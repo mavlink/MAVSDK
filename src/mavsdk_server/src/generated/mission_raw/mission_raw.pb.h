@@ -105,6 +105,12 @@ extern ImportQgroundcontrolMissionRequestDefaultTypeInternal _ImportQgroundcontr
 class ImportQgroundcontrolMissionResponse;
 struct ImportQgroundcontrolMissionResponseDefaultTypeInternal;
 extern ImportQgroundcontrolMissionResponseDefaultTypeInternal _ImportQgroundcontrolMissionResponse_default_instance_;
+class IsMissionFinishedRequest;
+struct IsMissionFinishedRequestDefaultTypeInternal;
+extern IsMissionFinishedRequestDefaultTypeInternal _IsMissionFinishedRequest_default_instance_;
+class IsMissionFinishedResponse;
+struct IsMissionFinishedResponseDefaultTypeInternal;
+extern IsMissionFinishedResponseDefaultTypeInternal _IsMissionFinishedResponse_default_instance_;
 class MissionChangedResponse;
 struct MissionChangedResponseDefaultTypeInternal;
 extern MissionChangedResponseDefaultTypeInternal _MissionChangedResponse_default_instance_;
@@ -1067,7 +1073,7 @@ class MissionRawResult final
     return reinterpret_cast<const MissionRawResult*>(
         &_MissionRawResult_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 35;
+  static constexpr int kIndexInFileMessages = 37;
   friend void swap(MissionRawResult& a, MissionRawResult& b) { a.Swap(&b); }
   inline void Swap(MissionRawResult* other) {
     if (other == this) return;
@@ -1312,7 +1318,7 @@ class MissionProgress final
     return reinterpret_cast<const MissionProgress*>(
         &_MissionProgress_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 32;
+  static constexpr int kIndexInFileMessages = 34;
   friend void swap(MissionProgress& a, MissionProgress& b) { a.Swap(&b); }
   inline void Swap(MissionProgress* other) {
     if (other == this) return;
@@ -1515,7 +1521,7 @@ class MissionItem final
     return reinterpret_cast<const MissionItem*>(
         &_MissionItem_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 33;
+  static constexpr int kIndexInFileMessages = 35;
   friend void swap(MissionItem& a, MissionItem& b) { a.Swap(&b); }
   inline void Swap(MissionItem* other) {
     if (other == this) return;
@@ -1977,6 +1983,152 @@ class MissionChangedResponse final
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
+  friend struct ::TableStruct_mission_5fraw_2fmission_5fraw_2eproto;
+};
+// -------------------------------------------------------------------
+
+class IsMissionFinishedRequest final
+    : public ::google::protobuf::internal::ZeroFieldsBase
+/* @@protoc_insertion_point(class_definition:mavsdk.rpc.mission_raw.IsMissionFinishedRequest) */ {
+ public:
+  inline IsMissionFinishedRequest() : IsMissionFinishedRequest(nullptr) {}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(IsMissionFinishedRequest* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(IsMissionFinishedRequest));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR IsMissionFinishedRequest(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline IsMissionFinishedRequest(const IsMissionFinishedRequest& from) : IsMissionFinishedRequest(nullptr, from) {}
+  inline IsMissionFinishedRequest(IsMissionFinishedRequest&& from) noexcept
+      : IsMissionFinishedRequest(nullptr, std::move(from)) {}
+  inline IsMissionFinishedRequest& operator=(const IsMissionFinishedRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline IsMissionFinishedRequest& operator=(IsMissionFinishedRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const IsMissionFinishedRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const IsMissionFinishedRequest* internal_default_instance() {
+    return reinterpret_cast<const IsMissionFinishedRequest*>(
+        &_IsMissionFinishedRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 32;
+  friend void swap(IsMissionFinishedRequest& a, IsMissionFinishedRequest& b) { a.Swap(&b); }
+  inline void Swap(IsMissionFinishedRequest* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(IsMissionFinishedRequest* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  IsMissionFinishedRequest* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::internal::ZeroFieldsBase::DefaultConstruct<IsMissionFinishedRequest>(arena);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
+  inline void CopyFrom(const IsMissionFinishedRequest& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
+  void MergeFrom(const IsMissionFinishedRequest& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
+  }
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.mission_raw.IsMissionFinishedRequest"; }
+
+ protected:
+  explicit IsMissionFinishedRequest(::google::protobuf::Arena* arena);
+  IsMissionFinishedRequest(::google::protobuf::Arena* arena, const IsMissionFinishedRequest& from);
+  IsMissionFinishedRequest(::google::protobuf::Arena* arena, IsMissionFinishedRequest&& from) noexcept
+      : IsMissionFinishedRequest(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission_raw.IsMissionFinishedRequest)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 0, 0,
+      0, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const IsMissionFinishedRequest& from_msg);
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
   friend struct ::TableStruct_mission_5fraw_2fmission_5fraw_2eproto;
 };
 // -------------------------------------------------------------------
@@ -5284,7 +5436,7 @@ class MissionImportData final
     return reinterpret_cast<const MissionImportData*>(
         &_MissionImportData_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 34;
+  static constexpr int kIndexInFileMessages = 36;
   friend void swap(MissionImportData& a, MissionImportData& b) { a.Swap(&b); }
   inline void Swap(MissionImportData* other) {
     if (other == this) return;
@@ -5453,6 +5605,215 @@ class MissionImportData final
     ::google::protobuf::RepeatedPtrField< ::mavsdk::rpc::mission_raw::MissionItem > geofence_items_;
     ::google::protobuf::RepeatedPtrField< ::mavsdk::rpc::mission_raw::MissionItem > rally_items_;
     ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_mission_5fraw_2fmission_5fraw_2eproto;
+};
+// -------------------------------------------------------------------
+
+class IsMissionFinishedResponse final
+    : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:mavsdk.rpc.mission_raw.IsMissionFinishedResponse) */ {
+ public:
+  inline IsMissionFinishedResponse() : IsMissionFinishedResponse(nullptr) {}
+  ~IsMissionFinishedResponse() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(IsMissionFinishedResponse* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(IsMissionFinishedResponse));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR IsMissionFinishedResponse(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline IsMissionFinishedResponse(const IsMissionFinishedResponse& from) : IsMissionFinishedResponse(nullptr, from) {}
+  inline IsMissionFinishedResponse(IsMissionFinishedResponse&& from) noexcept
+      : IsMissionFinishedResponse(nullptr, std::move(from)) {}
+  inline IsMissionFinishedResponse& operator=(const IsMissionFinishedResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline IsMissionFinishedResponse& operator=(IsMissionFinishedResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const IsMissionFinishedResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const IsMissionFinishedResponse* internal_default_instance() {
+    return reinterpret_cast<const IsMissionFinishedResponse*>(
+        &_IsMissionFinishedResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 33;
+  friend void swap(IsMissionFinishedResponse& a, IsMissionFinishedResponse& b) { a.Swap(&b); }
+  inline void Swap(IsMissionFinishedResponse* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(IsMissionFinishedResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  IsMissionFinishedResponse* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<IsMissionFinishedResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const IsMissionFinishedResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const IsMissionFinishedResponse& from) { IsMissionFinishedResponse::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(IsMissionFinishedResponse* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.mission_raw.IsMissionFinishedResponse"; }
+
+ protected:
+  explicit IsMissionFinishedResponse(::google::protobuf::Arena* arena);
+  IsMissionFinishedResponse(::google::protobuf::Arena* arena, const IsMissionFinishedResponse& from);
+  IsMissionFinishedResponse(::google::protobuf::Arena* arena, IsMissionFinishedResponse&& from) noexcept
+      : IsMissionFinishedResponse(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kMissionRawResultFieldNumber = 1,
+    kIsFinishedFieldNumber = 2,
+  };
+  // .mavsdk.rpc.mission_raw.MissionRawResult mission_raw_result = 1;
+  bool has_mission_raw_result() const;
+  void clear_mission_raw_result() ;
+  const ::mavsdk::rpc::mission_raw::MissionRawResult& mission_raw_result() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::mission_raw::MissionRawResult* release_mission_raw_result();
+  ::mavsdk::rpc::mission_raw::MissionRawResult* mutable_mission_raw_result();
+  void set_allocated_mission_raw_result(::mavsdk::rpc::mission_raw::MissionRawResult* value);
+  void unsafe_arena_set_allocated_mission_raw_result(::mavsdk::rpc::mission_raw::MissionRawResult* value);
+  ::mavsdk::rpc::mission_raw::MissionRawResult* unsafe_arena_release_mission_raw_result();
+
+  private:
+  const ::mavsdk::rpc::mission_raw::MissionRawResult& _internal_mission_raw_result() const;
+  ::mavsdk::rpc::mission_raw::MissionRawResult* _internal_mutable_mission_raw_result();
+
+  public:
+  // bool is_finished = 2;
+  void clear_is_finished() ;
+  bool is_finished() const;
+  void set_is_finished(bool value);
+
+  private:
+  bool _internal_is_finished() const;
+  void _internal_set_is_finished(bool value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission_raw.IsMissionFinishedResponse)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      1, 2, 1,
+      0, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const IsMissionFinishedResponse& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::mavsdk::rpc::mission_raw::MissionRawResult* mission_raw_result_;
+    bool is_finished_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -9330,6 +9691,132 @@ inline void ImportQgroundcontrolMissionFromStringResponse::set_allocated_mission
 
   _impl_.mission_import_data_ = reinterpret_cast<::mavsdk::rpc::mission_raw::MissionImportData*>(value);
   // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.mission_raw.ImportQgroundcontrolMissionFromStringResponse.mission_import_data)
+}
+
+// -------------------------------------------------------------------
+
+// IsMissionFinishedRequest
+
+// -------------------------------------------------------------------
+
+// IsMissionFinishedResponse
+
+// .mavsdk.rpc.mission_raw.MissionRawResult mission_raw_result = 1;
+inline bool IsMissionFinishedResponse::has_mission_raw_result() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.mission_raw_result_ != nullptr);
+  return value;
+}
+inline void IsMissionFinishedResponse::clear_mission_raw_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.mission_raw_result_ != nullptr) _impl_.mission_raw_result_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
+}
+inline const ::mavsdk::rpc::mission_raw::MissionRawResult& IsMissionFinishedResponse::_internal_mission_raw_result() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::mavsdk::rpc::mission_raw::MissionRawResult* p = _impl_.mission_raw_result_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::mission_raw::MissionRawResult&>(::mavsdk::rpc::mission_raw::_MissionRawResult_default_instance_);
+}
+inline const ::mavsdk::rpc::mission_raw::MissionRawResult& IsMissionFinishedResponse::mission_raw_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission_raw.IsMissionFinishedResponse.mission_raw_result)
+  return _internal_mission_raw_result();
+}
+inline void IsMissionFinishedResponse::unsafe_arena_set_allocated_mission_raw_result(::mavsdk::rpc::mission_raw::MissionRawResult* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.mission_raw_result_);
+  }
+  _impl_.mission_raw_result_ = reinterpret_cast<::mavsdk::rpc::mission_raw::MissionRawResult*>(value);
+  if (value != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.mission_raw.IsMissionFinishedResponse.mission_raw_result)
+}
+inline ::mavsdk::rpc::mission_raw::MissionRawResult* IsMissionFinishedResponse::release_mission_raw_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::mission_raw::MissionRawResult* released = _impl_.mission_raw_result_;
+  _impl_.mission_raw_result_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
+    }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::mavsdk::rpc::mission_raw::MissionRawResult* IsMissionFinishedResponse::unsafe_arena_release_mission_raw_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.mission_raw.IsMissionFinishedResponse.mission_raw_result)
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::mission_raw::MissionRawResult* temp = _impl_.mission_raw_result_;
+  _impl_.mission_raw_result_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::mission_raw::MissionRawResult* IsMissionFinishedResponse::_internal_mutable_mission_raw_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.mission_raw_result_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::mission_raw::MissionRawResult>(GetArena());
+    _impl_.mission_raw_result_ = reinterpret_cast<::mavsdk::rpc::mission_raw::MissionRawResult*>(p);
+  }
+  return _impl_.mission_raw_result_;
+}
+inline ::mavsdk::rpc::mission_raw::MissionRawResult* IsMissionFinishedResponse::mutable_mission_raw_result() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  ::mavsdk::rpc::mission_raw::MissionRawResult* _msg = _internal_mutable_mission_raw_result();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.mission_raw.IsMissionFinishedResponse.mission_raw_result)
+  return _msg;
+}
+inline void IsMissionFinishedResponse::set_allocated_mission_raw_result(::mavsdk::rpc::mission_raw::MissionRawResult* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete (_impl_.mission_raw_result_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+
+  _impl_.mission_raw_result_ = reinterpret_cast<::mavsdk::rpc::mission_raw::MissionRawResult*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.mission_raw.IsMissionFinishedResponse.mission_raw_result)
+}
+
+// bool is_finished = 2;
+inline void IsMissionFinishedResponse::clear_is_finished() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.is_finished_ = false;
+}
+inline bool IsMissionFinishedResponse::is_finished() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission_raw.IsMissionFinishedResponse.is_finished)
+  return _internal_is_finished();
+}
+inline void IsMissionFinishedResponse::set_is_finished(bool value) {
+  _internal_set_is_finished(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.mission_raw.IsMissionFinishedResponse.is_finished)
+}
+inline bool IsMissionFinishedResponse::_internal_is_finished() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.is_finished_;
+}
+inline void IsMissionFinishedResponse::_internal_set_is_finished(bool value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.is_finished_ = value;
 }
 
 // -------------------------------------------------------------------

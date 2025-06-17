@@ -750,6 +750,31 @@ public:
         return grpc::Status::OK;
     }
 
+    grpc::Status IsMissionFinished(
+        grpc::ServerContext* /* context */,
+        const rpc::mission_raw::IsMissionFinishedRequest* /* request */,
+        rpc::mission_raw::IsMissionFinishedResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                auto result = mavsdk::MissionRaw::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->is_mission_finished();
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result.first);
+
+            response->set_is_finished(result.second);
+        }
+
+        return grpc::Status::OK;
+    }
+
     void stop()
     {
         _stopped.store(true);

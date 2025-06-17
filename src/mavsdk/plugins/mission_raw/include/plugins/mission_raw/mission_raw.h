@@ -508,6 +508,17 @@ public:
     import_qgroundcontrol_mission_from_string(std::string qgc_plan) const;
 
     /**
+     * @brief Check if the mission is finished.
+     *
+     * Returns true if the mission is finished, false otherwise.
+     *
+     * This function is blocking.
+     *
+     * @return Result of request.
+     */
+    std::pair<Result, bool> is_mission_finished() const;
+
+    /**
      * @brief Copy constructor.
      */
     MissionRaw(const MissionRaw& other);
