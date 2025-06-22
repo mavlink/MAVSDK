@@ -2,7 +2,7 @@
 #include "mavlink_parameter_client.h"
 #include "mavlink_message_handler.h"
 #include "system_impl.h"
-#include "plugin_base.h"
+#include "overloaded.h"
 #include <algorithm>
 #include <future>
 #include <limits>
