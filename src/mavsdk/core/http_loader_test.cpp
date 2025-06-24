@@ -136,7 +136,12 @@ TEST_F(HttpLoaderTest, HttpLoader_DownloadAsync_OneBad)
     http_loader->download_async(_file_url_2, _file_local_path_2, progress);
     http_loader->download_async(_file_url_3, _file_local_path_3, progress);
 
-    std::this_thread::sleep_for(std::chrono::milliseconds(300));
+    // Wait for downloads to complete (2 success + 1 error) with timeout
+    auto start_time = std::chrono::steady_clock::now();
+    while ((callback_finished_counter + callback_error_counter) < 3 &&
+           std::chrono::steady_clock::now() - start_time < std::chrono::milliseconds(1000)) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    }
 
     EXPECT_EQ(check_file_exists(_file_local_path_1), true);
     EXPECT_EQ(check_file_exists(_file_local_path_2), false);
@@ -182,7 +187,12 @@ TEST_F(HttpLoaderTest, HttpLoader_DownloadAsync_AllGood)
     http_loader->download_async(_file_url_2, _file_local_path_2, progress);
     http_loader->download_async(_file_url_3, _file_local_path_3, progress);
 
-    std::this_thread::sleep_for(std::chrono::milliseconds(300));
+    // Wait for all downloads to complete with timeout
+    auto start_time = std::chrono::steady_clock::now();
+    while (callback_finished_counter < 3 && callback_error_counter == 0 &&
+           std::chrono::steady_clock::now() - start_time < std::chrono::milliseconds(1000)) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    }
 
     EXPECT_EQ(check_file_exists(_file_local_path_1), true);
     EXPECT_EQ(check_file_exists(_file_local_path_2), true);
