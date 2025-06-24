@@ -91,8 +91,7 @@ if (NOT BUILD_WITHOUT_CURL)
     list(APPEND UNIT_TEST_SOURCES
         ${PROJECT_SOURCE_DIR}/mavsdk/core/curl_test.cpp
         ${PROJECT_SOURCE_DIR}/mavsdk/core/hostname_to_ip_test.cpp
-        # TODO: add this again
-        #${PROJECT_SOURCE_DIR}/mavsdk/core/http_loader_test.cpp
+        ${PROJECT_SOURCE_DIR}/mavsdk/core/http_loader_test.cpp
     )
 else()
     target_compile_definitions(mavsdk
@@ -177,6 +176,7 @@ install(FILES
     include/mavsdk/server_component.h
     include/mavsdk/mavlink_address.h
     include/mavsdk/vehicle.h
+    include/mavsdk/overloaded.h
     ${CMAKE_CURRENT_BINARY_DIR}/include/mavsdk/mavlink_include.h
     DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/mavsdk"
 )
@@ -196,7 +196,6 @@ list(APPEND UNIT_TEST_SOURCES
     ${PROJECT_SOURCE_DIR}/mavsdk/core/mavsdk_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/mavsdk_time_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/mavlink_channels_test.cpp
-    ${PROJECT_SOURCE_DIR}/mavsdk/core/mavlink_component_metadata_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/mavlink_mission_transfer_client_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/mavlink_mission_transfer_server_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/mavlink_statustext_handler_test.cpp
@@ -206,5 +205,12 @@ list(APPEND UNIT_TEST_SOURCES
     ${PROJECT_SOURCE_DIR}/mavsdk/core/unittests_main.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/mavlink_parameter_cache_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/string_utils_test.cpp
+    ${PROJECT_SOURCE_DIR}/mavsdk/core/base64_test.cpp
 )
+
+if (NOT BUILD_WITHOUT_CURL)
+    list(APPEND UNIT_TEST_SOURCES
+        ${PROJECT_SOURCE_DIR}/mavsdk/core/mavlink_component_metadata_test.cpp
+    )
+endif()
 set(UNIT_TEST_SOURCES ${UNIT_TEST_SOURCES} PARENT_SCOPE)

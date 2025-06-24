@@ -14,7 +14,7 @@
 #include "serial_connection.h"
 #include "version.h"
 #include "server_component_impl.h"
-#include "plugin_base.h"
+#include "overloaded.h"
 #include "mavlink_channels.h"
 #include "callback_list.tpp"
 #include "hostname_to_ip.h"

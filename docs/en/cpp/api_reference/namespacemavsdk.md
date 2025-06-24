@@ -293,7 +293,7 @@ Stream operator to print information about a `ConnectionResult`.
 ### overloaded() {#namespacemavsdk_1a724e321aaff91eb2ba28279e0292e552}
 
 ```
-#include: plugin_base.h
+#include: overloaded.h
 ```
 ```cpp
 mavsdk::overloaded(Ts...) -> overloaded< Ts... >
