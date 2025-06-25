@@ -926,13 +926,18 @@ void MavsdkImpl::call_user_callback_located(
     UserCallback user_callback =
         _callback_debugging ? UserCallback{func, filename, linenumber} : UserCallback{func};
 
-    _user_callback_queue.enqueue(user_callback);
+    _user_callback_queue.push_back(std::make_shared<UserCallback>(user_callback));
 }
 
 void MavsdkImpl::process_user_callbacks_thread()
 {
     while (!_should_exit) {
-        auto callback = _user_callback_queue.dequeue();
+        std::shared_ptr<UserCallback> callback;
+        {
+            LockedQueue<UserCallback>::Guard guard(_user_callback_queue);
+            callback = guard.wait_and_pop_front();
+        }
+
         if (!callback) {
             continue;
         }
@@ -946,8 +951,8 @@ void MavsdkImpl::process_user_callbacks_thread()
         auto cookie = timeout_handler.add(
             [&]() {
                 if (_callback_debugging) {
-                    LogWarn() << "Callback called from " << callback.value().filename << ":"
-                              << callback.value().linenumber << " took more than " << timeout_s
+                    LogWarn() << "Callback called from " << callback->filename << ":"
+                              << callback->linenumber << " took more than " << timeout_s
                               << " second to run.";
                     fflush(stdout);
                     fflush(stderr);
@@ -959,7 +964,7 @@ void MavsdkImpl::process_user_callbacks_thread()
                 }
             },
             timeout_s);
-        callback.value().func();
+        callback->func();
         timeout_handler.remove(cookie);
     }
 }
