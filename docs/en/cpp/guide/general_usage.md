@@ -16,8 +16,9 @@ Plugin objects are instantiated with a *specific* `System` object (a plugin inst
 Plugin objects are created as shared pointers that will be destroyed when all associated handles are out of scope.
 All objects are automatically cleaned up when the parent `Mavsdk` object is destroyed.
 
-:: info
+::: info
 The term plugin is a bit misleading as they are not "plugged in" (loaded at runtime), but modules compiled in.
+:::
 
 
 ## Error Handling
