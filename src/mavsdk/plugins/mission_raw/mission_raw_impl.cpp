@@ -657,6 +657,29 @@ MissionRawImpl::import_qgroundcontrol_mission_from_string(const std::string& qgc
     return MissionImport::parse_json(qgc_plan, _system_impl->autopilot());
 }
 
+std::pair<MissionRaw::Result, MissionRaw::MissionImportData>
+MissionRawImpl::import_mission_planner_mission(std::string mission_planner_path)
+{
+    std::ifstream file(mission_planner_path);
+    if (!file) {
+        return std::make_pair<MissionRaw::Result, MissionRaw::MissionImportData>(
+            MissionRaw::Result::FailedToOpenMissionPlannerPlan, {});
+    }
+
+    std::stringstream buf;
+    buf << file.rdbuf();
+    file.close();
+
+    return MissionImport::parse_mission_planner(buf.str(), _system_impl->autopilot());
+}
+
+std::pair<MissionRaw::Result, MissionRaw::MissionImportData>
+MissionRawImpl::import_mission_planner_mission_from_string(
+    const std::string& mission_planner_mission)
+{
+    return MissionImport::parse_mission_planner(mission_planner_mission, _system_impl->autopilot());
+}
+
 MissionRaw::Result MissionRawImpl::convert_result(MavlinkMissionTransferClient::Result result)
 {
     switch (result) {

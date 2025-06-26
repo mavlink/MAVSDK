@@ -225,6 +225,12 @@ public:
                 return rpc::mission_raw::MissionRawResult_Result_RESULT_PROTOCOL_ERROR;
             case mavsdk::MissionRaw::Result::IntMessagesNotSupported:
                 return rpc::mission_raw::MissionRawResult_Result_RESULT_INT_MESSAGES_NOT_SUPPORTED;
+            case mavsdk::MissionRaw::Result::FailedToOpenMissionPlannerPlan:
+                return rpc::mission_raw::
+                    MissionRawResult_Result_RESULT_FAILED_TO_OPEN_MISSION_PLANNER_PLAN;
+            case mavsdk::MissionRaw::Result::FailedToParseMissionPlannerPlan:
+                return rpc::mission_raw::
+                    MissionRawResult_Result_RESULT_FAILED_TO_PARSE_MISSION_PLANNER_PLAN;
         }
     }
 
@@ -273,6 +279,12 @@ public:
                 return mavsdk::MissionRaw::Result::ProtocolError;
             case rpc::mission_raw::MissionRawResult_Result_RESULT_INT_MESSAGES_NOT_SUPPORTED:
                 return mavsdk::MissionRaw::Result::IntMessagesNotSupported;
+            case rpc::mission_raw::
+                MissionRawResult_Result_RESULT_FAILED_TO_OPEN_MISSION_PLANNER_PLAN:
+                return mavsdk::MissionRaw::Result::FailedToOpenMissionPlannerPlan;
+            case rpc::mission_raw::
+                MissionRawResult_Result_RESULT_FAILED_TO_PARSE_MISSION_PLANNER_PLAN:
+                return mavsdk::MissionRaw::Result::FailedToParseMissionPlannerPlan;
         }
     }
 
@@ -739,6 +751,71 @@ public:
 
         auto result = _lazy_plugin.maybe_plugin()->import_qgroundcontrol_mission_from_string(
             request->qgc_plan());
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result.first);
+
+            response->set_allocated_mission_import_data(
+                translateToRpcMissionImportData(result.second).release());
+        }
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status ImportMissionPlannerMission(
+        grpc::ServerContext* /* context */,
+        const rpc::mission_raw::ImportMissionPlannerMissionRequest* request,
+        rpc::mission_raw::ImportMissionPlannerMissionResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                auto result = mavsdk::MissionRaw::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        if (request == nullptr) {
+            LogWarn() << "ImportMissionPlannerMission sent with a null request! Ignoring...";
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->import_mission_planner_mission(
+            request->mission_planner_path());
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result.first);
+
+            response->set_allocated_mission_import_data(
+                translateToRpcMissionImportData(result.second).release());
+        }
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status ImportMissionPlannerMissionFromString(
+        grpc::ServerContext* /* context */,
+        const rpc::mission_raw::ImportMissionPlannerMissionFromStringRequest* request,
+        rpc::mission_raw::ImportMissionPlannerMissionFromStringResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                auto result = mavsdk::MissionRaw::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        if (request == nullptr) {
+            LogWarn()
+                << "ImportMissionPlannerMissionFromString sent with a null request! Ignoring...";
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->import_mission_planner_mission_from_string(
+            request->mission_planner_mission());
 
         if (response != nullptr) {
             fillResponseWithResult(response, result.first);
