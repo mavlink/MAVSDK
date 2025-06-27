@@ -117,7 +117,7 @@ ManualControlImpl::set_manual_control_input(float x, float y, float z, float r)
             static_cast<int16_t>(x * 1000),
             static_cast<int16_t>(y * 1000),
             static_cast<int16_t>(z * 1000),
-            static_cast<int16_t>(r * 1000),
+            static_cast<int16_t>(-r * 1000),
             buttons,
             buttons2,
             enabled_extensions,
