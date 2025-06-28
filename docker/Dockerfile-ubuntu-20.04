@@ -26,11 +26,12 @@ RUN apt-get update \
         python3 \
         python3-pip \
         python3-future \
-        python3-lxml \
         ruby-dev \
         doxygen \
         colordiff \
         lsb-release \
+        libxml2-dev \
+        libxslt-dev \
     && apt-get -y autoremove \
     && apt-get clean autoclean \
     && rm -rf /var/lib/apt/lists/{apt,dpkg,cache,log} /tmp/* /var/tmp/*
