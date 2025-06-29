@@ -69,6 +69,8 @@ void | [unsubscribe_mission_progress](#classmavsdk_1_1_mission_raw_1ac46f08b5270
 void | [unsubscribe_mission_changed](#classmavsdk_1_1_mission_raw_1ac6cd7602b2e5b46ad0ea1cf8bf602a0c) ([MissionChangedHandle](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a46da6d8a53822fd5fbd7b2a414624c5c) handle) | Unsubscribe from subscribe_mission_changed.
 std::pair< [Result](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eaf), [MissionRaw::MissionImportData](structmavsdk_1_1_mission_raw_1_1_mission_import_data.md) > | [import_qgroundcontrol_mission](#classmavsdk_1_1_mission_raw_1a2a4ca261c37737e691c6954693d6d0a5) (std::string qgc_plan_path)const | Import a QGroundControl missions in JSON .plan format, from a file.
 std::pair< [Result](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eaf), [MissionRaw::MissionImportData](structmavsdk_1_1_mission_raw_1_1_mission_import_data.md) > | [import_qgroundcontrol_mission_from_string](#classmavsdk_1_1_mission_raw_1a4a1b55650120d8af0ce7fa037f6b5ce9) (std::string qgc_plan)const | Import a QGroundControl missions in JSON .plan format, from a string.
+std::pair< [Result](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eaf), [MissionRaw::MissionImportData](structmavsdk_1_1_mission_raw_1_1_mission_import_data.md) > | [import_mission_planner_mission](#classmavsdk_1_1_mission_raw_1abf8ac0f813d4dff4f0fe3acce0b39163) (std::string mission_planner_path)const | Import a [Mission](classmavsdk_1_1_mission.md) Planner mission in QGC WPL 110 format, from a file.
+std::pair< [Result](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eaf), [MissionRaw::MissionImportData](structmavsdk_1_1_mission_raw_1_1_mission_import_data.md) > | [import_mission_planner_mission_from_string](#classmavsdk_1_1_mission_raw_1a25e5f8e8c7f6d778f7ab6e91b39a6ec9) (std::string mission_planner_mission)const | Import a [Mission](classmavsdk_1_1_mission.md) Planner mission in QGC WPL 110 format, from a string.
 std::pair< [Result](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eaf), bool > | [is_mission_finished](#classmavsdk_1_1_mission_raw_1a998db451c2718d9728276ca2d01ce315) () const | Check if the mission is finished.
 const [MissionRaw](classmavsdk_1_1_mission_raw.md) & | [operator=](#classmavsdk_1_1_mission_raw_1a2b8cdc1fbee72224a9ef6eb9266b2e2a) (const [MissionRaw](classmavsdk_1_1_mission_raw.md) &)=delete | Equality operator (object is not copyable).
 
@@ -247,6 +249,8 @@ Value | Description
 <span id="classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eafa80038ba51e64057d4a00429697a3368f"></span> `CurrentInvalid` | The current item is not set correctly. 
 <span id="classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eafaca3da8f495e4e628912a7798655da6c2"></span> `ProtocolError` | There was a protocol error. 
 <span id="classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eafa3f5f527103f3b11c1c271363c542432b"></span> `IntMessagesNotSupported` | The system does not support the MISSION_INT protocol. 
+<span id="classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eafa6d80e75c1ced1d8667d7ba55a2b67429"></span> `FailedToOpenMissionPlannerPlan` | Failed to open the [Mission](classmavsdk_1_1_mission.md) Planner plan. 
+<span id="classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eafad56bf0f57cf6420ed771f852543a07eb"></span> `FailedToParseMissionPlannerPlan` | Failed to parse the [Mission](classmavsdk_1_1_mission.md) Planner plan. 
 
 ## Member Function Documentation
 
@@ -730,6 +734,60 @@ This function is blocking.
 **Parameters**
 
 * std::string **qgc_plan** - 
+
+**Returns**
+
+&emsp;std::pair< [Result](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eaf), [MissionRaw::MissionImportData](structmavsdk_1_1_mission_raw_1_1_mission_import_data.md) > - Result of request.
+
+### import_mission_planner_mission() {#classmavsdk_1_1_mission_raw_1abf8ac0f813d4dff4f0fe3acce0b39163}
+```cpp
+std::pair< Result, MissionRaw::MissionImportData > mavsdk::MissionRaw::import_mission_planner_mission(std::string mission_planner_path) const
+```
+
+
+Import a [Mission](classmavsdk_1_1_mission.md) Planner mission in QGC WPL 110 format, from a file.
+
+Supported:
+<ul>
+<li><p>Waypoints</p>
+</li>
+<li><p>ArduPilot home position handling</p>
+</li>
+</ul>
+
+
+This function is blocking.
+
+**Parameters**
+
+* std::string **mission_planner_path** - 
+
+**Returns**
+
+&emsp;std::pair< [Result](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eaf), [MissionRaw::MissionImportData](structmavsdk_1_1_mission_raw_1_1_mission_import_data.md) > - Result of request.
+
+### import_mission_planner_mission_from_string() {#classmavsdk_1_1_mission_raw_1a25e5f8e8c7f6d778f7ab6e91b39a6ec9}
+```cpp
+std::pair< Result, MissionRaw::MissionImportData > mavsdk::MissionRaw::import_mission_planner_mission_from_string(std::string mission_planner_mission) const
+```
+
+
+Import a [Mission](classmavsdk_1_1_mission.md) Planner mission in QGC WPL 110 format, from a string.
+
+Supported:
+<ul>
+<li><p>Waypoints</p>
+</li>
+<li><p>ArduPilot home position handling</p>
+</li>
+</ul>
+
+
+This function is blocking.
+
+**Parameters**
+
+* std::string **mission_planner_mission** - 
 
 **Returns**
 

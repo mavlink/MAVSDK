@@ -93,6 +93,18 @@ extern DownloadRallypointsRequestDefaultTypeInternal _DownloadRallypointsRequest
 class DownloadRallypointsResponse;
 struct DownloadRallypointsResponseDefaultTypeInternal;
 extern DownloadRallypointsResponseDefaultTypeInternal _DownloadRallypointsResponse_default_instance_;
+class ImportMissionPlannerMissionFromStringRequest;
+struct ImportMissionPlannerMissionFromStringRequestDefaultTypeInternal;
+extern ImportMissionPlannerMissionFromStringRequestDefaultTypeInternal _ImportMissionPlannerMissionFromStringRequest_default_instance_;
+class ImportMissionPlannerMissionFromStringResponse;
+struct ImportMissionPlannerMissionFromStringResponseDefaultTypeInternal;
+extern ImportMissionPlannerMissionFromStringResponseDefaultTypeInternal _ImportMissionPlannerMissionFromStringResponse_default_instance_;
+class ImportMissionPlannerMissionRequest;
+struct ImportMissionPlannerMissionRequestDefaultTypeInternal;
+extern ImportMissionPlannerMissionRequestDefaultTypeInternal _ImportMissionPlannerMissionRequest_default_instance_;
+class ImportMissionPlannerMissionResponse;
+struct ImportMissionPlannerMissionResponseDefaultTypeInternal;
+extern ImportMissionPlannerMissionResponseDefaultTypeInternal _ImportMissionPlannerMissionResponse_default_instance_;
 class ImportQgroundcontrolMissionFromStringRequest;
 struct ImportQgroundcontrolMissionFromStringRequestDefaultTypeInternal;
 extern ImportQgroundcontrolMissionFromStringRequestDefaultTypeInternal _ImportQgroundcontrolMissionFromStringRequest_default_instance_;
@@ -202,6 +214,8 @@ enum MissionRawResult_Result : int {
   MissionRawResult_Result_RESULT_CURRENT_INVALID = 16,
   MissionRawResult_Result_RESULT_PROTOCOL_ERROR = 17,
   MissionRawResult_Result_RESULT_INT_MESSAGES_NOT_SUPPORTED = 18,
+  MissionRawResult_Result_RESULT_FAILED_TO_OPEN_MISSION_PLANNER_PLAN = 19,
+  MissionRawResult_Result_RESULT_FAILED_TO_PARSE_MISSION_PLANNER_PLAN = 20,
   MissionRawResult_Result_MissionRawResult_Result_INT_MIN_SENTINEL_DO_NOT_USE_ =
       std::numeric_limits<::int32_t>::min(),
   MissionRawResult_Result_MissionRawResult_Result_INT_MAX_SENTINEL_DO_NOT_USE_ =
@@ -211,8 +225,8 @@ enum MissionRawResult_Result : int {
 bool MissionRawResult_Result_IsValid(int value);
 extern const uint32_t MissionRawResult_Result_internal_data_[];
 constexpr MissionRawResult_Result MissionRawResult_Result_Result_MIN = static_cast<MissionRawResult_Result>(0);
-constexpr MissionRawResult_Result MissionRawResult_Result_Result_MAX = static_cast<MissionRawResult_Result>(18);
-constexpr int MissionRawResult_Result_Result_ARRAYSIZE = 18 + 1;
+constexpr MissionRawResult_Result MissionRawResult_Result_Result_MAX = static_cast<MissionRawResult_Result>(20);
+constexpr int MissionRawResult_Result_Result_ARRAYSIZE = 20 + 1;
 const ::google::protobuf::EnumDescriptor*
 MissionRawResult_Result_descriptor();
 template <typename T>
@@ -225,7 +239,7 @@ const std::string& MissionRawResult_Result_Name(T value) {
 template <>
 inline const std::string& MissionRawResult_Result_Name(MissionRawResult_Result value) {
   return ::google::protobuf::internal::NameOfDenseEnum<MissionRawResult_Result_descriptor,
-                                                 0, 18>(
+                                                 0, 20>(
       static_cast<int>(value));
 }
 inline bool MissionRawResult_Result_Parse(absl::string_view name, MissionRawResult_Result* value) {
@@ -1073,7 +1087,7 @@ class MissionRawResult final
     return reinterpret_cast<const MissionRawResult*>(
         &_MissionRawResult_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 37;
+  static constexpr int kIndexInFileMessages = 41;
   friend void swap(MissionRawResult& a, MissionRawResult& b) { a.Swap(&b); }
   inline void Swap(MissionRawResult* other) {
     if (other == this) return;
@@ -1177,6 +1191,8 @@ class MissionRawResult final
   static constexpr Result RESULT_CURRENT_INVALID = MissionRawResult_Result_RESULT_CURRENT_INVALID;
   static constexpr Result RESULT_PROTOCOL_ERROR = MissionRawResult_Result_RESULT_PROTOCOL_ERROR;
   static constexpr Result RESULT_INT_MESSAGES_NOT_SUPPORTED = MissionRawResult_Result_RESULT_INT_MESSAGES_NOT_SUPPORTED;
+  static constexpr Result RESULT_FAILED_TO_OPEN_MISSION_PLANNER_PLAN = MissionRawResult_Result_RESULT_FAILED_TO_OPEN_MISSION_PLANNER_PLAN;
+  static constexpr Result RESULT_FAILED_TO_PARSE_MISSION_PLANNER_PLAN = MissionRawResult_Result_RESULT_FAILED_TO_PARSE_MISSION_PLANNER_PLAN;
   static inline bool Result_IsValid(int value) {
     return MissionRawResult_Result_IsValid(value);
   }
@@ -1318,7 +1334,7 @@ class MissionProgress final
     return reinterpret_cast<const MissionProgress*>(
         &_MissionProgress_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 34;
+  static constexpr int kIndexInFileMessages = 38;
   friend void swap(MissionProgress& a, MissionProgress& b) { a.Swap(&b); }
   inline void Swap(MissionProgress* other) {
     if (other == this) return;
@@ -1521,7 +1537,7 @@ class MissionItem final
     return reinterpret_cast<const MissionItem*>(
         &_MissionItem_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 35;
+  static constexpr int kIndexInFileMessages = 39;
   friend void swap(MissionItem& a, MissionItem& b) { a.Swap(&b); }
   inline void Swap(MissionItem* other) {
     if (other == this) return;
@@ -2046,7 +2062,7 @@ class IsMissionFinishedRequest final
     return reinterpret_cast<const IsMissionFinishedRequest*>(
         &_IsMissionFinishedRequest_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 32;
+  static constexpr int kIndexInFileMessages = 36;
   friend void swap(IsMissionFinishedRequest& a, IsMissionFinishedRequest& b) { a.Swap(&b); }
   inline void Swap(IsMissionFinishedRequest* other) {
     if (other == this) return;
@@ -2519,6 +2535,400 @@ class ImportQgroundcontrolMissionFromStringRequest final
                           ::google::protobuf::Arena* arena, const Impl_& from,
                           const ImportQgroundcontrolMissionFromStringRequest& from_msg);
     ::google::protobuf::internal::ArenaStringPtr qgc_plan_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_mission_5fraw_2fmission_5fraw_2eproto;
+};
+// -------------------------------------------------------------------
+
+class ImportMissionPlannerMissionRequest final
+    : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:mavsdk.rpc.mission_raw.ImportMissionPlannerMissionRequest) */ {
+ public:
+  inline ImportMissionPlannerMissionRequest() : ImportMissionPlannerMissionRequest(nullptr) {}
+  ~ImportMissionPlannerMissionRequest() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(ImportMissionPlannerMissionRequest* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(ImportMissionPlannerMissionRequest));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR ImportMissionPlannerMissionRequest(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline ImportMissionPlannerMissionRequest(const ImportMissionPlannerMissionRequest& from) : ImportMissionPlannerMissionRequest(nullptr, from) {}
+  inline ImportMissionPlannerMissionRequest(ImportMissionPlannerMissionRequest&& from) noexcept
+      : ImportMissionPlannerMissionRequest(nullptr, std::move(from)) {}
+  inline ImportMissionPlannerMissionRequest& operator=(const ImportMissionPlannerMissionRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline ImportMissionPlannerMissionRequest& operator=(ImportMissionPlannerMissionRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const ImportMissionPlannerMissionRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const ImportMissionPlannerMissionRequest* internal_default_instance() {
+    return reinterpret_cast<const ImportMissionPlannerMissionRequest*>(
+        &_ImportMissionPlannerMissionRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 32;
+  friend void swap(ImportMissionPlannerMissionRequest& a, ImportMissionPlannerMissionRequest& b) { a.Swap(&b); }
+  inline void Swap(ImportMissionPlannerMissionRequest* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(ImportMissionPlannerMissionRequest* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  ImportMissionPlannerMissionRequest* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<ImportMissionPlannerMissionRequest>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const ImportMissionPlannerMissionRequest& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const ImportMissionPlannerMissionRequest& from) { ImportMissionPlannerMissionRequest::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(ImportMissionPlannerMissionRequest* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.mission_raw.ImportMissionPlannerMissionRequest"; }
+
+ protected:
+  explicit ImportMissionPlannerMissionRequest(::google::protobuf::Arena* arena);
+  ImportMissionPlannerMissionRequest(::google::protobuf::Arena* arena, const ImportMissionPlannerMissionRequest& from);
+  ImportMissionPlannerMissionRequest(::google::protobuf::Arena* arena, ImportMissionPlannerMissionRequest&& from) noexcept
+      : ImportMissionPlannerMissionRequest(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kMissionPlannerPathFieldNumber = 1,
+  };
+  // string mission_planner_path = 1;
+  void clear_mission_planner_path() ;
+  const std::string& mission_planner_path() const;
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_mission_planner_path(Arg_&& arg, Args_... args);
+  std::string* mutable_mission_planner_path();
+  PROTOBUF_NODISCARD std::string* release_mission_planner_path();
+  void set_allocated_mission_planner_path(std::string* value);
+
+  private:
+  const std::string& _internal_mission_planner_path() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_mission_planner_path(
+      const std::string& value);
+  std::string* _internal_mutable_mission_planner_path();
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission_raw.ImportMissionPlannerMissionRequest)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 0,
+      86, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const ImportMissionPlannerMissionRequest& from_msg);
+    ::google::protobuf::internal::ArenaStringPtr mission_planner_path_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_mission_5fraw_2fmission_5fraw_2eproto;
+};
+// -------------------------------------------------------------------
+
+class ImportMissionPlannerMissionFromStringRequest final
+    : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:mavsdk.rpc.mission_raw.ImportMissionPlannerMissionFromStringRequest) */ {
+ public:
+  inline ImportMissionPlannerMissionFromStringRequest() : ImportMissionPlannerMissionFromStringRequest(nullptr) {}
+  ~ImportMissionPlannerMissionFromStringRequest() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(ImportMissionPlannerMissionFromStringRequest* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(ImportMissionPlannerMissionFromStringRequest));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR ImportMissionPlannerMissionFromStringRequest(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline ImportMissionPlannerMissionFromStringRequest(const ImportMissionPlannerMissionFromStringRequest& from) : ImportMissionPlannerMissionFromStringRequest(nullptr, from) {}
+  inline ImportMissionPlannerMissionFromStringRequest(ImportMissionPlannerMissionFromStringRequest&& from) noexcept
+      : ImportMissionPlannerMissionFromStringRequest(nullptr, std::move(from)) {}
+  inline ImportMissionPlannerMissionFromStringRequest& operator=(const ImportMissionPlannerMissionFromStringRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline ImportMissionPlannerMissionFromStringRequest& operator=(ImportMissionPlannerMissionFromStringRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const ImportMissionPlannerMissionFromStringRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const ImportMissionPlannerMissionFromStringRequest* internal_default_instance() {
+    return reinterpret_cast<const ImportMissionPlannerMissionFromStringRequest*>(
+        &_ImportMissionPlannerMissionFromStringRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 34;
+  friend void swap(ImportMissionPlannerMissionFromStringRequest& a, ImportMissionPlannerMissionFromStringRequest& b) { a.Swap(&b); }
+  inline void Swap(ImportMissionPlannerMissionFromStringRequest* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(ImportMissionPlannerMissionFromStringRequest* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  ImportMissionPlannerMissionFromStringRequest* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<ImportMissionPlannerMissionFromStringRequest>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const ImportMissionPlannerMissionFromStringRequest& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const ImportMissionPlannerMissionFromStringRequest& from) { ImportMissionPlannerMissionFromStringRequest::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(ImportMissionPlannerMissionFromStringRequest* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.mission_raw.ImportMissionPlannerMissionFromStringRequest"; }
+
+ protected:
+  explicit ImportMissionPlannerMissionFromStringRequest(::google::protobuf::Arena* arena);
+  ImportMissionPlannerMissionFromStringRequest(::google::protobuf::Arena* arena, const ImportMissionPlannerMissionFromStringRequest& from);
+  ImportMissionPlannerMissionFromStringRequest(::google::protobuf::Arena* arena, ImportMissionPlannerMissionFromStringRequest&& from) noexcept
+      : ImportMissionPlannerMissionFromStringRequest(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kMissionPlannerMissionFieldNumber = 1,
+  };
+  // string mission_planner_mission = 1;
+  void clear_mission_planner_mission() ;
+  const std::string& mission_planner_mission() const;
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_mission_planner_mission(Arg_&& arg, Args_... args);
+  std::string* mutable_mission_planner_mission();
+  PROTOBUF_NODISCARD std::string* release_mission_planner_mission();
+  void set_allocated_mission_planner_mission(std::string* value);
+
+  private:
+  const std::string& _internal_mission_planner_mission() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_mission_planner_mission(
+      const std::string& value);
+  std::string* _internal_mutable_mission_planner_mission();
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission_raw.ImportMissionPlannerMissionFromStringRequest)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 0,
+      99, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const ImportMissionPlannerMissionFromStringRequest& from_msg);
+    ::google::protobuf::internal::ArenaStringPtr mission_planner_mission_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -5436,7 +5846,7 @@ class MissionImportData final
     return reinterpret_cast<const MissionImportData*>(
         &_MissionImportData_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 36;
+  static constexpr int kIndexInFileMessages = 40;
   friend void swap(MissionImportData& a, MissionImportData& b) { a.Swap(&b); }
   inline void Swap(MissionImportData* other) {
     if (other == this) return;
@@ -5672,7 +6082,7 @@ class IsMissionFinishedResponse final
     return reinterpret_cast<const IsMissionFinishedResponse*>(
         &_IsMissionFinishedResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 33;
+  static constexpr int kIndexInFileMessages = 37;
   friend void swap(IsMissionFinishedResponse& a, IsMissionFinishedResponse& b) { a.Swap(&b); }
   inline void Swap(IsMissionFinishedResponse* other) {
     if (other == this) return;
@@ -7477,6 +7887,434 @@ class ImportQgroundcontrolMissionFromStringResponse final
     inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
                           ::google::protobuf::Arena* arena, const Impl_& from,
                           const ImportQgroundcontrolMissionFromStringResponse& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::mavsdk::rpc::mission_raw::MissionRawResult* mission_raw_result_;
+    ::mavsdk::rpc::mission_raw::MissionImportData* mission_import_data_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_mission_5fraw_2fmission_5fraw_2eproto;
+};
+// -------------------------------------------------------------------
+
+class ImportMissionPlannerMissionResponse final
+    : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:mavsdk.rpc.mission_raw.ImportMissionPlannerMissionResponse) */ {
+ public:
+  inline ImportMissionPlannerMissionResponse() : ImportMissionPlannerMissionResponse(nullptr) {}
+  ~ImportMissionPlannerMissionResponse() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(ImportMissionPlannerMissionResponse* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(ImportMissionPlannerMissionResponse));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR ImportMissionPlannerMissionResponse(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline ImportMissionPlannerMissionResponse(const ImportMissionPlannerMissionResponse& from) : ImportMissionPlannerMissionResponse(nullptr, from) {}
+  inline ImportMissionPlannerMissionResponse(ImportMissionPlannerMissionResponse&& from) noexcept
+      : ImportMissionPlannerMissionResponse(nullptr, std::move(from)) {}
+  inline ImportMissionPlannerMissionResponse& operator=(const ImportMissionPlannerMissionResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline ImportMissionPlannerMissionResponse& operator=(ImportMissionPlannerMissionResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const ImportMissionPlannerMissionResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const ImportMissionPlannerMissionResponse* internal_default_instance() {
+    return reinterpret_cast<const ImportMissionPlannerMissionResponse*>(
+        &_ImportMissionPlannerMissionResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 33;
+  friend void swap(ImportMissionPlannerMissionResponse& a, ImportMissionPlannerMissionResponse& b) { a.Swap(&b); }
+  inline void Swap(ImportMissionPlannerMissionResponse* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(ImportMissionPlannerMissionResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  ImportMissionPlannerMissionResponse* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<ImportMissionPlannerMissionResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const ImportMissionPlannerMissionResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const ImportMissionPlannerMissionResponse& from) { ImportMissionPlannerMissionResponse::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(ImportMissionPlannerMissionResponse* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.mission_raw.ImportMissionPlannerMissionResponse"; }
+
+ protected:
+  explicit ImportMissionPlannerMissionResponse(::google::protobuf::Arena* arena);
+  ImportMissionPlannerMissionResponse(::google::protobuf::Arena* arena, const ImportMissionPlannerMissionResponse& from);
+  ImportMissionPlannerMissionResponse(::google::protobuf::Arena* arena, ImportMissionPlannerMissionResponse&& from) noexcept
+      : ImportMissionPlannerMissionResponse(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kMissionRawResultFieldNumber = 1,
+    kMissionImportDataFieldNumber = 2,
+  };
+  // .mavsdk.rpc.mission_raw.MissionRawResult mission_raw_result = 1;
+  bool has_mission_raw_result() const;
+  void clear_mission_raw_result() ;
+  const ::mavsdk::rpc::mission_raw::MissionRawResult& mission_raw_result() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::mission_raw::MissionRawResult* release_mission_raw_result();
+  ::mavsdk::rpc::mission_raw::MissionRawResult* mutable_mission_raw_result();
+  void set_allocated_mission_raw_result(::mavsdk::rpc::mission_raw::MissionRawResult* value);
+  void unsafe_arena_set_allocated_mission_raw_result(::mavsdk::rpc::mission_raw::MissionRawResult* value);
+  ::mavsdk::rpc::mission_raw::MissionRawResult* unsafe_arena_release_mission_raw_result();
+
+  private:
+  const ::mavsdk::rpc::mission_raw::MissionRawResult& _internal_mission_raw_result() const;
+  ::mavsdk::rpc::mission_raw::MissionRawResult* _internal_mutable_mission_raw_result();
+
+  public:
+  // .mavsdk.rpc.mission_raw.MissionImportData mission_import_data = 2;
+  bool has_mission_import_data() const;
+  void clear_mission_import_data() ;
+  const ::mavsdk::rpc::mission_raw::MissionImportData& mission_import_data() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::mission_raw::MissionImportData* release_mission_import_data();
+  ::mavsdk::rpc::mission_raw::MissionImportData* mutable_mission_import_data();
+  void set_allocated_mission_import_data(::mavsdk::rpc::mission_raw::MissionImportData* value);
+  void unsafe_arena_set_allocated_mission_import_data(::mavsdk::rpc::mission_raw::MissionImportData* value);
+  ::mavsdk::rpc::mission_raw::MissionImportData* unsafe_arena_release_mission_import_data();
+
+  private:
+  const ::mavsdk::rpc::mission_raw::MissionImportData& _internal_mission_import_data() const;
+  ::mavsdk::rpc::mission_raw::MissionImportData* _internal_mutable_mission_import_data();
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission_raw.ImportMissionPlannerMissionResponse)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      1, 2, 2,
+      0, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const ImportMissionPlannerMissionResponse& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::mavsdk::rpc::mission_raw::MissionRawResult* mission_raw_result_;
+    ::mavsdk::rpc::mission_raw::MissionImportData* mission_import_data_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_mission_5fraw_2fmission_5fraw_2eproto;
+};
+// -------------------------------------------------------------------
+
+class ImportMissionPlannerMissionFromStringResponse final
+    : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:mavsdk.rpc.mission_raw.ImportMissionPlannerMissionFromStringResponse) */ {
+ public:
+  inline ImportMissionPlannerMissionFromStringResponse() : ImportMissionPlannerMissionFromStringResponse(nullptr) {}
+  ~ImportMissionPlannerMissionFromStringResponse() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(ImportMissionPlannerMissionFromStringResponse* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(ImportMissionPlannerMissionFromStringResponse));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR ImportMissionPlannerMissionFromStringResponse(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline ImportMissionPlannerMissionFromStringResponse(const ImportMissionPlannerMissionFromStringResponse& from) : ImportMissionPlannerMissionFromStringResponse(nullptr, from) {}
+  inline ImportMissionPlannerMissionFromStringResponse(ImportMissionPlannerMissionFromStringResponse&& from) noexcept
+      : ImportMissionPlannerMissionFromStringResponse(nullptr, std::move(from)) {}
+  inline ImportMissionPlannerMissionFromStringResponse& operator=(const ImportMissionPlannerMissionFromStringResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline ImportMissionPlannerMissionFromStringResponse& operator=(ImportMissionPlannerMissionFromStringResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const ImportMissionPlannerMissionFromStringResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const ImportMissionPlannerMissionFromStringResponse* internal_default_instance() {
+    return reinterpret_cast<const ImportMissionPlannerMissionFromStringResponse*>(
+        &_ImportMissionPlannerMissionFromStringResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 35;
+  friend void swap(ImportMissionPlannerMissionFromStringResponse& a, ImportMissionPlannerMissionFromStringResponse& b) { a.Swap(&b); }
+  inline void Swap(ImportMissionPlannerMissionFromStringResponse* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(ImportMissionPlannerMissionFromStringResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  ImportMissionPlannerMissionFromStringResponse* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<ImportMissionPlannerMissionFromStringResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const ImportMissionPlannerMissionFromStringResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const ImportMissionPlannerMissionFromStringResponse& from) { ImportMissionPlannerMissionFromStringResponse::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(ImportMissionPlannerMissionFromStringResponse* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.mission_raw.ImportMissionPlannerMissionFromStringResponse"; }
+
+ protected:
+  explicit ImportMissionPlannerMissionFromStringResponse(::google::protobuf::Arena* arena);
+  ImportMissionPlannerMissionFromStringResponse(::google::protobuf::Arena* arena, const ImportMissionPlannerMissionFromStringResponse& from);
+  ImportMissionPlannerMissionFromStringResponse(::google::protobuf::Arena* arena, ImportMissionPlannerMissionFromStringResponse&& from) noexcept
+      : ImportMissionPlannerMissionFromStringResponse(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kMissionRawResultFieldNumber = 1,
+    kMissionImportDataFieldNumber = 2,
+  };
+  // .mavsdk.rpc.mission_raw.MissionRawResult mission_raw_result = 1;
+  bool has_mission_raw_result() const;
+  void clear_mission_raw_result() ;
+  const ::mavsdk::rpc::mission_raw::MissionRawResult& mission_raw_result() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::mission_raw::MissionRawResult* release_mission_raw_result();
+  ::mavsdk::rpc::mission_raw::MissionRawResult* mutable_mission_raw_result();
+  void set_allocated_mission_raw_result(::mavsdk::rpc::mission_raw::MissionRawResult* value);
+  void unsafe_arena_set_allocated_mission_raw_result(::mavsdk::rpc::mission_raw::MissionRawResult* value);
+  ::mavsdk::rpc::mission_raw::MissionRawResult* unsafe_arena_release_mission_raw_result();
+
+  private:
+  const ::mavsdk::rpc::mission_raw::MissionRawResult& _internal_mission_raw_result() const;
+  ::mavsdk::rpc::mission_raw::MissionRawResult* _internal_mutable_mission_raw_result();
+
+  public:
+  // .mavsdk.rpc.mission_raw.MissionImportData mission_import_data = 2;
+  bool has_mission_import_data() const;
+  void clear_mission_import_data() ;
+  const ::mavsdk::rpc::mission_raw::MissionImportData& mission_import_data() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::mission_raw::MissionImportData* release_mission_import_data();
+  ::mavsdk::rpc::mission_raw::MissionImportData* mutable_mission_import_data();
+  void set_allocated_mission_import_data(::mavsdk::rpc::mission_raw::MissionImportData* value);
+  void unsafe_arena_set_allocated_mission_import_data(::mavsdk::rpc::mission_raw::MissionImportData* value);
+  ::mavsdk::rpc::mission_raw::MissionImportData* unsafe_arena_release_mission_import_data();
+
+  private:
+  const ::mavsdk::rpc::mission_raw::MissionImportData& _internal_mission_import_data() const;
+  ::mavsdk::rpc::mission_raw::MissionImportData* _internal_mutable_mission_import_data();
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission_raw.ImportMissionPlannerMissionFromStringResponse)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      1, 2, 2,
+      0, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const ImportMissionPlannerMissionFromStringResponse& from_msg);
     ::google::protobuf::internal::HasBits<1> _has_bits_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     ::mavsdk::rpc::mission_raw::MissionRawResult* mission_raw_result_;
@@ -9691,6 +10529,502 @@ inline void ImportQgroundcontrolMissionFromStringResponse::set_allocated_mission
 
   _impl_.mission_import_data_ = reinterpret_cast<::mavsdk::rpc::mission_raw::MissionImportData*>(value);
   // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.mission_raw.ImportQgroundcontrolMissionFromStringResponse.mission_import_data)
+}
+
+// -------------------------------------------------------------------
+
+// ImportMissionPlannerMissionRequest
+
+// string mission_planner_path = 1;
+inline void ImportMissionPlannerMissionRequest::clear_mission_planner_path() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.mission_planner_path_.ClearToEmpty();
+}
+inline const std::string& ImportMissionPlannerMissionRequest::mission_planner_path() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission_raw.ImportMissionPlannerMissionRequest.mission_planner_path)
+  return _internal_mission_planner_path();
+}
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void ImportMissionPlannerMissionRequest::set_mission_planner_path(Arg_&& arg,
+                                                     Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.mission_planner_path_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.mission_raw.ImportMissionPlannerMissionRequest.mission_planner_path)
+}
+inline std::string* ImportMissionPlannerMissionRequest::mutable_mission_planner_path() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_mission_planner_path();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.mission_raw.ImportMissionPlannerMissionRequest.mission_planner_path)
+  return _s;
+}
+inline const std::string& ImportMissionPlannerMissionRequest::_internal_mission_planner_path() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.mission_planner_path_.Get();
+}
+inline void ImportMissionPlannerMissionRequest::_internal_set_mission_planner_path(const std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.mission_planner_path_.Set(value, GetArena());
+}
+inline std::string* ImportMissionPlannerMissionRequest::_internal_mutable_mission_planner_path() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.mission_planner_path_.Mutable( GetArena());
+}
+inline std::string* ImportMissionPlannerMissionRequest::release_mission_planner_path() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.mission_raw.ImportMissionPlannerMissionRequest.mission_planner_path)
+  return _impl_.mission_planner_path_.Release();
+}
+inline void ImportMissionPlannerMissionRequest::set_allocated_mission_planner_path(std::string* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.mission_planner_path_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.mission_planner_path_.IsDefault()) {
+    _impl_.mission_planner_path_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.mission_raw.ImportMissionPlannerMissionRequest.mission_planner_path)
+}
+
+// -------------------------------------------------------------------
+
+// ImportMissionPlannerMissionResponse
+
+// .mavsdk.rpc.mission_raw.MissionRawResult mission_raw_result = 1;
+inline bool ImportMissionPlannerMissionResponse::has_mission_raw_result() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.mission_raw_result_ != nullptr);
+  return value;
+}
+inline void ImportMissionPlannerMissionResponse::clear_mission_raw_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.mission_raw_result_ != nullptr) _impl_.mission_raw_result_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
+}
+inline const ::mavsdk::rpc::mission_raw::MissionRawResult& ImportMissionPlannerMissionResponse::_internal_mission_raw_result() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::mavsdk::rpc::mission_raw::MissionRawResult* p = _impl_.mission_raw_result_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::mission_raw::MissionRawResult&>(::mavsdk::rpc::mission_raw::_MissionRawResult_default_instance_);
+}
+inline const ::mavsdk::rpc::mission_raw::MissionRawResult& ImportMissionPlannerMissionResponse::mission_raw_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission_raw.ImportMissionPlannerMissionResponse.mission_raw_result)
+  return _internal_mission_raw_result();
+}
+inline void ImportMissionPlannerMissionResponse::unsafe_arena_set_allocated_mission_raw_result(::mavsdk::rpc::mission_raw::MissionRawResult* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.mission_raw_result_);
+  }
+  _impl_.mission_raw_result_ = reinterpret_cast<::mavsdk::rpc::mission_raw::MissionRawResult*>(value);
+  if (value != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.mission_raw.ImportMissionPlannerMissionResponse.mission_raw_result)
+}
+inline ::mavsdk::rpc::mission_raw::MissionRawResult* ImportMissionPlannerMissionResponse::release_mission_raw_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::mission_raw::MissionRawResult* released = _impl_.mission_raw_result_;
+  _impl_.mission_raw_result_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
+    }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::mavsdk::rpc::mission_raw::MissionRawResult* ImportMissionPlannerMissionResponse::unsafe_arena_release_mission_raw_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.mission_raw.ImportMissionPlannerMissionResponse.mission_raw_result)
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::mission_raw::MissionRawResult* temp = _impl_.mission_raw_result_;
+  _impl_.mission_raw_result_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::mission_raw::MissionRawResult* ImportMissionPlannerMissionResponse::_internal_mutable_mission_raw_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.mission_raw_result_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::mission_raw::MissionRawResult>(GetArena());
+    _impl_.mission_raw_result_ = reinterpret_cast<::mavsdk::rpc::mission_raw::MissionRawResult*>(p);
+  }
+  return _impl_.mission_raw_result_;
+}
+inline ::mavsdk::rpc::mission_raw::MissionRawResult* ImportMissionPlannerMissionResponse::mutable_mission_raw_result() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  ::mavsdk::rpc::mission_raw::MissionRawResult* _msg = _internal_mutable_mission_raw_result();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.mission_raw.ImportMissionPlannerMissionResponse.mission_raw_result)
+  return _msg;
+}
+inline void ImportMissionPlannerMissionResponse::set_allocated_mission_raw_result(::mavsdk::rpc::mission_raw::MissionRawResult* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete (_impl_.mission_raw_result_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+
+  _impl_.mission_raw_result_ = reinterpret_cast<::mavsdk::rpc::mission_raw::MissionRawResult*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.mission_raw.ImportMissionPlannerMissionResponse.mission_raw_result)
+}
+
+// .mavsdk.rpc.mission_raw.MissionImportData mission_import_data = 2;
+inline bool ImportMissionPlannerMissionResponse::has_mission_import_data() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.mission_import_data_ != nullptr);
+  return value;
+}
+inline void ImportMissionPlannerMissionResponse::clear_mission_import_data() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.mission_import_data_ != nullptr) _impl_.mission_import_data_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000002u;
+}
+inline const ::mavsdk::rpc::mission_raw::MissionImportData& ImportMissionPlannerMissionResponse::_internal_mission_import_data() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::mavsdk::rpc::mission_raw::MissionImportData* p = _impl_.mission_import_data_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::mission_raw::MissionImportData&>(::mavsdk::rpc::mission_raw::_MissionImportData_default_instance_);
+}
+inline const ::mavsdk::rpc::mission_raw::MissionImportData& ImportMissionPlannerMissionResponse::mission_import_data() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission_raw.ImportMissionPlannerMissionResponse.mission_import_data)
+  return _internal_mission_import_data();
+}
+inline void ImportMissionPlannerMissionResponse::unsafe_arena_set_allocated_mission_import_data(::mavsdk::rpc::mission_raw::MissionImportData* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.mission_import_data_);
+  }
+  _impl_.mission_import_data_ = reinterpret_cast<::mavsdk::rpc::mission_raw::MissionImportData*>(value);
+  if (value != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000002u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000002u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.mission_raw.ImportMissionPlannerMissionResponse.mission_import_data)
+}
+inline ::mavsdk::rpc::mission_raw::MissionImportData* ImportMissionPlannerMissionResponse::release_mission_import_data() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+
+  _impl_._has_bits_[0] &= ~0x00000002u;
+  ::mavsdk::rpc::mission_raw::MissionImportData* released = _impl_.mission_import_data_;
+  _impl_.mission_import_data_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
+    }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::mavsdk::rpc::mission_raw::MissionImportData* ImportMissionPlannerMissionResponse::unsafe_arena_release_mission_import_data() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.mission_raw.ImportMissionPlannerMissionResponse.mission_import_data)
+
+  _impl_._has_bits_[0] &= ~0x00000002u;
+  ::mavsdk::rpc::mission_raw::MissionImportData* temp = _impl_.mission_import_data_;
+  _impl_.mission_import_data_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::mission_raw::MissionImportData* ImportMissionPlannerMissionResponse::_internal_mutable_mission_import_data() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.mission_import_data_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::mission_raw::MissionImportData>(GetArena());
+    _impl_.mission_import_data_ = reinterpret_cast<::mavsdk::rpc::mission_raw::MissionImportData*>(p);
+  }
+  return _impl_.mission_import_data_;
+}
+inline ::mavsdk::rpc::mission_raw::MissionImportData* ImportMissionPlannerMissionResponse::mutable_mission_import_data() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  _impl_._has_bits_[0] |= 0x00000002u;
+  ::mavsdk::rpc::mission_raw::MissionImportData* _msg = _internal_mutable_mission_import_data();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.mission_raw.ImportMissionPlannerMissionResponse.mission_import_data)
+  return _msg;
+}
+inline void ImportMissionPlannerMissionResponse::set_allocated_mission_import_data(::mavsdk::rpc::mission_raw::MissionImportData* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete (_impl_.mission_import_data_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000002u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000002u;
+  }
+
+  _impl_.mission_import_data_ = reinterpret_cast<::mavsdk::rpc::mission_raw::MissionImportData*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.mission_raw.ImportMissionPlannerMissionResponse.mission_import_data)
+}
+
+// -------------------------------------------------------------------
+
+// ImportMissionPlannerMissionFromStringRequest
+
+// string mission_planner_mission = 1;
+inline void ImportMissionPlannerMissionFromStringRequest::clear_mission_planner_mission() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.mission_planner_mission_.ClearToEmpty();
+}
+inline const std::string& ImportMissionPlannerMissionFromStringRequest::mission_planner_mission() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission_raw.ImportMissionPlannerMissionFromStringRequest.mission_planner_mission)
+  return _internal_mission_planner_mission();
+}
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void ImportMissionPlannerMissionFromStringRequest::set_mission_planner_mission(Arg_&& arg,
+                                                     Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.mission_planner_mission_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.mission_raw.ImportMissionPlannerMissionFromStringRequest.mission_planner_mission)
+}
+inline std::string* ImportMissionPlannerMissionFromStringRequest::mutable_mission_planner_mission() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_mission_planner_mission();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.mission_raw.ImportMissionPlannerMissionFromStringRequest.mission_planner_mission)
+  return _s;
+}
+inline const std::string& ImportMissionPlannerMissionFromStringRequest::_internal_mission_planner_mission() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.mission_planner_mission_.Get();
+}
+inline void ImportMissionPlannerMissionFromStringRequest::_internal_set_mission_planner_mission(const std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.mission_planner_mission_.Set(value, GetArena());
+}
+inline std::string* ImportMissionPlannerMissionFromStringRequest::_internal_mutable_mission_planner_mission() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.mission_planner_mission_.Mutable( GetArena());
+}
+inline std::string* ImportMissionPlannerMissionFromStringRequest::release_mission_planner_mission() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.mission_raw.ImportMissionPlannerMissionFromStringRequest.mission_planner_mission)
+  return _impl_.mission_planner_mission_.Release();
+}
+inline void ImportMissionPlannerMissionFromStringRequest::set_allocated_mission_planner_mission(std::string* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.mission_planner_mission_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.mission_planner_mission_.IsDefault()) {
+    _impl_.mission_planner_mission_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.mission_raw.ImportMissionPlannerMissionFromStringRequest.mission_planner_mission)
+}
+
+// -------------------------------------------------------------------
+
+// ImportMissionPlannerMissionFromStringResponse
+
+// .mavsdk.rpc.mission_raw.MissionRawResult mission_raw_result = 1;
+inline bool ImportMissionPlannerMissionFromStringResponse::has_mission_raw_result() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.mission_raw_result_ != nullptr);
+  return value;
+}
+inline void ImportMissionPlannerMissionFromStringResponse::clear_mission_raw_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.mission_raw_result_ != nullptr) _impl_.mission_raw_result_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
+}
+inline const ::mavsdk::rpc::mission_raw::MissionRawResult& ImportMissionPlannerMissionFromStringResponse::_internal_mission_raw_result() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::mavsdk::rpc::mission_raw::MissionRawResult* p = _impl_.mission_raw_result_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::mission_raw::MissionRawResult&>(::mavsdk::rpc::mission_raw::_MissionRawResult_default_instance_);
+}
+inline const ::mavsdk::rpc::mission_raw::MissionRawResult& ImportMissionPlannerMissionFromStringResponse::mission_raw_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission_raw.ImportMissionPlannerMissionFromStringResponse.mission_raw_result)
+  return _internal_mission_raw_result();
+}
+inline void ImportMissionPlannerMissionFromStringResponse::unsafe_arena_set_allocated_mission_raw_result(::mavsdk::rpc::mission_raw::MissionRawResult* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.mission_raw_result_);
+  }
+  _impl_.mission_raw_result_ = reinterpret_cast<::mavsdk::rpc::mission_raw::MissionRawResult*>(value);
+  if (value != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.mission_raw.ImportMissionPlannerMissionFromStringResponse.mission_raw_result)
+}
+inline ::mavsdk::rpc::mission_raw::MissionRawResult* ImportMissionPlannerMissionFromStringResponse::release_mission_raw_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::mission_raw::MissionRawResult* released = _impl_.mission_raw_result_;
+  _impl_.mission_raw_result_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
+    }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::mavsdk::rpc::mission_raw::MissionRawResult* ImportMissionPlannerMissionFromStringResponse::unsafe_arena_release_mission_raw_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.mission_raw.ImportMissionPlannerMissionFromStringResponse.mission_raw_result)
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::mission_raw::MissionRawResult* temp = _impl_.mission_raw_result_;
+  _impl_.mission_raw_result_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::mission_raw::MissionRawResult* ImportMissionPlannerMissionFromStringResponse::_internal_mutable_mission_raw_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.mission_raw_result_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::mission_raw::MissionRawResult>(GetArena());
+    _impl_.mission_raw_result_ = reinterpret_cast<::mavsdk::rpc::mission_raw::MissionRawResult*>(p);
+  }
+  return _impl_.mission_raw_result_;
+}
+inline ::mavsdk::rpc::mission_raw::MissionRawResult* ImportMissionPlannerMissionFromStringResponse::mutable_mission_raw_result() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  ::mavsdk::rpc::mission_raw::MissionRawResult* _msg = _internal_mutable_mission_raw_result();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.mission_raw.ImportMissionPlannerMissionFromStringResponse.mission_raw_result)
+  return _msg;
+}
+inline void ImportMissionPlannerMissionFromStringResponse::set_allocated_mission_raw_result(::mavsdk::rpc::mission_raw::MissionRawResult* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete (_impl_.mission_raw_result_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+
+  _impl_.mission_raw_result_ = reinterpret_cast<::mavsdk::rpc::mission_raw::MissionRawResult*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.mission_raw.ImportMissionPlannerMissionFromStringResponse.mission_raw_result)
+}
+
+// .mavsdk.rpc.mission_raw.MissionImportData mission_import_data = 2;
+inline bool ImportMissionPlannerMissionFromStringResponse::has_mission_import_data() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.mission_import_data_ != nullptr);
+  return value;
+}
+inline void ImportMissionPlannerMissionFromStringResponse::clear_mission_import_data() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.mission_import_data_ != nullptr) _impl_.mission_import_data_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000002u;
+}
+inline const ::mavsdk::rpc::mission_raw::MissionImportData& ImportMissionPlannerMissionFromStringResponse::_internal_mission_import_data() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::mavsdk::rpc::mission_raw::MissionImportData* p = _impl_.mission_import_data_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::mission_raw::MissionImportData&>(::mavsdk::rpc::mission_raw::_MissionImportData_default_instance_);
+}
+inline const ::mavsdk::rpc::mission_raw::MissionImportData& ImportMissionPlannerMissionFromStringResponse::mission_import_data() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission_raw.ImportMissionPlannerMissionFromStringResponse.mission_import_data)
+  return _internal_mission_import_data();
+}
+inline void ImportMissionPlannerMissionFromStringResponse::unsafe_arena_set_allocated_mission_import_data(::mavsdk::rpc::mission_raw::MissionImportData* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.mission_import_data_);
+  }
+  _impl_.mission_import_data_ = reinterpret_cast<::mavsdk::rpc::mission_raw::MissionImportData*>(value);
+  if (value != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000002u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000002u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.mission_raw.ImportMissionPlannerMissionFromStringResponse.mission_import_data)
+}
+inline ::mavsdk::rpc::mission_raw::MissionImportData* ImportMissionPlannerMissionFromStringResponse::release_mission_import_data() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+
+  _impl_._has_bits_[0] &= ~0x00000002u;
+  ::mavsdk::rpc::mission_raw::MissionImportData* released = _impl_.mission_import_data_;
+  _impl_.mission_import_data_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
+    }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::mavsdk::rpc::mission_raw::MissionImportData* ImportMissionPlannerMissionFromStringResponse::unsafe_arena_release_mission_import_data() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.mission_raw.ImportMissionPlannerMissionFromStringResponse.mission_import_data)
+
+  _impl_._has_bits_[0] &= ~0x00000002u;
+  ::mavsdk::rpc::mission_raw::MissionImportData* temp = _impl_.mission_import_data_;
+  _impl_.mission_import_data_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::mission_raw::MissionImportData* ImportMissionPlannerMissionFromStringResponse::_internal_mutable_mission_import_data() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.mission_import_data_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::mission_raw::MissionImportData>(GetArena());
+    _impl_.mission_import_data_ = reinterpret_cast<::mavsdk::rpc::mission_raw::MissionImportData*>(p);
+  }
+  return _impl_.mission_import_data_;
+}
+inline ::mavsdk::rpc::mission_raw::MissionImportData* ImportMissionPlannerMissionFromStringResponse::mutable_mission_import_data() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  _impl_._has_bits_[0] |= 0x00000002u;
+  ::mavsdk::rpc::mission_raw::MissionImportData* _msg = _internal_mutable_mission_import_data();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.mission_raw.ImportMissionPlannerMissionFromStringResponse.mission_import_data)
+  return _msg;
+}
+inline void ImportMissionPlannerMissionFromStringResponse::set_allocated_mission_import_data(::mavsdk::rpc::mission_raw::MissionImportData* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete (_impl_.mission_import_data_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000002u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000002u;
+  }
+
+  _impl_.mission_import_data_ = reinterpret_cast<::mavsdk::rpc::mission_raw::MissionImportData*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.mission_raw.ImportMissionPlannerMissionFromStringResponse.mission_import_data)
 }
 
 // -------------------------------------------------------------------

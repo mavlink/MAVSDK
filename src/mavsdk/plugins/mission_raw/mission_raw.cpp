@@ -180,6 +180,18 @@ MissionRaw::import_qgroundcontrol_mission_from_string(std::string qgc_plan) cons
     return _impl->import_qgroundcontrol_mission_from_string(qgc_plan);
 }
 
+std::pair<MissionRaw::Result, MissionRaw::MissionImportData>
+MissionRaw::import_mission_planner_mission(std::string mission_planner_path) const
+{
+    return _impl->import_mission_planner_mission(mission_planner_path);
+}
+
+std::pair<MissionRaw::Result, MissionRaw::MissionImportData>
+MissionRaw::import_mission_planner_mission_from_string(std::string mission_planner_mission) const
+{
+    return _impl->import_mission_planner_mission_from_string(mission_planner_mission);
+}
+
 std::pair<MissionRaw::Result, bool> MissionRaw::is_mission_finished() const
 {
     return _impl->is_mission_finished();
@@ -311,6 +323,10 @@ std::ostream& operator<<(std::ostream& str, MissionRaw::Result const& result)
             return str << "Protocol Error";
         case MissionRaw::Result::IntMessagesNotSupported:
             return str << "Int Messages Not Supported";
+        case MissionRaw::Result::FailedToOpenMissionPlannerPlan:
+            return str << "Failed To Open Mission Planner Plan";
+        case MissionRaw::Result::FailedToParseMissionPlannerPlan:
+            return str << "Failed To Parse Mission Planner Plan";
         default:
             return str << "Unknown";
     }
