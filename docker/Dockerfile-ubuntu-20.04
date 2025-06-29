@@ -32,6 +32,7 @@ RUN apt-get update \
         lsb-release \
         libxml2-dev \
         libxslt-dev \
+        python3-dev \
     && apt-get -y autoremove \
     && apt-get clean autoclean \
     && rm -rf /var/lib/apt/lists/{apt,dpkg,cache,log} /tmp/* /var/tmp/*
