@@ -70,7 +70,7 @@ void MissionImpl::process_mission_current(const mavlink_message_t& message)
 
     std::lock_guard<std::mutex> lock(_mission_data.mutex);
     _mission_data.last_current_mavlink_mission_item = mission_current.seq;
-    _mission_data.mission_state = static_cast<MissionState>(mission_current.mission_state);
+    _mission_data.mission_state = mission_current.mission_state;
     report_progress_locked();
 }
 
@@ -995,7 +995,7 @@ std::pair<Mission::Result, bool> MissionImpl::is_mission_finished_locked() const
     }
 
     // If mission_state is Unknown, fall back to the previous behavior
-    if (_mission_data.mission_state == MissionState::Unknown) {
+    if (_mission_data.mission_state == MISSION_STATE_UNKNOWN) {
         // It is not straightforward to look at "current" because it jumps to 0
         // once the last item has been done. Therefore we have to lo decide using
         // "reached" here.
@@ -1012,7 +1012,7 @@ std::pair<Mission::Result, bool> MissionImpl::is_mission_finished_locked() const
     }
 
     // If mission_state is Completed, the mission is finished
-    if (_mission_data.mission_state == MissionState::Completed) {
+    if (_mission_data.mission_state == MISSION_STATE_COMPLETE) {
         return std::make_pair<Mission::Result, bool>(Mission::Result::Success, true);
     }
 

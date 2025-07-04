@@ -12,8 +12,6 @@ namespace mavsdk {
 
 class MissionRawImpl : public PluginImplBase {
 public:
-    enum class MissionState { Unknown = 0, NotCompleted = 1, Completed = 2 };
-
     explicit MissionRawImpl(System& system);
     explicit MissionRawImpl(std::shared_ptr<System> system);
     ~MissionRawImpl() override;
@@ -128,7 +126,7 @@ private:
         MissionRaw::MissionProgress last_reported{};
         CallbackList<MissionRaw::MissionProgress> callbacks{};
         int32_t last_reached{};
-        MissionState mission_state{MissionState::Unknown};
+        uint8_t mission_state{MISSION_STATE_UNKNOWN};
     } _mission_progress{};
 
     struct {

@@ -16,8 +16,6 @@ namespace mavsdk {
 
 class MissionImpl : public PluginImplBase {
 public:
-    enum class MissionState { Unknown = 0, NotCompleted = 1, Completed = 2 };
-
     explicit MissionImpl(System& system);
     explicit MissionImpl(std::shared_ptr<System> system);
     ~MissionImpl() override;
@@ -129,7 +127,7 @@ private:
         std::weak_ptr<MavlinkMissionTransferClient::WorkItem> last_upload{};
         std::weak_ptr<MavlinkMissionTransferClient::WorkItem> last_download{};
         bool gimbal_v2_in_control{false};
-        MissionState mission_state{MissionState::Unknown};
+        uint8_t mission_state{MISSION_STATE_UNKNOWN};
     } _mission_data{};
 
     TimeoutHandler::Cookie _timeout_cookie{};
