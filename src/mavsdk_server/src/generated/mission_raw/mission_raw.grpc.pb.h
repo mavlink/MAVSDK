@@ -217,6 +217,32 @@ class MissionRawService final {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionFromStringResponse>>(PrepareAsyncImportQgroundcontrolMissionFromStringRaw(context, request, cq));
     }
     //
+    // Import a Mission Planner mission in QGC WPL 110 format, from a file.
+    //
+    // Supported:
+    // - Waypoints
+    // - ArduPilot home position handling
+    virtual ::grpc::Status ImportMissionPlannerMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionRequest& request, ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionResponse>> AsyncImportMissionPlannerMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionResponse>>(AsyncImportMissionPlannerMissionRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionResponse>> PrepareAsyncImportMissionPlannerMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionResponse>>(PrepareAsyncImportMissionPlannerMissionRaw(context, request, cq));
+    }
+    //
+    // Import a Mission Planner mission in QGC WPL 110 format, from a string.
+    //
+    // Supported:
+    // - Waypoints
+    // - ArduPilot home position handling
+    virtual ::grpc::Status ImportMissionPlannerMissionFromString(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionFromStringRequest& request, ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionFromStringResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionFromStringResponse>> AsyncImportMissionPlannerMissionFromString(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionFromStringRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionFromStringResponse>>(AsyncImportMissionPlannerMissionFromStringRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionFromStringResponse>> PrepareAsyncImportMissionPlannerMissionFromString(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionFromStringRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionFromStringResponse>>(PrepareAsyncImportMissionPlannerMissionFromStringRaw(context, request, cq));
+    }
+    //
     // Check if the mission is finished.
     //
     // Returns true if the mission is finished, false otherwise.
@@ -323,6 +349,22 @@ class MissionRawService final {
       virtual void ImportQgroundcontrolMissionFromString(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionFromStringRequest* request, ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionFromStringResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void ImportQgroundcontrolMissionFromString(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionFromStringRequest* request, ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionFromStringResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       //
+      // Import a Mission Planner mission in QGC WPL 110 format, from a file.
+      //
+      // Supported:
+      // - Waypoints
+      // - ArduPilot home position handling
+      virtual void ImportMissionPlannerMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionRequest* request, ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionResponse* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void ImportMissionPlannerMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionRequest* request, ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      //
+      // Import a Mission Planner mission in QGC WPL 110 format, from a string.
+      //
+      // Supported:
+      // - Waypoints
+      // - ArduPilot home position handling
+      virtual void ImportMissionPlannerMissionFromString(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionFromStringRequest* request, ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionFromStringResponse* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void ImportMissionPlannerMissionFromString(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionFromStringRequest* request, ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionFromStringResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      //
       // Check if the mission is finished.
       //
       // Returns true if the mission is finished, false otherwise.
@@ -367,6 +409,10 @@ class MissionRawService final {
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionResponse>* PrepareAsyncImportQgroundcontrolMissionRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionFromStringResponse>* AsyncImportQgroundcontrolMissionFromStringRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionFromStringRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionFromStringResponse>* PrepareAsyncImportQgroundcontrolMissionFromStringRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionFromStringRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionResponse>* AsyncImportMissionPlannerMissionRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionResponse>* PrepareAsyncImportMissionPlannerMissionRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionFromStringResponse>* AsyncImportMissionPlannerMissionFromStringRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionFromStringRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionFromStringResponse>* PrepareAsyncImportMissionPlannerMissionFromStringRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionFromStringRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission_raw::IsMissionFinishedResponse>* AsyncIsMissionFinishedRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::IsMissionFinishedRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission_raw::IsMissionFinishedResponse>* PrepareAsyncIsMissionFinishedRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::IsMissionFinishedRequest& request, ::grpc::CompletionQueue* cq) = 0;
   };
@@ -489,6 +535,20 @@ class MissionRawService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionFromStringResponse>> PrepareAsyncImportQgroundcontrolMissionFromString(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionFromStringRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionFromStringResponse>>(PrepareAsyncImportQgroundcontrolMissionFromStringRaw(context, request, cq));
     }
+    ::grpc::Status ImportMissionPlannerMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionRequest& request, ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionResponse>> AsyncImportMissionPlannerMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionResponse>>(AsyncImportMissionPlannerMissionRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionResponse>> PrepareAsyncImportMissionPlannerMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionResponse>>(PrepareAsyncImportMissionPlannerMissionRaw(context, request, cq));
+    }
+    ::grpc::Status ImportMissionPlannerMissionFromString(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionFromStringRequest& request, ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionFromStringResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionFromStringResponse>> AsyncImportMissionPlannerMissionFromString(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionFromStringRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionFromStringResponse>>(AsyncImportMissionPlannerMissionFromStringRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionFromStringResponse>> PrepareAsyncImportMissionPlannerMissionFromString(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionFromStringRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionFromStringResponse>>(PrepareAsyncImportMissionPlannerMissionFromStringRaw(context, request, cq));
+    }
     ::grpc::Status IsMissionFinished(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::IsMissionFinishedRequest& request, ::mavsdk::rpc::mission_raw::IsMissionFinishedResponse* response) override;
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission_raw::IsMissionFinishedResponse>> AsyncIsMissionFinished(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::IsMissionFinishedRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission_raw::IsMissionFinishedResponse>>(AsyncIsMissionFinishedRaw(context, request, cq));
@@ -529,6 +589,10 @@ class MissionRawService final {
       void ImportQgroundcontrolMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionRequest* request, ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
       void ImportQgroundcontrolMissionFromString(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionFromStringRequest* request, ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionFromStringResponse* response, std::function<void(::grpc::Status)>) override;
       void ImportQgroundcontrolMissionFromString(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionFromStringRequest* request, ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionFromStringResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void ImportMissionPlannerMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionRequest* request, ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionResponse* response, std::function<void(::grpc::Status)>) override;
+      void ImportMissionPlannerMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionRequest* request, ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void ImportMissionPlannerMissionFromString(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionFromStringRequest* request, ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionFromStringResponse* response, std::function<void(::grpc::Status)>) override;
+      void ImportMissionPlannerMissionFromString(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionFromStringRequest* request, ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionFromStringResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
       void IsMissionFinished(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::IsMissionFinishedRequest* request, ::mavsdk::rpc::mission_raw::IsMissionFinishedResponse* response, std::function<void(::grpc::Status)>) override;
       void IsMissionFinished(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::IsMissionFinishedRequest* request, ::mavsdk::rpc::mission_raw::IsMissionFinishedResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
      private:
@@ -576,6 +640,10 @@ class MissionRawService final {
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionResponse>* PrepareAsyncImportQgroundcontrolMissionRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionFromStringResponse>* AsyncImportQgroundcontrolMissionFromStringRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionFromStringRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionFromStringResponse>* PrepareAsyncImportQgroundcontrolMissionFromStringRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionFromStringRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionResponse>* AsyncImportMissionPlannerMissionRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionResponse>* PrepareAsyncImportMissionPlannerMissionRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionFromStringResponse>* AsyncImportMissionPlannerMissionFromStringRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionFromStringRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionFromStringResponse>* PrepareAsyncImportMissionPlannerMissionFromStringRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionFromStringRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission_raw::IsMissionFinishedResponse>* AsyncIsMissionFinishedRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::IsMissionFinishedRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission_raw::IsMissionFinishedResponse>* PrepareAsyncIsMissionFinishedRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::IsMissionFinishedRequest& request, ::grpc::CompletionQueue* cq) override;
     const ::grpc::internal::RpcMethod rpcmethod_UploadMission_;
@@ -594,6 +662,8 @@ class MissionRawService final {
     const ::grpc::internal::RpcMethod rpcmethod_SubscribeMissionChanged_;
     const ::grpc::internal::RpcMethod rpcmethod_ImportQgroundcontrolMission_;
     const ::grpc::internal::RpcMethod rpcmethod_ImportQgroundcontrolMissionFromString_;
+    const ::grpc::internal::RpcMethod rpcmethod_ImportMissionPlannerMission_;
+    const ::grpc::internal::RpcMethod rpcmethod_ImportMissionPlannerMissionFromString_;
     const ::grpc::internal::RpcMethod rpcmethod_IsMissionFinished_;
   };
   static std::unique_ptr<Stub> NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
@@ -680,6 +750,20 @@ class MissionRawService final {
     // Not supported:
     // - Structure Scan
     virtual ::grpc::Status ImportQgroundcontrolMissionFromString(::grpc::ServerContext* context, const ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionFromStringRequest* request, ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionFromStringResponse* response);
+    //
+    // Import a Mission Planner mission in QGC WPL 110 format, from a file.
+    //
+    // Supported:
+    // - Waypoints
+    // - ArduPilot home position handling
+    virtual ::grpc::Status ImportMissionPlannerMission(::grpc::ServerContext* context, const ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionRequest* request, ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionResponse* response);
+    //
+    // Import a Mission Planner mission in QGC WPL 110 format, from a string.
+    //
+    // Supported:
+    // - Waypoints
+    // - ArduPilot home position handling
+    virtual ::grpc::Status ImportMissionPlannerMissionFromString(::grpc::ServerContext* context, const ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionFromStringRequest* request, ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionFromStringResponse* response);
     //
     // Check if the mission is finished.
     //
@@ -1007,12 +1091,52 @@ class MissionRawService final {
     }
   };
   template <class BaseClass>
+  class WithAsyncMethod_ImportMissionPlannerMission : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithAsyncMethod_ImportMissionPlannerMission() {
+      ::grpc::Service::MarkMethodAsync(16);
+    }
+    ~WithAsyncMethod_ImportMissionPlannerMission() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status ImportMissionPlannerMission(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionRequest* /*request*/, ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestImportMissionPlannerMission(::grpc::ServerContext* context, ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(16, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithAsyncMethod_ImportMissionPlannerMissionFromString : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithAsyncMethod_ImportMissionPlannerMissionFromString() {
+      ::grpc::Service::MarkMethodAsync(17);
+    }
+    ~WithAsyncMethod_ImportMissionPlannerMissionFromString() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status ImportMissionPlannerMissionFromString(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionFromStringRequest* /*request*/, ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionFromStringResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestImportMissionPlannerMissionFromString(::grpc::ServerContext* context, ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionFromStringRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionFromStringResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(17, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
   class WithAsyncMethod_IsMissionFinished : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_IsMissionFinished() {
-      ::grpc::Service::MarkMethodAsync(16);
+      ::grpc::Service::MarkMethodAsync(18);
     }
     ~WithAsyncMethod_IsMissionFinished() override {
       BaseClassMustBeDerivedFromService(this);
@@ -1023,10 +1147,10 @@ class MissionRawService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestIsMissionFinished(::grpc::ServerContext* context, ::mavsdk::rpc::mission_raw::IsMissionFinishedRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::mission_raw::IsMissionFinishedResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(16, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(18, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
-  typedef WithAsyncMethod_UploadMission<WithAsyncMethod_UploadGeofence<WithAsyncMethod_UploadRallyPoints<WithAsyncMethod_CancelMissionUpload<WithAsyncMethod_DownloadMission<WithAsyncMethod_DownloadGeofence<WithAsyncMethod_DownloadRallypoints<WithAsyncMethod_CancelMissionDownload<WithAsyncMethod_StartMission<WithAsyncMethod_PauseMission<WithAsyncMethod_ClearMission<WithAsyncMethod_SetCurrentMissionItem<WithAsyncMethod_SubscribeMissionProgress<WithAsyncMethod_SubscribeMissionChanged<WithAsyncMethod_ImportQgroundcontrolMission<WithAsyncMethod_ImportQgroundcontrolMissionFromString<WithAsyncMethod_IsMissionFinished<Service > > > > > > > > > > > > > > > > > AsyncService;
+  typedef WithAsyncMethod_UploadMission<WithAsyncMethod_UploadGeofence<WithAsyncMethod_UploadRallyPoints<WithAsyncMethod_CancelMissionUpload<WithAsyncMethod_DownloadMission<WithAsyncMethod_DownloadGeofence<WithAsyncMethod_DownloadRallypoints<WithAsyncMethod_CancelMissionDownload<WithAsyncMethod_StartMission<WithAsyncMethod_PauseMission<WithAsyncMethod_ClearMission<WithAsyncMethod_SetCurrentMissionItem<WithAsyncMethod_SubscribeMissionProgress<WithAsyncMethod_SubscribeMissionChanged<WithAsyncMethod_ImportQgroundcontrolMission<WithAsyncMethod_ImportQgroundcontrolMissionFromString<WithAsyncMethod_ImportMissionPlannerMission<WithAsyncMethod_ImportMissionPlannerMissionFromString<WithAsyncMethod_IsMissionFinished<Service > > > > > > > > > > > > > > > > > > > AsyncService;
   template <class BaseClass>
   class WithCallbackMethod_UploadMission : public BaseClass {
    private:
@@ -1450,18 +1574,72 @@ class MissionRawService final {
       ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionFromStringRequest* /*request*/, ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionFromStringResponse* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
+  class WithCallbackMethod_ImportMissionPlannerMission : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithCallbackMethod_ImportMissionPlannerMission() {
+      ::grpc::Service::MarkMethodCallback(16,
+          new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionRequest, ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionResponse>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionRequest* request, ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionResponse* response) { return this->ImportMissionPlannerMission(context, request, response); }));}
+    void SetMessageAllocatorFor_ImportMissionPlannerMission(
+        ::grpc::MessageAllocator< ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionRequest, ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionResponse>* allocator) {
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(16);
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionRequest, ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionResponse>*>(handler)
+              ->SetMessageAllocator(allocator);
+    }
+    ~WithCallbackMethod_ImportMissionPlannerMission() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status ImportMissionPlannerMission(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionRequest* /*request*/, ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* ImportMissionPlannerMission(
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionRequest* /*request*/, ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionResponse* /*response*/)  { return nullptr; }
+  };
+  template <class BaseClass>
+  class WithCallbackMethod_ImportMissionPlannerMissionFromString : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithCallbackMethod_ImportMissionPlannerMissionFromString() {
+      ::grpc::Service::MarkMethodCallback(17,
+          new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionFromStringRequest, ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionFromStringResponse>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionFromStringRequest* request, ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionFromStringResponse* response) { return this->ImportMissionPlannerMissionFromString(context, request, response); }));}
+    void SetMessageAllocatorFor_ImportMissionPlannerMissionFromString(
+        ::grpc::MessageAllocator< ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionFromStringRequest, ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionFromStringResponse>* allocator) {
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(17);
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionFromStringRequest, ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionFromStringResponse>*>(handler)
+              ->SetMessageAllocator(allocator);
+    }
+    ~WithCallbackMethod_ImportMissionPlannerMissionFromString() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status ImportMissionPlannerMissionFromString(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionFromStringRequest* /*request*/, ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionFromStringResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* ImportMissionPlannerMissionFromString(
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionFromStringRequest* /*request*/, ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionFromStringResponse* /*response*/)  { return nullptr; }
+  };
+  template <class BaseClass>
   class WithCallbackMethod_IsMissionFinished : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithCallbackMethod_IsMissionFinished() {
-      ::grpc::Service::MarkMethodCallback(16,
+      ::grpc::Service::MarkMethodCallback(18,
           new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::mission_raw::IsMissionFinishedRequest, ::mavsdk::rpc::mission_raw::IsMissionFinishedResponse>(
             [this](
                    ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::mission_raw::IsMissionFinishedRequest* request, ::mavsdk::rpc::mission_raw::IsMissionFinishedResponse* response) { return this->IsMissionFinished(context, request, response); }));}
     void SetMessageAllocatorFor_IsMissionFinished(
         ::grpc::MessageAllocator< ::mavsdk::rpc::mission_raw::IsMissionFinishedRequest, ::mavsdk::rpc::mission_raw::IsMissionFinishedResponse>* allocator) {
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(16);
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(18);
       static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::mission_raw::IsMissionFinishedRequest, ::mavsdk::rpc::mission_raw::IsMissionFinishedResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
@@ -1476,7 +1654,7 @@ class MissionRawService final {
     virtual ::grpc::ServerUnaryReactor* IsMissionFinished(
       ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::mission_raw::IsMissionFinishedRequest* /*request*/, ::mavsdk::rpc::mission_raw::IsMissionFinishedResponse* /*response*/)  { return nullptr; }
   };
-  typedef WithCallbackMethod_UploadMission<WithCallbackMethod_UploadGeofence<WithCallbackMethod_UploadRallyPoints<WithCallbackMethod_CancelMissionUpload<WithCallbackMethod_DownloadMission<WithCallbackMethod_DownloadGeofence<WithCallbackMethod_DownloadRallypoints<WithCallbackMethod_CancelMissionDownload<WithCallbackMethod_StartMission<WithCallbackMethod_PauseMission<WithCallbackMethod_ClearMission<WithCallbackMethod_SetCurrentMissionItem<WithCallbackMethod_SubscribeMissionProgress<WithCallbackMethod_SubscribeMissionChanged<WithCallbackMethod_ImportQgroundcontrolMission<WithCallbackMethod_ImportQgroundcontrolMissionFromString<WithCallbackMethod_IsMissionFinished<Service > > > > > > > > > > > > > > > > > CallbackService;
+  typedef WithCallbackMethod_UploadMission<WithCallbackMethod_UploadGeofence<WithCallbackMethod_UploadRallyPoints<WithCallbackMethod_CancelMissionUpload<WithCallbackMethod_DownloadMission<WithCallbackMethod_DownloadGeofence<WithCallbackMethod_DownloadRallypoints<WithCallbackMethod_CancelMissionDownload<WithCallbackMethod_StartMission<WithCallbackMethod_PauseMission<WithCallbackMethod_ClearMission<WithCallbackMethod_SetCurrentMissionItem<WithCallbackMethod_SubscribeMissionProgress<WithCallbackMethod_SubscribeMissionChanged<WithCallbackMethod_ImportQgroundcontrolMission<WithCallbackMethod_ImportQgroundcontrolMissionFromString<WithCallbackMethod_ImportMissionPlannerMission<WithCallbackMethod_ImportMissionPlannerMissionFromString<WithCallbackMethod_IsMissionFinished<Service > > > > > > > > > > > > > > > > > > > CallbackService;
   typedef CallbackService ExperimentalCallbackService;
   template <class BaseClass>
   class WithGenericMethod_UploadMission : public BaseClass {
@@ -1751,12 +1929,46 @@ class MissionRawService final {
     }
   };
   template <class BaseClass>
+  class WithGenericMethod_ImportMissionPlannerMission : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithGenericMethod_ImportMissionPlannerMission() {
+      ::grpc::Service::MarkMethodGeneric(16);
+    }
+    ~WithGenericMethod_ImportMissionPlannerMission() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status ImportMissionPlannerMission(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionRequest* /*request*/, ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
+  template <class BaseClass>
+  class WithGenericMethod_ImportMissionPlannerMissionFromString : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithGenericMethod_ImportMissionPlannerMissionFromString() {
+      ::grpc::Service::MarkMethodGeneric(17);
+    }
+    ~WithGenericMethod_ImportMissionPlannerMissionFromString() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status ImportMissionPlannerMissionFromString(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionFromStringRequest* /*request*/, ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionFromStringResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
+  template <class BaseClass>
   class WithGenericMethod_IsMissionFinished : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_IsMissionFinished() {
-      ::grpc::Service::MarkMethodGeneric(16);
+      ::grpc::Service::MarkMethodGeneric(18);
     }
     ~WithGenericMethod_IsMissionFinished() override {
       BaseClassMustBeDerivedFromService(this);
@@ -2088,12 +2300,52 @@ class MissionRawService final {
     }
   };
   template <class BaseClass>
+  class WithRawMethod_ImportMissionPlannerMission : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawMethod_ImportMissionPlannerMission() {
+      ::grpc::Service::MarkMethodRaw(16);
+    }
+    ~WithRawMethod_ImportMissionPlannerMission() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status ImportMissionPlannerMission(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionRequest* /*request*/, ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestImportMissionPlannerMission(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(16, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithRawMethod_ImportMissionPlannerMissionFromString : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawMethod_ImportMissionPlannerMissionFromString() {
+      ::grpc::Service::MarkMethodRaw(17);
+    }
+    ~WithRawMethod_ImportMissionPlannerMissionFromString() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status ImportMissionPlannerMissionFromString(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionFromStringRequest* /*request*/, ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionFromStringResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestImportMissionPlannerMissionFromString(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(17, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
   class WithRawMethod_IsMissionFinished : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_IsMissionFinished() {
-      ::grpc::Service::MarkMethodRaw(16);
+      ::grpc::Service::MarkMethodRaw(18);
     }
     ~WithRawMethod_IsMissionFinished() override {
       BaseClassMustBeDerivedFromService(this);
@@ -2104,7 +2356,7 @@ class MissionRawService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestIsMissionFinished(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(16, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(18, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -2460,12 +2712,56 @@ class MissionRawService final {
       ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
+  class WithRawCallbackMethod_ImportMissionPlannerMission : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawCallbackMethod_ImportMissionPlannerMission() {
+      ::grpc::Service::MarkMethodRawCallback(16,
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->ImportMissionPlannerMission(context, request, response); }));
+    }
+    ~WithRawCallbackMethod_ImportMissionPlannerMission() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status ImportMissionPlannerMission(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionRequest* /*request*/, ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* ImportMissionPlannerMission(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
+  };
+  template <class BaseClass>
+  class WithRawCallbackMethod_ImportMissionPlannerMissionFromString : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawCallbackMethod_ImportMissionPlannerMissionFromString() {
+      ::grpc::Service::MarkMethodRawCallback(17,
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->ImportMissionPlannerMissionFromString(context, request, response); }));
+    }
+    ~WithRawCallbackMethod_ImportMissionPlannerMissionFromString() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status ImportMissionPlannerMissionFromString(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionFromStringRequest* /*request*/, ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionFromStringResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* ImportMissionPlannerMissionFromString(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
+  };
+  template <class BaseClass>
   class WithRawCallbackMethod_IsMissionFinished : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawCallbackMethod_IsMissionFinished() {
-      ::grpc::Service::MarkMethodRawCallback(16,
+      ::grpc::Service::MarkMethodRawCallback(18,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
                    ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->IsMissionFinished(context, request, response); }));
@@ -2860,12 +3156,66 @@ class MissionRawService final {
     virtual ::grpc::Status StreamedImportQgroundcontrolMissionFromString(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionFromStringRequest,::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionFromStringResponse>* server_unary_streamer) = 0;
   };
   template <class BaseClass>
+  class WithStreamedUnaryMethod_ImportMissionPlannerMission : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithStreamedUnaryMethod_ImportMissionPlannerMission() {
+      ::grpc::Service::MarkMethodStreamed(16,
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionRequest, ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionRequest, ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionResponse>* streamer) {
+                       return this->StreamedImportMissionPlannerMission(context,
+                         streamer);
+                  }));
+    }
+    ~WithStreamedUnaryMethod_ImportMissionPlannerMission() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status ImportMissionPlannerMission(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionRequest* /*request*/, ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with streamed unary
+    virtual ::grpc::Status StreamedImportMissionPlannerMission(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionRequest,::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionResponse>* server_unary_streamer) = 0;
+  };
+  template <class BaseClass>
+  class WithStreamedUnaryMethod_ImportMissionPlannerMissionFromString : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithStreamedUnaryMethod_ImportMissionPlannerMissionFromString() {
+      ::grpc::Service::MarkMethodStreamed(17,
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionFromStringRequest, ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionFromStringResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionFromStringRequest, ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionFromStringResponse>* streamer) {
+                       return this->StreamedImportMissionPlannerMissionFromString(context,
+                         streamer);
+                  }));
+    }
+    ~WithStreamedUnaryMethod_ImportMissionPlannerMissionFromString() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status ImportMissionPlannerMissionFromString(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionFromStringRequest* /*request*/, ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionFromStringResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with streamed unary
+    virtual ::grpc::Status StreamedImportMissionPlannerMissionFromString(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionFromStringRequest,::mavsdk::rpc::mission_raw::ImportMissionPlannerMissionFromStringResponse>* server_unary_streamer) = 0;
+  };
+  template <class BaseClass>
   class WithStreamedUnaryMethod_IsMissionFinished : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithStreamedUnaryMethod_IsMissionFinished() {
-      ::grpc::Service::MarkMethodStreamed(16,
+      ::grpc::Service::MarkMethodStreamed(18,
         new ::grpc::internal::StreamedUnaryHandler<
           ::mavsdk::rpc::mission_raw::IsMissionFinishedRequest, ::mavsdk::rpc::mission_raw::IsMissionFinishedResponse>(
             [this](::grpc::ServerContext* context,
@@ -2886,7 +3236,7 @@ class MissionRawService final {
     // replace default version of method with streamed unary
     virtual ::grpc::Status StreamedIsMissionFinished(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::mission_raw::IsMissionFinishedRequest,::mavsdk::rpc::mission_raw::IsMissionFinishedResponse>* server_unary_streamer) = 0;
   };
-  typedef WithStreamedUnaryMethod_UploadMission<WithStreamedUnaryMethod_UploadGeofence<WithStreamedUnaryMethod_UploadRallyPoints<WithStreamedUnaryMethod_CancelMissionUpload<WithStreamedUnaryMethod_DownloadMission<WithStreamedUnaryMethod_DownloadGeofence<WithStreamedUnaryMethod_DownloadRallypoints<WithStreamedUnaryMethod_CancelMissionDownload<WithStreamedUnaryMethod_StartMission<WithStreamedUnaryMethod_PauseMission<WithStreamedUnaryMethod_ClearMission<WithStreamedUnaryMethod_SetCurrentMissionItem<WithStreamedUnaryMethod_ImportQgroundcontrolMission<WithStreamedUnaryMethod_ImportQgroundcontrolMissionFromString<WithStreamedUnaryMethod_IsMissionFinished<Service > > > > > > > > > > > > > > > StreamedUnaryService;
+  typedef WithStreamedUnaryMethod_UploadMission<WithStreamedUnaryMethod_UploadGeofence<WithStreamedUnaryMethod_UploadRallyPoints<WithStreamedUnaryMethod_CancelMissionUpload<WithStreamedUnaryMethod_DownloadMission<WithStreamedUnaryMethod_DownloadGeofence<WithStreamedUnaryMethod_DownloadRallypoints<WithStreamedUnaryMethod_CancelMissionDownload<WithStreamedUnaryMethod_StartMission<WithStreamedUnaryMethod_PauseMission<WithStreamedUnaryMethod_ClearMission<WithStreamedUnaryMethod_SetCurrentMissionItem<WithStreamedUnaryMethod_ImportQgroundcontrolMission<WithStreamedUnaryMethod_ImportQgroundcontrolMissionFromString<WithStreamedUnaryMethod_ImportMissionPlannerMission<WithStreamedUnaryMethod_ImportMissionPlannerMissionFromString<WithStreamedUnaryMethod_IsMissionFinished<Service > > > > > > > > > > > > > > > > > StreamedUnaryService;
   template <class BaseClass>
   class WithSplitStreamingMethod_SubscribeMissionProgress : public BaseClass {
    private:
@@ -2942,7 +3292,7 @@ class MissionRawService final {
     virtual ::grpc::Status StreamedSubscribeMissionChanged(::grpc::ServerContext* context, ::grpc::ServerSplitStreamer< ::mavsdk::rpc::mission_raw::SubscribeMissionChangedRequest,::mavsdk::rpc::mission_raw::MissionChangedResponse>* server_split_streamer) = 0;
   };
   typedef WithSplitStreamingMethod_SubscribeMissionProgress<WithSplitStreamingMethod_SubscribeMissionChanged<Service > > SplitStreamedService;
-  typedef WithStreamedUnaryMethod_UploadMission<WithStreamedUnaryMethod_UploadGeofence<WithStreamedUnaryMethod_UploadRallyPoints<WithStreamedUnaryMethod_CancelMissionUpload<WithStreamedUnaryMethod_DownloadMission<WithStreamedUnaryMethod_DownloadGeofence<WithStreamedUnaryMethod_DownloadRallypoints<WithStreamedUnaryMethod_CancelMissionDownload<WithStreamedUnaryMethod_StartMission<WithStreamedUnaryMethod_PauseMission<WithStreamedUnaryMethod_ClearMission<WithStreamedUnaryMethod_SetCurrentMissionItem<WithSplitStreamingMethod_SubscribeMissionProgress<WithSplitStreamingMethod_SubscribeMissionChanged<WithStreamedUnaryMethod_ImportQgroundcontrolMission<WithStreamedUnaryMethod_ImportQgroundcontrolMissionFromString<WithStreamedUnaryMethod_IsMissionFinished<Service > > > > > > > > > > > > > > > > > StreamedService;
+  typedef WithStreamedUnaryMethod_UploadMission<WithStreamedUnaryMethod_UploadGeofence<WithStreamedUnaryMethod_UploadRallyPoints<WithStreamedUnaryMethod_CancelMissionUpload<WithStreamedUnaryMethod_DownloadMission<WithStreamedUnaryMethod_DownloadGeofence<WithStreamedUnaryMethod_DownloadRallypoints<WithStreamedUnaryMethod_CancelMissionDownload<WithStreamedUnaryMethod_StartMission<WithStreamedUnaryMethod_PauseMission<WithStreamedUnaryMethod_ClearMission<WithStreamedUnaryMethod_SetCurrentMissionItem<WithSplitStreamingMethod_SubscribeMissionProgress<WithSplitStreamingMethod_SubscribeMissionChanged<WithStreamedUnaryMethod_ImportQgroundcontrolMission<WithStreamedUnaryMethod_ImportQgroundcontrolMissionFromString<WithStreamedUnaryMethod_ImportMissionPlannerMission<WithStreamedUnaryMethod_ImportMissionPlannerMissionFromString<WithStreamedUnaryMethod_IsMissionFinished<Service > > > > > > > > > > > > > > > > > > > StreamedService;
 };
 
 }  // namespace mission_raw

@@ -168,6 +168,8 @@ public:
         ProtocolError, /**< @brief There was a protocol error. */
         IntMessagesNotSupported, /**< @brief The system does not support the MISSION_INT protocol.
                                   */
+        FailedToOpenMissionPlannerPlan, /**< @brief Failed to open the Mission Planner plan. */
+        FailedToParseMissionPlannerPlan, /**< @brief Failed to parse the Mission Planner plan. */
     };
 
     /**
@@ -506,6 +508,34 @@ public:
      */
     std::pair<Result, MissionRaw::MissionImportData>
     import_qgroundcontrol_mission_from_string(std::string qgc_plan) const;
+
+    /**
+     * @brief Import a Mission Planner mission in QGC WPL 110 format, from a file.
+     *
+     * Supported:
+     * - Waypoints
+     * - ArduPilot home position handling
+     *
+     * This function is blocking.
+     *
+     * @return Result of request.
+     */
+    std::pair<Result, MissionRaw::MissionImportData>
+    import_mission_planner_mission(std::string mission_planner_path) const;
+
+    /**
+     * @brief Import a Mission Planner mission in QGC WPL 110 format, from a string.
+     *
+     * Supported:
+     * - Waypoints
+     * - ArduPilot home position handling
+     *
+     * This function is blocking.
+     *
+     * @return Result of request.
+     */
+    std::pair<Result, MissionRaw::MissionImportData>
+    import_mission_planner_mission_from_string(std::string mission_planner_mission) const;
 
     /**
      * @brief Check if the mission is finished.
