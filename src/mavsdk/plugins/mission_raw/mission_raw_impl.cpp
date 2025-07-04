@@ -105,7 +105,7 @@ void MissionRawImpl::process_mission_current(const mavlink_message_t& message)
         if (mission_current.seq != _mission_progress.last_reached) {
             _mission_progress.last.current = mission_current.seq;
         }
-        _mission_progress.mission_state = static_cast<MissionState>(mission_current.mission_state);
+        _mission_progress.mission_state = mission_current.mission_state;
     }
     {
         std::lock_guard<std::mutex> lock(_mission_changed.mutex);
@@ -712,14 +712,14 @@ std::pair<MissionRaw::Result, bool> MissionRawImpl::is_mission_finished() const
     }
 
     // If mission_state is Unknown, fall back to the previous behavior
-    if (_mission_progress.mission_state == MissionState::Unknown) {
+    if (_mission_progress.mission_state == MISSION_STATE_UNKNOWN) {
         return std::make_pair<MissionRaw::Result, bool>(
             MissionRaw::Result::Success,
             _mission_progress.last_reached == _mission_progress.last.total - 1);
     }
 
     // If mission_state is Completed, the mission is finished
-    if (_mission_progress.mission_state == MissionState::Completed) {
+    if (_mission_progress.mission_state == MISSION_STATE_COMPLETE) {
         return std::make_pair<MissionRaw::Result, bool>(MissionRaw::Result::Success, true);
     }
 
