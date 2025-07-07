@@ -332,8 +332,13 @@ void MavlinkFtpClient::process_mavlink_ftp_message(const mavlink_message_t& msg)
                 if (payload->opcode == RSP_ACK) {
                     if (payload->req_opcode == CMD_CALC_FILE_CRC32) {
                         stop_timer();
-                        uint32_t remote_crc = *reinterpret_cast<uint32_t*>(payload->data);
-                        item.callback(ClientResult::Success, remote_crc == item.local_crc);
+                        if (payload->size >= sizeof(uint32_t)) {
+                            uint32_t remote_crc = *reinterpret_cast<uint32_t*>(payload->data);
+                            item.callback(ClientResult::Success, remote_crc == item.local_crc);
+                        } else {
+                            LogWarn() << "CRC32 response payload too small";
+                            item.callback(ClientResult::ProtocolError, false);
+                        }
                         work_queue_guard.pop_front();
 
                     } else {
@@ -403,6 +408,7 @@ bool MavlinkFtpClient::download_start(Work& work, DownloadItem& item)
     work.payload.offset = 0;
     strncpy(
         reinterpret_cast<char*>(work.payload.data), item.remote_path.c_str(), max_data_length - 1);
+    work.payload.data[max_data_length - 1] = '\0';
     work.payload.size = item.remote_path.length() + 1;
 
     start_timer();
@@ -414,10 +420,15 @@ bool MavlinkFtpClient::download_start(Work& work, DownloadItem& item)
 bool MavlinkFtpClient::download_continue(Work& work, DownloadItem& item, PayloadHeader* payload)
 {
     if (payload->req_opcode == CMD_OPEN_FILE_RO) {
-        item.file_size = *(reinterpret_cast<uint32_t*>(payload->data));
+        if (payload->size >= sizeof(uint32_t)) {
+            item.file_size = *(reinterpret_cast<uint32_t*>(payload->data));
 
-        if (_debugging) {
-            LogWarn() << "Download continue, got file size: " << item.file_size;
+            if (_debugging) {
+                LogWarn() << "Download continue, got file size: " << item.file_size;
+            }
+        } else {
+            LogWarn() << "File size response payload too small";
+            return false;
         }
 
     } else if (payload->req_opcode == CMD_READ_FILE) {
@@ -501,6 +512,7 @@ bool MavlinkFtpClient::download_burst_start(Work& work, DownloadBurstItem& item)
     work.payload.offset = 0;
     strncpy(
         reinterpret_cast<char*>(work.payload.data), item.remote_path.c_str(), max_data_length - 1);
+    work.payload.data[max_data_length - 1] = '\0';
     work.payload.size = item.remote_path.length() + 1;
 
     start_timer();
@@ -513,13 +525,18 @@ bool MavlinkFtpClient::download_burst_continue(
     Work& work, DownloadBurstItem& item, PayloadHeader* payload)
 {
     if (payload->req_opcode == CMD_OPEN_FILE_RO) {
-        std::memcpy(&(item.file_size), payload->data, sizeof(uint32_t));
+        if (payload->size >= sizeof(uint32_t)) {
+            std::memcpy(&(item.file_size), payload->data, sizeof(uint32_t));
 
-        if (_debugging) {
-            LogDebug() << "Burst Download continue, got file size: " << item.file_size;
+            if (_debugging) {
+                LogDebug() << "Burst Download continue, got file size: " << item.file_size;
+            }
+
+            request_burst(work, item);
+        } else {
+            LogWarn() << "Burst download file size response payload too small";
+            return false;
         }
-
-        request_burst(work, item);
 
     } else if (payload->req_opcode == CMD_BURST_READ_FILE) {
         if (_debugging) {
@@ -774,6 +791,7 @@ bool MavlinkFtpClient::upload_start(Work& work, UploadItem& item)
         reinterpret_cast<char*>(work.payload.data),
         remote_file_path.string().c_str(),
         max_data_length - 1);
+    work.payload.data[max_data_length - 1] = '\0';
     work.payload.size = remote_file_path.string().size() + 1;
 
     start_timer();
@@ -851,6 +869,7 @@ bool MavlinkFtpClient::remove_start(Work& work, RemoveItem& item)
     work.payload.opcode = work.last_opcode;
     work.payload.offset = 0;
     strncpy(reinterpret_cast<char*>(work.payload.data), item.path.c_str(), max_data_length - 1);
+    work.payload.data[max_data_length - 1] = '\0';
     work.payload.size = item.path.length() + 1;
 
     start_timer();
@@ -874,11 +893,13 @@ bool MavlinkFtpClient::rename_start(Work& work, RenameItem& item)
     work.payload.offset = 0;
     strncpy(
         reinterpret_cast<char*>(work.payload.data), item.from_path.c_str(), max_data_length - 1);
+    work.payload.data[max_data_length - 1] = '\0';
     work.payload.size = item.from_path.length() + 1;
     strncpy(
         reinterpret_cast<char*>(&work.payload.data[work.payload.size]),
         item.to_path.c_str(),
-        max_data_length - work.payload.size);
+        max_data_length - work.payload.size - 1);
+    work.payload.data[max_data_length - 1] = '\0';
     work.payload.size += item.to_path.length() + 1;
     start_timer();
 
@@ -901,6 +922,7 @@ bool MavlinkFtpClient::create_dir_start(Work& work, CreateDirItem& item)
     work.payload.opcode = work.last_opcode;
     work.payload.offset = 0;
     strncpy(reinterpret_cast<char*>(work.payload.data), item.path.c_str(), max_data_length - 1);
+    work.payload.data[max_data_length - 1] = '\0';
     work.payload.size = item.path.length() + 1;
     start_timer();
 
@@ -923,6 +945,7 @@ bool MavlinkFtpClient::remove_dir_start(Work& work, RemoveDirItem& item)
     work.payload.opcode = work.last_opcode;
     work.payload.offset = 0;
     strncpy(reinterpret_cast<char*>(work.payload.data), item.path.c_str(), max_data_length - 1);
+    work.payload.data[max_data_length - 1] = '\0';
     work.payload.size = item.path.length() + 1;
     start_timer();
 
@@ -952,6 +975,7 @@ bool MavlinkFtpClient::compare_files_start(Work& work, CompareFilesItem& item)
     work.payload.offset = 0;
     strncpy(
         reinterpret_cast<char*>(work.payload.data), item.remote_path.c_str(), max_data_length - 1);
+    work.payload.data[max_data_length - 1] = '\0';
     work.payload.size = item.remote_path.length() + 1;
     start_timer();
 
@@ -974,6 +998,7 @@ bool MavlinkFtpClient::list_dir_start(Work& work, ListDirItem& item)
     work.payload.opcode = work.last_opcode;
     work.payload.offset = 0;
     strncpy(reinterpret_cast<char*>(work.payload.data), item.path.c_str(), max_data_length - 1);
+    work.payload.data[max_data_length - 1] = '\0';
     work.payload.size = item.path.length() + 1;
     start_timer();
 
@@ -1005,11 +1030,15 @@ bool MavlinkFtpClient::list_dir_continue(Work& work, ListDirItem& item, PayloadH
 
     size_t i = 0;
     while (i + 1 < payload->size) {
-        const int entry_len = std::strlen(reinterpret_cast<char*>(&payload->data[i]));
+        // Find the length of the null-terminated string, but don't read beyond payload size
+        size_t max_len = payload->size - i - 1; // Reserve space for null terminator
+        const int entry_len = strnlen(reinterpret_cast<char*>(&payload->data[i]), max_len);
 
         std::string entry;
         entry.resize(entry_len);
-        std::memcpy(entry.data(), &payload->data[i], entry_len);
+        if (entry_len > 0) {
+            std::memcpy(entry.data(), &payload->data[i], entry_len);
+        }
 
         i += entry_len + 1;
 
@@ -1041,6 +1070,7 @@ bool MavlinkFtpClient::list_dir_continue(Work& work, ListDirItem& item, PayloadH
     work.payload.opcode = work.last_opcode;
     work.payload.offset = item.offset;
     strncpy(reinterpret_cast<char*>(work.payload.data), item.path.c_str(), max_data_length - 1);
+    work.payload.data[max_data_length - 1] = '\0';
     work.payload.size = item.path.length() + 1;
     start_timer();
 
