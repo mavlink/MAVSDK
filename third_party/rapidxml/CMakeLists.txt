@@ -9,6 +9,8 @@ list(APPEND CMAKE_ARGS
     "-DCMAKE_TOOLCHAIN_FILE:PATH=${CMAKE_TOOLCHAIN_FILE}"
     "-DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}"
     "-DCMAKE_POSITION_INDEPENDENT_CODE=ON"
+    "-DRAPIDXML_BUILD_TESTS=OFF"
+    "-DRAPIDXML_INSTALL=ON"
     )
 
 if(IOS)
@@ -26,16 +28,8 @@ endforeach()
 
 ExternalProject_add(
     rapidxml
-    GIT_REPOSITORY https://github.com/timniederhausen/rapidxml
-    GIT_TAG master
+    GIT_REPOSITORY https://github.com/julianoes/rapidxml
+    GIT_TAG pr-install-headers
     PREFIX rapidxml
     CMAKE_ARGS ${CMAKE_ARGS}
-        -DRAPIDXML_BUILD_TESTS=OFF
-        -DRAPIDXML_INSTALL=ON
-    # Custom install step to ensure headers are properly installed
-    INSTALL_COMMAND ${CMAKE_COMMAND} --build <BINARY_DIR> --target install
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different <SOURCE_DIR>/rapidxml.hpp ${CMAKE_INSTALL_PREFIX}/include/rapidxml/rapidxml.hpp
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different <SOURCE_DIR>/rapidxml_iterators.hpp ${CMAKE_INSTALL_PREFIX}/include/rapidxml/rapidxml_iterators.hpp
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different <SOURCE_DIR>/rapidxml_print.hpp ${CMAKE_INSTALL_PREFIX}/include/rapidxml/rapidxml_print.hpp
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different <SOURCE_DIR>/rapidxml_utils.hpp ${CMAKE_INSTALL_PREFIX}/include/rapidxml/rapidxml_utils.hpp
     )
