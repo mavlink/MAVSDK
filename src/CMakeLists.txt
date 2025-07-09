@@ -31,12 +31,10 @@ include(../cmake/compiler_flags.cmake)
 
 find_package(Threads REQUIRED)
 
-if(NOT HUNTER_ENABLED)
-    list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../cmake/Modules/common")
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../cmake/Modules/common")
 
-    if(NOT MSVC)
-        list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../cmake/Modules/non-msvc")
-    endif()
+if(NOT MSVC)
+    list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../cmake/Modules/non-msvc")
 endif()
 
 # This will noop if hunter is not enabled
@@ -44,6 +42,13 @@ hunter_add_package(jsoncpp)
 hunter_add_package(CURL)
 hunter_add_package(lzma)
 
+if(HUNTER_ENABLED)
+    hunter_add_package(RapidXML)
+    find_package(RapidXML REQUIRED CONFIG)
+    add_library(rapidxml::rapidxml ALIAS RapidXML::RapidXML)
+else()
+    find_package(rapidxml REQUIRED)
+endif()
 
 message(STATUS "Build with CMAKE_PREFIX_PATH: ${CMAKE_PREFIX_PATH}")
 message(STATUS "CMAKE_FIND_ROOT_PATHS: ${CMAKE_FIND_ROOT_PATH}")

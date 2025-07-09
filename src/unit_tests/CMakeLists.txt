@@ -11,15 +11,19 @@ set_target_properties(unit_tests_runner
 )
 
 find_package(GTest REQUIRED)
-find_package(tinyxml2 REQUIRED)
 
 target_link_libraries(unit_tests_runner
     mavsdk
     JsonCpp::JsonCpp
-    tinyxml2::tinyxml2
+    rapidxml::rapidxml
     GTest::gtest
     GTest::gtest_main
     GTest::gmock
+)
+
+target_compile_definitions(unit_tests_runner
+    PRIVATE
+    RAPIDXML_NO_EXCEPTIONS=1
 )
 
 target_include_directories(unit_tests_runner

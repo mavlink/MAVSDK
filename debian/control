@@ -1,7 +1,7 @@
 Source: mavsdk
 Priority: optional
 Maintainer: hcb <hcb@archaeopteryx>
-Build-Depends: debhelper (>= 11), libjsoncpp-dev, libcurl4-openssl-dev, libtinyxml2-dev
+Build-Depends: debhelper (>= 11), libjsoncpp-dev, libcurl4-openssl-dev, librapidxml-dev
 Standards-Version: 4.1.3
 Section: libs
 Homepage: https://mavsdk.mavlink.io/main/en/index.html
@@ -19,6 +19,6 @@ Description: MAVSDK API for Mavlink-controlled vehicles
 Package: libmavsdk0
 Architecture: any
 Multi-Arch: same
-Depends: ${shlibs:Depends}, ${misc:Depends}, libjsoncpp1, libcurl4, libtinyxml2-6a
+Depends: ${shlibs:Depends}, ${misc:Depends}, libjsoncpp1, libcurl4, librapidxml
 Description: MAVSDK API for Mavlink-controlled vehicles
  This provides the runtime libraries for the mavsdk C++ library.

@@ -1,13 +1,19 @@
 #pragma once
 
 #include "mavlink_parameter_client.h"
-#include <tinyxml2.h>
+#include <rapidxml/rapidxml.hpp>
+#include <rapidxml/rapidxml_utils.hpp>
 #include <vector>
 #include <memory>
 #include <unordered_map>
 #include <string>
 #include <tuple>
 #include <utility>
+
+// Custom error handler for rapidxml no-exceptions mode
+namespace rapidxml {
+void parse_error_handler(const char* what, void* where);
+}
 
 namespace mavsdk {
 
@@ -83,17 +89,18 @@ private:
     // Until we have std::optional we need to use std::pair to return something that might be
     // nothing.
     std::pair<bool, std::vector<std::shared_ptr<Option>>> parse_options(
-        const tinyxml2::XMLElement* options_handle,
+        const rapidxml::xml_node<>* options_handle,
         const std::string& param_name,
         std::unordered_map<std::string, std::string>& type_map);
     std::tuple<bool, std::vector<std::shared_ptr<Option>>, Option> parse_range_options(
-        const tinyxml2::XMLElement* param_handle,
+        const rapidxml::xml_node<>* param_handle,
         const std::string& param_name,
         std::unordered_map<std::string, std::string>& type_map);
     std::pair<bool, Option> find_default(
         const std::vector<std::shared_ptr<Option>>& options, const std::string& default_str);
 
-    tinyxml2::XMLDocument _doc{};
+    rapidxml::xml_document<> _doc{};
+    std::string _xml_content{}; // Required for rapidxml in-situ parsing
 
     std::unordered_map<std::string, std::shared_ptr<Parameter>> _parameter_map{};
 

@@ -1,13 +1,37 @@
 #include "log.h"
 #include "camera_definition.h"
+#include <fstream>
+#include <sstream>
+
+// Custom error handler for rapidxml no-exceptions mode
+namespace rapidxml {
+void parse_error_handler(const char* what, void* where)
+{
+    (void)where; // Suppress unused parameter warning
+    mavsdk::LogErr() << "RapidXML parse error: " << what;
+    // In no-exceptions mode, we can't throw, so we just log the error
+    // The calling code will check for parsing success
+}
+} // namespace rapidxml
 
 namespace mavsdk {
 
 bool CameraDefinition::load_file(const std::string& filepath)
 {
-    tinyxml2::XMLError xml_error = _doc.LoadFile(filepath.c_str());
-    if (xml_error != tinyxml2::XML_SUCCESS) {
-        LogErr() << "tinyxml2::LoadFile failed: " << _doc.ErrorStr();
+    std::ifstream file(filepath);
+    if (!file.is_open()) {
+        LogErr() << "Failed to open file: " << filepath;
+        return false;
+    }
+
+    std::stringstream buffer;
+    buffer << file.rdbuf();
+    _xml_content = buffer.str();
+    file.close();
+
+    _doc.parse<0>(&_xml_content[0]);
+    if (_doc.first_node() == nullptr) {
+        LogErr() << "RapidXML parse failed for file: " << filepath;
         return false;
     }
 
@@ -16,9 +40,11 @@ bool CameraDefinition::load_file(const std::string& filepath)
 
 bool CameraDefinition::load_string(const std::string& content)
 {
-    tinyxml2::XMLError xml_error = _doc.Parse(content.c_str());
-    if (xml_error != tinyxml2::XML_SUCCESS) {
-        LogErr() << "tinyxml2::Parse failed: " << _doc.ErrorStr();
+    _xml_content = content;
+
+    _doc.parse<0>(&_xml_content[0]);
+    if (_doc.first_node() == nullptr) {
+        LogErr() << "RapidXML parse failed for string content";
         return false;
     }
 
@@ -37,35 +63,37 @@ std::string CameraDefinition::get_vendor() const
 
 bool CameraDefinition::parse_xml()
 {
-    auto e_mavlinkcamera = _doc.FirstChildElement("mavlinkcamera");
+    auto e_mavlinkcamera = _doc.first_node("mavlinkcamera");
     if (!e_mavlinkcamera) {
         LogErr() << "Tag mavlinkcamera not found";
         return false;
     }
 
-    auto e_definition = e_mavlinkcamera->FirstChildElement("definition");
+    auto e_definition = e_mavlinkcamera->first_node("definition");
     if (!e_definition) {
         LogErr() << "definition not found";
         return false;
     }
 
-    auto e_model = e_definition->FirstChildElement("model");
+    auto e_model = e_definition->first_node("model");
     if (!e_model) {
         LogErr() << "model not found";
         return false;
     }
 
-    _model = e_model->GetText();
+    const char* model_text = e_model->value();
+    _model = model_text ? model_text : "";
 
-    auto e_vendor = e_definition->FirstChildElement("vendor");
+    auto e_vendor = e_definition->first_node("vendor");
     if (!e_vendor) {
         LogErr() << "vendor not found";
         return false;
     }
 
-    _vendor = e_vendor->GetText();
+    const char* vendor_text = e_vendor->value();
+    _vendor = vendor_text ? vendor_text : "";
 
-    auto e_parameters = e_mavlinkcamera->FirstChildElement("parameters");
+    auto e_parameters = e_mavlinkcamera->first_node("parameters");
     if (!e_parameters) {
         LogErr() << "Tag parameters not found";
         return false;
@@ -73,38 +101,42 @@ bool CameraDefinition::parse_xml()
 
     std::unordered_map<std::string, std::string> type_map{};
     // We need all types first.
-    for (auto e_parameter = e_parameters->FirstChildElement("parameter"); e_parameter != nullptr;
-         e_parameter = e_parameter->NextSiblingElement("parameter")) {
-        const char* param_name = e_parameter->Attribute("name");
-        if (!param_name) {
+    for (auto e_parameter = e_parameters->first_node("parameter"); e_parameter != nullptr;
+         e_parameter = e_parameter->next_sibling("parameter")) {
+        auto name_attr = e_parameter->first_attribute("name");
+        if (!name_attr) {
             LogErr() << "name attribute missing";
             return false;
         }
+        const char* param_name = name_attr->value();
 
-        const char* type_str = e_parameter->Attribute("type");
-        if (!type_str) {
+        auto type_attr = e_parameter->first_attribute("type");
+        if (!type_attr) {
             LogErr() << "type attribute missing";
             return false;
         }
+        const char* type_str = type_attr->value();
 
         type_map[param_name] = type_str;
     }
 
-    for (auto e_parameter = e_parameters->FirstChildElement("parameter"); e_parameter != nullptr;
-         e_parameter = e_parameter->NextSiblingElement("parameter")) {
+    for (auto e_parameter = e_parameters->first_node("parameter"); e_parameter != nullptr;
+         e_parameter = e_parameter->next_sibling("parameter")) {
         auto new_parameter = std::make_shared<Parameter>();
 
-        const char* param_name = e_parameter->Attribute("name");
-        if (!param_name) {
+        auto name_attr = e_parameter->first_attribute("name");
+        if (!name_attr) {
             LogErr() << "name attribute missing";
             return false;
         }
+        const char* param_name = name_attr->value();
 
-        const char* type_str_res = e_parameter->Attribute("type");
-        if (!type_str_res) {
+        auto type_attr = e_parameter->first_attribute("type");
+        if (!type_attr) {
             LogErr() << "type attribute missing for " << param_name;
             return false;
         }
+        const char* type_str_res = type_attr->value();
 
         auto type_str = std::string(type_str_res);
         if (type_str == "string") {
@@ -124,25 +156,28 @@ bool CameraDefinition::parse_xml()
 
         // By default control is on.
         new_parameter->is_control = true;
-        const char* control_str = e_parameter->Attribute("control");
-        if (control_str) {
-            if (std::string(control_str) == "0") {
+        auto control_attr = e_parameter->first_attribute("control");
+        if (control_attr) {
+            const char* control_str = control_attr->value();
+            if (control_str && std::string(control_str) == "0") {
                 new_parameter->is_control = false;
             }
         }
 
         new_parameter->is_readonly = false;
-        const char* readonly_str = e_parameter->Attribute("readonly");
-        if (readonly_str) {
-            if (std::string(readonly_str) == "1") {
+        auto readonly_attr = e_parameter->first_attribute("readonly");
+        if (readonly_attr) {
+            const char* readonly_str = readonly_attr->value();
+            if (readonly_str && std::string(readonly_str) == "1") {
                 new_parameter->is_readonly = true;
             }
         }
 
         new_parameter->is_writeonly = false;
-        const char* writeonly_str = e_parameter->Attribute("writeonly");
-        if (writeonly_str) {
-            if (std::string(writeonly_str) == "1") {
+        auto writeonly_attr = e_parameter->first_attribute("writeonly");
+        if (writeonly_attr) {
+            const char* writeonly_str = writeonly_attr->value();
+            if (writeonly_str && std::string(writeonly_str) == "1") {
                 new_parameter->is_writeonly = true;
             }
         }
@@ -157,13 +192,14 @@ bool CameraDefinition::parse_xml()
             new_parameter->is_control = false;
         }
 
-        auto e_description = e_parameter->FirstChildElement("description");
+        auto e_description = e_parameter->first_node("description");
         if (!e_description) {
             LogErr() << "Description missing";
             return false;
         }
 
-        new_parameter->description = e_description->GetText();
+        const char* description_text = e_description->value();
+        new_parameter->description = description_text ? description_text : "";
 
         // LogDebug() << "Found: " << new_parameter->description
         //            << " (" << param_name
@@ -172,20 +208,23 @@ bool CameraDefinition::parse_xml()
         //            << ", writeonly: " << (new_parameter->is_writeonly ? "yes" : "no")
         //            << ")";
 
-        auto e_updates = e_parameter->FirstChildElement("updates");
+        auto e_updates = e_parameter->first_node("updates");
         if (e_updates) {
-            for (auto e_update = e_updates->FirstChildElement("update"); e_update != nullptr;
-                 e_update = e_update->NextSiblingElement("update")) {
-                // LogDebug() << "Updates: " << e_update->GetText();
-                new_parameter->updates.emplace_back(e_update->GetText());
+            for (auto e_update = e_updates->first_node("update"); e_update != nullptr;
+                 e_update = e_update->next_sibling("update")) {
+                const char* update_text = e_update->value();
+                if (update_text) {
+                    new_parameter->updates.emplace_back(update_text);
+                }
             }
         }
 
-        const char* default_str = e_parameter->Attribute("default");
-        if (!default_str) {
+        auto default_attr = e_parameter->first_attribute("default");
+        if (!default_attr) {
             LogWarn() << "Default missing for " << param_name;
             continue;
         }
+        const char* default_str = default_attr->value();
 
         auto get_default_opt = [&]() {
             auto maybe_default = find_default(new_parameter->options, default_str);
@@ -198,7 +237,7 @@ bool CameraDefinition::parse_xml()
             return std::optional{maybe_default.second};
         };
 
-        auto e_options = e_parameter->FirstChildElement("options");
+        auto e_options = e_parameter->first_node("options");
         if (e_options) {
             auto maybe_options = parse_options(e_options, param_name, type_map);
             if (!maybe_options.first) {
@@ -253,25 +292,27 @@ bool CameraDefinition::parse_xml()
 
 std::pair<bool, std::vector<std::shared_ptr<CameraDefinition::Option>>>
 CameraDefinition::parse_options(
-    const tinyxml2::XMLElement* options_handle,
+    const rapidxml::xml_node<>* options_handle,
     const std::string& param_name,
     std::unordered_map<std::string, std::string>& type_map)
 {
     std::vector<std::shared_ptr<Option>> options{};
 
-    for (auto e_option = options_handle->FirstChildElement("option"); e_option != nullptr;
-         e_option = e_option->NextSiblingElement("option")) {
-        const char* option_name = e_option->Attribute("name");
-        if (!option_name) {
+    for (auto e_option = options_handle->first_node("option"); e_option != nullptr;
+         e_option = e_option->next_sibling("option")) {
+        auto name_attr = e_option->first_attribute("name");
+        if (!name_attr) {
             LogErr() << "no option name given";
             return std::make_pair<>(false, options);
         }
+        const char* option_name = name_attr->value();
 
-        const char* option_value = e_option->Attribute("value");
-        if (!option_value) {
+        auto value_attr = e_option->first_attribute("value");
+        if (!value_attr) {
             LogErr() << "no option value given";
             return std::make_pair<>(false, options);
         }
+        const char* option_value = value_attr->value();
 
         auto new_option = std::make_shared<Option>();
 
@@ -281,42 +322,46 @@ CameraDefinition::parse_options(
 
         // LogDebug() << "Type: " << type_map[param_name] << ", name: " << option_name;
 
-        auto e_exclusions = e_option->FirstChildElement("exclusions");
+        auto e_exclusions = e_option->first_node("exclusions");
         if (e_exclusions) {
-            for (auto e_exclude = e_exclusions->FirstChildElement("exclude"); e_exclude != nullptr;
-                 e_exclude = e_exclude->NextSiblingElement("exclude")) {
-                // LogDebug() << "Exclude: " << e_exclude->GetText();
-                new_option->exclusions.emplace_back(e_exclude->GetText());
+            for (auto e_exclude = e_exclusions->first_node("exclude"); e_exclude != nullptr;
+                 e_exclude = e_exclude->next_sibling("exclude")) {
+                const char* exclude_text = e_exclude->value();
+                if (exclude_text) {
+                    new_option->exclusions.emplace_back(exclude_text);
+                }
             }
         }
 
-        auto e_parameterranges = e_option->FirstChildElement("parameterranges");
+        auto e_parameterranges = e_option->first_node("parameterranges");
         if (e_parameterranges) {
-            for (auto e_parameterrange = e_parameterranges->FirstChildElement("parameterrange");
+            for (auto e_parameterrange = e_parameterranges->first_node("parameterrange");
                  e_parameterrange != nullptr;
-                 e_parameterrange = e_parameterrange->NextSiblingElement("parameterrange")) {
-                const char* roption_parameter_str = e_parameterrange->Attribute("parameter");
-                if (!roption_parameter_str) {
+                 e_parameterrange = e_parameterrange->next_sibling("parameterrange")) {
+                auto param_attr = e_parameterrange->first_attribute("parameter");
+                if (!param_attr) {
                     LogErr() << "missing roption parameter name";
                     return std::make_pair<>(false, options);
                 }
+                const char* roption_parameter_str = param_attr->value();
 
                 ParameterRange new_parameter_range;
 
-                for (auto e_roption = e_parameterrange->FirstChildElement("roption");
-                     e_roption != nullptr;
-                     e_roption = e_roption->NextSiblingElement("roption")) {
-                    const char* roption_name_str = e_roption->Attribute("name");
-                    if (!roption_name_str) {
+                for (auto e_roption = e_parameterrange->first_node("roption"); e_roption != nullptr;
+                     e_roption = e_roption->next_sibling("roption")) {
+                    auto roption_name_attr = e_roption->first_attribute("name");
+                    if (!roption_name_attr) {
                         LogErr() << "missing roption name attribute";
                         return std::make_pair<>(false, options);
                     }
+                    const char* roption_name_str = roption_name_attr->value();
 
-                    const char* roption_value_str = e_roption->Attribute("value");
-                    if (!roption_value_str) {
+                    auto roption_value_attr = e_roption->first_attribute("value");
+                    if (!roption_value_attr) {
                         LogErr() << "missing roption value attribute";
                         return std::make_pair<>(false, options);
                     }
+                    const char* roption_value_str = roption_value_attr->value();
 
                     if (type_map.find(roption_parameter_str) == type_map.end()) {
                         LogErr() << "unknown roption type";
@@ -348,27 +393,29 @@ CameraDefinition::parse_options(
 
 std::tuple<bool, std::vector<std::shared_ptr<CameraDefinition::Option>>, CameraDefinition::Option>
 CameraDefinition::parse_range_options(
-    const tinyxml2::XMLElement* param_handle,
+    const rapidxml::xml_node<>* param_handle,
     const std::string& param_name,
     std::unordered_map<std::string, std::string>& type_map)
 {
     std::vector<std::shared_ptr<Option>> options{};
     Option default_option{};
 
-    const char* min_str = param_handle->Attribute("min");
-    if (!min_str) {
+    auto min_attr = param_handle->first_attribute("min");
+    if (!min_attr) {
         LogDebug() << "min range missing for " << param_name;
         return std::make_tuple<>(false, options, default_option);
     }
+    const char* min_str = min_attr->value();
 
     ParamValue min_value;
     min_value.set_from_xml(type_map[param_name], min_str);
 
-    const char* max_str = param_handle->Attribute("max");
-    if (!max_str) {
+    auto max_attr = param_handle->first_attribute("max");
+    if (!max_attr) {
         LogDebug() << "max range missing for " << param_name;
         return std::make_tuple<>(false, options, default_option);
     }
+    const char* max_str = max_attr->value();
 
     auto min_option = std::make_shared<Option>();
     min_option->name = "min";
@@ -381,7 +428,8 @@ CameraDefinition::parse_range_options(
     max_option->name = "max";
     max_option->value = max_value;
 
-    const char* step_str = param_handle->Attribute("step");
+    auto step_attr = param_handle->first_attribute("step");
+    const char* step_str = step_attr ? step_attr->value() : nullptr;
     if (!step_str) {
         LogDebug() << "step range missing for " << param_name;
     }
@@ -402,11 +450,12 @@ CameraDefinition::parse_range_options(
         options.push_back(max_option);
     }
 
-    const char* default_str = param_handle->Attribute("default");
-    if (!default_str) {
+    auto default_attr = param_handle->first_attribute("default");
+    if (!default_attr) {
         LogDebug() << "default range missing for " << param_name;
         return std::make_tuple<>(false, options, default_option);
     }
+    const char* default_str = default_attr->value();
 
     ParamValue default_value;
     default_value.set_from_xml(type_map[param_name], default_str);
