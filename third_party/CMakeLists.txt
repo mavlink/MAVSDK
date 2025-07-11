@@ -14,6 +14,8 @@ endif()
 
 if(SUPERBUILD)
     build_target(mavlink)
+    build_target(picosha2)
+    build_target(libmavlike)
     build_target(jsoncpp)
     build_target(tinyxml2)
     build_target(liblzma)
