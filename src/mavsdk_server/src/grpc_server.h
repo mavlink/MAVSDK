@@ -114,6 +114,11 @@
 #include "manual_control/manual_control_service_impl.h"
 #endif
 
+#ifdef MAVLINK_DIRECT_ENABLED
+#include "plugins/mavlink_direct/mavlink_direct.h"
+#include "mavlink_direct/mavlink_direct_service_impl.h"
+#endif
+
 #ifdef MISSION_ENABLED
 #include "plugins/mission/mission.h"
 #include "mission/mission_service_impl.h"
@@ -295,6 +300,11 @@ public:
 #ifdef MANUAL_CONTROL_ENABLED
         _manual_control_lazy_plugin(mavsdk),
         _manual_control_service(_manual_control_lazy_plugin),
+#endif
+
+#ifdef MAVLINK_DIRECT_ENABLED
+        _mavlink_direct_lazy_plugin(mavsdk),
+        _mavlink_direct_service(_mavlink_direct_lazy_plugin),
 #endif
 
 #ifdef MISSION_ENABLED
@@ -522,6 +532,13 @@ private:
     LazyPlugin<ManualControl> _manual_control_lazy_plugin;
 
     ManualControlServiceImpl<> _manual_control_service;
+#endif
+
+#ifdef MAVLINK_DIRECT_ENABLED
+
+    LazyPlugin<MavlinkDirect> _mavlink_direct_lazy_plugin;
+
+    MavlinkDirectServiceImpl<> _mavlink_direct_service;
 #endif
 
 #ifdef MISSION_ENABLED
