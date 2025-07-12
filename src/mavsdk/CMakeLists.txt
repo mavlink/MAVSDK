@@ -10,6 +10,8 @@ find_package(jsoncpp REQUIRED)
 find_package(tinyxml2 REQUIRED)
 
 find_package(libevents REQUIRED)
+find_package(picosha2 REQUIRED)
+find_package(mav REQUIRED)
 
 target_link_libraries(mavsdk
     PUBLIC
@@ -18,6 +20,7 @@ target_link_libraries(mavsdk
     JsonCpp::JsonCpp
     tinyxml2::tinyxml2
     LibEvents::LibEvents
+    mav::mav
 )
 
 if (NOT APPLE AND NOT ANDROID AND NOT MSVC)
