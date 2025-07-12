@@ -504,7 +504,7 @@ void MavsdkImpl::process_message(mavlink_message_t& message, Connection* connect
     }
 }
 
-void MavsdkImpl::process_libmav_message(const LibmavMessage& message, Connection* connection)
+void MavsdkImpl::process_libmav_message(const LibmavMessage& message, Connection* /* connection */)
 {
     // Assumes _received_libmav_messages_mutex
 
