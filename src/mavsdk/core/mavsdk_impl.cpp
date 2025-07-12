@@ -345,6 +345,15 @@ void MavsdkImpl::receive_message(mavlink_message_t& message, Connection* connect
     _received_messages_cv.notify_one();
 }
 
+void MavsdkImpl::receive_libmav_message(const LibmavMessage& message, Connection* connection)
+{
+    {
+        std::lock_guard lock(_received_libmav_messages_mutex);
+        _received_libmav_messages.emplace(ReceivedLibmavMessage{message, connection});
+    }
+    _received_libmav_messages_cv.notify_one();
+}
+
 void MavsdkImpl::process_messages()
 {
     std::lock_guard lock(_received_messages_mutex);
@@ -352,6 +361,16 @@ void MavsdkImpl::process_messages()
         auto message_copied = _received_messages.front();
         process_message(message_copied.message, message_copied.connection_ptr);
         _received_messages.pop();
+    }
+}
+
+void MavsdkImpl::process_libmav_messages()
+{
+    std::lock_guard lock(_received_libmav_messages_mutex);
+    while (!_received_libmav_messages.empty()) {
+        auto message_copied = _received_libmav_messages.front();
+        process_libmav_message(message_copied.message, message_copied.connection_ptr);
+        _received_libmav_messages.pop();
     }
 }
 
@@ -485,6 +504,94 @@ void MavsdkImpl::process_message(mavlink_message_t& message, Connection* connect
     }
 }
 
+void MavsdkImpl::process_libmav_message(const LibmavMessage& message, Connection* connection)
+{
+    // Assumes _received_libmav_messages_mutex
+
+    if (_message_logging_on) {
+        LogDebug() << "MavsdkImpl::process_libmav_message: " << message.message_name << " from "
+                   << static_cast<int>(message.system_id) << "/"
+                   << static_cast<int>(message.component_id);
+    }
+
+    if (_message_logging_on) {
+        LogDebug() << "Processing libmav message " << message.message_name << " from "
+                   << static_cast<int>(message.system_id) << "/"
+                   << static_cast<int>(message.component_id);
+    }
+
+    if (_should_exit) {
+        // If we're meant to clean up, let's not try to acquire any more locks but bail.
+        return;
+    }
+
+    {
+        std::lock_guard lock(_mutex);
+
+        // Don't ever create a system with sysid 0.
+        if (message.system_id == 0) {
+            if (_message_logging_on) {
+                LogDebug() << "Ignoring libmav message with sysid == 0";
+            }
+            return;
+        }
+
+        // Filter out QGroundControl messages similar to regular mavlink processing
+        if (_configuration.get_component_type() == ComponentType::GroundStation &&
+            message.system_id == 255 && message.component_id == MAV_COMP_ID_MISSIONPLANNER) {
+            if (_message_logging_on) {
+                LogDebug() << "Ignoring libmav messages from QGC as we are also a ground station";
+            }
+            return;
+        }
+
+        bool found_system = false;
+        for (auto& system : _systems) {
+            if (system.first == message.system_id) {
+                system.second->system_impl()->add_new_component(message.component_id);
+                found_system = true;
+                break;
+            }
+        }
+
+        if (!found_system) {
+            if (_system_debugging) {
+                LogWarn() << "Create new system/component from libmav " << (int)message.system_id
+                          << "/" << (int)message.component_id;
+            }
+            make_system_with_component(message.system_id, message.component_id);
+
+            // We now better talk back.
+            start_sending_heartbeats();
+        }
+
+        if (_should_exit) {
+            // Don't try to call at() if systems have already been destroyed
+            // in destructor.
+            return;
+        }
+    }
+
+    // Distribute libmav message to systems for libmav-specific handling
+    bool found_system = false;
+    for (auto& system : _systems) {
+        if (system.first == message.system_id) {
+            if (_message_logging_on) {
+                LogDebug() << "Distributing libmav message " << message.message_name
+                           << " to SystemImpl for system " << system.first;
+            }
+            system.second->system_impl()->process_libmav_message(message);
+            found_system = true;
+            // Don't break - distribute to all matching system instances
+        }
+    }
+
+    if (!found_system) {
+        LogWarn() << "No system found for libmav message " << message.message_name
+                  << " from system " << message.system_id;
+    }
+}
+
 bool MavsdkImpl::send_message(mavlink_message_t& message)
 {
     // Create a copy of the message to avoid reference issues
@@ -614,6 +721,9 @@ MavsdkImpl::add_udp_connection(const CliArg::Udp& udp, ForwardingOption forwardi
         [this](mavlink_message_t& message, Connection* connection) {
             receive_message(message, connection);
         },
+        [this](const LibmavMessage& message, Connection* connection) {
+            receive_libmav_message(message, connection);
+        },
         udp.mode == CliArg::Udp::Mode::In ? udp.host : "0.0.0.0",
         udp.mode == CliArg::Udp::Mode::In ? udp.port : 0,
         forwarding_option);
@@ -659,6 +769,9 @@ MavsdkImpl::add_tcp_connection(const CliArg::Tcp& tcp, ForwardingOption forwardi
             [this](mavlink_message_t& message, Connection* connection) {
                 receive_message(message, connection);
             },
+            [this](const LibmavMessage& message, Connection* connection) {
+                receive_libmav_message(message, connection);
+            },
             tcp.host,
             tcp.port,
             forwarding_option);
@@ -675,6 +788,9 @@ MavsdkImpl::add_tcp_connection(const CliArg::Tcp& tcp, ForwardingOption forwardi
         auto new_conn = std::make_unique<TcpServerConnection>(
             [this](mavlink_message_t& message, Connection* connection) {
                 receive_message(message, connection);
+            },
+            [this](const LibmavMessage& message, Connection* connection) {
+                receive_libmav_message(message, connection);
             },
             tcp.host,
             tcp.port,
@@ -700,6 +816,9 @@ std::pair<ConnectionResult, Mavsdk::ConnectionHandle> MavsdkImpl::add_serial_con
     auto new_conn = std::make_unique<SerialConnection>(
         [this](mavlink_message_t& message, Connection* connection) {
             receive_message(message, connection);
+        },
+        [this](const LibmavMessage& message, Connection* connection) {
+            receive_libmav_message(message, connection);
         },
         dev_path,
         baudrate,
@@ -870,6 +989,9 @@ void MavsdkImpl::work_thread()
     while (!_should_exit) {
         // Process incoming messages
         process_messages();
+
+        // Process incoming libmav messages
+        process_libmav_messages();
 
         // Run timers
         timeout_handler.run_once();
@@ -1089,6 +1211,15 @@ Sender& MavsdkImpl::sender()
 {
     std::lock_guard lock(_server_components_mutex);
     return default_server_component_with_lock().sender();
+}
+
+std::vector<Connection*> MavsdkImpl::get_connections() const
+{
+    std::vector<Connection*> connections;
+    for (const auto& connection_entry : _connections) {
+        connections.push_back(connection_entry.connection.get());
+    }
+    return connections;
 }
 
 } // namespace mavsdk

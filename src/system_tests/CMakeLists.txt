@@ -25,6 +25,7 @@ add_executable(system_tests_runner
     ftp_remove_dir.cpp
     ftp_compare_files.cpp
     ftp_list_dir.cpp
+    mavlink_direct_roundtrip.cpp
     system_tests_runner.cpp
 )
 

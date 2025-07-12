@@ -21,6 +21,13 @@ public:
         std::string local_ip,
         int local_port,
         ForwardingOption forwarding_option = ForwardingOption::ForwardingOff);
+
+    explicit UdpConnection(
+        Connection::ReceiverCallback receiver_callback,
+        Connection::LibmavReceiverCallback libmav_receiver_callback,
+        std::string local_ip,
+        int local_port,
+        ForwardingOption forwarding_option = ForwardingOption::ForwardingOff);
     ~UdpConnection() override;
     ConnectionResult start() override;
     ConnectionResult stop() override;

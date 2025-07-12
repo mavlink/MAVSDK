@@ -20,6 +20,14 @@ public:
         int baudrate,
         bool flow_control,
         ForwardingOption forwarding_option = ForwardingOption::ForwardingOff);
+
+    explicit SerialConnection(
+        Connection::ReceiverCallback receiver_callback,
+        Connection::LibmavReceiverCallback libmav_receiver_callback,
+        std::string path,
+        int baudrate,
+        bool flow_control,
+        ForwardingOption forwarding_option = ForwardingOption::ForwardingOff);
     ConnectionResult start() override;
     ConnectionResult stop() override;
     ~SerialConnection() override;

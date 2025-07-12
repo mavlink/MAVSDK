@@ -38,6 +38,18 @@ UdpConnection::UdpConnection(
     _local_port_number(local_port_number)
 {}
 
+UdpConnection::UdpConnection(
+    Connection::ReceiverCallback receiver_callback,
+    Connection::LibmavReceiverCallback libmav_receiver_callback,
+    std::string local_ip,
+    int local_port_number,
+    ForwardingOption forwarding_option) :
+    Connection(
+        std::move(receiver_callback), std::move(libmav_receiver_callback), forwarding_option),
+    _local_ip(std::move(local_ip)),
+    _local_port_number(local_port_number)
+{}
+
 UdpConnection::~UdpConnection()
 {
     // If no one explicitly called stop before, we should at least do it.
@@ -47,6 +59,10 @@ UdpConnection::~UdpConnection()
 ConnectionResult UdpConnection::start()
 {
     if (!start_mavlink_receiver()) {
+        return ConnectionResult::ConnectionsExhausted;
+    }
+
+    if (!start_libmav_receiver()) {
         return ConnectionResult::ConnectionsExhausted;
     }
 
@@ -300,6 +316,15 @@ void UdpConnection::receive()
             }
 
             receive_message(_mavlink_receiver->get_last_message(), this);
+        }
+
+        // Also parse with libmav if available
+        if (_libmav_receiver) {
+            _libmav_receiver->set_new_datagram(buffer, static_cast<int>(recv_len));
+
+            while (_libmav_receiver->parse_message()) {
+                receive_libmav_message(_libmav_receiver->get_last_message(), this);
+            }
         }
     }
 }

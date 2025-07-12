@@ -16,6 +16,13 @@ public:
         std::string local_ip,
         int local_port,
         ForwardingOption forwarding_option);
+
+    TcpServerConnection(
+        Connection::ReceiverCallback receiver_callback,
+        Connection::LibmavReceiverCallback libmav_receiver_callback,
+        std::string local_ip,
+        int local_port,
+        ForwardingOption forwarding_option);
     ~TcpServerConnection() override;
 
     ConnectionResult start() override;

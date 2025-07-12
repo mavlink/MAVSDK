@@ -59,6 +59,20 @@ SerialConnection::SerialConnection(
     _flow_control(flow_control)
 {}
 
+SerialConnection::SerialConnection(
+    Connection::ReceiverCallback receiver_callback,
+    Connection::LibmavReceiverCallback libmav_receiver_callback,
+    std::string path,
+    int baudrate,
+    bool flow_control,
+    ForwardingOption forwarding_option) :
+    Connection(
+        std::move(receiver_callback), std::move(libmav_receiver_callback), forwarding_option),
+    _serial_node(std::move(path)),
+    _baudrate(baudrate),
+    _flow_control(flow_control)
+{}
+
 SerialConnection::~SerialConnection()
 {
     // If no one explicitly called stop before, we should at least do it.
