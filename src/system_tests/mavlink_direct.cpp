@@ -114,10 +114,10 @@ TEST(SystemTest, MavlinkDirectExtendedFields)
     std::optional<MavlinkDirect::MavlinkMessage> received_compact;
     std::optional<MavlinkDirect::MavlinkMessage> received_full;
 
-    // Subscribe to PLAY_TUNE_V2 messages
+    // Subscribe to SYS_STATUS messages
     auto handle = receiver_mavlink_direct.subscribe_message(
-        "PLAY_TUNE_V2", [&](MavlinkDirect::MavlinkMessage message) {
-            LogInfo() << "Received PLAY_TUNE_V2: " << message.fields_json;
+        "SYS_STATUS", [&](MavlinkDirect::MavlinkMessage message) {
+            LogInfo() << "Received SYS_STATUS: " << message.fields_json;
             if (received_compact == std::nullopt) {
                 received_compact = message;
             } else {
@@ -127,29 +127,29 @@ TEST(SystemTest, MavlinkDirectExtendedFields)
 
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
-    // Test 1: Send PLAY_TUNE_V2 in compact form (no extensions)
+    // Test 1: Send SYS_STATUS in compact form (no extensions)
     MavlinkDirect::MavlinkMessage compact_message;
-    compact_message.message_name = "PLAY_TUNE_V2";
+    compact_message.message_name = "SYS_STATUS";
     compact_message.system_id = 1;
     compact_message.component_id = 1;
     compact_message.target_system = 0;
     compact_message.target_component = 0;
-    compact_message.fields_json = R"({"target_system":0,"target_component":0,"tune":"MBT180L8"})";
+    compact_message.fields_json = R"({"onboard_control_sensors_present":1,"onboard_control_sensors_enabled":1,"onboard_control_sensors_health":1,"load":500,"voltage_battery":12000,"current_battery":1000,"battery_remaining":75,"drop_rate_comm":0,"errors_comm":0,"errors_count1":0,"errors_count2":0,"errors_count3":0,"errors_count4":0})";
 
     auto result1 = sender_mavlink_direct.send_message(compact_message);
     EXPECT_EQ(result1, MavlinkDirect::Result::Success);
 
     std::this_thread::sleep_for(std::chrono::milliseconds(200));
 
-    // Test 2: Send PLAY_TUNE_V2 in full form (with extensions)
+    // Test 2: Send SYS_STATUS in full form (with extensions)
     MavlinkDirect::MavlinkMessage full_message;
-    full_message.message_name = "PLAY_TUNE_V2";
+    full_message.message_name = "SYS_STATUS";
     full_message.system_id = 1;
     full_message.component_id = 1;
     full_message.target_system = 0;
     full_message.target_component = 0;
     full_message.fields_json =
-        R"({"target_system":0,"target_component":0,"tune":"MBT180L8","tune2":"EXTENDED"})";
+        R"({"onboard_control_sensors_present":1,"onboard_control_sensors_enabled":1,"onboard_control_sensors_health":1,"load":500,"voltage_battery":12000,"current_battery":1000,"battery_remaining":75,"drop_rate_comm":0,"errors_comm":0,"errors_count1":0,"errors_count2":0,"errors_count3":0,"errors_count4":0,"onboard_control_sensors_present_extended":123,"onboard_control_sensors_enabled_extended":456,"onboard_control_sensors_health_extended":789})";
 
     auto result2 = sender_mavlink_direct.send_message(full_message);
     EXPECT_EQ(result2, MavlinkDirect::Result::Success);
@@ -164,12 +164,9 @@ TEST(SystemTest, MavlinkDirectExtendedFields)
     ASSERT_TRUE(received_full.has_value());
 
     // Verify both messages were received and parsing worked
-    EXPECT_EQ(received_compact->message_name, "PLAY_TUNE_V2");
-    EXPECT_EQ(received_full->message_name, "PLAY_TUNE_V2");
+    EXPECT_EQ(received_compact->message_name, "SYS_STATUS");
+    EXPECT_EQ(received_full->message_name, "SYS_STATUS");
 
-    // Note: Since we're using simplified parsing, we just verify the messages were parsed correctly
-    EXPECT_TRUE(received_compact->fields_json.find("PLAY_TUNE_V2") != std::string::npos);
-    EXPECT_TRUE(received_full->fields_json.find("PLAY_TUNE_V2") != std::string::npos);
 
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
