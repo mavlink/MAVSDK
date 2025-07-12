@@ -6,6 +6,7 @@
 #include <chrono>
 #include <thread>
 #include <gtest/gtest.h>
+#include <json/json.h>
 
 using namespace mavsdk;
 
@@ -134,7 +135,8 @@ TEST(SystemTest, MavlinkDirectExtendedFields)
     compact_message.component_id = 1;
     compact_message.target_system = 0;
     compact_message.target_component = 0;
-    compact_message.fields_json = R"({"onboard_control_sensors_present":1,"onboard_control_sensors_enabled":1,"onboard_control_sensors_health":1,"load":500,"voltage_battery":12000,"current_battery":1000,"battery_remaining":75,"drop_rate_comm":0,"errors_comm":0,"errors_count1":0,"errors_count2":0,"errors_count3":0,"errors_count4":0})";
+    compact_message.fields_json =
+        R"({"onboard_control_sensors_present":1,"onboard_control_sensors_enabled":1,"onboard_control_sensors_health":1,"load":500,"voltage_battery":12000,"current_battery":1000,"battery_remaining":75,"drop_rate_comm":0,"errors_comm":0,"errors_count1":0,"errors_count2":0,"errors_count3":0,"errors_count4":0})";
 
     auto result1 = sender_mavlink_direct.send_message(compact_message);
     EXPECT_EQ(result1, MavlinkDirect::Result::Success);
@@ -167,6 +169,42 @@ TEST(SystemTest, MavlinkDirectExtendedFields)
     EXPECT_EQ(received_compact->message_name, "SYS_STATUS");
     EXPECT_EQ(received_full->message_name, "SYS_STATUS");
 
+    // Parse JSON to verify field values
+    Json::Value compact_json, full_json;
+    Json::Reader reader;
+
+    ASSERT_TRUE(reader.parse(received_compact->fields_json, compact_json));
+    ASSERT_TRUE(reader.parse(received_full->fields_json, full_json));
+
+    // Verify basic fields are present and correct in both messages
+    EXPECT_EQ(compact_json["onboard_control_sensors_present"].asUInt(), 1u);
+    EXPECT_EQ(compact_json["load"].asUInt(), 500u);
+    EXPECT_EQ(compact_json["voltage_battery"].asUInt(), 12000u);
+    EXPECT_EQ(compact_json["current_battery"].asInt(), 1000);
+    EXPECT_EQ(compact_json["battery_remaining"].asInt(), 75);
+
+    EXPECT_EQ(full_json["onboard_control_sensors_present"].asUInt(), 1u);
+    EXPECT_EQ(full_json["load"].asUInt(), 500u);
+    EXPECT_EQ(full_json["voltage_battery"].asUInt(), 12000u);
+    EXPECT_EQ(full_json["current_battery"].asInt(), 1000);
+    EXPECT_EQ(full_json["battery_remaining"].asInt(), 75);
+
+    // Verify compact message HAS extended fields with zero values (MAVLink v2 zero-truncation)
+    EXPECT_TRUE(compact_json.isMember("onboard_control_sensors_present_extended"));
+    EXPECT_TRUE(compact_json.isMember("onboard_control_sensors_enabled_extended"));
+    EXPECT_TRUE(compact_json.isMember("onboard_control_sensors_health_extended"));
+    EXPECT_EQ(compact_json["onboard_control_sensors_present_extended"].asUInt(), 0u);
+    EXPECT_EQ(compact_json["onboard_control_sensors_enabled_extended"].asUInt(), 0u);
+    EXPECT_EQ(compact_json["onboard_control_sensors_health_extended"].asUInt(), 0u);
+
+    // Verify full message HAS extended fields with correct values
+    EXPECT_TRUE(full_json.isMember("onboard_control_sensors_present_extended"));
+    EXPECT_TRUE(full_json.isMember("onboard_control_sensors_enabled_extended"));
+    EXPECT_TRUE(full_json.isMember("onboard_control_sensors_health_extended"));
+
+    EXPECT_EQ(full_json["onboard_control_sensors_present_extended"].asUInt(), 123u);
+    EXPECT_EQ(full_json["onboard_control_sensors_enabled_extended"].asUInt(), 456u);
+    EXPECT_EQ(full_json["onboard_control_sensors_health_extended"].asUInt(), 789u);
 
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
