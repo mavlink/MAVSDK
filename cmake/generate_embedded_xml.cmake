@@ -1,25 +1,42 @@
-# CMake script to embed common.xml as a C++ string constant
-# Usage: cmake -DXML_SOURCE_PATH=<path> -DOUTPUT_HEADER=<path> -P generate_embedded_xml.cmake
+# CMake script to embed MAVLink XML files as C++ string constants
+# Usage: cmake -DMINIMAL_XML_PATH=<path> -DSTANDARD_XML_PATH=<path> -DCOMMON_XML_PATH=<path> -DOUTPUT_HEADER=<path> -P generate_embedded_xml.cmake
 
-if(NOT XML_SOURCE_PATH)
-    message(FATAL_ERROR "XML_SOURCE_PATH must be specified")
+if(NOT MINIMAL_XML_PATH)
+    message(FATAL_ERROR "MINIMAL_XML_PATH must be specified")
+endif()
+
+if(NOT STANDARD_XML_PATH)
+    message(FATAL_ERROR "STANDARD_XML_PATH must be specified")
+endif()
+
+if(NOT COMMON_XML_PATH)
+    message(FATAL_ERROR "COMMON_XML_PATH must be specified")
 endif()
 
 if(NOT OUTPUT_HEADER)
     message(FATAL_ERROR "OUTPUT_HEADER must be specified")
 endif()
 
-# Read the XML file
-if(NOT EXISTS "${XML_SOURCE_PATH}")
-    message(FATAL_ERROR "XML file not found: ${XML_SOURCE_PATH}")
-endif()
+# Function to read and escape XML content
+function(read_and_escape_xml XML_PATH CONSTANT_NAME ESCAPED_VAR)
+    if(NOT EXISTS "${XML_PATH}")
+        message(FATAL_ERROR "XML file not found: ${XML_PATH}")
+    endif()
 
-file(READ "${XML_SOURCE_PATH}" XML_CONTENT)
+    file(READ "${XML_PATH}" XML_CONTENT)
 
-# Escape the XML content for C++ string literal
-string(REPLACE "\\" "\\\\" XML_CONTENT "${XML_CONTENT}")
-string(REPLACE "\"" "\\\"" XML_CONTENT "${XML_CONTENT}")
-string(REPLACE "\n" "\\n\"\n    \"" XML_CONTENT "${XML_CONTENT}")
+    # Escape the XML content for C++ string literal
+    string(REPLACE "\\" "\\\\" XML_CONTENT "${XML_CONTENT}")
+    string(REPLACE "\"" "\\\"" XML_CONTENT "${XML_CONTENT}")
+    string(REPLACE "\n" "\\n\"\n    \"" XML_CONTENT "${XML_CONTENT}")
+    
+    set(${ESCAPED_VAR} "    const char* ${CONSTANT_NAME} = \n    \"${XML_CONTENT}\";" PARENT_SCOPE)
+endfunction()
+
+# Read and escape all XML files
+read_and_escape_xml("${MINIMAL_XML_PATH}" "MINIMAL_XML" MINIMAL_XML_CONSTANT)
+read_and_escape_xml("${STANDARD_XML_PATH}" "STANDARD_XML" STANDARD_XML_CONSTANT)
+read_and_escape_xml("${COMMON_XML_PATH}" "COMMON_XML" COMMON_XML_CONSTANT)
 
 # Generate the header file content
 set(HEADER_CONTENT
@@ -29,8 +46,11 @@ set(HEADER_CONTENT
 #pragma once
 
 namespace mav_embedded {
-    const char* COMMON_XML = 
-    \"${XML_CONTENT}\";
+${MINIMAL_XML_CONSTANT}
+
+${STANDARD_XML_CONSTANT}
+
+${COMMON_XML_CONSTANT}
 }
 ")
 
