@@ -42,17 +42,24 @@ else
     exit 1
 fi
 
+# Parse optional --quiet flag
+quiet_mode=false
+if [ $# -gt 0 ] && [[ "$1" == "--quiet" || "$1" == "-q" ]]; then
+    quiet_mode=true
+    shift
+fi
+
 # Check that exactly one directory is given
 if [ $# -eq 0 ];
 then
     echo "No directory supplied"
-    echo "Usage: ./fix_style.sh dir"
+    echo "Usage: ./fix_style.sh [--quiet|-q] dir"
     exit 1
 
 elif [ $# -gt 1 ];
 then
     echo "Too many directories supplied"
-    echo "Usage: ./fix_style.sh dir"
+    echo "Usage: ./fix_style.sh [--quiet|-q] dir"
     exit 1
 fi
 
@@ -99,8 +106,10 @@ while IFS= read file; do
     result=`$clang_format -style=file -i $file`
 
     if ! cmp $file $file.orig >/dev/null 2>&1; then
-        echo "Changed $file:"
-        $diff_cmd $file.orig $file
+        if [ "$quiet_mode" = false ]; then
+            echo "Changed $file:"
+            $diff_cmd $file.orig $file
+        fi
         error_found=true
     fi
 
