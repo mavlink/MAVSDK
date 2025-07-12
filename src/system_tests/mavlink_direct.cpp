@@ -353,3 +353,157 @@ TEST(SystemTest, TelemetryServerToMavlinkDirect)
 
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
+
+TEST(SystemTest, MavlinkDirectArrayFields)
+{
+    Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
+    Mavsdk mavsdk_autopilot{Mavsdk::Configuration{ComponentType::Autopilot}};
+
+    ASSERT_EQ(
+        mavsdk_groundstation.add_any_connection("udpin://0.0.0.0:17004"),
+        ConnectionResult::Success);
+    ASSERT_EQ(
+        mavsdk_autopilot.add_any_connection("udpout://127.0.0.1:17004"), ConnectionResult::Success);
+
+    // Ground station discovers the autopilot system
+    auto maybe_system = mavsdk_groundstation.first_autopilot(10.0);
+    ASSERT_TRUE(maybe_system);
+    auto system = maybe_system.value();
+    ASSERT_TRUE(system->has_autopilot());
+
+    // Wait for autopilot instance to discover the connection to the ground station
+    while (mavsdk_autopilot.systems().size() == 0) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    }
+
+    auto groundstation_system = mavsdk_autopilot.systems().at(0);
+    ASSERT_EQ(groundstation_system->component_ids()[0], 190);
+
+    auto receiver_mavlink_direct = MavlinkDirect{system};
+    auto sender_mavlink_direct = MavlinkDirect{groundstation_system};
+
+    std::optional<MavlinkDirect::MavlinkMessage> received_partial;
+    std::optional<MavlinkDirect::MavlinkMessage> received_full;
+
+    // Subscribe to GPS_STATUS messages
+    auto handle = receiver_mavlink_direct.subscribe_message(
+        "GPS_STATUS", [&](MavlinkDirect::MavlinkMessage message) {
+            LogInfo() << "Received GPS_STATUS: " << message.fields_json;
+            if (received_partial == std::nullopt) {
+                received_partial = message;
+            } else {
+                received_full = message;
+            }
+        });
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+
+    // Test 1: Send GPS_STATUS with partial array data (3 satellites)
+    MavlinkDirect::MavlinkMessage partial_message;
+    partial_message.message_name = "GPS_STATUS";
+    partial_message.system_id = 1;
+    partial_message.component_id = 1;
+    partial_message.target_system = 0;
+    partial_message.target_component = 0;
+    partial_message.fields_json =
+        R"({"satellites_visible":3,"satellite_prn":[1,2,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"satellite_used":[1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"satellite_elevation":[45,60,30,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"satellite_azimuth":[90,180,270,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"satellite_snr":[25,30,15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]})";
+
+    auto result1 = sender_mavlink_direct.send_message(partial_message);
+    EXPECT_EQ(result1, MavlinkDirect::Result::Success);
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(200));
+
+    // Test 2: Send GPS_STATUS with full array data (20 satellites)
+    MavlinkDirect::MavlinkMessage full_message;
+    full_message.message_name = "GPS_STATUS";
+    full_message.system_id = 1;
+    full_message.component_id = 1;
+    full_message.target_system = 0;
+    full_message.target_component = 0;
+    full_message.fields_json =
+        R"({"satellites_visible":20,"satellite_prn":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],"satellite_used":[1,1,1,1,1,0,0,0,0,0,1,1,1,1,1,0,0,0,0,0],"satellite_elevation":[45,60,30,75,20,85,50,40,65,35,25,55,70,15,80,10,90,5,45,60],"satellite_azimuth":[0,36,72,108,144,180,216,252,28,64,100,136,172,208,244,20,56,92,128,164],"satellite_snr":[25,30,15,35,20,40,28,22,32,18,26,31,16,38,24,19,33,21,29,27]})";
+
+    auto result2 = sender_mavlink_direct.send_message(full_message);
+    EXPECT_EQ(result2, MavlinkDirect::Result::Success);
+
+    // Wait for both messages to be received
+    auto timeout = std::chrono::steady_clock::now() + std::chrono::seconds(5);
+    while ((!received_partial || !received_full) && std::chrono::steady_clock::now() < timeout) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    }
+
+    ASSERT_TRUE(received_partial.has_value());
+    ASSERT_TRUE(received_full.has_value());
+
+    // Verify both messages were received and parsing worked
+    EXPECT_EQ(received_partial->message_name, "GPS_STATUS");
+    EXPECT_EQ(received_full->message_name, "GPS_STATUS");
+
+    // Parse JSON to verify field values
+    Json::Value partial_json, full_json;
+    Json::Reader reader;
+
+    ASSERT_TRUE(reader.parse(received_partial->fields_json, partial_json));
+    ASSERT_TRUE(reader.parse(received_full->fields_json, full_json));
+
+    // Verify scalar field
+    EXPECT_EQ(partial_json["satellites_visible"].asUInt(), 3u);
+    EXPECT_EQ(full_json["satellites_visible"].asUInt(), 20u);
+
+    // Verify array fields are present and have correct type (arrays)
+    EXPECT_TRUE(partial_json["satellite_prn"].isArray());
+    EXPECT_TRUE(partial_json["satellite_used"].isArray());
+    EXPECT_TRUE(partial_json["satellite_elevation"].isArray());
+    EXPECT_TRUE(partial_json["satellite_azimuth"].isArray());
+    EXPECT_TRUE(partial_json["satellite_snr"].isArray());
+
+    EXPECT_TRUE(full_json["satellite_prn"].isArray());
+    EXPECT_TRUE(full_json["satellite_used"].isArray());
+    EXPECT_TRUE(full_json["satellite_elevation"].isArray());
+    EXPECT_TRUE(full_json["satellite_azimuth"].isArray());
+    EXPECT_TRUE(full_json["satellite_snr"].isArray());
+
+    // Verify array lengths (should be 20 elements each)
+    EXPECT_EQ(partial_json["satellite_prn"].size(), 20u);
+    EXPECT_EQ(partial_json["satellite_used"].size(), 20u);
+    EXPECT_EQ(partial_json["satellite_elevation"].size(), 20u);
+    EXPECT_EQ(partial_json["satellite_azimuth"].size(), 20u);
+    EXPECT_EQ(partial_json["satellite_snr"].size(), 20u);
+
+    EXPECT_EQ(full_json["satellite_prn"].size(), 20u);
+    EXPECT_EQ(full_json["satellite_used"].size(), 20u);
+    EXPECT_EQ(full_json["satellite_elevation"].size(), 20u);
+    EXPECT_EQ(full_json["satellite_azimuth"].size(), 20u);
+    EXPECT_EQ(full_json["satellite_snr"].size(), 20u);
+
+    // Verify specific array element values for partial message
+    EXPECT_EQ(partial_json["satellite_prn"][0].asUInt(), 1u);
+    EXPECT_EQ(partial_json["satellite_prn"][1].asUInt(), 2u);
+    EXPECT_EQ(partial_json["satellite_prn"][2].asUInt(), 3u);
+    EXPECT_EQ(partial_json["satellite_prn"][3].asUInt(), 0u); // Should be zero
+    EXPECT_EQ(partial_json["satellite_prn"][19].asUInt(), 0u); // Last element should be zero
+
+    EXPECT_EQ(partial_json["satellite_used"][0].asUInt(), 1u);
+    EXPECT_EQ(partial_json["satellite_used"][1].asUInt(), 1u);
+    EXPECT_EQ(partial_json["satellite_used"][2].asUInt(), 0u);
+    EXPECT_EQ(partial_json["satellite_used"][3].asUInt(), 0u);
+
+    EXPECT_EQ(partial_json["satellite_elevation"][0].asUInt(), 45u);
+    EXPECT_EQ(partial_json["satellite_elevation"][1].asUInt(), 60u);
+    EXPECT_EQ(partial_json["satellite_elevation"][2].asUInt(), 30u);
+    EXPECT_EQ(partial_json["satellite_elevation"][3].asUInt(), 0u);
+
+    // Verify specific array element values for full message
+    EXPECT_EQ(full_json["satellite_prn"][0].asUInt(), 1u);
+    EXPECT_EQ(full_json["satellite_prn"][9].asUInt(), 10u);
+    EXPECT_EQ(full_json["satellite_prn"][19].asUInt(), 20u); // Last element
+
+    EXPECT_EQ(full_json["satellite_used"][0].asUInt(), 1u);
+    EXPECT_EQ(full_json["satellite_used"][5].asUInt(), 0u); // Some unused satellites
+    EXPECT_EQ(full_json["satellite_used"][10].asUInt(), 1u);
+
+    EXPECT_EQ(full_json["satellite_snr"][0].asUInt(), 25u);
+    EXPECT_EQ(full_json["satellite_snr"][19].asUInt(), 27u); // Last element
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+}

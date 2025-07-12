@@ -287,6 +287,67 @@ bool MavlinkDirectImpl::json_to_libmav_message(
                 LogWarn() << "Failed to set string field " << field_name << " = "
                           << field_value.asString();
             }
+        } else if (field_value.isArray()) {
+            // Handle array fields
+            auto array_size = field_value.size();
+
+            // Try different vector types based on typical MAVLink array field types
+            std::vector<uint8_t> uint8_vec;
+            std::vector<uint16_t> uint16_vec;
+            std::vector<uint32_t> uint32_vec;
+            std::vector<int8_t> int8_vec;
+            std::vector<int16_t> int16_vec;
+            std::vector<int32_t> int32_vec;
+            std::vector<float> float_vec;
+            std::vector<double> double_vec;
+
+            // Convert JSON array to vectors of different types
+            uint8_vec.reserve(array_size);
+            uint16_vec.reserve(array_size);
+            uint32_vec.reserve(array_size);
+            int8_vec.reserve(array_size);
+            int16_vec.reserve(array_size);
+            int32_vec.reserve(array_size);
+            float_vec.reserve(array_size);
+            double_vec.reserve(array_size);
+
+            for (Json::ArrayIndex i = 0; i < array_size; ++i) {
+                const auto& elem = field_value[i];
+                if (elem.isNumeric()) {
+                    uint8_vec.push_back(static_cast<uint8_t>(elem.asUInt()));
+                    uint16_vec.push_back(static_cast<uint16_t>(elem.asUInt()));
+                    uint32_vec.push_back(static_cast<uint32_t>(elem.asUInt()));
+                    int8_vec.push_back(static_cast<int8_t>(elem.asInt()));
+                    int16_vec.push_back(static_cast<int16_t>(elem.asInt()));
+                    int32_vec.push_back(static_cast<int32_t>(elem.asInt()));
+                    float_vec.push_back(static_cast<float>(elem.asFloat()));
+                    double_vec.push_back(elem.asDouble());
+                } else {
+                    // Default to 0 for non-numeric values
+                    uint8_vec.push_back(0);
+                    uint16_vec.push_back(0);
+                    uint32_vec.push_back(0);
+                    int8_vec.push_back(0);
+                    int16_vec.push_back(0);
+                    int32_vec.push_back(0);
+                    float_vec.push_back(0.0f);
+                    double_vec.push_back(0.0);
+                }
+            }
+
+            // Try to set the array field with different vector types
+            if (msg.set(field_name, uint8_vec) == mav::MessageResult::Success ||
+                msg.set(field_name, uint16_vec) == mav::MessageResult::Success ||
+                msg.set(field_name, uint32_vec) == mav::MessageResult::Success ||
+                msg.set(field_name, int8_vec) == mav::MessageResult::Success ||
+                msg.set(field_name, int16_vec) == mav::MessageResult::Success ||
+                msg.set(field_name, int32_vec) == mav::MessageResult::Success ||
+                msg.set(field_name, float_vec) == mav::MessageResult::Success ||
+                msg.set(field_name, double_vec) == mav::MessageResult::Success) {
+                // Successfully set the array field
+            } else {
+                LogWarn() << "Failed to set array field " << field_name;
+            }
         } else {
             LogWarn() << "Unsupported JSON field type for " << field_name;
         }
