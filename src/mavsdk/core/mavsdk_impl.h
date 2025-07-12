@@ -14,6 +14,7 @@
 #include "call_every_handler.h"
 #include "component_type.h"
 #include "connection.h"
+#include "libmav_receiver.h"
 #include "cli_arg.h"
 #include "handle_factory.h"
 #include "handle.h"
@@ -42,6 +43,7 @@ public:
 
     void forward_message(mavlink_message_t& message, Connection* connection);
     void receive_message(mavlink_message_t& message, Connection* connection);
+    void receive_libmav_message(const LibmavMessage& message, Connection* connection);
 
     std::pair<ConnectionResult, Mavsdk::ConnectionHandle>
     add_any_connection(const std::string& connection_url, ForwardingOption forwarding_option);
@@ -101,6 +103,9 @@ public:
 
     ServerComponentImpl& default_server_component_impl();
 
+    // Get connections for sending messages
+    std::vector<Connection*> get_connections() const;
+
 private:
     static constexpr float DEFAULT_TIMEOUT_S = 0.5f;
 
@@ -126,8 +131,14 @@ private:
     void process_messages();
     void process_message(mavlink_message_t& message, Connection* connection);
 
+    void process_libmav_messages();
+    void process_libmav_message(const LibmavMessage& message, Connection* connection);
+
     void deliver_messages();
     void deliver_message(mavlink_message_t& message);
+
+    void deliver_libmav_messages();
+    void deliver_libmav_message(const LibmavMessage& message);
 
     bool is_any_system_connected() const;
 
@@ -194,6 +205,14 @@ private:
     mutable std::mutex _received_messages_mutex{};
     std::queue<ReceivedMessage> _received_messages;
     std::condition_variable _received_messages_cv{};
+
+    struct ReceivedLibmavMessage {
+        LibmavMessage message;
+        Connection* connection_ptr;
+    };
+    mutable std::mutex _received_libmav_messages_mutex{};
+    std::queue<ReceivedLibmavMessage> _received_libmav_messages;
+    std::condition_variable _received_libmav_messages_cv{};
 
     mutable std::mutex _messages_to_send_mutex{};
     std::queue<mavlink_message_t> _messages_to_send;

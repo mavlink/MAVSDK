@@ -39,6 +39,19 @@ TcpClientConnection::TcpClientConnection(
     _should_exit(false)
 {}
 
+TcpClientConnection::TcpClientConnection(
+    Connection::ReceiverCallback receiver_callback,
+    Connection::LibmavReceiverCallback libmav_receiver_callback,
+    std::string remote_ip,
+    int remote_port,
+    ForwardingOption forwarding_option) :
+    Connection(
+        std::move(receiver_callback), std::move(libmav_receiver_callback), forwarding_option),
+    _remote_ip(std::move(remote_ip)),
+    _remote_port_number(remote_port),
+    _should_exit(false)
+{}
+
 TcpClientConnection::~TcpClientConnection()
 {
     // If no one explicitly called stop before, we should at least do it.

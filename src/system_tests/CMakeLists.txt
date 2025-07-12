@@ -25,6 +25,7 @@ add_executable(system_tests_runner
     ftp_remove_dir.cpp
     ftp_compare_files.cpp
     ftp_list_dir.cpp
+    mavlink_direct.cpp
     system_tests_runner.cpp
 )
 
@@ -36,12 +37,15 @@ target_include_directories(system_tests_runner
 hunter_add_package(GTest)
 find_package(GTest REQUIRED)
 
+find_package(jsoncpp REQUIRED)
+
 target_link_libraries(system_tests_runner
     PRIVATE
     mavsdk
     GTest::gtest
     GTest::gtest_main
     GTest::gmock
+    JsonCpp::JsonCpp
 )
 
 set_target_properties(system_tests_runner
