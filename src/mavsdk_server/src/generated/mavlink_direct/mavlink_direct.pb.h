@@ -20,7 +20,6 @@
 #include "google/protobuf/io/coded_stream.h"
 #include "google/protobuf/arena.h"
 #include "google/protobuf/arenastring.h"
-#include "google/protobuf/generated_message_bases.h"
 #include "google/protobuf/generated_message_tctable_decl.h"
 #include "google/protobuf/generated_message_util.h"
 #include "google/protobuf/metadata_lite.h"
@@ -75,9 +74,6 @@ extern SendMessageResponseDefaultTypeInternal _SendMessageResponse_default_insta
 class SubscribeMessageRequest;
 struct SubscribeMessageRequestDefaultTypeInternal;
 extern SubscribeMessageRequestDefaultTypeInternal _SubscribeMessageRequest_default_instance_;
-class SubscribeMessageTypeRequest;
-struct SubscribeMessageTypeRequestDefaultTypeInternal;
-extern SubscribeMessageTypeRequestDefaultTypeInternal _SubscribeMessageTypeRequest_default_instance_;
 }  // namespace mavlink_direct
 }  // namespace rpc
 }  // namespace mavsdk
@@ -134,208 +130,12 @@ inline bool MavlinkDirectResult_Result_Parse(absl::string_view name, MavlinkDire
 
 // -------------------------------------------------------------------
 
-class SubscribeMessageTypeRequest final
-    : public ::google::protobuf::Message
-/* @@protoc_insertion_point(class_definition:mavsdk.rpc.mavlink_direct.SubscribeMessageTypeRequest) */ {
- public:
-  inline SubscribeMessageTypeRequest() : SubscribeMessageTypeRequest(nullptr) {}
-  ~SubscribeMessageTypeRequest() PROTOBUF_FINAL;
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-  void operator delete(SubscribeMessageTypeRequest* msg, std::destroying_delete_t) {
-    SharedDtor(*msg);
-    ::google::protobuf::internal::SizedDelete(msg, sizeof(SubscribeMessageTypeRequest));
-  }
-#endif
-
-  template <typename = void>
-  explicit PROTOBUF_CONSTEXPR SubscribeMessageTypeRequest(
-      ::google::protobuf::internal::ConstantInitialized);
-
-  inline SubscribeMessageTypeRequest(const SubscribeMessageTypeRequest& from) : SubscribeMessageTypeRequest(nullptr, from) {}
-  inline SubscribeMessageTypeRequest(SubscribeMessageTypeRequest&& from) noexcept
-      : SubscribeMessageTypeRequest(nullptr, std::move(from)) {}
-  inline SubscribeMessageTypeRequest& operator=(const SubscribeMessageTypeRequest& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline SubscribeMessageTypeRequest& operator=(SubscribeMessageTypeRequest&& from) noexcept {
-    if (this == &from) return *this;
-    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-      InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
-  }
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-  }
-
-  static const ::google::protobuf::Descriptor* descriptor() {
-    return GetDescriptor();
-  }
-  static const ::google::protobuf::Descriptor* GetDescriptor() {
-    return default_instance().GetMetadata().descriptor;
-  }
-  static const ::google::protobuf::Reflection* GetReflection() {
-    return default_instance().GetMetadata().reflection;
-  }
-  static const SubscribeMessageTypeRequest& default_instance() {
-    return *internal_default_instance();
-  }
-  static inline const SubscribeMessageTypeRequest* internal_default_instance() {
-    return reinterpret_cast<const SubscribeMessageTypeRequest*>(
-        &_SubscribeMessageTypeRequest_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages = 4;
-  friend void swap(SubscribeMessageTypeRequest& a, SubscribeMessageTypeRequest& b) { a.Swap(&b); }
-  inline void Swap(SubscribeMessageTypeRequest* other) {
-    if (other == this) return;
-    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-      InternalSwap(other);
-    } else {
-      ::google::protobuf::internal::GenericSwap(this, other);
-    }
-  }
-  void UnsafeArenaSwap(SubscribeMessageTypeRequest* other) {
-    if (other == this) return;
-    ABSL_DCHECK(GetArena() == other->GetArena());
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  SubscribeMessageTypeRequest* New(::google::protobuf::Arena* arena = nullptr) const {
-    return ::google::protobuf::Message::DefaultConstruct<SubscribeMessageTypeRequest>(arena);
-  }
-  using ::google::protobuf::Message::CopyFrom;
-  void CopyFrom(const SubscribeMessageTypeRequest& from);
-  using ::google::protobuf::Message::MergeFrom;
-  void MergeFrom(const SubscribeMessageTypeRequest& from) { SubscribeMessageTypeRequest::MergeImpl(*this, from); }
-
-  private:
-  static void MergeImpl(
-      ::google::protobuf::MessageLite& to_msg,
-      const ::google::protobuf::MessageLite& from_msg);
-
-  public:
-  bool IsInitialized() const {
-    return true;
-  }
-  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
-  #if defined(PROTOBUF_CUSTOM_VTABLE)
-  private:
-  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
-  static ::uint8_t* _InternalSerialize(
-      const MessageLite& msg, ::uint8_t* target,
-      ::google::protobuf::io::EpsCopyOutputStream* stream);
-
-  public:
-  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
-  ::uint8_t* _InternalSerialize(
-      ::uint8_t* target,
-      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
-    return _InternalSerialize(*this, target, stream);
-  }
-  #else   // PROTOBUF_CUSTOM_VTABLE
-  ::size_t ByteSizeLong() const final;
-  ::uint8_t* _InternalSerialize(
-      ::uint8_t* target,
-      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
-  #endif  // PROTOBUF_CUSTOM_VTABLE
-  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
-
-  private:
-  void SharedCtor(::google::protobuf::Arena* arena);
-  static void SharedDtor(MessageLite& self);
-  void InternalSwap(SubscribeMessageTypeRequest* other);
- private:
-  template <typename T>
-  friend ::absl::string_view(
-      ::google::protobuf::internal::GetAnyMessageName)();
-  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.mavlink_direct.SubscribeMessageTypeRequest"; }
-
- protected:
-  explicit SubscribeMessageTypeRequest(::google::protobuf::Arena* arena);
-  SubscribeMessageTypeRequest(::google::protobuf::Arena* arena, const SubscribeMessageTypeRequest& from);
-  SubscribeMessageTypeRequest(::google::protobuf::Arena* arena, SubscribeMessageTypeRequest&& from) noexcept
-      : SubscribeMessageTypeRequest(arena) {
-    *this = ::std::move(from);
-  }
-  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-  static void* PlacementNew_(const void*, void* mem,
-                             ::google::protobuf::Arena* arena);
-  static constexpr auto InternalNewImpl_();
-  static const ::google::protobuf::internal::ClassDataFull _class_data_;
-
- public:
-  ::google::protobuf::Metadata GetMetadata() const;
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-  enum : int {
-    kMessageNameFieldNumber = 1,
-  };
-  // string message_name = 1;
-  void clear_message_name() ;
-  const std::string& message_name() const;
-  template <typename Arg_ = const std::string&, typename... Args_>
-  void set_message_name(Arg_&& arg, Args_... args);
-  std::string* mutable_message_name();
-  PROTOBUF_NODISCARD std::string* release_message_name();
-  void set_allocated_message_name(std::string* value);
-
-  private:
-  const std::string& _internal_message_name() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_message_name(
-      const std::string& value);
-  std::string* _internal_mutable_message_name();
-
-  public:
-  // @@protoc_insertion_point(class_scope:mavsdk.rpc.mavlink_direct.SubscribeMessageTypeRequest)
- private:
-  class _Internal;
-  friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<
-      0, 1, 0,
-      74, 2>
-      _table_;
-
-  friend class ::google::protobuf::MessageLite;
-  friend class ::google::protobuf::Arena;
-  template <typename T>
-  friend class ::google::protobuf::Arena::InternalHelper;
-  using InternalArenaConstructable_ = void;
-  using DestructorSkippable_ = void;
-  struct Impl_ {
-    inline explicit constexpr Impl_(
-        ::google::protobuf::internal::ConstantInitialized) noexcept;
-    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
-                          ::google::protobuf::Arena* arena);
-    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
-                          ::google::protobuf::Arena* arena, const Impl_& from,
-                          const SubscribeMessageTypeRequest& from_msg);
-    ::google::protobuf::internal::ArenaStringPtr message_name_;
-    ::google::protobuf::internal::CachedSize _cached_size_;
-    PROTOBUF_TSAN_DECLARE_MEMBER
-  };
-  union { Impl_ _impl_; };
-  friend struct ::TableStruct_mavlink_5fdirect_2fmavlink_5fdirect_2eproto;
-};
-// -------------------------------------------------------------------
-
 class SubscribeMessageRequest final
-    : public ::google::protobuf::internal::ZeroFieldsBase
+    : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:mavsdk.rpc.mavlink_direct.SubscribeMessageRequest) */ {
  public:
   inline SubscribeMessageRequest() : SubscribeMessageRequest(nullptr) {}
+  ~SubscribeMessageRequest() PROTOBUF_FINAL;
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
   void operator delete(SubscribeMessageRequest* msg, std::destroying_delete_t) {
@@ -409,21 +209,49 @@ class SubscribeMessageRequest final
   // implements Message ----------------------------------------------
 
   SubscribeMessageRequest* New(::google::protobuf::Arena* arena = nullptr) const {
-    return ::google::protobuf::internal::ZeroFieldsBase::DefaultConstruct<SubscribeMessageRequest>(arena);
+    return ::google::protobuf::Message::DefaultConstruct<SubscribeMessageRequest>(arena);
   }
-  using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
-  inline void CopyFrom(const SubscribeMessageRequest& from) {
-    ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
-  }
-  using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
-  void MergeFrom(const SubscribeMessageRequest& from) {
-    ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
-  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const SubscribeMessageRequest& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const SubscribeMessageRequest& from) { SubscribeMessageRequest::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
 
   public:
   bool IsInitialized() const {
     return true;
   }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(SubscribeMessageRequest* other);
  private:
   template <typename T>
   friend ::absl::string_view(
@@ -448,13 +276,32 @@ class SubscribeMessageRequest final
   // nested types ----------------------------------------------------
 
   // accessors -------------------------------------------------------
+  enum : int {
+    kMessageNameFieldNumber = 1,
+  };
+  // string message_name = 1;
+  void clear_message_name() ;
+  const std::string& message_name() const;
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_message_name(Arg_&& arg, Args_... args);
+  std::string* mutable_message_name();
+  PROTOBUF_NODISCARD std::string* release_message_name();
+  void set_allocated_message_name(std::string* value);
+
+  private:
+  const std::string& _internal_message_name() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_message_name(
+      const std::string& value);
+  std::string* _internal_mutable_message_name();
+
+  public:
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.mavlink_direct.SubscribeMessageRequest)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      0, 0, 0,
-      0, 2>
+      0, 1, 0,
+      70, 2>
       _table_;
 
   friend class ::google::protobuf::MessageLite;
@@ -471,8 +318,11 @@ class SubscribeMessageRequest final
     inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
                           ::google::protobuf::Arena* arena, const Impl_& from,
                           const SubscribeMessageRequest& from_msg);
+    ::google::protobuf::internal::ArenaStringPtr message_name_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
+  union { Impl_ _impl_; };
   friend struct ::TableStruct_mavlink_5fdirect_2fmavlink_5fdirect_2eproto;
 };
 // -------------------------------------------------------------------
@@ -537,7 +387,7 @@ class MavlinkMessage final
     return reinterpret_cast<const MavlinkMessage*>(
         &_MavlinkMessage_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 5;
+  static constexpr int kIndexInFileMessages = 4;
   friend void swap(MavlinkMessage& a, MavlinkMessage& b) { a.Swap(&b); }
   inline void Swap(MavlinkMessage* other) {
     if (other == this) return;
@@ -800,7 +650,7 @@ class MavlinkDirectResult final
     return reinterpret_cast<const MavlinkDirectResult*>(
         &_MavlinkDirectResult_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 6;
+  static constexpr int kIndexInFileMessages = 5;
   friend void swap(MavlinkDirectResult& a, MavlinkDirectResult& b) { a.Swap(&b); }
   inline void Swap(MavlinkDirectResult* other) {
     if (other == this) return;
@@ -1780,6 +1630,54 @@ inline void SendMessageResponse::set_allocated_mavlink_direct_result(::mavsdk::r
 
 // SubscribeMessageRequest
 
+// string message_name = 1;
+inline void SubscribeMessageRequest::clear_message_name() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.message_name_.ClearToEmpty();
+}
+inline const std::string& SubscribeMessageRequest::message_name() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mavlink_direct.SubscribeMessageRequest.message_name)
+  return _internal_message_name();
+}
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void SubscribeMessageRequest::set_message_name(Arg_&& arg,
+                                                     Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.message_name_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.mavlink_direct.SubscribeMessageRequest.message_name)
+}
+inline std::string* SubscribeMessageRequest::mutable_message_name() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_message_name();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.mavlink_direct.SubscribeMessageRequest.message_name)
+  return _s;
+}
+inline const std::string& SubscribeMessageRequest::_internal_message_name() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.message_name_.Get();
+}
+inline void SubscribeMessageRequest::_internal_set_message_name(const std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.message_name_.Set(value, GetArena());
+}
+inline std::string* SubscribeMessageRequest::_internal_mutable_message_name() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.message_name_.Mutable( GetArena());
+}
+inline std::string* SubscribeMessageRequest::release_message_name() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.mavlink_direct.SubscribeMessageRequest.message_name)
+  return _impl_.message_name_.Release();
+}
+inline void SubscribeMessageRequest::set_allocated_message_name(std::string* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.message_name_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.message_name_.IsDefault()) {
+    _impl_.message_name_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.mavlink_direct.SubscribeMessageRequest.message_name)
+}
+
 // -------------------------------------------------------------------
 
 // MessageResponse
@@ -1878,58 +1776,6 @@ inline void MessageResponse::set_allocated_message(::mavsdk::rpc::mavlink_direct
 
   _impl_.message_ = reinterpret_cast<::mavsdk::rpc::mavlink_direct::MavlinkMessage*>(value);
   // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.mavlink_direct.MessageResponse.message)
-}
-
-// -------------------------------------------------------------------
-
-// SubscribeMessageTypeRequest
-
-// string message_name = 1;
-inline void SubscribeMessageTypeRequest::clear_message_name() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.message_name_.ClearToEmpty();
-}
-inline const std::string& SubscribeMessageTypeRequest::message_name() const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.mavlink_direct.SubscribeMessageTypeRequest.message_name)
-  return _internal_message_name();
-}
-template <typename Arg_, typename... Args_>
-inline PROTOBUF_ALWAYS_INLINE void SubscribeMessageTypeRequest::set_message_name(Arg_&& arg,
-                                                     Args_... args) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.message_name_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.mavlink_direct.SubscribeMessageTypeRequest.message_name)
-}
-inline std::string* SubscribeMessageTypeRequest::mutable_message_name() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  std::string* _s = _internal_mutable_message_name();
-  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.mavlink_direct.SubscribeMessageTypeRequest.message_name)
-  return _s;
-}
-inline const std::string& SubscribeMessageTypeRequest::_internal_message_name() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.message_name_.Get();
-}
-inline void SubscribeMessageTypeRequest::_internal_set_message_name(const std::string& value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.message_name_.Set(value, GetArena());
-}
-inline std::string* SubscribeMessageTypeRequest::_internal_mutable_message_name() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  return _impl_.message_name_.Mutable( GetArena());
-}
-inline std::string* SubscribeMessageTypeRequest::release_message_name() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:mavsdk.rpc.mavlink_direct.SubscribeMessageTypeRequest.message_name)
-  return _impl_.message_name_.Release();
-}
-inline void SubscribeMessageTypeRequest::set_allocated_message_name(std::string* value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.message_name_.SetAllocated(value, GetArena());
-  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.message_name_.IsDefault()) {
-    _impl_.message_name_.Set("", GetArena());
-  }
-  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.mavlink_direct.SubscribeMessageTypeRequest.message_name)
 }
 
 // -------------------------------------------------------------------
