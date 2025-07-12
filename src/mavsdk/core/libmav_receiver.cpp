@@ -11,8 +11,10 @@ namespace mavsdk {
 
 LibmavReceiver::LibmavReceiver()
 {
-    // Initialize MessageSet with embedded common.xml content
+    // Initialize MessageSet with embedded XML content in dependency order
     _message_set = std::make_unique<mav::MessageSet>();
+    _message_set->addFromXMLString(mav_embedded::MINIMAL_XML);
+    _message_set->addFromXMLString(mav_embedded::STANDARD_XML);
     _message_set->addFromXMLString(mav_embedded::COMMON_XML);
 
     if (const char* env_p = std::getenv("MAVSDK_MAVLINK_DIRECT_DEBUGGING")) {
