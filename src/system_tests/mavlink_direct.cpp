@@ -42,7 +42,7 @@ TEST(SystemTest, MavlinkDirectRoundtrip)
 
     std::optional<MavlinkDirect::MavlinkMessage> received_message;
     // Ground station subscribes to receive GLOBAL_POSITION_INT from autopilot
-    auto handle = receiver_mavlink_direct.subscribe_message_type(
+    auto handle = receiver_mavlink_direct.subscribe_message(
         "GLOBAL_POSITION_INT", [&](MavlinkDirect::MavlinkMessage message) {
             LogInfo() << "Received GLOBAL_POSITION_INT: " << message.fields_json;
             received_message = message;
@@ -115,7 +115,7 @@ TEST(SystemTest, MavlinkDirectExtendedFields)
     std::optional<MavlinkDirect::MavlinkMessage> received_full;
 
     // Subscribe to PLAY_TUNE_V2 messages
-    auto handle = receiver_mavlink_direct.subscribe_message_type(
+    auto handle = receiver_mavlink_direct.subscribe_message(
         "PLAY_TUNE_V2", [&](MavlinkDirect::MavlinkMessage message) {
             LogInfo() << "Received PLAY_TUNE_V2: " << message.fields_json;
             if (received_compact == std::nullopt) {
@@ -276,7 +276,7 @@ TEST(SystemTest, TelemetryServerToMavlinkDirect)
     std::optional<MavlinkDirect::MavlinkMessage> received_message;
 
     // Subscribe to GLOBAL_POSITION_INT via MavlinkDirect
-    auto handle = receiver_mavlink_direct.subscribe_message_type(
+    auto handle = receiver_mavlink_direct.subscribe_message(
         "GLOBAL_POSITION_INT", [&](MavlinkDirect::MavlinkMessage message) {
             LogInfo() << "Received GLOBAL_POSITION_INT via MavlinkDirect: " << message.fields_json;
             received_message = message;

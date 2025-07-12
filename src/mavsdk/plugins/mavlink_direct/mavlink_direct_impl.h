@@ -28,29 +28,19 @@ public:
 
     MavlinkDirect::Result send_message(MavlinkDirect::MavlinkMessage message);
 
-    MavlinkDirect::MessageHandle subscribe_message(const MavlinkDirect::MessageCallback& callback);
+    MavlinkDirect::MessageHandle
+    subscribe_message(std::string message_name, const MavlinkDirect::MessageCallback& callback);
 
     void unsubscribe_message(MavlinkDirect::MessageHandle handle);
 
-    MavlinkDirect::MessageTypeHandle subscribe_message_type(
-        std::string message_name, const MavlinkDirect::MessageTypeCallback& callback);
-
-    void unsubscribe_message_type(MavlinkDirect::MessageTypeHandle handle);
-
 private:
-    // Handle factories
+    // Handle factory
     HandleFactory<MavlinkDirect::MavlinkMessage> _message_handle_factory{};
-    HandleFactory<MavlinkDirect::MavlinkMessage> _message_type_handle_factory{};
 
     // Callback storage
-    std::mutex _message_callback_mutex;
-    MavlinkDirect::MessageCallback _message_received_callback{nullptr};
-    MavlinkDirect::MessageHandle _message_callback_handle{};
-
-    std::mutex _message_type_callbacks_mutex;
-    std::map<MavlinkDirect::MessageTypeHandle, MavlinkDirect::MessageTypeCallback>
-        _message_type_callbacks;
-    std::map<MavlinkDirect::MessageTypeHandle, std::string> _message_type_handle_to_name;
+    std::mutex _message_callbacks_mutex;
+    std::map<MavlinkDirect::MessageHandle, MavlinkDirect::MessageCallback> _message_callbacks;
+    std::map<MavlinkDirect::MessageHandle, std::string> _message_handle_to_name;
 
     bool _debugging = false;
 
