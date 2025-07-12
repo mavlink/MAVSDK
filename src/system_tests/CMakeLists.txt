@@ -36,12 +36,15 @@ target_include_directories(system_tests_runner
 
 find_package(GTest REQUIRED)
 
+find_package(jsoncpp REQUIRED)
+
 target_link_libraries(system_tests_runner
     PRIVATE
     mavsdk
     GTest::gtest
     GTest::gtest_main
     GTest::gmock
+    JsonCpp::JsonCpp
 )
 
 set_target_properties(system_tests_runner

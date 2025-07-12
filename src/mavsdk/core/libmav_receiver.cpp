@@ -1,6 +1,7 @@
 #include "libmav_receiver.h"
 #include "embedded_mavlink_xml.h"
 #include <mav/MessageSet.h>
+#include <mav/BufferParser.h>
 #include <json/json.h>
 #include <variant>
 #include <cstring>
@@ -16,6 +17,9 @@ LibmavReceiver::LibmavReceiver()
     _message_set->addFromXMLString(mav_embedded::MINIMAL_XML);
     _message_set->addFromXMLString(mav_embedded::STANDARD_XML);
     _message_set->addFromXMLString(mav_embedded::COMMON_XML);
+
+    // Initialize BufferParser with our MessageSet
+    _buffer_parser = std::make_unique<mav::BufferParser>(*_message_set);
 
     if (const char* env_p = std::getenv("MAVSDK_MAVLINK_DIRECT_DEBUGGING")) {
         if (std::string(env_p) == "1") {
@@ -45,85 +49,128 @@ bool LibmavReceiver::parse_message()
 
 bool LibmavReceiver::parse_libmav_message_from_buffer(const uint8_t* buffer, size_t buffer_len)
 {
-    // For now, use the same manual parsing approach but enhanced for all message types
-    // TODO: Implement proper libmav parsing once we understand the correct API
-    for (size_t i = 0; i < buffer_len; ++i) {
-        uint8_t byte = buffer[i];
+    size_t bytes_consumed = 0;
+    auto message_opt = _buffer_parser->parseMessage(buffer, buffer_len, bytes_consumed);
 
-        // Look for MAVLink v2 start byte
-        if (byte == 0xFD) {
-            // Check if we have enough bytes for a minimal header (10 bytes)
-            if (i + 10 > buffer_len) {
-                break; // Not enough data for complete message
-            }
-
-            // Extract payload length from header
-            uint8_t payload_len = buffer[i + 1];
-
-            // Calculate total message length: header(10) + payload + checksum(2)
-            size_t total_msg_len = 10 + payload_len + 2;
-
-            if (i + total_msg_len > buffer_len) {
-                break; // Not enough data for complete message
-            }
-
-            // Extract message ID from header (24-bit field at bytes 7-9)
-            uint32_t message_id = (static_cast<uint32_t>(buffer[i + 7]) << 0) |
-                                  (static_cast<uint32_t>(buffer[i + 8]) << 8) |
-                                  (static_cast<uint32_t>(buffer[i + 9]) << 16);
-
-            if (_debugging) {
-                LogDebug() << "Parsing message with ID: " << message_id;
-            }
-
-            // Get message name from ID
-            auto message_name_opt = message_id_to_name(message_id);
-            if (!message_name_opt) {
-                LogWarn() << "Unknown message ID: " << message_id;
-                continue; // Unknown message type
-            }
-
-            if (_debugging) {
-                LogDebug() << "Parsed message: " << message_name_opt.value()
-                           << " (ID: " << message_id << ")";
-            }
-
-            // For now, generate basic JSON with message info
-            // TODO: Implement proper field extraction using libmav
-            std::ostringstream json_stream;
-            json_stream << "{";
-            json_stream << "\"message_id\":" << message_id;
-            json_stream << ",\"message_name\":\"" << message_name_opt.value() << "\"";
-            json_stream << "}";
-
-            // Fill our LibmavMessage structure
-            _last_message.message = std::nullopt; // No libmav message for now
-            _last_message.message_name = message_name_opt.value();
-            _last_message.system_id = buffer[i + 5];
-            _last_message.component_id = buffer[i + 6];
-            _last_message.target_system = 0; // TODO: Extract from payload if present
-            _last_message.target_component = 0; // TODO: Extract from payload if present
-            _last_message.fields_json = json_stream.str();
-
-            // Clear the original datagram since we processed it
-            _datagram = nullptr;
-            _datagram_len = 0;
-
-            return true;
-        }
+    if (!message_opt) {
+        return false; // No complete message found
     }
 
-    return false;
+    auto message = message_opt.value();
+
+    if (_debugging) {
+        LogDebug() << "Parsed message: " << message.name() << " (ID: " << message.id() << ")";
+    }
+
+    // Extract system and component IDs from header
+    auto header = message.header();
+
+    // Generate complete JSON with all field values
+    std::string json = libmav_message_to_json(message);
+
+    // Fill our LibmavMessage structure
+    _last_message.message = message;
+    _last_message.message_name = message.name();
+    _last_message.system_id = header.systemId();
+    _last_message.component_id = header.componentId();
+
+    // Extract target_system and target_component if present in message fields
+    uint8_t target_system = 0;
+    uint8_t target_component = 0;
+    if (message.get("target_system", target_system) == mav::MessageResult::Success) {
+        _last_message.target_system = target_system;
+    } else {
+        _last_message.target_system = 0;
+    }
+    if (message.get("target_component", target_component) == mav::MessageResult::Success) {
+        _last_message.target_component = target_component;
+    } else {
+        _last_message.target_component = 0;
+    }
+
+    _last_message.fields_json = json;
+
+    // Clear the original datagram since we processed it
+    _datagram = nullptr;
+    _datagram_len = 0;
+
+    return true;
 }
 
 std::string LibmavReceiver::libmav_message_to_json(const mav::Message& msg) const
 {
-    // This is a placeholder - for now we don't use this method
-    // TODO: Implement proper libmav field extraction once API is understood
     std::ostringstream json_stream;
     json_stream << "{";
     json_stream << "\"message_id\":" << msg.id();
     json_stream << ",\"message_name\":\"" << msg.name() << "\"";
+
+    // Get message definition to iterate through all fields
+    auto message_def_opt = _message_set->getMessageDefinition(static_cast<int>(msg.id()));
+    if (message_def_opt) {
+        auto& message_def = message_def_opt.get();
+
+        // Get field names and iterate through them
+        auto field_names = message_def.fieldNames();
+        for (const auto& field_name : field_names) {
+            json_stream << ",\"" << field_name << "\":";
+
+            // Extract field value based on type and convert to JSON
+            auto variant_opt = msg.getAsNativeTypeInVariant(field_name);
+            if (variant_opt) {
+                const auto& variant = variant_opt.value();
+
+                // Convert variant to JSON string based on the field type
+                std::visit(
+                    [&json_stream](const auto& value) {
+                        using T = std::decay_t<decltype(value)>;
+
+                        if constexpr (
+                            std::is_same_v<T, uint8_t> || std::is_same_v<T, uint16_t> ||
+                            std::is_same_v<T, uint32_t> || std::is_same_v<T, uint64_t> ||
+                            std::is_same_v<T, int8_t> || std::is_same_v<T, int16_t> ||
+                            std::is_same_v<T, int32_t> || std::is_same_v<T, int64_t>) {
+                            json_stream << static_cast<int64_t>(value);
+                        } else if constexpr (std::is_same_v<T, char>) {
+                            json_stream << static_cast<int>(value);
+                        } else if constexpr (
+                            std::is_same_v<T, float> || std::is_same_v<T, double>) {
+                            json_stream << value;
+                        } else if constexpr (std::is_same_v<T, std::string>) {
+                            json_stream << "\"" << value << "\"";
+                        } else if constexpr (
+                            std::is_same_v<T, std::vector<uint8_t>> ||
+                            std::is_same_v<T, std::vector<uint16_t>> ||
+                            std::is_same_v<T, std::vector<uint32_t>> ||
+                            std::is_same_v<T, std::vector<uint64_t>> ||
+                            std::is_same_v<T, std::vector<int8_t>> ||
+                            std::is_same_v<T, std::vector<int16_t>> ||
+                            std::is_same_v<T, std::vector<int32_t>> ||
+                            std::is_same_v<T, std::vector<int64_t>> ||
+                            std::is_same_v<T, std::vector<float>> ||
+                            std::is_same_v<T, std::vector<double>>) {
+                            // Handle vector types
+                            json_stream << "[";
+                            bool first = true;
+                            for (const auto& elem : value) {
+                                if (!first)
+                                    json_stream << ",";
+                                first = false;
+                                json_stream << elem;
+                            }
+                            json_stream << "]";
+                        } else {
+                            // Fallback for unknown types
+                            json_stream << "null";
+                        }
+                    },
+                    variant);
+            } else {
+                // Field not present or failed to extract
+                json_stream << "null";
+            }
+        }
+    }
+
     json_stream << "}";
     return json_stream.str();
 }

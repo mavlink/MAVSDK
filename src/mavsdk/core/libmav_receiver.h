@@ -10,7 +10,8 @@
 // Forward declarations to avoid including MessageSet.h in header
 namespace mav {
 class MessageSet;
-}
+class BufferParser;
+} // namespace mav
 
 namespace Json {
 class Value;
@@ -53,6 +54,7 @@ public:
 
 private:
     std::unique_ptr<mav::MessageSet> _message_set;
+    std::unique_ptr<mav::BufferParser> _buffer_parser;
     LibmavMessage _last_message;
 
     char* _datagram = nullptr;
