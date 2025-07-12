@@ -20,6 +20,7 @@
 #include "timesync.h"
 #include "system.h"
 #include "vehicle.h"
+#include "libmav_receiver.h"
 #include <cstdint>
 #include <functional>
 #include <atomic>
@@ -34,6 +35,7 @@ namespace mavsdk {
 
 class MavsdkImpl;
 class PluginImplBase;
+class Connection;
 
 // This class is the impl of System. This is to hide the private methods
 // and functionality from the public library API.
@@ -64,6 +66,25 @@ public:
 
     void
     update_component_id_messages_handler(uint16_t msg_id, uint8_t component_id, const void* cookie);
+
+    // Libmav message handling
+    using LibmavMessageCallback = std::function<void(const LibmavMessage&)>;
+
+    void process_libmav_message(const LibmavMessage& message);
+
+    void register_libmav_message_handler(
+        const std::string& message_name, const LibmavMessageCallback& callback, const void* cookie);
+    void register_libmav_message_handler_with_compid(
+        const std::string& message_name,
+        uint8_t cmp_id,
+        const LibmavMessageCallback& callback,
+        const void* cookie);
+
+    void unregister_libmav_message_handler(const std::string& message_name, const void* cookie);
+    void unregister_all_libmav_message_handlers(const void* cookie);
+
+    // Get connections for sending messages
+    std::vector<Connection*> get_connections() const;
 
     TimeoutHandler::Cookie
     register_timeout_handler(const std::function<void()>& callback, double duration_s);
@@ -350,6 +371,18 @@ private:
     AutopilotTime _autopilot_time{};
 
     MavlinkMessageHandler _mavlink_message_handler{};
+
+    // Libmav message handling
+    struct LibmavMessageHandler {
+        std::string message_name;
+        LibmavMessageCallback callback;
+        const void* cookie;
+        std::optional<uint8_t> component_id; // If specified, only messages from this component
+    };
+    std::mutex _libmav_message_handlers_mutex{};
+    std::vector<LibmavMessageHandler> _libmav_message_handlers{};
+
+    bool _message_debugging = false;
 
     MavlinkStatustextHandler _statustext_handler{};
 

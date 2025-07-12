@@ -10,6 +10,7 @@ list(APPEND CMAKE_ARGS
     "-DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}"
     "-DCMAKE_POSITION_INDEPENDENT_CODE=ON"
     "-DBUILD_SHARED_LIBS=OFF"
+    "-DBUILD_TESTING=OFF"
     )
 
 if(IOS)
@@ -28,7 +29,7 @@ endforeach()
 ExternalProject_add(
     libmavlike
     GIT_REPOSITORY https://github.com/julianoes/libmav
-    GIT_TAG pr-no-deps
+    GIT_TAG change-noexcept
     PREFIX libmavlike
     CMAKE_ARGS ${CMAKE_ARGS}
     )

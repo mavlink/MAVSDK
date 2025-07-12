@@ -1,0 +1,72 @@
+#pragma once
+
+#include <mav/Message.h>
+#include <string>
+#include <cstdint>
+#include <optional>
+#include <memory>
+#include "mavlink_include.h"
+
+// Forward declarations to avoid including MessageSet.h in header
+namespace mav {
+class MessageSet;
+}
+
+namespace Json {
+class Value;
+}
+
+namespace mavsdk {
+
+struct LibmavMessage {
+    std::optional<mav::Message>
+        message; // The libmav message object (optional since no default constructor)
+    std::string message_name; // Message name (e.g., "HEARTBEAT")
+    uint32_t system_id; // Source system ID
+    uint32_t component_id; // Source component ID
+    uint32_t target_system; // Target system ID (if applicable)
+    uint32_t target_component; // Target component ID (if applicable)
+    std::string fields_json; // Pre-converted JSON fields
+};
+
+class LibmavReceiver {
+public:
+    LibmavReceiver();
+    ~LibmavReceiver(); // Need explicit destructor for unique_ptr with incomplete type
+
+    const LibmavMessage& get_last_message() const { return _last_message; }
+
+    void set_new_datagram(char* datagram, unsigned datagram_len);
+
+    bool parse_message();
+
+    // Message creation for sending
+    std::optional<mav::Message> create_message(const std::string& message_name) const;
+
+    // Convert libmav message to mavlink_message_t for sending
+    bool
+    libmav_to_mavlink_message(const mav::Message& libmav_msg, mavlink_message_t& mavlink_msg) const;
+
+    // Helper methods for message ID/name conversion
+    std::optional<std::string> message_id_to_name(uint32_t id) const;
+    std::optional<int> message_name_to_id(const std::string& name) const;
+
+private:
+    std::unique_ptr<mav::MessageSet> _message_set;
+    LibmavMessage _last_message;
+
+    char* _datagram = nullptr;
+    unsigned _datagram_len = 0;
+
+    // libmav parsing state
+    std::vector<uint8_t> _buffer;
+    size_t _buffer_pos = 0;
+
+    bool _debugging = false;
+
+    // Helper methods
+    std::string libmav_message_to_json(const mav::Message& msg) const;
+    bool parse_libmav_message_from_buffer(const uint8_t* buffer, size_t buffer_len);
+};
+
+} // namespace mavsdk
