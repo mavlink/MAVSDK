@@ -113,74 +113,25 @@ MavlinkDirect::Result MavlinkDirectImpl::send_message(MavlinkDirect::MavlinkMess
     return MavlinkDirect::Result::Success;
 }
 
-MavlinkDirect::MessageHandle
-MavlinkDirectImpl::subscribe_message(const MavlinkDirect::MessageCallback& callback)
+MavlinkDirect::MessageHandle MavlinkDirectImpl::subscribe_message(
+    std::string message_name, const MavlinkDirect::MessageCallback& callback)
 {
-    std::lock_guard<std::mutex> lock(_message_callback_mutex);
+    std::lock_guard<std::mutex> lock(_message_callbacks_mutex);
 
     // Create a proper handle
     auto handle = _message_handle_factory.create();
 
-    _message_received_callback = callback;
-    _message_callback_handle = handle;
-
-    // Register for all libmav messages from the system
-    _system_impl->register_libmav_message_handler(
-        "", // Empty string means all messages
-        [this](const LibmavMessage& libmav_msg) {
-            std::lock_guard<std::mutex> callback_lock(_message_callback_mutex);
-            if (_message_received_callback) {
-                // Convert LibmavMessage to MavlinkDirect::MavlinkMessage
-                MavlinkDirect::MavlinkMessage message;
-                message.message_name = libmav_msg.message_name;
-                message.system_id = libmav_msg.system_id;
-                message.component_id = libmav_msg.component_id;
-                message.target_system = libmav_msg.target_system;
-                message.target_component = libmav_msg.target_component;
-                message.fields_json = libmav_msg.fields_json;
-
-                _message_received_callback(message);
-            }
-        },
-        this // Use 'this' as cookie for later unregistration
-    );
-
-    return handle;
-}
-
-void MavlinkDirectImpl::unsubscribe_message(MavlinkDirect::MessageHandle handle)
-{
-    std::lock_guard<std::mutex> lock(_message_callback_mutex);
-
-    if (handle == _message_callback_handle) {
-        // Unregister from SystemImpl using our 'this' cookie
-        _system_impl->unregister_all_libmav_message_handlers(this);
-
-        // Clear the callback and reset handle
-        _message_received_callback = nullptr;
-        _message_callback_handle = MavlinkDirect::MessageHandle{};
-    }
-}
-
-MavlinkDirect::MessageTypeHandle MavlinkDirectImpl::subscribe_message_type(
-    std::string message_name, const MavlinkDirect::MessageTypeCallback& callback)
-{
-    std::lock_guard<std::mutex> lock(_message_type_callbacks_mutex);
-
-    // Create a proper handle
-    auto handle = _message_type_handle_factory.create();
-
     // Store the callback and message name mapped to the handle
-    _message_type_callbacks[handle] = callback;
-    _message_type_handle_to_name[handle] = message_name;
+    _message_callbacks[handle] = callback;
+    _message_handle_to_name[handle] = message_name;
 
-    // Register with SystemImpl for this specific message type
+    // Register with SystemImpl
     _system_impl->register_libmav_message_handler(
-        message_name,
+        message_name, // Empty string means all messages, specific name means filtered
         [this, handle](const LibmavMessage& libmav_msg) {
-            std::lock_guard<std::mutex> callback_lock(_message_type_callbacks_mutex);
-            auto it = _message_type_callbacks.find(handle);
-            if (it != _message_type_callbacks.end()) {
+            std::lock_guard<std::mutex> callback_lock(_message_callbacks_mutex);
+            auto it = _message_callbacks.find(handle);
+            if (it != _message_callbacks.end()) {
                 // Convert LibmavMessage to MavlinkDirect::MavlinkMessage
                 MavlinkDirect::MavlinkMessage message;
                 message.message_name = libmav_msg.message_name;
@@ -199,21 +150,21 @@ MavlinkDirect::MessageTypeHandle MavlinkDirectImpl::subscribe_message_type(
     return handle;
 }
 
-void MavlinkDirectImpl::unsubscribe_message_type(MavlinkDirect::MessageTypeHandle handle)
+void MavlinkDirectImpl::unsubscribe_message(MavlinkDirect::MessageHandle handle)
 {
-    std::lock_guard<std::mutex> lock(_message_type_callbacks_mutex);
+    std::lock_guard<std::mutex> lock(_message_callbacks_mutex);
 
     // Find the message name for this handle
-    auto name_it = _message_type_handle_to_name.find(handle);
-    if (name_it != _message_type_handle_to_name.end()) {
+    auto name_it = _message_handle_to_name.find(handle);
+    if (name_it != _message_handle_to_name.end()) {
         const std::string& message_name = name_it->second;
 
         // Unregister from SystemImpl using the handle address as cookie
         _system_impl->unregister_libmav_message_handler(message_name, &handle);
 
         // Remove from our callback maps
-        _message_type_callbacks.erase(handle);
-        _message_type_handle_to_name.erase(handle);
+        _message_callbacks.erase(handle);
+        _message_handle_to_name.erase(handle);
     }
 }
 

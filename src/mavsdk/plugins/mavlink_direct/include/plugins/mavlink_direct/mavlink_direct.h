@@ -141,38 +141,16 @@ public:
     /**
      * @brief Subscribe to incoming MAVLink messages.
      *
-     * This provides direct access to all incoming MAVLink messages without any filtering or
-     * processing.
+     * This provides direct access to incoming MAVLink messages. Use an empty string
+     * in message_name to subscribe to all messages, or specify a message name
+     * (e.g., "HEARTBEAT") to filter for specific message types.
      */
-    MessageHandle subscribe_message(const MessageCallback& callback);
+    MessageHandle subscribe_message(std::string message_name, const MessageCallback& callback);
 
     /**
      * @brief Unsubscribe from subscribe_message
      */
     void unsubscribe_message(MessageHandle handle);
-
-    /**
-     * @brief Callback type for subscribe_message_type.
-     */
-    using MessageTypeCallback = std::function<void(MavlinkMessage)>;
-
-    /**
-     * @brief Handle type for subscribe_message_type.
-     */
-    using MessageTypeHandle = Handle<MavlinkMessage>;
-
-    /**
-     * @brief Subscribe to incoming MAVLink messages of a specific type.
-     *
-     * This provides filtered access to incoming MAVLink messages of a specific message name.
-     */
-    MessageTypeHandle
-    subscribe_message_type(std::string message_name, const MessageTypeCallback& callback);
-
-    /**
-     * @brief Unsubscribe from subscribe_message_type
-     */
-    void unsubscribe_message_type(MessageTypeHandle handle);
 
     /**
      * @brief Copy constructor.

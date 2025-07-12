@@ -29,25 +29,15 @@ MavlinkDirect::Result MavlinkDirect::send_message(MavlinkMessage message) const
     return _impl->send_message(message);
 }
 
-MavlinkDirect::MessageHandle MavlinkDirect::subscribe_message(const MessageCallback& callback)
+MavlinkDirect::MessageHandle
+MavlinkDirect::subscribe_message(std::string message_name, const MessageCallback& callback)
 {
-    return _impl->subscribe_message(callback);
+    return _impl->subscribe_message(message_name, callback);
 }
 
 void MavlinkDirect::unsubscribe_message(MessageHandle handle)
 {
     _impl->unsubscribe_message(handle);
-}
-
-MavlinkDirect::MessageTypeHandle
-MavlinkDirect::subscribe_message_type(std::string message_name, const MessageTypeCallback& callback)
-{
-    return _impl->subscribe_message_type(message_name, callback);
-}
-
-void MavlinkDirect::unsubscribe_message_type(MessageTypeHandle handle)
-{
-    _impl->unsubscribe_message_type(handle);
 }
 
 bool operator==(const MavlinkDirect::MavlinkMessage& lhs, const MavlinkDirect::MavlinkMessage& rhs)

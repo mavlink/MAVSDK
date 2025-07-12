@@ -28,7 +28,7 @@ namespace mavsdk {
 namespace rpc {
 namespace mavlink_direct {
 
-inline constexpr SubscribeMessageTypeRequest::Impl_::Impl_(
+inline constexpr SubscribeMessageRequest::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : message_name_(
             &::google::protobuf::internal::fixed_address_empty_string,
@@ -36,7 +36,7 @@ inline constexpr SubscribeMessageTypeRequest::Impl_::Impl_(
         _cached_size_{0} {}
 
 template <typename>
-PROTOBUF_CONSTEXPR SubscribeMessageTypeRequest::SubscribeMessageTypeRequest(::_pbi::ConstantInitialized)
+PROTOBUF_CONSTEXPR SubscribeMessageRequest::SubscribeMessageRequest(::_pbi::ConstantInitialized)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
     : ::google::protobuf::Message(_class_data_.base()),
 #else   // PROTOBUF_CUSTOM_VTABLE
@@ -44,24 +44,6 @@ PROTOBUF_CONSTEXPR SubscribeMessageTypeRequest::SubscribeMessageTypeRequest(::_p
 #endif  // PROTOBUF_CUSTOM_VTABLE
       _impl_(::_pbi::ConstantInitialized()) {
 }
-struct SubscribeMessageTypeRequestDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR SubscribeMessageTypeRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~SubscribeMessageTypeRequestDefaultTypeInternal() {}
-  union {
-    SubscribeMessageTypeRequest _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SubscribeMessageTypeRequestDefaultTypeInternal _SubscribeMessageTypeRequest_default_instance_;
-              template <typename>
-PROTOBUF_CONSTEXPR SubscribeMessageRequest::SubscribeMessageRequest(::_pbi::ConstantInitialized)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::internal::ZeroFieldsBase(_class_data_.base()){}
-#else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::internal::ZeroFieldsBase() {
-}
-#endif  // PROTOBUF_CUSTOM_VTABLE
 struct SubscribeMessageRequestDefaultTypeInternal {
   PROTOBUF_CONSTEXPR SubscribeMessageRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~SubscribeMessageRequestDefaultTypeInternal() {}
@@ -246,6 +228,7 @@ const ::uint32_t
         ~0u,  // no _inlined_string_donated_
         ~0u,  // no _split_
         ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mavlink_direct::SubscribeMessageRequest, _impl_.message_name_),
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mavlink_direct::MessageResponse, _impl_._has_bits_),
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mavlink_direct::MessageResponse, _internal_metadata_),
         ~0u,  // no _extensions_
@@ -256,15 +239,6 @@ const ::uint32_t
         ~0u,  // no sizeof(Split)
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mavlink_direct::MessageResponse, _impl_.message_),
         0,
-        ~0u,  // no _has_bits_
-        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mavlink_direct::SubscribeMessageTypeRequest, _internal_metadata_),
-        ~0u,  // no _extensions_
-        ~0u,  // no _oneof_case_
-        ~0u,  // no _weak_field_map_
-        ~0u,  // no _inlined_string_donated_
-        ~0u,  // no _split_
-        ~0u,  // no sizeof(Split)
-        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mavlink_direct::SubscribeMessageTypeRequest, _impl_.message_name_),
         ~0u,  // no _has_bits_
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mavlink_direct::MavlinkMessage, _internal_metadata_),
         ~0u,  // no _extensions_
@@ -296,17 +270,15 @@ static const ::_pbi::MigrationSchema
         {0, 9, -1, sizeof(::mavsdk::rpc::mavlink_direct::SendMessageRequest)},
         {10, 19, -1, sizeof(::mavsdk::rpc::mavlink_direct::SendMessageResponse)},
         {20, -1, -1, sizeof(::mavsdk::rpc::mavlink_direct::SubscribeMessageRequest)},
-        {28, 37, -1, sizeof(::mavsdk::rpc::mavlink_direct::MessageResponse)},
-        {38, -1, -1, sizeof(::mavsdk::rpc::mavlink_direct::SubscribeMessageTypeRequest)},
-        {47, -1, -1, sizeof(::mavsdk::rpc::mavlink_direct::MavlinkMessage)},
-        {61, -1, -1, sizeof(::mavsdk::rpc::mavlink_direct::MavlinkDirectResult)},
+        {29, 38, -1, sizeof(::mavsdk::rpc::mavlink_direct::MessageResponse)},
+        {39, -1, -1, sizeof(::mavsdk::rpc::mavlink_direct::MavlinkMessage)},
+        {53, -1, -1, sizeof(::mavsdk::rpc::mavlink_direct::MavlinkDirectResult)},
 };
 static const ::_pb::Message* const file_default_instances[] = {
     &::mavsdk::rpc::mavlink_direct::_SendMessageRequest_default_instance_._instance,
     &::mavsdk::rpc::mavlink_direct::_SendMessageResponse_default_instance_._instance,
     &::mavsdk::rpc::mavlink_direct::_SubscribeMessageRequest_default_instance_._instance,
     &::mavsdk::rpc::mavlink_direct::_MessageResponse_default_instance_._instance,
-    &::mavsdk::rpc::mavlink_direct::_SubscribeMessageTypeRequest_default_instance_._instance,
     &::mavsdk::rpc::mavlink_direct::_MavlinkMessage_default_instance_._instance,
     &::mavsdk::rpc::mavlink_direct::_MavlinkDirectResult_default_instance_._instance,
 };
@@ -318,34 +290,30 @@ const char descriptor_table_protodef_mavlink_5fdirect_2fmavlink_5fdirect_2eproto
     "\001 \001(\0132).mavsdk.rpc.mavlink_direct.Mavlin"
     "kMessage\"d\n\023SendMessageResponse\022M\n\025mavli"
     "nk_direct_result\030\001 \001(\0132..mavsdk.rpc.mavl"
-    "ink_direct.MavlinkDirectResult\"\031\n\027Subscr"
-    "ibeMessageRequest\"M\n\017MessageResponse\022:\n\007"
-    "message\030\001 \001(\0132).mavsdk.rpc.mavlink_direc"
-    "t.MavlinkMessage\"3\n\033SubscribeMessageType"
-    "Request\022\024\n\014message_name\030\001 \001(\t\"\225\001\n\016Mavlin"
-    "kMessage\022\024\n\014message_name\030\001 \001(\t\022\021\n\tsystem"
-    "_id\030\002 \001(\r\022\024\n\014component_id\030\003 \001(\r\022\025\n\rtarge"
-    "t_system\030\004 \001(\r\022\030\n\020target_component\030\005 \001(\r"
-    "\022\023\n\013fields_json\030\006 \001(\t\"\262\002\n\023MavlinkDirectR"
-    "esult\022E\n\006result\030\001 \001(\01625.mavsdk.rpc.mavli"
-    "nk_direct.MavlinkDirectResult.Result\022\022\n\n"
-    "result_str\030\002 \001(\t\"\277\001\n\006Result\022\022\n\016RESULT_UN"
-    "KNOWN\020\000\022\022\n\016RESULT_SUCCESS\020\001\022\020\n\014RESULT_ER"
-    "ROR\020\002\022\032\n\026RESULT_INVALID_MESSAGE\020\003\022\030\n\024RES"
-    "ULT_INVALID_FIELD\020\004\022\033\n\027RESULT_CONNECTION"
-    "_ERROR\020\005\022\024\n\020RESULT_NO_SYSTEM\020\006\022\022\n\016RESULT"
-    "_TIMEOUT\020\0072\213\003\n\024MavlinkDirectService\022r\n\013S"
-    "endMessage\022-.mavsdk.rpc.mavlink_direct.S"
-    "endMessageRequest\032..mavsdk.rpc.mavlink_d"
-    "irect.SendMessageResponse\"\004\200\265\030\001\022z\n\020Subsc"
-    "ribeMessage\0222.mavsdk.rpc.mavlink_direct."
-    "SubscribeMessageRequest\032*.mavsdk.rpc.mav"
-    "link_direct.MessageResponse\"\004\200\265\030\0000\001\022\202\001\n\024"
-    "SubscribeMessageType\0226.mavsdk.rpc.mavlin"
-    "k_direct.SubscribeMessageTypeRequest\032*.m"
-    "avsdk.rpc.mavlink_direct.MessageResponse"
-    "\"\004\200\265\030\0000\001B.\n\030io.mavsdk.mavlink_directB\022Ma"
-    "vlinkDirectProtob\006proto3"
+    "ink_direct.MavlinkDirectResult\"/\n\027Subscr"
+    "ibeMessageRequest\022\024\n\014message_name\030\001 \001(\t\""
+    "M\n\017MessageResponse\022:\n\007message\030\001 \001(\0132).ma"
+    "vsdk.rpc.mavlink_direct.MavlinkMessage\"\225"
+    "\001\n\016MavlinkMessage\022\024\n\014message_name\030\001 \001(\t\022"
+    "\021\n\tsystem_id\030\002 \001(\r\022\024\n\014component_id\030\003 \001(\r"
+    "\022\025\n\rtarget_system\030\004 \001(\r\022\030\n\020target_compon"
+    "ent\030\005 \001(\r\022\023\n\013fields_json\030\006 \001(\t\"\262\002\n\023Mavli"
+    "nkDirectResult\022E\n\006result\030\001 \001(\01625.mavsdk."
+    "rpc.mavlink_direct.MavlinkDirectResult.R"
+    "esult\022\022\n\nresult_str\030\002 \001(\t\"\277\001\n\006Result\022\022\n\016"
+    "RESULT_UNKNOWN\020\000\022\022\n\016RESULT_SUCCESS\020\001\022\020\n\014"
+    "RESULT_ERROR\020\002\022\032\n\026RESULT_INVALID_MESSAGE"
+    "\020\003\022\030\n\024RESULT_INVALID_FIELD\020\004\022\033\n\027RESULT_C"
+    "ONNECTION_ERROR\020\005\022\024\n\020RESULT_NO_SYSTEM\020\006\022"
+    "\022\n\016RESULT_TIMEOUT\020\0072\206\002\n\024MavlinkDirectSer"
+    "vice\022r\n\013SendMessage\022-.mavsdk.rpc.mavlink"
+    "_direct.SendMessageRequest\032..mavsdk.rpc."
+    "mavlink_direct.SendMessageResponse\"\004\200\265\030\001"
+    "\022z\n\020SubscribeMessage\0222.mavsdk.rpc.mavlin"
+    "k_direct.SubscribeMessageRequest\032*.mavsd"
+    "k.rpc.mavlink_direct.MessageResponse\"\004\200\265"
+    "\030\0000\001B.\n\030io.mavsdk.mavlink_directB\022Mavlin"
+    "kDirectProtob\006proto3"
 };
 static const ::_pbi::DescriptorTable* const descriptor_table_mavlink_5fdirect_2fmavlink_5fdirect_2eproto_deps[1] =
     {
@@ -355,13 +323,13 @@ static ::absl::once_flag descriptor_table_mavlink_5fdirect_2fmavlink_5fdirect_2e
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_mavlink_5fdirect_2fmavlink_5fdirect_2eproto = {
     false,
     false,
-    1344,
+    1180,
     descriptor_table_protodef_mavlink_5fdirect_2fmavlink_5fdirect_2eproto,
     "mavlink_direct/mavlink_direct.proto",
     &descriptor_table_mavlink_5fdirect_2fmavlink_5fdirect_2eproto_once,
     descriptor_table_mavlink_5fdirect_2fmavlink_5fdirect_2eproto_deps,
     1,
-    7,
+    6,
     schemas,
     file_default_instances,
     TableStruct_mavlink_5fdirect_2fmavlink_5fdirect_2eproto::offsets,
@@ -905,26 +873,54 @@ class SubscribeMessageRequest::_Internal {
 
 SubscribeMessageRequest::SubscribeMessageRequest(::google::protobuf::Arena* arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::internal::ZeroFieldsBase(arena, _class_data_.base()) {
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
 #else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
+    : ::google::protobuf::Message(arena) {
 #endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.mavlink_direct.SubscribeMessageRequest)
 }
+inline PROTOBUF_NDEBUG_INLINE SubscribeMessageRequest::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from, const ::mavsdk::rpc::mavlink_direct::SubscribeMessageRequest& from_msg)
+      : message_name_(arena, from.message_name_),
+        _cached_size_{0} {}
+
 SubscribeMessageRequest::SubscribeMessageRequest(
     ::google::protobuf::Arena* arena,
     const SubscribeMessageRequest& from)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::internal::ZeroFieldsBase(arena, _class_data_.base()) {
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
 #else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
+    : ::google::protobuf::Message(arena) {
 #endif  // PROTOBUF_CUSTOM_VTABLE
   SubscribeMessageRequest* const _this = this;
   (void)_this;
   _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
       from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
 
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.mavlink_direct.SubscribeMessageRequest)
+}
+inline PROTOBUF_NDEBUG_INLINE SubscribeMessageRequest::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : message_name_(arena),
+        _cached_size_{0} {}
+
+inline void SubscribeMessageRequest::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+}
+SubscribeMessageRequest::~SubscribeMessageRequest() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.mavlink_direct.SubscribeMessageRequest)
+  SharedDtor(*this);
+}
+inline void SubscribeMessageRequest::SharedDtor(MessageLite& self) {
+  SubscribeMessageRequest& this_ = static_cast<SubscribeMessageRequest&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.message_name_.Destroy();
+  this_._impl_.~Impl_();
 }
 
 inline void* SubscribeMessageRequest::PlacementNew_(const void*, void* mem,
@@ -932,7 +928,7 @@ inline void* SubscribeMessageRequest::PlacementNew_(const void*, void* mem,
   return ::new (mem) SubscribeMessageRequest(arena);
 }
 constexpr auto SubscribeMessageRequest::InternalNewImpl_() {
-  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(SubscribeMessageRequest),
+  return ::google::protobuf::internal::MessageCreator::CopyInit(sizeof(SubscribeMessageRequest),
                                             alignof(SubscribeMessageRequest));
 }
 PROTOBUF_CONSTINIT
@@ -944,10 +940,10 @@ const ::google::protobuf::internal::ClassDataFull SubscribeMessageRequest::_clas
         nullptr,  // OnDemandRegisterArenaDtor
         nullptr,  // IsInitialized
         &SubscribeMessageRequest::MergeImpl,
-        ::google::protobuf::internal::ZeroFieldsBase::GetNewImpl<SubscribeMessageRequest>(),
+        ::google::protobuf::Message::GetNewImpl<SubscribeMessageRequest>(),
 #if defined(PROTOBUF_CUSTOM_VTABLE)
         &SubscribeMessageRequest::SharedDtor,
-        ::google::protobuf::internal::ZeroFieldsBase::GetClearImpl<SubscribeMessageRequest>(), &SubscribeMessageRequest::ByteSizeLong,
+        ::google::protobuf::Message::GetClearImpl<SubscribeMessageRequest>(), &SubscribeMessageRequest::ByteSizeLong,
             &SubscribeMessageRequest::_InternalSerialize,
 #endif  // PROTOBUF_CUSTOM_VTABLE
         PROTOBUF_FIELD_OFFSET(SubscribeMessageRequest, _impl_._cached_size_),
@@ -963,15 +959,15 @@ const ::google::protobuf::internal::ClassData* SubscribeMessageRequest::GetClass
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<0, 0, 0, 0, 2> SubscribeMessageRequest::_table_ = {
+const ::_pbi::TcParseTable<0, 1, 0, 70, 2> SubscribeMessageRequest::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
-    0, 0,  // max_field_number, fast_idx_mask
+    1, 0,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967295,  // skipmap
-    offsetof(decltype(_table_), field_names),  // no field_entries
-    0,  // num_field_entries
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
     0,  // num_aux_entries
     offsetof(decltype(_table_), field_names),  // no aux_entries
     _class_data_.base(),
@@ -981,24 +977,124 @@ const ::_pbi::TcParseTable<0, 0, 0, 0, 2> SubscribeMessageRequest::_table_ = {
     ::_pbi::TcParser::GetTable<::mavsdk::rpc::mavlink_direct::SubscribeMessageRequest>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    {::_pbi::TcParser::MiniParse, {}},
+    // string message_name = 1;
+    {::_pbi::TcParser::FastUS1,
+     {10, 63, 0, PROTOBUF_FIELD_OFFSET(SubscribeMessageRequest, _impl_.message_name_)}},
   }}, {{
     65535, 65535
+  }}, {{
+    // string message_name = 1;
+    {PROTOBUF_FIELD_OFFSET(SubscribeMessageRequest, _impl_.message_name_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
   }},
-  // no field_entries, or aux_entries
+  // no aux_entries
   {{
+    "\61\14\0\0\0\0\0\0"
+    "mavsdk.rpc.mavlink_direct.SubscribeMessageRequest"
+    "message_name"
   }},
 };
 
+PROTOBUF_NOINLINE void SubscribeMessageRequest::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.mavlink_direct.SubscribeMessageRequest)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.message_name_.ClearToEmpty();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::uint8_t* SubscribeMessageRequest::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const SubscribeMessageRequest& this_ = static_cast<const SubscribeMessageRequest&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* SubscribeMessageRequest::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const SubscribeMessageRequest& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.mavlink_direct.SubscribeMessageRequest)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
+
+          // string message_name = 1;
+          if (!this_._internal_message_name().empty()) {
+            const std::string& _s = this_._internal_message_name();
+            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "mavsdk.rpc.mavlink_direct.SubscribeMessageRequest.message_name");
+            target = stream->WriteStringMaybeAliased(1, _s, target);
+          }
+
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.mavlink_direct.SubscribeMessageRequest)
+          return target;
+        }
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t SubscribeMessageRequest::ByteSizeLong(const MessageLite& base) {
+          const SubscribeMessageRequest& this_ = static_cast<const SubscribeMessageRequest&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t SubscribeMessageRequest::ByteSizeLong() const {
+          const SubscribeMessageRequest& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.mavlink_direct.SubscribeMessageRequest)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+           {
+            // string message_name = 1;
+            if (!this_._internal_message_name().empty()) {
+              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                              this_._internal_message_name());
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
+        }
+
+void SubscribeMessageRequest::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<SubscribeMessageRequest*>(&to_msg);
+  auto& from = static_cast<const SubscribeMessageRequest&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.mavlink_direct.SubscribeMessageRequest)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (!from._internal_message_name().empty()) {
+    _this->_internal_set_message_name(from._internal_message_name());
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void SubscribeMessageRequest::CopyFrom(const SubscribeMessageRequest& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.mavlink_direct.SubscribeMessageRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
 
 
-
-
-
-
+void SubscribeMessageRequest::InternalSwap(SubscribeMessageRequest* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  auto* arena = GetArena();
+  ABSL_DCHECK_EQ(arena, other->GetArena());
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.message_name_, &other->_impl_.message_name_, arena);
+}
 
 ::google::protobuf::Metadata SubscribeMessageRequest::GetMetadata() const {
-  return ::google::protobuf::internal::ZeroFieldsBase::GetMetadataImpl(GetClassData()->full());
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // ===================================================================
 
@@ -1248,237 +1344,6 @@ void MessageResponse::InternalSwap(MessageResponse* PROTOBUF_RESTRICT other) {
 }
 
 ::google::protobuf::Metadata MessageResponse::GetMetadata() const {
-  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
-}
-// ===================================================================
-
-class SubscribeMessageTypeRequest::_Internal {
- public:
-};
-
-SubscribeMessageTypeRequest::SubscribeMessageTypeRequest(::google::protobuf::Arena* arena)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(arena, _class_data_.base()) {
-#else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(arena) {
-#endif  // PROTOBUF_CUSTOM_VTABLE
-  SharedCtor(arena);
-  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.mavlink_direct.SubscribeMessageTypeRequest)
-}
-inline PROTOBUF_NDEBUG_INLINE SubscribeMessageTypeRequest::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
-    const Impl_& from, const ::mavsdk::rpc::mavlink_direct::SubscribeMessageTypeRequest& from_msg)
-      : message_name_(arena, from.message_name_),
-        _cached_size_{0} {}
-
-SubscribeMessageTypeRequest::SubscribeMessageTypeRequest(
-    ::google::protobuf::Arena* arena,
-    const SubscribeMessageTypeRequest& from)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(arena, _class_data_.base()) {
-#else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(arena) {
-#endif  // PROTOBUF_CUSTOM_VTABLE
-  SubscribeMessageTypeRequest* const _this = this;
-  (void)_this;
-  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
-      from._internal_metadata_);
-  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
-
-  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.mavlink_direct.SubscribeMessageTypeRequest)
-}
-inline PROTOBUF_NDEBUG_INLINE SubscribeMessageTypeRequest::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility,
-    ::google::protobuf::Arena* arena)
-      : message_name_(arena),
-        _cached_size_{0} {}
-
-inline void SubscribeMessageTypeRequest::SharedCtor(::_pb::Arena* arena) {
-  new (&_impl_) Impl_(internal_visibility(), arena);
-}
-SubscribeMessageTypeRequest::~SubscribeMessageTypeRequest() {
-  // @@protoc_insertion_point(destructor:mavsdk.rpc.mavlink_direct.SubscribeMessageTypeRequest)
-  SharedDtor(*this);
-}
-inline void SubscribeMessageTypeRequest::SharedDtor(MessageLite& self) {
-  SubscribeMessageTypeRequest& this_ = static_cast<SubscribeMessageTypeRequest&>(self);
-  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
-  ABSL_DCHECK(this_.GetArena() == nullptr);
-  this_._impl_.message_name_.Destroy();
-  this_._impl_.~Impl_();
-}
-
-inline void* SubscribeMessageTypeRequest::PlacementNew_(const void*, void* mem,
-                                        ::google::protobuf::Arena* arena) {
-  return ::new (mem) SubscribeMessageTypeRequest(arena);
-}
-constexpr auto SubscribeMessageTypeRequest::InternalNewImpl_() {
-  return ::google::protobuf::internal::MessageCreator::CopyInit(sizeof(SubscribeMessageTypeRequest),
-                                            alignof(SubscribeMessageTypeRequest));
-}
-PROTOBUF_CONSTINIT
-PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::google::protobuf::internal::ClassDataFull SubscribeMessageTypeRequest::_class_data_ = {
-    ::google::protobuf::internal::ClassData{
-        &_SubscribeMessageTypeRequest_default_instance_._instance,
-        &_table_.header,
-        nullptr,  // OnDemandRegisterArenaDtor
-        nullptr,  // IsInitialized
-        &SubscribeMessageTypeRequest::MergeImpl,
-        ::google::protobuf::Message::GetNewImpl<SubscribeMessageTypeRequest>(),
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-        &SubscribeMessageTypeRequest::SharedDtor,
-        ::google::protobuf::Message::GetClearImpl<SubscribeMessageTypeRequest>(), &SubscribeMessageTypeRequest::ByteSizeLong,
-            &SubscribeMessageTypeRequest::_InternalSerialize,
-#endif  // PROTOBUF_CUSTOM_VTABLE
-        PROTOBUF_FIELD_OFFSET(SubscribeMessageTypeRequest, _impl_._cached_size_),
-        false,
-    },
-    &SubscribeMessageTypeRequest::kDescriptorMethods,
-    &descriptor_table_mavlink_5fdirect_2fmavlink_5fdirect_2eproto,
-    nullptr,  // tracker
-};
-const ::google::protobuf::internal::ClassData* SubscribeMessageTypeRequest::GetClassData() const {
-  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
-  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
-  return _class_data_.base();
-}
-PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<0, 1, 0, 74, 2> SubscribeMessageTypeRequest::_table_ = {
-  {
-    0,  // no _has_bits_
-    0, // no _extensions_
-    1, 0,  // max_field_number, fast_idx_mask
-    offsetof(decltype(_table_), field_lookup_table),
-    4294967294,  // skipmap
-    offsetof(decltype(_table_), field_entries),
-    1,  // num_field_entries
-    0,  // num_aux_entries
-    offsetof(decltype(_table_), field_names),  // no aux_entries
-    _class_data_.base(),
-    nullptr,  // post_loop_handler
-    ::_pbi::TcParser::GenericFallback,  // fallback
-    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-    ::_pbi::TcParser::GetTable<::mavsdk::rpc::mavlink_direct::SubscribeMessageTypeRequest>(),  // to_prefetch
-    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
-  }, {{
-    // string message_name = 1;
-    {::_pbi::TcParser::FastUS1,
-     {10, 63, 0, PROTOBUF_FIELD_OFFSET(SubscribeMessageTypeRequest, _impl_.message_name_)}},
-  }}, {{
-    65535, 65535
-  }}, {{
-    // string message_name = 1;
-    {PROTOBUF_FIELD_OFFSET(SubscribeMessageTypeRequest, _impl_.message_name_), 0, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-  }},
-  // no aux_entries
-  {{
-    "\65\14\0\0\0\0\0\0"
-    "mavsdk.rpc.mavlink_direct.SubscribeMessageTypeRequest"
-    "message_name"
-  }},
-};
-
-PROTOBUF_NOINLINE void SubscribeMessageTypeRequest::Clear() {
-// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.mavlink_direct.SubscribeMessageTypeRequest)
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  ::uint32_t cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  _impl_.message_name_.ClearToEmpty();
-  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
-}
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-        ::uint8_t* SubscribeMessageTypeRequest::_InternalSerialize(
-            const MessageLite& base, ::uint8_t* target,
-            ::google::protobuf::io::EpsCopyOutputStream* stream) {
-          const SubscribeMessageTypeRequest& this_ = static_cast<const SubscribeMessageTypeRequest&>(base);
-#else   // PROTOBUF_CUSTOM_VTABLE
-        ::uint8_t* SubscribeMessageTypeRequest::_InternalSerialize(
-            ::uint8_t* target,
-            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
-          const SubscribeMessageTypeRequest& this_ = *this;
-#endif  // PROTOBUF_CUSTOM_VTABLE
-          // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.mavlink_direct.SubscribeMessageTypeRequest)
-          ::uint32_t cached_has_bits = 0;
-          (void)cached_has_bits;
-
-          // string message_name = 1;
-          if (!this_._internal_message_name().empty()) {
-            const std::string& _s = this_._internal_message_name();
-            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "mavsdk.rpc.mavlink_direct.SubscribeMessageTypeRequest.message_name");
-            target = stream->WriteStringMaybeAliased(1, _s, target);
-          }
-
-          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
-            target =
-                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
-          }
-          // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.mavlink_direct.SubscribeMessageTypeRequest)
-          return target;
-        }
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-        ::size_t SubscribeMessageTypeRequest::ByteSizeLong(const MessageLite& base) {
-          const SubscribeMessageTypeRequest& this_ = static_cast<const SubscribeMessageTypeRequest&>(base);
-#else   // PROTOBUF_CUSTOM_VTABLE
-        ::size_t SubscribeMessageTypeRequest::ByteSizeLong() const {
-          const SubscribeMessageTypeRequest& this_ = *this;
-#endif  // PROTOBUF_CUSTOM_VTABLE
-          // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.mavlink_direct.SubscribeMessageTypeRequest)
-          ::size_t total_size = 0;
-
-          ::uint32_t cached_has_bits = 0;
-          // Prevent compiler warnings about cached_has_bits being unused
-          (void)cached_has_bits;
-
-           {
-            // string message_name = 1;
-            if (!this_._internal_message_name().empty()) {
-              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                              this_._internal_message_name());
-            }
-          }
-          return this_.MaybeComputeUnknownFieldsSize(total_size,
-                                                     &this_._impl_._cached_size_);
-        }
-
-void SubscribeMessageTypeRequest::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
-  auto* const _this = static_cast<SubscribeMessageTypeRequest*>(&to_msg);
-  auto& from = static_cast<const SubscribeMessageTypeRequest&>(from_msg);
-  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.mavlink_direct.SubscribeMessageTypeRequest)
-  ABSL_DCHECK_NE(&from, _this);
-  ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  if (!from._internal_message_name().empty()) {
-    _this->_internal_set_message_name(from._internal_message_name());
-  }
-  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
-}
-
-void SubscribeMessageTypeRequest::CopyFrom(const SubscribeMessageTypeRequest& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.mavlink_direct.SubscribeMessageTypeRequest)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-
-void SubscribeMessageTypeRequest::InternalSwap(SubscribeMessageTypeRequest* PROTOBUF_RESTRICT other) {
-  using std::swap;
-  auto* arena = GetArena();
-  ABSL_DCHECK_EQ(arena, other->GetArena());
-  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.message_name_, &other->_impl_.message_name_, arena);
-}
-
-::google::protobuf::Metadata SubscribeMessageTypeRequest::GetMetadata() const {
   return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // ===================================================================

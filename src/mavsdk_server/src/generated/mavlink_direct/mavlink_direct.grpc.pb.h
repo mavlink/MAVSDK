@@ -52,7 +52,9 @@ class MavlinkDirectService final {
     //
     // Subscribe to incoming MAVLink messages.
     //
-    // This provides direct access to all incoming MAVLink messages without any filtering or processing.
+    // This provides direct access to incoming MAVLink messages. Use an empty string
+    // in message_name to subscribe to all messages, or specify a message name
+    // (e.g., "HEARTBEAT") to filter for specific message types.
     std::unique_ptr< ::grpc::ClientReaderInterface< ::mavsdk::rpc::mavlink_direct::MessageResponse>> SubscribeMessage(::grpc::ClientContext* context, const ::mavsdk::rpc::mavlink_direct::SubscribeMessageRequest& request) {
       return std::unique_ptr< ::grpc::ClientReaderInterface< ::mavsdk::rpc::mavlink_direct::MessageResponse>>(SubscribeMessageRaw(context, request));
     }
@@ -61,19 +63,6 @@ class MavlinkDirectService final {
     }
     std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::mavlink_direct::MessageResponse>> PrepareAsyncSubscribeMessage(::grpc::ClientContext* context, const ::mavsdk::rpc::mavlink_direct::SubscribeMessageRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::mavlink_direct::MessageResponse>>(PrepareAsyncSubscribeMessageRaw(context, request, cq));
-    }
-    //
-    // Subscribe to incoming MAVLink messages of a specific type.
-    //
-    // This provides filtered access to incoming MAVLink messages of a specific message name.
-    std::unique_ptr< ::grpc::ClientReaderInterface< ::mavsdk::rpc::mavlink_direct::MessageResponse>> SubscribeMessageType(::grpc::ClientContext* context, const ::mavsdk::rpc::mavlink_direct::SubscribeMessageTypeRequest& request) {
-      return std::unique_ptr< ::grpc::ClientReaderInterface< ::mavsdk::rpc::mavlink_direct::MessageResponse>>(SubscribeMessageTypeRaw(context, request));
-    }
-    std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::mavlink_direct::MessageResponse>> AsyncSubscribeMessageType(::grpc::ClientContext* context, const ::mavsdk::rpc::mavlink_direct::SubscribeMessageTypeRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
-      return std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::mavlink_direct::MessageResponse>>(AsyncSubscribeMessageTypeRaw(context, request, cq, tag));
-    }
-    std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::mavlink_direct::MessageResponse>> PrepareAsyncSubscribeMessageType(::grpc::ClientContext* context, const ::mavsdk::rpc::mavlink_direct::SubscribeMessageTypeRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::mavlink_direct::MessageResponse>>(PrepareAsyncSubscribeMessageTypeRaw(context, request, cq));
     }
     class async_interface {
      public:
@@ -87,13 +76,10 @@ class MavlinkDirectService final {
       //
       // Subscribe to incoming MAVLink messages.
       //
-      // This provides direct access to all incoming MAVLink messages without any filtering or processing.
+      // This provides direct access to incoming MAVLink messages. Use an empty string
+      // in message_name to subscribe to all messages, or specify a message name
+      // (e.g., "HEARTBEAT") to filter for specific message types.
       virtual void SubscribeMessage(::grpc::ClientContext* context, const ::mavsdk::rpc::mavlink_direct::SubscribeMessageRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::mavlink_direct::MessageResponse>* reactor) = 0;
-      //
-      // Subscribe to incoming MAVLink messages of a specific type.
-      //
-      // This provides filtered access to incoming MAVLink messages of a specific message name.
-      virtual void SubscribeMessageType(::grpc::ClientContext* context, const ::mavsdk::rpc::mavlink_direct::SubscribeMessageTypeRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::mavlink_direct::MessageResponse>* reactor) = 0;
     };
     typedef class async_interface experimental_async_interface;
     virtual class async_interface* async() { return nullptr; }
@@ -104,9 +90,6 @@ class MavlinkDirectService final {
     virtual ::grpc::ClientReaderInterface< ::mavsdk::rpc::mavlink_direct::MessageResponse>* SubscribeMessageRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mavlink_direct::SubscribeMessageRequest& request) = 0;
     virtual ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::mavlink_direct::MessageResponse>* AsyncSubscribeMessageRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mavlink_direct::SubscribeMessageRequest& request, ::grpc::CompletionQueue* cq, void* tag) = 0;
     virtual ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::mavlink_direct::MessageResponse>* PrepareAsyncSubscribeMessageRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mavlink_direct::SubscribeMessageRequest& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientReaderInterface< ::mavsdk::rpc::mavlink_direct::MessageResponse>* SubscribeMessageTypeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mavlink_direct::SubscribeMessageTypeRequest& request) = 0;
-    virtual ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::mavlink_direct::MessageResponse>* AsyncSubscribeMessageTypeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mavlink_direct::SubscribeMessageTypeRequest& request, ::grpc::CompletionQueue* cq, void* tag) = 0;
-    virtual ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::mavlink_direct::MessageResponse>* PrepareAsyncSubscribeMessageTypeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mavlink_direct::SubscribeMessageTypeRequest& request, ::grpc::CompletionQueue* cq) = 0;
   };
   class Stub final : public StubInterface {
    public:
@@ -127,22 +110,12 @@ class MavlinkDirectService final {
     std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::mavlink_direct::MessageResponse>> PrepareAsyncSubscribeMessage(::grpc::ClientContext* context, const ::mavsdk::rpc::mavlink_direct::SubscribeMessageRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::mavlink_direct::MessageResponse>>(PrepareAsyncSubscribeMessageRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientReader< ::mavsdk::rpc::mavlink_direct::MessageResponse>> SubscribeMessageType(::grpc::ClientContext* context, const ::mavsdk::rpc::mavlink_direct::SubscribeMessageTypeRequest& request) {
-      return std::unique_ptr< ::grpc::ClientReader< ::mavsdk::rpc::mavlink_direct::MessageResponse>>(SubscribeMessageTypeRaw(context, request));
-    }
-    std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::mavlink_direct::MessageResponse>> AsyncSubscribeMessageType(::grpc::ClientContext* context, const ::mavsdk::rpc::mavlink_direct::SubscribeMessageTypeRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
-      return std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::mavlink_direct::MessageResponse>>(AsyncSubscribeMessageTypeRaw(context, request, cq, tag));
-    }
-    std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::mavlink_direct::MessageResponse>> PrepareAsyncSubscribeMessageType(::grpc::ClientContext* context, const ::mavsdk::rpc::mavlink_direct::SubscribeMessageTypeRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::mavlink_direct::MessageResponse>>(PrepareAsyncSubscribeMessageTypeRaw(context, request, cq));
-    }
     class async final :
       public StubInterface::async_interface {
      public:
       void SendMessage(::grpc::ClientContext* context, const ::mavsdk::rpc::mavlink_direct::SendMessageRequest* request, ::mavsdk::rpc::mavlink_direct::SendMessageResponse* response, std::function<void(::grpc::Status)>) override;
       void SendMessage(::grpc::ClientContext* context, const ::mavsdk::rpc::mavlink_direct::SendMessageRequest* request, ::mavsdk::rpc::mavlink_direct::SendMessageResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
       void SubscribeMessage(::grpc::ClientContext* context, const ::mavsdk::rpc::mavlink_direct::SubscribeMessageRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::mavlink_direct::MessageResponse>* reactor) override;
-      void SubscribeMessageType(::grpc::ClientContext* context, const ::mavsdk::rpc::mavlink_direct::SubscribeMessageTypeRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::mavlink_direct::MessageResponse>* reactor) override;
      private:
       friend class Stub;
       explicit async(Stub* stub): stub_(stub) { }
@@ -159,12 +132,8 @@ class MavlinkDirectService final {
     ::grpc::ClientReader< ::mavsdk::rpc::mavlink_direct::MessageResponse>* SubscribeMessageRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mavlink_direct::SubscribeMessageRequest& request) override;
     ::grpc::ClientAsyncReader< ::mavsdk::rpc::mavlink_direct::MessageResponse>* AsyncSubscribeMessageRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mavlink_direct::SubscribeMessageRequest& request, ::grpc::CompletionQueue* cq, void* tag) override;
     ::grpc::ClientAsyncReader< ::mavsdk::rpc::mavlink_direct::MessageResponse>* PrepareAsyncSubscribeMessageRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mavlink_direct::SubscribeMessageRequest& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientReader< ::mavsdk::rpc::mavlink_direct::MessageResponse>* SubscribeMessageTypeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mavlink_direct::SubscribeMessageTypeRequest& request) override;
-    ::grpc::ClientAsyncReader< ::mavsdk::rpc::mavlink_direct::MessageResponse>* AsyncSubscribeMessageTypeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mavlink_direct::SubscribeMessageTypeRequest& request, ::grpc::CompletionQueue* cq, void* tag) override;
-    ::grpc::ClientAsyncReader< ::mavsdk::rpc::mavlink_direct::MessageResponse>* PrepareAsyncSubscribeMessageTypeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mavlink_direct::SubscribeMessageTypeRequest& request, ::grpc::CompletionQueue* cq) override;
     const ::grpc::internal::RpcMethod rpcmethod_SendMessage_;
     const ::grpc::internal::RpcMethod rpcmethod_SubscribeMessage_;
-    const ::grpc::internal::RpcMethod rpcmethod_SubscribeMessageType_;
   };
   static std::unique_ptr<Stub> NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
 
@@ -180,13 +149,10 @@ class MavlinkDirectService final {
     //
     // Subscribe to incoming MAVLink messages.
     //
-    // This provides direct access to all incoming MAVLink messages without any filtering or processing.
+    // This provides direct access to incoming MAVLink messages. Use an empty string
+    // in message_name to subscribe to all messages, or specify a message name
+    // (e.g., "HEARTBEAT") to filter for specific message types.
     virtual ::grpc::Status SubscribeMessage(::grpc::ServerContext* context, const ::mavsdk::rpc::mavlink_direct::SubscribeMessageRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::mavlink_direct::MessageResponse>* writer);
-    //
-    // Subscribe to incoming MAVLink messages of a specific type.
-    //
-    // This provides filtered access to incoming MAVLink messages of a specific message name.
-    virtual ::grpc::Status SubscribeMessageType(::grpc::ServerContext* context, const ::mavsdk::rpc::mavlink_direct::SubscribeMessageTypeRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::mavlink_direct::MessageResponse>* writer);
   };
   template <class BaseClass>
   class WithAsyncMethod_SendMessage : public BaseClass {
@@ -228,27 +194,7 @@ class MavlinkDirectService final {
       ::grpc::Service::RequestAsyncServerStreaming(1, context, request, writer, new_call_cq, notification_cq, tag);
     }
   };
-  template <class BaseClass>
-  class WithAsyncMethod_SubscribeMessageType : public BaseClass {
-   private:
-    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
-   public:
-    WithAsyncMethod_SubscribeMessageType() {
-      ::grpc::Service::MarkMethodAsync(2);
-    }
-    ~WithAsyncMethod_SubscribeMessageType() override {
-      BaseClassMustBeDerivedFromService(this);
-    }
-    // disable synchronous version of this method
-    ::grpc::Status SubscribeMessageType(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mavlink_direct::SubscribeMessageTypeRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::mavlink_direct::MessageResponse>* /*writer*/) override {
-      abort();
-      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
-    }
-    void RequestSubscribeMessageType(::grpc::ServerContext* context, ::mavsdk::rpc::mavlink_direct::SubscribeMessageTypeRequest* request, ::grpc::ServerAsyncWriter< ::mavsdk::rpc::mavlink_direct::MessageResponse>* writer, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncServerStreaming(2, context, request, writer, new_call_cq, notification_cq, tag);
-    }
-  };
-  typedef WithAsyncMethod_SendMessage<WithAsyncMethod_SubscribeMessage<WithAsyncMethod_SubscribeMessageType<Service > > > AsyncService;
+  typedef WithAsyncMethod_SendMessage<WithAsyncMethod_SubscribeMessage<Service > > AsyncService;
   template <class BaseClass>
   class WithCallbackMethod_SendMessage : public BaseClass {
    private:
@@ -298,29 +244,7 @@ class MavlinkDirectService final {
     virtual ::grpc::ServerWriteReactor< ::mavsdk::rpc::mavlink_direct::MessageResponse>* SubscribeMessage(
       ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::mavlink_direct::SubscribeMessageRequest* /*request*/)  { return nullptr; }
   };
-  template <class BaseClass>
-  class WithCallbackMethod_SubscribeMessageType : public BaseClass {
-   private:
-    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
-   public:
-    WithCallbackMethod_SubscribeMessageType() {
-      ::grpc::Service::MarkMethodCallback(2,
-          new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::mavlink_direct::SubscribeMessageTypeRequest, ::mavsdk::rpc::mavlink_direct::MessageResponse>(
-            [this](
-                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::mavlink_direct::SubscribeMessageTypeRequest* request) { return this->SubscribeMessageType(context, request); }));
-    }
-    ~WithCallbackMethod_SubscribeMessageType() override {
-      BaseClassMustBeDerivedFromService(this);
-    }
-    // disable synchronous version of this method
-    ::grpc::Status SubscribeMessageType(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mavlink_direct::SubscribeMessageTypeRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::mavlink_direct::MessageResponse>* /*writer*/) override {
-      abort();
-      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
-    }
-    virtual ::grpc::ServerWriteReactor< ::mavsdk::rpc::mavlink_direct::MessageResponse>* SubscribeMessageType(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::mavlink_direct::SubscribeMessageTypeRequest* /*request*/)  { return nullptr; }
-  };
-  typedef WithCallbackMethod_SendMessage<WithCallbackMethod_SubscribeMessage<WithCallbackMethod_SubscribeMessageType<Service > > > CallbackService;
+  typedef WithCallbackMethod_SendMessage<WithCallbackMethod_SubscribeMessage<Service > > CallbackService;
   typedef CallbackService ExperimentalCallbackService;
   template <class BaseClass>
   class WithGenericMethod_SendMessage : public BaseClass {
@@ -352,23 +276,6 @@ class MavlinkDirectService final {
     }
     // disable synchronous version of this method
     ::grpc::Status SubscribeMessage(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mavlink_direct::SubscribeMessageRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::mavlink_direct::MessageResponse>* /*writer*/) override {
-      abort();
-      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
-    }
-  };
-  template <class BaseClass>
-  class WithGenericMethod_SubscribeMessageType : public BaseClass {
-   private:
-    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
-   public:
-    WithGenericMethod_SubscribeMessageType() {
-      ::grpc::Service::MarkMethodGeneric(2);
-    }
-    ~WithGenericMethod_SubscribeMessageType() override {
-      BaseClassMustBeDerivedFromService(this);
-    }
-    // disable synchronous version of this method
-    ::grpc::Status SubscribeMessageType(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mavlink_direct::SubscribeMessageTypeRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::mavlink_direct::MessageResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -414,26 +321,6 @@ class MavlinkDirectService final {
     }
   };
   template <class BaseClass>
-  class WithRawMethod_SubscribeMessageType : public BaseClass {
-   private:
-    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
-   public:
-    WithRawMethod_SubscribeMessageType() {
-      ::grpc::Service::MarkMethodRaw(2);
-    }
-    ~WithRawMethod_SubscribeMessageType() override {
-      BaseClassMustBeDerivedFromService(this);
-    }
-    // disable synchronous version of this method
-    ::grpc::Status SubscribeMessageType(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mavlink_direct::SubscribeMessageTypeRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::mavlink_direct::MessageResponse>* /*writer*/) override {
-      abort();
-      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
-    }
-    void RequestSubscribeMessageType(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncWriter< ::grpc::ByteBuffer>* writer, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncServerStreaming(2, context, request, writer, new_call_cq, notification_cq, tag);
-    }
-  };
-  template <class BaseClass>
   class WithRawCallbackMethod_SendMessage : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
@@ -475,28 +362,6 @@ class MavlinkDirectService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeMessage(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)  { return nullptr; }
-  };
-  template <class BaseClass>
-  class WithRawCallbackMethod_SubscribeMessageType : public BaseClass {
-   private:
-    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
-   public:
-    WithRawCallbackMethod_SubscribeMessageType() {
-      ::grpc::Service::MarkMethodRawCallback(2,
-          new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
-            [this](
-                   ::grpc::CallbackServerContext* context, const::grpc::ByteBuffer* request) { return this->SubscribeMessageType(context, request); }));
-    }
-    ~WithRawCallbackMethod_SubscribeMessageType() override {
-      BaseClassMustBeDerivedFromService(this);
-    }
-    // disable synchronous version of this method
-    ::grpc::Status SubscribeMessageType(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mavlink_direct::SubscribeMessageTypeRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::mavlink_direct::MessageResponse>* /*writer*/) override {
-      abort();
-      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
-    }
-    virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeMessageType(
       ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
@@ -554,35 +419,8 @@ class MavlinkDirectService final {
     // replace default version of method with split streamed
     virtual ::grpc::Status StreamedSubscribeMessage(::grpc::ServerContext* context, ::grpc::ServerSplitStreamer< ::mavsdk::rpc::mavlink_direct::SubscribeMessageRequest,::mavsdk::rpc::mavlink_direct::MessageResponse>* server_split_streamer) = 0;
   };
-  template <class BaseClass>
-  class WithSplitStreamingMethod_SubscribeMessageType : public BaseClass {
-   private:
-    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
-   public:
-    WithSplitStreamingMethod_SubscribeMessageType() {
-      ::grpc::Service::MarkMethodStreamed(2,
-        new ::grpc::internal::SplitServerStreamingHandler<
-          ::mavsdk::rpc::mavlink_direct::SubscribeMessageTypeRequest, ::mavsdk::rpc::mavlink_direct::MessageResponse>(
-            [this](::grpc::ServerContext* context,
-                   ::grpc::ServerSplitStreamer<
-                     ::mavsdk::rpc::mavlink_direct::SubscribeMessageTypeRequest, ::mavsdk::rpc::mavlink_direct::MessageResponse>* streamer) {
-                       return this->StreamedSubscribeMessageType(context,
-                         streamer);
-                  }));
-    }
-    ~WithSplitStreamingMethod_SubscribeMessageType() override {
-      BaseClassMustBeDerivedFromService(this);
-    }
-    // disable regular version of this method
-    ::grpc::Status SubscribeMessageType(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mavlink_direct::SubscribeMessageTypeRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::mavlink_direct::MessageResponse>* /*writer*/) override {
-      abort();
-      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
-    }
-    // replace default version of method with split streamed
-    virtual ::grpc::Status StreamedSubscribeMessageType(::grpc::ServerContext* context, ::grpc::ServerSplitStreamer< ::mavsdk::rpc::mavlink_direct::SubscribeMessageTypeRequest,::mavsdk::rpc::mavlink_direct::MessageResponse>* server_split_streamer) = 0;
-  };
-  typedef WithSplitStreamingMethod_SubscribeMessage<WithSplitStreamingMethod_SubscribeMessageType<Service > > SplitStreamedService;
-  typedef WithStreamedUnaryMethod_SendMessage<WithSplitStreamingMethod_SubscribeMessage<WithSplitStreamingMethod_SubscribeMessageType<Service > > > StreamedService;
+  typedef WithSplitStreamingMethod_SubscribeMessage<Service > SplitStreamedService;
+  typedef WithStreamedUnaryMethod_SendMessage<WithSplitStreamingMethod_SubscribeMessage<Service > > StreamedService;
 };
 
 }  // namespace mavlink_direct
