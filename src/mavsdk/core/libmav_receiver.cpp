@@ -139,16 +139,27 @@ std::string LibmavReceiver::libmav_message_to_json(const mav::Message& msg) cons
                             json_stream << "\"" << value << "\"";
                         } else if constexpr (
                             std::is_same_v<T, std::vector<uint8_t>> ||
+                            std::is_same_v<T, std::vector<int8_t>>) {
+                            // Handle uint8_t/int8_t vectors specially to avoid character output
+                            json_stream << "[";
+                            bool first = true;
+                            for (const auto& elem : value) {
+                                if (!first)
+                                    json_stream << ",";
+                                first = false;
+                                json_stream << static_cast<int>(elem);
+                            }
+                            json_stream << "]";
+                        } else if constexpr (
                             std::is_same_v<T, std::vector<uint16_t>> ||
                             std::is_same_v<T, std::vector<uint32_t>> ||
                             std::is_same_v<T, std::vector<uint64_t>> ||
-                            std::is_same_v<T, std::vector<int8_t>> ||
                             std::is_same_v<T, std::vector<int16_t>> ||
                             std::is_same_v<T, std::vector<int32_t>> ||
                             std::is_same_v<T, std::vector<int64_t>> ||
                             std::is_same_v<T, std::vector<float>> ||
                             std::is_same_v<T, std::vector<double>>) {
-                            // Handle vector types
+                            // Handle other vector types
                             json_stream << "[";
                             bool first = true;
                             for (const auto& elem : value) {
