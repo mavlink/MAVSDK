@@ -31,18 +31,11 @@ include(../cmake/compiler_flags.cmake)
 
 find_package(Threads REQUIRED)
 
-if(NOT HUNTER_ENABLED)
-    list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../cmake/Modules/common")
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../cmake/Modules/common")
 
-    if(NOT MSVC)
-        list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../cmake/Modules/non-msvc")
-    endif()
+if(NOT MSVC)
+    list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../cmake/Modules/non-msvc")
 endif()
-
-# This will noop if hunter is not enabled
-hunter_add_package(jsoncpp)
-hunter_add_package(CURL)
-hunter_add_package(lzma)
 
 
 message(STATUS "Build with CMAKE_PREFIX_PATH: ${CMAKE_PREFIX_PATH}")

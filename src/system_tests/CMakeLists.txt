@@ -33,7 +33,6 @@ target_include_directories(system_tests_runner
     ${PROJECT_SOURCE_DIR}/mavsdk/core
 )
 
-hunter_add_package(GTest)
 find_package(GTest REQUIRED)
 
 target_link_libraries(system_tests_runner
