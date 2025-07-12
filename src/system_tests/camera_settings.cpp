@@ -253,7 +253,6 @@ TEST(SystemTest, CameraSettingsAsync)
     Camera::CurrentSettingsHandle handle_settings =
         camera.subscribe_current_settings([&](const Camera::CurrentSettingsUpdate& update) {
             for (auto& setting : update.current_settings) {
-                // std::cout << "setting: " << setting << "\n";
                 if (setting.setting_id == "WB_TEMP") {
                     camera.unsubscribe_current_settings(handle_settings);
                     prom_found_wb_temp.set_value();
@@ -276,7 +275,6 @@ TEST(SystemTest, CameraSettingsAsync)
     camera.subscribe_possible_setting_options(
         [&](const Camera::PossibleSettingOptionsUpdate& update) {
             for (auto& setting_options : update.setting_options) {
-                // std::cout << "setting options: " << setting_options.setting_id << "\n";
                 if (setting_options.setting_id == "EXP_ABSOLUTE") {
                     prom_found_exp_absolute.set_value();
                 }
