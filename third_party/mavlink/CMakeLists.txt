@@ -26,6 +26,7 @@ if(IOS)
                 COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/message_definitions/v1.0/minimal.xml ${CMAKE_INSTALL_PREFIX}/include/mavlink/message_definitions/v1.0/
                 COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/message_definitions/v1.0/standard.xml ${CMAKE_INSTALL_PREFIX}/include/mavlink/message_definitions/v1.0/
                 COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/message_definitions/v1.0/common.xml ${CMAKE_INSTALL_PREFIX}/include/mavlink/message_definitions/v1.0/
+                COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/message_definitions/v1.0/ardupilotmega.xml ${CMAKE_INSTALL_PREFIX}/include/mavlink/message_definitions/v1.0/
     )
 else()
     ExternalProject_add(
@@ -40,5 +41,6 @@ else()
                 COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/message_definitions/v1.0/minimal.xml ${CMAKE_INSTALL_PREFIX}/include/mavlink/message_definitions/v1.0/
                 COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/message_definitions/v1.0/standard.xml ${CMAKE_INSTALL_PREFIX}/include/mavlink/message_definitions/v1.0/
                 COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/message_definitions/v1.0/common.xml ${CMAKE_INSTALL_PREFIX}/include/mavlink/message_definitions/v1.0/
+                COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/message_definitions/v1.0/ardupilotmega.xml ${CMAKE_INSTALL_PREFIX}/include/mavlink/message_definitions/v1.0/
     )
 endif()

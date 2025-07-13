@@ -602,3 +602,73 @@ TEST(SystemTest, MavlinkDirectLoadCustomXml)
 
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
+
+TEST(SystemTest, MavlinkDirectArdupilotmegaMessage)
+{
+    Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
+    Mavsdk mavsdk_autopilot{Mavsdk::Configuration{ComponentType::Autopilot}};
+
+    ASSERT_EQ(
+        mavsdk_groundstation.add_any_connection("udpin://0.0.0.0:17000"),
+        ConnectionResult::Success);
+    ASSERT_EQ(
+        mavsdk_autopilot.add_any_connection("udpout://127.0.0.1:17000"), ConnectionResult::Success);
+
+    // Ground station discovers the autopilot system
+    auto maybe_system = mavsdk_groundstation.first_autopilot(10.0);
+    ASSERT_TRUE(maybe_system);
+    auto system = maybe_system.value();
+    ASSERT_TRUE(system->has_autopilot());
+
+    // Wait for autopilot instance to discover the connection to the ground station
+    LogInfo() << "Waiting for autopilot system to connect...";
+    while (mavsdk_autopilot.systems().size() == 0) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    }
+
+    // Get the autopilot's view of the connected system
+    auto groundstation_system = mavsdk_autopilot.systems().at(0);
+    ASSERT_EQ(groundstation_system->component_ids()[0], 190);
+
+    // Create separate MavlinkDirect instances for sender (autopilot) and receiver (ground station)
+    auto receiver_mavlink_direct = MavlinkDirect{system};
+    auto sender_mavlink_direct = MavlinkDirect{groundstation_system};
+
+    std::optional<MavlinkDirect::MavlinkMessage> received_message;
+    // Ground station subscribes to receive MEMINFO from autopilot (ArduPilot-specific message)
+    auto handle = receiver_mavlink_direct.subscribe_message(
+        "MEMINFO", [&](MavlinkDirect::MavlinkMessage message) {
+            LogInfo() << "Received MEMINFO: " << message.fields_json;
+            received_message = message;
+        });
+
+    // Autopilot sends MEMINFO message (ID 152 from ardupilotmega.xml)
+    MavlinkDirect::MavlinkMessage meminfo_msg;
+    meminfo_msg.message_name = "MEMINFO";
+    meminfo_msg.fields_json = R"({"brkval": 32768, "freemem": 8192})";
+
+    auto result = sender_mavlink_direct.send_message(meminfo_msg);
+    ASSERT_EQ(result, MavlinkDirect::Result::Success);
+
+    // Wait for message to be received
+    auto timeout = std::chrono::steady_clock::now() + std::chrono::seconds(5);
+    while (!received_message.has_value() && std::chrono::steady_clock::now() < timeout) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    }
+
+    // Verify the message was received
+    ASSERT_TRUE(received_message.has_value());
+    EXPECT_EQ(received_message->message_name, "MEMINFO");
+
+    // Parse JSON to verify field values
+    Json::Value json;
+    Json::Reader reader;
+    ASSERT_TRUE(reader.parse(received_message->fields_json, json));
+
+    // Verify MEMINFO message fields
+    EXPECT_EQ(json["brkval"].asUInt(), 32768u); // Heap top
+    EXPECT_EQ(json["freemem"].asUInt(), 8192u); // Free memory
+
+    LogInfo() << "Successfully tested ArduPilot-specific MEMINFO message from ardupilotmega.xml";
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+}
