@@ -59,7 +59,6 @@ private:
     char* _datagram = nullptr;
     unsigned _datagram_len = 0;
 
-
     bool _debugging = false;
 
     // Helper methods

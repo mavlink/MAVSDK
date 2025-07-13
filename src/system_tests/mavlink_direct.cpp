@@ -81,6 +81,7 @@ TEST(SystemTest, MavlinkDirectRoundtrip)
     // Note: For now we only check message_name since field extraction is simplified
     EXPECT_TRUE(received_message->fields_json.find("GLOBAL_POSITION_INT") != std::string::npos);
 
+    receiver_mavlink_direct.unsubscribe_message(handle);
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
@@ -206,6 +207,7 @@ TEST(SystemTest, MavlinkDirectExtendedFields)
     EXPECT_EQ(full_json["onboard_control_sensors_enabled_extended"].asUInt(), 456u);
     EXPECT_EQ(full_json["onboard_control_sensors_health_extended"].asUInt(), 789u);
 
+    receiver_mavlink_direct.unsubscribe_message(handle);
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
@@ -351,6 +353,7 @@ TEST(SystemTest, TelemetryServerToMavlinkDirect)
     // Verify the JSON contains the message info (since we're using simplified parsing)
     EXPECT_TRUE(received_message->fields_json.find("GLOBAL_POSITION_INT") != std::string::npos);
 
+    receiver_mavlink_direct.unsubscribe_message(handle);
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
@@ -505,6 +508,7 @@ TEST(SystemTest, MavlinkDirectArrayFields)
     EXPECT_EQ(full_json["satellite_snr"][0].asUInt(), 25u);
     EXPECT_EQ(full_json["satellite_snr"][19].asUInt(), 27u); // Last element
 
+    receiver_mavlink_direct.unsubscribe_message(handle);
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
@@ -600,6 +604,7 @@ TEST(SystemTest, MavlinkDirectLoadCustomXml)
     EXPECT_EQ(json["counter"].asUInt(), 1337u);
     EXPECT_EQ(json["status"].asUInt(), 5u);
 
+    receiver_mavlink_direct.unsubscribe_message(handle);
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
@@ -670,5 +675,6 @@ TEST(SystemTest, MavlinkDirectArdupilotmegaMessage)
     EXPECT_EQ(json["freemem"].asUInt(), 8192u); // Free memory
 
     LogInfo() << "Successfully tested ArduPilot-specific MEMINFO message from ardupilotmega.xml";
+    receiver_mavlink_direct.unsubscribe_message(handle);
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
