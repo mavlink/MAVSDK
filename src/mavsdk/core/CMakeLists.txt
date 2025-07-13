@@ -13,9 +13,9 @@ configure_file(version.h.in version.h)
 configure_file(include/mavsdk/mavlink_include.h.in include/mavsdk/mavlink_include.h)
 
 # Generate embedded XML header for libmav
-set(MAVLINK_MINIMAL_XML "${CMAKE_BINARY_DIR}/third_party/mavlink/mavlink/src/mavlink/message_definitions/v1.0/minimal.xml")
-set(MAVLINK_STANDARD_XML "${CMAKE_BINARY_DIR}/third_party/mavlink/mavlink/src/mavlink/message_definitions/v1.0/standard.xml")
-set(MAVLINK_COMMON_XML "${CMAKE_BINARY_DIR}/third_party/mavlink/mavlink/src/mavlink/message_definitions/v1.0/common.xml")
+set(MAVLINK_MINIMAL_XML "${DEPS_INSTALL_PATH}/include/mavlink/message_definitions/v1.0/minimal.xml")
+set(MAVLINK_STANDARD_XML "${DEPS_INSTALL_PATH}/include/mavlink/message_definitions/v1.0/standard.xml")
+set(MAVLINK_COMMON_XML "${DEPS_INSTALL_PATH}/include/mavlink/message_definitions/v1.0/common.xml")
 set(EMBEDDED_XML_HEADER "${CMAKE_CURRENT_BINARY_DIR}/embedded_mavlink_xml.h")
 
 add_custom_command(
