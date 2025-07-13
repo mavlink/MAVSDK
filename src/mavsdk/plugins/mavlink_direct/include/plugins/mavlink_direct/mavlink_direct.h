@@ -153,6 +153,20 @@ public:
     void unsubscribe_message(MessageHandle handle);
 
     /**
+     * @brief Load custom MAVLink message definitions from XML.
+     *
+     * This allows loading custom MAVLink message definitions at runtime,
+     * extending the available message types beyond the built-in definitions.
+     *
+     * This function is blocking.
+     *
+
+     * @return Result of request.
+
+     */
+    Result load_custom_xml(std::string xml_content) const;
+
+    /**
      * @brief Copy constructor.
      */
     MavlinkDirect(const MavlinkDirect& other);

@@ -207,6 +207,34 @@ public:
         return grpc::Status::OK;
     }
 
+    grpc::Status LoadCustomXml(
+        grpc::ServerContext* /* context */,
+        const rpc::mavlink_direct::LoadCustomXmlRequest* request,
+        rpc::mavlink_direct::LoadCustomXmlResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                auto result = mavsdk::MavlinkDirect::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        if (request == nullptr) {
+            LogWarn() << "LoadCustomXml sent with a null request! Ignoring...";
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->load_custom_xml(request->xml_content());
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+
+        return grpc::Status::OK;
+    }
+
     void stop()
     {
         _stopped.store(true);

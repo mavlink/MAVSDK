@@ -205,27 +205,24 @@ std::optional<mav::Message> LibmavReceiver::create_message(const std::string& me
     return _message_set->create(message_name);
 }
 
-bool LibmavReceiver::libmav_to_mavlink_message(
-    const mav::Message& libmav_msg, mavlink_message_t& mavlink_msg) const
+bool LibmavReceiver::load_custom_xml(const std::string& xml_content)
 {
-    // Get the raw message data from the finalized libmav message
-    auto message_data = libmav_msg.data();
+    if (!_message_set) {
+        return false;
+    }
 
-    // Parse the raw MAVLink data into mavlink_message_t structure
-    mavlink_status_t status;
-    bool message_parsed = false;
+    // Use libmav's addFromXMLString method to load custom XML
+    auto result = _message_set->addFromXMLString(xml_content, false /* recursive_open_includes */);
 
-    // Parse the message header and payload from the raw data
-    // libmav data includes full MAVLink packet: header + payload + checksum + signature
-    // Parse byte by byte until we get a complete message or reach max size
-    for (size_t i = 0; i < 280; ++i) { // 280 is roughly max MAVLink message size
-        if (mavlink_parse_char(MAVLINK_COMM_0, message_data[i], &mavlink_msg, &status)) {
-            message_parsed = true;
-            break;
+    if (_debugging) {
+        if (result == mav::MessageSetResult::Success) {
+            LogDebug() << "Successfully loaded custom XML definitions";
+        } else {
+            LogDebug() << "Failed to load custom XML definitions";
         }
     }
 
-    return message_parsed;
+    return result == mav::MessageSetResult::Success;
 }
 
 } // namespace mavsdk

@@ -33,6 +33,8 @@ public:
 
     void unsubscribe_message(MavlinkDirect::MessageHandle handle);
 
+    MavlinkDirect::Result load_custom_xml(const std::string& xml_content);
+
 private:
     // Handle factory
     HandleFactory<MavlinkDirect::MavlinkMessage> _message_handle_factory{};

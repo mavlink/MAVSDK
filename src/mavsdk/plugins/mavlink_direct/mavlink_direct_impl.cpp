@@ -77,7 +77,12 @@ MavlinkDirect::Result MavlinkDirectImpl::send_message(MavlinkDirect::MavlinkMess
 
     // Convert JSON fields to libmav message fields
     if (!json_to_libmav_message(message.fields_json, libmav_message)) {
+        LogErr() << "Failed to convert JSON fields to libmav message for " << message.message_name;
         return MavlinkDirect::Result::InvalidField; // JSON conversion failed
+    }
+
+    if (_debugging) {
+        LogDebug() << "Successfully populated fields for " << message.message_name;
     }
 
     // Set target system/component if specified
@@ -90,24 +95,36 @@ MavlinkDirect::Result MavlinkDirectImpl::send_message(MavlinkDirect::MavlinkMess
         libmav_message.set("target_component", static_cast<uint8_t>(message.target_component));
     }
 
-    // Finalize the message (add header, CRC, etc.)
-    mav::Identifier sender{
-        static_cast<uint8_t>(message.system_id), static_cast<uint8_t>(message.component_id)};
-    auto message_size_opt = libmav_message.finalize(0, sender); // seq=0 for now
-    if (!message_size_opt) {
-        return MavlinkDirect::Result::Error; // Message finalization failed
+    if (_debugging) {
+        LogDebug() << "Sending " << message.message_name << " via unified libmav API";
     }
 
-    // Convert libmav message back to mavlink_message_t for sending
-    mavlink_message_t mavlink_msg;
-    if (!libmav_receiver->libmav_to_mavlink_message(libmav_message, mavlink_msg)) {
-        return MavlinkDirect::Result::Error; // Conversion failed
-    }
+    _system_impl->queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
+        mavlink_message_t mavlink_message;
 
-    // Send through existing connection interface
-    auto send_result = connection->send_message(mavlink_msg);
-    if (!send_result.first) {
-        return MavlinkDirect::Result::ConnectionError;
+        // Use clean libmav helper methods to get payload data
+        auto payload_view = libmav_message.getPayloadView();
+        const uint8_t payload_length = libmav_message.getPayloadLength();
+
+        // Set up the mavlink_message_t structure
+        mavlink_message.msgid = libmav_message.id();
+        mavlink_message.len = payload_length;
+        memcpy(mavlink_message.payload64, payload_view.first, payload_length);
+
+        mavlink_finalize_message_chan(
+            &mavlink_message,
+            mavlink_address.system_id,
+            mavlink_address.component_id,
+            channel,
+            payload_length,
+            libmav_message.type().maxPayloadSize(),
+            libmav_message.type().crcExtra());
+
+        return mavlink_message;
+    });
+
+    if (_debugging) {
+        LogDebug() << "Successfully sent " << message.message_name << " as raw data";
     }
 
     return MavlinkDirect::Result::Success;
@@ -354,6 +371,41 @@ bool MavlinkDirectImpl::json_to_libmav_message(
     }
 
     return true;
+}
+
+MavlinkDirect::Result MavlinkDirectImpl::load_custom_xml(const std::string& xml_content)
+{
+    // Get access to the LibmavReceiver through the system connections
+    auto connections = _system_impl->get_connections();
+    if (connections.empty()) {
+        LogErr() << "No connections available for loading custom XML";
+        return MavlinkDirect::Result::ConnectionError;
+    }
+
+    // Use the first connection to get the MessageSet
+    auto connection = connections[0];
+    auto libmav_receiver = connection->get_libmav_receiver();
+    if (!libmav_receiver) {
+        LogErr() << "LibmavReceiver not available";
+        return MavlinkDirect::Result::ConnectionError;
+    }
+
+    if (_debugging) {
+        LogDebug() << "Loading custom XML definitions...";
+    }
+
+    // Load the custom XML into the MessageSet
+    bool success = libmav_receiver->load_custom_xml(xml_content);
+
+    if (success) {
+        if (_debugging) {
+            LogDebug() << "Successfully loaded custom XML definitions";
+        }
+        return MavlinkDirect::Result::Success;
+    } else {
+        LogErr() << "Failed to load custom XML definitions";
+        return MavlinkDirect::Result::Error;
+    }
 }
 
 } // namespace mavsdk

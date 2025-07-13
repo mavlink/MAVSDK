@@ -40,6 +40,11 @@ void MavlinkDirect::unsubscribe_message(MessageHandle handle)
     _impl->unsubscribe_message(handle);
 }
 
+MavlinkDirect::Result MavlinkDirect::load_custom_xml(std::string xml_content) const
+{
+    return _impl->load_custom_xml(xml_content);
+}
+
 bool operator==(const MavlinkDirect::MavlinkMessage& lhs, const MavlinkDirect::MavlinkMessage& rhs)
 {
     return (rhs.message_name == lhs.message_name) && (rhs.system_id == lhs.system_id) &&
