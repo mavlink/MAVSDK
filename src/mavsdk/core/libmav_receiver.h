@@ -59,9 +59,6 @@ private:
     char* _datagram = nullptr;
     unsigned _datagram_len = 0;
 
-    // libmav parsing state
-    std::vector<uint8_t> _buffer;
-    size_t _buffer_pos = 0;
 
     bool _debugging = false;
 
