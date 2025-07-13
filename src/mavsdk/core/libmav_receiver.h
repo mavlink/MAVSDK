@@ -44,13 +44,12 @@ public:
     // Message creation for sending
     std::optional<mav::Message> create_message(const std::string& message_name) const;
 
-    // Convert libmav message to mavlink_message_t for sending
-    bool
-    libmav_to_mavlink_message(const mav::Message& libmav_msg, mavlink_message_t& mavlink_msg) const;
-
     // Helper methods for message ID/name conversion
     std::optional<std::string> message_id_to_name(uint32_t id) const;
     std::optional<int> message_name_to_id(const std::string& name) const;
+
+    // Load custom XML message definitions
+    bool load_custom_xml(const std::string& xml_content);
 
 private:
     std::unique_ptr<mav::MessageSet> _message_set;

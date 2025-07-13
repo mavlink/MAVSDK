@@ -137,9 +137,6 @@ private:
     void deliver_messages();
     void deliver_message(mavlink_message_t& message);
 
-    void deliver_libmav_messages();
-    void deliver_libmav_message(const LibmavMessage& message);
-
     bool is_any_system_connected() const;
 
     std::shared_ptr<ServerComponent> server_component_by_id_with_lock(uint8_t component_id);

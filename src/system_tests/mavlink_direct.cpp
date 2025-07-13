@@ -507,3 +507,98 @@ TEST(SystemTest, MavlinkDirectArrayFields)
 
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
+
+TEST(SystemTest, MavlinkDirectLoadCustomXml)
+{
+    Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
+    Mavsdk mavsdk_autopilot{Mavsdk::Configuration{ComponentType::Autopilot}};
+
+    ASSERT_EQ(
+        mavsdk_groundstation.add_any_connection("udpin://0.0.0.0:17005"),
+        ConnectionResult::Success);
+    ASSERT_EQ(
+        mavsdk_autopilot.add_any_connection("udpout://127.0.0.1:17005"), ConnectionResult::Success);
+
+    // Ground station discovers the autopilot system
+    auto maybe_system = mavsdk_groundstation.first_autopilot(10.0);
+    ASSERT_TRUE(maybe_system);
+    auto system = maybe_system.value();
+    ASSERT_TRUE(system->has_autopilot());
+
+    // Wait for autopilot instance to discover the connection to the ground station
+    while (mavsdk_autopilot.systems().size() == 0) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    }
+
+    auto groundstation_system = mavsdk_autopilot.systems().at(0);
+    ASSERT_EQ(groundstation_system->component_ids()[0], 190);
+
+    auto sender_mavlink_direct = MavlinkDirect{groundstation_system};
+    auto receiver_mavlink_direct = MavlinkDirect{system};
+
+    // Define custom XML with a test message
+    std::string custom_xml = R"(<?xml version="1.0"?>
+<mavlink>
+    <version>3</version>
+    <dialect>0</dialect>
+    <messages>
+        <message id="420" name="CUSTOM_TEST_MESSAGE">
+            <description>A test custom message for LoadCustomXml</description>
+            <field type="uint32_t" name="test_value">Test value field</field>
+            <field type="uint16_t" name="counter">Counter field</field>
+            <field type="uint8_t" name="status">Status byte</field>
+        </message>
+    </messages>
+</mavlink>)";
+
+    // Load custom XML on both sender and receiver
+    auto result1 = sender_mavlink_direct.load_custom_xml(custom_xml);
+    EXPECT_EQ(result1, MavlinkDirect::Result::Success);
+
+    auto result2 = receiver_mavlink_direct.load_custom_xml(custom_xml);
+    EXPECT_EQ(result2, MavlinkDirect::Result::Success);
+
+    std::optional<MavlinkDirect::MavlinkMessage> received_message;
+
+    // Subscribe to the custom message
+    auto handle = receiver_mavlink_direct.subscribe_message(
+        "CUSTOM_TEST_MESSAGE", [&](MavlinkDirect::MavlinkMessage message) {
+            LogInfo() << "Received CUSTOM_TEST_MESSAGE: " << message.fields_json;
+            received_message = message;
+        });
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+
+    // Send the custom message
+    MavlinkDirect::MavlinkMessage custom_message;
+    custom_message.message_name = "CUSTOM_TEST_MESSAGE";
+    custom_message.system_id = 1;
+    custom_message.component_id = 1;
+    custom_message.target_system = 0;
+    custom_message.target_component = 0;
+    custom_message.fields_json = R"({"test_value":42,"counter":1337,"status":5})";
+
+    auto send_result = sender_mavlink_direct.send_message(custom_message);
+    EXPECT_EQ(send_result, MavlinkDirect::Result::Success);
+
+    // Wait for message to be received
+    auto timeout = std::chrono::steady_clock::now() + std::chrono::seconds(5);
+    while (!received_message && std::chrono::steady_clock::now() < timeout) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    }
+
+    ASSERT_TRUE(received_message.has_value());
+    EXPECT_EQ(received_message->message_name, "CUSTOM_TEST_MESSAGE");
+
+    // Parse JSON to verify field values
+    Json::Value json;
+    Json::Reader reader;
+    ASSERT_TRUE(reader.parse(received_message->fields_json, json));
+
+    // Verify custom message fields
+    EXPECT_EQ(json["test_value"].asUInt(), 42u);
+    EXPECT_EQ(json["counter"].asUInt(), 1337u);
+    EXPECT_EQ(json["status"].asUInt(), 5u);
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+}
