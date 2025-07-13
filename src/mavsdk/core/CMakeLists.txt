@@ -16,6 +16,7 @@ configure_file(include/mavsdk/mavlink_include.h.in include/mavsdk/mavlink_includ
 set(MAVLINK_MINIMAL_XML "${DEPS_INSTALL_PATH}/include/mavlink/message_definitions/v1.0/minimal.xml")
 set(MAVLINK_STANDARD_XML "${DEPS_INSTALL_PATH}/include/mavlink/message_definitions/v1.0/standard.xml")
 set(MAVLINK_COMMON_XML "${DEPS_INSTALL_PATH}/include/mavlink/message_definitions/v1.0/common.xml")
+set(MAVLINK_ARDUPILOTMEGA_XML "${DEPS_INSTALL_PATH}/include/mavlink/message_definitions/v1.0/ardupilotmega.xml")
 set(EMBEDDED_XML_HEADER "${CMAKE_CURRENT_BINARY_DIR}/embedded_mavlink_xml.h")
 
 add_custom_command(
@@ -24,9 +25,10 @@ add_custom_command(
         -DMINIMAL_XML_PATH=${MAVLINK_MINIMAL_XML}
         -DSTANDARD_XML_PATH=${MAVLINK_STANDARD_XML}
         -DCOMMON_XML_PATH=${MAVLINK_COMMON_XML}
+        -DARDUPILOTMEGA_XML_PATH=${MAVLINK_ARDUPILOTMEGA_XML}
         -DOUTPUT_HEADER=${EMBEDDED_XML_HEADER}
         -P ${CMAKE_SOURCE_DIR}/cmake/generate_embedded_xml.cmake
-    DEPENDS ${MAVLINK_MINIMAL_XML} ${MAVLINK_STANDARD_XML} ${MAVLINK_COMMON_XML}
+    DEPENDS ${MAVLINK_MINIMAL_XML} ${MAVLINK_STANDARD_XML} ${MAVLINK_COMMON_XML} ${MAVLINK_ARDUPILOTMEGA_XML}
     COMMENT "Generating embedded MAVLink XML header for core"
     VERBATIM
 )

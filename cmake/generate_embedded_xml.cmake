@@ -1,5 +1,5 @@
 # CMake script to embed MAVLink XML files as C++ string constants
-# Usage: cmake -DMINIMAL_XML_PATH=<path> -DSTANDARD_XML_PATH=<path> -DCOMMON_XML_PATH=<path> -DOUTPUT_HEADER=<path> -P generate_embedded_xml.cmake
+# Usage: cmake -DMINIMAL_XML_PATH=<path> -DSTANDARD_XML_PATH=<path> -DCOMMON_XML_PATH=<path> -DARDUPILOTMEGA_XML_PATH=<path> -DOUTPUT_HEADER=<path> -P generate_embedded_xml.cmake
 
 if(NOT MINIMAL_XML_PATH)
     message(FATAL_ERROR "MINIMAL_XML_PATH must be specified")
@@ -11,6 +11,10 @@ endif()
 
 if(NOT COMMON_XML_PATH)
     message(FATAL_ERROR "COMMON_XML_PATH must be specified")
+endif()
+
+if(NOT ARDUPILOTMEGA_XML_PATH)
+    message(FATAL_ERROR "ARDUPILOTMEGA_XML_PATH must be specified")
 endif()
 
 if(NOT OUTPUT_HEADER)
@@ -37,6 +41,7 @@ endfunction()
 read_and_escape_xml("${MINIMAL_XML_PATH}" "MINIMAL_XML" MINIMAL_XML_CONSTANT)
 read_and_escape_xml("${STANDARD_XML_PATH}" "STANDARD_XML" STANDARD_XML_CONSTANT)
 read_and_escape_xml("${COMMON_XML_PATH}" "COMMON_XML" COMMON_XML_CONSTANT)
+read_and_escape_xml("${ARDUPILOTMEGA_XML_PATH}" "ARDUPILOTMEGA_XML" ARDUPILOTMEGA_XML_CONSTANT)
 
 # Generate the header file content
 set(HEADER_CONTENT
@@ -51,6 +56,8 @@ ${MINIMAL_XML_CONSTANT}
 ${STANDARD_XML_CONSTANT}
 
 ${COMMON_XML_CONSTANT}
+
+${ARDUPILOTMEGA_XML_CONSTANT}
 }
 ")
 

@@ -17,6 +17,7 @@ LibmavReceiver::LibmavReceiver()
     _message_set->addFromXMLString(mav_embedded::MINIMAL_XML);
     _message_set->addFromXMLString(mav_embedded::STANDARD_XML);
     _message_set->addFromXMLString(mav_embedded::COMMON_XML);
+    _message_set->addFromXMLString(mav_embedded::ARDUPILOTMEGA_XML);
 
     // Initialize BufferParser with our MessageSet
     _buffer_parser = std::make_unique<mav::BufferParser>(*_message_set);
