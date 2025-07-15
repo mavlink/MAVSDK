@@ -43,12 +43,12 @@ public:
     // Thus, no one can interfere between the two steps.
     class Guard {
     public:
-        explicit Guard(LockedQueue& locked_queue) : _locked_queue(locked_queue)
-        {
-            _locked_queue._mutex.lock();
-        }
+        explicit Guard(LockedQueue& locked_queue) :
+            _locked_queue(locked_queue),
+            _lock(locked_queue._mutex)
+        {}
 
-        ~Guard() { _locked_queue._mutex.unlock(); }
+        ~Guard() = default;
 
         Guard(Guard& other) = delete;
         Guard(const Guard& other) = delete;
@@ -67,18 +67,14 @@ public:
 
         std::shared_ptr<T> wait_and_pop_front()
         {
-            // Convert lock_guard to unique_lock for condition variable usage
-            _locked_queue._mutex.unlock();
-            std::unique_lock<std::mutex> lock(_locked_queue._mutex);
-
             while (_locked_queue._queue.empty()) {
                 if (_locked_queue._should_exit) {
-                    return nullptr;
+                    return std::shared_ptr<T>{};
                 }
-                _locked_queue._condition_var.wait(lock);
+                _locked_queue._condition_var.wait(_lock);
             }
             if (_locked_queue._should_exit) {
-                return nullptr;
+                return std::shared_ptr<T>{};
             }
 
             auto result = _locked_queue._queue.front();
@@ -90,6 +86,7 @@ public:
 
     private:
         LockedQueue<T>& _locked_queue;
+        std::unique_lock<std::mutex> _lock;
     };
 
 private:
