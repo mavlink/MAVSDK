@@ -1,5 +1,6 @@
 #include "mavlink_direct_impl.h"
 #include <mav/Message.h>
+#include <mav/MessageSet.h>
 #include <variant>
 #include <json/json.h>
 #include "log.h"
@@ -47,22 +48,11 @@ void MavlinkDirectImpl::disable() {}
 
 MavlinkDirect::Result MavlinkDirectImpl::send_message(MavlinkDirect::MavlinkMessage message)
 {
-    // Get access to the LibmavReceiver's MessageSet through the system
-    // For now, we'll access it through the connection's libmav receiver
-    auto connections = _system_impl->get_connections();
-    if (connections.empty()) {
-        return MavlinkDirect::Result::ConnectionError;
-    }
-
-    // Use the first connection to get the MessageSet
-    auto connection = connections[0];
-    auto libmav_receiver = connection->get_libmav_receiver();
-    if (!libmav_receiver) {
-        return MavlinkDirect::Result::ConnectionError;
-    }
+    // Get access to the MessageSet through the system
+    auto& message_set = _system_impl->get_message_set();
 
     // Create libmav message from the message name
-    auto libmav_message_opt = libmav_receiver->create_message(message.message_name);
+    auto libmav_message_opt = message_set.create(message.message_name);
     if (!libmav_message_opt) {
         LogErr() << "Failed to create message: " << message.message_name;
         return MavlinkDirect::Result::InvalidMessage; // Message type not found
@@ -187,20 +177,11 @@ void MavlinkDirectImpl::unsubscribe_message(MavlinkDirect::MessageHandle handle)
 
 std::optional<uint32_t> MavlinkDirectImpl::message_name_to_id(const std::string& name) const
 {
-    // Get connections to access LibmavReceiver
-    auto connections = _system_impl->get_connections();
-    if (connections.empty()) {
-        return std::nullopt;
-    }
+    // Get MessageSet to access message definitions
+    auto& message_set = _system_impl->get_message_set();
 
-    auto connection = connections[0];
-    auto libmav_receiver = connection->get_libmav_receiver();
-    if (!libmav_receiver) {
-        return std::nullopt;
-    }
-
-    // Use LibmavReceiver's message name to ID conversion
-    auto id_opt = libmav_receiver->message_name_to_id(name);
+    // Use MessageSet's message name to ID conversion
+    auto id_opt = message_set.idForMessage(name);
     if (id_opt.has_value()) {
         return static_cast<uint32_t>(id_opt.value());
     }
@@ -210,20 +191,15 @@ std::optional<uint32_t> MavlinkDirectImpl::message_name_to_id(const std::string&
 
 std::optional<std::string> MavlinkDirectImpl::message_id_to_name(uint32_t id) const
 {
-    // Get connections to access LibmavReceiver
-    auto connections = _system_impl->get_connections();
-    if (connections.empty()) {
-        return std::nullopt;
-    }
+    // Get MessageSet to access message definitions
+    auto& message_set = _system_impl->get_message_set();
 
-    auto connection = connections[0];
-    auto libmav_receiver = connection->get_libmav_receiver();
-    if (!libmav_receiver) {
-        return std::nullopt;
+    // Use MessageSet's message ID to name conversion
+    auto message_def = message_set.getMessageDefinition(static_cast<int>(id));
+    if (message_def) {
+        return message_def.get().name();
     }
-
-    // Use LibmavReceiver's message ID to name conversion
-    return libmav_receiver->message_id_to_name(id);
+    return std::nullopt;
 }
 
 Json::Value MavlinkDirectImpl::libmav_to_json(const mav::Message& msg) const
@@ -259,48 +235,48 @@ bool MavlinkDirectImpl::json_to_libmav_message(
         // Convert JSON values to appropriate types and set in message
         if (field_value.isInt()) {
             auto result = msg.set(field_name, static_cast<int32_t>(field_value.asInt()));
-            if (result != mav::MessageResult::Success) {
+            if (result != ::mav::MessageResult::Success) {
                 // Try as other integer types
                 if (msg.set(field_name, static_cast<uint32_t>(field_value.asUInt())) !=
-                        mav::MessageResult::Success &&
+                        ::mav::MessageResult::Success &&
                     msg.set(field_name, static_cast<int16_t>(field_value.asInt())) !=
-                        mav::MessageResult::Success &&
+                        ::mav::MessageResult::Success &&
                     msg.set(field_name, static_cast<uint16_t>(field_value.asUInt())) !=
-                        mav::MessageResult::Success &&
+                        ::mav::MessageResult::Success &&
                     msg.set(field_name, static_cast<int8_t>(field_value.asInt())) !=
-                        mav::MessageResult::Success &&
+                        ::mav::MessageResult::Success &&
                     msg.set(field_name, static_cast<uint8_t>(field_value.asUInt())) !=
-                        mav::MessageResult::Success) {
+                        ::mav::MessageResult::Success) {
                     LogWarn() << "Failed to set integer field " << field_name << " = "
                               << field_value.asInt();
                 }
             }
         } else if (field_value.isUInt()) {
             auto result = msg.set(field_name, static_cast<uint32_t>(field_value.asUInt()));
-            if (result != mav::MessageResult::Success) {
+            if (result != ::mav::MessageResult::Success) {
                 // Try as other unsigned integer types
                 if (msg.set(field_name, static_cast<uint64_t>(field_value.asUInt64())) !=
-                        mav::MessageResult::Success &&
+                        ::mav::MessageResult::Success &&
                     msg.set(field_name, static_cast<uint16_t>(field_value.asUInt())) !=
-                        mav::MessageResult::Success &&
+                        ::mav::MessageResult::Success &&
                     msg.set(field_name, static_cast<uint8_t>(field_value.asUInt())) !=
-                        mav::MessageResult::Success) {
+                        ::mav::MessageResult::Success) {
                     LogWarn() << "Failed to set unsigned integer field " << field_name << " = "
                               << field_value.asUInt();
                 }
             }
         } else if (field_value.isDouble()) {
             auto result = msg.set(field_name, static_cast<float>(field_value.asFloat()));
-            if (result != mav::MessageResult::Success) {
+            if (result != ::mav::MessageResult::Success) {
                 // Try as double
-                if (msg.set(field_name, field_value.asDouble()) != mav::MessageResult::Success) {
+                if (msg.set(field_name, field_value.asDouble()) != ::mav::MessageResult::Success) {
                     LogWarn() << "Failed to set float/double field " << field_name << " = "
                               << field_value.asDouble();
                 }
             }
         } else if (field_value.isString()) {
             auto result = msg.setString(field_name, field_value.asString());
-            if (result != mav::MessageResult::Success) {
+            if (result != ::mav::MessageResult::Success) {
                 LogWarn() << "Failed to set string field " << field_name << " = "
                           << field_value.asString();
             }
@@ -353,14 +329,14 @@ bool MavlinkDirectImpl::json_to_libmav_message(
             }
 
             // Try to set the array field with different vector types
-            if (msg.set(field_name, uint8_vec) == mav::MessageResult::Success ||
-                msg.set(field_name, uint16_vec) == mav::MessageResult::Success ||
-                msg.set(field_name, uint32_vec) == mav::MessageResult::Success ||
-                msg.set(field_name, int8_vec) == mav::MessageResult::Success ||
-                msg.set(field_name, int16_vec) == mav::MessageResult::Success ||
-                msg.set(field_name, int32_vec) == mav::MessageResult::Success ||
-                msg.set(field_name, float_vec) == mav::MessageResult::Success ||
-                msg.set(field_name, double_vec) == mav::MessageResult::Success) {
+            if (msg.set(field_name, uint8_vec) == ::mav::MessageResult::Success ||
+                msg.set(field_name, uint16_vec) == ::mav::MessageResult::Success ||
+                msg.set(field_name, uint32_vec) == ::mav::MessageResult::Success ||
+                msg.set(field_name, int8_vec) == ::mav::MessageResult::Success ||
+                msg.set(field_name, int16_vec) == ::mav::MessageResult::Success ||
+                msg.set(field_name, int32_vec) == ::mav::MessageResult::Success ||
+                msg.set(field_name, float_vec) == ::mav::MessageResult::Success ||
+                msg.set(field_name, double_vec) == ::mav::MessageResult::Success) {
                 // Successfully set the array field
             } else {
                 LogWarn() << "Failed to set array field " << field_name;
@@ -375,27 +351,16 @@ bool MavlinkDirectImpl::json_to_libmav_message(
 
 MavlinkDirect::Result MavlinkDirectImpl::load_custom_xml(const std::string& xml_content)
 {
-    // Get access to the LibmavReceiver through the system connections
-    auto connections = _system_impl->get_connections();
-    if (connections.empty()) {
-        LogErr() << "No connections available for loading custom XML";
-        return MavlinkDirect::Result::ConnectionError;
-    }
-
-    // Use the first connection to get the MessageSet
-    auto connection = connections[0];
-    auto libmav_receiver = connection->get_libmav_receiver();
-    if (!libmav_receiver) {
-        LogErr() << "LibmavReceiver not available";
-        return MavlinkDirect::Result::ConnectionError;
-    }
+    // Get access to the MessageSet through the system
+    auto& message_set = _system_impl->get_message_set();
 
     if (_debugging) {
         LogDebug() << "Loading custom XML definitions...";
     }
 
     // Load the custom XML into the MessageSet
-    bool success = libmav_receiver->load_custom_xml(xml_content);
+    auto result = message_set.addFromXMLString(xml_content, false /* recursive_open_includes */);
+    bool success = (result == ::mav::MessageSetResult::Success);
 
     if (success) {
         if (_debugging) {

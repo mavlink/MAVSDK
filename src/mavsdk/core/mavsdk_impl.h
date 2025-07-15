@@ -30,6 +30,11 @@
 #include "timeout_handler.h"
 #include "callback_list.h"
 
+// Forward declarations to avoid including MessageSet.h in header
+namespace mav {
+class MessageSet;
+}
+
 namespace mavsdk {
 
 class MavsdkImpl {
@@ -106,6 +111,9 @@ public:
     // Get connections for sending messages
     std::vector<Connection*> get_connections() const;
 
+    // Get MessageSet for message creation and parsing
+    mav::MessageSet& get_message_set() const;
+
 private:
     static constexpr float DEFAULT_TIMEOUT_S = 0.5f;
 
@@ -146,6 +154,9 @@ private:
     static uint8_t get_target_component_id(const mavlink_message_t& message);
 
     mutable std::recursive_mutex _mutex{};
+
+    // Message set for libmav message handling (shared across all connections)
+    std::unique_ptr<mav::MessageSet> _message_set;
 
     HandleFactory<> _connections_handle_factory;
     struct ConnectionEntry {

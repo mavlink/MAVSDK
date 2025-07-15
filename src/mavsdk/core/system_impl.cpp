@@ -2,6 +2,7 @@
 #include "mavsdk_impl.h"
 #include "mavlink_include.h"
 #include "system_impl.h"
+#include <mav/MessageSet.h>
 #include "server_component_impl.h"
 #include "plugin_impl_base.h"
 #include "px4_custom_mode.h"
@@ -1399,6 +1400,11 @@ MavlinkParameterClient* SystemImpl::param_sender(uint8_t component_id, bool exte
 std::vector<Connection*> SystemImpl::get_connections() const
 {
     return _mavsdk_impl.get_connections();
+}
+
+mav::MessageSet& SystemImpl::get_message_set() const
+{
+    return _mavsdk_impl.get_message_set();
 }
 
 } // namespace mavsdk

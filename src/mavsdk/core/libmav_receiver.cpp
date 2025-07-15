@@ -1,5 +1,4 @@
 #include "libmav_receiver.h"
-#include "embedded_mavlink_xml.h"
 #include <mav/MessageSet.h>
 #include <mav/BufferParser.h>
 #include <json/json.h>
@@ -10,17 +9,10 @@
 
 namespace mavsdk {
 
-LibmavReceiver::LibmavReceiver()
+LibmavReceiver::LibmavReceiver(mav::MessageSet& message_set) : _message_set(message_set)
 {
-    // Initialize MessageSet with embedded XML content in dependency order
-    _message_set = std::make_unique<mav::MessageSet>();
-    _message_set->addFromXMLString(mav_embedded::MINIMAL_XML);
-    _message_set->addFromXMLString(mav_embedded::STANDARD_XML);
-    _message_set->addFromXMLString(mav_embedded::COMMON_XML);
-    _message_set->addFromXMLString(mav_embedded::ARDUPILOTMEGA_XML);
-
-    // Initialize BufferParser with our MessageSet
-    _buffer_parser = std::make_unique<mav::BufferParser>(*_message_set);
+    // Initialize BufferParser with the provided MessageSet
+    _buffer_parser = std::make_unique<mav::BufferParser>(_message_set);
 
     if (const char* env_p = std::getenv("MAVSDK_MAVLINK_DIRECT_DEBUGGING")) {
         if (std::string(env_p) == "1") {
@@ -106,7 +98,7 @@ std::string LibmavReceiver::libmav_message_to_json(const mav::Message& msg) cons
     json_stream << ",\"message_name\":\"" << msg.name() << "\"";
 
     // Get message definition to iterate through all fields
-    auto message_def_opt = _message_set->getMessageDefinition(static_cast<int>(msg.id()));
+    auto message_def_opt = _message_set.getMessageDefinition(static_cast<int>(msg.id()));
     if (message_def_opt) {
         auto& message_def = message_def_opt.get();
 
@@ -189,7 +181,7 @@ std::string LibmavReceiver::libmav_message_to_json(const mav::Message& msg) cons
 
 std::optional<std::string> LibmavReceiver::message_id_to_name(uint32_t id) const
 {
-    auto message_def = _message_set->getMessageDefinition(static_cast<int>(id));
+    auto message_def = _message_set.getMessageDefinition(static_cast<int>(id));
     if (message_def) {
         return message_def.get().name();
     }
@@ -198,22 +190,18 @@ std::optional<std::string> LibmavReceiver::message_id_to_name(uint32_t id) const
 
 std::optional<int> LibmavReceiver::message_name_to_id(const std::string& name) const
 {
-    return _message_set->idForMessage(name);
+    return _message_set.idForMessage(name);
 }
 
 std::optional<mav::Message> LibmavReceiver::create_message(const std::string& message_name) const
 {
-    return _message_set->create(message_name);
+    return _message_set.create(message_name);
 }
 
 bool LibmavReceiver::load_custom_xml(const std::string& xml_content)
 {
-    if (!_message_set) {
-        return false;
-    }
-
     // Use libmav's addFromXMLString method to load custom XML
-    auto result = _message_set->addFromXMLString(xml_content, false /* recursive_open_includes */);
+    auto result = _message_set.addFromXMLString(xml_content, false /* recursive_open_includes */);
 
     if (_debugging) {
         if (result == mav::MessageSetResult::Success) {
