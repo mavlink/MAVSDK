@@ -31,6 +31,11 @@
 #include <mutex>
 #include <future>
 
+// Forward declarations
+namespace mav {
+class MessageSet;
+}
+
 namespace mavsdk {
 
 class MavsdkImpl;
@@ -85,6 +90,9 @@ public:
 
     // Get connections for sending messages
     std::vector<Connection*> get_connections() const;
+
+    // Get MessageSet for message creation and parsing
+    mav::MessageSet& get_message_set() const;
 
     TimeoutHandler::Cookie
     register_timeout_handler(const std::function<void()>& callback, double duration_s);

@@ -50,12 +50,16 @@ std::string GetLastErrorStdStr()
 SerialConnection::SerialConnection(
     Connection::ReceiverCallback receiver_callback,
     Connection::LibmavReceiverCallback libmav_receiver_callback,
+    mav::MessageSet& message_set,
     std::string path,
     int baudrate,
     bool flow_control,
     ForwardingOption forwarding_option) :
     Connection(
-        std::move(receiver_callback), std::move(libmav_receiver_callback), forwarding_option),
+        std::move(receiver_callback),
+        std::move(libmav_receiver_callback),
+        message_set,
+        forwarding_option),
     _serial_node(std::move(path)),
     _baudrate(baudrate),
     _flow_control(flow_control)
@@ -70,6 +74,10 @@ SerialConnection::~SerialConnection()
 ConnectionResult SerialConnection::start()
 {
     if (!start_mavlink_receiver()) {
+        return ConnectionResult::ConnectionsExhausted;
+    }
+
+    if (!start_libmav_receiver()) {
         return ConnectionResult::ConnectionsExhausted;
     }
 

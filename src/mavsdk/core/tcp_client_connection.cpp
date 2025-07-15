@@ -31,11 +31,15 @@ namespace mavsdk {
 TcpClientConnection::TcpClientConnection(
     Connection::ReceiverCallback receiver_callback,
     Connection::LibmavReceiverCallback libmav_receiver_callback,
+    mav::MessageSet& message_set,
     std::string remote_ip,
     int remote_port,
     ForwardingOption forwarding_option) :
     Connection(
-        std::move(receiver_callback), std::move(libmav_receiver_callback), forwarding_option),
+        std::move(receiver_callback),
+        std::move(libmav_receiver_callback),
+        message_set,
+        forwarding_option),
     _remote_ip(std::move(remote_ip)),
     _remote_port_number(remote_port),
     _should_exit(false)
@@ -50,6 +54,10 @@ TcpClientConnection::~TcpClientConnection()
 ConnectionResult TcpClientConnection::start()
 {
     if (!start_mavlink_receiver()) {
+        return ConnectionResult::ConnectionsExhausted;
+    }
+
+    if (!start_libmav_receiver()) {
         return ConnectionResult::ConnectionsExhausted;
     }
 

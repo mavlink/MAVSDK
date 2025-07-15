@@ -32,7 +32,7 @@ struct LibmavMessage {
 
 class LibmavReceiver {
 public:
-    LibmavReceiver();
+    explicit LibmavReceiver(mav::MessageSet& message_set);
     ~LibmavReceiver(); // Need explicit destructor for unique_ptr with incomplete type
 
     const LibmavMessage& get_last_message() const { return _last_message; }
@@ -52,7 +52,7 @@ public:
     bool load_custom_xml(const std::string& xml_content);
 
 private:
-    std::unique_ptr<mav::MessageSet> _message_set;
+    mav::MessageSet& _message_set;
     std::unique_ptr<mav::BufferParser> _buffer_parser;
     LibmavMessage _last_message;
 
