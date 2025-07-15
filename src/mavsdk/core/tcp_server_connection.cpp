@@ -30,16 +30,6 @@
 namespace mavsdk {
 TcpServerConnection::TcpServerConnection(
     Connection::ReceiverCallback receiver_callback,
-    std::string local_ip,
-    int local_port,
-    ForwardingOption forwarding_option) :
-    Connection(std::move(receiver_callback), forwarding_option),
-    _local_ip(std::move(local_ip)),
-    _local_port(local_port)
-{}
-
-TcpServerConnection::TcpServerConnection(
-    Connection::ReceiverCallback receiver_callback,
     Connection::LibmavReceiverCallback libmav_receiver_callback,
     std::string local_ip,
     int local_port,

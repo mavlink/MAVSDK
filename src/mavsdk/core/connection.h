@@ -20,10 +20,6 @@ public:
 
     explicit Connection(
         ReceiverCallback receiver_callback,
-        ForwardingOption forwarding_option = ForwardingOption::ForwardingOff);
-
-    explicit Connection(
-        ReceiverCallback receiver_callback,
         LibmavReceiverCallback libmav_receiver_callback,
         ForwardingOption forwarding_option = ForwardingOption::ForwardingOff);
     virtual ~Connection();
