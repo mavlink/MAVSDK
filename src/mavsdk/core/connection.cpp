@@ -9,25 +9,6 @@ namespace mavsdk {
 
 std::atomic<unsigned> Connection::_forwarding_connections_count = 0;
 
-Connection::Connection(ReceiverCallback receiver_callback, ForwardingOption forwarding_option) :
-    _receiver_callback(std::move(receiver_callback)),
-    _mavlink_receiver(),
-    _forwarding_option(forwarding_option)
-{
-    // Insert system ID 0 in all connections for broadcast.
-    _system_ids.insert(0);
-
-    if (forwarding_option == ForwardingOption::ForwardingOn) {
-        _forwarding_connections_count++;
-    }
-
-    if (const char* env_p = std::getenv("MAVSDK_MAVLINK_DIRECT_DEBUGGING")) {
-        if (std::string(env_p) == "1") {
-            _debugging = true;
-        }
-    }
-}
-
 Connection::Connection(
     ReceiverCallback receiver_callback,
     LibmavReceiverCallback libmav_receiver_callback,

@@ -30,17 +30,6 @@ namespace mavsdk {
 /* change to remote_ip and remote_port */
 TcpClientConnection::TcpClientConnection(
     Connection::ReceiverCallback receiver_callback,
-    std::string remote_ip,
-    int remote_port,
-    ForwardingOption forwarding_option) :
-    Connection(std::move(receiver_callback), forwarding_option),
-    _remote_ip(std::move(remote_ip)),
-    _remote_port_number(remote_port),
-    _should_exit(false)
-{}
-
-TcpClientConnection::TcpClientConnection(
-    Connection::ReceiverCallback receiver_callback,
     Connection::LibmavReceiverCallback libmav_receiver_callback,
     std::string remote_ip,
     int remote_port,

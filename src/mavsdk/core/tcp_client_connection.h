@@ -23,12 +23,6 @@ class TcpClientConnection : public Connection {
 public:
     TcpClientConnection(
         Connection::ReceiverCallback receiver_callback,
-        std::string remote_ip,
-        int remote_port,
-        ForwardingOption forwarding_option = ForwardingOption::ForwardingOff);
-
-    TcpClientConnection(
-        Connection::ReceiverCallback receiver_callback,
         Connection::LibmavReceiverCallback libmav_receiver_callback,
         std::string remote_ip,
         int remote_port,
