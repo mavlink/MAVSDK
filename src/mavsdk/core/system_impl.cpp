@@ -262,7 +262,7 @@ void SystemImpl::process_autopilot_version(const mavlink_message_t& message)
 void SystemImpl::heartbeats_timed_out()
 {
     LogInfo() << "heartbeats timed out";
-    set_disconnected();
+    // set_disconnected();  due to the way we handle heartbeats, we don't want to set disconnected here
 }
 
 void SystemImpl::system_thread()
