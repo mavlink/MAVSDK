@@ -204,42 +204,6 @@ jobs:
       - name: build
         run: cmake --build build/release -j$(nproc)
 
-  ubuntu-hunter:
-    name: Ubuntu 24.04 (non-mavsdk_server, hunter)
-    needs: [check-docker-changes, update-docker-images]
-    if: always() && needs.check-docker-changes.result == 'success'
-    runs-on: ubuntu-24.04
-    container:
-      image: docker.io/mavsdk/mavsdk-ubuntu-24.04:${{ needs.check-docker-changes.outputs.docker_tag }}
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          submodules: recursive
-          fetch-depth: 0
-      - name: git permission workaround
-        run: |
-          git config --global --add safe.directory "$GITHUB_WORKSPACE"
-          git config --global --add safe.directory /github/workspace
-      - name: git get version tags
-        run: git fetch --tags
-      - uses: actions/cache@v4
-        id: cache
-        with:
-          path: ~/.hunter
-          key: ${{ github.job }}-${{ hashFiles('~/.hunter/**') }}
-      - name: install mavlink on the system
-        run: |
-            cmake -Bthird_party/mavlink/build -Sthird_party/mavlink
-            cmake --build third_party/mavlink/build
-      - name: configure
-        run: cmake -DSUPERBUILD=OFF -DHUNTER_ENABLED=ON -DCMAKE_TOOLCHAIN_FILE=$(pwd)/cmake/fpic_toolchain.cmake  -DCMAKE_BUILD_TYPE=Debug -DBUILD_MAVSDK_SERVER=OFF -DBUILD_SHARED_LIBS=OFF -DENABLE_CPPTRACE=On -Bbuild -H.
-      - name: build
-        run: cmake --build build -j$(nproc)
-      - name: unit tests
-        run: ./build/src/unit_tests/unit_tests_runner
-      - name: system tests
-        run: ./build/src/system_tests/system_tests_runner
-
   ubuntu24-style-and-proto-check:
     name: ubuntu-24.04 (style and proto check)
     needs: [check-docker-changes, update-docker-images]
