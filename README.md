@@ -1,6 +1,9 @@
 <img alt="MAVSDK" src="docs/assets/site/sdk_logo_full.png" width="400">
 
-[![Build and Test](https://github.com/mavlink/MAVSDK/actions/workflows/main.yml/badge.svg?branch=main)](https://github.com/mavlink/MAVSDK/actions/workflows/main.yml)
+[![Linux](https://github.com/mavlink/MAVSDK/actions/workflows/linux.yml/badge.svg?branch=main)](https://github.com/mavlink/MAVSDK/actions/workflows/linux.yml)
+[![macOS](https://github.com/mavlink/MAVSDK/actions/workflows/macos.yml/badge.svg?branch=main)](https://github.com/mavlink/MAVSDK/actions/workflows/macos.yml)
+[![Windows](https://github.com/mavlink/MAVSDK/actions/workflows/windows.yml/badge.svg?branch=main)](https://github.com/mavlink/MAVSDK/actions/workflows/windows.yml)
+[![Docs](https://github.com/mavlink/MAVSDK/actions/workflows/docs_deploy.yml/badge.svg?branch=main)](https://github.com/mavlink/MAVSDK/actions/workflows/docs_deploy.yml)
 [![Coverage Status](https://coveralls.io/repos/github/mavlink/MAVSDK/badge.svg?branch=main)](https://coveralls.io/github/mavlink/MAVSDK?branch=main)
 
 ## Description
