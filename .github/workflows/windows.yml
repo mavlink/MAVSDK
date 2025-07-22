@@ -65,7 +65,7 @@ jobs:
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: 'install/bin/mavsdk_server_bin.exe'
-          asset_name: 'mavsdk_server_win32.exe'
+          asset_name: 'mavsdk_server_win_x64.exe'
           tag: ${{ github.ref }}
           overwrite: true
 
