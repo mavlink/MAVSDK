@@ -20,8 +20,19 @@ jobs:
     name: Windows mavsdk_server build
     runs-on: windows-2022
     strategy:
+      fail-fast: false
       matrix:
-        arch: [x64, Win32]
+        include:
+          - platform: x64
+            arch: x64
+            toolchain: ''
+          - platform: Win32
+            arch: x86
+            toolchain: ''
+          - platform: ARM64
+            arch: arm64
+            toolchain: ''
+            toolchain_file: cmake\\win-arm64-toolchain.cmake
     steps:
       - uses: actions/checkout@v4
         with:
@@ -33,7 +44,7 @@ jobs:
         id: cache
         with:
           path: ./build/third_party/install
-          key: ${{ github.job }}-${{ hashFiles('./third_party/**') }}
+          key: ${{ github.job }}-${{ matrix.arch }}-${{ hashFiles('./third_party/**') }}
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: |
@@ -44,7 +55,7 @@ jobs:
           choco install jom
           echo "C:\Program Files\jom" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
       - name: configure
-        run: cmake -G"Visual Studio 17 2022" -A ${{ matrix.arch }}
+        run: cmake -G"Visual Studio 17 2022" -A ${{ matrix.platform }}
           $env:superbuild
           $env:cmake_prefix_path
           -DCMAKE_BUILD_TYPE=RelWithDebInfo
@@ -52,6 +63,8 @@ jobs:
           -DBUILD_MAVSDK_SERVER=ON
           -DBUILD_SHARED_LIBS=OFF
           -DWERROR=ON
+          ${{ matrix.toolchain }}
+          ${{ matrix.toolchain_file && format('-DCMAKE_TOOLCHAIN_FILE="{0}"', matrix.toolchain_file) || '' }}
           -Bbuild
           -S.
       - name: build
@@ -59,7 +72,7 @@ jobs:
       - name: Upload mavsdk_server binary as artifact
         uses: actions/upload-artifact@v4
         with:
-          name: 'mavsdk_server-windows-${{ matrix.arch == "x64" && "x64" || "x86" }}-release'
+          name: mavsdk_server-windows-${{ matrix.arch }}-release
           path: 'install/bin/mavsdk_server_bin.exe'
           retention-days: 2
       - name: Publish mavsdk_server binary to release
@@ -68,16 +81,43 @@ jobs:
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: 'install/bin/mavsdk_server_bin.exe'
-          asset_name: 'mavsdk_server_win_${{ matrix.arch == "x64" && "x64" || "x86" }}.exe'
+          asset_name: mavsdk_server_win_${{ matrix.arch }}.exe
           tag: ${{ github.ref }}
           overwrite: true
 
-  Windows-mavsdk-library:
-    name: Windows mavsdk library build
+  Windows-mavsdk-library-builds:
+    name: Windows mavsdk library build (${{ matrix.arch }}-${{ matrix.config }})
     runs-on: windows-2022
     strategy:
+      fail-fast: false
       matrix:
-        arch: [x64, Win32]
+        include:
+          - platform: x64
+            arch: x64
+            config: Debug
+            toolchain: ''
+          - platform: x64
+            arch: x64
+            config: RelWithDebInfo
+            toolchain: ''
+          - platform: Win32
+            arch: x86
+            config: Debug
+            toolchain: ''
+          - platform: Win32
+            arch: x86
+            config: RelWithDebInfo
+            toolchain: ''
+          - platform: ARM64
+            arch: arm64
+            config: Debug
+            toolchain: ''
+            toolchain_file: cmake\\win-arm64-toolchain.cmake
+          - platform: ARM64
+            arch: arm64
+            config: RelWithDebInfo
+            toolchain: ''
+            toolchain_file: cmake\\win-arm64-toolchain.cmake
     steps:
       - uses: actions/checkout@v4
         with:
@@ -89,7 +129,7 @@ jobs:
         id: cache
         with:
           path: ./build/third_party/install
-          key: ${{ github.job }}-${{ hashFiles('./third_party/**') }}
+          key: ${{ github.job }}-${{ matrix.arch }}-${{ matrix.config }}-${{ hashFiles('./third_party/**') }}
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: |
@@ -100,24 +140,26 @@ jobs:
           choco install jom
           echo "C:\Program Files\jom" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
       - name: configure
-        run: cmake -G"Visual Studio 17 2022" -A ${{ matrix.arch }}
+        run: cmake -G"Visual Studio 17 2022" -A ${{ matrix.platform }}
           $env:superbuild
           $env:cmake_prefix_path
-          -DCMAKE_BUILD_TYPE=RelWithDebInfo
+          -DCMAKE_BUILD_TYPE=${{ matrix.config }}
           -DCMAKE_INSTALL_PREFIX=install
           -DBUILD_MAVSDK_SERVER=OFF
           -DBUILD_SHARED_LIBS=ON
           -DWERROR=ON
+          ${{ matrix.toolchain }}
+          ${{ matrix.toolchain_file && format('-DCMAKE_TOOLCHAIN_FILE="{0}"', matrix.toolchain_file) || '' }}
           -Bbuild
           -S.
       - name: build
-        run: cmake --build build -j4 --config RelWithDebInfo --target install
+        run: cmake --build build -j4 --config ${{ matrix.config }} --target install
       - name: Create zip file from mavsdk libraries
-        run: (cd install && 7z.exe a -tzip ../mavsdk-windows-${{ matrix.arch == "x64" && "x64" || "x86" }}-release.zip .)
+        run: (cd install && 7z.exe a -tzip ../mavsdk-windows-${{ matrix.arch }}-${{ matrix.config }}.zip .)
       - name: Upload mavsdk library as artifact
         uses: actions/upload-artifact@v4
         with:
-          name: 'mavsdk-windows-${{ matrix.arch == "x64" && "x64" || "x86" }}-release'
+          name: mavsdk-windows-${{ matrix.arch }}-${{ matrix.config }}
           path: 'install/'
           retention-days: 2
       - name: Publish mavsdk library to release
@@ -125,7 +167,90 @@ jobs:
         uses: svenstaro/upload-release-action@v1-release
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: 'mavsdk-windows-${{ matrix.arch == "x64" && "x64" || "x86" }}-release.zip'
-          asset_name: 'mavsdk-windows-${{ matrix.arch == "x64" && "x64" || "x86" }}-release.zip'
+          file: mavsdk-windows-${{ matrix.arch }}-${{ matrix.config }}.zip
+          asset_name: mavsdk-windows-${{ matrix.arch }}-${{ matrix.config }}.zip
+          tag: ${{ github.ref }}
+          overwrite: true
+
+  Windows-mavsdk-library-combine:
+    name: Combine Windows mavsdk library artifacts
+    runs-on: windows-2022
+    needs: Windows-mavsdk-library-builds
+    strategy:
+      matrix:
+        include:
+          - arch: x64
+            platform: x64
+          - arch: x86
+            platform: Win32
+          - arch: arm64
+            platform: ARM64
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download Debug artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: mavsdk-windows-${{ matrix.arch }}-Debug
+          path: debug-files
+      - name: Download RelWithDebInfo artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: mavsdk-windows-${{ matrix.arch }}-RelWithDebInfo
+          path: release-files
+      - name: Create combined directory structure
+        run: |
+          mkdir combined\Debug
+          mkdir combined\Release
+          xcopy debug-files combined\Debug /E /I /Y
+          xcopy release-files combined\Release /E /I /Y
+          # Copy headers only once to avoid duplication
+          xcopy combined\Debug\include combined\include /E /I /Y
+          Remove-Item -Recurse -Force combined\Debug\include
+          Remove-Item -Recurse -Force combined\Release\include
+          # Create shared cmake directory structure
+          mkdir combined\lib\cmake\MAVSDK
+          # Copy CMake config files from debug build
+          xcopy debug-files\lib\cmake\MAVSDK combined\lib\cmake\MAVSDK /E /I /Y
+      - name: Test dual-config setup by building examples (Debug)
+        shell: cmd
+        run: |
+          rem Build examples in Debug configuration
+          cd /d %GITHUB_WORKSPACE%
+          cmake -G"Visual Studio 17 2022" -A ${{ matrix.platform }} ^
+            -DCMAKE_BUILD_TYPE=Debug ^
+            -DCMAKE_PREFIX_PATH=%GITHUB_WORKSPACE%\combined ^
+            -Bbuild-examples-debug ^
+            -Sexamples
+
+          cmake --build build-examples-debug --config Debug
+      - name: Test dual-config setup by building examples (RelWithDebInfo)
+        shell: cmd
+        run: |
+          rem Build examples in RelWithDebInfo configuration
+          cd /d %GITHUB_WORKSPACE%
+          cmake -G"Visual Studio 17 2022" -A ${{ matrix.platform }} ^
+            -DCMAKE_BUILD_TYPE=RelWithDebInfo ^
+            -DCMAKE_PREFIX_PATH=%GITHUB_WORKSPACE%\combined ^
+            -Bbuild-examples-release ^
+            -Sexamples
+
+          cmake --build build-examples-release --config RelWithDebInfo
+      - name: Create final ZIP file
+        run: |
+          cd combined
+          7z.exe a -tzip ..\mavsdk-windows-${{ matrix.arch }}.zip .
+      - name: Upload combined artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: mavsdk-windows-${{ matrix.arch }}
+          path: mavsdk-windows-${{ matrix.arch }}.zip
+          retention-days: 2
+      - name: Publish combined library to release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: svenstaro/upload-release-action@v1-release
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: mavsdk-windows-${{ matrix.arch }}.zip
+          asset_name: mavsdk-windows-${{ matrix.arch }}.zip
           tag: ${{ github.ref }}
           overwrite: true
