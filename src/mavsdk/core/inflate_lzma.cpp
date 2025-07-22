@@ -4,7 +4,9 @@
 #include <cstdio>
 #include <cstring>
 #include <cerrno>
+#ifndef LZMA_API_STATIC
 #define LZMA_API_STATIC
+#endif
 #include <lzma.h>
 
 // The following code is from the liblzma example:
