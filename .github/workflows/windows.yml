@@ -18,7 +18,7 @@ on:
 jobs:
   Windows-mavsdk_server:
     name: Windows mavsdk_server build
-    runs-on: windows-latest
+    runs-on: windows-2022
     steps:
       - uses: actions/checkout@v4
         with:
@@ -71,7 +71,7 @@ jobs:
 
   Windows-mavsdk-library:
     name: Windows mavsdk library build
-    runs-on: windows-latest
+    runs-on: windows-2022
     steps:
       - uses: actions/checkout@v4
         with:
