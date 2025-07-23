@@ -145,6 +145,8 @@ private:
     void start_sending_tracking_status(uint32_t interval_us);
     void stop_sending_tracking_status();
     void send_tracking_status_with_interval(uint32_t interval_us);
+    void start_sending_capture_status();
+    void stop_sending_capture_status();
 
     std::optional<mavlink_command_ack_t>
     process_camera_information_request(const MavlinkCommandReceiver::CommandLong& command);
@@ -211,6 +213,10 @@ private:
     CameraServer::TrackPoint _tracked_point{};
     CameraServer::TrackRectangle _tracked_rectangle{};
     std::thread _tracking_status_sending_thread{};
+
+    // CAMERA_CAPTURE_STATUS periodic sending fields
+    static constexpr float CAPTURE_STATUS_INTERVAL_S = 5.0f; // 0.2 Hz
+    CallEveryHandler::Cookie _capture_status_timer_cookie{};
 
     CameraServer::Information _information{};
     bool _is_video_streaming_set{};

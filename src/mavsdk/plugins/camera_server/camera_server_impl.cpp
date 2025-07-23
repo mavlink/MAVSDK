@@ -171,6 +171,7 @@ void CameraServerImpl::init()
 void CameraServerImpl::deinit()
 {
     stop_image_capture_interval();
+    stop_sending_capture_status();
     _server_component_impl->unregister_all_mavlink_command_handlers(this);
 
     std::lock_guard lg(_mutex);
@@ -747,14 +748,35 @@ CameraServer::Result CameraServerImpl::respond_storage_information(
 CameraServer::CaptureStatusHandle
 CameraServerImpl::subscribe_capture_status(const CameraServer::CaptureStatusCallback& callback)
 {
-    std::lock_guard<std::mutex> lg{_mutex};
-    return _capture_status_callbacks.subscribe(callback);
+    CameraServer::CaptureStatusHandle handle;
+    bool should_start_timer = false;
+
+    {
+        std::lock_guard<std::mutex> lg{_mutex};
+        should_start_timer = _capture_status_callbacks.empty();
+        handle = _capture_status_callbacks.subscribe(callback);
+    }
+
+    if (should_start_timer) {
+        start_sending_capture_status();
+    }
+
+    return handle;
 }
 
 void CameraServerImpl::unsubscribe_capture_status(CameraServer::CaptureStatusHandle handle)
 {
-    std::lock_guard<std::mutex> lg{_mutex};
-    _capture_status_callbacks.unsubscribe(handle);
+    bool should_stop_timer = false;
+
+    {
+        std::lock_guard<std::mutex> lg{_mutex};
+        _capture_status_callbacks.unsubscribe(handle);
+        should_stop_timer = _capture_status_callbacks.empty();
+    }
+
+    if (should_stop_timer) {
+        stop_sending_capture_status();
+    }
 }
 
 CameraServer::Result CameraServerImpl::respond_capture_status(
@@ -2173,6 +2195,17 @@ void CameraServerImpl::stop_sending_tracking_status()
     if (_tracking_status_sending_thread.joinable()) {
         _tracking_status_sending_thread.join();
     }
+}
+
+void CameraServerImpl::start_sending_capture_status()
+{
+    _capture_status_timer_cookie = _server_component_impl->add_call_every(
+        [this]() { send_capture_status(); }, CAPTURE_STATUS_INTERVAL_S);
+}
+
+void CameraServerImpl::stop_sending_capture_status()
+{
+    _server_component_impl->remove_call_every(_capture_status_timer_cookie);
 }
 
 } // namespace mavsdk
