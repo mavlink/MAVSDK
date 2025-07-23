@@ -211,6 +211,9 @@ jobs:
           mkdir combined\lib\cmake\MAVSDK
           # Copy CMake config files from debug build
           xcopy debug-files\lib\cmake\MAVSDK combined\lib\cmake\MAVSDK /E /I /Y
+          # Remove duplicate/conflicting cmake files from individual config directories
+          Remove-Item -Recurse -Force combined\Debug\lib\cmake -ErrorAction SilentlyContinue
+          Remove-Item -Recurse -Force combined\Release\lib\cmake -ErrorAction SilentlyContinue
       - name: Test dual-config setup by building examples (Debug)
         shell: cmd
         run: |
