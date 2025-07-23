@@ -120,7 +120,7 @@ elseif(MSVC)
             PREFIX openssl
             CONFIGURE_COMMAND perl <SOURCE_DIR>/Configure VC-WIN64A --prefix=${NATIVE_INSTALL_PREFIX} --openssldir=${NATIVE_INSTALL_PREFIX} ${OPENSSL_BUILD_TYPE} no-shared no-asm no-tests
             BUILD_COMMAND set MAKEFLAGS= && nmake build_libs
-            INSTALL_COMMAND nmake install_dev
+            INSTALL_COMMAND set MAKEFLAGS= && nmake install_dev
         )
     endif()
 
