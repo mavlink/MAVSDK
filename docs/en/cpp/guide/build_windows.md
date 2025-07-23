@@ -47,7 +47,10 @@ git submodule update --init --recursive
 ```
 
 ## Building the MAVSDK library only
-
+::: Tip
+Make sure to run this within the Visual Studio environment to access Ninja. You can either run the "x64 Native Tools Command Prompt for VS 2022" program or call the vcvarsall.bat script located in your Visual Studio 2022 installation directory:
+`C:\Program Files\Microsoft Visual Studio\2022\EDITION\VC\Auxiliary\Build\vcvarsall.bat`
+:::
 ### Debug Build
 
 For development, use the debug build:
