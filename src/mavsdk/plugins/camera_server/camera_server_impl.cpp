@@ -429,6 +429,7 @@ CameraServerImpl::respond_start_video(CameraServer::CameraFeedback start_video_f
             auto command_ack = _server_component_impl->make_command_ack_message(
                 _last_start_video_command, MAV_RESULT_ACCEPTED);
             _server_component_impl->send_command_ack(command_ack);
+            send_capture_status();
             return CameraServer::Result::Success;
         }
         case CameraServer::CameraFeedback::Busy: {
@@ -473,6 +474,7 @@ CameraServerImpl::respond_stop_video(CameraServer::CameraFeedback stop_video_fee
             auto command_ack = _server_component_impl->make_command_ack_message(
                 _last_stop_video_command, MAV_RESULT_ACCEPTED);
             _server_component_impl->send_command_ack(command_ack);
+            send_capture_status();
             return CameraServer::Result::Success;
         }
         case CameraServer::CameraFeedback::Busy: {
