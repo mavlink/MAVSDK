@@ -70,7 +70,7 @@ elseif(IOS)
         CONFIGURE_COMMAND <SOURCE_DIR>/Configure ${OPENSSL_PLATFORM} --prefix=${CMAKE_INSTALL_PREFIX} ${OPENSSL_BUILD_TYPE} no-shared no-tests
         )
 
-elseif(CMAKE_CROSSCOMPILING) # This assumes we use dockcross
+elseif(CMAKE_CROSSCOMPILING AND NOT MSVC) # This assumes we use dockcross
     if(${CMAKE_SYSTEM_PROCESSOR} STREQUAL "arm")
         set(OPENSSL_PLATFORM "linux-armv4")
     elseif(${CMAKE_SYSTEM_PROCESSOR} STREQUAL "aarch64")
@@ -95,6 +95,18 @@ elseif(MSVC)
     cmake_path(NATIVE_PATH CMAKE_INSTALL_PREFIX NORMALIZE NATIVE_INSTALL_PREFIX)
     message("NATIVE_INSTALL_PREFIX: ${NATIVE_INSTALL_PREFIX}")
 
+    # Determine OpenSSL platform based on architecture
+    if(CMAKE_GENERATOR_PLATFORM STREQUAL "x64")
+        set(OPENSSL_PLATFORM "VC-WIN64A")
+    elseif(CMAKE_GENERATOR_PLATFORM STREQUAL "Win32")
+        set(OPENSSL_PLATFORM "VC-WIN32")
+    elseif(CMAKE_GENERATOR_PLATFORM STREQUAL "ARM64")
+        set(OPENSSL_PLATFORM "VC-WIN64-ARM")
+    else()
+        message(FATAL_ERROR "Unsupported Windows architecture: ${CMAKE_GENERATOR_PLATFORM}")
+    endif()
+    message("OPENSSL_PLATFORM set to ${OPENSSL_PLATFORM}")
+
     find_program(JOM_EXECUTABLE
         NAMES jom jom.exe
         DOC "Path to jom executable"
@@ -108,7 +120,7 @@ elseif(MSVC)
             openssl
             URL https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz
             PREFIX openssl
-            CONFIGURE_COMMAND perl <SOURCE_DIR>/Configure VC-WIN64A --prefix=${NATIVE_INSTALL_PREFIX} --openssldir=${NATIVE_INSTALL_PREFIX} ${OPENSSL_BUILD_TYPE} no-shared no-asm no-tests /FS
+            CONFIGURE_COMMAND perl <SOURCE_DIR>/Configure ${OPENSSL_PLATFORM} --prefix=${NATIVE_INSTALL_PREFIX} --openssldir=${NATIVE_INSTALL_PREFIX} ${OPENSSL_BUILD_TYPE} no-shared no-asm no-tests /FS
             BUILD_COMMAND set MAKEFLAGS= && set set CL=/O2 /MT /DNDEBUG /FS && jom -j ${BUILD_PARALLEL_JOBS} build_libs
             INSTALL_COMMAND set MAKEFLAGS= && nmake install_dev
             )
@@ -118,7 +130,7 @@ elseif(MSVC)
             openssl
             URL https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz
             PREFIX openssl
-            CONFIGURE_COMMAND perl <SOURCE_DIR>/Configure VC-WIN64A --prefix=${NATIVE_INSTALL_PREFIX} --openssldir=${NATIVE_INSTALL_PREFIX} ${OPENSSL_BUILD_TYPE} no-shared no-asm no-tests
+            CONFIGURE_COMMAND perl <SOURCE_DIR>/Configure ${OPENSSL_PLATFORM} --prefix=${NATIVE_INSTALL_PREFIX} --openssldir=${NATIVE_INSTALL_PREFIX} ${OPENSSL_BUILD_TYPE} no-shared no-asm no-tests
             BUILD_COMMAND set MAKEFLAGS= && nmake build_libs
             INSTALL_COMMAND set MAKEFLAGS= && nmake install_dev
         )

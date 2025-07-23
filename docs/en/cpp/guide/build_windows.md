@@ -19,7 +19,7 @@ The build requirements are:
 
 1. Install [Build Tools for Visual Studio 2022](https://www.visualstudio.com/downloads/)
    - Only the "Visual C++ Build Tools" are needed from the installer
-   
+
 2. Install [CMake](https://cmake.org/download/)
    - Download and run the installer
    - Make sure to tick "add to PATH" during installation
@@ -159,4 +159,33 @@ If you don't need http/https downloads for camera definition files or other comp
 cmake -GNinja -DBUILD_WITHOUT_CURL=ON -Bbuild -S.
 ```
 
-This eliminates the need for Perl/OpenSSL setup. 
+This eliminates the need for Perl/OpenSSL setup.
+
+### Strange errors such as "Invalid connection URL"
+
+When mixing build types such as linking a Debug application against a Release MAVSDK library (or vice versa), you may encounter runtime crashes or strange error messages. This is due to ABI (Application Binary Interface) incompatibility between Debug and Release builds in MSVC.
+
+**Common symptoms:**
+- Runtime crashes when passing `std::string` objects between your application and MAVSDK
+- "Invalid connection URL" errors with valid connection strings
+- Memory corruption or access violations
+- Seemingly random crashes when calling MAVSDK functions
+
+**Root cause:**
+MSVC uses different memory layouts and allocators for `std::string` in Debug vs Release builds. When a Debug application passes a `std::string` to a Release MAVSDK library, the internal structure mismatch causes corruption.
+
+**Solution:**
+Ensure your application build configuration matches the MAVSDK library configuration:
+
+1. **Using pre-built packages**: The dual-configuration packages automatically handle this by selecting the matching configuration based on your `CMAKE_BUILD_TYPE`
+
+2. **When building from source**: Use the same `CMAKE_BUILD_TYPE` for both MAVSDK and your application:
+   ```bash
+   # For Debug applications
+   cmake -GNinja -DCMAKE_BUILD_TYPE=Debug -Bbuild -S.
+
+   # For Release applications
+   cmake -GNinja -DCMAKE_BUILD_TYPE=Release -Bbuild -S.
+   ```
+
+3. **Mixed configurations are not supported**: Never link a Debug application against a Release MAVSDK library or vice versa on Windows.
