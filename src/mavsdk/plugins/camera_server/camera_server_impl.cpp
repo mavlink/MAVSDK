@@ -1085,17 +1085,25 @@ void CameraServerImpl::start_image_capture_interval(float interval_s, int32_t co
     // If count == 0, it means capture "forever" until a stop command is received.
     auto remaining = std::make_shared<int32_t>(count == 0 ? INT32_MAX : count);
 
-    _last_interval_index = index;
+    {
+        std::lock_guard<std::mutex> lg{_mutex};
+        _last_interval_index = index;
+        _is_image_capture_interval_set = true;
+        _image_capture_timer_interval_s = interval_s;
+    }
 
     _image_capture_timer_cookie = _server_component_impl->add_call_every(
         [this, remaining]() {
             LogDebug() << "capture image timer triggered";
 
-            if (!_take_photo_callbacks.empty()) {
-                _take_photo_callbacks.queue(_last_interval_index++, [this](const auto& func) {
-                    _server_component_impl->call_user_callback(func);
-                });
-                (*remaining)--;
+            {
+                std::lock_guard<std::mutex> lg{_mutex};
+                if (!_take_photo_callbacks.empty()) {
+                    _take_photo_callbacks.queue(_last_interval_index++, [this](const auto& func) {
+                        _server_component_impl->call_user_callback(func);
+                    });
+                    (*remaining)--;
+                }
             }
 
             if (*remaining == 0) {
@@ -1103,9 +1111,6 @@ void CameraServerImpl::start_image_capture_interval(float interval_s, int32_t co
             }
         },
         interval_s);
-
-    _is_image_capture_interval_set = true;
-    _image_capture_timer_interval_s = interval_s;
 }
 
 void CameraServerImpl::stop_image_capture_interval()
