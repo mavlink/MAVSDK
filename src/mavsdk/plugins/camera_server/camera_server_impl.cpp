@@ -399,6 +399,8 @@ CameraServer::Result CameraServerImpl::respond_take_photo(
     });
     LogDebug() << "sent camera image captured msg - index: " << +capture_info.index;
 
+    send_capture_status();
+
     return CameraServer::Result::Success;
 }
 
