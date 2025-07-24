@@ -14,8 +14,10 @@ endif()
 
 if(SUPERBUILD)
     build_target(mavlink)
-    build_target(jsoncpp)
+    build_target(picosha2)
     build_target(tinyxml2)
+    build_target(libmavlike)
+    build_target(jsoncpp)
     build_target(liblzma)
 
     if(NOT BUILD_WITHOUT_CURL)

@@ -13,6 +13,8 @@ class TcpServerConnection : public Connection {
 public:
     TcpServerConnection(
         Connection::ReceiverCallback receiver_callback,
+        Connection::LibmavReceiverCallback libmav_receiver_callback,
+        mav::MessageSet& message_set,
         std::string local_ip,
         int local_port,
         ForwardingOption forwarding_option);

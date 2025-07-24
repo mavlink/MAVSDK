@@ -12,6 +12,29 @@ get_target_property(
 configure_file(version.h.in version.h)
 configure_file(include/mavsdk/mavlink_include.h.in include/mavsdk/mavlink_include.h)
 
+# Generate embedded XML header for libmav
+set(MAVLINK_MINIMAL_XML "${DEPS_INSTALL_PATH}/include/mavlink/message_definitions/v1.0/minimal.xml")
+set(MAVLINK_STANDARD_XML "${DEPS_INSTALL_PATH}/include/mavlink/message_definitions/v1.0/standard.xml")
+set(MAVLINK_COMMON_XML "${DEPS_INSTALL_PATH}/include/mavlink/message_definitions/v1.0/common.xml")
+set(MAVLINK_ARDUPILOTMEGA_XML "${DEPS_INSTALL_PATH}/include/mavlink/message_definitions/v1.0/ardupilotmega.xml")
+set(EMBEDDED_XML_HEADER "${CMAKE_CURRENT_BINARY_DIR}/embedded_mavlink_xml.h")
+
+add_custom_command(
+    OUTPUT ${EMBEDDED_XML_HEADER}
+    COMMAND ${CMAKE_COMMAND} 
+        -DMINIMAL_XML_PATH=${MAVLINK_MINIMAL_XML}
+        -DSTANDARD_XML_PATH=${MAVLINK_STANDARD_XML}
+        -DCOMMON_XML_PATH=${MAVLINK_COMMON_XML}
+        -DARDUPILOTMEGA_XML_PATH=${MAVLINK_ARDUPILOTMEGA_XML}
+        -DOUTPUT_HEADER=${EMBEDDED_XML_HEADER}
+        -P ${CMAKE_SOURCE_DIR}/cmake/generate_embedded_xml.cmake
+    DEPENDS ${MAVLINK_MINIMAL_XML} ${MAVLINK_STANDARD_XML} ${MAVLINK_COMMON_XML} ${MAVLINK_ARDUPILOTMEGA_XML}
+    COMMENT "Generating embedded MAVLink XML header for core"
+    VERBATIM
+)
+
+add_custom_target(generate_core_mavlink_xml_header DEPENDS ${EMBEDDED_XML_HEADER})
+
 target_sources(mavsdk
     PRIVATE
     autopilot.cpp
@@ -44,6 +67,7 @@ target_sources(mavsdk
     mavlink_parameter_subscription.cpp
     mavlink_parameter_helper.cpp
     mavlink_receiver.cpp
+    libmav_receiver.cpp
     mavlink_request_message.cpp
     mavlink_request_message_handler.cpp
     mavlink_statustext_handler.cpp
@@ -152,6 +176,12 @@ target_include_directories(mavsdk
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
     )
+
+# Ensure the embedded XML header is generated before building
+add_dependencies(mavsdk generate_core_mavlink_xml_header)
+
+# Make sure libmav_receiver.cpp knows about the generated header
+set_source_files_properties(libmav_receiver.cpp PROPERTIES OBJECT_DEPENDS ${EMBEDDED_XML_HEADER})
 
 install(TARGETS mavsdk
     EXPORT mavsdk-targets

@@ -506,8 +506,9 @@ bool MavlinkParameterClient::send_set_param_message(WorkItemSet& work_item)
         const auto param_value_buf = work_item.param_value.get_128_bytes();
         return _sender.queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
             if (_parameter_debugging) {
-                LogDebug() << "Sending param_ext_set to:" << (int)mavlink_address.system_id << ":"
-                           << (int)mavlink_address.component_id;
+                LogDebug() << "Sending param_ext_set from:" << (int)mavlink_address.system_id << '/'
+                           << (int)mavlink_address.component_id << " to: " << (int)_target_system_id
+                           << '/' << (int)_target_component_id;
             }
 
             mavlink_msg_param_ext_set_pack_chan(
@@ -530,8 +531,9 @@ bool MavlinkParameterClient::send_set_param_message(WorkItemSet& work_item)
 
         return _sender.queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
             if (_parameter_debugging) {
-                LogDebug() << "Sending param_set to:" << (int)mavlink_address.system_id << ":"
-                           << (int)mavlink_address.component_id;
+                LogDebug() << "Sending param_set from:" << (int)mavlink_address.system_id << '/'
+                           << (int)mavlink_address.component_id << " to: " << (int)_target_system_id
+                           << '/' << (int)_target_component_id;
             }
             mavlink_msg_param_set_pack_chan(
                 mavlink_address.system_id,
