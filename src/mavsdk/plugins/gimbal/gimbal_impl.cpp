@@ -421,20 +421,20 @@ void GimbalImpl::check_is_gimbal_valid(GimbalItem* gimbal)
         return;
     }
 
-    // Check if we should request GIMBAL_DEVICE_INFORMATION again.
+    // Check if we should request GIMBAL_DEVICE_INFORMATION once.
     if (!gimbal->gimbal_device_information_received &&
-        gimbal->gimbal_device_information_requests_left-- > 0) {
+        gimbal->gimbal_device_information_requests_left > 0) {
+        gimbal->gimbal_device_information_requests_left--;
         auto component_id = (gimbal->gimbal_device_id > 0 && gimbal->gimbal_device_id <= 6) ?
                                 gimbal->gimbal_manager_compid :
                                 gimbal->gimbal_device_id;
         if (component_id != 0) {
             request_gimbal_device_information(component_id);
         }
-        return;
     }
 
-    // If we have gimbal_manager_information but no GIMBAL_DEVICE_INFORMATION despite
-    // having tried multiple times, we might as well continue without.
+    // If we have gimbal_manager_information but no GIMBAL_DEVICE_INFORMATION after
+    // our attempt, we continue without it since it's just nice to have.
     if (!gimbal->gimbal_device_information_received) {
         LogWarn() << "Continuing despite GIMBAL_DEVICE_INFORMATION missing";
     }
