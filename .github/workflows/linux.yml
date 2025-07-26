@@ -93,21 +93,10 @@ jobs:
         run: cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Coverage -DASAN=ON -DWERROR=ON -DENABLE_CPPTRACE=On -Bbuild -H.
       - name: build
         run: cmake --build build -j$(nproc)
-      - name: enable core dumps
-        run: |
-          sudo ulimit -c unlimited
-          echo '/tmp/core.%e.%p.%t' | sudo tee /proc/sys/kernel/core_pattern
       - name: unit tests
         run: ./build/src/unit_tests/unit_tests_runner
       - name: system tests
         run: ./build/src/system_tests/system_tests_runner
-      - name: upload core dumps on failure
-        if: failure()
-        run: |
-          find /tmp -name 'core.*' -type f | head -5 | while read core; do
-            echo "Found core dump: $core"
-            gdb -batch -ex "bt" -ex "info registers" -ex "quit" ./build/src/system_tests/system_tests_runner "$core" 2>/dev/null || true
-          done
       - name: run lcov
         run: lcov --capture --directory . --no-external --exclude "*/third_party/*"  --output-file lcov.info
       - name: check size of lcov.info
@@ -180,21 +169,10 @@ jobs:
         run: cmake -DCMAKE_PREFIX_PATH="$(pwd)/install" -DCMAKE_BUILD_TYPE=RelWithDebInfo -DWERROR=ON -Bexamples/build -Hexamples
       - name: build examples
         run: cmake --build examples/build -j$(nproc)
-      - name: enable core dumps
-        run: |
-          sudo ulimit -c unlimited
-          echo '/tmp/core.%e.%p.%t' | sudo tee /proc/sys/kernel/core_pattern
       - name: unit tests
         run: ./build/release/src/unit_tests/unit_tests_runner
       - name: system tests
         run: ./build/release/src/system_tests/system_tests_runner
-      - name: upload core dumps on failure
-        if: failure()
-        run: |
-          find /tmp -name 'core.*' -type f | head -5 | while read core; do
-            echo "Found core dump: $core"
-            gdb -batch -ex "bt" -ex "info registers" -ex "quit" ./build/release/src/system_tests/system_tests_runner "$core" 2>/dev/null || true
-          done
       - name: test (mavsdk_server)
         run: ./build/release/src/mavsdk_server/test/unit_tests_mavsdk_server
 
