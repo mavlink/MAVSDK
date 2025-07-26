@@ -333,13 +333,15 @@ void MavlinkCommandSender::receive_timeout(const CommandIdentification& identifi
 
         if (work->retries_to_do > 0) {
             // We're not sure the command arrived, let's retransmit.
-            LogWarn() << "sending again after "
-                      << _system_impl.get_time().elapsed_since_s(work->time_started)
-                      << " s, retries to do: " << work->retries_to_do << "  ("
-                      << work->identification.command << ").";
+            if (_command_debugging) {
+                LogWarn() << "sending again after "
+                          << _system_impl.get_time().elapsed_since_s(work->time_started)
+                          << " s, retries to do: " << work->retries_to_do << "  ("
+                          << work->identification.command << ").";
 
-            if (work->identification.command == MAV_CMD_REQUEST_MESSAGE) {
-                LogWarn() << "Request was for msg ID: " << work->identification.maybe_param1;
+                if (work->identification.command == MAV_CMD_REQUEST_MESSAGE) {
+                    LogWarn() << "Request was for msg ID: " << work->identification.maybe_param1;
+                }
             }
 
             if (!send_mavlink_message(work->command)) {
@@ -372,12 +374,17 @@ void MavlinkCommandSender::receive_timeout(const CommandIdentification& identifi
                     LogErr() << "No command, that's awkward";
                     continue;
                 }
-                LogWarn() << "Retrying failed for REQUEST_MESSAGE command for message: "
-                          << work->identification.maybe_param1 << ", to ("
-                          << std::to_string(target_sysid) << "/" << std::to_string(target_compid)
-                          << ")";
+                if (_command_debugging) {
+                    LogWarn() << "Retrying failed for REQUEST_MESSAGE command for message: "
+                              << work->identification.maybe_param1 << ", to ("
+                              << std::to_string(target_sysid) << "/"
+                              << std::to_string(target_compid) << ")";
+                }
             } else {
-                LogWarn() << "Retrying failed for command: " << work->identification.command << ")";
+                if (_command_debugging) {
+                    LogWarn() << "Retrying failed for command: " << work->identification.command
+                              << ")";
+                }
             }
 
             temp_callback = work->callback;
