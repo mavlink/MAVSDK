@@ -158,8 +158,8 @@ jobs:
           echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/release/third_party/install" >> $GITHUB_ENV
       - name: configure
         run: |
-          echo "CC=${{ matrix.cc }}" >> $GITHUB_ENV
-          echo "CXX=${{ matrix.cxx }}" >> $GITHUB_ENV
+          export CC=${{ matrix.cc }}
+          export CXX=${{ matrix.cxx }}
           cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_MAVSDK_SERVER=ON -DWERROR=ON -DENABLE_CPPTRACE=On -DCMAKE_INSTALL_PREFIX=install -Bbuild/release -H.
       - name: build
         run: cmake --build build/release -j$(nproc)
