@@ -108,6 +108,83 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           path-to-lcov: "./lcov.info"
 
+  ubuntu-debug:
+    name: Ubuntu 24.04 (Debug Build)
+    needs: [check-docker-changes, update-docker-images]
+    if: always() && needs.check-docker-changes.result == 'success'
+    runs-on: ubuntu-24.04
+    container:
+      image: docker.io/mavsdk/mavsdk-ubuntu-24.04:${{ needs.check-docker-changes.outputs.docker_tag }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0
+      - name: git permission workaround
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          git config --global --add safe.directory /github/workspace
+      - name: git get version tags
+        run: git fetch --tags
+      - uses: actions/cache@v4
+        id: cache
+        with:
+          path: ./build/debug/third_party/install
+          key: ${{ github.job }}-${{ hashFiles('./third_party/**') }}
+      - name: disable superbuild on cache hit
+        if: steps.cache.outputs.cache-hit == 'true'
+        run: |
+          echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV
+          echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/debug/third_party/install" >> $GITHUB_ENV
+      - name: configure
+        run: cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Debug -DWERROR=ON -DENABLE_CPPTRACE=On -Bbuild/debug -H.
+      - name: build
+        run: cmake --build build/debug -j$(nproc)
+      - name: unit tests
+        run: ./build/debug/src/unit_tests/unit_tests_runner
+      - name: system tests
+        run: ./build/debug/src/system_tests/system_tests_runner
+
+  ubuntu-asan:
+    name: Ubuntu 24.04 (AddressSanitizer)
+    needs: [check-docker-changes, update-docker-images]
+    if: always() && needs.check-docker-changes.result == 'success'
+    runs-on: ubuntu-24.04
+    container:
+      image: docker.io/mavsdk/mavsdk-ubuntu-24.04:${{ needs.check-docker-changes.outputs.docker_tag }}
+    env:
+      ASAN_OPTIONS: detect_leaks=1:abort_on_error=1:halt_on_error=1:check_initialization_order=1:strict_init_order=1
+      MSAN_OPTIONS: halt_on_error=1:abort_on_error=1
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0
+      - name: git permission workaround
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          git config --global --add safe.directory /github/workspace
+      - name: git get version tags
+        run: git fetch --tags
+      - uses: actions/cache@v4
+        id: cache
+        with:
+          path: ./build/asan/third_party/install
+          key: ${{ github.job }}-${{ hashFiles('./third_party/**') }}
+      - name: disable superbuild on cache hit
+        if: steps.cache.outputs.cache-hit == 'true'
+        run: |
+          echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV
+          echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/asan/third_party/install" >> $GITHUB_ENV
+      - name: configure
+        run: cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Debug -DASAN=ON -DWERROR=ON -DENABLE_CPPTRACE=On -Bbuild/asan -H.
+      - name: build
+        run: cmake --build build/asan -j$(nproc)
+      - name: unit tests
+        run: ./build/asan/src/unit_tests/unit_tests_runner
+      - name: system tests
+        run: ./build/asan/src/system_tests/system_tests_runner
+
   ubuntu-superbuild:
     name: ${{ matrix.description }}
     needs: [check-docker-changes, update-docker-images]
