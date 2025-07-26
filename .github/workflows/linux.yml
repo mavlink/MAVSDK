@@ -95,7 +95,7 @@ jobs:
         run: cmake --build build -j$(nproc)
       - name: enable core dumps
         run: |
-          ulimit -c unlimited
+          sudo ulimit -c unlimited
           echo '/tmp/core.%e.%p.%t' | sudo tee /proc/sys/kernel/core_pattern
       - name: unit tests
         run: ./build/src/unit_tests/unit_tests_runner
@@ -182,7 +182,7 @@ jobs:
         run: cmake --build examples/build -j$(nproc)
       - name: enable core dumps
         run: |
-          ulimit -c unlimited
+          sudo ulimit -c unlimited
           echo '/tmp/core.%e.%p.%t' | sudo tee /proc/sys/kernel/core_pattern
       - name: unit tests
         run: ./build/release/src/unit_tests/unit_tests_runner
