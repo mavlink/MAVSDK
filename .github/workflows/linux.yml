@@ -192,6 +192,9 @@ jobs:
     runs-on: ubuntu-24.04
     container:
       image: docker.io/mavsdk/mavsdk-ubuntu-${{ matrix.ubuntu_version }}:${{ needs.check-docker-changes.outputs.docker_tag }}
+    env:
+      ASAN_OPTIONS: ${{ matrix.enable_asan && 'detect_leaks=1:abort_on_error=1:halt_on_error=1:check_initialization_order=1:strict_init_order=1' || '' }}
+      MSAN_OPTIONS: ${{ matrix.enable_asan && 'halt_on_error=1:abort_on_error=1' || '' }}
     strategy:
       fail-fast: false
       matrix:
@@ -203,11 +206,13 @@ jobs:
           - ubuntu_version: "24.04"
             cc: gcc-14
             cxx: g++-14
-            description: Ubuntu 24.04 (GCC 14)
+            description: Ubuntu 24.04 (GCC 14 + ASAN)
+            enable_asan: true
           - ubuntu_version: "24.04"
             cc: clang-18
             cxx: clang++-18
-            description: Ubuntu 24.04 (clang 18)
+            description: Ubuntu 24.04 (clang 18 + ASAN)
+            enable_asan: true
     steps:
       - uses: actions/checkout@v4
         with:
@@ -237,7 +242,7 @@ jobs:
         run: |
           export CC=${{ matrix.cc }}
           export CXX=${{ matrix.cxx }}
-          cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_MAVSDK_SERVER=ON -DWERROR=ON -DENABLE_CPPTRACE=On -DCMAKE_INSTALL_PREFIX=install -Bbuild/release -H.
+          cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_MAVSDK_SERVER=ON -DWERROR=ON -DENABLE_CPPTRACE=On ${{ matrix.enable_asan && '-DASAN=ON' || '' }} -DCMAKE_INSTALL_PREFIX=install -Bbuild/release -H.
       - name: build
         run: cmake --build build/release -j$(nproc)
       - name: install
