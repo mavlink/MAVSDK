@@ -19,7 +19,7 @@ void crash_handler(int sig)
 {
     // Use only async-signal-safe functions in signal handler
     const char msg1[] = "=== CRASH DETECTED ===\n";
-    write(STDERR_FILENO, msg1, sizeof(msg1) - 1);
+    (void)write(STDERR_FILENO, msg1, sizeof(msg1) - 1);
 
     // Format signal info using async-signal-safe functions
     char sig_msg[100];
@@ -31,20 +31,20 @@ void crash_handler(int sig)
         len = snprintf(sig_msg, sizeof(sig_msg), "Signal: %d\n", sig);
     }
     if (len > 0 && len < (int)sizeof(sig_msg)) {
-        write(STDERR_FILENO, sig_msg, len);
+        (void)write(STDERR_FILENO, sig_msg, len);
     }
 
     // Process ID
     char pid_msg[50];
     len = snprintf(pid_msg, sizeof(pid_msg), "Process: %d\n", getpid());
     if (len > 0 && len < (int)sizeof(pid_msg)) {
-        write(STDERR_FILENO, pid_msg, len);
+        (void)write(STDERR_FILENO, pid_msg, len);
     }
 
     // Stack trace using async-signal-safe backtrace_symbols_fd
 #if defined(__linux__) || defined(__APPLE__)
     const char trace_msg[] = "Stack trace (backtrace):\n";
-    write(STDERR_FILENO, trace_msg, sizeof(trace_msg) - 1);
+    (void)write(STDERR_FILENO, trace_msg, sizeof(trace_msg) - 1);
 
     void* array[20];
     size_t size = backtrace(array, 20);
@@ -52,7 +52,7 @@ void crash_handler(int sig)
 #endif
 
     const char msg2[] = "=== END CRASH INFO ===\n";
-    write(STDERR_FILENO, msg2, sizeof(msg2) - 1);
+    (void)write(STDERR_FILENO, msg2, sizeof(msg2) - 1);
 
     // Force immediate exit to prevent hanging
     _exit(128 + sig);
