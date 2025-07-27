@@ -192,6 +192,7 @@ jobs:
     runs-on: ubuntu-24.04
     container:
       image: docker.io/mavsdk/mavsdk-ubuntu-${{ matrix.ubuntu_version }}:${{ needs.check-docker-changes.outputs.docker_tag }}
+      options: --privileged --ulimit core=-1 --security-opt seccomp=unconfined
     strategy:
       fail-fast: false
       matrix:
@@ -219,6 +220,12 @@ jobs:
           git config --global --add safe.directory /github/workspace
       - name: git get version tags
         run: git fetch --tags
+      - name: configure core dumps
+        run: |
+          ulimit -c unlimited
+          echo '/tmp/core.%h.%e.%t' | sudo tee /proc/sys/kernel/core_pattern
+          echo 'Core dump pattern set to:' 
+          cat /proc/sys/kernel/core_pattern
       - name: install dependencies for examples
         run: |
           sudo apt-get update && sudo apt-get install -y \
@@ -254,6 +261,29 @@ jobs:
         run: ./build/release/src/system_tests/standalone_ftp_test
       - name: system tests
         run: ./build/release/src/system_tests/system_tests_runner
+      - name: collect core dumps
+        if: failure()
+        run: |
+          echo "Looking for core dumps..."
+          find /tmp -name "core.*" -type f -ls
+          if ls /tmp/core.* 1> /dev/null 2>&1; then
+            for core in /tmp/core.*; do
+              echo "=== Analyzing core dump: $core ==="
+              file "$core"
+              gdb -batch -ex "bt full" -ex "info registers" -ex "thread apply all bt" \
+                  ./build/release/src/system_tests/system_tests_runner "$core" || true
+            done
+          else
+            echo "No core dumps found"
+          fi
+      - name: upload core dumps
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: core-dumps-${{ matrix.description }}-${{ github.run_id }}
+          path: /tmp/core.*
+          retention-days: 7
+          if-no-files-found: ignore
       - name: test (mavsdk_server)
         run: ./build/release/src/mavsdk_server/test/unit_tests_mavsdk_server
 
@@ -352,6 +382,7 @@ jobs:
     runs-on: ubuntu-24.04
     container:
       image: docker.io/mavsdk/mavsdk-${{ matrix.os_type }}-${{ matrix.os_version }}:${{ needs.check-docker-changes.outputs.docker_tag }}
+      options: --privileged --ulimit core=-1 --security-opt seccomp=unconfined
     strategy:
       fail-fast: false
       matrix:
@@ -385,6 +416,12 @@ jobs:
           git config --global --add safe.directory /github/workspace
       - name: git get version tags
         run: git fetch --tags
+      - name: configure core dumps
+        run: |
+          ulimit -c unlimited
+          echo '/tmp/core.%h.%e.%t' | sudo tee /proc/sys/kernel/core_pattern
+          echo 'Core dump pattern set to:' 
+          cat /proc/sys/kernel/core_pattern
       - name: configure
         run: cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_MAVSDK_SERVER=OFF -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=install -DWERROR=ON -Bbuild/release -H.
       - name: build
@@ -397,6 +434,29 @@ jobs:
         run: ./build/release/src/system_tests/standalone_ftp_test
       - name: system tests
         run: ./build/release/src/system_tests/system_tests_runner
+      - name: collect core dumps
+        if: failure()
+        run: |
+          echo "Looking for core dumps..."
+          find /tmp -name "core.*" -type f -ls
+          if ls /tmp/core.* 1> /dev/null 2>&1; then
+            for core in /tmp/core.*; do
+              echo "=== Analyzing core dump: $core ==="
+              file "$core"
+              gdb -batch -ex "bt full" -ex "info registers" -ex "thread apply all bt" \
+                  ./build/release/src/system_tests/system_tests_runner "$core" || true
+            done
+          else
+            echo "No core dumps found"
+          fi
+      - name: upload core dumps
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: core-dumps-${{ matrix.os_type }}-${{ matrix.os_version }}-${{ github.run_id }}
+          path: /tmp/core.*
+          retention-days: 7
+          if-no-files-found: ignore
       - name: install
         run: cmake --build build/release --target install
       - name: Package
