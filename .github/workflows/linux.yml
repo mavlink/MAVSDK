@@ -397,8 +397,18 @@ jobs:
         run: cmake --build build/release -- -j$(nproc)
       - name: unit tests
         run: ./build/release/src/unit_tests/unit_tests_runner
+      - name: install gdb
+        run: apt-get update && apt-get install -y gdb
       - name: system tests
-        run: ./build/release/src/system_tests/system_tests_runner
+        run: |
+          timeout 600 gdb -batch \
+            -ex "set pagination off" \
+            -ex "set print thread-events off" \
+            -ex "run" \
+            -ex "thread apply all bt" \
+            -ex "info registers" \
+            -ex "quit" \
+            --args ./build/release/src/system_tests/system_tests_runner
       - name: install
         run: cmake --build build/release --target install
       - name: Package
