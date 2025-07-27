@@ -29,7 +29,11 @@ ComponentMetadataServerImpl::~ComponentMetadataServerImpl()
 {
     _server_component_impl->unregister_plugin(this);
     if (_metadata_set) {
-        std::filesystem::remove_all(_tmp_path);
+        std::error_code ec;
+        std::filesystem::remove_all(_tmp_path, ec);
+        if (ec) {
+            LogErr() << "Error removing " << _tmp_path << ": " << ec.message();
+        }
     }
 }
 
