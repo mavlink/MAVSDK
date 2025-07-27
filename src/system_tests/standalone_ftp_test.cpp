@@ -15,7 +15,6 @@ static constexpr double reduced_timeout_s = 0.1;
 static const fs::path temp_dir_provided = "/tmp/mavsdk_systemtest_temp_data/provided";
 static const fs::path temp_file = "data.bin";
 
-
 bool test_ftp_remove_file()
 {
     std::cout << "Test 1: FtpRemoveFile..." << std::endl;

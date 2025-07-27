@@ -13,7 +13,6 @@ using namespace mavsdk;
 static constexpr unsigned num_params_per_type = 3;
 static constexpr double reduced_timeout_s = 0.1;
 
-
 static std::map<std::string, float> generate_float_params()
 {
     std::map<std::string, float> params;
