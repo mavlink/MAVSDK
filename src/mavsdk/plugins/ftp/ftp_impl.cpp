@@ -80,6 +80,7 @@ std::pair<Ftp::Result, Ftp::ListDirectoryData> FtpImpl::list_directory(const std
     auto fut = prom.get_future();
 
     list_directory_async(path, [&](Ftp::Result result, Ftp::ListDirectoryData data) {
+        LogInfo() << "Setting promise value for list_directory";
         prom.set_value(std::pair<Ftp::Result, Ftp::ListDirectoryData>(result, data));
     });
     return fut.get();
@@ -108,7 +109,10 @@ Ftp::Result FtpImpl::create_directory(const std::string& path)
     std::promise<Ftp::Result> prom{};
     auto fut = prom.get_future();
 
-    create_directory_async(path, [&](Ftp::Result result) { prom.set_value(result); });
+    create_directory_async(path, [&](Ftp::Result result) {
+        LogInfo() << "Setting promise value for create_directory";
+        prom.set_value(result);
+    });
     return fut.get();
 }
 
@@ -129,7 +133,10 @@ Ftp::Result FtpImpl::remove_directory(const std::string& path)
     std::promise<Ftp::Result> prom{};
     auto fut = prom.get_future();
 
-    remove_directory_async(path, [&](Ftp::Result result) { prom.set_value(result); });
+    remove_directory_async(path, [&](Ftp::Result result) {
+        LogInfo() << "Setting promise value for remove_directory";
+        prom.set_value(result);
+    });
 
     return fut.get();
 }
@@ -151,7 +158,10 @@ Ftp::Result FtpImpl::remove_file(const std::string& path)
     std::promise<Ftp::Result> prom;
     auto fut = prom.get_future();
 
-    remove_file_async(path, [&](Ftp::Result result) { prom.set_value(result); });
+    remove_file_async(path, [&](Ftp::Result result) {
+        LogInfo() << "Setting promise value for remove_file";
+        prom.set_value(result);
+    });
 
     return fut.get();
 }
@@ -173,7 +183,10 @@ Ftp::Result FtpImpl::rename(const std::string& from_path, const std::string& to_
     std::promise<Ftp::Result> prom{};
     auto fut = prom.get_future();
 
-    rename_async(from_path, to_path, [&](Ftp::Result result) { prom.set_value(result); });
+    rename_async(from_path, to_path, [&](Ftp::Result result) {
+        LogInfo() << "Setting promise value for rename";
+        prom.set_value(result);
+    });
 
     return fut.get();
 }
@@ -198,6 +211,7 @@ FtpImpl::are_files_identical(const std::string& local_path, const std::string& r
     auto fut = prom.get_future();
 
     are_files_identical_async(local_path, remote_path, [&](Ftp::Result result, bool identical) {
+        LogInfo() << "Setting promise value for are_files_identical";
         prom.set_value(std::pair<Ftp::Result, bool>{result, identical});
     });
 
