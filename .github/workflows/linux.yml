@@ -252,18 +252,8 @@ jobs:
         run: ./build/release/src/system_tests/standalone_param_test
       - name: standalone ftp test
         run: ./build/release/src/system_tests/standalone_ftp_test
-      - name: install gdb
-        run: apt-get update && apt-get install -y gdb
       - name: system tests
-        run: |
-          timeout 600 gdb -batch \
-            -ex "set pagination off" \
-            -ex "set print thread-events off" \
-            -ex "run" \
-            -ex "thread apply all bt" \
-            -ex "info registers" \
-            -ex "quit" \
-            --args ./build/release/src/system_tests/system_tests_runner
+        run: ./build/release/src/system_tests/system_tests_runner
       - name: test (mavsdk_server)
         run: ./build/release/src/mavsdk_server/test/unit_tests_mavsdk_server
 
@@ -405,18 +395,8 @@ jobs:
         run: ./build/release/src/system_tests/standalone_param_test
       - name: standalone ftp test
         run: ./build/release/src/system_tests/standalone_ftp_test
-      - name: install gdb
-        run: apt-get update && apt-get install -y gdb
       - name: system tests
-        run: |
-          timeout 600 gdb -batch \
-            -ex "set pagination off" \
-            -ex "set print thread-events off" \
-            -ex "run" \
-            -ex "thread apply all bt" \
-            -ex "info registers" \
-            -ex "quit" \
-            --args ./build/release/src/system_tests/system_tests_runner
+        run: ./build/release/src/system_tests/system_tests_runner
       - name: install
         run: cmake --build build/release --target install
       - name: Package
