@@ -132,7 +132,10 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: test-binary-coverage-${{ github.run_id }}
-          path: ./build/src/system_tests/system_tests_runner
+          path: |
+            ./build/src/system_tests/system_tests_runner
+            ./build/src/mavsdk/libmavsdk.so*
+            ./build/src/mavsdk_server/src/libmavsdk_server.so*
           retention-days: 7
       - name: run lcov
         run: lcov --capture --directory . --no-external --exclude "*/third_party/*"  --output-file lcov.info
@@ -330,6 +333,8 @@ jobs:
             ./build/release/src/system_tests/system_tests_runner
             ./build/release/src/system_tests/standalone_param_test
             ./build/release/src/system_tests/standalone_ftp_test
+            ./build/release/src/mavsdk/libmavsdk.so*
+            ./build/release/src/mavsdk_server/src/libmavsdk_server.so*
           retention-days: 7
       - name: test (mavsdk_server)
         run: ./build/release/src/mavsdk_server/test/unit_tests_mavsdk_server
@@ -513,6 +518,8 @@ jobs:
             ./build/release/src/system_tests/system_tests_runner
             ./build/release/src/system_tests/standalone_param_test
             ./build/release/src/system_tests/standalone_ftp_test
+            ./build/release/src/mavsdk/libmavsdk.so*
+            ./build/release/src/mavsdk_server/src/libmavsdk_server.so*
           retention-days: 7
       - name: install
         run: cmake --build build/release --target install
