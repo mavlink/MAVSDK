@@ -7,10 +7,6 @@
 #include <chrono>
 #include <thread>
 #include <iostream>
-#include <signal.h>
-#include <unistd.h>
-#include <execinfo.h>
-#include <cstring>
 
 using namespace mavsdk;
 namespace fs = std::filesystem;
@@ -19,54 +15,6 @@ static constexpr double reduced_timeout_s = 0.1;
 static const fs::path temp_dir_provided = "/tmp/mavsdk_systemtest_temp_data/provided";
 static const fs::path temp_file = "data.bin";
 
-// Async-signal-safe crash handler
-void crash_handler(int sig)
-{
-    // Use only async-signal-safe functions in signal handler
-    const char msg1[] = "=== CRASH DETECTED ===\n";
-    ssize_t unused = write(STDERR_FILENO, msg1, sizeof(msg1) - 1);
-    (void)unused;
-
-    // Format signal info using async-signal-safe functions
-    char sig_msg[100];
-    const char* signal_name = strsignal(sig);
-    int len = 0;
-    if (signal_name) {
-        len = snprintf(sig_msg, sizeof(sig_msg), "Signal: %s (%d)\n", signal_name, sig);
-    } else {
-        len = snprintf(sig_msg, sizeof(sig_msg), "Signal: %d\n", sig);
-    }
-    if (len > 0 && len < (int)sizeof(sig_msg)) {
-        unused = write(STDERR_FILENO, sig_msg, len);
-        (void)unused;
-    }
-
-    // Process ID
-    char pid_msg[50];
-    len = snprintf(pid_msg, sizeof(pid_msg), "Process: %d\n", getpid());
-    if (len > 0 && len < (int)sizeof(pid_msg)) {
-        unused = write(STDERR_FILENO, pid_msg, len);
-        (void)unused;
-    }
-
-    // Stack trace using async-signal-safe backtrace_symbols_fd
-#if defined(__linux__) || defined(__APPLE__)
-    const char trace_msg[] = "Stack trace (backtrace):\n";
-    unused = write(STDERR_FILENO, trace_msg, sizeof(trace_msg) - 1);
-    (void)unused;
-
-    void* array[20];
-    size_t size = backtrace(array, 20);
-    backtrace_symbols_fd(array, size, STDERR_FILENO);
-#endif
-
-    const char msg2[] = "=== END CRASH INFO ===\n";
-    unused = write(STDERR_FILENO, msg2, sizeof(msg2) - 1);
-    (void)unused;
-
-    // Force immediate exit to prevent hanging
-    _exit(128 + sig);
-}
 
 bool test_ftp_remove_file()
 {
@@ -252,11 +200,7 @@ bool test_ftp_remove_file_outside_of_root()
 
 int main()
 {
-    // Install crash handler
-    signal(SIGSEGV, crash_handler);
-    signal(SIGABRT, crash_handler);
-    signal(SIGFPE, crash_handler);
-    signal(SIGILL, crash_handler);
+    // Use default signal handling to allow core dumps
 
     std::cout << "Running standalone FTP remove file tests..." << std::endl;
 
