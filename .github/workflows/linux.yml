@@ -90,7 +90,7 @@ jobs:
             lcov \
             curl
       - name: configure
-        run: cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Coverage -DASAN=ON -DWERROR=ON -DENABLE_CPPTRACE=On -Bbuild -H.
+        run: cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Coverage -DASAN=ON -DWERROR=ON -Bbuild -H.
       - name: build
         run: cmake --build build -j$(nproc)
       - name: unit tests
@@ -244,7 +244,7 @@ jobs:
         run: |
           export CC=${{ matrix.cc }}
           export CXX=${{ matrix.cxx }}
-          cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_MAVSDK_SERVER=ON -DWERROR=ON -DENABLE_CPPTRACE=On -DCMAKE_INSTALL_PREFIX=install -Bbuild/release -H.
+          cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_MAVSDK_SERVER=ON -DWERROR=ON -DCMAKE_INSTALL_PREFIX=install -Bbuild/release -H.
       - name: build
         run: cmake --build build/release -j$(nproc)
       - name: install
@@ -564,7 +564,7 @@ jobs:
           echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV
           echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/release/third_party/install" >> $GITHUB_ENV
       - name: configure
-        run: cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Release -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DBUILD_STATIC_MAVSDK_SERVER=ON -DCMAKE_INSTALL_PREFIX=install -DWERROR=ON -DENABLE_CPPTRACE=On -Bbuild/release -H.
+        run: cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Release -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DBUILD_STATIC_MAVSDK_SERVER=ON -DCMAKE_INSTALL_PREFIX=install -DWERROR=ON -Bbuild/release -H.
       - name: build
         run: cmake --build build/release --target install -- -j$(nproc)
       - name: unit tests
