@@ -248,6 +248,8 @@ jobs:
         run: cmake --build examples/build -j$(nproc)
       - name: unit tests
         run: ./build/release/src/unit_tests/unit_tests_runner
+      - name: install gdb
+        run: apt-get update && apt-get install -y gdb
       - name: system tests
         run: |
           timeout 600 gdb -batch \
