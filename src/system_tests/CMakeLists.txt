@@ -62,3 +62,41 @@ if(ENABLE_CPPTRACE)
         -DENABLE_CPPTRACE
     )
 endif()
+
+# Standalone tests without GTest
+add_executable(standalone_param_test
+    standalone_param_test.cpp
+)
+
+target_include_directories(standalone_param_test
+    PRIVATE
+    ${PROJECT_SOURCE_DIR}/mavsdk/core
+)
+
+target_link_libraries(standalone_param_test
+    PRIVATE
+    mavsdk
+)
+
+set_target_properties(standalone_param_test
+    PROPERTIES COMPILE_FLAGS ${warnings}
+)
+
+add_executable(standalone_ftp_test
+    standalone_ftp_test.cpp
+    fs_helpers.cpp
+)
+
+target_include_directories(standalone_ftp_test
+    PRIVATE
+    ${PROJECT_SOURCE_DIR}/mavsdk/core
+)
+
+target_link_libraries(standalone_ftp_test
+    PRIVATE
+    mavsdk
+)
+
+set_target_properties(standalone_ftp_test
+    PROPERTIES COMPILE_FLAGS ${warnings}
+)

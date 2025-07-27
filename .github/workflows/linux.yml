@@ -248,6 +248,10 @@ jobs:
         run: cmake --build examples/build -j$(nproc)
       - name: unit tests
         run: ./build/release/src/unit_tests/unit_tests_runner
+      - name: standalone param test
+        run: ./build/release/src/system_tests/standalone_param_test
+      - name: standalone ftp test
+        run: ./build/release/src/system_tests/standalone_ftp_test
       - name: install gdb
         run: apt-get update && apt-get install -y gdb
       - name: system tests
@@ -397,6 +401,10 @@ jobs:
         run: cmake --build build/release -- -j$(nproc)
       - name: unit tests
         run: ./build/release/src/unit_tests/unit_tests_runner
+      - name: standalone param test
+        run: ./build/release/src/system_tests/standalone_param_test
+      - name: standalone ftp test
+        run: ./build/release/src/system_tests/standalone_ftp_test
       - name: install gdb
         run: apt-get update && apt-get install -y gdb
       - name: system tests
