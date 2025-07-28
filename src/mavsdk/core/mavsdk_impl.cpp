@@ -1081,7 +1081,8 @@ void MavsdkImpl::process_user_callbacks_thread()
         auto cookie = timeout_handler.add(
             [this,
              filename = callback.value().filename,
-             linenumber = callback.value().linenumber]() {
+             linenumber = callback.value().linenumber,
+             timeout_s]() {
                 if (_callback_debugging) {
                     LogWarn() << "Callback called from " << filename << ":" << linenumber
                               << " took more than " << timeout_s << " second to run.";
