@@ -3,7 +3,6 @@
 #include <queue>
 #include <mutex>
 #include <memory>
-#include <condition_variable>
 
 namespace mavsdk {
 
@@ -16,20 +15,12 @@ public:
     {
         std::lock_guard<std::mutex> lock(_mutex);
         _queue.push_back(item_ptr);
-        _condition_var.notify_one();
     }
 
     size_t size()
     {
         std::lock_guard<std::mutex> lock(_mutex);
         return _queue.size();
-    }
-
-    void stop()
-    {
-        std::lock_guard<std::mutex> lock(_mutex);
-        _should_exit = true;
-        _condition_var.notify_all();
     }
 
     using iterator = typename std::deque<std::shared_ptr<T>>::iterator;
@@ -65,27 +56,6 @@ public:
             return _locked_queue._queue.front();
         }
 
-        std::shared_ptr<T> wait_and_pop_front()
-        {
-            // Convert lock_guard to unique_lock for condition variable usage
-            _locked_queue._mutex.unlock();
-            std::unique_lock<std::mutex> lock(_locked_queue._mutex);
-
-            while (_locked_queue._queue.empty()) {
-                if (_locked_queue._should_exit) {
-                    return nullptr;
-                }
-                _locked_queue._condition_var.wait(lock);
-            }
-            if (_locked_queue._should_exit) {
-                return nullptr;
-            }
-
-            auto result = _locked_queue._queue.front();
-            _locked_queue._queue.pop_front();
-            return result;
-        }
-
         void pop_front() { _locked_queue._queue.pop_front(); }
 
     private:
@@ -95,8 +65,6 @@ public:
 private:
     std::deque<std::shared_ptr<T>> _queue{};
     std::mutex _mutex{};
-    std::condition_variable _condition_var{};
-    bool _should_exit{false};
 };
 
 } // namespace mavsdk

@@ -1061,22 +1061,15 @@ void MavsdkImpl::call_user_callback_located(
     UserCallback user_callback =
         _callback_debugging ? UserCallback{func, filename, linenumber} : UserCallback{func};
 
-    _user_callback_queue.push_back(std::make_shared<UserCallback>(user_callback));
+    _user_callback_queue.enqueue(user_callback);
 }
 
 void MavsdkImpl::process_user_callbacks_thread()
 {
     while (!_should_exit) {
-        UserCallback callback;
-        {
-            LockedQueue<UserCallback>::Guard guard(_user_callback_queue);
-            auto ptr = guard.wait_and_pop_front();
-            if (!ptr) {
-                continue;
-            }
-            // We need to get a copy instead of just a shared_ptr because the queue might
-            // be invalidated when the lock is released.
-            callback = *ptr;
+        auto callback = _user_callback_queue.dequeue();
+        if (!callback) {
+            continue;
         }
 
         // Check if we're in the process of shutting down before executing the callback
@@ -1086,11 +1079,12 @@ void MavsdkImpl::process_user_callbacks_thread()
 
         const double timeout_s = 1.0;
         auto cookie = timeout_handler.add(
-            [&]() {
+            [this,
+             filename = callback.value().filename,
+             linenumber = callback.value().linenumber]() {
                 if (_callback_debugging) {
-                    LogWarn() << "Callback called from " << callback.filename << ":"
-                              << callback.linenumber << " took more than " << timeout_s
-                              << " second to run.";
+                    LogWarn() << "Callback called from " << filename << ":" << linenumber
+                              << " took more than " << timeout_s << " second to run.";
                     fflush(stdout);
                     fflush(stderr);
                     abort();
@@ -1101,7 +1095,7 @@ void MavsdkImpl::process_user_callbacks_thread()
                 }
             },
             timeout_s);
-        callback.func();
+        callback.value().func();
         timeout_handler.remove(cookie);
     }
 }

@@ -23,7 +23,7 @@
 #include "mavlink_address.h"
 #include "mavlink_message_handler.h"
 #include "mavlink_command_receiver.h"
-#include "locked_queue.h"
+#include "safe_queue.h"
 #include "server_component.h"
 #include "system.h"
 #include "sender.h"
@@ -194,7 +194,7 @@ private:
 
     std::thread* _work_thread{nullptr};
     std::thread* _process_user_callbacks_thread{nullptr};
-    LockedQueue<UserCallback> _user_callback_queue{};
+    SafeQueue<UserCallback> _user_callback_queue{};
 
     bool _message_logging_on{false};
     bool _callback_debugging{false};
