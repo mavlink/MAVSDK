@@ -23,7 +23,6 @@ void HttpLoader::start()
 void HttpLoader::stop()
 {
     _should_exit = true;
-    _work_queue.stop();
     if (_work_thread.joinable()) {
         _work_thread.join();
     }
@@ -53,14 +52,14 @@ void HttpLoader::work_thread()
     while (!_should_exit) {
         LockedQueue<WorkItem>::Guard work_queue_guard(_work_queue);
 
-        auto work = work_queue_guard.wait_and_pop_front();
+        auto work = work_queue_guard.get_front();
 
         if (!work) {
-            // Queue was stopped or should exit
-            break;
+            continue;
         }
 
         do_item(*work);
+        work_queue_guard.pop_front();
     }
 }
 
