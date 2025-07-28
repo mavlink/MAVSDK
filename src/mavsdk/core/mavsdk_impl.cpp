@@ -1067,14 +1067,16 @@ void MavsdkImpl::call_user_callback_located(
 void MavsdkImpl::process_user_callbacks_thread()
 {
     while (!_should_exit) {
-        std::shared_ptr<UserCallback> callback;
+        UserCallback callback;
         {
             LockedQueue<UserCallback>::Guard guard(_user_callback_queue);
-            callback = guard.wait_and_pop_front();
-        }
-
-        if (!callback) {
-            continue;
+            auto ptr = guard.wait_and_pop_front();
+            if (!ptr) {
+                continue;
+            }
+            // We need to get a copy instead of just a shared_ptr because the queue might
+            // be invalidated when the lock is released.
+            callback = *ptr;
         }
 
         // Check if we're in the process of shutting down before executing the callback
@@ -1086,8 +1088,8 @@ void MavsdkImpl::process_user_callbacks_thread()
         auto cookie = timeout_handler.add(
             [&]() {
                 if (_callback_debugging) {
-                    LogWarn() << "Callback called from " << callback->filename << ":"
-                              << callback->linenumber << " took more than " << timeout_s
+                    LogWarn() << "Callback called from " << callback.filename << ":"
+                              << callback.linenumber << " took more than " << timeout_s
                               << " second to run.";
                     fflush(stdout);
                     fflush(stderr);
@@ -1099,7 +1101,7 @@ void MavsdkImpl::process_user_callbacks_thread()
                 }
             },
             timeout_s);
-        callback->func();
+        callback.func();
         timeout_handler.remove(cookie);
     }
 }
