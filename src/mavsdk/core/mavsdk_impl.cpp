@@ -1086,10 +1086,11 @@ void MavsdkImpl::process_user_callbacks_thread()
 
         const double timeout_s = 1.0;
         auto cookie = timeout_handler.add(
-            [this, filename = callback.filename, linenumber = callback.linenumber, timeout_s]() {
+            [&]() {
                 if (_callback_debugging) {
-                    LogWarn() << "Callback called from " << filename << ":" << linenumber
-                              << " took more than " << timeout_s << " second to run.";
+                    LogWarn() << "Callback called from " << callback.filename << ":"
+                              << callback.linenumber << " took more than " << timeout_s
+                              << " second to run.";
                     fflush(stdout);
                     fflush(stderr);
                     abort();
