@@ -97,7 +97,7 @@ jobs:
             lcov \
             curl
       - name: configure
-        run: cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Coverage -DASAN=ON -DWERROR=ON -Bbuild -H.
+        run: cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Coverage -DASAN=ON -DWERROR=ON -DCMAKE_CXX_FLAGS="-fstack-protector-all" -DCMAKE_C_FLAGS="-fstack-protector-all" -Bbuild -H.
       - name: build
         run: cmake --build build -j$(nproc)
       - name: unit tests
@@ -177,7 +177,7 @@ jobs:
           echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV
           echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/debug/third_party/install" >> $GITHUB_ENV
       - name: configure
-        run: cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Debug -DWERROR=ON -DENABLE_CPPTRACE=On -Bbuild/debug -H.
+        run: cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Debug -DWERROR=ON -DENABLE_CPPTRACE=On -DCMAKE_CXX_FLAGS="-fstack-protector-all" -DCMAKE_C_FLAGS="-fstack-protector-all" -Bbuild/debug -H.
       - name: build
         run: cmake --build build/debug -j$(nproc)
       - name: unit tests
@@ -217,7 +217,7 @@ jobs:
           echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV
           echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/asan/third_party/install" >> $GITHUB_ENV
       - name: configure
-        run: cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Debug -DASAN=ON -DWERROR=ON -DENABLE_CPPTRACE=On -Bbuild/asan -H.
+        run: cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Debug -DASAN=ON -DWERROR=ON -DENABLE_CPPTRACE=On -DCMAKE_CXX_FLAGS="-fstack-protector-all" -DCMAKE_C_FLAGS="-fstack-protector-all" -Bbuild/asan -H.
       - name: build
         run: cmake --build build/asan -j$(nproc)
       - name: unit tests
@@ -284,7 +284,7 @@ jobs:
         run: |
           export CC=${{ matrix.cc }}
           export CXX=${{ matrix.cxx }}
-          cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_MAVSDK_SERVER=ON -DWERROR=ON -DCMAKE_INSTALL_PREFIX=install -Bbuild/release -H.
+          cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_MAVSDK_SERVER=ON -DWERROR=ON -DCMAKE_INSTALL_PREFIX=install -DCMAKE_CXX_FLAGS="-fstack-protector-all" -DCMAKE_C_FLAGS="-fstack-protector-all" -Bbuild/release -H.
       - name: build
         run: cmake --build build/release -j$(nproc)
       - name: install
@@ -475,7 +475,7 @@ jobs:
           echo 'Core dump pattern set to:' 
           cat /proc/sys/kernel/core_pattern
       - name: configure
-        run: cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_MAVSDK_SERVER=OFF -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=install -DWERROR=ON -Bbuild/release -H.
+        run: cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_MAVSDK_SERVER=OFF -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=install -DWERROR=ON -DCMAKE_CXX_FLAGS="-fstack-protector-all" -DCMAKE_C_FLAGS="-fstack-protector-all" -Bbuild/release -H.
       - name: build
         run: cmake --build build/release -- -j$(nproc)
       - name: unit tests
