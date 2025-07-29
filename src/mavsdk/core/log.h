@@ -30,7 +30,8 @@
 
 namespace mavsdk {
 
-// Mutex removed - allowing interleaved output to avoid static data sharing between MAVSDK instances
+// Mutex moved to log.cpp to avoid inlining issues
+std::mutex& get_log_mutex();
 
 std::ostream& operator<<(std::ostream& os, std::byte b);
 
@@ -41,6 +42,7 @@ void set_color(Color color);
 class LogDetailed {
 public:
     LogDetailed(const char* filename, int filenumber) :
+        _lock_guard(get_log_mutex()),
         _s(),
         _caller_filename(filename),
         _caller_filenumber(filenumber)
@@ -96,11 +98,11 @@ public:
 
         // Time output taken from:
         // https://stackoverflow.com/questions/16357999#answer-16358264
-        // time_t rawtime;
-        // time(&rawtime);
-        // struct tm* timeinfo = localtime(&rawtime);
-        // char time_buffer[10]{}; // We need 8 characters + \0
-        // strftime(time_buffer, sizeof(time_buffer), "%I:%M:%S", timeinfo);
+        //time_t rawtime;
+        //time(&rawtime);
+        //struct tm* timeinfo = localtime(&rawtime);
+        //char time_buffer[10]{}; // We need 8 characters + \0
+        //strftime(time_buffer, sizeof(time_buffer), "%I:%M:%S", timeinfo);
         std::cout << "["; //<< time_buffer;
 
         switch (_log_level) {
@@ -134,6 +136,8 @@ protected:
     log::Level _log_level = log::Level::Debug;
 
 private:
+    std::lock_guard<std::mutex> _lock_guard;
+
     std::stringstream _s;
     const char* _caller_filename;
     int _caller_filenumber;
