@@ -25,6 +25,14 @@ namespace mavsdk {
 static std::mutex callback_mutex_{};
 static log::Callback callback_{nullptr};
 
+// Dedicated mutex for logging operations - moved from header to avoid inlining issues
+static std::mutex log_mutex_{};
+
+std::mutex& get_log_mutex()
+{
+    return log_mutex_;
+}
+
 std::ostream& operator<<(std::ostream& os, std::byte b)
 {
     return os << std::bitset<8>(std::to_integer<int>(b));

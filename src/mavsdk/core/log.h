@@ -30,7 +30,8 @@
 
 namespace mavsdk {
 
-static std::mutex log_mutex_{};
+// Mutex moved to log.cpp to avoid inlining issues
+std::mutex& get_log_mutex();
 
 std::ostream& operator<<(std::ostream& os, std::byte b);
 
@@ -41,7 +42,7 @@ void set_color(Color color);
 class LogDetailed {
 public:
     LogDetailed(const char* filename, int filenumber) :
-        _lock_guard(log_mutex_),
+        _lock_guard(get_log_mutex()),
         _s(),
         _caller_filename(filename),
         _caller_filenumber(filenumber)
@@ -53,13 +54,7 @@ public:
         return *this;
     }
 
-    virtual
-#if defined(__has_feature)
-#if __has_feature(thread_sanitizer)
-        __attribute__((no_sanitize("thread")))
-#endif
-#endif
-        ~LogDetailed()
+    virtual ~LogDetailed()
     {
         if (log::get_callback() &&
             log::get_callback()(_log_level, _s.str(), _caller_filename, _caller_filenumber)) {
