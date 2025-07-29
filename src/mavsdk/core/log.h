@@ -23,25 +23,14 @@
 
 #define call_user_callback(...) call_user_callback_located(FILENAME, __LINE__, __VA_ARGS__)
 
-// TEMPORARILY DISABLE ALL LOGGING TO TEST CORRUPTION THEORY
-#define LogDebug() NoOpLog()
-#define LogInfo() NoOpLog()
-#define LogWarn() NoOpLog()
-#define LogErr() NoOpLog()
+#define LogDebug() LogDebugDetailed(FILENAME, __LINE__)
+#define LogInfo() LogInfoDetailed(FILENAME, __LINE__)
+#define LogWarn() LogWarnDetailed(FILENAME, __LINE__)
+#define LogErr() LogErrDetailed(FILENAME, __LINE__)
 
 namespace mavsdk {
 
 static std::mutex log_mutex_{};
-
-// No-op logging class for testing
-class NoOpLog {
-public:
-    template<typename T> NoOpLog& operator<<(const T& x)
-    {
-        (void)x;
-        return *this;
-    }
-};
 
 std::ostream& operator<<(std::ostream& os, std::byte b);
 
