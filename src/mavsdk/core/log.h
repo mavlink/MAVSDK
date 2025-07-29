@@ -98,12 +98,12 @@ public:
 
         // Time output taken from:
         // https://stackoverflow.com/questions/16357999#answer-16358264
-        time_t rawtime;
-        time(&rawtime);
-        struct tm* timeinfo = localtime(&rawtime);
-        char time_buffer[10]{}; // We need 8 characters + \0
-        strftime(time_buffer, sizeof(time_buffer), "%I:%M:%S", timeinfo);
-        std::cout << "[" << time_buffer;
+        //time_t rawtime;
+        //time(&rawtime);
+        //struct tm* timeinfo = localtime(&rawtime);
+        //char time_buffer[10]{}; // We need 8 characters + \0
+        //strftime(time_buffer, sizeof(time_buffer), "%I:%M:%S", timeinfo);
+        std::cout << "["; //<< time_buffer;
 
         switch (_log_level) {
             case log::Level::Debug:
