@@ -208,10 +208,48 @@ void FtpImpl::remove_file_async(const std::string& path, Ftp::ResultCallback cal
 
 Ftp::Result FtpImpl::rename(const std::string& from_path, const std::string& to_path)
 {
+    // Add corruption detection
+    const uint32_t STACK_GUARD = 0xDEADBEEF;
+    uint32_t guard1 = STACK_GUARD;
+
     std::promise<Ftp::Result> prom{};
     auto fut = prom.get_future();
 
-    rename_async(from_path, to_path, [&](Ftp::Result result) { prom.set_value(result); });
+    uint32_t guard2 = STACK_GUARD;
+
+    // Store promise address for validation
+    void* orig_prom_addr = &prom;
+    void* orig_fut_addr = &fut;
+
+    rename_async(from_path, to_path, [&, orig_prom_addr, orig_fut_addr](Ftp::Result result) {
+        LogInfo() << "Setting promise value for rename";
+
+        // Check for corruption before fulfillment
+        if (guard1 != STACK_GUARD || guard2 != STACK_GUARD) {
+            LogErr() << "Stack corruption detected around promise! guard1=" << std::hex << guard1
+                     << " guard2=" << guard2;
+            std::abort();
+        }
+
+        if (&prom != orig_prom_addr || &fut != orig_fut_addr) {
+            LogErr() << "Promise/future address changed! prom: " << &prom << " vs "
+                     << orig_prom_addr << " fut: " << &fut << " vs " << orig_fut_addr;
+            std::abort();
+        }
+
+        prom.set_value(result);
+    });
+
+    // Check corruption before get()
+    if (guard1 != STACK_GUARD || guard2 != STACK_GUARD) {
+        LogErr() << "Stack corruption detected before fut.get()! guard1=" << std::hex << guard1
+                 << " guard2=" << guard2;
+        std::abort();
+    }
+
+    // Try to detect future corruption before calling get() - no exceptions available
+    auto status = fut.wait_for(std::chrono::seconds(0));
+    LogInfo() << "Future wait_for succeeded, status=" << (int)status;
 
     return fut.get();
 }
