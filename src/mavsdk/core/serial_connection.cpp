@@ -49,7 +49,7 @@ std::string GetLastErrorStdStr()
 
 SerialConnection::SerialConnection(
     Connection::ReceiverCallback receiver_callback,
-    Connection::LibmavReceiverCallback libmav_receiver_callback,
+    // Connection::LibmavReceiverCallback libmav_receiver_callback,
     mav::MessageSet& message_set,
     std::string path,
     int baudrate,
@@ -57,7 +57,7 @@ SerialConnection::SerialConnection(
     ForwardingOption forwarding_option) :
     Connection(
         std::move(receiver_callback),
-        std::move(libmav_receiver_callback),
+        // std::move(libmav_receiver_callback),
         message_set,
         forwarding_option),
     _serial_node(std::move(path)),

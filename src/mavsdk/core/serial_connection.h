@@ -16,7 +16,7 @@ class SerialConnection : public Connection {
 public:
     explicit SerialConnection(
         Connection::ReceiverCallback receiver_callback,
-        Connection::LibmavReceiverCallback libmav_receiver_callback,
+        // Connection::LibmavReceiverCallback libmav_receiver_callback,
         mav::MessageSet& message_set,
         std::string path,
         int baudrate,

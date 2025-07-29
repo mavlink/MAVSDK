@@ -30,14 +30,14 @@ namespace mavsdk {
 
 UdpConnection::UdpConnection(
     Connection::ReceiverCallback receiver_callback,
-    Connection::LibmavReceiverCallback libmav_receiver_callback,
+    // Connection::LibmavReceiverCallback libmav_receiver_callback,
     mav::MessageSet& message_set,
     std::string local_ip,
     int local_port_number,
     ForwardingOption forwarding_option) :
     Connection(
         std::move(receiver_callback),
-        std::move(libmav_receiver_callback),
+        // std::move(libmav_receiver_callback),
         message_set,
         forwarding_option),
     _local_ip(std::move(local_ip)),
@@ -313,13 +313,13 @@ void UdpConnection::receive()
         }
 
         // Also parse with libmav if available
-        if (_libmav_receiver) {
-            _libmav_receiver->set_new_datagram(buffer, static_cast<int>(recv_len));
+        // if (_libmav_receiver) {
+        //    _libmav_receiver->set_new_datagram(buffer, static_cast<int>(recv_len));
 
-            while (_libmav_receiver->parse_message()) {
-                receive_libmav_message(_libmav_receiver->get_last_message(), this);
-            }
-        }
+        //    while (_libmav_receiver->parse_message()) {
+        //        receive_libmav_message(_libmav_receiver->get_last_message(), this);
+        //    }
+        //}
     }
 }
 

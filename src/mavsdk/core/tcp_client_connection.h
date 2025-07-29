@@ -23,7 +23,7 @@ class TcpClientConnection : public Connection {
 public:
     TcpClientConnection(
         Connection::ReceiverCallback receiver_callback,
-        Connection::LibmavReceiverCallback libmav_receiver_callback,
+        // Connection::LibmavReceiverCallback libmav_receiver_callback,
         mav::MessageSet& message_set,
         std::string remote_ip,
         int remote_port,

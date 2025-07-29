@@ -55,7 +55,7 @@ MavsdkImpl::MavsdkImpl(const Mavsdk::Configuration& configuration) :
     set_configuration(configuration);
 
     // Initialize MessageSet with embedded XML content in dependency order
-    //_message_set = std::make_unique<mav::MessageSet>();
+    _message_set = std::make_unique<mav::MessageSet>();
     //_message_set->addFromXMLString(mav_embedded::MINIMAL_XML);
     //_message_set->addFromXMLString(mav_embedded::STANDARD_XML);
     //_message_set->addFromXMLString(mav_embedded::COMMON_XML);
@@ -730,9 +730,9 @@ MavsdkImpl::add_udp_connection(const CliArg::Udp& udp, ForwardingOption forwardi
         [this](mavlink_message_t& message, Connection* connection) {
             receive_message(message, connection);
         },
-        [this](const LibmavMessage& message, Connection* connection) {
-            receive_libmav_message(message, connection);
-        },
+        //[this](const LibmavMessage& message, Connection* connection) {
+        //    receive_libmav_message(message, connection);
+        //},
         *_message_set,
         udp.mode == CliArg::Udp::Mode::In ? udp.host : "0.0.0.0",
         udp.mode == CliArg::Udp::Mode::In ? udp.port : 0,
@@ -779,9 +779,9 @@ MavsdkImpl::add_tcp_connection(const CliArg::Tcp& tcp, ForwardingOption forwardi
             [this](mavlink_message_t& message, Connection* connection) {
                 receive_message(message, connection);
             },
-            [this](const LibmavMessage& message, Connection* connection) {
-                receive_libmav_message(message, connection);
-            },
+            //[this](const LibmavMessage& message, Connection* connection) {
+            //    receive_libmav_message(message, connection);
+            //},
             *_message_set,
             tcp.host,
             tcp.port,
@@ -800,9 +800,9 @@ MavsdkImpl::add_tcp_connection(const CliArg::Tcp& tcp, ForwardingOption forwardi
             [this](mavlink_message_t& message, Connection* connection) {
                 receive_message(message, connection);
             },
-            [this](const LibmavMessage& message, Connection* connection) {
-                receive_libmav_message(message, connection);
-            },
+            //[this](const LibmavMessage& message, Connection* connection) {
+            //    receive_libmav_message(message, connection);
+            //},
             *_message_set,
             tcp.host,
             tcp.port,
@@ -829,9 +829,9 @@ std::pair<ConnectionResult, Mavsdk::ConnectionHandle> MavsdkImpl::add_serial_con
         [this](mavlink_message_t& message, Connection* connection) {
             receive_message(message, connection);
         },
-        [this](const LibmavMessage& message, Connection* connection) {
-            receive_libmav_message(message, connection);
-        },
+        //[this](const LibmavMessage& message, Connection* connection) {
+        //    receive_libmav_message(message, connection);
+        //},
         *_message_set,
         dev_path,
         baudrate,

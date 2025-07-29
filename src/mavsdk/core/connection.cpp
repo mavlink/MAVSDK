@@ -11,14 +11,14 @@ std::atomic<unsigned> Connection::_forwarding_connections_count = 0;
 
 Connection::Connection(
     ReceiverCallback receiver_callback,
-    LibmavReceiverCallback libmav_receiver_callback,
+    // LibmavReceiverCallback libmav_receiver_callback,
     mav::MessageSet& message_set,
     ForwardingOption forwarding_option) :
     _receiver_callback(std::move(receiver_callback)),
-    _libmav_receiver_callback(std::move(libmav_receiver_callback)),
+    //_libmav_receiver_callback(std::move(libmav_receiver_callback)),
     _message_set(message_set),
     _mavlink_receiver(),
-    _libmav_receiver(),
+    //_libmav_receiver(),
     _forwarding_option(forwarding_option)
 {
     // Insert system ID 0 in all connections for broadcast.
@@ -41,7 +41,7 @@ Connection::~Connection()
     stop_mavlink_receiver();
     stop_libmav_receiver();
     _receiver_callback = {};
-    _libmav_receiver_callback = {};
+    //_libmav_receiver_callback = {};
 }
 
 bool Connection::start_mavlink_receiver()
@@ -59,15 +59,15 @@ void Connection::stop_mavlink_receiver()
 
 bool Connection::start_libmav_receiver()
 {
-    _libmav_receiver = std::make_unique<LibmavReceiver>(_message_set);
+    //_libmav_receiver = std::make_unique<LibmavReceiver>(_message_set);
     return true;
 }
 
 void Connection::stop_libmav_receiver()
 {
-    if (_libmav_receiver) {
-        _libmav_receiver.reset();
-    }
+    // if (_libmav_receiver) {
+    //     _libmav_receiver.reset();
+    // }
 }
 
 void Connection::receive_libmav_message(const LibmavMessage& message, Connection* connection)
@@ -82,14 +82,14 @@ void Connection::receive_libmav_message(const LibmavMessage& message, Connection
                    << " from system " << message.system_id;
     }
 
-    if (_libmav_receiver_callback) {
-        if (_debugging) {
-            LogDebug() << "Calling libmav receiver callback for: " << message.message_name;
-        }
-        _libmav_receiver_callback(message, connection);
-    } else {
-        LogWarn() << "No libmav receiver callback set!";
-    }
+    // if (_libmav_receiver_callback) {
+    //     if (_debugging) {
+    //         LogDebug() << "Calling libmav receiver callback for: " << message.message_name;
+    //     }
+    //     _libmav_receiver_callback(message, connection);
+    // } else {
+    //     LogWarn() << "No libmav receiver callback set!";
+    // }
 }
 
 void Connection::receive_message(mavlink_message_t& message, Connection* connection)
