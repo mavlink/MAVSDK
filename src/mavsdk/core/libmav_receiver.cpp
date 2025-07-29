@@ -31,6 +31,9 @@ void LibmavReceiver::set_new_datagram(char* datagram, unsigned datagram_len)
 
 bool LibmavReceiver::parse_message()
 {
+    // Just don't for now
+    return false;
+
     if (!_datagram || _datagram_len == 0) {
         return false;
     }
