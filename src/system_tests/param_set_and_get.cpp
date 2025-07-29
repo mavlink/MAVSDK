@@ -19,6 +19,8 @@ static constexpr double reduced_timeout_s = 0.1;
 
 TEST(SystemTest, ParamSetAndGet)
 {
+    LogInfo() << "=== ParamSetAndGet TEST STARTING ===";
+
     Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
     mavsdk_groundstation.set_timeout_s(reduced_timeout_s);
 

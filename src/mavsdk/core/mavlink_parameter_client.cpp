@@ -362,11 +362,36 @@ MavlinkParameterClient::get_param_float(const std::string& name)
 {
     auto prom = std::promise<std::pair<Result, float>>();
     auto res = prom.get_future();
+
+    // Store addresses for corruption detection
+    void* prom_addr = &prom;
+    void* fut_addr = &res;
+
+    LogInfo() << "Parameter get_param_float('" << name << "') - prom: " << prom_addr
+              << " fut: " << fut_addr;
+
     get_param_float_async(
         name,
-        [&prom](Result result, float value) { prom.set_value(std::make_pair<>(result, value)); },
+        [&prom, prom_addr, fut_addr, name](Result result, float value) {
+            LogInfo() << "Parameter callback for '" << name << "' - prom: " << &prom
+                      << " (orig: " << prom_addr << ") result: " << (int)result;
+
+            if (&prom != prom_addr) {
+                LogErr() << "CORRUPTION DETECTED: Promise address changed from " << prom_addr
+                         << " to " << &prom;
+                std::abort();
+            }
+
+            prom.set_value(std::make_pair<>(result, value));
+            LogInfo() << "Promise set_value completed for '" << name << "'";
+        },
         this);
-    return res.get();
+
+    LogInfo() << "About to call fut.get() for '" << name << "'";
+    auto result = res.get();
+    LogInfo() << "fut.get() returned for '" << name << "' - result: " << (int)result.first;
+
+    return result;
 }
 
 std::pair<MavlinkParameterClient::Result, std::string>
