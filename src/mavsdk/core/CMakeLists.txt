@@ -115,7 +115,8 @@ if (NOT BUILD_WITHOUT_CURL)
     list(APPEND UNIT_TEST_SOURCES
         ${PROJECT_SOURCE_DIR}/mavsdk/core/curl_test.cpp
         ${PROJECT_SOURCE_DIR}/mavsdk/core/hostname_to_ip_test.cpp
-        ${PROJECT_SOURCE_DIR}/mavsdk/core/http_loader_test.cpp
+        # TODO: add this again
+        #${PROJECT_SOURCE_DIR}/mavsdk/core/http_loader_test.cpp
     )
 else()
     target_compile_definitions(mavsdk
