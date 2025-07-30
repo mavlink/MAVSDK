@@ -24,7 +24,11 @@ FtpImpl::~FtpImpl()
 
 void FtpImpl::init() {}
 
-void FtpImpl::deinit() {}
+void FtpImpl::deinit()
+{
+    // Cancel all FTP operations to prevent use-after-free callbacks
+    _system_impl->mavlink_ftp_client().cancel_all_operations();
+}
 
 void FtpImpl::enable() {}
 
