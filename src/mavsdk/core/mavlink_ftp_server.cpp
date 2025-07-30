@@ -966,15 +966,26 @@ void MavlinkFtpServer::_work_remove_directory(const PayloadHeader& payload)
         _send_mavlink_ftp_message(response);
         return;
     }
-    if (fs::remove(path, ec)) {
-        response.opcode = Opcode::RSP_ACK;
-        response.size = 0;
-    } else {
+    if (ec) {
+        LogErr() << "fs::exists for " << path << " returned error: " << ec.message();
         response.opcode = Opcode::RSP_NAK;
         response.size = 1;
         response.data[0] = ServerResult::ERR_FAIL;
+        _send_mavlink_ftp_message(response);
+        return;
     }
 
+    if (!fs::remove(path, ec)) {
+        LogErr() << "fs::remove returned error: " << ec.message();
+        response.opcode = Opcode::RSP_NAK;
+        response.size = 1;
+        response.data[0] = ServerResult::ERR_FAIL;
+        _send_mavlink_ftp_message(response);
+        return;
+    }
+
+    response.opcode = Opcode::RSP_ACK;
+    response.size = 0;
     _send_mavlink_ftp_message(response);
 }
 
@@ -1102,14 +1113,17 @@ void MavlinkFtpServer::_work_rename(const PayloadHeader& payload)
     }
 
     fs::rename(old_name, new_name, ec);
-    if (!ec) {
-        response.opcode = Opcode::RSP_ACK;
-    } else {
+    if (ec) {
+        LogErr() << "fs::rename from " << old_name << " to " << new_name
+                 << " returned error: " << ec.message();
         response.opcode = Opcode::RSP_NAK;
         response.size = 1;
         response.data[0] = ServerResult::ERR_FAIL;
+        _send_mavlink_ftp_message(response);
+        return;
     }
 
+    response.opcode = Opcode::RSP_ACK;
     _send_mavlink_ftp_message(response);
 }
 
