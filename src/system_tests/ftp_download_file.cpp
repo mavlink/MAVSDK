@@ -214,13 +214,11 @@ TEST(SystemTest, FtpDownloadBigFileLossy)
     // drop_some callback which accesses the local counter variable.
     mavsdk_groundstation.intercept_incoming_messages_async(nullptr);
     mavsdk_groundstation.intercept_outgoing_messages_async(nullptr);
-
-    std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
 TEST(SystemTest, FtpDownloadStopAndTryAgain)
 {
-    ASSERT_TRUE(create_temp_file(temp_dir_provided / temp_file, 1000));
+    ASSERT_TRUE(create_temp_file(temp_dir_provided / temp_file, 2000));
     ASSERT_TRUE(reset_directories(temp_dir_downloaded));
 
     Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
@@ -229,13 +227,9 @@ TEST(SystemTest, FtpDownloadStopAndTryAgain)
     Mavsdk mavsdk_autopilot{Mavsdk::Configuration{ComponentType::Autopilot}};
     mavsdk_autopilot.set_timeout_s(reduced_timeout_s);
 
-    // Once we received half, we want to stop all traffic.
-    bool got_half = false;
-    std::mutex got_half_mutex;
-    auto drop_at_some_point = [&got_half, &got_half_mutex](mavlink_message_t&) {
-        std::lock_guard<std::mutex> lock(got_half_mutex);
-        return !got_half;
-    };
+    // Once we received some, we want to stop all traffic.
+    std::atomic<bool> got_some = false;
+    auto drop_at_some_point = [&got_some](mavlink_message_t&) { return !got_some; };
 
     mavsdk_groundstation.intercept_incoming_messages_async(drop_at_some_point);
     mavsdk_groundstation.intercept_outgoing_messages_async(drop_at_some_point);
@@ -266,11 +260,10 @@ TEST(SystemTest, FtpDownloadStopAndTryAgain)
             ("" / temp_file).string(),
             temp_dir_downloaded.string(),
             false,
-            [&prom, &got_half, &got_half_mutex, &slow_down_counter](
+            [&prom, &got_some, &slow_down_counter](
                 Ftp::Result result, Ftp::ProgressData progress_data) {
-                if (progress_data.bytes_transferred > 200) {
-                    std::lock_guard<std::mutex> lock(got_half_mutex);
-                    got_half = true;
+                if (progress_data.bytes_transferred > 500) {
+                    got_some = true;
                 }
                 if (result != Ftp::Result::Next) {
                     prom.set_value(result);
@@ -363,6 +356,4 @@ TEST(SystemTest, FtpDownloadFileOutsideOfRoot)
         ASSERT_EQ(future_status, std::future_status::ready);
         EXPECT_EQ(fut.get(), Ftp::Result::ProtocolError);
     }
-
-    std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
