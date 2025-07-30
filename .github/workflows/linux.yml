@@ -234,8 +234,8 @@ jobs:
         run: cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=RelWithDebInfo -DWERROR=ON -DCMAKE_CXX_FLAGS="-fstack-protector-all" -DCMAKE_C_FLAGS="-fstack-protector-all" -Bbuild/release -H.
       - name: build
         run: cmake --build build/release -j$(nproc)
-      - name: run individual test 10 times
-        run: ./build/release/src/system_tests/system_tests_runner --gtest_filter="SystemTest.${{ matrix.test_name }}" --gtest_repeat=10
+      - name: run individual test 50 times
+        run: ./build/release/src/system_tests/system_tests_runner --gtest_filter="SystemTest.${{ matrix.test_name }}" --gtest_repeat=50
       - name: collect core dumps
         if: failure()
         run: |
@@ -264,6 +264,118 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: test-binary-${{ matrix.test_name }}-${{ github.run_id }}
+          path: |
+            ./build/release/src/system_tests/system_tests_runner
+            ./build/release/src/mavsdk/libmavsdk.so*
+          retention-days: 7
+
+  debian-test-individual:
+    name: Debian Individual System Tests (${{ matrix.os_version }}, ${{ matrix.test_name }})
+    needs: [check-docker-changes, update-docker-images]
+    if: always() && needs.check-docker-changes.result == 'success'
+    runs-on: ubuntu-24.04
+    container:
+      image: docker.io/mavsdk/mavsdk-debian-${{ matrix.os_version }}:${{ needs.check-docker-changes.outputs.docker_tag }}
+      options: --privileged --ulimit core=-1 --security-opt seccomp=unconfined
+    strategy:
+      fail-fast: false
+      matrix:
+        os_version: ["11", "12", "13"]
+        test_name:
+          - CameraMode
+          - CameraTakePhoto
+          - CameraTakePhotoInterval
+          - CameraFormatStorage
+          - CameraSettings
+          - CameraSettingsAsync
+          - CameraStorage
+          - CameraListCameras
+          - CameraVideoStreamSettings
+          - ComponentInformationConnect
+          - ActionArmDisarm
+          - ParamSetAndGet
+          - ParamSetAndGetLossy
+          - ParamGetAll
+          - ParamGetAllLossy
+          - ParamCustomSetAndGet
+          - ParamCustomSetAndGetLossy
+          - MissionRawUpload
+          - TelemetrySubscription
+          - FtpDownloadFile
+          - FtpDownloadBigFile
+          - FtpDownloadBigFileLossy
+          - FtpDownloadStopAndTryAgain
+          - FtpDownloadFileOutsideOfRoot
+          - FtpDownloadBurstFile
+          - FtpDownloadBurstBigFile
+          - FtpDownloadBurstBigFileLossy
+          - FtpDownloadBurstStopAndTryAgain
+          - FtpDownloadBurstFileOutsideOfRoot
+          - FtpRemoveFile
+          - FtpRemoveFileThatDoesNotExist
+          - FtpRemoveFileOutsideOfRoot
+          - FtpUploadFile
+          - FtpUploadBigFile
+          - FtpUploadBigFileLossy
+          - FtpUploadStopAndTryAgain
+          - FtpUploadFileOutsideOfRoot
+          - FtpRenameFile
+          - FtpCreateDir
+          - FtpRemoveDir
+          - FtpRemoveDirNotEmpty
+          - FtpCompareFiles
+          - FtpListDir
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0
+      - name: git permission workaround
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          git config --global --add safe.directory /github/workspace
+      - name: git get version tags
+        run: git fetch --tags
+      - name: configure core dumps
+        run: |
+          ulimit -c unlimited
+          echo '/tmp/core.%h.%e.%t' | sudo tee /proc/sys/kernel/core_pattern
+          echo 'Core dump pattern set to:' 
+          cat /proc/sys/kernel/core_pattern
+      - name: configure
+        run: cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_MAVSDK_SERVER=OFF -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=install -DWERROR=ON -DCMAKE_CXX_FLAGS="-fstack-protector-all" -DCMAKE_C_FLAGS="-fstack-protector-all" -Bbuild/release -H.
+      - name: build
+        run: cmake --build build/release -- -j$(nproc)
+      - name: run individual test 50 times
+        run: ./build/release/src/system_tests/system_tests_runner --gtest_filter="SystemTest.${{ matrix.test_name }}" --gtest_repeat=50
+      - name: collect core dumps
+        if: failure()
+        run: |
+          echo "Looking for core dumps..."
+          find /tmp -name "core.*" -type f -ls
+          if ls /tmp/core.* 1> /dev/null 2>&1; then
+            for core in /tmp/core.*; do
+              echo "=== Analyzing core dump: $core ==="
+              file "$core"
+              gdb -batch -ex "bt full" -ex "info registers" -ex "thread apply all bt" \
+                  ./build/release/src/system_tests/system_tests_runner "$core" || true
+            done
+          else
+            echo "No core dumps found"
+          fi
+      - name: upload core dumps
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: core-dumps-debian-${{ matrix.os_version }}-${{ matrix.test_name }}-${{ github.run_id }}
+          path: /tmp/core.*
+          retention-days: 7
+          if-no-files-found: ignore
+      - name: upload test binary for core dump analysis
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-binary-debian-${{ matrix.os_version }}-${{ matrix.test_name }}-${{ github.run_id }}
           path: |
             ./build/release/src/system_tests/system_tests_runner
             ./build/release/src/mavsdk/libmavsdk.so*
