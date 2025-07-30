@@ -92,8 +92,6 @@ TEST(SystemTest, FtpDownloadFile)
         EXPECT_TRUE(
             are_files_identical(temp_dir_provided / temp_file, temp_dir_downloaded / temp_file));
     }
-
-    std::this_thread::sleep_for(std::chrono::milliseconds(500));
 }
 
 TEST(SystemTest, FtpDownloadBigFile)
@@ -146,8 +144,6 @@ TEST(SystemTest, FtpDownloadBigFile)
 
     EXPECT_TRUE(
         are_files_identical(temp_dir_provided / temp_file, temp_dir_downloaded / temp_file));
-
-    std::this_thread::sleep_for(std::chrono::milliseconds(500));
 }
 
 TEST(SystemTest, FtpDownloadBigFileLossy)
@@ -306,8 +302,6 @@ TEST(SystemTest, FtpDownloadStopAndTryAgain)
         ASSERT_EQ(future_status, std::future_status::ready);
         EXPECT_EQ(fut.get(), Ftp::Result::Success);
     }
-
-    std::this_thread::sleep_for(std::chrono::milliseconds(500));
 }
 
 TEST(SystemTest, FtpDownloadFileOutsideOfRoot)
@@ -356,6 +350,4 @@ TEST(SystemTest, FtpDownloadFileOutsideOfRoot)
         ASSERT_EQ(future_status, std::future_status::ready);
         EXPECT_EQ(fut.get(), Ftp::Result::ProtocolError);
     }
-
-    std::this_thread::sleep_for(std::chrono::milliseconds(500));
 }

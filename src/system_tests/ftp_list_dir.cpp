@@ -74,6 +74,4 @@ TEST(SystemTest, FtpListDir)
 
     EXPECT_EQ(ret.second.files, truth_files);
     EXPECT_EQ(ret.second.dirs, truth_dirs);
-
-    std::this_thread::sleep_for(std::chrono::milliseconds(500));
 }

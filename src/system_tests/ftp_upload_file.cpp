@@ -92,8 +92,6 @@ TEST(SystemTest, FtpUploadFile)
         EXPECT_TRUE(
             are_files_identical(temp_dir_to_upload / temp_file, temp_dir_provided / temp_file));
     }
-
-    std::this_thread::sleep_for(std::chrono::milliseconds(500));
 }
 
 TEST(SystemTest, FtpUploadBigFile)
