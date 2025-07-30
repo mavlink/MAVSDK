@@ -1,5 +1,7 @@
 #include "param_server_impl.h"
 #include "callback_list.tpp"
+#include <thread>
+#include <chrono>
 
 namespace mavsdk {
 
@@ -23,7 +25,18 @@ void ParamServerImpl::init() {}
 
 void ParamServerImpl::deinit()
 {
-    _server_component_impl->mavlink_parameter_server().unsubscribe_all_params_changed(this);
+    // Ensure synchronous cleanup - keep trying until all callbacks are unregistered
+    auto& param_server = _server_component_impl->mavlink_parameter_server();
+    param_server.unsubscribe_all_params_changed(this);
+
+    // Give a brief moment for any deferred unsubscriptions to be processed
+    // This prevents use-after-free if callbacks are still executing
+    std::this_thread::sleep_for(std::chrono::milliseconds(10));
+
+    // Clear our callback lists to ensure no pending callbacks exist
+    _changed_param_int_callbacks.clear();
+    _changed_param_float_callbacks.clear();
+    _changed_param_custom_callbacks.clear();
 }
 
 ParamServer::Result ParamServerImpl::set_protocol(bool extended_protocol)
