@@ -1490,4 +1490,17 @@ std::ostream& operator<<(std::ostream& str, MavlinkFtpClient::ClientResult const
     }
 }
 
+void MavlinkFtpClient::cancel_all_operations()
+{
+    // Stop any pending timeout timers
+    stop_timer();
+
+    // Clear the work queue to cancel all pending operations
+    // This prevents callbacks from being executed
+    LockedQueue<Work>::Guard work_queue_guard(_work_queue);
+    while (work_queue_guard.get_front() != nullptr) {
+        work_queue_guard.pop_front();
+    }
+}
+
 } // namespace mavsdk

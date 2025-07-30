@@ -94,6 +94,8 @@ public:
     uint8_t get_our_compid();
     ClientResult set_target_compid(uint8_t component_id);
 
+    void cancel_all_operations();
+
 private:
     static constexpr unsigned RETRIES = 10;
 
