@@ -234,7 +234,7 @@ void MissionRawServerImpl::process_mission_request_list(const mavlink_message_t&
         requested_mission_items,
         _target_system_id,
         _target_component_id,
-        [&](MavlinkMissionTransferServer::Result result) {
+        [this, requested_mission_items](MavlinkMissionTransferServer::Result result) {
             auto converted_result = convert_result(result);
             auto converted_items = convert_items(requested_mission_items);
             _outgoing_mission_callbacks.queue(
