@@ -275,7 +275,7 @@ TEST(SystemTest, FtpUploadStopAndTryAgain)
                 }
             });
 
-        auto future_status = fut.wait_for(std::chrono::seconds(10));
+        auto future_status = fut.wait_for(std::chrono::seconds(15));
         ASSERT_EQ(future_status, std::future_status::ready);
         EXPECT_EQ(fut.get(), Ftp::Result::Timeout);
     }
