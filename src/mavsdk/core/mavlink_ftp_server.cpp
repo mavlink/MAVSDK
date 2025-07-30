@@ -229,9 +229,31 @@ std::string MavlinkFtpServer::_data_as_string(const PayloadHeader& payload, size
 
     for (int i = entry; i >= 0; --i) {
         start = end;
+
+        // Defensive check: prevent buffer overflow when start >= max_data_length
+        if (start >= max_data_length) {
+            LogErr() << "ABORT: FTP _data_as_string buffer overflow - start=" << start
+                     << " >= max_data_length=" << max_data_length;
+            abort();
+        }
+
         end +=
             strnlen(reinterpret_cast<const char*>(&payload.data[start]), max_data_length - start) +
             1;
+
+        // Additional defensive check: prevent end from exceeding buffer
+        if (end > max_data_length) {
+            LogErr() << "ABORT: FTP _data_as_string end overflow - end=" << end
+                     << " > max_data_length=" << max_data_length;
+            abort();
+        }
+    }
+
+    // Defensive check: prevent memcpy overflow
+    if (end < start || (end - start) > max_data_length) {
+        LogErr() << "ABORT: FTP _data_as_string memcpy bounds - start=" << start << " end=" << end
+                 << " max_data_length=" << max_data_length;
+        abort();
     }
 
     result.resize(end - start);
