@@ -79,7 +79,7 @@ TEST(SystemTest, ParamCustomSetAndGet)
     EXPECT_EQ(server_result_pair.first, ParamServer::Result::Success);
     EXPECT_EQ(server_result_pair.second, data_shorter);
 
-    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    std::this_thread::sleep_for(std::chrono::milliseconds(500));
 }
 
 TEST(SystemTest, ParamCustomSetAndGetLossy)
@@ -145,5 +145,5 @@ TEST(SystemTest, ParamCustomSetAndGetLossy)
     mavsdk_groundstation.intercept_incoming_messages_async(nullptr);
     mavsdk_groundstation.intercept_incoming_messages_async(nullptr);
 
-    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    std::this_thread::sleep_for(std::chrono::milliseconds(500));
 }

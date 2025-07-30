@@ -68,4 +68,6 @@ TEST(SystemTest, CameraVideoStreamSettings)
     // We expect to find one camera.
     EXPECT_EQ(camera.camera_list().cameras.size(), 1);
     EXPECT_EQ(fut_got_info.wait_for(std::chrono::seconds(30)), std::future_status::ready);
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(500));
 }

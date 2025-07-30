@@ -96,7 +96,7 @@ TEST(SystemTest, ParamSetAndGet)
     EXPECT_EQ(server_result_all_params.int_params.size(), 1);
     EXPECT_EQ(server_result_all_params.float_params.size(), 1);
 
-    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    std::this_thread::sleep_for(std::chrono::milliseconds(500));
 }
 
 TEST(SystemTest, ParamSetAndGetLossy)
@@ -181,4 +181,6 @@ TEST(SystemTest, ParamSetAndGetLossy)
     // drop_some callback which accesses the local counter variable.
     mavsdk_groundstation.intercept_incoming_messages_async(nullptr);
     mavsdk_groundstation.intercept_incoming_messages_async(nullptr);
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(500));
 }

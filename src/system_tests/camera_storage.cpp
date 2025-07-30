@@ -77,4 +77,6 @@ TEST(SystemTest, CameraStorage)
         got_storage = true;
     }
     EXPECT_TRUE(got_storage);
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(500));
 }

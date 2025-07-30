@@ -186,5 +186,5 @@ TEST(SystemTest, ParamGetAllLossy)
     mavsdk_groundstation.intercept_incoming_messages_async(nullptr);
     mavsdk_groundstation.intercept_outgoing_messages_async(nullptr);
 
-    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    std::this_thread::sleep_for(std::chrono::milliseconds(500));
 }

@@ -84,5 +84,5 @@ TEST(SystemTest, CameraTakePhoto)
         received_captured_info_fut.wait_for(std::chrono::seconds(10)), std::future_status::ready);
     received_captured_info_fut.get();
 
-    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    std::this_thread::sleep_for(std::chrono::milliseconds(500));
 }

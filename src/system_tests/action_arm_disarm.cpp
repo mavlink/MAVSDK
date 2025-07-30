@@ -47,5 +47,5 @@ TEST(SystemTest, ActionArmDisarm)
     // And disarm again
     EXPECT_EQ(action.disarm(), Action::Result::Success);
 
-    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    std::this_thread::sleep_for(std::chrono::milliseconds(500));
 }

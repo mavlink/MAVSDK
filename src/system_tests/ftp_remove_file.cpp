@@ -57,7 +57,7 @@ TEST(SystemTest, FtpRemoveFile)
 
     EXPECT_FALSE(file_exists(temp_dir_provided / temp_file));
 
-    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    std::this_thread::sleep_for(std::chrono::milliseconds(500));
 }
 
 TEST(SystemTest, FtpRemoveFileThatDoesNotExist)
@@ -93,7 +93,7 @@ TEST(SystemTest, FtpRemoveFileThatDoesNotExist)
 
     EXPECT_FALSE(file_exists(temp_dir_provided / temp_file));
 
-    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    std::this_thread::sleep_for(std::chrono::milliseconds(500));
 }
 
 TEST(SystemTest, FtpRemoveFileOutsideOfRoot)
@@ -127,5 +127,5 @@ TEST(SystemTest, FtpRemoveFileOutsideOfRoot)
 
     EXPECT_EQ(ftp.remove_file((fs::path("..") / temp_file).string()), Ftp::Result::ProtocolError);
 
-    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    std::this_thread::sleep_for(std::chrono::milliseconds(500));
 }

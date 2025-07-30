@@ -82,7 +82,7 @@ TEST(SystemTest, MavlinkDirectRoundtrip)
     EXPECT_TRUE(received_message->fields_json.find("GLOBAL_POSITION_INT") != std::string::npos);
 
     receiver_mavlink_direct.unsubscribe_message(handle);
-    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    std::this_thread::sleep_for(std::chrono::milliseconds(500));
 }
 
 TEST(SystemTest, MavlinkDirectExtendedFields)
@@ -208,7 +208,7 @@ TEST(SystemTest, MavlinkDirectExtendedFields)
     EXPECT_EQ(full_json["onboard_control_sensors_health_extended"].asUInt(), 789u);
 
     receiver_mavlink_direct.unsubscribe_message(handle);
-    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    std::this_thread::sleep_for(std::chrono::milliseconds(500));
 }
 
 TEST(SystemTest, MavlinkDirectToTelemetry)
@@ -277,7 +277,7 @@ TEST(SystemTest, MavlinkDirectToTelemetry)
     EXPECT_NEAR(received_position->longitude_deg, -122.3974560, 0.0001);
 
     receiver_telemetry.unsubscribe_position(handle);
-    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    std::this_thread::sleep_for(std::chrono::milliseconds(500));
 }
 
 TEST(SystemTest, TelemetryServerToMavlinkDirect)
@@ -354,7 +354,7 @@ TEST(SystemTest, TelemetryServerToMavlinkDirect)
     EXPECT_TRUE(received_message->fields_json.find("GLOBAL_POSITION_INT") != std::string::npos);
 
     receiver_mavlink_direct.unsubscribe_message(handle);
-    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    std::this_thread::sleep_for(std::chrono::milliseconds(500));
 }
 
 TEST(SystemTest, MavlinkDirectArrayFields)
@@ -509,7 +509,7 @@ TEST(SystemTest, MavlinkDirectArrayFields)
     EXPECT_EQ(full_json["satellite_snr"][19].asUInt(), 27u); // Last element
 
     receiver_mavlink_direct.unsubscribe_message(handle);
-    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    std::this_thread::sleep_for(std::chrono::milliseconds(500));
 }
 
 TEST(SystemTest, MavlinkDirectLoadCustomXml)
@@ -605,7 +605,7 @@ TEST(SystemTest, MavlinkDirectLoadCustomXml)
     EXPECT_EQ(json["status"].asUInt(), 5u);
 
     receiver_mavlink_direct.unsubscribe_message(handle);
-    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    std::this_thread::sleep_for(std::chrono::milliseconds(500));
 }
 
 TEST(SystemTest, MavlinkDirectArdupilotmegaMessage)
@@ -676,5 +676,5 @@ TEST(SystemTest, MavlinkDirectArdupilotmegaMessage)
 
     LogInfo() << "Successfully tested ArduPilot-specific MEMINFO message from ardupilotmega.xml";
     receiver_mavlink_direct.unsubscribe_message(handle);
-    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    std::this_thread::sleep_for(std::chrono::milliseconds(500));
 }

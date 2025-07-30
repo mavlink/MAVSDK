@@ -289,4 +289,6 @@ TEST(SystemTest, CameraSettingsAsync)
         Camera::Result::Success);
 
     EXPECT_EQ(fut_found_exp_absolute.wait_for(std::chrono::seconds(1)), std::future_status::ready);
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(500));
 }

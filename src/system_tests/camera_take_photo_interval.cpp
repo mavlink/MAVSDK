@@ -83,4 +83,6 @@ TEST(SystemTest, CameraTakePhotoInterval)
     EXPECT_GE(*captured, 2);
 
     camera.unsubscribe_capture_info(capture_info_handle);
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(500));
 }

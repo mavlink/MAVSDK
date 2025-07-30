@@ -72,5 +72,5 @@ TEST(SystemTest, FtpCompareFiles)
     EXPECT_EQ(result.first, Ftp::Result::Success);
     EXPECT_EQ(result.second, false);
 
-    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    std::this_thread::sleep_for(std::chrono::milliseconds(500));
 }

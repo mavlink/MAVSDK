@@ -41,5 +41,5 @@ TEST(SystemTest, MissionRawUpload)
     EXPECT_EQ(
         mission_raw.upload_mission(result_pair.second.mission_items), MissionRaw::Result::Success);
 
-    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    std::this_thread::sleep_for(std::chrono::milliseconds(500));
 }
