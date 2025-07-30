@@ -214,7 +214,7 @@ TEST(SystemTest, FtpDownloadBigFileLossy)
 
 TEST(SystemTest, FtpDownloadStopAndTryAgain)
 {
-    ASSERT_TRUE(create_temp_file(temp_dir_provided / temp_file, 2000));
+    ASSERT_TRUE(create_temp_file(temp_dir_provided / temp_file, 5000));
     ASSERT_TRUE(reset_directories(temp_dir_downloaded));
 
     Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
@@ -249,25 +249,22 @@ TEST(SystemTest, FtpDownloadStopAndTryAgain)
     auto ftp = Ftp{system};
 
     {
-        unsigned slow_down_counter = 0;
         auto prom = std::promise<Ftp::Result>();
         auto fut = prom.get_future();
         ftp.download_async(
             ("" / temp_file).string(),
             temp_dir_downloaded.string(),
             false,
-            [&prom, &got_some, &slow_down_counter](
-                Ftp::Result result, Ftp::ProgressData progress_data) {
+            [&prom, &got_some](Ftp::Result result, Ftp::ProgressData progress_data) {
                 if (progress_data.bytes_transferred > 500) {
                     got_some = true;
                 }
                 if (result != Ftp::Result::Next) {
+                    LogDebug() << "Got result: " << result;
                     prom.set_value(result);
                 } else {
-                    if (slow_down_counter++ % 10 == 0) {
-                        LogDebug() << "Download progress: " << progress_data.bytes_transferred
-                                   << "/" << progress_data.total_bytes << " bytes";
-                    }
+                    LogDebug() << "Download progress: " << progress_data.bytes_transferred << "/"
+                               << progress_data.total_bytes << " bytes";
                 }
             });
 
