@@ -200,8 +200,6 @@ void ActionServerImpl::init()
             auto custom_mode = static_cast<uint8_t>(command.params.param2);
             auto sub_custom_mode = static_cast<uint8_t>(command.params.param3);
 
-            std::lock_guard<std::mutex> lock(_callback_mutex);
-
             if (is_custom) {
                 // PX4 uses custom modes
                 px4::px4_custom_mode px4_mode{};
@@ -212,6 +210,7 @@ void ActionServerImpl::init()
             } else {
                 // TO DO: non PX4 flight modes...
                 // Just bug out now if not using PX4 modes
+                std::lock_guard<std::mutex> callback_lock(_callback_mutex);
                 _flight_mode_change_callbacks.queue(
                     ActionServer::Result::ParameterError,
                     request_flight_mode,
@@ -222,22 +221,25 @@ void ActionServerImpl::init()
             }
 
             bool allow_mode = false;
-            switch (request_flight_mode) {
-                case ActionServer::FlightMode::Manual:
-                    allow_mode = true;
-                    break;
-                case ActionServer::FlightMode::Mission:
-                    allow_mode = _allowed_flight_modes.can_auto_mode;
-                    break;
-                case ActionServer::FlightMode::Stabilized:
-                    allow_mode = _allowed_flight_modes.can_stabilize_mode;
-                    break;
-                case ActionServer::FlightMode::Offboard:
-                    allow_mode = _allowed_flight_modes.can_guided_mode;
-                    break;
-                default:
-                    allow_mode = false;
-                    break;
+            {
+                std::lock_guard<std::mutex> flight_mode_lock(_flight_mode_mutex);
+                switch (request_flight_mode) {
+                    case ActionServer::FlightMode::Manual:
+                        allow_mode = true;
+                        break;
+                    case ActionServer::FlightMode::Mission:
+                        allow_mode = _allowed_flight_modes.can_auto_mode;
+                        break;
+                    case ActionServer::FlightMode::Stabilized:
+                        allow_mode = _allowed_flight_modes.can_stabilize_mode;
+                        break;
+                    case ActionServer::FlightMode::Offboard:
+                        allow_mode = _allowed_flight_modes.can_guided_mode;
+                        break;
+                    default:
+                        allow_mode = false;
+                        break;
+                }
             }
 
             // PX4...
@@ -250,10 +252,14 @@ void ActionServerImpl::init()
                 set_custom_mode(px4_mode.data);
             }
 
-            _flight_mode_change_callbacks.queue(
-                allow_mode ? ActionServer::Result::Success : ActionServer::Result::CommandDenied,
-                request_flight_mode,
-                [this](const auto& func) { _server_component_impl->call_user_callback(func); });
+            {
+                std::lock_guard<std::mutex> callback_lock(_callback_mutex);
+                _flight_mode_change_callbacks.queue(
+                    allow_mode ? ActionServer::Result::Success :
+                                 ActionServer::Result::CommandDenied,
+                    request_flight_mode,
+                    [this](const auto& func) { _server_component_impl->call_user_callback(func); });
+            }
 
             return _server_component_impl->make_command_ack_message(
                 command,
@@ -266,6 +272,7 @@ void ActionServerImpl::deinit()
 {
     _server_component_impl->unregister_all_mavlink_command_handlers(this);
     _server_component_impl->remove_call_every(_send_version_cookie);
+    _server_component_impl->unregister_all_mavlink_command_handlers(this);
 }
 
 ActionServer::ArmDisarmHandle
