@@ -82,6 +82,8 @@ void Connection::receive_libmav_message(const LibmavMessage& message, Connection
                    << " from system " << message.system_id;
     }
 
+    (void)connection;
+
     // if (_libmav_receiver_callback) {
     //     if (_debugging) {
     //         LogDebug() << "Calling libmav receiver callback for: " << message.message_name;
