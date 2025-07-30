@@ -104,9 +104,6 @@ jobs:
         run: ./build/src/unit_tests/unit_tests_runner
       - name: system tests
         run: ./build/src/system_tests/system_tests_runner
-        env:
-          MAVSDK_PARAMETER_DEBUGGING: 1
-          MAVSDK_FTP_DEBUGGING: 1
       - name: collect core dumps
         if: failure()
         run: |
@@ -239,9 +236,6 @@ jobs:
         run: cmake --build build/release -j$(nproc)
       - name: run individual test 50 times
         run: ./build/release/src/system_tests/system_tests_runner --gtest_filter="SystemTest.${{ matrix.test_name }}" --gtest_repeat=50
-        env:
-          MAVSDK_PARAMETER_DEBUGGING: 1
-          MAVSDK_FTP_DEBUGGING: 1
       - name: collect core dumps
         if: failure()
         run: |
@@ -354,9 +348,6 @@ jobs:
         run: cmake --build build/release -- -j$(nproc)
       - name: run individual test 50 times
         run: ./build/release/src/system_tests/system_tests_runner --gtest_filter="SystemTest.${{ matrix.test_name }}" --gtest_repeat=50
-        env:
-          MAVSDK_PARAMETER_DEBUGGING: 1
-          MAVSDK_FTP_DEBUGGING: 1
       - name: collect core dumps
         if: failure()
         run: |
@@ -426,9 +417,6 @@ jobs:
         run: ./build/debug/src/unit_tests/unit_tests_runner
       - name: system tests
         run: ./build/debug/src/system_tests/system_tests_runner
-        env:
-          MAVSDK_PARAMETER_DEBUGGING: 1
-          MAVSDK_FTP_DEBUGGING: 1
 
   ubuntu-asan:
     name: Ubuntu 24.04 (AddressSanitizer)
@@ -469,9 +457,6 @@ jobs:
         run: ./build/asan/src/unit_tests/unit_tests_runner
       - name: system tests
         run: ./build/asan/src/system_tests/system_tests_runner
-        env:
-          MAVSDK_PARAMETER_DEBUGGING: 1
-          MAVSDK_FTP_DEBUGGING: 1
 
   ubuntu-superbuild:
     name: ${{ matrix.description }}
