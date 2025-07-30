@@ -163,21 +163,20 @@ std::optional<std::shared_ptr<System>> MavsdkImpl::first_autopilot(double timeou
         return {};
     }
 
-    auto prom = std::promise<std::shared_ptr<System>>();
+    auto prom = std::make_shared<std::promise<std::shared_ptr<System>>>();
+    auto fut = prom->get_future();
 
-    std::once_flag flag;
-    auto handle = subscribe_on_new_system([this, &prom, &flag]() {
+    auto flag = std::make_shared<std::once_flag>();
+    auto handle = subscribe_on_new_system([this, prom, flag]() {
         // Check all systems, not just the first one
         auto all_systems = systems();
         for (auto& system : all_systems) {
             if (system->is_connected() && system->has_autopilot()) {
-                std::call_once(flag, [&prom, &system]() { prom.set_value(system); });
+                std::call_once(*flag, [prom, system]() { prom->set_value(system); });
                 break;
             }
         }
     });
-
-    auto fut = prom.get_future();
 
     if (timeout_s > 0.0) {
         if (fut.wait_for(std::chrono::milliseconds(int64_t(timeout_s * 1e3))) ==
