@@ -59,9 +59,10 @@ TEST(SystemTest, CameraVideoStreamSettings)
     std::this_thread::sleep_for(std::chrono::milliseconds(1500));
     auto prom_got_info = std::promise<void>();
     auto fut_got_info = prom_got_info.get_future();
+    std::once_flag flag2;
     camera.subscribe_video_stream_info([&](const Camera::VideoStreamUpdate& update) {
         EXPECT_EQ(update.video_stream_info.settings.uri, example_rtsp_url);
-        prom_got_info.set_value();
+        std::call_once(flag2, [&]() { prom_got_info.set_value(); });
     });
 
     // We expect to find one camera.
