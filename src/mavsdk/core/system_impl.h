@@ -94,6 +94,9 @@ public:
     // Get MessageSet for message creation and parsing
     mav::MessageSet& get_message_set() const;
 
+    // Thread-safe MessageSet operations
+    bool load_custom_xml_to_message_set(const std::string& xml_content);
+
     TimeoutHandler::Cookie
     register_timeout_handler(const std::function<void()>& callback, double duration_s);
     void refresh_timeout_handler(TimeoutHandler::Cookie cookie);

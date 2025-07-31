@@ -5,8 +5,11 @@
 #include <json/json.h>
 #include "log.h"
 #include "connection.h"
+#include "callback_list.tpp"
 
 namespace mavsdk {
+
+template class CallbackList<MavlinkDirect::MavlinkMessage>;
 
 MavlinkDirectImpl::MavlinkDirectImpl(System& system) : PluginImplBase(system)
 {
@@ -123,33 +126,29 @@ MavlinkDirect::Result MavlinkDirectImpl::send_message(MavlinkDirect::MavlinkMess
 MavlinkDirect::MessageHandle MavlinkDirectImpl::subscribe_message(
     std::string message_name, const MavlinkDirect::MessageCallback& callback)
 {
-    std::lock_guard<std::mutex> lock(_message_callbacks_mutex);
+    // Subscribe using CallbackList pattern - this handles thread safety internally
+    auto handle = _message_subscriptions.subscribe(callback);
 
-    // Create a proper handle
-    auto handle = _message_handle_factory.create();
+    // Store message name for this handle (CallbackList protects this too)
+    _handle_to_message_name[handle] = message_name;
 
-    // Store the callback and message name mapped to the handle
-    _message_callbacks[handle] = callback;
-    _message_handle_to_name[handle] = message_name;
-
-    // Register with SystemImpl
+    // Register with SystemImpl - no lock-order-inversion because CallbackList handles
+    // synchronization
     _system_impl->register_libmav_message_handler(
-        message_name, // Empty string means all messages, specific name means filtered
-        [this, handle](const LibmavMessage& libmav_msg) {
-            std::lock_guard<std::mutex> callback_lock(_message_callbacks_mutex);
-            auto it = _message_callbacks.find(handle);
-            if (it != _message_callbacks.end()) {
-                // Convert LibmavMessage to MavlinkDirect::MavlinkMessage
-                MavlinkDirect::MavlinkMessage message;
-                message.message_name = libmav_msg.message_name;
-                message.system_id = libmav_msg.system_id;
-                message.component_id = libmav_msg.component_id;
-                message.target_system = libmav_msg.target_system;
-                message.target_component = libmav_msg.target_component;
-                message.fields_json = libmav_msg.fields_json;
+        message_name,
+        [this](const LibmavMessage& libmav_msg) {
+            // Convert LibmavMessage to MavlinkDirect::MavlinkMessage
+            MavlinkDirect::MavlinkMessage message;
+            message.message_name = libmav_msg.message_name;
+            message.system_id = libmav_msg.system_id;
+            message.component_id = libmav_msg.component_id;
+            message.target_system = libmav_msg.target_system;
+            message.target_component = libmav_msg.target_component;
+            message.fields_json = libmav_msg.fields_json;
 
-                it->second(message);
-            }
+            // Use CallbackList::queue to safely call all subscribed callbacks
+            _message_subscriptions.queue(
+                message, [this](const auto& func) { _system_impl->call_user_callback(func); });
         },
         &handle // Use handle address as cookie for specific unregistration
     );
@@ -159,20 +158,19 @@ MavlinkDirect::MessageHandle MavlinkDirectImpl::subscribe_message(
 
 void MavlinkDirectImpl::unsubscribe_message(MavlinkDirect::MessageHandle handle)
 {
-    std::lock_guard<std::mutex> lock(_message_callbacks_mutex);
-
-    // Find the message name for this handle
-    auto name_it = _message_handle_to_name.find(handle);
-    if (name_it != _message_handle_to_name.end()) {
-        const std::string& message_name = name_it->second;
-
-        // Unregister from SystemImpl using the handle address as cookie
-        _system_impl->unregister_libmav_message_handler(message_name, &handle);
-
-        // Remove from our callback maps
-        _message_callbacks.erase(handle);
-        _message_handle_to_name.erase(handle);
+    // Get the message name for unregistration
+    auto name_it = _handle_to_message_name.find(handle);
+    if (name_it == _handle_to_message_name.end()) {
+        return; // Handle not found, nothing to unsubscribe
     }
+    std::string message_name = name_it->second;
+
+    // Unregister from SystemImpl - no lock-order-inversion with CallbackList pattern
+    _system_impl->unregister_libmav_message_handler(message_name, &handle);
+
+    // Remove from CallbackList and message name map - CallbackList handles thread safety
+    _message_subscriptions.unsubscribe(handle);
+    _handle_to_message_name.erase(handle);
 }
 
 std::optional<uint32_t> MavlinkDirectImpl::message_name_to_id(const std::string& name) const
@@ -351,16 +349,13 @@ bool MavlinkDirectImpl::json_to_libmav_message(
 
 MavlinkDirect::Result MavlinkDirectImpl::load_custom_xml(const std::string& xml_content)
 {
-    // Get access to the MessageSet through the system
-    auto& message_set = _system_impl->get_message_set();
-
     if (_debugging) {
         LogDebug() << "Loading custom XML definitions...";
     }
 
-    // Load the custom XML into the MessageSet
-    auto result = message_set.addFromXMLString(xml_content, false /* recursive_open_includes */);
-    bool success = (result == ::mav::MessageSetResult::Success);
+    // Load the custom XML into the MessageSet with thread safety
+    // This uses the thread-safe method that protects against concurrent read operations
+    bool success = _system_impl->load_custom_xml_to_message_set(xml_content);
 
     if (success) {
         if (_debugging) {

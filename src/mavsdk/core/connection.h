@@ -11,6 +11,8 @@
 
 namespace mavsdk {
 
+class MavsdkImpl; // Forward declaration
+
 class Connection {
 public:
     using ReceiverCallback =
@@ -21,7 +23,7 @@ public:
     explicit Connection(
         ReceiverCallback receiver_callback,
         LibmavReceiverCallback libmav_receiver_callback,
-        mav::MessageSet& message_set,
+        MavsdkImpl& mavsdk_impl,
         ForwardingOption forwarding_option = ForwardingOption::ForwardingOff);
     virtual ~Connection();
 
@@ -52,7 +54,7 @@ protected:
 
     ReceiverCallback _receiver_callback{};
     LibmavReceiverCallback _libmav_receiver_callback{};
-    mav::MessageSet& _message_set;
+    MavsdkImpl& _mavsdk_impl; // For thread-safe MessageSet access
     std::unique_ptr<MavlinkReceiver> _mavlink_receiver;
     std::unique_ptr<LibmavReceiver> _libmav_receiver;
     ForwardingOption _forwarding_option;

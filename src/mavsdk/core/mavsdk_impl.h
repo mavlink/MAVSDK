@@ -15,6 +15,7 @@
 #include "component_type.h"
 #include "connection.h"
 #include "libmav_receiver.h"
+#include <mav/BufferParser.h>
 #include "cli_arg.h"
 #include "handle_factory.h"
 #include "handle.h"
@@ -33,7 +34,10 @@
 // Forward declarations to avoid including MessageSet.h in header
 namespace mav {
 class MessageSet;
-}
+class Message;
+class MessageDefinition;
+class BufferParser;
+} // namespace mav
 
 namespace mavsdk {
 
@@ -114,6 +118,18 @@ public:
     // Get MessageSet for message creation and parsing
     mav::MessageSet& get_message_set() const;
 
+    // Thread-safe MessageSet operations
+    bool load_custom_xml_to_message_set(const std::string& xml_content);
+    std::optional<std::string> message_id_to_name_safe(uint32_t id) const;
+    std::optional<int> message_name_to_id_safe(const std::string& name) const;
+    std::optional<mav::Message> create_message_safe(const std::string& message_name) const;
+
+    // Thread-safe MessageSet operations for LibmavReceiver
+    std::optional<mav::Message>
+    parse_message_safe(const uint8_t* buffer, size_t buffer_len, size_t& bytes_consumed) const;
+    mav::OptionalReference<const mav::MessageDefinition>
+    get_message_definition_safe(int message_id) const;
+
 private:
     static constexpr float DEFAULT_TIMEOUT_S = 0.5f;
 
@@ -157,6 +173,8 @@ private:
 
     // Message set for libmav message handling (shared across all connections)
     std::unique_ptr<mav::MessageSet> _message_set;
+    std::unique_ptr<mav::BufferParser> _buffer_parser; // Thread-safe parser
+    mutable std::mutex _message_set_mutex;
 
     HandleFactory<> _connections_handle_factory;
     struct ConnectionEntry {

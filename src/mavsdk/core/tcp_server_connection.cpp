@@ -31,14 +31,14 @@ namespace mavsdk {
 TcpServerConnection::TcpServerConnection(
     Connection::ReceiverCallback receiver_callback,
     Connection::LibmavReceiverCallback libmav_receiver_callback,
-    mav::MessageSet& message_set,
+    MavsdkImpl& mavsdk_impl,
     std::string local_ip,
     int local_port,
     ForwardingOption forwarding_option) :
     Connection(
         std::move(receiver_callback),
         std::move(libmav_receiver_callback),
-        message_set,
+        mavsdk_impl,
         forwarding_option),
     _local_ip(std::move(local_ip)),
     _local_port(local_port)
@@ -273,6 +273,15 @@ void TcpServerConnection::receive()
         // Parse all mavlink messages in one data packet. Once exhausted, we'll exit while.
         while (_mavlink_receiver->parse_message()) {
             receive_message(_mavlink_receiver->get_last_message(), this);
+        }
+
+        // Also parse with libmav if available
+        if (_libmav_receiver) {
+            _libmav_receiver->set_new_datagram(buffer.data(), static_cast<int>(recv_len));
+
+            while (_libmav_receiver->parse_message()) {
+                receive_libmav_message(_libmav_receiver->get_last_message(), this);
+            }
         }
     }
 }

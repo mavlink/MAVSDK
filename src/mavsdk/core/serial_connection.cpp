@@ -50,7 +50,7 @@ std::string GetLastErrorStdStr()
 SerialConnection::SerialConnection(
     Connection::ReceiverCallback receiver_callback,
     Connection::LibmavReceiverCallback libmav_receiver_callback,
-    mav::MessageSet& message_set,
+    MavsdkImpl& mavsdk_impl,
     std::string path,
     int baudrate,
     bool flow_control,
@@ -58,7 +58,7 @@ SerialConnection::SerialConnection(
     Connection(
         std::move(receiver_callback),
         std::move(libmav_receiver_callback),
-        message_set,
+        mavsdk_impl,
         forwarding_option),
     _serial_node(std::move(path)),
     _baudrate(baudrate),
@@ -349,6 +349,15 @@ void SerialConnection::receive()
         // Parse all mavlink messages in one data packet. Once exhausted, we'll exit while.
         while (_mavlink_receiver->parse_message()) {
             receive_message(_mavlink_receiver->get_last_message(), this);
+        }
+
+        // Also parse with libmav if available
+        if (_libmav_receiver) {
+            _libmav_receiver->set_new_datagram(buffer, recv_len);
+
+            while (_libmav_receiver->parse_message()) {
+                receive_libmav_message(_libmav_receiver->get_last_message(), this);
+            }
         }
     }
 }
