@@ -280,7 +280,7 @@ jobs:
           echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV
           echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/ubsan/third_party/install" >> $GITHUB_ENV
       - name: configure
-      - run: |
+        run: |
           export CC=clang-18
           export CXX=clang++-18
           cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Debug -DUBSAN=ON -DWERROR=ON -Bbuild/ubsan -H.
@@ -443,7 +443,7 @@ jobs:
           echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV
           echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/default/third_party/install" >> $GITHUB_ENV
       - name: build necessary protoc tooling
-        run: cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Debug -DBUILD_MAVSDK_SERVER=ON-Bbuild/default -H.
+        run: cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Debug -DBUILD_MAVSDK_SERVER=ON -Bbuild/default -H.
       - name: generate code from protos
         run: PATH="$PATH:$HOME/.local/bin" tools/generate_from_protos.sh
       - name: fix style
