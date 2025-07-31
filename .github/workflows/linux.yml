@@ -199,10 +199,12 @@ jobs:
         run: |
           echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV
           echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/asan/third_party/install" >> $GITHUB_ENV
+      - name: Install clang-19
+        run: sudo apt-get update && sudo apt-get install -y clang-19
       - name: configure
         run: |
-          export CC=clang-18
-          export CXX=clang++-18
+          export CC=clang-19
+          export CXX=clang++-19
           cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Debug -DASAN=ON -DWERROR=ON -Bbuild/asan -H.
       - name: build
         run: cmake --build build/asan -j$(nproc)
@@ -239,10 +241,12 @@ jobs:
         run: |
           echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV
           echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/tsan/third_party/install" >> $GITHUB_ENV
+      - name: Install clang-19
+        run: sudo apt-get update && sudo apt-get install -y clang-19
       - name: configure
         run: |
-          export CC=clang-18
-          export CXX=clang++-18
+          export CC=clang-19
+          export CXX=clang++-19
           cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Debug -DTSAN=ON -DWERROR=ON -Bbuild/tsan -H.
       - name: build
         run: cmake --build build/tsan -j$(nproc)
@@ -279,10 +283,12 @@ jobs:
         run: |
           echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV
           echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/ubsan/third_party/install" >> $GITHUB_ENV
+      - name: Install clang-19
+        run: sudo apt-get update && sudo apt-get install -y clang-19
       - name: configure
         run: |
-          export CC=clang-18
-          export CXX=clang++-18
+          export CC=clang-19
+          export CXX=clang++-19
           cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Debug -DUBSAN=ON -DWERROR=ON -Bbuild/ubsan -H.
       - name: build
         run: cmake --build build/ubsan -j$(nproc)
