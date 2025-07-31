@@ -193,14 +193,12 @@ jobs:
         id: cache
         with:
           path: ./build/asan/third_party/install
-          key: ${{ github.job }}-${{ hashFiles('./third_party/**') }}
+          key: ${{ github.job }}-${{ hashFiles('./third_party/**') }}-2
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: |
           echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV
           echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/asan/third_party/install" >> $GITHUB_ENV
-      - name: Install clang-19
-        run: sudo apt-get update && sudo apt-get install -y clang-19
       - name: configure
         run: |
           export CC=clang-19
@@ -235,14 +233,12 @@ jobs:
         id: cache
         with:
           path: ./build/tsan/third_party/install
-          key: ${{ github.job }}-${{ hashFiles('./third_party/**') }}
+          key: ${{ github.job }}-${{ hashFiles('./third_party/**') }}-2
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: |
           echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV
           echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/tsan/third_party/install" >> $GITHUB_ENV
-      - name: Install clang-19
-        run: sudo apt-get update && sudo apt-get install -y clang-19
       - name: configure
         run: |
           export CC=clang-19
@@ -277,7 +273,7 @@ jobs:
         id: cache
         with:
           path: ./build/ubsan/third_party/install
-          key: ${{ github.job }}-${{ hashFiles('./third_party/**') }}
+          key: ${{ github.job }}-${{ hashFiles('./third_party/**') }}-2
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: |
@@ -318,9 +314,9 @@ jobs:
             cxx: g++-14
             description: Ubuntu 24.04 (GCC 14)
           - ubuntu_version: "24.04"
-            cc: clang-18
-            cxx: clang++-18
-            description: Ubuntu 24.04 (clang 18)
+            cc: clang-19
+            cxx: clang++-19
+            description: Ubuntu 24.04 (clang 19)
     steps:
       - uses: actions/checkout@v4
         with:

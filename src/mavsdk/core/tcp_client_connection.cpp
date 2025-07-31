@@ -88,7 +88,7 @@ ConnectionResult TcpClientConnection::setup_port()
         return ConnectionResult::SocketError;
     }
 
-    struct sockaddr_in remote_addr {};
+    struct sockaddr_in remote_addr{};
     remote_addr.sin_family = AF_INET;
     remote_addr.sin_port = htons(_remote_port_number);
 
@@ -166,7 +166,7 @@ std::pair<bool, std::string> TcpClientConnection::send_message(const mavlink_mes
         return result;
     }
 
-    struct sockaddr_in dest_addr {};
+    struct sockaddr_in dest_addr{};
     dest_addr.sin_family = AF_INET;
 
     inet_pton(AF_INET, _remote_ip.c_str(), &dest_addr.sin_addr.s_addr);

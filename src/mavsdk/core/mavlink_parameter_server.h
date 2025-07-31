@@ -107,7 +107,7 @@ private:
             std::string param_id1, ParamValue param_value1, WorkItemVariant work_item_variant1) :
             param_id(std::move(param_id1)),
             param_value(std::move(param_value1)),
-            work_item_variant(std::move(work_item_variant1)){};
+            work_item_variant(std::move(work_item_variant1)) {};
     };
 
     Sender& _sender;

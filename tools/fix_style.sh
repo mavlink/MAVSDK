@@ -3,15 +3,19 @@
 # This script runs clang-format over all files ending in .h, .c, .cpp listed
 # by git in the given directory.
 
-version_required_major="18"
+version_required_major="19"
 
 # Try to find the latest version of clang
-if command -v clang-format-18 >/dev/null; then
-    clang_format=clang-format-18
+if command -v clang-format-19 >/dev/null; then
+    clang_format=clang-format-19
 elif command -v clang-format >/dev/null; then
     clang_format=clang-format
 else
-    echo "You can use clang-format from docker:"
+    echo "On Ubuntu 24.04, you can install it:"
+    echo ""
+    echo "    'sudo apt install clang-format-19'"
+    echo ""
+    echo "Otherwise, you can use clang-format from docker:"
     echo ""
     echo "    'tools/run-docker.sh tools/fix_style.sh .'"
     exit 1

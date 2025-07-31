@@ -87,7 +87,7 @@ ConnectionResult UdpConnection::setup_port()
         return ConnectionResult::SocketError;
     }
 
-    struct sockaddr_in addr {};
+    struct sockaddr_in addr{};
     addr.sin_family = AF_INET;
     if (inet_pton(AF_INET, _local_ip.c_str(), &(addr.sin_addr)) != 1) {
         LogErr() << "inet_pton failure for address: " << _local_ip;
@@ -184,7 +184,7 @@ std::pair<bool, std::string> UdpConnection::send_message(const mavlink_message_t
     result.first = true;
 
     for (auto& remote : _remotes) {
-        struct sockaddr_in dest_addr {};
+        struct sockaddr_in dest_addr{};
         dest_addr.sin_family = AF_INET;
 
         if (inet_pton(AF_INET, remote.ip.c_str(), &dest_addr.sin_addr.s_addr) != 1) {

@@ -41,7 +41,7 @@ public:
             std::string param_name1, ParamChangedCallbacks callback1, const void* cookie1) :
             param_name(std::move(param_name1)),
             callback(std::move(callback1)),
-            cookie(cookie1){};
+            cookie(cookie1) {};
     };
 
     /**

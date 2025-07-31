@@ -182,7 +182,7 @@ private:
         WorkItem() = delete;
         WorkItem(WorkItemVariant new_work_item_variant, const void* new_cookie) :
             work_item_variant(std::move(new_work_item_variant)),
-            cookie(new_cookie){};
+            cookie(new_cookie) {};
     };
     void process_param_value(const mavlink_message_t& message);
     void process_param_ext_value(const mavlink_message_t& message);
