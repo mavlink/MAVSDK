@@ -1772,7 +1772,8 @@ public:
     using RawImuHandle = Handle<Imu>;
 
     /**
-     * @brief Subscribe to 'Raw IMU' updates.
+     * @brief Subscribe to 'Raw IMU' updates (note that units are are incorrect and "raw" as
+     * provided by the sensor)
      */
     RawImuHandle subscribe_raw_imu(const RawImuCallback& callback);
 

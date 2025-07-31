@@ -290,7 +290,7 @@ class TelemetryService final {
     std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::telemetry::ScaledImuResponse>> PrepareAsyncSubscribeScaledImu(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeScaledImuRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::telemetry::ScaledImuResponse>>(PrepareAsyncSubscribeScaledImuRaw(context, request, cq));
     }
-    // Subscribe to 'Raw IMU' updates.
+    // Subscribe to 'Raw IMU' updates (note that units are are incorrect and "raw" as provided by the sensor)
     std::unique_ptr< ::grpc::ClientReaderInterface< ::mavsdk::rpc::telemetry::RawImuResponse>> SubscribeRawImu(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeRawImuRequest& request) {
       return std::unique_ptr< ::grpc::ClientReaderInterface< ::mavsdk::rpc::telemetry::RawImuResponse>>(SubscribeRawImuRaw(context, request));
     }
@@ -624,7 +624,7 @@ class TelemetryService final {
       virtual void SubscribeImu(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeImuRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::ImuResponse>* reactor) = 0;
       // Subscribe to 'Scaled IMU' updates.
       virtual void SubscribeScaledImu(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeScaledImuRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::ScaledImuResponse>* reactor) = 0;
-      // Subscribe to 'Raw IMU' updates.
+      // Subscribe to 'Raw IMU' updates (note that units are are incorrect and "raw" as provided by the sensor)
       virtual void SubscribeRawImu(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeRawImuRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::RawImuResponse>* reactor) = 0;
       // Subscribe to 'HealthAllOk' updates.
       virtual void SubscribeHealthAllOk(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribeHealthAllOkRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::telemetry::HealthAllOkResponse>* reactor) = 0;
@@ -1707,7 +1707,7 @@ class TelemetryService final {
     virtual ::grpc::Status SubscribeImu(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeImuRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::ImuResponse>* writer);
     // Subscribe to 'Scaled IMU' updates.
     virtual ::grpc::Status SubscribeScaledImu(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeScaledImuRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::ScaledImuResponse>* writer);
-    // Subscribe to 'Raw IMU' updates.
+    // Subscribe to 'Raw IMU' updates (note that units are are incorrect and "raw" as provided by the sensor)
     virtual ::grpc::Status SubscribeRawImu(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeRawImuRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::RawImuResponse>* writer);
     // Subscribe to 'HealthAllOk' updates.
     virtual ::grpc::Status SubscribeHealthAllOk(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SubscribeHealthAllOkRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::telemetry::HealthAllOkResponse>* writer);
