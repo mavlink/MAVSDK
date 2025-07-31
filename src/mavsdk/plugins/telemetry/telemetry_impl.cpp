@@ -877,15 +877,18 @@ void TelemetryImpl::process_scaled_imu(const mavlink_message_t& message)
     mavlink_scaled_imu_t scaled_imu_reading;
     mavlink_msg_scaled_imu_decode(&message, &scaled_imu_reading);
     Telemetry::Imu new_imu;
-    new_imu.acceleration_frd.forward_m_s2 = scaled_imu_reading.xacc;
-    new_imu.acceleration_frd.right_m_s2 = scaled_imu_reading.yacc;
-    new_imu.acceleration_frd.down_m_s2 = scaled_imu_reading.zacc;
-    new_imu.angular_velocity_frd.forward_rad_s = scaled_imu_reading.xgyro;
-    new_imu.angular_velocity_frd.right_rad_s = scaled_imu_reading.ygyro;
-    new_imu.angular_velocity_frd.down_rad_s = scaled_imu_reading.zgyro;
-    new_imu.magnetic_field_frd.forward_gauss = scaled_imu_reading.xmag;
-    new_imu.magnetic_field_frd.right_gauss = scaled_imu_reading.ymag;
-    new_imu.magnetic_field_frd.down_gauss = scaled_imu_reading.zmag;
+    // From mG to m/s^2
+    new_imu.acceleration_frd.forward_m_s2 = scaled_imu_reading.xacc / 1000.f * 9.81f;
+    new_imu.acceleration_frd.right_m_s2 = scaled_imu_reading.yacc / 1000.f * 9.81f;
+    new_imu.acceleration_frd.down_m_s2 = scaled_imu_reading.zacc / 1000.f * 9.81f;
+    // From mrad to rad
+    new_imu.angular_velocity_frd.forward_rad_s = scaled_imu_reading.xgyro / 1000.f;
+    new_imu.angular_velocity_frd.right_rad_s = scaled_imu_reading.ygyro / 1000.f;
+    new_imu.angular_velocity_frd.down_rad_s = scaled_imu_reading.zgyro / 1000.f;
+    // From milliGauss to Gauss
+    new_imu.magnetic_field_frd.forward_gauss = scaled_imu_reading.xmag / 1000.f;
+    new_imu.magnetic_field_frd.right_gauss = scaled_imu_reading.ymag / 1000.f;
+    new_imu.magnetic_field_frd.down_gauss = scaled_imu_reading.zmag / 1000.f;
     new_imu.temperature_degc = static_cast<float>(scaled_imu_reading.temperature) * 1e-2f;
     new_imu.timestamp_us = static_cast<uint64_t>(scaled_imu_reading.time_boot_ms) * 1000;
 
