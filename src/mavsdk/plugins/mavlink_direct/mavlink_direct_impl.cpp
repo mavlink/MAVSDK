@@ -43,7 +43,15 @@ void MavlinkDirectImpl::init()
     // No need to register for mavlink messages anymore - we'll use libmav subscription system
 }
 
-void MavlinkDirectImpl::deinit() {}
+void MavlinkDirectImpl::deinit()
+{
+    // Clean up all libmav message handlers registered by this plugin
+    _system_impl->unregister_all_libmav_message_handlers(this);
+
+    // Clear internal state
+    _handle_to_message_name.clear();
+    _message_subscriptions.clear();
+}
 
 void MavlinkDirectImpl::enable() {}
 
