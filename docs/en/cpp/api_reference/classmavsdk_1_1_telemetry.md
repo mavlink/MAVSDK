@@ -237,7 +237,7 @@ void | [unsubscribe_imu](#classmavsdk_1_1_telemetry_1a2af03957c69efd9b5cbb7537de
 [ScaledImuHandle](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a4968d9d418d48a4368f2915023ca0014) | [subscribe_scaled_imu](#classmavsdk_1_1_telemetry_1a61bd540f505a3a6acd858ca169e868b3) (const [ScaledImuCallback](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a26159a775adcfbc42302234b7108d94f) & callback) | Subscribe to 'Scaled IMU' updates.
 void | [unsubscribe_scaled_imu](#classmavsdk_1_1_telemetry_1a69acf5d201425f0a318a36ad6230fb46) ([ScaledImuHandle](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a4968d9d418d48a4368f2915023ca0014) handle) | Unsubscribe from subscribe_scaled_imu.
 [Imu](structmavsdk_1_1_telemetry_1_1_imu.md) | [scaled_imu](#classmavsdk_1_1_telemetry_1ab6a515ba85a67bc80e6e1c9a05d1f94d) () const | Poll for '[Imu](structmavsdk_1_1_telemetry_1_1_imu.md)' (blocking).
-[RawImuHandle](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a416f5b4dc6c51d78d05572d5cc18f3fb) | [subscribe_raw_imu](#classmavsdk_1_1_telemetry_1a98db826585b84957478a6195d46f0491) (const [RawImuCallback](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a92711da85d343cb58b73561e6b730c76) & callback) | Subscribe to 'Raw IMU' updates.
+[RawImuHandle](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a416f5b4dc6c51d78d05572d5cc18f3fb) | [subscribe_raw_imu](#classmavsdk_1_1_telemetry_1a98db826585b84957478a6195d46f0491) (const [RawImuCallback](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a92711da85d343cb58b73561e6b730c76) & callback) | Subscribe to 'Raw IMU' updates (note that units are are incorrect and "raw" as provided by the sensor)
 void | [unsubscribe_raw_imu](#classmavsdk_1_1_telemetry_1aec5b5fbbb37654bb6dae9607451929d7) ([RawImuHandle](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a416f5b4dc6c51d78d05572d5cc18f3fb) handle) | Unsubscribe from subscribe_raw_imu.
 [Imu](structmavsdk_1_1_telemetry_1_1_imu.md) | [raw_imu](#classmavsdk_1_1_telemetry_1a691464f001ddf8d02b97bcf137f5cf8a) () const | Poll for '[Imu](structmavsdk_1_1_telemetry_1_1_imu.md)' (blocking).
 [HealthAllOkHandle](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1aa882d4938eb491cce5b7ca6aead2384c) | [subscribe_health_all_ok](#classmavsdk_1_1_telemetry_1acc64edfa8230926024cdefe93ab10c7f) (const [HealthAllOkCallback](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a71cdcadfaa988dc14029e0b9fdbe742d) & callback) | Subscribe to 'HealthAllOk' updates.
@@ -2262,7 +2262,7 @@ RawImuHandle mavsdk::Telemetry::subscribe_raw_imu(const RawImuCallback &callback
 ```
 
 
-Subscribe to 'Raw IMU' updates.
+Subscribe to 'Raw IMU' updates (note that units are are incorrect and "raw" as provided by the sensor)
 
 
 **Parameters**
