@@ -41,10 +41,14 @@ void MavlinkRequestMessage::request(
 
     // Respond with 'Busy' if already in progress.
     for (auto& item : _work_items) {
-        if (item.message_id == message_id && item.param2 == param2) {
+        if (item.message_id == message_id && item.param2 == param2 &&
+            item.target_component == target_component) {
             lock.unlock();
             if (callback) {
                 callback(MavlinkCommandSender::Result::Busy, {});
+            }
+            if (_debugging) {
+                LogDebug() << "Message " << item.message_id << " already requested";
             }
             return;
         }
