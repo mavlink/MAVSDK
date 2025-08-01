@@ -31,14 +31,14 @@ namespace mavsdk {
 UdpConnection::UdpConnection(
     Connection::ReceiverCallback receiver_callback,
     Connection::LibmavReceiverCallback libmav_receiver_callback,
-    mav::MessageSet& message_set,
+    MavsdkImpl& mavsdk_impl,
     std::string local_ip,
     int local_port_number,
     ForwardingOption forwarding_option) :
     Connection(
         std::move(receiver_callback),
         std::move(libmav_receiver_callback),
-        message_set,
+        mavsdk_impl,
         forwarding_option),
     _local_ip(std::move(local_ip)),
     _local_port_number(local_port_number)
@@ -87,7 +87,7 @@ ConnectionResult UdpConnection::setup_port()
         return ConnectionResult::SocketError;
     }
 
-    struct sockaddr_in addr {};
+    struct sockaddr_in addr{};
     addr.sin_family = AF_INET;
     if (inet_pton(AF_INET, _local_ip.c_str(), &(addr.sin_addr)) != 1) {
         LogErr() << "inet_pton failure for address: " << _local_ip;
@@ -184,7 +184,7 @@ std::pair<bool, std::string> UdpConnection::send_message(const mavlink_message_t
     result.first = true;
 
     for (auto& remote : _remotes) {
-        struct sockaddr_in dest_addr {};
+        struct sockaddr_in dest_addr{};
         dest_addr.sin_family = AF_INET;
 
         if (inet_pton(AF_INET, remote.ip.c_str(), &dest_addr.sin_addr.s_addr) != 1) {

@@ -1407,4 +1407,9 @@ mav::MessageSet& SystemImpl::get_message_set() const
     return _mavsdk_impl.get_message_set();
 }
 
+bool SystemImpl::load_custom_xml_to_message_set(const std::string& xml_content)
+{
+    return _mavsdk_impl.load_custom_xml_to_message_set(xml_content);
+}
+
 } // namespace mavsdk

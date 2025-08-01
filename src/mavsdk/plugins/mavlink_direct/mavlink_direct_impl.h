@@ -3,6 +3,7 @@
 #include "plugins/mavlink_direct/mavlink_direct.h"
 
 #include "plugin_impl_base.h"
+#include "callback_list.h"
 
 #include <json/json.h>
 #include <mav/Message.h>
@@ -36,13 +37,11 @@ public:
     MavlinkDirect::Result load_custom_xml(const std::string& xml_content);
 
 private:
-    // Handle factory
-    HandleFactory<MavlinkDirect::MavlinkMessage> _message_handle_factory{};
+    // Thread-safe callback management using CallbackList pattern (like other plugins)
+    CallbackList<MavlinkDirect::MavlinkMessage> _message_subscriptions{};
 
-    // Callback storage
-    std::mutex _message_callbacks_mutex;
-    std::map<MavlinkDirect::MessageHandle, MavlinkDirect::MessageCallback> _message_callbacks;
-    std::map<MavlinkDirect::MessageHandle, std::string> _message_handle_to_name;
+    // Map to track message names for each subscription handle (protected by CallbackList's mutex)
+    std::map<MavlinkDirect::MessageHandle, std::string> _handle_to_message_name{};
 
     bool _debugging = false;
 

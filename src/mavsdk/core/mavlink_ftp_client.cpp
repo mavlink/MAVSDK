@@ -1066,18 +1066,30 @@ MavlinkFtpClient::ClientResult MavlinkFtpClient::translate(ServerResult result)
     switch (result) {
         case ServerResult::SUCCESS:
             return ClientResult::Success;
-        case ServerResult::ERR_TIMEOUT:
-            return ClientResult::Timeout;
-        case ServerResult::ERR_FILE_IO_ERROR:
-            return ClientResult::FileIoError;
+        case ServerResult::ERR_FAIL:
+            return ClientResult::ProtocolError;
+        case ServerResult::ERR_FAIL_ERRNO:
+            return ClientResult::ProtocolError;
+        case ServerResult::ERR_INVALID_DATA_SIZE:
+            return ClientResult::ProtocolError;
+        case ServerResult::ERR_INVALID_SESSION:
+            return ClientResult::ProtocolError;
+        case ServerResult::ERR_NO_SESSIONS_AVAILABLE:
+            return ClientResult::ProtocolError;
+        case ServerResult::ERR_EOF:
+            return ClientResult::ProtocolError;
+        case ServerResult::ERR_UNKOWN_COMMAND:
+            return ClientResult::Unsupported;
         case ServerResult::ERR_FAIL_FILE_EXISTS:
             return ClientResult::FileExists;
         case ServerResult::ERR_FAIL_FILE_PROTECTED:
             return ClientResult::FileProtected;
-        case ServerResult::ERR_UNKOWN_COMMAND:
-            return ClientResult::Unsupported;
         case ServerResult::ERR_FAIL_FILE_DOES_NOT_EXIST:
             return ClientResult::FileDoesNotExist;
+        case ServerResult::ERR_TIMEOUT:
+            return ClientResult::Timeout;
+        case ServerResult::ERR_FILE_IO_ERROR:
+            return ClientResult::FileIoError;
         default:
             LogInfo() << "Unknown error code: " << (int)result;
             return ClientResult::ProtocolError;
@@ -1475,6 +1487,19 @@ std::ostream& operator<<(std::ostream& str, MavlinkFtpClient::ClientResult const
             return str << "ProtocolError";
         case MavlinkFtpClient::ClientResult::NoSystem:
             return str << "NoSystem";
+    }
+}
+
+void MavlinkFtpClient::cancel_all_operations()
+{
+    // Stop any pending timeout timers
+    stop_timer();
+
+    // Clear the work queue to cancel all pending operations
+    // This prevents callbacks from being executed
+    LockedQueue<Work>::Guard work_queue_guard(_work_queue);
+    while (work_queue_guard.get_front() != nullptr) {
+        work_queue_guard.pop_front();
     }
 }
 

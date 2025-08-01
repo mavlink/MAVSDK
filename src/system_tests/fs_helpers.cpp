@@ -35,6 +35,9 @@ bool reset_directories(const fs::path& path)
 {
     std::error_code ec;
     fs::remove_all(path, ec);
+    if (ec) {
+        LogErr() << "Error removing " << path << ": " << ec.message();
+    }
 
     return fs::create_directories(path);
 }

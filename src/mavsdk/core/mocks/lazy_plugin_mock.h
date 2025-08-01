@@ -6,7 +6,7 @@ namespace testing {
 
 template<typename Plugin> class MockLazyPlugin {
 public:
-    MOCK_CONST_METHOD0(maybe_plugin, Plugin*()){};
+    MOCK_CONST_METHOD0(maybe_plugin, Plugin*()) {};
 };
 
 } // namespace testing

@@ -30,9 +30,12 @@ struct LibmavMessage {
     std::string fields_json; // Pre-converted JSON fields
 };
 
+// Forward declaration for thread-safe MessageSet operations
+class MavsdkImpl;
+
 class LibmavReceiver {
 public:
-    explicit LibmavReceiver(mav::MessageSet& message_set);
+    explicit LibmavReceiver(MavsdkImpl& mavsdk_impl);
     ~LibmavReceiver(); // Need explicit destructor for unique_ptr with incomplete type
 
     const LibmavMessage& get_last_message() const { return _last_message; }
@@ -52,7 +55,7 @@ public:
     bool load_custom_xml(const std::string& xml_content);
 
 private:
-    mav::MessageSet& _message_set;
+    MavsdkImpl& _mavsdk_impl; // For thread-safe MessageSet access
     std::unique_ptr<mav::BufferParser> _buffer_parser;
     LibmavMessage _last_message;
 

@@ -24,7 +24,11 @@ FtpImpl::~FtpImpl()
 
 void FtpImpl::init() {}
 
-void FtpImpl::deinit() {}
+void FtpImpl::deinit()
+{
+    // Cancel all FTP operations to prevent use-after-free callbacks
+    _system_impl->mavlink_ftp_client().cancel_all_operations();
+}
 
 void FtpImpl::enable() {}
 
@@ -79,7 +83,7 @@ std::pair<Ftp::Result, Ftp::ListDirectoryData> FtpImpl::list_directory(const std
     std::promise<std::pair<Ftp::Result, Ftp::ListDirectoryData>> prom;
     auto fut = prom.get_future();
 
-    list_directory_async(path, [&](Ftp::Result result, Ftp::ListDirectoryData data) {
+    list_directory_async(path, [&prom](Ftp::Result result, Ftp::ListDirectoryData data) {
         prom.set_value(std::pair<Ftp::Result, Ftp::ListDirectoryData>(result, data));
     });
     return fut.get();
@@ -108,7 +112,7 @@ Ftp::Result FtpImpl::create_directory(const std::string& path)
     std::promise<Ftp::Result> prom{};
     auto fut = prom.get_future();
 
-    create_directory_async(path, [&](Ftp::Result result) { prom.set_value(result); });
+    create_directory_async(path, [&prom](Ftp::Result result) { prom.set_value(result); });
     return fut.get();
 }
 
@@ -129,7 +133,7 @@ Ftp::Result FtpImpl::remove_directory(const std::string& path)
     std::promise<Ftp::Result> prom{};
     auto fut = prom.get_future();
 
-    remove_directory_async(path, [&](Ftp::Result result) { prom.set_value(result); });
+    remove_directory_async(path, [&prom](Ftp::Result result) { prom.set_value(result); });
 
     return fut.get();
 }
@@ -197,7 +201,7 @@ FtpImpl::are_files_identical(const std::string& local_path, const std::string& r
     std::promise<std::pair<Ftp::Result, bool>> prom{};
     auto fut = prom.get_future();
 
-    are_files_identical_async(local_path, remote_path, [&](Ftp::Result result, bool identical) {
+    are_files_identical_async(local_path, remote_path, [&prom](Ftp::Result result, bool identical) {
         prom.set_value(std::pair<Ftp::Result, bool>{result, identical});
     });
 

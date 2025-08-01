@@ -61,6 +61,7 @@ jobs:
     runs-on: ubuntu-24.04
     container:
       image: docker.io/mavsdk/mavsdk-ubuntu-22.04:${{ needs.check-docker-changes.outputs.docker_tag }}
+      options: --privileged --ulimit core=-1 --security-opt seccomp=unconfined
     env:
       NODE_OPTIONS: --max_old_space_size=4096
     steps:
@@ -74,6 +75,12 @@ jobs:
           git config --global --add safe.directory /github/workspace
       - name: git get version tags
         run: git fetch --tags
+      - name: configure core dumps
+        run: |
+          ulimit -c unlimited
+          echo '/tmp/core.%h.%e.%t' | sudo tee /proc/sys/kernel/core_pattern
+          echo 'Core dump pattern set to:'
+          cat /proc/sys/kernel/core_pattern
       - uses: actions/cache@v4
         id: cache
         with:
@@ -90,13 +97,32 @@ jobs:
             lcov \
             curl
       - name: configure
-        run: cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Coverage -DASAN=ON -DWERROR=ON -DENABLE_CPPTRACE=On -Bbuild -H.
+        run: cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Coverage -DWERROR=ON -Bbuild -H.
       - name: build
         run: cmake --build build -j$(nproc)
       - name: unit tests
         run: ./build/src/unit_tests/unit_tests_runner
       - name: system tests
         run: ./build/src/system_tests/system_tests_runner
+      - name: upload core dumps
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: core-dumps-coverage-${{ github.run_id }}
+          path: /tmp/core.*
+          retention-days: 7
+          if-no-files-found: ignore
+      - name: upload test binary for core dump analysis
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-binary-coverage-${{ github.run_id }}
+          path: |
+            ./build/src/unit_tests/unit_tests_runner
+            ./build/src/system_tests/system_tests_runner
+            ./build/src/mavsdk/libmavsdk.so*
+            ./build/src/mavsdk_server/src/libmavsdk_server.so*
+          retention-days: 7
       - name: run lcov
         run: lcov --capture --directory . --no-external --exclude "*/third_party/*"  --output-file lcov.info
       - name: check size of lcov.info
@@ -108,6 +134,165 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           path-to-lcov: "./lcov.info"
 
+  ubuntu-debug:
+    name: Ubuntu 24.04 (Debug Build)
+    needs: [check-docker-changes, update-docker-images]
+    if: always() && needs.check-docker-changes.result == 'success'
+    runs-on: ubuntu-24.04
+    container:
+      image: docker.io/mavsdk/mavsdk-ubuntu-24.04:${{ needs.check-docker-changes.outputs.docker_tag }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0
+      - name: git permission workaround
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          git config --global --add safe.directory /github/workspace
+      - name: git get version tags
+        run: git fetch --tags
+      - uses: actions/cache@v4
+        id: cache
+        with:
+          path: ./build/debug/third_party/install
+          key: ${{ github.job }}-${{ hashFiles('./third_party/**') }}
+      - name: disable superbuild on cache hit
+        if: steps.cache.outputs.cache-hit == 'true'
+        run: |
+          echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV
+          echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/debug/third_party/install" >> $GITHUB_ENV
+      - name: configure
+        run: cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Debug -DWERROR=ON -Bbuild/debug -H.
+      - name: build
+        run: cmake --build build/debug -j$(nproc)
+      - name: unit tests
+        run: ./build/debug/src/unit_tests/unit_tests_runner
+      - name: system tests
+        run: ./build/debug/src/system_tests/system_tests_runner
+
+  ubuntu-asan:
+    name: Ubuntu 24.04 (AddressSanitizer)
+    needs: [check-docker-changes, update-docker-images]
+    if: always() && needs.check-docker-changes.result == 'success'
+    runs-on: ubuntu-24.04
+    container:
+      image: docker.io/mavsdk/mavsdk-ubuntu-24.04:${{ needs.check-docker-changes.outputs.docker_tag }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0
+      - name: git permission workaround
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          git config --global --add safe.directory /github/workspace
+      - name: git get version tags
+        run: git fetch --tags
+      - uses: actions/cache@v4
+        id: cache
+        with:
+          path: ./build/asan/third_party/install
+          key: ${{ github.job }}-${{ hashFiles('./third_party/**') }}-2
+      - name: disable superbuild on cache hit
+        if: steps.cache.outputs.cache-hit == 'true'
+        run: |
+          echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV
+          echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/asan/third_party/install" >> $GITHUB_ENV
+      - name: configure
+        run: |
+          export CC=clang-19
+          export CXX=clang++-19
+          cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Debug -DASAN=ON -DWERROR=ON -Bbuild/asan -H.
+      - name: build
+        run: cmake --build build/asan -j$(nproc)
+      - name: unit tests
+        run: ./build/asan/src/unit_tests/unit_tests_runner
+      - name: system tests
+        run: ./build/asan/src/system_tests/system_tests_runner
+
+  ubuntu-tsan:
+    name: Ubuntu 24.04 (ThreadSanitizer)
+    needs: [check-docker-changes, update-docker-images]
+    if: always() && needs.check-docker-changes.result == 'success'
+    runs-on: ubuntu-24.04
+    container:
+      image: docker.io/mavsdk/mavsdk-ubuntu-24.04:${{ needs.check-docker-changes.outputs.docker_tag }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0
+      - name: git permission workaround
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          git config --global --add safe.directory /github/workspace
+      - name: git get version tags
+        run: git fetch --tags
+      - uses: actions/cache@v4
+        id: cache
+        with:
+          path: ./build/tsan/third_party/install
+          key: ${{ github.job }}-${{ hashFiles('./third_party/**') }}-2
+      - name: disable superbuild on cache hit
+        if: steps.cache.outputs.cache-hit == 'true'
+        run: |
+          echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV
+          echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/tsan/third_party/install" >> $GITHUB_ENV
+      - name: configure
+        run: |
+          export CC=clang-19
+          export CXX=clang++-19
+          cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Debug -DTSAN=ON -DWERROR=ON -Bbuild/tsan -H.
+      - name: build
+        run: cmake --build build/tsan -j$(nproc)
+      - name: unit tests
+        run: ./build/tsan/src/unit_tests/unit_tests_runner
+      - name: system tests
+        run: ./build/tsan/src/system_tests/system_tests_runner
+
+  ubuntu-ubsan:
+    name: Ubuntu 24.04 (UndefinedBehaviour)
+    needs: [check-docker-changes, update-docker-images]
+    if: always() && needs.check-docker-changes.result == 'success'
+    runs-on: ubuntu-24.04
+    container:
+      image: docker.io/mavsdk/mavsdk-ubuntu-24.04:${{ needs.check-docker-changes.outputs.docker_tag }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0
+      - name: git permission workaround
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          git config --global --add safe.directory /github/workspace
+      - name: git get version tags
+        run: git fetch --tags
+      - uses: actions/cache@v4
+        id: cache
+        with:
+          path: ./build/ubsan/third_party/install
+          key: ${{ github.job }}-${{ hashFiles('./third_party/**') }}-2
+      - name: disable superbuild on cache hit
+        if: steps.cache.outputs.cache-hit == 'true'
+        run: |
+          echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV
+          echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/ubsan/third_party/install" >> $GITHUB_ENV
+      - name: Install clang-19
+        run: sudo apt-get update && sudo apt-get install -y clang-19
+      - name: configure
+        run: |
+          export CC=clang-19
+          export CXX=clang++-19
+          cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Debug -DUBSAN=ON -DWERROR=ON -Bbuild/ubsan -H.
+      - name: build
+        run: cmake --build build/ubsan -j$(nproc)
+      - name: unit tests
+        run: ./build/ubsan/src/unit_tests/unit_tests_runner
+      - name: system tests
+        run: ./build/ubsan/src/system_tests/system_tests_runner
+
   ubuntu-superbuild:
     name: ${{ matrix.description }}
     needs: [check-docker-changes, update-docker-images]
@@ -115,6 +300,7 @@ jobs:
     runs-on: ubuntu-24.04
     container:
       image: docker.io/mavsdk/mavsdk-ubuntu-${{ matrix.ubuntu_version }}:${{ needs.check-docker-changes.outputs.docker_tag }}
+      options: --privileged --ulimit core=-1 --security-opt seccomp=unconfined
     strategy:
       fail-fast: false
       matrix:
@@ -128,9 +314,9 @@ jobs:
             cxx: g++-14
             description: Ubuntu 24.04 (GCC 14)
           - ubuntu_version: "24.04"
-            cc: clang-18
-            cxx: clang++-18
-            description: Ubuntu 24.04 (clang 18)
+            cc: clang-19
+            cxx: clang++-19
+            description: Ubuntu 24.04 (clang 19)
     steps:
       - uses: actions/checkout@v4
         with:
@@ -142,6 +328,12 @@ jobs:
           git config --global --add safe.directory /github/workspace
       - name: git get version tags
         run: git fetch --tags
+      - name: configure core dumps
+        run: |
+          ulimit -c unlimited
+          echo '/tmp/core.%h.%e.%t' | sudo tee /proc/sys/kernel/core_pattern
+          echo 'Core dump pattern set to:'
+          cat /proc/sys/kernel/core_pattern
       - name: install dependencies for examples
         run: |
           sudo apt-get update && sudo apt-get install -y \
@@ -160,7 +352,7 @@ jobs:
         run: |
           export CC=${{ matrix.cc }}
           export CXX=${{ matrix.cxx }}
-          cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_MAVSDK_SERVER=ON -DWERROR=ON -DENABLE_CPPTRACE=On -DCMAKE_INSTALL_PREFIX=install -Bbuild/release -H.
+          cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_MAVSDK_SERVER=ON -DWERROR=ON -DCMAKE_INSTALL_PREFIX=install -Bbuild/release -H.
       - name: build
         run: cmake --build build/release -j$(nproc)
       - name: install
@@ -175,6 +367,26 @@ jobs:
         run: ./build/release/src/system_tests/system_tests_runner
       - name: test (mavsdk_server)
         run: ./build/release/src/mavsdk_server/test/unit_tests_mavsdk_server
+      - name: upload core dumps
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: core-dumps-${{ matrix.description }}-${{ github.run_id }}
+          path: /tmp/core.*
+          retention-days: 7
+          if-no-files-found: ignore
+      - name: upload test binaries for core dump analysis
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-binaries-${{ matrix.description }}-${{ github.run_id }}
+          path: |
+            ./build/src/unit_tests/unit_tests_runner
+            ./build/release/src/system_tests/system_tests_runner
+            ./build/release/src/mavsdk_server/test/unit_tests_mavsdk_server
+            ./build/release/src/mavsdk/libmavsdk.so*
+            ./build/release/src/mavsdk_server/src/libmavsdk_server.so*
+          retention-days: 7
 
   ubuntu-no-curl:
     name: Ubuntu 24.04 (mavsdk, without curl)
@@ -233,7 +445,7 @@ jobs:
           echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV
           echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/default/third_party/install" >> $GITHUB_ENV
       - name: build necessary protoc tooling
-        run: cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Debug -DBUILD_MAVSDK_SERVER=ON -DENABLE_CPPTRACE=On -Bbuild/default -H.
+        run: cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Debug -DBUILD_MAVSDK_SERVER=ON -Bbuild/default -H.
       - name: generate code from protos
         run: PATH="$PATH:$HOME/.local/bin" tools/generate_from_protos.sh
       - name: fix style
@@ -271,6 +483,7 @@ jobs:
     runs-on: ubuntu-24.04
     container:
       image: docker.io/mavsdk/mavsdk-${{ matrix.os_type }}-${{ matrix.os_version }}:${{ needs.check-docker-changes.outputs.docker_tag }}
+      options: --privileged --ulimit core=-1 --security-opt seccomp=unconfined
     strategy:
       fail-fast: false
       matrix:
@@ -304,6 +517,12 @@ jobs:
           git config --global --add safe.directory /github/workspace
       - name: git get version tags
         run: git fetch --tags
+      - name: configure core dumps
+        run: |
+          ulimit -c unlimited
+          echo '/tmp/core.%h.%e.%t' | sudo tee /proc/sys/kernel/core_pattern
+          echo 'Core dump pattern set to:'
+          cat /proc/sys/kernel/core_pattern
       - name: configure
         run: cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_MAVSDK_SERVER=OFF -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=install -DWERROR=ON -Bbuild/release -H.
       - name: build
@@ -312,6 +531,27 @@ jobs:
         run: ./build/release/src/unit_tests/unit_tests_runner
       - name: system tests
         run: ./build/release/src/system_tests/system_tests_runner
+      - name: upload core dumps
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: core-dumps-${{ matrix.os_type }}-${{ matrix.os_version }}-${{ github.run_id }}
+          path: /tmp/core.*
+          retention-days: 7
+          if-no-files-found: ignore
+      - name: upload test binaries for core dump analysis
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-binaries-${{ matrix.os_type }}-${{ matrix.os_version }}-${{ github.run_id }}
+          path: |
+            ./build/release/src/unit_tests/unit_tests_runner
+            ./build/release/src/system_tests/system_tests_runner
+            ./build/release/src/system_tests/standalone_param_test
+            ./build/release/src/system_tests/standalone_ftp_test
+            ./build/release/src/mavsdk/libmavsdk.so*
+            ./build/release/src/mavsdk_server/src/libmavsdk_server.so*
+          retention-days: 7
       - name: install
         run: cmake --build build/release --target install
       - name: Package
@@ -419,7 +659,7 @@ jobs:
           echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV
           echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/release/third_party/install" >> $GITHUB_ENV
       - name: configure
-        run: cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Release -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DBUILD_STATIC_MAVSDK_SERVER=ON -DCMAKE_INSTALL_PREFIX=install -DWERROR=ON -DENABLE_CPPTRACE=On -Bbuild/release -H.
+        run: cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Release -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DBUILD_STATIC_MAVSDK_SERVER=ON -DCMAKE_INSTALL_PREFIX=install -DWERROR=ON -Bbuild/release -H.
       - name: build
         run: cmake --build build/release --target install -- -j$(nproc)
       - name: unit tests

@@ -1,5 +1,6 @@
 #include "log.h"
 #include "mavsdk.h"
+#include <atomic>
 #include <filesystem>
 #include <gtest/gtest.h>
 #include <chrono>
@@ -161,7 +162,7 @@ TEST(SystemTest, FtpUploadBigFileLossy)
     Mavsdk mavsdk_autopilot{Mavsdk::Configuration{ComponentType::Autopilot}};
     mavsdk_autopilot.set_timeout_s(reduced_timeout_s);
 
-    unsigned counter = 0;
+    std::atomic<unsigned> counter = 0;
     auto drop_some = [&counter](mavlink_message_t&) { return counter++ % 5; };
 
     mavsdk_groundstation.intercept_incoming_messages_async(drop_some);
@@ -216,7 +217,7 @@ TEST(SystemTest, FtpUploadBigFileLossy)
 
 TEST(SystemTest, FtpUploadStopAndTryAgain)
 {
-    ASSERT_TRUE(create_temp_file(temp_dir_to_upload / temp_file, 1000));
+    ASSERT_TRUE(create_temp_file(temp_dir_to_upload / temp_file, 2000));
     ASSERT_TRUE(reset_directories(temp_dir_provided));
 
     Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
@@ -225,13 +226,9 @@ TEST(SystemTest, FtpUploadStopAndTryAgain)
     Mavsdk mavsdk_autopilot{Mavsdk::Configuration{ComponentType::Autopilot}};
     mavsdk_autopilot.set_timeout_s(reduced_timeout_s);
 
-    // Once we received half, we want to stop all traffic.
-    bool got_half = false;
-    std::mutex got_half_mutex;
-    auto drop_at_some_point = [&got_half, &got_half_mutex](mavlink_message_t&) {
-        std::lock_guard<std::mutex> lock(got_half_mutex);
-        return !got_half;
-    };
+    // Once we received some, we want to stop all traffic.
+    std::atomic<bool> got_some = false;
+    auto drop_at_some_point = [&got_some](mavlink_message_t&) { return !got_some; };
 
     mavsdk_groundstation.intercept_incoming_messages_async(drop_at_some_point);
     mavsdk_groundstation.intercept_outgoing_messages_async(drop_at_some_point);
@@ -260,11 +257,9 @@ TEST(SystemTest, FtpUploadStopAndTryAgain)
         ftp.upload_async(
             (temp_dir_to_upload / temp_file).string(),
             "",
-            [&prom, &got_half, &got_half_mutex](
-                Ftp::Result result, Ftp::ProgressData progress_data) {
+            [&prom, &got_some](Ftp::Result result, Ftp::ProgressData progress_data) {
                 if (progress_data.bytes_transferred > 500) {
-                    std::lock_guard<std::mutex> lock(got_half_mutex);
-                    got_half = true;
+                    got_some = true;
                 }
                 if (result != Ftp::Result::Next) {
                     prom.set_value(result);
@@ -291,7 +286,7 @@ TEST(SystemTest, FtpUploadStopAndTryAgain)
         ftp.upload_async(
             (temp_dir_to_upload / temp_file).string(),
             "",
-            [&prom, &got_half](Ftp::Result result, Ftp::ProgressData progress_data) {
+            [&prom, &got_some](Ftp::Result result, Ftp::ProgressData progress_data) {
                 if (result != Ftp::Result::Next) {
                     prom.set_value(result);
                 } else {

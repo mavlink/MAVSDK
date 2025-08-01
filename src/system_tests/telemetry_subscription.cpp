@@ -2,6 +2,7 @@
 #include "mavsdk.h"
 #include "plugins/telemetry/telemetry.h"
 #include "plugins/telemetry_server/telemetry_server.h"
+#include <atomic>
 #include <future>
 #include <thread>
 #include <gtest/gtest.h>
@@ -32,7 +33,7 @@ TEST(SystemTest, TelemetrySubscription)
 
     auto prom1 = std::promise<void>{};
     auto fut1 = prom1.get_future();
-    unsigned num_subscription1_called = 0;
+    std::atomic<unsigned> num_subscription1_called{0};
     auto handle1 = telemetry.subscribe_status_text([&](const Telemetry::StatusText& status_text) {
         LogInfo() << "Received: " << status_text.text;
         ++num_subscription1_called;
@@ -43,7 +44,7 @@ TEST(SystemTest, TelemetrySubscription)
 
     auto prom2 = std::promise<void>{};
     auto fut2 = prom2.get_future();
-    unsigned num_subscription2_called = 0;
+    std::atomic<unsigned> num_subscription2_called{0};
 
     std::function<void(Telemetry::StatusText)> callback =
         [&](const Telemetry::StatusText& status_text) {

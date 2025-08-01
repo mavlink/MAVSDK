@@ -1390,36 +1390,43 @@ void CameraImpl::check_camera_definition_with_lock(PotentialCamera& potential_ca
                         return;
                     }
 
-                    std::lock_guard lock(_mutex);
-                    auto maybe_potential_camera =
-                        maybe_potential_camera_for_component_id_with_lock(component_id, 0);
-                    if (maybe_potential_camera == nullptr) {
-                        LogErr() << "Failed to find camera with ID " << component_id;
-                        return;
-                    }
+                    // Use call_user_callback to defer callback execution and avoid deadlock
+                    _system_impl->call_user_callback(
+                        [file_cache_tag, downloaded_filename, component_id, client_result, this]() {
+                            std::lock_guard lock(_mutex);
+                            auto maybe_potential_camera =
+                                maybe_potential_camera_for_component_id_with_lock(component_id, 0);
+                            if (maybe_potential_camera == nullptr) {
+                                LogErr() << "Failed to find camera with ID " << component_id;
+                                return;
+                            }
 
-                    if (client_result != MavlinkFtpClient::ClientResult::Success) {
-                        LogErr() << "File download failed with result " << client_result;
-                        maybe_potential_camera->is_fetching_camera_definition = false;
-                        maybe_potential_camera->camera_definition_result = Camera::Result::Error;
-                        notify_camera_list_with_lock();
-                        return;
-                    }
+                            if (client_result != MavlinkFtpClient::ClientResult::Success) {
+                                LogErr() << "File download failed with result " << client_result;
+                                maybe_potential_camera->is_fetching_camera_definition = false;
+                                maybe_potential_camera->camera_definition_result =
+                                    Camera::Result::Error;
+                                notify_camera_list_with_lock();
+                                return;
+                            }
 
-                    auto downloaded_filepath = _tmp_download_path / downloaded_filename;
+                            auto downloaded_filepath = _tmp_download_path / downloaded_filename;
 
-                    LogDebug() << "File download finished to " << downloaded_filepath;
-                    if (_file_cache) {
-                        // Cache the file (this will move/remove the temp file as well)
-                        downloaded_filepath =
-                            _file_cache->insert(file_cache_tag, downloaded_filepath)
-                                .value_or(downloaded_filepath);
-                        LogDebug() << "Cached path: " << downloaded_filepath;
-                    }
-                    load_camera_definition_with_lock(*maybe_potential_camera, downloaded_filepath);
-                    maybe_potential_camera->is_fetching_camera_definition = false;
-                    maybe_potential_camera->camera_definition_result = Camera::Result::Success;
-                    notify_camera_list_with_lock();
+                            LogDebug() << "File download finished to " << downloaded_filepath;
+                            if (_file_cache) {
+                                // Cache the file (this will move/remove the temp file as well)
+                                downloaded_filepath =
+                                    _file_cache->insert(file_cache_tag, downloaded_filepath)
+                                        .value_or(downloaded_filepath);
+                                LogDebug() << "Cached path: " << downloaded_filepath;
+                            }
+                            load_camera_definition_with_lock(
+                                *maybe_potential_camera, downloaded_filepath);
+                            maybe_potential_camera->is_fetching_camera_definition = false;
+                            maybe_potential_camera->camera_definition_result =
+                                Camera::Result::Success;
+                            notify_camera_list_with_lock();
+                        });
                 });
         } else {
             LogErr() << "Unknown protocol for URL: " << url;

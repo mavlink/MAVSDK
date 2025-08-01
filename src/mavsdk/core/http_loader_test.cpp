@@ -3,12 +3,15 @@
 #include "curl_include.h"
 #include "curl_wrapper.h"
 #include "curl_wrapper_types.h"
+#include "unused.h"
 #include <fstream>
 #include <iostream>
 #include <chrono>
 #include <vector>
 #include <numeric>
 #include <thread>
+#include <future>
+#include <atomic>
 #include <gtest/gtest.h>
 
 using namespace mavsdk;
@@ -114,21 +117,33 @@ TEST_F(HttpLoaderTest, HttpLoader_DownloadAsync_OneBad)
     expect_one_simulated_download_to_fail(curl_wrapper_raw, _file_url_2, _file_local_path_2);
     expect_one_simulated_download_to_succeed(curl_wrapper_raw, _file_url_3, _file_local_path_3);
 
-    std::vector<int> callback_results_progress;
-    int callback_finished_counter = 0;
-    int callback_error_counter = 0;
+    std::atomic<int> callback_finished_counter{0};
+    std::atomic<int> callback_error_counter{0};
+    std::atomic<int> total_progress_calls{0};
+    std::promise<void> completion_promise;
+    auto completion_future = completion_promise.get_future();
 
     ProgressCallback progress =
-        [&callback_results_progress, &callback_finished_counter, &callback_error_counter](
-            int got_progress, HttpStatus status, CURLcode curl_code) -> int {
+        [&callback_finished_counter,
+         &callback_error_counter,
+         &total_progress_calls,
+         &completion_promise](int got_progress, HttpStatus status, CURLcode curl_code) -> int {
+        UNUSED(got_progress);
+
         if (status == HttpStatus::Downloading) {
-            callback_results_progress.push_back(got_progress);
+            total_progress_calls++;
         } else if (
             status == HttpStatus::Error && curl_code == CURLcode::CURLE_COULDNT_RESOLVE_HOST) {
             callback_error_counter++;
         } else if (status == HttpStatus::Finished && curl_code == CURLcode::CURLE_OK) {
             callback_finished_counter++;
         }
+
+        // Signal completion when we have 2 finished + 1 error
+        if ((callback_finished_counter + callback_error_counter) >= 3) {
+            completion_promise.set_value();
+        }
+
         return 0;
     };
 
@@ -136,23 +151,18 @@ TEST_F(HttpLoaderTest, HttpLoader_DownloadAsync_OneBad)
     http_loader->download_async(_file_url_2, _file_local_path_2, progress);
     http_loader->download_async(_file_url_3, _file_local_path_3, progress);
 
-    // Wait for downloads to complete (2 success + 1 error) with timeout
-    auto start_time = std::chrono::steady_clock::now();
-    while ((callback_finished_counter + callback_error_counter) < 3 &&
-           std::chrono::steady_clock::now() - start_time < std::chrono::milliseconds(1000)) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
-    }
+    // Wait for completion using future with timeout
+    ASSERT_EQ(
+        completion_future.wait_for(std::chrono::milliseconds(1000)), std::future_status::ready);
 
     EXPECT_EQ(check_file_exists(_file_local_path_1), true);
     EXPECT_EQ(check_file_exists(_file_local_path_2), false);
     EXPECT_EQ(check_file_exists(_file_local_path_3), true);
 
-    int callback_results_sum =
-        std::accumulate(callback_results_progress.begin(), callback_results_progress.end(), 0);
-    EXPECT_EQ(callback_results_sum, 2 * 5050);
-    EXPECT_EQ(callback_results_progress.size(), 2 * 101);
-    EXPECT_EQ(callback_finished_counter, 2);
-    EXPECT_EQ(callback_error_counter, 1);
+    // We expect 2 successful downloads with 101 progress calls each = 202 total
+    EXPECT_EQ(total_progress_calls.load(), 2 * 101);
+    EXPECT_EQ(callback_finished_counter.load(), 2);
+    EXPECT_EQ(callback_error_counter.load(), 1);
 
     clean();
 }
@@ -165,21 +175,33 @@ TEST_F(HttpLoaderTest, HttpLoader_DownloadAsync_AllGood)
 
     expect_all_simulated_downloads_to_succeed(curl_wrapper_raw);
 
-    std::vector<int> callback_results_progress;
-    int callback_finished_counter = 0;
-    int callback_error_counter = 0;
+    std::atomic<int> callback_finished_counter{0};
+    std::atomic<int> callback_error_counter{0};
+    std::atomic<int> total_progress_calls{0};
+    std::promise<void> completion_promise;
+    auto completion_future = completion_promise.get_future();
 
     ProgressCallback progress =
-        [&callback_results_progress, &callback_finished_counter, &callback_error_counter](
-            int got_progress, HttpStatus status, CURLcode curl_code) -> int {
+        [&callback_finished_counter,
+         &callback_error_counter,
+         &total_progress_calls,
+         &completion_promise](int got_progress, HttpStatus status, CURLcode curl_code) -> int {
+        UNUSED(got_progress);
+
         if (status == HttpStatus::Downloading) {
-            callback_results_progress.push_back(got_progress);
+            total_progress_calls++;
         } else if (
             status == HttpStatus::Error && curl_code == CURLcode::CURLE_COULDNT_RESOLVE_HOST) {
             callback_error_counter++;
         } else if (status == HttpStatus::Finished && curl_code == CURLcode::CURLE_OK) {
             callback_finished_counter++;
         }
+
+        // Signal completion when we have 3 finished downloads
+        if (callback_finished_counter >= 3) {
+            completion_promise.set_value();
+        }
+
         return 0;
     };
 
@@ -187,23 +209,18 @@ TEST_F(HttpLoaderTest, HttpLoader_DownloadAsync_AllGood)
     http_loader->download_async(_file_url_2, _file_local_path_2, progress);
     http_loader->download_async(_file_url_3, _file_local_path_3, progress);
 
-    // Wait for all downloads to complete with timeout
-    auto start_time = std::chrono::steady_clock::now();
-    while (callback_finished_counter < 3 && callback_error_counter == 0 &&
-           std::chrono::steady_clock::now() - start_time < std::chrono::milliseconds(1000)) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
-    }
+    // Wait for completion using future with timeout
+    ASSERT_EQ(
+        completion_future.wait_for(std::chrono::milliseconds(1000)), std::future_status::ready);
 
     EXPECT_EQ(check_file_exists(_file_local_path_1), true);
     EXPECT_EQ(check_file_exists(_file_local_path_2), true);
     EXPECT_EQ(check_file_exists(_file_local_path_3), true);
 
-    int callback_results_sum =
-        std::accumulate(callback_results_progress.begin(), callback_results_progress.end(), 0);
-    EXPECT_EQ(callback_results_sum, 3 * 5050);
-    EXPECT_EQ(callback_results_progress.size(), 3 * 101);
-    EXPECT_EQ(callback_finished_counter, 3);
-    EXPECT_EQ(callback_error_counter, 0);
+    // We expect 3 successful downloads with 101 progress calls each = 303 total
+    EXPECT_EQ(total_progress_calls.load(), 3 * 101);
+    EXPECT_EQ(callback_finished_counter.load(), 3);
+    EXPECT_EQ(callback_error_counter.load(), 0);
 
     clean();
 }

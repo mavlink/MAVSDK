@@ -12,11 +12,11 @@ std::atomic<unsigned> Connection::_forwarding_connections_count = 0;
 Connection::Connection(
     ReceiverCallback receiver_callback,
     LibmavReceiverCallback libmav_receiver_callback,
-    mav::MessageSet& message_set,
+    MavsdkImpl& mavsdk_impl,
     ForwardingOption forwarding_option) :
     _receiver_callback(std::move(receiver_callback)),
     _libmav_receiver_callback(std::move(libmav_receiver_callback)),
-    _message_set(message_set),
+    _mavsdk_impl(mavsdk_impl),
     _mavlink_receiver(),
     _libmav_receiver(),
     _forwarding_option(forwarding_option)
@@ -59,7 +59,7 @@ void Connection::stop_mavlink_receiver()
 
 bool Connection::start_libmav_receiver()
 {
-    _libmav_receiver = std::make_unique<LibmavReceiver>(_message_set);
+    _libmav_receiver = std::make_unique<LibmavReceiver>(_mavsdk_impl);
     return true;
 }
 

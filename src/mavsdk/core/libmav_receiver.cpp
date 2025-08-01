@@ -1,4 +1,5 @@
 #include "libmav_receiver.h"
+#include "mavsdk_impl.h"
 #include <mav/MessageSet.h>
 #include <mav/BufferParser.h>
 #include <json/json.h>
@@ -9,10 +10,9 @@
 
 namespace mavsdk {
 
-LibmavReceiver::LibmavReceiver(mav::MessageSet& message_set) : _message_set(message_set)
+LibmavReceiver::LibmavReceiver(MavsdkImpl& mavsdk_impl) : _mavsdk_impl(mavsdk_impl)
 {
-    // Initialize BufferParser with the provided MessageSet
-    _buffer_parser = std::make_unique<mav::BufferParser>(_message_set);
+    // No need for individual BufferParser - we'll use MavsdkImpl's thread-safe parsing
 
     if (const char* env_p = std::getenv("MAVSDK_MAVLINK_DIRECT_DEBUGGING")) {
         if (std::string(env_p) == "1") {
@@ -43,7 +43,9 @@ bool LibmavReceiver::parse_message()
 bool LibmavReceiver::parse_libmav_message_from_buffer(const uint8_t* buffer, size_t buffer_len)
 {
     size_t bytes_consumed = 0;
-    auto message_opt = _buffer_parser->parseMessage(buffer, buffer_len, bytes_consumed);
+
+    // Use thread-safe parsing from MavsdkImpl (handles MessageSet synchronization internally)
+    auto message_opt = _mavsdk_impl.parse_message_safe(buffer, buffer_len, bytes_consumed);
 
     if (!message_opt) {
         return false; // No complete message found
@@ -97,8 +99,9 @@ std::string LibmavReceiver::libmav_message_to_json(const mav::Message& msg) cons
     json_stream << "\"message_id\":" << msg.id();
     json_stream << ",\"message_name\":\"" << msg.name() << "\"";
 
-    // Get message definition to iterate through all fields
-    auto message_def_opt = _message_set.getMessageDefinition(static_cast<int>(msg.id()));
+    // Get message definition to iterate through all fields (using thread-safe method)
+    auto message_def_opt = _mavsdk_impl.get_message_definition_safe(static_cast<int>(msg.id()));
+
     if (message_def_opt) {
         auto& message_def = message_def_opt.get();
 
@@ -181,37 +184,26 @@ std::string LibmavReceiver::libmav_message_to_json(const mav::Message& msg) cons
 
 std::optional<std::string> LibmavReceiver::message_id_to_name(uint32_t id) const
 {
-    auto message_def = _message_set.getMessageDefinition(static_cast<int>(id));
-    if (message_def) {
-        return message_def.get().name();
-    }
-    return std::nullopt;
+    return _mavsdk_impl.message_id_to_name_safe(id);
 }
 
 std::optional<int> LibmavReceiver::message_name_to_id(const std::string& name) const
 {
-    return _message_set.idForMessage(name);
+    return _mavsdk_impl.message_name_to_id_safe(name);
 }
 
 std::optional<mav::Message> LibmavReceiver::create_message(const std::string& message_name) const
 {
-    return _message_set.create(message_name);
+    return _mavsdk_impl.create_message_safe(message_name);
 }
 
 bool LibmavReceiver::load_custom_xml(const std::string& xml_content)
 {
-    // Use libmav's addFromXMLString method to load custom XML
-    auto result = _message_set.addFromXMLString(xml_content, false /* recursive_open_includes */);
+    // Note: This method should not be called directly on LibmavReceiver instances.
+    // Use MavlinkDirect::load_custom_xml() instead which goes through proper channels.
 
-    if (_debugging) {
-        if (result == mav::MessageSetResult::Success) {
-            LogDebug() << "Successfully loaded custom XML definitions";
-        } else {
-            LogDebug() << "Failed to load custom XML definitions";
-        }
-    }
-
-    return result == mav::MessageSetResult::Success;
+    // Use thread-safe method from MavsdkImpl
+    return _mavsdk_impl.load_custom_xml_to_message_set(xml_content);
 }
 
 } // namespace mavsdk

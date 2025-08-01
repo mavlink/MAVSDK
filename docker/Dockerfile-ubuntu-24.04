@@ -25,8 +25,9 @@ RUN apt-get update \
         g++-13 \
         gcc-14 \
         g++-14 \
-        clang-18 \
-        clang-format-18 \
+        clang-19 \
+        clang-format-19 \
+        libclang-rt-19-dev \
         cmake \
         python3 \
         python3-pip \

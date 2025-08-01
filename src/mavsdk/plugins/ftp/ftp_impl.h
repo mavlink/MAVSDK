@@ -57,8 +57,8 @@ public:
     Ftp::Result set_target_compid(uint8_t component_id);
 
 private:
-    Ftp::Result result_from_mavlink_ftp_result(MavlinkFtpClient::ClientResult result);
-    Ftp::ProgressData
+    static Ftp::Result result_from_mavlink_ftp_result(MavlinkFtpClient::ClientResult result);
+    static Ftp::ProgressData
     progress_data_from_mavlink_ftp_progress_data(MavlinkFtpClient::ProgressData progress_data);
 };
 

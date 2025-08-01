@@ -5,6 +5,7 @@
 #include "plugins/telemetry_server/telemetry_server.h"
 #include <chrono>
 #include <thread>
+#include <future>
 #include <gtest/gtest.h>
 #include <json/json.h>
 
@@ -41,12 +42,14 @@ TEST(SystemTest, MavlinkDirectRoundtrip)
     auto receiver_mavlink_direct = MavlinkDirect{system};
     auto sender_mavlink_direct = MavlinkDirect{groundstation_system};
 
-    std::optional<MavlinkDirect::MavlinkMessage> received_message;
+    auto prom = std::promise<MavlinkDirect::MavlinkMessage>();
+    auto fut = prom.get_future();
+
     // Ground station subscribes to receive GLOBAL_POSITION_INT from autopilot
     auto handle = receiver_mavlink_direct.subscribe_message(
-        "GLOBAL_POSITION_INT", [&](MavlinkDirect::MavlinkMessage message) {
+        "GLOBAL_POSITION_INT", [&prom](MavlinkDirect::MavlinkMessage message) {
             LogInfo() << "Received GLOBAL_POSITION_INT: " << message.fields_json;
-            received_message = message;
+            prom.set_value(message);
         });
 
     // Wait a bit more for subscription to be properly registered
@@ -69,20 +72,18 @@ TEST(SystemTest, MavlinkDirectRoundtrip)
     EXPECT_EQ(result, MavlinkDirect::Result::Success);
 
     // Wait for message to be received
-    auto timeout = std::chrono::steady_clock::now() + std::chrono::seconds(5);
-    while (!received_message && std::chrono::steady_clock::now() < timeout) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
-    }
+    ASSERT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
 
-    ASSERT_TRUE(received_message.has_value());
-    EXPECT_EQ(received_message->message_name, test_message.message_name);
-    EXPECT_EQ(received_message->system_id, test_message.system_id);
-    EXPECT_EQ(received_message->component_id, test_message.component_id);
+    auto received_message = fut.get();
+
+    EXPECT_EQ(received_message.message_name, test_message.message_name);
+    EXPECT_EQ(received_message.system_id, test_message.system_id);
+    EXPECT_EQ(received_message.component_id, test_message.component_id);
+
     // Note: For now we only check message_name since field extraction is simplified
-    EXPECT_TRUE(received_message->fields_json.find("GLOBAL_POSITION_INT") != std::string::npos);
+    EXPECT_TRUE(received_message.fields_json.find("GLOBAL_POSITION_INT") != std::string::npos);
 
     receiver_mavlink_direct.unsubscribe_message(handle);
-    std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
 TEST(SystemTest, MavlinkDirectExtendedFields)
@@ -113,17 +114,22 @@ TEST(SystemTest, MavlinkDirectExtendedFields)
     auto receiver_mavlink_direct = MavlinkDirect{system};
     auto sender_mavlink_direct = MavlinkDirect{groundstation_system};
 
-    std::optional<MavlinkDirect::MavlinkMessage> received_compact;
-    std::optional<MavlinkDirect::MavlinkMessage> received_full;
+    auto compact_prom = std::promise<MavlinkDirect::MavlinkMessage>();
+    auto compact_fut = compact_prom.get_future();
+    auto full_prom = std::promise<MavlinkDirect::MavlinkMessage>();
+    auto full_fut = full_prom.get_future();
+
+    bool compact_received = false;
 
     // Subscribe to SYS_STATUS messages
     auto handle = receiver_mavlink_direct.subscribe_message(
         "SYS_STATUS", [&](MavlinkDirect::MavlinkMessage message) {
             LogInfo() << "Received SYS_STATUS: " << message.fields_json;
-            if (received_compact == std::nullopt) {
-                received_compact = message;
+            if (!compact_received) {
+                compact_received = true;
+                compact_prom.set_value(message);
             } else {
-                received_full = message;
+                full_prom.set_value(message);
             }
         });
 
@@ -158,24 +164,22 @@ TEST(SystemTest, MavlinkDirectExtendedFields)
     EXPECT_EQ(result2, MavlinkDirect::Result::Success);
 
     // Wait for both messages to be received
-    auto timeout = std::chrono::steady_clock::now() + std::chrono::seconds(5);
-    while ((!received_compact || !received_full) && std::chrono::steady_clock::now() < timeout) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
-    }
+    ASSERT_EQ(compact_fut.wait_for(std::chrono::seconds(5)), std::future_status::ready);
+    ASSERT_EQ(full_fut.wait_for(std::chrono::seconds(5)), std::future_status::ready);
 
-    ASSERT_TRUE(received_compact.has_value());
-    ASSERT_TRUE(received_full.has_value());
+    auto received_compact = compact_fut.get();
+    auto received_full = full_fut.get();
 
     // Verify both messages were received and parsing worked
-    EXPECT_EQ(received_compact->message_name, "SYS_STATUS");
-    EXPECT_EQ(received_full->message_name, "SYS_STATUS");
+    EXPECT_EQ(received_compact.message_name, "SYS_STATUS");
+    EXPECT_EQ(received_full.message_name, "SYS_STATUS");
 
     // Parse JSON to verify field values
     Json::Value compact_json, full_json;
     Json::Reader reader;
 
-    ASSERT_TRUE(reader.parse(received_compact->fields_json, compact_json));
-    ASSERT_TRUE(reader.parse(received_full->fields_json, full_json));
+    ASSERT_TRUE(reader.parse(received_compact.fields_json, compact_json));
+    ASSERT_TRUE(reader.parse(received_full.fields_json, full_json));
 
     // Verify basic fields are present and correct in both messages
     EXPECT_EQ(compact_json["onboard_control_sensors_present"].asUInt(), 1u);
@@ -240,13 +244,14 @@ TEST(SystemTest, MavlinkDirectToTelemetry)
     auto sender_mavlink_direct = MavlinkDirect{groundstation_system};
     auto receiver_telemetry = Telemetry{system};
 
-    std::optional<Telemetry::Position> received_position;
+    auto prom = std::promise<Telemetry::Position>();
+    auto fut = prom.get_future();
 
     // Subscribe to position updates via Telemetry
-    auto handle = receiver_telemetry.subscribe_position([&](Telemetry::Position position) {
+    auto handle = receiver_telemetry.subscribe_position([&prom](Telemetry::Position position) {
         LogInfo() << "Received position via Telemetry: lat=" << position.latitude_deg
                   << " lon=" << position.longitude_deg;
-        received_position = position;
+        prom.set_value(position);
     });
 
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
@@ -265,16 +270,13 @@ TEST(SystemTest, MavlinkDirectToTelemetry)
     EXPECT_EQ(result, MavlinkDirect::Result::Success);
 
     // Wait for position to be received
-    auto timeout = std::chrono::steady_clock::now() + std::chrono::seconds(5);
-    while (!received_position && std::chrono::steady_clock::now() < timeout) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
-    }
+    ASSERT_EQ(fut.wait_for(std::chrono::seconds(5)), std::future_status::ready);
 
-    ASSERT_TRUE(received_position.has_value());
+    auto received_position = fut.get();
 
     // Verify the position data (lat/lon are in degrees * 1e7 in MAVLink)
-    EXPECT_NEAR(received_position->latitude_deg, 47.3977418, 0.0001);
-    EXPECT_NEAR(received_position->longitude_deg, -122.3974560, 0.0001);
+    EXPECT_NEAR(received_position.latitude_deg, 47.3977418, 0.0001);
+    EXPECT_NEAR(received_position.longitude_deg, -122.3974560, 0.0001);
 
     receiver_telemetry.unsubscribe_position(handle);
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
@@ -310,13 +312,14 @@ TEST(SystemTest, TelemetryServerToMavlinkDirect)
     auto sender_telemetry_server = TelemetryServer{autopilot_server_component};
     auto receiver_mavlink_direct = MavlinkDirect{system};
 
-    std::optional<MavlinkDirect::MavlinkMessage> received_message;
+    auto prom = std::promise<MavlinkDirect::MavlinkMessage>();
+    auto fut = prom.get_future();
 
     // Subscribe to GLOBAL_POSITION_INT via MavlinkDirect
     auto handle = receiver_mavlink_direct.subscribe_message(
-        "GLOBAL_POSITION_INT", [&](MavlinkDirect::MavlinkMessage message) {
+        "GLOBAL_POSITION_INT", [&prom](MavlinkDirect::MavlinkMessage message) {
             LogInfo() << "Received GLOBAL_POSITION_INT via MavlinkDirect: " << message.fields_json;
-            received_message = message;
+            prom.set_value(message);
         });
 
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
@@ -340,18 +343,16 @@ TEST(SystemTest, TelemetryServerToMavlinkDirect)
     EXPECT_EQ(result, TelemetryServer::Result::Success);
 
     // Wait for message to be received
-    auto timeout = std::chrono::steady_clock::now() + std::chrono::seconds(5);
-    while (!received_message && std::chrono::steady_clock::now() < timeout) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
-    }
+    ASSERT_EQ(fut.wait_for(std::chrono::seconds(5)), std::future_status::ready);
 
-    ASSERT_TRUE(received_message.has_value());
-    EXPECT_EQ(received_message->message_name, "GLOBAL_POSITION_INT");
-    EXPECT_EQ(received_message->system_id, 1);
-    EXPECT_EQ(received_message->component_id, 1);
+    auto received_message = fut.get();
+
+    EXPECT_EQ(received_message.message_name, "GLOBAL_POSITION_INT");
+    EXPECT_EQ(received_message.system_id, 1);
+    EXPECT_EQ(received_message.component_id, 1);
 
     // Verify the JSON contains the message info (since we're using simplified parsing)
-    EXPECT_TRUE(received_message->fields_json.find("GLOBAL_POSITION_INT") != std::string::npos);
+    EXPECT_TRUE(received_message.fields_json.find("GLOBAL_POSITION_INT") != std::string::npos);
 
     receiver_mavlink_direct.unsubscribe_message(handle);
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
@@ -385,17 +386,22 @@ TEST(SystemTest, MavlinkDirectArrayFields)
     auto receiver_mavlink_direct = MavlinkDirect{system};
     auto sender_mavlink_direct = MavlinkDirect{groundstation_system};
 
-    std::optional<MavlinkDirect::MavlinkMessage> received_partial;
-    std::optional<MavlinkDirect::MavlinkMessage> received_full;
+    auto partial_prom = std::promise<MavlinkDirect::MavlinkMessage>();
+    auto partial_fut = partial_prom.get_future();
+    auto full_prom = std::promise<MavlinkDirect::MavlinkMessage>();
+    auto full_fut = full_prom.get_future();
+
+    bool partial_received = false;
 
     // Subscribe to GPS_STATUS messages
     auto handle = receiver_mavlink_direct.subscribe_message(
         "GPS_STATUS", [&](MavlinkDirect::MavlinkMessage message) {
             LogInfo() << "Received GPS_STATUS: " << message.fields_json;
-            if (received_partial == std::nullopt) {
-                received_partial = message;
+            if (!partial_received) {
+                partial_received = true;
+                partial_prom.set_value(message);
             } else {
-                received_full = message;
+                full_prom.set_value(message);
             }
         });
 
@@ -430,24 +436,22 @@ TEST(SystemTest, MavlinkDirectArrayFields)
     EXPECT_EQ(result2, MavlinkDirect::Result::Success);
 
     // Wait for both messages to be received
-    auto timeout = std::chrono::steady_clock::now() + std::chrono::seconds(5);
-    while ((!received_partial || !received_full) && std::chrono::steady_clock::now() < timeout) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
-    }
+    ASSERT_EQ(partial_fut.wait_for(std::chrono::seconds(5)), std::future_status::ready);
+    ASSERT_EQ(full_fut.wait_for(std::chrono::seconds(5)), std::future_status::ready);
 
-    ASSERT_TRUE(received_partial.has_value());
-    ASSERT_TRUE(received_full.has_value());
+    auto received_partial = partial_fut.get();
+    auto received_full = full_fut.get();
 
     // Verify both messages were received and parsing worked
-    EXPECT_EQ(received_partial->message_name, "GPS_STATUS");
-    EXPECT_EQ(received_full->message_name, "GPS_STATUS");
+    EXPECT_EQ(received_partial.message_name, "GPS_STATUS");
+    EXPECT_EQ(received_full.message_name, "GPS_STATUS");
 
     // Parse JSON to verify field values
     Json::Value partial_json, full_json;
     Json::Reader reader;
 
-    ASSERT_TRUE(reader.parse(received_partial->fields_json, partial_json));
-    ASSERT_TRUE(reader.parse(received_full->fields_json, full_json));
+    ASSERT_TRUE(reader.parse(received_partial.fields_json, partial_json));
+    ASSERT_TRUE(reader.parse(received_full.fields_json, full_json));
 
     // Verify scalar field
     EXPECT_EQ(partial_json["satellites_visible"].asUInt(), 3u);
@@ -562,13 +566,14 @@ TEST(SystemTest, MavlinkDirectLoadCustomXml)
     auto result2 = receiver_mavlink_direct.load_custom_xml(custom_xml);
     EXPECT_EQ(result2, MavlinkDirect::Result::Success);
 
-    std::optional<MavlinkDirect::MavlinkMessage> received_message;
+    auto prom = std::promise<MavlinkDirect::MavlinkMessage>();
+    auto fut = prom.get_future();
 
     // Subscribe to the custom message
     auto handle = receiver_mavlink_direct.subscribe_message(
-        "CUSTOM_TEST_MESSAGE", [&](MavlinkDirect::MavlinkMessage message) {
+        "CUSTOM_TEST_MESSAGE", [&prom](MavlinkDirect::MavlinkMessage message) {
             LogInfo() << "Received CUSTOM_TEST_MESSAGE: " << message.fields_json;
-            received_message = message;
+            prom.set_value(message);
         });
 
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
@@ -586,18 +591,16 @@ TEST(SystemTest, MavlinkDirectLoadCustomXml)
     EXPECT_EQ(send_result, MavlinkDirect::Result::Success);
 
     // Wait for message to be received
-    auto timeout = std::chrono::steady_clock::now() + std::chrono::seconds(5);
-    while (!received_message && std::chrono::steady_clock::now() < timeout) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
-    }
+    ASSERT_EQ(fut.wait_for(std::chrono::seconds(5)), std::future_status::ready);
 
-    ASSERT_TRUE(received_message.has_value());
-    EXPECT_EQ(received_message->message_name, "CUSTOM_TEST_MESSAGE");
+    auto received_message = fut.get();
+
+    EXPECT_EQ(received_message.message_name, "CUSTOM_TEST_MESSAGE");
 
     // Parse JSON to verify field values
     Json::Value json;
     Json::Reader reader;
-    ASSERT_TRUE(reader.parse(received_message->fields_json, json));
+    ASSERT_TRUE(reader.parse(received_message.fields_json, json));
 
     // Verify custom message fields
     EXPECT_EQ(json["test_value"].asUInt(), 42u);
@@ -639,12 +642,14 @@ TEST(SystemTest, MavlinkDirectArdupilotmegaMessage)
     auto receiver_mavlink_direct = MavlinkDirect{system};
     auto sender_mavlink_direct = MavlinkDirect{groundstation_system};
 
-    std::optional<MavlinkDirect::MavlinkMessage> received_message;
+    auto prom = std::promise<MavlinkDirect::MavlinkMessage>();
+    auto fut = prom.get_future();
+
     // Ground station subscribes to receive MEMINFO from autopilot (ArduPilot-specific message)
     auto handle = receiver_mavlink_direct.subscribe_message(
-        "MEMINFO", [&](MavlinkDirect::MavlinkMessage message) {
+        "MEMINFO", [&prom](MavlinkDirect::MavlinkMessage message) {
             LogInfo() << "Received MEMINFO: " << message.fields_json;
-            received_message = message;
+            prom.set_value(message);
         });
 
     // Autopilot sends MEMINFO message (ID 152 from ardupilotmega.xml)
@@ -656,19 +661,17 @@ TEST(SystemTest, MavlinkDirectArdupilotmegaMessage)
     ASSERT_EQ(result, MavlinkDirect::Result::Success);
 
     // Wait for message to be received
-    auto timeout = std::chrono::steady_clock::now() + std::chrono::seconds(5);
-    while (!received_message.has_value() && std::chrono::steady_clock::now() < timeout) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
-    }
+    ASSERT_EQ(fut.wait_for(std::chrono::seconds(5)), std::future_status::ready);
+
+    auto received_message = fut.get();
 
     // Verify the message was received
-    ASSERT_TRUE(received_message.has_value());
-    EXPECT_EQ(received_message->message_name, "MEMINFO");
+    EXPECT_EQ(received_message.message_name, "MEMINFO");
 
     // Parse JSON to verify field values
     Json::Value json;
     Json::Reader reader;
-    ASSERT_TRUE(reader.parse(received_message->fields_json, json));
+    ASSERT_TRUE(reader.parse(received_message.fields_json, json));
 
     // Verify MEMINFO message fields
     EXPECT_EQ(json["brkval"].asUInt(), 32768u); // Heap top

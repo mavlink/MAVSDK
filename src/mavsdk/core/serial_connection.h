@@ -17,7 +17,7 @@ public:
     explicit SerialConnection(
         Connection::ReceiverCallback receiver_callback,
         Connection::LibmavReceiverCallback libmav_receiver_callback,
-        mav::MessageSet& message_set,
+        MavsdkImpl& mavsdk_impl,
         std::string path,
         int baudrate,
         bool flow_control,
