@@ -5,19 +5,24 @@
 
 version_required_major="19"
 
+# Function to print installation instructions
+print_installation_instructions() {
+    echo "On Ubuntu 24.04, you can install it:"
+    echo ""
+    echo "    'sudo apt install clang-format-$version_required_major'"
+    echo ""
+    echo "Otherwise, you can use clang-format from docker:"
+    echo ""
+    echo "    'tools/run-docker.sh tools/fix_style.sh .'"
+}
+
 # Try to find the latest version of clang
 if command -v clang-format-19 >/dev/null; then
     clang_format=clang-format-19
 elif command -v clang-format >/dev/null; then
     clang_format=clang-format
 else
-    echo "On Ubuntu 24.04, you can install it:"
-    echo ""
-    echo "    'sudo apt install clang-format-$version_required_major"
-    echo ""
-    echo "Otherwise, you can use clang-format from docker:"
-    echo ""
-    echo "    'tools/run-docker.sh tools/fix_style.sh .'"
+    print_installation_instructions
     exit 1
 fi
 
@@ -29,25 +34,13 @@ version_major=${BASH_REMATCH[1]}
 if [ "$version_required_major" -gt "$version_major" ]; then
     echo "Clang version $version_major too old (required: $version_required_major)"
     echo ""
-    echo "On Ubuntu 24.04, you can install it:"
-    echo ""
-    echo "    'sudo apt install clang-format-$version_required_major"
-    echo ""
-    echo "Otherwise, you can use clang-format from docker:"
-    echo ""
-    echo "    'tools/run-docker.sh tools/fix_style.sh .'"
+    print_installation_instructions
     exit 1
 
 elif [ "$version_required_major" -lt "$version_major" ]; then
     echo "Clang version $version_major too new (required: $version_required_major)"
     echo ""
-    echo "On Ubuntu 24.04, you can install it:"
-    echo ""
-    echo "    'sudo apt install clang-format-$version_required_major"
-    echo ""
-    echo "Otherwise, you can use clang-format from docker:"
-    echo ""
-    echo "    'tools/run-docker.sh tools/fix_style.sh .'"
+    print_installation_instructions
     exit 1
 fi
 
