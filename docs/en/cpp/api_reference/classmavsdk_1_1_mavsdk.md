@@ -20,6 +20,8 @@ struct [Configuration](classmavsdk_1_1_mavsdk_1_1_configuration.md)
 
 struct [ConnectionError](structmavsdk_1_1_mavsdk_1_1_connection_error.md)
 
+struct [MavlinkMessage](structmavsdk_1_1_mavsdk_1_1_mavlink_message.md)
+
 ## Public Types
 
 
@@ -30,6 +32,8 @@ std::function< void([ConnectionError](structmavsdk_1_1_mavsdk_1_1_connection_err
 [Handle](classmavsdk_1_1_handle.md)< [ConnectionError](structmavsdk_1_1_mavsdk_1_1_connection_error.md) > [ConnectionErrorHandle](#classmavsdk_1_1_mavsdk_1aeb442a462d03662e4c152509fd0c203b) | [Handle](classmavsdk_1_1_handle.md) type to remove a connection error subscription.
 std::function< void()> [NewSystemCallback](#classmavsdk_1_1_mavsdk_1a7a283c6a75e852a56be4c5862f8a3fab) | Callback type discover and timeout notifications.
 [Handle](classmavsdk_1_1_handle.md)<> [NewSystemHandle](#classmavsdk_1_1_mavsdk_1ae0727f2bed9cbf276d161ada0a432b8c) | [Handle](classmavsdk_1_1_handle.md) type to unsubscribe from subscribe_on_new_system.
+[Handle](classmavsdk_1_1_handle.md)< bool([MavlinkMessage](structmavsdk_1_1_mavsdk_1_1_mavlink_message.md))> [InterceptJsonHandle](#classmavsdk_1_1_mavsdk_1a3b40ae4fd8af4c4419b61f0ad955812f) | [Handle](classmavsdk_1_1_handle.md) for intercepting messages.
+std::function< bool([MavlinkMessage](structmavsdk_1_1_mavsdk_1_1_mavlink_message.md))> [InterceptJsonCallback](#classmavsdk_1_1_mavsdk_1a17923db3b1504e911487729114b68f48) | Callback type for intercepting messages.
 
 ## Public Member Functions
 
@@ -54,6 +58,10 @@ void | [unsubscribe_on_new_system](#classmavsdk_1_1_mavsdk_1ad7f77f1295a700ee73c
 std::shared_ptr< [ServerComponent](classmavsdk_1_1_server_component.md) > | [server_component](#classmavsdk_1_1_mavsdk_1a693a2f665c35d6b01d6144819d353280) (unsigned instance=0) | Get server component with default type of [Mavsdk](classmavsdk_1_1_mavsdk.md) instance.
 std::shared_ptr< [ServerComponent](classmavsdk_1_1_server_component.md) > | [server_component_by_type](#classmavsdk_1_1_mavsdk_1a547fc7e18434473ea3e0e51ab3305abb) ([ComponentType](namespacemavsdk.md#namespacemavsdk_1a20fe7f7c8312779a187017111bf33d12) component_type, unsigned instance=0) | Get server component by a high level type.
 std::shared_ptr< [ServerComponent](classmavsdk_1_1_server_component.md) > | [server_component_by_id](#classmavsdk_1_1_mavsdk_1adef7d0d7422bcddbda629a404fb33ae2) (uint8_t component_id) | Get server component by the low MAVLink component ID.
+[InterceptJsonHandle](classmavsdk_1_1_mavsdk.md#classmavsdk_1_1_mavsdk_1a3b40ae4fd8af4c4419b61f0ad955812f) | [subscribe_incoming_messages_json](#classmavsdk_1_1_mavsdk_1a722fce6f1abe8337721dde710b5b40d7) (const [InterceptJsonCallback](classmavsdk_1_1_mavsdk.md#classmavsdk_1_1_mavsdk_1a17923db3b1504e911487729114b68f48) & callback) | Intercept incoming messages as JSON.
+void | [unsubscribe_incoming_messages_json](#classmavsdk_1_1_mavsdk_1a4be244c38939cb517c2061baf4d43386) ([InterceptJsonHandle](classmavsdk_1_1_mavsdk.md#classmavsdk_1_1_mavsdk_1a3b40ae4fd8af4c4419b61f0ad955812f) handle) | Unsubscribe from incoming messages as JSON.
+[InterceptJsonHandle](classmavsdk_1_1_mavsdk.md#classmavsdk_1_1_mavsdk_1a3b40ae4fd8af4c4419b61f0ad955812f) | [subscribe_outgoing_messages_json](#classmavsdk_1_1_mavsdk_1a58f85b2f74a32404a8e975feefed8f47) (const [InterceptJsonCallback](classmavsdk_1_1_mavsdk.md#classmavsdk_1_1_mavsdk_1a17923db3b1504e911487729114b68f48) & callback) | Intercept outgoing messages as JSON.
+void | [unsubscribe_outgoing_messages_json](#classmavsdk_1_1_mavsdk_1aa3a490358db87cfed617cdad902bb753) ([InterceptJsonHandle](classmavsdk_1_1_mavsdk.md#classmavsdk_1_1_mavsdk_1a3b40ae4fd8af4c4419b61f0ad955812f) handle) | Unsubscribe from outgoing messages as JSON.
 void | [intercept_incoming_messages_async](#classmavsdk_1_1_mavsdk_1ac80c8909958533131cbdbc61d061794f) (std::function< bool(mavlink_message_t &)> callback) | Intercept incoming messages.
 void | [intercept_outgoing_messages_async](#classmavsdk_1_1_mavsdk_1a040ee5c1d41e71c0d63cf8f76d2db275) (std::function< bool(mavlink_message_t &)> callback) | Intercept outgoing messages.
 
@@ -146,6 +154,26 @@ using mavsdk::Mavsdk::NewSystemHandle =  Handle<>
 
 
 [Handle](classmavsdk_1_1_handle.md) type to unsubscribe from subscribe_on_new_system.
+
+
+### typedef InterceptJsonHandle {#classmavsdk_1_1_mavsdk_1a3b40ae4fd8af4c4419b61f0ad955812f}
+
+```cpp
+using mavsdk::Mavsdk::InterceptJsonHandle =  Handle<bool(MavlinkMessage)>
+```
+
+
+[Handle](classmavsdk_1_1_handle.md) for intercepting messages.
+
+
+### typedef InterceptJsonCallback {#classmavsdk_1_1_mavsdk_1a17923db3b1504e911487729114b68f48}
+
+```cpp
+using mavsdk::Mavsdk::InterceptJsonCallback =  std::function<bool(MavlinkMessage)>
+```
+
+
+Callback type for intercepting messages.
 
 
 ## Member Function Documentation
@@ -454,6 +482,71 @@ This represents a server component of the MAVSDK instance.
 **Returns**
 
 &emsp;std::shared_ptr< [ServerComponent](classmavsdk_1_1_server_component.md) > - A valid shared pointer to a server component if it was successful, an empty pointer otherwise.
+
+### subscribe_incoming_messages_json() {#classmavsdk_1_1_mavsdk_1a722fce6f1abe8337721dde710b5b40d7}
+```cpp
+InterceptJsonHandle mavsdk::Mavsdk::subscribe_incoming_messages_json(const InterceptJsonCallback &callback)
+```
+
+
+Intercept incoming messages as JSON.
+
+This is a hook that allows to read any messages arriving via the in JSON format.
+
+**Parameters**
+
+* const [InterceptJsonCallback](classmavsdk_1_1_mavsdk.md#classmavsdk_1_1_mavsdk_1a17923db3b1504e911487729114b68f48)& **callback** - Callback to be called for each incoming message. To drop a message, return 'false' from the callback.
+
+**Returns**
+
+&emsp;[InterceptJsonHandle](classmavsdk_1_1_mavsdk.md#classmavsdk_1_1_mavsdk_1a3b40ae4fd8af4c4419b61f0ad955812f) - 
+
+### unsubscribe_incoming_messages_json() {#classmavsdk_1_1_mavsdk_1a4be244c38939cb517c2061baf4d43386}
+```cpp
+void mavsdk::Mavsdk::unsubscribe_incoming_messages_json(InterceptJsonHandle handle)
+```
+
+
+Unsubscribe from incoming messages as JSON.
+
+
+**Parameters**
+
+* [InterceptJsonHandle](classmavsdk_1_1_mavsdk.md#classmavsdk_1_1_mavsdk_1a3b40ae4fd8af4c4419b61f0ad955812f) **handle** - 
+
+### subscribe_outgoing_messages_json() {#classmavsdk_1_1_mavsdk_1a58f85b2f74a32404a8e975feefed8f47}
+```cpp
+InterceptJsonHandle mavsdk::Mavsdk::subscribe_outgoing_messages_json(const InterceptJsonCallback &callback)
+```
+
+
+Intercept outgoing messages as JSON.
+
+3 
+
+
+This is a hook that allows to read any messages arriving via the in JSON format.
+
+**Parameters**
+
+* const [InterceptJsonCallback](classmavsdk_1_1_mavsdk.md#classmavsdk_1_1_mavsdk_1a17923db3b1504e911487729114b68f48)& **callback** - Callback to be called for each outgoing message. To drop a message, return 'false' from the callback.
+
+**Returns**
+
+&emsp;[InterceptJsonHandle](classmavsdk_1_1_mavsdk.md#classmavsdk_1_1_mavsdk_1a3b40ae4fd8af4c4419b61f0ad955812f) - 
+
+### unsubscribe_outgoing_messages_json() {#classmavsdk_1_1_mavsdk_1aa3a490358db87cfed617cdad902bb753}
+```cpp
+void mavsdk::Mavsdk::unsubscribe_outgoing_messages_json(InterceptJsonHandle handle)
+```
+
+
+Unsubscribe from outgoing messages as JSON.
+
+
+**Parameters**
+
+* [InterceptJsonHandle](classmavsdk_1_1_mavsdk.md#classmavsdk_1_1_mavsdk_1a3b40ae4fd8af4c4419b61f0ad955812f) **handle** - 
 
 ### intercept_incoming_messages_async() {#classmavsdk_1_1_mavsdk_1ac80c8909958533131cbdbc61d061794f}
 ```cpp

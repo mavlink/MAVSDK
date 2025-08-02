@@ -526,6 +526,17 @@ void MavsdkImpl::process_libmav_message(const LibmavMessage& message, Connection
                    << static_cast<int>(message.component_id);
     }
 
+    // JSON message interception for incoming messages
+    auto json_message = libmav_to_mavsdk_message(message);
+    if (!call_json_interception_callbacks(json_message, _incoming_json_message_subscriptions)) {
+        // Message was dropped by interception callback
+        if (_message_logging_on) {
+            LogDebug() << "Incoming JSON message " << message.message_name
+                       << " dropped by interception";
+        }
+        return;
+    }
+
     if (_message_logging_on) {
         LogDebug() << "Processing libmav message " << message.message_name << " from "
                    << static_cast<int>(message.system_id) << "/"
@@ -666,6 +677,62 @@ void MavsdkImpl::deliver_message(mavlink_message_t& message)
         // about it.
         LogDebug() << "Dropped outgoing message: " << int(message.msgid);
         return;
+    }
+
+    // JSON message interception for outgoing messages
+    // Convert mavlink_message_t to LibmavMessage first, then to Mavsdk::MavlinkMessage
+    uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
+    uint16_t len = mavlink_msg_to_send_buffer(buffer, &message);
+
+    size_t bytes_consumed = 0;
+    auto libmav_msg_opt = parse_message_safe(buffer, len, bytes_consumed);
+
+    if (libmav_msg_opt) {
+        // Create LibmavMessage with JSON
+        LibmavMessage libmav_message;
+        libmav_message.message = libmav_msg_opt.value();
+        libmav_message.message_name = libmav_msg_opt.value().name();
+        libmav_message.system_id = message.sysid;
+        libmav_message.component_id = message.compid;
+
+        // Extract target_system and target_component if present
+        uint8_t target_system = 0;
+        uint8_t target_component = 0;
+        if (libmav_msg_opt.value().get("target_system", target_system) ==
+            mav::MessageResult::Success) {
+            libmav_message.target_system = target_system;
+        } else {
+            libmav_message.target_system = 0;
+        }
+        if (libmav_msg_opt.value().get("target_component", target_component) ==
+            mav::MessageResult::Success) {
+            libmav_message.target_component = target_component;
+        } else {
+            libmav_message.target_component = 0;
+        }
+
+        // Generate JSON using LibmavReceiver's public method
+        auto connections = get_connections();
+        if (!connections.empty() && connections[0]->get_libmav_receiver()) {
+            libmav_message.fields_json =
+                connections[0]->get_libmav_receiver()->libmav_message_to_json(
+                    libmav_msg_opt.value());
+        } else {
+            // Fallback: create minimal JSON if no receiver available
+            libmav_message.fields_json =
+                "{\"message_id\":" + std::to_string(libmav_msg_opt.value().id()) +
+                ",\"message_name\":\"" + libmav_msg_opt.value().name() + "\"}";
+        }
+
+        auto json_message = libmav_to_mavsdk_message(libmav_message);
+        if (!call_json_interception_callbacks(json_message, _outgoing_json_message_subscriptions)) {
+            // Message was dropped by JSON interception callback
+            if (_message_logging_on) {
+                LogDebug() << "Outgoing JSON message " << libmav_message.message_name
+                           << " dropped by interception";
+            }
+            return;
+        }
     }
 
     std::lock_guard lock(_mutex);
@@ -1171,6 +1238,79 @@ void MavsdkImpl::intercept_outgoing_messages_async(std::function<bool(mavlink_me
 {
     std::lock_guard<std::mutex> lock(_intercept_callbacks_mutex);
     _intercept_outgoing_messages_callback = callback;
+}
+
+Mavsdk::MavlinkMessage MavsdkImpl::libmav_to_mavsdk_message(const LibmavMessage& libmav_message)
+{
+    // Convert LibmavMessage to Mavsdk::MavlinkMessage (much simpler!)
+    Mavsdk::MavlinkMessage json_message;
+    json_message.message_name = libmav_message.message_name;
+    json_message.system_id = libmav_message.system_id;
+    json_message.component_id = libmav_message.component_id;
+    json_message.target_system = libmav_message.target_system;
+    json_message.target_component = libmav_message.target_component;
+    json_message.fields_json = libmav_message.fields_json; // Already populated!
+
+    return json_message;
+}
+
+bool MavsdkImpl::call_json_interception_callbacks(
+    const Mavsdk::MavlinkMessage& json_message,
+    std::vector<std::pair<Mavsdk::InterceptJsonHandle, Mavsdk::InterceptJsonCallback>>&
+        callback_list)
+{
+    bool keep_message = true;
+
+    std::lock_guard<std::mutex> lock(_json_subscriptions_mutex);
+    for (const auto& subscription : callback_list) {
+        if (!subscription.second(json_message)) {
+            keep_message = false;
+        }
+    }
+
+    return keep_message;
+}
+
+Mavsdk::InterceptJsonHandle
+MavsdkImpl::subscribe_incoming_messages_json(const Mavsdk::InterceptJsonCallback& callback)
+{
+    std::lock_guard<std::mutex> lock(_json_subscriptions_mutex);
+    auto handle = _json_handle_factory.create();
+    _incoming_json_message_subscriptions.push_back(std::make_pair(handle, callback));
+    return handle;
+}
+
+void MavsdkImpl::unsubscribe_incoming_messages_json(Mavsdk::InterceptJsonHandle handle)
+{
+    std::lock_guard<std::mutex> lock(_json_subscriptions_mutex);
+    auto it = std::find_if(
+        _incoming_json_message_subscriptions.begin(),
+        _incoming_json_message_subscriptions.end(),
+        [handle](const auto& subscription) { return subscription.first == handle; });
+    if (it != _incoming_json_message_subscriptions.end()) {
+        _incoming_json_message_subscriptions.erase(it);
+    }
+}
+
+Mavsdk::InterceptJsonHandle
+MavsdkImpl::subscribe_outgoing_messages_json(const Mavsdk::InterceptJsonCallback& callback)
+{
+    std::lock_guard<std::mutex> lock(_json_subscriptions_mutex);
+    auto handle = _json_handle_factory.create();
+    _outgoing_json_message_subscriptions.push_back(std::make_pair(handle, callback));
+    return handle;
+}
+
+void MavsdkImpl::unsubscribe_outgoing_messages_json(Mavsdk::InterceptJsonHandle handle)
+{
+    std::lock_guard<std::mutex> lock(_json_subscriptions_mutex);
+    auto it = std::find_if(
+        _outgoing_json_message_subscriptions.begin(),
+        _outgoing_json_message_subscriptions.end(),
+        [handle](const auto& subscription) { return subscription.first == handle; });
+    if (it != _outgoing_json_message_subscriptions.end()) {
+        _outgoing_json_message_subscriptions.erase(it);
+    }
 }
 
 Mavsdk::ConnectionErrorHandle
