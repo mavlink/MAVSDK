@@ -245,4 +245,26 @@ void Mavsdk::unsubscribe_connection_errors(ConnectionErrorHandle handle)
     return _impl->unsubscribe_connection_errors(handle);
 }
 
+Mavsdk::InterceptJsonHandle
+Mavsdk::subscribe_incoming_messages_json(const InterceptJsonCallback& callback)
+{
+    return _impl->subscribe_incoming_messages_json(callback);
+}
+
+void Mavsdk::unsubscribe_incoming_messages_json(InterceptJsonHandle handle)
+{
+    _impl->unsubscribe_incoming_messages_json(handle);
+}
+
+Mavsdk::InterceptJsonHandle
+Mavsdk::subscribe_outgoing_messages_json(const InterceptJsonCallback& callback)
+{
+    return _impl->subscribe_outgoing_messages_json(callback);
+}
+
+void Mavsdk::unsubscribe_outgoing_messages_json(InterceptJsonHandle handle)
+{
+    _impl->unsubscribe_outgoing_messages_json(handle);
+}
+
 } // namespace mavsdk
