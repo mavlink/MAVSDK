@@ -28,12 +28,11 @@ bool MavlinkReceiver::parse_message()
 {
     // Note that one datagram can contain multiple mavlink messages.
     for (unsigned i = 0; i < _datagram_len; ++i) {
-        if (mavlink_frame_char_buffer(
-                &_mavlink_message_buffer,
-                &_mavlink_status,
-                _datagram[i],
-                &_last_message,
-                &_status) == 1) {
+        uint8_t parse_result = mavlink_frame_char_buffer(
+            &_mavlink_message_buffer, &_mavlink_status, _datagram[i], &_last_message, &_status);
+
+        if (parse_result == MAVLINK_FRAMING_OK) {
+            // Successfully parsed message
             // Move the pointer to the datagram forward by the amount parsed.
             _datagram += (i + 1);
             // And decrease the length, so we don't overshoot in the next round.
@@ -45,6 +44,36 @@ bool MavlinkReceiver::parse_message()
 
             // We have parsed one message, let's return, so it can be handled.
             return true;
+        } else if (parse_result == MAVLINK_FRAMING_BAD_CRC) {
+            // Complete message with bad CRC - store raw bytes for forwarding
+            // Calculate the message length based on header info
+            size_t message_length = 0;
+            if (_last_message.magic == MAVLINK_STX_MAVLINK1) {
+                // MAVLink v1: STX + header + payload + CRC
+                message_length = 1 + MAVLINK_CORE_HEADER_MAVLINK1_LEN + _last_message.len +
+                                 MAVLINK_NUM_CHECKSUM_BYTES;
+            } else {
+                // MAVLink v2: STX + header + payload + CRC + optional signature
+                message_length =
+                    1 + MAVLINK_CORE_HEADER_LEN + _last_message.len + MAVLINK_NUM_CHECKSUM_BYTES;
+                if (_last_message.incompat_flags & MAVLINK_IFLAG_SIGNED) {
+                    message_length += MAVLINK_SIGNATURE_BLOCK_LEN;
+                }
+            }
+
+            // Calculate start position (current position minus what we've consumed)
+            if (i + 1 >= message_length) {
+                // Note: Raw message detected but storage removed since retrieval methods were
+                // unused
+
+                // Move the pointer to the datagram forward by the amount parsed.
+                _datagram += (i + 1);
+                // And decrease the length, so we don't overshoot in the next round.
+                _datagram_len -= (i + 1);
+
+                // Return true to indicate we have something to process (raw message)
+                return true;
+            }
         }
     }
 

@@ -263,52 +263,11 @@ ConnectionResult SerialConnection::stop()
 
 std::pair<bool, std::string> SerialConnection::send_message(const mavlink_message_t& message)
 {
-    std::pair<bool, std::string> result;
-
-    if (_serial_node.empty()) {
-        LogErr() << "Dev Path unknown";
-        result.first = false;
-        result.second = "Dev Path unknown";
-        return result;
-    }
-
-    if (_baudrate == 0) {
-        result.first = false;
-        result.second = "Baudrate unknown";
-        return result;
-    }
-
+    // Convert message to raw bytes and use common send path
     uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
     uint16_t buffer_len = mavlink_msg_to_send_buffer(buffer, &message);
 
-    int send_len;
-#if defined(LINUX) || defined(APPLE)
-    send_len = static_cast<int>(write(_fd, buffer, buffer_len));
-#else
-    if (!WriteFile(_handle, buffer, buffer_len, LPDWORD(&send_len), NULL)) {
-        std::stringstream ss;
-        ss << "WriteFile failure: " << GET_ERROR();
-        LogErr() << ss.str();
-        result.first = false;
-        result.second = ss.str();
-        return result;
-    }
-#endif
-
-    if (send_len != buffer_len) {
-        result.first = false;
-        result.second = "Baudrate unknown";
-
-        std::stringstream ss;
-        ss << "write failure: " << GET_ERROR();
-        LogErr() << ss.str();
-        result.first = false;
-        result.second = ss.str();
-        return result;
-    }
-
-    result.first = true;
-    return result;
+    return send_raw_bytes(reinterpret_cast<const char*>(buffer), buffer_len);
 }
 
 void SerialConnection::receive()
@@ -409,5 +368,49 @@ int SerialConnection::define_from_baudrate(int baudrate)
     }
 }
 #endif
+
+std::pair<bool, std::string> SerialConnection::send_raw_bytes(const char* bytes, size_t length)
+{
+    std::pair<bool, std::string> result;
+
+    if (_serial_node.empty()) {
+        LogErr() << "Dev Path unknown";
+        result.first = false;
+        result.second = "Dev Path unknown";
+        return result;
+    }
+
+    if (_baudrate == 0) {
+        result.first = false;
+        result.second = "Baudrate unknown";
+        return result;
+    }
+
+    int send_len;
+#if defined(LINUX) || defined(APPLE)
+    send_len = static_cast<int>(write(_fd, bytes, length));
+#else
+    if (!WriteFile(_handle, bytes, static_cast<DWORD>(length), LPDWORD(&send_len), NULL)) {
+        std::stringstream ss;
+        ss << "WriteFile failure: " << GET_ERROR();
+        LogErr() << ss.str();
+        result.first = false;
+        result.second = ss.str();
+        return result;
+    }
+#endif
+
+    if (send_len != static_cast<int>(length)) {
+        std::stringstream ss;
+        ss << "write failure: " << GET_ERROR();
+        LogErr() << ss.str();
+        result.first = false;
+        result.second = ss.str();
+        return result;
+    }
+
+    result.first = true;
+    return result;
+}
 
 } // namespace mavsdk
