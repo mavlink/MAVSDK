@@ -380,6 +380,62 @@ public:
     std::shared_ptr<ServerComponent> server_component_by_id(uint8_t component_id);
 
     /**
+     * @brief A complete MAVLink message with all header information and fields
+     */
+    struct MavlinkMessage {
+        std::string message_name{}; /**< @brief MAVLink message name (e.g., "HEARTBEAT",
+                                       "GLOBAL_POSITION_INT") */
+        uint32_t system_id{}; /**< @brief System ID of the sender (for received messages) */
+        uint32_t component_id{}; /**< @brief Component ID of the sender (for received messages) */
+        uint32_t target_system{}; /**< @brief Target system ID (for sending, 0 for broadcast) */
+        uint32_t
+            target_component{}; /**< @brief Target component ID (for sending, 0 for broadcast) */
+        std::string fields_json{}; /**< @brief All message fields as single JSON object */
+    };
+
+    /**
+     * @brief Handle for intercepting messages.
+     */
+    using InterceptJsonHandle = Handle<bool(MavlinkMessage)>;
+
+    /**
+     * @brief Callback type for intercepting messages.
+     */
+    using InterceptJsonCallback = std::function<bool(MavlinkMessage)>;
+
+    /**
+     * @brief Intercept incoming messages as JSON.
+     *
+     * This is a hook that allows to read any messages arriving via the
+     * in JSON format.
+     *
+     * @param callback Callback to be called for each incoming message.
+     *        To drop a message, return 'false' from the callback.
+     */
+    InterceptJsonHandle subscribe_incoming_messages_json(const InterceptJsonCallback& callback);
+
+    /**
+     * @brief Unsubscribe from incoming messages as JSON
+     */
+    void unsubscribe_incoming_messages_json(InterceptJsonHandle handle);
+
+    /**3
+     * @brief Intercept outgoing messages as JSON.
+     *
+     * This is a hook that allows to read any messages arriving via the
+     * in JSON format.
+     *
+     * @param callback Callback to be called for each outgoing message.
+     *        To drop a message, return 'false' from the callback.
+     */
+    InterceptJsonHandle subscribe_outgoing_messages_json(const InterceptJsonCallback& callback);
+
+    /**
+     * @brief Unsubscribe from outgoing messages as JSON
+     */
+    void unsubscribe_outgoing_messages_json(InterceptJsonHandle handle);
+
+    /**
      * @brief Intercept incoming messages.
      *
      * This is a hook which allows to change or drop MAVLink messages as they

@@ -373,7 +373,6 @@ private:
         ParamValue value,
         const GetParamIntCallback& callback);
 
-    std::mutex _component_discovered_callback_mutex{};
     CallbackList<ComponentType> _component_discovered_callbacks{};
     CallbackList<ComponentType, uint8_t> _component_discovered_id_callbacks{};
 
@@ -401,7 +400,6 @@ private:
         std::function<void(const MavlinkStatustextHandler::Statustext&)> callback;
         void* cookie;
     };
-    std::mutex _statustext_handler_callbacks_mutex{};
     std::vector<StatustextCallback> _statustext_handler_callbacks;
 
     std::atomic<bool> _armed{false};
@@ -445,9 +443,9 @@ private:
     std::vector<PluginImplBase*> _plugin_impls{};
 
     // We used set to maintain unique component ids
+    mutable std::mutex _components_mutex{};
     std::unordered_set<uint8_t> _components{};
 
-    std::mutex _param_changed_callbacks_mutex{};
     std::unordered_map<const void*, ParamChangedCallback> _param_changed_callbacks{};
 
     MAV_TYPE _vehicle_type{MAV_TYPE::MAV_TYPE_GENERIC};

@@ -277,13 +277,11 @@ void SystemImpl::remove_call_every(CallEveryHandler::Cookie cookie)
 void SystemImpl::register_statustext_handler(
     std::function<void(const MavlinkStatustextHandler::Statustext&)> callback, void* cookie)
 {
-    std::lock_guard<std::mutex> lock(_statustext_handler_callbacks_mutex);
     _statustext_handler_callbacks.push_back(StatustextCallback{std::move(callback), cookie});
 }
 
 void SystemImpl::unregister_statustext_handler(void* cookie)
 {
-    std::lock_guard<std::mutex> lock(_statustext_handler_callbacks_mutex);
     _statustext_handler_callbacks.erase(std::remove_if(
         _statustext_handler_callbacks.begin(),
         _statustext_handler_callbacks.end(),
@@ -340,7 +338,6 @@ void SystemImpl::process_statustext(const mavlink_message_t& message)
                    << MavlinkStatustextHandler::severity_str(maybe_result.value().severity) << ": "
                    << maybe_result.value().text;
 
-        std::lock_guard<std::mutex> lock(_statustext_handler_callbacks_mutex);
         for (const auto& entry : _statustext_handler_callbacks) {
             entry.callback(maybe_result.value());
         }
@@ -461,9 +458,14 @@ void SystemImpl::add_new_component(uint8_t component_id)
         return;
     }
 
-    auto res_pair = _components.insert(component_id);
-    if (res_pair.second) {
-        std::lock_guard<std::mutex> lock(_component_discovered_callback_mutex);
+    bool is_new_component = false;
+    {
+        std::lock_guard<std::mutex> lock(_components_mutex);
+        auto res_pair = _components.insert(component_id);
+        is_new_component = res_pair.second;
+    }
+
+    if (is_new_component) {
         _component_discovered_callbacks.queue(
             component_type(component_id), [this](const auto& func) { call_user_callback(func); });
         _component_discovered_id_callbacks.queue(
@@ -477,16 +479,17 @@ void SystemImpl::add_new_component(uint8_t component_id)
 
 size_t SystemImpl::total_components() const
 {
+    std::lock_guard<std::mutex> lock(_components_mutex);
     return _components.size();
 }
 
 System::ComponentDiscoveredHandle
 SystemImpl::subscribe_component_discovered(const System::ComponentDiscoveredCallback& callback)
 {
-    std::lock_guard<std::mutex> lock(_component_discovered_callback_mutex);
     const auto handle = _component_discovered_callbacks.subscribe(callback);
 
     if (total_components() > 0) {
+        std::lock_guard<std::mutex> components_lock(_components_mutex);
         for (const auto& elem : _components) {
             _component_discovered_callbacks.queue(
                 component_type(elem), [this](const auto& func) { call_user_callback(func); });
@@ -497,17 +500,16 @@ SystemImpl::subscribe_component_discovered(const System::ComponentDiscoveredCall
 
 void SystemImpl::unsubscribe_component_discovered(System::ComponentDiscoveredHandle handle)
 {
-    std::lock_guard<std::mutex> lock(_component_discovered_callback_mutex);
     _component_discovered_callbacks.unsubscribe(handle);
 }
 
 System::ComponentDiscoveredIdHandle
 SystemImpl::subscribe_component_discovered_id(const System::ComponentDiscoveredIdCallback& callback)
 {
-    std::lock_guard<std::mutex> lock(_component_discovered_callback_mutex);
     const auto handle = _component_discovered_id_callbacks.subscribe(callback);
 
     if (total_components() > 0) {
+        std::lock_guard<std::mutex> components_lock(_components_mutex);
         for (const auto& elem : _components) {
             _component_discovered_id_callbacks.queue(
                 component_type(elem), elem, [this](const auto& func) { call_user_callback(func); });
@@ -518,7 +520,6 @@ SystemImpl::subscribe_component_discovered_id(const System::ComponentDiscoveredI
 
 void SystemImpl::unsubscribe_component_discovered_id(System::ComponentDiscoveredIdHandle handle)
 {
-    std::lock_guard<std::mutex> lock(_component_discovered_callback_mutex);
     _component_discovered_id_callbacks.unsubscribe(handle);
 }
 
@@ -544,6 +545,7 @@ bool SystemImpl::is_camera(uint8_t comp_id)
 
 bool SystemImpl::has_camera(int camera_id) const
 {
+    std::lock_guard<std::mutex> lock(_components_mutex);
     int camera_comp_id = (camera_id == -1) ? camera_id : (MAV_COMP_ID_CAMERA + camera_id);
 
     if (camera_comp_id == -1) { // Check whether the system has any camera.
@@ -587,8 +589,11 @@ void SystemImpl::set_connected()
     bool enable_needed = false;
     {
         if (!_connected) {
-            if (!_components.empty()) {
-                LogDebug() << "Discovered " << _components.size() << " component(s)";
+            {
+                std::lock_guard<std::mutex> lock(_components_mutex);
+                if (!_components.empty()) {
+                    LogDebug() << "Discovered " << _components.size() << " component(s)";
+                }
             }
 
             _connected = true;
@@ -669,6 +674,7 @@ uint8_t SystemImpl::get_system_id() const
 
 std::vector<uint8_t> SystemImpl::component_ids() const
 {
+    std::lock_guard<std::mutex> lock(_components_mutex);
     return std::vector<uint8_t>{_components.begin(), _components.end()};
 }
 
@@ -1148,6 +1154,7 @@ void SystemImpl::receive_int_param(
 
 uint8_t SystemImpl::get_autopilot_id() const
 {
+    std::lock_guard<std::mutex> lock(_components_mutex);
     for (auto compid : _components)
         if (compid == MavlinkCommandSender::DEFAULT_COMPONENT_ID_AUTOPILOT) {
             return compid;
@@ -1158,6 +1165,7 @@ uint8_t SystemImpl::get_autopilot_id() const
 
 std::vector<uint8_t> SystemImpl::get_camera_ids() const
 {
+    std::lock_guard<std::mutex> lock(_components_mutex);
     std::vector<uint8_t> camera_ids{};
 
     for (auto compid : _components)
@@ -1169,6 +1177,7 @@ std::vector<uint8_t> SystemImpl::get_camera_ids() const
 
 uint8_t SystemImpl::get_gimbal_id() const
 {
+    std::lock_guard<std::mutex> lock(_components_mutex);
     for (auto compid : _components)
         if (compid == MAV_COMP_ID_GIMBAL) {
             return compid;
@@ -1178,8 +1187,11 @@ uint8_t SystemImpl::get_gimbal_id() const
 
 MavlinkCommandSender::Result SystemImpl::send_command(MavlinkCommandSender::CommandLong& command)
 {
-    if (_target_address.system_id == 0 && _components.empty()) {
-        return MavlinkCommandSender::Result::NoSystem;
+    {
+        std::lock_guard<std::mutex> lock(_components_mutex);
+        if (_target_address.system_id == 0 && _components.empty()) {
+            return MavlinkCommandSender::Result::NoSystem;
+        }
     }
     command.target_system_id = get_system_id();
     return _command_sender.send_command(command);
@@ -1187,8 +1199,11 @@ MavlinkCommandSender::Result SystemImpl::send_command(MavlinkCommandSender::Comm
 
 MavlinkCommandSender::Result SystemImpl::send_command(MavlinkCommandSender::CommandInt& command)
 {
-    if (_target_address.system_id == 0 && _components.empty()) {
-        return MavlinkCommandSender::Result::NoSystem;
+    {
+        std::lock_guard<std::mutex> lock(_components_mutex);
+        if (_target_address.system_id == 0 && _components.empty()) {
+            return MavlinkCommandSender::Result::NoSystem;
+        }
     }
     command.target_system_id = get_system_id();
     return _command_sender.send_command(command);
@@ -1197,11 +1212,14 @@ MavlinkCommandSender::Result SystemImpl::send_command(MavlinkCommandSender::Comm
 void SystemImpl::send_command_async(
     MavlinkCommandSender::CommandLong command, const CommandResultCallback& callback)
 {
-    if (_target_address.system_id == 0 && _components.empty()) {
-        if (callback) {
-            callback(MavlinkCommandSender::Result::NoSystem, NAN);
+    {
+        std::lock_guard<std::mutex> lock(_components_mutex);
+        if (_target_address.system_id == 0 && _components.empty()) {
+            if (callback) {
+                callback(MavlinkCommandSender::Result::NoSystem, NAN);
+            }
+            return;
         }
-        return;
     }
     command.target_system_id = get_system_id();
 
@@ -1211,11 +1229,14 @@ void SystemImpl::send_command_async(
 void SystemImpl::send_command_async(
     MavlinkCommandSender::CommandInt command, const CommandResultCallback& callback)
 {
-    if (_target_address.system_id == 0 && _components.empty()) {
-        if (callback) {
-            callback(MavlinkCommandSender::Result::NoSystem, NAN);
+    {
+        std::lock_guard<std::mutex> lock(_components_mutex);
+        if (_target_address.system_id == 0 && _components.empty()) {
+            if (callback) {
+                callback(MavlinkCommandSender::Result::NoSystem, NAN);
+            }
+            return;
         }
-        return;
     }
     command.target_system_id = get_system_id();
 
@@ -1306,8 +1327,6 @@ void SystemImpl::call_user_callback_located(
 
 void SystemImpl::param_changed(const std::string& name)
 {
-    std::lock_guard<std::mutex> lock(_param_changed_callbacks_mutex);
-
     for (auto& callback : _param_changed_callbacks) {
         callback.second(name);
     }
@@ -1326,15 +1345,11 @@ void SystemImpl::register_param_changed_handler(
         return;
     }
 
-    std::lock_guard<std::mutex> lock(_param_changed_callbacks_mutex);
-
     _param_changed_callbacks[cookie] = callback;
 }
 
 void SystemImpl::unregister_param_changed_handler(const void* cookie)
 {
-    std::lock_guard<std::mutex> lock(_param_changed_callbacks_mutex);
-
     auto it = _param_changed_callbacks.find(cookie);
     if (it == _param_changed_callbacks.end()) {
         LogWarn() << "param_changed_handler for cookie not found";

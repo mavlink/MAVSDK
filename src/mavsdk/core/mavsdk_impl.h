@@ -87,6 +87,14 @@ public:
     void intercept_incoming_messages_async(std::function<bool(mavlink_message_t&)> callback);
     void intercept_outgoing_messages_async(std::function<bool(mavlink_message_t&)> callback);
 
+    // JSON message interception
+    Mavsdk::InterceptJsonHandle
+    subscribe_incoming_messages_json(const Mavsdk::InterceptJsonCallback& callback);
+    void unsubscribe_incoming_messages_json(Mavsdk::InterceptJsonHandle handle);
+    Mavsdk::InterceptJsonHandle
+    subscribe_outgoing_messages_json(const Mavsdk::InterceptJsonCallback& callback);
+    void unsubscribe_outgoing_messages_json(Mavsdk::InterceptJsonHandle handle);
+
     Mavsdk::ConnectionErrorHandle
     subscribe_connection_errors(Mavsdk::ConnectionErrorCallback callback);
     void unsubscribe_connection_errors(Mavsdk::ConnectionErrorHandle handle);
@@ -169,6 +177,13 @@ private:
     static uint8_t get_target_system_id(const mavlink_message_t& message);
     static uint8_t get_target_component_id(const mavlink_message_t& message);
 
+    // Helper methods for JSON message conversion
+    Mavsdk::MavlinkMessage libmav_to_mavsdk_message(const LibmavMessage& libmav_message);
+    bool call_json_interception_callbacks(
+        const Mavsdk::MavlinkMessage& json_message,
+        std::vector<std::pair<Mavsdk::InterceptJsonHandle, Mavsdk::InterceptJsonCallback>>&
+            callback_list);
+
     mutable std::recursive_mutex _mutex{};
 
     // Message set for libmav message handling (shared across all connections)
@@ -221,6 +236,14 @@ private:
     mutable std::mutex _intercept_callbacks_mutex{};
     std::function<bool(mavlink_message_t&)> _intercept_incoming_messages_callback{nullptr};
     std::function<bool(mavlink_message_t&)> _intercept_outgoing_messages_callback{nullptr};
+
+    // JSON message interception
+    std::vector<std::pair<Mavsdk::InterceptJsonHandle, Mavsdk::InterceptJsonCallback>>
+        _incoming_json_message_subscriptions{};
+    std::vector<std::pair<Mavsdk::InterceptJsonHandle, Mavsdk::InterceptJsonCallback>>
+        _outgoing_json_message_subscriptions{};
+    mutable std::mutex _json_subscriptions_mutex{};
+    HandleFactory<bool(Mavsdk::MavlinkMessage)> _json_handle_factory{};
 
     std::atomic<double> _timeout_s{DEFAULT_TIMEOUT_S};
 
