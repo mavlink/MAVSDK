@@ -27,6 +27,7 @@ public:
     ~SerialConnection() override;
 
     std::pair<bool, std::string> send_message(const mavlink_message_t& message) override;
+    std::pair<bool, std::string> send_raw_bytes(const char* bytes, size_t length) override;
 
     // Non-copyable
     SerialConnection(const SerialConnection&) = delete;

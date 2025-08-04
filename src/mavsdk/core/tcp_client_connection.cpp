@@ -150,6 +150,15 @@ ConnectionResult TcpClientConnection::stop()
 
 std::pair<bool, std::string> TcpClientConnection::send_message(const mavlink_message_t& message)
 {
+    // Convert message to raw bytes and use common send path
+    uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
+    uint16_t buffer_len = mavlink_msg_to_send_buffer(buffer, &message);
+
+    return send_raw_bytes(reinterpret_cast<const char*>(buffer), buffer_len);
+}
+
+std::pair<bool, std::string> TcpClientConnection::send_raw_bytes(const char* bytes, size_t length)
+{
     std::pair<bool, std::string> result;
 
     if (_remote_ip.empty()) {
@@ -166,29 +175,15 @@ std::pair<bool, std::string> TcpClientConnection::send_message(const mavlink_mes
         return result;
     }
 
-    struct sockaddr_in dest_addr{};
-    dest_addr.sin_family = AF_INET;
-
-    inet_pton(AF_INET, _remote_ip.c_str(), &dest_addr.sin_addr.s_addr);
-
-    dest_addr.sin_port = htons(_remote_port_number);
-
-    uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
-    uint16_t buffer_len = mavlink_msg_to_send_buffer(buffer, &message);
-
-    // TODO: remove this assert again
-    assert(buffer_len <= MAVLINK_MAX_PACKET_LEN);
-
 #if !defined(MSG_NOSIGNAL)
     auto flags = 0;
 #else
     auto flags = MSG_NOSIGNAL;
 #endif
 
-    const auto send_len =
-        send(_socket_fd.get(), reinterpret_cast<const char*>(buffer), buffer_len, flags);
+    const auto send_len = send(_socket_fd.get(), bytes, length, flags);
 
-    if (send_len != buffer_len) {
+    if (send_len != static_cast<std::remove_cv_t<decltype(send_len)>>(length)) {
         std::stringstream ss;
         ss << "Send failure: " << GET_ERROR(errno);
         LogErr() << ss.str();

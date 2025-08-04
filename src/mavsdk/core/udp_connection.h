@@ -28,6 +28,7 @@ public:
     ConnectionResult stop() override;
 
     std::pair<bool, std::string> send_message(const mavlink_message_t& message) override;
+    std::pair<bool, std::string> send_raw_bytes(const char* bytes, size_t length) override;
 
     void add_remote_to_keep(const std::string& remote_ip, int remote_port);
 
