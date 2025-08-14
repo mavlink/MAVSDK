@@ -32,6 +32,9 @@ public:
 
     virtual std::pair<bool, std::string> send_message(const mavlink_message_t& message) = 0;
 
+    // Send raw bytes for forwarding unknown messages
+    virtual std::pair<bool, std::string> send_raw_bytes(const char* bytes, size_t length) = 0;
+
     bool has_system_id(uint8_t system_id);
     bool should_forward_messages() const;
     static unsigned forwarding_connections_count();

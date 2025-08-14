@@ -141,6 +141,14 @@ ConnectionResult UdpConnection::stop()
 
 std::pair<bool, std::string> UdpConnection::send_message(const mavlink_message_t& message)
 {
+    // Convert message to raw bytes and use common send path
+    uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
+    uint16_t buffer_len = mavlink_msg_to_send_buffer(buffer, &message);
+    return send_raw_bytes(reinterpret_cast<const char*>(buffer), buffer_len);
+}
+
+std::pair<bool, std::string> UdpConnection::send_raw_bytes(const char* bytes, size_t length)
+{
     std::pair<bool, std::string> result;
 
     std::lock_guard<std::mutex> lock(_remote_mutex);
@@ -174,7 +182,7 @@ std::pair<bool, std::string> UdpConnection::send_message(const mavlink_message_t
         return result;
     }
 
-    // Send the message to all the remotes. A remote is a UDP endpoint
+    // Send the raw bytes to all the remotes. A remote is a UDP endpoint
     // identified by its <ip, port>. This means that if we have two
     // systems on two different endpoints, then messages directed towards
     // only one system will be sent to both remotes. The systems are
@@ -200,18 +208,15 @@ std::pair<bool, std::string> UdpConnection::send_message(const mavlink_message_t
         }
         dest_addr.sin_port = htons(remote.port_number);
 
-        uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
-        uint16_t buffer_len = mavlink_msg_to_send_buffer(buffer, &message);
-
         const auto send_len = sendto(
             _socket_fd.get(),
-            reinterpret_cast<char*>(buffer),
-            buffer_len,
+            bytes,
+            length,
             0,
             reinterpret_cast<const sockaddr*>(&dest_addr),
             sizeof(dest_addr));
 
-        if (send_len != buffer_len) {
+        if (send_len != static_cast<std::remove_cv_t<decltype(send_len)>>(length)) {
             std::stringstream ss;
             ss << "sendto failure: " << GET_ERROR(errno) << " for: " << remote.ip << ":"
                << remote.port_number;
@@ -309,6 +314,7 @@ void UdpConnection::receive()
                 }
             }
 
+            // Handle parsed message
             receive_message(_mavlink_receiver->get_last_message(), this);
         }
 

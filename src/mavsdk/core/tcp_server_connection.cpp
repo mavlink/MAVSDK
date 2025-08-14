@@ -142,33 +142,13 @@ ConnectionResult TcpServerConnection::stop()
 
 std::pair<bool, std::string> TcpServerConnection::send_message(const mavlink_message_t& message)
 {
-    std::pair<bool, std::string> result;
-
+    // Convert message to raw bytes and use common send path
     uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
     uint16_t buffer_len = mavlink_msg_to_send_buffer(buffer, &message);
 
     assert(buffer_len <= MAVLINK_MAX_PACKET_LEN);
 
-#if !defined(MSG_NOSIGNAL)
-    auto flags = 0;
-#else
-    auto flags = MSG_NOSIGNAL;
-#endif
-
-    const auto send_len =
-        send(_client_socket_fd.get(), reinterpret_cast<const char*>(buffer), buffer_len, flags);
-
-    if (send_len != buffer_len) {
-        std::stringstream ss;
-        ss << "Send failure: " << GET_ERROR(errno);
-        LogErr() << ss.str();
-        result.first = false;
-        result.second = ss.str();
-        return result;
-    }
-
-    result.first = true;
-    return result;
+    return send_raw_bytes(reinterpret_cast<const char*>(buffer), buffer_len);
 }
 
 void TcpServerConnection::accept_client()
@@ -284,6 +264,32 @@ void TcpServerConnection::receive()
             }
         }
     }
+}
+
+std::pair<bool, std::string> TcpServerConnection::send_raw_bytes(const char* bytes, size_t length)
+{
+    // Basic implementation for TCP server connections
+    std::pair<bool, std::string> result;
+
+#if !defined(MSG_NOSIGNAL)
+    auto flags = 0;
+#else
+    auto flags = MSG_NOSIGNAL;
+#endif
+
+    const auto send_len = send(_client_socket_fd.get(), bytes, length, flags);
+
+    if (send_len != static_cast<std::remove_cv_t<decltype(send_len)>>(length)) {
+        std::stringstream ss;
+        ss << "Send failure: " << GET_ERROR(errno);
+        LogErr() << ss.str();
+        result.first = false;
+        result.second = ss.str();
+        return result;
+    }
+
+    result.first = true;
+    return result;
 }
 
 } // namespace mavsdk
