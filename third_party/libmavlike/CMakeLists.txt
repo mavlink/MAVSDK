@@ -29,7 +29,7 @@ endforeach()
 ExternalProject_add(
     libmavlike
     GIT_REPOSITORY https://github.com/julianoes/libmavlike
-    GIT_TAG ccc3addc341ae907de7a2937ebf51c6ff2cd30fa
+    GIT_TAG 80dbd91a0c5d6f0a79f1e8597b820ba075d1cf15
     PREFIX libmavlike
     CMAKE_ARGS ${CMAKE_ARGS}
     )
