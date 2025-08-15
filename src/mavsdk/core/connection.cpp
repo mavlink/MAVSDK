@@ -70,7 +70,8 @@ void Connection::stop_libmav_receiver()
     }
 }
 
-void Connection::receive_libmav_message(const LibmavMessage& message, Connection* connection)
+void Connection::receive_libmav_message(
+    const Mavsdk::MavlinkMessage& message, Connection* connection)
 {
     // Register system ID when receiving a message from a new system.
     if (_system_ids.find(message.system_id) == _system_ids.end()) {

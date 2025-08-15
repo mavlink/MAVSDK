@@ -48,8 +48,10 @@ MavlinkDirect::Result MavlinkDirect::load_custom_xml(std::string xml_content) co
 bool operator==(const MavlinkDirect::MavlinkMessage& lhs, const MavlinkDirect::MavlinkMessage& rhs)
 {
     return (rhs.message_name == lhs.message_name) && (rhs.system_id == lhs.system_id) &&
-           (rhs.component_id == lhs.component_id) && (rhs.target_system == lhs.target_system) &&
-           (rhs.target_component == lhs.target_component) && (rhs.fields_json == lhs.fields_json);
+           (rhs.component_id == lhs.component_id) &&
+           (rhs.target_system_id == lhs.target_system_id) &&
+           (rhs.target_component_id == lhs.target_component_id) &&
+           (rhs.fields_json == lhs.fields_json);
 }
 
 std::ostream& operator<<(std::ostream& str, MavlinkDirect::MavlinkMessage const& mavlink_message)
@@ -59,8 +61,8 @@ std::ostream& operator<<(std::ostream& str, MavlinkDirect::MavlinkMessage const&
     str << "    message_name: " << mavlink_message.message_name << '\n';
     str << "    system_id: " << mavlink_message.system_id << '\n';
     str << "    component_id: " << mavlink_message.component_id << '\n';
-    str << "    target_system: " << mavlink_message.target_system << '\n';
-    str << "    target_component: " << mavlink_message.target_component << '\n';
+    str << "    target_system_id: " << mavlink_message.target_system_id << '\n';
+    str << "    target_component_id: " << mavlink_message.target_component_id << '\n';
     str << "    fields_json: " << mavlink_message.fields_json << '\n';
     str << '}';
     return str;

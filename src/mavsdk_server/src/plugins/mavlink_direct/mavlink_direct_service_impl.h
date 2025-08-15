@@ -54,9 +54,9 @@ public:
 
         rpc_obj->set_component_id(mavlink_message.component_id);
 
-        rpc_obj->set_target_system(mavlink_message.target_system);
+        rpc_obj->set_target_system_id(mavlink_message.target_system_id);
 
-        rpc_obj->set_target_component(mavlink_message.target_component);
+        rpc_obj->set_target_component_id(mavlink_message.target_component_id);
 
         rpc_obj->set_fields_json(mavlink_message.fields_json);
 
@@ -74,9 +74,9 @@ public:
 
         obj.component_id = mavlink_message.component_id();
 
-        obj.target_system = mavlink_message.target_system();
+        obj.target_system_id = mavlink_message.target_system_id();
 
-        obj.target_component = mavlink_message.target_component();
+        obj.target_component_id = mavlink_message.target_component_id();
 
         obj.fields_json = mavlink_message.fields_json();
 

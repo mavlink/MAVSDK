@@ -484,8 +484,8 @@ class MavlinkMessage final
     kFieldsJsonFieldNumber = 6,
     kSystemIdFieldNumber = 2,
     kComponentIdFieldNumber = 3,
-    kTargetSystemFieldNumber = 4,
-    kTargetComponentFieldNumber = 5,
+    kTargetSystemIdFieldNumber = 4,
+    kTargetComponentIdFieldNumber = 5,
   };
   // string message_name = 1;
   void clear_message_name() ;
@@ -539,24 +539,24 @@ class MavlinkMessage final
   void _internal_set_component_id(::uint32_t value);
 
   public:
-  // uint32 target_system = 4;
-  void clear_target_system() ;
-  ::uint32_t target_system() const;
-  void set_target_system(::uint32_t value);
+  // uint32 target_system_id = 4;
+  void clear_target_system_id() ;
+  ::uint32_t target_system_id() const;
+  void set_target_system_id(::uint32_t value);
 
   private:
-  ::uint32_t _internal_target_system() const;
-  void _internal_set_target_system(::uint32_t value);
+  ::uint32_t _internal_target_system_id() const;
+  void _internal_set_target_system_id(::uint32_t value);
 
   public:
-  // uint32 target_component = 5;
-  void clear_target_component() ;
-  ::uint32_t target_component() const;
-  void set_target_component(::uint32_t value);
+  // uint32 target_component_id = 5;
+  void clear_target_component_id() ;
+  ::uint32_t target_component_id() const;
+  void set_target_component_id(::uint32_t value);
 
   private:
-  ::uint32_t _internal_target_component() const;
-  void _internal_set_target_component(::uint32_t value);
+  ::uint32_t _internal_target_component_id() const;
+  void _internal_set_target_component_id(::uint32_t value);
 
   public:
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.mavlink_direct.MavlinkMessage)
@@ -586,8 +586,8 @@ class MavlinkMessage final
     ::google::protobuf::internal::ArenaStringPtr fields_json_;
     ::uint32_t system_id_;
     ::uint32_t component_id_;
-    ::uint32_t target_system_;
-    ::uint32_t target_component_;
+    ::uint32_t target_system_id_;
+    ::uint32_t target_component_id_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -2426,48 +2426,48 @@ inline void MavlinkMessage::_internal_set_component_id(::uint32_t value) {
   _impl_.component_id_ = value;
 }
 
-// uint32 target_system = 4;
-inline void MavlinkMessage::clear_target_system() {
+// uint32 target_system_id = 4;
+inline void MavlinkMessage::clear_target_system_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.target_system_ = 0u;
+  _impl_.target_system_id_ = 0u;
 }
-inline ::uint32_t MavlinkMessage::target_system() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.mavlink_direct.MavlinkMessage.target_system)
-  return _internal_target_system();
+inline ::uint32_t MavlinkMessage::target_system_id() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mavlink_direct.MavlinkMessage.target_system_id)
+  return _internal_target_system_id();
 }
-inline void MavlinkMessage::set_target_system(::uint32_t value) {
-  _internal_set_target_system(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.mavlink_direct.MavlinkMessage.target_system)
+inline void MavlinkMessage::set_target_system_id(::uint32_t value) {
+  _internal_set_target_system_id(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.mavlink_direct.MavlinkMessage.target_system_id)
 }
-inline ::uint32_t MavlinkMessage::_internal_target_system() const {
+inline ::uint32_t MavlinkMessage::_internal_target_system_id() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.target_system_;
+  return _impl_.target_system_id_;
 }
-inline void MavlinkMessage::_internal_set_target_system(::uint32_t value) {
+inline void MavlinkMessage::_internal_set_target_system_id(::uint32_t value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.target_system_ = value;
+  _impl_.target_system_id_ = value;
 }
 
-// uint32 target_component = 5;
-inline void MavlinkMessage::clear_target_component() {
+// uint32 target_component_id = 5;
+inline void MavlinkMessage::clear_target_component_id() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.target_component_ = 0u;
+  _impl_.target_component_id_ = 0u;
 }
-inline ::uint32_t MavlinkMessage::target_component() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.mavlink_direct.MavlinkMessage.target_component)
-  return _internal_target_component();
+inline ::uint32_t MavlinkMessage::target_component_id() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mavlink_direct.MavlinkMessage.target_component_id)
+  return _internal_target_component_id();
 }
-inline void MavlinkMessage::set_target_component(::uint32_t value) {
-  _internal_set_target_component(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.mavlink_direct.MavlinkMessage.target_component)
+inline void MavlinkMessage::set_target_component_id(::uint32_t value) {
+  _internal_set_target_component_id(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.mavlink_direct.MavlinkMessage.target_component_id)
 }
-inline ::uint32_t MavlinkMessage::_internal_target_component() const {
+inline ::uint32_t MavlinkMessage::_internal_target_component_id() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.target_component_;
+  return _impl_.target_component_id_;
 }
-inline void MavlinkMessage::_internal_set_target_component(::uint32_t value) {
+inline void MavlinkMessage::_internal_set_target_component_id(::uint32_t value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.target_component_ = value;
+  _impl_.target_component_id_ = value;
 }
 
 // string fields_json = 6;

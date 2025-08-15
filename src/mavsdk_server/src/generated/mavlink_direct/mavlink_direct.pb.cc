@@ -65,8 +65,8 @@ inline constexpr MavlinkMessage::Impl_::Impl_(
             ::_pbi::ConstantInitialized()),
         system_id_{0u},
         component_id_{0u},
-        target_system_{0u},
-        target_component_{0u},
+        target_system_id_{0u},
+        target_component_id_{0u},
         _cached_size_{0} {}
 
 template <typename>
@@ -321,8 +321,8 @@ const ::uint32_t
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mavlink_direct::MavlinkMessage, _impl_.message_name_),
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mavlink_direct::MavlinkMessage, _impl_.system_id_),
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mavlink_direct::MavlinkMessage, _impl_.component_id_),
-        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mavlink_direct::MavlinkMessage, _impl_.target_system_),
-        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mavlink_direct::MavlinkMessage, _impl_.target_component_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mavlink_direct::MavlinkMessage, _impl_.target_system_id_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mavlink_direct::MavlinkMessage, _impl_.target_component_id_),
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mavlink_direct::MavlinkMessage, _impl_.fields_json_),
         ~0u,  // no _has_bits_
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mavlink_direct::MavlinkDirectResult, _internal_metadata_),
@@ -372,30 +372,30 @@ const char descriptor_table_protodef_mavlink_5fdirect_2fmavlink_5fdirect_2eproto
     "\n\024LoadCustomXmlRequest\022\023\n\013xml_content\030\001 "
     "\001(\t\"f\n\025LoadCustomXmlResponse\022M\n\025mavlink_"
     "direct_result\030\001 \001(\0132..mavsdk.rpc.mavlink"
-    "_direct.MavlinkDirectResult\"\225\001\n\016MavlinkM"
+    "_direct.MavlinkDirectResult\"\233\001\n\016MavlinkM"
     "essage\022\024\n\014message_name\030\001 \001(\t\022\021\n\tsystem_i"
-    "d\030\002 \001(\r\022\024\n\014component_id\030\003 \001(\r\022\025\n\rtarget_"
-    "system\030\004 \001(\r\022\030\n\020target_component\030\005 \001(\r\022\023"
-    "\n\013fields_json\030\006 \001(\t\"\262\002\n\023MavlinkDirectRes"
-    "ult\022E\n\006result\030\001 \001(\01625.mavsdk.rpc.mavlink"
-    "_direct.MavlinkDirectResult.Result\022\022\n\nre"
-    "sult_str\030\002 \001(\t\"\277\001\n\006Result\022\022\n\016RESULT_UNKN"
-    "OWN\020\000\022\022\n\016RESULT_SUCCESS\020\001\022\020\n\014RESULT_ERRO"
-    "R\020\002\022\032\n\026RESULT_INVALID_MESSAGE\020\003\022\030\n\024RESUL"
-    "T_INVALID_FIELD\020\004\022\033\n\027RESULT_CONNECTION_E"
-    "RROR\020\005\022\024\n\020RESULT_NO_SYSTEM\020\006\022\022\n\016RESULT_T"
-    "IMEOUT\020\0072\200\003\n\024MavlinkDirectService\022r\n\013Sen"
-    "dMessage\022-.mavsdk.rpc.mavlink_direct.Sen"
-    "dMessageRequest\032..mavsdk.rpc.mavlink_dir"
-    "ect.SendMessageResponse\"\004\200\265\030\001\022z\n\020Subscri"
-    "beMessage\0222.mavsdk.rpc.mavlink_direct.Su"
-    "bscribeMessageRequest\032*.mavsdk.rpc.mavli"
-    "nk_direct.MessageResponse\"\004\200\265\030\0000\001\022x\n\rLoa"
-    "dCustomXml\022/.mavsdk.rpc.mavlink_direct.L"
-    "oadCustomXmlRequest\0320.mavsdk.rpc.mavlink"
-    "_direct.LoadCustomXmlResponse\"\004\200\265\030\001B.\n\030i"
-    "o.mavsdk.mavlink_directB\022MavlinkDirectPr"
-    "otob\006proto3"
+    "d\030\002 \001(\r\022\024\n\014component_id\030\003 \001(\r\022\030\n\020target_"
+    "system_id\030\004 \001(\r\022\033\n\023target_component_id\030\005"
+    " \001(\r\022\023\n\013fields_json\030\006 \001(\t\"\262\002\n\023MavlinkDir"
+    "ectResult\022E\n\006result\030\001 \001(\01625.mavsdk.rpc.m"
+    "avlink_direct.MavlinkDirectResult.Result"
+    "\022\022\n\nresult_str\030\002 \001(\t\"\277\001\n\006Result\022\022\n\016RESUL"
+    "T_UNKNOWN\020\000\022\022\n\016RESULT_SUCCESS\020\001\022\020\n\014RESUL"
+    "T_ERROR\020\002\022\032\n\026RESULT_INVALID_MESSAGE\020\003\022\030\n"
+    "\024RESULT_INVALID_FIELD\020\004\022\033\n\027RESULT_CONNEC"
+    "TION_ERROR\020\005\022\024\n\020RESULT_NO_SYSTEM\020\006\022\022\n\016RE"
+    "SULT_TIMEOUT\020\0072\200\003\n\024MavlinkDirectService\022"
+    "r\n\013SendMessage\022-.mavsdk.rpc.mavlink_dire"
+    "ct.SendMessageRequest\032..mavsdk.rpc.mavli"
+    "nk_direct.SendMessageResponse\"\004\200\265\030\001\022z\n\020S"
+    "ubscribeMessage\0222.mavsdk.rpc.mavlink_dir"
+    "ect.SubscribeMessageRequest\032*.mavsdk.rpc"
+    ".mavlink_direct.MessageResponse\"\004\200\265\030\0000\001\022"
+    "x\n\rLoadCustomXml\022/.mavsdk.rpc.mavlink_di"
+    "rect.LoadCustomXmlRequest\0320.mavsdk.rpc.m"
+    "avlink_direct.LoadCustomXmlResponse\"\004\200\265\030"
+    "\001B.\n\030io.mavsdk.mavlink_directB\022MavlinkDi"
+    "rectProtob\006proto3"
 };
 static const ::_pbi::DescriptorTable* const descriptor_table_mavlink_5fdirect_2fmavlink_5fdirect_2eproto_deps[1] =
     {
@@ -405,7 +405,7 @@ static ::absl::once_flag descriptor_table_mavlink_5fdirect_2fmavlink_5fdirect_2e
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_mavlink_5fdirect_2fmavlink_5fdirect_2eproto = {
     false,
     false,
-    1451,
+    1457,
     descriptor_table_protodef_mavlink_5fdirect_2fmavlink_5fdirect_2eproto,
     "mavlink_direct/mavlink_direct.proto",
     &descriptor_table_mavlink_5fdirect_2fmavlink_5fdirect_2eproto_once,
@@ -1948,9 +1948,9 @@ MavlinkMessage::MavlinkMessage(
                offsetof(Impl_, system_id_),
            reinterpret_cast<const char *>(&from._impl_) +
                offsetof(Impl_, system_id_),
-           offsetof(Impl_, target_component_) -
+           offsetof(Impl_, target_component_id_) -
                offsetof(Impl_, system_id_) +
-               sizeof(Impl_::target_component_));
+               sizeof(Impl_::target_component_id_));
 
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.mavlink_direct.MavlinkMessage)
 }
@@ -1966,9 +1966,9 @@ inline void MavlinkMessage::SharedCtor(::_pb::Arena* arena) {
   ::memset(reinterpret_cast<char *>(&_impl_) +
                offsetof(Impl_, system_id_),
            0,
-           offsetof(Impl_, target_component_) -
+           offsetof(Impl_, target_component_id_) -
                offsetof(Impl_, system_id_) +
-               sizeof(Impl_::target_component_));
+               sizeof(Impl_::target_component_id_));
 }
 MavlinkMessage::~MavlinkMessage() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.mavlink_direct.MavlinkMessage)
@@ -2047,12 +2047,12 @@ const ::_pbi::TcParseTable<3, 6, 0, 72, 2> MavlinkMessage::_table_ = {
     // uint32 component_id = 3;
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(MavlinkMessage, _impl_.component_id_), 63>(),
      {24, 63, 0, PROTOBUF_FIELD_OFFSET(MavlinkMessage, _impl_.component_id_)}},
-    // uint32 target_system = 4;
-    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(MavlinkMessage, _impl_.target_system_), 63>(),
-     {32, 63, 0, PROTOBUF_FIELD_OFFSET(MavlinkMessage, _impl_.target_system_)}},
-    // uint32 target_component = 5;
-    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(MavlinkMessage, _impl_.target_component_), 63>(),
-     {40, 63, 0, PROTOBUF_FIELD_OFFSET(MavlinkMessage, _impl_.target_component_)}},
+    // uint32 target_system_id = 4;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(MavlinkMessage, _impl_.target_system_id_), 63>(),
+     {32, 63, 0, PROTOBUF_FIELD_OFFSET(MavlinkMessage, _impl_.target_system_id_)}},
+    // uint32 target_component_id = 5;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(MavlinkMessage, _impl_.target_component_id_), 63>(),
+     {40, 63, 0, PROTOBUF_FIELD_OFFSET(MavlinkMessage, _impl_.target_component_id_)}},
     // string fields_json = 6;
     {::_pbi::TcParser::FastUS1,
      {50, 63, 0, PROTOBUF_FIELD_OFFSET(MavlinkMessage, _impl_.fields_json_)}},
@@ -2069,11 +2069,11 @@ const ::_pbi::TcParseTable<3, 6, 0, 72, 2> MavlinkMessage::_table_ = {
     // uint32 component_id = 3;
     {PROTOBUF_FIELD_OFFSET(MavlinkMessage, _impl_.component_id_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUInt32)},
-    // uint32 target_system = 4;
-    {PROTOBUF_FIELD_OFFSET(MavlinkMessage, _impl_.target_system_), 0, 0,
+    // uint32 target_system_id = 4;
+    {PROTOBUF_FIELD_OFFSET(MavlinkMessage, _impl_.target_system_id_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUInt32)},
-    // uint32 target_component = 5;
-    {PROTOBUF_FIELD_OFFSET(MavlinkMessage, _impl_.target_component_), 0, 0,
+    // uint32 target_component_id = 5;
+    {PROTOBUF_FIELD_OFFSET(MavlinkMessage, _impl_.target_component_id_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUInt32)},
     // string fields_json = 6;
     {PROTOBUF_FIELD_OFFSET(MavlinkMessage, _impl_.fields_json_), 0, 0,
@@ -2098,8 +2098,8 @@ PROTOBUF_NOINLINE void MavlinkMessage::Clear() {
   _impl_.message_name_.ClearToEmpty();
   _impl_.fields_json_.ClearToEmpty();
   ::memset(&_impl_.system_id_, 0, static_cast<::size_t>(
-      reinterpret_cast<char*>(&_impl_.target_component_) -
-      reinterpret_cast<char*>(&_impl_.system_id_)) + sizeof(_impl_.target_component_));
+      reinterpret_cast<char*>(&_impl_.target_component_id_) -
+      reinterpret_cast<char*>(&_impl_.system_id_)) + sizeof(_impl_.target_component_id_));
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
@@ -2140,18 +2140,18 @@ PROTOBUF_NOINLINE void MavlinkMessage::Clear() {
                 3, this_._internal_component_id(), target);
           }
 
-          // uint32 target_system = 4;
-          if (this_._internal_target_system() != 0) {
+          // uint32 target_system_id = 4;
+          if (this_._internal_target_system_id() != 0) {
             target = stream->EnsureSpace(target);
             target = ::_pbi::WireFormatLite::WriteUInt32ToArray(
-                4, this_._internal_target_system(), target);
+                4, this_._internal_target_system_id(), target);
           }
 
-          // uint32 target_component = 5;
-          if (this_._internal_target_component() != 0) {
+          // uint32 target_component_id = 5;
+          if (this_._internal_target_component_id() != 0) {
             target = stream->EnsureSpace(target);
             target = ::_pbi::WireFormatLite::WriteUInt32ToArray(
-                5, this_._internal_target_component(), target);
+                5, this_._internal_target_component_id(), target);
           }
 
           // string fields_json = 6;
@@ -2207,15 +2207,15 @@ PROTOBUF_NOINLINE void MavlinkMessage::Clear() {
               total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(
                   this_._internal_component_id());
             }
-            // uint32 target_system = 4;
-            if (this_._internal_target_system() != 0) {
+            // uint32 target_system_id = 4;
+            if (this_._internal_target_system_id() != 0) {
               total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(
-                  this_._internal_target_system());
+                  this_._internal_target_system_id());
             }
-            // uint32 target_component = 5;
-            if (this_._internal_target_component() != 0) {
+            // uint32 target_component_id = 5;
+            if (this_._internal_target_component_id() != 0) {
               total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(
-                  this_._internal_target_component());
+                  this_._internal_target_component_id());
             }
           }
           return this_.MaybeComputeUnknownFieldsSize(total_size,
@@ -2242,11 +2242,11 @@ void MavlinkMessage::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::
   if (from._internal_component_id() != 0) {
     _this->_impl_.component_id_ = from._impl_.component_id_;
   }
-  if (from._internal_target_system() != 0) {
-    _this->_impl_.target_system_ = from._impl_.target_system_;
+  if (from._internal_target_system_id() != 0) {
+    _this->_impl_.target_system_id_ = from._impl_.target_system_id_;
   }
-  if (from._internal_target_component() != 0) {
-    _this->_impl_.target_component_ = from._impl_.target_component_;
+  if (from._internal_target_component_id() != 0) {
+    _this->_impl_.target_component_id_ = from._impl_.target_component_id_;
   }
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
@@ -2267,8 +2267,8 @@ void MavlinkMessage::InternalSwap(MavlinkMessage* PROTOBUF_RESTRICT other) {
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.message_name_, &other->_impl_.message_name_, arena);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.fields_json_, &other->_impl_.fields_json_, arena);
   ::google::protobuf::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(MavlinkMessage, _impl_.target_component_)
-      + sizeof(MavlinkMessage::_impl_.target_component_)
+      PROTOBUF_FIELD_OFFSET(MavlinkMessage, _impl_.target_component_id_)
+      + sizeof(MavlinkMessage::_impl_.target_component_id_)
       - PROTOBUF_FIELD_OFFSET(MavlinkMessage, _impl_.system_id_)>(
           reinterpret_cast<char*>(&_impl_.system_id_),
           reinterpret_cast<char*>(&other->_impl_.system_id_));

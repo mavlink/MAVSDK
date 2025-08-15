@@ -14,6 +14,10 @@ TelemetryServerImpl::TelemetryServerImpl(std::shared_ptr<ServerComponent> server
 
 TelemetryServerImpl::~TelemetryServerImpl()
 {
+    // Unregister command handlers BEFORE unregistering plugin to prevent use-after-free
+    _server_component_impl->unregister_mavlink_command_handler(MAV_CMD_SET_MESSAGE_INTERVAL, this);
+    _server_component_impl->unregister_mavlink_command_handler(MAV_CMD_REQUEST_MESSAGE, this);
+
     _server_component_impl->unregister_plugin(this);
     std::lock_guard<std::mutex> lock(_mutex);
     for (const auto& request : _interval_requests) {
