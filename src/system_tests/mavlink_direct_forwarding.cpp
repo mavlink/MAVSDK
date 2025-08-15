@@ -39,7 +39,7 @@ TEST(SystemTest, MavlinkDirectForwardingKnownMessage)
         mavsdk_receiver.add_any_connection("udpin://0.0.0.0:17011"), ConnectionResult::Success);
 
     LogInfo() << "Waiting for connections to establish...";
-    std::this_thread::sleep_for(std::chrono::seconds(1));
+    std::this_thread::sleep_for(std::chrono::seconds(2));
 
     // Receiver discovers the sender system (autopilot) through the forwarder
     auto receiver_target_system = mavsdk_receiver.first_autopilot(10.0);
@@ -153,7 +153,7 @@ TEST(SystemTest, MavlinkDirectForwardingUnknownMessage)
 </mavlink>)";
 
     LogInfo() << "Waiting for connections to establish...";
-    std::this_thread::sleep_for(std::chrono::seconds(1));
+    std::this_thread::sleep_for(std::chrono::seconds(2));
 
     // Receiver discovers the sender system (autopilot) through the forwarder
     auto receiver_target_system = mavsdk_receiver.first_autopilot(10.0);
