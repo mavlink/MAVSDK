@@ -697,19 +697,19 @@ void MavsdkImpl::deliver_message(mavlink_message_t& message)
         libmav_message.component_id = message.compid;
 
         // Extract target_system and target_component if present
-        uint8_t target_system = 0;
-        uint8_t target_component = 0;
-        if (libmav_msg_opt.value().get("target_system", target_system) ==
+        uint8_t target_system_id = 0;
+        uint8_t target_component_id = 0;
+        if (libmav_msg_opt.value().get("target_system", target_system_id) ==
             mav::MessageResult::Success) {
-            libmav_message.target_system = target_system;
+            libmav_message.target_system_id = target_system_id;
         } else {
-            libmav_message.target_system = 0;
+            libmav_message.target_system_id = 0;
         }
-        if (libmav_msg_opt.value().get("target_component", target_component) ==
+        if (libmav_msg_opt.value().get("target_component", target_component_id) ==
             mav::MessageResult::Success) {
-            libmav_message.target_component = target_component;
+            libmav_message.target_component_id = target_component_id;
         } else {
-            libmav_message.target_component = 0;
+            libmav_message.target_component_id = 0;
         }
 
         // Generate JSON using LibmavReceiver's public method
@@ -1248,8 +1248,8 @@ Mavsdk::MavlinkMessage MavsdkImpl::libmav_to_mavsdk_message(const LibmavMessage&
     json_message.message_name = libmav_message.message_name;
     json_message.system_id = libmav_message.system_id;
     json_message.component_id = libmav_message.component_id;
-    json_message.target_system = libmav_message.target_system;
-    json_message.target_component = libmav_message.target_component;
+    json_message.target_system_id = libmav_message.target_system_id;
+    json_message.target_component_id = libmav_message.target_component_id;
     json_message.fields_json = libmav_message.fields_json; // Already populated!
 
     return json_message;

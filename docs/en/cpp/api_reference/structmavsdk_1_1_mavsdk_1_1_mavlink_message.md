@@ -16,9 +16,9 @@ uint32_t [system_id](#structmavsdk_1_1_mavsdk_1_1_mavlink_message_1ab4e295a583a8
 
 uint32_t [component_id](#structmavsdk_1_1_mavsdk_1_1_mavlink_message_1a810d77876cacc800939d3bfb6453e2f7) {} - Component ID of the sender (for received messages)
 
-uint32_t [target_system](#structmavsdk_1_1_mavsdk_1_1_mavlink_message_1aa30e2970d9a40c17e7bf8e02b150d310) {} - Target system ID (for sending, 0 for broadcast)
+uint32_t [target_system_id](#structmavsdk_1_1_mavsdk_1_1_mavlink_message_1a33caacebcd27ee177372f92472cfd215) {} - Target system ID (for sending, 0 for broadcast)
 
-uint32_t [target_component](#structmavsdk_1_1_mavsdk_1_1_mavlink_message_1a5cf69f1e41e5791da49528dfd1788865) {} - Target component ID (for sending, 0 for broadcast)
+uint32_t [target_component_id](#structmavsdk_1_1_mavsdk_1_1_mavlink_message_1ad19da69723464182b41439325eea5014) {} - Target component ID (for sending, 0 for broadcast)
 
 std::string [fields_json](#structmavsdk_1_1_mavsdk_1_1_mavlink_message_1a73165621a97083c143ba7c36461c9754) {} - All message fields as single JSON object.
 
@@ -56,20 +56,20 @@ uint32_t mavsdk::Mavsdk::MavlinkMessage::component_id {}
 Component ID of the sender (for received messages)
 
 
-### target_system {#structmavsdk_1_1_mavsdk_1_1_mavlink_message_1aa30e2970d9a40c17e7bf8e02b150d310}
+### target_system_id {#structmavsdk_1_1_mavsdk_1_1_mavlink_message_1a33caacebcd27ee177372f92472cfd215}
 
 ```cpp
-uint32_t mavsdk::Mavsdk::MavlinkMessage::target_system {}
+uint32_t mavsdk::Mavsdk::MavlinkMessage::target_system_id {}
 ```
 
 
 Target system ID (for sending, 0 for broadcast)
 
 
-### target_component {#structmavsdk_1_1_mavsdk_1_1_mavlink_message_1a5cf69f1e41e5791da49528dfd1788865}
+### target_component_id {#structmavsdk_1_1_mavsdk_1_1_mavlink_message_1ad19da69723464182b41439325eea5014}
 
 ```cpp
-uint32_t mavsdk::Mavsdk::MavlinkMessage::target_component {}
+uint32_t mavsdk::Mavsdk::MavlinkMessage::target_component_id {}
 ```
 
 

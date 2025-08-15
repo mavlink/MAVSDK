@@ -16,9 +16,9 @@ uint32_t [system_id](#structmavsdk_1_1_mavlink_direct_1_1_mavlink_message_1a0fea
 
 uint32_t [component_id](#structmavsdk_1_1_mavlink_direct_1_1_mavlink_message_1a742b128da448bb76b80ea842dc04161e) {} - Component ID of the sender (for received messages)
 
-uint32_t [target_system](#structmavsdk_1_1_mavlink_direct_1_1_mavlink_message_1abe3432b0a8d0fdcccf57091ef8ffd674) {} - Target system ID (for sending, 0 for broadcast)
+uint32_t [target_system_id](#structmavsdk_1_1_mavlink_direct_1_1_mavlink_message_1a428079a85d1d095c9b48a9bab2109d4e) {} - Target system ID (for sending, 0 for broadcast)
 
-uint32_t [target_component](#structmavsdk_1_1_mavlink_direct_1_1_mavlink_message_1abed450709e187a3f0bedd2763680620c) {} - Target component ID (for sending, 0 for broadcast)
+uint32_t [target_component_id](#structmavsdk_1_1_mavlink_direct_1_1_mavlink_message_1a9c22c881d07fb00698bb149a99b76bdb) {} - Target component ID (for sending, 0 for broadcast)
 
 std::string [fields_json](#structmavsdk_1_1_mavlink_direct_1_1_mavlink_message_1a6f3a89236007a00cf69f2063dcbcac50) {} - All message fields as single JSON object.
 
@@ -56,20 +56,20 @@ uint32_t mavsdk::MavlinkDirect::MavlinkMessage::component_id {}
 Component ID of the sender (for received messages)
 
 
-### target_system {#structmavsdk_1_1_mavlink_direct_1_1_mavlink_message_1abe3432b0a8d0fdcccf57091ef8ffd674}
+### target_system_id {#structmavsdk_1_1_mavlink_direct_1_1_mavlink_message_1a428079a85d1d095c9b48a9bab2109d4e}
 
 ```cpp
-uint32_t mavsdk::MavlinkDirect::MavlinkMessage::target_system {}
+uint32_t mavsdk::MavlinkDirect::MavlinkMessage::target_system_id {}
 ```
 
 
 Target system ID (for sending, 0 for broadcast)
 
 
-### target_component {#structmavsdk_1_1_mavlink_direct_1_1_mavlink_message_1abed450709e187a3f0bedd2763680620c}
+### target_component_id {#structmavsdk_1_1_mavlink_direct_1_1_mavlink_message_1a9c22c881d07fb00698bb149a99b76bdb}
 
 ```cpp
-uint32_t mavsdk::MavlinkDirect::MavlinkMessage::target_component {}
+uint32_t mavsdk::MavlinkDirect::MavlinkMessage::target_component_id {}
 ```
 
 

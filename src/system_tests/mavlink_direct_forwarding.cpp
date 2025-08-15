@@ -75,8 +75,8 @@ TEST(SystemTest, MavlinkDirectForwardingKnownMessage)
     test_message.message_name = "GLOBAL_POSITION_INT";
     test_message.system_id = 1;
     test_message.component_id = 1;
-    test_message.target_system = 0;
-    test_message.target_component = 0;
+    test_message.target_system_id = 0;
+    test_message.target_component_id = 0;
     test_message.fields_json =
         R"({"time_boot_ms":12345,"lat":473977418,"lon":-1223974560,"alt":100500,"relative_alt":50250,"vx":100,"vy":-50,"vz":25,"hdg":18000})";
 
@@ -199,8 +199,8 @@ TEST(SystemTest, MavlinkDirectForwardingUnknownMessage)
     test_message.message_name = "CUSTOM_FORWARD_TEST";
     test_message.system_id = 1;
     test_message.component_id = 1;
-    test_message.target_system = 0;
-    test_message.target_component = 0;
+    test_message.target_system_id = 0;
+    test_message.target_component_id = 0;
     test_message.fields_json =
         R"({"test_id":12345,"sequence":1,"status":42,"message":"Hello through forwarder!"})";
 

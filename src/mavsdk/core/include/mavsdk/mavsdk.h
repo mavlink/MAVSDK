@@ -387,9 +387,9 @@ public:
                                        "GLOBAL_POSITION_INT") */
         uint32_t system_id{}; /**< @brief System ID of the sender (for received messages) */
         uint32_t component_id{}; /**< @brief Component ID of the sender (for received messages) */
-        uint32_t target_system{}; /**< @brief Target system ID (for sending, 0 for broadcast) */
+        uint32_t target_system_id{}; /**< @brief Target system ID (for sending, 0 for broadcast) */
         uint32_t
-            target_component{}; /**< @brief Target component ID (for sending, 0 for broadcast) */
+            target_component_id{}; /**< @brief Target component ID (for sending, 0 for broadcast) */
         std::string fields_json{}; /**< @brief All message fields as single JSON object */
     };
 

@@ -25,8 +25,8 @@ struct LibmavMessage {
     std::string message_name; // Message name (e.g., "HEARTBEAT")
     uint32_t system_id; // Source system ID
     uint32_t component_id; // Source component ID
-    uint32_t target_system; // Target system ID (if applicable)
-    uint32_t target_component; // Target component ID (if applicable)
+    uint32_t target_system_id; // Target system ID (if applicable)
+    uint32_t target_component_id; // Target component ID (if applicable)
     std::string fields_json; // Pre-converted JSON fields
 };
 

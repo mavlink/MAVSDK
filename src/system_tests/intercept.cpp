@@ -321,7 +321,7 @@ TEST(SystemTest, InterceptJsonOutgoing)
     auto json_handle = mavsdk_autopilot.subscribe_outgoing_messages_json(
         [&json_prom, &intercept_called](Mavsdk::MavlinkMessage json_message) {
             LogInfo() << "Intercepted outgoing JSON message: " << json_message.message_name
-                      << " to system " << json_message.target_system
+                      << " to system " << json_message.target_system_id
                       << " with fields: " << json_message.fields_json;
 
             if (json_message.message_name == "GPS_RAW_INT") {
@@ -388,7 +388,7 @@ TEST(SystemTest, InterceptJsonOutgoing)
 
     LogInfo() << "Successfully tested outgoing JSON message interception";
     LogInfo() << "  - Message name: " << intercepted_message.message_name;
-    LogInfo() << "  - Target system: " << intercepted_message.target_system;
+    LogInfo() << "  - Target system: " << intercepted_message.target_system_id;
     LogInfo() << "  - Fields JSON length: " << intercepted_message.fields_json.length();
 
     // Cleanup

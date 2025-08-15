@@ -87,13 +87,14 @@ MavlinkDirect::Result MavlinkDirectImpl::send_message(MavlinkDirect::MavlinkMess
     }
 
     // Set target system/component if specified
-    if (message.target_system != 0) {
+    if (message.target_system_id != 0) {
         // For messages that have target_system field, set it
-        libmav_message.set("target_system", static_cast<uint8_t>(message.target_system));
+        libmav_message.set("target_system", static_cast<uint8_t>(message.target_system_id));
     }
-    if (message.target_component != 0) {
+    if (message.target_component_id != 0) {
         // For messages that have target_component field, set it
-        libmav_message.set("target_component", static_cast<uint8_t>(message.target_component));
+        libmav_message.set(
+            "target_component_id", static_cast<uint8_t>(message.target_component_id));
     }
 
     if (_debugging) {
@@ -150,8 +151,8 @@ MavlinkDirect::MessageHandle MavlinkDirectImpl::subscribe_message(
             message.message_name = libmav_msg.message_name;
             message.system_id = libmav_msg.system_id;
             message.component_id = libmav_msg.component_id;
-            message.target_system = libmav_msg.target_system;
-            message.target_component = libmav_msg.target_component;
+            message.target_system_id = libmav_msg.target_system_id;
+            message.target_component_id = libmav_msg.target_component_id;
             message.fields_json = libmav_msg.fields_json;
 
             // Use CallbackList::queue to safely call all subscribed callbacks

@@ -70,17 +70,17 @@ bool LibmavReceiver::parse_libmav_message_from_buffer(const uint8_t* buffer, siz
     _last_message.component_id = header.componentId();
 
     // Extract target_system and target_component if present in message fields
-    uint8_t target_system = 0;
-    uint8_t target_component = 0;
-    if (message.get("target_system", target_system) == mav::MessageResult::Success) {
-        _last_message.target_system = target_system;
+    uint8_t target_system_id = 0;
+    uint8_t target_component_id = 0;
+    if (message.get("target_system", target_system_id) == mav::MessageResult::Success) {
+        _last_message.target_system_id = target_system_id;
     } else {
-        _last_message.target_system = 0;
+        _last_message.target_system_id = 0;
     }
-    if (message.get("target_component", target_component) == mav::MessageResult::Success) {
-        _last_message.target_component = target_component;
+    if (message.get("target_component", target_component_id) == mav::MessageResult::Success) {
+        _last_message.target_component_id = target_component_id;
     } else {
-        _last_message.target_component = 0;
+        _last_message.target_component_id = 0;
     }
 
     _last_message.fields_json = json;
