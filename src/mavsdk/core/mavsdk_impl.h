@@ -52,7 +52,7 @@ public:
 
     void forward_message(mavlink_message_t& message, Connection* connection);
     void receive_message(mavlink_message_t& message, Connection* connection);
-    void receive_libmav_message(const LibmavMessage& message, Connection* connection);
+    void receive_libmav_message(const Mavsdk::MavlinkMessage& message, Connection* connection);
 
     std::pair<ConnectionResult, Mavsdk::ConnectionHandle>
     add_any_connection(const std::string& connection_url, ForwardingOption forwarding_option);
@@ -164,7 +164,7 @@ private:
     void process_message(mavlink_message_t& message, Connection* connection);
 
     void process_libmav_messages();
-    void process_libmav_message(const LibmavMessage& message, Connection* connection);
+    void process_libmav_message(const Mavsdk::MavlinkMessage& message, Connection* connection);
 
     void deliver_messages();
     void deliver_message(mavlink_message_t& message);
@@ -178,7 +178,6 @@ private:
     static uint8_t get_target_component_id(const mavlink_message_t& message);
 
     // Helper methods for JSON message conversion
-    Mavsdk::MavlinkMessage libmav_to_mavsdk_message(const LibmavMessage& libmav_message);
     bool call_json_interception_callbacks(
         const Mavsdk::MavlinkMessage& json_message,
         std::vector<std::pair<Mavsdk::InterceptJsonHandle, Mavsdk::InterceptJsonCallback>>&
@@ -256,7 +255,7 @@ private:
     std::condition_variable _received_messages_cv{};
 
     struct ReceivedLibmavMessage {
-        LibmavMessage message;
+        Mavsdk::MavlinkMessage message;
         Connection* connection_ptr;
     };
     mutable std::mutex _received_libmav_messages_mutex{};

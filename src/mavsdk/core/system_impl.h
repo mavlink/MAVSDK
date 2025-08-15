@@ -73,9 +73,9 @@ public:
     update_component_id_messages_handler(uint16_t msg_id, uint8_t component_id, const void* cookie);
 
     // Libmav message handling
-    using LibmavMessageCallback = std::function<void(const LibmavMessage&)>;
+    using LibmavMessageCallback = std::function<void(const Mavsdk::MavlinkMessage&)>;
 
-    void process_libmav_message(const LibmavMessage& message);
+    void process_libmav_message(const Mavsdk::MavlinkMessage& message);
 
     void register_libmav_message_handler(
         const std::string& message_name, const LibmavMessageCallback& callback, const void* cookie);

@@ -121,7 +121,7 @@ void SystemImpl::update_component_id_messages_handler(
     _mavlink_message_handler.update_component_id(msg_id, component_id, cookie);
 }
 
-void SystemImpl::process_libmav_message(const LibmavMessage& message)
+void SystemImpl::process_libmav_message(const Mavsdk::MavlinkMessage& message)
 {
     // Call all registered libmav message handlers
     std::lock_guard<std::mutex> lock(_libmav_message_handlers_mutex);

@@ -63,8 +63,8 @@ bool LibmavReceiver::parse_libmav_message_from_buffer(const uint8_t* buffer, siz
     // Generate complete JSON with all field values
     std::string json = libmav_message_to_json(message);
 
-    // Fill our LibmavMessage structure
-    _last_message.message = message;
+    // Fill our message structures
+    _last_libmav_message = message;
     _last_message.message_name = message.name();
     _last_message.system_id = header.systemId();
     _last_message.component_id = header.componentId();
