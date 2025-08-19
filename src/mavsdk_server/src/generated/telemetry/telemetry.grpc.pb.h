@@ -32,6 +32,7 @@ namespace telemetry {
 //
 // Allow users to get vehicle telemetry and state information
 // (e.g. battery, GPS, RC connection, flight mode etc.) and set telemetry update rates.
+// Certain Telemetry Topics such as, Position or Velocity_Ned require GPS Fix before data gets published.
 class TelemetryService final {
  public:
   static constexpr char const* service_full_name() {

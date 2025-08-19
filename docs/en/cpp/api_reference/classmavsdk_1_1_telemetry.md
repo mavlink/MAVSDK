@@ -4,7 +4,7 @@
 ----
 
 
-Allow users to get vehicle telemetry and state information (e.g. battery, GPS, RC connection, flight mode etc.) and set telemetry update rates. 
+Allow users to get vehicle telemetry and state information (e.g. battery, GPS, RC connection, flight mode etc.) and set telemetry update rates. Certain [Telemetry](classmavsdk_1_1_telemetry.md) Topics such as, [Position](structmavsdk_1_1_telemetry_1_1_position.md) or Velocity_Ned require GPS Fix before data gets published. 
 
 
 ## Data Structures
