@@ -95,7 +95,9 @@ jobs:
         run: |
           sudo apt-get update && sudo apt-get install -y \
             lcov \
-            curl
+            curl \
+            gpg \
+            git
       - name: configure
         run: cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Coverage -DWERROR=ON -Bbuild -H.
       - name: build
@@ -128,9 +130,10 @@ jobs:
       - name: check size of lcov.info
         run: |
           ls -l lcov.info
-      - name: Coveralls
-        uses: coverallsapp/github-action@v2
+      - uses: codecov/codecov-action@v5
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          path-to-lcov: "./lcov.info"
+          fail_ci_if_error: true # optional (default = false)
+          files: ./lcov.info # optional
+          token: ${{ secrets.CODECOV_TOKEN }}
+          verbose: true # optional (default = false)
 
