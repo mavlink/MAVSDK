@@ -87,13 +87,14 @@ MavlinkDirect::Result MavlinkDirectImpl::send_message(MavlinkDirect::MavlinkMess
     }
 
     // Set target system/component if specified
-    if (message.target_system != 0) {
+    if (message.target_system_id != 0) {
         // For messages that have target_system field, set it
-        libmav_message.set("target_system", static_cast<uint8_t>(message.target_system));
+        libmav_message.set("target_system", static_cast<uint8_t>(message.target_system_id));
     }
-    if (message.target_component != 0) {
+    if (message.target_component_id != 0) {
         // For messages that have target_component field, set it
-        libmav_message.set("target_component", static_cast<uint8_t>(message.target_component));
+        libmav_message.set(
+            "target_component_id", static_cast<uint8_t>(message.target_component_id));
     }
 
     if (_debugging) {
@@ -144,19 +145,20 @@ MavlinkDirect::MessageHandle MavlinkDirectImpl::subscribe_message(
     // synchronization
     _system_impl->register_libmav_message_handler(
         message_name,
-        [this](const LibmavMessage& libmav_msg) {
-            // Convert LibmavMessage to MavlinkDirect::MavlinkMessage
-            MavlinkDirect::MavlinkMessage message;
-            message.message_name = libmav_msg.message_name;
-            message.system_id = libmav_msg.system_id;
-            message.component_id = libmav_msg.component_id;
-            message.target_system = libmav_msg.target_system;
-            message.target_component = libmav_msg.target_component;
-            message.fields_json = libmav_msg.fields_json;
-
+        [this](const Mavsdk::MavlinkMessage& message) {
             // Use CallbackList::queue to safely call all subscribed callbacks
-            _message_subscriptions.queue(
-                message, [this](const auto& func) { _system_impl->call_user_callback(func); });
+            // Convert Mavsdk::MavlinkMessage to MavlinkDirect::MavlinkMessage (they're identical)
+            MavlinkDirect::MavlinkMessage direct_message;
+            direct_message.message_name = message.message_name;
+            direct_message.system_id = message.system_id;
+            direct_message.component_id = message.component_id;
+            direct_message.target_system_id = message.target_system_id;
+            direct_message.target_component_id = message.target_component_id;
+            direct_message.fields_json = message.fields_json;
+
+            _message_subscriptions.queue(direct_message, [this](const auto& func) {
+                _system_impl->call_user_callback(func);
+            });
         },
         &handle // Use handle address as cookie for specific unregistration
     );

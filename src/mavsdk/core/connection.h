@@ -18,7 +18,7 @@ public:
     using ReceiverCallback =
         std::function<void(mavlink_message_t& message, Connection* connection)>;
     using LibmavReceiverCallback =
-        std::function<void(const LibmavMessage& message, Connection* connection)>;
+        std::function<void(const Mavsdk::MavlinkMessage& message, Connection* connection)>;
 
     explicit Connection(
         ReceiverCallback receiver_callback,
@@ -53,7 +53,7 @@ protected:
 
     bool start_libmav_receiver();
     void stop_libmav_receiver();
-    void receive_libmav_message(const LibmavMessage& message, Connection* connection);
+    void receive_libmav_message(const Mavsdk::MavlinkMessage& message, Connection* connection);
 
     ReceiverCallback _receiver_callback{};
     LibmavReceiverCallback _libmav_receiver_callback{};

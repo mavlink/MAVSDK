@@ -60,8 +60,8 @@ TEST(SystemTest, MavlinkDirectRoundtrip)
     test_message.message_name = "GLOBAL_POSITION_INT";
     test_message.system_id = 1;
     test_message.component_id = 1;
-    test_message.target_system = 0;
-    test_message.target_component = 0;
+    test_message.target_system_id = 0;
+    test_message.target_component_id = 0;
     test_message.fields_json =
         R"({"time_boot_ms":12345,"lat":473977418,"lon":-1223974560,"alt":100500,"relative_alt":50250,"vx":100,"vy":-50,"vz":25,"hdg":18000})";
 
@@ -140,8 +140,8 @@ TEST(SystemTest, MavlinkDirectExtendedFields)
     compact_message.message_name = "SYS_STATUS";
     compact_message.system_id = 1;
     compact_message.component_id = 1;
-    compact_message.target_system = 0;
-    compact_message.target_component = 0;
+    compact_message.target_system_id = 0;
+    compact_message.target_component_id = 0;
     compact_message.fields_json =
         R"({"onboard_control_sensors_present":1,"onboard_control_sensors_enabled":1,"onboard_control_sensors_health":1,"load":500,"voltage_battery":12000,"current_battery":1000,"battery_remaining":75,"drop_rate_comm":0,"errors_comm":0,"errors_count1":0,"errors_count2":0,"errors_count3":0,"errors_count4":0})";
 
@@ -155,8 +155,8 @@ TEST(SystemTest, MavlinkDirectExtendedFields)
     full_message.message_name = "SYS_STATUS";
     full_message.system_id = 1;
     full_message.component_id = 1;
-    full_message.target_system = 0;
-    full_message.target_component = 0;
+    full_message.target_system_id = 0;
+    full_message.target_component_id = 0;
     full_message.fields_json =
         R"({"onboard_control_sensors_present":1,"onboard_control_sensors_enabled":1,"onboard_control_sensors_health":1,"load":500,"voltage_battery":12000,"current_battery":1000,"battery_remaining":75,"drop_rate_comm":0,"errors_comm":0,"errors_count1":0,"errors_count2":0,"errors_count3":0,"errors_count4":0,"onboard_control_sensors_present_extended":123,"onboard_control_sensors_enabled_extended":456,"onboard_control_sensors_health_extended":789})";
 
@@ -261,8 +261,8 @@ TEST(SystemTest, MavlinkDirectToTelemetry)
     test_message.message_name = "GLOBAL_POSITION_INT";
     test_message.system_id = 1;
     test_message.component_id = 1;
-    test_message.target_system = 0;
-    test_message.target_component = 0;
+    test_message.target_system_id = 0;
+    test_message.target_component_id = 0;
     test_message.fields_json =
         R"({"time_boot_ms":12345,"lat":473977418,"lon":-1223974560,"alt":100500,"relative_alt":50250,"vx":100,"vy":-50,"vz":25,"hdg":18000})";
 
@@ -412,8 +412,8 @@ TEST(SystemTest, MavlinkDirectArrayFields)
     partial_message.message_name = "GPS_STATUS";
     partial_message.system_id = 1;
     partial_message.component_id = 1;
-    partial_message.target_system = 0;
-    partial_message.target_component = 0;
+    partial_message.target_system_id = 0;
+    partial_message.target_component_id = 0;
     partial_message.fields_json =
         R"({"satellites_visible":3,"satellite_prn":[1,2,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"satellite_used":[1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"satellite_elevation":[45,60,30,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"satellite_azimuth":[90,180,270,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"satellite_snr":[25,30,15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]})";
 
@@ -427,8 +427,8 @@ TEST(SystemTest, MavlinkDirectArrayFields)
     full_message.message_name = "GPS_STATUS";
     full_message.system_id = 1;
     full_message.component_id = 1;
-    full_message.target_system = 0;
-    full_message.target_component = 0;
+    full_message.target_system_id = 0;
+    full_message.target_component_id = 0;
     full_message.fields_json =
         R"({"satellites_visible":20,"satellite_prn":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],"satellite_used":[1,1,1,1,1,0,0,0,0,0,1,1,1,1,1,0,0,0,0,0],"satellite_elevation":[45,60,30,75,20,85,50,40,65,35,25,55,70,15,80,10,90,5,45,60],"satellite_azimuth":[0,36,72,108,144,180,216,252,28,64,100,136,172,208,244,20,56,92,128,164],"satellite_snr":[25,30,15,35,20,40,28,22,32,18,26,31,16,38,24,19,33,21,29,27]})";
 
@@ -583,8 +583,8 @@ TEST(SystemTest, MavlinkDirectLoadCustomXml)
     custom_message.message_name = "CUSTOM_TEST_MESSAGE";
     custom_message.system_id = 1;
     custom_message.component_id = 1;
-    custom_message.target_system = 0;
-    custom_message.target_component = 0;
+    custom_message.target_system_id = 0;
+    custom_message.target_component_id = 0;
     custom_message.fields_json = R"({"test_value":42,"counter":1337,"status":5})";
 
     auto send_result = sender_mavlink_direct.send_message(custom_message);

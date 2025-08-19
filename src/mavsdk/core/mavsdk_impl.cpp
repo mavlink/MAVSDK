@@ -357,7 +357,8 @@ void MavsdkImpl::receive_message(mavlink_message_t& message, Connection* connect
     _received_messages_cv.notify_one();
 }
 
-void MavsdkImpl::receive_libmav_message(const LibmavMessage& message, Connection* connection)
+void MavsdkImpl::receive_libmav_message(
+    const Mavsdk::MavlinkMessage& message, Connection* connection)
 {
     {
         std::lock_guard lock(_received_libmav_messages_mutex);
@@ -403,32 +404,11 @@ void MavsdkImpl::process_message(mavlink_message_t& message, Connection* connect
     {
         std::lock_guard lock(_mutex);
 
-        // This is a low level interface where incoming messages can be tampered
-        // with or even dropped.
-        {
-            bool keep = true;
-            {
-                std::lock_guard<std::mutex> intercept_lock(_intercept_callbacks_mutex);
-                if (_intercept_incoming_messages_callback != nullptr) {
-                    keep = _intercept_incoming_messages_callback(message);
-                }
-            }
-
-            if (!keep) {
-                LogDebug() << "Dropped incoming message: " << int(message.msgid);
-                return;
-            }
-        }
-
-        if (_should_exit) {
-            // If we're meant to clean up, let's not try to acquire any more locks but bail.
-            return;
-        }
-
-        /** @note: Forward message if option is enabled and multiple interfaces are connected.
-         *  Performs message forwarding checks for every messages if message forwarding
-         *  is enabled on at least one connection, and in case of a single forwarding connection,
-         *  we check that it is not the one which received the current message.
+        /** @note: Forward message FIRST (before intercept) if option is enabled and multiple
+         * interfaces are connected. This ensures that forwarded messages are not affected by
+         * intercept modifications. Performs message forwarding checks for every messages if message
+         * forwarding is enabled on at least one connection, and in case of a single forwarding
+         * connection, we check that it is not the one which received the current message.
          *
          * Conditions:
          * 1. At least 2 connections.
@@ -445,6 +425,28 @@ void MavsdkImpl::process_message(mavlink_message_t& message, Connection* connect
                            << static_cast<int>(message.compid);
             }
             forward_message(message, connection);
+        }
+
+        if (_should_exit) {
+            // If we're meant to clean up, let's not try to acquire any more locks but bail.
+            return;
+        }
+
+        // This is a low level interface where incoming messages can be tampered
+        // with or even dropped FOR LOCAL PROCESSING ONLY (after forwarding).
+        {
+            bool keep = true;
+            {
+                std::lock_guard<std::mutex> intercept_lock(_intercept_callbacks_mutex);
+                if (_intercept_incoming_messages_callback != nullptr) {
+                    keep = _intercept_incoming_messages_callback(message);
+                }
+            }
+
+            if (!keep) {
+                LogDebug() << "Dropped incoming message: " << int(message.msgid);
+                return;
+            }
         }
 
         // Don't ever create a system with sysid 0.
@@ -516,7 +518,8 @@ void MavsdkImpl::process_message(mavlink_message_t& message, Connection* connect
     }
 }
 
-void MavsdkImpl::process_libmav_message(const LibmavMessage& message, Connection* /* connection */)
+void MavsdkImpl::process_libmav_message(
+    const Mavsdk::MavlinkMessage& message, Connection* /* connection */)
 {
     // Assumes _received_libmav_messages_mutex
 
@@ -524,6 +527,16 @@ void MavsdkImpl::process_libmav_message(const LibmavMessage& message, Connection
         LogDebug() << "MavsdkImpl::process_libmav_message: " << message.message_name << " from "
                    << static_cast<int>(message.system_id) << "/"
                    << static_cast<int>(message.component_id);
+    }
+
+    // JSON message interception for incoming messages
+    if (!call_json_interception_callbacks(message, _incoming_json_message_subscriptions)) {
+        // Message was dropped by interception callback
+        if (_message_logging_on) {
+            LogDebug() << "Incoming JSON message " << message.message_name
+                       << " dropped by interception";
+        }
+        return;
     }
 
     if (_message_logging_on) {
@@ -668,6 +681,60 @@ void MavsdkImpl::deliver_message(mavlink_message_t& message)
         return;
     }
 
+    // JSON message interception for outgoing messages
+    // Convert mavlink_message_t to Mavsdk::MavlinkMessage for JSON interception
+    uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
+    uint16_t len = mavlink_msg_to_send_buffer(buffer, &message);
+
+    size_t bytes_consumed = 0;
+    auto libmav_msg_opt = parse_message_safe(buffer, len, bytes_consumed);
+
+    if (libmav_msg_opt) {
+        // Create Mavsdk::MavlinkMessage directly for JSON interception
+        Mavsdk::MavlinkMessage json_message;
+        json_message.message_name = libmav_msg_opt.value().name();
+        json_message.system_id = message.sysid;
+        json_message.component_id = message.compid;
+
+        // Extract target_system and target_component if present
+        uint8_t target_system_id = 0;
+        uint8_t target_component_id = 0;
+        if (libmav_msg_opt.value().get("target_system", target_system_id) ==
+            mav::MessageResult::Success) {
+            json_message.target_system_id = target_system_id;
+        } else {
+            json_message.target_system_id = 0;
+        }
+        if (libmav_msg_opt.value().get("target_component", target_component_id) ==
+            mav::MessageResult::Success) {
+            json_message.target_component_id = target_component_id;
+        } else {
+            json_message.target_component_id = 0;
+        }
+
+        // Generate JSON using LibmavReceiver's public method
+        auto connections = get_connections();
+        if (!connections.empty() && connections[0]->get_libmav_receiver()) {
+            json_message.fields_json =
+                connections[0]->get_libmav_receiver()->libmav_message_to_json(
+                    libmav_msg_opt.value());
+        } else {
+            // Fallback: create minimal JSON if no receiver available
+            json_message.fields_json =
+                "{\"message_id\":" + std::to_string(libmav_msg_opt.value().id()) +
+                ",\"message_name\":\"" + libmav_msg_opt.value().name() + "\"}";
+        }
+
+        if (!call_json_interception_callbacks(json_message, _outgoing_json_message_subscriptions)) {
+            // Message was dropped by JSON interception callback
+            if (_message_logging_on) {
+                LogDebug() << "Outgoing JSON message " << json_message.message_name
+                           << " dropped by interception";
+            }
+            return;
+        }
+    }
+
     std::lock_guard lock(_mutex);
 
     if (_connections.empty()) {
@@ -733,7 +800,7 @@ MavsdkImpl::add_udp_connection(const CliArg::Udp& udp, ForwardingOption forwardi
         [this](mavlink_message_t& message, Connection* connection) {
             receive_message(message, connection);
         },
-        [this](const LibmavMessage& message, Connection* connection) {
+        [this](const Mavsdk::MavlinkMessage& message, Connection* connection) {
             receive_libmav_message(message, connection);
         },
         *this, // Pass MavsdkImpl reference for thread-safe MessageSet access
@@ -782,7 +849,7 @@ MavsdkImpl::add_tcp_connection(const CliArg::Tcp& tcp, ForwardingOption forwardi
             [this](mavlink_message_t& message, Connection* connection) {
                 receive_message(message, connection);
             },
-            [this](const LibmavMessage& message, Connection* connection) {
+            [this](const Mavsdk::MavlinkMessage& message, Connection* connection) {
                 receive_libmav_message(message, connection);
             },
             *this, // Pass MavsdkImpl reference for thread-safe MessageSet access
@@ -803,7 +870,7 @@ MavsdkImpl::add_tcp_connection(const CliArg::Tcp& tcp, ForwardingOption forwardi
             [this](mavlink_message_t& message, Connection* connection) {
                 receive_message(message, connection);
             },
-            [this](const LibmavMessage& message, Connection* connection) {
+            [this](const Mavsdk::MavlinkMessage& message, Connection* connection) {
                 receive_libmav_message(message, connection);
             },
             *this, // Pass MavsdkImpl reference for thread-safe MessageSet access
@@ -832,7 +899,7 @@ std::pair<ConnectionResult, Mavsdk::ConnectionHandle> MavsdkImpl::add_serial_con
         [this](mavlink_message_t& message, Connection* connection) {
             receive_message(message, connection);
         },
-        [this](const LibmavMessage& message, Connection* connection) {
+        [this](const Mavsdk::MavlinkMessage& message, Connection* connection) {
             receive_libmav_message(message, connection);
         },
         *this, // Pass MavsdkImpl reference for thread-safe MessageSet access
@@ -1173,6 +1240,65 @@ void MavsdkImpl::intercept_outgoing_messages_async(std::function<bool(mavlink_me
     _intercept_outgoing_messages_callback = callback;
 }
 
+bool MavsdkImpl::call_json_interception_callbacks(
+    const Mavsdk::MavlinkMessage& json_message,
+    std::vector<std::pair<Mavsdk::InterceptJsonHandle, Mavsdk::InterceptJsonCallback>>&
+        callback_list)
+{
+    bool keep_message = true;
+
+    std::lock_guard<std::mutex> lock(_json_subscriptions_mutex);
+    for (const auto& subscription : callback_list) {
+        if (!subscription.second(json_message)) {
+            keep_message = false;
+        }
+    }
+
+    return keep_message;
+}
+
+Mavsdk::InterceptJsonHandle
+MavsdkImpl::subscribe_incoming_messages_json(const Mavsdk::InterceptJsonCallback& callback)
+{
+    std::lock_guard<std::mutex> lock(_json_subscriptions_mutex);
+    auto handle = _json_handle_factory.create();
+    _incoming_json_message_subscriptions.push_back(std::make_pair(handle, callback));
+    return handle;
+}
+
+void MavsdkImpl::unsubscribe_incoming_messages_json(Mavsdk::InterceptJsonHandle handle)
+{
+    std::lock_guard<std::mutex> lock(_json_subscriptions_mutex);
+    auto it = std::find_if(
+        _incoming_json_message_subscriptions.begin(),
+        _incoming_json_message_subscriptions.end(),
+        [handle](const auto& subscription) { return subscription.first == handle; });
+    if (it != _incoming_json_message_subscriptions.end()) {
+        _incoming_json_message_subscriptions.erase(it);
+    }
+}
+
+Mavsdk::InterceptJsonHandle
+MavsdkImpl::subscribe_outgoing_messages_json(const Mavsdk::InterceptJsonCallback& callback)
+{
+    std::lock_guard<std::mutex> lock(_json_subscriptions_mutex);
+    auto handle = _json_handle_factory.create();
+    _outgoing_json_message_subscriptions.push_back(std::make_pair(handle, callback));
+    return handle;
+}
+
+void MavsdkImpl::unsubscribe_outgoing_messages_json(Mavsdk::InterceptJsonHandle handle)
+{
+    std::lock_guard<std::mutex> lock(_json_subscriptions_mutex);
+    auto it = std::find_if(
+        _outgoing_json_message_subscriptions.begin(),
+        _outgoing_json_message_subscriptions.end(),
+        [handle](const auto& subscription) { return subscription.first == handle; });
+    if (it != _outgoing_json_message_subscriptions.end()) {
+        _outgoing_json_message_subscriptions.erase(it);
+    }
+}
+
 Mavsdk::ConnectionErrorHandle
 MavsdkImpl::subscribe_connection_errors(Mavsdk::ConnectionErrorCallback callback)
 {
@@ -1233,6 +1359,7 @@ Sender& MavsdkImpl::sender()
 
 std::vector<Connection*> MavsdkImpl::get_connections() const
 {
+    std::lock_guard lock(_mutex);
     std::vector<Connection*> connections;
     for (const auto& connection_entry : _connections) {
         connections.push_back(connection_entry.connection.get());

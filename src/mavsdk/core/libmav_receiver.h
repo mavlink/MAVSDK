@@ -6,6 +6,7 @@
 #include <optional>
 #include <memory>
 #include "mavlink_include.h"
+#include "mavsdk.h"
 
 // Forward declarations to avoid including MessageSet.h in header
 namespace mav {
@@ -19,17 +20,6 @@ class Value;
 
 namespace mavsdk {
 
-struct LibmavMessage {
-    std::optional<mav::Message>
-        message; // The libmav message object (optional since no default constructor)
-    std::string message_name; // Message name (e.g., "HEARTBEAT")
-    uint32_t system_id; // Source system ID
-    uint32_t component_id; // Source component ID
-    uint32_t target_system; // Target system ID (if applicable)
-    uint32_t target_component; // Target component ID (if applicable)
-    std::string fields_json; // Pre-converted JSON fields
-};
-
 // Forward declaration for thread-safe MessageSet operations
 class MavsdkImpl;
 
@@ -38,7 +28,11 @@ public:
     explicit LibmavReceiver(MavsdkImpl& mavsdk_impl);
     ~LibmavReceiver(); // Need explicit destructor for unique_ptr with incomplete type
 
-    const LibmavMessage& get_last_message() const { return _last_message; }
+    const Mavsdk::MavlinkMessage& get_last_message() const { return _last_message; }
+    const std::optional<mav::Message>& get_last_libmav_message() const
+    {
+        return _last_libmav_message;
+    }
 
     void set_new_datagram(char* datagram, unsigned datagram_len);
 
@@ -54,10 +48,14 @@ public:
     // Load custom XML message definitions
     bool load_custom_xml(const std::string& xml_content);
 
+    // JSON conversion (made public for use in message interception)
+    std::string libmav_message_to_json(const mav::Message& msg) const;
+
 private:
     MavsdkImpl& _mavsdk_impl; // For thread-safe MessageSet access
     std::unique_ptr<mav::BufferParser> _buffer_parser;
-    LibmavMessage _last_message;
+    Mavsdk::MavlinkMessage _last_message;
+    std::optional<mav::Message> _last_libmav_message; // Separate libmav message for integration
 
     char* _datagram = nullptr;
     unsigned _datagram_len = 0;
@@ -65,7 +63,6 @@ private:
     bool _debugging = false;
 
     // Helper methods
-    std::string libmav_message_to_json(const mav::Message& msg) const;
     bool parse_libmav_message_from_buffer(const uint8_t* buffer, size_t buffer_len);
 };
 
