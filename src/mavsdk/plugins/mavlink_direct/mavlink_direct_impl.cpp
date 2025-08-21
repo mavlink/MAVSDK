@@ -3,6 +3,8 @@
 #include <mav/MessageSet.h>
 #include <variant>
 #include <json/json.h>
+#include <cmath>
+#include <limits>
 #include "log.h"
 #include "connection.h"
 #include "callback_list.tpp"
@@ -273,14 +275,38 @@ bool MavlinkDirectImpl::json_to_libmav_message(
                               << field_value.asUInt();
                 }
             }
-        } else if (field_value.isDouble()) {
-            auto result = msg.set(field_name, static_cast<float>(field_value.asFloat()));
-            if (result != ::mav::MessageResult::Success) {
-                // Try as double
-                if (msg.set(field_name, field_value.asDouble()) != ::mav::MessageResult::Success) {
-                    LogWarn() << "Failed to set float/double field " << field_name << " = "
-                              << field_value.asDouble();
+        } else if (field_value.isNull() || field_value.isDouble()) {
+            // Handle float/double values (including null -> NaN)
+            auto field_opt = msg.type().getField(field_name);
+            if (!field_opt) {
+                LogWarn() << "Field " << field_name << " not found in message definition";
+                continue;
+            }
+
+            auto field = field_opt.value();
+            ::mav::MessageResult result = ::mav::MessageResult::FieldNotFound;
+
+            if (field.type.base_type == ::mav::FieldType::BaseType::FLOAT) {
+                if (field_value.isNull()) {
+                    result = msg.set(field_name, std::numeric_limits<float>::quiet_NaN());
+                } else {
+                    result = msg.set(field_name, static_cast<float>(field_value.asFloat()));
                 }
+            } else if (field.type.base_type == ::mav::FieldType::BaseType::DOUBLE) {
+                if (field_value.isNull()) {
+                    result = msg.set(field_name, std::numeric_limits<double>::quiet_NaN());
+                } else {
+                    result = msg.set(field_name, field_value.asDouble());
+                }
+            } else {
+                LogWarn() << "Field " << field_name << " is not a float or double field";
+                continue;
+            }
+
+            if (result != ::mav::MessageResult::Success) {
+                LogWarn() << "Failed to set float/double field " << field_name << " = "
+                          << (field_value.isNull() ? "null" :
+                                                     std::to_string(field_value.asDouble()));
             }
         } else if (field_value.isString()) {
             auto result = msg.setString(field_name, field_value.asString());
@@ -289,64 +315,152 @@ bool MavlinkDirectImpl::json_to_libmav_message(
                           << field_value.asString();
             }
         } else if (field_value.isArray()) {
-            // Handle array fields
+            // Handle array fields with proper type detection
             auto array_size = field_value.size();
 
-            // Try different vector types based on typical MAVLink array field types
-            std::vector<uint8_t> uint8_vec;
-            std::vector<uint16_t> uint16_vec;
-            std::vector<uint32_t> uint32_vec;
-            std::vector<int8_t> int8_vec;
-            std::vector<int16_t> int16_vec;
-            std::vector<int32_t> int32_vec;
-            std::vector<float> float_vec;
-            std::vector<double> double_vec;
-
-            // Convert JSON array to vectors of different types
-            uint8_vec.reserve(array_size);
-            uint16_vec.reserve(array_size);
-            uint32_vec.reserve(array_size);
-            int8_vec.reserve(array_size);
-            int16_vec.reserve(array_size);
-            int32_vec.reserve(array_size);
-            float_vec.reserve(array_size);
-            double_vec.reserve(array_size);
-
-            for (Json::ArrayIndex i = 0; i < array_size; ++i) {
-                const auto& elem = field_value[i];
-                if (elem.isNumeric()) {
-                    uint8_vec.push_back(static_cast<uint8_t>(elem.asUInt()));
-                    uint16_vec.push_back(static_cast<uint16_t>(elem.asUInt()));
-                    uint32_vec.push_back(static_cast<uint32_t>(elem.asUInt()));
-                    int8_vec.push_back(static_cast<int8_t>(elem.asInt()));
-                    int16_vec.push_back(static_cast<int16_t>(elem.asInt()));
-                    int32_vec.push_back(static_cast<int32_t>(elem.asInt()));
-                    float_vec.push_back(static_cast<float>(elem.asFloat()));
-                    double_vec.push_back(elem.asDouble());
-                } else {
-                    // Default to 0 for non-numeric values
-                    uint8_vec.push_back(0);
-                    uint16_vec.push_back(0);
-                    uint32_vec.push_back(0);
-                    int8_vec.push_back(0);
-                    int16_vec.push_back(0);
-                    int32_vec.push_back(0);
-                    float_vec.push_back(0.0f);
-                    double_vec.push_back(0.0);
-                }
+            // Get field definition to determine correct type
+            auto field_opt = msg.type().getField(field_name);
+            if (!field_opt) {
+                LogWarn() << "Field " << field_name << " not found in message definition";
+                continue;
             }
 
-            // Try to set the array field with different vector types
-            if (msg.set(field_name, uint8_vec) == ::mav::MessageResult::Success ||
-                msg.set(field_name, uint16_vec) == ::mav::MessageResult::Success ||
-                msg.set(field_name, uint32_vec) == ::mav::MessageResult::Success ||
-                msg.set(field_name, int8_vec) == ::mav::MessageResult::Success ||
-                msg.set(field_name, int16_vec) == ::mav::MessageResult::Success ||
-                msg.set(field_name, int32_vec) == ::mav::MessageResult::Success ||
-                msg.set(field_name, float_vec) == ::mav::MessageResult::Success ||
-                msg.set(field_name, double_vec) == ::mav::MessageResult::Success) {
-                // Successfully set the array field
-            } else {
+            auto field = field_opt.value();
+            if (field.type.size <= 1) {
+                LogWarn() << "Field " << field_name << " is not an array field";
+                continue;
+            }
+
+            // Create and populate only the correct vector type
+            ::mav::MessageResult result = ::mav::MessageResult::FieldNotFound;
+            switch (field.type.base_type) {
+                case ::mav::FieldType::BaseType::UINT8: {
+                    std::vector<uint8_t> vec;
+                    vec.reserve(array_size);
+                    for (Json::ArrayIndex i = 0; i < array_size; ++i) {
+                        const auto& elem = field_value[i];
+                        vec.push_back(elem.isNumeric() ? static_cast<uint8_t>(elem.asUInt()) : 0);
+                    }
+                    result = msg.set(field_name, vec);
+                    break;
+                }
+                case ::mav::FieldType::BaseType::UINT16: {
+                    std::vector<uint16_t> vec;
+                    vec.reserve(array_size);
+                    for (Json::ArrayIndex i = 0; i < array_size; ++i) {
+                        const auto& elem = field_value[i];
+                        vec.push_back(elem.isNumeric() ? static_cast<uint16_t>(elem.asUInt()) : 0);
+                    }
+                    result = msg.set(field_name, vec);
+                    break;
+                }
+                case ::mav::FieldType::BaseType::UINT32: {
+                    std::vector<uint32_t> vec;
+                    vec.reserve(array_size);
+                    for (Json::ArrayIndex i = 0; i < array_size; ++i) {
+                        const auto& elem = field_value[i];
+                        vec.push_back(elem.isNumeric() ? static_cast<uint32_t>(elem.asUInt()) : 0);
+                    }
+                    result = msg.set(field_name, vec);
+                    break;
+                }
+                case ::mav::FieldType::BaseType::UINT64: {
+                    std::vector<uint64_t> vec;
+                    vec.reserve(array_size);
+                    for (Json::ArrayIndex i = 0; i < array_size; ++i) {
+                        const auto& elem = field_value[i];
+                        vec.push_back(
+                            elem.isNumeric() ? static_cast<uint64_t>(elem.asUInt64()) : 0);
+                    }
+                    result = msg.set(field_name, vec);
+                    break;
+                }
+                case ::mav::FieldType::BaseType::INT8: {
+                    std::vector<int8_t> vec;
+                    vec.reserve(array_size);
+                    for (Json::ArrayIndex i = 0; i < array_size; ++i) {
+                        const auto& elem = field_value[i];
+                        vec.push_back(elem.isNumeric() ? static_cast<int8_t>(elem.asInt()) : 0);
+                    }
+                    result = msg.set(field_name, vec);
+                    break;
+                }
+                case ::mav::FieldType::BaseType::INT16: {
+                    std::vector<int16_t> vec;
+                    vec.reserve(array_size);
+                    for (Json::ArrayIndex i = 0; i < array_size; ++i) {
+                        const auto& elem = field_value[i];
+                        vec.push_back(elem.isNumeric() ? static_cast<int16_t>(elem.asInt()) : 0);
+                    }
+                    result = msg.set(field_name, vec);
+                    break;
+                }
+                case ::mav::FieldType::BaseType::INT32: {
+                    std::vector<int32_t> vec;
+                    vec.reserve(array_size);
+                    for (Json::ArrayIndex i = 0; i < array_size; ++i) {
+                        const auto& elem = field_value[i];
+                        vec.push_back(elem.isNumeric() ? static_cast<int32_t>(elem.asInt()) : 0);
+                    }
+                    result = msg.set(field_name, vec);
+                    break;
+                }
+                case ::mav::FieldType::BaseType::INT64: {
+                    std::vector<int64_t> vec;
+                    vec.reserve(array_size);
+                    for (Json::ArrayIndex i = 0; i < array_size; ++i) {
+                        const auto& elem = field_value[i];
+                        vec.push_back(elem.isNumeric() ? static_cast<int64_t>(elem.asInt64()) : 0);
+                    }
+                    result = msg.set(field_name, vec);
+                    break;
+                }
+                case ::mav::FieldType::BaseType::FLOAT: {
+                    std::vector<float> vec;
+                    vec.reserve(array_size);
+                    for (Json::ArrayIndex i = 0; i < array_size; ++i) {
+                        const auto& elem = field_value[i];
+                        if (elem.isNumeric()) {
+                            vec.push_back(static_cast<float>(elem.asFloat()));
+                        } else {
+                            // For non-numeric values (including null), use NaN
+                            vec.push_back(std::numeric_limits<float>::quiet_NaN());
+                        }
+                    }
+                    result = msg.set(field_name, vec);
+                    break;
+                }
+                case ::mav::FieldType::BaseType::DOUBLE: {
+                    std::vector<double> vec;
+                    vec.reserve(array_size);
+                    for (Json::ArrayIndex i = 0; i < array_size; ++i) {
+                        const auto& elem = field_value[i];
+                        if (elem.isNumeric()) {
+                            vec.push_back(elem.asDouble());
+                        } else {
+                            // For non-numeric values (including null), use NaN
+                            vec.push_back(std::numeric_limits<double>::quiet_NaN());
+                        }
+                    }
+                    result = msg.set(field_name, vec);
+                    break;
+                }
+                case ::mav::FieldType::BaseType::CHAR: {
+                    std::vector<char> vec;
+                    vec.reserve(array_size);
+                    for (Json::ArrayIndex i = 0; i < array_size; ++i) {
+                        const auto& elem = field_value[i];
+                        vec.push_back(elem.isNumeric() ? static_cast<char>(elem.asInt()) : 0);
+                    }
+                    result = msg.set(field_name, vec);
+                    break;
+                }
+                default:
+                    LogWarn() << "Unsupported array field type for " << field_name;
+                    break;
+            }
+
+            if (result != ::mav::MessageResult::Success) {
                 LogWarn() << "Failed to set array field " << field_name;
             }
         } else {
