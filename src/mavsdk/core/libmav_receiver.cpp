@@ -6,6 +6,7 @@
 #include <variant>
 #include <cstring>
 #include <sstream>
+#include <cmath>
 #include "log.h"
 
 namespace mavsdk {
@@ -130,7 +131,11 @@ std::string LibmavReceiver::libmav_message_to_json(const mav::Message& msg) cons
                             json_stream << static_cast<int>(value);
                         } else if constexpr (
                             std::is_same_v<T, float> || std::is_same_v<T, double>) {
-                            json_stream << value;
+                            if (!std::isfinite(value)) {
+                                json_stream << "null";
+                            } else {
+                                json_stream << value;
+                            }
                         } else if constexpr (std::is_same_v<T, std::string>) {
                             json_stream << "\"" << value << "\"";
                         } else if constexpr (
@@ -152,10 +157,8 @@ std::string LibmavReceiver::libmav_message_to_json(const mav::Message& msg) cons
                             std::is_same_v<T, std::vector<uint64_t>> ||
                             std::is_same_v<T, std::vector<int16_t>> ||
                             std::is_same_v<T, std::vector<int32_t>> ||
-                            std::is_same_v<T, std::vector<int64_t>> ||
-                            std::is_same_v<T, std::vector<float>> ||
-                            std::is_same_v<T, std::vector<double>>) {
-                            // Handle other vector types
+                            std::is_same_v<T, std::vector<int64_t>>) {
+                            // Handle integer vector types
                             json_stream << "[";
                             bool first = true;
                             for (const auto& elem : value) {
@@ -163,6 +166,23 @@ std::string LibmavReceiver::libmav_message_to_json(const mav::Message& msg) cons
                                     json_stream << ",";
                                 first = false;
                                 json_stream << elem;
+                            }
+                            json_stream << "]";
+                        } else if constexpr (
+                            std::is_same_v<T, std::vector<float>> ||
+                            std::is_same_v<T, std::vector<double>>) {
+                            // Handle float/double vector types with NaN check
+                            json_stream << "[";
+                            bool first = true;
+                            for (const auto& elem : value) {
+                                if (!first)
+                                    json_stream << ",";
+                                first = false;
+                                if (!std::isfinite(elem)) {
+                                    json_stream << "null";
+                                } else {
+                                    json_stream << elem;
+                                }
                             }
                             json_stream << "]";
                         } else {

@@ -681,3 +681,146 @@ TEST(SystemTest, MavlinkDirectArdupilotmegaMessage)
     receiver_mavlink_direct.unsubscribe_message(handle);
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
+
+TEST(SystemTest, MavlinkDirectNanInfinityJsonHandling)
+{
+    Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
+    Mavsdk mavsdk_autopilot{Mavsdk::Configuration{ComponentType::Autopilot}};
+
+    ASSERT_EQ(
+        mavsdk_groundstation.add_any_connection("udpin://0.0.0.0:17006"),
+        ConnectionResult::Success);
+    ASSERT_EQ(
+        mavsdk_autopilot.add_any_connection("udpout://127.0.0.1:17006"), ConnectionResult::Success);
+
+    // Ground station discovers the autopilot system
+    auto maybe_system = mavsdk_groundstation.first_autopilot(10.0);
+    ASSERT_TRUE(maybe_system);
+    auto system = maybe_system.value();
+    ASSERT_TRUE(system->has_autopilot());
+
+    // Wait for autopilot instance to discover the connection to the ground station
+    while (mavsdk_autopilot.systems().size() == 0) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    }
+
+    auto groundstation_system = mavsdk_autopilot.systems().at(0);
+    ASSERT_EQ(groundstation_system->component_ids()[0], 190);
+
+    auto receiver_mavlink_direct = MavlinkDirect{system};
+    auto sender_mavlink_direct = MavlinkDirect{groundstation_system};
+
+    // Define custom XML with a test message containing float fields
+    std::string custom_xml = R"(<?xml version="1.0"?>
+<mavlink>
+    <version>3</version>
+    <dialect>0</dialect>
+    <messages>
+        <message id="421" name="FLOAT_TEST_MESSAGE">
+            <description>A test message for NaN/infinity handling in JSON</description>
+            <field type="float" name="normal_float">Normal float field</field>
+            <field type="float" name="nan_float">NaN float field</field>
+            <field type="float" name="pos_inf_float">Positive infinity float field</field>
+            <field type="float" name="neg_inf_float">Negative infinity float field</field>
+            <field type="double" name="normal_double">Normal double field</field>
+            <field type="double" name="nan_double">NaN double field</field>
+            <field type="float[4]" name="float_array">Array with some NaN/inf values</field>
+        </message>
+    </messages>
+</mavlink>)";
+
+    // Load custom XML on both sender and receiver
+    auto result1 = sender_mavlink_direct.load_custom_xml(custom_xml);
+    EXPECT_EQ(result1, MavlinkDirect::Result::Success);
+
+    auto result2 = receiver_mavlink_direct.load_custom_xml(custom_xml);
+    EXPECT_EQ(result2, MavlinkDirect::Result::Success);
+
+    auto prom = std::promise<MavlinkDirect::MavlinkMessage>();
+    auto fut = prom.get_future();
+
+    // Subscribe to the custom message
+    auto handle = receiver_mavlink_direct.subscribe_message(
+        "FLOAT_TEST_MESSAGE", [&prom](MavlinkDirect::MavlinkMessage message) {
+            LogInfo() << "Received FLOAT_TEST_MESSAGE: " << message.fields_json;
+            prom.set_value(message);
+        });
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+
+    // Create test message with NaN and infinity values
+    // Note: We can't send these directly in JSON, so we'll simulate the scenario
+    // where they would be received from a MAVLink message containing such values
+
+    // For testing, we'll send a normal message and verify that the libmav receiver
+    // handles NaN/inf correctly. The actual test will be done by checking that
+    // valid JSON is produced even when NaN/inf values are present in libmav parsing.
+
+    MavlinkDirect::MavlinkMessage test_message;
+    test_message.message_name = "FLOAT_TEST_MESSAGE";
+    test_message.system_id = 1;
+    test_message.component_id = 1;
+    test_message.target_system_id = 0;
+    test_message.target_component_id = 0;
+    test_message.fields_json =
+        R"({"normal_float":3.14,"nan_float":null,"pos_inf_float":null,"neg_inf_float":null,"normal_double":2.718,"nan_double":null,"float_array":[1.0,null,null,4.0]})";
+
+    auto send_result = sender_mavlink_direct.send_message(test_message);
+    EXPECT_EQ(send_result, MavlinkDirect::Result::Success);
+
+    // Wait for message to be received
+    ASSERT_EQ(fut.wait_for(std::chrono::seconds(5)), std::future_status::ready);
+
+    auto received_message = fut.get();
+
+    EXPECT_EQ(received_message.message_name, "FLOAT_TEST_MESSAGE");
+
+    // Parse JSON to verify it's valid JSON (most important test)
+    Json::Value json;
+    Json::Reader reader;
+    ASSERT_TRUE(reader.parse(received_message.fields_json, json))
+        << "JSON parsing failed, indicating invalid JSON was generated. "
+        << "JSON content: " << received_message.fields_json;
+
+    // Verify all expected fields are present
+    EXPECT_TRUE(json.isMember("normal_float"));
+    EXPECT_TRUE(json.isMember("nan_float"));
+    EXPECT_TRUE(json.isMember("pos_inf_float"));
+    EXPECT_TRUE(json.isMember("neg_inf_float"));
+    EXPECT_TRUE(json.isMember("normal_double"));
+    EXPECT_TRUE(json.isMember("nan_double"));
+    EXPECT_TRUE(json.isMember("float_array"));
+
+    // Verify that normal values are preserved correctly
+    EXPECT_TRUE(json["normal_float"].isNumeric());
+    EXPECT_NEAR(json["normal_float"].asFloat(), 3.14f, 0.001f);
+    EXPECT_TRUE(json["normal_double"].isNumeric());
+    EXPECT_NEAR(json["normal_double"].asDouble(), 2.718, 0.001);
+
+    // The key test: verify that null values in input JSON were converted to NaN
+    // in the MAVLink message, then back to null in the output JSON
+    EXPECT_TRUE(json["nan_float"].isNull())
+        << "nan_float should be null, got: " << json["nan_float"];
+    EXPECT_TRUE(json["pos_inf_float"].isNull())
+        << "pos_inf_float should be null, got: " << json["pos_inf_float"];
+    EXPECT_TRUE(json["neg_inf_float"].isNull())
+        << "neg_inf_float should be null, got: " << json["neg_inf_float"];
+    EXPECT_TRUE(json["nan_double"].isNull())
+        << "nan_double should be null, got: " << json["nan_double"];
+
+    // Verify array handling: normal values preserved, null values round-trip as null (via NaN)
+    EXPECT_TRUE(json["float_array"].isArray());
+    EXPECT_EQ(json["float_array"].size(), 4u);
+    EXPECT_TRUE(json["float_array"][0].isNumeric());
+    EXPECT_NEAR(json["float_array"][0].asFloat(), 1.0f, 0.001f);
+    EXPECT_TRUE(json["float_array"][1].isNull())
+        << "float_array[1] should be null (converted from NaN), got: " << json["float_array"][1];
+    EXPECT_TRUE(json["float_array"][2].isNull())
+        << "float_array[2] should be null (converted from NaN), got: " << json["float_array"][2];
+    EXPECT_TRUE(json["float_array"][3].isNumeric());
+    EXPECT_NEAR(json["float_array"][3].asFloat(), 4.0f, 0.001f);
+
+    LogInfo() << "Successfully verified that float/double JSON handling produces valid JSON";
+    receiver_mavlink_direct.unsubscribe_message(handle);
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+}
