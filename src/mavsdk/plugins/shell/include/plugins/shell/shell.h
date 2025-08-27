@@ -23,8 +23,7 @@ class System;
 class ShellImpl;
 
 /**
- * @brief *
- * Allow to communicate with the vehicle's system shell.
+ * @brief Allow to communicate with the vehicle's system shell.
  */
 class Shell : public PluginBase {
 public:
@@ -88,7 +87,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result send(std::string command) const;
 

@@ -11,6 +11,7 @@
 #include <iostream>
 #include <iomanip>
 #include <cstring>
+#include <string>
 #include <thread>
 
 using namespace mavsdk;
@@ -20,12 +21,13 @@ using std::this_thread::sleep_for;
 void usage(const std::string& bin_name)
 {
     std::cerr << "Usage : " << bin_name << " <connection_url> [--rm]\n"
-              << '\n'
               << "Connection URL format should be :\n"
-              << " For TCP : tcp://[server_host][:server_port]\n"
-              << " For UDP : udp://[bind_host][:bind_port]\n"
-              << " For Serial : serial:///path/to/serial/dev[:baudrate]\n"
-              << "For example, to connect to the simulator use URL: udp://:14540\n"
+              << " For TCP server: tcpin://<our_ip>:<port>\n"
+              << " For TCP client: tcpout://<remote_ip>:<port>\n"
+              << " For UDP server: udp://<our_ip>:<port>\n"
+              << " For UDP client: udp://<remote_ip>:<port>\n"
+              << " For Serial : serial://</path/to/serial/dev>:<baudrate>]\n"
+              << "For example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n"
               << '\n'
               << "To remove log files after all downloads completed,\n"
               << "please add the --rm argument" << std::endl;
@@ -42,12 +44,12 @@ int main(int argc, char** argv)
     bool remove_log_files = false;
 
     for (int i = 2; i < argc; ++i) {
-        if (argv[i] == "--rm") {
+        if (std::string(argv[i]) == "--rm") {
             remove_log_files = true;
         }
     }
 
-    Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
+    Mavsdk mavsdk{Mavsdk::Configuration{ComponentType::GroundStation}};
     ConnectionResult connection_result = mavsdk.add_any_connection(argv[1]);
 
     if (connection_result != ConnectionResult::Success) {

@@ -233,13 +233,16 @@ void MavlinkMissionTransferClient::UploadWorkItem::start()
         }
     }
 
-    int num_currents = 0;
-    std::for_each(_items.cbegin(), _items.cend(), [&num_currents](const ItemInt& item) {
-        num_currents += item.current;
-    });
-    if (num_currents != 1) {
-        callback_and_reset(Result::CurrentInvalid);
-        return;
+    if (_type == MAV_MISSION_TYPE_MISSION) {
+        int num_currents = 0;
+        std::for_each(_items.cbegin(), _items.cend(), [&num_currents](const ItemInt& item) {
+            num_currents += item.current;
+        });
+
+        if (num_currents != 1) {
+            callback_and_reset(Result::CurrentInvalid);
+            return;
+        }
     }
 
     if (std::any_of(_items.cbegin(), _items.cend(), [this](const ItemInt& item) {
@@ -253,7 +256,7 @@ void MavlinkMissionTransferClient::UploadWorkItem::start()
 
     _retries_done = 0;
     _step = Step::SendCount;
-    _timeout_handler.add([this]() { process_timeout(); }, _timeout_s, &_cookie);
+    _cookie = _timeout_handler.add([this]() { process_timeout(); }, _timeout_s);
 
     _next_sequence = 0;
 
@@ -539,7 +542,7 @@ void MavlinkMissionTransferClient::UploadWorkItem::process_timeout()
 
     switch (_step) {
         case Step::SendCount:
-            _timeout_handler.add([this]() { process_timeout(); }, _timeout_s, &_cookie);
+            _cookie = _timeout_handler.add([this]() { process_timeout(); }, _timeout_s);
             send_count();
             break;
 
@@ -547,7 +550,7 @@ void MavlinkMissionTransferClient::UploadWorkItem::process_timeout()
             // When waiting for items requested we should wait longer than
             // just our timeout, otherwise we give up too quickly.
             ++_retries_done;
-            _timeout_handler.add([this]() { process_timeout(); }, _timeout_s, &_cookie);
+            _cookie = _timeout_handler.add([this]() { process_timeout(); }, _timeout_s);
             break;
     }
 }
@@ -609,7 +612,7 @@ void MavlinkMissionTransferClient::DownloadWorkItem::start()
     _items.clear();
     _started = true;
     _retries_done = 0;
-    _timeout_handler.add([this]() { process_timeout(); }, _timeout_s, &_cookie);
+    _cookie = _timeout_handler.add([this]() { process_timeout(); }, _timeout_s);
     request_list();
 }
 
@@ -789,12 +792,12 @@ void MavlinkMissionTransferClient::DownloadWorkItem::process_timeout()
 
     switch (_step) {
         case Step::RequestList:
-            _timeout_handler.add([this]() { process_timeout(); }, _timeout_s, &_cookie);
+            _cookie = _timeout_handler.add([this]() { process_timeout(); }, _timeout_s);
             request_list();
             break;
 
         case Step::RequestItem:
-            _timeout_handler.add([this]() { process_timeout(); }, _timeout_s, &_cookie);
+            _cookie = _timeout_handler.add([this]() { process_timeout(); }, _timeout_s);
             request_item();
             break;
     }
@@ -847,7 +850,7 @@ void MavlinkMissionTransferClient::ClearWorkItem::start()
 
     _started = true;
     _retries_done = 0;
-    _timeout_handler.add([this]() { process_timeout(); }, _timeout_s, &_cookie);
+    _cookie = _timeout_handler.add([this]() { process_timeout(); }, _timeout_s);
     send_clear();
 }
 
@@ -890,7 +893,7 @@ void MavlinkMissionTransferClient::ClearWorkItem::process_timeout()
         return;
     }
 
-    _timeout_handler.add([this]() { process_timeout(); }, _timeout_s, &_cookie);
+    _cookie = _timeout_handler.add([this]() { process_timeout(); }, _timeout_s);
     send_clear();
 }
 
@@ -1003,7 +1006,7 @@ void MavlinkMissionTransferClient::SetCurrentWorkItem::start()
     }
 
     _retries_done = 0;
-    _timeout_handler.add([this]() { process_timeout(); }, _timeout_s, &_cookie);
+    _cookie = _timeout_handler.add([this]() { process_timeout(); }, _timeout_s);
     send_current_mission_item();
 }
 
@@ -1052,7 +1055,7 @@ void MavlinkMissionTransferClient::SetCurrentWorkItem::process_mission_current(
         callback_and_reset(Result::Success);
         return;
     } else {
-        _timeout_handler.refresh(&_cookie);
+        _timeout_handler.refresh(_cookie);
         send_current_mission_item();
         return;
     }
@@ -1067,7 +1070,7 @@ void MavlinkMissionTransferClient::SetCurrentWorkItem::process_timeout()
         return;
     }
 
-    _timeout_handler.add([this]() { process_timeout(); }, _timeout_s, &_cookie);
+    _cookie = _timeout_handler.add([this]() { process_timeout(); }, _timeout_s);
     send_current_mission_item();
 }
 

@@ -32,11 +32,6 @@ void MissionRawServer::unsubscribe_incoming_mission(IncomingMissionHandle handle
     _impl->unsubscribe_incoming_mission(handle);
 }
 
-MissionRawServer::MissionPlan MissionRawServer::incoming_mission() const
-{
-    return _impl->incoming_mission();
-}
-
 MissionRawServer::CurrentItemChangedHandle
 MissionRawServer::subscribe_current_item_changed(const CurrentItemChangedCallback& callback)
 {
@@ -46,11 +41,6 @@ MissionRawServer::subscribe_current_item_changed(const CurrentItemChangedCallbac
 void MissionRawServer::unsubscribe_current_item_changed(CurrentItemChangedHandle handle)
 {
     _impl->unsubscribe_current_item_changed(handle);
-}
-
-MissionRawServer::MissionItem MissionRawServer::current_item_changed() const
-{
-    return _impl->current_item_changed();
 }
 
 void MissionRawServer::set_current_item_complete() const
@@ -67,11 +57,6 @@ MissionRawServer::subscribe_clear_all(const ClearAllCallback& callback)
 void MissionRawServer::unsubscribe_clear_all(ClearAllHandle handle)
 {
     _impl->unsubscribe_clear_all(handle);
-}
-
-uint32_t MissionRawServer::clear_all() const
-{
-    return _impl->clear_all();
 }
 
 bool operator==(const MissionRawServer::MissionItem& lhs, const MissionRawServer::MissionItem& rhs)

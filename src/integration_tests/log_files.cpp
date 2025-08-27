@@ -11,10 +11,10 @@ using namespace mavsdk;
 
 TEST(HardwareTest, LogFiles)
 {
-    Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
+    Mavsdk mavsdk{Mavsdk::Configuration{ComponentType::GroundStation}};
 
     // ConnectionResult ret = mavsdk.add_serial_connection("/dev/ttyACM0");
-    ConnectionResult ret = mavsdk.add_udp_connection();
+    ConnectionResult ret = mavsdk.add_any_connection("udpin://0.0.0.0:14540");
     ASSERT_EQ(ret, ConnectionResult::Success);
 
     std::this_thread::sleep_for(std::chrono::seconds(2));
@@ -34,8 +34,7 @@ TEST(HardwareTest, LogFiles)
 
         for (auto& entry : entry_result.second) {
             float size_mib = entry.size_bytes / 1024.0f / 1024.0f;
-            LogInfo() << "Entry " << entry.id << ": "
-                      << " at " << entry.date << ", " << size_mib
+            LogInfo() << "Entry " << entry.id << ": " << " at " << entry.date << ", " << size_mib
                       << " MiB, bytes: " << entry.size_bytes;
             std::stringstream file_path_stream;
             file_path_stream << "./logfile_" << entry.id << ".ulog";
@@ -66,10 +65,10 @@ TEST(HardwareTest, LogFiles)
 
 TEST(HardwareTest, LogFilesDownloadFailsIfPathIsDirectory)
 {
-    Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
+    Mavsdk mavsdk{Mavsdk::Configuration{ComponentType::GroundStation}};
 
     // ConnectionResult ret = mavsdk.add_serial_connection("/dev/ttyACM0");
-    ConnectionResult ret = mavsdk.add_udp_connection();
+    ConnectionResult ret = mavsdk.add_any_connection("udpin://0.0.0.0:14540");
     ASSERT_EQ(ret, ConnectionResult::Success);
 
     std::this_thread::sleep_for(std::chrono::seconds(2));
@@ -89,8 +88,7 @@ TEST(HardwareTest, LogFilesDownloadFailsIfPathIsDirectory)
 
         for (auto& entry : entry_result.second) {
             float size_mib = entry.size_bytes / 1024.0f / 1024.0f;
-            LogInfo() << "Entry " << entry.id << ": "
-                      << " at " << entry.date << ", " << size_mib
+            LogInfo() << "Entry " << entry.id << ": " << " at " << entry.date << ", " << size_mib
                       << " MiB, bytes: " << entry.size_bytes;
 
             std::stringstream file_path_stream;
@@ -122,10 +120,10 @@ TEST(HardwareTest, LogFilesDownloadFailsIfPathIsDirectory)
 
 TEST(HardwareTest, LogFilesDownloadFailsIfFileAlreadyExists)
 {
-    Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
+    Mavsdk mavsdk{Mavsdk::Configuration{ComponentType::GroundStation}};
 
     // ConnectionResult ret = mavsdk.add_serial_connection("/dev/ttyACM0");
-    ConnectionResult ret = mavsdk.add_udp_connection();
+    ConnectionResult ret = mavsdk.add_any_connection("udpin://0.0.0.0:14540");
     ASSERT_EQ(ret, ConnectionResult::Success);
 
     std::this_thread::sleep_for(std::chrono::seconds(2));
@@ -145,8 +143,7 @@ TEST(HardwareTest, LogFilesDownloadFailsIfFileAlreadyExists)
 
         for (auto& entry : entry_result.second) {
             float size_mib = entry.size_bytes / 1024.0f / 1024.0f;
-            LogInfo() << "Entry " << entry.id << ": "
-                      << " at " << entry.date << ", " << size_mib
+            LogInfo() << "Entry " << entry.id << ": " << " at " << entry.date << ", " << size_mib
                       << " MiB, bytes: " << entry.size_bytes;
             std::stringstream file_path_stream;
             file_path_stream << "./logfile_" << entry.id << ".ulog";

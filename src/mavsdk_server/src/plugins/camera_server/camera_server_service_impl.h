@@ -16,6 +16,7 @@
 #include <future>
 #include <limits>
 #include <memory>
+#include <mutex>
 #include <sstream>
 #include <vector>
 
@@ -139,6 +140,10 @@ public:
 
         rpc_obj->set_definition_file_uri(information.definition_file_uri);
 
+        rpc_obj->set_image_in_video_mode_supported(information.image_in_video_mode_supported);
+
+        rpc_obj->set_video_in_image_mode_supported(information.video_in_image_mode_supported);
+
         return rpc_obj;
     }
 
@@ -168,6 +173,10 @@ public:
         obj.definition_file_version = information.definition_file_version();
 
         obj.definition_file_uri = information.definition_file_uri();
+
+        obj.image_in_video_mode_supported = information.image_in_video_mode_supported();
+
+        obj.video_in_image_mode_supported = information.video_in_image_mode_supported();
 
         return obj;
     }
@@ -595,6 +604,66 @@ public:
         obj.video_status = translateFromRpcVideoStatus(capture_status.video_status());
 
         obj.image_count = capture_status.image_count();
+
+        return obj;
+    }
+
+    static std::unique_ptr<rpc::camera_server::TrackPoint>
+    translateToRpcTrackPoint(const mavsdk::CameraServer::TrackPoint& track_point)
+    {
+        auto rpc_obj = std::make_unique<rpc::camera_server::TrackPoint>();
+
+        rpc_obj->set_point_x(track_point.point_x);
+
+        rpc_obj->set_point_y(track_point.point_y);
+
+        rpc_obj->set_radius(track_point.radius);
+
+        return rpc_obj;
+    }
+
+    static mavsdk::CameraServer::TrackPoint
+    translateFromRpcTrackPoint(const rpc::camera_server::TrackPoint& track_point)
+    {
+        mavsdk::CameraServer::TrackPoint obj;
+
+        obj.point_x = track_point.point_x();
+
+        obj.point_y = track_point.point_y();
+
+        obj.radius = track_point.radius();
+
+        return obj;
+    }
+
+    static std::unique_ptr<rpc::camera_server::TrackRectangle>
+    translateToRpcTrackRectangle(const mavsdk::CameraServer::TrackRectangle& track_rectangle)
+    {
+        auto rpc_obj = std::make_unique<rpc::camera_server::TrackRectangle>();
+
+        rpc_obj->set_top_left_corner_x(track_rectangle.top_left_corner_x);
+
+        rpc_obj->set_top_left_corner_y(track_rectangle.top_left_corner_y);
+
+        rpc_obj->set_bottom_right_corner_x(track_rectangle.bottom_right_corner_x);
+
+        rpc_obj->set_bottom_right_corner_y(track_rectangle.bottom_right_corner_y);
+
+        return rpc_obj;
+    }
+
+    static mavsdk::CameraServer::TrackRectangle
+    translateFromRpcTrackRectangle(const rpc::camera_server::TrackRectangle& track_rectangle)
+    {
+        mavsdk::CameraServer::TrackRectangle obj;
+
+        obj.top_left_corner_x = track_rectangle.top_left_corner_x();
+
+        obj.top_left_corner_y = track_rectangle.top_left_corner_y();
+
+        obj.bottom_right_corner_x = track_rectangle.bottom_right_corner_x();
+
+        obj.bottom_right_corner_y = track_rectangle.bottom_right_corner_y();
 
         return obj;
     }
@@ -1414,9 +1483,550 @@ public:
         return grpc::Status::OK;
     }
 
+    grpc::Status SubscribeZoomInStart(
+        grpc::ServerContext* /* context */,
+        const mavsdk::rpc::camera_server::SubscribeZoomInStartRequest* /* request */,
+        grpc::ServerWriter<rpc::camera_server::ZoomInStartResponse>* writer) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            return grpc::Status::OK;
+        }
+
+        auto stream_closed_promise = std::make_shared<std::promise<void>>();
+        auto stream_closed_future = stream_closed_promise->get_future();
+        register_stream_stop_promise(stream_closed_promise);
+
+        auto is_finished = std::make_shared<bool>(false);
+        auto subscribe_mutex = std::make_shared<std::mutex>();
+
+        const mavsdk::CameraServer::ZoomInStartHandle handle =
+            _lazy_plugin.maybe_plugin()->subscribe_zoom_in_start(
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
+                    const int32_t zoom_in_start) {
+                    rpc::camera_server::ZoomInStartResponse rpc_response;
+
+                    rpc_response.set_reserved(zoom_in_start);
+
+                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
+                    if (!*is_finished && !writer->Write(rpc_response)) {
+                        _lazy_plugin.maybe_plugin()->unsubscribe_zoom_in_start(handle);
+
+                        *is_finished = true;
+                        unregister_stream_stop_promise(stream_closed_promise);
+                        stream_closed_promise->set_value();
+                    }
+                });
+
+        stream_closed_future.wait();
+        std::unique_lock<std::mutex> lock(*subscribe_mutex);
+        *is_finished = true;
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status RespondZoomInStart(
+        grpc::ServerContext* /* context */,
+        const rpc::camera_server::RespondZoomInStartRequest* request,
+        rpc::camera_server::RespondZoomInStartResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                // For server plugins, this should never happen, they should always be
+                // constructible.
+                auto result = mavsdk::CameraServer::Result::Unknown;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        if (request == nullptr) {
+            LogWarn() << "RespondZoomInStart sent with a null request! Ignoring...";
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->respond_zoom_in_start(
+            translateFromRpcCameraFeedback(request->zoom_in_start_feedback()));
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status SubscribeZoomOutStart(
+        grpc::ServerContext* /* context */,
+        const mavsdk::rpc::camera_server::SubscribeZoomOutStartRequest* /* request */,
+        grpc::ServerWriter<rpc::camera_server::ZoomOutStartResponse>* writer) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            return grpc::Status::OK;
+        }
+
+        auto stream_closed_promise = std::make_shared<std::promise<void>>();
+        auto stream_closed_future = stream_closed_promise->get_future();
+        register_stream_stop_promise(stream_closed_promise);
+
+        auto is_finished = std::make_shared<bool>(false);
+        auto subscribe_mutex = std::make_shared<std::mutex>();
+
+        const mavsdk::CameraServer::ZoomOutStartHandle handle =
+            _lazy_plugin.maybe_plugin()->subscribe_zoom_out_start(
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
+                    const int32_t zoom_out_start) {
+                    rpc::camera_server::ZoomOutStartResponse rpc_response;
+
+                    rpc_response.set_reserved(zoom_out_start);
+
+                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
+                    if (!*is_finished && !writer->Write(rpc_response)) {
+                        _lazy_plugin.maybe_plugin()->unsubscribe_zoom_out_start(handle);
+
+                        *is_finished = true;
+                        unregister_stream_stop_promise(stream_closed_promise);
+                        stream_closed_promise->set_value();
+                    }
+                });
+
+        stream_closed_future.wait();
+        std::unique_lock<std::mutex> lock(*subscribe_mutex);
+        *is_finished = true;
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status RespondZoomOutStart(
+        grpc::ServerContext* /* context */,
+        const rpc::camera_server::RespondZoomOutStartRequest* request,
+        rpc::camera_server::RespondZoomOutStartResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                // For server plugins, this should never happen, they should always be
+                // constructible.
+                auto result = mavsdk::CameraServer::Result::Unknown;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        if (request == nullptr) {
+            LogWarn() << "RespondZoomOutStart sent with a null request! Ignoring...";
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->respond_zoom_out_start(
+            translateFromRpcCameraFeedback(request->zoom_out_start_feedback()));
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status SubscribeZoomStop(
+        grpc::ServerContext* /* context */,
+        const mavsdk::rpc::camera_server::SubscribeZoomStopRequest* /* request */,
+        grpc::ServerWriter<rpc::camera_server::ZoomStopResponse>* writer) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            return grpc::Status::OK;
+        }
+
+        auto stream_closed_promise = std::make_shared<std::promise<void>>();
+        auto stream_closed_future = stream_closed_promise->get_future();
+        register_stream_stop_promise(stream_closed_promise);
+
+        auto is_finished = std::make_shared<bool>(false);
+        auto subscribe_mutex = std::make_shared<std::mutex>();
+
+        const mavsdk::CameraServer::ZoomStopHandle handle =
+            _lazy_plugin.maybe_plugin()->subscribe_zoom_stop(
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
+                    const int32_t zoom_stop) {
+                    rpc::camera_server::ZoomStopResponse rpc_response;
+
+                    rpc_response.set_reserved(zoom_stop);
+
+                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
+                    if (!*is_finished && !writer->Write(rpc_response)) {
+                        _lazy_plugin.maybe_plugin()->unsubscribe_zoom_stop(handle);
+
+                        *is_finished = true;
+                        unregister_stream_stop_promise(stream_closed_promise);
+                        stream_closed_promise->set_value();
+                    }
+                });
+
+        stream_closed_future.wait();
+        std::unique_lock<std::mutex> lock(*subscribe_mutex);
+        *is_finished = true;
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status RespondZoomStop(
+        grpc::ServerContext* /* context */,
+        const rpc::camera_server::RespondZoomStopRequest* request,
+        rpc::camera_server::RespondZoomStopResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                // For server plugins, this should never happen, they should always be
+                // constructible.
+                auto result = mavsdk::CameraServer::Result::Unknown;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        if (request == nullptr) {
+            LogWarn() << "RespondZoomStop sent with a null request! Ignoring...";
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->respond_zoom_stop(
+            translateFromRpcCameraFeedback(request->zoom_stop_feedback()));
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status SubscribeZoomRange(
+        grpc::ServerContext* /* context */,
+        const mavsdk::rpc::camera_server::SubscribeZoomRangeRequest* /* request */,
+        grpc::ServerWriter<rpc::camera_server::ZoomRangeResponse>* writer) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            return grpc::Status::OK;
+        }
+
+        auto stream_closed_promise = std::make_shared<std::promise<void>>();
+        auto stream_closed_future = stream_closed_promise->get_future();
+        register_stream_stop_promise(stream_closed_promise);
+
+        auto is_finished = std::make_shared<bool>(false);
+        auto subscribe_mutex = std::make_shared<std::mutex>();
+
+        const mavsdk::CameraServer::ZoomRangeHandle handle =
+            _lazy_plugin.maybe_plugin()->subscribe_zoom_range(
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
+                    const float zoom_range) {
+                    rpc::camera_server::ZoomRangeResponse rpc_response;
+
+                    rpc_response.set_factor(zoom_range);
+
+                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
+                    if (!*is_finished && !writer->Write(rpc_response)) {
+                        _lazy_plugin.maybe_plugin()->unsubscribe_zoom_range(handle);
+
+                        *is_finished = true;
+                        unregister_stream_stop_promise(stream_closed_promise);
+                        stream_closed_promise->set_value();
+                    }
+                });
+
+        stream_closed_future.wait();
+        std::unique_lock<std::mutex> lock(*subscribe_mutex);
+        *is_finished = true;
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status RespondZoomRange(
+        grpc::ServerContext* /* context */,
+        const rpc::camera_server::RespondZoomRangeRequest* request,
+        rpc::camera_server::RespondZoomRangeResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                // For server plugins, this should never happen, they should always be
+                // constructible.
+                auto result = mavsdk::CameraServer::Result::Unknown;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        if (request == nullptr) {
+            LogWarn() << "RespondZoomRange sent with a null request! Ignoring...";
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->respond_zoom_range(
+            translateFromRpcCameraFeedback(request->zoom_range_feedback()));
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status SetTrackingRectangleStatus(
+        grpc::ServerContext* /* context */,
+        const rpc::camera_server::SetTrackingRectangleStatusRequest* request,
+        rpc::camera_server::SetTrackingRectangleStatusResponse* /* response */) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            return grpc::Status::OK;
+        }
+
+        if (request == nullptr) {
+            LogWarn() << "SetTrackingRectangleStatus sent with a null request! Ignoring...";
+            return grpc::Status::OK;
+        }
+
+        _lazy_plugin.maybe_plugin()->set_tracking_rectangle_status(
+            translateFromRpcTrackRectangle(request->tracked_rectangle()));
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status SetTrackingOffStatus(
+        grpc::ServerContext* /* context */,
+        const rpc::camera_server::SetTrackingOffStatusRequest* /* request */,
+        rpc::camera_server::SetTrackingOffStatusResponse* /* response */) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            return grpc::Status::OK;
+        }
+
+        _lazy_plugin.maybe_plugin()->set_tracking_off_status();
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status SubscribeTrackingPointCommand(
+        grpc::ServerContext* /* context */,
+        const mavsdk::rpc::camera_server::SubscribeTrackingPointCommandRequest* /* request */,
+        grpc::ServerWriter<rpc::camera_server::TrackingPointCommandResponse>* writer) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            return grpc::Status::OK;
+        }
+
+        auto stream_closed_promise = std::make_shared<std::promise<void>>();
+        auto stream_closed_future = stream_closed_promise->get_future();
+        register_stream_stop_promise(stream_closed_promise);
+
+        auto is_finished = std::make_shared<bool>(false);
+        auto subscribe_mutex = std::make_shared<std::mutex>();
+
+        const mavsdk::CameraServer::TrackingPointCommandHandle handle =
+            _lazy_plugin.maybe_plugin()->subscribe_tracking_point_command(
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
+                    const mavsdk::CameraServer::TrackPoint tracking_point_command) {
+                    rpc::camera_server::TrackingPointCommandResponse rpc_response;
+
+                    rpc_response.set_allocated_track_point(
+                        translateToRpcTrackPoint(tracking_point_command).release());
+
+                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
+                    if (!*is_finished && !writer->Write(rpc_response)) {
+                        _lazy_plugin.maybe_plugin()->unsubscribe_tracking_point_command(handle);
+
+                        *is_finished = true;
+                        unregister_stream_stop_promise(stream_closed_promise);
+                        stream_closed_promise->set_value();
+                    }
+                });
+
+        stream_closed_future.wait();
+        std::unique_lock<std::mutex> lock(*subscribe_mutex);
+        *is_finished = true;
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status SubscribeTrackingRectangleCommand(
+        grpc::ServerContext* /* context */,
+        const mavsdk::rpc::camera_server::SubscribeTrackingRectangleCommandRequest* /* request */,
+        grpc::ServerWriter<rpc::camera_server::TrackingRectangleCommandResponse>* writer) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            return grpc::Status::OK;
+        }
+
+        auto stream_closed_promise = std::make_shared<std::promise<void>>();
+        auto stream_closed_future = stream_closed_promise->get_future();
+        register_stream_stop_promise(stream_closed_promise);
+
+        auto is_finished = std::make_shared<bool>(false);
+        auto subscribe_mutex = std::make_shared<std::mutex>();
+
+        const mavsdk::CameraServer::TrackingRectangleCommandHandle handle =
+            _lazy_plugin.maybe_plugin()->subscribe_tracking_rectangle_command(
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
+                    const mavsdk::CameraServer::TrackRectangle tracking_rectangle_command) {
+                    rpc::camera_server::TrackingRectangleCommandResponse rpc_response;
+
+                    rpc_response.set_allocated_track_rectangle(
+                        translateToRpcTrackRectangle(tracking_rectangle_command).release());
+
+                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
+                    if (!*is_finished && !writer->Write(rpc_response)) {
+                        _lazy_plugin.maybe_plugin()->unsubscribe_tracking_rectangle_command(handle);
+
+                        *is_finished = true;
+                        unregister_stream_stop_promise(stream_closed_promise);
+                        stream_closed_promise->set_value();
+                    }
+                });
+
+        stream_closed_future.wait();
+        std::unique_lock<std::mutex> lock(*subscribe_mutex);
+        *is_finished = true;
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status SubscribeTrackingOffCommand(
+        grpc::ServerContext* /* context */,
+        const mavsdk::rpc::camera_server::SubscribeTrackingOffCommandRequest* /* request */,
+        grpc::ServerWriter<rpc::camera_server::TrackingOffCommandResponse>* writer) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            return grpc::Status::OK;
+        }
+
+        auto stream_closed_promise = std::make_shared<std::promise<void>>();
+        auto stream_closed_future = stream_closed_promise->get_future();
+        register_stream_stop_promise(stream_closed_promise);
+
+        auto is_finished = std::make_shared<bool>(false);
+        auto subscribe_mutex = std::make_shared<std::mutex>();
+
+        const mavsdk::CameraServer::TrackingOffCommandHandle handle =
+            _lazy_plugin.maybe_plugin()->subscribe_tracking_off_command(
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
+                    const int32_t tracking_off_command) {
+                    rpc::camera_server::TrackingOffCommandResponse rpc_response;
+
+                    rpc_response.set_dummy(tracking_off_command);
+
+                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
+                    if (!*is_finished && !writer->Write(rpc_response)) {
+                        _lazy_plugin.maybe_plugin()->unsubscribe_tracking_off_command(handle);
+
+                        *is_finished = true;
+                        unregister_stream_stop_promise(stream_closed_promise);
+                        stream_closed_promise->set_value();
+                    }
+                });
+
+        stream_closed_future.wait();
+        std::unique_lock<std::mutex> lock(*subscribe_mutex);
+        *is_finished = true;
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status RespondTrackingPointCommand(
+        grpc::ServerContext* /* context */,
+        const rpc::camera_server::RespondTrackingPointCommandRequest* request,
+        rpc::camera_server::RespondTrackingPointCommandResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                // For server plugins, this should never happen, they should always be
+                // constructible.
+                auto result = mavsdk::CameraServer::Result::Unknown;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        if (request == nullptr) {
+            LogWarn() << "RespondTrackingPointCommand sent with a null request! Ignoring...";
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->respond_tracking_point_command(
+            translateFromRpcCameraFeedback(request->stop_video_feedback()));
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status RespondTrackingRectangleCommand(
+        grpc::ServerContext* /* context */,
+        const rpc::camera_server::RespondTrackingRectangleCommandRequest* request,
+        rpc::camera_server::RespondTrackingRectangleCommandResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                // For server plugins, this should never happen, they should always be
+                // constructible.
+                auto result = mavsdk::CameraServer::Result::Unknown;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        if (request == nullptr) {
+            LogWarn() << "RespondTrackingRectangleCommand sent with a null request! Ignoring...";
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->respond_tracking_rectangle_command(
+            translateFromRpcCameraFeedback(request->stop_video_feedback()));
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status RespondTrackingOffCommand(
+        grpc::ServerContext* /* context */,
+        const rpc::camera_server::RespondTrackingOffCommandRequest* request,
+        rpc::camera_server::RespondTrackingOffCommandResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                // For server plugins, this should never happen, they should always be
+                // constructible.
+                auto result = mavsdk::CameraServer::Result::Unknown;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        if (request == nullptr) {
+            LogWarn() << "RespondTrackingOffCommand sent with a null request! Ignoring...";
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->respond_tracking_off_command(
+            translateFromRpcCameraFeedback(request->stop_video_feedback()));
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+
+        return grpc::Status::OK;
+    }
+
     void stop()
     {
         _stopped.store(true);
+        std::lock_guard<std::mutex> lock(_stream_stop_mutex);
         for (auto& prom : _stream_stop_promises) {
             if (auto handle = prom.lock()) {
                 handle->set_value();
@@ -1433,12 +2043,14 @@ private:
                 handle->set_value();
             }
         } else {
+            std::lock_guard<std::mutex> lock(_stream_stop_mutex);
             _stream_stop_promises.push_back(prom);
         }
     }
 
     void unregister_stream_stop_promise(std::shared_ptr<std::promise<void>> prom)
     {
+        std::lock_guard<std::mutex> lock(_stream_stop_mutex);
         for (auto it = _stream_stop_promises.begin(); it != _stream_stop_promises.end();
              /* ++it */) {
             if (it->lock() == prom) {
@@ -1452,6 +2064,7 @@ private:
     LazyServerPlugin& _lazy_plugin;
 
     std::atomic<bool> _stopped{false};
+    std::mutex _stream_stop_mutex{};
     std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises{};
 };
 

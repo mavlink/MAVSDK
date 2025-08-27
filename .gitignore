@@ -26,3 +26,9 @@ cmake-build-*
 # mavlink repo to generate mavlink-headers
 mavlink
 mavlink-headers
+
+
+# vitepress - Docs guide
+docs/node_modules/
+docs/.vitepress/cache/
+docs/.vitepress/dist/

@@ -1,6 +1,6 @@
 //
 // Example to connect multiple vehicles and make them take off and land in parallel.
-//./multiple_drones udp://:14540 udp://:14541
+//./multiple_drones udpin://0.0.0.0:14540 udpin://0.0.0.0:14541
 //
 
 #include <mavsdk/mavsdk.h>
@@ -20,12 +20,14 @@ static void takeoff_and_land(std::shared_ptr<System> system);
 
 void usage(const std::string& bin_name)
 {
-    std::cerr << "Usage : " << bin_name << " <connection_url_1> [<connection_url_2> ...]\n"
+    std::cerr << "Usage : " << bin_name << " <connection_url>\n"
               << "Connection URL format should be :\n"
-              << " For TCP : tcp://[server_host][:server_port]\n"
-              << " For UDP : udp://[bind_host][:bind_port]\n"
-              << " For Serial : serial:///path/to/serial/dev[:baudrate]\n"
-              << "For example, to connect to the simulator use URL: udp://:14540\n";
+              << " For TCP server: tcpin://<our_ip>:<port>\n"
+              << " For TCP client: tcpout://<remote_ip>:<port>\n"
+              << " For UDP server: udp://<our_ip>:<port>\n"
+              << " For UDP client: udp://<remote_ip>:<port>\n"
+              << " For Serial : serial://</path/to/serial/dev>:<baudrate>]\n"
+              << "For example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n";
 }
 
 int main(int argc, char* argv[])
@@ -36,7 +38,7 @@ int main(int argc, char* argv[])
         return 1;
     }
 
-    Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
+    Mavsdk mavsdk{Mavsdk::Configuration{ComponentType::GroundStation}};
 
     size_t total_udp_ports = argc - 1;
 

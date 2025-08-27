@@ -21,6 +21,7 @@ public:
     void disable() override;
 
     Action::Result arm() const;
+    Action::Result arm_force() const;
     Action::Result disarm() const;
     Action::Result terminate() const;
     Action::Result kill() const;
@@ -47,6 +48,7 @@ public:
     Action::Result transition_to_multicopter() const;
 
     void arm_async(const Action::ResultCallback& callback) const;
+    void arm_force_async(const Action::ResultCallback& callback) const;
     void disarm_async(const Action::ResultCallback& callback) const;
     void terminate_async(const Action::ResultCallback& callback) const;
     void kill_async(const Action::ResultCallback& callback) const;
@@ -81,13 +83,6 @@ public:
 
     Action::Result set_takeoff_altitude(float relative_altitude_m);
     std::pair<Action::Result, float> get_takeoff_altitude() const;
-
-    void
-    set_maximum_speed_async(const float speed_m_s, const Action::ResultCallback& callback) const;
-    void get_maximum_speed_async(const Action::GetMaximumSpeedCallback& callback) const;
-
-    Action::Result set_maximum_speed(float speed_m_s) const;
-    std::pair<Action::Result, float> get_maximum_speed() const;
 
     void set_return_to_launch_altitude_async(
         const float relative_altitude_m, const Action::ResultCallback& callback) const;

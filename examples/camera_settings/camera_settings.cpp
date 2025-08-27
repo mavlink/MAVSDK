@@ -22,10 +22,12 @@ void usage(std::string bin_name)
 {
     std::cerr << "Usage : " << bin_name << " <connection_url>\n"
               << "Connection URL format should be :\n"
-              << " For TCP : tcp://[server_host][:server_port]\n"
-              << " For UDP : udp://[bind_host][:bind_port]\n"
-              << " For Serial : serial:///path/to/serial/dev[:baudrate]\n"
-              << "For example, to connect to the simulator use URL: udp://:14540\n";
+              << " For TCP server: tcpin://<our_ip>:<port>\n"
+              << " For TCP client: tcpout://<remote_ip>:<port>\n"
+              << " For UDP server: udp://<our_ip>:<port>\n"
+              << " For UDP client: udp://<remote_ip>:<port>\n"
+              << " For Serial : serial://</path/to/serial/dev>:<baudrate>]\n"
+              << "For example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n";
 }
 
 struct CurrentSettings {
@@ -47,7 +49,7 @@ void show_settings(const CurrentSettings& current_settings)
     }
 }
 
-void change_camera_mode(Camera& camera)
+void change_camera_mode(int32_t component_id, Camera& camera)
 {
     while (true) {
         std::cout << "Possible modes:\n"
@@ -60,21 +62,28 @@ void change_camera_mode(Camera& camera)
         std::cin >> input;
 
         if (input == "1") {
-            camera.set_mode(Camera::Mode::Photo);
+            camera.set_mode(component_id, Camera::Mode::Photo);
             return;
         } else if (input == "2") {
-            camera.set_mode(Camera::Mode::Video);
+            camera.set_mode(component_id, Camera::Mode::Video);
             return;
         }
     }
 }
 
 bool choose_setting(
-    Camera& camera, const std::string& setting_id, const std::string& current_option_id)
+    int32_t component_id,
+    Camera& camera,
+    const std::string& setting_id,
+    const std::string& current_option_id)
 {
-    const auto setting_options = camera.possible_setting_options();
+    const auto setting_options = camera.get_possible_setting_options(component_id);
+    if (setting_options.first != Camera::Result::Success) {
+        std::cerr << "Could not get settings\n";
+        return false;
+    }
 
-    for (const auto& setting_option : setting_options) {
+    for (const auto& setting_option : setting_options.second) {
         if (setting_option.setting_id == setting_id) {
             std::cout << "Options for " << setting_option.setting_description << ":\n";
             unsigned index = 1;
@@ -108,7 +117,7 @@ bool choose_setting(
             setting.setting_id = setting_id;
             setting.option.option_id = setting_option.options[input_int].option_id;
 
-            camera.set_setting(setting);
+            camera.set_setting(component_id, setting);
             return true;
         }
     }
@@ -116,7 +125,8 @@ bool choose_setting(
     return false;
 }
 
-void change_camera_setting(Camera& camera, const CurrentSettings& current_settings)
+void change_camera_setting(
+    int32_t component_id, Camera& camera, const CurrentSettings& current_settings)
 {
     while (true) {
         std::cout << "Possible settings:\n";
@@ -153,6 +163,7 @@ void change_camera_setting(Camera& camera, const CurrentSettings& current_settin
         }
 
         if (choose_setting(
+                component_id,
                 camera,
                 temp_settings[input_int].setting_id,
                 temp_settings[input_int].option.option_id)) {
@@ -197,7 +208,7 @@ int main(int argc, char** argv)
         return 1;
     }
 
-    Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
+    Mavsdk mavsdk{Mavsdk::Configuration{ComponentType::GroundStation}};
     ConnectionResult connection_result = mavsdk.add_any_connection(argv[1]);
 
     if (connection_result != ConnectionResult::Success) {
@@ -237,13 +248,28 @@ int main(int argc, char** argv)
     auto telemetry = Telemetry{system};
     auto camera = Camera{system};
 
+    // Wait for camera to be discovered.
+    std::this_thread::sleep_for(std::chrono::milliseconds(500));
+
+    // We expect to find one camera.
+    if (camera.camera_list().cameras.size() == 0) {
+        std::cerr << "No camera found, exiting.\n";
+        return 1;
+    }
+
+    if (camera.camera_list().cameras.size() > 1) {
+        std::cout << "More than one camera found, using first one discovered.\n";
+    }
+    const auto component_id = camera.camera_list().cameras[0].component_id;
+
     CurrentSettings current_settings;
 
     // Subscribe to current settings and cache them.
-    camera.subscribe_current_settings([&current_settings](std::vector<Camera::Setting> settings) {
-        std::lock_guard<std::mutex> lock(current_settings.mutex);
-        current_settings.settings = settings;
-    });
+    camera.subscribe_current_settings(
+        [&current_settings](const Camera::CurrentSettingsUpdate& update) {
+            std::lock_guard<std::mutex> lock(current_settings.mutex);
+            current_settings.settings = update.current_settings;
+        });
 
     while (true) {
         switch (get_input()) {
@@ -251,10 +277,10 @@ int main(int argc, char** argv)
                 show_settings(current_settings);
                 break;
             case Input::ChangeCameraMode:
-                change_camera_mode(camera);
+                change_camera_mode(component_id, camera);
                 break;
             case Input::ChangeSetting:
-                change_camera_setting(camera, current_settings);
+                change_camera_setting(component_id, camera, current_settings);
                 break;
             case Input::Quit:
                 return 0;

@@ -45,13 +45,17 @@ void MavlinkFtpServer::process_mavlink_ftp_message(const mavlink_message_t& msg)
 
     if (ftp_req.target_system != 0 &&
         ftp_req.target_system != _server_component_impl.get_own_system_id()) {
-        LogWarn() << "wrong sysid!";
+        if (_debugging) {
+            LogDebug() << "Received FTP message with wrong target system ID";
+        }
         return;
     }
 
     if (ftp_req.target_component != 0 &&
         ftp_req.target_component != _server_component_impl.get_own_component_id()) {
-        LogWarn() << "wrong compid!";
+        if (_debugging) {
+            LogDebug() << "Received FTP message with wrong target component ID";
+        }
         return;
     }
 
@@ -252,6 +256,7 @@ MavlinkFtpServer::_path_from_string(const std::string& payload_path)
 
     // No permission whatsoever if the root dir is not set.
     if (_root_dir.empty()) {
+        LogWarn() << "Root dir not set!";
         return ServerResult::ERR_FAIL;
     }
 
@@ -281,10 +286,13 @@ void MavlinkFtpServer::set_root_directory(const std::string& root_dir)
 {
     std::lock_guard<std::mutex> lock(_mutex);
 
-    std::error_code ignored;
-    _root_dir = fs::canonical(fs::path(root_dir), ignored).string();
+    std::error_code ec;
+    _root_dir = fs::canonical(fs::path(root_dir), ec).string();
+    if (ec) {
+        LogWarn() << "Root dir could not be made absolute: " << ec.message();
+    }
     if (_debugging) {
-        LogDebug() << "Set root dir to: " << _root_dir;
+        LogDebug() << "Set root dir to: " << _root_dir << " from: " << root_dir;
     }
 }
 
@@ -770,22 +778,31 @@ void MavlinkFtpServer::_work_burst(const PayloadHeader& payload)
 
     _session_info.burst_offset = payload.offset;
     _session_info.burst_chunk_size = payload.size;
-
     _burst_seq = payload.seq_number + 1;
 
+    if (_session_info.burst_thread.joinable()) {
+        _session_info.burst_stop = true;
+        _session_info.burst_thread.join();
+    }
+
+    _session_info.burst_stop = false;
+
     // Schedule sending out burst messages.
-    // Use some arbitrary "fast" rate: 100 packets per second
-    _server_component_impl.add_call_every(
-        [this]() { _send_burst_packet(); }, 0.01f, &_burst_call_every_cookie);
+    _session_info.burst_thread = std::thread([this]() {
+        while (!_session_info.burst_stop)
+            if (_send_burst_packet())
+                break;
+    });
 
     // Don't send response as that's done in the call every burst call above.
 }
 
-void MavlinkFtpServer::_send_burst_packet()
+// Returns true if sending is complete
+bool MavlinkFtpServer::_send_burst_packet()
 {
     std::lock_guard<std::mutex> lock(_mutex);
     if (!_session_info.ifstream.is_open()) {
-        _reset();
+        return false;
     }
 
     PayloadHeader burst_packet{};
@@ -797,11 +814,10 @@ void MavlinkFtpServer::_send_burst_packet()
     _send_mavlink_ftp_message(burst_packet);
 
     if (burst_packet.burst_complete == 1) {
-        if (_burst_call_every_cookie != nullptr) {
-            _server_component_impl.remove_call_every(_burst_call_every_cookie);
-            _burst_call_every_cookie = nullptr;
-        }
+        return true;
     }
+
+    return false;
 }
 
 void MavlinkFtpServer::_make_burst_packet(PayloadHeader& packet)
@@ -871,8 +887,7 @@ void MavlinkFtpServer::_work_write(const PayloadHeader& payload)
     }
 
     response.opcode = Opcode::RSP_ACK;
-    response.size = sizeof(uint32_t);
-    std::memcpy(response.data, &payload.size, response.size);
+    response.size = 0;
 
     _send_mavlink_ftp_message(response);
 }
@@ -903,9 +918,9 @@ void MavlinkFtpServer::_reset()
         _session_info.ofstream.close();
     }
 
-    if (_burst_call_every_cookie != nullptr) {
-        _server_component_impl.remove_call_every(_burst_call_every_cookie);
-        _burst_call_every_cookie = nullptr;
+    _session_info.burst_stop = true;
+    if (_session_info.burst_thread.joinable()) {
+        _session_info.burst_thread.join();
     }
 }
 
@@ -951,15 +966,26 @@ void MavlinkFtpServer::_work_remove_directory(const PayloadHeader& payload)
         _send_mavlink_ftp_message(response);
         return;
     }
-    if (fs::remove(path, ec)) {
-        response.opcode = Opcode::RSP_ACK;
-        response.size = 0;
-    } else {
+    if (ec) {
+        LogErr() << "fs::exists for " << path << " returned error: " << ec.message();
         response.opcode = Opcode::RSP_NAK;
         response.size = 1;
         response.data[0] = ServerResult::ERR_FAIL;
+        _send_mavlink_ftp_message(response);
+        return;
     }
 
+    if (!fs::remove(path, ec)) {
+        LogErr() << "fs::remove returned error: " << ec.message();
+        response.opcode = Opcode::RSP_NAK;
+        response.size = 1;
+        response.data[0] = ServerResult::ERR_FAIL;
+        _send_mavlink_ftp_message(response);
+        return;
+    }
+
+    response.opcode = Opcode::RSP_ACK;
+    response.size = 0;
     _send_mavlink_ftp_message(response);
 }
 
@@ -1087,14 +1113,17 @@ void MavlinkFtpServer::_work_rename(const PayloadHeader& payload)
     }
 
     fs::rename(old_name, new_name, ec);
-    if (!ec) {
-        response.opcode = Opcode::RSP_ACK;
-    } else {
+    if (ec) {
+        LogErr() << "fs::rename from " << old_name << " to " << new_name
+                 << " returned error: " << ec.message();
         response.opcode = Opcode::RSP_NAK;
         response.size = 1;
         response.data[0] = ServerResult::ERR_FAIL;
+        _send_mavlink_ftp_message(response);
+        return;
     }
 
+    response.opcode = Opcode::RSP_ACK;
     _send_mavlink_ftp_message(response);
 }
 

@@ -14,9 +14,9 @@ static uint8_t _sysid = 0;
 
 TEST(SitlTest, SystemConnectionAsync)
 {
-    Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
+    Mavsdk mavsdk{Mavsdk::Configuration{ComponentType::GroundStation}};
 
-    ASSERT_EQ(mavsdk.add_udp_connection(), ConnectionResult::Success);
+    ASSERT_EQ(mavsdk.add_any_connection("udpin://0.0.0.0:14540"), ConnectionResult::Success);
 
     mavsdk.subscribe_on_new_system([&mavsdk]() {
         const auto system = mavsdk.systems().at(0);

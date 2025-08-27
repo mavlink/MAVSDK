@@ -12,9 +12,9 @@ static std::atomic<Telemetry::FlightMode> _flight_mode{Telemetry::FlightMode::Un
 
 TEST(SitlTestDisabled, TelemetryFlightModes)
 {
-    Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
+    Mavsdk mavsdk{Mavsdk::Configuration{ComponentType::GroundStation}};
 
-    ConnectionResult ret = mavsdk.add_udp_connection();
+    ConnectionResult ret = mavsdk.add_any_connection("udpin://0.0.0.0:14540");
     ASSERT_EQ(ret, ConnectionResult::Success);
     std::this_thread::sleep_for(std::chrono::seconds(2));
 

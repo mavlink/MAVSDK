@@ -3,7 +3,7 @@
 // separate plan file. Also saves the telemetry information to csv files
 //
 // Run with:
-// ./fly_multiple_drones udp://:14540 udp://:14541 test1.plan test2.plan
+// ./fly_multiple_drones udpin://0.0.0.0:14540 udpin://0.0.0.0:14541 test1.plan test2.plan
 //
 //
 // How to Start Multiple Instances (for jMAVSim)
@@ -33,12 +33,12 @@
 // 2. Build the executable
 // 3. (a) Create a Mission in QGroundControl and save them to a file (.plan), or
 //    (b) Use a pre-created sample mission plan.
-// 4. Run the executable by passing the connection urls (ex. udp://:14540) and
+// 4. Run the executable by passing the connection urls (ex. udpin://0.0.0.0:14540) and
 //    path of QGC mission plan as arguments Example: If you have test1.plan and
 //    test2.plan in "../../../plugins/mission/" and you are running two drones
-//    in udp://:14540 and udp://:14541 then you run the example as:
+//    in udpin://0.0.0.0:14540 and udpin://0.0.0.0:14541 then you run the example as:
 //
-//   ./fly_multiple_drones udp://:14540 udp://:14541 test1.plan test2.plan
+//   ./fly_multiple_drones udpin://0.0.0.0:14540 udpin://0.0.0.0:14541 test1.plan test2.plan
 //
 //
 // Note: The mission needs to end with RTL or land, otherwise it will get stuck
@@ -69,9 +69,28 @@ static void complete_mission(std::string qgc_plan, std::shared_ptr<System> syste
 
 static std::string getCurrentTimeString()
 {
+    // Get the current time
     time_t now = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+
+    // Create buffer to hold formatted time string
     std::string s(30, '\0');
-    strftime(&s[0], s.size(), "%Y-%m-%d %H:%M:%S", std::localtime(&now));
+
+    // Use thread-safe time conversion
+#ifdef _WIN32
+    // Windows thread-safe version
+    struct tm timeinfo;
+    localtime_s(&timeinfo, &now);
+    strftime(&s[0], s.size(), "%Y-%m-%d %H:%M:%S", &timeinfo);
+#else
+    // POSIX thread-safe version
+    struct tm timeinfo;
+    localtime_r(&now, &timeinfo);
+    strftime(&s[0], s.size(), "%Y-%m-%d %H:%M:%S", &timeinfo);
+#endif
+
+    // Resize string to actual content length (removing trailing nulls)
+    s.resize(strlen(s.c_str()));
+
     return s;
 }
 
@@ -85,10 +104,10 @@ int main(int argc, char* argv[])
         return 1;
     }
 
-    Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
+    Mavsdk mavsdk{Mavsdk::Configuration{ComponentType::GroundStation}};
 
     // Half of argc is how many udp ports is being used
-    size_t total_ports_used = argc / 2;
+    int total_ports_used = argc / 2;
 
     // the loop below adds the number of ports the sdk monitors.
     // Loop must start from 1 since we are ignoring argv[0] which would be the name of the

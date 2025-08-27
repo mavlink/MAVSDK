@@ -30,6 +30,10 @@ int GrpcServer::run()
     builder.RegisterService(&_action_server_service);
 #endif
 
+#ifdef ARM_AUTHORIZER_SERVER_ENABLED
+    builder.RegisterService(&_arm_authorizer_server_service);
+#endif
+
 #ifdef CALIBRATION_ENABLED
     builder.RegisterService(&_calibration_service);
 #endif
@@ -42,12 +46,16 @@ int GrpcServer::run()
     builder.RegisterService(&_camera_server_service);
 #endif
 
-#ifdef COMPONENT_INFORMATION_ENABLED
-    builder.RegisterService(&_component_information_service);
+#ifdef COMPONENT_METADATA_ENABLED
+    builder.RegisterService(&_component_metadata_service);
 #endif
 
-#ifdef COMPONENT_INFORMATION_SERVER_ENABLED
-    builder.RegisterService(&_component_information_server_service);
+#ifdef COMPONENT_METADATA_SERVER_ENABLED
+    builder.RegisterService(&_component_metadata_server_service);
+#endif
+
+#ifdef EVENTS_ENABLED
+    builder.RegisterService(&_events_service);
 #endif
 
 #ifdef FAILURE_ENABLED
@@ -86,8 +94,16 @@ int GrpcServer::run()
     builder.RegisterService(&_log_files_service);
 #endif
 
+#ifdef LOG_STREAMING_ENABLED
+    builder.RegisterService(&_log_streaming_service);
+#endif
+
 #ifdef MANUAL_CONTROL_ENABLED
     builder.RegisterService(&_manual_control_service);
+#endif
+
+#ifdef MAVLINK_DIRECT_ENABLED
+    builder.RegisterService(&_mavlink_direct_service);
 #endif
 
 #ifdef MISSION_ENABLED
@@ -136,10 +152,6 @@ int GrpcServer::run()
 
 #ifdef TELEMETRY_SERVER_ENABLED
     builder.RegisterService(&_telemetry_server_service);
-#endif
-
-#ifdef TRACKING_SERVER_ENABLED
-    builder.RegisterService(&_tracking_server_service);
 #endif
 
 #ifdef TRANSPONDER_ENABLED
@@ -193,6 +205,10 @@ void GrpcServer::stop()
         _action_server_service.stop();
 #endif
 
+#ifdef ARM_AUTHORIZER_SERVER_ENABLED
+        _arm_authorizer_server_service.stop();
+#endif
+
 #ifdef CALIBRATION_ENABLED
         _calibration_service.stop();
 #endif
@@ -205,12 +221,16 @@ void GrpcServer::stop()
         _camera_server_service.stop();
 #endif
 
-#ifdef COMPONENT_INFORMATION_ENABLED
-        _component_information_service.stop();
+#ifdef COMPONENT_METADATA_ENABLED
+        _component_metadata_service.stop();
 #endif
 
-#ifdef COMPONENT_INFORMATION_SERVER_ENABLED
-        _component_information_server_service.stop();
+#ifdef COMPONENT_METADATA_SERVER_ENABLED
+        _component_metadata_server_service.stop();
+#endif
+
+#ifdef EVENTS_ENABLED
+        _events_service.stop();
 #endif
 
 #ifdef FAILURE_ENABLED
@@ -249,8 +269,16 @@ void GrpcServer::stop()
         _log_files_service.stop();
 #endif
 
+#ifdef LOG_STREAMING_ENABLED
+        _log_streaming_service.stop();
+#endif
+
 #ifdef MANUAL_CONTROL_ENABLED
         _manual_control_service.stop();
+#endif
+
+#ifdef MAVLINK_DIRECT_ENABLED
+        _mavlink_direct_service.stop();
 #endif
 
 #ifdef MISSION_ENABLED
@@ -299,10 +327,6 @@ void GrpcServer::stop()
 
 #ifdef TELEMETRY_SERVER_ENABLED
         _telemetry_server_service.stop();
-#endif
-
-#ifdef TRACKING_SERVER_ENABLED
-        _tracking_server_service.stop();
 #endif
 
 #ifdef TRANSPONDER_ENABLED

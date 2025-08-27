@@ -18,10 +18,10 @@ target_link_libraries(offboard
 if(NOT MSVC)
     add_compile_options(offboard PRIVATE -Wall -Wextra)
 else()
-    add_compile_options(offboard PRIVATE -WX -W2)
+    add_compile_options(offboard PRIVATE -W2)
 endif()
 
 if(MINGW OR MSVC)
     # For M_PI
-    add_target_definitions(offboard "-D_USE_MATH_DEFINES")
+    target_compile_definitions(offboard PRIVATE "-D_USE_MATH_DEFINES")
 endif()

@@ -29,7 +29,7 @@ namespace mavsdk {
 namespace rpc {
 namespace offboard {
 
-// *
+//
 // Control a drone with position, velocity, attitude or motor commands.
 //
 // The module is called offboard because the commands can be sent from external sources

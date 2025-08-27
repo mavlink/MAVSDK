@@ -2,7 +2,6 @@
 #include <cmath>
 #include "integration_test_helper.h"
 #include "mavsdk.h"
-#include "mavsdk_math.h"
 #include "plugins/action/action.h"
 #include "plugins/telemetry/telemetry.h"
 #include "plugins/offboard/offboard.h"
@@ -12,9 +11,9 @@ using namespace mavsdk;
 
 TEST(SitlTest, OffboardVelocityNED)
 {
-    Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
+    Mavsdk mavsdk{Mavsdk::Configuration{ComponentType::GroundStation}};
 
-    ConnectionResult ret = mavsdk.add_udp_connection();
+    ConnectionResult ret = mavsdk.add_any_connection("udpin://0.0.0.0:14540");
     ASSERT_EQ(ConnectionResult::Success, ret);
 
     // Wait for system to connect via heartbeat.
@@ -60,7 +59,7 @@ TEST(SitlTest, OffboardVelocityNED)
 
     {
         const float step_size = 0.01f;
-        const float one_cycle = 2.0f * static_cast<float>(PI);
+        const float one_cycle = 2.0f * static_cast<float>(M_PI);
         const unsigned steps = 2 * unsigned(one_cycle / step_size);
 
         for (unsigned i = 0; i < steps; ++i) {
@@ -134,9 +133,9 @@ TEST(SitlTest, OffboardVelocityNED)
 
 TEST(SitlTest, OffboardVelocityBody)
 {
-    Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
+    Mavsdk mavsdk{Mavsdk::Configuration{ComponentType::GroundStation}};
 
-    ConnectionResult ret = mavsdk.add_udp_connection();
+    ConnectionResult ret = mavsdk.add_any_connection("udpin://0.0.0.0:14540");
     ASSERT_EQ(ConnectionResult::Success, ret);
 
     // Wait for system to connect via heartbeat.

@@ -1,40 +1,8 @@
 #include "mavlink_parameter_subscription.h"
 
-namespace mavsdk {
+#include <algorithm>
 
-template<class T>
-void MavlinkParameterSubscription::subscribe_param_changed(
-    const std::string& name, const ParamChangedCallback<T>& callback, const void* cookie)
-{
-    std::lock_guard<std::mutex> lock(_param_changed_subscriptions_mutex);
-    if (callback != nullptr) {
-        ParamChangedSubscription subscription{name, callback, cookie};
-        // This is just to let the upper level know of what probably is a bug, but we check again
-        // when actually calling the callback We also cannot assume here that the user called
-        // provide_param before subscribe_param_changed, so the only thing that makes sense is to
-        // log a warning, but then continue anyways.
-        /*std::lock_guard<std::mutex> lock2(_all_params_mutex);
-        if (_all_params.find(name) != _all_params.end()) {
-            const auto curr_value = _all_params.at(name);
-            if (!curr_value.template is_same_type_templated<T>()) {
-                LogDebug()
-                    << "You just registered a param changed callback where the type does not match
-        the type already stored";
-            }
-        }*/
-        _param_changed_subscriptions.push_back(subscription);
-    } else {
-        for (auto it = _param_changed_subscriptions.begin();
-             it != _param_changed_subscriptions.end();
-             /* ++it */) {
-            if (it->param_name == name && it->cookie == cookie) {
-                it = _param_changed_subscriptions.erase(it);
-            } else {
-                ++it;
-            }
-        }
-    }
-}
+namespace mavsdk {
 
 void MavlinkParameterSubscription::subscribe_param_float_changed(
     const std::string& name, const ParamFloatChangedCallback& callback, const void* cookie)
@@ -57,11 +25,16 @@ void MavlinkParameterSubscription::subscribe_param_custom_changed(
 void MavlinkParameterSubscription::find_and_call_subscriptions_value_changed(
     const std::string& param_name, const ParamValue& value)
 {
+    // Process any deferred operations before calling subscriptions
+    process_deferred_operations();
+
+    // Now lock the mutex and call the subscriptions
     std::lock_guard<std::mutex> lock(_param_changed_subscriptions_mutex);
     for (const auto& subscription : _param_changed_subscriptions) {
         if (subscription.param_name != param_name) {
             continue;
         }
+        LogDebug() << "Param " << param_name << " changed to " << value;
         // We have a subscription on this param name, now check if the subscription is for the right
         // type and call the callback when matching
         if (std::get_if<ParamFloatChangedCallback>(&subscription.callback) && value.get_float()) {
@@ -81,15 +54,25 @@ void MavlinkParameterSubscription::find_and_call_subscriptions_value_changed(
 
 void MavlinkParameterSubscription::unsubscribe_all_params_changed(const void* cookie)
 {
-    std::lock_guard<std::mutex> lock(_param_changed_subscriptions_mutex);
+    // Process any deferred operations first
+    process_deferred_operations();
 
-    for (auto it = _param_changed_subscriptions.begin(); it != _param_changed_subscriptions.end();
-         /* it++ */) {
-        if (it->cookie == cookie) {
-            it = _param_changed_subscriptions.erase(it);
-        } else {
-            it++;
-        }
+    // Try to lock the mutex, if it fails we're likely in a callback
+    if (_param_changed_subscriptions_mutex.try_lock()) {
+        // We've acquired the lock without blocking, so we can modify the list
+        _param_changed_subscriptions.erase(
+            std::remove_if(
+                _param_changed_subscriptions.begin(),
+                _param_changed_subscriptions.end(),
+                [&](const auto& subscription) { return subscription.cookie == cookie; }),
+            _param_changed_subscriptions.end());
+        _param_changed_subscriptions_mutex.unlock();
+    } else {
+        // We couldn't acquire the lock because we're likely in a callback
+        // Defer the unsubscription of all params for this cookie
+        std::lock_guard<std::mutex> lock(_deferred_unsubscriptions_mutex);
+        // Add a special marker for unsubscribe_all (empty param_name)
+        _deferred_unsubscriptions.push_back({"", cookie});
     }
 }
 

@@ -757,6 +757,10 @@ public:
             float(NAN)}; /**< @brief Current indicated airspeed (IAS) in metres per second */
         float throttle_percentage{float(NAN)}; /**< @brief Current throttle setting (0 to 100) */
         float climb_rate_m_s{float(NAN)}; /**< @brief Current climb rate in metres per second */
+        float groundspeed_m_s{float(NAN)}; /**< @brief Current groundspeed metres per second */
+        float heading_deg{
+            float(NAN)}; /**< @brief Current heading in compass units (0-360, 0=north) */
+        float absolute_altitude_m{float(NAN)}; /**< @brief Current altitude in metres (MSL) */
     };
 
     /**
@@ -916,7 +920,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result publish_position(Position position, VelocityNed velocity_ned, Heading heading) const;
 
@@ -925,7 +931,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result publish_home(Position home) const;
 
@@ -934,7 +942,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result publish_sys_status(
         Battery battery,
@@ -949,7 +959,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result publish_extended_sys_state(VtolState vtol_state, LandedState landed_state) const;
 
@@ -958,7 +970,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result publish_raw_gps(RawGps raw_gps, GpsInfo gps_info) const;
 
@@ -967,7 +981,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result publish_battery(Battery battery) const;
 
@@ -976,7 +992,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result publish_status_text(StatusText status_text) const;
 
@@ -985,7 +1003,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result publish_odometry(Odometry odometry) const;
 
@@ -994,7 +1014,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result publish_position_velocity_ned(PositionVelocityNed position_velocity_ned) const;
 
@@ -1003,7 +1025,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result publish_ground_truth(GroundTruth ground_truth) const;
 
@@ -1012,7 +1036,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result publish_imu(Imu imu) const;
 
@@ -1021,7 +1047,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result publish_scaled_imu(Imu imu) const;
 
@@ -1030,7 +1058,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result publish_raw_imu(Imu imu) const;
 
@@ -1039,7 +1069,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result publish_unix_epoch_time(uint64_t time_us) const;
 
@@ -1048,9 +1080,33 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result publish_distance_sensor(DistanceSensor distance_sensor) const;
+
+    /**
+     * @brief Publish to "attitude" updates.
+     *
+     * This function is blocking.
+     *
+
+     * @return Result of request.
+
+     */
+    Result publish_attitude(EulerAngle angle, AngularVelocityBody angular_velocity) const;
+
+    /**
+     * @brief Publish to "Visual Flight Rules HUD" updates.
+     *
+     * This function is blocking.
+     *
+
+     * @return Result of request.
+
+     */
+    Result publish_visual_flight_rules_hud(FixedwingMetrics fixed_wing_metrics) const;
 
     /**
      * @brief Copy constructor.

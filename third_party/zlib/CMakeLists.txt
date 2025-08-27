@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.13)
 
 project(external-zlib)
 include(ExternalProject)
@@ -9,6 +9,7 @@ list(APPEND CMAKE_ARGS
     "-DCMAKE_TOOLCHAIN_FILE:PATH=${CMAKE_TOOLCHAIN_FILE}"
     "-DCMAKE_POSITION_INDEPENDENT_CODE=ON"
     "-DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}"
+    "-DBUILD_SHARED_LIBS=OFF
     )
 
 if(IOS)

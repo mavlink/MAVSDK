@@ -25,67 +25,85 @@ MavlinkCommandSender::MavlinkCommandSender(SystemImpl& system_impl) : _system_im
 
 MavlinkCommandSender::~MavlinkCommandSender()
 {
+    if (_command_debugging) {
+        LogDebug() << "CommandSender destroyed";
+    }
     _system_impl.unregister_all_mavlink_message_handlers(this);
+
+    LockedQueue<Work>::Guard work_queue_guard(_work_queue);
+    for (const auto& work : _work_queue) {
+        _system_impl.unregister_timeout_handler(work->timeout_cookie);
+    }
 }
 
-MavlinkCommandSender::Result
-MavlinkCommandSender::send_command(const MavlinkCommandSender::CommandInt& command)
+MavlinkCommandSender::Result MavlinkCommandSender::send_command(
+    const MavlinkCommandSender::CommandInt& command, unsigned retries)
 {
     // We wrap the async call with a promise and future.
     auto prom = std::make_shared<std::promise<Result>>();
     auto res = prom->get_future();
 
-    queue_command_async(command, [prom](Result result, float progress) {
-        UNUSED(progress);
-        // We can only fulfill the promise once in C++11.
-        // Therefore, we have to ignore the IN_PROGRESS state and wait
-        // for the final result.
-        if (result != Result::InProgress) {
-            prom->set_value(result);
-        }
-    });
+    queue_command_async(
+        command,
+        [prom](Result result, float progress) {
+            UNUSED(progress);
+            // We can only fulfill the promise once in C++11.
+            // Therefore, we have to ignore the IN_PROGRESS state and wait
+            // for the final result.
+            if (result != Result::InProgress) {
+                prom->set_value(result);
+            }
+        },
+        retries);
 
     // Block now to wait for result.
     return res.get();
 }
 
-MavlinkCommandSender::Result
-MavlinkCommandSender::send_command(const MavlinkCommandSender::CommandLong& command)
+MavlinkCommandSender::Result MavlinkCommandSender::send_command(
+    const MavlinkCommandSender::CommandLong& command, unsigned retries)
 {
     // We wrap the async call with a promise and future.
     auto prom = std::make_shared<std::promise<Result>>();
     auto res = prom->get_future();
 
-    queue_command_async(command, [prom](Result result, float progress) {
-        UNUSED(progress);
-        // We can only fulfill the promise once in C++11.
-        // Therefore, we have to ignore the IN_PROGRESS state and wait
-        // for the final result.
-        if (result != Result::InProgress) {
-            prom->set_value(result);
-        }
-    });
+    queue_command_async(
+        command,
+        [prom](Result result, float progress) {
+            UNUSED(progress);
+            // We can only fulfill the promise once in C++11.
+            // Therefore, we have to ignore the IN_PROGRESS state and wait
+            // for the final result.
+            if (result != Result::InProgress) {
+                prom->set_value(result);
+            }
+        },
+        retries);
 
     return res.get();
 }
 
 void MavlinkCommandSender::queue_command_async(
-    const CommandInt& command, const CommandResultCallback& callback)
+    const CommandInt& command, const CommandResultCallback& callback, unsigned retries)
 {
     if (_command_debugging) {
-        LogDebug() << "COMMAND_INT " << (int)(command.command) << " to send to "
-                   << (int)(command.target_system_id) << ", " << (int)(command.target_component_id);
+        LogDebug() << "COMMAND_INT " << static_cast<int>(command.command) << " to send to "
+                   << static_cast<int>(command.target_system_id) << ", "
+                   << static_cast<int>(command.target_component_id);
     }
 
     CommandIdentification identification = identification_from_command(command);
 
-    for (const auto& work : _work_queue) {
-        if (work->identification == identification && callback == nullptr) {
-            if (_command_debugging) {
-                LogDebug() << "Dropping command " << static_cast<int>(identification.command)
-                           << " that is already being sent";
+    {
+        LockedQueue<Work>::Guard work_queue_guard(_work_queue);
+        for (const auto& work : _work_queue) {
+            if (work->identification == identification && callback == nullptr) {
+                if (_command_debugging) {
+                    LogDebug() << "Dropping command " << static_cast<int>(identification.command)
+                               << " that is already being sent";
+                }
+                return;
             }
-            return;
         }
     }
 
@@ -94,26 +112,31 @@ void MavlinkCommandSender::queue_command_async(
     new_work->command = command;
     new_work->identification = identification;
     new_work->callback = callback;
+    new_work->retries_to_do = retries;
     _work_queue.push_back(new_work);
 }
 
 void MavlinkCommandSender::queue_command_async(
-    const CommandLong& command, const CommandResultCallback& callback)
+    const CommandLong& command, const CommandResultCallback& callback, unsigned retries)
 {
     if (_command_debugging) {
-        LogDebug() << "COMMAND_LONG " << (int)(command.command) << " to send to "
-                   << (int)(command.target_system_id) << ", " << (int)(command.target_component_id);
+        LogDebug() << "COMMAND_LONG " << static_cast<int>(command.command) << " to send to "
+                   << static_cast<int>(command.target_system_id) << ", "
+                   << static_cast<int>(command.target_component_id);
     }
 
     CommandIdentification identification = identification_from_command(command);
 
-    for (const auto& work : _work_queue) {
-        if (work->identification == identification && callback == nullptr) {
-            if (_command_debugging) {
-                LogDebug() << "Dropping command " << static_cast<int>(identification.command)
-                           << " that is already being sent";
+    {
+        LockedQueue<Work>::Guard work_queue_guard(_work_queue);
+        for (const auto& work : _work_queue) {
+            if (work->identification == identification && callback == nullptr) {
+                if (_command_debugging) {
+                    LogDebug() << "Dropping command " << static_cast<int>(identification.command)
+                               << " that is already being sent";
+                }
+                return;
             }
-            return;
         }
     }
 
@@ -123,10 +146,11 @@ void MavlinkCommandSender::queue_command_async(
     new_work->identification = identification;
     new_work->callback = callback;
     new_work->time_started = _system_impl.get_time().steady_time();
+    new_work->retries_to_do = retries;
     _work_queue.push_back(new_work);
 }
 
-void MavlinkCommandSender::receive_command_ack(mavlink_message_t message)
+void MavlinkCommandSender::receive_command_ack(const mavlink_message_t& message)
 {
     mavlink_command_ack_t command_ack;
     mavlink_msg_command_ack_decode(&message, &command_ack);
@@ -148,7 +172,7 @@ void MavlinkCommandSender::receive_command_ack(mavlink_message_t message)
     LockedQueue<Work>::Guard work_queue_guard(_work_queue);
 
     for (auto it = _work_queue.begin(); it != _work_queue.end(); ++it) {
-        auto work = *it;
+        const auto& work = *it;
 
         if (!work) {
             LogErr() << "No work available! (should not happen #1)";
@@ -163,8 +187,8 @@ void MavlinkCommandSender::receive_command_ack(mavlink_message_t message)
             if (_command_debugging) {
                 LogDebug() << "Command ack for " << command_ack.command
                            << " (from: " << std::to_string(message.sysid) << "/"
-                           << std::to_string(message.compid) << ")"
-                           << " does not match command " << work->identification.command
+                           << std::to_string(message.compid) << ")" << " does not match command "
+                           << work->identification.command
                            << " (to: " << std::to_string(work->identification.target_system_id)
                            << "/" << std::to_string(work->identification.target_component_id) << ")"
                            << " after "
@@ -238,16 +262,13 @@ void MavlinkCommandSender::receive_command_ack(mavlink_message_t message)
                 }
                 // If we get a progress update, we can raise the timeout
                 // to something higher because we know the initial command
-                // has arrived. A possible timeout for this case is the initial
-                // timeout * the possible retries because this should match the
-                // case where there is no progress update, and we keep trying.
+                // has arrived.
                 _system_impl.unregister_timeout_handler(work->timeout_cookie);
-                _system_impl.register_timeout_handler(
+                work->timeout_cookie = _system_impl.register_timeout_handler(
                     [this, identification = work->identification] {
                         receive_timeout(identification);
                     },
-                    work->retries_to_do * work->timeout_s,
-                    &work->timeout_cookie);
+                    3.0);
 
                 temp_result = {
                     Result::InProgress, static_cast<float>(command_ack.progress) / 100.0f};
@@ -287,6 +308,9 @@ void MavlinkCommandSender::receive_command_ack(mavlink_message_t message)
 
 void MavlinkCommandSender::receive_timeout(const CommandIdentification& identification)
 {
+    if (_command_debugging) {
+        LogDebug() << "Got timeout!";
+    }
     bool found_command = false;
     CommandResultCallback temp_callback = nullptr;
     std::pair<Result, float> temp_result{Result::UnknownError, NAN};
@@ -294,7 +318,7 @@ void MavlinkCommandSender::receive_timeout(const CommandIdentification& identifi
     LockedQueue<Work>::Guard work_queue_guard(_work_queue);
 
     for (auto it = _work_queue.begin(); it != _work_queue.end(); ++it) {
-        auto work = *it;
+        const auto& work = *it;
 
         if (!work) {
             LogErr() << "No work available! (should not happen #2)";
@@ -309,13 +333,15 @@ void MavlinkCommandSender::receive_timeout(const CommandIdentification& identifi
 
         if (work->retries_to_do > 0) {
             // We're not sure the command arrived, let's retransmit.
-            LogWarn() << "sending again after "
-                      << _system_impl.get_time().elapsed_since_s(work->time_started)
-                      << " s, retries to do: " << work->retries_to_do << "  ("
-                      << work->identification.command << ").";
+            if (_command_debugging) {
+                LogWarn() << "sending again after "
+                          << _system_impl.get_time().elapsed_since_s(work->time_started)
+                          << " s, retries to do: " << work->retries_to_do << "  ("
+                          << work->identification.command << ").";
 
-            if (work->identification.command == MAV_CMD_REQUEST_MESSAGE) {
-                LogWarn() << "Request was for msg ID: " << work->identification.maybe_param1;
+                if (work->identification.command == MAV_CMD_REQUEST_MESSAGE) {
+                    LogWarn() << "Request was for msg ID: " << work->identification.maybe_param1;
+                }
             }
 
             if (!send_mavlink_message(work->command)) {
@@ -327,16 +353,39 @@ void MavlinkCommandSender::receive_timeout(const CommandIdentification& identifi
                 break;
             } else {
                 --work->retries_to_do;
-                _system_impl.register_timeout_handler(
+                work->timeout_cookie = _system_impl.register_timeout_handler(
                     [this, identification = work->identification] {
                         receive_timeout(identification);
                     },
-                    work->timeout_s,
-                    &work->timeout_cookie);
+                    work->timeout_s);
             }
         } else {
             // We have tried retransmitting, giving up now.
-            LogErr() << "Retrying failed (" << work->identification.command << ")";
+            if (work->identification.command == 512) {
+                uint8_t target_sysid;
+                uint8_t target_compid;
+                if (auto command_int = std::get_if<CommandInt>(&work->command)) {
+                    target_sysid = command_int->target_system_id;
+                    target_compid = command_int->target_component_id;
+                } else if (auto command_long = std::get_if<CommandLong>(&work->command)) {
+                    target_sysid = command_long->target_system_id;
+                    target_compid = command_long->target_component_id;
+                } else {
+                    LogErr() << "No command, that's awkward";
+                    continue;
+                }
+                if (_command_debugging) {
+                    LogWarn() << "Retrying failed for REQUEST_MESSAGE command for message: "
+                              << work->identification.maybe_param1 << ", to ("
+                              << std::to_string(target_sysid) << "/"
+                              << std::to_string(target_compid) << ")";
+                }
+            } else {
+                if (_command_debugging) {
+                    LogWarn() << "Retrying failed for command: " << work->identification.command
+                              << ")";
+                }
+            }
 
             temp_callback = work->callback;
             temp_result = {Result::Timeout, NAN};
@@ -404,15 +453,14 @@ void MavlinkCommandSender::do_work()
 
         work->already_sent = true;
 
-        _system_impl.register_timeout_handler(
+        work->timeout_cookie = _system_impl.register_timeout_handler(
             [this, identification = work->identification] { receive_timeout(identification); },
-            work->timeout_s,
-            &work->timeout_cookie);
+            work->timeout_s);
     }
 }
 
 void MavlinkCommandSender::call_callback(
-    const CommandResultCallback& callback, Result result, float progress)
+    const CommandResultCallback& callback, Result result, float progress) const
 {
     if (!callback) {
         return;
@@ -425,7 +473,7 @@ void MavlinkCommandSender::call_callback(
         [temp_callback, result, progress]() { temp_callback(result, progress); });
 }
 
-bool MavlinkCommandSender::send_mavlink_message(const Command& command)
+bool MavlinkCommandSender::send_mavlink_message(const Command& command) const
 {
     if (auto command_int = std::get_if<CommandInt>(&command)) {
         return _system_impl.queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {

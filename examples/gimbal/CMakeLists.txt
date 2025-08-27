@@ -18,5 +18,5 @@ target_link_libraries(gimbal
 if(NOT MSVC)
     add_compile_options(gimbal PRIVATE -Wall -Wextra)
 else()
-    add_compile_options(gimbal PRIVATE -WX -W2)
+    add_compile_options(gimbal PRIVATE -W2)
 endif()

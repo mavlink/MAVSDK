@@ -2,6 +2,7 @@
 #include "mavsdk.h"
 #include "plugins/telemetry/telemetry.h"
 #include "plugins/telemetry_server/telemetry_server.h"
+#include <atomic>
 #include <future>
 #include <thread>
 #include <gtest/gtest.h>
@@ -10,13 +11,15 @@ using namespace mavsdk;
 
 TEST(SystemTest, TelemetrySubscription)
 {
-    Mavsdk mavsdk_groundstation{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
+    Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
 
-    Mavsdk mavsdk_autopilot{Mavsdk::Configuration{Mavsdk::ComponentType::Autopilot}};
+    Mavsdk mavsdk_autopilot{Mavsdk::Configuration{ComponentType::Autopilot}};
 
-    ASSERT_EQ(mavsdk_groundstation.add_any_connection("udp://:17000"), ConnectionResult::Success);
     ASSERT_EQ(
-        mavsdk_autopilot.add_any_connection("udp://127.0.0.1:17000"), ConnectionResult::Success);
+        mavsdk_groundstation.add_any_connection("tcpin://0.0.0.0:13000"),
+        ConnectionResult::Success);
+    ASSERT_EQ(
+        mavsdk_autopilot.add_any_connection("tcpout://127.0.0.1:13000"), ConnectionResult::Success);
 
     auto telemetry_server = TelemetryServer{mavsdk_autopilot.server_component()};
 
@@ -30,7 +33,7 @@ TEST(SystemTest, TelemetrySubscription)
 
     auto prom1 = std::promise<void>{};
     auto fut1 = prom1.get_future();
-    unsigned num_subscription1_called = 0;
+    std::atomic<unsigned> num_subscription1_called{0};
     auto handle1 = telemetry.subscribe_status_text([&](const Telemetry::StatusText& status_text) {
         LogInfo() << "Received: " << status_text.text;
         ++num_subscription1_called;
@@ -41,7 +44,7 @@ TEST(SystemTest, TelemetrySubscription)
 
     auto prom2 = std::promise<void>{};
     auto fut2 = prom2.get_future();
-    unsigned num_subscription2_called = 0;
+    std::atomic<unsigned> num_subscription2_called{0};
 
     std::function<void(Telemetry::StatusText)> callback =
         [&](const Telemetry::StatusText& status_text) {

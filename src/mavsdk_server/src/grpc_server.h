@@ -24,6 +24,11 @@
 #include "action_server/action_server_service_impl.h"
 #endif
 
+#ifdef ARM_AUTHORIZER_SERVER_ENABLED
+#include "plugins/arm_authorizer_server/arm_authorizer_server.h"
+#include "arm_authorizer_server/arm_authorizer_server_service_impl.h"
+#endif
+
 #ifdef CALIBRATION_ENABLED
 #include "plugins/calibration/calibration.h"
 #include "calibration/calibration_service_impl.h"
@@ -39,14 +44,19 @@
 #include "camera_server/camera_server_service_impl.h"
 #endif
 
-#ifdef COMPONENT_INFORMATION_ENABLED
-#include "plugins/component_information/component_information.h"
-#include "component_information/component_information_service_impl.h"
+#ifdef COMPONENT_METADATA_ENABLED
+#include "plugins/component_metadata/component_metadata.h"
+#include "component_metadata/component_metadata_service_impl.h"
 #endif
 
-#ifdef COMPONENT_INFORMATION_SERVER_ENABLED
-#include "plugins/component_information_server/component_information_server.h"
-#include "component_information_server/component_information_server_service_impl.h"
+#ifdef COMPONENT_METADATA_SERVER_ENABLED
+#include "plugins/component_metadata_server/component_metadata_server.h"
+#include "component_metadata_server/component_metadata_server_service_impl.h"
+#endif
+
+#ifdef EVENTS_ENABLED
+#include "plugins/events/events.h"
+#include "events/events_service_impl.h"
 #endif
 
 #ifdef FAILURE_ENABLED
@@ -94,9 +104,19 @@
 #include "log_files/log_files_service_impl.h"
 #endif
 
+#ifdef LOG_STREAMING_ENABLED
+#include "plugins/log_streaming/log_streaming.h"
+#include "log_streaming/log_streaming_service_impl.h"
+#endif
+
 #ifdef MANUAL_CONTROL_ENABLED
 #include "plugins/manual_control/manual_control.h"
 #include "manual_control/manual_control_service_impl.h"
+#endif
+
+#ifdef MAVLINK_DIRECT_ENABLED
+#include "plugins/mavlink_direct/mavlink_direct.h"
+#include "mavlink_direct/mavlink_direct_service_impl.h"
 #endif
 
 #ifdef MISSION_ENABLED
@@ -159,11 +179,6 @@
 #include "telemetry_server/telemetry_server_service_impl.h"
 #endif
 
-#ifdef TRACKING_SERVER_ENABLED
-#include "plugins/tracking_server/tracking_server.h"
-#include "tracking_server/tracking_server_service_impl.h"
-#endif
-
 #ifdef TRANSPONDER_ENABLED
 #include "plugins/transponder/transponder.h"
 #include "transponder/transponder_service_impl.h"
@@ -197,6 +212,11 @@ public:
         _action_server_service(_action_server_lazy_plugin),
 #endif
 
+#ifdef ARM_AUTHORIZER_SERVER_ENABLED
+        _arm_authorizer_server_lazy_plugin(mavsdk),
+        _arm_authorizer_server_service(_arm_authorizer_server_lazy_plugin),
+#endif
+
 #ifdef CALIBRATION_ENABLED
         _calibration_lazy_plugin(mavsdk),
         _calibration_service(_calibration_lazy_plugin),
@@ -212,14 +232,19 @@ public:
         _camera_server_service(_camera_server_lazy_plugin),
 #endif
 
-#ifdef COMPONENT_INFORMATION_ENABLED
-        _component_information_lazy_plugin(mavsdk),
-        _component_information_service(_component_information_lazy_plugin),
+#ifdef COMPONENT_METADATA_ENABLED
+        _component_metadata_lazy_plugin(mavsdk),
+        _component_metadata_service(_component_metadata_lazy_plugin),
 #endif
 
-#ifdef COMPONENT_INFORMATION_SERVER_ENABLED
-        _component_information_server_lazy_plugin(mavsdk),
-        _component_information_server_service(_component_information_server_lazy_plugin),
+#ifdef COMPONENT_METADATA_SERVER_ENABLED
+        _component_metadata_server_lazy_plugin(mavsdk),
+        _component_metadata_server_service(_component_metadata_server_lazy_plugin),
+#endif
+
+#ifdef EVENTS_ENABLED
+        _events_lazy_plugin(mavsdk),
+        _events_service(_events_lazy_plugin),
 #endif
 
 #ifdef FAILURE_ENABLED
@@ -267,9 +292,19 @@ public:
         _log_files_service(_log_files_lazy_plugin),
 #endif
 
+#ifdef LOG_STREAMING_ENABLED
+        _log_streaming_lazy_plugin(mavsdk),
+        _log_streaming_service(_log_streaming_lazy_plugin),
+#endif
+
 #ifdef MANUAL_CONTROL_ENABLED
         _manual_control_lazy_plugin(mavsdk),
         _manual_control_service(_manual_control_lazy_plugin),
+#endif
+
+#ifdef MAVLINK_DIRECT_ENABLED
+        _mavlink_direct_lazy_plugin(mavsdk),
+        _mavlink_direct_service(_mavlink_direct_lazy_plugin),
 #endif
 
 #ifdef MISSION_ENABLED
@@ -332,11 +367,6 @@ public:
         _telemetry_server_service(_telemetry_server_lazy_plugin),
 #endif
 
-#ifdef TRACKING_SERVER_ENABLED
-        _tracking_server_lazy_plugin(mavsdk),
-        _tracking_server_service(_tracking_server_lazy_plugin),
-#endif
-
 #ifdef TRANSPONDER_ENABLED
         _transponder_lazy_plugin(mavsdk),
         _transponder_service(_transponder_lazy_plugin),
@@ -378,6 +408,13 @@ private:
     ActionServerServiceImpl<> _action_server_service;
 #endif
 
+#ifdef ARM_AUTHORIZER_SERVER_ENABLED
+
+    LazyServerPlugin<ArmAuthorizerServer> _arm_authorizer_server_lazy_plugin;
+
+    ArmAuthorizerServerServiceImpl<> _arm_authorizer_server_service;
+#endif
+
 #ifdef CALIBRATION_ENABLED
 
     LazyPlugin<Calibration> _calibration_lazy_plugin;
@@ -399,18 +436,25 @@ private:
     CameraServerServiceImpl<> _camera_server_service;
 #endif
 
-#ifdef COMPONENT_INFORMATION_ENABLED
+#ifdef COMPONENT_METADATA_ENABLED
 
-    LazyPlugin<ComponentInformation> _component_information_lazy_plugin;
+    LazyPlugin<ComponentMetadata> _component_metadata_lazy_plugin;
 
-    ComponentInformationServiceImpl<> _component_information_service;
+    ComponentMetadataServiceImpl<> _component_metadata_service;
 #endif
 
-#ifdef COMPONENT_INFORMATION_SERVER_ENABLED
+#ifdef COMPONENT_METADATA_SERVER_ENABLED
 
-    LazyServerPlugin<ComponentInformationServer> _component_information_server_lazy_plugin;
+    LazyServerPlugin<ComponentMetadataServer> _component_metadata_server_lazy_plugin;
 
-    ComponentInformationServerServiceImpl<> _component_information_server_service;
+    ComponentMetadataServerServiceImpl<> _component_metadata_server_service;
+#endif
+
+#ifdef EVENTS_ENABLED
+
+    LazyPlugin<Events> _events_lazy_plugin;
+
+    EventsServiceImpl<> _events_service;
 #endif
 
 #ifdef FAILURE_ENABLED
@@ -476,11 +520,25 @@ private:
     LogFilesServiceImpl<> _log_files_service;
 #endif
 
+#ifdef LOG_STREAMING_ENABLED
+
+    LazyPlugin<LogStreaming> _log_streaming_lazy_plugin;
+
+    LogStreamingServiceImpl<> _log_streaming_service;
+#endif
+
 #ifdef MANUAL_CONTROL_ENABLED
 
     LazyPlugin<ManualControl> _manual_control_lazy_plugin;
 
     ManualControlServiceImpl<> _manual_control_service;
+#endif
+
+#ifdef MAVLINK_DIRECT_ENABLED
+
+    LazyPlugin<MavlinkDirect> _mavlink_direct_lazy_plugin;
+
+    MavlinkDirectServiceImpl<> _mavlink_direct_service;
 #endif
 
 #ifdef MISSION_ENABLED
@@ -565,13 +623,6 @@ private:
     LazyServerPlugin<TelemetryServer> _telemetry_server_lazy_plugin;
 
     TelemetryServerServiceImpl<> _telemetry_server_service;
-#endif
-
-#ifdef TRACKING_SERVER_ENABLED
-
-    LazyServerPlugin<TrackingServer> _tracking_server_lazy_plugin;
-
-    TrackingServerServiceImpl<> _tracking_server_service;
 #endif
 
 #ifdef TRANSPONDER_ENABLED

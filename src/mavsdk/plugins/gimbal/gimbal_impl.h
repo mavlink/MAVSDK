@@ -1,7 +1,7 @@
 #pragma once
 
+#include <optional>
 #include "plugins/gimbal/gimbal.h"
-#include "gimbal_protocol_base.h"
 #include "plugin_impl_base.h"
 #include "system.h"
 #include "callback_list.h"
@@ -20,37 +20,68 @@ public:
     void enable() override;
     void disable() override;
 
-    Gimbal::Result set_angles(float roll_deg, float pitch_deg, float yaw_deg);
+    Gimbal::Result set_angles(
+        int32_t gimbal_id,
+        float roll_deg,
+        float pitch_deg,
+        float yaw_deg,
+        Gimbal::GimbalMode gimbal_mode,
+        Gimbal::SendMode send_mode);
     void set_angles_async(
-        float roll_deg, float pitch_deg, float yaw_deg, Gimbal::ResultCallback callback);
+        int32_t gimbal_id,
+        float roll_deg,
+        float pitch_deg,
+        float yaw_deg,
+        Gimbal::GimbalMode gimbal_mode,
+        Gimbal::SendMode send_mode,
+        const Gimbal::ResultCallback& callback);
 
-    Gimbal::Result set_pitch_and_yaw(float pitch_deg, float yaw_deg);
-    void set_pitch_and_yaw_async(float pitch_deg, float yaw_deg, Gimbal::ResultCallback callback);
+    Gimbal::Result set_angular_rates(
+        int32_t gimbal_id,
+        float roll_rate_deg,
+        float pitch_rate_deg,
+        float yaw_rate_deg,
+        Gimbal::GimbalMode gimbal_mode,
+        Gimbal::SendMode send_mode);
+    void set_angular_rates_async(
+        int32_t gimbal_id,
+        float roll_rate_deg,
+        float pitch_rate_deg,
+        float yaw_rate_deg,
+        Gimbal::GimbalMode gimbal_mode,
+        Gimbal::SendMode send_mode,
+        const Gimbal::ResultCallback& callback);
 
-    Gimbal::Result set_pitch_rate_and_yaw_rate(float pitch_rate_deg_s, float yaw_rate_deg_s);
-
-    void set_pitch_rate_and_yaw_rate_async(
-        float pitch_rate_deg_s, float yaw_rate_deg_s, Gimbal::ResultCallback callback);
-
-    Gimbal::Result set_mode(const Gimbal::GimbalMode gimbal_mode);
-    void set_mode_async(const Gimbal::GimbalMode gimbal_mode, Gimbal::ResultCallback callback);
-
-    Gimbal::Result set_roi_location(double latitude_deg, double longitude_deg, float altitude_m);
+    Gimbal::Result set_roi_location(
+        int32_t gimbal_id, double latitude_deg, double longitude_deg, float altitude_m);
     void set_roi_location_async(
+        int32_t gimbal_id,
         double latitude_deg,
         double longitude_deg,
         float altitude_m,
-        Gimbal::ResultCallback callback);
+        const Gimbal::ResultCallback& callback);
 
-    Gimbal::Result take_control(Gimbal::ControlMode control_mode);
-    void take_control_async(Gimbal::ControlMode control_mode, Gimbal::ResultCallback callback);
+    Gimbal::Result take_control(int32_t gimbal_id, Gimbal::ControlMode control_mode);
+    void take_control_async(
+        int32_t gimbal_id,
+        Gimbal::ControlMode control_mode,
+        const Gimbal::ResultCallback& callback);
 
-    Gimbal::Result release_control();
-    void release_control_async(Gimbal::ResultCallback callback);
+    Gimbal::Result release_control(int32_t gimbal_id);
+    void release_control_async(int32_t gimbal_id, const Gimbal::ResultCallback& callback);
 
-    Gimbal::ControlStatus control();
-    Gimbal::ControlHandle subscribe_control(const Gimbal::ControlCallback& callback);
-    void unsubscribe_control(Gimbal::ControlHandle handle);
+    Gimbal::GimbalListHandle subscribe_gimbal_list(const Gimbal::GimbalListCallback& callback);
+    void unsubscribe_gimbal_list(Gimbal::GimbalListHandle handle);
+    Gimbal::GimbalList gimbal_list();
+
+    Gimbal::ControlStatusHandle
+    subscribe_control_status(const Gimbal::ControlStatusCallback& callback);
+    void unsubscribe_control_status(Gimbal::ControlStatusHandle handle);
+    std::pair<Gimbal::Result, Gimbal::ControlStatus> get_control_status(int32_t gimbal_id);
+
+    Gimbal::AttitudeHandle subscribe_attitude(const Gimbal::AttitudeCallback& callback);
+    void unsubscribe_attitude(Gimbal::AttitudeHandle handle);
+    std::pair<Gimbal::Result, Gimbal::Attitude> get_attitude(int32_t gimbal_id);
 
     static Gimbal::Result
     gimbal_result_from_command_result(MavlinkCommandSender::Result command_result);
@@ -63,17 +94,69 @@ public:
     const GimbalImpl& operator=(const GimbalImpl&) = delete;
 
 private:
-    std::unique_ptr<GimbalProtocolBase> _gimbal_protocol{nullptr};
+    struct GimbalItem {
+        Gimbal::ControlStatus control_status{0, Gimbal::ControlMode::None, 0, 0, 0, 0};
+        Gimbal::Attitude attitude{};
+        std::string vendor_name;
+        std::string model_name;
+        std::string custom_name;
+        unsigned gimbal_manager_information_requests_left{5};
+        unsigned gimbal_device_information_requests_left{5};
+        bool gimbal_manager_information_received{false};
+        bool gimbal_device_information_received{false};
+        uint8_t gimbal_manager_compid{0};
+        uint8_t gimbal_device_id{0};
+        bool is_valid{false};
+    };
 
-    void* _protocol_cookie{nullptr};
+    struct GimbalAddress {
+        uint8_t gimbal_manager_compid{0};
+        uint8_t gimbal_device_id{0};
+    };
 
-    void wait_for_protocol();
-    void wait_for_protocol_async(std::function<void()> callback);
-    void receive_protocol_timeout();
+    void request_gimbal_manager_information(uint8_t target_component_id) const;
+    void request_gimbal_device_information(uint8_t target_component_id) const;
+
+    void process_heartbeat(const mavlink_message_t& message);
     void process_gimbal_manager_information(const mavlink_message_t& message);
+    void process_gimbal_manager_status(const mavlink_message_t& message);
+    void process_gimbal_device_information(const mavlink_message_t& message);
+    void process_gimbal_device_attitude_status(const mavlink_message_t& message);
+    void process_attitude(const mavlink_message_t& message);
+
+    void check_is_gimbal_valid(GimbalItem* gimbal_item);
+
+    void set_angles_async_internal(
+        int32_t gimbal_id,
+        float roll_deg,
+        float pitch_deg,
+        float yaw_deg,
+        Gimbal::GimbalMode gimbal_mode,
+        Gimbal::SendMode send_mode,
+        const Gimbal::ResultCallback& callback);
+
+    void set_angular_rates_async_internal(
+        int32_t gimbal_id,
+        float roll_rate_deg,
+        float pitch_rate_deg,
+        float yaw_rate_deg,
+        Gimbal::GimbalMode gimbal_mode,
+        Gimbal::SendMode send_mode,
+        const Gimbal::ResultCallback& callback);
+
+    Gimbal::GimbalList gimbal_list_with_lock();
+    std::optional<GimbalAddress> maybe_address_for_gimbal_id(int32_t gimbal_id) const;
+    GimbalItem* maybe_gimbal_item_for_gimbal_id(int32_t gimbal_id);
 
     std::mutex _mutex{};
-    CallbackList<Gimbal::ControlStatus> _control_subscriptions{};
+    CallbackList<Gimbal::GimbalList> _gimbal_list_subscriptions{};
+    CallbackList<Gimbal::ControlStatus> _control_status_subscriptions{};
+    CallbackList<Gimbal::Attitude> _attitude_subscriptions{};
+
+    std::vector<GimbalItem> _gimbals;
+    float _vehicle_yaw_rad{NAN};
+
+    bool _debugging{false};
 };
 
 } // namespace mavsdk

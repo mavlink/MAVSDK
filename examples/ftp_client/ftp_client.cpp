@@ -21,10 +21,12 @@ void usage(const std::string& bin_name)
         << " <connection_url> <server component id> <command> <parameters>\n"
         << '\n'
         << "Connection URL format should be :\n"
-        << " For TCP : tcp://[server_host][:server_port]\n"
-        << " For UDP : udp://[bind_host][:bind_port]\n"
-        << " For Serial : serial:///path/to/serial/dev[:baudrate]\n"
-        << "For example, to connect to the simulator use URL: udp://:14540\n"
+        << " For TCP server: tcpin://<our_ip>:<port>\n"
+        << " For TCP client: tcpout://<remote_ip>:<port>\n"
+        << " For UDP server: udp://<our_ip>:<port>\n"
+        << " For UDP client: udp://<remote_ip>:<port>\n"
+        << " For Serial : serial://</path/to/serial/dev>:<baudrate>]\n"
+        << "For example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n"
         << '\n'
         << "Server component id is for example 1 for autopilot or 195 for companion computer,\n"
         << "which is being used if you run the ftp_server example\n"
@@ -70,22 +72,16 @@ Ftp::Result remove_file(Ftp& ftp, const std::string& path)
 Ftp::Result remove_directory(Ftp& ftp, const std::string& path, bool recursive = true)
 {
     if (recursive) {
-        auto prom = std::promise<std::pair<Ftp::Result, std::vector<std::string>>>{};
+        auto prom = std::promise<std::pair<Ftp::Result, Ftp::ListDirectoryData>>{};
         auto future_result = prom.get_future();
-        ftp.list_directory_async(path, [&prom](Ftp::Result result, std::vector<std::string> list) {
-            prom.set_value(std::pair<Ftp::Result, std::vector<std::string>>(result, list));
+        ftp.list_directory_async(path, [&prom](Ftp::Result result, auto data) {
+            prom.set_value(std::pair(result, data));
         });
 
-        std::pair<Ftp::Result, std::vector<std::string>> result = future_result.get();
+        auto result = future_result.get();
         if (result.first == Ftp::Result::Success) {
-            for (auto entry : result.second) {
-                if (entry[0] == 'D') {
-                    remove_directory(ftp, path + "/" + entry.substr(1, entry.size() - 1));
-                } else if (entry[0] == 'F') {
-                    auto i = entry.find('\t');
-                    std::string name = entry.substr(1, i - 1);
-                    remove_file(ftp, path + "/" + name);
-                }
+            for (auto entry : result.second.dirs) {
+                remove_directory(ftp, path + "/" + entry.substr(1, entry.size() - 1));
             }
         }
     }
@@ -101,15 +97,20 @@ Ftp::Result remove_directory(Ftp& ftp, const std::string& path, bool recursive =
 Ftp::Result list_directory(Ftp& ftp, const std::string& path)
 {
     std::cerr << "List directory: " << path << '\n';
-    auto prom = std::promise<std::pair<Ftp::Result, std::vector<std::string>>>{};
+    auto prom = std::promise<std::pair<Ftp::Result, Ftp::ListDirectoryData>>{};
     auto future_result = prom.get_future();
-    ftp.list_directory_async(path, [&prom](Ftp::Result result, std::vector<std::string> list) {
-        prom.set_value(std::pair<Ftp::Result, std::vector<std::string>>(result, list));
+    ftp.list_directory_async(path, [&prom](Ftp::Result result, Ftp::ListDirectoryData data) {
+        prom.set_value(std::pair(result, data));
     });
 
-    std::pair<Ftp::Result, std::vector<std::string>> result = future_result.get();
+    auto result = future_result.get();
     if (result.first == Ftp::Result::Success) {
-        for (auto entry : result.second) {
+        std::cerr << "Directories: " << '\n';
+        for (auto entry : result.second.dirs) {
+            std::cerr << entry << '\n';
+        }
+        std::cerr << "Files: " << '\n';
+        for (auto entry : result.second.files) {
             std::cerr << entry << '\n';
         }
     }
@@ -156,8 +157,7 @@ upload_file(Ftp& ftp, const std::string& local_file_path, const std::string& rem
                 int percentage = progress.total_bytes > 0 ?
                                      progress.bytes_transferred * 100 / progress.total_bytes :
                                      0;
-                std::cerr << "\rUploading "
-                          << "[" << std::setw(3) << percentage << "%] "
+                std::cerr << "\rUploading " << "[" << std::setw(3) << percentage << "%] "
                           << progress.bytes_transferred << " of " << progress.total_bytes;
                 if (progress.bytes_transferred == progress.total_bytes) {
                     std::cerr << '\n';
@@ -186,7 +186,7 @@ int main(int argc, char** argv)
         return 1;
     }
 
-    Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
+    Mavsdk mavsdk{Mavsdk::Configuration{ComponentType::GroundStation}};
     ConnectionResult connection_result = mavsdk.add_any_connection(argv[1]);
 
     if (connection_result != ConnectionResult::Success) {

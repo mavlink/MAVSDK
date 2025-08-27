@@ -39,6 +39,7 @@ using MagneticFieldFrd = Telemetry::MagneticFieldFrd;
 using Imu = Telemetry::Imu;
 using GpsGlobalOrigin = Telemetry::GpsGlobalOrigin;
 using Altitude = Telemetry::Altitude;
+using Wind = Telemetry::Wind;
 
 Telemetry::Telemetry(System& system) : PluginBase(), _impl{std::make_unique<TelemetryImpl>(system)}
 {}
@@ -186,38 +187,6 @@ void Telemetry::unsubscribe_attitude_angular_velocity_body(AttitudeAngularVeloci
 Telemetry::AngularVelocityBody Telemetry::attitude_angular_velocity_body() const
 {
     return _impl->attitude_angular_velocity_body();
-}
-
-Telemetry::CameraAttitudeQuaternionHandle
-Telemetry::subscribe_camera_attitude_quaternion(const CameraAttitudeQuaternionCallback& callback)
-{
-    return _impl->subscribe_camera_attitude_quaternion(callback);
-}
-
-void Telemetry::unsubscribe_camera_attitude_quaternion(CameraAttitudeQuaternionHandle handle)
-{
-    _impl->unsubscribe_camera_attitude_quaternion(handle);
-}
-
-Telemetry::Quaternion Telemetry::camera_attitude_quaternion() const
-{
-    return _impl->camera_attitude_quaternion();
-}
-
-Telemetry::CameraAttitudeEulerHandle
-Telemetry::subscribe_camera_attitude_euler(const CameraAttitudeEulerCallback& callback)
-{
-    return _impl->subscribe_camera_attitude_euler(callback);
-}
-
-void Telemetry::unsubscribe_camera_attitude_euler(CameraAttitudeEulerHandle handle)
-{
-    _impl->unsubscribe_camera_attitude_euler(handle);
-}
-
-Telemetry::EulerAngle Telemetry::camera_attitude_euler() const
-{
-    return _impl->camera_attitude_euler();
 }
 
 Telemetry::VelocityNedHandle Telemetry::subscribe_velocity_ned(const VelocityNedCallback& callback)
@@ -572,6 +541,21 @@ Telemetry::Altitude Telemetry::altitude() const
     return _impl->altitude();
 }
 
+Telemetry::WindHandle Telemetry::subscribe_wind(const WindCallback& callback)
+{
+    return _impl->subscribe_wind(callback);
+}
+
+void Telemetry::unsubscribe_wind(WindHandle handle)
+{
+    _impl->unsubscribe_wind(handle);
+}
+
+Telemetry::Wind Telemetry::wind() const
+{
+    return _impl->wind();
+}
+
 void Telemetry::set_rate_position_async(double rate_hz, const ResultCallback callback)
 {
     _impl->set_rate_position_async(rate_hz, callback);
@@ -640,16 +624,6 @@ void Telemetry::set_rate_attitude_euler_async(double rate_hz, const ResultCallba
 Telemetry::Result Telemetry::set_rate_attitude_euler(double rate_hz) const
 {
     return _impl->set_rate_attitude_euler(rate_hz);
-}
-
-void Telemetry::set_rate_camera_attitude_async(double rate_hz, const ResultCallback callback)
-{
-    _impl->set_rate_camera_attitude_async(rate_hz, callback);
-}
-
-Telemetry::Result Telemetry::set_rate_camera_attitude(double rate_hz) const
-{
-    return _impl->set_rate_camera_attitude(rate_hz);
 }
 
 void Telemetry::set_rate_velocity_ned_async(double rate_hz, const ResultCallback callback)
@@ -811,6 +785,16 @@ void Telemetry::set_rate_altitude_async(double rate_hz, const ResultCallback cal
 Telemetry::Result Telemetry::set_rate_altitude(double rate_hz) const
 {
     return _impl->set_rate_altitude(rate_hz);
+}
+
+void Telemetry::set_rate_health_async(double rate_hz, const ResultCallback callback)
+{
+    _impl->set_rate_health_async(rate_hz, callback);
+}
+
+Telemetry::Result Telemetry::set_rate_health(double rate_hz) const
+{
+    return _impl->set_rate_health(rate_hz);
 }
 
 void Telemetry::get_gps_global_origin_async(const GetGpsGlobalOriginCallback callback)
@@ -1008,7 +992,10 @@ bool operator==(const Telemetry::Battery& lhs, const Telemetry::Battery& rhs)
            ((std::isnan(rhs.capacity_consumed_ah) && std::isnan(lhs.capacity_consumed_ah)) ||
             rhs.capacity_consumed_ah == lhs.capacity_consumed_ah) &&
            ((std::isnan(rhs.remaining_percent) && std::isnan(lhs.remaining_percent)) ||
-            rhs.remaining_percent == lhs.remaining_percent);
+            rhs.remaining_percent == lhs.remaining_percent) &&
+           ((std::isnan(rhs.time_remaining_s) && std::isnan(lhs.time_remaining_s)) ||
+            rhs.time_remaining_s == lhs.time_remaining_s) &&
+           (rhs.battery_function == lhs.battery_function);
 }
 
 std::ostream& operator<<(std::ostream& str, Telemetry::Battery const& battery)
@@ -1021,6 +1008,8 @@ std::ostream& operator<<(std::ostream& str, Telemetry::Battery const& battery)
     str << "    current_battery_a: " << battery.current_battery_a << '\n';
     str << "    capacity_consumed_ah: " << battery.capacity_consumed_ah << '\n';
     str << "    remaining_percent: " << battery.remaining_percent << '\n';
+    str << "    time_remaining_s: " << battery.time_remaining_s << '\n';
+    str << "    battery_function: " << battery.battery_function << '\n';
     str << '}';
     return str;
 }
@@ -1364,7 +1353,13 @@ bool operator==(const Telemetry::FixedwingMetrics& lhs, const Telemetry::Fixedwi
            ((std::isnan(rhs.throttle_percentage) && std::isnan(lhs.throttle_percentage)) ||
             rhs.throttle_percentage == lhs.throttle_percentage) &&
            ((std::isnan(rhs.climb_rate_m_s) && std::isnan(lhs.climb_rate_m_s)) ||
-            rhs.climb_rate_m_s == lhs.climb_rate_m_s);
+            rhs.climb_rate_m_s == lhs.climb_rate_m_s) &&
+           ((std::isnan(rhs.groundspeed_m_s) && std::isnan(lhs.groundspeed_m_s)) ||
+            rhs.groundspeed_m_s == lhs.groundspeed_m_s) &&
+           ((std::isnan(rhs.heading_deg) && std::isnan(lhs.heading_deg)) ||
+            rhs.heading_deg == lhs.heading_deg) &&
+           ((std::isnan(rhs.absolute_altitude_m) && std::isnan(lhs.absolute_altitude_m)) ||
+            rhs.absolute_altitude_m == lhs.absolute_altitude_m);
 }
 
 std::ostream& operator<<(std::ostream& str, Telemetry::FixedwingMetrics const& fixedwing_metrics)
@@ -1374,6 +1369,9 @@ std::ostream& operator<<(std::ostream& str, Telemetry::FixedwingMetrics const& f
     str << "    airspeed_m_s: " << fixedwing_metrics.airspeed_m_s << '\n';
     str << "    throttle_percentage: " << fixedwing_metrics.throttle_percentage << '\n';
     str << "    climb_rate_m_s: " << fixedwing_metrics.climb_rate_m_s << '\n';
+    str << "    groundspeed_m_s: " << fixedwing_metrics.groundspeed_m_s << '\n';
+    str << "    heading_deg: " << fixedwing_metrics.heading_deg << '\n';
+    str << "    absolute_altitude_m: " << fixedwing_metrics.absolute_altitude_m << '\n';
     str << '}';
     return str;
 }
@@ -1516,6 +1514,49 @@ std::ostream& operator<<(std::ostream& str, Telemetry::Altitude const& altitude)
     return str;
 }
 
+bool operator==(const Telemetry::Wind& lhs, const Telemetry::Wind& rhs)
+{
+    return ((std::isnan(rhs.wind_x_ned_m_s) && std::isnan(lhs.wind_x_ned_m_s)) ||
+            rhs.wind_x_ned_m_s == lhs.wind_x_ned_m_s) &&
+           ((std::isnan(rhs.wind_y_ned_m_s) && std::isnan(lhs.wind_y_ned_m_s)) ||
+            rhs.wind_y_ned_m_s == lhs.wind_y_ned_m_s) &&
+           ((std::isnan(rhs.wind_z_ned_m_s) && std::isnan(lhs.wind_z_ned_m_s)) ||
+            rhs.wind_z_ned_m_s == lhs.wind_z_ned_m_s) &&
+           ((std::isnan(rhs.horizontal_variability_stddev_m_s) &&
+             std::isnan(lhs.horizontal_variability_stddev_m_s)) ||
+            rhs.horizontal_variability_stddev_m_s == lhs.horizontal_variability_stddev_m_s) &&
+           ((std::isnan(rhs.vertical_variability_stddev_m_s) &&
+             std::isnan(lhs.vertical_variability_stddev_m_s)) ||
+            rhs.vertical_variability_stddev_m_s == lhs.vertical_variability_stddev_m_s) &&
+           ((std::isnan(rhs.wind_altitude_msl_m) && std::isnan(lhs.wind_altitude_msl_m)) ||
+            rhs.wind_altitude_msl_m == lhs.wind_altitude_msl_m) &&
+           ((std::isnan(rhs.horizontal_wind_speed_accuracy_m_s) &&
+             std::isnan(lhs.horizontal_wind_speed_accuracy_m_s)) ||
+            rhs.horizontal_wind_speed_accuracy_m_s == lhs.horizontal_wind_speed_accuracy_m_s) &&
+           ((std::isnan(rhs.vertical_wind_speed_accuracy_m_s) &&
+             std::isnan(lhs.vertical_wind_speed_accuracy_m_s)) ||
+            rhs.vertical_wind_speed_accuracy_m_s == lhs.vertical_wind_speed_accuracy_m_s);
+}
+
+std::ostream& operator<<(std::ostream& str, Telemetry::Wind const& wind)
+{
+    str << std::setprecision(15);
+    str << "wind:" << '\n' << "{\n";
+    str << "    wind_x_ned_m_s: " << wind.wind_x_ned_m_s << '\n';
+    str << "    wind_y_ned_m_s: " << wind.wind_y_ned_m_s << '\n';
+    str << "    wind_z_ned_m_s: " << wind.wind_z_ned_m_s << '\n';
+    str << "    horizontal_variability_stddev_m_s: " << wind.horizontal_variability_stddev_m_s
+        << '\n';
+    str << "    vertical_variability_stddev_m_s: " << wind.vertical_variability_stddev_m_s << '\n';
+    str << "    wind_altitude_msl_m: " << wind.wind_altitude_msl_m << '\n';
+    str << "    horizontal_wind_speed_accuracy_m_s: " << wind.horizontal_wind_speed_accuracy_m_s
+        << '\n';
+    str << "    vertical_wind_speed_accuracy_m_s: " << wind.vertical_wind_speed_accuracy_m_s
+        << '\n';
+    str << '}';
+    return str;
+}
+
 std::ostream& operator<<(std::ostream& str, Telemetry::Result const& result)
 {
     switch (result) {
@@ -1557,6 +1598,24 @@ std::ostream& operator<<(std::ostream& str, Telemetry::FixType const& fix_type)
             return str << "Rtk Float";
         case Telemetry::FixType::RtkFixed:
             return str << "Rtk Fixed";
+        default:
+            return str << "Unknown";
+    }
+}
+
+std::ostream& operator<<(std::ostream& str, Telemetry::BatteryFunction const& battery_function)
+{
+    switch (battery_function) {
+        case Telemetry::BatteryFunction::Unknown:
+            return str << "Unknown";
+        case Telemetry::BatteryFunction::All:
+            return str << "All";
+        case Telemetry::BatteryFunction::Propulsion:
+            return str << "Propulsion";
+        case Telemetry::BatteryFunction::Avionics:
+            return str << "Avionics";
+        case Telemetry::BatteryFunction::Payload:
+            return str << "Payload";
         default:
             return str << "Unknown";
     }

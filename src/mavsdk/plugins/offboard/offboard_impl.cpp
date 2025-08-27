@@ -1,7 +1,7 @@
 #include <cmath>
 #include <utility>
 #include "mavlink_address.h"
-#include "mavsdk_math.h"
+#include "math_utils.h"
 #include "offboard_impl.h"
 #include "mavsdk_impl.h"
 #include "px4_custom_mode.h"
@@ -128,14 +128,11 @@ Offboard::Result OffboardImpl::set_position_ned(Offboard::PositionNedYaw positio
         _position_ned_yaw = position_ned_yaw;
 
         if (_mode != Mode::PositionNed) {
-            if (_call_every_cookie) {
-                // If we're already sending other setpoints, stop that now.
-                _system_impl->remove_call_every(_call_every_cookie);
-                _call_every_cookie = nullptr;
-            }
+            // If we're already sending other setpoints, stop that now.
+            _system_impl->remove_call_every(_call_every_cookie);
             // We automatically send Ned setpoints from now on.
-            _system_impl->add_call_every(
-                [this]() { send_position_ned(); }, SEND_INTERVAL_S, &_call_every_cookie);
+            _call_every_cookie =
+                _system_impl->add_call_every([this]() { send_position_ned(); }, SEND_INTERVAL_S);
 
             _mode = Mode::PositionNed;
         } else {
@@ -156,14 +153,11 @@ Offboard::Result OffboardImpl::set_position_global(Offboard::PositionGlobalYaw p
         _position_global_yaw = position_global_yaw;
 
         if (_mode != Mode::PositionGlobalAltRel) {
-            if (_call_every_cookie) {
-                // If we're already sending other setpoints, stop that now.
-                _system_impl->remove_call_every(_call_every_cookie);
-                _call_every_cookie = nullptr;
-            }
+            // If we're already sending other setpoints, stop that now.
+            _system_impl->remove_call_every(_call_every_cookie);
             // We automatically send Global setpoints from now on.
-            _system_impl->add_call_every(
-                [this]() { send_position_global(); }, SEND_INTERVAL_S, &_call_every_cookie);
+            _call_every_cookie =
+                _system_impl->add_call_every([this]() { send_position_global(); }, SEND_INTERVAL_S);
 
             _mode = Mode::PositionGlobalAltRel;
         } else {
@@ -184,14 +178,11 @@ Offboard::Result OffboardImpl::set_velocity_ned(Offboard::VelocityNedYaw velocit
         _velocity_ned_yaw = velocity_ned_yaw;
 
         if (_mode != Mode::VelocityNed) {
-            if (_call_every_cookie) {
-                // If we're already sending other setpoints, stop that now.
-                _system_impl->remove_call_every(_call_every_cookie);
-                _call_every_cookie = nullptr;
-            }
+            // If we're already sending other setpoints, stop that now.
+            _system_impl->remove_call_every(_call_every_cookie);
             // We automatically send Ned setpoints from now on.
-            _system_impl->add_call_every(
-                [this]() { send_velocity_ned(); }, SEND_INTERVAL_S, &_call_every_cookie);
+            _call_every_cookie =
+                _system_impl->add_call_every([this]() { send_velocity_ned(); }, SEND_INTERVAL_S);
 
             _mode = Mode::VelocityNed;
         } else {
@@ -213,14 +204,11 @@ Offboard::Result OffboardImpl::set_position_velocity_ned(
         _velocity_ned_yaw = velocity_ned_yaw;
 
         if (_mode != Mode::PositionVelocityNed) {
-            if (_call_every_cookie) {
-                // If we're already sending other setpoints, stop that now.
-                _system_impl->remove_call_every(_call_every_cookie);
-                _call_every_cookie = nullptr;
-            }
+            // If we're already sending other setpoints, stop that now.
+            _system_impl->remove_call_every(_call_every_cookie);
             // We automatically send Ned setpoints from now on.
-            _system_impl->add_call_every(
-                [this]() { send_position_velocity_ned(); }, SEND_INTERVAL_S, &_call_every_cookie);
+            _call_every_cookie = _system_impl->add_call_every(
+                [this]() { send_position_velocity_ned(); }, SEND_INTERVAL_S);
 
             _mode = Mode::PositionVelocityNed;
         } else {
@@ -246,16 +234,11 @@ Offboard::Result OffboardImpl::set_position_velocity_acceleration_ned(
         _acceleration_ned = acceleration_ned;
 
         if (_mode != Mode::PositionVelocityAccelerationNed) {
-            if (_call_every_cookie) {
-                // If we're already sending other setpoints, stop that now.
-                _system_impl->remove_call_every(_call_every_cookie);
-                _call_every_cookie = nullptr;
-            }
+            // If we're already sending other setpoints, stop that now.
+            _system_impl->remove_call_every(_call_every_cookie);
             // We automatically send Ned setpoints from now on.
-            _system_impl->add_call_every(
-                [this]() { send_position_velocity_acceleration_ned(); },
-                SEND_INTERVAL_S,
-                &_call_every_cookie);
+            _call_every_cookie = _system_impl->add_call_every(
+                [this]() { send_position_velocity_acceleration_ned(); }, SEND_INTERVAL_S);
 
             _mode = Mode::PositionVelocityAccelerationNed;
         } else {
@@ -276,14 +259,11 @@ Offboard::Result OffboardImpl::set_acceleration_ned(Offboard::AccelerationNed ac
         _acceleration_ned = acceleration_ned;
 
         if (_mode != Mode::AccelerationNed) {
-            if (_call_every_cookie) {
-                // If we're already sending other setpoints, stop that now.
-                _system_impl->remove_call_every(_call_every_cookie);
-                _call_every_cookie = nullptr;
-            }
+            // If we're already sending other setpoints, stop that now.
+            _system_impl->remove_call_every(_call_every_cookie);
             // We automatically send Ned setpoints from now on.
-            _system_impl->add_call_every(
-                [this]() { send_acceleration_ned(); }, SEND_INTERVAL_S, &_call_every_cookie);
+            _call_every_cookie = _system_impl->add_call_every(
+                [this]() { send_acceleration_ned(); }, SEND_INTERVAL_S);
 
             _mode = Mode::AccelerationNed;
         } else {
@@ -305,14 +285,11 @@ OffboardImpl::set_velocity_body(Offboard::VelocityBodyYawspeed velocity_body_yaw
         _velocity_body_yawspeed = velocity_body_yawspeed;
 
         if (_mode != Mode::VelocityBody) {
-            if (_call_every_cookie) {
-                // If we're already sending other setpoints, stop that now.
-                _system_impl->remove_call_every(_call_every_cookie);
-                _call_every_cookie = nullptr;
-            }
+            // If we're already sending other setpoints, stop that now.
+            _system_impl->remove_call_every(_call_every_cookie);
             // We automatically send body setpoints from now on.
-            _system_impl->add_call_every(
-                [this]() { send_velocity_body(); }, SEND_INTERVAL_S, &_call_every_cookie);
+            _call_every_cookie =
+                _system_impl->add_call_every([this]() { send_velocity_body(); }, SEND_INTERVAL_S);
 
             _mode = Mode::VelocityBody;
         } else {
@@ -333,14 +310,11 @@ Offboard::Result OffboardImpl::set_attitude(Offboard::Attitude attitude)
         _attitude = attitude;
 
         if (_mode != Mode::Attitude) {
-            if (_call_every_cookie) {
-                // If we're already sending other setpoints, stop that now.
-                _system_impl->remove_call_every(_call_every_cookie);
-                _call_every_cookie = nullptr;
-            }
+            // If we're already sending other setpoints, stop that now.
+            _system_impl->remove_call_every(_call_every_cookie);
             // We automatically send body setpoints from now on.
-            _system_impl->add_call_every(
-                [this]() { send_attitude(); }, SEND_INTERVAL_S, &_call_every_cookie);
+            _call_every_cookie =
+                _system_impl->add_call_every([this]() { send_attitude(); }, SEND_INTERVAL_S);
 
             _mode = Mode::Attitude;
         } else {
@@ -361,14 +335,11 @@ Offboard::Result OffboardImpl::set_attitude_rate(Offboard::AttitudeRate attitude
         _attitude_rate = attitude_rate;
 
         if (_mode != Mode::AttitudeRate) {
-            if (_call_every_cookie) {
-                // If we're already sending other setpoints, stop that now.
-                _system_impl->remove_call_every(_call_every_cookie);
-                _call_every_cookie = nullptr;
-            }
+            // If we're already sending other setpoints, stop that now.
+            _system_impl->remove_call_every(_call_every_cookie);
             // We automatically send body setpoints from now on.
-            _system_impl->add_call_every(
-                [this]() { send_attitude_rate(); }, SEND_INTERVAL_S, &_call_every_cookie);
+            _call_every_cookie =
+                _system_impl->add_call_every([this]() { send_attitude_rate(); }, SEND_INTERVAL_S);
 
             _mode = Mode::AttitudeRate;
         } else {
@@ -389,14 +360,11 @@ Offboard::Result OffboardImpl::set_actuator_control(Offboard::ActuatorControl ac
         _actuator_control = actuator_control;
 
         if (_mode != Mode::ActuatorControl) {
-            if (_call_every_cookie) {
-                // If we're already sending other setpoints, stop that now.
-                _system_impl->remove_call_every(_call_every_cookie);
-                _call_every_cookie = nullptr;
-            }
+            // If we're already sending other setpoints, stop that now.
+            _system_impl->remove_call_every(_call_every_cookie);
             // We automatically send motor rate values from now on.
-            _system_impl->add_call_every(
-                [this]() { send_actuator_control(); }, SEND_INTERVAL_S, &_call_every_cookie);
+            _call_every_cookie = _system_impl->add_call_every(
+                [this]() { send_actuator_control(); }, SEND_INTERVAL_S);
 
             _mode = Mode::ActuatorControl;
         } else {
@@ -893,10 +861,7 @@ void OffboardImpl::stop_sending_setpoints()
 {
     // We assume that we already acquired the mutex in this function.
 
-    if (_call_every_cookie != nullptr) {
-        _system_impl->remove_call_every(_call_every_cookie);
-        _call_every_cookie = nullptr;
-    }
+    _system_impl->remove_call_every(_call_every_cookie);
     _mode = Mode::NotActive;
 }
 

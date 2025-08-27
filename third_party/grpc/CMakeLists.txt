@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.13)
 
 project(external-grpc)
 include(ExternalProject)
@@ -10,6 +10,7 @@ list(APPEND CMAKE_ARGS
     "-DCMAKE_POSITION_INDEPENDENT_CODE=ON"
     "-DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}"
     "-DCMAKE_CXX_STANDARD=17"
+    "-DBUILD_SHARED_LIBS=OFF"
     "-DRUN_HAVE_STD_REGEX=0"
     "-DRUN_HAVE_POSIX_REGEX=0"
     "-DRUN_HAVE_STEADY_CLOCK=0"
@@ -24,6 +25,7 @@ list(APPEND CMAKE_ARGS
     "-DgRPC_INSTALL_default=ON"
     "-DgRPC_MSVC_STATIC_RUNTIME=OFF"
     "-DgRPC_BUILD_CSHARP_EXT=OFF"
+    "-DgRPC_DOWNLOAD_ARCHIVES=OFF"
     )
 
 if(CMAKE_CROSSCOMPILING)
@@ -51,9 +53,18 @@ foreach(CMAKE_ARG ${CMAKE_ARGS})
     message(STATUS "-- ${CMAKE_ARG}")
 endforeach()
 
+if(NOT MSVC)
+    set(MODULES_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../../cmake/Modules/non-msvc")
+    message(STATUS "cmake modules path: ${MODULES_PATH}")
+
+    list(APPEND CMAKE_ARGS
+        "-DCMAKE_MODULE_PATH=${MODULES_PATH}"
+    )
+endif()
+
 ExternalProject_add(
     grpc
-    URL https://github.com/grpc/grpc/archive/v1.61.1.tar.gz
+    URL https://github.com/grpc/grpc/archive/v1.68.2.tar.gz
     PREFIX grpc
     CMAKE_ARGS "${CMAKE_ARGS}"
     )

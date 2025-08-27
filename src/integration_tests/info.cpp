@@ -7,9 +7,9 @@ using namespace mavsdk;
 
 TEST(SitlTest, PX4Info)
 {
-    Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
+    Mavsdk mavsdk{Mavsdk::Configuration{ComponentType::GroundStation}};
 
-    ConnectionResult ret = mavsdk.add_udp_connection();
+    ConnectionResult ret = mavsdk.add_any_connection("udpin://0.0.0.0:14540");
     ASSERT_EQ(ret, ConnectionResult::Success);
 
     // Wait for system to connect via heartbeat.
@@ -72,13 +72,11 @@ TEST(SitlTest, PX4Info)
         EXPECT_EQ(flight_info_result.first, Info::Result::Success);
 
         if (flight_info_result.first == Info::Result::Success) {
-            std::cout << "Time since boot (ms): "
-                      << std::to_string(flight_info_result.second.time_boot_ms) << '\n';
-            std::cout << "Flight UID: " << flight_info_result.second.flight_uid << '\n';
+            std::cout << flight_info_result.second << '\n';
         } else {
-            LogWarn() << "Product request result: " << flight_info_result.first;
+            LogWarn() << "Flight info request result: " << flight_info_result.first;
         }
 
-        std::this_thread::sleep_for(std::chrono::seconds(1));
+        std::this_thread::sleep_for(std::chrono::seconds(2));
     }
 }

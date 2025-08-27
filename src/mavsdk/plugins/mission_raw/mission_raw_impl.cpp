@@ -79,11 +79,17 @@ void MissionRawImpl::process_mission_ack(const mavlink_message_t& message)
         return;
     }
 
-    // We assume that if the vehicle sends an ACCEPTED ack might have received
-    // a new mission. In that case we need to notify our user.
-    std::lock_guard<std::mutex> lock(_mission_changed.mutex);
-    _mission_changed.callbacks.queue(
-        true, [this](const auto& func) { _system_impl->call_user_callback(func); });
+    // We assume that if the vehicle sends an ACCEPTED ack, we might have received
+    // a new mission. In that case we can notify our user.
+    // However, with the (opaque) mission_id, we can determine this properly using
+    // the id. Therefore, we only do the notification if the opaque ID is 0 and
+    // therefore not yet supported. This way we stay backwards compatible with
+    // previous autopilot versions.
+    if (mission_ack.opaque_id == 0) {
+        std::lock_guard<std::mutex> lock(_mission_changed.mutex);
+        _mission_changed.callbacks.queue(
+            true, [this](const auto& func) { _system_impl->call_user_callback(func); });
+    }
 }
 
 void MissionRawImpl::process_mission_current(const mavlink_message_t& message)
@@ -98,6 +104,17 @@ void MissionRawImpl::process_mission_current(const mavlink_message_t& message)
         // so we need to ignore that case.
         if (mission_current.seq != _mission_progress.last_reached) {
             _mission_progress.last.current = mission_current.seq;
+        }
+        _mission_progress.mission_state = mission_current.mission_state;
+    }
+    {
+        std::lock_guard<std::mutex> lock(_mission_changed.mutex);
+        if (_mission_changed.last_mission_id != mission_current.mission_id) {
+            _mission_changed.last_mission_id = mission_current.mission_id;
+
+            _mission_changed.callbacks.queue(
+                true, [this](const auto& func) { _system_impl->call_user_callback(func); });
+            LogDebug() << "Mission changed";
         }
     }
 
@@ -134,7 +151,8 @@ void MissionRawImpl::upload_mission_items_async(
     uint8_t type,
     const MissionRaw::ResultCallback& callback)
 {
-    if (_last_upload.lock()) {
+    auto work_item = _last_upload.lock();
+    if (work_item && !work_item->is_done()) {
         _system_impl->call_user_callback([callback]() {
             if (callback) {
                 callback(MissionRaw::Result::Busy);
@@ -225,9 +243,36 @@ MissionRawImpl::download_mission()
     return fut.get();
 }
 
+std::pair<MissionRaw::Result, std::vector<MissionRaw::MissionItem>>
+MissionRawImpl::download_geofence()
+{
+    auto prom = std::promise<std::pair<MissionRaw::Result, std::vector<MissionRaw::MissionItem>>>();
+    auto fut = prom.get_future();
+
+    download_geofence_async(
+        [&prom](MissionRaw::Result result, std::vector<MissionRaw::MissionItem> geofence) {
+            prom.set_value(std::make_pair<>(result, geofence));
+        });
+    return fut.get();
+}
+
+std::pair<MissionRaw::Result, std::vector<MissionRaw::MissionItem>>
+MissionRawImpl::download_rallypoints()
+{
+    auto prom = std::promise<std::pair<MissionRaw::Result, std::vector<MissionRaw::MissionItem>>>();
+    auto fut = prom.get_future();
+
+    download_rallypoints_async(
+        [&prom](MissionRaw::Result result, std::vector<MissionRaw::MissionItem> rallypoints) {
+            prom.set_value(std::make_pair<>(result, rallypoints));
+        });
+    return fut.get();
+}
+
 void MissionRawImpl::download_mission_async(const MissionRaw::DownloadMissionCallback& callback)
 {
-    if (_last_download.lock()) {
+    auto work_item = _last_download.lock();
+    if (work_item && !work_item->is_done()) {
         _system_impl->call_user_callback([callback]() {
             if (callback) {
                 std::vector<MissionRaw::MissionItem> empty_items;
@@ -239,6 +284,61 @@ void MissionRawImpl::download_mission_async(const MissionRaw::DownloadMissionCal
 
     _last_download = _system_impl->mission_transfer_client().download_items_async(
         MAV_MISSION_TYPE_MISSION,
+        _system_impl->get_system_id(),
+        [this, callback](
+            MavlinkMissionTransferClient::Result result,
+            std::vector<MavlinkMissionTransferClient::ItemInt> items) {
+            auto converted_result = convert_result(result);
+            auto converted_items = convert_items(items);
+            _system_impl->call_user_callback([callback, converted_result, converted_items]() {
+                callback(converted_result, converted_items);
+            });
+        });
+}
+
+void MissionRawImpl::download_geofence_async(const MissionRaw::DownloadGeofenceCallback& callback)
+{
+    auto work_item = _last_download.lock();
+    if (work_item && !work_item->is_done()) {
+        _system_impl->call_user_callback([callback]() {
+            if (callback) {
+                std::vector<MissionRaw::MissionItem> empty_items;
+                callback(MissionRaw::Result::Busy, empty_items);
+            }
+        });
+        return;
+    }
+
+    _last_download = _system_impl->mission_transfer_client().download_items_async(
+        MAV_MISSION_TYPE_FENCE,
+        _system_impl->get_system_id(),
+        [this, callback](
+            MavlinkMissionTransferClient::Result result,
+            std::vector<MavlinkMissionTransferClient::ItemInt> items) {
+            auto converted_result = convert_result(result);
+            auto converted_items = convert_items(items);
+            _system_impl->call_user_callback([callback, converted_result, converted_items]() {
+                callback(converted_result, converted_items);
+            });
+        });
+}
+
+void MissionRawImpl::download_rallypoints_async(
+    const MissionRaw::DownloadRallypointsCallback& callback)
+{
+    auto work_item = _last_download.lock();
+    if (work_item && !work_item->is_done()) {
+        _system_impl->call_user_callback([callback]() {
+            if (callback) {
+                std::vector<MissionRaw::MissionItem> empty_items;
+                callback(MissionRaw::Result::Busy, empty_items);
+            }
+        });
+        return;
+    }
+
+    _last_download = _system_impl->mission_transfer_client().download_items_async(
+        MAV_MISSION_TYPE_RALLY,
         _system_impl->get_system_id(),
         [this, callback](
             MavlinkMissionTransferClient::Result result,
@@ -557,6 +657,29 @@ MissionRawImpl::import_qgroundcontrol_mission_from_string(const std::string& qgc
     return MissionImport::parse_json(qgc_plan, _system_impl->autopilot());
 }
 
+std::pair<MissionRaw::Result, MissionRaw::MissionImportData>
+MissionRawImpl::import_mission_planner_mission(std::string mission_planner_path)
+{
+    std::ifstream file(mission_planner_path);
+    if (!file) {
+        return std::make_pair<MissionRaw::Result, MissionRaw::MissionImportData>(
+            MissionRaw::Result::FailedToOpenMissionPlannerPlan, {});
+    }
+
+    std::stringstream buf;
+    buf << file.rdbuf();
+    file.close();
+
+    return MissionImport::parse_mission_planner(buf.str(), _system_impl->autopilot());
+}
+
+std::pair<MissionRaw::Result, MissionRaw::MissionImportData>
+MissionRawImpl::import_mission_planner_mission_from_string(
+    const std::string& mission_planner_mission)
+{
+    return MissionImport::parse_mission_planner(mission_planner_mission, _system_impl->autopilot());
+}
+
 MissionRaw::Result MissionRawImpl::convert_result(MavlinkMissionTransferClient::Result result)
 {
     switch (result) {
@@ -593,5 +716,37 @@ MissionRaw::Result MissionRawImpl::convert_result(MavlinkMissionTransferClient::
         default:
             return MissionRaw::Result::Unknown;
     }
+}
+
+std::pair<MissionRaw::Result, bool> MissionRawImpl::is_mission_finished() const
+{
+    std::lock_guard<std::mutex> lock(_mission_progress.mutex);
+
+    if (_mission_progress.last.current < 0) {
+        return std::make_pair<MissionRaw::Result, bool>(MissionRaw::Result::Success, false);
+    }
+
+    if (_mission_progress.last_reached < 0) {
+        return std::make_pair<MissionRaw::Result, bool>(MissionRaw::Result::Success, false);
+    }
+
+    if (_mission_progress.last.total <= 0) {
+        return std::make_pair<MissionRaw::Result, bool>(MissionRaw::Result::Success, false);
+    }
+
+    // If mission_state is Unknown, fall back to the previous behavior
+    if (_mission_progress.mission_state == MISSION_STATE_UNKNOWN) {
+        return std::make_pair<MissionRaw::Result, bool>(
+            MissionRaw::Result::Success,
+            _mission_progress.last_reached == _mission_progress.last.total - 1);
+    }
+
+    // If mission_state is Completed, the mission is finished
+    if (_mission_progress.mission_state == MISSION_STATE_COMPLETE) {
+        return std::make_pair<MissionRaw::Result, bool>(MissionRaw::Result::Success, true);
+    }
+
+    // If mission_state is NotCompleted, the mission is not finished
+    return std::make_pair<MissionRaw::Result, bool>(MissionRaw::Result::Success, false);
 }
 } // namespace mavsdk

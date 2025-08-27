@@ -1,5 +1,6 @@
 #pragma once
 
+#include <atomic>
 #include <cstdint>
 #include <mutex>
 #include <sys/types.h>
@@ -7,44 +8,41 @@
 #include <vector>
 #include <atomic>
 #include <thread>
+#include <queue>
 
 #include "autopilot.h"
 #include "call_every_handler.h"
+#include "component_type.h"
 #include "connection.h"
+#include "libmav_receiver.h"
+#include <mav/BufferParser.h>
+#include "cli_arg.h"
+#include "handle_factory.h"
 #include "handle.h"
 #include "mavsdk.h"
 #include "mavlink_include.h"
 #include "mavlink_address.h"
 #include "mavlink_message_handler.h"
 #include "mavlink_command_receiver.h"
-#include "safe_queue.h"
+#include "locked_queue.h"
 #include "server_component.h"
 #include "system.h"
 #include "sender.h"
 #include "timeout_handler.h"
 #include "callback_list.h"
 
+// Forward declarations to avoid including MessageSet.h in header
+namespace mav {
+class MessageSet;
+class Message;
+class MessageDefinition;
+class BufferParser;
+} // namespace mav
+
 namespace mavsdk {
 
 class MavsdkImpl {
 public:
-    /** @brief Default System ID for GCS configuration type. */
-    static constexpr int DEFAULT_SYSTEM_ID_GCS = 245;
-    /** @brief Default Component ID for GCS configuration type. */
-    static constexpr int DEFAULT_COMPONENT_ID_GCS = MAV_COMP_ID_MISSIONPLANNER;
-    /** @brief Default System ID for CompanionComputer configuration type. */
-    static constexpr int DEFAULT_SYSTEM_ID_CC = 1;
-    /** @brief Default Component ID for CompanionComputer configuration type. */
-    static constexpr int DEFAULT_COMPONENT_ID_CC = MAV_COMP_ID_PATHPLANNER;
-    /** @brief Default System ID for Autopilot configuration type. */
-    static constexpr int DEFAULT_SYSTEM_ID_AUTOPILOT = 1;
-    /** @brief Default Component ID for Autopilot configuration type. */
-    static constexpr int DEFAULT_COMPONENT_ID_AUTOPILOT = MAV_COMP_ID_AUTOPILOT1;
-    /** @brief Default System ID for Camera configuration type. */
-    static constexpr int DEFAULT_SYSTEM_ID_CAMERA = 1;
-    /** @brief Default Component ID for Camera configuration type. */
-    static constexpr int DEFAULT_COMPONENT_ID_CAMERA = MAV_COMP_ID_CAMERA;
-
     MavsdkImpl(const Mavsdk::Configuration& configuration);
     ~MavsdkImpl();
     MavsdkImpl(const MavsdkImpl&) = delete;
@@ -54,21 +52,10 @@ public:
 
     void forward_message(mavlink_message_t& message, Connection* connection);
     void receive_message(mavlink_message_t& message, Connection* connection);
+    void receive_libmav_message(const Mavsdk::MavlinkMessage& message, Connection* connection);
 
     std::pair<ConnectionResult, Mavsdk::ConnectionHandle>
     add_any_connection(const std::string& connection_url, ForwardingOption forwarding_option);
-    std::pair<ConnectionResult, Mavsdk::ConnectionHandle> add_udp_connection(
-        const std::string& local_ip, int local_port_number, ForwardingOption forwarding_option);
-    std::pair<ConnectionResult, Mavsdk::ConnectionHandle> add_tcp_connection(
-        const std::string& remote_ip, int remote_port, ForwardingOption forwarding_option);
-    std::pair<ConnectionResult, Mavsdk::ConnectionHandle> add_serial_connection(
-        const std::string& dev_path,
-        int baudrate,
-        bool flow_control,
-        ForwardingOption forwarding_option);
-    std::pair<ConnectionResult, Mavsdk::ConnectionHandle> setup_udp_remote(
-        const std::string& remote_ip, int remote_port, ForwardingOption forwarding_option);
-
     void remove_connection(Mavsdk::ConnectionHandle handle);
 
     std::vector<std::shared_ptr<System>> systems() const;
@@ -100,10 +87,22 @@ public:
     void intercept_incoming_messages_async(std::function<bool(mavlink_message_t&)> callback);
     void intercept_outgoing_messages_async(std::function<bool(mavlink_message_t&)> callback);
 
+    // JSON message interception
+    Mavsdk::InterceptJsonHandle
+    subscribe_incoming_messages_json(const Mavsdk::InterceptJsonCallback& callback);
+    void unsubscribe_incoming_messages_json(Mavsdk::InterceptJsonHandle handle);
+    Mavsdk::InterceptJsonHandle
+    subscribe_outgoing_messages_json(const Mavsdk::InterceptJsonCallback& callback);
+    void unsubscribe_outgoing_messages_json(Mavsdk::InterceptJsonHandle handle);
+
+    Mavsdk::ConnectionErrorHandle
+    subscribe_connection_errors(Mavsdk::ConnectionErrorCallback callback);
+    void unsubscribe_connection_errors(Mavsdk::ConnectionErrorHandle handle);
+
     std::shared_ptr<ServerComponent> server_component(unsigned instance = 0);
 
     std::shared_ptr<ServerComponent>
-    server_component_by_type(Mavsdk::ComponentType server_component_type, unsigned instance = 0);
+    server_component_by_type(ComponentType server_component_type, unsigned instance = 0);
     std::shared_ptr<ServerComponent> server_component_by_id(uint8_t component_id);
 
     Time time{};
@@ -121,37 +120,95 @@ public:
 
     ServerComponentImpl& default_server_component_impl();
 
+    // Get connections for sending messages
+    std::vector<Connection*> get_connections() const;
+
+    // Get MessageSet for message creation and parsing
+    mav::MessageSet& get_message_set() const;
+
+    // Thread-safe MessageSet operations
+    bool load_custom_xml_to_message_set(const std::string& xml_content);
+    std::optional<std::string> message_id_to_name_safe(uint32_t id) const;
+    std::optional<int> message_name_to_id_safe(const std::string& name) const;
+    std::optional<mav::Message> create_message_safe(const std::string& message_name) const;
+
+    // Thread-safe MessageSet operations for LibmavReceiver
+    std::optional<mav::Message>
+    parse_message_safe(const uint8_t* buffer, size_t buffer_len, size_t& bytes_consumed) const;
+    mav::OptionalReference<const mav::MessageDefinition>
+    get_message_definition_safe(int message_id) const;
+
 private:
-    Mavsdk::ConnectionHandle add_connection(const std::shared_ptr<Connection>&);
+    static constexpr float DEFAULT_TIMEOUT_S = 0.5f;
+
+    std::pair<ConnectionResult, Mavsdk::ConnectionHandle>
+    add_udp_connection(const CliArg::Udp& udp, ForwardingOption forwarding_option);
+
+    std::pair<ConnectionResult, Mavsdk::ConnectionHandle>
+    add_tcp_connection(const CliArg::Tcp& tcp, ForwardingOption forwarding_option);
+    std::pair<ConnectionResult, Mavsdk::ConnectionHandle> add_serial_connection(
+        const std::string& dev_path,
+        int baudrate,
+        bool flow_control,
+        ForwardingOption forwarding_option);
+
+    Mavsdk::ConnectionHandle add_connection(std::unique_ptr<Connection>&& connection);
     void make_system_with_component(uint8_t system_id, uint8_t component_id);
+
+    void send_heartbeats();
 
     void work_thread();
     void process_user_callbacks_thread();
 
-    void send_heartbeat();
+    void process_messages();
+    void process_message(mavlink_message_t& message, Connection* connection);
+
+    void process_libmav_messages();
+    void process_libmav_message(const Mavsdk::MavlinkMessage& message, Connection* connection);
+
+    void deliver_messages();
+    void deliver_message(mavlink_message_t& message);
+
     bool is_any_system_connected() const;
+
+    std::shared_ptr<ServerComponent> server_component_by_id_with_lock(uint8_t component_id);
+    ServerComponentImpl& default_server_component_with_lock();
 
     static uint8_t get_target_system_id(const mavlink_message_t& message);
     static uint8_t get_target_component_id(const mavlink_message_t& message);
 
-    std::mutex _connections_mutex{};
-    uint64_t _connections_handle_id{1};
+    // Helper methods for JSON message conversion
+    bool call_json_interception_callbacks(
+        const Mavsdk::MavlinkMessage& json_message,
+        std::vector<std::pair<Mavsdk::InterceptJsonHandle, Mavsdk::InterceptJsonCallback>>&
+            callback_list);
+
+    mutable std::recursive_mutex _mutex{};
+
+    // Message set for libmav message handling (shared across all connections)
+    std::unique_ptr<mav::MessageSet> _message_set;
+    std::unique_ptr<mav::BufferParser> _buffer_parser; // Thread-safe parser
+    mutable std::mutex _message_set_mutex;
+
+    HandleFactory<> _connections_handle_factory;
     struct ConnectionEntry {
-        std::shared_ptr<Connection> connection;
+        std::unique_ptr<Connection> connection;
         Handle<> handle;
     };
     std::vector<ConnectionEntry> _connections{};
+    CallbackList<Mavsdk::ConnectionError> _connections_errors_subscriptions{};
 
-    mutable std::recursive_mutex _systems_mutex{};
     std::vector<std::pair<uint8_t, std::shared_ptr<System>>> _systems{};
 
-    mutable std::mutex _server_components_mutex{};
+    std::recursive_mutex _server_components_mutex;
     std::vector<std::pair<uint8_t, std::shared_ptr<ServerComponent>>> _server_components{};
     std::shared_ptr<ServerComponent> _default_server_component{nullptr};
 
     CallbackList<> _new_system_callbacks{};
 
-    Mavsdk::Configuration _configuration{Mavsdk::ComponentType::GroundStation};
+    Mavsdk::Configuration _configuration{ComponentType::GroundStation};
+    std::atomic<uint8_t> _our_system_id{0};
+    std::atomic<uint8_t> _our_component_id{0};
 
     struct UserCallback {
         UserCallback() = default;
@@ -169,21 +226,50 @@ private:
 
     std::thread* _work_thread{nullptr};
     std::thread* _process_user_callbacks_thread{nullptr};
-    SafeQueue<UserCallback> _user_callback_queue{};
+    LockedQueue<UserCallback> _user_callback_queue{};
 
     bool _message_logging_on{false};
     bool _callback_debugging{false};
+    bool _system_debugging{false};
 
-    mutable std::mutex _intercept_callback_mutex{};
+    mutable std::mutex _intercept_callbacks_mutex{};
     std::function<bool(mavlink_message_t&)> _intercept_incoming_messages_callback{nullptr};
     std::function<bool(mavlink_message_t&)> _intercept_outgoing_messages_callback{nullptr};
 
-    std::atomic<double> _timeout_s{Mavsdk::DEFAULT_TIMEOUT_S};
+    // JSON message interception
+    std::vector<std::pair<Mavsdk::InterceptJsonHandle, Mavsdk::InterceptJsonCallback>>
+        _incoming_json_message_subscriptions{};
+    std::vector<std::pair<Mavsdk::InterceptJsonHandle, Mavsdk::InterceptJsonCallback>>
+        _outgoing_json_message_subscriptions{};
+    mutable std::mutex _json_subscriptions_mutex{};
+    HandleFactory<bool(Mavsdk::MavlinkMessage)> _json_handle_factory{};
+
+    std::atomic<double> _timeout_s{DEFAULT_TIMEOUT_S};
+
+    struct ReceivedMessage {
+        mavlink_message_t message;
+        Connection* connection_ptr;
+    };
+    mutable std::mutex _received_messages_mutex{};
+    std::queue<ReceivedMessage> _received_messages;
+    std::condition_variable _received_messages_cv{};
+
+    struct ReceivedLibmavMessage {
+        Mavsdk::MavlinkMessage message;
+        Connection* connection_ptr;
+    };
+    mutable std::mutex _received_libmav_messages_mutex{};
+    std::queue<ReceivedLibmavMessage> _received_libmav_messages;
+    std::condition_variable _received_libmav_messages_cv{};
+
+    mutable std::mutex _messages_to_send_mutex{};
+    std::queue<mavlink_message_t> _messages_to_send;
 
     static constexpr double HEARTBEAT_SEND_INTERVAL_S = 1.0;
-    void* _heartbeat_send_cookie{nullptr};
+    std::mutex _heartbeat_mutex{};
+    CallEveryHandler::Cookie _heartbeat_send_cookie{};
 
-    std::atomic<bool> _should_exit = {false};
+    std::atomic<bool> _should_exit{false};
 };
 
 } // namespace mavsdk

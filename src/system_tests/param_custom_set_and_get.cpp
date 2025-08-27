@@ -2,6 +2,7 @@
 #include "mavsdk.h"
 #include "plugins/param/param.h"
 #include "plugins/param_server/param_server.h"
+#include <atomic>
 #include <thread>
 #include <gtest/gtest.h>
 
@@ -29,15 +30,17 @@ static std::string generate_uppercase_ascii(size_t length)
 
 TEST(SystemTest, ParamCustomSetAndGet)
 {
-    Mavsdk mavsdk_groundstation{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
+    Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
     mavsdk_groundstation.set_timeout_s(reduced_timeout_s);
 
-    Mavsdk mavsdk_autopilot{Mavsdk::Configuration{Mavsdk::ComponentType::Autopilot}};
+    Mavsdk mavsdk_autopilot{Mavsdk::Configuration{ComponentType::Autopilot}};
     mavsdk_autopilot.set_timeout_s(reduced_timeout_s);
 
-    ASSERT_EQ(mavsdk_groundstation.add_any_connection("udp://:17000"), ConnectionResult::Success);
     ASSERT_EQ(
-        mavsdk_autopilot.add_any_connection("udp://127.0.0.1:17000"), ConnectionResult::Success);
+        mavsdk_groundstation.add_any_connection("udpin://0.0.0.0:17000"),
+        ConnectionResult::Success);
+    ASSERT_EQ(
+        mavsdk_autopilot.add_any_connection("udpout://127.0.0.1:17000"), ConnectionResult::Success);
 
     auto param_server = ParamServer{mavsdk_autopilot.server_component()};
 
@@ -81,22 +84,24 @@ TEST(SystemTest, ParamCustomSetAndGet)
 
 TEST(SystemTest, ParamCustomSetAndGetLossy)
 {
-    Mavsdk mavsdk_groundstation{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
+    Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
     mavsdk_groundstation.set_timeout_s(reduced_timeout_s);
 
-    Mavsdk mavsdk_autopilot{Mavsdk::Configuration{Mavsdk::ComponentType::Autopilot}};
+    Mavsdk mavsdk_autopilot{Mavsdk::Configuration{ComponentType::Autopilot}};
     mavsdk_autopilot.set_timeout_s(reduced_timeout_s);
 
     // Drop every third message
-    unsigned counter = 0;
+    std::atomic<unsigned> counter = 0;
     auto drop_some = [&counter](mavlink_message_t&) { return counter++ % 3; };
 
     mavsdk_groundstation.intercept_incoming_messages_async(drop_some);
     mavsdk_groundstation.intercept_incoming_messages_async(drop_some);
 
-    ASSERT_EQ(mavsdk_groundstation.add_any_connection("udp://:17000"), ConnectionResult::Success);
     ASSERT_EQ(
-        mavsdk_autopilot.add_any_connection("udp://127.0.0.1:17000"), ConnectionResult::Success);
+        mavsdk_groundstation.add_any_connection("udpin://0.0.0.0:17000"),
+        ConnectionResult::Success);
+    ASSERT_EQ(
+        mavsdk_autopilot.add_any_connection("udpout://127.0.0.1:17000"), ConnectionResult::Success);
 
     auto param_server = ParamServer{mavsdk_autopilot.server_component()};
 

@@ -110,7 +110,11 @@ std::pair<LogFiles::Result, std::vector<LogFiles::Entry>> LogFilesImpl::get_entr
         prom->set_value(std::make_pair<>(result, entries));
     });
 
-    return future_result.get();
+    auto result = future_result.get();
+
+    _entries_user_callback = nullptr;
+
+    return result;
 }
 
 void LogFilesImpl::get_entries_async(LogFiles::GetEntriesCallback callback)
@@ -120,10 +124,8 @@ void LogFilesImpl::get_entries_async(LogFiles::GetEntriesCallback callback)
     _entries_user_callback = callback;
     _total_entries = 0;
 
-    _system_impl->register_timeout_handler(
-        [this]() { entries_timeout(); },
-        _system_impl->timeout_s() * 10.0,
-        &_entries_timeout_cookie);
+    _entries_timeout_cookie = _system_impl->register_timeout_handler(
+        [this]() { entries_timeout(); }, _system_impl->timeout_s() * 10.0);
 
     request_log_list(0, 0xFFFF);
 }
@@ -261,10 +263,8 @@ void LogFilesImpl::download_log_file_async(
         return;
     }
 
-    _system_impl->register_timeout_handler(
-        [this]() { LogFilesImpl::data_timeout(); },
-        _system_impl->timeout_s() * 1.0,
-        &_download_data.timeout_cookie);
+    _download_data.timeout_cookie = _system_impl->register_timeout_handler(
+        [this]() { LogFilesImpl::data_timeout(); }, _system_impl->timeout_s() * 1.0);
 
     // Request the first chunk
     request_log_data(_download_data.entry.id, 0, _download_data.current_chunk_size());
@@ -390,10 +390,8 @@ void LogFilesImpl::data_timeout()
         _download_data.current_chunk * CHUNK_SIZE,
         _download_data.current_chunk_size());
 
-    _system_impl->register_timeout_handler(
-        [this]() { LogFilesImpl::data_timeout(); },
-        _system_impl->timeout_s() * 1.0,
-        &_download_data.timeout_cookie);
+    _download_data.timeout_cookie = _system_impl->register_timeout_handler(
+        [this]() { LogFilesImpl::data_timeout(); }, _system_impl->timeout_s() * 1.0);
 }
 
 void LogFilesImpl::request_log_data(unsigned id, unsigned start, unsigned count)

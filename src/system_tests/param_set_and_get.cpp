@@ -2,6 +2,7 @@
 #include "mavsdk.h"
 #include "plugins/param/param.h"
 #include "plugins/param_server/param_server.h"
+#include <atomic>
 #include <chrono>
 #include <thread>
 #include <gtest/gtest.h>
@@ -18,15 +19,17 @@ static constexpr double reduced_timeout_s = 0.1;
 
 TEST(SystemTest, ParamSetAndGet)
 {
-    Mavsdk mavsdk_groundstation{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
+    Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
     mavsdk_groundstation.set_timeout_s(reduced_timeout_s);
 
-    Mavsdk mavsdk_autopilot{Mavsdk::Configuration{Mavsdk::ComponentType::Autopilot}};
+    Mavsdk mavsdk_autopilot{Mavsdk::Configuration{ComponentType::Autopilot}};
     mavsdk_autopilot.set_timeout_s(reduced_timeout_s);
 
-    ASSERT_EQ(mavsdk_groundstation.add_any_connection("udp://:17000"), ConnectionResult::Success);
     ASSERT_EQ(
-        mavsdk_autopilot.add_any_connection("udp://127.0.0.1:17000"), ConnectionResult::Success);
+        mavsdk_groundstation.add_any_connection("udpin://0.0.0.0:17000"),
+        ConnectionResult::Success);
+    ASSERT_EQ(
+        mavsdk_autopilot.add_any_connection("udpout://127.0.0.1:17000"), ConnectionResult::Success);
 
     auto param_server = ParamServer{mavsdk_autopilot.server_component()};
 
@@ -39,10 +42,10 @@ TEST(SystemTest, ParamSetAndGet)
     auto param = Param{system};
 
     // First we try to get a param before it is available.
-    auto result_pair = param.get_param_float(param_name_float);
-    EXPECT_EQ(result_pair.first, Param::Result::Timeout);
-    result_pair = param.get_param_int(param_name_int);
-    EXPECT_EQ(result_pair.first, Param::Result::Timeout);
+    auto result_pair_float = param.get_param_float(param_name_float);
+    EXPECT_EQ(result_pair_float.first, Param::Result::Timeout);
+    auto result_pair_int = param.get_param_int(param_name_int);
+    EXPECT_EQ(result_pair_int.first, Param::Result::Timeout);
 
     // Then we make it available.
     EXPECT_EQ(
@@ -53,13 +56,13 @@ TEST(SystemTest, ParamSetAndGet)
         ParamServer::Result::Success);
 
     // Now it should be available
-    result_pair = param.get_param_float(param_name_float);
-    EXPECT_EQ(result_pair.first, Param::Result::Success);
-    EXPECT_EQ(result_pair.second, param_value_float);
+    result_pair_float = param.get_param_float(param_name_float);
+    EXPECT_EQ(result_pair_float.first, Param::Result::Success);
+    EXPECT_EQ(result_pair_float.second, param_value_float);
 
-    result_pair = param.get_param_int(param_name_int);
-    EXPECT_EQ(result_pair.first, Param::Result::Success);
-    EXPECT_EQ(result_pair.second, param_value_int);
+    result_pair_int = param.get_param_int(param_name_int);
+    EXPECT_EQ(result_pair_int.first, Param::Result::Success);
+    EXPECT_EQ(result_pair_int.second, param_value_int);
 
     // Let's now change the values
     auto result = param.set_param_float(param_name_float, param_value_float + 1.0f);
@@ -69,22 +72,22 @@ TEST(SystemTest, ParamSetAndGet)
     EXPECT_EQ(result, Param::Result::Success);
 
     // Check if it has been changed correctly
-    result_pair = param.get_param_float(param_name_float);
-    EXPECT_EQ(result_pair.first, Param::Result::Success);
-    EXPECT_EQ(result_pair.second, param_value_float + 1.0f);
+    result_pair_float = param.get_param_float(param_name_float);
+    EXPECT_EQ(result_pair_float.first, Param::Result::Success);
+    EXPECT_EQ(result_pair_float.second, param_value_float + 1.0f);
 
-    result_pair = param.get_param_int(param_name_int);
-    EXPECT_EQ(result_pair.first, Param::Result::Success);
-    EXPECT_EQ(result_pair.second, param_value_int + 2);
+    result_pair_int = param.get_param_int(param_name_int);
+    EXPECT_EQ(result_pair_int.first, Param::Result::Success);
+    EXPECT_EQ(result_pair_int.second, param_value_int + 2);
 
     // Also check the server side
-    auto server_result_pair = param_server.retrieve_param_float(param_name_float);
-    EXPECT_EQ(server_result_pair.first, ParamServer::Result::Success);
-    EXPECT_FLOAT_EQ(server_result_pair.second, param_value_float + 1.0f);
+    auto server_result_pair_float = param_server.retrieve_param_float(param_name_float);
+    EXPECT_EQ(server_result_pair_float.first, ParamServer::Result::Success);
+    EXPECT_FLOAT_EQ(server_result_pair_float.second, param_value_float + 1.0f);
 
-    server_result_pair = param_server.retrieve_param_int(param_name_int);
-    EXPECT_EQ(server_result_pair.first, ParamServer::Result::Success);
-    EXPECT_FLOAT_EQ(server_result_pair.second, param_value_int + 2);
+    auto server_result_pair_int = param_server.retrieve_param_int(param_name_int);
+    EXPECT_EQ(server_result_pair_int.first, ParamServer::Result::Success);
+    EXPECT_EQ(server_result_pair_int.second, param_value_int + 2);
 
     // Also try to retrieve them all at once
     auto server_result_all_params = param_server.retrieve_all_params();
@@ -96,22 +99,24 @@ TEST(SystemTest, ParamSetAndGet)
 
 TEST(SystemTest, ParamSetAndGetLossy)
 {
-    Mavsdk mavsdk_groundstation{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
+    Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
     mavsdk_groundstation.set_timeout_s(reduced_timeout_s);
 
     // Drop every third message
-    unsigned counter = 0;
+    std::atomic<unsigned> counter = 0;
     auto drop_some = [&counter](mavlink_message_t&) { return counter++ % 3; };
 
     mavsdk_groundstation.intercept_incoming_messages_async(drop_some);
     mavsdk_groundstation.intercept_incoming_messages_async(drop_some);
 
-    Mavsdk mavsdk_autopilot{Mavsdk::Configuration{Mavsdk::ComponentType::Autopilot}};
+    Mavsdk mavsdk_autopilot{Mavsdk::Configuration{ComponentType::Autopilot}};
     mavsdk_autopilot.set_timeout_s(reduced_timeout_s);
 
-    ASSERT_EQ(mavsdk_groundstation.add_any_connection("udp://:17000"), ConnectionResult::Success);
     ASSERT_EQ(
-        mavsdk_autopilot.add_any_connection("udp://127.0.0.1:17000"), ConnectionResult::Success);
+        mavsdk_groundstation.add_any_connection("udpin://0.0.0.0:17000"),
+        ConnectionResult::Success);
+    ASSERT_EQ(
+        mavsdk_autopilot.add_any_connection("udpout://127.0.0.1:17000"), ConnectionResult::Success);
 
     auto param_server = ParamServer{mavsdk_autopilot.server_component()};
 
@@ -132,13 +137,13 @@ TEST(SystemTest, ParamSetAndGetLossy)
         ParamServer::Result::Success);
 
     // Now it should be available
-    auto result_pair = param.get_param_float(param_name_float);
-    EXPECT_EQ(result_pair.first, Param::Result::Success);
-    EXPECT_EQ(result_pair.second, param_value_float);
+    auto result_pair_float = param.get_param_float(param_name_float);
+    EXPECT_EQ(result_pair_float.first, Param::Result::Success);
+    EXPECT_EQ(result_pair_float.second, param_value_float);
 
-    result_pair = param.get_param_int(param_name_int);
-    EXPECT_EQ(result_pair.first, Param::Result::Success);
-    EXPECT_EQ(result_pair.second, param_value_int);
+    auto result_pair_int = param.get_param_int(param_name_int);
+    EXPECT_EQ(result_pair_int.first, Param::Result::Success);
+    EXPECT_EQ(result_pair_int.second, param_value_int);
 
     // Let's now change the values
     auto result = param.set_param_float(param_name_float, param_value_float + 1.0f);
@@ -148,22 +153,22 @@ TEST(SystemTest, ParamSetAndGetLossy)
     EXPECT_EQ(result, Param::Result::Success);
 
     // Check if it has been changed correctly
-    result_pair = param.get_param_float(param_name_float);
-    EXPECT_EQ(result_pair.first, Param::Result::Success);
-    EXPECT_EQ(result_pair.second, param_value_float + 1.0f);
+    result_pair_float = param.get_param_float(param_name_float);
+    EXPECT_EQ(result_pair_float.first, Param::Result::Success);
+    EXPECT_EQ(result_pair_float.second, param_value_float + 1.0f);
 
-    result_pair = param.get_param_int(param_name_int);
-    EXPECT_EQ(result_pair.first, Param::Result::Success);
-    EXPECT_EQ(result_pair.second, param_value_int + 2);
+    result_pair_int = param.get_param_int(param_name_int);
+    EXPECT_EQ(result_pair_int.first, Param::Result::Success);
+    EXPECT_EQ(result_pair_int.second, param_value_int + 2);
 
     // Also check the server side
-    auto server_result_pair = param_server.retrieve_param_float(param_name_float);
-    EXPECT_EQ(server_result_pair.first, ParamServer::Result::Success);
-    EXPECT_FLOAT_EQ(server_result_pair.second, param_value_float + 1.0f);
+    auto server_result_pair_float = param_server.retrieve_param_float(param_name_float);
+    EXPECT_EQ(server_result_pair_float.first, ParamServer::Result::Success);
+    EXPECT_FLOAT_EQ(server_result_pair_float.second, param_value_float + 1.0f);
 
-    server_result_pair = param_server.retrieve_param_int(param_name_int);
-    EXPECT_EQ(server_result_pair.first, ParamServer::Result::Success);
-    EXPECT_FLOAT_EQ(server_result_pair.second, param_value_int + 2);
+    auto server_result_pair_int = param_server.retrieve_param_int(param_name_int);
+    EXPECT_EQ(server_result_pair_int.first, ParamServer::Result::Success);
+    EXPECT_EQ(server_result_pair_int.second, param_value_int + 2);
 
     // Also try to retrieve them all at once
     auto server_result_all_params = param_server.retrieve_all_params();

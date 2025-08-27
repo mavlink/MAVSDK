@@ -24,26 +24,35 @@ if(CCACHE AND CCACHE_PROGRAM AND NOT DEFINED ENV{CCACHE_DISABLE})
     endif()
 endif()
 
-option(BUILD_TESTS "Build tests" ON)
+option(BUILD_TESTING "Build tests" ON)
 option(CMAKE_POSITION_INDEPENDENT_CODE "Position independent code" ON)
 
-include(cmake/compiler_flags.cmake)
+include(../cmake/compiler_flags.cmake)
 
 find_package(Threads REQUIRED)
 
-if(NOT HUNTER_ENABLED)
-    list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules")
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../cmake/Modules/common")
+
+if(NOT MSVC)
+    list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../cmake/Modules/non-msvc")
 endif()
 
-# This will noop if hunter is not enabled
-hunter_add_package(jsoncpp)
-hunter_add_package(CURL)
 
-find_package(CURL REQUIRED)
+message(STATUS "Build with CMAKE_PREFIX_PATH: ${CMAKE_PREFIX_PATH}")
+message(STATUS "CMAKE_FIND_ROOT_PATHS: ${CMAKE_FIND_ROOT_PATH}")
 
-if(BUILD_TESTS AND (IOS OR ANDROID))
-    message(STATUS "Building for iOS or Android: forcing BUILD_TESTS to FALSE...")
-    set(BUILD_TESTS OFF)
+if(NOT BUILD_WITHOUT_CURL)
+    find_package(CURL REQUIRED)
+endif()
+if (CMAKE_CROSSCOMPILING)
+    find_package(LibLZMA HINTS "${CMAKE_PREFIX_PATH}" REQUIRED)
+else()
+    find_package(LibLZMA REQUIRED)
+endif()
+
+if(BUILD_TESTING AND (IOS OR ANDROID))
+    message(STATUS "Building for iOS or Android: forcing BUILD_TESTING to FALSE...")
+    set(BUILD_TESTING OFF)
 endif()
 
 if(ANDROID)
@@ -66,16 +75,13 @@ endif()
 
 add_subdirectory(mavsdk)
 
-include(cmake/static_analyzers.cmake)
+include(../cmake/static_analyzers.cmake)
 
-if(BUILD_TESTS)
+if(BUILD_TESTING)
     enable_testing()
-    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/third_party/gtest EXCLUDE_FROM_ALL)
 
     add_subdirectory(integration_tests)
-
     add_subdirectory(unit_tests)
-
     add_subdirectory(system_tests)
 endif()
 

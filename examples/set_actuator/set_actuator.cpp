@@ -13,12 +13,14 @@ using namespace mavsdk;
 
 void usage(const std::string& bin_name)
 {
-    std::cerr << "Usage :" << bin_name << " <connection_url> <actuator_index> <actuator_value>\n"
+    std::cerr << "Usage : " << bin_name << " <connection_url>\n"
               << "Connection URL format should be :\n"
-              << " For TCP : tcp://[server_host][:server_port]\n"
-              << " For UDP : udp://[bind_host][:bind_port]\n"
-              << " For Serial : serial:///path/to/serial/dev[:baudrate]\n"
-              << "For example, to connect to the simulator use URL: udp://:14540\n";
+              << " For TCP server: tcpin://<our_ip>:<port>\n"
+              << " For TCP client: tcpout://<remote_ip>:<port>\n"
+              << " For UDP server: udp://<our_ip>:<port>\n"
+              << " For UDP client: udp://<remote_ip>:<port>\n"
+              << " For Serial : serial://</path/to/serial/dev>:<baudrate>]\n"
+              << "For example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n";
 }
 
 int main(int argc, char** argv)
@@ -32,7 +34,7 @@ int main(int argc, char** argv)
     const int index = std::stod(argv[2]);
     const float value = std::stof(argv[3]);
 
-    Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
+    Mavsdk mavsdk{Mavsdk::Configuration{ComponentType::GroundStation}};
     const ConnectionResult connection_result = mavsdk.add_any_connection(connection_url);
 
     if (connection_result != ConnectionResult::Success) {

@@ -15,6 +15,7 @@
 #include <future>
 #include <limits>
 #include <memory>
+#include <mutex>
 #include <sstream>
 #include <vector>
 
@@ -121,6 +122,33 @@ public:
         obj.y_m_s = speed_body.y_m_s();
 
         obj.z_m_s = speed_body.z_m_s();
+
+        return obj;
+    }
+
+    static std::unique_ptr<rpc::mocap::SpeedNed>
+    translateToRpcSpeedNed(const mavsdk::Mocap::SpeedNed& speed_ned)
+    {
+        auto rpc_obj = std::make_unique<rpc::mocap::SpeedNed>();
+
+        rpc_obj->set_north_m_s(speed_ned.north_m_s);
+
+        rpc_obj->set_east_m_s(speed_ned.east_m_s);
+
+        rpc_obj->set_down_m_s(speed_ned.down_m_s);
+
+        return rpc_obj;
+    }
+
+    static mavsdk::Mocap::SpeedNed translateFromRpcSpeedNed(const rpc::mocap::SpeedNed& speed_ned)
+    {
+        mavsdk::Mocap::SpeedNed obj;
+
+        obj.north_m_s = speed_ned.north_m_s();
+
+        obj.east_m_s = speed_ned.east_m_s();
+
+        obj.down_m_s = speed_ned.down_m_s();
 
         return obj;
     }
@@ -241,6 +269,36 @@ public:
 
         obj.pose_covariance =
             translateFromRpcCovariance(vision_position_estimate.pose_covariance());
+
+        return obj;
+    }
+
+    static std::unique_ptr<rpc::mocap::VisionSpeedEstimate> translateToRpcVisionSpeedEstimate(
+        const mavsdk::Mocap::VisionSpeedEstimate& vision_speed_estimate)
+    {
+        auto rpc_obj = std::make_unique<rpc::mocap::VisionSpeedEstimate>();
+
+        rpc_obj->set_time_usec(vision_speed_estimate.time_usec);
+
+        rpc_obj->set_allocated_speed_ned(
+            translateToRpcSpeedNed(vision_speed_estimate.speed_ned).release());
+
+        rpc_obj->set_allocated_speed_covariance(
+            translateToRpcCovariance(vision_speed_estimate.speed_covariance).release());
+
+        return rpc_obj;
+    }
+
+    static mavsdk::Mocap::VisionSpeedEstimate translateFromRpcVisionSpeedEstimate(
+        const rpc::mocap::VisionSpeedEstimate& vision_speed_estimate)
+    {
+        mavsdk::Mocap::VisionSpeedEstimate obj;
+
+        obj.time_usec = vision_speed_estimate.time_usec();
+
+        obj.speed_ned = translateFromRpcSpeedNed(vision_speed_estimate.speed_ned());
+
+        obj.speed_covariance = translateFromRpcCovariance(vision_speed_estimate.speed_covariance());
 
         return obj;
     }
@@ -431,6 +489,35 @@ public:
         return grpc::Status::OK;
     }
 
+    grpc::Status SetVisionSpeedEstimate(
+        grpc::ServerContext* /* context */,
+        const rpc::mocap::SetVisionSpeedEstimateRequest* request,
+        rpc::mocap::SetVisionSpeedEstimateResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                auto result = mavsdk::Mocap::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        if (request == nullptr) {
+            LogWarn() << "SetVisionSpeedEstimate sent with a null request! Ignoring...";
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->set_vision_speed_estimate(
+            translateFromRpcVisionSpeedEstimate(request->vision_speed_estimate()));
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+
+        return grpc::Status::OK;
+    }
+
     grpc::Status SetAttitudePositionMocap(
         grpc::ServerContext* /* context */,
         const rpc::mocap::SetAttitudePositionMocapRequest* request,
@@ -492,6 +579,7 @@ public:
     void stop()
     {
         _stopped.store(true);
+        std::lock_guard<std::mutex> lock(_stream_stop_mutex);
         for (auto& prom : _stream_stop_promises) {
             if (auto handle = prom.lock()) {
                 handle->set_value();
@@ -508,12 +596,14 @@ private:
                 handle->set_value();
             }
         } else {
+            std::lock_guard<std::mutex> lock(_stream_stop_mutex);
             _stream_stop_promises.push_back(prom);
         }
     }
 
     void unregister_stream_stop_promise(std::shared_ptr<std::promise<void>> prom)
     {
+        std::lock_guard<std::mutex> lock(_stream_stop_mutex);
         for (auto it = _stream_stop_promises.begin(); it != _stream_stop_promises.end();
              /* ++it */) {
             if (it->lock() == prom) {
@@ -527,6 +617,7 @@ private:
     LazyPlugin& _lazy_plugin;
 
     std::atomic<bool> _stopped{false};
+    std::mutex _stream_stop_mutex{};
     std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises{};
 };
 

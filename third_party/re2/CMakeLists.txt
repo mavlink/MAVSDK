@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.13)
 
 project(external-re2)
 include(ExternalProject)
@@ -27,7 +27,8 @@ endforeach()
 
 ExternalProject_add(
     re2
-    URL https://github.com/google/re2/archive/2023-11-01.tar.gz
+    GIT_REPOSITORY https://github.com/google/re2
+    GIT_TAG b84e3ff189980a33d4a0c6fa1201aa0b3b8bab4a
     PREFIX re2
     CMAKE_ARGS "${CMAKE_ARGS}"
     )

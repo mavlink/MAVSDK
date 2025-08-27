@@ -1,6 +1,7 @@
 #include "telemetry_server_impl.h"
 #include "unused.h"
 #include <array>
+#include <algorithm>
 
 namespace mavsdk {
 
@@ -13,6 +14,10 @@ TelemetryServerImpl::TelemetryServerImpl(std::shared_ptr<ServerComponent> server
 
 TelemetryServerImpl::~TelemetryServerImpl()
 {
+    // Unregister command handlers BEFORE unregistering plugin to prevent use-after-free
+    _server_component_impl->unregister_mavlink_command_handler(MAV_CMD_SET_MESSAGE_INTERVAL, this);
+    _server_component_impl->unregister_mavlink_command_handler(MAV_CMD_REQUEST_MESSAGE, this);
+
     _server_component_impl->unregister_plugin(this);
     std::lock_guard<std::mutex> lock(_mutex);
     for (const auto& request : _interval_requests) {
@@ -42,7 +47,7 @@ void TelemetryServerImpl::init()
 
             if (found == _interval_requests.end() && command.params.param2 != -1) {
                 // If not found interval already, add a new one
-                _interval_requests.push_back({msgid, interval_ms, nullptr});
+                _interval_requests.push_back({msgid, interval_ms});
                 //_server_component_impl->add_call_every(
                 //    [this, msgid]() {
                 //        std::lock_guard<std::mutex> lock_interval(_mutex);
@@ -82,20 +87,25 @@ void TelemetryServerImpl::init()
                 case MAVLINK_MSG_ID_HOME_POSITION:
                     if (_maybe_home) {
                         if (_send_home()) {
-                            return _server_component_impl->make_command_ack_message(
-                                command, MAV_RESULT::MAV_RESULT_ACCEPTED);
+                            return std::optional<mavlink_command_ack_t>{
+                                _server_component_impl->make_command_ack_message(
+                                    command, MAV_RESULT::MAV_RESULT_ACCEPTED)};
                         } else {
-                            return _server_component_impl->make_command_ack_message(
-                                command, MAV_RESULT::MAV_RESULT_FAILED);
+                            return std::optional<mavlink_command_ack_t>{
+                                _server_component_impl->make_command_ack_message(
+                                    command, MAV_RESULT::MAV_RESULT_FAILED)};
                         }
                     } else {
-                        return _server_component_impl->make_command_ack_message(
-                            command, MAV_RESULT::MAV_RESULT_DENIED);
+                        return std::optional<mavlink_command_ack_t>{
+                            _server_component_impl->make_command_ack_message(
+                                command, MAV_RESULT::MAV_RESULT_DENIED)};
                     }
 
                 default:
-                    return _server_component_impl->make_command_ack_message(
-                        command, MAV_RESULT::MAV_RESULT_DENIED);
+                    // Let's hope someone else answers and keep silent. In an ideal world we would
+                    // explicitly deny all the ones that we ought to answer but haven't implemented
+                    // yet.
+                    return std::optional<mavlink_command_ack_t>{};
             }
         },
         this);
@@ -392,10 +402,21 @@ TelemetryServer::Result TelemetryServerImpl::publish_raw_imu(TelemetryServer::Im
 
 TelemetryServer::Result TelemetryServerImpl::publish_unix_epoch_time(uint64_t time_us)
 {
-    UNUSED(time_us);
-
-    // TODO :)
-    return {};
+    return _server_component_impl->queue_message(
+               [&](MavlinkAddress mavlink_address, uint8_t channel) {
+                   mavlink_message_t message;
+                   mavlink_msg_system_time_pack_chan(
+                       mavlink_address.system_id,
+                       mavlink_address.component_id,
+                       channel,
+                       &message,
+                       time_us,
+                       0 // TODO: add timestamping in general
+                   );
+                   return message;
+               }) ?
+               TelemetryServer::Result::Success :
+               TelemetryServer::Result::Unsupported;
 }
 
 TelemetryServer::Result TelemetryServerImpl::publish_sys_status(
@@ -501,6 +522,53 @@ TelemetryServer::Result TelemetryServerImpl::publish_extended_sys_state(
                        &message,
                        to_mav_vtol_state(vtol_state),
                        to_mav_landed_state(landed_state));
+                   return message;
+               }) ?
+               TelemetryServer::Result::Success :
+               TelemetryServer::Result::Unsupported;
+}
+
+TelemetryServer::Result TelemetryServerImpl::publish_attitude(
+    TelemetryServer::EulerAngle attitude, TelemetryServer::AngularVelocityBody angular_velocity)
+{
+    return _server_component_impl->queue_message(
+               [&](MavlinkAddress mavlink_address, uint8_t channel) {
+                   mavlink_message_t message;
+                   mavlink_msg_attitude_pack_chan(
+                       mavlink_address.system_id,
+                       mavlink_address.component_id,
+                       channel,
+                       &message,
+                       static_cast<uint32_t>(attitude.timestamp_us / 1000.F),
+                       attitude.roll_deg * M_PI / 180.F,
+                       attitude.pitch_deg * M_PI / 180.F,
+                       attitude.yaw_deg * M_PI / 180.F,
+                       angular_velocity.roll_rad_s,
+                       angular_velocity.pitch_rad_s,
+                       angular_velocity.yaw_rad_s);
+                   return message;
+               }) ?
+               TelemetryServer::Result::Success :
+               TelemetryServer::Result::Unsupported;
+}
+
+TelemetryServer::Result TelemetryServerImpl::publish_visual_flight_rules_hud(
+    TelemetryServer::FixedwingMetrics fixed_wing_metrics)
+{
+    return _server_component_impl->queue_message(
+               [&](MavlinkAddress mavlink_address, uint8_t channel) {
+                   mavlink_message_t message;
+                   mavlink_msg_vfr_hud_pack_chan(
+                       mavlink_address.system_id,
+                       mavlink_address.component_id,
+                       channel,
+                       &message,
+                       fixed_wing_metrics.airspeed_m_s,
+                       fixed_wing_metrics.groundspeed_m_s,
+                       static_cast<uint16_t>(std::round(fixed_wing_metrics.heading_deg)),
+                       static_cast<uint16_t>(std::round(fixed_wing_metrics.throttle_percentage)),
+                       fixed_wing_metrics.absolute_altitude_m,
+                       fixed_wing_metrics.climb_rate_m_s);
                    return message;
                }) ?
                TelemetryServer::Result::Success :

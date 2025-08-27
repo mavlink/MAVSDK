@@ -5,8 +5,6 @@
 #include "mavsdk.h"
 #include "plugins/telemetry/telemetry.h"
 
-#define CAMERA_AVAILABLE 0 // Set to 1 if camera is available and should be tested.
-
 using namespace mavsdk;
 
 static void receive_result(Telemetry::Result result);
@@ -19,10 +17,6 @@ static void print_euler_angle(Telemetry::EulerAngle euler_angle);
 static void print_angular_velocity_body(Telemetry::AngularVelocityBody angular_velocity_body);
 static void print_fixedwing_metrics(Telemetry::FixedwingMetrics fixedwing_metrics);
 static void print_ground_truth(const Telemetry::GroundTruth& ground_truth);
-#if CAMERA_AVAILABLE == 1
-static void print_camera_quaternion(Telemetry::Quaternion quaternion);
-static void print_camera_euler_angle(Telemetry::EulerAngle euler_angle);
-#endif
 static void print_velocity_ned(Telemetry::VelocityNed velocity_ned);
 static void print_imu(Telemetry::Imu imu);
 static void print_gps_info(Telemetry::GpsInfo gps_info);
@@ -44,10 +38,6 @@ static bool _received_euler_angle = false;
 static bool _received_angular_velocity_body = false;
 static bool _received_fixedwing_metrics = false;
 static bool _received_ground_truth = false;
-#if CAMERA_AVAILABLE == 1
-static bool _received_camera_quaternion = false;
-static bool _received_camera_euler_angle = false;
-#endif
 static bool _received_velocity = false;
 static bool _received_imu = false;
 static bool _received_gps_info = false;
@@ -60,9 +50,9 @@ static bool _received_altitude = false;
 
 TEST(SitlTest, PX4TelemetryAsync)
 {
-    Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
+    Mavsdk mavsdk{Mavsdk::Configuration{ComponentType::GroundStation}};
 
-    ConnectionResult ret = mavsdk.add_udp_connection();
+    ConnectionResult ret = mavsdk.add_any_connection("udpin://0.0.0.0:14540");
     ASSERT_EQ(ret, ConnectionResult::Success);
 
     std::this_thread::sleep_for(std::chrono::seconds(3));
@@ -153,14 +143,6 @@ TEST(SitlTest, PX4TelemetryAsync)
     telemetry->subscribe_ground_truth(
         [](Telemetry::GroundTruth ground_truth) { print_ground_truth(ground_truth); });
 
-#if CAMERA_AVAILABLE == 1
-    telemetry->subscribe_camera_attitude_quaternion(
-        [](Telemetry::Quaternion quaternion) { print_camera_quaternion(quaternion); });
-
-    telemetry->subscribe_camera_attitude_euler(
-        [](Telemetry::EulerAngle euler_angle) { print_camera_euler_angle(euler_angle); });
-#endif
-
     telemetry->subscribe_velocity_ned(
         [](Telemetry::VelocityNed velocity_ned) { print_velocity_ned(velocity_ned); });
 
@@ -206,10 +188,6 @@ TEST(SitlTest, PX4TelemetryAsync)
     EXPECT_TRUE(_received_fixedwing_metrics);
     EXPECT_TRUE(_received_ground_truth);
     EXPECT_TRUE(_received_euler_angle);
-#if CAMERA_AVAILABLE == 1
-    EXPECT_TRUE(_received_camera_quaternion);
-    EXPECT_TRUE(_received_camera_euler_angle);
-#endif
     EXPECT_TRUE(_received_velocity);
     EXPECT_TRUE(_received_imu);
     EXPECT_TRUE(_received_gps_info);
@@ -286,7 +264,10 @@ void print_angular_velocity_body(Telemetry::AngularVelocityBody angular_velocity
 void print_fixedwing_metrics(Telemetry::FixedwingMetrics fixedwing_metrics)
 {
     std::cout << "async Airspeed: " << fixedwing_metrics.airspeed_m_s << " m/s, "
+              << "Groundspeed: " << fixedwing_metrics.groundspeed_m_s << " m/s, "
+              << "Heading: " << fixedwing_metrics.heading_deg << " deg, "
               << "Throttle: " << fixedwing_metrics.throttle_percentage << " %, "
+              << "Altitude: " << fixedwing_metrics.absolute_altitude_m << " m (MSL), "
               << "Climb: " << fixedwing_metrics.climb_rate_m_s << " m/s" << '\n';
     _received_fixedwing_metrics = true;
 }
@@ -296,24 +277,6 @@ void print_ground_truth(const Telemetry::GroundTruth& ground_truth)
     std::cout << ground_truth << '\n';
     _received_ground_truth = true;
 }
-
-#if CAMERA_AVAILABLE == 1
-void print_camera_quaternion(Telemetry::Quaternion quaternion)
-{
-    std::cout << "Camera Quaternion: [ " << quaternion.w << ", " << quaternion.x << ", "
-              << quaternion.y << ", " << quaternion.z << " ]" << '\n';
-
-    _received_camera_quaternion = true;
-}
-
-void print_camera_euler_angle(Telemetry::EulerAngle euler_angle)
-{
-    std::cout << "Camera Euler angle: [ " << euler_angle.roll_deg << ", " << euler_angle.pitch_deg
-              << ", " << euler_angle.yaw_deg << " ] deg" << '\n';
-
-    _received_camera_euler_angle = true;
-}
-#endif
 
 void print_velocity_ned(Telemetry::VelocityNed velocity_ned)
 {
@@ -370,10 +333,10 @@ void print_position_velocity_ned(Telemetry::PositionVelocityNed position_velocit
 void print_altitude(Telemetry::Altitude altitude)
 {
     std::cout << "altitude_monotonic: " << altitude.altitude_monotonic_m << "m, "
-              << "altitude_local" << altitude.altitude_local_m << "m, "
-              << "altitude_amsl" << altitude.altitude_amsl_m << "m, "
-              << "altitude_relative" << altitude.altitude_relative_m << "m, "
-              << "altitude_terrain" << altitude.altitude_terrain_m << "m" << std::endl;
+              << "altitude_local" << altitude.altitude_local_m << "m, " << "altitude_amsl"
+              << altitude.altitude_amsl_m << "m, " << "altitude_relative"
+              << altitude.altitude_relative_m << "m, " << "altitude_terrain"
+              << altitude.altitude_terrain_m << "m" << std::endl;
 
     _received_altitude = true;
 }

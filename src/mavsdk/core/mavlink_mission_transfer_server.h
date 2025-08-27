@@ -63,7 +63,8 @@ public:
     };
 
     using ResultCallback = std::function<void(Result result)>;
-    using ResultAndItemsCallback = std::function<void(Result result, std::vector<ItemInt> items)>;
+    using ResultAndItemsCallback =
+        std::function<void(Result result, uint8_t type, std::vector<ItemInt> items)>;
     using ProgressCallback = std::function<void(float progress)>;
 
     class WorkItem {
@@ -130,14 +131,9 @@ public:
         void process_timeout();
         void callback_and_reset(Result result);
 
-        enum class Step {
-            RequestList,
-            RequestItem,
-        } _step{Step::RequestList};
-
         std::vector<ItemInt> _items{};
         ResultAndItemsCallback _callback{nullptr};
-        void* _cookie{nullptr};
+        TimeoutHandler::Cookie _cookie{};
         std::size_t _next_sequence{0};
         std::size_t _expected_count{0};
         unsigned _retries_done{0};
@@ -146,6 +142,55 @@ public:
         uint8_t _target_component_id{0};
     };
     static constexpr unsigned retries = 5;
+
+    class SendOutgoingMission : public WorkItem {
+    public:
+        explicit SendOutgoingMission(
+            Sender& sender,
+            MavlinkMessageHandler& message_handler,
+            TimeoutHandler& timeout_handler,
+            uint8_t type,
+            const std::vector<ItemInt>& items,
+            double timeout_s,
+            ResultCallback callback,
+            uint8_t target_system_id,
+            uint8_t target_component_id,
+            bool debugging);
+
+        ~SendOutgoingMission() override;
+
+        void start() override;
+        void cancel() override;
+
+        SendOutgoingMission(const SendOutgoingMission&) = delete;
+        SendOutgoingMission(SendOutgoingMission&&) = delete;
+        SendOutgoingMission& operator=(const SendOutgoingMission&) = delete;
+        SendOutgoingMission& operator=(SendOutgoingMission&&) = delete;
+
+    private:
+        void send_count();
+        void send_mission_item();
+        void send_cancel_and_finish();
+
+        void process_mission_request(const mavlink_message_t& message);
+        void process_mission_request_int(const mavlink_message_t& message);
+        void process_mission_ack(const mavlink_message_t& message);
+        void process_timeout();
+        void callback_and_reset(Result result);
+
+        enum class Step {
+            SendCount,
+            SendItems,
+        } _step{Step::SendCount};
+
+        std::vector<ItemInt> _items{};
+        ResultCallback _callback{nullptr};
+        TimeoutHandler::Cookie _cookie{};
+        std::size_t _next_sequence{0};
+        unsigned _retries_done{0};
+        uint8_t _target_system_id{0};
+        uint8_t _target_component_id{0};
+    };
 
     explicit MavlinkMissionTransferServer(
         Sender& sender,
@@ -162,10 +207,15 @@ public:
         uint8_t target_component,
         ResultAndItemsCallback callback);
 
+    std::weak_ptr<WorkItem> send_outgoing_items_async(
+        uint8_t type,
+        const std::vector<ItemInt>& items,
+        uint8_t target_system,
+        uint8_t target_component,
+        ResultCallback callback);
+
     void do_work();
     bool is_idle();
-
-    void set_int_messages_supported(bool supported);
 
     // Non-copyable
     MavlinkMissionTransferServer(const MavlinkMissionTransferServer&) = delete;
@@ -179,7 +229,6 @@ private:
 
     LockedQueue<WorkItem> _work_queue{};
 
-    bool _int_messages_supported{true};
     bool _debugging{false};
 };
 

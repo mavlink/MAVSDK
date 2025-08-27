@@ -3,6 +3,7 @@
 #include "plugins/param/param.h"
 #include "plugins/param_server/param_server.h"
 #include <gtest/gtest.h>
+#include <atomic>
 #include <chrono>
 #include <vector>
 #include <thread>
@@ -18,7 +19,7 @@ static constexpr double reduced_timeout_s = 0.1;
 static std::map<std::string, float> generate_float_params()
 {
     std::map<std::string, float> params;
-    for (int i = 0; i < num_params_per_type; ++i) {
+    for (unsigned i = 0; i < num_params_per_type; ++i) {
         const auto id = std::string("TEST_FLOAT") + std::to_string(i);
         const float value = 42.0f + static_cast<float>(i);
         params[id] = value;
@@ -29,7 +30,7 @@ static std::map<std::string, float> generate_float_params()
 static std::map<std::string, int> generate_int_params()
 {
     std::map<std::string, int> params;
-    for (int i = 0; i < num_params_per_type; ++i) {
+    for (unsigned i = 0; i < num_params_per_type; ++i) {
         const auto id = std::string("TEST_INT") + std::to_string(i);
         const int value = 42 + i;
         params[id] = value;
@@ -60,15 +61,17 @@ static void assert_equal(const std::map<std::string, T1>& values, const std::vec
 
 TEST(SystemTest, ParamGetAll)
 {
-    Mavsdk mavsdk_groundstation{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
+    Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
     mavsdk_groundstation.set_timeout_s(reduced_timeout_s);
 
-    Mavsdk mavsdk_autopilot{Mavsdk::Configuration{Mavsdk::ComponentType::Autopilot}};
+    Mavsdk mavsdk_autopilot{Mavsdk::Configuration{ComponentType::Autopilot}};
     mavsdk_autopilot.set_timeout_s(reduced_timeout_s);
 
-    ASSERT_EQ(mavsdk_groundstation.add_any_connection("udp://:17000"), ConnectionResult::Success);
     ASSERT_EQ(
-        mavsdk_autopilot.add_any_connection("udp://127.0.0.1:17000"), ConnectionResult::Success);
+        mavsdk_groundstation.add_any_connection("udpin://0.0.0.0:17000"),
+        ConnectionResult::Success);
+    ASSERT_EQ(
+        mavsdk_autopilot.add_any_connection("udpout://127.0.0.1:17000"), ConnectionResult::Success);
 
     auto param_server = ParamServer{mavsdk_autopilot.server_component()};
 
@@ -117,22 +120,24 @@ TEST(SystemTest, ParamGetAll)
 
 TEST(SystemTest, ParamGetAllLossy)
 {
-    Mavsdk mavsdk_groundstation{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
+    Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
     mavsdk_groundstation.set_timeout_s(reduced_timeout_s);
 
-    Mavsdk mavsdk_autopilot{Mavsdk::Configuration{Mavsdk::ComponentType::Autopilot}};
+    Mavsdk mavsdk_autopilot{Mavsdk::Configuration{ComponentType::Autopilot}};
     mavsdk_autopilot.set_timeout_s(reduced_timeout_s);
 
     // Drop every third message
-    unsigned counter = 0;
+    std::atomic<unsigned> counter = 0;
     auto drop_some = [&counter](mavlink_message_t&) { return counter++ % 5; };
 
     mavsdk_groundstation.intercept_incoming_messages_async(drop_some);
     mavsdk_groundstation.intercept_outgoing_messages_async(drop_some);
 
-    ASSERT_EQ(mavsdk_groundstation.add_any_connection("udp://:17000"), ConnectionResult::Success);
     ASSERT_EQ(
-        mavsdk_autopilot.add_any_connection("udp://127.0.0.1:17000"), ConnectionResult::Success);
+        mavsdk_groundstation.add_any_connection("udpin://0.0.0.0:17000"),
+        ConnectionResult::Success);
+    ASSERT_EQ(
+        mavsdk_autopilot.add_any_connection("udpout://127.0.0.1:17000"), ConnectionResult::Success);
 
     auto param_server = ParamServer{mavsdk_autopilot.server_component()};
 

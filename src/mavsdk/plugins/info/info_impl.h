@@ -6,6 +6,7 @@
 #include "plugins/info/info.h"
 #include "plugin_impl_base.h"
 #include "ringbuffer.h"
+#include "callback_list.h"
 
 namespace mavsdk {
 
@@ -24,15 +25,17 @@ public:
     std::pair<Info::Result, Info::Identification> get_identification() const;
     std::pair<Info::Result, Info::Version> get_version() const;
     std::pair<Info::Result, Info::Product> get_product() const;
-    std::pair<Info::Result, Info::FlightInfo> get_flight_information() const;
+    std::pair<Info::Result, Info::FlightInfo> get_flight_information();
     std::pair<Info::Result, double> get_speed_factor() const;
+
+    Info::FlightInformationHandle
+    subscribe_flight_information(const Info::FlightInformationCallback& callback);
+    void unsubscribe_flight_information(Info::FlightInformationHandle handle);
 
     InfoImpl(const InfoImpl&) = delete;
     InfoImpl& operator=(const InfoImpl&) = delete;
 
 private:
-    void request_version_again();
-    void request_flight_information();
     void process_heartbeat(const mavlink_message_t& message);
     void process_autopilot_version(const mavlink_message_t& message);
     void process_flight_information(const mavlink_message_t& message);
@@ -41,20 +44,18 @@ private:
     Info::Version::FlightSoftwareVersionType
         get_flight_software_version_type(FIRMWARE_VERSION_TYPE);
 
-    void wait_for_information() const;
+    void wait_for_identification() const;
 
     mutable std::mutex _mutex{};
 
     Info::Version _version{};
     Info::Product _product{};
     Info::Identification _identification{};
-    Info::FlightInfo _flight_info{};
-    std::atomic<bool> _information_received{false};
-    bool _flight_information_received{false};
-    bool _was_armed{false};
+    bool _identification_received{false};
 
-    void* _call_every_cookie{nullptr};
-    void* _flight_info_call_every_cookie{nullptr};
+    Info::FlightInfo _flight_info{};
+
+    CallEveryHandler::Cookie _call_every_cookie{};
 
     struct SpeedFactorMeasurement {
         double simulated_duration_s{0.0};
@@ -72,6 +73,8 @@ private:
     Time _time{};
     SteadyTimePoint _last_time_attitude_arrived{};
     uint32_t _last_time_boot_ms{0};
+
+    CallbackList<Info::FlightInfo> _flight_info_subscriptions{};
 
     static const std::string vendor_id_str(uint16_t vendor_id);
     static const std::string product_id_str(uint16_t product_id);

@@ -102,7 +102,7 @@ private:
     mutable std::mutex _mutex{};
     FollowMe::TargetLocation _target_location{}; // sent to vehicle
     FollowMe::TargetLocation _last_location{}; // sent to vehicle
-    void* _target_location_cookie = nullptr;
+    CallEveryHandler::Cookie _target_location_cookie{};
 
     Time _time{};
     uint8_t _estimation_capabilities = 0; // sent to vehicle

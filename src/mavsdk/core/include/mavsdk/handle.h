@@ -4,10 +4,8 @@
 
 namespace mavsdk {
 
-template<typename... Args> class CallbackListImpl;
-template<typename... Args> class CallbackList;
 template<typename... Args> class FakeHandle;
-class MavsdkImpl;
+template<typename... Args> class HandleFactory;
 
 /**
  * @brief A handle returned from subscribe which allows to unsubscribe again.
@@ -17,15 +15,22 @@ public:
     Handle() = default;
     ~Handle() = default;
 
-private:
+    /**
+     * @brief Wheter handle is valid
+     *
+     * @return true if handle is valid
+     */
+    bool valid() const { return _id != 0; }
+
+    bool operator<(const Handle& other) const { return _id < other._id; }
     bool operator==(const Handle& other) const { return _id == other._id; }
 
+private:
     explicit Handle(uint64_t id) : _id(id) {}
     uint64_t _id{0};
 
-    friend CallbackListImpl<Args...>;
     friend FakeHandle<Args...>;
-    friend MavsdkImpl; // For connections.
+    template<typename...> friend class HandleFactory;
 };
 
 } // namespace mavsdk

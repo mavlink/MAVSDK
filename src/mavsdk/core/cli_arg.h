@@ -1,37 +1,60 @@
 #pragma once
 
+#include <optional>
 #include <string>
+#include <string_view>
+#include <variant>
 
 namespace mavsdk {
 
 class CliArg {
 public:
-    enum class Protocol { None, Udp, Tcp, Serial };
+    struct Udp {
+        enum class Mode {
+            Unknown,
+            In,
+            Out,
+        };
+        Mode mode{Mode::Unknown};
+        std::string host{};
+        int port{};
+    };
+
+    struct Tcp {
+        enum class Mode {
+            Unknown,
+            In,
+            Out,
+        };
+        Mode mode{Mode::Unknown};
+        std::string host{};
+        int port{};
+    };
+
+    struct Serial {
+        std::string path{};
+        int baudrate{};
+        bool flow_control_enabled{false};
+    };
+
+    using Protocol = std::variant<std::monostate, Udp, Tcp, Serial>;
 
     bool parse(const std::string& uri);
 
-    [[nodiscard]] Protocol get_protocol() const { return _protocol; }
-
-    [[nodiscard]] int get_port() const { return _port; }
-
-    [[nodiscard]] int get_baudrate() const { return _baudrate; }
-
-    [[nodiscard]] bool get_flow_control() const { return _flow_control_enabled; }
-
-    [[nodiscard]] std::string get_path() const { return _path; }
+    Protocol protocol{};
 
 private:
-    void reset();
-    bool find_protocol(std::string& rest);
-    bool find_path(std::string& rest);
-    bool find_port(std::string& rest);
-    bool find_baudrate(std::string& rest);
+    static std::optional<int> port_from_str(std::string_view str);
 
-    Protocol _protocol{Protocol::None};
-    std::string _path{};
-    int _port{0};
-    int _baudrate{0};
-    bool _flow_control_enabled{false};
+    bool parse_udp(const std::string_view rest);
+    bool parse_udpin(const std::string_view rest);
+    bool parse_udpout(const std::string_view rest);
+
+    bool parse_tcp(const std::string_view rest);
+    bool parse_tcpin(const std::string_view rest);
+    bool parse_tcpout(const std::string_view rest);
+
+    bool parse_serial(const std::string_view rest, bool flow_control_enabled);
 };
 
 } // namespace mavsdk

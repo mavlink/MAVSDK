@@ -211,7 +211,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result set_param_int(std::string name, int32_t value) const;
 
@@ -233,7 +235,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result set_param_float(std::string name, float value) const;
 
@@ -255,7 +259,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result set_param_custom(std::string name, std::string value) const;
 
@@ -275,7 +281,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result select_component(int32_t component_id, ProtocolVersion protocol_version) const;
 

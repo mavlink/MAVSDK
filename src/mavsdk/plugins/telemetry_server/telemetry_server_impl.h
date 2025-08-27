@@ -14,7 +14,7 @@ public:
     struct RequestMsgInterval {
         uint32_t msg_id{0};
         uint32_t interval{0};
-        void* cookie{nullptr};
+        CallEveryHandler::Cookie cookie{};
     };
 
     explicit TelemetryServerImpl(std::shared_ptr<ServerComponent> server_component);
@@ -75,6 +75,13 @@ public:
 
     TelemetryServer::Result publish_extended_sys_state(
         TelemetryServer::VtolState vtol_state, TelemetryServer::LandedState landed_state);
+
+    TelemetryServer::Result publish_attitude(
+        TelemetryServer::EulerAngle attitude,
+        TelemetryServer::AngularVelocityBody angular_velocity);
+
+    TelemetryServer::Result
+    publish_visual_flight_rules_hud(TelemetryServer::FixedwingMetrics fixed_wing_metrics);
 
 private:
     bool _send_home();

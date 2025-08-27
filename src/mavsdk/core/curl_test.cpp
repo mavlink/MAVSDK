@@ -82,11 +82,11 @@ TEST_F(CurlTest, Curl_DownloadFile_WithoutProgressFeedback_FileNotFound)
 TEST_F(CurlTest, Curl_DownloadFile_ProgressFeedback_Success)
 {
     int last_progress;
-    Status last_status;
+    HttpStatus last_status;
     CURLcode last_curl_code;
 
     auto progress = [&last_progress, &last_status, &last_curl_code](
-                        int got_progress, Status status, CURLcode curl_code) -> int {
+                        int got_progress, HttpStatus status, CURLcode curl_code) -> int {
         last_progress = got_progress;
         last_status = status;
         last_curl_code = curl_code;
@@ -99,7 +99,7 @@ TEST_F(CurlTest, Curl_DownloadFile_ProgressFeedback_Success)
         curl_wrapper.download_file_to_path(_file_url_existing_http, _local_path, progress);
     EXPECT_EQ(success, true);
     EXPECT_EQ(last_progress, 100);
-    EXPECT_EQ(last_status, Status::Finished);
+    EXPECT_EQ(last_status, HttpStatus::Finished);
     EXPECT_EQ(last_curl_code, CURLcode::CURLE_OK);
 
     bool file_exists = check_file_exists(_local_path);
@@ -109,11 +109,11 @@ TEST_F(CurlTest, Curl_DownloadFile_ProgressFeedback_Success)
 TEST_F(CurlTest, Curl_DownloadFile_ProgressFeedback_COULDNT_RESOLVE_HOST)
 {
     int last_progress;
-    Status last_status;
+    HttpStatus last_status;
     CURLcode last_curl_code;
 
     auto progress = [&last_progress, &last_status, &last_curl_code](
-                        int got_progress, Status status, CURLcode curl_code) -> int {
+                        int got_progress, HttpStatus status, CURLcode curl_code) -> int {
         last_progress = got_progress;
         last_status = status;
         last_curl_code = curl_code;
@@ -126,7 +126,7 @@ TEST_F(CurlTest, Curl_DownloadFile_ProgressFeedback_COULDNT_RESOLVE_HOST)
         curl_wrapper.download_file_to_path(_file_url_not_existing, _local_path, progress);
     EXPECT_EQ(success, false);
     EXPECT_EQ(last_progress, 0);
-    EXPECT_EQ(last_status, Status::Error);
+    EXPECT_EQ(last_status, HttpStatus::Error);
     EXPECT_EQ(last_curl_code, CURLcode::CURLE_COULDNT_RESOLVE_HOST);
 
     bool file_exists = check_file_exists(_local_path);

@@ -2,11 +2,11 @@
 #include "mavsdk_impl.h"
 #include "mavlink_include.h"
 #include "system_impl.h"
+#include <mav/MessageSet.h>
 #include "server_component_impl.h"
 #include "plugin_impl_base.h"
 #include "px4_custom_mode.h"
 #include "ardupilot_custom_mode.h"
-#include "request_message.h"
 #include "callback_list.tpp"
 #include "unused.h"
 #include <cassert>
@@ -18,8 +18,8 @@
 namespace mavsdk {
 
 template class CallbackList<bool>;
-template class CallbackList<System::ComponentType>;
-template class CallbackList<System::ComponentType, uint8_t>;
+template class CallbackList<ComponentType>;
+template class CallbackList<ComponentType, uint8_t>;
 
 SystemImpl::SystemImpl(MavsdkImpl& mavsdk_impl) :
     _mavsdk_impl(mavsdk_impl),
@@ -32,10 +32,17 @@ SystemImpl::SystemImpl(MavsdkImpl& mavsdk_impl) :
         _mavsdk_impl.timeout_handler,
         [this]() { return timeout_s(); },
         [this]() { return autopilot(); }),
-    _request_message(
+    _mavlink_request_message(
         *this, _command_sender, _mavlink_message_handler, _mavsdk_impl.timeout_handler),
-    _mavlink_ftp_client(*this)
+    _mavlink_ftp_client(*this),
+    _mavlink_component_metadata(*this)
 {
+    if (const char* env_p = std::getenv("MAVSDK_MESSAGE_DEBUGGING")) {
+        if (std::string(env_p) == "1") {
+            _message_debugging = true;
+        }
+    }
+
     _system_thread = new std::thread(&SystemImpl::system_thread, this);
 }
 
@@ -43,6 +50,7 @@ SystemImpl::~SystemImpl()
 {
     _should_exit = true;
     _mavlink_message_handler.unregister_all(this);
+    unregister_all_libmav_message_handlers(this);
 
     unregister_timeout_handler(_heartbeat_timeout_cookie);
 
@@ -73,21 +81,6 @@ void SystemImpl::init(uint8_t system_id, uint8_t comp_id)
         MAVLINK_MSG_ID_AUTOPILOT_VERSION,
         [this](const mavlink_message_t& message) { process_autopilot_version(message); },
         this);
-
-    // register_mavlink_command_handler(
-    //    MAV_CMD_REQUEST_AUTOPILOT_CAPABILITIES,
-    //    [this](const MavlinkCommandReceiver::CommandLong& command) {
-    //        return process_autopilot_version_request(command);
-    //    },
-    //    this);
-
-    //// TO-DO!
-    // register_mavlink_command_handler(
-    //    MAV_CMD_REQUEST_MESSAGE,
-    //    [this](const MavlinkCommandReceiver::CommandLong& command) {
-    //        return make_command_ack_message(command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
-    //    },
-    //    this);
 
     add_new_component(comp_id);
 }
@@ -128,18 +121,107 @@ void SystemImpl::update_component_id_messages_handler(
     _mavlink_message_handler.update_component_id(msg_id, component_id, cookie);
 }
 
-void SystemImpl::register_timeout_handler(
-    const std::function<void()>& callback, double duration_s, void** cookie)
+void SystemImpl::process_libmav_message(const Mavsdk::MavlinkMessage& message)
 {
-    _mavsdk_impl.timeout_handler.add(callback, duration_s, cookie);
+    // Call all registered libmav message handlers
+    std::lock_guard<std::mutex> lock(_libmav_message_handlers_mutex);
+
+    if (_message_debugging) {
+        LogDebug() << "SystemImpl::process_libmav_message: " << message.message_name
+                   << ", registered handlers: " << _libmav_message_handlers.size();
+    }
+
+    for (const auto& handler : _libmav_message_handlers) {
+        if (_message_debugging) {
+            LogDebug() << "Checking handler for message: '" << handler.message_name << "' against '"
+                       << message.message_name << "'";
+        }
+        // Check if message name matches (empty string means match all messages)
+        if (!handler.message_name.empty() && handler.message_name != message.message_name) {
+            if (_message_debugging) {
+                LogDebug() << "Handler message name mismatch, skipping";
+            }
+            continue;
+        }
+
+        // Check if component ID matches (if specified)
+        if (handler.component_id.has_value() &&
+            handler.component_id.value() != message.component_id) {
+            continue;
+        }
+
+        // Call the handler
+        if (_message_debugging) {
+            LogDebug() << "Calling libmav handler for: " << message.message_name;
+        }
+        if (handler.callback) {
+            handler.callback(message);
+        } else {
+            LogWarn() << "Handler callback is null!";
+        }
+    }
 }
 
-void SystemImpl::refresh_timeout_handler(const void* cookie)
+void SystemImpl::register_libmav_message_handler(
+    const std::string& message_name, const LibmavMessageCallback& callback, const void* cookie)
+{
+    std::lock_guard<std::mutex> lock(_libmav_message_handlers_mutex);
+    if (_message_debugging) {
+        LogDebug() << "Registering libmav handler for message: '" << message_name
+                   << "', total handlers will be: " << (_libmav_message_handlers.size() + 1);
+    }
+    _libmav_message_handlers.push_back({message_name, callback, cookie, std::nullopt});
+}
+
+void SystemImpl::register_libmav_message_handler_with_compid(
+    const std::string& message_name,
+    uint8_t cmp_id,
+    const LibmavMessageCallback& callback,
+    const void* cookie)
+{
+    std::lock_guard<std::mutex> lock(_libmav_message_handlers_mutex);
+    _libmav_message_handlers.push_back({message_name, callback, cookie, cmp_id});
+}
+
+void SystemImpl::unregister_libmav_message_handler(
+    const std::string& message_name, const void* cookie)
+{
+    std::lock_guard<std::mutex> lock(_libmav_message_handlers_mutex);
+
+    _libmav_message_handlers.erase(
+        std::remove_if(
+            _libmav_message_handlers.begin(),
+            _libmav_message_handlers.end(),
+            [&](const LibmavMessageHandler& handler) {
+                return handler.message_name == message_name && handler.cookie == cookie;
+            }),
+        _libmav_message_handlers.end());
+}
+
+void SystemImpl::unregister_all_libmav_message_handlers(const void* cookie)
+{
+    std::lock_guard<std::mutex> lock(_libmav_message_handlers_mutex);
+
+    _libmav_message_handlers.erase(
+        std::remove_if(
+            _libmav_message_handlers.begin(),
+            _libmav_message_handlers.end(),
+            [&](const LibmavMessageHandler& handler) { return handler.cookie == cookie; }),
+        _libmav_message_handlers.end());
+}
+
+TimeoutHandler::Cookie
+SystemImpl::register_timeout_handler(const std::function<void()>& callback, double duration_s)
+{
+    return _mavsdk_impl.timeout_handler.add(callback, duration_s);
+}
+
+void SystemImpl::refresh_timeout_handler(TimeoutHandler::Cookie cookie)
 {
     _mavsdk_impl.timeout_handler.refresh(cookie);
 }
 
-void SystemImpl::unregister_timeout_handler(const void* cookie)
+void SystemImpl::unregister_timeout_handler(TimeoutHandler::Cookie cookie)
 {
     _mavsdk_impl.timeout_handler.remove(cookie);
 }
@@ -157,7 +239,6 @@ void SystemImpl::enable_timesync()
 System::IsConnectedHandle
 SystemImpl::subscribe_is_connected(const System::IsConnectedCallback& callback)
 {
-    std::lock_guard<std::mutex> lock(_connection_mutex);
     return _is_connected_callbacks.subscribe(callback);
 }
 
@@ -171,23 +252,24 @@ void SystemImpl::process_mavlink_message(mavlink_message_t& message)
     _mavlink_message_handler.process_message(message);
 }
 
-void SystemImpl::add_call_every(std::function<void()> callback, float interval_s, void** cookie)
+CallEveryHandler::Cookie
+SystemImpl::add_call_every(std::function<void()> callback, float interval_s)
 {
-    _mavsdk_impl.call_every_handler.add(
-        std::move(callback), static_cast<double>(interval_s), cookie);
+    return _mavsdk_impl.call_every_handler.add(
+        std::move(callback), static_cast<double>(interval_s));
 }
 
-void SystemImpl::change_call_every(float interval_s, const void* cookie)
+void SystemImpl::change_call_every(float interval_s, CallEveryHandler::Cookie cookie)
 {
     _mavsdk_impl.call_every_handler.change(static_cast<double>(interval_s), cookie);
 }
 
-void SystemImpl::reset_call_every(const void* cookie)
+void SystemImpl::reset_call_every(CallEveryHandler::Cookie cookie)
 {
     _mavsdk_impl.call_every_handler.reset(cookie);
 }
 
-void SystemImpl::remove_call_every(const void* cookie)
+void SystemImpl::remove_call_every(CallEveryHandler::Cookie cookie)
 {
     _mavsdk_impl.call_every_handler.remove(cookie);
 }
@@ -195,13 +277,11 @@ void SystemImpl::remove_call_every(const void* cookie)
 void SystemImpl::register_statustext_handler(
     std::function<void(const MavlinkStatustextHandler::Statustext&)> callback, void* cookie)
 {
-    std::lock_guard<std::mutex> lock(_statustext_handler_callbacks_mutex);
     _statustext_handler_callbacks.push_back(StatustextCallback{std::move(callback), cookie});
 }
 
 void SystemImpl::unregister_statustext_handler(void* cookie)
 {
-    std::lock_guard<std::mutex> lock(_statustext_handler_callbacks_mutex);
     _statustext_handler_callbacks.erase(std::remove_if(
         _statustext_handler_callbacks.begin(),
         _statustext_handler_callbacks.end(),
@@ -258,7 +338,6 @@ void SystemImpl::process_statustext(const mavlink_message_t& message)
                    << MavlinkStatustextHandler::severity_str(maybe_result.value().severity) << ": "
                    << maybe_result.value().text;
 
-        std::lock_guard<std::mutex> lock(_statustext_handler_callbacks_mutex);
         for (const auto& entry : _statustext_handler_callbacks) {
             entry.callback(maybe_result.value());
         }
@@ -313,17 +392,6 @@ void SystemImpl::system_thread()
     }
 }
 
-// std::optional<mavlink_message_t>
-// SystemImpl::process_autopilot_version_request(const MavlinkCommandReceiver::CommandLong& command)
-//{
-//    if (_should_send_autopilot_version) {
-//        send_autopilot_version();
-//        return make_command_ack_message(command, MAV_RESULT::MAV_RESULT_ACCEPTED);
-//    }
-//
-//    return {};
-//}
-
 std::string SystemImpl::component_name(uint8_t component_id)
 {
     switch (component_id) {
@@ -345,6 +413,8 @@ std::string SystemImpl::component_name(uint8_t component_id)
             return "Gimbal";
         case MAV_COMP_ID_MISSIONPLANNER:
             return "Ground station";
+        case MAV_COMP_ID_ONBOARD_COMPUTER:
+            return "Companion Computer";
         case MAV_COMP_ID_WINCH:
             return "Winch";
         default:
@@ -352,22 +422,33 @@ std::string SystemImpl::component_name(uint8_t component_id)
     }
 }
 
-System::ComponentType SystemImpl::component_type(uint8_t component_id)
+ComponentType SystemImpl::component_type(uint8_t component_id)
 {
     switch (component_id) {
         case MAV_COMP_ID_AUTOPILOT1:
-            return System::ComponentType::AUTOPILOT;
+            return ComponentType::Autopilot;
+        case MAV_COMP_ID_MISSIONPLANNER:
+            return ComponentType::GroundStation;
+        case MAV_COMP_ID_ONBOARD_COMPUTER:
+        case MAV_COMP_ID_ONBOARD_COMPUTER2:
+        case MAV_COMP_ID_ONBOARD_COMPUTER3:
+        case MAV_COMP_ID_ONBOARD_COMPUTER4:
+            return ComponentType::CompanionComputer;
         case MAV_COMP_ID_CAMERA:
         case MAV_COMP_ID_CAMERA2:
         case MAV_COMP_ID_CAMERA3:
         case MAV_COMP_ID_CAMERA4:
         case MAV_COMP_ID_CAMERA5:
         case MAV_COMP_ID_CAMERA6:
-            return System::ComponentType::CAMERA;
+            return ComponentType::Camera;
         case MAV_COMP_ID_GIMBAL:
-            return System::ComponentType::GIMBAL;
+            return ComponentType::Gimbal;
+        case MAV_COMP_ID_ODID_TXRX_1:
+        case MAV_COMP_ID_ODID_TXRX_2:
+        case MAV_COMP_ID_ODID_TXRX_3:
+            return ComponentType::RemoteId;
         default:
-            return System::ComponentType::UNKNOWN;
+            return ComponentType::Custom;
     }
 }
 
@@ -377,9 +458,14 @@ void SystemImpl::add_new_component(uint8_t component_id)
         return;
     }
 
-    auto res_pair = _components.insert(component_id);
-    if (res_pair.second) {
-        std::lock_guard<std::mutex> lock(_component_discovered_callback_mutex);
+    bool is_new_component = false;
+    {
+        std::lock_guard<std::mutex> lock(_components_mutex);
+        auto res_pair = _components.insert(component_id);
+        is_new_component = res_pair.second;
+    }
+
+    if (is_new_component) {
         _component_discovered_callbacks.queue(
             component_type(component_id), [this](const auto& func) { call_user_callback(func); });
         _component_discovered_id_callbacks.queue(
@@ -393,16 +479,17 @@ void SystemImpl::add_new_component(uint8_t component_id)
 
 size_t SystemImpl::total_components() const
 {
+    std::lock_guard<std::mutex> lock(_components_mutex);
     return _components.size();
 }
 
 System::ComponentDiscoveredHandle
 SystemImpl::subscribe_component_discovered(const System::ComponentDiscoveredCallback& callback)
 {
-    std::lock_guard<std::mutex> lock(_component_discovered_callback_mutex);
     const auto handle = _component_discovered_callbacks.subscribe(callback);
 
     if (total_components() > 0) {
+        std::lock_guard<std::mutex> components_lock(_components_mutex);
         for (const auto& elem : _components) {
             _component_discovered_callbacks.queue(
                 component_type(elem), [this](const auto& func) { call_user_callback(func); });
@@ -413,17 +500,16 @@ SystemImpl::subscribe_component_discovered(const System::ComponentDiscoveredCall
 
 void SystemImpl::unsubscribe_component_discovered(System::ComponentDiscoveredHandle handle)
 {
-    std::lock_guard<std::mutex> lock(_component_discovered_callback_mutex);
     _component_discovered_callbacks.unsubscribe(handle);
 }
 
 System::ComponentDiscoveredIdHandle
 SystemImpl::subscribe_component_discovered_id(const System::ComponentDiscoveredIdCallback& callback)
 {
-    std::lock_guard<std::mutex> lock(_component_discovered_callback_mutex);
     const auto handle = _component_discovered_id_callbacks.subscribe(callback);
 
     if (total_components() > 0) {
+        std::lock_guard<std::mutex> components_lock(_components_mutex);
         for (const auto& elem : _components) {
             _component_discovered_id_callbacks.queue(
                 component_type(elem), elem, [this](const auto& func) { call_user_callback(func); });
@@ -434,7 +520,6 @@ SystemImpl::subscribe_component_discovered_id(const System::ComponentDiscoveredI
 
 void SystemImpl::unsubscribe_component_discovered_id(System::ComponentDiscoveredIdHandle handle)
 {
-    std::lock_guard<std::mutex> lock(_component_discovered_callback_mutex);
     _component_discovered_id_callbacks.unsubscribe(handle);
 }
 
@@ -460,6 +545,7 @@ bool SystemImpl::is_camera(uint8_t comp_id)
 
 bool SystemImpl::has_camera(int camera_id) const
 {
+    std::lock_guard<std::mutex> lock(_components_mutex);
     int camera_comp_id = (camera_id == -1) ? camera_id : (MAV_COMP_ID_CAMERA + camera_id);
 
     if (camera_comp_id == -1) { // Check whether the system has any camera.
@@ -494,112 +580,64 @@ bool SystemImpl::queue_message(
 
 void SystemImpl::send_autopilot_version_request()
 {
-    auto prom = std::promise<MavlinkCommandSender::Result>();
-    auto fut = prom.get_future();
-
-    send_autopilot_version_request_async(
-        [&prom](MavlinkCommandSender::Result result, float) { prom.set_value(result); });
-
-    if (fut.get() == MavlinkCommandSender::Result::Unsupported) {
-        _old_message_520_supported = false;
-        LogWarn() << "Trying alternative command (512).";
-        send_autopilot_version_request();
-    }
-}
-
-void SystemImpl::send_autopilot_version_request_async(
-    const MavlinkCommandSender::CommandResultCallback& callback)
-{
-    MavlinkCommandSender::CommandLong command{};
-    command.target_component_id = get_autopilot_id();
-
-    if (_old_message_520_supported) {
-        // Note: This MAVLINK message is deprecated and would be removed from MAVSDK in a future
-        // release.
-        command.command = MAV_CMD_REQUEST_AUTOPILOT_CAPABILITIES;
-        command.params.maybe_param1 = 1.0f;
-    } else {
-        command.command = MAV_CMD_REQUEST_MESSAGE;
-        command.params.maybe_param1 = {static_cast<float>(MAVLINK_MSG_ID_AUTOPILOT_VERSION)};
-    }
-
-    send_command_async(command, callback);
-}
-
-void SystemImpl::send_flight_information_request()
-{
-    auto prom = std::promise<MavlinkCommandSender::Result>();
-    auto fut = prom.get_future();
-
-    MavlinkCommandSender::CommandLong command{};
-    command.target_component_id = get_autopilot_id();
-
-    if (_old_message_528_supported) {
-        // Note: This MAVLINK message is deprecated and would be removed from MAVSDK in a future
-        // release.
-        command.command = MAV_CMD_REQUEST_FLIGHT_INFORMATION;
-        command.params.maybe_param1 = 1.0f;
-    } else {
-        command.command = MAV_CMD_REQUEST_MESSAGE;
-        command.params.maybe_param1 = {static_cast<float>(MAVLINK_MSG_ID_FLIGHT_INFORMATION)};
-    }
-
-    send_command_async(
-        command, [&prom](MavlinkCommandSender::Result result, float) { prom.set_value(result); });
-    if (fut.get() == MavlinkCommandSender::Result::Unsupported) {
-        _old_message_528_supported = false;
-        LogWarn() << "Trying alternative command (512)..";
-        send_flight_information_request();
-    }
+    mavlink_request_message().request(
+        MAVLINK_MSG_ID_AUTOPILOT_VERSION, MAV_COMP_ID_AUTOPILOT1, nullptr);
 }
 
 void SystemImpl::set_connected()
 {
     bool enable_needed = false;
     {
-        std::lock_guard<std::mutex> lock(_connection_mutex);
-
         if (!_connected) {
-            if (!_components.empty()) {
-                LogDebug() << "Discovered " << _components.size() << " component(s)";
+            {
+                std::lock_guard<std::mutex> lock(_components_mutex);
+                if (!_components.empty()) {
+                    LogDebug() << "Discovered " << _components.size() << " component(s)";
+                }
             }
 
             _connected = true;
 
-            // System with sysid 0 is a bit special: it is a placeholder for a connection initiated
-            // by MAVSDK. As such, it should not be advertised as a newly discovered system.
-            if (static_cast<int>(get_system_id()) != 0) {
-                _mavsdk_impl.notify_on_discover();
+            // Only send heartbeats if we're not shutting down
+            if (!_should_exit) {
+                // We call this later to avoid deadlocks on creating the server components.
+                _mavsdk_impl.call_user_callback([this]() {
+                    // Send a heartbeat back immediately.
+                    _mavsdk_impl.start_sending_heartbeats();
+                });
             }
 
-            // We call this later to avoid deadlocks on creating the server components.
-            _mavsdk_impl.call_user_callback([this]() {
-                // Send a heartbeat back immediately.
-                _mavsdk_impl.start_sending_heartbeats();
-            });
-
-            register_timeout_handler(
-                [this] { heartbeats_timed_out(); },
-                HEARTBEAT_TIMEOUT_S,
-                &_heartbeat_timeout_cookie);
+            _heartbeat_timeout_cookie =
+                register_timeout_handler([this] { heartbeats_timed_out(); }, HEARTBEAT_TIMEOUT_S);
 
             enable_needed = true;
 
+            // Queue callbacks without holding any locks to avoid deadlocks
             _is_connected_callbacks.queue(
                 true, [this](const auto& func) { _mavsdk_impl.call_user_callback(func); });
 
         } else if (_connected) {
             refresh_timeout_handler(_heartbeat_timeout_cookie);
         }
-        // If not yet connected there is nothing to do/
+        // If not yet connected there is nothing to do
     }
+
     if (enable_needed) {
+        // Notify about the new system without holding any locks
+        _mavsdk_impl.notify_on_discover();
+
         if (has_autopilot()) {
-            send_autopilot_version_request_async(nullptr);
+            send_autopilot_version_request();
         }
 
-        std::lock_guard<std::mutex> lock(_plugin_impls_mutex);
-        for (auto plugin_impl : _plugin_impls) {
+        // Enable plugins
+        std::vector<PluginImplBase*> plugin_impls_to_enable;
+        {
+            std::lock_guard<std::mutex> lock(_plugin_impls_mutex);
+            plugin_impls_to_enable = _plugin_impls;
+        }
+
+        for (auto plugin_impl : plugin_impls_to_enable) {
             plugin_impl->enable();
         }
     }
@@ -608,18 +646,16 @@ void SystemImpl::set_connected()
 void SystemImpl::set_disconnected()
 {
     {
-        std::lock_guard<std::mutex> lock(_connection_mutex);
-
         // This might not be needed because this is probably called from the triggered
         // timeout anyway, but it should also do no harm.
         // unregister_timeout_handler(_heartbeat_timeout_cookie);
         //_heartbeat_timeout_cookie = nullptr;
 
         _connected = false;
-        _mavsdk_impl.notify_on_timeout();
         _is_connected_callbacks.queue(
             false, [this](const auto& func) { _mavsdk_impl.call_user_callback(func); });
     }
+    _mavsdk_impl.notify_on_timeout();
 
     _mavsdk_impl.stop_sending_heartbeats();
 
@@ -638,6 +674,7 @@ uint8_t SystemImpl::get_system_id() const
 
 std::vector<uint8_t> SystemImpl::component_ids() const
 {
+    std::lock_guard<std::mutex> lock(_components_mutex);
     return std::vector<uint8_t>{_components.begin(), _components.end()};
 }
 
@@ -659,6 +696,11 @@ uint8_t SystemImpl::get_own_component_id() const
 MAV_TYPE SystemImpl::get_vehicle_type() const
 {
     return _vehicle_type;
+}
+
+Vehicle SystemImpl::vehicle() const
+{
+    return to_vehicle_from_mav_type(_vehicle_type);
 }
 
 uint8_t SystemImpl::get_own_mav_type() const
@@ -1112,6 +1154,7 @@ void SystemImpl::receive_int_param(
 
 uint8_t SystemImpl::get_autopilot_id() const
 {
+    std::lock_guard<std::mutex> lock(_components_mutex);
     for (auto compid : _components)
         if (compid == MavlinkCommandSender::DEFAULT_COMPONENT_ID_AUTOPILOT) {
             return compid;
@@ -1122,6 +1165,7 @@ uint8_t SystemImpl::get_autopilot_id() const
 
 std::vector<uint8_t> SystemImpl::get_camera_ids() const
 {
+    std::lock_guard<std::mutex> lock(_components_mutex);
     std::vector<uint8_t> camera_ids{};
 
     for (auto compid : _components)
@@ -1133,6 +1177,7 @@ std::vector<uint8_t> SystemImpl::get_camera_ids() const
 
 uint8_t SystemImpl::get_gimbal_id() const
 {
+    std::lock_guard<std::mutex> lock(_components_mutex);
     for (auto compid : _components)
         if (compid == MAV_COMP_ID_GIMBAL) {
             return compid;
@@ -1142,8 +1187,11 @@ uint8_t SystemImpl::get_gimbal_id() const
 
 MavlinkCommandSender::Result SystemImpl::send_command(MavlinkCommandSender::CommandLong& command)
 {
-    if (_target_address.system_id == 0 && _components.empty()) {
-        return MavlinkCommandSender::Result::NoSystem;
+    {
+        std::lock_guard<std::mutex> lock(_components_mutex);
+        if (_target_address.system_id == 0 && _components.empty()) {
+            return MavlinkCommandSender::Result::NoSystem;
+        }
     }
     command.target_system_id = get_system_id();
     return _command_sender.send_command(command);
@@ -1151,8 +1199,11 @@ MavlinkCommandSender::Result SystemImpl::send_command(MavlinkCommandSender::Comm
 
 MavlinkCommandSender::Result SystemImpl::send_command(MavlinkCommandSender::CommandInt& command)
 {
-    if (_target_address.system_id == 0 && _components.empty()) {
-        return MavlinkCommandSender::Result::NoSystem;
+    {
+        std::lock_guard<std::mutex> lock(_components_mutex);
+        if (_target_address.system_id == 0 && _components.empty()) {
+            return MavlinkCommandSender::Result::NoSystem;
+        }
     }
     command.target_system_id = get_system_id();
     return _command_sender.send_command(command);
@@ -1161,11 +1212,14 @@ MavlinkCommandSender::Result SystemImpl::send_command(MavlinkCommandSender::Comm
 void SystemImpl::send_command_async(
     MavlinkCommandSender::CommandLong command, const CommandResultCallback& callback)
 {
-    if (_target_address.system_id == 0 && _components.empty()) {
-        if (callback) {
-            callback(MavlinkCommandSender::Result::NoSystem, NAN);
+    {
+        std::lock_guard<std::mutex> lock(_components_mutex);
+        if (_target_address.system_id == 0 && _components.empty()) {
+            if (callback) {
+                callback(MavlinkCommandSender::Result::NoSystem, NAN);
+            }
+            return;
         }
-        return;
     }
     command.target_system_id = get_system_id();
 
@@ -1175,11 +1229,14 @@ void SystemImpl::send_command_async(
 void SystemImpl::send_command_async(
     MavlinkCommandSender::CommandInt command, const CommandResultCallback& callback)
 {
-    if (_target_address.system_id == 0 && _components.empty()) {
-        if (callback) {
-            callback(MavlinkCommandSender::Result::NoSystem, NAN);
+    {
+        std::lock_guard<std::mutex> lock(_components_mutex);
+        if (_target_address.system_id == 0 && _components.empty()) {
+            if (callback) {
+                callback(MavlinkCommandSender::Result::NoSystem, NAN);
+            }
+            return;
         }
-        return;
     }
     command.target_system_id = get_system_id();
 
@@ -1270,8 +1327,6 @@ void SystemImpl::call_user_callback_located(
 
 void SystemImpl::param_changed(const std::string& name)
 {
-    std::lock_guard<std::mutex> lock(_param_changed_callbacks_mutex);
-
     for (auto& callback : _param_changed_callbacks) {
         callback.second(name);
     }
@@ -1290,15 +1345,11 @@ void SystemImpl::register_param_changed_handler(
         return;
     }
 
-    std::lock_guard<std::mutex> lock(_param_changed_callbacks_mutex);
-
     _param_changed_callbacks[cookie] = callback;
 }
 
 void SystemImpl::unregister_param_changed_handler(const void* cookie)
 {
-    std::lock_guard<std::mutex> lock(_param_changed_callbacks_mutex);
-
     auto it = _param_changed_callbacks.find(cookie);
     if (it == _param_changed_callbacks.end()) {
         LogWarn() << "param_changed_handler for cookie not found";
@@ -1359,6 +1410,21 @@ MavlinkParameterClient* SystemImpl::param_sender(uint8_t component_id, bool exte
          extended});
 
     return _mavlink_parameter_clients.back().parameter_client.get();
+}
+
+std::vector<Connection*> SystemImpl::get_connections() const
+{
+    return _mavsdk_impl.get_connections();
+}
+
+mav::MessageSet& SystemImpl::get_message_set() const
+{
+    return _mavsdk_impl.get_message_set();
+}
+
+bool SystemImpl::load_custom_xml_to_message_set(const std::string& xml_content)
+{
+    return _mavsdk_impl.load_custom_xml_to_message_set(xml_content);
 }
 
 } // namespace mavsdk

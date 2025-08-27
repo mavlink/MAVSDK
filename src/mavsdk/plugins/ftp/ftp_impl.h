@@ -25,7 +25,7 @@ public:
     void enable() override;
     void disable() override;
 
-    std::pair<Ftp::Result, std::vector<std::string>> list_directory(const std::string& path);
+    std::pair<Ftp::Result, Ftp::ListDirectoryData> list_directory(const std::string& path);
     Ftp::Result create_directory(const std::string& path);
     Ftp::Result remove_directory(const std::string& path);
     Ftp::Result remove_file(const std::string& path);
@@ -57,8 +57,8 @@ public:
     Ftp::Result set_target_compid(uint8_t component_id);
 
 private:
-    Ftp::Result result_from_mavlink_ftp_result(MavlinkFtpClient::ClientResult result);
-    Ftp::ProgressData
+    static Ftp::Result result_from_mavlink_ftp_result(MavlinkFtpClient::ClientResult result);
+    static Ftp::ProgressData
     progress_data_from_mavlink_ftp_progress_data(MavlinkFtpClient::ProgressData progress_data);
 };
 

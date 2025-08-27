@@ -109,7 +109,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result send_status_text(StatusTextType type, std::string text) const;
 

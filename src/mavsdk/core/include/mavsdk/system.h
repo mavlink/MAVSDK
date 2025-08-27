@@ -6,8 +6,10 @@
 #include <vector>
 
 #include "autopilot.h"
+#include "component_type.h"
 #include "deprecated.h"
 #include "handle.h"
+#include "vehicle.h"
 
 namespace mavsdk {
 
@@ -125,11 +127,6 @@ public:
     void unsubscribe_is_connected(IsConnectedHandle handle);
 
     /**
-     * @brief Component Types
-     */
-    enum class ComponentType { UNKNOWN, AUTOPILOT, CAMERA, GIMBAL };
-
-    /**
      * @brief type for component discovery callback
      */
     using ComponentDiscoveredCallback = std::function<void(ComponentType)>;
@@ -188,6 +185,13 @@ public:
      * @return autopilot type discovered.
      */
     Autopilot autopilot_type() const;
+
+    /**
+     * @brief Get vehicle type.
+     *
+     * @return vehicle type discovered.
+     */
+    Vehicle vehicle_type() const;
 
     /**
      * @brief Copy constructor (object is not copyable).

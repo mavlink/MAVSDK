@@ -16,7 +16,7 @@ target_link_libraries(system_info
 )
 
 if(NOT MSVC)
-    add_compile_options(takeoff_and_land PRIVATE -Wall -Wextra)
+    add_compile_options(system_info PRIVATE -Wall -Wextra)
 else()
-    add_compile_options(takeoff_and_land PRIVATE -WX -W2)
+    add_compile_options(system_info PRIVATE -W2)
 endif()

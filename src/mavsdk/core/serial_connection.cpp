@@ -10,6 +10,8 @@
 #include <utility>
 #endif
 
+#include <sstream>
+
 namespace mavsdk {
 
 #ifndef WINDOWS
@@ -47,11 +49,17 @@ std::string GetLastErrorStdStr()
 
 SerialConnection::SerialConnection(
     Connection::ReceiverCallback receiver_callback,
+    Connection::LibmavReceiverCallback libmav_receiver_callback,
+    MavsdkImpl& mavsdk_impl,
     std::string path,
     int baudrate,
     bool flow_control,
     ForwardingOption forwarding_option) :
-    Connection(std::move(receiver_callback), forwarding_option),
+    Connection(
+        std::move(receiver_callback),
+        std::move(libmav_receiver_callback),
+        mavsdk_impl,
+        forwarding_option),
     _serial_node(std::move(path)),
     _baudrate(baudrate),
     _flow_control(flow_control)
@@ -66,6 +74,10 @@ SerialConnection::~SerialConnection()
 ConnectionResult SerialConnection::start()
 {
     if (!start_mavlink_receiver()) {
+        return ConnectionResult::ConnectionsExhausted;
+    }
+
+    if (!start_libmav_receiver()) {
         return ConnectionResult::ConnectionsExhausted;
     }
 
@@ -249,37 +261,13 @@ ConnectionResult SerialConnection::stop()
     return ConnectionResult::Success;
 }
 
-bool SerialConnection::send_message(const mavlink_message_t& message)
+std::pair<bool, std::string> SerialConnection::send_message(const mavlink_message_t& message)
 {
-    if (_serial_node.empty()) {
-        LogErr() << "Dev Path unknown";
-        return false;
-    }
-
-    if (_baudrate == 0) {
-        LogErr() << "Baudrate unknown";
-        return false;
-    }
-
+    // Convert message to raw bytes and use common send path
     uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
     uint16_t buffer_len = mavlink_msg_to_send_buffer(buffer, &message);
 
-    int send_len;
-#if defined(LINUX) || defined(APPLE)
-    send_len = static_cast<int>(write(_fd, buffer, buffer_len));
-#else
-    if (!WriteFile(_handle, buffer, buffer_len, LPDWORD(&send_len), NULL)) {
-        LogErr() << "WriteFile failure: " << GET_ERROR();
-        return false;
-    }
-#endif
-
-    if (send_len != buffer_len) {
-        LogErr() << "write failure: " << GET_ERROR();
-        return false;
-    }
-
-    return true;
+    return send_raw_bytes(reinterpret_cast<const char*>(buffer), buffer_len);
 }
 
 void SerialConnection::receive()
@@ -320,6 +308,15 @@ void SerialConnection::receive()
         // Parse all mavlink messages in one data packet. Once exhausted, we'll exit while.
         while (_mavlink_receiver->parse_message()) {
             receive_message(_mavlink_receiver->get_last_message(), this);
+        }
+
+        // Also parse with libmav if available
+        if (_libmav_receiver) {
+            _libmav_receiver->set_new_datagram(buffer, recv_len);
+
+            while (_libmav_receiver->parse_message()) {
+                receive_libmav_message(_libmav_receiver->get_last_message(), this);
+            }
         }
     }
 }
@@ -371,5 +368,49 @@ int SerialConnection::define_from_baudrate(int baudrate)
     }
 }
 #endif
+
+std::pair<bool, std::string> SerialConnection::send_raw_bytes(const char* bytes, size_t length)
+{
+    std::pair<bool, std::string> result;
+
+    if (_serial_node.empty()) {
+        LogErr() << "Dev Path unknown";
+        result.first = false;
+        result.second = "Dev Path unknown";
+        return result;
+    }
+
+    if (_baudrate == 0) {
+        result.first = false;
+        result.second = "Baudrate unknown";
+        return result;
+    }
+
+    int send_len;
+#if defined(LINUX) || defined(APPLE)
+    send_len = static_cast<int>(write(_fd, bytes, length));
+#else
+    if (!WriteFile(_handle, bytes, static_cast<DWORD>(length), LPDWORD(&send_len), NULL)) {
+        std::stringstream ss;
+        ss << "WriteFile failure: " << GET_ERROR();
+        LogErr() << ss.str();
+        result.first = false;
+        result.second = ss.str();
+        return result;
+    }
+#endif
+
+    if (send_len != static_cast<int>(length)) {
+        std::stringstream ss;
+        ss << "write failure: " << GET_ERROR();
+        LogErr() << ss.str();
+        result.first = false;
+        result.second = ss.str();
+        return result;
+    }
+
+    result.first = true;
+    return result;
+}
 
 } // namespace mavsdk

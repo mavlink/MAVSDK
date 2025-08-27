@@ -15,7 +15,7 @@ using namespace mavsdk;
 
 TEST(SitlTest, MissionTakeoffTransitionAndLand_standard_vtol)
 {
-    Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
+    Mavsdk mavsdk{Mavsdk::Configuration{ComponentType::GroundStation}};
     float mission_altitude_m = 40;
 
     {
@@ -32,7 +32,7 @@ TEST(SitlTest, MissionTakeoffTransitionAndLand_standard_vtol)
             }
         });
 
-        ConnectionResult ret = mavsdk.add_udp_connection();
+        ConnectionResult ret = mavsdk.add_any_connection("udpin://0.0.0.0:14540");
         ASSERT_EQ(ret, ConnectionResult::Success);
 
         auto status = future_result.wait_for(std::chrono::seconds(2));

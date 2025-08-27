@@ -88,17 +88,17 @@ int main(int argc, char** argv)
 
     MavsdkServer* mavsdk_server;
     mavsdk_server_init(&mavsdk_server);
-    const auto is_started = mavsdk_server_run_with_mavlink_ids(
+    const int ret = mavsdk_server_run_with_mavlink_ids(
         mavsdk_server,
         connection_url.c_str(),
         mavsdk_server_port,
         static_cast<uint8_t>(mavsdk_sysid),
         static_cast<uint8_t>(mavsdk_compid));
 
-    if (!is_started) {
+    if (ret != 0) {
         std::cout << "Failed to start, exiting...\n";
         mavsdk_server_destroy(mavsdk_server);
-        return 1;
+        return ret;
     }
 
     mavsdk_server_attach(mavsdk_server);

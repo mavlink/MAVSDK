@@ -9,6 +9,7 @@
 #include "deprecated.h"
 #include "handle.h"
 #include "system.h"
+#include "component_type.h"
 #include "server_component.h"
 #include "connection_result.h"
 #include "mavlink_include.h"
@@ -32,25 +33,11 @@ class MavsdkImpl;
 
  * It is used to discover vehicles and manage active connections.
  *
- * An instance of this class must be created (first) in order to use the library.
- * The instance must be destroyed after use in order to break connections and release all resources.
+ * An instance of this class must be created and kept alive in order to use the library.
+ * The instance can be destroyed after use in order to break connections and release all resources.
  */
 class Mavsdk {
 public:
-    /** @brief Default UDP bind IP (accepts any incoming connections). */
-    static constexpr auto DEFAULT_UDP_BIND_IP = "0.0.0.0";
-    /** @brief Default UDP bind port (same port as used by MAVROS). */
-    static constexpr int DEFAULT_UDP_PORT = 14540;
-    /** @brief Default TCP remote IP (localhost). */
-    static constexpr auto DEFAULT_TCP_REMOTE_IP = "127.0.0.1";
-    /** @brief Default TCP remote port. */
-    static constexpr int DEFAULT_TCP_REMOTE_PORT = 5760;
-    /** @brief Default serial baudrate. */
-    static constexpr int DEFAULT_SERIAL_BAUDRATE = 57600;
-
-    /** @brief Default internal timeout in seconds. */
-    static constexpr double DEFAULT_TIMEOUT_S = 0.5;
-
     /**
      * @brief Returns the version of MAVSDK.
      *
@@ -65,14 +52,24 @@ public:
      *
      * Supports connection: Serial, TCP or UDP.
      * Connection URL format should be:
-     * - UDP:    udp://[host][:bind_port]
-     * - TCP:    tcp://[host][:remote_port]
-     * - Serial: serial://dev_node[:baudrate]
      *
-     * For UDP, the host can be set to either:
-     *   - zero IP: 0.0.0.0 -> behave like a server and listen for heartbeats.
-     *   - some IP: 192.168.1.12 -> behave like a client, initiate connection
-     *     and start sending heartbeats.
+     * - UDP in  (server): udpin://our_ip:port
+     * - UDP out (client): udpout://remote_ip:port
+     *
+     * - TCP in  (server):  tcpin://our_ip:port
+     * - TCP out (client): tcpout://remote_ip:port
+     *
+     * - Serial: serial://dev_node:baudrate
+     * - Serial with flow control: serial_flowcontrol://dev_node:baudrate
+     *
+     * For UDP in and TCP in (as server), our IP can be set to:
+     *   - 0.0.0.0: listen on all interfaces
+     *   - 127.0.0.1: listen on loopback (local) interface only
+     *   - Our IP: (e.g. 192.168.1.12): listen only on the network interface
+     *             with this IP.
+     *
+     * For UDP out and TCP out, the IP needs to be set to the remote IP,
+     * where the MAVLink messages are to be sent to.
      *
      * @param connection_url connection URL string.
      * @param forwarding_option message forwarding option (when multiple interfaces are used).
@@ -93,14 +90,24 @@ public:
      *
      * Supports connection: Serial, TCP or UDP.
      * Connection URL format should be:
-     * - UDP:    udp://[host][:bind_port]
-     * - TCP:    tcp://[host][:remote_port]
-     * - Serial: serial://dev_node[:baudrate]
      *
-     * For UDP, the host can be set to either:
-     *   - zero IP: 0.0.0.0 -> behave like a server and listen for heartbeats.
-     *   - some IP: 192.168.1.12 -> behave like a client, initiate connection
-     *     and start sending heartbeats.
+     * - UDP in  (server): udpin://our_ip:port
+     * - UDP out (client): udpout://remote_ip:port
+     *
+     * - TCP in  (server):  tcpin://our_ip:port
+     * - TCP out (client): tcpout://remote_ip:port
+     *
+     * - Serial: serial://dev_node:baudrate
+     * - Serial with flow control: serial_flowcontrol://dev_node:baudrate
+     *
+     * For UDP in and TCP in (as server), our IP can be set to:
+     *   - 0.0.0.0: listen on all interfaces
+     *   - 127.0.0.1: listen on loopback (local) interface only
+     *   - Our IP: (e.g. 192.168.1.12): listen only on the network interface
+     *             with this IP.
+     *
+     * For UDP out and TCP out, the IP needs to be set to the remote IP,
+     * where the MAVLink messages are to be sent to.
      *
      * @param connection_url connection URL string.
      * @param forwarding_option message forwarding option (when multiple interfaces are used).
@@ -112,83 +119,49 @@ public:
         ForwardingOption forwarding_option = ForwardingOption::ForwardingOff);
 
     /**
-     * @brief Adds a UDP connection to the specified port number.
-     *
-     * Any incoming connections are accepted (0.0.0.0).
-     *
-     * @param local_port The local UDP port to listen to (defaults to 14540, the same as MAVROS).
-     * @param forwarding_option message forwarding option (when multiple interfaces are used).
-     * @return The result of adding the connection.
-     */
-    ConnectionResult add_udp_connection(
-        int local_port = DEFAULT_UDP_PORT,
-        ForwardingOption forwarding_option = ForwardingOption::ForwardingOff);
-
-    /**
-     * @brief Adds a UDP connection to the specified port number and local interface.
-     *
-     * To accept only local connections of the machine, use 127.0.0.1.
-     * For any incoming connections, use 0.0.0.0.
-     *
-     * @param local_ip The local UDP IP address to listen to.
-     * @param local_port The local UDP port to listen to (defaults to 14540, the same as MAVROS).
-     * @param forwarding_option message forwarding option (when multiple interfaces are used).
-     * @return The result of adding the connection.
-     */
-    ConnectionResult add_udp_connection(
-        const std::string& local_ip,
-        int local_port = DEFAULT_UDP_PORT,
-        ForwardingOption forwarding_option = ForwardingOption::ForwardingOff);
-
-    /**
-     * @brief Sets up instance to send heartbeats to the specified remote interface and port number.
-     *
-     * @param remote_ip The remote UDP IP address to report to.
-     * @param remote_port The local UDP port to report to.
-     * @param forwarding_option message forwarding option (when multiple interfaces are used).
-     * @return The result of operation.
-     */
-    ConnectionResult setup_udp_remote(
-        const std::string& remote_ip,
-        int remote_port,
-        ForwardingOption forwarding_option = ForwardingOption::ForwardingOff);
-
-    /**
-     * @brief Adds a TCP connection with a specific IP address and port number.
-     *
-     * @param remote_ip Remote IP address to connect to.
-     * @param remote_port The TCP port to connect to (defaults to 5760).
-     * @param forwarding_option message forwarding option (when multiple interfaces are used).
-     * @return The result of adding the connection.
-     */
-    ConnectionResult add_tcp_connection(
-        const std::string& remote_ip,
-        int remote_port = DEFAULT_TCP_REMOTE_PORT,
-        ForwardingOption forwarding_option = ForwardingOption::ForwardingOff);
-
-    /**
-     * @brief Adds a serial connection with a specific port (COM or UART dev node) and baudrate as
-     * specified.
-     *
-     *
-     * @param dev_path COM or UART dev node name/path (e.g. "/dev/ttyS0", or "COM3" on Windows).
-     * @param baudrate Baudrate of the serial port (defaults to 57600).
-     * @param flow_control enable/disable flow control.
-     * @param forwarding_option message forwarding option (when multiple interfaces are used).
-     * @return The result of adding the connection.
-     */
-    ConnectionResult add_serial_connection(
-        const std::string& dev_path,
-        int baudrate = DEFAULT_SERIAL_BAUDRATE,
-        bool flow_control = false,
-        ForwardingOption forwarding_option = ForwardingOption::ForwardingOff);
-
-    /**
      * Remove connection again.
      *
      * @param handle Handle returned when connection was added.
      */
     void remove_connection(ConnectionHandle handle);
+
+    /**
+     * ConnectionError type
+     */
+    struct ConnectionError {
+        std::string error_description; ///< The error description
+        ConnectionHandle connection_handle; ///< The connection handle
+    };
+
+    /**
+     * Connection Error callback type
+     */
+    using ConnectionErrorCallback = std::function<void(ConnectionError)>;
+
+    /**
+     * @brief Handle type to remove a connection error subscription.
+     */
+    using ConnectionErrorHandle = Handle<ConnectionError>;
+
+    /**
+     * Subscribe to connection errors.
+     *
+     * This will trigger when messages fail to be sent which can help
+     * diagnosing network interfaces or serial devices disappearing.
+     *
+     * Usually, an error will require to remove a connection and add it fresh.
+     *
+     * @param callback Callback to subscribe.
+     * @return Handle to unsubscribe again.
+     */
+    ConnectionErrorHandle subscribe_connection_errors(ConnectionErrorCallback callback);
+
+    /**
+     * Unsubscribe from connection errors.
+     *
+     * @param handle Handle to unsubscribe.
+     */
+    void unsubscribe_connection_errors(ConnectionErrorHandle handle);
 
     /**
      * @brief Get a vector of systems which have been discovered or set-up.
@@ -210,18 +183,6 @@ public:
      * @return A system or nothing if nothing was discovered within the timeout.
      */
     std::optional<std::shared_ptr<System>> first_autopilot(double timeout_s) const;
-
-    /**
-     * @brief ComponentType of configurations, used for automatic ID setting
-     */
-    enum class ComponentType {
-        Autopilot, /**< @brief SDK is used as an autopilot. */
-        GroundStation, /**< @brief SDK is used as a ground station. */
-        CompanionComputer, /**< @brief SDK is used as a companion computer on board the MAV. */
-        Camera, /** < @brief SDK is used as a camera. */
-        Custom /**< @brief the SDK is used in a custom configuration, no automatic ID will be
-                  provided */
-    };
 
     /**
      * @brief Possible configurations.
@@ -288,13 +249,26 @@ public:
          */
         void set_component_type(ComponentType component_type);
 
+        /**
+         * @brief Get the mav type (vehicle type) of this configuration
+         * @return `uint8_t` the mav type stored in this configuration
+         */
+        uint8_t get_mav_type() const;
+
+        /**
+         * @brief Set the mav type (vehicle type) of this configuration.
+         */
+        void set_mav_type(uint8_t mav_type);
+
     private:
         uint8_t _system_id;
         uint8_t _component_id;
         bool _always_send_heartbeats;
         ComponentType _component_type;
+        MAV_TYPE _mav_type;
 
-        static Mavsdk::ComponentType component_type_for_component_id(uint8_t component_id);
+        static ComponentType component_type_for_component_id(uint8_t component_id);
+        static MAV_TYPE mav_type_for_component_type(ComponentType component_type);
     };
 
     /**
@@ -342,15 +316,6 @@ public:
      * need to be increased to prevent timeouts.
      */
     void set_timeout_s(double timeout_s);
-
-    /**
-     * @brief Set system status of this MAVLink entity.
-     *
-     * The default system status is MAV_STATE_UNINIT.
-     *
-     * @param system_status system status.
-     */
-    void set_system_status(uint8_t system_status);
 
     /**
      * @brief Callback type discover and timeout notifications.
@@ -415,6 +380,62 @@ public:
     std::shared_ptr<ServerComponent> server_component_by_id(uint8_t component_id);
 
     /**
+     * @brief A complete MAVLink message with all header information and fields
+     */
+    struct MavlinkMessage {
+        std::string message_name{}; /**< @brief MAVLink message name (e.g., "HEARTBEAT",
+                                       "GLOBAL_POSITION_INT") */
+        uint32_t system_id{}; /**< @brief System ID of the sender (for received messages) */
+        uint32_t component_id{}; /**< @brief Component ID of the sender (for received messages) */
+        uint32_t target_system_id{}; /**< @brief Target system ID (for sending, 0 for broadcast) */
+        uint32_t
+            target_component_id{}; /**< @brief Target component ID (for sending, 0 for broadcast) */
+        std::string fields_json{}; /**< @brief All message fields as single JSON object */
+    };
+
+    /**
+     * @brief Handle for intercepting messages.
+     */
+    using InterceptJsonHandle = Handle<bool(MavlinkMessage)>;
+
+    /**
+     * @brief Callback type for intercepting messages.
+     */
+    using InterceptJsonCallback = std::function<bool(MavlinkMessage)>;
+
+    /**
+     * @brief Intercept incoming messages as JSON.
+     *
+     * This is a hook that allows to read any messages arriving via the
+     * in JSON format.
+     *
+     * @param callback Callback to be called for each incoming message.
+     *        To drop a message, return 'false' from the callback.
+     */
+    InterceptJsonHandle subscribe_incoming_messages_json(const InterceptJsonCallback& callback);
+
+    /**
+     * @brief Unsubscribe from incoming messages as JSON
+     */
+    void unsubscribe_incoming_messages_json(InterceptJsonHandle handle);
+
+    /**3
+     * @brief Intercept outgoing messages as JSON.
+     *
+     * This is a hook that allows to read any messages arriving via the
+     * in JSON format.
+     *
+     * @param callback Callback to be called for each outgoing message.
+     *        To drop a message, return 'false' from the callback.
+     */
+    InterceptJsonHandle subscribe_outgoing_messages_json(const InterceptJsonCallback& callback);
+
+    /**
+     * @brief Unsubscribe from outgoing messages as JSON
+     */
+    void unsubscribe_outgoing_messages_json(InterceptJsonHandle handle);
+
+    /**
      * @brief Intercept incoming messages.
      *
      * This is a hook which allows to change or drop MAVLink messages as they
@@ -443,6 +464,19 @@ public:
     void intercept_outgoing_messages_async(std::function<bool(mavlink_message_t&)> callback);
 
 private:
+    static constexpr int DEFAULT_SYSTEM_ID_AUTOPILOT = 1;
+    static constexpr int DEFAULT_COMPONENT_ID_AUTOPILOT = MAV_COMP_ID_AUTOPILOT1;
+    static constexpr int DEFAULT_SYSTEM_ID_GCS = 245;
+    static constexpr int DEFAULT_COMPONENT_ID_GCS = MAV_COMP_ID_MISSIONPLANNER;
+    static constexpr int DEFAULT_SYSTEM_ID_CC = 1;
+    static constexpr int DEFAULT_COMPONENT_ID_CC = MAV_COMP_ID_PATHPLANNER;
+    static constexpr int DEFAULT_SYSTEM_ID_CAMERA = 1;
+    static constexpr int DEFAULT_COMPONENT_ID_CAMERA = MAV_COMP_ID_CAMERA;
+    static constexpr int DEFAULT_SYSTEM_ID_GIMBAL = 1;
+    static constexpr int DEFAULT_COMPONENT_ID_GIMBAL = MAV_COMP_ID_GIMBAL;
+    static constexpr int DEFAULT_SYSTEM_ID_REMOTEID = 1;
+    static constexpr int DEFAULT_COMPONENT_ID_REMOTEID = MAV_COMP_ID_ODID_TXRX_1;
+
     /* @private. */
     std::shared_ptr<MavsdkImpl> _impl{};
 

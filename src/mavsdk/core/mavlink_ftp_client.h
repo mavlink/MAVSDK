@@ -3,6 +3,7 @@
 #include <cinttypes>
 #include <functional>
 #include <fstream>
+#include <deque>
 #include <unordered_map>
 #include <mutex>
 #include <optional>
@@ -13,6 +14,7 @@
 
 #include "mavlink_include.h"
 #include "locked_queue.h"
+#include "timeout_handler.h"
 
 // As found in
 // https://stackoverflow.com/questions/1537964#answer-3312896
@@ -60,7 +62,8 @@ public:
     using ResultCallback = std::function<void(ClientResult)>;
     using UploadCallback = std::function<void(ClientResult, ProgressData)>;
     using DownloadCallback = std::function<void(ClientResult, ProgressData)>;
-    using ListDirectoryCallback = std::function<void(ClientResult, std::vector<std::string>)>;
+    using ListDirectoryCallback =
+        std::function<void(ClientResult, std::vector<std::string>, std::vector<std::string>)>;
     using AreFilesIdenticalCallback = std::function<void(ClientResult, bool)>;
 
     void do_work();
@@ -70,7 +73,8 @@ public:
         const std::string& remote_file_path,
         const std::string& local_folder,
         bool use_burst,
-        DownloadCallback callback);
+        DownloadCallback callback,
+        std::optional<uint8_t> maybe_target_compid = {});
     void upload_async(
         const std::string& local_file_path,
         const std::string& remote_folder,
@@ -89,6 +93,8 @@ public:
     ClientResult set_root_directory(const std::string& root_dir);
     uint8_t get_our_compid();
     ClientResult set_target_compid(uint8_t component_id);
+
+    void cancel_all_operations();
 
 private:
     static constexpr unsigned RETRIES = 10;
@@ -151,12 +157,13 @@ private:
         std::string local_folder{};
         DownloadCallback callback{};
         std::ofstream ofstream{};
-        enum class Transferred {
-            No,
-            Yes,
+        uint32_t file_size{0};
+        struct MissingData {
+            size_t offset;
+            size_t size;
         };
-        std::vector<Transferred> transferred{};
-        int last_progress_percentage{-1};
+        std::deque<MissingData> missing_data{};
+        size_t current_offset{0};
     };
 
     struct UploadItem {
@@ -202,6 +209,7 @@ private:
         ListDirectoryCallback callback{};
         uint32_t offset{0};
         std::vector<std::string> dirs{};
+        std::vector<std::string> files{};
     };
 
     using Item = std::variant<
@@ -217,13 +225,17 @@ private:
 
     struct Work {
         Item item;
-        PayloadHeader payload; // The last payload saved for retries
+        PayloadHeader payload{}; // The last payload saved for retries
         unsigned retries{RETRIES};
         bool started{false};
         Opcode last_opcode{};
         uint16_t last_received_seq_number{0};
         uint16_t last_sent_seq_number{0};
-        Work(Item new_item) : item(std::move(new_item)) {}
+        uint8_t target_compid{};
+        Work(Item new_item, uint8_t target_compid_) :
+            item(std::move(new_item)),
+            target_compid(target_compid_)
+        {}
     };
 
     /// @brief Possible server results returned for requests.
@@ -268,6 +280,7 @@ private:
 
     bool download_burst_start(Work& work, DownloadBurstItem& item);
     bool download_burst_continue(Work& work, DownloadBurstItem& item, PayloadHeader* payload);
+    void download_burst_end(Work& work);
     void request_burst(Work& work, DownloadBurstItem& item);
     void request_next_rest(Work& work, DownloadBurstItem& item);
     size_t burst_bytes_transferred(DownloadBurstItem& item);
@@ -288,16 +301,18 @@ private:
     bool list_dir_start(Work& work, ListDirItem& item);
     bool list_dir_continue(Work& work, ListDirItem& item, PayloadHeader* payload);
 
+    void terminate_session(Work& work);
+
     static ClientResult result_from_nak(PayloadHeader* payload);
 
     void timeout();
-    void start_timer();
+    void start_timer(std::optional<double> duration_s = {});
     void stop_timer();
 
     ClientResult calc_local_file_crc32(const std::string& path, uint32_t& csum);
 
     static ClientResult translate(ServerResult result);
-    void send_mavlink_ftp_message(const PayloadHeader& payload);
+    void send_mavlink_ftp_message(const PayloadHeader& payload, uint8_t target_compid);
 
     uint8_t get_target_component_id();
 
@@ -310,7 +325,7 @@ private:
     uint8_t _session = 0;
     uint8_t _network_id = 0;
 
-    void* _timeout_cookie = nullptr;
+    TimeoutHandler::Cookie _timeout_cookie{};
 
     LockedQueue<Work> _work_queue{};
 

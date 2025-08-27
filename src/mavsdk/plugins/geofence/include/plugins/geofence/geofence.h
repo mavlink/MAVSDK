@@ -202,11 +202,14 @@ public:
      * @brief Upload geofences.
      *
      * Polygon and Circular geofences are uploaded to a drone. Once uploaded, the geofence will
-     * remain on the drone even if a connection is lost.
+     remain
+     * on the drone even if a connection is lost.
      *
      * This function is blocking. See 'upload_geofence_async' for the non-blocking counterpart.
      *
+
      * @return Result of request.
+
      */
     Result upload_geofence(GeofenceData geofence_data) const;
 
@@ -222,7 +225,9 @@ public:
      *
      * This function is blocking. See 'clear_geofence_async' for the non-blocking counterpart.
      *
+
      * @return Result of request.
+
      */
     Result clear_geofence() const;
 

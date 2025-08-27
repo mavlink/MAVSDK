@@ -12,16 +12,16 @@ int mavsdk_server_run(
 {
     if (!mavsdk_server->connect(std::string(system_address))) {
         // Connection was cancelled
-        return false;
+        return 1;
     }
 
     auto grpc_port = mavsdk_server->startGrpcServer(mavsdk_server_port);
     if (grpc_port == 0) {
         // Server failed to start
-        return false;
+        return 2;
     }
 
-    return true;
+    return 0;
 }
 
 int mavsdk_server_run_with_mavlink_ids(

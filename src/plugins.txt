@@ -1,10 +1,12 @@
 action
 action_server
+arm_authorizer_server
 calibration
 camera
 camera_server
-component_information
-component_information_server
+component_metadata
+component_metadata_server
+events
 failure
 follow_me
 ftp
@@ -14,7 +16,9 @@ gimbal
 gripper
 info
 log_files
+log_streaming
 manual_control
+mavlink_direct
 mission
 mission_raw
 mission_raw_server
@@ -27,7 +31,6 @@ server_utility
 shell
 telemetry
 telemetry_server
-tracking_server
 transponder
 tune
 winch

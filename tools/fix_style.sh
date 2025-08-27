@@ -3,26 +3,26 @@
 # This script runs clang-format over all files ending in .h, .c, .cpp listed
 # by git in the given directory.
 
-version_required_major="12"
+version_required_major="19"
+
+# Function to print installation instructions
+print_installation_instructions() {
+    echo "On Ubuntu 24.04, you can install it:"
+    echo ""
+    echo "    'sudo apt install clang-format-$version_required_major'"
+    echo ""
+    echo "Otherwise, you can use clang-format from docker:"
+    echo ""
+    echo "    'tools/run-docker.sh tools/fix_style.sh .'"
+}
 
 # Try to find the latest version of clang
-if command -v clang-format-12 >/dev/null; then
-    clang_format=clang-format-12
-elif command -v clang-format-11 >/dev/null; then
-    clang_format=clang-format-11
-elif command -v clang-format-10 >/dev/null; then
-    clang_format=clang-format-10
-elif command -v clang-format-9 >/dev/null; then
-    clang_format=clang-format-9
-elif command -v clang-format-8 >/dev/null; then
-    clang_format=clang-format-8
-elif command -v clang-format-7 >/dev/null; then
-    clang_format=clang-format-7
+if command -v clang-format-19 >/dev/null; then
+    clang_format=clang-format-19
 elif command -v clang-format >/dev/null; then
     clang_format=clang-format
 else
-    echo "clang-format not found"
-    echo "--> check: https://mavsdk.mavlink.io/main/en/cpp/guide/code_style.html#formatting-and-white-space"
+    print_installation_instructions
     exit 1
 fi
 
@@ -33,16 +33,14 @@ if [[ $version =~ $semver_regex ]]; then
 version_major=${BASH_REMATCH[1]}
 if [ "$version_required_major" -gt "$version_major" ]; then
     echo "Clang version $version_major too old (required: $version_required_major)"
-    echo "You can use clang-format-$version_required_major from docker:"
     echo ""
-    echo "    'tools/run-docker.sh tools/fix_style.sh .'"
+    print_installation_instructions
     exit 1
 
 elif [ "$version_required_major" -lt "$version_major" ]; then
     echo "Clang version $version_major too new (required: $version_required_major)"
-    echo "You can use clang-format-$version_required_major from docker:"
     echo ""
-    echo "    'tools/run-docker.sh tools/fix_style.sh .'"
+    print_installation_instructions
     exit 1
 fi
 
@@ -51,17 +49,24 @@ else
     exit 1
 fi
 
+# Parse optional --quiet flag
+quiet_mode=false
+if [ $# -gt 0 ] && [[ "$1" == "--quiet" || "$1" == "-q" ]]; then
+    quiet_mode=true
+    shift
+fi
+
 # Check that exactly one directory is given
 if [ $# -eq 0 ];
 then
     echo "No directory supplied"
-    echo "Usage: ./fix_style.sh dir"
+    echo "Usage: ./fix_style.sh [--quiet|-q] dir"
     exit 1
 
 elif [ $# -gt 1 ];
 then
     echo "Too many directories supplied"
-    echo "Usage: ./fix_style.sh dir"
+    echo "Usage: ./fix_style.sh [--quiet|-q] dir"
     exit 1
 fi
 
@@ -108,8 +113,10 @@ while IFS= read file; do
     result=`$clang_format -style=file -i $file`
 
     if ! cmp $file $file.orig >/dev/null 2>&1; then
-        echo "Changed $file:"
-        $diff_cmd $file.orig $file
+        if [ "$quiet_mode" = false ]; then
+            echo "Changed $file:"
+            $diff_cmd $file.orig $file
+        fi
         error_found=true
     fi
 

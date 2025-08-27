@@ -15,6 +15,7 @@
 #include <future>
 #include <limits>
 #include <memory>
+#include <mutex>
 #include <sstream>
 #include <vector>
 
@@ -50,6 +51,10 @@ public:
 
         rpc_obj->set_flight_uid(flight_info.flight_uid);
 
+        rpc_obj->set_duration_since_arming_ms(flight_info.duration_since_arming_ms);
+
+        rpc_obj->set_duration_since_takeoff_ms(flight_info.duration_since_takeoff_ms);
+
         return rpc_obj;
     }
 
@@ -61,6 +66,10 @@ public:
         obj.time_boot_ms = flight_info.time_boot_ms();
 
         obj.flight_uid = flight_info.flight_uid();
+
+        obj.duration_since_arming_ms = flight_info.duration_since_arming_ms();
+
+        obj.duration_since_takeoff_ms = flight_info.duration_since_takeoff_ms();
 
         return obj;
     }
@@ -397,9 +406,52 @@ public:
         return grpc::Status::OK;
     }
 
+    grpc::Status SubscribeFlightInformation(
+        grpc::ServerContext* /* context */,
+        const mavsdk::rpc::info::SubscribeFlightInformationRequest* /* request */,
+        grpc::ServerWriter<rpc::info::FlightInformationResponse>* writer) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            return grpc::Status::OK;
+        }
+
+        auto stream_closed_promise = std::make_shared<std::promise<void>>();
+        auto stream_closed_future = stream_closed_promise->get_future();
+        register_stream_stop_promise(stream_closed_promise);
+
+        auto is_finished = std::make_shared<bool>(false);
+        auto subscribe_mutex = std::make_shared<std::mutex>();
+
+        const mavsdk::Info::FlightInformationHandle handle =
+            _lazy_plugin.maybe_plugin()->subscribe_flight_information(
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
+                    const mavsdk::Info::FlightInfo flight_information) {
+                    rpc::info::FlightInformationResponse rpc_response;
+
+                    rpc_response.set_allocated_flight_info(
+                        translateToRpcFlightInfo(flight_information).release());
+
+                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
+                    if (!*is_finished && !writer->Write(rpc_response)) {
+                        _lazy_plugin.maybe_plugin()->unsubscribe_flight_information(handle);
+
+                        *is_finished = true;
+                        unregister_stream_stop_promise(stream_closed_promise);
+                        stream_closed_promise->set_value();
+                    }
+                });
+
+        stream_closed_future.wait();
+        std::unique_lock<std::mutex> lock(*subscribe_mutex);
+        *is_finished = true;
+
+        return grpc::Status::OK;
+    }
+
     void stop()
     {
         _stopped.store(true);
+        std::lock_guard<std::mutex> lock(_stream_stop_mutex);
         for (auto& prom : _stream_stop_promises) {
             if (auto handle = prom.lock()) {
                 handle->set_value();
@@ -416,12 +468,14 @@ private:
                 handle->set_value();
             }
         } else {
+            std::lock_guard<std::mutex> lock(_stream_stop_mutex);
             _stream_stop_promises.push_back(prom);
         }
     }
 
     void unregister_stream_stop_promise(std::shared_ptr<std::promise<void>> prom)
     {
+        std::lock_guard<std::mutex> lock(_stream_stop_mutex);
         for (auto it = _stream_stop_promises.begin(); it != _stream_stop_promises.end();
              /* ++it */) {
             if (it->lock() == prom) {
@@ -435,6 +489,7 @@ private:
     LazyPlugin& _lazy_plugin;
 
     std::atomic<bool> _stopped{false};
+    std::mutex _stream_stop_mutex{};
     std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises{};
 };
 

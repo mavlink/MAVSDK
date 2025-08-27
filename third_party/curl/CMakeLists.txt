@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.13)
 
 project(external-curl)
 include(ExternalProject)
@@ -9,23 +9,26 @@ list(APPEND CMAKE_ARGS
     "-DCMAKE_TOOLCHAIN_FILE:PATH=${CMAKE_TOOLCHAIN_FILE}"
     "-DCMAKE_POSITION_INDEPENDENT_CODE=ON"
     "-DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}"
-    "-DCURL_USE_OPENSSL=OFF"
+    "-DCURL_USE_OPENSSL=ON"
     "-DCURL_USE_LIBSSH2=OFF"
+    "-DCURL_USE_LIBPSL=OFF"
+    "-DBUILD_CURL_EXE=OFF"
     "-DBUILD_SHARED_LIBS=OFF"
-    "-DCURL_CA_PATH_SET=OFF"
+    "-DCURL_BROTLI=OFF"
     "-DCURL_ZLIB=OFF"
-    "-DHTTP_ONLY=ON"
-    "-DHAVE_POSIX_STRERROR_R=1"
+    "-DCURL_ZSTD=OFF"
+    "-DHTTP_ONLY=OFF"
+    "-DUSE_NGHTTP2=OFF"
     "-DBUILD_TESTING=OFF"
+    "-DUSE_LIBIDN2=OFF"
     )
 
 if(ANDROID)
     list(APPEND CMAKE_ARGS
-        "-DBUILD_CURL_EXE=OFF"
-        )
+        "-DCURL_CA_PATH=/system/etc/security/cacerts"
+    )
 elseif(IOS)
     list(APPEND CMAKE_ARGS
-        "-DBUILD_CURL_EXE=OFF"
         "-DPLATFORM=${PLATFORM}"
         "-DDEPLOYMENT_TARGET=${DEPLOYMENT_TARGET}"
         "-DENABLE_STRICT_TRY_COMPILE=${ENABLE_STRICT_TRY_COMPILE}"
@@ -38,6 +41,15 @@ elseif(CMAKE_CROSSCOMPILING) # This assumes we use dockcross
     endif()
 endif()
 
+if(NOT MSVC)
+    set(MODULES_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../../cmake/Modules/non-msvc")
+    message(STATUS "cmake modules path: ${MODULES_PATH}")
+
+    list(APPEND CMAKE_ARGS
+        "-DCMAKE_MODULE_PATH=${MODULES_PATH}"
+    )
+endif()
+
 message(STATUS "Preparing external project \"curl\" with args:")
 foreach(CMAKE_ARG ${CMAKE_ARGS})
     message(STATUS "-- ${CMAKE_ARG}")
@@ -46,7 +58,7 @@ endforeach()
 ExternalProject_add(
     curl
     GIT_REPOSITORY https://github.com/curl/curl.git
-    GIT_TAG curl-7_88_1
+    GIT_TAG curl-8_13_0
     GIT_SHALLOW ON
     PREFIX curl
     CMAKE_ARGS "${CMAKE_ARGS}"

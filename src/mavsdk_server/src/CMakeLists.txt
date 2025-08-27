@@ -7,6 +7,8 @@ list(APPEND MAVSDK_SERVER_SOURCES
     grpc_server.cpp
 )
 
+set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+
 set(COMPONENTS_LIST ${ENABLED_PLUGINS})
 list(APPEND COMPONENTS_LIST core)
 foreach(COMPONENT_NAME ${COMPONENTS_LIST})
@@ -35,7 +37,6 @@ target_link_libraries(mavsdk_server
     PRIVATE
     mavsdk
     gRPC::grpc++
-    ${CMAKE_DL_LIBS}
 )
 
 if(BUILD_WITH_PROTO_REFLECTION)
@@ -51,11 +52,13 @@ foreach(plugin ${COMPONENTS_LIST})
     )
 endforeach()
 
-set_target_properties(mavsdk_server
-    PROPERTIES COMPILE_FLAGS ${warnings}
-    VERSION ${MAVSDK_VERSION_STRING}
-    SOVERSION ${MAVSDK_SOVERSION_STRING}
-    )
+if(NOT MSVC)
+    set_target_properties(mavsdk_server
+        PROPERTIES COMPILE_FLAGS "${warnings} -Wno-null-dereference"
+        VERSION ${MAVSDK_VERSION_STRING}
+        SOVERSION ${MAVSDK_SOVERSION_STRING}
+        )
+endif()
 
 target_link_libraries(mavsdk_server PRIVATE ${CMAKE_DL_LIBS})
 
@@ -107,7 +110,29 @@ if(NOT IOS AND NOT ANDROID)
         EXPORT mavsdk-targets
         RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
     )
+
+    if (BUILD_SHARED_LIBS)
+        if (APPLE)
+            set_target_properties(mavsdk_server PROPERTIES
+                BUILD_WITH_INSTALL_RPATH ON
+                INSTALL_NAME_DIR "@rpath"
+                INSTALL_RPATH "@loader_path/../lib"
+            )
+            set_target_properties(mavsdk_server_bin PROPERTIES
+                BUILD_WITH_INSTALL_RPATH ON
+                INSTALL_RPATH "@loader_path/../lib"
+            )
+        else()
+            set_target_properties(mavsdk_server PROPERTIES
+                INSTALL_RPATH "$ORIGIN"
+            )
+            set_target_properties(mavsdk_server_bin PROPERTIES
+                INSTALL_RPATH "${CMAKE_INSTALL_LIBDIR}"
+            )
+        endif()
+    endif()
 endif()
+
 
 # iOS builds mavsdk_server.framework
 if(IOS OR (APPLE AND MACOS_FRAMEWORK))

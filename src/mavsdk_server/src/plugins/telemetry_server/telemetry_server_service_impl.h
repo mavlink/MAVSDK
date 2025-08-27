@@ -16,6 +16,7 @@
 #include <future>
 #include <limits>
 #include <memory>
+#include <mutex>
 #include <sstream>
 #include <vector>
 
@@ -969,6 +970,12 @@ public:
 
         rpc_obj->set_climb_rate_m_s(fixedwing_metrics.climb_rate_m_s);
 
+        rpc_obj->set_groundspeed_m_s(fixedwing_metrics.groundspeed_m_s);
+
+        rpc_obj->set_heading_deg(fixedwing_metrics.heading_deg);
+
+        rpc_obj->set_absolute_altitude_m(fixedwing_metrics.absolute_altitude_m);
+
         return rpc_obj;
     }
 
@@ -982,6 +989,12 @@ public:
         obj.throttle_percentage = fixedwing_metrics.throttle_percentage();
 
         obj.climb_rate_m_s = fixedwing_metrics.climb_rate_m_s();
+
+        obj.groundspeed_m_s = fixedwing_metrics.groundspeed_m_s();
+
+        obj.heading_deg = fixedwing_metrics.heading_deg();
+
+        obj.absolute_altitude_m = fixedwing_metrics.absolute_altitude_m();
 
         return obj;
     }
@@ -1633,9 +1646,73 @@ public:
         return grpc::Status::OK;
     }
 
+    grpc::Status PublishAttitude(
+        grpc::ServerContext* /* context */,
+        const rpc::telemetry_server::PublishAttitudeRequest* request,
+        rpc::telemetry_server::PublishAttitudeResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                // For server plugins, this should never happen, they should always be
+                // constructible.
+                auto result = mavsdk::TelemetryServer::Result::Unknown;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        if (request == nullptr) {
+            LogWarn() << "PublishAttitude sent with a null request! Ignoring...";
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->publish_attitude(
+            translateFromRpcEulerAngle(request->angle()),
+            translateFromRpcAngularVelocityBody(request->angular_velocity()));
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status PublishVisualFlightRulesHud(
+        grpc::ServerContext* /* context */,
+        const rpc::telemetry_server::PublishVisualFlightRulesHudRequest* request,
+        rpc::telemetry_server::PublishVisualFlightRulesHudResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                // For server plugins, this should never happen, they should always be
+                // constructible.
+                auto result = mavsdk::TelemetryServer::Result::Unknown;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        if (request == nullptr) {
+            LogWarn() << "PublishVisualFlightRulesHud sent with a null request! Ignoring...";
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->publish_visual_flight_rules_hud(
+            translateFromRpcFixedwingMetrics(request->fixed_wing_metrics()));
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+
+        return grpc::Status::OK;
+    }
+
     void stop()
     {
         _stopped.store(true);
+        std::lock_guard<std::mutex> lock(_stream_stop_mutex);
         for (auto& prom : _stream_stop_promises) {
             if (auto handle = prom.lock()) {
                 handle->set_value();
@@ -1652,12 +1729,14 @@ private:
                 handle->set_value();
             }
         } else {
+            std::lock_guard<std::mutex> lock(_stream_stop_mutex);
             _stream_stop_promises.push_back(prom);
         }
     }
 
     void unregister_stream_stop_promise(std::shared_ptr<std::promise<void>> prom)
     {
+        std::lock_guard<std::mutex> lock(_stream_stop_mutex);
         for (auto it = _stream_stop_promises.begin(); it != _stream_stop_promises.end();
              /* ++it */) {
             if (it->lock() == prom) {
@@ -1671,6 +1750,7 @@ private:
     LazyServerPlugin& _lazy_plugin;
 
     std::atomic<bool> _stopped{false};
+    std::mutex _stream_stop_mutex{};
     std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises{};
 };
 

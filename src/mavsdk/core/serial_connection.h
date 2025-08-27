@@ -7,7 +7,7 @@
 #include "connection.h"
 
 #if defined(WINDOWS)
-#include "windows_include.h"
+#include <windows.h>
 #endif
 
 namespace mavsdk {
@@ -16,6 +16,8 @@ class SerialConnection : public Connection {
 public:
     explicit SerialConnection(
         Connection::ReceiverCallback receiver_callback,
+        Connection::LibmavReceiverCallback libmav_receiver_callback,
+        MavsdkImpl& mavsdk_impl,
         std::string path,
         int baudrate,
         bool flow_control,
@@ -24,7 +26,8 @@ public:
     ConnectionResult stop() override;
     ~SerialConnection() override;
 
-    bool send_message(const mavlink_message_t& message) override;
+    std::pair<bool, std::string> send_message(const mavlink_message_t& message) override;
+    std::pair<bool, std::string> send_raw_bytes(const char* bytes, size_t length) override;
 
     // Non-copyable
     SerialConnection(const SerialConnection&) = delete;

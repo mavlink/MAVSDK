@@ -21,5 +21,5 @@ target_link_libraries(follow_me
 if(NOT MSVC)
     add_compile_options(follow_me PRIVATE -Wall -Wextra)
 else()
-    add_compile_options(follow_me PRIVATE -WX -W2)
+    add_compile_options(follow_me PRIVATE -W2)
 endif()

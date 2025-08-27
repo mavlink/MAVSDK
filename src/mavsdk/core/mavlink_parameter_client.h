@@ -9,6 +9,7 @@
 #include "mavlink_parameter_subscription.h"
 #include "mavlink_parameter_cache.h"
 #include "mavlink_parameter_helper.h"
+#include "timeout_handler.h"
 
 #include <array>
 #include <cstddef>
@@ -25,7 +26,6 @@ namespace mavsdk {
 
 class Sender;
 class MavlinkMessageHandler;
-class TimeoutHandler;
 
 class MavlinkParameterClient : public MavlinkParameterSubscription {
 public:
@@ -152,6 +152,8 @@ public:
     friend std::ostream& operator<<(std::ostream&, const Result&);
 
 private:
+    const double _get_all_timeout_factor = 4.0;
+
     struct WorkItemSet {
         const std::string param_name;
         const ParamValue param_value;
@@ -180,7 +182,7 @@ private:
         WorkItem() = delete;
         WorkItem(WorkItemVariant new_work_item_variant, const void* new_cookie) :
             work_item_variant(std::move(new_work_item_variant)),
-            cookie(new_cookie){};
+            cookie(new_cookie) {};
     };
     void process_param_value(const mavlink_message_t& message);
     void process_param_ext_value(const mavlink_message_t& message);
@@ -193,6 +195,8 @@ private:
         const std::array<char, PARAM_ID_LEN>& param_id_buff, int16_t param_index);
     bool send_request_list_message();
 
+    bool request_next_missing(uint16_t count);
+
     Sender& _sender;
     MavlinkMessageHandler& _message_handler;
     TimeoutHandler& _timeout_handler;
@@ -204,7 +208,7 @@ private:
 
     // These are specific depending on the work item type
     LockedQueue<WorkItem> _work_queue{};
-    void* _timeout_cookie = nullptr;
+    TimeoutHandler::Cookie _timeout_cookie{};
 
     MavlinkParameterCache _param_cache{};
 

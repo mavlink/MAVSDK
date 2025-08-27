@@ -1,11 +1,11 @@
 #include "mavlink_parameter_helper.h"
 #include "mavlink_parameter_client.h"
 #include "mavlink_message_handler.h"
-#include "timeout_handler.h"
 #include "system_impl.h"
-#include "plugin_base.h"
+#include "overloaded.h"
 #include <algorithm>
 #include <future>
+#include <limits>
 #include <utility>
 
 namespace mavsdk {
@@ -75,8 +75,7 @@ MavlinkParameterClient::set_param(const std::string& name, const ParamValue& val
 {
     auto prom = std::promise<Result>();
     auto res = prom.get_future();
-    set_param_async(
-        name, value, [&prom](Result result) { prom.set_value(result); }, this);
+    set_param_async(name, value, [&prom](Result result) { prom.set_value(result); }, this);
     return res.get();
 }
 
@@ -174,8 +173,7 @@ MavlinkParameterClient::set_param_int(const std::string& name, int32_t value)
 {
     auto prom = std::promise<Result>();
     auto res = prom.get_future();
-    set_param_int_async(
-        name, value, [&prom](Result result) { prom.set_value(result); }, this);
+    set_param_int_async(name, value, [&prom](Result result) { prom.set_value(result); }, this);
     return res.get();
 }
 
@@ -193,8 +191,7 @@ MavlinkParameterClient::set_param_float(const std::string& name, float value)
     auto prom = std::promise<Result>();
     auto res = prom.get_future();
 
-    set_param_float_async(
-        name, value, [&prom](Result result) { prom.set_value(result); }, this);
+    set_param_float_async(name, value, [&prom](Result result) { prom.set_value(result); }, this);
 
     return res.get();
 }
@@ -230,8 +227,7 @@ MavlinkParameterClient::set_param_custom(const std::string& name, const std::str
 {
     auto prom = std::promise<Result>();
     auto res = prom.get_future();
-    set_param_custom_async(
-        name, value, [&prom](Result result) { prom.set_value(result); }, this);
+    set_param_custom_async(name, value, [&prom](Result result) { prom.set_value(result); }, this);
     return res.get();
 }
 
@@ -284,6 +280,29 @@ void MavlinkParameterClient::get_param_async_typesafe(
         if (result == Result::Success) {
             if (value.is<T>()) {
                 callback(Result::Success, value.get<T>());
+            } else {
+                callback(Result::WrongType, {});
+            }
+        } else {
+            callback(result, {});
+        }
+    };
+    get_param_async(name, callback_future_result, cookie);
+}
+
+template<>
+void MavlinkParameterClient::get_param_async_typesafe(
+    const std::string& name, const GetParamTypesafeCallback<int32_t> callback, const void* cookie)
+{
+    // We need to delay the type checking until we get a response from the server.
+    GetParamAnyCallback callback_future_result = [callback](Result result, ParamValue value) {
+        if (result == Result::Success) {
+            if (value.is<int32_t>()) {
+                callback(Result::Success, value.get<int32_t>());
+            } else if (value.is<int16_t>()) {
+                callback(Result::Success, value.get<int16_t>());
+            } else if (value.is<int8_t>()) {
+                callback(Result::Success, value.get<int8_t>());
             } else {
                 callback(Result::WrongType, {});
             }
@@ -436,40 +455,44 @@ void MavlinkParameterClient::do_work()
                 }
                 work->already_requested = true;
                 // We want to get notified if a timeout happens
-                _timeout_handler.add(
-                    [this] { receive_timeout(); }, _timeout_s_callback(), &_timeout_cookie);
+                _timeout_cookie =
+                    _timeout_handler.add([this] { receive_timeout(); }, _timeout_s_callback());
             },
             [&](WorkItemGet& item) {
+                // We can't rely on the cache as we haven't implemented the hash check.
+                clear_cache();
                 if (!send_get_param_message(item)) {
                     LogErr() << "Send message failed";
                     work_queue_guard->pop_front();
                     if (item.callback) {
                         auto callback = item.callback;
                         work_queue_guard.reset();
-                        item.callback(Result::ConnectionError, ParamValue{});
+                        callback(Result::ConnectionError, ParamValue{});
                     }
                     return;
                 }
                 work->already_requested = true;
                 // We want to get notified if a timeout happens
-                _timeout_handler.add(
-                    [this] { receive_timeout(); }, _timeout_s_callback(), &_timeout_cookie);
+                _timeout_cookie =
+                    _timeout_handler.add([this] { receive_timeout(); }, _timeout_s_callback());
             },
             [&](WorkItemGetAll& item) {
+                // We can't rely on the cache as we haven't implemented the hash check.
+                clear_cache();
                 if (!send_request_list_message()) {
                     LogErr() << "Send message failed";
                     work_queue_guard->pop_front();
                     if (item.callback) {
                         auto callback = item.callback;
                         work_queue_guard.reset();
-                        item.callback(Result::ConnectionError, {});
+                        callback(Result::ConnectionError, {});
                     }
                     return;
                 }
                 work->already_requested = true;
                 // We want to get notified if a timeout happens
-                _timeout_handler.add(
-                    [this] { receive_timeout(); }, _timeout_s_callback(), &_timeout_cookie);
+                _timeout_cookie = _timeout_handler.add(
+                    [this] { receive_timeout(); }, _timeout_s_callback() * _get_all_timeout_factor);
             }},
         work->work_item_variant);
 }
@@ -483,8 +506,9 @@ bool MavlinkParameterClient::send_set_param_message(WorkItemSet& work_item)
         const auto param_value_buf = work_item.param_value.get_128_bytes();
         return _sender.queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
             if (_parameter_debugging) {
-                LogDebug() << "Sending param_ext_set to:" << (int)mavlink_address.system_id << ":"
-                           << (int)mavlink_address.component_id;
+                LogDebug() << "Sending param_ext_set from:" << (int)mavlink_address.system_id << '/'
+                           << (int)mavlink_address.component_id << " to: " << (int)_target_system_id
+                           << '/' << (int)_target_component_id;
             }
 
             mavlink_msg_param_ext_set_pack_chan(
@@ -507,8 +531,9 @@ bool MavlinkParameterClient::send_set_param_message(WorkItemSet& work_item)
 
         return _sender.queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
             if (_parameter_debugging) {
-                LogDebug() << "Sending param_set to:" << (int)mavlink_address.system_id << ":"
-                           << (int)mavlink_address.component_id;
+                LogDebug() << "Sending param_set from:" << (int)mavlink_address.system_id << '/'
+                           << (int)mavlink_address.component_id << " to: " << (int)_target_system_id
+                           << '/' << (int)_target_component_id;
             }
             mavlink_msg_param_set_pack_chan(
                 mavlink_address.system_id,
@@ -642,7 +667,14 @@ void MavlinkParameterClient::process_param_value(const mavlink_message_t& messag
     }
 
     if (_parameter_debugging) {
-        LogDebug() << "process_param_value: " << safe_param_id << " " << received_value;
+        LogDebug() << "process_param_value: " << safe_param_id << " " << received_value
+                   << ", index: " << param_value.param_index;
+    }
+
+    if (param_value.param_index == std::numeric_limits<uint16_t>::max() &&
+        safe_param_id == "_HASH_CHECK") {
+        // Ignore PX4's _HASH_CHECK param.
+        return;
     }
 
     // We need to use a unique pointer here to remove the lock from the work queue manually "early"
@@ -652,7 +684,12 @@ void MavlinkParameterClient::process_param_value(const mavlink_message_t& messag
     // out of scope.
     auto work_queue_guard = std::make_unique<LockedQueue<WorkItem>::Guard>(_work_queue);
     const auto work = work_queue_guard->get_front();
+
     if (!work) {
+        // Prevent deadlock by releasing the lock before doing more work.
+        work_queue_guard.reset();
+        // update existing param
+        find_and_call_subscriptions_value_changed(safe_param_id, received_value);
         return;
     }
 
@@ -671,6 +708,18 @@ void MavlinkParameterClient::process_param_value(const mavlink_message_t& messag
                 if (_parameter_debugging) {
                     LogDebug() << "Item value is: " << item.param_value
                                << ", received: " << received_value;
+                }
+
+                if (!item.param_value.is_same_type(received_value)) {
+                    LogErr() << "Wrong type in param set";
+                    _timeout_handler.remove(_timeout_cookie);
+                    work_queue_guard->pop_front();
+                    if (item.callback) {
+                        auto callback = item.callback;
+                        work_queue_guard.reset();
+                        callback(MavlinkParameterClient::Result::WrongType);
+                    }
+                    return;
                 }
 
                 if (item.param_value == received_value) {
@@ -741,6 +790,8 @@ void MavlinkParameterClient::process_param_value(const mavlink_message_t& messag
                 }
             },
             [&](WorkItemGetAll& item) {
+                auto maybe_current_missing_index = _param_cache.last_missing_requested();
+
                 switch (_param_cache.add_new_param(
                     safe_param_id, received_value, param_value.param_index)) {
                     case MavlinkParameterCache::AddNewParamResult::AlreadyExists:
@@ -751,14 +802,21 @@ void MavlinkParameterClient::process_param_value(const mavlink_message_t& messag
                         // params.
                     case MavlinkParameterCache::AddNewParamResult::Ok:
 
-                        item.count = param_value.param_count;
-                        if (_parameter_debugging) {
-                            LogDebug() << "Count is now " << item.count;
+                        if (item.count != param_value.param_count) {
+                            item.count = param_value.param_count;
+                            if (_parameter_debugging) {
+                                LogDebug() << "Count is now " << item.count;
+                            }
                         }
+
+                        if (_parameter_debugging) {
+                            LogDebug() << "Received param: " << param_value.param_index;
+                        }
+
                         if (_param_cache.count(_use_extended) == param_value.param_count) {
                             _timeout_handler.remove(_timeout_cookie);
                             if (_parameter_debugging) {
-                                LogDebug() << "Param set complete: "
+                                LogDebug() << "Getting all parameters complete: "
                                            << (_use_extended ? "extended" : "not extended");
                             }
                             work_queue_guard->pop_front();
@@ -771,38 +829,27 @@ void MavlinkParameterClient::process_param_value(const mavlink_message_t& messag
                             }
                         } else {
                             if (_parameter_debugging) {
-                                LogDebug() << "Count expected " << _param_cache.count(_use_extended)
-                                           << " so far " << param_value.param_count;
+                                LogDebug() << "Received " << _param_cache.count(_use_extended)
+                                           << " of " << param_value.param_count;
                             }
                             if (item.rerequesting) {
-                                auto maybe_next_missing_index =
-                                    _param_cache.next_missing_index(item.count);
-                                if (!maybe_next_missing_index.has_value()) {
-                                    LogErr() << "logic error, there should a missing index";
-                                    assert(false);
-                                }
-
-                                if (_parameter_debugging) {
-                                    LogDebug() << "Requesting missing parameter "
-                                               << (int)maybe_next_missing_index.value();
-                                }
-
-                                std::array<char, PARAM_ID_LEN> param_id_buff{};
-                                if (!send_get_param_message(
-                                        param_id_buff, maybe_next_missing_index.value())) {
-                                    LogErr() << "Send message failed";
-                                    work_queue_guard->pop_front();
-                                    if (item.callback) {
-                                        auto callback = item.callback;
-                                        work_queue_guard.reset();
-                                        callback(Result::ConnectionError, {});
+                                if (maybe_current_missing_index == param_value.param_index) {
+                                    // Looks like the last one of the previous retransmission chunk
+                                    // was done, start another one.
+                                    if (!request_next_missing(item.count)) {
+                                        work_queue_guard->pop_front();
+                                        if (item.callback) {
+                                            auto callback = item.callback;
+                                            work_queue_guard.reset();
+                                            callback(Result::ConnectionError, {});
+                                        }
+                                        return;
                                     }
-                                    return;
                                 }
                             } else {
                                 // update the timeout handler, messages are still coming in.
                             }
-                            _timeout_handler.refresh(&_timeout_cookie);
+                            _timeout_handler.refresh(_timeout_cookie);
                         }
                         break;
                     case MavlinkParameterCache::AddNewParamResult::TooManyParams:
@@ -818,8 +865,6 @@ void MavlinkParameterClient::process_param_value(const mavlink_message_t& messag
                 }
             }},
         work->work_item_variant);
-
-    // find_and_call_subscriptions_value_changed(safe_param_id, received_value);
 }
 
 void MavlinkParameterClient::process_param_ext_value(const mavlink_message_t& message)
@@ -844,9 +889,15 @@ void MavlinkParameterClient::process_param_ext_value(const mavlink_message_t& me
     // See comments on process_param_value for use of unique_ptr
     auto work_queue_guard = std::make_unique<LockedQueue<WorkItem>::Guard>(_work_queue);
     auto work = work_queue_guard->get_front();
+
     if (!work) {
+        // Prevent deadlock by releasing the lock before doing more work.
+        work_queue_guard.reset();
+        // update existing param
+        find_and_call_subscriptions_value_changed(safe_param_id, received_value);
         return;
     }
+
     if (!work->already_requested) {
         return;
     }
@@ -891,7 +942,7 @@ void MavlinkParameterClient::process_param_ext_value(const mavlink_message_t& me
                         if (_param_cache.count(_use_extended) == param_ext_value.param_count) {
                             _timeout_handler.remove(_timeout_cookie);
                             if (_parameter_debugging) {
-                                LogDebug() << "Param set complete: "
+                                LogDebug() << "Getting all parameters complete: "
                                            << (_use_extended ? "extended" : "not extended");
                             }
                             work_queue_guard->pop_front();
@@ -904,11 +955,11 @@ void MavlinkParameterClient::process_param_ext_value(const mavlink_message_t& me
                             }
                         } else {
                             if (_parameter_debugging) {
-                                LogDebug() << "Count expected " << _param_cache.count(_use_extended)
-                                           << " but is " << param_ext_value.param_count;
+                                LogDebug() << "Received " << _param_cache.count(_use_extended)
+                                           << " of " << param_ext_value.param_count;
                             }
                             // update the timeout handler, messages are still coming in.
-                            _timeout_handler.refresh(&_timeout_cookie);
+                            _timeout_handler.refresh(_timeout_cookie);
                         }
                         break;
                     case MavlinkParameterCache::AddNewParamResult::TooManyParams:
@@ -925,9 +976,6 @@ void MavlinkParameterClient::process_param_ext_value(const mavlink_message_t& me
             },
         },
         work->work_item_variant);
-
-    // TODO I think we need to consider more edge cases here
-    // find_and_call_subscriptions_value_changed(safe_param_id, received_value);
 }
 
 void MavlinkParameterClient::process_param_ext_ack(const mavlink_message_t& message)
@@ -1038,8 +1086,8 @@ void MavlinkParameterClient::receive_timeout()
                         }
                     } else {
                         --work->retries_to_do;
-                        _timeout_handler.add(
-                            [this] { receive_timeout(); }, _timeout_s_callback(), &_timeout_cookie);
+                        _timeout_cookie = _timeout_handler.add(
+                            [this] { receive_timeout(); }, _timeout_s_callback());
                     }
                 } else {
                     // We have tried retransmitting, giving up now.
@@ -1066,8 +1114,8 @@ void MavlinkParameterClient::receive_timeout()
                         }
                     } else {
                         --work->retries_to_do;
-                        _timeout_handler.add(
-                            [this] { receive_timeout(); }, _timeout_s_callback(), &_timeout_cookie);
+                        _timeout_cookie = _timeout_handler.add(
+                            [this] { receive_timeout(); }, _timeout_s_callback());
                     }
                 } else {
                     // We have tried retransmitting, giving up now.
@@ -1100,40 +1148,37 @@ void MavlinkParameterClient::receive_timeout()
                             if (item.callback) {
                                 auto callback = item.callback;
                                 work_queue_guard.reset();
-                                item.callback(Result::ConnectionError, {});
+                                callback(Result::ConnectionError, {});
                             }
                             return;
                         }
 
-                        // We want to get notified if a timeout happens
-                        _timeout_handler.add(
-                            [this] { receive_timeout(); }, _timeout_s_callback(), &_timeout_cookie);
+                        // We want to get notified if a timeout happens.
+                        _timeout_cookie = _timeout_handler.add(
+                            [this] { receive_timeout(); },
+                            _timeout_s_callback() * _get_all_timeout_factor);
                     } else {
                         if (item.callback) {
                             auto callback = item.callback;
                             work_queue_guard.reset();
-                            item.callback(Result::Timeout, {});
+                            callback(Result::Timeout, {});
                         }
                         return;
                     }
 
                 } else {
                     item.rerequesting = true;
-                    auto maybe_next_missing_index = _param_cache.next_missing_index(item.count);
-                    if (!maybe_next_missing_index.has_value()) {
-                        LogErr() << "logic error, there should a missing index";
-                        assert(false);
-                    }
+
+                    LogInfo() << "Requesting " << _param_cache.missing_count(item.count) << " of "
+                              << item.count << " parameters missed during initial burst.";
 
                     if (_parameter_debugging) {
-                        LogDebug() << "Requesting missing parameter "
-                                   << (int)maybe_next_missing_index.value();
+                        _param_cache.print_missing(item.count);
                     }
 
-                    std::array<char, PARAM_ID_LEN> param_id_buff{};
-
-                    if (!send_get_param_message(param_id_buff, maybe_next_missing_index.value())) {
-                        LogErr() << "Send message failed";
+                    // To speed retransmissions up, we request params in chunks, otherwise the
+                    // latency back and forth makes this quite slow.
+                    if (!request_next_missing(item.count)) {
                         work_queue_guard->pop_front();
                         if (item.callback) {
                             auto callback = item.callback;
@@ -1142,11 +1187,38 @@ void MavlinkParameterClient::receive_timeout()
                         }
                         return;
                     }
-                    _timeout_handler.add(
-                        [this] { receive_timeout(); }, _timeout_s_callback(), &_timeout_cookie);
+
+                    _timeout_cookie =
+                        _timeout_handler.add([this] { receive_timeout(); }, _timeout_s_callback());
                 }
             }},
         work->work_item_variant);
+}
+
+bool MavlinkParameterClient::request_next_missing(uint16_t count)
+{
+    // Requesting 10 at a time seems to work on SiK radios.
+    const uint16_t chunk_size = 10;
+
+    auto next_missing_indices = _param_cache.next_missing_indices(count, chunk_size);
+    if (next_missing_indices.empty()) {
+        LogErr() << "logic error, there should a missing index";
+        return false;
+    }
+
+    for (auto next_missing_index : next_missing_indices) {
+        if (_parameter_debugging) {
+            LogDebug() << "Requesting missing parameter " << (int)next_missing_index;
+        }
+
+        std::array<char, PARAM_ID_LEN> param_id_buff{};
+
+        if (!send_get_param_message(param_id_buff, next_missing_index)) {
+            LogErr() << "Send message failed";
+            return false;
+        }
+    }
+    return true;
 }
 
 std::ostream& operator<<(std::ostream& str, const MavlinkParameterClient::Result& result)

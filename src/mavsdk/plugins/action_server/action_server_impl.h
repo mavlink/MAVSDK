@@ -51,7 +51,14 @@ public:
 
     ActionServer::AllowableFlightModes get_allowable_flight_modes();
 
+    ActionServer::Result set_armed_state(bool armed);
+
+    ActionServer::Result set_flight_mode(ActionServer::FlightMode flight_mode);
+
 private:
+    static ActionServer::FlightMode telemetry_flight_mode_from_flight_mode(FlightMode flight_mode);
+    static uint32_t to_px4_mode_from_flight_mode(ActionServer::FlightMode flight_mode);
+
     void set_base_mode(uint8_t base_mode);
     uint8_t get_base_mode() const;
 
@@ -75,21 +82,11 @@ private:
     std::atomic<bool> _force_disarmable = false;
     std::atomic<bool> _allow_takeoff = false;
 
-    union px4_custom_mode {
-        struct {
-            uint16_t reserved;
-            uint8_t main_mode;
-            uint8_t sub_mode;
-        };
-        uint32_t data;
-        float data_float;
-    };
-
     std::mutex _flight_mode_mutex;
     ActionServer::AllowableFlightModes _allowed_flight_modes{};
     std::atomic<ActionServer::FlightMode> _flight_mode{ActionServer::FlightMode::Unknown};
 
-    void* _send_version_cookie{nullptr};
+    CallEveryHandler::Cookie _send_version_cookie{};
 };
 
 } // namespace mavsdk

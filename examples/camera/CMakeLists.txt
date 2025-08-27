@@ -18,5 +18,5 @@ target_link_libraries(camera
 if(NOT MSVC)
     add_compile_options(camera PRIVATE -Wall -Wextra)
 else()
-    add_compile_options(camera PRIVATE -WX -W2)
+    add_compile_options(camera PRIVATE -W2)
 endif()

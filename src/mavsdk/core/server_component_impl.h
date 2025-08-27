@@ -10,6 +10,7 @@
 #include "mavlink_ftp_server.h"
 #include "mavsdk_time.h"
 #include "flight_mode.h"
+#include "call_every_handler.h"
 #include "log.h"
 #include "sender.h"
 
@@ -24,6 +25,14 @@ class ServerPluginImplBase;
 
 class ServerComponentImpl {
 public:
+    static constexpr mavlink_protocol_version_t MAVLINK_VERSION_INFO{
+        MAVLINK_VERSION * 100, // currently active mavlink version
+        100, // min supported version
+        MAVLINK_VERSION * 100, // max supported version
+        {}, // spec version hash (unused for now)
+        {}, // library version hash (unused for now)
+    };
+
     ServerComponentImpl(MavsdkImpl& mavsdk_impl, uint8_t component_id);
     ~ServerComponentImpl();
 
@@ -89,10 +98,10 @@ public:
     void unregister_mavlink_message_handler(uint16_t msg_id, const void* cookie);
     void unregister_all_mavlink_message_handlers(const void* cookie);
 
-    void register_timeout_handler(
-        const std::function<void()>& callback, double duration_s, void** cookie);
-    void refresh_timeout_handler(const void* cookie);
-    void unregister_timeout_handler(const void* cookie);
+    TimeoutHandler::Cookie
+    register_timeout_handler(const std::function<void()>& callback, double duration_s);
+    void refresh_timeout_handler(TimeoutHandler::Cookie cookie);
+    void unregister_timeout_handler(TimeoutHandler::Cookie cookie);
 
     [[nodiscard]] uint8_t get_own_system_id() const;
 
@@ -107,10 +116,10 @@ public:
     bool queue_message(
         std::function<mavlink_message_t(MavlinkAddress mavlink_addres, uint8_t channel)> fun);
 
-    void add_call_every(std::function<void()> callback, float interval_s, void** cookie);
-    void change_call_every(float interval_s, const void* cookie);
-    void reset_call_every(const void* cookie);
-    void remove_call_every(const void* cookie);
+    CallEveryHandler::Cookie add_call_every(std::function<void()> callback, float interval_s);
+    void change_call_every(float interval_s, CallEveryHandler::Cookie cookie);
+    void reset_call_every(CallEveryHandler::Cookie cookie);
+    void remove_call_every(CallEveryHandler::Cookie cookie);
 
     mavlink_command_ack_t
     make_command_ack_message(const MavlinkCommandReceiver::CommandLong& command, MAV_RESULT result);
@@ -139,6 +148,7 @@ public:
     void set_product_id(uint16_t product_id);
     bool set_uid2(std::string uid2);
     void send_autopilot_version();
+    void send_protocol_version();
 
     MavlinkMissionTransferServer& mission_transfer_server() { return _mission_transfer_server; }
     MavlinkParameterServer& mavlink_parameter_server() { return _mavlink_parameter_server; }

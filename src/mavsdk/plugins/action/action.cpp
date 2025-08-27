@@ -28,6 +28,16 @@ Action::Result Action::arm() const
     return _impl->arm();
 }
 
+void Action::arm_force_async(const ResultCallback callback)
+{
+    _impl->arm_force_async(callback);
+}
+
+Action::Result Action::arm_force() const
+{
+    return _impl->arm_force();
+}
+
 void Action::disarm_async(const ResultCallback callback)
 {
     _impl->disarm_async(callback);
@@ -215,26 +225,6 @@ Action::Result Action::set_takeoff_altitude(float altitude) const
     return _impl->set_takeoff_altitude(altitude);
 }
 
-void Action::get_maximum_speed_async(const GetMaximumSpeedCallback callback)
-{
-    _impl->get_maximum_speed_async(callback);
-}
-
-std::pair<Action::Result, float> Action::get_maximum_speed() const
-{
-    return _impl->get_maximum_speed();
-}
-
-void Action::set_maximum_speed_async(float speed, const ResultCallback callback)
-{
-    _impl->set_maximum_speed_async(speed, callback);
-}
-
-Action::Result Action::set_maximum_speed(float speed) const
-{
-    return _impl->set_maximum_speed(speed);
-}
-
 void Action::get_return_to_launch_altitude_async(const GetReturnToLaunchAltitudeCallback callback)
 {
     _impl->get_return_to_launch_altitude_async(callback);
@@ -297,6 +287,8 @@ std::ostream& operator<<(std::ostream& str, Action::Result const& result)
             return str << "Unsupported";
         case Action::Result::Failed:
             return str << "Failed";
+        case Action::Result::InvalidArgument:
+            return str << "Invalid Argument";
         default:
             return str << "Unknown";
     }

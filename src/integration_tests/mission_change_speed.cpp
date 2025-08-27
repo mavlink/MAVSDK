@@ -22,9 +22,9 @@ const static float speeds[4] = {10.0f, 3.0f, 8.0f, 5.0f};
 // Test to check speed set for mission items.
 TEST(SitlTest, PX4MissionChangeSpeed)
 {
-    Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
+    Mavsdk mavsdk{Mavsdk::Configuration{ComponentType::GroundStation}};
 
-    ConnectionResult ret = mavsdk.add_udp_connection();
+    ConnectionResult ret = mavsdk.add_any_connection("udpin://0.0.0.0:14540");
     ASSERT_EQ(ret, ConnectionResult::Success);
 
     // Wait for system to connect via heartbeat.

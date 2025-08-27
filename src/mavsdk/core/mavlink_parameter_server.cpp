@@ -1,8 +1,9 @@
 #include "mavlink_parameter_server.h"
 #include "mavlink_address.h"
 #include "mavlink_parameter_helper.h"
-#include "plugin_base.h"
+#include "overloaded.h"
 #include <cassert>
+#include <limits>
 
 namespace mavsdk {
 
@@ -25,7 +26,7 @@ MavlinkParameterServer::MavlinkParameterServer(
         const auto& param_values = optional_param_values.value();
         for (const auto& [key, value] : param_values) {
             const auto result = provide_server_param(key, value);
-            if (result != Result::Success) {
+            if (result != Result::Ok) {
                 LogDebug() << "Cannot add parameter:" << key << ":" << value << " " << result;
             }
         }
@@ -85,30 +86,39 @@ MavlinkParameterServer::provide_server_param(const std::string& name, const Para
     // first we try to add it as a new parameter
     switch (_param_cache.add_new_param(name, param_value)) {
         case MavlinkParameterCache::AddNewParamResult::Ok:
-            return Result::Success;
+            return Result::Ok;
         case MavlinkParameterCache::AddNewParamResult::AlreadyExists:
-            return Result::ParamExistsAlready;
+            // then, to not change the public api behaviour, try updating its value.
+            switch (_param_cache.update_existing_param(name, param_value)) {
+                case MavlinkParameterCache::UpdateExistingParamResult::Ok:
+                    find_and_call_subscriptions_value_changed(name, param_value);
+                    {
+                        auto new_work = std::make_shared<WorkItem>(
+                            name,
+                            param_value,
+                            WorkItemValue{
+                                std::numeric_limits<std::uint16_t>::max(),
+                                std::numeric_limits<std::uint16_t>::max(),
+                                _last_extended});
+                        _work_queue.push_back(new_work);
+                    }
+                    return Result::OkExistsAlready;
+                case MavlinkParameterCache::UpdateExistingParamResult::MissingParam:
+                    return Result::ParamNotFound;
+                case MavlinkParameterCache::UpdateExistingParamResult::WrongType:
+                    return Result::WrongType;
+                default:
+                    LogErr() << "Unknown update_existing_param result";
+                    assert(false);
+                    return Result::Unknown;
+            }
         case MavlinkParameterCache::AddNewParamResult::TooManyParams:
             return Result::TooManyParams;
         default:
             LogErr() << "Unknown add_new_param result";
             assert(false);
+            return Result::Unknown;
     }
-
-    // then, to not change the public api behaviour, try updating its value.
-    switch (_param_cache.update_existing_param(name, param_value)) {
-        case MavlinkParameterCache::UpdateExistingParamResult::Ok:
-            return Result::Success;
-        case MavlinkParameterCache::UpdateExistingParamResult::MissingParam:
-            return Result::ParamNotFound;
-        case MavlinkParameterCache::UpdateExistingParamResult::WrongType:
-            return Result::WrongType;
-        default:
-            LogErr() << "Unknown update_existing_param result";
-            assert(false);
-    }
-
-    return Result::Unknown;
 }
 
 MavlinkParameterServer::Result
@@ -157,7 +167,7 @@ MavlinkParameterServer::retrieve_server_param(const std::string& name)
     // This parameter exists, check its type
     const auto& param = param_opt.value();
     if (param.value.is<T>()) {
-        return {Result::Success, param.value.get<T>()};
+        return {Result::Ok, param.value.get<T>()};
     }
     return {Result::WrongType, {}};
 }
@@ -183,9 +193,10 @@ MavlinkParameterServer::retrieve_server_param_int(const std::string& name)
 void MavlinkParameterServer::process_param_set_internally(
     const std::string& param_id, const ParamValue& value_to_set, bool extended)
 {
-    // TODO: add debugging env
-    LogDebug() << "Param set request" << (extended ? " extended" : "") << ": " << param_id
-               << " with " << value_to_set;
+    if (_parameter_debugging) {
+        LogDebug() << "Param set request" << (extended ? " extended" : "") << ": " << param_id
+                   << " with " << value_to_set;
+    }
     std::lock_guard<std::mutex> lock(_all_params_mutex);
     // for checking if the update actually changed the value
     const auto opt_before_update = _param_cache.param_by_id(param_id, extended);
@@ -223,6 +234,7 @@ void MavlinkParameterServer::process_param_set_internally(
             return;
         }
         case MavlinkParameterCache::UpdateExistingParamResult::Ok: {
+            LogWarn() << "Update existing params!";
             const auto updated_parameter = _param_cache.param_by_id(param_id, extended).value();
             // The param set doesn't differentiate between an update that actually changed the value
             // e.g. 0 to 1 and an update that had no effect e.g. 0 to 0.
@@ -294,6 +306,7 @@ void MavlinkParameterServer::process_param_ext_set(const mavlink_message_t& mess
         LogWarn() << "Invalid Param Set ext Request: " << safe_param_id;
         return;
     }
+
     process_param_set_internally(safe_param_id, value_to_set, true);
 }
 
@@ -332,7 +345,6 @@ void MavlinkParameterServer::process_param_request_read(const mavlink_message_t&
 
 void MavlinkParameterServer::process_param_ext_request_read(const mavlink_message_t& message)
 {
-    LogDebug() << "process param_ext_request_read";
     mavlink_param_ext_request_read_t read_request{};
     mavlink_msg_param_ext_request_read_decode(&message, &read_request);
     if (!target_matches(read_request.target_system, read_request.target_component, true)) {
@@ -377,6 +389,8 @@ void MavlinkParameterServer::internal_process_param_request_read_by_id(
     auto new_work = std::make_shared<WorkItem>(
         param.id, param.value, WorkItemValue{param.index, param_count, extended});
     _work_queue.push_back(new_work);
+
+    _last_extended = extended;
 }
 
 void MavlinkParameterServer::internal_process_param_request_read_by_index(
@@ -479,6 +493,7 @@ void MavlinkParameterServer::do_work()
                         return;
                     }
                 } else {
+                    LogWarn() << "sending not extended message";
                     float param_value;
                     if (_sender.autopilot() == Autopilot::ArduPilot) {
                         param_value = work->param_value.get_4_float_bytes_cast();
@@ -534,8 +549,10 @@ void MavlinkParameterServer::do_work()
 std::ostream& operator<<(std::ostream& str, const MavlinkParameterServer::Result& result)
 {
     switch (result) {
-        case MavlinkParameterServer::Result::Success:
-            return str << "Success";
+        case MavlinkParameterServer::Result::Ok:
+            return str << "Ok";
+        case MavlinkParameterServer::Result::OkExistsAlready:
+            return str << "OkExistsAlready";
         case MavlinkParameterServer::Result::WrongType:
             return str << "WrongType";
         case MavlinkParameterServer::Result::ParamNameTooLong:

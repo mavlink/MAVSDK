@@ -10,23 +10,13 @@ add_executable(integration_tests_runner
     action_transition_multicopter_fixedwing.cpp
     action_goto.cpp
     action_hold.cpp
+    autopilot_server_configuration.cpp
     calibration.cpp
-    camera_capture_info.cpp
-    camera_mode.cpp
-    camera_settings.cpp
-    camera_status.cpp
-    camera_take_photo.cpp
-    camera_take_photo_interval.cpp
-    camera_format.cpp
-    camera_reset_settings.cpp
-    camera_test_helpers.cpp
     connection.cpp
     follow_me.cpp
     geofence.cpp
-    gimbal.cpp
     info.cpp
     offboard_attitude.cpp
-    #logging.cpp # Not fully implemented
     log_files.cpp
     mission_cancellation.cpp
     mission_change_speed.cpp
@@ -59,26 +49,6 @@ target_include_directories(integration_tests_runner
     ${PROJECT_SOURCE_DIR}/mavsdk/core
 )
 
-# SYSTEM because we don't want warnings for gtest headers.
-target_include_directories(integration_tests_runner
-    SYSTEM
-    PRIVATE ${PROJECT_SOURCE_DIR}/third_party/gtest/googletest/include
-    PRIVATE ${PROJECT_SOURCE_DIR}/third_party/gtest/googlemock/include
-    PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/../third_party/include
-)
-
-if(MSVC)
-    target_compile_options(integration_tests_runner
-        PRIVATE
-         /wd4996 # ignore deprecated
-    )
-else()
-    target_compile_options(integration_tests_runner
-        PRIVATE
-        -Wno-error=deprecated-declarations
-    )
-endif()
-
 target_compile_definitions(integration_tests_runner
     PRIVATE
     "-DTESTING")
@@ -87,12 +57,14 @@ set_target_properties(integration_tests_runner
     PROPERTIES COMPILE_FLAGS ${warnings}
 )
 
+find_package(GTest REQUIRED)
+
 target_link_libraries(integration_tests_runner
     PRIVATE
     mavsdk
-    gtest
-    gtest_main
-    gmock
+    GTest::gtest
+    GTest::gtest_main
+    GTest::gmock
 )
 
 add_test(integration_tests

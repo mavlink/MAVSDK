@@ -1,10 +1,12 @@
 #include "mavlink_ftp_client.h"
 #include "system_impl.h"
-#include "plugin_base.h"
+#include "overloaded.h"
 #include "unused.h"
 #include <algorithm>
 #include <fstream>
 #include <filesystem>
+#include <algorithm>
+#include <numeric>
 
 #include "crc32.h"
 
@@ -29,6 +31,7 @@ MavlinkFtpClient::MavlinkFtpClient(SystemImpl& system_impl) : _system_impl(syste
 
 MavlinkFtpClient::~MavlinkFtpClient()
 {
+    stop_timer();
     _system_impl.unregister_all_mavlink_message_handlers(this);
 }
 
@@ -105,13 +108,17 @@ void MavlinkFtpClient::process_mavlink_ftp_message(const mavlink_message_t& msg)
     mavlink_msg_file_transfer_protocol_decode(&msg, &ftp_req);
 
     if (ftp_req.target_system != 0 && ftp_req.target_system != _system_impl.get_own_system_id()) {
-        LogWarn() << "Received FTP with wrong target system ID!";
+        if (_debugging) {
+            LogDebug() << "Received FTP message with wrong target system ID";
+        }
         return;
     }
 
     if (ftp_req.target_component != 0 &&
         ftp_req.target_component != _system_impl.get_own_component_id()) {
-        LogWarn() << "Received FTP with wrong target component ID!";
+        if (_debugging) {
+            LogDebug() << "Received FTP message with wrong target component ID";
+        }
         return;
     }
 
@@ -175,6 +182,7 @@ void MavlinkFtpClient::process_mavlink_ftp_message(const mavlink_message_t& msg)
                 } else if (payload->opcode == RSP_NAK) {
                     stop_timer();
                     item.callback(result_from_nak(payload), {});
+                    terminate_session(*work);
                     work_queue_guard.pop_front();
                 }
             },
@@ -202,9 +210,20 @@ void MavlinkFtpClient::process_mavlink_ftp_message(const mavlink_message_t& msg)
                     }
 
                 } else if (payload->opcode == RSP_NAK) {
-                    stop_timer();
-                    item.callback(result_from_nak(payload), {});
-                    work_queue_guard.pop_front();
+                    const ServerResult sr = static_cast<ServerResult>(payload->data[0]);
+                    // In case there's no session available, there's another transfer in progress
+                    // for the given component. Back off and try again later.
+                    if (sr == ERR_NO_SESSIONS_AVAILABLE) {
+                        payload->seq_number = 0; // Ignore this response
+                        start_timer(3.0);
+                        LogDebug() << "No session available, retrying...";
+                    } else {
+                        LogWarn() << "FTP: NAK received";
+                        stop_timer();
+                        item.callback(result_from_nak(payload), {});
+                        terminate_session(*work);
+                        work_queue_guard.pop_front();
+                    }
                 }
             },
             [&](UploadItem& item) {
@@ -233,6 +252,7 @@ void MavlinkFtpClient::process_mavlink_ftp_message(const mavlink_message_t& msg)
                 } else if (payload->opcode == RSP_NAK) {
                     stop_timer();
                     item.callback(result_from_nak(payload), {});
+                    terminate_session(*work);
                     work_queue_guard.pop_front();
                 }
             },
@@ -250,6 +270,7 @@ void MavlinkFtpClient::process_mavlink_ftp_message(const mavlink_message_t& msg)
                 } else if (payload->opcode == RSP_NAK) {
                     stop_timer();
                     item.callback(result_from_nak(payload));
+                    terminate_session(*work);
                     work_queue_guard.pop_front();
                 }
             },
@@ -267,6 +288,7 @@ void MavlinkFtpClient::process_mavlink_ftp_message(const mavlink_message_t& msg)
                 } else if (payload->opcode == RSP_NAK) {
                     stop_timer();
                     item.callback(result_from_nak(payload));
+                    terminate_session(*work);
                     work_queue_guard.pop_front();
                 }
             },
@@ -284,6 +306,7 @@ void MavlinkFtpClient::process_mavlink_ftp_message(const mavlink_message_t& msg)
                 } else if (payload->opcode == RSP_NAK) {
                     stop_timer();
                     item.callback(result_from_nak(payload));
+                    terminate_session(*work);
                     work_queue_guard.pop_front();
                 }
             },
@@ -301,6 +324,7 @@ void MavlinkFtpClient::process_mavlink_ftp_message(const mavlink_message_t& msg)
                 } else if (payload->opcode == RSP_NAK) {
                     stop_timer();
                     item.callback(result_from_nak(payload));
+                    terminate_session(*work);
                     work_queue_guard.pop_front();
                 }
             },
@@ -319,6 +343,7 @@ void MavlinkFtpClient::process_mavlink_ftp_message(const mavlink_message_t& msg)
                 } else if (payload->opcode == RSP_NAK) {
                     stop_timer();
                     item.callback(result_from_nak(payload), false);
+                    terminate_session(*work);
                     work_queue_guard.pop_front();
                 }
             },
@@ -340,10 +365,12 @@ void MavlinkFtpClient::process_mavlink_ftp_message(const mavlink_message_t& msg)
                     stop_timer();
                     if (payload->data[0] == ERR_EOF) {
                         std::sort(item.dirs.begin(), item.dirs.end());
-                        item.callback(ClientResult::Success, item.dirs);
+                        std::sort(item.files.begin(), item.files.end());
+                        item.callback(ClientResult::Success, item.dirs, item.files);
                     } else {
-                        item.callback(result_from_nak(payload), {});
+                        item.callback(result_from_nak(payload), {}, {});
                     }
+                    terminate_session(*work);
                     work_queue_guard.pop_front();
                 }
             }},
@@ -355,6 +382,7 @@ void MavlinkFtpClient::process_mavlink_ftp_message(const mavlink_message_t& msg)
 bool MavlinkFtpClient::download_start(Work& work, DownloadItem& item)
 {
     fs::path local_path = fs::path(item.local_folder) / fs::path(item.remote_path).filename();
+    fs::create_directories(fs::path(item.local_folder));
 
     if (_debugging) {
         LogDebug() << "Trying to open write to local path: " << local_path.string();
@@ -370,7 +398,7 @@ bool MavlinkFtpClient::download_start(Work& work, DownloadItem& item)
     work.last_opcode = CMD_OPEN_FILE_RO;
     work.payload = {};
     work.payload.seq_number = work.last_sent_seq_number++;
-    work.payload.session = 0;
+    work.payload.session = _session;
     work.payload.opcode = work.last_opcode;
     work.payload.offset = 0;
     strncpy(
@@ -378,7 +406,7 @@ bool MavlinkFtpClient::download_start(Work& work, DownloadItem& item)
     work.payload.size = item.remote_path.length() + 1;
 
     start_timer();
-    send_mavlink_ftp_message(work.payload);
+    send_mavlink_ftp_message(work.payload, work.target_compid);
 
     return true;
 }
@@ -434,7 +462,7 @@ bool MavlinkFtpClient::download_continue(Work& work, DownloadItem& item, Payload
         }
 
         start_timer();
-        send_mavlink_ftp_message(work.payload);
+        send_mavlink_ftp_message(work.payload, work.target_compid);
 
         return true;
     } else {
@@ -442,19 +470,9 @@ bool MavlinkFtpClient::download_continue(Work& work, DownloadItem& item, Payload
             LogDebug() << "All bytes written, terminating session";
         }
 
-        // Final step
-        work.last_opcode = CMD_TERMINATE_SESSION;
-
-        work.payload = {};
-        work.payload.seq_number = work.last_sent_seq_number++;
-        work.payload.session = _session;
-
-        work.payload.opcode = work.last_opcode;
-        work.payload.offset = 0;
-        work.payload.size = 0;
-
         start_timer();
-        send_mavlink_ftp_message(work.payload);
+        terminate_session(work);
+        return true;
     }
 
     return true;
@@ -478,7 +496,7 @@ bool MavlinkFtpClient::download_burst_start(Work& work, DownloadBurstItem& item)
     work.last_opcode = CMD_OPEN_FILE_RO;
     work.payload = {};
     work.payload.seq_number = work.last_sent_seq_number++;
-    work.payload.session = 0;
+    work.payload.session = _session;
     work.payload.opcode = work.last_opcode;
     work.payload.offset = 0;
     strncpy(
@@ -486,7 +504,7 @@ bool MavlinkFtpClient::download_burst_start(Work& work, DownloadBurstItem& item)
     work.payload.size = item.remote_path.length() + 1;
 
     start_timer();
-    send_mavlink_ftp_message(work.payload);
+    send_mavlink_ftp_message(work.payload, work.target_compid);
 
     return true;
 }
@@ -495,21 +513,13 @@ bool MavlinkFtpClient::download_burst_continue(
     Work& work, DownloadBurstItem& item, PayloadHeader* payload)
 {
     if (payload->req_opcode == CMD_OPEN_FILE_RO) {
-        const size_t file_size = *(reinterpret_cast<uint32_t*>(payload->data));
-        item.transferred.resize(file_size, DownloadBurstItem::Transferred::No);
-
-        // We just use a vector of 0 and write that to the file to prepare it.
-        // We then fill in the chunks as they come in.
-        std::vector<char> empty;
-        empty.resize(file_size);
-        item.ofstream.write(empty.data(), empty.size());
+        std::memcpy(&(item.file_size), payload->data, sizeof(uint32_t));
 
         if (_debugging) {
-            LogDebug() << "Burst Download continue, got file size: " << file_size;
+            LogDebug() << "Burst Download continue, got file size: " << item.file_size;
         }
 
         request_burst(work, item);
-        return true;
 
     } else if (payload->req_opcode == CMD_BURST_READ_FILE) {
         if (_debugging) {
@@ -517,11 +527,27 @@ bool MavlinkFtpClient::download_burst_continue(
                        << " write: " << std::to_string(payload->size);
         }
 
-        item.ofstream.seekp(payload->offset);
-        if (item.ofstream.fail()) {
-            LogWarn() << "Seek failed";
-            item.callback(ClientResult::FileIoError, {});
-            return false;
+        if (payload->offset != item.current_offset) {
+            if (payload->offset < item.current_offset) {
+                // Not sure why this would happen but we don't know how to deal with it and ignore
+                // it.
+                LogWarn() << "Got payload offset: " << payload->offset
+                          << ", next offset: " << item.current_offset;
+                return false;
+            }
+
+            // we missed a part
+            item.missing_data.emplace_back(DownloadBurstItem::MissingData{
+                item.current_offset, payload->offset - item.current_offset});
+            // write some 0 instead
+            std::vector<char> empty(payload->offset - item.current_offset);
+            item.ofstream.write(empty.data(), empty.size());
+            if (!item.ofstream) {
+                LogWarn() << "Write failed";
+                item.callback(ClientResult::FileIoError, {});
+                download_burst_end(work);
+                return false;
+            }
         }
 
         // Write actual data to file.
@@ -529,62 +555,49 @@ bool MavlinkFtpClient::download_burst_continue(
         if (!item.ofstream) {
             LogWarn() << "Write failed";
             item.callback(ClientResult::FileIoError, {});
+            download_burst_end(work);
             return false;
         }
 
         // Keep track of what was written.
-        for (size_t i = payload->offset; i < payload->offset + payload->size; ++i) {
-            item.transferred[i] = DownloadBurstItem::Transferred::Yes;
-        }
+        item.current_offset = payload->offset + payload->size;
 
         if (_debugging) {
             LogDebug() << "Received " << payload->offset << " to "
                        << payload->size + payload->offset;
         }
 
-        const size_t bytes_transferred = burst_bytes_transferred(item);
-
-        if (bytes_transferred == item.transferred.size()) {
+        if (payload->size + payload->offset >= item.file_size) {
             if (_debugging) {
                 LogDebug() << "Burst complete";
             }
 
-            // Final step
-            work.last_opcode = CMD_TERMINATE_SESSION;
+            if (item.missing_data.empty()) {
+                // No missing data, we're done.
 
-            work.payload = {};
-            work.payload.seq_number = work.last_sent_seq_number++;
-            work.payload.session = _session;
-
-            work.payload.opcode = work.last_opcode;
-            work.payload.offset = 0;
-            work.payload.size = 0;
-
-            start_timer();
-            send_mavlink_ftp_message(work.payload);
-
-            return true;
-
+                // Final step
+                download_burst_end(work);
+            } else {
+                // The burst is supposedly complete but we still need data because
+                // we missed some, so request next without burst.
+                request_next_rest(work, item);
+            }
         } else {
             item.callback(
                 ClientResult::Next,
                 ProgressData{
-                    static_cast<uint32_t>(bytes_transferred),
-                    static_cast<uint32_t>(item.transferred.size())});
+                    static_cast<uint32_t>(burst_bytes_transferred(item)),
+                    static_cast<uint32_t>(item.file_size)});
 
             if (payload->burst_complete) {
-                // The burst is supposedly complete but we still need data, so request next without
-                // burst.
-                request_next_rest(work, item);
-
+                // This burst is complete but the file isn't. we need to start a
+                // new one
+                request_burst(work, item);
             } else {
                 // There might be more coming, just wait for now.
                 start_timer();
             }
-
-            return true;
         }
-
     } else if (payload->req_opcode == CMD_READ_FILE) {
         if (_debugging) {
             LogWarn() << "Burst download continue missing pieces, write at " << payload->offset
@@ -595,57 +608,80 @@ bool MavlinkFtpClient::download_burst_continue(
         if (item.ofstream.fail()) {
             LogWarn() << "Seek failed";
             item.callback(ClientResult::FileIoError, {});
+            download_burst_end(work);
             return false;
         }
 
         item.ofstream.write(reinterpret_cast<const char*>(payload->data), payload->size);
         if (!item.ofstream) {
             item.callback(ClientResult::FileIoError, {});
+            download_burst_end(work);
             return false;
         }
 
-        // Keep track of what was written.
-        for (size_t i = payload->offset; i < payload->offset + payload->size; ++i) {
-            item.transferred[i] = DownloadBurstItem::Transferred::Yes;
+        auto& missing = item.missing_data.front();
+        if (missing.offset != payload->offset) {
+            LogErr() << "Offset mismatch";
+            item.callback(ClientResult::ProtocolError, {});
+            download_burst_end(work);
+            return false;
+        }
+
+        if (missing.size <= payload->size) {
+            // we got all needed data for this chunk
+            item.missing_data.pop_front();
+        } else {
+            missing.offset += payload->size;
+            missing.size -= payload->size;
+        }
+
+        // Check if this was the last one
+        if (item.file_size == payload->offset + payload->size) {
+            item.current_offset = item.file_size;
         }
 
         const size_t bytes_transferred = burst_bytes_transferred(item);
 
         if (_debugging) {
-            LogDebug() << "Written " << bytes_transferred << " of " << item.transferred.size()
-                       << " bytes";
+            LogDebug() << "Written " << bytes_transferred << " of " << item.file_size << " bytes";
         }
 
-        if (bytes_transferred == item.transferred.size()) {
+        if (item.missing_data.empty() && bytes_transferred == item.file_size) {
             // Final step
-            work.last_opcode = CMD_TERMINATE_SESSION;
-
-            work.payload = {};
-            work.payload.seq_number = work.last_sent_seq_number++;
-            work.payload.session = _session;
-
-            work.payload.opcode = work.last_opcode;
-            work.payload.offset = 0;
-            work.payload.size = 0;
-
-            start_timer();
-            send_mavlink_ftp_message(work.payload);
-            return true;
+            download_burst_end(work);
         } else {
             item.callback(
                 ClientResult::Next,
                 ProgressData{
                     static_cast<uint32_t>(bytes_transferred),
-                    static_cast<uint32_t>(item.transferred.size())});
+                    static_cast<uint32_t>(item.file_size)});
 
             request_next_rest(work, item);
-            return true;
         }
 
     } else {
         LogErr() << "Unexpected req_opcode";
+        download_burst_end(work);
         return false;
     }
+
+    return true;
+}
+
+void MavlinkFtpClient::download_burst_end(Work& work)
+{
+    work.last_opcode = CMD_TERMINATE_SESSION;
+
+    work.payload = {};
+    work.payload.seq_number = work.last_sent_seq_number++;
+    work.payload.session = _session;
+
+    work.payload.opcode = work.last_opcode;
+    work.payload.offset = 0;
+    work.payload.size = 0;
+
+    start_timer();
+    send_mavlink_ftp_message(work.payload, work.target_compid);
 }
 
 void MavlinkFtpClient::request_burst(Work& work, DownloadBurstItem& item)
@@ -657,39 +693,22 @@ void MavlinkFtpClient::request_burst(Work& work, DownloadBurstItem& item)
     work.payload.seq_number = work.last_sent_seq_number++;
     work.payload.session = _session;
     work.payload.opcode = work.last_opcode;
-    work.payload.offset = 0;
+    work.payload.offset = item.current_offset;
 
     // Fill up the whole packet.
     work.payload.size = max_data_length;
 
     start_timer();
-    send_mavlink_ftp_message(work.payload);
+    send_mavlink_ftp_message(work.payload, work.target_compid);
 }
 
 void MavlinkFtpClient::request_next_rest(Work& work, DownloadBurstItem& item)
 {
-    const auto first_missing = std::find(
-        item.transferred.begin(), item.transferred.end(), DownloadBurstItem::Transferred::No);
-    if (first_missing == item.transferred.end()) {
-        LogErr() << "Nothing missing, this doesn't make sense.";
-        return;
-    }
-
-    const auto last_missing_plus_one =
-        std::find(first_missing, item.transferred.end(), DownloadBurstItem::Transferred::Yes);
-
-    const size_t offset = std::distance(item.transferred.begin(), first_missing);
-
-    const uint32_t size =
-        static_cast<uint32_t>(std::distance(first_missing, last_missing_plus_one));
-
-    if (size == 0) {
-        LogErr() << "Size is 0";
-        return;
-    }
+    const auto& missing = item.missing_data.front();
+    size_t size = std::min(missing.size, size_t(max_data_length));
 
     if (_debugging) {
-        LogDebug() << "Re-requesting from " << offset << " with size " << size;
+        LogDebug() << "Re-requesting from " << missing.offset << " with size " << size;
     }
 
     work.last_opcode = CMD_READ_FILE;
@@ -697,19 +716,23 @@ void MavlinkFtpClient::request_next_rest(Work& work, DownloadBurstItem& item)
     work.payload.seq_number = work.last_sent_seq_number++;
     work.payload.session = _session;
     work.payload.opcode = work.last_opcode;
-    work.payload.offset = offset;
+    work.payload.offset = missing.offset;
 
-    work.payload.size =
-        static_cast<uint8_t>(std::min(static_cast<uint32_t>(max_data_length), size));
+    work.payload.size = size;
 
     start_timer();
-    send_mavlink_ftp_message(work.payload);
+    send_mavlink_ftp_message(work.payload, work.target_compid);
 }
 
 size_t MavlinkFtpClient::burst_bytes_transferred(DownloadBurstItem& item)
 {
-    return std::count(
-        item.transferred.begin(), item.transferred.end(), DownloadBurstItem::Transferred::Yes);
+    return item.current_offset - std::accumulate(
+                                     item.missing_data.begin(),
+                                     item.missing_data.end(),
+                                     size_t(0),
+                                     [](size_t acc, const DownloadBurstItem::MissingData& missing) {
+                                         return acc + missing.size;
+                                     });
 }
 
 bool MavlinkFtpClient::upload_start(Work& work, UploadItem& item)
@@ -744,7 +767,7 @@ bool MavlinkFtpClient::upload_start(Work& work, UploadItem& item)
     work.last_opcode = CMD_CREATE_FILE;
     work.payload = {};
     work.payload.seq_number = work.last_sent_seq_number++;
-    work.payload.session = 0;
+    work.payload.session = _session;
     work.payload.opcode = work.last_opcode;
     work.payload.offset = 0;
     strncpy(
@@ -754,7 +777,7 @@ bool MavlinkFtpClient::upload_start(Work& work, UploadItem& item)
     work.payload.size = remote_file_path.string().size() + 1;
 
     start_timer();
-    send_mavlink_ftp_message(work.payload);
+    send_mavlink_ftp_message(work.payload, work.target_compid);
 
     return true;
 }
@@ -788,7 +811,7 @@ bool MavlinkFtpClient::upload_continue(Work& work, UploadItem& item)
         item.bytes_transferred += bytes_read;
 
         start_timer();
-        send_mavlink_ftp_message(work.payload);
+        send_mavlink_ftp_message(work.payload, work.target_compid);
 
     } else {
         // Final step
@@ -803,7 +826,7 @@ bool MavlinkFtpClient::upload_continue(Work& work, UploadItem& item)
         work.payload.size = 0;
 
         start_timer();
-        send_mavlink_ftp_message(work.payload);
+        send_mavlink_ftp_message(work.payload, work.target_compid);
     }
 
     item.callback(
@@ -824,14 +847,14 @@ bool MavlinkFtpClient::remove_start(Work& work, RemoveItem& item)
     work.last_opcode = CMD_REMOVE_FILE;
     work.payload = {};
     work.payload.seq_number = work.last_sent_seq_number++;
-    work.payload.session = 0;
+    work.payload.session = _session;
     work.payload.opcode = work.last_opcode;
     work.payload.offset = 0;
     strncpy(reinterpret_cast<char*>(work.payload.data), item.path.c_str(), max_data_length - 1);
     work.payload.size = item.path.length() + 1;
 
     start_timer();
-    send_mavlink_ftp_message(work.payload);
+    send_mavlink_ftp_message(work.payload, work.target_compid);
 
     return true;
 }
@@ -846,7 +869,7 @@ bool MavlinkFtpClient::rename_start(Work& work, RenameItem& item)
     work.last_opcode = CMD_RENAME;
     work.payload = {};
     work.payload.seq_number = work.last_sent_seq_number++;
-    work.payload.session = 0;
+    work.payload.session = _session;
     work.payload.opcode = work.last_opcode;
     work.payload.offset = 0;
     strncpy(
@@ -859,7 +882,7 @@ bool MavlinkFtpClient::rename_start(Work& work, RenameItem& item)
     work.payload.size += item.to_path.length() + 1;
     start_timer();
 
-    send_mavlink_ftp_message(work.payload);
+    send_mavlink_ftp_message(work.payload, work.target_compid);
 
     return true;
 }
@@ -874,14 +897,14 @@ bool MavlinkFtpClient::create_dir_start(Work& work, CreateDirItem& item)
     work.last_opcode = CMD_CREATE_DIRECTORY;
     work.payload = {};
     work.payload.seq_number = work.last_sent_seq_number++;
-    work.payload.session = 0;
+    work.payload.session = _session;
     work.payload.opcode = work.last_opcode;
     work.payload.offset = 0;
     strncpy(reinterpret_cast<char*>(work.payload.data), item.path.c_str(), max_data_length - 1);
     work.payload.size = item.path.length() + 1;
     start_timer();
 
-    send_mavlink_ftp_message(work.payload);
+    send_mavlink_ftp_message(work.payload, work.target_compid);
 
     return true;
 }
@@ -896,14 +919,14 @@ bool MavlinkFtpClient::remove_dir_start(Work& work, RemoveDirItem& item)
     work.last_opcode = CMD_REMOVE_DIRECTORY;
     work.payload = {};
     work.payload.seq_number = work.last_sent_seq_number++;
-    work.payload.session = 0;
+    work.payload.session = _session;
     work.payload.opcode = work.last_opcode;
     work.payload.offset = 0;
     strncpy(reinterpret_cast<char*>(work.payload.data), item.path.c_str(), max_data_length - 1);
     work.payload.size = item.path.length() + 1;
     start_timer();
 
-    send_mavlink_ftp_message(work.payload);
+    send_mavlink_ftp_message(work.payload, work.target_compid);
 
     return true;
 }
@@ -924,7 +947,7 @@ bool MavlinkFtpClient::compare_files_start(Work& work, CompareFilesItem& item)
     work.last_opcode = CMD_CALC_FILE_CRC32;
     work.payload = {};
     work.payload.seq_number = work.last_sent_seq_number++;
-    work.payload.session = 0;
+    work.payload.session = _session;
     work.payload.opcode = work.last_opcode;
     work.payload.offset = 0;
     strncpy(
@@ -932,7 +955,7 @@ bool MavlinkFtpClient::compare_files_start(Work& work, CompareFilesItem& item)
     work.payload.size = item.remote_path.length() + 1;
     start_timer();
 
-    send_mavlink_ftp_message(work.payload);
+    send_mavlink_ftp_message(work.payload, work.target_compid);
 
     return true;
 }
@@ -940,21 +963,21 @@ bool MavlinkFtpClient::compare_files_start(Work& work, CompareFilesItem& item)
 bool MavlinkFtpClient::list_dir_start(Work& work, ListDirItem& item)
 {
     if (item.path.length() + 1 >= max_data_length) {
-        item.callback(ClientResult::InvalidParameter, {});
+        item.callback(ClientResult::InvalidParameter, {}, {});
         return false;
     }
 
     work.last_opcode = CMD_LIST_DIRECTORY;
     work.payload = {};
     work.payload.seq_number = work.last_sent_seq_number++;
-    work.payload.session = 0;
+    work.payload.session = _session;
     work.payload.opcode = work.last_opcode;
     work.payload.offset = 0;
     strncpy(reinterpret_cast<char*>(work.payload.data), item.path.c_str(), max_data_length - 1);
     work.payload.size = item.path.length() + 1;
     start_timer();
 
-    send_mavlink_ftp_message(work.payload);
+    send_mavlink_ftp_message(work.payload, work.target_compid);
 
     return true;
 }
@@ -967,6 +990,13 @@ bool MavlinkFtpClient::list_dir_continue(Work& work, ListDirItem& item, PayloadH
 
     if (payload->size > max_data_length) {
         LogWarn() << "Received FTP payload with invalid size";
+        return false;
+    }
+
+    if (payload->size == 0) {
+        std::sort(item.dirs.begin(), item.dirs.end());
+        std::sort(item.files.begin(), item.files.end());
+        item.callback(ClientResult::Success, item.dirs, item.files);
         return false;
     }
 
@@ -990,20 +1020,31 @@ bool MavlinkFtpClient::list_dir_continue(Work& work, ListDirItem& item, PayloadH
             continue;
         }
 
-        item.dirs.push_back(entry);
+        auto tab = entry.find('\t');
+        if (tab != std::string::npos) {
+            entry = entry.substr(0, tab);
+        }
+
+        if (entry[0] == 'D') {
+            item.dirs.push_back(entry.substr(1, entry.size() - 1));
+        } else if (entry[0] == 'F') {
+            item.files.push_back(entry.substr(1, entry.size() - 1));
+        } else {
+            LogErr() << "Unknown list_dir entry: " << entry;
+        }
     }
 
     work.last_opcode = CMD_LIST_DIRECTORY;
     work.payload = {};
     work.payload.seq_number = work.last_sent_seq_number++;
-    work.payload.session = 0;
+    work.payload.session = _session;
     work.payload.opcode = work.last_opcode;
     work.payload.offset = item.offset;
     strncpy(reinterpret_cast<char*>(work.payload.data), item.path.c_str(), max_data_length - 1);
     work.payload.size = item.path.length() + 1;
     start_timer();
 
-    send_mavlink_ftp_message(work.payload);
+    send_mavlink_ftp_message(work.payload, work.target_compid);
 
     return true;
 }
@@ -1025,19 +1066,32 @@ MavlinkFtpClient::ClientResult MavlinkFtpClient::translate(ServerResult result)
     switch (result) {
         case ServerResult::SUCCESS:
             return ClientResult::Success;
-        case ServerResult::ERR_TIMEOUT:
-            return ClientResult::Timeout;
-        case ServerResult::ERR_FILE_IO_ERROR:
-            return ClientResult::FileIoError;
+        case ServerResult::ERR_FAIL:
+            return ClientResult::ProtocolError;
+        case ServerResult::ERR_FAIL_ERRNO:
+            return ClientResult::ProtocolError;
+        case ServerResult::ERR_INVALID_DATA_SIZE:
+            return ClientResult::ProtocolError;
+        case ServerResult::ERR_INVALID_SESSION:
+            return ClientResult::ProtocolError;
+        case ServerResult::ERR_NO_SESSIONS_AVAILABLE:
+            return ClientResult::ProtocolError;
+        case ServerResult::ERR_EOF:
+            return ClientResult::ProtocolError;
+        case ServerResult::ERR_UNKOWN_COMMAND:
+            return ClientResult::Unsupported;
         case ServerResult::ERR_FAIL_FILE_EXISTS:
             return ClientResult::FileExists;
         case ServerResult::ERR_FAIL_FILE_PROTECTED:
             return ClientResult::FileProtected;
-        case ServerResult::ERR_UNKOWN_COMMAND:
-            return ClientResult::Unsupported;
         case ServerResult::ERR_FAIL_FILE_DOES_NOT_EXIST:
             return ClientResult::FileDoesNotExist;
+        case ServerResult::ERR_TIMEOUT:
+            return ClientResult::Timeout;
+        case ServerResult::ERR_FILE_IO_ERROR:
+            return ClientResult::FileIoError;
         default:
+            LogInfo() << "Unknown error code: " << (int)result;
             return ClientResult::ProtocolError;
     }
 }
@@ -1046,14 +1100,16 @@ void MavlinkFtpClient::download_async(
     const std::string& remote_path,
     const std::string& local_folder,
     bool use_burst,
-    DownloadCallback callback)
+    DownloadCallback callback,
+    std::optional<uint8_t> maybe_target_compid)
 {
     if (use_burst) {
         auto item = DownloadBurstItem{};
         item.remote_path = remote_path;
         item.local_folder = local_folder;
         item.callback = callback;
-        auto new_work = Work{std::move(item)};
+        auto new_work =
+            Work{std::move(item), maybe_target_compid.value_or(get_target_component_id())};
         _work_queue.push_back(std::make_shared<Work>(std::move(new_work)));
 
     } else {
@@ -1061,7 +1117,8 @@ void MavlinkFtpClient::download_async(
         item.remote_path = remote_path;
         item.local_folder = local_folder;
         item.callback = callback;
-        auto new_work = Work{std::move(item)};
+        auto new_work =
+            Work{std::move(item), maybe_target_compid.value_or(get_target_component_id())};
         _work_queue.push_back(std::make_shared<Work>(std::move(new_work)));
     }
 }
@@ -1073,7 +1130,7 @@ void MavlinkFtpClient::upload_async(
     item.local_file_path = local_file_path;
     item.remote_folder = remote_folder;
     item.callback = callback;
-    auto new_work = Work{std::move(item)};
+    auto new_work = Work{std::move(item), get_target_component_id()};
 
     _work_queue.push_back(std::make_shared<Work>(std::move(new_work)));
 }
@@ -1083,7 +1140,7 @@ void MavlinkFtpClient::list_directory_async(const std::string& path, ListDirecto
     auto item = ListDirItem{};
     item.path = path;
     item.callback = callback;
-    auto new_work = Work{std::move(item)};
+    auto new_work = Work{std::move(item), get_target_component_id()};
 
     _work_queue.push_back(std::make_shared<Work>(std::move(new_work)));
 }
@@ -1093,7 +1150,7 @@ void MavlinkFtpClient::create_directory_async(const std::string& path, ResultCal
     auto item = CreateDirItem{};
     item.path = path;
     item.callback = callback;
-    auto new_work = Work{std::move(item)};
+    auto new_work = Work{std::move(item), get_target_component_id()};
 
     _work_queue.push_back(std::make_shared<Work>(std::move(new_work)));
 }
@@ -1103,7 +1160,7 @@ void MavlinkFtpClient::remove_directory_async(const std::string& path, ResultCal
     auto item = RemoveDirItem{};
     item.path = path;
     item.callback = callback;
-    auto new_work = Work{std::move(item)};
+    auto new_work = Work{std::move(item), get_target_component_id()};
 
     _work_queue.push_back(std::make_shared<Work>(std::move(new_work)));
 }
@@ -1113,7 +1170,7 @@ void MavlinkFtpClient::remove_file_async(const std::string& path, ResultCallback
     auto item = RemoveItem{};
     item.path = path;
     item.callback = callback;
-    auto new_work = Work{std::move(item)};
+    auto new_work = Work{std::move(item), get_target_component_id()};
 
     _work_queue.push_back(std::make_shared<Work>(std::move(new_work)));
 }
@@ -1125,7 +1182,7 @@ void MavlinkFtpClient::rename_async(
     item.from_path = from_path;
     item.to_path = to_path;
     item.callback = callback;
-    auto new_work = Work{std::move(item)};
+    auto new_work = Work{std::move(item), get_target_component_id()};
 
     _work_queue.push_back(std::make_shared<Work>(std::move(new_work)));
 }
@@ -1139,12 +1196,12 @@ void MavlinkFtpClient::are_files_identical_async(
     item.local_path = local_path;
     item.remote_path = remote_path;
     item.callback = callback;
-    auto new_work = Work{std::move(item)};
+    auto new_work = Work{std::move(item), get_target_component_id()};
 
     _work_queue.push_back(std::make_shared<Work>(std::move(new_work)));
 }
 
-void MavlinkFtpClient::send_mavlink_ftp_message(const PayloadHeader& payload)
+void MavlinkFtpClient::send_mavlink_ftp_message(const PayloadHeader& payload, uint8_t target_compid)
 {
     _system_impl.queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
         mavlink_message_t message;
@@ -1155,17 +1212,17 @@ void MavlinkFtpClient::send_mavlink_ftp_message(const PayloadHeader& payload)
             &message,
             _network_id,
             _system_impl.get_system_id(),
-            get_target_component_id(),
+            target_compid,
             reinterpret_cast<const uint8_t*>(&payload));
         return message;
     });
 }
 
-void MavlinkFtpClient::start_timer()
+void MavlinkFtpClient::start_timer(std::optional<double> duration_s)
 {
     _system_impl.unregister_timeout_handler(_timeout_cookie);
-    _system_impl.register_timeout_handler(
-        [this]() { timeout(); }, _system_impl.timeout_s(), &_timeout_cookie);
+    _timeout_cookie = _system_impl.register_timeout_handler(
+        [this]() { timeout(); }, duration_s.value_or(_system_impl.timeout_s()));
 }
 
 void MavlinkFtpClient::stop_timer()
@@ -1198,7 +1255,7 @@ void MavlinkFtpClient::timeout()
                 }
 
                 start_timer();
-                send_mavlink_ftp_message(work->payload);
+                send_mavlink_ftp_message(work->payload, work->target_compid);
             },
             [&](DownloadBurstItem& item) {
                 if (--work->retries == 0) {
@@ -1211,12 +1268,36 @@ void MavlinkFtpClient::timeout()
                 }
 
                 {
-                    const size_t bytes_transferred = burst_bytes_transferred(item);
-                    if (bytes_transferred == 0 || bytes_transferred == item.transferred.size()) {
-                        start_timer();
-                        send_mavlink_ftp_message(work->payload);
+                    // This happens when we missed the last ack containing burst complete.
+                    // We have already a file size, so we don't need to start at the
+                    // beginning any more.
+                    if (item.file_size != 0 && item.current_offset != 0) {
+                        // In that case start requesting what we missed.
+                        if (item.current_offset == item.file_size && item.missing_data.empty()) {
+                            // We are done anyway.
+                            item.ofstream.close();
+                            item.callback(ClientResult::Success, {});
+                            download_burst_end(*work);
+                            work_queue_guard.pop_front();
+                        } else {
+                            // The burst is supposedly complete but we still need data because
+                            // we missed some, so request next without burst.
+                            // We presumably missed the very last chunk.
+                            if (item.current_offset < item.file_size) {
+                                item.missing_data.emplace_back(DownloadBurstItem::MissingData{
+                                    item.current_offset, item.file_size - item.current_offset});
+                                item.current_offset = item.file_size;
+                                if (_debugging) {
+                                    LogDebug() << "Adding " << item.current_offset << " with size "
+                                               << item.file_size - item.current_offset;
+                                }
+                            }
+                            request_next_rest(*work, item);
+                        }
                     } else {
-                        request_next_rest(*work, item);
+                        // Otherwise, start burst again.
+                        start_timer();
+                        send_mavlink_ftp_message(work->payload, work->target_compid);
                     }
                 }
             },
@@ -1231,7 +1312,7 @@ void MavlinkFtpClient::timeout()
                 }
 
                 start_timer();
-                send_mavlink_ftp_message(work->payload);
+                send_mavlink_ftp_message(work->payload, work->target_compid);
             },
             [&](RemoveItem& item) {
                 if (--work->retries == 0) {
@@ -1244,7 +1325,7 @@ void MavlinkFtpClient::timeout()
                 }
 
                 start_timer();
-                send_mavlink_ftp_message(work->payload);
+                send_mavlink_ftp_message(work->payload, work->target_compid);
             },
             [&](RenameItem& item) {
                 if (--work->retries == 0) {
@@ -1257,7 +1338,7 @@ void MavlinkFtpClient::timeout()
                 }
 
                 start_timer();
-                send_mavlink_ftp_message(work->payload);
+                send_mavlink_ftp_message(work->payload, work->target_compid);
             },
             [&](CreateDirItem& item) {
                 if (--work->retries == 0) {
@@ -1270,7 +1351,7 @@ void MavlinkFtpClient::timeout()
                 }
 
                 start_timer();
-                send_mavlink_ftp_message(work->payload);
+                send_mavlink_ftp_message(work->payload, work->target_compid);
             },
             [&](RemoveDirItem& item) {
                 if (--work->retries == 0) {
@@ -1283,7 +1364,7 @@ void MavlinkFtpClient::timeout()
                 }
 
                 start_timer();
-                send_mavlink_ftp_message(work->payload);
+                send_mavlink_ftp_message(work->payload, work->target_compid);
             },
             [&](CompareFilesItem& item) {
                 if (--work->retries == 0) {
@@ -1296,11 +1377,11 @@ void MavlinkFtpClient::timeout()
                 }
 
                 start_timer();
-                send_mavlink_ftp_message(work->payload);
+                send_mavlink_ftp_message(work->payload, work->target_compid);
             },
             [&](ListDirItem& item) {
                 if (--work->retries == 0) {
-                    item.callback(ClientResult::Timeout, {});
+                    item.callback(ClientResult::Timeout, {}, {});
                     work_queue_guard.pop_front();
                     return;
                 }
@@ -1309,7 +1390,7 @@ void MavlinkFtpClient::timeout()
                 }
 
                 start_timer();
-                send_mavlink_ftp_message(work->payload);
+                send_mavlink_ftp_message(work->payload, work->target_compid);
             }},
         work->item);
 }
@@ -1341,6 +1422,21 @@ MavlinkFtpClient::calc_local_file_crc32(const std::string& path, uint32_t& csum)
     csum = checksum.get();
 
     return ClientResult::Success;
+}
+
+void MavlinkFtpClient::terminate_session(Work& work)
+{
+    work.last_opcode = CMD_TERMINATE_SESSION;
+
+    work.payload = {};
+    work.payload.seq_number = work.last_sent_seq_number++;
+    work.payload.session = _session;
+
+    work.payload.opcode = work.last_opcode;
+    work.payload.offset = 0;
+    work.payload.size = 0;
+
+    send_mavlink_ftp_message(work.payload, work.target_compid);
 }
 
 uint8_t MavlinkFtpClient::get_our_compid()
@@ -1391,6 +1487,19 @@ std::ostream& operator<<(std::ostream& str, MavlinkFtpClient::ClientResult const
             return str << "ProtocolError";
         case MavlinkFtpClient::ClientResult::NoSystem:
             return str << "NoSystem";
+    }
+}
+
+void MavlinkFtpClient::cancel_all_operations()
+{
+    // Stop any pending timeout timers
+    stop_timer();
+
+    // Clear the work queue to cancel all pending operations
+    // This prevents callbacks from being executed
+    LockedQueue<Work>::Guard work_queue_guard(_work_queue);
+    while (work_queue_guard.get_front() != nullptr) {
+        work_queue_guard.pop_front();
     }
 }
 

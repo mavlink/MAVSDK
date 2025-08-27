@@ -23,7 +23,11 @@ public:
     void disable() override;
 
     std::pair<MissionRaw::Result, std::vector<MissionRaw::MissionItem>> download_mission();
+    std::pair<MissionRaw::Result, std::vector<MissionRaw::MissionItem>> download_geofence();
+    std::pair<MissionRaw::Result, std::vector<MissionRaw::MissionItem>> download_rallypoints();
     void download_mission_async(const MissionRaw::DownloadMissionCallback& callback);
+    void download_geofence_async(const MissionRaw::DownloadMissionCallback& callback);
+    void download_rallypoints_async(const MissionRaw::DownloadMissionCallback& callback);
     MissionRaw::Result cancel_mission_download();
 
     MissionRaw::Result upload_mission(std::vector<MissionRaw::MissionItem> mission_items);
@@ -62,11 +66,19 @@ public:
     subscribe_mission_progress(const MissionRaw::MissionProgressCallback& callback);
     void unsubscribe_mission_progress(MissionRaw::MissionProgressHandle handle);
 
+    std::pair<MissionRaw::Result, bool> is_mission_finished() const;
+
     std::pair<MissionRaw::Result, MissionRaw::MissionImportData>
     import_qgroundcontrol_mission(std::string qgc_plan_path);
 
     std::pair<MissionRaw::Result, MissionRaw::MissionImportData>
     import_qgroundcontrol_mission_from_string(const std::string& qgc_plan);
+
+    std::pair<MissionRaw::Result, MissionRaw::MissionImportData>
+    import_mission_planner_mission(std::string mission_planner_path);
+
+    std::pair<MissionRaw::Result, MissionRaw::MissionImportData>
+    import_mission_planner_mission_from_string(const std::string& mission_planner_mission);
 
 #if 0
     void import_qgroundcontrol_mission_async(
@@ -115,16 +127,18 @@ private:
     std::weak_ptr<MavlinkMissionTransferClient::WorkItem> _last_download{};
 
     struct {
-        std::mutex mutex{};
+        mutable std::mutex mutex{};
         MissionRaw::MissionProgress last{};
         MissionRaw::MissionProgress last_reported{};
         CallbackList<MissionRaw::MissionProgress> callbacks{};
         int32_t last_reached{};
+        uint8_t mission_state{MISSION_STATE_UNKNOWN};
     } _mission_progress{};
 
     struct {
         std::mutex mutex{};
         CallbackList<bool> callbacks{};
+        uint32_t last_mission_id{0};
     } _mission_changed{};
 };
 

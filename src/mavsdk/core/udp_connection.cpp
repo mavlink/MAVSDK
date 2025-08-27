@@ -11,13 +11,14 @@
 #else
 #include <netinet/in.h>
 #include <sys/socket.h>
+#include <sys/time.h>
 #include <arpa/inet.h>
 #include <errno.h>
-#include <unistd.h> // for close()
 #endif
 
 #include <algorithm>
 #include <utility>
+#include <sstream>
 
 #ifdef WINDOWS
 #define GET_ERROR(_x) WSAGetLastError()
@@ -29,10 +30,16 @@ namespace mavsdk {
 
 UdpConnection::UdpConnection(
     Connection::ReceiverCallback receiver_callback,
+    Connection::LibmavReceiverCallback libmav_receiver_callback,
+    MavsdkImpl& mavsdk_impl,
     std::string local_ip,
     int local_port_number,
     ForwardingOption forwarding_option) :
-    Connection(std::move(receiver_callback), forwarding_option),
+    Connection(
+        std::move(receiver_callback),
+        std::move(libmav_receiver_callback),
+        mavsdk_impl,
+        forwarding_option),
     _local_ip(std::move(local_ip)),
     _local_port_number(local_port_number)
 {}
@@ -46,6 +53,10 @@ UdpConnection::~UdpConnection()
 ConnectionResult UdpConnection::start()
 {
     if (!start_mavlink_receiver()) {
+        return ConnectionResult::ConnectionsExhausted;
+    }
+
+    if (!start_libmav_receiver()) {
         return ConnectionResult::ConnectionsExhausted;
     }
 
@@ -69,22 +80,38 @@ ConnectionResult UdpConnection::setup_port()
     }
 #endif
 
-    _socket_fd = socket(AF_INET, SOCK_DGRAM, 0);
+    _socket_fd.reset(socket(AF_INET, SOCK_DGRAM, 0));
 
-    if (_socket_fd < 0) {
+    if (_socket_fd.empty()) {
         LogErr() << "socket error" << GET_ERROR(errno);
         return ConnectionResult::SocketError;
     }
 
-    struct sockaddr_in addr {};
+    struct sockaddr_in addr{};
     addr.sin_family = AF_INET;
-    inet_pton(AF_INET, _local_ip.c_str(), &(addr.sin_addr));
+    if (inet_pton(AF_INET, _local_ip.c_str(), &(addr.sin_addr)) != 1) {
+        LogErr() << "inet_pton failure for address: " << _local_ip;
+        return ConnectionResult::SocketError;
+    }
     addr.sin_port = htons(_local_port_number);
 
-    if (bind(_socket_fd, reinterpret_cast<sockaddr*>(&addr), sizeof(addr)) != 0) {
+    if (bind(_socket_fd.get(), reinterpret_cast<sockaddr*>(&addr), sizeof(addr)) != 0) {
         LogErr() << "bind error: " << GET_ERROR(errno);
         return ConnectionResult::BindError;
     }
+
+    // Set receive timeout cross-platform
+    const unsigned timeout_ms = 500;
+
+#if defined(WINDOWS)
+    setsockopt(
+        _socket_fd.get(), SOL_SOCKET, SO_RCVTIMEO, (const char*)&timeout_ms, sizeof(timeout_ms));
+#else
+    struct timeval tv;
+    tv.tv_sec = 0;
+    tv.tv_usec = timeout_ms * 1000;
+    setsockopt(_socket_fd.get(), SOL_SOCKET, SO_RCVTIMEO, (const void*)&tv, sizeof(tv));
+#endif
 
     return ConnectionResult::Success;
 }
@@ -98,31 +125,12 @@ ConnectionResult UdpConnection::stop()
 {
     _should_exit = true;
 
-#if !defined(WINDOWS)
-    // This should interrupt a recv/recvfrom call.
-    shutdown(_socket_fd, SHUT_RDWR);
-
-#if defined(APPLE)
-    // But on Mac, closing is also needed to stop blocking recv/recvfrom.
-    close(_socket_fd);
-#endif
-#else
-    shutdown(_socket_fd, SD_BOTH);
-
-    closesocket(_socket_fd);
-
-    WSACleanup();
-#endif
-
     if (_recv_thread) {
         _recv_thread->join();
         _recv_thread.reset();
     }
 
-#if !defined(WINDOWS) & !defined(APPLE)
-    // On Linux we can close later to avoid thread sanitizer from complaining.
-    close(_socket_fd);
-#endif
+    _socket_fd.close();
 
     // We need to stop this after stopping the receive thread, otherwise
     // it can happen that we interfere with the parsing of a message.
@@ -131,61 +139,117 @@ ConnectionResult UdpConnection::stop()
     return ConnectionResult::Success;
 }
 
-bool UdpConnection::send_message(const mavlink_message_t& message)
+std::pair<bool, std::string> UdpConnection::send_message(const mavlink_message_t& message)
 {
+    // Convert message to raw bytes and use common send path
+    uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
+    uint16_t buffer_len = mavlink_msg_to_send_buffer(buffer, &message);
+    return send_raw_bytes(reinterpret_cast<const char*>(buffer), buffer_len);
+}
+
+std::pair<bool, std::string> UdpConnection::send_raw_bytes(const char* bytes, size_t length)
+{
+    std::pair<bool, std::string> result;
+
     std::lock_guard<std::mutex> lock(_remote_mutex);
 
+    // Remove inactive remotes before sending messages
+    auto now = std::chrono::steady_clock::now();
+
+    _remotes.erase(
+        std::remove_if(
+            _remotes.begin(),
+            _remotes.end(),
+            [&now, this](const Remote& remote) {
+                const auto elapsed = now - remote.last_activity;
+                const bool inactive = elapsed > REMOTE_TIMEOUT;
+
+                const bool should_remove = inactive && remote.remote_option == RemoteOption::Found;
+
+                // We can cleanup old/previous remotes if we have
+                if (should_remove) {
+                    LogInfo() << "Removing inactive remote: " << remote.ip << ":"
+                              << remote.port_number;
+                }
+
+                return should_remove;
+            }),
+        _remotes.end());
+
     if (_remotes.size() == 0) {
-        LogErr() << "No known remotes";
-        return false;
+        result.first = false;
+        result.second = "no remotes";
+        return result;
     }
 
-    // Send the message to all the remotes. A remote is a UDP endpoint
+    // Send the raw bytes to all the remotes. A remote is a UDP endpoint
     // identified by its <ip, port>. This means that if we have two
     // systems on two different endpoints, then messages directed towards
     // only one system will be sent to both remotes. The systems are
     // then expected to ignore messages that are not directed to them.
-    bool send_successful = true;
+
+    // For multiple remotes, we ignore errors, for just one, we bubble it up.
+    result.first = true;
+
     for (auto& remote : _remotes) {
-        struct sockaddr_in dest_addr {};
+        struct sockaddr_in dest_addr{};
         dest_addr.sin_family = AF_INET;
 
-        inet_pton(AF_INET, remote.ip.c_str(), &dest_addr.sin_addr.s_addr);
+        if (inet_pton(AF_INET, remote.ip.c_str(), &dest_addr.sin_addr.s_addr) != 1) {
+            std::stringstream ss;
+            ss << "inet_pton failure for: " << remote.ip << ":" << remote.port_number;
+            LogErr() << ss.str();
+            result.first = false;
+            if (!result.second.empty()) {
+                result.second += ", ";
+            }
+            result.second += ss.str();
+            continue;
+        }
         dest_addr.sin_port = htons(remote.port_number);
 
-        uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
-        uint16_t buffer_len = mavlink_msg_to_send_buffer(buffer, &message);
-
         const auto send_len = sendto(
-            _socket_fd,
-            reinterpret_cast<char*>(buffer),
-            buffer_len,
+            _socket_fd.get(),
+            bytes,
+            length,
             0,
             reinterpret_cast<const sockaddr*>(&dest_addr),
             sizeof(dest_addr));
 
-        if (send_len != buffer_len) {
-            LogErr() << "sendto failure: " << GET_ERROR(errno);
-            send_successful = false;
+        if (send_len != static_cast<std::remove_cv_t<decltype(send_len)>>(length)) {
+            std::stringstream ss;
+            ss << "sendto failure: " << GET_ERROR(errno) << " for: " << remote.ip << ":"
+               << remote.port_number;
+            LogErr() << ss.str();
+            result.first = false;
+            if (!result.second.empty()) {
+                result.second += ", ";
+            }
+            result.second += ss.str();
             continue;
         }
     }
 
-    return send_successful;
+    return result;
 }
 
-void UdpConnection::add_remote(const std::string& remote_ip, const int remote_port)
+void UdpConnection::add_remote_to_keep(const std::string& remote_ip, const int remote_port)
 {
-    add_remote_with_remote_sysid(remote_ip, remote_port, 0);
+    add_remote_impl(remote_ip, remote_port, 0, RemoteOption::Fixed);
 }
 
-void UdpConnection::add_remote_with_remote_sysid(
-    const std::string& remote_ip, const int remote_port, const uint8_t remote_sysid)
+void UdpConnection::add_remote_impl(
+    const std::string& remote_ip,
+    const int remote_port,
+    const uint8_t remote_sysid,
+    RemoteOption remote_option)
 {
     std::lock_guard<std::mutex> lock(_remote_mutex);
     Remote new_remote;
     new_remote.ip = remote_ip;
     new_remote.port_number = remote_port;
+    new_remote.last_activity = std::chrono::steady_clock::now();
+    new_remote.remote_option = remote_option;
 
     auto existing_remote =
         std::find_if(_remotes.begin(), _remotes.end(), [&new_remote](Remote& remote) {
@@ -200,6 +264,9 @@ void UdpConnection::add_remote_with_remote_sysid(
                       << " (with system ID: " << static_cast<int>(remote_sysid) << ")";
         }
         _remotes.push_back(new_remote);
+    } else {
+        // Update the timestamp for the existing remote
+        existing_remote->last_activity = std::chrono::steady_clock::now();
     }
 }
 
@@ -212,7 +279,7 @@ void UdpConnection::receive()
         struct sockaddr_in src_addr = {};
         socklen_t src_addr_len = sizeof(src_addr);
         const auto recv_len = recvfrom(
-            _socket_fd,
+            _socket_fd.get(),
             buffer,
             sizeof(buffer),
             0,
@@ -226,7 +293,7 @@ void UdpConnection::receive()
         }
 
         if (recv_len < 0) {
-            // This happens on destruction when close(_socket_fd) is called,
+            // This happens on destruction when _socket_fd.close() is called,
             // therefore be quiet.
             // LogErr() << "recvfrom error: " << GET_ERROR(errno);
             continue;
@@ -239,11 +306,25 @@ void UdpConnection::receive()
             const uint8_t sysid = _mavlink_receiver->get_last_message().sysid;
 
             if (sysid != 0) {
-                add_remote_with_remote_sysid(
-                    inet_ntoa(src_addr.sin_addr), ntohs(src_addr.sin_port), sysid);
+                char ip_str[INET_ADDRSTRLEN];
+                if (inet_ntop(AF_INET, &src_addr.sin_addr, ip_str, INET_ADDRSTRLEN) != nullptr) {
+                    add_remote_impl(ip_str, ntohs(src_addr.sin_port), sysid, RemoteOption::Found);
+                } else {
+                    LogErr() << "inet_ntop failure for: " << strerror(errno);
+                }
             }
 
+            // Handle parsed message
             receive_message(_mavlink_receiver->get_last_message(), this);
+        }
+
+        // Also parse with libmav if available
+        if (_libmav_receiver) {
+            _libmav_receiver->set_new_datagram(buffer, static_cast<int>(recv_len));
+
+            while (_libmav_receiver->parse_message()) {
+                receive_libmav_message(_libmav_receiver->get_last_message(), this);
+            }
         }
     }
 }

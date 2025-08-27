@@ -33,12 +33,12 @@ public:
     ~MavlinkParameterServer();
 
     enum class Result {
-        Success,
+        Ok,
+        OkExistsAlready,
         WrongType,
         ParamNameTooLong,
         NotFound,
         ParamValueTooLong,
-        ParamExistsAlready,
         TooManyParams,
         ParamNotFound,
         Unknown,
@@ -55,6 +55,7 @@ public:
     std::pair<Result, int32_t> retrieve_server_param_int(const std::string& name);
     std::pair<Result, std::string> retrieve_server_param_custom(const std::string& name);
 
+    void set_extended_protocol(bool extended_protocol) { _extended_protocol = extended_protocol; };
     void do_work();
 
     friend std::ostream& operator<<(std::ostream&, const Result&);
@@ -106,7 +107,7 @@ private:
             std::string param_id1, ParamValue param_value1, WorkItemVariant work_item_variant1) :
             param_id(std::move(param_id1)),
             param_value(std::move(param_value1)),
-            work_item_variant(std::move(work_item_variant1)){};
+            work_item_variant(std::move(work_item_variant1)) {};
     };
 
     Sender& _sender;
@@ -117,7 +118,9 @@ private:
 
     LockedQueue<WorkItem> _work_queue{};
 
+    bool _extended_protocol = true;
     bool _parameter_debugging = false;
+    bool _last_extended = true;
 };
 
 } // namespace mavsdk

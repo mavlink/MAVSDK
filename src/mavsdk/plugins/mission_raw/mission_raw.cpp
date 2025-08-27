@@ -74,6 +74,28 @@ MissionRaw::download_mission() const
     return _impl->download_mission();
 }
 
+void MissionRaw::download_geofence_async(const DownloadGeofenceCallback callback)
+{
+    _impl->download_geofence_async(callback);
+}
+
+std::pair<MissionRaw::Result, std::vector<MissionRaw::MissionItem>>
+MissionRaw::download_geofence() const
+{
+    return _impl->download_geofence();
+}
+
+void MissionRaw::download_rallypoints_async(const DownloadRallypointsCallback callback)
+{
+    _impl->download_rallypoints_async(callback);
+}
+
+std::pair<MissionRaw::Result, std::vector<MissionRaw::MissionItem>>
+MissionRaw::download_rallypoints() const
+{
+    return _impl->download_rallypoints();
+}
+
 MissionRaw::Result MissionRaw::cancel_mission_download() const
 {
     return _impl->cancel_mission_download();
@@ -156,6 +178,23 @@ std::pair<MissionRaw::Result, MissionRaw::MissionImportData>
 MissionRaw::import_qgroundcontrol_mission_from_string(std::string qgc_plan) const
 {
     return _impl->import_qgroundcontrol_mission_from_string(qgc_plan);
+}
+
+std::pair<MissionRaw::Result, MissionRaw::MissionImportData>
+MissionRaw::import_mission_planner_mission(std::string mission_planner_path) const
+{
+    return _impl->import_mission_planner_mission(mission_planner_path);
+}
+
+std::pair<MissionRaw::Result, MissionRaw::MissionImportData>
+MissionRaw::import_mission_planner_mission_from_string(std::string mission_planner_mission) const
+{
+    return _impl->import_mission_planner_mission_from_string(mission_planner_mission);
+}
+
+std::pair<MissionRaw::Result, bool> MissionRaw::is_mission_finished() const
+{
+    return _impl->is_mission_finished();
 }
 
 bool operator==(const MissionRaw::MissionProgress& lhs, const MissionRaw::MissionProgress& rhs)
@@ -284,6 +323,10 @@ std::ostream& operator<<(std::ostream& str, MissionRaw::Result const& result)
             return str << "Protocol Error";
         case MissionRaw::Result::IntMessagesNotSupported:
             return str << "Int Messages Not Supported";
+        case MissionRaw::Result::FailedToOpenMissionPlannerPlan:
+            return str << "Failed To Open Mission Planner Plan";
+        case MissionRaw::Result::FailedToParseMissionPlannerPlan:
+            return str << "Failed To Parse Mission Planner Plan";
         default:
             return str << "Unknown";
     }

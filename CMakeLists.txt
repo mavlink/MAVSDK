@@ -1,15 +1,14 @@
-cmake_minimum_required(VERSION 3.13)
+cmake_minimum_required(VERSION 3.22.1)
 
-option(HUNTER_ENABLED "Enable Hunter package manager support" OFF)
 option(SUPERBUILD "Build dependencies" ON)
 option(BUILD_MAVSDK_SERVER "Build mavsdk_server" OFF)
 option(BUILD_WITH_PROTO_REFLECTION "Build mavsdk_server with proto reflection" OFF)
 option(BUILD_SHARED_LIBS "Build core as shared libraries instead of static ones" ON)
 option(MAVLINK_DIALECT "MAVLink dialect. Default: common" "common")
+option(BUILD_TESTING "Build tests" ON)
+option(BUILD_WITHOUT_CURL "Build without CURL" OFF)
 
-if (SUPERBUILD AND HUNTER_ENABLED)
-    message(FATAL_ERROR "Cannot SUPERBUILD while HUNTER_ENABLED. Set -DSUPERBUILD=OFF when using Hunter")
-endif()
+message("Using cmake version: ${CMAKE_VERSION}")
 
 if (NOT MAVLINK_DIALECT)
     set(MAVLINK_DIALECT "common")
@@ -40,13 +39,18 @@ message(STATUS "Version patch: ${MAVSDK_VERSION_PATCH}")
 set(MAVSDK_SOVERSION_STRING ${MAVSDK_VERSION_MAJOR})
 set(MAVSDK_VERSION_STRING ${MAVSDK_VERSION_MAJOR}.${MAVSDK_VERSION_MINOR}.${MAVSDK_VERSION_PATCH})
 
-include("src/cmake/HunterGate.cmake")
-HunterGate(
-    URL "https://github.com/cpp-pm/hunter/archive/v0.23.315.tar.gz"
-    SHA1 "ea5d72afc0df67f2126e7fd069f20c5f723709e1"
-)
-
 project(mavsdk_superbuild)
+
+# FIXME: in the future we need to mark library methods that need to be visible manually
+#        and remove CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS.
+#        At the moment, we are running into the 65535 object limit on Windows likely because of this.
+if (BUILD_SHARED_LIBS AND MSVC AND BUILD_MAVSDK_SERVER)
+    message(FATAL_ERROR
+        "To build mavsdk_server on Windows, you need to use BUILD_SHARED_LIBS=OFF.\n"
+        "This avoids the Windows 65535 object limit when statically linking all dependencies.\n"
+        "Use: cmake -DBUILD_SHARED_LIBS=OFF ..."
+    )
+endif()
 
 if (BUILD_BACKEND)
     message(FATAL_ERROR "The argument BUILD_BACKEND has been replaced by BUILD_MAVSDK_SERVER. To build mavsdk_server, use -DBUILD_MAVSDK_SERVER=ON.")

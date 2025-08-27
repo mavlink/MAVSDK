@@ -2,7 +2,7 @@
 
 namespace ardupilot {
 
-// Enumeration representing the available modes for the Arudpilot rover autopilot.
+// Enumeration representing the available modes for the Ardupilot rover autopilot.
 enum class RoverMode {
     Manual = 0,
     Acro = 1,
@@ -19,7 +19,7 @@ enum class RoverMode {
     Unknown = 100
 };
 
-// Enumeration representing the available modes for the Arudpilot copter autopilot.
+// Enumeration representing the available modes for the Ardupilot copter autopilot.
 enum class CopterMode {
     Stabilize = 0,
     Acro = 1,

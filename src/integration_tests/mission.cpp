@@ -38,7 +38,7 @@ static std::atomic<bool> pause_already_done{false};
 
 TEST(SitlTest, PX4MissionAddWaypointsAndFly)
 {
-    Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
+    Mavsdk mavsdk{Mavsdk::Configuration{ComponentType::GroundStation}};
 
     {
         auto prom = std::make_shared<std::promise<void>>();
@@ -54,7 +54,7 @@ TEST(SitlTest, PX4MissionAddWaypointsAndFly)
             }
         });
 
-        ConnectionResult ret = mavsdk.add_udp_connection();
+        ConnectionResult ret = mavsdk.add_any_connection("udpin://0.0.0.0:14540");
         ASSERT_EQ(ret, ConnectionResult::Success);
 
         auto status = future_result.wait_for(std::chrono::seconds(2));

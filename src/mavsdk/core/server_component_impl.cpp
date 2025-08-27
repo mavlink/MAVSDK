@@ -18,6 +18,8 @@ ServerComponentImpl::ServerComponentImpl(MavsdkImpl& mavsdk_impl, uint8_t compon
     _mavlink_request_message_handler(mavsdk_impl, *this, _mavlink_command_receiver),
     _mavlink_ftp_server(*this)
 {
+    _autopilot_version.capabilities |= MAV_PROTOCOL_CAPABILITY_MAVLINK2;
+
     if (!MavlinkChannels::Instance().checkout_free_channel(_channel)) {
         // We use a default of channel 0 which will still work but not track
         // seq correctly.
@@ -38,6 +40,14 @@ ServerComponentImpl::ServerComponentImpl(MavsdkImpl& mavsdk_impl, uint8_t compon
         [this](const MavlinkCommandReceiver::CommandInt& command) {
             send_autopilot_version();
             return make_command_ack_message(command, MAV_RESULT_ACCEPTED);
+        },
+        this);
+
+    _mavlink_request_message_handler.register_handler(
+        MAVLINK_MSG_ID_PROTOCOL_VERSION,
+        [this](uint8_t, uint8_t, const MavlinkRequestMessageHandler::Params&) {
+            send_protocol_version();
+            return MAV_RESULT_ACCEPTED;
         },
         this);
 
@@ -170,24 +180,24 @@ bool ServerComponentImpl::queue_message(
     return _mavsdk_impl.send_message(message);
 }
 
-void ServerComponentImpl::add_call_every(
-    std::function<void()> callback, float interval_s, void** cookie)
+CallEveryHandler::Cookie
+ServerComponentImpl::add_call_every(std::function<void()> callback, float interval_s)
 {
-    _mavsdk_impl.call_every_handler.add(
-        std::move(callback), static_cast<double>(interval_s), cookie);
+    return _mavsdk_impl.call_every_handler.add(
+        std::move(callback), static_cast<double>(interval_s));
 }
 
-void ServerComponentImpl::change_call_every(float interval_s, const void* cookie)
+void ServerComponentImpl::change_call_every(float interval_s, CallEveryHandler::Cookie cookie)
 {
     _mavsdk_impl.call_every_handler.change(static_cast<double>(interval_s), cookie);
 }
 
-void ServerComponentImpl::reset_call_every(const void* cookie)
+void ServerComponentImpl::reset_call_every(CallEveryHandler::Cookie cookie)
 {
     _mavsdk_impl.call_every_handler.reset(cookie);
 }
 
-void ServerComponentImpl::remove_call_every(const void* cookie)
+void ServerComponentImpl::remove_call_every(CallEveryHandler::Cookie cookie)
 {
     _mavsdk_impl.call_every_handler.remove(cookie);
 }
@@ -275,18 +285,18 @@ void ServerComponentImpl::call_user_callback_located(
     _mavsdk_impl.call_user_callback_located(filename, linenumber, func);
 }
 
-void ServerComponentImpl::register_timeout_handler(
-    const std::function<void()>& callback, double duration_s, void** cookie)
+TimeoutHandler::Cookie ServerComponentImpl::register_timeout_handler(
+    const std::function<void()>& callback, double duration_s)
 {
-    _mavsdk_impl.timeout_handler.add(callback, duration_s, cookie);
+    return _mavsdk_impl.timeout_handler.add(callback, duration_s);
 }
 
-void ServerComponentImpl::refresh_timeout_handler(const void* cookie)
+void ServerComponentImpl::refresh_timeout_handler(TimeoutHandler::Cookie cookie)
 {
     _mavsdk_impl.timeout_handler.refresh(cookie);
 }
 
-void ServerComponentImpl::unregister_timeout_handler(const void* cookie)
+void ServerComponentImpl::unregister_timeout_handler(TimeoutHandler::Cookie cookie)
 {
     _mavsdk_impl.timeout_handler.remove(cookie);
 }
@@ -373,6 +383,24 @@ void ServerComponentImpl::send_autopilot_version()
             _autopilot_version.product_id,
             0,
             _autopilot_version.uid2.data());
+        return message;
+    });
+}
+
+void ServerComponentImpl::send_protocol_version()
+{
+    queue_message([&, this](MavlinkAddress mavlink_address, uint8_t channel) {
+        mavlink_message_t message;
+        mavlink_msg_protocol_version_pack_chan(
+            mavlink_address.system_id,
+            mavlink_address.component_id,
+            channel,
+            &message,
+            MAVLINK_VERSION_INFO.version,
+            MAVLINK_VERSION_INFO.min_version,
+            MAVLINK_VERSION_INFO.max_version,
+            MAVLINK_VERSION_INFO.spec_version_hash,
+            MAVLINK_VERSION_INFO.library_version_hash);
         return message;
     });
 }

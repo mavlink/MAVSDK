@@ -18,5 +18,5 @@ target_link_libraries(calibrate
 if(NOT MSVC)
     add_compile_options(calibrate PRIVATE -Wall -Wextra)
 else()
-    add_compile_options(calibrate PRIVATE -WX -W2)
+    add_compile_options(calibrate PRIVATE -W2)
 endif()

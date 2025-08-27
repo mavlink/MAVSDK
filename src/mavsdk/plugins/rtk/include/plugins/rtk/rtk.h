@@ -62,7 +62,7 @@ public:
      * @brief RTCM data type
      */
     struct RtcmData {
-        std::string data{}; /**< @brief The data encoded as a string */
+        std::string data_base64{}; /**< @brief The data encoded as a base64 string */
     };
 
     /**
@@ -107,7 +107,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result send_rtcm_data(RtcmData rtcm_data) const;
 

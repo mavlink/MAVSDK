@@ -15,6 +15,7 @@
 #include <future>
 #include <limits>
 #include <memory>
+#include <mutex>
 #include <sstream>
 #include <vector>
 
@@ -101,10 +102,240 @@ public:
         }
     }
 
+    static rpc::gimbal::SendMode translateToRpcSendMode(const mavsdk::Gimbal::SendMode& send_mode)
+    {
+        switch (send_mode) {
+            default:
+                LogErr() << "Unknown send_mode enum value: " << static_cast<int>(send_mode);
+            // FALLTHROUGH
+            case mavsdk::Gimbal::SendMode::Once:
+                return rpc::gimbal::SEND_MODE_ONCE;
+            case mavsdk::Gimbal::SendMode::Stream:
+                return rpc::gimbal::SEND_MODE_STREAM;
+        }
+    }
+
+    static mavsdk::Gimbal::SendMode translateFromRpcSendMode(const rpc::gimbal::SendMode send_mode)
+    {
+        switch (send_mode) {
+            default:
+                LogErr() << "Unknown send_mode enum value: " << static_cast<int>(send_mode);
+            // FALLTHROUGH
+            case rpc::gimbal::SEND_MODE_ONCE:
+                return mavsdk::Gimbal::SendMode::Once;
+            case rpc::gimbal::SEND_MODE_STREAM:
+                return mavsdk::Gimbal::SendMode::Stream;
+        }
+    }
+
+    static std::unique_ptr<rpc::gimbal::Quaternion>
+    translateToRpcQuaternion(const mavsdk::Gimbal::Quaternion& quaternion)
+    {
+        auto rpc_obj = std::make_unique<rpc::gimbal::Quaternion>();
+
+        rpc_obj->set_w(quaternion.w);
+
+        rpc_obj->set_x(quaternion.x);
+
+        rpc_obj->set_y(quaternion.y);
+
+        rpc_obj->set_z(quaternion.z);
+
+        return rpc_obj;
+    }
+
+    static mavsdk::Gimbal::Quaternion
+    translateFromRpcQuaternion(const rpc::gimbal::Quaternion& quaternion)
+    {
+        mavsdk::Gimbal::Quaternion obj;
+
+        obj.w = quaternion.w();
+
+        obj.x = quaternion.x();
+
+        obj.y = quaternion.y();
+
+        obj.z = quaternion.z();
+
+        return obj;
+    }
+
+    static std::unique_ptr<rpc::gimbal::EulerAngle>
+    translateToRpcEulerAngle(const mavsdk::Gimbal::EulerAngle& euler_angle)
+    {
+        auto rpc_obj = std::make_unique<rpc::gimbal::EulerAngle>();
+
+        rpc_obj->set_roll_deg(euler_angle.roll_deg);
+
+        rpc_obj->set_pitch_deg(euler_angle.pitch_deg);
+
+        rpc_obj->set_yaw_deg(euler_angle.yaw_deg);
+
+        return rpc_obj;
+    }
+
+    static mavsdk::Gimbal::EulerAngle
+    translateFromRpcEulerAngle(const rpc::gimbal::EulerAngle& euler_angle)
+    {
+        mavsdk::Gimbal::EulerAngle obj;
+
+        obj.roll_deg = euler_angle.roll_deg();
+
+        obj.pitch_deg = euler_angle.pitch_deg();
+
+        obj.yaw_deg = euler_angle.yaw_deg();
+
+        return obj;
+    }
+
+    static std::unique_ptr<rpc::gimbal::AngularVelocityBody> translateToRpcAngularVelocityBody(
+        const mavsdk::Gimbal::AngularVelocityBody& angular_velocity_body)
+    {
+        auto rpc_obj = std::make_unique<rpc::gimbal::AngularVelocityBody>();
+
+        rpc_obj->set_roll_rad_s(angular_velocity_body.roll_rad_s);
+
+        rpc_obj->set_pitch_rad_s(angular_velocity_body.pitch_rad_s);
+
+        rpc_obj->set_yaw_rad_s(angular_velocity_body.yaw_rad_s);
+
+        return rpc_obj;
+    }
+
+    static mavsdk::Gimbal::AngularVelocityBody translateFromRpcAngularVelocityBody(
+        const rpc::gimbal::AngularVelocityBody& angular_velocity_body)
+    {
+        mavsdk::Gimbal::AngularVelocityBody obj;
+
+        obj.roll_rad_s = angular_velocity_body.roll_rad_s();
+
+        obj.pitch_rad_s = angular_velocity_body.pitch_rad_s();
+
+        obj.yaw_rad_s = angular_velocity_body.yaw_rad_s();
+
+        return obj;
+    }
+
+    static std::unique_ptr<rpc::gimbal::Attitude>
+    translateToRpcAttitude(const mavsdk::Gimbal::Attitude& attitude)
+    {
+        auto rpc_obj = std::make_unique<rpc::gimbal::Attitude>();
+
+        rpc_obj->set_gimbal_id(attitude.gimbal_id);
+
+        rpc_obj->set_allocated_euler_angle_forward(
+            translateToRpcEulerAngle(attitude.euler_angle_forward).release());
+
+        rpc_obj->set_allocated_quaternion_forward(
+            translateToRpcQuaternion(attitude.quaternion_forward).release());
+
+        rpc_obj->set_allocated_euler_angle_north(
+            translateToRpcEulerAngle(attitude.euler_angle_north).release());
+
+        rpc_obj->set_allocated_quaternion_north(
+            translateToRpcQuaternion(attitude.quaternion_north).release());
+
+        rpc_obj->set_allocated_angular_velocity(
+            translateToRpcAngularVelocityBody(attitude.angular_velocity).release());
+
+        rpc_obj->set_timestamp_us(attitude.timestamp_us);
+
+        return rpc_obj;
+    }
+
+    static mavsdk::Gimbal::Attitude translateFromRpcAttitude(const rpc::gimbal::Attitude& attitude)
+    {
+        mavsdk::Gimbal::Attitude obj;
+
+        obj.gimbal_id = attitude.gimbal_id();
+
+        obj.euler_angle_forward = translateFromRpcEulerAngle(attitude.euler_angle_forward());
+
+        obj.quaternion_forward = translateFromRpcQuaternion(attitude.quaternion_forward());
+
+        obj.euler_angle_north = translateFromRpcEulerAngle(attitude.euler_angle_north());
+
+        obj.quaternion_north = translateFromRpcQuaternion(attitude.quaternion_north());
+
+        obj.angular_velocity = translateFromRpcAngularVelocityBody(attitude.angular_velocity());
+
+        obj.timestamp_us = attitude.timestamp_us();
+
+        return obj;
+    }
+
+    static std::unique_ptr<rpc::gimbal::GimbalItem>
+    translateToRpcGimbalItem(const mavsdk::Gimbal::GimbalItem& gimbal_item)
+    {
+        auto rpc_obj = std::make_unique<rpc::gimbal::GimbalItem>();
+
+        rpc_obj->set_gimbal_id(gimbal_item.gimbal_id);
+
+        rpc_obj->set_vendor_name(gimbal_item.vendor_name);
+
+        rpc_obj->set_model_name(gimbal_item.model_name);
+
+        rpc_obj->set_custom_name(gimbal_item.custom_name);
+
+        rpc_obj->set_gimbal_manager_component_id(gimbal_item.gimbal_manager_component_id);
+
+        rpc_obj->set_gimbal_device_id(gimbal_item.gimbal_device_id);
+
+        return rpc_obj;
+    }
+
+    static mavsdk::Gimbal::GimbalItem
+    translateFromRpcGimbalItem(const rpc::gimbal::GimbalItem& gimbal_item)
+    {
+        mavsdk::Gimbal::GimbalItem obj;
+
+        obj.gimbal_id = gimbal_item.gimbal_id();
+
+        obj.vendor_name = gimbal_item.vendor_name();
+
+        obj.model_name = gimbal_item.model_name();
+
+        obj.custom_name = gimbal_item.custom_name();
+
+        obj.gimbal_manager_component_id = gimbal_item.gimbal_manager_component_id();
+
+        obj.gimbal_device_id = gimbal_item.gimbal_device_id();
+
+        return obj;
+    }
+
+    static std::unique_ptr<rpc::gimbal::GimbalList>
+    translateToRpcGimbalList(const mavsdk::Gimbal::GimbalList& gimbal_list)
+    {
+        auto rpc_obj = std::make_unique<rpc::gimbal::GimbalList>();
+
+        for (const auto& elem : gimbal_list.gimbals) {
+            auto* ptr = rpc_obj->add_gimbals();
+            ptr->CopyFrom(*translateToRpcGimbalItem(elem).release());
+        }
+
+        return rpc_obj;
+    }
+
+    static mavsdk::Gimbal::GimbalList
+    translateFromRpcGimbalList(const rpc::gimbal::GimbalList& gimbal_list)
+    {
+        mavsdk::Gimbal::GimbalList obj;
+
+        for (const auto& elem : gimbal_list.gimbals()) {
+            obj.gimbals.push_back(
+                translateFromRpcGimbalItem(static_cast<mavsdk::rpc::gimbal::GimbalItem>(elem)));
+        }
+
+        return obj;
+    }
+
     static std::unique_ptr<rpc::gimbal::ControlStatus>
     translateToRpcControlStatus(const mavsdk::Gimbal::ControlStatus& control_status)
     {
         auto rpc_obj = std::make_unique<rpc::gimbal::ControlStatus>();
+
+        rpc_obj->set_gimbal_id(control_status.gimbal_id);
 
         rpc_obj->set_control_mode(translateToRpcControlMode(control_status.control_mode));
 
@@ -123,6 +354,8 @@ public:
     translateFromRpcControlStatus(const rpc::gimbal::ControlStatus& control_status)
     {
         mavsdk::Gimbal::ControlStatus obj;
+
+        obj.gimbal_id = control_status.gimbal_id();
 
         obj.control_mode = translateFromRpcControlMode(control_status.control_mode());
 
@@ -156,6 +389,8 @@ public:
                 return rpc::gimbal::GimbalResult_Result_RESULT_UNSUPPORTED;
             case mavsdk::Gimbal::Result::NoSystem:
                 return rpc::gimbal::GimbalResult_Result_RESULT_NO_SYSTEM;
+            case mavsdk::Gimbal::Result::InvalidArgument:
+                return rpc::gimbal::GimbalResult_Result_RESULT_INVALID_ARGUMENT;
         }
     }
 
@@ -178,6 +413,8 @@ public:
                 return mavsdk::Gimbal::Result::Unsupported;
             case rpc::gimbal::GimbalResult_Result_RESULT_NO_SYSTEM:
                 return mavsdk::Gimbal::Result::NoSystem;
+            case rpc::gimbal::GimbalResult_Result_RESULT_INVALID_ARGUMENT:
+                return mavsdk::Gimbal::Result::InvalidArgument;
         }
     }
 
@@ -201,7 +438,12 @@ public:
         }
 
         auto result = _lazy_plugin.maybe_plugin()->set_angles(
-            request->roll_deg(), request->pitch_deg(), request->yaw_deg());
+            request->gimbal_id(),
+            request->roll_deg(),
+            request->pitch_deg(),
+            request->yaw_deg(),
+            translateFromRpcGimbalMode(request->gimbal_mode()),
+            translateFromRpcSendMode(request->send_mode()));
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -210,10 +452,10 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status SetPitchAndYaw(
+    grpc::Status SetAngularRates(
         grpc::ServerContext* /* context */,
-        const rpc::gimbal::SetPitchAndYawRequest* request,
-        rpc::gimbal::SetPitchAndYawResponse* response) override
+        const rpc::gimbal::SetAngularRatesRequest* request,
+        rpc::gimbal::SetAngularRatesResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
             if (response != nullptr) {
@@ -225,70 +467,17 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "SetPitchAndYaw sent with a null request! Ignoring...";
+            LogWarn() << "SetAngularRates sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
 
-        auto result = _lazy_plugin.maybe_plugin()->set_pitch_and_yaw(
-            request->pitch_deg(), request->yaw_deg());
-
-        if (response != nullptr) {
-            fillResponseWithResult(response, result);
-        }
-
-        return grpc::Status::OK;
-    }
-
-    grpc::Status SetPitchRateAndYawRate(
-        grpc::ServerContext* /* context */,
-        const rpc::gimbal::SetPitchRateAndYawRateRequest* request,
-        rpc::gimbal::SetPitchRateAndYawRateResponse* response) override
-    {
-        if (_lazy_plugin.maybe_plugin() == nullptr) {
-            if (response != nullptr) {
-                auto result = mavsdk::Gimbal::Result::NoSystem;
-                fillResponseWithResult(response, result);
-            }
-
-            return grpc::Status::OK;
-        }
-
-        if (request == nullptr) {
-            LogWarn() << "SetPitchRateAndYawRate sent with a null request! Ignoring...";
-            return grpc::Status::OK;
-        }
-
-        auto result = _lazy_plugin.maybe_plugin()->set_pitch_rate_and_yaw_rate(
-            request->pitch_rate_deg_s(), request->yaw_rate_deg_s());
-
-        if (response != nullptr) {
-            fillResponseWithResult(response, result);
-        }
-
-        return grpc::Status::OK;
-    }
-
-    grpc::Status SetMode(
-        grpc::ServerContext* /* context */,
-        const rpc::gimbal::SetModeRequest* request,
-        rpc::gimbal::SetModeResponse* response) override
-    {
-        if (_lazy_plugin.maybe_plugin() == nullptr) {
-            if (response != nullptr) {
-                auto result = mavsdk::Gimbal::Result::NoSystem;
-                fillResponseWithResult(response, result);
-            }
-
-            return grpc::Status::OK;
-        }
-
-        if (request == nullptr) {
-            LogWarn() << "SetMode sent with a null request! Ignoring...";
-            return grpc::Status::OK;
-        }
-
-        auto result = _lazy_plugin.maybe_plugin()->set_mode(
-            translateFromRpcGimbalMode(request->gimbal_mode()));
+        auto result = _lazy_plugin.maybe_plugin()->set_angular_rates(
+            request->gimbal_id(),
+            request->roll_rate_deg_s(),
+            request->pitch_rate_deg_s(),
+            request->yaw_rate_deg_s(),
+            translateFromRpcGimbalMode(request->gimbal_mode()),
+            translateFromRpcSendMode(request->send_mode()));
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -317,7 +506,10 @@ public:
         }
 
         auto result = _lazy_plugin.maybe_plugin()->set_roi_location(
-            request->latitude_deg(), request->longitude_deg(), request->altitude_m());
+            request->gimbal_id(),
+            request->latitude_deg(),
+            request->longitude_deg(),
+            request->altitude_m());
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -346,7 +538,7 @@ public:
         }
 
         auto result = _lazy_plugin.maybe_plugin()->take_control(
-            translateFromRpcControlMode(request->control_mode()));
+            request->gimbal_id(), translateFromRpcControlMode(request->control_mode()));
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -357,7 +549,7 @@ public:
 
     grpc::Status ReleaseControl(
         grpc::ServerContext* /* context */,
-        const rpc::gimbal::ReleaseControlRequest* /* request */,
+        const rpc::gimbal::ReleaseControlRequest* request,
         rpc::gimbal::ReleaseControlResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
@@ -369,7 +561,12 @@ public:
             return grpc::Status::OK;
         }
 
-        auto result = _lazy_plugin.maybe_plugin()->release_control();
+        if (request == nullptr) {
+            LogWarn() << "ReleaseControl sent with a null request! Ignoring...";
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->release_control(request->gimbal_id());
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -378,10 +575,10 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status SubscribeControl(
+    grpc::Status SubscribeGimbalList(
         grpc::ServerContext* /* context */,
-        const mavsdk::rpc::gimbal::SubscribeControlRequest* /* request */,
-        grpc::ServerWriter<rpc::gimbal::ControlResponse>* writer) override
+        const mavsdk::rpc::gimbal::SubscribeGimbalListRequest* /* request */,
+        grpc::ServerWriter<rpc::gimbal::GimbalListResponse>* writer) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
             return grpc::Status::OK;
@@ -394,23 +591,24 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        const mavsdk::Gimbal::ControlHandle handle = _lazy_plugin.maybe_plugin()->subscribe_control(
-            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
-                const mavsdk::Gimbal::ControlStatus control) {
-                rpc::gimbal::ControlResponse rpc_response;
+        const mavsdk::Gimbal::GimbalListHandle handle =
+            _lazy_plugin.maybe_plugin()->subscribe_gimbal_list(
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
+                    const mavsdk::Gimbal::GimbalList gimbal_list) {
+                    rpc::gimbal::GimbalListResponse rpc_response;
 
-                rpc_response.set_allocated_control_status(
-                    translateToRpcControlStatus(control).release());
+                    rpc_response.set_allocated_gimbal_list(
+                        translateToRpcGimbalList(gimbal_list).release());
 
-                std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                if (!*is_finished && !writer->Write(rpc_response)) {
-                    _lazy_plugin.maybe_plugin()->unsubscribe_control(handle);
+                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
+                    if (!*is_finished && !writer->Write(rpc_response)) {
+                        _lazy_plugin.maybe_plugin()->unsubscribe_gimbal_list(handle);
 
-                    *is_finished = true;
-                    unregister_stream_stop_promise(stream_closed_promise);
-                    stream_closed_promise->set_value();
-                }
-            });
+                        *is_finished = true;
+                        unregister_stream_stop_promise(stream_closed_promise);
+                        stream_closed_promise->set_value();
+                    }
+                });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
@@ -419,9 +617,154 @@ public:
         return grpc::Status::OK;
     }
 
+    grpc::Status SubscribeControlStatus(
+        grpc::ServerContext* /* context */,
+        const mavsdk::rpc::gimbal::SubscribeControlStatusRequest* /* request */,
+        grpc::ServerWriter<rpc::gimbal::ControlStatusResponse>* writer) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            return grpc::Status::OK;
+        }
+
+        auto stream_closed_promise = std::make_shared<std::promise<void>>();
+        auto stream_closed_future = stream_closed_promise->get_future();
+        register_stream_stop_promise(stream_closed_promise);
+
+        auto is_finished = std::make_shared<bool>(false);
+        auto subscribe_mutex = std::make_shared<std::mutex>();
+
+        const mavsdk::Gimbal::ControlStatusHandle handle =
+            _lazy_plugin.maybe_plugin()->subscribe_control_status(
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
+                    const mavsdk::Gimbal::ControlStatus control_status) {
+                    rpc::gimbal::ControlStatusResponse rpc_response;
+
+                    rpc_response.set_allocated_control_status(
+                        translateToRpcControlStatus(control_status).release());
+
+                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
+                    if (!*is_finished && !writer->Write(rpc_response)) {
+                        _lazy_plugin.maybe_plugin()->unsubscribe_control_status(handle);
+
+                        *is_finished = true;
+                        unregister_stream_stop_promise(stream_closed_promise);
+                        stream_closed_promise->set_value();
+                    }
+                });
+
+        stream_closed_future.wait();
+        std::unique_lock<std::mutex> lock(*subscribe_mutex);
+        *is_finished = true;
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status GetControlStatus(
+        grpc::ServerContext* /* context */,
+        const rpc::gimbal::GetControlStatusRequest* request,
+        rpc::gimbal::GetControlStatusResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                auto result = mavsdk::Gimbal::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        if (request == nullptr) {
+            LogWarn() << "GetControlStatus sent with a null request! Ignoring...";
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->get_control_status(request->gimbal_id());
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result.first);
+
+            response->set_allocated_control_status(
+                translateToRpcControlStatus(result.second).release());
+        }
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status SubscribeAttitude(
+        grpc::ServerContext* /* context */,
+        const mavsdk::rpc::gimbal::SubscribeAttitudeRequest* /* request */,
+        grpc::ServerWriter<rpc::gimbal::AttitudeResponse>* writer) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            return grpc::Status::OK;
+        }
+
+        auto stream_closed_promise = std::make_shared<std::promise<void>>();
+        auto stream_closed_future = stream_closed_promise->get_future();
+        register_stream_stop_promise(stream_closed_promise);
+
+        auto is_finished = std::make_shared<bool>(false);
+        auto subscribe_mutex = std::make_shared<std::mutex>();
+
+        const mavsdk::Gimbal::AttitudeHandle handle =
+            _lazy_plugin.maybe_plugin()->subscribe_attitude(
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
+                    const mavsdk::Gimbal::Attitude attitude) {
+                    rpc::gimbal::AttitudeResponse rpc_response;
+
+                    rpc_response.set_allocated_attitude(translateToRpcAttitude(attitude).release());
+
+                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
+                    if (!*is_finished && !writer->Write(rpc_response)) {
+                        _lazy_plugin.maybe_plugin()->unsubscribe_attitude(handle);
+
+                        *is_finished = true;
+                        unregister_stream_stop_promise(stream_closed_promise);
+                        stream_closed_promise->set_value();
+                    }
+                });
+
+        stream_closed_future.wait();
+        std::unique_lock<std::mutex> lock(*subscribe_mutex);
+        *is_finished = true;
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status GetAttitude(
+        grpc::ServerContext* /* context */,
+        const rpc::gimbal::GetAttitudeRequest* request,
+        rpc::gimbal::GetAttitudeResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                auto result = mavsdk::Gimbal::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        if (request == nullptr) {
+            LogWarn() << "GetAttitude sent with a null request! Ignoring...";
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->get_attitude(request->gimbal_id());
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result.first);
+
+            response->set_allocated_attitude(translateToRpcAttitude(result.second).release());
+        }
+
+        return grpc::Status::OK;
+    }
+
     void stop()
     {
         _stopped.store(true);
+        std::lock_guard<std::mutex> lock(_stream_stop_mutex);
         for (auto& prom : _stream_stop_promises) {
             if (auto handle = prom.lock()) {
                 handle->set_value();
@@ -438,12 +781,14 @@ private:
                 handle->set_value();
             }
         } else {
+            std::lock_guard<std::mutex> lock(_stream_stop_mutex);
             _stream_stop_promises.push_back(prom);
         }
     }
 
     void unregister_stream_stop_promise(std::shared_ptr<std::promise<void>> prom)
     {
+        std::lock_guard<std::mutex> lock(_stream_stop_mutex);
         for (auto it = _stream_stop_promises.begin(); it != _stream_stop_promises.end();
              /* ++it */) {
             if (it->lock() == prom) {
@@ -457,6 +802,7 @@ private:
     LazyPlugin& _lazy_plugin;
 
     std::atomic<bool> _stopped{false};
+    std::mutex _stream_stop_mutex{};
     std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises{};
 };
 

@@ -5,17 +5,15 @@
 #include <vector>
 #include <memory>
 #include <unordered_map>
-#include <mutex>
 #include <string>
 #include <tuple>
 #include <utility>
-
 namespace mavsdk {
 
 class CameraDefinition {
 public:
-    CameraDefinition();
-    ~CameraDefinition();
+    CameraDefinition() = default;
+    ~CameraDefinition() = default;
 
     bool load_file(const std::string& filepath);
     bool load_string(const std::string& content);
@@ -23,7 +21,11 @@ public:
     std::string get_vendor() const;
     std::string get_model() const;
 
+    // This is to just assume everything is the default, mostly for testing.
     void assume_default_settings();
+
+    // This is to start and mark things as requiring an update.
+    void reset_to_default_settings(bool needs_updating);
 
     struct Setting {
         std::string name;
@@ -54,8 +56,6 @@ public:
     const CameraDefinition& operator=(const CameraDefinition&) = delete;
 
 private:
-    bool get_possible_settings_locked(std::unordered_map<std::string, ParamValue>& settings);
-
     using ParameterRange = std::unordered_map<std::string, ParamValue>;
 
     struct Option {
@@ -91,8 +91,6 @@ private:
         std::unordered_map<std::string, std::string>& type_map);
     std::pair<bool, Option> find_default(
         const std::vector<std::shared_ptr<Option>>& options, const std::string& default_str);
-
-    mutable std::mutex _mutex{};
 
     tinyxml2::XMLDocument _doc{};
 

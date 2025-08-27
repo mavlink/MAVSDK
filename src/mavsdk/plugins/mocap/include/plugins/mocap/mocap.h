@@ -23,8 +23,7 @@ class System;
 class MocapImpl;
 
 /**
- * @brief *
- * Allows interfacing a vehicle with a motion capture system in
+ * @brief Allows interfacing a vehicle with a motion capture system in
  * order to allow navigation without global positioning sources available
  * (e.g. indoors, or when flying under a bridge. etc.).
  */
@@ -129,6 +128,29 @@ public:
      * @return A reference to the stream.
      */
     friend std::ostream& operator<<(std::ostream& str, Mocap::SpeedBody const& speed_body);
+
+    /**
+     * @brief Speed type, represented in NED (North East Down) coordinates.
+     */
+    struct SpeedNed {
+        float north_m_s{}; /**< @brief Velocity North in metres/second. */
+        float east_m_s{}; /**< @brief Velocity East in metres/second. */
+        float down_m_s{}; /**< @brief Velocity Down in metres/second. */
+    };
+
+    /**
+     * @brief Equal operator to compare two `Mocap::SpeedNed` objects.
+     *
+     * @return `true` if items are equal.
+     */
+    friend bool operator==(const Mocap::SpeedNed& lhs, const Mocap::SpeedNed& rhs);
+
+    /**
+     * @brief Stream operator to print information about a `Mocap::SpeedNed`.
+     *
+     * @return A reference to the stream.
+     */
+    friend std::ostream& operator<<(std::ostream& str, Mocap::SpeedNed const& speed_ned);
 
     /**
      * @brief Angular velocity type
@@ -238,6 +260,31 @@ public:
     operator<<(std::ostream& str, Mocap::VisionPositionEstimate const& vision_position_estimate);
 
     /**
+     * @brief Global speed estimate from a vision source.
+     */
+    struct VisionSpeedEstimate {
+        uint64_t time_usec{}; /**< @brief Timestamp UNIX Epoch time (0 to use Backend timestamp) */
+        SpeedNed speed_ned{}; /**< @brief Global speed (m/s) */
+        Covariance speed_covariance{}; /**< @brief Linear velocity cross-covariance matrix. */
+    };
+
+    /**
+     * @brief Equal operator to compare two `Mocap::VisionSpeedEstimate` objects.
+     *
+     * @return `true` if items are equal.
+     */
+    friend bool
+    operator==(const Mocap::VisionSpeedEstimate& lhs, const Mocap::VisionSpeedEstimate& rhs);
+
+    /**
+     * @brief Stream operator to print information about a `Mocap::VisionSpeedEstimate`.
+     *
+     * @return A reference to the stream.
+     */
+    friend std::ostream&
+    operator<<(std::ostream& str, Mocap::VisionSpeedEstimate const& vision_speed_estimate);
+
+    /**
      * @brief Motion capture attitude and position
      */
     struct AttitudePositionMocap {
@@ -343,16 +390,31 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result set_vision_position_estimate(VisionPositionEstimate vision_position_estimate) const;
+
+    /**
+     * @brief Send Global speed estimate from a vision source.
+     *
+     * This function is blocking.
+     *
+
+     * @return Result of request.
+
+     */
+    Result set_vision_speed_estimate(VisionSpeedEstimate vision_speed_estimate) const;
 
     /**
      * @brief Send motion capture attitude and position.
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result set_attitude_position_mocap(AttitudePositionMocap attitude_position_mocap) const;
 
@@ -361,7 +423,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result set_odometry(Odometry odometry) const;
 

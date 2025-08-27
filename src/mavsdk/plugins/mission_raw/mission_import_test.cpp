@@ -441,3 +441,224 @@ TEST(MissionRaw, ImportSamplePlanWithArduPilot)
 
     EXPECT_EQ(reference_items, result_pair.second.mission_items);
 }
+
+TEST(MissionRaw, ImportSamplePlanWithDigicamControl)
+{
+    auto digicam_control_items = std::vector<MissionRaw::MissionItem>{
+        {0,
+         MAV_FRAME_MISSION,
+         MAV_CMD_DO_DIGICAM_CONTROL,
+         1, // current
+         1, // autocontinue
+         1,
+         0,
+         0,
+         0,
+         1,
+         0,
+         0,
+         MAV_MISSION_TYPE_MISSION}};
+
+    std::ifstream file{path_prefix("qgroundcontrol_sample_with_digicam_control.plan")};
+    ASSERT_TRUE(file);
+
+    std::stringstream buf;
+    buf << file.rdbuf();
+    file.close();
+
+    const auto result_pair = MissionImport::parse_json(buf.str(), Autopilot::Px4);
+    ASSERT_EQ(result_pair.first, MissionRaw::Result::Success);
+
+    EXPECT_EQ(digicam_control_items, result_pair.second.mission_items);
+}
+
+std::vector<MissionRaw::MissionItem> create_mission_planner_reference_items()
+{
+    return {
+        {0,
+         MAV_FRAME_GLOBAL_INT, // frame
+         MAV_CMD_NAV_TAKEOFF,
+         1, // current
+         1, // autocontinue
+         0.0f, // param1
+         0.0f, // param2
+         0.0f, // param3
+         0.0f, // param4
+         473978101, // x (lat * 1e7)
+         85455380, // y (lon * 1e7)
+         15.0f, // z
+         MAV_MISSION_TYPE_MISSION},
+        {1,
+         MAV_FRAME_GLOBAL_INT, // frame
+         MAV_CMD_NAV_WAYPOINT,
+         0, // current
+         1, // autocontinue
+         0.0f, // param1
+         0.0f, // param2
+         0.0f, // param3
+         0.0f, // param4
+         473977992, // x (lat * 1e7)
+         85454669, // y (lon * 1e7)
+         15.0f, // z
+         MAV_MISSION_TYPE_MISSION},
+        {2,
+         MAV_FRAME_GLOBAL_INT, // frame
+         MAV_CMD_NAV_WAYPOINT,
+         0, // current
+         1, // autocontinue
+         0.0f, // param1
+         0.0f, // param2
+         0.0f, // param3
+         0.0f, // param4
+         473977883, // x (lat * 1e7)
+         85453958, // y (lon * 1e7)
+         15.0f, // z
+         MAV_MISSION_TYPE_MISSION},
+        {3,
+         MAV_FRAME_GLOBAL_INT, // frame
+         MAV_CMD_NAV_RETURN_TO_LAUNCH,
+         0, // current
+         1, // autocontinue
+         0.0f, // param1
+         0.0f, // param2
+         0.0f, // param3
+         0.0f, // param4
+         473977774, // x (lat * 1e7)
+         85453247, // y (lon * 1e7)
+         0.0f, // z
+         MAV_MISSION_TYPE_MISSION}};
+}
+
+TEST(MissionRaw, ImportMissionPlannerSuccessfully)
+{
+    auto reference_items = create_mission_planner_reference_items();
+
+    std::ifstream file{path_prefix("mission_planner_sample.txt")};
+    ASSERT_TRUE(file);
+
+    std::stringstream buf;
+    buf << file.rdbuf();
+    file.close();
+
+    const auto result_pair = MissionImport::parse_mission_planner(buf.str(), Autopilot::Px4);
+    ASSERT_EQ(result_pair.first, MissionRaw::Result::Success);
+
+    EXPECT_EQ(reference_items.size(), result_pair.second.mission_items.size());
+    for (size_t i = 0; i < reference_items.size(); ++i) {
+        EXPECT_EQ(reference_items[i].seq, result_pair.second.mission_items[i].seq);
+        EXPECT_EQ(reference_items[i].command, result_pair.second.mission_items[i].command);
+        EXPECT_EQ(reference_items[i].x, result_pair.second.mission_items[i].x);
+        EXPECT_EQ(reference_items[i].y, result_pair.second.mission_items[i].y);
+        EXPECT_EQ(reference_items[i].z, result_pair.second.mission_items[i].z);
+        EXPECT_EQ(
+            reference_items[i].mission_type, result_pair.second.mission_items[i].mission_type);
+    }
+
+    // Mission Planner format doesn't include geofence or rally points
+    EXPECT_EQ(result_pair.second.geofence_items.size(), 0);
+    EXPECT_EQ(result_pair.second.rally_items.size(), 0);
+}
+
+TEST(MissionRaw, ImportMissionPlannerWithArduPilotHomePosition)
+{
+    auto reference_items = create_mission_planner_reference_items();
+
+    std::ifstream file{path_prefix("mission_planner_sample.txt")};
+    ASSERT_TRUE(file);
+
+    std::stringstream buf;
+    buf << file.rdbuf();
+    file.close();
+
+    const auto result_pair = MissionImport::parse_mission_planner(buf.str(), Autopilot::ArduPilot);
+    ASSERT_EQ(result_pair.first, MissionRaw::Result::Success);
+
+    // ArduPilot should have one extra item (home position) at the beginning
+    EXPECT_EQ(reference_items.size() + 1, result_pair.second.mission_items.size());
+
+    // First item should be home position
+    const auto& home_item = result_pair.second.mission_items[0];
+    EXPECT_EQ(home_item.seq, 0);
+    EXPECT_EQ(home_item.command, MAV_CMD_NAV_WAYPOINT);
+    EXPECT_EQ(home_item.frame, MAV_FRAME_GLOBAL_INT);
+    EXPECT_EQ(home_item.current, 1); // home should be current
+    EXPECT_EQ(home_item.mission_type, MAV_MISSION_TYPE_MISSION);
+
+    // Subsequent items should match reference (with updated sequence numbers)
+    for (size_t i = 0; i < reference_items.size(); ++i) {
+        const auto& item = result_pair.second.mission_items[i + 1];
+        EXPECT_EQ(item.seq, i + 1);
+        EXPECT_EQ(item.command, reference_items[i].command);
+        EXPECT_EQ(item.current, 0); // only home should be current
+    }
+}
+
+TEST(MissionRaw, ImportMissionPlannerInvalidFormat)
+{
+    const std::string invalid_mission =
+        "Invalid Mission Format\n0\t1\t0\t22\t0\t0\t0\t0\t47.39781011\t8.54553801\t15\t1\n";
+
+    const auto result_pair = MissionImport::parse_mission_planner(invalid_mission, Autopilot::Px4);
+    EXPECT_EQ(result_pair.first, MissionRaw::Result::FailedToParseMissionPlannerPlan);
+    EXPECT_EQ(result_pair.second.mission_items.size(), 0);
+}
+
+TEST(MissionRaw, ImportMissionPlannerInvalidLineFormat)
+{
+    const std::string invalid_mission =
+        "QGC WPL 110\n0\t1\t0\t22\t0\t0\t0\t0\t47.39781011\t8.54553801\t15\t1\t99\t88\n"; // too
+                                                                                          // many
+                                                                                          // fields
+
+    const auto result_pair = MissionImport::parse_mission_planner(invalid_mission, Autopilot::Px4);
+    EXPECT_EQ(result_pair.first, MissionRaw::Result::FailedToParseMissionPlannerPlan);
+    EXPECT_EQ(result_pair.second.mission_items.size(), 0);
+}
+
+TEST(MissionRaw, ImportMissionPlannerEmptyMission)
+{
+    const std::string empty_mission = "QGC WPL 110\n";
+
+    const auto result_pair = MissionImport::parse_mission_planner(empty_mission, Autopilot::Px4);
+    ASSERT_EQ(result_pair.first, MissionRaw::Result::Success);
+    EXPECT_EQ(result_pair.second.mission_items.size(), 0);
+}
+
+TEST(MissionRaw, ImportMissionPlannerFromString)
+{
+    const std::string mission_string =
+        "QGC WPL 110\n0\t1\t0\t22\t0\t0\t0\t0\t47.39781011\t8.54553801\t15\t1\n1\t0\t0\t16\t0\t0\t0\t0\t47.39779921\t8.54546693\t15\t1\n";
+
+    const auto result_pair = MissionImport::parse_mission_planner(mission_string, Autopilot::Px4);
+    ASSERT_EQ(result_pair.first, MissionRaw::Result::Success);
+    EXPECT_EQ(result_pair.second.mission_items.size(), 2);
+
+    // Verify first item
+    const auto& first_item = result_pair.second.mission_items[0];
+    EXPECT_EQ(first_item.seq, 0);
+    EXPECT_EQ(first_item.command, MAV_CMD_NAV_TAKEOFF);
+    EXPECT_EQ(first_item.current, 1);
+
+    // Verify second item
+    const auto& second_item = result_pair.second.mission_items[1];
+    EXPECT_EQ(second_item.seq, 1);
+    EXPECT_EQ(second_item.command, MAV_CMD_NAV_WAYPOINT);
+    EXPECT_EQ(second_item.current, 0);
+}
+
+TEST(MissionRaw, ImportMissionPlannerWithGlobalFrame)
+{
+    // Test with MAV_FRAME_GLOBAL (0) which should also apply 1e7 scaling
+    const std::string mission_string =
+        "QGC WPL 110\n0\t1\t0\t22\t0\t0\t0\t0\t47.3978101\t8.5455380\t15\t1\n";
+
+    const auto result_pair = MissionImport::parse_mission_planner(mission_string, Autopilot::Px4);
+    ASSERT_EQ(result_pair.first, MissionRaw::Result::Success);
+    EXPECT_EQ(result_pair.second.mission_items.size(), 1);
+
+    const auto& item = result_pair.second.mission_items[0];
+    EXPECT_EQ(item.frame, MAV_FRAME_GLOBAL);
+    EXPECT_EQ(item.command, MAV_CMD_NAV_TAKEOFF);
+    EXPECT_EQ(item.x, 473978101); // Should be scaled by 1e7
+    EXPECT_EQ(item.y, 85455380); // Should be scaled by 1e7
+}

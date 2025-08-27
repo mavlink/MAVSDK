@@ -297,7 +297,9 @@ public:
      *
      * This function is blocking. See 'upload_mission_async' for the non-blocking counterpart.
      *
+
      * @return Result of request.
+
      */
     Result upload_mission(MissionPlan mission_plan) const;
 
@@ -320,7 +322,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result cancel_mission_upload() const;
 
@@ -369,7 +373,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result cancel_mission_download() const;
 
@@ -389,7 +395,9 @@ public:
      *
      * This function is blocking. See 'start_mission_async' for the non-blocking counterpart.
      *
+
      * @return Result of request.
+
      */
     Result start_mission() const;
 
@@ -415,7 +423,9 @@ public:
      *
      * This function is blocking. See 'pause_mission_async' for the non-blocking counterpart.
      *
+
      * @return Result of request.
+
      */
     Result pause_mission() const;
 
@@ -431,7 +441,9 @@ public:
      *
      * This function is blocking. See 'clear_mission_async' for the non-blocking counterpart.
      *
+
      * @return Result of request.
+
      */
     Result clear_mission() const;
 
@@ -458,9 +470,11 @@ public:
      * are used.
      *
      * This function is blocking. See 'set_current_mission_item_async' for the non-blocking
-     * counterpart.
+     counterpart.
      *
+
      * @return Result of request.
+
      */
     Result set_current_mission_item(int32_t index) const;
 
@@ -520,7 +534,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result set_return_to_launch_after_mission(bool enable) const;
 

@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.13)
 
 project(external-jsoncpp)
 include(ExternalProject)
@@ -30,7 +30,7 @@ endforeach()
 ExternalProject_Add(
     jsoncpp
     GIT_REPOSITORY https://github.com/open-source-parsers/jsoncpp
-    GIT_TAG 69098a18b9af0c47549d9a271c054d13ca92b006
+    GIT_TAG 1.9.6
     PREFIX jsoncpp
     CMAKE_ARGS "${CMAKE_ARGS}"
     )

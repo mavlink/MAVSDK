@@ -9,6 +9,7 @@
 
 namespace mavsdk {
 
+using ListDirectoryData = Ftp::ListDirectoryData;
 using ProgressData = Ftp::ProgressData;
 
 Ftp::Ftp(System& system) : PluginBase(), _impl{std::make_unique<FtpImpl>(system)} {}
@@ -37,7 +38,7 @@ void Ftp::list_directory_async(std::string remote_dir, const ListDirectoryCallba
     _impl->list_directory_async(remote_dir, callback);
 }
 
-std::pair<Ftp::Result, std::vector<std::string>> Ftp::list_directory(std::string remote_dir) const
+std::pair<Ftp::Result, Ftp::ListDirectoryData> Ftp::list_directory(std::string remote_dir) const
 {
     return _impl->list_directory(remote_dir);
 }
@@ -100,6 +101,29 @@ Ftp::are_files_identical(std::string local_file_path, std::string remote_file_pa
 Ftp::Result Ftp::set_target_compid(uint32_t compid) const
 {
     return _impl->set_target_compid(compid);
+}
+
+bool operator==(const Ftp::ListDirectoryData& lhs, const Ftp::ListDirectoryData& rhs)
+{
+    return (rhs.dirs == lhs.dirs) && (rhs.files == lhs.files);
+}
+
+std::ostream& operator<<(std::ostream& str, Ftp::ListDirectoryData const& list_directory_data)
+{
+    str << std::setprecision(15);
+    str << "list_directory_data:" << '\n' << "{\n";
+    str << "    dirs: [";
+    for (auto it = list_directory_data.dirs.begin(); it != list_directory_data.dirs.end(); ++it) {
+        str << *it;
+        str << (it + 1 != list_directory_data.dirs.end() ? ", " : "]\n");
+    }
+    str << "    files: [";
+    for (auto it = list_directory_data.files.begin(); it != list_directory_data.files.end(); ++it) {
+        str << *it;
+        str << (it + 1 != list_directory_data.files.end() ? ", " : "]\n");
+    }
+    str << '}';
+    return str;
 }
 
 bool operator==(const Ftp::ProgressData& lhs, const Ftp::ProgressData& rhs)

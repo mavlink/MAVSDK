@@ -20,5 +20,5 @@ target_link_libraries(multiple_drones
 if(NOT MSVC)
     add_compile_options(multiple_drones PRIVATE -Wall -Wextra)
 else()
-    add_compile_options(multiple_drones PRIVATE -WX -W2)
+    add_compile_options(multiple_drones PRIVATE -W2)
 endif()

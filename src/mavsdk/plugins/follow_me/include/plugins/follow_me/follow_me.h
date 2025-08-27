@@ -186,7 +186,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result set_config(Config config) const;
 
@@ -204,7 +206,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result set_target_location(TargetLocation location) const;
 
@@ -222,7 +226,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result start() const;
 
@@ -231,7 +237,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result stop() const;
 
