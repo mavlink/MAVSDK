@@ -824,3 +824,396 @@ TEST(SystemTest, MavlinkDirectNanInfinityJsonHandling)
     receiver_mavlink_direct.unsubscribe_message(handle);
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
+
+TEST(SystemTest, MavlinkDirectMessageFiltering)
+{
+    // Test that message filtering works correctly: when subscribed to one message type,
+    // only that message type is received, not others
+
+    Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
+    Mavsdk mavsdk_autopilot{Mavsdk::Configuration{ComponentType::Autopilot}};
+
+    ASSERT_EQ(
+        mavsdk_groundstation.add_any_connection("udpin://0.0.0.0:17008"),
+        ConnectionResult::Success);
+    ASSERT_EQ(
+        mavsdk_autopilot.add_any_connection("udpout://127.0.0.1:17008"), ConnectionResult::Success);
+
+    // Ground station discovers the autopilot system
+    auto maybe_system = mavsdk_groundstation.first_autopilot(10.0);
+    ASSERT_TRUE(maybe_system);
+    auto system = maybe_system.value();
+    ASSERT_TRUE(system->has_autopilot());
+
+    // Wait for autopilot instance to discover the connection to the ground station
+    LogInfo() << "Waiting for autopilot system to connect...";
+    while (mavsdk_autopilot.systems().size() == 0) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    }
+
+    auto groundstation_system = mavsdk_autopilot.systems().at(0);
+    ASSERT_EQ(groundstation_system->component_ids()[0], 190);
+
+    // Create separate MavlinkDirect instances
+    auto receiver_mavlink_direct = MavlinkDirect{system};
+    auto sender_mavlink_direct = MavlinkDirect{groundstation_system};
+
+    // Set up counters to track what messages are received
+    std::atomic<int> heartbeat_count{0};
+    std::atomic<int> global_position_count{0};
+    std::atomic<int> sys_status_count{0};
+    std::atomic<int> other_message_count{0};
+
+    // Subscribe ONLY to HEARTBEAT messages
+    auto handle = receiver_mavlink_direct.subscribe_message(
+        "HEARTBEAT", [&](MavlinkDirect::MavlinkMessage message) {
+            if (message.message_name == "HEARTBEAT") {
+                heartbeat_count++;
+                LogInfo() << "Received expected HEARTBEAT message";
+            } else if (message.message_name == "GLOBAL_POSITION_INT") {
+                global_position_count++;
+                LogErr() << "BUG: Received GLOBAL_POSITION_INT when subscribed to HEARTBEAT!";
+            } else if (message.message_name == "SYS_STATUS") {
+                sys_status_count++;
+                LogErr() << "BUG: Received SYS_STATUS when subscribed to HEARTBEAT!";
+            } else {
+                other_message_count++;
+                LogErr() << "BUG: Received unexpected message: " << message.message_name;
+            }
+        });
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+
+    // Send different message types - the subscription should only receive HEARTBEAT
+
+    // 1. Send HEARTBEAT (should be received)
+    MavlinkDirect::MavlinkMessage heartbeat_message;
+    heartbeat_message.message_name = "HEARTBEAT";
+    heartbeat_message.system_id = 1;
+    heartbeat_message.component_id = 1;
+    heartbeat_message.fields_json =
+        R"({"type":2,"autopilot":3,"base_mode":81,"custom_mode":0,"system_status":4,"mavlink_version":3})";
+
+    LogInfo() << "Sending HEARTBEAT message (should be received)";
+    EXPECT_EQ(
+        sender_mavlink_direct.send_message(heartbeat_message), MavlinkDirect::Result::Success);
+    std::this_thread::sleep_for(std::chrono::milliseconds(200));
+
+    // 2. Send GLOBAL_POSITION_INT (should NOT be received)
+    MavlinkDirect::MavlinkMessage gps_message;
+    gps_message.message_name = "GLOBAL_POSITION_INT";
+    gps_message.system_id = 1;
+    gps_message.component_id = 1;
+    gps_message.fields_json =
+        R"({"time_boot_ms":12345,"lat":473977418,"lon":-1223974560,"alt":100500,"relative_alt":50250,"vx":100,"vy":-50,"vz":25,"hdg":18000})";
+
+    LogInfo() << "Sending GLOBAL_POSITION_INT message (should NOT be received)";
+    EXPECT_EQ(sender_mavlink_direct.send_message(gps_message), MavlinkDirect::Result::Success);
+    std::this_thread::sleep_for(std::chrono::milliseconds(200));
+
+    // 3. Send SYS_STATUS (should NOT be received)
+    MavlinkDirect::MavlinkMessage sys_status_message;
+    sys_status_message.message_name = "SYS_STATUS";
+    sys_status_message.system_id = 1;
+    sys_status_message.component_id = 1;
+    sys_status_message.fields_json =
+        R"({"onboard_control_sensors_present":1,"onboard_control_sensors_enabled":1,"onboard_control_sensors_health":1,"load":500,"voltage_battery":12000,"current_battery":1000,"battery_remaining":75,"drop_rate_comm":0,"errors_comm":0,"errors_count1":0,"errors_count2":0,"errors_count3":0,"errors_count4":0})";
+
+    LogInfo() << "Sending SYS_STATUS message (should NOT be received)";
+    EXPECT_EQ(
+        sender_mavlink_direct.send_message(sys_status_message), MavlinkDirect::Result::Success);
+    std::this_thread::sleep_for(std::chrono::milliseconds(200));
+
+    // 4. Send another HEARTBEAT (should be received)
+    LogInfo() << "Sending second HEARTBEAT message (should be received)";
+    EXPECT_EQ(
+        sender_mavlink_direct.send_message(heartbeat_message), MavlinkDirect::Result::Success);
+    std::this_thread::sleep_for(std::chrono::milliseconds(200));
+
+    // Verify filtering worked correctly
+    EXPECT_GE(heartbeat_count.load(), 2) << "Should have received at least 2 HEARTBEAT messages";
+    EXPECT_EQ(global_position_count.load(), 0)
+        << "Should NOT have received any GLOBAL_POSITION_INT messages";
+    EXPECT_EQ(sys_status_count.load(), 0) << "Should NOT have received any SYS_STATUS messages";
+    EXPECT_EQ(other_message_count.load(), 0) << "Should NOT have received any other message types";
+
+    LogInfo() << "Message filtering test results:";
+    LogInfo() << "  HEARTBEAT received: " << heartbeat_count.load() << " (expected: >= 2)";
+    LogInfo() << "  GLOBAL_POSITION_INT received: " << global_position_count.load()
+              << " (expected: 0)";
+    LogInfo() << "  SYS_STATUS received: " << sys_status_count.load() << " (expected: 0)";
+    LogInfo() << "  Other messages received: " << other_message_count.load() << " (expected: 0)";
+
+    receiver_mavlink_direct.unsubscribe_message(handle);
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+}
+
+TEST(SystemTest, MavlinkDirectEmptyStringFiltering)
+{
+    // Test that subscribing with empty string ("") receives all message types
+
+    Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
+    Mavsdk mavsdk_autopilot{Mavsdk::Configuration{ComponentType::Autopilot}};
+
+    ASSERT_EQ(
+        mavsdk_groundstation.add_any_connection("udpin://0.0.0.0:17009"),
+        ConnectionResult::Success);
+    ASSERT_EQ(
+        mavsdk_autopilot.add_any_connection("udpout://127.0.0.1:17009"), ConnectionResult::Success);
+
+    // Ground station discovers the autopilot system
+    auto maybe_system = mavsdk_groundstation.first_autopilot(10.0);
+    ASSERT_TRUE(maybe_system);
+    auto system = maybe_system.value();
+    ASSERT_TRUE(system->has_autopilot());
+
+    // Wait for autopilot instance to discover the connection to the ground station
+    LogInfo() << "Waiting for autopilot system to connect...";
+    while (mavsdk_autopilot.systems().size() == 0) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    }
+
+    auto groundstation_system = mavsdk_autopilot.systems().at(0);
+    ASSERT_EQ(groundstation_system->component_ids()[0], 190);
+
+    // Create separate MavlinkDirect instances
+    auto receiver_mavlink_direct = MavlinkDirect{system};
+    auto sender_mavlink_direct = MavlinkDirect{groundstation_system};
+
+    // Set up counters to track what messages are received
+    std::atomic<int> heartbeat_count{0};
+    std::atomic<int> global_position_count{0};
+    std::atomic<int> sys_status_count{0};
+    std::atomic<int> total_messages{0};
+
+    // Subscribe to ALL messages with empty string
+    auto handle =
+        receiver_mavlink_direct.subscribe_message("", [&](MavlinkDirect::MavlinkMessage message) {
+            total_messages++;
+            if (message.message_name == "HEARTBEAT") {
+                heartbeat_count++;
+                LogInfo() << "Received HEARTBEAT via empty string subscription";
+            } else if (message.message_name == "GLOBAL_POSITION_INT") {
+                global_position_count++;
+                LogInfo() << "Received GLOBAL_POSITION_INT via empty string subscription";
+            } else if (message.message_name == "SYS_STATUS") {
+                sys_status_count++;
+                LogInfo() << "Received SYS_STATUS via empty string subscription";
+            } else {
+                LogInfo() << "Received other message via empty string subscription: "
+                          << message.message_name;
+            }
+        });
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+
+    // Send different message types - all should be received with empty string subscription
+
+    // 1. Send HEARTBEAT
+    MavlinkDirect::MavlinkMessage heartbeat_message;
+    heartbeat_message.message_name = "HEARTBEAT";
+    heartbeat_message.system_id = 1;
+    heartbeat_message.component_id = 1;
+    heartbeat_message.fields_json =
+        R"({"type":2,"autopilot":3,"base_mode":81,"custom_mode":0,"system_status":4,"mavlink_version":3})";
+
+    LogInfo() << "Sending HEARTBEAT message";
+    EXPECT_EQ(
+        sender_mavlink_direct.send_message(heartbeat_message), MavlinkDirect::Result::Success);
+    std::this_thread::sleep_for(std::chrono::milliseconds(200));
+
+    // 2. Send GLOBAL_POSITION_INT
+    MavlinkDirect::MavlinkMessage gps_message;
+    gps_message.message_name = "GLOBAL_POSITION_INT";
+    gps_message.system_id = 1;
+    gps_message.component_id = 1;
+    gps_message.fields_json =
+        R"({"time_boot_ms":12345,"lat":473977418,"lon":-1223974560,"alt":100500,"relative_alt":50250,"vx":100,"vy":-50,"vz":25,"hdg":18000})";
+
+    LogInfo() << "Sending GLOBAL_POSITION_INT message";
+    EXPECT_EQ(sender_mavlink_direct.send_message(gps_message), MavlinkDirect::Result::Success);
+    std::this_thread::sleep_for(std::chrono::milliseconds(200));
+
+    // 3. Send SYS_STATUS
+    MavlinkDirect::MavlinkMessage sys_status_message;
+    sys_status_message.message_name = "SYS_STATUS";
+    sys_status_message.system_id = 1;
+    sys_status_message.component_id = 1;
+    sys_status_message.fields_json =
+        R"({"onboard_control_sensors_present":1,"onboard_control_sensors_enabled":1,"onboard_control_sensors_health":1,"load":500,"voltage_battery":12000,"current_battery":1000,"battery_remaining":75,"drop_rate_comm":0,"errors_comm":0,"errors_count1":0,"errors_count2":0,"errors_count3":0,"errors_count4":0})";
+
+    LogInfo() << "Sending SYS_STATUS message";
+    EXPECT_EQ(
+        sender_mavlink_direct.send_message(sys_status_message), MavlinkDirect::Result::Success);
+    std::this_thread::sleep_for(std::chrono::milliseconds(200));
+
+    // Verify empty string subscription received ALL message types
+    EXPECT_GE(heartbeat_count.load(), 1) << "Should have received at least 1 HEARTBEAT message";
+    EXPECT_GE(global_position_count.load(), 1)
+        << "Should have received at least 1 GLOBAL_POSITION_INT message";
+    EXPECT_GE(sys_status_count.load(), 1) << "Should have received at least 1 SYS_STATUS message";
+    EXPECT_GE(total_messages.load(), 3) << "Should have received at least 3 total messages";
+
+    LogInfo() << "Empty string filtering test results:";
+    LogInfo() << "  HEARTBEAT received: " << heartbeat_count.load() << " (expected: >= 1)";
+    LogInfo() << "  GLOBAL_POSITION_INT received: " << global_position_count.load()
+              << " (expected: >= 1)";
+    LogInfo() << "  SYS_STATUS received: " << sys_status_count.load() << " (expected: >= 1)";
+    LogInfo() << "  Total messages received: " << total_messages.load() << " (expected: >= 3)";
+
+    receiver_mavlink_direct.unsubscribe_message(handle);
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+}
+
+TEST(SystemTest, MavlinkDirectMultipleSubscriptions)
+{
+    // Test that having multiple subscriptions works correctly:
+    // - One subscription for all messages ("")
+    // - One subscription for specific message ("HEARTBEAT")
+    // This should expose any issues with shared CallbackList behavior
+
+    Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
+    Mavsdk mavsdk_autopilot{Mavsdk::Configuration{ComponentType::Autopilot}};
+
+    ASSERT_EQ(
+        mavsdk_groundstation.add_any_connection("udpin://0.0.0.0:17010"),
+        ConnectionResult::Success);
+    ASSERT_EQ(
+        mavsdk_autopilot.add_any_connection("udpout://127.0.0.1:17010"), ConnectionResult::Success);
+
+    // Ground station discovers the autopilot system
+    auto maybe_system = mavsdk_groundstation.first_autopilot(10.0);
+    ASSERT_TRUE(maybe_system);
+    auto system = maybe_system.value();
+    ASSERT_TRUE(system->has_autopilot());
+
+    // Wait for autopilot instance to discover the connection to the ground station
+    LogInfo() << "Waiting for autopilot system to connect...";
+    while (mavsdk_autopilot.systems().size() == 0) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    }
+
+    auto groundstation_system = mavsdk_autopilot.systems().at(0);
+    ASSERT_EQ(groundstation_system->component_ids()[0], 190);
+
+    // Create separate MavlinkDirect instances
+    auto receiver_mavlink_direct = MavlinkDirect{system};
+    auto sender_mavlink_direct = MavlinkDirect{groundstation_system};
+
+    // Set up counters for the "all messages" subscription
+    std::atomic<int> all_messages_heartbeat{0};
+    std::atomic<int> all_messages_gps{0};
+    std::atomic<int> all_messages_sys_status{0};
+    std::atomic<int> all_messages_total{0};
+
+    // Set up counters for the "HEARTBEAT only" subscription
+    std::atomic<int> heartbeat_only_heartbeat{0};
+    std::atomic<int> heartbeat_only_other{0};
+
+    // Subscription 1: All messages (empty string)
+    auto handle_all =
+        receiver_mavlink_direct.subscribe_message("", [&](MavlinkDirect::MavlinkMessage message) {
+            all_messages_total++;
+            if (message.message_name == "HEARTBEAT") {
+                all_messages_heartbeat++;
+                LogInfo() << "ALL subscription received HEARTBEAT";
+            } else if (message.message_name == "GLOBAL_POSITION_INT") {
+                all_messages_gps++;
+                LogInfo() << "ALL subscription received GLOBAL_POSITION_INT";
+            } else if (message.message_name == "SYS_STATUS") {
+                all_messages_sys_status++;
+                LogInfo() << "ALL subscription received SYS_STATUS";
+            } else {
+                LogInfo() << "ALL subscription received other: " << message.message_name;
+            }
+        });
+
+    // Subscription 2: HEARTBEAT only
+    auto handle_heartbeat = receiver_mavlink_direct.subscribe_message(
+        "HEARTBEAT", [&](MavlinkDirect::MavlinkMessage message) {
+            if (message.message_name == "HEARTBEAT") {
+                heartbeat_only_heartbeat++;
+                LogInfo() << "HEARTBEAT-only subscription received HEARTBEAT";
+            } else {
+                heartbeat_only_other++;
+                LogErr() << "BUG: HEARTBEAT-only subscription received: " << message.message_name;
+            }
+        });
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+
+    // Send different message types
+
+    // 1. Send HEARTBEAT (both subscriptions should receive it)
+    MavlinkDirect::MavlinkMessage heartbeat_message;
+    heartbeat_message.message_name = "HEARTBEAT";
+    heartbeat_message.system_id = 1;
+    heartbeat_message.component_id = 1;
+    heartbeat_message.fields_json =
+        R"({"type":2,"autopilot":3,"base_mode":81,"custom_mode":0,"system_status":4,"mavlink_version":3})";
+
+    LogInfo() << "Sending HEARTBEAT message";
+    EXPECT_EQ(
+        sender_mavlink_direct.send_message(heartbeat_message), MavlinkDirect::Result::Success);
+    std::this_thread::sleep_for(std::chrono::milliseconds(200));
+
+    // 2. Send GLOBAL_POSITION_INT (only ALL subscription should receive it)
+    MavlinkDirect::MavlinkMessage gps_message;
+    gps_message.message_name = "GLOBAL_POSITION_INT";
+    gps_message.system_id = 1;
+    gps_message.component_id = 1;
+    gps_message.fields_json =
+        R"({"time_boot_ms":12345,"lat":473977418,"lon":-1223974560,"alt":100500,"relative_alt":50250,"vx":100,"vy":-50,"vz":25,"hdg":18000})";
+
+    LogInfo() << "Sending GLOBAL_POSITION_INT message";
+    EXPECT_EQ(sender_mavlink_direct.send_message(gps_message), MavlinkDirect::Result::Success);
+    std::this_thread::sleep_for(std::chrono::milliseconds(200));
+
+    // 3. Send SYS_STATUS (only ALL subscription should receive it)
+    MavlinkDirect::MavlinkMessage sys_status_message;
+    sys_status_message.message_name = "SYS_STATUS";
+    sys_status_message.system_id = 1;
+    sys_status_message.component_id = 1;
+    sys_status_message.fields_json =
+        R"({"onboard_control_sensors_present":1,"onboard_control_sensors_enabled":1,"onboard_control_sensors_health":1,"load":500,"voltage_battery":12000,"current_battery":1000,"battery_remaining":75,"drop_rate_comm":0,"errors_comm":0,"errors_count1":0,"errors_count4":0})";
+
+    LogInfo() << "Sending SYS_STATUS message";
+    EXPECT_EQ(
+        sender_mavlink_direct.send_message(sys_status_message), MavlinkDirect::Result::Success);
+    std::this_thread::sleep_for(std::chrono::milliseconds(200));
+
+    // 4. Send another HEARTBEAT (both subscriptions should receive it)
+    LogInfo() << "Sending second HEARTBEAT message";
+    EXPECT_EQ(
+        sender_mavlink_direct.send_message(heartbeat_message), MavlinkDirect::Result::Success);
+    std::this_thread::sleep_for(std::chrono::milliseconds(200));
+
+    // Verify correct filtering behavior
+    LogInfo() << "Multiple subscriptions test results:";
+    LogInfo() << "  ALL subscription - HEARTBEAT: " << all_messages_heartbeat.load()
+              << " (expected: >= 2)";
+    LogInfo() << "  ALL subscription - GPS: " << all_messages_gps.load() << " (expected: >= 1)";
+    LogInfo() << "  ALL subscription - SYS_STATUS: " << all_messages_sys_status.load()
+              << " (expected: >= 1)";
+    LogInfo() << "  ALL subscription - Total: " << all_messages_total.load() << " (expected: >= 4)";
+    LogInfo() << "  HEARTBEAT-only - HEARTBEAT: " << heartbeat_only_heartbeat.load()
+              << " (expected: >= 2)";
+    LogInfo() << "  HEARTBEAT-only - Other: " << heartbeat_only_other.load() << " (expected: 0)";
+
+    // ALL subscription should receive everything
+    EXPECT_GE(all_messages_heartbeat.load(), 2)
+        << "ALL subscription should receive HEARTBEAT messages";
+    EXPECT_GE(all_messages_gps.load(), 1) << "ALL subscription should receive GLOBAL_POSITION_INT";
+    EXPECT_GE(all_messages_sys_status.load(), 1) << "ALL subscription should receive SYS_STATUS";
+    EXPECT_GE(all_messages_total.load(), 4) << "ALL subscription should receive all sent messages";
+
+    // HEARTBEAT-only subscription should only receive HEARTBEAT
+    EXPECT_GE(heartbeat_only_heartbeat.load(), 2)
+        << "HEARTBEAT-only should receive HEARTBEAT messages";
+    EXPECT_EQ(heartbeat_only_other.load(), 0)
+        << "HEARTBEAT-only should NOT receive any other messages";
+
+    receiver_mavlink_direct.unsubscribe_message(handle_all);
+    receiver_mavlink_direct.unsubscribe_message(handle_heartbeat);
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+}

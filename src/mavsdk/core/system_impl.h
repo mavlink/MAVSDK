@@ -77,16 +77,12 @@ public:
 
     void process_libmav_message(const Mavsdk::MavlinkMessage& message);
 
-    void register_libmav_message_handler(
-        const std::string& message_name, const LibmavMessageCallback& callback, const void* cookie);
-    void register_libmav_message_handler_with_compid(
-        const std::string& message_name,
-        uint8_t cmp_id,
-        const LibmavMessageCallback& callback,
-        const void* cookie);
+    Handle<Mavsdk::MavlinkMessage> register_libmav_message_handler(
+        const std::string& message_name, const LibmavMessageCallback& callback);
+    Handle<Mavsdk::MavlinkMessage> register_libmav_message_handler_with_compid(
+        const std::string& message_name, uint8_t cmp_id, const LibmavMessageCallback& callback);
 
-    void unregister_libmav_message_handler(const std::string& message_name, const void* cookie);
-    void unregister_all_libmav_message_handlers(const void* cookie);
+    void unregister_libmav_message_handler(Handle<Mavsdk::MavlinkMessage> handle);
 
     // Get connections for sending messages
     std::vector<Connection*> get_connections() const;
@@ -382,15 +378,8 @@ private:
 
     MavlinkMessageHandler _mavlink_message_handler{};
 
-    // Libmav message handling
-    struct LibmavMessageHandler {
-        std::string message_name;
-        LibmavMessageCallback callback;
-        const void* cookie;
-        std::optional<uint8_t> component_id; // If specified, only messages from this component
-    };
-    std::mutex _libmav_message_handlers_mutex{};
-    std::vector<LibmavMessageHandler> _libmav_message_handlers{};
+    // Libmav message handling using CallbackList for thread safety
+    CallbackList<Mavsdk::MavlinkMessage> _libmav_message_callbacks{};
 
     bool _message_debugging = false;
 

@@ -10,7 +10,6 @@
 #include <optional>
 #include <map>
 #include <mutex>
-#include "handle_factory.h"
 
 namespace mavsdk {
 
@@ -37,11 +36,9 @@ public:
     MavlinkDirect::Result load_custom_xml(const std::string& xml_content);
 
 private:
-    // Thread-safe callback management using CallbackList pattern (like other plugins)
-    CallbackList<MavlinkDirect::MavlinkMessage> _message_subscriptions{};
-
-    // Map to track message names for each subscription handle (protected by CallbackList's mutex)
-    std::map<MavlinkDirect::MessageHandle, std::string> _handle_to_message_name{};
+    // Internal callback management
+    CallbackList<MavlinkDirect::MavlinkMessage> _callbacks{};
+    Handle<Mavsdk::MavlinkMessage> _system_subscription{};
 
     bool _debugging = false;
 
