@@ -50,7 +50,8 @@ SystemImpl::~SystemImpl()
 {
     _should_exit = true;
     _mavlink_message_handler.unregister_all(this);
-    unregister_all_libmav_message_handlers(this);
+    // Clear all libmav message callbacks
+    _libmav_message_callbacks.clear();
 
     unregister_timeout_handler(_heartbeat_timeout_cookie);
 
@@ -123,91 +124,102 @@ void SystemImpl::update_component_id_messages_handler(
 
 void SystemImpl::process_libmav_message(const Mavsdk::MavlinkMessage& message)
 {
-    // Call all registered libmav message handlers
-    std::lock_guard<std::mutex> lock(_libmav_message_handlers_mutex);
-
     if (_message_debugging) {
-        LogDebug() << "SystemImpl::process_libmav_message: " << message.message_name
-                   << ", registered handlers: " << _libmav_message_handlers.size();
+        LogDebug() << "SystemImpl::process_libmav_message: " << message.message_name;
     }
 
-    for (const auto& handler : _libmav_message_handlers) {
-        if (_message_debugging) {
-            LogDebug() << "Checking handler for message: '" << handler.message_name << "' against '"
-                       << message.message_name << "'";
-        }
-        // Check if message name matches (empty string means match all messages)
-        if (!handler.message_name.empty() && handler.message_name != message.message_name) {
-            if (_message_debugging) {
-                LogDebug() << "Handler message name mismatch, skipping";
-            }
-            continue;
-        }
-
-        // Check if component ID matches (if specified)
-        if (handler.component_id.has_value() &&
-            handler.component_id.value() != message.component_id) {
-            continue;
-        }
-
-        // Call the handler
-        if (_message_debugging) {
-            LogDebug() << "Calling libmav handler for: " << message.message_name;
-        }
-        if (handler.callback) {
-            handler.callback(message);
-        } else {
-            LogWarn() << "Handler callback is null!";
-        }
-    }
+    // CallbackList handles thread safety - just call all callbacks and let them filter internally
+    _libmav_message_callbacks.queue(
+        message, [this](const std::function<void()>& callback_wrapper) { callback_wrapper(); });
 }
 
-void SystemImpl::register_libmav_message_handler(
-    const std::string& message_name, const LibmavMessageCallback& callback, const void* cookie)
+Handle<Mavsdk::MavlinkMessage> SystemImpl::register_libmav_message_handler(
+    const std::string& message_name, const LibmavMessageCallback& callback)
 {
-    std::lock_guard<std::mutex> lock(_libmav_message_handlers_mutex);
+    // Create a filtering callback that only calls the user callback for matching messages
+    auto filtering_callback =
+        [this, message_name, callback](const Mavsdk::MavlinkMessage& message) {
+            if (_message_debugging) {
+                LogDebug() << "Checking handler for message: '" << message_name << "' against '"
+                           << message.message_name << "'";
+            }
+
+            // Check if message name matches (empty string means match all messages)
+            if (!message_name.empty() && message_name != message.message_name) {
+                if (_message_debugging) {
+                    LogDebug() << "Handler message name mismatch, skipping";
+                }
+                return;
+            }
+
+            // Call the user callback
+            if (_message_debugging) {
+                LogDebug() << "Calling libmav handler for: " << message.message_name;
+            }
+            callback(message);
+        };
+
+    auto handle = _libmav_message_callbacks.subscribe(filtering_callback);
+
+    if (_message_debugging) {
+        LogDebug() << "Registering libmav handler for message: '" << message_name << "'";
+    }
+
+    return handle;
+}
+
+Handle<Mavsdk::MavlinkMessage> SystemImpl::register_libmav_message_handler_with_compid(
+    const std::string& message_name, uint8_t cmp_id, const LibmavMessageCallback& callback)
+{
+    // Create a filtering callback that only calls the user callback for matching messages
+    auto filtering_callback =
+        [this, message_name, cmp_id, callback](const Mavsdk::MavlinkMessage& message) {
+            if (_message_debugging) {
+                LogDebug() << "Checking handler for message: '" << message_name << "' against '"
+                           << message.message_name
+                           << "' with component ID: " << static_cast<int>(cmp_id);
+            }
+
+            // Check if message name matches (empty string means match all messages)
+            if (!message_name.empty() && message_name != message.message_name) {
+                if (_message_debugging) {
+                    LogDebug() << "Handler message name mismatch, skipping";
+                }
+                return;
+            }
+
+            // Check if component ID matches
+            if (cmp_id != message.component_id) {
+                if (_message_debugging) {
+                    LogDebug() << "Handler component ID mismatch, skipping";
+                }
+                return;
+            }
+
+            // Call the user callback
+            if (_message_debugging) {
+                LogDebug() << "Calling libmav handler for: " << message.message_name;
+            }
+            callback(message);
+        };
+
+    auto handle = _libmav_message_callbacks.subscribe(filtering_callback);
+
     if (_message_debugging) {
         LogDebug() << "Registering libmav handler for message: '" << message_name
-                   << "', total handlers will be: " << (_libmav_message_handlers.size() + 1);
+                   << "' with component ID: " << static_cast<int>(cmp_id);
     }
-    _libmav_message_handlers.push_back({message_name, callback, cookie, std::nullopt});
+
+    return handle;
 }
 
-void SystemImpl::register_libmav_message_handler_with_compid(
-    const std::string& message_name,
-    uint8_t cmp_id,
-    const LibmavMessageCallback& callback,
-    const void* cookie)
+void SystemImpl::unregister_libmav_message_handler(Handle<Mavsdk::MavlinkMessage> handle)
 {
-    std::lock_guard<std::mutex> lock(_libmav_message_handlers_mutex);
-    _libmav_message_handlers.push_back({message_name, callback, cookie, cmp_id});
-}
+    _libmav_message_callbacks.unsubscribe(handle);
 
-void SystemImpl::unregister_libmav_message_handler(
-    const std::string& message_name, const void* cookie)
-{
-    std::lock_guard<std::mutex> lock(_libmav_message_handlers_mutex);
-
-    _libmav_message_handlers.erase(
-        std::remove_if(
-            _libmav_message_handlers.begin(),
-            _libmav_message_handlers.end(),
-            [&](const LibmavMessageHandler& handler) {
-                return handler.message_name == message_name && handler.cookie == cookie;
-            }),
-        _libmav_message_handlers.end());
-}
-
-void SystemImpl::unregister_all_libmav_message_handlers(const void* cookie)
-{
-    std::lock_guard<std::mutex> lock(_libmav_message_handlers_mutex);
-
-    _libmav_message_handlers.erase(
-        std::remove_if(
-            _libmav_message_handlers.begin(),
-            _libmav_message_handlers.end(),
-            [&](const LibmavMessageHandler& handler) { return handler.cookie == cookie; }),
-        _libmav_message_handlers.end());
+    if (_message_debugging) {
+        LogDebug() << "Unregistered libmav handler";
+    }
 }
 
 TimeoutHandler::Cookie

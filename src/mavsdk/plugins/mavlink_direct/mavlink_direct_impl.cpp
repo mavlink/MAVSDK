@@ -41,18 +41,34 @@ MavlinkDirectImpl::~MavlinkDirectImpl()
 
 void MavlinkDirectImpl::init()
 {
-    // No need to initialize MessageSet here - LibmavReceiver handles that
-    // No need to register for mavlink messages anymore - we'll use libmav subscription system
+    // Subscribe to all messages from SystemImpl and distribute to internal CallbackList
+    _system_subscription = _system_impl->register_libmav_message_handler(
+        "", // Empty string means all messages
+        [this](const Mavsdk::MavlinkMessage& message) {
+            // Convert Mavsdk::MavlinkMessage to MavlinkDirect::MavlinkMessage
+            MavlinkDirect::MavlinkMessage mavlink_direct_message;
+            mavlink_direct_message.message_name = message.message_name;
+            mavlink_direct_message.system_id = message.system_id;
+            mavlink_direct_message.component_id = message.component_id;
+            mavlink_direct_message.target_system_id = message.target_system_id;
+            mavlink_direct_message.target_component_id = message.target_component_id;
+            mavlink_direct_message.fields_json = message.fields_json;
+
+            // Distribute to all internal subscribers
+            _callbacks.queue(mavlink_direct_message, [this](const std::function<void()>& func) {
+                _system_impl->call_user_callback(func);
+            });
+        });
 }
 
 void MavlinkDirectImpl::deinit()
 {
-    // Clean up all libmav message handlers registered by this plugin
-    _system_impl->unregister_all_libmav_message_handlers(this);
-
-    // Clear internal state
-    _handle_to_message_name.clear();
-    _message_subscriptions.clear();
+    // Unsubscribe from SystemImpl - this automatically prevents dangling callbacks
+    if (_system_subscription.valid()) {
+        _system_impl->unregister_libmav_message_handler(_system_subscription);
+        _system_subscription = {}; // Reset handle
+    }
+    // Internal CallbackList will be automatically cleaned up when destroyed
 }
 
 void MavlinkDirectImpl::enable() {}
@@ -137,52 +153,26 @@ MavlinkDirect::Result MavlinkDirectImpl::send_message(MavlinkDirect::MavlinkMess
 MavlinkDirect::MessageHandle MavlinkDirectImpl::subscribe_message(
     std::string message_name, const MavlinkDirect::MessageCallback& callback)
 {
-    // Subscribe using CallbackList pattern - this handles thread safety internally
-    auto handle = _message_subscriptions.subscribe(callback);
+    // Add filtering callback to internal CallbackList
+    auto filtering_callback = [message_name,
+                               callback](const MavlinkDirect::MavlinkMessage& message) {
+        // Apply message filtering (empty string means all messages)
+        if (!message_name.empty() && message_name != message.message_name) {
+            return;
+        }
 
-    // Store message name for this handle (CallbackList protects this too)
-    _handle_to_message_name[handle] = message_name;
+        // Call user callback for matching messages
+        callback(message);
+    };
 
-    // Register with SystemImpl - no lock-order-inversion because CallbackList handles
-    // synchronization
-    _system_impl->register_libmav_message_handler(
-        message_name,
-        [this](const Mavsdk::MavlinkMessage& message) {
-            // Use CallbackList::queue to safely call all subscribed callbacks
-            // Convert Mavsdk::MavlinkMessage to MavlinkDirect::MavlinkMessage (they're identical)
-            MavlinkDirect::MavlinkMessage direct_message;
-            direct_message.message_name = message.message_name;
-            direct_message.system_id = message.system_id;
-            direct_message.component_id = message.component_id;
-            direct_message.target_system_id = message.target_system_id;
-            direct_message.target_component_id = message.target_component_id;
-            direct_message.fields_json = message.fields_json;
-
-            _message_subscriptions.queue(direct_message, [this](const auto& func) {
-                _system_impl->call_user_callback(func);
-            });
-        },
-        &handle // Use handle address as cookie for specific unregistration
-    );
-
-    return handle;
+    // Subscribe to internal CallbackList and return handle directly
+    return _callbacks.subscribe(filtering_callback);
 }
 
 void MavlinkDirectImpl::unsubscribe_message(MavlinkDirect::MessageHandle handle)
 {
-    // Get the message name for unregistration
-    auto name_it = _handle_to_message_name.find(handle);
-    if (name_it == _handle_to_message_name.end()) {
-        return; // Handle not found, nothing to unsubscribe
-    }
-    std::string message_name = name_it->second;
-
-    // Unregister from SystemImpl - no lock-order-inversion with CallbackList pattern
-    _system_impl->unregister_libmav_message_handler(message_name, &handle);
-
-    // Remove from CallbackList and message name map - CallbackList handles thread safety
-    _message_subscriptions.unsubscribe(handle);
-    _handle_to_message_name.erase(handle);
+    // Unregister from internal CallbackList directly
+    _callbacks.unsubscribe(handle);
 }
 
 std::optional<uint32_t> MavlinkDirectImpl::message_name_to_id(const std::string& name) const
