@@ -193,23 +193,22 @@ void LogFilesImpl::process_log_entry(const mavlink_message_t& message)
     _log_entries[msg.id] = new_entry;
 
     // Check if all entries are received
-    bool all_received = true;
-    for (const auto& entry_opt : _log_entries) {
-        if (!entry_opt.has_value()) {
-            all_received = false;
-            break;
-        }
-    }
+    bool all_received =
+        std::all_of(_log_entries.begin(), _log_entries.end(), [](const auto& entry_opt) {
+            return entry_opt.has_value();
+        });
 
     if (all_received) {
         _system_impl->unregister_timeout_handler(_entries_timeout_cookie);
 
         // Build result list from vector (safe since all entries are present)
-        std::vector<LogFiles::Entry> entry_list{};
+        std::vector<LogFiles::Entry> entry_list;
         entry_list.reserve(_log_entries.size());
-        for (const auto& entry_opt : _log_entries) {
-            entry_list.push_back(entry_opt.value());
-        }
+        std::transform(
+            _log_entries.begin(),
+            _log_entries.end(),
+            std::back_inserter(entry_list),
+            [](const auto& entry_opt) { return entry_opt.value(); });
 
         const auto cb = _entries_user_callback;
         if (cb) {
@@ -392,13 +391,11 @@ void LogFilesImpl::process_log_data(const mavlink_message_t& message)
     _download_data.chunk_bin_table[bin] = true;
 
     // Check if all bins in the chunk have been received
-    bool chunk_complete = true;
-    for (uint32_t i = 0; i < _download_data.bins_in_chunk(); ++i) {
-        if (!_download_data.chunk_bin_table[i]) {
-            chunk_complete = false;
-            break;
-        }
-    }
+    const uint32_t bins_in_chunk = _download_data.bins_in_chunk();
+    bool chunk_complete = std::all_of(
+        _download_data.chunk_bin_table.begin(),
+        _download_data.chunk_bin_table.begin() + bins_in_chunk,
+        [](bool received) { return received; });
 
     if (chunk_complete) {
         uint32_t chunk_bytes = _download_data.current_chunk_size();
@@ -438,7 +435,6 @@ void LogFilesImpl::process_log_data(const mavlink_message_t& message)
         // Check for missing bins when we might have all bins for this chunk
         // This handles: receiving the last expected bin AND receiving retried bins that might
         // complete the chunk
-        const uint32_t bins_in_chunk = _download_data.bins_in_chunk();
         if (bins_in_chunk > 0) {
             const uint32_t expected_last_bin = bins_in_chunk - 1;
             // Check if this could be the last bin we need (either the expected last one, or a
