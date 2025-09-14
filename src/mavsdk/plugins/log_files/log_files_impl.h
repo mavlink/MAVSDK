@@ -31,7 +31,6 @@ struct LogData {
     uint32_t current_chunk{};
     std::vector<bool> chunk_bin_table{};
 
-    uint32_t chunk_bytes_written{};
     uint32_t total_bytes_written{};
 
     TimeoutHandler::Cookie timeout_cookie{};
@@ -70,6 +69,7 @@ private:
 
     void process_log_data(const mavlink_message_t& message);
     void data_timeout();
+    void check_and_request_missing_bins();
 
     void request_log_list(uint16_t index_min, uint16_t index_max);
     void request_log_data(unsigned id, unsigned start, unsigned count);

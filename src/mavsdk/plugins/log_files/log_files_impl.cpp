@@ -252,6 +252,18 @@ void LogFilesImpl::download_log_file_async(
         return;
     }
 
+    // Check for zero-sized file and abort early
+    if (entry_it->second.size_bytes == 0) {
+        LogErr() << "Cannot download zero-sized log file";
+
+        if (callback) {
+            _system_impl->call_user_callback([callback]() {
+                callback(LogFiles::Result::InvalidArgument, LogFiles::ProgressData());
+            });
+        }
+        return;
+    }
+
     _download_data = LogData(entry_it->second, file_path, callback);
 
     if (!_download_data.file_is_open()) {
@@ -264,7 +276,7 @@ void LogFilesImpl::download_log_file_async(
     }
 
     _download_data.timeout_cookie = _system_impl->register_timeout_handler(
-        [this]() { LogFilesImpl::data_timeout(); }, _system_impl->timeout_s() * 1.0);
+        [this]() { LogFilesImpl::data_timeout(); }, _system_impl->timeout_s());
 
     // Request the first chunk
     request_log_data(_download_data.entry.id, 0, _download_data.current_chunk_size());
@@ -329,20 +341,25 @@ void LogFilesImpl::process_log_data(const mavlink_message_t& message)
 
     _download_data.file.write((char*)msg.data, msg.count);
 
-    // Quietly ignore duplicate packets -- we don't want to record the bytes_written twice
-    if (!_download_data.chunk_bin_table[bin]) {
-        _download_data.chunk_bytes_written += msg.count;
-        _download_data.chunk_bin_table[bin] = true;
+    // Mark bin as received (quietly ignore duplicates)
+    _download_data.chunk_bin_table[bin] = true;
+
+    // Check if all bins in the chunk have been received
+    bool chunk_complete = true;
+    for (uint32_t i = 0; i < _download_data.bins_in_chunk(); ++i) {
+        if (!_download_data.chunk_bin_table[i]) {
+            chunk_complete = false;
+            break;
+        }
     }
 
-    bool chunk_complete = _download_data.chunk_bytes_written == _download_data.current_chunk_size();
-
     if (chunk_complete) {
+        uint32_t chunk_bytes = _download_data.current_chunk_size();
+
         auto result = LogFiles::Result::Next;
 
         _download_data.current_chunk++;
-        _download_data.total_bytes_written += _download_data.chunk_bytes_written;
-        _download_data.chunk_bytes_written = 0;
+        _download_data.total_bytes_written += chunk_bytes;
         _download_data.chunk_bin_table = std::vector<bool>(_download_data.bins_in_chunk(), false);
 
         bool log_complete = _download_data.total_bytes_written == _download_data.entry.size_bytes;
@@ -370,6 +387,17 @@ void LogFilesImpl::process_log_data(const mavlink_message_t& message)
             _system_impl->call_user_callback(
                 [cb, progress_data, result]() { cb(result, progress_data); });
         }
+    } else {
+        // Check for missing bins when we might have all bins for this chunk
+        // This handles: receiving the last expected bin AND receiving retried bins that might complete the chunk
+        const uint32_t bins_in_chunk = _download_data.bins_in_chunk();
+        if (bins_in_chunk > 0) {
+            const uint32_t expected_last_bin = bins_in_chunk - 1;
+            // Check if this could be the last bin we need (either the expected last one, or a retried one)
+            if (bin == expected_last_bin || _download_data.chunk_bin_table[expected_last_bin]) {
+                check_and_request_missing_bins();
+            }
+        }
     }
 }
 
@@ -381,17 +409,49 @@ void LogFilesImpl::data_timeout()
     LogErr() << "Requesting missing chunk:\t" << _download_data.current_chunk << "/"
              << _download_data.total_chunks();
 
-    // Reset chunk data
-    _download_data.chunk_bytes_written = 0;
-    _download_data.chunk_bin_table = std::vector<bool>(_download_data.bins_in_chunk(), false);
-
-    request_log_data(
-        _download_data.entry.id,
-        _download_data.current_chunk * CHUNK_SIZE,
-        _download_data.current_chunk_size());
+    // Don't reset chunk data - preserve what we've received
+    // Instead, request missing ranges based on bin table
+    check_and_request_missing_bins();
 
     _download_data.timeout_cookie = _system_impl->register_timeout_handler(
-        [this]() { LogFilesImpl::data_timeout(); }, _system_impl->timeout_s() * 1.0);
+        [this]() { LogFilesImpl::data_timeout(); }, _system_impl->timeout_s());
+}
+
+void LogFilesImpl::check_and_request_missing_bins()
+{
+    // Note: This function assumes _download_data_mutex is already locked by caller
+
+    // Find missing ranges and request the first one
+    const uint32_t chunk_start = _download_data.current_chunk * CHUNK_SIZE;
+    const uint32_t bins_in_chunk = _download_data.bins_in_chunk();
+
+    uint32_t range_start = 0;
+    bool in_missing_range = false;
+    bool requested_something = false;
+
+    for (uint32_t bin = 0; bin <= bins_in_chunk; ++bin) {
+        bool is_missing = (bin < bins_in_chunk) ? !_download_data.chunk_bin_table[bin] : false;
+
+        if (is_missing && !in_missing_range) {
+            // Start of a missing range
+            range_start = bin;
+            in_missing_range = true;
+        } else if (!is_missing && in_missing_range) {
+            // End of a missing range, request it (but only request the first one)
+            if (!requested_something) {
+                const uint32_t missing_start =
+                    chunk_start + (range_start * MAVLINK_MSG_LOG_DATA_FIELD_DATA_LEN);
+                const uint32_t missing_count =
+                    (bin - range_start) * MAVLINK_MSG_LOG_DATA_FIELD_DATA_LEN;
+
+                LogDebug() << "Requesting missing range from offset " << missing_start << " count "
+                           << missing_count;
+                request_log_data(_download_data.entry.id, missing_start, missing_count);
+                requested_something = true;
+            }
+            in_missing_range = false;
+        }
+    }
 }
 
 void LogFilesImpl::request_log_data(unsigned id, unsigned start, unsigned count)
