@@ -5,6 +5,7 @@
 #include "plugin_impl_base.h"
 #include "system.h"
 #include <fstream>
+#include <optional>
 
 namespace mavsdk {
 
@@ -72,6 +73,7 @@ private:
     void process_log_data(const mavlink_message_t& message);
     void data_timeout();
     void check_and_request_missing_bins();
+    void check_and_request_missing_entries();
 
     void request_log_list(uint16_t index_min, uint16_t index_max);
     void request_log_data(unsigned id, unsigned start, unsigned count);
@@ -79,8 +81,9 @@ private:
     void request_end();
 
     std::mutex _entries_mutex;
-    std::unordered_map<uint16_t, LogFiles::Entry> _log_entries;
+    std::vector<std::optional<LogFiles::Entry>> _log_entries;
     uint32_t _total_entries{0};
+    uint32_t _entries_retry_count{0};
     TimeoutHandler::Cookie _entries_timeout_cookie{};
     LogFiles::GetEntriesCallback _entries_user_callback{};
 
