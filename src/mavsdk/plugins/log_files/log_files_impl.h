@@ -8,7 +8,9 @@
 
 namespace mavsdk {
 
-static constexpr uint32_t TABLE_BINS = 512;
+// We need to keep this smaller, otherwise we end up running over the UDP buffer in Linux when PX4
+// sends too much all at once.
+static constexpr uint32_t TABLE_BINS = 128;
 static constexpr uint32_t CHUNK_SIZE = (TABLE_BINS * MAVLINK_MSG_LOG_DATA_FIELD_DATA_LEN);
 
 struct LogData {
