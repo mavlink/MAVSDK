@@ -116,6 +116,8 @@
         * [class LogStreaming](cpp/api_reference/classmavsdk_1_1_log_streaming.md)
             * [struct LogStreamingRaw](cpp/api_reference/structmavsdk_1_1_log_streaming_1_1_log_streaming_raw.md)
         * [class ManualControl](cpp/api_reference/classmavsdk_1_1_manual_control.md)
+        * [class MavlinkDirect](cpp/api_reference/classmavsdk_1_1_mavlink_direct.md)
+            * [struct MavlinkMessage](cpp/api_reference/structmavsdk_1_1_mavlink_direct_1_1_mavlink_message.md)
         * [class MavlinkPassthrough](cpp/api_reference/classmavsdk_1_1_mavlink_passthrough.md)
             * [struct CommandInt](cpp/api_reference/structmavsdk_1_1_mavlink_passthrough_1_1_command_int.md)
             * [struct CommandLong](cpp/api_reference/structmavsdk_1_1_mavlink_passthrough_1_1_command_long.md)
