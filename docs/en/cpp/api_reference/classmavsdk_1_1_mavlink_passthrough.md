@@ -7,7 +7,20 @@
 The [MavlinkPassthrough](classmavsdk_1_1_mavlink_passthrough.md) class provides direct MAVLink access. 
 
 
-"With great power comes great responsibility." - This plugin allows you to send and receive MAVLink messages. There is no checking or safe-guards, you're on your own, and you have been warned. 
+"With great power comes great responsibility." - This plugin allows you to send and receive MAVLink messages. There is no checking or safe-guards, you're on your own, and you have been warned.
+
+
+::: warning
+[MavlinkPassthrough](classmavsdk_1_1_mavlink_passthrough.md) will get deprecated in MAVSDK v4 and will only be available built from source. Use [MavlinkDirect](classmavsdk_1_1_mavlink_direct.md) instead. [MavlinkDirect](classmavsdk_1_1_mavlink_direct.md) provides enhanced functionality including:
+<ul>
+<li><p>Runtime message parsing with JSON field representation</p>
+</li>
+<li><p>Custom message support via XML loading</p>
+</li>
+<li><p>Better language wrapper integration </p>
+</li>
+</ul>
+:::
 
 
 ## Data Structures
