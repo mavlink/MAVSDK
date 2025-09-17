@@ -15,6 +15,7 @@
         * [Offboard Control](cpp/guide/offboard.md)
         * [Follow Me](cpp/guide/follow_me.md)
         * [VTOL Support](cpp/guide/vtol.md)
+        * [MavlinkDirect](cpp/guide/mavlink_direct.md)
         * [Building C++ Apps](cpp/guide/toolchain.md)
         * [Logging](cpp/guide/logging.md)
         * [Plugin/Test Logging](cpp/guide/dev_logging.md)
