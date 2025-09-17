@@ -1,4 +1,4 @@
-# MavlinkDirect Plugin Guide
+# MavlinkDirect
 
 The [MavlinkDirect](../cpp/api_reference/classmavsdk_1_1_mavlink_direct.md) plugin enables direct MAVLink communication with runtime message parsing and JSON field representation.
 
@@ -39,9 +39,41 @@ MavlinkDirect works at runtime instead of compile-time, so instead of having the
 - Enum values or flags/bits need to be assembled manually.
 - The API is likely slower although that's likely negligible in C++ as long as messages are not sent/received at very high rates (benchmarks outstanding).
 
-## Getting Started
+## Load custom MAVLink xml / MAVLink dialects
 
-### Basic obstacle example
+By default all messsages from the [common.xml](https://mavlink.io/en/messages/common.html) MAVLink dialect are available, loaded in.
+
+MavlinkDirect allows to load your own/custom MAVLink messages or other dialects.
+
+In the example below we load in the AIRSPEED message as it is drafted in development.xml but not yet moved to common.xml, and hence not available by default in MAVSDK yet:
+
+```cpp
+    std::string custom_xml = R"(
+<mavlink>
+    <messages>
+        <message id="295" name="AIRSPEED">
+            <description>Airspeed sensor data</description>
+            <field type="uint8_t" name="id">Sensor ID</field>
+            <field type="float" name="airspeed">Calibrated airspeed in m/s</field>
+            <field type="int16_t" name="temperature">Temperature in centidegrees</field>
+            <field type="float" name="raw_press">Raw differential pressure</field>
+            <field type="uint8_t" name="flags">Airspeed sensor flags</field>
+        </message>
+    </messages>
+</mavlink>)";
+
+    // Load custom XML
+    auto xml_result = mavlink_direct.load_custom_xml(custom_xml);
+    if (xml_result != MavlinkDirect::Result::Success) {
+        std::cerr << "Failed to load custom XML: " << xml_result << std::endl;
+        return 1;
+    }
+```
+
+Check out the [full example on GitHub](https://github.com/mavlink/MAVSDK/tree/main/examples/mavlink_direct_sender_custom)
+
+
+## Sending messages
 
 Let's assume we are a companion computer that detects obstacles and therefore needs to send the message [OBSTACLE_DISTANCE](https://mavlink.io/en/messages/common.html#OBSTACLE_DISTANCE) to the autopilot.
 
@@ -106,9 +138,9 @@ while (true) {
 
 Check the full example on [GitHub](https://github.com/mavlink/MAVSDK/tree/main/examples/mavlink_direct_sender).
 
-### Receiving Messages
+## Receiving messages
 
-#### Subscribe to Specific Message Types
+You can subscribe to specific message types:
 
 ```cpp
 // Subscribe to GLOBAL_POSITION_INT messages
@@ -129,7 +161,7 @@ auto handle = mavlink_direct.subscribe_message(
 );
 ```
 
-#### Subscribe to All Messages
+Or all messages using the empty string `""`:
 
 ```cpp
 // Subscribe to all incoming messages
@@ -143,14 +175,14 @@ auto handle = mavlink_direct.subscribe_message(
 );
 ```
 
-#### Unsubscribe
+And to unsubscribe again, just use the handle from the subscription, as usual.
 
 ```cpp
 // Clean up subscription
 mavlink_direct.unsubscribe_message(handle);
 ```
 
-### Sniffing all messages
+## Sniffing all messages
 
 There is also [an example that demonstrates a generic MAVLink message sniffer](https://github.com/mavlink/MAVSDK/tree/main/examples/sniffer).
 
@@ -158,7 +190,7 @@ There is also [an example that demonstrates a generic MAVLink message sniffer](h
 : This example uses the mavsdk.h intercept API rather than the MavlinkDirect plugin API, however, they are very similar.
 :::
 
-## JSON Field Format
+## JSON field format
 
 MavlinkDirect represents MAVLink message fields as JSON objects:
 
@@ -183,37 +215,6 @@ MavlinkDirect represents MAVLink message fields as JSON objects:
 - Arrays are represented as JSON arrays: `[1, 2, 3, 0, 0]`
 - NaN and infinity values are represented as `null`
 - Extended fields are automatically included
-
-## Load custom MAVLink xml / MAVLink dialects
-
-MavlinkDirect allows to load your own/custom MAVLink messages or other dialects.
-
-In the example below we load in the AIRSPEED message as it is drafted in development.xml but not yet moved to common.xml, and hence not available by default in MAVSDK yet:
-
-```cpp
-    std::string custom_xml = R"(
-<mavlink>
-    <messages>
-        <message id="295" name="AIRSPEED">
-            <description>Airspeed sensor data</description>
-            <field type="uint8_t" name="id">Sensor ID</field>
-            <field type="float" name="airspeed">Calibrated airspeed in m/s</field>
-            <field type="int16_t" name="temperature">Temperature in centidegrees</field>
-            <field type="float" name="raw_press">Raw differential pressure</field>
-            <field type="uint8_t" name="flags">Airspeed sensor flags</field>
-        </message>
-    </messages>
-</mavlink>)";
-
-    // Load custom XML
-    auto xml_result = mavlink_direct.load_custom_xml(custom_xml);
-    if (xml_result != MavlinkDirect::Result::Success) {
-        std::cerr << "Failed to load custom XML: " << xml_result << std::endl;
-        return 1;
-    }
-```
-
-Check out the [full example on GitHub](https://github.com/mavlink/MAVSDK/tree/main/examples/mavlink_direct_sender_custom)
 
 ## API reference
 
