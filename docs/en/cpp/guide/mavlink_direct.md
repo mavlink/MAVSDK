@@ -1,21 +1,27 @@
 # MavlinkDirect Plugin Guide
 
-The MavlinkDirect plugin enables direct MAVLink communication with runtime message parsing and JSON field representation. It provides an alternative to MavlinkPassthrough.
-
-The MavlinkDirect plugin is built on top of the work by Thomas Debrunner in [libmav](https://github.com/Auterion/libmav).
-
+The [MavlinkDirect](../cpp/api_reference/classmavsdk_1_1_mavlink_direct.md) plugin enables direct MAVLink communication with runtime message parsing and JSON field representation.
 
 ::: warning
-: The MavlinkDirect API is quite new and is not necessarily stabilized yet. The functionality is here to stay but the specifics and types might still change before MAVSDK v4.
+The MavlinkDirect API is quite new and is not necessarily stabilized yet.
+The functionality is here to stay but the specifics and types might still change before MAVSDK v4.
+:::
+
+::: tip
+MavlinkDirect is the recommended replacement for [MavlinkPassthrough](../cpp/api_reference/classmavsdk_1_1_mavlink_passthrough.md).
+In MAVSDK v4, MavlinkPassthrough will only be available as a compile-time option.
+:::
+
+::: info
+The MavlinkDirect plugin is built on top of the work by Thomas Debrunner in [libmav](https://github.com/Auterion/libmav).
 :::
 
 ## Overview
 
 MavlinkDirect allows you to:
+
 - Send and receive any MAVLink message
 - Load custom MAVLink message definitions from XML
-
-**Important:** MavlinkDirect is the recommended replacement for MavlinkPassthrough. In MAVSDK v4, MavlinkPassthrough will only be available as a compile-time option.
 
 ## Runtime vs compile-time considerations
 
@@ -158,25 +164,25 @@ MavlinkDirect represents MAVLink message fields as JSON objects:
 
 ```json
 {
-    "time_boot_ms": 12345,
-    "lat": 473977418,
-    "lon": -1223974560,
-    "alt": 100500,
-    "relative_alt": 50250,
-    "vx": 100,
-    "vy": -50,
-    "vz": 25,
-    "hdg": 18000
+  "time_boot_ms": 12345,
+  "lat": 473977418,
+  "lon": -1223974560,
+  "alt": 100500,
+  "relative_alt": 50250,
+  "vx": 100,
+  "vy": -50,
+  "vz": 25,
+  "hdg": 18000
 }
 ```
 
 **Key points:**
+
 - All field names match the MAVLink message definition
 - Numeric values preserve original MAVLink types and scaling
 - Arrays are represented as JSON arrays: `[1, 2, 3, 0, 0]`
 - NaN and infinity values are represented as `null`
 - Extended fields are automatically included
-
 
 ## Load custom MAVLink xml / MAVLink dialects
 
@@ -218,4 +224,3 @@ See [API Reference](../api_reference/classmavsdk_1_1_mavlink_direct.md) for full
 ### Can I get more debug information?
 
 Yes, set the environment variable `MAVSDK_MAVLINK_DIRECT_DEBUGGING=1` before running your binary.
-
