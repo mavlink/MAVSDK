@@ -39,7 +39,7 @@ MavlinkDirect works at runtime instead of compile-time, so instead of having the
 - Enum values or flags/bits need to be assembled manually.
 - The API is likely slower although that's likely negligible in C++ as long as messages are not sent/received at very high rates (benchmarks outstanding).
 
-## Load custom MAVLink xml / MAVLink dialects
+## Load custom MAVLink XML/ MAVLink dialects
 
 By default all messsages from the [common.xml](https://mavlink.io/en/messages/common.html) MAVLink dialect are available, loaded in.
 
