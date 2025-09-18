@@ -1,9 +1,6 @@
 <div style="float:right; padding:10px; margin-right:20px;"><img src="../assets/site/sdk_logo_full.png" title="MAVSDK Logo" width="400px"/></div>
 
-# MAVSDK (main)
-
-[![Build and Test](https://github.com/mavlink/MAVSDK/actions/workflows/main.yml/badge.svg?branch=main)](https://github.com/mavlink/MAVSDK/actions/workflows/main.yml)
-[![Coverage Status](https://coveralls.io/repos/github/mavlink/MAVSDK/badge.svg?branch=main)](https://coveralls.io/github/mavlink/MAVSDK?branch=main)
+# MAVSDK (main / v3)
 
 *MAVSDK* is a collection of libraries for various programming languages to interface with [MAVLink](https://mavlink.io/en/) systems such as drones, cameras or ground systems.
 

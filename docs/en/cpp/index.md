@@ -53,7 +53,8 @@ The following APIs provide more direct access to underlying MAVLink messages/typ
 They should only be used where features are missing from the main APIs above.
 * [Param](api_reference/classmavsdk_1_1_param.md): Raw access to get and set parameters.
 * [MissionRaw](api_reference/classmavsdk_1_1_mission_raw.md): Direct access to MAVLink mission items.
-* [MavlinkPassthrough](api_reference/classmavsdk_1_1_mavlink_passthrough.md): Provides full/direct MAVLink access
+* [MavlinkDirect](api_reference/classmavsdk_1_1_mavlink_direct.md): Modern MAVLink access with JSON field representation and runtime message parsing
+* [MavlinkPassthrough](api_reference/classmavsdk_1_1_mavlink_passthrough.md): **DEPRECATED** (use [MavlinkDirect](api_reference/classmavsdk_1_1_mavlink_direct.md) instead)
 
 
 ## Contributing/Extending

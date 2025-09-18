@@ -19,8 +19,8 @@ void usage(const std::string& bin_name)
               << "Connection URL format should be :\n"
               << " For TCP server: tcpin://<our_ip>:<port>\n"
               << " For TCP client: tcpout://<remote_ip>:<port>\n"
-              << " For UDP server: udp://<our_ip>:<port>\n"
-              << " For UDP client: udp://<remote_ip>:<port>\n"
+              << " For UDP server: udpin://<our_ip>:<port>\n"
+              << " For UDP client: udpout://<remote_ip>:<port>\n"
               << " For Serial : serial://</path/to/serial/dev>:<baudrate>]\n"
               << "For example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n";
 }

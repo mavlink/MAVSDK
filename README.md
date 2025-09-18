@@ -13,7 +13,7 @@ It aims to be:
 - Easy to use with a simple API supporting both synchronous (blocking) API calls and asynchronous API calls using callbacks.
 - Fast and lightweight.
 - Cross-platform (Linux, macOS, Windows, iOS, Android).
-- Extensible (using the MavlinkPassthrough plugin).
+- Extensible (using the `MavlinkDirect` plugin, or the soon-to-be-deprecated `MavlinkPassthrough` plugin).
 - Fully compliant with the MAVLink standard/definitions.
 
 In order to support multiple programming languages, MAVSDK implements a gRPC server in C++ which allows clients in different programming languages to connect to. The API is defined by the proto IDL ([proto files](https://github.com/mavlink/MAVSDK-Proto/tree/master/protos)).
