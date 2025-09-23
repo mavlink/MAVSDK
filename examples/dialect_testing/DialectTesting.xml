@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<mavlink>
+    <messages>
+        <message id="10200" name="FDV_SET_IMAGE_PROCESSING_PARAMETERS">
+            <!-- description is essential -->
+            <description>Message to set the FDV image processing parameters</description>
+            <field type="uint64_t" name="time_usec" units="us">Timestamp (UNIX Epoch time)</field>
+            <field type="uint8_t" name="thermal_color_map">Thermal color map</field>
+        </message>
+    </messages>
+</mavlink>
