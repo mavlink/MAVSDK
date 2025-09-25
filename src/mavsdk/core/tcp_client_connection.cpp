@@ -27,6 +27,15 @@
 
 namespace mavsdk {
 
+inline bool notReady(int err) 
+{
+#ifdef WINDOWS
+    return err == WSAEWOULDBLOCK || err == WSAETIMEDOUT;
+#else
+    return err == EAGAIN || err == ETIMEDOUT;
+#endif
+}
+
 /* change to remote_ip and remote_port */
 TcpClientConnection::TcpClientConnection(
     Connection::ReceiverCallback receiver_callback,
@@ -204,13 +213,13 @@ void TcpClientConnection::receive()
     while (!_should_exit) {
         const auto recv_len = recv(_socket_fd.get(), buffer, sizeof(buffer), 0);
 
-        if (recv_len == 0 || (recv_len < 0 && (errno == EAGAIN || errno == ETIMEDOUT))) {
+        if (recv_len == 0 || (recv_len < 0 && notReady(recv_len))) {
             // Timeout, just try again.
             continue;
         }
 
         if (recv_len < 0) {
-            LogErr() << "TCP receive error: " << GET_ERROR(errno) << ", trying to reeconnect...";
+            LogErr() << "TCP receive error: " << GET_ERROR(errno) << ", trying to reconnect...";
             std::this_thread::sleep_for(std::chrono::seconds(1));
             setup_port();
             continue;
