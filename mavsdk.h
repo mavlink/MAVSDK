@@ -3,6 +3,7 @@
 
 #include <stddef.h>
 #include <stdint.h>
+#include "log.h"
 #include "mavsdk_export.h"
 
 #ifdef __cplusplus

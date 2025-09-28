@@ -18,14 +18,20 @@ set(CMAKE_C_EXTENSIONS OFF)
 find_package(MAVSDK REQUIRED)
 
 set(C_API_SOURCES
+    log.cpp
     mavsdk.cpp
     system.cpp
 )
 
 set(C_API_HEADERS
+    autopilot.h
+    component_type.h
+    connection_result.h
+    log.h
     mavsdk.h
-    system.h
     mavsdk_export.h
+    system.h
+    vehicle.h
 )
 
 add_library(cmavsdk)
@@ -84,4 +90,6 @@ install(EXPORT cmavsdkTargets
     NAMESPACE CMAVSDK::
     DESTINATION lib/cmake/cmavsdk
 )
+
+add_subdirectory(example)
 

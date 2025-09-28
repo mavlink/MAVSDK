@@ -66,13 +66,6 @@ static ForwardingOption cpp_forwarding_option_from_c(mavsdk_forwarding_option_t 
     }
 }
 
-// Helper to duplicate C string
-static char* duplicate_string(const std::string& str) {
-    char* result = new char[str.length() + 1];
-    std::strcpy(result, str.c_str());
-    return result;
-}
-
 // ===== C API Implementation =====
 extern "C" {
 
