@@ -1,5 +1,3 @@
-find_package(cmavsdk REQUIRED)
-
 add_executable(example)
 
 target_sources(example
