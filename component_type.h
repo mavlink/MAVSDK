@@ -1,0 +1,24 @@
+#ifndef CMAVSDK_COMPONENT_TYPE_H
+#define CMAVSDK_COMPONENT_TYPE_H
+
+#include "mavsdk_export.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+typedef enum {
+    MAVSDK_COMPONENT_TYPE_AUTOPILOT = 0,
+    MAVSDK_COMPONENT_TYPE_GROUND_STATION = 1,
+    MAVSDK_COMPONENT_TYPE_COMPANION_COMPUTER = 2,
+    MAVSDK_COMPONENT_TYPE_CAMERA = 3,
+    MAVSDK_COMPONENT_TYPE_GIMBAL = 4,
+    MAVSDK_COMPONENT_TYPE_REMOTE_ID = 5,
+    MAVSDK_COMPONENT_TYPE_CUSTOM = 6
+} mavsdk_component_type_t;
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif // CMAVSDK_COMPONENT_TYPE_H
