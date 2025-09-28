@@ -1,0 +1,869 @@
+syntax = "proto3";
+
+package mavsdk.rpc.telemetry;
+
+import "mavsdk_options.proto";
+
+option java_package = "io.mavsdk.telemetry";
+option java_outer_classname = "TelemetryProto";
+
+/*
+ * Allow users to get vehicle telemetry and state information
+ * (e.g. battery, GPS, RC connection, flight mode etc.) and set telemetry update rates.
+ * Certain Telemetry Topics such as, Position or Velocity_Ned require GPS Fix before data gets published.
+ */
+service TelemetryService {
+    // Subscribe to 'position' updates.
+    rpc SubscribePosition(SubscribePositionRequest) returns(stream PositionResponse) {}
+    // Subscribe to 'home position' updates.
+    rpc SubscribeHome(SubscribeHomeRequest) returns(stream HomeResponse) {}
+    // Subscribe to in-air updates.
+    rpc SubscribeInAir(SubscribeInAirRequest) returns(stream InAirResponse) {}
+    // Subscribe to landed state updates
+    rpc SubscribeLandedState(SubscribeLandedStateRequest) returns(stream LandedStateResponse) {}
+    // Subscribe to armed updates.
+    rpc SubscribeArmed(SubscribeArmedRequest) returns(stream ArmedResponse) {}
+    // subscribe to vtol state Updates
+    rpc SubscribeVtolState(SubscribeVtolStateRequest) returns(stream VtolStateResponse) {}
+    // Subscribe to 'attitude' updates (quaternion).
+    rpc SubscribeAttitudeQuaternion(SubscribeAttitudeQuaternionRequest) returns(stream AttitudeQuaternionResponse) {}
+    // Subscribe to 'attitude' updates (Euler).
+    rpc SubscribeAttitudeEuler(SubscribeAttitudeEulerRequest) returns(stream AttitudeEulerResponse) {}
+    // Subscribe to 'attitude' updates (angular velocity)
+    rpc SubscribeAttitudeAngularVelocityBody(SubscribeAttitudeAngularVelocityBodyRequest) returns(stream AttitudeAngularVelocityBodyResponse) {}
+    // Subscribe to 'ground speed' updates (NED).
+    rpc SubscribeVelocityNed(SubscribeVelocityNedRequest) returns(stream VelocityNedResponse) {}
+    // Subscribe to 'GPS info' updates.
+    rpc SubscribeGpsInfo(SubscribeGpsInfoRequest) returns(stream GpsInfoResponse) {}
+    // Subscribe to 'Raw GPS' updates.
+    rpc SubscribeRawGps(SubscribeRawGpsRequest) returns(stream RawGpsResponse) {}
+    // Subscribe to 'battery' updates.
+    rpc SubscribeBattery(SubscribeBatteryRequest) returns(stream BatteryResponse) {}
+    // Subscribe to 'flight mode' updates.
+    rpc SubscribeFlightMode(SubscribeFlightModeRequest) returns(stream FlightModeResponse) {}
+    // Subscribe to 'health' updates.
+    rpc SubscribeHealth(SubscribeHealthRequest) returns(stream HealthResponse) {}
+    // Subscribe to 'RC status' updates.
+    rpc SubscribeRcStatus(SubscribeRcStatusRequest) returns(stream RcStatusResponse) {}
+    // Subscribe to 'status text' updates.
+    rpc SubscribeStatusText(SubscribeStatusTextRequest) returns(stream StatusTextResponse) {}
+    // Subscribe to 'actuator control target' updates.
+    rpc SubscribeActuatorControlTarget(SubscribeActuatorControlTargetRequest) returns(stream ActuatorControlTargetResponse) {}
+    // Subscribe to 'actuator output status' updates.
+    rpc SubscribeActuatorOutputStatus(SubscribeActuatorOutputStatusRequest) returns(stream ActuatorOutputStatusResponse) {}
+    // Subscribe to 'odometry' updates.
+    rpc SubscribeOdometry(SubscribeOdometryRequest) returns(stream OdometryResponse) {}
+    // Subscribe to 'position velocity' updates.
+    rpc SubscribePositionVelocityNed(SubscribePositionVelocityNedRequest) returns(stream PositionVelocityNedResponse) {}
+    // Subscribe to 'ground truth' updates.
+    rpc SubscribeGroundTruth(SubscribeGroundTruthRequest) returns(stream GroundTruthResponse) {}
+    // Subscribe to 'fixedwing metrics' updates.
+    rpc SubscribeFixedwingMetrics(SubscribeFixedwingMetricsRequest) returns(stream FixedwingMetricsResponse) {}
+    // Subscribe to 'IMU' updates (in SI units in NED body frame).
+    rpc SubscribeImu(SubscribeImuRequest) returns(stream ImuResponse) {}
+    // Subscribe to 'Scaled IMU' updates.
+    rpc SubscribeScaledImu(SubscribeScaledImuRequest) returns(stream ScaledImuResponse) {}
+    // Subscribe to 'Raw IMU' updates (note that units are are incorrect and "raw" as provided by the sensor)
+    rpc SubscribeRawImu(SubscribeRawImuRequest) returns(stream RawImuResponse) {}
+    // Subscribe to 'HealthAllOk' updates.
+    rpc SubscribeHealthAllOk(SubscribeHealthAllOkRequest) returns(stream HealthAllOkResponse) {}
+    // Subscribe to 'unix epoch time' updates.
+    rpc SubscribeUnixEpochTime(SubscribeUnixEpochTimeRequest) returns(stream UnixEpochTimeResponse) {}
+    // Subscribe to 'Distance Sensor' updates.
+    rpc SubscribeDistanceSensor(SubscribeDistanceSensorRequest) returns(stream DistanceSensorResponse) {}
+    // Subscribe to 'Scaled Pressure' updates.
+    rpc SubscribeScaledPressure(SubscribeScaledPressureRequest) returns(stream ScaledPressureResponse) {}
+    // Subscribe to 'Heading' updates.
+    rpc SubscribeHeading(SubscribeHeadingRequest) returns(stream HeadingResponse) {}
+    // Subscribe to 'Altitude' updates.
+    rpc SubscribeAltitude(SubscribeAltitudeRequest) returns(stream AltitudeResponse){}
+    // Subscribe to 'Wind Estimated' updates.
+    rpc SubscribeWind(SubscribeWindRequest) returns(stream WindResponse){}
+
+    // Set rate to 'position' updates.
+    rpc SetRatePosition(SetRatePositionRequest) returns(SetRatePositionResponse) {}
+    // Set rate to 'home position' updates.
+    rpc SetRateHome(SetRateHomeRequest) returns(SetRateHomeResponse) {}
+    // Set rate to in-air updates.
+    rpc SetRateInAir(SetRateInAirRequest) returns(SetRateInAirResponse) {}
+    // Set rate to landed state updates
+    rpc SetRateLandedState(SetRateLandedStateRequest) returns(SetRateLandedStateResponse) {}
+    // Set rate to VTOL state updates
+    rpc SetRateVtolState(SetRateVtolStateRequest) returns(SetRateVtolStateResponse) {}
+    // Set rate to 'attitude euler angle' updates.
+    rpc SetRateAttitudeQuaternion(SetRateAttitudeQuaternionRequest) returns(SetRateAttitudeQuaternionResponse) {}
+    // Set rate to 'attitude quaternion' updates.
+    rpc SetRateAttitudeEuler(SetRateAttitudeEulerRequest) returns(SetRateAttitudeEulerResponse) {}
+    // Set rate of camera attitude updates.
+    // Set rate to 'ground speed' updates (NED).
+    rpc SetRateVelocityNed(SetRateVelocityNedRequest) returns(SetRateVelocityNedResponse) {}
+    // Set rate to 'GPS info' updates.
+    rpc SetRateGpsInfo(SetRateGpsInfoRequest) returns(SetRateGpsInfoResponse) {}
+    // Set rate to 'battery' updates.
+    rpc SetRateBattery(SetRateBatteryRequest) returns(SetRateBatteryResponse) {}
+    // Set rate to 'RC status' updates.
+    rpc SetRateRcStatus(SetRateRcStatusRequest) returns(SetRateRcStatusResponse) {}
+    // Set rate to 'actuator control target' updates.
+    rpc SetRateActuatorControlTarget(SetRateActuatorControlTargetRequest) returns(SetRateActuatorControlTargetResponse) {}
+    // Set rate to 'actuator output status' updates.
+    rpc SetRateActuatorOutputStatus(SetRateActuatorOutputStatusRequest) returns(SetRateActuatorOutputStatusResponse) {}
+    // Set rate to 'odometry' updates.
+    rpc SetRateOdometry(SetRateOdometryRequest) returns(SetRateOdometryResponse) {}
+    // Set rate to 'position velocity' updates.
+    rpc SetRatePositionVelocityNed(SetRatePositionVelocityNedRequest) returns(SetRatePositionVelocityNedResponse) {}
+    // Set rate to 'ground truth' updates.
+    rpc SetRateGroundTruth(SetRateGroundTruthRequest) returns(SetRateGroundTruthResponse) {}
+    // Set rate to 'fixedwing metrics' updates.
+    rpc SetRateFixedwingMetrics(SetRateFixedwingMetricsRequest) returns(SetRateFixedwingMetricsResponse) {}
+    // Set rate to 'IMU' updates.
+    rpc SetRateImu(SetRateImuRequest) returns(SetRateImuResponse) {}
+    // Set rate to 'Scaled IMU' updates.
+    rpc SetRateScaledImu(SetRateScaledImuRequest) returns(SetRateScaledImuResponse) {}
+    // Set rate to 'Raw IMU' updates.
+    rpc SetRateRawImu(SetRateRawImuRequest) returns(SetRateRawImuResponse) {}
+    // Set rate to 'unix epoch time' updates.
+    rpc SetRateUnixEpochTime(SetRateUnixEpochTimeRequest) returns(SetRateUnixEpochTimeResponse) {}
+    // Set rate to 'Distance Sensor' updates.
+    rpc SetRateDistanceSensor(SetRateDistanceSensorRequest) returns(SetRateDistanceSensorResponse) {}
+    // Set rate to 'Altitude' updates.
+    rpc SetRateAltitude(SetRateAltitudeRequest) returns(SetRateAltitudeResponse){}
+    // Set rate to 'Health' updates.
+    rpc SetRateHealth(SetRateHealthRequest) returns(SetRateHealthResponse){}
+
+    // Get the GPS location of where the estimator has been initialized.
+    rpc GetGpsGlobalOrigin(GetGpsGlobalOriginRequest) returns(GetGpsGlobalOriginResponse) {}
+
+
+}
+
+message SubscribePositionRequest {}
+message PositionResponse {
+    Position position = 1; // The next position
+}
+
+message SubscribeHomeRequest {}
+message HomeResponse {
+    Position home = 1; // The next home position
+}
+
+message SubscribeInAirRequest {}
+message InAirResponse {
+    bool is_in_air = 1; // The next 'in-air' state
+}
+
+message SubscribeLandedStateRequest {}
+message LandedStateResponse {
+    LandedState landed_state = 1; // The next 'landed' state
+}
+
+message SubscribeArmedRequest {}
+message ArmedResponse {
+   bool is_armed = 1; // The next 'armed' state
+}
+
+message SubscribeVtolStateRequest {}
+message VtolStateResponse {
+    VtolState vtol_state = 1; // The next 'vtol' state
+}
+
+message SubscribeAttitudeQuaternionRequest {}
+message AttitudeQuaternionResponse {
+    Quaternion attitude_quaternion = 1; // The next attitude (quaternion)
+}
+
+message SubscribeAttitudeEulerRequest {}
+message AttitudeEulerResponse {
+    EulerAngle attitude_euler = 1; // The next attitude (Euler)
+}
+
+message SubscribeAttitudeAngularVelocityBodyRequest {}
+message AttitudeAngularVelocityBodyResponse {
+    AngularVelocityBody attitude_angular_velocity_body = 1; // The next angular velocity (rad/s)
+}
+
+message SubscribeVelocityNedRequest {}
+message VelocityNedResponse {
+    VelocityNed velocity_ned = 1; // The next velocity (NED)
+}
+
+message SubscribeGpsInfoRequest {}
+message GpsInfoResponse {
+    GpsInfo gps_info = 1; // The next 'GPS info' state
+}
+
+message SubscribeRawGpsRequest {}
+message RawGpsResponse {
+    RawGps raw_gps = 1; // The next 'Raw GPS' state. Warning: this is an advanced feature, use `Position` updates to get the location of the drone!
+}
+
+message SubscribeBatteryRequest {}
+message BatteryResponse {
+    Battery battery = 1; // The next 'battery' state
+}
+
+message SubscribeFlightModeRequest {}
+message FlightModeResponse {
+    FlightMode flight_mode = 1; // The next flight mode
+}
+
+message SubscribeHealthRequest {}
+message HealthResponse {
+    Health health = 1; // The next 'health' state
+}
+
+message SubscribeRcStatusRequest {}
+message RcStatusResponse {
+    RcStatus rc_status = 1; // The next RC status
+}
+
+message SubscribeStatusTextRequest {}
+message StatusTextResponse {
+    StatusText status_text = 1; // The next 'status text'
+}
+
+message SubscribeActuatorControlTargetRequest {}
+message ActuatorControlTargetResponse {
+    ActuatorControlTarget actuator_control_target = 1; // The next actuator control target
+}
+
+message SubscribeActuatorOutputStatusRequest {}
+message ActuatorOutputStatusResponse {
+    ActuatorOutputStatus actuator_output_status = 1; // The next actuator output status
+}
+
+message SubscribeOdometryRequest {}
+message OdometryResponse {
+    Odometry odometry = 1; // The next odometry status
+}
+
+message SubscribePositionVelocityNedRequest {}
+message PositionVelocityNedResponse {
+    PositionVelocityNed position_velocity_ned = 1; // The next position and velocity status
+}
+
+message SubscribeGroundTruthRequest {}
+message GroundTruthResponse {
+    GroundTruth ground_truth = 1; // Ground truth position information available in simulation
+}
+
+message SubscribeFixedwingMetricsRequest {}
+message FixedwingMetricsResponse {
+    FixedwingMetrics fixedwing_metrics = 1; // The next fixedwing metrics
+}
+
+message SubscribeImuRequest {}
+message ImuResponse {
+    Imu imu = 1; // The next IMU status
+}
+
+message SubscribeScaledImuRequest {}
+message ScaledImuResponse {
+    Imu imu = 1; // The next scaled IMU status
+}
+
+message SubscribeRawImuRequest {}
+message RawImuResponse {
+    Imu imu = 1; // The next raw IMU status
+}
+
+message SubscribeHealthAllOkRequest {}
+message HealthAllOkResponse {
+    bool is_health_all_ok = 1; // The next 'health all ok' status
+}
+
+message SubscribeUnixEpochTimeRequest {}
+message UnixEpochTimeResponse {
+    uint64 time_us = 1; // The next 'unix epoch time' status
+}
+
+message SubscribeDistanceSensorRequest {}
+message DistanceSensorResponse {
+    DistanceSensor distance_sensor = 1; // The next Distance Sensor status
+}
+
+message SubscribeScaledPressureRequest {}
+message ScaledPressureResponse {
+    ScaledPressure scaled_pressure = 1; // The next Scaled Pressure status
+}
+
+message SubscribeHeadingRequest {}
+message HeadingResponse {
+    Heading heading_deg = 1; // The next heading (yaw) in degrees
+}
+
+message SubscribeAltitudeRequest {}
+message AltitudeResponse {
+    Altitude altitude = 1; // The next altitude
+}
+
+message SubscribeWindRequest {}
+message WindResponse {
+    Wind wind = 1; // The next wind
+}
+
+message SetRatePositionRequest {
+    double rate_hz = 1; // The requested rate (in Hertz)
+}
+message SetRatePositionResponse {
+    TelemetryResult telemetry_result = 1;
+}
+
+message SetRateHomeRequest {
+    double rate_hz = 1; // The requested rate (in Hertz)
+}
+message SetRateHomeResponse {
+    TelemetryResult telemetry_result = 1;
+}
+
+message SetRateInAirRequest {
+    double rate_hz = 1; // The requested rate (in Hertz)
+}
+message SetRateInAirResponse {
+    TelemetryResult telemetry_result = 1;
+}
+
+message SetRateLandedStateRequest {
+    double rate_hz = 1; // The requested rate (in Hertz)
+}
+message SetRateLandedStateResponse {
+    TelemetryResult telemetry_result = 1;
+}
+
+message SetRateVtolStateRequest {
+    double rate_hz = 1; // The requested rate (in Hertz)
+}
+message SetRateVtolStateResponse {
+    TelemetryResult telemetry_result = 1;
+}
+
+message SetRateAttitudeEulerRequest {
+    double rate_hz = 1; // The requested rate (in Hertz)
+}
+message SetRateAttitudeEulerResponse {
+    TelemetryResult telemetry_result = 1;
+}
+
+message SetRateAttitudeQuaternionRequest {
+    double rate_hz = 1; // The requested rate (in Hertz)
+}
+message SetRateAttitudeQuaternionResponse {
+    TelemetryResult telemetry_result = 1;
+}
+
+message SetRateAttitudeAngularVelocityBodyRequest {
+    double rate_hz = 1; // The requested rate (in Hertz)
+}
+message SetRateAttitudeAngularVelocityBodyResponse {
+    TelemetryResult telemetry_result = 1;
+}
+
+message SetRateVelocityNedRequest {
+    double rate_hz = 1; // The requested rate (in Hertz)
+}
+message SetRateVelocityNedResponse {
+    TelemetryResult telemetry_result = 1;
+}
+
+message SetRateGpsInfoRequest {
+    double rate_hz = 1; // The requested rate (in Hertz)
+}
+message SetRateGpsInfoResponse {
+    TelemetryResult telemetry_result = 1;
+}
+
+message SetRateRawGpsRequest {
+    double rate_hz = 1; // The requested rate (in Hertz)
+}
+
+message SetRateBatteryRequest {
+    double rate_hz = 1; // The requested rate (in Hertz)
+}
+message SetRateBatteryResponse {
+    TelemetryResult telemetry_result = 1;
+}
+
+message SetRateRcStatusRequest {
+    double rate_hz = 1; // The requested rate (in Hertz)
+}
+message SetRateRcStatusResponse {
+    TelemetryResult telemetry_result = 1;
+}
+
+message SetRateActuatorControlTargetRequest {
+    double rate_hz = 1; // The requested rate (in Hertz)
+}
+message SetRateActuatorControlTargetResponse {
+    TelemetryResult telemetry_result = 1;
+}
+
+message SetRateActuatorOutputStatusRequest {
+    double rate_hz = 1; // The requested rate (in Hertz)
+}
+message SetRateActuatorOutputStatusResponse {
+    TelemetryResult telemetry_result = 1;
+}
+
+message SetRateOdometryRequest {
+    double rate_hz = 1; // The requested rate (in Hertz)
+}
+message SetRateOdometryResponse {
+    TelemetryResult telemetry_result = 1;
+}
+
+message SetRatePositionVelocityNedRequest {
+    double rate_hz = 1; // The requested rate (in Hertz)
+}
+message SetRatePositionVelocityNedResponse {
+    TelemetryResult telemetry_result = 1;
+}
+
+message SetRateGroundTruthRequest {
+    double rate_hz = 1; // The requested rate (in Hertz)
+}
+message SetRateGroundTruthResponse {
+    TelemetryResult telemetry_result = 1;
+}
+
+message SetRateFixedwingMetricsRequest {
+    double rate_hz = 1; // The requested rate (in Hertz)
+}
+message SetRateFixedwingMetricsResponse {
+    TelemetryResult telemetry_result = 1;
+}
+
+message SetRateImuRequest {
+    double rate_hz = 1; // The requested rate (in Hertz)
+}
+message SetRateImuResponse {
+    TelemetryResult telemetry_result = 1;
+}
+
+message SetRateScaledImuRequest {
+    double rate_hz = 1; // The requested rate (in Hertz)
+}
+message SetRateScaledImuResponse {
+    TelemetryResult telemetry_result = 1;
+}
+
+message SetRateRawImuRequest {
+    double rate_hz = 1; // The requested rate (in Hertz)
+}
+message SetRateRawImuResponse {
+    TelemetryResult telemetry_result = 1;
+}
+
+message SetRateUnixEpochTimeRequest {
+    double rate_hz = 1; // The requested rate (in Hertz)
+}
+message SetRateUnixEpochTimeResponse {
+    TelemetryResult telemetry_result = 1;
+}
+
+message SetRateDistanceSensorRequest {
+    double rate_hz = 1; // The requested rate (in Hertz)
+}
+message SetRateDistanceSensorResponse {
+    TelemetryResult telemetry_result = 1;
+}
+
+message GetGpsGlobalOriginRequest {}
+message GetGpsGlobalOriginResponse {
+    TelemetryResult telemetry_result = 1;
+    GpsGlobalOrigin gps_global_origin = 2;
+}
+
+message SetRateAltitudeRequest {
+    double rate_hz = 1;  // The requested rate (in Hertz)
+}
+message SetRateAltitudeResponse {
+    TelemetryResult telemetry_result = 1;
+}
+
+message SetRateHealthRequest {
+    double rate_hz = 1;  // The requested rate (in Hertz)
+}
+message SetRateHealthResponse {
+    TelemetryResult telemetry_result = 1;
+}
+
+// Position type in global coordinates.
+message Position {
+    double latitude_deg = 1 [(mavsdk.options.default_value)="NaN"]; // Latitude in degrees (range: -90 to +90)
+    double longitude_deg = 2 [(mavsdk.options.default_value)="NaN"]; // Longitude in degrees (range: -180 to +180)
+    float absolute_altitude_m = 3 [(mavsdk.options.default_value)="NaN"]; // Altitude AMSL (above mean sea level) in metres
+    float relative_altitude_m = 4 [(mavsdk.options.default_value)="NaN"]; // Altitude relative to takeoff altitude in metres
+}
+
+// Heading type used for global position
+message Heading {
+    double heading_deg = 1 [(mavsdk.options.default_value)="NaN"]; // Heading in degrees (range: 0 to +360)
+}
+
+/*
+ * Quaternion type.
+ *
+ * All rotations and axis systems follow the right-hand rule.
+ * The Hamilton quaternion product definition is used.
+ * A zero-rotation quaternion is represented by (1,0,0,0).
+ * The quaternion could also be written as w + xi + yj + zk.
+ *
+ * For more info see: https://en.wikipedia.org/wiki/Quaternion
+ */
+message Quaternion {
+    float w = 1 [(mavsdk.options.default_value)="NaN"]; // Quaternion entry 0, also denoted as a
+    float x = 2 [(mavsdk.options.default_value)="NaN"]; // Quaternion entry 1, also denoted as b
+    float y = 3 [(mavsdk.options.default_value)="NaN"]; // Quaternion entry 2, also denoted as c
+    float z = 4 [(mavsdk.options.default_value)="NaN"]; // Quaternion entry 3, also denoted as d
+    uint64 timestamp_us = 5; // Timestamp in microseconds
+}
+
+/*
+ * Euler angle type.
+ *
+ * All rotations and axis systems follow the right-hand rule.
+ * The Euler angles follow the convention of a 3-2-1 intrinsic Tait-Bryan rotation sequence.
+ *
+ * For more info see https://en.wikipedia.org/wiki/Euler_angles
+ */
+message EulerAngle {
+    float roll_deg = 1 [(mavsdk.options.default_value)="NaN"]; // Roll angle in degrees, positive is banking to the right
+    float pitch_deg = 2 [(mavsdk.options.default_value)="NaN"]; // Pitch angle in degrees, positive is pitching nose up
+    float yaw_deg = 3 [(mavsdk.options.default_value)="NaN"]; // Yaw angle in degrees, positive is clock-wise seen from above
+    uint64 timestamp_us = 4; // Timestamp in microseconds
+}
+
+// Angular velocity type.
+message AngularVelocityBody {
+    float roll_rad_s = 1 [(mavsdk.options.default_value)="NaN"]; // Roll angular velocity
+    float pitch_rad_s = 2 [(mavsdk.options.default_value)="NaN"]; // Pitch angular velocity
+    float yaw_rad_s = 3 [(mavsdk.options.default_value)="NaN"]; // Yaw angular velocity
+}
+
+// GPS information type.
+message GpsInfo {
+    int32 num_satellites = 1 [(mavsdk.options.default_value)="0"]; // Number of visible satellites in use
+    FixType fix_type = 2; // Fix type
+}
+
+/*
+ * Raw GPS information type.
+ *
+ * Warning: this is an advanced type! If you want the location of the drone, use
+ * the position instead. This message exposes the raw values of the GNSS sensor.
+ */
+ message RawGps {
+     uint64 timestamp_us = 1; // Timestamp in microseconds (UNIX Epoch time or time since system boot, to be inferred)
+     double latitude_deg = 2; // Latitude in degrees (WGS84, EGM96 ellipsoid)
+     double longitude_deg = 3; // Longitude in degrees (WGS84, EGM96 ellipsoid)
+     float absolute_altitude_m = 4; // Altitude AMSL (above mean sea level) in metres
+     float hdop = 5; // GPS HDOP horizontal dilution of position (unitless). If unknown, set to NaN
+     float vdop = 6; // GPS VDOP vertical dilution of position (unitless). If unknown, set to NaN
+     float velocity_m_s = 7; // Ground velocity in metres per second
+     float cog_deg = 8; // Course over ground (NOT heading, but direction of movement) in degrees. If unknown, set to NaN
+     float altitude_ellipsoid_m = 9; // Altitude in metres (above WGS84, EGM96 ellipsoid)
+     float horizontal_uncertainty_m = 10; // Position uncertainty in metres
+     float vertical_uncertainty_m = 11; // Altitude uncertainty in metres
+     float velocity_uncertainty_m_s = 12; // Velocity uncertainty in metres per second
+     float heading_uncertainty_deg = 13; // Heading uncertainty in degrees
+     float yaw_deg = 14; // Yaw in earth frame from north.
+ }
+
+// GPS fix type.
+enum FixType {
+    FIX_TYPE_NO_GPS = 0; // No GPS connected
+    FIX_TYPE_NO_FIX = 1; // No position information, GPS is connected
+    FIX_TYPE_FIX_2D = 2; // 2D position
+    FIX_TYPE_FIX_3D = 3; // 3D position
+    FIX_TYPE_FIX_DGPS = 4; // DGPS/SBAS aided 3D position
+    FIX_TYPE_RTK_FLOAT = 5; // RTK float, 3D position
+    FIX_TYPE_RTK_FIXED = 6; // RTK Fixed, 3D position
+}
+
+// Battery function type.
+enum BatteryFunction {
+    BATTERY_FUNCTION_UNKNOWN = 0; // Battery function is unknown
+    BATTERY_FUNCTION_ALL = 1; // Battery supports all flight systems
+    BATTERY_FUNCTION_PROPULSION = 2; // Battery for the propulsion system
+    BATTERY_FUNCTION_AVIONICS = 3; // Avionics battery
+    BATTERY_FUNCTION_PAYLOAD = 4; // Payload battery
+
+}
+
+// Battery type.
+message Battery {
+    uint32 id = 1 [(mavsdk.options.default_value)="0"]; // Battery ID, for systems with multiple batteries
+    float temperature_degc = 2 [(mavsdk.options.default_value)="NaN"]; // Temperature of the battery in degrees Celsius. NAN for unknown temperature
+    float voltage_v = 3 [(mavsdk.options.default_value)="NaN"]; // Voltage in volts
+    float current_battery_a = 4 [(mavsdk.options.default_value)="NaN"]; // Battery current in Amps, NAN if autopilot does not measure the current
+    float capacity_consumed_ah = 5 [(mavsdk.options.default_value)="NaN"]; // Consumed charge in Amp hours, NAN if autopilot does not provide consumption estimate
+    float remaining_percent = 6 [(mavsdk.options.default_value)="NaN"]; // Estimated battery remaining (range: 0 to 100)
+    float time_remaining_s = 7 [(mavsdk.options.default_value)="NaN"]; // Estimated battery usage time remaining 
+    BatteryFunction battery_function = 8; // Function of the battery
+}
+
+/*
+ * Flight modes.
+ *
+ * For more information about flight modes, check out
+ * https://docs.px4.io/master/en/config/flight_mode.html.
+ */
+enum FlightMode {
+    FLIGHT_MODE_UNKNOWN = 0; // Mode not known
+    FLIGHT_MODE_READY = 1; // Armed and ready to take off
+    FLIGHT_MODE_TAKEOFF = 2; // Taking off
+    FLIGHT_MODE_HOLD = 3; // Holding (hovering in place (or circling for fixed-wing vehicles)
+    FLIGHT_MODE_MISSION = 4; // In mission
+    FLIGHT_MODE_RETURN_TO_LAUNCH = 5; // Returning to launch position (then landing)
+    FLIGHT_MODE_LAND = 6; // Landing
+    FLIGHT_MODE_OFFBOARD = 7; // In 'offboard' mode
+    FLIGHT_MODE_FOLLOW_ME = 8; // In 'follow-me' mode
+    FLIGHT_MODE_MANUAL = 9; // In 'Manual' mode
+    FLIGHT_MODE_ALTCTL = 10; // In 'Altitude Control' mode
+    FLIGHT_MODE_POSCTL = 11; // In 'Position Control' mode
+    FLIGHT_MODE_ACRO = 12; // In 'Acro' mode
+    FLIGHT_MODE_STABILIZED = 13; // In 'Stabilize' mode
+    FLIGHT_MODE_RATTITUDE = 14; // In 'Rattitude' mode
+}
+
+// Health type.
+message Health {
+    bool is_gyrometer_calibration_ok = 1 [(mavsdk.options.default_value)="false"]; // True if the gyrometer is calibrated
+    bool is_accelerometer_calibration_ok = 2 [(mavsdk.options.default_value)="false"]; // True if the accelerometer is calibrated
+    bool is_magnetometer_calibration_ok = 3 [(mavsdk.options.default_value)="false"]; // True if the magnetometer is calibrated
+    bool is_local_position_ok = 5 [(mavsdk.options.default_value)="false"]; // True if the local position estimate is good enough to fly in 'position control' mode
+    bool is_global_position_ok = 6 [(mavsdk.options.default_value)="false"]; // True if the global position estimate is good enough to fly in 'position control' mode
+    bool is_home_position_ok = 7 [(mavsdk.options.default_value)="false"]; // True if the home position has been initialized properly
+    bool is_armable = 8 [(mavsdk.options.default_value)="false"]; // True if system can be armed
+}
+
+// Remote control status type.
+message RcStatus {
+    bool was_available_once = 1 [(mavsdk.options.default_value)="false"]; // True if an RC signal has been available once
+    bool is_available = 2 [(mavsdk.options.default_value)="false"]; // True if the RC signal is available now
+    float signal_strength_percent = 3 [(mavsdk.options.default_value)="NaN"]; // Signal strength (range: 0 to 100, NaN if unknown)
+}
+
+// Status types.
+enum StatusTextType {
+    STATUS_TEXT_TYPE_DEBUG = 0; // Debug
+    STATUS_TEXT_TYPE_INFO = 1; // Information
+    STATUS_TEXT_TYPE_NOTICE = 2; // Notice
+    STATUS_TEXT_TYPE_WARNING = 3; // Warning
+    STATUS_TEXT_TYPE_ERROR = 4; // Error
+    STATUS_TEXT_TYPE_CRITICAL = 5; // Critical
+    STATUS_TEXT_TYPE_ALERT = 6; // Alert
+    STATUS_TEXT_TYPE_EMERGENCY = 7; // Emergency
+}
+
+// StatusText information type.
+message StatusText {
+    StatusTextType type = 1; // Message type
+    string text = 2; // MAVLink status message
+}
+
+// Actuator control target type.
+message ActuatorControlTarget {
+    int32 group = 1 [(mavsdk.options.default_value)="0"]; // An actuator control group is e.g. 'attitude' for the core flight controls, or 'gimbal' for a payload.
+    repeated float controls = 2; // Controls normed from -1 to 1, where 0 is neutral position.
+}
+
+// Actuator output status type.
+message ActuatorOutputStatus {
+    uint32 active = 1 [(mavsdk.options.default_value)="0"]; // Active outputs
+    repeated float actuator = 2; // Servo/motor output values
+}
+
+// Landed State enumeration.
+enum LandedState {
+    LANDED_STATE_UNKNOWN = 0; // Landed state is unknown
+    LANDED_STATE_ON_GROUND = 1; // The vehicle is on the ground
+    LANDED_STATE_IN_AIR = 2; // The vehicle is in the air
+    LANDED_STATE_TAKING_OFF = 3; // The vehicle is taking off
+    LANDED_STATE_LANDING = 4; // The vehicle is landing
+}
+
+// VTOL State enumeration
+enum VtolState {
+    VTOL_STATE_UNDEFINED = 0; // MAV is not configured as VTOL
+    VTOL_STATE_TRANSITION_TO_FW = 1; // VTOL is in transition from multicopter to fixed-wing
+	VTOL_STATE_TRANSITION_TO_MC = 2; // VTOL is in transition from fixed-wing to multicopter
+    VTOL_STATE_MC = 3; // VTOL is in multicopter state
+    VTOL_STATE_FW = 4; // VTOL is in fixed-wing state
+}
+
+/*
+ * Covariance type.
+ *
+ * Row-major representation of a 6x6 cross-covariance matrix
+ * upper right triangle.
+ * Set first to NaN if unknown.
+ */
+message Covariance {
+    repeated float covariance_matrix = 1; // Representation of a covariance matrix.
+}
+
+// Velocity type, represented in the Body (X Y Z) frame and in metres/second.
+message VelocityBody {
+    float x_m_s = 1; // Velocity in X in metres/second
+    float y_m_s = 2; // Velocity in Y in metres/second
+    float z_m_s = 3; // Velocity in Z in metres/second
+}
+
+// Position type, represented in the Body (X Y Z) frame
+message PositionBody {
+    float x_m = 1; // X Position in metres.
+    float y_m = 2; // Y Position in metres.
+    float z_m = 3; // Z Position in metres.
+}
+
+// Odometry message type.
+message Odometry {
+    // Mavlink frame id
+    enum MavFrame {
+        MAV_FRAME_UNDEF = 0; // Frame is undefined.
+        MAV_FRAME_BODY_NED = 8; // Setpoint in body NED frame. This makes sense if all position control is externalized - e.g. useful to command 2 m/s^2 acceleration to the right.
+        MAV_FRAME_VISION_NED = 16; // Odometry local coordinate frame of data given by a vision estimation system, Z-down (x: north, y: east, z: down).
+        MAV_FRAME_ESTIM_NED = 18; // Odometry local coordinate frame of data given by an estimator running onboard the vehicle, Z-down (x: north, y: east, z: down).
+    }
+
+    uint64 time_usec = 1; // Timestamp (0 to use Backend timestamp).
+    MavFrame frame_id = 2; // Coordinate frame of reference for the pose data.
+    MavFrame child_frame_id = 3;  // Coordinate frame of reference for the velocity in free space (twist) data.
+    PositionBody position_body = 4; // Position.
+    Quaternion q = 5; // Quaternion components, w, x, y, z (1 0 0 0 is the null-rotation).
+    VelocityBody velocity_body = 6; // Linear velocity (m/s).
+    AngularVelocityBody angular_velocity_body = 7; // Angular velocity (rad/s).
+    Covariance pose_covariance = 8; // Pose cross-covariance matrix.
+    Covariance velocity_covariance = 9; // Velocity cross-covariance matrix.
+}
+
+// DistanceSensor message type.
+message DistanceSensor {
+    float minimum_distance_m = 1 [(mavsdk.options.default_value)="NaN"]; // Minimum distance the sensor can measure, NaN if unknown.
+    float maximum_distance_m = 2 [(mavsdk.options.default_value)="NaN"]; // Maximum distance the sensor can measure, NaN if unknown.
+    float current_distance_m = 3 [(mavsdk.options.default_value)="NaN"]; // Current distance reading, NaN if unknown.
+    EulerAngle orientation = 4; // Sensor Orientation reading.
+}
+
+// Scaled Pressure message type.
+message ScaledPressure {
+    uint64 timestamp_us = 1; // Timestamp (time since system boot)
+    float absolute_pressure_hpa = 2; // Absolute pressure in hPa
+    float differential_pressure_hpa = 3; // Differential pressure 1 in hPa
+    float temperature_deg = 4; // Absolute pressure temperature (in celsius)
+    float differential_pressure_temperature_deg = 5; // Differential pressure temperature (in celsius, 0 if not available)
+}
+
+// PositionNed message type.
+message PositionNed {
+    float north_m = 1 [(mavsdk.options.default_value)="NaN"]; // Position along north direction in metres
+    float east_m = 2 [(mavsdk.options.default_value)="NaN"]; // Position along east direction in metres
+    float down_m = 3 [(mavsdk.options.default_value)="NaN"]; // Position along down direction in metres
+}
+
+// VelocityNed message type.
+message VelocityNed {
+    float north_m_s = 1; // Velocity along north direction in metres per second
+    float east_m_s = 2; // Velocity along east direction in metres per second
+    float down_m_s = 3; // Velocity along down direction in metres per second
+}
+
+// PositionVelocityNed message type.
+message PositionVelocityNed {
+    PositionNed position = 1; // Position (NED)
+    VelocityNed velocity = 2; // Velocity (NED)
+}
+
+// GroundTruth message type.
+message GroundTruth {
+    double latitude_deg = 1 [(mavsdk.options.default_value)="NaN"]; // Latitude in degrees (range: -90 to +90)
+    double longitude_deg = 2 [(mavsdk.options.default_value)="NaN"]; // Longitude in degrees (range: -180 to 180)
+    float absolute_altitude_m = 3 [(mavsdk.options.default_value)="NaN"]; // Altitude AMSL (above mean sea level) in metres
+}
+
+// FixedwingMetrics message type.
+message FixedwingMetrics {
+    float airspeed_m_s = 1 [(mavsdk.options.default_value)="NaN"]; // Current indicated airspeed (IAS) in metres per second
+    float throttle_percentage = 2 [(mavsdk.options.default_value)="NaN"]; // Current throttle setting (0 to 100)
+    float climb_rate_m_s = 3 [(mavsdk.options.default_value)="NaN"]; // Current climb rate in metres per second
+    float groundspeed_m_s = 4 [(mavsdk.options.default_value)="NaN"]; // Current groundspeed metres per second
+    float heading_deg = 5 [(mavsdk.options.default_value)="NaN"]; // Current heading in compass units (0-360, 0=north)
+    float absolute_altitude_m = 6 [(mavsdk.options.default_value)="NaN"]; // Current altitude in metres (MSL)
+}
+
+// AccelerationFrd message type.
+message AccelerationFrd {
+    float forward_m_s2 = 1 [(mavsdk.options.default_value)="NaN"]; // Acceleration in forward direction in metres per second^2
+    float right_m_s2 = 2 [(mavsdk.options.default_value)="NaN"]; // Acceleration in right direction in metres per second^2
+    float down_m_s2 = 3 [(mavsdk.options.default_value)="NaN"]; // Acceleration in down direction in metres per second^2
+}
+
+// AngularVelocityFrd message type.
+message AngularVelocityFrd {
+    float forward_rad_s = 1 [(mavsdk.options.default_value)="NaN"]; // Angular velocity in forward direction in radians per second
+    float right_rad_s = 2 [(mavsdk.options.default_value)="NaN"]; // Angular velocity in right direction in radians per second
+    float down_rad_s = 3 [(mavsdk.options.default_value)="NaN"]; // Angular velocity in Down direction in radians per second
+}
+
+// MagneticFieldFrd message type.
+message MagneticFieldFrd {
+    float forward_gauss = 1 [(mavsdk.options.default_value)="NaN"]; // Magnetic field in forward direction measured in Gauss
+    float right_gauss = 2 [(mavsdk.options.default_value)="NaN"]; // Magnetic field in East direction measured in Gauss
+    float down_gauss = 3 [(mavsdk.options.default_value)="NaN"]; // Magnetic field in Down direction measured in Gauss
+}
+
+// Imu message type.
+message Imu {
+    AccelerationFrd acceleration_frd = 1; // Acceleration
+    AngularVelocityFrd angular_velocity_frd = 2; // Angular velocity
+    MagneticFieldFrd magnetic_field_frd = 3; // Magnetic field
+    float temperature_degc = 4 [(mavsdk.options.default_value)="NaN"]; // Temperature
+    uint64 timestamp_us = 5; // Timestamp in microseconds
+}
+
+// Gps global origin type.
+message GpsGlobalOrigin {
+    double latitude_deg = 1 [(mavsdk.options.default_value)="NaN"]; // Latitude of the origin
+    double longitude_deg = 2 [(mavsdk.options.default_value)="NaN"]; // Longitude of the origin
+    float altitude_m = 3 [(mavsdk.options.default_value)="NaN"]; // Altitude AMSL (above mean sea level) in metres
+}
+
+// Altitude message type
+message Altitude {
+    float altitude_monotonic_m = 1 [(mavsdk.options.default_value)="NaN"]; // Altitude in meters is initialized on system boot and monotonic
+    float altitude_amsl_m = 2 [(mavsdk.options.default_value)="NaN"];  //  Altitude AMSL (above mean sea level) in meters
+    float altitude_local_m = 3 [(mavsdk.options.default_value)="NaN"]; // Local altitude in meters
+    float altitude_relative_m = 4 [(mavsdk.options.default_value)="NaN"]; // Altitude above home position in meters
+    float altitude_terrain_m = 5 [(mavsdk.options.default_value)="NaN"]; // Altitude above terrain in meters
+    float bottom_clearance_m = 6 [(mavsdk.options.default_value)="NaN"]; // This is not the altitude, but the clear space below the system according to the fused clearance estimate in meters.
+}
+
+// Wind message type
+message Wind {
+    float wind_x_ned_m_s = 1 [(mavsdk.options.default_value)="NaN"]; // Wind in North (NED) direction
+    float wind_y_ned_m_s = 2 [(mavsdk.options.default_value)="NaN"]; //  Wind in East (NED) direction
+    float wind_z_ned_m_s = 3 [(mavsdk.options.default_value)="NaN"]; // Wind in down (NED) direction
+    float horizontal_variability_stddev_m_s = 4 [(mavsdk.options.default_value)="NaN"]; // Variability of wind in XY, 1-STD estimated from a 1 Hz lowpassed wind estimate
+    float vertical_variability_stddev_m_s = 5 [(mavsdk.options.default_value)="NaN"]; // Variability of wind in Z, 1-STD estimated from a 1 Hz lowpassed wind estimate
+    float wind_altitude_msl_m = 6 [(mavsdk.options.default_value)="NaN"]; // Altitude (MSL) that this measurement was taken at
+    float horizontal_wind_speed_accuracy_m_s = 7 [(mavsdk.options.default_value)="NaN"]; // Horizontal speed 1-STD accuracy 
+    float vertical_wind_speed_accuracy_m_s = 8 [(mavsdk.options.default_value)="NaN"]; // Vertical speed 1-STD accuracy
+}
+
+// Result type.
+message TelemetryResult {
+    // Possible results returned for telemetry requests.
+    enum Result {
+        RESULT_UNKNOWN = 0; // Unknown result
+        RESULT_SUCCESS = 1; // Success: the telemetry command was accepted by the vehicle
+        RESULT_NO_SYSTEM = 2; // No system connected
+        RESULT_CONNECTION_ERROR = 3; // Connection error
+        RESULT_BUSY = 4; // Vehicle is busy
+        RESULT_COMMAND_DENIED = 5; // Command refused by vehicle
+        RESULT_TIMEOUT = 6; // Request timed out
+        RESULT_UNSUPPORTED = 7; // Request not supported
+    }
+
+    Result result = 1; // Result enum value
+    string result_str = 2; // Human-readable English string describing the result
+}

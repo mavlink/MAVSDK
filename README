@@ -1,0 +1,7 @@
+From src/:
+
+protoc action.proto --plugin=protoc-gen-custom=$(which protoc-gen-mavsdk) -I. --custom_out=. --custom_opt=output_file=action/action.h --custom_opt=template_file=file.h.j2 --custom_opt=lstrip_blocks=True --custom_opt=trim_blocks=True
+
+protoc action.proto --plugin=protoc-gen-custom=$(which protoc-gen-mavsdk) -I. --custom_out=. --custom_opt=output_file=action/action.cpp --custom_opt=template_file=file.cpp.j2 --custom_opt=lstrip_blocks=True --custom_opt=trim_blocks=True
+
+protoc telemetry.proto --plugin=protoc-gen-custom=$(which protoc-gen-mavsdk) -I. --custom_out=. --custom_opt=output_file=telemetry/telemetry.h --custom_opt=template_file=file.h.j2 --custom_opt=lstrip_blocks=True --custom_opt=trim_blocks=True

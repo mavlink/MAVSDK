@@ -1,0 +1,146 @@
+#ifndef CMAVSDK_{{ plugin_name.uppercase }}_H
+#define CMAVSDK_{{ plugin_name.uppercase }}_H
+
+#include <stddef.h>
+#include <stdint.h>
+#include <stdbool.h>
+#include "mavsdk_export.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+// ===== Forward Declarations =====
+typedef void* mavsdk_system_t;
+
+// ===== Opaque Handles =====
+typedef void* mavsdk_{{ plugin_name.lower_snake_case }}_t;
+{% for method in methods %}
+{% if method.is_stream %}
+typedef void* mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}_handle_t;
+{% endif %}
+{% endfor %}
+
+// ===== Enums =====
+{% for enum in enums %}
+typedef enum {
+    {% for value in enum.values %}
+    MAVSDK_{{ plugin_name.uppercase }}_{{ enum.name.uppercase }}_{{ value.name.uppercase }} = {{ loop.index0 }},
+    {% endfor %}
+} mavsdk_{{ plugin_name.lower_snake_case }}_{{ enum.name.lower_snake_case }}_t;
+
+{% endfor %}
+
+// ===== Structs =====
+{% for struct in structs %}
+{% if struct.name.upper_camel_case.endswith('Result') %}
+{% for nested_enum_name, nested_enum in struct.nested_enums.items() %}
+{% if nested_enum_name == 'Result' %}
+typedef enum {
+    {% for value in nested_enum.values %}
+    MAVSDK_{{ plugin_name.uppercase }}_RESULT_{{ value.name.uppercase }} = {{ loop.index0 }},
+    {% endfor %}
+} mavsdk_{{ plugin_name.lower_snake_case }}_result_t;
+
+{% endif %}
+{% endfor %}
+{% else %}
+{% for nested_enum_name, nested_enum in struct.nested_enums.items() %}
+typedef enum {
+    {% for value in nested_enum.values %}
+    MAVSDK_{{ plugin_name.uppercase }}_{{ struct.name.uppercase }}_{{ nested_enum.name.uppercase }}_{{ value.name.uppercase }} = {{ loop.index0 }},
+    {% endfor %}
+} mavsdk_{{ plugin_name.lower_snake_case }}_{{ struct.name.lower_snake_case }}_{{ nested_enum.name.lower_snake_case }}_t;
+
+{% endfor %}
+typedef struct {
+    {% for field in struct.fields %}
+    {% if field.type_info.is_primitive %}
+    {{ field.type_info.name }} {{ field.name.lower_snake_case }};
+    {% elif field.type_info.parent_type %}
+    mavsdk_{{ plugin_name.lower_snake_case }}_{{ field.type_info.parent_type.lower_snake_case }}_{{ field.type_info.name.lower_snake_case }}_t {{ field.name.lower_snake_case }};
+    {% else %}
+    mavsdk_{{ plugin_name.lower_snake_case }}_{{ field.type_info.name.lower_snake_case }}_t {{ field.name.lower_snake_case }};
+    {% endif %}
+    {% if field.type_info.is_repeated %}
+    int {{ field.name.lower_snake_case }}_size;
+    {% endif %}
+    {% endfor %}
+} mavsdk_{{ plugin_name.lower_snake_case }}_{{ struct.name.lower_snake_case }}_t;
+{% endif %}
+
+{% if struct.fields | selectattr('type_info.is_repeated') | list %}
+void mavsdk_{{ plugin_name.lower_snake_case }}_{{ struct.name.lower_snake_case }}_destroy(
+    mavsdk_{{ plugin_name.lower_snake_case }}_{{ struct.name.lower_snake_case }}_t* target);
+{% endif %}
+
+{% endfor %}
+
+// ===== Callback Typedefs =====
+{% for method in methods %}
+{% if method.is_async %}
+typedef void (*mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}_callback_t)({% if method.has_result %}const mavsdk_{{ plugin_name.lower_snake_case }}_result_t result, {% endif %}{% if method.return_type %}const {% if method.return_type.is_primitive %}{{ method.return_type.name }}{% else %}mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.return_type.name.lower_snake_case }}_t{% endif %} {{ method.name.lower_snake_case }}, {% endif %}void* user_data);
+{% endif %}
+{% endfor %}
+
+// ===== {{ plugin_name.upper_camel_case }} Creation/Destruction =====
+CMAVSDK_EXPORT mavsdk_{{ plugin_name.lower_snake_case }}_t mavsdk_{{ plugin_name.lower_snake_case }}_create(mavsdk_system_t system);
+CMAVSDK_EXPORT void mavsdk_{{ plugin_name.lower_snake_case }}_destroy(mavsdk_{{ plugin_name.lower_snake_case }}_t {{ plugin_name.lower_snake_case }});
+
+// ===== Methods =====
+{% for method in methods %}
+{% if method.is_async %}
+
+CMAVSDK_EXPORT {% if method.is_stream %}mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}_handle_t{% else %}void{% endif %} mavsdk_{{ plugin_name.lower_snake_case }}{% if method.is_stream %}_subscribe{% endif %}_{{ method.name.lower_snake_case }}{% if not method.is_stream %}_async{% endif %}(
+    mavsdk_{{ plugin_name.lower_snake_case }}_t {{ plugin_name.lower_snake_case }},
+    {% for param in method.params %}
+    {% if param.type_info.is_primitive %}
+    {{ param.type_info.name }} {{ param.name.lower_snake_case }},
+    {% elif param.type_info.parent_type %}
+    mavsdk_{{ plugin_name.lower_snake_case }}_{{ param.type_info.parent_type.lower_snake_case }}_{{ param.type_info.name.lower_snake_case }}_t {{ param.name.lower_snake_case }},
+    {% else %}
+    mavsdk_{{ plugin_name.lower_snake_case }}_{{ param.type_info.name.lower_snake_case }}_t {{ param.name.lower_snake_case }},
+    {% endif %}
+    {% endfor %}
+    mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}_callback_t callback,
+    void* user_data);
+
+{% if method.is_stream %}
+CMAVSDK_EXPORT void mavsdk_{{ plugin_name.lower_snake_case }}_unsubscribe_{{ method.name.lower_snake_case }}(
+    mavsdk_{{ plugin_name.lower_snake_case }}_t {{ plugin_name.lower_snake_case }},
+    mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}_handle_t);
+{% endif %}
+{% endif %}
+
+CMAVSDK_EXPORT
+{% if method.has_result %}
+mavsdk_{{ plugin_name.lower_snake_case }}_result_t
+{% else %}
+void
+{% endif %}
+mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}(
+    mavsdk_{{ plugin_name.lower_snake_case }}_t {{ plugin_name.lower_snake_case }}{% if method.params %},
+    {% for param in method.params %}
+    {% if param.type_info.is_primitive %}
+    {{ param.type_info.name }} {{ param.name.lower_snake_case }}{% if not loop.last %},
+    {% endif %}
+    {% elif param.type_info.parent_type %}
+    mavsdk_{{ plugin_name.lower_snake_case }}_{{ param.type_info.parent_type.lower_snake_case }}_{{ param.type_info.name.lower_snake_case }}_t {{ param.name.lower_snake_case }}{% if not loop.last %},
+    {% endif %}
+    {% else %}
+    mavsdk_{{ plugin_name.lower_snake_case }}_{{ param.type_info.name.lower_snake_case }}_t {{ param.name.lower_snake_case }}{% if not loop.last %},
+    {% endif %}
+    {% endif %}
+    {% endfor %}{% endif %}{% if method.return_name %},
+    {% if method.return_type.is_primitive %}
+    {{ method.return_type.name }}* {{ method.return_name.lower_snake_case }}_out
+    {% else %}
+    mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.return_type.name.lower_snake_case }}_t* {{ method.return_name.lower_snake_case }}_out{% endif %}{% endif %});
+
+{% endfor %}
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif // CMAVSDK_{{ plugin_name.uppercase }}_H

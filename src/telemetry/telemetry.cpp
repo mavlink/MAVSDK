@@ -1,1171 +1,3107 @@
-#include "telemetry/telemetry.h"
+#include "telemetry.h"
+#include "plugins/telemetry/telemetry.h"
+#include <cstring>
+#include <vector>
 
-#include <mavsdk/plugins/telemetry/telemetry.h>
-#include <functional>
-#include <memory>
-#include <string>
+// ===== C++ to C Type Conversions =====
 
-using namespace mavsdk;
-
-// Helper to convert C++ Telemetry::Result to C mavsdk_telemetry_result_t
-static mavsdk_telemetry_result_t telemetry_result_from_cpp(Telemetry::Result result)
-{
-    switch (result) {
-        case Telemetry::Result::Success:
+static mavsdk_telemetry_result_t 
+translate_result(mavsdk::Telemetry::Result cpp_result) {
+    switch(cpp_result) {
+        case mavsdk::Telemetry::Result::Unknown:
+            return MAVSDK_TELEMETRY_RESULT_UNKNOWN;
+        case mavsdk::Telemetry::Result::Success:
             return MAVSDK_TELEMETRY_RESULT_SUCCESS;
-        case Telemetry::Result::NoSystem:
+        case mavsdk::Telemetry::Result::NoSystem:
             return MAVSDK_TELEMETRY_RESULT_NO_SYSTEM;
-        case Telemetry::Result::ConnectionError:
+        case mavsdk::Telemetry::Result::ConnectionError:
             return MAVSDK_TELEMETRY_RESULT_CONNECTION_ERROR;
-        case Telemetry::Result::Busy:
+        case mavsdk::Telemetry::Result::Busy:
             return MAVSDK_TELEMETRY_RESULT_BUSY;
-        case Telemetry::Result::CommandDenied:
+        case mavsdk::Telemetry::Result::CommandDenied:
             return MAVSDK_TELEMETRY_RESULT_COMMAND_DENIED;
-        case Telemetry::Result::Timeout:
+        case mavsdk::Telemetry::Result::Timeout:
             return MAVSDK_TELEMETRY_RESULT_TIMEOUT;
-        case Telemetry::Result::Unsupported:
+        case mavsdk::Telemetry::Result::Unsupported:
             return MAVSDK_TELEMETRY_RESULT_UNSUPPORTED;
-        case Telemetry::Result::Unknown:
         default:
             return MAVSDK_TELEMETRY_RESULT_UNKNOWN;
     }
 }
 
-// Helper to convert C++ FixType to C
-static mavsdk_telemetry_fix_type_t fix_type_from_cpp(Telemetry::FixType fix_type)
-{
-    switch (fix_type) {
-        case Telemetry::FixType::NoGps:
+static mavsdk::Telemetry::FixType
+translate_fix_type_from_c(mavsdk_telemetry_fix_type_t c_enum) {
+    switch(c_enum) {
+        case MAVSDK_TELEMETRY_FIX_TYPE_NO_GPS:
+            return mavsdk::Telemetry::FixType::NoGps;
+        case MAVSDK_TELEMETRY_FIX_TYPE_NO_FIX:
+            return mavsdk::Telemetry::FixType::NoFix;
+        case MAVSDK_TELEMETRY_FIX_TYPE_FIX_2D:
+            return mavsdk::Telemetry::FixType::Fix2D;
+        case MAVSDK_TELEMETRY_FIX_TYPE_FIX_3D:
+            return mavsdk::Telemetry::FixType::Fix3D;
+        case MAVSDK_TELEMETRY_FIX_TYPE_FIX_DGPS:
+            return mavsdk::Telemetry::FixType::FixDgps;
+        case MAVSDK_TELEMETRY_FIX_TYPE_RTK_FLOAT:
+            return mavsdk::Telemetry::FixType::RtkFloat;
+        case MAVSDK_TELEMETRY_FIX_TYPE_RTK_FIXED:
+            return mavsdk::Telemetry::FixType::RtkFixed;
+    }
+    return mavsdk::Telemetry::FixType::NoGps;
+}
+
+static mavsdk_telemetry_fix_type_t
+translate_fix_type_to_c(mavsdk::Telemetry::FixType cpp_enum) {
+    switch(cpp_enum) {
+        case mavsdk::Telemetry::FixType::NoGps:
             return MAVSDK_TELEMETRY_FIX_TYPE_NO_GPS;
-        case Telemetry::FixType::NoFix:
+        case mavsdk::Telemetry::FixType::NoFix:
             return MAVSDK_TELEMETRY_FIX_TYPE_NO_FIX;
-        case Telemetry::FixType::Fix2D:
+        case mavsdk::Telemetry::FixType::Fix2D:
             return MAVSDK_TELEMETRY_FIX_TYPE_FIX_2D;
-        case Telemetry::FixType::Fix3D:
+        case mavsdk::Telemetry::FixType::Fix3D:
             return MAVSDK_TELEMETRY_FIX_TYPE_FIX_3D;
-        case Telemetry::FixType::FixDgps:
+        case mavsdk::Telemetry::FixType::FixDgps:
             return MAVSDK_TELEMETRY_FIX_TYPE_FIX_DGPS;
-        case Telemetry::FixType::RtkFloat:
+        case mavsdk::Telemetry::FixType::RtkFloat:
             return MAVSDK_TELEMETRY_FIX_TYPE_RTK_FLOAT;
-        case Telemetry::FixType::RtkFixed:
+        case mavsdk::Telemetry::FixType::RtkFixed:
             return MAVSDK_TELEMETRY_FIX_TYPE_RTK_FIXED;
-        default:
-            return MAVSDK_TELEMETRY_FIX_TYPE_NO_FIX;
     }
+    return MAVSDK_TELEMETRY_FIX_TYPE_NO_GPS;
 }
 
-// Helper to convert C++ FlightMode to C
-static mavsdk_telemetry_flight_mode_t flight_mode_from_cpp(Telemetry::FlightMode flight_mode)
-{
-    switch (flight_mode) {
-        case Telemetry::FlightMode::Ready:
-            return MAVSDK_TELEMETRY_FLIGHT_MODE_READY;
-        case Telemetry::FlightMode::Takeoff:
-            return MAVSDK_TELEMETRY_FLIGHT_MODE_TAKEOFF;
-        case Telemetry::FlightMode::Hold:
-            return MAVSDK_TELEMETRY_FLIGHT_MODE_HOLD;
-        case Telemetry::FlightMode::Mission:
-            return MAVSDK_TELEMETRY_FLIGHT_MODE_MISSION;
-        case Telemetry::FlightMode::ReturnToLaunch:
-            return MAVSDK_TELEMETRY_FLIGHT_MODE_RETURN_TO_LAUNCH;
-        case Telemetry::FlightMode::Land:
-            return MAVSDK_TELEMETRY_FLIGHT_MODE_LAND;
-        case Telemetry::FlightMode::Offboard:
-            return MAVSDK_TELEMETRY_FLIGHT_MODE_OFFBOARD;
-        case Telemetry::FlightMode::FollowMe:
-            return MAVSDK_TELEMETRY_FLIGHT_MODE_FOLLOW_ME;
-        case Telemetry::FlightMode::Manual:
-            return MAVSDK_TELEMETRY_FLIGHT_MODE_MANUAL;
-        case Telemetry::FlightMode::Altctl:
-            return MAVSDK_TELEMETRY_FLIGHT_MODE_ALTCTL;
-        case Telemetry::FlightMode::Posctl:
-            return MAVSDK_TELEMETRY_FLIGHT_MODE_POSCTL;
-        case Telemetry::FlightMode::Acro:
-            return MAVSDK_TELEMETRY_FLIGHT_MODE_ACRO;
-        case Telemetry::FlightMode::Stabilized:
-            return MAVSDK_TELEMETRY_FLIGHT_MODE_STABILIZED;
-        case Telemetry::FlightMode::Rattitude:
-            return MAVSDK_TELEMETRY_FLIGHT_MODE_RATTITUDE;
-        case Telemetry::FlightMode::Unknown:
-        default:
+static mavsdk::Telemetry::BatteryFunction
+translate_battery_function_from_c(mavsdk_telemetry_battery_function_t c_enum) {
+    switch(c_enum) {
+        case MAVSDK_TELEMETRY_BATTERY_FUNCTION_UNKNOWN:
+            return mavsdk::Telemetry::BatteryFunction::Unknown;
+        case MAVSDK_TELEMETRY_BATTERY_FUNCTION_ALL:
+            return mavsdk::Telemetry::BatteryFunction::All;
+        case MAVSDK_TELEMETRY_BATTERY_FUNCTION_PROPULSION:
+            return mavsdk::Telemetry::BatteryFunction::Propulsion;
+        case MAVSDK_TELEMETRY_BATTERY_FUNCTION_AVIONICS:
+            return mavsdk::Telemetry::BatteryFunction::Avionics;
+        case MAVSDK_TELEMETRY_BATTERY_FUNCTION_PAYLOAD:
+            return mavsdk::Telemetry::BatteryFunction::Payload;
+    }
+    return mavsdk::Telemetry::BatteryFunction::Unknown;
+}
+
+static mavsdk_telemetry_battery_function_t
+translate_battery_function_to_c(mavsdk::Telemetry::BatteryFunction cpp_enum) {
+    switch(cpp_enum) {
+        case mavsdk::Telemetry::BatteryFunction::Unknown:
+            return MAVSDK_TELEMETRY_BATTERY_FUNCTION_UNKNOWN;
+        case mavsdk::Telemetry::BatteryFunction::All:
+            return MAVSDK_TELEMETRY_BATTERY_FUNCTION_ALL;
+        case mavsdk::Telemetry::BatteryFunction::Propulsion:
+            return MAVSDK_TELEMETRY_BATTERY_FUNCTION_PROPULSION;
+        case mavsdk::Telemetry::BatteryFunction::Avionics:
+            return MAVSDK_TELEMETRY_BATTERY_FUNCTION_AVIONICS;
+        case mavsdk::Telemetry::BatteryFunction::Payload:
+            return MAVSDK_TELEMETRY_BATTERY_FUNCTION_PAYLOAD;
+    }
+    return MAVSDK_TELEMETRY_BATTERY_FUNCTION_UNKNOWN;
+}
+
+static mavsdk::Telemetry::FlightMode
+translate_flight_mode_from_c(mavsdk_telemetry_flight_mode_t c_enum) {
+    switch(c_enum) {
+        case MAVSDK_TELEMETRY_FLIGHT_MODE_UNKNOWN:
+            return mavsdk::Telemetry::FlightMode::Unknown;
+        case MAVSDK_TELEMETRY_FLIGHT_MODE_READY:
+            return mavsdk::Telemetry::FlightMode::Ready;
+        case MAVSDK_TELEMETRY_FLIGHT_MODE_TAKEOFF:
+            return mavsdk::Telemetry::FlightMode::Takeoff;
+        case MAVSDK_TELEMETRY_FLIGHT_MODE_HOLD:
+            return mavsdk::Telemetry::FlightMode::Hold;
+        case MAVSDK_TELEMETRY_FLIGHT_MODE_MISSION:
+            return mavsdk::Telemetry::FlightMode::Mission;
+        case MAVSDK_TELEMETRY_FLIGHT_MODE_RETURN_TO_LAUNCH:
+            return mavsdk::Telemetry::FlightMode::ReturnToLaunch;
+        case MAVSDK_TELEMETRY_FLIGHT_MODE_LAND:
+            return mavsdk::Telemetry::FlightMode::Land;
+        case MAVSDK_TELEMETRY_FLIGHT_MODE_OFFBOARD:
+            return mavsdk::Telemetry::FlightMode::Offboard;
+        case MAVSDK_TELEMETRY_FLIGHT_MODE_FOLLOW_ME:
+            return mavsdk::Telemetry::FlightMode::FollowMe;
+        case MAVSDK_TELEMETRY_FLIGHT_MODE_MANUAL:
+            return mavsdk::Telemetry::FlightMode::Manual;
+        case MAVSDK_TELEMETRY_FLIGHT_MODE_ALTCTL:
+            return mavsdk::Telemetry::FlightMode::Altctl;
+        case MAVSDK_TELEMETRY_FLIGHT_MODE_POSCTL:
+            return mavsdk::Telemetry::FlightMode::Posctl;
+        case MAVSDK_TELEMETRY_FLIGHT_MODE_ACRO:
+            return mavsdk::Telemetry::FlightMode::Acro;
+        case MAVSDK_TELEMETRY_FLIGHT_MODE_STABILIZED:
+            return mavsdk::Telemetry::FlightMode::Stabilized;
+        case MAVSDK_TELEMETRY_FLIGHT_MODE_RATTITUDE:
+            return mavsdk::Telemetry::FlightMode::Rattitude;
+    }
+    return mavsdk::Telemetry::FlightMode::Unknown;
+}
+
+static mavsdk_telemetry_flight_mode_t
+translate_flight_mode_to_c(mavsdk::Telemetry::FlightMode cpp_enum) {
+    switch(cpp_enum) {
+        case mavsdk::Telemetry::FlightMode::Unknown:
             return MAVSDK_TELEMETRY_FLIGHT_MODE_UNKNOWN;
+        case mavsdk::Telemetry::FlightMode::Ready:
+            return MAVSDK_TELEMETRY_FLIGHT_MODE_READY;
+        case mavsdk::Telemetry::FlightMode::Takeoff:
+            return MAVSDK_TELEMETRY_FLIGHT_MODE_TAKEOFF;
+        case mavsdk::Telemetry::FlightMode::Hold:
+            return MAVSDK_TELEMETRY_FLIGHT_MODE_HOLD;
+        case mavsdk::Telemetry::FlightMode::Mission:
+            return MAVSDK_TELEMETRY_FLIGHT_MODE_MISSION;
+        case mavsdk::Telemetry::FlightMode::ReturnToLaunch:
+            return MAVSDK_TELEMETRY_FLIGHT_MODE_RETURN_TO_LAUNCH;
+        case mavsdk::Telemetry::FlightMode::Land:
+            return MAVSDK_TELEMETRY_FLIGHT_MODE_LAND;
+        case mavsdk::Telemetry::FlightMode::Offboard:
+            return MAVSDK_TELEMETRY_FLIGHT_MODE_OFFBOARD;
+        case mavsdk::Telemetry::FlightMode::FollowMe:
+            return MAVSDK_TELEMETRY_FLIGHT_MODE_FOLLOW_ME;
+        case mavsdk::Telemetry::FlightMode::Manual:
+            return MAVSDK_TELEMETRY_FLIGHT_MODE_MANUAL;
+        case mavsdk::Telemetry::FlightMode::Altctl:
+            return MAVSDK_TELEMETRY_FLIGHT_MODE_ALTCTL;
+        case mavsdk::Telemetry::FlightMode::Posctl:
+            return MAVSDK_TELEMETRY_FLIGHT_MODE_POSCTL;
+        case mavsdk::Telemetry::FlightMode::Acro:
+            return MAVSDK_TELEMETRY_FLIGHT_MODE_ACRO;
+        case mavsdk::Telemetry::FlightMode::Stabilized:
+            return MAVSDK_TELEMETRY_FLIGHT_MODE_STABILIZED;
+        case mavsdk::Telemetry::FlightMode::Rattitude:
+            return MAVSDK_TELEMETRY_FLIGHT_MODE_RATTITUDE;
     }
+    return MAVSDK_TELEMETRY_FLIGHT_MODE_UNKNOWN;
 }
 
-// Helper to convert C++ LandedState to C
-static mavsdk_telemetry_landed_state_t landed_state_from_cpp(Telemetry::LandedState landed_state)
-{
-    switch (landed_state) {
-        case Telemetry::LandedState::OnGround:
-            return MAVSDK_TELEMETRY_LANDED_STATE_ON_GROUND;
-        case Telemetry::LandedState::InAir:
-            return MAVSDK_TELEMETRY_LANDED_STATE_IN_AIR;
-        case Telemetry::LandedState::TakingOff:
-            return MAVSDK_TELEMETRY_LANDED_STATE_TAKING_OFF;
-        case Telemetry::LandedState::Landing:
-            return MAVSDK_TELEMETRY_LANDED_STATE_LANDING;
-        case Telemetry::LandedState::Unknown:
-        default:
+static mavsdk::Telemetry::StatusTextType
+translate_status_text_type_from_c(mavsdk_telemetry_status_text_type_t c_enum) {
+    switch(c_enum) {
+        case MAVSDK_TELEMETRY_STATUS_TEXT_TYPE_DEBUG:
+            return mavsdk::Telemetry::StatusTextType::Debug;
+        case MAVSDK_TELEMETRY_STATUS_TEXT_TYPE_INFO:
+            return mavsdk::Telemetry::StatusTextType::Info;
+        case MAVSDK_TELEMETRY_STATUS_TEXT_TYPE_NOTICE:
+            return mavsdk::Telemetry::StatusTextType::Notice;
+        case MAVSDK_TELEMETRY_STATUS_TEXT_TYPE_WARNING:
+            return mavsdk::Telemetry::StatusTextType::Warning;
+        case MAVSDK_TELEMETRY_STATUS_TEXT_TYPE_ERROR:
+            return mavsdk::Telemetry::StatusTextType::Error;
+        case MAVSDK_TELEMETRY_STATUS_TEXT_TYPE_CRITICAL:
+            return mavsdk::Telemetry::StatusTextType::Critical;
+        case MAVSDK_TELEMETRY_STATUS_TEXT_TYPE_ALERT:
+            return mavsdk::Telemetry::StatusTextType::Alert;
+        case MAVSDK_TELEMETRY_STATUS_TEXT_TYPE_EMERGENCY:
+            return mavsdk::Telemetry::StatusTextType::Emergency;
+    }
+    return mavsdk::Telemetry::StatusTextType::Debug;
+}
+
+static mavsdk_telemetry_status_text_type_t
+translate_status_text_type_to_c(mavsdk::Telemetry::StatusTextType cpp_enum) {
+    switch(cpp_enum) {
+        case mavsdk::Telemetry::StatusTextType::Debug:
+            return MAVSDK_TELEMETRY_STATUS_TEXT_TYPE_DEBUG;
+        case mavsdk::Telemetry::StatusTextType::Info:
+            return MAVSDK_TELEMETRY_STATUS_TEXT_TYPE_INFO;
+        case mavsdk::Telemetry::StatusTextType::Notice:
+            return MAVSDK_TELEMETRY_STATUS_TEXT_TYPE_NOTICE;
+        case mavsdk::Telemetry::StatusTextType::Warning:
+            return MAVSDK_TELEMETRY_STATUS_TEXT_TYPE_WARNING;
+        case mavsdk::Telemetry::StatusTextType::Error:
+            return MAVSDK_TELEMETRY_STATUS_TEXT_TYPE_ERROR;
+        case mavsdk::Telemetry::StatusTextType::Critical:
+            return MAVSDK_TELEMETRY_STATUS_TEXT_TYPE_CRITICAL;
+        case mavsdk::Telemetry::StatusTextType::Alert:
+            return MAVSDK_TELEMETRY_STATUS_TEXT_TYPE_ALERT;
+        case mavsdk::Telemetry::StatusTextType::Emergency:
+            return MAVSDK_TELEMETRY_STATUS_TEXT_TYPE_EMERGENCY;
+    }
+    return MAVSDK_TELEMETRY_STATUS_TEXT_TYPE_DEBUG;
+}
+
+static mavsdk::Telemetry::LandedState
+translate_landed_state_from_c(mavsdk_telemetry_landed_state_t c_enum) {
+    switch(c_enum) {
+        case MAVSDK_TELEMETRY_LANDED_STATE_UNKNOWN:
+            return mavsdk::Telemetry::LandedState::Unknown;
+        case MAVSDK_TELEMETRY_LANDED_STATE_ON_GROUND:
+            return mavsdk::Telemetry::LandedState::OnGround;
+        case MAVSDK_TELEMETRY_LANDED_STATE_IN_AIR:
+            return mavsdk::Telemetry::LandedState::InAir;
+        case MAVSDK_TELEMETRY_LANDED_STATE_TAKING_OFF:
+            return mavsdk::Telemetry::LandedState::TakingOff;
+        case MAVSDK_TELEMETRY_LANDED_STATE_LANDING:
+            return mavsdk::Telemetry::LandedState::Landing;
+    }
+    return mavsdk::Telemetry::LandedState::Unknown;
+}
+
+static mavsdk_telemetry_landed_state_t
+translate_landed_state_to_c(mavsdk::Telemetry::LandedState cpp_enum) {
+    switch(cpp_enum) {
+        case mavsdk::Telemetry::LandedState::Unknown:
             return MAVSDK_TELEMETRY_LANDED_STATE_UNKNOWN;
+        case mavsdk::Telemetry::LandedState::OnGround:
+            return MAVSDK_TELEMETRY_LANDED_STATE_ON_GROUND;
+        case mavsdk::Telemetry::LandedState::InAir:
+            return MAVSDK_TELEMETRY_LANDED_STATE_IN_AIR;
+        case mavsdk::Telemetry::LandedState::TakingOff:
+            return MAVSDK_TELEMETRY_LANDED_STATE_TAKING_OFF;
+        case mavsdk::Telemetry::LandedState::Landing:
+            return MAVSDK_TELEMETRY_LANDED_STATE_LANDING;
     }
+    return MAVSDK_TELEMETRY_LANDED_STATE_UNKNOWN;
 }
 
-// Helper to convert C++ VtolState to C
-static mavsdk_telemetry_vtol_state_t vtol_state_from_cpp(Telemetry::VtolState vtol_state)
-{
-    switch (vtol_state) {
-        case Telemetry::VtolState::TransitionToFw:
-            return MAVSDK_TELEMETRY_VTOL_STATE_TRANSITION_TO_FW;
-        case Telemetry::VtolState::TransitionToMc:
-            return MAVSDK_TELEMETRY_VTOL_STATE_TRANSITION_TO_MC;
-        case Telemetry::VtolState::Mc:
-            return MAVSDK_TELEMETRY_VTOL_STATE_MC;
-        case Telemetry::VtolState::Fw:
-            return MAVSDK_TELEMETRY_VTOL_STATE_FW;
-        case Telemetry::VtolState::Undefined:
-        default:
+static mavsdk::Telemetry::VtolState
+translate_vtol_state_from_c(mavsdk_telemetry_vtol_state_t c_enum) {
+    switch(c_enum) {
+        case MAVSDK_TELEMETRY_VTOL_STATE_UNDEFINED:
+            return mavsdk::Telemetry::VtolState::Undefined;
+        case MAVSDK_TELEMETRY_VTOL_STATE_TRANSITION_TO_FW:
+            return mavsdk::Telemetry::VtolState::TransitionToFw;
+        case MAVSDK_TELEMETRY_VTOL_STATE_TRANSITION_TO_MC:
+            return mavsdk::Telemetry::VtolState::TransitionToMc;
+        case MAVSDK_TELEMETRY_VTOL_STATE_MC:
+            return mavsdk::Telemetry::VtolState::Mc;
+        case MAVSDK_TELEMETRY_VTOL_STATE_FW:
+            return mavsdk::Telemetry::VtolState::Fw;
+    }
+    return mavsdk::Telemetry::VtolState::Undefined;
+}
+
+static mavsdk_telemetry_vtol_state_t
+translate_vtol_state_to_c(mavsdk::Telemetry::VtolState cpp_enum) {
+    switch(cpp_enum) {
+        case mavsdk::Telemetry::VtolState::Undefined:
             return MAVSDK_TELEMETRY_VTOL_STATE_UNDEFINED;
+        case mavsdk::Telemetry::VtolState::TransitionToFw:
+            return MAVSDK_TELEMETRY_VTOL_STATE_TRANSITION_TO_FW;
+        case mavsdk::Telemetry::VtolState::TransitionToMc:
+            return MAVSDK_TELEMETRY_VTOL_STATE_TRANSITION_TO_MC;
+        case mavsdk::Telemetry::VtolState::Mc:
+            return MAVSDK_TELEMETRY_VTOL_STATE_MC;
+        case mavsdk::Telemetry::VtolState::Fw:
+            return MAVSDK_TELEMETRY_VTOL_STATE_FW;
+    }
+    return MAVSDK_TELEMETRY_VTOL_STATE_UNDEFINED;
+}
+
+
+static mavsdk_telemetry_position_t
+translate_position_to_c(const mavsdk::Telemetry::Position& cpp_struct) {
+    mavsdk_telemetry_position_t c_struct{};
+    c_struct.latitude_deg = cpp_struct.latitude_deg;
+    c_struct.longitude_deg = cpp_struct.longitude_deg;
+    c_struct.absolute_altitude_m = cpp_struct.absolute_altitude_m;
+    c_struct.relative_altitude_m = cpp_struct.relative_altitude_m;
+    return c_struct;
+}
+
+
+static mavsdk_telemetry_heading_t
+translate_heading_to_c(const mavsdk::Telemetry::Heading& cpp_struct) {
+    mavsdk_telemetry_heading_t c_struct{};
+    c_struct.heading_deg = cpp_struct.heading_deg;
+    return c_struct;
+}
+
+
+static mavsdk_telemetry_quaternion_t
+translate_quaternion_to_c(const mavsdk::Telemetry::Quaternion& cpp_struct) {
+    mavsdk_telemetry_quaternion_t c_struct{};
+    c_struct.w = cpp_struct.w;
+    c_struct.x = cpp_struct.x;
+    c_struct.y = cpp_struct.y;
+    c_struct.z = cpp_struct.z;
+    c_struct.timestamp_us = cpp_struct.timestamp_us;
+    return c_struct;
+}
+
+
+static mavsdk_telemetry_euler_angle_t
+translate_euler_angle_to_c(const mavsdk::Telemetry::EulerAngle& cpp_struct) {
+    mavsdk_telemetry_euler_angle_t c_struct{};
+    c_struct.roll_deg = cpp_struct.roll_deg;
+    c_struct.pitch_deg = cpp_struct.pitch_deg;
+    c_struct.yaw_deg = cpp_struct.yaw_deg;
+    c_struct.timestamp_us = cpp_struct.timestamp_us;
+    return c_struct;
+}
+
+
+static mavsdk_telemetry_angular_velocity_body_t
+translate_angular_velocity_body_to_c(const mavsdk::Telemetry::AngularVelocityBody& cpp_struct) {
+    mavsdk_telemetry_angular_velocity_body_t c_struct{};
+    c_struct.roll_rad_s = cpp_struct.roll_rad_s;
+    c_struct.pitch_rad_s = cpp_struct.pitch_rad_s;
+    c_struct.yaw_rad_s = cpp_struct.yaw_rad_s;
+    return c_struct;
+}
+
+
+static mavsdk_telemetry_gps_info_t
+translate_gps_info_to_c(const mavsdk::Telemetry::GpsInfo& cpp_struct) {
+    mavsdk_telemetry_gps_info_t c_struct{};
+    c_struct.num_satellites = cpp_struct.num_satellites;
+    c_struct.fix_type = translate_fix_type_to_c(cpp_struct.fix_type);
+    return c_struct;
+}
+
+
+static mavsdk_telemetry_raw_gps_t
+translate_raw_gps_to_c(const mavsdk::Telemetry::RawGps& cpp_struct) {
+    mavsdk_telemetry_raw_gps_t c_struct{};
+    c_struct.timestamp_us = cpp_struct.timestamp_us;
+    c_struct.latitude_deg = cpp_struct.latitude_deg;
+    c_struct.longitude_deg = cpp_struct.longitude_deg;
+    c_struct.absolute_altitude_m = cpp_struct.absolute_altitude_m;
+    c_struct.hdop = cpp_struct.hdop;
+    c_struct.vdop = cpp_struct.vdop;
+    c_struct.velocity_m_s = cpp_struct.velocity_m_s;
+    c_struct.cog_deg = cpp_struct.cog_deg;
+    c_struct.altitude_ellipsoid_m = cpp_struct.altitude_ellipsoid_m;
+    c_struct.horizontal_uncertainty_m = cpp_struct.horizontal_uncertainty_m;
+    c_struct.vertical_uncertainty_m = cpp_struct.vertical_uncertainty_m;
+    c_struct.velocity_uncertainty_m_s = cpp_struct.velocity_uncertainty_m_s;
+    c_struct.heading_uncertainty_deg = cpp_struct.heading_uncertainty_deg;
+    c_struct.yaw_deg = cpp_struct.yaw_deg;
+    return c_struct;
+}
+
+
+static mavsdk_telemetry_battery_t
+translate_battery_to_c(const mavsdk::Telemetry::Battery& cpp_struct) {
+    mavsdk_telemetry_battery_t c_struct{};
+    c_struct.id = cpp_struct.id;
+    c_struct.temperature_degc = cpp_struct.temperature_degc;
+    c_struct.voltage_v = cpp_struct.voltage_v;
+    c_struct.current_battery_a = cpp_struct.current_battery_a;
+    c_struct.capacity_consumed_ah = cpp_struct.capacity_consumed_ah;
+    c_struct.remaining_percent = cpp_struct.remaining_percent;
+    c_struct.time_remaining_s = cpp_struct.time_remaining_s;
+    c_struct.battery_function = translate_battery_function_to_c(cpp_struct.battery_function);
+    return c_struct;
+}
+
+
+static mavsdk_telemetry_health_t
+translate_health_to_c(const mavsdk::Telemetry::Health& cpp_struct) {
+    mavsdk_telemetry_health_t c_struct{};
+    c_struct.is_gyrometer_calibration_ok = cpp_struct.is_gyrometer_calibration_ok;
+    c_struct.is_accelerometer_calibration_ok = cpp_struct.is_accelerometer_calibration_ok;
+    c_struct.is_magnetometer_calibration_ok = cpp_struct.is_magnetometer_calibration_ok;
+    c_struct.is_local_position_ok = cpp_struct.is_local_position_ok;
+    c_struct.is_global_position_ok = cpp_struct.is_global_position_ok;
+    c_struct.is_home_position_ok = cpp_struct.is_home_position_ok;
+    c_struct.is_armable = cpp_struct.is_armable;
+    return c_struct;
+}
+
+
+static mavsdk_telemetry_rc_status_t
+translate_rc_status_to_c(const mavsdk::Telemetry::RcStatus& cpp_struct) {
+    mavsdk_telemetry_rc_status_t c_struct{};
+    c_struct.was_available_once = cpp_struct.was_available_once;
+    c_struct.is_available = cpp_struct.is_available;
+    c_struct.signal_strength_percent = cpp_struct.signal_strength_percent;
+    return c_struct;
+}
+
+
+static mavsdk_telemetry_status_text_t
+translate_status_text_to_c(const mavsdk::Telemetry::StatusText& cpp_struct) {
+    mavsdk_telemetry_status_text_t c_struct{};
+    c_struct.type = translate_status_text_type_to_c(cpp_struct.type);
+    c_struct.text = strdup(cpp_struct.text.c_str());
+    return c_struct;
+}
+
+void mavsdk_telemetry_status_text_destroy(
+    mavsdk_telemetry_status_text_t* target) {
+    if (!target) return;
+    if (target->text) {
+        free((void*)target->text);
     }
 }
 
-// Helper to copy Position from C++ to C
-static void copy_position_to_c(const Telemetry::Position& cpp_pos, mavsdk_telemetry_position_t* c_pos)
-{
-    if (!c_pos) return;
-    c_pos->latitude_deg = cpp_pos.latitude_deg;
-    c_pos->longitude_deg = cpp_pos.longitude_deg;
-    c_pos->absolute_altitude_m = cpp_pos.absolute_altitude_m;
-    c_pos->relative_altitude_m = c_pos->relative_altitude_m;
+static mavsdk_telemetry_actuator_control_target_t
+translate_actuator_control_target_to_c(const mavsdk::Telemetry::ActuatorControlTarget& cpp_struct) {
+    mavsdk_telemetry_actuator_control_target_t c_struct{};
+    c_struct.group = cpp_struct.group;
+    c_struct.controls_size = cpp_struct.controls.size();
+    c_struct.controls = new float[c_struct.controls_size];
+    std::copy(cpp_struct.controls.begin(), cpp_struct.controls.end(), c_struct.controls);
+    return c_struct;
 }
 
-// Helper to copy Quaternion from C++ to C
-static void copy_quaternion_to_c(const Telemetry::Quaternion& cpp_quat, mavsdk_telemetry_quaternion_t* c_quat)
-{
-    if (!c_quat) return;
-    c_quat->w = cpp_quat.w;
-    c_quat->x = cpp_quat.x;
-    c_quat->y = cpp_quat.y;
-    c_quat->z = cpp_quat.z;
-    c_quat->timestamp_us = cpp_quat.timestamp_us;
+void mavsdk_telemetry_actuator_control_target_destroy(
+    mavsdk_telemetry_actuator_control_target_t* target) {
+    if (!target) return;
+    if (target->controls) {
+        delete[] target->controls;
+        target->controls = nullptr;
+    }
 }
 
-// Helper to copy EulerAngle from C++ to C
-static void copy_euler_angle_to_c(const Telemetry::EulerAngle& cpp_euler, mavsdk_telemetry_euler_angle_t* c_euler)
-{
-    if (!c_euler) return;
-    c_euler->roll_deg = cpp_euler.roll_deg;
-    c_euler->pitch_deg = cpp_euler.pitch_deg;
-    c_euler->yaw_deg = cpp_euler.yaw_deg;
-    c_euler->timestamp_us = cpp_euler.timestamp_us;
+static mavsdk_telemetry_actuator_output_status_t
+translate_actuator_output_status_to_c(const mavsdk::Telemetry::ActuatorOutputStatus& cpp_struct) {
+    mavsdk_telemetry_actuator_output_status_t c_struct{};
+    c_struct.active = cpp_struct.active;
+    c_struct.actuator_size = cpp_struct.actuator.size();
+    c_struct.actuator = new float[c_struct.actuator_size];
+    std::copy(cpp_struct.actuator.begin(), cpp_struct.actuator.end(), c_struct.actuator);
+    return c_struct;
 }
 
-// Helper to copy AngularVelocityBody from C++ to C
-static void copy_angular_velocity_body_to_c(const Telemetry::AngularVelocityBody& cpp_ang_vel, mavsdk_telemetry_angular_velocity_body_t* c_ang_vel)
-{
-    if (!c_ang_vel) return;
-    c_ang_vel->roll_rad_s = cpp_ang_vel.roll_rad_s;
-    c_ang_vel->pitch_rad_s = cpp_ang_vel.pitch_rad_s;
-    c_ang_vel->yaw_rad_s = cpp_ang_vel.yaw_rad_s;
+void mavsdk_telemetry_actuator_output_status_destroy(
+    mavsdk_telemetry_actuator_output_status_t* target) {
+    if (!target) return;
+    if (target->actuator) {
+        delete[] target->actuator;
+        target->actuator = nullptr;
+    }
 }
 
-// Helper to copy VelocityNed from C++ to C
-static void copy_velocity_ned_to_c(const Telemetry::VelocityNed& cpp_vel, mavsdk_telemetry_velocity_ned_t* c_vel)
-{
-    if (!c_vel) return;
-    c_vel->north_m_s = cpp_vel.north_m_s;
-    c_vel->east_m_s = cpp_vel.east_m_s;
-    c_vel->down_m_s = cpp_vel.down_m_s;
+static mavsdk_telemetry_covariance_t
+translate_covariance_to_c(const mavsdk::Telemetry::Covariance& cpp_struct) {
+    mavsdk_telemetry_covariance_t c_struct{};
+    c_struct.covariance_matrix_size = cpp_struct.covariance_matrix.size();
+    c_struct.covariance_matrix = new float[c_struct.covariance_matrix_size];
+    std::copy(cpp_struct.covariance_matrix.begin(), cpp_struct.covariance_matrix.end(), c_struct.covariance_matrix);
+    return c_struct;
 }
 
-// Helper to copy GpsInfo from C++ to C
-static void copy_gps_info_to_c(const Telemetry::GpsInfo& cpp_gps, mavsdk_telemetry_gps_info_t* c_gps)
-{
-    if (!c_gps) return;
-    c_gps->num_satellites = cpp_gps.num_satellites;
-    c_gps->fix_type = fix_type_from_cpp(cpp_gps.fix_type);
+void mavsdk_telemetry_covariance_destroy(
+    mavsdk_telemetry_covariance_t* target) {
+    if (!target) return;
+    if (target->covariance_matrix) {
+        delete[] target->covariance_matrix;
+        target->covariance_matrix = nullptr;
+    }
 }
 
-// Helper to copy Battery from C++ to C
-static void copy_battery_to_c(const Telemetry::Battery& cpp_battery, mavsdk_telemetry_battery_t* c_battery)
-{
-    if (!c_battery) return;
-    c_battery->id = cpp_battery.id;
-    c_battery->temperature_degc = cpp_battery.temperature_degc;
-    c_battery->voltage_v = cpp_battery.voltage_v;
-    c_battery->current_battery_a = cpp_battery.current_battery_a;
-    c_battery->capacity_consumed_ah = cpp_battery.capacity_consumed_ah;
-    c_battery->remaining_percent = cpp_battery.remaining_percent;
-    c_battery->time_remaining_s = cpp_battery.time_remaining_s;
+static mavsdk_telemetry_velocity_body_t
+translate_velocity_body_to_c(const mavsdk::Telemetry::VelocityBody& cpp_struct) {
+    mavsdk_telemetry_velocity_body_t c_struct{};
+    c_struct.x_m_s = cpp_struct.x_m_s;
+    c_struct.y_m_s = cpp_struct.y_m_s;
+    c_struct.z_m_s = cpp_struct.z_m_s;
+    return c_struct;
 }
 
-// Helper to copy Health from C++ to C
-static void copy_health_to_c(const Telemetry::Health& cpp_health, mavsdk_telemetry_health_t* c_health)
-{
-    if (!c_health) return;
-    c_health->is_gyrometer_calibration_ok = cpp_health.is_gyrometer_calibration_ok;
-    c_health->is_accelerometer_calibration_ok = cpp_health.is_accelerometer_calibration_ok;
-    c_health->is_magnetometer_calibration_ok = cpp_health.is_magnetometer_calibration_ok;
-    c_health->is_local_position_ok = cpp_health.is_local_position_ok;
-    c_health->is_global_position_ok = cpp_health.is_global_position_ok;
-    c_health->is_home_position_ok = cpp_health.is_home_position_ok;
-    c_health->is_armable = cpp_health.is_armable;
+
+static mavsdk_telemetry_position_body_t
+translate_position_body_to_c(const mavsdk::Telemetry::PositionBody& cpp_struct) {
+    mavsdk_telemetry_position_body_t c_struct{};
+    c_struct.x_m = cpp_struct.x_m;
+    c_struct.y_m = cpp_struct.y_m;
+    c_struct.z_m = cpp_struct.z_m;
+    return c_struct;
 }
 
-// Helper to copy RcStatus from C++ to C
-static void copy_rc_status_to_c(const Telemetry::RcStatus& cpp_rc, mavsdk_telemetry_rc_status_t* c_rc)
-{
-    if (!c_rc) return;
-    c_rc->was_available_once = cpp_rc.was_available_once;
-    c_rc->is_available = cpp_rc.is_available;
-    c_rc->signal_strength_percent = cpp_rc.signal_strength_percent;
+
+
+static mavsdk_telemetry_odometry_mav_frame_t
+translate_odometry_mav_frame_to_c(mavsdk::Telemetry::Odometry::MavFrame cpp_enum) {
+    switch(cpp_enum) {
+        case mavsdk::Telemetry::Odometry::MavFrame::Undef:
+            return MAVSDK_TELEMETRY_ODOMETRY_MAV_FRAME_UNDEF;
+        case mavsdk::Telemetry::Odometry::MavFrame::BodyNed:
+            return MAVSDK_TELEMETRY_ODOMETRY_MAV_FRAME_BODY_NED;
+        case mavsdk::Telemetry::Odometry::MavFrame::VisionNed:
+            return MAVSDK_TELEMETRY_ODOMETRY_MAV_FRAME_VISION_NED;
+        case mavsdk::Telemetry::Odometry::MavFrame::EstimNed:
+            return MAVSDK_TELEMETRY_ODOMETRY_MAV_FRAME_ESTIM_NED;
+    }
+    return MAVSDK_TELEMETRY_ODOMETRY_MAV_FRAME_UNDEF;
 }
 
-// Callback wrapper structures
-struct TelemetryResultCallbackWrapper {
-    mavsdk_telemetry_result_callback_t user_callback;
-    void* user_data;
+static mavsdk_telemetry_odometry_t
+translate_odometry_to_c(const mavsdk::Telemetry::Odometry& cpp_struct) {
+    mavsdk_telemetry_odometry_t c_struct{};
+    c_struct.time_usec = cpp_struct.time_usec;
+    c_struct.frame_id = translate_odometry_mav_frame_to_c(cpp_struct.frame_id);
+    c_struct.child_frame_id = translate_odometry_mav_frame_to_c(cpp_struct.child_frame_id);
+    c_struct.position_body = translate_position_body_to_c(cpp_struct.position_body);
+    c_struct.q = translate_quaternion_to_c(cpp_struct.q);
+    c_struct.velocity_body = translate_velocity_body_to_c(cpp_struct.velocity_body);
+    c_struct.angular_velocity_body = translate_angular_velocity_body_to_c(cpp_struct.angular_velocity_body);
+    c_struct.pose_covariance = translate_covariance_to_c(cpp_struct.pose_covariance);
+    c_struct.velocity_covariance = translate_covariance_to_c(cpp_struct.velocity_covariance);
+    return c_struct;
+}
+
+
+static mavsdk_telemetry_distance_sensor_t
+translate_distance_sensor_to_c(const mavsdk::Telemetry::DistanceSensor& cpp_struct) {
+    mavsdk_telemetry_distance_sensor_t c_struct{};
+    c_struct.minimum_distance_m = cpp_struct.minimum_distance_m;
+    c_struct.maximum_distance_m = cpp_struct.maximum_distance_m;
+    c_struct.current_distance_m = cpp_struct.current_distance_m;
+    c_struct.orientation = translate_euler_angle_to_c(cpp_struct.orientation);
+    return c_struct;
+}
+
+
+static mavsdk_telemetry_scaled_pressure_t
+translate_scaled_pressure_to_c(const mavsdk::Telemetry::ScaledPressure& cpp_struct) {
+    mavsdk_telemetry_scaled_pressure_t c_struct{};
+    c_struct.timestamp_us = cpp_struct.timestamp_us;
+    c_struct.absolute_pressure_hpa = cpp_struct.absolute_pressure_hpa;
+    c_struct.differential_pressure_hpa = cpp_struct.differential_pressure_hpa;
+    c_struct.temperature_deg = cpp_struct.temperature_deg;
+    c_struct.differential_pressure_temperature_deg = cpp_struct.differential_pressure_temperature_deg;
+    return c_struct;
+}
+
+
+static mavsdk_telemetry_position_ned_t
+translate_position_ned_to_c(const mavsdk::Telemetry::PositionNed& cpp_struct) {
+    mavsdk_telemetry_position_ned_t c_struct{};
+    c_struct.north_m = cpp_struct.north_m;
+    c_struct.east_m = cpp_struct.east_m;
+    c_struct.down_m = cpp_struct.down_m;
+    return c_struct;
+}
+
+
+static mavsdk_telemetry_velocity_ned_t
+translate_velocity_ned_to_c(const mavsdk::Telemetry::VelocityNed& cpp_struct) {
+    mavsdk_telemetry_velocity_ned_t c_struct{};
+    c_struct.north_m_s = cpp_struct.north_m_s;
+    c_struct.east_m_s = cpp_struct.east_m_s;
+    c_struct.down_m_s = cpp_struct.down_m_s;
+    return c_struct;
+}
+
+
+static mavsdk_telemetry_position_velocity_ned_t
+translate_position_velocity_ned_to_c(const mavsdk::Telemetry::PositionVelocityNed& cpp_struct) {
+    mavsdk_telemetry_position_velocity_ned_t c_struct{};
+    c_struct.position = translate_position_ned_to_c(cpp_struct.position);
+    c_struct.velocity = translate_velocity_ned_to_c(cpp_struct.velocity);
+    return c_struct;
+}
+
+
+static mavsdk_telemetry_ground_truth_t
+translate_ground_truth_to_c(const mavsdk::Telemetry::GroundTruth& cpp_struct) {
+    mavsdk_telemetry_ground_truth_t c_struct{};
+    c_struct.latitude_deg = cpp_struct.latitude_deg;
+    c_struct.longitude_deg = cpp_struct.longitude_deg;
+    c_struct.absolute_altitude_m = cpp_struct.absolute_altitude_m;
+    return c_struct;
+}
+
+
+static mavsdk_telemetry_fixedwing_metrics_t
+translate_fixedwing_metrics_to_c(const mavsdk::Telemetry::FixedwingMetrics& cpp_struct) {
+    mavsdk_telemetry_fixedwing_metrics_t c_struct{};
+    c_struct.airspeed_m_s = cpp_struct.airspeed_m_s;
+    c_struct.throttle_percentage = cpp_struct.throttle_percentage;
+    c_struct.climb_rate_m_s = cpp_struct.climb_rate_m_s;
+    c_struct.groundspeed_m_s = cpp_struct.groundspeed_m_s;
+    c_struct.heading_deg = cpp_struct.heading_deg;
+    c_struct.absolute_altitude_m = cpp_struct.absolute_altitude_m;
+    return c_struct;
+}
+
+
+static mavsdk_telemetry_acceleration_frd_t
+translate_acceleration_frd_to_c(const mavsdk::Telemetry::AccelerationFrd& cpp_struct) {
+    mavsdk_telemetry_acceleration_frd_t c_struct{};
+    c_struct.forward_m_s2 = cpp_struct.forward_m_s2;
+    c_struct.right_m_s2 = cpp_struct.right_m_s2;
+    c_struct.down_m_s2 = cpp_struct.down_m_s2;
+    return c_struct;
+}
+
+
+static mavsdk_telemetry_angular_velocity_frd_t
+translate_angular_velocity_frd_to_c(const mavsdk::Telemetry::AngularVelocityFrd& cpp_struct) {
+    mavsdk_telemetry_angular_velocity_frd_t c_struct{};
+    c_struct.forward_rad_s = cpp_struct.forward_rad_s;
+    c_struct.right_rad_s = cpp_struct.right_rad_s;
+    c_struct.down_rad_s = cpp_struct.down_rad_s;
+    return c_struct;
+}
+
+
+static mavsdk_telemetry_magnetic_field_frd_t
+translate_magnetic_field_frd_to_c(const mavsdk::Telemetry::MagneticFieldFrd& cpp_struct) {
+    mavsdk_telemetry_magnetic_field_frd_t c_struct{};
+    c_struct.forward_gauss = cpp_struct.forward_gauss;
+    c_struct.right_gauss = cpp_struct.right_gauss;
+    c_struct.down_gauss = cpp_struct.down_gauss;
+    return c_struct;
+}
+
+
+static mavsdk_telemetry_imu_t
+translate_imu_to_c(const mavsdk::Telemetry::Imu& cpp_struct) {
+    mavsdk_telemetry_imu_t c_struct{};
+    c_struct.acceleration_frd = translate_acceleration_frd_to_c(cpp_struct.acceleration_frd);
+    c_struct.angular_velocity_frd = translate_angular_velocity_frd_to_c(cpp_struct.angular_velocity_frd);
+    c_struct.magnetic_field_frd = translate_magnetic_field_frd_to_c(cpp_struct.magnetic_field_frd);
+    c_struct.temperature_degc = cpp_struct.temperature_degc;
+    c_struct.timestamp_us = cpp_struct.timestamp_us;
+    return c_struct;
+}
+
+
+static mavsdk_telemetry_gps_global_origin_t
+translate_gps_global_origin_to_c(const mavsdk::Telemetry::GpsGlobalOrigin& cpp_struct) {
+    mavsdk_telemetry_gps_global_origin_t c_struct{};
+    c_struct.latitude_deg = cpp_struct.latitude_deg;
+    c_struct.longitude_deg = cpp_struct.longitude_deg;
+    c_struct.altitude_m = cpp_struct.altitude_m;
+    return c_struct;
+}
+
+
+static mavsdk_telemetry_altitude_t
+translate_altitude_to_c(const mavsdk::Telemetry::Altitude& cpp_struct) {
+    mavsdk_telemetry_altitude_t c_struct{};
+    c_struct.altitude_monotonic_m = cpp_struct.altitude_monotonic_m;
+    c_struct.altitude_amsl_m = cpp_struct.altitude_amsl_m;
+    c_struct.altitude_local_m = cpp_struct.altitude_local_m;
+    c_struct.altitude_relative_m = cpp_struct.altitude_relative_m;
+    c_struct.altitude_terrain_m = cpp_struct.altitude_terrain_m;
+    c_struct.bottom_clearance_m = cpp_struct.bottom_clearance_m;
+    return c_struct;
+}
+
+
+static mavsdk_telemetry_wind_t
+translate_wind_to_c(const mavsdk::Telemetry::Wind& cpp_struct) {
+    mavsdk_telemetry_wind_t c_struct{};
+    c_struct.wind_x_ned_m_s = cpp_struct.wind_x_ned_m_s;
+    c_struct.wind_y_ned_m_s = cpp_struct.wind_y_ned_m_s;
+    c_struct.wind_z_ned_m_s = cpp_struct.wind_z_ned_m_s;
+    c_struct.horizontal_variability_stddev_m_s = cpp_struct.horizontal_variability_stddev_m_s;
+    c_struct.vertical_variability_stddev_m_s = cpp_struct.vertical_variability_stddev_m_s;
+    c_struct.wind_altitude_msl_m = cpp_struct.wind_altitude_msl_m;
+    c_struct.horizontal_wind_speed_accuracy_m_s = cpp_struct.horizontal_wind_speed_accuracy_m_s;
+    c_struct.vertical_wind_speed_accuracy_m_s = cpp_struct.vertical_wind_speed_accuracy_m_s;
+    return c_struct;
+}
+
+
+
+// ===== Telemetry Wrapper =====
+
+struct mavsdk_telemetry_wrapper {
+    std::shared_ptr<mavsdk::Telemetry> cpp_plugin;
 };
 
-struct PositionCallbackWrapper {
-    mavsdk_telemetry_position_callback_t user_callback;
-    void* user_data;
-};
-
-struct HomeCallbackWrapper {
-    mavsdk_telemetry_home_callback_t user_callback;
-    void* user_data;
-};
-
-struct InAirCallbackWrapper {
-    mavsdk_telemetry_in_air_callback_t user_callback;
-    void* user_data;
-};
-
-struct LandedStateCallbackWrapper {
-    mavsdk_telemetry_landed_state_callback_t user_callback;
-    void* user_data;
-};
-
-struct ArmedCallbackWrapper {
-    mavsdk_telemetry_armed_callback_t user_callback;
-    void* user_data;
-};
-
-struct VtolStateCallbackWrapper {
-    mavsdk_telemetry_vtol_state_callback_t user_callback;
-    void* user_data;
-};
-
-struct AttitudeQuaternionCallbackWrapper {
-    mavsdk_telemetry_attitude_quaternion_callback_t user_callback;
-    void* user_data;
-};
-
-struct AttitudeEulerCallbackWrapper {
-    mavsdk_telemetry_attitude_euler_callback_t user_callback;
-    void* user_data;
-};
-
-struct AttitudeAngularVelocityBodyCallbackWrapper {
-    mavsdk_telemetry_attitude_angular_velocity_body_callback_t user_callback;
-    void* user_data;
-};
-
-struct VelocityNedCallbackWrapper {
-    mavsdk_telemetry_velocity_ned_callback_t user_callback;
-    void* user_data;
-};
-
-struct GpsInfoCallbackWrapper {
-    mavsdk_telemetry_gps_info_callback_t user_callback;
-    void* user_data;
-};
-
-struct BatteryCallbackWrapper {
-    mavsdk_telemetry_battery_callback_t user_callback;
-    void* user_data;
-};
-
-struct FlightModeCallbackWrapper {
-    mavsdk_telemetry_flight_mode_callback_t user_callback;
-    void* user_data;
-};
-
-struct HealthCallbackWrapper {
-    mavsdk_telemetry_health_callback_t user_callback;
-    void* user_data;
-};
-
-struct RcStatusCallbackWrapper {
-    mavsdk_telemetry_rc_status_callback_t user_callback;
-    void* user_data;
-};
-
-struct StatusTextCallbackWrapper {
-    mavsdk_telemetry_status_text_callback_t user_callback;
-    void* user_data;
-};
-
-struct HealthAllOkCallbackWrapper {
-    mavsdk_telemetry_health_all_ok_callback_t user_callback;
-    void* user_data;
-};
-
-extern "C" {
-
-// ===== Telemetry Creation/Destruction =====
-mavsdk_telemetry_t mavsdk_telemetry_create(mavsdk_system_t system)
-{
-    auto* cpp_system_ptr = static_cast<System**>(system);
-    if (!cpp_system_ptr || !*cpp_system_ptr) {
+mavsdk_telemetry_t 
+mavsdk_telemetry_create(mavsdk_system_t system) {
+    if (system == nullptr) {
         return nullptr;
     }
     
-    auto* telemetry = new Telemetry(std::shared_ptr<System>(*cpp_system_ptr, [](System*) {
-        // Empty deleter - we don't own the System, the mavsdk_t does
-    }));
-    return static_cast<mavsdk_telemetry_t>(telemetry);
+    auto wrapper = new mavsdk_telemetry_wrapper();
+    auto system_ptr = static_cast<std::shared_ptr<mavsdk::System>*>(system);
+    wrapper->cpp_plugin = std::make_shared<mavsdk::Telemetry>(*system_ptr);
+    
+    return wrapper;
 }
 
-void mavsdk_telemetry_destroy(mavsdk_telemetry_t telemetry)
-{
-    auto* cpp_telemetry = static_cast<Telemetry*>(telemetry);
-    delete cpp_telemetry;
+void mavsdk_telemetry_destroy(mavsdk_telemetry_t telemetry) {
+    if (telemetry == nullptr) {
+        return;
+    }
+    
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    delete wrapper;
 }
 
-// ===== Subscription Methods =====
+// ===== Method Implementations =====
+
+// Position async
 mavsdk_telemetry_position_handle_t mavsdk_telemetry_subscribe_position(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_position_callback_t callback,
     void* user_data)
 {
-    auto* cpp_telemetry = static_cast<Telemetry*>(telemetry);
-    if (!cpp_telemetry) return nullptr;
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
     
-    auto* wrapper = new PositionCallbackWrapper{callback, user_data};
-    auto cpp_handle = cpp_telemetry->subscribe_position([wrapper](Telemetry::Position position) {
-        if (wrapper->user_callback) {
-            mavsdk_telemetry_position_t c_position;
-            copy_position_to_c(position, &c_position);
-            wrapper->user_callback(&c_position, wrapper->user_data);
-        }
-    });
+    auto cpp_handle = wrapper->cpp_plugin->subscribe_position(
+        [callback, user_data](mavsdk::Telemetry::Position value) {
+            if (callback) {
+                callback(
+                    translate_position_to_c(value),
+                    user_data);
+            }
+        });
     
-    auto* handle_pair = new std::pair<Telemetry::PositionHandle, PositionCallbackWrapper*>(cpp_handle, wrapper);
-    return static_cast<mavsdk_telemetry_position_handle_t>(handle_pair);
+    auto handle_wrapper = new mavsdk::Telemetry::PositionHandle(std::move(cpp_handle));
+    return static_cast<mavsdk_telemetry_position_handle_t>(handle_wrapper);
 }
 
 void mavsdk_telemetry_unsubscribe_position(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_position_handle_t handle)
 {
-    auto* cpp_telemetry = static_cast<Telemetry*>(telemetry);
-    auto* handle_pair = static_cast<std::pair<Telemetry::PositionHandle, PositionCallbackWrapper*>*>(handle);
-    
-    if (cpp_telemetry && handle_pair) {
-        cpp_telemetry->unsubscribe_position(handle_pair->first);
-        delete handle_pair->second;
-        delete handle_pair;
+    if (handle) {
+        auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+        auto cpp_handle = static_cast<mavsdk::Telemetry::PositionHandle*>(handle);
+        wrapper->cpp_plugin->unsubscribe_position(std::move(*cpp_handle));
+        delete cpp_handle;
     }
 }
 
+// Position sync
+void
+mavsdk_telemetry_position(
+    mavsdk_telemetry_t telemetry,
+mavsdk_telemetry_position_t* position_out)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+    auto ret_value = wrapper->cpp_plugin->position();
+    
+    if (position_out != nullptr) {
+        *position_out = translate_position_to_c(ret_value);
+    }
+}
+
+// Home async
 mavsdk_telemetry_home_handle_t mavsdk_telemetry_subscribe_home(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_home_callback_t callback,
     void* user_data)
 {
-    auto* cpp_telemetry = static_cast<Telemetry*>(telemetry);
-    if (!cpp_telemetry) return nullptr;
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
     
-    auto* wrapper = new HomeCallbackWrapper{callback, user_data};
-    auto cpp_handle = cpp_telemetry->subscribe_home([wrapper](Telemetry::Position home) {
-        if (wrapper->user_callback) {
-            mavsdk_telemetry_position_t c_home;
-            copy_position_to_c(home, &c_home);
-            wrapper->user_callback(&c_home, wrapper->user_data);
-        }
-    });
+    auto cpp_handle = wrapper->cpp_plugin->subscribe_home(
+        [callback, user_data](mavsdk::Telemetry::Position value) {
+            if (callback) {
+                callback(
+                    translate_position_to_c(value),
+                    user_data);
+            }
+        });
     
-    auto* handle_pair = new std::pair<Telemetry::HomeHandle, HomeCallbackWrapper*>(cpp_handle, wrapper);
-    return static_cast<mavsdk_telemetry_home_handle_t>(handle_pair);
+    auto handle_wrapper = new mavsdk::Telemetry::HomeHandle(std::move(cpp_handle));
+    return static_cast<mavsdk_telemetry_home_handle_t>(handle_wrapper);
 }
 
 void mavsdk_telemetry_unsubscribe_home(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_home_handle_t handle)
 {
-    auto* cpp_telemetry = static_cast<Telemetry*>(telemetry);
-    auto* handle_pair = static_cast<std::pair<Telemetry::HomeHandle, HomeCallbackWrapper*>*>(handle);
-    
-    if (cpp_telemetry && handle_pair) {
-        cpp_telemetry->unsubscribe_home(handle_pair->first);
-        delete handle_pair->second;
-        delete handle_pair;
+    if (handle) {
+        auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+        auto cpp_handle = static_cast<mavsdk::Telemetry::HomeHandle*>(handle);
+        wrapper->cpp_plugin->unsubscribe_home(std::move(*cpp_handle));
+        delete cpp_handle;
     }
 }
 
+// Home sync
+void
+mavsdk_telemetry_home(
+    mavsdk_telemetry_t telemetry,
+mavsdk_telemetry_position_t* home_out)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+    auto ret_value = wrapper->cpp_plugin->home();
+    
+    if (home_out != nullptr) {
+        *home_out = translate_position_to_c(ret_value);
+    }
+}
+
+// InAir async
 mavsdk_telemetry_in_air_handle_t mavsdk_telemetry_subscribe_in_air(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_in_air_callback_t callback,
     void* user_data)
 {
-    auto* cpp_telemetry = static_cast<Telemetry*>(telemetry);
-    if (!cpp_telemetry) return nullptr;
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
     
-    auto* wrapper = new InAirCallbackWrapper{callback, user_data};
-    auto cpp_handle = cpp_telemetry->subscribe_in_air([wrapper](bool in_air) {
-        if (wrapper->user_callback) {
-            wrapper->user_callback(in_air, wrapper->user_data);
-        }
-    });
+    auto cpp_handle = wrapper->cpp_plugin->subscribe_in_air(
+        [callback, user_data](bool value) {
+            if (callback) {
+                callback(
+                    value,
+                    user_data);
+            }
+        });
     
-    auto* handle_pair = new std::pair<Telemetry::InAirHandle, InAirCallbackWrapper*>(cpp_handle, wrapper);
-    return static_cast<mavsdk_telemetry_in_air_handle_t>(handle_pair);
+    auto handle_wrapper = new mavsdk::Telemetry::InAirHandle(std::move(cpp_handle));
+    return static_cast<mavsdk_telemetry_in_air_handle_t>(handle_wrapper);
 }
 
 void mavsdk_telemetry_unsubscribe_in_air(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_in_air_handle_t handle)
 {
-    auto* cpp_telemetry = static_cast<Telemetry*>(telemetry);
-    auto* handle_pair = static_cast<std::pair<Telemetry::InAirHandle, InAirCallbackWrapper*>*>(handle);
-    
-    if (cpp_telemetry && handle_pair) {
-        cpp_telemetry->unsubscribe_in_air(handle_pair->first);
-        delete handle_pair->second;
-        delete handle_pair;
+    if (handle) {
+        auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+        auto cpp_handle = static_cast<mavsdk::Telemetry::InAirHandle*>(handle);
+        wrapper->cpp_plugin->unsubscribe_in_air(std::move(*cpp_handle));
+        delete cpp_handle;
     }
 }
 
+// InAir sync
+void
+mavsdk_telemetry_in_air(
+    mavsdk_telemetry_t telemetry,
+bool* is_in_air_out)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+    auto ret_value = wrapper->cpp_plugin->in_air();
+    
+    *is_in_air_out = ret_value;
+}
+
+// LandedState async
 mavsdk_telemetry_landed_state_handle_t mavsdk_telemetry_subscribe_landed_state(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_landed_state_callback_t callback,
     void* user_data)
 {
-    auto* cpp_telemetry = static_cast<Telemetry*>(telemetry);
-    if (!cpp_telemetry) return nullptr;
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
     
-    auto* wrapper = new LandedStateCallbackWrapper{callback, user_data};
-    auto cpp_handle = cpp_telemetry->subscribe_landed_state([wrapper](Telemetry::LandedState landed_state) {
-        if (wrapper->user_callback) {
-            wrapper->user_callback(landed_state_from_cpp(landed_state), wrapper->user_data);
-        }
-    });
+    auto cpp_handle = wrapper->cpp_plugin->subscribe_landed_state(
+        [callback, user_data](mavsdk::Telemetry::LandedState value) {
+            if (callback) {
+                callback(
+                    translate_landed_state_to_c(value),
+                    user_data);
+            }
+        });
     
-    auto* handle_pair = new std::pair<Telemetry::LandedStateHandle, LandedStateCallbackWrapper*>(cpp_handle, wrapper);
-    return static_cast<mavsdk_telemetry_landed_state_handle_t>(handle_pair);
+    auto handle_wrapper = new mavsdk::Telemetry::LandedStateHandle(std::move(cpp_handle));
+    return static_cast<mavsdk_telemetry_landed_state_handle_t>(handle_wrapper);
 }
 
 void mavsdk_telemetry_unsubscribe_landed_state(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_landed_state_handle_t handle)
 {
-    auto* cpp_telemetry = static_cast<Telemetry*>(telemetry);
-    auto* handle_pair = static_cast<std::pair<Telemetry::LandedStateHandle, LandedStateCallbackWrapper*>*>(handle);
-    
-    if (cpp_telemetry && handle_pair) {
-        cpp_telemetry->unsubscribe_landed_state(handle_pair->first);
-        delete handle_pair->second;
-        delete handle_pair;
+    if (handle) {
+        auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+        auto cpp_handle = static_cast<mavsdk::Telemetry::LandedStateHandle*>(handle);
+        wrapper->cpp_plugin->unsubscribe_landed_state(std::move(*cpp_handle));
+        delete cpp_handle;
     }
 }
 
+// LandedState sync
+void
+mavsdk_telemetry_landed_state(
+    mavsdk_telemetry_t telemetry,
+mavsdk_telemetry_landed_state_t* landed_state_out)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+    auto ret_value = wrapper->cpp_plugin->landed_state();
+    
+    if (landed_state_out != nullptr) {
+        *landed_state_out = translate_landed_state_to_c(ret_value);
+    }
+}
+
+// Armed async
 mavsdk_telemetry_armed_handle_t mavsdk_telemetry_subscribe_armed(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_armed_callback_t callback,
     void* user_data)
 {
-    auto* cpp_telemetry = static_cast<Telemetry*>(telemetry);
-    if (!cpp_telemetry) return nullptr;
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
     
-    auto* wrapper = new ArmedCallbackWrapper{callback, user_data};
-    auto cpp_handle = cpp_telemetry->subscribe_armed([wrapper](bool armed) {
-        if (wrapper->user_callback) {
-            wrapper->user_callback(armed, wrapper->user_data);
-        }
-    });
+    auto cpp_handle = wrapper->cpp_plugin->subscribe_armed(
+        [callback, user_data](bool value) {
+            if (callback) {
+                callback(
+                    value,
+                    user_data);
+            }
+        });
     
-    auto* handle_pair = new std::pair<Telemetry::ArmedHandle, ArmedCallbackWrapper*>(cpp_handle, wrapper);
-    return static_cast<mavsdk_telemetry_armed_handle_t>(handle_pair);
+    auto handle_wrapper = new mavsdk::Telemetry::ArmedHandle(std::move(cpp_handle));
+    return static_cast<mavsdk_telemetry_armed_handle_t>(handle_wrapper);
 }
 
 void mavsdk_telemetry_unsubscribe_armed(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_armed_handle_t handle)
 {
-    auto* cpp_telemetry = static_cast<Telemetry*>(telemetry);
-    auto* handle_pair = static_cast<std::pair<Telemetry::ArmedHandle, ArmedCallbackWrapper*>*>(handle);
-    
-    if (cpp_telemetry && handle_pair) {
-        cpp_telemetry->unsubscribe_armed(handle_pair->first);
-        delete handle_pair->second;
-        delete handle_pair;
+    if (handle) {
+        auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+        auto cpp_handle = static_cast<mavsdk::Telemetry::ArmedHandle*>(handle);
+        wrapper->cpp_plugin->unsubscribe_armed(std::move(*cpp_handle));
+        delete cpp_handle;
     }
 }
 
+// Armed sync
+void
+mavsdk_telemetry_armed(
+    mavsdk_telemetry_t telemetry,
+bool* is_armed_out)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+    auto ret_value = wrapper->cpp_plugin->armed();
+    
+    *is_armed_out = ret_value;
+}
+
+// VtolState async
 mavsdk_telemetry_vtol_state_handle_t mavsdk_telemetry_subscribe_vtol_state(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_vtol_state_callback_t callback,
     void* user_data)
 {
-    auto* cpp_telemetry = static_cast<Telemetry*>(telemetry);
-    if (!cpp_telemetry) return nullptr;
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
     
-    auto* wrapper = new VtolStateCallbackWrapper{callback, user_data};
-    auto cpp_handle = cpp_telemetry->subscribe_vtol_state([wrapper](Telemetry::VtolState vtol_state) {
-        if (wrapper->user_callback) {
-            wrapper->user_callback(vtol_state_from_cpp(vtol_state), wrapper->user_data);
-        }
-    });
+    auto cpp_handle = wrapper->cpp_plugin->subscribe_vtol_state(
+        [callback, user_data](mavsdk::Telemetry::VtolState value) {
+            if (callback) {
+                callback(
+                    translate_vtol_state_to_c(value),
+                    user_data);
+            }
+        });
     
-    auto* handle_pair = new std::pair<Telemetry::VtolStateHandle, VtolStateCallbackWrapper*>(cpp_handle, wrapper);
-    return static_cast<mavsdk_telemetry_vtol_state_handle_t>(handle_pair);
+    auto handle_wrapper = new mavsdk::Telemetry::VtolStateHandle(std::move(cpp_handle));
+    return static_cast<mavsdk_telemetry_vtol_state_handle_t>(handle_wrapper);
 }
 
 void mavsdk_telemetry_unsubscribe_vtol_state(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_vtol_state_handle_t handle)
 {
-    auto* cpp_telemetry = static_cast<Telemetry*>(telemetry);
-    auto* handle_pair = static_cast<std::pair<Telemetry::VtolStateHandle, VtolStateCallbackWrapper*>*>(handle);
-    
-    if (cpp_telemetry && handle_pair) {
-        cpp_telemetry->unsubscribe_vtol_state(handle_pair->first);
-        delete handle_pair->second;
-        delete handle_pair;
+    if (handle) {
+        auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+        auto cpp_handle = static_cast<mavsdk::Telemetry::VtolStateHandle*>(handle);
+        wrapper->cpp_plugin->unsubscribe_vtol_state(std::move(*cpp_handle));
+        delete cpp_handle;
     }
 }
 
+// VtolState sync
+void
+mavsdk_telemetry_vtol_state(
+    mavsdk_telemetry_t telemetry,
+mavsdk_telemetry_vtol_state_t* vtol_state_out)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+    auto ret_value = wrapper->cpp_plugin->vtol_state();
+    
+    if (vtol_state_out != nullptr) {
+        *vtol_state_out = translate_vtol_state_to_c(ret_value);
+    }
+}
+
+// AttitudeQuaternion async
 mavsdk_telemetry_attitude_quaternion_handle_t mavsdk_telemetry_subscribe_attitude_quaternion(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_attitude_quaternion_callback_t callback,
     void* user_data)
 {
-    auto* cpp_telemetry = static_cast<Telemetry*>(telemetry);
-    if (!cpp_telemetry) return nullptr;
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
     
-    auto* wrapper = new AttitudeQuaternionCallbackWrapper{callback, user_data};
-    auto cpp_handle = cpp_telemetry->subscribe_attitude_quaternion([wrapper](Telemetry::Quaternion quaternion) {
-        if (wrapper->user_callback) {
-            mavsdk_telemetry_quaternion_t c_quaternion;
-            copy_quaternion_to_c(quaternion, &c_quaternion);
-            wrapper->user_callback(&c_quaternion, wrapper->user_data);
-        }
-    });
+    auto cpp_handle = wrapper->cpp_plugin->subscribe_attitude_quaternion(
+        [callback, user_data](mavsdk::Telemetry::Quaternion value) {
+            if (callback) {
+                callback(
+                    translate_quaternion_to_c(value),
+                    user_data);
+            }
+        });
     
-    auto* handle_pair = new std::pair<Telemetry::AttitudeQuaternionHandle, AttitudeQuaternionCallbackWrapper*>(cpp_handle, wrapper);
-    return static_cast<mavsdk_telemetry_attitude_quaternion_handle_t>(handle_pair);
+    auto handle_wrapper = new mavsdk::Telemetry::AttitudeQuaternionHandle(std::move(cpp_handle));
+    return static_cast<mavsdk_telemetry_attitude_quaternion_handle_t>(handle_wrapper);
 }
 
 void mavsdk_telemetry_unsubscribe_attitude_quaternion(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_attitude_quaternion_handle_t handle)
 {
-    auto* cpp_telemetry = static_cast<Telemetry*>(telemetry);
-    auto* handle_pair = static_cast<std::pair<Telemetry::AttitudeQuaternionHandle, AttitudeQuaternionCallbackWrapper*>*>(handle);
-    
-    if (cpp_telemetry && handle_pair) {
-        cpp_telemetry->unsubscribe_attitude_quaternion(handle_pair->first);
-        delete handle_pair->second;
-        delete handle_pair;
+    if (handle) {
+        auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+        auto cpp_handle = static_cast<mavsdk::Telemetry::AttitudeQuaternionHandle*>(handle);
+        wrapper->cpp_plugin->unsubscribe_attitude_quaternion(std::move(*cpp_handle));
+        delete cpp_handle;
     }
 }
 
+// AttitudeQuaternion sync
+void
+mavsdk_telemetry_attitude_quaternion(
+    mavsdk_telemetry_t telemetry,
+mavsdk_telemetry_quaternion_t* attitude_quaternion_out)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+    auto ret_value = wrapper->cpp_plugin->attitude_quaternion();
+    
+    if (attitude_quaternion_out != nullptr) {
+        *attitude_quaternion_out = translate_quaternion_to_c(ret_value);
+    }
+}
+
+// AttitudeEuler async
 mavsdk_telemetry_attitude_euler_handle_t mavsdk_telemetry_subscribe_attitude_euler(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_attitude_euler_callback_t callback,
     void* user_data)
 {
-    auto* cpp_telemetry = static_cast<Telemetry*>(telemetry);
-    if (!cpp_telemetry) return nullptr;
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
     
-    auto* wrapper = new AttitudeEulerCallbackWrapper{callback, user_data};
-    auto cpp_handle = cpp_telemetry->subscribe_attitude_euler([wrapper](Telemetry::EulerAngle euler_angle) {
-        if (wrapper->user_callback) {
-            mavsdk_telemetry_euler_angle_t c_euler_angle;
-            copy_euler_angle_to_c(euler_angle, &c_euler_angle);
-            wrapper->user_callback(&c_euler_angle, wrapper->user_data);
-        }
-    });
+    auto cpp_handle = wrapper->cpp_plugin->subscribe_attitude_euler(
+        [callback, user_data](mavsdk::Telemetry::EulerAngle value) {
+            if (callback) {
+                callback(
+                    translate_euler_angle_to_c(value),
+                    user_data);
+            }
+        });
     
-    auto* handle_pair = new std::pair<Telemetry::AttitudeEulerHandle, AttitudeEulerCallbackWrapper*>(cpp_handle, wrapper);
-    return static_cast<mavsdk_telemetry_attitude_euler_handle_t>(handle_pair);
+    auto handle_wrapper = new mavsdk::Telemetry::AttitudeEulerHandle(std::move(cpp_handle));
+    return static_cast<mavsdk_telemetry_attitude_euler_handle_t>(handle_wrapper);
 }
 
 void mavsdk_telemetry_unsubscribe_attitude_euler(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_attitude_euler_handle_t handle)
 {
-    auto* cpp_telemetry = static_cast<Telemetry*>(telemetry);
-    auto* handle_pair = static_cast<std::pair<Telemetry::AttitudeEulerHandle, AttitudeEulerCallbackWrapper*>*>(handle);
-    
-    if (cpp_telemetry && handle_pair) {
-        cpp_telemetry->unsubscribe_attitude_euler(handle_pair->first);
-        delete handle_pair->second;
-        delete handle_pair;
+    if (handle) {
+        auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+        auto cpp_handle = static_cast<mavsdk::Telemetry::AttitudeEulerHandle*>(handle);
+        wrapper->cpp_plugin->unsubscribe_attitude_euler(std::move(*cpp_handle));
+        delete cpp_handle;
     }
 }
 
+// AttitudeEuler sync
+void
+mavsdk_telemetry_attitude_euler(
+    mavsdk_telemetry_t telemetry,
+mavsdk_telemetry_euler_angle_t* attitude_euler_out)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+    auto ret_value = wrapper->cpp_plugin->attitude_euler();
+    
+    if (attitude_euler_out != nullptr) {
+        *attitude_euler_out = translate_euler_angle_to_c(ret_value);
+    }
+}
+
+// AttitudeAngularVelocityBody async
 mavsdk_telemetry_attitude_angular_velocity_body_handle_t mavsdk_telemetry_subscribe_attitude_angular_velocity_body(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_attitude_angular_velocity_body_callback_t callback,
     void* user_data)
 {
-    auto* cpp_telemetry = static_cast<Telemetry*>(telemetry);
-    if (!cpp_telemetry) return nullptr;
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
     
-    auto* wrapper = new AttitudeAngularVelocityBodyCallbackWrapper{callback, user_data};
-    auto cpp_handle = cpp_telemetry->subscribe_attitude_angular_velocity_body([wrapper](Telemetry::AngularVelocityBody angular_velocity) {
-        if (wrapper->user_callback) {
-            mavsdk_telemetry_angular_velocity_body_t c_angular_velocity;
-            copy_angular_velocity_body_to_c(angular_velocity, &c_angular_velocity);
-            wrapper->user_callback(&c_angular_velocity, wrapper->user_data);
-        }
-    });
+    auto cpp_handle = wrapper->cpp_plugin->subscribe_attitude_angular_velocity_body(
+        [callback, user_data](mavsdk::Telemetry::AngularVelocityBody value) {
+            if (callback) {
+                callback(
+                    translate_angular_velocity_body_to_c(value),
+                    user_data);
+            }
+        });
     
-    auto* handle_pair = new std::pair<Telemetry::AttitudeAngularVelocityBodyHandle, AttitudeAngularVelocityBodyCallbackWrapper*>(cpp_handle, wrapper);
-    return static_cast<mavsdk_telemetry_attitude_angular_velocity_body_handle_t>(handle_pair);
+    auto handle_wrapper = new mavsdk::Telemetry::AttitudeAngularVelocityBodyHandle(std::move(cpp_handle));
+    return static_cast<mavsdk_telemetry_attitude_angular_velocity_body_handle_t>(handle_wrapper);
 }
 
 void mavsdk_telemetry_unsubscribe_attitude_angular_velocity_body(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_attitude_angular_velocity_body_handle_t handle)
 {
-    auto* cpp_telemetry = static_cast<Telemetry*>(telemetry);
-    auto* handle_pair = static_cast<std::pair<Telemetry::AttitudeAngularVelocityBodyHandle, AttitudeAngularVelocityBodyCallbackWrapper*>*>(handle);
-    
-    if (cpp_telemetry && handle_pair) {
-        cpp_telemetry->unsubscribe_attitude_angular_velocity_body(handle_pair->first);
-        delete handle_pair->second;
-        delete handle_pair;
+    if (handle) {
+        auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+        auto cpp_handle = static_cast<mavsdk::Telemetry::AttitudeAngularVelocityBodyHandle*>(handle);
+        wrapper->cpp_plugin->unsubscribe_attitude_angular_velocity_body(std::move(*cpp_handle));
+        delete cpp_handle;
     }
 }
 
+// AttitudeAngularVelocityBody sync
+void
+mavsdk_telemetry_attitude_angular_velocity_body(
+    mavsdk_telemetry_t telemetry,
+mavsdk_telemetry_angular_velocity_body_t* attitude_angular_velocity_body_out)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+    auto ret_value = wrapper->cpp_plugin->attitude_angular_velocity_body();
+    
+    if (attitude_angular_velocity_body_out != nullptr) {
+        *attitude_angular_velocity_body_out = translate_angular_velocity_body_to_c(ret_value);
+    }
+}
+
+// VelocityNed async
 mavsdk_telemetry_velocity_ned_handle_t mavsdk_telemetry_subscribe_velocity_ned(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_velocity_ned_callback_t callback,
     void* user_data)
 {
-    auto* cpp_telemetry = static_cast<Telemetry*>(telemetry);
-    if (!cpp_telemetry) return nullptr;
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
     
-    auto* wrapper = new VelocityNedCallbackWrapper{callback, user_data};
-    auto cpp_handle = cpp_telemetry->subscribe_velocity_ned([wrapper](Telemetry::VelocityNed velocity) {
-        if (wrapper->user_callback) {
-            mavsdk_telemetry_velocity_ned_t c_velocity;
-            copy_velocity_ned_to_c(velocity, &c_velocity);
-            wrapper->user_callback(&c_velocity, wrapper->user_data);
-        }
-    });
+    auto cpp_handle = wrapper->cpp_plugin->subscribe_velocity_ned(
+        [callback, user_data](mavsdk::Telemetry::VelocityNed value) {
+            if (callback) {
+                callback(
+                    translate_velocity_ned_to_c(value),
+                    user_data);
+            }
+        });
     
-    auto* handle_pair = new std::pair<Telemetry::VelocityNedHandle, VelocityNedCallbackWrapper*>(cpp_handle, wrapper);
-    return static_cast<mavsdk_telemetry_velocity_ned_handle_t>(handle_pair);
+    auto handle_wrapper = new mavsdk::Telemetry::VelocityNedHandle(std::move(cpp_handle));
+    return static_cast<mavsdk_telemetry_velocity_ned_handle_t>(handle_wrapper);
 }
 
 void mavsdk_telemetry_unsubscribe_velocity_ned(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_velocity_ned_handle_t handle)
 {
-    auto* cpp_telemetry = static_cast<Telemetry*>(telemetry);
-    auto* handle_pair = static_cast<std::pair<Telemetry::VelocityNedHandle, VelocityNedCallbackWrapper*>*>(handle);
-    
-    if (cpp_telemetry && handle_pair) {
-        cpp_telemetry->unsubscribe_velocity_ned(handle_pair->first);
-        delete handle_pair->second;
-        delete handle_pair;
+    if (handle) {
+        auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+        auto cpp_handle = static_cast<mavsdk::Telemetry::VelocityNedHandle*>(handle);
+        wrapper->cpp_plugin->unsubscribe_velocity_ned(std::move(*cpp_handle));
+        delete cpp_handle;
     }
 }
 
+// VelocityNed sync
+void
+mavsdk_telemetry_velocity_ned(
+    mavsdk_telemetry_t telemetry,
+mavsdk_telemetry_velocity_ned_t* velocity_ned_out)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+    auto ret_value = wrapper->cpp_plugin->velocity_ned();
+    
+    if (velocity_ned_out != nullptr) {
+        *velocity_ned_out = translate_velocity_ned_to_c(ret_value);
+    }
+}
+
+// GpsInfo async
 mavsdk_telemetry_gps_info_handle_t mavsdk_telemetry_subscribe_gps_info(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_gps_info_callback_t callback,
     void* user_data)
 {
-    auto* cpp_telemetry = static_cast<Telemetry*>(telemetry);
-    if (!cpp_telemetry) return nullptr;
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
     
-    auto* wrapper = new GpsInfoCallbackWrapper{callback, user_data};
-    auto cpp_handle = cpp_telemetry->subscribe_gps_info([wrapper](Telemetry::GpsInfo gps_info) {
-        if (wrapper->user_callback) {
-            mavsdk_telemetry_gps_info_t c_gps_info;
-            copy_gps_info_to_c(gps_info, &c_gps_info);
-            wrapper->user_callback(&c_gps_info, wrapper->user_data);
-        }
-    });
+    auto cpp_handle = wrapper->cpp_plugin->subscribe_gps_info(
+        [callback, user_data](mavsdk::Telemetry::GpsInfo value) {
+            if (callback) {
+                callback(
+                    translate_gps_info_to_c(value),
+                    user_data);
+            }
+        });
     
-    auto* handle_pair = new std::pair<Telemetry::GpsInfoHandle, GpsInfoCallbackWrapper*>(cpp_handle, wrapper);
-    return static_cast<mavsdk_telemetry_gps_info_handle_t>(handle_pair);
+    auto handle_wrapper = new mavsdk::Telemetry::GpsInfoHandle(std::move(cpp_handle));
+    return static_cast<mavsdk_telemetry_gps_info_handle_t>(handle_wrapper);
 }
 
 void mavsdk_telemetry_unsubscribe_gps_info(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_gps_info_handle_t handle)
 {
-    auto* cpp_telemetry = static_cast<Telemetry*>(telemetry);
-    auto* handle_pair = static_cast<std::pair<Telemetry::GpsInfoHandle, GpsInfoCallbackWrapper*>*>(handle);
-    
-    if (cpp_telemetry && handle_pair) {
-        cpp_telemetry->unsubscribe_gps_info(handle_pair->first);
-        delete handle_pair->second;
-        delete handle_pair;
+    if (handle) {
+        auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+        auto cpp_handle = static_cast<mavsdk::Telemetry::GpsInfoHandle*>(handle);
+        wrapper->cpp_plugin->unsubscribe_gps_info(std::move(*cpp_handle));
+        delete cpp_handle;
     }
 }
 
+// GpsInfo sync
+void
+mavsdk_telemetry_gps_info(
+    mavsdk_telemetry_t telemetry,
+mavsdk_telemetry_gps_info_t* gps_info_out)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+    auto ret_value = wrapper->cpp_plugin->gps_info();
+    
+    if (gps_info_out != nullptr) {
+        *gps_info_out = translate_gps_info_to_c(ret_value);
+    }
+}
+
+// RawGps async
+mavsdk_telemetry_raw_gps_handle_t mavsdk_telemetry_subscribe_raw_gps(
+    mavsdk_telemetry_t telemetry,
+    mavsdk_telemetry_raw_gps_callback_t callback,
+    void* user_data)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+    auto cpp_handle = wrapper->cpp_plugin->subscribe_raw_gps(
+        [callback, user_data](mavsdk::Telemetry::RawGps value) {
+            if (callback) {
+                callback(
+                    translate_raw_gps_to_c(value),
+                    user_data);
+            }
+        });
+    
+    auto handle_wrapper = new mavsdk::Telemetry::RawGpsHandle(std::move(cpp_handle));
+    return static_cast<mavsdk_telemetry_raw_gps_handle_t>(handle_wrapper);
+}
+
+void mavsdk_telemetry_unsubscribe_raw_gps(
+    mavsdk_telemetry_t telemetry,
+    mavsdk_telemetry_raw_gps_handle_t handle)
+{
+    if (handle) {
+        auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+        auto cpp_handle = static_cast<mavsdk::Telemetry::RawGpsHandle*>(handle);
+        wrapper->cpp_plugin->unsubscribe_raw_gps(std::move(*cpp_handle));
+        delete cpp_handle;
+    }
+}
+
+// RawGps sync
+void
+mavsdk_telemetry_raw_gps(
+    mavsdk_telemetry_t telemetry,
+mavsdk_telemetry_raw_gps_t* raw_gps_out)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+    auto ret_value = wrapper->cpp_plugin->raw_gps();
+    
+    if (raw_gps_out != nullptr) {
+        *raw_gps_out = translate_raw_gps_to_c(ret_value);
+    }
+}
+
+// Battery async
 mavsdk_telemetry_battery_handle_t mavsdk_telemetry_subscribe_battery(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_battery_callback_t callback,
     void* user_data)
 {
-    auto* cpp_telemetry = static_cast<Telemetry*>(telemetry);
-    if (!cpp_telemetry) return nullptr;
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
     
-    auto* wrapper = new BatteryCallbackWrapper{callback, user_data};
-    auto cpp_handle = cpp_telemetry->subscribe_battery([wrapper](Telemetry::Battery battery) {
-        if (wrapper->user_callback) {
-            mavsdk_telemetry_battery_t c_battery;
-            copy_battery_to_c(battery, &c_battery);
-            wrapper->user_callback(&c_battery, wrapper->user_data);
-        }
-    });
+    auto cpp_handle = wrapper->cpp_plugin->subscribe_battery(
+        [callback, user_data](mavsdk::Telemetry::Battery value) {
+            if (callback) {
+                callback(
+                    translate_battery_to_c(value),
+                    user_data);
+            }
+        });
     
-    auto* handle_pair = new std::pair<Telemetry::BatteryHandle, BatteryCallbackWrapper*>(cpp_handle, wrapper);
-    return static_cast<mavsdk_telemetry_battery_handle_t>(handle_pair);
+    auto handle_wrapper = new mavsdk::Telemetry::BatteryHandle(std::move(cpp_handle));
+    return static_cast<mavsdk_telemetry_battery_handle_t>(handle_wrapper);
 }
 
 void mavsdk_telemetry_unsubscribe_battery(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_battery_handle_t handle)
 {
-    auto* cpp_telemetry = static_cast<Telemetry*>(telemetry);
-    auto* handle_pair = static_cast<std::pair<Telemetry::BatteryHandle, BatteryCallbackWrapper*>*>(handle);
-    
-    if (cpp_telemetry && handle_pair) {
-        cpp_telemetry->unsubscribe_battery(handle_pair->first);
-        delete handle_pair->second;
-        delete handle_pair;
+    if (handle) {
+        auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+        auto cpp_handle = static_cast<mavsdk::Telemetry::BatteryHandle*>(handle);
+        wrapper->cpp_plugin->unsubscribe_battery(std::move(*cpp_handle));
+        delete cpp_handle;
     }
 }
 
+// Battery sync
+void
+mavsdk_telemetry_battery(
+    mavsdk_telemetry_t telemetry,
+mavsdk_telemetry_battery_t* battery_out)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+    auto ret_value = wrapper->cpp_plugin->battery();
+    
+    if (battery_out != nullptr) {
+        *battery_out = translate_battery_to_c(ret_value);
+    }
+}
+
+// FlightMode async
 mavsdk_telemetry_flight_mode_handle_t mavsdk_telemetry_subscribe_flight_mode(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_flight_mode_callback_t callback,
     void* user_data)
 {
-    auto* cpp_telemetry = static_cast<Telemetry*>(telemetry);
-    if (!cpp_telemetry) return nullptr;
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
     
-    auto* wrapper = new FlightModeCallbackWrapper{callback, user_data};
-    auto cpp_handle = cpp_telemetry->subscribe_flight_mode([wrapper](Telemetry::FlightMode flight_mode) {
-        if (wrapper->user_callback) {
-            wrapper->user_callback(flight_mode_from_cpp(flight_mode), wrapper->user_data);
-        }
-    });
+    auto cpp_handle = wrapper->cpp_plugin->subscribe_flight_mode(
+        [callback, user_data](mavsdk::Telemetry::FlightMode value) {
+            if (callback) {
+                callback(
+                    translate_flight_mode_to_c(value),
+                    user_data);
+            }
+        });
     
-    auto* handle_pair = new std::pair<Telemetry::FlightModeHandle, FlightModeCallbackWrapper*>(cpp_handle, wrapper);
-    return static_cast<mavsdk_telemetry_flight_mode_handle_t>(handle_pair);
+    auto handle_wrapper = new mavsdk::Telemetry::FlightModeHandle(std::move(cpp_handle));
+    return static_cast<mavsdk_telemetry_flight_mode_handle_t>(handle_wrapper);
 }
 
 void mavsdk_telemetry_unsubscribe_flight_mode(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_flight_mode_handle_t handle)
 {
-    auto* cpp_telemetry = static_cast<Telemetry*>(telemetry);
-    auto* handle_pair = static_cast<std::pair<Telemetry::FlightModeHandle, FlightModeCallbackWrapper*>*>(handle);
-    
-    if (cpp_telemetry && handle_pair) {
-        cpp_telemetry->unsubscribe_flight_mode(handle_pair->first);
-        delete handle_pair->second;
-        delete handle_pair;
+    if (handle) {
+        auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+        auto cpp_handle = static_cast<mavsdk::Telemetry::FlightModeHandle*>(handle);
+        wrapper->cpp_plugin->unsubscribe_flight_mode(std::move(*cpp_handle));
+        delete cpp_handle;
     }
 }
 
+// FlightMode sync
+void
+mavsdk_telemetry_flight_mode(
+    mavsdk_telemetry_t telemetry,
+mavsdk_telemetry_flight_mode_t* flight_mode_out)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+    auto ret_value = wrapper->cpp_plugin->flight_mode();
+    
+    if (flight_mode_out != nullptr) {
+        *flight_mode_out = translate_flight_mode_to_c(ret_value);
+    }
+}
+
+// Health async
 mavsdk_telemetry_health_handle_t mavsdk_telemetry_subscribe_health(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_health_callback_t callback,
     void* user_data)
 {
-    auto* cpp_telemetry = static_cast<Telemetry*>(telemetry);
-    if (!cpp_telemetry) return nullptr;
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
     
-    auto* wrapper = new HealthCallbackWrapper{callback, user_data};
-    auto cpp_handle = cpp_telemetry->subscribe_health([wrapper](Telemetry::Health health) {
-        if (wrapper->user_callback) {
-            mavsdk_telemetry_health_t c_health;
-            copy_health_to_c(health, &c_health);
-            wrapper->user_callback(&c_health, wrapper->user_data);
-        }
-    });
+    auto cpp_handle = wrapper->cpp_plugin->subscribe_health(
+        [callback, user_data](mavsdk::Telemetry::Health value) {
+            if (callback) {
+                callback(
+                    translate_health_to_c(value),
+                    user_data);
+            }
+        });
     
-    auto* handle_pair = new std::pair<Telemetry::HealthHandle, HealthCallbackWrapper*>(cpp_handle, wrapper);
-    return static_cast<mavsdk_telemetry_health_handle_t>(handle_pair);
+    auto handle_wrapper = new mavsdk::Telemetry::HealthHandle(std::move(cpp_handle));
+    return static_cast<mavsdk_telemetry_health_handle_t>(handle_wrapper);
 }
 
 void mavsdk_telemetry_unsubscribe_health(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_health_handle_t handle)
 {
-    auto* cpp_telemetry = static_cast<Telemetry*>(telemetry);
-    auto* handle_pair = static_cast<std::pair<Telemetry::HealthHandle, HealthCallbackWrapper*>*>(handle);
-    
-    if (cpp_telemetry && handle_pair) {
-        cpp_telemetry->unsubscribe_health(handle_pair->first);
-        delete handle_pair->second;
-        delete handle_pair;
+    if (handle) {
+        auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+        auto cpp_handle = static_cast<mavsdk::Telemetry::HealthHandle*>(handle);
+        wrapper->cpp_plugin->unsubscribe_health(std::move(*cpp_handle));
+        delete cpp_handle;
     }
 }
 
+// Health sync
+void
+mavsdk_telemetry_health(
+    mavsdk_telemetry_t telemetry,
+mavsdk_telemetry_health_t* health_out)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+    auto ret_value = wrapper->cpp_plugin->health();
+    
+    if (health_out != nullptr) {
+        *health_out = translate_health_to_c(ret_value);
+    }
+}
+
+// RcStatus async
 mavsdk_telemetry_rc_status_handle_t mavsdk_telemetry_subscribe_rc_status(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_rc_status_callback_t callback,
     void* user_data)
 {
-    auto* cpp_telemetry = static_cast<Telemetry*>(telemetry);
-    if (!cpp_telemetry) return nullptr;
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
     
-    auto* wrapper = new RcStatusCallbackWrapper{callback, user_data};
-    auto cpp_handle = cpp_telemetry->subscribe_rc_status([wrapper](Telemetry::RcStatus rc_status) {
-        if (wrapper->user_callback) {
-            mavsdk_telemetry_rc_status_t c_rc_status;
-            copy_rc_status_to_c(rc_status, &c_rc_status);
-            wrapper->user_callback(&c_rc_status, wrapper->user_data);
-        }
-    });
+    auto cpp_handle = wrapper->cpp_plugin->subscribe_rc_status(
+        [callback, user_data](mavsdk::Telemetry::RcStatus value) {
+            if (callback) {
+                callback(
+                    translate_rc_status_to_c(value),
+                    user_data);
+            }
+        });
     
-    auto* handle_pair = new std::pair<Telemetry::RcStatusHandle, RcStatusCallbackWrapper*>(cpp_handle, wrapper);
-    return static_cast<mavsdk_telemetry_rc_status_handle_t>(handle_pair);
+    auto handle_wrapper = new mavsdk::Telemetry::RcStatusHandle(std::move(cpp_handle));
+    return static_cast<mavsdk_telemetry_rc_status_handle_t>(handle_wrapper);
 }
 
 void mavsdk_telemetry_unsubscribe_rc_status(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_rc_status_handle_t handle)
 {
-    auto* cpp_telemetry = static_cast<Telemetry*>(telemetry);
-    auto* handle_pair = static_cast<std::pair<Telemetry::RcStatusHandle, RcStatusCallbackWrapper*>*>(handle);
-    
-    if (cpp_telemetry && handle_pair) {
-        cpp_telemetry->unsubscribe_rc_status(handle_pair->first);
-        delete handle_pair->second;
-        delete handle_pair;
+    if (handle) {
+        auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+        auto cpp_handle = static_cast<mavsdk::Telemetry::RcStatusHandle*>(handle);
+        wrapper->cpp_plugin->unsubscribe_rc_status(std::move(*cpp_handle));
+        delete cpp_handle;
     }
 }
 
+// RcStatus sync
+void
+mavsdk_telemetry_rc_status(
+    mavsdk_telemetry_t telemetry,
+mavsdk_telemetry_rc_status_t* rc_status_out)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+    auto ret_value = wrapper->cpp_plugin->rc_status();
+    
+    if (rc_status_out != nullptr) {
+        *rc_status_out = translate_rc_status_to_c(ret_value);
+    }
+}
+
+// StatusText async
+mavsdk_telemetry_status_text_handle_t mavsdk_telemetry_subscribe_status_text(
+    mavsdk_telemetry_t telemetry,
+    mavsdk_telemetry_status_text_callback_t callback,
+    void* user_data)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+    auto cpp_handle = wrapper->cpp_plugin->subscribe_status_text(
+        [callback, user_data](mavsdk::Telemetry::StatusText value) {
+            if (callback) {
+                callback(
+                    translate_status_text_to_c(value),
+                    user_data);
+            }
+        });
+    
+    auto handle_wrapper = new mavsdk::Telemetry::StatusTextHandle(std::move(cpp_handle));
+    return static_cast<mavsdk_telemetry_status_text_handle_t>(handle_wrapper);
+}
+
+void mavsdk_telemetry_unsubscribe_status_text(
+    mavsdk_telemetry_t telemetry,
+    mavsdk_telemetry_status_text_handle_t handle)
+{
+    if (handle) {
+        auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+        auto cpp_handle = static_cast<mavsdk::Telemetry::StatusTextHandle*>(handle);
+        wrapper->cpp_plugin->unsubscribe_status_text(std::move(*cpp_handle));
+        delete cpp_handle;
+    }
+}
+
+// StatusText sync
+void
+mavsdk_telemetry_status_text(
+    mavsdk_telemetry_t telemetry,
+mavsdk_telemetry_status_text_t* status_text_out)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+    auto ret_value = wrapper->cpp_plugin->status_text();
+    
+    if (status_text_out != nullptr) {
+        *status_text_out = translate_status_text_to_c(ret_value);
+    }
+}
+
+// ActuatorControlTarget async
+mavsdk_telemetry_actuator_control_target_handle_t mavsdk_telemetry_subscribe_actuator_control_target(
+    mavsdk_telemetry_t telemetry,
+    mavsdk_telemetry_actuator_control_target_callback_t callback,
+    void* user_data)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+    auto cpp_handle = wrapper->cpp_plugin->subscribe_actuator_control_target(
+        [callback, user_data](mavsdk::Telemetry::ActuatorControlTarget value) {
+            if (callback) {
+                callback(
+                    translate_actuator_control_target_to_c(value),
+                    user_data);
+            }
+        });
+    
+    auto handle_wrapper = new mavsdk::Telemetry::ActuatorControlTargetHandle(std::move(cpp_handle));
+    return static_cast<mavsdk_telemetry_actuator_control_target_handle_t>(handle_wrapper);
+}
+
+void mavsdk_telemetry_unsubscribe_actuator_control_target(
+    mavsdk_telemetry_t telemetry,
+    mavsdk_telemetry_actuator_control_target_handle_t handle)
+{
+    if (handle) {
+        auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+        auto cpp_handle = static_cast<mavsdk::Telemetry::ActuatorControlTargetHandle*>(handle);
+        wrapper->cpp_plugin->unsubscribe_actuator_control_target(std::move(*cpp_handle));
+        delete cpp_handle;
+    }
+}
+
+// ActuatorControlTarget sync
+void
+mavsdk_telemetry_actuator_control_target(
+    mavsdk_telemetry_t telemetry,
+mavsdk_telemetry_actuator_control_target_t* actuator_control_target_out)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+    auto ret_value = wrapper->cpp_plugin->actuator_control_target();
+    
+    if (actuator_control_target_out != nullptr) {
+        *actuator_control_target_out = translate_actuator_control_target_to_c(ret_value);
+    }
+}
+
+// ActuatorOutputStatus async
+mavsdk_telemetry_actuator_output_status_handle_t mavsdk_telemetry_subscribe_actuator_output_status(
+    mavsdk_telemetry_t telemetry,
+    mavsdk_telemetry_actuator_output_status_callback_t callback,
+    void* user_data)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+    auto cpp_handle = wrapper->cpp_plugin->subscribe_actuator_output_status(
+        [callback, user_data](mavsdk::Telemetry::ActuatorOutputStatus value) {
+            if (callback) {
+                callback(
+                    translate_actuator_output_status_to_c(value),
+                    user_data);
+            }
+        });
+    
+    auto handle_wrapper = new mavsdk::Telemetry::ActuatorOutputStatusHandle(std::move(cpp_handle));
+    return static_cast<mavsdk_telemetry_actuator_output_status_handle_t>(handle_wrapper);
+}
+
+void mavsdk_telemetry_unsubscribe_actuator_output_status(
+    mavsdk_telemetry_t telemetry,
+    mavsdk_telemetry_actuator_output_status_handle_t handle)
+{
+    if (handle) {
+        auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+        auto cpp_handle = static_cast<mavsdk::Telemetry::ActuatorOutputStatusHandle*>(handle);
+        wrapper->cpp_plugin->unsubscribe_actuator_output_status(std::move(*cpp_handle));
+        delete cpp_handle;
+    }
+}
+
+// ActuatorOutputStatus sync
+void
+mavsdk_telemetry_actuator_output_status(
+    mavsdk_telemetry_t telemetry,
+mavsdk_telemetry_actuator_output_status_t* actuator_output_status_out)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+    auto ret_value = wrapper->cpp_plugin->actuator_output_status();
+    
+    if (actuator_output_status_out != nullptr) {
+        *actuator_output_status_out = translate_actuator_output_status_to_c(ret_value);
+    }
+}
+
+// Odometry async
+mavsdk_telemetry_odometry_handle_t mavsdk_telemetry_subscribe_odometry(
+    mavsdk_telemetry_t telemetry,
+    mavsdk_telemetry_odometry_callback_t callback,
+    void* user_data)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+    auto cpp_handle = wrapper->cpp_plugin->subscribe_odometry(
+        [callback, user_data](mavsdk::Telemetry::Odometry value) {
+            if (callback) {
+                callback(
+                    translate_odometry_to_c(value),
+                    user_data);
+            }
+        });
+    
+    auto handle_wrapper = new mavsdk::Telemetry::OdometryHandle(std::move(cpp_handle));
+    return static_cast<mavsdk_telemetry_odometry_handle_t>(handle_wrapper);
+}
+
+void mavsdk_telemetry_unsubscribe_odometry(
+    mavsdk_telemetry_t telemetry,
+    mavsdk_telemetry_odometry_handle_t handle)
+{
+    if (handle) {
+        auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+        auto cpp_handle = static_cast<mavsdk::Telemetry::OdometryHandle*>(handle);
+        wrapper->cpp_plugin->unsubscribe_odometry(std::move(*cpp_handle));
+        delete cpp_handle;
+    }
+}
+
+// Odometry sync
+void
+mavsdk_telemetry_odometry(
+    mavsdk_telemetry_t telemetry,
+mavsdk_telemetry_odometry_t* odometry_out)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+    auto ret_value = wrapper->cpp_plugin->odometry();
+    
+    if (odometry_out != nullptr) {
+        *odometry_out = translate_odometry_to_c(ret_value);
+    }
+}
+
+// PositionVelocityNed async
+mavsdk_telemetry_position_velocity_ned_handle_t mavsdk_telemetry_subscribe_position_velocity_ned(
+    mavsdk_telemetry_t telemetry,
+    mavsdk_telemetry_position_velocity_ned_callback_t callback,
+    void* user_data)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+    auto cpp_handle = wrapper->cpp_plugin->subscribe_position_velocity_ned(
+        [callback, user_data](mavsdk::Telemetry::PositionVelocityNed value) {
+            if (callback) {
+                callback(
+                    translate_position_velocity_ned_to_c(value),
+                    user_data);
+            }
+        });
+    
+    auto handle_wrapper = new mavsdk::Telemetry::PositionVelocityNedHandle(std::move(cpp_handle));
+    return static_cast<mavsdk_telemetry_position_velocity_ned_handle_t>(handle_wrapper);
+}
+
+void mavsdk_telemetry_unsubscribe_position_velocity_ned(
+    mavsdk_telemetry_t telemetry,
+    mavsdk_telemetry_position_velocity_ned_handle_t handle)
+{
+    if (handle) {
+        auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+        auto cpp_handle = static_cast<mavsdk::Telemetry::PositionVelocityNedHandle*>(handle);
+        wrapper->cpp_plugin->unsubscribe_position_velocity_ned(std::move(*cpp_handle));
+        delete cpp_handle;
+    }
+}
+
+// PositionVelocityNed sync
+void
+mavsdk_telemetry_position_velocity_ned(
+    mavsdk_telemetry_t telemetry,
+mavsdk_telemetry_position_velocity_ned_t* position_velocity_ned_out)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+    auto ret_value = wrapper->cpp_plugin->position_velocity_ned();
+    
+    if (position_velocity_ned_out != nullptr) {
+        *position_velocity_ned_out = translate_position_velocity_ned_to_c(ret_value);
+    }
+}
+
+// GroundTruth async
+mavsdk_telemetry_ground_truth_handle_t mavsdk_telemetry_subscribe_ground_truth(
+    mavsdk_telemetry_t telemetry,
+    mavsdk_telemetry_ground_truth_callback_t callback,
+    void* user_data)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+    auto cpp_handle = wrapper->cpp_plugin->subscribe_ground_truth(
+        [callback, user_data](mavsdk::Telemetry::GroundTruth value) {
+            if (callback) {
+                callback(
+                    translate_ground_truth_to_c(value),
+                    user_data);
+            }
+        });
+    
+    auto handle_wrapper = new mavsdk::Telemetry::GroundTruthHandle(std::move(cpp_handle));
+    return static_cast<mavsdk_telemetry_ground_truth_handle_t>(handle_wrapper);
+}
+
+void mavsdk_telemetry_unsubscribe_ground_truth(
+    mavsdk_telemetry_t telemetry,
+    mavsdk_telemetry_ground_truth_handle_t handle)
+{
+    if (handle) {
+        auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+        auto cpp_handle = static_cast<mavsdk::Telemetry::GroundTruthHandle*>(handle);
+        wrapper->cpp_plugin->unsubscribe_ground_truth(std::move(*cpp_handle));
+        delete cpp_handle;
+    }
+}
+
+// GroundTruth sync
+void
+mavsdk_telemetry_ground_truth(
+    mavsdk_telemetry_t telemetry,
+mavsdk_telemetry_ground_truth_t* ground_truth_out)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+    auto ret_value = wrapper->cpp_plugin->ground_truth();
+    
+    if (ground_truth_out != nullptr) {
+        *ground_truth_out = translate_ground_truth_to_c(ret_value);
+    }
+}
+
+// FixedwingMetrics async
+mavsdk_telemetry_fixedwing_metrics_handle_t mavsdk_telemetry_subscribe_fixedwing_metrics(
+    mavsdk_telemetry_t telemetry,
+    mavsdk_telemetry_fixedwing_metrics_callback_t callback,
+    void* user_data)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+    auto cpp_handle = wrapper->cpp_plugin->subscribe_fixedwing_metrics(
+        [callback, user_data](mavsdk::Telemetry::FixedwingMetrics value) {
+            if (callback) {
+                callback(
+                    translate_fixedwing_metrics_to_c(value),
+                    user_data);
+            }
+        });
+    
+    auto handle_wrapper = new mavsdk::Telemetry::FixedwingMetricsHandle(std::move(cpp_handle));
+    return static_cast<mavsdk_telemetry_fixedwing_metrics_handle_t>(handle_wrapper);
+}
+
+void mavsdk_telemetry_unsubscribe_fixedwing_metrics(
+    mavsdk_telemetry_t telemetry,
+    mavsdk_telemetry_fixedwing_metrics_handle_t handle)
+{
+    if (handle) {
+        auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+        auto cpp_handle = static_cast<mavsdk::Telemetry::FixedwingMetricsHandle*>(handle);
+        wrapper->cpp_plugin->unsubscribe_fixedwing_metrics(std::move(*cpp_handle));
+        delete cpp_handle;
+    }
+}
+
+// FixedwingMetrics sync
+void
+mavsdk_telemetry_fixedwing_metrics(
+    mavsdk_telemetry_t telemetry,
+mavsdk_telemetry_fixedwing_metrics_t* fixedwing_metrics_out)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+    auto ret_value = wrapper->cpp_plugin->fixedwing_metrics();
+    
+    if (fixedwing_metrics_out != nullptr) {
+        *fixedwing_metrics_out = translate_fixedwing_metrics_to_c(ret_value);
+    }
+}
+
+// Imu async
+mavsdk_telemetry_imu_handle_t mavsdk_telemetry_subscribe_imu(
+    mavsdk_telemetry_t telemetry,
+    mavsdk_telemetry_imu_callback_t callback,
+    void* user_data)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+    auto cpp_handle = wrapper->cpp_plugin->subscribe_imu(
+        [callback, user_data](mavsdk::Telemetry::Imu value) {
+            if (callback) {
+                callback(
+                    translate_imu_to_c(value),
+                    user_data);
+            }
+        });
+    
+    auto handle_wrapper = new mavsdk::Telemetry::ImuHandle(std::move(cpp_handle));
+    return static_cast<mavsdk_telemetry_imu_handle_t>(handle_wrapper);
+}
+
+void mavsdk_telemetry_unsubscribe_imu(
+    mavsdk_telemetry_t telemetry,
+    mavsdk_telemetry_imu_handle_t handle)
+{
+    if (handle) {
+        auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+        auto cpp_handle = static_cast<mavsdk::Telemetry::ImuHandle*>(handle);
+        wrapper->cpp_plugin->unsubscribe_imu(std::move(*cpp_handle));
+        delete cpp_handle;
+    }
+}
+
+// Imu sync
+void
+mavsdk_telemetry_imu(
+    mavsdk_telemetry_t telemetry,
+mavsdk_telemetry_imu_t* imu_out)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+    auto ret_value = wrapper->cpp_plugin->imu();
+    
+    if (imu_out != nullptr) {
+        *imu_out = translate_imu_to_c(ret_value);
+    }
+}
+
+// ScaledImu async
+mavsdk_telemetry_scaled_imu_handle_t mavsdk_telemetry_subscribe_scaled_imu(
+    mavsdk_telemetry_t telemetry,
+    mavsdk_telemetry_scaled_imu_callback_t callback,
+    void* user_data)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+    auto cpp_handle = wrapper->cpp_plugin->subscribe_scaled_imu(
+        [callback, user_data](mavsdk::Telemetry::Imu value) {
+            if (callback) {
+                callback(
+                    translate_imu_to_c(value),
+                    user_data);
+            }
+        });
+    
+    auto handle_wrapper = new mavsdk::Telemetry::ScaledImuHandle(std::move(cpp_handle));
+    return static_cast<mavsdk_telemetry_scaled_imu_handle_t>(handle_wrapper);
+}
+
+void mavsdk_telemetry_unsubscribe_scaled_imu(
+    mavsdk_telemetry_t telemetry,
+    mavsdk_telemetry_scaled_imu_handle_t handle)
+{
+    if (handle) {
+        auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+        auto cpp_handle = static_cast<mavsdk::Telemetry::ScaledImuHandle*>(handle);
+        wrapper->cpp_plugin->unsubscribe_scaled_imu(std::move(*cpp_handle));
+        delete cpp_handle;
+    }
+}
+
+// ScaledImu sync
+void
+mavsdk_telemetry_scaled_imu(
+    mavsdk_telemetry_t telemetry,
+mavsdk_telemetry_imu_t* imu_out)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+    auto ret_value = wrapper->cpp_plugin->scaled_imu();
+    
+    if (imu_out != nullptr) {
+        *imu_out = translate_imu_to_c(ret_value);
+    }
+}
+
+// RawImu async
+mavsdk_telemetry_raw_imu_handle_t mavsdk_telemetry_subscribe_raw_imu(
+    mavsdk_telemetry_t telemetry,
+    mavsdk_telemetry_raw_imu_callback_t callback,
+    void* user_data)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+    auto cpp_handle = wrapper->cpp_plugin->subscribe_raw_imu(
+        [callback, user_data](mavsdk::Telemetry::Imu value) {
+            if (callback) {
+                callback(
+                    translate_imu_to_c(value),
+                    user_data);
+            }
+        });
+    
+    auto handle_wrapper = new mavsdk::Telemetry::RawImuHandle(std::move(cpp_handle));
+    return static_cast<mavsdk_telemetry_raw_imu_handle_t>(handle_wrapper);
+}
+
+void mavsdk_telemetry_unsubscribe_raw_imu(
+    mavsdk_telemetry_t telemetry,
+    mavsdk_telemetry_raw_imu_handle_t handle)
+{
+    if (handle) {
+        auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+        auto cpp_handle = static_cast<mavsdk::Telemetry::RawImuHandle*>(handle);
+        wrapper->cpp_plugin->unsubscribe_raw_imu(std::move(*cpp_handle));
+        delete cpp_handle;
+    }
+}
+
+// RawImu sync
+void
+mavsdk_telemetry_raw_imu(
+    mavsdk_telemetry_t telemetry,
+mavsdk_telemetry_imu_t* imu_out)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+    auto ret_value = wrapper->cpp_plugin->raw_imu();
+    
+    if (imu_out != nullptr) {
+        *imu_out = translate_imu_to_c(ret_value);
+    }
+}
+
+// HealthAllOk async
 mavsdk_telemetry_health_all_ok_handle_t mavsdk_telemetry_subscribe_health_all_ok(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_health_all_ok_callback_t callback,
     void* user_data)
 {
-    auto* cpp_telemetry = static_cast<Telemetry*>(telemetry);
-    if (!cpp_telemetry) return nullptr;
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
     
-    auto* wrapper = new HealthAllOkCallbackWrapper{callback, user_data};
-    auto cpp_handle = cpp_telemetry->subscribe_health_all_ok([wrapper](bool health_all_ok) {
-        if (wrapper->user_callback) {
-            wrapper->user_callback(health_all_ok, wrapper->user_data);
-        }
-    });
+    auto cpp_handle = wrapper->cpp_plugin->subscribe_health_all_ok(
+        [callback, user_data](bool value) {
+            if (callback) {
+                callback(
+                    value,
+                    user_data);
+            }
+        });
     
-    auto* handle_pair = new std::pair<Telemetry::HealthAllOkHandle, HealthAllOkCallbackWrapper*>(cpp_handle, wrapper);
-    return static_cast<mavsdk_telemetry_health_all_ok_handle_t>(handle_pair);
+    auto handle_wrapper = new mavsdk::Telemetry::HealthAllOkHandle(std::move(cpp_handle));
+    return static_cast<mavsdk_telemetry_health_all_ok_handle_t>(handle_wrapper);
 }
 
 void mavsdk_telemetry_unsubscribe_health_all_ok(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_health_all_ok_handle_t handle)
 {
-    auto* cpp_telemetry = static_cast<Telemetry*>(telemetry);
-    auto* handle_pair = static_cast<std::pair<Telemetry::HealthAllOkHandle, HealthAllOkCallbackWrapper*>*>(handle);
-    
-    if (cpp_telemetry && handle_pair) {
-        cpp_telemetry->unsubscribe_health_all_ok(handle_pair->first);
-        delete handle_pair->second;
-        delete handle_pair;
+    if (handle) {
+        auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+        auto cpp_handle = static_cast<mavsdk::Telemetry::HealthAllOkHandle*>(handle);
+        wrapper->cpp_plugin->unsubscribe_health_all_ok(std::move(*cpp_handle));
+        delete cpp_handle;
     }
 }
 
-// ===== Rate Setting Methods (Async) =====
+// HealthAllOk sync
+void
+mavsdk_telemetry_health_all_ok(
+    mavsdk_telemetry_t telemetry,
+bool* is_health_all_ok_out)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+    auto ret_value = wrapper->cpp_plugin->health_all_ok();
+    
+    *is_health_all_ok_out = ret_value;
+}
+
+// UnixEpochTime async
+mavsdk_telemetry_unix_epoch_time_handle_t mavsdk_telemetry_subscribe_unix_epoch_time(
+    mavsdk_telemetry_t telemetry,
+    mavsdk_telemetry_unix_epoch_time_callback_t callback,
+    void* user_data)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+    auto cpp_handle = wrapper->cpp_plugin->subscribe_unix_epoch_time(
+        [callback, user_data](uint64_t value) {
+            if (callback) {
+                callback(
+                    value,
+                    user_data);
+            }
+        });
+    
+    auto handle_wrapper = new mavsdk::Telemetry::UnixEpochTimeHandle(std::move(cpp_handle));
+    return static_cast<mavsdk_telemetry_unix_epoch_time_handle_t>(handle_wrapper);
+}
+
+void mavsdk_telemetry_unsubscribe_unix_epoch_time(
+    mavsdk_telemetry_t telemetry,
+    mavsdk_telemetry_unix_epoch_time_handle_t handle)
+{
+    if (handle) {
+        auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+        auto cpp_handle = static_cast<mavsdk::Telemetry::UnixEpochTimeHandle*>(handle);
+        wrapper->cpp_plugin->unsubscribe_unix_epoch_time(std::move(*cpp_handle));
+        delete cpp_handle;
+    }
+}
+
+// UnixEpochTime sync
+void
+mavsdk_telemetry_unix_epoch_time(
+    mavsdk_telemetry_t telemetry,
+uint64_t* time_us_out)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+    auto ret_value = wrapper->cpp_plugin->unix_epoch_time();
+    
+    *time_us_out = ret_value;
+}
+
+// DistanceSensor async
+mavsdk_telemetry_distance_sensor_handle_t mavsdk_telemetry_subscribe_distance_sensor(
+    mavsdk_telemetry_t telemetry,
+    mavsdk_telemetry_distance_sensor_callback_t callback,
+    void* user_data)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+    auto cpp_handle = wrapper->cpp_plugin->subscribe_distance_sensor(
+        [callback, user_data](mavsdk::Telemetry::DistanceSensor value) {
+            if (callback) {
+                callback(
+                    translate_distance_sensor_to_c(value),
+                    user_data);
+            }
+        });
+    
+    auto handle_wrapper = new mavsdk::Telemetry::DistanceSensorHandle(std::move(cpp_handle));
+    return static_cast<mavsdk_telemetry_distance_sensor_handle_t>(handle_wrapper);
+}
+
+void mavsdk_telemetry_unsubscribe_distance_sensor(
+    mavsdk_telemetry_t telemetry,
+    mavsdk_telemetry_distance_sensor_handle_t handle)
+{
+    if (handle) {
+        auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+        auto cpp_handle = static_cast<mavsdk::Telemetry::DistanceSensorHandle*>(handle);
+        wrapper->cpp_plugin->unsubscribe_distance_sensor(std::move(*cpp_handle));
+        delete cpp_handle;
+    }
+}
+
+// DistanceSensor sync
+void
+mavsdk_telemetry_distance_sensor(
+    mavsdk_telemetry_t telemetry,
+mavsdk_telemetry_distance_sensor_t* distance_sensor_out)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+    auto ret_value = wrapper->cpp_plugin->distance_sensor();
+    
+    if (distance_sensor_out != nullptr) {
+        *distance_sensor_out = translate_distance_sensor_to_c(ret_value);
+    }
+}
+
+// ScaledPressure async
+mavsdk_telemetry_scaled_pressure_handle_t mavsdk_telemetry_subscribe_scaled_pressure(
+    mavsdk_telemetry_t telemetry,
+    mavsdk_telemetry_scaled_pressure_callback_t callback,
+    void* user_data)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+    auto cpp_handle = wrapper->cpp_plugin->subscribe_scaled_pressure(
+        [callback, user_data](mavsdk::Telemetry::ScaledPressure value) {
+            if (callback) {
+                callback(
+                    translate_scaled_pressure_to_c(value),
+                    user_data);
+            }
+        });
+    
+    auto handle_wrapper = new mavsdk::Telemetry::ScaledPressureHandle(std::move(cpp_handle));
+    return static_cast<mavsdk_telemetry_scaled_pressure_handle_t>(handle_wrapper);
+}
+
+void mavsdk_telemetry_unsubscribe_scaled_pressure(
+    mavsdk_telemetry_t telemetry,
+    mavsdk_telemetry_scaled_pressure_handle_t handle)
+{
+    if (handle) {
+        auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+        auto cpp_handle = static_cast<mavsdk::Telemetry::ScaledPressureHandle*>(handle);
+        wrapper->cpp_plugin->unsubscribe_scaled_pressure(std::move(*cpp_handle));
+        delete cpp_handle;
+    }
+}
+
+// ScaledPressure sync
+void
+mavsdk_telemetry_scaled_pressure(
+    mavsdk_telemetry_t telemetry,
+mavsdk_telemetry_scaled_pressure_t* scaled_pressure_out)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+    auto ret_value = wrapper->cpp_plugin->scaled_pressure();
+    
+    if (scaled_pressure_out != nullptr) {
+        *scaled_pressure_out = translate_scaled_pressure_to_c(ret_value);
+    }
+}
+
+// Heading async
+mavsdk_telemetry_heading_handle_t mavsdk_telemetry_subscribe_heading(
+    mavsdk_telemetry_t telemetry,
+    mavsdk_telemetry_heading_callback_t callback,
+    void* user_data)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+    auto cpp_handle = wrapper->cpp_plugin->subscribe_heading(
+        [callback, user_data](mavsdk::Telemetry::Heading value) {
+            if (callback) {
+                callback(
+                    translate_heading_to_c(value),
+                    user_data);
+            }
+        });
+    
+    auto handle_wrapper = new mavsdk::Telemetry::HeadingHandle(std::move(cpp_handle));
+    return static_cast<mavsdk_telemetry_heading_handle_t>(handle_wrapper);
+}
+
+void mavsdk_telemetry_unsubscribe_heading(
+    mavsdk_telemetry_t telemetry,
+    mavsdk_telemetry_heading_handle_t handle)
+{
+    if (handle) {
+        auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+        auto cpp_handle = static_cast<mavsdk::Telemetry::HeadingHandle*>(handle);
+        wrapper->cpp_plugin->unsubscribe_heading(std::move(*cpp_handle));
+        delete cpp_handle;
+    }
+}
+
+// Heading sync
+void
+mavsdk_telemetry_heading(
+    mavsdk_telemetry_t telemetry,
+mavsdk_telemetry_heading_t* heading_deg_out)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+    auto ret_value = wrapper->cpp_plugin->heading();
+    
+    if (heading_deg_out != nullptr) {
+        *heading_deg_out = translate_heading_to_c(ret_value);
+    }
+}
+
+// Altitude async
+mavsdk_telemetry_altitude_handle_t mavsdk_telemetry_subscribe_altitude(
+    mavsdk_telemetry_t telemetry,
+    mavsdk_telemetry_altitude_callback_t callback,
+    void* user_data)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+    auto cpp_handle = wrapper->cpp_plugin->subscribe_altitude(
+        [callback, user_data](mavsdk::Telemetry::Altitude value) {
+            if (callback) {
+                callback(
+                    translate_altitude_to_c(value),
+                    user_data);
+            }
+        });
+    
+    auto handle_wrapper = new mavsdk::Telemetry::AltitudeHandle(std::move(cpp_handle));
+    return static_cast<mavsdk_telemetry_altitude_handle_t>(handle_wrapper);
+}
+
+void mavsdk_telemetry_unsubscribe_altitude(
+    mavsdk_telemetry_t telemetry,
+    mavsdk_telemetry_altitude_handle_t handle)
+{
+    if (handle) {
+        auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+        auto cpp_handle = static_cast<mavsdk::Telemetry::AltitudeHandle*>(handle);
+        wrapper->cpp_plugin->unsubscribe_altitude(std::move(*cpp_handle));
+        delete cpp_handle;
+    }
+}
+
+// Altitude sync
+void
+mavsdk_telemetry_altitude(
+    mavsdk_telemetry_t telemetry,
+mavsdk_telemetry_altitude_t* altitude_out)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+    auto ret_value = wrapper->cpp_plugin->altitude();
+    
+    if (altitude_out != nullptr) {
+        *altitude_out = translate_altitude_to_c(ret_value);
+    }
+}
+
+// Wind async
+mavsdk_telemetry_wind_handle_t mavsdk_telemetry_subscribe_wind(
+    mavsdk_telemetry_t telemetry,
+    mavsdk_telemetry_wind_callback_t callback,
+    void* user_data)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+    auto cpp_handle = wrapper->cpp_plugin->subscribe_wind(
+        [callback, user_data](mavsdk::Telemetry::Wind value) {
+            if (callback) {
+                callback(
+                    translate_wind_to_c(value),
+                    user_data);
+            }
+        });
+    
+    auto handle_wrapper = new mavsdk::Telemetry::WindHandle(std::move(cpp_handle));
+    return static_cast<mavsdk_telemetry_wind_handle_t>(handle_wrapper);
+}
+
+void mavsdk_telemetry_unsubscribe_wind(
+    mavsdk_telemetry_t telemetry,
+    mavsdk_telemetry_wind_handle_t handle)
+{
+    if (handle) {
+        auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+        auto cpp_handle = static_cast<mavsdk::Telemetry::WindHandle*>(handle);
+        wrapper->cpp_plugin->unsubscribe_wind(std::move(*cpp_handle));
+        delete cpp_handle;
+    }
+}
+
+// Wind sync
+void
+mavsdk_telemetry_wind(
+    mavsdk_telemetry_t telemetry,
+mavsdk_telemetry_wind_t* wind_out)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+    auto ret_value = wrapper->cpp_plugin->wind();
+    
+    if (wind_out != nullptr) {
+        *wind_out = translate_wind_to_c(ret_value);
+    }
+}
+
+// SetRatePosition async
 void mavsdk_telemetry_set_rate_position_async(
     mavsdk_telemetry_t telemetry,
     double rate_hz,
-    mavsdk_telemetry_result_callback_t callback,
+    mavsdk_telemetry_set_rate_position_callback_t callback,
     void* user_data)
 {
-    auto* cpp_telemetry = static_cast<Telemetry*>(telemetry);
-    if (!cpp_telemetry) return;
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
     
-    auto* wrapper = new TelemetryResultCallbackWrapper{callback, user_data};
-    cpp_telemetry->set_rate_position_async(rate_hz, [wrapper](Telemetry::Result result) {
-        if (wrapper->user_callback) {
-            wrapper->user_callback(telemetry_result_from_cpp(result), wrapper->user_data);
-        }
-        delete wrapper;
-    });
+wrapper->cpp_plugin->set_rate_position_async(
+        rate_hz,        [callback, user_data](mavsdk::Telemetry::Result result) {
+            if (callback) {
+                callback(
+translate_result(result),                    user_data);
+            }
+        });
 }
 
+
+// SetRatePosition sync
+mavsdk_telemetry_result_t
+mavsdk_telemetry_set_rate_position(
+    mavsdk_telemetry_t telemetry,
+    double rate_hz)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+    auto ret_value = wrapper->cpp_plugin->set_rate_position(        rate_hz);
+    
+    return translate_result(ret_value);
+}
+
+// SetRateHome async
 void mavsdk_telemetry_set_rate_home_async(
     mavsdk_telemetry_t telemetry,
     double rate_hz,
-    mavsdk_telemetry_result_callback_t callback,
+    mavsdk_telemetry_set_rate_home_callback_t callback,
     void* user_data)
 {
-    auto* cpp_telemetry = static_cast<Telemetry*>(telemetry);
-    if (!cpp_telemetry) return;
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
     
-    auto* wrapper = new TelemetryResultCallbackWrapper{callback, user_data};
-    cpp_telemetry->set_rate_home_async(rate_hz, [wrapper](Telemetry::Result result) {
-        if (wrapper->user_callback) {
-            wrapper->user_callback(telemetry_result_from_cpp(result), wrapper->user_data);
-        }
-        delete wrapper;
-    });
+wrapper->cpp_plugin->set_rate_home_async(
+        rate_hz,        [callback, user_data](mavsdk::Telemetry::Result result) {
+            if (callback) {
+                callback(
+translate_result(result),                    user_data);
+            }
+        });
 }
 
+
+// SetRateHome sync
+mavsdk_telemetry_result_t
+mavsdk_telemetry_set_rate_home(
+    mavsdk_telemetry_t telemetry,
+    double rate_hz)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+    auto ret_value = wrapper->cpp_plugin->set_rate_home(        rate_hz);
+    
+    return translate_result(ret_value);
+}
+
+// SetRateInAir async
 void mavsdk_telemetry_set_rate_in_air_async(
     mavsdk_telemetry_t telemetry,
     double rate_hz,
-    mavsdk_telemetry_result_callback_t callback,
+    mavsdk_telemetry_set_rate_in_air_callback_t callback,
     void* user_data)
 {
-    auto* cpp_telemetry = static_cast<Telemetry*>(telemetry);
-    if (!cpp_telemetry) return;
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
     
-    auto* wrapper = new TelemetryResultCallbackWrapper{callback, user_data};
-    cpp_telemetry->set_rate_in_air_async(rate_hz, [wrapper](Telemetry::Result result) {
-        if (wrapper->user_callback) {
-            wrapper->user_callback(telemetry_result_from_cpp(result), wrapper->user_data);
-        }
-        delete wrapper;
-    });
+wrapper->cpp_plugin->set_rate_in_air_async(
+        rate_hz,        [callback, user_data](mavsdk::Telemetry::Result result) {
+            if (callback) {
+                callback(
+translate_result(result),                    user_data);
+            }
+        });
 }
 
-void mavsdk_telemetry_set_rate_attitude_async(
+
+// SetRateInAir sync
+mavsdk_telemetry_result_t
+mavsdk_telemetry_set_rate_in_air(
+    mavsdk_telemetry_t telemetry,
+    double rate_hz)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+    auto ret_value = wrapper->cpp_plugin->set_rate_in_air(        rate_hz);
+    
+    return translate_result(ret_value);
+}
+
+// SetRateLandedState async
+void mavsdk_telemetry_set_rate_landed_state_async(
     mavsdk_telemetry_t telemetry,
     double rate_hz,
-    mavsdk_telemetry_result_callback_t callback,
+    mavsdk_telemetry_set_rate_landed_state_callback_t callback,
     void* user_data)
 {
-    auto* cpp_telemetry = static_cast<Telemetry*>(telemetry);
-    if (!cpp_telemetry) return;
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
     
-    auto* wrapper = new TelemetryResultCallbackWrapper{callback, user_data};
-    cpp_telemetry->set_rate_attitude_quaternion_async(rate_hz, [wrapper](Telemetry::Result result) {
-        if (wrapper->user_callback) {
-            wrapper->user_callback(telemetry_result_from_cpp(result), wrapper->user_data);
-        }
-        delete wrapper;
-    });
+wrapper->cpp_plugin->set_rate_landed_state_async(
+        rate_hz,        [callback, user_data](mavsdk::Telemetry::Result result) {
+            if (callback) {
+                callback(
+translate_result(result),                    user_data);
+            }
+        });
 }
 
+
+// SetRateLandedState sync
+mavsdk_telemetry_result_t
+mavsdk_telemetry_set_rate_landed_state(
+    mavsdk_telemetry_t telemetry,
+    double rate_hz)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+    auto ret_value = wrapper->cpp_plugin->set_rate_landed_state(        rate_hz);
+    
+    return translate_result(ret_value);
+}
+
+// SetRateVtolState async
+void mavsdk_telemetry_set_rate_vtol_state_async(
+    mavsdk_telemetry_t telemetry,
+    double rate_hz,
+    mavsdk_telemetry_set_rate_vtol_state_callback_t callback,
+    void* user_data)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+wrapper->cpp_plugin->set_rate_vtol_state_async(
+        rate_hz,        [callback, user_data](mavsdk::Telemetry::Result result) {
+            if (callback) {
+                callback(
+translate_result(result),                    user_data);
+            }
+        });
+}
+
+
+// SetRateVtolState sync
+mavsdk_telemetry_result_t
+mavsdk_telemetry_set_rate_vtol_state(
+    mavsdk_telemetry_t telemetry,
+    double rate_hz)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+    auto ret_value = wrapper->cpp_plugin->set_rate_vtol_state(        rate_hz);
+    
+    return translate_result(ret_value);
+}
+
+// SetRateAttitudeQuaternion async
+void mavsdk_telemetry_set_rate_attitude_quaternion_async(
+    mavsdk_telemetry_t telemetry,
+    double rate_hz,
+    mavsdk_telemetry_set_rate_attitude_quaternion_callback_t callback,
+    void* user_data)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+wrapper->cpp_plugin->set_rate_attitude_quaternion_async(
+        rate_hz,        [callback, user_data](mavsdk::Telemetry::Result result) {
+            if (callback) {
+                callback(
+translate_result(result),                    user_data);
+            }
+        });
+}
+
+
+// SetRateAttitudeQuaternion sync
+mavsdk_telemetry_result_t
+mavsdk_telemetry_set_rate_attitude_quaternion(
+    mavsdk_telemetry_t telemetry,
+    double rate_hz)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+    auto ret_value = wrapper->cpp_plugin->set_rate_attitude_quaternion(        rate_hz);
+    
+    return translate_result(ret_value);
+}
+
+// SetRateAttitudeEuler async
+void mavsdk_telemetry_set_rate_attitude_euler_async(
+    mavsdk_telemetry_t telemetry,
+    double rate_hz,
+    mavsdk_telemetry_set_rate_attitude_euler_callback_t callback,
+    void* user_data)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+wrapper->cpp_plugin->set_rate_attitude_euler_async(
+        rate_hz,        [callback, user_data](mavsdk::Telemetry::Result result) {
+            if (callback) {
+                callback(
+translate_result(result),                    user_data);
+            }
+        });
+}
+
+
+// SetRateAttitudeEuler sync
+mavsdk_telemetry_result_t
+mavsdk_telemetry_set_rate_attitude_euler(
+    mavsdk_telemetry_t telemetry,
+    double rate_hz)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+    auto ret_value = wrapper->cpp_plugin->set_rate_attitude_euler(        rate_hz);
+    
+    return translate_result(ret_value);
+}
+
+// SetRateVelocityNed async
 void mavsdk_telemetry_set_rate_velocity_ned_async(
     mavsdk_telemetry_t telemetry,
     double rate_hz,
-    mavsdk_telemetry_result_callback_t callback,
+    mavsdk_telemetry_set_rate_velocity_ned_callback_t callback,
     void* user_data)
 {
-    auto* cpp_telemetry = static_cast<Telemetry*>(telemetry);
-    if (!cpp_telemetry) return;
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
     
-    auto* wrapper = new TelemetryResultCallbackWrapper{callback, user_data};
-    cpp_telemetry->set_rate_velocity_ned_async(rate_hz, [wrapper](Telemetry::Result result) {
-        if (wrapper->user_callback) {
-            wrapper->user_callback(telemetry_result_from_cpp(result), wrapper->user_data);
-        }
-        delete wrapper;
-    });
+wrapper->cpp_plugin->set_rate_velocity_ned_async(
+        rate_hz,        [callback, user_data](mavsdk::Telemetry::Result result) {
+            if (callback) {
+                callback(
+translate_result(result),                    user_data);
+            }
+        });
 }
 
+
+// SetRateVelocityNed sync
+mavsdk_telemetry_result_t
+mavsdk_telemetry_set_rate_velocity_ned(
+    mavsdk_telemetry_t telemetry,
+    double rate_hz)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+    auto ret_value = wrapper->cpp_plugin->set_rate_velocity_ned(        rate_hz);
+    
+    return translate_result(ret_value);
+}
+
+// SetRateGpsInfo async
 void mavsdk_telemetry_set_rate_gps_info_async(
     mavsdk_telemetry_t telemetry,
     double rate_hz,
-    mavsdk_telemetry_result_callback_t callback,
+    mavsdk_telemetry_set_rate_gps_info_callback_t callback,
     void* user_data)
 {
-    auto* cpp_telemetry = static_cast<Telemetry*>(telemetry);
-    if (!cpp_telemetry) return;
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
     
-    auto* wrapper = new TelemetryResultCallbackWrapper{callback, user_data};
-    cpp_telemetry->set_rate_gps_info_async(rate_hz, [wrapper](Telemetry::Result result) {
-        if (wrapper->user_callback) {
-            wrapper->user_callback(telemetry_result_from_cpp(result), wrapper->user_data);
-        }
-        delete wrapper;
-    });
+wrapper->cpp_plugin->set_rate_gps_info_async(
+        rate_hz,        [callback, user_data](mavsdk::Telemetry::Result result) {
+            if (callback) {
+                callback(
+translate_result(result),                    user_data);
+            }
+        });
 }
 
+
+// SetRateGpsInfo sync
+mavsdk_telemetry_result_t
+mavsdk_telemetry_set_rate_gps_info(
+    mavsdk_telemetry_t telemetry,
+    double rate_hz)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+    auto ret_value = wrapper->cpp_plugin->set_rate_gps_info(        rate_hz);
+    
+    return translate_result(ret_value);
+}
+
+// SetRateBattery async
 void mavsdk_telemetry_set_rate_battery_async(
     mavsdk_telemetry_t telemetry,
     double rate_hz,
-    mavsdk_telemetry_result_callback_t callback,
+    mavsdk_telemetry_set_rate_battery_callback_t callback,
     void* user_data)
 {
-    auto* cpp_telemetry = static_cast<Telemetry*>(telemetry);
-    if (!cpp_telemetry) return;
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
     
-    auto* wrapper = new TelemetryResultCallbackWrapper{callback, user_data};
-    cpp_telemetry->set_rate_battery_async(rate_hz, [wrapper](Telemetry::Result result) {
-        if (wrapper->user_callback) {
-            wrapper->user_callback(telemetry_result_from_cpp(result), wrapper->user_data);
+wrapper->cpp_plugin->set_rate_battery_async(
+        rate_hz,        [callback, user_data](mavsdk::Telemetry::Result result) {
+            if (callback) {
+                callback(
+translate_result(result),                    user_data);
+            }
+        });
+}
+
+
+// SetRateBattery sync
+mavsdk_telemetry_result_t
+mavsdk_telemetry_set_rate_battery(
+    mavsdk_telemetry_t telemetry,
+    double rate_hz)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+    auto ret_value = wrapper->cpp_plugin->set_rate_battery(        rate_hz);
+    
+    return translate_result(ret_value);
+}
+
+// SetRateRcStatus async
+void mavsdk_telemetry_set_rate_rc_status_async(
+    mavsdk_telemetry_t telemetry,
+    double rate_hz,
+    mavsdk_telemetry_set_rate_rc_status_callback_t callback,
+    void* user_data)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+wrapper->cpp_plugin->set_rate_rc_status_async(
+        rate_hz,        [callback, user_data](mavsdk::Telemetry::Result result) {
+            if (callback) {
+                callback(
+translate_result(result),                    user_data);
+            }
+        });
+}
+
+
+// SetRateRcStatus sync
+mavsdk_telemetry_result_t
+mavsdk_telemetry_set_rate_rc_status(
+    mavsdk_telemetry_t telemetry,
+    double rate_hz)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+    auto ret_value = wrapper->cpp_plugin->set_rate_rc_status(        rate_hz);
+    
+    return translate_result(ret_value);
+}
+
+// SetRateActuatorControlTarget async
+void mavsdk_telemetry_set_rate_actuator_control_target_async(
+    mavsdk_telemetry_t telemetry,
+    double rate_hz,
+    mavsdk_telemetry_set_rate_actuator_control_target_callback_t callback,
+    void* user_data)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+wrapper->cpp_plugin->set_rate_actuator_control_target_async(
+        rate_hz,        [callback, user_data](mavsdk::Telemetry::Result result) {
+            if (callback) {
+                callback(
+translate_result(result),                    user_data);
+            }
+        });
+}
+
+
+// SetRateActuatorControlTarget sync
+mavsdk_telemetry_result_t
+mavsdk_telemetry_set_rate_actuator_control_target(
+    mavsdk_telemetry_t telemetry,
+    double rate_hz)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+    auto ret_value = wrapper->cpp_plugin->set_rate_actuator_control_target(        rate_hz);
+    
+    return translate_result(ret_value);
+}
+
+// SetRateActuatorOutputStatus async
+void mavsdk_telemetry_set_rate_actuator_output_status_async(
+    mavsdk_telemetry_t telemetry,
+    double rate_hz,
+    mavsdk_telemetry_set_rate_actuator_output_status_callback_t callback,
+    void* user_data)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+wrapper->cpp_plugin->set_rate_actuator_output_status_async(
+        rate_hz,        [callback, user_data](mavsdk::Telemetry::Result result) {
+            if (callback) {
+                callback(
+translate_result(result),                    user_data);
+            }
+        });
+}
+
+
+// SetRateActuatorOutputStatus sync
+mavsdk_telemetry_result_t
+mavsdk_telemetry_set_rate_actuator_output_status(
+    mavsdk_telemetry_t telemetry,
+    double rate_hz)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+    auto ret_value = wrapper->cpp_plugin->set_rate_actuator_output_status(        rate_hz);
+    
+    return translate_result(ret_value);
+}
+
+// SetRateOdometry async
+void mavsdk_telemetry_set_rate_odometry_async(
+    mavsdk_telemetry_t telemetry,
+    double rate_hz,
+    mavsdk_telemetry_set_rate_odometry_callback_t callback,
+    void* user_data)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+wrapper->cpp_plugin->set_rate_odometry_async(
+        rate_hz,        [callback, user_data](mavsdk::Telemetry::Result result) {
+            if (callback) {
+                callback(
+translate_result(result),                    user_data);
+            }
+        });
+}
+
+
+// SetRateOdometry sync
+mavsdk_telemetry_result_t
+mavsdk_telemetry_set_rate_odometry(
+    mavsdk_telemetry_t telemetry,
+    double rate_hz)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+    auto ret_value = wrapper->cpp_plugin->set_rate_odometry(        rate_hz);
+    
+    return translate_result(ret_value);
+}
+
+// SetRatePositionVelocityNed async
+void mavsdk_telemetry_set_rate_position_velocity_ned_async(
+    mavsdk_telemetry_t telemetry,
+    double rate_hz,
+    mavsdk_telemetry_set_rate_position_velocity_ned_callback_t callback,
+    void* user_data)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+wrapper->cpp_plugin->set_rate_position_velocity_ned_async(
+        rate_hz,        [callback, user_data](mavsdk::Telemetry::Result result) {
+            if (callback) {
+                callback(
+translate_result(result),                    user_data);
+            }
+        });
+}
+
+
+// SetRatePositionVelocityNed sync
+mavsdk_telemetry_result_t
+mavsdk_telemetry_set_rate_position_velocity_ned(
+    mavsdk_telemetry_t telemetry,
+    double rate_hz)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+    auto ret_value = wrapper->cpp_plugin->set_rate_position_velocity_ned(        rate_hz);
+    
+    return translate_result(ret_value);
+}
+
+// SetRateGroundTruth async
+void mavsdk_telemetry_set_rate_ground_truth_async(
+    mavsdk_telemetry_t telemetry,
+    double rate_hz,
+    mavsdk_telemetry_set_rate_ground_truth_callback_t callback,
+    void* user_data)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+wrapper->cpp_plugin->set_rate_ground_truth_async(
+        rate_hz,        [callback, user_data](mavsdk::Telemetry::Result result) {
+            if (callback) {
+                callback(
+translate_result(result),                    user_data);
+            }
+        });
+}
+
+
+// SetRateGroundTruth sync
+mavsdk_telemetry_result_t
+mavsdk_telemetry_set_rate_ground_truth(
+    mavsdk_telemetry_t telemetry,
+    double rate_hz)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+    auto ret_value = wrapper->cpp_plugin->set_rate_ground_truth(        rate_hz);
+    
+    return translate_result(ret_value);
+}
+
+// SetRateFixedwingMetrics async
+void mavsdk_telemetry_set_rate_fixedwing_metrics_async(
+    mavsdk_telemetry_t telemetry,
+    double rate_hz,
+    mavsdk_telemetry_set_rate_fixedwing_metrics_callback_t callback,
+    void* user_data)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+wrapper->cpp_plugin->set_rate_fixedwing_metrics_async(
+        rate_hz,        [callback, user_data](mavsdk::Telemetry::Result result) {
+            if (callback) {
+                callback(
+translate_result(result),                    user_data);
+            }
+        });
+}
+
+
+// SetRateFixedwingMetrics sync
+mavsdk_telemetry_result_t
+mavsdk_telemetry_set_rate_fixedwing_metrics(
+    mavsdk_telemetry_t telemetry,
+    double rate_hz)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+    auto ret_value = wrapper->cpp_plugin->set_rate_fixedwing_metrics(        rate_hz);
+    
+    return translate_result(ret_value);
+}
+
+// SetRateImu async
+void mavsdk_telemetry_set_rate_imu_async(
+    mavsdk_telemetry_t telemetry,
+    double rate_hz,
+    mavsdk_telemetry_set_rate_imu_callback_t callback,
+    void* user_data)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+wrapper->cpp_plugin->set_rate_imu_async(
+        rate_hz,        [callback, user_data](mavsdk::Telemetry::Result result) {
+            if (callback) {
+                callback(
+translate_result(result),                    user_data);
+            }
+        });
+}
+
+
+// SetRateImu sync
+mavsdk_telemetry_result_t
+mavsdk_telemetry_set_rate_imu(
+    mavsdk_telemetry_t telemetry,
+    double rate_hz)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+    auto ret_value = wrapper->cpp_plugin->set_rate_imu(        rate_hz);
+    
+    return translate_result(ret_value);
+}
+
+// SetRateScaledImu async
+void mavsdk_telemetry_set_rate_scaled_imu_async(
+    mavsdk_telemetry_t telemetry,
+    double rate_hz,
+    mavsdk_telemetry_set_rate_scaled_imu_callback_t callback,
+    void* user_data)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+wrapper->cpp_plugin->set_rate_scaled_imu_async(
+        rate_hz,        [callback, user_data](mavsdk::Telemetry::Result result) {
+            if (callback) {
+                callback(
+translate_result(result),                    user_data);
+            }
+        });
+}
+
+
+// SetRateScaledImu sync
+mavsdk_telemetry_result_t
+mavsdk_telemetry_set_rate_scaled_imu(
+    mavsdk_telemetry_t telemetry,
+    double rate_hz)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+    auto ret_value = wrapper->cpp_plugin->set_rate_scaled_imu(        rate_hz);
+    
+    return translate_result(ret_value);
+}
+
+// SetRateRawImu async
+void mavsdk_telemetry_set_rate_raw_imu_async(
+    mavsdk_telemetry_t telemetry,
+    double rate_hz,
+    mavsdk_telemetry_set_rate_raw_imu_callback_t callback,
+    void* user_data)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+wrapper->cpp_plugin->set_rate_raw_imu_async(
+        rate_hz,        [callback, user_data](mavsdk::Telemetry::Result result) {
+            if (callback) {
+                callback(
+translate_result(result),                    user_data);
+            }
+        });
+}
+
+
+// SetRateRawImu sync
+mavsdk_telemetry_result_t
+mavsdk_telemetry_set_rate_raw_imu(
+    mavsdk_telemetry_t telemetry,
+    double rate_hz)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+    auto ret_value = wrapper->cpp_plugin->set_rate_raw_imu(        rate_hz);
+    
+    return translate_result(ret_value);
+}
+
+// SetRateUnixEpochTime async
+void mavsdk_telemetry_set_rate_unix_epoch_time_async(
+    mavsdk_telemetry_t telemetry,
+    double rate_hz,
+    mavsdk_telemetry_set_rate_unix_epoch_time_callback_t callback,
+    void* user_data)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+wrapper->cpp_plugin->set_rate_unix_epoch_time_async(
+        rate_hz,        [callback, user_data](mavsdk::Telemetry::Result result) {
+            if (callback) {
+                callback(
+translate_result(result),                    user_data);
+            }
+        });
+}
+
+
+// SetRateUnixEpochTime sync
+mavsdk_telemetry_result_t
+mavsdk_telemetry_set_rate_unix_epoch_time(
+    mavsdk_telemetry_t telemetry,
+    double rate_hz)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+    auto ret_value = wrapper->cpp_plugin->set_rate_unix_epoch_time(        rate_hz);
+    
+    return translate_result(ret_value);
+}
+
+// SetRateDistanceSensor async
+void mavsdk_telemetry_set_rate_distance_sensor_async(
+    mavsdk_telemetry_t telemetry,
+    double rate_hz,
+    mavsdk_telemetry_set_rate_distance_sensor_callback_t callback,
+    void* user_data)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+wrapper->cpp_plugin->set_rate_distance_sensor_async(
+        rate_hz,        [callback, user_data](mavsdk::Telemetry::Result result) {
+            if (callback) {
+                callback(
+translate_result(result),                    user_data);
+            }
+        });
+}
+
+
+// SetRateDistanceSensor sync
+mavsdk_telemetry_result_t
+mavsdk_telemetry_set_rate_distance_sensor(
+    mavsdk_telemetry_t telemetry,
+    double rate_hz)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+    auto ret_value = wrapper->cpp_plugin->set_rate_distance_sensor(        rate_hz);
+    
+    return translate_result(ret_value);
+}
+
+// SetRateAltitude async
+void mavsdk_telemetry_set_rate_altitude_async(
+    mavsdk_telemetry_t telemetry,
+    double rate_hz,
+    mavsdk_telemetry_set_rate_altitude_callback_t callback,
+    void* user_data)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+wrapper->cpp_plugin->set_rate_altitude_async(
+        rate_hz,        [callback, user_data](mavsdk::Telemetry::Result result) {
+            if (callback) {
+                callback(
+translate_result(result),                    user_data);
+            }
+        });
+}
+
+
+// SetRateAltitude sync
+mavsdk_telemetry_result_t
+mavsdk_telemetry_set_rate_altitude(
+    mavsdk_telemetry_t telemetry,
+    double rate_hz)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+    auto ret_value = wrapper->cpp_plugin->set_rate_altitude(        rate_hz);
+    
+    return translate_result(ret_value);
+}
+
+// SetRateHealth async
+void mavsdk_telemetry_set_rate_health_async(
+    mavsdk_telemetry_t telemetry,
+    double rate_hz,
+    mavsdk_telemetry_set_rate_health_callback_t callback,
+    void* user_data)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+wrapper->cpp_plugin->set_rate_health_async(
+        rate_hz,        [callback, user_data](mavsdk::Telemetry::Result result) {
+            if (callback) {
+                callback(
+translate_result(result),                    user_data);
+            }
+        });
+}
+
+
+// SetRateHealth sync
+mavsdk_telemetry_result_t
+mavsdk_telemetry_set_rate_health(
+    mavsdk_telemetry_t telemetry,
+    double rate_hz)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+    auto ret_value = wrapper->cpp_plugin->set_rate_health(        rate_hz);
+    
+    return translate_result(ret_value);
+}
+
+// GetGpsGlobalOrigin async
+void mavsdk_telemetry_get_gps_global_origin_async(
+    mavsdk_telemetry_t telemetry,
+    mavsdk_telemetry_get_gps_global_origin_callback_t callback,
+    void* user_data)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+wrapper->cpp_plugin->get_gps_global_origin_async(
+        [callback, user_data](mavsdk::Telemetry::Result result, mavsdk::Telemetry::GpsGlobalOrigin value) {
+            if (callback) {
+                callback(
+translate_result(result),                    translate_gps_global_origin_to_c(value),
+                    user_data);
+            }
+        });
+}
+
+
+// GetGpsGlobalOrigin sync
+mavsdk_telemetry_result_t
+mavsdk_telemetry_get_gps_global_origin(
+    mavsdk_telemetry_t telemetry,
+mavsdk_telemetry_gps_global_origin_t* gps_global_origin_out)
+{
+    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    
+    auto result_pair = wrapper->cpp_plugin->get_gps_global_origin(
+);
+    
+        if (gps_global_origin_out != nullptr) {
+            *gps_global_origin_out = translate_gps_global_origin_to_c(result_pair.second);
         }
-        delete wrapper;
-    });
-}
-
-// ===== Rate Setting Methods (Sync) =====
-mavsdk_telemetry_result_t mavsdk_telemetry_set_rate_position(
-    mavsdk_telemetry_t telemetry,
-    double rate_hz)
-{
-    auto* cpp_telemetry = static_cast<Telemetry*>(telemetry);
-    if (!cpp_telemetry) return MAVSDK_TELEMETRY_RESULT_NO_SYSTEM;
-    return telemetry_result_from_cpp(cpp_telemetry->set_rate_position(rate_hz));
-}
-
-mavsdk_telemetry_result_t mavsdk_telemetry_set_rate_home(
-    mavsdk_telemetry_t telemetry,
-    double rate_hz)
-{
-    auto* cpp_telemetry = static_cast<Telemetry*>(telemetry);
-    if (!cpp_telemetry) return MAVSDK_TELEMETRY_RESULT_NO_SYSTEM;
-    return telemetry_result_from_cpp(cpp_telemetry->set_rate_home(rate_hz));
-}
-
-mavsdk_telemetry_result_t mavsdk_telemetry_set_rate_in_air(
-    mavsdk_telemetry_t telemetry,
-    double rate_hz)
-{
-    auto* cpp_telemetry = static_cast<Telemetry*>(telemetry);
-    if (!cpp_telemetry) return MAVSDK_TELEMETRY_RESULT_NO_SYSTEM;
-    return telemetry_result_from_cpp(cpp_telemetry->set_rate_in_air(rate_hz));
-}
-
-mavsdk_telemetry_result_t mavsdk_telemetry_set_rate_attitude(
-    mavsdk_telemetry_t telemetry,
-    double rate_hz)
-{
-    auto* cpp_telemetry = static_cast<Telemetry*>(telemetry);
-    if (!cpp_telemetry) return MAVSDK_TELEMETRY_RESULT_NO_SYSTEM;
-    return telemetry_result_from_cpp(cpp_telemetry->set_rate_attitude_quaternion(rate_hz));
-}
-
-mavsdk_telemetry_result_t mavsdk_telemetry_set_rate_velocity_ned(
-    mavsdk_telemetry_t telemetry,
-    double rate_hz)
-{
-    auto* cpp_telemetry = static_cast<Telemetry*>(telemetry);
-    if (!cpp_telemetry) return MAVSDK_TELEMETRY_RESULT_NO_SYSTEM;
-    return telemetry_result_from_cpp(cpp_telemetry->set_rate_velocity_ned(rate_hz));
-}
-
-mavsdk_telemetry_result_t mavsdk_telemetry_set_rate_gps_info(
-    mavsdk_telemetry_t telemetry,
-    double rate_hz)
-{
-    auto* cpp_telemetry = static_cast<Telemetry*>(telemetry);
-    if (!cpp_telemetry) return MAVSDK_TELEMETRY_RESULT_NO_SYSTEM;
-    return telemetry_result_from_cpp(cpp_telemetry->set_rate_gps_info(rate_hz));
-}
-
-mavsdk_telemetry_result_t mavsdk_telemetry_set_rate_battery(
-    mavsdk_telemetry_t telemetry,
-    double rate_hz)
-{
-    auto* cpp_telemetry = static_cast<Telemetry*>(telemetry);
-    if (!cpp_telemetry) return MAVSDK_TELEMETRY_RESULT_NO_SYSTEM;
-    return telemetry_result_from_cpp(cpp_telemetry->set_rate_battery(rate_hz));
-}
-
-// ===== Polling Methods =====
-mavsdk_telemetry_result_t mavsdk_telemetry_position(
-    mavsdk_telemetry_t telemetry,
-    mavsdk_telemetry_position_t* position_out)
-{
-    auto* cpp_telemetry = static_cast<Telemetry*>(telemetry);
-    if (!cpp_telemetry || !position_out) return MAVSDK_TELEMETRY_RESULT_NO_SYSTEM;
     
-    auto position = cpp_telemetry->position();
-    copy_position_to_c(position, position_out);
-    return MAVSDK_TELEMETRY_RESULT_SUCCESS;
+    return translate_result(result_pair.first);
 }
-
-mavsdk_telemetry_result_t mavsdk_telemetry_home(
-    mavsdk_telemetry_t telemetry,
-    mavsdk_telemetry_position_t* home_out)
-{
-    auto* cpp_telemetry = static_cast<Telemetry*>(telemetry);
-    if (!cpp_telemetry || !home_out) return MAVSDK_TELEMETRY_RESULT_NO_SYSTEM;
-    
-    auto home = cpp_telemetry->home();
-    copy_position_to_c(home, home_out);
-    return MAVSDK_TELEMETRY_RESULT_SUCCESS;
-}
-
-mavsdk_telemetry_result_t mavsdk_telemetry_in_air(
-    mavsdk_telemetry_t telemetry,
-    bool* in_air_out)
-{
-    auto* cpp_telemetry = static_cast<Telemetry*>(telemetry);
-    if (!cpp_telemetry || !in_air_out) return MAVSDK_TELEMETRY_RESULT_NO_SYSTEM;
-    
-    *in_air_out = cpp_telemetry->in_air();
-    return MAVSDK_TELEMETRY_RESULT_SUCCESS;
-}
-
-mavsdk_telemetry_result_t mavsdk_telemetry_landed_state(
-    mavsdk_telemetry_t telemetry,
-    mavsdk_telemetry_landed_state_t* landed_state_out)
-{
-    auto* cpp_telemetry = static_cast<Telemetry*>(telemetry);
-    if (!cpp_telemetry || !landed_state_out) return MAVSDK_TELEMETRY_RESULT_NO_SYSTEM;
-    
-    auto landed_state = cpp_telemetry->landed_state();
-    *landed_state_out = landed_state_from_cpp(landed_state);
-    return MAVSDK_TELEMETRY_RESULT_SUCCESS;
-}
-
-mavsdk_telemetry_result_t mavsdk_telemetry_armed(
-    mavsdk_telemetry_t telemetry,
-    bool* armed_out)
-{
-    auto* cpp_telemetry = static_cast<Telemetry*>(telemetry);
-    if (!cpp_telemetry || !armed_out) return MAVSDK_TELEMETRY_RESULT_NO_SYSTEM;
-    
-    *armed_out = cpp_telemetry->armed();
-    return MAVSDK_TELEMETRY_RESULT_SUCCESS;
-}
-
-mavsdk_telemetry_result_t mavsdk_telemetry_flight_mode(
-    mavsdk_telemetry_t telemetry,
-    mavsdk_telemetry_flight_mode_t* flight_mode_out)
-{
-    auto* cpp_telemetry = static_cast<Telemetry*>(telemetry);
-    if (!cpp_telemetry || !flight_mode_out) return MAVSDK_TELEMETRY_RESULT_NO_SYSTEM;
-    
-    auto flight_mode = cpp_telemetry->flight_mode();
-    *flight_mode_out = flight_mode_from_cpp(flight_mode);
-    return MAVSDK_TELEMETRY_RESULT_SUCCESS;
-}
-
-mavsdk_telemetry_result_t mavsdk_telemetry_health(
-    mavsdk_telemetry_t telemetry,
-    mavsdk_telemetry_health_t* health_out)
-{
-    auto* cpp_telemetry = static_cast<Telemetry*>(telemetry);
-    if (!cpp_telemetry || !health_out) return MAVSDK_TELEMETRY_RESULT_NO_SYSTEM;
-    
-    auto health = cpp_telemetry->health();
-    copy_health_to_c(health, health_out);
-    return MAVSDK_TELEMETRY_RESULT_SUCCESS;
-}
-
-mavsdk_telemetry_result_t mavsdk_telemetry_battery(
-    mavsdk_telemetry_t telemetry,
-    mavsdk_telemetry_battery_t* battery_out)
-{
-    auto* cpp_telemetry = static_cast<Telemetry*>(telemetry);
-    if (!cpp_telemetry || !battery_out) return MAVSDK_TELEMETRY_RESULT_NO_SYSTEM;
-    
-    auto battery = cpp_telemetry->battery();
-    copy_battery_to_c(battery, battery_out);
-    return MAVSDK_TELEMETRY_RESULT_SUCCESS;
-}
-
-} // extern "C"

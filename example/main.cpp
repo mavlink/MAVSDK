@@ -24,12 +24,10 @@ static bool my_log_callback(mavsdk_log_level_t level, const char* message, const
     return true;
 }
 
-static void position_callback(const mavsdk_telemetry_position_t* position, void* user_data) {
+static void position_callback(const mavsdk_telemetry_position_t position, void* user_data) {
     (void)user_data; // Unused parameter
     
-    if (position) {
-        printf("Altitude: %.1f m\n", position->absolute_altitude_m);
-    }
+    printf("Altitude: %.1f m\n", position.absolute_altitude_m);
 }
 
 int main() {
@@ -70,10 +68,22 @@ int main() {
         mavsdk_destroy(mavsdk);
         return 1;
     }
+    printf("Arming...\n");
     mavsdk_action_arm(action);
+    printf("Taking off...\n");
     mavsdk_action_takeoff(action);
 
-    sleep(15);
+    sleep(5);
+
+    printf("Unsubscribing from position updates...\n");
+    mavsdk_telemetry_unsubscribe_position(telemetry, position_handle);
+
+    sleep(5);
+
+    printf("Subscribing again...\n");
+    mavsdk_telemetry_subscribe_position(telemetry, position_callback, NULL);
+
+    sleep(5);
 
     mavsdk_action_land(action);
 

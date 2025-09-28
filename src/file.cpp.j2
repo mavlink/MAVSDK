@@ -1,0 +1,289 @@
+#include "{{ plugin_name.lower_snake_case }}.h"
+#include "plugins/{{ plugin_name.lower_snake_case }}/{{ plugin_name.lower_snake_case }}.h"
+#include <cstring>
+#include <vector>
+
+// ===== C++ to C Type Conversions =====
+
+static mavsdk_{{ plugin_name.lower_snake_case }}_result_t 
+translate_result(mavsdk::{{ plugin_name.upper_camel_case }}::Result cpp_result) {
+    switch(cpp_result) {
+        {% for struct in structs %}
+        {% if struct.name.upper_camel_case.endswith('Result') %}
+        {% for nested_enum_name, nested_enum in struct.nested_enums.items() %}
+        {% if nested_enum_name == 'Result' %}
+        {% for value in nested_enum.values %}
+        case mavsdk::{{ plugin_name.upper_camel_case }}::Result::{{ value.name.upper_camel_case }}:
+            return MAVSDK_{{ plugin_name.uppercase }}_RESULT_{{ value.name.uppercase }};
+        {% endfor %}
+        {% endif %}
+        {% endfor %}
+        {% endif %}
+        {% endfor %}
+        default:
+            return MAVSDK_{{ plugin_name.uppercase }}_RESULT_UNKNOWN;
+    }
+}
+
+{% for enum in enums %}
+static mavsdk::{{ plugin_name.upper_camel_case }}::{{ enum.name.upper_camel_case }}
+translate_{{ enum.name.lower_snake_case }}_from_c(mavsdk_{{ plugin_name.lower_snake_case }}_{{ enum.name.lower_snake_case }}_t c_enum) {
+    switch(c_enum) {
+        {% for value in enum.values %}
+        case MAVSDK_{{ plugin_name.uppercase }}_{{ enum.name.uppercase }}_{{ value.name.uppercase }}:
+            return mavsdk::{{ plugin_name.upper_camel_case }}::{{ enum.name.upper_camel_case }}::{{ value.name.upper_camel_case }};
+        {% endfor %}
+    }
+    return mavsdk::{{ plugin_name.upper_camel_case }}::{{ enum.name.upper_camel_case }}::{{ enum.values[0].name.upper_camel_case }};
+}
+
+static mavsdk_{{ plugin_name.lower_snake_case }}_{{ enum.name.lower_snake_case }}_t
+translate_{{ enum.name.lower_snake_case }}_to_c(mavsdk::{{ plugin_name.upper_camel_case }}::{{ enum.name.upper_camel_case }} cpp_enum) {
+    switch(cpp_enum) {
+        {% for value in enum.values %}
+        case mavsdk::{{ plugin_name.upper_camel_case }}::{{ enum.name.upper_camel_case }}::{{ value.name.upper_camel_case }}:
+            return MAVSDK_{{ plugin_name.uppercase }}_{{ enum.name.uppercase }}_{{ value.name.uppercase }};
+        {% endfor %}
+    }
+    return MAVSDK_{{ plugin_name.uppercase }}_{{ enum.name.uppercase }}_{{ enum.values[0].name.uppercase }};
+}
+
+{% endfor %}
+
+{% for struct in structs %}
+{% if not struct.name.upper_camel_case.endswith('Result') %}
+{% for nested_enum_name, nested_enum in struct.nested_enums.items() %}
+
+static mavsdk_{{ plugin_name.lower_snake_case }}_{{ struct.name.lower_snake_case }}_{{ nested_enum.name.lower_snake_case }}_t
+translate_{{ struct.name.lower_snake_case }}_{{ nested_enum.name.lower_snake_case }}_to_c(mavsdk::{{ plugin_name.upper_camel_case }}::{{ struct.name.upper_camel_case }}::{{ nested_enum.name.upper_camel_case }} cpp_enum) {
+    switch(cpp_enum) {
+        {% for value in nested_enum.values %}
+        case mavsdk::{{ plugin_name.upper_camel_case }}::{{ struct.name.upper_camel_case }}::{{ nested_enum.name.upper_camel_case }}::{{ value.name.upper_camel_case }}:
+            return MAVSDK_{{ plugin_name.uppercase }}_{{ struct.name.uppercase }}_{{ nested_enum.name.uppercase }}_{{ value.name.uppercase }};
+        {% endfor %}
+    }
+    return MAVSDK_{{ plugin_name.uppercase }}_{{ struct.name.uppercase }}_{{ nested_enum.name.uppercase }}_{{ nested_enum.values[0].name.uppercase }};
+}
+
+{% endfor %}
+static mavsdk_{{ plugin_name.lower_snake_case }}_{{ struct.name.lower_snake_case }}_t
+translate_{{ struct.name.lower_snake_case }}_to_c(const mavsdk::{{ plugin_name.upper_camel_case }}::{{ struct.name.upper_camel_case }}& cpp_struct) {
+    mavsdk_{{ plugin_name.lower_snake_case }}_{{ struct.name.lower_snake_case }}_t c_struct{};
+    {% for field in struct.fields %}
+    {% if field.type_info.is_string %}
+    c_struct.{{ field.name.lower_snake_case }} = strdup(cpp_struct.{{ field.name.lower_snake_case }}.c_str());
+    {% elif field.type_info.is_repeated %}
+    c_struct.{{ field.name.lower_snake_case }}_size = cpp_struct.{{ field.name.lower_snake_case }}.size();
+    {% if field.type_info.is_primitive %}
+    c_struct.{{ field.name.lower_snake_case }} = new {{ field.type_info.inner_name }}[c_struct.{{ field.name.lower_snake_case }}_size];
+    std::copy(cpp_struct.{{ field.name.lower_snake_case }}.begin(), cpp_struct.{{ field.name.lower_snake_case }}.end(), c_struct.{{ field.name.lower_snake_case }});
+    {% else %}
+    c_struct.{{ field.name.lower_snake_case }} = new mavsdk_{{ plugin_name.lower_snake_case }}_{{ field.type_info.inner_name.lower_snake_case }}_t[c_struct.{{ field.name.lower_snake_case }}_size];
+    for (int i = 0; i < c_struct.{{ field.name.lower_snake_case }}_size; i++) {
+        c_struct.{{ field.name.lower_snake_case }}[i] = translate_{{ field.type_info.name.lower_snake_case }}_to_c(cpp_struct.{{ field.name.lower_snake_case }}[i]);
+    }
+    {% endif %}
+    {% elif field.type_info.is_primitive %}
+    c_struct.{{ field.name.lower_snake_case }} = cpp_struct.{{ field.name.lower_snake_case }};
+    {% elif field.type_info.parent_type %}
+    c_struct.{{ field.name.lower_snake_case }} = translate_{{ field.type_info.parent_type.lower_snake_case }}_{{ field.type_info.name.lower_snake_case }}_to_c(cpp_struct.{{ field.name.lower_snake_case }});
+    {% else %}
+    c_struct.{{ field.name.lower_snake_case }} = translate_{{ field.type_info.name.lower_snake_case }}_to_c(cpp_struct.{{ field.name.lower_snake_case }});
+    {% endif %}
+    {% endfor %}
+    return c_struct;
+}
+
+{% if struct.fields | selectattr('type_info.is_repeated') | list or struct.fields | selectattr('type_info.is_string') | list %}
+void mavsdk_{{ plugin_name.lower_snake_case }}_{{ struct.name.lower_snake_case }}_destroy(
+    mavsdk_{{ plugin_name.lower_snake_case }}_{{ struct.name.lower_snake_case }}_t* target) {
+    if (!target) return;
+    {% for field in struct.fields %}
+    {% if field.type_info.is_string %}
+    if (target->{{ field.name.lower_snake_case }}) {
+        free((void*)target->{{ field.name.lower_snake_case }});
+    }
+    {% elif field.type_info.is_repeated %}
+    if (target->{{ field.name.lower_snake_case }}) {
+        {% if not field.type_info.is_primitive %}
+        for (int i = 0; i < target->{{ field.name.lower_snake_case }}_size; i++) {
+            mavsdk_{{ plugin_name.lower_snake_case }}_{{ field.type_info.name.lower_snake_case }}_destroy(&target->{{ field.name.lower_snake_case }}[i]);
+        }
+        {% endif %}
+        delete[] target->{{ field.name.lower_snake_case }};
+        target->{{ field.name.lower_snake_case }} = nullptr;
+    }
+    {% endif %}
+    {% endfor %}
+}
+{% endif %}
+
+{% endif %}
+{% endfor %}
+
+// ===== {{ plugin_name.upper_camel_case }} Wrapper =====
+
+struct mavsdk_{{ plugin_name.lower_snake_case }}_wrapper {
+    std::shared_ptr<mavsdk::{{ plugin_name.upper_camel_case }}> cpp_plugin;
+};
+
+mavsdk_{{ plugin_name.lower_snake_case }}_t 
+mavsdk_{{ plugin_name.lower_snake_case }}_create(mavsdk_system_t system) {
+    if (system == nullptr) {
+        return nullptr;
+    }
+    
+    auto wrapper = new mavsdk_{{ plugin_name.lower_snake_case }}_wrapper();
+    auto system_ptr = static_cast<std::shared_ptr<mavsdk::System>*>(system);
+    wrapper->cpp_plugin = std::make_shared<mavsdk::{{ plugin_name.upper_camel_case }}>(*system_ptr);
+    
+    return wrapper;
+}
+
+void mavsdk_{{ plugin_name.lower_snake_case }}_destroy(mavsdk_{{ plugin_name.lower_snake_case }}_t {{ plugin_name.lower_snake_case }}) {
+    if ({{ plugin_name.lower_snake_case }} == nullptr) {
+        return;
+    }
+    
+    auto wrapper = static_cast<mavsdk_{{ plugin_name.lower_snake_case }}_wrapper*>({{ plugin_name.lower_snake_case }});
+    delete wrapper;
+}
+
+// ===== Method Implementations =====
+{% for method in methods %}
+
+// {{ method.name.upper_camel_case }} async
+{% if method.is_stream %}mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}_handle_t{% else %}void{% endif %} mavsdk_{{ plugin_name.lower_snake_case }}{% if method.is_stream %}_subscribe{% endif %}_{{ method.name.lower_snake_case }}{% if not method.is_stream %}_async{% endif %}(
+    mavsdk_{{ plugin_name.lower_snake_case }}_t {{ plugin_name.lower_snake_case }},
+    {% for param in method.params %}
+    {% if param.type_info.is_primitive %}
+    {{ param.type_info.name }} {{ param.name.lower_snake_case }},
+    {% elif param.type_info.parent_type %}
+    mavsdk_{{ plugin_name.lower_snake_case }}_{{ param.type_info.parent_type.lower_snake_case }}_{{ param.type_info.name.lower_snake_case }}_t {{ param.name.lower_snake_case }},
+    {% else %}
+    mavsdk_{{ plugin_name.lower_snake_case }}_{{ param.type_info.name.lower_snake_case }}_t {{ param.name.lower_snake_case }},
+    {% endif %}
+    {% endfor %}
+    mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}_callback_t callback,
+    void* user_data)
+{
+    auto wrapper = static_cast<mavsdk_{{ plugin_name.lower_snake_case }}_wrapper*>({{ plugin_name.lower_snake_case }});
+    
+    {% if method.is_stream %}
+    auto cpp_handle = {% endif %}wrapper->cpp_plugin->{% if method.is_stream %}subscribe_{% endif %}{{ method.name.lower_snake_case }}{% if not method.is_stream %}_async{% endif %}(
+        {% for param in method.params %}
+        {% if param.type_info.is_primitive %}
+        {{ param.name.lower_snake_case }}{% if not loop.last %},{% endif %}
+        {% elif param.type_info.parent_type %}
+        translate_{{ param.type_info.parent_type.lower_snake_case }}_{{ param.type_info.name.lower_snake_case }}_from_c({{ param.name.lower_snake_case }}){% if not loop.last %},{% endif %}
+        {% else %}
+        translate_{{ param.type_info.name.lower_snake_case }}_from_c({{ param.name.lower_snake_case }}){% if not loop.last %},{% endif %}
+        {% endif %}
+        {% endfor %}{% if method.params %},{% endif %}
+        [callback, user_data]({% if method.has_result %}mavsdk::{{ plugin_name.upper_camel_case }}::Result result{% endif %}{% if method.return_type %}{% if method.has_result %}, {% endif %}{% if method.return_type.is_primitive %}{{ method.return_type.name }}{% else %}mavsdk::{{ plugin_name.upper_camel_case }}::{{ method.return_type.name.upper_camel_case }}{% endif %} value{% endif %}) {
+            if (callback) {
+                callback(
+                    {% if method.has_result %}translate_result(result),{% endif %}
+                    {% if method.return_type %}
+                    {% if method.return_type.is_primitive %}
+                    value,
+                    {% else %}
+                    translate_{{ method.return_type.name.lower_snake_case }}_to_c(value),
+                    {% endif %}
+                    {% endif %}
+                    user_data);
+            }
+        });
+    {% if method.is_stream %}
+    
+    auto handle_wrapper = new mavsdk::{{ plugin_name.upper_camel_case }}::{{ method.name.upper_camel_case }}Handle(std::move(cpp_handle));
+    return static_cast<mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}_handle_t>(handle_wrapper);
+    {% endif %}
+}
+
+{% if method.is_stream %}
+void mavsdk_{{ plugin_name.lower_snake_case }}_unsubscribe_{{ method.name.lower_snake_case }}(
+    mavsdk_{{ plugin_name.lower_snake_case }}_t {{ plugin_name.lower_snake_case }},
+    mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}_handle_t handle)
+{
+    if (handle) {
+        auto wrapper = static_cast<mavsdk_{{ plugin_name.lower_snake_case }}_wrapper*>({{ plugin_name.lower_snake_case }});
+        auto cpp_handle = static_cast<mavsdk::{{ plugin_name.upper_camel_case }}::{{ method.name.upper_camel_case }}Handle*>(handle);
+        wrapper->cpp_plugin->unsubscribe_{{ method.name.lower_snake_case }}(std::move(*cpp_handle));
+        delete cpp_handle;
+    }
+}
+{% endif %}
+
+// {{ method.name.upper_camel_case }} sync
+{% if method.has_result %}
+mavsdk_{{ plugin_name.lower_snake_case }}_result_t
+{% else %}
+void
+{% endif %}
+mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}(
+    mavsdk_{{ plugin_name.lower_snake_case }}_t {{ plugin_name.lower_snake_case }}{% if method.params %},
+    {% for param in method.params %}
+    {% if param.type_info.is_primitive %}
+    {{ param.type_info.name }} {{ param.name.lower_snake_case }}{% if not loop.last %},
+    {% endif %}
+    {% elif param.type_info.parent_type %}
+    mavsdk_{{ plugin_name.lower_snake_case }}_{{ param.type_info.parent_type.lower_snake_case }}_{{ param.type_info.name.lower_snake_case }}_t {{ param.name.lower_snake_case }}{% if not loop.last %},
+    {% endif %}
+    {% else %}
+    mavsdk_{{ plugin_name.lower_snake_case }}_{{ param.type_info.name.lower_snake_case }}_t {{ param.name.lower_snake_case }}{% if not loop.last %},
+    {% endif %}
+    {% endif %}
+    {% endfor %}{% endif %}{% if method.return_name %},
+    {% if method.return_type.is_primitive %}{{ method.return_type.name }}*{% else %}mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.return_type.name.lower_snake_case }}_t*{% endif %} {{ method.return_name.lower_snake_case }}_out{% endif %})
+{
+    auto wrapper = static_cast<mavsdk_{{ plugin_name.lower_snake_case }}_wrapper*>({{ plugin_name.lower_snake_case }});
+    
+    {% if method.has_result and method.return_name %}
+    auto result_pair = wrapper->cpp_plugin->{{ method.name.lower_snake_case }}(
+        {% for param in method.params %}
+        {% if param.type_info.is_primitive %}
+        {{ param.name.lower_snake_case }}{% if not loop.last %},{% endif %}
+        {% elif param.type_info.parent_type %}
+        translate_{{ param.type_info.parent_type.lower_snake_case }}_{{ param.type_info.name.lower_snake_case }}_from_c({{ param.name.lower_snake_case }}){% if not loop.last %},{% endif %}
+        {% else %}
+        translate_{{ param.type_info.name.lower_snake_case }}_from_c({{ param.name.lower_snake_case }}){% if not loop.last %},{% endif %}
+        {% endif %}
+        {% endfor %});
+    
+    {% if method.return_type.is_primitive %}
+    *{{ method.return_name.lower_snake_case }}_out = result_pair.second;
+    {% else %}
+        if ({{ method.return_name.lower_snake_case }}_out != nullptr) {
+            *{{ method.return_name.lower_snake_case }}_out = translate_{{ method.return_type.name.lower_snake_case }}_to_c(result_pair.second);
+        }
+    {% endif %}
+    
+    return translate_result(result_pair.first);
+    {% else %}
+    {% if method.has_result or method.return_type %}
+    auto ret_value = {% endif %}wrapper->cpp_plugin->{{ method.name.lower_snake_case }}({% for param in method.params %}
+        {% if param.type_info.is_primitive %}
+        {{ param.name.lower_snake_case }}{% if not loop.last %},{% endif %}
+        {% elif param.type_info.parent_type %}
+        translate_{{ param.type_info.parent_type.lower_snake_case }}_{{ param.type_info.name.lower_snake_case }}_from_c({{ param.name.lower_snake_case }}){% if not loop.last %},{% endif %}
+        {% else %}
+        translate_{{ param.type_info.name.lower_snake_case }}_from_c({{ param.name.lower_snake_case }}){% if not loop.last %},{% endif %}
+        {% endif %}
+        {% endfor %});
+    
+    {% if method.return_name %}
+    {% if method.return_type.is_primitive %}
+    *{{ method.return_name.lower_snake_case }}_out = ret_value;
+    {% else %}
+    if ({{ method.return_name.lower_snake_case }}_out != nullptr) {
+        *{{ method.return_name.lower_snake_case }}_out = translate_{{ method.return_type.name.lower_snake_case }}_to_c(ret_value);
+    }
+    {% endif %}
+    {% endif %}
+    {% if method.has_result %}
+    return translate_result(ret_value);
+    {% endif %}
+    {% endif %}
+}
+{% endfor %}
