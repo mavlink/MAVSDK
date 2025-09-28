@@ -28,7 +28,10 @@ int main() {
     // Now when using MAVSDK, the custom logger will be called
     mavsdk_configuration_t configuration = mavsdk_configuration_create_with_component_type(MAVSDK_COMPONENT_TYPE_GROUND_STATION);
     mavsdk_t mavsdk = mavsdk_create(configuration);
+    mavsdk_add_any_connection(mavsdk, "udpin://0.0.0.0:14540");
 
+    printf("Waiting for autopilot\n");
+    mavsdk_system_t drone = mavsdk_first_autopilot(mavsdk, 30);
     // Do more stuff here
     
     // Cleanup
