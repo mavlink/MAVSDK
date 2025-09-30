@@ -39,6 +39,8 @@ message(STATUS "Version patch: ${MAVSDK_VERSION_PATCH}")
 set(MAVSDK_SOVERSION_STRING ${MAVSDK_VERSION_MAJOR})
 set(MAVSDK_VERSION_STRING ${MAVSDK_VERSION_MAJOR}.${MAVSDK_VERSION_MINOR}.${MAVSDK_VERSION_PATCH})
 
+set(MAVLINK_XML_PATH "" CACHE PATH "Where the mavlink xml files are located.")
+
 project(mavsdk_superbuild)
 
 # FIXME: in the future we need to mark library methods that need to be visible manually
