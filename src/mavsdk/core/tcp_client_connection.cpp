@@ -27,12 +27,12 @@
 
 namespace mavsdk {
 
-inline bool notReady(int err) 
+inline bool notReady(int err)
 {
 #ifdef WINDOWS
-    return err == WSAEWOULDBLOCK || err == WSAETIMEDOUT;
+    return (err == WSAEWOULDBLOCK || err == WSAETIMEDOUT);
 #else
-    return err == EAGAIN || err == ETIMEDOUT;
+    return (err == EAGAIN || err == ETIMEDOUT);
 #endif
 }
 
