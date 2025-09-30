@@ -172,6 +172,12 @@ void MissionRawImpl::upload_mission_items_async(
         [this, callback, int_items](MavlinkMissionTransferClient::Result result) {
             auto converted_result = convert_result(result);
             auto converted_items = convert_items(int_items);
+
+            if (converted_result == MissionRaw::Result::Success) {
+                std::lock_guard<std::mutex> lock(_mission_progress.mutex);
+                _mission_progress.last.total = int_items.size();
+            }
+
             _system_impl->call_user_callback([callback, converted_result, converted_items]() {
                 if (callback) {
                     callback(converted_result);
@@ -290,6 +296,12 @@ void MissionRawImpl::download_mission_async(const MissionRaw::DownloadMissionCal
             std::vector<MavlinkMissionTransferClient::ItemInt> items) {
             auto converted_result = convert_result(result);
             auto converted_items = convert_items(items);
+
+            if (converted_result == MissionRaw::Result::Success) {
+                std::lock_guard<std::mutex> lock(_mission_progress.mutex);
+                _mission_progress.last.total = items.size();
+            }
+
             _system_impl->call_user_callback([callback, converted_result, converted_items]() {
                 callback(converted_result, converted_items);
             });
@@ -430,9 +442,6 @@ std::vector<MissionRaw::MissionItem> MissionRawImpl::convert_items(
     for (const auto& transfer_item : transfer_items) {
         new_items.push_back(convert_item(transfer_item));
     }
-
-    std::lock_guard<std::mutex> lock(_mission_progress.mutex);
-    _mission_progress.last.total = new_items.size();
 
     return new_items;
 }
