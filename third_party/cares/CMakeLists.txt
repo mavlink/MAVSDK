@@ -29,7 +29,7 @@ endforeach()
 
 ExternalProject_add(
     cares
-    URL https://github.com/c-ares/c-ares/releases/download/cares-1_19_1/c-ares-1.19.1.tar.gz
+    URL https://github.com/c-ares/c-ares/releases/download/cares-1_34_5/c-ares-1.34.5.tar.gz
     PREFIX cares
     CMAKE_ARGS "${CMAKE_ARGS}"
     )
