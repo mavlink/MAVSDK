@@ -14,6 +14,7 @@ endif()
 
 if(SUPERBUILD)
     build_target(mavlink)
+    build_target(libevents)
     build_target(picosha2)
     build_target(tinyxml2)
     build_target(libmavlike)
@@ -55,8 +56,6 @@ if(SUPERBUILD)
     endif()
 
 endif()
-
-build_target(libevents)
 
 if(ENABLE_CPPTRACE)
     build_target(cpptrace)
