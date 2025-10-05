@@ -10,6 +10,12 @@
 extern "C" {
 #endif
 
+/**
+ * @brief Allow users to get vehicle telemetry and state information
+ * (e.g. battery, GPS, RC connection, flight mode etc.) and set telemetry update rates.
+ * Certain Telemetry Topics such as, Position or Velocity_Ned require GPS Fix before data gets published.
+ */
+
 // ===== Forward Declarations =====
 typedef void* mavsdk_system_t;
 
@@ -50,349 +56,708 @@ typedef void* mavsdk_telemetry_altitude_handle_t;
 typedef void* mavsdk_telemetry_wind_handle_t;
 
 // ===== Enums =====
+/**
+ * @brief GPS fix type.
+ */
 typedef enum {
+    /**  No GPS connected. */
     MAVSDK_TELEMETRY_FIX_TYPE_NO_GPS = 0,
+    /**  No position information, GPS is connected. */
     MAVSDK_TELEMETRY_FIX_TYPE_NO_FIX = 1,
+    /**  2D position. */
     MAVSDK_TELEMETRY_FIX_TYPE_FIX_2D = 2,
+    /**  3D position. */
     MAVSDK_TELEMETRY_FIX_TYPE_FIX_3D = 3,
+    /**  DGPS/SBAS aided 3D position. */
     MAVSDK_TELEMETRY_FIX_TYPE_FIX_DGPS = 4,
+    /**  RTK float, 3D position. */
     MAVSDK_TELEMETRY_FIX_TYPE_RTK_FLOAT = 5,
+    /**  RTK Fixed, 3D position. */
     MAVSDK_TELEMETRY_FIX_TYPE_RTK_FIXED = 6,
 } mavsdk_telemetry_fix_type_t;
 
+/**
+ * @brief Battery function type.
+ */
 typedef enum {
+    /**  Battery function is unknown. */
     MAVSDK_TELEMETRY_BATTERY_FUNCTION_UNKNOWN = 0,
+    /**  Battery supports all flight systems. */
     MAVSDK_TELEMETRY_BATTERY_FUNCTION_ALL = 1,
+    /**  Battery for the propulsion system. */
     MAVSDK_TELEMETRY_BATTERY_FUNCTION_PROPULSION = 2,
+    /**  Avionics battery. */
     MAVSDK_TELEMETRY_BATTERY_FUNCTION_AVIONICS = 3,
+    /**  Payload battery. */
     MAVSDK_TELEMETRY_BATTERY_FUNCTION_PAYLOAD = 4,
 } mavsdk_telemetry_battery_function_t;
 
+/**
+ * @brief Flight modes.
+ *
+ * For more information about flight modes, check out
+ * https://docs.px4.io/master/en/config/flight_mode.html.
+ */
 typedef enum {
+    /**  Mode not known. */
     MAVSDK_TELEMETRY_FLIGHT_MODE_UNKNOWN = 0,
+    /**  Armed and ready to take off. */
     MAVSDK_TELEMETRY_FLIGHT_MODE_READY = 1,
+    /**  Taking off. */
     MAVSDK_TELEMETRY_FLIGHT_MODE_TAKEOFF = 2,
+    /**  Holding (hovering in place (or circling for fixed-wing vehicles). */
     MAVSDK_TELEMETRY_FLIGHT_MODE_HOLD = 3,
+    /**  In mission. */
     MAVSDK_TELEMETRY_FLIGHT_MODE_MISSION = 4,
+    /**  Returning to launch position (then landing). */
     MAVSDK_TELEMETRY_FLIGHT_MODE_RETURN_TO_LAUNCH = 5,
+    /**  Landing. */
     MAVSDK_TELEMETRY_FLIGHT_MODE_LAND = 6,
+    /**  In 'offboard' mode. */
     MAVSDK_TELEMETRY_FLIGHT_MODE_OFFBOARD = 7,
+    /**  In 'follow-me' mode. */
     MAVSDK_TELEMETRY_FLIGHT_MODE_FOLLOW_ME = 8,
+    /**  In 'Manual' mode. */
     MAVSDK_TELEMETRY_FLIGHT_MODE_MANUAL = 9,
+    /**  In 'Altitude Control' mode. */
     MAVSDK_TELEMETRY_FLIGHT_MODE_ALTCTL = 10,
+    /**  In 'Position Control' mode. */
     MAVSDK_TELEMETRY_FLIGHT_MODE_POSCTL = 11,
+    /**  In 'Acro' mode. */
     MAVSDK_TELEMETRY_FLIGHT_MODE_ACRO = 12,
+    /**  In 'Stabilize' mode. */
     MAVSDK_TELEMETRY_FLIGHT_MODE_STABILIZED = 13,
+    /**  In 'Rattitude' mode. */
     MAVSDK_TELEMETRY_FLIGHT_MODE_RATTITUDE = 14,
 } mavsdk_telemetry_flight_mode_t;
 
+/**
+ * @brief Status types.
+ */
 typedef enum {
+    /**  Debug. */
     MAVSDK_TELEMETRY_STATUS_TEXT_TYPE_DEBUG = 0,
+    /**  Information. */
     MAVSDK_TELEMETRY_STATUS_TEXT_TYPE_INFO = 1,
+    /**  Notice. */
     MAVSDK_TELEMETRY_STATUS_TEXT_TYPE_NOTICE = 2,
+    /**  Warning. */
     MAVSDK_TELEMETRY_STATUS_TEXT_TYPE_WARNING = 3,
+    /**  Error. */
     MAVSDK_TELEMETRY_STATUS_TEXT_TYPE_ERROR = 4,
+    /**  Critical. */
     MAVSDK_TELEMETRY_STATUS_TEXT_TYPE_CRITICAL = 5,
+    /**  Alert. */
     MAVSDK_TELEMETRY_STATUS_TEXT_TYPE_ALERT = 6,
+    /**  Emergency. */
     MAVSDK_TELEMETRY_STATUS_TEXT_TYPE_EMERGENCY = 7,
 } mavsdk_telemetry_status_text_type_t;
 
+/**
+ * @brief Landed State enumeration.
+ */
 typedef enum {
+    /**  Landed state is unknown. */
     MAVSDK_TELEMETRY_LANDED_STATE_UNKNOWN = 0,
+    /**  The vehicle is on the ground. */
     MAVSDK_TELEMETRY_LANDED_STATE_ON_GROUND = 1,
+    /**  The vehicle is in the air. */
     MAVSDK_TELEMETRY_LANDED_STATE_IN_AIR = 2,
+    /**  The vehicle is taking off. */
     MAVSDK_TELEMETRY_LANDED_STATE_TAKING_OFF = 3,
+    /**  The vehicle is landing. */
     MAVSDK_TELEMETRY_LANDED_STATE_LANDING = 4,
 } mavsdk_telemetry_landed_state_t;
 
+/**
+ * @brief VTOL State enumeration
+ */
 typedef enum {
+    /**  MAV is not configured as VTOL. */
     MAVSDK_TELEMETRY_VTOL_STATE_UNDEFINED = 0,
+    /**  VTOL is in transition from multicopter to fixed-wing. */
     MAVSDK_TELEMETRY_VTOL_STATE_TRANSITION_TO_FW = 1,
+    /**  VTOL is in transition from fixed-wing to multicopter. */
     MAVSDK_TELEMETRY_VTOL_STATE_TRANSITION_TO_MC = 2,
+    /**  VTOL is in multicopter state. */
     MAVSDK_TELEMETRY_VTOL_STATE_MC = 3,
+    /**  VTOL is in fixed-wing state. */
     MAVSDK_TELEMETRY_VTOL_STATE_FW = 4,
 } mavsdk_telemetry_vtol_state_t;
 
 
 // ===== Structs =====
+/**
+ * @brief Position type in global coordinates.
+ */
 typedef struct {
+    /**  Latitude in degrees (range: -90 to +90) */
     double latitude_deg;
+    /**  Longitude in degrees (range: -180 to +180) */
     double longitude_deg;
+    /**  Altitude AMSL (above mean sea level) in metres */
     float absolute_altitude_m;
+    /**  Altitude relative to takeoff altitude in metres */
     float relative_altitude_m;
 } mavsdk_telemetry_position_t;
 
 
+/**
+ * @brief Heading type used for global position
+ */
 typedef struct {
+    /**  Heading in degrees (range: 0 to +360) */
     double heading_deg;
 } mavsdk_telemetry_heading_t;
 
 
+/**
+ * @brief Quaternion type.
+ * 
+ *  All rotations and axis systems follow the right-hand rule.
+ *  The Hamilton quaternion product definition is used.
+ *  A zero-rotation quaternion is represented by (1,0,0,0).
+ *  The quaternion could also be written as w + xi + yj + zk.
+ * 
+ *  For more info see: https://en.wikipedia.org/wiki/Quaternion
+ */
 typedef struct {
+    /**  Quaternion entry 0, also denoted as a */
     float w;
+    /**  Quaternion entry 1, also denoted as b */
     float x;
+    /**  Quaternion entry 2, also denoted as c */
     float y;
+    /**  Quaternion entry 3, also denoted as d */
     float z;
+    /**  Timestamp in microseconds */
     uint64_t timestamp_us;
 } mavsdk_telemetry_quaternion_t;
 
 
+/**
+ * @brief Euler angle type.
+ * 
+ *  All rotations and axis systems follow the right-hand rule.
+ *  The Euler angles follow the convention of a 3-2-1 intrinsic Tait-Bryan rotation sequence.
+ * 
+ *  For more info see https://en.wikipedia.org/wiki/Euler_angles
+ */
 typedef struct {
+    /**  Roll angle in degrees, positive is banking to the right */
     float roll_deg;
+    /**  Pitch angle in degrees, positive is pitching nose up */
     float pitch_deg;
+    /**  Yaw angle in degrees, positive is clock-wise seen from above */
     float yaw_deg;
+    /**  Timestamp in microseconds */
     uint64_t timestamp_us;
 } mavsdk_telemetry_euler_angle_t;
 
 
+/**
+ * @brief Angular velocity type.
+ */
 typedef struct {
+    /**  Roll angular velocity */
     float roll_rad_s;
+    /**  Pitch angular velocity */
     float pitch_rad_s;
+    /**  Yaw angular velocity */
     float yaw_rad_s;
 } mavsdk_telemetry_angular_velocity_body_t;
 
 
+/**
+ * @brief GPS information type.
+ */
 typedef struct {
+    /**  Number of visible satellites in use */
     int32_t num_satellites;
+    /**  Fix type */
     mavsdk_telemetry_fix_type_t fix_type;
 } mavsdk_telemetry_gps_info_t;
 
 
+/**
+ * @brief Raw GPS information type.
+ * 
+ *  Warning: this is an advanced type! If you want the location of the drone, use
+ *  the position instead. This message exposes the raw values of the GNSS sensor.
+ */
 typedef struct {
+    /**  Timestamp in microseconds (UNIX Epoch time or time since system boot, to be inferred) */
     uint64_t timestamp_us;
+    /**  Latitude in degrees (WGS84, EGM96 ellipsoid) */
     double latitude_deg;
+    /**  Longitude in degrees (WGS84, EGM96 ellipsoid) */
     double longitude_deg;
+    /**  Altitude AMSL (above mean sea level) in metres */
     float absolute_altitude_m;
+    /**  GPS HDOP horizontal dilution of position (unitless). If unknown, set to NaN */
     float hdop;
+    /**  GPS VDOP vertical dilution of position (unitless). If unknown, set to NaN */
     float vdop;
+    /**  Ground velocity in metres per second */
     float velocity_m_s;
+    /**  Course over ground (NOT heading, but direction of movement) in degrees. If unknown, set to NaN */
     float cog_deg;
+    /**  Altitude in metres (above WGS84, EGM96 ellipsoid) */
     float altitude_ellipsoid_m;
+    /**  Position uncertainty in metres */
     float horizontal_uncertainty_m;
+    /**  Altitude uncertainty in metres */
     float vertical_uncertainty_m;
+    /**  Velocity uncertainty in metres per second */
     float velocity_uncertainty_m_s;
+    /**  Heading uncertainty in degrees */
     float heading_uncertainty_deg;
+    /**  Yaw in earth frame from north. */
     float yaw_deg;
 } mavsdk_telemetry_raw_gps_t;
 
 
+/**
+ * @brief Battery type.
+ */
 typedef struct {
+    /**  Battery ID, for systems with multiple batteries */
     uint32_t id;
+    /**  Temperature of the battery in degrees Celsius. NAN for unknown temperature */
     float temperature_degc;
+    /**  Voltage in volts */
     float voltage_v;
+    /**  Battery current in Amps, NAN if autopilot does not measure the current */
     float current_battery_a;
+    /**  Consumed charge in Amp hours, NAN if autopilot does not provide consumption estimate */
     float capacity_consumed_ah;
+    /**  Estimated battery remaining (range: 0 to 100) */
     float remaining_percent;
+    /**  Estimated battery usage time remaining */
     float time_remaining_s;
+    /**  Function of the battery */
     mavsdk_telemetry_battery_function_t battery_function;
 } mavsdk_telemetry_battery_t;
 
 
+/**
+ * @brief Health type.
+ */
 typedef struct {
+    /**  True if the gyrometer is calibrated */
     bool is_gyrometer_calibration_ok;
+    /**  True if the accelerometer is calibrated */
     bool is_accelerometer_calibration_ok;
+    /**  True if the magnetometer is calibrated */
     bool is_magnetometer_calibration_ok;
+    /**  True if the local position estimate is good enough to fly in 'position control' mode */
     bool is_local_position_ok;
+    /**  True if the global position estimate is good enough to fly in 'position control' mode */
     bool is_global_position_ok;
+    /**  True if the home position has been initialized properly */
     bool is_home_position_ok;
+    /**  True if system can be armed */
     bool is_armable;
 } mavsdk_telemetry_health_t;
 
 
+/**
+ * @brief Remote control status type.
+ */
 typedef struct {
+    /**  True if an RC signal has been available once */
     bool was_available_once;
+    /**  True if the RC signal is available now */
     bool is_available;
+    /**  Signal strength (range: 0 to 100, NaN if unknown) */
     float signal_strength_percent;
 } mavsdk_telemetry_rc_status_t;
 
 
+/**
+ * @brief StatusText information type.
+ */
 typedef struct {
+    /**  Message type */
     mavsdk_telemetry_status_text_type_t type;
+    /**  MAVLink status message */
     char* text;
 } mavsdk_telemetry_status_text_t;
 
 
+/**
+ * @brief Actuator control target type.
+ * 
+ * @note This struct contains dynamically allocated memory. You must call
+ *       mavsdk_telemetry_actuator_control_target_destroy() when done to avoid memory leaks.
+ */
 typedef struct {
+    /**  An actuator control group is e.g. 'attitude' for the core flight controls, or 'gimbal' for a payload. */
     int32_t group;
+    /**  Controls normed from -1 to 1, where 0 is neutral position. */
     float* controls;
     int controls_size;
 } mavsdk_telemetry_actuator_control_target_t;
 
+/**
+ * @brief Destroy a actuator_control_target struct.
+ * 
+ * Frees all memory allocated by MAVSDK for this struct, including any
+ * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
+ * 
+ * @param target Pointer to the struct to destroy. Can be NULL (no-op).
+ */
 void mavsdk_telemetry_actuator_control_target_destroy(
     mavsdk_telemetry_actuator_control_target_t* target);
 
+/**
+ * @brief Actuator output status type.
+ * 
+ * @note This struct contains dynamically allocated memory. You must call
+ *       mavsdk_telemetry_actuator_output_status_destroy() when done to avoid memory leaks.
+ */
 typedef struct {
+    /**  Active outputs */
     uint32_t active;
+    /**  Servo/motor output values */
     float* actuator;
     int actuator_size;
 } mavsdk_telemetry_actuator_output_status_t;
 
+/**
+ * @brief Destroy a actuator_output_status struct.
+ * 
+ * Frees all memory allocated by MAVSDK for this struct, including any
+ * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
+ * 
+ * @param target Pointer to the struct to destroy. Can be NULL (no-op).
+ */
 void mavsdk_telemetry_actuator_output_status_destroy(
     mavsdk_telemetry_actuator_output_status_t* target);
 
+/**
+ * @brief Covariance type.
+ * 
+ *  Row-major representation of a 6x6 cross-covariance matrix
+ *  upper right triangle.
+ *  Set first to NaN if unknown.
+ * 
+ * @note This struct contains dynamically allocated memory. You must call
+ *       mavsdk_telemetry_covariance_destroy() when done to avoid memory leaks.
+ */
 typedef struct {
+    /**  Representation of a covariance matrix. */
     float* covariance_matrix;
     int covariance_matrix_size;
 } mavsdk_telemetry_covariance_t;
 
+/**
+ * @brief Destroy a covariance struct.
+ * 
+ * Frees all memory allocated by MAVSDK for this struct, including any
+ * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
+ * 
+ * @param target Pointer to the struct to destroy. Can be NULL (no-op).
+ */
 void mavsdk_telemetry_covariance_destroy(
     mavsdk_telemetry_covariance_t* target);
 
+/**
+ * @brief Velocity type, represented in the Body (X Y Z) frame and in metres/second.
+ */
 typedef struct {
+    /**  Velocity in X in metres/second */
     float x_m_s;
+    /**  Velocity in Y in metres/second */
     float y_m_s;
+    /**  Velocity in Z in metres/second */
     float z_m_s;
 } mavsdk_telemetry_velocity_body_t;
 
 
+/**
+ * @brief Position type, represented in the Body (X Y Z) frame
+ */
 typedef struct {
+    /**  X Position in metres. */
     float x_m;
+    /**  Y Position in metres. */
     float y_m;
+    /**  Z Position in metres. */
     float z_m;
 } mavsdk_telemetry_position_body_t;
 
 
+/**
+ * @brief Mavlink frame id
+ */
 typedef enum {
+    /**  Frame is undefined.. */
     MAVSDK_TELEMETRY_ODOMETRY_MAV_FRAME_UNDEF = 0,
+    /**  Setpoint in body NED frame. This makes sense if all position control is externalized - e.g. useful to command 2 m/s^2 acceleration to the right.. */
     MAVSDK_TELEMETRY_ODOMETRY_MAV_FRAME_BODY_NED = 1,
+    /**  Odometry local coordinate frame of data given by a vision estimation system, Z-down (x: north, y: east, z: down).. */
     MAVSDK_TELEMETRY_ODOMETRY_MAV_FRAME_VISION_NED = 2,
+    /**  Odometry local coordinate frame of data given by an estimator running onboard the vehicle, Z-down (x: north, y: east, z: down).. */
     MAVSDK_TELEMETRY_ODOMETRY_MAV_FRAME_ESTIM_NED = 3,
 } mavsdk_telemetry_odometry_mav_frame_t;
 
+/**
+ * @brief Odometry message type.
+ */
 typedef struct {
+    /**  Timestamp (0 to use Backend timestamp). */
     uint64_t time_usec;
+    /**  Coordinate frame of reference for the pose data. */
     mavsdk_telemetry_odometry_mav_frame_t frame_id;
+    /**  Coordinate frame of reference for the velocity in free space (twist) data. */
     mavsdk_telemetry_odometry_mav_frame_t child_frame_id;
+    /**  Position. */
     mavsdk_telemetry_position_body_t position_body;
+    /**  Quaternion components, w, x, y, z (1 0 0 0 is the null-rotation). */
     mavsdk_telemetry_quaternion_t q;
+    /**  Linear velocity (m/s). */
     mavsdk_telemetry_velocity_body_t velocity_body;
+    /**  Angular velocity (rad/s). */
     mavsdk_telemetry_angular_velocity_body_t angular_velocity_body;
+    /**  Pose cross-covariance matrix. */
     mavsdk_telemetry_covariance_t pose_covariance;
+    /**  Velocity cross-covariance matrix. */
     mavsdk_telemetry_covariance_t velocity_covariance;
 } mavsdk_telemetry_odometry_t;
 
 
+/**
+ * @brief DistanceSensor message type.
+ */
 typedef struct {
+    /**  Minimum distance the sensor can measure, NaN if unknown. */
     float minimum_distance_m;
+    /**  Maximum distance the sensor can measure, NaN if unknown. */
     float maximum_distance_m;
+    /**  Current distance reading, NaN if unknown. */
     float current_distance_m;
+    /**  Sensor Orientation reading. */
     mavsdk_telemetry_euler_angle_t orientation;
 } mavsdk_telemetry_distance_sensor_t;
 
 
+/**
+ * @brief Scaled Pressure message type.
+ */
 typedef struct {
+    /**  Timestamp (time since system boot) */
     uint64_t timestamp_us;
+    /**  Absolute pressure in hPa */
     float absolute_pressure_hpa;
+    /**  Differential pressure 1 in hPa */
     float differential_pressure_hpa;
+    /**  Absolute pressure temperature (in celsius) */
     float temperature_deg;
+    /**  Differential pressure temperature (in celsius, 0 if not available) */
     float differential_pressure_temperature_deg;
 } mavsdk_telemetry_scaled_pressure_t;
 
 
+/**
+ * @brief PositionNed message type.
+ */
 typedef struct {
+    /**  Position along north direction in metres */
     float north_m;
+    /**  Position along east direction in metres */
     float east_m;
+    /**  Position along down direction in metres */
     float down_m;
 } mavsdk_telemetry_position_ned_t;
 
 
+/**
+ * @brief VelocityNed message type.
+ */
 typedef struct {
+    /**  Velocity along north direction in metres per second */
     float north_m_s;
+    /**  Velocity along east direction in metres per second */
     float east_m_s;
+    /**  Velocity along down direction in metres per second */
     float down_m_s;
 } mavsdk_telemetry_velocity_ned_t;
 
 
+/**
+ * @brief PositionVelocityNed message type.
+ */
 typedef struct {
+    /**  Position (NED) */
     mavsdk_telemetry_position_ned_t position;
+    /**  Velocity (NED) */
     mavsdk_telemetry_velocity_ned_t velocity;
 } mavsdk_telemetry_position_velocity_ned_t;
 
 
+/**
+ * @brief GroundTruth message type.
+ */
 typedef struct {
+    /**  Latitude in degrees (range: -90 to +90) */
     double latitude_deg;
+    /**  Longitude in degrees (range: -180 to 180) */
     double longitude_deg;
+    /**  Altitude AMSL (above mean sea level) in metres */
     float absolute_altitude_m;
 } mavsdk_telemetry_ground_truth_t;
 
 
+/**
+ * @brief FixedwingMetrics message type.
+ */
 typedef struct {
+    /**  Current indicated airspeed (IAS) in metres per second */
     float airspeed_m_s;
+    /**  Current throttle setting (0 to 100) */
     float throttle_percentage;
+    /**  Current climb rate in metres per second */
     float climb_rate_m_s;
+    /**  Current groundspeed metres per second */
     float groundspeed_m_s;
+    /**  Current heading in compass units (0-360, 0=north) */
     float heading_deg;
+    /**  Current altitude in metres (MSL) */
     float absolute_altitude_m;
 } mavsdk_telemetry_fixedwing_metrics_t;
 
 
+/**
+ * @brief AccelerationFrd message type.
+ */
 typedef struct {
+    /**  Acceleration in forward direction in metres per second^2 */
     float forward_m_s2;
+    /**  Acceleration in right direction in metres per second^2 */
     float right_m_s2;
+    /**  Acceleration in down direction in metres per second^2 */
     float down_m_s2;
 } mavsdk_telemetry_acceleration_frd_t;
 
 
+/**
+ * @brief AngularVelocityFrd message type.
+ */
 typedef struct {
+    /**  Angular velocity in forward direction in radians per second */
     float forward_rad_s;
+    /**  Angular velocity in right direction in radians per second */
     float right_rad_s;
+    /**  Angular velocity in Down direction in radians per second */
     float down_rad_s;
 } mavsdk_telemetry_angular_velocity_frd_t;
 
 
+/**
+ * @brief MagneticFieldFrd message type.
+ */
 typedef struct {
+    /**  Magnetic field in forward direction measured in Gauss */
     float forward_gauss;
+    /**  Magnetic field in East direction measured in Gauss */
     float right_gauss;
+    /**  Magnetic field in Down direction measured in Gauss */
     float down_gauss;
 } mavsdk_telemetry_magnetic_field_frd_t;
 
 
+/**
+ * @brief Imu message type.
+ */
 typedef struct {
+    /**  Acceleration */
     mavsdk_telemetry_acceleration_frd_t acceleration_frd;
+    /**  Angular velocity */
     mavsdk_telemetry_angular_velocity_frd_t angular_velocity_frd;
+    /**  Magnetic field */
     mavsdk_telemetry_magnetic_field_frd_t magnetic_field_frd;
+    /**  Temperature */
     float temperature_degc;
+    /**  Timestamp in microseconds */
     uint64_t timestamp_us;
 } mavsdk_telemetry_imu_t;
 
 
+/**
+ * @brief Gps global origin type.
+ */
 typedef struct {
+    /**  Latitude of the origin */
     double latitude_deg;
+    /**  Longitude of the origin */
     double longitude_deg;
+    /**  Altitude AMSL (above mean sea level) in metres */
     float altitude_m;
 } mavsdk_telemetry_gps_global_origin_t;
 
 
+/**
+ * @brief Altitude message type
+ */
 typedef struct {
+    /**  Altitude in meters is initialized on system boot and monotonic */
     float altitude_monotonic_m;
+    /**   Altitude AMSL (above mean sea level) in meters */
     float altitude_amsl_m;
+    /**  Local altitude in meters */
     float altitude_local_m;
+    /**  Altitude above home position in meters */
     float altitude_relative_m;
+    /**  Altitude above terrain in meters */
     float altitude_terrain_m;
+    /**  This is not the altitude, but the clear space below the system according to the fused clearance estimate in meters. */
     float bottom_clearance_m;
 } mavsdk_telemetry_altitude_t;
 
 
+/**
+ * @brief Wind message type
+ */
 typedef struct {
+    /**  Wind in North (NED) direction */
     float wind_x_ned_m_s;
+    /**   Wind in East (NED) direction */
     float wind_y_ned_m_s;
+    /**  Wind in down (NED) direction */
     float wind_z_ned_m_s;
+    /**  Variability of wind in XY, 1-STD estimated from a 1 Hz lowpassed wind estimate */
     float horizontal_variability_stddev_m_s;
+    /**  Variability of wind in Z, 1-STD estimated from a 1 Hz lowpassed wind estimate */
     float vertical_variability_stddev_m_s;
+    /**  Altitude (MSL) that this measurement was taken at */
     float wind_altitude_msl_m;
+    /**  Horizontal speed 1-STD accuracy */
     float horizontal_wind_speed_accuracy_m_s;
+    /**  Vertical speed 1-STD accuracy */
     float vertical_wind_speed_accuracy_m_s;
 } mavsdk_telemetry_wind_t;
 
 
+/**
+ * @brief Possible results returned for telemetry requests.
+ */
 typedef enum {
+    /**  Unknown result. */
     MAVSDK_TELEMETRY_RESULT_UNKNOWN = 0,
+    /**  Success: the telemetry command was accepted by the vehicle. */
     MAVSDK_TELEMETRY_RESULT_SUCCESS = 1,
+    /**  No system connected. */
     MAVSDK_TELEMETRY_RESULT_NO_SYSTEM = 2,
+    /**  Connection error. */
     MAVSDK_TELEMETRY_RESULT_CONNECTION_ERROR = 3,
+    /**  Vehicle is busy. */
     MAVSDK_TELEMETRY_RESULT_BUSY = 4,
+    /**  Command refused by vehicle. */
     MAVSDK_TELEMETRY_RESULT_COMMAND_DENIED = 5,
+    /**  Request timed out. */
     MAVSDK_TELEMETRY_RESULT_TIMEOUT = 6,
+    /**  Request not supported. */
     MAVSDK_TELEMETRY_RESULT_UNSUPPORTED = 7,
 } mavsdk_telemetry_result_t;
 
@@ -465,15 +830,39 @@ CMAVSDK_EXPORT void mavsdk_telemetry_destroy(mavsdk_telemetry_t telemetry);
 
 // ===== Methods =====
 
+/**
+ * @brief Subscribe to 'position' updates.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param callback Function to call when new data is available.
+ * @param user_data User data to pass to the callback.
+ * @return Handle for this subscription. Use mavsdk_telemetry_unsubscribe_position() to unsubscribe.
+ */
 CMAVSDK_EXPORT mavsdk_telemetry_position_handle_t mavsdk_telemetry_subscribe_position(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_position_callback_t callback,
     void* user_data);
 
+/**
+ * @brief Unsubscribe from 'position' updates.
+ * 
+ * Stops the subscription and frees resources associated with the handle.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param handle The subscription handle returned by mavsdk_telemetry_subscribe_position().
+ */
 CMAVSDK_EXPORT void mavsdk_telemetry_unsubscribe_position(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_position_handle_t);
 
+/**
+ * @brief Get the current position (blocking).
+ * 
+ * This function blocks until a value is available.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param position_out Pointer to store the result.
+ */
 CMAVSDK_EXPORT
 void
 mavsdk_telemetry_position(
@@ -481,15 +870,39 @@ mavsdk_telemetry_position(
     mavsdk_telemetry_position_t* position_out);
 
 
+/**
+ * @brief Subscribe to 'home position' updates.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param callback Function to call when new data is available.
+ * @param user_data User data to pass to the callback.
+ * @return Handle for this subscription. Use mavsdk_telemetry_unsubscribe_home() to unsubscribe.
+ */
 CMAVSDK_EXPORT mavsdk_telemetry_home_handle_t mavsdk_telemetry_subscribe_home(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_home_callback_t callback,
     void* user_data);
 
+/**
+ * @brief Unsubscribe from 'home' updates.
+ * 
+ * Stops the subscription and frees resources associated with the handle.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param handle The subscription handle returned by mavsdk_telemetry_subscribe_home().
+ */
 CMAVSDK_EXPORT void mavsdk_telemetry_unsubscribe_home(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_home_handle_t);
 
+/**
+ * @brief Get the current home (blocking).
+ * 
+ * This function blocks until a value is available.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param home_out Pointer to store the result.
+ */
 CMAVSDK_EXPORT
 void
 mavsdk_telemetry_home(
@@ -497,15 +910,39 @@ mavsdk_telemetry_home(
     mavsdk_telemetry_position_t* home_out);
 
 
+/**
+ * @brief Subscribe to in-air updates.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param callback Function to call when new data is available.
+ * @param user_data User data to pass to the callback.
+ * @return Handle for this subscription. Use mavsdk_telemetry_unsubscribe_in_air() to unsubscribe.
+ */
 CMAVSDK_EXPORT mavsdk_telemetry_in_air_handle_t mavsdk_telemetry_subscribe_in_air(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_in_air_callback_t callback,
     void* user_data);
 
+/**
+ * @brief Unsubscribe from 'in_air' updates.
+ * 
+ * Stops the subscription and frees resources associated with the handle.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param handle The subscription handle returned by mavsdk_telemetry_subscribe_in_air().
+ */
 CMAVSDK_EXPORT void mavsdk_telemetry_unsubscribe_in_air(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_in_air_handle_t);
 
+/**
+ * @brief Get the current in air (blocking).
+ * 
+ * This function blocks until a value is available.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param in_air_out Pointer to store the result.
+ */
 CMAVSDK_EXPORT
 void
 mavsdk_telemetry_in_air(
@@ -514,15 +951,39 @@ mavsdk_telemetry_in_air(
 );
 
 
+/**
+ * @brief Subscribe to landed state updates
+ * 
+ * @param telemetry The telemetry instance.
+ * @param callback Function to call when new data is available.
+ * @param user_data User data to pass to the callback.
+ * @return Handle for this subscription. Use mavsdk_telemetry_unsubscribe_landed_state() to unsubscribe.
+ */
 CMAVSDK_EXPORT mavsdk_telemetry_landed_state_handle_t mavsdk_telemetry_subscribe_landed_state(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_landed_state_callback_t callback,
     void* user_data);
 
+/**
+ * @brief Unsubscribe from 'landed_state' updates.
+ * 
+ * Stops the subscription and frees resources associated with the handle.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param handle The subscription handle returned by mavsdk_telemetry_subscribe_landed_state().
+ */
 CMAVSDK_EXPORT void mavsdk_telemetry_unsubscribe_landed_state(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_landed_state_handle_t);
 
+/**
+ * @brief Get the current landed state (blocking).
+ * 
+ * This function blocks until a value is available.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param landed_state_out Pointer to store the result.
+ */
 CMAVSDK_EXPORT
 void
 mavsdk_telemetry_landed_state(
@@ -530,15 +991,39 @@ mavsdk_telemetry_landed_state(
     mavsdk_telemetry_landed_state_t* landed_state_out);
 
 
+/**
+ * @brief Subscribe to armed updates.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param callback Function to call when new data is available.
+ * @param user_data User data to pass to the callback.
+ * @return Handle for this subscription. Use mavsdk_telemetry_unsubscribe_armed() to unsubscribe.
+ */
 CMAVSDK_EXPORT mavsdk_telemetry_armed_handle_t mavsdk_telemetry_subscribe_armed(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_armed_callback_t callback,
     void* user_data);
 
+/**
+ * @brief Unsubscribe from 'armed' updates.
+ * 
+ * Stops the subscription and frees resources associated with the handle.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param handle The subscription handle returned by mavsdk_telemetry_subscribe_armed().
+ */
 CMAVSDK_EXPORT void mavsdk_telemetry_unsubscribe_armed(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_armed_handle_t);
 
+/**
+ * @brief Get the current armed (blocking).
+ * 
+ * This function blocks until a value is available.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param armed_out Pointer to store the result.
+ */
 CMAVSDK_EXPORT
 void
 mavsdk_telemetry_armed(
@@ -547,15 +1032,39 @@ mavsdk_telemetry_armed(
 );
 
 
+/**
+ * @brief subscribe to vtol state Updates
+ * 
+ * @param telemetry The telemetry instance.
+ * @param callback Function to call when new data is available.
+ * @param user_data User data to pass to the callback.
+ * @return Handle for this subscription. Use mavsdk_telemetry_unsubscribe_vtol_state() to unsubscribe.
+ */
 CMAVSDK_EXPORT mavsdk_telemetry_vtol_state_handle_t mavsdk_telemetry_subscribe_vtol_state(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_vtol_state_callback_t callback,
     void* user_data);
 
+/**
+ * @brief Unsubscribe from 'vtol_state' updates.
+ * 
+ * Stops the subscription and frees resources associated with the handle.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param handle The subscription handle returned by mavsdk_telemetry_subscribe_vtol_state().
+ */
 CMAVSDK_EXPORT void mavsdk_telemetry_unsubscribe_vtol_state(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_vtol_state_handle_t);
 
+/**
+ * @brief Get the current vtol state (blocking).
+ * 
+ * This function blocks until a value is available.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param vtol_state_out Pointer to store the result.
+ */
 CMAVSDK_EXPORT
 void
 mavsdk_telemetry_vtol_state(
@@ -563,15 +1072,39 @@ mavsdk_telemetry_vtol_state(
     mavsdk_telemetry_vtol_state_t* vtol_state_out);
 
 
+/**
+ * @brief Subscribe to 'attitude' updates (quaternion).
+ * 
+ * @param telemetry The telemetry instance.
+ * @param callback Function to call when new data is available.
+ * @param user_data User data to pass to the callback.
+ * @return Handle for this subscription. Use mavsdk_telemetry_unsubscribe_attitude_quaternion() to unsubscribe.
+ */
 CMAVSDK_EXPORT mavsdk_telemetry_attitude_quaternion_handle_t mavsdk_telemetry_subscribe_attitude_quaternion(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_attitude_quaternion_callback_t callback,
     void* user_data);
 
+/**
+ * @brief Unsubscribe from 'attitude_quaternion' updates.
+ * 
+ * Stops the subscription and frees resources associated with the handle.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param handle The subscription handle returned by mavsdk_telemetry_subscribe_attitude_quaternion().
+ */
 CMAVSDK_EXPORT void mavsdk_telemetry_unsubscribe_attitude_quaternion(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_attitude_quaternion_handle_t);
 
+/**
+ * @brief Get the current attitude quaternion (blocking).
+ * 
+ * This function blocks until a value is available.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param attitude_quaternion_out Pointer to store the result.
+ */
 CMAVSDK_EXPORT
 void
 mavsdk_telemetry_attitude_quaternion(
@@ -579,15 +1112,39 @@ mavsdk_telemetry_attitude_quaternion(
     mavsdk_telemetry_quaternion_t* attitude_quaternion_out);
 
 
+/**
+ * @brief Subscribe to 'attitude' updates (Euler).
+ * 
+ * @param telemetry The telemetry instance.
+ * @param callback Function to call when new data is available.
+ * @param user_data User data to pass to the callback.
+ * @return Handle for this subscription. Use mavsdk_telemetry_unsubscribe_attitude_euler() to unsubscribe.
+ */
 CMAVSDK_EXPORT mavsdk_telemetry_attitude_euler_handle_t mavsdk_telemetry_subscribe_attitude_euler(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_attitude_euler_callback_t callback,
     void* user_data);
 
+/**
+ * @brief Unsubscribe from 'attitude_euler' updates.
+ * 
+ * Stops the subscription and frees resources associated with the handle.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param handle The subscription handle returned by mavsdk_telemetry_subscribe_attitude_euler().
+ */
 CMAVSDK_EXPORT void mavsdk_telemetry_unsubscribe_attitude_euler(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_attitude_euler_handle_t);
 
+/**
+ * @brief Get the current attitude euler (blocking).
+ * 
+ * This function blocks until a value is available.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param attitude_euler_out Pointer to store the result.
+ */
 CMAVSDK_EXPORT
 void
 mavsdk_telemetry_attitude_euler(
@@ -595,15 +1152,39 @@ mavsdk_telemetry_attitude_euler(
     mavsdk_telemetry_euler_angle_t* attitude_euler_out);
 
 
+/**
+ * @brief Subscribe to 'attitude' updates (angular velocity)
+ * 
+ * @param telemetry The telemetry instance.
+ * @param callback Function to call when new data is available.
+ * @param user_data User data to pass to the callback.
+ * @return Handle for this subscription. Use mavsdk_telemetry_unsubscribe_attitude_angular_velocity_body() to unsubscribe.
+ */
 CMAVSDK_EXPORT mavsdk_telemetry_attitude_angular_velocity_body_handle_t mavsdk_telemetry_subscribe_attitude_angular_velocity_body(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_attitude_angular_velocity_body_callback_t callback,
     void* user_data);
 
+/**
+ * @brief Unsubscribe from 'attitude_angular_velocity_body' updates.
+ * 
+ * Stops the subscription and frees resources associated with the handle.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param handle The subscription handle returned by mavsdk_telemetry_subscribe_attitude_angular_velocity_body().
+ */
 CMAVSDK_EXPORT void mavsdk_telemetry_unsubscribe_attitude_angular_velocity_body(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_attitude_angular_velocity_body_handle_t);
 
+/**
+ * @brief Get the current attitude angular velocity body (blocking).
+ * 
+ * This function blocks until a value is available.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param attitude_angular_velocity_body_out Pointer to store the result.
+ */
 CMAVSDK_EXPORT
 void
 mavsdk_telemetry_attitude_angular_velocity_body(
@@ -611,15 +1192,39 @@ mavsdk_telemetry_attitude_angular_velocity_body(
     mavsdk_telemetry_angular_velocity_body_t* attitude_angular_velocity_body_out);
 
 
+/**
+ * @brief Subscribe to 'ground speed' updates (NED).
+ * 
+ * @param telemetry The telemetry instance.
+ * @param callback Function to call when new data is available.
+ * @param user_data User data to pass to the callback.
+ * @return Handle for this subscription. Use mavsdk_telemetry_unsubscribe_velocity_ned() to unsubscribe.
+ */
 CMAVSDK_EXPORT mavsdk_telemetry_velocity_ned_handle_t mavsdk_telemetry_subscribe_velocity_ned(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_velocity_ned_callback_t callback,
     void* user_data);
 
+/**
+ * @brief Unsubscribe from 'velocity_ned' updates.
+ * 
+ * Stops the subscription and frees resources associated with the handle.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param handle The subscription handle returned by mavsdk_telemetry_subscribe_velocity_ned().
+ */
 CMAVSDK_EXPORT void mavsdk_telemetry_unsubscribe_velocity_ned(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_velocity_ned_handle_t);
 
+/**
+ * @brief Get the current velocity ned (blocking).
+ * 
+ * This function blocks until a value is available.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param velocity_ned_out Pointer to store the result.
+ */
 CMAVSDK_EXPORT
 void
 mavsdk_telemetry_velocity_ned(
@@ -627,15 +1232,39 @@ mavsdk_telemetry_velocity_ned(
     mavsdk_telemetry_velocity_ned_t* velocity_ned_out);
 
 
+/**
+ * @brief Subscribe to 'GPS info' updates.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param callback Function to call when new data is available.
+ * @param user_data User data to pass to the callback.
+ * @return Handle for this subscription. Use mavsdk_telemetry_unsubscribe_gps_info() to unsubscribe.
+ */
 CMAVSDK_EXPORT mavsdk_telemetry_gps_info_handle_t mavsdk_telemetry_subscribe_gps_info(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_gps_info_callback_t callback,
     void* user_data);
 
+/**
+ * @brief Unsubscribe from 'gps_info' updates.
+ * 
+ * Stops the subscription and frees resources associated with the handle.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param handle The subscription handle returned by mavsdk_telemetry_subscribe_gps_info().
+ */
 CMAVSDK_EXPORT void mavsdk_telemetry_unsubscribe_gps_info(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_gps_info_handle_t);
 
+/**
+ * @brief Get the current gps info (blocking).
+ * 
+ * This function blocks until a value is available.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param gps_info_out Pointer to store the result.
+ */
 CMAVSDK_EXPORT
 void
 mavsdk_telemetry_gps_info(
@@ -643,15 +1272,39 @@ mavsdk_telemetry_gps_info(
     mavsdk_telemetry_gps_info_t* gps_info_out);
 
 
+/**
+ * @brief Subscribe to 'Raw GPS' updates.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param callback Function to call when new data is available.
+ * @param user_data User data to pass to the callback.
+ * @return Handle for this subscription. Use mavsdk_telemetry_unsubscribe_raw_gps() to unsubscribe.
+ */
 CMAVSDK_EXPORT mavsdk_telemetry_raw_gps_handle_t mavsdk_telemetry_subscribe_raw_gps(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_raw_gps_callback_t callback,
     void* user_data);
 
+/**
+ * @brief Unsubscribe from 'raw_gps' updates.
+ * 
+ * Stops the subscription and frees resources associated with the handle.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param handle The subscription handle returned by mavsdk_telemetry_subscribe_raw_gps().
+ */
 CMAVSDK_EXPORT void mavsdk_telemetry_unsubscribe_raw_gps(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_raw_gps_handle_t);
 
+/**
+ * @brief Get the current raw gps (blocking).
+ * 
+ * This function blocks until a value is available.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param raw_gps_out Pointer to store the result.
+ */
 CMAVSDK_EXPORT
 void
 mavsdk_telemetry_raw_gps(
@@ -659,15 +1312,39 @@ mavsdk_telemetry_raw_gps(
     mavsdk_telemetry_raw_gps_t* raw_gps_out);
 
 
+/**
+ * @brief Subscribe to 'battery' updates.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param callback Function to call when new data is available.
+ * @param user_data User data to pass to the callback.
+ * @return Handle for this subscription. Use mavsdk_telemetry_unsubscribe_battery() to unsubscribe.
+ */
 CMAVSDK_EXPORT mavsdk_telemetry_battery_handle_t mavsdk_telemetry_subscribe_battery(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_battery_callback_t callback,
     void* user_data);
 
+/**
+ * @brief Unsubscribe from 'battery' updates.
+ * 
+ * Stops the subscription and frees resources associated with the handle.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param handle The subscription handle returned by mavsdk_telemetry_subscribe_battery().
+ */
 CMAVSDK_EXPORT void mavsdk_telemetry_unsubscribe_battery(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_battery_handle_t);
 
+/**
+ * @brief Get the current battery (blocking).
+ * 
+ * This function blocks until a value is available.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param battery_out Pointer to store the result.
+ */
 CMAVSDK_EXPORT
 void
 mavsdk_telemetry_battery(
@@ -675,15 +1352,39 @@ mavsdk_telemetry_battery(
     mavsdk_telemetry_battery_t* battery_out);
 
 
+/**
+ * @brief Subscribe to 'flight mode' updates.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param callback Function to call when new data is available.
+ * @param user_data User data to pass to the callback.
+ * @return Handle for this subscription. Use mavsdk_telemetry_unsubscribe_flight_mode() to unsubscribe.
+ */
 CMAVSDK_EXPORT mavsdk_telemetry_flight_mode_handle_t mavsdk_telemetry_subscribe_flight_mode(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_flight_mode_callback_t callback,
     void* user_data);
 
+/**
+ * @brief Unsubscribe from 'flight_mode' updates.
+ * 
+ * Stops the subscription and frees resources associated with the handle.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param handle The subscription handle returned by mavsdk_telemetry_subscribe_flight_mode().
+ */
 CMAVSDK_EXPORT void mavsdk_telemetry_unsubscribe_flight_mode(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_flight_mode_handle_t);
 
+/**
+ * @brief Get the current flight mode (blocking).
+ * 
+ * This function blocks until a value is available.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param flight_mode_out Pointer to store the result.
+ */
 CMAVSDK_EXPORT
 void
 mavsdk_telemetry_flight_mode(
@@ -691,15 +1392,39 @@ mavsdk_telemetry_flight_mode(
     mavsdk_telemetry_flight_mode_t* flight_mode_out);
 
 
+/**
+ * @brief Subscribe to 'health' updates.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param callback Function to call when new data is available.
+ * @param user_data User data to pass to the callback.
+ * @return Handle for this subscription. Use mavsdk_telemetry_unsubscribe_health() to unsubscribe.
+ */
 CMAVSDK_EXPORT mavsdk_telemetry_health_handle_t mavsdk_telemetry_subscribe_health(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_health_callback_t callback,
     void* user_data);
 
+/**
+ * @brief Unsubscribe from 'health' updates.
+ * 
+ * Stops the subscription and frees resources associated with the handle.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param handle The subscription handle returned by mavsdk_telemetry_subscribe_health().
+ */
 CMAVSDK_EXPORT void mavsdk_telemetry_unsubscribe_health(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_health_handle_t);
 
+/**
+ * @brief Get the current health (blocking).
+ * 
+ * This function blocks until a value is available.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param health_out Pointer to store the result.
+ */
 CMAVSDK_EXPORT
 void
 mavsdk_telemetry_health(
@@ -707,15 +1432,39 @@ mavsdk_telemetry_health(
     mavsdk_telemetry_health_t* health_out);
 
 
+/**
+ * @brief Subscribe to 'RC status' updates.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param callback Function to call when new data is available.
+ * @param user_data User data to pass to the callback.
+ * @return Handle for this subscription. Use mavsdk_telemetry_unsubscribe_rc_status() to unsubscribe.
+ */
 CMAVSDK_EXPORT mavsdk_telemetry_rc_status_handle_t mavsdk_telemetry_subscribe_rc_status(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_rc_status_callback_t callback,
     void* user_data);
 
+/**
+ * @brief Unsubscribe from 'rc_status' updates.
+ * 
+ * Stops the subscription and frees resources associated with the handle.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param handle The subscription handle returned by mavsdk_telemetry_subscribe_rc_status().
+ */
 CMAVSDK_EXPORT void mavsdk_telemetry_unsubscribe_rc_status(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_rc_status_handle_t);
 
+/**
+ * @brief Get the current rc status (blocking).
+ * 
+ * This function blocks until a value is available.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param rc_status_out Pointer to store the result.
+ */
 CMAVSDK_EXPORT
 void
 mavsdk_telemetry_rc_status(
@@ -723,15 +1472,39 @@ mavsdk_telemetry_rc_status(
     mavsdk_telemetry_rc_status_t* rc_status_out);
 
 
+/**
+ * @brief Subscribe to 'status text' updates.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param callback Function to call when new data is available.
+ * @param user_data User data to pass to the callback.
+ * @return Handle for this subscription. Use mavsdk_telemetry_unsubscribe_status_text() to unsubscribe.
+ */
 CMAVSDK_EXPORT mavsdk_telemetry_status_text_handle_t mavsdk_telemetry_subscribe_status_text(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_status_text_callback_t callback,
     void* user_data);
 
+/**
+ * @brief Unsubscribe from 'status_text' updates.
+ * 
+ * Stops the subscription and frees resources associated with the handle.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param handle The subscription handle returned by mavsdk_telemetry_subscribe_status_text().
+ */
 CMAVSDK_EXPORT void mavsdk_telemetry_unsubscribe_status_text(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_status_text_handle_t);
 
+/**
+ * @brief Get the current status text (blocking).
+ * 
+ * This function blocks until a value is available.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param status_text_out Pointer to store the result.
+ */
 CMAVSDK_EXPORT
 void
 mavsdk_telemetry_status_text(
@@ -739,15 +1512,39 @@ mavsdk_telemetry_status_text(
     mavsdk_telemetry_status_text_t* status_text_out);
 
 
+/**
+ * @brief Subscribe to 'actuator control target' updates.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param callback Function to call when new data is available.
+ * @param user_data User data to pass to the callback.
+ * @return Handle for this subscription. Use mavsdk_telemetry_unsubscribe_actuator_control_target() to unsubscribe.
+ */
 CMAVSDK_EXPORT mavsdk_telemetry_actuator_control_target_handle_t mavsdk_telemetry_subscribe_actuator_control_target(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_actuator_control_target_callback_t callback,
     void* user_data);
 
+/**
+ * @brief Unsubscribe from 'actuator_control_target' updates.
+ * 
+ * Stops the subscription and frees resources associated with the handle.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param handle The subscription handle returned by mavsdk_telemetry_subscribe_actuator_control_target().
+ */
 CMAVSDK_EXPORT void mavsdk_telemetry_unsubscribe_actuator_control_target(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_actuator_control_target_handle_t);
 
+/**
+ * @brief Get the current actuator control target (blocking).
+ * 
+ * This function blocks until a value is available.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param actuator_control_target_out Pointer to store the result.
+ */
 CMAVSDK_EXPORT
 void
 mavsdk_telemetry_actuator_control_target(
@@ -755,15 +1552,39 @@ mavsdk_telemetry_actuator_control_target(
     mavsdk_telemetry_actuator_control_target_t* actuator_control_target_out);
 
 
+/**
+ * @brief Subscribe to 'actuator output status' updates.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param callback Function to call when new data is available.
+ * @param user_data User data to pass to the callback.
+ * @return Handle for this subscription. Use mavsdk_telemetry_unsubscribe_actuator_output_status() to unsubscribe.
+ */
 CMAVSDK_EXPORT mavsdk_telemetry_actuator_output_status_handle_t mavsdk_telemetry_subscribe_actuator_output_status(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_actuator_output_status_callback_t callback,
     void* user_data);
 
+/**
+ * @brief Unsubscribe from 'actuator_output_status' updates.
+ * 
+ * Stops the subscription and frees resources associated with the handle.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param handle The subscription handle returned by mavsdk_telemetry_subscribe_actuator_output_status().
+ */
 CMAVSDK_EXPORT void mavsdk_telemetry_unsubscribe_actuator_output_status(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_actuator_output_status_handle_t);
 
+/**
+ * @brief Get the current actuator output status (blocking).
+ * 
+ * This function blocks until a value is available.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param actuator_output_status_out Pointer to store the result.
+ */
 CMAVSDK_EXPORT
 void
 mavsdk_telemetry_actuator_output_status(
@@ -771,15 +1592,39 @@ mavsdk_telemetry_actuator_output_status(
     mavsdk_telemetry_actuator_output_status_t* actuator_output_status_out);
 
 
+/**
+ * @brief Subscribe to 'odometry' updates.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param callback Function to call when new data is available.
+ * @param user_data User data to pass to the callback.
+ * @return Handle for this subscription. Use mavsdk_telemetry_unsubscribe_odometry() to unsubscribe.
+ */
 CMAVSDK_EXPORT mavsdk_telemetry_odometry_handle_t mavsdk_telemetry_subscribe_odometry(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_odometry_callback_t callback,
     void* user_data);
 
+/**
+ * @brief Unsubscribe from 'odometry' updates.
+ * 
+ * Stops the subscription and frees resources associated with the handle.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param handle The subscription handle returned by mavsdk_telemetry_subscribe_odometry().
+ */
 CMAVSDK_EXPORT void mavsdk_telemetry_unsubscribe_odometry(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_odometry_handle_t);
 
+/**
+ * @brief Get the current odometry (blocking).
+ * 
+ * This function blocks until a value is available.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param odometry_out Pointer to store the result.
+ */
 CMAVSDK_EXPORT
 void
 mavsdk_telemetry_odometry(
@@ -787,15 +1632,39 @@ mavsdk_telemetry_odometry(
     mavsdk_telemetry_odometry_t* odometry_out);
 
 
+/**
+ * @brief Subscribe to 'position velocity' updates.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param callback Function to call when new data is available.
+ * @param user_data User data to pass to the callback.
+ * @return Handle for this subscription. Use mavsdk_telemetry_unsubscribe_position_velocity_ned() to unsubscribe.
+ */
 CMAVSDK_EXPORT mavsdk_telemetry_position_velocity_ned_handle_t mavsdk_telemetry_subscribe_position_velocity_ned(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_position_velocity_ned_callback_t callback,
     void* user_data);
 
+/**
+ * @brief Unsubscribe from 'position_velocity_ned' updates.
+ * 
+ * Stops the subscription and frees resources associated with the handle.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param handle The subscription handle returned by mavsdk_telemetry_subscribe_position_velocity_ned().
+ */
 CMAVSDK_EXPORT void mavsdk_telemetry_unsubscribe_position_velocity_ned(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_position_velocity_ned_handle_t);
 
+/**
+ * @brief Get the current position velocity ned (blocking).
+ * 
+ * This function blocks until a value is available.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param position_velocity_ned_out Pointer to store the result.
+ */
 CMAVSDK_EXPORT
 void
 mavsdk_telemetry_position_velocity_ned(
@@ -803,15 +1672,39 @@ mavsdk_telemetry_position_velocity_ned(
     mavsdk_telemetry_position_velocity_ned_t* position_velocity_ned_out);
 
 
+/**
+ * @brief Subscribe to 'ground truth' updates.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param callback Function to call when new data is available.
+ * @param user_data User data to pass to the callback.
+ * @return Handle for this subscription. Use mavsdk_telemetry_unsubscribe_ground_truth() to unsubscribe.
+ */
 CMAVSDK_EXPORT mavsdk_telemetry_ground_truth_handle_t mavsdk_telemetry_subscribe_ground_truth(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_ground_truth_callback_t callback,
     void* user_data);
 
+/**
+ * @brief Unsubscribe from 'ground_truth' updates.
+ * 
+ * Stops the subscription and frees resources associated with the handle.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param handle The subscription handle returned by mavsdk_telemetry_subscribe_ground_truth().
+ */
 CMAVSDK_EXPORT void mavsdk_telemetry_unsubscribe_ground_truth(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_ground_truth_handle_t);
 
+/**
+ * @brief Get the current ground truth (blocking).
+ * 
+ * This function blocks until a value is available.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param ground_truth_out Pointer to store the result.
+ */
 CMAVSDK_EXPORT
 void
 mavsdk_telemetry_ground_truth(
@@ -819,15 +1712,39 @@ mavsdk_telemetry_ground_truth(
     mavsdk_telemetry_ground_truth_t* ground_truth_out);
 
 
+/**
+ * @brief Subscribe to 'fixedwing metrics' updates.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param callback Function to call when new data is available.
+ * @param user_data User data to pass to the callback.
+ * @return Handle for this subscription. Use mavsdk_telemetry_unsubscribe_fixedwing_metrics() to unsubscribe.
+ */
 CMAVSDK_EXPORT mavsdk_telemetry_fixedwing_metrics_handle_t mavsdk_telemetry_subscribe_fixedwing_metrics(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_fixedwing_metrics_callback_t callback,
     void* user_data);
 
+/**
+ * @brief Unsubscribe from 'fixedwing_metrics' updates.
+ * 
+ * Stops the subscription and frees resources associated with the handle.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param handle The subscription handle returned by mavsdk_telemetry_subscribe_fixedwing_metrics().
+ */
 CMAVSDK_EXPORT void mavsdk_telemetry_unsubscribe_fixedwing_metrics(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_fixedwing_metrics_handle_t);
 
+/**
+ * @brief Get the current fixedwing metrics (blocking).
+ * 
+ * This function blocks until a value is available.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param fixedwing_metrics_out Pointer to store the result.
+ */
 CMAVSDK_EXPORT
 void
 mavsdk_telemetry_fixedwing_metrics(
@@ -835,15 +1752,39 @@ mavsdk_telemetry_fixedwing_metrics(
     mavsdk_telemetry_fixedwing_metrics_t* fixedwing_metrics_out);
 
 
+/**
+ * @brief Subscribe to 'IMU' updates (in SI units in NED body frame).
+ * 
+ * @param telemetry The telemetry instance.
+ * @param callback Function to call when new data is available.
+ * @param user_data User data to pass to the callback.
+ * @return Handle for this subscription. Use mavsdk_telemetry_unsubscribe_imu() to unsubscribe.
+ */
 CMAVSDK_EXPORT mavsdk_telemetry_imu_handle_t mavsdk_telemetry_subscribe_imu(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_imu_callback_t callback,
     void* user_data);
 
+/**
+ * @brief Unsubscribe from 'imu' updates.
+ * 
+ * Stops the subscription and frees resources associated with the handle.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param handle The subscription handle returned by mavsdk_telemetry_subscribe_imu().
+ */
 CMAVSDK_EXPORT void mavsdk_telemetry_unsubscribe_imu(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_imu_handle_t);
 
+/**
+ * @brief Get the current imu (blocking).
+ * 
+ * This function blocks until a value is available.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param imu_out Pointer to store the result.
+ */
 CMAVSDK_EXPORT
 void
 mavsdk_telemetry_imu(
@@ -851,15 +1792,39 @@ mavsdk_telemetry_imu(
     mavsdk_telemetry_imu_t* imu_out);
 
 
+/**
+ * @brief Subscribe to 'Scaled IMU' updates.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param callback Function to call when new data is available.
+ * @param user_data User data to pass to the callback.
+ * @return Handle for this subscription. Use mavsdk_telemetry_unsubscribe_scaled_imu() to unsubscribe.
+ */
 CMAVSDK_EXPORT mavsdk_telemetry_scaled_imu_handle_t mavsdk_telemetry_subscribe_scaled_imu(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_scaled_imu_callback_t callback,
     void* user_data);
 
+/**
+ * @brief Unsubscribe from 'scaled_imu' updates.
+ * 
+ * Stops the subscription and frees resources associated with the handle.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param handle The subscription handle returned by mavsdk_telemetry_subscribe_scaled_imu().
+ */
 CMAVSDK_EXPORT void mavsdk_telemetry_unsubscribe_scaled_imu(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_scaled_imu_handle_t);
 
+/**
+ * @brief Get the current scaled imu (blocking).
+ * 
+ * This function blocks until a value is available.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param scaled_imu_out Pointer to store the result.
+ */
 CMAVSDK_EXPORT
 void
 mavsdk_telemetry_scaled_imu(
@@ -867,15 +1832,39 @@ mavsdk_telemetry_scaled_imu(
     mavsdk_telemetry_imu_t* imu_out);
 
 
+/**
+ * @brief Subscribe to 'Raw IMU' updates (note that units are are incorrect and "raw" as provided by the sensor)
+ * 
+ * @param telemetry The telemetry instance.
+ * @param callback Function to call when new data is available.
+ * @param user_data User data to pass to the callback.
+ * @return Handle for this subscription. Use mavsdk_telemetry_unsubscribe_raw_imu() to unsubscribe.
+ */
 CMAVSDK_EXPORT mavsdk_telemetry_raw_imu_handle_t mavsdk_telemetry_subscribe_raw_imu(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_raw_imu_callback_t callback,
     void* user_data);
 
+/**
+ * @brief Unsubscribe from 'raw_imu' updates.
+ * 
+ * Stops the subscription and frees resources associated with the handle.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param handle The subscription handle returned by mavsdk_telemetry_subscribe_raw_imu().
+ */
 CMAVSDK_EXPORT void mavsdk_telemetry_unsubscribe_raw_imu(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_raw_imu_handle_t);
 
+/**
+ * @brief Get the current raw imu (blocking).
+ * 
+ * This function blocks until a value is available.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param raw_imu_out Pointer to store the result.
+ */
 CMAVSDK_EXPORT
 void
 mavsdk_telemetry_raw_imu(
@@ -883,15 +1872,39 @@ mavsdk_telemetry_raw_imu(
     mavsdk_telemetry_imu_t* imu_out);
 
 
+/**
+ * @brief Subscribe to 'HealthAllOk' updates.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param callback Function to call when new data is available.
+ * @param user_data User data to pass to the callback.
+ * @return Handle for this subscription. Use mavsdk_telemetry_unsubscribe_health_all_ok() to unsubscribe.
+ */
 CMAVSDK_EXPORT mavsdk_telemetry_health_all_ok_handle_t mavsdk_telemetry_subscribe_health_all_ok(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_health_all_ok_callback_t callback,
     void* user_data);
 
+/**
+ * @brief Unsubscribe from 'health_all_ok' updates.
+ * 
+ * Stops the subscription and frees resources associated with the handle.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param handle The subscription handle returned by mavsdk_telemetry_subscribe_health_all_ok().
+ */
 CMAVSDK_EXPORT void mavsdk_telemetry_unsubscribe_health_all_ok(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_health_all_ok_handle_t);
 
+/**
+ * @brief Get the current health all ok (blocking).
+ * 
+ * This function blocks until a value is available.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param health_all_ok_out Pointer to store the result.
+ */
 CMAVSDK_EXPORT
 void
 mavsdk_telemetry_health_all_ok(
@@ -900,15 +1913,39 @@ mavsdk_telemetry_health_all_ok(
 );
 
 
+/**
+ * @brief Subscribe to 'unix epoch time' updates.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param callback Function to call when new data is available.
+ * @param user_data User data to pass to the callback.
+ * @return Handle for this subscription. Use mavsdk_telemetry_unsubscribe_unix_epoch_time() to unsubscribe.
+ */
 CMAVSDK_EXPORT mavsdk_telemetry_unix_epoch_time_handle_t mavsdk_telemetry_subscribe_unix_epoch_time(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_unix_epoch_time_callback_t callback,
     void* user_data);
 
+/**
+ * @brief Unsubscribe from 'unix_epoch_time' updates.
+ * 
+ * Stops the subscription and frees resources associated with the handle.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param handle The subscription handle returned by mavsdk_telemetry_subscribe_unix_epoch_time().
+ */
 CMAVSDK_EXPORT void mavsdk_telemetry_unsubscribe_unix_epoch_time(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_unix_epoch_time_handle_t);
 
+/**
+ * @brief Get the current unix epoch time (blocking).
+ * 
+ * This function blocks until a value is available.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param unix_epoch_time_out Pointer to store the result.
+ */
 CMAVSDK_EXPORT
 void
 mavsdk_telemetry_unix_epoch_time(
@@ -917,15 +1954,39 @@ mavsdk_telemetry_unix_epoch_time(
 );
 
 
+/**
+ * @brief Subscribe to 'Distance Sensor' updates.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param callback Function to call when new data is available.
+ * @param user_data User data to pass to the callback.
+ * @return Handle for this subscription. Use mavsdk_telemetry_unsubscribe_distance_sensor() to unsubscribe.
+ */
 CMAVSDK_EXPORT mavsdk_telemetry_distance_sensor_handle_t mavsdk_telemetry_subscribe_distance_sensor(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_distance_sensor_callback_t callback,
     void* user_data);
 
+/**
+ * @brief Unsubscribe from 'distance_sensor' updates.
+ * 
+ * Stops the subscription and frees resources associated with the handle.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param handle The subscription handle returned by mavsdk_telemetry_subscribe_distance_sensor().
+ */
 CMAVSDK_EXPORT void mavsdk_telemetry_unsubscribe_distance_sensor(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_distance_sensor_handle_t);
 
+/**
+ * @brief Get the current distance sensor (blocking).
+ * 
+ * This function blocks until a value is available.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param distance_sensor_out Pointer to store the result.
+ */
 CMAVSDK_EXPORT
 void
 mavsdk_telemetry_distance_sensor(
@@ -933,15 +1994,39 @@ mavsdk_telemetry_distance_sensor(
     mavsdk_telemetry_distance_sensor_t* distance_sensor_out);
 
 
+/**
+ * @brief Subscribe to 'Scaled Pressure' updates.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param callback Function to call when new data is available.
+ * @param user_data User data to pass to the callback.
+ * @return Handle for this subscription. Use mavsdk_telemetry_unsubscribe_scaled_pressure() to unsubscribe.
+ */
 CMAVSDK_EXPORT mavsdk_telemetry_scaled_pressure_handle_t mavsdk_telemetry_subscribe_scaled_pressure(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_scaled_pressure_callback_t callback,
     void* user_data);
 
+/**
+ * @brief Unsubscribe from 'scaled_pressure' updates.
+ * 
+ * Stops the subscription and frees resources associated with the handle.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param handle The subscription handle returned by mavsdk_telemetry_subscribe_scaled_pressure().
+ */
 CMAVSDK_EXPORT void mavsdk_telemetry_unsubscribe_scaled_pressure(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_scaled_pressure_handle_t);
 
+/**
+ * @brief Get the current scaled pressure (blocking).
+ * 
+ * This function blocks until a value is available.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param scaled_pressure_out Pointer to store the result.
+ */
 CMAVSDK_EXPORT
 void
 mavsdk_telemetry_scaled_pressure(
@@ -949,15 +2034,39 @@ mavsdk_telemetry_scaled_pressure(
     mavsdk_telemetry_scaled_pressure_t* scaled_pressure_out);
 
 
+/**
+ * @brief Subscribe to 'Heading' updates.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param callback Function to call when new data is available.
+ * @param user_data User data to pass to the callback.
+ * @return Handle for this subscription. Use mavsdk_telemetry_unsubscribe_heading() to unsubscribe.
+ */
 CMAVSDK_EXPORT mavsdk_telemetry_heading_handle_t mavsdk_telemetry_subscribe_heading(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_heading_callback_t callback,
     void* user_data);
 
+/**
+ * @brief Unsubscribe from 'heading' updates.
+ * 
+ * Stops the subscription and frees resources associated with the handle.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param handle The subscription handle returned by mavsdk_telemetry_subscribe_heading().
+ */
 CMAVSDK_EXPORT void mavsdk_telemetry_unsubscribe_heading(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_heading_handle_t);
 
+/**
+ * @brief Get the current heading (blocking).
+ * 
+ * This function blocks until a value is available.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param heading_out Pointer to store the result.
+ */
 CMAVSDK_EXPORT
 void
 mavsdk_telemetry_heading(
@@ -965,15 +2074,39 @@ mavsdk_telemetry_heading(
     mavsdk_telemetry_heading_t* heading_deg_out);
 
 
+/**
+ * @brief Subscribe to 'Altitude' updates.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param callback Function to call when new data is available.
+ * @param user_data User data to pass to the callback.
+ * @return Handle for this subscription. Use mavsdk_telemetry_unsubscribe_altitude() to unsubscribe.
+ */
 CMAVSDK_EXPORT mavsdk_telemetry_altitude_handle_t mavsdk_telemetry_subscribe_altitude(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_altitude_callback_t callback,
     void* user_data);
 
+/**
+ * @brief Unsubscribe from 'altitude' updates.
+ * 
+ * Stops the subscription and frees resources associated with the handle.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param handle The subscription handle returned by mavsdk_telemetry_subscribe_altitude().
+ */
 CMAVSDK_EXPORT void mavsdk_telemetry_unsubscribe_altitude(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_altitude_handle_t);
 
+/**
+ * @brief Get the current altitude (blocking).
+ * 
+ * This function blocks until a value is available.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param altitude_out Pointer to store the result.
+ */
 CMAVSDK_EXPORT
 void
 mavsdk_telemetry_altitude(
@@ -981,15 +2114,39 @@ mavsdk_telemetry_altitude(
     mavsdk_telemetry_altitude_t* altitude_out);
 
 
+/**
+ * @brief Subscribe to 'Wind Estimated' updates.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param callback Function to call when new data is available.
+ * @param user_data User data to pass to the callback.
+ * @return Handle for this subscription. Use mavsdk_telemetry_unsubscribe_wind() to unsubscribe.
+ */
 CMAVSDK_EXPORT mavsdk_telemetry_wind_handle_t mavsdk_telemetry_subscribe_wind(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_wind_callback_t callback,
     void* user_data);
 
+/**
+ * @brief Unsubscribe from 'wind' updates.
+ * 
+ * Stops the subscription and frees resources associated with the handle.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param handle The subscription handle returned by mavsdk_telemetry_subscribe_wind().
+ */
 CMAVSDK_EXPORT void mavsdk_telemetry_unsubscribe_wind(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_wind_handle_t);
 
+/**
+ * @brief Get the current wind (blocking).
+ * 
+ * This function blocks until a value is available.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param wind_out Pointer to store the result.
+ */
 CMAVSDK_EXPORT
 void
 mavsdk_telemetry_wind(
@@ -997,6 +2154,15 @@ mavsdk_telemetry_wind(
     mavsdk_telemetry_wind_t* wind_out);
 
 
+/**
+ * @brief Set rate to 'position' updates.
+ * 
+ * @param telemetry The telemetry instance.
+* @param rate_hz  The requested rate (in Hertz)
+ * 
+ * @param callback Function to call when new data is available.
+ * @param user_data User data to pass to the callback.
+ */
 CMAVSDK_EXPORT void mavsdk_telemetry_set_rate_position_async(
     mavsdk_telemetry_t telemetry,
     double rate_hz,
@@ -1004,6 +2170,14 @@ CMAVSDK_EXPORT void mavsdk_telemetry_set_rate_position_async(
     void* user_data);
 
 
+/**
+ * @brief Get the current set rate position (blocking).
+ * 
+ * This function blocks until a value is available.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param set_rate_position_out Pointer to store the result.
+ */
 CMAVSDK_EXPORT
 mavsdk_telemetry_result_t
 mavsdk_telemetry_set_rate_position(
@@ -1011,6 +2185,15 @@ mavsdk_telemetry_set_rate_position(
     double rate_hz);
 
 
+/**
+ * @brief Set rate to 'home position' updates.
+ * 
+ * @param telemetry The telemetry instance.
+* @param rate_hz  The requested rate (in Hertz)
+ * 
+ * @param callback Function to call when new data is available.
+ * @param user_data User data to pass to the callback.
+ */
 CMAVSDK_EXPORT void mavsdk_telemetry_set_rate_home_async(
     mavsdk_telemetry_t telemetry,
     double rate_hz,
@@ -1018,6 +2201,14 @@ CMAVSDK_EXPORT void mavsdk_telemetry_set_rate_home_async(
     void* user_data);
 
 
+/**
+ * @brief Get the current set rate home (blocking).
+ * 
+ * This function blocks until a value is available.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param set_rate_home_out Pointer to store the result.
+ */
 CMAVSDK_EXPORT
 mavsdk_telemetry_result_t
 mavsdk_telemetry_set_rate_home(
@@ -1025,6 +2216,15 @@ mavsdk_telemetry_set_rate_home(
     double rate_hz);
 
 
+/**
+ * @brief Set rate to in-air updates.
+ * 
+ * @param telemetry The telemetry instance.
+* @param rate_hz  The requested rate (in Hertz)
+ * 
+ * @param callback Function to call when new data is available.
+ * @param user_data User data to pass to the callback.
+ */
 CMAVSDK_EXPORT void mavsdk_telemetry_set_rate_in_air_async(
     mavsdk_telemetry_t telemetry,
     double rate_hz,
@@ -1032,6 +2232,14 @@ CMAVSDK_EXPORT void mavsdk_telemetry_set_rate_in_air_async(
     void* user_data);
 
 
+/**
+ * @brief Get the current set rate in air (blocking).
+ * 
+ * This function blocks until a value is available.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param set_rate_in_air_out Pointer to store the result.
+ */
 CMAVSDK_EXPORT
 mavsdk_telemetry_result_t
 mavsdk_telemetry_set_rate_in_air(
@@ -1039,6 +2247,15 @@ mavsdk_telemetry_set_rate_in_air(
     double rate_hz);
 
 
+/**
+ * @brief Set rate to landed state updates
+ * 
+ * @param telemetry The telemetry instance.
+* @param rate_hz  The requested rate (in Hertz)
+ * 
+ * @param callback Function to call when new data is available.
+ * @param user_data User data to pass to the callback.
+ */
 CMAVSDK_EXPORT void mavsdk_telemetry_set_rate_landed_state_async(
     mavsdk_telemetry_t telemetry,
     double rate_hz,
@@ -1046,6 +2263,14 @@ CMAVSDK_EXPORT void mavsdk_telemetry_set_rate_landed_state_async(
     void* user_data);
 
 
+/**
+ * @brief Get the current set rate landed state (blocking).
+ * 
+ * This function blocks until a value is available.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param set_rate_landed_state_out Pointer to store the result.
+ */
 CMAVSDK_EXPORT
 mavsdk_telemetry_result_t
 mavsdk_telemetry_set_rate_landed_state(
@@ -1053,6 +2278,15 @@ mavsdk_telemetry_set_rate_landed_state(
     double rate_hz);
 
 
+/**
+ * @brief Set rate to VTOL state updates
+ * 
+ * @param telemetry The telemetry instance.
+* @param rate_hz  The requested rate (in Hertz)
+ * 
+ * @param callback Function to call when new data is available.
+ * @param user_data User data to pass to the callback.
+ */
 CMAVSDK_EXPORT void mavsdk_telemetry_set_rate_vtol_state_async(
     mavsdk_telemetry_t telemetry,
     double rate_hz,
@@ -1060,6 +2294,14 @@ CMAVSDK_EXPORT void mavsdk_telemetry_set_rate_vtol_state_async(
     void* user_data);
 
 
+/**
+ * @brief Get the current set rate vtol state (blocking).
+ * 
+ * This function blocks until a value is available.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param set_rate_vtol_state_out Pointer to store the result.
+ */
 CMAVSDK_EXPORT
 mavsdk_telemetry_result_t
 mavsdk_telemetry_set_rate_vtol_state(
@@ -1067,6 +2309,15 @@ mavsdk_telemetry_set_rate_vtol_state(
     double rate_hz);
 
 
+/**
+ * @brief Set rate to 'attitude euler angle' updates.
+ * 
+ * @param telemetry The telemetry instance.
+* @param rate_hz  The requested rate (in Hertz)
+ * 
+ * @param callback Function to call when new data is available.
+ * @param user_data User data to pass to the callback.
+ */
 CMAVSDK_EXPORT void mavsdk_telemetry_set_rate_attitude_quaternion_async(
     mavsdk_telemetry_t telemetry,
     double rate_hz,
@@ -1074,6 +2325,14 @@ CMAVSDK_EXPORT void mavsdk_telemetry_set_rate_attitude_quaternion_async(
     void* user_data);
 
 
+/**
+ * @brief Get the current set rate attitude quaternion (blocking).
+ * 
+ * This function blocks until a value is available.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param set_rate_attitude_quaternion_out Pointer to store the result.
+ */
 CMAVSDK_EXPORT
 mavsdk_telemetry_result_t
 mavsdk_telemetry_set_rate_attitude_quaternion(
@@ -1081,6 +2340,15 @@ mavsdk_telemetry_set_rate_attitude_quaternion(
     double rate_hz);
 
 
+/**
+ * @brief Set rate to 'attitude quaternion' updates.
+ * 
+ * @param telemetry The telemetry instance.
+* @param rate_hz  The requested rate (in Hertz)
+ * 
+ * @param callback Function to call when new data is available.
+ * @param user_data User data to pass to the callback.
+ */
 CMAVSDK_EXPORT void mavsdk_telemetry_set_rate_attitude_euler_async(
     mavsdk_telemetry_t telemetry,
     double rate_hz,
@@ -1088,6 +2356,14 @@ CMAVSDK_EXPORT void mavsdk_telemetry_set_rate_attitude_euler_async(
     void* user_data);
 
 
+/**
+ * @brief Get the current set rate attitude euler (blocking).
+ * 
+ * This function blocks until a value is available.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param set_rate_attitude_euler_out Pointer to store the result.
+ */
 CMAVSDK_EXPORT
 mavsdk_telemetry_result_t
 mavsdk_telemetry_set_rate_attitude_euler(
@@ -1095,6 +2371,16 @@ mavsdk_telemetry_set_rate_attitude_euler(
     double rate_hz);
 
 
+/**
+ * @brief Set rate of camera attitude updates.
+ *  Set rate to 'ground speed' updates (NED).
+ * 
+ * @param telemetry The telemetry instance.
+* @param rate_hz  The requested rate (in Hertz)
+ * 
+ * @param callback Function to call when new data is available.
+ * @param user_data User data to pass to the callback.
+ */
 CMAVSDK_EXPORT void mavsdk_telemetry_set_rate_velocity_ned_async(
     mavsdk_telemetry_t telemetry,
     double rate_hz,
@@ -1102,6 +2388,14 @@ CMAVSDK_EXPORT void mavsdk_telemetry_set_rate_velocity_ned_async(
     void* user_data);
 
 
+/**
+ * @brief Get the current set rate velocity ned (blocking).
+ * 
+ * This function blocks until a value is available.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param set_rate_velocity_ned_out Pointer to store the result.
+ */
 CMAVSDK_EXPORT
 mavsdk_telemetry_result_t
 mavsdk_telemetry_set_rate_velocity_ned(
@@ -1109,6 +2403,15 @@ mavsdk_telemetry_set_rate_velocity_ned(
     double rate_hz);
 
 
+/**
+ * @brief Set rate to 'GPS info' updates.
+ * 
+ * @param telemetry The telemetry instance.
+* @param rate_hz  The requested rate (in Hertz)
+ * 
+ * @param callback Function to call when new data is available.
+ * @param user_data User data to pass to the callback.
+ */
 CMAVSDK_EXPORT void mavsdk_telemetry_set_rate_gps_info_async(
     mavsdk_telemetry_t telemetry,
     double rate_hz,
@@ -1116,6 +2419,14 @@ CMAVSDK_EXPORT void mavsdk_telemetry_set_rate_gps_info_async(
     void* user_data);
 
 
+/**
+ * @brief Get the current set rate gps info (blocking).
+ * 
+ * This function blocks until a value is available.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param set_rate_gps_info_out Pointer to store the result.
+ */
 CMAVSDK_EXPORT
 mavsdk_telemetry_result_t
 mavsdk_telemetry_set_rate_gps_info(
@@ -1123,6 +2434,15 @@ mavsdk_telemetry_set_rate_gps_info(
     double rate_hz);
 
 
+/**
+ * @brief Set rate to 'battery' updates.
+ * 
+ * @param telemetry The telemetry instance.
+* @param rate_hz  The requested rate (in Hertz)
+ * 
+ * @param callback Function to call when new data is available.
+ * @param user_data User data to pass to the callback.
+ */
 CMAVSDK_EXPORT void mavsdk_telemetry_set_rate_battery_async(
     mavsdk_telemetry_t telemetry,
     double rate_hz,
@@ -1130,6 +2450,14 @@ CMAVSDK_EXPORT void mavsdk_telemetry_set_rate_battery_async(
     void* user_data);
 
 
+/**
+ * @brief Get the current set rate battery (blocking).
+ * 
+ * This function blocks until a value is available.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param set_rate_battery_out Pointer to store the result.
+ */
 CMAVSDK_EXPORT
 mavsdk_telemetry_result_t
 mavsdk_telemetry_set_rate_battery(
@@ -1137,6 +2465,15 @@ mavsdk_telemetry_set_rate_battery(
     double rate_hz);
 
 
+/**
+ * @brief Set rate to 'RC status' updates.
+ * 
+ * @param telemetry The telemetry instance.
+* @param rate_hz  The requested rate (in Hertz)
+ * 
+ * @param callback Function to call when new data is available.
+ * @param user_data User data to pass to the callback.
+ */
 CMAVSDK_EXPORT void mavsdk_telemetry_set_rate_rc_status_async(
     mavsdk_telemetry_t telemetry,
     double rate_hz,
@@ -1144,6 +2481,14 @@ CMAVSDK_EXPORT void mavsdk_telemetry_set_rate_rc_status_async(
     void* user_data);
 
 
+/**
+ * @brief Get the current set rate rc status (blocking).
+ * 
+ * This function blocks until a value is available.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param set_rate_rc_status_out Pointer to store the result.
+ */
 CMAVSDK_EXPORT
 mavsdk_telemetry_result_t
 mavsdk_telemetry_set_rate_rc_status(
@@ -1151,6 +2496,15 @@ mavsdk_telemetry_set_rate_rc_status(
     double rate_hz);
 
 
+/**
+ * @brief Set rate to 'actuator control target' updates.
+ * 
+ * @param telemetry The telemetry instance.
+* @param rate_hz  The requested rate (in Hertz)
+ * 
+ * @param callback Function to call when new data is available.
+ * @param user_data User data to pass to the callback.
+ */
 CMAVSDK_EXPORT void mavsdk_telemetry_set_rate_actuator_control_target_async(
     mavsdk_telemetry_t telemetry,
     double rate_hz,
@@ -1158,6 +2512,14 @@ CMAVSDK_EXPORT void mavsdk_telemetry_set_rate_actuator_control_target_async(
     void* user_data);
 
 
+/**
+ * @brief Get the current set rate actuator control target (blocking).
+ * 
+ * This function blocks until a value is available.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param set_rate_actuator_control_target_out Pointer to store the result.
+ */
 CMAVSDK_EXPORT
 mavsdk_telemetry_result_t
 mavsdk_telemetry_set_rate_actuator_control_target(
@@ -1165,6 +2527,15 @@ mavsdk_telemetry_set_rate_actuator_control_target(
     double rate_hz);
 
 
+/**
+ * @brief Set rate to 'actuator output status' updates.
+ * 
+ * @param telemetry The telemetry instance.
+* @param rate_hz  The requested rate (in Hertz)
+ * 
+ * @param callback Function to call when new data is available.
+ * @param user_data User data to pass to the callback.
+ */
 CMAVSDK_EXPORT void mavsdk_telemetry_set_rate_actuator_output_status_async(
     mavsdk_telemetry_t telemetry,
     double rate_hz,
@@ -1172,6 +2543,14 @@ CMAVSDK_EXPORT void mavsdk_telemetry_set_rate_actuator_output_status_async(
     void* user_data);
 
 
+/**
+ * @brief Get the current set rate actuator output status (blocking).
+ * 
+ * This function blocks until a value is available.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param set_rate_actuator_output_status_out Pointer to store the result.
+ */
 CMAVSDK_EXPORT
 mavsdk_telemetry_result_t
 mavsdk_telemetry_set_rate_actuator_output_status(
@@ -1179,6 +2558,15 @@ mavsdk_telemetry_set_rate_actuator_output_status(
     double rate_hz);
 
 
+/**
+ * @brief Set rate to 'odometry' updates.
+ * 
+ * @param telemetry The telemetry instance.
+* @param rate_hz  The requested rate (in Hertz)
+ * 
+ * @param callback Function to call when new data is available.
+ * @param user_data User data to pass to the callback.
+ */
 CMAVSDK_EXPORT void mavsdk_telemetry_set_rate_odometry_async(
     mavsdk_telemetry_t telemetry,
     double rate_hz,
@@ -1186,6 +2574,14 @@ CMAVSDK_EXPORT void mavsdk_telemetry_set_rate_odometry_async(
     void* user_data);
 
 
+/**
+ * @brief Get the current set rate odometry (blocking).
+ * 
+ * This function blocks until a value is available.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param set_rate_odometry_out Pointer to store the result.
+ */
 CMAVSDK_EXPORT
 mavsdk_telemetry_result_t
 mavsdk_telemetry_set_rate_odometry(
@@ -1193,6 +2589,15 @@ mavsdk_telemetry_set_rate_odometry(
     double rate_hz);
 
 
+/**
+ * @brief Set rate to 'position velocity' updates.
+ * 
+ * @param telemetry The telemetry instance.
+* @param rate_hz  The requested rate (in Hertz)
+ * 
+ * @param callback Function to call when new data is available.
+ * @param user_data User data to pass to the callback.
+ */
 CMAVSDK_EXPORT void mavsdk_telemetry_set_rate_position_velocity_ned_async(
     mavsdk_telemetry_t telemetry,
     double rate_hz,
@@ -1200,6 +2605,14 @@ CMAVSDK_EXPORT void mavsdk_telemetry_set_rate_position_velocity_ned_async(
     void* user_data);
 
 
+/**
+ * @brief Get the current set rate position velocity ned (blocking).
+ * 
+ * This function blocks until a value is available.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param set_rate_position_velocity_ned_out Pointer to store the result.
+ */
 CMAVSDK_EXPORT
 mavsdk_telemetry_result_t
 mavsdk_telemetry_set_rate_position_velocity_ned(
@@ -1207,6 +2620,15 @@ mavsdk_telemetry_set_rate_position_velocity_ned(
     double rate_hz);
 
 
+/**
+ * @brief Set rate to 'ground truth' updates.
+ * 
+ * @param telemetry The telemetry instance.
+* @param rate_hz  The requested rate (in Hertz)
+ * 
+ * @param callback Function to call when new data is available.
+ * @param user_data User data to pass to the callback.
+ */
 CMAVSDK_EXPORT void mavsdk_telemetry_set_rate_ground_truth_async(
     mavsdk_telemetry_t telemetry,
     double rate_hz,
@@ -1214,6 +2636,14 @@ CMAVSDK_EXPORT void mavsdk_telemetry_set_rate_ground_truth_async(
     void* user_data);
 
 
+/**
+ * @brief Get the current set rate ground truth (blocking).
+ * 
+ * This function blocks until a value is available.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param set_rate_ground_truth_out Pointer to store the result.
+ */
 CMAVSDK_EXPORT
 mavsdk_telemetry_result_t
 mavsdk_telemetry_set_rate_ground_truth(
@@ -1221,6 +2651,15 @@ mavsdk_telemetry_set_rate_ground_truth(
     double rate_hz);
 
 
+/**
+ * @brief Set rate to 'fixedwing metrics' updates.
+ * 
+ * @param telemetry The telemetry instance.
+* @param rate_hz  The requested rate (in Hertz)
+ * 
+ * @param callback Function to call when new data is available.
+ * @param user_data User data to pass to the callback.
+ */
 CMAVSDK_EXPORT void mavsdk_telemetry_set_rate_fixedwing_metrics_async(
     mavsdk_telemetry_t telemetry,
     double rate_hz,
@@ -1228,6 +2667,14 @@ CMAVSDK_EXPORT void mavsdk_telemetry_set_rate_fixedwing_metrics_async(
     void* user_data);
 
 
+/**
+ * @brief Get the current set rate fixedwing metrics (blocking).
+ * 
+ * This function blocks until a value is available.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param set_rate_fixedwing_metrics_out Pointer to store the result.
+ */
 CMAVSDK_EXPORT
 mavsdk_telemetry_result_t
 mavsdk_telemetry_set_rate_fixedwing_metrics(
@@ -1235,6 +2682,15 @@ mavsdk_telemetry_set_rate_fixedwing_metrics(
     double rate_hz);
 
 
+/**
+ * @brief Set rate to 'IMU' updates.
+ * 
+ * @param telemetry The telemetry instance.
+* @param rate_hz  The requested rate (in Hertz)
+ * 
+ * @param callback Function to call when new data is available.
+ * @param user_data User data to pass to the callback.
+ */
 CMAVSDK_EXPORT void mavsdk_telemetry_set_rate_imu_async(
     mavsdk_telemetry_t telemetry,
     double rate_hz,
@@ -1242,6 +2698,14 @@ CMAVSDK_EXPORT void mavsdk_telemetry_set_rate_imu_async(
     void* user_data);
 
 
+/**
+ * @brief Get the current set rate imu (blocking).
+ * 
+ * This function blocks until a value is available.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param set_rate_imu_out Pointer to store the result.
+ */
 CMAVSDK_EXPORT
 mavsdk_telemetry_result_t
 mavsdk_telemetry_set_rate_imu(
@@ -1249,6 +2713,15 @@ mavsdk_telemetry_set_rate_imu(
     double rate_hz);
 
 
+/**
+ * @brief Set rate to 'Scaled IMU' updates.
+ * 
+ * @param telemetry The telemetry instance.
+* @param rate_hz  The requested rate (in Hertz)
+ * 
+ * @param callback Function to call when new data is available.
+ * @param user_data User data to pass to the callback.
+ */
 CMAVSDK_EXPORT void mavsdk_telemetry_set_rate_scaled_imu_async(
     mavsdk_telemetry_t telemetry,
     double rate_hz,
@@ -1256,6 +2729,14 @@ CMAVSDK_EXPORT void mavsdk_telemetry_set_rate_scaled_imu_async(
     void* user_data);
 
 
+/**
+ * @brief Get the current set rate scaled imu (blocking).
+ * 
+ * This function blocks until a value is available.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param set_rate_scaled_imu_out Pointer to store the result.
+ */
 CMAVSDK_EXPORT
 mavsdk_telemetry_result_t
 mavsdk_telemetry_set_rate_scaled_imu(
@@ -1263,6 +2744,15 @@ mavsdk_telemetry_set_rate_scaled_imu(
     double rate_hz);
 
 
+/**
+ * @brief Set rate to 'Raw IMU' updates.
+ * 
+ * @param telemetry The telemetry instance.
+* @param rate_hz  The requested rate (in Hertz)
+ * 
+ * @param callback Function to call when new data is available.
+ * @param user_data User data to pass to the callback.
+ */
 CMAVSDK_EXPORT void mavsdk_telemetry_set_rate_raw_imu_async(
     mavsdk_telemetry_t telemetry,
     double rate_hz,
@@ -1270,6 +2760,14 @@ CMAVSDK_EXPORT void mavsdk_telemetry_set_rate_raw_imu_async(
     void* user_data);
 
 
+/**
+ * @brief Get the current set rate raw imu (blocking).
+ * 
+ * This function blocks until a value is available.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param set_rate_raw_imu_out Pointer to store the result.
+ */
 CMAVSDK_EXPORT
 mavsdk_telemetry_result_t
 mavsdk_telemetry_set_rate_raw_imu(
@@ -1277,6 +2775,15 @@ mavsdk_telemetry_set_rate_raw_imu(
     double rate_hz);
 
 
+/**
+ * @brief Set rate to 'unix epoch time' updates.
+ * 
+ * @param telemetry The telemetry instance.
+* @param rate_hz  The requested rate (in Hertz)
+ * 
+ * @param callback Function to call when new data is available.
+ * @param user_data User data to pass to the callback.
+ */
 CMAVSDK_EXPORT void mavsdk_telemetry_set_rate_unix_epoch_time_async(
     mavsdk_telemetry_t telemetry,
     double rate_hz,
@@ -1284,6 +2791,14 @@ CMAVSDK_EXPORT void mavsdk_telemetry_set_rate_unix_epoch_time_async(
     void* user_data);
 
 
+/**
+ * @brief Get the current set rate unix epoch time (blocking).
+ * 
+ * This function blocks until a value is available.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param set_rate_unix_epoch_time_out Pointer to store the result.
+ */
 CMAVSDK_EXPORT
 mavsdk_telemetry_result_t
 mavsdk_telemetry_set_rate_unix_epoch_time(
@@ -1291,6 +2806,15 @@ mavsdk_telemetry_set_rate_unix_epoch_time(
     double rate_hz);
 
 
+/**
+ * @brief Set rate to 'Distance Sensor' updates.
+ * 
+ * @param telemetry The telemetry instance.
+* @param rate_hz  The requested rate (in Hertz)
+ * 
+ * @param callback Function to call when new data is available.
+ * @param user_data User data to pass to the callback.
+ */
 CMAVSDK_EXPORT void mavsdk_telemetry_set_rate_distance_sensor_async(
     mavsdk_telemetry_t telemetry,
     double rate_hz,
@@ -1298,6 +2822,14 @@ CMAVSDK_EXPORT void mavsdk_telemetry_set_rate_distance_sensor_async(
     void* user_data);
 
 
+/**
+ * @brief Get the current set rate distance sensor (blocking).
+ * 
+ * This function blocks until a value is available.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param set_rate_distance_sensor_out Pointer to store the result.
+ */
 CMAVSDK_EXPORT
 mavsdk_telemetry_result_t
 mavsdk_telemetry_set_rate_distance_sensor(
@@ -1305,6 +2837,15 @@ mavsdk_telemetry_set_rate_distance_sensor(
     double rate_hz);
 
 
+/**
+ * @brief Set rate to 'Altitude' updates.
+ * 
+ * @param telemetry The telemetry instance.
+* @param rate_hz  The requested rate (in Hertz)
+ * 
+ * @param callback Function to call when new data is available.
+ * @param user_data User data to pass to the callback.
+ */
 CMAVSDK_EXPORT void mavsdk_telemetry_set_rate_altitude_async(
     mavsdk_telemetry_t telemetry,
     double rate_hz,
@@ -1312,6 +2853,14 @@ CMAVSDK_EXPORT void mavsdk_telemetry_set_rate_altitude_async(
     void* user_data);
 
 
+/**
+ * @brief Get the current set rate altitude (blocking).
+ * 
+ * This function blocks until a value is available.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param set_rate_altitude_out Pointer to store the result.
+ */
 CMAVSDK_EXPORT
 mavsdk_telemetry_result_t
 mavsdk_telemetry_set_rate_altitude(
@@ -1319,6 +2868,15 @@ mavsdk_telemetry_set_rate_altitude(
     double rate_hz);
 
 
+/**
+ * @brief Set rate to 'Health' updates.
+ * 
+ * @param telemetry The telemetry instance.
+* @param rate_hz  The requested rate (in Hertz)
+ * 
+ * @param callback Function to call when new data is available.
+ * @param user_data User data to pass to the callback.
+ */
 CMAVSDK_EXPORT void mavsdk_telemetry_set_rate_health_async(
     mavsdk_telemetry_t telemetry,
     double rate_hz,
@@ -1326,6 +2884,14 @@ CMAVSDK_EXPORT void mavsdk_telemetry_set_rate_health_async(
     void* user_data);
 
 
+/**
+ * @brief Get the current set rate health (blocking).
+ * 
+ * This function blocks until a value is available.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param set_rate_health_out Pointer to store the result.
+ */
 CMAVSDK_EXPORT
 mavsdk_telemetry_result_t
 mavsdk_telemetry_set_rate_health(
@@ -1333,12 +2899,27 @@ mavsdk_telemetry_set_rate_health(
     double rate_hz);
 
 
+/**
+ * @brief Get the GPS location of where the estimator has been initialized.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param callback Function to call when new data is available.
+ * @param user_data User data to pass to the callback.
+ */
 CMAVSDK_EXPORT void mavsdk_telemetry_get_gps_global_origin_async(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_get_gps_global_origin_callback_t callback,
     void* user_data);
 
 
+/**
+ * @brief Get the current get gps global origin (blocking).
+ * 
+ * This function blocks until a value is available.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param get_gps_global_origin_out Pointer to store the result.
+ */
 CMAVSDK_EXPORT
 mavsdk_telemetry_result_t
 mavsdk_telemetry_get_gps_global_origin(

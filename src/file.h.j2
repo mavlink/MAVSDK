@@ -10,6 +10,10 @@
 extern "C" {
 #endif
 
+/**
+ * @brief {{ class_description | replace('\n', '\n *')}}
+ */
+
 // ===== Forward Declarations =====
 typedef void* mavsdk_system_t;
 
@@ -23,8 +27,12 @@ typedef void* mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_sna
 
 // ===== Enums =====
 {% for enum in enums %}
+/**
+ * @brief {{ enum.enum_description | replace('\n', '\n *')}}
+ */
 typedef enum {
     {% for value in enum.values %}
+    /** {{ value.description.rstrip() }}. */
     MAVSDK_{{ plugin_name.uppercase }}_{{ enum.name.uppercase }}_{{ value.name.uppercase }} = {{ loop.index0 }},
     {% endfor %}
 } mavsdk_{{ plugin_name.lower_snake_case }}_{{ enum.name.lower_snake_case }}_t;
@@ -36,8 +44,12 @@ typedef enum {
 {% if struct.name.upper_camel_case.endswith('Result') %}
 {% for nested_enum_name, nested_enum in struct.nested_enums.items() %}
 {% if nested_enum_name == 'Result' %}
+/**
+ * @brief {{ nested_enum.enum_description | replace('\n', '\n *')}}
+ */
 typedef enum {
     {% for value in nested_enum.values %}
+    /** {{ value.description.rstrip() }}. */
     MAVSDK_{{ plugin_name.uppercase }}_RESULT_{{ value.name.uppercase }} = {{ loop.index0 }},
     {% endfor %}
 } mavsdk_{{ plugin_name.lower_snake_case }}_result_t;
@@ -46,15 +58,28 @@ typedef enum {
 {% endfor %}
 {% else %}
 {% for nested_enum_name, nested_enum in struct.nested_enums.items() %}
+/**
+ * @brief {{ nested_enum.enum_description | replace('\n', '\n *')}}
+ */
 typedef enum {
     {% for value in nested_enum.values %}
+    /** {{ value.description.rstrip() }}. */
     MAVSDK_{{ plugin_name.uppercase }}_{{ struct.name.uppercase }}_{{ nested_enum.name.uppercase }}_{{ value.name.uppercase }} = {{ loop.index0 }},
     {% endfor %}
 } mavsdk_{{ plugin_name.lower_snake_case }}_{{ struct.name.lower_snake_case }}_{{ nested_enum.name.lower_snake_case }}_t;
 
 {% endfor %}
+/**
+ * @brief {{ struct.struct_description | replace('\n', '\n * ') }}
+ {% if struct.fields | selectattr('type_info.is_repeated') | list %}
+ * 
+ * @note This struct contains dynamically allocated memory. You must call
+ *       mavsdk_{{ plugin_name.lower_snake_case }}_{{ struct.name.lower_snake_case }}_destroy() when done to avoid memory leaks.
+ {% endif %}
+ */
 typedef struct {
     {% for field in struct.fields %}
+    /** {{ field.description.rstrip() }} */
     {% if field.type_info.is_primitive %}
     {{ field.type_info.name }} {{ field.name.lower_snake_case }};
     {% elif field.type_info.parent_type %}
@@ -70,6 +95,14 @@ typedef struct {
 {% endif %}
 
 {% if struct.fields | selectattr('type_info.is_repeated') | list %}
+/**
+ * @brief Destroy a {{ struct.name.lower_snake_case }} struct.
+ * 
+ * Frees all memory allocated by MAVSDK for this struct, including any
+ * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
+ * 
+ * @param target Pointer to the struct to destroy. Can be NULL (no-op).
+ */
 void mavsdk_{{ plugin_name.lower_snake_case }}_{{ struct.name.lower_snake_case }}_destroy(
     mavsdk_{{ plugin_name.lower_snake_case }}_{{ struct.name.lower_snake_case }}_t* target);
 {% endif %}
@@ -91,6 +124,19 @@ CMAVSDK_EXPORT void mavsdk_{{ plugin_name.lower_snake_case }}_destroy(mavsdk_{{ 
 {% for method in methods %}
 {% if method.is_async %}
 
+/**
+ * @brief {{ method.method_description | replace('\n', '\n * ') }}
+ * 
+ * @param {{ plugin_name.lower_snake_case }} The {{ plugin_name.lower_snake_case }} instance.
+ {% for param in method.params -%}
+ * @param {{ param.name.lower_snake_case }} {{ param.description | replace('\n', '\n * ') if param.description else 'The ' + param.name.lower_snake_case + ' parameter.' }}
+ {% endfor %}
+ * @param callback Function to call when new data is available.
+ * @param user_data User data to pass to the callback.
+ {% if method.is_stream %}
+ * @return Handle for this subscription. Use mavsdk_{{ plugin_name.lower_snake_case }}_unsubscribe_{{ method.name.lower_snake_case }}() to unsubscribe.
+ {% endif %}
+ */
 CMAVSDK_EXPORT {% if method.is_stream %}mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}_handle_t{% else %}void{% endif %} mavsdk_{{ plugin_name.lower_snake_case }}{% if method.is_stream %}_subscribe{% endif %}_{{ method.name.lower_snake_case }}{% if not method.is_stream %}_async{% endif %}(
     mavsdk_{{ plugin_name.lower_snake_case }}_t {{ plugin_name.lower_snake_case }},
     {% for param in method.params %}
@@ -106,12 +152,28 @@ CMAVSDK_EXPORT {% if method.is_stream %}mavsdk_{{ plugin_name.lower_snake_case }
     void* user_data);
 
 {% if method.is_stream %}
+/**
+ * @brief Unsubscribe from '{{ method.name.lower_snake_case }}' updates.
+ * 
+ * Stops the subscription and frees resources associated with the handle.
+ * 
+ * @param {{ plugin_name.lower_snake_case }} The {{ plugin_name.lower_snake_case }} instance.
+ * @param handle The subscription handle returned by mavsdk_{{ plugin_name.lower_snake_case }}_subscribe_{{ method.name.lower_snake_case }}().
+ */
 CMAVSDK_EXPORT void mavsdk_{{ plugin_name.lower_snake_case }}_unsubscribe_{{ method.name.lower_snake_case }}(
     mavsdk_{{ plugin_name.lower_snake_case }}_t {{ plugin_name.lower_snake_case }},
     mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}_handle_t);
 {% endif %}
 {% endif %}
 
+/**
+ * @brief Get the current {{ method.name.lower_snake_case | replace('_', ' ') }} (blocking).
+ * 
+ * This function blocks until a value is available.
+ * 
+ * @param telemetry The telemetry instance.
+ * @param {{ method.name.lower_snake_case }}_out Pointer to store the result.
+ */
 CMAVSDK_EXPORT
 {% if method.has_result %}
 mavsdk_{{ plugin_name.lower_snake_case }}_result_t
