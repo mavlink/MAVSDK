@@ -91,6 +91,8 @@ FlightMode to_flight_mode_from_ardupilot_plane_mode(uint32_t custom_mode)
             return FlightMode::Altctl;
         case ardupilot::PlaneMode::Fbwa:
             return FlightMode::FBWA;
+        case ardupilot::PlaneMode::Fbwb:
+            return FlightMode::FBWB;
         case ardupilot::PlaneMode::Guided:
             return FlightMode::Guided;
         case ardupilot::PlaneMode::Loiter:
@@ -99,6 +101,8 @@ FlightMode to_flight_mode_from_ardupilot_plane_mode(uint32_t custom_mode)
             return FlightMode::ReturnToLaunch;
         case ardupilot::PlaneMode::Stabilize:
             return FlightMode::Stabilized;
+        case ardupilot::PlaneMode::Takeoff:
+            return FlightMode::Takeoff;
         case ardupilot::PlaneMode::Unknown:
             return FlightMode::Unknown;
         default:

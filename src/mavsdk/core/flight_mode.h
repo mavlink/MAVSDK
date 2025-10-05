@@ -9,6 +9,7 @@ namespace mavsdk {
 enum class FlightMode {
     Unknown,
     FBWA,
+    FBWB,
     Autotune,
     Guided,
     Ready,

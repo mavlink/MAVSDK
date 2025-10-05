@@ -1054,8 +1054,12 @@ ardupilot::PlaneMode SystemImpl::flight_mode_to_ardupilot_plane_mode(FlightMode 
             return ardupilot::PlaneMode::Manual;
         case FlightMode::FBWA:
             return ardupilot::PlaneMode::Fbwa;
+        case FlightMode::FBWB:
+            return ardupilot::PlaneMode::Fbwb;
         case FlightMode::Stabilized:
             return ardupilot::PlaneMode::Stabilize;
+        case FlightMode::Takeoff:
+            return ardupilot::PlaneMode::Takeoff;
         case FlightMode::Offboard:
             return ardupilot::PlaneMode::Guided;
         case FlightMode::Unknown:
