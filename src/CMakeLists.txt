@@ -2,6 +2,7 @@ find_package(MAVSDK REQUIRED)
 
 set(C_API_SOURCES
     action/action.cpp
+    calibration/calibration.cpp
     log.cpp
     mavsdk.cpp
     system.cpp
@@ -11,6 +12,7 @@ set(C_API_SOURCES
 set(C_API_HEADERS
     autopilot.h
     action/action.h
+    calibration/calibration.h
     component_type.h
     connection_result.h
     log.h

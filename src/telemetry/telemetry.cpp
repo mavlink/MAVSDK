@@ -3100,6 +3100,7 @@ mavsdk_telemetry_gps_global_origin_t* gps_global_origin_out)
 {
     auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
     
+
     auto result_pair = wrapper->cpp_plugin->get_gps_global_origin(
 );
     

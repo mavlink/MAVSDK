@@ -137,11 +137,11 @@ CMAVSDK_EXPORT void mavsdk_{{ plugin_name.lower_snake_case }}_destroy(mavsdk_{{ 
  {% endfor %}
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
- {% if method.is_stream %}
+ {% if method.is_stream and not method.is_finite %}
  * @return Handle for this subscription. Use mavsdk_{{ plugin_name.lower_snake_case }}_unsubscribe_{{ method.name.lower_snake_case }}() to unsubscribe.
  {% endif %}
  */
-CMAVSDK_EXPORT {% if method.is_stream %}mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}_handle_t{% else %}void{% endif %} mavsdk_{{ plugin_name.lower_snake_case }}{% if method.is_stream %}_subscribe{% endif %}_{{ method.name.lower_snake_case }}{% if not method.is_stream %}_async{% endif %}(
+CMAVSDK_EXPORT {% if method.is_stream and not method.is_finite%}mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}_handle_t{% else %}void{% endif %} mavsdk_{{ plugin_name.lower_snake_case }}{% if method.is_stream and not method.is_finite%}_subscribe{% endif %}_{{ method.name.lower_snake_case }}{% if not method.is_stream or method.is_finite %}_async{% endif %}(
     mavsdk_{{ plugin_name.lower_snake_case }}_t {{ plugin_name.lower_snake_case }},
     {% for param in method.params %}
     {% if param.type_info.is_primitive %}
@@ -155,7 +155,7 @@ CMAVSDK_EXPORT {% if method.is_stream %}mavsdk_{{ plugin_name.lower_snake_case }
     mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}_callback_t callback,
     void* user_data);
 
-{% if method.is_stream %}
+{% if method.is_stream and not method.is_finite %}
 /**
  * @brief Unsubscribe from '{{ method.name.lower_snake_case }}' updates.
  * 
@@ -170,6 +170,7 @@ CMAVSDK_EXPORT void mavsdk_{{ plugin_name.lower_snake_case }}_unsubscribe_{{ met
 {% endif %}
 {% endif %}
 
+{% if method.is_sync %}
 /**
  * @brief Get the current {{ method.name.lower_snake_case | replace('_', ' ') }} (blocking).
  * 
@@ -203,6 +204,7 @@ mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}(
     {% else %}
     mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.return_type.name.lower_snake_case }}_t* {{ method.return_name.lower_snake_case }}_out{% endif %}{% endif %});
 
+{% endif %}
 {% endfor %}
 
 #ifdef __cplusplus

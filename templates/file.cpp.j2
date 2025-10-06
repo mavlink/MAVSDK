@@ -156,8 +156,9 @@ void mavsdk_{{ plugin_name.lower_snake_case }}_destroy(mavsdk_{{ plugin_name.low
 // ===== Method Implementations =====
 {% for method in methods %}
 
+{% if method.is_async %}
 // {{ method.name.upper_camel_case }} async
-{% if method.is_stream %}mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}_handle_t{% else %}void{% endif %} mavsdk_{{ plugin_name.lower_snake_case }}{% if method.is_stream %}_subscribe{% endif %}_{{ method.name.lower_snake_case }}{% if not method.is_stream %}_async{% endif %}(
+{% if method.is_stream and not method.is_finite%}mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}_handle_t{% else %}void{% endif %} mavsdk_{{ plugin_name.lower_snake_case }}{% if method.is_stream and not method.is_finite %}_subscribe{% endif %}_{{ method.name.lower_snake_case }}{% if not method.is_stream or method.is_finite %}_async{% endif %}(
     mavsdk_{{ plugin_name.lower_snake_case }}_t {{ plugin_name.lower_snake_case }},
     {% for param in method.params %}
     {% if param.type_info.is_primitive %}
@@ -173,8 +174,8 @@ void mavsdk_{{ plugin_name.lower_snake_case }}_destroy(mavsdk_{{ plugin_name.low
 {
     auto wrapper = static_cast<mavsdk_{{ plugin_name.lower_snake_case }}_wrapper*>({{ plugin_name.lower_snake_case }});
     
-    {% if method.is_stream %}
-    auto cpp_handle = {% endif %}wrapper->cpp_plugin->{% if method.is_stream %}subscribe_{% endif %}{{ method.name.lower_snake_case }}{% if not method.is_stream %}_async{% endif %}(
+    {% if method.is_stream %}{% if not method.is_finite %}
+    auto cpp_handle = {% endif %}{% endif %}wrapper->cpp_plugin->{% if method.is_stream and not method.is_finite %}subscribe_{% endif %}{{ method.name.lower_snake_case }}{% if not method.is_stream or method.is_finite %}_async{% endif %}(
         {% for param in method.params %}
         {% if param.type_info.is_primitive %}
         {{ param.name.lower_snake_case }}{% if not loop.last %},{% endif %}
@@ -198,14 +199,14 @@ void mavsdk_{{ plugin_name.lower_snake_case }}_destroy(mavsdk_{{ plugin_name.low
                     user_data);
             }
         });
-    {% if method.is_stream %}
+    {% if method.is_stream and not method.is_finite %}
     
     auto handle_wrapper = new mavsdk::{{ plugin_name.upper_camel_case }}::{{ method.name.upper_camel_case }}Handle(std::move(cpp_handle));
     return static_cast<mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}_handle_t>(handle_wrapper);
     {% endif %}
 }
 
-{% if method.is_stream %}
+{% if method.is_stream and not method.is_finite %}
 void mavsdk_{{ plugin_name.lower_snake_case }}_unsubscribe_{{ method.name.lower_snake_case }}(
     mavsdk_{{ plugin_name.lower_snake_case }}_t {{ plugin_name.lower_snake_case }},
     mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}_handle_t handle)
@@ -218,7 +219,9 @@ void mavsdk_{{ plugin_name.lower_snake_case }}_unsubscribe_{{ method.name.lower_
     }
 }
 {% endif %}
+{% endif %}
 
+{% if method.is_sync %}
 // {{ method.name.upper_camel_case }} sync
 {% if method.has_result %}
 mavsdk_{{ plugin_name.lower_snake_case }}_result_t
@@ -244,6 +247,7 @@ mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}(
     auto wrapper = static_cast<mavsdk_{{ plugin_name.lower_snake_case }}_wrapper*>({{ plugin_name.lower_snake_case }});
     
     {% if method.has_result and method.return_name %}
+
     auto result_pair = wrapper->cpp_plugin->{{ method.name.lower_snake_case }}(
         {% for param in method.params %}
         {% if param.type_info.is_primitive %}
@@ -290,4 +294,5 @@ mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}(
     {% endif %}
     {% endif %}
 }
+{% endif %}
 {% endfor %}

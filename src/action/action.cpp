@@ -644,6 +644,7 @@ float* altitude_out)
 {
     auto wrapper = static_cast<mavsdk_action_wrapper*>(action);
     
+
     auto result_pair = wrapper->cpp_plugin->get_takeoff_altitude(
 );
     
@@ -711,6 +712,7 @@ float* relative_altitude_m_out)
 {
     auto wrapper = static_cast<mavsdk_action_wrapper*>(action);
     
+
     auto result_pair = wrapper->cpp_plugin->get_return_to_launch_altitude(
 );
     
