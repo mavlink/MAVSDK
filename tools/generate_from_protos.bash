@@ -1,0 +1,108 @@
+#!/bin/bash
+
+set -e  # Exit on any error
+
+# Get the directory where this script is located
+script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+project_root="$(cd "$script_dir/.." && pwd)"
+
+# Default plugins if none provided
+default_plugins=("action" "telemetry")
+
+# Use provided plugins or defaults
+plugins=("${@:-${default_plugins[@]}}")
+
+# Function to setup and activate virtual environment
+setup_venv() {
+    if [ -z "$VIRTUAL_ENV" ]; then
+        echo "Not in a virtual environment. Setting up..."
+        
+        if [ ! -d "$project_root/venv" ]; then
+            echo "Creating virtual environment..."
+            python3 -m venv "$project_root/venv"
+        fi
+        
+        echo "Activating virtual environment..."
+        source "$project_root/venv/bin/activate"
+        
+        echo "Installing dependencies..."
+        pip install -r "$project_root/proto/pb_plugins/requirements.txt"
+        pip install -e "$project_root/proto/pb_plugins"
+        
+        echo "Virtual environment setup complete."
+    else
+        echo "Already in a virtual environment: $VIRTUAL_ENV"
+    fi
+}
+
+# Function to run protoc commands for a plugin
+process_plugin() {
+    local plugin=$1
+    local proto_file="$project_root/proto/protos/${plugin}/${plugin}.proto"
+    local output_dir="$project_root/src"
+    local template_path="$project_root/templates"
+    
+    # Check if proto file exists
+    if [ ! -f "$proto_file" ]; then
+        echo "Error: Proto file not found: $proto_file"
+        return 1
+    fi
+    
+    # Check if template directory exists
+    if [ ! -d "$template_path" ]; then
+        echo "Error: Template directory not found: $template_path"
+        return 1
+    fi
+    
+    # Create output directory if it doesn't exist
+    mkdir -p "$output_dir"
+    
+    echo "Processing $plugin..."
+    
+    # Generate header file
+    echo "  Generating ${plugin}.h..."
+    protoc "$proto_file" \
+        --plugin=protoc-gen-custom="$(which protoc-gen-mavsdk)" \
+        -I"$project_root/proto/protos/${plugin}" \
+        -I"$project_root/proto/protos" \
+        --custom_out="$output_dir" \
+        --custom_opt="output_file=${plugin}/${plugin}.h" \
+        --custom_opt="template_path=$template_path" \
+        --custom_opt="template_file=file.h.j2" \
+        --custom_opt="lstrip_blocks=True" \
+        --custom_opt="trim_blocks=True"
+    
+    # Generate implementation file
+    echo "  Generating ${plugin}.cpp..."
+    protoc "$proto_file" \
+        --plugin=protoc-gen-custom="$(which protoc-gen-mavsdk)" \
+        -I"$project_root/proto/protos/${plugin}" \
+        -I"$project_root/proto/protos" \
+        --custom_out="$output_dir" \
+        --custom_opt="output_file=${plugin}/${plugin}.cpp" \
+        --custom_opt="template_path=$template_path" \
+        --custom_opt="template_file=file.cpp.j2" \
+        --custom_opt="lstrip_blocks=True" \
+        --custom_opt="trim_blocks=True"
+    
+    echo "  $plugin processing complete."
+}
+
+# Main execution
+main() {
+    echo "Starting protoc code generation..."
+    echo "Plugins to process: ${plugins[*]}"
+    
+    # Setup virtual environment
+    setup_venv
+    
+    # Process each plugin
+    for plugin in "${plugins[@]}"; do
+        process_plugin "$plugin"
+    done
+    
+    echo "All plugins processed successfully!"
+}
+
+# Run main function
+main
