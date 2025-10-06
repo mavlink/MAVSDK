@@ -15,7 +15,7 @@ message(STATUS "Building with ${BUILD_PARALLEL_JOBS} jobs")
 
 message(STATUS "Preparing external project \"openssl\"")
 
-set(OPENSSL_VERSION 3.4.0)
+set(OPENSSL_VERSION 3.6.0)
 
 if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
     set(OPENSSL_BUILD_TYPE "--debug")

@@ -39,8 +39,8 @@ endforeach()
 
 ExternalProject_add(
     boringssl
-    URL https://github.com/google/boringssl/releases/download/0.20241203.0/boringssl-0.20241203.0.tar.gz
-    URL_MD5 3320699951028ba64150b5296bc9d0e6
+    URL https://github.com/google/boringssl/releases/download/0.20250818.0/boringssl-0.20250818.0.tar.gz
+    URL_MD5 4458cca764918f34e846629b1bb0cbe7
     PREFIX boringssl
     CMAKE_ARGS "${CMAKE_ARGS}"
     )
