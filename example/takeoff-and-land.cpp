@@ -31,7 +31,6 @@ static void position_callback(const mavsdk_telemetry_position_t position, void* 
 }
 
 int main() {
-    // Set custom log callback
     mavsdk_log_subscribe(my_log_callback, NULL);
     
     mavsdk_configuration_t configuration = mavsdk_configuration_create_with_component_type(MAVSDK_COMPONENT_TYPE_GROUND_STATION);
