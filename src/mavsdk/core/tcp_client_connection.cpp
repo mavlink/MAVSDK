@@ -19,22 +19,7 @@
 #include <netdb.h>
 #endif
 
-#ifndef WINDOWS
-#define GET_ERROR(_x) strerror(_x)
-#else
-#define GET_ERROR(_x) WSAGetLastError()
-#endif
-
 namespace mavsdk {
-
-inline bool notReady(int err)
-{
-#ifdef WINDOWS
-    return (err == WSAEWOULDBLOCK || err == WSAETIMEDOUT);
-#else
-    return (err == EAGAIN || err == ETIMEDOUT);
-#endif
-}
 
 /* change to remote_ip and remote_port */
 TcpClientConnection::TcpClientConnection(
@@ -85,7 +70,7 @@ ConnectionResult TcpClientConnection::setup_port()
 #ifdef WINDOWS
     WSADATA wsa;
     if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0) {
-        LogErr() << "Error: Winsock failed, error: %d", WSAGetLastError();
+        LogErr() << "Error: Winsock failed, error: " << get_socket_error_string(WSAGetLastError());
         return ConnectionResult::SocketError;
     }
 #endif
@@ -93,7 +78,7 @@ ConnectionResult TcpClientConnection::setup_port()
     _socket_fd.reset(socket(AF_INET, SOCK_STREAM, 0));
 
     if (_socket_fd.empty()) {
-        LogErr() << "socket error" << GET_ERROR(errno);
+        LogErr() << "socket error" << strerror(errno);
         return ConnectionResult::SocketError;
     }
 
@@ -114,7 +99,7 @@ ConnectionResult TcpClientConnection::setup_port()
             _socket_fd.get(),
             reinterpret_cast<sockaddr*>(&remote_addr),
             sizeof(struct sockaddr_in)) < 0) {
-        LogErr() << "connect error: " << GET_ERROR(errno);
+        LogErr() << "connect error: " << strerror(errno);
         return ConnectionResult::SocketConnectionError;
     }
 
@@ -194,7 +179,7 @@ std::pair<bool, std::string> TcpClientConnection::send_raw_bytes(const char* byt
 
     if (send_len != static_cast<std::remove_cv_t<decltype(send_len)>>(length)) {
         std::stringstream ss;
-        ss << "Send failure: " << GET_ERROR(errno);
+        ss << "Send failure: " << strerror(errno);
         LogErr() << ss.str();
         result.first = false;
         result.second = ss.str();
@@ -213,13 +198,27 @@ void TcpClientConnection::receive()
     while (!_should_exit) {
         const auto recv_len = recv(_socket_fd.get(), buffer, sizeof(buffer), 0);
 
-        if (recv_len == 0 || (recv_len < 0 && notReady(recv_len))) {
-            // Timeout, just try again.
+        if (recv_len == 0) {
+            // Connection closed, just try again.
             continue;
         }
 
         if (recv_len < 0) {
-            LogErr() << "TCP receive error: " << GET_ERROR(errno) << ", trying to reconnect...";
+#ifdef WINDOWS
+            int err = WSAGetLastError();
+            if (err == WSAEWOULDBLOCK || err == WSAETIMEDOUT) {
+                // Timeout, just try again.
+                continue;
+            }
+            LogErr() << "TCP receive error: " << get_socket_error_string(err)
+                     << ", trying to reconnect...";
+#else
+            if (errno == EAGAIN || errno == ETIMEDOUT) {
+                // Timeout, just try again.
+                continue;
+            }
+            LogErr() << "TCP receive error: " << strerror(errno) << ", trying to reconnect...";
+#endif
             std::this_thread::sleep_for(std::chrono::seconds(1));
             setup_port();
             continue;

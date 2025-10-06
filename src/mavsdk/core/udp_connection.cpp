@@ -20,12 +20,6 @@
 #include <utility>
 #include <sstream>
 
-#ifdef WINDOWS
-#define GET_ERROR(_x) WSAGetLastError()
-#else
-#define GET_ERROR(_x) strerror(_x)
-#endif
-
 namespace mavsdk {
 
 UdpConnection::UdpConnection(
@@ -75,7 +69,7 @@ ConnectionResult UdpConnection::setup_port()
 #ifdef WINDOWS
     WSADATA wsa;
     if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0) {
-        LogErr() << "Error: Winsock failed, error: %d", WSAGetLastError();
+        LogErr() << "Error: Winsock failed, error: " << get_socket_error_string(WSAGetLastError());
         return ConnectionResult::SocketError;
     }
 #endif
@@ -83,7 +77,7 @@ ConnectionResult UdpConnection::setup_port()
     _socket_fd.reset(socket(AF_INET, SOCK_DGRAM, 0));
 
     if (_socket_fd.empty()) {
-        LogErr() << "socket error" << GET_ERROR(errno);
+        LogErr() << "socket error" << strerror(errno);
         return ConnectionResult::SocketError;
     }
 
@@ -96,7 +90,7 @@ ConnectionResult UdpConnection::setup_port()
     addr.sin_port = htons(_local_port_number);
 
     if (bind(_socket_fd.get(), reinterpret_cast<sockaddr*>(&addr), sizeof(addr)) != 0) {
-        LogErr() << "bind error: " << GET_ERROR(errno);
+        LogErr() << "bind error: " << strerror(errno);
         return ConnectionResult::BindError;
     }
 
@@ -218,8 +212,14 @@ std::pair<bool, std::string> UdpConnection::send_raw_bytes(const char* bytes, si
 
         if (send_len != static_cast<std::remove_cv_t<decltype(send_len)>>(length)) {
             std::stringstream ss;
-            ss << "sendto failure: " << GET_ERROR(errno) << " for: " << remote.ip << ":"
+#ifdef WINDOWS
+            int err = WSAGetLastError();
+            ss << "sendto failure: " << get_socket_error_string(err) << " for: " << remote.ip << ":"
                << remote.port_number;
+#else
+            ss << "sendto failure: " << strerror(errno) << " for: " << remote.ip << ":"
+               << remote.port_number;
+#endif
             LogErr() << ss.str();
             result.first = false;
             if (!result.second.empty()) {
