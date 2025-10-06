@@ -39,7 +39,7 @@ setup_venv() {
 process_plugin() {
     local plugin=$1
     local proto_file="$project_root/proto/protos/${plugin}/${plugin}.proto"
-    local output_dir="$project_root/src"
+    local output_dir="$project_root/src/plugins"
     local template_path="$project_root/templates"
     
     # Check if proto file exists

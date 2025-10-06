@@ -3,7 +3,8 @@
 // (see https://github.com/mavlink/MAVSDK-Proto/blob/main/protos/telemetry/telemetry.proto)
 
 #include "telemetry.h"
-#include "plugins/telemetry/telemetry.h"
+
+#include <mavsdk/plugins/telemetry/telemetry.h>
 #include <cstring>
 #include <vector>
 

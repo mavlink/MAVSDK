@@ -1,25 +1,23 @@
 find_package(MAVSDK REQUIRED)
 
+include(${CMAKE_CURRENT_SOURCE_DIR}/plugins_generated.cmake)
+
 set(C_API_SOURCES
-    action/action.cpp
-    calibration/calibration.cpp
+    ${PLUGIN_SOURCES}
     log.cpp
     mavsdk.cpp
     system.cpp
-    telemetry/telemetry.cpp
 )
 
 set(C_API_HEADERS
+    ${PLUGIN_HEADERS}
     autopilot.h
-    action/action.h
-    calibration/calibration.h
     component_type.h
     connection_result.h
     log.h
     mavsdk.h
     mavsdk_export.h
     system.h
-    telemetry/telemetry.h
     vehicle.h
 )
 
@@ -51,7 +49,6 @@ target_compile_options(cmavsdk
     PRIVATE
         -Wall
         -Wextra
-        #-Werror
         -fvisibility=hidden
 )
 

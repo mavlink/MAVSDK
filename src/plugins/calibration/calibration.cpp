@@ -3,7 +3,8 @@
 // (see https://github.com/mavlink/MAVSDK-Proto/blob/main/protos/calibration/calibration.proto)
 
 #include "calibration.h"
-#include "plugins/calibration/calibration.h"
+
+#include <mavsdk/plugins/calibration/calibration.h>
 #include <cstring>
 #include <vector>
 

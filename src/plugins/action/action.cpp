@@ -3,7 +3,8 @@
 // (see https://github.com/mavlink/MAVSDK-Proto/blob/main/protos/action/action.proto)
 
 #include "action.h"
-#include "plugins/action/action.h"
+
+#include <mavsdk/plugins/action/action.h>
 #include <cstring>
 #include <vector>
 

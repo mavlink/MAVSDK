@@ -4,7 +4,7 @@
 #include <unistd.h>
 
 #include "mavsdk.h"
-#include "calibration/calibration.h"
+#include "plugins/calibration/calibration.h"
 
 typedef struct {
     bool completed;
