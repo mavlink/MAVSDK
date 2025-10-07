@@ -335,7 +335,7 @@ TEST(SystemTest, InterceptJsonOutgoing)
     // Publish GPS data from autopilot
     LogInfo() << "Publishing GPS data from autopilot...";
     TelemetryServer::RawGps raw_gps{};
-    raw_gps.timestamp_us = 1234567890;
+    raw_gps.timestamp_us = 1234567890123456789;
     raw_gps.latitude_deg = 47.3977421; // Zurich coordinates
     raw_gps.longitude_deg = 8.5455938;
     raw_gps.absolute_altitude_m = 488.0f;

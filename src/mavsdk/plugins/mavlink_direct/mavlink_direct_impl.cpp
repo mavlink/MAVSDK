@@ -233,37 +233,20 @@ bool MavlinkDirectImpl::json_to_libmav_message(
         const Json::Value& field_value = json[field_name];
 
         // Convert JSON values to appropriate types and set in message
-        if (field_value.isInt()) {
-            auto result = msg.set(field_name, static_cast<int32_t>(field_value.asInt()));
+        // libmav handles type casting based on field definition, so we just need to pass
+        // int64/uint64
+        if (field_value.isInt() || field_value.isInt64()) {
+            int64_t value = field_value.asInt64();
+            auto result = msg.set(field_name, value);
             if (result != ::mav::MessageResult::Success) {
-                // Try as other integer types
-                if (msg.set(field_name, static_cast<uint32_t>(field_value.asUInt())) !=
-                        ::mav::MessageResult::Success &&
-                    msg.set(field_name, static_cast<int16_t>(field_value.asInt())) !=
-                        ::mav::MessageResult::Success &&
-                    msg.set(field_name, static_cast<uint16_t>(field_value.asUInt())) !=
-                        ::mav::MessageResult::Success &&
-                    msg.set(field_name, static_cast<int8_t>(field_value.asInt())) !=
-                        ::mav::MessageResult::Success &&
-                    msg.set(field_name, static_cast<uint8_t>(field_value.asUInt())) !=
-                        ::mav::MessageResult::Success) {
-                    LogWarn() << "Failed to set integer field " << field_name << " = "
-                              << field_value.asInt();
-                }
+                LogWarn() << "Failed to set integer field " << field_name << " = " << value;
             }
-        } else if (field_value.isUInt()) {
-            auto result = msg.set(field_name, static_cast<uint32_t>(field_value.asUInt()));
+        } else if (field_value.isUInt() || field_value.isUInt64()) {
+            uint64_t value = field_value.asUInt64();
+            auto result = msg.set(field_name, value);
             if (result != ::mav::MessageResult::Success) {
-                // Try as other unsigned integer types
-                if (msg.set(field_name, static_cast<uint64_t>(field_value.asUInt64())) !=
-                        ::mav::MessageResult::Success &&
-                    msg.set(field_name, static_cast<uint16_t>(field_value.asUInt())) !=
-                        ::mav::MessageResult::Success &&
-                    msg.set(field_name, static_cast<uint8_t>(field_value.asUInt())) !=
-                        ::mav::MessageResult::Success) {
-                    LogWarn() << "Failed to set unsigned integer field " << field_name << " = "
-                              << field_value.asUInt();
-                }
+                LogWarn() << "Failed to set unsigned integer field " << field_name << " = "
+                          << value;
             }
         } else if (field_value.isNull() || field_value.isDouble()) {
             // Handle float/double values (including null -> NaN)
