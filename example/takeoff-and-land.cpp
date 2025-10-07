@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <unistd.h>
 
-#include "mavsdk.h"
-#include "plugins/action/action.h"
-#include "plugins/telemetry/telemetry.h"
+#include "cmavsdk/mavsdk.h"
+#include "cmavsdk/plugins/action/action.h"
+#include "cmavsdk/plugins/telemetry/telemetry.h"
 
 static bool my_log_callback(mavsdk_log_level_t level, const char* message, const char* file, int line, void* user_data) {
     const char* level_str = "UNKNOWN";

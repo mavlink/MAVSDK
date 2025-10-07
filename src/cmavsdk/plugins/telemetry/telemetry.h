@@ -8,7 +8,7 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <stdbool.h>
-#include "mavsdk_export.h"
+#include "cmavsdk/mavsdk_export.h"
 
 #ifdef __cplusplus
 extern "C" {

@@ -2,31 +2,31 @@ find_package(MAVSDK REQUIRED)
 
 include(${CMAKE_CURRENT_SOURCE_DIR}/plugins_generated.cmake)
 
-set(C_API_SOURCES
-    ${PLUGIN_SOURCES}
-    log.cpp
-    mavsdk.cpp
-    system.cpp
+set(CORE_SOURCES
+    cmavsdk/log.cpp
+    cmavsdk/mavsdk.cpp
+    cmavsdk/system.cpp
 )
 
-set(C_API_HEADERS
-    ${PLUGIN_HEADERS}
-    autopilot.h
-    component_type.h
-    connection_result.h
-    log.h
-    mavsdk.h
-    mavsdk_export.h
-    system.h
-    vehicle.h
+set(CORE_HEADERS
+    cmavsdk/autopilot.h
+    cmavsdk/component_type.h
+    cmavsdk/connection_result.h
+    cmavsdk/log.h
+    cmavsdk/mavsdk.h
+    cmavsdk/mavsdk_export.h
+    cmavsdk/system.h
+    cmavsdk/vehicle.h
 )
 
 add_library(cmavsdk)
 
 target_sources(cmavsdk
     PRIVATE
-        ${C_API_SOURCES}
-        ${C_API_HEADERS}
+        ${CORE_SOURCES}
+        ${CORE_HEADERS}
+        ${PLUGIN_HEADERS}
+        ${PLUGIN_SOURCES}
 )
 
 target_include_directories(cmavsdk
@@ -66,9 +66,9 @@ install(TARGETS cmavsdk
 )
 
 install(
-    FILES
-        ${C_API_HEADERS}
+    DIRECTORY cmavsdk/
     DESTINATION include/cmavsdk
+    FILES_MATCHING PATTERN "*.h"
 )
 
 install(EXPORT cmavsdkTargets

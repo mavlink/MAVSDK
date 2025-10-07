@@ -3,8 +3,8 @@
 #include <stdbool.h>
 #include <unistd.h>
 
-#include "mavsdk.h"
-#include "plugins/calibration/calibration.h"
+#include "cmavsdk/mavsdk.h"
+#include "cmavsdk/plugins/calibration/calibration.h"
 
 typedef struct {
     bool completed;
