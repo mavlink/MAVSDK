@@ -90,11 +90,14 @@ process_plugin() {
 
 # Main execution
 main() {
+    echo "Setting up venv..."
+    setup_venv
+
+    echo "Generating plugins_generated.cmake..."
+    python3 ${script_dir}/generate_cmake.py ${plugins[*]}
+
     echo "Starting protoc code generation..."
     echo "Plugins to process: ${plugins[*]}"
-    
-    # Setup virtual environment
-    setup_venv
     
     # Process each plugin
     for plugin in "${plugins[@]}"; do
