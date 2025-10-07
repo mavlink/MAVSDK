@@ -70,4 +70,8 @@ protected:
     // void received_mavlink_message(mavlink_message_t &);
 };
 
+#ifdef WINDOWS
+std::string get_socket_error_string(int error_code);
+#endif
+
 } // namespace mavsdk

@@ -5,6 +5,10 @@
 #include "mavsdk_impl.h"
 #include "log.h"
 
+#ifdef WINDOWS
+#include <winsock2.h>
+#endif
+
 namespace mavsdk {
 
 std::atomic<unsigned> Connection::_forwarding_connections_count = 0;
@@ -116,5 +120,42 @@ bool Connection::has_system_id(uint8_t system_id)
 {
     return _system_ids.find(system_id) != _system_ids.end();
 }
+
+#ifdef WINDOWS
+std::string get_socket_error_string(int error_code)
+{
+    if (error_code == 0) {
+        return "";
+    }
+
+    LPVOID lpMsgBuf = nullptr;
+    DWORD bufLen = FormatMessage(
+        FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
+        NULL,
+        error_code,
+        MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+        (LPTSTR)&lpMsgBuf,
+        0,
+        NULL);
+
+    if (bufLen) {
+        LPCSTR lpMsgStr = (LPCSTR)lpMsgBuf;
+        std::string result(lpMsgStr, lpMsgStr + bufLen);
+        LocalFree(lpMsgBuf);
+
+        // Remove trailing newline if present
+        if (!result.empty() && result[result.length() - 1] == '\n') {
+            result.erase(result.length() - 1);
+        }
+        if (!result.empty() && result[result.length() - 1] == '\r') {
+            result.erase(result.length() - 1);
+        }
+
+        return result;
+    }
+
+    return std::to_string(error_code);
+}
+#endif
 
 } // namespace mavsdk

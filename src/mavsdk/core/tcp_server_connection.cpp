@@ -21,12 +21,6 @@
 #include <netdb.h>
 #endif
 
-#ifndef WINDOWS
-#define GET_ERROR(_x) strerror(_x)
-#else
-#define GET_ERROR(_x) WSAGetLastError()
-#endif
-
 namespace mavsdk {
 TcpServerConnection::TcpServerConnection(
     Connection::ReceiverCallback receiver_callback,
@@ -62,14 +56,14 @@ ConnectionResult TcpServerConnection::start()
 #ifdef WINDOWS
     WSADATA wsa;
     if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0) {
-        LogErr() << "Error: Winsock failed, error: " << WSAGetLastError();
+        LogErr() << "Error: Winsock failed, error: " << get_socket_error_string(WSAGetLastError());
         return ConnectionResult::SocketError;
     }
 #endif
 
     _server_socket_fd.reset(socket(AF_INET, SOCK_STREAM, 0));
     if (_server_socket_fd.empty()) {
-        LogErr() << "socket error: " << GET_ERROR(errno);
+        LogErr() << "socket error: " << strerror(errno);
         return ConnectionResult::SocketError;
     }
 
@@ -82,12 +76,12 @@ ConnectionResult TcpServerConnection::start()
             _server_socket_fd.get(),
             reinterpret_cast<sockaddr*>(&server_addr),
             sizeof(server_addr)) < 0) {
-        LogErr() << "bind error: " << GET_ERROR(errno);
+        LogErr() << "bind error: " << strerror(errno);
         return ConnectionResult::SocketError;
     }
 
     if (listen(_server_socket_fd.get(), 3) < 0) {
-        LogErr() << "listen error: " << GET_ERROR(errno);
+        LogErr() << "listen error: " << strerror(errno);
         return ConnectionResult::SocketError;
     }
 
@@ -158,7 +152,7 @@ void TcpServerConnection::accept_client()
     u_long iMode = 1;
     int iResult = ioctlsocket(_server_socket_fd.get(), FIONBIO, &iMode);
     if (iResult != 0) {
-        LogErr() << "ioctlsocket failed with error: " << WSAGetLastError();
+        LogErr() << "ioctlsocket failed with error: " << get_socket_error_string(WSAGetLastError());
     }
 #else
     // Set server socket to non-blocking
@@ -180,7 +174,7 @@ void TcpServerConnection::accept_client()
             select(_server_socket_fd.get() + 1, &readfds, nullptr, nullptr, &timeout);
 
         if (activity < 0 && errno != EINTR) {
-            LogErr() << "select error: " << GET_ERROR(errno);
+            LogErr() << "select error: " << strerror(errno);
             continue;
         }
 
@@ -193,15 +187,17 @@ void TcpServerConnection::accept_client()
             sockaddr_in client_addr{};
             socklen_t client_addr_len = sizeof(client_addr);
 
-            _client_socket_fd.reset(accept(
-                _server_socket_fd.get(),
-                reinterpret_cast<sockaddr*>(&client_addr),
-                &client_addr_len));
+            {
+                _client_socket_fd.reset(accept(
+                    _server_socket_fd.get(),
+                    reinterpret_cast<sockaddr*>(&client_addr),
+                    &client_addr_len));
+            }
             if (_client_socket_fd.empty()) {
                 if (_should_exit) {
                     return;
                 }
-                LogErr() << "accept error: " << GET_ERROR(errno);
+                LogErr() << "accept error: " << strerror(errno);
                 continue;
             }
 
@@ -239,7 +235,15 @@ void TcpServerConnection::receive()
                 continue;
             }
 
-            LogErr() << "recv failed: " << GET_ERROR(errno);
+            // Connection reset - if shutting down, exit quietly; otherwise log and exit
+            if (errno == ECONNRESET) {
+                if (!_should_exit) {
+                    LogErr() << "recv failed: " << strerror(errno);
+                }
+                return;
+            }
+
+            LogErr() << "recv failed: " << strerror(errno);
             return;
         }
 #endif
@@ -280,9 +284,20 @@ std::pair<bool, std::string> TcpServerConnection::send_raw_bytes(const char* byt
     const auto send_len = send(_client_socket_fd.get(), bytes, length, flags);
 
     if (send_len != static_cast<std::remove_cv_t<decltype(send_len)>>(length)) {
+        // Broken pipe is expected during shutdown, don't log it
         std::stringstream ss;
-        ss << "Send failure: " << GET_ERROR(errno);
-        LogErr() << ss.str();
+#ifdef WINDOWS
+        int err = WSAGetLastError();
+        ss << "Send failure: " << get_socket_error_string(err);
+        if (err != WSAECONNRESET || !_should_exit) {
+            LogErr() << ss.str();
+        }
+#else
+        ss << "Send failure: " << strerror(errno);
+        if (errno != EPIPE || !_should_exit) {
+            LogErr() << ss.str();
+        }
+#endif
         result.first = false;
         result.second = ss.str();
         return result;
