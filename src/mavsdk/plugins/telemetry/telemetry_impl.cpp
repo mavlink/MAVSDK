@@ -571,7 +571,7 @@ void TelemetryImpl::set_rate_unix_epoch_time_async(
     double rate_hz, Telemetry::ResultCallback callback)
 {
     _system_impl->set_msg_rate_async(
-        MAVLINK_MSG_ID_UTM_GLOBAL_POSITION,
+        MAVLINK_MSG_ID_SYSTEM_TIME,
         rate_hz,
         [callback](MavlinkCommandSender::Result command_result, float) {
             command_result_callback(command_result, callback);
