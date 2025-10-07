@@ -251,6 +251,24 @@ bool MavlinkDirectImpl::json_to_libmav_message(
                               << field_value.asInt();
                 }
             }
+        } else if (field_value.isInt64()) {
+            auto result = msg.set(field_name, static_cast<int64_t>(field_value.asInt64()));
+            if (result != ::mav::MessageResult::Success) {
+                // Try as other integer types
+                if (msg.set(field_name, static_cast<uint32_t>(field_value.asUInt())) !=
+                        ::mav::MessageResult::Success &&
+                    msg.set(field_name, static_cast<int16_t>(field_value.asInt())) !=
+                        ::mav::MessageResult::Success &&
+                    msg.set(field_name, static_cast<uint16_t>(field_value.asUInt())) !=
+                        ::mav::MessageResult::Success &&
+                    msg.set(field_name, static_cast<int8_t>(field_value.asInt())) !=
+                        ::mav::MessageResult::Success &&
+                    msg.set(field_name, static_cast<uint8_t>(field_value.asUInt())) !=
+                        ::mav::MessageResult::Success) {
+                    LogWarn() << "Failed to set integer64 field " << field_name << " = "
+                              << field_value.asInt64();
+                }
+            }
         } else if (field_value.isUInt()) {
             auto result = msg.set(field_name, static_cast<uint32_t>(field_value.asUInt()));
             if (result != ::mav::MessageResult::Success) {
@@ -263,6 +281,20 @@ bool MavlinkDirectImpl::json_to_libmav_message(
                         ::mav::MessageResult::Success) {
                     LogWarn() << "Failed to set unsigned integer field " << field_name << " = "
                               << field_value.asUInt();
+                }
+            }
+        } else if (field_value.isUInt64()) {
+            auto result = msg.set(field_name, static_cast<uint32_t>(field_value.asUInt64()));
+            if (result != ::mav::MessageResult::Success) {
+                // Try as other unsigned integer types
+                if (msg.set(field_name, static_cast<uint64_t>(field_value.asUInt64())) !=
+                        ::mav::MessageResult::Success &&
+                    msg.set(field_name, static_cast<uint16_t>(field_value.asUInt())) !=
+                        ::mav::MessageResult::Success &&
+                    msg.set(field_name, static_cast<uint8_t>(field_value.asUInt())) !=
+                        ::mav::MessageResult::Success) {
+                    LogWarn() << "Failed to set unsigned integer64 field " << field_name << " = "
+                              << field_value.asUInt64();
                 }
             }
         } else if (field_value.isNull() || field_value.isDouble()) {
