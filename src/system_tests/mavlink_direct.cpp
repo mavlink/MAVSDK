@@ -1217,3 +1217,93 @@ TEST(SystemTest, MavlinkDirectMultipleSubscriptions)
     receiver_mavlink_direct.unsubscribe_message(handle_heartbeat);
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
+
+TEST(SystemTest, MavlinkDirectLargeUint64)
+{
+    // Test GPS_RAW_INT with time_usec field > 2^32 to verify proper uint64 handling
+
+    Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
+    Mavsdk mavsdk_autopilot{Mavsdk::Configuration{ComponentType::Autopilot}};
+
+    ASSERT_EQ(
+        mavsdk_groundstation.add_any_connection("udpin://0.0.0.0:17011"),
+        ConnectionResult::Success);
+    ASSERT_EQ(
+        mavsdk_autopilot.add_any_connection("udpout://127.0.0.1:17011"), ConnectionResult::Success);
+
+    // Ground station discovers the autopilot system
+    auto maybe_system = mavsdk_groundstation.first_autopilot(10.0);
+    ASSERT_TRUE(maybe_system);
+    auto system = maybe_system.value();
+    ASSERT_TRUE(system->has_autopilot());
+
+    // Wait for autopilot instance to discover the connection to the ground station
+    LogInfo() << "Waiting for autopilot system to connect...";
+    while (mavsdk_autopilot.systems().size() == 0) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    }
+
+    auto groundstation_system = mavsdk_autopilot.systems().at(0);
+    ASSERT_EQ(groundstation_system->component_ids()[0], 190);
+
+    auto receiver_mavlink_direct = MavlinkDirect{system};
+    auto sender_mavlink_direct = MavlinkDirect{groundstation_system};
+
+    auto prom = std::promise<MavlinkDirect::MavlinkMessage>();
+    auto fut = prom.get_future();
+
+    // Subscribe to GPS_RAW_INT messages
+    auto handle = receiver_mavlink_direct.subscribe_message(
+        "GPS_RAW_INT", [&prom](MavlinkDirect::MavlinkMessage message) {
+            LogInfo() << "Received GPS_RAW_INT: " << message.fields_json;
+            prom.set_value(message);
+        });
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+
+    // Send GPS_RAW_INT with time_usec > 2^32 (5000000000 microseconds = ~83 minutes)
+    // This value requires full uint64 representation
+    MavlinkDirect::MavlinkMessage gps_raw_message;
+    gps_raw_message.message_name = "GPS_RAW_INT";
+    gps_raw_message.system_id = 1;
+    gps_raw_message.component_id = 1;
+    gps_raw_message.target_system_id = 0;
+    gps_raw_message.target_component_id = 0;
+    gps_raw_message.fields_json =
+        R"({"time_usec":5000000000,"fix_type":3,"lat":473977418,"lon":-1223974560,"alt":100500,"eph":100,"epv":150,"vel":500,"cog":18000,"satellites_visible":12})";
+
+    LogInfo() << "Sending GPS_RAW_INT with time_usec=5000000000 (> 2^32)";
+    auto result = sender_mavlink_direct.send_message(gps_raw_message);
+    EXPECT_EQ(result, MavlinkDirect::Result::Success);
+
+    // Wait for message to be received
+    ASSERT_EQ(fut.wait_for(std::chrono::seconds(5)), std::future_status::ready);
+
+    auto received_message = fut.get();
+
+    EXPECT_EQ(received_message.message_name, "GPS_RAW_INT");
+    EXPECT_EQ(received_message.system_id, 1);
+    EXPECT_EQ(received_message.component_id, 1);
+
+    // Parse JSON to verify uint64 field value is preserved
+    Json::Value json;
+    Json::Reader reader;
+    ASSERT_TRUE(reader.parse(received_message.fields_json, json))
+        << "Failed to parse received JSON: " << received_message.fields_json;
+
+    // Verify time_usec field is present and has the correct large value
+    ASSERT_TRUE(json.isMember("time_usec")) << "time_usec field missing from JSON";
+    EXPECT_EQ(json["time_usec"].asUInt64(), 5000000000ULL)
+        << "time_usec value incorrect: expected 5000000000, got " << json["time_usec"].asUInt64();
+
+    // Verify other fields for completeness
+    EXPECT_EQ(json["fix_type"].asUInt(), 3u);
+    EXPECT_EQ(json["lat"].asInt(), 473977418);
+    EXPECT_EQ(json["lon"].asInt(), -1223974560);
+    EXPECT_EQ(json["alt"].asInt(), 100500);
+    EXPECT_EQ(json["satellites_visible"].asUInt(), 12u);
+
+    LogInfo() << "Successfully verified uint64 handling for time_usec > 2^32";
+    receiver_mavlink_direct.unsubscribe_message(handle);
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+}
