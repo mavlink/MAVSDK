@@ -5,6 +5,10 @@
 #include "mavsdk_impl.h"
 #include "log.h"
 
+#ifdef WINDOWS
+#include <winsock2.h>
+#endif
+
 namespace mavsdk {
 
 std::atomic<unsigned> Connection::_forwarding_connections_count = 0;
@@ -118,8 +122,6 @@ bool Connection::has_system_id(uint8_t system_id)
 }
 
 #ifdef WINDOWS
-#include <winsock2.h>
-
 std::string get_socket_error_string(int error_code)
 {
     if (error_code == 0) {
