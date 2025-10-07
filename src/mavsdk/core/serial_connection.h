@@ -1,14 +1,14 @@
 #pragma once
 
+#if defined(WINDOWS)
+#include <windows.h>
+#endif
+
 #include <mutex>
 #include <memory>
 #include <atomic>
 #include <thread>
 #include "connection.h"
-
-#if defined(WINDOWS)
-#include <windows.h>
-#endif
 
 namespace mavsdk {
 

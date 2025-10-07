@@ -1,14 +1,14 @@
 #pragma once
 
+#ifdef WINDOWS
+#include <Windows.h>
+#endif
+
 #include <filesystem>
 #include <cstdint>
 #include <optional>
 #include <string>
 #include <map>
-
-#ifdef WINDOWS
-#include <Windows.h>
-#endif
 
 namespace mavsdk {
 
