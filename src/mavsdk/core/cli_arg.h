@@ -37,7 +37,11 @@ public:
         bool flow_control_enabled{false};
     };
 
-    using Protocol = std::variant<std::monostate, Udp, Tcp, Serial>;
+    struct Raw {
+        // No parameters needed for raw connection
+    };
+
+    using Protocol = std::variant<std::monostate, Udp, Tcp, Serial, Raw>;
 
     bool parse(const std::string& uri);
 
@@ -55,6 +59,7 @@ private:
     bool parse_tcpout(const std::string_view rest);
 
     bool parse_serial(const std::string_view rest, bool flow_control_enabled);
+    bool parse_raw(const std::string_view rest);
 };
 
 } // namespace mavsdk
