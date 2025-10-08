@@ -28,8 +28,8 @@ TEST(SystemTest, RawBytesHeartbeat)
         LogInfo() << "Received " << length << " raw bytes";
 
         // Parse to check if this is a heartbeat
-        mavlink_message_t msg;
-        mavlink_status_t status;
+        mavlink_message_t msg = {};
+        mavlink_status_t status = {};
 
         for (size_t i = 0; i < length; ++i) {
             if (mavlink_parse_char(MAVLINK_COMM_0, static_cast<uint8_t>(bytes[i]), &msg, &status)) {
