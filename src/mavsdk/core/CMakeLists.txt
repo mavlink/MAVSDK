@@ -81,6 +81,7 @@ target_sources(mavsdk
     param_value.cpp
     ping.cpp
     plugin_impl_base.cpp
+    raw_connection.cpp
     serial_connection.cpp
     server_component.cpp
     server_component_impl.cpp

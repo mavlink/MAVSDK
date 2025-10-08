@@ -29,6 +29,7 @@ add_executable(system_tests_runner
     mavlink_direct.cpp
     mavlink_direct_forwarding.cpp
     connections.cpp
+    raw_bytes.cpp
     system_tests_runner.cpp
 )
 

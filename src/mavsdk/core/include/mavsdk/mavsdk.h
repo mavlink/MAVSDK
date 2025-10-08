@@ -463,6 +463,50 @@ public:
      */
     void intercept_outgoing_messages_async(std::function<bool(mavlink_message_t&)> callback);
 
+    /**
+     * @brief Callback type for raw bytes subscriptions.
+     */
+    using RawBytesCallback = std::function<void(const char* bytes, size_t length)>;
+
+    /**
+     * @brief Handle type for raw bytes subscriptions.
+     */
+    using RawBytesHandle = Handle<const char*, size_t>;
+
+    /**
+     * @brief Send raw MAVLink bytes.
+     *
+     * This allows sending raw MAVLink message bytes through all connections.
+     * The bytes can contain one or more MAVLink messages.
+     *
+     * @note When this API is first used, heartbeats will be automatically enabled.
+     *
+     * @param bytes Pointer to raw MAVLink message bytes.
+     * @param length Number of bytes to send.
+     * @return true if bytes were successfully sent, false otherwise.
+     */
+    bool send_raw_bytes(const char* bytes, size_t length);
+
+    /**
+     * @brief Subscribe to all outgoing raw bytes.
+     *
+     * This allows monitoring all MAVLink bytes that are sent out through any connection.
+     * The callback will be called with raw bytes after they are successfully sent.
+     *
+     * @note When this API is first used, heartbeats will be automatically enabled.
+     *
+     * @param callback Callback to be called with outgoing raw bytes.
+     * @return Handle to unsubscribe again.
+     */
+    RawBytesHandle subscribe_raw_bytes(RawBytesCallback callback);
+
+    /**
+     * @brief Unsubscribe from raw bytes.
+     *
+     * @param handle Handle from subscribe_raw_bytes.
+     */
+    void unsubscribe_raw_bytes(RawBytesHandle handle);
+
 private:
     static constexpr int DEFAULT_SYSTEM_ID_AUTOPILOT = 1;
     static constexpr int DEFAULT_COMPONENT_ID_AUTOPILOT = MAV_COMP_ID_AUTOPILOT1;

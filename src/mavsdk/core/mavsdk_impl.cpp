@@ -9,6 +9,7 @@
 #include "tcp_client_connection.h"
 #include "tcp_server_connection.h"
 #include "udp_connection.h"
+#include "raw_connection.h"
 #include "system.h"
 #include "system_impl.h"
 #include "serial_connection.h"
@@ -790,6 +791,9 @@ std::pair<ConnectionResult, Mavsdk::ConnectionHandle> MavsdkImpl::add_any_connec
             [this, forwarding_option](const CliArg::Serial& serial) {
                 return add_serial_connection(
                     serial.path, serial.baudrate, serial.flow_control_enabled, forwarding_option);
+            },
+            [this, forwarding_option](const CliArg::Raw&) {
+                return add_raw_connection(forwarding_option);
             }},
         cli_arg.protocol);
 }
@@ -928,6 +932,44 @@ std::pair<ConnectionResult, Mavsdk::ConnectionHandle> MavsdkImpl::add_serial_con
     } else {
         return {ret, Mavsdk::ConnectionHandle{}};
     }
+}
+
+std::pair<ConnectionResult, Mavsdk::ConnectionHandle>
+MavsdkImpl::add_raw_connection(ForwardingOption forwarding_option)
+{
+    // Check if a raw connection already exists
+    if (find_raw_connection() != nullptr) {
+        LogErr() << "Raw connection already exists. Only one raw connection is allowed.";
+        return {ConnectionResult::ConnectionError, Mavsdk::ConnectionHandle{}};
+    }
+
+    auto new_conn = std::make_unique<RawConnection>(
+        [this](mavlink_message_t& message, Connection* connection) {
+            receive_message(message, connection);
+        },
+        [this](const Mavsdk::MavlinkMessage& message, Connection* connection) {
+            receive_libmav_message(message, connection);
+        },
+        *this,
+        forwarding_option);
+
+    if (!new_conn) {
+        return {ConnectionResult::ConnectionError, Mavsdk::ConnectionHandle{}};
+    }
+
+    ConnectionResult ret = new_conn->start();
+    if (ret != ConnectionResult::Success) {
+        return {ret, Mavsdk::ConnectionHandle{}};
+    }
+
+    auto handle = add_connection(std::move(new_conn));
+
+    // Enable heartbeats for raw connection
+    auto new_configuration = get_configuration();
+    new_configuration.set_always_send_heartbeats(true);
+    set_configuration(new_configuration);
+
+    return {ConnectionResult::Success, handle};
 }
 
 Mavsdk::ConnectionHandle MavsdkImpl::add_connection(std::unique_ptr<Connection>&& new_connection)
@@ -1316,6 +1358,58 @@ void MavsdkImpl::unsubscribe_outgoing_messages_json(Mavsdk::InterceptJsonHandle 
     if (it != _outgoing_json_message_subscriptions.end()) {
         _outgoing_json_message_subscriptions.erase(it);
     }
+}
+
+RawConnection* MavsdkImpl::find_raw_connection()
+{
+    std::lock_guard lock(_mutex);
+
+    for (auto& entry : _connections) {
+        auto* raw_conn = dynamic_cast<RawConnection*>(entry.connection.get());
+        if (raw_conn != nullptr) {
+            return raw_conn;
+        }
+    }
+    return nullptr;
+}
+
+bool MavsdkImpl::send_raw_bytes(const char* bytes, size_t length)
+{
+    auto* raw_conn = find_raw_connection();
+    if (raw_conn == nullptr) {
+        LogErr()
+            << "No raw connection available. Please add one using add_any_connection(\"raw://\")";
+        return false;
+    }
+
+    raw_conn->receive(bytes, length);
+    return true;
+}
+
+Mavsdk::RawBytesHandle MavsdkImpl::subscribe_raw_bytes(const Mavsdk::RawBytesCallback& callback)
+{
+    if (find_raw_connection() == nullptr) {
+        LogWarn() << "No raw connection available. Subscription will only receive bytes after you "
+                     "add a connection using add_any_connection(\"raw://\")";
+    }
+    return _raw_bytes_subscriptions.subscribe(callback);
+}
+
+void MavsdkImpl::unsubscribe_raw_bytes(Mavsdk::RawBytesHandle handle)
+{
+    _raw_bytes_subscriptions.unsubscribe(handle);
+}
+
+bool MavsdkImpl::notify_raw_bytes_sent(const char* bytes, size_t length)
+{
+    if (_raw_bytes_subscriptions.empty()) {
+        return false;
+    }
+
+    _raw_bytes_subscriptions.queue(
+        bytes, length, [this](const std::function<void()>& func) { call_user_callback(func); });
+
+    return true;
 }
 
 Mavsdk::ConnectionErrorHandle

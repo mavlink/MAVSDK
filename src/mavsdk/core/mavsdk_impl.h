@@ -42,6 +42,8 @@ class BufferParser;
 
 namespace mavsdk {
 
+class RawConnection; // Forward declaration
+
 class MavsdkImpl {
 public:
     MavsdkImpl(const Mavsdk::Configuration& configuration);
@@ -100,6 +102,12 @@ public:
     subscribe_connection_errors(Mavsdk::ConnectionErrorCallback callback);
     void unsubscribe_connection_errors(Mavsdk::ConnectionErrorHandle handle);
 
+    // Raw bytes API
+    bool send_raw_bytes(const char* bytes, size_t length);
+    Mavsdk::RawBytesHandle subscribe_raw_bytes(const Mavsdk::RawBytesCallback& callback);
+    void unsubscribe_raw_bytes(Mavsdk::RawBytesHandle handle);
+    bool notify_raw_bytes_sent(const char* bytes, size_t length);
+
     std::shared_ptr<ServerComponent> server_component(unsigned instance = 0);
 
     std::shared_ptr<ServerComponent>
@@ -152,6 +160,8 @@ private:
         int baudrate,
         bool flow_control,
         ForwardingOption forwarding_option);
+    std::pair<ConnectionResult, Mavsdk::ConnectionHandle>
+    add_raw_connection(ForwardingOption forwarding_option);
 
     Mavsdk::ConnectionHandle add_connection(std::unique_ptr<Connection>&& connection);
     void make_system_with_component(uint8_t system_id, uint8_t component_id);
@@ -183,6 +193,9 @@ private:
         const Mavsdk::MavlinkMessage& json_message,
         std::vector<std::pair<Mavsdk::InterceptJsonHandle, Mavsdk::InterceptJsonCallback>>&
             callback_list);
+
+    // Find the raw connection in the connections list
+    RawConnection* find_raw_connection();
 
     mutable std::recursive_mutex _mutex{};
 
@@ -245,6 +258,9 @@ private:
         _outgoing_json_message_subscriptions{};
     mutable std::mutex _json_subscriptions_mutex{};
     HandleFactory<bool(Mavsdk::MavlinkMessage)> _json_handle_factory{};
+
+    // Raw bytes subscriptions
+    CallbackList<const char*, size_t> _raw_bytes_subscriptions{};
 
     std::atomic<double> _timeout_s{DEFAULT_TIMEOUT_S};
 
