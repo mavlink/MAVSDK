@@ -90,6 +90,7 @@ ConnectionResult TcpClientConnection::setup_port()
     hp = gethostbyname(_remote_ip.c_str());
     if (hp == nullptr) {
         LogErr() << "Could not get host by name";
+        _socket_fd.close();
         return ConnectionResult::SocketConnectionError;
     }
 
@@ -99,7 +100,8 @@ ConnectionResult TcpClientConnection::setup_port()
             _socket_fd.get(),
             reinterpret_cast<sockaddr*>(&remote_addr),
             sizeof(struct sockaddr_in)) < 0) {
-        LogErr() << "connect error: " << strerror(errno);
+        LogErr() << "Connect error: " << strerror(errno);
+        _socket_fd.close();
         return ConnectionResult::SocketConnectionError;
     }
 
@@ -153,6 +155,10 @@ std::pair<bool, std::string> TcpClientConnection::send_message(const mavlink_mes
 
 std::pair<bool, std::string> TcpClientConnection::send_raw_bytes(const char* bytes, size_t length)
 {
+    if (_socket_fd.empty()) {
+        return std::make_pair(false, "Not connected");
+    }
+
     std::pair<bool, std::string> result;
 
     if (_remote_ip.empty()) {
@@ -196,10 +202,19 @@ void TcpClientConnection::receive()
     char buffer[2048];
 
     while (!_should_exit) {
+        if (_socket_fd.empty()) {
+            std::this_thread::sleep_for(std::chrono::seconds(1));
+            setup_port();
+            continue;
+        }
+
         const auto recv_len = recv(_socket_fd.get(), buffer, sizeof(buffer), 0);
 
         if (recv_len == 0) {
             // Connection closed, just try again.
+            LogInfo() << "TCP connection closed, trying to reconnect...";
+            std::this_thread::sleep_for(std::chrono::seconds(1));
+            setup_port();
             continue;
         }
 
