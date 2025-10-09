@@ -1406,8 +1406,7 @@ bool MavsdkImpl::notify_raw_bytes_sent(const char* bytes, size_t length)
         return false;
     }
 
-    _raw_bytes_subscriptions.queue(
-        bytes, length, [this](const std::function<void()>& func) { call_user_callback(func); });
+    _raw_bytes_subscriptions(bytes, length);
 
     return true;
 }
