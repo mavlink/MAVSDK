@@ -23,28 +23,29 @@ TEST(SystemTest, RawBytesHeartbeat)
     bool heartbeat_received = false;
 
     // Subscribe to raw bytes to capture the heartbeat response
-    auto handle = mavsdk_responder.subscribe_raw_bytes([&prom, &heartbeat_received](
-                                                           const char* bytes, size_t length) {
-        LogInfo() << "Received " << length << " raw bytes";
+    auto handle = mavsdk_responder.subscribe_raw_bytes_to_be_sent(
+        [&prom, &heartbeat_received](const char* bytes, size_t length) {
+            LogInfo() << "Received " << length << " raw bytes";
 
-        // Parse to check if this is a heartbeat
-        mavlink_message_t msg = {};
-        mavlink_status_t status = {};
+            // Parse to check if this is a heartbeat
+            mavlink_message_t msg = {};
+            mavlink_status_t status = {};
 
-        for (size_t i = 0; i < length; ++i) {
-            if (mavlink_parse_char(MAVLINK_COMM_0, static_cast<uint8_t>(bytes[i]), &msg, &status)) {
-                if (msg.msgid == MAVLINK_MSG_ID_HEARTBEAT) {
-                    LogInfo() << "Captured HEARTBEAT message from system " << (int)msg.sysid
-                              << ", component " << (int)msg.compid;
-                    if (!heartbeat_received) {
-                        heartbeat_received = true;
-                        prom.set_value();
+            for (size_t i = 0; i < length; ++i) {
+                if (mavlink_parse_char(
+                        MAVLINK_COMM_0, static_cast<uint8_t>(bytes[i]), &msg, &status)) {
+                    if (msg.msgid == MAVLINK_MSG_ID_HEARTBEAT) {
+                        LogInfo() << "Captured HEARTBEAT message from system " << (int)msg.sysid
+                                  << ", component " << (int)msg.compid;
+                        if (!heartbeat_received) {
+                            heartbeat_received = true;
+                            prom.set_value();
+                        }
+                        return;
                     }
-                    return;
                 }
             }
-        }
-    });
+        });
 
     // Give subscription time to be registered
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
@@ -71,7 +72,7 @@ TEST(SystemTest, RawBytesHeartbeat)
     std::thread heartbeat_thread([&]() {
         while (should_send_heartbeats) {
             LogInfo() << "Sending raw heartbeat (" << len << " bytes)...";
-            mavsdk_responder.send_raw_bytes(
+            mavsdk_responder.pass_received_raw_bytes(
                 reinterpret_cast<const char*>(heartbeat_bytes.data()), len);
             std::this_thread::sleep_for(std::chrono::seconds(1));
         }
@@ -87,5 +88,5 @@ TEST(SystemTest, RawBytesHeartbeat)
     should_send_heartbeats = false;
     heartbeat_thread.join();
 
-    mavsdk_responder.unsubscribe_raw_bytes(handle);
+    mavsdk_responder.unsubscribe_raw_bytes_to_be_sent(handle);
 }

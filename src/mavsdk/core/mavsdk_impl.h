@@ -103,9 +103,9 @@ public:
     void unsubscribe_connection_errors(Mavsdk::ConnectionErrorHandle handle);
 
     // Raw bytes API
-    bool send_raw_bytes(const char* bytes, size_t length);
-    Mavsdk::RawBytesHandle subscribe_raw_bytes(const Mavsdk::RawBytesCallback& callback);
-    void unsubscribe_raw_bytes(Mavsdk::RawBytesHandle handle);
+    void pass_received_raw_bytes(const char* bytes, size_t length);
+    Mavsdk::RawBytesHandle subscribe_raw_bytes_to_be_sent(const Mavsdk::RawBytesCallback& callback);
+    void unsubscribe_raw_bytes_to_be_sent(Mavsdk::RawBytesHandle handle);
     bool notify_raw_bytes_sent(const char* bytes, size_t length);
 
     std::shared_ptr<ServerComponent> server_component(unsigned instance = 0);

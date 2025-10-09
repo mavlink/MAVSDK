@@ -474,38 +474,41 @@ public:
     using RawBytesHandle = Handle<const char*, size_t>;
 
     /**
-     * @brief Send raw MAVLink bytes.
+     * @brief Pass received raw MAVLink bytes.
      *
-     * This allows sending raw MAVLink message bytes through all connections.
+     * This allows passing raw MAVLink message bytes into MAVSDK to be processel.
      * The bytes can contain one or more MAVLink messages.
      *
-     * @note When this API is first used, heartbeats will be automatically enabled.
+     * @note Before using this, run add_any_connection("raw://")
+     *
+     * This goes together with subscribe_to_bytes_to_send.
      *
      * @param bytes Pointer to raw MAVLink message bytes.
      * @param length Number of bytes to send.
-     * @return true if bytes were successfully sent, false otherwise.
      */
-    bool send_raw_bytes(const char* bytes, size_t length);
+    void pass_received_raw_bytes(const char* bytes, size_t length);
 
     /**
-     * @brief Subscribe to all outgoing raw bytes.
+     * @brief Subscribe to raw bytes to be sent.
      *
-     * This allows monitoring all MAVLink bytes that are sent out through any connection.
-     * The callback will be called with raw bytes after they are successfully sent.
+     * This allows getting MAVLink bytes that need to be sent out.
      *
-     * @note When this API is first used, heartbeats will be automatically enabled.
+     * @note Before using this, run add_any_connection("raw://")
+     *
+     * This goes together with pass_received_raw_bytes.
+     * The bytes contain one mavlink message at a time.
      *
      * @param callback Callback to be called with outgoing raw bytes.
      * @return Handle to unsubscribe again.
      */
-    RawBytesHandle subscribe_raw_bytes(RawBytesCallback callback);
+    RawBytesHandle subscribe_raw_bytes_to_be_sent(RawBytesCallback callback);
 
     /**
-     * @brief Unsubscribe from raw bytes.
+     * @brief Unsubscribe from raw bytes to be sent.
      *
-     * @param handle Handle from subscribe_raw_bytes.
+     * @param handle Handle from subscribe_raw_bytes_to_be_sent.
      */
-    void unsubscribe_raw_bytes(RawBytesHandle handle);
+    void unsubscribe_raw_bytes_to_be_sent(RawBytesHandle handle);
 
 private:
     static constexpr int DEFAULT_SYSTEM_ID_AUTOPILOT = 1;

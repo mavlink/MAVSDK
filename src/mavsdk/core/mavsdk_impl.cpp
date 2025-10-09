@@ -1373,20 +1373,20 @@ RawConnection* MavsdkImpl::find_raw_connection()
     return nullptr;
 }
 
-bool MavsdkImpl::send_raw_bytes(const char* bytes, size_t length)
+void MavsdkImpl::pass_received_raw_bytes(const char* bytes, size_t length)
 {
     auto* raw_conn = find_raw_connection();
     if (raw_conn == nullptr) {
         LogErr()
             << "No raw connection available. Please add one using add_any_connection(\"raw://\")";
-        return false;
+        return;
     }
 
     raw_conn->receive(bytes, length);
-    return true;
 }
 
-Mavsdk::RawBytesHandle MavsdkImpl::subscribe_raw_bytes(const Mavsdk::RawBytesCallback& callback)
+Mavsdk::RawBytesHandle
+MavsdkImpl::subscribe_raw_bytes_to_be_sent(const Mavsdk::RawBytesCallback& callback)
 {
     if (find_raw_connection() == nullptr) {
         LogWarn() << "No raw connection available. Subscription will only receive bytes after you "
@@ -1395,7 +1395,7 @@ Mavsdk::RawBytesHandle MavsdkImpl::subscribe_raw_bytes(const Mavsdk::RawBytesCal
     return _raw_bytes_subscriptions.subscribe(callback);
 }
 
-void MavsdkImpl::unsubscribe_raw_bytes(Mavsdk::RawBytesHandle handle)
+void MavsdkImpl::unsubscribe_raw_bytes_to_be_sent(Mavsdk::RawBytesHandle handle)
 {
     _raw_bytes_subscriptions.unsubscribe(handle);
 }
