@@ -234,19 +234,19 @@ void Mavsdk::intercept_outgoing_messages_async(std::function<bool(mavlink_messag
     _impl->intercept_outgoing_messages_async(callback);
 }
 
-bool Mavsdk::send_raw_bytes(const char* bytes, size_t length)
+void Mavsdk::pass_received_raw_bytes(const char* bytes, size_t length)
 {
-    return _impl->send_raw_bytes(bytes, length);
+    _impl->pass_received_raw_bytes(bytes, length);
 }
 
-Mavsdk::RawBytesHandle Mavsdk::subscribe_raw_bytes(RawBytesCallback callback)
+Mavsdk::RawBytesHandle Mavsdk::subscribe_raw_bytes_to_be_sent(RawBytesCallback callback)
 {
-    return _impl->subscribe_raw_bytes(callback);
+    return _impl->subscribe_raw_bytes_to_be_sent(callback);
 }
 
-void Mavsdk::unsubscribe_raw_bytes(RawBytesHandle handle)
+void Mavsdk::unsubscribe_raw_bytes_to_be_sent(RawBytesHandle handle)
 {
-    _impl->unsubscribe_raw_bytes(handle);
+    _impl->unsubscribe_raw_bytes_to_be_sent(handle);
 }
 
 Mavsdk::ConnectionErrorHandle
