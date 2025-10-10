@@ -193,6 +193,9 @@ typedef enum {
 // ===== Structs =====
 /**
  * @brief Position type in global coordinates.
+ *
+ * @note This struct may contain dynamically allocated memory. Always call
+ *       mavsdk_telemetry_position_destroy() when done to avoid memory leaks.
  */
 typedef struct {
     /**  Latitude in degrees (range: -90 to +90) */
@@ -205,15 +208,68 @@ typedef struct {
     float relative_altitude_m;
 } mavsdk_telemetry_position_t;
 
+/**
+ * @brief Destroy a position struct.
+ *
+ * Frees all memory allocated by MAVSDK for this struct, including any
+ * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
+ * Always call this function when done with the struct, even if it currently
+ * contains no dynamic allocations.
+ *
+ * @param target Pointer to the struct to destroy. Can be NULL (no-op).
+ */
+void mavsdk_telemetry_position_destroy(
+    mavsdk_telemetry_position_t* target);
+
+/**
+ * @brief Destroy an array of position structs.
+ *
+ * Frees all memory allocated for the array and its elements, including any
+ * nested dynamic allocations. Must be called to avoid memory leaks.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ * @param size Number of elements in the array.
+ */
+void mavsdk_telemetry_position_array_destroy(
+    mavsdk_telemetry_position_t** array,
+    size_t size);
 
 /**
  * @brief Heading type used for global position
+ *
+ * @note This struct may contain dynamically allocated memory. Always call
+ *       mavsdk_telemetry_heading_destroy() when done to avoid memory leaks.
  */
 typedef struct {
     /**  Heading in degrees (range: 0 to +360) */
     double heading_deg;
 } mavsdk_telemetry_heading_t;
 
+/**
+ * @brief Destroy a heading struct.
+ *
+ * Frees all memory allocated by MAVSDK for this struct, including any
+ * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
+ * Always call this function when done with the struct, even if it currently
+ * contains no dynamic allocations.
+ *
+ * @param target Pointer to the struct to destroy. Can be NULL (no-op).
+ */
+void mavsdk_telemetry_heading_destroy(
+    mavsdk_telemetry_heading_t* target);
+
+/**
+ * @brief Destroy an array of heading structs.
+ *
+ * Frees all memory allocated for the array and its elements, including any
+ * nested dynamic allocations. Must be called to avoid memory leaks.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ * @param size Number of elements in the array.
+ */
+void mavsdk_telemetry_heading_array_destroy(
+    mavsdk_telemetry_heading_t** array,
+    size_t size);
 
 /**
  * @brief Quaternion type.
@@ -224,6 +280,9 @@ typedef struct {
  *  The quaternion could also be written as w + xi + yj + zk.
  * 
  *  For more info see: https://en.wikipedia.org/wiki/Quaternion
+ *
+ * @note This struct may contain dynamically allocated memory. Always call
+ *       mavsdk_telemetry_quaternion_destroy() when done to avoid memory leaks.
  */
 typedef struct {
     /**  Quaternion entry 0, also denoted as a */
@@ -238,6 +297,31 @@ typedef struct {
     uint64_t timestamp_us;
 } mavsdk_telemetry_quaternion_t;
 
+/**
+ * @brief Destroy a quaternion struct.
+ *
+ * Frees all memory allocated by MAVSDK for this struct, including any
+ * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
+ * Always call this function when done with the struct, even if it currently
+ * contains no dynamic allocations.
+ *
+ * @param target Pointer to the struct to destroy. Can be NULL (no-op).
+ */
+void mavsdk_telemetry_quaternion_destroy(
+    mavsdk_telemetry_quaternion_t* target);
+
+/**
+ * @brief Destroy an array of quaternion structs.
+ *
+ * Frees all memory allocated for the array and its elements, including any
+ * nested dynamic allocations. Must be called to avoid memory leaks.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ * @param size Number of elements in the array.
+ */
+void mavsdk_telemetry_quaternion_array_destroy(
+    mavsdk_telemetry_quaternion_t** array,
+    size_t size);
 
 /**
  * @brief Euler angle type.
@@ -246,6 +330,9 @@ typedef struct {
  *  The Euler angles follow the convention of a 3-2-1 intrinsic Tait-Bryan rotation sequence.
  * 
  *  For more info see https://en.wikipedia.org/wiki/Euler_angles
+ *
+ * @note This struct may contain dynamically allocated memory. Always call
+ *       mavsdk_telemetry_euler_angle_destroy() when done to avoid memory leaks.
  */
 typedef struct {
     /**  Roll angle in degrees, positive is banking to the right */
@@ -258,9 +345,37 @@ typedef struct {
     uint64_t timestamp_us;
 } mavsdk_telemetry_euler_angle_t;
 
+/**
+ * @brief Destroy a euler_angle struct.
+ *
+ * Frees all memory allocated by MAVSDK for this struct, including any
+ * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
+ * Always call this function when done with the struct, even if it currently
+ * contains no dynamic allocations.
+ *
+ * @param target Pointer to the struct to destroy. Can be NULL (no-op).
+ */
+void mavsdk_telemetry_euler_angle_destroy(
+    mavsdk_telemetry_euler_angle_t* target);
+
+/**
+ * @brief Destroy an array of euler_angle structs.
+ *
+ * Frees all memory allocated for the array and its elements, including any
+ * nested dynamic allocations. Must be called to avoid memory leaks.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ * @param size Number of elements in the array.
+ */
+void mavsdk_telemetry_euler_angle_array_destroy(
+    mavsdk_telemetry_euler_angle_t** array,
+    size_t size);
 
 /**
  * @brief Angular velocity type.
+ *
+ * @note This struct may contain dynamically allocated memory. Always call
+ *       mavsdk_telemetry_angular_velocity_body_destroy() when done to avoid memory leaks.
  */
 typedef struct {
     /**  Roll angular velocity */
@@ -271,9 +386,37 @@ typedef struct {
     float yaw_rad_s;
 } mavsdk_telemetry_angular_velocity_body_t;
 
+/**
+ * @brief Destroy a angular_velocity_body struct.
+ *
+ * Frees all memory allocated by MAVSDK for this struct, including any
+ * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
+ * Always call this function when done with the struct, even if it currently
+ * contains no dynamic allocations.
+ *
+ * @param target Pointer to the struct to destroy. Can be NULL (no-op).
+ */
+void mavsdk_telemetry_angular_velocity_body_destroy(
+    mavsdk_telemetry_angular_velocity_body_t* target);
+
+/**
+ * @brief Destroy an array of angular_velocity_body structs.
+ *
+ * Frees all memory allocated for the array and its elements, including any
+ * nested dynamic allocations. Must be called to avoid memory leaks.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ * @param size Number of elements in the array.
+ */
+void mavsdk_telemetry_angular_velocity_body_array_destroy(
+    mavsdk_telemetry_angular_velocity_body_t** array,
+    size_t size);
 
 /**
  * @brief GPS information type.
+ *
+ * @note This struct may contain dynamically allocated memory. Always call
+ *       mavsdk_telemetry_gps_info_destroy() when done to avoid memory leaks.
  */
 typedef struct {
     /**  Number of visible satellites in use */
@@ -282,12 +425,40 @@ typedef struct {
     mavsdk_telemetry_fix_type_t fix_type;
 } mavsdk_telemetry_gps_info_t;
 
+/**
+ * @brief Destroy a gps_info struct.
+ *
+ * Frees all memory allocated by MAVSDK for this struct, including any
+ * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
+ * Always call this function when done with the struct, even if it currently
+ * contains no dynamic allocations.
+ *
+ * @param target Pointer to the struct to destroy. Can be NULL (no-op).
+ */
+void mavsdk_telemetry_gps_info_destroy(
+    mavsdk_telemetry_gps_info_t* target);
+
+/**
+ * @brief Destroy an array of gps_info structs.
+ *
+ * Frees all memory allocated for the array and its elements, including any
+ * nested dynamic allocations. Must be called to avoid memory leaks.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ * @param size Number of elements in the array.
+ */
+void mavsdk_telemetry_gps_info_array_destroy(
+    mavsdk_telemetry_gps_info_t** array,
+    size_t size);
 
 /**
  * @brief Raw GPS information type.
  * 
  *  Warning: this is an advanced type! If you want the location of the drone, use
  *  the position instead. This message exposes the raw values of the GNSS sensor.
+ *
+ * @note This struct may contain dynamically allocated memory. Always call
+ *       mavsdk_telemetry_raw_gps_destroy() when done to avoid memory leaks.
  */
 typedef struct {
     /**  Timestamp in microseconds (UNIX Epoch time or time since system boot, to be inferred) */
@@ -320,9 +491,37 @@ typedef struct {
     float yaw_deg;
 } mavsdk_telemetry_raw_gps_t;
 
+/**
+ * @brief Destroy a raw_gps struct.
+ *
+ * Frees all memory allocated by MAVSDK for this struct, including any
+ * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
+ * Always call this function when done with the struct, even if it currently
+ * contains no dynamic allocations.
+ *
+ * @param target Pointer to the struct to destroy. Can be NULL (no-op).
+ */
+void mavsdk_telemetry_raw_gps_destroy(
+    mavsdk_telemetry_raw_gps_t* target);
+
+/**
+ * @brief Destroy an array of raw_gps structs.
+ *
+ * Frees all memory allocated for the array and its elements, including any
+ * nested dynamic allocations. Must be called to avoid memory leaks.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ * @param size Number of elements in the array.
+ */
+void mavsdk_telemetry_raw_gps_array_destroy(
+    mavsdk_telemetry_raw_gps_t** array,
+    size_t size);
 
 /**
  * @brief Battery type.
+ *
+ * @note This struct may contain dynamically allocated memory. Always call
+ *       mavsdk_telemetry_battery_destroy() when done to avoid memory leaks.
  */
 typedef struct {
     /**  Battery ID, for systems with multiple batteries */
@@ -343,9 +542,37 @@ typedef struct {
     mavsdk_telemetry_battery_function_t battery_function;
 } mavsdk_telemetry_battery_t;
 
+/**
+ * @brief Destroy a battery struct.
+ *
+ * Frees all memory allocated by MAVSDK for this struct, including any
+ * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
+ * Always call this function when done with the struct, even if it currently
+ * contains no dynamic allocations.
+ *
+ * @param target Pointer to the struct to destroy. Can be NULL (no-op).
+ */
+void mavsdk_telemetry_battery_destroy(
+    mavsdk_telemetry_battery_t* target);
+
+/**
+ * @brief Destroy an array of battery structs.
+ *
+ * Frees all memory allocated for the array and its elements, including any
+ * nested dynamic allocations. Must be called to avoid memory leaks.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ * @param size Number of elements in the array.
+ */
+void mavsdk_telemetry_battery_array_destroy(
+    mavsdk_telemetry_battery_t** array,
+    size_t size);
 
 /**
  * @brief Health type.
+ *
+ * @note This struct may contain dynamically allocated memory. Always call
+ *       mavsdk_telemetry_health_destroy() when done to avoid memory leaks.
  */
 typedef struct {
     /**  True if the gyrometer is calibrated */
@@ -364,9 +591,37 @@ typedef struct {
     bool is_armable;
 } mavsdk_telemetry_health_t;
 
+/**
+ * @brief Destroy a health struct.
+ *
+ * Frees all memory allocated by MAVSDK for this struct, including any
+ * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
+ * Always call this function when done with the struct, even if it currently
+ * contains no dynamic allocations.
+ *
+ * @param target Pointer to the struct to destroy. Can be NULL (no-op).
+ */
+void mavsdk_telemetry_health_destroy(
+    mavsdk_telemetry_health_t* target);
+
+/**
+ * @brief Destroy an array of health structs.
+ *
+ * Frees all memory allocated for the array and its elements, including any
+ * nested dynamic allocations. Must be called to avoid memory leaks.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ * @param size Number of elements in the array.
+ */
+void mavsdk_telemetry_health_array_destroy(
+    mavsdk_telemetry_health_t** array,
+    size_t size);
 
 /**
  * @brief Remote control status type.
+ *
+ * @note This struct may contain dynamically allocated memory. Always call
+ *       mavsdk_telemetry_rc_status_destroy() when done to avoid memory leaks.
  */
 typedef struct {
     /**  True if an RC signal has been available once */
@@ -377,9 +632,37 @@ typedef struct {
     float signal_strength_percent;
 } mavsdk_telemetry_rc_status_t;
 
+/**
+ * @brief Destroy a rc_status struct.
+ *
+ * Frees all memory allocated by MAVSDK for this struct, including any
+ * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
+ * Always call this function when done with the struct, even if it currently
+ * contains no dynamic allocations.
+ *
+ * @param target Pointer to the struct to destroy. Can be NULL (no-op).
+ */
+void mavsdk_telemetry_rc_status_destroy(
+    mavsdk_telemetry_rc_status_t* target);
+
+/**
+ * @brief Destroy an array of rc_status structs.
+ *
+ * Frees all memory allocated for the array and its elements, including any
+ * nested dynamic allocations. Must be called to avoid memory leaks.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ * @param size Number of elements in the array.
+ */
+void mavsdk_telemetry_rc_status_array_destroy(
+    mavsdk_telemetry_rc_status_t** array,
+    size_t size);
 
 /**
  * @brief StatusText information type.
+ *
+ * @note This struct may contain dynamically allocated memory. Always call
+ *       mavsdk_telemetry_status_text_destroy() when done to avoid memory leaks.
  */
 typedef struct {
     /**  Message type */
@@ -388,11 +671,36 @@ typedef struct {
     char* text;
 } mavsdk_telemetry_status_text_t;
 
+/**
+ * @brief Destroy a status_text struct.
+ *
+ * Frees all memory allocated by MAVSDK for this struct, including any
+ * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
+ * Always call this function when done with the struct, even if it currently
+ * contains no dynamic allocations.
+ *
+ * @param target Pointer to the struct to destroy. Can be NULL (no-op).
+ */
+void mavsdk_telemetry_status_text_destroy(
+    mavsdk_telemetry_status_text_t* target);
+
+/**
+ * @brief Destroy an array of status_text structs.
+ *
+ * Frees all memory allocated for the array and its elements, including any
+ * nested dynamic allocations. Must be called to avoid memory leaks.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ * @param size Number of elements in the array.
+ */
+void mavsdk_telemetry_status_text_array_destroy(
+    mavsdk_telemetry_status_text_t** array,
+    size_t size);
 
 /**
  * @brief Actuator control target type.
- * 
- * @note This struct contains dynamically allocated memory. You must call
+ *
+ * @note This struct may contain dynamically allocated memory. Always call
  *       mavsdk_telemetry_actuator_control_target_destroy() when done to avoid memory leaks.
  */
 typedef struct {
@@ -405,19 +713,34 @@ typedef struct {
 
 /**
  * @brief Destroy a actuator_control_target struct.
- * 
+ *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
- * 
+ * Always call this function when done with the struct, even if it currently
+ * contains no dynamic allocations.
+ *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
 void mavsdk_telemetry_actuator_control_target_destroy(
     mavsdk_telemetry_actuator_control_target_t* target);
 
 /**
+ * @brief Destroy an array of actuator_control_target structs.
+ *
+ * Frees all memory allocated for the array and its elements, including any
+ * nested dynamic allocations. Must be called to avoid memory leaks.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ * @param size Number of elements in the array.
+ */
+void mavsdk_telemetry_actuator_control_target_array_destroy(
+    mavsdk_telemetry_actuator_control_target_t** array,
+    size_t size);
+
+/**
  * @brief Actuator output status type.
- * 
- * @note This struct contains dynamically allocated memory. You must call
+ *
+ * @note This struct may contain dynamically allocated memory. Always call
  *       mavsdk_telemetry_actuator_output_status_destroy() when done to avoid memory leaks.
  */
 typedef struct {
@@ -430,14 +753,29 @@ typedef struct {
 
 /**
  * @brief Destroy a actuator_output_status struct.
- * 
+ *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
- * 
+ * Always call this function when done with the struct, even if it currently
+ * contains no dynamic allocations.
+ *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
 void mavsdk_telemetry_actuator_output_status_destroy(
     mavsdk_telemetry_actuator_output_status_t* target);
+
+/**
+ * @brief Destroy an array of actuator_output_status structs.
+ *
+ * Frees all memory allocated for the array and its elements, including any
+ * nested dynamic allocations. Must be called to avoid memory leaks.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ * @param size Number of elements in the array.
+ */
+void mavsdk_telemetry_actuator_output_status_array_destroy(
+    mavsdk_telemetry_actuator_output_status_t** array,
+    size_t size);
 
 /**
  * @brief Covariance type.
@@ -445,8 +783,8 @@ void mavsdk_telemetry_actuator_output_status_destroy(
  *  Row-major representation of a 6x6 cross-covariance matrix
  *  upper right triangle.
  *  Set first to NaN if unknown.
- * 
- * @note This struct contains dynamically allocated memory. You must call
+ *
+ * @note This struct may contain dynamically allocated memory. Always call
  *       mavsdk_telemetry_covariance_destroy() when done to avoid memory leaks.
  */
 typedef struct {
@@ -457,17 +795,35 @@ typedef struct {
 
 /**
  * @brief Destroy a covariance struct.
- * 
+ *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
- * 
+ * Always call this function when done with the struct, even if it currently
+ * contains no dynamic allocations.
+ *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
 void mavsdk_telemetry_covariance_destroy(
     mavsdk_telemetry_covariance_t* target);
 
 /**
+ * @brief Destroy an array of covariance structs.
+ *
+ * Frees all memory allocated for the array and its elements, including any
+ * nested dynamic allocations. Must be called to avoid memory leaks.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ * @param size Number of elements in the array.
+ */
+void mavsdk_telemetry_covariance_array_destroy(
+    mavsdk_telemetry_covariance_t** array,
+    size_t size);
+
+/**
  * @brief Velocity type, represented in the Body (X Y Z) frame and in metres/second.
+ *
+ * @note This struct may contain dynamically allocated memory. Always call
+ *       mavsdk_telemetry_velocity_body_destroy() when done to avoid memory leaks.
  */
 typedef struct {
     /**  Velocity in X in metres/second */
@@ -478,9 +834,37 @@ typedef struct {
     float z_m_s;
 } mavsdk_telemetry_velocity_body_t;
 
+/**
+ * @brief Destroy a velocity_body struct.
+ *
+ * Frees all memory allocated by MAVSDK for this struct, including any
+ * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
+ * Always call this function when done with the struct, even if it currently
+ * contains no dynamic allocations.
+ *
+ * @param target Pointer to the struct to destroy. Can be NULL (no-op).
+ */
+void mavsdk_telemetry_velocity_body_destroy(
+    mavsdk_telemetry_velocity_body_t* target);
+
+/**
+ * @brief Destroy an array of velocity_body structs.
+ *
+ * Frees all memory allocated for the array and its elements, including any
+ * nested dynamic allocations. Must be called to avoid memory leaks.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ * @param size Number of elements in the array.
+ */
+void mavsdk_telemetry_velocity_body_array_destroy(
+    mavsdk_telemetry_velocity_body_t** array,
+    size_t size);
 
 /**
  * @brief Position type, represented in the Body (X Y Z) frame
+ *
+ * @note This struct may contain dynamically allocated memory. Always call
+ *       mavsdk_telemetry_position_body_destroy() when done to avoid memory leaks.
  */
 typedef struct {
     /**  X Position in metres. */
@@ -491,6 +875,31 @@ typedef struct {
     float z_m;
 } mavsdk_telemetry_position_body_t;
 
+/**
+ * @brief Destroy a position_body struct.
+ *
+ * Frees all memory allocated by MAVSDK for this struct, including any
+ * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
+ * Always call this function when done with the struct, even if it currently
+ * contains no dynamic allocations.
+ *
+ * @param target Pointer to the struct to destroy. Can be NULL (no-op).
+ */
+void mavsdk_telemetry_position_body_destroy(
+    mavsdk_telemetry_position_body_t* target);
+
+/**
+ * @brief Destroy an array of position_body structs.
+ *
+ * Frees all memory allocated for the array and its elements, including any
+ * nested dynamic allocations. Must be called to avoid memory leaks.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ * @param size Number of elements in the array.
+ */
+void mavsdk_telemetry_position_body_array_destroy(
+    mavsdk_telemetry_position_body_t** array,
+    size_t size);
 
 /**
  * @brief Mavlink frame id
@@ -508,6 +917,9 @@ typedef enum {
 
 /**
  * @brief Odometry message type.
+ *
+ * @note This struct may contain dynamically allocated memory. Always call
+ *       mavsdk_telemetry_odometry_destroy() when done to avoid memory leaks.
  */
 typedef struct {
     /**  Timestamp (0 to use Backend timestamp). */
@@ -530,9 +942,37 @@ typedef struct {
     mavsdk_telemetry_covariance_t velocity_covariance;
 } mavsdk_telemetry_odometry_t;
 
+/**
+ * @brief Destroy a odometry struct.
+ *
+ * Frees all memory allocated by MAVSDK for this struct, including any
+ * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
+ * Always call this function when done with the struct, even if it currently
+ * contains no dynamic allocations.
+ *
+ * @param target Pointer to the struct to destroy. Can be NULL (no-op).
+ */
+void mavsdk_telemetry_odometry_destroy(
+    mavsdk_telemetry_odometry_t* target);
+
+/**
+ * @brief Destroy an array of odometry structs.
+ *
+ * Frees all memory allocated for the array and its elements, including any
+ * nested dynamic allocations. Must be called to avoid memory leaks.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ * @param size Number of elements in the array.
+ */
+void mavsdk_telemetry_odometry_array_destroy(
+    mavsdk_telemetry_odometry_t** array,
+    size_t size);
 
 /**
  * @brief DistanceSensor message type.
+ *
+ * @note This struct may contain dynamically allocated memory. Always call
+ *       mavsdk_telemetry_distance_sensor_destroy() when done to avoid memory leaks.
  */
 typedef struct {
     /**  Minimum distance the sensor can measure, NaN if unknown. */
@@ -545,9 +985,37 @@ typedef struct {
     mavsdk_telemetry_euler_angle_t orientation;
 } mavsdk_telemetry_distance_sensor_t;
 
+/**
+ * @brief Destroy a distance_sensor struct.
+ *
+ * Frees all memory allocated by MAVSDK for this struct, including any
+ * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
+ * Always call this function when done with the struct, even if it currently
+ * contains no dynamic allocations.
+ *
+ * @param target Pointer to the struct to destroy. Can be NULL (no-op).
+ */
+void mavsdk_telemetry_distance_sensor_destroy(
+    mavsdk_telemetry_distance_sensor_t* target);
+
+/**
+ * @brief Destroy an array of distance_sensor structs.
+ *
+ * Frees all memory allocated for the array and its elements, including any
+ * nested dynamic allocations. Must be called to avoid memory leaks.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ * @param size Number of elements in the array.
+ */
+void mavsdk_telemetry_distance_sensor_array_destroy(
+    mavsdk_telemetry_distance_sensor_t** array,
+    size_t size);
 
 /**
  * @brief Scaled Pressure message type.
+ *
+ * @note This struct may contain dynamically allocated memory. Always call
+ *       mavsdk_telemetry_scaled_pressure_destroy() when done to avoid memory leaks.
  */
 typedef struct {
     /**  Timestamp (time since system boot) */
@@ -562,9 +1030,37 @@ typedef struct {
     float differential_pressure_temperature_deg;
 } mavsdk_telemetry_scaled_pressure_t;
 
+/**
+ * @brief Destroy a scaled_pressure struct.
+ *
+ * Frees all memory allocated by MAVSDK for this struct, including any
+ * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
+ * Always call this function when done with the struct, even if it currently
+ * contains no dynamic allocations.
+ *
+ * @param target Pointer to the struct to destroy. Can be NULL (no-op).
+ */
+void mavsdk_telemetry_scaled_pressure_destroy(
+    mavsdk_telemetry_scaled_pressure_t* target);
+
+/**
+ * @brief Destroy an array of scaled_pressure structs.
+ *
+ * Frees all memory allocated for the array and its elements, including any
+ * nested dynamic allocations. Must be called to avoid memory leaks.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ * @param size Number of elements in the array.
+ */
+void mavsdk_telemetry_scaled_pressure_array_destroy(
+    mavsdk_telemetry_scaled_pressure_t** array,
+    size_t size);
 
 /**
  * @brief PositionNed message type.
+ *
+ * @note This struct may contain dynamically allocated memory. Always call
+ *       mavsdk_telemetry_position_ned_destroy() when done to avoid memory leaks.
  */
 typedef struct {
     /**  Position along north direction in metres */
@@ -575,9 +1071,37 @@ typedef struct {
     float down_m;
 } mavsdk_telemetry_position_ned_t;
 
+/**
+ * @brief Destroy a position_ned struct.
+ *
+ * Frees all memory allocated by MAVSDK for this struct, including any
+ * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
+ * Always call this function when done with the struct, even if it currently
+ * contains no dynamic allocations.
+ *
+ * @param target Pointer to the struct to destroy. Can be NULL (no-op).
+ */
+void mavsdk_telemetry_position_ned_destroy(
+    mavsdk_telemetry_position_ned_t* target);
+
+/**
+ * @brief Destroy an array of position_ned structs.
+ *
+ * Frees all memory allocated for the array and its elements, including any
+ * nested dynamic allocations. Must be called to avoid memory leaks.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ * @param size Number of elements in the array.
+ */
+void mavsdk_telemetry_position_ned_array_destroy(
+    mavsdk_telemetry_position_ned_t** array,
+    size_t size);
 
 /**
  * @brief VelocityNed message type.
+ *
+ * @note This struct may contain dynamically allocated memory. Always call
+ *       mavsdk_telemetry_velocity_ned_destroy() when done to avoid memory leaks.
  */
 typedef struct {
     /**  Velocity along north direction in metres per second */
@@ -588,9 +1112,37 @@ typedef struct {
     float down_m_s;
 } mavsdk_telemetry_velocity_ned_t;
 
+/**
+ * @brief Destroy a velocity_ned struct.
+ *
+ * Frees all memory allocated by MAVSDK for this struct, including any
+ * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
+ * Always call this function when done with the struct, even if it currently
+ * contains no dynamic allocations.
+ *
+ * @param target Pointer to the struct to destroy. Can be NULL (no-op).
+ */
+void mavsdk_telemetry_velocity_ned_destroy(
+    mavsdk_telemetry_velocity_ned_t* target);
+
+/**
+ * @brief Destroy an array of velocity_ned structs.
+ *
+ * Frees all memory allocated for the array and its elements, including any
+ * nested dynamic allocations. Must be called to avoid memory leaks.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ * @param size Number of elements in the array.
+ */
+void mavsdk_telemetry_velocity_ned_array_destroy(
+    mavsdk_telemetry_velocity_ned_t** array,
+    size_t size);
 
 /**
  * @brief PositionVelocityNed message type.
+ *
+ * @note This struct may contain dynamically allocated memory. Always call
+ *       mavsdk_telemetry_position_velocity_ned_destroy() when done to avoid memory leaks.
  */
 typedef struct {
     /**  Position (NED) */
@@ -599,9 +1151,37 @@ typedef struct {
     mavsdk_telemetry_velocity_ned_t velocity;
 } mavsdk_telemetry_position_velocity_ned_t;
 
+/**
+ * @brief Destroy a position_velocity_ned struct.
+ *
+ * Frees all memory allocated by MAVSDK for this struct, including any
+ * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
+ * Always call this function when done with the struct, even if it currently
+ * contains no dynamic allocations.
+ *
+ * @param target Pointer to the struct to destroy. Can be NULL (no-op).
+ */
+void mavsdk_telemetry_position_velocity_ned_destroy(
+    mavsdk_telemetry_position_velocity_ned_t* target);
+
+/**
+ * @brief Destroy an array of position_velocity_ned structs.
+ *
+ * Frees all memory allocated for the array and its elements, including any
+ * nested dynamic allocations. Must be called to avoid memory leaks.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ * @param size Number of elements in the array.
+ */
+void mavsdk_telemetry_position_velocity_ned_array_destroy(
+    mavsdk_telemetry_position_velocity_ned_t** array,
+    size_t size);
 
 /**
  * @brief GroundTruth message type.
+ *
+ * @note This struct may contain dynamically allocated memory. Always call
+ *       mavsdk_telemetry_ground_truth_destroy() when done to avoid memory leaks.
  */
 typedef struct {
     /**  Latitude in degrees (range: -90 to +90) */
@@ -612,9 +1192,37 @@ typedef struct {
     float absolute_altitude_m;
 } mavsdk_telemetry_ground_truth_t;
 
+/**
+ * @brief Destroy a ground_truth struct.
+ *
+ * Frees all memory allocated by MAVSDK for this struct, including any
+ * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
+ * Always call this function when done with the struct, even if it currently
+ * contains no dynamic allocations.
+ *
+ * @param target Pointer to the struct to destroy. Can be NULL (no-op).
+ */
+void mavsdk_telemetry_ground_truth_destroy(
+    mavsdk_telemetry_ground_truth_t* target);
+
+/**
+ * @brief Destroy an array of ground_truth structs.
+ *
+ * Frees all memory allocated for the array and its elements, including any
+ * nested dynamic allocations. Must be called to avoid memory leaks.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ * @param size Number of elements in the array.
+ */
+void mavsdk_telemetry_ground_truth_array_destroy(
+    mavsdk_telemetry_ground_truth_t** array,
+    size_t size);
 
 /**
  * @brief FixedwingMetrics message type.
+ *
+ * @note This struct may contain dynamically allocated memory. Always call
+ *       mavsdk_telemetry_fixedwing_metrics_destroy() when done to avoid memory leaks.
  */
 typedef struct {
     /**  Current indicated airspeed (IAS) in metres per second */
@@ -631,9 +1239,37 @@ typedef struct {
     float absolute_altitude_m;
 } mavsdk_telemetry_fixedwing_metrics_t;
 
+/**
+ * @brief Destroy a fixedwing_metrics struct.
+ *
+ * Frees all memory allocated by MAVSDK for this struct, including any
+ * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
+ * Always call this function when done with the struct, even if it currently
+ * contains no dynamic allocations.
+ *
+ * @param target Pointer to the struct to destroy. Can be NULL (no-op).
+ */
+void mavsdk_telemetry_fixedwing_metrics_destroy(
+    mavsdk_telemetry_fixedwing_metrics_t* target);
+
+/**
+ * @brief Destroy an array of fixedwing_metrics structs.
+ *
+ * Frees all memory allocated for the array and its elements, including any
+ * nested dynamic allocations. Must be called to avoid memory leaks.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ * @param size Number of elements in the array.
+ */
+void mavsdk_telemetry_fixedwing_metrics_array_destroy(
+    mavsdk_telemetry_fixedwing_metrics_t** array,
+    size_t size);
 
 /**
  * @brief AccelerationFrd message type.
+ *
+ * @note This struct may contain dynamically allocated memory. Always call
+ *       mavsdk_telemetry_acceleration_frd_destroy() when done to avoid memory leaks.
  */
 typedef struct {
     /**  Acceleration in forward direction in metres per second^2 */
@@ -644,9 +1280,37 @@ typedef struct {
     float down_m_s2;
 } mavsdk_telemetry_acceleration_frd_t;
 
+/**
+ * @brief Destroy a acceleration_frd struct.
+ *
+ * Frees all memory allocated by MAVSDK for this struct, including any
+ * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
+ * Always call this function when done with the struct, even if it currently
+ * contains no dynamic allocations.
+ *
+ * @param target Pointer to the struct to destroy. Can be NULL (no-op).
+ */
+void mavsdk_telemetry_acceleration_frd_destroy(
+    mavsdk_telemetry_acceleration_frd_t* target);
+
+/**
+ * @brief Destroy an array of acceleration_frd structs.
+ *
+ * Frees all memory allocated for the array and its elements, including any
+ * nested dynamic allocations. Must be called to avoid memory leaks.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ * @param size Number of elements in the array.
+ */
+void mavsdk_telemetry_acceleration_frd_array_destroy(
+    mavsdk_telemetry_acceleration_frd_t** array,
+    size_t size);
 
 /**
  * @brief AngularVelocityFrd message type.
+ *
+ * @note This struct may contain dynamically allocated memory. Always call
+ *       mavsdk_telemetry_angular_velocity_frd_destroy() when done to avoid memory leaks.
  */
 typedef struct {
     /**  Angular velocity in forward direction in radians per second */
@@ -657,9 +1321,37 @@ typedef struct {
     float down_rad_s;
 } mavsdk_telemetry_angular_velocity_frd_t;
 
+/**
+ * @brief Destroy a angular_velocity_frd struct.
+ *
+ * Frees all memory allocated by MAVSDK for this struct, including any
+ * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
+ * Always call this function when done with the struct, even if it currently
+ * contains no dynamic allocations.
+ *
+ * @param target Pointer to the struct to destroy. Can be NULL (no-op).
+ */
+void mavsdk_telemetry_angular_velocity_frd_destroy(
+    mavsdk_telemetry_angular_velocity_frd_t* target);
+
+/**
+ * @brief Destroy an array of angular_velocity_frd structs.
+ *
+ * Frees all memory allocated for the array and its elements, including any
+ * nested dynamic allocations. Must be called to avoid memory leaks.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ * @param size Number of elements in the array.
+ */
+void mavsdk_telemetry_angular_velocity_frd_array_destroy(
+    mavsdk_telemetry_angular_velocity_frd_t** array,
+    size_t size);
 
 /**
  * @brief MagneticFieldFrd message type.
+ *
+ * @note This struct may contain dynamically allocated memory. Always call
+ *       mavsdk_telemetry_magnetic_field_frd_destroy() when done to avoid memory leaks.
  */
 typedef struct {
     /**  Magnetic field in forward direction measured in Gauss */
@@ -670,9 +1362,37 @@ typedef struct {
     float down_gauss;
 } mavsdk_telemetry_magnetic_field_frd_t;
 
+/**
+ * @brief Destroy a magnetic_field_frd struct.
+ *
+ * Frees all memory allocated by MAVSDK for this struct, including any
+ * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
+ * Always call this function when done with the struct, even if it currently
+ * contains no dynamic allocations.
+ *
+ * @param target Pointer to the struct to destroy. Can be NULL (no-op).
+ */
+void mavsdk_telemetry_magnetic_field_frd_destroy(
+    mavsdk_telemetry_magnetic_field_frd_t* target);
+
+/**
+ * @brief Destroy an array of magnetic_field_frd structs.
+ *
+ * Frees all memory allocated for the array and its elements, including any
+ * nested dynamic allocations. Must be called to avoid memory leaks.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ * @param size Number of elements in the array.
+ */
+void mavsdk_telemetry_magnetic_field_frd_array_destroy(
+    mavsdk_telemetry_magnetic_field_frd_t** array,
+    size_t size);
 
 /**
  * @brief Imu message type.
+ *
+ * @note This struct may contain dynamically allocated memory. Always call
+ *       mavsdk_telemetry_imu_destroy() when done to avoid memory leaks.
  */
 typedef struct {
     /**  Acceleration */
@@ -687,9 +1407,37 @@ typedef struct {
     uint64_t timestamp_us;
 } mavsdk_telemetry_imu_t;
 
+/**
+ * @brief Destroy a imu struct.
+ *
+ * Frees all memory allocated by MAVSDK for this struct, including any
+ * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
+ * Always call this function when done with the struct, even if it currently
+ * contains no dynamic allocations.
+ *
+ * @param target Pointer to the struct to destroy. Can be NULL (no-op).
+ */
+void mavsdk_telemetry_imu_destroy(
+    mavsdk_telemetry_imu_t* target);
+
+/**
+ * @brief Destroy an array of imu structs.
+ *
+ * Frees all memory allocated for the array and its elements, including any
+ * nested dynamic allocations. Must be called to avoid memory leaks.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ * @param size Number of elements in the array.
+ */
+void mavsdk_telemetry_imu_array_destroy(
+    mavsdk_telemetry_imu_t** array,
+    size_t size);
 
 /**
  * @brief Gps global origin type.
+ *
+ * @note This struct may contain dynamically allocated memory. Always call
+ *       mavsdk_telemetry_gps_global_origin_destroy() when done to avoid memory leaks.
  */
 typedef struct {
     /**  Latitude of the origin */
@@ -700,9 +1448,37 @@ typedef struct {
     float altitude_m;
 } mavsdk_telemetry_gps_global_origin_t;
 
+/**
+ * @brief Destroy a gps_global_origin struct.
+ *
+ * Frees all memory allocated by MAVSDK for this struct, including any
+ * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
+ * Always call this function when done with the struct, even if it currently
+ * contains no dynamic allocations.
+ *
+ * @param target Pointer to the struct to destroy. Can be NULL (no-op).
+ */
+void mavsdk_telemetry_gps_global_origin_destroy(
+    mavsdk_telemetry_gps_global_origin_t* target);
+
+/**
+ * @brief Destroy an array of gps_global_origin structs.
+ *
+ * Frees all memory allocated for the array and its elements, including any
+ * nested dynamic allocations. Must be called to avoid memory leaks.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ * @param size Number of elements in the array.
+ */
+void mavsdk_telemetry_gps_global_origin_array_destroy(
+    mavsdk_telemetry_gps_global_origin_t** array,
+    size_t size);
 
 /**
  * @brief Altitude message type
+ *
+ * @note This struct may contain dynamically allocated memory. Always call
+ *       mavsdk_telemetry_altitude_destroy() when done to avoid memory leaks.
  */
 typedef struct {
     /**  Altitude in meters is initialized on system boot and monotonic */
@@ -719,9 +1495,37 @@ typedef struct {
     float bottom_clearance_m;
 } mavsdk_telemetry_altitude_t;
 
+/**
+ * @brief Destroy a altitude struct.
+ *
+ * Frees all memory allocated by MAVSDK for this struct, including any
+ * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
+ * Always call this function when done with the struct, even if it currently
+ * contains no dynamic allocations.
+ *
+ * @param target Pointer to the struct to destroy. Can be NULL (no-op).
+ */
+void mavsdk_telemetry_altitude_destroy(
+    mavsdk_telemetry_altitude_t* target);
+
+/**
+ * @brief Destroy an array of altitude structs.
+ *
+ * Frees all memory allocated for the array and its elements, including any
+ * nested dynamic allocations. Must be called to avoid memory leaks.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ * @param size Number of elements in the array.
+ */
+void mavsdk_telemetry_altitude_array_destroy(
+    mavsdk_telemetry_altitude_t** array,
+    size_t size);
 
 /**
  * @brief Wind message type
+ *
+ * @note This struct may contain dynamically allocated memory. Always call
+ *       mavsdk_telemetry_wind_destroy() when done to avoid memory leaks.
  */
 typedef struct {
     /**  Wind in North (NED) direction */
@@ -742,6 +1546,31 @@ typedef struct {
     float vertical_wind_speed_accuracy_m_s;
 } mavsdk_telemetry_wind_t;
 
+/**
+ * @brief Destroy a wind struct.
+ *
+ * Frees all memory allocated by MAVSDK for this struct, including any
+ * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
+ * Always call this function when done with the struct, even if it currently
+ * contains no dynamic allocations.
+ *
+ * @param target Pointer to the struct to destroy. Can be NULL (no-op).
+ */
+void mavsdk_telemetry_wind_destroy(
+    mavsdk_telemetry_wind_t* target);
+
+/**
+ * @brief Destroy an array of wind structs.
+ *
+ * Frees all memory allocated for the array and its elements, including any
+ * nested dynamic allocations. Must be called to avoid memory leaks.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ * @param size Number of elements in the array.
+ */
+void mavsdk_telemetry_wind_array_destroy(
+    mavsdk_telemetry_wind_t** array,
+    size_t size);
 
 /**
  * @brief Possible results returned for telemetry requests.
@@ -767,6 +1596,81 @@ typedef enum {
 
 
 
+// ===== Primitive Array Destroy Functions =====
+/**
+ * @brief Destroy an array of float.
+ *
+ * Frees the memory allocated for the array.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ */
+void mavsdk_telemetry_float_array_destroy(float** array);
+/**
+ * @brief Destroy an array of double.
+ *
+ * Frees the memory allocated for the array.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ */
+void mavsdk_telemetry_double_array_destroy(double** array);
+/**
+ * @brief Destroy an array of int32_t.
+ *
+ * Frees the memory allocated for the array.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ */
+void mavsdk_telemetry_int32t_array_destroy(int32_t** array);
+/**
+ * @brief Destroy an array of uint32_t.
+ *
+ * Frees the memory allocated for the array.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ */
+void mavsdk_telemetry_uint32t_array_destroy(uint32_t** array);
+/**
+ * @brief Destroy an array of int64_t.
+ *
+ * Frees the memory allocated for the array.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ */
+void mavsdk_telemetry_int64t_array_destroy(int64_t** array);
+/**
+ * @brief Destroy an array of uint64_t.
+ *
+ * Frees the memory allocated for the array.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ */
+void mavsdk_telemetry_uint64t_array_destroy(uint64_t** array);
+/**
+ * @brief Destroy an array of bool.
+ *
+ * Frees the memory allocated for the array.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ */
+void mavsdk_telemetry_bool_array_destroy(bool** array);
+
+/**
+ * @brief Destroy a string (char*).
+ *
+ * Frees the memory allocated for the string.
+ *
+ * @param str Pointer to the string pointer. Will be set to NULL after freeing.
+ */
+void mavsdk_telemetry_string_destroy(char** str);
+
+/**
+ * @brief Destroy a byte buffer (uint8_t*).
+ *
+ * Frees the memory allocated for the byte buffer.
+ *
+ * @param buffer Pointer to the buffer pointer. Will be set to NULL after freeing.
+ */
+void mavsdk_telemetry_byte_buffer_destroy(uint8_t** buffer);
 
 // ===== Callback Typedefs =====
 typedef void (*mavsdk_telemetry_position_callback_t)(const mavsdk_telemetry_position_t position, void* user_data);
@@ -836,7 +1740,7 @@ CMAVSDK_EXPORT void mavsdk_telemetry_destroy(mavsdk_telemetry_t telemetry);
 
 /**
  * @brief Subscribe to 'position' updates.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
@@ -849,9 +1753,9 @@ CMAVSDK_EXPORT mavsdk_telemetry_position_handle_t mavsdk_telemetry_subscribe_pos
 
 /**
  * @brief Unsubscribe from 'position' updates.
- * 
+ *
  * Stops the subscription and frees resources associated with the handle.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param handle The subscription handle returned by mavsdk_telemetry_subscribe_position().
  */
@@ -861,9 +1765,9 @@ CMAVSDK_EXPORT void mavsdk_telemetry_unsubscribe_position(
 
 /**
  * @brief Get the current position (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param position_out Pointer to store the result.
  */
@@ -876,7 +1780,7 @@ mavsdk_telemetry_position(
 
 /**
  * @brief Subscribe to 'home position' updates.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
@@ -889,9 +1793,9 @@ CMAVSDK_EXPORT mavsdk_telemetry_home_handle_t mavsdk_telemetry_subscribe_home(
 
 /**
  * @brief Unsubscribe from 'home' updates.
- * 
+ *
  * Stops the subscription and frees resources associated with the handle.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param handle The subscription handle returned by mavsdk_telemetry_subscribe_home().
  */
@@ -901,9 +1805,9 @@ CMAVSDK_EXPORT void mavsdk_telemetry_unsubscribe_home(
 
 /**
  * @brief Get the current home (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param home_out Pointer to store the result.
  */
@@ -916,7 +1820,7 @@ mavsdk_telemetry_home(
 
 /**
  * @brief Subscribe to in-air updates.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
@@ -929,9 +1833,9 @@ CMAVSDK_EXPORT mavsdk_telemetry_in_air_handle_t mavsdk_telemetry_subscribe_in_ai
 
 /**
  * @brief Unsubscribe from 'in_air' updates.
- * 
+ *
  * Stops the subscription and frees resources associated with the handle.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param handle The subscription handle returned by mavsdk_telemetry_subscribe_in_air().
  */
@@ -941,9 +1845,9 @@ CMAVSDK_EXPORT void mavsdk_telemetry_unsubscribe_in_air(
 
 /**
  * @brief Get the current in air (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param in_air_out Pointer to store the result.
  */
@@ -956,7 +1860,7 @@ mavsdk_telemetry_in_air(
 
 /**
  * @brief Subscribe to landed state updates
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
@@ -969,9 +1873,9 @@ CMAVSDK_EXPORT mavsdk_telemetry_landed_state_handle_t mavsdk_telemetry_subscribe
 
 /**
  * @brief Unsubscribe from 'landed_state' updates.
- * 
+ *
  * Stops the subscription and frees resources associated with the handle.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param handle The subscription handle returned by mavsdk_telemetry_subscribe_landed_state().
  */
@@ -981,9 +1885,9 @@ CMAVSDK_EXPORT void mavsdk_telemetry_unsubscribe_landed_state(
 
 /**
  * @brief Get the current landed state (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param landed_state_out Pointer to store the result.
  */
@@ -996,7 +1900,7 @@ mavsdk_telemetry_landed_state(
 
 /**
  * @brief Subscribe to armed updates.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
@@ -1009,9 +1913,9 @@ CMAVSDK_EXPORT mavsdk_telemetry_armed_handle_t mavsdk_telemetry_subscribe_armed(
 
 /**
  * @brief Unsubscribe from 'armed' updates.
- * 
+ *
  * Stops the subscription and frees resources associated with the handle.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param handle The subscription handle returned by mavsdk_telemetry_subscribe_armed().
  */
@@ -1021,9 +1925,9 @@ CMAVSDK_EXPORT void mavsdk_telemetry_unsubscribe_armed(
 
 /**
  * @brief Get the current armed (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param armed_out Pointer to store the result.
  */
@@ -1036,7 +1940,7 @@ mavsdk_telemetry_armed(
 
 /**
  * @brief subscribe to vtol state Updates
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
@@ -1049,9 +1953,9 @@ CMAVSDK_EXPORT mavsdk_telemetry_vtol_state_handle_t mavsdk_telemetry_subscribe_v
 
 /**
  * @brief Unsubscribe from 'vtol_state' updates.
- * 
+ *
  * Stops the subscription and frees resources associated with the handle.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param handle The subscription handle returned by mavsdk_telemetry_subscribe_vtol_state().
  */
@@ -1061,9 +1965,9 @@ CMAVSDK_EXPORT void mavsdk_telemetry_unsubscribe_vtol_state(
 
 /**
  * @brief Get the current vtol state (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param vtol_state_out Pointer to store the result.
  */
@@ -1076,7 +1980,7 @@ mavsdk_telemetry_vtol_state(
 
 /**
  * @brief Subscribe to 'attitude' updates (quaternion).
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
@@ -1089,9 +1993,9 @@ CMAVSDK_EXPORT mavsdk_telemetry_attitude_quaternion_handle_t mavsdk_telemetry_su
 
 /**
  * @brief Unsubscribe from 'attitude_quaternion' updates.
- * 
+ *
  * Stops the subscription and frees resources associated with the handle.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param handle The subscription handle returned by mavsdk_telemetry_subscribe_attitude_quaternion().
  */
@@ -1101,9 +2005,9 @@ CMAVSDK_EXPORT void mavsdk_telemetry_unsubscribe_attitude_quaternion(
 
 /**
  * @brief Get the current attitude quaternion (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param attitude_quaternion_out Pointer to store the result.
  */
@@ -1116,7 +2020,7 @@ mavsdk_telemetry_attitude_quaternion(
 
 /**
  * @brief Subscribe to 'attitude' updates (Euler).
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
@@ -1129,9 +2033,9 @@ CMAVSDK_EXPORT mavsdk_telemetry_attitude_euler_handle_t mavsdk_telemetry_subscri
 
 /**
  * @brief Unsubscribe from 'attitude_euler' updates.
- * 
+ *
  * Stops the subscription and frees resources associated with the handle.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param handle The subscription handle returned by mavsdk_telemetry_subscribe_attitude_euler().
  */
@@ -1141,9 +2045,9 @@ CMAVSDK_EXPORT void mavsdk_telemetry_unsubscribe_attitude_euler(
 
 /**
  * @brief Get the current attitude euler (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param attitude_euler_out Pointer to store the result.
  */
@@ -1156,7 +2060,7 @@ mavsdk_telemetry_attitude_euler(
 
 /**
  * @brief Subscribe to 'attitude' updates (angular velocity)
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
@@ -1169,9 +2073,9 @@ CMAVSDK_EXPORT mavsdk_telemetry_attitude_angular_velocity_body_handle_t mavsdk_t
 
 /**
  * @brief Unsubscribe from 'attitude_angular_velocity_body' updates.
- * 
+ *
  * Stops the subscription and frees resources associated with the handle.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param handle The subscription handle returned by mavsdk_telemetry_subscribe_attitude_angular_velocity_body().
  */
@@ -1181,9 +2085,9 @@ CMAVSDK_EXPORT void mavsdk_telemetry_unsubscribe_attitude_angular_velocity_body(
 
 /**
  * @brief Get the current attitude angular velocity body (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param attitude_angular_velocity_body_out Pointer to store the result.
  */
@@ -1196,7 +2100,7 @@ mavsdk_telemetry_attitude_angular_velocity_body(
 
 /**
  * @brief Subscribe to 'ground speed' updates (NED).
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
@@ -1209,9 +2113,9 @@ CMAVSDK_EXPORT mavsdk_telemetry_velocity_ned_handle_t mavsdk_telemetry_subscribe
 
 /**
  * @brief Unsubscribe from 'velocity_ned' updates.
- * 
+ *
  * Stops the subscription and frees resources associated with the handle.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param handle The subscription handle returned by mavsdk_telemetry_subscribe_velocity_ned().
  */
@@ -1221,9 +2125,9 @@ CMAVSDK_EXPORT void mavsdk_telemetry_unsubscribe_velocity_ned(
 
 /**
  * @brief Get the current velocity ned (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param velocity_ned_out Pointer to store the result.
  */
@@ -1236,7 +2140,7 @@ mavsdk_telemetry_velocity_ned(
 
 /**
  * @brief Subscribe to 'GPS info' updates.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
@@ -1249,9 +2153,9 @@ CMAVSDK_EXPORT mavsdk_telemetry_gps_info_handle_t mavsdk_telemetry_subscribe_gps
 
 /**
  * @brief Unsubscribe from 'gps_info' updates.
- * 
+ *
  * Stops the subscription and frees resources associated with the handle.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param handle The subscription handle returned by mavsdk_telemetry_subscribe_gps_info().
  */
@@ -1261,9 +2165,9 @@ CMAVSDK_EXPORT void mavsdk_telemetry_unsubscribe_gps_info(
 
 /**
  * @brief Get the current gps info (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param gps_info_out Pointer to store the result.
  */
@@ -1276,7 +2180,7 @@ mavsdk_telemetry_gps_info(
 
 /**
  * @brief Subscribe to 'Raw GPS' updates.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
@@ -1289,9 +2193,9 @@ CMAVSDK_EXPORT mavsdk_telemetry_raw_gps_handle_t mavsdk_telemetry_subscribe_raw_
 
 /**
  * @brief Unsubscribe from 'raw_gps' updates.
- * 
+ *
  * Stops the subscription and frees resources associated with the handle.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param handle The subscription handle returned by mavsdk_telemetry_subscribe_raw_gps().
  */
@@ -1301,9 +2205,9 @@ CMAVSDK_EXPORT void mavsdk_telemetry_unsubscribe_raw_gps(
 
 /**
  * @brief Get the current raw gps (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param raw_gps_out Pointer to store the result.
  */
@@ -1316,7 +2220,7 @@ mavsdk_telemetry_raw_gps(
 
 /**
  * @brief Subscribe to 'battery' updates.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
@@ -1329,9 +2233,9 @@ CMAVSDK_EXPORT mavsdk_telemetry_battery_handle_t mavsdk_telemetry_subscribe_batt
 
 /**
  * @brief Unsubscribe from 'battery' updates.
- * 
+ *
  * Stops the subscription and frees resources associated with the handle.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param handle The subscription handle returned by mavsdk_telemetry_subscribe_battery().
  */
@@ -1341,9 +2245,9 @@ CMAVSDK_EXPORT void mavsdk_telemetry_unsubscribe_battery(
 
 /**
  * @brief Get the current battery (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param battery_out Pointer to store the result.
  */
@@ -1356,7 +2260,7 @@ mavsdk_telemetry_battery(
 
 /**
  * @brief Subscribe to 'flight mode' updates.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
@@ -1369,9 +2273,9 @@ CMAVSDK_EXPORT mavsdk_telemetry_flight_mode_handle_t mavsdk_telemetry_subscribe_
 
 /**
  * @brief Unsubscribe from 'flight_mode' updates.
- * 
+ *
  * Stops the subscription and frees resources associated with the handle.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param handle The subscription handle returned by mavsdk_telemetry_subscribe_flight_mode().
  */
@@ -1381,9 +2285,9 @@ CMAVSDK_EXPORT void mavsdk_telemetry_unsubscribe_flight_mode(
 
 /**
  * @brief Get the current flight mode (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param flight_mode_out Pointer to store the result.
  */
@@ -1396,7 +2300,7 @@ mavsdk_telemetry_flight_mode(
 
 /**
  * @brief Subscribe to 'health' updates.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
@@ -1409,9 +2313,9 @@ CMAVSDK_EXPORT mavsdk_telemetry_health_handle_t mavsdk_telemetry_subscribe_healt
 
 /**
  * @brief Unsubscribe from 'health' updates.
- * 
+ *
  * Stops the subscription and frees resources associated with the handle.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param handle The subscription handle returned by mavsdk_telemetry_subscribe_health().
  */
@@ -1421,9 +2325,9 @@ CMAVSDK_EXPORT void mavsdk_telemetry_unsubscribe_health(
 
 /**
  * @brief Get the current health (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param health_out Pointer to store the result.
  */
@@ -1436,7 +2340,7 @@ mavsdk_telemetry_health(
 
 /**
  * @brief Subscribe to 'RC status' updates.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
@@ -1449,9 +2353,9 @@ CMAVSDK_EXPORT mavsdk_telemetry_rc_status_handle_t mavsdk_telemetry_subscribe_rc
 
 /**
  * @brief Unsubscribe from 'rc_status' updates.
- * 
+ *
  * Stops the subscription and frees resources associated with the handle.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param handle The subscription handle returned by mavsdk_telemetry_subscribe_rc_status().
  */
@@ -1461,9 +2365,9 @@ CMAVSDK_EXPORT void mavsdk_telemetry_unsubscribe_rc_status(
 
 /**
  * @brief Get the current rc status (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param rc_status_out Pointer to store the result.
  */
@@ -1476,7 +2380,7 @@ mavsdk_telemetry_rc_status(
 
 /**
  * @brief Subscribe to 'status text' updates.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
@@ -1489,9 +2393,9 @@ CMAVSDK_EXPORT mavsdk_telemetry_status_text_handle_t mavsdk_telemetry_subscribe_
 
 /**
  * @brief Unsubscribe from 'status_text' updates.
- * 
+ *
  * Stops the subscription and frees resources associated with the handle.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param handle The subscription handle returned by mavsdk_telemetry_subscribe_status_text().
  */
@@ -1501,9 +2405,9 @@ CMAVSDK_EXPORT void mavsdk_telemetry_unsubscribe_status_text(
 
 /**
  * @brief Get the current status text (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param status_text_out Pointer to store the result.
  */
@@ -1516,7 +2420,7 @@ mavsdk_telemetry_status_text(
 
 /**
  * @brief Subscribe to 'actuator control target' updates.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
@@ -1529,9 +2433,9 @@ CMAVSDK_EXPORT mavsdk_telemetry_actuator_control_target_handle_t mavsdk_telemetr
 
 /**
  * @brief Unsubscribe from 'actuator_control_target' updates.
- * 
+ *
  * Stops the subscription and frees resources associated with the handle.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param handle The subscription handle returned by mavsdk_telemetry_subscribe_actuator_control_target().
  */
@@ -1541,9 +2445,9 @@ CMAVSDK_EXPORT void mavsdk_telemetry_unsubscribe_actuator_control_target(
 
 /**
  * @brief Get the current actuator control target (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param actuator_control_target_out Pointer to store the result.
  */
@@ -1556,7 +2460,7 @@ mavsdk_telemetry_actuator_control_target(
 
 /**
  * @brief Subscribe to 'actuator output status' updates.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
@@ -1569,9 +2473,9 @@ CMAVSDK_EXPORT mavsdk_telemetry_actuator_output_status_handle_t mavsdk_telemetry
 
 /**
  * @brief Unsubscribe from 'actuator_output_status' updates.
- * 
+ *
  * Stops the subscription and frees resources associated with the handle.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param handle The subscription handle returned by mavsdk_telemetry_subscribe_actuator_output_status().
  */
@@ -1581,9 +2485,9 @@ CMAVSDK_EXPORT void mavsdk_telemetry_unsubscribe_actuator_output_status(
 
 /**
  * @brief Get the current actuator output status (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param actuator_output_status_out Pointer to store the result.
  */
@@ -1596,7 +2500,7 @@ mavsdk_telemetry_actuator_output_status(
 
 /**
  * @brief Subscribe to 'odometry' updates.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
@@ -1609,9 +2513,9 @@ CMAVSDK_EXPORT mavsdk_telemetry_odometry_handle_t mavsdk_telemetry_subscribe_odo
 
 /**
  * @brief Unsubscribe from 'odometry' updates.
- * 
+ *
  * Stops the subscription and frees resources associated with the handle.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param handle The subscription handle returned by mavsdk_telemetry_subscribe_odometry().
  */
@@ -1621,9 +2525,9 @@ CMAVSDK_EXPORT void mavsdk_telemetry_unsubscribe_odometry(
 
 /**
  * @brief Get the current odometry (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param odometry_out Pointer to store the result.
  */
@@ -1636,7 +2540,7 @@ mavsdk_telemetry_odometry(
 
 /**
  * @brief Subscribe to 'position velocity' updates.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
@@ -1649,9 +2553,9 @@ CMAVSDK_EXPORT mavsdk_telemetry_position_velocity_ned_handle_t mavsdk_telemetry_
 
 /**
  * @brief Unsubscribe from 'position_velocity_ned' updates.
- * 
+ *
  * Stops the subscription and frees resources associated with the handle.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param handle The subscription handle returned by mavsdk_telemetry_subscribe_position_velocity_ned().
  */
@@ -1661,9 +2565,9 @@ CMAVSDK_EXPORT void mavsdk_telemetry_unsubscribe_position_velocity_ned(
 
 /**
  * @brief Get the current position velocity ned (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param position_velocity_ned_out Pointer to store the result.
  */
@@ -1676,7 +2580,7 @@ mavsdk_telemetry_position_velocity_ned(
 
 /**
  * @brief Subscribe to 'ground truth' updates.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
@@ -1689,9 +2593,9 @@ CMAVSDK_EXPORT mavsdk_telemetry_ground_truth_handle_t mavsdk_telemetry_subscribe
 
 /**
  * @brief Unsubscribe from 'ground_truth' updates.
- * 
+ *
  * Stops the subscription and frees resources associated with the handle.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param handle The subscription handle returned by mavsdk_telemetry_subscribe_ground_truth().
  */
@@ -1701,9 +2605,9 @@ CMAVSDK_EXPORT void mavsdk_telemetry_unsubscribe_ground_truth(
 
 /**
  * @brief Get the current ground truth (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param ground_truth_out Pointer to store the result.
  */
@@ -1716,7 +2620,7 @@ mavsdk_telemetry_ground_truth(
 
 /**
  * @brief Subscribe to 'fixedwing metrics' updates.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
@@ -1729,9 +2633,9 @@ CMAVSDK_EXPORT mavsdk_telemetry_fixedwing_metrics_handle_t mavsdk_telemetry_subs
 
 /**
  * @brief Unsubscribe from 'fixedwing_metrics' updates.
- * 
+ *
  * Stops the subscription and frees resources associated with the handle.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param handle The subscription handle returned by mavsdk_telemetry_subscribe_fixedwing_metrics().
  */
@@ -1741,9 +2645,9 @@ CMAVSDK_EXPORT void mavsdk_telemetry_unsubscribe_fixedwing_metrics(
 
 /**
  * @brief Get the current fixedwing metrics (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param fixedwing_metrics_out Pointer to store the result.
  */
@@ -1756,7 +2660,7 @@ mavsdk_telemetry_fixedwing_metrics(
 
 /**
  * @brief Subscribe to 'IMU' updates (in SI units in NED body frame).
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
@@ -1769,9 +2673,9 @@ CMAVSDK_EXPORT mavsdk_telemetry_imu_handle_t mavsdk_telemetry_subscribe_imu(
 
 /**
  * @brief Unsubscribe from 'imu' updates.
- * 
+ *
  * Stops the subscription and frees resources associated with the handle.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param handle The subscription handle returned by mavsdk_telemetry_subscribe_imu().
  */
@@ -1781,9 +2685,9 @@ CMAVSDK_EXPORT void mavsdk_telemetry_unsubscribe_imu(
 
 /**
  * @brief Get the current imu (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param imu_out Pointer to store the result.
  */
@@ -1796,7 +2700,7 @@ mavsdk_telemetry_imu(
 
 /**
  * @brief Subscribe to 'Scaled IMU' updates.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
@@ -1809,9 +2713,9 @@ CMAVSDK_EXPORT mavsdk_telemetry_scaled_imu_handle_t mavsdk_telemetry_subscribe_s
 
 /**
  * @brief Unsubscribe from 'scaled_imu' updates.
- * 
+ *
  * Stops the subscription and frees resources associated with the handle.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param handle The subscription handle returned by mavsdk_telemetry_subscribe_scaled_imu().
  */
@@ -1821,9 +2725,9 @@ CMAVSDK_EXPORT void mavsdk_telemetry_unsubscribe_scaled_imu(
 
 /**
  * @brief Get the current scaled imu (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param scaled_imu_out Pointer to store the result.
  */
@@ -1836,7 +2740,7 @@ mavsdk_telemetry_scaled_imu(
 
 /**
  * @brief Subscribe to 'Raw IMU' updates (note that units are are incorrect and "raw" as provided by the sensor)
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
@@ -1849,9 +2753,9 @@ CMAVSDK_EXPORT mavsdk_telemetry_raw_imu_handle_t mavsdk_telemetry_subscribe_raw_
 
 /**
  * @brief Unsubscribe from 'raw_imu' updates.
- * 
+ *
  * Stops the subscription and frees resources associated with the handle.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param handle The subscription handle returned by mavsdk_telemetry_subscribe_raw_imu().
  */
@@ -1861,9 +2765,9 @@ CMAVSDK_EXPORT void mavsdk_telemetry_unsubscribe_raw_imu(
 
 /**
  * @brief Get the current raw imu (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param raw_imu_out Pointer to store the result.
  */
@@ -1876,7 +2780,7 @@ mavsdk_telemetry_raw_imu(
 
 /**
  * @brief Subscribe to 'HealthAllOk' updates.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
@@ -1889,9 +2793,9 @@ CMAVSDK_EXPORT mavsdk_telemetry_health_all_ok_handle_t mavsdk_telemetry_subscrib
 
 /**
  * @brief Unsubscribe from 'health_all_ok' updates.
- * 
+ *
  * Stops the subscription and frees resources associated with the handle.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param handle The subscription handle returned by mavsdk_telemetry_subscribe_health_all_ok().
  */
@@ -1901,9 +2805,9 @@ CMAVSDK_EXPORT void mavsdk_telemetry_unsubscribe_health_all_ok(
 
 /**
  * @brief Get the current health all ok (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param health_all_ok_out Pointer to store the result.
  */
@@ -1916,7 +2820,7 @@ mavsdk_telemetry_health_all_ok(
 
 /**
  * @brief Subscribe to 'unix epoch time' updates.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
@@ -1929,9 +2833,9 @@ CMAVSDK_EXPORT mavsdk_telemetry_unix_epoch_time_handle_t mavsdk_telemetry_subscr
 
 /**
  * @brief Unsubscribe from 'unix_epoch_time' updates.
- * 
+ *
  * Stops the subscription and frees resources associated with the handle.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param handle The subscription handle returned by mavsdk_telemetry_subscribe_unix_epoch_time().
  */
@@ -1941,9 +2845,9 @@ CMAVSDK_EXPORT void mavsdk_telemetry_unsubscribe_unix_epoch_time(
 
 /**
  * @brief Get the current unix epoch time (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param unix_epoch_time_out Pointer to store the result.
  */
@@ -1956,7 +2860,7 @@ mavsdk_telemetry_unix_epoch_time(
 
 /**
  * @brief Subscribe to 'Distance Sensor' updates.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
@@ -1969,9 +2873,9 @@ CMAVSDK_EXPORT mavsdk_telemetry_distance_sensor_handle_t mavsdk_telemetry_subscr
 
 /**
  * @brief Unsubscribe from 'distance_sensor' updates.
- * 
+ *
  * Stops the subscription and frees resources associated with the handle.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param handle The subscription handle returned by mavsdk_telemetry_subscribe_distance_sensor().
  */
@@ -1981,9 +2885,9 @@ CMAVSDK_EXPORT void mavsdk_telemetry_unsubscribe_distance_sensor(
 
 /**
  * @brief Get the current distance sensor (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param distance_sensor_out Pointer to store the result.
  */
@@ -1996,7 +2900,7 @@ mavsdk_telemetry_distance_sensor(
 
 /**
  * @brief Subscribe to 'Scaled Pressure' updates.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
@@ -2009,9 +2913,9 @@ CMAVSDK_EXPORT mavsdk_telemetry_scaled_pressure_handle_t mavsdk_telemetry_subscr
 
 /**
  * @brief Unsubscribe from 'scaled_pressure' updates.
- * 
+ *
  * Stops the subscription and frees resources associated with the handle.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param handle The subscription handle returned by mavsdk_telemetry_subscribe_scaled_pressure().
  */
@@ -2021,9 +2925,9 @@ CMAVSDK_EXPORT void mavsdk_telemetry_unsubscribe_scaled_pressure(
 
 /**
  * @brief Get the current scaled pressure (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param scaled_pressure_out Pointer to store the result.
  */
@@ -2036,7 +2940,7 @@ mavsdk_telemetry_scaled_pressure(
 
 /**
  * @brief Subscribe to 'Heading' updates.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
@@ -2049,9 +2953,9 @@ CMAVSDK_EXPORT mavsdk_telemetry_heading_handle_t mavsdk_telemetry_subscribe_head
 
 /**
  * @brief Unsubscribe from 'heading' updates.
- * 
+ *
  * Stops the subscription and frees resources associated with the handle.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param handle The subscription handle returned by mavsdk_telemetry_subscribe_heading().
  */
@@ -2061,9 +2965,9 @@ CMAVSDK_EXPORT void mavsdk_telemetry_unsubscribe_heading(
 
 /**
  * @brief Get the current heading (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param heading_out Pointer to store the result.
  */
@@ -2076,7 +2980,7 @@ mavsdk_telemetry_heading(
 
 /**
  * @brief Subscribe to 'Altitude' updates.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
@@ -2089,9 +2993,9 @@ CMAVSDK_EXPORT mavsdk_telemetry_altitude_handle_t mavsdk_telemetry_subscribe_alt
 
 /**
  * @brief Unsubscribe from 'altitude' updates.
- * 
+ *
  * Stops the subscription and frees resources associated with the handle.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param handle The subscription handle returned by mavsdk_telemetry_subscribe_altitude().
  */
@@ -2101,9 +3005,9 @@ CMAVSDK_EXPORT void mavsdk_telemetry_unsubscribe_altitude(
 
 /**
  * @brief Get the current altitude (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param altitude_out Pointer to store the result.
  */
@@ -2116,7 +3020,7 @@ mavsdk_telemetry_altitude(
 
 /**
  * @brief Subscribe to 'Wind Estimated' updates.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
@@ -2129,9 +3033,9 @@ CMAVSDK_EXPORT mavsdk_telemetry_wind_handle_t mavsdk_telemetry_subscribe_wind(
 
 /**
  * @brief Unsubscribe from 'wind' updates.
- * 
+ *
  * Stops the subscription and frees resources associated with the handle.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param handle The subscription handle returned by mavsdk_telemetry_subscribe_wind().
  */
@@ -2141,9 +3045,9 @@ CMAVSDK_EXPORT void mavsdk_telemetry_unsubscribe_wind(
 
 /**
  * @brief Get the current wind (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param wind_out Pointer to store the result.
  */
@@ -2156,7 +3060,7 @@ mavsdk_telemetry_wind(
 
 /**
  * @brief Set rate to 'position' updates.
- * 
+ *
  * @param telemetry The telemetry instance.
 * @param rate_hz  The requested rate (in Hertz)
  * 
@@ -2172,9 +3076,9 @@ CMAVSDK_EXPORT void mavsdk_telemetry_set_rate_position_async(
 
 /**
  * @brief Get the current set rate position (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param set_rate_position_out Pointer to store the result.
  */
@@ -2187,7 +3091,7 @@ mavsdk_telemetry_set_rate_position(
 
 /**
  * @brief Set rate to 'home position' updates.
- * 
+ *
  * @param telemetry The telemetry instance.
 * @param rate_hz  The requested rate (in Hertz)
  * 
@@ -2203,9 +3107,9 @@ CMAVSDK_EXPORT void mavsdk_telemetry_set_rate_home_async(
 
 /**
  * @brief Get the current set rate home (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param set_rate_home_out Pointer to store the result.
  */
@@ -2218,7 +3122,7 @@ mavsdk_telemetry_set_rate_home(
 
 /**
  * @brief Set rate to in-air updates.
- * 
+ *
  * @param telemetry The telemetry instance.
 * @param rate_hz  The requested rate (in Hertz)
  * 
@@ -2234,9 +3138,9 @@ CMAVSDK_EXPORT void mavsdk_telemetry_set_rate_in_air_async(
 
 /**
  * @brief Get the current set rate in air (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param set_rate_in_air_out Pointer to store the result.
  */
@@ -2249,7 +3153,7 @@ mavsdk_telemetry_set_rate_in_air(
 
 /**
  * @brief Set rate to landed state updates
- * 
+ *
  * @param telemetry The telemetry instance.
 * @param rate_hz  The requested rate (in Hertz)
  * 
@@ -2265,9 +3169,9 @@ CMAVSDK_EXPORT void mavsdk_telemetry_set_rate_landed_state_async(
 
 /**
  * @brief Get the current set rate landed state (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param set_rate_landed_state_out Pointer to store the result.
  */
@@ -2280,7 +3184,7 @@ mavsdk_telemetry_set_rate_landed_state(
 
 /**
  * @brief Set rate to VTOL state updates
- * 
+ *
  * @param telemetry The telemetry instance.
 * @param rate_hz  The requested rate (in Hertz)
  * 
@@ -2296,9 +3200,9 @@ CMAVSDK_EXPORT void mavsdk_telemetry_set_rate_vtol_state_async(
 
 /**
  * @brief Get the current set rate vtol state (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param set_rate_vtol_state_out Pointer to store the result.
  */
@@ -2311,7 +3215,7 @@ mavsdk_telemetry_set_rate_vtol_state(
 
 /**
  * @brief Set rate to 'attitude euler angle' updates.
- * 
+ *
  * @param telemetry The telemetry instance.
 * @param rate_hz  The requested rate (in Hertz)
  * 
@@ -2327,9 +3231,9 @@ CMAVSDK_EXPORT void mavsdk_telemetry_set_rate_attitude_quaternion_async(
 
 /**
  * @brief Get the current set rate attitude quaternion (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param set_rate_attitude_quaternion_out Pointer to store the result.
  */
@@ -2342,7 +3246,7 @@ mavsdk_telemetry_set_rate_attitude_quaternion(
 
 /**
  * @brief Set rate to 'attitude quaternion' updates.
- * 
+ *
  * @param telemetry The telemetry instance.
 * @param rate_hz  The requested rate (in Hertz)
  * 
@@ -2358,9 +3262,9 @@ CMAVSDK_EXPORT void mavsdk_telemetry_set_rate_attitude_euler_async(
 
 /**
  * @brief Get the current set rate attitude euler (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param set_rate_attitude_euler_out Pointer to store the result.
  */
@@ -2374,7 +3278,7 @@ mavsdk_telemetry_set_rate_attitude_euler(
 /**
  * @brief Set rate of camera attitude updates.
  *  Set rate to 'ground speed' updates (NED).
- * 
+ *
  * @param telemetry The telemetry instance.
 * @param rate_hz  The requested rate (in Hertz)
  * 
@@ -2390,9 +3294,9 @@ CMAVSDK_EXPORT void mavsdk_telemetry_set_rate_velocity_ned_async(
 
 /**
  * @brief Get the current set rate velocity ned (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param set_rate_velocity_ned_out Pointer to store the result.
  */
@@ -2405,7 +3309,7 @@ mavsdk_telemetry_set_rate_velocity_ned(
 
 /**
  * @brief Set rate to 'GPS info' updates.
- * 
+ *
  * @param telemetry The telemetry instance.
 * @param rate_hz  The requested rate (in Hertz)
  * 
@@ -2421,9 +3325,9 @@ CMAVSDK_EXPORT void mavsdk_telemetry_set_rate_gps_info_async(
 
 /**
  * @brief Get the current set rate gps info (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param set_rate_gps_info_out Pointer to store the result.
  */
@@ -2436,7 +3340,7 @@ mavsdk_telemetry_set_rate_gps_info(
 
 /**
  * @brief Set rate to 'battery' updates.
- * 
+ *
  * @param telemetry The telemetry instance.
 * @param rate_hz  The requested rate (in Hertz)
  * 
@@ -2452,9 +3356,9 @@ CMAVSDK_EXPORT void mavsdk_telemetry_set_rate_battery_async(
 
 /**
  * @brief Get the current set rate battery (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param set_rate_battery_out Pointer to store the result.
  */
@@ -2467,7 +3371,7 @@ mavsdk_telemetry_set_rate_battery(
 
 /**
  * @brief Set rate to 'RC status' updates.
- * 
+ *
  * @param telemetry The telemetry instance.
 * @param rate_hz  The requested rate (in Hertz)
  * 
@@ -2483,9 +3387,9 @@ CMAVSDK_EXPORT void mavsdk_telemetry_set_rate_rc_status_async(
 
 /**
  * @brief Get the current set rate rc status (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param set_rate_rc_status_out Pointer to store the result.
  */
@@ -2498,7 +3402,7 @@ mavsdk_telemetry_set_rate_rc_status(
 
 /**
  * @brief Set rate to 'actuator control target' updates.
- * 
+ *
  * @param telemetry The telemetry instance.
 * @param rate_hz  The requested rate (in Hertz)
  * 
@@ -2514,9 +3418,9 @@ CMAVSDK_EXPORT void mavsdk_telemetry_set_rate_actuator_control_target_async(
 
 /**
  * @brief Get the current set rate actuator control target (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param set_rate_actuator_control_target_out Pointer to store the result.
  */
@@ -2529,7 +3433,7 @@ mavsdk_telemetry_set_rate_actuator_control_target(
 
 /**
  * @brief Set rate to 'actuator output status' updates.
- * 
+ *
  * @param telemetry The telemetry instance.
 * @param rate_hz  The requested rate (in Hertz)
  * 
@@ -2545,9 +3449,9 @@ CMAVSDK_EXPORT void mavsdk_telemetry_set_rate_actuator_output_status_async(
 
 /**
  * @brief Get the current set rate actuator output status (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param set_rate_actuator_output_status_out Pointer to store the result.
  */
@@ -2560,7 +3464,7 @@ mavsdk_telemetry_set_rate_actuator_output_status(
 
 /**
  * @brief Set rate to 'odometry' updates.
- * 
+ *
  * @param telemetry The telemetry instance.
 * @param rate_hz  The requested rate (in Hertz)
  * 
@@ -2576,9 +3480,9 @@ CMAVSDK_EXPORT void mavsdk_telemetry_set_rate_odometry_async(
 
 /**
  * @brief Get the current set rate odometry (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param set_rate_odometry_out Pointer to store the result.
  */
@@ -2591,7 +3495,7 @@ mavsdk_telemetry_set_rate_odometry(
 
 /**
  * @brief Set rate to 'position velocity' updates.
- * 
+ *
  * @param telemetry The telemetry instance.
 * @param rate_hz  The requested rate (in Hertz)
  * 
@@ -2607,9 +3511,9 @@ CMAVSDK_EXPORT void mavsdk_telemetry_set_rate_position_velocity_ned_async(
 
 /**
  * @brief Get the current set rate position velocity ned (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param set_rate_position_velocity_ned_out Pointer to store the result.
  */
@@ -2622,7 +3526,7 @@ mavsdk_telemetry_set_rate_position_velocity_ned(
 
 /**
  * @brief Set rate to 'ground truth' updates.
- * 
+ *
  * @param telemetry The telemetry instance.
 * @param rate_hz  The requested rate (in Hertz)
  * 
@@ -2638,9 +3542,9 @@ CMAVSDK_EXPORT void mavsdk_telemetry_set_rate_ground_truth_async(
 
 /**
  * @brief Get the current set rate ground truth (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param set_rate_ground_truth_out Pointer to store the result.
  */
@@ -2653,7 +3557,7 @@ mavsdk_telemetry_set_rate_ground_truth(
 
 /**
  * @brief Set rate to 'fixedwing metrics' updates.
- * 
+ *
  * @param telemetry The telemetry instance.
 * @param rate_hz  The requested rate (in Hertz)
  * 
@@ -2669,9 +3573,9 @@ CMAVSDK_EXPORT void mavsdk_telemetry_set_rate_fixedwing_metrics_async(
 
 /**
  * @brief Get the current set rate fixedwing metrics (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param set_rate_fixedwing_metrics_out Pointer to store the result.
  */
@@ -2684,7 +3588,7 @@ mavsdk_telemetry_set_rate_fixedwing_metrics(
 
 /**
  * @brief Set rate to 'IMU' updates.
- * 
+ *
  * @param telemetry The telemetry instance.
 * @param rate_hz  The requested rate (in Hertz)
  * 
@@ -2700,9 +3604,9 @@ CMAVSDK_EXPORT void mavsdk_telemetry_set_rate_imu_async(
 
 /**
  * @brief Get the current set rate imu (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param set_rate_imu_out Pointer to store the result.
  */
@@ -2715,7 +3619,7 @@ mavsdk_telemetry_set_rate_imu(
 
 /**
  * @brief Set rate to 'Scaled IMU' updates.
- * 
+ *
  * @param telemetry The telemetry instance.
 * @param rate_hz  The requested rate (in Hertz)
  * 
@@ -2731,9 +3635,9 @@ CMAVSDK_EXPORT void mavsdk_telemetry_set_rate_scaled_imu_async(
 
 /**
  * @brief Get the current set rate scaled imu (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param set_rate_scaled_imu_out Pointer to store the result.
  */
@@ -2746,7 +3650,7 @@ mavsdk_telemetry_set_rate_scaled_imu(
 
 /**
  * @brief Set rate to 'Raw IMU' updates.
- * 
+ *
  * @param telemetry The telemetry instance.
 * @param rate_hz  The requested rate (in Hertz)
  * 
@@ -2762,9 +3666,9 @@ CMAVSDK_EXPORT void mavsdk_telemetry_set_rate_raw_imu_async(
 
 /**
  * @brief Get the current set rate raw imu (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param set_rate_raw_imu_out Pointer to store the result.
  */
@@ -2777,7 +3681,7 @@ mavsdk_telemetry_set_rate_raw_imu(
 
 /**
  * @brief Set rate to 'unix epoch time' updates.
- * 
+ *
  * @param telemetry The telemetry instance.
 * @param rate_hz  The requested rate (in Hertz)
  * 
@@ -2793,9 +3697,9 @@ CMAVSDK_EXPORT void mavsdk_telemetry_set_rate_unix_epoch_time_async(
 
 /**
  * @brief Get the current set rate unix epoch time (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param set_rate_unix_epoch_time_out Pointer to store the result.
  */
@@ -2808,7 +3712,7 @@ mavsdk_telemetry_set_rate_unix_epoch_time(
 
 /**
  * @brief Set rate to 'Distance Sensor' updates.
- * 
+ *
  * @param telemetry The telemetry instance.
 * @param rate_hz  The requested rate (in Hertz)
  * 
@@ -2824,9 +3728,9 @@ CMAVSDK_EXPORT void mavsdk_telemetry_set_rate_distance_sensor_async(
 
 /**
  * @brief Get the current set rate distance sensor (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param set_rate_distance_sensor_out Pointer to store the result.
  */
@@ -2839,7 +3743,7 @@ mavsdk_telemetry_set_rate_distance_sensor(
 
 /**
  * @brief Set rate to 'Altitude' updates.
- * 
+ *
  * @param telemetry The telemetry instance.
 * @param rate_hz  The requested rate (in Hertz)
  * 
@@ -2855,9 +3759,9 @@ CMAVSDK_EXPORT void mavsdk_telemetry_set_rate_altitude_async(
 
 /**
  * @brief Get the current set rate altitude (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param set_rate_altitude_out Pointer to store the result.
  */
@@ -2870,7 +3774,7 @@ mavsdk_telemetry_set_rate_altitude(
 
 /**
  * @brief Set rate to 'Health' updates.
- * 
+ *
  * @param telemetry The telemetry instance.
 * @param rate_hz  The requested rate (in Hertz)
  * 
@@ -2886,9 +3790,9 @@ CMAVSDK_EXPORT void mavsdk_telemetry_set_rate_health_async(
 
 /**
  * @brief Get the current set rate health (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param set_rate_health_out Pointer to store the result.
  */
@@ -2901,7 +3805,7 @@ mavsdk_telemetry_set_rate_health(
 
 /**
  * @brief Get the GPS location of where the estimator has been initialized.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
@@ -2914,9 +3818,9 @@ CMAVSDK_EXPORT void mavsdk_telemetry_get_gps_global_origin_async(
 
 /**
  * @brief Get the current get gps global origin (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param get_gps_global_origin_out Pointer to store the result.
  */

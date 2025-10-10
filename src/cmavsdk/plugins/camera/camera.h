@@ -64,6 +64,9 @@ typedef enum {
 // ===== Structs =====
 /**
  * @brief Type to represent a setting option.
+ *
+ * @note This struct may contain dynamically allocated memory. Always call
+ *       mavsdk_camera_option_destroy() when done to avoid memory leaks.
  */
 typedef struct {
     /**  Name of the option (machine readable) */
@@ -72,9 +75,37 @@ typedef struct {
     char* option_description;
 } mavsdk_camera_option_t;
 
+/**
+ * @brief Destroy a option struct.
+ *
+ * Frees all memory allocated by MAVSDK for this struct, including any
+ * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
+ * Always call this function when done with the struct, even if it currently
+ * contains no dynamic allocations.
+ *
+ * @param target Pointer to the struct to destroy. Can be NULL (no-op).
+ */
+void mavsdk_camera_option_destroy(
+    mavsdk_camera_option_t* target);
+
+/**
+ * @brief Destroy an array of option structs.
+ *
+ * Frees all memory allocated for the array and its elements, including any
+ * nested dynamic allocations. Must be called to avoid memory leaks.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ * @param size Number of elements in the array.
+ */
+void mavsdk_camera_option_array_destroy(
+    mavsdk_camera_option_t** array,
+    size_t size);
 
 /**
  * @brief Type to represent a setting with a selected option.
+ *
+ * @note This struct may contain dynamically allocated memory. Always call
+ *       mavsdk_camera_setting_destroy() when done to avoid memory leaks.
  */
 typedef struct {
     /**  Name of a setting (machine readable) */
@@ -87,11 +118,36 @@ typedef struct {
     bool is_range;
 } mavsdk_camera_setting_t;
 
+/**
+ * @brief Destroy a setting struct.
+ *
+ * Frees all memory allocated by MAVSDK for this struct, including any
+ * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
+ * Always call this function when done with the struct, even if it currently
+ * contains no dynamic allocations.
+ *
+ * @param target Pointer to the struct to destroy. Can be NULL (no-op).
+ */
+void mavsdk_camera_setting_destroy(
+    mavsdk_camera_setting_t* target);
+
+/**
+ * @brief Destroy an array of setting structs.
+ *
+ * Frees all memory allocated for the array and its elements, including any
+ * nested dynamic allocations. Must be called to avoid memory leaks.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ * @param size Number of elements in the array.
+ */
+void mavsdk_camera_setting_array_destroy(
+    mavsdk_camera_setting_t** array,
+    size_t size);
 
 /**
  * @brief Type to represent a setting with a list of options to choose from.
- * 
- * @note This struct contains dynamically allocated memory. You must call
+ *
+ * @note This struct may contain dynamically allocated memory. Always call
  *       mavsdk_camera_setting_options_destroy() when done to avoid memory leaks.
  */
 typedef struct {
@@ -110,17 +166,35 @@ typedef struct {
 
 /**
  * @brief Destroy a setting_options struct.
- * 
+ *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
- * 
+ * Always call this function when done with the struct, even if it currently
+ * contains no dynamic allocations.
+ *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
 void mavsdk_camera_setting_options_destroy(
     mavsdk_camera_setting_options_t* target);
 
 /**
+ * @brief Destroy an array of setting_options structs.
+ *
+ * Frees all memory allocated for the array and its elements, including any
+ * nested dynamic allocations. Must be called to avoid memory leaks.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ * @param size Number of elements in the array.
+ */
+void mavsdk_camera_setting_options_array_destroy(
+    mavsdk_camera_setting_options_t** array,
+    size_t size);
+
+/**
  * @brief Type for video stream settings.
+ *
+ * @note This struct may contain dynamically allocated memory. Always call
+ *       mavsdk_camera_video_stream_settings_destroy() when done to avoid memory leaks.
  */
 typedef struct {
     /**  Frames per second */
@@ -139,6 +213,31 @@ typedef struct {
     float horizontal_fov_deg;
 } mavsdk_camera_video_stream_settings_t;
 
+/**
+ * @brief Destroy a video_stream_settings struct.
+ *
+ * Frees all memory allocated by MAVSDK for this struct, including any
+ * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
+ * Always call this function when done with the struct, even if it currently
+ * contains no dynamic allocations.
+ *
+ * @param target Pointer to the struct to destroy. Can be NULL (no-op).
+ */
+void mavsdk_camera_video_stream_settings_destroy(
+    mavsdk_camera_video_stream_settings_t* target);
+
+/**
+ * @brief Destroy an array of video_stream_settings structs.
+ *
+ * Frees all memory allocated for the array and its elements, including any
+ * nested dynamic allocations. Must be called to avoid memory leaks.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ * @param size Number of elements in the array.
+ */
+void mavsdk_camera_video_stream_settings_array_destroy(
+    mavsdk_camera_video_stream_settings_t** array,
+    size_t size);
 
 /**
  * @brief Video stream status type.
@@ -164,6 +263,9 @@ typedef enum {
 
 /**
  * @brief Information about the video stream.
+ *
+ * @note This struct may contain dynamically allocated memory. Always call
+ *       mavsdk_camera_video_stream_info_destroy() when done to avoid memory leaks.
  */
 typedef struct {
     /**  Stream ID */
@@ -176,9 +278,37 @@ typedef struct {
     mavsdk_camera_video_stream_info_video_stream_spectrum_t spectrum;
 } mavsdk_camera_video_stream_info_t;
 
+/**
+ * @brief Destroy a video_stream_info struct.
+ *
+ * Frees all memory allocated by MAVSDK for this struct, including any
+ * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
+ * Always call this function when done with the struct, even if it currently
+ * contains no dynamic allocations.
+ *
+ * @param target Pointer to the struct to destroy. Can be NULL (no-op).
+ */
+void mavsdk_camera_video_stream_info_destroy(
+    mavsdk_camera_video_stream_info_t* target);
+
+/**
+ * @brief Destroy an array of video_stream_info structs.
+ *
+ * Frees all memory allocated for the array and its elements, including any
+ * nested dynamic allocations. Must be called to avoid memory leaks.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ * @param size Number of elements in the array.
+ */
+void mavsdk_camera_video_stream_info_array_destroy(
+    mavsdk_camera_video_stream_info_t** array,
+    size_t size);
 
 /**
  * @brief An update about the current mode
+ *
+ * @note This struct may contain dynamically allocated memory. Always call
+ *       mavsdk_camera_mode_update_destroy() when done to avoid memory leaks.
  */
 typedef struct {
     /**  Component ID */
@@ -187,9 +317,37 @@ typedef struct {
     mavsdk_camera_mode_t mode;
 } mavsdk_camera_mode_update_t;
 
+/**
+ * @brief Destroy a mode_update struct.
+ *
+ * Frees all memory allocated by MAVSDK for this struct, including any
+ * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
+ * Always call this function when done with the struct, even if it currently
+ * contains no dynamic allocations.
+ *
+ * @param target Pointer to the struct to destroy. Can be NULL (no-op).
+ */
+void mavsdk_camera_mode_update_destroy(
+    mavsdk_camera_mode_update_t* target);
+
+/**
+ * @brief Destroy an array of mode_update structs.
+ *
+ * Frees all memory allocated for the array and its elements, including any
+ * nested dynamic allocations. Must be called to avoid memory leaks.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ * @param size Number of elements in the array.
+ */
+void mavsdk_camera_mode_update_array_destroy(
+    mavsdk_camera_mode_update_t** array,
+    size_t size);
 
 /**
  * @brief An update about a video stream
+ *
+ * @note This struct may contain dynamically allocated memory. Always call
+ *       mavsdk_camera_video_stream_update_destroy() when done to avoid memory leaks.
  */
 typedef struct {
     /**  Component ID */
@@ -198,6 +356,31 @@ typedef struct {
     mavsdk_camera_video_stream_info_t video_stream_info;
 } mavsdk_camera_video_stream_update_t;
 
+/**
+ * @brief Destroy a video_stream_update struct.
+ *
+ * Frees all memory allocated by MAVSDK for this struct, including any
+ * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
+ * Always call this function when done with the struct, even if it currently
+ * contains no dynamic allocations.
+ *
+ * @param target Pointer to the struct to destroy. Can be NULL (no-op).
+ */
+void mavsdk_camera_video_stream_update_destroy(
+    mavsdk_camera_video_stream_update_t* target);
+
+/**
+ * @brief Destroy an array of video_stream_update structs.
+ *
+ * Frees all memory allocated for the array and its elements, including any
+ * nested dynamic allocations. Must be called to avoid memory leaks.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ * @param size Number of elements in the array.
+ */
+void mavsdk_camera_video_stream_update_array_destroy(
+    mavsdk_camera_video_stream_update_t** array,
+    size_t size);
 
 /**
  * @brief Storage status type.
@@ -233,6 +416,9 @@ typedef enum {
 
 /**
  * @brief Information about the camera's storage status.
+ *
+ * @note This struct may contain dynamically allocated memory. Always call
+ *       mavsdk_camera_storage_destroy() when done to avoid memory leaks.
  */
 typedef struct {
     /**  Component ID */
@@ -259,9 +445,37 @@ typedef struct {
     mavsdk_camera_storage_storage_type_t storage_type;
 } mavsdk_camera_storage_t;
 
+/**
+ * @brief Destroy a storage struct.
+ *
+ * Frees all memory allocated by MAVSDK for this struct, including any
+ * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
+ * Always call this function when done with the struct, even if it currently
+ * contains no dynamic allocations.
+ *
+ * @param target Pointer to the struct to destroy. Can be NULL (no-op).
+ */
+void mavsdk_camera_storage_destroy(
+    mavsdk_camera_storage_t* target);
+
+/**
+ * @brief Destroy an array of storage structs.
+ *
+ * Frees all memory allocated for the array and its elements, including any
+ * nested dynamic allocations. Must be called to avoid memory leaks.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ * @param size Number of elements in the array.
+ */
+void mavsdk_camera_storage_array_destroy(
+    mavsdk_camera_storage_t** array,
+    size_t size);
 
 /**
  * @brief An update about storage
+ *
+ * @note This struct may contain dynamically allocated memory. Always call
+ *       mavsdk_camera_storage_update_destroy() when done to avoid memory leaks.
  */
 typedef struct {
     /**  Component ID */
@@ -270,11 +484,36 @@ typedef struct {
     mavsdk_camera_storage_t storage;
 } mavsdk_camera_storage_update_t;
 
+/**
+ * @brief Destroy a storage_update struct.
+ *
+ * Frees all memory allocated by MAVSDK for this struct, including any
+ * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
+ * Always call this function when done with the struct, even if it currently
+ * contains no dynamic allocations.
+ *
+ * @param target Pointer to the struct to destroy. Can be NULL (no-op).
+ */
+void mavsdk_camera_storage_update_destroy(
+    mavsdk_camera_storage_update_t* target);
+
+/**
+ * @brief Destroy an array of storage_update structs.
+ *
+ * Frees all memory allocated for the array and its elements, including any
+ * nested dynamic allocations. Must be called to avoid memory leaks.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ * @param size Number of elements in the array.
+ */
+void mavsdk_camera_storage_update_array_destroy(
+    mavsdk_camera_storage_update_t** array,
+    size_t size);
 
 /**
  * @brief An update about a current setting
- * 
- * @note This struct contains dynamically allocated memory. You must call
+ *
+ * @note This struct may contain dynamically allocated memory. Always call
  *       mavsdk_camera_current_settings_update_destroy() when done to avoid memory leaks.
  */
 typedef struct {
@@ -287,19 +526,34 @@ typedef struct {
 
 /**
  * @brief Destroy a current_settings_update struct.
- * 
+ *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
- * 
+ * Always call this function when done with the struct, even if it currently
+ * contains no dynamic allocations.
+ *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
 void mavsdk_camera_current_settings_update_destroy(
     mavsdk_camera_current_settings_update_t* target);
 
 /**
+ * @brief Destroy an array of current_settings_update structs.
+ *
+ * Frees all memory allocated for the array and its elements, including any
+ * nested dynamic allocations. Must be called to avoid memory leaks.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ * @param size Number of elements in the array.
+ */
+void mavsdk_camera_current_settings_update_array_destroy(
+    mavsdk_camera_current_settings_update_t** array,
+    size_t size);
+
+/**
  * @brief An update about possible setting options
- * 
- * @note This struct contains dynamically allocated memory. You must call
+ *
+ * @note This struct may contain dynamically allocated memory. Always call
  *       mavsdk_camera_possible_setting_options_update_destroy() when done to avoid memory leaks.
  */
 typedef struct {
@@ -312,14 +566,29 @@ typedef struct {
 
 /**
  * @brief Destroy a possible_setting_options_update struct.
- * 
+ *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
- * 
+ * Always call this function when done with the struct, even if it currently
+ * contains no dynamic allocations.
+ *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
 void mavsdk_camera_possible_setting_options_update_destroy(
     mavsdk_camera_possible_setting_options_update_t* target);
+
+/**
+ * @brief Destroy an array of possible_setting_options_update structs.
+ *
+ * Frees all memory allocated for the array and its elements, including any
+ * nested dynamic allocations. Must be called to avoid memory leaks.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ * @param size Number of elements in the array.
+ */
+void mavsdk_camera_possible_setting_options_update_array_destroy(
+    mavsdk_camera_possible_setting_options_update_t** array,
+    size_t size);
 
 /**
  * @brief Possible results returned for camera commands
@@ -354,9 +623,11 @@ typedef enum {
 } mavsdk_camera_result_t;
 
 
-
 /**
  * @brief Position type in global coordinates.
+ *
+ * @note This struct may contain dynamically allocated memory. Always call
+ *       mavsdk_camera_position_destroy() when done to avoid memory leaks.
  */
 typedef struct {
     /**  Latitude in degrees (range: -90 to +90) */
@@ -369,6 +640,31 @@ typedef struct {
     float relative_altitude_m;
 } mavsdk_camera_position_t;
 
+/**
+ * @brief Destroy a position struct.
+ *
+ * Frees all memory allocated by MAVSDK for this struct, including any
+ * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
+ * Always call this function when done with the struct, even if it currently
+ * contains no dynamic allocations.
+ *
+ * @param target Pointer to the struct to destroy. Can be NULL (no-op).
+ */
+void mavsdk_camera_position_destroy(
+    mavsdk_camera_position_t* target);
+
+/**
+ * @brief Destroy an array of position structs.
+ *
+ * Frees all memory allocated for the array and its elements, including any
+ * nested dynamic allocations. Must be called to avoid memory leaks.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ * @param size Number of elements in the array.
+ */
+void mavsdk_camera_position_array_destroy(
+    mavsdk_camera_position_t** array,
+    size_t size);
 
 /**
  * @brief Quaternion type.
@@ -379,6 +675,9 @@ typedef struct {
  *  The quaternion could also be written as w + xi + yj + zk.
  * 
  *  For more info see: https://en.wikipedia.org/wiki/Quaternion
+ *
+ * @note This struct may contain dynamically allocated memory. Always call
+ *       mavsdk_camera_quaternion_destroy() when done to avoid memory leaks.
  */
 typedef struct {
     /**  Quaternion entry 0, also denoted as a */
@@ -391,6 +690,31 @@ typedef struct {
     float z;
 } mavsdk_camera_quaternion_t;
 
+/**
+ * @brief Destroy a quaternion struct.
+ *
+ * Frees all memory allocated by MAVSDK for this struct, including any
+ * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
+ * Always call this function when done with the struct, even if it currently
+ * contains no dynamic allocations.
+ *
+ * @param target Pointer to the struct to destroy. Can be NULL (no-op).
+ */
+void mavsdk_camera_quaternion_destroy(
+    mavsdk_camera_quaternion_t* target);
+
+/**
+ * @brief Destroy an array of quaternion structs.
+ *
+ * Frees all memory allocated for the array and its elements, including any
+ * nested dynamic allocations. Must be called to avoid memory leaks.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ * @param size Number of elements in the array.
+ */
+void mavsdk_camera_quaternion_array_destroy(
+    mavsdk_camera_quaternion_t** array,
+    size_t size);
 
 /**
  * @brief Euler angle type.
@@ -399,6 +723,9 @@ typedef struct {
  *  The Euler angles follow the convention of a 3-2-1 intrinsic Tait-Bryan rotation sequence.
  * 
  *  For more info see https://en.wikipedia.org/wiki/Euler_angles
+ *
+ * @note This struct may contain dynamically allocated memory. Always call
+ *       mavsdk_camera_euler_angle_destroy() when done to avoid memory leaks.
  */
 typedef struct {
     /**  Roll angle in degrees, positive is banking to the right */
@@ -409,9 +736,37 @@ typedef struct {
     float yaw_deg;
 } mavsdk_camera_euler_angle_t;
 
+/**
+ * @brief Destroy a euler_angle struct.
+ *
+ * Frees all memory allocated by MAVSDK for this struct, including any
+ * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
+ * Always call this function when done with the struct, even if it currently
+ * contains no dynamic allocations.
+ *
+ * @param target Pointer to the struct to destroy. Can be NULL (no-op).
+ */
+void mavsdk_camera_euler_angle_destroy(
+    mavsdk_camera_euler_angle_t* target);
+
+/**
+ * @brief Destroy an array of euler_angle structs.
+ *
+ * Frees all memory allocated for the array and its elements, including any
+ * nested dynamic allocations. Must be called to avoid memory leaks.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ * @param size Number of elements in the array.
+ */
+void mavsdk_camera_euler_angle_array_destroy(
+    mavsdk_camera_euler_angle_t** array,
+    size_t size);
 
 /**
  * @brief Information about a picture just captured.
+ *
+ * @note This struct may contain dynamically allocated memory. Always call
+ *       mavsdk_camera_capture_info_destroy() when done to avoid memory leaks.
  */
 typedef struct {
     /**  Component ID */
@@ -432,9 +787,37 @@ typedef struct {
     char* file_url;
 } mavsdk_camera_capture_info_t;
 
+/**
+ * @brief Destroy a capture_info struct.
+ *
+ * Frees all memory allocated by MAVSDK for this struct, including any
+ * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
+ * Always call this function when done with the struct, even if it currently
+ * contains no dynamic allocations.
+ *
+ * @param target Pointer to the struct to destroy. Can be NULL (no-op).
+ */
+void mavsdk_camera_capture_info_destroy(
+    mavsdk_camera_capture_info_t* target);
+
+/**
+ * @brief Destroy an array of capture_info structs.
+ *
+ * Frees all memory allocated for the array and its elements, including any
+ * nested dynamic allocations. Must be called to avoid memory leaks.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ * @param size Number of elements in the array.
+ */
+void mavsdk_camera_capture_info_array_destroy(
+    mavsdk_camera_capture_info_t** array,
+    size_t size);
 
 /**
  * @brief Type to represent a camera information.
+ *
+ * @note This struct may contain dynamically allocated memory. Always call
+ *       mavsdk_camera_information_destroy() when done to avoid memory leaks.
  */
 typedef struct {
     /**  Component ID */
@@ -455,11 +838,36 @@ typedef struct {
     uint32_t vertical_resolution_px;
 } mavsdk_camera_information_t;
 
+/**
+ * @brief Destroy a information struct.
+ *
+ * Frees all memory allocated by MAVSDK for this struct, including any
+ * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
+ * Always call this function when done with the struct, even if it currently
+ * contains no dynamic allocations.
+ *
+ * @param target Pointer to the struct to destroy. Can be NULL (no-op).
+ */
+void mavsdk_camera_information_destroy(
+    mavsdk_camera_information_t* target);
+
+/**
+ * @brief Destroy an array of information structs.
+ *
+ * Frees all memory allocated for the array and its elements, including any
+ * nested dynamic allocations. Must be called to avoid memory leaks.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ * @param size Number of elements in the array.
+ */
+void mavsdk_camera_information_array_destroy(
+    mavsdk_camera_information_t** array,
+    size_t size);
 
 /**
  * @brief Camera list
- * 
- * @note This struct contains dynamically allocated memory. You must call
+ *
+ * @note This struct may contain dynamically allocated memory. Always call
  *       mavsdk_camera_camera_list_destroy() when done to avoid memory leaks.
  */
 typedef struct {
@@ -470,15 +878,106 @@ typedef struct {
 
 /**
  * @brief Destroy a camera_list struct.
- * 
+ *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
- * 
+ * Always call this function when done with the struct, even if it currently
+ * contains no dynamic allocations.
+ *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
 void mavsdk_camera_camera_list_destroy(
     mavsdk_camera_camera_list_t* target);
 
+/**
+ * @brief Destroy an array of camera_list structs.
+ *
+ * Frees all memory allocated for the array and its elements, including any
+ * nested dynamic allocations. Must be called to avoid memory leaks.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ * @param size Number of elements in the array.
+ */
+void mavsdk_camera_camera_list_array_destroy(
+    mavsdk_camera_camera_list_t** array,
+    size_t size);
+
+
+// ===== Primitive Array Destroy Functions =====
+/**
+ * @brief Destroy an array of float.
+ *
+ * Frees the memory allocated for the array.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ */
+void mavsdk_camera_float_array_destroy(float** array);
+/**
+ * @brief Destroy an array of double.
+ *
+ * Frees the memory allocated for the array.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ */
+void mavsdk_camera_double_array_destroy(double** array);
+/**
+ * @brief Destroy an array of int32_t.
+ *
+ * Frees the memory allocated for the array.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ */
+void mavsdk_camera_int32t_array_destroy(int32_t** array);
+/**
+ * @brief Destroy an array of uint32_t.
+ *
+ * Frees the memory allocated for the array.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ */
+void mavsdk_camera_uint32t_array_destroy(uint32_t** array);
+/**
+ * @brief Destroy an array of int64_t.
+ *
+ * Frees the memory allocated for the array.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ */
+void mavsdk_camera_int64t_array_destroy(int64_t** array);
+/**
+ * @brief Destroy an array of uint64_t.
+ *
+ * Frees the memory allocated for the array.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ */
+void mavsdk_camera_uint64t_array_destroy(uint64_t** array);
+/**
+ * @brief Destroy an array of bool.
+ *
+ * Frees the memory allocated for the array.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ */
+void mavsdk_camera_bool_array_destroy(bool** array);
+
+/**
+ * @brief Destroy a string (char*).
+ *
+ * Frees the memory allocated for the string.
+ *
+ * @param str Pointer to the string pointer. Will be set to NULL after freeing.
+ */
+void mavsdk_camera_string_destroy(char** str);
+
+/**
+ * @brief Destroy a byte buffer (uint8_t*).
+ *
+ * Frees the memory allocated for the byte buffer.
+ *
+ * @param buffer Pointer to the buffer pointer. Will be set to NULL after freeing.
+ */
+void mavsdk_camera_byte_buffer_destroy(uint8_t** buffer);
 
 // ===== Callback Typedefs =====
 typedef void (*mavsdk_camera_take_photo_callback_t)(const mavsdk_camera_result_t result, void* user_data);
@@ -519,7 +1018,7 @@ CMAVSDK_EXPORT void mavsdk_camera_destroy(mavsdk_camera_t camera);
 
 /**
  * @brief Take one photo.
- * 
+ *
  * @param camera The camera instance.
 * @param component_id  Component ID
  * 
@@ -535,9 +1034,9 @@ CMAVSDK_EXPORT void mavsdk_camera_take_photo_async(
 
 /**
  * @brief Get the current take photo (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param take_photo_out Pointer to store the result.
  */
@@ -550,7 +1049,7 @@ mavsdk_camera_take_photo(
 
 /**
  * @brief Start photo timelapse with a given interval.
- * 
+ *
  * @param camera The camera instance.
 * @param component_id  Component ID
  * 
@@ -569,9 +1068,9 @@ CMAVSDK_EXPORT void mavsdk_camera_start_photo_interval_async(
 
 /**
  * @brief Get the current start photo interval (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param start_photo_interval_out Pointer to store the result.
  */
@@ -585,7 +1084,7 @@ mavsdk_camera_start_photo_interval(
 
 /**
  * @brief Stop a running photo timelapse.
- * 
+ *
  * @param camera The camera instance.
 * @param component_id  Component ID
  * 
@@ -601,9 +1100,9 @@ CMAVSDK_EXPORT void mavsdk_camera_stop_photo_interval_async(
 
 /**
  * @brief Get the current stop photo interval (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param stop_photo_interval_out Pointer to store the result.
  */
@@ -616,7 +1115,7 @@ mavsdk_camera_stop_photo_interval(
 
 /**
  * @brief Start a video recording.
- * 
+ *
  * @param camera The camera instance.
 * @param component_id  Component ID
  * 
@@ -632,9 +1131,9 @@ CMAVSDK_EXPORT void mavsdk_camera_start_video_async(
 
 /**
  * @brief Get the current start video (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param start_video_out Pointer to store the result.
  */
@@ -647,7 +1146,7 @@ mavsdk_camera_start_video(
 
 /**
  * @brief Stop a running video recording.
- * 
+ *
  * @param camera The camera instance.
 * @param component_id  Component ID
  * 
@@ -663,9 +1162,9 @@ CMAVSDK_EXPORT void mavsdk_camera_stop_video_async(
 
 /**
  * @brief Get the current stop video (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param stop_video_out Pointer to store the result.
  */
@@ -678,9 +1177,9 @@ mavsdk_camera_stop_video(
 
 /**
  * @brief Get the current start video streaming (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param start_video_streaming_out Pointer to store the result.
  */
@@ -694,9 +1193,9 @@ mavsdk_camera_start_video_streaming(
 
 /**
  * @brief Get the current stop video streaming (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param stop_video_streaming_out Pointer to store the result.
  */
@@ -710,7 +1209,7 @@ mavsdk_camera_stop_video_streaming(
 
 /**
  * @brief Set camera mode.
- * 
+ *
  * @param camera The camera instance.
 * @param component_id  Component ID
  * 
@@ -729,9 +1228,9 @@ CMAVSDK_EXPORT void mavsdk_camera_set_mode_async(
 
 /**
  * @brief Get the current set mode (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param set_mode_out Pointer to store the result.
  */
@@ -749,7 +1248,7 @@ mavsdk_camera_set_mode(
  *  Note that this might need to be called initially to set the PhotosRange accordingly.
  *  Once set to 'all' rather than 'since connection', it will try to request the previous
  *  images over time.
- * 
+ *
  * @param camera The camera instance.
 * @param component_id  Component ID
  * 
@@ -768,9 +1267,9 @@ CMAVSDK_EXPORT void mavsdk_camera_list_photos_async(
 
 /**
  * @brief Get the current list photos (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param list_photos_out Pointer to store the result.
  */
@@ -789,7 +1288,7 @@ mavsdk_camera_list_photos(
  * 
  *  This allows to find out what cameras are connected to the system.
  *  Based on the camera ID, we can then address a specific camera.
- * 
+ *
  * @param camera The camera instance.
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
@@ -802,9 +1301,9 @@ CMAVSDK_EXPORT mavsdk_camera_camera_list_handle_t mavsdk_camera_subscribe_camera
 
 /**
  * @brief Unsubscribe from 'camera_list' updates.
- * 
+ *
  * Stops the subscription and frees resources associated with the handle.
- * 
+ *
  * @param camera The camera instance.
  * @param handle The subscription handle returned by mavsdk_camera_subscribe_camera_list().
  */
@@ -814,9 +1313,9 @@ CMAVSDK_EXPORT void mavsdk_camera_unsubscribe_camera_list(
 
 /**
  * @brief Get the current camera list (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param camera_list_out Pointer to store the result.
  */
@@ -829,7 +1328,7 @@ mavsdk_camera_camera_list(
 
 /**
  * @brief Subscribe to camera mode updates.
- * 
+ *
  * @param camera The camera instance.
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
@@ -842,9 +1341,9 @@ CMAVSDK_EXPORT mavsdk_camera_mode_handle_t mavsdk_camera_subscribe_mode(
 
 /**
  * @brief Unsubscribe from 'mode' updates.
- * 
+ *
  * Stops the subscription and frees resources associated with the handle.
- * 
+ *
  * @param camera The camera instance.
  * @param handle The subscription handle returned by mavsdk_camera_subscribe_mode().
  */
@@ -855,9 +1354,9 @@ CMAVSDK_EXPORT void mavsdk_camera_unsubscribe_mode(
 
 /**
  * @brief Get the current get mode (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param get_mode_out Pointer to store the result.
  */
@@ -871,7 +1370,7 @@ mavsdk_camera_get_mode(
 
 /**
  * @brief Subscribe to video stream info updates.
- * 
+ *
  * @param camera The camera instance.
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
@@ -884,9 +1383,9 @@ CMAVSDK_EXPORT mavsdk_camera_video_stream_info_handle_t mavsdk_camera_subscribe_
 
 /**
  * @brief Unsubscribe from 'video_stream_info' updates.
- * 
+ *
  * Stops the subscription and frees resources associated with the handle.
- * 
+ *
  * @param camera The camera instance.
  * @param handle The subscription handle returned by mavsdk_camera_subscribe_video_stream_info().
  */
@@ -897,9 +1396,9 @@ CMAVSDK_EXPORT void mavsdk_camera_unsubscribe_video_stream_info(
 
 /**
  * @brief Get the current get video stream info (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param get_video_stream_info_out Pointer to store the result.
  */
@@ -913,7 +1412,7 @@ mavsdk_camera_get_video_stream_info(
 
 /**
  * @brief Subscribe to capture info updates.
- * 
+ *
  * @param camera The camera instance.
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
@@ -926,9 +1425,9 @@ CMAVSDK_EXPORT mavsdk_camera_capture_info_handle_t mavsdk_camera_subscribe_captu
 
 /**
  * @brief Unsubscribe from 'capture_info' updates.
- * 
+ *
  * Stops the subscription and frees resources associated with the handle.
- * 
+ *
  * @param camera The camera instance.
  * @param handle The subscription handle returned by mavsdk_camera_subscribe_capture_info().
  */
@@ -939,7 +1438,7 @@ CMAVSDK_EXPORT void mavsdk_camera_unsubscribe_capture_info(
 
 /**
  * @brief Subscribe to camera's storage status updates.
- * 
+ *
  * @param camera The camera instance.
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
@@ -952,9 +1451,9 @@ CMAVSDK_EXPORT mavsdk_camera_storage_handle_t mavsdk_camera_subscribe_storage(
 
 /**
  * @brief Unsubscribe from 'storage' updates.
- * 
+ *
  * Stops the subscription and frees resources associated with the handle.
- * 
+ *
  * @param camera The camera instance.
  * @param handle The subscription handle returned by mavsdk_camera_subscribe_storage().
  */
@@ -965,9 +1464,9 @@ CMAVSDK_EXPORT void mavsdk_camera_unsubscribe_storage(
 
 /**
  * @brief Get the current get storage (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param get_storage_out Pointer to store the result.
  */
@@ -981,7 +1480,7 @@ mavsdk_camera_get_storage(
 
 /**
  * @brief Get the list of current camera settings.
- * 
+ *
  * @param camera The camera instance.
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
@@ -994,9 +1493,9 @@ CMAVSDK_EXPORT mavsdk_camera_current_settings_handle_t mavsdk_camera_subscribe_c
 
 /**
  * @brief Unsubscribe from 'current_settings' updates.
- * 
+ *
  * Stops the subscription and frees resources associated with the handle.
- * 
+ *
  * @param camera The camera instance.
  * @param handle The subscription handle returned by mavsdk_camera_subscribe_current_settings().
  */
@@ -1007,9 +1506,9 @@ CMAVSDK_EXPORT void mavsdk_camera_unsubscribe_current_settings(
 
 /**
  * @brief Get the current get current settings (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param get_current_settings_out Pointer to store the result.
  */
@@ -1024,7 +1523,7 @@ mavsdk_camera_get_current_settings(
 
 /**
  * @brief Get the list of settings that can be changed.
- * 
+ *
  * @param camera The camera instance.
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
@@ -1037,9 +1536,9 @@ CMAVSDK_EXPORT mavsdk_camera_possible_setting_options_handle_t mavsdk_camera_sub
 
 /**
  * @brief Unsubscribe from 'possible_setting_options' updates.
- * 
+ *
  * Stops the subscription and frees resources associated with the handle.
- * 
+ *
  * @param camera The camera instance.
  * @param handle The subscription handle returned by mavsdk_camera_subscribe_possible_setting_options().
  */
@@ -1050,9 +1549,9 @@ CMAVSDK_EXPORT void mavsdk_camera_unsubscribe_possible_setting_options(
 
 /**
  * @brief Get the current get possible setting options (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param get_possible_setting_options_out Pointer to store the result.
  */
@@ -1069,7 +1568,7 @@ mavsdk_camera_get_possible_setting_options(
  * @brief Set a setting to some value.
  * 
  *  Only setting_id of setting and option_id of option needs to be set.
- * 
+ *
  * @param camera The camera instance.
 * @param component_id  Component ID
  * 
@@ -1088,9 +1587,9 @@ CMAVSDK_EXPORT void mavsdk_camera_set_setting_async(
 
 /**
  * @brief Get the current set setting (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param set_setting_out Pointer to store the result.
  */
@@ -1106,7 +1605,7 @@ mavsdk_camera_set_setting(
  * @brief Get a setting.
  * 
  *  Only setting_id of setting needs to be set.
- * 
+ *
  * @param camera The camera instance.
 * @param component_id  Component ID (0/all not available)
  * 
@@ -1125,9 +1624,9 @@ CMAVSDK_EXPORT void mavsdk_camera_get_setting_async(
 
 /**
  * @brief Get the current get setting (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param get_setting_out Pointer to store the result.
  */
@@ -1144,7 +1643,7 @@ mavsdk_camera_get_setting(
  * @brief Format storage (e.g. SD card) in camera.
  * 
  *  This will delete all content of the camera storage!
- * 
+ *
  * @param camera The camera instance.
 * @param component_id  Component ID
  * 
@@ -1163,9 +1662,9 @@ CMAVSDK_EXPORT void mavsdk_camera_format_storage_async(
 
 /**
  * @brief Get the current format storage (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param format_storage_out Pointer to store the result.
  */
@@ -1181,7 +1680,7 @@ mavsdk_camera_format_storage(
  * @brief Reset all settings in camera.
  * 
  *  This will reset all camera settings to default value
- * 
+ *
  * @param camera The camera instance.
 * @param component_id  Component ID
  * 
@@ -1197,9 +1696,9 @@ CMAVSDK_EXPORT void mavsdk_camera_reset_settings_async(
 
 /**
  * @brief Get the current reset settings (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param reset_settings_out Pointer to store the result.
  */
@@ -1212,7 +1711,7 @@ mavsdk_camera_reset_settings(
 
 /**
  * @brief Start zooming in.
- * 
+ *
  * @param camera The camera instance.
 * @param component_id  Component ID
  * 
@@ -1228,9 +1727,9 @@ CMAVSDK_EXPORT void mavsdk_camera_zoom_in_start_async(
 
 /**
  * @brief Get the current zoom in start (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param zoom_in_start_out Pointer to store the result.
  */
@@ -1243,7 +1742,7 @@ mavsdk_camera_zoom_in_start(
 
 /**
  * @brief Start zooming out.
- * 
+ *
  * @param camera The camera instance.
 * @param component_id  Component ID
  * 
@@ -1259,9 +1758,9 @@ CMAVSDK_EXPORT void mavsdk_camera_zoom_out_start_async(
 
 /**
  * @brief Get the current zoom out start (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param zoom_out_start_out Pointer to store the result.
  */
@@ -1274,7 +1773,7 @@ mavsdk_camera_zoom_out_start(
 
 /**
  * @brief Stop zooming.
- * 
+ *
  * @param camera The camera instance.
 * @param component_id  Component ID
  * 
@@ -1290,9 +1789,9 @@ CMAVSDK_EXPORT void mavsdk_camera_zoom_stop_async(
 
 /**
  * @brief Get the current zoom stop (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param zoom_stop_out Pointer to store the result.
  */
@@ -1305,7 +1804,7 @@ mavsdk_camera_zoom_stop(
 
 /**
  * @brief Zoom to value as proportion of full camera range (percentage between 0.0 and 100.0).
- * 
+ *
  * @param camera The camera instance.
 * @param component_id  Component ID
  * 
@@ -1324,9 +1823,9 @@ CMAVSDK_EXPORT void mavsdk_camera_zoom_range_async(
 
 /**
  * @brief Get the current zoom range (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param zoom_range_out Pointer to store the result.
  */
@@ -1340,7 +1839,7 @@ mavsdk_camera_zoom_range(
 
 /**
  * @brief Track point.
- * 
+ *
  * @param camera The camera instance.
 * @param component_id  Component ID
  * 
@@ -1365,9 +1864,9 @@ CMAVSDK_EXPORT void mavsdk_camera_track_point_async(
 
 /**
  * @brief Get the current track point (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param track_point_out Pointer to store the result.
  */
@@ -1383,7 +1882,7 @@ mavsdk_camera_track_point(
 
 /**
  * @brief Track rectangle.
- * 
+ *
  * @param camera The camera instance.
 * @param component_id  Component ID
  * 
@@ -1411,9 +1910,9 @@ CMAVSDK_EXPORT void mavsdk_camera_track_rectangle_async(
 
 /**
  * @brief Get the current track rectangle (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param track_rectangle_out Pointer to store the result.
  */
@@ -1430,7 +1929,7 @@ mavsdk_camera_track_rectangle(
 
 /**
  * @brief Stop tracking.
- * 
+ *
  * @param camera The camera instance.
 * @param component_id  Component ID
  * 
@@ -1446,9 +1945,9 @@ CMAVSDK_EXPORT void mavsdk_camera_track_stop_async(
 
 /**
  * @brief Get the current track stop (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param track_stop_out Pointer to store the result.
  */
@@ -1461,7 +1960,7 @@ mavsdk_camera_track_stop(
 
 /**
  * @brief Start focusing in.
- * 
+ *
  * @param camera The camera instance.
 * @param component_id  Component ID
  * 
@@ -1477,9 +1976,9 @@ CMAVSDK_EXPORT void mavsdk_camera_focus_in_start_async(
 
 /**
  * @brief Get the current focus in start (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param focus_in_start_out Pointer to store the result.
  */
@@ -1492,7 +1991,7 @@ mavsdk_camera_focus_in_start(
 
 /**
  * @brief Start focusing out.
- * 
+ *
  * @param camera The camera instance.
 * @param component_id  Component ID
  * 
@@ -1508,9 +2007,9 @@ CMAVSDK_EXPORT void mavsdk_camera_focus_out_start_async(
 
 /**
  * @brief Get the current focus out start (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param focus_out_start_out Pointer to store the result.
  */
@@ -1523,7 +2022,7 @@ mavsdk_camera_focus_out_start(
 
 /**
  * @brief Stop focus.
- * 
+ *
  * @param camera The camera instance.
 * @param component_id  Component ID
  * 
@@ -1539,9 +2038,9 @@ CMAVSDK_EXPORT void mavsdk_camera_focus_stop_async(
 
 /**
  * @brief Get the current focus stop (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param focus_stop_out Pointer to store the result.
  */
@@ -1554,7 +2053,7 @@ mavsdk_camera_focus_stop(
 
 /**
  * @brief Focus with range value of full range (value between 0.0 and 100.0).
- * 
+ *
  * @param camera The camera instance.
 * @param component_id  Component ID
  * 
@@ -1573,9 +2072,9 @@ CMAVSDK_EXPORT void mavsdk_camera_focus_range_async(
 
 /**
  * @brief Get the current focus range (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param focus_range_out Pointer to store the result.
  */

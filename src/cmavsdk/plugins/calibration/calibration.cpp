@@ -10,7 +10,7 @@
 
 // ===== C++ to C Type Conversions =====
 
-static mavsdk_calibration_result_t 
+static mavsdk_calibration_result_t
 translate_result(mavsdk::Calibration::Result cpp_result) {
     switch(cpp_result) {
         case mavsdk::Calibration::Result::Unknown:
@@ -72,9 +72,79 @@ void mavsdk_calibration_progress_data_destroy(
     if (!target) return;
     if (target->status_text) {
         free((void*)target->status_text);
+        target->status_text = nullptr;
     }
 }
 
+void mavsdk_calibration_progress_data_array_destroy(
+    mavsdk_calibration_progress_data_t** array,
+    size_t size) {
+    if (!array || !*array) return;
+
+    for (size_t i = 0; i < size; i++) {
+        mavsdk_calibration_progress_data_destroy(&(*array)[i]);
+    }
+
+    delete[] *array;
+    *array = nullptr;
+}
+
+
+// ===== Primitive Array Destroy Functions =====
+void mavsdk_calibration_float_array_destroy(float** array) {
+    if (!array || !*array) return;
+    delete[] *array;
+    *array = nullptr;
+}
+
+void mavsdk_calibration_double_array_destroy(double** array) {
+    if (!array || !*array) return;
+    delete[] *array;
+    *array = nullptr;
+}
+
+void mavsdk_calibration_int32t_array_destroy(int32_t** array) {
+    if (!array || !*array) return;
+    delete[] *array;
+    *array = nullptr;
+}
+
+void mavsdk_calibration_uint32t_array_destroy(uint32_t** array) {
+    if (!array || !*array) return;
+    delete[] *array;
+    *array = nullptr;
+}
+
+void mavsdk_calibration_int64t_array_destroy(int64_t** array) {
+    if (!array || !*array) return;
+    delete[] *array;
+    *array = nullptr;
+}
+
+void mavsdk_calibration_uint64t_array_destroy(uint64_t** array) {
+    if (!array || !*array) return;
+    delete[] *array;
+    *array = nullptr;
+}
+
+void mavsdk_calibration_bool_array_destroy(bool** array) {
+    if (!array || !*array) return;
+    delete[] *array;
+    *array = nullptr;
+}
+
+
+void mavsdk_calibration_string_destroy(char** str) {
+    if (!str || !*str) return;
+    free(*str);
+    *str = nullptr;
+}
+
+void mavsdk_calibration_byte_buffer_destroy(uint8_t** buffer) {
+    if (!buffer || !*buffer) return;
+    delete[] *buffer;
+    *buffer = nullptr;
+}
 
 // ===== Calibration Wrapper =====
 
@@ -82,16 +152,16 @@ struct mavsdk_calibration_wrapper {
     std::shared_ptr<mavsdk::Calibration> cpp_plugin;
 };
 
-mavsdk_calibration_t 
+mavsdk_calibration_t
 mavsdk_calibration_create(mavsdk_system_t system) {
     if (system == nullptr) {
         return nullptr;
     }
-    
+
     auto wrapper = new mavsdk_calibration_wrapper();
     auto system_ptr = static_cast<std::shared_ptr<mavsdk::System>*>(system);
     wrapper->cpp_plugin = std::make_shared<mavsdk::Calibration>(*system_ptr);
-    
+
     return wrapper;
 }
 
@@ -99,7 +169,7 @@ void mavsdk_calibration_destroy(mavsdk_calibration_t calibration) {
     if (calibration == nullptr) {
         return;
     }
-    
+
     auto wrapper = static_cast<mavsdk_calibration_wrapper*>(calibration);
     delete wrapper;
 }
@@ -113,7 +183,7 @@ void mavsdk_calibration_calibrate_gyro_async(
     void* user_data)
 {
     auto wrapper = static_cast<mavsdk_calibration_wrapper*>(calibration);
-    
+
     wrapper->cpp_plugin->calibrate_gyro_async(
         [callback, user_data](
             mavsdk::Calibration::Result result,
@@ -136,7 +206,7 @@ void mavsdk_calibration_calibrate_accelerometer_async(
     void* user_data)
 {
     auto wrapper = static_cast<mavsdk_calibration_wrapper*>(calibration);
-    
+
     wrapper->cpp_plugin->calibrate_accelerometer_async(
         [callback, user_data](
             mavsdk::Calibration::Result result,
@@ -159,7 +229,7 @@ void mavsdk_calibration_calibrate_magnetometer_async(
     void* user_data)
 {
     auto wrapper = static_cast<mavsdk_calibration_wrapper*>(calibration);
-    
+
     wrapper->cpp_plugin->calibrate_magnetometer_async(
         [callback, user_data](
             mavsdk::Calibration::Result result,
@@ -182,7 +252,7 @@ void mavsdk_calibration_calibrate_level_horizon_async(
     void* user_data)
 {
     auto wrapper = static_cast<mavsdk_calibration_wrapper*>(calibration);
-    
+
     wrapper->cpp_plugin->calibrate_level_horizon_async(
         [callback, user_data](
             mavsdk::Calibration::Result result,
@@ -205,7 +275,7 @@ void mavsdk_calibration_calibrate_gimbal_accelerometer_async(
     void* user_data)
 {
     auto wrapper = static_cast<mavsdk_calibration_wrapper*>(calibration);
-    
+
     wrapper->cpp_plugin->calibrate_gimbal_accelerometer_async(
         [callback, user_data](
             mavsdk::Calibration::Result result,
@@ -228,8 +298,8 @@ mavsdk_calibration_cancel(
     mavsdk_calibration_t calibration)
 {
     auto wrapper = static_cast<mavsdk_calibration_wrapper*>(calibration);
-    
+
     auto ret_value = wrapper->cpp_plugin->cancel();
-    
+
     return translate_result(ret_value);
 }

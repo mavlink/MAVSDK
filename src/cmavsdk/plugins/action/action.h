@@ -81,6 +81,81 @@ typedef enum {
 
 
 
+// ===== Primitive Array Destroy Functions =====
+/**
+ * @brief Destroy an array of float.
+ *
+ * Frees the memory allocated for the array.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ */
+void mavsdk_action_float_array_destroy(float** array);
+/**
+ * @brief Destroy an array of double.
+ *
+ * Frees the memory allocated for the array.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ */
+void mavsdk_action_double_array_destroy(double** array);
+/**
+ * @brief Destroy an array of int32_t.
+ *
+ * Frees the memory allocated for the array.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ */
+void mavsdk_action_int32t_array_destroy(int32_t** array);
+/**
+ * @brief Destroy an array of uint32_t.
+ *
+ * Frees the memory allocated for the array.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ */
+void mavsdk_action_uint32t_array_destroy(uint32_t** array);
+/**
+ * @brief Destroy an array of int64_t.
+ *
+ * Frees the memory allocated for the array.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ */
+void mavsdk_action_int64t_array_destroy(int64_t** array);
+/**
+ * @brief Destroy an array of uint64_t.
+ *
+ * Frees the memory allocated for the array.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ */
+void mavsdk_action_uint64t_array_destroy(uint64_t** array);
+/**
+ * @brief Destroy an array of bool.
+ *
+ * Frees the memory allocated for the array.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ */
+void mavsdk_action_bool_array_destroy(bool** array);
+
+/**
+ * @brief Destroy a string (char*).
+ *
+ * Frees the memory allocated for the string.
+ *
+ * @param str Pointer to the string pointer. Will be set to NULL after freeing.
+ */
+void mavsdk_action_string_destroy(char** str);
+
+/**
+ * @brief Destroy a byte buffer (uint8_t*).
+ *
+ * Frees the memory allocated for the byte buffer.
+ *
+ * @param buffer Pointer to the buffer pointer. Will be set to NULL after freeing.
+ */
+void mavsdk_action_byte_buffer_destroy(uint8_t** buffer);
 
 // ===== Callback Typedefs =====
 typedef void (*mavsdk_action_arm_callback_t)(const mavsdk_action_result_t result, void* user_data);
@@ -116,7 +191,7 @@ CMAVSDK_EXPORT void mavsdk_action_destroy(mavsdk_action_t action);
  * 
  *  Arming a drone normally causes motors to spin at idle.
  *  Before arming take all safety precautions and stand clear of the drone!
- * 
+ *
  * @param action The action instance.
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
@@ -129,9 +204,9 @@ CMAVSDK_EXPORT void mavsdk_action_arm_async(
 
 /**
  * @brief Get the current arm (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param arm_out Pointer to store the result.
  */
@@ -148,7 +223,7 @@ mavsdk_action_arm(
  * 
  *  Arming a drone normally causes motors to spin at idle.
  *  Before arming take all safety precautions and stand clear of the drone!
- * 
+ *
  * @param action The action instance.
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
@@ -161,9 +236,9 @@ CMAVSDK_EXPORT void mavsdk_action_arm_force_async(
 
 /**
  * @brief Get the current arm force (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param arm_force_out Pointer to store the result.
  */
@@ -178,7 +253,7 @@ mavsdk_action_arm_force(
  * 
  *  This will disarm a drone that considers itself landed. If flying, the drone should
  *  reject the disarm command. Disarming means that all motors will stop.
- * 
+ *
  * @param action The action instance.
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
@@ -191,9 +266,9 @@ CMAVSDK_EXPORT void mavsdk_action_disarm_async(
 
 /**
  * @brief Get the current disarm (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param disarm_out Pointer to store the result.
  */
@@ -210,7 +285,7 @@ mavsdk_action_disarm(
  *  it to take off and hover at the takeoff altitude.
  * 
  *  Note that the vehicle must be armed before it can take off.
- * 
+ *
  * @param action The action instance.
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
@@ -223,9 +298,9 @@ CMAVSDK_EXPORT void mavsdk_action_takeoff_async(
 
 /**
  * @brief Get the current takeoff (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param takeoff_out Pointer to store the result.
  */
@@ -239,7 +314,7 @@ mavsdk_action_takeoff(
  * @brief Send command to land at the current position.
  * 
  *  This switches the drone to 'Land' flight mode.
- * 
+ *
  * @param action The action instance.
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
@@ -252,9 +327,9 @@ CMAVSDK_EXPORT void mavsdk_action_land_async(
 
 /**
  * @brief Get the current land (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param land_out Pointer to store the result.
  */
@@ -268,7 +343,7 @@ mavsdk_action_land(
  * @brief Send command to reboot the drone components.
  * 
  *  This will reboot the autopilot, companion computer, camera and gimbal.
- * 
+ *
  * @param action The action instance.
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
@@ -281,9 +356,9 @@ CMAVSDK_EXPORT void mavsdk_action_reboot_async(
 
 /**
  * @brief Get the current reboot (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param reboot_out Pointer to store the result.
  */
@@ -299,7 +374,7 @@ mavsdk_action_reboot(
  *  This will shut down the autopilot, onboard computer, camera and gimbal.
  *  This command should only be used when the autopilot is disarmed and autopilots commonly
  *  reject it if they are not already ready to shut down.
- * 
+ *
  * @param action The action instance.
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
@@ -312,9 +387,9 @@ CMAVSDK_EXPORT void mavsdk_action_shutdown_async(
 
 /**
  * @brief Get the current shutdown (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param shutdown_out Pointer to store the result.
  */
@@ -328,7 +403,7 @@ mavsdk_action_shutdown(
  * @brief Send command to terminate the drone.
  * 
  *  This will run the terminate routine as configured on the drone (e.g. disarm and open the parachute).
- * 
+ *
  * @param action The action instance.
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
@@ -341,9 +416,9 @@ CMAVSDK_EXPORT void mavsdk_action_terminate_async(
 
 /**
  * @brief Get the current terminate (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param terminate_out Pointer to store the result.
  */
@@ -358,7 +433,7 @@ mavsdk_action_terminate(
  * 
  *  This will disarm a drone irrespective of whether it is landed or flying.
  *  Note that the drone will fall out of the sky if this command is used while flying.
- * 
+ *
  * @param action The action instance.
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
@@ -371,9 +446,9 @@ CMAVSDK_EXPORT void mavsdk_action_kill_async(
 
 /**
  * @brief Get the current kill (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param kill_out Pointer to store the result.
  */
@@ -389,7 +464,7 @@ mavsdk_action_kill(
  *  This switches the drone into [Return mode](https://docs.px4.io/master/en/flight_modes/return.html) which
  *  generally means it will rise up to a certain altitude to clear any obstacles before heading
  *  back to the launch (takeoff) position and land there.
- * 
+ *
  * @param action The action instance.
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
@@ -402,9 +477,9 @@ CMAVSDK_EXPORT void mavsdk_action_return_to_launch_async(
 
 /**
  * @brief Get the current return to launch (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param return_to_launch_out Pointer to store the result.
  */
@@ -421,7 +496,7 @@ mavsdk_action_return_to_launch(
  *  in meters AMSL (above mean sea level).
  * 
  *  The yaw angle is in degrees (frame is NED, 0 is North, positive is clockwise).
- * 
+ *
  * @param action The action instance.
 * @param latitude_deg  Latitude (in degrees)
  * 
@@ -446,9 +521,9 @@ CMAVSDK_EXPORT void mavsdk_action_goto_location_async(
 
 /**
  * @brief Get the current goto location (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param goto_location_out Pointer to store the result.
  */
@@ -466,7 +541,7 @@ mavsdk_action_goto_location(
  * @brief Send command do orbit to the drone.
  * 
  *  This will run the orbit routine with the given parameters.
- * 
+ *
  * @param action The action instance.
 * @param radius_m  Radius of circle (in meters)
  * 
@@ -497,9 +572,9 @@ CMAVSDK_EXPORT void mavsdk_action_do_orbit_async(
 
 /**
  * @brief Get the current do orbit (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param do_orbit_out Pointer to store the result.
  */
@@ -523,7 +598,7 @@ mavsdk_action_do_orbit(
  * 
  *  Note: this command is specific to the PX4 Autopilot flight stack as
  *  it implies a change to a PX4-specific mode.
- * 
+ *
  * @param action The action instance.
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
@@ -536,9 +611,9 @@ CMAVSDK_EXPORT void mavsdk_action_hold_async(
 
 /**
  * @brief Get the current hold (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param hold_out Pointer to store the result.
  */
@@ -552,7 +627,7 @@ mavsdk_action_hold(
  * @brief Send command to set the value of an actuator.
  * 
  *  Note that the index of the actuator starts at 1 and that the value goes from -1 to 1.
- * 
+ *
  * @param action The action instance.
 * @param index  Index of actuator (starting with 1)
  * 
@@ -571,9 +646,9 @@ CMAVSDK_EXPORT void mavsdk_action_set_actuator_async(
 
 /**
  * @brief Get the current set actuator (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param set_actuator_out Pointer to store the result.
  */
@@ -591,7 +666,7 @@ mavsdk_action_set_actuator(
  *  The associated action will only be executed for VTOL vehicles (on other vehicle types the
  *  command will fail). The command will succeed if called when the vehicle
  *  is already in fixedwing mode.
- * 
+ *
  * @param action The action instance.
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
@@ -604,9 +679,9 @@ CMAVSDK_EXPORT void mavsdk_action_transition_to_fixedwing_async(
 
 /**
  * @brief Get the current transition to fixedwing (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param transition_to_fixedwing_out Pointer to store the result.
  */
@@ -622,7 +697,7 @@ mavsdk_action_transition_to_fixedwing(
  *  The associated action will only be executed for VTOL vehicles (on other vehicle types the
  *  command will fail). The command will succeed if called when the vehicle
  *  is already in multicopter mode.
- * 
+ *
  * @param action The action instance.
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
@@ -635,9 +710,9 @@ CMAVSDK_EXPORT void mavsdk_action_transition_to_multicopter_async(
 
 /**
  * @brief Get the current transition to multicopter (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param transition_to_multicopter_out Pointer to store the result.
  */
@@ -649,7 +724,7 @@ mavsdk_action_transition_to_multicopter(
 
 /**
  * @brief Get the takeoff altitude (in meters above ground).
- * 
+ *
  * @param action The action instance.
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
@@ -662,9 +737,9 @@ CMAVSDK_EXPORT void mavsdk_action_get_takeoff_altitude_async(
 
 /**
  * @brief Get the current get takeoff altitude (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param get_takeoff_altitude_out Pointer to store the result.
  */
@@ -677,7 +752,7 @@ mavsdk_action_get_takeoff_altitude(
 
 /**
  * @brief Set takeoff altitude (in meters above ground).
- * 
+ *
  * @param action The action instance.
 * @param altitude  Takeoff altitude relative to ground/takeoff location (in meters)
  * 
@@ -693,9 +768,9 @@ CMAVSDK_EXPORT void mavsdk_action_set_takeoff_altitude_async(
 
 /**
  * @brief Get the current set takeoff altitude (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param set_takeoff_altitude_out Pointer to store the result.
  */
@@ -708,7 +783,7 @@ mavsdk_action_set_takeoff_altitude(
 
 /**
  * @brief Get the return to launch minimum return altitude (in meters).
- * 
+ *
  * @param action The action instance.
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
@@ -721,9 +796,9 @@ CMAVSDK_EXPORT void mavsdk_action_get_return_to_launch_altitude_async(
 
 /**
  * @brief Get the current get return to launch altitude (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param get_return_to_launch_altitude_out Pointer to store the result.
  */
@@ -736,7 +811,7 @@ mavsdk_action_get_return_to_launch_altitude(
 
 /**
  * @brief Set the return to launch minimum return altitude (in meters).
- * 
+ *
  * @param action The action instance.
 * @param relative_altitude_m  Return altitude relative to takeoff location (in meters)
  * 
@@ -752,9 +827,9 @@ CMAVSDK_EXPORT void mavsdk_action_set_return_to_launch_altitude_async(
 
 /**
  * @brief Get the current set return to launch altitude (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param set_return_to_launch_altitude_out Pointer to store the result.
  */
@@ -770,7 +845,7 @@ mavsdk_action_set_return_to_launch_altitude(
  * 
  *  This will set the speed during a mission, reposition, and similar.
  *  It is ephemeral, so not stored on the drone and does not survive a reboot.
- * 
+ *
  * @param action The action instance.
 * @param speed_m_s  Speed in meters/second
  * 
@@ -786,9 +861,9 @@ CMAVSDK_EXPORT void mavsdk_action_set_current_speed_async(
 
 /**
  * @brief Get the current set current speed (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param set_current_speed_out Pointer to store the result.
  */

@@ -10,7 +10,7 @@
 
 // ===== C++ to C Type Conversions =====
 
-static mavsdk_camera_result_t 
+static mavsdk_camera_result_t
 translate_result(mavsdk::Camera::Result cpp_result) {
     switch(cpp_result) {
         case mavsdk::Camera::Result::Unknown:
@@ -119,10 +119,25 @@ void mavsdk_camera_option_destroy(
     if (!target) return;
     if (target->option_id) {
         free((void*)target->option_id);
+        target->option_id = nullptr;
     }
     if (target->option_description) {
         free((void*)target->option_description);
+        target->option_description = nullptr;
     }
+}
+
+void mavsdk_camera_option_array_destroy(
+    mavsdk_camera_option_t** array,
+    size_t size) {
+    if (!array || !*array) return;
+
+    for (size_t i = 0; i < size; i++) {
+        mavsdk_camera_option_destroy(&(*array)[i]);
+    }
+
+    delete[] *array;
+    *array = nullptr;
 }
 
 
@@ -155,10 +170,25 @@ void mavsdk_camera_setting_destroy(
     if (!target) return;
     if (target->setting_id) {
         free((void*)target->setting_id);
+        target->setting_id = nullptr;
     }
     if (target->setting_description) {
         free((void*)target->setting_description);
+        target->setting_description = nullptr;
     }
+}
+
+void mavsdk_camera_setting_array_destroy(
+    mavsdk_camera_setting_t** array,
+    size_t size) {
+    if (!array || !*array) return;
+
+    for (size_t i = 0; i < size; i++) {
+        mavsdk_camera_setting_destroy(&(*array)[i]);
+    }
+
+    delete[] *array;
+    *array = nullptr;
 }
 
 
@@ -201,9 +231,11 @@ void mavsdk_camera_setting_options_destroy(
     if (!target) return;
     if (target->setting_id) {
         free((void*)target->setting_id);
+        target->setting_id = nullptr;
     }
     if (target->setting_description) {
         free((void*)target->setting_description);
+        target->setting_description = nullptr;
     }
     if (target->options) {
         for (size_t i = 0; i < target->options_size; i++) {
@@ -211,7 +243,21 @@ void mavsdk_camera_setting_options_destroy(
         }
         delete[] target->options;
         target->options = nullptr;
+        target->options_size = 0;
     }
+}
+
+void mavsdk_camera_setting_options_array_destroy(
+    mavsdk_camera_setting_options_t** array,
+    size_t size) {
+    if (!array || !*array) return;
+
+    for (size_t i = 0; i < size; i++) {
+        mavsdk_camera_setting_options_destroy(&(*array)[i]);
+    }
+
+    delete[] *array;
+    *array = nullptr;
 }
 
 
@@ -248,7 +294,21 @@ void mavsdk_camera_video_stream_settings_destroy(
     if (!target) return;
     if (target->uri) {
         free((void*)target->uri);
+        target->uri = nullptr;
     }
+}
+
+void mavsdk_camera_video_stream_settings_array_destroy(
+    mavsdk_camera_video_stream_settings_t** array,
+    size_t size) {
+    if (!array || !*array) return;
+
+    for (size_t i = 0; i < size; i++) {
+        mavsdk_camera_video_stream_settings_destroy(&(*array)[i]);
+    }
+
+    delete[] *array;
+    *array = nullptr;
 }
 
 
@@ -324,6 +384,23 @@ translate_video_stream_info_to_c(const mavsdk::Camera::VideoStreamInfo& cpp_stru
     return c_struct;
 }
 
+void mavsdk_camera_video_stream_info_destroy(
+    mavsdk_camera_video_stream_info_t* target) {
+    if (!target) return;
+}
+
+void mavsdk_camera_video_stream_info_array_destroy(
+    mavsdk_camera_video_stream_info_t** array,
+    size_t size) {
+    if (!array || !*array) return;
+
+    for (size_t i = 0; i < size; i++) {
+        mavsdk_camera_video_stream_info_destroy(&(*array)[i]);
+    }
+
+    delete[] *array;
+    *array = nullptr;
+}
 
 
 static mavsdk::Camera::ModeUpdate
@@ -342,6 +419,23 @@ translate_mode_update_to_c(const mavsdk::Camera::ModeUpdate& cpp_struct) {
     return c_struct;
 }
 
+void mavsdk_camera_mode_update_destroy(
+    mavsdk_camera_mode_update_t* target) {
+    if (!target) return;
+}
+
+void mavsdk_camera_mode_update_array_destroy(
+    mavsdk_camera_mode_update_t** array,
+    size_t size) {
+    if (!array || !*array) return;
+
+    for (size_t i = 0; i < size; i++) {
+        mavsdk_camera_mode_update_destroy(&(*array)[i]);
+    }
+
+    delete[] *array;
+    *array = nullptr;
+}
 
 
 static mavsdk::Camera::VideoStreamUpdate
@@ -360,6 +454,23 @@ translate_video_stream_update_to_c(const mavsdk::Camera::VideoStreamUpdate& cpp_
     return c_struct;
 }
 
+void mavsdk_camera_video_stream_update_destroy(
+    mavsdk_camera_video_stream_update_t* target) {
+    if (!target) return;
+}
+
+void mavsdk_camera_video_stream_update_array_destroy(
+    mavsdk_camera_video_stream_update_t** array,
+    size_t size) {
+    if (!array || !*array) return;
+
+    for (size_t i = 0; i < size; i++) {
+        mavsdk_camera_video_stream_update_destroy(&(*array)[i]);
+    }
+
+    delete[] *array;
+    *array = nullptr;
+}
 
 
 static mavsdk::Camera::Storage::StorageStatus
@@ -475,7 +586,21 @@ void mavsdk_camera_storage_destroy(
     if (!target) return;
     if (target->media_folder_name) {
         free((void*)target->media_folder_name);
+        target->media_folder_name = nullptr;
     }
+}
+
+void mavsdk_camera_storage_array_destroy(
+    mavsdk_camera_storage_t** array,
+    size_t size) {
+    if (!array || !*array) return;
+
+    for (size_t i = 0; i < size; i++) {
+        mavsdk_camera_storage_destroy(&(*array)[i]);
+    }
+
+    delete[] *array;
+    *array = nullptr;
 }
 
 
@@ -495,6 +620,23 @@ translate_storage_update_to_c(const mavsdk::Camera::StorageUpdate& cpp_struct) {
     return c_struct;
 }
 
+void mavsdk_camera_storage_update_destroy(
+    mavsdk_camera_storage_update_t* target) {
+    if (!target) return;
+}
+
+void mavsdk_camera_storage_update_array_destroy(
+    mavsdk_camera_storage_update_t** array,
+    size_t size) {
+    if (!array || !*array) return;
+
+    for (size_t i = 0; i < size; i++) {
+        mavsdk_camera_storage_update_destroy(&(*array)[i]);
+    }
+
+    delete[] *array;
+    *array = nullptr;
+}
 
 
 static mavsdk::Camera::CurrentSettingsUpdate
@@ -530,7 +672,21 @@ void mavsdk_camera_current_settings_update_destroy(
         }
         delete[] target->current_settings;
         target->current_settings = nullptr;
+        target->current_settings_size = 0;
     }
+}
+
+void mavsdk_camera_current_settings_update_array_destroy(
+    mavsdk_camera_current_settings_update_t** array,
+    size_t size) {
+    if (!array || !*array) return;
+
+    for (size_t i = 0; i < size; i++) {
+        mavsdk_camera_current_settings_update_destroy(&(*array)[i]);
+    }
+
+    delete[] *array;
+    *array = nullptr;
 }
 
 
@@ -567,7 +723,21 @@ void mavsdk_camera_possible_setting_options_update_destroy(
         }
         delete[] target->setting_options;
         target->setting_options = nullptr;
+        target->setting_options_size = 0;
     }
+}
+
+void mavsdk_camera_possible_setting_options_update_array_destroy(
+    mavsdk_camera_possible_setting_options_update_t** array,
+    size_t size) {
+    if (!array || !*array) return;
+
+    for (size_t i = 0; i < size; i++) {
+        mavsdk_camera_possible_setting_options_update_destroy(&(*array)[i]);
+    }
+
+    delete[] *array;
+    *array = nullptr;
 }
 
 
@@ -592,6 +762,23 @@ translate_position_to_c(const mavsdk::Camera::Position& cpp_struct) {
     return c_struct;
 }
 
+void mavsdk_camera_position_destroy(
+    mavsdk_camera_position_t* target) {
+    if (!target) return;
+}
+
+void mavsdk_camera_position_array_destroy(
+    mavsdk_camera_position_t** array,
+    size_t size) {
+    if (!array || !*array) return;
+
+    for (size_t i = 0; i < size; i++) {
+        mavsdk_camera_position_destroy(&(*array)[i]);
+    }
+
+    delete[] *array;
+    *array = nullptr;
+}
 
 
 static mavsdk::Camera::Quaternion
@@ -614,6 +801,23 @@ translate_quaternion_to_c(const mavsdk::Camera::Quaternion& cpp_struct) {
     return c_struct;
 }
 
+void mavsdk_camera_quaternion_destroy(
+    mavsdk_camera_quaternion_t* target) {
+    if (!target) return;
+}
+
+void mavsdk_camera_quaternion_array_destroy(
+    mavsdk_camera_quaternion_t** array,
+    size_t size) {
+    if (!array || !*array) return;
+
+    for (size_t i = 0; i < size; i++) {
+        mavsdk_camera_quaternion_destroy(&(*array)[i]);
+    }
+
+    delete[] *array;
+    *array = nullptr;
+}
 
 
 static mavsdk::Camera::EulerAngle
@@ -634,6 +838,23 @@ translate_euler_angle_to_c(const mavsdk::Camera::EulerAngle& cpp_struct) {
     return c_struct;
 }
 
+void mavsdk_camera_euler_angle_destroy(
+    mavsdk_camera_euler_angle_t* target) {
+    if (!target) return;
+}
+
+void mavsdk_camera_euler_angle_array_destroy(
+    mavsdk_camera_euler_angle_t** array,
+    size_t size) {
+    if (!array || !*array) return;
+
+    for (size_t i = 0; i < size; i++) {
+        mavsdk_camera_euler_angle_destroy(&(*array)[i]);
+    }
+
+    delete[] *array;
+    *array = nullptr;
+}
 
 
 static mavsdk::Camera::CaptureInfo
@@ -671,7 +892,21 @@ void mavsdk_camera_capture_info_destroy(
     if (!target) return;
     if (target->file_url) {
         free((void*)target->file_url);
+        target->file_url = nullptr;
     }
+}
+
+void mavsdk_camera_capture_info_array_destroy(
+    mavsdk_camera_capture_info_t** array,
+    size_t size) {
+    if (!array || !*array) return;
+
+    for (size_t i = 0; i < size; i++) {
+        mavsdk_camera_capture_info_destroy(&(*array)[i]);
+    }
+
+    delete[] *array;
+    *array = nullptr;
 }
 
 
@@ -712,10 +947,25 @@ void mavsdk_camera_information_destroy(
     if (!target) return;
     if (target->vendor_name) {
         free((void*)target->vendor_name);
+        target->vendor_name = nullptr;
     }
     if (target->model_name) {
         free((void*)target->model_name);
+        target->model_name = nullptr;
     }
+}
+
+void mavsdk_camera_information_array_destroy(
+    mavsdk_camera_information_t** array,
+    size_t size) {
+    if (!array || !*array) return;
+
+    for (size_t i = 0; i < size; i++) {
+        mavsdk_camera_information_destroy(&(*array)[i]);
+    }
+
+    delete[] *array;
+    *array = nullptr;
 }
 
 
@@ -750,9 +1000,79 @@ void mavsdk_camera_camera_list_destroy(
         }
         delete[] target->cameras;
         target->cameras = nullptr;
+        target->cameras_size = 0;
     }
 }
 
+void mavsdk_camera_camera_list_array_destroy(
+    mavsdk_camera_camera_list_t** array,
+    size_t size) {
+    if (!array || !*array) return;
+
+    for (size_t i = 0; i < size; i++) {
+        mavsdk_camera_camera_list_destroy(&(*array)[i]);
+    }
+
+    delete[] *array;
+    *array = nullptr;
+}
+
+
+// ===== Primitive Array Destroy Functions =====
+void mavsdk_camera_float_array_destroy(float** array) {
+    if (!array || !*array) return;
+    delete[] *array;
+    *array = nullptr;
+}
+
+void mavsdk_camera_double_array_destroy(double** array) {
+    if (!array || !*array) return;
+    delete[] *array;
+    *array = nullptr;
+}
+
+void mavsdk_camera_int32t_array_destroy(int32_t** array) {
+    if (!array || !*array) return;
+    delete[] *array;
+    *array = nullptr;
+}
+
+void mavsdk_camera_uint32t_array_destroy(uint32_t** array) {
+    if (!array || !*array) return;
+    delete[] *array;
+    *array = nullptr;
+}
+
+void mavsdk_camera_int64t_array_destroy(int64_t** array) {
+    if (!array || !*array) return;
+    delete[] *array;
+    *array = nullptr;
+}
+
+void mavsdk_camera_uint64t_array_destroy(uint64_t** array) {
+    if (!array || !*array) return;
+    delete[] *array;
+    *array = nullptr;
+}
+
+void mavsdk_camera_bool_array_destroy(bool** array) {
+    if (!array || !*array) return;
+    delete[] *array;
+    *array = nullptr;
+}
+
+
+void mavsdk_camera_string_destroy(char** str) {
+    if (!str || !*str) return;
+    free(*str);
+    *str = nullptr;
+}
+
+void mavsdk_camera_byte_buffer_destroy(uint8_t** buffer) {
+    if (!buffer || !*buffer) return;
+    delete[] *buffer;
+    *buffer = nullptr;
+}
 
 // ===== Camera Wrapper =====
 
@@ -760,16 +1080,16 @@ struct mavsdk_camera_wrapper {
     std::shared_ptr<mavsdk::Camera> cpp_plugin;
 };
 
-mavsdk_camera_t 
+mavsdk_camera_t
 mavsdk_camera_create(mavsdk_system_t system) {
     if (system == nullptr) {
         return nullptr;
     }
-    
+
     auto wrapper = new mavsdk_camera_wrapper();
     auto system_ptr = static_cast<std::shared_ptr<mavsdk::System>*>(system);
     wrapper->cpp_plugin = std::make_shared<mavsdk::Camera>(*system_ptr);
-    
+
     return wrapper;
 }
 
@@ -777,7 +1097,7 @@ void mavsdk_camera_destroy(mavsdk_camera_t camera) {
     if (camera == nullptr) {
         return;
     }
-    
+
     auto wrapper = static_cast<mavsdk_camera_wrapper*>(camera);
     delete wrapper;
 }
@@ -792,7 +1112,7 @@ void mavsdk_camera_take_photo_async(
     void* user_data)
 {
     auto wrapper = static_cast<mavsdk_camera_wrapper*>(camera);
-    
+
     wrapper->cpp_plugin->take_photo_async(
         component_id,
         [callback, user_data](
@@ -813,9 +1133,9 @@ mavsdk_camera_take_photo(
     int32_t component_id)
 {
     auto wrapper = static_cast<mavsdk_camera_wrapper*>(camera);
-    
+
     auto ret_value = wrapper->cpp_plugin->take_photo(        component_id);
-    
+
     return translate_result(ret_value);
 }
 
@@ -828,7 +1148,7 @@ void mavsdk_camera_start_photo_interval_async(
     void* user_data)
 {
     auto wrapper = static_cast<mavsdk_camera_wrapper*>(camera);
-    
+
     wrapper->cpp_plugin->start_photo_interval_async(
         component_id,
         interval_s,
@@ -851,9 +1171,9 @@ mavsdk_camera_start_photo_interval(
     float interval_s)
 {
     auto wrapper = static_cast<mavsdk_camera_wrapper*>(camera);
-    
+
     auto ret_value = wrapper->cpp_plugin->start_photo_interval(        component_id,        interval_s);
-    
+
     return translate_result(ret_value);
 }
 
@@ -865,7 +1185,7 @@ void mavsdk_camera_stop_photo_interval_async(
     void* user_data)
 {
     auto wrapper = static_cast<mavsdk_camera_wrapper*>(camera);
-    
+
     wrapper->cpp_plugin->stop_photo_interval_async(
         component_id,
         [callback, user_data](
@@ -886,9 +1206,9 @@ mavsdk_camera_stop_photo_interval(
     int32_t component_id)
 {
     auto wrapper = static_cast<mavsdk_camera_wrapper*>(camera);
-    
+
     auto ret_value = wrapper->cpp_plugin->stop_photo_interval(        component_id);
-    
+
     return translate_result(ret_value);
 }
 
@@ -900,7 +1220,7 @@ void mavsdk_camera_start_video_async(
     void* user_data)
 {
     auto wrapper = static_cast<mavsdk_camera_wrapper*>(camera);
-    
+
     wrapper->cpp_plugin->start_video_async(
         component_id,
         [callback, user_data](
@@ -921,9 +1241,9 @@ mavsdk_camera_start_video(
     int32_t component_id)
 {
     auto wrapper = static_cast<mavsdk_camera_wrapper*>(camera);
-    
+
     auto ret_value = wrapper->cpp_plugin->start_video(        component_id);
-    
+
     return translate_result(ret_value);
 }
 
@@ -935,7 +1255,7 @@ void mavsdk_camera_stop_video_async(
     void* user_data)
 {
     auto wrapper = static_cast<mavsdk_camera_wrapper*>(camera);
-    
+
     wrapper->cpp_plugin->stop_video_async(
         component_id,
         [callback, user_data](
@@ -956,9 +1276,9 @@ mavsdk_camera_stop_video(
     int32_t component_id)
 {
     auto wrapper = static_cast<mavsdk_camera_wrapper*>(camera);
-    
+
     auto ret_value = wrapper->cpp_plugin->stop_video(        component_id);
-    
+
     return translate_result(ret_value);
 }
 
@@ -971,9 +1291,9 @@ mavsdk_camera_start_video_streaming(
     int32_t stream_id)
 {
     auto wrapper = static_cast<mavsdk_camera_wrapper*>(camera);
-    
+
     auto ret_value = wrapper->cpp_plugin->start_video_streaming(        component_id,        stream_id);
-    
+
     return translate_result(ret_value);
 }
 
@@ -986,9 +1306,9 @@ mavsdk_camera_stop_video_streaming(
     int32_t stream_id)
 {
     auto wrapper = static_cast<mavsdk_camera_wrapper*>(camera);
-    
+
     auto ret_value = wrapper->cpp_plugin->stop_video_streaming(        component_id,        stream_id);
-    
+
     return translate_result(ret_value);
 }
 
@@ -1001,7 +1321,7 @@ void mavsdk_camera_set_mode_async(
     void* user_data)
 {
     auto wrapper = static_cast<mavsdk_camera_wrapper*>(camera);
-    
+
     wrapper->cpp_plugin->set_mode_async(
         component_id,
         translate_mode_from_c(mode),
@@ -1024,9 +1344,9 @@ mavsdk_camera_set_mode(
     mavsdk_camera_mode_t mode)
 {
     auto wrapper = static_cast<mavsdk_camera_wrapper*>(camera);
-    
+
     auto ret_value = wrapper->cpp_plugin->set_mode(        component_id,        translate_mode_from_c(mode));
-    
+
     return translate_result(ret_value);
 }
 
@@ -1039,7 +1359,7 @@ void mavsdk_camera_list_photos_async(
     void* user_data)
 {
     auto wrapper = static_cast<mavsdk_camera_wrapper*>(camera);
-    
+
     wrapper->cpp_plugin->list_photos_async(
         component_id,
         translate_photos_range_from_c(photos_range),
@@ -1077,17 +1397,17 @@ mavsdk_camera_list_photos(
     size_t* capture_infos_size_out)
 {
     auto wrapper = static_cast<mavsdk_camera_wrapper*>(camera);
-    
+
     auto result_pair = wrapper->cpp_plugin->list_photos(
         component_id,
         translate_photos_range_from_c(photos_range));
-    
+
     if (capture_infos_out != nullptr) {
         size_t count = result_pair.second.size();
 
         *capture_infos_out = new mavsdk_camera_capture_info_t[count];
 
-        for (size_t i = 0; i < count; i++) { 
+        for (size_t i = 0; i < count; i++) {
             (*capture_infos_out)[i] = translate_capture_info_to_c(result_pair.second[i]);
         }
 
@@ -1095,7 +1415,7 @@ mavsdk_camera_list_photos(
             *capture_infos_size_out = count;
         }
     }
-    
+
     return translate_result(result_pair.first);
 }
 
@@ -1106,7 +1426,7 @@ mavsdk_camera_camera_list_handle_t mavsdk_camera_subscribe_camera_list(
     void* user_data)
 {
     auto wrapper = static_cast<mavsdk_camera_wrapper*>(camera);
-    
+
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_camera_list(
         [callback, user_data](
             mavsdk::Camera::CameraList value) {
@@ -1116,7 +1436,7 @@ mavsdk_camera_camera_list_handle_t mavsdk_camera_subscribe_camera_list(
                         user_data);
                 }
         });
-    
+
     auto handle_wrapper = new mavsdk::Camera::CameraListHandle(std::move(cpp_handle));
     return static_cast<mavsdk_camera_camera_list_handle_t>(handle_wrapper);
 }
@@ -1140,9 +1460,9 @@ mavsdk_camera_camera_list(
     mavsdk_camera_camera_list_t* camera_list_out)
 {
     auto wrapper = static_cast<mavsdk_camera_wrapper*>(camera);
-    
+
     auto ret_value = wrapper->cpp_plugin->camera_list();
-    
+
     if (camera_list_out != nullptr) {
         *camera_list_out = translate_camera_list_to_c(ret_value);
     }
@@ -1155,7 +1475,7 @@ mavsdk_camera_mode_handle_t mavsdk_camera_subscribe_mode(
     void* user_data)
 {
     auto wrapper = static_cast<mavsdk_camera_wrapper*>(camera);
-    
+
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_mode(
         [callback, user_data](
             mavsdk::Camera::ModeUpdate value) {
@@ -1165,7 +1485,7 @@ mavsdk_camera_mode_handle_t mavsdk_camera_subscribe_mode(
                         user_data);
                 }
         });
-    
+
     auto handle_wrapper = new mavsdk::Camera::ModeHandle(std::move(cpp_handle));
     return static_cast<mavsdk_camera_mode_handle_t>(handle_wrapper);
 }
@@ -1192,14 +1512,14 @@ mavsdk_camera_get_mode(
     mavsdk_camera_mode_t* mode_out)
 {
     auto wrapper = static_cast<mavsdk_camera_wrapper*>(camera);
-    
+
     auto result_pair = wrapper->cpp_plugin->get_mode(
         component_id);
-    
+
     if (mode_out != nullptr) {
         *mode_out = translate_mode_to_c(result_pair.second);
     }
-    
+
     return translate_result(result_pair.first);
 }
 
@@ -1210,7 +1530,7 @@ mavsdk_camera_video_stream_info_handle_t mavsdk_camera_subscribe_video_stream_in
     void* user_data)
 {
     auto wrapper = static_cast<mavsdk_camera_wrapper*>(camera);
-    
+
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_video_stream_info(
         [callback, user_data](
             mavsdk::Camera::VideoStreamUpdate value) {
@@ -1220,7 +1540,7 @@ mavsdk_camera_video_stream_info_handle_t mavsdk_camera_subscribe_video_stream_in
                         user_data);
                 }
         });
-    
+
     auto handle_wrapper = new mavsdk::Camera::VideoStreamInfoHandle(std::move(cpp_handle));
     return static_cast<mavsdk_camera_video_stream_info_handle_t>(handle_wrapper);
 }
@@ -1247,14 +1567,14 @@ mavsdk_camera_get_video_stream_info(
     mavsdk_camera_video_stream_info_t* video_stream_info_out)
 {
     auto wrapper = static_cast<mavsdk_camera_wrapper*>(camera);
-    
+
     auto result_pair = wrapper->cpp_plugin->get_video_stream_info(
         component_id);
-    
+
     if (video_stream_info_out != nullptr) {
         *video_stream_info_out = translate_video_stream_info_to_c(result_pair.second);
     }
-    
+
     return translate_result(result_pair.first);
 }
 
@@ -1265,7 +1585,7 @@ mavsdk_camera_capture_info_handle_t mavsdk_camera_subscribe_capture_info(
     void* user_data)
 {
     auto wrapper = static_cast<mavsdk_camera_wrapper*>(camera);
-    
+
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_capture_info(
         [callback, user_data](
             mavsdk::Camera::CaptureInfo value) {
@@ -1275,7 +1595,7 @@ mavsdk_camera_capture_info_handle_t mavsdk_camera_subscribe_capture_info(
                         user_data);
                 }
         });
-    
+
     auto handle_wrapper = new mavsdk::Camera::CaptureInfoHandle(std::move(cpp_handle));
     return static_cast<mavsdk_camera_capture_info_handle_t>(handle_wrapper);
 }
@@ -1300,7 +1620,7 @@ mavsdk_camera_storage_handle_t mavsdk_camera_subscribe_storage(
     void* user_data)
 {
     auto wrapper = static_cast<mavsdk_camera_wrapper*>(camera);
-    
+
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_storage(
         [callback, user_data](
             mavsdk::Camera::StorageUpdate value) {
@@ -1310,7 +1630,7 @@ mavsdk_camera_storage_handle_t mavsdk_camera_subscribe_storage(
                         user_data);
                 }
         });
-    
+
     auto handle_wrapper = new mavsdk::Camera::StorageHandle(std::move(cpp_handle));
     return static_cast<mavsdk_camera_storage_handle_t>(handle_wrapper);
 }
@@ -1337,14 +1657,14 @@ mavsdk_camera_get_storage(
     mavsdk_camera_storage_t* storage_out)
 {
     auto wrapper = static_cast<mavsdk_camera_wrapper*>(camera);
-    
+
     auto result_pair = wrapper->cpp_plugin->get_storage(
         component_id);
-    
+
     if (storage_out != nullptr) {
         *storage_out = translate_storage_to_c(result_pair.second);
     }
-    
+
     return translate_result(result_pair.first);
 }
 
@@ -1355,7 +1675,7 @@ mavsdk_camera_current_settings_handle_t mavsdk_camera_subscribe_current_settings
     void* user_data)
 {
     auto wrapper = static_cast<mavsdk_camera_wrapper*>(camera);
-    
+
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_current_settings(
         [callback, user_data](
             mavsdk::Camera::CurrentSettingsUpdate value) {
@@ -1365,7 +1685,7 @@ mavsdk_camera_current_settings_handle_t mavsdk_camera_subscribe_current_settings
                         user_data);
                 }
         });
-    
+
     auto handle_wrapper = new mavsdk::Camera::CurrentSettingsHandle(std::move(cpp_handle));
     return static_cast<mavsdk_camera_current_settings_handle_t>(handle_wrapper);
 }
@@ -1393,16 +1713,16 @@ mavsdk_camera_get_current_settings(
     size_t* current_settings_size_out)
 {
     auto wrapper = static_cast<mavsdk_camera_wrapper*>(camera);
-    
+
     auto result_pair = wrapper->cpp_plugin->get_current_settings(
         component_id);
-    
+
     if (current_settings_out != nullptr) {
         size_t count = result_pair.second.size();
 
         *current_settings_out = new mavsdk_camera_setting_t[count];
 
-        for (size_t i = 0; i < count; i++) { 
+        for (size_t i = 0; i < count; i++) {
             (*current_settings_out)[i] = translate_setting_to_c(result_pair.second[i]);
         }
 
@@ -1410,7 +1730,7 @@ mavsdk_camera_get_current_settings(
             *current_settings_size_out = count;
         }
     }
-    
+
     return translate_result(result_pair.first);
 }
 
@@ -1421,7 +1741,7 @@ mavsdk_camera_possible_setting_options_handle_t mavsdk_camera_subscribe_possible
     void* user_data)
 {
     auto wrapper = static_cast<mavsdk_camera_wrapper*>(camera);
-    
+
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_possible_setting_options(
         [callback, user_data](
             mavsdk::Camera::PossibleSettingOptionsUpdate value) {
@@ -1431,7 +1751,7 @@ mavsdk_camera_possible_setting_options_handle_t mavsdk_camera_subscribe_possible
                         user_data);
                 }
         });
-    
+
     auto handle_wrapper = new mavsdk::Camera::PossibleSettingOptionsHandle(std::move(cpp_handle));
     return static_cast<mavsdk_camera_possible_setting_options_handle_t>(handle_wrapper);
 }
@@ -1459,16 +1779,16 @@ mavsdk_camera_get_possible_setting_options(
     size_t* setting_options_size_out)
 {
     auto wrapper = static_cast<mavsdk_camera_wrapper*>(camera);
-    
+
     auto result_pair = wrapper->cpp_plugin->get_possible_setting_options(
         component_id);
-    
+
     if (setting_options_out != nullptr) {
         size_t count = result_pair.second.size();
 
         *setting_options_out = new mavsdk_camera_setting_options_t[count];
 
-        for (size_t i = 0; i < count; i++) { 
+        for (size_t i = 0; i < count; i++) {
             (*setting_options_out)[i] = translate_setting_options_to_c(result_pair.second[i]);
         }
 
@@ -1476,7 +1796,7 @@ mavsdk_camera_get_possible_setting_options(
             *setting_options_size_out = count;
         }
     }
-    
+
     return translate_result(result_pair.first);
 }
 
@@ -1489,7 +1809,7 @@ void mavsdk_camera_set_setting_async(
     void* user_data)
 {
     auto wrapper = static_cast<mavsdk_camera_wrapper*>(camera);
-    
+
     wrapper->cpp_plugin->set_setting_async(
         component_id,
         translate_setting_from_c(setting),
@@ -1512,9 +1832,9 @@ mavsdk_camera_set_setting(
     mavsdk_camera_setting_t setting)
 {
     auto wrapper = static_cast<mavsdk_camera_wrapper*>(camera);
-    
+
     auto ret_value = wrapper->cpp_plugin->set_setting(        component_id,        translate_setting_from_c(setting));
-    
+
     return translate_result(ret_value);
 }
 
@@ -1527,7 +1847,7 @@ void mavsdk_camera_get_setting_async(
     void* user_data)
 {
     auto wrapper = static_cast<mavsdk_camera_wrapper*>(camera);
-    
+
     wrapper->cpp_plugin->get_setting_async(
         component_id,
         translate_setting_from_c(setting),
@@ -1553,15 +1873,15 @@ mavsdk_camera_get_setting(
     mavsdk_camera_setting_t* setting_out)
 {
     auto wrapper = static_cast<mavsdk_camera_wrapper*>(camera);
-    
+
     auto result_pair = wrapper->cpp_plugin->get_setting(
         component_id,
         translate_setting_from_c(setting));
-    
+
     if (setting_out != nullptr) {
         *setting_out = translate_setting_to_c(result_pair.second);
     }
-    
+
     return translate_result(result_pair.first);
 }
 
@@ -1574,7 +1894,7 @@ void mavsdk_camera_format_storage_async(
     void* user_data)
 {
     auto wrapper = static_cast<mavsdk_camera_wrapper*>(camera);
-    
+
     wrapper->cpp_plugin->format_storage_async(
         component_id,
         storage_id,
@@ -1597,9 +1917,9 @@ mavsdk_camera_format_storage(
     int32_t storage_id)
 {
     auto wrapper = static_cast<mavsdk_camera_wrapper*>(camera);
-    
+
     auto ret_value = wrapper->cpp_plugin->format_storage(        component_id,        storage_id);
-    
+
     return translate_result(ret_value);
 }
 
@@ -1611,7 +1931,7 @@ void mavsdk_camera_reset_settings_async(
     void* user_data)
 {
     auto wrapper = static_cast<mavsdk_camera_wrapper*>(camera);
-    
+
     wrapper->cpp_plugin->reset_settings_async(
         component_id,
         [callback, user_data](
@@ -1632,9 +1952,9 @@ mavsdk_camera_reset_settings(
     int32_t component_id)
 {
     auto wrapper = static_cast<mavsdk_camera_wrapper*>(camera);
-    
+
     auto ret_value = wrapper->cpp_plugin->reset_settings(        component_id);
-    
+
     return translate_result(ret_value);
 }
 
@@ -1646,7 +1966,7 @@ void mavsdk_camera_zoom_in_start_async(
     void* user_data)
 {
     auto wrapper = static_cast<mavsdk_camera_wrapper*>(camera);
-    
+
     wrapper->cpp_plugin->zoom_in_start_async(
         component_id,
         [callback, user_data](
@@ -1667,9 +1987,9 @@ mavsdk_camera_zoom_in_start(
     int32_t component_id)
 {
     auto wrapper = static_cast<mavsdk_camera_wrapper*>(camera);
-    
+
     auto ret_value = wrapper->cpp_plugin->zoom_in_start(        component_id);
-    
+
     return translate_result(ret_value);
 }
 
@@ -1681,7 +2001,7 @@ void mavsdk_camera_zoom_out_start_async(
     void* user_data)
 {
     auto wrapper = static_cast<mavsdk_camera_wrapper*>(camera);
-    
+
     wrapper->cpp_plugin->zoom_out_start_async(
         component_id,
         [callback, user_data](
@@ -1702,9 +2022,9 @@ mavsdk_camera_zoom_out_start(
     int32_t component_id)
 {
     auto wrapper = static_cast<mavsdk_camera_wrapper*>(camera);
-    
+
     auto ret_value = wrapper->cpp_plugin->zoom_out_start(        component_id);
-    
+
     return translate_result(ret_value);
 }
 
@@ -1716,7 +2036,7 @@ void mavsdk_camera_zoom_stop_async(
     void* user_data)
 {
     auto wrapper = static_cast<mavsdk_camera_wrapper*>(camera);
-    
+
     wrapper->cpp_plugin->zoom_stop_async(
         component_id,
         [callback, user_data](
@@ -1737,9 +2057,9 @@ mavsdk_camera_zoom_stop(
     int32_t component_id)
 {
     auto wrapper = static_cast<mavsdk_camera_wrapper*>(camera);
-    
+
     auto ret_value = wrapper->cpp_plugin->zoom_stop(        component_id);
-    
+
     return translate_result(ret_value);
 }
 
@@ -1752,7 +2072,7 @@ void mavsdk_camera_zoom_range_async(
     void* user_data)
 {
     auto wrapper = static_cast<mavsdk_camera_wrapper*>(camera);
-    
+
     wrapper->cpp_plugin->zoom_range_async(
         component_id,
         range,
@@ -1775,9 +2095,9 @@ mavsdk_camera_zoom_range(
     float range)
 {
     auto wrapper = static_cast<mavsdk_camera_wrapper*>(camera);
-    
+
     auto ret_value = wrapper->cpp_plugin->zoom_range(        component_id,        range);
-    
+
     return translate_result(ret_value);
 }
 
@@ -1792,7 +2112,7 @@ void mavsdk_camera_track_point_async(
     void* user_data)
 {
     auto wrapper = static_cast<mavsdk_camera_wrapper*>(camera);
-    
+
     wrapper->cpp_plugin->track_point_async(
         component_id,
         point_x,
@@ -1819,9 +2139,9 @@ mavsdk_camera_track_point(
     float radius)
 {
     auto wrapper = static_cast<mavsdk_camera_wrapper*>(camera);
-    
+
     auto ret_value = wrapper->cpp_plugin->track_point(        component_id,        point_x,        point_y,        radius);
-    
+
     return translate_result(ret_value);
 }
 
@@ -1837,7 +2157,7 @@ void mavsdk_camera_track_rectangle_async(
     void* user_data)
 {
     auto wrapper = static_cast<mavsdk_camera_wrapper*>(camera);
-    
+
     wrapper->cpp_plugin->track_rectangle_async(
         component_id,
         top_left_x,
@@ -1866,9 +2186,9 @@ mavsdk_camera_track_rectangle(
     float bottom_right_y)
 {
     auto wrapper = static_cast<mavsdk_camera_wrapper*>(camera);
-    
+
     auto ret_value = wrapper->cpp_plugin->track_rectangle(        component_id,        top_left_x,        top_left_y,        bottom_right_x,        bottom_right_y);
-    
+
     return translate_result(ret_value);
 }
 
@@ -1880,7 +2200,7 @@ void mavsdk_camera_track_stop_async(
     void* user_data)
 {
     auto wrapper = static_cast<mavsdk_camera_wrapper*>(camera);
-    
+
     wrapper->cpp_plugin->track_stop_async(
         component_id,
         [callback, user_data](
@@ -1901,9 +2221,9 @@ mavsdk_camera_track_stop(
     int32_t component_id)
 {
     auto wrapper = static_cast<mavsdk_camera_wrapper*>(camera);
-    
+
     auto ret_value = wrapper->cpp_plugin->track_stop(        component_id);
-    
+
     return translate_result(ret_value);
 }
 
@@ -1915,7 +2235,7 @@ void mavsdk_camera_focus_in_start_async(
     void* user_data)
 {
     auto wrapper = static_cast<mavsdk_camera_wrapper*>(camera);
-    
+
     wrapper->cpp_plugin->focus_in_start_async(
         component_id,
         [callback, user_data](
@@ -1936,9 +2256,9 @@ mavsdk_camera_focus_in_start(
     int32_t component_id)
 {
     auto wrapper = static_cast<mavsdk_camera_wrapper*>(camera);
-    
+
     auto ret_value = wrapper->cpp_plugin->focus_in_start(        component_id);
-    
+
     return translate_result(ret_value);
 }
 
@@ -1950,7 +2270,7 @@ void mavsdk_camera_focus_out_start_async(
     void* user_data)
 {
     auto wrapper = static_cast<mavsdk_camera_wrapper*>(camera);
-    
+
     wrapper->cpp_plugin->focus_out_start_async(
         component_id,
         [callback, user_data](
@@ -1971,9 +2291,9 @@ mavsdk_camera_focus_out_start(
     int32_t component_id)
 {
     auto wrapper = static_cast<mavsdk_camera_wrapper*>(camera);
-    
+
     auto ret_value = wrapper->cpp_plugin->focus_out_start(        component_id);
-    
+
     return translate_result(ret_value);
 }
 
@@ -1985,7 +2305,7 @@ void mavsdk_camera_focus_stop_async(
     void* user_data)
 {
     auto wrapper = static_cast<mavsdk_camera_wrapper*>(camera);
-    
+
     wrapper->cpp_plugin->focus_stop_async(
         component_id,
         [callback, user_data](
@@ -2006,9 +2326,9 @@ mavsdk_camera_focus_stop(
     int32_t component_id)
 {
     auto wrapper = static_cast<mavsdk_camera_wrapper*>(camera);
-    
+
     auto ret_value = wrapper->cpp_plugin->focus_stop(        component_id);
-    
+
     return translate_result(ret_value);
 }
 
@@ -2021,7 +2341,7 @@ void mavsdk_camera_focus_range_async(
     void* user_data)
 {
     auto wrapper = static_cast<mavsdk_camera_wrapper*>(camera);
-    
+
     wrapper->cpp_plugin->focus_range_async(
         component_id,
         range,
@@ -2044,8 +2364,8 @@ mavsdk_camera_focus_range(
     float range)
 {
     auto wrapper = static_cast<mavsdk_camera_wrapper*>(camera);
-    
+
     auto ret_value = wrapper->cpp_plugin->focus_range(        component_id,        range);
-    
+
     return translate_result(ret_value);
 }

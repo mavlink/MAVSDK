@@ -63,11 +63,13 @@ typedef enum {
 } mavsdk_calibration_result_t;
 
 
-
 /**
  * @brief Progress data coming from calibration.
  * 
  *  Can be a progress percentage, or an instruction text.
+ *
+ * @note This struct may contain dynamically allocated memory. Always call
+ *       mavsdk_calibration_progress_data_destroy() when done to avoid memory leaks.
  */
 typedef struct {
     /**  Whether this ProgressData contains a 'progress' status or not */
@@ -80,7 +82,108 @@ typedef struct {
     char* status_text;
 } mavsdk_calibration_progress_data_t;
 
+/**
+ * @brief Destroy a progress_data struct.
+ *
+ * Frees all memory allocated by MAVSDK for this struct, including any
+ * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
+ * Always call this function when done with the struct, even if it currently
+ * contains no dynamic allocations.
+ *
+ * @param target Pointer to the struct to destroy. Can be NULL (no-op).
+ */
+void mavsdk_calibration_progress_data_destroy(
+    mavsdk_calibration_progress_data_t* target);
 
+/**
+ * @brief Destroy an array of progress_data structs.
+ *
+ * Frees all memory allocated for the array and its elements, including any
+ * nested dynamic allocations. Must be called to avoid memory leaks.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ * @param size Number of elements in the array.
+ */
+void mavsdk_calibration_progress_data_array_destroy(
+    mavsdk_calibration_progress_data_t** array,
+    size_t size);
+
+
+// ===== Primitive Array Destroy Functions =====
+/**
+ * @brief Destroy an array of float.
+ *
+ * Frees the memory allocated for the array.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ */
+void mavsdk_calibration_float_array_destroy(float** array);
+/**
+ * @brief Destroy an array of double.
+ *
+ * Frees the memory allocated for the array.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ */
+void mavsdk_calibration_double_array_destroy(double** array);
+/**
+ * @brief Destroy an array of int32_t.
+ *
+ * Frees the memory allocated for the array.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ */
+void mavsdk_calibration_int32t_array_destroy(int32_t** array);
+/**
+ * @brief Destroy an array of uint32_t.
+ *
+ * Frees the memory allocated for the array.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ */
+void mavsdk_calibration_uint32t_array_destroy(uint32_t** array);
+/**
+ * @brief Destroy an array of int64_t.
+ *
+ * Frees the memory allocated for the array.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ */
+void mavsdk_calibration_int64t_array_destroy(int64_t** array);
+/**
+ * @brief Destroy an array of uint64_t.
+ *
+ * Frees the memory allocated for the array.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ */
+void mavsdk_calibration_uint64t_array_destroy(uint64_t** array);
+/**
+ * @brief Destroy an array of bool.
+ *
+ * Frees the memory allocated for the array.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ */
+void mavsdk_calibration_bool_array_destroy(bool** array);
+
+/**
+ * @brief Destroy a string (char*).
+ *
+ * Frees the memory allocated for the string.
+ *
+ * @param str Pointer to the string pointer. Will be set to NULL after freeing.
+ */
+void mavsdk_calibration_string_destroy(char** str);
+
+/**
+ * @brief Destroy a byte buffer (uint8_t*).
+ *
+ * Frees the memory allocated for the byte buffer.
+ *
+ * @param buffer Pointer to the buffer pointer. Will be set to NULL after freeing.
+ */
+void mavsdk_calibration_byte_buffer_destroy(uint8_t** buffer);
 
 // ===== Callback Typedefs =====
 typedef void (*mavsdk_calibration_calibrate_gyro_callback_t)(const mavsdk_calibration_result_t result, const mavsdk_calibration_progress_data_t progress_data, void* user_data);
@@ -97,7 +200,7 @@ CMAVSDK_EXPORT void mavsdk_calibration_destroy(mavsdk_calibration_t calibration)
 
 /**
  * @brief Perform gyro calibration.
- * 
+ *
  * @param calibration The calibration instance.
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
@@ -111,7 +214,7 @@ CMAVSDK_EXPORT void mavsdk_calibration_calibrate_gyro_async(
 
 /**
  * @brief Perform accelerometer calibration.
- * 
+ *
  * @param calibration The calibration instance.
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
@@ -125,7 +228,7 @@ CMAVSDK_EXPORT void mavsdk_calibration_calibrate_accelerometer_async(
 
 /**
  * @brief Perform magnetometer calibration.
- * 
+ *
  * @param calibration The calibration instance.
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
@@ -139,7 +242,7 @@ CMAVSDK_EXPORT void mavsdk_calibration_calibrate_magnetometer_async(
 
 /**
  * @brief Perform board level horizon calibration.
- * 
+ *
  * @param calibration The calibration instance.
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
@@ -153,7 +256,7 @@ CMAVSDK_EXPORT void mavsdk_calibration_calibrate_level_horizon_async(
 
 /**
  * @brief Perform gimbal accelerometer calibration.
- * 
+ *
  * @param calibration The calibration instance.
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
@@ -167,9 +270,9 @@ CMAVSDK_EXPORT void mavsdk_calibration_calibrate_gimbal_accelerometer_async(
 
 /**
  * @brief Get the current cancel (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param cancel_out Pointer to store the result.
  */

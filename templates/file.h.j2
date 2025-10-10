@@ -75,11 +75,9 @@ typedef enum {
 {% endfor %}
 /**
  * @brief {{ struct.struct_description | replace('\n', '\n * ') }}
- {% if struct.fields | selectattr('type_info.is_repeated') | list %}
- * 
- * @note This struct contains dynamically allocated memory. You must call
+ *
+ * @note This struct may contain dynamically allocated memory. Always call
  *       mavsdk_{{ plugin_name.lower_snake_case }}_{{ struct.name.lower_snake_case }}_destroy() when done to avoid memory leaks.
- {% endif %}
  */
 typedef struct {
     {% for field in struct.fields %}
@@ -101,22 +99,66 @@ typedef struct {
     {% endif %}
     {% endfor %}
 } mavsdk_{{ plugin_name.lower_snake_case }}_{{ struct.name.lower_snake_case }}_t;
-{% endif %}
 
-{% if struct.fields | selectattr('type_info.is_repeated') | list %}
 /**
  * @brief Destroy a {{ struct.name.lower_snake_case }} struct.
- * 
+ *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
- * 
+ * Always call this function when done with the struct, even if it currently
+ * contains no dynamic allocations.
+ *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
 void mavsdk_{{ plugin_name.lower_snake_case }}_{{ struct.name.lower_snake_case }}_destroy(
     mavsdk_{{ plugin_name.lower_snake_case }}_{{ struct.name.lower_snake_case }}_t* target);
+
+/**
+ * @brief Destroy an array of {{ struct.name.lower_snake_case }} structs.
+ *
+ * Frees all memory allocated for the array and its elements, including any
+ * nested dynamic allocations. Must be called to avoid memory leaks.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ * @param size Number of elements in the array.
+ */
+void mavsdk_{{ plugin_name.lower_snake_case }}_{{ struct.name.lower_snake_case }}_array_destroy(
+    mavsdk_{{ plugin_name.lower_snake_case }}_{{ struct.name.lower_snake_case }}_t** array,
+    size_t size);
 {% endif %}
 
 {% endfor %}
+
+// ===== Primitive Array Destroy Functions =====
+{% set primitive_types = ['float', 'double', 'int32_t', 'uint32_t', 'int64_t', 'uint64_t', 'bool'] %}
+{% for prim_type in primitive_types %}
+/**
+ * @brief Destroy an array of {{ prim_type }}.
+ *
+ * Frees the memory allocated for the array.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ */
+void mavsdk_{{ plugin_name.lower_snake_case }}_{{ prim_type | replace('_', '') }}_array_destroy({{ prim_type }}** array);
+{% endfor %}
+
+/**
+ * @brief Destroy a string (char*).
+ *
+ * Frees the memory allocated for the string.
+ *
+ * @param str Pointer to the string pointer. Will be set to NULL after freeing.
+ */
+void mavsdk_{{ plugin_name.lower_snake_case }}_string_destroy(char** str);
+
+/**
+ * @brief Destroy a byte buffer (uint8_t*).
+ *
+ * Frees the memory allocated for the byte buffer.
+ *
+ * @param buffer Pointer to the buffer pointer. Will be set to NULL after freeing.
+ */
+void mavsdk_{{ plugin_name.lower_snake_case }}_byte_buffer_destroy(uint8_t** buffer);
 
 // ===== Callback Typedefs =====
 {% for method in methods %}
@@ -135,7 +177,7 @@ CMAVSDK_EXPORT void mavsdk_{{ plugin_name.lower_snake_case }}_destroy(mavsdk_{{ 
 
 /**
  * @brief {{ method.method_description | replace('\n', '\n * ') }}
- * 
+ *
  * @param {{ plugin_name.lower_snake_case }} The {{ plugin_name.lower_snake_case }} instance.
  {% for param in method.params -%}
  * @param {{ param.name.lower_snake_case }} {{ param.description | replace('\n', '\n * ') if param.description else 'The ' + param.name.lower_snake_case + ' parameter.' }}
@@ -163,9 +205,9 @@ CMAVSDK_EXPORT {% if method.is_stream and not method.is_finite%}mavsdk_{{ plugin
 {% if method.is_stream and not method.is_finite %}
 /**
  * @brief Unsubscribe from '{{ method.name.lower_snake_case }}' updates.
- * 
+ *
  * Stops the subscription and frees resources associated with the handle.
- * 
+ *
  * @param {{ plugin_name.lower_snake_case }} The {{ plugin_name.lower_snake_case }} instance.
  * @param handle The subscription handle returned by mavsdk_{{ plugin_name.lower_snake_case }}_subscribe_{{ method.name.lower_snake_case }}().
  */
@@ -178,9 +220,9 @@ CMAVSDK_EXPORT void mavsdk_{{ plugin_name.lower_snake_case }}_unsubscribe_{{ met
 {% if method.is_sync %}
 /**
  * @brief Get the current {{ method.name.lower_snake_case | replace('_', ' ') }} (blocking).
- * 
+ *
  * This function blocks until a value is available.
- * 
+ *
  * @param telemetry The telemetry instance.
  * @param {{ method.name.lower_snake_case }}_out Pointer to store the result.
  */
