@@ -249,7 +249,10 @@ void TcpServerConnection::receive()
 #endif
 
         if (recv_len == 0) {
-            continue;
+            // Client disconnected, close the socket and go back to accept new connections
+            LogInfo() << "TCP client disconnected, waiting for new connection...";
+            _client_socket_fd.close();
+            return;
         }
 
         _mavlink_receiver->set_new_datagram(buffer.data(), static_cast<int>(recv_len));
