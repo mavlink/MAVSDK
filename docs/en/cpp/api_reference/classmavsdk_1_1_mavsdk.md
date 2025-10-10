@@ -619,14 +619,14 @@ void mavsdk::Mavsdk::pass_received_raw_bytes(const char *bytes, size_t length)
 
 Pass received raw MAVLink bytes.
 
-This allows passing raw MAVLink message bytes into MAVSDK to be processel. The bytes can contain one or more MAVLink messages.
+This allows passing raw MAVLink message bytes into MAVSDK to be processed. The bytes can contain one or more MAVLink messages.
 
 
 ::: info
 Before using this, run add_any_connection("raw://")
 :::
 
-This goes together with subscribe_to_bytes_to_send.
+This goes together with subscribe_raw_bytes_to_be_sent.
 
 **Parameters**
 
