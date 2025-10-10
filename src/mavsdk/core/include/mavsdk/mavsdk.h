@@ -463,6 +463,53 @@ public:
      */
     void intercept_outgoing_messages_async(std::function<bool(mavlink_message_t&)> callback);
 
+    /**
+     * @brief Callback type for raw bytes subscriptions.
+     */
+    using RawBytesCallback = std::function<void(const char* bytes, size_t length)>;
+
+    /**
+     * @brief Handle type for raw bytes subscriptions.
+     */
+    using RawBytesHandle = Handle<const char*, size_t>;
+
+    /**
+     * @brief Pass received raw MAVLink bytes.
+     *
+     * This allows passing raw MAVLink message bytes into MAVSDK to be processed.
+     * The bytes can contain one or more MAVLink messages.
+     *
+     * @note Before using this, run add_any_connection("raw://")
+     *
+     * This goes together with subscribe_raw_bytes_to_be_sent.
+     *
+     * @param bytes Pointer to raw MAVLink message bytes.
+     * @param length Number of bytes to send.
+     */
+    void pass_received_raw_bytes(const char* bytes, size_t length);
+
+    /**
+     * @brief Subscribe to raw bytes to be sent.
+     *
+     * This allows getting MAVLink bytes that need to be sent out.
+     *
+     * @note Before using this, run add_any_connection("raw://")
+     *
+     * This goes together with pass_received_raw_bytes.
+     * The bytes contain one mavlink message at a time.
+     *
+     * @param callback Callback to be called with outgoing raw bytes.
+     * @return Handle to unsubscribe again.
+     */
+    RawBytesHandle subscribe_raw_bytes_to_be_sent(RawBytesCallback callback);
+
+    /**
+     * @brief Unsubscribe from raw bytes to be sent.
+     *
+     * @param handle Handle from subscribe_raw_bytes_to_be_sent.
+     */
+    void unsubscribe_raw_bytes_to_be_sent(RawBytesHandle handle);
+
 private:
     static constexpr int DEFAULT_SYSTEM_ID_AUTOPILOT = 1;
     static constexpr int DEFAULT_COMPONENT_ID_AUTOPILOT = MAV_COMP_ID_AUTOPILOT1;

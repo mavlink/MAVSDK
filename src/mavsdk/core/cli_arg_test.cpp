@@ -381,3 +381,22 @@ TEST(CliArg, SerialWrong)
     EXPECT_FALSE(ca.parse("serial://COM3:-1"));
     EXPECT_FALSE(ca.parse("serial://COM3"));
 }
+
+TEST(CliArg, RawConnection)
+{
+    CliArg ca;
+
+    EXPECT_TRUE(ca.parse("raw://"));
+    auto raw = std::get_if<CliArg::Raw>(&ca.protocol);
+    ASSERT_TRUE(raw);
+}
+
+TEST(CliArg, RawConnectionWrong)
+{
+    CliArg ca;
+
+    // raw:// should not have any parameters
+    EXPECT_FALSE(ca.parse("raw://something"));
+    EXPECT_FALSE(ca.parse("raw://localhost"));
+    EXPECT_FALSE(ca.parse("raw://127.0.0.1"));
+}

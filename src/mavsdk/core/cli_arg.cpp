@@ -59,6 +59,11 @@ bool CliArg::parse(const std::string& uri)
             std::string_view(uri).substr(serial_flowcontrol.size() + delimiter.size()), true);
     }
 
+    const std::string raw = "raw";
+    if (uri.find(raw + delimiter) == 0) {
+        return parse_raw(std::string_view(uri).substr(raw.size() + delimiter.size()));
+    }
+
     LogErr() << "Unknown protocol";
     return false;
 }
@@ -290,6 +295,18 @@ bool CliArg::parse_serial(const std::string_view rest, bool flow_control_enabled
 
     p.baudrate = value;
 
+    return true;
+}
+
+bool CliArg::parse_raw(const std::string_view rest)
+{
+    // raw:// connection has no parameters
+    if (!rest.empty()) {
+        LogErr() << "raw:// connection should not have parameters";
+        return false;
+    }
+
+    protocol = Raw{};
     return true;
 }
 
