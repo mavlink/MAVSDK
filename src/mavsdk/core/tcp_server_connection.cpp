@@ -67,6 +67,14 @@ ConnectionResult TcpServerConnection::start()
         return ConnectionResult::SocketError;
     }
 
+    // Allow reuse of address to avoid "Address already in use" errors
+    int yes = 1;
+#ifdef WINDOWS
+    setsockopt(_server_socket_fd.get(), SOL_SOCKET, SO_REUSEADDR, (const char*)&yes, sizeof(yes));
+#else
+    setsockopt(_server_socket_fd.get(), SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes));
+#endif
+
     sockaddr_in server_addr{};
     server_addr.sin_family = AF_INET;
     server_addr.sin_addr.s_addr = INADDR_ANY;
