@@ -476,12 +476,12 @@ public:
     /**
      * @brief Pass received raw MAVLink bytes.
      *
-     * This allows passing raw MAVLink message bytes into MAVSDK to be processel.
+     * This allows passing raw MAVLink message bytes into MAVSDK to be processed.
      * The bytes can contain one or more MAVLink messages.
      *
      * @note Before using this, run add_any_connection("raw://")
      *
-     * This goes together with subscribe_to_bytes_to_send.
+     * This goes together with subscribe_raw_bytes_to_be_sent.
      *
      * @param bytes Pointer to raw MAVLink message bytes.
      * @param length Number of bytes to send.
