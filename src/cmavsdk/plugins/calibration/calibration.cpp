@@ -43,6 +43,20 @@ translate_result(mavsdk::Calibration::Result cpp_result) {
 }
 
 
+
+
+static mavsdk::Calibration::ProgressData
+translate_progress_data_from_c(const mavsdk_calibration_progress_data_t& c_struct) {
+    mavsdk::Calibration::ProgressData cpp_struct{};
+    cpp_struct.has_progress = c_struct.has_progress;
+    cpp_struct.progress = c_struct.progress;
+    cpp_struct.has_status_text = c_struct.has_status_text;
+    if (c_struct.status_text) {
+        cpp_struct.status_text = c_struct.status_text;
+    }
+    return cpp_struct;
+}
+
 static mavsdk_calibration_progress_data_t
 translate_progress_data_to_c(const mavsdk::Calibration::ProgressData& cpp_struct) {
     mavsdk_calibration_progress_data_t c_struct{};
@@ -100,13 +114,16 @@ void mavsdk_calibration_calibrate_gyro_async(
 {
     auto wrapper = static_cast<mavsdk_calibration_wrapper*>(calibration);
     
-wrapper->cpp_plugin->calibrate_gyro_async(
-        [callback, user_data](mavsdk::Calibration::Result result, mavsdk::Calibration::ProgressData value) {
-            if (callback) {
-                callback(
-translate_result(result),                    translate_progress_data_to_c(value),
-                    user_data);
-            }
+    wrapper->cpp_plugin->calibrate_gyro_async(
+        [callback, user_data](
+            mavsdk::Calibration::Result result,
+            mavsdk::Calibration::ProgressData value) {
+                if (callback) {
+                    callback(
+                        translate_result(result),
+                        translate_progress_data_to_c(value),
+                        user_data);
+                }
         });
 }
 
@@ -120,13 +137,16 @@ void mavsdk_calibration_calibrate_accelerometer_async(
 {
     auto wrapper = static_cast<mavsdk_calibration_wrapper*>(calibration);
     
-wrapper->cpp_plugin->calibrate_accelerometer_async(
-        [callback, user_data](mavsdk::Calibration::Result result, mavsdk::Calibration::ProgressData value) {
-            if (callback) {
-                callback(
-translate_result(result),                    translate_progress_data_to_c(value),
-                    user_data);
-            }
+    wrapper->cpp_plugin->calibrate_accelerometer_async(
+        [callback, user_data](
+            mavsdk::Calibration::Result result,
+            mavsdk::Calibration::ProgressData value) {
+                if (callback) {
+                    callback(
+                        translate_result(result),
+                        translate_progress_data_to_c(value),
+                        user_data);
+                }
         });
 }
 
@@ -140,13 +160,16 @@ void mavsdk_calibration_calibrate_magnetometer_async(
 {
     auto wrapper = static_cast<mavsdk_calibration_wrapper*>(calibration);
     
-wrapper->cpp_plugin->calibrate_magnetometer_async(
-        [callback, user_data](mavsdk::Calibration::Result result, mavsdk::Calibration::ProgressData value) {
-            if (callback) {
-                callback(
-translate_result(result),                    translate_progress_data_to_c(value),
-                    user_data);
-            }
+    wrapper->cpp_plugin->calibrate_magnetometer_async(
+        [callback, user_data](
+            mavsdk::Calibration::Result result,
+            mavsdk::Calibration::ProgressData value) {
+                if (callback) {
+                    callback(
+                        translate_result(result),
+                        translate_progress_data_to_c(value),
+                        user_data);
+                }
         });
 }
 
@@ -160,13 +183,16 @@ void mavsdk_calibration_calibrate_level_horizon_async(
 {
     auto wrapper = static_cast<mavsdk_calibration_wrapper*>(calibration);
     
-wrapper->cpp_plugin->calibrate_level_horizon_async(
-        [callback, user_data](mavsdk::Calibration::Result result, mavsdk::Calibration::ProgressData value) {
-            if (callback) {
-                callback(
-translate_result(result),                    translate_progress_data_to_c(value),
-                    user_data);
-            }
+    wrapper->cpp_plugin->calibrate_level_horizon_async(
+        [callback, user_data](
+            mavsdk::Calibration::Result result,
+            mavsdk::Calibration::ProgressData value) {
+                if (callback) {
+                    callback(
+                        translate_result(result),
+                        translate_progress_data_to_c(value),
+                        user_data);
+                }
         });
 }
 
@@ -180,13 +206,16 @@ void mavsdk_calibration_calibrate_gimbal_accelerometer_async(
 {
     auto wrapper = static_cast<mavsdk_calibration_wrapper*>(calibration);
     
-wrapper->cpp_plugin->calibrate_gimbal_accelerometer_async(
-        [callback, user_data](mavsdk::Calibration::Result result, mavsdk::Calibration::ProgressData value) {
-            if (callback) {
-                callback(
-translate_result(result),                    translate_progress_data_to_c(value),
-                    user_data);
-            }
+    wrapper->cpp_plugin->calibrate_gimbal_accelerometer_async(
+        [callback, user_data](
+            mavsdk::Calibration::Result result,
+            mavsdk::Calibration::ProgressData value) {
+                if (callback) {
+                    callback(
+                        translate_result(result),
+                        translate_progress_data_to_c(value),
+                        user_data);
+                }
         });
 }
 

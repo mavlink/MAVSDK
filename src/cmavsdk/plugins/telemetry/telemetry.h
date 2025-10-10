@@ -400,7 +400,7 @@ typedef struct {
     int32_t group;
     /**  Controls normed from -1 to 1, where 0 is neutral position. */
     float* controls;
-    int controls_size;
+    size_t controls_size;
 } mavsdk_telemetry_actuator_control_target_t;
 
 /**
@@ -425,7 +425,7 @@ typedef struct {
     uint32_t active;
     /**  Servo/motor output values */
     float* actuator;
-    int actuator_size;
+    size_t actuator_size;
 } mavsdk_telemetry_actuator_output_status_t;
 
 /**
@@ -452,7 +452,7 @@ void mavsdk_telemetry_actuator_output_status_destroy(
 typedef struct {
     /**  Representation of a covariance matrix. */
     float* covariance_matrix;
-    int covariance_matrix_size;
+    size_t covariance_matrix_size;
 } mavsdk_telemetry_covariance_t;
 
 /**
@@ -771,9 +771,9 @@ typedef enum {
 // ===== Callback Typedefs =====
 typedef void (*mavsdk_telemetry_position_callback_t)(const mavsdk_telemetry_position_t position, void* user_data);
 typedef void (*mavsdk_telemetry_home_callback_t)(const mavsdk_telemetry_position_t home, void* user_data);
-typedef void (*mavsdk_telemetry_in_air_callback_t)(const bool in_air, void* user_data);
+typedef void (*mavsdk_telemetry_in_air_callback_t)(const bool is_in_air, void* user_data);
 typedef void (*mavsdk_telemetry_landed_state_callback_t)(const mavsdk_telemetry_landed_state_t landed_state, void* user_data);
-typedef void (*mavsdk_telemetry_armed_callback_t)(const bool armed, void* user_data);
+typedef void (*mavsdk_telemetry_armed_callback_t)(const bool is_armed, void* user_data);
 typedef void (*mavsdk_telemetry_vtol_state_callback_t)(const mavsdk_telemetry_vtol_state_t vtol_state, void* user_data);
 typedef void (*mavsdk_telemetry_attitude_quaternion_callback_t)(const mavsdk_telemetry_quaternion_t attitude_quaternion, void* user_data);
 typedef void (*mavsdk_telemetry_attitude_euler_callback_t)(const mavsdk_telemetry_euler_angle_t attitude_euler, void* user_data);
@@ -793,13 +793,13 @@ typedef void (*mavsdk_telemetry_position_velocity_ned_callback_t)(const mavsdk_t
 typedef void (*mavsdk_telemetry_ground_truth_callback_t)(const mavsdk_telemetry_ground_truth_t ground_truth, void* user_data);
 typedef void (*mavsdk_telemetry_fixedwing_metrics_callback_t)(const mavsdk_telemetry_fixedwing_metrics_t fixedwing_metrics, void* user_data);
 typedef void (*mavsdk_telemetry_imu_callback_t)(const mavsdk_telemetry_imu_t imu, void* user_data);
-typedef void (*mavsdk_telemetry_scaled_imu_callback_t)(const mavsdk_telemetry_imu_t scaled_imu, void* user_data);
-typedef void (*mavsdk_telemetry_raw_imu_callback_t)(const mavsdk_telemetry_imu_t raw_imu, void* user_data);
-typedef void (*mavsdk_telemetry_health_all_ok_callback_t)(const bool health_all_ok, void* user_data);
-typedef void (*mavsdk_telemetry_unix_epoch_time_callback_t)(const uint64_t unix_epoch_time, void* user_data);
+typedef void (*mavsdk_telemetry_scaled_imu_callback_t)(const mavsdk_telemetry_imu_t imu, void* user_data);
+typedef void (*mavsdk_telemetry_raw_imu_callback_t)(const mavsdk_telemetry_imu_t imu, void* user_data);
+typedef void (*mavsdk_telemetry_health_all_ok_callback_t)(const bool is_health_all_ok, void* user_data);
+typedef void (*mavsdk_telemetry_unix_epoch_time_callback_t)(const uint64_t time_us, void* user_data);
 typedef void (*mavsdk_telemetry_distance_sensor_callback_t)(const mavsdk_telemetry_distance_sensor_t distance_sensor, void* user_data);
 typedef void (*mavsdk_telemetry_scaled_pressure_callback_t)(const mavsdk_telemetry_scaled_pressure_t scaled_pressure, void* user_data);
-typedef void (*mavsdk_telemetry_heading_callback_t)(const mavsdk_telemetry_heading_t heading, void* user_data);
+typedef void (*mavsdk_telemetry_heading_callback_t)(const mavsdk_telemetry_heading_t heading_deg, void* user_data);
 typedef void (*mavsdk_telemetry_altitude_callback_t)(const mavsdk_telemetry_altitude_t altitude, void* user_data);
 typedef void (*mavsdk_telemetry_wind_callback_t)(const mavsdk_telemetry_wind_t wind, void* user_data);
 typedef void (*mavsdk_telemetry_set_rate_position_callback_t)(const mavsdk_telemetry_result_t result, void* user_data);
@@ -826,7 +826,7 @@ typedef void (*mavsdk_telemetry_set_rate_unix_epoch_time_callback_t)(const mavsd
 typedef void (*mavsdk_telemetry_set_rate_distance_sensor_callback_t)(const mavsdk_telemetry_result_t result, void* user_data);
 typedef void (*mavsdk_telemetry_set_rate_altitude_callback_t)(const mavsdk_telemetry_result_t result, void* user_data);
 typedef void (*mavsdk_telemetry_set_rate_health_callback_t)(const mavsdk_telemetry_result_t result, void* user_data);
-typedef void (*mavsdk_telemetry_get_gps_global_origin_callback_t)(const mavsdk_telemetry_result_t result, const mavsdk_telemetry_gps_global_origin_t get_gps_global_origin, void* user_data);
+typedef void (*mavsdk_telemetry_get_gps_global_origin_callback_t)(const mavsdk_telemetry_result_t result, const mavsdk_telemetry_gps_global_origin_t gps_global_origin, void* user_data);
 
 // ===== Telemetry Creation/Destruction =====
 CMAVSDK_EXPORT mavsdk_telemetry_t mavsdk_telemetry_create(mavsdk_system_t system);
@@ -951,8 +951,7 @@ CMAVSDK_EXPORT
 void
 mavsdk_telemetry_in_air(
     mavsdk_telemetry_t telemetry,
-    bool* is_in_air_out
-);
+    bool* is_in_air_out);
 
 
 /**
@@ -1032,8 +1031,7 @@ CMAVSDK_EXPORT
 void
 mavsdk_telemetry_armed(
     mavsdk_telemetry_t telemetry,
-    bool* is_armed_out
-);
+    bool* is_armed_out);
 
 
 /**
@@ -1913,8 +1911,7 @@ CMAVSDK_EXPORT
 void
 mavsdk_telemetry_health_all_ok(
     mavsdk_telemetry_t telemetry,
-    bool* is_health_all_ok_out
-);
+    bool* is_health_all_ok_out);
 
 
 /**
@@ -1954,8 +1951,7 @@ CMAVSDK_EXPORT
 void
 mavsdk_telemetry_unix_epoch_time(
     mavsdk_telemetry_t telemetry,
-    uint64_t* time_us_out
-);
+    uint64_t* time_us_out);
 
 
 /**

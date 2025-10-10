@@ -99,9 +99,9 @@ typedef void (*mavsdk_action_hold_callback_t)(const mavsdk_action_result_t resul
 typedef void (*mavsdk_action_set_actuator_callback_t)(const mavsdk_action_result_t result, void* user_data);
 typedef void (*mavsdk_action_transition_to_fixedwing_callback_t)(const mavsdk_action_result_t result, void* user_data);
 typedef void (*mavsdk_action_transition_to_multicopter_callback_t)(const mavsdk_action_result_t result, void* user_data);
-typedef void (*mavsdk_action_get_takeoff_altitude_callback_t)(const mavsdk_action_result_t result, const float get_takeoff_altitude, void* user_data);
+typedef void (*mavsdk_action_get_takeoff_altitude_callback_t)(const mavsdk_action_result_t result, const float altitude, void* user_data);
 typedef void (*mavsdk_action_set_takeoff_altitude_callback_t)(const mavsdk_action_result_t result, void* user_data);
-typedef void (*mavsdk_action_get_return_to_launch_altitude_callback_t)(const mavsdk_action_result_t result, const float get_return_to_launch_altitude, void* user_data);
+typedef void (*mavsdk_action_get_return_to_launch_altitude_callback_t)(const mavsdk_action_result_t result, const float relative_altitude_m, void* user_data);
 typedef void (*mavsdk_action_set_return_to_launch_altitude_callback_t)(const mavsdk_action_result_t result, void* user_data);
 typedef void (*mavsdk_action_set_current_speed_callback_t)(const mavsdk_action_result_t result, void* user_data);
 
@@ -672,8 +672,7 @@ CMAVSDK_EXPORT
 mavsdk_action_result_t
 mavsdk_action_get_takeoff_altitude(
     mavsdk_action_t action,
-    float* altitude_out
-);
+    float* altitude_out);
 
 
 /**
@@ -732,8 +731,7 @@ CMAVSDK_EXPORT
 mavsdk_action_result_t
 mavsdk_action_get_return_to_launch_altitude(
     mavsdk_action_t action,
-    float* relative_altitude_m_out
-);
+    float* relative_altitude_m_out);
 
 
 /**

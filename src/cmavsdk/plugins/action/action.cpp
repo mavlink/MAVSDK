@@ -84,6 +84,7 @@ translate_orbit_yaw_behavior_to_c(mavsdk::Action::OrbitYawBehavior cpp_enum) {
 
 
 
+
 // ===== Action Wrapper =====
 
 struct mavsdk_action_wrapper {
@@ -122,12 +123,14 @@ void mavsdk_action_arm_async(
 {
     auto wrapper = static_cast<mavsdk_action_wrapper*>(action);
     
-wrapper->cpp_plugin->arm_async(
-        [callback, user_data](mavsdk::Action::Result result) {
-            if (callback) {
-                callback(
-translate_result(result),                    user_data);
-            }
+    wrapper->cpp_plugin->arm_async(
+        [callback, user_data](
+            mavsdk::Action::Result result) {
+                if (callback) {
+                    callback(
+                        translate_result(result),
+                        user_data);
+                }
         });
 }
 
@@ -152,12 +155,14 @@ void mavsdk_action_arm_force_async(
 {
     auto wrapper = static_cast<mavsdk_action_wrapper*>(action);
     
-wrapper->cpp_plugin->arm_force_async(
-        [callback, user_data](mavsdk::Action::Result result) {
-            if (callback) {
-                callback(
-translate_result(result),                    user_data);
-            }
+    wrapper->cpp_plugin->arm_force_async(
+        [callback, user_data](
+            mavsdk::Action::Result result) {
+                if (callback) {
+                    callback(
+                        translate_result(result),
+                        user_data);
+                }
         });
 }
 
@@ -182,12 +187,14 @@ void mavsdk_action_disarm_async(
 {
     auto wrapper = static_cast<mavsdk_action_wrapper*>(action);
     
-wrapper->cpp_plugin->disarm_async(
-        [callback, user_data](mavsdk::Action::Result result) {
-            if (callback) {
-                callback(
-translate_result(result),                    user_data);
-            }
+    wrapper->cpp_plugin->disarm_async(
+        [callback, user_data](
+            mavsdk::Action::Result result) {
+                if (callback) {
+                    callback(
+                        translate_result(result),
+                        user_data);
+                }
         });
 }
 
@@ -212,12 +219,14 @@ void mavsdk_action_takeoff_async(
 {
     auto wrapper = static_cast<mavsdk_action_wrapper*>(action);
     
-wrapper->cpp_plugin->takeoff_async(
-        [callback, user_data](mavsdk::Action::Result result) {
-            if (callback) {
-                callback(
-translate_result(result),                    user_data);
-            }
+    wrapper->cpp_plugin->takeoff_async(
+        [callback, user_data](
+            mavsdk::Action::Result result) {
+                if (callback) {
+                    callback(
+                        translate_result(result),
+                        user_data);
+                }
         });
 }
 
@@ -242,12 +251,14 @@ void mavsdk_action_land_async(
 {
     auto wrapper = static_cast<mavsdk_action_wrapper*>(action);
     
-wrapper->cpp_plugin->land_async(
-        [callback, user_data](mavsdk::Action::Result result) {
-            if (callback) {
-                callback(
-translate_result(result),                    user_data);
-            }
+    wrapper->cpp_plugin->land_async(
+        [callback, user_data](
+            mavsdk::Action::Result result) {
+                if (callback) {
+                    callback(
+                        translate_result(result),
+                        user_data);
+                }
         });
 }
 
@@ -272,12 +283,14 @@ void mavsdk_action_reboot_async(
 {
     auto wrapper = static_cast<mavsdk_action_wrapper*>(action);
     
-wrapper->cpp_plugin->reboot_async(
-        [callback, user_data](mavsdk::Action::Result result) {
-            if (callback) {
-                callback(
-translate_result(result),                    user_data);
-            }
+    wrapper->cpp_plugin->reboot_async(
+        [callback, user_data](
+            mavsdk::Action::Result result) {
+                if (callback) {
+                    callback(
+                        translate_result(result),
+                        user_data);
+                }
         });
 }
 
@@ -302,12 +315,14 @@ void mavsdk_action_shutdown_async(
 {
     auto wrapper = static_cast<mavsdk_action_wrapper*>(action);
     
-wrapper->cpp_plugin->shutdown_async(
-        [callback, user_data](mavsdk::Action::Result result) {
-            if (callback) {
-                callback(
-translate_result(result),                    user_data);
-            }
+    wrapper->cpp_plugin->shutdown_async(
+        [callback, user_data](
+            mavsdk::Action::Result result) {
+                if (callback) {
+                    callback(
+                        translate_result(result),
+                        user_data);
+                }
         });
 }
 
@@ -332,12 +347,14 @@ void mavsdk_action_terminate_async(
 {
     auto wrapper = static_cast<mavsdk_action_wrapper*>(action);
     
-wrapper->cpp_plugin->terminate_async(
-        [callback, user_data](mavsdk::Action::Result result) {
-            if (callback) {
-                callback(
-translate_result(result),                    user_data);
-            }
+    wrapper->cpp_plugin->terminate_async(
+        [callback, user_data](
+            mavsdk::Action::Result result) {
+                if (callback) {
+                    callback(
+                        translate_result(result),
+                        user_data);
+                }
         });
 }
 
@@ -362,12 +379,14 @@ void mavsdk_action_kill_async(
 {
     auto wrapper = static_cast<mavsdk_action_wrapper*>(action);
     
-wrapper->cpp_plugin->kill_async(
-        [callback, user_data](mavsdk::Action::Result result) {
-            if (callback) {
-                callback(
-translate_result(result),                    user_data);
-            }
+    wrapper->cpp_plugin->kill_async(
+        [callback, user_data](
+            mavsdk::Action::Result result) {
+                if (callback) {
+                    callback(
+                        translate_result(result),
+                        user_data);
+                }
         });
 }
 
@@ -392,12 +411,14 @@ void mavsdk_action_return_to_launch_async(
 {
     auto wrapper = static_cast<mavsdk_action_wrapper*>(action);
     
-wrapper->cpp_plugin->return_to_launch_async(
-        [callback, user_data](mavsdk::Action::Result result) {
-            if (callback) {
-                callback(
-translate_result(result),                    user_data);
-            }
+    wrapper->cpp_plugin->return_to_launch_async(
+        [callback, user_data](
+            mavsdk::Action::Result result) {
+                if (callback) {
+                    callback(
+                        translate_result(result),
+                        user_data);
+                }
         });
 }
 
@@ -426,12 +447,18 @@ void mavsdk_action_goto_location_async(
 {
     auto wrapper = static_cast<mavsdk_action_wrapper*>(action);
     
-wrapper->cpp_plugin->goto_location_async(
-        latitude_deg,        longitude_deg,        absolute_altitude_m,        yaw_deg,        [callback, user_data](mavsdk::Action::Result result) {
-            if (callback) {
-                callback(
-translate_result(result),                    user_data);
-            }
+    wrapper->cpp_plugin->goto_location_async(
+        latitude_deg,
+        longitude_deg,
+        absolute_altitude_m,
+        yaw_deg,
+        [callback, user_data](
+            mavsdk::Action::Result result) {
+                if (callback) {
+                    callback(
+                        translate_result(result),
+                        user_data);
+                }
         });
 }
 
@@ -466,12 +493,19 @@ void mavsdk_action_do_orbit_async(
 {
     auto wrapper = static_cast<mavsdk_action_wrapper*>(action);
     
-wrapper->cpp_plugin->do_orbit_async(
-        radius_m,        velocity_ms,        translate_orbit_yaw_behavior_from_c(yaw_behavior),        latitude_deg,        longitude_deg,        absolute_altitude_m,        [callback, user_data](mavsdk::Action::Result result) {
-            if (callback) {
-                callback(
-translate_result(result),                    user_data);
-            }
+    wrapper->cpp_plugin->do_orbit_async(
+        radius_m,
+        velocity_ms,
+        translate_orbit_yaw_behavior_from_c(yaw_behavior),        latitude_deg,
+        longitude_deg,
+        absolute_altitude_m,
+        [callback, user_data](
+            mavsdk::Action::Result result) {
+                if (callback) {
+                    callback(
+                        translate_result(result),
+                        user_data);
+                }
         });
 }
 
@@ -502,12 +536,14 @@ void mavsdk_action_hold_async(
 {
     auto wrapper = static_cast<mavsdk_action_wrapper*>(action);
     
-wrapper->cpp_plugin->hold_async(
-        [callback, user_data](mavsdk::Action::Result result) {
-            if (callback) {
-                callback(
-translate_result(result),                    user_data);
-            }
+    wrapper->cpp_plugin->hold_async(
+        [callback, user_data](
+            mavsdk::Action::Result result) {
+                if (callback) {
+                    callback(
+                        translate_result(result),
+                        user_data);
+                }
         });
 }
 
@@ -534,12 +570,16 @@ void mavsdk_action_set_actuator_async(
 {
     auto wrapper = static_cast<mavsdk_action_wrapper*>(action);
     
-wrapper->cpp_plugin->set_actuator_async(
-        index,        value,        [callback, user_data](mavsdk::Action::Result result) {
-            if (callback) {
-                callback(
-translate_result(result),                    user_data);
-            }
+    wrapper->cpp_plugin->set_actuator_async(
+        index,
+        value,
+        [callback, user_data](
+            mavsdk::Action::Result result) {
+                if (callback) {
+                    callback(
+                        translate_result(result),
+                        user_data);
+                }
         });
 }
 
@@ -566,12 +606,14 @@ void mavsdk_action_transition_to_fixedwing_async(
 {
     auto wrapper = static_cast<mavsdk_action_wrapper*>(action);
     
-wrapper->cpp_plugin->transition_to_fixedwing_async(
-        [callback, user_data](mavsdk::Action::Result result) {
-            if (callback) {
-                callback(
-translate_result(result),                    user_data);
-            }
+    wrapper->cpp_plugin->transition_to_fixedwing_async(
+        [callback, user_data](
+            mavsdk::Action::Result result) {
+                if (callback) {
+                    callback(
+                        translate_result(result),
+                        user_data);
+                }
         });
 }
 
@@ -596,12 +638,14 @@ void mavsdk_action_transition_to_multicopter_async(
 {
     auto wrapper = static_cast<mavsdk_action_wrapper*>(action);
     
-wrapper->cpp_plugin->transition_to_multicopter_async(
-        [callback, user_data](mavsdk::Action::Result result) {
-            if (callback) {
-                callback(
-translate_result(result),                    user_data);
-            }
+    wrapper->cpp_plugin->transition_to_multicopter_async(
+        [callback, user_data](
+            mavsdk::Action::Result result) {
+                if (callback) {
+                    callback(
+                        translate_result(result),
+                        user_data);
+                }
         });
 }
 
@@ -626,13 +670,16 @@ void mavsdk_action_get_takeoff_altitude_async(
 {
     auto wrapper = static_cast<mavsdk_action_wrapper*>(action);
     
-wrapper->cpp_plugin->get_takeoff_altitude_async(
-        [callback, user_data](mavsdk::Action::Result result, float value) {
-            if (callback) {
-                callback(
-translate_result(result),                    value,
-                    user_data);
-            }
+    wrapper->cpp_plugin->get_takeoff_altitude_async(
+        [callback, user_data](
+            mavsdk::Action::Result result,
+            float value) {
+                if (callback) {
+                    callback(
+                        translate_result(result),
+                        value,
+                        user_data);
+                }
         });
 }
 
@@ -641,11 +688,10 @@ translate_result(result),                    value,
 mavsdk_action_result_t
 mavsdk_action_get_takeoff_altitude(
     mavsdk_action_t action,
-float* altitude_out)
+    float* altitude_out)
 {
     auto wrapper = static_cast<mavsdk_action_wrapper*>(action);
     
-
     auto result_pair = wrapper->cpp_plugin->get_takeoff_altitude(
 );
     
@@ -663,12 +709,15 @@ void mavsdk_action_set_takeoff_altitude_async(
 {
     auto wrapper = static_cast<mavsdk_action_wrapper*>(action);
     
-wrapper->cpp_plugin->set_takeoff_altitude_async(
-        altitude,        [callback, user_data](mavsdk::Action::Result result) {
-            if (callback) {
-                callback(
-translate_result(result),                    user_data);
-            }
+    wrapper->cpp_plugin->set_takeoff_altitude_async(
+        altitude,
+        [callback, user_data](
+            mavsdk::Action::Result result) {
+                if (callback) {
+                    callback(
+                        translate_result(result),
+                        user_data);
+                }
         });
 }
 
@@ -694,13 +743,16 @@ void mavsdk_action_get_return_to_launch_altitude_async(
 {
     auto wrapper = static_cast<mavsdk_action_wrapper*>(action);
     
-wrapper->cpp_plugin->get_return_to_launch_altitude_async(
-        [callback, user_data](mavsdk::Action::Result result, float value) {
-            if (callback) {
-                callback(
-translate_result(result),                    value,
-                    user_data);
-            }
+    wrapper->cpp_plugin->get_return_to_launch_altitude_async(
+        [callback, user_data](
+            mavsdk::Action::Result result,
+            float value) {
+                if (callback) {
+                    callback(
+                        translate_result(result),
+                        value,
+                        user_data);
+                }
         });
 }
 
@@ -709,11 +761,10 @@ translate_result(result),                    value,
 mavsdk_action_result_t
 mavsdk_action_get_return_to_launch_altitude(
     mavsdk_action_t action,
-float* relative_altitude_m_out)
+    float* relative_altitude_m_out)
 {
     auto wrapper = static_cast<mavsdk_action_wrapper*>(action);
     
-
     auto result_pair = wrapper->cpp_plugin->get_return_to_launch_altitude(
 );
     
@@ -731,12 +782,15 @@ void mavsdk_action_set_return_to_launch_altitude_async(
 {
     auto wrapper = static_cast<mavsdk_action_wrapper*>(action);
     
-wrapper->cpp_plugin->set_return_to_launch_altitude_async(
-        relative_altitude_m,        [callback, user_data](mavsdk::Action::Result result) {
-            if (callback) {
-                callback(
-translate_result(result),                    user_data);
-            }
+    wrapper->cpp_plugin->set_return_to_launch_altitude_async(
+        relative_altitude_m,
+        [callback, user_data](
+            mavsdk::Action::Result result) {
+                if (callback) {
+                    callback(
+                        translate_result(result),
+                        user_data);
+                }
         });
 }
 
@@ -763,12 +817,15 @@ void mavsdk_action_set_current_speed_async(
 {
     auto wrapper = static_cast<mavsdk_action_wrapper*>(action);
     
-wrapper->cpp_plugin->set_current_speed_async(
-        speed_m_s,        [callback, user_data](mavsdk::Action::Result result) {
-            if (callback) {
-                callback(
-translate_result(result),                    user_data);
-            }
+    wrapper->cpp_plugin->set_current_speed_async(
+        speed_m_s,
+        [callback, user_data](
+            mavsdk::Action::Result result) {
+                if (callback) {
+                    callback(
+                        translate_result(result),
+                        user_data);
+                }
         });
 }
 

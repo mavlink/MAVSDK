@@ -83,11 +83,11 @@ typedef struct {
 
 
 // ===== Callback Typedefs =====
-typedef void (*mavsdk_calibration_calibrate_gyro_callback_t)(const mavsdk_calibration_result_t result, const mavsdk_calibration_progress_data_t calibrate_gyro, void* user_data);
-typedef void (*mavsdk_calibration_calibrate_accelerometer_callback_t)(const mavsdk_calibration_result_t result, const mavsdk_calibration_progress_data_t calibrate_accelerometer, void* user_data);
-typedef void (*mavsdk_calibration_calibrate_magnetometer_callback_t)(const mavsdk_calibration_result_t result, const mavsdk_calibration_progress_data_t calibrate_magnetometer, void* user_data);
-typedef void (*mavsdk_calibration_calibrate_level_horizon_callback_t)(const mavsdk_calibration_result_t result, const mavsdk_calibration_progress_data_t calibrate_level_horizon, void* user_data);
-typedef void (*mavsdk_calibration_calibrate_gimbal_accelerometer_callback_t)(const mavsdk_calibration_result_t result, const mavsdk_calibration_progress_data_t calibrate_gimbal_accelerometer, void* user_data);
+typedef void (*mavsdk_calibration_calibrate_gyro_callback_t)(const mavsdk_calibration_result_t result, const mavsdk_calibration_progress_data_t progress_data, void* user_data);
+typedef void (*mavsdk_calibration_calibrate_accelerometer_callback_t)(const mavsdk_calibration_result_t result, const mavsdk_calibration_progress_data_t progress_data, void* user_data);
+typedef void (*mavsdk_calibration_calibrate_magnetometer_callback_t)(const mavsdk_calibration_result_t result, const mavsdk_calibration_progress_data_t progress_data, void* user_data);
+typedef void (*mavsdk_calibration_calibrate_level_horizon_callback_t)(const mavsdk_calibration_result_t result, const mavsdk_calibration_progress_data_t progress_data, void* user_data);
+typedef void (*mavsdk_calibration_calibrate_gimbal_accelerometer_callback_t)(const mavsdk_calibration_result_t result, const mavsdk_calibration_progress_data_t progress_data, void* user_data);
 
 // ===== Calibration Creation/Destruction =====
 CMAVSDK_EXPORT mavsdk_calibration_t mavsdk_calibration_create(mavsdk_system_t system);

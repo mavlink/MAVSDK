@@ -7,7 +7,7 @@ script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 project_root="$(cd "$script_dir/.." && pwd)"
 
 # Default plugins if none provided
-default_plugins=("action" "calibration" "telemetry")
+default_plugins=("action" "calibration" "camera" "telemetry")
 
 # Use provided plugins or defaults
 plugins=("${@:-${default_plugins[@]}}")

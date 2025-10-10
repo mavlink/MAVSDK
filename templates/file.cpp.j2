@@ -59,6 +59,54 @@ translate_{{ enum.name.lower_snake_case }}_to_c(mavsdk::{{ plugin_name.upper_cam
 {% if not struct.name.upper_camel_case.endswith('Result') %}
 {% for nested_enum_name, nested_enum in struct.nested_enums.items() %}
 
+static mavsdk::{{ plugin_name.upper_camel_case }}::{{ struct.name.upper_camel_case }}::{{ nested_enum.name.upper_camel_case }}
+translate_{{ struct.name.lower_snake_case }}_{{ nested_enum.name.lower_snake_case }}_from_c(mavsdk_{{ plugin_name.lower_snake_case }}_{{ struct.name.lower_snake_case }}_{{ nested_enum.name.lower_snake_case }}_t c_enum) {
+    switch(c_enum) {
+        {% for value in nested_enum.values %}
+        case MAVSDK_{{ plugin_name.uppercase }}_{{ struct.name.uppercase }}_{{ nested_enum.name.uppercase }}_{{ value.name.uppercase }}:
+            return mavsdk::{{ plugin_name.upper_camel_case }}::{{ struct.name.upper_camel_case }}::{{ nested_enum.name.upper_camel_case }}::{{ value.name.upper_camel_case }};
+        {% endfor %}
+    }
+    return mavsdk::{{ plugin_name.upper_camel_case }}::{{ struct.name.upper_camel_case }}::{{ nested_enum.name.upper_camel_case }}::{{ nested_enum.values[0].name.upper_camel_case }};
+}
+
+{% endfor %}
+
+static mavsdk::{{ plugin_name.upper_camel_case }}::{{ struct.name.upper_camel_case }}
+translate_{{ struct.name.lower_snake_case }}_from_c(const mavsdk_{{ plugin_name.lower_snake_case }}_{{ struct.name.lower_snake_case }}_t& c_struct) {
+    mavsdk::{{ plugin_name.upper_camel_case }}::{{ struct.name.upper_camel_case }} cpp_struct{};
+    {% for field in struct.fields %}
+    {% if field.type_info.is_string %}
+    if (c_struct.{{ field.name.lower_snake_case }}) {
+        cpp_struct.{{ field.name.lower_snake_case }} = c_struct.{{ field.name.lower_snake_case }};
+    }
+    {% elif field.type_info.is_repeated %}
+    {% if field.type_info.is_primitive %}
+    cpp_struct.{{ field.name.lower_snake_case }}.assign(
+        c_struct.{{ field.name.lower_snake_case }},
+        c_struct.{{ field.name.lower_snake_case }} + c_struct.{{ field.name.lower_snake_case }}_size);
+    {% else %}
+    cpp_struct.{{ field.name.lower_snake_case }}.reserve(c_struct.{{ field.name.lower_snake_case }}_size);
+    for (size_t i = 0; i < c_struct.{{ field.name.lower_snake_case }}_size; i++) {
+        cpp_struct.{{ field.name.lower_snake_case }}.push_back(
+            translate_{{ field.type_info.inner_name.lower_snake_case }}_from_c(c_struct.{{ field.name.lower_snake_case }}[i]));
+    }
+    {% endif %}
+    {% elif field.type_info.is_primitive %}
+    cpp_struct.{{ field.name.lower_snake_case }} = c_struct.{{ field.name.lower_snake_case }};
+    {% elif field.type_info.parent_type %}
+    cpp_struct.{{ field.name.lower_snake_case }} = translate_{{ field.type_info.parent_type.lower_snake_case }}_{{ field.type_info.name.lower_snake_case }}_from_c(c_struct.{{ field.name.lower_snake_case }});
+    {% else %}
+    cpp_struct.{{ field.name.lower_snake_case }} = translate_{{ field.type_info.name.lower_snake_case }}_from_c(c_struct.{{ field.name.lower_snake_case }});
+    {% endif %}
+    {% endfor %}
+    return cpp_struct;
+}
+{% endif %}
+
+{% if not struct.name.upper_camel_case.endswith('Result') %}
+{% for nested_enum_name, nested_enum in struct.nested_enums.items() %}
+
 static mavsdk_{{ plugin_name.lower_snake_case }}_{{ struct.name.lower_snake_case }}_{{ nested_enum.name.lower_snake_case }}_t
 translate_{{ struct.name.lower_snake_case }}_{{ nested_enum.name.lower_snake_case }}_to_c(mavsdk::{{ plugin_name.upper_camel_case }}::{{ struct.name.upper_camel_case }}::{{ nested_enum.name.upper_camel_case }} cpp_enum) {
     switch(cpp_enum) {
@@ -84,8 +132,8 @@ translate_{{ struct.name.lower_snake_case }}_to_c(const mavsdk::{{ plugin_name.u
     std::copy(cpp_struct.{{ field.name.lower_snake_case }}.begin(), cpp_struct.{{ field.name.lower_snake_case }}.end(), c_struct.{{ field.name.lower_snake_case }});
     {% else %}
     c_struct.{{ field.name.lower_snake_case }} = new mavsdk_{{ plugin_name.lower_snake_case }}_{{ field.type_info.inner_name.lower_snake_case }}_t[c_struct.{{ field.name.lower_snake_case }}_size];
-    for (int i = 0; i < c_struct.{{ field.name.lower_snake_case }}_size; i++) {
-        c_struct.{{ field.name.lower_snake_case }}[i] = translate_{{ field.type_info.name.lower_snake_case }}_to_c(cpp_struct.{{ field.name.lower_snake_case }}[i]);
+    for (size_t i = 0; i < c_struct.{{ field.name.lower_snake_case }}_size; i++) {
+        c_struct.{{ field.name.lower_snake_case }}[i] = translate_{{ field.type_info.inner_name.lower_snake_case }}_to_c(cpp_struct.{{ field.name.lower_snake_case }}[i]);
     }
     {% endif %}
     {% elif field.type_info.is_primitive %}
@@ -111,8 +159,8 @@ void mavsdk_{{ plugin_name.lower_snake_case }}_{{ struct.name.lower_snake_case }
     {% elif field.type_info.is_repeated %}
     if (target->{{ field.name.lower_snake_case }}) {
         {% if not field.type_info.is_primitive %}
-        for (int i = 0; i < target->{{ field.name.lower_snake_case }}_size; i++) {
-            mavsdk_{{ plugin_name.lower_snake_case }}_{{ field.type_info.name.lower_snake_case }}_destroy(&target->{{ field.name.lower_snake_case }}[i]);
+        for (size_t i = 0; i < target->{{ field.name.lower_snake_case }}_size; i++) {
+            mavsdk_{{ plugin_name.lower_snake_case }}_{{ field.type_info.inner_name.lower_snake_case }}_destroy(&target->{{ field.name.lower_snake_case }}[i]);
         }
         {% endif %}
         delete[] target->{{ field.name.lower_snake_case }};
@@ -175,30 +223,64 @@ void mavsdk_{{ plugin_name.lower_snake_case }}_destroy(mavsdk_{{ plugin_name.low
 {
     auto wrapper = static_cast<mavsdk_{{ plugin_name.lower_snake_case }}_wrapper*>({{ plugin_name.lower_snake_case }});
     
-    {% if method.is_stream %}{% if not method.is_finite %}
-    auto cpp_handle = {% endif %}{% endif %}wrapper->cpp_plugin->{% if method.is_stream and not method.is_finite %}subscribe_{% endif %}{{ method.name.lower_snake_case }}{% if not method.is_stream or method.is_finite %}_async{% endif %}(
+    {% if method.is_stream and not method.is_finite %}
+    auto cpp_handle = {%- endif %}
+    wrapper->cpp_plugin->{% if method.is_stream and not method.is_finite %}subscribe_{% endif %}{{ method.name.lower_snake_case }}{% if not method.is_stream or method.is_finite %}_async{% endif %}(
         {% for param in method.params %}
         {% if param.type_info.is_primitive %}
-        {{ param.name.lower_snake_case }}{% if not loop.last %},{% endif %}
+        {{ param.name.lower_snake_case }}{% if not loop.last %},
+        {% endif %}
         {% elif param.type_info.parent_type %}
-        translate_{{ param.type_info.parent_type.lower_snake_case }}_{{ param.type_info.name.lower_snake_case }}_from_c({{ param.name.lower_snake_case }}){% if not loop.last %},{% endif %}
+        translate_{{ param.type_info.parent_type.lower_snake_case }}_{{ param.type_info.name.lower_snake_case }}_from_c({{ param.name.lower_snake_case }}){% if not loop.last %},
+        {% endif %}
         {% else %}
         translate_{{ param.type_info.name.lower_snake_case }}_from_c({{ param.name.lower_snake_case }}){% if not loop.last %},{% endif %}
         {% endif %}
-        {% endfor %}{% if method.params %},{% endif %}
-        [callback, user_data]({% if method.has_result %}mavsdk::{{ plugin_name.upper_camel_case }}::Result result{% endif %}{% if method.return_type %}{% if method.has_result %}, {% endif %}{% if method.return_type.is_primitive %}{{ method.return_type.name }}{% else %}mavsdk::{{ plugin_name.upper_camel_case }}::{{ method.return_type.name.upper_camel_case }}{% endif %} value{% endif %}) {
-            if (callback) {
-                callback(
-                    {% if method.has_result %}translate_result(result),{% endif %}
-                    {% if method.return_type %}
-                    {% if method.return_type.is_primitive %}
-                    value,
-                    {% else %}
-                    translate_{{ method.return_type.name.lower_snake_case }}_to_c(value),
+        {% endfor %}{% if method.params %},
+        {% endif %}
+        [callback, user_data](
+            {% if method.has_result %}
+            mavsdk::{{ plugin_name.upper_camel_case }}::Result result{% if method.return_type %},
+            {% endif %}
+            {% endif %}
+            {% if method.return_type %}
+            {% if method.return_type.is_primitive %}
+            {{ method.return_type.name }} value
+            {%- elif method.return_type.is_repeated %}
+            std::vector<mavsdk::{{ plugin_name.upper_camel_case }}::{{ method.return_type.inner_name.upper_camel_case }}> value
+            {%- else %}
+            mavsdk::{{ plugin_name.upper_camel_case }}::{{ method.return_type.name.upper_camel_case }} value
+            {%- endif %}
+            {% endif %}) {
+                if (callback) {
+                    {% if method.return_name and method.return_type.is_repeated %}
+                    size_t count = value.size();
+                    mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.return_type.inner_name.lower_snake_case }}_t* {{ method.return_name.lower_snake_case }} = nullptr;
+
+                    if (count > 0) {
+                        {{ method.return_name.lower_snake_case }} = new mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.return_type.inner_name.lower_snake_case }}_t[count];
+                        for (size_t i = 0; i < count; i++) {
+                            {{ method.return_name.lower_snake_case }}[i] = translate_{{ method.return_type.inner_name.lower_snake_case }}_to_c(value[i]);
+                        }
+                    }
+
                     {% endif %}
-                    {% endif %}
-                    user_data);
-            }
+                    callback(
+                        {% if method.has_result %}
+                        translate_result(result),
+                        {% endif %}
+                        {% if method.return_type %}
+                        {% if method.return_type.is_primitive %}
+                        value,
+                        {% elif method.return_type.is_repeated %}
+                        {{ method.return_name.lower_snake_case }},
+                        count,
+                        {% else %}
+                        translate_{{ method.return_type.name.lower_snake_case }}_to_c(value),
+                        {% endif %}
+                        {% endif %}
+                        user_data);
+                }
         });
     {% if method.is_stream and not method.is_finite %}
     
@@ -243,29 +325,54 @@ mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}(
     {% endif %}
     {% endif %}
     {% endfor %}{% endif %}{% if method.return_name %},
-    {% if method.return_type.is_primitive %}{{ method.return_type.name }}*{% else %}mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.return_type.name.lower_snake_case }}_t*{% endif %} {{ method.return_name.lower_snake_case }}_out{% endif %})
+    {% if method.return_type.is_primitive %}
+    {{ method.return_type.name }}* {{ method.return_name.lower_snake_case }}_out)
+    {% elif method.return_type.is_repeated %}
+    mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.return_type.inner_name.lower_snake_case }}_t** {{ method.return_name.lower_snake_case }}_out,
+    size_t* {{ method.return_name.lower_snake_case }}_size_out)
+    {% else %}
+    mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.return_type.inner_name.lower_snake_case }}_t* {{ method.return_name.lower_snake_case }}_out)
+    {% endif %}
+    {% else %})
+    {% endif %}
 {
     auto wrapper = static_cast<mavsdk_{{ plugin_name.lower_snake_case }}_wrapper*>({{ plugin_name.lower_snake_case }});
     
     {% if method.has_result and method.return_name %}
-
     auto result_pair = wrapper->cpp_plugin->{{ method.name.lower_snake_case }}(
         {% for param in method.params %}
         {% if param.type_info.is_primitive %}
-        {{ param.name.lower_snake_case }}{% if not loop.last %},{% endif %}
+        {{ param.name.lower_snake_case }}{% if not loop.last %},
+        {% endif %}
         {% elif param.type_info.parent_type %}
-        translate_{{ param.type_info.parent_type.lower_snake_case }}_{{ param.type_info.name.lower_snake_case }}_from_c({{ param.name.lower_snake_case }}){% if not loop.last %},{% endif %}
+        translate_{{ param.type_info.parent_type.lower_snake_case }}_{{ param.type_info.name.lower_snake_case }}_from_c({{ param.name.lower_snake_case }}){% if not loop.last %},
+        {% endif %}
         {% else %}
-        translate_{{ param.type_info.name.lower_snake_case }}_from_c({{ param.name.lower_snake_case }}){% if not loop.last %},{% endif %}
+        translate_{{ param.type_info.name.lower_snake_case }}_from_c({{ param.name.lower_snake_case }}){% if not loop.last %},
+        {% endif %}
         {% endif %}
         {% endfor %});
     
     {% if method.return_type.is_primitive %}
     *{{ method.return_name.lower_snake_case }}_out = result_pair.second;
-    {% else %}
-        if ({{ method.return_name.lower_snake_case }}_out != nullptr) {
-            *{{ method.return_name.lower_snake_case }}_out = translate_{{ method.return_type.name.lower_snake_case }}_to_c(result_pair.second);
+    {% elif method.return_type.is_repeated %}
+    if ({{ method.return_name.lower_snake_case }}_out != nullptr) {
+        size_t count = result_pair.second.size();
+
+        *{{ method.return_name.lower_snake_case }}_out = new mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.return_type.inner_name.lower_snake_case }}_t[count];
+
+        for (size_t i = 0; i < count; i++) { 
+            (*{{ method.return_name.lower_snake_case }}_out)[i] = translate_{{ method.return_type.inner_name.lower_snake_case }}_to_c(result_pair.second[i]);
         }
+
+        if ({{ method.return_name.lower_snake_case }}_size_out != nullptr) {
+            *{{ method.return_name.lower_snake_case }}_size_out = count;
+        }
+    }
+    {% else %}
+    if ({{ method.return_name.lower_snake_case }}_out != nullptr) {
+        *{{ method.return_name.lower_snake_case }}_out = translate_{{ method.return_type.name.lower_snake_case }}_to_c(result_pair.second);
+    }
     {% endif %}
     
     return translate_result(result_pair.first);
