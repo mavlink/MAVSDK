@@ -21,6 +21,7 @@ set(PLUGIN_SOURCES
     cmavsdk/plugins/log_files/log_files.cpp
     cmavsdk/plugins/log_streaming/log_streaming.cpp
     cmavsdk/plugins/manual_control/manual_control.cpp
+    cmavsdk/plugins/mavlink_direct/mavlink_direct.cpp
     cmavsdk/plugins/mission/mission.cpp
     cmavsdk/plugins/mission_raw/mission_raw.cpp
     cmavsdk/plugins/mission_raw_server/mission_raw_server.cpp
@@ -58,6 +59,7 @@ set(PLUGIN_HEADERS
     cmavsdk/plugins/log_files/log_files.h
     cmavsdk/plugins/log_streaming/log_streaming.h
     cmavsdk/plugins/manual_control/manual_control.h
+    cmavsdk/plugins/mavlink_direct/mavlink_direct.h
     cmavsdk/plugins/mission/mission.h
     cmavsdk/plugins/mission_raw/mission_raw.h
     cmavsdk/plugins/mission_raw_server/mission_raw_server.h
