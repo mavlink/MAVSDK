@@ -7,6 +7,7 @@ set(PLUGIN_SOURCES
     cmavsdk/plugins/geofence/geofence.cpp
     cmavsdk/plugins/gimbal/gimbal.cpp
     cmavsdk/plugins/mission/mission.cpp
+    cmavsdk/plugins/mission_raw/mission_raw.cpp
     cmavsdk/plugins/telemetry/telemetry.cpp
 )
 
@@ -17,5 +18,6 @@ set(PLUGIN_HEADERS
     cmavsdk/plugins/geofence/geofence.h
     cmavsdk/plugins/gimbal/gimbal.h
     cmavsdk/plugins/mission/mission.h
+    cmavsdk/plugins/mission_raw/mission_raw.h
     cmavsdk/plugins/telemetry/telemetry.h
 )

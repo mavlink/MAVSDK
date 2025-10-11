@@ -246,7 +246,15 @@ void mavsdk_{{ plugin_name.lower_snake_case }}_destroy(mavsdk_{{ plugin_name.low
 {% if method.is_stream and not method.is_finite%}mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}_handle_t{% else %}void{% endif %} mavsdk_{{ plugin_name.lower_snake_case }}{% if method.is_stream and not method.is_finite %}_subscribe{% endif %}_{{ method.name.lower_snake_case }}{% if not method.is_stream or method.is_finite %}_async{% endif %}(
     mavsdk_{{ plugin_name.lower_snake_case }}_t {{ plugin_name.lower_snake_case }},
     {% for param in method.params %}
+    {% if param.type_info.is_repeated %}
     {% if param.type_info.is_primitive %}
+    const {{ param.type_info.inner_name }}* {{ param.name.lower_snake_case }},
+    size_t {{ param.name.lower_snake_case }}_size,
+    {% else %}
+    const mavsdk_{{ plugin_name.lower_snake_case }}_{{ param.type_info.inner_name.lower_snake_case }}_t* {{ param.name.lower_snake_case }},
+    size_t {{ param.name.lower_snake_case }}_size,
+    {% endif %}
+    {% elif param.type_info.is_primitive %}
     {{ param.type_info.name }} {{ param.name.lower_snake_case }},
     {% elif param.type_info.parent_type %}
     mavsdk_{{ plugin_name.lower_snake_case }}_{{ param.type_info.parent_type.lower_snake_case }}_{{ param.type_info.name.lower_snake_case }}_t {{ param.name.lower_snake_case }},
@@ -263,7 +271,22 @@ void mavsdk_{{ plugin_name.lower_snake_case }}_destroy(mavsdk_{{ plugin_name.low
     auto cpp_handle = {%- endif %}
     wrapper->cpp_plugin->{% if method.is_stream and not method.is_finite %}subscribe_{% endif %}{{ method.name.lower_snake_case }}{% if not method.is_stream or method.is_finite %}_async{% endif %}(
         {% for param in method.params %}
+        {% if param.type_info.is_repeated %}
         {% if param.type_info.is_primitive %}
+        std::vector<{{ param.type_info.inner_name }}>({{ param.name.lower_snake_case }}, {{ param.name.lower_snake_case }} + {{ param.name.lower_snake_case }}_size){% if not loop.last %},
+        {% endif %}
+        {% else %}
+        [&{{ param.name.lower_snake_case }}, {{ param.name.lower_snake_case }}_size]() {
+            std::vector<mavsdk::{{ plugin_name.upper_camel_case }}::{{ param.type_info.inner_name.upper_camel_case }}> vec;
+            vec.reserve({{ param.name.lower_snake_case }}_size);
+            for (size_t i = 0; i < {{ param.name.lower_snake_case }}_size; i++) {
+                vec.push_back(translate_{{ param.type_info.inner_name.lower_snake_case }}_from_c({{ param.name.lower_snake_case }}[i]));
+            }
+            return vec;
+        }(){% if not loop.last %},
+        {% endif %}
+        {% endif %}
+        {% elif param.type_info.is_primitive %}
         {{ param.name.lower_snake_case }}{% if not loop.last %},
         {% endif %}
         {% elif param.type_info.parent_type %}
@@ -350,7 +373,17 @@ void
 mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}(
     mavsdk_{{ plugin_name.lower_snake_case }}_t {{ plugin_name.lower_snake_case }}{% if method.params %},
     {% for param in method.params %}
+    {% if param.type_info.is_repeated %}
     {% if param.type_info.is_primitive %}
+    const {{ param.type_info.inner_name }}* {{ param.name.lower_snake_case }},
+    size_t {{ param.name.lower_snake_case }}_size{% if not loop.last %},
+    {% endif %}
+    {% else %}
+    const mavsdk_{{ plugin_name.lower_snake_case }}_{{ param.type_info.inner_name.lower_snake_case }}_t* {{ param.name.lower_snake_case }},
+    size_t {{ param.name.lower_snake_case }}_size{% if not loop.last %},
+    {% endif %}
+    {% endif %}
+    {% elif param.type_info.is_primitive %}
     {{ param.type_info.name }} {{ param.name.lower_snake_case }}{% if not loop.last %},
     {% endif %}
     {% elif param.type_info.parent_type %}
@@ -377,7 +410,22 @@ mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}(
     {% if method.has_result and method.return_name %}
     auto result_pair = wrapper->cpp_plugin->{{ method.name.lower_snake_case }}(
         {% for param in method.params %}
+        {% if param.type_info.is_repeated %}
         {% if param.type_info.is_primitive %}
+        std::vector<{{ param.type_info.inner_name }}>({{ param.name.lower_snake_case }}, {{ param.name.lower_snake_case }} + {{ param.name.lower_snake_case }}_size){% if not loop.last %},
+        {% endif %}
+        {% else %}
+        [&{{ param.name.lower_snake_case }}, {{ param.name.lower_snake_case }}_size]() {
+            std::vector<mavsdk::{{ plugin_name.upper_camel_case }}::{{ param.type_info.inner_name.upper_camel_case }}> vec;
+            vec.reserve({{ param.name.lower_snake_case }}_size);
+            for (size_t i = 0; i < {{ param.name.lower_snake_case }}_size; i++) {
+                vec.push_back(translate_{{ param.type_info.inner_name.lower_snake_case }}_from_c({{ param.name.lower_snake_case }}[i]));
+            }
+            return vec;
+        }(){% if not loop.last %},
+        {% endif %}
+        {% endif %}
+        {% elif param.type_info.is_primitive %}
         {{ param.name.lower_snake_case }}{% if not loop.last %},
         {% endif %}
         {% elif param.type_info.parent_type %}
@@ -415,7 +463,20 @@ mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}(
     {% else %}
     {% if method.has_result or method.return_type %}
     auto ret_value = {% endif %}wrapper->cpp_plugin->{{ method.name.lower_snake_case }}({% for param in method.params %}
+        {% if param.type_info.is_repeated %}
         {% if param.type_info.is_primitive %}
+        std::vector<{{ param.type_info.inner_name }}>({{ param.name.lower_snake_case }}, {{ param.name.lower_snake_case }} + {{ param.name.lower_snake_case }}_size){% if not loop.last %},{% endif %}
+        {% else %}
+        [&{{ param.name.lower_snake_case }}, {{ param.name.lower_snake_case }}_size]() {
+            std::vector<mavsdk::{{ plugin_name.upper_camel_case }}::{{ param.type_info.inner_name.upper_camel_case }}> vec;
+            vec.reserve({{ param.name.lower_snake_case }}_size);
+            for (size_t i = 0; i < {{ param.name.lower_snake_case }}_size; i++) {
+                vec.push_back(translate_{{ param.type_info.inner_name.lower_snake_case }}_from_c({{ param.name.lower_snake_case }}[i]));
+            }
+            return vec;
+        }(){% if not loop.last %},{% endif %}
+        {% endif %}
+        {% elif param.type_info.is_primitive %}
         {{ param.name.lower_snake_case }}{% if not loop.last %},{% endif %}
         {% elif param.type_info.parent_type %}
         translate_{{ param.type_info.parent_type.lower_snake_case }}_{{ param.type_info.name.lower_snake_case }}_from_c({{ param.name.lower_snake_case }}){% if not loop.last %},{% endif %}

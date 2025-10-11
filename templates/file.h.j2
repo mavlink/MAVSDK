@@ -191,7 +191,15 @@ CMAVSDK_EXPORT void mavsdk_{{ plugin_name.lower_snake_case }}_destroy(mavsdk_{{ 
 CMAVSDK_EXPORT {% if method.is_stream and not method.is_finite%}mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}_handle_t{% else %}void{% endif %} mavsdk_{{ plugin_name.lower_snake_case }}{% if method.is_stream and not method.is_finite%}_subscribe{% endif %}_{{ method.name.lower_snake_case }}{% if not method.is_stream or method.is_finite %}_async{% endif %}(
     mavsdk_{{ plugin_name.lower_snake_case }}_t {{ plugin_name.lower_snake_case }},
     {% for param in method.params %}
+    {% if param.type_info.is_repeated %}
     {% if param.type_info.is_primitive %}
+    const {{ param.type_info.inner_name }}* {{ param.name.lower_snake_case }},
+    size_t {{ param.name.lower_snake_case }}_size,
+    {% else %}
+    const mavsdk_{{ plugin_name.lower_snake_case }}_{{ param.type_info.inner_name.lower_snake_case }}_t* {{ param.name.lower_snake_case }},
+    size_t {{ param.name.lower_snake_case }}_size,
+    {% endif %}
+    {% elif param.type_info.is_primitive %}
     {{ param.type_info.name }} {{ param.name.lower_snake_case }},
     {% elif param.type_info.parent_type %}
     mavsdk_{{ plugin_name.lower_snake_case }}_{{ param.type_info.parent_type.lower_snake_case }}_{{ param.type_info.name.lower_snake_case }}_t {{ param.name.lower_snake_case }},
@@ -235,7 +243,17 @@ void
 mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}(
     mavsdk_{{ plugin_name.lower_snake_case }}_t {{ plugin_name.lower_snake_case }}{% if method.params %},
     {% for param in method.params %}
+    {% if param.type_info.is_repeated %}
     {% if param.type_info.is_primitive %}
+    const {{ param.type_info.inner_name }}* {{ param.name.lower_snake_case }},
+    size_t {{ param.name.lower_snake_case }}_size{% if not loop.last %},
+    {% endif %}
+    {% else %}
+    const mavsdk_{{ plugin_name.lower_snake_case }}_{{ param.type_info.inner_name.lower_snake_case }}_t* {{ param.name.lower_snake_case }},
+    size_t {{ param.name.lower_snake_case }}_size{% if not loop.last %},
+    {% endif %}
+    {% endif %}
+    {% elif param.type_info.is_primitive %}
     {{ param.type_info.name }} {{ param.name.lower_snake_case }}{% if not loop.last %},
     {% endif %}
     {% elif param.type_info.parent_type %}
