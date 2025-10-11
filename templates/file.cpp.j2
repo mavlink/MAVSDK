@@ -343,7 +343,9 @@ void mavsdk_{{ plugin_name.lower_snake_case }}_destroy(mavsdk_{{ plugin_name.low
             {% endif %}
             {% endif %}
             {% if method.return_type %}
-            {% if method.return_type.is_primitive %}
+            {% if method.return_type.is_string %}
+            const std::string& value
+            {%- elif method.return_type.is_primitive %}
             {{ method.return_type.name }} value
             {%- elif method.return_type.is_repeated %}
             std::vector<mavsdk::{{ plugin_name.upper_camel_case }}::{{ method.return_type.inner_name.upper_camel_case }}> value
@@ -369,7 +371,9 @@ void mavsdk_{{ plugin_name.lower_snake_case }}_destroy(mavsdk_{{ plugin_name.low
                         translate_result(result),
                         {% endif %}
                         {% if method.return_type %}
-                        {% if method.return_type.is_primitive %}
+                        {% if method.return_type.is_string %}
+                        strdup(value.c_str()),
+                        {% elif method.return_type.is_primitive %}
                         value,
                         {% elif method.return_type.is_repeated %}
                         {{ method.return_name.lower_snake_case }},

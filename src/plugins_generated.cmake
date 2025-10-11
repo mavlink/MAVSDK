@@ -31,6 +31,7 @@ set(PLUGIN_SOURCES
     cmavsdk/plugins/param_server/param_server.cpp
     cmavsdk/plugins/rtk/rtk.cpp
     cmavsdk/plugins/server_utility/server_utility.cpp
+    cmavsdk/plugins/shell/shell.cpp
     cmavsdk/plugins/telemetry/telemetry.cpp
     cmavsdk/plugins/telemetry_server/telemetry_server.cpp
     cmavsdk/plugins/transponder/transponder.cpp
@@ -69,6 +70,7 @@ set(PLUGIN_HEADERS
     cmavsdk/plugins/param_server/param_server.h
     cmavsdk/plugins/rtk/rtk.h
     cmavsdk/plugins/server_utility/server_utility.h
+    cmavsdk/plugins/shell/shell.h
     cmavsdk/plugins/telemetry/telemetry.h
     cmavsdk/plugins/telemetry_server/telemetry_server.h
     cmavsdk/plugins/transponder/transponder.h
