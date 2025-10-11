@@ -2,6 +2,7 @@
 
 set(PLUGIN_SOURCES
     cmavsdk/plugins/action/action.cpp
+    cmavsdk/plugins/action_server/action_server.cpp
     cmavsdk/plugins/calibration/calibration.cpp
     cmavsdk/plugins/camera/camera.cpp
     cmavsdk/plugins/geofence/geofence.cpp
@@ -13,6 +14,7 @@ set(PLUGIN_SOURCES
 
 set(PLUGIN_HEADERS
     cmavsdk/plugins/action/action.h
+    cmavsdk/plugins/action_server/action_server.h
     cmavsdk/plugins/calibration/calibration.h
     cmavsdk/plugins/camera/camera.h
     cmavsdk/plugins/geofence/geofence.h

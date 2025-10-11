@@ -216,6 +216,20 @@ struct mavsdk_{{ plugin_name.lower_snake_case }}_wrapper {
     std::shared_ptr<mavsdk::{{ plugin_name.upper_camel_case }}> cpp_plugin;
 };
 
+{% if is_server %}
+mavsdk_{{ plugin_name.lower_snake_case }}_t
+mavsdk_{{ plugin_name.lower_snake_case }}_create(mavsdk_server_component_t server_component) {
+    if (server_component == nullptr) {
+        return nullptr;
+    }
+
+    auto wrapper = new mavsdk_{{ plugin_name.lower_snake_case }}_wrapper();
+    auto server_component_ptr = static_cast<std::shared_ptr<mavsdk::ServerComponent>*>(server_component);
+    wrapper->cpp_plugin = std::make_shared<mavsdk::{{ plugin_name.upper_camel_case }}>(*server_component_ptr);
+
+    return wrapper;
+}
+{% else %}
 mavsdk_{{ plugin_name.lower_snake_case }}_t
 mavsdk_{{ plugin_name.lower_snake_case }}_create(mavsdk_system_t system) {
     if (system == nullptr) {
@@ -228,6 +242,7 @@ mavsdk_{{ plugin_name.lower_snake_case }}_create(mavsdk_system_t system) {
 
     return wrapper;
 }
+{% endif %}
 
 void mavsdk_{{ plugin_name.lower_snake_case }}_destroy(mavsdk_{{ plugin_name.lower_snake_case }}_t {{ plugin_name.lower_snake_case }}) {
     if ({{ plugin_name.lower_snake_case }} == nullptr) {

@@ -19,7 +19,11 @@ extern "C" {
  */
 
 // ===== Forward Declarations =====
+{% if is_server %}
+typedef void* mavsdk_server_component_t;
+{% else %}
 typedef void* mavsdk_system_t;
+{% endif %}
 
 // ===== Opaque Handles =====
 typedef void* mavsdk_{{ plugin_name.lower_snake_case }}_t;
@@ -168,7 +172,11 @@ typedef void (*mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_sn
 {% endfor %}
 
 // ===== {{ plugin_name.upper_camel_case }} Creation/Destruction =====
+{% if is_server %}
+CMAVSDK_EXPORT mavsdk_{{ plugin_name.lower_snake_case }}_t mavsdk_{{ plugin_name.lower_snake_case }}_create(mavsdk_server_component_t server_component);
+{% else %}
 CMAVSDK_EXPORT mavsdk_{{ plugin_name.lower_snake_case }}_t mavsdk_{{ plugin_name.lower_snake_case }}_create(mavsdk_system_t system);
+{% endif %}
 CMAVSDK_EXPORT void mavsdk_{{ plugin_name.lower_snake_case }}_destroy(mavsdk_{{ plugin_name.lower_snake_case }}_t {{ plugin_name.lower_snake_case }});
 
 // ===== Methods =====
