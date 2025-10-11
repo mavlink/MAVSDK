@@ -4,6 +4,9 @@ set(PLUGIN_SOURCES
     cmavsdk/plugins/action/action.cpp
     cmavsdk/plugins/calibration/calibration.cpp
     cmavsdk/plugins/camera/camera.cpp
+    cmavsdk/plugins/geofence/geofence.cpp
+    cmavsdk/plugins/gimbal/gimbal.cpp
+    cmavsdk/plugins/mission/mission.cpp
     cmavsdk/plugins/telemetry/telemetry.cpp
 )
 
@@ -11,5 +14,8 @@ set(PLUGIN_HEADERS
     cmavsdk/plugins/action/action.h
     cmavsdk/plugins/calibration/calibration.h
     cmavsdk/plugins/camera/camera.h
+    cmavsdk/plugins/geofence/geofence.h
+    cmavsdk/plugins/gimbal/gimbal.h
+    cmavsdk/plugins/mission/mission.h
     cmavsdk/plugins/telemetry/telemetry.h
 )
