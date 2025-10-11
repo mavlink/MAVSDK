@@ -75,7 +75,7 @@ typedef enum {
  * @note This struct may contain dynamically allocated memory. Always call
  *       mavsdk_gimbal_quaternion_destroy() when done to avoid memory leaks.
  */
-typedef struct {
+typedef struct CMAVSDK_EXPORT {
     /**  Quaternion entry 0, also denoted as a */
     float w;
     /**  Quaternion entry 1, also denoted as b */
@@ -96,7 +96,7 @@ typedef struct {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-void mavsdk_gimbal_quaternion_destroy(
+CMAVSDK_EXPORT void mavsdk_gimbal_quaternion_destroy(
     mavsdk_gimbal_quaternion_t* target);
 
 /**
@@ -108,7 +108,7 @@ void mavsdk_gimbal_quaternion_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-void mavsdk_gimbal_quaternion_array_destroy(
+CMAVSDK_EXPORT void mavsdk_gimbal_quaternion_array_destroy(
     mavsdk_gimbal_quaternion_t** array,
     size_t size);
 
@@ -124,7 +124,7 @@ void mavsdk_gimbal_quaternion_array_destroy(
  * @note This struct may contain dynamically allocated memory. Always call
  *       mavsdk_gimbal_euler_angle_destroy() when done to avoid memory leaks.
  */
-typedef struct {
+typedef struct CMAVSDK_EXPORT {
     /**  Roll angle in degrees, positive is banking to the right */
     float roll_deg;
     /**  Pitch angle in degrees, positive is pitching nose up */
@@ -143,7 +143,7 @@ typedef struct {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-void mavsdk_gimbal_euler_angle_destroy(
+CMAVSDK_EXPORT void mavsdk_gimbal_euler_angle_destroy(
     mavsdk_gimbal_euler_angle_t* target);
 
 /**
@@ -155,7 +155,7 @@ void mavsdk_gimbal_euler_angle_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-void mavsdk_gimbal_euler_angle_array_destroy(
+CMAVSDK_EXPORT void mavsdk_gimbal_euler_angle_array_destroy(
     mavsdk_gimbal_euler_angle_t** array,
     size_t size);
 
@@ -165,7 +165,7 @@ void mavsdk_gimbal_euler_angle_array_destroy(
  * @note This struct may contain dynamically allocated memory. Always call
  *       mavsdk_gimbal_angular_velocity_body_destroy() when done to avoid memory leaks.
  */
-typedef struct {
+typedef struct CMAVSDK_EXPORT {
     /**  Roll angular velocity */
     float roll_rad_s;
     /**  Pitch angular velocity */
@@ -184,7 +184,7 @@ typedef struct {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-void mavsdk_gimbal_angular_velocity_body_destroy(
+CMAVSDK_EXPORT void mavsdk_gimbal_angular_velocity_body_destroy(
     mavsdk_gimbal_angular_velocity_body_t* target);
 
 /**
@@ -196,7 +196,7 @@ void mavsdk_gimbal_angular_velocity_body_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-void mavsdk_gimbal_angular_velocity_body_array_destroy(
+CMAVSDK_EXPORT void mavsdk_gimbal_angular_velocity_body_array_destroy(
     mavsdk_gimbal_angular_velocity_body_t** array,
     size_t size);
 
@@ -206,7 +206,7 @@ void mavsdk_gimbal_angular_velocity_body_array_destroy(
  * @note This struct may contain dynamically allocated memory. Always call
  *       mavsdk_gimbal_attitude_destroy() when done to avoid memory leaks.
  */
-typedef struct {
+typedef struct CMAVSDK_EXPORT {
     /**  Gimbal ID */
     int32_t gimbal_id;
     /**  Euler angle relative to forward */
@@ -233,7 +233,7 @@ typedef struct {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-void mavsdk_gimbal_attitude_destroy(
+CMAVSDK_EXPORT void mavsdk_gimbal_attitude_destroy(
     mavsdk_gimbal_attitude_t* target);
 
 /**
@@ -245,7 +245,7 @@ void mavsdk_gimbal_attitude_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-void mavsdk_gimbal_attitude_array_destroy(
+CMAVSDK_EXPORT void mavsdk_gimbal_attitude_array_destroy(
     mavsdk_gimbal_attitude_t** array,
     size_t size);
 
@@ -255,7 +255,7 @@ void mavsdk_gimbal_attitude_array_destroy(
  * @note This struct may contain dynamically allocated memory. Always call
  *       mavsdk_gimbal_gimbal_item_destroy() when done to avoid memory leaks.
  */
-typedef struct {
+typedef struct CMAVSDK_EXPORT {
     /**  ID to address it, starting at 1 (0 means all gimbals) */
     int32_t gimbal_id;
     /**  Vendor name */
@@ -280,7 +280,7 @@ typedef struct {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-void mavsdk_gimbal_gimbal_item_destroy(
+CMAVSDK_EXPORT void mavsdk_gimbal_gimbal_item_destroy(
     mavsdk_gimbal_gimbal_item_t* target);
 
 /**
@@ -292,7 +292,7 @@ void mavsdk_gimbal_gimbal_item_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-void mavsdk_gimbal_gimbal_item_array_destroy(
+CMAVSDK_EXPORT void mavsdk_gimbal_gimbal_item_array_destroy(
     mavsdk_gimbal_gimbal_item_t** array,
     size_t size);
 
@@ -302,7 +302,7 @@ void mavsdk_gimbal_gimbal_item_array_destroy(
  * @note This struct may contain dynamically allocated memory. Always call
  *       mavsdk_gimbal_gimbal_list_destroy() when done to avoid memory leaks.
  */
-typedef struct {
+typedef struct CMAVSDK_EXPORT {
     /**  Gimbal items. */
     mavsdk_gimbal_gimbal_item_t* gimbals;
     size_t gimbals_size;
@@ -318,7 +318,7 @@ typedef struct {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-void mavsdk_gimbal_gimbal_list_destroy(
+CMAVSDK_EXPORT void mavsdk_gimbal_gimbal_list_destroy(
     mavsdk_gimbal_gimbal_list_t* target);
 
 /**
@@ -330,7 +330,7 @@ void mavsdk_gimbal_gimbal_list_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-void mavsdk_gimbal_gimbal_list_array_destroy(
+CMAVSDK_EXPORT void mavsdk_gimbal_gimbal_list_array_destroy(
     mavsdk_gimbal_gimbal_list_t** array,
     size_t size);
 
@@ -340,7 +340,7 @@ void mavsdk_gimbal_gimbal_list_array_destroy(
  * @note This struct may contain dynamically allocated memory. Always call
  *       mavsdk_gimbal_control_status_destroy() when done to avoid memory leaks.
  */
-typedef struct {
+typedef struct CMAVSDK_EXPORT {
     /**  Gimbal ID */
     int32_t gimbal_id;
     /**  Control mode (none, primary or secondary) */
@@ -365,7 +365,7 @@ typedef struct {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-void mavsdk_gimbal_control_status_destroy(
+CMAVSDK_EXPORT void mavsdk_gimbal_control_status_destroy(
     mavsdk_gimbal_control_status_t* target);
 
 /**
@@ -377,7 +377,7 @@ void mavsdk_gimbal_control_status_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-void mavsdk_gimbal_control_status_array_destroy(
+CMAVSDK_EXPORT void mavsdk_gimbal_control_status_array_destroy(
     mavsdk_gimbal_control_status_t** array,
     size_t size);
 
@@ -411,7 +411,7 @@ typedef enum {
  *
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  */
-void mavsdk_gimbal_float_array_destroy(float** array);
+CMAVSDK_EXPORT void mavsdk_gimbal_float_array_destroy(float** array);
 /**
  * @brief Destroy an array of double.
  *
@@ -419,7 +419,7 @@ void mavsdk_gimbal_float_array_destroy(float** array);
  *
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  */
-void mavsdk_gimbal_double_array_destroy(double** array);
+CMAVSDK_EXPORT void mavsdk_gimbal_double_array_destroy(double** array);
 /**
  * @brief Destroy an array of int32_t.
  *
@@ -427,7 +427,7 @@ void mavsdk_gimbal_double_array_destroy(double** array);
  *
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  */
-void mavsdk_gimbal_int32t_array_destroy(int32_t** array);
+CMAVSDK_EXPORT void mavsdk_gimbal_int32t_array_destroy(int32_t** array);
 /**
  * @brief Destroy an array of uint32_t.
  *
@@ -435,7 +435,7 @@ void mavsdk_gimbal_int32t_array_destroy(int32_t** array);
  *
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  */
-void mavsdk_gimbal_uint32t_array_destroy(uint32_t** array);
+CMAVSDK_EXPORT void mavsdk_gimbal_uint32t_array_destroy(uint32_t** array);
 /**
  * @brief Destroy an array of int64_t.
  *
@@ -443,7 +443,7 @@ void mavsdk_gimbal_uint32t_array_destroy(uint32_t** array);
  *
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  */
-void mavsdk_gimbal_int64t_array_destroy(int64_t** array);
+CMAVSDK_EXPORT void mavsdk_gimbal_int64t_array_destroy(int64_t** array);
 /**
  * @brief Destroy an array of uint64_t.
  *
@@ -451,7 +451,7 @@ void mavsdk_gimbal_int64t_array_destroy(int64_t** array);
  *
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  */
-void mavsdk_gimbal_uint64t_array_destroy(uint64_t** array);
+CMAVSDK_EXPORT void mavsdk_gimbal_uint64t_array_destroy(uint64_t** array);
 /**
  * @brief Destroy an array of bool.
  *
@@ -459,7 +459,7 @@ void mavsdk_gimbal_uint64t_array_destroy(uint64_t** array);
  *
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  */
-void mavsdk_gimbal_bool_array_destroy(bool** array);
+CMAVSDK_EXPORT void mavsdk_gimbal_bool_array_destroy(bool** array);
 
 /**
  * @brief Destroy a string (char*).
@@ -468,7 +468,7 @@ void mavsdk_gimbal_bool_array_destroy(bool** array);
  *
  * @param str Pointer to the string pointer. Will be set to NULL after freeing.
  */
-void mavsdk_gimbal_string_destroy(char** str);
+CMAVSDK_EXPORT void mavsdk_gimbal_string_destroy(char** str);
 
 /**
  * @brief Destroy a byte buffer (uint8_t*).
@@ -477,7 +477,7 @@ void mavsdk_gimbal_string_destroy(char** str);
  *
  * @param buffer Pointer to the buffer pointer. Will be set to NULL after freeing.
  */
-void mavsdk_gimbal_byte_buffer_destroy(uint8_t** buffer);
+CMAVSDK_EXPORT void mavsdk_gimbal_byte_buffer_destroy(uint8_t** buffer);
 
 // ===== Callback Typedefs =====
 typedef void (*mavsdk_gimbal_set_angles_callback_t)(const mavsdk_gimbal_result_t result, void* user_data);

@@ -35,7 +35,7 @@ typedef void* mavsdk_log_files_download_log_file_handle_t;
  * @note This struct may contain dynamically allocated memory. Always call
  *       mavsdk_log_files_progress_data_destroy() when done to avoid memory leaks.
  */
-typedef struct {
+typedef struct CMAVSDK_EXPORT {
     /**  Progress from 0 to 1 */
     float progress;
 } mavsdk_log_files_progress_data_t;
@@ -50,7 +50,7 @@ typedef struct {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-void mavsdk_log_files_progress_data_destroy(
+CMAVSDK_EXPORT void mavsdk_log_files_progress_data_destroy(
     mavsdk_log_files_progress_data_t* target);
 
 /**
@@ -62,7 +62,7 @@ void mavsdk_log_files_progress_data_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-void mavsdk_log_files_progress_data_array_destroy(
+CMAVSDK_EXPORT void mavsdk_log_files_progress_data_array_destroy(
     mavsdk_log_files_progress_data_t** array,
     size_t size);
 
@@ -72,7 +72,7 @@ void mavsdk_log_files_progress_data_array_destroy(
  * @note This struct may contain dynamically allocated memory. Always call
  *       mavsdk_log_files_entry_destroy() when done to avoid memory leaks.
  */
-typedef struct {
+typedef struct CMAVSDK_EXPORT {
     /**  ID of the log file, to specify a file to be downloaded */
     uint32_t id;
     /**  Date of the log file in UTC in ISO 8601 format "yyyy-mm-ddThh:mm:ssZ" */
@@ -91,7 +91,7 @@ typedef struct {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-void mavsdk_log_files_entry_destroy(
+CMAVSDK_EXPORT void mavsdk_log_files_entry_destroy(
     mavsdk_log_files_entry_t* target);
 
 /**
@@ -103,7 +103,7 @@ void mavsdk_log_files_entry_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-void mavsdk_log_files_entry_array_destroy(
+CMAVSDK_EXPORT void mavsdk_log_files_entry_array_destroy(
     mavsdk_log_files_entry_t** array,
     size_t size);
 
@@ -139,7 +139,7 @@ typedef enum {
  *
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  */
-void mavsdk_log_files_float_array_destroy(float** array);
+CMAVSDK_EXPORT void mavsdk_log_files_float_array_destroy(float** array);
 /**
  * @brief Destroy an array of double.
  *
@@ -147,7 +147,7 @@ void mavsdk_log_files_float_array_destroy(float** array);
  *
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  */
-void mavsdk_log_files_double_array_destroy(double** array);
+CMAVSDK_EXPORT void mavsdk_log_files_double_array_destroy(double** array);
 /**
  * @brief Destroy an array of int32_t.
  *
@@ -155,7 +155,7 @@ void mavsdk_log_files_double_array_destroy(double** array);
  *
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  */
-void mavsdk_log_files_int32t_array_destroy(int32_t** array);
+CMAVSDK_EXPORT void mavsdk_log_files_int32t_array_destroy(int32_t** array);
 /**
  * @brief Destroy an array of uint32_t.
  *
@@ -163,7 +163,7 @@ void mavsdk_log_files_int32t_array_destroy(int32_t** array);
  *
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  */
-void mavsdk_log_files_uint32t_array_destroy(uint32_t** array);
+CMAVSDK_EXPORT void mavsdk_log_files_uint32t_array_destroy(uint32_t** array);
 /**
  * @brief Destroy an array of int64_t.
  *
@@ -171,7 +171,7 @@ void mavsdk_log_files_uint32t_array_destroy(uint32_t** array);
  *
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  */
-void mavsdk_log_files_int64t_array_destroy(int64_t** array);
+CMAVSDK_EXPORT void mavsdk_log_files_int64t_array_destroy(int64_t** array);
 /**
  * @brief Destroy an array of uint64_t.
  *
@@ -179,7 +179,7 @@ void mavsdk_log_files_int64t_array_destroy(int64_t** array);
  *
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  */
-void mavsdk_log_files_uint64t_array_destroy(uint64_t** array);
+CMAVSDK_EXPORT void mavsdk_log_files_uint64t_array_destroy(uint64_t** array);
 /**
  * @brief Destroy an array of bool.
  *
@@ -187,7 +187,7 @@ void mavsdk_log_files_uint64t_array_destroy(uint64_t** array);
  *
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  */
-void mavsdk_log_files_bool_array_destroy(bool** array);
+CMAVSDK_EXPORT void mavsdk_log_files_bool_array_destroy(bool** array);
 
 /**
  * @brief Destroy a string (char*).
@@ -196,7 +196,7 @@ void mavsdk_log_files_bool_array_destroy(bool** array);
  *
  * @param str Pointer to the string pointer. Will be set to NULL after freeing.
  */
-void mavsdk_log_files_string_destroy(char** str);
+CMAVSDK_EXPORT void mavsdk_log_files_string_destroy(char** str);
 
 /**
  * @brief Destroy a byte buffer (uint8_t*).
@@ -205,7 +205,7 @@ void mavsdk_log_files_string_destroy(char** str);
  *
  * @param buffer Pointer to the buffer pointer. Will be set to NULL after freeing.
  */
-void mavsdk_log_files_byte_buffer_destroy(uint8_t** buffer);
+CMAVSDK_EXPORT void mavsdk_log_files_byte_buffer_destroy(uint8_t** buffer);
 
 // ===== Callback Typedefs =====
 typedef void (*mavsdk_log_files_get_entries_callback_t)(const mavsdk_log_files_result_t result, const mavsdk_log_files_entry_t* entries, size_t entries_size, void* user_data);

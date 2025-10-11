@@ -91,7 +91,7 @@ typedef enum {
  * @note This struct may contain dynamically allocated memory. Always call
  *       mavsdk_transponder_adsb_vehicle_destroy() when done to avoid memory leaks.
  */
-typedef struct {
+typedef struct CMAVSDK_EXPORT {
     /**  ICAO (International Civil Aviation Organization) unique worldwide identifier */
     uint32_t icao_address;
     /**  Latitude in degrees (range: -90 to +90) */
@@ -128,7 +128,7 @@ typedef struct {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-void mavsdk_transponder_adsb_vehicle_destroy(
+CMAVSDK_EXPORT void mavsdk_transponder_adsb_vehicle_destroy(
     mavsdk_transponder_adsb_vehicle_t* target);
 
 /**
@@ -140,7 +140,7 @@ void mavsdk_transponder_adsb_vehicle_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-void mavsdk_transponder_adsb_vehicle_array_destroy(
+CMAVSDK_EXPORT void mavsdk_transponder_adsb_vehicle_array_destroy(
     mavsdk_transponder_adsb_vehicle_t** array,
     size_t size);
 
@@ -174,7 +174,7 @@ typedef enum {
  *
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  */
-void mavsdk_transponder_float_array_destroy(float** array);
+CMAVSDK_EXPORT void mavsdk_transponder_float_array_destroy(float** array);
 /**
  * @brief Destroy an array of double.
  *
@@ -182,7 +182,7 @@ void mavsdk_transponder_float_array_destroy(float** array);
  *
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  */
-void mavsdk_transponder_double_array_destroy(double** array);
+CMAVSDK_EXPORT void mavsdk_transponder_double_array_destroy(double** array);
 /**
  * @brief Destroy an array of int32_t.
  *
@@ -190,7 +190,7 @@ void mavsdk_transponder_double_array_destroy(double** array);
  *
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  */
-void mavsdk_transponder_int32t_array_destroy(int32_t** array);
+CMAVSDK_EXPORT void mavsdk_transponder_int32t_array_destroy(int32_t** array);
 /**
  * @brief Destroy an array of uint32_t.
  *
@@ -198,7 +198,7 @@ void mavsdk_transponder_int32t_array_destroy(int32_t** array);
  *
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  */
-void mavsdk_transponder_uint32t_array_destroy(uint32_t** array);
+CMAVSDK_EXPORT void mavsdk_transponder_uint32t_array_destroy(uint32_t** array);
 /**
  * @brief Destroy an array of int64_t.
  *
@@ -206,7 +206,7 @@ void mavsdk_transponder_uint32t_array_destroy(uint32_t** array);
  *
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  */
-void mavsdk_transponder_int64t_array_destroy(int64_t** array);
+CMAVSDK_EXPORT void mavsdk_transponder_int64t_array_destroy(int64_t** array);
 /**
  * @brief Destroy an array of uint64_t.
  *
@@ -214,7 +214,7 @@ void mavsdk_transponder_int64t_array_destroy(int64_t** array);
  *
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  */
-void mavsdk_transponder_uint64t_array_destroy(uint64_t** array);
+CMAVSDK_EXPORT void mavsdk_transponder_uint64t_array_destroy(uint64_t** array);
 /**
  * @brief Destroy an array of bool.
  *
@@ -222,7 +222,7 @@ void mavsdk_transponder_uint64t_array_destroy(uint64_t** array);
  *
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  */
-void mavsdk_transponder_bool_array_destroy(bool** array);
+CMAVSDK_EXPORT void mavsdk_transponder_bool_array_destroy(bool** array);
 
 /**
  * @brief Destroy a string (char*).
@@ -231,7 +231,7 @@ void mavsdk_transponder_bool_array_destroy(bool** array);
  *
  * @param str Pointer to the string pointer. Will be set to NULL after freeing.
  */
-void mavsdk_transponder_string_destroy(char** str);
+CMAVSDK_EXPORT void mavsdk_transponder_string_destroy(char** str);
 
 /**
  * @brief Destroy a byte buffer (uint8_t*).
@@ -240,7 +240,7 @@ void mavsdk_transponder_string_destroy(char** str);
  *
  * @param buffer Pointer to the buffer pointer. Will be set to NULL after freeing.
  */
-void mavsdk_transponder_byte_buffer_destroy(uint8_t** buffer);
+CMAVSDK_EXPORT void mavsdk_transponder_byte_buffer_destroy(uint8_t** buffer);
 
 // ===== Callback Typedefs =====
 typedef void (*mavsdk_transponder_transponder_callback_t)(const mavsdk_transponder_adsb_vehicle_t transponder, void* user_data);

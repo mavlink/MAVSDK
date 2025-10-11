@@ -79,7 +79,7 @@ typedef enum {
  * @note This struct may contain dynamically allocated memory. Always call
  *       mavsdk_mission_mission_item_destroy() when done to avoid memory leaks.
  */
-typedef struct {
+typedef struct CMAVSDK_EXPORT {
     /**  Latitude in degrees (range: -90 to +90) */
     double latitude_deg;
     /**  Longitude in degrees (range: -180 to +180) */
@@ -120,7 +120,7 @@ typedef struct {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-void mavsdk_mission_mission_item_destroy(
+CMAVSDK_EXPORT void mavsdk_mission_mission_item_destroy(
     mavsdk_mission_mission_item_t* target);
 
 /**
@@ -132,7 +132,7 @@ void mavsdk_mission_mission_item_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-void mavsdk_mission_mission_item_array_destroy(
+CMAVSDK_EXPORT void mavsdk_mission_mission_item_array_destroy(
     mavsdk_mission_mission_item_t** array,
     size_t size);
 
@@ -142,7 +142,7 @@ void mavsdk_mission_mission_item_array_destroy(
  * @note This struct may contain dynamically allocated memory. Always call
  *       mavsdk_mission_mission_plan_destroy() when done to avoid memory leaks.
  */
-typedef struct {
+typedef struct CMAVSDK_EXPORT {
     /**  The mission items */
     mavsdk_mission_mission_item_t* mission_items;
     size_t mission_items_size;
@@ -158,7 +158,7 @@ typedef struct {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-void mavsdk_mission_mission_plan_destroy(
+CMAVSDK_EXPORT void mavsdk_mission_mission_plan_destroy(
     mavsdk_mission_mission_plan_t* target);
 
 /**
@@ -170,7 +170,7 @@ void mavsdk_mission_mission_plan_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-void mavsdk_mission_mission_plan_array_destroy(
+CMAVSDK_EXPORT void mavsdk_mission_mission_plan_array_destroy(
     mavsdk_mission_mission_plan_t** array,
     size_t size);
 
@@ -180,7 +180,7 @@ void mavsdk_mission_mission_plan_array_destroy(
  * @note This struct may contain dynamically allocated memory. Always call
  *       mavsdk_mission_mission_progress_destroy() when done to avoid memory leaks.
  */
-typedef struct {
+typedef struct CMAVSDK_EXPORT {
     /**  Current mission item index (0-based), if equal to total, the mission is finished */
     int32_t current;
     /**  Total number of mission items */
@@ -197,7 +197,7 @@ typedef struct {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-void mavsdk_mission_mission_progress_destroy(
+CMAVSDK_EXPORT void mavsdk_mission_mission_progress_destroy(
     mavsdk_mission_mission_progress_t* target);
 
 /**
@@ -209,7 +209,7 @@ void mavsdk_mission_mission_progress_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-void mavsdk_mission_mission_progress_array_destroy(
+CMAVSDK_EXPORT void mavsdk_mission_mission_progress_array_destroy(
     mavsdk_mission_mission_progress_t** array,
     size_t size);
 
@@ -258,7 +258,7 @@ typedef enum {
  * @note This struct may contain dynamically allocated memory. Always call
  *       mavsdk_mission_progress_data_destroy() when done to avoid memory leaks.
  */
-typedef struct {
+typedef struct CMAVSDK_EXPORT {
     /**  Progress (0..1.0) */
     float progress;
 } mavsdk_mission_progress_data_t;
@@ -273,7 +273,7 @@ typedef struct {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-void mavsdk_mission_progress_data_destroy(
+CMAVSDK_EXPORT void mavsdk_mission_progress_data_destroy(
     mavsdk_mission_progress_data_t* target);
 
 /**
@@ -285,7 +285,7 @@ void mavsdk_mission_progress_data_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-void mavsdk_mission_progress_data_array_destroy(
+CMAVSDK_EXPORT void mavsdk_mission_progress_data_array_destroy(
     mavsdk_mission_progress_data_t** array,
     size_t size);
 
@@ -295,7 +295,7 @@ void mavsdk_mission_progress_data_array_destroy(
  * @note This struct may contain dynamically allocated memory. Always call
  *       mavsdk_mission_progress_data_or_mission_destroy() when done to avoid memory leaks.
  */
-typedef struct {
+typedef struct CMAVSDK_EXPORT {
     /**  Whether this ProgressData contains a 'progress' status or not */
     bool has_progress;
     /**  Progress (0..1.0) */
@@ -316,7 +316,7 @@ typedef struct {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-void mavsdk_mission_progress_data_or_mission_destroy(
+CMAVSDK_EXPORT void mavsdk_mission_progress_data_or_mission_destroy(
     mavsdk_mission_progress_data_or_mission_t* target);
 
 /**
@@ -328,7 +328,7 @@ void mavsdk_mission_progress_data_or_mission_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-void mavsdk_mission_progress_data_or_mission_array_destroy(
+CMAVSDK_EXPORT void mavsdk_mission_progress_data_or_mission_array_destroy(
     mavsdk_mission_progress_data_or_mission_t** array,
     size_t size);
 
@@ -341,7 +341,7 @@ void mavsdk_mission_progress_data_or_mission_array_destroy(
  *
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  */
-void mavsdk_mission_float_array_destroy(float** array);
+CMAVSDK_EXPORT void mavsdk_mission_float_array_destroy(float** array);
 /**
  * @brief Destroy an array of double.
  *
@@ -349,7 +349,7 @@ void mavsdk_mission_float_array_destroy(float** array);
  *
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  */
-void mavsdk_mission_double_array_destroy(double** array);
+CMAVSDK_EXPORT void mavsdk_mission_double_array_destroy(double** array);
 /**
  * @brief Destroy an array of int32_t.
  *
@@ -357,7 +357,7 @@ void mavsdk_mission_double_array_destroy(double** array);
  *
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  */
-void mavsdk_mission_int32t_array_destroy(int32_t** array);
+CMAVSDK_EXPORT void mavsdk_mission_int32t_array_destroy(int32_t** array);
 /**
  * @brief Destroy an array of uint32_t.
  *
@@ -365,7 +365,7 @@ void mavsdk_mission_int32t_array_destroy(int32_t** array);
  *
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  */
-void mavsdk_mission_uint32t_array_destroy(uint32_t** array);
+CMAVSDK_EXPORT void mavsdk_mission_uint32t_array_destroy(uint32_t** array);
 /**
  * @brief Destroy an array of int64_t.
  *
@@ -373,7 +373,7 @@ void mavsdk_mission_uint32t_array_destroy(uint32_t** array);
  *
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  */
-void mavsdk_mission_int64t_array_destroy(int64_t** array);
+CMAVSDK_EXPORT void mavsdk_mission_int64t_array_destroy(int64_t** array);
 /**
  * @brief Destroy an array of uint64_t.
  *
@@ -381,7 +381,7 @@ void mavsdk_mission_int64t_array_destroy(int64_t** array);
  *
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  */
-void mavsdk_mission_uint64t_array_destroy(uint64_t** array);
+CMAVSDK_EXPORT void mavsdk_mission_uint64t_array_destroy(uint64_t** array);
 /**
  * @brief Destroy an array of bool.
  *
@@ -389,7 +389,7 @@ void mavsdk_mission_uint64t_array_destroy(uint64_t** array);
  *
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  */
-void mavsdk_mission_bool_array_destroy(bool** array);
+CMAVSDK_EXPORT void mavsdk_mission_bool_array_destroy(bool** array);
 
 /**
  * @brief Destroy a string (char*).
@@ -398,7 +398,7 @@ void mavsdk_mission_bool_array_destroy(bool** array);
  *
  * @param str Pointer to the string pointer. Will be set to NULL after freeing.
  */
-void mavsdk_mission_string_destroy(char** str);
+CMAVSDK_EXPORT void mavsdk_mission_string_destroy(char** str);
 
 /**
  * @brief Destroy a byte buffer (uint8_t*).
@@ -407,7 +407,7 @@ void mavsdk_mission_string_destroy(char** str);
  *
  * @param buffer Pointer to the buffer pointer. Will be set to NULL after freeing.
  */
-void mavsdk_mission_byte_buffer_destroy(uint8_t** buffer);
+CMAVSDK_EXPORT void mavsdk_mission_byte_buffer_destroy(uint8_t** buffer);
 
 // ===== Callback Typedefs =====
 typedef void (*mavsdk_mission_upload_mission_callback_t)(const mavsdk_mission_result_t result, void* user_data);

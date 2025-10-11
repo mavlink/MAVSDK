@@ -66,7 +66,7 @@ typedef enum {
  * @note This struct may contain dynamically allocated memory. Always call
  *       mavsdk_winch_status_flags_destroy() when done to avoid memory leaks.
  */
-typedef struct {
+typedef struct CMAVSDK_EXPORT {
     /**  Winch is healthy */
     bool healthy;
     /**  Winch line is fully retracted */
@@ -107,7 +107,7 @@ typedef struct {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-void mavsdk_winch_status_flags_destroy(
+CMAVSDK_EXPORT void mavsdk_winch_status_flags_destroy(
     mavsdk_winch_status_flags_t* target);
 
 /**
@@ -119,7 +119,7 @@ void mavsdk_winch_status_flags_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-void mavsdk_winch_status_flags_array_destroy(
+CMAVSDK_EXPORT void mavsdk_winch_status_flags_array_destroy(
     mavsdk_winch_status_flags_t** array,
     size_t size);
 
@@ -129,7 +129,7 @@ void mavsdk_winch_status_flags_array_destroy(
  * @note This struct may contain dynamically allocated memory. Always call
  *       mavsdk_winch_status_destroy() when done to avoid memory leaks.
  */
-typedef struct {
+typedef struct CMAVSDK_EXPORT {
     /**  Time in usec */
     uint64_t time_usec;
     /**  Length of the line in meters */
@@ -158,7 +158,7 @@ typedef struct {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-void mavsdk_winch_status_destroy(
+CMAVSDK_EXPORT void mavsdk_winch_status_destroy(
     mavsdk_winch_status_t* target);
 
 /**
@@ -170,7 +170,7 @@ void mavsdk_winch_status_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-void mavsdk_winch_status_array_destroy(
+CMAVSDK_EXPORT void mavsdk_winch_status_array_destroy(
     mavsdk_winch_status_t** array,
     size_t size);
 
@@ -204,7 +204,7 @@ typedef enum {
  *
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  */
-void mavsdk_winch_float_array_destroy(float** array);
+CMAVSDK_EXPORT void mavsdk_winch_float_array_destroy(float** array);
 /**
  * @brief Destroy an array of double.
  *
@@ -212,7 +212,7 @@ void mavsdk_winch_float_array_destroy(float** array);
  *
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  */
-void mavsdk_winch_double_array_destroy(double** array);
+CMAVSDK_EXPORT void mavsdk_winch_double_array_destroy(double** array);
 /**
  * @brief Destroy an array of int32_t.
  *
@@ -220,7 +220,7 @@ void mavsdk_winch_double_array_destroy(double** array);
  *
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  */
-void mavsdk_winch_int32t_array_destroy(int32_t** array);
+CMAVSDK_EXPORT void mavsdk_winch_int32t_array_destroy(int32_t** array);
 /**
  * @brief Destroy an array of uint32_t.
  *
@@ -228,7 +228,7 @@ void mavsdk_winch_int32t_array_destroy(int32_t** array);
  *
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  */
-void mavsdk_winch_uint32t_array_destroy(uint32_t** array);
+CMAVSDK_EXPORT void mavsdk_winch_uint32t_array_destroy(uint32_t** array);
 /**
  * @brief Destroy an array of int64_t.
  *
@@ -236,7 +236,7 @@ void mavsdk_winch_uint32t_array_destroy(uint32_t** array);
  *
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  */
-void mavsdk_winch_int64t_array_destroy(int64_t** array);
+CMAVSDK_EXPORT void mavsdk_winch_int64t_array_destroy(int64_t** array);
 /**
  * @brief Destroy an array of uint64_t.
  *
@@ -244,7 +244,7 @@ void mavsdk_winch_int64t_array_destroy(int64_t** array);
  *
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  */
-void mavsdk_winch_uint64t_array_destroy(uint64_t** array);
+CMAVSDK_EXPORT void mavsdk_winch_uint64t_array_destroy(uint64_t** array);
 /**
  * @brief Destroy an array of bool.
  *
@@ -252,7 +252,7 @@ void mavsdk_winch_uint64t_array_destroy(uint64_t** array);
  *
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  */
-void mavsdk_winch_bool_array_destroy(bool** array);
+CMAVSDK_EXPORT void mavsdk_winch_bool_array_destroy(bool** array);
 
 /**
  * @brief Destroy a string (char*).
@@ -261,7 +261,7 @@ void mavsdk_winch_bool_array_destroy(bool** array);
  *
  * @param str Pointer to the string pointer. Will be set to NULL after freeing.
  */
-void mavsdk_winch_string_destroy(char** str);
+CMAVSDK_EXPORT void mavsdk_winch_string_destroy(char** str);
 
 /**
  * @brief Destroy a byte buffer (uint8_t*).
@@ -270,7 +270,7 @@ void mavsdk_winch_string_destroy(char** str);
  *
  * @param buffer Pointer to the buffer pointer. Will be set to NULL after freeing.
  */
-void mavsdk_winch_byte_buffer_destroy(uint8_t** buffer);
+CMAVSDK_EXPORT void mavsdk_winch_byte_buffer_destroy(uint8_t** buffer);
 
 // ===== Callback Typedefs =====
 typedef void (*mavsdk_winch_status_callback_t)(const mavsdk_winch_status_t status, void* user_data);

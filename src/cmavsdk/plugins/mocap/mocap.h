@@ -35,7 +35,7 @@ typedef void* mavsdk_mocap_t;
  * @note This struct may contain dynamically allocated memory. Always call
  *       mavsdk_mocap_position_body_destroy() when done to avoid memory leaks.
  */
-typedef struct {
+typedef struct CMAVSDK_EXPORT {
     /**  X position in metres. */
     float x_m;
     /**  Y position in metres. */
@@ -54,7 +54,7 @@ typedef struct {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-void mavsdk_mocap_position_body_destroy(
+CMAVSDK_EXPORT void mavsdk_mocap_position_body_destroy(
     mavsdk_mocap_position_body_t* target);
 
 /**
@@ -66,7 +66,7 @@ void mavsdk_mocap_position_body_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-void mavsdk_mocap_position_body_array_destroy(
+CMAVSDK_EXPORT void mavsdk_mocap_position_body_array_destroy(
     mavsdk_mocap_position_body_t** array,
     size_t size);
 
@@ -76,7 +76,7 @@ void mavsdk_mocap_position_body_array_destroy(
  * @note This struct may contain dynamically allocated memory. Always call
  *       mavsdk_mocap_angle_body_destroy() when done to avoid memory leaks.
  */
-typedef struct {
+typedef struct CMAVSDK_EXPORT {
     /**  Roll angle in radians. */
     float roll_rad;
     /**  Pitch angle in radians. */
@@ -95,7 +95,7 @@ typedef struct {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-void mavsdk_mocap_angle_body_destroy(
+CMAVSDK_EXPORT void mavsdk_mocap_angle_body_destroy(
     mavsdk_mocap_angle_body_t* target);
 
 /**
@@ -107,7 +107,7 @@ void mavsdk_mocap_angle_body_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-void mavsdk_mocap_angle_body_array_destroy(
+CMAVSDK_EXPORT void mavsdk_mocap_angle_body_array_destroy(
     mavsdk_mocap_angle_body_t** array,
     size_t size);
 
@@ -117,7 +117,7 @@ void mavsdk_mocap_angle_body_array_destroy(
  * @note This struct may contain dynamically allocated memory. Always call
  *       mavsdk_mocap_speed_body_destroy() when done to avoid memory leaks.
  */
-typedef struct {
+typedef struct CMAVSDK_EXPORT {
     /**  Velocity in X in metres/second. */
     float x_m_s;
     /**  Velocity in Y in metres/second. */
@@ -136,7 +136,7 @@ typedef struct {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-void mavsdk_mocap_speed_body_destroy(
+CMAVSDK_EXPORT void mavsdk_mocap_speed_body_destroy(
     mavsdk_mocap_speed_body_t* target);
 
 /**
@@ -148,7 +148,7 @@ void mavsdk_mocap_speed_body_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-void mavsdk_mocap_speed_body_array_destroy(
+CMAVSDK_EXPORT void mavsdk_mocap_speed_body_array_destroy(
     mavsdk_mocap_speed_body_t** array,
     size_t size);
 
@@ -158,7 +158,7 @@ void mavsdk_mocap_speed_body_array_destroy(
  * @note This struct may contain dynamically allocated memory. Always call
  *       mavsdk_mocap_speed_ned_destroy() when done to avoid memory leaks.
  */
-typedef struct {
+typedef struct CMAVSDK_EXPORT {
     /**  Velocity North in metres/second. */
     float north_m_s;
     /**  Velocity East in metres/second. */
@@ -177,7 +177,7 @@ typedef struct {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-void mavsdk_mocap_speed_ned_destroy(
+CMAVSDK_EXPORT void mavsdk_mocap_speed_ned_destroy(
     mavsdk_mocap_speed_ned_t* target);
 
 /**
@@ -189,7 +189,7 @@ void mavsdk_mocap_speed_ned_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-void mavsdk_mocap_speed_ned_array_destroy(
+CMAVSDK_EXPORT void mavsdk_mocap_speed_ned_array_destroy(
     mavsdk_mocap_speed_ned_t** array,
     size_t size);
 
@@ -199,7 +199,7 @@ void mavsdk_mocap_speed_ned_array_destroy(
  * @note This struct may contain dynamically allocated memory. Always call
  *       mavsdk_mocap_angular_velocity_body_destroy() when done to avoid memory leaks.
  */
-typedef struct {
+typedef struct CMAVSDK_EXPORT {
     /**  Roll angular velocity in radians/second. */
     float roll_rad_s;
     /**  Pitch angular velocity in radians/second. */
@@ -218,7 +218,7 @@ typedef struct {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-void mavsdk_mocap_angular_velocity_body_destroy(
+CMAVSDK_EXPORT void mavsdk_mocap_angular_velocity_body_destroy(
     mavsdk_mocap_angular_velocity_body_t* target);
 
 /**
@@ -230,7 +230,7 @@ void mavsdk_mocap_angular_velocity_body_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-void mavsdk_mocap_angular_velocity_body_array_destroy(
+CMAVSDK_EXPORT void mavsdk_mocap_angular_velocity_body_array_destroy(
     mavsdk_mocap_angular_velocity_body_t** array,
     size_t size);
 
@@ -243,7 +243,7 @@ void mavsdk_mocap_angular_velocity_body_array_destroy(
  * @note This struct may contain dynamically allocated memory. Always call
  *       mavsdk_mocap_covariance_destroy() when done to avoid memory leaks.
  */
-typedef struct {
+typedef struct CMAVSDK_EXPORT {
     /**  The covariance matrix */
     float* covariance_matrix;
     size_t covariance_matrix_size;
@@ -259,7 +259,7 @@ typedef struct {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-void mavsdk_mocap_covariance_destroy(
+CMAVSDK_EXPORT void mavsdk_mocap_covariance_destroy(
     mavsdk_mocap_covariance_t* target);
 
 /**
@@ -271,7 +271,7 @@ void mavsdk_mocap_covariance_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-void mavsdk_mocap_covariance_array_destroy(
+CMAVSDK_EXPORT void mavsdk_mocap_covariance_array_destroy(
     mavsdk_mocap_covariance_t** array,
     size_t size);
 
@@ -288,7 +288,7 @@ void mavsdk_mocap_covariance_array_destroy(
  * @note This struct may contain dynamically allocated memory. Always call
  *       mavsdk_mocap_quaternion_destroy() when done to avoid memory leaks.
  */
-typedef struct {
+typedef struct CMAVSDK_EXPORT {
     /**  Quaternion entry 0, also denoted as a */
     float w;
     /**  Quaternion entry 1, also denoted as b */
@@ -309,7 +309,7 @@ typedef struct {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-void mavsdk_mocap_quaternion_destroy(
+CMAVSDK_EXPORT void mavsdk_mocap_quaternion_destroy(
     mavsdk_mocap_quaternion_t* target);
 
 /**
@@ -321,7 +321,7 @@ void mavsdk_mocap_quaternion_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-void mavsdk_mocap_quaternion_array_destroy(
+CMAVSDK_EXPORT void mavsdk_mocap_quaternion_array_destroy(
     mavsdk_mocap_quaternion_t** array,
     size_t size);
 
@@ -331,7 +331,7 @@ void mavsdk_mocap_quaternion_array_destroy(
  * @note This struct may contain dynamically allocated memory. Always call
  *       mavsdk_mocap_vision_position_estimate_destroy() when done to avoid memory leaks.
  */
-typedef struct {
+typedef struct CMAVSDK_EXPORT {
     /**  PositionBody frame timestamp UNIX Epoch time (0 to use Backend timestamp) */
     uint64_t time_usec;
     /**  Global position (m) */
@@ -352,7 +352,7 @@ typedef struct {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-void mavsdk_mocap_vision_position_estimate_destroy(
+CMAVSDK_EXPORT void mavsdk_mocap_vision_position_estimate_destroy(
     mavsdk_mocap_vision_position_estimate_t* target);
 
 /**
@@ -364,7 +364,7 @@ void mavsdk_mocap_vision_position_estimate_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-void mavsdk_mocap_vision_position_estimate_array_destroy(
+CMAVSDK_EXPORT void mavsdk_mocap_vision_position_estimate_array_destroy(
     mavsdk_mocap_vision_position_estimate_t** array,
     size_t size);
 
@@ -374,7 +374,7 @@ void mavsdk_mocap_vision_position_estimate_array_destroy(
  * @note This struct may contain dynamically allocated memory. Always call
  *       mavsdk_mocap_vision_speed_estimate_destroy() when done to avoid memory leaks.
  */
-typedef struct {
+typedef struct CMAVSDK_EXPORT {
     /**  Timestamp UNIX Epoch time (0 to use Backend timestamp) */
     uint64_t time_usec;
     /**  Global speed (m/s) */
@@ -393,7 +393,7 @@ typedef struct {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-void mavsdk_mocap_vision_speed_estimate_destroy(
+CMAVSDK_EXPORT void mavsdk_mocap_vision_speed_estimate_destroy(
     mavsdk_mocap_vision_speed_estimate_t* target);
 
 /**
@@ -405,7 +405,7 @@ void mavsdk_mocap_vision_speed_estimate_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-void mavsdk_mocap_vision_speed_estimate_array_destroy(
+CMAVSDK_EXPORT void mavsdk_mocap_vision_speed_estimate_array_destroy(
     mavsdk_mocap_vision_speed_estimate_t** array,
     size_t size);
 
@@ -415,7 +415,7 @@ void mavsdk_mocap_vision_speed_estimate_array_destroy(
  * @note This struct may contain dynamically allocated memory. Always call
  *       mavsdk_mocap_attitude_position_mocap_destroy() when done to avoid memory leaks.
  */
-typedef struct {
+typedef struct CMAVSDK_EXPORT {
     /**  PositionBody frame timestamp UNIX Epoch time (0 to use Backend timestamp) */
     uint64_t time_usec;
     /**  Attitude quaternion (w, x, y, z order, zero-rotation is 1, 0, 0, 0) */
@@ -436,7 +436,7 @@ typedef struct {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-void mavsdk_mocap_attitude_position_mocap_destroy(
+CMAVSDK_EXPORT void mavsdk_mocap_attitude_position_mocap_destroy(
     mavsdk_mocap_attitude_position_mocap_t* target);
 
 /**
@@ -448,7 +448,7 @@ void mavsdk_mocap_attitude_position_mocap_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-void mavsdk_mocap_attitude_position_mocap_array_destroy(
+CMAVSDK_EXPORT void mavsdk_mocap_attitude_position_mocap_array_destroy(
     mavsdk_mocap_attitude_position_mocap_t** array,
     size_t size);
 
@@ -468,7 +468,7 @@ typedef enum {
  * @note This struct may contain dynamically allocated memory. Always call
  *       mavsdk_mocap_odometry_destroy() when done to avoid memory leaks.
  */
-typedef struct {
+typedef struct CMAVSDK_EXPORT {
     /**  Timestamp (0 to use Backend timestamp). */
     uint64_t time_usec;
     /**  Coordinate frame of reference for the pose data. */
@@ -497,7 +497,7 @@ typedef struct {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-void mavsdk_mocap_odometry_destroy(
+CMAVSDK_EXPORT void mavsdk_mocap_odometry_destroy(
     mavsdk_mocap_odometry_t* target);
 
 /**
@@ -509,7 +509,7 @@ void mavsdk_mocap_odometry_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-void mavsdk_mocap_odometry_array_destroy(
+CMAVSDK_EXPORT void mavsdk_mocap_odometry_array_destroy(
     mavsdk_mocap_odometry_t** array,
     size_t size);
 
@@ -541,7 +541,7 @@ typedef enum {
  *
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  */
-void mavsdk_mocap_float_array_destroy(float** array);
+CMAVSDK_EXPORT void mavsdk_mocap_float_array_destroy(float** array);
 /**
  * @brief Destroy an array of double.
  *
@@ -549,7 +549,7 @@ void mavsdk_mocap_float_array_destroy(float** array);
  *
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  */
-void mavsdk_mocap_double_array_destroy(double** array);
+CMAVSDK_EXPORT void mavsdk_mocap_double_array_destroy(double** array);
 /**
  * @brief Destroy an array of int32_t.
  *
@@ -557,7 +557,7 @@ void mavsdk_mocap_double_array_destroy(double** array);
  *
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  */
-void mavsdk_mocap_int32t_array_destroy(int32_t** array);
+CMAVSDK_EXPORT void mavsdk_mocap_int32t_array_destroy(int32_t** array);
 /**
  * @brief Destroy an array of uint32_t.
  *
@@ -565,7 +565,7 @@ void mavsdk_mocap_int32t_array_destroy(int32_t** array);
  *
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  */
-void mavsdk_mocap_uint32t_array_destroy(uint32_t** array);
+CMAVSDK_EXPORT void mavsdk_mocap_uint32t_array_destroy(uint32_t** array);
 /**
  * @brief Destroy an array of int64_t.
  *
@@ -573,7 +573,7 @@ void mavsdk_mocap_uint32t_array_destroy(uint32_t** array);
  *
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  */
-void mavsdk_mocap_int64t_array_destroy(int64_t** array);
+CMAVSDK_EXPORT void mavsdk_mocap_int64t_array_destroy(int64_t** array);
 /**
  * @brief Destroy an array of uint64_t.
  *
@@ -581,7 +581,7 @@ void mavsdk_mocap_int64t_array_destroy(int64_t** array);
  *
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  */
-void mavsdk_mocap_uint64t_array_destroy(uint64_t** array);
+CMAVSDK_EXPORT void mavsdk_mocap_uint64t_array_destroy(uint64_t** array);
 /**
  * @brief Destroy an array of bool.
  *
@@ -589,7 +589,7 @@ void mavsdk_mocap_uint64t_array_destroy(uint64_t** array);
  *
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  */
-void mavsdk_mocap_bool_array_destroy(bool** array);
+CMAVSDK_EXPORT void mavsdk_mocap_bool_array_destroy(bool** array);
 
 /**
  * @brief Destroy a string (char*).
@@ -598,7 +598,7 @@ void mavsdk_mocap_bool_array_destroy(bool** array);
  *
  * @param str Pointer to the string pointer. Will be set to NULL after freeing.
  */
-void mavsdk_mocap_string_destroy(char** str);
+CMAVSDK_EXPORT void mavsdk_mocap_string_destroy(char** str);
 
 /**
  * @brief Destroy a byte buffer (uint8_t*).
@@ -607,7 +607,7 @@ void mavsdk_mocap_string_destroy(char** str);
  *
  * @param buffer Pointer to the buffer pointer. Will be set to NULL after freeing.
  */
-void mavsdk_mocap_byte_buffer_destroy(uint8_t** buffer);
+CMAVSDK_EXPORT void mavsdk_mocap_byte_buffer_destroy(uint8_t** buffer);
 
 // ===== Callback Typedefs =====
 

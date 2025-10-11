@@ -40,7 +40,7 @@ typedef void* mavsdk_offboard_t;
  * @note This struct may contain dynamically allocated memory. Always call
  *       mavsdk_offboard_attitude_destroy() when done to avoid memory leaks.
  */
-typedef struct {
+typedef struct CMAVSDK_EXPORT {
     /**  Roll angle (in degrees, positive is right side down) */
     float roll_deg;
     /**  Pitch angle (in degrees, positive is nose up) */
@@ -61,7 +61,7 @@ typedef struct {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-void mavsdk_offboard_attitude_destroy(
+CMAVSDK_EXPORT void mavsdk_offboard_attitude_destroy(
     mavsdk_offboard_attitude_t* target);
 
 /**
@@ -73,7 +73,7 @@ void mavsdk_offboard_attitude_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-void mavsdk_offboard_attitude_array_destroy(
+CMAVSDK_EXPORT void mavsdk_offboard_attitude_array_destroy(
     mavsdk_offboard_attitude_t** array,
     size_t size);
 
@@ -84,7 +84,7 @@ void mavsdk_offboard_attitude_array_destroy(
  * @note This struct may contain dynamically allocated memory. Always call
  *       mavsdk_offboard_actuator_control_group_destroy() when done to avoid memory leaks.
  */
-typedef struct {
+typedef struct CMAVSDK_EXPORT {
     /**  Controls in the group */
     float* controls;
     size_t controls_size;
@@ -100,7 +100,7 @@ typedef struct {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-void mavsdk_offboard_actuator_control_group_destroy(
+CMAVSDK_EXPORT void mavsdk_offboard_actuator_control_group_destroy(
     mavsdk_offboard_actuator_control_group_t* target);
 
 /**
@@ -112,7 +112,7 @@ void mavsdk_offboard_actuator_control_group_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-void mavsdk_offboard_actuator_control_group_array_destroy(
+CMAVSDK_EXPORT void mavsdk_offboard_actuator_control_group_array_destroy(
     mavsdk_offboard_actuator_control_group_t** array,
     size_t size);
 
@@ -136,7 +136,7 @@ void mavsdk_offboard_actuator_control_group_array_destroy(
  * @note This struct may contain dynamically allocated memory. Always call
  *       mavsdk_offboard_actuator_control_destroy() when done to avoid memory leaks.
  */
-typedef struct {
+typedef struct CMAVSDK_EXPORT {
     /**  Control groups. */
     mavsdk_offboard_actuator_control_group_t* groups;
     size_t groups_size;
@@ -152,7 +152,7 @@ typedef struct {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-void mavsdk_offboard_actuator_control_destroy(
+CMAVSDK_EXPORT void mavsdk_offboard_actuator_control_destroy(
     mavsdk_offboard_actuator_control_t* target);
 
 /**
@@ -164,7 +164,7 @@ void mavsdk_offboard_actuator_control_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-void mavsdk_offboard_actuator_control_array_destroy(
+CMAVSDK_EXPORT void mavsdk_offboard_actuator_control_array_destroy(
     mavsdk_offboard_actuator_control_t** array,
     size_t size);
 
@@ -174,7 +174,7 @@ void mavsdk_offboard_actuator_control_array_destroy(
  * @note This struct may contain dynamically allocated memory. Always call
  *       mavsdk_offboard_attitude_rate_destroy() when done to avoid memory leaks.
  */
-typedef struct {
+typedef struct CMAVSDK_EXPORT {
     /**  Roll angular rate (in degrees/second, positive for clock-wise looking from front) */
     float roll_deg_s;
     /**  Pitch angular rate (in degrees/second, positive for head/front moving up) */
@@ -195,7 +195,7 @@ typedef struct {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-void mavsdk_offboard_attitude_rate_destroy(
+CMAVSDK_EXPORT void mavsdk_offboard_attitude_rate_destroy(
     mavsdk_offboard_attitude_rate_t* target);
 
 /**
@@ -207,7 +207,7 @@ void mavsdk_offboard_attitude_rate_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-void mavsdk_offboard_attitude_rate_array_destroy(
+CMAVSDK_EXPORT void mavsdk_offboard_attitude_rate_array_destroy(
     mavsdk_offboard_attitude_rate_t** array,
     size_t size);
 
@@ -217,7 +217,7 @@ void mavsdk_offboard_attitude_rate_array_destroy(
  * @note This struct may contain dynamically allocated memory. Always call
  *       mavsdk_offboard_position_ned_yaw_destroy() when done to avoid memory leaks.
  */
-typedef struct {
+typedef struct CMAVSDK_EXPORT {
     /**  Position North (in metres) */
     float north_m;
     /**  Position East (in metres) */
@@ -238,7 +238,7 @@ typedef struct {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-void mavsdk_offboard_position_ned_yaw_destroy(
+CMAVSDK_EXPORT void mavsdk_offboard_position_ned_yaw_destroy(
     mavsdk_offboard_position_ned_yaw_t* target);
 
 /**
@@ -250,7 +250,7 @@ void mavsdk_offboard_position_ned_yaw_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-void mavsdk_offboard_position_ned_yaw_array_destroy(
+CMAVSDK_EXPORT void mavsdk_offboard_position_ned_yaw_array_destroy(
     mavsdk_offboard_position_ned_yaw_t** array,
     size_t size);
 
@@ -272,7 +272,7 @@ typedef enum {
  * @note This struct may contain dynamically allocated memory. Always call
  *       mavsdk_offboard_position_global_yaw_destroy() when done to avoid memory leaks.
  */
-typedef struct {
+typedef struct CMAVSDK_EXPORT {
     /**  Latitude (in degrees) */
     double lat_deg;
     /**  Longitude (in degrees) */
@@ -295,7 +295,7 @@ typedef struct {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-void mavsdk_offboard_position_global_yaw_destroy(
+CMAVSDK_EXPORT void mavsdk_offboard_position_global_yaw_destroy(
     mavsdk_offboard_position_global_yaw_t* target);
 
 /**
@@ -307,7 +307,7 @@ void mavsdk_offboard_position_global_yaw_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-void mavsdk_offboard_position_global_yaw_array_destroy(
+CMAVSDK_EXPORT void mavsdk_offboard_position_global_yaw_array_destroy(
     mavsdk_offboard_position_global_yaw_t** array,
     size_t size);
 
@@ -317,7 +317,7 @@ void mavsdk_offboard_position_global_yaw_array_destroy(
  * @note This struct may contain dynamically allocated memory. Always call
  *       mavsdk_offboard_velocity_body_yawspeed_destroy() when done to avoid memory leaks.
  */
-typedef struct {
+typedef struct CMAVSDK_EXPORT {
     /**  Velocity forward (in metres/second) */
     float forward_m_s;
     /**  Velocity right (in metres/second) */
@@ -338,7 +338,7 @@ typedef struct {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-void mavsdk_offboard_velocity_body_yawspeed_destroy(
+CMAVSDK_EXPORT void mavsdk_offboard_velocity_body_yawspeed_destroy(
     mavsdk_offboard_velocity_body_yawspeed_t* target);
 
 /**
@@ -350,7 +350,7 @@ void mavsdk_offboard_velocity_body_yawspeed_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-void mavsdk_offboard_velocity_body_yawspeed_array_destroy(
+CMAVSDK_EXPORT void mavsdk_offboard_velocity_body_yawspeed_array_destroy(
     mavsdk_offboard_velocity_body_yawspeed_t** array,
     size_t size);
 
@@ -360,7 +360,7 @@ void mavsdk_offboard_velocity_body_yawspeed_array_destroy(
  * @note This struct may contain dynamically allocated memory. Always call
  *       mavsdk_offboard_velocity_ned_yaw_destroy() when done to avoid memory leaks.
  */
-typedef struct {
+typedef struct CMAVSDK_EXPORT {
     /**  Velocity North (in metres/second) */
     float north_m_s;
     /**  Velocity East (in metres/second) */
@@ -381,7 +381,7 @@ typedef struct {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-void mavsdk_offboard_velocity_ned_yaw_destroy(
+CMAVSDK_EXPORT void mavsdk_offboard_velocity_ned_yaw_destroy(
     mavsdk_offboard_velocity_ned_yaw_t* target);
 
 /**
@@ -393,7 +393,7 @@ void mavsdk_offboard_velocity_ned_yaw_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-void mavsdk_offboard_velocity_ned_yaw_array_destroy(
+CMAVSDK_EXPORT void mavsdk_offboard_velocity_ned_yaw_array_destroy(
     mavsdk_offboard_velocity_ned_yaw_t** array,
     size_t size);
 
@@ -403,7 +403,7 @@ void mavsdk_offboard_velocity_ned_yaw_array_destroy(
  * @note This struct may contain dynamically allocated memory. Always call
  *       mavsdk_offboard_acceleration_ned_destroy() when done to avoid memory leaks.
  */
-typedef struct {
+typedef struct CMAVSDK_EXPORT {
     /**  Acceleration North (in metres/second^2) */
     float north_m_s2;
     /**  Acceleration East (in metres/second^2) */
@@ -422,7 +422,7 @@ typedef struct {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-void mavsdk_offboard_acceleration_ned_destroy(
+CMAVSDK_EXPORT void mavsdk_offboard_acceleration_ned_destroy(
     mavsdk_offboard_acceleration_ned_t* target);
 
 /**
@@ -434,7 +434,7 @@ void mavsdk_offboard_acceleration_ned_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-void mavsdk_offboard_acceleration_ned_array_destroy(
+CMAVSDK_EXPORT void mavsdk_offboard_acceleration_ned_array_destroy(
     mavsdk_offboard_acceleration_ned_t** array,
     size_t size);
 
@@ -472,7 +472,7 @@ typedef enum {
  *
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  */
-void mavsdk_offboard_float_array_destroy(float** array);
+CMAVSDK_EXPORT void mavsdk_offboard_float_array_destroy(float** array);
 /**
  * @brief Destroy an array of double.
  *
@@ -480,7 +480,7 @@ void mavsdk_offboard_float_array_destroy(float** array);
  *
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  */
-void mavsdk_offboard_double_array_destroy(double** array);
+CMAVSDK_EXPORT void mavsdk_offboard_double_array_destroy(double** array);
 /**
  * @brief Destroy an array of int32_t.
  *
@@ -488,7 +488,7 @@ void mavsdk_offboard_double_array_destroy(double** array);
  *
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  */
-void mavsdk_offboard_int32t_array_destroy(int32_t** array);
+CMAVSDK_EXPORT void mavsdk_offboard_int32t_array_destroy(int32_t** array);
 /**
  * @brief Destroy an array of uint32_t.
  *
@@ -496,7 +496,7 @@ void mavsdk_offboard_int32t_array_destroy(int32_t** array);
  *
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  */
-void mavsdk_offboard_uint32t_array_destroy(uint32_t** array);
+CMAVSDK_EXPORT void mavsdk_offboard_uint32t_array_destroy(uint32_t** array);
 /**
  * @brief Destroy an array of int64_t.
  *
@@ -504,7 +504,7 @@ void mavsdk_offboard_uint32t_array_destroy(uint32_t** array);
  *
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  */
-void mavsdk_offboard_int64t_array_destroy(int64_t** array);
+CMAVSDK_EXPORT void mavsdk_offboard_int64t_array_destroy(int64_t** array);
 /**
  * @brief Destroy an array of uint64_t.
  *
@@ -512,7 +512,7 @@ void mavsdk_offboard_int64t_array_destroy(int64_t** array);
  *
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  */
-void mavsdk_offboard_uint64t_array_destroy(uint64_t** array);
+CMAVSDK_EXPORT void mavsdk_offboard_uint64t_array_destroy(uint64_t** array);
 /**
  * @brief Destroy an array of bool.
  *
@@ -520,7 +520,7 @@ void mavsdk_offboard_uint64t_array_destroy(uint64_t** array);
  *
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  */
-void mavsdk_offboard_bool_array_destroy(bool** array);
+CMAVSDK_EXPORT void mavsdk_offboard_bool_array_destroy(bool** array);
 
 /**
  * @brief Destroy a string (char*).
@@ -529,7 +529,7 @@ void mavsdk_offboard_bool_array_destroy(bool** array);
  *
  * @param str Pointer to the string pointer. Will be set to NULL after freeing.
  */
-void mavsdk_offboard_string_destroy(char** str);
+CMAVSDK_EXPORT void mavsdk_offboard_string_destroy(char** str);
 
 /**
  * @brief Destroy a byte buffer (uint8_t*).
@@ -538,7 +538,7 @@ void mavsdk_offboard_string_destroy(char** str);
  *
  * @param buffer Pointer to the buffer pointer. Will be set to NULL after freeing.
  */
-void mavsdk_offboard_byte_buffer_destroy(uint8_t** buffer);
+CMAVSDK_EXPORT void mavsdk_offboard_byte_buffer_destroy(uint8_t** buffer);
 
 // ===== Callback Typedefs =====
 typedef void (*mavsdk_offboard_start_callback_t)(const mavsdk_offboard_result_t result, void* user_data);

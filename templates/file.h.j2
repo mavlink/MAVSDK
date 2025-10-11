@@ -83,7 +83,7 @@ typedef enum {
  * @note This struct may contain dynamically allocated memory. Always call
  *       mavsdk_{{ plugin_name.lower_snake_case }}_{{ struct.name.lower_snake_case }}_destroy() when done to avoid memory leaks.
  */
-typedef struct {
+typedef struct CMAVSDK_EXPORT {
     {% for field in struct.fields %}
     /** {{ field.description.rstrip() }} */
     {% if field.type_info.is_primitive %}
@@ -114,7 +114,7 @@ typedef struct {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-void mavsdk_{{ plugin_name.lower_snake_case }}_{{ struct.name.lower_snake_case }}_destroy(
+CMAVSDK_EXPORT void mavsdk_{{ plugin_name.lower_snake_case }}_{{ struct.name.lower_snake_case }}_destroy(
     mavsdk_{{ plugin_name.lower_snake_case }}_{{ struct.name.lower_snake_case }}_t* target);
 
 /**
@@ -126,7 +126,7 @@ void mavsdk_{{ plugin_name.lower_snake_case }}_{{ struct.name.lower_snake_case }
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-void mavsdk_{{ plugin_name.lower_snake_case }}_{{ struct.name.lower_snake_case }}_array_destroy(
+CMAVSDK_EXPORT void mavsdk_{{ plugin_name.lower_snake_case }}_{{ struct.name.lower_snake_case }}_array_destroy(
     mavsdk_{{ plugin_name.lower_snake_case }}_{{ struct.name.lower_snake_case }}_t** array,
     size_t size);
 {% endif %}
@@ -143,7 +143,7 @@ void mavsdk_{{ plugin_name.lower_snake_case }}_{{ struct.name.lower_snake_case }
  *
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  */
-void mavsdk_{{ plugin_name.lower_snake_case }}_{{ prim_type | replace('_', '') }}_array_destroy({{ prim_type }}** array);
+CMAVSDK_EXPORT void mavsdk_{{ plugin_name.lower_snake_case }}_{{ prim_type | replace('_', '') }}_array_destroy({{ prim_type }}** array);
 {% endfor %}
 
 /**
@@ -153,7 +153,7 @@ void mavsdk_{{ plugin_name.lower_snake_case }}_{{ prim_type | replace('_', '') }
  *
  * @param str Pointer to the string pointer. Will be set to NULL after freeing.
  */
-void mavsdk_{{ plugin_name.lower_snake_case }}_string_destroy(char** str);
+CMAVSDK_EXPORT void mavsdk_{{ plugin_name.lower_snake_case }}_string_destroy(char** str);
 
 /**
  * @brief Destroy a byte buffer (uint8_t*).
@@ -162,7 +162,7 @@ void mavsdk_{{ plugin_name.lower_snake_case }}_string_destroy(char** str);
  *
  * @param buffer Pointer to the buffer pointer. Will be set to NULL after freeing.
  */
-void mavsdk_{{ plugin_name.lower_snake_case }}_byte_buffer_destroy(uint8_t** buffer);
+CMAVSDK_EXPORT void mavsdk_{{ plugin_name.lower_snake_case }}_byte_buffer_destroy(uint8_t** buffer);
 
 // ===== Callback Typedefs =====
 {% for method in methods %}

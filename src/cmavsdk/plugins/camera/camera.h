@@ -68,7 +68,7 @@ typedef enum {
  * @note This struct may contain dynamically allocated memory. Always call
  *       mavsdk_camera_option_destroy() when done to avoid memory leaks.
  */
-typedef struct {
+typedef struct CMAVSDK_EXPORT {
     /**  Name of the option (machine readable) */
     char* option_id;
     /**  Description of the option (human readable) */
@@ -85,7 +85,7 @@ typedef struct {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-void mavsdk_camera_option_destroy(
+CMAVSDK_EXPORT void mavsdk_camera_option_destroy(
     mavsdk_camera_option_t* target);
 
 /**
@@ -97,7 +97,7 @@ void mavsdk_camera_option_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-void mavsdk_camera_option_array_destroy(
+CMAVSDK_EXPORT void mavsdk_camera_option_array_destroy(
     mavsdk_camera_option_t** array,
     size_t size);
 
@@ -107,7 +107,7 @@ void mavsdk_camera_option_array_destroy(
  * @note This struct may contain dynamically allocated memory. Always call
  *       mavsdk_camera_setting_destroy() when done to avoid memory leaks.
  */
-typedef struct {
+typedef struct CMAVSDK_EXPORT {
     /**  Name of a setting (machine readable) */
     char* setting_id;
     /**  Description of the setting (human readable). This field is meant to be read from the drone, ignore it when setting. */
@@ -128,7 +128,7 @@ typedef struct {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-void mavsdk_camera_setting_destroy(
+CMAVSDK_EXPORT void mavsdk_camera_setting_destroy(
     mavsdk_camera_setting_t* target);
 
 /**
@@ -140,7 +140,7 @@ void mavsdk_camera_setting_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-void mavsdk_camera_setting_array_destroy(
+CMAVSDK_EXPORT void mavsdk_camera_setting_array_destroy(
     mavsdk_camera_setting_t** array,
     size_t size);
 
@@ -150,7 +150,7 @@ void mavsdk_camera_setting_array_destroy(
  * @note This struct may contain dynamically allocated memory. Always call
  *       mavsdk_camera_setting_options_destroy() when done to avoid memory leaks.
  */
-typedef struct {
+typedef struct CMAVSDK_EXPORT {
     /**  Component ID */
     int32_t component_id;
     /**  Name of the setting (machine readable) */
@@ -174,7 +174,7 @@ typedef struct {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-void mavsdk_camera_setting_options_destroy(
+CMAVSDK_EXPORT void mavsdk_camera_setting_options_destroy(
     mavsdk_camera_setting_options_t* target);
 
 /**
@@ -186,7 +186,7 @@ void mavsdk_camera_setting_options_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-void mavsdk_camera_setting_options_array_destroy(
+CMAVSDK_EXPORT void mavsdk_camera_setting_options_array_destroy(
     mavsdk_camera_setting_options_t** array,
     size_t size);
 
@@ -196,7 +196,7 @@ void mavsdk_camera_setting_options_array_destroy(
  * @note This struct may contain dynamically allocated memory. Always call
  *       mavsdk_camera_video_stream_settings_destroy() when done to avoid memory leaks.
  */
-typedef struct {
+typedef struct CMAVSDK_EXPORT {
     /**  Frames per second */
     float frame_rate_hz;
     /**  Horizontal resolution (in pixels) */
@@ -223,7 +223,7 @@ typedef struct {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-void mavsdk_camera_video_stream_settings_destroy(
+CMAVSDK_EXPORT void mavsdk_camera_video_stream_settings_destroy(
     mavsdk_camera_video_stream_settings_t* target);
 
 /**
@@ -235,7 +235,7 @@ void mavsdk_camera_video_stream_settings_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-void mavsdk_camera_video_stream_settings_array_destroy(
+CMAVSDK_EXPORT void mavsdk_camera_video_stream_settings_array_destroy(
     mavsdk_camera_video_stream_settings_t** array,
     size_t size);
 
@@ -267,7 +267,7 @@ typedef enum {
  * @note This struct may contain dynamically allocated memory. Always call
  *       mavsdk_camera_video_stream_info_destroy() when done to avoid memory leaks.
  */
-typedef struct {
+typedef struct CMAVSDK_EXPORT {
     /**  Stream ID */
     int32_t stream_id;
     /**  Video stream settings */
@@ -288,7 +288,7 @@ typedef struct {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-void mavsdk_camera_video_stream_info_destroy(
+CMAVSDK_EXPORT void mavsdk_camera_video_stream_info_destroy(
     mavsdk_camera_video_stream_info_t* target);
 
 /**
@@ -300,7 +300,7 @@ void mavsdk_camera_video_stream_info_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-void mavsdk_camera_video_stream_info_array_destroy(
+CMAVSDK_EXPORT void mavsdk_camera_video_stream_info_array_destroy(
     mavsdk_camera_video_stream_info_t** array,
     size_t size);
 
@@ -310,7 +310,7 @@ void mavsdk_camera_video_stream_info_array_destroy(
  * @note This struct may contain dynamically allocated memory. Always call
  *       mavsdk_camera_mode_update_destroy() when done to avoid memory leaks.
  */
-typedef struct {
+typedef struct CMAVSDK_EXPORT {
     /**  Component ID */
     int32_t component_id;
     /**  Camera mode */
@@ -327,7 +327,7 @@ typedef struct {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-void mavsdk_camera_mode_update_destroy(
+CMAVSDK_EXPORT void mavsdk_camera_mode_update_destroy(
     mavsdk_camera_mode_update_t* target);
 
 /**
@@ -339,7 +339,7 @@ void mavsdk_camera_mode_update_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-void mavsdk_camera_mode_update_array_destroy(
+CMAVSDK_EXPORT void mavsdk_camera_mode_update_array_destroy(
     mavsdk_camera_mode_update_t** array,
     size_t size);
 
@@ -349,7 +349,7 @@ void mavsdk_camera_mode_update_array_destroy(
  * @note This struct may contain dynamically allocated memory. Always call
  *       mavsdk_camera_video_stream_update_destroy() when done to avoid memory leaks.
  */
-typedef struct {
+typedef struct CMAVSDK_EXPORT {
     /**  Component ID */
     int32_t component_id;
     /**  Video stream info */
@@ -366,7 +366,7 @@ typedef struct {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-void mavsdk_camera_video_stream_update_destroy(
+CMAVSDK_EXPORT void mavsdk_camera_video_stream_update_destroy(
     mavsdk_camera_video_stream_update_t* target);
 
 /**
@@ -378,7 +378,7 @@ void mavsdk_camera_video_stream_update_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-void mavsdk_camera_video_stream_update_array_destroy(
+CMAVSDK_EXPORT void mavsdk_camera_video_stream_update_array_destroy(
     mavsdk_camera_video_stream_update_t** array,
     size_t size);
 
@@ -420,7 +420,7 @@ typedef enum {
  * @note This struct may contain dynamically allocated memory. Always call
  *       mavsdk_camera_storage_destroy() when done to avoid memory leaks.
  */
-typedef struct {
+typedef struct CMAVSDK_EXPORT {
     /**  Component ID */
     int32_t component_id;
     /**  Whether video recording is currently in process */
@@ -455,7 +455,7 @@ typedef struct {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-void mavsdk_camera_storage_destroy(
+CMAVSDK_EXPORT void mavsdk_camera_storage_destroy(
     mavsdk_camera_storage_t* target);
 
 /**
@@ -467,7 +467,7 @@ void mavsdk_camera_storage_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-void mavsdk_camera_storage_array_destroy(
+CMAVSDK_EXPORT void mavsdk_camera_storage_array_destroy(
     mavsdk_camera_storage_t** array,
     size_t size);
 
@@ -477,7 +477,7 @@ void mavsdk_camera_storage_array_destroy(
  * @note This struct may contain dynamically allocated memory. Always call
  *       mavsdk_camera_storage_update_destroy() when done to avoid memory leaks.
  */
-typedef struct {
+typedef struct CMAVSDK_EXPORT {
     /**  Component ID */
     int32_t component_id;
     /**  Storage */
@@ -494,7 +494,7 @@ typedef struct {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-void mavsdk_camera_storage_update_destroy(
+CMAVSDK_EXPORT void mavsdk_camera_storage_update_destroy(
     mavsdk_camera_storage_update_t* target);
 
 /**
@@ -506,7 +506,7 @@ void mavsdk_camera_storage_update_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-void mavsdk_camera_storage_update_array_destroy(
+CMAVSDK_EXPORT void mavsdk_camera_storage_update_array_destroy(
     mavsdk_camera_storage_update_t** array,
     size_t size);
 
@@ -516,7 +516,7 @@ void mavsdk_camera_storage_update_array_destroy(
  * @note This struct may contain dynamically allocated memory. Always call
  *       mavsdk_camera_current_settings_update_destroy() when done to avoid memory leaks.
  */
-typedef struct {
+typedef struct CMAVSDK_EXPORT {
     /**  Component ID */
     int32_t component_id;
     /**  List of current settings */
@@ -534,7 +534,7 @@ typedef struct {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-void mavsdk_camera_current_settings_update_destroy(
+CMAVSDK_EXPORT void mavsdk_camera_current_settings_update_destroy(
     mavsdk_camera_current_settings_update_t* target);
 
 /**
@@ -546,7 +546,7 @@ void mavsdk_camera_current_settings_update_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-void mavsdk_camera_current_settings_update_array_destroy(
+CMAVSDK_EXPORT void mavsdk_camera_current_settings_update_array_destroy(
     mavsdk_camera_current_settings_update_t** array,
     size_t size);
 
@@ -556,7 +556,7 @@ void mavsdk_camera_current_settings_update_array_destroy(
  * @note This struct may contain dynamically allocated memory. Always call
  *       mavsdk_camera_possible_setting_options_update_destroy() when done to avoid memory leaks.
  */
-typedef struct {
+typedef struct CMAVSDK_EXPORT {
     /**  Component ID */
     int32_t component_id;
     /**  List of settings that can be changed */
@@ -574,7 +574,7 @@ typedef struct {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-void mavsdk_camera_possible_setting_options_update_destroy(
+CMAVSDK_EXPORT void mavsdk_camera_possible_setting_options_update_destroy(
     mavsdk_camera_possible_setting_options_update_t* target);
 
 /**
@@ -586,7 +586,7 @@ void mavsdk_camera_possible_setting_options_update_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-void mavsdk_camera_possible_setting_options_update_array_destroy(
+CMAVSDK_EXPORT void mavsdk_camera_possible_setting_options_update_array_destroy(
     mavsdk_camera_possible_setting_options_update_t** array,
     size_t size);
 
@@ -629,7 +629,7 @@ typedef enum {
  * @note This struct may contain dynamically allocated memory. Always call
  *       mavsdk_camera_position_destroy() when done to avoid memory leaks.
  */
-typedef struct {
+typedef struct CMAVSDK_EXPORT {
     /**  Latitude in degrees (range: -90 to +90) */
     double latitude_deg;
     /**  Longitude in degrees (range: -180 to +180) */
@@ -650,7 +650,7 @@ typedef struct {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-void mavsdk_camera_position_destroy(
+CMAVSDK_EXPORT void mavsdk_camera_position_destroy(
     mavsdk_camera_position_t* target);
 
 /**
@@ -662,7 +662,7 @@ void mavsdk_camera_position_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-void mavsdk_camera_position_array_destroy(
+CMAVSDK_EXPORT void mavsdk_camera_position_array_destroy(
     mavsdk_camera_position_t** array,
     size_t size);
 
@@ -679,7 +679,7 @@ void mavsdk_camera_position_array_destroy(
  * @note This struct may contain dynamically allocated memory. Always call
  *       mavsdk_camera_quaternion_destroy() when done to avoid memory leaks.
  */
-typedef struct {
+typedef struct CMAVSDK_EXPORT {
     /**  Quaternion entry 0, also denoted as a */
     float w;
     /**  Quaternion entry 1, also denoted as b */
@@ -700,7 +700,7 @@ typedef struct {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-void mavsdk_camera_quaternion_destroy(
+CMAVSDK_EXPORT void mavsdk_camera_quaternion_destroy(
     mavsdk_camera_quaternion_t* target);
 
 /**
@@ -712,7 +712,7 @@ void mavsdk_camera_quaternion_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-void mavsdk_camera_quaternion_array_destroy(
+CMAVSDK_EXPORT void mavsdk_camera_quaternion_array_destroy(
     mavsdk_camera_quaternion_t** array,
     size_t size);
 
@@ -727,7 +727,7 @@ void mavsdk_camera_quaternion_array_destroy(
  * @note This struct may contain dynamically allocated memory. Always call
  *       mavsdk_camera_euler_angle_destroy() when done to avoid memory leaks.
  */
-typedef struct {
+typedef struct CMAVSDK_EXPORT {
     /**  Roll angle in degrees, positive is banking to the right */
     float roll_deg;
     /**  Pitch angle in degrees, positive is pitching nose up */
@@ -746,7 +746,7 @@ typedef struct {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-void mavsdk_camera_euler_angle_destroy(
+CMAVSDK_EXPORT void mavsdk_camera_euler_angle_destroy(
     mavsdk_camera_euler_angle_t* target);
 
 /**
@@ -758,7 +758,7 @@ void mavsdk_camera_euler_angle_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-void mavsdk_camera_euler_angle_array_destroy(
+CMAVSDK_EXPORT void mavsdk_camera_euler_angle_array_destroy(
     mavsdk_camera_euler_angle_t** array,
     size_t size);
 
@@ -768,7 +768,7 @@ void mavsdk_camera_euler_angle_array_destroy(
  * @note This struct may contain dynamically allocated memory. Always call
  *       mavsdk_camera_capture_info_destroy() when done to avoid memory leaks.
  */
-typedef struct {
+typedef struct CMAVSDK_EXPORT {
     /**  Component ID */
     int32_t component_id;
     /**  Location where the picture was taken */
@@ -797,7 +797,7 @@ typedef struct {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-void mavsdk_camera_capture_info_destroy(
+CMAVSDK_EXPORT void mavsdk_camera_capture_info_destroy(
     mavsdk_camera_capture_info_t* target);
 
 /**
@@ -809,7 +809,7 @@ void mavsdk_camera_capture_info_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-void mavsdk_camera_capture_info_array_destroy(
+CMAVSDK_EXPORT void mavsdk_camera_capture_info_array_destroy(
     mavsdk_camera_capture_info_t** array,
     size_t size);
 
@@ -819,7 +819,7 @@ void mavsdk_camera_capture_info_array_destroy(
  * @note This struct may contain dynamically allocated memory. Always call
  *       mavsdk_camera_information_destroy() when done to avoid memory leaks.
  */
-typedef struct {
+typedef struct CMAVSDK_EXPORT {
     /**  Component ID */
     int32_t component_id;
     /**  Name of the camera vendor */
@@ -848,7 +848,7 @@ typedef struct {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-void mavsdk_camera_information_destroy(
+CMAVSDK_EXPORT void mavsdk_camera_information_destroy(
     mavsdk_camera_information_t* target);
 
 /**
@@ -860,7 +860,7 @@ void mavsdk_camera_information_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-void mavsdk_camera_information_array_destroy(
+CMAVSDK_EXPORT void mavsdk_camera_information_array_destroy(
     mavsdk_camera_information_t** array,
     size_t size);
 
@@ -870,7 +870,7 @@ void mavsdk_camera_information_array_destroy(
  * @note This struct may contain dynamically allocated memory. Always call
  *       mavsdk_camera_camera_list_destroy() when done to avoid memory leaks.
  */
-typedef struct {
+typedef struct CMAVSDK_EXPORT {
     /**  Camera items. */
     mavsdk_camera_information_t* cameras;
     size_t cameras_size;
@@ -886,7 +886,7 @@ typedef struct {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-void mavsdk_camera_camera_list_destroy(
+CMAVSDK_EXPORT void mavsdk_camera_camera_list_destroy(
     mavsdk_camera_camera_list_t* target);
 
 /**
@@ -898,7 +898,7 @@ void mavsdk_camera_camera_list_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-void mavsdk_camera_camera_list_array_destroy(
+CMAVSDK_EXPORT void mavsdk_camera_camera_list_array_destroy(
     mavsdk_camera_camera_list_t** array,
     size_t size);
 
@@ -911,7 +911,7 @@ void mavsdk_camera_camera_list_array_destroy(
  *
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  */
-void mavsdk_camera_float_array_destroy(float** array);
+CMAVSDK_EXPORT void mavsdk_camera_float_array_destroy(float** array);
 /**
  * @brief Destroy an array of double.
  *
@@ -919,7 +919,7 @@ void mavsdk_camera_float_array_destroy(float** array);
  *
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  */
-void mavsdk_camera_double_array_destroy(double** array);
+CMAVSDK_EXPORT void mavsdk_camera_double_array_destroy(double** array);
 /**
  * @brief Destroy an array of int32_t.
  *
@@ -927,7 +927,7 @@ void mavsdk_camera_double_array_destroy(double** array);
  *
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  */
-void mavsdk_camera_int32t_array_destroy(int32_t** array);
+CMAVSDK_EXPORT void mavsdk_camera_int32t_array_destroy(int32_t** array);
 /**
  * @brief Destroy an array of uint32_t.
  *
@@ -935,7 +935,7 @@ void mavsdk_camera_int32t_array_destroy(int32_t** array);
  *
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  */
-void mavsdk_camera_uint32t_array_destroy(uint32_t** array);
+CMAVSDK_EXPORT void mavsdk_camera_uint32t_array_destroy(uint32_t** array);
 /**
  * @brief Destroy an array of int64_t.
  *
@@ -943,7 +943,7 @@ void mavsdk_camera_uint32t_array_destroy(uint32_t** array);
  *
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  */
-void mavsdk_camera_int64t_array_destroy(int64_t** array);
+CMAVSDK_EXPORT void mavsdk_camera_int64t_array_destroy(int64_t** array);
 /**
  * @brief Destroy an array of uint64_t.
  *
@@ -951,7 +951,7 @@ void mavsdk_camera_int64t_array_destroy(int64_t** array);
  *
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  */
-void mavsdk_camera_uint64t_array_destroy(uint64_t** array);
+CMAVSDK_EXPORT void mavsdk_camera_uint64t_array_destroy(uint64_t** array);
 /**
  * @brief Destroy an array of bool.
  *
@@ -959,7 +959,7 @@ void mavsdk_camera_uint64t_array_destroy(uint64_t** array);
  *
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  */
-void mavsdk_camera_bool_array_destroy(bool** array);
+CMAVSDK_EXPORT void mavsdk_camera_bool_array_destroy(bool** array);
 
 /**
  * @brief Destroy a string (char*).
@@ -968,7 +968,7 @@ void mavsdk_camera_bool_array_destroy(bool** array);
  *
  * @param str Pointer to the string pointer. Will be set to NULL after freeing.
  */
-void mavsdk_camera_string_destroy(char** str);
+CMAVSDK_EXPORT void mavsdk_camera_string_destroy(char** str);
 
 /**
  * @brief Destroy a byte buffer (uint8_t*).
@@ -977,7 +977,7 @@ void mavsdk_camera_string_destroy(char** str);
  *
  * @param buffer Pointer to the buffer pointer. Will be set to NULL after freeing.
  */
-void mavsdk_camera_byte_buffer_destroy(uint8_t** buffer);
+CMAVSDK_EXPORT void mavsdk_camera_byte_buffer_destroy(uint8_t** buffer);
 
 // ===== Callback Typedefs =====
 typedef void (*mavsdk_camera_take_photo_callback_t)(const mavsdk_camera_result_t result, void* user_data);

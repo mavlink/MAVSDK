@@ -34,7 +34,7 @@ typedef void* mavsdk_info_flight_information_handle_t;
  * @note This struct may contain dynamically allocated memory. Always call
  *       mavsdk_info_flight_info_destroy() when done to avoid memory leaks.
  */
-typedef struct {
+typedef struct CMAVSDK_EXPORT {
     /**  Time since system boot */
     uint32_t time_boot_ms;
     /**  Flight counter. Starts from zero, is incremented at every disarm and is never reset (even after reboot) */
@@ -55,7 +55,7 @@ typedef struct {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-void mavsdk_info_flight_info_destroy(
+CMAVSDK_EXPORT void mavsdk_info_flight_info_destroy(
     mavsdk_info_flight_info_t* target);
 
 /**
@@ -67,7 +67,7 @@ void mavsdk_info_flight_info_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-void mavsdk_info_flight_info_array_destroy(
+CMAVSDK_EXPORT void mavsdk_info_flight_info_array_destroy(
     mavsdk_info_flight_info_t** array,
     size_t size);
 
@@ -77,7 +77,7 @@ void mavsdk_info_flight_info_array_destroy(
  * @note This struct may contain dynamically allocated memory. Always call
  *       mavsdk_info_identification_destroy() when done to avoid memory leaks.
  */
-typedef struct {
+typedef struct CMAVSDK_EXPORT {
     /**  UID of the hardware. This refers to uid2 of MAVLink. If the system does not support uid2 yet, this is all zeros. */
     char* hardware_uid;
     /**  Legacy UID of the hardware, referred to as uid in MAVLink (formerly exposed during system discovery as UUID). */
@@ -94,7 +94,7 @@ typedef struct {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-void mavsdk_info_identification_destroy(
+CMAVSDK_EXPORT void mavsdk_info_identification_destroy(
     mavsdk_info_identification_t* target);
 
 /**
@@ -106,7 +106,7 @@ void mavsdk_info_identification_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-void mavsdk_info_identification_array_destroy(
+CMAVSDK_EXPORT void mavsdk_info_identification_array_destroy(
     mavsdk_info_identification_t** array,
     size_t size);
 
@@ -116,7 +116,7 @@ void mavsdk_info_identification_array_destroy(
  * @note This struct may contain dynamically allocated memory. Always call
  *       mavsdk_info_product_destroy() when done to avoid memory leaks.
  */
-typedef struct {
+typedef struct CMAVSDK_EXPORT {
     /**  ID of the board vendor */
     int32_t vendor_id;
     /**  Name of the vendor */
@@ -137,7 +137,7 @@ typedef struct {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-void mavsdk_info_product_destroy(
+CMAVSDK_EXPORT void mavsdk_info_product_destroy(
     mavsdk_info_product_t* target);
 
 /**
@@ -149,7 +149,7 @@ void mavsdk_info_product_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-void mavsdk_info_product_array_destroy(
+CMAVSDK_EXPORT void mavsdk_info_product_array_destroy(
     mavsdk_info_product_t** array,
     size_t size);
 
@@ -177,7 +177,7 @@ typedef enum {
  * @note This struct may contain dynamically allocated memory. Always call
  *       mavsdk_info_version_destroy() when done to avoid memory leaks.
  */
-typedef struct {
+typedef struct CMAVSDK_EXPORT {
     /**  Flight software major version */
     int32_t flight_sw_major;
     /**  Flight software minor version */
@@ -214,7 +214,7 @@ typedef struct {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-void mavsdk_info_version_destroy(
+CMAVSDK_EXPORT void mavsdk_info_version_destroy(
     mavsdk_info_version_t* target);
 
 /**
@@ -226,7 +226,7 @@ void mavsdk_info_version_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-void mavsdk_info_version_array_destroy(
+CMAVSDK_EXPORT void mavsdk_info_version_array_destroy(
     mavsdk_info_version_t** array,
     size_t size);
 
@@ -254,7 +254,7 @@ typedef enum {
  *
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  */
-void mavsdk_info_float_array_destroy(float** array);
+CMAVSDK_EXPORT void mavsdk_info_float_array_destroy(float** array);
 /**
  * @brief Destroy an array of double.
  *
@@ -262,7 +262,7 @@ void mavsdk_info_float_array_destroy(float** array);
  *
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  */
-void mavsdk_info_double_array_destroy(double** array);
+CMAVSDK_EXPORT void mavsdk_info_double_array_destroy(double** array);
 /**
  * @brief Destroy an array of int32_t.
  *
@@ -270,7 +270,7 @@ void mavsdk_info_double_array_destroy(double** array);
  *
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  */
-void mavsdk_info_int32t_array_destroy(int32_t** array);
+CMAVSDK_EXPORT void mavsdk_info_int32t_array_destroy(int32_t** array);
 /**
  * @brief Destroy an array of uint32_t.
  *
@@ -278,7 +278,7 @@ void mavsdk_info_int32t_array_destroy(int32_t** array);
  *
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  */
-void mavsdk_info_uint32t_array_destroy(uint32_t** array);
+CMAVSDK_EXPORT void mavsdk_info_uint32t_array_destroy(uint32_t** array);
 /**
  * @brief Destroy an array of int64_t.
  *
@@ -286,7 +286,7 @@ void mavsdk_info_uint32t_array_destroy(uint32_t** array);
  *
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  */
-void mavsdk_info_int64t_array_destroy(int64_t** array);
+CMAVSDK_EXPORT void mavsdk_info_int64t_array_destroy(int64_t** array);
 /**
  * @brief Destroy an array of uint64_t.
  *
@@ -294,7 +294,7 @@ void mavsdk_info_int64t_array_destroy(int64_t** array);
  *
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  */
-void mavsdk_info_uint64t_array_destroy(uint64_t** array);
+CMAVSDK_EXPORT void mavsdk_info_uint64t_array_destroy(uint64_t** array);
 /**
  * @brief Destroy an array of bool.
  *
@@ -302,7 +302,7 @@ void mavsdk_info_uint64t_array_destroy(uint64_t** array);
  *
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  */
-void mavsdk_info_bool_array_destroy(bool** array);
+CMAVSDK_EXPORT void mavsdk_info_bool_array_destroy(bool** array);
 
 /**
  * @brief Destroy a string (char*).
@@ -311,7 +311,7 @@ void mavsdk_info_bool_array_destroy(bool** array);
  *
  * @param str Pointer to the string pointer. Will be set to NULL after freeing.
  */
-void mavsdk_info_string_destroy(char** str);
+CMAVSDK_EXPORT void mavsdk_info_string_destroy(char** str);
 
 /**
  * @brief Destroy a byte buffer (uint8_t*).
@@ -320,7 +320,7 @@ void mavsdk_info_string_destroy(char** str);
  *
  * @param buffer Pointer to the buffer pointer. Will be set to NULL after freeing.
  */
-void mavsdk_info_byte_buffer_destroy(uint8_t** buffer);
+CMAVSDK_EXPORT void mavsdk_info_byte_buffer_destroy(uint8_t** buffer);
 
 // ===== Callback Typedefs =====
 typedef void (*mavsdk_info_flight_information_callback_t)(const mavsdk_info_flight_info_t flight_info, void* user_data);

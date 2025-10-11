@@ -43,7 +43,7 @@ typedef enum {
  * @note This struct may contain dynamically allocated memory. Always call
  *       mavsdk_param_int_param_destroy() when done to avoid memory leaks.
  */
-typedef struct {
+typedef struct CMAVSDK_EXPORT {
     /**  Name of the parameter */
     char* name;
     /**  Value of the parameter */
@@ -60,7 +60,7 @@ typedef struct {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-void mavsdk_param_int_param_destroy(
+CMAVSDK_EXPORT void mavsdk_param_int_param_destroy(
     mavsdk_param_int_param_t* target);
 
 /**
@@ -72,7 +72,7 @@ void mavsdk_param_int_param_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-void mavsdk_param_int_param_array_destroy(
+CMAVSDK_EXPORT void mavsdk_param_int_param_array_destroy(
     mavsdk_param_int_param_t** array,
     size_t size);
 
@@ -82,7 +82,7 @@ void mavsdk_param_int_param_array_destroy(
  * @note This struct may contain dynamically allocated memory. Always call
  *       mavsdk_param_float_param_destroy() when done to avoid memory leaks.
  */
-typedef struct {
+typedef struct CMAVSDK_EXPORT {
     /**  Name of the parameter */
     char* name;
     /**  Value of the parameter */
@@ -99,7 +99,7 @@ typedef struct {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-void mavsdk_param_float_param_destroy(
+CMAVSDK_EXPORT void mavsdk_param_float_param_destroy(
     mavsdk_param_float_param_t* target);
 
 /**
@@ -111,7 +111,7 @@ void mavsdk_param_float_param_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-void mavsdk_param_float_param_array_destroy(
+CMAVSDK_EXPORT void mavsdk_param_float_param_array_destroy(
     mavsdk_param_float_param_t** array,
     size_t size);
 
@@ -121,7 +121,7 @@ void mavsdk_param_float_param_array_destroy(
  * @note This struct may contain dynamically allocated memory. Always call
  *       mavsdk_param_custom_param_destroy() when done to avoid memory leaks.
  */
-typedef struct {
+typedef struct CMAVSDK_EXPORT {
     /**  Name of the parameter */
     char* name;
     /**  Value of the parameter (max len 128 bytes) */
@@ -138,7 +138,7 @@ typedef struct {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-void mavsdk_param_custom_param_destroy(
+CMAVSDK_EXPORT void mavsdk_param_custom_param_destroy(
     mavsdk_param_custom_param_t* target);
 
 /**
@@ -150,7 +150,7 @@ void mavsdk_param_custom_param_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-void mavsdk_param_custom_param_array_destroy(
+CMAVSDK_EXPORT void mavsdk_param_custom_param_array_destroy(
     mavsdk_param_custom_param_t** array,
     size_t size);
 
@@ -160,7 +160,7 @@ void mavsdk_param_custom_param_array_destroy(
  * @note This struct may contain dynamically allocated memory. Always call
  *       mavsdk_param_all_params_destroy() when done to avoid memory leaks.
  */
-typedef struct {
+typedef struct CMAVSDK_EXPORT {
     /**  Collection of all parameter names and values of type int */
     mavsdk_param_int_param_t* int_params;
     size_t int_params_size;
@@ -182,7 +182,7 @@ typedef struct {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-void mavsdk_param_all_params_destroy(
+CMAVSDK_EXPORT void mavsdk_param_all_params_destroy(
     mavsdk_param_all_params_t* target);
 
 /**
@@ -194,7 +194,7 @@ void mavsdk_param_all_params_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-void mavsdk_param_all_params_array_destroy(
+CMAVSDK_EXPORT void mavsdk_param_all_params_array_destroy(
     mavsdk_param_all_params_t** array,
     size_t size);
 
@@ -232,7 +232,7 @@ typedef enum {
  *
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  */
-void mavsdk_param_float_array_destroy(float** array);
+CMAVSDK_EXPORT void mavsdk_param_float_array_destroy(float** array);
 /**
  * @brief Destroy an array of double.
  *
@@ -240,7 +240,7 @@ void mavsdk_param_float_array_destroy(float** array);
  *
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  */
-void mavsdk_param_double_array_destroy(double** array);
+CMAVSDK_EXPORT void mavsdk_param_double_array_destroy(double** array);
 /**
  * @brief Destroy an array of int32_t.
  *
@@ -248,7 +248,7 @@ void mavsdk_param_double_array_destroy(double** array);
  *
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  */
-void mavsdk_param_int32t_array_destroy(int32_t** array);
+CMAVSDK_EXPORT void mavsdk_param_int32t_array_destroy(int32_t** array);
 /**
  * @brief Destroy an array of uint32_t.
  *
@@ -256,7 +256,7 @@ void mavsdk_param_int32t_array_destroy(int32_t** array);
  *
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  */
-void mavsdk_param_uint32t_array_destroy(uint32_t** array);
+CMAVSDK_EXPORT void mavsdk_param_uint32t_array_destroy(uint32_t** array);
 /**
  * @brief Destroy an array of int64_t.
  *
@@ -264,7 +264,7 @@ void mavsdk_param_uint32t_array_destroy(uint32_t** array);
  *
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  */
-void mavsdk_param_int64t_array_destroy(int64_t** array);
+CMAVSDK_EXPORT void mavsdk_param_int64t_array_destroy(int64_t** array);
 /**
  * @brief Destroy an array of uint64_t.
  *
@@ -272,7 +272,7 @@ void mavsdk_param_int64t_array_destroy(int64_t** array);
  *
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  */
-void mavsdk_param_uint64t_array_destroy(uint64_t** array);
+CMAVSDK_EXPORT void mavsdk_param_uint64t_array_destroy(uint64_t** array);
 /**
  * @brief Destroy an array of bool.
  *
@@ -280,7 +280,7 @@ void mavsdk_param_uint64t_array_destroy(uint64_t** array);
  *
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  */
-void mavsdk_param_bool_array_destroy(bool** array);
+CMAVSDK_EXPORT void mavsdk_param_bool_array_destroy(bool** array);
 
 /**
  * @brief Destroy a string (char*).
@@ -289,7 +289,7 @@ void mavsdk_param_bool_array_destroy(bool** array);
  *
  * @param str Pointer to the string pointer. Will be set to NULL after freeing.
  */
-void mavsdk_param_string_destroy(char** str);
+CMAVSDK_EXPORT void mavsdk_param_string_destroy(char** str);
 
 /**
  * @brief Destroy a byte buffer (uint8_t*).
@@ -298,7 +298,7 @@ void mavsdk_param_string_destroy(char** str);
  *
  * @param buffer Pointer to the buffer pointer. Will be set to NULL after freeing.
  */
-void mavsdk_param_byte_buffer_destroy(uint8_t** buffer);
+CMAVSDK_EXPORT void mavsdk_param_byte_buffer_destroy(uint8_t** buffer);
 
 // ===== Callback Typedefs =====
 
