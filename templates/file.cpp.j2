@@ -467,7 +467,13 @@ mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}(
         {% endfor %});
 
     {% if method.return_type.is_primitive %}
+    {% if method.return_type.is_string %}
+    if ({{ method.return_name.lower_snake_case }}_out != nullptr) {
+        *{{ method.return_name.lower_snake_case }}_out = strdup(result_pair.second.c_str());
+    }
+    {% else %}
     *{{ method.return_name.lower_snake_case }}_out = result_pair.second;
+    {% endif %}
     {% elif method.return_type.is_repeated %}
     if ({{ method.return_name.lower_snake_case }}_out != nullptr) {
         size_t count = result_pair.second.size();
@@ -516,7 +522,13 @@ mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}(
 
     {% if method.return_name %}
     {% if method.return_type.is_primitive %}
+    {% if method.return_type.is_string %}
+    if ({{ method.return_name.lower_snake_case }}_out != nullptr) {
+        *{{ method.return_name.lower_snake_case }}_out = strdup(ret_value.c_str());
+    }
+    {% else %}
     *{{ method.return_name.lower_snake_case }}_out = ret_value;
+    {% endif %}
     {% else %}
     if ({{ method.return_name.lower_snake_case }}_out != nullptr) {
         *{{ method.return_name.lower_snake_case }}_out = translate_{{ method.return_type.name.lower_snake_case }}_to_c(ret_value);

@@ -24,6 +24,12 @@ set(PLUGIN_SOURCES
     cmavsdk/plugins/mission/mission.cpp
     cmavsdk/plugins/mission_raw/mission_raw.cpp
     cmavsdk/plugins/mission_raw_server/mission_raw_server.cpp
+    cmavsdk/plugins/mocap/mocap.cpp
+    cmavsdk/plugins/offboard/offboard.cpp
+    cmavsdk/plugins/param/param.cpp
+    cmavsdk/plugins/param_server/param_server.cpp
+    cmavsdk/plugins/rtk/rtk.cpp
+    cmavsdk/plugins/server_utility/server_utility.cpp
     cmavsdk/plugins/telemetry/telemetry.cpp
     cmavsdk/plugins/telemetry_server/telemetry_server.cpp
 )
@@ -52,6 +58,12 @@ set(PLUGIN_HEADERS
     cmavsdk/plugins/mission/mission.h
     cmavsdk/plugins/mission_raw/mission_raw.h
     cmavsdk/plugins/mission_raw_server/mission_raw_server.h
+    cmavsdk/plugins/mocap/mocap.h
+    cmavsdk/plugins/offboard/offboard.h
+    cmavsdk/plugins/param/param.h
+    cmavsdk/plugins/param_server/param_server.h
+    cmavsdk/plugins/rtk/rtk.h
+    cmavsdk/plugins/server_utility/server_utility.h
     cmavsdk/plugins/telemetry/telemetry.h
     cmavsdk/plugins/telemetry_server/telemetry_server.h
 )
