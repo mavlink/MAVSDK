@@ -29,8 +29,6 @@ translate_result(mavsdk::Telemetry::Result cpp_result) {
             return MAVSDK_TELEMETRY_RESULT_TIMEOUT;
         case mavsdk::Telemetry::Result::Unsupported:
             return MAVSDK_TELEMETRY_RESULT_UNSUPPORTED;
-        default:
-            return MAVSDK_TELEMETRY_RESULT_UNKNOWN;
     }
 }
 

@@ -43,8 +43,6 @@ translate_result(mavsdk::Action::Result cpp_result) {
             return MAVSDK_ACTION_RESULT_FAILED;
         case mavsdk::Action::Result::InvalidArgument:
             return MAVSDK_ACTION_RESULT_INVALID_ARGUMENT;
-        default:
-            return MAVSDK_ACTION_RESULT_UNKNOWN;
     }
 }
 

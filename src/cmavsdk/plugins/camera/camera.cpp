@@ -39,8 +39,6 @@ translate_result(mavsdk::Camera::Result cpp_result) {
             return MAVSDK_CAMERA_RESULT_CAMERA_ID_INVALID;
         case mavsdk::Camera::Result::ActionUnsupported:
             return MAVSDK_CAMERA_RESULT_ACTION_UNSUPPORTED;
-        default:
-            return MAVSDK_CAMERA_RESULT_UNKNOWN;
     }
 }
 

@@ -45,8 +45,6 @@ translate_result(mavsdk::Mission::Result cpp_result) {
             return MAVSDK_MISSION_RESULT_PROTOCOL_ERROR;
         case mavsdk::Mission::Result::IntMessagesNotSupported:
             return MAVSDK_MISSION_RESULT_INT_MESSAGES_NOT_SUPPORTED;
-        default:
-            return MAVSDK_MISSION_RESULT_UNKNOWN;
     }
 }
 

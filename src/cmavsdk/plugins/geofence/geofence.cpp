@@ -29,8 +29,6 @@ translate_result(mavsdk::Geofence::Result cpp_result) {
             return MAVSDK_GEOFENCE_RESULT_INVALID_ARGUMENT;
         case mavsdk::Geofence::Result::NoSystem:
             return MAVSDK_GEOFENCE_RESULT_NO_SYSTEM;
-        default:
-            return MAVSDK_GEOFENCE_RESULT_UNKNOWN;
     }
 }
 

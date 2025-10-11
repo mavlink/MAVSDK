@@ -37,8 +37,6 @@ translate_result(mavsdk::Calibration::Result cpp_result) {
             return MAVSDK_CALIBRATION_RESULT_FAILED_ARMED;
         case mavsdk::Calibration::Result::Unsupported:
             return MAVSDK_CALIBRATION_RESULT_UNSUPPORTED;
-        default:
-            return MAVSDK_CALIBRATION_RESULT_UNKNOWN;
     }
 }
 

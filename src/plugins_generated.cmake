@@ -3,23 +3,33 @@
 set(PLUGIN_SOURCES
     cmavsdk/plugins/action/action.cpp
     cmavsdk/plugins/action_server/action_server.cpp
+    cmavsdk/plugins/arm_authorizer_server/arm_authorizer_server.cpp
     cmavsdk/plugins/calibration/calibration.cpp
     cmavsdk/plugins/camera/camera.cpp
+    cmavsdk/plugins/camera_server/camera_server.cpp
+    cmavsdk/plugins/component_metadata/component_metadata.cpp
+    cmavsdk/plugins/component_metadata_server/component_metadata_server.cpp
     cmavsdk/plugins/geofence/geofence.cpp
     cmavsdk/plugins/gimbal/gimbal.cpp
     cmavsdk/plugins/mission/mission.cpp
     cmavsdk/plugins/mission_raw/mission_raw.cpp
     cmavsdk/plugins/telemetry/telemetry.cpp
+    cmavsdk/plugins/telemetry_server/telemetry_server.cpp
 )
 
 set(PLUGIN_HEADERS
     cmavsdk/plugins/action/action.h
     cmavsdk/plugins/action_server/action_server.h
+    cmavsdk/plugins/arm_authorizer_server/arm_authorizer_server.h
     cmavsdk/plugins/calibration/calibration.h
     cmavsdk/plugins/camera/camera.h
+    cmavsdk/plugins/camera_server/camera_server.h
+    cmavsdk/plugins/component_metadata/component_metadata.h
+    cmavsdk/plugins/component_metadata_server/component_metadata_server.h
     cmavsdk/plugins/geofence/geofence.h
     cmavsdk/plugins/gimbal/gimbal.h
     cmavsdk/plugins/mission/mission.h
     cmavsdk/plugins/mission_raw/mission_raw.h
     cmavsdk/plugins/telemetry/telemetry.h
+    cmavsdk/plugins/telemetry_server/telemetry_server.h
 )

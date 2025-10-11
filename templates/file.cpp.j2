@@ -10,6 +10,8 @@
 
 // ===== C++ to C Type Conversions =====
 
+{% for struct in structs %}
+{% if struct.name.upper_camel_case.endswith('Result') %}
 static mavsdk_{{ plugin_name.lower_snake_case }}_result_t
 translate_result(mavsdk::{{ plugin_name.upper_camel_case }}::Result cpp_result) {
     switch(cpp_result) {
@@ -25,10 +27,10 @@ translate_result(mavsdk::{{ plugin_name.upper_camel_case }}::Result cpp_result) 
         {% endfor %}
         {% endif %}
         {% endfor %}
-        default:
-            return MAVSDK_{{ plugin_name.uppercase }}_RESULT_UNKNOWN;
     }
 }
+{% endif %}
+{% endfor %}
 
 {% for enum in enums %}
 static mavsdk::{{ plugin_name.upper_camel_case }}::{{ enum.name.upper_camel_case }}

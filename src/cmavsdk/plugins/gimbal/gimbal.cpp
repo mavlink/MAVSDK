@@ -27,8 +27,6 @@ translate_result(mavsdk::Gimbal::Result cpp_result) {
             return MAVSDK_GIMBAL_RESULT_NO_SYSTEM;
         case mavsdk::Gimbal::Result::InvalidArgument:
             return MAVSDK_GIMBAL_RESULT_INVALID_ARGUMENT;
-        default:
-            return MAVSDK_GIMBAL_RESULT_UNKNOWN;
     }
 }
 

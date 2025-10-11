@@ -39,8 +39,6 @@ translate_result(mavsdk::ActionServer::Result cpp_result) {
             return MAVSDK_ACTION_SERVER_RESULT_PARAMETER_ERROR;
         case mavsdk::ActionServer::Result::Next:
             return MAVSDK_ACTION_SERVER_RESULT_NEXT;
-        default:
-            return MAVSDK_ACTION_SERVER_RESULT_UNKNOWN;
     }
 }
 

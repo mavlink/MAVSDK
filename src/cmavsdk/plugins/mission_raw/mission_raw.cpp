@@ -55,8 +55,6 @@ translate_result(mavsdk::MissionRaw::Result cpp_result) {
             return MAVSDK_MISSION_RAW_RESULT_FAILED_TO_OPEN_MISSION_PLANNER_PLAN;
         case mavsdk::MissionRaw::Result::FailedToParseMissionPlannerPlan:
             return MAVSDK_MISSION_RAW_RESULT_FAILED_TO_PARSE_MISSION_PLANNER_PLAN;
-        default:
-            return MAVSDK_MISSION_RAW_RESULT_UNKNOWN;
     }
 }
 
