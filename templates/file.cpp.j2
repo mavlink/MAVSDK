@@ -165,21 +165,32 @@ void mavsdk_{{ plugin_name.lower_snake_case }}_{{ struct.name.lower_snake_case }
     mavsdk_{{ plugin_name.lower_snake_case }}_{{ struct.name.lower_snake_case }}_t* target) {
     if (!target) return;
     {% for field in struct.fields %}
-    {% if field.type_info.is_string %}
+    {% if field.type_info.is_repeated %}
     if (target->{{ field.name.lower_snake_case }}) {
-        free((void*)target->{{ field.name.lower_snake_case }});
-        target->{{ field.name.lower_snake_case }} = nullptr;
-    }
-    {% elif field.type_info.is_repeated %}
-    if (target->{{ field.name.lower_snake_case }}) {
-        {% if not field.type_info.is_primitive %}
+        {% if field.type_info.is_string %}
+        for (size_t i = 0; i < target->{{ field.name.lower_snake_case }}_size; i++) {
+            if (target->{{ field.name.lower_snake_case }}[i]) {
+                free(target->{{ field.name.lower_snake_case }}[i]);
+            }
+        }
+        delete[] target->{{ field.name.lower_snake_case }};
+        {% elif field.type_info.is_enum %}
+        delete[] target->{{ field.name.lower_snake_case }};
+        {% elif not field.type_info.is_primitive %}
         for (size_t i = 0; i < target->{{ field.name.lower_snake_case }}_size; i++) {
             mavsdk_{{ plugin_name.lower_snake_case }}_{{ field.type_info.inner_name.lower_snake_case }}_destroy(&target->{{ field.name.lower_snake_case }}[i]);
         }
-        {% endif %}
         delete[] target->{{ field.name.lower_snake_case }};
+        {% else %}
+        delete[] target->{{ field.name.lower_snake_case }};
+        {% endif %}
         target->{{ field.name.lower_snake_case }} = nullptr;
         target->{{ field.name.lower_snake_case }}_size = 0;
+    }
+    {% elif field.type_info.is_string %}
+    if (target->{{ field.name.lower_snake_case }}) {
+        free((void*)target->{{ field.name.lower_snake_case }});
+        target->{{ field.name.lower_snake_case }} = nullptr;
     }
     {% endif %}
     {% endfor %}

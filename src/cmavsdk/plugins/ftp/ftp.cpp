@@ -82,12 +82,24 @@ void mavsdk_ftp_list_directory_data_destroy(
     mavsdk_ftp_list_directory_data_t* target) {
     if (!target) return;
     if (target->dirs) {
-        free((void*)target->dirs);
+        for (size_t i = 0; i < target->dirs_size; i++) {
+            if (target->dirs[i]) {
+                free(target->dirs[i]);
+            }
+        }
+        delete[] target->dirs;
         target->dirs = nullptr;
+        target->dirs_size = 0;
     }
     if (target->files) {
-        free((void*)target->files);
+        for (size_t i = 0; i < target->files_size; i++) {
+            if (target->files[i]) {
+                free(target->files[i]);
+            }
+        }
+        delete[] target->files;
         target->files = nullptr;
+        target->files_size = 0;
     }
 }
 

@@ -32,6 +32,9 @@ set(PLUGIN_SOURCES
     cmavsdk/plugins/server_utility/server_utility.cpp
     cmavsdk/plugins/telemetry/telemetry.cpp
     cmavsdk/plugins/telemetry_server/telemetry_server.cpp
+    cmavsdk/plugins/transponder/transponder.cpp
+    cmavsdk/plugins/tune/tune.cpp
+    cmavsdk/plugins/winch/winch.cpp
 )
 
 set(PLUGIN_HEADERS
@@ -66,4 +69,7 @@ set(PLUGIN_HEADERS
     cmavsdk/plugins/server_utility/server_utility.h
     cmavsdk/plugins/telemetry/telemetry.h
     cmavsdk/plugins/telemetry_server/telemetry_server.h
+    cmavsdk/plugins/transponder/transponder.h
+    cmavsdk/plugins/tune/tune.h
+    cmavsdk/plugins/winch/winch.h
 )
