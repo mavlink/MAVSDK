@@ -16,6 +16,9 @@ set(PLUGIN_SOURCES
     cmavsdk/plugins/ftp_server/ftp_server.cpp
     cmavsdk/plugins/geofence/geofence.cpp
     cmavsdk/plugins/gimbal/gimbal.cpp
+    cmavsdk/plugins/gripper/gripper.cpp
+    cmavsdk/plugins/info/info.cpp
+    cmavsdk/plugins/log_files/log_files.cpp
     cmavsdk/plugins/mission/mission.cpp
     cmavsdk/plugins/mission_raw/mission_raw.cpp
     cmavsdk/plugins/telemetry/telemetry.cpp
@@ -38,6 +41,9 @@ set(PLUGIN_HEADERS
     cmavsdk/plugins/ftp_server/ftp_server.h
     cmavsdk/plugins/geofence/geofence.h
     cmavsdk/plugins/gimbal/gimbal.h
+    cmavsdk/plugins/gripper/gripper.h
+    cmavsdk/plugins/info/info.h
+    cmavsdk/plugins/log_files/log_files.h
     cmavsdk/plugins/mission/mission.h
     cmavsdk/plugins/mission_raw/mission_raw.h
     cmavsdk/plugins/telemetry/telemetry.h
