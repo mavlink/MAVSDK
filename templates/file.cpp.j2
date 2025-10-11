@@ -78,12 +78,15 @@ static mavsdk::{{ plugin_name.upper_camel_case }}::{{ struct.name.upper_camel_ca
 translate_{{ struct.name.lower_snake_case }}_from_c(const mavsdk_{{ plugin_name.lower_snake_case }}_{{ struct.name.lower_snake_case }}_t& c_struct) {
     mavsdk::{{ plugin_name.upper_camel_case }}::{{ struct.name.upper_camel_case }} cpp_struct{};
     {% for field in struct.fields %}
+    {% if field.type_info.is_repeated %}
     {% if field.type_info.is_string %}
-    if (c_struct.{{ field.name.lower_snake_case }}) {
-        cpp_struct.{{ field.name.lower_snake_case }} = c_struct.{{ field.name.lower_snake_case }};
+    cpp_struct.{{ field.name.lower_snake_case }}.reserve(c_struct.{{ field.name.lower_snake_case }}_size);
+    for (size_t i = 0; i < c_struct.{{ field.name.lower_snake_case }}_size; i++) {
+        if (c_struct.{{ field.name.lower_snake_case }}[i]) {
+            cpp_struct.{{ field.name.lower_snake_case }}.push_back(c_struct.{{ field.name.lower_snake_case }}[i]);
+        }
     }
-    {% elif field.type_info.is_repeated %}
-    {% if field.type_info.is_primitive %}
+    {% elif field.type_info.is_primitive %}
     cpp_struct.{{ field.name.lower_snake_case }}.assign(
         c_struct.{{ field.name.lower_snake_case }},
         c_struct.{{ field.name.lower_snake_case }} + c_struct.{{ field.name.lower_snake_case }}_size);
@@ -94,6 +97,10 @@ translate_{{ struct.name.lower_snake_case }}_from_c(const mavsdk_{{ plugin_name.
             translate_{{ field.type_info.inner_name.lower_snake_case }}_from_c(c_struct.{{ field.name.lower_snake_case }}[i]));
     }
     {% endif %}
+    {% elif field.type_info.is_string %}
+    if (c_struct.{{ field.name.lower_snake_case }}) {
+        cpp_struct.{{ field.name.lower_snake_case }} = c_struct.{{ field.name.lower_snake_case }};
+    }
     {% elif field.type_info.is_primitive %}
     cpp_struct.{{ field.name.lower_snake_case }} = c_struct.{{ field.name.lower_snake_case }};
     {% elif field.type_info.parent_type %}
@@ -125,11 +132,14 @@ static mavsdk_{{ plugin_name.lower_snake_case }}_{{ struct.name.lower_snake_case
 translate_{{ struct.name.lower_snake_case }}_to_c(const mavsdk::{{ plugin_name.upper_camel_case }}::{{ struct.name.upper_camel_case }}& cpp_struct) {
     mavsdk_{{ plugin_name.lower_snake_case }}_{{ struct.name.lower_snake_case }}_t c_struct{};
     {% for field in struct.fields %}
-    {% if field.type_info.is_string %}
-    c_struct.{{ field.name.lower_snake_case }} = strdup(cpp_struct.{{ field.name.lower_snake_case }}.c_str());
-    {% elif field.type_info.is_repeated %}
+    {% if field.type_info.is_repeated %}
     c_struct.{{ field.name.lower_snake_case }}_size = cpp_struct.{{ field.name.lower_snake_case }}.size();
-    {% if field.type_info.is_primitive %}
+    {% if field.type_info.is_string %}
+    c_struct.{{ field.name.lower_snake_case }} = new char*[c_struct.{{ field.name.lower_snake_case }}_size];
+    for (size_t i = 0; i < c_struct.{{ field.name.lower_snake_case }}_size; i++) {
+        c_struct.{{ field.name.lower_snake_case }}[i] = strdup(cpp_struct.{{ field.name.lower_snake_case }}[i].c_str());
+    }
+    {% elif field.type_info.is_primitive %}
     c_struct.{{ field.name.lower_snake_case }} = new {{ field.type_info.inner_name }}[c_struct.{{ field.name.lower_snake_case }}_size];
     std::copy(cpp_struct.{{ field.name.lower_snake_case }}.begin(), cpp_struct.{{ field.name.lower_snake_case }}.end(), c_struct.{{ field.name.lower_snake_case }});
     {% else %}
@@ -138,6 +148,8 @@ translate_{{ struct.name.lower_snake_case }}_to_c(const mavsdk::{{ plugin_name.u
         c_struct.{{ field.name.lower_snake_case }}[i] = translate_{{ field.type_info.inner_name.lower_snake_case }}_to_c(cpp_struct.{{ field.name.lower_snake_case }}[i]);
     }
     {% endif %}
+    {% elif field.type_info.is_string %}
+    c_struct.{{ field.name.lower_snake_case }} = strdup(cpp_struct.{{ field.name.lower_snake_case }}.c_str());
     {% elif field.type_info.is_primitive %}
     c_struct.{{ field.name.lower_snake_case }} = cpp_struct.{{ field.name.lower_snake_case }};
     {% elif field.type_info.parent_type %}
