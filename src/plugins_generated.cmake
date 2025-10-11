@@ -19,8 +19,11 @@ set(PLUGIN_SOURCES
     cmavsdk/plugins/gripper/gripper.cpp
     cmavsdk/plugins/info/info.cpp
     cmavsdk/plugins/log_files/log_files.cpp
+    cmavsdk/plugins/log_streaming/log_streaming.cpp
+    cmavsdk/plugins/manual_control/manual_control.cpp
     cmavsdk/plugins/mission/mission.cpp
     cmavsdk/plugins/mission_raw/mission_raw.cpp
+    cmavsdk/plugins/mission_raw_server/mission_raw_server.cpp
     cmavsdk/plugins/telemetry/telemetry.cpp
     cmavsdk/plugins/telemetry_server/telemetry_server.cpp
 )
@@ -44,8 +47,11 @@ set(PLUGIN_HEADERS
     cmavsdk/plugins/gripper/gripper.h
     cmavsdk/plugins/info/info.h
     cmavsdk/plugins/log_files/log_files.h
+    cmavsdk/plugins/log_streaming/log_streaming.h
+    cmavsdk/plugins/manual_control/manual_control.h
     cmavsdk/plugins/mission/mission.h
     cmavsdk/plugins/mission_raw/mission_raw.h
+    cmavsdk/plugins/mission_raw_server/mission_raw_server.h
     cmavsdk/plugins/telemetry/telemetry.h
     cmavsdk/plugins/telemetry_server/telemetry_server.h
 )
