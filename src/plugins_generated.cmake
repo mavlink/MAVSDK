@@ -9,6 +9,9 @@ set(PLUGIN_SOURCES
     cmavsdk/plugins/camera_server/camera_server.cpp
     cmavsdk/plugins/component_metadata/component_metadata.cpp
     cmavsdk/plugins/component_metadata_server/component_metadata_server.cpp
+    cmavsdk/plugins/events/events.cpp
+    cmavsdk/plugins/failure/failure.cpp
+    cmavsdk/plugins/ftp_server/ftp_server.cpp
     cmavsdk/plugins/geofence/geofence.cpp
     cmavsdk/plugins/gimbal/gimbal.cpp
     cmavsdk/plugins/mission/mission.cpp
@@ -26,6 +29,9 @@ set(PLUGIN_HEADERS
     cmavsdk/plugins/camera_server/camera_server.h
     cmavsdk/plugins/component_metadata/component_metadata.h
     cmavsdk/plugins/component_metadata_server/component_metadata_server.h
+    cmavsdk/plugins/events/events.h
+    cmavsdk/plugins/failure/failure.h
+    cmavsdk/plugins/ftp_server/ftp_server.h
     cmavsdk/plugins/geofence/geofence.h
     cmavsdk/plugins/gimbal/gimbal.h
     cmavsdk/plugins/mission/mission.h
