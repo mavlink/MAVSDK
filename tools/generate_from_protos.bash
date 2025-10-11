@@ -7,7 +7,7 @@ script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 project_root="$(cd "$script_dir/.." && pwd)"
 
 # Default plugins if none provided
-default_plugins=("action" "action_server" "arm_authorizer_server" "calibration" "camera" "camera_server" "component_metadata" "component_metadata_server" "events" "failure" "ftp" "ftp_server" "geofence" "gimbal" "mission" "mission_raw" "telemetry" "telemetry_server")
+default_plugins=("action" "action_server" "arm_authorizer_server" "calibration" "camera" "camera_server" "component_metadata" "component_metadata_server" "events" "failure" "follow_me" "ftp" "ftp_server" "geofence" "gimbal" "mission" "mission_raw" "telemetry" "telemetry_server")
 
 # Use provided plugins or defaults
 plugins=("${@:-${default_plugins[@]}}")

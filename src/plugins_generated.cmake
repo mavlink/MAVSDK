@@ -11,6 +11,7 @@ set(PLUGIN_SOURCES
     cmavsdk/plugins/component_metadata_server/component_metadata_server.cpp
     cmavsdk/plugins/events/events.cpp
     cmavsdk/plugins/failure/failure.cpp
+    cmavsdk/plugins/follow_me/follow_me.cpp
     cmavsdk/plugins/ftp/ftp.cpp
     cmavsdk/plugins/ftp_server/ftp_server.cpp
     cmavsdk/plugins/geofence/geofence.cpp
@@ -32,6 +33,7 @@ set(PLUGIN_HEADERS
     cmavsdk/plugins/component_metadata_server/component_metadata_server.h
     cmavsdk/plugins/events/events.h
     cmavsdk/plugins/failure/failure.h
+    cmavsdk/plugins/follow_me/follow_me.h
     cmavsdk/plugins/ftp/ftp.h
     cmavsdk/plugins/ftp_server/ftp_server.h
     cmavsdk/plugins/geofence/geofence.h
