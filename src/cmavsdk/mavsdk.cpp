@@ -6,6 +6,13 @@
 #include <vector>
 #include <cstring>
 
+namespace {
+    struct CallbackContext {
+        void* callback;
+        void* user_data;
+    };
+}
+
 using namespace mavsdk;
 
 // ===== Helper conversions =====
@@ -241,6 +248,256 @@ mavsdk_system_t mavsdk_first_autopilot(mavsdk_t mavsdk, double timeout_s) {
         return static_cast<mavsdk_system_t>(new std::shared_ptr<System>(system_opt.value()));
     }
     return nullptr;
+}
+
+// --- Connection Error Handling ---
+mavsdk_connection_error_handle_t mavsdk_subscribe_connection_errors(
+    mavsdk_t mavsdk,
+    mavsdk_connection_error_callback_t callback,
+    void* user_data
+) {
+    auto* cpp_mavsdk = static_cast<Mavsdk*>(mavsdk);
+
+    struct CallbackContext {
+        mavsdk_connection_error_callback_t callback;
+        void* user_data;
+    };
+
+    auto* ctx = new CallbackContext{callback, user_data};
+
+    auto handle = cpp_mavsdk->subscribe_connection_errors(
+        [ctx](Mavsdk::ConnectionError error) {
+            mavsdk_connection_error_t c_error;
+            c_error.error_description = new char[error.error_description.length() + 1];
+            std::strcpy(c_error.error_description, error.error_description.c_str());
+            c_error.connection_handle = new Mavsdk::ConnectionHandle(error.connection_handle);
+
+            ctx->callback(c_error, ctx->user_data);
+
+            delete[] c_error.error_description;
+            delete static_cast<Mavsdk::ConnectionHandle*>(c_error.connection_handle);
+        }
+    );
+
+    auto* result = new std::pair<Mavsdk::ConnectionErrorHandle, CallbackContext*>(
+        std::move(handle), ctx
+    );
+    return static_cast<mavsdk_connection_error_handle_t>(result);
+}
+
+void mavsdk_unsubscribe_connection_errors(
+    mavsdk_t mavsdk,
+    mavsdk_connection_error_handle_t handle
+) {
+    auto* cpp_mavsdk = static_cast<Mavsdk*>(mavsdk);
+    auto* pair = static_cast<std::pair<Mavsdk::ConnectionErrorHandle, CallbackContext*>*>(handle);
+
+    cpp_mavsdk->unsubscribe_connection_errors(pair->first);
+    delete pair->second;
+    delete pair;
+}
+
+// --- System Event Subscriptions ---
+mavsdk_new_system_handle_t mavsdk_subscribe_on_new_system(
+    mavsdk_t mavsdk,
+    mavsdk_new_system_callback_t callback,
+    void* user_data
+) {
+    auto* cpp_mavsdk = static_cast<Mavsdk*>(mavsdk);
+
+    struct CallbackContext {
+        mavsdk_new_system_callback_t callback;
+        void* user_data;
+    };
+
+    auto* ctx = new CallbackContext{callback, user_data};
+
+    auto handle = cpp_mavsdk->subscribe_on_new_system(
+        [ctx]() {
+            ctx->callback(ctx->user_data);
+        }
+    );
+
+    auto* result = new std::pair<Mavsdk::NewSystemHandle, CallbackContext*>(
+        std::move(handle), ctx
+    );
+    return static_cast<mavsdk_new_system_handle_t>(result);
+}
+
+void mavsdk_unsubscribe_on_new_system(
+    mavsdk_t mavsdk,
+    mavsdk_new_system_handle_t handle
+) {
+    auto* cpp_mavsdk = static_cast<Mavsdk*>(mavsdk);
+    auto* pair = static_cast<std::pair<Mavsdk::NewSystemHandle, CallbackContext*>*>(handle);
+
+    cpp_mavsdk->unsubscribe_on_new_system(pair->first);
+    delete pair->second;
+    delete pair;
+}
+
+// --- Configuration ---
+void mavsdk_set_configuration(
+    mavsdk_t mavsdk,
+    mavsdk_configuration_t configuration
+) {
+    auto* cpp_mavsdk = static_cast<Mavsdk*>(mavsdk);
+    auto* cpp_config = static_cast<Mavsdk::Configuration*>(configuration);
+    cpp_mavsdk->set_configuration(*cpp_config);
+}
+
+// --- Server Components ---
+mavsdk_server_component_t mavsdk_server_component(
+    mavsdk_t mavsdk,
+    unsigned int instance
+) {
+    auto* cpp_mavsdk = static_cast<Mavsdk*>(mavsdk);
+    auto component = cpp_mavsdk->server_component(instance);
+    if (component) {
+        return static_cast<mavsdk_server_component_t>(
+            new std::shared_ptr<ServerComponent>(component)
+        );
+    }
+    return nullptr;
+}
+
+mavsdk_server_component_t mavsdk_server_component_by_type(
+    mavsdk_t mavsdk,
+    mavsdk_component_type_t component_type,
+    unsigned int instance
+) {
+    auto* cpp_mavsdk = static_cast<Mavsdk*>(mavsdk);
+    auto component = cpp_mavsdk->server_component_by_type(
+        cpp_component_type_from_c(component_type),
+        instance
+    );
+    if (component) {
+        return static_cast<mavsdk_server_component_t>(
+            new std::shared_ptr<ServerComponent>(component)
+        );
+    }
+    return nullptr;
+}
+
+mavsdk_server_component_t mavsdk_server_component_by_id(
+    mavsdk_t mavsdk,
+    uint8_t component_id
+) {
+    auto* cpp_mavsdk = static_cast<Mavsdk*>(mavsdk);
+    auto component = cpp_mavsdk->server_component_by_id(component_id);
+    if (component) {
+        return static_cast<mavsdk_server_component_t>(
+            new std::shared_ptr<ServerComponent>(component)
+        );
+    }
+    return nullptr;
+}
+
+// --- Message Interception (JSON) ---
+mavsdk_intercept_json_handle_t mavsdk_subscribe_incoming_messages_json(
+    mavsdk_t mavsdk,
+    mavsdk_intercept_json_callback_t callback,
+    void* user_data
+) {
+    auto* cpp_mavsdk = static_cast<Mavsdk*>(mavsdk);
+
+    struct CallbackContext {
+        mavsdk_intercept_json_callback_t callback;
+        void* user_data;
+    };
+
+    auto* ctx = new CallbackContext{callback, user_data};
+
+    auto handle = cpp_mavsdk->subscribe_incoming_messages_json(
+        [ctx](Mavsdk::MavlinkMessage msg) -> bool {
+            mavsdk_message_t c_msg;
+            c_msg.message_name = new char[msg.message_name.length() + 1];
+            std::strcpy(c_msg.message_name, msg.message_name.c_str());
+            c_msg.system_id = msg.system_id;
+            c_msg.component_id = msg.component_id;
+            c_msg.target_system_id = msg.target_system_id;
+            c_msg.target_component_id = msg.target_component_id;
+            c_msg.fields_json = new char[msg.fields_json.length() + 1];
+            std::strcpy(c_msg.fields_json, msg.fields_json.c_str());
+
+            int result = ctx->callback(c_msg, ctx->user_data);
+
+            delete[] c_msg.message_name;
+            delete[] c_msg.fields_json;
+
+            return result != 0;
+        }
+    );
+
+    auto* result = new std::pair<Mavsdk::InterceptJsonHandle, CallbackContext*>(
+        std::move(handle), ctx
+    );
+    return static_cast<mavsdk_intercept_json_handle_t>(result);
+}
+
+void mavsdk_unsubscribe_incoming_messages_json(
+    mavsdk_t mavsdk,
+    mavsdk_intercept_json_handle_t handle
+) {
+    auto* cpp_mavsdk = static_cast<Mavsdk*>(mavsdk);
+    auto* pair = static_cast<std::pair<Mavsdk::InterceptJsonHandle, CallbackContext*>*>(handle);
+
+    cpp_mavsdk->unsubscribe_incoming_messages_json(pair->first);
+    delete pair->second;
+    delete pair;
+}
+
+mavsdk_intercept_json_handle_t mavsdk_subscribe_outgoing_messages_json(
+    mavsdk_t mavsdk,
+    mavsdk_intercept_json_callback_t callback,
+    void* user_data
+) {
+    auto* cpp_mavsdk = static_cast<Mavsdk*>(mavsdk);
+
+    struct CallbackContext {
+        mavsdk_intercept_json_callback_t callback;
+        void* user_data;
+    };
+
+    auto* ctx = new CallbackContext{callback, user_data};
+
+    auto handle = cpp_mavsdk->subscribe_outgoing_messages_json(
+        [ctx](Mavsdk::MavlinkMessage msg) -> bool {
+            mavsdk_message_t c_msg;
+            c_msg.message_name = new char[msg.message_name.length() + 1];
+            std::strcpy(c_msg.message_name, msg.message_name.c_str());
+            c_msg.system_id = msg.system_id;
+            c_msg.component_id = msg.component_id;
+            c_msg.target_system_id = msg.target_system_id;
+            c_msg.target_component_id = msg.target_component_id;
+            c_msg.fields_json = new char[msg.fields_json.length() + 1];
+            std::strcpy(c_msg.fields_json, msg.fields_json.c_str());
+
+            int result = ctx->callback(c_msg, ctx->user_data);
+
+            delete[] c_msg.message_name;
+            delete[] c_msg.fields_json;
+
+            return result != 0;
+        }
+    );
+
+    auto* result = new std::pair<Mavsdk::InterceptJsonHandle, CallbackContext*>(
+        std::move(handle), ctx
+    );
+    return static_cast<mavsdk_intercept_json_handle_t>(result);
+}
+
+void mavsdk_unsubscribe_outgoing_messages_json(
+    mavsdk_t mavsdk,
+    mavsdk_intercept_json_handle_t handle
+) {
+    auto* cpp_mavsdk = static_cast<Mavsdk*>(mavsdk);
+    auto* pair = static_cast<std::pair<Mavsdk::InterceptJsonHandle, CallbackContext*>*>(handle);
+
+    cpp_mavsdk->unsubscribe_outgoing_messages_json(pair->first);
+    delete pair->second;
+    delete pair;
 }
 
 // --- Timeout ---
