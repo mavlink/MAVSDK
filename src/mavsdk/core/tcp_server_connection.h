@@ -4,6 +4,7 @@
 #include "socket_holder.h"
 
 #include <atomic>
+#include <mutex>
 #include <string>
 #include <thread>
 
@@ -32,6 +33,7 @@ private:
     Connection::ReceiverCallback _receiver_callback;
     std::string _local_ip;
     int _local_port;
+    std::mutex _mutex{};
     SocketHolder _server_socket_fd;
     SocketHolder _client_socket_fd;
     std::unique_ptr<std::thread> _accept_receive_thread;
