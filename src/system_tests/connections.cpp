@@ -27,7 +27,8 @@ TEST(SystemTest, TcpConnectionReconnectionFromServerSide)
 
     // Start client
     Mavsdk client_mavsdk{Mavsdk::Configuration{ComponentType::GroundStation}};
-    ASSERT_EQ(client_mavsdk.add_any_connection(client_url), ConnectionResult::Success);
+    auto [client_result, client_handle] = client_mavsdk.add_any_connection_with_handle(client_url);
+    ASSERT_EQ(client_result, ConnectionResult::Success);
 
     // Wait for discovery
     LogInfo() << "Waiting for client to discover server...";
@@ -91,6 +92,7 @@ TEST(SystemTest, TcpConnectionReconnectionFromServerSide)
 
     // Cleanup
     client_mavlink.unsubscribe_message(handle);
+    client_mavsdk.remove_connection(client_handle);
     server_mavsdk.remove_connection(server_handle2);
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
