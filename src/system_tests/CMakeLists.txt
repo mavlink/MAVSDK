@@ -28,6 +28,7 @@ add_executable(system_tests_runner
     intercept.cpp
     mavlink_direct.cpp
     mavlink_direct_forwarding.cpp
+    connections.cpp
     system_tests_runner.cpp
 )
 

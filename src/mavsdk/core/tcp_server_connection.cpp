@@ -61,11 +61,21 @@ ConnectionResult TcpServerConnection::start()
     }
 #endif
 
+    std::lock_guard<std::mutex> lock(_mutex);
+
     _server_socket_fd.reset(socket(AF_INET, SOCK_STREAM, 0));
     if (_server_socket_fd.empty()) {
         LogErr() << "socket error: " << strerror(errno);
         return ConnectionResult::SocketError;
     }
+
+    // Allow reuse of address to avoid "Address already in use" errors
+    int yes = 1;
+#ifdef WINDOWS
+    setsockopt(_server_socket_fd.get(), SOL_SOCKET, SO_REUSEADDR, (const char*)&yes, sizeof(yes));
+#else
+    setsockopt(_server_socket_fd.get(), SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes));
+#endif
 
     sockaddr_in server_addr{};
     server_addr.sin_family = AF_INET;
@@ -85,30 +95,6 @@ ConnectionResult TcpServerConnection::start()
         return ConnectionResult::SocketError;
     }
 
-    // Set receive timeout cross-platform
-    const unsigned timeout_ms = 500;
-
-#if defined(WINDOWS)
-    setsockopt(
-        _server_socket_fd.get(),
-        SOL_SOCKET,
-        SO_RCVTIMEO,
-        (const char*)&timeout_ms,
-        sizeof(timeout_ms));
-    setsockopt(
-        _client_socket_fd.get(),
-        SOL_SOCKET,
-        SO_RCVTIMEO,
-        (const char*)&timeout_ms,
-        sizeof(timeout_ms));
-#else
-    struct timeval tv;
-    tv.tv_sec = 0;
-    tv.tv_usec = timeout_ms * 1000;
-    setsockopt(_server_socket_fd.get(), SOL_SOCKET, SO_RCVTIMEO, (const void*)&tv, sizeof(tv));
-    setsockopt(_client_socket_fd.get(), SOL_SOCKET, SO_RCVTIMEO, (const void*)&tv, sizeof(tv));
-#endif
-
     _accept_receive_thread =
         std::make_unique<std::thread>(&TcpServerConnection::accept_client, this);
 
@@ -124,8 +110,11 @@ ConnectionResult TcpServerConnection::stop()
         _accept_receive_thread.reset();
     }
 
-    _client_socket_fd.close();
-    _server_socket_fd.close();
+    {
+        std::lock_guard<std::mutex> lock(_mutex);
+        _client_socket_fd.close();
+        _server_socket_fd.close();
+    }
 
     // We need to stop this after stopping the receive thread, otherwise
     // it can happen that we interfere with the parsing of a message.
@@ -147,31 +136,37 @@ std::pair<bool, std::string> TcpServerConnection::send_message(const mavlink_mes
 
 void TcpServerConnection::accept_client()
 {
+    // Get server socket fd with mutex protection for setup
+    SocketHolder::DescriptorType server_socket_fd;
+    {
+        std::lock_guard<std::mutex> lock(_mutex);
+        server_socket_fd = _server_socket_fd.get();
+    }
+
 #ifdef WINDOWS
     // Set server socket to non-blocking
     u_long iMode = 1;
-    int iResult = ioctlsocket(_server_socket_fd.get(), FIONBIO, &iMode);
+    int iResult = ioctlsocket(server_socket_fd, FIONBIO, &iMode);
     if (iResult != 0) {
         LogErr() << "ioctlsocket failed with error: " << get_socket_error_string(WSAGetLastError());
     }
 #else
     // Set server socket to non-blocking
-    int flags = fcntl(_server_socket_fd.get(), F_GETFL, 0);
-    fcntl(_server_socket_fd.get(), F_SETFL, flags | O_NONBLOCK);
+    int flags = fcntl(server_socket_fd, F_GETFL, 0);
+    fcntl(server_socket_fd, F_SETFL, flags | O_NONBLOCK);
 #endif
 
     while (!_should_exit) {
         fd_set readfds;
         FD_ZERO(&readfds);
-        FD_SET(_server_socket_fd.get(), &readfds);
+        FD_SET(server_socket_fd, &readfds);
 
         // Set timeout to 1 second
         timeval timeout;
         timeout.tv_sec = 1;
         timeout.tv_usec = 0;
 
-        const int activity =
-            select(_server_socket_fd.get() + 1, &readfds, nullptr, nullptr, &timeout);
+        const int activity = select(server_socket_fd + 1, &readfds, nullptr, nullptr, &timeout);
 
         if (activity < 0 && errno != EINTR) {
             LogErr() << "select error: " << strerror(errno);
@@ -183,22 +178,37 @@ void TcpServerConnection::accept_client()
             continue;
         }
 
-        if (FD_ISSET(_server_socket_fd.get(), &readfds)) {
+        if (FD_ISSET(server_socket_fd, &readfds)) {
             sockaddr_in client_addr{};
             socklen_t client_addr_len = sizeof(client_addr);
 
-            {
-                _client_socket_fd.reset(accept(
-                    _server_socket_fd.get(),
-                    reinterpret_cast<sockaddr*>(&client_addr),
-                    &client_addr_len));
-            }
-            if (_client_socket_fd.empty()) {
+            int new_fd = accept(
+                server_socket_fd, reinterpret_cast<sockaddr*>(&client_addr), &client_addr_len);
+
+            if (new_fd < 0) {
                 if (_should_exit) {
                     return;
                 }
                 LogErr() << "accept error: " << strerror(errno);
                 continue;
+            }
+
+            // Set receive timeout on client socket
+            const unsigned timeout_ms = 500;
+#if defined(WINDOWS)
+            setsockopt(
+                new_fd, SOL_SOCKET, SO_RCVTIMEO, (const char*)&timeout_ms, sizeof(timeout_ms));
+#else
+            struct timeval tv;
+            tv.tv_sec = 0;
+            tv.tv_usec = timeout_ms * 1000;
+            setsockopt(new_fd, SOL_SOCKET, SO_RCVTIMEO, (const void*)&tv, sizeof(tv));
+#endif
+
+            // Now store the new client socket with mutex protection
+            {
+                std::lock_guard<std::mutex> lock(_mutex);
+                _client_socket_fd.reset(new_fd);
             }
 
             receive();
@@ -210,9 +220,19 @@ void TcpServerConnection::receive()
 {
     std::array<char, 2048> buffer{};
 
+    // Get client socket fd with mutex protection, then release mutex before blocking recv
+    SocketHolder::DescriptorType client_socket_fd;
+    {
+        std::lock_guard<std::mutex> lock(_mutex);
+        if (_client_socket_fd.empty()) {
+            return;
+        }
+        client_socket_fd = _client_socket_fd.get();
+    }
+
     bool dataReceived = false;
     while (!dataReceived && !_should_exit) {
-        const auto recv_len = recv(_client_socket_fd.get(), buffer.data(), buffer.size(), 0);
+        const auto recv_len = recv(client_socket_fd, buffer.data(), buffer.size(), 0);
 
 #ifdef WINDOWS
         if (recv_len == SOCKET_ERROR) {
@@ -249,7 +269,13 @@ void TcpServerConnection::receive()
 #endif
 
         if (recv_len == 0) {
-            continue;
+            // Client disconnected, close the socket and go back to accept new connections
+            LogInfo() << "TCP client disconnected, waiting for new connection...";
+            {
+                std::lock_guard<std::mutex> lock(_mutex);
+                _client_socket_fd.close();
+            }
+            return;
         }
 
         _mavlink_receiver->set_new_datagram(buffer.data(), static_cast<int>(recv_len));
@@ -275,13 +301,25 @@ std::pair<bool, std::string> TcpServerConnection::send_raw_bytes(const char* byt
     // Basic implementation for TCP server connections
     std::pair<bool, std::string> result;
 
+    // Get client socket fd with mutex protection, then release mutex before blocking send
+    SocketHolder::DescriptorType client_socket_fd;
+    {
+        std::lock_guard<std::mutex> lock(_mutex);
+        if (_client_socket_fd.empty()) {
+            result.first = false;
+            result.second = "Not connected";
+            return result;
+        }
+        client_socket_fd = _client_socket_fd.get();
+    }
+
 #if !defined(MSG_NOSIGNAL)
     auto flags = 0;
 #else
     auto flags = MSG_NOSIGNAL;
 #endif
 
-    const auto send_len = send(_client_socket_fd.get(), bytes, length, flags);
+    const auto send_len = send(client_socket_fd, bytes, length, flags);
 
     if (send_len != static_cast<std::remove_cv_t<decltype(send_len)>>(length)) {
         // Broken pipe is expected during shutdown, don't log it

@@ -75,9 +75,11 @@ ConnectionResult TcpClientConnection::setup_port()
     }
 #endif
 
-    _socket_fd.reset(socket(AF_INET, SOCK_STREAM, 0));
+    std::lock_guard<std::mutex> lock(_mutex);
 
-    if (_socket_fd.empty()) {
+    int new_fd = socket(AF_INET, SOCK_STREAM, 0);
+
+    if (new_fd < 0) {
         LogErr() << "socket error" << strerror(errno);
         return ConnectionResult::SocketError;
     }
@@ -90,18 +92,14 @@ ConnectionResult TcpClientConnection::setup_port()
     hp = gethostbyname(_remote_ip.c_str());
     if (hp == nullptr) {
         LogErr() << "Could not get host by name";
-        _socket_fd.close();
         return ConnectionResult::SocketConnectionError;
     }
 
     memcpy(&remote_addr.sin_addr, hp->h_addr, hp->h_length);
 
-    if (connect(
-            _socket_fd.get(),
-            reinterpret_cast<sockaddr*>(&remote_addr),
-            sizeof(struct sockaddr_in)) < 0) {
+    if (connect(new_fd, reinterpret_cast<sockaddr*>(&remote_addr), sizeof(struct sockaddr_in)) <
+        0) {
         LogErr() << "Connect error: " << strerror(errno);
-        _socket_fd.close();
         return ConnectionResult::SocketConnectionError;
     }
 
@@ -109,14 +107,15 @@ ConnectionResult TcpClientConnection::setup_port()
     const unsigned timeout_ms = 500;
 
 #if defined(WINDOWS)
-    setsockopt(
-        _socket_fd.get(), SOL_SOCKET, SO_RCVTIMEO, (const char*)&timeout_ms, sizeof(timeout_ms));
+    setsockopt(new_fd, SOL_SOCKET, SO_RCVTIMEO, (const char*)&timeout_ms, sizeof(timeout_ms));
 #else
     struct timeval tv;
     tv.tv_sec = 0;
     tv.tv_usec = timeout_ms * 1000;
-    setsockopt(_socket_fd.get(), SOL_SOCKET, SO_RCVTIMEO, (const void*)&tv, sizeof(tv));
+    setsockopt(new_fd, SOL_SOCKET, SO_RCVTIMEO, (const void*)&tv, sizeof(tv));
 #endif
+
+    _socket_fd.reset(new_fd);
 
     return ConnectionResult::Success;
 }
@@ -135,7 +134,10 @@ ConnectionResult TcpClientConnection::stop()
         _recv_thread.reset();
     }
 
-    _socket_fd.close();
+    {
+        std::lock_guard<std::mutex> lock(_mutex);
+        _socket_fd.close();
+    }
 
     // We need to stop this after stopping the receive thread, otherwise
     // it can happen that we interfere with the parsing of a message.
@@ -155,10 +157,6 @@ std::pair<bool, std::string> TcpClientConnection::send_message(const mavlink_mes
 
 std::pair<bool, std::string> TcpClientConnection::send_raw_bytes(const char* bytes, size_t length)
 {
-    if (_socket_fd.empty()) {
-        return std::make_pair(false, "Not connected");
-    }
-
     std::pair<bool, std::string> result;
 
     if (_remote_ip.empty()) {
@@ -175,13 +173,25 @@ std::pair<bool, std::string> TcpClientConnection::send_raw_bytes(const char* byt
         return result;
     }
 
+    // Get socket fd with mutex protection, then release mutex before blocking send
+    SocketHolder::DescriptorType socket_fd;
+    {
+        std::lock_guard<std::mutex> lock(_mutex);
+        if (_socket_fd.empty()) {
+            result.first = false;
+            result.second = "Not connected";
+            return result;
+        }
+        socket_fd = _socket_fd.get();
+    }
+
 #if !defined(MSG_NOSIGNAL)
     auto flags = 0;
 #else
     auto flags = MSG_NOSIGNAL;
 #endif
 
-    const auto send_len = send(_socket_fd.get(), bytes, length, flags);
+    const auto send_len = send(socket_fd, bytes, length, flags);
 
     if (send_len != static_cast<std::remove_cv_t<decltype(send_len)>>(length)) {
         std::stringstream ss;
@@ -202,13 +212,25 @@ void TcpClientConnection::receive()
     char buffer[2048];
 
     while (!_should_exit) {
-        if (_socket_fd.empty()) {
+        // Get socket fd with mutex protection, then release mutex before blocking recv
+        SocketHolder::DescriptorType socket_fd;
+        {
+            std::lock_guard<std::mutex> lock(_mutex);
+            if (_socket_fd.empty()) {
+                // Socket not connected, need to reconnect
+                socket_fd = SocketHolder::invalid_socket_fd;
+            } else {
+                socket_fd = _socket_fd.get();
+            }
+        }
+
+        if (socket_fd == SocketHolder::invalid_socket_fd) {
             std::this_thread::sleep_for(std::chrono::seconds(1));
             setup_port();
             continue;
         }
 
-        const auto recv_len = recv(_socket_fd.get(), buffer, sizeof(buffer), 0);
+        const auto recv_len = recv(socket_fd, buffer, sizeof(buffer), 0);
 
         if (recv_len == 0) {
             // Connection closed, just try again.
