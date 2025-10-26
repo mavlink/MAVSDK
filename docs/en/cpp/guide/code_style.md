@@ -16,7 +16,7 @@ All **.cpp** and **.h** files should be formatted according to the `.clang-forma
 To automatically fix the formatting, run the command:
 
 ```
-./tools/fix_style.sh .
+./tools/fix_style.py .
 ```
 
 If you don't have clang-format installed or in the correct version, you can use a docker image or install it as explained below:
@@ -26,7 +26,7 @@ If you don't have clang-format installed or in the correct version, you can use 
 You can just use the pre-built docker image:
 
 ```
-tools/run-docker.sh tools/fix_style.sh .
+tools/run-docker.sh tools/fix_style.py .
 ```
 
 ## General Guidelines
