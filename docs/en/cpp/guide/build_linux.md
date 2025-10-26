@@ -4,12 +4,12 @@ This guide explains how to build MAVSDK from source on Linux systems.
 
 ## Requirements
 
-The build requirements are git, cmake, and a C++ compiler (GCC or Clang).
+The build requirements are git, cmake, and a C++ compiler (GCC or Clang), and python.
 
 ### Ubuntu
 ```bash
 sudo apt-get update
-sudo apt-get install build-essential cmake git
+sudo apt-get install build-essential cmake git python3 python3-pip
 ```
 
 ### Fedora
