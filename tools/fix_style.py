@@ -6,11 +6,13 @@ listed by git in the given directory.
 """
 
 import argparse
+import multiprocessing
 import os
 import re
 import shutil
 import subprocess
 import sys
+from functools import partial
 from pathlib import Path
 
 # Try to import tqdm for progress bar support
@@ -139,7 +141,8 @@ def format_file(clang_format, file_path, quiet_mode, diff_cmd):
         # Run clang-format
         subprocess.run(
             [clang_format, '-style=file', '-i', file_path],
-            check=True
+            check=True,
+            capture_output=True
         )
 
         # Check if file changed
@@ -147,16 +150,26 @@ def format_file(clang_format, file_path, quiet_mode, diff_cmd):
 
         if files_differ:
             if not quiet_mode:
-                print(f"Changed {file_path}:")
-                subprocess.run([diff_cmd, orig_file, file_path])
-            return True
+                diff_output = subprocess.run(
+                    [diff_cmd, orig_file, file_path],
+                    capture_output=True,
+                    text=True
+                )
+                return (True, f"Changed {file_path}:\n{diff_output.stdout}")
+            return (True, None)
 
-        return False
+        return (False, None)
 
     finally:
         # Clean up backup
         if os.path.exists(orig_file):
             os.remove(orig_file)
+
+
+def format_file_wrapper(args):
+    """Wrapper for format_file to work with multiprocessing.Pool.map."""
+    file_path, clang_format, quiet_mode, diff_cmd = args
+    return format_file(clang_format, str(file_path), quiet_mode, diff_cmd)
 
 
 def files_are_identical(file1, file2):
@@ -181,6 +194,13 @@ def main():
         '-q', '--quiet',
         action='store_true',
         help='Quiet mode - suppress diff output'
+    )
+    parser.add_argument(
+        '-j', '--cores',
+        type=int,
+        default=None,
+        metavar='N',
+        help='Number of parallel workers (default: CPU count / 2)'
     )
 
     args = parser.parse_args()
@@ -209,30 +229,51 @@ def main():
 
     # Filter out ignored files first to get accurate count
     files_to_process = [
-        file for file in files
+        directory / file for file in files
         if not should_ignore(file, directory, ignore_patterns)
     ]
 
-    # Create progress bar if tqdm is available and not in quiet mode
-    if HAS_TQDM and not args.quiet:
-        file_iterator = tqdm(
-            files_to_process,
-            desc="Formatting files",
-            unit="file",
-            ncols=80,
-            bar_format='{desc}: {percentage:3.0f}%|{bar}| {n_fmt}/{total_fmt}'
-        )
+    # Determine number of worker processes
+    if args.cores is not None:
+        num_workers = max(1, args.cores)
     else:
-        file_iterator = files_to_process
+        # Default: CPU count / 2
+        num_workers = max(1, multiprocessing.cpu_count() // 2)
 
-    # Process each file
+    # Prepare arguments for each file
+    format_args = [
+        (file_path, clang_format, args.quiet, diff_cmd)
+        for file_path in files_to_process
+    ]
+
+    # Process files in parallel
     error_found = False
-    for file in file_iterator:
-        file_path = directory / file
+    diff_outputs = []
 
-        # Format file and track if changes were made
-        if format_file(clang_format, str(file_path), args.quiet, diff_cmd):
+    with multiprocessing.Pool(processes=num_workers) as pool:
+        # Use imap_unordered for better performance with progress bar
+        if HAS_TQDM and not args.quiet:
+            results = list(tqdm(
+                pool.imap_unordered(format_file_wrapper, format_args),
+                total=len(format_args),
+                desc="Formatting files",
+                unit="file",
+                ncols=80,
+                bar_format='{desc}: {percentage:3.0f}%|{bar}| {n_fmt}/{total_fmt}'
+            ))
+        else:
+            results = pool.map(format_file_wrapper, format_args)
+
+    # Process results
+    for changed, diff_output in results:
+        if changed:
             error_found = True
+            if diff_output:
+                diff_outputs.append(diff_output)
+
+    # Print all diff outputs after processing (to avoid interleaved output)
+    for output in diff_outputs:
+        print(output)
 
     # Exit with error if any files were changed
     if error_found:
