@@ -45,6 +45,7 @@ target_sources(mavsdk
     autopilot.cpp
     base64.cpp
     call_every_handler.cpp
+    callback_tracker.cpp
     connection.cpp
     connection_result.cpp
     crc32.cpp
