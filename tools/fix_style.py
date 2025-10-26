@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 """
-This script runs clang-format over all files ending in .h, .c, .cpp, .proto
+This script runs clang-format over all files ending in .h, .c, .cpp
 listed by git in the given directory.
 """
 
@@ -108,7 +108,7 @@ def should_ignore(file_path, directory, ignore_patterns):
 
 
 def get_git_files(directory):
-    """Get list of .h, .c, .cpp, and .proto files from git."""
+    """Get list of .h, .c, and .cpp files from git."""
     try:
         result = subprocess.run(
             ['git', 'ls-files'],
@@ -121,7 +121,7 @@ def get_git_files(directory):
         # Filter for relevant file extensions
         files = []
         for line in result.stdout.splitlines():
-            if re.search(r'\.(h|c|cpp|proto)$', line):
+            if re.search(r'\.(h|c|cpp)$', line):
                 files.append(line)
 
         return files
