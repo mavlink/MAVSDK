@@ -357,6 +357,8 @@ std::string EventsImpl::mode_name_from_custom_mode(uint32_t custom_mode) const
         _system_impl->autopilot(), _system_impl->get_vehicle_type(), custom_mode)) {
         case FlightMode::FBWA:
             return "FBWA";
+        case FlightMode::FBWB:
+            return "FBWB";
         case FlightMode::Autotune:
             return "Autotune";
         case FlightMode::Guided:

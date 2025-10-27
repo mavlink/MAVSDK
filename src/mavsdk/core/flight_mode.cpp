@@ -17,6 +17,12 @@ to_flight_mode_from_custom_mode(Autopilot autopilot, MAV_TYPE mav_type, uint32_t
             case MAV_TYPE::MAV_TYPE_GROUND_ROVER:
                 return to_flight_mode_from_ardupilot_rover_mode(custom_mode);
             case MAV_TYPE::MAV_TYPE_FIXED_WING:
+            case MAV_TYPE::MAV_TYPE_VTOL_FIXEDROTOR:
+            case MAV_TYPE::MAV_TYPE_VTOL_TAILSITTER:
+            case MAV_TYPE::MAV_TYPE_VTOL_TAILSITTER_DUOROTOR:
+            case MAV_TYPE::MAV_TYPE_VTOL_TAILSITTER_QUADROTOR:
+            case MAV_TYPE::MAV_TYPE_VTOL_TILTROTOR:
+            case MAV_TYPE::MAV_TYPE_VTOL_TILTWING:
                 return to_flight_mode_from_ardupilot_plane_mode(custom_mode);
             default:
                 return to_flight_mode_from_ardupilot_copter_mode(custom_mode);
@@ -91,6 +97,8 @@ FlightMode to_flight_mode_from_ardupilot_plane_mode(uint32_t custom_mode)
             return FlightMode::Altctl;
         case ardupilot::PlaneMode::Fbwa:
             return FlightMode::FBWA;
+        case ardupilot::PlaneMode::Fbwb:
+            return FlightMode::FBWB;
         case ardupilot::PlaneMode::Guided:
             return FlightMode::Guided;
         case ardupilot::PlaneMode::Loiter:
@@ -99,6 +107,8 @@ FlightMode to_flight_mode_from_ardupilot_plane_mode(uint32_t custom_mode)
             return FlightMode::ReturnToLaunch;
         case ardupilot::PlaneMode::Stabilize:
             return FlightMode::Stabilized;
+        case ardupilot::PlaneMode::Takeoff:
+            return FlightMode::Takeoff;
         case ardupilot::PlaneMode::Unknown:
             return FlightMode::Unknown;
         default:
