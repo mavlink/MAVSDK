@@ -113,13 +113,17 @@ class {{ struct.name.upper_camel_case }}(ctypes.Structure):
 class {{ plugin_name.upper_camel_case }}:
     """{{ class_description }}"""
     
-    def __init__(self, lib: ctypes.CDLL, {% if is_server %}server_component{% else %}system{% endif %}: ctypes.c_void_p):
+    def __init__(self, lib: ctypes.CDLL, {% if is_server %}server_component{% else %}system{% endif %}):
         self._lib = lib
         self._handle = None
         self._callbacks = []  # Keep references to prevent GC
         
         self._setup_functions()
-        self._handle = self._lib.mavsdk_{{ plugin_name.lower_snake_case }}_create({% if is_server %}server_component{% else %}system{% endif %})
+        {% if is_server %}
+        self._handle = self._lib.mavsdk_{{ plugin_name.lower_snake_case }}_create(server_component._handle if hasattr(server_component, '_handle') else server_component)
+        {% else %}
+        self._handle = self._lib.mavsdk_{{ plugin_name.lower_snake_case }}_create(system._handle if hasattr(system, '_handle') else system)
+        {% endif %}
     
     def _setup_functions(self):
         """Setup C function signatures"""
@@ -155,6 +159,8 @@ class {{ plugin_name.upper_camel_case }}:
             ctypes.c_size_t,
             {% elif param.type_info.is_primitive %}
             ctypes.{{ param.type_info.name }},
+            {% elif param.type_info.is_enum %}
+            ctypes.c_int,
             {% elif param.type_info.parent_type %}
             ctypes.c_int,
             {% else %}
@@ -191,6 +197,8 @@ class {{ plugin_name.upper_camel_case }}:
             ctypes.c_size_t,
             {% elif param.type_info.is_primitive %}
             ctypes.{{ param.type_info.name }},
+            {% elif param.type_info.is_enum %}
+            ctypes.c_int,
             {% elif param.type_info.parent_type %}
             ctypes.c_int,
             {% else %}
@@ -201,6 +209,8 @@ class {{ plugin_name.upper_camel_case }}:
             {% if method.return_type.is_repeated %}
             ctypes.POINTER(ctypes.POINTER({{ method.return_type.inner_name.upper_camel_case }})),
             ctypes.POINTER(ctypes.c_size_t)
+            {% elif method.return_type.is_primitive %}
+            ctypes.POINTER(ctypes.{{ method.return_type.name }})
             {% else %}
             ctypes.POINTER({{ method.return_type.inner_name.upper_camel_case }})
             {% endif %}
@@ -214,7 +224,7 @@ class {{ plugin_name.upper_camel_case }}:
     
     {% for method in methods %}
     {% if method.is_async %}
-    def {{ method.name.lower_snake_case }}(self, {% for param in method.params %}{{ param.name.lower_snake_case }}, {% endfor %}callback: Callable, user_data: Any = None):
+    def {{ method.name.lower_snake_case }}_async(self, {% for param in method.params %}{{ param.name.lower_snake_case }}, {% endfor %}callback: Callable, user_data: Any = None):
         """{{ method.method_description }}"""
         
         def c_callback({% if method.has_result %}result, {% endif %}{% if method.return_type %}{{ method.return_name.lower_snake_case }}{% if method.return_type.is_repeated %}, size{% endif %}, {% endif %}ud):
@@ -291,6 +301,20 @@ class {{ plugin_name.upper_camel_case }}:
         )
         {% endif %}
         return result_out
+        {% endif %}
+        {% else %}
+        {% if method.has_result %}
+        result = self._lib.mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}(
+            self._handle,
+            {% for param in method.params %}{{ param.name.lower_snake_case }}{% if not loop.last %}, {% endif %}{% endfor %}
+        )
+        if result != 0:
+            raise Exception(f"{{ method.name.lower_snake_case }} failed: {result}")
+        {% else %}
+        self._lib.mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}(
+            self._handle,
+            {% for param in method.params %}{{ param.name.lower_snake_case }}{% if not loop.last %}, {% endif %}{% endfor %}
+        )
         {% endif %}
         {% endif %}
     {% endif %}
