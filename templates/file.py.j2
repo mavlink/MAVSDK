@@ -10,19 +10,13 @@ import ctypes
 from typing import Optional, List, Callable, Any
 from enum import IntEnum
 
-{% if is_server %}
-from ..types import ServerComponentHandle
-{% else %}
-from ..types import SystemHandle
-{% endif %}
-
 
 # ===== Enums =====
 {% for enum in enums %}
 class {{ enum.name.upper_camel_case }}(IntEnum):
     """{{ enum.enum_description }}"""
     {% for value in enum.values %}
-    {{ value.name.uppercase }} = {{ loop.index0 }}  # {{ value.description.rstrip() }}
+    {{ value.name.uppercase }} = {{ loop.index0 }}
     {% endfor %}
 
 {% endfor %}
@@ -35,7 +29,7 @@ class {{ enum.name.upper_camel_case }}(IntEnum):
 class {{ plugin_name.upper_camel_case }}Result(IntEnum):
     """{{ nested_enum.enum_description }}"""
     {% for value in nested_enum.values %}
-    {{ value.name.uppercase }} = {{ loop.index0 }}  # {{ value.description.rstrip() }}
+    {{ value.name.uppercase }} = {{ loop.index0 }}
     {% endfor %}
 
 {% endif %}
@@ -50,7 +44,7 @@ class {{ plugin_name.upper_camel_case }}Result(IntEnum):
 class {{ struct.name.upper_camel_case }}{{ nested_enum.name.upper_camel_case }}(IntEnum):
     """{{ nested_enum.enum_description }}"""
     {% for value in nested_enum.values %}
-    {{ value.name.uppercase }} = {{ loop.index0 }}  # {{ value.description.rstrip() }}
+    {{ value.name.uppercase }} = {{ loop.index0 }}
     {% endfor %}
 
 {% endfor %}
@@ -71,19 +65,19 @@ class {{ struct.name.upper_camel_case }}(ctypes.Structure):
         {% for field in struct.fields %}
         {% if field.type_info.is_primitive %}
         {% if field.type_info.is_repeated %}
-        ("{{ field.name.lower_snake_case }}", ctypes.POINTER(ctypes.{{ field.type_info.name | replace('int32_t', 'c_int32') | replace('uint32_t', 'c_uint32') | replace('int64_t', 'c_int64') | replace('uint64_t', 'c_uint64') | replace('float', 'c_float') | replace('double', 'c_double') | replace('bool', 'c_bool') }})),
+        ("{{ field.name.lower_snake_case }}", ctypes.POINTER(ctypes.{{ field.type_info.name }})),
         ("{{ field.name.lower_snake_case }}_size", ctypes.c_size_t),
         {% else %}
-        ("{{ field.name.lower_snake_case }}", ctypes.{{ field.type_info.name | replace('int32_t', 'c_int32') | replace('uint32_t', 'c_uint32') | replace('int64_t', 'c_int64') | replace('uint64_t', 'c_uint64') | replace('float', 'c_float') | replace('double', 'c_double') | replace('bool', 'c_bool') }}),  # {{ field.description.rstrip() }}
+        ("{{ field.name.lower_snake_case }}", ctypes.{{ field.type_info.name }}),
         {% endif %}
         {% else %}
         {% if field.type_info.is_repeated %}
         ("{{ field.name.lower_snake_case }}", ctypes.POINTER({{ field.type_info.inner_name.upper_camel_case }})),
         ("{{ field.name.lower_snake_case }}_size", ctypes.c_size_t),
         {% elif field.type_info.parent_type %}
-        ("{{ field.name.lower_snake_case }}", ctypes.c_int),  # {{ field.type_info.parent_type.upper_camel_case }}{{ field.type_info.name.upper_camel_case }}
+        ("{{ field.name.lower_snake_case }}", ctypes.c_int),
         {% else %}
-        ("{{ field.name.lower_snake_case }}", {{ field.type_info.name.upper_camel_case }}),  # {{ field.description.rstrip() }}
+        ("{{ field.name.lower_snake_case }}", {{ field.type_info.name.upper_camel_case }}),
         {% endif %}
         {% endif %}
         {% endfor %}
@@ -97,20 +91,20 @@ class {{ struct.name.upper_camel_case }}(ctypes.Structure):
 {% if method.is_async %}
 {{ method.name.upper_camel_case }}Callback = ctypes.CFUNCTYPE(
     None,
-    {% if method.has_result %}ctypes.c_int,  # result{% endif %}
+    {% if method.has_result %}ctypes.c_int,{% endif %}
     {% if method.return_type %}
     {% if method.return_type.is_primitive %}
-    ctypes.{{ method.return_type.name | replace('int32_t', 'c_int32') | replace('uint32_t', 'c_uint32') | replace('int64_t', 'c_int64') | replace('uint64_t', 'c_uint64') | replace('float', 'c_float') | replace('double', 'c_double') | replace('bool', 'c_bool') }},  # {{ method.return_name.lower_snake_case }}
+    ctypes.{{ method.return_type.name }},
     {% else %}
     {% if method.return_type.is_repeated %}
-    ctypes.POINTER({{ method.return_type.inner_name.upper_camel_case }}),  # {{ method.return_name.lower_snake_case }}
-    ctypes.c_size_t,  # {{ method.return_name.lower_snake_case }}_size
+    ctypes.POINTER({{ method.return_type.inner_name.upper_camel_case }}),
+    ctypes.c_size_t,
     {% else %}
-    {{ method.return_type.inner_name.upper_camel_case }},  # {{ method.return_name.lower_snake_case }}
+    {{ method.return_type.inner_name.upper_camel_case }},
     {% endif %}
     {% endif %}
     {% endif %}
-    ctypes.c_void_p  # user_data
+    ctypes.c_void_p
 )
 {% endif %}
 {% endfor %}
@@ -131,11 +125,7 @@ class {{ plugin_name.upper_camel_case }}:
         """Setup C function signatures"""
         
         # Create/Destroy
-        {% if is_server %}
         self._lib.mavsdk_{{ plugin_name.lower_snake_case }}_create.argtypes = [ctypes.c_void_p]
-        {% else %}
-        self._lib.mavsdk_{{ plugin_name.lower_snake_case }}_create.argtypes = [ctypes.c_void_p]
-        {% endif %}
         self._lib.mavsdk_{{ plugin_name.lower_snake_case }}_create.restype = ctypes.c_void_p
         
         self._lib.mavsdk_{{ plugin_name.lower_snake_case }}_destroy.argtypes = [ctypes.c_void_p]
@@ -143,7 +133,6 @@ class {{ plugin_name.upper_camel_case }}:
         
         {% for struct in structs %}
         {% if not struct.name.upper_camel_case.endswith('Result') %}
-        # {{ struct.name.upper_camel_case }} destroy functions
         self._lib.mavsdk_{{ plugin_name.lower_snake_case }}_{{ struct.name.lower_snake_case }}_destroy.argtypes = [
             ctypes.POINTER({{ struct.name.upper_camel_case }})
         ]
@@ -153,23 +142,29 @@ class {{ plugin_name.upper_camel_case }}:
         {% endfor %}
         
         {% for method in methods %}
-        # {{ method.name.lower_snake_case }}
         {% if method.is_async %}
         self._lib.mavsdk_{{ plugin_name.lower_snake_case }}{% if method.is_stream and not method.is_finite %}_subscribe{% endif %}_{{ method.name.lower_snake_case }}{% if not method.is_stream or method.is_finite %}_async{% endif %}.argtypes = [
-            ctypes.c_void_p,  # plugin handle
+            ctypes.c_void_p,
             {% for param in method.params %}
             {% if param.type_info.is_repeated %}
-            ctypes.POINTER(ctypes.{{ param.type_info.inner_name | replace('int32_t', 'c_int32') | replace('uint32_t', 'c_uint32') }}),
+            {% if param.type_info.is_primitive %}
+            ctypes.POINTER(ctypes.{{ param.type_info.inner_name }}),
+            {% else %}
+            ctypes.POINTER({{ param.type_info.inner_name.upper_camel_case }}),
+            {% endif %}
             ctypes.c_size_t,
             {% elif param.type_info.is_primitive %}
-            ctypes.{{ param.type_info.name | replace('int32_t', 'c_int32') | replace('uint32_t', 'c_uint32') | replace('float', 'c_float') | replace('double', 'c_double') | replace('bool', 'c_bool') }},
+            ctypes.{{ param.type_info.name }},
+            {% elif param.type_info.parent_type %}
+            ctypes.c_int,
             {% else %}
             {{ param.type_info.name.upper_camel_case }},
             {% endif %}
             {% endfor %}
             {{ method.name.upper_camel_case }}Callback,
-            ctypes.c_void_p  # user_data
+            ctypes.c_void_p
         ]
+
         self._lib.mavsdk_{{ plugin_name.lower_snake_case }}{% if method.is_stream and not method.is_finite %}_subscribe{% endif %}_{{ method.name.lower_snake_case }}{% if not method.is_stream or method.is_finite %}_async{% endif %}.restype = {% if method.is_stream and not method.is_finite %}ctypes.c_void_p{% else %}None{% endif %}
         
         {% if method.is_stream and not method.is_finite %}
@@ -178,6 +173,7 @@ class {{ plugin_name.upper_camel_case }}:
             ctypes.c_void_p,
             ctypes.c_void_p
         ]
+
         self._lib.mavsdk_{{ plugin_name.lower_snake_case }}_unsubscribe_{{ method.name.lower_snake_case }}.restype = None
         {% endif %}
         {% endif %}
@@ -186,8 +182,19 @@ class {{ plugin_name.upper_camel_case }}:
         self._lib.mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}.argtypes = [
             ctypes.c_void_p,
             {% for param in method.params %}
+            {% if param.type_info.is_repeated %}
             {% if param.type_info.is_primitive %}
-            ctypes.{{ param.type_info.name | replace('int32_t', 'c_int32') }},
+            ctypes.POINTER(ctypes.{{ param.type_info.inner_name }}),
+            {% else %}
+            ctypes.POINTER({{ param.type_info.inner_name.upper_camel_case }}),
+            {% endif %}
+            ctypes.c_size_t,
+            {% elif param.type_info.is_primitive %}
+            ctypes.{{ param.type_info.name }},
+            {% elif param.type_info.parent_type %}
+            ctypes.c_int,
+            {% else %}
+            {{ param.type_info.name.upper_camel_case }},
             {% endif %}
             {% endfor %}
             {% if method.return_name %}
@@ -199,7 +206,9 @@ class {{ plugin_name.upper_camel_case }}:
             {% endif %}
             {% endif %}
         ]
+
         self._lib.mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}.restype = {% if method.has_result %}ctypes.c_int{% else %}None{% endif %}
+
         {% endif %}
         {% endfor %}
     
@@ -240,7 +249,7 @@ class {{ plugin_name.upper_camel_case }}:
     {% endif %}
     
     {% if method.is_sync %}
-    def {{ method.name.lower_snake_case }}(self{% for param in method.params %}, {{ param.name.lower_snake_case }}{% endfor %}){% if method.return_name %} -> {{ method.return_type.inner_name.upper_camel_case }}{% endif %}:
+    def {{ method.name.lower_snake_case }}(self{% for param in method.params %}, {{ param.name.lower_snake_case }}{% endfor %}):
         """Get {{ method.name.lower_snake_case }} (blocking)"""
         {% if method.return_name %}
         {% if method.return_type.is_repeated %}
