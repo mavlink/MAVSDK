@@ -120,12 +120,48 @@ class {{ plugin_name.upper_camel_case }}:
         self._callbacks = []  # Keep references to prevent GC
         
         self._setup_functions()
+        
+        # Validate input parameter
         {% if is_server %}
-        self._handle = self._lib.mavsdk_{{ plugin_name.lower_snake_case }}_create(server_component._handle if hasattr(server_component, '_handle') else server_component)
+        if server_component is None:
+            raise ValueError("server_component cannot be None")
+        
+        # Extract handle with validation
+        if hasattr(server_component, '_handle'):
+            component_handle = server_component._handle
+        elif isinstance(server_component, ctypes.c_void_p):
+            component_handle = server_component
+        else:
+            raise ValueError(f"Invalid server_component type: {type(server_component)}. Expected ServerComponent or c_void_p")
+        
+        # Validate handle is not null
+        if not component_handle or (isinstance(component_handle, int) and component_handle == 0):
+            raise ValueError("server_component handle is null")
+        
+        self._handle = self._lib.mavsdk_{{ plugin_name.lower_snake_case }}_create(component_handle)
         {% else %}
-        self._handle = self._lib.mavsdk_{{ plugin_name.lower_snake_case }}_create(system._handle if hasattr(system, '_handle') else system)
+        if system is None:
+            raise ValueError("system cannot be None")
+        
+        # Extract handle with validation
+        if hasattr(system, '_handle'):
+            system_handle = system._handle
+        elif isinstance(system, ctypes.c_void_p):
+            system_handle = system
+        else:
+            raise ValueError(f"Invalid system type: {type(system)}. Expected MavsdkSystem or c_void_p")
+        
+        # Validate handle is not null
+        if not system_handle or (isinstance(system_handle, int) and system_handle == 0):
+            raise ValueError("system handle is null")
+        
+        self._handle = self._lib.mavsdk_{{ plugin_name.lower_snake_case }}_create(system_handle)
         {% endif %}
-    
+        
+        # Validate plugin creation succeeded
+        if not self._handle:
+            raise RuntimeError("Failed to create {{ plugin_name.upper_camel_case }} plugin - C function returned null handle")
+   
     def _setup_functions(self):
         """Setup C function signatures"""
         
@@ -259,7 +295,7 @@ class {{ plugin_name.upper_camel_case }}:
     {% endif %}
     {% endif %}
     
-    {% if method.is_sync %}
+{% if method.is_sync %}
     def {{ method.name.lower_snake_case }}(self{% for param in method.params %}, {{ param.name.lower_snake_case }}{% endfor %}):
         """Get {{ method.name.lower_snake_case }} (blocking)"""
         {% if method.return_name %}
@@ -286,8 +322,14 @@ class {{ plugin_name.upper_camel_case }}:
         {% endif %}
         return [result_ptr[i] for i in range(size.value)]
         {% else %}
+        {# Single value return type logic #}
+        {% if method.return_type.is_primitive %}
+        result_out = ctypes.{{ method.return_type.inner_name }}()
+        {% else %}
         result_out = {{ method.return_type.inner_name.upper_camel_case }}()
+        {% endif %}
         {% if method.has_result %}
+        {# This is the case for get_takeoff_altitude - has both result AND return value #}
         result_code = self._lib.mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}(
             self._handle,
             {% for param in method.params %}{{ param.name.lower_snake_case }}, {% endfor %}
@@ -296,16 +338,27 @@ class {{ plugin_name.upper_camel_case }}:
         result = {{ result_enum }}(result_code)
         if result != {{ result_enum }}.SUCCESS:
             raise Exception(f"{{ method.name.lower_snake_case }} failed: {result}")
+        {% if method.return_type.is_primitive %}
+        return result_out.value
         {% else %}
+        return result_out
+        {% endif %}
+        {% else %}
+        {# Has return value but no result enum #}
         self._lib.mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}(
             self._handle,
             {% for param in method.params %}{{ param.name.lower_snake_case }}, {% endfor %}
             ctypes.byref(result_out)
         )
-        {% endif %}
+        {% if method.return_type.is_primitive %}
+        return result_out.value
+        {% else %}
         return result_out
         {% endif %}
+        {% endif %}
+        {% endif %}
         {% else %}
+        {# No return value, only possible result enum #}
         {% if method.has_result %}
         result_code = self._lib.mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}(
             self._handle,
@@ -322,7 +375,7 @@ class {{ plugin_name.upper_camel_case }}:
         {% endif %}
         {% endif %}
     {% endif %}
-    
+  
     {% endfor %}
     
     def destroy(self):
