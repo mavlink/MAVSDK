@@ -22,11 +22,12 @@ class {{ enum.name.upper_camel_case }}(IntEnum):
 {% endfor %}
 
 # ===== Result Enums =====
+{% set result_enum = plugin_name.upper_camel_case + "Result" %}
 {% for struct in structs %}
 {% if struct.name.upper_camel_case.endswith('Result') %}
 {% for nested_enum_name, nested_enum in struct.nested_enums.items() %}
 {% if nested_enum_name == 'Result' %}
-class {{ plugin_name.upper_camel_case }}Result(IntEnum):
+class {{ result_enum }}(IntEnum):
     """{{ nested_enum.enum_description }}"""
     {% for value in nested_enum.values %}
     {{ value.name.uppercase }} = {{ loop.index0 }}
@@ -266,13 +267,14 @@ class {{ plugin_name.upper_camel_case }}:
         result_ptr = ctypes.POINTER({{ method.return_type.inner_name.upper_camel_case }})()
         size = ctypes.c_size_t()
         {% if method.has_result %}
-        result = self._lib.mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}(
+        result_code = self._lib.mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}(
             self._handle,
             {% for param in method.params %}{{ param.name.lower_snake_case }}, {% endfor %}
             ctypes.byref(result_ptr),
             ctypes.byref(size)
         )
-        if result != 0:
+        result = {{ result_enum }}(result_code)
+        if result != {{ result_enum }}.SUCCESS:
             raise Exception(f"{{ method.name.lower_snake_case }} failed: {result}")
         {% else %}
         self._lib.mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}(
@@ -286,12 +288,13 @@ class {{ plugin_name.upper_camel_case }}:
         {% else %}
         result_out = {{ method.return_type.inner_name.upper_camel_case }}()
         {% if method.has_result %}
-        result = self._lib.mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}(
+        result_code = self._lib.mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}(
             self._handle,
             {% for param in method.params %}{{ param.name.lower_snake_case }}, {% endfor %}
             ctypes.byref(result_out)
         )
-        if result != 0:
+        result = {{ result_enum }}(result_code)
+        if result != {{ result_enum }}.SUCCESS:
             raise Exception(f"{{ method.name.lower_snake_case }} failed: {result}")
         {% else %}
         self._lib.mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}(
@@ -304,11 +307,12 @@ class {{ plugin_name.upper_camel_case }}:
         {% endif %}
         {% else %}
         {% if method.has_result %}
-        result = self._lib.mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}(
+        result_code = self._lib.mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}(
             self._handle,
             {% for param in method.params %}{{ param.name.lower_snake_case }}{% if not loop.last %}, {% endif %}{% endfor %}
         )
-        if result != 0:
+        result = {{ result_enum }}(result_code)
+        if result != {{ result_enum }}.SUCCESS:
             raise Exception(f"{{ method.name.lower_snake_case }} failed: {result}")
         {% else %}
         self._lib.mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}(
