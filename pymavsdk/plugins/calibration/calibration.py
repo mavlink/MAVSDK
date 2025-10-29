@@ -30,8 +30,6 @@ class CalibrationResult(IntEnum):
     UNSUPPORTED = 11
 
 
-# ===== Nested Enums =====
-
 # ===== Internal C Structures =====
 class ProgressDataCStruct(ctypes.Structure):
     """
@@ -53,6 +51,7 @@ class ProgressData:
 
  Can be a progress percentage, or an instruction text.
     """
+
     def __init__(self, has_progress=None, progress=None, has_status_text=None, status_text=None):
         self.has_progress = has_progress
         self.progress = progress

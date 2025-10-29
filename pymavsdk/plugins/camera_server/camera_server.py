@@ -40,36 +40,6 @@ class CameraServerResult(IntEnum):
     NO_SYSTEM = 8
 
 
-# ===== Nested Enums =====
-class StorageInformationStorageStatus(IntEnum):
-    """Storage status type."""
-    NOT_AVAILABLE = 0
-    UNFORMATTED = 1
-    FORMATTED = 2
-    NOT_SUPPORTED = 3
-
-class StorageInformationStorageType(IntEnum):
-    """Storage type."""
-    UNKNOWN = 0
-    USB_STICK = 1
-    SD = 2
-    MICROSD = 3
-    HD = 4
-    OTHER = 5
-
-class CaptureStatusImageStatus(IntEnum):
-    """The image status"""
-    IDLE = 0
-    CAPTURE_IN_PROGRESS = 1
-    INTERVAL_IDLE = 2
-    INTERVAL_IN_PROGRESS = 3
-
-class CaptureStatusVideoStatus(IntEnum):
-    """The video status"""
-    IDLE = 0
-    CAPTURE_IN_PROGRESS = 1
-
-
 # ===== Internal C Structures =====
 class InformationCStruct(ctypes.Structure):
     """
@@ -199,6 +169,7 @@ class Information:
     """
     Type to represent a camera information.
     """
+
     def __init__(self, vendor_name=None, model_name=None, firmware_version=None, focal_length_mm=None, horizontal_sensor_size_mm=None, vertical_sensor_size_mm=None, horizontal_resolution_px=None, vertical_resolution_px=None, lens_id=None, definition_file_version=None, definition_file_uri=None, image_in_video_mode_supported=None, video_in_image_mode_supported=None):
         self.vendor_name = vendor_name
         self.model_name = model_name
@@ -303,6 +274,7 @@ class VideoStreaming:
     """
     Type to represent video streaming settings
     """
+
     def __init__(self, has_rtsp_server=None, rtsp_uri=None):
         self.has_rtsp_server = has_rtsp_server
         self.rtsp_uri = rtsp_uri
@@ -336,6 +308,7 @@ class Position:
     """
     Position type in global coordinates.
     """
+
     def __init__(self, latitude_deg=None, longitude_deg=None, absolute_altitude_m=None, relative_altitude_m=None):
         self.latitude_deg = latitude_deg
         self.longitude_deg = longitude_deg
@@ -392,6 +365,7 @@ class Quaternion:
 
  For more info see: https://en.wikipedia.org/wiki/Quaternion
     """
+
     def __init__(self, w=None, x=None, y=None, z=None):
         self.w = w
         self.x = x
@@ -441,6 +415,7 @@ class CaptureInfo:
     """
     Information about a picture just captured.
     """
+
     def __init__(self, position=None, attitude_quaternion=None, time_utc_us=None, is_success=None, index=None, file_url=None):
         self.position = position
         self.attitude_quaternion = attitude_quaternion
@@ -502,6 +477,23 @@ class StorageInformation:
     """
     Information about the camera storage.
     """
+    class StorageStatus(IntEnum):
+        """Storage status type."""
+        NOT_AVAILABLE = 0
+        UNFORMATTED = 1
+        FORMATTED = 2
+        NOT_SUPPORTED = 3
+
+    class StorageType(IntEnum):
+        """Storage type."""
+        UNKNOWN = 0
+        USB_STICK = 1
+        SD = 2
+        MICROSD = 3
+        HD = 4
+        OTHER = 5
+
+
     def __init__(self, used_storage_mib=None, available_storage_mib=None, total_storage_mib=None, storage_status=None, storage_id=None, storage_type=None, read_speed_mib_s=None, write_speed_mib_s=None):
         self.used_storage_mib = used_storage_mib
         self.available_storage_mib = available_storage_mib
@@ -520,10 +512,10 @@ class StorageInformation:
         instance.available_storage_mib = c_struct.available_storage_mib
         instance.total_storage_mib = c_struct.total_storage_mib
         # Convert C enum to Python enum
-        instance.storage_status = StorageStatus(c_struct.storage_status)
+        instance.storage_status = StorageInformation.StorageStatus(c_struct.storage_status)
         instance.storage_id = c_struct.storage_id
         # Convert C enum to Python enum
-        instance.storage_type = StorageType(c_struct.storage_type)
+        instance.storage_type = StorageInformation.StorageType(c_struct.storage_type)
         instance.read_speed_mib_s = c_struct.read_speed_mib_s
         instance.write_speed_mib_s = c_struct.write_speed_mib_s
         return instance
@@ -581,6 +573,19 @@ class CaptureStatus:
     """
     Capture status
     """
+    class ImageStatus(IntEnum):
+        """The image status"""
+        IDLE = 0
+        CAPTURE_IN_PROGRESS = 1
+        INTERVAL_IDLE = 2
+        INTERVAL_IN_PROGRESS = 3
+
+    class VideoStatus(IntEnum):
+        """The video status"""
+        IDLE = 0
+        CAPTURE_IN_PROGRESS = 1
+
+
     def __init__(self, image_interval_s=None, recording_time_s=None, available_capacity_mib=None, image_status=None, video_status=None, image_count=None):
         self.image_interval_s = image_interval_s
         self.recording_time_s = recording_time_s
@@ -597,9 +602,9 @@ class CaptureStatus:
         instance.recording_time_s = c_struct.recording_time_s
         instance.available_capacity_mib = c_struct.available_capacity_mib
         # Convert C enum to Python enum
-        instance.image_status = ImageStatus(c_struct.image_status)
+        instance.image_status = CaptureStatus.ImageStatus(c_struct.image_status)
         # Convert C enum to Python enum
-        instance.video_status = VideoStatus(c_struct.video_status)
+        instance.video_status = CaptureStatus.VideoStatus(c_struct.video_status)
         instance.image_count = c_struct.image_count
         return instance
 
@@ -646,6 +651,7 @@ class TrackPoint:
     """
     Point description type
     """
+
     def __init__(self, point_x=None, point_y=None, radius=None):
         self.point_x = point_x
         self.point_y = point_y
@@ -688,6 +694,7 @@ class TrackRectangle:
     """
     Rectangle description type
     """
+
     def __init__(self, top_left_corner_x=None, top_left_corner_y=None, bottom_right_corner_x=None, bottom_right_corner_y=None):
         self.top_left_corner_x = top_left_corner_x
         self.top_left_corner_y = top_left_corner_y

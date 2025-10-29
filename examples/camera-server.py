@@ -119,15 +119,12 @@ def storage_information_callback(storage_id, user_data=None):
     storage_information = StorageInformation()
     total_storage = 4 * 1024 * 1024  # 4GB
     
-    # Set all required fields
     storage_information.total_storage_mib = total_storage
     storage_information.used_storage_mib = 100.0
     storage_information.available_storage_mib = total_storage - storage_information.used_storage_mib
     storage_information.storage_status = StorageInformationStorageStatus.FORMATTED
     storage_information.storage_type = StorageInformationStorageType.MICROSD
     storage_information.storage_id = storage_id
-    
-    # Set optional fields to 0 instead of None
     storage_information.read_speed_mib_s = 0.0
     storage_information.write_speed_mib_s = 0.0
 

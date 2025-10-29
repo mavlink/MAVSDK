@@ -94,15 +94,6 @@ class TelemetryResult(IntEnum):
     UNSUPPORTED = 7
 
 
-# ===== Nested Enums =====
-class OdometryMavFrame(IntEnum):
-    """Mavlink frame id"""
-    UNDEF = 0
-    BODY_NED = 1
-    VISION_NED = 2
-    ESTIM_NED = 3
-
-
 # ===== Internal C Structures =====
 class PositionCStruct(ctypes.Structure):
     """
@@ -491,6 +482,7 @@ class Position:
     """
     Position type in global coordinates.
     """
+
     def __init__(self, latitude_deg=None, longitude_deg=None, absolute_altitude_m=None, relative_altitude_m=None):
         self.latitude_deg = latitude_deg
         self.longitude_deg = longitude_deg
@@ -540,6 +532,7 @@ class Heading:
     """
     Heading type used for global position
     """
+
     def __init__(self, heading_deg=None):
         self.heading_deg = heading_deg
 
@@ -575,6 +568,7 @@ class Quaternion:
 
  For more info see: https://en.wikipedia.org/wiki/Quaternion
     """
+
     def __init__(self, w=None, x=None, y=None, z=None, timestamp_us=None):
         self.w = w
         self.x = x
@@ -636,6 +630,7 @@ class EulerAngle:
 
  For more info see https://en.wikipedia.org/wiki/Euler_angles
     """
+
     def __init__(self, roll_deg=None, pitch_deg=None, yaw_deg=None, timestamp_us=None):
         self.roll_deg = roll_deg
         self.pitch_deg = pitch_deg
@@ -685,6 +680,7 @@ class AngularVelocityBody:
     """
     Angular velocity type.
     """
+
     def __init__(self, roll_rad_s=None, pitch_rad_s=None, yaw_rad_s=None):
         self.roll_rad_s = roll_rad_s
         self.pitch_rad_s = pitch_rad_s
@@ -727,6 +723,7 @@ class GpsInfo:
     """
     GPS information type.
     """
+
     def __init__(self, num_satellites=None, fix_type=None):
         self.num_satellites = num_satellites
         self.fix_type = fix_type
@@ -766,6 +763,7 @@ class RawGps:
  Warning: this is an advanced type! If you want the location of the drone, use
  the position instead. This message exposes the raw values of the GNSS sensor.
     """
+
     def __init__(self, timestamp_us=None, latitude_deg=None, longitude_deg=None, absolute_altitude_m=None, hdop=None, vdop=None, velocity_m_s=None, cog_deg=None, altitude_ellipsoid_m=None, horizontal_uncertainty_m=None, vertical_uncertainty_m=None, velocity_uncertainty_m_s=None, heading_uncertainty_deg=None, yaw_deg=None):
         self.timestamp_us = timestamp_us
         self.latitude_deg = latitude_deg
@@ -885,6 +883,7 @@ class Battery:
     """
     Battery type.
     """
+
     def __init__(self, id=None, temperature_degc=None, voltage_v=None, current_battery_a=None, capacity_consumed_ah=None, remaining_percent=None, time_remaining_s=None, battery_function=None):
         self.id = id
         self.temperature_degc = temperature_degc
@@ -963,6 +962,7 @@ class Health:
     """
     Health type.
     """
+
     def __init__(self, is_gyrometer_calibration_ok=None, is_accelerometer_calibration_ok=None, is_magnetometer_calibration_ok=None, is_local_position_ok=None, is_global_position_ok=None, is_home_position_ok=None, is_armable=None):
         self.is_gyrometer_calibration_ok = is_gyrometer_calibration_ok
         self.is_accelerometer_calibration_ok = is_accelerometer_calibration_ok
@@ -1033,6 +1033,7 @@ class RcStatus:
     """
     Remote control status type.
     """
+
     def __init__(self, was_available_once=None, is_available=None, signal_strength_percent=None):
         self.was_available_once = was_available_once
         self.is_available = is_available
@@ -1075,6 +1076,7 @@ class StatusText:
     """
     StatusText information type.
     """
+
     def __init__(self, type=None, text=None):
         self.type = type
         self.text = text
@@ -1109,6 +1111,7 @@ class ActuatorControlTarget:
     """
     Actuator control target type.
     """
+
     def __init__(self, group=None, controls=None):
         self.group = group
         self.controls = controls or []
@@ -1152,6 +1155,7 @@ class ActuatorOutputStatus:
     """
     Actuator output status type.
     """
+
     def __init__(self, active=None, actuator=None):
         self.active = active
         self.actuator = actuator or []
@@ -1199,6 +1203,7 @@ class Covariance:
  upper right triangle.
  Set first to NaN if unknown.
     """
+
     def __init__(self, covariance_matrix=None):
         self.covariance_matrix = covariance_matrix or []
 
@@ -1235,6 +1240,7 @@ class VelocityBody:
     """
     Velocity type, represented in the Body (X Y Z) frame and in metres/second.
     """
+
     def __init__(self, x_m_s=None, y_m_s=None, z_m_s=None):
         self.x_m_s = x_m_s
         self.y_m_s = y_m_s
@@ -1277,6 +1283,7 @@ class PositionBody:
     """
     Position type, represented in the Body (X Y Z) frame
     """
+
     def __init__(self, x_m=None, y_m=None, z_m=None):
         self.x_m = x_m
         self.y_m = y_m
@@ -1319,6 +1326,14 @@ class Odometry:
     """
     Odometry message type.
     """
+    class MavFrame(IntEnum):
+        """Mavlink frame id"""
+        UNDEF = 0
+        BODY_NED = 1
+        VISION_NED = 2
+        ESTIM_NED = 3
+
+
     def __init__(self, time_usec=None, frame_id=None, child_frame_id=None, position_body=None, q=None, velocity_body=None, angular_velocity_body=None, pose_covariance=None, velocity_covariance=None):
         self.time_usec = time_usec
         self.frame_id = frame_id
@@ -1336,9 +1351,9 @@ class Odometry:
         instance = cls()
         instance.time_usec = c_struct.time_usec
         # Convert C enum to Python enum
-        instance.frame_id = MavFrame(c_struct.frame_id)
+        instance.frame_id = Odometry.MavFrame(c_struct.frame_id)
         # Convert C enum to Python enum
-        instance.child_frame_id = MavFrame(c_struct.child_frame_id)
+        instance.child_frame_id = Odometry.MavFrame(c_struct.child_frame_id)
         # Convert nested C struct to Python object
         instance.position_body = PositionBody.from_c_struct(c_struct.position_body)
         # Convert nested C struct to Python object
@@ -1405,6 +1420,7 @@ class DistanceSensor:
     """
     DistanceSensor message type.
     """
+
     def __init__(self, minimum_distance_m=None, maximum_distance_m=None, current_distance_m=None, orientation=None):
         self.minimum_distance_m = minimum_distance_m
         self.maximum_distance_m = maximum_distance_m
@@ -1454,6 +1470,7 @@ class ScaledPressure:
     """
     Scaled Pressure message type.
     """
+
     def __init__(self, timestamp_us=None, absolute_pressure_hpa=None, differential_pressure_hpa=None, temperature_deg=None, differential_pressure_temperature_deg=None):
         self.timestamp_us = timestamp_us
         self.absolute_pressure_hpa = absolute_pressure_hpa
@@ -1510,6 +1527,7 @@ class PositionNed:
     """
     PositionNed message type.
     """
+
     def __init__(self, north_m=None, east_m=None, down_m=None):
         self.north_m = north_m
         self.east_m = east_m
@@ -1552,6 +1570,7 @@ class VelocityNed:
     """
     VelocityNed message type.
     """
+
     def __init__(self, north_m_s=None, east_m_s=None, down_m_s=None):
         self.north_m_s = north_m_s
         self.east_m_s = east_m_s
@@ -1594,6 +1613,7 @@ class PositionVelocityNed:
     """
     PositionVelocityNed message type.
     """
+
     def __init__(self, position=None, velocity=None):
         self.position = position
         self.velocity = velocity
@@ -1629,6 +1649,7 @@ class GroundTruth:
     """
     GroundTruth message type.
     """
+
     def __init__(self, latitude_deg=None, longitude_deg=None, absolute_altitude_m=None):
         self.latitude_deg = latitude_deg
         self.longitude_deg = longitude_deg
@@ -1671,6 +1692,7 @@ class FixedwingMetrics:
     """
     FixedwingMetrics message type.
     """
+
     def __init__(self, airspeed_m_s=None, throttle_percentage=None, climb_rate_m_s=None, groundspeed_m_s=None, heading_deg=None, absolute_altitude_m=None):
         self.airspeed_m_s = airspeed_m_s
         self.throttle_percentage = throttle_percentage
@@ -1734,6 +1756,7 @@ class AccelerationFrd:
     """
     AccelerationFrd message type.
     """
+
     def __init__(self, forward_m_s2=None, right_m_s2=None, down_m_s2=None):
         self.forward_m_s2 = forward_m_s2
         self.right_m_s2 = right_m_s2
@@ -1776,6 +1799,7 @@ class AngularVelocityFrd:
     """
     AngularVelocityFrd message type.
     """
+
     def __init__(self, forward_rad_s=None, right_rad_s=None, down_rad_s=None):
         self.forward_rad_s = forward_rad_s
         self.right_rad_s = right_rad_s
@@ -1818,6 +1842,7 @@ class MagneticFieldFrd:
     """
     MagneticFieldFrd message type.
     """
+
     def __init__(self, forward_gauss=None, right_gauss=None, down_gauss=None):
         self.forward_gauss = forward_gauss
         self.right_gauss = right_gauss
@@ -1860,6 +1885,7 @@ class Imu:
     """
     Imu message type.
     """
+
     def __init__(self, acceleration_frd=None, angular_velocity_frd=None, magnetic_field_frd=None, temperature_degc=None, timestamp_us=None):
         self.acceleration_frd = acceleration_frd
         self.angular_velocity_frd = angular_velocity_frd
@@ -1916,6 +1942,7 @@ class GpsGlobalOrigin:
     """
     Gps global origin type.
     """
+
     def __init__(self, latitude_deg=None, longitude_deg=None, altitude_m=None):
         self.latitude_deg = latitude_deg
         self.longitude_deg = longitude_deg
@@ -1958,6 +1985,7 @@ class Altitude:
     """
     Altitude message type
     """
+
     def __init__(self, altitude_monotonic_m=None, altitude_amsl_m=None, altitude_local_m=None, altitude_relative_m=None, altitude_terrain_m=None, bottom_clearance_m=None):
         self.altitude_monotonic_m = altitude_monotonic_m
         self.altitude_amsl_m = altitude_amsl_m
@@ -2021,6 +2049,7 @@ class Wind:
     """
     Wind message type
     """
+
     def __init__(self, wind_x_ned_m_s=None, wind_y_ned_m_s=None, wind_z_ned_m_s=None, horizontal_variability_stddev_m_s=None, vertical_variability_stddev_m_s=None, wind_altitude_msl_m=None, horizontal_wind_speed_accuracy_m_s=None, vertical_wind_speed_accuracy_m_s=None):
         self.wind_x_ned_m_s = wind_x_ned_m_s
         self.wind_y_ned_m_s = wind_y_ned_m_s

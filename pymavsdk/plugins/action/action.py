@@ -41,8 +41,6 @@ class ActionResult(IntEnum):
     INVALID_ARGUMENT = 14
 
 
-# ===== Nested Enums =====
-
 # ===== Internal C Structures =====
 
 # ===== Structures =====
