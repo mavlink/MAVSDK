@@ -136,6 +136,51 @@ class {{ struct.name.upper_camel_case }}:
         {% endfor %}
         return instance
 
+    def to_c_struct(self):
+        """Convert to C structure for C library calls"""
+        c_struct = {{ struct.name.upper_camel_case }}CStruct()
+        {% for field in struct.fields %}
+        {% if field.type_info.is_string %}
+        # Convert Python string to C string (bytes)
+        c_struct.{{ field.name.lower_snake_case }} = self.{{ field.name.lower_snake_case }}.encode('utf-8') if self.{{ field.name.lower_snake_case }} is not None else None
+        {% elif field.type_info.is_primitive %}
+        {% if field.type_info.is_repeated %}
+        # Convert Python list to C array
+        if self.{{ field.name.lower_snake_case }}:
+            array_type = ctypes.{{ field.type_info.inner_name }} * len(self.{{ field.name.lower_snake_case }})
+            c_struct.{{ field.name.lower_snake_case }} = array_type(*self.{{ field.name.lower_snake_case }})
+            c_struct.{{ field.name.lower_snake_case }}_size = len(self.{{ field.name.lower_snake_case }})
+        else:
+            c_struct.{{ field.name.lower_snake_case }} = None
+            c_struct.{{ field.name.lower_snake_case }}_size = 0
+        {% else %}
+        c_struct.{{ field.name.lower_snake_case }} = self.{{ field.name.lower_snake_case }}
+        {% endif %}
+        {% elif field.type_info.is_enum %}
+        # Convert Python enum to C int
+        c_struct.{{ field.name.lower_snake_case }} = int(self.{{ field.name.lower_snake_case }}) if self.{{ field.name.lower_snake_case }} is not None else 0
+        {% else %}
+        {% if field.type_info.is_repeated %}
+        # Convert list of Python objects to C array
+        if self.{{ field.name.lower_snake_case }}:
+            array_type = {{ field.type_info.inner_name.upper_camel_case }}CStruct * len(self.{{ field.name.lower_snake_case }})
+            c_array = array_type()
+            for i, item in enumerate(self.{{ field.name.lower_snake_case }}):
+                c_array[i] = item.to_c_struct()
+            c_struct.{{ field.name.lower_snake_case }} = ctypes.cast(c_array, ctypes.POINTER({{ field.type_info.inner_name.upper_camel_case }}CStruct))
+            c_struct.{{ field.name.lower_snake_case }}_size = len(self.{{ field.name.lower_snake_case }})
+        else:
+            c_struct.{{ field.name.lower_snake_case }} = None
+            c_struct.{{ field.name.lower_snake_case }}_size = 0
+        {% else %}
+        # Convert nested Python object to C struct
+        if self.{{ field.name.lower_snake_case }} is not None:
+            c_struct.{{ field.name.lower_snake_case }} = self.{{ field.name.lower_snake_case }}.to_c_struct()
+        {% endif %}
+        {% endif %}
+        {% endfor %}
+        return c_struct
+
     def __str__(self):
         fields = []
         {% for field in struct.fields %}
@@ -270,7 +315,7 @@ class {{ plugin_name.upper_camel_case }}:
             {% elif param.type_info.parent_type %}
             ctypes.c_int,
             {% else %}
-            {{ param.type_info.name.upper_camel_case }},
+            {{ param.type_info.name.upper_camel_case }}CStruct,
             {% endif %}
             {% endfor %}
             {{ method.name.upper_camel_case }}Callback,
@@ -308,7 +353,7 @@ class {{ plugin_name.upper_camel_case }}:
             {% elif param.type_info.parent_type %}
             ctypes.c_int,
             {% else %}
-            {{ param.type_info.name.upper_camel_case }},
+            {{ param.type_info.name.upper_camel_case }}CStruct,
             {% endif %}
             {% endfor %}
             {% if method.return_name %}
@@ -333,7 +378,7 @@ class {{ plugin_name.upper_camel_case }}:
     {% for method in methods %}
 
     {% if method.is_async %}
-    def {{ method.name.lower_snake_case }}_async(self, {% for param in method.params %}{{ param.name.lower_snake_case }}, {% endfor %}callback: Callable, user_data: Any = None):
+    def {% if method.is_stream and not method.is_finite %}subscribe_{% endif %}{{ method.name.lower_snake_case }}{% if not method.is_stream or method.is_finite %}_async{% endif %}(self, {% for param in method.params %}{{ param.name.lower_snake_case }}, {% endfor %}callback: Callable, user_data: Any = None):
         """{{ method.method_description }}"""
 
         def c_callback({% if method.has_result %}result, {% endif %}{% if method.return_type %}c_data{% if method.return_type.is_repeated %}, size{% endif %}, {% endif %}ud):
@@ -421,7 +466,13 @@ class {{ plugin_name.upper_camel_case }}:
         {% if method.has_result %}
         result_code = self._lib.mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}(
             self._handle,
-            {% for param in method.params %}{{ param.name.lower_snake_case }}, {% endfor %}
+            {% for param in method.params %}
+            {% if param.type_info.is_primitive or param.type_info.is_enum %}
+            {{ param.name.lower_snake_case }},
+            {% else %}
+            {{ param.name.lower_snake_case }}.to_c_struct(),
+            {% endif %}
+            {% endfor %}
             ctypes.byref(result_ptr),
             ctypes.byref(size)
         )
@@ -431,7 +482,13 @@ class {{ plugin_name.upper_camel_case }}:
         {% else %}
         self._lib.mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}(
             self._handle,
-            {% for param in method.params %}{{ param.name.lower_snake_case }}, {% endfor %}
+            {% for param in method.params %}
+            {% if param.type_info.is_primitive or param.type_info.is_enum %}
+            {{ param.name.lower_snake_case }},
+            {% else %}
+            {{ param.name.lower_snake_case }}.to_c_struct(),
+            {% endif %}
+            {% endfor %}
             ctypes.byref(result_ptr),
             ctypes.byref(size)
         )
@@ -453,7 +510,13 @@ class {{ plugin_name.upper_camel_case }}:
         {# This is the case for get_takeoff_altitude - has both result AND return value #}
         result_code = self._lib.mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}(
             self._handle,
-            {% for param in method.params %}{{ param.name.lower_snake_case }}, {% endfor %}
+            {% for param in method.params %}
+            {% if param.type_info.is_primitive or param.type_info.is_enum %}
+            {{ param.name.lower_snake_case }},
+            {% else %}
+            {{ param.name.lower_snake_case }}.to_c_struct(),
+            {% endif %}
+            {% endfor %}
             ctypes.byref(result_out)
         )
         result = {{ result_enum }}(result_code)
@@ -465,7 +528,7 @@ class {{ plugin_name.upper_camel_case }}:
         {# Convert to pure Python object #}
         py_result = {{ method.return_type.inner_name.upper_camel_case }}.from_c_struct(result_out)
 
-        self._lib.mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.return_type.inner_name.lower_snake_case }}_destroy(result_out)
+        self._lib.mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.return_type.inner_name.lower_snake_case }}_destroy(ctypes.byref(result_out))
 
         return py_result
         {% endif %}
@@ -473,7 +536,13 @@ class {{ plugin_name.upper_camel_case }}:
         {# Has return value but no result enum #}
         self._lib.mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}(
             self._handle,
-            {% for param in method.params %}{{ param.name.lower_snake_case }}, {% endfor %}
+            {% for param in method.params %}
+            {% if param.type_info.is_primitive or param.type_info.is_enum %}
+            {{ param.name.lower_snake_case }},
+            {% else %}
+            {{ param.name.lower_snake_case }}.to_c_struct(),
+            {% endif %}
+            {% endfor %}
             ctypes.byref(result_out)
         )
         {% if method.return_type.is_primitive %}
@@ -482,7 +551,7 @@ class {{ plugin_name.upper_camel_case }}:
         {# Convert to pure Python object #}
         py_result = {{ method.return_type.inner_name.upper_camel_case }}.from_c_struct(result_out)
 
-        self._lib.mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.return_type.inner_name.lower_snake_case }}_destroy(result_out)
+        self._lib.mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.return_type.inner_name.lower_snake_case }}_destroy(ctypes.byref(result_out))
 
         return py_result
         {% endif %}
@@ -493,7 +562,13 @@ class {{ plugin_name.upper_camel_case }}:
         {% if method.has_result %}
         result_code = self._lib.mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}(
             self._handle,
-            {% for param in method.params %}{{ param.name.lower_snake_case }}{% if not loop.last %}, {% endif %}{% endfor %}
+            {% for param in method.params %}
+            {% if param.type_info.is_primitive or param.type_info.is_enum %}
+            {{ param.name.lower_snake_case }}{% if not loop.last %}, {% endif %}
+            {% else %}
+            {{ param.name.lower_snake_case }}.to_c_struct(){% if not loop.last %}, {% endif %}
+            {% endif %}
+            {% endfor %}
         )
         result = {{ result_enum }}(result_code)
         if result != {{ result_enum }}.SUCCESS:
@@ -501,12 +576,18 @@ class {{ plugin_name.upper_camel_case }}:
         {% else %}
         self._lib.mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}(
             self._handle,
-            {% for param in method.params %}{{ param.name.lower_snake_case }}{% if not loop.last %}, {% endif %}{% endfor %}
+            {% for param in method.params %}
+            {% if param.type_info.is_primitive or param.type_info.is_enum %}
+            {{ param.name.lower_snake_case }}{% if not loop.last %}, {% endif %}
+            {% else %}
+            {{ param.name.lower_snake_case }}.to_c_struct(){% if not loop.last %}, {% endif %}
+            {% endif %}
+            {% endfor %}
         )
         {% endif %}
         {% endif %}
 {% endif %}
- 
+
     {% endfor %}
 
     def destroy(self):
