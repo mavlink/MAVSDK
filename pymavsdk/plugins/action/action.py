@@ -43,6 +43,8 @@ class ActionResult(IntEnum):
 
 # ===== Nested Enums =====
 
+# ===== Internal C Structures =====
+
 # ===== Structures =====
 
 # ===== Callback Types =====
@@ -136,18 +138,18 @@ ctypes.c_int,    ctypes.c_void_p
 
 class Action:
     """Enable simple actions such as arming, taking off, and landing."""
-    
+
     def __init__(self, lib: ctypes.CDLL, system):
         self._lib = lib
         self._handle = None
         self._callbacks = []  # Keep references to prevent GC
-        
+
         self._setup_functions()
-        
+
         # Validate input parameter
         if system is None:
             raise ValueError("system cannot be None")
-        
+
         # Extract handle with validation
         if hasattr(system, '_handle'):
             system_handle = system._handle
@@ -155,36 +157,36 @@ class Action:
             system_handle = system
         else:
             raise ValueError(f"Invalid system type: {type(system)}. Expected MavsdkSystem or c_void_p")
-        
+
         # Validate handle is not null
         if not system_handle or (isinstance(system_handle, int) and system_handle == 0):
             raise ValueError("system handle is null")
-        
+
         self._handle = self._lib.mavsdk_action_create(system_handle)
-        
+
         # Validate plugin creation succeeded
         if not self._handle:
             raise RuntimeError("Failed to create Action plugin - C function returned null handle")
-   
+
     def _setup_functions(self):
         """Setup C function signatures"""
-        
+
         # Create/Destroy
         self._lib.mavsdk_action_create.argtypes = [ctypes.c_void_p]
         self._lib.mavsdk_action_create.restype = ctypes.c_void_p
-        
+
         self._lib.mavsdk_action_destroy.argtypes = [ctypes.c_void_p]
         self._lib.mavsdk_action_destroy.restype = None
-        
-        
+
+
         self._lib.mavsdk_action_arm_async.argtypes = [
             ctypes.c_void_p,
             ArmCallback,
             ctypes.c_void_p
         ]
 
-        self._lib.mavsdk_action_arm_async.restype = None        
-        
+        self._lib.mavsdk_action_arm_async.restype = None
+
         self._lib.mavsdk_action_arm.argtypes = [
             ctypes.c_void_p,
         ]
@@ -196,8 +198,8 @@ class Action:
             ctypes.c_void_p
         ]
 
-        self._lib.mavsdk_action_arm_force_async.restype = None        
-        
+        self._lib.mavsdk_action_arm_force_async.restype = None
+
         self._lib.mavsdk_action_arm_force.argtypes = [
             ctypes.c_void_p,
         ]
@@ -209,8 +211,8 @@ class Action:
             ctypes.c_void_p
         ]
 
-        self._lib.mavsdk_action_disarm_async.restype = None        
-        
+        self._lib.mavsdk_action_disarm_async.restype = None
+
         self._lib.mavsdk_action_disarm.argtypes = [
             ctypes.c_void_p,
         ]
@@ -222,8 +224,8 @@ class Action:
             ctypes.c_void_p
         ]
 
-        self._lib.mavsdk_action_takeoff_async.restype = None        
-        
+        self._lib.mavsdk_action_takeoff_async.restype = None
+
         self._lib.mavsdk_action_takeoff.argtypes = [
             ctypes.c_void_p,
         ]
@@ -235,8 +237,8 @@ class Action:
             ctypes.c_void_p
         ]
 
-        self._lib.mavsdk_action_land_async.restype = None        
-        
+        self._lib.mavsdk_action_land_async.restype = None
+
         self._lib.mavsdk_action_land.argtypes = [
             ctypes.c_void_p,
         ]
@@ -248,8 +250,8 @@ class Action:
             ctypes.c_void_p
         ]
 
-        self._lib.mavsdk_action_reboot_async.restype = None        
-        
+        self._lib.mavsdk_action_reboot_async.restype = None
+
         self._lib.mavsdk_action_reboot.argtypes = [
             ctypes.c_void_p,
         ]
@@ -261,8 +263,8 @@ class Action:
             ctypes.c_void_p
         ]
 
-        self._lib.mavsdk_action_shutdown_async.restype = None        
-        
+        self._lib.mavsdk_action_shutdown_async.restype = None
+
         self._lib.mavsdk_action_shutdown.argtypes = [
             ctypes.c_void_p,
         ]
@@ -274,8 +276,8 @@ class Action:
             ctypes.c_void_p
         ]
 
-        self._lib.mavsdk_action_terminate_async.restype = None        
-        
+        self._lib.mavsdk_action_terminate_async.restype = None
+
         self._lib.mavsdk_action_terminate.argtypes = [
             ctypes.c_void_p,
         ]
@@ -287,8 +289,8 @@ class Action:
             ctypes.c_void_p
         ]
 
-        self._lib.mavsdk_action_kill_async.restype = None        
-        
+        self._lib.mavsdk_action_kill_async.restype = None
+
         self._lib.mavsdk_action_kill.argtypes = [
             ctypes.c_void_p,
         ]
@@ -300,8 +302,8 @@ class Action:
             ctypes.c_void_p
         ]
 
-        self._lib.mavsdk_action_return_to_launch_async.restype = None        
-        
+        self._lib.mavsdk_action_return_to_launch_async.restype = None
+
         self._lib.mavsdk_action_return_to_launch.argtypes = [
             ctypes.c_void_p,
         ]
@@ -317,8 +319,8 @@ class Action:
             ctypes.c_void_p
         ]
 
-        self._lib.mavsdk_action_goto_location_async.restype = None        
-        
+        self._lib.mavsdk_action_goto_location_async.restype = None
+
         self._lib.mavsdk_action_goto_location.argtypes = [
             ctypes.c_void_p,
             ctypes.c_double,
@@ -340,8 +342,8 @@ class Action:
             ctypes.c_void_p
         ]
 
-        self._lib.mavsdk_action_do_orbit_async.restype = None        
-        
+        self._lib.mavsdk_action_do_orbit_async.restype = None
+
         self._lib.mavsdk_action_do_orbit.argtypes = [
             ctypes.c_void_p,
             ctypes.c_float,
@@ -359,8 +361,8 @@ class Action:
             ctypes.c_void_p
         ]
 
-        self._lib.mavsdk_action_hold_async.restype = None        
-        
+        self._lib.mavsdk_action_hold_async.restype = None
+
         self._lib.mavsdk_action_hold.argtypes = [
             ctypes.c_void_p,
         ]
@@ -374,8 +376,8 @@ class Action:
             ctypes.c_void_p
         ]
 
-        self._lib.mavsdk_action_set_actuator_async.restype = None        
-        
+        self._lib.mavsdk_action_set_actuator_async.restype = None
+
         self._lib.mavsdk_action_set_actuator.argtypes = [
             ctypes.c_void_p,
             ctypes.c_int32,
@@ -389,8 +391,8 @@ class Action:
             ctypes.c_void_p
         ]
 
-        self._lib.mavsdk_action_transition_to_fixedwing_async.restype = None        
-        
+        self._lib.mavsdk_action_transition_to_fixedwing_async.restype = None
+
         self._lib.mavsdk_action_transition_to_fixedwing.argtypes = [
             ctypes.c_void_p,
         ]
@@ -402,8 +404,8 @@ class Action:
             ctypes.c_void_p
         ]
 
-        self._lib.mavsdk_action_transition_to_multicopter_async.restype = None        
-        
+        self._lib.mavsdk_action_transition_to_multicopter_async.restype = None
+
         self._lib.mavsdk_action_transition_to_multicopter.argtypes = [
             ctypes.c_void_p,
         ]
@@ -415,8 +417,8 @@ class Action:
             ctypes.c_void_p
         ]
 
-        self._lib.mavsdk_action_get_takeoff_altitude_async.restype = None        
-        
+        self._lib.mavsdk_action_get_takeoff_altitude_async.restype = None
+
         self._lib.mavsdk_action_get_takeoff_altitude.argtypes = [
             ctypes.c_void_p,
             ctypes.POINTER(ctypes.c_float)
@@ -430,8 +432,8 @@ class Action:
             ctypes.c_void_p
         ]
 
-        self._lib.mavsdk_action_set_takeoff_altitude_async.restype = None        
-        
+        self._lib.mavsdk_action_set_takeoff_altitude_async.restype = None
+
         self._lib.mavsdk_action_set_takeoff_altitude.argtypes = [
             ctypes.c_void_p,
             ctypes.c_float,
@@ -444,8 +446,8 @@ class Action:
             ctypes.c_void_p
         ]
 
-        self._lib.mavsdk_action_get_return_to_launch_altitude_async.restype = None        
-        
+        self._lib.mavsdk_action_get_return_to_launch_altitude_async.restype = None
+
         self._lib.mavsdk_action_get_return_to_launch_altitude.argtypes = [
             ctypes.c_void_p,
             ctypes.POINTER(ctypes.c_float)
@@ -459,8 +461,8 @@ class Action:
             ctypes.c_void_p
         ]
 
-        self._lib.mavsdk_action_set_return_to_launch_altitude_async.restype = None        
-        
+        self._lib.mavsdk_action_set_return_to_launch_altitude_async.restype = None
+
         self._lib.mavsdk_action_set_return_to_launch_altitude.argtypes = [
             ctypes.c_void_p,
             ctypes.c_float,
@@ -474,37 +476,42 @@ class Action:
             ctypes.c_void_p
         ]
 
-        self._lib.mavsdk_action_set_current_speed_async.restype = None        
-        
+        self._lib.mavsdk_action_set_current_speed_async.restype = None
+
         self._lib.mavsdk_action_set_current_speed.argtypes = [
             ctypes.c_void_p,
             ctypes.c_float,
         ]
 
         self._lib.mavsdk_action_set_current_speed.restype = ctypes.c_int
-    
+
+
     def arm_async(self, callback: Callable, user_data: Any = None):
         """Send command to arm the drone.
 
  Arming a drone normally causes motors to spin at idle.
  Before arming take all safety precautions and stand clear of the drone!"""
-        
+
         def c_callback(result, ud):
             try:
-                callback(ActionResult(result), user_data)
+                py_result = ActionResult(result)
+
+
+                callback(py_result, user_data)
+
             except Exception as e:
                 print(f"Error in arm callback: {e}")
-        
+
         cb = ArmCallback(c_callback)
         self._callbacks.append(cb)
-        
+
         self._lib.mavsdk_action_arm_async(
             self._handle,
             cb,
             None
         )
-    
-    
+
+
     def arm(self):
         """Get arm (blocking)"""
         result_code = self._lib.mavsdk_action_arm(
@@ -513,7 +520,8 @@ class Action:
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
             raise Exception(f"arm failed: {result}")
-  
+ 
+
     def arm_force_async(self, callback: Callable, user_data: Any = None):
         """Send command to force-arm the drone without any checks.
 
@@ -521,23 +529,27 @@ class Action:
 
  Arming a drone normally causes motors to spin at idle.
  Before arming take all safety precautions and stand clear of the drone!"""
-        
+
         def c_callback(result, ud):
             try:
-                callback(ActionResult(result), user_data)
+                py_result = ActionResult(result)
+
+
+                callback(py_result, user_data)
+
             except Exception as e:
                 print(f"Error in arm_force callback: {e}")
-        
+
         cb = ArmForceCallback(c_callback)
         self._callbacks.append(cb)
-        
+
         self._lib.mavsdk_action_arm_force_async(
             self._handle,
             cb,
             None
         )
-    
-    
+
+
     def arm_force(self):
         """Get arm_force (blocking)"""
         result_code = self._lib.mavsdk_action_arm_force(
@@ -546,29 +558,34 @@ class Action:
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
             raise Exception(f"arm_force failed: {result}")
-  
+ 
+
     def disarm_async(self, callback: Callable, user_data: Any = None):
         """Send command to disarm the drone.
 
  This will disarm a drone that considers itself landed. If flying, the drone should
  reject the disarm command. Disarming means that all motors will stop."""
-        
+
         def c_callback(result, ud):
             try:
-                callback(ActionResult(result), user_data)
+                py_result = ActionResult(result)
+
+
+                callback(py_result, user_data)
+
             except Exception as e:
                 print(f"Error in disarm callback: {e}")
-        
+
         cb = DisarmCallback(c_callback)
         self._callbacks.append(cb)
-        
+
         self._lib.mavsdk_action_disarm_async(
             self._handle,
             cb,
             None
         )
-    
-    
+
+
     def disarm(self):
         """Get disarm (blocking)"""
         result_code = self._lib.mavsdk_action_disarm(
@@ -577,7 +594,8 @@ class Action:
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
             raise Exception(f"disarm failed: {result}")
-  
+ 
+
     def takeoff_async(self, callback: Callable, user_data: Any = None):
         """Send command to take off and hover.
 
@@ -585,23 +603,27 @@ class Action:
  it to take off and hover at the takeoff altitude.
 
  Note that the vehicle must be armed before it can take off."""
-        
+
         def c_callback(result, ud):
             try:
-                callback(ActionResult(result), user_data)
+                py_result = ActionResult(result)
+
+
+                callback(py_result, user_data)
+
             except Exception as e:
                 print(f"Error in takeoff callback: {e}")
-        
+
         cb = TakeoffCallback(c_callback)
         self._callbacks.append(cb)
-        
+
         self._lib.mavsdk_action_takeoff_async(
             self._handle,
             cb,
             None
         )
-    
-    
+
+
     def takeoff(self):
         """Get takeoff (blocking)"""
         result_code = self._lib.mavsdk_action_takeoff(
@@ -610,28 +632,33 @@ class Action:
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
             raise Exception(f"takeoff failed: {result}")
-  
+ 
+
     def land_async(self, callback: Callable, user_data: Any = None):
         """Send command to land at the current position.
 
  This switches the drone to 'Land' flight mode."""
-        
+
         def c_callback(result, ud):
             try:
-                callback(ActionResult(result), user_data)
+                py_result = ActionResult(result)
+
+
+                callback(py_result, user_data)
+
             except Exception as e:
                 print(f"Error in land callback: {e}")
-        
+
         cb = LandCallback(c_callback)
         self._callbacks.append(cb)
-        
+
         self._lib.mavsdk_action_land_async(
             self._handle,
             cb,
             None
         )
-    
-    
+
+
     def land(self):
         """Get land (blocking)"""
         result_code = self._lib.mavsdk_action_land(
@@ -640,28 +667,33 @@ class Action:
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
             raise Exception(f"land failed: {result}")
-  
+ 
+
     def reboot_async(self, callback: Callable, user_data: Any = None):
         """Send command to reboot the drone components.
 
  This will reboot the autopilot, companion computer, camera and gimbal."""
-        
+
         def c_callback(result, ud):
             try:
-                callback(ActionResult(result), user_data)
+                py_result = ActionResult(result)
+
+
+                callback(py_result, user_data)
+
             except Exception as e:
                 print(f"Error in reboot callback: {e}")
-        
+
         cb = RebootCallback(c_callback)
         self._callbacks.append(cb)
-        
+
         self._lib.mavsdk_action_reboot_async(
             self._handle,
             cb,
             None
         )
-    
-    
+
+
     def reboot(self):
         """Get reboot (blocking)"""
         result_code = self._lib.mavsdk_action_reboot(
@@ -670,30 +702,35 @@ class Action:
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
             raise Exception(f"reboot failed: {result}")
-  
+ 
+
     def shutdown_async(self, callback: Callable, user_data: Any = None):
         """Send command to shut down the drone components.
 
  This will shut down the autopilot, onboard computer, camera and gimbal.
  This command should only be used when the autopilot is disarmed and autopilots commonly
  reject it if they are not already ready to shut down."""
-        
+
         def c_callback(result, ud):
             try:
-                callback(ActionResult(result), user_data)
+                py_result = ActionResult(result)
+
+
+                callback(py_result, user_data)
+
             except Exception as e:
                 print(f"Error in shutdown callback: {e}")
-        
+
         cb = ShutdownCallback(c_callback)
         self._callbacks.append(cb)
-        
+
         self._lib.mavsdk_action_shutdown_async(
             self._handle,
             cb,
             None
         )
-    
-    
+
+
     def shutdown(self):
         """Get shutdown (blocking)"""
         result_code = self._lib.mavsdk_action_shutdown(
@@ -702,28 +739,33 @@ class Action:
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
             raise Exception(f"shutdown failed: {result}")
-  
+ 
+
     def terminate_async(self, callback: Callable, user_data: Any = None):
         """Send command to terminate the drone.
 
  This will run the terminate routine as configured on the drone (e.g. disarm and open the parachute)."""
-        
+
         def c_callback(result, ud):
             try:
-                callback(ActionResult(result), user_data)
+                py_result = ActionResult(result)
+
+
+                callback(py_result, user_data)
+
             except Exception as e:
                 print(f"Error in terminate callback: {e}")
-        
+
         cb = TerminateCallback(c_callback)
         self._callbacks.append(cb)
-        
+
         self._lib.mavsdk_action_terminate_async(
             self._handle,
             cb,
             None
         )
-    
-    
+
+
     def terminate(self):
         """Get terminate (blocking)"""
         result_code = self._lib.mavsdk_action_terminate(
@@ -732,29 +774,34 @@ class Action:
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
             raise Exception(f"terminate failed: {result}")
-  
+ 
+
     def kill_async(self, callback: Callable, user_data: Any = None):
         """Send command to kill the drone.
 
  This will disarm a drone irrespective of whether it is landed or flying.
  Note that the drone will fall out of the sky if this command is used while flying."""
-        
+
         def c_callback(result, ud):
             try:
-                callback(ActionResult(result), user_data)
+                py_result = ActionResult(result)
+
+
+                callback(py_result, user_data)
+
             except Exception as e:
                 print(f"Error in kill callback: {e}")
-        
+
         cb = KillCallback(c_callback)
         self._callbacks.append(cb)
-        
+
         self._lib.mavsdk_action_kill_async(
             self._handle,
             cb,
             None
         )
-    
-    
+
+
     def kill(self):
         """Get kill (blocking)"""
         result_code = self._lib.mavsdk_action_kill(
@@ -763,30 +810,35 @@ class Action:
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
             raise Exception(f"kill failed: {result}")
-  
+ 
+
     def return_to_launch_async(self, callback: Callable, user_data: Any = None):
         """Send command to return to the launch (takeoff) position and land.
 
  This switches the drone into [Return mode](https://docs.px4.io/master/en/flight_modes/return.html) which
  generally means it will rise up to a certain altitude to clear any obstacles before heading
  back to the launch (takeoff) position and land there."""
-        
+
         def c_callback(result, ud):
             try:
-                callback(ActionResult(result), user_data)
+                py_result = ActionResult(result)
+
+
+                callback(py_result, user_data)
+
             except Exception as e:
                 print(f"Error in return_to_launch callback: {e}")
-        
+
         cb = ReturnToLaunchCallback(c_callback)
         self._callbacks.append(cb)
-        
+
         self._lib.mavsdk_action_return_to_launch_async(
             self._handle,
             cb,
             None
         )
-    
-    
+
+
     def return_to_launch(self):
         """Get return_to_launch (blocking)"""
         result_code = self._lib.mavsdk_action_return_to_launch(
@@ -795,7 +847,8 @@ class Action:
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
             raise Exception(f"return_to_launch failed: {result}")
-  
+ 
+
     def goto_location_async(self, latitude_deg, longitude_deg, absolute_altitude_m, yaw_deg, callback: Callable, user_data: Any = None):
         """Send command to move the vehicle to a specific global position.
 
@@ -803,16 +856,20 @@ class Action:
  in meters AMSL (above mean sea level).
 
  The yaw angle is in degrees (frame is NED, 0 is North, positive is clockwise)."""
-        
+
         def c_callback(result, ud):
             try:
-                callback(ActionResult(result), user_data)
+                py_result = ActionResult(result)
+
+
+                callback(py_result, user_data)
+
             except Exception as e:
                 print(f"Error in goto_location callback: {e}")
-        
+
         cb = GotoLocationCallback(c_callback)
         self._callbacks.append(cb)
-        
+
         self._lib.mavsdk_action_goto_location_async(
             self._handle,
             latitude_deg,
@@ -822,8 +879,8 @@ class Action:
             cb,
             None
         )
-    
-    
+
+
     def goto_location(self, latitude_deg, longitude_deg, absolute_altitude_m, yaw_deg):
         """Get goto_location (blocking)"""
         result_code = self._lib.mavsdk_action_goto_location(
@@ -832,21 +889,26 @@ latitude_deg, longitude_deg, absolute_altitude_m, yaw_deg        )
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
             raise Exception(f"goto_location failed: {result}")
-  
+ 
+
     def do_orbit_async(self, radius_m, velocity_ms, yaw_behavior, latitude_deg, longitude_deg, absolute_altitude_m, callback: Callable, user_data: Any = None):
         """Send command do orbit to the drone.
 
  This will run the orbit routine with the given parameters."""
-        
+
         def c_callback(result, ud):
             try:
-                callback(ActionResult(result), user_data)
+                py_result = ActionResult(result)
+
+
+                callback(py_result, user_data)
+
             except Exception as e:
                 print(f"Error in do_orbit callback: {e}")
-        
+
         cb = DoOrbitCallback(c_callback)
         self._callbacks.append(cb)
-        
+
         self._lib.mavsdk_action_do_orbit_async(
             self._handle,
             radius_m,
@@ -858,8 +920,8 @@ latitude_deg, longitude_deg, absolute_altitude_m, yaw_deg        )
             cb,
             None
         )
-    
-    
+
+
     def do_orbit(self, radius_m, velocity_ms, yaw_behavior, latitude_deg, longitude_deg, absolute_altitude_m):
         """Get do_orbit (blocking)"""
         result_code = self._lib.mavsdk_action_do_orbit(
@@ -868,7 +930,8 @@ radius_m, velocity_ms, yaw_behavior, latitude_deg, longitude_deg, absolute_altit
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
             raise Exception(f"do_orbit failed: {result}")
-  
+ 
+
     def hold_async(self, callback: Callable, user_data: Any = None):
         """Send command to hold position (a.k.a. "Loiter").
 
@@ -877,23 +940,27 @@ radius_m, velocity_ms, yaw_behavior, latitude_deg, longitude_deg, absolute_altit
 
  Note: this command is specific to the PX4 Autopilot flight stack as
  it implies a change to a PX4-specific mode."""
-        
+
         def c_callback(result, ud):
             try:
-                callback(ActionResult(result), user_data)
+                py_result = ActionResult(result)
+
+
+                callback(py_result, user_data)
+
             except Exception as e:
                 print(f"Error in hold callback: {e}")
-        
+
         cb = HoldCallback(c_callback)
         self._callbacks.append(cb)
-        
+
         self._lib.mavsdk_action_hold_async(
             self._handle,
             cb,
             None
         )
-    
-    
+
+
     def hold(self):
         """Get hold (blocking)"""
         result_code = self._lib.mavsdk_action_hold(
@@ -902,21 +969,26 @@ radius_m, velocity_ms, yaw_behavior, latitude_deg, longitude_deg, absolute_altit
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
             raise Exception(f"hold failed: {result}")
-  
+ 
+
     def set_actuator_async(self, index, value, callback: Callable, user_data: Any = None):
         """Send command to set the value of an actuator.
 
  Note that the index of the actuator starts at 1 and that the value goes from -1 to 1."""
-        
+
         def c_callback(result, ud):
             try:
-                callback(ActionResult(result), user_data)
+                py_result = ActionResult(result)
+
+
+                callback(py_result, user_data)
+
             except Exception as e:
                 print(f"Error in set_actuator callback: {e}")
-        
+
         cb = SetActuatorCallback(c_callback)
         self._callbacks.append(cb)
-        
+
         self._lib.mavsdk_action_set_actuator_async(
             self._handle,
             index,
@@ -924,8 +996,8 @@ radius_m, velocity_ms, yaw_behavior, latitude_deg, longitude_deg, absolute_altit
             cb,
             None
         )
-    
-    
+
+
     def set_actuator(self, index, value):
         """Get set_actuator (blocking)"""
         result_code = self._lib.mavsdk_action_set_actuator(
@@ -934,30 +1006,35 @@ index, value        )
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
             raise Exception(f"set_actuator failed: {result}")
-  
+ 
+
     def transition_to_fixedwing_async(self, callback: Callable, user_data: Any = None):
         """Send command to transition the drone to fixedwing.
 
  The associated action will only be executed for VTOL vehicles (on other vehicle types the
  command will fail). The command will succeed if called when the vehicle
  is already in fixedwing mode."""
-        
+
         def c_callback(result, ud):
             try:
-                callback(ActionResult(result), user_data)
+                py_result = ActionResult(result)
+
+
+                callback(py_result, user_data)
+
             except Exception as e:
                 print(f"Error in transition_to_fixedwing callback: {e}")
-        
+
         cb = TransitionToFixedwingCallback(c_callback)
         self._callbacks.append(cb)
-        
+
         self._lib.mavsdk_action_transition_to_fixedwing_async(
             self._handle,
             cb,
             None
         )
-    
-    
+
+
     def transition_to_fixedwing(self):
         """Get transition_to_fixedwing (blocking)"""
         result_code = self._lib.mavsdk_action_transition_to_fixedwing(
@@ -966,30 +1043,35 @@ index, value        )
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
             raise Exception(f"transition_to_fixedwing failed: {result}")
-  
+ 
+
     def transition_to_multicopter_async(self, callback: Callable, user_data: Any = None):
         """Send command to transition the drone to multicopter.
 
  The associated action will only be executed for VTOL vehicles (on other vehicle types the
  command will fail). The command will succeed if called when the vehicle
  is already in multicopter mode."""
-        
+
         def c_callback(result, ud):
             try:
-                callback(ActionResult(result), user_data)
+                py_result = ActionResult(result)
+
+
+                callback(py_result, user_data)
+
             except Exception as e:
                 print(f"Error in transition_to_multicopter callback: {e}")
-        
+
         cb = TransitionToMulticopterCallback(c_callback)
         self._callbacks.append(cb)
-        
+
         self._lib.mavsdk_action_transition_to_multicopter_async(
             self._handle,
             cb,
             None
         )
-    
-    
+
+
     def transition_to_multicopter(self):
         """Get transition_to_multicopter (blocking)"""
         result_code = self._lib.mavsdk_action_transition_to_multicopter(
@@ -998,26 +1080,32 @@ index, value        )
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
             raise Exception(f"transition_to_multicopter failed: {result}")
-  
+ 
+
     def get_takeoff_altitude_async(self, callback: Callable, user_data: Any = None):
         """Get the takeoff altitude (in meters above ground)."""
-        
-        def c_callback(result, altitude, ud):
+
+        def c_callback(result, c_data, ud):
             try:
-                callback(ActionResult(result), altitude, user_data)
+                py_result = ActionResult(result)
+
+                py_data = c_data
+
+                callback(py_result, py_data, user_data)
+
             except Exception as e:
                 print(f"Error in get_takeoff_altitude callback: {e}")
-        
+
         cb = GetTakeoffAltitudeCallback(c_callback)
         self._callbacks.append(cb)
-        
+
         self._lib.mavsdk_action_get_takeoff_altitude_async(
             self._handle,
             cb,
             None
         )
-    
-    
+
+
     def get_takeoff_altitude(self):
         """Get get_takeoff_altitude (blocking)"""
         result_out = ctypes.c_float()
@@ -1029,27 +1117,32 @@ index, value        )
         if result != ActionResult.SUCCESS:
             raise Exception(f"get_takeoff_altitude failed: {result}")
         return result_out.value
-  
+ 
+
     def set_takeoff_altitude_async(self, altitude, callback: Callable, user_data: Any = None):
         """Set takeoff altitude (in meters above ground)."""
-        
+
         def c_callback(result, ud):
             try:
-                callback(ActionResult(result), user_data)
+                py_result = ActionResult(result)
+
+
+                callback(py_result, user_data)
+
             except Exception as e:
                 print(f"Error in set_takeoff_altitude callback: {e}")
-        
+
         cb = SetTakeoffAltitudeCallback(c_callback)
         self._callbacks.append(cb)
-        
+
         self._lib.mavsdk_action_set_takeoff_altitude_async(
             self._handle,
             altitude,
             cb,
             None
         )
-    
-    
+
+
     def set_takeoff_altitude(self, altitude):
         """Get set_takeoff_altitude (blocking)"""
         result_code = self._lib.mavsdk_action_set_takeoff_altitude(
@@ -1058,26 +1151,32 @@ altitude        )
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
             raise Exception(f"set_takeoff_altitude failed: {result}")
-  
+ 
+
     def get_return_to_launch_altitude_async(self, callback: Callable, user_data: Any = None):
         """Get the return to launch minimum return altitude (in meters)."""
-        
-        def c_callback(result, relative_altitude_m, ud):
+
+        def c_callback(result, c_data, ud):
             try:
-                callback(ActionResult(result), relative_altitude_m, user_data)
+                py_result = ActionResult(result)
+
+                py_data = c_data
+
+                callback(py_result, py_data, user_data)
+
             except Exception as e:
                 print(f"Error in get_return_to_launch_altitude callback: {e}")
-        
+
         cb = GetReturnToLaunchAltitudeCallback(c_callback)
         self._callbacks.append(cb)
-        
+
         self._lib.mavsdk_action_get_return_to_launch_altitude_async(
             self._handle,
             cb,
             None
         )
-    
-    
+
+
     def get_return_to_launch_altitude(self):
         """Get get_return_to_launch_altitude (blocking)"""
         result_out = ctypes.c_float()
@@ -1089,27 +1188,32 @@ altitude        )
         if result != ActionResult.SUCCESS:
             raise Exception(f"get_return_to_launch_altitude failed: {result}")
         return result_out.value
-  
+ 
+
     def set_return_to_launch_altitude_async(self, relative_altitude_m, callback: Callable, user_data: Any = None):
         """Set the return to launch minimum return altitude (in meters)."""
-        
+
         def c_callback(result, ud):
             try:
-                callback(ActionResult(result), user_data)
+                py_result = ActionResult(result)
+
+
+                callback(py_result, user_data)
+
             except Exception as e:
                 print(f"Error in set_return_to_launch_altitude callback: {e}")
-        
+
         cb = SetReturnToLaunchAltitudeCallback(c_callback)
         self._callbacks.append(cb)
-        
+
         self._lib.mavsdk_action_set_return_to_launch_altitude_async(
             self._handle,
             relative_altitude_m,
             cb,
             None
         )
-    
-    
+
+
     def set_return_to_launch_altitude(self, relative_altitude_m):
         """Get set_return_to_launch_altitude (blocking)"""
         result_code = self._lib.mavsdk_action_set_return_to_launch_altitude(
@@ -1118,30 +1222,35 @@ relative_altitude_m        )
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
             raise Exception(f"set_return_to_launch_altitude failed: {result}")
-  
+ 
+
     def set_current_speed_async(self, speed_m_s, callback: Callable, user_data: Any = None):
         """Set current speed.
 
  This will set the speed during a mission, reposition, and similar.
  It is ephemeral, so not stored on the drone and does not survive a reboot."""
-        
+
         def c_callback(result, ud):
             try:
-                callback(ActionResult(result), user_data)
+                py_result = ActionResult(result)
+
+
+                callback(py_result, user_data)
+
             except Exception as e:
                 print(f"Error in set_current_speed callback: {e}")
-        
+
         cb = SetCurrentSpeedCallback(c_callback)
         self._callbacks.append(cb)
-        
+
         self._lib.mavsdk_action_set_current_speed_async(
             self._handle,
             speed_m_s,
             cb,
             None
         )
-    
-    
+
+
     def set_current_speed(self, speed_m_s):
         """Get set_current_speed (blocking)"""
         result_code = self._lib.mavsdk_action_set_current_speed(
@@ -1150,13 +1259,13 @@ speed_m_s        )
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
             raise Exception(f"set_current_speed failed: {result}")
-  
-    
+ 
+
     def destroy(self):
         """Destroy the plugin instance"""
         if self._handle:
             self._lib.mavsdk_action_destroy(self._handle)
             self._handle = None
-    
+
     def __del__(self):
         self.destroy()

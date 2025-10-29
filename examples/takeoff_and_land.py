@@ -43,6 +43,9 @@ def main():
     if drone:
         print(f"Using system: {drone}")
         action = Action(mavsdk._lib, drone)
+
+        print(f"Takeoff altitude: {action.get_takeoff_altitude()}")
+        print(f"RTL altitude: {action.get_return_to_launch_altitude()}")
         
         print("Arming...")
         action.arm()
