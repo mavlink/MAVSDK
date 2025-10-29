@@ -154,11 +154,16 @@ class {{ struct.name.upper_camel_case }}:
             c_struct.{{ field.name.lower_snake_case }} = None
             c_struct.{{ field.name.lower_snake_case }}_size = 0
         {% else %}
+        # Check for None values in primitive types
+        if self.{{ field.name.lower_snake_case }} is None:
+            raise ValueError(f"Field '{{ field.name.lower_snake_case }}' must be set before converting to C struct")
         c_struct.{{ field.name.lower_snake_case }} = self.{{ field.name.lower_snake_case }}
         {% endif %}
         {% elif field.type_info.is_enum %}
-        # Convert Python enum to C int
-        c_struct.{{ field.name.lower_snake_case }} = int(self.{{ field.name.lower_snake_case }}) if self.{{ field.name.lower_snake_case }} is not None else 0
+        # Check for None values in enum types
+        if self.{{ field.name.lower_snake_case }} is None:
+            raise ValueError(f"Field '{{ field.name.lower_snake_case }}' must be set before converting to C struct")
+        c_struct.{{ field.name.lower_snake_case }} = int(self.{{ field.name.lower_snake_case }})
         {% else %}
         {% if field.type_info.is_repeated %}
         # Convert list of Python objects to C array
@@ -479,6 +484,7 @@ class {{ plugin_name.upper_camel_case }}:
         result = {{ result_enum }}(result_code)
         if result != {{ result_enum }}.SUCCESS:
             raise Exception(f"{{ method.name.lower_snake_case }} failed: {result}")
+        return result
         {% else %}
         self._lib.mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}(
             self._handle,
@@ -522,6 +528,7 @@ class {{ plugin_name.upper_camel_case }}:
         result = {{ result_enum }}(result_code)
         if result != {{ result_enum }}.SUCCESS:
             raise Exception(f"{{ method.name.lower_snake_case }} failed: {result}")
+        return result
         {% if method.return_type.is_primitive %}
         return result_out.value
         {% else %}
@@ -573,6 +580,7 @@ class {{ plugin_name.upper_camel_case }}:
         result = {{ result_enum }}(result_code)
         if result != {{ result_enum }}.SUCCESS:
             raise Exception(f"{{ method.name.lower_snake_case }} failed: {result}")
+        return result
         {% else %}
         self._lib.mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}(
             self._handle,
