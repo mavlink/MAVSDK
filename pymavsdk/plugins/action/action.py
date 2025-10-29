@@ -520,7 +520,8 @@ class Action:
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
             raise Exception(f"arm failed: {result}")
- 
+        return result
+
 
     def arm_force_async(self, callback: Callable, user_data: Any = None):
         """Send command to force-arm the drone without any checks.
@@ -558,7 +559,8 @@ class Action:
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
             raise Exception(f"arm_force failed: {result}")
- 
+        return result
+
 
     def disarm_async(self, callback: Callable, user_data: Any = None):
         """Send command to disarm the drone.
@@ -594,7 +596,8 @@ class Action:
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
             raise Exception(f"disarm failed: {result}")
- 
+        return result
+
 
     def takeoff_async(self, callback: Callable, user_data: Any = None):
         """Send command to take off and hover.
@@ -632,7 +635,8 @@ class Action:
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
             raise Exception(f"takeoff failed: {result}")
- 
+        return result
+
 
     def land_async(self, callback: Callable, user_data: Any = None):
         """Send command to land at the current position.
@@ -667,7 +671,8 @@ class Action:
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
             raise Exception(f"land failed: {result}")
- 
+        return result
+
 
     def reboot_async(self, callback: Callable, user_data: Any = None):
         """Send command to reboot the drone components.
@@ -702,7 +707,8 @@ class Action:
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
             raise Exception(f"reboot failed: {result}")
- 
+        return result
+
 
     def shutdown_async(self, callback: Callable, user_data: Any = None):
         """Send command to shut down the drone components.
@@ -739,7 +745,8 @@ class Action:
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
             raise Exception(f"shutdown failed: {result}")
- 
+        return result
+
 
     def terminate_async(self, callback: Callable, user_data: Any = None):
         """Send command to terminate the drone.
@@ -774,7 +781,8 @@ class Action:
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
             raise Exception(f"terminate failed: {result}")
- 
+        return result
+
 
     def kill_async(self, callback: Callable, user_data: Any = None):
         """Send command to kill the drone.
@@ -810,7 +818,8 @@ class Action:
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
             raise Exception(f"kill failed: {result}")
- 
+        return result
+
 
     def return_to_launch_async(self, callback: Callable, user_data: Any = None):
         """Send command to return to the launch (takeoff) position and land.
@@ -847,7 +856,8 @@ class Action:
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
             raise Exception(f"return_to_launch failed: {result}")
- 
+        return result
+
 
     def goto_location_async(self, latitude_deg, longitude_deg, absolute_altitude_m, yaw_deg, callback: Callable, user_data: Any = None):
         """Send command to move the vehicle to a specific global position.
@@ -885,11 +895,12 @@ class Action:
         """Get goto_location (blocking)"""
         result_code = self._lib.mavsdk_action_goto_location(
             self._handle,
-latitude_deg, longitude_deg, absolute_altitude_m, yaw_deg        )
+            latitude_deg,             longitude_deg,             absolute_altitude_m,             yaw_deg        )
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
             raise Exception(f"goto_location failed: {result}")
- 
+        return result
+
 
     def do_orbit_async(self, radius_m, velocity_ms, yaw_behavior, latitude_deg, longitude_deg, absolute_altitude_m, callback: Callable, user_data: Any = None):
         """Send command do orbit to the drone.
@@ -926,11 +937,12 @@ latitude_deg, longitude_deg, absolute_altitude_m, yaw_deg        )
         """Get do_orbit (blocking)"""
         result_code = self._lib.mavsdk_action_do_orbit(
             self._handle,
-radius_m, velocity_ms, yaw_behavior, latitude_deg, longitude_deg, absolute_altitude_m        )
+            radius_m,             velocity_ms,             yaw_behavior,             latitude_deg,             longitude_deg,             absolute_altitude_m        )
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
             raise Exception(f"do_orbit failed: {result}")
- 
+        return result
+
 
     def hold_async(self, callback: Callable, user_data: Any = None):
         """Send command to hold position (a.k.a. "Loiter").
@@ -969,7 +981,8 @@ radius_m, velocity_ms, yaw_behavior, latitude_deg, longitude_deg, absolute_altit
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
             raise Exception(f"hold failed: {result}")
- 
+        return result
+
 
     def set_actuator_async(self, index, value, callback: Callable, user_data: Any = None):
         """Send command to set the value of an actuator.
@@ -1002,11 +1015,12 @@ radius_m, velocity_ms, yaw_behavior, latitude_deg, longitude_deg, absolute_altit
         """Get set_actuator (blocking)"""
         result_code = self._lib.mavsdk_action_set_actuator(
             self._handle,
-index, value        )
+            index,             value        )
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
             raise Exception(f"set_actuator failed: {result}")
- 
+        return result
+
 
     def transition_to_fixedwing_async(self, callback: Callable, user_data: Any = None):
         """Send command to transition the drone to fixedwing.
@@ -1043,7 +1057,8 @@ index, value        )
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
             raise Exception(f"transition_to_fixedwing failed: {result}")
- 
+        return result
+
 
     def transition_to_multicopter_async(self, callback: Callable, user_data: Any = None):
         """Send command to transition the drone to multicopter.
@@ -1080,7 +1095,8 @@ index, value        )
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
             raise Exception(f"transition_to_multicopter failed: {result}")
- 
+        return result
+
 
     def get_takeoff_altitude_async(self, callback: Callable, user_data: Any = None):
         """Get the takeoff altitude (in meters above ground)."""
@@ -1116,8 +1132,9 @@ index, value        )
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
             raise Exception(f"get_takeoff_altitude failed: {result}")
+        return result
         return result_out.value
- 
+
 
     def set_takeoff_altitude_async(self, altitude, callback: Callable, user_data: Any = None):
         """Set takeoff altitude (in meters above ground)."""
@@ -1147,11 +1164,12 @@ index, value        )
         """Get set_takeoff_altitude (blocking)"""
         result_code = self._lib.mavsdk_action_set_takeoff_altitude(
             self._handle,
-altitude        )
+            altitude        )
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
             raise Exception(f"set_takeoff_altitude failed: {result}")
- 
+        return result
+
 
     def get_return_to_launch_altitude_async(self, callback: Callable, user_data: Any = None):
         """Get the return to launch minimum return altitude (in meters)."""
@@ -1187,8 +1205,9 @@ altitude        )
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
             raise Exception(f"get_return_to_launch_altitude failed: {result}")
+        return result
         return result_out.value
- 
+
 
     def set_return_to_launch_altitude_async(self, relative_altitude_m, callback: Callable, user_data: Any = None):
         """Set the return to launch minimum return altitude (in meters)."""
@@ -1218,11 +1237,12 @@ altitude        )
         """Get set_return_to_launch_altitude (blocking)"""
         result_code = self._lib.mavsdk_action_set_return_to_launch_altitude(
             self._handle,
-relative_altitude_m        )
+            relative_altitude_m        )
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
             raise Exception(f"set_return_to_launch_altitude failed: {result}")
- 
+        return result
+
 
     def set_current_speed_async(self, speed_m_s, callback: Callable, user_data: Any = None):
         """Set current speed.
@@ -1255,11 +1275,12 @@ relative_altitude_m        )
         """Get set_current_speed (blocking)"""
         result_code = self._lib.mavsdk_action_set_current_speed(
             self._handle,
-speed_m_s        )
+            speed_m_s        )
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
             raise Exception(f"set_current_speed failed: {result}")
- 
+        return result
+
 
     def destroy(self):
         """Destroy the plugin instance"""

@@ -1,3 +1,3 @@
 # This file is auto-generated - do not edit manually
 
-from .action import *
+from .camera_server import *

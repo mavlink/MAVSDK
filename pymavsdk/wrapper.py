@@ -132,6 +132,13 @@ class MavsdkConfiguration:
     def __del__(self):
         self.destroy()
 
+class MavsdkServerComponent:
+    """Wrapper for mavsdk_server_component_t"""
+    
+    def __init__(self, lib: ctypes.CDLL, handle: ctypes.c_void_p):
+        self._lib = lib
+        self._handle = handle
+
 class MavsdkSystem:
     """Wrapper for mavsdk_system_t"""
     
@@ -208,13 +215,15 @@ class Mavsdk:
     """Python wrapper for cmavsdk library"""
     
     def __init__(self, configuration: Optional[MavsdkConfiguration] = None, 
-                 lib_path: Optional[str] = None):
+                 lib_path: Optional[str] = None,
+                 component_type: Optional[ComponentType] = None):
         """
         Initialize the cmavsdk wrapper
         
         Args:
             configuration: Optional MavsdkConfiguration object
             lib_path: Optional explicit path to the library
+            component_type: Optional component type (overrides default GROUND_STATION)
         """
         if lib_path:
             self._lib = ctypes.CDLL(lib_path)
@@ -224,16 +233,23 @@ class Mavsdk:
         self._callbacks = []  # Keep references to prevent GC
         self._setup_functions()
         
-        # If no configuration provided, create a default one
+        # Handle configuration creation
         if configuration is None:
-            print("Creating default configuration...")
-            default_config = MavsdkConfiguration.create_with_component_type(
-                self._lib, ComponentType.GROUND_STATION
+            if component_type is None:
+                component_type = ComponentType.GROUND_STATION
+                print("Creating default configuration...")
+            else:
+                print(f"Creating configuration with component type: {component_type}")
+            
+            configuration = MavsdkConfiguration.create_with_component_type(
+                self._lib, component_type
             )
-            config_handle = default_config._handle
-            print(f"✓ Created default config handle: {config_handle}")
+            config_handle = configuration._handle
+            print(f"✓ Created config handle: {config_handle}")
         else:
             config_handle = configuration._handle
+            if component_type is not None:
+                print("Warning: Both configuration and component_type provided, using configuration")
         
         print(f"Creating Mavsdk with config: {config_handle}")
         self._handle = self._lib.mavsdk_create(config_handle)
@@ -356,7 +372,27 @@ class Mavsdk:
         
         self._lib.mavsdk_system_vehicle_type.argtypes = [ctypes.c_void_p]
         self._lib.mavsdk_system_vehicle_type.restype = ctypes.c_int
-    
+
+        # Add server component functions
+        self._lib.mavsdk_server_component.argtypes = [
+            ctypes.c_void_p,
+            ctypes.c_uint
+        ]
+        self._lib.mavsdk_server_component.restype = ctypes.c_void_p
+        
+        self._lib.mavsdk_server_component_by_type.argtypes = [
+            ctypes.c_void_p,
+            ctypes.c_int,
+            ctypes.c_uint
+        ]
+        self._lib.mavsdk_server_component_by_type.restype = ctypes.c_void_p
+        
+        self._lib.mavsdk_server_component_by_id.argtypes = [
+            ctypes.c_void_p,
+            ctypes.c_uint8
+        ]
+        self._lib.mavsdk_server_component_by_id.restype = ctypes.c_void_p
+
     def version(self) -> str:
         """Get MAVSDK version string"""
         version_bytes = self._lib.mavsdk_version(self._handle)
@@ -423,6 +459,29 @@ class Mavsdk:
     def unsubscribe_on_new_system(self, handle: ctypes.c_void_p):
         """Unsubscribe from new system discoveries"""
         self._lib.mavsdk_unsubscribe_on_new_system(self._handle, handle)
+
+    def server_component(self, instance: int = 0):
+        """Get server component by instance"""
+        handle = self._lib.mavsdk_server_component(self._handle, instance)
+        if handle:
+            return MavsdkServerComponent(self._lib, handle)
+        return None
+    
+    def server_component_by_type(self, component_type: ComponentType, instance: int = 0):
+        """Get server component by type and instance"""
+        handle = self._lib.mavsdk_server_component_by_type(
+            self._handle, int(component_type), instance
+        )
+        if handle:
+            return MavsdkServerComponent(self._lib, handle)
+        return None
+    
+    def server_component_by_id(self, component_id: int):
+        """Get server component by component ID"""
+        handle = self._lib.mavsdk_server_component_by_id(self._handle, component_id)
+        if handle:
+            return MavsdkServerComponent(self._lib, handle)
+        return None
     
     def destroy(self):
         """Destroy the Mavsdk instance"""

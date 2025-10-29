@@ -8,7 +8,7 @@ project_root="$(cd "$script_dir/.." && pwd)"
 
 # Default plugins if none provided
 #default_plugins=("action" "action_server" "arm_authorizer_server" "calibration" "camera" "camera_server" "component_metadata" "component_metadata_server" "events" "failure" "follow_me" "ftp" "ftp_server" "geofence" "gimbal" "gripper" "info" "log_files" "log_streaming" "manual_control" "mavlink_direct" "mission" "mission_raw" "mission_raw_server" "mocap" "offboard" "param" "param_server" "rtk" "server_utility" "shell" "telemetry" "telemetry_server" "transponder" "tune" "winch")
-default_plugins=("action" "telemetry")
+default_plugins=("action" "telemetry" "calibration" "camera_server")
 
 # Use provided plugins or defaults
 plugins=("${@:-${default_plugins[@]}}")
@@ -59,8 +59,20 @@ process_plugin() {
     mkdir -p "$output_dir"
     
     echo "Processing $plugin..."
+
+    # Generate __init__.py
+    protoc "$proto_file" \
+        --plugin=protoc-gen-custom="$(which protoc-gen-mavsdk)" \
+        -I"$project_root/proto/protos/${plugin}" \
+        -I"$project_root/proto/protos" \
+        --custom_out="$output_dir" \
+        --custom_opt="output_file=${plugin}/__init__.py" \
+        --custom_opt="template_path=$template_path" \
+        --custom_opt="template_file=__init__.py.j2" \
+        --custom_opt="lstrip_blocks=True" \
+        --custom_opt="trim_blocks=True"
     
-    # Generate header file
+    # Generate implementation
     echo "  Generating ${plugin}.py..."
     protoc "$proto_file" \
         --plugin=protoc-gen-custom="$(which protoc-gen-mavsdk)" \
@@ -80,9 +92,6 @@ process_plugin() {
 main() {
     echo "Setting up venv..."
     setup_venv
-
-    #echo "Generating plugins_generated.cmake..."
-    #python3 ${script_dir}/generate_cmake.py ${plugins[*]}
 
     echo "Starting protoc code generation..."
     echo "Plugins to process: ${plugins[*]}"

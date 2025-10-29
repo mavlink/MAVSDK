@@ -53,7 +53,7 @@ def main():
         
         # Subscribe to position updates
         position_updates = []
-        position_handle = telemetry.position_async(on_position_update)
+        position_handle = telemetry.subscribe_position(on_position_update)
         
         print("Arming...")
         action.arm()
@@ -82,7 +82,7 @@ def main():
             if state == LandedState.ON_GROUND:
                 landed = True
         
-        landed_handle = telemetry.landed_state_async(on_landed_state)
+        landed_handle = telemetry.subscribe_landed_state(on_landed_state)
         
         print("Waiting for landing completion...")
         while not landed:

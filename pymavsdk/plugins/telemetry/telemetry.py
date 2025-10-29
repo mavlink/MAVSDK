@@ -507,6 +507,27 @@ class Position:
         instance.relative_altitude_m = c_struct.relative_altitude_m
         return instance
 
+    def to_c_struct(self):
+        """Convert to C structure for C library calls"""
+        c_struct = PositionCStruct()
+        # Check for None values in primitive types
+        if self.latitude_deg is None:
+            raise ValueError(f"Field 'latitude_deg' must be set before converting to C struct")
+        c_struct.latitude_deg = self.latitude_deg
+        # Check for None values in primitive types
+        if self.longitude_deg is None:
+            raise ValueError(f"Field 'longitude_deg' must be set before converting to C struct")
+        c_struct.longitude_deg = self.longitude_deg
+        # Check for None values in primitive types
+        if self.absolute_altitude_m is None:
+            raise ValueError(f"Field 'absolute_altitude_m' must be set before converting to C struct")
+        c_struct.absolute_altitude_m = self.absolute_altitude_m
+        # Check for None values in primitive types
+        if self.relative_altitude_m is None:
+            raise ValueError(f"Field 'relative_altitude_m' must be set before converting to C struct")
+        c_struct.relative_altitude_m = self.relative_altitude_m
+        return c_struct
+
     def __str__(self):
         fields = []
         fields.append(f"latitude_deg={self.latitude_deg}")
@@ -528,6 +549,15 @@ class Heading:
         instance = cls()
         instance.heading_deg = c_struct.heading_deg
         return instance
+
+    def to_c_struct(self):
+        """Convert to C structure for C library calls"""
+        c_struct = HeadingCStruct()
+        # Check for None values in primitive types
+        if self.heading_deg is None:
+            raise ValueError(f"Field 'heading_deg' must be set before converting to C struct")
+        c_struct.heading_deg = self.heading_deg
+        return c_struct
 
     def __str__(self):
         fields = []
@@ -563,6 +593,31 @@ class Quaternion:
         instance.timestamp_us = c_struct.timestamp_us
         return instance
 
+    def to_c_struct(self):
+        """Convert to C structure for C library calls"""
+        c_struct = QuaternionCStruct()
+        # Check for None values in primitive types
+        if self.w is None:
+            raise ValueError(f"Field 'w' must be set before converting to C struct")
+        c_struct.w = self.w
+        # Check for None values in primitive types
+        if self.x is None:
+            raise ValueError(f"Field 'x' must be set before converting to C struct")
+        c_struct.x = self.x
+        # Check for None values in primitive types
+        if self.y is None:
+            raise ValueError(f"Field 'y' must be set before converting to C struct")
+        c_struct.y = self.y
+        # Check for None values in primitive types
+        if self.z is None:
+            raise ValueError(f"Field 'z' must be set before converting to C struct")
+        c_struct.z = self.z
+        # Check for None values in primitive types
+        if self.timestamp_us is None:
+            raise ValueError(f"Field 'timestamp_us' must be set before converting to C struct")
+        c_struct.timestamp_us = self.timestamp_us
+        return c_struct
+
     def __str__(self):
         fields = []
         fields.append(f"w={self.w}")
@@ -597,6 +652,27 @@ class EulerAngle:
         instance.timestamp_us = c_struct.timestamp_us
         return instance
 
+    def to_c_struct(self):
+        """Convert to C structure for C library calls"""
+        c_struct = EulerAngleCStruct()
+        # Check for None values in primitive types
+        if self.roll_deg is None:
+            raise ValueError(f"Field 'roll_deg' must be set before converting to C struct")
+        c_struct.roll_deg = self.roll_deg
+        # Check for None values in primitive types
+        if self.pitch_deg is None:
+            raise ValueError(f"Field 'pitch_deg' must be set before converting to C struct")
+        c_struct.pitch_deg = self.pitch_deg
+        # Check for None values in primitive types
+        if self.yaw_deg is None:
+            raise ValueError(f"Field 'yaw_deg' must be set before converting to C struct")
+        c_struct.yaw_deg = self.yaw_deg
+        # Check for None values in primitive types
+        if self.timestamp_us is None:
+            raise ValueError(f"Field 'timestamp_us' must be set before converting to C struct")
+        c_struct.timestamp_us = self.timestamp_us
+        return c_struct
+
     def __str__(self):
         fields = []
         fields.append(f"roll_deg={self.roll_deg}")
@@ -623,6 +699,23 @@ class AngularVelocityBody:
         instance.yaw_rad_s = c_struct.yaw_rad_s
         return instance
 
+    def to_c_struct(self):
+        """Convert to C structure for C library calls"""
+        c_struct = AngularVelocityBodyCStruct()
+        # Check for None values in primitive types
+        if self.roll_rad_s is None:
+            raise ValueError(f"Field 'roll_rad_s' must be set before converting to C struct")
+        c_struct.roll_rad_s = self.roll_rad_s
+        # Check for None values in primitive types
+        if self.pitch_rad_s is None:
+            raise ValueError(f"Field 'pitch_rad_s' must be set before converting to C struct")
+        c_struct.pitch_rad_s = self.pitch_rad_s
+        # Check for None values in primitive types
+        if self.yaw_rad_s is None:
+            raise ValueError(f"Field 'yaw_rad_s' must be set before converting to C struct")
+        c_struct.yaw_rad_s = self.yaw_rad_s
+        return c_struct
+
     def __str__(self):
         fields = []
         fields.append(f"roll_rad_s={self.roll_rad_s}")
@@ -646,6 +739,19 @@ class GpsInfo:
         # Convert C enum to Python enum
         instance.fix_type = FixType(c_struct.fix_type)
         return instance
+
+    def to_c_struct(self):
+        """Convert to C structure for C library calls"""
+        c_struct = GpsInfoCStruct()
+        # Check for None values in primitive types
+        if self.num_satellites is None:
+            raise ValueError(f"Field 'num_satellites' must be set before converting to C struct")
+        c_struct.num_satellites = self.num_satellites
+        # Check for None values in enum types
+        if self.fix_type is None:
+            raise ValueError(f"Field 'fix_type' must be set before converting to C struct")
+        c_struct.fix_type = int(self.fix_type)
+        return c_struct
 
     def __str__(self):
         fields = []
@@ -696,6 +802,67 @@ class RawGps:
         instance.yaw_deg = c_struct.yaw_deg
         return instance
 
+    def to_c_struct(self):
+        """Convert to C structure for C library calls"""
+        c_struct = RawGpsCStruct()
+        # Check for None values in primitive types
+        if self.timestamp_us is None:
+            raise ValueError(f"Field 'timestamp_us' must be set before converting to C struct")
+        c_struct.timestamp_us = self.timestamp_us
+        # Check for None values in primitive types
+        if self.latitude_deg is None:
+            raise ValueError(f"Field 'latitude_deg' must be set before converting to C struct")
+        c_struct.latitude_deg = self.latitude_deg
+        # Check for None values in primitive types
+        if self.longitude_deg is None:
+            raise ValueError(f"Field 'longitude_deg' must be set before converting to C struct")
+        c_struct.longitude_deg = self.longitude_deg
+        # Check for None values in primitive types
+        if self.absolute_altitude_m is None:
+            raise ValueError(f"Field 'absolute_altitude_m' must be set before converting to C struct")
+        c_struct.absolute_altitude_m = self.absolute_altitude_m
+        # Check for None values in primitive types
+        if self.hdop is None:
+            raise ValueError(f"Field 'hdop' must be set before converting to C struct")
+        c_struct.hdop = self.hdop
+        # Check for None values in primitive types
+        if self.vdop is None:
+            raise ValueError(f"Field 'vdop' must be set before converting to C struct")
+        c_struct.vdop = self.vdop
+        # Check for None values in primitive types
+        if self.velocity_m_s is None:
+            raise ValueError(f"Field 'velocity_m_s' must be set before converting to C struct")
+        c_struct.velocity_m_s = self.velocity_m_s
+        # Check for None values in primitive types
+        if self.cog_deg is None:
+            raise ValueError(f"Field 'cog_deg' must be set before converting to C struct")
+        c_struct.cog_deg = self.cog_deg
+        # Check for None values in primitive types
+        if self.altitude_ellipsoid_m is None:
+            raise ValueError(f"Field 'altitude_ellipsoid_m' must be set before converting to C struct")
+        c_struct.altitude_ellipsoid_m = self.altitude_ellipsoid_m
+        # Check for None values in primitive types
+        if self.horizontal_uncertainty_m is None:
+            raise ValueError(f"Field 'horizontal_uncertainty_m' must be set before converting to C struct")
+        c_struct.horizontal_uncertainty_m = self.horizontal_uncertainty_m
+        # Check for None values in primitive types
+        if self.vertical_uncertainty_m is None:
+            raise ValueError(f"Field 'vertical_uncertainty_m' must be set before converting to C struct")
+        c_struct.vertical_uncertainty_m = self.vertical_uncertainty_m
+        # Check for None values in primitive types
+        if self.velocity_uncertainty_m_s is None:
+            raise ValueError(f"Field 'velocity_uncertainty_m_s' must be set before converting to C struct")
+        c_struct.velocity_uncertainty_m_s = self.velocity_uncertainty_m_s
+        # Check for None values in primitive types
+        if self.heading_uncertainty_deg is None:
+            raise ValueError(f"Field 'heading_uncertainty_deg' must be set before converting to C struct")
+        c_struct.heading_uncertainty_deg = self.heading_uncertainty_deg
+        # Check for None values in primitive types
+        if self.yaw_deg is None:
+            raise ValueError(f"Field 'yaw_deg' must be set before converting to C struct")
+        c_struct.yaw_deg = self.yaw_deg
+        return c_struct
+
     def __str__(self):
         fields = []
         fields.append(f"timestamp_us={self.timestamp_us}")
@@ -743,6 +910,43 @@ class Battery:
         instance.battery_function = BatteryFunction(c_struct.battery_function)
         return instance
 
+    def to_c_struct(self):
+        """Convert to C structure for C library calls"""
+        c_struct = BatteryCStruct()
+        # Check for None values in primitive types
+        if self.id is None:
+            raise ValueError(f"Field 'id' must be set before converting to C struct")
+        c_struct.id = self.id
+        # Check for None values in primitive types
+        if self.temperature_degc is None:
+            raise ValueError(f"Field 'temperature_degc' must be set before converting to C struct")
+        c_struct.temperature_degc = self.temperature_degc
+        # Check for None values in primitive types
+        if self.voltage_v is None:
+            raise ValueError(f"Field 'voltage_v' must be set before converting to C struct")
+        c_struct.voltage_v = self.voltage_v
+        # Check for None values in primitive types
+        if self.current_battery_a is None:
+            raise ValueError(f"Field 'current_battery_a' must be set before converting to C struct")
+        c_struct.current_battery_a = self.current_battery_a
+        # Check for None values in primitive types
+        if self.capacity_consumed_ah is None:
+            raise ValueError(f"Field 'capacity_consumed_ah' must be set before converting to C struct")
+        c_struct.capacity_consumed_ah = self.capacity_consumed_ah
+        # Check for None values in primitive types
+        if self.remaining_percent is None:
+            raise ValueError(f"Field 'remaining_percent' must be set before converting to C struct")
+        c_struct.remaining_percent = self.remaining_percent
+        # Check for None values in primitive types
+        if self.time_remaining_s is None:
+            raise ValueError(f"Field 'time_remaining_s' must be set before converting to C struct")
+        c_struct.time_remaining_s = self.time_remaining_s
+        # Check for None values in enum types
+        if self.battery_function is None:
+            raise ValueError(f"Field 'battery_function' must be set before converting to C struct")
+        c_struct.battery_function = int(self.battery_function)
+        return c_struct
+
     def __str__(self):
         fields = []
         fields.append(f"id={self.id}")
@@ -781,6 +985,39 @@ class Health:
         instance.is_armable = c_struct.is_armable
         return instance
 
+    def to_c_struct(self):
+        """Convert to C structure for C library calls"""
+        c_struct = HealthCStruct()
+        # Check for None values in primitive types
+        if self.is_gyrometer_calibration_ok is None:
+            raise ValueError(f"Field 'is_gyrometer_calibration_ok' must be set before converting to C struct")
+        c_struct.is_gyrometer_calibration_ok = self.is_gyrometer_calibration_ok
+        # Check for None values in primitive types
+        if self.is_accelerometer_calibration_ok is None:
+            raise ValueError(f"Field 'is_accelerometer_calibration_ok' must be set before converting to C struct")
+        c_struct.is_accelerometer_calibration_ok = self.is_accelerometer_calibration_ok
+        # Check for None values in primitive types
+        if self.is_magnetometer_calibration_ok is None:
+            raise ValueError(f"Field 'is_magnetometer_calibration_ok' must be set before converting to C struct")
+        c_struct.is_magnetometer_calibration_ok = self.is_magnetometer_calibration_ok
+        # Check for None values in primitive types
+        if self.is_local_position_ok is None:
+            raise ValueError(f"Field 'is_local_position_ok' must be set before converting to C struct")
+        c_struct.is_local_position_ok = self.is_local_position_ok
+        # Check for None values in primitive types
+        if self.is_global_position_ok is None:
+            raise ValueError(f"Field 'is_global_position_ok' must be set before converting to C struct")
+        c_struct.is_global_position_ok = self.is_global_position_ok
+        # Check for None values in primitive types
+        if self.is_home_position_ok is None:
+            raise ValueError(f"Field 'is_home_position_ok' must be set before converting to C struct")
+        c_struct.is_home_position_ok = self.is_home_position_ok
+        # Check for None values in primitive types
+        if self.is_armable is None:
+            raise ValueError(f"Field 'is_armable' must be set before converting to C struct")
+        c_struct.is_armable = self.is_armable
+        return c_struct
+
     def __str__(self):
         fields = []
         fields.append(f"is_gyrometer_calibration_ok={self.is_gyrometer_calibration_ok}")
@@ -810,6 +1047,23 @@ class RcStatus:
         instance.signal_strength_percent = c_struct.signal_strength_percent
         return instance
 
+    def to_c_struct(self):
+        """Convert to C structure for C library calls"""
+        c_struct = RcStatusCStruct()
+        # Check for None values in primitive types
+        if self.was_available_once is None:
+            raise ValueError(f"Field 'was_available_once' must be set before converting to C struct")
+        c_struct.was_available_once = self.was_available_once
+        # Check for None values in primitive types
+        if self.is_available is None:
+            raise ValueError(f"Field 'is_available' must be set before converting to C struct")
+        c_struct.is_available = self.is_available
+        # Check for None values in primitive types
+        if self.signal_strength_percent is None:
+            raise ValueError(f"Field 'signal_strength_percent' must be set before converting to C struct")
+        c_struct.signal_strength_percent = self.signal_strength_percent
+        return c_struct
+
     def __str__(self):
         fields = []
         fields.append(f"was_available_once={self.was_available_once}")
@@ -833,6 +1087,17 @@ class StatusText:
         instance.type = StatusTextType(c_struct.type)
         instance.text = c_struct.text
         return instance
+
+    def to_c_struct(self):
+        """Convert to C structure for C library calls"""
+        c_struct = StatusTextCStruct()
+        # Check for None values in enum types
+        if self.type is None:
+            raise ValueError(f"Field 'type' must be set before converting to C struct")
+        c_struct.type = int(self.type)
+        # Convert Python string to C string (bytes)
+        c_struct.text = self.text.encode('utf-8') if self.text is not None else None
+        return c_struct
 
     def __str__(self):
         fields = []
@@ -860,6 +1125,23 @@ class ActuatorControlTarget:
             instance.controls = []
         return instance
 
+    def to_c_struct(self):
+        """Convert to C structure for C library calls"""
+        c_struct = ActuatorControlTargetCStruct()
+        # Check for None values in primitive types
+        if self.group is None:
+            raise ValueError(f"Field 'group' must be set before converting to C struct")
+        c_struct.group = self.group
+        # Convert Python list to C array
+        if self.controls:
+            array_type = ctypes.c_float * len(self.controls)
+            c_struct.controls = array_type(*self.controls)
+            c_struct.controls_size = len(self.controls)
+        else:
+            c_struct.controls = None
+            c_struct.controls_size = 0
+        return c_struct
+
     def __str__(self):
         fields = []
         fields.append(f"group={self.group}")
@@ -885,6 +1167,23 @@ class ActuatorOutputStatus:
         else:
             instance.actuator = []
         return instance
+
+    def to_c_struct(self):
+        """Convert to C structure for C library calls"""
+        c_struct = ActuatorOutputStatusCStruct()
+        # Check for None values in primitive types
+        if self.active is None:
+            raise ValueError(f"Field 'active' must be set before converting to C struct")
+        c_struct.active = self.active
+        # Convert Python list to C array
+        if self.actuator:
+            array_type = ctypes.c_float * len(self.actuator)
+            c_struct.actuator = array_type(*self.actuator)
+            c_struct.actuator_size = len(self.actuator)
+        else:
+            c_struct.actuator = None
+            c_struct.actuator_size = 0
+        return c_struct
 
     def __str__(self):
         fields = []
@@ -914,6 +1213,19 @@ class Covariance:
             instance.covariance_matrix = []
         return instance
 
+    def to_c_struct(self):
+        """Convert to C structure for C library calls"""
+        c_struct = CovarianceCStruct()
+        # Convert Python list to C array
+        if self.covariance_matrix:
+            array_type = ctypes.c_float * len(self.covariance_matrix)
+            c_struct.covariance_matrix = array_type(*self.covariance_matrix)
+            c_struct.covariance_matrix_size = len(self.covariance_matrix)
+        else:
+            c_struct.covariance_matrix = None
+            c_struct.covariance_matrix_size = 0
+        return c_struct
+
     def __str__(self):
         fields = []
         fields.append(f"covariance_matrix=[{len(self.covariance_matrix)} items]")
@@ -936,6 +1248,23 @@ class VelocityBody:
         instance.y_m_s = c_struct.y_m_s
         instance.z_m_s = c_struct.z_m_s
         return instance
+
+    def to_c_struct(self):
+        """Convert to C structure for C library calls"""
+        c_struct = VelocityBodyCStruct()
+        # Check for None values in primitive types
+        if self.x_m_s is None:
+            raise ValueError(f"Field 'x_m_s' must be set before converting to C struct")
+        c_struct.x_m_s = self.x_m_s
+        # Check for None values in primitive types
+        if self.y_m_s is None:
+            raise ValueError(f"Field 'y_m_s' must be set before converting to C struct")
+        c_struct.y_m_s = self.y_m_s
+        # Check for None values in primitive types
+        if self.z_m_s is None:
+            raise ValueError(f"Field 'z_m_s' must be set before converting to C struct")
+        c_struct.z_m_s = self.z_m_s
+        return c_struct
 
     def __str__(self):
         fields = []
@@ -961,6 +1290,23 @@ class PositionBody:
         instance.y_m = c_struct.y_m
         instance.z_m = c_struct.z_m
         return instance
+
+    def to_c_struct(self):
+        """Convert to C structure for C library calls"""
+        c_struct = PositionBodyCStruct()
+        # Check for None values in primitive types
+        if self.x_m is None:
+            raise ValueError(f"Field 'x_m' must be set before converting to C struct")
+        c_struct.x_m = self.x_m
+        # Check for None values in primitive types
+        if self.y_m is None:
+            raise ValueError(f"Field 'y_m' must be set before converting to C struct")
+        c_struct.y_m = self.y_m
+        # Check for None values in primitive types
+        if self.z_m is None:
+            raise ValueError(f"Field 'z_m' must be set before converting to C struct")
+        c_struct.z_m = self.z_m
+        return c_struct
 
     def __str__(self):
         fields = []
@@ -1007,6 +1353,41 @@ class Odometry:
         instance.velocity_covariance = Covariance.from_c_struct(c_struct.velocity_covariance)
         return instance
 
+    def to_c_struct(self):
+        """Convert to C structure for C library calls"""
+        c_struct = OdometryCStruct()
+        # Check for None values in primitive types
+        if self.time_usec is None:
+            raise ValueError(f"Field 'time_usec' must be set before converting to C struct")
+        c_struct.time_usec = self.time_usec
+        # Check for None values in enum types
+        if self.frame_id is None:
+            raise ValueError(f"Field 'frame_id' must be set before converting to C struct")
+        c_struct.frame_id = int(self.frame_id)
+        # Check for None values in enum types
+        if self.child_frame_id is None:
+            raise ValueError(f"Field 'child_frame_id' must be set before converting to C struct")
+        c_struct.child_frame_id = int(self.child_frame_id)
+        # Convert nested Python object to C struct
+        if self.position_body is not None:
+            c_struct.position_body = self.position_body.to_c_struct()
+        # Convert nested Python object to C struct
+        if self.q is not None:
+            c_struct.q = self.q.to_c_struct()
+        # Convert nested Python object to C struct
+        if self.velocity_body is not None:
+            c_struct.velocity_body = self.velocity_body.to_c_struct()
+        # Convert nested Python object to C struct
+        if self.angular_velocity_body is not None:
+            c_struct.angular_velocity_body = self.angular_velocity_body.to_c_struct()
+        # Convert nested Python object to C struct
+        if self.pose_covariance is not None:
+            c_struct.pose_covariance = self.pose_covariance.to_c_struct()
+        # Convert nested Python object to C struct
+        if self.velocity_covariance is not None:
+            c_struct.velocity_covariance = self.velocity_covariance.to_c_struct()
+        return c_struct
+
     def __str__(self):
         fields = []
         fields.append(f"time_usec={self.time_usec}")
@@ -1041,6 +1422,26 @@ class DistanceSensor:
         instance.orientation = EulerAngle.from_c_struct(c_struct.orientation)
         return instance
 
+    def to_c_struct(self):
+        """Convert to C structure for C library calls"""
+        c_struct = DistanceSensorCStruct()
+        # Check for None values in primitive types
+        if self.minimum_distance_m is None:
+            raise ValueError(f"Field 'minimum_distance_m' must be set before converting to C struct")
+        c_struct.minimum_distance_m = self.minimum_distance_m
+        # Check for None values in primitive types
+        if self.maximum_distance_m is None:
+            raise ValueError(f"Field 'maximum_distance_m' must be set before converting to C struct")
+        c_struct.maximum_distance_m = self.maximum_distance_m
+        # Check for None values in primitive types
+        if self.current_distance_m is None:
+            raise ValueError(f"Field 'current_distance_m' must be set before converting to C struct")
+        c_struct.current_distance_m = self.current_distance_m
+        # Convert nested Python object to C struct
+        if self.orientation is not None:
+            c_struct.orientation = self.orientation.to_c_struct()
+        return c_struct
+
     def __str__(self):
         fields = []
         fields.append(f"minimum_distance_m={self.minimum_distance_m}")
@@ -1071,6 +1472,31 @@ class ScaledPressure:
         instance.differential_pressure_temperature_deg = c_struct.differential_pressure_temperature_deg
         return instance
 
+    def to_c_struct(self):
+        """Convert to C structure for C library calls"""
+        c_struct = ScaledPressureCStruct()
+        # Check for None values in primitive types
+        if self.timestamp_us is None:
+            raise ValueError(f"Field 'timestamp_us' must be set before converting to C struct")
+        c_struct.timestamp_us = self.timestamp_us
+        # Check for None values in primitive types
+        if self.absolute_pressure_hpa is None:
+            raise ValueError(f"Field 'absolute_pressure_hpa' must be set before converting to C struct")
+        c_struct.absolute_pressure_hpa = self.absolute_pressure_hpa
+        # Check for None values in primitive types
+        if self.differential_pressure_hpa is None:
+            raise ValueError(f"Field 'differential_pressure_hpa' must be set before converting to C struct")
+        c_struct.differential_pressure_hpa = self.differential_pressure_hpa
+        # Check for None values in primitive types
+        if self.temperature_deg is None:
+            raise ValueError(f"Field 'temperature_deg' must be set before converting to C struct")
+        c_struct.temperature_deg = self.temperature_deg
+        # Check for None values in primitive types
+        if self.differential_pressure_temperature_deg is None:
+            raise ValueError(f"Field 'differential_pressure_temperature_deg' must be set before converting to C struct")
+        c_struct.differential_pressure_temperature_deg = self.differential_pressure_temperature_deg
+        return c_struct
+
     def __str__(self):
         fields = []
         fields.append(f"timestamp_us={self.timestamp_us}")
@@ -1098,6 +1524,23 @@ class PositionNed:
         instance.down_m = c_struct.down_m
         return instance
 
+    def to_c_struct(self):
+        """Convert to C structure for C library calls"""
+        c_struct = PositionNedCStruct()
+        # Check for None values in primitive types
+        if self.north_m is None:
+            raise ValueError(f"Field 'north_m' must be set before converting to C struct")
+        c_struct.north_m = self.north_m
+        # Check for None values in primitive types
+        if self.east_m is None:
+            raise ValueError(f"Field 'east_m' must be set before converting to C struct")
+        c_struct.east_m = self.east_m
+        # Check for None values in primitive types
+        if self.down_m is None:
+            raise ValueError(f"Field 'down_m' must be set before converting to C struct")
+        c_struct.down_m = self.down_m
+        return c_struct
+
     def __str__(self):
         fields = []
         fields.append(f"north_m={self.north_m}")
@@ -1122,6 +1565,23 @@ class VelocityNed:
         instance.east_m_s = c_struct.east_m_s
         instance.down_m_s = c_struct.down_m_s
         return instance
+
+    def to_c_struct(self):
+        """Convert to C structure for C library calls"""
+        c_struct = VelocityNedCStruct()
+        # Check for None values in primitive types
+        if self.north_m_s is None:
+            raise ValueError(f"Field 'north_m_s' must be set before converting to C struct")
+        c_struct.north_m_s = self.north_m_s
+        # Check for None values in primitive types
+        if self.east_m_s is None:
+            raise ValueError(f"Field 'east_m_s' must be set before converting to C struct")
+        c_struct.east_m_s = self.east_m_s
+        # Check for None values in primitive types
+        if self.down_m_s is None:
+            raise ValueError(f"Field 'down_m_s' must be set before converting to C struct")
+        c_struct.down_m_s = self.down_m_s
+        return c_struct
 
     def __str__(self):
         fields = []
@@ -1148,6 +1608,17 @@ class PositionVelocityNed:
         instance.velocity = VelocityNed.from_c_struct(c_struct.velocity)
         return instance
 
+    def to_c_struct(self):
+        """Convert to C structure for C library calls"""
+        c_struct = PositionVelocityNedCStruct()
+        # Convert nested Python object to C struct
+        if self.position is not None:
+            c_struct.position = self.position.to_c_struct()
+        # Convert nested Python object to C struct
+        if self.velocity is not None:
+            c_struct.velocity = self.velocity.to_c_struct()
+        return c_struct
+
     def __str__(self):
         fields = []
         fields.append(f"position={self.position}")
@@ -1171,6 +1642,23 @@ class GroundTruth:
         instance.longitude_deg = c_struct.longitude_deg
         instance.absolute_altitude_m = c_struct.absolute_altitude_m
         return instance
+
+    def to_c_struct(self):
+        """Convert to C structure for C library calls"""
+        c_struct = GroundTruthCStruct()
+        # Check for None values in primitive types
+        if self.latitude_deg is None:
+            raise ValueError(f"Field 'latitude_deg' must be set before converting to C struct")
+        c_struct.latitude_deg = self.latitude_deg
+        # Check for None values in primitive types
+        if self.longitude_deg is None:
+            raise ValueError(f"Field 'longitude_deg' must be set before converting to C struct")
+        c_struct.longitude_deg = self.longitude_deg
+        # Check for None values in primitive types
+        if self.absolute_altitude_m is None:
+            raise ValueError(f"Field 'absolute_altitude_m' must be set before converting to C struct")
+        c_struct.absolute_altitude_m = self.absolute_altitude_m
+        return c_struct
 
     def __str__(self):
         fields = []
@@ -1203,6 +1691,35 @@ class FixedwingMetrics:
         instance.absolute_altitude_m = c_struct.absolute_altitude_m
         return instance
 
+    def to_c_struct(self):
+        """Convert to C structure for C library calls"""
+        c_struct = FixedwingMetricsCStruct()
+        # Check for None values in primitive types
+        if self.airspeed_m_s is None:
+            raise ValueError(f"Field 'airspeed_m_s' must be set before converting to C struct")
+        c_struct.airspeed_m_s = self.airspeed_m_s
+        # Check for None values in primitive types
+        if self.throttle_percentage is None:
+            raise ValueError(f"Field 'throttle_percentage' must be set before converting to C struct")
+        c_struct.throttle_percentage = self.throttle_percentage
+        # Check for None values in primitive types
+        if self.climb_rate_m_s is None:
+            raise ValueError(f"Field 'climb_rate_m_s' must be set before converting to C struct")
+        c_struct.climb_rate_m_s = self.climb_rate_m_s
+        # Check for None values in primitive types
+        if self.groundspeed_m_s is None:
+            raise ValueError(f"Field 'groundspeed_m_s' must be set before converting to C struct")
+        c_struct.groundspeed_m_s = self.groundspeed_m_s
+        # Check for None values in primitive types
+        if self.heading_deg is None:
+            raise ValueError(f"Field 'heading_deg' must be set before converting to C struct")
+        c_struct.heading_deg = self.heading_deg
+        # Check for None values in primitive types
+        if self.absolute_altitude_m is None:
+            raise ValueError(f"Field 'absolute_altitude_m' must be set before converting to C struct")
+        c_struct.absolute_altitude_m = self.absolute_altitude_m
+        return c_struct
+
     def __str__(self):
         fields = []
         fields.append(f"airspeed_m_s={self.airspeed_m_s}")
@@ -1231,6 +1748,23 @@ class AccelerationFrd:
         instance.down_m_s2 = c_struct.down_m_s2
         return instance
 
+    def to_c_struct(self):
+        """Convert to C structure for C library calls"""
+        c_struct = AccelerationFrdCStruct()
+        # Check for None values in primitive types
+        if self.forward_m_s2 is None:
+            raise ValueError(f"Field 'forward_m_s2' must be set before converting to C struct")
+        c_struct.forward_m_s2 = self.forward_m_s2
+        # Check for None values in primitive types
+        if self.right_m_s2 is None:
+            raise ValueError(f"Field 'right_m_s2' must be set before converting to C struct")
+        c_struct.right_m_s2 = self.right_m_s2
+        # Check for None values in primitive types
+        if self.down_m_s2 is None:
+            raise ValueError(f"Field 'down_m_s2' must be set before converting to C struct")
+        c_struct.down_m_s2 = self.down_m_s2
+        return c_struct
+
     def __str__(self):
         fields = []
         fields.append(f"forward_m_s2={self.forward_m_s2}")
@@ -1256,6 +1790,23 @@ class AngularVelocityFrd:
         instance.down_rad_s = c_struct.down_rad_s
         return instance
 
+    def to_c_struct(self):
+        """Convert to C structure for C library calls"""
+        c_struct = AngularVelocityFrdCStruct()
+        # Check for None values in primitive types
+        if self.forward_rad_s is None:
+            raise ValueError(f"Field 'forward_rad_s' must be set before converting to C struct")
+        c_struct.forward_rad_s = self.forward_rad_s
+        # Check for None values in primitive types
+        if self.right_rad_s is None:
+            raise ValueError(f"Field 'right_rad_s' must be set before converting to C struct")
+        c_struct.right_rad_s = self.right_rad_s
+        # Check for None values in primitive types
+        if self.down_rad_s is None:
+            raise ValueError(f"Field 'down_rad_s' must be set before converting to C struct")
+        c_struct.down_rad_s = self.down_rad_s
+        return c_struct
+
     def __str__(self):
         fields = []
         fields.append(f"forward_rad_s={self.forward_rad_s}")
@@ -1280,6 +1831,23 @@ class MagneticFieldFrd:
         instance.right_gauss = c_struct.right_gauss
         instance.down_gauss = c_struct.down_gauss
         return instance
+
+    def to_c_struct(self):
+        """Convert to C structure for C library calls"""
+        c_struct = MagneticFieldFrdCStruct()
+        # Check for None values in primitive types
+        if self.forward_gauss is None:
+            raise ValueError(f"Field 'forward_gauss' must be set before converting to C struct")
+        c_struct.forward_gauss = self.forward_gauss
+        # Check for None values in primitive types
+        if self.right_gauss is None:
+            raise ValueError(f"Field 'right_gauss' must be set before converting to C struct")
+        c_struct.right_gauss = self.right_gauss
+        # Check for None values in primitive types
+        if self.down_gauss is None:
+            raise ValueError(f"Field 'down_gauss' must be set before converting to C struct")
+        c_struct.down_gauss = self.down_gauss
+        return c_struct
 
     def __str__(self):
         fields = []
@@ -1313,6 +1881,28 @@ class Imu:
         instance.timestamp_us = c_struct.timestamp_us
         return instance
 
+    def to_c_struct(self):
+        """Convert to C structure for C library calls"""
+        c_struct = ImuCStruct()
+        # Convert nested Python object to C struct
+        if self.acceleration_frd is not None:
+            c_struct.acceleration_frd = self.acceleration_frd.to_c_struct()
+        # Convert nested Python object to C struct
+        if self.angular_velocity_frd is not None:
+            c_struct.angular_velocity_frd = self.angular_velocity_frd.to_c_struct()
+        # Convert nested Python object to C struct
+        if self.magnetic_field_frd is not None:
+            c_struct.magnetic_field_frd = self.magnetic_field_frd.to_c_struct()
+        # Check for None values in primitive types
+        if self.temperature_degc is None:
+            raise ValueError(f"Field 'temperature_degc' must be set before converting to C struct")
+        c_struct.temperature_degc = self.temperature_degc
+        # Check for None values in primitive types
+        if self.timestamp_us is None:
+            raise ValueError(f"Field 'timestamp_us' must be set before converting to C struct")
+        c_struct.timestamp_us = self.timestamp_us
+        return c_struct
+
     def __str__(self):
         fields = []
         fields.append(f"acceleration_frd={self.acceleration_frd}")
@@ -1339,6 +1929,23 @@ class GpsGlobalOrigin:
         instance.longitude_deg = c_struct.longitude_deg
         instance.altitude_m = c_struct.altitude_m
         return instance
+
+    def to_c_struct(self):
+        """Convert to C structure for C library calls"""
+        c_struct = GpsGlobalOriginCStruct()
+        # Check for None values in primitive types
+        if self.latitude_deg is None:
+            raise ValueError(f"Field 'latitude_deg' must be set before converting to C struct")
+        c_struct.latitude_deg = self.latitude_deg
+        # Check for None values in primitive types
+        if self.longitude_deg is None:
+            raise ValueError(f"Field 'longitude_deg' must be set before converting to C struct")
+        c_struct.longitude_deg = self.longitude_deg
+        # Check for None values in primitive types
+        if self.altitude_m is None:
+            raise ValueError(f"Field 'altitude_m' must be set before converting to C struct")
+        c_struct.altitude_m = self.altitude_m
+        return c_struct
 
     def __str__(self):
         fields = []
@@ -1370,6 +1977,35 @@ class Altitude:
         instance.altitude_terrain_m = c_struct.altitude_terrain_m
         instance.bottom_clearance_m = c_struct.bottom_clearance_m
         return instance
+
+    def to_c_struct(self):
+        """Convert to C structure for C library calls"""
+        c_struct = AltitudeCStruct()
+        # Check for None values in primitive types
+        if self.altitude_monotonic_m is None:
+            raise ValueError(f"Field 'altitude_monotonic_m' must be set before converting to C struct")
+        c_struct.altitude_monotonic_m = self.altitude_monotonic_m
+        # Check for None values in primitive types
+        if self.altitude_amsl_m is None:
+            raise ValueError(f"Field 'altitude_amsl_m' must be set before converting to C struct")
+        c_struct.altitude_amsl_m = self.altitude_amsl_m
+        # Check for None values in primitive types
+        if self.altitude_local_m is None:
+            raise ValueError(f"Field 'altitude_local_m' must be set before converting to C struct")
+        c_struct.altitude_local_m = self.altitude_local_m
+        # Check for None values in primitive types
+        if self.altitude_relative_m is None:
+            raise ValueError(f"Field 'altitude_relative_m' must be set before converting to C struct")
+        c_struct.altitude_relative_m = self.altitude_relative_m
+        # Check for None values in primitive types
+        if self.altitude_terrain_m is None:
+            raise ValueError(f"Field 'altitude_terrain_m' must be set before converting to C struct")
+        c_struct.altitude_terrain_m = self.altitude_terrain_m
+        # Check for None values in primitive types
+        if self.bottom_clearance_m is None:
+            raise ValueError(f"Field 'bottom_clearance_m' must be set before converting to C struct")
+        c_struct.bottom_clearance_m = self.bottom_clearance_m
+        return c_struct
 
     def __str__(self):
         fields = []
@@ -1408,6 +2044,43 @@ class Wind:
         instance.horizontal_wind_speed_accuracy_m_s = c_struct.horizontal_wind_speed_accuracy_m_s
         instance.vertical_wind_speed_accuracy_m_s = c_struct.vertical_wind_speed_accuracy_m_s
         return instance
+
+    def to_c_struct(self):
+        """Convert to C structure for C library calls"""
+        c_struct = WindCStruct()
+        # Check for None values in primitive types
+        if self.wind_x_ned_m_s is None:
+            raise ValueError(f"Field 'wind_x_ned_m_s' must be set before converting to C struct")
+        c_struct.wind_x_ned_m_s = self.wind_x_ned_m_s
+        # Check for None values in primitive types
+        if self.wind_y_ned_m_s is None:
+            raise ValueError(f"Field 'wind_y_ned_m_s' must be set before converting to C struct")
+        c_struct.wind_y_ned_m_s = self.wind_y_ned_m_s
+        # Check for None values in primitive types
+        if self.wind_z_ned_m_s is None:
+            raise ValueError(f"Field 'wind_z_ned_m_s' must be set before converting to C struct")
+        c_struct.wind_z_ned_m_s = self.wind_z_ned_m_s
+        # Check for None values in primitive types
+        if self.horizontal_variability_stddev_m_s is None:
+            raise ValueError(f"Field 'horizontal_variability_stddev_m_s' must be set before converting to C struct")
+        c_struct.horizontal_variability_stddev_m_s = self.horizontal_variability_stddev_m_s
+        # Check for None values in primitive types
+        if self.vertical_variability_stddev_m_s is None:
+            raise ValueError(f"Field 'vertical_variability_stddev_m_s' must be set before converting to C struct")
+        c_struct.vertical_variability_stddev_m_s = self.vertical_variability_stddev_m_s
+        # Check for None values in primitive types
+        if self.wind_altitude_msl_m is None:
+            raise ValueError(f"Field 'wind_altitude_msl_m' must be set before converting to C struct")
+        c_struct.wind_altitude_msl_m = self.wind_altitude_msl_m
+        # Check for None values in primitive types
+        if self.horizontal_wind_speed_accuracy_m_s is None:
+            raise ValueError(f"Field 'horizontal_wind_speed_accuracy_m_s' must be set before converting to C struct")
+        c_struct.horizontal_wind_speed_accuracy_m_s = self.horizontal_wind_speed_accuracy_m_s
+        # Check for None values in primitive types
+        if self.vertical_wind_speed_accuracy_m_s is None:
+            raise ValueError(f"Field 'vertical_wind_speed_accuracy_m_s' must be set before converting to C struct")
+        c_struct.vertical_wind_speed_accuracy_m_s = self.vertical_wind_speed_accuracy_m_s
+        return c_struct
 
     def __str__(self):
         fields = []
@@ -2960,7 +3633,7 @@ class Telemetry:
         self._lib.mavsdk_telemetry_get_gps_global_origin.restype = ctypes.c_int
 
 
-    def position_async(self, callback: Callable, user_data: Any = None):
+    def subscribe_position(self, callback: Callable, user_data: Any = None):
         """Subscribe to 'position' updates."""
 
         def c_callback(c_data, ud):
@@ -2999,12 +3672,12 @@ class Telemetry:
         )
         py_result = Position.from_c_struct(result_out)
 
-        self._lib.mavsdk_telemetry_position_destroy(result_out)
+        self._lib.mavsdk_telemetry_position_destroy(ctypes.byref(result_out))
 
         return py_result
- 
 
-    def home_async(self, callback: Callable, user_data: Any = None):
+
+    def subscribe_home(self, callback: Callable, user_data: Any = None):
         """Subscribe to 'home position' updates."""
 
         def c_callback(c_data, ud):
@@ -3043,12 +3716,12 @@ class Telemetry:
         )
         py_result = Position.from_c_struct(result_out)
 
-        self._lib.mavsdk_telemetry_position_destroy(result_out)
+        self._lib.mavsdk_telemetry_position_destroy(ctypes.byref(result_out))
 
         return py_result
- 
 
-    def in_air_async(self, callback: Callable, user_data: Any = None):
+
+    def subscribe_in_air(self, callback: Callable, user_data: Any = None):
         """Subscribe to in-air updates."""
 
         def c_callback(c_data, ud):
@@ -3084,9 +3757,9 @@ class Telemetry:
             ctypes.byref(result_out)
         )
         return result_out.value
- 
 
-    def landed_state_async(self, callback: Callable, user_data: Any = None):
+
+    def subscribe_landed_state(self, callback: Callable, user_data: Any = None):
         """Subscribe to landed state updates"""
 
         def c_callback(c_data, ud):
@@ -3123,12 +3796,12 @@ class Telemetry:
         )
         py_result = LandedState.from_c_struct(result_out)
 
-        self._lib.mavsdk_telemetry_landed_state_destroy(result_out)
+        self._lib.mavsdk_telemetry_landed_state_destroy(ctypes.byref(result_out))
 
         return py_result
- 
 
-    def armed_async(self, callback: Callable, user_data: Any = None):
+
+    def subscribe_armed(self, callback: Callable, user_data: Any = None):
         """Subscribe to armed updates."""
 
         def c_callback(c_data, ud):
@@ -3164,9 +3837,9 @@ class Telemetry:
             ctypes.byref(result_out)
         )
         return result_out.value
- 
 
-    def vtol_state_async(self, callback: Callable, user_data: Any = None):
+
+    def subscribe_vtol_state(self, callback: Callable, user_data: Any = None):
         """subscribe to vtol state Updates"""
 
         def c_callback(c_data, ud):
@@ -3203,12 +3876,12 @@ class Telemetry:
         )
         py_result = VtolState.from_c_struct(result_out)
 
-        self._lib.mavsdk_telemetry_vtol_state_destroy(result_out)
+        self._lib.mavsdk_telemetry_vtol_state_destroy(ctypes.byref(result_out))
 
         return py_result
- 
 
-    def attitude_quaternion_async(self, callback: Callable, user_data: Any = None):
+
+    def subscribe_attitude_quaternion(self, callback: Callable, user_data: Any = None):
         """Subscribe to 'attitude' updates (quaternion)."""
 
         def c_callback(c_data, ud):
@@ -3247,12 +3920,12 @@ class Telemetry:
         )
         py_result = Quaternion.from_c_struct(result_out)
 
-        self._lib.mavsdk_telemetry_quaternion_destroy(result_out)
+        self._lib.mavsdk_telemetry_quaternion_destroy(ctypes.byref(result_out))
 
         return py_result
- 
 
-    def attitude_euler_async(self, callback: Callable, user_data: Any = None):
+
+    def subscribe_attitude_euler(self, callback: Callable, user_data: Any = None):
         """Subscribe to 'attitude' updates (Euler)."""
 
         def c_callback(c_data, ud):
@@ -3291,12 +3964,12 @@ class Telemetry:
         )
         py_result = EulerAngle.from_c_struct(result_out)
 
-        self._lib.mavsdk_telemetry_euler_angle_destroy(result_out)
+        self._lib.mavsdk_telemetry_euler_angle_destroy(ctypes.byref(result_out))
 
         return py_result
- 
 
-    def attitude_angular_velocity_body_async(self, callback: Callable, user_data: Any = None):
+
+    def subscribe_attitude_angular_velocity_body(self, callback: Callable, user_data: Any = None):
         """Subscribe to 'attitude' updates (angular velocity)"""
 
         def c_callback(c_data, ud):
@@ -3335,12 +4008,12 @@ class Telemetry:
         )
         py_result = AngularVelocityBody.from_c_struct(result_out)
 
-        self._lib.mavsdk_telemetry_angular_velocity_body_destroy(result_out)
+        self._lib.mavsdk_telemetry_angular_velocity_body_destroy(ctypes.byref(result_out))
 
         return py_result
- 
 
-    def velocity_ned_async(self, callback: Callable, user_data: Any = None):
+
+    def subscribe_velocity_ned(self, callback: Callable, user_data: Any = None):
         """Subscribe to 'ground speed' updates (NED)."""
 
         def c_callback(c_data, ud):
@@ -3379,12 +4052,12 @@ class Telemetry:
         )
         py_result = VelocityNed.from_c_struct(result_out)
 
-        self._lib.mavsdk_telemetry_velocity_ned_destroy(result_out)
+        self._lib.mavsdk_telemetry_velocity_ned_destroy(ctypes.byref(result_out))
 
         return py_result
- 
 
-    def gps_info_async(self, callback: Callable, user_data: Any = None):
+
+    def subscribe_gps_info(self, callback: Callable, user_data: Any = None):
         """Subscribe to 'GPS info' updates."""
 
         def c_callback(c_data, ud):
@@ -3423,12 +4096,12 @@ class Telemetry:
         )
         py_result = GpsInfo.from_c_struct(result_out)
 
-        self._lib.mavsdk_telemetry_gps_info_destroy(result_out)
+        self._lib.mavsdk_telemetry_gps_info_destroy(ctypes.byref(result_out))
 
         return py_result
- 
 
-    def raw_gps_async(self, callback: Callable, user_data: Any = None):
+
+    def subscribe_raw_gps(self, callback: Callable, user_data: Any = None):
         """Subscribe to 'Raw GPS' updates."""
 
         def c_callback(c_data, ud):
@@ -3467,12 +4140,12 @@ class Telemetry:
         )
         py_result = RawGps.from_c_struct(result_out)
 
-        self._lib.mavsdk_telemetry_raw_gps_destroy(result_out)
+        self._lib.mavsdk_telemetry_raw_gps_destroy(ctypes.byref(result_out))
 
         return py_result
- 
 
-    def battery_async(self, callback: Callable, user_data: Any = None):
+
+    def subscribe_battery(self, callback: Callable, user_data: Any = None):
         """Subscribe to 'battery' updates."""
 
         def c_callback(c_data, ud):
@@ -3511,12 +4184,12 @@ class Telemetry:
         )
         py_result = Battery.from_c_struct(result_out)
 
-        self._lib.mavsdk_telemetry_battery_destroy(result_out)
+        self._lib.mavsdk_telemetry_battery_destroy(ctypes.byref(result_out))
 
         return py_result
- 
 
-    def flight_mode_async(self, callback: Callable, user_data: Any = None):
+
+    def subscribe_flight_mode(self, callback: Callable, user_data: Any = None):
         """Subscribe to 'flight mode' updates."""
 
         def c_callback(c_data, ud):
@@ -3553,12 +4226,12 @@ class Telemetry:
         )
         py_result = FlightMode.from_c_struct(result_out)
 
-        self._lib.mavsdk_telemetry_flight_mode_destroy(result_out)
+        self._lib.mavsdk_telemetry_flight_mode_destroy(ctypes.byref(result_out))
 
         return py_result
- 
 
-    def health_async(self, callback: Callable, user_data: Any = None):
+
+    def subscribe_health(self, callback: Callable, user_data: Any = None):
         """Subscribe to 'health' updates."""
 
         def c_callback(c_data, ud):
@@ -3597,12 +4270,12 @@ class Telemetry:
         )
         py_result = Health.from_c_struct(result_out)
 
-        self._lib.mavsdk_telemetry_health_destroy(result_out)
+        self._lib.mavsdk_telemetry_health_destroy(ctypes.byref(result_out))
 
         return py_result
- 
 
-    def rc_status_async(self, callback: Callable, user_data: Any = None):
+
+    def subscribe_rc_status(self, callback: Callable, user_data: Any = None):
         """Subscribe to 'RC status' updates."""
 
         def c_callback(c_data, ud):
@@ -3641,12 +4314,12 @@ class Telemetry:
         )
         py_result = RcStatus.from_c_struct(result_out)
 
-        self._lib.mavsdk_telemetry_rc_status_destroy(result_out)
+        self._lib.mavsdk_telemetry_rc_status_destroy(ctypes.byref(result_out))
 
         return py_result
- 
 
-    def status_text_async(self, callback: Callable, user_data: Any = None):
+
+    def subscribe_status_text(self, callback: Callable, user_data: Any = None):
         """Subscribe to 'status text' updates."""
 
         def c_callback(c_data, ud):
@@ -3685,12 +4358,12 @@ class Telemetry:
         )
         py_result = StatusText.from_c_struct(result_out)
 
-        self._lib.mavsdk_telemetry_status_text_destroy(result_out)
+        self._lib.mavsdk_telemetry_status_text_destroy(ctypes.byref(result_out))
 
         return py_result
- 
 
-    def actuator_control_target_async(self, callback: Callable, user_data: Any = None):
+
+    def subscribe_actuator_control_target(self, callback: Callable, user_data: Any = None):
         """Subscribe to 'actuator control target' updates."""
 
         def c_callback(c_data, ud):
@@ -3729,12 +4402,12 @@ class Telemetry:
         )
         py_result = ActuatorControlTarget.from_c_struct(result_out)
 
-        self._lib.mavsdk_telemetry_actuator_control_target_destroy(result_out)
+        self._lib.mavsdk_telemetry_actuator_control_target_destroy(ctypes.byref(result_out))
 
         return py_result
- 
 
-    def actuator_output_status_async(self, callback: Callable, user_data: Any = None):
+
+    def subscribe_actuator_output_status(self, callback: Callable, user_data: Any = None):
         """Subscribe to 'actuator output status' updates."""
 
         def c_callback(c_data, ud):
@@ -3773,12 +4446,12 @@ class Telemetry:
         )
         py_result = ActuatorOutputStatus.from_c_struct(result_out)
 
-        self._lib.mavsdk_telemetry_actuator_output_status_destroy(result_out)
+        self._lib.mavsdk_telemetry_actuator_output_status_destroy(ctypes.byref(result_out))
 
         return py_result
- 
 
-    def odometry_async(self, callback: Callable, user_data: Any = None):
+
+    def subscribe_odometry(self, callback: Callable, user_data: Any = None):
         """Subscribe to 'odometry' updates."""
 
         def c_callback(c_data, ud):
@@ -3817,12 +4490,12 @@ class Telemetry:
         )
         py_result = Odometry.from_c_struct(result_out)
 
-        self._lib.mavsdk_telemetry_odometry_destroy(result_out)
+        self._lib.mavsdk_telemetry_odometry_destroy(ctypes.byref(result_out))
 
         return py_result
- 
 
-    def position_velocity_ned_async(self, callback: Callable, user_data: Any = None):
+
+    def subscribe_position_velocity_ned(self, callback: Callable, user_data: Any = None):
         """Subscribe to 'position velocity' updates."""
 
         def c_callback(c_data, ud):
@@ -3861,12 +4534,12 @@ class Telemetry:
         )
         py_result = PositionVelocityNed.from_c_struct(result_out)
 
-        self._lib.mavsdk_telemetry_position_velocity_ned_destroy(result_out)
+        self._lib.mavsdk_telemetry_position_velocity_ned_destroy(ctypes.byref(result_out))
 
         return py_result
- 
 
-    def ground_truth_async(self, callback: Callable, user_data: Any = None):
+
+    def subscribe_ground_truth(self, callback: Callable, user_data: Any = None):
         """Subscribe to 'ground truth' updates."""
 
         def c_callback(c_data, ud):
@@ -3905,12 +4578,12 @@ class Telemetry:
         )
         py_result = GroundTruth.from_c_struct(result_out)
 
-        self._lib.mavsdk_telemetry_ground_truth_destroy(result_out)
+        self._lib.mavsdk_telemetry_ground_truth_destroy(ctypes.byref(result_out))
 
         return py_result
- 
 
-    def fixedwing_metrics_async(self, callback: Callable, user_data: Any = None):
+
+    def subscribe_fixedwing_metrics(self, callback: Callable, user_data: Any = None):
         """Subscribe to 'fixedwing metrics' updates."""
 
         def c_callback(c_data, ud):
@@ -3949,12 +4622,12 @@ class Telemetry:
         )
         py_result = FixedwingMetrics.from_c_struct(result_out)
 
-        self._lib.mavsdk_telemetry_fixedwing_metrics_destroy(result_out)
+        self._lib.mavsdk_telemetry_fixedwing_metrics_destroy(ctypes.byref(result_out))
 
         return py_result
- 
 
-    def imu_async(self, callback: Callable, user_data: Any = None):
+
+    def subscribe_imu(self, callback: Callable, user_data: Any = None):
         """Subscribe to 'IMU' updates (in SI units in NED body frame)."""
 
         def c_callback(c_data, ud):
@@ -3993,12 +4666,12 @@ class Telemetry:
         )
         py_result = Imu.from_c_struct(result_out)
 
-        self._lib.mavsdk_telemetry_imu_destroy(result_out)
+        self._lib.mavsdk_telemetry_imu_destroy(ctypes.byref(result_out))
 
         return py_result
- 
 
-    def scaled_imu_async(self, callback: Callable, user_data: Any = None):
+
+    def subscribe_scaled_imu(self, callback: Callable, user_data: Any = None):
         """Subscribe to 'Scaled IMU' updates."""
 
         def c_callback(c_data, ud):
@@ -4037,12 +4710,12 @@ class Telemetry:
         )
         py_result = Imu.from_c_struct(result_out)
 
-        self._lib.mavsdk_telemetry_imu_destroy(result_out)
+        self._lib.mavsdk_telemetry_imu_destroy(ctypes.byref(result_out))
 
         return py_result
- 
 
-    def raw_imu_async(self, callback: Callable, user_data: Any = None):
+
+    def subscribe_raw_imu(self, callback: Callable, user_data: Any = None):
         """Subscribe to 'Raw IMU' updates (note that units are are incorrect and "raw" as provided by the sensor)"""
 
         def c_callback(c_data, ud):
@@ -4081,12 +4754,12 @@ class Telemetry:
         )
         py_result = Imu.from_c_struct(result_out)
 
-        self._lib.mavsdk_telemetry_imu_destroy(result_out)
+        self._lib.mavsdk_telemetry_imu_destroy(ctypes.byref(result_out))
 
         return py_result
- 
 
-    def health_all_ok_async(self, callback: Callable, user_data: Any = None):
+
+    def subscribe_health_all_ok(self, callback: Callable, user_data: Any = None):
         """Subscribe to 'HealthAllOk' updates."""
 
         def c_callback(c_data, ud):
@@ -4122,9 +4795,9 @@ class Telemetry:
             ctypes.byref(result_out)
         )
         return result_out.value
- 
 
-    def unix_epoch_time_async(self, callback: Callable, user_data: Any = None):
+
+    def subscribe_unix_epoch_time(self, callback: Callable, user_data: Any = None):
         """Subscribe to 'unix epoch time' updates."""
 
         def c_callback(c_data, ud):
@@ -4160,9 +4833,9 @@ class Telemetry:
             ctypes.byref(result_out)
         )
         return result_out.value
- 
 
-    def distance_sensor_async(self, callback: Callable, user_data: Any = None):
+
+    def subscribe_distance_sensor(self, callback: Callable, user_data: Any = None):
         """Subscribe to 'Distance Sensor' updates."""
 
         def c_callback(c_data, ud):
@@ -4201,12 +4874,12 @@ class Telemetry:
         )
         py_result = DistanceSensor.from_c_struct(result_out)
 
-        self._lib.mavsdk_telemetry_distance_sensor_destroy(result_out)
+        self._lib.mavsdk_telemetry_distance_sensor_destroy(ctypes.byref(result_out))
 
         return py_result
- 
 
-    def scaled_pressure_async(self, callback: Callable, user_data: Any = None):
+
+    def subscribe_scaled_pressure(self, callback: Callable, user_data: Any = None):
         """Subscribe to 'Scaled Pressure' updates."""
 
         def c_callback(c_data, ud):
@@ -4245,12 +4918,12 @@ class Telemetry:
         )
         py_result = ScaledPressure.from_c_struct(result_out)
 
-        self._lib.mavsdk_telemetry_scaled_pressure_destroy(result_out)
+        self._lib.mavsdk_telemetry_scaled_pressure_destroy(ctypes.byref(result_out))
 
         return py_result
- 
 
-    def heading_async(self, callback: Callable, user_data: Any = None):
+
+    def subscribe_heading(self, callback: Callable, user_data: Any = None):
         """Subscribe to 'Heading' updates."""
 
         def c_callback(c_data, ud):
@@ -4289,12 +4962,12 @@ class Telemetry:
         )
         py_result = Heading.from_c_struct(result_out)
 
-        self._lib.mavsdk_telemetry_heading_destroy(result_out)
+        self._lib.mavsdk_telemetry_heading_destroy(ctypes.byref(result_out))
 
         return py_result
- 
 
-    def altitude_async(self, callback: Callable, user_data: Any = None):
+
+    def subscribe_altitude(self, callback: Callable, user_data: Any = None):
         """Subscribe to 'Altitude' updates."""
 
         def c_callback(c_data, ud):
@@ -4333,12 +5006,12 @@ class Telemetry:
         )
         py_result = Altitude.from_c_struct(result_out)
 
-        self._lib.mavsdk_telemetry_altitude_destroy(result_out)
+        self._lib.mavsdk_telemetry_altitude_destroy(ctypes.byref(result_out))
 
         return py_result
- 
 
-    def wind_async(self, callback: Callable, user_data: Any = None):
+
+    def subscribe_wind(self, callback: Callable, user_data: Any = None):
         """Subscribe to 'Wind Estimated' updates."""
 
         def c_callback(c_data, ud):
@@ -4377,10 +5050,10 @@ class Telemetry:
         )
         py_result = Wind.from_c_struct(result_out)
 
-        self._lib.mavsdk_telemetry_wind_destroy(result_out)
+        self._lib.mavsdk_telemetry_wind_destroy(ctypes.byref(result_out))
 
         return py_result
- 
+
 
     def set_rate_position_async(self, rate_hz, callback: Callable, user_data: Any = None):
         """Set rate to 'position' updates."""
@@ -4410,11 +5083,12 @@ class Telemetry:
         """Get set_rate_position (blocking)"""
         result_code = self._lib.mavsdk_telemetry_set_rate_position(
             self._handle,
-rate_hz        )
+            rate_hz        )
         result = TelemetryResult(result_code)
         if result != TelemetryResult.SUCCESS:
             raise Exception(f"set_rate_position failed: {result}")
- 
+        return result
+
 
     def set_rate_home_async(self, rate_hz, callback: Callable, user_data: Any = None):
         """Set rate to 'home position' updates."""
@@ -4444,11 +5118,12 @@ rate_hz        )
         """Get set_rate_home (blocking)"""
         result_code = self._lib.mavsdk_telemetry_set_rate_home(
             self._handle,
-rate_hz        )
+            rate_hz        )
         result = TelemetryResult(result_code)
         if result != TelemetryResult.SUCCESS:
             raise Exception(f"set_rate_home failed: {result}")
- 
+        return result
+
 
     def set_rate_in_air_async(self, rate_hz, callback: Callable, user_data: Any = None):
         """Set rate to in-air updates."""
@@ -4478,11 +5153,12 @@ rate_hz        )
         """Get set_rate_in_air (blocking)"""
         result_code = self._lib.mavsdk_telemetry_set_rate_in_air(
             self._handle,
-rate_hz        )
+            rate_hz        )
         result = TelemetryResult(result_code)
         if result != TelemetryResult.SUCCESS:
             raise Exception(f"set_rate_in_air failed: {result}")
- 
+        return result
+
 
     def set_rate_landed_state_async(self, rate_hz, callback: Callable, user_data: Any = None):
         """Set rate to landed state updates"""
@@ -4512,11 +5188,12 @@ rate_hz        )
         """Get set_rate_landed_state (blocking)"""
         result_code = self._lib.mavsdk_telemetry_set_rate_landed_state(
             self._handle,
-rate_hz        )
+            rate_hz        )
         result = TelemetryResult(result_code)
         if result != TelemetryResult.SUCCESS:
             raise Exception(f"set_rate_landed_state failed: {result}")
- 
+        return result
+
 
     def set_rate_vtol_state_async(self, rate_hz, callback: Callable, user_data: Any = None):
         """Set rate to VTOL state updates"""
@@ -4546,11 +5223,12 @@ rate_hz        )
         """Get set_rate_vtol_state (blocking)"""
         result_code = self._lib.mavsdk_telemetry_set_rate_vtol_state(
             self._handle,
-rate_hz        )
+            rate_hz        )
         result = TelemetryResult(result_code)
         if result != TelemetryResult.SUCCESS:
             raise Exception(f"set_rate_vtol_state failed: {result}")
- 
+        return result
+
 
     def set_rate_attitude_quaternion_async(self, rate_hz, callback: Callable, user_data: Any = None):
         """Set rate to 'attitude euler angle' updates."""
@@ -4580,11 +5258,12 @@ rate_hz        )
         """Get set_rate_attitude_quaternion (blocking)"""
         result_code = self._lib.mavsdk_telemetry_set_rate_attitude_quaternion(
             self._handle,
-rate_hz        )
+            rate_hz        )
         result = TelemetryResult(result_code)
         if result != TelemetryResult.SUCCESS:
             raise Exception(f"set_rate_attitude_quaternion failed: {result}")
- 
+        return result
+
 
     def set_rate_attitude_euler_async(self, rate_hz, callback: Callable, user_data: Any = None):
         """Set rate to 'attitude quaternion' updates."""
@@ -4614,11 +5293,12 @@ rate_hz        )
         """Get set_rate_attitude_euler (blocking)"""
         result_code = self._lib.mavsdk_telemetry_set_rate_attitude_euler(
             self._handle,
-rate_hz        )
+            rate_hz        )
         result = TelemetryResult(result_code)
         if result != TelemetryResult.SUCCESS:
             raise Exception(f"set_rate_attitude_euler failed: {result}")
- 
+        return result
+
 
     def set_rate_velocity_ned_async(self, rate_hz, callback: Callable, user_data: Any = None):
         """Set rate of camera attitude updates.
@@ -4649,11 +5329,12 @@ rate_hz        )
         """Get set_rate_velocity_ned (blocking)"""
         result_code = self._lib.mavsdk_telemetry_set_rate_velocity_ned(
             self._handle,
-rate_hz        )
+            rate_hz        )
         result = TelemetryResult(result_code)
         if result != TelemetryResult.SUCCESS:
             raise Exception(f"set_rate_velocity_ned failed: {result}")
- 
+        return result
+
 
     def set_rate_gps_info_async(self, rate_hz, callback: Callable, user_data: Any = None):
         """Set rate to 'GPS info' updates."""
@@ -4683,11 +5364,12 @@ rate_hz        )
         """Get set_rate_gps_info (blocking)"""
         result_code = self._lib.mavsdk_telemetry_set_rate_gps_info(
             self._handle,
-rate_hz        )
+            rate_hz        )
         result = TelemetryResult(result_code)
         if result != TelemetryResult.SUCCESS:
             raise Exception(f"set_rate_gps_info failed: {result}")
- 
+        return result
+
 
     def set_rate_battery_async(self, rate_hz, callback: Callable, user_data: Any = None):
         """Set rate to 'battery' updates."""
@@ -4717,11 +5399,12 @@ rate_hz        )
         """Get set_rate_battery (blocking)"""
         result_code = self._lib.mavsdk_telemetry_set_rate_battery(
             self._handle,
-rate_hz        )
+            rate_hz        )
         result = TelemetryResult(result_code)
         if result != TelemetryResult.SUCCESS:
             raise Exception(f"set_rate_battery failed: {result}")
- 
+        return result
+
 
     def set_rate_rc_status_async(self, rate_hz, callback: Callable, user_data: Any = None):
         """Set rate to 'RC status' updates."""
@@ -4751,11 +5434,12 @@ rate_hz        )
         """Get set_rate_rc_status (blocking)"""
         result_code = self._lib.mavsdk_telemetry_set_rate_rc_status(
             self._handle,
-rate_hz        )
+            rate_hz        )
         result = TelemetryResult(result_code)
         if result != TelemetryResult.SUCCESS:
             raise Exception(f"set_rate_rc_status failed: {result}")
- 
+        return result
+
 
     def set_rate_actuator_control_target_async(self, rate_hz, callback: Callable, user_data: Any = None):
         """Set rate to 'actuator control target' updates."""
@@ -4785,11 +5469,12 @@ rate_hz        )
         """Get set_rate_actuator_control_target (blocking)"""
         result_code = self._lib.mavsdk_telemetry_set_rate_actuator_control_target(
             self._handle,
-rate_hz        )
+            rate_hz        )
         result = TelemetryResult(result_code)
         if result != TelemetryResult.SUCCESS:
             raise Exception(f"set_rate_actuator_control_target failed: {result}")
- 
+        return result
+
 
     def set_rate_actuator_output_status_async(self, rate_hz, callback: Callable, user_data: Any = None):
         """Set rate to 'actuator output status' updates."""
@@ -4819,11 +5504,12 @@ rate_hz        )
         """Get set_rate_actuator_output_status (blocking)"""
         result_code = self._lib.mavsdk_telemetry_set_rate_actuator_output_status(
             self._handle,
-rate_hz        )
+            rate_hz        )
         result = TelemetryResult(result_code)
         if result != TelemetryResult.SUCCESS:
             raise Exception(f"set_rate_actuator_output_status failed: {result}")
- 
+        return result
+
 
     def set_rate_odometry_async(self, rate_hz, callback: Callable, user_data: Any = None):
         """Set rate to 'odometry' updates."""
@@ -4853,11 +5539,12 @@ rate_hz        )
         """Get set_rate_odometry (blocking)"""
         result_code = self._lib.mavsdk_telemetry_set_rate_odometry(
             self._handle,
-rate_hz        )
+            rate_hz        )
         result = TelemetryResult(result_code)
         if result != TelemetryResult.SUCCESS:
             raise Exception(f"set_rate_odometry failed: {result}")
- 
+        return result
+
 
     def set_rate_position_velocity_ned_async(self, rate_hz, callback: Callable, user_data: Any = None):
         """Set rate to 'position velocity' updates."""
@@ -4887,11 +5574,12 @@ rate_hz        )
         """Get set_rate_position_velocity_ned (blocking)"""
         result_code = self._lib.mavsdk_telemetry_set_rate_position_velocity_ned(
             self._handle,
-rate_hz        )
+            rate_hz        )
         result = TelemetryResult(result_code)
         if result != TelemetryResult.SUCCESS:
             raise Exception(f"set_rate_position_velocity_ned failed: {result}")
- 
+        return result
+
 
     def set_rate_ground_truth_async(self, rate_hz, callback: Callable, user_data: Any = None):
         """Set rate to 'ground truth' updates."""
@@ -4921,11 +5609,12 @@ rate_hz        )
         """Get set_rate_ground_truth (blocking)"""
         result_code = self._lib.mavsdk_telemetry_set_rate_ground_truth(
             self._handle,
-rate_hz        )
+            rate_hz        )
         result = TelemetryResult(result_code)
         if result != TelemetryResult.SUCCESS:
             raise Exception(f"set_rate_ground_truth failed: {result}")
- 
+        return result
+
 
     def set_rate_fixedwing_metrics_async(self, rate_hz, callback: Callable, user_data: Any = None):
         """Set rate to 'fixedwing metrics' updates."""
@@ -4955,11 +5644,12 @@ rate_hz        )
         """Get set_rate_fixedwing_metrics (blocking)"""
         result_code = self._lib.mavsdk_telemetry_set_rate_fixedwing_metrics(
             self._handle,
-rate_hz        )
+            rate_hz        )
         result = TelemetryResult(result_code)
         if result != TelemetryResult.SUCCESS:
             raise Exception(f"set_rate_fixedwing_metrics failed: {result}")
- 
+        return result
+
 
     def set_rate_imu_async(self, rate_hz, callback: Callable, user_data: Any = None):
         """Set rate to 'IMU' updates."""
@@ -4989,11 +5679,12 @@ rate_hz        )
         """Get set_rate_imu (blocking)"""
         result_code = self._lib.mavsdk_telemetry_set_rate_imu(
             self._handle,
-rate_hz        )
+            rate_hz        )
         result = TelemetryResult(result_code)
         if result != TelemetryResult.SUCCESS:
             raise Exception(f"set_rate_imu failed: {result}")
- 
+        return result
+
 
     def set_rate_scaled_imu_async(self, rate_hz, callback: Callable, user_data: Any = None):
         """Set rate to 'Scaled IMU' updates."""
@@ -5023,11 +5714,12 @@ rate_hz        )
         """Get set_rate_scaled_imu (blocking)"""
         result_code = self._lib.mavsdk_telemetry_set_rate_scaled_imu(
             self._handle,
-rate_hz        )
+            rate_hz        )
         result = TelemetryResult(result_code)
         if result != TelemetryResult.SUCCESS:
             raise Exception(f"set_rate_scaled_imu failed: {result}")
- 
+        return result
+
 
     def set_rate_raw_imu_async(self, rate_hz, callback: Callable, user_data: Any = None):
         """Set rate to 'Raw IMU' updates."""
@@ -5057,11 +5749,12 @@ rate_hz        )
         """Get set_rate_raw_imu (blocking)"""
         result_code = self._lib.mavsdk_telemetry_set_rate_raw_imu(
             self._handle,
-rate_hz        )
+            rate_hz        )
         result = TelemetryResult(result_code)
         if result != TelemetryResult.SUCCESS:
             raise Exception(f"set_rate_raw_imu failed: {result}")
- 
+        return result
+
 
     def set_rate_unix_epoch_time_async(self, rate_hz, callback: Callable, user_data: Any = None):
         """Set rate to 'unix epoch time' updates."""
@@ -5091,11 +5784,12 @@ rate_hz        )
         """Get set_rate_unix_epoch_time (blocking)"""
         result_code = self._lib.mavsdk_telemetry_set_rate_unix_epoch_time(
             self._handle,
-rate_hz        )
+            rate_hz        )
         result = TelemetryResult(result_code)
         if result != TelemetryResult.SUCCESS:
             raise Exception(f"set_rate_unix_epoch_time failed: {result}")
- 
+        return result
+
 
     def set_rate_distance_sensor_async(self, rate_hz, callback: Callable, user_data: Any = None):
         """Set rate to 'Distance Sensor' updates."""
@@ -5125,11 +5819,12 @@ rate_hz        )
         """Get set_rate_distance_sensor (blocking)"""
         result_code = self._lib.mavsdk_telemetry_set_rate_distance_sensor(
             self._handle,
-rate_hz        )
+            rate_hz        )
         result = TelemetryResult(result_code)
         if result != TelemetryResult.SUCCESS:
             raise Exception(f"set_rate_distance_sensor failed: {result}")
- 
+        return result
+
 
     def set_rate_altitude_async(self, rate_hz, callback: Callable, user_data: Any = None):
         """Set rate to 'Altitude' updates."""
@@ -5159,11 +5854,12 @@ rate_hz        )
         """Get set_rate_altitude (blocking)"""
         result_code = self._lib.mavsdk_telemetry_set_rate_altitude(
             self._handle,
-rate_hz        )
+            rate_hz        )
         result = TelemetryResult(result_code)
         if result != TelemetryResult.SUCCESS:
             raise Exception(f"set_rate_altitude failed: {result}")
- 
+        return result
+
 
     def set_rate_health_async(self, rate_hz, callback: Callable, user_data: Any = None):
         """Set rate to 'Health' updates."""
@@ -5193,11 +5889,12 @@ rate_hz        )
         """Get set_rate_health (blocking)"""
         result_code = self._lib.mavsdk_telemetry_set_rate_health(
             self._handle,
-rate_hz        )
+            rate_hz        )
         result = TelemetryResult(result_code)
         if result != TelemetryResult.SUCCESS:
             raise Exception(f"set_rate_health failed: {result}")
- 
+        return result
+
 
     def get_gps_global_origin_async(self, callback: Callable, user_data: Any = None):
         """Get the GPS location of where the estimator has been initialized."""
@@ -5235,12 +5932,13 @@ rate_hz        )
         result = TelemetryResult(result_code)
         if result != TelemetryResult.SUCCESS:
             raise Exception(f"get_gps_global_origin failed: {result}")
+        return result
         py_result = GpsGlobalOrigin.from_c_struct(result_out)
 
-        self._lib.mavsdk_telemetry_gps_global_origin_destroy(result_out)
+        self._lib.mavsdk_telemetry_gps_global_origin_destroy(ctypes.byref(result_out))
 
         return py_result
- 
+
 
     def destroy(self):
         """Destroy the plugin instance"""
