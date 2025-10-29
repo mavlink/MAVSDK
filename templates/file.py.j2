@@ -38,20 +38,6 @@ class {{ result_enum }}(IntEnum):
 {% endif %}
 {% endfor %}
 
-# ===== Nested Enums =====
-{% for struct in structs %}
-{% if not struct.name.upper_camel_case.endswith('Result') %}
-{% for nested_enum_name, nested_enum in struct.nested_enums.items() %}
-class {{ struct.name.upper_camel_case }}{{ nested_enum.name.upper_camel_case }}(IntEnum):
-    """{{ nested_enum.enum_description }}"""
-    {% for value in nested_enum.values %}
-    {{ value.name.uppercase }} = {{ loop.index0 }}
-    {% endfor %}
-
-{% endfor %}
-{% endif %}
-{% endfor %}
-
 # ===== Internal C Structures =====
 {% for struct in structs %}
 {% if not struct.name.upper_camel_case.endswith('Result') %}
@@ -94,6 +80,15 @@ class {{ struct.name.upper_camel_case }}:
     """
     {{ struct.struct_description }}
     """
+    {% for nested_enum_name, nested_enum in struct.nested_enums.items() %}
+    class {{ nested_enum.name.upper_camel_case }}(IntEnum):
+        """{{ nested_enum.enum_description }}"""
+        {% for value in nested_enum.values %}
+        {{ value.name.uppercase }} = {{ loop.index0 }}
+        {% endfor %}
+
+    {% endfor %}
+
     def __init__(self{% for field in struct.fields %}, {{ field.name.lower_snake_case }}=None{% endfor %}):
         {% for field in struct.fields %}
         {% if field.type_info.is_repeated %}
@@ -120,7 +115,7 @@ class {{ struct.name.upper_camel_case }}:
         {% endif %}
         {% elif field.type_info.is_enum %}
         # Convert C enum to Python enum
-        instance.{{ field.name.lower_snake_case }} = {{ field.type_info.name.upper_camel_case }}(c_struct.{{ field.name.lower_snake_case }})
+        instance.{{ field.name.lower_snake_case }} = {% if field.type_info.parent_type %}{{ field.type_info.parent_type.upper_camel_case }}.{% endif %}{{ field.type_info.name.upper_camel_case }}(c_struct.{{ field.name.lower_snake_case }})
         {% else %}
         {% if field.type_info.is_repeated %}
         # Convert array of C structs to Python objects
