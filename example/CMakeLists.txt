@@ -46,3 +46,15 @@ target_link_libraries(camera-server
         cmavsdk
 )
 
+add_executable(mission)
+
+target_sources(mission
+    PRIVATE
+        mission.c
+)
+
+target_link_libraries(mission
+    PRIVATE
+        cmavsdk
+)
+
