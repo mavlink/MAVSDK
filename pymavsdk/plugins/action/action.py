@@ -1130,7 +1130,6 @@ class Action:
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
             raise Exception(f"get_takeoff_altitude failed: {result}")
-        return result
         return result_out.value
 
 
@@ -1203,7 +1202,6 @@ class Action:
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
             raise Exception(f"get_return_to_launch_altitude failed: {result}")
-        return result
         return result_out.value
 
 

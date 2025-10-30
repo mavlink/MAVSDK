@@ -189,9 +189,12 @@ class Information:
     def from_c_struct(cls, c_struct):
         """Convert from C structure to Python object"""
         instance = cls()
-        instance.vendor_name = c_struct.vendor_name
-        instance.model_name = c_struct.model_name
-        instance.firmware_version = c_struct.firmware_version
+        # Convert C string to Python string
+        instance.vendor_name = c_struct.vendor_name.decode('utf-8')
+        # Convert C string to Python string
+        instance.model_name = c_struct.model_name.decode('utf-8')
+        # Convert C string to Python string
+        instance.firmware_version = c_struct.firmware_version.decode('utf-8')
         instance.focal_length_mm = c_struct.focal_length_mm
         instance.horizontal_sensor_size_mm = c_struct.horizontal_sensor_size_mm
         instance.vertical_sensor_size_mm = c_struct.vertical_sensor_size_mm
@@ -199,7 +202,8 @@ class Information:
         instance.vertical_resolution_px = c_struct.vertical_resolution_px
         instance.lens_id = c_struct.lens_id
         instance.definition_file_version = c_struct.definition_file_version
-        instance.definition_file_uri = c_struct.definition_file_uri
+        # Convert C string to Python string
+        instance.definition_file_uri = c_struct.definition_file_uri.decode('utf-8')
         instance.image_in_video_mode_supported = c_struct.image_in_video_mode_supported
         instance.video_in_image_mode_supported = c_struct.video_in_image_mode_supported
         return instance
@@ -208,11 +212,11 @@ class Information:
         """Convert to C structure for C library calls"""
         c_struct = InformationCStruct()
         # Convert Python string to C string (bytes)
-        c_struct.vendor_name = self.vendor_name.encode('utf-8') if self.vendor_name is not None else None
+        c_struct.vendor_name = self.vendor_name.encode('utf-8')
         # Convert Python string to C string (bytes)
-        c_struct.model_name = self.model_name.encode('utf-8') if self.model_name is not None else None
+        c_struct.model_name = self.model_name.encode('utf-8')
         # Convert Python string to C string (bytes)
-        c_struct.firmware_version = self.firmware_version.encode('utf-8') if self.firmware_version is not None else None
+        c_struct.firmware_version = self.firmware_version.encode('utf-8')
         # Check for None values in primitive types
         if self.focal_length_mm is None:
             raise ValueError(f"Field 'focal_length_mm' must be set before converting to C struct")
@@ -242,7 +246,7 @@ class Information:
             raise ValueError(f"Field 'definition_file_version' must be set before converting to C struct")
         c_struct.definition_file_version = self.definition_file_version
         # Convert Python string to C string (bytes)
-        c_struct.definition_file_uri = self.definition_file_uri.encode('utf-8') if self.definition_file_uri is not None else None
+        c_struct.definition_file_uri = self.definition_file_uri.encode('utf-8')
         # Check for None values in primitive types
         if self.image_in_video_mode_supported is None:
             raise ValueError(f"Field 'image_in_video_mode_supported' must be set before converting to C struct")
@@ -284,7 +288,8 @@ class VideoStreaming:
         """Convert from C structure to Python object"""
         instance = cls()
         instance.has_rtsp_server = c_struct.has_rtsp_server
-        instance.rtsp_uri = c_struct.rtsp_uri
+        # Convert C string to Python string
+        instance.rtsp_uri = c_struct.rtsp_uri.decode('utf-8')
         return instance
 
     def to_c_struct(self):
@@ -295,7 +300,7 @@ class VideoStreaming:
             raise ValueError(f"Field 'has_rtsp_server' must be set before converting to C struct")
         c_struct.has_rtsp_server = self.has_rtsp_server
         # Convert Python string to C string (bytes)
-        c_struct.rtsp_uri = self.rtsp_uri.encode('utf-8') if self.rtsp_uri is not None else None
+        c_struct.rtsp_uri = self.rtsp_uri.encode('utf-8')
         return c_struct
 
     def __str__(self):
@@ -435,7 +440,8 @@ class CaptureInfo:
         instance.time_utc_us = c_struct.time_utc_us
         instance.is_success = c_struct.is_success
         instance.index = c_struct.index
-        instance.file_url = c_struct.file_url
+        # Convert C string to Python string
+        instance.file_url = c_struct.file_url.decode('utf-8')
         return instance
 
     def to_c_struct(self):
@@ -460,7 +466,7 @@ class CaptureInfo:
             raise ValueError(f"Field 'index' must be set before converting to C struct")
         c_struct.index = self.index
         # Convert Python string to C string (bytes)
-        c_struct.file_url = self.file_url.encode('utf-8') if self.file_url is not None else None
+        c_struct.file_url = self.file_url.encode('utf-8')
         return c_struct
 
     def __str__(self):

@@ -65,7 +65,8 @@ class ProgressData:
         instance.has_progress = c_struct.has_progress
         instance.progress = c_struct.progress
         instance.has_status_text = c_struct.has_status_text
-        instance.status_text = c_struct.status_text
+        # Convert C string to Python string
+        instance.status_text = c_struct.status_text.decode('utf-8')
         return instance
 
     def to_c_struct(self):
@@ -84,7 +85,7 @@ class ProgressData:
             raise ValueError(f"Field 'has_status_text' must be set before converting to C struct")
         c_struct.has_status_text = self.has_status_text
         # Convert Python string to C string (bytes)
-        c_struct.status_text = self.status_text.encode('utf-8') if self.status_text is not None else None
+        c_struct.status_text = self.status_text.encode('utf-8')
         return c_struct
 
     def __str__(self):

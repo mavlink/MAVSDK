@@ -275,17 +275,19 @@ class Option:
     def from_c_struct(cls, c_struct):
         """Convert from C structure to Python object"""
         instance = cls()
-        instance.option_id = c_struct.option_id
-        instance.option_description = c_struct.option_description
+        # Convert C string to Python string
+        instance.option_id = c_struct.option_id.decode('utf-8')
+        # Convert C string to Python string
+        instance.option_description = c_struct.option_description.decode('utf-8')
         return instance
 
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = OptionCStruct()
         # Convert Python string to C string (bytes)
-        c_struct.option_id = self.option_id.encode('utf-8') if self.option_id is not None else None
+        c_struct.option_id = self.option_id.encode('utf-8')
         # Convert Python string to C string (bytes)
-        c_struct.option_description = self.option_description.encode('utf-8') if self.option_description is not None else None
+        c_struct.option_description = self.option_description.encode('utf-8')
         return c_struct
 
     def __str__(self):
@@ -309,8 +311,10 @@ class Setting:
     def from_c_struct(cls, c_struct):
         """Convert from C structure to Python object"""
         instance = cls()
-        instance.setting_id = c_struct.setting_id
-        instance.setting_description = c_struct.setting_description
+        # Convert C string to Python string
+        instance.setting_id = c_struct.setting_id.decode('utf-8')
+        # Convert C string to Python string
+        instance.setting_description = c_struct.setting_description.decode('utf-8')
         # Convert nested C struct to Python object
         instance.option = Option.from_c_struct(c_struct.option)
         instance.is_range = c_struct.is_range
@@ -320,9 +324,9 @@ class Setting:
         """Convert to C structure for C library calls"""
         c_struct = SettingCStruct()
         # Convert Python string to C string (bytes)
-        c_struct.setting_id = self.setting_id.encode('utf-8') if self.setting_id is not None else None
+        c_struct.setting_id = self.setting_id.encode('utf-8')
         # Convert Python string to C string (bytes)
-        c_struct.setting_description = self.setting_description.encode('utf-8') if self.setting_description is not None else None
+        c_struct.setting_description = self.setting_description.encode('utf-8')
         # Convert nested Python object to C struct
         if self.option is not None:
             c_struct.option = self.option.to_c_struct()
@@ -357,10 +361,12 @@ class SettingOptions:
         """Convert from C structure to Python object"""
         instance = cls()
         instance.component_id = c_struct.component_id
-        instance.setting_id = c_struct.setting_id
-        instance.setting_description = c_struct.setting_description
+        # Convert C string to Python string
+        instance.setting_id = c_struct.setting_id.decode('utf-8')
+        # Convert C string to Python string
+        instance.setting_description = c_struct.setting_description.decode('utf-8')
         # Convert array of C structs to Python objects
-        if hasattr(c_struct, 'options_size') and c_struct.options_size > 0:
+        if c_struct.options_size > 0:
             instance.options = [Option.from_c_struct(c_struct.options[i]) for i in range(c_struct.options_size)]
         else:
             instance.options = []
@@ -375,9 +381,9 @@ class SettingOptions:
             raise ValueError(f"Field 'component_id' must be set before converting to C struct")
         c_struct.component_id = self.component_id
         # Convert Python string to C string (bytes)
-        c_struct.setting_id = self.setting_id.encode('utf-8') if self.setting_id is not None else None
+        c_struct.setting_id = self.setting_id.encode('utf-8')
         # Convert Python string to C string (bytes)
-        c_struct.setting_description = self.setting_description.encode('utf-8') if self.setting_description is not None else None
+        c_struct.setting_description = self.setting_description.encode('utf-8')
         # Convert list of Python objects to C array
         if self.options:
             array_type = OptionCStruct * len(self.options)
@@ -427,7 +433,8 @@ class VideoStreamSettings:
         instance.vertical_resolution_pix = c_struct.vertical_resolution_pix
         instance.bit_rate_b_s = c_struct.bit_rate_b_s
         instance.rotation_deg = c_struct.rotation_deg
-        instance.uri = c_struct.uri
+        # Convert C string to Python string
+        instance.uri = c_struct.uri.decode('utf-8')
         instance.horizontal_fov_deg = c_struct.horizontal_fov_deg
         return instance
 
@@ -455,7 +462,7 @@ class VideoStreamSettings:
             raise ValueError(f"Field 'rotation_deg' must be set before converting to C struct")
         c_struct.rotation_deg = self.rotation_deg
         # Convert Python string to C string (bytes)
-        c_struct.uri = self.uri.encode('utf-8') if self.uri is not None else None
+        c_struct.uri = self.uri.encode('utf-8')
         # Check for None values in primitive types
         if self.horizontal_fov_deg is None:
             raise ValueError(f"Field 'horizontal_fov_deg' must be set before converting to C struct")
@@ -654,7 +661,8 @@ class Storage:
         instance.available_storage_mib = c_struct.available_storage_mib
         instance.total_storage_mib = c_struct.total_storage_mib
         instance.recording_time_s = c_struct.recording_time_s
-        instance.media_folder_name = c_struct.media_folder_name
+        # Convert C string to Python string
+        instance.media_folder_name = c_struct.media_folder_name.decode('utf-8')
         # Convert C enum to Python enum
         instance.storage_status = Storage.StorageStatus(c_struct.storage_status)
         instance.storage_id = c_struct.storage_id
@@ -694,7 +702,7 @@ class Storage:
             raise ValueError(f"Field 'recording_time_s' must be set before converting to C struct")
         c_struct.recording_time_s = self.recording_time_s
         # Convert Python string to C string (bytes)
-        c_struct.media_folder_name = self.media_folder_name.encode('utf-8') if self.media_folder_name is not None else None
+        c_struct.media_folder_name = self.media_folder_name.encode('utf-8')
         # Check for None values in enum types
         if self.storage_status is None:
             raise ValueError(f"Field 'storage_status' must be set before converting to C struct")
@@ -775,7 +783,7 @@ class CurrentSettingsUpdate:
         instance = cls()
         instance.component_id = c_struct.component_id
         # Convert array of C structs to Python objects
-        if hasattr(c_struct, 'current_settings_size') and c_struct.current_settings_size > 0:
+        if c_struct.current_settings_size > 0:
             instance.current_settings = [Setting.from_c_struct(c_struct.current_settings[i]) for i in range(c_struct.current_settings_size)]
         else:
             instance.current_settings = []
@@ -822,7 +830,7 @@ class PossibleSettingOptionsUpdate:
         instance = cls()
         instance.component_id = c_struct.component_id
         # Convert array of C structs to Python objects
-        if hasattr(c_struct, 'setting_options_size') and c_struct.setting_options_size > 0:
+        if c_struct.setting_options_size > 0:
             instance.setting_options = [SettingOptions.from_c_struct(c_struct.setting_options[i]) for i in range(c_struct.setting_options_size)]
         else:
             instance.setting_options = []
@@ -1038,7 +1046,8 @@ class CaptureInfo:
         instance.time_utc_us = c_struct.time_utc_us
         instance.is_success = c_struct.is_success
         instance.index = c_struct.index
-        instance.file_url = c_struct.file_url
+        # Convert C string to Python string
+        instance.file_url = c_struct.file_url.decode('utf-8')
         return instance
 
     def to_c_struct(self):
@@ -1070,7 +1079,7 @@ class CaptureInfo:
             raise ValueError(f"Field 'index' must be set before converting to C struct")
         c_struct.index = self.index
         # Convert Python string to C string (bytes)
-        c_struct.file_url = self.file_url.encode('utf-8') if self.file_url is not None else None
+        c_struct.file_url = self.file_url.encode('utf-8')
         return c_struct
 
     def __str__(self):
@@ -1105,8 +1114,10 @@ class Information:
         """Convert from C structure to Python object"""
         instance = cls()
         instance.component_id = c_struct.component_id
-        instance.vendor_name = c_struct.vendor_name
-        instance.model_name = c_struct.model_name
+        # Convert C string to Python string
+        instance.vendor_name = c_struct.vendor_name.decode('utf-8')
+        # Convert C string to Python string
+        instance.model_name = c_struct.model_name.decode('utf-8')
         instance.focal_length_mm = c_struct.focal_length_mm
         instance.horizontal_sensor_size_mm = c_struct.horizontal_sensor_size_mm
         instance.vertical_sensor_size_mm = c_struct.vertical_sensor_size_mm
@@ -1122,9 +1133,9 @@ class Information:
             raise ValueError(f"Field 'component_id' must be set before converting to C struct")
         c_struct.component_id = self.component_id
         # Convert Python string to C string (bytes)
-        c_struct.vendor_name = self.vendor_name.encode('utf-8') if self.vendor_name is not None else None
+        c_struct.vendor_name = self.vendor_name.encode('utf-8')
         # Convert Python string to C string (bytes)
-        c_struct.model_name = self.model_name.encode('utf-8') if self.model_name is not None else None
+        c_struct.model_name = self.model_name.encode('utf-8')
         # Check for None values in primitive types
         if self.focal_length_mm is None:
             raise ValueError(f"Field 'focal_length_mm' must be set before converting to C struct")
@@ -1172,7 +1183,7 @@ class CameraList:
         """Convert from C structure to Python object"""
         instance = cls()
         # Convert array of C structs to Python objects
-        if hasattr(c_struct, 'cameras_size') and c_struct.cameras_size > 0:
+        if c_struct.cameras_size > 0:
             instance.cameras = [Information.from_c_struct(c_struct.cameras[i]) for i in range(c_struct.cameras_size)]
         else:
             instance.cameras = []
@@ -2381,7 +2392,6 @@ class Camera:
         result = CameraResult(result_code)
         if result != CameraResult.SUCCESS:
             raise Exception(f"get_mode failed: {result}")
-        return result
         py_result = Mode.from_c_struct(result_out)
 
         self._lib.mavsdk_camera_mode_destroy(ctypes.byref(result_out))
@@ -2433,7 +2443,6 @@ class Camera:
         result = CameraResult(result_code)
         if result != CameraResult.SUCCESS:
             raise Exception(f"get_video_stream_info failed: {result}")
-        return result
         py_result = VideoStreamInfo.from_c_struct(result_out)
 
         self._lib.mavsdk_camera_video_stream_info_destroy(ctypes.byref(result_out))
@@ -2517,7 +2526,6 @@ class Camera:
         result = CameraResult(result_code)
         if result != CameraResult.SUCCESS:
             raise Exception(f"get_storage failed: {result}")
-        return result
         py_result = Storage.from_c_struct(result_out)
 
         self._lib.mavsdk_camera_storage_destroy(ctypes.byref(result_out))
@@ -2713,7 +2721,6 @@ class Camera:
         result = CameraResult(result_code)
         if result != CameraResult.SUCCESS:
             raise Exception(f"get_setting failed: {result}")
-        return result
         py_result = Setting.from_c_struct(result_out)
 
         self._lib.mavsdk_camera_setting_destroy(ctypes.byref(result_out))

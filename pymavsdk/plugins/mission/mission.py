@@ -259,7 +259,7 @@ class MissionPlan:
         """Convert from C structure to Python object"""
         instance = cls()
         # Convert array of C structs to Python objects
-        if hasattr(c_struct, 'mission_items_size') and c_struct.mission_items_size > 0:
+        if c_struct.mission_items_size > 0:
             instance.mission_items = [MissionItem.from_c_struct(c_struct.mission_items[i]) for i in range(c_struct.mission_items_size)]
         else:
             instance.mission_items = []
@@ -790,7 +790,6 @@ class Mission:
         result = MissionResult(result_code)
         if result != MissionResult.SUCCESS:
             raise Exception(f"download_mission failed: {result}")
-        return result
         py_result = MissionPlan.from_c_struct(result_out)
 
         self._lib.mavsdk_mission_mission_plan_destroy(ctypes.byref(result_out))
@@ -1002,7 +1001,6 @@ class Mission:
         result = MissionResult(result_code)
         if result != MissionResult.SUCCESS:
             raise Exception(f"is_mission_finished failed: {result}")
-        return result
         return result_out.value
 
 
@@ -1061,7 +1059,6 @@ class Mission:
         result = MissionResult(result_code)
         if result != MissionResult.SUCCESS:
             raise Exception(f"get_return_to_launch_after_mission failed: {result}")
-        return result
         return result_out.value
 
 

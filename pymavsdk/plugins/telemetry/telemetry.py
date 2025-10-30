@@ -1087,7 +1087,8 @@ class StatusText:
         instance = cls()
         # Convert C enum to Python enum
         instance.type = StatusTextType(c_struct.type)
-        instance.text = c_struct.text
+        # Convert C string to Python string
+        instance.text = c_struct.text.decode('utf-8')
         return instance
 
     def to_c_struct(self):
@@ -1098,7 +1099,7 @@ class StatusText:
             raise ValueError(f"Field 'type' must be set before converting to C struct")
         c_struct.type = int(self.type)
         # Convert Python string to C string (bytes)
-        c_struct.text = self.text.encode('utf-8') if self.text is not None else None
+        c_struct.text = self.text.encode('utf-8')
         return c_struct
 
     def __str__(self):
@@ -1122,7 +1123,7 @@ class ActuatorControlTarget:
         instance = cls()
         instance.group = c_struct.group
         # Convert C array to Python list
-        if hasattr(c_struct, 'controls_size') and c_struct.controls_size > 0:
+        if c_struct.controls_size > 0:
             instance.controls = [c_struct.controls[i] for i in range(c_struct.controls_size)]
         else:
             instance.controls = []
@@ -1166,7 +1167,7 @@ class ActuatorOutputStatus:
         instance = cls()
         instance.active = c_struct.active
         # Convert C array to Python list
-        if hasattr(c_struct, 'actuator_size') and c_struct.actuator_size > 0:
+        if c_struct.actuator_size > 0:
             instance.actuator = [c_struct.actuator[i] for i in range(c_struct.actuator_size)]
         else:
             instance.actuator = []
@@ -1212,7 +1213,7 @@ class Covariance:
         """Convert from C structure to Python object"""
         instance = cls()
         # Convert C array to Python list
-        if hasattr(c_struct, 'covariance_matrix_size') and c_struct.covariance_matrix_size > 0:
+        if c_struct.covariance_matrix_size > 0:
             instance.covariance_matrix = [c_struct.covariance_matrix[i] for i in range(c_struct.covariance_matrix_size)]
         else:
             instance.covariance_matrix = []
@@ -5961,7 +5962,6 @@ class Telemetry:
         result = TelemetryResult(result_code)
         if result != TelemetryResult.SUCCESS:
             raise Exception(f"get_gps_global_origin failed: {result}")
-        return result
         py_result = GpsGlobalOrigin.from_c_struct(result_out)
 
         self._lib.mavsdk_telemetry_gps_global_origin_destroy(ctypes.byref(result_out))
