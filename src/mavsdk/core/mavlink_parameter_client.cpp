@@ -56,6 +56,12 @@ MavlinkParameterClient::MavlinkParameterClient(
             MAVLINK_MSG_ID_PARAM_VALUE,
             [this](const mavlink_message_t& message) { process_param_value(message); },
             this);
+
+        // PARAM_ERROR is only for standard protocol (not extended)
+        _message_handler.register_one(
+            MAVLINK_MSG_ID_PARAM_ERROR,
+            [this](const mavlink_message_t& message) { process_param_error(message); },
+            this);
     }
 }
 
@@ -1048,6 +1054,89 @@ void MavlinkParameterClient::process_param_ext_ack(const mavlink_message_t& mess
             },
             [&](WorkItemGet&) { LogWarn() << "Unexpected ParamExtAck response."; },
             [&](WorkItemGetAll&) { LogWarn() << "Unexpected ParamExtAck response."; }},
+        work->work_item_variant);
+}
+
+void MavlinkParameterClient::process_param_error(const mavlink_message_t& message)
+{
+    mavlink_param_error_t param_error;
+    mavlink_msg_param_error_decode(&message, &param_error);
+    const auto safe_param_id = extract_safe_param_id(param_error.param_id);
+
+    if (_parameter_debugging) {
+        LogDebug() << "process param_error: " << safe_param_id
+                   << " error code: " << (int)param_error.error;
+    }
+
+    // See comments on process_param_value for use of unique_ptr
+    auto work_queue_guard = std::make_unique<LockedQueue<WorkItem>::Guard>(_work_queue);
+    auto work = work_queue_guard->get_front();
+    if (!work) {
+        return;
+    }
+    if (!work->already_requested) {
+        return;
+    }
+
+    // Map MAV_PARAM_ERROR to Result
+    auto map_param_error_to_result = [](uint8_t error_code) -> Result {
+        switch (error_code) {
+            case 1: // MAV_PARAM_ERROR_DOES_NOT_EXIST
+                return Result::DoesNotExist;
+            case 2: // MAV_PARAM_ERROR_VALUE_OUT_OF_RANGE
+                return Result::ValueOutOfRange;
+            case 3: // MAV_PARAM_ERROR_PERMISSION_DENIED
+                return Result::PermissionDenied;
+            case 4: // MAV_PARAM_ERROR_COMPONENT_NOT_FOUND
+                return Result::ComponentNotFound;
+            case 5: // MAV_PARAM_ERROR_READ_ONLY
+                return Result::ReadOnly;
+            case 6: // MAV_PARAM_ERROR_TYPE_UNSUPPORTED
+                return Result::TypeUnsupported;
+            case 7: // MAV_PARAM_ERROR_TYPE_MISMATCH
+                return Result::TypeMismatch;
+            case 8: // MAV_PARAM_ERROR_READ_FAIL
+                return Result::ReadFail;
+            default:
+                return Result::UnknownError;
+        }
+    };
+
+    std::visit(
+        overloaded{
+            [&](WorkItemSet& item) {
+                if (item.param_name != safe_param_id) {
+                    // No match, let's just return the borrowed work item.
+                    return;
+                }
+                _timeout_handler.remove(_timeout_cookie);
+                work_queue_guard->pop_front();
+                if (item.callback) {
+                    auto callback = item.callback;
+                    auto result = map_param_error_to_result(param_error.error);
+                    work_queue_guard.reset();
+                    callback(result);
+                }
+            },
+            [&](WorkItemGet& item) {
+                if (!validate_id_or_index(
+                        item.param_identifier,
+                        safe_param_id,
+                        static_cast<int16_t>(param_error.param_index))) {
+                    LogWarn() << "Got unexpected PARAM_ERROR on work item";
+                    // No match, let's just return the borrowed work item.
+                    return;
+                }
+                _timeout_handler.remove(_timeout_cookie);
+                work_queue_guard->pop_front();
+                if (item.callback) {
+                    auto callback = item.callback;
+                    auto result = map_param_error_to_result(param_error.error);
+                    work_queue_guard.reset();
+                    callback(result, ParamValue{});
+                }
+            },
+            [&](WorkItemGetAll&) { LogWarn() << "Unexpected PARAM_ERROR response for GetAll."; }},
         work->work_item_variant);
 }
 

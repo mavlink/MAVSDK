@@ -159,6 +159,22 @@ std::ostream& operator<<(std::ostream& str, Param::Result const& result)
             return str << "Param Value Too Long";
         case Param::Result::Failed:
             return str << "Failed";
+        case Param::Result::DoesNotExist:
+            return str << "Does Not Exist";
+        case Param::Result::ValueOutOfRange:
+            return str << "Value Out Of Range";
+        case Param::Result::PermissionDenied:
+            return str << "Permission Denied";
+        case Param::Result::ComponentNotFound:
+            return str << "Component Not Found";
+        case Param::Result::ReadOnly:
+            return str << "Read Only";
+        case Param::Result::TypeUnsupported:
+            return str << "Type Unsupported";
+        case Param::Result::TypeMismatch:
+            return str << "Type Mismatch";
+        case Param::Result::ReadFail:
+            return str << "Read Fail";
         default:
             return str << "Unknown";
     }

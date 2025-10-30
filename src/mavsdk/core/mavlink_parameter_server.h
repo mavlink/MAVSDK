@@ -42,6 +42,12 @@ public:
         TooManyParams,
         ParamNotFound,
         Unknown,
+        ValueOutOfRange,
+        PermissionDenied,
+        ReadOnly,
+        TypeUnsupported,
+        TypeMismatch,
+        ReadFail,
     };
 
     Result provide_server_param(const std::string& name, const ParamValue& param_value);
@@ -82,6 +88,8 @@ private:
 
     bool target_matches(uint16_t target_sys_id, uint16_t target_comp_id, bool is_request);
     void log_target_mismatch(uint16_t target_sys_id, uint16_t target_comp_id);
+
+    void send_param_error(const std::string& param_id, int16_t param_index, uint8_t error_code);
 
     static std::variant<std::monostate, std::string, std::uint16_t>
     extract_request_read_param_identifier(int16_t param_index, const char* param_id);
