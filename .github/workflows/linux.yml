@@ -449,7 +449,7 @@ jobs:
       - name: generate code from protos
         run: PATH="$PATH:$HOME/.local/bin" tools/generate_from_protos.sh
       - name: fix style
-        run: tools/fix_style.sh . || true
+        run: tools/fix_style.py . || true
       - name: check for diff
         run: git diff --exit-code
 

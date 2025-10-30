@@ -194,7 +194,7 @@ Once the proto file has been created, you can generate all files required for th
    ```
 1. Fix style after auto-generation:
    ```
-   tools/fix_style.sh .
+   tools/fix_style.py .
    ```
 
 ::: info
