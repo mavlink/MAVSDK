@@ -58,3 +58,15 @@ target_link_libraries(mission
         cmavsdk
 )
 
+add_executable(params)
+
+target_sources(params
+    PRIVATE
+        params.c
+)
+
+target_link_libraries(params
+    PRIVATE
+        cmavsdk
+)
+
