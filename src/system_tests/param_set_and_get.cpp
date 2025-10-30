@@ -43,9 +43,9 @@ TEST(SystemTest, ParamSetAndGet)
 
     // First we try to get a param before it is available.
     auto result_pair_float = param.get_param_float(param_name_float);
-    EXPECT_EQ(result_pair_float.first, Param::Result::Timeout);
+    EXPECT_EQ(result_pair_float.first, Param::Result::DoesNotExist);
     auto result_pair_int = param.get_param_int(param_name_int);
-    EXPECT_EQ(result_pair_int.first, Param::Result::Timeout);
+    EXPECT_EQ(result_pair_int.first, Param::Result::DoesNotExist);
 
     // Then we make it available.
     EXPECT_EQ(
