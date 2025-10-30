@@ -103,10 +103,13 @@ class {{ struct.name.upper_camel_case }}:
         """Convert from C structure to Python object"""
         instance = cls()
         {% for field in struct.fields %}
-        {% if field.type_info.is_primitive %}
+        {% if field.type_info.is_string %}
+        # Convert C string to Python string
+        instance.{{ field.name.lower_snake_case }} = c_struct.{{ field.name.lower_snake_case }}.decode('utf-8')
+        {% elif field.type_info.is_primitive %}
         {% if field.type_info.is_repeated %}
         # Convert C array to Python list
-        if hasattr(c_struct, '{{ field.name.lower_snake_case }}_size') and c_struct.{{ field.name.lower_snake_case }}_size > 0:
+        if c_struct.{{ field.name.lower_snake_case }}_size > 0:
             instance.{{ field.name.lower_snake_case }} = [c_struct.{{ field.name.lower_snake_case }}[i] for i in range(c_struct.{{ field.name.lower_snake_case }}_size)]
         else:
             instance.{{ field.name.lower_snake_case }} = []
@@ -119,7 +122,7 @@ class {{ struct.name.upper_camel_case }}:
         {% else %}
         {% if field.type_info.is_repeated %}
         # Convert array of C structs to Python objects
-        if hasattr(c_struct, '{{ field.name.lower_snake_case }}_size') and c_struct.{{ field.name.lower_snake_case }}_size > 0:
+        if c_struct.{{ field.name.lower_snake_case }}_size > 0:
             instance.{{ field.name.lower_snake_case }} = [{{ field.type_info.inner_name.upper_camel_case }}.from_c_struct(c_struct.{{ field.name.lower_snake_case }}[i]) for i in range(c_struct.{{ field.name.lower_snake_case }}_size)]
         else:
             instance.{{ field.name.lower_snake_case }} = []
@@ -137,7 +140,7 @@ class {{ struct.name.upper_camel_case }}:
         {% for field in struct.fields %}
         {% if field.type_info.is_string %}
         # Convert Python string to C string (bytes)
-        c_struct.{{ field.name.lower_snake_case }} = self.{{ field.name.lower_snake_case }}.encode('utf-8') if self.{{ field.name.lower_snake_case }} is not None else None
+        c_struct.{{ field.name.lower_snake_case }} = self.{{ field.name.lower_snake_case }}.encode('utf-8')
         {% elif field.type_info.is_primitive %}
         {% if field.type_info.is_repeated %}
         # Convert Python list to C array
@@ -523,7 +526,6 @@ class {{ plugin_name.upper_camel_case }}:
         result = {{ result_enum }}(result_code)
         if result != {{ result_enum }}.SUCCESS:
             raise Exception(f"{{ method.name.lower_snake_case }} failed: {result}")
-        return result
         {% if method.return_type.is_primitive %}
         return result_out.value
         {% else %}
