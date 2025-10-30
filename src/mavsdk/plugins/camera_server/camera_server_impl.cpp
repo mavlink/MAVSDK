@@ -2151,7 +2151,7 @@ void CameraServerImpl::send_tracking_status_with_interval(uint32_t interval_us)
                         &message,
                         CAMERA_TRACKING_STATUS_FLAGS_IDLE,
                         CAMERA_TRACKING_MODE_NONE,
-                        CAMERA_TRACKING_TARGET_DATA_NONE,
+                        0, // used to be CAMERA_TRACKING_TARGET_DATA_NONE
                         0.0f,
                         0.0f,
                         0.0f,

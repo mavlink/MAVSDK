@@ -58,6 +58,14 @@ public:
         StringTypeUnsupported,
         InconsistentData,
         UnknownError,
+        DoesNotExist,
+        ValueOutOfRange,
+        PermissionDenied,
+        ComponentNotFound,
+        ReadOnly,
+        TypeUnsupported,
+        TypeMismatch,
+        ReadFail,
     };
 
     Result set_param(const std::string& name, const ParamValue& value);
@@ -187,6 +195,7 @@ private:
     void process_param_value(const mavlink_message_t& message);
     void process_param_ext_value(const mavlink_message_t& message);
     void process_param_ext_ack(const mavlink_message_t& message);
+    void process_param_error(const mavlink_message_t& message);
     void receive_timeout();
 
     bool send_set_param_message(WorkItemSet& work_item);

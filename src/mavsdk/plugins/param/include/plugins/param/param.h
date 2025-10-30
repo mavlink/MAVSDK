@@ -179,6 +179,14 @@ public:
         NoSystem, /**< @brief No system connected. */
         ParamValueTooLong, /**< @brief Param value too long (> 128). */
         Failed, /**< @brief Operation failed.. */
+        DoesNotExist, /**< @brief Parameter does not exist. */
+        ValueOutOfRange, /**< @brief Parameter value does not fit within accepted range. */
+        PermissionDenied, /**< @brief Caller is not permitted to set the value of this parameter. */
+        ComponentNotFound, /**< @brief Unknown component specified. */
+        ReadOnly, /**< @brief Parameter is read-only. */
+        TypeUnsupported, /**< @brief Parameter data type is not supported by flight stack. */
+        TypeMismatch, /**< @brief Parameter type does not match expected type. */
+        ReadFail, /**< @brief Parameter exists but reading failed. */
     };
 
     /**

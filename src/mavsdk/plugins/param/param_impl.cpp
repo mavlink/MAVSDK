@@ -137,24 +137,39 @@ ParamImpl::result_from_mavlink_parameter_client_result(MavlinkParameterClient::R
             return Param::Result::ParamNameTooLong;
         case MavlinkParameterClient::Result::NotFound:
             LogWarn() << "NotFound";
-            return Param::Result::Unknown; // TODO fix
+            return Param::Result::Unknown; // TODO fix - no corresponding proto Result yet
         case MavlinkParameterClient::Result::ValueUnsupported:
             LogWarn() << "ValueUnsupported";
-            return Param::Result::Unknown; // TODO fix
+            return Param::Result::Unknown; // TODO fix - no corresponding proto Result yet
         case MavlinkParameterClient::Result::Failed:
-            LogWarn() << "Failed";
-            return Param::Result::Unknown; // TODO fix
+            return Param::Result::Failed;
         case MavlinkParameterClient::Result::ParamValueTooLong:
             return Param::Result::ParamValueTooLong;
         case MavlinkParameterClient::Result::StringTypeUnsupported:
             LogWarn() << "StringTypeUnsupported";
-            return Param::Result::Unknown; // TODO fix
+            return Param::Result::Unknown; // TODO fix - no corresponding proto Result yet
         case MavlinkParameterClient::Result::InconsistentData:
             LogWarn() << "InconsistentData";
-            return Param::Result::Unknown; // TODO fix
+            return Param::Result::Unknown; // TODO fix - no corresponding proto Result yet
         case MavlinkParameterClient::Result::UnknownError:
-            LogErr() << "Unknown 2 param error";
             return Param::Result::Unknown;
+        // New PARAM_ERROR codes
+        case MavlinkParameterClient::Result::DoesNotExist:
+            return Param::Result::DoesNotExist;
+        case MavlinkParameterClient::Result::ValueOutOfRange:
+            return Param::Result::ValueOutOfRange;
+        case MavlinkParameterClient::Result::PermissionDenied:
+            return Param::Result::PermissionDenied;
+        case MavlinkParameterClient::Result::ComponentNotFound:
+            return Param::Result::ComponentNotFound;
+        case MavlinkParameterClient::Result::ReadOnly:
+            return Param::Result::ReadOnly;
+        case MavlinkParameterClient::Result::TypeUnsupported:
+            return Param::Result::TypeUnsupported;
+        case MavlinkParameterClient::Result::TypeMismatch:
+            return Param::Result::TypeMismatch;
+        case MavlinkParameterClient::Result::ReadFail:
+            return Param::Result::ReadFail;
         default:
             LogErr() << "Unknown param error" << (int)result;
             return Param::Result::Unknown;
