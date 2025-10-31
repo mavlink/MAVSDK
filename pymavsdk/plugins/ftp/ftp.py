@@ -8,7 +8,7 @@ Implements file transfer functionality using MAVLink FTP.
 
 import ctypes
 
-from typing import Optional, List, Callable, Any
+from typing import Callable, Any
 from enum import IntEnum
 
 from ...cmavsdk_loader import _cmavsdk_lib
@@ -133,38 +133,46 @@ class ProgressData:
 # ===== Callback Types =====
 DownloadCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ProgressDataCStruct,
+    ctypes.c_int,
+    ProgressDataCStruct,
     ctypes.c_void_p
 )
 UploadCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ProgressDataCStruct,
+    ctypes.c_int,
+    ProgressDataCStruct,
     ctypes.c_void_p
 )
 ListDirectoryCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ListDirectoryDataCStruct,
+    ctypes.c_int,
+    ListDirectoryDataCStruct,
     ctypes.c_void_p
 )
 CreateDirectoryCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 RemoveDirectoryCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 RemoveFileCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 RenameCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 AreFilesIdenticalCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_bool,
+    ctypes.c_int,
+    ctypes.c_bool,
     ctypes.c_void_p
 )
 
@@ -176,8 +184,6 @@ class Ftp:
         self._lib = _cmavsdk_lib
         self._handle = None
         self._callbacks = []  # Keep references to prevent GC
-
-        self._setup_functions()
 
         if system is None:
             raise ValueError("system cannot be None")
@@ -191,152 +197,6 @@ class Ftp:
 
         if not self._handle:
             raise RuntimeError("Failed to create Ftp plugin - C function returned null handle")
-
-    def _setup_functions(self):
-        """Setup C function signatures"""
-
-        # Create/Destroy
-        self._lib.mavsdk_ftp_create.argtypes = [ctypes.c_void_p]
-        self._lib.mavsdk_ftp_create.restype = ctypes.c_void_p
-
-        self._lib.mavsdk_ftp_destroy.argtypes = [ctypes.c_void_p]
-        self._lib.mavsdk_ftp_destroy.restype = None
-
-        self._lib.mavsdk_ftp_list_directory_data_destroy.argtypes = [
-            ctypes.POINTER(ListDirectoryDataCStruct)
-        ]
-        self._lib.mavsdk_ftp_list_directory_data_destroy.restype = None
-
-        self._lib.mavsdk_ftp_progress_data_destroy.argtypes = [
-            ctypes.POINTER(ProgressDataCStruct)
-        ]
-        self._lib.mavsdk_ftp_progress_data_destroy.restype = None
-
-
-        self._lib.mavsdk_ftp_download_async.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_char_p,
-            ctypes.c_char_p,
-            ctypes.c_bool,
-            DownloadCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_ftp_download_async.restype = None
-
-        self._lib.mavsdk_ftp_upload_async.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_char_p,
-            ctypes.c_char_p,
-            UploadCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_ftp_upload_async.restype = None
-
-        self._lib.mavsdk_ftp_list_directory_async.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_char_p,
-            ListDirectoryCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_ftp_list_directory_async.restype = None
-
-        self._lib.mavsdk_ftp_list_directory.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_char_p,
-            ctypes.POINTER(ListDirectoryDataCStruct)
-        ]
-
-        self._lib.mavsdk_ftp_list_directory.restype = ctypes.c_int
-        self._lib.mavsdk_ftp_create_directory_async.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_char_p,
-            CreateDirectoryCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_ftp_create_directory_async.restype = None
-
-        self._lib.mavsdk_ftp_create_directory.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_char_p,
-        ]
-
-        self._lib.mavsdk_ftp_create_directory.restype = ctypes.c_int
-        self._lib.mavsdk_ftp_remove_directory_async.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_char_p,
-            RemoveDirectoryCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_ftp_remove_directory_async.restype = None
-
-        self._lib.mavsdk_ftp_remove_directory.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_char_p,
-        ]
-
-        self._lib.mavsdk_ftp_remove_directory.restype = ctypes.c_int
-        self._lib.mavsdk_ftp_remove_file_async.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_char_p,
-            RemoveFileCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_ftp_remove_file_async.restype = None
-
-        self._lib.mavsdk_ftp_remove_file.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_char_p,
-        ]
-
-        self._lib.mavsdk_ftp_remove_file.restype = ctypes.c_int
-        self._lib.mavsdk_ftp_rename_async.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_char_p,
-            ctypes.c_char_p,
-            RenameCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_ftp_rename_async.restype = None
-
-        self._lib.mavsdk_ftp_rename.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_char_p,
-            ctypes.c_char_p,
-        ]
-
-        self._lib.mavsdk_ftp_rename.restype = ctypes.c_int
-        self._lib.mavsdk_ftp_are_files_identical_async.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_char_p,
-            ctypes.c_char_p,
-            AreFilesIdenticalCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_ftp_are_files_identical_async.restype = None
-
-        self._lib.mavsdk_ftp_are_files_identical.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_char_p,
-            ctypes.c_char_p,
-            ctypes.POINTER(ctypes.c_bool)
-        ]
-
-        self._lib.mavsdk_ftp_are_files_identical.restype = ctypes.c_int
-
-        self._lib.mavsdk_ftp_set_target_compid.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_uint32,
-        ]
-
-        self._lib.mavsdk_ftp_set_target_compid.restype = ctypes.c_int
 
 
     def download_async(self, remote_file_path, local_dir, use_burst, callback: Callable, user_data: Any = None):
@@ -647,3 +507,145 @@ class Ftp:
 
     def __del__(self):
         self.destroy()
+
+_cmavsdk_lib.mavsdk_ftp_create.argtypes = [ctypes.c_void_p]
+_cmavsdk_lib.mavsdk_ftp_create.restype = ctypes.c_void_p
+
+_cmavsdk_lib.mavsdk_ftp_destroy.argtypes = [ctypes.c_void_p]
+_cmavsdk_lib.mavsdk_ftp_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_ftp_list_directory_data_destroy.argtypes = [
+    ctypes.POINTER(ListDirectoryDataCStruct)
+]
+_cmavsdk_lib.mavsdk_ftp_list_directory_data_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_ftp_progress_data_destroy.argtypes = [
+    ctypes.POINTER(ProgressDataCStruct)
+]
+_cmavsdk_lib.mavsdk_ftp_progress_data_destroy.restype = None
+
+
+_cmavsdk_lib.mavsdk_ftp_download_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_char_p,
+    ctypes.c_char_p,
+    ctypes.c_bool,
+    DownloadCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_ftp_download_async.restype = None
+
+_cmavsdk_lib.mavsdk_ftp_upload_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_char_p,
+    ctypes.c_char_p,
+    UploadCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_ftp_upload_async.restype = None
+
+_cmavsdk_lib.mavsdk_ftp_list_directory_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_char_p,
+    ListDirectoryCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_ftp_list_directory_async.restype = None
+
+_cmavsdk_lib.mavsdk_ftp_list_directory.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_char_p,
+    ctypes.POINTER(ListDirectoryDataCStruct)
+]
+
+_cmavsdk_lib.mavsdk_ftp_list_directory.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_ftp_create_directory_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_char_p,
+    CreateDirectoryCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_ftp_create_directory_async.restype = None
+
+_cmavsdk_lib.mavsdk_ftp_create_directory.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_char_p,
+]
+
+_cmavsdk_lib.mavsdk_ftp_create_directory.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_ftp_remove_directory_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_char_p,
+    RemoveDirectoryCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_ftp_remove_directory_async.restype = None
+
+_cmavsdk_lib.mavsdk_ftp_remove_directory.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_char_p,
+]
+
+_cmavsdk_lib.mavsdk_ftp_remove_directory.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_ftp_remove_file_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_char_p,
+    RemoveFileCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_ftp_remove_file_async.restype = None
+
+_cmavsdk_lib.mavsdk_ftp_remove_file.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_char_p,
+]
+
+_cmavsdk_lib.mavsdk_ftp_remove_file.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_ftp_rename_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_char_p,
+    ctypes.c_char_p,
+    RenameCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_ftp_rename_async.restype = None
+
+_cmavsdk_lib.mavsdk_ftp_rename.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_char_p,
+    ctypes.c_char_p,
+]
+
+_cmavsdk_lib.mavsdk_ftp_rename.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_ftp_are_files_identical_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_char_p,
+    ctypes.c_char_p,
+    AreFilesIdenticalCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_ftp_are_files_identical_async.restype = None
+
+_cmavsdk_lib.mavsdk_ftp_are_files_identical.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_char_p,
+    ctypes.c_char_p,
+    ctypes.POINTER(ctypes.c_bool)
+]
+
+_cmavsdk_lib.mavsdk_ftp_are_files_identical.restype = ctypes.c_int
+
+_cmavsdk_lib.mavsdk_ftp_set_target_compid.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_uint32,
+]
+
+_cmavsdk_lib.mavsdk_ftp_set_target_compid.restype = ctypes.c_int

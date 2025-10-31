@@ -9,7 +9,7 @@ Acts as a vehicle and receives incoming missions from GCS (in raw MAVLINK format
 
 import ctypes
 
-from typing import Optional, List, Callable, Any
+from typing import Callable, Any
 from enum import IntEnum
 
 from ...cmavsdk_loader import _cmavsdk_lib
@@ -272,7 +272,8 @@ class MissionProgress:
 # ===== Callback Types =====
 IncomingMissionCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    MissionPlanCStruct,
+    ctypes.c_int,
+    MissionPlanCStruct,
     ctypes.c_void_p
 )
 CurrentItemChangedCallback = ctypes.CFUNCTYPE(
@@ -296,8 +297,6 @@ class MissionRawServer:
         self._handle = None
         self._callbacks = []  # Keep references to prevent GC
 
-        self._setup_functions()
-
         if server_component is None:
             raise ValueError("server_component cannot be None")
 
@@ -310,84 +309,6 @@ class MissionRawServer:
 
         if not self._handle:
             raise RuntimeError("Failed to create MissionRawServer plugin - C function returned null handle")
-
-    def _setup_functions(self):
-        """Setup C function signatures"""
-
-        # Create/Destroy
-        self._lib.mavsdk_mission_raw_server_create.argtypes = [ctypes.c_void_p]
-        self._lib.mavsdk_mission_raw_server_create.restype = ctypes.c_void_p
-
-        self._lib.mavsdk_mission_raw_server_destroy.argtypes = [ctypes.c_void_p]
-        self._lib.mavsdk_mission_raw_server_destroy.restype = None
-
-        self._lib.mavsdk_mission_raw_server_mission_item_destroy.argtypes = [
-            ctypes.POINTER(MissionItemCStruct)
-        ]
-        self._lib.mavsdk_mission_raw_server_mission_item_destroy.restype = None
-
-        self._lib.mavsdk_mission_raw_server_mission_plan_destroy.argtypes = [
-            ctypes.POINTER(MissionPlanCStruct)
-        ]
-        self._lib.mavsdk_mission_raw_server_mission_plan_destroy.restype = None
-
-        self._lib.mavsdk_mission_raw_server_mission_progress_destroy.argtypes = [
-            ctypes.POINTER(MissionProgressCStruct)
-        ]
-        self._lib.mavsdk_mission_raw_server_mission_progress_destroy.restype = None
-
-
-        self._lib.mavsdk_mission_raw_server_subscribe_incoming_mission.argtypes = [
-            ctypes.c_void_p,
-            IncomingMissionCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_mission_raw_server_subscribe_incoming_mission.restype = ctypes.c_void_p
-        # Unsubscribe
-        self._lib.mavsdk_mission_raw_server_unsubscribe_incoming_mission.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_mission_raw_server_unsubscribe_incoming_mission.restype = None
-
-        self._lib.mavsdk_mission_raw_server_subscribe_current_item_changed.argtypes = [
-            ctypes.c_void_p,
-            CurrentItemChangedCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_mission_raw_server_subscribe_current_item_changed.restype = ctypes.c_void_p
-        # Unsubscribe
-        self._lib.mavsdk_mission_raw_server_unsubscribe_current_item_changed.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_mission_raw_server_unsubscribe_current_item_changed.restype = None
-
-
-        self._lib.mavsdk_mission_raw_server_set_current_item_complete.argtypes = [
-            ctypes.c_void_p,
-        ]
-
-        self._lib.mavsdk_mission_raw_server_set_current_item_complete.restype = None
-        self._lib.mavsdk_mission_raw_server_subscribe_clear_all.argtypes = [
-            ctypes.c_void_p,
-            ClearAllCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_mission_raw_server_subscribe_clear_all.restype = ctypes.c_void_p
-        # Unsubscribe
-        self._lib.mavsdk_mission_raw_server_unsubscribe_clear_all.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_mission_raw_server_unsubscribe_clear_all.restype = None
-
 
 
     def subscribe_incoming_mission(self, callback: Callable, user_data: Any = None):
@@ -501,3 +422,77 @@ class MissionRawServer:
 
     def __del__(self):
         self.destroy()
+
+_cmavsdk_lib.mavsdk_mission_raw_server_create.argtypes = [ctypes.c_void_p]
+_cmavsdk_lib.mavsdk_mission_raw_server_create.restype = ctypes.c_void_p
+
+_cmavsdk_lib.mavsdk_mission_raw_server_destroy.argtypes = [ctypes.c_void_p]
+_cmavsdk_lib.mavsdk_mission_raw_server_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_mission_raw_server_mission_item_destroy.argtypes = [
+    ctypes.POINTER(MissionItemCStruct)
+]
+_cmavsdk_lib.mavsdk_mission_raw_server_mission_item_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_mission_raw_server_mission_plan_destroy.argtypes = [
+    ctypes.POINTER(MissionPlanCStruct)
+]
+_cmavsdk_lib.mavsdk_mission_raw_server_mission_plan_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_mission_raw_server_mission_progress_destroy.argtypes = [
+    ctypes.POINTER(MissionProgressCStruct)
+]
+_cmavsdk_lib.mavsdk_mission_raw_server_mission_progress_destroy.restype = None
+
+
+_cmavsdk_lib.mavsdk_mission_raw_server_subscribe_incoming_mission.argtypes = [
+    ctypes.c_void_p,
+    IncomingMissionCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_mission_raw_server_subscribe_incoming_mission.restype = ctypes.c_void_p
+# Unsubscribe
+_cmavsdk_lib.mavsdk_mission_raw_server_unsubscribe_incoming_mission.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_mission_raw_server_unsubscribe_incoming_mission.restype = None
+
+_cmavsdk_lib.mavsdk_mission_raw_server_subscribe_current_item_changed.argtypes = [
+    ctypes.c_void_p,
+    CurrentItemChangedCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_mission_raw_server_subscribe_current_item_changed.restype = ctypes.c_void_p
+# Unsubscribe
+_cmavsdk_lib.mavsdk_mission_raw_server_unsubscribe_current_item_changed.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_mission_raw_server_unsubscribe_current_item_changed.restype = None
+
+
+_cmavsdk_lib.mavsdk_mission_raw_server_set_current_item_complete.argtypes = [
+    ctypes.c_void_p,
+]
+
+_cmavsdk_lib.mavsdk_mission_raw_server_set_current_item_complete.restype = None
+_cmavsdk_lib.mavsdk_mission_raw_server_subscribe_clear_all.argtypes = [
+    ctypes.c_void_p,
+    ClearAllCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_mission_raw_server_subscribe_clear_all.restype = ctypes.c_void_p
+# Unsubscribe
+_cmavsdk_lib.mavsdk_mission_raw_server_unsubscribe_clear_all.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_mission_raw_server_unsubscribe_clear_all.restype = None
+

@@ -8,7 +8,7 @@ Provide control over a gimbal.
 
 import ctypes
 
-from typing import Optional, List, Callable, Any
+from typing import Callable, Any
 from enum import IntEnum
 
 from ...cmavsdk_loader import _cmavsdk_lib
@@ -524,23 +524,28 @@ class ControlStatus:
 # ===== Callback Types =====
 SetAnglesCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 SetAngularRatesCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 SetRoiLocationCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 TakeControlCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 ReleaseControlCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 GimbalListCallback = ctypes.CFUNCTYPE(
     None,
@@ -567,8 +572,6 @@ class Gimbal:
         self._handle = None
         self._callbacks = []  # Keep references to prevent GC
 
-        self._setup_functions()
-
         if system is None:
             raise ValueError("system cannot be None")
 
@@ -581,223 +584,6 @@ class Gimbal:
 
         if not self._handle:
             raise RuntimeError("Failed to create Gimbal plugin - C function returned null handle")
-
-    def _setup_functions(self):
-        """Setup C function signatures"""
-
-        # Create/Destroy
-        self._lib.mavsdk_gimbal_create.argtypes = [ctypes.c_void_p]
-        self._lib.mavsdk_gimbal_create.restype = ctypes.c_void_p
-
-        self._lib.mavsdk_gimbal_destroy.argtypes = [ctypes.c_void_p]
-        self._lib.mavsdk_gimbal_destroy.restype = None
-
-        self._lib.mavsdk_gimbal_quaternion_destroy.argtypes = [
-            ctypes.POINTER(QuaternionCStruct)
-        ]
-        self._lib.mavsdk_gimbal_quaternion_destroy.restype = None
-
-        self._lib.mavsdk_gimbal_euler_angle_destroy.argtypes = [
-            ctypes.POINTER(EulerAngleCStruct)
-        ]
-        self._lib.mavsdk_gimbal_euler_angle_destroy.restype = None
-
-        self._lib.mavsdk_gimbal_angular_velocity_body_destroy.argtypes = [
-            ctypes.POINTER(AngularVelocityBodyCStruct)
-        ]
-        self._lib.mavsdk_gimbal_angular_velocity_body_destroy.restype = None
-
-        self._lib.mavsdk_gimbal_attitude_destroy.argtypes = [
-            ctypes.POINTER(AttitudeCStruct)
-        ]
-        self._lib.mavsdk_gimbal_attitude_destroy.restype = None
-
-        self._lib.mavsdk_gimbal_gimbal_item_destroy.argtypes = [
-            ctypes.POINTER(GimbalItemCStruct)
-        ]
-        self._lib.mavsdk_gimbal_gimbal_item_destroy.restype = None
-
-        self._lib.mavsdk_gimbal_gimbal_list_destroy.argtypes = [
-            ctypes.POINTER(GimbalListCStruct)
-        ]
-        self._lib.mavsdk_gimbal_gimbal_list_destroy.restype = None
-
-        self._lib.mavsdk_gimbal_control_status_destroy.argtypes = [
-            ctypes.POINTER(ControlStatusCStruct)
-        ]
-        self._lib.mavsdk_gimbal_control_status_destroy.restype = None
-
-
-        self._lib.mavsdk_gimbal_set_angles_async.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_int32,
-            ctypes.c_float,
-            ctypes.c_float,
-            ctypes.c_float,
-            ctypes.c_int,
-            ctypes.c_int,
-            SetAnglesCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_gimbal_set_angles_async.restype = None
-
-        self._lib.mavsdk_gimbal_set_angles.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_int32,
-            ctypes.c_float,
-            ctypes.c_float,
-            ctypes.c_float,
-            ctypes.c_int,
-            ctypes.c_int,
-        ]
-
-        self._lib.mavsdk_gimbal_set_angles.restype = ctypes.c_int
-        self._lib.mavsdk_gimbal_set_angular_rates_async.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_int32,
-            ctypes.c_float,
-            ctypes.c_float,
-            ctypes.c_float,
-            ctypes.c_int,
-            ctypes.c_int,
-            SetAngularRatesCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_gimbal_set_angular_rates_async.restype = None
-
-        self._lib.mavsdk_gimbal_set_angular_rates.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_int32,
-            ctypes.c_float,
-            ctypes.c_float,
-            ctypes.c_float,
-            ctypes.c_int,
-            ctypes.c_int,
-        ]
-
-        self._lib.mavsdk_gimbal_set_angular_rates.restype = ctypes.c_int
-        self._lib.mavsdk_gimbal_set_roi_location_async.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_int32,
-            ctypes.c_double,
-            ctypes.c_double,
-            ctypes.c_float,
-            SetRoiLocationCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_gimbal_set_roi_location_async.restype = None
-
-        self._lib.mavsdk_gimbal_set_roi_location.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_int32,
-            ctypes.c_double,
-            ctypes.c_double,
-            ctypes.c_float,
-        ]
-
-        self._lib.mavsdk_gimbal_set_roi_location.restype = ctypes.c_int
-        self._lib.mavsdk_gimbal_take_control_async.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_int32,
-            ctypes.c_int,
-            TakeControlCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_gimbal_take_control_async.restype = None
-
-        self._lib.mavsdk_gimbal_take_control.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_int32,
-            ctypes.c_int,
-        ]
-
-        self._lib.mavsdk_gimbal_take_control.restype = ctypes.c_int
-        self._lib.mavsdk_gimbal_release_control_async.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_int32,
-            ReleaseControlCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_gimbal_release_control_async.restype = None
-
-        self._lib.mavsdk_gimbal_release_control.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_int32,
-        ]
-
-        self._lib.mavsdk_gimbal_release_control.restype = ctypes.c_int
-        self._lib.mavsdk_gimbal_subscribe_gimbal_list.argtypes = [
-            ctypes.c_void_p,
-            GimbalListCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_gimbal_subscribe_gimbal_list.restype = ctypes.c_void_p
-        # Unsubscribe
-        self._lib.mavsdk_gimbal_unsubscribe_gimbal_list.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_gimbal_unsubscribe_gimbal_list.restype = None
-
-        self._lib.mavsdk_gimbal_gimbal_list.argtypes = [
-            ctypes.c_void_p,
-            ctypes.POINTER(GimbalListCStruct)
-        ]
-
-        self._lib.mavsdk_gimbal_gimbal_list.restype = None
-        self._lib.mavsdk_gimbal_subscribe_control_status.argtypes = [
-            ctypes.c_void_p,
-            ControlStatusCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_gimbal_subscribe_control_status.restype = ctypes.c_void_p
-        # Unsubscribe
-        self._lib.mavsdk_gimbal_unsubscribe_control_status.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_gimbal_unsubscribe_control_status.restype = None
-
-
-        self._lib.mavsdk_gimbal_get_control_status.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_int32,
-            ctypes.POINTER(ControlStatusCStruct)
-        ]
-
-        self._lib.mavsdk_gimbal_get_control_status.restype = ctypes.c_int
-        self._lib.mavsdk_gimbal_subscribe_attitude.argtypes = [
-            ctypes.c_void_p,
-            AttitudeCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_gimbal_subscribe_attitude.restype = ctypes.c_void_p
-        # Unsubscribe
-        self._lib.mavsdk_gimbal_unsubscribe_attitude.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_gimbal_unsubscribe_attitude.restype = None
-
-
-        self._lib.mavsdk_gimbal_get_attitude.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_int32,
-            ctypes.POINTER(AttitudeCStruct)
-        ]
-
-        self._lib.mavsdk_gimbal_get_attitude.restype = ctypes.c_int
 
 
     def set_angles_async(self, gimbal_id, roll_deg, pitch_deg, yaw_deg, gimbal_mode, send_mode, callback: Callable, user_data: Any = None):
@@ -1180,3 +966,216 @@ class Gimbal:
 
     def __del__(self):
         self.destroy()
+
+_cmavsdk_lib.mavsdk_gimbal_create.argtypes = [ctypes.c_void_p]
+_cmavsdk_lib.mavsdk_gimbal_create.restype = ctypes.c_void_p
+
+_cmavsdk_lib.mavsdk_gimbal_destroy.argtypes = [ctypes.c_void_p]
+_cmavsdk_lib.mavsdk_gimbal_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_gimbal_quaternion_destroy.argtypes = [
+    ctypes.POINTER(QuaternionCStruct)
+]
+_cmavsdk_lib.mavsdk_gimbal_quaternion_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_gimbal_euler_angle_destroy.argtypes = [
+    ctypes.POINTER(EulerAngleCStruct)
+]
+_cmavsdk_lib.mavsdk_gimbal_euler_angle_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_gimbal_angular_velocity_body_destroy.argtypes = [
+    ctypes.POINTER(AngularVelocityBodyCStruct)
+]
+_cmavsdk_lib.mavsdk_gimbal_angular_velocity_body_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_gimbal_attitude_destroy.argtypes = [
+    ctypes.POINTER(AttitudeCStruct)
+]
+_cmavsdk_lib.mavsdk_gimbal_attitude_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_gimbal_gimbal_item_destroy.argtypes = [
+    ctypes.POINTER(GimbalItemCStruct)
+]
+_cmavsdk_lib.mavsdk_gimbal_gimbal_item_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_gimbal_gimbal_list_destroy.argtypes = [
+    ctypes.POINTER(GimbalListCStruct)
+]
+_cmavsdk_lib.mavsdk_gimbal_gimbal_list_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_gimbal_control_status_destroy.argtypes = [
+    ctypes.POINTER(ControlStatusCStruct)
+]
+_cmavsdk_lib.mavsdk_gimbal_control_status_destroy.restype = None
+
+
+_cmavsdk_lib.mavsdk_gimbal_set_angles_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+    ctypes.c_float,
+    ctypes.c_float,
+    ctypes.c_float,
+    ctypes.c_int,
+    ctypes.c_int,
+    SetAnglesCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_gimbal_set_angles_async.restype = None
+
+_cmavsdk_lib.mavsdk_gimbal_set_angles.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+    ctypes.c_float,
+    ctypes.c_float,
+    ctypes.c_float,
+    ctypes.c_int,
+    ctypes.c_int,
+]
+
+_cmavsdk_lib.mavsdk_gimbal_set_angles.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_gimbal_set_angular_rates_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+    ctypes.c_float,
+    ctypes.c_float,
+    ctypes.c_float,
+    ctypes.c_int,
+    ctypes.c_int,
+    SetAngularRatesCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_gimbal_set_angular_rates_async.restype = None
+
+_cmavsdk_lib.mavsdk_gimbal_set_angular_rates.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+    ctypes.c_float,
+    ctypes.c_float,
+    ctypes.c_float,
+    ctypes.c_int,
+    ctypes.c_int,
+]
+
+_cmavsdk_lib.mavsdk_gimbal_set_angular_rates.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_gimbal_set_roi_location_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+    ctypes.c_double,
+    ctypes.c_double,
+    ctypes.c_float,
+    SetRoiLocationCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_gimbal_set_roi_location_async.restype = None
+
+_cmavsdk_lib.mavsdk_gimbal_set_roi_location.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+    ctypes.c_double,
+    ctypes.c_double,
+    ctypes.c_float,
+]
+
+_cmavsdk_lib.mavsdk_gimbal_set_roi_location.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_gimbal_take_control_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+    ctypes.c_int,
+    TakeControlCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_gimbal_take_control_async.restype = None
+
+_cmavsdk_lib.mavsdk_gimbal_take_control.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+    ctypes.c_int,
+]
+
+_cmavsdk_lib.mavsdk_gimbal_take_control.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_gimbal_release_control_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+    ReleaseControlCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_gimbal_release_control_async.restype = None
+
+_cmavsdk_lib.mavsdk_gimbal_release_control.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+]
+
+_cmavsdk_lib.mavsdk_gimbal_release_control.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_gimbal_subscribe_gimbal_list.argtypes = [
+    ctypes.c_void_p,
+    GimbalListCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_gimbal_subscribe_gimbal_list.restype = ctypes.c_void_p
+# Unsubscribe
+_cmavsdk_lib.mavsdk_gimbal_unsubscribe_gimbal_list.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_gimbal_unsubscribe_gimbal_list.restype = None
+
+_cmavsdk_lib.mavsdk_gimbal_gimbal_list.argtypes = [
+    ctypes.c_void_p,
+    ctypes.POINTER(GimbalListCStruct)
+]
+
+_cmavsdk_lib.mavsdk_gimbal_gimbal_list.restype = None
+_cmavsdk_lib.mavsdk_gimbal_subscribe_control_status.argtypes = [
+    ctypes.c_void_p,
+    ControlStatusCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_gimbal_subscribe_control_status.restype = ctypes.c_void_p
+# Unsubscribe
+_cmavsdk_lib.mavsdk_gimbal_unsubscribe_control_status.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_gimbal_unsubscribe_control_status.restype = None
+
+
+_cmavsdk_lib.mavsdk_gimbal_get_control_status.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+    ctypes.POINTER(ControlStatusCStruct)
+]
+
+_cmavsdk_lib.mavsdk_gimbal_get_control_status.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_gimbal_subscribe_attitude.argtypes = [
+    ctypes.c_void_p,
+    AttitudeCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_gimbal_subscribe_attitude.restype = ctypes.c_void_p
+# Unsubscribe
+_cmavsdk_lib.mavsdk_gimbal_unsubscribe_attitude.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_gimbal_unsubscribe_attitude.restype = None
+
+
+_cmavsdk_lib.mavsdk_gimbal_get_attitude.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+    ctypes.POINTER(AttitudeCStruct)
+]
+
+_cmavsdk_lib.mavsdk_gimbal_get_attitude.restype = ctypes.c_int

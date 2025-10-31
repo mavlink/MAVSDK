@@ -14,7 +14,7 @@ Can be used to manage cameras that implement the MAVLink
 
 import ctypes
 
-from typing import Optional, List, Callable, Any
+from typing import Callable, Any
 from enum import IntEnum
 
 from ...cmavsdk_loader import _cmavsdk_lib
@@ -1217,31 +1217,38 @@ class CameraList:
 # ===== Callback Types =====
 TakePhotoCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 StartPhotoIntervalCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 StopPhotoIntervalCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 StartVideoCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 StopVideoCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 SetModeCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 ListPhotosCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.POINTER(CaptureInfoCStruct),
+    ctypes.c_int,
+    ctypes.POINTER(CaptureInfoCStruct),
     ctypes.c_size_t,
     ctypes.c_void_p
 )
@@ -1282,64 +1289,79 @@ PossibleSettingOptionsCallback = ctypes.CFUNCTYPE(
 )
 SetSettingCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 GetSettingCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    SettingCStruct,
+    ctypes.c_int,
+    SettingCStruct,
     ctypes.c_void_p
 )
 FormatStorageCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 ResetSettingsCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 ZoomInStartCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 ZoomOutStartCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 ZoomStopCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 ZoomRangeCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 TrackPointCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 TrackRectangleCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 TrackStopCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 FocusInStartCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 FocusOutStartCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 FocusStopCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 FocusRangeCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 
 
@@ -1357,8 +1379,6 @@ class Camera:
         self._handle = None
         self._callbacks = []  # Keep references to prevent GC
 
-        self._setup_functions()
-
         if system is None:
             raise ValueError("system cannot be None")
 
@@ -1371,635 +1391,6 @@ class Camera:
 
         if not self._handle:
             raise RuntimeError("Failed to create Camera plugin - C function returned null handle")
-
-    def _setup_functions(self):
-        """Setup C function signatures"""
-
-        # Create/Destroy
-        self._lib.mavsdk_camera_create.argtypes = [ctypes.c_void_p]
-        self._lib.mavsdk_camera_create.restype = ctypes.c_void_p
-
-        self._lib.mavsdk_camera_destroy.argtypes = [ctypes.c_void_p]
-        self._lib.mavsdk_camera_destroy.restype = None
-
-        self._lib.mavsdk_camera_option_destroy.argtypes = [
-            ctypes.POINTER(OptionCStruct)
-        ]
-        self._lib.mavsdk_camera_option_destroy.restype = None
-
-        self._lib.mavsdk_camera_setting_destroy.argtypes = [
-            ctypes.POINTER(SettingCStruct)
-        ]
-        self._lib.mavsdk_camera_setting_destroy.restype = None
-
-        self._lib.mavsdk_camera_setting_options_destroy.argtypes = [
-            ctypes.POINTER(SettingOptionsCStruct)
-        ]
-        self._lib.mavsdk_camera_setting_options_destroy.restype = None
-
-        self._lib.mavsdk_camera_video_stream_settings_destroy.argtypes = [
-            ctypes.POINTER(VideoStreamSettingsCStruct)
-        ]
-        self._lib.mavsdk_camera_video_stream_settings_destroy.restype = None
-
-        self._lib.mavsdk_camera_video_stream_info_destroy.argtypes = [
-            ctypes.POINTER(VideoStreamInfoCStruct)
-        ]
-        self._lib.mavsdk_camera_video_stream_info_destroy.restype = None
-
-        self._lib.mavsdk_camera_mode_update_destroy.argtypes = [
-            ctypes.POINTER(ModeUpdateCStruct)
-        ]
-        self._lib.mavsdk_camera_mode_update_destroy.restype = None
-
-        self._lib.mavsdk_camera_video_stream_update_destroy.argtypes = [
-            ctypes.POINTER(VideoStreamUpdateCStruct)
-        ]
-        self._lib.mavsdk_camera_video_stream_update_destroy.restype = None
-
-        self._lib.mavsdk_camera_storage_destroy.argtypes = [
-            ctypes.POINTER(StorageCStruct)
-        ]
-        self._lib.mavsdk_camera_storage_destroy.restype = None
-
-        self._lib.mavsdk_camera_storage_update_destroy.argtypes = [
-            ctypes.POINTER(StorageUpdateCStruct)
-        ]
-        self._lib.mavsdk_camera_storage_update_destroy.restype = None
-
-        self._lib.mavsdk_camera_current_settings_update_destroy.argtypes = [
-            ctypes.POINTER(CurrentSettingsUpdateCStruct)
-        ]
-        self._lib.mavsdk_camera_current_settings_update_destroy.restype = None
-
-        self._lib.mavsdk_camera_possible_setting_options_update_destroy.argtypes = [
-            ctypes.POINTER(PossibleSettingOptionsUpdateCStruct)
-        ]
-        self._lib.mavsdk_camera_possible_setting_options_update_destroy.restype = None
-
-        self._lib.mavsdk_camera_position_destroy.argtypes = [
-            ctypes.POINTER(PositionCStruct)
-        ]
-        self._lib.mavsdk_camera_position_destroy.restype = None
-
-        self._lib.mavsdk_camera_quaternion_destroy.argtypes = [
-            ctypes.POINTER(QuaternionCStruct)
-        ]
-        self._lib.mavsdk_camera_quaternion_destroy.restype = None
-
-        self._lib.mavsdk_camera_euler_angle_destroy.argtypes = [
-            ctypes.POINTER(EulerAngleCStruct)
-        ]
-        self._lib.mavsdk_camera_euler_angle_destroy.restype = None
-
-        self._lib.mavsdk_camera_capture_info_destroy.argtypes = [
-            ctypes.POINTER(CaptureInfoCStruct)
-        ]
-        self._lib.mavsdk_camera_capture_info_destroy.restype = None
-
-        self._lib.mavsdk_camera_information_destroy.argtypes = [
-            ctypes.POINTER(InformationCStruct)
-        ]
-        self._lib.mavsdk_camera_information_destroy.restype = None
-
-        self._lib.mavsdk_camera_camera_list_destroy.argtypes = [
-            ctypes.POINTER(CameraListCStruct)
-        ]
-        self._lib.mavsdk_camera_camera_list_destroy.restype = None
-
-
-        self._lib.mavsdk_camera_take_photo_async.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_int32,
-            TakePhotoCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_camera_take_photo_async.restype = None
-
-        self._lib.mavsdk_camera_take_photo.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_int32,
-        ]
-
-        self._lib.mavsdk_camera_take_photo.restype = ctypes.c_int
-        self._lib.mavsdk_camera_start_photo_interval_async.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_int32,
-            ctypes.c_float,
-            StartPhotoIntervalCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_camera_start_photo_interval_async.restype = None
-
-        self._lib.mavsdk_camera_start_photo_interval.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_int32,
-            ctypes.c_float,
-        ]
-
-        self._lib.mavsdk_camera_start_photo_interval.restype = ctypes.c_int
-        self._lib.mavsdk_camera_stop_photo_interval_async.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_int32,
-            StopPhotoIntervalCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_camera_stop_photo_interval_async.restype = None
-
-        self._lib.mavsdk_camera_stop_photo_interval.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_int32,
-        ]
-
-        self._lib.mavsdk_camera_stop_photo_interval.restype = ctypes.c_int
-        self._lib.mavsdk_camera_start_video_async.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_int32,
-            StartVideoCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_camera_start_video_async.restype = None
-
-        self._lib.mavsdk_camera_start_video.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_int32,
-        ]
-
-        self._lib.mavsdk_camera_start_video.restype = ctypes.c_int
-        self._lib.mavsdk_camera_stop_video_async.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_int32,
-            StopVideoCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_camera_stop_video_async.restype = None
-
-        self._lib.mavsdk_camera_stop_video.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_int32,
-        ]
-
-        self._lib.mavsdk_camera_stop_video.restype = ctypes.c_int
-
-        self._lib.mavsdk_camera_start_video_streaming.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_int32,
-            ctypes.c_int32,
-        ]
-
-        self._lib.mavsdk_camera_start_video_streaming.restype = ctypes.c_int
-
-        self._lib.mavsdk_camera_stop_video_streaming.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_int32,
-            ctypes.c_int32,
-        ]
-
-        self._lib.mavsdk_camera_stop_video_streaming.restype = ctypes.c_int
-        self._lib.mavsdk_camera_set_mode_async.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_int32,
-            ctypes.c_int,
-            SetModeCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_camera_set_mode_async.restype = None
-
-        self._lib.mavsdk_camera_set_mode.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_int32,
-            ctypes.c_int,
-        ]
-
-        self._lib.mavsdk_camera_set_mode.restype = ctypes.c_int
-        self._lib.mavsdk_camera_list_photos_async.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_int32,
-            ctypes.c_int,
-            ListPhotosCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_camera_list_photos_async.restype = None
-
-        self._lib.mavsdk_camera_list_photos.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_int32,
-            ctypes.c_int,
-            ctypes.POINTER(ctypes.POINTER(CaptureInfoCStruct)),
-            ctypes.POINTER(ctypes.c_size_t)
-        ]
-
-        self._lib.mavsdk_camera_list_photos.restype = ctypes.c_int
-        self._lib.mavsdk_camera_subscribe_camera_list.argtypes = [
-            ctypes.c_void_p,
-            CameraListCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_camera_subscribe_camera_list.restype = ctypes.c_void_p
-        # Unsubscribe
-        self._lib.mavsdk_camera_unsubscribe_camera_list.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_camera_unsubscribe_camera_list.restype = None
-
-        self._lib.mavsdk_camera_camera_list.argtypes = [
-            ctypes.c_void_p,
-            ctypes.POINTER(CameraListCStruct)
-        ]
-
-        self._lib.mavsdk_camera_camera_list.restype = None
-        self._lib.mavsdk_camera_subscribe_mode.argtypes = [
-            ctypes.c_void_p,
-            ModeCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_camera_subscribe_mode.restype = ctypes.c_void_p
-        # Unsubscribe
-        self._lib.mavsdk_camera_unsubscribe_mode.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_camera_unsubscribe_mode.restype = None
-
-
-        self._lib.mavsdk_camera_get_mode.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_int32,
-            ctypes.POINTER(ctypes.c_int)
-        ]
-
-        self._lib.mavsdk_camera_get_mode.restype = ctypes.c_int
-        self._lib.mavsdk_camera_subscribe_video_stream_info.argtypes = [
-            ctypes.c_void_p,
-            VideoStreamInfoCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_camera_subscribe_video_stream_info.restype = ctypes.c_void_p
-        # Unsubscribe
-        self._lib.mavsdk_camera_unsubscribe_video_stream_info.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_camera_unsubscribe_video_stream_info.restype = None
-
-
-        self._lib.mavsdk_camera_get_video_stream_info.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_int32,
-            ctypes.POINTER(VideoStreamInfoCStruct)
-        ]
-
-        self._lib.mavsdk_camera_get_video_stream_info.restype = ctypes.c_int
-        self._lib.mavsdk_camera_subscribe_capture_info.argtypes = [
-            ctypes.c_void_p,
-            CaptureInfoCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_camera_subscribe_capture_info.restype = ctypes.c_void_p
-        # Unsubscribe
-        self._lib.mavsdk_camera_unsubscribe_capture_info.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_camera_unsubscribe_capture_info.restype = None
-
-        self._lib.mavsdk_camera_subscribe_storage.argtypes = [
-            ctypes.c_void_p,
-            StorageCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_camera_subscribe_storage.restype = ctypes.c_void_p
-        # Unsubscribe
-        self._lib.mavsdk_camera_unsubscribe_storage.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_camera_unsubscribe_storage.restype = None
-
-
-        self._lib.mavsdk_camera_get_storage.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_int32,
-            ctypes.POINTER(StorageCStruct)
-        ]
-
-        self._lib.mavsdk_camera_get_storage.restype = ctypes.c_int
-        self._lib.mavsdk_camera_subscribe_current_settings.argtypes = [
-            ctypes.c_void_p,
-            CurrentSettingsCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_camera_subscribe_current_settings.restype = ctypes.c_void_p
-        # Unsubscribe
-        self._lib.mavsdk_camera_unsubscribe_current_settings.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_camera_unsubscribe_current_settings.restype = None
-
-
-        self._lib.mavsdk_camera_get_current_settings.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_int32,
-            ctypes.POINTER(ctypes.POINTER(SettingCStruct)),
-            ctypes.POINTER(ctypes.c_size_t)
-        ]
-
-        self._lib.mavsdk_camera_get_current_settings.restype = ctypes.c_int
-        self._lib.mavsdk_camera_subscribe_possible_setting_options.argtypes = [
-            ctypes.c_void_p,
-            PossibleSettingOptionsCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_camera_subscribe_possible_setting_options.restype = ctypes.c_void_p
-        # Unsubscribe
-        self._lib.mavsdk_camera_unsubscribe_possible_setting_options.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_camera_unsubscribe_possible_setting_options.restype = None
-
-
-        self._lib.mavsdk_camera_get_possible_setting_options.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_int32,
-            ctypes.POINTER(ctypes.POINTER(SettingOptionsCStruct)),
-            ctypes.POINTER(ctypes.c_size_t)
-        ]
-
-        self._lib.mavsdk_camera_get_possible_setting_options.restype = ctypes.c_int
-        self._lib.mavsdk_camera_set_setting_async.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_int32,
-            SettingCStruct,
-            SetSettingCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_camera_set_setting_async.restype = None
-
-        self._lib.mavsdk_camera_set_setting.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_int32,
-            SettingCStruct,
-        ]
-
-        self._lib.mavsdk_camera_set_setting.restype = ctypes.c_int
-        self._lib.mavsdk_camera_get_setting_async.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_int32,
-            SettingCStruct,
-            GetSettingCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_camera_get_setting_async.restype = None
-
-        self._lib.mavsdk_camera_get_setting.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_int32,
-            SettingCStruct,
-            ctypes.POINTER(SettingCStruct)
-        ]
-
-        self._lib.mavsdk_camera_get_setting.restype = ctypes.c_int
-        self._lib.mavsdk_camera_format_storage_async.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_int32,
-            ctypes.c_int32,
-            FormatStorageCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_camera_format_storage_async.restype = None
-
-        self._lib.mavsdk_camera_format_storage.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_int32,
-            ctypes.c_int32,
-        ]
-
-        self._lib.mavsdk_camera_format_storage.restype = ctypes.c_int
-        self._lib.mavsdk_camera_reset_settings_async.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_int32,
-            ResetSettingsCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_camera_reset_settings_async.restype = None
-
-        self._lib.mavsdk_camera_reset_settings.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_int32,
-        ]
-
-        self._lib.mavsdk_camera_reset_settings.restype = ctypes.c_int
-        self._lib.mavsdk_camera_zoom_in_start_async.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_int32,
-            ZoomInStartCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_camera_zoom_in_start_async.restype = None
-
-        self._lib.mavsdk_camera_zoom_in_start.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_int32,
-        ]
-
-        self._lib.mavsdk_camera_zoom_in_start.restype = ctypes.c_int
-        self._lib.mavsdk_camera_zoom_out_start_async.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_int32,
-            ZoomOutStartCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_camera_zoom_out_start_async.restype = None
-
-        self._lib.mavsdk_camera_zoom_out_start.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_int32,
-        ]
-
-        self._lib.mavsdk_camera_zoom_out_start.restype = ctypes.c_int
-        self._lib.mavsdk_camera_zoom_stop_async.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_int32,
-            ZoomStopCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_camera_zoom_stop_async.restype = None
-
-        self._lib.mavsdk_camera_zoom_stop.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_int32,
-        ]
-
-        self._lib.mavsdk_camera_zoom_stop.restype = ctypes.c_int
-        self._lib.mavsdk_camera_zoom_range_async.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_int32,
-            ctypes.c_float,
-            ZoomRangeCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_camera_zoom_range_async.restype = None
-
-        self._lib.mavsdk_camera_zoom_range.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_int32,
-            ctypes.c_float,
-        ]
-
-        self._lib.mavsdk_camera_zoom_range.restype = ctypes.c_int
-        self._lib.mavsdk_camera_track_point_async.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_int32,
-            ctypes.c_float,
-            ctypes.c_float,
-            ctypes.c_float,
-            TrackPointCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_camera_track_point_async.restype = None
-
-        self._lib.mavsdk_camera_track_point.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_int32,
-            ctypes.c_float,
-            ctypes.c_float,
-            ctypes.c_float,
-        ]
-
-        self._lib.mavsdk_camera_track_point.restype = ctypes.c_int
-        self._lib.mavsdk_camera_track_rectangle_async.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_int32,
-            ctypes.c_float,
-            ctypes.c_float,
-            ctypes.c_float,
-            ctypes.c_float,
-            TrackRectangleCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_camera_track_rectangle_async.restype = None
-
-        self._lib.mavsdk_camera_track_rectangle.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_int32,
-            ctypes.c_float,
-            ctypes.c_float,
-            ctypes.c_float,
-            ctypes.c_float,
-        ]
-
-        self._lib.mavsdk_camera_track_rectangle.restype = ctypes.c_int
-        self._lib.mavsdk_camera_track_stop_async.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_int32,
-            TrackStopCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_camera_track_stop_async.restype = None
-
-        self._lib.mavsdk_camera_track_stop.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_int32,
-        ]
-
-        self._lib.mavsdk_camera_track_stop.restype = ctypes.c_int
-        self._lib.mavsdk_camera_focus_in_start_async.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_int32,
-            FocusInStartCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_camera_focus_in_start_async.restype = None
-
-        self._lib.mavsdk_camera_focus_in_start.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_int32,
-        ]
-
-        self._lib.mavsdk_camera_focus_in_start.restype = ctypes.c_int
-        self._lib.mavsdk_camera_focus_out_start_async.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_int32,
-            FocusOutStartCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_camera_focus_out_start_async.restype = None
-
-        self._lib.mavsdk_camera_focus_out_start.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_int32,
-        ]
-
-        self._lib.mavsdk_camera_focus_out_start.restype = ctypes.c_int
-        self._lib.mavsdk_camera_focus_stop_async.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_int32,
-            FocusStopCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_camera_focus_stop_async.restype = None
-
-        self._lib.mavsdk_camera_focus_stop.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_int32,
-        ]
-
-        self._lib.mavsdk_camera_focus_stop.restype = ctypes.c_int
-        self._lib.mavsdk_camera_focus_range_async.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_int32,
-            ctypes.c_float,
-            FocusRangeCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_camera_focus_range_async.restype = None
-
-        self._lib.mavsdk_camera_focus_range.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_int32,
-            ctypes.c_float,
-        ]
-
-        self._lib.mavsdk_camera_focus_range.restype = ctypes.c_int
 
 
     def take_photo_async(self, component_id, callback: Callable, user_data: Any = None):
@@ -3199,3 +2590,628 @@ class Camera:
 
     def __del__(self):
         self.destroy()
+
+_cmavsdk_lib.mavsdk_camera_create.argtypes = [ctypes.c_void_p]
+_cmavsdk_lib.mavsdk_camera_create.restype = ctypes.c_void_p
+
+_cmavsdk_lib.mavsdk_camera_destroy.argtypes = [ctypes.c_void_p]
+_cmavsdk_lib.mavsdk_camera_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_camera_option_destroy.argtypes = [
+    ctypes.POINTER(OptionCStruct)
+]
+_cmavsdk_lib.mavsdk_camera_option_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_camera_setting_destroy.argtypes = [
+    ctypes.POINTER(SettingCStruct)
+]
+_cmavsdk_lib.mavsdk_camera_setting_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_camera_setting_options_destroy.argtypes = [
+    ctypes.POINTER(SettingOptionsCStruct)
+]
+_cmavsdk_lib.mavsdk_camera_setting_options_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_camera_video_stream_settings_destroy.argtypes = [
+    ctypes.POINTER(VideoStreamSettingsCStruct)
+]
+_cmavsdk_lib.mavsdk_camera_video_stream_settings_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_camera_video_stream_info_destroy.argtypes = [
+    ctypes.POINTER(VideoStreamInfoCStruct)
+]
+_cmavsdk_lib.mavsdk_camera_video_stream_info_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_camera_mode_update_destroy.argtypes = [
+    ctypes.POINTER(ModeUpdateCStruct)
+]
+_cmavsdk_lib.mavsdk_camera_mode_update_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_camera_video_stream_update_destroy.argtypes = [
+    ctypes.POINTER(VideoStreamUpdateCStruct)
+]
+_cmavsdk_lib.mavsdk_camera_video_stream_update_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_camera_storage_destroy.argtypes = [
+    ctypes.POINTER(StorageCStruct)
+]
+_cmavsdk_lib.mavsdk_camera_storage_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_camera_storage_update_destroy.argtypes = [
+    ctypes.POINTER(StorageUpdateCStruct)
+]
+_cmavsdk_lib.mavsdk_camera_storage_update_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_camera_current_settings_update_destroy.argtypes = [
+    ctypes.POINTER(CurrentSettingsUpdateCStruct)
+]
+_cmavsdk_lib.mavsdk_camera_current_settings_update_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_camera_possible_setting_options_update_destroy.argtypes = [
+    ctypes.POINTER(PossibleSettingOptionsUpdateCStruct)
+]
+_cmavsdk_lib.mavsdk_camera_possible_setting_options_update_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_camera_position_destroy.argtypes = [
+    ctypes.POINTER(PositionCStruct)
+]
+_cmavsdk_lib.mavsdk_camera_position_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_camera_quaternion_destroy.argtypes = [
+    ctypes.POINTER(QuaternionCStruct)
+]
+_cmavsdk_lib.mavsdk_camera_quaternion_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_camera_euler_angle_destroy.argtypes = [
+    ctypes.POINTER(EulerAngleCStruct)
+]
+_cmavsdk_lib.mavsdk_camera_euler_angle_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_camera_capture_info_destroy.argtypes = [
+    ctypes.POINTER(CaptureInfoCStruct)
+]
+_cmavsdk_lib.mavsdk_camera_capture_info_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_camera_information_destroy.argtypes = [
+    ctypes.POINTER(InformationCStruct)
+]
+_cmavsdk_lib.mavsdk_camera_information_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_camera_camera_list_destroy.argtypes = [
+    ctypes.POINTER(CameraListCStruct)
+]
+_cmavsdk_lib.mavsdk_camera_camera_list_destroy.restype = None
+
+
+_cmavsdk_lib.mavsdk_camera_take_photo_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+    TakePhotoCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_camera_take_photo_async.restype = None
+
+_cmavsdk_lib.mavsdk_camera_take_photo.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+]
+
+_cmavsdk_lib.mavsdk_camera_take_photo.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_camera_start_photo_interval_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+    ctypes.c_float,
+    StartPhotoIntervalCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_camera_start_photo_interval_async.restype = None
+
+_cmavsdk_lib.mavsdk_camera_start_photo_interval.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+    ctypes.c_float,
+]
+
+_cmavsdk_lib.mavsdk_camera_start_photo_interval.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_camera_stop_photo_interval_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+    StopPhotoIntervalCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_camera_stop_photo_interval_async.restype = None
+
+_cmavsdk_lib.mavsdk_camera_stop_photo_interval.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+]
+
+_cmavsdk_lib.mavsdk_camera_stop_photo_interval.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_camera_start_video_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+    StartVideoCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_camera_start_video_async.restype = None
+
+_cmavsdk_lib.mavsdk_camera_start_video.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+]
+
+_cmavsdk_lib.mavsdk_camera_start_video.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_camera_stop_video_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+    StopVideoCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_camera_stop_video_async.restype = None
+
+_cmavsdk_lib.mavsdk_camera_stop_video.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+]
+
+_cmavsdk_lib.mavsdk_camera_stop_video.restype = ctypes.c_int
+
+_cmavsdk_lib.mavsdk_camera_start_video_streaming.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+    ctypes.c_int32,
+]
+
+_cmavsdk_lib.mavsdk_camera_start_video_streaming.restype = ctypes.c_int
+
+_cmavsdk_lib.mavsdk_camera_stop_video_streaming.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+    ctypes.c_int32,
+]
+
+_cmavsdk_lib.mavsdk_camera_stop_video_streaming.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_camera_set_mode_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+    ctypes.c_int,
+    SetModeCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_camera_set_mode_async.restype = None
+
+_cmavsdk_lib.mavsdk_camera_set_mode.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+    ctypes.c_int,
+]
+
+_cmavsdk_lib.mavsdk_camera_set_mode.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_camera_list_photos_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+    ctypes.c_int,
+    ListPhotosCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_camera_list_photos_async.restype = None
+
+_cmavsdk_lib.mavsdk_camera_list_photos.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+    ctypes.c_int,
+    ctypes.POINTER(ctypes.POINTER(CaptureInfoCStruct)),
+    ctypes.POINTER(ctypes.c_size_t)
+]
+
+_cmavsdk_lib.mavsdk_camera_list_photos.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_camera_subscribe_camera_list.argtypes = [
+    ctypes.c_void_p,
+    CameraListCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_camera_subscribe_camera_list.restype = ctypes.c_void_p
+# Unsubscribe
+_cmavsdk_lib.mavsdk_camera_unsubscribe_camera_list.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_camera_unsubscribe_camera_list.restype = None
+
+_cmavsdk_lib.mavsdk_camera_camera_list.argtypes = [
+    ctypes.c_void_p,
+    ctypes.POINTER(CameraListCStruct)
+]
+
+_cmavsdk_lib.mavsdk_camera_camera_list.restype = None
+_cmavsdk_lib.mavsdk_camera_subscribe_mode.argtypes = [
+    ctypes.c_void_p,
+    ModeCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_camera_subscribe_mode.restype = ctypes.c_void_p
+# Unsubscribe
+_cmavsdk_lib.mavsdk_camera_unsubscribe_mode.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_camera_unsubscribe_mode.restype = None
+
+
+_cmavsdk_lib.mavsdk_camera_get_mode.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+    ctypes.POINTER(ctypes.c_int)
+]
+
+_cmavsdk_lib.mavsdk_camera_get_mode.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_camera_subscribe_video_stream_info.argtypes = [
+    ctypes.c_void_p,
+    VideoStreamInfoCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_camera_subscribe_video_stream_info.restype = ctypes.c_void_p
+# Unsubscribe
+_cmavsdk_lib.mavsdk_camera_unsubscribe_video_stream_info.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_camera_unsubscribe_video_stream_info.restype = None
+
+
+_cmavsdk_lib.mavsdk_camera_get_video_stream_info.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+    ctypes.POINTER(VideoStreamInfoCStruct)
+]
+
+_cmavsdk_lib.mavsdk_camera_get_video_stream_info.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_camera_subscribe_capture_info.argtypes = [
+    ctypes.c_void_p,
+    CaptureInfoCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_camera_subscribe_capture_info.restype = ctypes.c_void_p
+# Unsubscribe
+_cmavsdk_lib.mavsdk_camera_unsubscribe_capture_info.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_camera_unsubscribe_capture_info.restype = None
+
+_cmavsdk_lib.mavsdk_camera_subscribe_storage.argtypes = [
+    ctypes.c_void_p,
+    StorageCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_camera_subscribe_storage.restype = ctypes.c_void_p
+# Unsubscribe
+_cmavsdk_lib.mavsdk_camera_unsubscribe_storage.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_camera_unsubscribe_storage.restype = None
+
+
+_cmavsdk_lib.mavsdk_camera_get_storage.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+    ctypes.POINTER(StorageCStruct)
+]
+
+_cmavsdk_lib.mavsdk_camera_get_storage.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_camera_subscribe_current_settings.argtypes = [
+    ctypes.c_void_p,
+    CurrentSettingsCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_camera_subscribe_current_settings.restype = ctypes.c_void_p
+# Unsubscribe
+_cmavsdk_lib.mavsdk_camera_unsubscribe_current_settings.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_camera_unsubscribe_current_settings.restype = None
+
+
+_cmavsdk_lib.mavsdk_camera_get_current_settings.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+    ctypes.POINTER(ctypes.POINTER(SettingCStruct)),
+    ctypes.POINTER(ctypes.c_size_t)
+]
+
+_cmavsdk_lib.mavsdk_camera_get_current_settings.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_camera_subscribe_possible_setting_options.argtypes = [
+    ctypes.c_void_p,
+    PossibleSettingOptionsCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_camera_subscribe_possible_setting_options.restype = ctypes.c_void_p
+# Unsubscribe
+_cmavsdk_lib.mavsdk_camera_unsubscribe_possible_setting_options.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_camera_unsubscribe_possible_setting_options.restype = None
+
+
+_cmavsdk_lib.mavsdk_camera_get_possible_setting_options.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+    ctypes.POINTER(ctypes.POINTER(SettingOptionsCStruct)),
+    ctypes.POINTER(ctypes.c_size_t)
+]
+
+_cmavsdk_lib.mavsdk_camera_get_possible_setting_options.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_camera_set_setting_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+    SettingCStruct,
+    SetSettingCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_camera_set_setting_async.restype = None
+
+_cmavsdk_lib.mavsdk_camera_set_setting.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+    SettingCStruct,
+]
+
+_cmavsdk_lib.mavsdk_camera_set_setting.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_camera_get_setting_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+    SettingCStruct,
+    GetSettingCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_camera_get_setting_async.restype = None
+
+_cmavsdk_lib.mavsdk_camera_get_setting.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+    SettingCStruct,
+    ctypes.POINTER(SettingCStruct)
+]
+
+_cmavsdk_lib.mavsdk_camera_get_setting.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_camera_format_storage_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+    ctypes.c_int32,
+    FormatStorageCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_camera_format_storage_async.restype = None
+
+_cmavsdk_lib.mavsdk_camera_format_storage.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+    ctypes.c_int32,
+]
+
+_cmavsdk_lib.mavsdk_camera_format_storage.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_camera_reset_settings_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+    ResetSettingsCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_camera_reset_settings_async.restype = None
+
+_cmavsdk_lib.mavsdk_camera_reset_settings.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+]
+
+_cmavsdk_lib.mavsdk_camera_reset_settings.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_camera_zoom_in_start_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+    ZoomInStartCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_camera_zoom_in_start_async.restype = None
+
+_cmavsdk_lib.mavsdk_camera_zoom_in_start.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+]
+
+_cmavsdk_lib.mavsdk_camera_zoom_in_start.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_camera_zoom_out_start_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+    ZoomOutStartCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_camera_zoom_out_start_async.restype = None
+
+_cmavsdk_lib.mavsdk_camera_zoom_out_start.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+]
+
+_cmavsdk_lib.mavsdk_camera_zoom_out_start.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_camera_zoom_stop_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+    ZoomStopCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_camera_zoom_stop_async.restype = None
+
+_cmavsdk_lib.mavsdk_camera_zoom_stop.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+]
+
+_cmavsdk_lib.mavsdk_camera_zoom_stop.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_camera_zoom_range_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+    ctypes.c_float,
+    ZoomRangeCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_camera_zoom_range_async.restype = None
+
+_cmavsdk_lib.mavsdk_camera_zoom_range.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+    ctypes.c_float,
+]
+
+_cmavsdk_lib.mavsdk_camera_zoom_range.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_camera_track_point_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+    ctypes.c_float,
+    ctypes.c_float,
+    ctypes.c_float,
+    TrackPointCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_camera_track_point_async.restype = None
+
+_cmavsdk_lib.mavsdk_camera_track_point.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+    ctypes.c_float,
+    ctypes.c_float,
+    ctypes.c_float,
+]
+
+_cmavsdk_lib.mavsdk_camera_track_point.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_camera_track_rectangle_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+    ctypes.c_float,
+    ctypes.c_float,
+    ctypes.c_float,
+    ctypes.c_float,
+    TrackRectangleCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_camera_track_rectangle_async.restype = None
+
+_cmavsdk_lib.mavsdk_camera_track_rectangle.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+    ctypes.c_float,
+    ctypes.c_float,
+    ctypes.c_float,
+    ctypes.c_float,
+]
+
+_cmavsdk_lib.mavsdk_camera_track_rectangle.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_camera_track_stop_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+    TrackStopCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_camera_track_stop_async.restype = None
+
+_cmavsdk_lib.mavsdk_camera_track_stop.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+]
+
+_cmavsdk_lib.mavsdk_camera_track_stop.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_camera_focus_in_start_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+    FocusInStartCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_camera_focus_in_start_async.restype = None
+
+_cmavsdk_lib.mavsdk_camera_focus_in_start.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+]
+
+_cmavsdk_lib.mavsdk_camera_focus_in_start.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_camera_focus_out_start_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+    FocusOutStartCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_camera_focus_out_start_async.restype = None
+
+_cmavsdk_lib.mavsdk_camera_focus_out_start.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+]
+
+_cmavsdk_lib.mavsdk_camera_focus_out_start.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_camera_focus_stop_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+    FocusStopCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_camera_focus_stop_async.restype = None
+
+_cmavsdk_lib.mavsdk_camera_focus_stop.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+]
+
+_cmavsdk_lib.mavsdk_camera_focus_stop.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_camera_focus_range_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+    ctypes.c_float,
+    FocusRangeCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_camera_focus_range_async.restype = None
+
+_cmavsdk_lib.mavsdk_camera_focus_range.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+    ctypes.c_float,
+]
+
+_cmavsdk_lib.mavsdk_camera_focus_range.restype = ctypes.c_int

@@ -8,7 +8,7 @@ Allows users to send winch actions, as well as receive status information from w
 
 import ctypes
 
-from typing import Optional, List, Callable, Any
+from typing import Callable, Any
 from enum import IntEnum
 
 from ...cmavsdk_loader import _cmavsdk_lib
@@ -295,43 +295,53 @@ StatusCallback = ctypes.CFUNCTYPE(
 )
 RelaxCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 RelativeLengthControlCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 RateControlCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 LockCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 DeliverCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 HoldCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 RetractCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 LoadLineCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 AbandonLineCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 LoadPayloadCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 
 
@@ -342,8 +352,6 @@ class Winch:
         self._lib = _cmavsdk_lib
         self._handle = None
         self._callbacks = []  # Keep references to prevent GC
-
-        self._setup_functions()
 
         if system is None:
             raise ValueError("system cannot be None")
@@ -357,205 +365,6 @@ class Winch:
 
         if not self._handle:
             raise RuntimeError("Failed to create Winch plugin - C function returned null handle")
-
-    def _setup_functions(self):
-        """Setup C function signatures"""
-
-        # Create/Destroy
-        self._lib.mavsdk_winch_create.argtypes = [ctypes.c_void_p]
-        self._lib.mavsdk_winch_create.restype = ctypes.c_void_p
-
-        self._lib.mavsdk_winch_destroy.argtypes = [ctypes.c_void_p]
-        self._lib.mavsdk_winch_destroy.restype = None
-
-        self._lib.mavsdk_winch_status_flags_destroy.argtypes = [
-            ctypes.POINTER(StatusFlagsCStruct)
-        ]
-        self._lib.mavsdk_winch_status_flags_destroy.restype = None
-
-        self._lib.mavsdk_winch_status_destroy.argtypes = [
-            ctypes.POINTER(StatusCStruct)
-        ]
-        self._lib.mavsdk_winch_status_destroy.restype = None
-
-
-        self._lib.mavsdk_winch_subscribe_status.argtypes = [
-            ctypes.c_void_p,
-            StatusCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_winch_subscribe_status.restype = ctypes.c_void_p
-        # Unsubscribe
-        self._lib.mavsdk_winch_unsubscribe_status.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_winch_unsubscribe_status.restype = None
-
-        self._lib.mavsdk_winch_status.argtypes = [
-            ctypes.c_void_p,
-            ctypes.POINTER(StatusCStruct)
-        ]
-
-        self._lib.mavsdk_winch_status.restype = None
-        self._lib.mavsdk_winch_relax_async.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_uint32,
-            RelaxCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_winch_relax_async.restype = None
-
-        self._lib.mavsdk_winch_relax.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_uint32,
-        ]
-
-        self._lib.mavsdk_winch_relax.restype = ctypes.c_int
-        self._lib.mavsdk_winch_relative_length_control_async.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_uint32,
-            ctypes.c_float,
-            ctypes.c_float,
-            RelativeLengthControlCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_winch_relative_length_control_async.restype = None
-
-        self._lib.mavsdk_winch_relative_length_control.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_uint32,
-            ctypes.c_float,
-            ctypes.c_float,
-        ]
-
-        self._lib.mavsdk_winch_relative_length_control.restype = ctypes.c_int
-        self._lib.mavsdk_winch_rate_control_async.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_uint32,
-            ctypes.c_float,
-            RateControlCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_winch_rate_control_async.restype = None
-
-        self._lib.mavsdk_winch_rate_control.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_uint32,
-            ctypes.c_float,
-        ]
-
-        self._lib.mavsdk_winch_rate_control.restype = ctypes.c_int
-        self._lib.mavsdk_winch_lock_async.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_uint32,
-            LockCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_winch_lock_async.restype = None
-
-        self._lib.mavsdk_winch_lock.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_uint32,
-        ]
-
-        self._lib.mavsdk_winch_lock.restype = ctypes.c_int
-        self._lib.mavsdk_winch_deliver_async.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_uint32,
-            DeliverCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_winch_deliver_async.restype = None
-
-        self._lib.mavsdk_winch_deliver.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_uint32,
-        ]
-
-        self._lib.mavsdk_winch_deliver.restype = ctypes.c_int
-        self._lib.mavsdk_winch_hold_async.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_uint32,
-            HoldCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_winch_hold_async.restype = None
-
-        self._lib.mavsdk_winch_hold.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_uint32,
-        ]
-
-        self._lib.mavsdk_winch_hold.restype = ctypes.c_int
-        self._lib.mavsdk_winch_retract_async.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_uint32,
-            RetractCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_winch_retract_async.restype = None
-
-        self._lib.mavsdk_winch_retract.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_uint32,
-        ]
-
-        self._lib.mavsdk_winch_retract.restype = ctypes.c_int
-        self._lib.mavsdk_winch_load_line_async.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_uint32,
-            LoadLineCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_winch_load_line_async.restype = None
-
-        self._lib.mavsdk_winch_load_line.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_uint32,
-        ]
-
-        self._lib.mavsdk_winch_load_line.restype = ctypes.c_int
-        self._lib.mavsdk_winch_abandon_line_async.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_uint32,
-            AbandonLineCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_winch_abandon_line_async.restype = None
-
-        self._lib.mavsdk_winch_abandon_line.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_uint32,
-        ]
-
-        self._lib.mavsdk_winch_abandon_line.restype = ctypes.c_int
-        self._lib.mavsdk_winch_load_payload_async.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_uint32,
-            LoadPayloadCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_winch_load_payload_async.restype = None
-
-        self._lib.mavsdk_winch_load_payload.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_uint32,
-        ]
-
-        self._lib.mavsdk_winch_load_payload.restype = ctypes.c_int
 
 
     def subscribe_status(self, callback: Callable, user_data: Any = None):
@@ -965,3 +774,198 @@ class Winch:
 
     def __del__(self):
         self.destroy()
+
+_cmavsdk_lib.mavsdk_winch_create.argtypes = [ctypes.c_void_p]
+_cmavsdk_lib.mavsdk_winch_create.restype = ctypes.c_void_p
+
+_cmavsdk_lib.mavsdk_winch_destroy.argtypes = [ctypes.c_void_p]
+_cmavsdk_lib.mavsdk_winch_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_winch_status_flags_destroy.argtypes = [
+    ctypes.POINTER(StatusFlagsCStruct)
+]
+_cmavsdk_lib.mavsdk_winch_status_flags_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_winch_status_destroy.argtypes = [
+    ctypes.POINTER(StatusCStruct)
+]
+_cmavsdk_lib.mavsdk_winch_status_destroy.restype = None
+
+
+_cmavsdk_lib.mavsdk_winch_subscribe_status.argtypes = [
+    ctypes.c_void_p,
+    StatusCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_winch_subscribe_status.restype = ctypes.c_void_p
+# Unsubscribe
+_cmavsdk_lib.mavsdk_winch_unsubscribe_status.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_winch_unsubscribe_status.restype = None
+
+_cmavsdk_lib.mavsdk_winch_status.argtypes = [
+    ctypes.c_void_p,
+    ctypes.POINTER(StatusCStruct)
+]
+
+_cmavsdk_lib.mavsdk_winch_status.restype = None
+_cmavsdk_lib.mavsdk_winch_relax_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_uint32,
+    RelaxCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_winch_relax_async.restype = None
+
+_cmavsdk_lib.mavsdk_winch_relax.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_uint32,
+]
+
+_cmavsdk_lib.mavsdk_winch_relax.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_winch_relative_length_control_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_uint32,
+    ctypes.c_float,
+    ctypes.c_float,
+    RelativeLengthControlCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_winch_relative_length_control_async.restype = None
+
+_cmavsdk_lib.mavsdk_winch_relative_length_control.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_uint32,
+    ctypes.c_float,
+    ctypes.c_float,
+]
+
+_cmavsdk_lib.mavsdk_winch_relative_length_control.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_winch_rate_control_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_uint32,
+    ctypes.c_float,
+    RateControlCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_winch_rate_control_async.restype = None
+
+_cmavsdk_lib.mavsdk_winch_rate_control.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_uint32,
+    ctypes.c_float,
+]
+
+_cmavsdk_lib.mavsdk_winch_rate_control.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_winch_lock_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_uint32,
+    LockCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_winch_lock_async.restype = None
+
+_cmavsdk_lib.mavsdk_winch_lock.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_uint32,
+]
+
+_cmavsdk_lib.mavsdk_winch_lock.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_winch_deliver_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_uint32,
+    DeliverCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_winch_deliver_async.restype = None
+
+_cmavsdk_lib.mavsdk_winch_deliver.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_uint32,
+]
+
+_cmavsdk_lib.mavsdk_winch_deliver.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_winch_hold_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_uint32,
+    HoldCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_winch_hold_async.restype = None
+
+_cmavsdk_lib.mavsdk_winch_hold.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_uint32,
+]
+
+_cmavsdk_lib.mavsdk_winch_hold.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_winch_retract_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_uint32,
+    RetractCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_winch_retract_async.restype = None
+
+_cmavsdk_lib.mavsdk_winch_retract.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_uint32,
+]
+
+_cmavsdk_lib.mavsdk_winch_retract.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_winch_load_line_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_uint32,
+    LoadLineCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_winch_load_line_async.restype = None
+
+_cmavsdk_lib.mavsdk_winch_load_line.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_uint32,
+]
+
+_cmavsdk_lib.mavsdk_winch_load_line.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_winch_abandon_line_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_uint32,
+    AbandonLineCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_winch_abandon_line_async.restype = None
+
+_cmavsdk_lib.mavsdk_winch_abandon_line.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_uint32,
+]
+
+_cmavsdk_lib.mavsdk_winch_abandon_line.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_winch_load_payload_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_uint32,
+    LoadPayloadCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_winch_load_payload_async.restype = None
+
+_cmavsdk_lib.mavsdk_winch_load_payload.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_uint32,
+]
+
+_cmavsdk_lib.mavsdk_winch_load_payload.restype = ctypes.c_int

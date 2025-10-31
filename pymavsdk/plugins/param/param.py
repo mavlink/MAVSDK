@@ -8,7 +8,7 @@ Provide raw access to get and set parameters.
 
 import ctypes
 
-from typing import Optional, List, Callable, Any
+from typing import Callable, Any
 from enum import IntEnum
 
 from ...cmavsdk_loader import _cmavsdk_lib
@@ -274,8 +274,6 @@ class Param:
         self._handle = None
         self._callbacks = []  # Keep references to prevent GC
 
-        self._setup_functions()
-
         if system is None:
             raise ValueError("system cannot be None")
 
@@ -288,101 +286,6 @@ class Param:
 
         if not self._handle:
             raise RuntimeError("Failed to create Param plugin - C function returned null handle")
-
-    def _setup_functions(self):
-        """Setup C function signatures"""
-
-        # Create/Destroy
-        self._lib.mavsdk_param_create.argtypes = [ctypes.c_void_p]
-        self._lib.mavsdk_param_create.restype = ctypes.c_void_p
-
-        self._lib.mavsdk_param_destroy.argtypes = [ctypes.c_void_p]
-        self._lib.mavsdk_param_destroy.restype = None
-
-        self._lib.mavsdk_param_int_param_destroy.argtypes = [
-            ctypes.POINTER(IntParamCStruct)
-        ]
-        self._lib.mavsdk_param_int_param_destroy.restype = None
-
-        self._lib.mavsdk_param_float_param_destroy.argtypes = [
-            ctypes.POINTER(FloatParamCStruct)
-        ]
-        self._lib.mavsdk_param_float_param_destroy.restype = None
-
-        self._lib.mavsdk_param_custom_param_destroy.argtypes = [
-            ctypes.POINTER(CustomParamCStruct)
-        ]
-        self._lib.mavsdk_param_custom_param_destroy.restype = None
-
-        self._lib.mavsdk_param_all_params_destroy.argtypes = [
-            ctypes.POINTER(AllParamsCStruct)
-        ]
-        self._lib.mavsdk_param_all_params_destroy.restype = None
-
-
-
-        self._lib.mavsdk_param_get_param_int.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_char_p,
-            ctypes.POINTER(ctypes.c_int32)
-        ]
-
-        self._lib.mavsdk_param_get_param_int.restype = ctypes.c_int
-
-        self._lib.mavsdk_param_set_param_int.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_char_p,
-            ctypes.c_int32,
-        ]
-
-        self._lib.mavsdk_param_set_param_int.restype = ctypes.c_int
-
-        self._lib.mavsdk_param_get_param_float.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_char_p,
-            ctypes.POINTER(ctypes.c_float)
-        ]
-
-        self._lib.mavsdk_param_get_param_float.restype = ctypes.c_int
-
-        self._lib.mavsdk_param_set_param_float.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_char_p,
-            ctypes.c_float,
-        ]
-
-        self._lib.mavsdk_param_set_param_float.restype = ctypes.c_int
-
-        self._lib.mavsdk_param_get_param_custom.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_char_p,
-            ctypes.POINTER(ctypes.c_char_p)
-        ]
-
-        self._lib.mavsdk_param_get_param_custom.restype = ctypes.c_int
-
-        self._lib.mavsdk_param_set_param_custom.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_char_p,
-            ctypes.c_char_p,
-        ]
-
-        self._lib.mavsdk_param_set_param_custom.restype = ctypes.c_int
-
-        self._lib.mavsdk_param_get_all_params.argtypes = [
-            ctypes.c_void_p,
-            ctypes.POINTER(AllParamsCStruct)
-        ]
-
-        self._lib.mavsdk_param_get_all_params.restype = None
-
-        self._lib.mavsdk_param_select_component.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_int32,
-            ctypes.c_int,
-        ]
-
-        self._lib.mavsdk_param_select_component.restype = ctypes.c_int
 
 
 
@@ -501,3 +404,94 @@ class Param:
 
     def __del__(self):
         self.destroy()
+
+_cmavsdk_lib.mavsdk_param_create.argtypes = [ctypes.c_void_p]
+_cmavsdk_lib.mavsdk_param_create.restype = ctypes.c_void_p
+
+_cmavsdk_lib.mavsdk_param_destroy.argtypes = [ctypes.c_void_p]
+_cmavsdk_lib.mavsdk_param_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_param_int_param_destroy.argtypes = [
+    ctypes.POINTER(IntParamCStruct)
+]
+_cmavsdk_lib.mavsdk_param_int_param_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_param_float_param_destroy.argtypes = [
+    ctypes.POINTER(FloatParamCStruct)
+]
+_cmavsdk_lib.mavsdk_param_float_param_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_param_custom_param_destroy.argtypes = [
+    ctypes.POINTER(CustomParamCStruct)
+]
+_cmavsdk_lib.mavsdk_param_custom_param_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_param_all_params_destroy.argtypes = [
+    ctypes.POINTER(AllParamsCStruct)
+]
+_cmavsdk_lib.mavsdk_param_all_params_destroy.restype = None
+
+
+
+_cmavsdk_lib.mavsdk_param_get_param_int.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_char_p,
+    ctypes.POINTER(ctypes.c_int32)
+]
+
+_cmavsdk_lib.mavsdk_param_get_param_int.restype = ctypes.c_int
+
+_cmavsdk_lib.mavsdk_param_set_param_int.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_char_p,
+    ctypes.c_int32,
+]
+
+_cmavsdk_lib.mavsdk_param_set_param_int.restype = ctypes.c_int
+
+_cmavsdk_lib.mavsdk_param_get_param_float.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_char_p,
+    ctypes.POINTER(ctypes.c_float)
+]
+
+_cmavsdk_lib.mavsdk_param_get_param_float.restype = ctypes.c_int
+
+_cmavsdk_lib.mavsdk_param_set_param_float.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_char_p,
+    ctypes.c_float,
+]
+
+_cmavsdk_lib.mavsdk_param_set_param_float.restype = ctypes.c_int
+
+_cmavsdk_lib.mavsdk_param_get_param_custom.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_char_p,
+    ctypes.POINTER(ctypes.c_char_p)
+]
+
+_cmavsdk_lib.mavsdk_param_get_param_custom.restype = ctypes.c_int
+
+_cmavsdk_lib.mavsdk_param_set_param_custom.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_char_p,
+    ctypes.c_char_p,
+]
+
+_cmavsdk_lib.mavsdk_param_set_param_custom.restype = ctypes.c_int
+
+_cmavsdk_lib.mavsdk_param_get_all_params.argtypes = [
+    ctypes.c_void_p,
+    ctypes.POINTER(AllParamsCStruct)
+]
+
+_cmavsdk_lib.mavsdk_param_get_all_params.restype = None
+
+_cmavsdk_lib.mavsdk_param_select_component.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+    ctypes.c_int,
+]
+
+_cmavsdk_lib.mavsdk_param_select_component.restype = ctypes.c_int

@@ -8,7 +8,7 @@ Access component metadata json definitions, such as parameters.
 
 import ctypes
 
-from typing import Optional, List, Callable, Any
+from typing import Callable, Any
 from enum import IntEnum
 
 from ...cmavsdk_loader import _cmavsdk_lib
@@ -148,8 +148,6 @@ class ComponentMetadata:
         self._handle = None
         self._callbacks = []  # Keep references to prevent GC
 
-        self._setup_functions()
-
         if system is None:
             raise ValueError("system cannot be None")
 
@@ -162,65 +160,6 @@ class ComponentMetadata:
 
         if not self._handle:
             raise RuntimeError("Failed to create ComponentMetadata plugin - C function returned null handle")
-
-    def _setup_functions(self):
-        """Setup C function signatures"""
-
-        # Create/Destroy
-        self._lib.mavsdk_component_metadata_create.argtypes = [ctypes.c_void_p]
-        self._lib.mavsdk_component_metadata_create.restype = ctypes.c_void_p
-
-        self._lib.mavsdk_component_metadata_destroy.argtypes = [ctypes.c_void_p]
-        self._lib.mavsdk_component_metadata_destroy.restype = None
-
-        self._lib.mavsdk_component_metadata_metadata_data_destroy.argtypes = [
-            ctypes.POINTER(MetadataDataCStruct)
-        ]
-        self._lib.mavsdk_component_metadata_metadata_data_destroy.restype = None
-
-        self._lib.mavsdk_component_metadata_metadata_update_destroy.argtypes = [
-            ctypes.POINTER(MetadataUpdateCStruct)
-        ]
-        self._lib.mavsdk_component_metadata_metadata_update_destroy.restype = None
-
-
-
-        self._lib.mavsdk_component_metadata_request_component.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_uint32,
-        ]
-
-        self._lib.mavsdk_component_metadata_request_component.restype = None
-
-        self._lib.mavsdk_component_metadata_request_autopilot_component.argtypes = [
-            ctypes.c_void_p,
-        ]
-
-        self._lib.mavsdk_component_metadata_request_autopilot_component.restype = None
-        self._lib.mavsdk_component_metadata_subscribe_metadata_available.argtypes = [
-            ctypes.c_void_p,
-            MetadataAvailableCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_component_metadata_subscribe_metadata_available.restype = ctypes.c_void_p
-        # Unsubscribe
-        self._lib.mavsdk_component_metadata_unsubscribe_metadata_available.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_component_metadata_unsubscribe_metadata_available.restype = None
-
-
-        self._lib.mavsdk_component_metadata_get_metadata.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_uint32,
-            ctypes.c_int,
-            ctypes.POINTER(MetadataDataCStruct)
-        ]
-
-        self._lib.mavsdk_component_metadata_get_metadata.restype = ctypes.c_int
 
 
 
@@ -299,3 +238,58 @@ class ComponentMetadata:
 
     def __del__(self):
         self.destroy()
+
+_cmavsdk_lib.mavsdk_component_metadata_create.argtypes = [ctypes.c_void_p]
+_cmavsdk_lib.mavsdk_component_metadata_create.restype = ctypes.c_void_p
+
+_cmavsdk_lib.mavsdk_component_metadata_destroy.argtypes = [ctypes.c_void_p]
+_cmavsdk_lib.mavsdk_component_metadata_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_component_metadata_metadata_data_destroy.argtypes = [
+    ctypes.POINTER(MetadataDataCStruct)
+]
+_cmavsdk_lib.mavsdk_component_metadata_metadata_data_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_component_metadata_metadata_update_destroy.argtypes = [
+    ctypes.POINTER(MetadataUpdateCStruct)
+]
+_cmavsdk_lib.mavsdk_component_metadata_metadata_update_destroy.restype = None
+
+
+
+_cmavsdk_lib.mavsdk_component_metadata_request_component.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_uint32,
+]
+
+_cmavsdk_lib.mavsdk_component_metadata_request_component.restype = None
+
+_cmavsdk_lib.mavsdk_component_metadata_request_autopilot_component.argtypes = [
+    ctypes.c_void_p,
+]
+
+_cmavsdk_lib.mavsdk_component_metadata_request_autopilot_component.restype = None
+_cmavsdk_lib.mavsdk_component_metadata_subscribe_metadata_available.argtypes = [
+    ctypes.c_void_p,
+    MetadataAvailableCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_component_metadata_subscribe_metadata_available.restype = ctypes.c_void_p
+# Unsubscribe
+_cmavsdk_lib.mavsdk_component_metadata_unsubscribe_metadata_available.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_component_metadata_unsubscribe_metadata_available.restype = None
+
+
+_cmavsdk_lib.mavsdk_component_metadata_get_metadata.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_uint32,
+    ctypes.c_int,
+    ctypes.POINTER(MetadataDataCStruct)
+]
+
+_cmavsdk_lib.mavsdk_component_metadata_get_metadata.restype = ctypes.c_int

@@ -9,7 +9,7 @@ Allow to download log files from the vehicle after a flight is complete.
 
 import ctypes
 
-from typing import Optional, List, Callable, Any
+from typing import Callable, Any
 from enum import IntEnum
 
 from ...cmavsdk_loader import _cmavsdk_lib
@@ -128,13 +128,15 @@ class Entry:
 # ===== Callback Types =====
 GetEntriesCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.POINTER(EntryCStruct),
+    ctypes.c_int,
+    ctypes.POINTER(EntryCStruct),
     ctypes.c_size_t,
     ctypes.c_void_p
 )
 DownloadLogFileCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ProgressDataCStruct,
+    ctypes.c_int,
+    ProgressDataCStruct,
     ctypes.c_void_p
 )
 
@@ -148,8 +150,6 @@ class LogFiles:
         self._handle = None
         self._callbacks = []  # Keep references to prevent GC
 
-        self._setup_functions()
-
         if system is None:
             raise ValueError("system cannot be None")
 
@@ -162,59 +162,6 @@ class LogFiles:
 
         if not self._handle:
             raise RuntimeError("Failed to create LogFiles plugin - C function returned null handle")
-
-    def _setup_functions(self):
-        """Setup C function signatures"""
-
-        # Create/Destroy
-        self._lib.mavsdk_log_files_create.argtypes = [ctypes.c_void_p]
-        self._lib.mavsdk_log_files_create.restype = ctypes.c_void_p
-
-        self._lib.mavsdk_log_files_destroy.argtypes = [ctypes.c_void_p]
-        self._lib.mavsdk_log_files_destroy.restype = None
-
-        self._lib.mavsdk_log_files_progress_data_destroy.argtypes = [
-            ctypes.POINTER(ProgressDataCStruct)
-        ]
-        self._lib.mavsdk_log_files_progress_data_destroy.restype = None
-
-        self._lib.mavsdk_log_files_entry_destroy.argtypes = [
-            ctypes.POINTER(EntryCStruct)
-        ]
-        self._lib.mavsdk_log_files_entry_destroy.restype = None
-
-
-        self._lib.mavsdk_log_files_get_entries_async.argtypes = [
-            ctypes.c_void_p,
-            GetEntriesCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_log_files_get_entries_async.restype = None
-
-        self._lib.mavsdk_log_files_get_entries.argtypes = [
-            ctypes.c_void_p,
-            ctypes.POINTER(ctypes.POINTER(EntryCStruct)),
-            ctypes.POINTER(ctypes.c_size_t)
-        ]
-
-        self._lib.mavsdk_log_files_get_entries.restype = ctypes.c_int
-        self._lib.mavsdk_log_files_download_log_file_async.argtypes = [
-            ctypes.c_void_p,
-            EntryCStruct,
-            ctypes.c_char_p,
-            DownloadLogFileCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_log_files_download_log_file_async.restype = None
-
-
-        self._lib.mavsdk_log_files_erase_all_log_files.argtypes = [
-            ctypes.c_void_p,
-        ]
-
-        self._lib.mavsdk_log_files_erase_all_log_files.restype = ctypes.c_int
 
 
     def get_entries_async(self, callback: Callable, user_data: Any = None):
@@ -316,3 +263,52 @@ class LogFiles:
 
     def __del__(self):
         self.destroy()
+
+_cmavsdk_lib.mavsdk_log_files_create.argtypes = [ctypes.c_void_p]
+_cmavsdk_lib.mavsdk_log_files_create.restype = ctypes.c_void_p
+
+_cmavsdk_lib.mavsdk_log_files_destroy.argtypes = [ctypes.c_void_p]
+_cmavsdk_lib.mavsdk_log_files_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_log_files_progress_data_destroy.argtypes = [
+    ctypes.POINTER(ProgressDataCStruct)
+]
+_cmavsdk_lib.mavsdk_log_files_progress_data_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_log_files_entry_destroy.argtypes = [
+    ctypes.POINTER(EntryCStruct)
+]
+_cmavsdk_lib.mavsdk_log_files_entry_destroy.restype = None
+
+
+_cmavsdk_lib.mavsdk_log_files_get_entries_async.argtypes = [
+    ctypes.c_void_p,
+    GetEntriesCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_log_files_get_entries_async.restype = None
+
+_cmavsdk_lib.mavsdk_log_files_get_entries.argtypes = [
+    ctypes.c_void_p,
+    ctypes.POINTER(ctypes.POINTER(EntryCStruct)),
+    ctypes.POINTER(ctypes.c_size_t)
+]
+
+_cmavsdk_lib.mavsdk_log_files_get_entries.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_log_files_download_log_file_async.argtypes = [
+    ctypes.c_void_p,
+    EntryCStruct,
+    ctypes.c_char_p,
+    DownloadLogFileCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_log_files_download_log_file_async.restype = None
+
+
+_cmavsdk_lib.mavsdk_log_files_erase_all_log_files.argtypes = [
+    ctypes.c_void_p,
+]
+
+_cmavsdk_lib.mavsdk_log_files_erase_all_log_files.restype = ctypes.c_int

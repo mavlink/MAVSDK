@@ -8,7 +8,7 @@ Enable waypoint missions.
 
 import ctypes
 
-from typing import Optional, List, Callable, Any
+from typing import Callable, Any
 from enum import IntEnum
 
 from ...cmavsdk_loader import _cmavsdk_lib
@@ -408,38 +408,46 @@ class ProgressDataOrMission:
 # ===== Callback Types =====
 UploadMissionCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 UploadMissionWithProgressCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ProgressDataCStruct,
+    ctypes.c_int,
+    ProgressDataCStruct,
     ctypes.c_void_p
 )
 DownloadMissionCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    MissionPlanCStruct,
+    ctypes.c_int,
+    MissionPlanCStruct,
     ctypes.c_void_p
 )
 DownloadMissionWithProgressCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ProgressDataOrMissionCStruct,
+    ctypes.c_int,
+    ProgressDataOrMissionCStruct,
     ctypes.c_void_p
 )
 StartMissionCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 PauseMissionCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 ClearMissionCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 SetCurrentMissionItemCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 MissionProgressCallback = ctypes.CFUNCTYPE(
     None,
@@ -456,8 +464,6 @@ class Mission:
         self._handle = None
         self._callbacks = []  # Keep references to prevent GC
 
-        self._setup_functions()
-
         if system is None:
             raise ValueError("system cannot be None")
 
@@ -470,197 +476,6 @@ class Mission:
 
         if not self._handle:
             raise RuntimeError("Failed to create Mission plugin - C function returned null handle")
-
-    def _setup_functions(self):
-        """Setup C function signatures"""
-
-        # Create/Destroy
-        self._lib.mavsdk_mission_create.argtypes = [ctypes.c_void_p]
-        self._lib.mavsdk_mission_create.restype = ctypes.c_void_p
-
-        self._lib.mavsdk_mission_destroy.argtypes = [ctypes.c_void_p]
-        self._lib.mavsdk_mission_destroy.restype = None
-
-        self._lib.mavsdk_mission_mission_item_destroy.argtypes = [
-            ctypes.POINTER(MissionItemCStruct)
-        ]
-        self._lib.mavsdk_mission_mission_item_destroy.restype = None
-
-        self._lib.mavsdk_mission_mission_plan_destroy.argtypes = [
-            ctypes.POINTER(MissionPlanCStruct)
-        ]
-        self._lib.mavsdk_mission_mission_plan_destroy.restype = None
-
-        self._lib.mavsdk_mission_mission_progress_destroy.argtypes = [
-            ctypes.POINTER(MissionProgressCStruct)
-        ]
-        self._lib.mavsdk_mission_mission_progress_destroy.restype = None
-
-        self._lib.mavsdk_mission_progress_data_destroy.argtypes = [
-            ctypes.POINTER(ProgressDataCStruct)
-        ]
-        self._lib.mavsdk_mission_progress_data_destroy.restype = None
-
-        self._lib.mavsdk_mission_progress_data_or_mission_destroy.argtypes = [
-            ctypes.POINTER(ProgressDataOrMissionCStruct)
-        ]
-        self._lib.mavsdk_mission_progress_data_or_mission_destroy.restype = None
-
-
-        self._lib.mavsdk_mission_upload_mission_async.argtypes = [
-            ctypes.c_void_p,
-            MissionPlanCStruct,
-            UploadMissionCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_mission_upload_mission_async.restype = None
-
-        self._lib.mavsdk_mission_upload_mission.argtypes = [
-            ctypes.c_void_p,
-            MissionPlanCStruct,
-        ]
-
-        self._lib.mavsdk_mission_upload_mission.restype = ctypes.c_int
-        self._lib.mavsdk_mission_upload_mission_with_progress_async.argtypes = [
-            ctypes.c_void_p,
-            MissionPlanCStruct,
-            UploadMissionWithProgressCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_mission_upload_mission_with_progress_async.restype = None
-
-
-        self._lib.mavsdk_mission_cancel_mission_upload.argtypes = [
-            ctypes.c_void_p,
-        ]
-
-        self._lib.mavsdk_mission_cancel_mission_upload.restype = ctypes.c_int
-        self._lib.mavsdk_mission_download_mission_async.argtypes = [
-            ctypes.c_void_p,
-            DownloadMissionCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_mission_download_mission_async.restype = None
-
-        self._lib.mavsdk_mission_download_mission.argtypes = [
-            ctypes.c_void_p,
-            ctypes.POINTER(MissionPlanCStruct)
-        ]
-
-        self._lib.mavsdk_mission_download_mission.restype = ctypes.c_int
-        self._lib.mavsdk_mission_download_mission_with_progress_async.argtypes = [
-            ctypes.c_void_p,
-            DownloadMissionWithProgressCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_mission_download_mission_with_progress_async.restype = None
-
-
-        self._lib.mavsdk_mission_cancel_mission_download.argtypes = [
-            ctypes.c_void_p,
-        ]
-
-        self._lib.mavsdk_mission_cancel_mission_download.restype = ctypes.c_int
-        self._lib.mavsdk_mission_start_mission_async.argtypes = [
-            ctypes.c_void_p,
-            StartMissionCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_mission_start_mission_async.restype = None
-
-        self._lib.mavsdk_mission_start_mission.argtypes = [
-            ctypes.c_void_p,
-        ]
-
-        self._lib.mavsdk_mission_start_mission.restype = ctypes.c_int
-        self._lib.mavsdk_mission_pause_mission_async.argtypes = [
-            ctypes.c_void_p,
-            PauseMissionCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_mission_pause_mission_async.restype = None
-
-        self._lib.mavsdk_mission_pause_mission.argtypes = [
-            ctypes.c_void_p,
-        ]
-
-        self._lib.mavsdk_mission_pause_mission.restype = ctypes.c_int
-        self._lib.mavsdk_mission_clear_mission_async.argtypes = [
-            ctypes.c_void_p,
-            ClearMissionCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_mission_clear_mission_async.restype = None
-
-        self._lib.mavsdk_mission_clear_mission.argtypes = [
-            ctypes.c_void_p,
-        ]
-
-        self._lib.mavsdk_mission_clear_mission.restype = ctypes.c_int
-        self._lib.mavsdk_mission_set_current_mission_item_async.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_int32,
-            SetCurrentMissionItemCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_mission_set_current_mission_item_async.restype = None
-
-        self._lib.mavsdk_mission_set_current_mission_item.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_int32,
-        ]
-
-        self._lib.mavsdk_mission_set_current_mission_item.restype = ctypes.c_int
-
-        self._lib.mavsdk_mission_is_mission_finished.argtypes = [
-            ctypes.c_void_p,
-            ctypes.POINTER(ctypes.c_bool)
-        ]
-
-        self._lib.mavsdk_mission_is_mission_finished.restype = ctypes.c_int
-        self._lib.mavsdk_mission_subscribe_mission_progress.argtypes = [
-            ctypes.c_void_p,
-            MissionProgressCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_mission_subscribe_mission_progress.restype = ctypes.c_void_p
-        # Unsubscribe
-        self._lib.mavsdk_mission_unsubscribe_mission_progress.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_mission_unsubscribe_mission_progress.restype = None
-
-        self._lib.mavsdk_mission_mission_progress.argtypes = [
-            ctypes.c_void_p,
-            ctypes.POINTER(MissionProgressCStruct)
-        ]
-
-        self._lib.mavsdk_mission_mission_progress.restype = None
-
-        self._lib.mavsdk_mission_get_return_to_launch_after_mission.argtypes = [
-            ctypes.c_void_p,
-            ctypes.POINTER(ctypes.c_bool)
-        ]
-
-        self._lib.mavsdk_mission_get_return_to_launch_after_mission.restype = ctypes.c_int
-
-        self._lib.mavsdk_mission_set_return_to_launch_after_mission.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_bool,
-        ]
-
-        self._lib.mavsdk_mission_set_return_to_launch_after_mission.restype = ctypes.c_int
 
 
     def upload_mission_async(self, mission_plan, callback: Callable, user_data: Any = None):
@@ -1076,3 +891,190 @@ class Mission:
 
     def __del__(self):
         self.destroy()
+
+_cmavsdk_lib.mavsdk_mission_create.argtypes = [ctypes.c_void_p]
+_cmavsdk_lib.mavsdk_mission_create.restype = ctypes.c_void_p
+
+_cmavsdk_lib.mavsdk_mission_destroy.argtypes = [ctypes.c_void_p]
+_cmavsdk_lib.mavsdk_mission_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_mission_mission_item_destroy.argtypes = [
+    ctypes.POINTER(MissionItemCStruct)
+]
+_cmavsdk_lib.mavsdk_mission_mission_item_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_mission_mission_plan_destroy.argtypes = [
+    ctypes.POINTER(MissionPlanCStruct)
+]
+_cmavsdk_lib.mavsdk_mission_mission_plan_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_mission_mission_progress_destroy.argtypes = [
+    ctypes.POINTER(MissionProgressCStruct)
+]
+_cmavsdk_lib.mavsdk_mission_mission_progress_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_mission_progress_data_destroy.argtypes = [
+    ctypes.POINTER(ProgressDataCStruct)
+]
+_cmavsdk_lib.mavsdk_mission_progress_data_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_mission_progress_data_or_mission_destroy.argtypes = [
+    ctypes.POINTER(ProgressDataOrMissionCStruct)
+]
+_cmavsdk_lib.mavsdk_mission_progress_data_or_mission_destroy.restype = None
+
+
+_cmavsdk_lib.mavsdk_mission_upload_mission_async.argtypes = [
+    ctypes.c_void_p,
+    MissionPlanCStruct,
+    UploadMissionCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_mission_upload_mission_async.restype = None
+
+_cmavsdk_lib.mavsdk_mission_upload_mission.argtypes = [
+    ctypes.c_void_p,
+    MissionPlanCStruct,
+]
+
+_cmavsdk_lib.mavsdk_mission_upload_mission.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_mission_upload_mission_with_progress_async.argtypes = [
+    ctypes.c_void_p,
+    MissionPlanCStruct,
+    UploadMissionWithProgressCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_mission_upload_mission_with_progress_async.restype = None
+
+
+_cmavsdk_lib.mavsdk_mission_cancel_mission_upload.argtypes = [
+    ctypes.c_void_p,
+]
+
+_cmavsdk_lib.mavsdk_mission_cancel_mission_upload.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_mission_download_mission_async.argtypes = [
+    ctypes.c_void_p,
+    DownloadMissionCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_mission_download_mission_async.restype = None
+
+_cmavsdk_lib.mavsdk_mission_download_mission.argtypes = [
+    ctypes.c_void_p,
+    ctypes.POINTER(MissionPlanCStruct)
+]
+
+_cmavsdk_lib.mavsdk_mission_download_mission.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_mission_download_mission_with_progress_async.argtypes = [
+    ctypes.c_void_p,
+    DownloadMissionWithProgressCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_mission_download_mission_with_progress_async.restype = None
+
+
+_cmavsdk_lib.mavsdk_mission_cancel_mission_download.argtypes = [
+    ctypes.c_void_p,
+]
+
+_cmavsdk_lib.mavsdk_mission_cancel_mission_download.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_mission_start_mission_async.argtypes = [
+    ctypes.c_void_p,
+    StartMissionCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_mission_start_mission_async.restype = None
+
+_cmavsdk_lib.mavsdk_mission_start_mission.argtypes = [
+    ctypes.c_void_p,
+]
+
+_cmavsdk_lib.mavsdk_mission_start_mission.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_mission_pause_mission_async.argtypes = [
+    ctypes.c_void_p,
+    PauseMissionCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_mission_pause_mission_async.restype = None
+
+_cmavsdk_lib.mavsdk_mission_pause_mission.argtypes = [
+    ctypes.c_void_p,
+]
+
+_cmavsdk_lib.mavsdk_mission_pause_mission.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_mission_clear_mission_async.argtypes = [
+    ctypes.c_void_p,
+    ClearMissionCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_mission_clear_mission_async.restype = None
+
+_cmavsdk_lib.mavsdk_mission_clear_mission.argtypes = [
+    ctypes.c_void_p,
+]
+
+_cmavsdk_lib.mavsdk_mission_clear_mission.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_mission_set_current_mission_item_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+    SetCurrentMissionItemCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_mission_set_current_mission_item_async.restype = None
+
+_cmavsdk_lib.mavsdk_mission_set_current_mission_item.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+]
+
+_cmavsdk_lib.mavsdk_mission_set_current_mission_item.restype = ctypes.c_int
+
+_cmavsdk_lib.mavsdk_mission_is_mission_finished.argtypes = [
+    ctypes.c_void_p,
+    ctypes.POINTER(ctypes.c_bool)
+]
+
+_cmavsdk_lib.mavsdk_mission_is_mission_finished.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_mission_subscribe_mission_progress.argtypes = [
+    ctypes.c_void_p,
+    MissionProgressCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_mission_subscribe_mission_progress.restype = ctypes.c_void_p
+# Unsubscribe
+_cmavsdk_lib.mavsdk_mission_unsubscribe_mission_progress.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_mission_unsubscribe_mission_progress.restype = None
+
+_cmavsdk_lib.mavsdk_mission_mission_progress.argtypes = [
+    ctypes.c_void_p,
+    ctypes.POINTER(MissionProgressCStruct)
+]
+
+_cmavsdk_lib.mavsdk_mission_mission_progress.restype = None
+
+_cmavsdk_lib.mavsdk_mission_get_return_to_launch_after_mission.argtypes = [
+    ctypes.c_void_p,
+    ctypes.POINTER(ctypes.c_bool)
+]
+
+_cmavsdk_lib.mavsdk_mission_get_return_to_launch_after_mission.restype = ctypes.c_int
+
+_cmavsdk_lib.mavsdk_mission_set_return_to_launch_after_mission.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_bool,
+]
+
+_cmavsdk_lib.mavsdk_mission_set_return_to_launch_after_mission.restype = ctypes.c_int

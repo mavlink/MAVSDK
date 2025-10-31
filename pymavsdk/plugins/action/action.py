@@ -8,7 +8,7 @@ Enable simple actions such as arming, taking off, and landing.
 
 import ctypes
 
-from typing import Optional, List, Callable, Any
+from typing import Callable, Any
 from enum import IntEnum
 
 from ...cmavsdk_loader import _cmavsdk_lib
@@ -51,89 +51,110 @@ class ActionResult(IntEnum):
 # ===== Callback Types =====
 ArmCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 ArmForceCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 DisarmCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 TakeoffCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 LandCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 RebootCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 ShutdownCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 TerminateCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 KillCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 ReturnToLaunchCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 GotoLocationCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 DoOrbitCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 HoldCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 SetActuatorCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 TransitionToFixedwingCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 TransitionToMulticopterCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 GetTakeoffAltitudeCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_float,
+    ctypes.c_int,
+    ctypes.c_float,
     ctypes.c_void_p
 )
 SetTakeoffAltitudeCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 GetReturnToLaunchAltitudeCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_float,
+    ctypes.c_int,
+    ctypes.c_float,
     ctypes.c_void_p
 )
 SetReturnToLaunchAltitudeCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 SetCurrentSpeedCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 
 
@@ -144,8 +165,6 @@ class Action:
         self._lib = _cmavsdk_lib
         self._handle = None
         self._callbacks = []  # Keep references to prevent GC
-
-        self._setup_functions()
 
         if system is None:
             raise ValueError("system cannot be None")
@@ -159,323 +178,6 @@ class Action:
 
         if not self._handle:
             raise RuntimeError("Failed to create Action plugin - C function returned null handle")
-
-    def _setup_functions(self):
-        """Setup C function signatures"""
-
-        # Create/Destroy
-        self._lib.mavsdk_action_create.argtypes = [ctypes.c_void_p]
-        self._lib.mavsdk_action_create.restype = ctypes.c_void_p
-
-        self._lib.mavsdk_action_destroy.argtypes = [ctypes.c_void_p]
-        self._lib.mavsdk_action_destroy.restype = None
-
-
-        self._lib.mavsdk_action_arm_async.argtypes = [
-            ctypes.c_void_p,
-            ArmCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_action_arm_async.restype = None
-
-        self._lib.mavsdk_action_arm.argtypes = [
-            ctypes.c_void_p,
-        ]
-
-        self._lib.mavsdk_action_arm.restype = ctypes.c_int
-        self._lib.mavsdk_action_arm_force_async.argtypes = [
-            ctypes.c_void_p,
-            ArmForceCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_action_arm_force_async.restype = None
-
-        self._lib.mavsdk_action_arm_force.argtypes = [
-            ctypes.c_void_p,
-        ]
-
-        self._lib.mavsdk_action_arm_force.restype = ctypes.c_int
-        self._lib.mavsdk_action_disarm_async.argtypes = [
-            ctypes.c_void_p,
-            DisarmCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_action_disarm_async.restype = None
-
-        self._lib.mavsdk_action_disarm.argtypes = [
-            ctypes.c_void_p,
-        ]
-
-        self._lib.mavsdk_action_disarm.restype = ctypes.c_int
-        self._lib.mavsdk_action_takeoff_async.argtypes = [
-            ctypes.c_void_p,
-            TakeoffCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_action_takeoff_async.restype = None
-
-        self._lib.mavsdk_action_takeoff.argtypes = [
-            ctypes.c_void_p,
-        ]
-
-        self._lib.mavsdk_action_takeoff.restype = ctypes.c_int
-        self._lib.mavsdk_action_land_async.argtypes = [
-            ctypes.c_void_p,
-            LandCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_action_land_async.restype = None
-
-        self._lib.mavsdk_action_land.argtypes = [
-            ctypes.c_void_p,
-        ]
-
-        self._lib.mavsdk_action_land.restype = ctypes.c_int
-        self._lib.mavsdk_action_reboot_async.argtypes = [
-            ctypes.c_void_p,
-            RebootCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_action_reboot_async.restype = None
-
-        self._lib.mavsdk_action_reboot.argtypes = [
-            ctypes.c_void_p,
-        ]
-
-        self._lib.mavsdk_action_reboot.restype = ctypes.c_int
-        self._lib.mavsdk_action_shutdown_async.argtypes = [
-            ctypes.c_void_p,
-            ShutdownCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_action_shutdown_async.restype = None
-
-        self._lib.mavsdk_action_shutdown.argtypes = [
-            ctypes.c_void_p,
-        ]
-
-        self._lib.mavsdk_action_shutdown.restype = ctypes.c_int
-        self._lib.mavsdk_action_terminate_async.argtypes = [
-            ctypes.c_void_p,
-            TerminateCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_action_terminate_async.restype = None
-
-        self._lib.mavsdk_action_terminate.argtypes = [
-            ctypes.c_void_p,
-        ]
-
-        self._lib.mavsdk_action_terminate.restype = ctypes.c_int
-        self._lib.mavsdk_action_kill_async.argtypes = [
-            ctypes.c_void_p,
-            KillCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_action_kill_async.restype = None
-
-        self._lib.mavsdk_action_kill.argtypes = [
-            ctypes.c_void_p,
-        ]
-
-        self._lib.mavsdk_action_kill.restype = ctypes.c_int
-        self._lib.mavsdk_action_return_to_launch_async.argtypes = [
-            ctypes.c_void_p,
-            ReturnToLaunchCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_action_return_to_launch_async.restype = None
-
-        self._lib.mavsdk_action_return_to_launch.argtypes = [
-            ctypes.c_void_p,
-        ]
-
-        self._lib.mavsdk_action_return_to_launch.restype = ctypes.c_int
-        self._lib.mavsdk_action_goto_location_async.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_double,
-            ctypes.c_double,
-            ctypes.c_float,
-            ctypes.c_float,
-            GotoLocationCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_action_goto_location_async.restype = None
-
-        self._lib.mavsdk_action_goto_location.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_double,
-            ctypes.c_double,
-            ctypes.c_float,
-            ctypes.c_float,
-        ]
-
-        self._lib.mavsdk_action_goto_location.restype = ctypes.c_int
-        self._lib.mavsdk_action_do_orbit_async.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_float,
-            ctypes.c_float,
-            ctypes.c_int,
-            ctypes.c_double,
-            ctypes.c_double,
-            ctypes.c_double,
-            DoOrbitCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_action_do_orbit_async.restype = None
-
-        self._lib.mavsdk_action_do_orbit.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_float,
-            ctypes.c_float,
-            ctypes.c_int,
-            ctypes.c_double,
-            ctypes.c_double,
-            ctypes.c_double,
-        ]
-
-        self._lib.mavsdk_action_do_orbit.restype = ctypes.c_int
-        self._lib.mavsdk_action_hold_async.argtypes = [
-            ctypes.c_void_p,
-            HoldCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_action_hold_async.restype = None
-
-        self._lib.mavsdk_action_hold.argtypes = [
-            ctypes.c_void_p,
-        ]
-
-        self._lib.mavsdk_action_hold.restype = ctypes.c_int
-        self._lib.mavsdk_action_set_actuator_async.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_int32,
-            ctypes.c_float,
-            SetActuatorCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_action_set_actuator_async.restype = None
-
-        self._lib.mavsdk_action_set_actuator.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_int32,
-            ctypes.c_float,
-        ]
-
-        self._lib.mavsdk_action_set_actuator.restype = ctypes.c_int
-        self._lib.mavsdk_action_transition_to_fixedwing_async.argtypes = [
-            ctypes.c_void_p,
-            TransitionToFixedwingCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_action_transition_to_fixedwing_async.restype = None
-
-        self._lib.mavsdk_action_transition_to_fixedwing.argtypes = [
-            ctypes.c_void_p,
-        ]
-
-        self._lib.mavsdk_action_transition_to_fixedwing.restype = ctypes.c_int
-        self._lib.mavsdk_action_transition_to_multicopter_async.argtypes = [
-            ctypes.c_void_p,
-            TransitionToMulticopterCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_action_transition_to_multicopter_async.restype = None
-
-        self._lib.mavsdk_action_transition_to_multicopter.argtypes = [
-            ctypes.c_void_p,
-        ]
-
-        self._lib.mavsdk_action_transition_to_multicopter.restype = ctypes.c_int
-        self._lib.mavsdk_action_get_takeoff_altitude_async.argtypes = [
-            ctypes.c_void_p,
-            GetTakeoffAltitudeCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_action_get_takeoff_altitude_async.restype = None
-
-        self._lib.mavsdk_action_get_takeoff_altitude.argtypes = [
-            ctypes.c_void_p,
-            ctypes.POINTER(ctypes.c_float)
-        ]
-
-        self._lib.mavsdk_action_get_takeoff_altitude.restype = ctypes.c_int
-        self._lib.mavsdk_action_set_takeoff_altitude_async.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_float,
-            SetTakeoffAltitudeCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_action_set_takeoff_altitude_async.restype = None
-
-        self._lib.mavsdk_action_set_takeoff_altitude.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_float,
-        ]
-
-        self._lib.mavsdk_action_set_takeoff_altitude.restype = ctypes.c_int
-        self._lib.mavsdk_action_get_return_to_launch_altitude_async.argtypes = [
-            ctypes.c_void_p,
-            GetReturnToLaunchAltitudeCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_action_get_return_to_launch_altitude_async.restype = None
-
-        self._lib.mavsdk_action_get_return_to_launch_altitude.argtypes = [
-            ctypes.c_void_p,
-            ctypes.POINTER(ctypes.c_float)
-        ]
-
-        self._lib.mavsdk_action_get_return_to_launch_altitude.restype = ctypes.c_int
-        self._lib.mavsdk_action_set_return_to_launch_altitude_async.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_float,
-            SetReturnToLaunchAltitudeCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_action_set_return_to_launch_altitude_async.restype = None
-
-        self._lib.mavsdk_action_set_return_to_launch_altitude.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_float,
-        ]
-
-        self._lib.mavsdk_action_set_return_to_launch_altitude.restype = ctypes.c_int
-        self._lib.mavsdk_action_set_current_speed_async.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_float,
-            SetCurrentSpeedCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_action_set_current_speed_async.restype = None
-
-        self._lib.mavsdk_action_set_current_speed.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_float,
-        ]
-
-        self._lib.mavsdk_action_set_current_speed.restype = ctypes.c_int
 
 
     def arm_async(self, callback: Callable, user_data: Any = None):
@@ -1280,3 +982,316 @@ class Action:
 
     def __del__(self):
         self.destroy()
+
+_cmavsdk_lib.mavsdk_action_create.argtypes = [ctypes.c_void_p]
+_cmavsdk_lib.mavsdk_action_create.restype = ctypes.c_void_p
+
+_cmavsdk_lib.mavsdk_action_destroy.argtypes = [ctypes.c_void_p]
+_cmavsdk_lib.mavsdk_action_destroy.restype = None
+
+
+_cmavsdk_lib.mavsdk_action_arm_async.argtypes = [
+    ctypes.c_void_p,
+    ArmCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_action_arm_async.restype = None
+
+_cmavsdk_lib.mavsdk_action_arm.argtypes = [
+    ctypes.c_void_p,
+]
+
+_cmavsdk_lib.mavsdk_action_arm.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_action_arm_force_async.argtypes = [
+    ctypes.c_void_p,
+    ArmForceCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_action_arm_force_async.restype = None
+
+_cmavsdk_lib.mavsdk_action_arm_force.argtypes = [
+    ctypes.c_void_p,
+]
+
+_cmavsdk_lib.mavsdk_action_arm_force.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_action_disarm_async.argtypes = [
+    ctypes.c_void_p,
+    DisarmCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_action_disarm_async.restype = None
+
+_cmavsdk_lib.mavsdk_action_disarm.argtypes = [
+    ctypes.c_void_p,
+]
+
+_cmavsdk_lib.mavsdk_action_disarm.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_action_takeoff_async.argtypes = [
+    ctypes.c_void_p,
+    TakeoffCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_action_takeoff_async.restype = None
+
+_cmavsdk_lib.mavsdk_action_takeoff.argtypes = [
+    ctypes.c_void_p,
+]
+
+_cmavsdk_lib.mavsdk_action_takeoff.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_action_land_async.argtypes = [
+    ctypes.c_void_p,
+    LandCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_action_land_async.restype = None
+
+_cmavsdk_lib.mavsdk_action_land.argtypes = [
+    ctypes.c_void_p,
+]
+
+_cmavsdk_lib.mavsdk_action_land.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_action_reboot_async.argtypes = [
+    ctypes.c_void_p,
+    RebootCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_action_reboot_async.restype = None
+
+_cmavsdk_lib.mavsdk_action_reboot.argtypes = [
+    ctypes.c_void_p,
+]
+
+_cmavsdk_lib.mavsdk_action_reboot.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_action_shutdown_async.argtypes = [
+    ctypes.c_void_p,
+    ShutdownCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_action_shutdown_async.restype = None
+
+_cmavsdk_lib.mavsdk_action_shutdown.argtypes = [
+    ctypes.c_void_p,
+]
+
+_cmavsdk_lib.mavsdk_action_shutdown.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_action_terminate_async.argtypes = [
+    ctypes.c_void_p,
+    TerminateCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_action_terminate_async.restype = None
+
+_cmavsdk_lib.mavsdk_action_terminate.argtypes = [
+    ctypes.c_void_p,
+]
+
+_cmavsdk_lib.mavsdk_action_terminate.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_action_kill_async.argtypes = [
+    ctypes.c_void_p,
+    KillCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_action_kill_async.restype = None
+
+_cmavsdk_lib.mavsdk_action_kill.argtypes = [
+    ctypes.c_void_p,
+]
+
+_cmavsdk_lib.mavsdk_action_kill.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_action_return_to_launch_async.argtypes = [
+    ctypes.c_void_p,
+    ReturnToLaunchCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_action_return_to_launch_async.restype = None
+
+_cmavsdk_lib.mavsdk_action_return_to_launch.argtypes = [
+    ctypes.c_void_p,
+]
+
+_cmavsdk_lib.mavsdk_action_return_to_launch.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_action_goto_location_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_double,
+    ctypes.c_double,
+    ctypes.c_float,
+    ctypes.c_float,
+    GotoLocationCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_action_goto_location_async.restype = None
+
+_cmavsdk_lib.mavsdk_action_goto_location.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_double,
+    ctypes.c_double,
+    ctypes.c_float,
+    ctypes.c_float,
+]
+
+_cmavsdk_lib.mavsdk_action_goto_location.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_action_do_orbit_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_float,
+    ctypes.c_float,
+    ctypes.c_int,
+    ctypes.c_double,
+    ctypes.c_double,
+    ctypes.c_double,
+    DoOrbitCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_action_do_orbit_async.restype = None
+
+_cmavsdk_lib.mavsdk_action_do_orbit.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_float,
+    ctypes.c_float,
+    ctypes.c_int,
+    ctypes.c_double,
+    ctypes.c_double,
+    ctypes.c_double,
+]
+
+_cmavsdk_lib.mavsdk_action_do_orbit.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_action_hold_async.argtypes = [
+    ctypes.c_void_p,
+    HoldCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_action_hold_async.restype = None
+
+_cmavsdk_lib.mavsdk_action_hold.argtypes = [
+    ctypes.c_void_p,
+]
+
+_cmavsdk_lib.mavsdk_action_hold.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_action_set_actuator_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+    ctypes.c_float,
+    SetActuatorCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_action_set_actuator_async.restype = None
+
+_cmavsdk_lib.mavsdk_action_set_actuator.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+    ctypes.c_float,
+]
+
+_cmavsdk_lib.mavsdk_action_set_actuator.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_action_transition_to_fixedwing_async.argtypes = [
+    ctypes.c_void_p,
+    TransitionToFixedwingCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_action_transition_to_fixedwing_async.restype = None
+
+_cmavsdk_lib.mavsdk_action_transition_to_fixedwing.argtypes = [
+    ctypes.c_void_p,
+]
+
+_cmavsdk_lib.mavsdk_action_transition_to_fixedwing.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_action_transition_to_multicopter_async.argtypes = [
+    ctypes.c_void_p,
+    TransitionToMulticopterCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_action_transition_to_multicopter_async.restype = None
+
+_cmavsdk_lib.mavsdk_action_transition_to_multicopter.argtypes = [
+    ctypes.c_void_p,
+]
+
+_cmavsdk_lib.mavsdk_action_transition_to_multicopter.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_action_get_takeoff_altitude_async.argtypes = [
+    ctypes.c_void_p,
+    GetTakeoffAltitudeCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_action_get_takeoff_altitude_async.restype = None
+
+_cmavsdk_lib.mavsdk_action_get_takeoff_altitude.argtypes = [
+    ctypes.c_void_p,
+    ctypes.POINTER(ctypes.c_float)
+]
+
+_cmavsdk_lib.mavsdk_action_get_takeoff_altitude.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_action_set_takeoff_altitude_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_float,
+    SetTakeoffAltitudeCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_action_set_takeoff_altitude_async.restype = None
+
+_cmavsdk_lib.mavsdk_action_set_takeoff_altitude.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_float,
+]
+
+_cmavsdk_lib.mavsdk_action_set_takeoff_altitude.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_action_get_return_to_launch_altitude_async.argtypes = [
+    ctypes.c_void_p,
+    GetReturnToLaunchAltitudeCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_action_get_return_to_launch_altitude_async.restype = None
+
+_cmavsdk_lib.mavsdk_action_get_return_to_launch_altitude.argtypes = [
+    ctypes.c_void_p,
+    ctypes.POINTER(ctypes.c_float)
+]
+
+_cmavsdk_lib.mavsdk_action_get_return_to_launch_altitude.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_action_set_return_to_launch_altitude_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_float,
+    SetReturnToLaunchAltitudeCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_action_set_return_to_launch_altitude_async.restype = None
+
+_cmavsdk_lib.mavsdk_action_set_return_to_launch_altitude.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_float,
+]
+
+_cmavsdk_lib.mavsdk_action_set_return_to_launch_altitude.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_action_set_current_speed_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_float,
+    SetCurrentSpeedCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_action_set_current_speed_async.restype = None
+
+_cmavsdk_lib.mavsdk_action_set_current_speed.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_float,
+]
+
+_cmavsdk_lib.mavsdk_action_set_current_speed.restype = ctypes.c_int

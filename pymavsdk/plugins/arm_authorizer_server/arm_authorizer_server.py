@@ -8,7 +8,7 @@ Use arm authorization.
 
 import ctypes
 
-from typing import Optional, List, Callable, Any
+from typing import Callable, Any
 from enum import IntEnum
 
 from ...cmavsdk_loader import _cmavsdk_lib
@@ -53,8 +53,6 @@ class ArmAuthorizerServer:
         self._handle = None
         self._callbacks = []  # Keep references to prevent GC
 
-        self._setup_functions()
-
         if server_component is None:
             raise ValueError("server_component cannot be None")
 
@@ -67,49 +65,6 @@ class ArmAuthorizerServer:
 
         if not self._handle:
             raise RuntimeError("Failed to create ArmAuthorizerServer plugin - C function returned null handle")
-
-    def _setup_functions(self):
-        """Setup C function signatures"""
-
-        # Create/Destroy
-        self._lib.mavsdk_arm_authorizer_server_create.argtypes = [ctypes.c_void_p]
-        self._lib.mavsdk_arm_authorizer_server_create.restype = ctypes.c_void_p
-
-        self._lib.mavsdk_arm_authorizer_server_destroy.argtypes = [ctypes.c_void_p]
-        self._lib.mavsdk_arm_authorizer_server_destroy.restype = None
-
-
-        self._lib.mavsdk_arm_authorizer_server_subscribe_arm_authorization.argtypes = [
-            ctypes.c_void_p,
-            ArmAuthorizationCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_arm_authorizer_server_subscribe_arm_authorization.restype = ctypes.c_void_p
-        # Unsubscribe
-        self._lib.mavsdk_arm_authorizer_server_unsubscribe_arm_authorization.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_arm_authorizer_server_unsubscribe_arm_authorization.restype = None
-
-
-        self._lib.mavsdk_arm_authorizer_server_accept_arm_authorization.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_int32,
-        ]
-
-        self._lib.mavsdk_arm_authorizer_server_accept_arm_authorization.restype = ctypes.c_int
-
-        self._lib.mavsdk_arm_authorizer_server_reject_arm_authorization.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_bool,
-            ctypes.c_int,
-            ctypes.c_int32,
-        ]
-
-        self._lib.mavsdk_arm_authorizer_server_reject_arm_authorization.restype = ctypes.c_int
 
 
     def subscribe_arm_authorization(self, callback: Callable, user_data: Any = None):
@@ -174,3 +129,42 @@ class ArmAuthorizerServer:
 
     def __del__(self):
         self.destroy()
+
+_cmavsdk_lib.mavsdk_arm_authorizer_server_create.argtypes = [ctypes.c_void_p]
+_cmavsdk_lib.mavsdk_arm_authorizer_server_create.restype = ctypes.c_void_p
+
+_cmavsdk_lib.mavsdk_arm_authorizer_server_destroy.argtypes = [ctypes.c_void_p]
+_cmavsdk_lib.mavsdk_arm_authorizer_server_destroy.restype = None
+
+
+_cmavsdk_lib.mavsdk_arm_authorizer_server_subscribe_arm_authorization.argtypes = [
+    ctypes.c_void_p,
+    ArmAuthorizationCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_arm_authorizer_server_subscribe_arm_authorization.restype = ctypes.c_void_p
+# Unsubscribe
+_cmavsdk_lib.mavsdk_arm_authorizer_server_unsubscribe_arm_authorization.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_arm_authorizer_server_unsubscribe_arm_authorization.restype = None
+
+
+_cmavsdk_lib.mavsdk_arm_authorizer_server_accept_arm_authorization.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+]
+
+_cmavsdk_lib.mavsdk_arm_authorizer_server_accept_arm_authorization.restype = ctypes.c_int
+
+_cmavsdk_lib.mavsdk_arm_authorizer_server_reject_arm_authorization.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_bool,
+    ctypes.c_int,
+    ctypes.c_int32,
+]
+
+_cmavsdk_lib.mavsdk_arm_authorizer_server_reject_arm_authorization.restype = ctypes.c_int

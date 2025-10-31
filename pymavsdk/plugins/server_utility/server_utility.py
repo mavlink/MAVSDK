@@ -8,7 +8,7 @@ Utility for onboard MAVSDK instances for common "server" tasks.
 
 import ctypes
 
-from typing import Optional, List, Callable, Any
+from typing import Callable, Any
 from enum import IntEnum
 
 from ...cmavsdk_loader import _cmavsdk_lib
@@ -52,8 +52,6 @@ class ServerUtility:
         self._handle = None
         self._callbacks = []  # Keep references to prevent GC
 
-        self._setup_functions()
-
         if system is None:
             raise ValueError("system cannot be None")
 
@@ -66,26 +64,6 @@ class ServerUtility:
 
         if not self._handle:
             raise RuntimeError("Failed to create ServerUtility plugin - C function returned null handle")
-
-    def _setup_functions(self):
-        """Setup C function signatures"""
-
-        # Create/Destroy
-        self._lib.mavsdk_server_utility_create.argtypes = [ctypes.c_void_p]
-        self._lib.mavsdk_server_utility_create.restype = ctypes.c_void_p
-
-        self._lib.mavsdk_server_utility_destroy.argtypes = [ctypes.c_void_p]
-        self._lib.mavsdk_server_utility_destroy.restype = None
-
-
-
-        self._lib.mavsdk_server_utility_send_status_text.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_int,
-            ctypes.c_char_p,
-        ]
-
-        self._lib.mavsdk_server_utility_send_status_text.restype = ctypes.c_int
 
 
 
@@ -108,3 +86,19 @@ class ServerUtility:
 
     def __del__(self):
         self.destroy()
+
+_cmavsdk_lib.mavsdk_server_utility_create.argtypes = [ctypes.c_void_p]
+_cmavsdk_lib.mavsdk_server_utility_create.restype = ctypes.c_void_p
+
+_cmavsdk_lib.mavsdk_server_utility_destroy.argtypes = [ctypes.c_void_p]
+_cmavsdk_lib.mavsdk_server_utility_destroy.restype = None
+
+
+
+_cmavsdk_lib.mavsdk_server_utility_send_status_text.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int,
+    ctypes.c_char_p,
+]
+
+_cmavsdk_lib.mavsdk_server_utility_send_status_text.restype = ctypes.c_int

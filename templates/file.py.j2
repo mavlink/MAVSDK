@@ -8,7 +8,7 @@
 
 import ctypes
 
-from typing import Optional, List, Callable, Any
+from typing import Callable, Any
 from enum import IntEnum
 
 from ...cmavsdk_loader import _cmavsdk_lib
@@ -210,7 +210,9 @@ class {{ struct.name.upper_camel_case }}:
 {% if method.is_async %}
 {{ method.name.upper_camel_case }}Callback = ctypes.CFUNCTYPE(
     None,
-    {% if method.has_result %}ctypes.c_int,{% endif %}
+    {% if method.has_result %}
+    ctypes.c_int,
+    {% endif %}
     {% if method.return_type %}
     {% if method.return_type.is_primitive %}
     ctypes.{{ method.return_type.name }},
@@ -239,8 +241,6 @@ class {{ plugin_name.upper_camel_case }}:
         self._handle = None
         self._callbacks = []  # Keep references to prevent GC
 
-        self._setup_functions()
-
         {% if is_server %}
         if server_component is None:
             raise ValueError("server_component cannot be None")
@@ -265,105 +265,6 @@ class {{ plugin_name.upper_camel_case }}:
 
         if not self._handle:
             raise RuntimeError("Failed to create {{ plugin_name.upper_camel_case }} plugin - C function returned null handle")
-
-    def _setup_functions(self):
-        """Setup C function signatures"""
-
-        # Create/Destroy
-        self._lib.mavsdk_{{ plugin_name.lower_snake_case }}_create.argtypes = [ctypes.c_void_p]
-        self._lib.mavsdk_{{ plugin_name.lower_snake_case }}_create.restype = ctypes.c_void_p
-
-        self._lib.mavsdk_{{ plugin_name.lower_snake_case }}_destroy.argtypes = [ctypes.c_void_p]
-        self._lib.mavsdk_{{ plugin_name.lower_snake_case }}_destroy.restype = None
-
-        {% for struct in structs %}
-        {% if not struct.name.upper_camel_case.endswith('Result') %}
-        self._lib.mavsdk_{{ plugin_name.lower_snake_case }}_{{ struct.name.lower_snake_case }}_destroy.argtypes = [
-            ctypes.POINTER({{ struct.name.upper_camel_case }}CStruct)
-        ]
-        self._lib.mavsdk_{{ plugin_name.lower_snake_case }}_{{ struct.name.lower_snake_case }}_destroy.restype = None
-
-        {% endif %}
-        {% endfor %}
-
-        {% for method in methods %}
-        {% if method.is_async %}
-        self._lib.mavsdk_{{ plugin_name.lower_snake_case }}{% if method.is_stream and not method.is_finite %}_subscribe{% endif %}_{{ method.name.lower_snake_case }}{% if not method.is_stream or method.is_finite %}_async{% endif %}.argtypes = [
-            ctypes.c_void_p,
-            {% for param in method.params %}
-            {% if param.type_info.is_repeated %}
-            {% if param.type_info.is_primitive %}
-            ctypes.POINTER(ctypes.{{ param.type_info.inner_name }}),
-            {% else %}
-            ctypes.POINTER({{ param.type_info.inner_name.upper_camel_case }}CStruct),
-            {% endif %}
-            ctypes.c_size_t,
-            {% elif param.type_info.is_primitive %}
-            ctypes.{{ param.type_info.name }},
-            {% elif param.type_info.is_enum %}
-            ctypes.c_int,
-            {% elif param.type_info.parent_type %}
-            ctypes.c_int,
-            {% else %}
-            {{ param.type_info.name.upper_camel_case }}CStruct,
-            {% endif %}
-            {% endfor %}
-            {{ method.name.upper_camel_case }}Callback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_{{ plugin_name.lower_snake_case }}{% if method.is_stream and not method.is_finite %}_subscribe{% endif %}_{{ method.name.lower_snake_case }}{% if not method.is_stream or method.is_finite %}_async{% endif %}.restype = {% if method.is_stream and not method.is_finite %}ctypes.c_void_p{% else %}None{% endif %}
-
-        {% if method.is_stream and not method.is_finite %}
-        # Unsubscribe
-        self._lib.mavsdk_{{ plugin_name.lower_snake_case }}_unsubscribe_{{ method.name.lower_snake_case }}.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_{{ plugin_name.lower_snake_case }}_unsubscribe_{{ method.name.lower_snake_case }}.restype = None
-        {% endif %}
-        {% endif %}
-
-        {% if method.is_sync %}
-        self._lib.mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}.argtypes = [
-            ctypes.c_void_p,
-            {% for param in method.params %}
-            {% if param.type_info.is_repeated %}
-            {% if param.type_info.is_primitive %}
-            ctypes.POINTER(ctypes.{{ param.type_info.inner_name }}),
-            {% else %}
-            ctypes.POINTER({{ param.type_info.inner_name.upper_camel_case }}CStruct),
-            {% endif %}
-            ctypes.c_size_t,
-            {% elif param.type_info.is_primitive %}
-            ctypes.{{ param.type_info.name }},
-            {% elif param.type_info.is_enum %}
-            ctypes.c_int,
-            {% elif param.type_info.parent_type %}
-            ctypes.c_int,
-            {% else %}
-            {{ param.type_info.name.upper_camel_case }}CStruct,
-            {% endif %}
-            {% endfor %}
-            {% if method.return_name %}
-            {% if method.return_type.is_repeated %}
-            ctypes.POINTER(ctypes.POINTER({{ method.return_type.inner_name.upper_camel_case }}CStruct)),
-            ctypes.POINTER(ctypes.c_size_t)
-            {% elif method.return_type.is_primitive %}
-            ctypes.POINTER(ctypes.{{ method.return_type.name }})
-            {% elif method.return_type.is_enum %}
-            ctypes.POINTER(ctypes.c_int)
-            {% else %}
-            ctypes.POINTER({{ method.return_type.inner_name.upper_camel_case }}CStruct)
-            {% endif %}
-            {% endif %}
-        ]
-
-        self._lib.mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}.restype = {% if method.has_result %}ctypes.c_int{% else %}None{% endif %}
-
-        {% endif %}
-        {% endfor %}
 
     {% for method in methods %}
 
@@ -590,3 +491,99 @@ class {{ plugin_name.upper_camel_case }}:
 
     def __del__(self):
         self.destroy()
+
+_cmavsdk_lib.mavsdk_{{ plugin_name.lower_snake_case }}_create.argtypes = [ctypes.c_void_p]
+_cmavsdk_lib.mavsdk_{{ plugin_name.lower_snake_case }}_create.restype = ctypes.c_void_p
+
+_cmavsdk_lib.mavsdk_{{ plugin_name.lower_snake_case }}_destroy.argtypes = [ctypes.c_void_p]
+_cmavsdk_lib.mavsdk_{{ plugin_name.lower_snake_case }}_destroy.restype = None
+
+{% for struct in structs %}
+{% if not struct.name.upper_camel_case.endswith('Result') %}
+_cmavsdk_lib.mavsdk_{{ plugin_name.lower_snake_case }}_{{ struct.name.lower_snake_case }}_destroy.argtypes = [
+    ctypes.POINTER({{ struct.name.upper_camel_case }}CStruct)
+]
+_cmavsdk_lib.mavsdk_{{ plugin_name.lower_snake_case }}_{{ struct.name.lower_snake_case }}_destroy.restype = None
+
+{% endif %}
+{% endfor %}
+
+{% for method in methods %}
+{% if method.is_async %}
+_cmavsdk_lib.mavsdk_{{ plugin_name.lower_snake_case }}{% if method.is_stream and not method.is_finite %}_subscribe{% endif %}_{{ method.name.lower_snake_case }}{% if not method.is_stream or method.is_finite %}_async{% endif %}.argtypes = [
+    ctypes.c_void_p,
+    {% for param in method.params %}
+    {% if param.type_info.is_repeated %}
+    {% if param.type_info.is_primitive %}
+    ctypes.POINTER(ctypes.{{ param.type_info.inner_name }}),
+    {% else %}
+    ctypes.POINTER({{ param.type_info.inner_name.upper_camel_case }}CStruct),
+    {% endif %}
+    ctypes.c_size_t,
+    {% elif param.type_info.is_primitive %}
+    ctypes.{{ param.type_info.name }},
+    {% elif param.type_info.is_enum %}
+    ctypes.c_int,
+    {% elif param.type_info.parent_type %}
+    ctypes.c_int,
+    {% else %}
+    {{ param.type_info.name.upper_camel_case }}CStruct,
+    {% endif %}
+    {% endfor %}
+    {{ method.name.upper_camel_case }}Callback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_{{ plugin_name.lower_snake_case }}{% if method.is_stream and not method.is_finite %}_subscribe{% endif %}_{{ method.name.lower_snake_case }}{% if not method.is_stream or method.is_finite %}_async{% endif %}.restype = {% if method.is_stream and not method.is_finite %}ctypes.c_void_p{% else %}None{% endif %}
+
+{% if method.is_stream and not method.is_finite %}
+# Unsubscribe
+_cmavsdk_lib.mavsdk_{{ plugin_name.lower_snake_case }}_unsubscribe_{{ method.name.lower_snake_case }}.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_{{ plugin_name.lower_snake_case }}_unsubscribe_{{ method.name.lower_snake_case }}.restype = None
+{% endif %}
+{% endif %}
+
+{% if method.is_sync %}
+_cmavsdk_lib.mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}.argtypes = [
+    ctypes.c_void_p,
+    {% for param in method.params %}
+    {% if param.type_info.is_repeated %}
+    {% if param.type_info.is_primitive %}
+    ctypes.POINTER(ctypes.{{ param.type_info.inner_name }}),
+    {% else %}
+    ctypes.POINTER({{ param.type_info.inner_name.upper_camel_case }}CStruct),
+    {% endif %}
+    ctypes.c_size_t,
+    {% elif param.type_info.is_primitive %}
+    ctypes.{{ param.type_info.name }},
+    {% elif param.type_info.is_enum %}
+    ctypes.c_int,
+    {% elif param.type_info.parent_type %}
+    ctypes.c_int,
+    {% else %}
+    {{ param.type_info.name.upper_camel_case }}CStruct,
+    {% endif %}
+    {% endfor %}
+    {% if method.return_name %}
+    {% if method.return_type.is_repeated %}
+    ctypes.POINTER(ctypes.POINTER({{ method.return_type.inner_name.upper_camel_case }}CStruct)),
+    ctypes.POINTER(ctypes.c_size_t)
+    {% elif method.return_type.is_primitive %}
+    ctypes.POINTER(ctypes.{{ method.return_type.name }})
+    {% elif method.return_type.is_enum %}
+    ctypes.POINTER(ctypes.c_int)
+    {% else %}
+    ctypes.POINTER({{ method.return_type.inner_name.upper_camel_case }}CStruct)
+    {% endif %}
+    {% endif %}
+]
+
+_cmavsdk_lib.mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}.restype = {% if method.has_result %}ctypes.c_int{% else %}None{% endif %}
+
+{% endif %}
+{% endfor %}
+

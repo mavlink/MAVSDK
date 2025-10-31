@@ -8,7 +8,7 @@ Enable to calibrate sensors of a drone such as gyro, accelerometer, and magnetom
 
 import ctypes
 
-from typing import Optional, List, Callable, Any
+from typing import Callable, Any
 from enum import IntEnum
 
 from ...cmavsdk_loader import _cmavsdk_lib
@@ -103,27 +103,32 @@ class ProgressData:
 # ===== Callback Types =====
 CalibrateGyroCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ProgressDataCStruct,
+    ctypes.c_int,
+    ProgressDataCStruct,
     ctypes.c_void_p
 )
 CalibrateAccelerometerCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ProgressDataCStruct,
+    ctypes.c_int,
+    ProgressDataCStruct,
     ctypes.c_void_p
 )
 CalibrateMagnetometerCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ProgressDataCStruct,
+    ctypes.c_int,
+    ProgressDataCStruct,
     ctypes.c_void_p
 )
 CalibrateLevelHorizonCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ProgressDataCStruct,
+    ctypes.c_int,
+    ProgressDataCStruct,
     ctypes.c_void_p
 )
 CalibrateGimbalAccelerometerCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ProgressDataCStruct,
+    ctypes.c_int,
+    ProgressDataCStruct,
     ctypes.c_void_p
 )
 
@@ -135,8 +140,6 @@ class Calibration:
         self._lib = _cmavsdk_lib
         self._handle = None
         self._callbacks = []  # Keep references to prevent GC
-
-        self._setup_functions()
 
         if system is None:
             raise ValueError("system cannot be None")
@@ -150,69 +153,6 @@ class Calibration:
 
         if not self._handle:
             raise RuntimeError("Failed to create Calibration plugin - C function returned null handle")
-
-    def _setup_functions(self):
-        """Setup C function signatures"""
-
-        # Create/Destroy
-        self._lib.mavsdk_calibration_create.argtypes = [ctypes.c_void_p]
-        self._lib.mavsdk_calibration_create.restype = ctypes.c_void_p
-
-        self._lib.mavsdk_calibration_destroy.argtypes = [ctypes.c_void_p]
-        self._lib.mavsdk_calibration_destroy.restype = None
-
-        self._lib.mavsdk_calibration_progress_data_destroy.argtypes = [
-            ctypes.POINTER(ProgressDataCStruct)
-        ]
-        self._lib.mavsdk_calibration_progress_data_destroy.restype = None
-
-
-        self._lib.mavsdk_calibration_calibrate_gyro_async.argtypes = [
-            ctypes.c_void_p,
-            CalibrateGyroCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_calibration_calibrate_gyro_async.restype = None
-
-        self._lib.mavsdk_calibration_calibrate_accelerometer_async.argtypes = [
-            ctypes.c_void_p,
-            CalibrateAccelerometerCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_calibration_calibrate_accelerometer_async.restype = None
-
-        self._lib.mavsdk_calibration_calibrate_magnetometer_async.argtypes = [
-            ctypes.c_void_p,
-            CalibrateMagnetometerCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_calibration_calibrate_magnetometer_async.restype = None
-
-        self._lib.mavsdk_calibration_calibrate_level_horizon_async.argtypes = [
-            ctypes.c_void_p,
-            CalibrateLevelHorizonCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_calibration_calibrate_level_horizon_async.restype = None
-
-        self._lib.mavsdk_calibration_calibrate_gimbal_accelerometer_async.argtypes = [
-            ctypes.c_void_p,
-            CalibrateGimbalAccelerometerCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_calibration_calibrate_gimbal_accelerometer_async.restype = None
-
-
-        self._lib.mavsdk_calibration_cancel.argtypes = [
-            ctypes.c_void_p,
-        ]
-
-        self._lib.mavsdk_calibration_cancel.restype = ctypes.c_int
 
 
     def calibrate_gyro_async(self, callback: Callable, user_data: Any = None):
@@ -375,3 +315,62 @@ class Calibration:
 
     def __del__(self):
         self.destroy()
+
+_cmavsdk_lib.mavsdk_calibration_create.argtypes = [ctypes.c_void_p]
+_cmavsdk_lib.mavsdk_calibration_create.restype = ctypes.c_void_p
+
+_cmavsdk_lib.mavsdk_calibration_destroy.argtypes = [ctypes.c_void_p]
+_cmavsdk_lib.mavsdk_calibration_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_calibration_progress_data_destroy.argtypes = [
+    ctypes.POINTER(ProgressDataCStruct)
+]
+_cmavsdk_lib.mavsdk_calibration_progress_data_destroy.restype = None
+
+
+_cmavsdk_lib.mavsdk_calibration_calibrate_gyro_async.argtypes = [
+    ctypes.c_void_p,
+    CalibrateGyroCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_calibration_calibrate_gyro_async.restype = None
+
+_cmavsdk_lib.mavsdk_calibration_calibrate_accelerometer_async.argtypes = [
+    ctypes.c_void_p,
+    CalibrateAccelerometerCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_calibration_calibrate_accelerometer_async.restype = None
+
+_cmavsdk_lib.mavsdk_calibration_calibrate_magnetometer_async.argtypes = [
+    ctypes.c_void_p,
+    CalibrateMagnetometerCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_calibration_calibrate_magnetometer_async.restype = None
+
+_cmavsdk_lib.mavsdk_calibration_calibrate_level_horizon_async.argtypes = [
+    ctypes.c_void_p,
+    CalibrateLevelHorizonCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_calibration_calibrate_level_horizon_async.restype = None
+
+_cmavsdk_lib.mavsdk_calibration_calibrate_gimbal_accelerometer_async.argtypes = [
+    ctypes.c_void_p,
+    CalibrateGimbalAccelerometerCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_calibration_calibrate_gimbal_accelerometer_async.restype = None
+
+
+_cmavsdk_lib.mavsdk_calibration_cancel.argtypes = [
+    ctypes.c_void_p,
+]
+
+_cmavsdk_lib.mavsdk_calibration_cancel.restype = ctypes.c_int

@@ -8,7 +8,7 @@ Enable setting a geofence.
 
 import ctypes
 
-from typing import Optional, List, Callable, Any
+from typing import Callable, Any
 from enum import IntEnum
 
 from ...cmavsdk_loader import _cmavsdk_lib
@@ -271,11 +271,13 @@ class GeofenceData:
 # ===== Callback Types =====
 UploadGeofenceCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 ClearGeofenceCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 
 
@@ -286,8 +288,6 @@ class Geofence:
         self._lib = _cmavsdk_lib
         self._handle = None
         self._callbacks = []  # Keep references to prevent GC
-
-        self._setup_functions()
 
         if system is None:
             raise ValueError("system cannot be None")
@@ -301,66 +301,6 @@ class Geofence:
 
         if not self._handle:
             raise RuntimeError("Failed to create Geofence plugin - C function returned null handle")
-
-    def _setup_functions(self):
-        """Setup C function signatures"""
-
-        # Create/Destroy
-        self._lib.mavsdk_geofence_create.argtypes = [ctypes.c_void_p]
-        self._lib.mavsdk_geofence_create.restype = ctypes.c_void_p
-
-        self._lib.mavsdk_geofence_destroy.argtypes = [ctypes.c_void_p]
-        self._lib.mavsdk_geofence_destroy.restype = None
-
-        self._lib.mavsdk_geofence_point_destroy.argtypes = [
-            ctypes.POINTER(PointCStruct)
-        ]
-        self._lib.mavsdk_geofence_point_destroy.restype = None
-
-        self._lib.mavsdk_geofence_polygon_destroy.argtypes = [
-            ctypes.POINTER(PolygonCStruct)
-        ]
-        self._lib.mavsdk_geofence_polygon_destroy.restype = None
-
-        self._lib.mavsdk_geofence_circle_destroy.argtypes = [
-            ctypes.POINTER(CircleCStruct)
-        ]
-        self._lib.mavsdk_geofence_circle_destroy.restype = None
-
-        self._lib.mavsdk_geofence_geofence_data_destroy.argtypes = [
-            ctypes.POINTER(GeofenceDataCStruct)
-        ]
-        self._lib.mavsdk_geofence_geofence_data_destroy.restype = None
-
-
-        self._lib.mavsdk_geofence_upload_geofence_async.argtypes = [
-            ctypes.c_void_p,
-            GeofenceDataCStruct,
-            UploadGeofenceCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_geofence_upload_geofence_async.restype = None
-
-        self._lib.mavsdk_geofence_upload_geofence.argtypes = [
-            ctypes.c_void_p,
-            GeofenceDataCStruct,
-        ]
-
-        self._lib.mavsdk_geofence_upload_geofence.restype = ctypes.c_int
-        self._lib.mavsdk_geofence_clear_geofence_async.argtypes = [
-            ctypes.c_void_p,
-            ClearGeofenceCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_geofence_clear_geofence_async.restype = None
-
-        self._lib.mavsdk_geofence_clear_geofence.argtypes = [
-            ctypes.c_void_p,
-        ]
-
-        self._lib.mavsdk_geofence_clear_geofence.restype = ctypes.c_int
 
 
     def upload_geofence_async(self, geofence_data, callback: Callable, user_data: Any = None):
@@ -443,3 +383,59 @@ class Geofence:
 
     def __del__(self):
         self.destroy()
+
+_cmavsdk_lib.mavsdk_geofence_create.argtypes = [ctypes.c_void_p]
+_cmavsdk_lib.mavsdk_geofence_create.restype = ctypes.c_void_p
+
+_cmavsdk_lib.mavsdk_geofence_destroy.argtypes = [ctypes.c_void_p]
+_cmavsdk_lib.mavsdk_geofence_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_geofence_point_destroy.argtypes = [
+    ctypes.POINTER(PointCStruct)
+]
+_cmavsdk_lib.mavsdk_geofence_point_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_geofence_polygon_destroy.argtypes = [
+    ctypes.POINTER(PolygonCStruct)
+]
+_cmavsdk_lib.mavsdk_geofence_polygon_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_geofence_circle_destroy.argtypes = [
+    ctypes.POINTER(CircleCStruct)
+]
+_cmavsdk_lib.mavsdk_geofence_circle_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_geofence_geofence_data_destroy.argtypes = [
+    ctypes.POINTER(GeofenceDataCStruct)
+]
+_cmavsdk_lib.mavsdk_geofence_geofence_data_destroy.restype = None
+
+
+_cmavsdk_lib.mavsdk_geofence_upload_geofence_async.argtypes = [
+    ctypes.c_void_p,
+    GeofenceDataCStruct,
+    UploadGeofenceCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_geofence_upload_geofence_async.restype = None
+
+_cmavsdk_lib.mavsdk_geofence_upload_geofence.argtypes = [
+    ctypes.c_void_p,
+    GeofenceDataCStruct,
+]
+
+_cmavsdk_lib.mavsdk_geofence_upload_geofence.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_geofence_clear_geofence_async.argtypes = [
+    ctypes.c_void_p,
+    ClearGeofenceCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_geofence_clear_geofence_async.restype = None
+
+_cmavsdk_lib.mavsdk_geofence_clear_geofence.argtypes = [
+    ctypes.c_void_p,
+]
+
+_cmavsdk_lib.mavsdk_geofence_clear_geofence.restype = ctypes.c_int

@@ -8,7 +8,7 @@ Get event notifications, such as takeoff, or arming checks
 
 import ctypes
 
-from typing import Optional, List, Callable, Any
+from typing import Callable, Any
 from enum import IntEnum
 
 from ...cmavsdk_loader import _cmavsdk_lib
@@ -412,8 +412,6 @@ class Events:
         self._handle = None
         self._callbacks = []  # Keep references to prevent GC
 
-        self._setup_functions()
-
         if system is None:
             raise ValueError("system cannot be None")
 
@@ -426,80 +424,6 @@ class Events:
 
         if not self._handle:
             raise RuntimeError("Failed to create Events plugin - C function returned null handle")
-
-    def _setup_functions(self):
-        """Setup C function signatures"""
-
-        # Create/Destroy
-        self._lib.mavsdk_events_create.argtypes = [ctypes.c_void_p]
-        self._lib.mavsdk_events_create.restype = ctypes.c_void_p
-
-        self._lib.mavsdk_events_destroy.argtypes = [ctypes.c_void_p]
-        self._lib.mavsdk_events_destroy.restype = None
-
-        self._lib.mavsdk_events_event_destroy.argtypes = [
-            ctypes.POINTER(EventCStruct)
-        ]
-        self._lib.mavsdk_events_event_destroy.restype = None
-
-        self._lib.mavsdk_events_health_and_arming_check_problem_destroy.argtypes = [
-            ctypes.POINTER(HealthAndArmingCheckProblemCStruct)
-        ]
-        self._lib.mavsdk_events_health_and_arming_check_problem_destroy.restype = None
-
-        self._lib.mavsdk_events_health_and_arming_check_mode_destroy.argtypes = [
-            ctypes.POINTER(HealthAndArmingCheckModeCStruct)
-        ]
-        self._lib.mavsdk_events_health_and_arming_check_mode_destroy.restype = None
-
-        self._lib.mavsdk_events_health_component_report_destroy.argtypes = [
-            ctypes.POINTER(HealthComponentReportCStruct)
-        ]
-        self._lib.mavsdk_events_health_component_report_destroy.restype = None
-
-        self._lib.mavsdk_events_health_and_arming_check_report_destroy.argtypes = [
-            ctypes.POINTER(HealthAndArmingCheckReportCStruct)
-        ]
-        self._lib.mavsdk_events_health_and_arming_check_report_destroy.restype = None
-
-
-        self._lib.mavsdk_events_subscribe_events.argtypes = [
-            ctypes.c_void_p,
-            EventsCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_events_subscribe_events.restype = ctypes.c_void_p
-        # Unsubscribe
-        self._lib.mavsdk_events_unsubscribe_events.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_events_unsubscribe_events.restype = None
-
-        self._lib.mavsdk_events_subscribe_health_and_arming_checks.argtypes = [
-            ctypes.c_void_p,
-            HealthAndArmingChecksCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_events_subscribe_health_and_arming_checks.restype = ctypes.c_void_p
-        # Unsubscribe
-        self._lib.mavsdk_events_unsubscribe_health_and_arming_checks.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_events_unsubscribe_health_and_arming_checks.restype = None
-
-
-        self._lib.mavsdk_events_get_health_and_arming_checks_report.argtypes = [
-            ctypes.c_void_p,
-            ctypes.POINTER(HealthAndArmingCheckReportCStruct)
-        ]
-
-        self._lib.mavsdk_events_get_health_and_arming_checks_report.restype = ctypes.c_int
 
 
     def subscribe_events(self, callback: Callable, user_data: Any = None):
@@ -592,3 +516,73 @@ class Events:
 
     def __del__(self):
         self.destroy()
+
+_cmavsdk_lib.mavsdk_events_create.argtypes = [ctypes.c_void_p]
+_cmavsdk_lib.mavsdk_events_create.restype = ctypes.c_void_p
+
+_cmavsdk_lib.mavsdk_events_destroy.argtypes = [ctypes.c_void_p]
+_cmavsdk_lib.mavsdk_events_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_events_event_destroy.argtypes = [
+    ctypes.POINTER(EventCStruct)
+]
+_cmavsdk_lib.mavsdk_events_event_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_events_health_and_arming_check_problem_destroy.argtypes = [
+    ctypes.POINTER(HealthAndArmingCheckProblemCStruct)
+]
+_cmavsdk_lib.mavsdk_events_health_and_arming_check_problem_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_events_health_and_arming_check_mode_destroy.argtypes = [
+    ctypes.POINTER(HealthAndArmingCheckModeCStruct)
+]
+_cmavsdk_lib.mavsdk_events_health_and_arming_check_mode_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_events_health_component_report_destroy.argtypes = [
+    ctypes.POINTER(HealthComponentReportCStruct)
+]
+_cmavsdk_lib.mavsdk_events_health_component_report_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_events_health_and_arming_check_report_destroy.argtypes = [
+    ctypes.POINTER(HealthAndArmingCheckReportCStruct)
+]
+_cmavsdk_lib.mavsdk_events_health_and_arming_check_report_destroy.restype = None
+
+
+_cmavsdk_lib.mavsdk_events_subscribe_events.argtypes = [
+    ctypes.c_void_p,
+    EventsCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_events_subscribe_events.restype = ctypes.c_void_p
+# Unsubscribe
+_cmavsdk_lib.mavsdk_events_unsubscribe_events.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_events_unsubscribe_events.restype = None
+
+_cmavsdk_lib.mavsdk_events_subscribe_health_and_arming_checks.argtypes = [
+    ctypes.c_void_p,
+    HealthAndArmingChecksCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_events_subscribe_health_and_arming_checks.restype = ctypes.c_void_p
+# Unsubscribe
+_cmavsdk_lib.mavsdk_events_unsubscribe_health_and_arming_checks.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_events_unsubscribe_health_and_arming_checks.restype = None
+
+
+_cmavsdk_lib.mavsdk_events_get_health_and_arming_checks_report.argtypes = [
+    ctypes.c_void_p,
+    ctypes.POINTER(HealthAndArmingCheckReportCStruct)
+]
+
+_cmavsdk_lib.mavsdk_events_get_health_and_arming_checks_report.restype = ctypes.c_int

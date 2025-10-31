@@ -10,7 +10,7 @@ Allows interfacing a vehicle with a motion capture system in
 
 import ctypes
 
-from typing import Optional, List, Callable, Any
+from typing import Callable, Any
 from enum import IntEnum
 
 from ...cmavsdk_loader import _cmavsdk_lib
@@ -713,8 +713,6 @@ class Mocap:
         self._handle = None
         self._callbacks = []  # Keep references to prevent GC
 
-        self._setup_functions()
-
         if system is None:
             raise ValueError("system cannot be None")
 
@@ -727,101 +725,6 @@ class Mocap:
 
         if not self._handle:
             raise RuntimeError("Failed to create Mocap plugin - C function returned null handle")
-
-    def _setup_functions(self):
-        """Setup C function signatures"""
-
-        # Create/Destroy
-        self._lib.mavsdk_mocap_create.argtypes = [ctypes.c_void_p]
-        self._lib.mavsdk_mocap_create.restype = ctypes.c_void_p
-
-        self._lib.mavsdk_mocap_destroy.argtypes = [ctypes.c_void_p]
-        self._lib.mavsdk_mocap_destroy.restype = None
-
-        self._lib.mavsdk_mocap_position_body_destroy.argtypes = [
-            ctypes.POINTER(PositionBodyCStruct)
-        ]
-        self._lib.mavsdk_mocap_position_body_destroy.restype = None
-
-        self._lib.mavsdk_mocap_angle_body_destroy.argtypes = [
-            ctypes.POINTER(AngleBodyCStruct)
-        ]
-        self._lib.mavsdk_mocap_angle_body_destroy.restype = None
-
-        self._lib.mavsdk_mocap_speed_body_destroy.argtypes = [
-            ctypes.POINTER(SpeedBodyCStruct)
-        ]
-        self._lib.mavsdk_mocap_speed_body_destroy.restype = None
-
-        self._lib.mavsdk_mocap_speed_ned_destroy.argtypes = [
-            ctypes.POINTER(SpeedNedCStruct)
-        ]
-        self._lib.mavsdk_mocap_speed_ned_destroy.restype = None
-
-        self._lib.mavsdk_mocap_angular_velocity_body_destroy.argtypes = [
-            ctypes.POINTER(AngularVelocityBodyCStruct)
-        ]
-        self._lib.mavsdk_mocap_angular_velocity_body_destroy.restype = None
-
-        self._lib.mavsdk_mocap_covariance_destroy.argtypes = [
-            ctypes.POINTER(CovarianceCStruct)
-        ]
-        self._lib.mavsdk_mocap_covariance_destroy.restype = None
-
-        self._lib.mavsdk_mocap_quaternion_destroy.argtypes = [
-            ctypes.POINTER(QuaternionCStruct)
-        ]
-        self._lib.mavsdk_mocap_quaternion_destroy.restype = None
-
-        self._lib.mavsdk_mocap_vision_position_estimate_destroy.argtypes = [
-            ctypes.POINTER(VisionPositionEstimateCStruct)
-        ]
-        self._lib.mavsdk_mocap_vision_position_estimate_destroy.restype = None
-
-        self._lib.mavsdk_mocap_vision_speed_estimate_destroy.argtypes = [
-            ctypes.POINTER(VisionSpeedEstimateCStruct)
-        ]
-        self._lib.mavsdk_mocap_vision_speed_estimate_destroy.restype = None
-
-        self._lib.mavsdk_mocap_attitude_position_mocap_destroy.argtypes = [
-            ctypes.POINTER(AttitudePositionMocapCStruct)
-        ]
-        self._lib.mavsdk_mocap_attitude_position_mocap_destroy.restype = None
-
-        self._lib.mavsdk_mocap_odometry_destroy.argtypes = [
-            ctypes.POINTER(OdometryCStruct)
-        ]
-        self._lib.mavsdk_mocap_odometry_destroy.restype = None
-
-
-
-        self._lib.mavsdk_mocap_set_vision_position_estimate.argtypes = [
-            ctypes.c_void_p,
-            VisionPositionEstimateCStruct,
-        ]
-
-        self._lib.mavsdk_mocap_set_vision_position_estimate.restype = ctypes.c_int
-
-        self._lib.mavsdk_mocap_set_vision_speed_estimate.argtypes = [
-            ctypes.c_void_p,
-            VisionSpeedEstimateCStruct,
-        ]
-
-        self._lib.mavsdk_mocap_set_vision_speed_estimate.restype = ctypes.c_int
-
-        self._lib.mavsdk_mocap_set_attitude_position_mocap.argtypes = [
-            ctypes.c_void_p,
-            AttitudePositionMocapCStruct,
-        ]
-
-        self._lib.mavsdk_mocap_set_attitude_position_mocap.restype = ctypes.c_int
-
-        self._lib.mavsdk_mocap_set_odometry.argtypes = [
-            ctypes.c_void_p,
-            OdometryCStruct,
-        ]
-
-        self._lib.mavsdk_mocap_set_odometry.restype = ctypes.c_int
 
 
 
@@ -880,3 +783,94 @@ class Mocap:
 
     def __del__(self):
         self.destroy()
+
+_cmavsdk_lib.mavsdk_mocap_create.argtypes = [ctypes.c_void_p]
+_cmavsdk_lib.mavsdk_mocap_create.restype = ctypes.c_void_p
+
+_cmavsdk_lib.mavsdk_mocap_destroy.argtypes = [ctypes.c_void_p]
+_cmavsdk_lib.mavsdk_mocap_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_mocap_position_body_destroy.argtypes = [
+    ctypes.POINTER(PositionBodyCStruct)
+]
+_cmavsdk_lib.mavsdk_mocap_position_body_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_mocap_angle_body_destroy.argtypes = [
+    ctypes.POINTER(AngleBodyCStruct)
+]
+_cmavsdk_lib.mavsdk_mocap_angle_body_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_mocap_speed_body_destroy.argtypes = [
+    ctypes.POINTER(SpeedBodyCStruct)
+]
+_cmavsdk_lib.mavsdk_mocap_speed_body_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_mocap_speed_ned_destroy.argtypes = [
+    ctypes.POINTER(SpeedNedCStruct)
+]
+_cmavsdk_lib.mavsdk_mocap_speed_ned_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_mocap_angular_velocity_body_destroy.argtypes = [
+    ctypes.POINTER(AngularVelocityBodyCStruct)
+]
+_cmavsdk_lib.mavsdk_mocap_angular_velocity_body_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_mocap_covariance_destroy.argtypes = [
+    ctypes.POINTER(CovarianceCStruct)
+]
+_cmavsdk_lib.mavsdk_mocap_covariance_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_mocap_quaternion_destroy.argtypes = [
+    ctypes.POINTER(QuaternionCStruct)
+]
+_cmavsdk_lib.mavsdk_mocap_quaternion_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_mocap_vision_position_estimate_destroy.argtypes = [
+    ctypes.POINTER(VisionPositionEstimateCStruct)
+]
+_cmavsdk_lib.mavsdk_mocap_vision_position_estimate_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_mocap_vision_speed_estimate_destroy.argtypes = [
+    ctypes.POINTER(VisionSpeedEstimateCStruct)
+]
+_cmavsdk_lib.mavsdk_mocap_vision_speed_estimate_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_mocap_attitude_position_mocap_destroy.argtypes = [
+    ctypes.POINTER(AttitudePositionMocapCStruct)
+]
+_cmavsdk_lib.mavsdk_mocap_attitude_position_mocap_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_mocap_odometry_destroy.argtypes = [
+    ctypes.POINTER(OdometryCStruct)
+]
+_cmavsdk_lib.mavsdk_mocap_odometry_destroy.restype = None
+
+
+
+_cmavsdk_lib.mavsdk_mocap_set_vision_position_estimate.argtypes = [
+    ctypes.c_void_p,
+    VisionPositionEstimateCStruct,
+]
+
+_cmavsdk_lib.mavsdk_mocap_set_vision_position_estimate.restype = ctypes.c_int
+
+_cmavsdk_lib.mavsdk_mocap_set_vision_speed_estimate.argtypes = [
+    ctypes.c_void_p,
+    VisionSpeedEstimateCStruct,
+]
+
+_cmavsdk_lib.mavsdk_mocap_set_vision_speed_estimate.restype = ctypes.c_int
+
+_cmavsdk_lib.mavsdk_mocap_set_attitude_position_mocap.argtypes = [
+    ctypes.c_void_p,
+    AttitudePositionMocapCStruct,
+]
+
+_cmavsdk_lib.mavsdk_mocap_set_attitude_position_mocap.restype = ctypes.c_int
+
+_cmavsdk_lib.mavsdk_mocap_set_odometry.argtypes = [
+    ctypes.c_void_p,
+    OdometryCStruct,
+]
+
+_cmavsdk_lib.mavsdk_mocap_set_odometry.restype = ctypes.c_int

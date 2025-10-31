@@ -9,7 +9,7 @@ Allow users to command the vehicle to follow a specific target.
 
 import ctypes
 
-from typing import Optional, List, Callable, Any
+from typing import Callable, Any
 from enum import IntEnum
 
 from ...cmavsdk_loader import _cmavsdk_lib
@@ -210,8 +210,6 @@ class FollowMe:
         self._handle = None
         self._callbacks = []  # Keep references to prevent GC
 
-        self._setup_functions()
-
         if system is None:
             raise ValueError("system cannot be None")
 
@@ -224,75 +222,6 @@ class FollowMe:
 
         if not self._handle:
             raise RuntimeError("Failed to create FollowMe plugin - C function returned null handle")
-
-    def _setup_functions(self):
-        """Setup C function signatures"""
-
-        # Create/Destroy
-        self._lib.mavsdk_follow_me_create.argtypes = [ctypes.c_void_p]
-        self._lib.mavsdk_follow_me_create.restype = ctypes.c_void_p
-
-        self._lib.mavsdk_follow_me_destroy.argtypes = [ctypes.c_void_p]
-        self._lib.mavsdk_follow_me_destroy.restype = None
-
-        self._lib.mavsdk_follow_me_config_destroy.argtypes = [
-            ctypes.POINTER(ConfigCStruct)
-        ]
-        self._lib.mavsdk_follow_me_config_destroy.restype = None
-
-        self._lib.mavsdk_follow_me_target_location_destroy.argtypes = [
-            ctypes.POINTER(TargetLocationCStruct)
-        ]
-        self._lib.mavsdk_follow_me_target_location_destroy.restype = None
-
-
-
-        self._lib.mavsdk_follow_me_get_config.argtypes = [
-            ctypes.c_void_p,
-            ctypes.POINTER(ConfigCStruct)
-        ]
-
-        self._lib.mavsdk_follow_me_get_config.restype = None
-
-        self._lib.mavsdk_follow_me_set_config.argtypes = [
-            ctypes.c_void_p,
-            ConfigCStruct,
-        ]
-
-        self._lib.mavsdk_follow_me_set_config.restype = ctypes.c_int
-
-        self._lib.mavsdk_follow_me_is_active.argtypes = [
-            ctypes.c_void_p,
-            ctypes.POINTER(ctypes.c_bool)
-        ]
-
-        self._lib.mavsdk_follow_me_is_active.restype = None
-
-        self._lib.mavsdk_follow_me_set_target_location.argtypes = [
-            ctypes.c_void_p,
-            TargetLocationCStruct,
-        ]
-
-        self._lib.mavsdk_follow_me_set_target_location.restype = ctypes.c_int
-
-        self._lib.mavsdk_follow_me_get_last_location.argtypes = [
-            ctypes.c_void_p,
-            ctypes.POINTER(TargetLocationCStruct)
-        ]
-
-        self._lib.mavsdk_follow_me_get_last_location.restype = None
-
-        self._lib.mavsdk_follow_me_start.argtypes = [
-            ctypes.c_void_p,
-        ]
-
-        self._lib.mavsdk_follow_me_start.restype = ctypes.c_int
-
-        self._lib.mavsdk_follow_me_stop.argtypes = [
-            ctypes.c_void_p,
-        ]
-
-        self._lib.mavsdk_follow_me_stop.restype = ctypes.c_int
 
 
 
@@ -392,3 +321,68 @@ class FollowMe:
 
     def __del__(self):
         self.destroy()
+
+_cmavsdk_lib.mavsdk_follow_me_create.argtypes = [ctypes.c_void_p]
+_cmavsdk_lib.mavsdk_follow_me_create.restype = ctypes.c_void_p
+
+_cmavsdk_lib.mavsdk_follow_me_destroy.argtypes = [ctypes.c_void_p]
+_cmavsdk_lib.mavsdk_follow_me_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_follow_me_config_destroy.argtypes = [
+    ctypes.POINTER(ConfigCStruct)
+]
+_cmavsdk_lib.mavsdk_follow_me_config_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_follow_me_target_location_destroy.argtypes = [
+    ctypes.POINTER(TargetLocationCStruct)
+]
+_cmavsdk_lib.mavsdk_follow_me_target_location_destroy.restype = None
+
+
+
+_cmavsdk_lib.mavsdk_follow_me_get_config.argtypes = [
+    ctypes.c_void_p,
+    ctypes.POINTER(ConfigCStruct)
+]
+
+_cmavsdk_lib.mavsdk_follow_me_get_config.restype = None
+
+_cmavsdk_lib.mavsdk_follow_me_set_config.argtypes = [
+    ctypes.c_void_p,
+    ConfigCStruct,
+]
+
+_cmavsdk_lib.mavsdk_follow_me_set_config.restype = ctypes.c_int
+
+_cmavsdk_lib.mavsdk_follow_me_is_active.argtypes = [
+    ctypes.c_void_p,
+    ctypes.POINTER(ctypes.c_bool)
+]
+
+_cmavsdk_lib.mavsdk_follow_me_is_active.restype = None
+
+_cmavsdk_lib.mavsdk_follow_me_set_target_location.argtypes = [
+    ctypes.c_void_p,
+    TargetLocationCStruct,
+]
+
+_cmavsdk_lib.mavsdk_follow_me_set_target_location.restype = ctypes.c_int
+
+_cmavsdk_lib.mavsdk_follow_me_get_last_location.argtypes = [
+    ctypes.c_void_p,
+    ctypes.POINTER(TargetLocationCStruct)
+]
+
+_cmavsdk_lib.mavsdk_follow_me_get_last_location.restype = None
+
+_cmavsdk_lib.mavsdk_follow_me_start.argtypes = [
+    ctypes.c_void_p,
+]
+
+_cmavsdk_lib.mavsdk_follow_me_start.restype = ctypes.c_int
+
+_cmavsdk_lib.mavsdk_follow_me_stop.argtypes = [
+    ctypes.c_void_p,
+]
+
+_cmavsdk_lib.mavsdk_follow_me_stop.restype = ctypes.c_int

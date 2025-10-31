@@ -8,7 +8,7 @@ Allow to communicate with the vehicle's system shell.
 
 import ctypes
 
-from typing import Optional, List, Callable, Any
+from typing import Callable, Any
 from enum import IntEnum
 
 from ...cmavsdk_loader import _cmavsdk_lib
@@ -47,8 +47,6 @@ class Shell:
         self._handle = None
         self._callbacks = []  # Keep references to prevent GC
 
-        self._setup_functions()
-
         if system is None:
             raise ValueError("system cannot be None")
 
@@ -61,40 +59,6 @@ class Shell:
 
         if not self._handle:
             raise RuntimeError("Failed to create Shell plugin - C function returned null handle")
-
-    def _setup_functions(self):
-        """Setup C function signatures"""
-
-        # Create/Destroy
-        self._lib.mavsdk_shell_create.argtypes = [ctypes.c_void_p]
-        self._lib.mavsdk_shell_create.restype = ctypes.c_void_p
-
-        self._lib.mavsdk_shell_destroy.argtypes = [ctypes.c_void_p]
-        self._lib.mavsdk_shell_destroy.restype = None
-
-
-
-        self._lib.mavsdk_shell_send.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_char_p,
-        ]
-
-        self._lib.mavsdk_shell_send.restype = ctypes.c_int
-        self._lib.mavsdk_shell_subscribe_receive.argtypes = [
-            ctypes.c_void_p,
-            ReceiveCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_shell_subscribe_receive.restype = ctypes.c_void_p
-        # Unsubscribe
-        self._lib.mavsdk_shell_unsubscribe_receive.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_shell_unsubscribe_receive.restype = None
-
 
 
 
@@ -149,3 +113,33 @@ class Shell:
 
     def __del__(self):
         self.destroy()
+
+_cmavsdk_lib.mavsdk_shell_create.argtypes = [ctypes.c_void_p]
+_cmavsdk_lib.mavsdk_shell_create.restype = ctypes.c_void_p
+
+_cmavsdk_lib.mavsdk_shell_destroy.argtypes = [ctypes.c_void_p]
+_cmavsdk_lib.mavsdk_shell_destroy.restype = None
+
+
+
+_cmavsdk_lib.mavsdk_shell_send.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_char_p,
+]
+
+_cmavsdk_lib.mavsdk_shell_send.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_shell_subscribe_receive.argtypes = [
+    ctypes.c_void_p,
+    ReceiveCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_shell_subscribe_receive.restype = ctypes.c_void_p
+# Unsubscribe
+_cmavsdk_lib.mavsdk_shell_unsubscribe_receive.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_shell_unsubscribe_receive.restype = None
+

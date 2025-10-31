@@ -10,7 +10,7 @@ Allow users to get vehicle telemetry and state information
 
 import ctypes
 
-from typing import Optional, List, Callable, Any
+from typing import Callable, Any
 from enum import IntEnum
 
 from ...cmavsdk_loader import _cmavsdk_lib
@@ -2296,103 +2296,128 @@ WindCallback = ctypes.CFUNCTYPE(
 )
 SetRatePositionCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 SetRateHomeCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 SetRateInAirCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 SetRateLandedStateCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 SetRateVtolStateCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 SetRateAttitudeQuaternionCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 SetRateAttitudeEulerCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 SetRateVelocityNedCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 SetRateGpsInfoCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 SetRateBatteryCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 SetRateRcStatusCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 SetRateActuatorControlTargetCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 SetRateActuatorOutputStatusCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 SetRateOdometryCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 SetRatePositionVelocityNedCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 SetRateGroundTruthCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 SetRateFixedwingMetricsCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 SetRateImuCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 SetRateScaledImuCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 SetRateRawImuCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 SetRateUnixEpochTimeCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 SetRateDistanceSensorCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 SetRateAltitudeCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 SetRateHealthCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 GetGpsGlobalOriginCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    GpsGlobalOriginCStruct,
+    ctypes.c_int,
+    GpsGlobalOriginCStruct,
     ctypes.c_void_p
 )
 
@@ -2407,8 +2432,6 @@ class Telemetry:
         self._handle = None
         self._callbacks = []  # Keep references to prevent GC
 
-        self._setup_functions()
-
         if system is None:
             raise ValueError("system cannot be None")
 
@@ -2421,1240 +2444,6 @@ class Telemetry:
 
         if not self._handle:
             raise RuntimeError("Failed to create Telemetry plugin - C function returned null handle")
-
-    def _setup_functions(self):
-        """Setup C function signatures"""
-
-        # Create/Destroy
-        self._lib.mavsdk_telemetry_create.argtypes = [ctypes.c_void_p]
-        self._lib.mavsdk_telemetry_create.restype = ctypes.c_void_p
-
-        self._lib.mavsdk_telemetry_destroy.argtypes = [ctypes.c_void_p]
-        self._lib.mavsdk_telemetry_destroy.restype = None
-
-        self._lib.mavsdk_telemetry_position_destroy.argtypes = [
-            ctypes.POINTER(PositionCStruct)
-        ]
-        self._lib.mavsdk_telemetry_position_destroy.restype = None
-
-        self._lib.mavsdk_telemetry_heading_destroy.argtypes = [
-            ctypes.POINTER(HeadingCStruct)
-        ]
-        self._lib.mavsdk_telemetry_heading_destroy.restype = None
-
-        self._lib.mavsdk_telemetry_quaternion_destroy.argtypes = [
-            ctypes.POINTER(QuaternionCStruct)
-        ]
-        self._lib.mavsdk_telemetry_quaternion_destroy.restype = None
-
-        self._lib.mavsdk_telemetry_euler_angle_destroy.argtypes = [
-            ctypes.POINTER(EulerAngleCStruct)
-        ]
-        self._lib.mavsdk_telemetry_euler_angle_destroy.restype = None
-
-        self._lib.mavsdk_telemetry_angular_velocity_body_destroy.argtypes = [
-            ctypes.POINTER(AngularVelocityBodyCStruct)
-        ]
-        self._lib.mavsdk_telemetry_angular_velocity_body_destroy.restype = None
-
-        self._lib.mavsdk_telemetry_gps_info_destroy.argtypes = [
-            ctypes.POINTER(GpsInfoCStruct)
-        ]
-        self._lib.mavsdk_telemetry_gps_info_destroy.restype = None
-
-        self._lib.mavsdk_telemetry_raw_gps_destroy.argtypes = [
-            ctypes.POINTER(RawGpsCStruct)
-        ]
-        self._lib.mavsdk_telemetry_raw_gps_destroy.restype = None
-
-        self._lib.mavsdk_telemetry_battery_destroy.argtypes = [
-            ctypes.POINTER(BatteryCStruct)
-        ]
-        self._lib.mavsdk_telemetry_battery_destroy.restype = None
-
-        self._lib.mavsdk_telemetry_health_destroy.argtypes = [
-            ctypes.POINTER(HealthCStruct)
-        ]
-        self._lib.mavsdk_telemetry_health_destroy.restype = None
-
-        self._lib.mavsdk_telemetry_rc_status_destroy.argtypes = [
-            ctypes.POINTER(RcStatusCStruct)
-        ]
-        self._lib.mavsdk_telemetry_rc_status_destroy.restype = None
-
-        self._lib.mavsdk_telemetry_status_text_destroy.argtypes = [
-            ctypes.POINTER(StatusTextCStruct)
-        ]
-        self._lib.mavsdk_telemetry_status_text_destroy.restype = None
-
-        self._lib.mavsdk_telemetry_actuator_control_target_destroy.argtypes = [
-            ctypes.POINTER(ActuatorControlTargetCStruct)
-        ]
-        self._lib.mavsdk_telemetry_actuator_control_target_destroy.restype = None
-
-        self._lib.mavsdk_telemetry_actuator_output_status_destroy.argtypes = [
-            ctypes.POINTER(ActuatorOutputStatusCStruct)
-        ]
-        self._lib.mavsdk_telemetry_actuator_output_status_destroy.restype = None
-
-        self._lib.mavsdk_telemetry_covariance_destroy.argtypes = [
-            ctypes.POINTER(CovarianceCStruct)
-        ]
-        self._lib.mavsdk_telemetry_covariance_destroy.restype = None
-
-        self._lib.mavsdk_telemetry_velocity_body_destroy.argtypes = [
-            ctypes.POINTER(VelocityBodyCStruct)
-        ]
-        self._lib.mavsdk_telemetry_velocity_body_destroy.restype = None
-
-        self._lib.mavsdk_telemetry_position_body_destroy.argtypes = [
-            ctypes.POINTER(PositionBodyCStruct)
-        ]
-        self._lib.mavsdk_telemetry_position_body_destroy.restype = None
-
-        self._lib.mavsdk_telemetry_odometry_destroy.argtypes = [
-            ctypes.POINTER(OdometryCStruct)
-        ]
-        self._lib.mavsdk_telemetry_odometry_destroy.restype = None
-
-        self._lib.mavsdk_telemetry_distance_sensor_destroy.argtypes = [
-            ctypes.POINTER(DistanceSensorCStruct)
-        ]
-        self._lib.mavsdk_telemetry_distance_sensor_destroy.restype = None
-
-        self._lib.mavsdk_telemetry_scaled_pressure_destroy.argtypes = [
-            ctypes.POINTER(ScaledPressureCStruct)
-        ]
-        self._lib.mavsdk_telemetry_scaled_pressure_destroy.restype = None
-
-        self._lib.mavsdk_telemetry_position_ned_destroy.argtypes = [
-            ctypes.POINTER(PositionNedCStruct)
-        ]
-        self._lib.mavsdk_telemetry_position_ned_destroy.restype = None
-
-        self._lib.mavsdk_telemetry_velocity_ned_destroy.argtypes = [
-            ctypes.POINTER(VelocityNedCStruct)
-        ]
-        self._lib.mavsdk_telemetry_velocity_ned_destroy.restype = None
-
-        self._lib.mavsdk_telemetry_position_velocity_ned_destroy.argtypes = [
-            ctypes.POINTER(PositionVelocityNedCStruct)
-        ]
-        self._lib.mavsdk_telemetry_position_velocity_ned_destroy.restype = None
-
-        self._lib.mavsdk_telemetry_ground_truth_destroy.argtypes = [
-            ctypes.POINTER(GroundTruthCStruct)
-        ]
-        self._lib.mavsdk_telemetry_ground_truth_destroy.restype = None
-
-        self._lib.mavsdk_telemetry_fixedwing_metrics_destroy.argtypes = [
-            ctypes.POINTER(FixedwingMetricsCStruct)
-        ]
-        self._lib.mavsdk_telemetry_fixedwing_metrics_destroy.restype = None
-
-        self._lib.mavsdk_telemetry_acceleration_frd_destroy.argtypes = [
-            ctypes.POINTER(AccelerationFrdCStruct)
-        ]
-        self._lib.mavsdk_telemetry_acceleration_frd_destroy.restype = None
-
-        self._lib.mavsdk_telemetry_angular_velocity_frd_destroy.argtypes = [
-            ctypes.POINTER(AngularVelocityFrdCStruct)
-        ]
-        self._lib.mavsdk_telemetry_angular_velocity_frd_destroy.restype = None
-
-        self._lib.mavsdk_telemetry_magnetic_field_frd_destroy.argtypes = [
-            ctypes.POINTER(MagneticFieldFrdCStruct)
-        ]
-        self._lib.mavsdk_telemetry_magnetic_field_frd_destroy.restype = None
-
-        self._lib.mavsdk_telemetry_imu_destroy.argtypes = [
-            ctypes.POINTER(ImuCStruct)
-        ]
-        self._lib.mavsdk_telemetry_imu_destroy.restype = None
-
-        self._lib.mavsdk_telemetry_gps_global_origin_destroy.argtypes = [
-            ctypes.POINTER(GpsGlobalOriginCStruct)
-        ]
-        self._lib.mavsdk_telemetry_gps_global_origin_destroy.restype = None
-
-        self._lib.mavsdk_telemetry_altitude_destroy.argtypes = [
-            ctypes.POINTER(AltitudeCStruct)
-        ]
-        self._lib.mavsdk_telemetry_altitude_destroy.restype = None
-
-        self._lib.mavsdk_telemetry_wind_destroy.argtypes = [
-            ctypes.POINTER(WindCStruct)
-        ]
-        self._lib.mavsdk_telemetry_wind_destroy.restype = None
-
-
-        self._lib.mavsdk_telemetry_subscribe_position.argtypes = [
-            ctypes.c_void_p,
-            PositionCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_subscribe_position.restype = ctypes.c_void_p
-        # Unsubscribe
-        self._lib.mavsdk_telemetry_unsubscribe_position.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_unsubscribe_position.restype = None
-
-        self._lib.mavsdk_telemetry_position.argtypes = [
-            ctypes.c_void_p,
-            ctypes.POINTER(PositionCStruct)
-        ]
-
-        self._lib.mavsdk_telemetry_position.restype = None
-        self._lib.mavsdk_telemetry_subscribe_home.argtypes = [
-            ctypes.c_void_p,
-            HomeCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_subscribe_home.restype = ctypes.c_void_p
-        # Unsubscribe
-        self._lib.mavsdk_telemetry_unsubscribe_home.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_unsubscribe_home.restype = None
-
-        self._lib.mavsdk_telemetry_home.argtypes = [
-            ctypes.c_void_p,
-            ctypes.POINTER(PositionCStruct)
-        ]
-
-        self._lib.mavsdk_telemetry_home.restype = None
-        self._lib.mavsdk_telemetry_subscribe_in_air.argtypes = [
-            ctypes.c_void_p,
-            InAirCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_subscribe_in_air.restype = ctypes.c_void_p
-        # Unsubscribe
-        self._lib.mavsdk_telemetry_unsubscribe_in_air.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_unsubscribe_in_air.restype = None
-
-        self._lib.mavsdk_telemetry_in_air.argtypes = [
-            ctypes.c_void_p,
-            ctypes.POINTER(ctypes.c_bool)
-        ]
-
-        self._lib.mavsdk_telemetry_in_air.restype = None
-        self._lib.mavsdk_telemetry_subscribe_landed_state.argtypes = [
-            ctypes.c_void_p,
-            LandedStateCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_subscribe_landed_state.restype = ctypes.c_void_p
-        # Unsubscribe
-        self._lib.mavsdk_telemetry_unsubscribe_landed_state.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_unsubscribe_landed_state.restype = None
-
-        self._lib.mavsdk_telemetry_landed_state.argtypes = [
-            ctypes.c_void_p,
-            ctypes.POINTER(ctypes.c_int)
-        ]
-
-        self._lib.mavsdk_telemetry_landed_state.restype = None
-        self._lib.mavsdk_telemetry_subscribe_armed.argtypes = [
-            ctypes.c_void_p,
-            ArmedCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_subscribe_armed.restype = ctypes.c_void_p
-        # Unsubscribe
-        self._lib.mavsdk_telemetry_unsubscribe_armed.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_unsubscribe_armed.restype = None
-
-        self._lib.mavsdk_telemetry_armed.argtypes = [
-            ctypes.c_void_p,
-            ctypes.POINTER(ctypes.c_bool)
-        ]
-
-        self._lib.mavsdk_telemetry_armed.restype = None
-        self._lib.mavsdk_telemetry_subscribe_vtol_state.argtypes = [
-            ctypes.c_void_p,
-            VtolStateCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_subscribe_vtol_state.restype = ctypes.c_void_p
-        # Unsubscribe
-        self._lib.mavsdk_telemetry_unsubscribe_vtol_state.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_unsubscribe_vtol_state.restype = None
-
-        self._lib.mavsdk_telemetry_vtol_state.argtypes = [
-            ctypes.c_void_p,
-            ctypes.POINTER(ctypes.c_int)
-        ]
-
-        self._lib.mavsdk_telemetry_vtol_state.restype = None
-        self._lib.mavsdk_telemetry_subscribe_attitude_quaternion.argtypes = [
-            ctypes.c_void_p,
-            AttitudeQuaternionCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_subscribe_attitude_quaternion.restype = ctypes.c_void_p
-        # Unsubscribe
-        self._lib.mavsdk_telemetry_unsubscribe_attitude_quaternion.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_unsubscribe_attitude_quaternion.restype = None
-
-        self._lib.mavsdk_telemetry_attitude_quaternion.argtypes = [
-            ctypes.c_void_p,
-            ctypes.POINTER(QuaternionCStruct)
-        ]
-
-        self._lib.mavsdk_telemetry_attitude_quaternion.restype = None
-        self._lib.mavsdk_telemetry_subscribe_attitude_euler.argtypes = [
-            ctypes.c_void_p,
-            AttitudeEulerCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_subscribe_attitude_euler.restype = ctypes.c_void_p
-        # Unsubscribe
-        self._lib.mavsdk_telemetry_unsubscribe_attitude_euler.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_unsubscribe_attitude_euler.restype = None
-
-        self._lib.mavsdk_telemetry_attitude_euler.argtypes = [
-            ctypes.c_void_p,
-            ctypes.POINTER(EulerAngleCStruct)
-        ]
-
-        self._lib.mavsdk_telemetry_attitude_euler.restype = None
-        self._lib.mavsdk_telemetry_subscribe_attitude_angular_velocity_body.argtypes = [
-            ctypes.c_void_p,
-            AttitudeAngularVelocityBodyCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_subscribe_attitude_angular_velocity_body.restype = ctypes.c_void_p
-        # Unsubscribe
-        self._lib.mavsdk_telemetry_unsubscribe_attitude_angular_velocity_body.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_unsubscribe_attitude_angular_velocity_body.restype = None
-
-        self._lib.mavsdk_telemetry_attitude_angular_velocity_body.argtypes = [
-            ctypes.c_void_p,
-            ctypes.POINTER(AngularVelocityBodyCStruct)
-        ]
-
-        self._lib.mavsdk_telemetry_attitude_angular_velocity_body.restype = None
-        self._lib.mavsdk_telemetry_subscribe_velocity_ned.argtypes = [
-            ctypes.c_void_p,
-            VelocityNedCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_subscribe_velocity_ned.restype = ctypes.c_void_p
-        # Unsubscribe
-        self._lib.mavsdk_telemetry_unsubscribe_velocity_ned.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_unsubscribe_velocity_ned.restype = None
-
-        self._lib.mavsdk_telemetry_velocity_ned.argtypes = [
-            ctypes.c_void_p,
-            ctypes.POINTER(VelocityNedCStruct)
-        ]
-
-        self._lib.mavsdk_telemetry_velocity_ned.restype = None
-        self._lib.mavsdk_telemetry_subscribe_gps_info.argtypes = [
-            ctypes.c_void_p,
-            GpsInfoCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_subscribe_gps_info.restype = ctypes.c_void_p
-        # Unsubscribe
-        self._lib.mavsdk_telemetry_unsubscribe_gps_info.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_unsubscribe_gps_info.restype = None
-
-        self._lib.mavsdk_telemetry_gps_info.argtypes = [
-            ctypes.c_void_p,
-            ctypes.POINTER(GpsInfoCStruct)
-        ]
-
-        self._lib.mavsdk_telemetry_gps_info.restype = None
-        self._lib.mavsdk_telemetry_subscribe_raw_gps.argtypes = [
-            ctypes.c_void_p,
-            RawGpsCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_subscribe_raw_gps.restype = ctypes.c_void_p
-        # Unsubscribe
-        self._lib.mavsdk_telemetry_unsubscribe_raw_gps.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_unsubscribe_raw_gps.restype = None
-
-        self._lib.mavsdk_telemetry_raw_gps.argtypes = [
-            ctypes.c_void_p,
-            ctypes.POINTER(RawGpsCStruct)
-        ]
-
-        self._lib.mavsdk_telemetry_raw_gps.restype = None
-        self._lib.mavsdk_telemetry_subscribe_battery.argtypes = [
-            ctypes.c_void_p,
-            BatteryCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_subscribe_battery.restype = ctypes.c_void_p
-        # Unsubscribe
-        self._lib.mavsdk_telemetry_unsubscribe_battery.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_unsubscribe_battery.restype = None
-
-        self._lib.mavsdk_telemetry_battery.argtypes = [
-            ctypes.c_void_p,
-            ctypes.POINTER(BatteryCStruct)
-        ]
-
-        self._lib.mavsdk_telemetry_battery.restype = None
-        self._lib.mavsdk_telemetry_subscribe_flight_mode.argtypes = [
-            ctypes.c_void_p,
-            FlightModeCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_subscribe_flight_mode.restype = ctypes.c_void_p
-        # Unsubscribe
-        self._lib.mavsdk_telemetry_unsubscribe_flight_mode.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_unsubscribe_flight_mode.restype = None
-
-        self._lib.mavsdk_telemetry_flight_mode.argtypes = [
-            ctypes.c_void_p,
-            ctypes.POINTER(ctypes.c_int)
-        ]
-
-        self._lib.mavsdk_telemetry_flight_mode.restype = None
-        self._lib.mavsdk_telemetry_subscribe_health.argtypes = [
-            ctypes.c_void_p,
-            HealthCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_subscribe_health.restype = ctypes.c_void_p
-        # Unsubscribe
-        self._lib.mavsdk_telemetry_unsubscribe_health.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_unsubscribe_health.restype = None
-
-        self._lib.mavsdk_telemetry_health.argtypes = [
-            ctypes.c_void_p,
-            ctypes.POINTER(HealthCStruct)
-        ]
-
-        self._lib.mavsdk_telemetry_health.restype = None
-        self._lib.mavsdk_telemetry_subscribe_rc_status.argtypes = [
-            ctypes.c_void_p,
-            RcStatusCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_subscribe_rc_status.restype = ctypes.c_void_p
-        # Unsubscribe
-        self._lib.mavsdk_telemetry_unsubscribe_rc_status.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_unsubscribe_rc_status.restype = None
-
-        self._lib.mavsdk_telemetry_rc_status.argtypes = [
-            ctypes.c_void_p,
-            ctypes.POINTER(RcStatusCStruct)
-        ]
-
-        self._lib.mavsdk_telemetry_rc_status.restype = None
-        self._lib.mavsdk_telemetry_subscribe_status_text.argtypes = [
-            ctypes.c_void_p,
-            StatusTextCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_subscribe_status_text.restype = ctypes.c_void_p
-        # Unsubscribe
-        self._lib.mavsdk_telemetry_unsubscribe_status_text.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_unsubscribe_status_text.restype = None
-
-        self._lib.mavsdk_telemetry_status_text.argtypes = [
-            ctypes.c_void_p,
-            ctypes.POINTER(StatusTextCStruct)
-        ]
-
-        self._lib.mavsdk_telemetry_status_text.restype = None
-        self._lib.mavsdk_telemetry_subscribe_actuator_control_target.argtypes = [
-            ctypes.c_void_p,
-            ActuatorControlTargetCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_subscribe_actuator_control_target.restype = ctypes.c_void_p
-        # Unsubscribe
-        self._lib.mavsdk_telemetry_unsubscribe_actuator_control_target.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_unsubscribe_actuator_control_target.restype = None
-
-        self._lib.mavsdk_telemetry_actuator_control_target.argtypes = [
-            ctypes.c_void_p,
-            ctypes.POINTER(ActuatorControlTargetCStruct)
-        ]
-
-        self._lib.mavsdk_telemetry_actuator_control_target.restype = None
-        self._lib.mavsdk_telemetry_subscribe_actuator_output_status.argtypes = [
-            ctypes.c_void_p,
-            ActuatorOutputStatusCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_subscribe_actuator_output_status.restype = ctypes.c_void_p
-        # Unsubscribe
-        self._lib.mavsdk_telemetry_unsubscribe_actuator_output_status.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_unsubscribe_actuator_output_status.restype = None
-
-        self._lib.mavsdk_telemetry_actuator_output_status.argtypes = [
-            ctypes.c_void_p,
-            ctypes.POINTER(ActuatorOutputStatusCStruct)
-        ]
-
-        self._lib.mavsdk_telemetry_actuator_output_status.restype = None
-        self._lib.mavsdk_telemetry_subscribe_odometry.argtypes = [
-            ctypes.c_void_p,
-            OdometryCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_subscribe_odometry.restype = ctypes.c_void_p
-        # Unsubscribe
-        self._lib.mavsdk_telemetry_unsubscribe_odometry.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_unsubscribe_odometry.restype = None
-
-        self._lib.mavsdk_telemetry_odometry.argtypes = [
-            ctypes.c_void_p,
-            ctypes.POINTER(OdometryCStruct)
-        ]
-
-        self._lib.mavsdk_telemetry_odometry.restype = None
-        self._lib.mavsdk_telemetry_subscribe_position_velocity_ned.argtypes = [
-            ctypes.c_void_p,
-            PositionVelocityNedCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_subscribe_position_velocity_ned.restype = ctypes.c_void_p
-        # Unsubscribe
-        self._lib.mavsdk_telemetry_unsubscribe_position_velocity_ned.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_unsubscribe_position_velocity_ned.restype = None
-
-        self._lib.mavsdk_telemetry_position_velocity_ned.argtypes = [
-            ctypes.c_void_p,
-            ctypes.POINTER(PositionVelocityNedCStruct)
-        ]
-
-        self._lib.mavsdk_telemetry_position_velocity_ned.restype = None
-        self._lib.mavsdk_telemetry_subscribe_ground_truth.argtypes = [
-            ctypes.c_void_p,
-            GroundTruthCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_subscribe_ground_truth.restype = ctypes.c_void_p
-        # Unsubscribe
-        self._lib.mavsdk_telemetry_unsubscribe_ground_truth.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_unsubscribe_ground_truth.restype = None
-
-        self._lib.mavsdk_telemetry_ground_truth.argtypes = [
-            ctypes.c_void_p,
-            ctypes.POINTER(GroundTruthCStruct)
-        ]
-
-        self._lib.mavsdk_telemetry_ground_truth.restype = None
-        self._lib.mavsdk_telemetry_subscribe_fixedwing_metrics.argtypes = [
-            ctypes.c_void_p,
-            FixedwingMetricsCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_subscribe_fixedwing_metrics.restype = ctypes.c_void_p
-        # Unsubscribe
-        self._lib.mavsdk_telemetry_unsubscribe_fixedwing_metrics.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_unsubscribe_fixedwing_metrics.restype = None
-
-        self._lib.mavsdk_telemetry_fixedwing_metrics.argtypes = [
-            ctypes.c_void_p,
-            ctypes.POINTER(FixedwingMetricsCStruct)
-        ]
-
-        self._lib.mavsdk_telemetry_fixedwing_metrics.restype = None
-        self._lib.mavsdk_telemetry_subscribe_imu.argtypes = [
-            ctypes.c_void_p,
-            ImuCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_subscribe_imu.restype = ctypes.c_void_p
-        # Unsubscribe
-        self._lib.mavsdk_telemetry_unsubscribe_imu.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_unsubscribe_imu.restype = None
-
-        self._lib.mavsdk_telemetry_imu.argtypes = [
-            ctypes.c_void_p,
-            ctypes.POINTER(ImuCStruct)
-        ]
-
-        self._lib.mavsdk_telemetry_imu.restype = None
-        self._lib.mavsdk_telemetry_subscribe_scaled_imu.argtypes = [
-            ctypes.c_void_p,
-            ScaledImuCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_subscribe_scaled_imu.restype = ctypes.c_void_p
-        # Unsubscribe
-        self._lib.mavsdk_telemetry_unsubscribe_scaled_imu.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_unsubscribe_scaled_imu.restype = None
-
-        self._lib.mavsdk_telemetry_scaled_imu.argtypes = [
-            ctypes.c_void_p,
-            ctypes.POINTER(ImuCStruct)
-        ]
-
-        self._lib.mavsdk_telemetry_scaled_imu.restype = None
-        self._lib.mavsdk_telemetry_subscribe_raw_imu.argtypes = [
-            ctypes.c_void_p,
-            RawImuCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_subscribe_raw_imu.restype = ctypes.c_void_p
-        # Unsubscribe
-        self._lib.mavsdk_telemetry_unsubscribe_raw_imu.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_unsubscribe_raw_imu.restype = None
-
-        self._lib.mavsdk_telemetry_raw_imu.argtypes = [
-            ctypes.c_void_p,
-            ctypes.POINTER(ImuCStruct)
-        ]
-
-        self._lib.mavsdk_telemetry_raw_imu.restype = None
-        self._lib.mavsdk_telemetry_subscribe_health_all_ok.argtypes = [
-            ctypes.c_void_p,
-            HealthAllOkCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_subscribe_health_all_ok.restype = ctypes.c_void_p
-        # Unsubscribe
-        self._lib.mavsdk_telemetry_unsubscribe_health_all_ok.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_unsubscribe_health_all_ok.restype = None
-
-        self._lib.mavsdk_telemetry_health_all_ok.argtypes = [
-            ctypes.c_void_p,
-            ctypes.POINTER(ctypes.c_bool)
-        ]
-
-        self._lib.mavsdk_telemetry_health_all_ok.restype = None
-        self._lib.mavsdk_telemetry_subscribe_unix_epoch_time.argtypes = [
-            ctypes.c_void_p,
-            UnixEpochTimeCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_subscribe_unix_epoch_time.restype = ctypes.c_void_p
-        # Unsubscribe
-        self._lib.mavsdk_telemetry_unsubscribe_unix_epoch_time.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_unsubscribe_unix_epoch_time.restype = None
-
-        self._lib.mavsdk_telemetry_unix_epoch_time.argtypes = [
-            ctypes.c_void_p,
-            ctypes.POINTER(ctypes.c_uint64)
-        ]
-
-        self._lib.mavsdk_telemetry_unix_epoch_time.restype = None
-        self._lib.mavsdk_telemetry_subscribe_distance_sensor.argtypes = [
-            ctypes.c_void_p,
-            DistanceSensorCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_subscribe_distance_sensor.restype = ctypes.c_void_p
-        # Unsubscribe
-        self._lib.mavsdk_telemetry_unsubscribe_distance_sensor.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_unsubscribe_distance_sensor.restype = None
-
-        self._lib.mavsdk_telemetry_distance_sensor.argtypes = [
-            ctypes.c_void_p,
-            ctypes.POINTER(DistanceSensorCStruct)
-        ]
-
-        self._lib.mavsdk_telemetry_distance_sensor.restype = None
-        self._lib.mavsdk_telemetry_subscribe_scaled_pressure.argtypes = [
-            ctypes.c_void_p,
-            ScaledPressureCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_subscribe_scaled_pressure.restype = ctypes.c_void_p
-        # Unsubscribe
-        self._lib.mavsdk_telemetry_unsubscribe_scaled_pressure.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_unsubscribe_scaled_pressure.restype = None
-
-        self._lib.mavsdk_telemetry_scaled_pressure.argtypes = [
-            ctypes.c_void_p,
-            ctypes.POINTER(ScaledPressureCStruct)
-        ]
-
-        self._lib.mavsdk_telemetry_scaled_pressure.restype = None
-        self._lib.mavsdk_telemetry_subscribe_heading.argtypes = [
-            ctypes.c_void_p,
-            HeadingCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_subscribe_heading.restype = ctypes.c_void_p
-        # Unsubscribe
-        self._lib.mavsdk_telemetry_unsubscribe_heading.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_unsubscribe_heading.restype = None
-
-        self._lib.mavsdk_telemetry_heading.argtypes = [
-            ctypes.c_void_p,
-            ctypes.POINTER(HeadingCStruct)
-        ]
-
-        self._lib.mavsdk_telemetry_heading.restype = None
-        self._lib.mavsdk_telemetry_subscribe_altitude.argtypes = [
-            ctypes.c_void_p,
-            AltitudeCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_subscribe_altitude.restype = ctypes.c_void_p
-        # Unsubscribe
-        self._lib.mavsdk_telemetry_unsubscribe_altitude.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_unsubscribe_altitude.restype = None
-
-        self._lib.mavsdk_telemetry_altitude.argtypes = [
-            ctypes.c_void_p,
-            ctypes.POINTER(AltitudeCStruct)
-        ]
-
-        self._lib.mavsdk_telemetry_altitude.restype = None
-        self._lib.mavsdk_telemetry_subscribe_wind.argtypes = [
-            ctypes.c_void_p,
-            WindCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_subscribe_wind.restype = ctypes.c_void_p
-        # Unsubscribe
-        self._lib.mavsdk_telemetry_unsubscribe_wind.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_unsubscribe_wind.restype = None
-
-        self._lib.mavsdk_telemetry_wind.argtypes = [
-            ctypes.c_void_p,
-            ctypes.POINTER(WindCStruct)
-        ]
-
-        self._lib.mavsdk_telemetry_wind.restype = None
-        self._lib.mavsdk_telemetry_set_rate_position_async.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_double,
-            SetRatePositionCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_set_rate_position_async.restype = None
-
-        self._lib.mavsdk_telemetry_set_rate_position.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_double,
-        ]
-
-        self._lib.mavsdk_telemetry_set_rate_position.restype = ctypes.c_int
-        self._lib.mavsdk_telemetry_set_rate_home_async.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_double,
-            SetRateHomeCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_set_rate_home_async.restype = None
-
-        self._lib.mavsdk_telemetry_set_rate_home.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_double,
-        ]
-
-        self._lib.mavsdk_telemetry_set_rate_home.restype = ctypes.c_int
-        self._lib.mavsdk_telemetry_set_rate_in_air_async.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_double,
-            SetRateInAirCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_set_rate_in_air_async.restype = None
-
-        self._lib.mavsdk_telemetry_set_rate_in_air.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_double,
-        ]
-
-        self._lib.mavsdk_telemetry_set_rate_in_air.restype = ctypes.c_int
-        self._lib.mavsdk_telemetry_set_rate_landed_state_async.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_double,
-            SetRateLandedStateCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_set_rate_landed_state_async.restype = None
-
-        self._lib.mavsdk_telemetry_set_rate_landed_state.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_double,
-        ]
-
-        self._lib.mavsdk_telemetry_set_rate_landed_state.restype = ctypes.c_int
-        self._lib.mavsdk_telemetry_set_rate_vtol_state_async.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_double,
-            SetRateVtolStateCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_set_rate_vtol_state_async.restype = None
-
-        self._lib.mavsdk_telemetry_set_rate_vtol_state.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_double,
-        ]
-
-        self._lib.mavsdk_telemetry_set_rate_vtol_state.restype = ctypes.c_int
-        self._lib.mavsdk_telemetry_set_rate_attitude_quaternion_async.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_double,
-            SetRateAttitudeQuaternionCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_set_rate_attitude_quaternion_async.restype = None
-
-        self._lib.mavsdk_telemetry_set_rate_attitude_quaternion.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_double,
-        ]
-
-        self._lib.mavsdk_telemetry_set_rate_attitude_quaternion.restype = ctypes.c_int
-        self._lib.mavsdk_telemetry_set_rate_attitude_euler_async.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_double,
-            SetRateAttitudeEulerCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_set_rate_attitude_euler_async.restype = None
-
-        self._lib.mavsdk_telemetry_set_rate_attitude_euler.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_double,
-        ]
-
-        self._lib.mavsdk_telemetry_set_rate_attitude_euler.restype = ctypes.c_int
-        self._lib.mavsdk_telemetry_set_rate_velocity_ned_async.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_double,
-            SetRateVelocityNedCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_set_rate_velocity_ned_async.restype = None
-
-        self._lib.mavsdk_telemetry_set_rate_velocity_ned.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_double,
-        ]
-
-        self._lib.mavsdk_telemetry_set_rate_velocity_ned.restype = ctypes.c_int
-        self._lib.mavsdk_telemetry_set_rate_gps_info_async.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_double,
-            SetRateGpsInfoCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_set_rate_gps_info_async.restype = None
-
-        self._lib.mavsdk_telemetry_set_rate_gps_info.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_double,
-        ]
-
-        self._lib.mavsdk_telemetry_set_rate_gps_info.restype = ctypes.c_int
-        self._lib.mavsdk_telemetry_set_rate_battery_async.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_double,
-            SetRateBatteryCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_set_rate_battery_async.restype = None
-
-        self._lib.mavsdk_telemetry_set_rate_battery.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_double,
-        ]
-
-        self._lib.mavsdk_telemetry_set_rate_battery.restype = ctypes.c_int
-        self._lib.mavsdk_telemetry_set_rate_rc_status_async.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_double,
-            SetRateRcStatusCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_set_rate_rc_status_async.restype = None
-
-        self._lib.mavsdk_telemetry_set_rate_rc_status.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_double,
-        ]
-
-        self._lib.mavsdk_telemetry_set_rate_rc_status.restype = ctypes.c_int
-        self._lib.mavsdk_telemetry_set_rate_actuator_control_target_async.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_double,
-            SetRateActuatorControlTargetCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_set_rate_actuator_control_target_async.restype = None
-
-        self._lib.mavsdk_telemetry_set_rate_actuator_control_target.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_double,
-        ]
-
-        self._lib.mavsdk_telemetry_set_rate_actuator_control_target.restype = ctypes.c_int
-        self._lib.mavsdk_telemetry_set_rate_actuator_output_status_async.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_double,
-            SetRateActuatorOutputStatusCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_set_rate_actuator_output_status_async.restype = None
-
-        self._lib.mavsdk_telemetry_set_rate_actuator_output_status.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_double,
-        ]
-
-        self._lib.mavsdk_telemetry_set_rate_actuator_output_status.restype = ctypes.c_int
-        self._lib.mavsdk_telemetry_set_rate_odometry_async.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_double,
-            SetRateOdometryCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_set_rate_odometry_async.restype = None
-
-        self._lib.mavsdk_telemetry_set_rate_odometry.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_double,
-        ]
-
-        self._lib.mavsdk_telemetry_set_rate_odometry.restype = ctypes.c_int
-        self._lib.mavsdk_telemetry_set_rate_position_velocity_ned_async.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_double,
-            SetRatePositionVelocityNedCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_set_rate_position_velocity_ned_async.restype = None
-
-        self._lib.mavsdk_telemetry_set_rate_position_velocity_ned.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_double,
-        ]
-
-        self._lib.mavsdk_telemetry_set_rate_position_velocity_ned.restype = ctypes.c_int
-        self._lib.mavsdk_telemetry_set_rate_ground_truth_async.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_double,
-            SetRateGroundTruthCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_set_rate_ground_truth_async.restype = None
-
-        self._lib.mavsdk_telemetry_set_rate_ground_truth.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_double,
-        ]
-
-        self._lib.mavsdk_telemetry_set_rate_ground_truth.restype = ctypes.c_int
-        self._lib.mavsdk_telemetry_set_rate_fixedwing_metrics_async.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_double,
-            SetRateFixedwingMetricsCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_set_rate_fixedwing_metrics_async.restype = None
-
-        self._lib.mavsdk_telemetry_set_rate_fixedwing_metrics.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_double,
-        ]
-
-        self._lib.mavsdk_telemetry_set_rate_fixedwing_metrics.restype = ctypes.c_int
-        self._lib.mavsdk_telemetry_set_rate_imu_async.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_double,
-            SetRateImuCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_set_rate_imu_async.restype = None
-
-        self._lib.mavsdk_telemetry_set_rate_imu.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_double,
-        ]
-
-        self._lib.mavsdk_telemetry_set_rate_imu.restype = ctypes.c_int
-        self._lib.mavsdk_telemetry_set_rate_scaled_imu_async.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_double,
-            SetRateScaledImuCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_set_rate_scaled_imu_async.restype = None
-
-        self._lib.mavsdk_telemetry_set_rate_scaled_imu.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_double,
-        ]
-
-        self._lib.mavsdk_telemetry_set_rate_scaled_imu.restype = ctypes.c_int
-        self._lib.mavsdk_telemetry_set_rate_raw_imu_async.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_double,
-            SetRateRawImuCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_set_rate_raw_imu_async.restype = None
-
-        self._lib.mavsdk_telemetry_set_rate_raw_imu.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_double,
-        ]
-
-        self._lib.mavsdk_telemetry_set_rate_raw_imu.restype = ctypes.c_int
-        self._lib.mavsdk_telemetry_set_rate_unix_epoch_time_async.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_double,
-            SetRateUnixEpochTimeCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_set_rate_unix_epoch_time_async.restype = None
-
-        self._lib.mavsdk_telemetry_set_rate_unix_epoch_time.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_double,
-        ]
-
-        self._lib.mavsdk_telemetry_set_rate_unix_epoch_time.restype = ctypes.c_int
-        self._lib.mavsdk_telemetry_set_rate_distance_sensor_async.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_double,
-            SetRateDistanceSensorCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_set_rate_distance_sensor_async.restype = None
-
-        self._lib.mavsdk_telemetry_set_rate_distance_sensor.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_double,
-        ]
-
-        self._lib.mavsdk_telemetry_set_rate_distance_sensor.restype = ctypes.c_int
-        self._lib.mavsdk_telemetry_set_rate_altitude_async.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_double,
-            SetRateAltitudeCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_set_rate_altitude_async.restype = None
-
-        self._lib.mavsdk_telemetry_set_rate_altitude.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_double,
-        ]
-
-        self._lib.mavsdk_telemetry_set_rate_altitude.restype = ctypes.c_int
-        self._lib.mavsdk_telemetry_set_rate_health_async.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_double,
-            SetRateHealthCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_set_rate_health_async.restype = None
-
-        self._lib.mavsdk_telemetry_set_rate_health.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_double,
-        ]
-
-        self._lib.mavsdk_telemetry_set_rate_health.restype = ctypes.c_int
-        self._lib.mavsdk_telemetry_get_gps_global_origin_async.argtypes = [
-            ctypes.c_void_p,
-            GetGpsGlobalOriginCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_telemetry_get_gps_global_origin_async.restype = None
-
-        self._lib.mavsdk_telemetry_get_gps_global_origin.argtypes = [
-            ctypes.c_void_p,
-            ctypes.POINTER(GpsGlobalOriginCStruct)
-        ]
-
-        self._lib.mavsdk_telemetry_get_gps_global_origin.restype = ctypes.c_int
 
 
     def subscribe_position(self, callback: Callable, user_data: Any = None):
@@ -5971,3 +4760,1233 @@ class Telemetry:
 
     def __del__(self):
         self.destroy()
+
+_cmavsdk_lib.mavsdk_telemetry_create.argtypes = [ctypes.c_void_p]
+_cmavsdk_lib.mavsdk_telemetry_create.restype = ctypes.c_void_p
+
+_cmavsdk_lib.mavsdk_telemetry_destroy.argtypes = [ctypes.c_void_p]
+_cmavsdk_lib.mavsdk_telemetry_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_position_destroy.argtypes = [
+    ctypes.POINTER(PositionCStruct)
+]
+_cmavsdk_lib.mavsdk_telemetry_position_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_heading_destroy.argtypes = [
+    ctypes.POINTER(HeadingCStruct)
+]
+_cmavsdk_lib.mavsdk_telemetry_heading_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_quaternion_destroy.argtypes = [
+    ctypes.POINTER(QuaternionCStruct)
+]
+_cmavsdk_lib.mavsdk_telemetry_quaternion_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_euler_angle_destroy.argtypes = [
+    ctypes.POINTER(EulerAngleCStruct)
+]
+_cmavsdk_lib.mavsdk_telemetry_euler_angle_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_angular_velocity_body_destroy.argtypes = [
+    ctypes.POINTER(AngularVelocityBodyCStruct)
+]
+_cmavsdk_lib.mavsdk_telemetry_angular_velocity_body_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_gps_info_destroy.argtypes = [
+    ctypes.POINTER(GpsInfoCStruct)
+]
+_cmavsdk_lib.mavsdk_telemetry_gps_info_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_raw_gps_destroy.argtypes = [
+    ctypes.POINTER(RawGpsCStruct)
+]
+_cmavsdk_lib.mavsdk_telemetry_raw_gps_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_battery_destroy.argtypes = [
+    ctypes.POINTER(BatteryCStruct)
+]
+_cmavsdk_lib.mavsdk_telemetry_battery_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_health_destroy.argtypes = [
+    ctypes.POINTER(HealthCStruct)
+]
+_cmavsdk_lib.mavsdk_telemetry_health_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_rc_status_destroy.argtypes = [
+    ctypes.POINTER(RcStatusCStruct)
+]
+_cmavsdk_lib.mavsdk_telemetry_rc_status_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_status_text_destroy.argtypes = [
+    ctypes.POINTER(StatusTextCStruct)
+]
+_cmavsdk_lib.mavsdk_telemetry_status_text_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_actuator_control_target_destroy.argtypes = [
+    ctypes.POINTER(ActuatorControlTargetCStruct)
+]
+_cmavsdk_lib.mavsdk_telemetry_actuator_control_target_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_actuator_output_status_destroy.argtypes = [
+    ctypes.POINTER(ActuatorOutputStatusCStruct)
+]
+_cmavsdk_lib.mavsdk_telemetry_actuator_output_status_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_covariance_destroy.argtypes = [
+    ctypes.POINTER(CovarianceCStruct)
+]
+_cmavsdk_lib.mavsdk_telemetry_covariance_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_velocity_body_destroy.argtypes = [
+    ctypes.POINTER(VelocityBodyCStruct)
+]
+_cmavsdk_lib.mavsdk_telemetry_velocity_body_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_position_body_destroy.argtypes = [
+    ctypes.POINTER(PositionBodyCStruct)
+]
+_cmavsdk_lib.mavsdk_telemetry_position_body_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_odometry_destroy.argtypes = [
+    ctypes.POINTER(OdometryCStruct)
+]
+_cmavsdk_lib.mavsdk_telemetry_odometry_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_distance_sensor_destroy.argtypes = [
+    ctypes.POINTER(DistanceSensorCStruct)
+]
+_cmavsdk_lib.mavsdk_telemetry_distance_sensor_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_scaled_pressure_destroy.argtypes = [
+    ctypes.POINTER(ScaledPressureCStruct)
+]
+_cmavsdk_lib.mavsdk_telemetry_scaled_pressure_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_position_ned_destroy.argtypes = [
+    ctypes.POINTER(PositionNedCStruct)
+]
+_cmavsdk_lib.mavsdk_telemetry_position_ned_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_velocity_ned_destroy.argtypes = [
+    ctypes.POINTER(VelocityNedCStruct)
+]
+_cmavsdk_lib.mavsdk_telemetry_velocity_ned_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_position_velocity_ned_destroy.argtypes = [
+    ctypes.POINTER(PositionVelocityNedCStruct)
+]
+_cmavsdk_lib.mavsdk_telemetry_position_velocity_ned_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_ground_truth_destroy.argtypes = [
+    ctypes.POINTER(GroundTruthCStruct)
+]
+_cmavsdk_lib.mavsdk_telemetry_ground_truth_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_fixedwing_metrics_destroy.argtypes = [
+    ctypes.POINTER(FixedwingMetricsCStruct)
+]
+_cmavsdk_lib.mavsdk_telemetry_fixedwing_metrics_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_acceleration_frd_destroy.argtypes = [
+    ctypes.POINTER(AccelerationFrdCStruct)
+]
+_cmavsdk_lib.mavsdk_telemetry_acceleration_frd_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_angular_velocity_frd_destroy.argtypes = [
+    ctypes.POINTER(AngularVelocityFrdCStruct)
+]
+_cmavsdk_lib.mavsdk_telemetry_angular_velocity_frd_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_magnetic_field_frd_destroy.argtypes = [
+    ctypes.POINTER(MagneticFieldFrdCStruct)
+]
+_cmavsdk_lib.mavsdk_telemetry_magnetic_field_frd_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_imu_destroy.argtypes = [
+    ctypes.POINTER(ImuCStruct)
+]
+_cmavsdk_lib.mavsdk_telemetry_imu_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_gps_global_origin_destroy.argtypes = [
+    ctypes.POINTER(GpsGlobalOriginCStruct)
+]
+_cmavsdk_lib.mavsdk_telemetry_gps_global_origin_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_altitude_destroy.argtypes = [
+    ctypes.POINTER(AltitudeCStruct)
+]
+_cmavsdk_lib.mavsdk_telemetry_altitude_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_wind_destroy.argtypes = [
+    ctypes.POINTER(WindCStruct)
+]
+_cmavsdk_lib.mavsdk_telemetry_wind_destroy.restype = None
+
+
+_cmavsdk_lib.mavsdk_telemetry_subscribe_position.argtypes = [
+    ctypes.c_void_p,
+    PositionCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_subscribe_position.restype = ctypes.c_void_p
+# Unsubscribe
+_cmavsdk_lib.mavsdk_telemetry_unsubscribe_position.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_unsubscribe_position.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_position.argtypes = [
+    ctypes.c_void_p,
+    ctypes.POINTER(PositionCStruct)
+]
+
+_cmavsdk_lib.mavsdk_telemetry_position.restype = None
+_cmavsdk_lib.mavsdk_telemetry_subscribe_home.argtypes = [
+    ctypes.c_void_p,
+    HomeCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_subscribe_home.restype = ctypes.c_void_p
+# Unsubscribe
+_cmavsdk_lib.mavsdk_telemetry_unsubscribe_home.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_unsubscribe_home.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_home.argtypes = [
+    ctypes.c_void_p,
+    ctypes.POINTER(PositionCStruct)
+]
+
+_cmavsdk_lib.mavsdk_telemetry_home.restype = None
+_cmavsdk_lib.mavsdk_telemetry_subscribe_in_air.argtypes = [
+    ctypes.c_void_p,
+    InAirCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_subscribe_in_air.restype = ctypes.c_void_p
+# Unsubscribe
+_cmavsdk_lib.mavsdk_telemetry_unsubscribe_in_air.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_unsubscribe_in_air.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_in_air.argtypes = [
+    ctypes.c_void_p,
+    ctypes.POINTER(ctypes.c_bool)
+]
+
+_cmavsdk_lib.mavsdk_telemetry_in_air.restype = None
+_cmavsdk_lib.mavsdk_telemetry_subscribe_landed_state.argtypes = [
+    ctypes.c_void_p,
+    LandedStateCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_subscribe_landed_state.restype = ctypes.c_void_p
+# Unsubscribe
+_cmavsdk_lib.mavsdk_telemetry_unsubscribe_landed_state.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_unsubscribe_landed_state.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_landed_state.argtypes = [
+    ctypes.c_void_p,
+    ctypes.POINTER(ctypes.c_int)
+]
+
+_cmavsdk_lib.mavsdk_telemetry_landed_state.restype = None
+_cmavsdk_lib.mavsdk_telemetry_subscribe_armed.argtypes = [
+    ctypes.c_void_p,
+    ArmedCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_subscribe_armed.restype = ctypes.c_void_p
+# Unsubscribe
+_cmavsdk_lib.mavsdk_telemetry_unsubscribe_armed.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_unsubscribe_armed.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_armed.argtypes = [
+    ctypes.c_void_p,
+    ctypes.POINTER(ctypes.c_bool)
+]
+
+_cmavsdk_lib.mavsdk_telemetry_armed.restype = None
+_cmavsdk_lib.mavsdk_telemetry_subscribe_vtol_state.argtypes = [
+    ctypes.c_void_p,
+    VtolStateCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_subscribe_vtol_state.restype = ctypes.c_void_p
+# Unsubscribe
+_cmavsdk_lib.mavsdk_telemetry_unsubscribe_vtol_state.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_unsubscribe_vtol_state.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_vtol_state.argtypes = [
+    ctypes.c_void_p,
+    ctypes.POINTER(ctypes.c_int)
+]
+
+_cmavsdk_lib.mavsdk_telemetry_vtol_state.restype = None
+_cmavsdk_lib.mavsdk_telemetry_subscribe_attitude_quaternion.argtypes = [
+    ctypes.c_void_p,
+    AttitudeQuaternionCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_subscribe_attitude_quaternion.restype = ctypes.c_void_p
+# Unsubscribe
+_cmavsdk_lib.mavsdk_telemetry_unsubscribe_attitude_quaternion.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_unsubscribe_attitude_quaternion.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_attitude_quaternion.argtypes = [
+    ctypes.c_void_p,
+    ctypes.POINTER(QuaternionCStruct)
+]
+
+_cmavsdk_lib.mavsdk_telemetry_attitude_quaternion.restype = None
+_cmavsdk_lib.mavsdk_telemetry_subscribe_attitude_euler.argtypes = [
+    ctypes.c_void_p,
+    AttitudeEulerCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_subscribe_attitude_euler.restype = ctypes.c_void_p
+# Unsubscribe
+_cmavsdk_lib.mavsdk_telemetry_unsubscribe_attitude_euler.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_unsubscribe_attitude_euler.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_attitude_euler.argtypes = [
+    ctypes.c_void_p,
+    ctypes.POINTER(EulerAngleCStruct)
+]
+
+_cmavsdk_lib.mavsdk_telemetry_attitude_euler.restype = None
+_cmavsdk_lib.mavsdk_telemetry_subscribe_attitude_angular_velocity_body.argtypes = [
+    ctypes.c_void_p,
+    AttitudeAngularVelocityBodyCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_subscribe_attitude_angular_velocity_body.restype = ctypes.c_void_p
+# Unsubscribe
+_cmavsdk_lib.mavsdk_telemetry_unsubscribe_attitude_angular_velocity_body.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_unsubscribe_attitude_angular_velocity_body.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_attitude_angular_velocity_body.argtypes = [
+    ctypes.c_void_p,
+    ctypes.POINTER(AngularVelocityBodyCStruct)
+]
+
+_cmavsdk_lib.mavsdk_telemetry_attitude_angular_velocity_body.restype = None
+_cmavsdk_lib.mavsdk_telemetry_subscribe_velocity_ned.argtypes = [
+    ctypes.c_void_p,
+    VelocityNedCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_subscribe_velocity_ned.restype = ctypes.c_void_p
+# Unsubscribe
+_cmavsdk_lib.mavsdk_telemetry_unsubscribe_velocity_ned.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_unsubscribe_velocity_ned.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_velocity_ned.argtypes = [
+    ctypes.c_void_p,
+    ctypes.POINTER(VelocityNedCStruct)
+]
+
+_cmavsdk_lib.mavsdk_telemetry_velocity_ned.restype = None
+_cmavsdk_lib.mavsdk_telemetry_subscribe_gps_info.argtypes = [
+    ctypes.c_void_p,
+    GpsInfoCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_subscribe_gps_info.restype = ctypes.c_void_p
+# Unsubscribe
+_cmavsdk_lib.mavsdk_telemetry_unsubscribe_gps_info.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_unsubscribe_gps_info.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_gps_info.argtypes = [
+    ctypes.c_void_p,
+    ctypes.POINTER(GpsInfoCStruct)
+]
+
+_cmavsdk_lib.mavsdk_telemetry_gps_info.restype = None
+_cmavsdk_lib.mavsdk_telemetry_subscribe_raw_gps.argtypes = [
+    ctypes.c_void_p,
+    RawGpsCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_subscribe_raw_gps.restype = ctypes.c_void_p
+# Unsubscribe
+_cmavsdk_lib.mavsdk_telemetry_unsubscribe_raw_gps.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_unsubscribe_raw_gps.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_raw_gps.argtypes = [
+    ctypes.c_void_p,
+    ctypes.POINTER(RawGpsCStruct)
+]
+
+_cmavsdk_lib.mavsdk_telemetry_raw_gps.restype = None
+_cmavsdk_lib.mavsdk_telemetry_subscribe_battery.argtypes = [
+    ctypes.c_void_p,
+    BatteryCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_subscribe_battery.restype = ctypes.c_void_p
+# Unsubscribe
+_cmavsdk_lib.mavsdk_telemetry_unsubscribe_battery.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_unsubscribe_battery.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_battery.argtypes = [
+    ctypes.c_void_p,
+    ctypes.POINTER(BatteryCStruct)
+]
+
+_cmavsdk_lib.mavsdk_telemetry_battery.restype = None
+_cmavsdk_lib.mavsdk_telemetry_subscribe_flight_mode.argtypes = [
+    ctypes.c_void_p,
+    FlightModeCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_subscribe_flight_mode.restype = ctypes.c_void_p
+# Unsubscribe
+_cmavsdk_lib.mavsdk_telemetry_unsubscribe_flight_mode.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_unsubscribe_flight_mode.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_flight_mode.argtypes = [
+    ctypes.c_void_p,
+    ctypes.POINTER(ctypes.c_int)
+]
+
+_cmavsdk_lib.mavsdk_telemetry_flight_mode.restype = None
+_cmavsdk_lib.mavsdk_telemetry_subscribe_health.argtypes = [
+    ctypes.c_void_p,
+    HealthCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_subscribe_health.restype = ctypes.c_void_p
+# Unsubscribe
+_cmavsdk_lib.mavsdk_telemetry_unsubscribe_health.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_unsubscribe_health.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_health.argtypes = [
+    ctypes.c_void_p,
+    ctypes.POINTER(HealthCStruct)
+]
+
+_cmavsdk_lib.mavsdk_telemetry_health.restype = None
+_cmavsdk_lib.mavsdk_telemetry_subscribe_rc_status.argtypes = [
+    ctypes.c_void_p,
+    RcStatusCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_subscribe_rc_status.restype = ctypes.c_void_p
+# Unsubscribe
+_cmavsdk_lib.mavsdk_telemetry_unsubscribe_rc_status.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_unsubscribe_rc_status.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_rc_status.argtypes = [
+    ctypes.c_void_p,
+    ctypes.POINTER(RcStatusCStruct)
+]
+
+_cmavsdk_lib.mavsdk_telemetry_rc_status.restype = None
+_cmavsdk_lib.mavsdk_telemetry_subscribe_status_text.argtypes = [
+    ctypes.c_void_p,
+    StatusTextCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_subscribe_status_text.restype = ctypes.c_void_p
+# Unsubscribe
+_cmavsdk_lib.mavsdk_telemetry_unsubscribe_status_text.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_unsubscribe_status_text.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_status_text.argtypes = [
+    ctypes.c_void_p,
+    ctypes.POINTER(StatusTextCStruct)
+]
+
+_cmavsdk_lib.mavsdk_telemetry_status_text.restype = None
+_cmavsdk_lib.mavsdk_telemetry_subscribe_actuator_control_target.argtypes = [
+    ctypes.c_void_p,
+    ActuatorControlTargetCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_subscribe_actuator_control_target.restype = ctypes.c_void_p
+# Unsubscribe
+_cmavsdk_lib.mavsdk_telemetry_unsubscribe_actuator_control_target.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_unsubscribe_actuator_control_target.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_actuator_control_target.argtypes = [
+    ctypes.c_void_p,
+    ctypes.POINTER(ActuatorControlTargetCStruct)
+]
+
+_cmavsdk_lib.mavsdk_telemetry_actuator_control_target.restype = None
+_cmavsdk_lib.mavsdk_telemetry_subscribe_actuator_output_status.argtypes = [
+    ctypes.c_void_p,
+    ActuatorOutputStatusCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_subscribe_actuator_output_status.restype = ctypes.c_void_p
+# Unsubscribe
+_cmavsdk_lib.mavsdk_telemetry_unsubscribe_actuator_output_status.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_unsubscribe_actuator_output_status.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_actuator_output_status.argtypes = [
+    ctypes.c_void_p,
+    ctypes.POINTER(ActuatorOutputStatusCStruct)
+]
+
+_cmavsdk_lib.mavsdk_telemetry_actuator_output_status.restype = None
+_cmavsdk_lib.mavsdk_telemetry_subscribe_odometry.argtypes = [
+    ctypes.c_void_p,
+    OdometryCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_subscribe_odometry.restype = ctypes.c_void_p
+# Unsubscribe
+_cmavsdk_lib.mavsdk_telemetry_unsubscribe_odometry.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_unsubscribe_odometry.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_odometry.argtypes = [
+    ctypes.c_void_p,
+    ctypes.POINTER(OdometryCStruct)
+]
+
+_cmavsdk_lib.mavsdk_telemetry_odometry.restype = None
+_cmavsdk_lib.mavsdk_telemetry_subscribe_position_velocity_ned.argtypes = [
+    ctypes.c_void_p,
+    PositionVelocityNedCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_subscribe_position_velocity_ned.restype = ctypes.c_void_p
+# Unsubscribe
+_cmavsdk_lib.mavsdk_telemetry_unsubscribe_position_velocity_ned.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_unsubscribe_position_velocity_ned.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_position_velocity_ned.argtypes = [
+    ctypes.c_void_p,
+    ctypes.POINTER(PositionVelocityNedCStruct)
+]
+
+_cmavsdk_lib.mavsdk_telemetry_position_velocity_ned.restype = None
+_cmavsdk_lib.mavsdk_telemetry_subscribe_ground_truth.argtypes = [
+    ctypes.c_void_p,
+    GroundTruthCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_subscribe_ground_truth.restype = ctypes.c_void_p
+# Unsubscribe
+_cmavsdk_lib.mavsdk_telemetry_unsubscribe_ground_truth.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_unsubscribe_ground_truth.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_ground_truth.argtypes = [
+    ctypes.c_void_p,
+    ctypes.POINTER(GroundTruthCStruct)
+]
+
+_cmavsdk_lib.mavsdk_telemetry_ground_truth.restype = None
+_cmavsdk_lib.mavsdk_telemetry_subscribe_fixedwing_metrics.argtypes = [
+    ctypes.c_void_p,
+    FixedwingMetricsCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_subscribe_fixedwing_metrics.restype = ctypes.c_void_p
+# Unsubscribe
+_cmavsdk_lib.mavsdk_telemetry_unsubscribe_fixedwing_metrics.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_unsubscribe_fixedwing_metrics.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_fixedwing_metrics.argtypes = [
+    ctypes.c_void_p,
+    ctypes.POINTER(FixedwingMetricsCStruct)
+]
+
+_cmavsdk_lib.mavsdk_telemetry_fixedwing_metrics.restype = None
+_cmavsdk_lib.mavsdk_telemetry_subscribe_imu.argtypes = [
+    ctypes.c_void_p,
+    ImuCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_subscribe_imu.restype = ctypes.c_void_p
+# Unsubscribe
+_cmavsdk_lib.mavsdk_telemetry_unsubscribe_imu.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_unsubscribe_imu.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_imu.argtypes = [
+    ctypes.c_void_p,
+    ctypes.POINTER(ImuCStruct)
+]
+
+_cmavsdk_lib.mavsdk_telemetry_imu.restype = None
+_cmavsdk_lib.mavsdk_telemetry_subscribe_scaled_imu.argtypes = [
+    ctypes.c_void_p,
+    ScaledImuCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_subscribe_scaled_imu.restype = ctypes.c_void_p
+# Unsubscribe
+_cmavsdk_lib.mavsdk_telemetry_unsubscribe_scaled_imu.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_unsubscribe_scaled_imu.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_scaled_imu.argtypes = [
+    ctypes.c_void_p,
+    ctypes.POINTER(ImuCStruct)
+]
+
+_cmavsdk_lib.mavsdk_telemetry_scaled_imu.restype = None
+_cmavsdk_lib.mavsdk_telemetry_subscribe_raw_imu.argtypes = [
+    ctypes.c_void_p,
+    RawImuCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_subscribe_raw_imu.restype = ctypes.c_void_p
+# Unsubscribe
+_cmavsdk_lib.mavsdk_telemetry_unsubscribe_raw_imu.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_unsubscribe_raw_imu.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_raw_imu.argtypes = [
+    ctypes.c_void_p,
+    ctypes.POINTER(ImuCStruct)
+]
+
+_cmavsdk_lib.mavsdk_telemetry_raw_imu.restype = None
+_cmavsdk_lib.mavsdk_telemetry_subscribe_health_all_ok.argtypes = [
+    ctypes.c_void_p,
+    HealthAllOkCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_subscribe_health_all_ok.restype = ctypes.c_void_p
+# Unsubscribe
+_cmavsdk_lib.mavsdk_telemetry_unsubscribe_health_all_ok.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_unsubscribe_health_all_ok.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_health_all_ok.argtypes = [
+    ctypes.c_void_p,
+    ctypes.POINTER(ctypes.c_bool)
+]
+
+_cmavsdk_lib.mavsdk_telemetry_health_all_ok.restype = None
+_cmavsdk_lib.mavsdk_telemetry_subscribe_unix_epoch_time.argtypes = [
+    ctypes.c_void_p,
+    UnixEpochTimeCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_subscribe_unix_epoch_time.restype = ctypes.c_void_p
+# Unsubscribe
+_cmavsdk_lib.mavsdk_telemetry_unsubscribe_unix_epoch_time.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_unsubscribe_unix_epoch_time.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_unix_epoch_time.argtypes = [
+    ctypes.c_void_p,
+    ctypes.POINTER(ctypes.c_uint64)
+]
+
+_cmavsdk_lib.mavsdk_telemetry_unix_epoch_time.restype = None
+_cmavsdk_lib.mavsdk_telemetry_subscribe_distance_sensor.argtypes = [
+    ctypes.c_void_p,
+    DistanceSensorCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_subscribe_distance_sensor.restype = ctypes.c_void_p
+# Unsubscribe
+_cmavsdk_lib.mavsdk_telemetry_unsubscribe_distance_sensor.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_unsubscribe_distance_sensor.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_distance_sensor.argtypes = [
+    ctypes.c_void_p,
+    ctypes.POINTER(DistanceSensorCStruct)
+]
+
+_cmavsdk_lib.mavsdk_telemetry_distance_sensor.restype = None
+_cmavsdk_lib.mavsdk_telemetry_subscribe_scaled_pressure.argtypes = [
+    ctypes.c_void_p,
+    ScaledPressureCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_subscribe_scaled_pressure.restype = ctypes.c_void_p
+# Unsubscribe
+_cmavsdk_lib.mavsdk_telemetry_unsubscribe_scaled_pressure.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_unsubscribe_scaled_pressure.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_scaled_pressure.argtypes = [
+    ctypes.c_void_p,
+    ctypes.POINTER(ScaledPressureCStruct)
+]
+
+_cmavsdk_lib.mavsdk_telemetry_scaled_pressure.restype = None
+_cmavsdk_lib.mavsdk_telemetry_subscribe_heading.argtypes = [
+    ctypes.c_void_p,
+    HeadingCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_subscribe_heading.restype = ctypes.c_void_p
+# Unsubscribe
+_cmavsdk_lib.mavsdk_telemetry_unsubscribe_heading.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_unsubscribe_heading.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_heading.argtypes = [
+    ctypes.c_void_p,
+    ctypes.POINTER(HeadingCStruct)
+]
+
+_cmavsdk_lib.mavsdk_telemetry_heading.restype = None
+_cmavsdk_lib.mavsdk_telemetry_subscribe_altitude.argtypes = [
+    ctypes.c_void_p,
+    AltitudeCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_subscribe_altitude.restype = ctypes.c_void_p
+# Unsubscribe
+_cmavsdk_lib.mavsdk_telemetry_unsubscribe_altitude.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_unsubscribe_altitude.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_altitude.argtypes = [
+    ctypes.c_void_p,
+    ctypes.POINTER(AltitudeCStruct)
+]
+
+_cmavsdk_lib.mavsdk_telemetry_altitude.restype = None
+_cmavsdk_lib.mavsdk_telemetry_subscribe_wind.argtypes = [
+    ctypes.c_void_p,
+    WindCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_subscribe_wind.restype = ctypes.c_void_p
+# Unsubscribe
+_cmavsdk_lib.mavsdk_telemetry_unsubscribe_wind.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_unsubscribe_wind.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_wind.argtypes = [
+    ctypes.c_void_p,
+    ctypes.POINTER(WindCStruct)
+]
+
+_cmavsdk_lib.mavsdk_telemetry_wind.restype = None
+_cmavsdk_lib.mavsdk_telemetry_set_rate_position_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_double,
+    SetRatePositionCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_set_rate_position_async.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_set_rate_position.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_double,
+]
+
+_cmavsdk_lib.mavsdk_telemetry_set_rate_position.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_telemetry_set_rate_home_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_double,
+    SetRateHomeCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_set_rate_home_async.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_set_rate_home.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_double,
+]
+
+_cmavsdk_lib.mavsdk_telemetry_set_rate_home.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_telemetry_set_rate_in_air_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_double,
+    SetRateInAirCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_set_rate_in_air_async.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_set_rate_in_air.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_double,
+]
+
+_cmavsdk_lib.mavsdk_telemetry_set_rate_in_air.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_telemetry_set_rate_landed_state_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_double,
+    SetRateLandedStateCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_set_rate_landed_state_async.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_set_rate_landed_state.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_double,
+]
+
+_cmavsdk_lib.mavsdk_telemetry_set_rate_landed_state.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_telemetry_set_rate_vtol_state_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_double,
+    SetRateVtolStateCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_set_rate_vtol_state_async.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_set_rate_vtol_state.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_double,
+]
+
+_cmavsdk_lib.mavsdk_telemetry_set_rate_vtol_state.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_telemetry_set_rate_attitude_quaternion_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_double,
+    SetRateAttitudeQuaternionCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_set_rate_attitude_quaternion_async.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_set_rate_attitude_quaternion.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_double,
+]
+
+_cmavsdk_lib.mavsdk_telemetry_set_rate_attitude_quaternion.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_telemetry_set_rate_attitude_euler_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_double,
+    SetRateAttitudeEulerCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_set_rate_attitude_euler_async.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_set_rate_attitude_euler.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_double,
+]
+
+_cmavsdk_lib.mavsdk_telemetry_set_rate_attitude_euler.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_telemetry_set_rate_velocity_ned_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_double,
+    SetRateVelocityNedCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_set_rate_velocity_ned_async.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_set_rate_velocity_ned.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_double,
+]
+
+_cmavsdk_lib.mavsdk_telemetry_set_rate_velocity_ned.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_telemetry_set_rate_gps_info_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_double,
+    SetRateGpsInfoCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_set_rate_gps_info_async.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_set_rate_gps_info.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_double,
+]
+
+_cmavsdk_lib.mavsdk_telemetry_set_rate_gps_info.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_telemetry_set_rate_battery_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_double,
+    SetRateBatteryCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_set_rate_battery_async.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_set_rate_battery.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_double,
+]
+
+_cmavsdk_lib.mavsdk_telemetry_set_rate_battery.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_telemetry_set_rate_rc_status_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_double,
+    SetRateRcStatusCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_set_rate_rc_status_async.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_set_rate_rc_status.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_double,
+]
+
+_cmavsdk_lib.mavsdk_telemetry_set_rate_rc_status.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_telemetry_set_rate_actuator_control_target_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_double,
+    SetRateActuatorControlTargetCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_set_rate_actuator_control_target_async.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_set_rate_actuator_control_target.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_double,
+]
+
+_cmavsdk_lib.mavsdk_telemetry_set_rate_actuator_control_target.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_telemetry_set_rate_actuator_output_status_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_double,
+    SetRateActuatorOutputStatusCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_set_rate_actuator_output_status_async.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_set_rate_actuator_output_status.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_double,
+]
+
+_cmavsdk_lib.mavsdk_telemetry_set_rate_actuator_output_status.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_telemetry_set_rate_odometry_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_double,
+    SetRateOdometryCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_set_rate_odometry_async.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_set_rate_odometry.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_double,
+]
+
+_cmavsdk_lib.mavsdk_telemetry_set_rate_odometry.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_telemetry_set_rate_position_velocity_ned_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_double,
+    SetRatePositionVelocityNedCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_set_rate_position_velocity_ned_async.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_set_rate_position_velocity_ned.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_double,
+]
+
+_cmavsdk_lib.mavsdk_telemetry_set_rate_position_velocity_ned.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_telemetry_set_rate_ground_truth_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_double,
+    SetRateGroundTruthCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_set_rate_ground_truth_async.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_set_rate_ground_truth.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_double,
+]
+
+_cmavsdk_lib.mavsdk_telemetry_set_rate_ground_truth.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_telemetry_set_rate_fixedwing_metrics_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_double,
+    SetRateFixedwingMetricsCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_set_rate_fixedwing_metrics_async.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_set_rate_fixedwing_metrics.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_double,
+]
+
+_cmavsdk_lib.mavsdk_telemetry_set_rate_fixedwing_metrics.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_telemetry_set_rate_imu_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_double,
+    SetRateImuCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_set_rate_imu_async.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_set_rate_imu.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_double,
+]
+
+_cmavsdk_lib.mavsdk_telemetry_set_rate_imu.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_telemetry_set_rate_scaled_imu_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_double,
+    SetRateScaledImuCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_set_rate_scaled_imu_async.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_set_rate_scaled_imu.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_double,
+]
+
+_cmavsdk_lib.mavsdk_telemetry_set_rate_scaled_imu.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_telemetry_set_rate_raw_imu_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_double,
+    SetRateRawImuCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_set_rate_raw_imu_async.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_set_rate_raw_imu.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_double,
+]
+
+_cmavsdk_lib.mavsdk_telemetry_set_rate_raw_imu.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_telemetry_set_rate_unix_epoch_time_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_double,
+    SetRateUnixEpochTimeCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_set_rate_unix_epoch_time_async.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_set_rate_unix_epoch_time.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_double,
+]
+
+_cmavsdk_lib.mavsdk_telemetry_set_rate_unix_epoch_time.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_telemetry_set_rate_distance_sensor_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_double,
+    SetRateDistanceSensorCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_set_rate_distance_sensor_async.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_set_rate_distance_sensor.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_double,
+]
+
+_cmavsdk_lib.mavsdk_telemetry_set_rate_distance_sensor.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_telemetry_set_rate_altitude_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_double,
+    SetRateAltitudeCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_set_rate_altitude_async.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_set_rate_altitude.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_double,
+]
+
+_cmavsdk_lib.mavsdk_telemetry_set_rate_altitude.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_telemetry_set_rate_health_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_double,
+    SetRateHealthCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_set_rate_health_async.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_set_rate_health.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_double,
+]
+
+_cmavsdk_lib.mavsdk_telemetry_set_rate_health.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_telemetry_get_gps_global_origin_async.argtypes = [
+    ctypes.c_void_p,
+    GetGpsGlobalOriginCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_telemetry_get_gps_global_origin_async.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_get_gps_global_origin.argtypes = [
+    ctypes.c_void_p,
+    ctypes.POINTER(GpsGlobalOriginCStruct)
+]
+
+_cmavsdk_lib.mavsdk_telemetry_get_gps_global_origin.restype = ctypes.c_int

@@ -9,7 +9,7 @@ Allow users to get ADS-B information
 
 import ctypes
 
-from typing import Optional, List, Callable, Any
+from typing import Callable, Any
 from enum import IntEnum
 
 from ...cmavsdk_loader import _cmavsdk_lib
@@ -196,7 +196,8 @@ TransponderCallback = ctypes.CFUNCTYPE(
 )
 SetRateTransponderCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 
 
@@ -208,8 +209,6 @@ class Transponder:
         self._lib = _cmavsdk_lib
         self._handle = None
         self._callbacks = []  # Keep references to prevent GC
-
-        self._setup_functions()
 
         if system is None:
             raise ValueError("system cannot be None")
@@ -223,59 +222,6 @@ class Transponder:
 
         if not self._handle:
             raise RuntimeError("Failed to create Transponder plugin - C function returned null handle")
-
-    def _setup_functions(self):
-        """Setup C function signatures"""
-
-        # Create/Destroy
-        self._lib.mavsdk_transponder_create.argtypes = [ctypes.c_void_p]
-        self._lib.mavsdk_transponder_create.restype = ctypes.c_void_p
-
-        self._lib.mavsdk_transponder_destroy.argtypes = [ctypes.c_void_p]
-        self._lib.mavsdk_transponder_destroy.restype = None
-
-        self._lib.mavsdk_transponder_adsb_vehicle_destroy.argtypes = [
-            ctypes.POINTER(AdsbVehicleCStruct)
-        ]
-        self._lib.mavsdk_transponder_adsb_vehicle_destroy.restype = None
-
-
-        self._lib.mavsdk_transponder_subscribe_transponder.argtypes = [
-            ctypes.c_void_p,
-            TransponderCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_transponder_subscribe_transponder.restype = ctypes.c_void_p
-        # Unsubscribe
-        self._lib.mavsdk_transponder_unsubscribe_transponder.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_transponder_unsubscribe_transponder.restype = None
-
-        self._lib.mavsdk_transponder_transponder.argtypes = [
-            ctypes.c_void_p,
-            ctypes.POINTER(AdsbVehicleCStruct)
-        ]
-
-        self._lib.mavsdk_transponder_transponder.restype = None
-        self._lib.mavsdk_transponder_set_rate_transponder_async.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_double,
-            SetRateTransponderCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_transponder_set_rate_transponder_async.restype = None
-
-        self._lib.mavsdk_transponder_set_rate_transponder.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_double,
-        ]
-
-        self._lib.mavsdk_transponder_set_rate_transponder.restype = ctypes.c_int
 
 
     def subscribe_transponder(self, callback: Callable, user_data: Any = None):
@@ -365,3 +311,52 @@ class Transponder:
 
     def __del__(self):
         self.destroy()
+
+_cmavsdk_lib.mavsdk_transponder_create.argtypes = [ctypes.c_void_p]
+_cmavsdk_lib.mavsdk_transponder_create.restype = ctypes.c_void_p
+
+_cmavsdk_lib.mavsdk_transponder_destroy.argtypes = [ctypes.c_void_p]
+_cmavsdk_lib.mavsdk_transponder_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_transponder_adsb_vehicle_destroy.argtypes = [
+    ctypes.POINTER(AdsbVehicleCStruct)
+]
+_cmavsdk_lib.mavsdk_transponder_adsb_vehicle_destroy.restype = None
+
+
+_cmavsdk_lib.mavsdk_transponder_subscribe_transponder.argtypes = [
+    ctypes.c_void_p,
+    TransponderCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_transponder_subscribe_transponder.restype = ctypes.c_void_p
+# Unsubscribe
+_cmavsdk_lib.mavsdk_transponder_unsubscribe_transponder.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_transponder_unsubscribe_transponder.restype = None
+
+_cmavsdk_lib.mavsdk_transponder_transponder.argtypes = [
+    ctypes.c_void_p,
+    ctypes.POINTER(AdsbVehicleCStruct)
+]
+
+_cmavsdk_lib.mavsdk_transponder_transponder.restype = None
+_cmavsdk_lib.mavsdk_transponder_set_rate_transponder_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_double,
+    SetRateTransponderCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_transponder_set_rate_transponder_async.restype = None
+
+_cmavsdk_lib.mavsdk_transponder_set_rate_transponder.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_double,
+]
+
+_cmavsdk_lib.mavsdk_transponder_set_rate_transponder.restype = ctypes.c_int

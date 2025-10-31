@@ -15,7 +15,7 @@ Control a drone with position, velocity, attitude or motor commands.
 
 import ctypes
 
-from typing import Optional, List, Callable, Any
+from typing import Callable, Any
 from enum import IntEnum
 
 from ...cmavsdk_loader import _cmavsdk_lib
@@ -597,11 +597,13 @@ class AccelerationNed:
 # ===== Callback Types =====
 StartCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 StopCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 
 
@@ -620,8 +622,6 @@ class Offboard:
         self._handle = None
         self._callbacks = []  # Keep references to prevent GC
 
-        self._setup_functions()
-
         if system is None:
             raise ValueError("system cannot be None")
 
@@ -634,169 +634,6 @@ class Offboard:
 
         if not self._handle:
             raise RuntimeError("Failed to create Offboard plugin - C function returned null handle")
-
-    def _setup_functions(self):
-        """Setup C function signatures"""
-
-        # Create/Destroy
-        self._lib.mavsdk_offboard_create.argtypes = [ctypes.c_void_p]
-        self._lib.mavsdk_offboard_create.restype = ctypes.c_void_p
-
-        self._lib.mavsdk_offboard_destroy.argtypes = [ctypes.c_void_p]
-        self._lib.mavsdk_offboard_destroy.restype = None
-
-        self._lib.mavsdk_offboard_attitude_destroy.argtypes = [
-            ctypes.POINTER(AttitudeCStruct)
-        ]
-        self._lib.mavsdk_offboard_attitude_destroy.restype = None
-
-        self._lib.mavsdk_offboard_actuator_control_group_destroy.argtypes = [
-            ctypes.POINTER(ActuatorControlGroupCStruct)
-        ]
-        self._lib.mavsdk_offboard_actuator_control_group_destroy.restype = None
-
-        self._lib.mavsdk_offboard_actuator_control_destroy.argtypes = [
-            ctypes.POINTER(ActuatorControlCStruct)
-        ]
-        self._lib.mavsdk_offboard_actuator_control_destroy.restype = None
-
-        self._lib.mavsdk_offboard_attitude_rate_destroy.argtypes = [
-            ctypes.POINTER(AttitudeRateCStruct)
-        ]
-        self._lib.mavsdk_offboard_attitude_rate_destroy.restype = None
-
-        self._lib.mavsdk_offboard_position_ned_yaw_destroy.argtypes = [
-            ctypes.POINTER(PositionNedYawCStruct)
-        ]
-        self._lib.mavsdk_offboard_position_ned_yaw_destroy.restype = None
-
-        self._lib.mavsdk_offboard_position_global_yaw_destroy.argtypes = [
-            ctypes.POINTER(PositionGlobalYawCStruct)
-        ]
-        self._lib.mavsdk_offboard_position_global_yaw_destroy.restype = None
-
-        self._lib.mavsdk_offboard_velocity_body_yawspeed_destroy.argtypes = [
-            ctypes.POINTER(VelocityBodyYawspeedCStruct)
-        ]
-        self._lib.mavsdk_offboard_velocity_body_yawspeed_destroy.restype = None
-
-        self._lib.mavsdk_offboard_velocity_ned_yaw_destroy.argtypes = [
-            ctypes.POINTER(VelocityNedYawCStruct)
-        ]
-        self._lib.mavsdk_offboard_velocity_ned_yaw_destroy.restype = None
-
-        self._lib.mavsdk_offboard_acceleration_ned_destroy.argtypes = [
-            ctypes.POINTER(AccelerationNedCStruct)
-        ]
-        self._lib.mavsdk_offboard_acceleration_ned_destroy.restype = None
-
-
-        self._lib.mavsdk_offboard_start_async.argtypes = [
-            ctypes.c_void_p,
-            StartCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_offboard_start_async.restype = None
-
-        self._lib.mavsdk_offboard_start.argtypes = [
-            ctypes.c_void_p,
-        ]
-
-        self._lib.mavsdk_offboard_start.restype = ctypes.c_int
-        self._lib.mavsdk_offboard_stop_async.argtypes = [
-            ctypes.c_void_p,
-            StopCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_offboard_stop_async.restype = None
-
-        self._lib.mavsdk_offboard_stop.argtypes = [
-            ctypes.c_void_p,
-        ]
-
-        self._lib.mavsdk_offboard_stop.restype = ctypes.c_int
-
-        self._lib.mavsdk_offboard_is_active.argtypes = [
-            ctypes.c_void_p,
-            ctypes.POINTER(ctypes.c_bool)
-        ]
-
-        self._lib.mavsdk_offboard_is_active.restype = None
-
-        self._lib.mavsdk_offboard_set_attitude.argtypes = [
-            ctypes.c_void_p,
-            AttitudeCStruct,
-        ]
-
-        self._lib.mavsdk_offboard_set_attitude.restype = ctypes.c_int
-
-        self._lib.mavsdk_offboard_set_actuator_control.argtypes = [
-            ctypes.c_void_p,
-            ActuatorControlCStruct,
-        ]
-
-        self._lib.mavsdk_offboard_set_actuator_control.restype = ctypes.c_int
-
-        self._lib.mavsdk_offboard_set_attitude_rate.argtypes = [
-            ctypes.c_void_p,
-            AttitudeRateCStruct,
-        ]
-
-        self._lib.mavsdk_offboard_set_attitude_rate.restype = ctypes.c_int
-
-        self._lib.mavsdk_offboard_set_position_ned.argtypes = [
-            ctypes.c_void_p,
-            PositionNedYawCStruct,
-        ]
-
-        self._lib.mavsdk_offboard_set_position_ned.restype = ctypes.c_int
-
-        self._lib.mavsdk_offboard_set_position_global.argtypes = [
-            ctypes.c_void_p,
-            PositionGlobalYawCStruct,
-        ]
-
-        self._lib.mavsdk_offboard_set_position_global.restype = ctypes.c_int
-
-        self._lib.mavsdk_offboard_set_velocity_body.argtypes = [
-            ctypes.c_void_p,
-            VelocityBodyYawspeedCStruct,
-        ]
-
-        self._lib.mavsdk_offboard_set_velocity_body.restype = ctypes.c_int
-
-        self._lib.mavsdk_offboard_set_velocity_ned.argtypes = [
-            ctypes.c_void_p,
-            VelocityNedYawCStruct,
-        ]
-
-        self._lib.mavsdk_offboard_set_velocity_ned.restype = ctypes.c_int
-
-        self._lib.mavsdk_offboard_set_position_velocity_ned.argtypes = [
-            ctypes.c_void_p,
-            PositionNedYawCStruct,
-            VelocityNedYawCStruct,
-        ]
-
-        self._lib.mavsdk_offboard_set_position_velocity_ned.restype = ctypes.c_int
-
-        self._lib.mavsdk_offboard_set_position_velocity_acceleration_ned.argtypes = [
-            ctypes.c_void_p,
-            PositionNedYawCStruct,
-            VelocityNedYawCStruct,
-            AccelerationNedCStruct,
-        ]
-
-        self._lib.mavsdk_offboard_set_position_velocity_acceleration_ned.restype = ctypes.c_int
-
-        self._lib.mavsdk_offboard_set_acceleration_ned.argtypes = [
-            ctypes.c_void_p,
-            AccelerationNedCStruct,
-        ]
-
-        self._lib.mavsdk_offboard_set_acceleration_ned.restype = ctypes.c_int
 
 
     def start_async(self, callback: Callable, user_data: Any = None):
@@ -1008,3 +845,162 @@ class Offboard:
 
     def __del__(self):
         self.destroy()
+
+_cmavsdk_lib.mavsdk_offboard_create.argtypes = [ctypes.c_void_p]
+_cmavsdk_lib.mavsdk_offboard_create.restype = ctypes.c_void_p
+
+_cmavsdk_lib.mavsdk_offboard_destroy.argtypes = [ctypes.c_void_p]
+_cmavsdk_lib.mavsdk_offboard_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_offboard_attitude_destroy.argtypes = [
+    ctypes.POINTER(AttitudeCStruct)
+]
+_cmavsdk_lib.mavsdk_offboard_attitude_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_offboard_actuator_control_group_destroy.argtypes = [
+    ctypes.POINTER(ActuatorControlGroupCStruct)
+]
+_cmavsdk_lib.mavsdk_offboard_actuator_control_group_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_offboard_actuator_control_destroy.argtypes = [
+    ctypes.POINTER(ActuatorControlCStruct)
+]
+_cmavsdk_lib.mavsdk_offboard_actuator_control_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_offboard_attitude_rate_destroy.argtypes = [
+    ctypes.POINTER(AttitudeRateCStruct)
+]
+_cmavsdk_lib.mavsdk_offboard_attitude_rate_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_offboard_position_ned_yaw_destroy.argtypes = [
+    ctypes.POINTER(PositionNedYawCStruct)
+]
+_cmavsdk_lib.mavsdk_offboard_position_ned_yaw_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_offboard_position_global_yaw_destroy.argtypes = [
+    ctypes.POINTER(PositionGlobalYawCStruct)
+]
+_cmavsdk_lib.mavsdk_offboard_position_global_yaw_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_offboard_velocity_body_yawspeed_destroy.argtypes = [
+    ctypes.POINTER(VelocityBodyYawspeedCStruct)
+]
+_cmavsdk_lib.mavsdk_offboard_velocity_body_yawspeed_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_offboard_velocity_ned_yaw_destroy.argtypes = [
+    ctypes.POINTER(VelocityNedYawCStruct)
+]
+_cmavsdk_lib.mavsdk_offboard_velocity_ned_yaw_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_offboard_acceleration_ned_destroy.argtypes = [
+    ctypes.POINTER(AccelerationNedCStruct)
+]
+_cmavsdk_lib.mavsdk_offboard_acceleration_ned_destroy.restype = None
+
+
+_cmavsdk_lib.mavsdk_offboard_start_async.argtypes = [
+    ctypes.c_void_p,
+    StartCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_offboard_start_async.restype = None
+
+_cmavsdk_lib.mavsdk_offboard_start.argtypes = [
+    ctypes.c_void_p,
+]
+
+_cmavsdk_lib.mavsdk_offboard_start.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_offboard_stop_async.argtypes = [
+    ctypes.c_void_p,
+    StopCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_offboard_stop_async.restype = None
+
+_cmavsdk_lib.mavsdk_offboard_stop.argtypes = [
+    ctypes.c_void_p,
+]
+
+_cmavsdk_lib.mavsdk_offboard_stop.restype = ctypes.c_int
+
+_cmavsdk_lib.mavsdk_offboard_is_active.argtypes = [
+    ctypes.c_void_p,
+    ctypes.POINTER(ctypes.c_bool)
+]
+
+_cmavsdk_lib.mavsdk_offboard_is_active.restype = None
+
+_cmavsdk_lib.mavsdk_offboard_set_attitude.argtypes = [
+    ctypes.c_void_p,
+    AttitudeCStruct,
+]
+
+_cmavsdk_lib.mavsdk_offboard_set_attitude.restype = ctypes.c_int
+
+_cmavsdk_lib.mavsdk_offboard_set_actuator_control.argtypes = [
+    ctypes.c_void_p,
+    ActuatorControlCStruct,
+]
+
+_cmavsdk_lib.mavsdk_offboard_set_actuator_control.restype = ctypes.c_int
+
+_cmavsdk_lib.mavsdk_offboard_set_attitude_rate.argtypes = [
+    ctypes.c_void_p,
+    AttitudeRateCStruct,
+]
+
+_cmavsdk_lib.mavsdk_offboard_set_attitude_rate.restype = ctypes.c_int
+
+_cmavsdk_lib.mavsdk_offboard_set_position_ned.argtypes = [
+    ctypes.c_void_p,
+    PositionNedYawCStruct,
+]
+
+_cmavsdk_lib.mavsdk_offboard_set_position_ned.restype = ctypes.c_int
+
+_cmavsdk_lib.mavsdk_offboard_set_position_global.argtypes = [
+    ctypes.c_void_p,
+    PositionGlobalYawCStruct,
+]
+
+_cmavsdk_lib.mavsdk_offboard_set_position_global.restype = ctypes.c_int
+
+_cmavsdk_lib.mavsdk_offboard_set_velocity_body.argtypes = [
+    ctypes.c_void_p,
+    VelocityBodyYawspeedCStruct,
+]
+
+_cmavsdk_lib.mavsdk_offboard_set_velocity_body.restype = ctypes.c_int
+
+_cmavsdk_lib.mavsdk_offboard_set_velocity_ned.argtypes = [
+    ctypes.c_void_p,
+    VelocityNedYawCStruct,
+]
+
+_cmavsdk_lib.mavsdk_offboard_set_velocity_ned.restype = ctypes.c_int
+
+_cmavsdk_lib.mavsdk_offboard_set_position_velocity_ned.argtypes = [
+    ctypes.c_void_p,
+    PositionNedYawCStruct,
+    VelocityNedYawCStruct,
+]
+
+_cmavsdk_lib.mavsdk_offboard_set_position_velocity_ned.restype = ctypes.c_int
+
+_cmavsdk_lib.mavsdk_offboard_set_position_velocity_acceleration_ned.argtypes = [
+    ctypes.c_void_p,
+    PositionNedYawCStruct,
+    VelocityNedYawCStruct,
+    AccelerationNedCStruct,
+]
+
+_cmavsdk_lib.mavsdk_offboard_set_position_velocity_acceleration_ned.restype = ctypes.c_int
+
+_cmavsdk_lib.mavsdk_offboard_set_acceleration_ned.argtypes = [
+    ctypes.c_void_p,
+    AccelerationNedCStruct,
+]
+
+_cmavsdk_lib.mavsdk_offboard_set_acceleration_ned.restype = ctypes.c_int

@@ -8,7 +8,7 @@ Provide information about the hardware and/or software of a system.
 
 import ctypes
 
-from typing import Optional, List, Callable, Any
+from typing import Callable, Any
 from enum import IntEnum
 
 from ...cmavsdk_loader import _cmavsdk_lib
@@ -346,8 +346,6 @@ class Info:
         self._handle = None
         self._callbacks = []  # Keep references to prevent GC
 
-        self._setup_functions()
-
         if system is None:
             raise ValueError("system cannot be None")
 
@@ -360,88 +358,6 @@ class Info:
 
         if not self._handle:
             raise RuntimeError("Failed to create Info plugin - C function returned null handle")
-
-    def _setup_functions(self):
-        """Setup C function signatures"""
-
-        # Create/Destroy
-        self._lib.mavsdk_info_create.argtypes = [ctypes.c_void_p]
-        self._lib.mavsdk_info_create.restype = ctypes.c_void_p
-
-        self._lib.mavsdk_info_destroy.argtypes = [ctypes.c_void_p]
-        self._lib.mavsdk_info_destroy.restype = None
-
-        self._lib.mavsdk_info_flight_info_destroy.argtypes = [
-            ctypes.POINTER(FlightInfoCStruct)
-        ]
-        self._lib.mavsdk_info_flight_info_destroy.restype = None
-
-        self._lib.mavsdk_info_identification_destroy.argtypes = [
-            ctypes.POINTER(IdentificationCStruct)
-        ]
-        self._lib.mavsdk_info_identification_destroy.restype = None
-
-        self._lib.mavsdk_info_product_destroy.argtypes = [
-            ctypes.POINTER(ProductCStruct)
-        ]
-        self._lib.mavsdk_info_product_destroy.restype = None
-
-        self._lib.mavsdk_info_version_destroy.argtypes = [
-            ctypes.POINTER(VersionCStruct)
-        ]
-        self._lib.mavsdk_info_version_destroy.restype = None
-
-
-
-        self._lib.mavsdk_info_get_flight_information.argtypes = [
-            ctypes.c_void_p,
-            ctypes.POINTER(FlightInfoCStruct)
-        ]
-
-        self._lib.mavsdk_info_get_flight_information.restype = ctypes.c_int
-
-        self._lib.mavsdk_info_get_identification.argtypes = [
-            ctypes.c_void_p,
-            ctypes.POINTER(IdentificationCStruct)
-        ]
-
-        self._lib.mavsdk_info_get_identification.restype = ctypes.c_int
-
-        self._lib.mavsdk_info_get_product.argtypes = [
-            ctypes.c_void_p,
-            ctypes.POINTER(ProductCStruct)
-        ]
-
-        self._lib.mavsdk_info_get_product.restype = ctypes.c_int
-
-        self._lib.mavsdk_info_get_version.argtypes = [
-            ctypes.c_void_p,
-            ctypes.POINTER(VersionCStruct)
-        ]
-
-        self._lib.mavsdk_info_get_version.restype = ctypes.c_int
-
-        self._lib.mavsdk_info_get_speed_factor.argtypes = [
-            ctypes.c_void_p,
-            ctypes.POINTER(ctypes.c_double)
-        ]
-
-        self._lib.mavsdk_info_get_speed_factor.restype = ctypes.c_int
-        self._lib.mavsdk_info_subscribe_flight_information.argtypes = [
-            ctypes.c_void_p,
-            FlightInformationCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_info_subscribe_flight_information.restype = ctypes.c_void_p
-        # Unsubscribe
-        self._lib.mavsdk_info_unsubscribe_flight_information.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_info_unsubscribe_flight_information.restype = None
-
 
 
 
@@ -570,3 +486,81 @@ class Info:
 
     def __del__(self):
         self.destroy()
+
+_cmavsdk_lib.mavsdk_info_create.argtypes = [ctypes.c_void_p]
+_cmavsdk_lib.mavsdk_info_create.restype = ctypes.c_void_p
+
+_cmavsdk_lib.mavsdk_info_destroy.argtypes = [ctypes.c_void_p]
+_cmavsdk_lib.mavsdk_info_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_info_flight_info_destroy.argtypes = [
+    ctypes.POINTER(FlightInfoCStruct)
+]
+_cmavsdk_lib.mavsdk_info_flight_info_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_info_identification_destroy.argtypes = [
+    ctypes.POINTER(IdentificationCStruct)
+]
+_cmavsdk_lib.mavsdk_info_identification_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_info_product_destroy.argtypes = [
+    ctypes.POINTER(ProductCStruct)
+]
+_cmavsdk_lib.mavsdk_info_product_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_info_version_destroy.argtypes = [
+    ctypes.POINTER(VersionCStruct)
+]
+_cmavsdk_lib.mavsdk_info_version_destroy.restype = None
+
+
+
+_cmavsdk_lib.mavsdk_info_get_flight_information.argtypes = [
+    ctypes.c_void_p,
+    ctypes.POINTER(FlightInfoCStruct)
+]
+
+_cmavsdk_lib.mavsdk_info_get_flight_information.restype = ctypes.c_int
+
+_cmavsdk_lib.mavsdk_info_get_identification.argtypes = [
+    ctypes.c_void_p,
+    ctypes.POINTER(IdentificationCStruct)
+]
+
+_cmavsdk_lib.mavsdk_info_get_identification.restype = ctypes.c_int
+
+_cmavsdk_lib.mavsdk_info_get_product.argtypes = [
+    ctypes.c_void_p,
+    ctypes.POINTER(ProductCStruct)
+]
+
+_cmavsdk_lib.mavsdk_info_get_product.restype = ctypes.c_int
+
+_cmavsdk_lib.mavsdk_info_get_version.argtypes = [
+    ctypes.c_void_p,
+    ctypes.POINTER(VersionCStruct)
+]
+
+_cmavsdk_lib.mavsdk_info_get_version.restype = ctypes.c_int
+
+_cmavsdk_lib.mavsdk_info_get_speed_factor.argtypes = [
+    ctypes.c_void_p,
+    ctypes.POINTER(ctypes.c_double)
+]
+
+_cmavsdk_lib.mavsdk_info_get_speed_factor.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_info_subscribe_flight_information.argtypes = [
+    ctypes.c_void_p,
+    FlightInformationCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_info_subscribe_flight_information.restype = ctypes.c_void_p
+# Unsubscribe
+_cmavsdk_lib.mavsdk_info_unsubscribe_flight_information.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_info_unsubscribe_flight_information.restype = None
+

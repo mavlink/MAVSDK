@@ -8,7 +8,7 @@ Enable manual control using e.g. a joystick or gamepad.
 
 import ctypes
 
-from typing import Optional, List, Callable, Any
+from typing import Callable, Any
 from enum import IntEnum
 
 from ...cmavsdk_loader import _cmavsdk_lib
@@ -37,11 +37,13 @@ class ManualControlResult(IntEnum):
 # ===== Callback Types =====
 StartPositionControlCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 StartAltitudeControlCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 
 
@@ -52,8 +54,6 @@ class ManualControl:
         self._lib = _cmavsdk_lib
         self._handle = None
         self._callbacks = []  # Keep references to prevent GC
-
-        self._setup_functions()
 
         if system is None:
             raise ValueError("system cannot be None")
@@ -67,54 +67,6 @@ class ManualControl:
 
         if not self._handle:
             raise RuntimeError("Failed to create ManualControl plugin - C function returned null handle")
-
-    def _setup_functions(self):
-        """Setup C function signatures"""
-
-        # Create/Destroy
-        self._lib.mavsdk_manual_control_create.argtypes = [ctypes.c_void_p]
-        self._lib.mavsdk_manual_control_create.restype = ctypes.c_void_p
-
-        self._lib.mavsdk_manual_control_destroy.argtypes = [ctypes.c_void_p]
-        self._lib.mavsdk_manual_control_destroy.restype = None
-
-
-        self._lib.mavsdk_manual_control_start_position_control_async.argtypes = [
-            ctypes.c_void_p,
-            StartPositionControlCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_manual_control_start_position_control_async.restype = None
-
-        self._lib.mavsdk_manual_control_start_position_control.argtypes = [
-            ctypes.c_void_p,
-        ]
-
-        self._lib.mavsdk_manual_control_start_position_control.restype = ctypes.c_int
-        self._lib.mavsdk_manual_control_start_altitude_control_async.argtypes = [
-            ctypes.c_void_p,
-            StartAltitudeControlCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_manual_control_start_altitude_control_async.restype = None
-
-        self._lib.mavsdk_manual_control_start_altitude_control.argtypes = [
-            ctypes.c_void_p,
-        ]
-
-        self._lib.mavsdk_manual_control_start_altitude_control.restype = ctypes.c_int
-
-        self._lib.mavsdk_manual_control_set_manual_control_input.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_float,
-            ctypes.c_float,
-            ctypes.c_float,
-            ctypes.c_float,
-        ]
-
-        self._lib.mavsdk_manual_control_set_manual_control_input.restype = ctypes.c_int
 
 
     def start_position_control_async(self, callback: Callable, user_data: Any = None):
@@ -211,3 +163,47 @@ class ManualControl:
 
     def __del__(self):
         self.destroy()
+
+_cmavsdk_lib.mavsdk_manual_control_create.argtypes = [ctypes.c_void_p]
+_cmavsdk_lib.mavsdk_manual_control_create.restype = ctypes.c_void_p
+
+_cmavsdk_lib.mavsdk_manual_control_destroy.argtypes = [ctypes.c_void_p]
+_cmavsdk_lib.mavsdk_manual_control_destroy.restype = None
+
+
+_cmavsdk_lib.mavsdk_manual_control_start_position_control_async.argtypes = [
+    ctypes.c_void_p,
+    StartPositionControlCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_manual_control_start_position_control_async.restype = None
+
+_cmavsdk_lib.mavsdk_manual_control_start_position_control.argtypes = [
+    ctypes.c_void_p,
+]
+
+_cmavsdk_lib.mavsdk_manual_control_start_position_control.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_manual_control_start_altitude_control_async.argtypes = [
+    ctypes.c_void_p,
+    StartAltitudeControlCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_manual_control_start_altitude_control_async.restype = None
+
+_cmavsdk_lib.mavsdk_manual_control_start_altitude_control.argtypes = [
+    ctypes.c_void_p,
+]
+
+_cmavsdk_lib.mavsdk_manual_control_start_altitude_control.restype = ctypes.c_int
+
+_cmavsdk_lib.mavsdk_manual_control_set_manual_control_input.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_float,
+    ctypes.c_float,
+    ctypes.c_float,
+    ctypes.c_float,
+]
+
+_cmavsdk_lib.mavsdk_manual_control_set_manual_control_input.restype = ctypes.c_int

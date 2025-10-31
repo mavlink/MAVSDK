@@ -8,7 +8,7 @@ Provide log streaming data.
 
 import ctypes
 
-from typing import Optional, List, Callable, Any
+from typing import Callable, Any
 from enum import IntEnum
 
 from ...cmavsdk_loader import _cmavsdk_lib
@@ -73,11 +73,13 @@ class LogStreamingRaw:
 # ===== Callback Types =====
 StartLogStreamingCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 StopLogStreamingCallback = ctypes.CFUNCTYPE(
     None,
-ctypes.c_int,    ctypes.c_void_p
+    ctypes.c_int,
+    ctypes.c_void_p
 )
 LogStreamingRawCallback = ctypes.CFUNCTYPE(
     None,
@@ -94,8 +96,6 @@ class LogStreaming:
         self._handle = None
         self._callbacks = []  # Keep references to prevent GC
 
-        self._setup_functions()
-
         if system is None:
             raise ValueError("system cannot be None")
 
@@ -108,64 +108,6 @@ class LogStreaming:
 
         if not self._handle:
             raise RuntimeError("Failed to create LogStreaming plugin - C function returned null handle")
-
-    def _setup_functions(self):
-        """Setup C function signatures"""
-
-        # Create/Destroy
-        self._lib.mavsdk_log_streaming_create.argtypes = [ctypes.c_void_p]
-        self._lib.mavsdk_log_streaming_create.restype = ctypes.c_void_p
-
-        self._lib.mavsdk_log_streaming_destroy.argtypes = [ctypes.c_void_p]
-        self._lib.mavsdk_log_streaming_destroy.restype = None
-
-        self._lib.mavsdk_log_streaming_log_streaming_raw_destroy.argtypes = [
-            ctypes.POINTER(LogStreamingRawCStruct)
-        ]
-        self._lib.mavsdk_log_streaming_log_streaming_raw_destroy.restype = None
-
-
-        self._lib.mavsdk_log_streaming_start_log_streaming_async.argtypes = [
-            ctypes.c_void_p,
-            StartLogStreamingCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_log_streaming_start_log_streaming_async.restype = None
-
-        self._lib.mavsdk_log_streaming_start_log_streaming.argtypes = [
-            ctypes.c_void_p,
-        ]
-
-        self._lib.mavsdk_log_streaming_start_log_streaming.restype = ctypes.c_int
-        self._lib.mavsdk_log_streaming_stop_log_streaming_async.argtypes = [
-            ctypes.c_void_p,
-            StopLogStreamingCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_log_streaming_stop_log_streaming_async.restype = None
-
-        self._lib.mavsdk_log_streaming_stop_log_streaming.argtypes = [
-            ctypes.c_void_p,
-        ]
-
-        self._lib.mavsdk_log_streaming_stop_log_streaming.restype = ctypes.c_int
-        self._lib.mavsdk_log_streaming_subscribe_log_streaming_raw.argtypes = [
-            ctypes.c_void_p,
-            LogStreamingRawCallback,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_log_streaming_subscribe_log_streaming_raw.restype = ctypes.c_void_p
-        # Unsubscribe
-        self._lib.mavsdk_log_streaming_unsubscribe_log_streaming_raw.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_void_p
-        ]
-
-        self._lib.mavsdk_log_streaming_unsubscribe_log_streaming_raw.restype = None
-
 
 
     def start_log_streaming_async(self, callback: Callable, user_data: Any = None):
@@ -276,3 +218,57 @@ class LogStreaming:
 
     def __del__(self):
         self.destroy()
+
+_cmavsdk_lib.mavsdk_log_streaming_create.argtypes = [ctypes.c_void_p]
+_cmavsdk_lib.mavsdk_log_streaming_create.restype = ctypes.c_void_p
+
+_cmavsdk_lib.mavsdk_log_streaming_destroy.argtypes = [ctypes.c_void_p]
+_cmavsdk_lib.mavsdk_log_streaming_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_log_streaming_log_streaming_raw_destroy.argtypes = [
+    ctypes.POINTER(LogStreamingRawCStruct)
+]
+_cmavsdk_lib.mavsdk_log_streaming_log_streaming_raw_destroy.restype = None
+
+
+_cmavsdk_lib.mavsdk_log_streaming_start_log_streaming_async.argtypes = [
+    ctypes.c_void_p,
+    StartLogStreamingCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_log_streaming_start_log_streaming_async.restype = None
+
+_cmavsdk_lib.mavsdk_log_streaming_start_log_streaming.argtypes = [
+    ctypes.c_void_p,
+]
+
+_cmavsdk_lib.mavsdk_log_streaming_start_log_streaming.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_log_streaming_stop_log_streaming_async.argtypes = [
+    ctypes.c_void_p,
+    StopLogStreamingCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_log_streaming_stop_log_streaming_async.restype = None
+
+_cmavsdk_lib.mavsdk_log_streaming_stop_log_streaming.argtypes = [
+    ctypes.c_void_p,
+]
+
+_cmavsdk_lib.mavsdk_log_streaming_stop_log_streaming.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_log_streaming_subscribe_log_streaming_raw.argtypes = [
+    ctypes.c_void_p,
+    LogStreamingRawCallback,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_log_streaming_subscribe_log_streaming_raw.restype = ctypes.c_void_p
+# Unsubscribe
+_cmavsdk_lib.mavsdk_log_streaming_unsubscribe_log_streaming_raw.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p
+]
+
+_cmavsdk_lib.mavsdk_log_streaming_unsubscribe_log_streaming_raw.restype = None
+

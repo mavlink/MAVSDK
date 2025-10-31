@@ -8,7 +8,7 @@ Provide component metadata json definitions, such as parameters.
 
 import ctypes
 
-from typing import Optional, List, Callable, Any
+from typing import Callable, Any
 from enum import IntEnum
 
 from ...cmavsdk_loader import _cmavsdk_lib
@@ -85,8 +85,6 @@ class ComponentMetadataServer:
         self._handle = None
         self._callbacks = []  # Keep references to prevent GC
 
-        self._setup_functions()
-
         if server_component is None:
             raise ValueError("server_component cannot be None")
 
@@ -99,31 +97,6 @@ class ComponentMetadataServer:
 
         if not self._handle:
             raise RuntimeError("Failed to create ComponentMetadataServer plugin - C function returned null handle")
-
-    def _setup_functions(self):
-        """Setup C function signatures"""
-
-        # Create/Destroy
-        self._lib.mavsdk_component_metadata_server_create.argtypes = [ctypes.c_void_p]
-        self._lib.mavsdk_component_metadata_server_create.restype = ctypes.c_void_p
-
-        self._lib.mavsdk_component_metadata_server_destroy.argtypes = [ctypes.c_void_p]
-        self._lib.mavsdk_component_metadata_server_destroy.restype = None
-
-        self._lib.mavsdk_component_metadata_server_metadata_destroy.argtypes = [
-            ctypes.POINTER(MetadataCStruct)
-        ]
-        self._lib.mavsdk_component_metadata_server_metadata_destroy.restype = None
-
-
-
-        self._lib.mavsdk_component_metadata_server_set_metadata.argtypes = [
-            ctypes.c_void_p,
-            ctypes.POINTER(MetadataCStruct),
-            ctypes.c_size_t,
-        ]
-
-        self._lib.mavsdk_component_metadata_server_set_metadata.restype = None
 
 
 
@@ -142,3 +115,24 @@ class ComponentMetadataServer:
 
     def __del__(self):
         self.destroy()
+
+_cmavsdk_lib.mavsdk_component_metadata_server_create.argtypes = [ctypes.c_void_p]
+_cmavsdk_lib.mavsdk_component_metadata_server_create.restype = ctypes.c_void_p
+
+_cmavsdk_lib.mavsdk_component_metadata_server_destroy.argtypes = [ctypes.c_void_p]
+_cmavsdk_lib.mavsdk_component_metadata_server_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_component_metadata_server_metadata_destroy.argtypes = [
+    ctypes.POINTER(MetadataCStruct)
+]
+_cmavsdk_lib.mavsdk_component_metadata_server_metadata_destroy.restype = None
+
+
+
+_cmavsdk_lib.mavsdk_component_metadata_server_set_metadata.argtypes = [
+    ctypes.c_void_p,
+    ctypes.POINTER(MetadataCStruct),
+    ctypes.c_size_t,
+]
+
+_cmavsdk_lib.mavsdk_component_metadata_server_set_metadata.restype = None
