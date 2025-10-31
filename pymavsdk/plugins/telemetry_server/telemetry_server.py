@@ -1743,25 +1743,16 @@ class TelemetryServer:
 
         self._setup_functions()
 
-        # Validate input parameter
         if server_component is None:
             raise ValueError("server_component cannot be None")
 
-        # Extract handle with validation
-        if hasattr(server_component, '_handle'):
-            component_handle = server_component._handle
-        elif isinstance(server_component, ctypes.c_void_p):
-            component_handle = server_component
-        else:
-            raise ValueError(f"Invalid server_component type: {type(server_component)}. Expected ServerComponent or c_void_p")
+        component_handle = server_component._handle
 
-        # Validate handle is not null
-        if not component_handle or (isinstance(component_handle, int) and component_handle == 0):
+        if not component_handle:
             raise ValueError("server_component handle is null")
 
         self._handle = self._lib.mavsdk_telemetry_server_create(component_handle)
 
-        # Validate plugin creation succeeded
         if not self._handle:
             raise RuntimeError("Failed to create TelemetryServer plugin - C function returned null handle")
 

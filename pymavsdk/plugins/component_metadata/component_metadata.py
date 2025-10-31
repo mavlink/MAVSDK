@@ -150,25 +150,16 @@ class ComponentMetadata:
 
         self._setup_functions()
 
-        # Validate input parameter
         if system is None:
             raise ValueError("system cannot be None")
 
-        # Extract handle with validation
-        if hasattr(system, '_handle'):
-            system_handle = system._handle
-        elif isinstance(system, ctypes.c_void_p):
-            system_handle = system
-        else:
-            raise ValueError(f"Invalid system type: {type(system)}. Expected MavsdkSystem or c_void_p")
+        system_handle = system._handle
 
-        # Validate handle is not null
-        if not system_handle or (isinstance(system_handle, int) and system_handle == 0):
+        if not system_handle:
             raise ValueError("system handle is null")
 
         self._handle = self._lib.mavsdk_component_metadata_create(system_handle)
 
-        # Validate plugin creation succeeded
         if not self._handle:
             raise RuntimeError("Failed to create ComponentMetadata plugin - C function returned null handle")
 
