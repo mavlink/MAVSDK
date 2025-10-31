@@ -7,8 +7,11 @@ Enable to calibrate sensors of a drone such as gyro, accelerometer, and magnetom
 """
 
 import ctypes
+
 from typing import Optional, List, Callable, Any
 from enum import IntEnum
+
+from ...cmavsdk_loader import _cmavsdk_lib
 
 
 # ===== Enums =====
@@ -128,8 +131,8 @@ ctypes.c_int,    ProgressDataCStruct,
 class Calibration:
     """Enable to calibrate sensors of a drone such as gyro, accelerometer, and magnetometer."""
 
-    def __init__(self, lib: ctypes.CDLL, system):
-        self._lib = lib
+    def __init__(self, system):
+        self._lib = _cmavsdk_lib
         self._handle = None
         self._callbacks = []  # Keep references to prevent GC
 

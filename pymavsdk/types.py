@@ -69,11 +69,3 @@ ComponentDiscoveredIdCallback = ctypes.CFUNCTYPE(
     ctypes.c_void_p
 )
 
-LogCallback = ctypes.CFUNCTYPE(
-    ctypes.c_bool,
-    ctypes.c_int,  # mavsdk_log_level_t
-    ctypes.c_char_p,  # message
-    ctypes.c_char_p,  # file
-    ctypes.c_int,  # line
-    ctypes.c_void_p  # user_data
-)

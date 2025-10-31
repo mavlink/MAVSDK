@@ -1,11 +1,7 @@
 import time
 import ctypes
-from pymavsdk import Mavsdk, MavsdkConfiguration, ComponentType
-from pymavsdk.plugins.camera_server import (
-    CameraServer, Mode, CameraServerResult, CameraFeedback, 
-    StorageInformationStorageStatus, StorageInformationStorageType,
-    CaptureStatusImageStatus, CaptureStatusVideoStatus
-)
+from pymavsdk import *
+from pymavsdk.plugins.camera_server import *
 
 # Global state variables
 start_video_time = 0
@@ -122,8 +118,8 @@ def storage_information_callback(storage_id, user_data=None):
     storage_information.total_storage_mib = total_storage
     storage_information.used_storage_mib = 100.0
     storage_information.available_storage_mib = total_storage - storage_information.used_storage_mib
-    storage_information.storage_status = StorageInformationStorageStatus.FORMATTED
-    storage_information.storage_type = StorageInformationStorageType.MICROSD
+    storage_information.storage_status = StorageInformation.StorageStatus.FORMATTED
+    storage_information.storage_type = StorageInformation.StorageType.MICROSD
     storage_information.storage_id = storage_id
     storage_information.read_speed_mib_s = 0.0
     storage_information.write_speed_mib_s = 0.0
@@ -202,7 +198,7 @@ def main():
         print("Failed to create server component")
         return 1
 
-    camera_server = CameraServer(mavsdk._lib, server_component)
+    camera_server = CameraServer(server_component)
 
     if not camera_server:
         print("Failed to create camera server")

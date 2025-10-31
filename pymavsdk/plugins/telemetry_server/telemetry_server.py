@@ -8,8 +8,11 @@ Allow users to provide vehicle telemetry and state information
 """
 
 import ctypes
+
 from typing import Optional, List, Callable, Any
 from enum import IntEnum
+
+from ...cmavsdk_loader import _cmavsdk_lib
 
 
 # ===== Enums =====
@@ -1733,8 +1736,8 @@ class TelemetryServer:
     """Allow users to provide vehicle telemetry and state information
  (e.g. battery, GPS, RC connection, flight mode etc.) and set telemetry update rates."""
 
-    def __init__(self, lib: ctypes.CDLL, server_component):
-        self._lib = lib
+    def __init__(self, server_component):
+        self._lib = _cmavsdk_lib
         self._handle = None
         self._callbacks = []  # Keep references to prevent GC
 

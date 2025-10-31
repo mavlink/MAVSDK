@@ -1,7 +1,6 @@
 import time
-from pymavsdk import Mavsdk, MavsdkConfiguration, ComponentType
-from pymavsdk.enums import ConnectionResult
-from pymavsdk.plugins.camera import Camera, CameraResult, Mode
+from pymavsdk import *
+from pymavsdk.plugins.camera import *
 
 def storage_callback(update, user_data=None):
     """Callback for camera storage updates"""
@@ -68,7 +67,7 @@ def main():
             time.sleep(1)
 
     # Create camera plugin
-    camera_plugin = Camera(mavsdk._lib, camera_server)
+    camera_plugin = Camera(camera_server)
     if not camera_plugin:
         print("Failed to create camera plugin")
         return -1

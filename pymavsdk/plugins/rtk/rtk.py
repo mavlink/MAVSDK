@@ -7,8 +7,11 @@ Service to send RTK corrections to the vehicle.
 """
 
 import ctypes
+
 from typing import Optional, List, Callable, Any
 from enum import IntEnum
+
+from ...cmavsdk_loader import _cmavsdk_lib
 
 
 # ===== Enums =====
@@ -70,8 +73,8 @@ class RtcmData:
 class Rtk:
     """Service to send RTK corrections to the vehicle."""
 
-    def __init__(self, lib: ctypes.CDLL, system):
-        self._lib = lib
+    def __init__(self, system):
+        self._lib = _cmavsdk_lib
         self._handle = None
         self._callbacks = []  # Keep references to prevent GC
 

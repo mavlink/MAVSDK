@@ -1,10 +1,9 @@
 import time
 import sys
-from pymavsdk import Mavsdk, MavsdkConfiguration, ComponentType
-from pymavsdk.enums import ConnectionResult
-from pymavsdk.plugins.action import Action, ActionResult
-from pymavsdk.plugins.mission import Mission, MissionItem, MissionPlan, MissionProgress, MissionResult
-from pymavsdk.plugins.telemetry import Telemetry
+from pymavsdk import *
+from pymavsdk.plugins.action import *
+from pymavsdk.plugins.mission import *
+from pymavsdk.plugins.telemetry import *
 
 def usage(bin_name):
     print(f"Usage : {bin_name} <connection_url>")
@@ -75,9 +74,9 @@ def main():
     print("Found autopilot system!")
 
     # Create plugins
-    action = Action(mavsdk._lib, drone)
-    mission = Mission(mavsdk._lib, drone)
-    telemetry = Telemetry(mavsdk._lib, drone)
+    action = Action(drone)
+    mission = Mission(drone)
+    telemetry = Telemetry(drone)
 
     # Wait for system to be ready
     health_ok = False

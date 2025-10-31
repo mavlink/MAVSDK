@@ -7,8 +7,11 @@ Provide vehicle actions (as a server) such as arming, taking off, and landing.
 """
 
 import ctypes
+
 from typing import Optional, List, Callable, Any
 from enum import IntEnum
+
+from ...cmavsdk_loader import _cmavsdk_lib
 
 
 # ===== Enums =====
@@ -197,8 +200,8 @@ ctypes.c_int,    ctypes.c_bool,
 class ActionServer:
     """Provide vehicle actions (as a server) such as arming, taking off, and landing."""
 
-    def __init__(self, lib: ctypes.CDLL, server_component):
-        self._lib = lib
+    def __init__(self, server_component):
+        self._lib = _cmavsdk_lib
         self._handle = None
         self._callbacks = []  # Keep references to prevent GC
 

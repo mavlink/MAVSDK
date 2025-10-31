@@ -7,8 +7,11 @@
 """
 
 import ctypes
+
 from typing import Optional, List, Callable, Any
 from enum import IntEnum
+
+from ...cmavsdk_loader import _cmavsdk_lib
 
 
 # ===== Enums =====
@@ -231,8 +234,8 @@ class {{ struct.name.upper_camel_case }}:
 class {{ plugin_name.upper_camel_case }}:
     """{{ class_description }}"""
 
-    def __init__(self, lib: ctypes.CDLL, {% if is_server %}server_component{% else %}system{% endif %}):
-        self._lib = lib
+    def __init__(self, {% if is_server %}server_component{% else %}system{% endif %}):
+        self._lib = _cmavsdk_lib
         self._handle = None
         self._callbacks = []  # Keep references to prevent GC
 

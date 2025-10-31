@@ -9,8 +9,11 @@ Allows interfacing a vehicle with a motion capture system in
 """
 
 import ctypes
+
 from typing import Optional, List, Callable, Any
 from enum import IntEnum
+
+from ...cmavsdk_loader import _cmavsdk_lib
 
 
 # ===== Enums =====
@@ -705,8 +708,8 @@ class Mocap:
  order to allow navigation without global positioning sources available
  (e.g. indoors, or when flying under a bridge. etc.)."""
 
-    def __init__(self, lib: ctypes.CDLL, system):
-        self._lib = lib
+    def __init__(self, system):
+        self._lib = _cmavsdk_lib
         self._handle = None
         self._callbacks = []  # Keep references to prevent GC
 

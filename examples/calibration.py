@@ -18,7 +18,7 @@ def calibration_callback(result, progress_data, user_data=None):
         if progress_data.has_progress:
             print(f"    Progress: {int(progress_data.progress * 100)}%")
         if progress_data.has_status_text:
-            status_text = progress_data.status_text.decode('utf-8')
+            status_text = progress_data.status_text
             print(f"    Instruction: {status_text}")
             
     elif result == CalibrationResult.FAILED:
@@ -70,10 +70,6 @@ def calibrate_accelerometer(calibration):
     
     calibration.calibrate_accelerometer_async(calibration_callback)
 
-    time.sleep(3)
-    print("cancelliiiiiiiiiiiiiiiiiiiiiiiing")
-    calibration.cancel()
-    
     # Wait for calibration to complete
     while not calibration_completed:
         time.sleep(1)
@@ -127,7 +123,7 @@ def main():
     print("Found autopilot system!")
     
     # Create calibration plugin
-    calibration = Calibration(mavsdk._lib, system)
+    calibration = Calibration(system)
     
     # Run calibrations
     calibrate_accelerometer(calibration)

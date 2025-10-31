@@ -2,10 +2,11 @@
 
 import ctypes
 import sys
-from pathlib import Path
 from typing import Optional, List, Callable, Any
+from .cmavsdk_loader import _cmavsdk_lib
+from .connection_result import ConnectionResult
 from .exceptions import LibraryNotFoundError, ConnectionError as ConnError
-from .enums import ComponentType, ForwardingOption, ConnectionResult
+from .enums import ComponentType, ForwardingOption
 from .types import (
     ConnectionError as CConnectionError,
     MavsdkMessage,
@@ -16,96 +17,28 @@ from .types import (
     IsConnectedCallback,
     ComponentDiscoveredCallback,
     ComponentDiscoveredIdCallback,
-    LogCallback,
 )
-
-def _find_library() -> ctypes.CDLL:
-    """Locate and load the cmavsdk shared library"""
-    
-    lib_names = {
-        'linux': ['libcmavsdk.so'],
-        'darwin': ['libcmavsdk.3.dylib'],
-        'win32': ['cmavsdk.dll', 'libcmavsdk.dll']
-    }
-    
-    # Dependency libraries to load first
-    dep_names = {
-        'linux': ['libmavsdk.so'],
-        'darwin': ['libmavsdk.3.dylib'],
-        'win32': ['mavsdk.dll', 'libmavsdk.dll']
-    }
-    
-    platform = sys.platform
-    if platform.startswith('linux'):
-        platform = 'linux'
-    
-    names = lib_names.get(platform, lib_names['linux'])
-    deps = dep_names.get(platform, dep_names['linux'])
-    
-    search_paths = [
-        Path.cwd(),
-        Path.cwd() / 'lib',
-        Path(__file__).parent / 'lib',
-    ]
-    
-    print(f"Searching for library on {platform}...")
-    
-    # First, try to load dependencies
-    dep_lib = None
-    for path in search_paths:
-        for dep_name in deps:
-            dep_path = path / dep_name
-            if dep_path.exists():
-                try:
-                    print(f"Loading dependency: {dep_path}")
-                    dep_lib = ctypes.CDLL(str(dep_path), mode=ctypes.RTLD_GLOBAL)
-                    print(f"✓ Loaded dependency: {dep_name}")
-                    break
-                except OSError as e:
-                    print(f"✗ Failed to load dependency {dep_path}: {e}")
-        if dep_lib:
-            break
-    
-    # Now load the main library
-    for path in search_paths:
-        for name in names:
-            lib_path = path / name
-            print(f"Checking: {lib_path}")
-            if lib_path.exists():
-                print(f"✓ Found library at: {lib_path}")
-                try:
-                    lib = ctypes.CDLL(str(lib_path))
-                    print("✓ Successfully loaded library!")
-                    return lib
-                except OSError as e:
-                    print(f"✗ Failed to load {lib_path}: {e}")
-                    continue
-    
-    raise LibraryNotFoundError(
-        f"Could not find cmavsdk library. Tried: {names}"
-    )
 
 class MavsdkConfiguration:
     """Wrapper for mavsdk_configuration_t"""
     
-    def __init__(self, lib: ctypes.CDLL, handle: ctypes.c_void_p):
-        self._lib = lib
+    def __init__(self, handle: ctypes.c_void_p):
+        self._lib = _cmavsdk_lib
         self._handle = handle
     
     @classmethod
-    def create_with_component_type(cls, lib: ctypes.CDLL, component_type: ComponentType):
+    def create_with_component_type(cls, component_type: ComponentType):
         """Create configuration with component type"""
-        handle = lib.mavsdk_configuration_create_with_component_type(int(component_type))
-        return cls(lib, handle)
+        handle = _cmavsdk_lib.mavsdk_configuration_create_with_component_type(int(component_type))
+        return cls(handle)
     
     @classmethod
-    def create_manual(cls, lib: ctypes.CDLL, system_id: int, component_id: int, 
-                     always_send_heartbeats: bool):
+    def create_manual(cls, system_id: int, component_id: int, always_send_heartbeats: bool):
         """Create manual configuration"""
         handle = lib.mavsdk_configuration_create_manual(
             system_id, component_id, int(always_send_heartbeats)
         )
-        return cls(lib, handle)
+        return cls(_cmavsdk_lib, handle)
     
     def destroy(self):
         """Destroy configuration"""
@@ -215,20 +148,15 @@ class Mavsdk:
     """Python wrapper for cmavsdk library"""
     
     def __init__(self, configuration: Optional[MavsdkConfiguration] = None, 
-                 lib_path: Optional[str] = None,
                  component_type: Optional[ComponentType] = None):
         """
         Initialize the cmavsdk wrapper
         
         Args:
             configuration: Optional MavsdkConfiguration object
-            lib_path: Optional explicit path to the library
             component_type: Optional component type (overrides default GROUND_STATION)
         """
-        if lib_path:
-            self._lib = ctypes.CDLL(lib_path)
-        else:
-            self._lib = _find_library()
+        self._lib = _cmavsdk_lib
         
         self._callbacks = []  # Keep references to prevent GC
         self._setup_functions()
@@ -241,9 +169,7 @@ class Mavsdk:
             else:
                 print(f"Creating configuration with component type: {component_type}")
             
-            configuration = MavsdkConfiguration.create_with_component_type(
-                self._lib, component_type
-            )
+            configuration = MavsdkConfiguration.create_with_component_type(component_type)
             config_handle = configuration._handle
             print(f"✓ Created config handle: {config_handle}")
         else:

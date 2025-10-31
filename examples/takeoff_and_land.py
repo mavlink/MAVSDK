@@ -1,8 +1,12 @@
 import time
-from pymavsdk import Mavsdk
-from pymavsdk.plugins.action import Action
+
+from pymavsdk import *
+from pymavsdk.plugins.action import *
 
 def main():
+    # Disable the MAVSDK log output
+    log_subscribe(lambda level, msg, file, line: True)
+
     mavsdk = Mavsdk()
     mavsdk.add_any_connection("udpin://0.0.0.0:14540")
     
@@ -42,7 +46,7 @@ def main():
     
     if drone:
         print(f"Using system: {drone}")
-        action = Action(mavsdk._lib, drone)
+        action = Action(drone)
 
         print(f"Takeoff altitude: {action.get_takeoff_altitude()}")
         print(f"RTL altitude: {action.get_return_to_launch_altitude()}")

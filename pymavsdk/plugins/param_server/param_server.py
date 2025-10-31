@@ -7,8 +7,11 @@ Provide raw access to retrieve and provide server parameters.
 """
 
 import ctypes
+
 from typing import Optional, List, Callable, Any
 from enum import IntEnum
+
+from ...cmavsdk_loader import _cmavsdk_lib
 
 
 # ===== Enums =====
@@ -274,8 +277,8 @@ ChangedParamCustomCallback = ctypes.CFUNCTYPE(
 class ParamServer:
     """Provide raw access to retrieve and provide server parameters."""
 
-    def __init__(self, lib: ctypes.CDLL, server_component):
-        self._lib = lib
+    def __init__(self, server_component):
+        self._lib = _cmavsdk_lib
         self._handle = None
         self._callbacks = []  # Keep references to prevent GC
 

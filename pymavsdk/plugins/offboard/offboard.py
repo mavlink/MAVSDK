@@ -14,8 +14,11 @@ Control a drone with position, velocity, attitude or motor commands.
 """
 
 import ctypes
+
 from typing import Optional, List, Callable, Any
 from enum import IntEnum
+
+from ...cmavsdk_loader import _cmavsdk_lib
 
 
 # ===== Enums =====
@@ -612,8 +615,8 @@ class Offboard:
  Mavsdk automatically sends setpoints at 20Hz (PX4 Offboard mode requires that setpoints
  are minimally sent at 2Hz)."""
 
-    def __init__(self, lib: ctypes.CDLL, system):
-        self._lib = lib
+    def __init__(self, system):
+        self._lib = _cmavsdk_lib
         self._handle = None
         self._callbacks = []  # Keep references to prevent GC
 

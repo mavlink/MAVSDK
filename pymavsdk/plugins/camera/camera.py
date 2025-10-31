@@ -13,8 +13,11 @@ Can be used to manage cameras that implement the MAVLink
 """
 
 import ctypes
+
 from typing import Optional, List, Callable, Any
 from enum import IntEnum
+
+from ...cmavsdk_loader import _cmavsdk_lib
 
 
 # ===== Enums =====
@@ -1349,8 +1352,8 @@ class Camera:
  instantiated separately for every camera and the camera selected using
  `select_camera`."""
 
-    def __init__(self, lib: ctypes.CDLL, system):
-        self._lib = lib
+    def __init__(self, system):
+        self._lib = _cmavsdk_lib
         self._handle = None
         self._callbacks = []  # Keep references to prevent GC
 

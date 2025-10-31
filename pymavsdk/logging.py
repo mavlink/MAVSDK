@@ -1,31 +1,27 @@
 """Logging support for cmavsdk"""
 
 import ctypes
+
+from enum import IntEnum
 from typing import Optional, Callable
-from .types import LogCallback
-from .enums import LogLevel
+
+from .cmavsdk_loader import _cmavsdk_lib
+
+_initialized = False
 
 # Global reference to keep callback alive
 _log_callback_ref: Optional[LogCallback] = None
-_lib = None
 
+def _init_logging():
+    global _initialized
+    if not _initialized:
+        _cmavsdk_lib.mavsdk_log_subscribe.argtypes = [LogCallback, ctypes.c_void_p]
+        _cmavsdk_lib.mavsdk_log_subscribe.restype = None
 
-def _get_lib():
-    """Get library instance"""
-    global _lib
-    if _lib is None:
-        from .wrapper import _find_library
-        _lib = _find_library()
-        
-        # Setup function signatures
-        _lib.mavsdk_log_subscribe.argtypes = [LogCallback, ctypes.c_void_p]
-        _lib.mavsdk_log_subscribe.restype = None
-        
-        _lib.mavsdk_log_unsubscribe.argtypes = []
-        _lib.mavsdk_log_unsubscribe.restype = None
-    
-    return _lib
+        _cmavsdk_lib.mavsdk_log_unsubscribe.argtypes = []
+        _cmavsdk_lib.mavsdk_log_unsubscribe.restype = None
 
+        _initialized = True
 
 def log_subscribe(callback: Callable[[LogLevel, str, Optional[str], int], bool]):
     """
@@ -33,7 +29,7 @@ def log_subscribe(callback: Callable[[LogLevel, str, Optional[str], int], bool])
     
     Args:
         callback: Function that takes (level, message, file, line) and returns bool.
-                 Return True to prevent default logging, False to keep it.
+                  Return True to prevent default logging, False to keep it.
     
     Example:
         def my_log_handler(level, message, file, line):
@@ -45,8 +41,10 @@ def log_subscribe(callback: Callable[[LogLevel, str, Optional[str], int], bool])
         log_subscribe(my_log_handler)
     """
     global _log_callback_ref
+
+    _init_logging()
     
-    lib = _get_lib()
+    lib = _cmavsdk_lib
     
     def c_callback(level: int, message: bytes, file: bytes, line: int, user_data):
         try:
@@ -68,6 +66,22 @@ def log_unsubscribe():
     """Unsubscribe from log messages"""
     global _log_callback_ref
     
-    lib = _get_lib()
+    lib = _cmavsdk_lib
     lib.mavsdk_log_unsubscribe()
     _log_callback_ref = None
+
+class LogLevel(IntEnum):
+    """Log levels"""
+    DEBUG = 0
+    INFO = 1
+    WARN = 2
+    ERROR = 3
+
+LogCallback = ctypes.CFUNCTYPE(
+    ctypes.c_bool,
+    ctypes.c_int,     # mavsdk_log_level_t
+    ctypes.c_char_p,  # message
+    ctypes.c_char_p,  # file
+    ctypes.c_int,     # line
+    ctypes.c_void_p   # user_data
+)

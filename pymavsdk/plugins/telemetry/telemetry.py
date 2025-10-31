@@ -9,8 +9,11 @@ Allow users to get vehicle telemetry and state information
 """
 
 import ctypes
+
 from typing import Optional, List, Callable, Any
 from enum import IntEnum
+
+from ...cmavsdk_loader import _cmavsdk_lib
 
 
 # ===== Enums =====
@@ -2399,8 +2402,8 @@ class Telemetry:
  (e.g. battery, GPS, RC connection, flight mode etc.) and set telemetry update rates.
  Certain Telemetry Topics such as, Position or Velocity_Ned require GPS Fix before data gets published."""
 
-    def __init__(self, lib: ctypes.CDLL, system):
-        self._lib = lib
+    def __init__(self, system):
+        self._lib = _cmavsdk_lib
         self._handle = None
         self._callbacks = []  # Keep references to prevent GC
 

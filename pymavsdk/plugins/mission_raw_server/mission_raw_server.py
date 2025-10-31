@@ -8,8 +8,11 @@ Acts as a vehicle and receives incoming missions from GCS (in raw MAVLINK format
 """
 
 import ctypes
+
 from typing import Optional, List, Callable, Any
 from enum import IntEnum
+
+from ...cmavsdk_loader import _cmavsdk_lib
 
 
 # ===== Enums =====
@@ -288,8 +291,8 @@ class MissionRawServer:
     """Acts as a vehicle and receives incoming missions from GCS (in raw MAVLINK format). 
  Provides current mission item state, so the server can progress through missions."""
 
-    def __init__(self, lib: ctypes.CDLL, server_component):
-        self._lib = lib
+    def __init__(self, server_component):
+        self._lib = _cmavsdk_lib
         self._handle = None
         self._callbacks = []  # Keep references to prevent GC
 

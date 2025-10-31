@@ -7,8 +7,11 @@ Use arm authorization.
 """
 
 import ctypes
+
 from typing import Optional, List, Callable, Any
 from enum import IntEnum
+
+from ...cmavsdk_loader import _cmavsdk_lib
 
 
 # ===== Enums =====
@@ -45,8 +48,8 @@ ArmAuthorizationCallback = ctypes.CFUNCTYPE(
 class ArmAuthorizerServer:
     """Use arm authorization."""
 
-    def __init__(self, lib: ctypes.CDLL, server_component):
-        self._lib = lib
+    def __init__(self, server_component):
+        self._lib = _cmavsdk_lib
         self._handle = None
         self._callbacks = []  # Keep references to prevent GC
 

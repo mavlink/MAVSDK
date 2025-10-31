@@ -48,8 +48,8 @@ def main():
     
     if drone:
         print(f"Using system: {drone}")
-        action = Action(mavsdk._lib, drone)
-        telemetry = Telemetry(mavsdk._lib, drone)
+        action = Action(drone)
+        telemetry = Telemetry(drone)
         
         # Subscribe to position updates
         position_updates = []
@@ -61,15 +61,14 @@ def main():
         print("Taking off...")
         action.takeoff()
 
-        # Get position once (sync)
+        print("Flying for 10 seconds...")
+        time.sleep(10)
+
         print("Current position (sync poll):")
         current_pos = telemetry.position()
         print(f"  Lat: {current_pos.latitude_deg:.6f}")
         print(f"  Lon: {current_pos.longitude_deg:.6f}") 
         print(f"  Alt: {current_pos.relative_altitude_m:.1f}m")
-        
-        print("Flying for 10 seconds...")
-        time.sleep(10)
             
         print("Landing...")
         action.land()

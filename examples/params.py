@@ -1,8 +1,8 @@
 import time
 import sys
-from pymavsdk import Mavsdk, MavsdkConfiguration, ComponentType
-from pymavsdk.enums import ConnectionResult
-from pymavsdk.plugins.param import Param, ParamResult, AllParams, IntParam, FloatParam
+
+from pymavsdk import *
+from pymavsdk.plugins.param import *
 
 def print_usage(bin_name):
     print(f"Usage : {bin_name} <connection_url> <action> [args]")
@@ -162,7 +162,7 @@ def main():
     print("Discovered autopilot")
     
     # Create param plugin
-    param = Param(mavsdk._lib, drone)
+    param = Param(drone)
     
     # Execute action
     if args["action"] == "get_all":
