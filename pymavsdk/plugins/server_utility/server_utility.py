@@ -68,12 +68,17 @@ class ServerUtility:
 
     def send_status_text(self, type, text):
         """Get send_status_text (blocking)"""
+
+
         result_code = self._lib.mavsdk_server_utility_send_status_text(
             self._handle,
-            type,             text        )
+            type,
+            text,
+        )
         result = ServerUtilityResult(result_code)
         if result != ServerUtilityResult.SUCCESS:
             raise Exception(f"send_status_text failed: {result}")
+
         return result
 
 

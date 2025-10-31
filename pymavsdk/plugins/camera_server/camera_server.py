@@ -777,36 +777,48 @@ class CameraServer:
 
     def set_information(self, information):
         """Get set_information (blocking)"""
+
+
         result_code = self._lib.mavsdk_camera_server_set_information(
             self._handle,
-            information.to_c_struct()        )
+            information.to_c_struct(),
+        )
         result = CameraServerResult(result_code)
         if result != CameraServerResult.SUCCESS:
             raise Exception(f"set_information failed: {result}")
+
         return result
 
 
 
     def set_video_streaming(self, video_streaming):
         """Get set_video_streaming (blocking)"""
+
+
         result_code = self._lib.mavsdk_camera_server_set_video_streaming(
             self._handle,
-            video_streaming.to_c_struct()        )
+            video_streaming.to_c_struct(),
+        )
         result = CameraServerResult(result_code)
         if result != CameraServerResult.SUCCESS:
             raise Exception(f"set_video_streaming failed: {result}")
+
         return result
 
 
 
     def set_in_progress(self, in_progress):
         """Get set_in_progress (blocking)"""
+
+
         result_code = self._lib.mavsdk_camera_server_set_in_progress(
             self._handle,
-            in_progress        )
+            in_progress,
+        )
         result = CameraServerResult(result_code)
         if result != CameraServerResult.SUCCESS:
             raise Exception(f"set_in_progress failed: {result}")
+
         return result
 
 
@@ -843,12 +855,17 @@ class CameraServer:
 
     def respond_take_photo(self, take_photo_feedback, capture_info):
         """Get respond_take_photo (blocking)"""
+
+
         result_code = self._lib.mavsdk_camera_server_respond_take_photo(
             self._handle,
-            take_photo_feedback,             capture_info.to_c_struct()        )
+            take_photo_feedback,
+            capture_info.to_c_struct(),
+        )
         result = CameraServerResult(result_code)
         if result != CameraServerResult.SUCCESS:
             raise Exception(f"respond_take_photo failed: {result}")
+
         return result
 
 
@@ -885,12 +902,16 @@ class CameraServer:
 
     def respond_start_video(self, start_video_feedback):
         """Get respond_start_video (blocking)"""
+
+
         result_code = self._lib.mavsdk_camera_server_respond_start_video(
             self._handle,
-            start_video_feedback        )
+            start_video_feedback,
+        )
         result = CameraServerResult(result_code)
         if result != CameraServerResult.SUCCESS:
             raise Exception(f"respond_start_video failed: {result}")
+
         return result
 
 
@@ -927,12 +948,16 @@ class CameraServer:
 
     def respond_stop_video(self, stop_video_feedback):
         """Get respond_stop_video (blocking)"""
+
+
         result_code = self._lib.mavsdk_camera_server_respond_stop_video(
             self._handle,
-            stop_video_feedback        )
+            stop_video_feedback,
+        )
         result = CameraServerResult(result_code)
         if result != CameraServerResult.SUCCESS:
             raise Exception(f"respond_stop_video failed: {result}")
+
         return result
 
 
@@ -969,12 +994,16 @@ class CameraServer:
 
     def respond_start_video_streaming(self, start_video_streaming_feedback):
         """Get respond_start_video_streaming (blocking)"""
+
+
         result_code = self._lib.mavsdk_camera_server_respond_start_video_streaming(
             self._handle,
-            start_video_streaming_feedback        )
+            start_video_streaming_feedback,
+        )
         result = CameraServerResult(result_code)
         if result != CameraServerResult.SUCCESS:
             raise Exception(f"respond_start_video_streaming failed: {result}")
+
         return result
 
 
@@ -1011,12 +1040,16 @@ class CameraServer:
 
     def respond_stop_video_streaming(self, stop_video_streaming_feedback):
         """Get respond_stop_video_streaming (blocking)"""
+
+
         result_code = self._lib.mavsdk_camera_server_respond_stop_video_streaming(
             self._handle,
-            stop_video_streaming_feedback        )
+            stop_video_streaming_feedback,
+        )
         result = CameraServerResult(result_code)
         if result != CameraServerResult.SUCCESS:
             raise Exception(f"respond_stop_video_streaming failed: {result}")
+
         return result
 
 
@@ -1053,12 +1086,16 @@ class CameraServer:
 
     def respond_set_mode(self, set_mode_feedback):
         """Get respond_set_mode (blocking)"""
+
+
         result_code = self._lib.mavsdk_camera_server_respond_set_mode(
             self._handle,
-            set_mode_feedback        )
+            set_mode_feedback,
+        )
         result = CameraServerResult(result_code)
         if result != CameraServerResult.SUCCESS:
             raise Exception(f"respond_set_mode failed: {result}")
+
         return result
 
 
@@ -1095,12 +1132,17 @@ class CameraServer:
 
     def respond_storage_information(self, storage_information_feedback, storage_information):
         """Get respond_storage_information (blocking)"""
+
+
         result_code = self._lib.mavsdk_camera_server_respond_storage_information(
             self._handle,
-            storage_information_feedback,             storage_information.to_c_struct()        )
+            storage_information_feedback,
+            storage_information.to_c_struct(),
+        )
         result = CameraServerResult(result_code)
         if result != CameraServerResult.SUCCESS:
             raise Exception(f"respond_storage_information failed: {result}")
+
         return result
 
 
@@ -1137,12 +1179,17 @@ class CameraServer:
 
     def respond_capture_status(self, capture_status_feedback, capture_status):
         """Get respond_capture_status (blocking)"""
+
+
         result_code = self._lib.mavsdk_camera_server_respond_capture_status(
             self._handle,
-            capture_status_feedback,             capture_status.to_c_struct()        )
+            capture_status_feedback,
+            capture_status.to_c_struct(),
+        )
         result = CameraServerResult(result_code)
         if result != CameraServerResult.SUCCESS:
             raise Exception(f"respond_capture_status failed: {result}")
+
         return result
 
 
@@ -1179,12 +1226,16 @@ class CameraServer:
 
     def respond_format_storage(self, format_storage_feedback):
         """Get respond_format_storage (blocking)"""
+
+
         result_code = self._lib.mavsdk_camera_server_respond_format_storage(
             self._handle,
-            format_storage_feedback        )
+            format_storage_feedback,
+        )
         result = CameraServerResult(result_code)
         if result != CameraServerResult.SUCCESS:
             raise Exception(f"respond_format_storage failed: {result}")
+
         return result
 
 
@@ -1221,12 +1272,16 @@ class CameraServer:
 
     def respond_reset_settings(self, reset_settings_feedback):
         """Get respond_reset_settings (blocking)"""
+
+
         result_code = self._lib.mavsdk_camera_server_respond_reset_settings(
             self._handle,
-            reset_settings_feedback        )
+            reset_settings_feedback,
+        )
         result = CameraServerResult(result_code)
         if result != CameraServerResult.SUCCESS:
             raise Exception(f"respond_reset_settings failed: {result}")
+
         return result
 
 
@@ -1263,12 +1318,16 @@ class CameraServer:
 
     def respond_zoom_in_start(self, zoom_in_start_feedback):
         """Get respond_zoom_in_start (blocking)"""
+
+
         result_code = self._lib.mavsdk_camera_server_respond_zoom_in_start(
             self._handle,
-            zoom_in_start_feedback        )
+            zoom_in_start_feedback,
+        )
         result = CameraServerResult(result_code)
         if result != CameraServerResult.SUCCESS:
             raise Exception(f"respond_zoom_in_start failed: {result}")
+
         return result
 
 
@@ -1305,12 +1364,16 @@ class CameraServer:
 
     def respond_zoom_out_start(self, zoom_out_start_feedback):
         """Get respond_zoom_out_start (blocking)"""
+
+
         result_code = self._lib.mavsdk_camera_server_respond_zoom_out_start(
             self._handle,
-            zoom_out_start_feedback        )
+            zoom_out_start_feedback,
+        )
         result = CameraServerResult(result_code)
         if result != CameraServerResult.SUCCESS:
             raise Exception(f"respond_zoom_out_start failed: {result}")
+
         return result
 
 
@@ -1347,12 +1410,16 @@ class CameraServer:
 
     def respond_zoom_stop(self, zoom_stop_feedback):
         """Get respond_zoom_stop (blocking)"""
+
+
         result_code = self._lib.mavsdk_camera_server_respond_zoom_stop(
             self._handle,
-            zoom_stop_feedback        )
+            zoom_stop_feedback,
+        )
         result = CameraServerResult(result_code)
         if result != CameraServerResult.SUCCESS:
             raise Exception(f"respond_zoom_stop failed: {result}")
+
         return result
 
 
@@ -1389,29 +1456,40 @@ class CameraServer:
 
     def respond_zoom_range(self, zoom_range_feedback):
         """Get respond_zoom_range (blocking)"""
+
+
         result_code = self._lib.mavsdk_camera_server_respond_zoom_range(
             self._handle,
-            zoom_range_feedback        )
+            zoom_range_feedback,
+        )
         result = CameraServerResult(result_code)
         if result != CameraServerResult.SUCCESS:
             raise Exception(f"respond_zoom_range failed: {result}")
+
         return result
 
 
 
     def set_tracking_rectangle_status(self, tracked_rectangle):
         """Get set_tracking_rectangle_status (blocking)"""
+
+
         self._lib.mavsdk_camera_server_set_tracking_rectangle_status(
             self._handle,
-            tracked_rectangle.to_c_struct()        )
+            tracked_rectangle.to_c_struct(),
+        )
+
 
 
 
     def set_tracking_off_status(self):
         """Get set_tracking_off_status (blocking)"""
+
+
         self._lib.mavsdk_camera_server_set_tracking_off_status(
             self._handle,
         )
+
 
 
     def subscribe_tracking_point_command(self, callback: Callable, user_data: Any = None):
@@ -1511,36 +1589,48 @@ class CameraServer:
 
     def respond_tracking_point_command(self, stop_video_feedback):
         """Get respond_tracking_point_command (blocking)"""
+
+
         result_code = self._lib.mavsdk_camera_server_respond_tracking_point_command(
             self._handle,
-            stop_video_feedback        )
+            stop_video_feedback,
+        )
         result = CameraServerResult(result_code)
         if result != CameraServerResult.SUCCESS:
             raise Exception(f"respond_tracking_point_command failed: {result}")
+
         return result
 
 
 
     def respond_tracking_rectangle_command(self, stop_video_feedback):
         """Get respond_tracking_rectangle_command (blocking)"""
+
+
         result_code = self._lib.mavsdk_camera_server_respond_tracking_rectangle_command(
             self._handle,
-            stop_video_feedback        )
+            stop_video_feedback,
+        )
         result = CameraServerResult(result_code)
         if result != CameraServerResult.SUCCESS:
             raise Exception(f"respond_tracking_rectangle_command failed: {result}")
+
         return result
 
 
 
     def respond_tracking_off_command(self, stop_video_feedback):
         """Get respond_tracking_off_command (blocking)"""
+
+
         result_code = self._lib.mavsdk_camera_server_respond_tracking_off_command(
             self._handle,
-            stop_video_feedback        )
+            stop_video_feedback,
+        )
         result = CameraServerResult(result_code)
         if result != CameraServerResult.SUCCESS:
             raise Exception(f"respond_tracking_off_command failed: {result}")
+
         return result
 
 

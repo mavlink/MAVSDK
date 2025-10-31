@@ -369,12 +369,16 @@ class MissionRaw:
 
     def upload_mission(self, mission_items):
         """Get upload_mission (blocking)"""
+
+
         result_code = self._lib.mavsdk_mission_raw_upload_mission(
             self._handle,
-            mission_items.to_c_struct()        )
+            mission_items.to_c_struct(),
+        )
         result = MissionRawResult(result_code)
         if result != MissionRawResult.SUCCESS:
             raise Exception(f"upload_mission failed: {result}")
+
         return result
 
 
@@ -404,12 +408,16 @@ class MissionRaw:
 
     def upload_geofence(self, mission_items):
         """Get upload_geofence (blocking)"""
+
+
         result_code = self._lib.mavsdk_mission_raw_upload_geofence(
             self._handle,
-            mission_items.to_c_struct()        )
+            mission_items.to_c_struct(),
+        )
         result = MissionRawResult(result_code)
         if result != MissionRawResult.SUCCESS:
             raise Exception(f"upload_geofence failed: {result}")
+
         return result
 
 
@@ -439,24 +447,31 @@ class MissionRaw:
 
     def upload_rally_points(self, mission_items):
         """Get upload_rally_points (blocking)"""
+
+
         result_code = self._lib.mavsdk_mission_raw_upload_rally_points(
             self._handle,
-            mission_items.to_c_struct()        )
+            mission_items.to_c_struct(),
+        )
         result = MissionRawResult(result_code)
         if result != MissionRawResult.SUCCESS:
             raise Exception(f"upload_rally_points failed: {result}")
+
         return result
 
 
 
     def cancel_mission_upload(self):
         """Get cancel_mission_upload (blocking)"""
+
+
         result_code = self._lib.mavsdk_mission_raw_cancel_mission_upload(
             self._handle,
         )
         result = MissionRawResult(result_code)
         if result != MissionRawResult.SUCCESS:
             raise Exception(f"cancel_mission_upload failed: {result}")
+
         return result
 
 
@@ -491,8 +506,10 @@ class MissionRaw:
 
     def download_mission(self):
         """Get download_mission (blocking)"""
+
         result_ptr = ctypes.POINTER(MissionItemCStruct)()
         size = ctypes.c_size_t()
+
         result_code = self._lib.mavsdk_mission_raw_download_mission(
             self._handle,
             ctypes.byref(result_ptr),
@@ -501,11 +518,9 @@ class MissionRaw:
         result = MissionRawResult(result_code)
         if result != MissionRawResult.SUCCESS:
             raise Exception(f"download_mission failed: {result}")
-        return result
+
         py_result = [MissionItem.from_c_struct(result_ptr[i]) for i in range(size.value)]
-
         self._lib.mavsdk_mission_raw_mission_item_destroy(result_ptr)
-
         return py_result
 
 
@@ -540,8 +555,10 @@ class MissionRaw:
 
     def download_geofence(self):
         """Get download_geofence (blocking)"""
+
         result_ptr = ctypes.POINTER(MissionItemCStruct)()
         size = ctypes.c_size_t()
+
         result_code = self._lib.mavsdk_mission_raw_download_geofence(
             self._handle,
             ctypes.byref(result_ptr),
@@ -550,11 +567,9 @@ class MissionRaw:
         result = MissionRawResult(result_code)
         if result != MissionRawResult.SUCCESS:
             raise Exception(f"download_geofence failed: {result}")
-        return result
+
         py_result = [MissionItem.from_c_struct(result_ptr[i]) for i in range(size.value)]
-
         self._lib.mavsdk_mission_raw_mission_item_destroy(result_ptr)
-
         return py_result
 
 
@@ -589,8 +604,10 @@ class MissionRaw:
 
     def download_rallypoints(self):
         """Get download_rallypoints (blocking)"""
+
         result_ptr = ctypes.POINTER(MissionItemCStruct)()
         size = ctypes.c_size_t()
+
         result_code = self._lib.mavsdk_mission_raw_download_rallypoints(
             self._handle,
             ctypes.byref(result_ptr),
@@ -599,23 +616,24 @@ class MissionRaw:
         result = MissionRawResult(result_code)
         if result != MissionRawResult.SUCCESS:
             raise Exception(f"download_rallypoints failed: {result}")
-        return result
+
         py_result = [MissionItem.from_c_struct(result_ptr[i]) for i in range(size.value)]
-
         self._lib.mavsdk_mission_raw_mission_item_destroy(result_ptr)
-
         return py_result
 
 
 
     def cancel_mission_download(self):
         """Get cancel_mission_download (blocking)"""
+
+
         result_code = self._lib.mavsdk_mission_raw_cancel_mission_download(
             self._handle,
         )
         result = MissionRawResult(result_code)
         if result != MissionRawResult.SUCCESS:
             raise Exception(f"cancel_mission_download failed: {result}")
+
         return result
 
 
@@ -646,12 +664,15 @@ class MissionRaw:
 
     def start_mission(self):
         """Get start_mission (blocking)"""
+
+
         result_code = self._lib.mavsdk_mission_raw_start_mission(
             self._handle,
         )
         result = MissionRawResult(result_code)
         if result != MissionRawResult.SUCCESS:
             raise Exception(f"start_mission failed: {result}")
+
         return result
 
 
@@ -685,12 +706,15 @@ class MissionRaw:
 
     def pause_mission(self):
         """Get pause_mission (blocking)"""
+
+
         result_code = self._lib.mavsdk_mission_raw_pause_mission(
             self._handle,
         )
         result = MissionRawResult(result_code)
         if result != MissionRawResult.SUCCESS:
             raise Exception(f"pause_mission failed: {result}")
+
         return result
 
 
@@ -719,12 +743,15 @@ class MissionRaw:
 
     def clear_mission(self):
         """Get clear_mission (blocking)"""
+
+
         result_code = self._lib.mavsdk_mission_raw_clear_mission(
             self._handle,
         )
         result = MissionRawResult(result_code)
         if result != MissionRawResult.SUCCESS:
             raise Exception(f"clear_mission failed: {result}")
+
         return result
 
 
@@ -757,12 +784,16 @@ class MissionRaw:
 
     def set_current_mission_item(self, index):
         """Get set_current_mission_item (blocking)"""
+
+
         result_code = self._lib.mavsdk_mission_raw_set_current_mission_item(
             self._handle,
-            index        )
+            index,
+        )
         result = MissionRawResult(result_code)
         if result != MissionRawResult.SUCCESS:
             raise Exception(f"set_current_mission_item failed: {result}")
+
         return result
 
 
@@ -798,15 +829,16 @@ class MissionRaw:
 
     def mission_progress(self):
         """Get mission_progress (blocking)"""
+
         result_out = MissionProgressCStruct()
+
         self._lib.mavsdk_mission_raw_mission_progress(
             self._handle,
             ctypes.byref(result_out)
         )
+
         py_result = MissionProgress.from_c_struct(result_out)
-
         self._lib.mavsdk_mission_raw_mission_progress_destroy(ctypes.byref(result_out))
-
         return py_result
 
 
@@ -848,7 +880,9 @@ class MissionRaw:
 
     def import_qgroundcontrol_mission(self, qgc_plan_path):
         """Get import_qgroundcontrol_mission (blocking)"""
+
         result_out = MissionImportDataCStruct()
+
         result_code = self._lib.mavsdk_mission_raw_import_qgroundcontrol_mission(
             self._handle,
             qgc_plan_path,
@@ -857,17 +891,18 @@ class MissionRaw:
         result = MissionRawResult(result_code)
         if result != MissionRawResult.SUCCESS:
             raise Exception(f"import_qgroundcontrol_mission failed: {result}")
+
         py_result = MissionImportData.from_c_struct(result_out)
-
         self._lib.mavsdk_mission_raw_mission_import_data_destroy(ctypes.byref(result_out))
-
         return py_result
 
 
 
     def import_qgroundcontrol_mission_from_string(self, qgc_plan):
         """Get import_qgroundcontrol_mission_from_string (blocking)"""
+
         result_out = MissionImportDataCStruct()
+
         result_code = self._lib.mavsdk_mission_raw_import_qgroundcontrol_mission_from_string(
             self._handle,
             qgc_plan,
@@ -876,17 +911,18 @@ class MissionRaw:
         result = MissionRawResult(result_code)
         if result != MissionRawResult.SUCCESS:
             raise Exception(f"import_qgroundcontrol_mission_from_string failed: {result}")
+
         py_result = MissionImportData.from_c_struct(result_out)
-
         self._lib.mavsdk_mission_raw_mission_import_data_destroy(ctypes.byref(result_out))
-
         return py_result
 
 
 
     def import_mission_planner_mission(self, mission_planner_path):
         """Get import_mission_planner_mission (blocking)"""
+
         result_out = MissionImportDataCStruct()
+
         result_code = self._lib.mavsdk_mission_raw_import_mission_planner_mission(
             self._handle,
             mission_planner_path,
@@ -895,17 +931,18 @@ class MissionRaw:
         result = MissionRawResult(result_code)
         if result != MissionRawResult.SUCCESS:
             raise Exception(f"import_mission_planner_mission failed: {result}")
+
         py_result = MissionImportData.from_c_struct(result_out)
-
         self._lib.mavsdk_mission_raw_mission_import_data_destroy(ctypes.byref(result_out))
-
         return py_result
 
 
 
     def import_mission_planner_mission_from_string(self, mission_planner_mission):
         """Get import_mission_planner_mission_from_string (blocking)"""
+
         result_out = MissionImportDataCStruct()
+
         result_code = self._lib.mavsdk_mission_raw_import_mission_planner_mission_from_string(
             self._handle,
             mission_planner_mission,
@@ -914,17 +951,18 @@ class MissionRaw:
         result = MissionRawResult(result_code)
         if result != MissionRawResult.SUCCESS:
             raise Exception(f"import_mission_planner_mission_from_string failed: {result}")
+
         py_result = MissionImportData.from_c_struct(result_out)
-
         self._lib.mavsdk_mission_raw_mission_import_data_destroy(ctypes.byref(result_out))
-
         return py_result
 
 
 
     def is_mission_finished(self):
         """Get is_mission_finished (blocking)"""
+
         result_out = ctypes.c_bool()
+
         result_code = self._lib.mavsdk_mission_raw_is_mission_finished(
             self._handle,
             ctypes.byref(result_out)
@@ -932,6 +970,7 @@ class MissionRaw:
         result = MissionRawResult(result_code)
         if result != MissionRawResult.SUCCESS:
             raise Exception(f"is_mission_finished failed: {result}")
+
         return result_out.value
 
 

@@ -1757,204 +1757,282 @@ class TelemetryServer:
 
     def publish_position(self, position, velocity_ned, heading):
         """Get publish_position (blocking)"""
+
+
         result_code = self._lib.mavsdk_telemetry_server_publish_position(
             self._handle,
-            position.to_c_struct(),             velocity_ned.to_c_struct(),             heading.to_c_struct()        )
+            position.to_c_struct(),
+            velocity_ned.to_c_struct(),
+            heading.to_c_struct(),
+        )
         result = TelemetryServerResult(result_code)
         if result != TelemetryServerResult.SUCCESS:
             raise Exception(f"publish_position failed: {result}")
+
         return result
 
 
 
     def publish_home(self, home):
         """Get publish_home (blocking)"""
+
+
         result_code = self._lib.mavsdk_telemetry_server_publish_home(
             self._handle,
-            home.to_c_struct()        )
+            home.to_c_struct(),
+        )
         result = TelemetryServerResult(result_code)
         if result != TelemetryServerResult.SUCCESS:
             raise Exception(f"publish_home failed: {result}")
+
         return result
 
 
 
     def publish_sys_status(self, battery, rc_receiver_status, gyro_status, accel_status, mag_status, gps_status):
         """Get publish_sys_status (blocking)"""
+
+
         result_code = self._lib.mavsdk_telemetry_server_publish_sys_status(
             self._handle,
-            battery.to_c_struct(),             rc_receiver_status,             gyro_status,             accel_status,             mag_status,             gps_status        )
+            battery.to_c_struct(),
+            rc_receiver_status,
+            gyro_status,
+            accel_status,
+            mag_status,
+            gps_status,
+        )
         result = TelemetryServerResult(result_code)
         if result != TelemetryServerResult.SUCCESS:
             raise Exception(f"publish_sys_status failed: {result}")
+
         return result
 
 
 
     def publish_extended_sys_state(self, vtol_state, landed_state):
         """Get publish_extended_sys_state (blocking)"""
+
+
         result_code = self._lib.mavsdk_telemetry_server_publish_extended_sys_state(
             self._handle,
-            vtol_state,             landed_state        )
+            vtol_state,
+            landed_state,
+        )
         result = TelemetryServerResult(result_code)
         if result != TelemetryServerResult.SUCCESS:
             raise Exception(f"publish_extended_sys_state failed: {result}")
+
         return result
 
 
 
     def publish_raw_gps(self, raw_gps, gps_info):
         """Get publish_raw_gps (blocking)"""
+
+
         result_code = self._lib.mavsdk_telemetry_server_publish_raw_gps(
             self._handle,
-            raw_gps.to_c_struct(),             gps_info.to_c_struct()        )
+            raw_gps.to_c_struct(),
+            gps_info.to_c_struct(),
+        )
         result = TelemetryServerResult(result_code)
         if result != TelemetryServerResult.SUCCESS:
             raise Exception(f"publish_raw_gps failed: {result}")
+
         return result
 
 
 
     def publish_battery(self, battery):
         """Get publish_battery (blocking)"""
+
+
         result_code = self._lib.mavsdk_telemetry_server_publish_battery(
             self._handle,
-            battery.to_c_struct()        )
+            battery.to_c_struct(),
+        )
         result = TelemetryServerResult(result_code)
         if result != TelemetryServerResult.SUCCESS:
             raise Exception(f"publish_battery failed: {result}")
+
         return result
 
 
 
     def publish_status_text(self, status_text):
         """Get publish_status_text (blocking)"""
+
+
         result_code = self._lib.mavsdk_telemetry_server_publish_status_text(
             self._handle,
-            status_text.to_c_struct()        )
+            status_text.to_c_struct(),
+        )
         result = TelemetryServerResult(result_code)
         if result != TelemetryServerResult.SUCCESS:
             raise Exception(f"publish_status_text failed: {result}")
+
         return result
 
 
 
     def publish_odometry(self, odometry):
         """Get publish_odometry (blocking)"""
+
+
         result_code = self._lib.mavsdk_telemetry_server_publish_odometry(
             self._handle,
-            odometry.to_c_struct()        )
+            odometry.to_c_struct(),
+        )
         result = TelemetryServerResult(result_code)
         if result != TelemetryServerResult.SUCCESS:
             raise Exception(f"publish_odometry failed: {result}")
+
         return result
 
 
 
     def publish_position_velocity_ned(self, position_velocity_ned):
         """Get publish_position_velocity_ned (blocking)"""
+
+
         result_code = self._lib.mavsdk_telemetry_server_publish_position_velocity_ned(
             self._handle,
-            position_velocity_ned.to_c_struct()        )
+            position_velocity_ned.to_c_struct(),
+        )
         result = TelemetryServerResult(result_code)
         if result != TelemetryServerResult.SUCCESS:
             raise Exception(f"publish_position_velocity_ned failed: {result}")
+
         return result
 
 
 
     def publish_ground_truth(self, ground_truth):
         """Get publish_ground_truth (blocking)"""
+
+
         result_code = self._lib.mavsdk_telemetry_server_publish_ground_truth(
             self._handle,
-            ground_truth.to_c_struct()        )
+            ground_truth.to_c_struct(),
+        )
         result = TelemetryServerResult(result_code)
         if result != TelemetryServerResult.SUCCESS:
             raise Exception(f"publish_ground_truth failed: {result}")
+
         return result
 
 
 
     def publish_imu(self, imu):
         """Get publish_imu (blocking)"""
+
+
         result_code = self._lib.mavsdk_telemetry_server_publish_imu(
             self._handle,
-            imu.to_c_struct()        )
+            imu.to_c_struct(),
+        )
         result = TelemetryServerResult(result_code)
         if result != TelemetryServerResult.SUCCESS:
             raise Exception(f"publish_imu failed: {result}")
+
         return result
 
 
 
     def publish_scaled_imu(self, imu):
         """Get publish_scaled_imu (blocking)"""
+
+
         result_code = self._lib.mavsdk_telemetry_server_publish_scaled_imu(
             self._handle,
-            imu.to_c_struct()        )
+            imu.to_c_struct(),
+        )
         result = TelemetryServerResult(result_code)
         if result != TelemetryServerResult.SUCCESS:
             raise Exception(f"publish_scaled_imu failed: {result}")
+
         return result
 
 
 
     def publish_raw_imu(self, imu):
         """Get publish_raw_imu (blocking)"""
+
+
         result_code = self._lib.mavsdk_telemetry_server_publish_raw_imu(
             self._handle,
-            imu.to_c_struct()        )
+            imu.to_c_struct(),
+        )
         result = TelemetryServerResult(result_code)
         if result != TelemetryServerResult.SUCCESS:
             raise Exception(f"publish_raw_imu failed: {result}")
+
         return result
 
 
 
     def publish_unix_epoch_time(self, time_us):
         """Get publish_unix_epoch_time (blocking)"""
+
+
         result_code = self._lib.mavsdk_telemetry_server_publish_unix_epoch_time(
             self._handle,
-            time_us        )
+            time_us,
+        )
         result = TelemetryServerResult(result_code)
         if result != TelemetryServerResult.SUCCESS:
             raise Exception(f"publish_unix_epoch_time failed: {result}")
+
         return result
 
 
 
     def publish_distance_sensor(self, distance_sensor):
         """Get publish_distance_sensor (blocking)"""
+
+
         result_code = self._lib.mavsdk_telemetry_server_publish_distance_sensor(
             self._handle,
-            distance_sensor.to_c_struct()        )
+            distance_sensor.to_c_struct(),
+        )
         result = TelemetryServerResult(result_code)
         if result != TelemetryServerResult.SUCCESS:
             raise Exception(f"publish_distance_sensor failed: {result}")
+
         return result
 
 
 
     def publish_attitude(self, angle, angular_velocity):
         """Get publish_attitude (blocking)"""
+
+
         result_code = self._lib.mavsdk_telemetry_server_publish_attitude(
             self._handle,
-            angle.to_c_struct(),             angular_velocity.to_c_struct()        )
+            angle.to_c_struct(),
+            angular_velocity.to_c_struct(),
+        )
         result = TelemetryServerResult(result_code)
         if result != TelemetryServerResult.SUCCESS:
             raise Exception(f"publish_attitude failed: {result}")
+
         return result
 
 
 
     def publish_visual_flight_rules_hud(self, fixed_wing_metrics):
         """Get publish_visual_flight_rules_hud (blocking)"""
+
+
         result_code = self._lib.mavsdk_telemetry_server_publish_visual_flight_rules_hud(
             self._handle,
-            fixed_wing_metrics.to_c_struct()        )
+            fixed_wing_metrics.to_c_struct(),
+        )
         result = TelemetryServerResult(result_code)
         if result != TelemetryServerResult.SUCCESS:
             raise Exception(f"publish_visual_flight_rules_hud failed: {result}")
+
         return result
 
 

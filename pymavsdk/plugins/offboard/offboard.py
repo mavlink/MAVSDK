@@ -650,12 +650,15 @@ class Offboard:
 
     def start(self):
         """Get start (blocking)"""
+
+
         result_code = self._lib.mavsdk_offboard_start(
             self._handle,
         )
         result = OffboardResult(result_code)
         if result != OffboardResult.SUCCESS:
             raise Exception(f"start failed: {result}")
+
         return result
 
 
@@ -686,143 +689,192 @@ class Offboard:
 
     def stop(self):
         """Get stop (blocking)"""
+
+
         result_code = self._lib.mavsdk_offboard_stop(
             self._handle,
         )
         result = OffboardResult(result_code)
         if result != OffboardResult.SUCCESS:
             raise Exception(f"stop failed: {result}")
+
         return result
 
 
 
     def is_active(self):
         """Get is_active (blocking)"""
+
         result_out = ctypes.c_bool()
+
         self._lib.mavsdk_offboard_is_active(
             self._handle,
             ctypes.byref(result_out)
         )
+
         return result_out.value
 
 
 
     def set_attitude(self, attitude):
         """Get set_attitude (blocking)"""
+
+
         result_code = self._lib.mavsdk_offboard_set_attitude(
             self._handle,
-            attitude.to_c_struct()        )
+            attitude.to_c_struct(),
+        )
         result = OffboardResult(result_code)
         if result != OffboardResult.SUCCESS:
             raise Exception(f"set_attitude failed: {result}")
+
         return result
 
 
 
     def set_actuator_control(self, actuator_control):
         """Get set_actuator_control (blocking)"""
+
+
         result_code = self._lib.mavsdk_offboard_set_actuator_control(
             self._handle,
-            actuator_control.to_c_struct()        )
+            actuator_control.to_c_struct(),
+        )
         result = OffboardResult(result_code)
         if result != OffboardResult.SUCCESS:
             raise Exception(f"set_actuator_control failed: {result}")
+
         return result
 
 
 
     def set_attitude_rate(self, attitude_rate):
         """Get set_attitude_rate (blocking)"""
+
+
         result_code = self._lib.mavsdk_offboard_set_attitude_rate(
             self._handle,
-            attitude_rate.to_c_struct()        )
+            attitude_rate.to_c_struct(),
+        )
         result = OffboardResult(result_code)
         if result != OffboardResult.SUCCESS:
             raise Exception(f"set_attitude_rate failed: {result}")
+
         return result
 
 
 
     def set_position_ned(self, position_ned_yaw):
         """Get set_position_ned (blocking)"""
+
+
         result_code = self._lib.mavsdk_offboard_set_position_ned(
             self._handle,
-            position_ned_yaw.to_c_struct()        )
+            position_ned_yaw.to_c_struct(),
+        )
         result = OffboardResult(result_code)
         if result != OffboardResult.SUCCESS:
             raise Exception(f"set_position_ned failed: {result}")
+
         return result
 
 
 
     def set_position_global(self, position_global_yaw):
         """Get set_position_global (blocking)"""
+
+
         result_code = self._lib.mavsdk_offboard_set_position_global(
             self._handle,
-            position_global_yaw.to_c_struct()        )
+            position_global_yaw.to_c_struct(),
+        )
         result = OffboardResult(result_code)
         if result != OffboardResult.SUCCESS:
             raise Exception(f"set_position_global failed: {result}")
+
         return result
 
 
 
     def set_velocity_body(self, velocity_body_yawspeed):
         """Get set_velocity_body (blocking)"""
+
+
         result_code = self._lib.mavsdk_offboard_set_velocity_body(
             self._handle,
-            velocity_body_yawspeed.to_c_struct()        )
+            velocity_body_yawspeed.to_c_struct(),
+        )
         result = OffboardResult(result_code)
         if result != OffboardResult.SUCCESS:
             raise Exception(f"set_velocity_body failed: {result}")
+
         return result
 
 
 
     def set_velocity_ned(self, velocity_ned_yaw):
         """Get set_velocity_ned (blocking)"""
+
+
         result_code = self._lib.mavsdk_offboard_set_velocity_ned(
             self._handle,
-            velocity_ned_yaw.to_c_struct()        )
+            velocity_ned_yaw.to_c_struct(),
+        )
         result = OffboardResult(result_code)
         if result != OffboardResult.SUCCESS:
             raise Exception(f"set_velocity_ned failed: {result}")
+
         return result
 
 
 
     def set_position_velocity_ned(self, position_ned_yaw, velocity_ned_yaw):
         """Get set_position_velocity_ned (blocking)"""
+
+
         result_code = self._lib.mavsdk_offboard_set_position_velocity_ned(
             self._handle,
-            position_ned_yaw.to_c_struct(),             velocity_ned_yaw.to_c_struct()        )
+            position_ned_yaw.to_c_struct(),
+            velocity_ned_yaw.to_c_struct(),
+        )
         result = OffboardResult(result_code)
         if result != OffboardResult.SUCCESS:
             raise Exception(f"set_position_velocity_ned failed: {result}")
+
         return result
 
 
 
     def set_position_velocity_acceleration_ned(self, position_ned_yaw, velocity_ned_yaw, acceleration_ned):
         """Get set_position_velocity_acceleration_ned (blocking)"""
+
+
         result_code = self._lib.mavsdk_offboard_set_position_velocity_acceleration_ned(
             self._handle,
-            position_ned_yaw.to_c_struct(),             velocity_ned_yaw.to_c_struct(),             acceleration_ned.to_c_struct()        )
+            position_ned_yaw.to_c_struct(),
+            velocity_ned_yaw.to_c_struct(),
+            acceleration_ned.to_c_struct(),
+        )
         result = OffboardResult(result_code)
         if result != OffboardResult.SUCCESS:
             raise Exception(f"set_position_velocity_acceleration_ned failed: {result}")
+
         return result
 
 
 
     def set_acceleration_ned(self, acceleration_ned):
         """Get set_acceleration_ned (blocking)"""
+
+
         result_code = self._lib.mavsdk_offboard_set_acceleration_ned(
             self._handle,
-            acceleration_ned.to_c_struct()        )
+            acceleration_ned.to_c_struct(),
+        )
         result = OffboardResult(result_code)
         if result != OffboardResult.SUCCESS:
             raise Exception(f"set_acceleration_ned failed: {result}")
+
         return result
 
 

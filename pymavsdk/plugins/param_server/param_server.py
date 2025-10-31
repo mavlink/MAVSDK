@@ -283,19 +283,25 @@ class ParamServer:
 
     def set_protocol(self, extended_protocol):
         """Get set_protocol (blocking)"""
+
+
         result_code = self._lib.mavsdk_param_server_set_protocol(
             self._handle,
-            extended_protocol        )
+            extended_protocol,
+        )
         result = ParamServerResult(result_code)
         if result != ParamServerResult.SUCCESS:
             raise Exception(f"set_protocol failed: {result}")
+
         return result
 
 
 
     def retrieve_param_int(self, name):
         """Get retrieve_param_int (blocking)"""
+
         result_out = ctypes.c_int32()
+
         result_code = self._lib.mavsdk_param_server_retrieve_param_int(
             self._handle,
             name,
@@ -304,25 +310,33 @@ class ParamServer:
         result = ParamServerResult(result_code)
         if result != ParamServerResult.SUCCESS:
             raise Exception(f"retrieve_param_int failed: {result}")
+
         return result_out.value
 
 
 
     def provide_param_int(self, name, value):
         """Get provide_param_int (blocking)"""
+
+
         result_code = self._lib.mavsdk_param_server_provide_param_int(
             self._handle,
-            name,             value        )
+            name,
+            value,
+        )
         result = ParamServerResult(result_code)
         if result != ParamServerResult.SUCCESS:
             raise Exception(f"provide_param_int failed: {result}")
+
         return result
 
 
 
     def retrieve_param_float(self, name):
         """Get retrieve_param_float (blocking)"""
+
         result_out = ctypes.c_float()
+
         result_code = self._lib.mavsdk_param_server_retrieve_param_float(
             self._handle,
             name,
@@ -331,25 +345,33 @@ class ParamServer:
         result = ParamServerResult(result_code)
         if result != ParamServerResult.SUCCESS:
             raise Exception(f"retrieve_param_float failed: {result}")
+
         return result_out.value
 
 
 
     def provide_param_float(self, name, value):
         """Get provide_param_float (blocking)"""
+
+
         result_code = self._lib.mavsdk_param_server_provide_param_float(
             self._handle,
-            name,             value        )
+            name,
+            value,
+        )
         result = ParamServerResult(result_code)
         if result != ParamServerResult.SUCCESS:
             raise Exception(f"provide_param_float failed: {result}")
+
         return result
 
 
 
     def retrieve_param_custom(self, name):
         """Get retrieve_param_custom (blocking)"""
+
         result_out = ctypes.c_char_p()
+
         result_code = self._lib.mavsdk_param_server_retrieve_param_custom(
             self._handle,
             name,
@@ -358,33 +380,40 @@ class ParamServer:
         result = ParamServerResult(result_code)
         if result != ParamServerResult.SUCCESS:
             raise Exception(f"retrieve_param_custom failed: {result}")
+
         return result_out.value
 
 
 
     def provide_param_custom(self, name, value):
         """Get provide_param_custom (blocking)"""
+
+
         result_code = self._lib.mavsdk_param_server_provide_param_custom(
             self._handle,
-            name,             value        )
+            name,
+            value,
+        )
         result = ParamServerResult(result_code)
         if result != ParamServerResult.SUCCESS:
             raise Exception(f"provide_param_custom failed: {result}")
+
         return result
 
 
 
     def retrieve_all_params(self):
         """Get retrieve_all_params (blocking)"""
+
         result_out = AllParamsCStruct()
+
         self._lib.mavsdk_param_server_retrieve_all_params(
             self._handle,
             ctypes.byref(result_out)
         )
+
         py_result = AllParams.from_c_struct(result_out)
-
         self._lib.mavsdk_param_server_all_params_destroy(ctypes.byref(result_out))
-
         return py_result
 
 

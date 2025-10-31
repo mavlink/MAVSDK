@@ -89,12 +89,18 @@ class Failure:
 
     def inject(self, failure_unit, failure_type, instance):
         """Get inject (blocking)"""
+
+
         result_code = self._lib.mavsdk_failure_inject(
             self._handle,
-            failure_unit,             failure_type,             instance        )
+            failure_unit,
+            failure_type,
+            instance,
+        )
         result = FailureResult(result_code)
         if result != FailureResult.SUCCESS:
             raise Exception(f"inject failed: {result}")
+
         return result
 
 

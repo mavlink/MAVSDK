@@ -323,135 +323,84 @@ class {{ plugin_name.upper_camel_case }}:
 {% if method.is_sync %}
     def {{ method.name.lower_snake_case }}(self{% for param in method.params %}, {{ param.name.lower_snake_case }}{% endfor %}):
         """Get {{ method.name.lower_snake_case }} (blocking)"""
+
+        {# Prepare output parameters based on return type #}
         {% if method.return_name %}
           {% if method.return_type.is_repeated %}
-          {# Array return type logic #}
         result_ptr = ctypes.POINTER({{ method.return_type.inner_name.upper_camel_case }}CStruct)()
         size = ctypes.c_size_t()
-            {% if method.has_result %}
-        result_code = self._lib.mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}(
-            self._handle,
-              {% for param in method.params %}
-                {% if param.type_info.is_primitive or param.type_info.is_enum %}
-            {{ param.name.lower_snake_case }},
-                {% else %}
-            {{ param.name.lower_snake_case }}.to_c_struct(),
-                {% endif %}
-              {% endfor %}
-            ctypes.byref(result_ptr),
-            ctypes.byref(size)
-        )
-        result = {{ result_enum }}(result_code)
-        if result != {{ result_enum }}.SUCCESS:
-            raise Exception(f"{{ method.name.lower_snake_case }} failed: {result}")
-        return result
-            {% else %}
-        self._lib.mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}(
-            self._handle,
-              {% for param in method.params %}
-                {% if param.type_info.is_primitive or param.type_info.is_enum %}
-            {{ param.name.lower_snake_case }},
-                {% else %}
-            {{ param.name.lower_snake_case }}.to_c_struct(),
-                {% endif %}
-              {% endfor %}
-            ctypes.byref(result_ptr),
-            ctypes.byref(size)
-        )
-            {% endif %}
-        {# Convert C array to Python list #}
-        py_result = [{{ method.return_type.inner_name.upper_camel_case }}.from_c_struct(result_ptr[i]) for i in range(size.value)]
-
-        self._lib.mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.return_type.inner_name.lower_snake_case }}_destroy(result_ptr)
-
-        return py_result
           {% else %}
-          {# Single value return type logic #}
             {% if method.return_type.is_primitive %}
         result_out = ctypes.{{ method.return_type.inner_name }}()
             {% else %}
         result_out = {{ method.return_type.inner_name.upper_camel_case }}CStruct()
             {% endif %}
-            {% if method.has_result %}
-            {# Has both result AND return value #}
+          {% endif %}
+        {% endif %}
+
+        {# Make the function call #}
+        {% if method.has_result %}
         result_code = self._lib.mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}(
             self._handle,
-              {% for param in method.params %}
-                {% if param.type_info.is_primitive or param.type_info.is_enum %}
+          {% for param in method.params %}
+            {% if param.type_info.is_primitive or param.type_info.is_enum %}
             {{ param.name.lower_snake_case }},
-                {% else %}
-            {{ param.name.lower_snake_case }}.to_c_struct(),
-                {% endif %}
-              {% endfor %}
-            ctypes.byref(result_out)
-        )
-        result = {{ result_enum }}(result_code)
-        if result != {{ result_enum }}.SUCCESS:
-            raise Exception(f"{{ method.name.lower_snake_case }} failed: {result}")
-              {% if method.return_type.is_primitive %}
-        return result_out.value
-              {% else %}
-              {# Convert to pure Python object #}
-        py_result = {{ method.return_type.inner_name.upper_camel_case }}.from_c_struct(result_out)
-
-        self._lib.mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.return_type.inner_name.lower_snake_case }}_destroy(ctypes.byref(result_out))
-
-        return py_result
-              {% endif %}
             {% else %}
-            {# Has return value but no result enum #}
-        self._lib.mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}(
-            self._handle,
-              {% for param in method.params %}
-                {% if param.type_info.is_primitive or param.type_info.is_enum %}
-            {{ param.name.lower_snake_case }},
-                {% else %}
             {{ param.name.lower_snake_case }}.to_c_struct(),
-                {% endif %}
-              {% endfor %}
+            {% endif %}
+          {% endfor %}
+          {% if method.return_name %}
+            {% if method.return_type.is_repeated %}
+            ctypes.byref(result_ptr),
+            ctypes.byref(size)
+            {% else %}
             ctypes.byref(result_out)
-        )
-              {% if method.return_type.is_primitive %}
-        return result_out.value
-              {% else %}
-            {# Convert to pure Python object #}
-        py_result = {{ method.return_type.inner_name.upper_camel_case }}.from_c_struct(result_out)
-
-        self._lib.mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.return_type.inner_name.lower_snake_case }}_destroy(ctypes.byref(result_out))
-
-        return py_result
-              {% endif %}
             {% endif %}
           {% endif %}
-        {% else %}
-        {# No return value, only possible result enum #}
-          {% if method.has_result %}
-        result_code = self._lib.mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}(
-            self._handle,
-            {% for param in method.params %}
-              {% if param.type_info.is_primitive or param.type_info.is_enum %}
-            {{ param.name.lower_snake_case }}{% if not loop.last %}, {% endif %}
-              {% else %}
-            {{ param.name.lower_snake_case }}.to_c_struct(){% if not loop.last %}, {% endif %}
-              {% endif %}
-            {% endfor %}
         )
         result = {{ result_enum }}(result_code)
         if result != {{ result_enum }}.SUCCESS:
             raise Exception(f"{{ method.name.lower_snake_case }} failed: {result}")
-        return result
-          {% else %}
+        {% else %}
         self._lib.mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}(
             self._handle,
-            {% for param in method.params %}
-              {% if param.type_info.is_primitive or param.type_info.is_enum %}
-            {{ param.name.lower_snake_case }}{% if not loop.last %}, {% endif %}
-              {% else %}
-            {{ param.name.lower_snake_case }}.to_c_struct(){% if not loop.last %}, {% endif %}
-              {% endif %}
-            {% endfor %}
-        )
+          {% for param in method.params %}
+            {% if param.type_info.is_primitive or param.type_info.is_enum %}
+            {{ param.name.lower_snake_case }},
+            {% else %}
+            {{ param.name.lower_snake_case }}.to_c_struct(),
+            {% endif %}
+          {% endfor %}
+          {% if method.return_name %}
+            {% if method.return_type.is_repeated %}
+            ctypes.byref(result_ptr),
+            ctypes.byref(size)
+            {% else %}
+            ctypes.byref(result_out)
+            {% endif %}
           {% endif %}
+        )
+        {% endif %}
+
+        {# Process and return the result #}
+        {% if method.return_name %}
+          {% if method.return_type.is_repeated %}
+        {# Convert C array to Python list #}
+        py_result = [{{ method.return_type.inner_name.upper_camel_case }}.from_c_struct(result_ptr[i]) for i in range(size.value)]
+        self._lib.mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.return_type.inner_name.lower_snake_case }}_destroy(result_ptr)
+        return py_result
+          {% else %}
+            {% if method.return_type.is_primitive %}
+        return result_out.value
+            {% else %}
+        {# Convert to pure Python object #}
+        py_result = {{ method.return_type.inner_name.upper_camel_case }}.from_c_struct(result_out)
+        self._lib.mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.return_type.inner_name.lower_snake_case }}_destroy(ctypes.byref(result_out))
+        return py_result
+            {% endif %}
+          {% endif %}
+        {% elif method.has_result %}
+        return result
         {% endif %}
     {% endif %}
 

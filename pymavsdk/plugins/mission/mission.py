@@ -458,12 +458,16 @@ class Mission:
 
     def upload_mission(self, mission_plan):
         """Get upload_mission (blocking)"""
+
+
         result_code = self._lib.mavsdk_mission_upload_mission(
             self._handle,
-            mission_plan.to_c_struct()        )
+            mission_plan.to_c_struct(),
+        )
         result = MissionResult(result_code)
         if result != MissionResult.SUCCESS:
             raise Exception(f"upload_mission failed: {result}")
+
         return result
 
 
@@ -502,12 +506,15 @@ class Mission:
 
     def cancel_mission_upload(self):
         """Get cancel_mission_upload (blocking)"""
+
+
         result_code = self._lib.mavsdk_mission_cancel_mission_upload(
             self._handle,
         )
         result = MissionResult(result_code)
         if result != MissionResult.SUCCESS:
             raise Exception(f"cancel_mission_upload failed: {result}")
+
         return result
 
 
@@ -542,7 +549,9 @@ class Mission:
 
     def download_mission(self):
         """Get download_mission (blocking)"""
+
         result_out = MissionPlanCStruct()
+
         result_code = self._lib.mavsdk_mission_download_mission(
             self._handle,
             ctypes.byref(result_out)
@@ -550,10 +559,9 @@ class Mission:
         result = MissionResult(result_code)
         if result != MissionResult.SUCCESS:
             raise Exception(f"download_mission failed: {result}")
+
         py_result = MissionPlan.from_c_struct(result_out)
-
         self._lib.mavsdk_mission_mission_plan_destroy(ctypes.byref(result_out))
-
         return py_result
 
 
@@ -591,12 +599,15 @@ class Mission:
 
     def cancel_mission_download(self):
         """Get cancel_mission_download (blocking)"""
+
+
         result_code = self._lib.mavsdk_mission_cancel_mission_download(
             self._handle,
         )
         result = MissionResult(result_code)
         if result != MissionResult.SUCCESS:
             raise Exception(f"cancel_mission_download failed: {result}")
+
         return result
 
 
@@ -627,12 +638,15 @@ class Mission:
 
     def start_mission(self):
         """Get start_mission (blocking)"""
+
+
         result_code = self._lib.mavsdk_mission_start_mission(
             self._handle,
         )
         result = MissionResult(result_code)
         if result != MissionResult.SUCCESS:
             raise Exception(f"start_mission failed: {result}")
+
         return result
 
 
@@ -666,12 +680,15 @@ class Mission:
 
     def pause_mission(self):
         """Get pause_mission (blocking)"""
+
+
         result_code = self._lib.mavsdk_mission_pause_mission(
             self._handle,
         )
         result = MissionResult(result_code)
         if result != MissionResult.SUCCESS:
             raise Exception(f"pause_mission failed: {result}")
+
         return result
 
 
@@ -700,12 +717,15 @@ class Mission:
 
     def clear_mission(self):
         """Get clear_mission (blocking)"""
+
+
         result_code = self._lib.mavsdk_mission_clear_mission(
             self._handle,
         )
         result = MissionResult(result_code)
         if result != MissionResult.SUCCESS:
             raise Exception(f"clear_mission failed: {result}")
+
         return result
 
 
@@ -741,19 +761,25 @@ class Mission:
 
     def set_current_mission_item(self, index):
         """Get set_current_mission_item (blocking)"""
+
+
         result_code = self._lib.mavsdk_mission_set_current_mission_item(
             self._handle,
-            index        )
+            index,
+        )
         result = MissionResult(result_code)
         if result != MissionResult.SUCCESS:
             raise Exception(f"set_current_mission_item failed: {result}")
+
         return result
 
 
 
     def is_mission_finished(self):
         """Get is_mission_finished (blocking)"""
+
         result_out = ctypes.c_bool()
+
         result_code = self._lib.mavsdk_mission_is_mission_finished(
             self._handle,
             ctypes.byref(result_out)
@@ -761,6 +787,7 @@ class Mission:
         result = MissionResult(result_code)
         if result != MissionResult.SUCCESS:
             raise Exception(f"is_mission_finished failed: {result}")
+
         return result_out.value
 
 
@@ -796,22 +823,25 @@ class Mission:
 
     def mission_progress(self):
         """Get mission_progress (blocking)"""
+
         result_out = MissionProgressCStruct()
+
         self._lib.mavsdk_mission_mission_progress(
             self._handle,
             ctypes.byref(result_out)
         )
+
         py_result = MissionProgress.from_c_struct(result_out)
-
         self._lib.mavsdk_mission_mission_progress_destroy(ctypes.byref(result_out))
-
         return py_result
 
 
 
     def get_return_to_launch_after_mission(self):
         """Get get_return_to_launch_after_mission (blocking)"""
+
         result_out = ctypes.c_bool()
+
         result_code = self._lib.mavsdk_mission_get_return_to_launch_after_mission(
             self._handle,
             ctypes.byref(result_out)
@@ -819,18 +849,23 @@ class Mission:
         result = MissionResult(result_code)
         if result != MissionResult.SUCCESS:
             raise Exception(f"get_return_to_launch_after_mission failed: {result}")
+
         return result_out.value
 
 
 
     def set_return_to_launch_after_mission(self, enable):
         """Get set_return_to_launch_after_mission (blocking)"""
+
+
         result_code = self._lib.mavsdk_mission_set_return_to_launch_after_mission(
             self._handle,
-            enable        )
+            enable,
+        )
         result = MissionResult(result_code)
         if result != MissionResult.SUCCESS:
             raise Exception(f"set_return_to_launch_after_mission failed: {result}")
+
         return result
 
 

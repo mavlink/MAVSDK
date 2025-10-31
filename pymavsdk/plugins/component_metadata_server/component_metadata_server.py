@@ -101,9 +101,13 @@ class ComponentMetadataServer:
 
     def set_metadata(self, metadata):
         """Get set_metadata (blocking)"""
+
+
         self._lib.mavsdk_component_metadata_server_set_metadata(
             self._handle,
-            metadata.to_c_struct()        )
+            metadata.to_c_struct(),
+        )
+
 
 
     def destroy(self):

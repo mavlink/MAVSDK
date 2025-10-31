@@ -100,12 +100,15 @@ class Action:
 
     def arm(self):
         """Get arm (blocking)"""
+
+
         result_code = self._lib.mavsdk_action_arm(
             self._handle,
         )
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
             raise Exception(f"arm failed: {result}")
+
         return result
 
 
@@ -139,12 +142,15 @@ class Action:
 
     def arm_force(self):
         """Get arm_force (blocking)"""
+
+
         result_code = self._lib.mavsdk_action_arm_force(
             self._handle,
         )
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
             raise Exception(f"arm_force failed: {result}")
+
         return result
 
 
@@ -176,12 +182,15 @@ class Action:
 
     def disarm(self):
         """Get disarm (blocking)"""
+
+
         result_code = self._lib.mavsdk_action_disarm(
             self._handle,
         )
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
             raise Exception(f"disarm failed: {result}")
+
         return result
 
 
@@ -215,12 +224,15 @@ class Action:
 
     def takeoff(self):
         """Get takeoff (blocking)"""
+
+
         result_code = self._lib.mavsdk_action_takeoff(
             self._handle,
         )
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
             raise Exception(f"takeoff failed: {result}")
+
         return result
 
 
@@ -251,12 +263,15 @@ class Action:
 
     def land(self):
         """Get land (blocking)"""
+
+
         result_code = self._lib.mavsdk_action_land(
             self._handle,
         )
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
             raise Exception(f"land failed: {result}")
+
         return result
 
 
@@ -287,12 +302,15 @@ class Action:
 
     def reboot(self):
         """Get reboot (blocking)"""
+
+
         result_code = self._lib.mavsdk_action_reboot(
             self._handle,
         )
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
             raise Exception(f"reboot failed: {result}")
+
         return result
 
 
@@ -325,12 +343,15 @@ class Action:
 
     def shutdown(self):
         """Get shutdown (blocking)"""
+
+
         result_code = self._lib.mavsdk_action_shutdown(
             self._handle,
         )
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
             raise Exception(f"shutdown failed: {result}")
+
         return result
 
 
@@ -361,12 +382,15 @@ class Action:
 
     def terminate(self):
         """Get terminate (blocking)"""
+
+
         result_code = self._lib.mavsdk_action_terminate(
             self._handle,
         )
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
             raise Exception(f"terminate failed: {result}")
+
         return result
 
 
@@ -398,12 +422,15 @@ class Action:
 
     def kill(self):
         """Get kill (blocking)"""
+
+
         result_code = self._lib.mavsdk_action_kill(
             self._handle,
         )
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
             raise Exception(f"kill failed: {result}")
+
         return result
 
 
@@ -436,12 +463,15 @@ class Action:
 
     def return_to_launch(self):
         """Get return_to_launch (blocking)"""
+
+
         result_code = self._lib.mavsdk_action_return_to_launch(
             self._handle,
         )
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
             raise Exception(f"return_to_launch failed: {result}")
+
         return result
 
 
@@ -479,12 +509,19 @@ class Action:
 
     def goto_location(self, latitude_deg, longitude_deg, absolute_altitude_m, yaw_deg):
         """Get goto_location (blocking)"""
+
+
         result_code = self._lib.mavsdk_action_goto_location(
             self._handle,
-            latitude_deg,             longitude_deg,             absolute_altitude_m,             yaw_deg        )
+            latitude_deg,
+            longitude_deg,
+            absolute_altitude_m,
+            yaw_deg,
+        )
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
             raise Exception(f"goto_location failed: {result}")
+
         return result
 
 
@@ -521,12 +558,21 @@ class Action:
 
     def do_orbit(self, radius_m, velocity_ms, yaw_behavior, latitude_deg, longitude_deg, absolute_altitude_m):
         """Get do_orbit (blocking)"""
+
+
         result_code = self._lib.mavsdk_action_do_orbit(
             self._handle,
-            radius_m,             velocity_ms,             yaw_behavior,             latitude_deg,             longitude_deg,             absolute_altitude_m        )
+            radius_m,
+            velocity_ms,
+            yaw_behavior,
+            latitude_deg,
+            longitude_deg,
+            absolute_altitude_m,
+        )
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
             raise Exception(f"do_orbit failed: {result}")
+
         return result
 
 
@@ -561,12 +607,15 @@ class Action:
 
     def hold(self):
         """Get hold (blocking)"""
+
+
         result_code = self._lib.mavsdk_action_hold(
             self._handle,
         )
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
             raise Exception(f"hold failed: {result}")
+
         return result
 
 
@@ -599,12 +648,17 @@ class Action:
 
     def set_actuator(self, index, value):
         """Get set_actuator (blocking)"""
+
+
         result_code = self._lib.mavsdk_action_set_actuator(
             self._handle,
-            index,             value        )
+            index,
+            value,
+        )
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
             raise Exception(f"set_actuator failed: {result}")
+
         return result
 
 
@@ -637,12 +691,15 @@ class Action:
 
     def transition_to_fixedwing(self):
         """Get transition_to_fixedwing (blocking)"""
+
+
         result_code = self._lib.mavsdk_action_transition_to_fixedwing(
             self._handle,
         )
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
             raise Exception(f"transition_to_fixedwing failed: {result}")
+
         return result
 
 
@@ -675,12 +732,15 @@ class Action:
 
     def transition_to_multicopter(self):
         """Get transition_to_multicopter (blocking)"""
+
+
         result_code = self._lib.mavsdk_action_transition_to_multicopter(
             self._handle,
         )
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
             raise Exception(f"transition_to_multicopter failed: {result}")
+
         return result
 
 
@@ -710,7 +770,9 @@ class Action:
 
     def get_takeoff_altitude(self):
         """Get get_takeoff_altitude (blocking)"""
+
         result_out = ctypes.c_float()
+
         result_code = self._lib.mavsdk_action_get_takeoff_altitude(
             self._handle,
             ctypes.byref(result_out)
@@ -718,6 +780,7 @@ class Action:
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
             raise Exception(f"get_takeoff_altitude failed: {result}")
+
         return result_out.value
 
 
@@ -747,12 +810,16 @@ class Action:
 
     def set_takeoff_altitude(self, altitude):
         """Get set_takeoff_altitude (blocking)"""
+
+
         result_code = self._lib.mavsdk_action_set_takeoff_altitude(
             self._handle,
-            altitude        )
+            altitude,
+        )
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
             raise Exception(f"set_takeoff_altitude failed: {result}")
+
         return result
 
 
@@ -782,7 +849,9 @@ class Action:
 
     def get_return_to_launch_altitude(self):
         """Get get_return_to_launch_altitude (blocking)"""
+
         result_out = ctypes.c_float()
+
         result_code = self._lib.mavsdk_action_get_return_to_launch_altitude(
             self._handle,
             ctypes.byref(result_out)
@@ -790,6 +859,7 @@ class Action:
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
             raise Exception(f"get_return_to_launch_altitude failed: {result}")
+
         return result_out.value
 
 
@@ -819,12 +889,16 @@ class Action:
 
     def set_return_to_launch_altitude(self, relative_altitude_m):
         """Get set_return_to_launch_altitude (blocking)"""
+
+
         result_code = self._lib.mavsdk_action_set_return_to_launch_altitude(
             self._handle,
-            relative_altitude_m        )
+            relative_altitude_m,
+        )
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
             raise Exception(f"set_return_to_launch_altitude failed: {result}")
+
         return result
 
 
@@ -857,12 +931,16 @@ class Action:
 
     def set_current_speed(self, speed_m_s):
         """Get set_current_speed (blocking)"""
+
+
         result_code = self._lib.mavsdk_action_set_current_speed(
             self._handle,
-            speed_m_s        )
+            speed_m_s,
+        )
         result = ActionResult(result_code)
         if result != ActionResult.SUCCESS:
             raise Exception(f"set_current_speed failed: {result}")
+
         return result
 
 

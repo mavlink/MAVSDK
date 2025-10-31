@@ -245,15 +245,16 @@ class Transponder:
 
     def transponder(self):
         """Get transponder (blocking)"""
+
         result_out = AdsbVehicleCStruct()
+
         self._lib.mavsdk_transponder_transponder(
             self._handle,
             ctypes.byref(result_out)
         )
+
         py_result = AdsbVehicle.from_c_struct(result_out)
-
         self._lib.mavsdk_transponder_adsb_vehicle_destroy(ctypes.byref(result_out))
-
         return py_result
 
 
@@ -283,12 +284,16 @@ class Transponder:
 
     def set_rate_transponder(self, rate_hz):
         """Get set_rate_transponder (blocking)"""
+
+
         result_code = self._lib.mavsdk_transponder_set_rate_transponder(
             self._handle,
-            rate_hz        )
+            rate_hz,
+        )
         result = TransponderResult(result_code)
         if result != TransponderResult.SUCCESS:
             raise Exception(f"set_rate_transponder failed: {result}")
+
         return result
 
 

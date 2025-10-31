@@ -136,12 +136,16 @@ class MavlinkDirect:
 
     def send_message(self, message):
         """Get send_message (blocking)"""
+
+
         result_code = self._lib.mavsdk_mavlink_direct_send_message(
             self._handle,
-            message.to_c_struct()        )
+            message.to_c_struct(),
+        )
         result = MavlinkDirectResult(result_code)
         if result != MavlinkDirectResult.SUCCESS:
             raise Exception(f"send_message failed: {result}")
+
         return result
 
 
@@ -185,12 +189,16 @@ class MavlinkDirect:
 
     def load_custom_xml(self, xml_content):
         """Get load_custom_xml (blocking)"""
+
+
         result_code = self._lib.mavsdk_mavlink_direct_load_custom_xml(
             self._handle,
-            xml_content        )
+            xml_content,
+        )
         result = MavlinkDirectResult(result_code)
         if result != MavlinkDirectResult.SUCCESS:
             raise Exception(f"load_custom_xml failed: {result}")
+
         return result
 
 

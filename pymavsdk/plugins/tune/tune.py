@@ -152,12 +152,16 @@ class Tune:
 
     def play_tune(self, tune_description):
         """Get play_tune (blocking)"""
+
+
         result_code = self._lib.mavsdk_tune_play_tune(
             self._handle,
-            tune_description.to_c_struct()        )
+            tune_description.to_c_struct(),
+        )
         result = TuneResult(result_code)
         if result != TuneResult.SUCCESS:
             raise Exception(f"play_tune failed: {result}")
+
         return result
 
 

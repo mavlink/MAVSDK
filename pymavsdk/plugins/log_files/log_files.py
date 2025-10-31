@@ -181,8 +181,10 @@ class LogFiles:
 
     def get_entries(self):
         """Get get_entries (blocking)"""
+
         result_ptr = ctypes.POINTER(EntryCStruct)()
         size = ctypes.c_size_t()
+
         result_code = self._lib.mavsdk_log_files_get_entries(
             self._handle,
             ctypes.byref(result_ptr),
@@ -191,11 +193,9 @@ class LogFiles:
         result = LogFilesResult(result_code)
         if result != LogFilesResult.SUCCESS:
             raise Exception(f"get_entries failed: {result}")
-        return result
+
         py_result = [Entry.from_c_struct(result_ptr[i]) for i in range(size.value)]
-
         self._lib.mavsdk_log_files_entry_destroy(result_ptr)
-
         return py_result
 
 
@@ -232,12 +232,15 @@ class LogFiles:
 
     def erase_all_log_files(self):
         """Get erase_all_log_files (blocking)"""
+
+
         result_code = self._lib.mavsdk_log_files_erase_all_log_files(
             self._handle,
         )
         result = LogFilesResult(result_code)
         if result != LogFilesResult.SUCCESS:
             raise Exception(f"erase_all_log_files failed: {result}")
+
         return result
 
 

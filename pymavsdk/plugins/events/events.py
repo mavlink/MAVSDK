@@ -482,7 +482,9 @@ class Events:
 
     def get_health_and_arming_checks_report(self):
         """Get get_health_and_arming_checks_report (blocking)"""
+
         result_out = HealthAndArmingCheckReportCStruct()
+
         result_code = self._lib.mavsdk_events_get_health_and_arming_checks_report(
             self._handle,
             ctypes.byref(result_out)
@@ -490,10 +492,9 @@ class Events:
         result = EventsResult(result_code)
         if result != EventsResult.SUCCESS:
             raise Exception(f"get_health_and_arming_checks_report failed: {result}")
+
         py_result = HealthAndArmingCheckReport.from_c_struct(result_out)
-
         self._lib.mavsdk_events_health_and_arming_check_report_destroy(ctypes.byref(result_out))
-
         return py_result
 
 

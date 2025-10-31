@@ -362,9 +362,12 @@ class MissionRawServer:
 
     def set_current_item_complete(self):
         """Get set_current_item_complete (blocking)"""
+
+
         self._lib.mavsdk_mission_raw_server_set_current_item_complete(
             self._handle,
         )
+
 
 
     def subscribe_clear_all(self, callback: Callable, user_data: Any = None):

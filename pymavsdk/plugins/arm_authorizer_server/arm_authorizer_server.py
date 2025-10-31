@@ -94,24 +94,34 @@ class ArmAuthorizerServer:
 
     def accept_arm_authorization(self, valid_time_s):
         """Get accept_arm_authorization (blocking)"""
+
+
         result_code = self._lib.mavsdk_arm_authorizer_server_accept_arm_authorization(
             self._handle,
-            valid_time_s        )
+            valid_time_s,
+        )
         result = ArmAuthorizerServerResult(result_code)
         if result != ArmAuthorizerServerResult.SUCCESS:
             raise Exception(f"accept_arm_authorization failed: {result}")
+
         return result
 
 
 
     def reject_arm_authorization(self, temporarily, reason, extra_info):
         """Get reject_arm_authorization (blocking)"""
+
+
         result_code = self._lib.mavsdk_arm_authorizer_server_reject_arm_authorization(
             self._handle,
-            temporarily,             reason,             extra_info        )
+            temporarily,
+            reason,
+            extra_info,
+        )
         result = ArmAuthorizerServerResult(result_code)
         if result != ArmAuthorizerServerResult.SUCCESS:
             raise Exception(f"reject_arm_authorization failed: {result}")
+
         return result
 
 

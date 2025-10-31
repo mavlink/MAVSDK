@@ -405,87 +405,114 @@ class ActionServer:
 
     def set_allow_takeoff(self, allow_takeoff):
         """Get set_allow_takeoff (blocking)"""
+
+
         result_code = self._lib.mavsdk_action_server_set_allow_takeoff(
             self._handle,
-            allow_takeoff        )
+            allow_takeoff,
+        )
         result = ActionServerResult(result_code)
         if result != ActionServerResult.SUCCESS:
             raise Exception(f"set_allow_takeoff failed: {result}")
+
         return result
 
 
 
     def set_armable(self, armable, force_armable):
         """Get set_armable (blocking)"""
+
+
         result_code = self._lib.mavsdk_action_server_set_armable(
             self._handle,
-            armable,             force_armable        )
+            armable,
+            force_armable,
+        )
         result = ActionServerResult(result_code)
         if result != ActionServerResult.SUCCESS:
             raise Exception(f"set_armable failed: {result}")
+
         return result
 
 
 
     def set_disarmable(self, disarmable, force_disarmable):
         """Get set_disarmable (blocking)"""
+
+
         result_code = self._lib.mavsdk_action_server_set_disarmable(
             self._handle,
-            disarmable,             force_disarmable        )
+            disarmable,
+            force_disarmable,
+        )
         result = ActionServerResult(result_code)
         if result != ActionServerResult.SUCCESS:
             raise Exception(f"set_disarmable failed: {result}")
+
         return result
 
 
 
     def set_allowable_flight_modes(self, flight_modes):
         """Get set_allowable_flight_modes (blocking)"""
+
+
         result_code = self._lib.mavsdk_action_server_set_allowable_flight_modes(
             self._handle,
-            flight_modes.to_c_struct()        )
+            flight_modes.to_c_struct(),
+        )
         result = ActionServerResult(result_code)
         if result != ActionServerResult.SUCCESS:
             raise Exception(f"set_allowable_flight_modes failed: {result}")
+
         return result
 
 
 
     def get_allowable_flight_modes(self):
         """Get get_allowable_flight_modes (blocking)"""
+
         result_out = AllowableFlightModesCStruct()
+
         self._lib.mavsdk_action_server_get_allowable_flight_modes(
             self._handle,
             ctypes.byref(result_out)
         )
+
         py_result = AllowableFlightModes.from_c_struct(result_out)
-
         self._lib.mavsdk_action_server_allowable_flight_modes_destroy(ctypes.byref(result_out))
-
         return py_result
 
 
 
     def set_armed_state(self, is_armed):
         """Get set_armed_state (blocking)"""
+
+
         result_code = self._lib.mavsdk_action_server_set_armed_state(
             self._handle,
-            is_armed        )
+            is_armed,
+        )
         result = ActionServerResult(result_code)
         if result != ActionServerResult.SUCCESS:
             raise Exception(f"set_armed_state failed: {result}")
+
         return result
 
 
 
     def set_flight_mode(self, flight_mode):
         """Get set_flight_mode (blocking)"""
+
+
         result_code = self._lib.mavsdk_action_server_set_flight_mode(
             self._handle,
-            flight_mode        )
+            flight_mode,
+        )
         result = ActionServerResult(result_code)
         if result != ActionServerResult.SUCCESS:
             raise Exception(f"set_flight_mode failed: {result}")
+
         return result
 
 

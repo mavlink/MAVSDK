@@ -357,7 +357,9 @@ class Info:
 
     def get_flight_information(self):
         """Get get_flight_information (blocking)"""
+
         result_out = FlightInfoCStruct()
+
         result_code = self._lib.mavsdk_info_get_flight_information(
             self._handle,
             ctypes.byref(result_out)
@@ -365,17 +367,18 @@ class Info:
         result = InfoResult(result_code)
         if result != InfoResult.SUCCESS:
             raise Exception(f"get_flight_information failed: {result}")
+
         py_result = FlightInfo.from_c_struct(result_out)
-
         self._lib.mavsdk_info_flight_info_destroy(ctypes.byref(result_out))
-
         return py_result
 
 
 
     def get_identification(self):
         """Get get_identification (blocking)"""
+
         result_out = IdentificationCStruct()
+
         result_code = self._lib.mavsdk_info_get_identification(
             self._handle,
             ctypes.byref(result_out)
@@ -383,17 +386,18 @@ class Info:
         result = InfoResult(result_code)
         if result != InfoResult.SUCCESS:
             raise Exception(f"get_identification failed: {result}")
+
         py_result = Identification.from_c_struct(result_out)
-
         self._lib.mavsdk_info_identification_destroy(ctypes.byref(result_out))
-
         return py_result
 
 
 
     def get_product(self):
         """Get get_product (blocking)"""
+
         result_out = ProductCStruct()
+
         result_code = self._lib.mavsdk_info_get_product(
             self._handle,
             ctypes.byref(result_out)
@@ -401,17 +405,18 @@ class Info:
         result = InfoResult(result_code)
         if result != InfoResult.SUCCESS:
             raise Exception(f"get_product failed: {result}")
+
         py_result = Product.from_c_struct(result_out)
-
         self._lib.mavsdk_info_product_destroy(ctypes.byref(result_out))
-
         return py_result
 
 
 
     def get_version(self):
         """Get get_version (blocking)"""
+
         result_out = VersionCStruct()
+
         result_code = self._lib.mavsdk_info_get_version(
             self._handle,
             ctypes.byref(result_out)
@@ -419,17 +424,18 @@ class Info:
         result = InfoResult(result_code)
         if result != InfoResult.SUCCESS:
             raise Exception(f"get_version failed: {result}")
+
         py_result = Version.from_c_struct(result_out)
-
         self._lib.mavsdk_info_version_destroy(ctypes.byref(result_out))
-
         return py_result
 
 
 
     def get_speed_factor(self):
         """Get get_speed_factor (blocking)"""
+
         result_out = ctypes.c_double()
+
         result_code = self._lib.mavsdk_info_get_speed_factor(
             self._handle,
             ctypes.byref(result_out)
@@ -437,6 +443,7 @@ class Info:
         result = InfoResult(result_code)
         if result != InfoResult.SUCCESS:
             raise Exception(f"get_speed_factor failed: {result}")
+
         return result_out.value
 
 

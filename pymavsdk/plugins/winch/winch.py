@@ -343,15 +343,16 @@ class Winch:
 
     def status(self):
         """Get status (blocking)"""
+
         result_out = StatusCStruct()
+
         self._lib.mavsdk_winch_status(
             self._handle,
             ctypes.byref(result_out)
         )
+
         py_result = Status.from_c_struct(result_out)
-
         self._lib.mavsdk_winch_status_destroy(ctypes.byref(result_out))
-
         return py_result
 
 
@@ -381,12 +382,16 @@ class Winch:
 
     def relax(self, instance):
         """Get relax (blocking)"""
+
+
         result_code = self._lib.mavsdk_winch_relax(
             self._handle,
-            instance        )
+            instance,
+        )
         result = WinchResult(result_code)
         if result != WinchResult.SUCCESS:
             raise Exception(f"relax failed: {result}")
+
         return result
 
 
@@ -418,12 +423,18 @@ class Winch:
 
     def relative_length_control(self, instance, length_m, rate_m_s):
         """Get relative_length_control (blocking)"""
+
+
         result_code = self._lib.mavsdk_winch_relative_length_control(
             self._handle,
-            instance,             length_m,             rate_m_s        )
+            instance,
+            length_m,
+            rate_m_s,
+        )
         result = WinchResult(result_code)
         if result != WinchResult.SUCCESS:
             raise Exception(f"relative_length_control failed: {result}")
+
         return result
 
 
@@ -454,12 +465,17 @@ class Winch:
 
     def rate_control(self, instance, rate_m_s):
         """Get rate_control (blocking)"""
+
+
         result_code = self._lib.mavsdk_winch_rate_control(
             self._handle,
-            instance,             rate_m_s        )
+            instance,
+            rate_m_s,
+        )
         result = WinchResult(result_code)
         if result != WinchResult.SUCCESS:
             raise Exception(f"rate_control failed: {result}")
+
         return result
 
 
@@ -489,12 +505,16 @@ class Winch:
 
     def lock(self, instance):
         """Get lock (blocking)"""
+
+
         result_code = self._lib.mavsdk_winch_lock(
             self._handle,
-            instance        )
+            instance,
+        )
         result = WinchResult(result_code)
         if result != WinchResult.SUCCESS:
             raise Exception(f"lock failed: {result}")
+
         return result
 
 
@@ -524,12 +544,16 @@ class Winch:
 
     def deliver(self, instance):
         """Get deliver (blocking)"""
+
+
         result_code = self._lib.mavsdk_winch_deliver(
             self._handle,
-            instance        )
+            instance,
+        )
         result = WinchResult(result_code)
         if result != WinchResult.SUCCESS:
             raise Exception(f"deliver failed: {result}")
+
         return result
 
 
@@ -559,12 +583,16 @@ class Winch:
 
     def hold(self, instance):
         """Get hold (blocking)"""
+
+
         result_code = self._lib.mavsdk_winch_hold(
             self._handle,
-            instance        )
+            instance,
+        )
         result = WinchResult(result_code)
         if result != WinchResult.SUCCESS:
             raise Exception(f"hold failed: {result}")
+
         return result
 
 
@@ -594,12 +622,16 @@ class Winch:
 
     def retract(self, instance):
         """Get retract (blocking)"""
+
+
         result_code = self._lib.mavsdk_winch_retract(
             self._handle,
-            instance        )
+            instance,
+        )
         result = WinchResult(result_code)
         if result != WinchResult.SUCCESS:
             raise Exception(f"retract failed: {result}")
+
         return result
 
 
@@ -631,12 +663,16 @@ class Winch:
 
     def load_line(self, instance):
         """Get load_line (blocking)"""
+
+
         result_code = self._lib.mavsdk_winch_load_line(
             self._handle,
-            instance        )
+            instance,
+        )
         result = WinchResult(result_code)
         if result != WinchResult.SUCCESS:
             raise Exception(f"load_line failed: {result}")
+
         return result
 
 
@@ -666,12 +702,16 @@ class Winch:
 
     def abandon_line(self, instance):
         """Get abandon_line (blocking)"""
+
+
         result_code = self._lib.mavsdk_winch_abandon_line(
             self._handle,
-            instance        )
+            instance,
+        )
         result = WinchResult(result_code)
         if result != WinchResult.SUCCESS:
             raise Exception(f"abandon_line failed: {result}")
+
         return result
 
 
@@ -701,12 +741,16 @@ class Winch:
 
     def load_payload(self, instance):
         """Get load_payload (blocking)"""
+
+
         result_code = self._lib.mavsdk_winch_load_payload(
             self._handle,
-            instance        )
+            instance,
+        )
         result = WinchResult(result_code)
         if result != WinchResult.SUCCESS:
             raise Exception(f"load_payload failed: {result}")
+
         return result
 
 

@@ -119,12 +119,15 @@ class LogStreaming:
 
     def start_log_streaming(self):
         """Get start_log_streaming (blocking)"""
+
+
         result_code = self._lib.mavsdk_log_streaming_start_log_streaming(
             self._handle,
         )
         result = LogStreamingResult(result_code)
         if result != LogStreamingResult.SUCCESS:
             raise Exception(f"start_log_streaming failed: {result}")
+
         return result
 
 
@@ -153,12 +156,15 @@ class LogStreaming:
 
     def stop_log_streaming(self):
         """Get stop_log_streaming (blocking)"""
+
+
         result_code = self._lib.mavsdk_log_streaming_stop_log_streaming(
             self._handle,
         )
         result = LogStreamingResult(result_code)
         if result != LogStreamingResult.SUCCESS:
             raise Exception(f"stop_log_streaming failed: {result}")
+
         return result
 
 

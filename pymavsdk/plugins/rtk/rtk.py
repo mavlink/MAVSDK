@@ -94,12 +94,16 @@ class Rtk:
 
     def send_rtcm_data(self, rtcm_data):
         """Get send_rtcm_data (blocking)"""
+
+
         result_code = self._lib.mavsdk_rtk_send_rtcm_data(
             self._handle,
-            rtcm_data.to_c_struct()        )
+            rtcm_data.to_c_struct(),
+        )
         result = RtkResult(result_code)
         if result != RtkResult.SUCCESS:
             raise Exception(f"send_rtcm_data failed: {result}")
+
         return result
 
 

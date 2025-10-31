@@ -290,7 +290,9 @@ class Param:
 
     def get_param_int(self, name):
         """Get get_param_int (blocking)"""
+
         result_out = ctypes.c_int32()
+
         result_code = self._lib.mavsdk_param_get_param_int(
             self._handle,
             name,
@@ -299,25 +301,33 @@ class Param:
         result = ParamResult(result_code)
         if result != ParamResult.SUCCESS:
             raise Exception(f"get_param_int failed: {result}")
+
         return result_out.value
 
 
 
     def set_param_int(self, name, value):
         """Get set_param_int (blocking)"""
+
+
         result_code = self._lib.mavsdk_param_set_param_int(
             self._handle,
-            name,             value        )
+            name,
+            value,
+        )
         result = ParamResult(result_code)
         if result != ParamResult.SUCCESS:
             raise Exception(f"set_param_int failed: {result}")
+
         return result
 
 
 
     def get_param_float(self, name):
         """Get get_param_float (blocking)"""
+
         result_out = ctypes.c_float()
+
         result_code = self._lib.mavsdk_param_get_param_float(
             self._handle,
             name,
@@ -326,25 +336,33 @@ class Param:
         result = ParamResult(result_code)
         if result != ParamResult.SUCCESS:
             raise Exception(f"get_param_float failed: {result}")
+
         return result_out.value
 
 
 
     def set_param_float(self, name, value):
         """Get set_param_float (blocking)"""
+
+
         result_code = self._lib.mavsdk_param_set_param_float(
             self._handle,
-            name,             value        )
+            name,
+            value,
+        )
         result = ParamResult(result_code)
         if result != ParamResult.SUCCESS:
             raise Exception(f"set_param_float failed: {result}")
+
         return result
 
 
 
     def get_param_custom(self, name):
         """Get get_param_custom (blocking)"""
+
         result_out = ctypes.c_char_p()
+
         result_code = self._lib.mavsdk_param_get_param_custom(
             self._handle,
             name,
@@ -353,45 +371,57 @@ class Param:
         result = ParamResult(result_code)
         if result != ParamResult.SUCCESS:
             raise Exception(f"get_param_custom failed: {result}")
+
         return result_out.value
 
 
 
     def set_param_custom(self, name, value):
         """Get set_param_custom (blocking)"""
+
+
         result_code = self._lib.mavsdk_param_set_param_custom(
             self._handle,
-            name,             value        )
+            name,
+            value,
+        )
         result = ParamResult(result_code)
         if result != ParamResult.SUCCESS:
             raise Exception(f"set_param_custom failed: {result}")
+
         return result
 
 
 
     def get_all_params(self):
         """Get get_all_params (blocking)"""
+
         result_out = AllParamsCStruct()
+
         self._lib.mavsdk_param_get_all_params(
             self._handle,
             ctypes.byref(result_out)
         )
+
         py_result = AllParams.from_c_struct(result_out)
-
         self._lib.mavsdk_param_all_params_destroy(ctypes.byref(result_out))
-
         return py_result
 
 
 
     def select_component(self, component_id, protocol_version):
         """Get select_component (blocking)"""
+
+
         result_code = self._lib.mavsdk_param_select_component(
             self._handle,
-            component_id,             protocol_version        )
+            component_id,
+            protocol_version,
+        )
         result = ParamResult(result_code)
         if result != ParamResult.SUCCESS:
             raise Exception(f"select_component failed: {result}")
+
         return result
 
 

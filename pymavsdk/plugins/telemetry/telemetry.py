@@ -2186,15 +2186,16 @@ class Telemetry:
 
     def position(self):
         """Get position (blocking)"""
+
         result_out = PositionCStruct()
+
         self._lib.mavsdk_telemetry_position(
             self._handle,
             ctypes.byref(result_out)
         )
+
         py_result = Position.from_c_struct(result_out)
-
         self._lib.mavsdk_telemetry_position_destroy(ctypes.byref(result_out))
-
         return py_result
 
 
@@ -2230,15 +2231,16 @@ class Telemetry:
 
     def home(self):
         """Get home (blocking)"""
+
         result_out = PositionCStruct()
+
         self._lib.mavsdk_telemetry_home(
             self._handle,
             ctypes.byref(result_out)
         )
+
         py_result = Position.from_c_struct(result_out)
-
         self._lib.mavsdk_telemetry_position_destroy(ctypes.byref(result_out))
-
         return py_result
 
 
@@ -2272,11 +2274,14 @@ class Telemetry:
 
     def in_air(self):
         """Get in_air (blocking)"""
+
         result_out = ctypes.c_bool()
+
         self._lib.mavsdk_telemetry_in_air(
             self._handle,
             ctypes.byref(result_out)
         )
+
         return result_out.value
 
 
@@ -2310,15 +2315,16 @@ class Telemetry:
 
     def landed_state(self):
         """Get landed_state (blocking)"""
+
         result_out = LandedStateCStruct()
+
         self._lib.mavsdk_telemetry_landed_state(
             self._handle,
             ctypes.byref(result_out)
         )
+
         py_result = LandedState.from_c_struct(result_out)
-
         self._lib.mavsdk_telemetry_landed_state_destroy(ctypes.byref(result_out))
-
         return py_result
 
 
@@ -2352,11 +2358,14 @@ class Telemetry:
 
     def armed(self):
         """Get armed (blocking)"""
+
         result_out = ctypes.c_bool()
+
         self._lib.mavsdk_telemetry_armed(
             self._handle,
             ctypes.byref(result_out)
         )
+
         return result_out.value
 
 
@@ -2390,15 +2399,16 @@ class Telemetry:
 
     def vtol_state(self):
         """Get vtol_state (blocking)"""
+
         result_out = VtolStateCStruct()
+
         self._lib.mavsdk_telemetry_vtol_state(
             self._handle,
             ctypes.byref(result_out)
         )
+
         py_result = VtolState.from_c_struct(result_out)
-
         self._lib.mavsdk_telemetry_vtol_state_destroy(ctypes.byref(result_out))
-
         return py_result
 
 
@@ -2434,15 +2444,16 @@ class Telemetry:
 
     def attitude_quaternion(self):
         """Get attitude_quaternion (blocking)"""
+
         result_out = QuaternionCStruct()
+
         self._lib.mavsdk_telemetry_attitude_quaternion(
             self._handle,
             ctypes.byref(result_out)
         )
+
         py_result = Quaternion.from_c_struct(result_out)
-
         self._lib.mavsdk_telemetry_quaternion_destroy(ctypes.byref(result_out))
-
         return py_result
 
 
@@ -2478,15 +2489,16 @@ class Telemetry:
 
     def attitude_euler(self):
         """Get attitude_euler (blocking)"""
+
         result_out = EulerAngleCStruct()
+
         self._lib.mavsdk_telemetry_attitude_euler(
             self._handle,
             ctypes.byref(result_out)
         )
+
         py_result = EulerAngle.from_c_struct(result_out)
-
         self._lib.mavsdk_telemetry_euler_angle_destroy(ctypes.byref(result_out))
-
         return py_result
 
 
@@ -2522,15 +2534,16 @@ class Telemetry:
 
     def attitude_angular_velocity_body(self):
         """Get attitude_angular_velocity_body (blocking)"""
+
         result_out = AngularVelocityBodyCStruct()
+
         self._lib.mavsdk_telemetry_attitude_angular_velocity_body(
             self._handle,
             ctypes.byref(result_out)
         )
+
         py_result = AngularVelocityBody.from_c_struct(result_out)
-
         self._lib.mavsdk_telemetry_angular_velocity_body_destroy(ctypes.byref(result_out))
-
         return py_result
 
 
@@ -2566,15 +2579,16 @@ class Telemetry:
 
     def velocity_ned(self):
         """Get velocity_ned (blocking)"""
+
         result_out = VelocityNedCStruct()
+
         self._lib.mavsdk_telemetry_velocity_ned(
             self._handle,
             ctypes.byref(result_out)
         )
+
         py_result = VelocityNed.from_c_struct(result_out)
-
         self._lib.mavsdk_telemetry_velocity_ned_destroy(ctypes.byref(result_out))
-
         return py_result
 
 
@@ -2610,15 +2624,16 @@ class Telemetry:
 
     def gps_info(self):
         """Get gps_info (blocking)"""
+
         result_out = GpsInfoCStruct()
+
         self._lib.mavsdk_telemetry_gps_info(
             self._handle,
             ctypes.byref(result_out)
         )
+
         py_result = GpsInfo.from_c_struct(result_out)
-
         self._lib.mavsdk_telemetry_gps_info_destroy(ctypes.byref(result_out))
-
         return py_result
 
 
@@ -2654,15 +2669,16 @@ class Telemetry:
 
     def raw_gps(self):
         """Get raw_gps (blocking)"""
+
         result_out = RawGpsCStruct()
+
         self._lib.mavsdk_telemetry_raw_gps(
             self._handle,
             ctypes.byref(result_out)
         )
+
         py_result = RawGps.from_c_struct(result_out)
-
         self._lib.mavsdk_telemetry_raw_gps_destroy(ctypes.byref(result_out))
-
         return py_result
 
 
@@ -2698,15 +2714,16 @@ class Telemetry:
 
     def battery(self):
         """Get battery (blocking)"""
+
         result_out = BatteryCStruct()
+
         self._lib.mavsdk_telemetry_battery(
             self._handle,
             ctypes.byref(result_out)
         )
+
         py_result = Battery.from_c_struct(result_out)
-
         self._lib.mavsdk_telemetry_battery_destroy(ctypes.byref(result_out))
-
         return py_result
 
 
@@ -2740,15 +2757,16 @@ class Telemetry:
 
     def flight_mode(self):
         """Get flight_mode (blocking)"""
+
         result_out = FlightModeCStruct()
+
         self._lib.mavsdk_telemetry_flight_mode(
             self._handle,
             ctypes.byref(result_out)
         )
+
         py_result = FlightMode.from_c_struct(result_out)
-
         self._lib.mavsdk_telemetry_flight_mode_destroy(ctypes.byref(result_out))
-
         return py_result
 
 
@@ -2784,15 +2802,16 @@ class Telemetry:
 
     def health(self):
         """Get health (blocking)"""
+
         result_out = HealthCStruct()
+
         self._lib.mavsdk_telemetry_health(
             self._handle,
             ctypes.byref(result_out)
         )
+
         py_result = Health.from_c_struct(result_out)
-
         self._lib.mavsdk_telemetry_health_destroy(ctypes.byref(result_out))
-
         return py_result
 
 
@@ -2828,15 +2847,16 @@ class Telemetry:
 
     def rc_status(self):
         """Get rc_status (blocking)"""
+
         result_out = RcStatusCStruct()
+
         self._lib.mavsdk_telemetry_rc_status(
             self._handle,
             ctypes.byref(result_out)
         )
+
         py_result = RcStatus.from_c_struct(result_out)
-
         self._lib.mavsdk_telemetry_rc_status_destroy(ctypes.byref(result_out))
-
         return py_result
 
 
@@ -2872,15 +2892,16 @@ class Telemetry:
 
     def status_text(self):
         """Get status_text (blocking)"""
+
         result_out = StatusTextCStruct()
+
         self._lib.mavsdk_telemetry_status_text(
             self._handle,
             ctypes.byref(result_out)
         )
+
         py_result = StatusText.from_c_struct(result_out)
-
         self._lib.mavsdk_telemetry_status_text_destroy(ctypes.byref(result_out))
-
         return py_result
 
 
@@ -2916,15 +2937,16 @@ class Telemetry:
 
     def actuator_control_target(self):
         """Get actuator_control_target (blocking)"""
+
         result_out = ActuatorControlTargetCStruct()
+
         self._lib.mavsdk_telemetry_actuator_control_target(
             self._handle,
             ctypes.byref(result_out)
         )
+
         py_result = ActuatorControlTarget.from_c_struct(result_out)
-
         self._lib.mavsdk_telemetry_actuator_control_target_destroy(ctypes.byref(result_out))
-
         return py_result
 
 
@@ -2960,15 +2982,16 @@ class Telemetry:
 
     def actuator_output_status(self):
         """Get actuator_output_status (blocking)"""
+
         result_out = ActuatorOutputStatusCStruct()
+
         self._lib.mavsdk_telemetry_actuator_output_status(
             self._handle,
             ctypes.byref(result_out)
         )
+
         py_result = ActuatorOutputStatus.from_c_struct(result_out)
-
         self._lib.mavsdk_telemetry_actuator_output_status_destroy(ctypes.byref(result_out))
-
         return py_result
 
 
@@ -3004,15 +3027,16 @@ class Telemetry:
 
     def odometry(self):
         """Get odometry (blocking)"""
+
         result_out = OdometryCStruct()
+
         self._lib.mavsdk_telemetry_odometry(
             self._handle,
             ctypes.byref(result_out)
         )
+
         py_result = Odometry.from_c_struct(result_out)
-
         self._lib.mavsdk_telemetry_odometry_destroy(ctypes.byref(result_out))
-
         return py_result
 
 
@@ -3048,15 +3072,16 @@ class Telemetry:
 
     def position_velocity_ned(self):
         """Get position_velocity_ned (blocking)"""
+
         result_out = PositionVelocityNedCStruct()
+
         self._lib.mavsdk_telemetry_position_velocity_ned(
             self._handle,
             ctypes.byref(result_out)
         )
+
         py_result = PositionVelocityNed.from_c_struct(result_out)
-
         self._lib.mavsdk_telemetry_position_velocity_ned_destroy(ctypes.byref(result_out))
-
         return py_result
 
 
@@ -3092,15 +3117,16 @@ class Telemetry:
 
     def ground_truth(self):
         """Get ground_truth (blocking)"""
+
         result_out = GroundTruthCStruct()
+
         self._lib.mavsdk_telemetry_ground_truth(
             self._handle,
             ctypes.byref(result_out)
         )
+
         py_result = GroundTruth.from_c_struct(result_out)
-
         self._lib.mavsdk_telemetry_ground_truth_destroy(ctypes.byref(result_out))
-
         return py_result
 
 
@@ -3136,15 +3162,16 @@ class Telemetry:
 
     def fixedwing_metrics(self):
         """Get fixedwing_metrics (blocking)"""
+
         result_out = FixedwingMetricsCStruct()
+
         self._lib.mavsdk_telemetry_fixedwing_metrics(
             self._handle,
             ctypes.byref(result_out)
         )
+
         py_result = FixedwingMetrics.from_c_struct(result_out)
-
         self._lib.mavsdk_telemetry_fixedwing_metrics_destroy(ctypes.byref(result_out))
-
         return py_result
 
 
@@ -3180,15 +3207,16 @@ class Telemetry:
 
     def imu(self):
         """Get imu (blocking)"""
+
         result_out = ImuCStruct()
+
         self._lib.mavsdk_telemetry_imu(
             self._handle,
             ctypes.byref(result_out)
         )
+
         py_result = Imu.from_c_struct(result_out)
-
         self._lib.mavsdk_telemetry_imu_destroy(ctypes.byref(result_out))
-
         return py_result
 
 
@@ -3224,15 +3252,16 @@ class Telemetry:
 
     def scaled_imu(self):
         """Get scaled_imu (blocking)"""
+
         result_out = ImuCStruct()
+
         self._lib.mavsdk_telemetry_scaled_imu(
             self._handle,
             ctypes.byref(result_out)
         )
+
         py_result = Imu.from_c_struct(result_out)
-
         self._lib.mavsdk_telemetry_imu_destroy(ctypes.byref(result_out))
-
         return py_result
 
 
@@ -3268,15 +3297,16 @@ class Telemetry:
 
     def raw_imu(self):
         """Get raw_imu (blocking)"""
+
         result_out = ImuCStruct()
+
         self._lib.mavsdk_telemetry_raw_imu(
             self._handle,
             ctypes.byref(result_out)
         )
+
         py_result = Imu.from_c_struct(result_out)
-
         self._lib.mavsdk_telemetry_imu_destroy(ctypes.byref(result_out))
-
         return py_result
 
 
@@ -3310,11 +3340,14 @@ class Telemetry:
 
     def health_all_ok(self):
         """Get health_all_ok (blocking)"""
+
         result_out = ctypes.c_bool()
+
         self._lib.mavsdk_telemetry_health_all_ok(
             self._handle,
             ctypes.byref(result_out)
         )
+
         return result_out.value
 
 
@@ -3348,11 +3381,14 @@ class Telemetry:
 
     def unix_epoch_time(self):
         """Get unix_epoch_time (blocking)"""
+
         result_out = ctypes.c_uint64()
+
         self._lib.mavsdk_telemetry_unix_epoch_time(
             self._handle,
             ctypes.byref(result_out)
         )
+
         return result_out.value
 
 
@@ -3388,15 +3424,16 @@ class Telemetry:
 
     def distance_sensor(self):
         """Get distance_sensor (blocking)"""
+
         result_out = DistanceSensorCStruct()
+
         self._lib.mavsdk_telemetry_distance_sensor(
             self._handle,
             ctypes.byref(result_out)
         )
+
         py_result = DistanceSensor.from_c_struct(result_out)
-
         self._lib.mavsdk_telemetry_distance_sensor_destroy(ctypes.byref(result_out))
-
         return py_result
 
 
@@ -3432,15 +3469,16 @@ class Telemetry:
 
     def scaled_pressure(self):
         """Get scaled_pressure (blocking)"""
+
         result_out = ScaledPressureCStruct()
+
         self._lib.mavsdk_telemetry_scaled_pressure(
             self._handle,
             ctypes.byref(result_out)
         )
+
         py_result = ScaledPressure.from_c_struct(result_out)
-
         self._lib.mavsdk_telemetry_scaled_pressure_destroy(ctypes.byref(result_out))
-
         return py_result
 
 
@@ -3476,15 +3514,16 @@ class Telemetry:
 
     def heading(self):
         """Get heading (blocking)"""
+
         result_out = HeadingCStruct()
+
         self._lib.mavsdk_telemetry_heading(
             self._handle,
             ctypes.byref(result_out)
         )
+
         py_result = Heading.from_c_struct(result_out)
-
         self._lib.mavsdk_telemetry_heading_destroy(ctypes.byref(result_out))
-
         return py_result
 
 
@@ -3520,15 +3559,16 @@ class Telemetry:
 
     def altitude(self):
         """Get altitude (blocking)"""
+
         result_out = AltitudeCStruct()
+
         self._lib.mavsdk_telemetry_altitude(
             self._handle,
             ctypes.byref(result_out)
         )
+
         py_result = Altitude.from_c_struct(result_out)
-
         self._lib.mavsdk_telemetry_altitude_destroy(ctypes.byref(result_out))
-
         return py_result
 
 
@@ -3564,15 +3604,16 @@ class Telemetry:
 
     def wind(self):
         """Get wind (blocking)"""
+
         result_out = WindCStruct()
+
         self._lib.mavsdk_telemetry_wind(
             self._handle,
             ctypes.byref(result_out)
         )
+
         py_result = Wind.from_c_struct(result_out)
-
         self._lib.mavsdk_telemetry_wind_destroy(ctypes.byref(result_out))
-
         return py_result
 
 
@@ -3602,12 +3643,16 @@ class Telemetry:
 
     def set_rate_position(self, rate_hz):
         """Get set_rate_position (blocking)"""
+
+
         result_code = self._lib.mavsdk_telemetry_set_rate_position(
             self._handle,
-            rate_hz        )
+            rate_hz,
+        )
         result = TelemetryResult(result_code)
         if result != TelemetryResult.SUCCESS:
             raise Exception(f"set_rate_position failed: {result}")
+
         return result
 
 
@@ -3637,12 +3682,16 @@ class Telemetry:
 
     def set_rate_home(self, rate_hz):
         """Get set_rate_home (blocking)"""
+
+
         result_code = self._lib.mavsdk_telemetry_set_rate_home(
             self._handle,
-            rate_hz        )
+            rate_hz,
+        )
         result = TelemetryResult(result_code)
         if result != TelemetryResult.SUCCESS:
             raise Exception(f"set_rate_home failed: {result}")
+
         return result
 
 
@@ -3672,12 +3721,16 @@ class Telemetry:
 
     def set_rate_in_air(self, rate_hz):
         """Get set_rate_in_air (blocking)"""
+
+
         result_code = self._lib.mavsdk_telemetry_set_rate_in_air(
             self._handle,
-            rate_hz        )
+            rate_hz,
+        )
         result = TelemetryResult(result_code)
         if result != TelemetryResult.SUCCESS:
             raise Exception(f"set_rate_in_air failed: {result}")
+
         return result
 
 
@@ -3707,12 +3760,16 @@ class Telemetry:
 
     def set_rate_landed_state(self, rate_hz):
         """Get set_rate_landed_state (blocking)"""
+
+
         result_code = self._lib.mavsdk_telemetry_set_rate_landed_state(
             self._handle,
-            rate_hz        )
+            rate_hz,
+        )
         result = TelemetryResult(result_code)
         if result != TelemetryResult.SUCCESS:
             raise Exception(f"set_rate_landed_state failed: {result}")
+
         return result
 
 
@@ -3742,12 +3799,16 @@ class Telemetry:
 
     def set_rate_vtol_state(self, rate_hz):
         """Get set_rate_vtol_state (blocking)"""
+
+
         result_code = self._lib.mavsdk_telemetry_set_rate_vtol_state(
             self._handle,
-            rate_hz        )
+            rate_hz,
+        )
         result = TelemetryResult(result_code)
         if result != TelemetryResult.SUCCESS:
             raise Exception(f"set_rate_vtol_state failed: {result}")
+
         return result
 
 
@@ -3777,12 +3838,16 @@ class Telemetry:
 
     def set_rate_attitude_quaternion(self, rate_hz):
         """Get set_rate_attitude_quaternion (blocking)"""
+
+
         result_code = self._lib.mavsdk_telemetry_set_rate_attitude_quaternion(
             self._handle,
-            rate_hz        )
+            rate_hz,
+        )
         result = TelemetryResult(result_code)
         if result != TelemetryResult.SUCCESS:
             raise Exception(f"set_rate_attitude_quaternion failed: {result}")
+
         return result
 
 
@@ -3812,12 +3877,16 @@ class Telemetry:
 
     def set_rate_attitude_euler(self, rate_hz):
         """Get set_rate_attitude_euler (blocking)"""
+
+
         result_code = self._lib.mavsdk_telemetry_set_rate_attitude_euler(
             self._handle,
-            rate_hz        )
+            rate_hz,
+        )
         result = TelemetryResult(result_code)
         if result != TelemetryResult.SUCCESS:
             raise Exception(f"set_rate_attitude_euler failed: {result}")
+
         return result
 
 
@@ -3848,12 +3917,16 @@ class Telemetry:
 
     def set_rate_velocity_ned(self, rate_hz):
         """Get set_rate_velocity_ned (blocking)"""
+
+
         result_code = self._lib.mavsdk_telemetry_set_rate_velocity_ned(
             self._handle,
-            rate_hz        )
+            rate_hz,
+        )
         result = TelemetryResult(result_code)
         if result != TelemetryResult.SUCCESS:
             raise Exception(f"set_rate_velocity_ned failed: {result}")
+
         return result
 
 
@@ -3883,12 +3956,16 @@ class Telemetry:
 
     def set_rate_gps_info(self, rate_hz):
         """Get set_rate_gps_info (blocking)"""
+
+
         result_code = self._lib.mavsdk_telemetry_set_rate_gps_info(
             self._handle,
-            rate_hz        )
+            rate_hz,
+        )
         result = TelemetryResult(result_code)
         if result != TelemetryResult.SUCCESS:
             raise Exception(f"set_rate_gps_info failed: {result}")
+
         return result
 
 
@@ -3918,12 +3995,16 @@ class Telemetry:
 
     def set_rate_battery(self, rate_hz):
         """Get set_rate_battery (blocking)"""
+
+
         result_code = self._lib.mavsdk_telemetry_set_rate_battery(
             self._handle,
-            rate_hz        )
+            rate_hz,
+        )
         result = TelemetryResult(result_code)
         if result != TelemetryResult.SUCCESS:
             raise Exception(f"set_rate_battery failed: {result}")
+
         return result
 
 
@@ -3953,12 +4034,16 @@ class Telemetry:
 
     def set_rate_rc_status(self, rate_hz):
         """Get set_rate_rc_status (blocking)"""
+
+
         result_code = self._lib.mavsdk_telemetry_set_rate_rc_status(
             self._handle,
-            rate_hz        )
+            rate_hz,
+        )
         result = TelemetryResult(result_code)
         if result != TelemetryResult.SUCCESS:
             raise Exception(f"set_rate_rc_status failed: {result}")
+
         return result
 
 
@@ -3988,12 +4073,16 @@ class Telemetry:
 
     def set_rate_actuator_control_target(self, rate_hz):
         """Get set_rate_actuator_control_target (blocking)"""
+
+
         result_code = self._lib.mavsdk_telemetry_set_rate_actuator_control_target(
             self._handle,
-            rate_hz        )
+            rate_hz,
+        )
         result = TelemetryResult(result_code)
         if result != TelemetryResult.SUCCESS:
             raise Exception(f"set_rate_actuator_control_target failed: {result}")
+
         return result
 
 
@@ -4023,12 +4112,16 @@ class Telemetry:
 
     def set_rate_actuator_output_status(self, rate_hz):
         """Get set_rate_actuator_output_status (blocking)"""
+
+
         result_code = self._lib.mavsdk_telemetry_set_rate_actuator_output_status(
             self._handle,
-            rate_hz        )
+            rate_hz,
+        )
         result = TelemetryResult(result_code)
         if result != TelemetryResult.SUCCESS:
             raise Exception(f"set_rate_actuator_output_status failed: {result}")
+
         return result
 
 
@@ -4058,12 +4151,16 @@ class Telemetry:
 
     def set_rate_odometry(self, rate_hz):
         """Get set_rate_odometry (blocking)"""
+
+
         result_code = self._lib.mavsdk_telemetry_set_rate_odometry(
             self._handle,
-            rate_hz        )
+            rate_hz,
+        )
         result = TelemetryResult(result_code)
         if result != TelemetryResult.SUCCESS:
             raise Exception(f"set_rate_odometry failed: {result}")
+
         return result
 
 
@@ -4093,12 +4190,16 @@ class Telemetry:
 
     def set_rate_position_velocity_ned(self, rate_hz):
         """Get set_rate_position_velocity_ned (blocking)"""
+
+
         result_code = self._lib.mavsdk_telemetry_set_rate_position_velocity_ned(
             self._handle,
-            rate_hz        )
+            rate_hz,
+        )
         result = TelemetryResult(result_code)
         if result != TelemetryResult.SUCCESS:
             raise Exception(f"set_rate_position_velocity_ned failed: {result}")
+
         return result
 
 
@@ -4128,12 +4229,16 @@ class Telemetry:
 
     def set_rate_ground_truth(self, rate_hz):
         """Get set_rate_ground_truth (blocking)"""
+
+
         result_code = self._lib.mavsdk_telemetry_set_rate_ground_truth(
             self._handle,
-            rate_hz        )
+            rate_hz,
+        )
         result = TelemetryResult(result_code)
         if result != TelemetryResult.SUCCESS:
             raise Exception(f"set_rate_ground_truth failed: {result}")
+
         return result
 
 
@@ -4163,12 +4268,16 @@ class Telemetry:
 
     def set_rate_fixedwing_metrics(self, rate_hz):
         """Get set_rate_fixedwing_metrics (blocking)"""
+
+
         result_code = self._lib.mavsdk_telemetry_set_rate_fixedwing_metrics(
             self._handle,
-            rate_hz        )
+            rate_hz,
+        )
         result = TelemetryResult(result_code)
         if result != TelemetryResult.SUCCESS:
             raise Exception(f"set_rate_fixedwing_metrics failed: {result}")
+
         return result
 
 
@@ -4198,12 +4307,16 @@ class Telemetry:
 
     def set_rate_imu(self, rate_hz):
         """Get set_rate_imu (blocking)"""
+
+
         result_code = self._lib.mavsdk_telemetry_set_rate_imu(
             self._handle,
-            rate_hz        )
+            rate_hz,
+        )
         result = TelemetryResult(result_code)
         if result != TelemetryResult.SUCCESS:
             raise Exception(f"set_rate_imu failed: {result}")
+
         return result
 
 
@@ -4233,12 +4346,16 @@ class Telemetry:
 
     def set_rate_scaled_imu(self, rate_hz):
         """Get set_rate_scaled_imu (blocking)"""
+
+
         result_code = self._lib.mavsdk_telemetry_set_rate_scaled_imu(
             self._handle,
-            rate_hz        )
+            rate_hz,
+        )
         result = TelemetryResult(result_code)
         if result != TelemetryResult.SUCCESS:
             raise Exception(f"set_rate_scaled_imu failed: {result}")
+
         return result
 
 
@@ -4268,12 +4385,16 @@ class Telemetry:
 
     def set_rate_raw_imu(self, rate_hz):
         """Get set_rate_raw_imu (blocking)"""
+
+
         result_code = self._lib.mavsdk_telemetry_set_rate_raw_imu(
             self._handle,
-            rate_hz        )
+            rate_hz,
+        )
         result = TelemetryResult(result_code)
         if result != TelemetryResult.SUCCESS:
             raise Exception(f"set_rate_raw_imu failed: {result}")
+
         return result
 
 
@@ -4303,12 +4424,16 @@ class Telemetry:
 
     def set_rate_unix_epoch_time(self, rate_hz):
         """Get set_rate_unix_epoch_time (blocking)"""
+
+
         result_code = self._lib.mavsdk_telemetry_set_rate_unix_epoch_time(
             self._handle,
-            rate_hz        )
+            rate_hz,
+        )
         result = TelemetryResult(result_code)
         if result != TelemetryResult.SUCCESS:
             raise Exception(f"set_rate_unix_epoch_time failed: {result}")
+
         return result
 
 
@@ -4338,12 +4463,16 @@ class Telemetry:
 
     def set_rate_distance_sensor(self, rate_hz):
         """Get set_rate_distance_sensor (blocking)"""
+
+
         result_code = self._lib.mavsdk_telemetry_set_rate_distance_sensor(
             self._handle,
-            rate_hz        )
+            rate_hz,
+        )
         result = TelemetryResult(result_code)
         if result != TelemetryResult.SUCCESS:
             raise Exception(f"set_rate_distance_sensor failed: {result}")
+
         return result
 
 
@@ -4373,12 +4502,16 @@ class Telemetry:
 
     def set_rate_altitude(self, rate_hz):
         """Get set_rate_altitude (blocking)"""
+
+
         result_code = self._lib.mavsdk_telemetry_set_rate_altitude(
             self._handle,
-            rate_hz        )
+            rate_hz,
+        )
         result = TelemetryResult(result_code)
         if result != TelemetryResult.SUCCESS:
             raise Exception(f"set_rate_altitude failed: {result}")
+
         return result
 
 
@@ -4408,12 +4541,16 @@ class Telemetry:
 
     def set_rate_health(self, rate_hz):
         """Get set_rate_health (blocking)"""
+
+
         result_code = self._lib.mavsdk_telemetry_set_rate_health(
             self._handle,
-            rate_hz        )
+            rate_hz,
+        )
         result = TelemetryResult(result_code)
         if result != TelemetryResult.SUCCESS:
             raise Exception(f"set_rate_health failed: {result}")
+
         return result
 
 
@@ -4445,7 +4582,9 @@ class Telemetry:
 
     def get_gps_global_origin(self):
         """Get get_gps_global_origin (blocking)"""
+
         result_out = GpsGlobalOriginCStruct()
+
         result_code = self._lib.mavsdk_telemetry_get_gps_global_origin(
             self._handle,
             ctypes.byref(result_out)
@@ -4453,10 +4592,9 @@ class Telemetry:
         result = TelemetryResult(result_code)
         if result != TelemetryResult.SUCCESS:
             raise Exception(f"get_gps_global_origin failed: {result}")
+
         py_result = GpsGlobalOrigin.from_c_struct(result_out)
-
         self._lib.mavsdk_telemetry_gps_global_origin_destroy(ctypes.byref(result_out))
-
         return py_result
 
 

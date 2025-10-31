@@ -1270,12 +1270,16 @@ class Camera:
 
     def take_photo(self, component_id):
         """Get take_photo (blocking)"""
+
+
         result_code = self._lib.mavsdk_camera_take_photo(
             self._handle,
-            component_id        )
+            component_id,
+        )
         result = CameraResult(result_code)
         if result != CameraResult.SUCCESS:
             raise Exception(f"take_photo failed: {result}")
+
         return result
 
 
@@ -1306,12 +1310,17 @@ class Camera:
 
     def start_photo_interval(self, component_id, interval_s):
         """Get start_photo_interval (blocking)"""
+
+
         result_code = self._lib.mavsdk_camera_start_photo_interval(
             self._handle,
-            component_id,             interval_s        )
+            component_id,
+            interval_s,
+        )
         result = CameraResult(result_code)
         if result != CameraResult.SUCCESS:
             raise Exception(f"start_photo_interval failed: {result}")
+
         return result
 
 
@@ -1341,12 +1350,16 @@ class Camera:
 
     def stop_photo_interval(self, component_id):
         """Get stop_photo_interval (blocking)"""
+
+
         result_code = self._lib.mavsdk_camera_stop_photo_interval(
             self._handle,
-            component_id        )
+            component_id,
+        )
         result = CameraResult(result_code)
         if result != CameraResult.SUCCESS:
             raise Exception(f"stop_photo_interval failed: {result}")
+
         return result
 
 
@@ -1376,12 +1389,16 @@ class Camera:
 
     def start_video(self, component_id):
         """Get start_video (blocking)"""
+
+
         result_code = self._lib.mavsdk_camera_start_video(
             self._handle,
-            component_id        )
+            component_id,
+        )
         result = CameraResult(result_code)
         if result != CameraResult.SUCCESS:
             raise Exception(f"start_video failed: {result}")
+
         return result
 
 
@@ -1411,36 +1428,50 @@ class Camera:
 
     def stop_video(self, component_id):
         """Get stop_video (blocking)"""
+
+
         result_code = self._lib.mavsdk_camera_stop_video(
             self._handle,
-            component_id        )
+            component_id,
+        )
         result = CameraResult(result_code)
         if result != CameraResult.SUCCESS:
             raise Exception(f"stop_video failed: {result}")
+
         return result
 
 
 
     def start_video_streaming(self, component_id, stream_id):
         """Get start_video_streaming (blocking)"""
+
+
         result_code = self._lib.mavsdk_camera_start_video_streaming(
             self._handle,
-            component_id,             stream_id        )
+            component_id,
+            stream_id,
+        )
         result = CameraResult(result_code)
         if result != CameraResult.SUCCESS:
             raise Exception(f"start_video_streaming failed: {result}")
+
         return result
 
 
 
     def stop_video_streaming(self, component_id, stream_id):
         """Get stop_video_streaming (blocking)"""
+
+
         result_code = self._lib.mavsdk_camera_stop_video_streaming(
             self._handle,
-            component_id,             stream_id        )
+            component_id,
+            stream_id,
+        )
         result = CameraResult(result_code)
         if result != CameraResult.SUCCESS:
             raise Exception(f"stop_video_streaming failed: {result}")
+
         return result
 
 
@@ -1471,12 +1502,17 @@ class Camera:
 
     def set_mode(self, component_id, mode):
         """Get set_mode (blocking)"""
+
+
         result_code = self._lib.mavsdk_camera_set_mode(
             self._handle,
-            component_id,             mode        )
+            component_id,
+            mode,
+        )
         result = CameraResult(result_code)
         if result != CameraResult.SUCCESS:
             raise Exception(f"set_mode failed: {result}")
+
         return result
 
 
@@ -1517,8 +1553,10 @@ class Camera:
 
     def list_photos(self, component_id, photos_range):
         """Get list_photos (blocking)"""
+
         result_ptr = ctypes.POINTER(CaptureInfoCStruct)()
         size = ctypes.c_size_t()
+
         result_code = self._lib.mavsdk_camera_list_photos(
             self._handle,
             component_id,
@@ -1529,11 +1567,9 @@ class Camera:
         result = CameraResult(result_code)
         if result != CameraResult.SUCCESS:
             raise Exception(f"list_photos failed: {result}")
-        return result
+
         py_result = [CaptureInfo.from_c_struct(result_ptr[i]) for i in range(size.value)]
-
         self._lib.mavsdk_camera_capture_info_destroy(result_ptr)
-
         return py_result
 
 
@@ -1572,15 +1608,16 @@ class Camera:
 
     def camera_list(self):
         """Get camera_list (blocking)"""
+
         result_out = CameraListCStruct()
+
         self._lib.mavsdk_camera_camera_list(
             self._handle,
             ctypes.byref(result_out)
         )
+
         py_result = CameraList.from_c_struct(result_out)
-
         self._lib.mavsdk_camera_camera_list_destroy(ctypes.byref(result_out))
-
         return py_result
 
 
@@ -1619,7 +1656,9 @@ class Camera:
 
     def get_mode(self, component_id):
         """Get get_mode (blocking)"""
+
         result_out = ModeCStruct()
+
         result_code = self._lib.mavsdk_camera_get_mode(
             self._handle,
             component_id,
@@ -1628,10 +1667,9 @@ class Camera:
         result = CameraResult(result_code)
         if result != CameraResult.SUCCESS:
             raise Exception(f"get_mode failed: {result}")
+
         py_result = Mode.from_c_struct(result_out)
-
         self._lib.mavsdk_camera_mode_destroy(ctypes.byref(result_out))
-
         return py_result
 
 
@@ -1670,7 +1708,9 @@ class Camera:
 
     def get_video_stream_info(self, component_id):
         """Get get_video_stream_info (blocking)"""
+
         result_out = VideoStreamInfoCStruct()
+
         result_code = self._lib.mavsdk_camera_get_video_stream_info(
             self._handle,
             component_id,
@@ -1679,10 +1719,9 @@ class Camera:
         result = CameraResult(result_code)
         if result != CameraResult.SUCCESS:
             raise Exception(f"get_video_stream_info failed: {result}")
+
         py_result = VideoStreamInfo.from_c_struct(result_out)
-
         self._lib.mavsdk_camera_video_stream_info_destroy(ctypes.byref(result_out))
-
         return py_result
 
 
@@ -1753,7 +1792,9 @@ class Camera:
 
     def get_storage(self, component_id):
         """Get get_storage (blocking)"""
+
         result_out = StorageCStruct()
+
         result_code = self._lib.mavsdk_camera_get_storage(
             self._handle,
             component_id,
@@ -1762,10 +1803,9 @@ class Camera:
         result = CameraResult(result_code)
         if result != CameraResult.SUCCESS:
             raise Exception(f"get_storage failed: {result}")
+
         py_result = Storage.from_c_struct(result_out)
-
         self._lib.mavsdk_camera_storage_destroy(ctypes.byref(result_out))
-
         return py_result
 
 
@@ -1804,8 +1844,10 @@ class Camera:
 
     def get_current_settings(self, component_id):
         """Get get_current_settings (blocking)"""
+
         result_ptr = ctypes.POINTER(SettingCStruct)()
         size = ctypes.c_size_t()
+
         result_code = self._lib.mavsdk_camera_get_current_settings(
             self._handle,
             component_id,
@@ -1815,11 +1857,9 @@ class Camera:
         result = CameraResult(result_code)
         if result != CameraResult.SUCCESS:
             raise Exception(f"get_current_settings failed: {result}")
-        return result
+
         py_result = [Setting.from_c_struct(result_ptr[i]) for i in range(size.value)]
-
         self._lib.mavsdk_camera_setting_destroy(result_ptr)
-
         return py_result
 
 
@@ -1858,8 +1898,10 @@ class Camera:
 
     def get_possible_setting_options(self, component_id):
         """Get get_possible_setting_options (blocking)"""
+
         result_ptr = ctypes.POINTER(SettingOptionsCStruct)()
         size = ctypes.c_size_t()
+
         result_code = self._lib.mavsdk_camera_get_possible_setting_options(
             self._handle,
             component_id,
@@ -1869,11 +1911,9 @@ class Camera:
         result = CameraResult(result_code)
         if result != CameraResult.SUCCESS:
             raise Exception(f"get_possible_setting_options failed: {result}")
-        return result
+
         py_result = [SettingOptions.from_c_struct(result_ptr[i]) for i in range(size.value)]
-
         self._lib.mavsdk_camera_setting_options_destroy(result_ptr)
-
         return py_result
 
 
@@ -1906,12 +1946,17 @@ class Camera:
 
     def set_setting(self, component_id, setting):
         """Get set_setting (blocking)"""
+
+
         result_code = self._lib.mavsdk_camera_set_setting(
             self._handle,
-            component_id,             setting.to_c_struct()        )
+            component_id,
+            setting.to_c_struct(),
+        )
         result = CameraResult(result_code)
         if result != CameraResult.SUCCESS:
             raise Exception(f"set_setting failed: {result}")
+
         return result
 
 
@@ -1947,7 +1992,9 @@ class Camera:
 
     def get_setting(self, component_id, setting):
         """Get get_setting (blocking)"""
+
         result_out = SettingCStruct()
+
         result_code = self._lib.mavsdk_camera_get_setting(
             self._handle,
             component_id,
@@ -1957,10 +2004,9 @@ class Camera:
         result = CameraResult(result_code)
         if result != CameraResult.SUCCESS:
             raise Exception(f"get_setting failed: {result}")
+
         py_result = Setting.from_c_struct(result_out)
-
         self._lib.mavsdk_camera_setting_destroy(ctypes.byref(result_out))
-
         return py_result
 
 
@@ -1993,12 +2039,17 @@ class Camera:
 
     def format_storage(self, component_id, storage_id):
         """Get format_storage (blocking)"""
+
+
         result_code = self._lib.mavsdk_camera_format_storage(
             self._handle,
-            component_id,             storage_id        )
+            component_id,
+            storage_id,
+        )
         result = CameraResult(result_code)
         if result != CameraResult.SUCCESS:
             raise Exception(f"format_storage failed: {result}")
+
         return result
 
 
@@ -2030,12 +2081,16 @@ class Camera:
 
     def reset_settings(self, component_id):
         """Get reset_settings (blocking)"""
+
+
         result_code = self._lib.mavsdk_camera_reset_settings(
             self._handle,
-            component_id        )
+            component_id,
+        )
         result = CameraResult(result_code)
         if result != CameraResult.SUCCESS:
             raise Exception(f"reset_settings failed: {result}")
+
         return result
 
 
@@ -2065,12 +2120,16 @@ class Camera:
 
     def zoom_in_start(self, component_id):
         """Get zoom_in_start (blocking)"""
+
+
         result_code = self._lib.mavsdk_camera_zoom_in_start(
             self._handle,
-            component_id        )
+            component_id,
+        )
         result = CameraResult(result_code)
         if result != CameraResult.SUCCESS:
             raise Exception(f"zoom_in_start failed: {result}")
+
         return result
 
 
@@ -2100,12 +2159,16 @@ class Camera:
 
     def zoom_out_start(self, component_id):
         """Get zoom_out_start (blocking)"""
+
+
         result_code = self._lib.mavsdk_camera_zoom_out_start(
             self._handle,
-            component_id        )
+            component_id,
+        )
         result = CameraResult(result_code)
         if result != CameraResult.SUCCESS:
             raise Exception(f"zoom_out_start failed: {result}")
+
         return result
 
 
@@ -2135,12 +2198,16 @@ class Camera:
 
     def zoom_stop(self, component_id):
         """Get zoom_stop (blocking)"""
+
+
         result_code = self._lib.mavsdk_camera_zoom_stop(
             self._handle,
-            component_id        )
+            component_id,
+        )
         result = CameraResult(result_code)
         if result != CameraResult.SUCCESS:
             raise Exception(f"zoom_stop failed: {result}")
+
         return result
 
 
@@ -2171,12 +2238,17 @@ class Camera:
 
     def zoom_range(self, component_id, range):
         """Get zoom_range (blocking)"""
+
+
         result_code = self._lib.mavsdk_camera_zoom_range(
             self._handle,
-            component_id,             range        )
+            component_id,
+            range,
+        )
         result = CameraResult(result_code)
         if result != CameraResult.SUCCESS:
             raise Exception(f"zoom_range failed: {result}")
+
         return result
 
 
@@ -2209,12 +2281,19 @@ class Camera:
 
     def track_point(self, component_id, point_x, point_y, radius):
         """Get track_point (blocking)"""
+
+
         result_code = self._lib.mavsdk_camera_track_point(
             self._handle,
-            component_id,             point_x,             point_y,             radius        )
+            component_id,
+            point_x,
+            point_y,
+            radius,
+        )
         result = CameraResult(result_code)
         if result != CameraResult.SUCCESS:
             raise Exception(f"track_point failed: {result}")
+
         return result
 
 
@@ -2248,12 +2327,20 @@ class Camera:
 
     def track_rectangle(self, component_id, top_left_x, top_left_y, bottom_right_x, bottom_right_y):
         """Get track_rectangle (blocking)"""
+
+
         result_code = self._lib.mavsdk_camera_track_rectangle(
             self._handle,
-            component_id,             top_left_x,             top_left_y,             bottom_right_x,             bottom_right_y        )
+            component_id,
+            top_left_x,
+            top_left_y,
+            bottom_right_x,
+            bottom_right_y,
+        )
         result = CameraResult(result_code)
         if result != CameraResult.SUCCESS:
             raise Exception(f"track_rectangle failed: {result}")
+
         return result
 
 
@@ -2283,12 +2370,16 @@ class Camera:
 
     def track_stop(self, component_id):
         """Get track_stop (blocking)"""
+
+
         result_code = self._lib.mavsdk_camera_track_stop(
             self._handle,
-            component_id        )
+            component_id,
+        )
         result = CameraResult(result_code)
         if result != CameraResult.SUCCESS:
             raise Exception(f"track_stop failed: {result}")
+
         return result
 
 
@@ -2318,12 +2409,16 @@ class Camera:
 
     def focus_in_start(self, component_id):
         """Get focus_in_start (blocking)"""
+
+
         result_code = self._lib.mavsdk_camera_focus_in_start(
             self._handle,
-            component_id        )
+            component_id,
+        )
         result = CameraResult(result_code)
         if result != CameraResult.SUCCESS:
             raise Exception(f"focus_in_start failed: {result}")
+
         return result
 
 
@@ -2353,12 +2448,16 @@ class Camera:
 
     def focus_out_start(self, component_id):
         """Get focus_out_start (blocking)"""
+
+
         result_code = self._lib.mavsdk_camera_focus_out_start(
             self._handle,
-            component_id        )
+            component_id,
+        )
         result = CameraResult(result_code)
         if result != CameraResult.SUCCESS:
             raise Exception(f"focus_out_start failed: {result}")
+
         return result
 
 
@@ -2388,12 +2487,16 @@ class Camera:
 
     def focus_stop(self, component_id):
         """Get focus_stop (blocking)"""
+
+
         result_code = self._lib.mavsdk_camera_focus_stop(
             self._handle,
-            component_id        )
+            component_id,
+        )
         result = CameraResult(result_code)
         if result != CameraResult.SUCCESS:
             raise Exception(f"focus_stop failed: {result}")
+
         return result
 
 
@@ -2424,12 +2527,17 @@ class Camera:
 
     def focus_range(self, component_id, range):
         """Get focus_range (blocking)"""
+
+
         result_code = self._lib.mavsdk_camera_focus_range(
             self._handle,
-            component_id,             range        )
+            component_id,
+            range,
+        )
         result = CameraResult(result_code)
         if result != CameraResult.SUCCESS:
             raise Exception(f"focus_range failed: {result}")
+
         return result
 
 

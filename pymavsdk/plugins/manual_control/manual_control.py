@@ -86,12 +86,15 @@ class ManualControl:
 
     def start_position_control(self):
         """Get start_position_control (blocking)"""
+
+
         result_code = self._lib.mavsdk_manual_control_start_position_control(
             self._handle,
         )
         result = ManualControlResult(result_code)
         if result != ManualControlResult.SUCCESS:
             raise Exception(f"start_position_control failed: {result}")
+
         return result
 
 
@@ -123,24 +126,34 @@ class ManualControl:
 
     def start_altitude_control(self):
         """Get start_altitude_control (blocking)"""
+
+
         result_code = self._lib.mavsdk_manual_control_start_altitude_control(
             self._handle,
         )
         result = ManualControlResult(result_code)
         if result != ManualControlResult.SUCCESS:
             raise Exception(f"start_altitude_control failed: {result}")
+
         return result
 
 
 
     def set_manual_control_input(self, x, y, z, r):
         """Get set_manual_control_input (blocking)"""
+
+
         result_code = self._lib.mavsdk_manual_control_set_manual_control_input(
             self._handle,
-            x,             y,             z,             r        )
+            x,
+            y,
+            z,
+            r,
+        )
         result = ManualControlResult(result_code)
         if result != ManualControlResult.SUCCESS:
             raise Exception(f"set_manual_control_input failed: {result}")
+
         return result
 
 

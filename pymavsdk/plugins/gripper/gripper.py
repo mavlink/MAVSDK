@@ -90,12 +90,16 @@ class Gripper:
 
     def grab(self, instance):
         """Get grab (blocking)"""
+
+
         result_code = self._lib.mavsdk_gripper_grab(
             self._handle,
-            instance        )
+            instance,
+        )
         result = GripperResult(result_code)
         if result != GripperResult.SUCCESS:
             raise Exception(f"grab failed: {result}")
+
         return result
 
 
@@ -125,12 +129,16 @@ class Gripper:
 
     def release(self, instance):
         """Get release (blocking)"""
+
+
         result_code = self._lib.mavsdk_gripper_release(
             self._handle,
-            instance        )
+            instance,
+        )
         result = GripperResult(result_code)
         if result != GripperResult.SUCCESS:
             raise Exception(f"release failed: {result}")
+
         return result
 
 

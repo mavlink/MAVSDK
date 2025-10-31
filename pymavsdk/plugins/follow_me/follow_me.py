@@ -226,89 +226,108 @@ class FollowMe:
 
     def get_config(self):
         """Get get_config (blocking)"""
+
         result_out = ConfigCStruct()
+
         self._lib.mavsdk_follow_me_get_config(
             self._handle,
             ctypes.byref(result_out)
         )
+
         py_result = Config.from_c_struct(result_out)
-
         self._lib.mavsdk_follow_me_config_destroy(ctypes.byref(result_out))
-
         return py_result
 
 
 
     def set_config(self, config):
         """Get set_config (blocking)"""
+
+
         result_code = self._lib.mavsdk_follow_me_set_config(
             self._handle,
-            config.to_c_struct()        )
+            config.to_c_struct(),
+        )
         result = FollowMeResult(result_code)
         if result != FollowMeResult.SUCCESS:
             raise Exception(f"set_config failed: {result}")
+
         return result
 
 
 
     def is_active(self):
         """Get is_active (blocking)"""
+
         result_out = ctypes.c_bool()
+
         self._lib.mavsdk_follow_me_is_active(
             self._handle,
             ctypes.byref(result_out)
         )
+
         return result_out.value
 
 
 
     def set_target_location(self, location):
         """Get set_target_location (blocking)"""
+
+
         result_code = self._lib.mavsdk_follow_me_set_target_location(
             self._handle,
-            location.to_c_struct()        )
+            location.to_c_struct(),
+        )
         result = FollowMeResult(result_code)
         if result != FollowMeResult.SUCCESS:
             raise Exception(f"set_target_location failed: {result}")
+
         return result
 
 
 
     def get_last_location(self):
         """Get get_last_location (blocking)"""
+
         result_out = TargetLocationCStruct()
+
         self._lib.mavsdk_follow_me_get_last_location(
             self._handle,
             ctypes.byref(result_out)
         )
+
         py_result = TargetLocation.from_c_struct(result_out)
-
         self._lib.mavsdk_follow_me_target_location_destroy(ctypes.byref(result_out))
-
         return py_result
 
 
 
     def start(self):
         """Get start (blocking)"""
+
+
         result_code = self._lib.mavsdk_follow_me_start(
             self._handle,
         )
         result = FollowMeResult(result_code)
         if result != FollowMeResult.SUCCESS:
             raise Exception(f"start failed: {result}")
+
         return result
 
 
 
     def stop(self):
         """Get stop (blocking)"""
+
+
         result_code = self._lib.mavsdk_follow_me_stop(
             self._handle,
         )
         result = FollowMeResult(result_code)
         if result != FollowMeResult.SUCCESS:
             raise Exception(f"stop failed: {result}")
+
         return result
 
 

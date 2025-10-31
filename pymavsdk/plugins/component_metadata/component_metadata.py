@@ -159,17 +159,24 @@ class ComponentMetadata:
 
     def request_component(self, compid):
         """Get request_component (blocking)"""
+
+
         self._lib.mavsdk_component_metadata_request_component(
             self._handle,
-            compid        )
+            compid,
+        )
+
 
 
 
     def request_autopilot_component(self):
         """Get request_autopilot_component (blocking)"""
+
+
         self._lib.mavsdk_component_metadata_request_autopilot_component(
             self._handle,
         )
+
 
 
     def subscribe_metadata_available(self, callback: Callable, user_data: Any = None):
@@ -207,7 +214,9 @@ class ComponentMetadata:
 
     def get_metadata(self, compid, metadata_type):
         """Get get_metadata (blocking)"""
+
         result_out = MetadataDataCStruct()
+
         result_code = self._lib.mavsdk_component_metadata_get_metadata(
             self._handle,
             compid,
@@ -217,10 +226,9 @@ class ComponentMetadata:
         result = ComponentMetadataResult(result_code)
         if result != ComponentMetadataResult.SUCCESS:
             raise Exception(f"get_metadata failed: {result}")
+
         py_result = MetadataData.from_c_struct(result_out)
-
         self._lib.mavsdk_component_metadata_metadata_data_destroy(ctypes.byref(result_out))
-
         return py_result
 
 

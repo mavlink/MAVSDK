@@ -267,12 +267,15 @@ class Calibration:
 
     def cancel(self):
         """Get cancel (blocking)"""
+
+
         result_code = self._lib.mavsdk_calibration_cancel(
             self._handle,
         )
         result = CalibrationResult(result_code)
         if result != CalibrationResult.SUCCESS:
             raise Exception(f"cancel failed: {result}")
+
         return result
 
 

@@ -56,12 +56,16 @@ class FtpServer:
 
     def set_root_dir(self, path):
         """Get set_root_dir (blocking)"""
+
+
         result_code = self._lib.mavsdk_ftp_server_set_root_dir(
             self._handle,
-            path        )
+            path,
+        )
         result = FtpServerResult(result_code)
         if result != FtpServerResult.SUCCESS:
             raise Exception(f"set_root_dir failed: {result}")
+
         return result
 
 

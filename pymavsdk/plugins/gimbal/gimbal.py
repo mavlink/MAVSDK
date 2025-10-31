@@ -582,12 +582,21 @@ class Gimbal:
 
     def set_angles(self, gimbal_id, roll_deg, pitch_deg, yaw_deg, gimbal_mode, send_mode):
         """Get set_angles (blocking)"""
+
+
         result_code = self._lib.mavsdk_gimbal_set_angles(
             self._handle,
-            gimbal_id,             roll_deg,             pitch_deg,             yaw_deg,             gimbal_mode,             send_mode        )
+            gimbal_id,
+            roll_deg,
+            pitch_deg,
+            yaw_deg,
+            gimbal_mode,
+            send_mode,
+        )
         result = GimbalResult(result_code)
         if result != GimbalResult.SUCCESS:
             raise Exception(f"set_angles failed: {result}")
+
         return result
 
 
@@ -628,12 +637,21 @@ class Gimbal:
 
     def set_angular_rates(self, gimbal_id, roll_rate_deg_s, pitch_rate_deg_s, yaw_rate_deg_s, gimbal_mode, send_mode):
         """Get set_angular_rates (blocking)"""
+
+
         result_code = self._lib.mavsdk_gimbal_set_angular_rates(
             self._handle,
-            gimbal_id,             roll_rate_deg_s,             pitch_rate_deg_s,             yaw_rate_deg_s,             gimbal_mode,             send_mode        )
+            gimbal_id,
+            roll_rate_deg_s,
+            pitch_rate_deg_s,
+            yaw_rate_deg_s,
+            gimbal_mode,
+            send_mode,
+        )
         result = GimbalResult(result_code)
         if result != GimbalResult.SUCCESS:
             raise Exception(f"set_angular_rates failed: {result}")
+
         return result
 
 
@@ -672,12 +690,19 @@ class Gimbal:
 
     def set_roi_location(self, gimbal_id, latitude_deg, longitude_deg, altitude_m):
         """Get set_roi_location (blocking)"""
+
+
         result_code = self._lib.mavsdk_gimbal_set_roi_location(
             self._handle,
-            gimbal_id,             latitude_deg,             longitude_deg,             altitude_m        )
+            gimbal_id,
+            latitude_deg,
+            longitude_deg,
+            altitude_m,
+        )
         result = GimbalResult(result_code)
         if result != GimbalResult.SUCCESS:
             raise Exception(f"set_roi_location failed: {result}")
+
         return result
 
 
@@ -716,12 +741,17 @@ class Gimbal:
 
     def take_control(self, gimbal_id, control_mode):
         """Get take_control (blocking)"""
+
+
         result_code = self._lib.mavsdk_gimbal_take_control(
             self._handle,
-            gimbal_id,             control_mode        )
+            gimbal_id,
+            control_mode,
+        )
         result = GimbalResult(result_code)
         if result != GimbalResult.SUCCESS:
             raise Exception(f"take_control failed: {result}")
+
         return result
 
 
@@ -753,12 +783,16 @@ class Gimbal:
 
     def release_control(self, gimbal_id):
         """Get release_control (blocking)"""
+
+
         result_code = self._lib.mavsdk_gimbal_release_control(
             self._handle,
-            gimbal_id        )
+            gimbal_id,
+        )
         result = GimbalResult(result_code)
         if result != GimbalResult.SUCCESS:
             raise Exception(f"release_control failed: {result}")
+
         return result
 
 
@@ -797,15 +831,16 @@ class Gimbal:
 
     def gimbal_list(self):
         """Get gimbal_list (blocking)"""
+
         result_out = GimbalListCStruct()
+
         self._lib.mavsdk_gimbal_gimbal_list(
             self._handle,
             ctypes.byref(result_out)
         )
+
         py_result = GimbalList.from_c_struct(result_out)
-
         self._lib.mavsdk_gimbal_gimbal_list_destroy(ctypes.byref(result_out))
-
         return py_result
 
 
@@ -848,7 +883,9 @@ class Gimbal:
 
     def get_control_status(self, gimbal_id):
         """Get get_control_status (blocking)"""
+
         result_out = ControlStatusCStruct()
+
         result_code = self._lib.mavsdk_gimbal_get_control_status(
             self._handle,
             gimbal_id,
@@ -857,10 +894,9 @@ class Gimbal:
         result = GimbalResult(result_code)
         if result != GimbalResult.SUCCESS:
             raise Exception(f"get_control_status failed: {result}")
+
         py_result = ControlStatus.from_c_struct(result_out)
-
         self._lib.mavsdk_gimbal_control_status_destroy(ctypes.byref(result_out))
-
         return py_result
 
 
@@ -901,7 +937,9 @@ class Gimbal:
 
     def get_attitude(self, gimbal_id):
         """Get get_attitude (blocking)"""
+
         result_out = AttitudeCStruct()
+
         result_code = self._lib.mavsdk_gimbal_get_attitude(
             self._handle,
             gimbal_id,
@@ -910,10 +948,9 @@ class Gimbal:
         result = GimbalResult(result_code)
         if result != GimbalResult.SUCCESS:
             raise Exception(f"get_attitude failed: {result}")
+
         py_result = Attitude.from_c_struct(result_out)
-
         self._lib.mavsdk_gimbal_attitude_destroy(ctypes.byref(result_out))
-
         return py_result
 
 

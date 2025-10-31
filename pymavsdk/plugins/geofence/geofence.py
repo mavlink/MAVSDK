@@ -321,12 +321,16 @@ class Geofence:
 
     def upload_geofence(self, geofence_data):
         """Get upload_geofence (blocking)"""
+
+
         result_code = self._lib.mavsdk_geofence_upload_geofence(
             self._handle,
-            geofence_data.to_c_struct()        )
+            geofence_data.to_c_struct(),
+        )
         result = GeofenceResult(result_code)
         if result != GeofenceResult.SUCCESS:
             raise Exception(f"upload_geofence failed: {result}")
+
         return result
 
 
@@ -355,12 +359,15 @@ class Geofence:
 
     def clear_geofence(self):
         """Get clear_geofence (blocking)"""
+
+
         result_code = self._lib.mavsdk_geofence_clear_geofence(
             self._handle,
         )
         result = GeofenceResult(result_code)
         if result != GeofenceResult.SUCCESS:
             raise Exception(f"clear_geofence failed: {result}")
+
         return result
 
 

@@ -244,7 +244,9 @@ class Ftp:
 
     def list_directory(self, remote_dir):
         """Get list_directory (blocking)"""
+
         result_out = ListDirectoryDataCStruct()
+
         result_code = self._lib.mavsdk_ftp_list_directory(
             self._handle,
             remote_dir,
@@ -253,10 +255,9 @@ class Ftp:
         result = FtpResult(result_code)
         if result != FtpResult.SUCCESS:
             raise Exception(f"list_directory failed: {result}")
+
         py_result = ListDirectoryData.from_c_struct(result_out)
-
         self._lib.mavsdk_ftp_list_directory_data_destroy(ctypes.byref(result_out))
-
         return py_result
 
 
@@ -286,12 +287,16 @@ class Ftp:
 
     def create_directory(self, remote_dir):
         """Get create_directory (blocking)"""
+
+
         result_code = self._lib.mavsdk_ftp_create_directory(
             self._handle,
-            remote_dir        )
+            remote_dir,
+        )
         result = FtpResult(result_code)
         if result != FtpResult.SUCCESS:
             raise Exception(f"create_directory failed: {result}")
+
         return result
 
 
@@ -321,12 +326,16 @@ class Ftp:
 
     def remove_directory(self, remote_dir):
         """Get remove_directory (blocking)"""
+
+
         result_code = self._lib.mavsdk_ftp_remove_directory(
             self._handle,
-            remote_dir        )
+            remote_dir,
+        )
         result = FtpResult(result_code)
         if result != FtpResult.SUCCESS:
             raise Exception(f"remove_directory failed: {result}")
+
         return result
 
 
@@ -356,12 +365,16 @@ class Ftp:
 
     def remove_file(self, remote_file_path):
         """Get remove_file (blocking)"""
+
+
         result_code = self._lib.mavsdk_ftp_remove_file(
             self._handle,
-            remote_file_path        )
+            remote_file_path,
+        )
         result = FtpResult(result_code)
         if result != FtpResult.SUCCESS:
             raise Exception(f"remove_file failed: {result}")
+
         return result
 
 
@@ -392,12 +405,17 @@ class Ftp:
 
     def rename(self, remote_from_path, remote_to_path):
         """Get rename (blocking)"""
+
+
         result_code = self._lib.mavsdk_ftp_rename(
             self._handle,
-            remote_from_path,             remote_to_path        )
+            remote_from_path,
+            remote_to_path,
+        )
         result = FtpResult(result_code)
         if result != FtpResult.SUCCESS:
             raise Exception(f"rename failed: {result}")
+
         return result
 
 
@@ -429,7 +447,9 @@ class Ftp:
 
     def are_files_identical(self, local_file_path, remote_file_path):
         """Get are_files_identical (blocking)"""
+
         result_out = ctypes.c_bool()
+
         result_code = self._lib.mavsdk_ftp_are_files_identical(
             self._handle,
             local_file_path,
@@ -439,18 +459,23 @@ class Ftp:
         result = FtpResult(result_code)
         if result != FtpResult.SUCCESS:
             raise Exception(f"are_files_identical failed: {result}")
+
         return result_out.value
 
 
 
     def set_target_compid(self, compid):
         """Get set_target_compid (blocking)"""
+
+
         result_code = self._lib.mavsdk_ftp_set_target_compid(
             self._handle,
-            compid        )
+            compid,
+        )
         result = FtpResult(result_code)
         if result != FtpResult.SUCCESS:
             raise Exception(f"set_target_compid failed: {result}")
+
         return result
 
 

@@ -729,48 +729,64 @@ class Mocap:
 
     def set_vision_position_estimate(self, vision_position_estimate):
         """Get set_vision_position_estimate (blocking)"""
+
+
         result_code = self._lib.mavsdk_mocap_set_vision_position_estimate(
             self._handle,
-            vision_position_estimate.to_c_struct()        )
+            vision_position_estimate.to_c_struct(),
+        )
         result = MocapResult(result_code)
         if result != MocapResult.SUCCESS:
             raise Exception(f"set_vision_position_estimate failed: {result}")
+
         return result
 
 
 
     def set_vision_speed_estimate(self, vision_speed_estimate):
         """Get set_vision_speed_estimate (blocking)"""
+
+
         result_code = self._lib.mavsdk_mocap_set_vision_speed_estimate(
             self._handle,
-            vision_speed_estimate.to_c_struct()        )
+            vision_speed_estimate.to_c_struct(),
+        )
         result = MocapResult(result_code)
         if result != MocapResult.SUCCESS:
             raise Exception(f"set_vision_speed_estimate failed: {result}")
+
         return result
 
 
 
     def set_attitude_position_mocap(self, attitude_position_mocap):
         """Get set_attitude_position_mocap (blocking)"""
+
+
         result_code = self._lib.mavsdk_mocap_set_attitude_position_mocap(
             self._handle,
-            attitude_position_mocap.to_c_struct()        )
+            attitude_position_mocap.to_c_struct(),
+        )
         result = MocapResult(result_code)
         if result != MocapResult.SUCCESS:
             raise Exception(f"set_attitude_position_mocap failed: {result}")
+
         return result
 
 
 
     def set_odometry(self, odometry):
         """Get set_odometry (blocking)"""
+
+
         result_code = self._lib.mavsdk_mocap_set_odometry(
             self._handle,
-            odometry.to_c_struct()        )
+            odometry.to_c_struct(),
+        )
         result = MocapResult(result_code)
         if result != MocapResult.SUCCESS:
             raise Exception(f"set_odometry failed: {result}")
+
         return result
 
 

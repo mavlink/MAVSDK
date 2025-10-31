@@ -58,12 +58,16 @@ class Shell:
 
     def send(self, command):
         """Get send (blocking)"""
+
+
         result_code = self._lib.mavsdk_shell_send(
             self._handle,
-            command        )
+            command,
+        )
         result = ShellResult(result_code)
         if result != ShellResult.SUCCESS:
             raise Exception(f"send failed: {result}")
+
         return result
 
 
