@@ -54,10 +54,8 @@ void MavlinkDirectImpl::init()
             mavlink_direct_message.target_component_id = message.target_component_id;
             mavlink_direct_message.fields_json = message.fields_json;
 
-            // Distribute to all internal subscribers
-            _callbacks.queue(mavlink_direct_message, [this](const std::function<void()>& func) {
-                _system_impl->call_user_callback(func);
-            });
+            // Call callbacks directly, queueing needs to happen in the user APIs
+            _callbacks(mavlink_direct_message);
         });
 }
 
@@ -154,16 +152,16 @@ MavlinkDirect::MessageHandle MavlinkDirectImpl::subscribe_message(
     std::string message_name, const MavlinkDirect::MessageCallback& callback)
 {
     // Add filtering callback to internal CallbackList
-    auto filtering_callback = [message_name,
-                               callback](const MavlinkDirect::MavlinkMessage& message) {
-        // Apply message filtering (empty string means all messages)
-        if (!message_name.empty() && message_name != message.message_name) {
-            return;
-        }
+    auto filtering_callback =
+        [this, message_name, callback](const MavlinkDirect::MavlinkMessage& message) {
+            // Apply message filtering (empty string means all messages)
+            if (!message_name.empty() && message_name != message.message_name) {
+                return;
+            }
 
-        // Call user callback for matching messages
-        callback(message);
-    };
+            // Queue user callback to user callback thread
+            _system_impl->call_user_callback([callback, message]() { callback(message); });
+        };
 
     // Subscribe to internal CallbackList and return handle directly
     return _callbacks.subscribe(filtering_callback);

@@ -30,6 +30,7 @@
 #include "sender.h"
 #include "timeout_handler.h"
 #include "callback_list.h"
+#include "callback_tracker.h"
 
 // Forward declarations to avoid including MessageSet.h in header
 namespace mav {
@@ -231,6 +232,7 @@ private:
     bool _message_logging_on{false};
     bool _callback_debugging{false};
     bool _system_debugging{false};
+    std::unique_ptr<CallbackTracker> _callback_tracker;
 
     mutable std::mutex _intercept_callbacks_mutex{};
     std::function<bool(mavlink_message_t&)> _intercept_incoming_messages_callback{nullptr};
