@@ -263,8 +263,6 @@ class AllParams:
         return f"AllParams({', '.join(fields)})"
 
 
-# ===== Callback Types =====
-
 
 class Param:
     """Provide raw access to get and set parameters."""
@@ -405,6 +403,9 @@ class Param:
     def __del__(self):
         self.destroy()
 
+# ===== Callback Types =====
+
+# ===== Setup Functions =====
 _cmavsdk_lib.mavsdk_param_create.argtypes = [ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_param_create.restype = ctypes.c_void_p
 

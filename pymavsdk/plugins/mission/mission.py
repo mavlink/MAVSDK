@@ -405,56 +405,6 @@ class ProgressDataOrMission:
         return f"ProgressDataOrMission({', '.join(fields)})"
 
 
-# ===== Callback Types =====
-UploadMissionCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-UploadMissionWithProgressCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ProgressDataCStruct,
-    ctypes.c_void_p
-)
-DownloadMissionCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    MissionPlanCStruct,
-    ctypes.c_void_p
-)
-DownloadMissionWithProgressCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ProgressDataOrMissionCStruct,
-    ctypes.c_void_p
-)
-StartMissionCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-PauseMissionCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-ClearMissionCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-SetCurrentMissionItemCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-MissionProgressCallback = ctypes.CFUNCTYPE(
-    None,
-    MissionProgressCStruct,
-    ctypes.c_void_p
-)
-
 
 class Mission:
     """Enable waypoint missions."""
@@ -892,6 +842,57 @@ class Mission:
     def __del__(self):
         self.destroy()
 
+# ===== Callback Types =====
+UploadMissionCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+UploadMissionWithProgressCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ProgressDataCStruct,
+    ctypes.c_void_p
+)
+DownloadMissionCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    MissionPlanCStruct,
+    ctypes.c_void_p
+)
+DownloadMissionWithProgressCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ProgressDataOrMissionCStruct,
+    ctypes.c_void_p
+)
+StartMissionCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+PauseMissionCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+ClearMissionCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+SetCurrentMissionItemCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+MissionProgressCallback = ctypes.CFUNCTYPE(
+    None,
+    MissionProgressCStruct,
+    ctypes.c_void_p
+)
+
+# ===== Setup Functions =====
 _cmavsdk_lib.mavsdk_mission_create.argtypes = [ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_mission_create.restype = ctypes.c_void_p
 

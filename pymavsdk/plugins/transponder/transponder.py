@@ -188,18 +188,6 @@ class AdsbVehicle:
         return f"AdsbVehicle({', '.join(fields)})"
 
 
-# ===== Callback Types =====
-TransponderCallback = ctypes.CFUNCTYPE(
-    None,
-    AdsbVehicleCStruct,
-    ctypes.c_void_p
-)
-SetRateTransponderCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-
 
 class Transponder:
     """Allow users to get ADS-B information
@@ -312,6 +300,19 @@ class Transponder:
     def __del__(self):
         self.destroy()
 
+# ===== Callback Types =====
+TransponderCallback = ctypes.CFUNCTYPE(
+    None,
+    AdsbVehicleCStruct,
+    ctypes.c_void_p
+)
+SetRateTransponderCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+
+# ===== Setup Functions =====
 _cmavsdk_lib.mavsdk_transponder_create.argtypes = [ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_transponder_create.restype = ctypes.c_void_p
 

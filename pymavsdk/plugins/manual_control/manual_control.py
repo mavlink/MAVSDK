@@ -34,18 +34,6 @@ class ManualControlResult(IntEnum):
 
 # ===== Structures =====
 
-# ===== Callback Types =====
-StartPositionControlCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-StartAltitudeControlCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-
 
 class ManualControl:
     """Enable manual control using e.g. a joystick or gamepad."""
@@ -164,6 +152,19 @@ class ManualControl:
     def __del__(self):
         self.destroy()
 
+# ===== Callback Types =====
+StartPositionControlCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+StartAltitudeControlCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+
+# ===== Setup Functions =====
 _cmavsdk_lib.mavsdk_manual_control_create.argtypes = [ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_manual_control_create.restype = ctypes.c_void_p
 

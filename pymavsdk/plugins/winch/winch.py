@@ -287,63 +287,6 @@ class Status:
         return f"Status({', '.join(fields)})"
 
 
-# ===== Callback Types =====
-StatusCallback = ctypes.CFUNCTYPE(
-    None,
-    StatusCStruct,
-    ctypes.c_void_p
-)
-RelaxCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-RelativeLengthControlCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-RateControlCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-LockCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-DeliverCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-HoldCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-RetractCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-LoadLineCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-AbandonLineCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-LoadPayloadCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-
 
 class Winch:
     """Allows users to send winch actions, as well as receive status information from winch systems."""
@@ -775,6 +718,64 @@ class Winch:
     def __del__(self):
         self.destroy()
 
+# ===== Callback Types =====
+StatusCallback = ctypes.CFUNCTYPE(
+    None,
+    StatusCStruct,
+    ctypes.c_void_p
+)
+RelaxCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+RelativeLengthControlCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+RateControlCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+LockCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+DeliverCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+HoldCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+RetractCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+LoadLineCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+AbandonLineCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+LoadPayloadCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+
+# ===== Setup Functions =====
 _cmavsdk_lib.mavsdk_winch_create.argtypes = [ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_winch_create.restype = ctypes.c_void_p
 

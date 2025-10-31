@@ -41,8 +41,6 @@ class ServerUtilityResult(IntEnum):
 
 # ===== Structures =====
 
-# ===== Callback Types =====
-
 
 class ServerUtility:
     """Utility for onboard MAVSDK instances for common "server" tasks."""
@@ -87,6 +85,9 @@ class ServerUtility:
     def __del__(self):
         self.destroy()
 
+# ===== Callback Types =====
+
+# ===== Setup Functions =====
 _cmavsdk_lib.mavsdk_server_utility_create.argtypes = [ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_server_utility_create.restype = ctypes.c_void_p
 

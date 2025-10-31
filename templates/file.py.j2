@@ -205,34 +205,8 @@ class {{ struct.name.upper_camel_case }}:
 {% endif %}
 {% endfor %}
 
-# ===== Callback Types =====
-{% for method in methods %}
-{% if method.is_async %}
-{{ method.name.upper_camel_case }}Callback = ctypes.CFUNCTYPE(
-    None,
-    {% if method.has_result %}
-    ctypes.c_int,
-    {% endif %}
-    {% if method.return_type %}
-    {% if method.return_type.is_primitive %}
-    ctypes.{{ method.return_type.name }},
-    {% elif method.return_type.is_enum %}
-    ctypes.c_int,
-    {% else %}
-    {% if method.return_type.is_repeated %}
-    ctypes.POINTER({{ method.return_type.inner_name.upper_camel_case }}CStruct),
-    ctypes.c_size_t,
-    {% else %}
-    {{ method.return_type.inner_name.upper_camel_case }}CStruct,
-    {% endif %}
-    {% endif %}
-    {% endif %}
-    ctypes.c_void_p
-)
-{% endif %}
-{% endfor %}
 
-
+# ===== Plugin =====
 class {{ plugin_name.upper_camel_case }}:
     """{{ class_description }}"""
 
@@ -492,6 +466,34 @@ class {{ plugin_name.upper_camel_case }}:
     def __del__(self):
         self.destroy()
 
+# ===== Callback Types =====
+{% for method in methods %}
+{% if method.is_async %}
+{{ method.name.upper_camel_case }}Callback = ctypes.CFUNCTYPE(
+    None,
+    {% if method.has_result %}
+    ctypes.c_int,
+    {% endif %}
+    {% if method.return_type %}
+    {% if method.return_type.is_primitive %}
+    ctypes.{{ method.return_type.name }},
+    {% elif method.return_type.is_enum %}
+    ctypes.c_int,
+    {% else %}
+    {% if method.return_type.is_repeated %}
+    ctypes.POINTER({{ method.return_type.inner_name.upper_camel_case }}CStruct),
+    ctypes.c_size_t,
+    {% else %}
+    {{ method.return_type.inner_name.upper_camel_case }}CStruct,
+    {% endif %}
+    {% endif %}
+    {% endif %}
+    ctypes.c_void_p
+)
+{% endif %}
+{% endfor %}
+
+# ===== Setup Functions =====
 _cmavsdk_lib.mavsdk_{{ plugin_name.lower_snake_case }}_create.argtypes = [ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_{{ plugin_name.lower_snake_case }}_create.restype = ctypes.c_void_p
 

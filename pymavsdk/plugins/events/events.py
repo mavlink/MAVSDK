@@ -391,18 +391,6 @@ class HealthAndArmingCheckReport:
         return f"HealthAndArmingCheckReport({', '.join(fields)})"
 
 
-# ===== Callback Types =====
-EventsCallback = ctypes.CFUNCTYPE(
-    None,
-    EventCStruct,
-    ctypes.c_void_p
-)
-HealthAndArmingChecksCallback = ctypes.CFUNCTYPE(
-    None,
-    HealthAndArmingCheckReportCStruct,
-    ctypes.c_void_p
-)
-
 
 class Events:
     """Get event notifications, such as takeoff, or arming checks"""
@@ -517,6 +505,19 @@ class Events:
     def __del__(self):
         self.destroy()
 
+# ===== Callback Types =====
+EventsCallback = ctypes.CFUNCTYPE(
+    None,
+    EventCStruct,
+    ctypes.c_void_p
+)
+HealthAndArmingChecksCallback = ctypes.CFUNCTYPE(
+    None,
+    HealthAndArmingCheckReportCStruct,
+    ctypes.c_void_p
+)
+
+# ===== Setup Functions =====
 _cmavsdk_lib.mavsdk_events_create.argtypes = [ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_events_create.restype = ctypes.c_void_p
 

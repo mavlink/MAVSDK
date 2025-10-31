@@ -1729,8 +1729,6 @@ class Imu:
         return f"Imu({', '.join(fields)})"
 
 
-# ===== Callback Types =====
-
 
 class TelemetryServer:
     """Allow users to provide vehicle telemetry and state information
@@ -1968,6 +1966,9 @@ class TelemetryServer:
     def __del__(self):
         self.destroy()
 
+# ===== Callback Types =====
+
+# ===== Setup Functions =====
 _cmavsdk_lib.mavsdk_telemetry_server_create.argtypes = [ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_telemetry_server_create.restype = ctypes.c_void_p
 

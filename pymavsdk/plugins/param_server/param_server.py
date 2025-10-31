@@ -256,23 +256,6 @@ class AllParams:
         return f"AllParams({', '.join(fields)})"
 
 
-# ===== Callback Types =====
-ChangedParamIntCallback = ctypes.CFUNCTYPE(
-    None,
-    IntParamCStruct,
-    ctypes.c_void_p
-)
-ChangedParamFloatCallback = ctypes.CFUNCTYPE(
-    None,
-    FloatParamCStruct,
-    ctypes.c_void_p
-)
-ChangedParamCustomCallback = ctypes.CFUNCTYPE(
-    None,
-    CustomParamCStruct,
-    ctypes.c_void_p
-)
-
 
 class ParamServer:
     """Provide raw access to retrieve and provide server parameters."""
@@ -509,6 +492,24 @@ class ParamServer:
     def __del__(self):
         self.destroy()
 
+# ===== Callback Types =====
+ChangedParamIntCallback = ctypes.CFUNCTYPE(
+    None,
+    IntParamCStruct,
+    ctypes.c_void_p
+)
+ChangedParamFloatCallback = ctypes.CFUNCTYPE(
+    None,
+    FloatParamCStruct,
+    ctypes.c_void_p
+)
+ChangedParamCustomCallback = ctypes.CFUNCTYPE(
+    None,
+    CustomParamCStruct,
+    ctypes.c_void_p
+)
+
+# ===== Setup Functions =====
 _cmavsdk_lib.mavsdk_param_server_create.argtypes = [ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_param_server_create.restype = ctypes.c_void_p
 

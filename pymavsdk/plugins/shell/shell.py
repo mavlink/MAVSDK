@@ -31,13 +31,6 @@ class ShellResult(IntEnum):
 
 # ===== Structures =====
 
-# ===== Callback Types =====
-ReceiveCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_char_p,
-    ctypes.c_void_p
-)
-
 
 class Shell:
     """Allow to communicate with the vehicle's system shell."""
@@ -114,6 +107,14 @@ class Shell:
     def __del__(self):
         self.destroy()
 
+# ===== Callback Types =====
+ReceiveCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_char_p,
+    ctypes.c_void_p
+)
+
+# ===== Setup Functions =====
 _cmavsdk_lib.mavsdk_shell_create.argtypes = [ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_shell_create.restype = ctypes.c_void_p
 

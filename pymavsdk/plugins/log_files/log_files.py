@@ -125,21 +125,6 @@ class Entry:
         return f"Entry({', '.join(fields)})"
 
 
-# ===== Callback Types =====
-GetEntriesCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.POINTER(EntryCStruct),
-    ctypes.c_size_t,
-    ctypes.c_void_p
-)
-DownloadLogFileCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ProgressDataCStruct,
-    ctypes.c_void_p
-)
-
 
 class LogFiles:
     """Allow to download log files from the vehicle after a flight is complete.
@@ -264,6 +249,22 @@ class LogFiles:
     def __del__(self):
         self.destroy()
 
+# ===== Callback Types =====
+GetEntriesCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.POINTER(EntryCStruct),
+    ctypes.c_size_t,
+    ctypes.c_void_p
+)
+DownloadLogFileCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ProgressDataCStruct,
+    ctypes.c_void_p
+)
+
+# ===== Setup Functions =====
 _cmavsdk_lib.mavsdk_log_files_create.argtypes = [ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_log_files_create.restype = ctypes.c_void_p
 

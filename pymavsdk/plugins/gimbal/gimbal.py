@@ -521,48 +521,6 @@ class ControlStatus:
         return f"ControlStatus({', '.join(fields)})"
 
 
-# ===== Callback Types =====
-SetAnglesCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-SetAngularRatesCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-SetRoiLocationCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-TakeControlCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-ReleaseControlCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-GimbalListCallback = ctypes.CFUNCTYPE(
-    None,
-    GimbalListCStruct,
-    ctypes.c_void_p
-)
-ControlStatusCallback = ctypes.CFUNCTYPE(
-    None,
-    ControlStatusCStruct,
-    ctypes.c_void_p
-)
-AttitudeCallback = ctypes.CFUNCTYPE(
-    None,
-    AttitudeCStruct,
-    ctypes.c_void_p
-)
-
 
 class Gimbal:
     """Provide control over a gimbal."""
@@ -967,6 +925,49 @@ class Gimbal:
     def __del__(self):
         self.destroy()
 
+# ===== Callback Types =====
+SetAnglesCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+SetAngularRatesCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+SetRoiLocationCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+TakeControlCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+ReleaseControlCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+GimbalListCallback = ctypes.CFUNCTYPE(
+    None,
+    GimbalListCStruct,
+    ctypes.c_void_p
+)
+ControlStatusCallback = ctypes.CFUNCTYPE(
+    None,
+    ControlStatusCStruct,
+    ctypes.c_void_p
+)
+AttitudeCallback = ctypes.CFUNCTYPE(
+    None,
+    AttitudeCStruct,
+    ctypes.c_void_p
+)
+
+# ===== Setup Functions =====
 _cmavsdk_lib.mavsdk_gimbal_create.argtypes = [ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_gimbal_create.restype = ctypes.c_void_p
 

@@ -159,50 +159,6 @@ class ArmDisarm:
         return f"ArmDisarm({', '.join(fields)})"
 
 
-# ===== Callback Types =====
-ArmDisarmCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ArmDisarmCStruct,
-    ctypes.c_void_p
-)
-FlightModeChangeCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-TakeoffCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_bool,
-    ctypes.c_void_p
-)
-LandCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_bool,
-    ctypes.c_void_p
-)
-RebootCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_bool,
-    ctypes.c_void_p
-)
-ShutdownCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_bool,
-    ctypes.c_void_p
-)
-TerminateCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_bool,
-    ctypes.c_void_p
-)
-
 
 class ActionServer:
     """Provide vehicle actions (as a server) such as arming, taking off, and landing."""
@@ -541,6 +497,51 @@ class ActionServer:
     def __del__(self):
         self.destroy()
 
+# ===== Callback Types =====
+ArmDisarmCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ArmDisarmCStruct,
+    ctypes.c_void_p
+)
+FlightModeChangeCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+TakeoffCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_bool,
+    ctypes.c_void_p
+)
+LandCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_bool,
+    ctypes.c_void_p
+)
+RebootCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_bool,
+    ctypes.c_void_p
+)
+ShutdownCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_bool,
+    ctypes.c_void_p
+)
+TerminateCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_bool,
+    ctypes.c_void_p
+)
+
+# ===== Setup Functions =====
 _cmavsdk_lib.mavsdk_action_server_create.argtypes = [ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_action_server_create.restype = ctypes.c_void_p
 

@@ -109,13 +109,6 @@ class MavlinkMessage:
         return f"MavlinkMessage({', '.join(fields)})"
 
 
-# ===== Callback Types =====
-MessageCallback = ctypes.CFUNCTYPE(
-    None,
-    MavlinkMessageCStruct,
-    ctypes.c_void_p
-)
-
 
 class MavlinkDirect:
     """Enable direct MAVLink communication using libmav."""
@@ -209,6 +202,14 @@ class MavlinkDirect:
     def __del__(self):
         self.destroy()
 
+# ===== Callback Types =====
+MessageCallback = ctypes.CFUNCTYPE(
+    None,
+    MavlinkMessageCStruct,
+    ctypes.c_void_p
+)
+
+# ===== Setup Functions =====
 _cmavsdk_lib.mavsdk_mavlink_direct_create.argtypes = [ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_mavlink_direct_create.restype = ctypes.c_void_p
 

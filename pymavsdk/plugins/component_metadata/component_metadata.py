@@ -132,13 +132,6 @@ class MetadataUpdate:
         return f"MetadataUpdate({', '.join(fields)})"
 
 
-# ===== Callback Types =====
-MetadataAvailableCallback = ctypes.CFUNCTYPE(
-    None,
-    MetadataUpdateCStruct,
-    ctypes.c_void_p
-)
-
 
 class ComponentMetadata:
     """Access component metadata json definitions, such as parameters."""
@@ -239,6 +232,14 @@ class ComponentMetadata:
     def __del__(self):
         self.destroy()
 
+# ===== Callback Types =====
+MetadataAvailableCallback = ctypes.CFUNCTYPE(
+    None,
+    MetadataUpdateCStruct,
+    ctypes.c_void_p
+)
+
+# ===== Setup Functions =====
 _cmavsdk_lib.mavsdk_component_metadata_create.argtypes = [ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_component_metadata_create.restype = ctypes.c_void_p
 

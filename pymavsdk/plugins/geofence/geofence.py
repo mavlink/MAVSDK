@@ -268,18 +268,6 @@ class GeofenceData:
         return f"GeofenceData({', '.join(fields)})"
 
 
-# ===== Callback Types =====
-UploadGeofenceCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-ClearGeofenceCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-
 
 class Geofence:
     """Enable setting a geofence."""
@@ -384,6 +372,19 @@ class Geofence:
     def __del__(self):
         self.destroy()
 
+# ===== Callback Types =====
+UploadGeofenceCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+ClearGeofenceCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+
+# ===== Setup Functions =====
 _cmavsdk_lib.mavsdk_geofence_create.argtypes = [ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_geofence_create.restype = ctypes.c_void_p
 

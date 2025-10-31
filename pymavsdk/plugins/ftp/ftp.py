@@ -130,52 +130,6 @@ class ProgressData:
         return f"ProgressData({', '.join(fields)})"
 
 
-# ===== Callback Types =====
-DownloadCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ProgressDataCStruct,
-    ctypes.c_void_p
-)
-UploadCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ProgressDataCStruct,
-    ctypes.c_void_p
-)
-ListDirectoryCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ListDirectoryDataCStruct,
-    ctypes.c_void_p
-)
-CreateDirectoryCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-RemoveDirectoryCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-RemoveFileCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-RenameCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-AreFilesIdenticalCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_bool,
-    ctypes.c_void_p
-)
-
 
 class Ftp:
     """Implements file transfer functionality using MAVLink FTP."""
@@ -508,6 +462,53 @@ class Ftp:
     def __del__(self):
         self.destroy()
 
+# ===== Callback Types =====
+DownloadCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ProgressDataCStruct,
+    ctypes.c_void_p
+)
+UploadCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ProgressDataCStruct,
+    ctypes.c_void_p
+)
+ListDirectoryCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ListDirectoryDataCStruct,
+    ctypes.c_void_p
+)
+CreateDirectoryCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+RemoveDirectoryCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+RemoveFileCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+RenameCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+AreFilesIdenticalCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_bool,
+    ctypes.c_void_p
+)
+
+# ===== Setup Functions =====
 _cmavsdk_lib.mavsdk_ftp_create.argtypes = [ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_ftp_create.restype = ctypes.c_void_p
 

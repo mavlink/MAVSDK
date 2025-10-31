@@ -2128,299 +2128,6 @@ class Wind:
         return f"Wind({', '.join(fields)})"
 
 
-# ===== Callback Types =====
-PositionCallback = ctypes.CFUNCTYPE(
-    None,
-    PositionCStruct,
-    ctypes.c_void_p
-)
-HomeCallback = ctypes.CFUNCTYPE(
-    None,
-    PositionCStruct,
-    ctypes.c_void_p
-)
-InAirCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_bool,
-    ctypes.c_void_p
-)
-LandedStateCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-ArmedCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_bool,
-    ctypes.c_void_p
-)
-VtolStateCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-AttitudeQuaternionCallback = ctypes.CFUNCTYPE(
-    None,
-    QuaternionCStruct,
-    ctypes.c_void_p
-)
-AttitudeEulerCallback = ctypes.CFUNCTYPE(
-    None,
-    EulerAngleCStruct,
-    ctypes.c_void_p
-)
-AttitudeAngularVelocityBodyCallback = ctypes.CFUNCTYPE(
-    None,
-    AngularVelocityBodyCStruct,
-    ctypes.c_void_p
-)
-VelocityNedCallback = ctypes.CFUNCTYPE(
-    None,
-    VelocityNedCStruct,
-    ctypes.c_void_p
-)
-GpsInfoCallback = ctypes.CFUNCTYPE(
-    None,
-    GpsInfoCStruct,
-    ctypes.c_void_p
-)
-RawGpsCallback = ctypes.CFUNCTYPE(
-    None,
-    RawGpsCStruct,
-    ctypes.c_void_p
-)
-BatteryCallback = ctypes.CFUNCTYPE(
-    None,
-    BatteryCStruct,
-    ctypes.c_void_p
-)
-FlightModeCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-HealthCallback = ctypes.CFUNCTYPE(
-    None,
-    HealthCStruct,
-    ctypes.c_void_p
-)
-RcStatusCallback = ctypes.CFUNCTYPE(
-    None,
-    RcStatusCStruct,
-    ctypes.c_void_p
-)
-StatusTextCallback = ctypes.CFUNCTYPE(
-    None,
-    StatusTextCStruct,
-    ctypes.c_void_p
-)
-ActuatorControlTargetCallback = ctypes.CFUNCTYPE(
-    None,
-    ActuatorControlTargetCStruct,
-    ctypes.c_void_p
-)
-ActuatorOutputStatusCallback = ctypes.CFUNCTYPE(
-    None,
-    ActuatorOutputStatusCStruct,
-    ctypes.c_void_p
-)
-OdometryCallback = ctypes.CFUNCTYPE(
-    None,
-    OdometryCStruct,
-    ctypes.c_void_p
-)
-PositionVelocityNedCallback = ctypes.CFUNCTYPE(
-    None,
-    PositionVelocityNedCStruct,
-    ctypes.c_void_p
-)
-GroundTruthCallback = ctypes.CFUNCTYPE(
-    None,
-    GroundTruthCStruct,
-    ctypes.c_void_p
-)
-FixedwingMetricsCallback = ctypes.CFUNCTYPE(
-    None,
-    FixedwingMetricsCStruct,
-    ctypes.c_void_p
-)
-ImuCallback = ctypes.CFUNCTYPE(
-    None,
-    ImuCStruct,
-    ctypes.c_void_p
-)
-ScaledImuCallback = ctypes.CFUNCTYPE(
-    None,
-    ImuCStruct,
-    ctypes.c_void_p
-)
-RawImuCallback = ctypes.CFUNCTYPE(
-    None,
-    ImuCStruct,
-    ctypes.c_void_p
-)
-HealthAllOkCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_bool,
-    ctypes.c_void_p
-)
-UnixEpochTimeCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_uint64,
-    ctypes.c_void_p
-)
-DistanceSensorCallback = ctypes.CFUNCTYPE(
-    None,
-    DistanceSensorCStruct,
-    ctypes.c_void_p
-)
-ScaledPressureCallback = ctypes.CFUNCTYPE(
-    None,
-    ScaledPressureCStruct,
-    ctypes.c_void_p
-)
-HeadingCallback = ctypes.CFUNCTYPE(
-    None,
-    HeadingCStruct,
-    ctypes.c_void_p
-)
-AltitudeCallback = ctypes.CFUNCTYPE(
-    None,
-    AltitudeCStruct,
-    ctypes.c_void_p
-)
-WindCallback = ctypes.CFUNCTYPE(
-    None,
-    WindCStruct,
-    ctypes.c_void_p
-)
-SetRatePositionCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-SetRateHomeCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-SetRateInAirCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-SetRateLandedStateCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-SetRateVtolStateCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-SetRateAttitudeQuaternionCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-SetRateAttitudeEulerCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-SetRateVelocityNedCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-SetRateGpsInfoCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-SetRateBatteryCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-SetRateRcStatusCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-SetRateActuatorControlTargetCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-SetRateActuatorOutputStatusCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-SetRateOdometryCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-SetRatePositionVelocityNedCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-SetRateGroundTruthCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-SetRateFixedwingMetricsCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-SetRateImuCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-SetRateScaledImuCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-SetRateRawImuCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-SetRateUnixEpochTimeCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-SetRateDistanceSensorCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-SetRateAltitudeCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-SetRateHealthCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-GetGpsGlobalOriginCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    GpsGlobalOriginCStruct,
-    ctypes.c_void_p
-)
-
 
 class Telemetry:
     """Allow users to get vehicle telemetry and state information
@@ -4761,6 +4468,300 @@ class Telemetry:
     def __del__(self):
         self.destroy()
 
+# ===== Callback Types =====
+PositionCallback = ctypes.CFUNCTYPE(
+    None,
+    PositionCStruct,
+    ctypes.c_void_p
+)
+HomeCallback = ctypes.CFUNCTYPE(
+    None,
+    PositionCStruct,
+    ctypes.c_void_p
+)
+InAirCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_bool,
+    ctypes.c_void_p
+)
+LandedStateCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+ArmedCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_bool,
+    ctypes.c_void_p
+)
+VtolStateCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+AttitudeQuaternionCallback = ctypes.CFUNCTYPE(
+    None,
+    QuaternionCStruct,
+    ctypes.c_void_p
+)
+AttitudeEulerCallback = ctypes.CFUNCTYPE(
+    None,
+    EulerAngleCStruct,
+    ctypes.c_void_p
+)
+AttitudeAngularVelocityBodyCallback = ctypes.CFUNCTYPE(
+    None,
+    AngularVelocityBodyCStruct,
+    ctypes.c_void_p
+)
+VelocityNedCallback = ctypes.CFUNCTYPE(
+    None,
+    VelocityNedCStruct,
+    ctypes.c_void_p
+)
+GpsInfoCallback = ctypes.CFUNCTYPE(
+    None,
+    GpsInfoCStruct,
+    ctypes.c_void_p
+)
+RawGpsCallback = ctypes.CFUNCTYPE(
+    None,
+    RawGpsCStruct,
+    ctypes.c_void_p
+)
+BatteryCallback = ctypes.CFUNCTYPE(
+    None,
+    BatteryCStruct,
+    ctypes.c_void_p
+)
+FlightModeCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+HealthCallback = ctypes.CFUNCTYPE(
+    None,
+    HealthCStruct,
+    ctypes.c_void_p
+)
+RcStatusCallback = ctypes.CFUNCTYPE(
+    None,
+    RcStatusCStruct,
+    ctypes.c_void_p
+)
+StatusTextCallback = ctypes.CFUNCTYPE(
+    None,
+    StatusTextCStruct,
+    ctypes.c_void_p
+)
+ActuatorControlTargetCallback = ctypes.CFUNCTYPE(
+    None,
+    ActuatorControlTargetCStruct,
+    ctypes.c_void_p
+)
+ActuatorOutputStatusCallback = ctypes.CFUNCTYPE(
+    None,
+    ActuatorOutputStatusCStruct,
+    ctypes.c_void_p
+)
+OdometryCallback = ctypes.CFUNCTYPE(
+    None,
+    OdometryCStruct,
+    ctypes.c_void_p
+)
+PositionVelocityNedCallback = ctypes.CFUNCTYPE(
+    None,
+    PositionVelocityNedCStruct,
+    ctypes.c_void_p
+)
+GroundTruthCallback = ctypes.CFUNCTYPE(
+    None,
+    GroundTruthCStruct,
+    ctypes.c_void_p
+)
+FixedwingMetricsCallback = ctypes.CFUNCTYPE(
+    None,
+    FixedwingMetricsCStruct,
+    ctypes.c_void_p
+)
+ImuCallback = ctypes.CFUNCTYPE(
+    None,
+    ImuCStruct,
+    ctypes.c_void_p
+)
+ScaledImuCallback = ctypes.CFUNCTYPE(
+    None,
+    ImuCStruct,
+    ctypes.c_void_p
+)
+RawImuCallback = ctypes.CFUNCTYPE(
+    None,
+    ImuCStruct,
+    ctypes.c_void_p
+)
+HealthAllOkCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_bool,
+    ctypes.c_void_p
+)
+UnixEpochTimeCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_uint64,
+    ctypes.c_void_p
+)
+DistanceSensorCallback = ctypes.CFUNCTYPE(
+    None,
+    DistanceSensorCStruct,
+    ctypes.c_void_p
+)
+ScaledPressureCallback = ctypes.CFUNCTYPE(
+    None,
+    ScaledPressureCStruct,
+    ctypes.c_void_p
+)
+HeadingCallback = ctypes.CFUNCTYPE(
+    None,
+    HeadingCStruct,
+    ctypes.c_void_p
+)
+AltitudeCallback = ctypes.CFUNCTYPE(
+    None,
+    AltitudeCStruct,
+    ctypes.c_void_p
+)
+WindCallback = ctypes.CFUNCTYPE(
+    None,
+    WindCStruct,
+    ctypes.c_void_p
+)
+SetRatePositionCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+SetRateHomeCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+SetRateInAirCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+SetRateLandedStateCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+SetRateVtolStateCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+SetRateAttitudeQuaternionCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+SetRateAttitudeEulerCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+SetRateVelocityNedCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+SetRateGpsInfoCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+SetRateBatteryCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+SetRateRcStatusCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+SetRateActuatorControlTargetCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+SetRateActuatorOutputStatusCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+SetRateOdometryCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+SetRatePositionVelocityNedCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+SetRateGroundTruthCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+SetRateFixedwingMetricsCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+SetRateImuCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+SetRateScaledImuCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+SetRateRawImuCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+SetRateUnixEpochTimeCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+SetRateDistanceSensorCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+SetRateAltitudeCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+SetRateHealthCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+GetGpsGlobalOriginCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    GpsGlobalOriginCStruct,
+    ctypes.c_void_p
+)
+
+# ===== Setup Functions =====
 _cmavsdk_lib.mavsdk_telemetry_create.argtypes = [ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_telemetry_create.restype = ctypes.c_void_p
 

@@ -316,74 +316,6 @@ class MissionImportData:
         return f"MissionImportData({', '.join(fields)})"
 
 
-# ===== Callback Types =====
-UploadMissionCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-UploadGeofenceCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-UploadRallyPointsCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-DownloadMissionCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.POINTER(MissionItemCStruct),
-    ctypes.c_size_t,
-    ctypes.c_void_p
-)
-DownloadGeofenceCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.POINTER(MissionItemCStruct),
-    ctypes.c_size_t,
-    ctypes.c_void_p
-)
-DownloadRallypointsCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.POINTER(MissionItemCStruct),
-    ctypes.c_size_t,
-    ctypes.c_void_p
-)
-StartMissionCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-PauseMissionCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-ClearMissionCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-SetCurrentMissionItemCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-MissionProgressCallback = ctypes.CFUNCTYPE(
-    None,
-    MissionProgressCStruct,
-    ctypes.c_void_p
-)
-MissionChangedCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_bool,
-    ctypes.c_void_p
-)
-
 
 class MissionRaw:
     """Enable raw missions as exposed by MAVLink."""
@@ -1011,6 +943,75 @@ class MissionRaw:
     def __del__(self):
         self.destroy()
 
+# ===== Callback Types =====
+UploadMissionCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+UploadGeofenceCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+UploadRallyPointsCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+DownloadMissionCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.POINTER(MissionItemCStruct),
+    ctypes.c_size_t,
+    ctypes.c_void_p
+)
+DownloadGeofenceCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.POINTER(MissionItemCStruct),
+    ctypes.c_size_t,
+    ctypes.c_void_p
+)
+DownloadRallypointsCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.POINTER(MissionItemCStruct),
+    ctypes.c_size_t,
+    ctypes.c_void_p
+)
+StartMissionCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+PauseMissionCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+ClearMissionCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+SetCurrentMissionItemCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+MissionProgressCallback = ctypes.CFUNCTYPE(
+    None,
+    MissionProgressCStruct,
+    ctypes.c_void_p
+)
+MissionChangedCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_bool,
+    ctypes.c_void_p
+)
+
+# ===== Setup Functions =====
 _cmavsdk_lib.mavsdk_mission_raw_create.argtypes = [ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_mission_raw_create.restype = ctypes.c_void_p
 

@@ -40,18 +40,6 @@ class GripperResult(IntEnum):
 
 # ===== Structures =====
 
-# ===== Callback Types =====
-GrabCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-ReleaseCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-
 
 class Gripper:
     """Allows users to send gripper actions."""
@@ -154,6 +142,19 @@ class Gripper:
     def __del__(self):
         self.destroy()
 
+# ===== Callback Types =====
+GrabCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+ReleaseCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+
+# ===== Setup Functions =====
 _cmavsdk_lib.mavsdk_gripper_create.argtypes = [ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_gripper_create.restype = ctypes.c_void_p
 

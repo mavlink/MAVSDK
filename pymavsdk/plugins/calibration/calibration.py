@@ -100,38 +100,6 @@ class ProgressData:
         return f"ProgressData({', '.join(fields)})"
 
 
-# ===== Callback Types =====
-CalibrateGyroCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ProgressDataCStruct,
-    ctypes.c_void_p
-)
-CalibrateAccelerometerCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ProgressDataCStruct,
-    ctypes.c_void_p
-)
-CalibrateMagnetometerCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ProgressDataCStruct,
-    ctypes.c_void_p
-)
-CalibrateLevelHorizonCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ProgressDataCStruct,
-    ctypes.c_void_p
-)
-CalibrateGimbalAccelerometerCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ProgressDataCStruct,
-    ctypes.c_void_p
-)
-
 
 class Calibration:
     """Enable to calibrate sensors of a drone such as gyro, accelerometer, and magnetometer."""
@@ -316,6 +284,39 @@ class Calibration:
     def __del__(self):
         self.destroy()
 
+# ===== Callback Types =====
+CalibrateGyroCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ProgressDataCStruct,
+    ctypes.c_void_p
+)
+CalibrateAccelerometerCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ProgressDataCStruct,
+    ctypes.c_void_p
+)
+CalibrateMagnetometerCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ProgressDataCStruct,
+    ctypes.c_void_p
+)
+CalibrateLevelHorizonCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ProgressDataCStruct,
+    ctypes.c_void_p
+)
+CalibrateGimbalAccelerometerCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ProgressDataCStruct,
+    ctypes.c_void_p
+)
+
+# ===== Setup Functions =====
 _cmavsdk_lib.mavsdk_calibration_create.argtypes = [ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_calibration_create.restype = ctypes.c_void_p
 

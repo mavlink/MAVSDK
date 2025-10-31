@@ -594,18 +594,6 @@ class AccelerationNed:
         return f"AccelerationNed({', '.join(fields)})"
 
 
-# ===== Callback Types =====
-StartCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-StopCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-
 
 class Offboard:
     """Control a drone with position, velocity, attitude or motor commands.
@@ -846,6 +834,19 @@ class Offboard:
     def __del__(self):
         self.destroy()
 
+# ===== Callback Types =====
+StartCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+StopCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+
+# ===== Setup Functions =====
 _cmavsdk_lib.mavsdk_offboard_create.argtypes = [ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_offboard_create.restype = ctypes.c_void_p
 

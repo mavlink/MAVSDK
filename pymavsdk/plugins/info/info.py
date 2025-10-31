@@ -330,13 +330,6 @@ class Version:
         return f"Version({', '.join(fields)})"
 
 
-# ===== Callback Types =====
-FlightInformationCallback = ctypes.CFUNCTYPE(
-    None,
-    FlightInfoCStruct,
-    ctypes.c_void_p
-)
-
 
 class Info:
     """Provide information about the hardware and/or software of a system."""
@@ -487,6 +480,14 @@ class Info:
     def __del__(self):
         self.destroy()
 
+# ===== Callback Types =====
+FlightInformationCallback = ctypes.CFUNCTYPE(
+    None,
+    FlightInfoCStruct,
+    ctypes.c_void_p
+)
+
+# ===== Setup Functions =====
 _cmavsdk_lib.mavsdk_info_create.argtypes = [ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_info_create.restype = ctypes.c_void_p
 

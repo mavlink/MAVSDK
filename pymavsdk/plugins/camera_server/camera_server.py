@@ -750,93 +750,6 @@ class TrackRectangle:
         return f"TrackRectangle({', '.join(fields)})"
 
 
-# ===== Callback Types =====
-TakePhotoCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int32,
-    ctypes.c_void_p
-)
-StartVideoCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int32,
-    ctypes.c_void_p
-)
-StopVideoCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int32,
-    ctypes.c_void_p
-)
-StartVideoStreamingCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int32,
-    ctypes.c_void_p
-)
-StopVideoStreamingCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int32,
-    ctypes.c_void_p
-)
-SetModeCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-StorageInformationCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int32,
-    ctypes.c_void_p
-)
-CaptureStatusCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int32,
-    ctypes.c_void_p
-)
-FormatStorageCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int32,
-    ctypes.c_void_p
-)
-ResetSettingsCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int32,
-    ctypes.c_void_p
-)
-ZoomInStartCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int32,
-    ctypes.c_void_p
-)
-ZoomOutStartCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int32,
-    ctypes.c_void_p
-)
-ZoomStopCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int32,
-    ctypes.c_void_p
-)
-ZoomRangeCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_float,
-    ctypes.c_void_p
-)
-TrackingPointCommandCallback = ctypes.CFUNCTYPE(
-    None,
-    TrackPointCStruct,
-    ctypes.c_void_p
-)
-TrackingRectangleCommandCallback = ctypes.CFUNCTYPE(
-    None,
-    TrackRectangleCStruct,
-    ctypes.c_void_p
-)
-TrackingOffCommandCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int32,
-    ctypes.c_void_p
-)
-
 
 class CameraServer:
     """Provides handling of camera interface"""
@@ -1639,6 +1552,94 @@ class CameraServer:
     def __del__(self):
         self.destroy()
 
+# ===== Callback Types =====
+TakePhotoCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int32,
+    ctypes.c_void_p
+)
+StartVideoCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int32,
+    ctypes.c_void_p
+)
+StopVideoCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int32,
+    ctypes.c_void_p
+)
+StartVideoStreamingCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int32,
+    ctypes.c_void_p
+)
+StopVideoStreamingCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int32,
+    ctypes.c_void_p
+)
+SetModeCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+StorageInformationCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int32,
+    ctypes.c_void_p
+)
+CaptureStatusCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int32,
+    ctypes.c_void_p
+)
+FormatStorageCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int32,
+    ctypes.c_void_p
+)
+ResetSettingsCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int32,
+    ctypes.c_void_p
+)
+ZoomInStartCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int32,
+    ctypes.c_void_p
+)
+ZoomOutStartCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int32,
+    ctypes.c_void_p
+)
+ZoomStopCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int32,
+    ctypes.c_void_p
+)
+ZoomRangeCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_float,
+    ctypes.c_void_p
+)
+TrackingPointCommandCallback = ctypes.CFUNCTYPE(
+    None,
+    TrackPointCStruct,
+    ctypes.c_void_p
+)
+TrackingRectangleCommandCallback = ctypes.CFUNCTYPE(
+    None,
+    TrackRectangleCStruct,
+    ctypes.c_void_p
+)
+TrackingOffCommandCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int32,
+    ctypes.c_void_p
+)
+
+# ===== Setup Functions =====
 _cmavsdk_lib.mavsdk_camera_server_create.argtypes = [ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_camera_server_create.restype = ctypes.c_void_p
 

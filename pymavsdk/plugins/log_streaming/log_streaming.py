@@ -70,23 +70,6 @@ class LogStreamingRaw:
         return f"LogStreamingRaw({', '.join(fields)})"
 
 
-# ===== Callback Types =====
-StartLogStreamingCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-StopLogStreamingCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-LogStreamingRawCallback = ctypes.CFUNCTYPE(
-    None,
-    LogStreamingRawCStruct,
-    ctypes.c_void_p
-)
-
 
 class LogStreaming:
     """Provide log streaming data."""
@@ -219,6 +202,24 @@ class LogStreaming:
     def __del__(self):
         self.destroy()
 
+# ===== Callback Types =====
+StartLogStreamingCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+StopLogStreamingCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+LogStreamingRawCallback = ctypes.CFUNCTYPE(
+    None,
+    LogStreamingRawCStruct,
+    ctypes.c_void_p
+)
+
+# ===== Setup Functions =====
 _cmavsdk_lib.mavsdk_log_streaming_create.argtypes = [ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_log_streaming_create.restype = ctypes.c_void_p
 

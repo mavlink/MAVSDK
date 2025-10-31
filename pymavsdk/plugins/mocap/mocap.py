@@ -700,8 +700,6 @@ class Odometry:
         return f"Odometry({', '.join(fields)})"
 
 
-# ===== Callback Types =====
-
 
 class Mocap:
     """Allows interfacing a vehicle with a motion capture system in
@@ -784,6 +782,9 @@ class Mocap:
     def __del__(self):
         self.destroy()
 
+# ===== Callback Types =====
+
+# ===== Setup Functions =====
 _cmavsdk_lib.mavsdk_mocap_create.argtypes = [ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_mocap_create.restype = ctypes.c_void_p
 

@@ -29,8 +29,6 @@ class FtpServerResult(IntEnum):
 
 # ===== Structures =====
 
-# ===== Callback Types =====
-
 
 class FtpServer:
     """Provide files or directories to transfer."""
@@ -75,6 +73,9 @@ class FtpServer:
     def __del__(self):
         self.destroy()
 
+# ===== Callback Types =====
+
+# ===== Setup Functions =====
 _cmavsdk_lib.mavsdk_ftp_server_create.argtypes = [ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_ftp_server_create.restype = ctypes.c_void_p
 

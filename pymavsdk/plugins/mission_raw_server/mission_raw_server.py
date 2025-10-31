@@ -269,24 +269,6 @@ class MissionProgress:
         return f"MissionProgress({', '.join(fields)})"
 
 
-# ===== Callback Types =====
-IncomingMissionCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    MissionPlanCStruct,
-    ctypes.c_void_p
-)
-CurrentItemChangedCallback = ctypes.CFUNCTYPE(
-    None,
-    MissionItemCStruct,
-    ctypes.c_void_p
-)
-ClearAllCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_uint32,
-    ctypes.c_void_p
-)
-
 
 class MissionRawServer:
     """Acts as a vehicle and receives incoming missions from GCS (in raw MAVLINK format). 
@@ -423,6 +405,25 @@ class MissionRawServer:
     def __del__(self):
         self.destroy()
 
+# ===== Callback Types =====
+IncomingMissionCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    MissionPlanCStruct,
+    ctypes.c_void_p
+)
+CurrentItemChangedCallback = ctypes.CFUNCTYPE(
+    None,
+    MissionItemCStruct,
+    ctypes.c_void_p
+)
+ClearAllCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_uint32,
+    ctypes.c_void_p
+)
+
+# ===== Setup Functions =====
 _cmavsdk_lib.mavsdk_mission_raw_server_create.argtypes = [ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_mission_raw_server_create.restype = ctypes.c_void_p
 

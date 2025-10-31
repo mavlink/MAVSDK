@@ -1214,156 +1214,6 @@ class CameraList:
         return f"CameraList({', '.join(fields)})"
 
 
-# ===== Callback Types =====
-TakePhotoCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-StartPhotoIntervalCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-StopPhotoIntervalCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-StartVideoCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-StopVideoCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-SetModeCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-ListPhotosCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.POINTER(CaptureInfoCStruct),
-    ctypes.c_size_t,
-    ctypes.c_void_p
-)
-CameraListCallback = ctypes.CFUNCTYPE(
-    None,
-    CameraListCStruct,
-    ctypes.c_void_p
-)
-ModeCallback = ctypes.CFUNCTYPE(
-    None,
-    ModeUpdateCStruct,
-    ctypes.c_void_p
-)
-VideoStreamInfoCallback = ctypes.CFUNCTYPE(
-    None,
-    VideoStreamUpdateCStruct,
-    ctypes.c_void_p
-)
-CaptureInfoCallback = ctypes.CFUNCTYPE(
-    None,
-    CaptureInfoCStruct,
-    ctypes.c_void_p
-)
-StorageCallback = ctypes.CFUNCTYPE(
-    None,
-    StorageUpdateCStruct,
-    ctypes.c_void_p
-)
-CurrentSettingsCallback = ctypes.CFUNCTYPE(
-    None,
-    CurrentSettingsUpdateCStruct,
-    ctypes.c_void_p
-)
-PossibleSettingOptionsCallback = ctypes.CFUNCTYPE(
-    None,
-    PossibleSettingOptionsUpdateCStruct,
-    ctypes.c_void_p
-)
-SetSettingCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-GetSettingCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    SettingCStruct,
-    ctypes.c_void_p
-)
-FormatStorageCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-ResetSettingsCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-ZoomInStartCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-ZoomOutStartCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-ZoomStopCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-ZoomRangeCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-TrackPointCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-TrackRectangleCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-TrackStopCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-FocusInStartCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-FocusOutStartCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-FocusStopCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-FocusRangeCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-
 
 class Camera:
     """Can be used to manage cameras that implement the MAVLink
@@ -2591,6 +2441,157 @@ class Camera:
     def __del__(self):
         self.destroy()
 
+# ===== Callback Types =====
+TakePhotoCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+StartPhotoIntervalCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+StopPhotoIntervalCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+StartVideoCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+StopVideoCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+SetModeCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+ListPhotosCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.POINTER(CaptureInfoCStruct),
+    ctypes.c_size_t,
+    ctypes.c_void_p
+)
+CameraListCallback = ctypes.CFUNCTYPE(
+    None,
+    CameraListCStruct,
+    ctypes.c_void_p
+)
+ModeCallback = ctypes.CFUNCTYPE(
+    None,
+    ModeUpdateCStruct,
+    ctypes.c_void_p
+)
+VideoStreamInfoCallback = ctypes.CFUNCTYPE(
+    None,
+    VideoStreamUpdateCStruct,
+    ctypes.c_void_p
+)
+CaptureInfoCallback = ctypes.CFUNCTYPE(
+    None,
+    CaptureInfoCStruct,
+    ctypes.c_void_p
+)
+StorageCallback = ctypes.CFUNCTYPE(
+    None,
+    StorageUpdateCStruct,
+    ctypes.c_void_p
+)
+CurrentSettingsCallback = ctypes.CFUNCTYPE(
+    None,
+    CurrentSettingsUpdateCStruct,
+    ctypes.c_void_p
+)
+PossibleSettingOptionsCallback = ctypes.CFUNCTYPE(
+    None,
+    PossibleSettingOptionsUpdateCStruct,
+    ctypes.c_void_p
+)
+SetSettingCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+GetSettingCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    SettingCStruct,
+    ctypes.c_void_p
+)
+FormatStorageCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+ResetSettingsCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+ZoomInStartCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+ZoomOutStartCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+ZoomStopCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+ZoomRangeCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+TrackPointCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+TrackRectangleCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+TrackStopCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+FocusInStartCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+FocusOutStartCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+FocusStopCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+FocusRangeCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+
+# ===== Setup Functions =====
 _cmavsdk_lib.mavsdk_camera_create.argtypes = [ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_camera_create.restype = ctypes.c_void_p
 

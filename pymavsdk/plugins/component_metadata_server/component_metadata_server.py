@@ -74,8 +74,6 @@ class Metadata:
         return f"Metadata({', '.join(fields)})"
 
 
-# ===== Callback Types =====
-
 
 class ComponentMetadataServer:
     """Provide component metadata json definitions, such as parameters."""
@@ -116,6 +114,9 @@ class ComponentMetadataServer:
     def __del__(self):
         self.destroy()
 
+# ===== Callback Types =====
+
+# ===== Setup Functions =====
 _cmavsdk_lib.mavsdk_component_metadata_server_create.argtypes = [ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_component_metadata_server_create.restype = ctypes.c_void_p
 

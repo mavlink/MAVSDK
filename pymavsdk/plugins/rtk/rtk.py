@@ -67,8 +67,6 @@ class RtcmData:
         return f"RtcmData({', '.join(fields)})"
 
 
-# ===== Callback Types =====
-
 
 class Rtk:
     """Service to send RTK corrections to the vehicle."""
@@ -113,6 +111,9 @@ class Rtk:
     def __del__(self):
         self.destroy()
 
+# ===== Callback Types =====
+
+# ===== Setup Functions =====
 _cmavsdk_lib.mavsdk_rtk_create.argtypes = [ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_rtk_create.restype = ctypes.c_void_p
 

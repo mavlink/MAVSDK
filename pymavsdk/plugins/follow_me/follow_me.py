@@ -198,8 +198,6 @@ class TargetLocation:
         return f"TargetLocation({', '.join(fields)})"
 
 
-# ===== Callback Types =====
-
 
 class FollowMe:
     """Allow users to command the vehicle to follow a specific target.
@@ -322,6 +320,9 @@ class FollowMe:
     def __del__(self):
         self.destroy()
 
+# ===== Callback Types =====
+
+# ===== Setup Functions =====
 _cmavsdk_lib.mavsdk_follow_me_create.argtypes = [ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_follow_me_create.restype = ctypes.c_void_p
 

@@ -102,13 +102,6 @@ class TuneDescription:
         return f"TuneDescription({', '.join(fields)})"
 
 
-# ===== Callback Types =====
-PlayTuneCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-
 
 class Tune:
     """Enable creating and sending a tune to be played on the system."""
@@ -176,6 +169,14 @@ class Tune:
     def __del__(self):
         self.destroy()
 
+# ===== Callback Types =====
+PlayTuneCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_int,
+    ctypes.c_void_p
+)
+
+# ===== Setup Functions =====
 _cmavsdk_lib.mavsdk_tune_create.argtypes = [ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_tune_create.restype = ctypes.c_void_p
 

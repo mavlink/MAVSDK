@@ -37,13 +37,6 @@ class ArmAuthorizerServerResult(IntEnum):
 
 # ===== Structures =====
 
-# ===== Callback Types =====
-ArmAuthorizationCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_uint32,
-    ctypes.c_void_p
-)
-
 
 class ArmAuthorizerServer:
     """Use arm authorization."""
@@ -130,6 +123,14 @@ class ArmAuthorizerServer:
     def __del__(self):
         self.destroy()
 
+# ===== Callback Types =====
+ArmAuthorizationCallback = ctypes.CFUNCTYPE(
+    None,
+    ctypes.c_uint32,
+    ctypes.c_void_p
+)
+
+# ===== Setup Functions =====
 _cmavsdk_lib.mavsdk_arm_authorizer_server_create.argtypes = [ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_arm_authorizer_server_create.restype = ctypes.c_void_p
 
