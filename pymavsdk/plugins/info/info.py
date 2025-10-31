@@ -331,6 +331,7 @@ class Version:
 
 
 
+# ===== Plugin =====
 class Info:
     """Provide information about the hardware and/or software of a system."""
 

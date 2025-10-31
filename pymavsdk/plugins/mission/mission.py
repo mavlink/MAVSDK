@@ -406,6 +406,7 @@ class ProgressDataOrMission:
 
 
 
+# ===== Plugin =====
 class Mission:
     """Enable waypoint missions."""
 

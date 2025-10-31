@@ -317,6 +317,7 @@ class MissionImportData:
 
 
 
+# ===== Plugin =====
 class MissionRaw:
     """Enable raw missions as exposed by MAVLink."""
 

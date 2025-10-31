@@ -32,6 +32,7 @@ class ShellResult(IntEnum):
 # ===== Structures =====
 
 
+# ===== Plugin =====
 class Shell:
     """Allow to communicate with the vehicle's system shell."""
 

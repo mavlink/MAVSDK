@@ -103,6 +103,7 @@ class TuneDescription:
 
 
 
+# ===== Plugin =====
 class Tune:
     """Enable creating and sending a tune to be played on the system."""
 

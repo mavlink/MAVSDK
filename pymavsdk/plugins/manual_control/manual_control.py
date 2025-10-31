@@ -35,6 +35,7 @@ class ManualControlResult(IntEnum):
 # ===== Structures =====
 
 
+# ===== Plugin =====
 class ManualControl:
     """Enable manual control using e.g. a joystick or gamepad."""
 

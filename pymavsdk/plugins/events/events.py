@@ -392,6 +392,7 @@ class HealthAndArmingCheckReport:
 
 
 
+# ===== Plugin =====
 class Events:
     """Get event notifications, such as takeoff, or arming checks"""
 

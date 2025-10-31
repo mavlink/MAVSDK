@@ -270,6 +270,7 @@ class MissionProgress:
 
 
 
+# ===== Plugin =====
 class MissionRawServer:
     """Acts as a vehicle and receives incoming missions from GCS (in raw MAVLINK format). 
  Provides current mission item state, so the server can progress through missions."""

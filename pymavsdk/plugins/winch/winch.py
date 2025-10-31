@@ -288,6 +288,7 @@ class Status:
 
 
 
+# ===== Plugin =====
 class Winch:
     """Allows users to send winch actions, as well as receive status information from winch systems."""
 

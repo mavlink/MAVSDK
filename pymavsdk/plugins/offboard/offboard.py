@@ -595,6 +595,7 @@ class AccelerationNed:
 
 
 
+# ===== Plugin =====
 class Offboard:
     """Control a drone with position, velocity, attitude or motor commands.
 

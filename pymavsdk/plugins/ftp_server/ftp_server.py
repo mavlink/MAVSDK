@@ -30,6 +30,7 @@ class FtpServerResult(IntEnum):
 # ===== Structures =====
 
 
+# ===== Plugin =====
 class FtpServer:
     """Provide files or directories to transfer."""
 

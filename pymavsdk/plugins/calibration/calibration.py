@@ -101,6 +101,7 @@ class ProgressData:
 
 
 
+# ===== Plugin =====
 class Calibration:
     """Enable to calibrate sensors of a drone such as gyro, accelerometer, and magnetometer."""
 

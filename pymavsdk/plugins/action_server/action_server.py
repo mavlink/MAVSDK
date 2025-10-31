@@ -160,6 +160,7 @@ class ArmDisarm:
 
 
 
+# ===== Plugin =====
 class ActionServer:
     """Provide vehicle actions (as a server) such as arming, taking off, and landing."""
 

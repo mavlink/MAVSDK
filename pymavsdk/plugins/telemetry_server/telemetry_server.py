@@ -1730,6 +1730,7 @@ class Imu:
 
 
 
+# ===== Plugin =====
 class TelemetryServer:
     """Allow users to provide vehicle telemetry and state information
  (e.g. battery, GPS, RC connection, flight mode etc.) and set telemetry update rates."""

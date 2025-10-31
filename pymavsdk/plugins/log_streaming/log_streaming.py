@@ -71,6 +71,7 @@ class LogStreamingRaw:
 
 
 
+# ===== Plugin =====
 class LogStreaming:
     """Provide log streaming data."""
 

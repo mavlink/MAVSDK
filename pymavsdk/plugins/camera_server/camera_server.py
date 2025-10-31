@@ -751,6 +751,7 @@ class TrackRectangle:
 
 
 
+# ===== Plugin =====
 class CameraServer:
     """Provides handling of camera interface"""
 

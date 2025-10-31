@@ -68,6 +68,7 @@ class RtcmData:
 
 
 
+# ===== Plugin =====
 class Rtk:
     """Service to send RTK corrections to the vehicle."""
 

@@ -189,6 +189,7 @@ class AdsbVehicle:
 
 
 
+# ===== Plugin =====
 class Transponder:
     """Allow users to get ADS-B information
  and set ADS-B update rates."""

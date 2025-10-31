@@ -41,6 +41,7 @@ class GripperResult(IntEnum):
 # ===== Structures =====
 
 
+# ===== Plugin =====
 class Gripper:
     """Allows users to send gripper actions."""
 

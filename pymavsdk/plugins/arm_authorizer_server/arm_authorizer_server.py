@@ -38,6 +38,7 @@ class ArmAuthorizerServerResult(IntEnum):
 # ===== Structures =====
 
 
+# ===== Plugin =====
 class ArmAuthorizerServer:
     """Use arm authorization."""
 

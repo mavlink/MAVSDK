@@ -522,6 +522,7 @@ class ControlStatus:
 
 
 
+# ===== Plugin =====
 class Gimbal:
     """Provide control over a gimbal."""
 

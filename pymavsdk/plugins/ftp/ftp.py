@@ -131,6 +131,7 @@ class ProgressData:
 
 
 
+# ===== Plugin =====
 class Ftp:
     """Implements file transfer functionality using MAVLink FTP."""
 

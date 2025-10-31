@@ -49,6 +49,7 @@ class ActionResult(IntEnum):
 # ===== Structures =====
 
 
+# ===== Plugin =====
 class Action:
     """Enable simple actions such as arming, taking off, and landing."""
 

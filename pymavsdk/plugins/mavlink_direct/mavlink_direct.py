@@ -110,6 +110,7 @@ class MavlinkMessage:
 
 
 
+# ===== Plugin =====
 class MavlinkDirect:
     """Enable direct MAVLink communication using libmav."""
 

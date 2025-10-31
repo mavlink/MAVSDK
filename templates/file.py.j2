@@ -27,18 +27,18 @@ class {{ enum.name.upper_camel_case }}(IntEnum):
 # ===== Result Enums =====
 {% set result_enum = plugin_name.upper_camel_case + "Result" %}
 {% for struct in structs %}
-{% if struct.name.upper_camel_case.endswith('Result') %}
-{% for nested_enum_name, nested_enum in struct.nested_enums.items() %}
-{% if nested_enum_name == 'Result' %}
+  {% if struct.name.upper_camel_case.endswith('Result') %}
+    {% for nested_enum_name, nested_enum in struct.nested_enums.items() %}
+      {% if nested_enum_name == 'Result' %}
 class {{ result_enum }}(IntEnum):
     """{{ nested_enum.enum_description }}"""
     {% for value in nested_enum.values %}
     {{ value.name.uppercase }} = {{ loop.index0 }}
     {% endfor %}
 
-{% endif %}
-{% endfor %}
-{% endif %}
+      {% endif %}
+    {% endfor %}
+  {% endif %}
 {% endfor %}
 
 # ===== Internal C Structures =====

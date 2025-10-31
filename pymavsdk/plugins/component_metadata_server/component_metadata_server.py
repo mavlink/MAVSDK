@@ -75,6 +75,7 @@ class Metadata:
 
 
 
+# ===== Plugin =====
 class ComponentMetadataServer:
     """Provide component metadata json definitions, such as parameters."""
 

@@ -199,6 +199,7 @@ class TargetLocation:
 
 
 
+# ===== Plugin =====
 class FollowMe:
     """Allow users to command the vehicle to follow a specific target.
  The target is provided as a GPS coordinate and altitude."""

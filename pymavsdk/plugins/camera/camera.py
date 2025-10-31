@@ -1215,6 +1215,7 @@ class CameraList:
 
 
 
+# ===== Plugin =====
 class Camera:
     """Can be used to manage cameras that implement the MAVLink
  Camera Protocol: https://mavlink.io/en/protocol/camera.html.

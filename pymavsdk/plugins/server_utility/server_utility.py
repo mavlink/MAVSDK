@@ -42,6 +42,7 @@ class ServerUtilityResult(IntEnum):
 # ===== Structures =====
 
 
+# ===== Plugin =====
 class ServerUtility:
     """Utility for onboard MAVSDK instances for common "server" tasks."""
 

@@ -269,6 +269,7 @@ class GeofenceData:
 
 
 
+# ===== Plugin =====
 class Geofence:
     """Enable setting a geofence."""
 

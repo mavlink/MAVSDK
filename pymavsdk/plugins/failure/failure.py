@@ -63,6 +63,7 @@ class FailureResult(IntEnum):
 # ===== Structures =====
 
 
+# ===== Plugin =====
 class Failure:
     """Inject failures into system to test failsafes."""
 

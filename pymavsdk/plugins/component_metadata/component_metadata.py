@@ -133,6 +133,7 @@ class MetadataUpdate:
 
 
 
+# ===== Plugin =====
 class ComponentMetadata:
     """Access component metadata json definitions, such as parameters."""
 

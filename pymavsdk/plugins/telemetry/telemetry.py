@@ -2129,6 +2129,7 @@ class Wind:
 
 
 
+# ===== Plugin =====
 class Telemetry:
     """Allow users to get vehicle telemetry and state information
  (e.g. battery, GPS, RC connection, flight mode etc.) and set telemetry update rates.
