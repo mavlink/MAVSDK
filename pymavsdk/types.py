@@ -50,12 +50,6 @@ InterceptJsonCallback = ctypes.CFUNCTYPE(
     ctypes.c_void_p
 )
 
-IsConnectedCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_bool,
-    ctypes.c_void_p
-)
-
 ComponentDiscoveredCallback = ctypes.CFUNCTYPE(
     None,
     ctypes.c_int,  # mavsdk_component_type_t

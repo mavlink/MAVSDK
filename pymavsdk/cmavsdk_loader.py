@@ -1,6 +1,9 @@
 import ctypes
 import sys
+
 from pathlib import Path
+
+from .exceptions import LibraryNotFoundError
 
 def _find_library() -> ctypes.CDLL:
     """Locate and load the cmavsdk shared library"""

@@ -2,21 +2,19 @@
 
 import ctypes
 import sys
+
 from typing import Optional, List, Callable, Any
+
 from .cmavsdk_loader import _cmavsdk_lib
 from .connection_result import ConnectionResult
-from .exceptions import LibraryNotFoundError, ConnectionError as ConnError
-from .enums import ComponentType, ForwardingOption
+from .component_type import ComponentType
+from .exceptions import ConnectionError
+from .enums import ForwardingOption
+from .server_component import ServerComponent
+from .system import System
 from .types import (
-    ConnectionError as CConnectionError,
-    MavsdkMessage,
     ConnectionResultWithHandle,
-    ConnectionErrorCallback,
     NewSystemCallback,
-    InterceptJsonCallback,
-    IsConnectedCallback,
-    ComponentDiscoveredCallback,
-    ComponentDiscoveredIdCallback,
 )
 
 class MavsdkConfiguration:
@@ -64,85 +62,6 @@ class MavsdkConfiguration:
     
     def __del__(self):
         self.destroy()
-
-class MavsdkServerComponent:
-    """Wrapper for mavsdk_server_component_t"""
-    
-    def __init__(self, lib: ctypes.CDLL, handle: ctypes.c_void_p):
-        self._lib = lib
-        self._handle = handle
-
-class MavsdkSystem:
-    """Wrapper for mavsdk_system_t"""
-    
-    def __init__(self, lib: ctypes.CDLL, handle: ctypes.c_void_p):
-        self._lib = lib
-        self._handle = handle
-        self._callbacks = []  # Keep references to prevent GC
-    
-    def has_autopilot(self) -> bool:
-        """Check if system has autopilot"""
-        return self._lib.mavsdk_system_has_autopilot(self._handle)
-    
-    def is_standalone(self) -> bool:
-        """Check if system is standalone"""
-        return self._lib.mavsdk_system_is_standalone(self._handle)
-    
-    def has_camera(self, camera_id: int = -1) -> bool:
-        """Check if system has camera"""
-        return self._lib.mavsdk_system_has_camera(self._handle, camera_id)
-    
-    def has_gimbal(self) -> bool:
-        """Check if system has gimbal"""
-        return self._lib.mavsdk_system_has_gimbal(self._handle)
-    
-    def is_connected(self) -> bool:
-        """Check if system is connected"""
-        return self._lib.mavsdk_system_is_connected(self._handle)
-    
-    def get_system_id(self) -> int:
-        """Get system ID"""
-        return self._lib.mavsdk_system_get_system_id(self._handle)
-    
-    def component_ids(self) -> List[int]:
-        """Get list of component IDs"""
-        count = ctypes.c_size_t()
-        ids_ptr = self._lib.mavsdk_system_component_ids(self._handle, ctypes.byref(count))
-        
-        if not ids_ptr:
-            return []
-        
-        ids = [ids_ptr[i] for i in range(count.value)]
-        self._lib.mavsdk_system_free_component_ids(ids_ptr)
-        return ids
-    
-    def subscribe_is_connected(self, callback: Callable[[bool, Any], None], 
-                               user_data: Any = None):
-        """Subscribe to connection state changes"""
-        c_callback = IsConnectedCallback(lambda connected, ud: callback(connected, user_data))
-        self._callbacks.append(c_callback)
-        
-        handle = self._lib.mavsdk_system_subscribe_is_connected(
-            self._handle, c_callback, None
-        )
-        return handle
-    
-    def unsubscribe_is_connected(self, handle: ctypes.c_void_p):
-        """Unsubscribe from connection state changes"""
-        self._lib.mavsdk_system_unsubscribe_is_connected(self._handle, handle)
-    
-    def enable_timesync(self):
-        """Enable time synchronization"""
-        self._lib.mavsdk_system_enable_timesync(self._handle)
-    
-    def autopilot_type(self) -> int:
-        """Get autopilot type"""
-        return self._lib.mavsdk_system_autopilot_type(self._handle)
-    
-    def vehicle_type(self) -> int:
-        """Get vehicle type"""
-        return self._lib.mavsdk_system_vehicle_type(self._handle)
-
 
 class Mavsdk:
     """Python wrapper for cmavsdk library"""
@@ -252,72 +171,6 @@ class Mavsdk:
         
         self._lib.mavsdk_unsubscribe_on_new_system.argtypes = [ctypes.c_void_p, ctypes.c_void_p]
         self._lib.mavsdk_unsubscribe_on_new_system.restype = None
-        
-        # System functions
-        self._lib.mavsdk_system_has_autopilot.argtypes = [ctypes.c_void_p]
-        self._lib.mavsdk_system_has_autopilot.restype = ctypes.c_bool
-        
-        self._lib.mavsdk_system_is_standalone.argtypes = [ctypes.c_void_p]
-        self._lib.mavsdk_system_is_standalone.restype = ctypes.c_bool
-        
-        self._lib.mavsdk_system_has_camera.argtypes = [ctypes.c_void_p, ctypes.c_int]
-        self._lib.mavsdk_system_has_camera.restype = ctypes.c_bool
-        
-        self._lib.mavsdk_system_has_gimbal.argtypes = [ctypes.c_void_p]
-        self._lib.mavsdk_system_has_gimbal.restype = ctypes.c_bool
-        
-        self._lib.mavsdk_system_is_connected.argtypes = [ctypes.c_void_p]
-        self._lib.mavsdk_system_is_connected.restype = ctypes.c_bool
-        
-        self._lib.mavsdk_system_get_system_id.argtypes = [ctypes.c_void_p]
-        self._lib.mavsdk_system_get_system_id.restype = ctypes.c_uint8
-        
-        self._lib.mavsdk_system_component_ids.argtypes = [
-            ctypes.c_void_p, ctypes.POINTER(ctypes.c_size_t)
-        ]
-        self._lib.mavsdk_system_component_ids.restype = ctypes.POINTER(ctypes.c_uint8)
-        
-        self._lib.mavsdk_system_free_component_ids.argtypes = [ctypes.POINTER(ctypes.c_uint8)]
-        self._lib.mavsdk_system_free_component_ids.restype = None
-        
-        self._lib.mavsdk_system_subscribe_is_connected.argtypes = [
-            ctypes.c_void_p, IsConnectedCallback, ctypes.c_void_p
-        ]
-        self._lib.mavsdk_system_subscribe_is_connected.restype = ctypes.c_void_p
-        
-        self._lib.mavsdk_system_unsubscribe_is_connected.argtypes = [
-            ctypes.c_void_p, ctypes.c_void_p
-        ]
-        self._lib.mavsdk_system_unsubscribe_is_connected.restype = None
-        
-        self._lib.mavsdk_system_enable_timesync.argtypes = [ctypes.c_void_p]
-        self._lib.mavsdk_system_enable_timesync.restype = None
-        
-        self._lib.mavsdk_system_autopilot_type.argtypes = [ctypes.c_void_p]
-        self._lib.mavsdk_system_autopilot_type.restype = ctypes.c_int
-        
-        self._lib.mavsdk_system_vehicle_type.argtypes = [ctypes.c_void_p]
-        self._lib.mavsdk_system_vehicle_type.restype = ctypes.c_int
-
-        # Add server component functions
-        self._lib.mavsdk_server_component.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_uint
-        ]
-        self._lib.mavsdk_server_component.restype = ctypes.c_void_p
-        
-        self._lib.mavsdk_server_component_by_type.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_int,
-            ctypes.c_uint
-        ]
-        self._lib.mavsdk_server_component_by_type.restype = ctypes.c_void_p
-        
-        self._lib.mavsdk_server_component_by_id.argtypes = [
-            ctypes.c_void_p,
-            ctypes.c_uint8
-        ]
-        self._lib.mavsdk_server_component_by_id.restype = ctypes.c_void_p
 
     def version(self) -> str:
         """Get MAVSDK version string"""
@@ -337,7 +190,7 @@ class Mavsdk:
             self._handle, connection_url.encode('utf-8')
         )
         if result.result != ConnectionResult.SUCCESS:
-            raise ConnError(f"Connection failed: {ConnectionResult(result.result).name}")
+            raise ConnectionError(f"Connection failed: {ConnectionResult(result.result).name}")
         return result.handle
     
     def remove_connection(self, handle: ctypes.c_void_p):
@@ -348,7 +201,7 @@ class Mavsdk:
         """Get number of discovered systems"""
         return self._lib.mavsdk_system_count(self._handle)
     
-    def get_systems(self) -> List[MavsdkSystem]:
+    def get_systems(self) -> List[System]:
         """Get all discovered systems"""
         count = ctypes.c_size_t()
         systems_ptr = self._lib.mavsdk_get_systems(self._handle, ctypes.byref(count))
@@ -357,18 +210,18 @@ class Mavsdk:
             return []
         
         systems = [
-            MavsdkSystem(self._lib, systems_ptr[i]) 
+            System(self._lib, systems_ptr[i]) 
             for i in range(count.value)
         ]
         
         self._lib.mavsdk_free_systems_array(systems_ptr)
         return systems
     
-    def first_autopilot(self, timeout_s: float = 3.0) -> Optional[MavsdkSystem]:
+    def first_autopilot(self, timeout_s: float = 3.0) -> Optional[System]:
         """Wait for and return first autopilot system"""
         handle = self._lib.mavsdk_first_autopilot(self._handle, timeout_s)
         if handle:
-            return MavsdkSystem(self._lib, handle)
+            return System(self._lib, handle)
         return None
     
     def subscribe_on_new_system(self, callback: Callable[[Any], None], 
@@ -390,7 +243,7 @@ class Mavsdk:
         """Get server component by instance"""
         handle = self._lib.mavsdk_server_component(self._handle, instance)
         if handle:
-            return MavsdkServerComponent(self._lib, handle)
+            return ServerComponent(self._lib, handle)
         return None
     
     def server_component_by_type(self, component_type: ComponentType, instance: int = 0):
@@ -399,14 +252,14 @@ class Mavsdk:
             self._handle, int(component_type), instance
         )
         if handle:
-            return MavsdkServerComponent(self._lib, handle)
+            return ServerComponent(self._lib, handle)
         return None
     
     def server_component_by_id(self, component_id: int):
         """Get server component by component ID"""
         handle = self._lib.mavsdk_server_component_by_id(self._handle, component_id)
         if handle:
-            return MavsdkServerComponent(self._lib, handle)
+            return ServerComponent(self._lib, handle)
         return None
     
     def destroy(self):

@@ -1,17 +1,17 @@
 """Custom exceptions for pymavsdk"""
 
 
-class CMAVSDKError(Exception):
-    """Base exception for cmavsdk wrapper errors"""
+class MavsdkError(Exception):
+    """Base exception for pymavsdk errors"""
     pass
 
 
-class LibraryNotFoundError(CMAVSDKError):
+class LibraryNotFoundError(MavsdkError):
     """Raised when the cmavsdk library cannot be found"""
     pass
 
 
-class ConnectionError(CMAVSDKError):
+class ConnectionError(MavsdkError):
     """Raised when a connection operation fails"""
     pass
 
