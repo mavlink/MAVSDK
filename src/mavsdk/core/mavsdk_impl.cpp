@@ -1120,19 +1120,20 @@ void MavsdkImpl::call_user_callback_located(
         _callback_tracker->maybe_print_stats(callback_size);
     }
 
-    if (callback_size >= 10) {
-        LogWarn()
-            << "User callback queue slow (queue size: " << callback_size
-            << ").\n"
-               "See: https://mavsdk.mavlink.io/main/en/cpp/troubleshooting.html#user_callbacks";
+    if (callback_size >= 100) {
+        return;
 
     } else if (callback_size == 99) {
         LogErr()
             << "User callback queue overflown\n"
                "See: https://mavsdk.mavlink.io/main/en/cpp/troubleshooting.html#user_callbacks";
-
-    } else if (callback_size >= 100) {
         return;
+
+    } else if (callback_size >= 10) {
+        LogWarn()
+            << "User callback queue slow (queue size: " << callback_size
+            << ").\n"
+               "See: https://mavsdk.mavlink.io/main/en/cpp/troubleshooting.html#user_callbacks";
     }
 
     // We only need to keep track of filename and linenumber if we're actually debugging this.
