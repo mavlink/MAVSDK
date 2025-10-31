@@ -7,21 +7,9 @@ from typing import Optional, Callable
 
 from .cmavsdk_loader import _cmavsdk_lib
 
-_initialized = False
-
 # Global reference to keep callback alive
 _log_callback_ref: Optional[LogCallback] = None
 
-def _init_logging():
-    global _initialized
-    if not _initialized:
-        _cmavsdk_lib.mavsdk_log_subscribe.argtypes = [LogCallback, ctypes.c_void_p]
-        _cmavsdk_lib.mavsdk_log_subscribe.restype = None
-
-        _cmavsdk_lib.mavsdk_log_unsubscribe.argtypes = []
-        _cmavsdk_lib.mavsdk_log_unsubscribe.restype = None
-
-        _initialized = True
 
 def log_subscribe(callback: Callable[[LogLevel, str, Optional[str], int], bool]):
     """
@@ -42,8 +30,6 @@ def log_subscribe(callback: Callable[[LogLevel, str, Optional[str], int], bool])
     """
     global _log_callback_ref
 
-    _init_logging()
-    
     lib = _cmavsdk_lib
     
     def c_callback(level: int, message: bytes, file: bytes, line: int, user_data):
@@ -77,6 +63,7 @@ class LogLevel(IntEnum):
     WARN = 2
     ERROR = 3
 
+
 LogCallback = ctypes.CFUNCTYPE(
     ctypes.c_bool,
     ctypes.c_int,     # mavsdk_log_level_t
@@ -85,3 +72,11 @@ LogCallback = ctypes.CFUNCTYPE(
     ctypes.c_int,     # line
     ctypes.c_void_p   # user_data
 )
+
+_cmavsdk_lib.mavsdk_log_subscribe.argtypes = [LogCallback, ctypes.c_void_p]
+_cmavsdk_lib.mavsdk_log_subscribe.restype = None
+
+_cmavsdk_lib.mavsdk_log_unsubscribe.argtypes = []
+_cmavsdk_lib.mavsdk_log_unsubscribe.restype = None
+
+
