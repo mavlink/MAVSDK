@@ -147,41 +147,26 @@ class {{ struct.name.upper_camel_case }}:
           {% elif field.type_info.is_primitive %}
             {% if field.type_info.is_repeated %}
         # Convert Python list to C array
-        if self.{{ field.name.lower_snake_case }}:
-            array_type = ctypes.{{ field.type_info.inner_name }} * len(self.{{ field.name.lower_snake_case }})
-            c_struct.{{ field.name.lower_snake_case }} = array_type(*self.{{ field.name.lower_snake_case }})
-            c_struct.{{ field.name.lower_snake_case }}_size = len(self.{{ field.name.lower_snake_case }})
-        else:
-            c_struct.{{ field.name.lower_snake_case }} = None
-            c_struct.{{ field.name.lower_snake_case }}_size = 0
+        array_type = ctypes.{{ field.type_info.inner_name }} * len(self.{{ field.name.lower_snake_case }})
+        c_struct.{{ field.name.lower_snake_case }} = array_type(*self.{{ field.name.lower_snake_case }})
+        c_struct.{{ field.name.lower_snake_case }}_size = len(self.{{ field.name.lower_snake_case }})
             {% else %}
-        # Check for None values in primitive types
-        if self.{{ field.name.lower_snake_case }} is None:
-            raise ValueError(f"Field '{{ field.name.lower_snake_case }}' must be set before converting to C struct")
         c_struct.{{ field.name.lower_snake_case }} = self.{{ field.name.lower_snake_case }}
             {% endif %}
           {% elif field.type_info.is_enum %}
-        # Check for None values in enum types
-        if self.{{ field.name.lower_snake_case }} is None:
-            raise ValueError(f"Field '{{ field.name.lower_snake_case }}' must be set before converting to C struct")
         c_struct.{{ field.name.lower_snake_case }} = int(self.{{ field.name.lower_snake_case }})
           {% else %}
             {% if field.type_info.is_repeated %}
         # Convert list of Python objects to C array
-        if self.{{ field.name.lower_snake_case }}:
-            array_type = {{ field.type_info.inner_name.upper_camel_case }}CStruct * len(self.{{ field.name.lower_snake_case }})
-            c_array = array_type()
-            for i, item in enumerate(self.{{ field.name.lower_snake_case }}):
-                c_array[i] = item.to_c_struct()
-            c_struct.{{ field.name.lower_snake_case }} = ctypes.cast(c_array, ctypes.POINTER({{ field.type_info.inner_name.upper_camel_case }}CStruct))
-            c_struct.{{ field.name.lower_snake_case }}_size = len(self.{{ field.name.lower_snake_case }})
-        else:
-            c_struct.{{ field.name.lower_snake_case }} = None
-            c_struct.{{ field.name.lower_snake_case }}_size = 0
+        array_type = {{ field.type_info.inner_name.upper_camel_case }}CStruct * len(self.{{ field.name.lower_snake_case }})
+        c_array = array_type()
+        for i, item in enumerate(self.{{ field.name.lower_snake_case }}):
+            c_array[i] = item.to_c_struct()
+        c_struct.{{ field.name.lower_snake_case }} = ctypes.cast(c_array, ctypes.POINTER({{ field.type_info.inner_name.upper_camel_case }}CStruct))
+        c_struct.{{ field.name.lower_snake_case }}_size = len(self.{{ field.name.lower_snake_case }})
             {% else %}
         # Convert nested Python object to C struct
-        if self.{{ field.name.lower_snake_case }} is not None:
-            c_struct.{{ field.name.lower_snake_case }} = self.{{ field.name.lower_snake_case }}.to_c_struct()
+        c_struct.{{ field.name.lower_snake_case }} = self.{{ field.name.lower_snake_case }}.to_c_struct()
             {% endif %}
           {% endif %}
         {% endfor %}
