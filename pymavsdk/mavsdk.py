@@ -75,7 +75,7 @@ class Mavsdk:
         """
         self._lib = _cmavsdk_lib
 
-        self._callbacks = []  # Keep references to prevent GC
+        self._callbacks = {}  # Keep references to prevent GC: { handle: callback }
 
         self._handle = self._lib.mavsdk_create(configuration._handle)
         self._destroyed = False
@@ -136,16 +136,19 @@ class Mavsdk:
                                 user_data: Any = None):
         """Subscribe to new system discoveries"""
         c_callback = NewSystemCallback(lambda ud: callback(user_data))
-        self._callbacks.append(c_callback)
 
         handle = self._lib.mavsdk_subscribe_on_new_system(
             self._handle, c_callback, None
         )
+
+        self._callbacks[handle] = c_callback
+
         return handle
 
     def unsubscribe_on_new_system(self, handle: ctypes.c_void_p):
         """Unsubscribe from new system discoveries"""
         self._lib.mavsdk_unsubscribe_on_new_system(self._handle, handle)
+        self._callbacks.pop(handle, None)
 
     def server_component(self, instance: int = 0):
         """Get server component by instance"""
@@ -173,6 +176,7 @@ class Mavsdk:
     def destroy(self):
         """Destroy the Mavsdk instance"""
         if not self._destroyed and self._handle:
+            self._callbacks.clear()
             self._lib.mavsdk_destroy(self._handle)
             self._handle = None
             self._destroyed = True
