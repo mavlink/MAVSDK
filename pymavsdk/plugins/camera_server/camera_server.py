@@ -220,43 +220,16 @@ class Information:
         c_struct.model_name = self.model_name.encode('utf-8')
         # Convert Python string to C string (bytes)
         c_struct.firmware_version = self.firmware_version.encode('utf-8')
-        # Check for None values in primitive types
-        if self.focal_length_mm is None:
-            raise ValueError(f"Field 'focal_length_mm' must be set before converting to C struct")
         c_struct.focal_length_mm = self.focal_length_mm
-        # Check for None values in primitive types
-        if self.horizontal_sensor_size_mm is None:
-            raise ValueError(f"Field 'horizontal_sensor_size_mm' must be set before converting to C struct")
         c_struct.horizontal_sensor_size_mm = self.horizontal_sensor_size_mm
-        # Check for None values in primitive types
-        if self.vertical_sensor_size_mm is None:
-            raise ValueError(f"Field 'vertical_sensor_size_mm' must be set before converting to C struct")
         c_struct.vertical_sensor_size_mm = self.vertical_sensor_size_mm
-        # Check for None values in primitive types
-        if self.horizontal_resolution_px is None:
-            raise ValueError(f"Field 'horizontal_resolution_px' must be set before converting to C struct")
         c_struct.horizontal_resolution_px = self.horizontal_resolution_px
-        # Check for None values in primitive types
-        if self.vertical_resolution_px is None:
-            raise ValueError(f"Field 'vertical_resolution_px' must be set before converting to C struct")
         c_struct.vertical_resolution_px = self.vertical_resolution_px
-        # Check for None values in primitive types
-        if self.lens_id is None:
-            raise ValueError(f"Field 'lens_id' must be set before converting to C struct")
         c_struct.lens_id = self.lens_id
-        # Check for None values in primitive types
-        if self.definition_file_version is None:
-            raise ValueError(f"Field 'definition_file_version' must be set before converting to C struct")
         c_struct.definition_file_version = self.definition_file_version
         # Convert Python string to C string (bytes)
         c_struct.definition_file_uri = self.definition_file_uri.encode('utf-8')
-        # Check for None values in primitive types
-        if self.image_in_video_mode_supported is None:
-            raise ValueError(f"Field 'image_in_video_mode_supported' must be set before converting to C struct")
         c_struct.image_in_video_mode_supported = self.image_in_video_mode_supported
-        # Check for None values in primitive types
-        if self.video_in_image_mode_supported is None:
-            raise ValueError(f"Field 'video_in_image_mode_supported' must be set before converting to C struct")
         c_struct.video_in_image_mode_supported = self.video_in_image_mode_supported
         return c_struct
 
@@ -298,9 +271,6 @@ class VideoStreaming:
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = VideoStreamingCStruct()
-        # Check for None values in primitive types
-        if self.has_rtsp_server is None:
-            raise ValueError(f"Field 'has_rtsp_server' must be set before converting to C struct")
         c_struct.has_rtsp_server = self.has_rtsp_server
         # Convert Python string to C string (bytes)
         c_struct.rtsp_uri = self.rtsp_uri.encode('utf-8')
@@ -336,21 +306,9 @@ class Position:
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = PositionCStruct()
-        # Check for None values in primitive types
-        if self.latitude_deg is None:
-            raise ValueError(f"Field 'latitude_deg' must be set before converting to C struct")
         c_struct.latitude_deg = self.latitude_deg
-        # Check for None values in primitive types
-        if self.longitude_deg is None:
-            raise ValueError(f"Field 'longitude_deg' must be set before converting to C struct")
         c_struct.longitude_deg = self.longitude_deg
-        # Check for None values in primitive types
-        if self.absolute_altitude_m is None:
-            raise ValueError(f"Field 'absolute_altitude_m' must be set before converting to C struct")
         c_struct.absolute_altitude_m = self.absolute_altitude_m
-        # Check for None values in primitive types
-        if self.relative_altitude_m is None:
-            raise ValueError(f"Field 'relative_altitude_m' must be set before converting to C struct")
         c_struct.relative_altitude_m = self.relative_altitude_m
         return c_struct
 
@@ -393,21 +351,9 @@ class Quaternion:
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = QuaternionCStruct()
-        # Check for None values in primitive types
-        if self.w is None:
-            raise ValueError(f"Field 'w' must be set before converting to C struct")
         c_struct.w = self.w
-        # Check for None values in primitive types
-        if self.x is None:
-            raise ValueError(f"Field 'x' must be set before converting to C struct")
         c_struct.x = self.x
-        # Check for None values in primitive types
-        if self.y is None:
-            raise ValueError(f"Field 'y' must be set before converting to C struct")
         c_struct.y = self.y
-        # Check for None values in primitive types
-        if self.z is None:
-            raise ValueError(f"Field 'z' must be set before converting to C struct")
         c_struct.z = self.z
         return c_struct
 
@@ -451,22 +397,11 @@ class CaptureInfo:
         """Convert to C structure for C library calls"""
         c_struct = CaptureInfoCStruct()
         # Convert nested Python object to C struct
-        if self.position is not None:
-            c_struct.position = self.position.to_c_struct()
+        c_struct.position = self.position.to_c_struct()
         # Convert nested Python object to C struct
-        if self.attitude_quaternion is not None:
-            c_struct.attitude_quaternion = self.attitude_quaternion.to_c_struct()
-        # Check for None values in primitive types
-        if self.time_utc_us is None:
-            raise ValueError(f"Field 'time_utc_us' must be set before converting to C struct")
+        c_struct.attitude_quaternion = self.attitude_quaternion.to_c_struct()
         c_struct.time_utc_us = self.time_utc_us
-        # Check for None values in primitive types
-        if self.is_success is None:
-            raise ValueError(f"Field 'is_success' must be set before converting to C struct")
         c_struct.is_success = self.is_success
-        # Check for None values in primitive types
-        if self.index is None:
-            raise ValueError(f"Field 'index' must be set before converting to C struct")
         c_struct.index = self.index
         # Convert Python string to C string (bytes)
         c_struct.file_url = self.file_url.encode('utf-8')
@@ -532,37 +467,13 @@ class StorageInformation:
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = StorageInformationCStruct()
-        # Check for None values in primitive types
-        if self.used_storage_mib is None:
-            raise ValueError(f"Field 'used_storage_mib' must be set before converting to C struct")
         c_struct.used_storage_mib = self.used_storage_mib
-        # Check for None values in primitive types
-        if self.available_storage_mib is None:
-            raise ValueError(f"Field 'available_storage_mib' must be set before converting to C struct")
         c_struct.available_storage_mib = self.available_storage_mib
-        # Check for None values in primitive types
-        if self.total_storage_mib is None:
-            raise ValueError(f"Field 'total_storage_mib' must be set before converting to C struct")
         c_struct.total_storage_mib = self.total_storage_mib
-        # Check for None values in enum types
-        if self.storage_status is None:
-            raise ValueError(f"Field 'storage_status' must be set before converting to C struct")
         c_struct.storage_status = int(self.storage_status)
-        # Check for None values in primitive types
-        if self.storage_id is None:
-            raise ValueError(f"Field 'storage_id' must be set before converting to C struct")
         c_struct.storage_id = self.storage_id
-        # Check for None values in enum types
-        if self.storage_type is None:
-            raise ValueError(f"Field 'storage_type' must be set before converting to C struct")
         c_struct.storage_type = int(self.storage_type)
-        # Check for None values in primitive types
-        if self.read_speed_mib_s is None:
-            raise ValueError(f"Field 'read_speed_mib_s' must be set before converting to C struct")
         c_struct.read_speed_mib_s = self.read_speed_mib_s
-        # Check for None values in primitive types
-        if self.write_speed_mib_s is None:
-            raise ValueError(f"Field 'write_speed_mib_s' must be set before converting to C struct")
         c_struct.write_speed_mib_s = self.write_speed_mib_s
         return c_struct
 
@@ -620,29 +531,11 @@ class CaptureStatus:
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = CaptureStatusCStruct()
-        # Check for None values in primitive types
-        if self.image_interval_s is None:
-            raise ValueError(f"Field 'image_interval_s' must be set before converting to C struct")
         c_struct.image_interval_s = self.image_interval_s
-        # Check for None values in primitive types
-        if self.recording_time_s is None:
-            raise ValueError(f"Field 'recording_time_s' must be set before converting to C struct")
         c_struct.recording_time_s = self.recording_time_s
-        # Check for None values in primitive types
-        if self.available_capacity_mib is None:
-            raise ValueError(f"Field 'available_capacity_mib' must be set before converting to C struct")
         c_struct.available_capacity_mib = self.available_capacity_mib
-        # Check for None values in enum types
-        if self.image_status is None:
-            raise ValueError(f"Field 'image_status' must be set before converting to C struct")
         c_struct.image_status = int(self.image_status)
-        # Check for None values in enum types
-        if self.video_status is None:
-            raise ValueError(f"Field 'video_status' must be set before converting to C struct")
         c_struct.video_status = int(self.video_status)
-        # Check for None values in primitive types
-        if self.image_count is None:
-            raise ValueError(f"Field 'image_count' must be set before converting to C struct")
         c_struct.image_count = self.image_count
         return c_struct
 
@@ -678,17 +571,8 @@ class TrackPoint:
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = TrackPointCStruct()
-        # Check for None values in primitive types
-        if self.point_x is None:
-            raise ValueError(f"Field 'point_x' must be set before converting to C struct")
         c_struct.point_x = self.point_x
-        # Check for None values in primitive types
-        if self.point_y is None:
-            raise ValueError(f"Field 'point_y' must be set before converting to C struct")
         c_struct.point_y = self.point_y
-        # Check for None values in primitive types
-        if self.radius is None:
-            raise ValueError(f"Field 'radius' must be set before converting to C struct")
         c_struct.radius = self.radius
         return c_struct
 
@@ -723,21 +607,9 @@ class TrackRectangle:
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = TrackRectangleCStruct()
-        # Check for None values in primitive types
-        if self.top_left_corner_x is None:
-            raise ValueError(f"Field 'top_left_corner_x' must be set before converting to C struct")
         c_struct.top_left_corner_x = self.top_left_corner_x
-        # Check for None values in primitive types
-        if self.top_left_corner_y is None:
-            raise ValueError(f"Field 'top_left_corner_y' must be set before converting to C struct")
         c_struct.top_left_corner_y = self.top_left_corner_y
-        # Check for None values in primitive types
-        if self.bottom_right_corner_x is None:
-            raise ValueError(f"Field 'bottom_right_corner_x' must be set before converting to C struct")
         c_struct.bottom_right_corner_x = self.bottom_right_corner_x
-        # Check for None values in primitive types
-        if self.bottom_right_corner_y is None:
-            raise ValueError(f"Field 'bottom_right_corner_y' must be set before converting to C struct")
         c_struct.bottom_right_corner_y = self.bottom_right_corner_y
         return c_struct
 

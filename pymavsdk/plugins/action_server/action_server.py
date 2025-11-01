@@ -101,17 +101,8 @@ class AllowableFlightModes:
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = AllowableFlightModesCStruct()
-        # Check for None values in primitive types
-        if self.can_auto_mode is None:
-            raise ValueError(f"Field 'can_auto_mode' must be set before converting to C struct")
         c_struct.can_auto_mode = self.can_auto_mode
-        # Check for None values in primitive types
-        if self.can_guided_mode is None:
-            raise ValueError(f"Field 'can_guided_mode' must be set before converting to C struct")
         c_struct.can_guided_mode = self.can_guided_mode
-        # Check for None values in primitive types
-        if self.can_stabilize_mode is None:
-            raise ValueError(f"Field 'can_stabilize_mode' must be set before converting to C struct")
         c_struct.can_stabilize_mode = self.can_stabilize_mode
         return c_struct
 
@@ -142,13 +133,7 @@ class ArmDisarm:
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = ArmDisarmCStruct()
-        # Check for None values in primitive types
-        if self.arm is None:
-            raise ValueError(f"Field 'arm' must be set before converting to C struct")
         c_struct.arm = self.arm
-        # Check for None values in primitive types
-        if self.force is None:
-            raise ValueError(f"Field 'force' must be set before converting to C struct")
         c_struct.force = self.force
         return c_struct
 

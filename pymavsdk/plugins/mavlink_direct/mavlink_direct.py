@@ -78,21 +78,9 @@ class MavlinkMessage:
         c_struct = MavlinkMessageCStruct()
         # Convert Python string to C string (bytes)
         c_struct.message_name = self.message_name.encode('utf-8')
-        # Check for None values in primitive types
-        if self.system_id is None:
-            raise ValueError(f"Field 'system_id' must be set before converting to C struct")
         c_struct.system_id = self.system_id
-        # Check for None values in primitive types
-        if self.component_id is None:
-            raise ValueError(f"Field 'component_id' must be set before converting to C struct")
         c_struct.component_id = self.component_id
-        # Check for None values in primitive types
-        if self.target_system_id is None:
-            raise ValueError(f"Field 'target_system_id' must be set before converting to C struct")
         c_struct.target_system_id = self.target_system_id
-        # Check for None values in primitive types
-        if self.target_component_id is None:
-            raise ValueError(f"Field 'target_component_id' must be set before converting to C struct")
         c_struct.target_component_id = self.target_component_id
         # Convert Python string to C string (bytes)
         c_struct.fields_json = self.fields_json.encode('utf-8')

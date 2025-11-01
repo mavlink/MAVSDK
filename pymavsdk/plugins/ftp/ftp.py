@@ -113,13 +113,7 @@ class ProgressData:
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = ProgressDataCStruct()
-        # Check for None values in primitive types
-        if self.bytes_transferred is None:
-            raise ValueError(f"Field 'bytes_transferred' must be set before converting to C struct")
         c_struct.bytes_transferred = self.bytes_transferred
-        # Check for None values in primitive types
-        if self.total_bytes is None:
-            raise ValueError(f"Field 'total_bytes' must be set before converting to C struct")
         c_struct.total_bytes = self.total_bytes
         return c_struct
 

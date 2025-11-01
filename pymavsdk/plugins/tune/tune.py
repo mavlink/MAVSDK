@@ -85,13 +85,7 @@ class TuneDescription:
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = TuneDescriptionCStruct()
-        # Check for None values in enum types
-        if self.song_elements is None:
-            raise ValueError(f"Field 'song_elements' must be set before converting to C struct")
         c_struct.song_elements = int(self.song_elements)
-        # Check for None values in primitive types
-        if self.tempo is None:
-            raise ValueError(f"Field 'tempo' must be set before converting to C struct")
         c_struct.tempo = self.tempo
         return c_struct
 

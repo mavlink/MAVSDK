@@ -71,9 +71,6 @@ class ProgressData:
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = ProgressDataCStruct()
-        # Check for None values in primitive types
-        if self.progress is None:
-            raise ValueError(f"Field 'progress' must be set before converting to C struct")
         c_struct.progress = self.progress
         return c_struct
 
@@ -105,15 +102,9 @@ class Entry:
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = EntryCStruct()
-        # Check for None values in primitive types
-        if self.id is None:
-            raise ValueError(f"Field 'id' must be set before converting to C struct")
         c_struct.id = self.id
         # Convert Python string to C string (bytes)
         c_struct.date = self.date.encode('utf-8')
-        # Check for None values in primitive types
-        if self.size_bytes is None:
-            raise ValueError(f"Field 'size_bytes' must be set before converting to C struct")
         c_struct.size_bytes = self.size_bytes
         return c_struct
 

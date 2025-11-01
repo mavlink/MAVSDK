@@ -505,21 +505,9 @@ class Position:
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = PositionCStruct()
-        # Check for None values in primitive types
-        if self.latitude_deg is None:
-            raise ValueError(f"Field 'latitude_deg' must be set before converting to C struct")
         c_struct.latitude_deg = self.latitude_deg
-        # Check for None values in primitive types
-        if self.longitude_deg is None:
-            raise ValueError(f"Field 'longitude_deg' must be set before converting to C struct")
         c_struct.longitude_deg = self.longitude_deg
-        # Check for None values in primitive types
-        if self.absolute_altitude_m is None:
-            raise ValueError(f"Field 'absolute_altitude_m' must be set before converting to C struct")
         c_struct.absolute_altitude_m = self.absolute_altitude_m
-        # Check for None values in primitive types
-        if self.relative_altitude_m is None:
-            raise ValueError(f"Field 'relative_altitude_m' must be set before converting to C struct")
         c_struct.relative_altitude_m = self.relative_altitude_m
         return c_struct
 
@@ -549,9 +537,6 @@ class Heading:
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = HeadingCStruct()
-        # Check for None values in primitive types
-        if self.heading_deg is None:
-            raise ValueError(f"Field 'heading_deg' must be set before converting to C struct")
         c_struct.heading_deg = self.heading_deg
         return c_struct
 
@@ -593,25 +578,10 @@ class Quaternion:
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = QuaternionCStruct()
-        # Check for None values in primitive types
-        if self.w is None:
-            raise ValueError(f"Field 'w' must be set before converting to C struct")
         c_struct.w = self.w
-        # Check for None values in primitive types
-        if self.x is None:
-            raise ValueError(f"Field 'x' must be set before converting to C struct")
         c_struct.x = self.x
-        # Check for None values in primitive types
-        if self.y is None:
-            raise ValueError(f"Field 'y' must be set before converting to C struct")
         c_struct.y = self.y
-        # Check for None values in primitive types
-        if self.z is None:
-            raise ValueError(f"Field 'z' must be set before converting to C struct")
         c_struct.z = self.z
-        # Check for None values in primitive types
-        if self.timestamp_us is None:
-            raise ValueError(f"Field 'timestamp_us' must be set before converting to C struct")
         c_struct.timestamp_us = self.timestamp_us
         return c_struct
 
@@ -653,21 +623,9 @@ class EulerAngle:
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = EulerAngleCStruct()
-        # Check for None values in primitive types
-        if self.roll_deg is None:
-            raise ValueError(f"Field 'roll_deg' must be set before converting to C struct")
         c_struct.roll_deg = self.roll_deg
-        # Check for None values in primitive types
-        if self.pitch_deg is None:
-            raise ValueError(f"Field 'pitch_deg' must be set before converting to C struct")
         c_struct.pitch_deg = self.pitch_deg
-        # Check for None values in primitive types
-        if self.yaw_deg is None:
-            raise ValueError(f"Field 'yaw_deg' must be set before converting to C struct")
         c_struct.yaw_deg = self.yaw_deg
-        # Check for None values in primitive types
-        if self.timestamp_us is None:
-            raise ValueError(f"Field 'timestamp_us' must be set before converting to C struct")
         c_struct.timestamp_us = self.timestamp_us
         return c_struct
 
@@ -701,17 +659,8 @@ class AngularVelocityBody:
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = AngularVelocityBodyCStruct()
-        # Check for None values in primitive types
-        if self.roll_rad_s is None:
-            raise ValueError(f"Field 'roll_rad_s' must be set before converting to C struct")
         c_struct.roll_rad_s = self.roll_rad_s
-        # Check for None values in primitive types
-        if self.pitch_rad_s is None:
-            raise ValueError(f"Field 'pitch_rad_s' must be set before converting to C struct")
         c_struct.pitch_rad_s = self.pitch_rad_s
-        # Check for None values in primitive types
-        if self.yaw_rad_s is None:
-            raise ValueError(f"Field 'yaw_rad_s' must be set before converting to C struct")
         c_struct.yaw_rad_s = self.yaw_rad_s
         return c_struct
 
@@ -743,13 +692,7 @@ class GpsInfo:
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = GpsInfoCStruct()
-        # Check for None values in primitive types
-        if self.num_satellites is None:
-            raise ValueError(f"Field 'num_satellites' must be set before converting to C struct")
         c_struct.num_satellites = self.num_satellites
-        # Check for None values in enum types
-        if self.fix_type is None:
-            raise ValueError(f"Field 'fix_type' must be set before converting to C struct")
         c_struct.fix_type = int(self.fix_type)
         return c_struct
 
@@ -806,61 +749,19 @@ class RawGps:
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = RawGpsCStruct()
-        # Check for None values in primitive types
-        if self.timestamp_us is None:
-            raise ValueError(f"Field 'timestamp_us' must be set before converting to C struct")
         c_struct.timestamp_us = self.timestamp_us
-        # Check for None values in primitive types
-        if self.latitude_deg is None:
-            raise ValueError(f"Field 'latitude_deg' must be set before converting to C struct")
         c_struct.latitude_deg = self.latitude_deg
-        # Check for None values in primitive types
-        if self.longitude_deg is None:
-            raise ValueError(f"Field 'longitude_deg' must be set before converting to C struct")
         c_struct.longitude_deg = self.longitude_deg
-        # Check for None values in primitive types
-        if self.absolute_altitude_m is None:
-            raise ValueError(f"Field 'absolute_altitude_m' must be set before converting to C struct")
         c_struct.absolute_altitude_m = self.absolute_altitude_m
-        # Check for None values in primitive types
-        if self.hdop is None:
-            raise ValueError(f"Field 'hdop' must be set before converting to C struct")
         c_struct.hdop = self.hdop
-        # Check for None values in primitive types
-        if self.vdop is None:
-            raise ValueError(f"Field 'vdop' must be set before converting to C struct")
         c_struct.vdop = self.vdop
-        # Check for None values in primitive types
-        if self.velocity_m_s is None:
-            raise ValueError(f"Field 'velocity_m_s' must be set before converting to C struct")
         c_struct.velocity_m_s = self.velocity_m_s
-        # Check for None values in primitive types
-        if self.cog_deg is None:
-            raise ValueError(f"Field 'cog_deg' must be set before converting to C struct")
         c_struct.cog_deg = self.cog_deg
-        # Check for None values in primitive types
-        if self.altitude_ellipsoid_m is None:
-            raise ValueError(f"Field 'altitude_ellipsoid_m' must be set before converting to C struct")
         c_struct.altitude_ellipsoid_m = self.altitude_ellipsoid_m
-        # Check for None values in primitive types
-        if self.horizontal_uncertainty_m is None:
-            raise ValueError(f"Field 'horizontal_uncertainty_m' must be set before converting to C struct")
         c_struct.horizontal_uncertainty_m = self.horizontal_uncertainty_m
-        # Check for None values in primitive types
-        if self.vertical_uncertainty_m is None:
-            raise ValueError(f"Field 'vertical_uncertainty_m' must be set before converting to C struct")
         c_struct.vertical_uncertainty_m = self.vertical_uncertainty_m
-        # Check for None values in primitive types
-        if self.velocity_uncertainty_m_s is None:
-            raise ValueError(f"Field 'velocity_uncertainty_m_s' must be set before converting to C struct")
         c_struct.velocity_uncertainty_m_s = self.velocity_uncertainty_m_s
-        # Check for None values in primitive types
-        if self.heading_uncertainty_deg is None:
-            raise ValueError(f"Field 'heading_uncertainty_deg' must be set before converting to C struct")
         c_struct.heading_uncertainty_deg = self.heading_uncertainty_deg
-        # Check for None values in primitive types
-        if self.yaw_deg is None:
-            raise ValueError(f"Field 'yaw_deg' must be set before converting to C struct")
         c_struct.yaw_deg = self.yaw_deg
         return c_struct
 
@@ -915,37 +816,13 @@ class Battery:
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = BatteryCStruct()
-        # Check for None values in primitive types
-        if self.id is None:
-            raise ValueError(f"Field 'id' must be set before converting to C struct")
         c_struct.id = self.id
-        # Check for None values in primitive types
-        if self.temperature_degc is None:
-            raise ValueError(f"Field 'temperature_degc' must be set before converting to C struct")
         c_struct.temperature_degc = self.temperature_degc
-        # Check for None values in primitive types
-        if self.voltage_v is None:
-            raise ValueError(f"Field 'voltage_v' must be set before converting to C struct")
         c_struct.voltage_v = self.voltage_v
-        # Check for None values in primitive types
-        if self.current_battery_a is None:
-            raise ValueError(f"Field 'current_battery_a' must be set before converting to C struct")
         c_struct.current_battery_a = self.current_battery_a
-        # Check for None values in primitive types
-        if self.capacity_consumed_ah is None:
-            raise ValueError(f"Field 'capacity_consumed_ah' must be set before converting to C struct")
         c_struct.capacity_consumed_ah = self.capacity_consumed_ah
-        # Check for None values in primitive types
-        if self.remaining_percent is None:
-            raise ValueError(f"Field 'remaining_percent' must be set before converting to C struct")
         c_struct.remaining_percent = self.remaining_percent
-        # Check for None values in primitive types
-        if self.time_remaining_s is None:
-            raise ValueError(f"Field 'time_remaining_s' must be set before converting to C struct")
         c_struct.time_remaining_s = self.time_remaining_s
-        # Check for None values in enum types
-        if self.battery_function is None:
-            raise ValueError(f"Field 'battery_function' must be set before converting to C struct")
         c_struct.battery_function = int(self.battery_function)
         return c_struct
 
@@ -991,33 +868,12 @@ class Health:
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = HealthCStruct()
-        # Check for None values in primitive types
-        if self.is_gyrometer_calibration_ok is None:
-            raise ValueError(f"Field 'is_gyrometer_calibration_ok' must be set before converting to C struct")
         c_struct.is_gyrometer_calibration_ok = self.is_gyrometer_calibration_ok
-        # Check for None values in primitive types
-        if self.is_accelerometer_calibration_ok is None:
-            raise ValueError(f"Field 'is_accelerometer_calibration_ok' must be set before converting to C struct")
         c_struct.is_accelerometer_calibration_ok = self.is_accelerometer_calibration_ok
-        # Check for None values in primitive types
-        if self.is_magnetometer_calibration_ok is None:
-            raise ValueError(f"Field 'is_magnetometer_calibration_ok' must be set before converting to C struct")
         c_struct.is_magnetometer_calibration_ok = self.is_magnetometer_calibration_ok
-        # Check for None values in primitive types
-        if self.is_local_position_ok is None:
-            raise ValueError(f"Field 'is_local_position_ok' must be set before converting to C struct")
         c_struct.is_local_position_ok = self.is_local_position_ok
-        # Check for None values in primitive types
-        if self.is_global_position_ok is None:
-            raise ValueError(f"Field 'is_global_position_ok' must be set before converting to C struct")
         c_struct.is_global_position_ok = self.is_global_position_ok
-        # Check for None values in primitive types
-        if self.is_home_position_ok is None:
-            raise ValueError(f"Field 'is_home_position_ok' must be set before converting to C struct")
         c_struct.is_home_position_ok = self.is_home_position_ok
-        # Check for None values in primitive types
-        if self.is_armable is None:
-            raise ValueError(f"Field 'is_armable' must be set before converting to C struct")
         c_struct.is_armable = self.is_armable
         return c_struct
 
@@ -1054,17 +910,8 @@ class RcStatus:
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = RcStatusCStruct()
-        # Check for None values in primitive types
-        if self.was_available_once is None:
-            raise ValueError(f"Field 'was_available_once' must be set before converting to C struct")
         c_struct.was_available_once = self.was_available_once
-        # Check for None values in primitive types
-        if self.is_available is None:
-            raise ValueError(f"Field 'is_available' must be set before converting to C struct")
         c_struct.is_available = self.is_available
-        # Check for None values in primitive types
-        if self.signal_strength_percent is None:
-            raise ValueError(f"Field 'signal_strength_percent' must be set before converting to C struct")
         c_struct.signal_strength_percent = self.signal_strength_percent
         return c_struct
 
@@ -1097,9 +944,6 @@ class StatusText:
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = StatusTextCStruct()
-        # Check for None values in enum types
-        if self.type is None:
-            raise ValueError(f"Field 'type' must be set before converting to C struct")
         c_struct.type = int(self.type)
         # Convert Python string to C string (bytes)
         c_struct.text = self.text.encode('utf-8')
@@ -1135,18 +979,11 @@ class ActuatorControlTarget:
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = ActuatorControlTargetCStruct()
-        # Check for None values in primitive types
-        if self.group is None:
-            raise ValueError(f"Field 'group' must be set before converting to C struct")
         c_struct.group = self.group
         # Convert Python list to C array
-        if self.controls:
-            array_type = ctypes.c_float * len(self.controls)
-            c_struct.controls = array_type(*self.controls)
-            c_struct.controls_size = len(self.controls)
-        else:
-            c_struct.controls = None
-            c_struct.controls_size = 0
+        array_type = ctypes.c_float * len(self.controls)
+        c_struct.controls = array_type(*self.controls)
+        c_struct.controls_size = len(self.controls)
         return c_struct
 
     def __str__(self):
@@ -1179,18 +1016,11 @@ class ActuatorOutputStatus:
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = ActuatorOutputStatusCStruct()
-        # Check for None values in primitive types
-        if self.active is None:
-            raise ValueError(f"Field 'active' must be set before converting to C struct")
         c_struct.active = self.active
         # Convert Python list to C array
-        if self.actuator:
-            array_type = ctypes.c_float * len(self.actuator)
-            c_struct.actuator = array_type(*self.actuator)
-            c_struct.actuator_size = len(self.actuator)
-        else:
-            c_struct.actuator = None
-            c_struct.actuator_size = 0
+        array_type = ctypes.c_float * len(self.actuator)
+        c_struct.actuator = array_type(*self.actuator)
+        c_struct.actuator_size = len(self.actuator)
         return c_struct
 
     def __str__(self):
@@ -1226,13 +1056,9 @@ class Covariance:
         """Convert to C structure for C library calls"""
         c_struct = CovarianceCStruct()
         # Convert Python list to C array
-        if self.covariance_matrix:
-            array_type = ctypes.c_float * len(self.covariance_matrix)
-            c_struct.covariance_matrix = array_type(*self.covariance_matrix)
-            c_struct.covariance_matrix_size = len(self.covariance_matrix)
-        else:
-            c_struct.covariance_matrix = None
-            c_struct.covariance_matrix_size = 0
+        array_type = ctypes.c_float * len(self.covariance_matrix)
+        c_struct.covariance_matrix = array_type(*self.covariance_matrix)
+        c_struct.covariance_matrix_size = len(self.covariance_matrix)
         return c_struct
 
     def __str__(self):
@@ -1262,17 +1088,8 @@ class VelocityBody:
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = VelocityBodyCStruct()
-        # Check for None values in primitive types
-        if self.x_m_s is None:
-            raise ValueError(f"Field 'x_m_s' must be set before converting to C struct")
         c_struct.x_m_s = self.x_m_s
-        # Check for None values in primitive types
-        if self.y_m_s is None:
-            raise ValueError(f"Field 'y_m_s' must be set before converting to C struct")
         c_struct.y_m_s = self.y_m_s
-        # Check for None values in primitive types
-        if self.z_m_s is None:
-            raise ValueError(f"Field 'z_m_s' must be set before converting to C struct")
         c_struct.z_m_s = self.z_m_s
         return c_struct
 
@@ -1305,17 +1122,8 @@ class PositionBody:
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = PositionBodyCStruct()
-        # Check for None values in primitive types
-        if self.x_m is None:
-            raise ValueError(f"Field 'x_m' must be set before converting to C struct")
         c_struct.x_m = self.x_m
-        # Check for None values in primitive types
-        if self.y_m is None:
-            raise ValueError(f"Field 'y_m' must be set before converting to C struct")
         c_struct.y_m = self.y_m
-        # Check for None values in primitive types
-        if self.z_m is None:
-            raise ValueError(f"Field 'z_m' must be set before converting to C struct")
         c_struct.z_m = self.z_m
         return c_struct
 
@@ -1375,36 +1183,21 @@ class Odometry:
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = OdometryCStruct()
-        # Check for None values in primitive types
-        if self.time_usec is None:
-            raise ValueError(f"Field 'time_usec' must be set before converting to C struct")
         c_struct.time_usec = self.time_usec
-        # Check for None values in enum types
-        if self.frame_id is None:
-            raise ValueError(f"Field 'frame_id' must be set before converting to C struct")
         c_struct.frame_id = int(self.frame_id)
-        # Check for None values in enum types
-        if self.child_frame_id is None:
-            raise ValueError(f"Field 'child_frame_id' must be set before converting to C struct")
         c_struct.child_frame_id = int(self.child_frame_id)
         # Convert nested Python object to C struct
-        if self.position_body is not None:
-            c_struct.position_body = self.position_body.to_c_struct()
+        c_struct.position_body = self.position_body.to_c_struct()
         # Convert nested Python object to C struct
-        if self.q is not None:
-            c_struct.q = self.q.to_c_struct()
+        c_struct.q = self.q.to_c_struct()
         # Convert nested Python object to C struct
-        if self.velocity_body is not None:
-            c_struct.velocity_body = self.velocity_body.to_c_struct()
+        c_struct.velocity_body = self.velocity_body.to_c_struct()
         # Convert nested Python object to C struct
-        if self.angular_velocity_body is not None:
-            c_struct.angular_velocity_body = self.angular_velocity_body.to_c_struct()
+        c_struct.angular_velocity_body = self.angular_velocity_body.to_c_struct()
         # Convert nested Python object to C struct
-        if self.pose_covariance is not None:
-            c_struct.pose_covariance = self.pose_covariance.to_c_struct()
+        c_struct.pose_covariance = self.pose_covariance.to_c_struct()
         # Convert nested Python object to C struct
-        if self.velocity_covariance is not None:
-            c_struct.velocity_covariance = self.velocity_covariance.to_c_struct()
+        c_struct.velocity_covariance = self.velocity_covariance.to_c_struct()
         return c_struct
 
     def __str__(self):
@@ -1445,21 +1238,11 @@ class DistanceSensor:
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = DistanceSensorCStruct()
-        # Check for None values in primitive types
-        if self.minimum_distance_m is None:
-            raise ValueError(f"Field 'minimum_distance_m' must be set before converting to C struct")
         c_struct.minimum_distance_m = self.minimum_distance_m
-        # Check for None values in primitive types
-        if self.maximum_distance_m is None:
-            raise ValueError(f"Field 'maximum_distance_m' must be set before converting to C struct")
         c_struct.maximum_distance_m = self.maximum_distance_m
-        # Check for None values in primitive types
-        if self.current_distance_m is None:
-            raise ValueError(f"Field 'current_distance_m' must be set before converting to C struct")
         c_struct.current_distance_m = self.current_distance_m
         # Convert nested Python object to C struct
-        if self.orientation is not None:
-            c_struct.orientation = self.orientation.to_c_struct()
+        c_struct.orientation = self.orientation.to_c_struct()
         return c_struct
 
     def __str__(self):
@@ -1496,25 +1279,10 @@ class ScaledPressure:
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = ScaledPressureCStruct()
-        # Check for None values in primitive types
-        if self.timestamp_us is None:
-            raise ValueError(f"Field 'timestamp_us' must be set before converting to C struct")
         c_struct.timestamp_us = self.timestamp_us
-        # Check for None values in primitive types
-        if self.absolute_pressure_hpa is None:
-            raise ValueError(f"Field 'absolute_pressure_hpa' must be set before converting to C struct")
         c_struct.absolute_pressure_hpa = self.absolute_pressure_hpa
-        # Check for None values in primitive types
-        if self.differential_pressure_hpa is None:
-            raise ValueError(f"Field 'differential_pressure_hpa' must be set before converting to C struct")
         c_struct.differential_pressure_hpa = self.differential_pressure_hpa
-        # Check for None values in primitive types
-        if self.temperature_deg is None:
-            raise ValueError(f"Field 'temperature_deg' must be set before converting to C struct")
         c_struct.temperature_deg = self.temperature_deg
-        # Check for None values in primitive types
-        if self.differential_pressure_temperature_deg is None:
-            raise ValueError(f"Field 'differential_pressure_temperature_deg' must be set before converting to C struct")
         c_struct.differential_pressure_temperature_deg = self.differential_pressure_temperature_deg
         return c_struct
 
@@ -1549,17 +1317,8 @@ class PositionNed:
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = PositionNedCStruct()
-        # Check for None values in primitive types
-        if self.north_m is None:
-            raise ValueError(f"Field 'north_m' must be set before converting to C struct")
         c_struct.north_m = self.north_m
-        # Check for None values in primitive types
-        if self.east_m is None:
-            raise ValueError(f"Field 'east_m' must be set before converting to C struct")
         c_struct.east_m = self.east_m
-        # Check for None values in primitive types
-        if self.down_m is None:
-            raise ValueError(f"Field 'down_m' must be set before converting to C struct")
         c_struct.down_m = self.down_m
         return c_struct
 
@@ -1592,17 +1351,8 @@ class VelocityNed:
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = VelocityNedCStruct()
-        # Check for None values in primitive types
-        if self.north_m_s is None:
-            raise ValueError(f"Field 'north_m_s' must be set before converting to C struct")
         c_struct.north_m_s = self.north_m_s
-        # Check for None values in primitive types
-        if self.east_m_s is None:
-            raise ValueError(f"Field 'east_m_s' must be set before converting to C struct")
         c_struct.east_m_s = self.east_m_s
-        # Check for None values in primitive types
-        if self.down_m_s is None:
-            raise ValueError(f"Field 'down_m_s' must be set before converting to C struct")
         c_struct.down_m_s = self.down_m_s
         return c_struct
 
@@ -1636,11 +1386,9 @@ class PositionVelocityNed:
         """Convert to C structure for C library calls"""
         c_struct = PositionVelocityNedCStruct()
         # Convert nested Python object to C struct
-        if self.position is not None:
-            c_struct.position = self.position.to_c_struct()
+        c_struct.position = self.position.to_c_struct()
         # Convert nested Python object to C struct
-        if self.velocity is not None:
-            c_struct.velocity = self.velocity.to_c_struct()
+        c_struct.velocity = self.velocity.to_c_struct()
         return c_struct
 
     def __str__(self):
@@ -1671,17 +1419,8 @@ class GroundTruth:
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = GroundTruthCStruct()
-        # Check for None values in primitive types
-        if self.latitude_deg is None:
-            raise ValueError(f"Field 'latitude_deg' must be set before converting to C struct")
         c_struct.latitude_deg = self.latitude_deg
-        # Check for None values in primitive types
-        if self.longitude_deg is None:
-            raise ValueError(f"Field 'longitude_deg' must be set before converting to C struct")
         c_struct.longitude_deg = self.longitude_deg
-        # Check for None values in primitive types
-        if self.absolute_altitude_m is None:
-            raise ValueError(f"Field 'absolute_altitude_m' must be set before converting to C struct")
         c_struct.absolute_altitude_m = self.absolute_altitude_m
         return c_struct
 
@@ -1720,29 +1459,11 @@ class FixedwingMetrics:
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = FixedwingMetricsCStruct()
-        # Check for None values in primitive types
-        if self.airspeed_m_s is None:
-            raise ValueError(f"Field 'airspeed_m_s' must be set before converting to C struct")
         c_struct.airspeed_m_s = self.airspeed_m_s
-        # Check for None values in primitive types
-        if self.throttle_percentage is None:
-            raise ValueError(f"Field 'throttle_percentage' must be set before converting to C struct")
         c_struct.throttle_percentage = self.throttle_percentage
-        # Check for None values in primitive types
-        if self.climb_rate_m_s is None:
-            raise ValueError(f"Field 'climb_rate_m_s' must be set before converting to C struct")
         c_struct.climb_rate_m_s = self.climb_rate_m_s
-        # Check for None values in primitive types
-        if self.groundspeed_m_s is None:
-            raise ValueError(f"Field 'groundspeed_m_s' must be set before converting to C struct")
         c_struct.groundspeed_m_s = self.groundspeed_m_s
-        # Check for None values in primitive types
-        if self.heading_deg is None:
-            raise ValueError(f"Field 'heading_deg' must be set before converting to C struct")
         c_struct.heading_deg = self.heading_deg
-        # Check for None values in primitive types
-        if self.absolute_altitude_m is None:
-            raise ValueError(f"Field 'absolute_altitude_m' must be set before converting to C struct")
         c_struct.absolute_altitude_m = self.absolute_altitude_m
         return c_struct
 
@@ -1778,17 +1499,8 @@ class AccelerationFrd:
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = AccelerationFrdCStruct()
-        # Check for None values in primitive types
-        if self.forward_m_s2 is None:
-            raise ValueError(f"Field 'forward_m_s2' must be set before converting to C struct")
         c_struct.forward_m_s2 = self.forward_m_s2
-        # Check for None values in primitive types
-        if self.right_m_s2 is None:
-            raise ValueError(f"Field 'right_m_s2' must be set before converting to C struct")
         c_struct.right_m_s2 = self.right_m_s2
-        # Check for None values in primitive types
-        if self.down_m_s2 is None:
-            raise ValueError(f"Field 'down_m_s2' must be set before converting to C struct")
         c_struct.down_m_s2 = self.down_m_s2
         return c_struct
 
@@ -1821,17 +1533,8 @@ class AngularVelocityFrd:
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = AngularVelocityFrdCStruct()
-        # Check for None values in primitive types
-        if self.forward_rad_s is None:
-            raise ValueError(f"Field 'forward_rad_s' must be set before converting to C struct")
         c_struct.forward_rad_s = self.forward_rad_s
-        # Check for None values in primitive types
-        if self.right_rad_s is None:
-            raise ValueError(f"Field 'right_rad_s' must be set before converting to C struct")
         c_struct.right_rad_s = self.right_rad_s
-        # Check for None values in primitive types
-        if self.down_rad_s is None:
-            raise ValueError(f"Field 'down_rad_s' must be set before converting to C struct")
         c_struct.down_rad_s = self.down_rad_s
         return c_struct
 
@@ -1864,17 +1567,8 @@ class MagneticFieldFrd:
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = MagneticFieldFrdCStruct()
-        # Check for None values in primitive types
-        if self.forward_gauss is None:
-            raise ValueError(f"Field 'forward_gauss' must be set before converting to C struct")
         c_struct.forward_gauss = self.forward_gauss
-        # Check for None values in primitive types
-        if self.right_gauss is None:
-            raise ValueError(f"Field 'right_gauss' must be set before converting to C struct")
         c_struct.right_gauss = self.right_gauss
-        # Check for None values in primitive types
-        if self.down_gauss is None:
-            raise ValueError(f"Field 'down_gauss' must be set before converting to C struct")
         c_struct.down_gauss = self.down_gauss
         return c_struct
 
@@ -1915,21 +1609,12 @@ class Imu:
         """Convert to C structure for C library calls"""
         c_struct = ImuCStruct()
         # Convert nested Python object to C struct
-        if self.acceleration_frd is not None:
-            c_struct.acceleration_frd = self.acceleration_frd.to_c_struct()
+        c_struct.acceleration_frd = self.acceleration_frd.to_c_struct()
         # Convert nested Python object to C struct
-        if self.angular_velocity_frd is not None:
-            c_struct.angular_velocity_frd = self.angular_velocity_frd.to_c_struct()
+        c_struct.angular_velocity_frd = self.angular_velocity_frd.to_c_struct()
         # Convert nested Python object to C struct
-        if self.magnetic_field_frd is not None:
-            c_struct.magnetic_field_frd = self.magnetic_field_frd.to_c_struct()
-        # Check for None values in primitive types
-        if self.temperature_degc is None:
-            raise ValueError(f"Field 'temperature_degc' must be set before converting to C struct")
+        c_struct.magnetic_field_frd = self.magnetic_field_frd.to_c_struct()
         c_struct.temperature_degc = self.temperature_degc
-        # Check for None values in primitive types
-        if self.timestamp_us is None:
-            raise ValueError(f"Field 'timestamp_us' must be set before converting to C struct")
         c_struct.timestamp_us = self.timestamp_us
         return c_struct
 
@@ -1964,17 +1649,8 @@ class GpsGlobalOrigin:
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = GpsGlobalOriginCStruct()
-        # Check for None values in primitive types
-        if self.latitude_deg is None:
-            raise ValueError(f"Field 'latitude_deg' must be set before converting to C struct")
         c_struct.latitude_deg = self.latitude_deg
-        # Check for None values in primitive types
-        if self.longitude_deg is None:
-            raise ValueError(f"Field 'longitude_deg' must be set before converting to C struct")
         c_struct.longitude_deg = self.longitude_deg
-        # Check for None values in primitive types
-        if self.altitude_m is None:
-            raise ValueError(f"Field 'altitude_m' must be set before converting to C struct")
         c_struct.altitude_m = self.altitude_m
         return c_struct
 
@@ -2013,29 +1689,11 @@ class Altitude:
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = AltitudeCStruct()
-        # Check for None values in primitive types
-        if self.altitude_monotonic_m is None:
-            raise ValueError(f"Field 'altitude_monotonic_m' must be set before converting to C struct")
         c_struct.altitude_monotonic_m = self.altitude_monotonic_m
-        # Check for None values in primitive types
-        if self.altitude_amsl_m is None:
-            raise ValueError(f"Field 'altitude_amsl_m' must be set before converting to C struct")
         c_struct.altitude_amsl_m = self.altitude_amsl_m
-        # Check for None values in primitive types
-        if self.altitude_local_m is None:
-            raise ValueError(f"Field 'altitude_local_m' must be set before converting to C struct")
         c_struct.altitude_local_m = self.altitude_local_m
-        # Check for None values in primitive types
-        if self.altitude_relative_m is None:
-            raise ValueError(f"Field 'altitude_relative_m' must be set before converting to C struct")
         c_struct.altitude_relative_m = self.altitude_relative_m
-        # Check for None values in primitive types
-        if self.altitude_terrain_m is None:
-            raise ValueError(f"Field 'altitude_terrain_m' must be set before converting to C struct")
         c_struct.altitude_terrain_m = self.altitude_terrain_m
-        # Check for None values in primitive types
-        if self.bottom_clearance_m is None:
-            raise ValueError(f"Field 'bottom_clearance_m' must be set before converting to C struct")
         c_struct.bottom_clearance_m = self.bottom_clearance_m
         return c_struct
 
@@ -2081,37 +1739,13 @@ class Wind:
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = WindCStruct()
-        # Check for None values in primitive types
-        if self.wind_x_ned_m_s is None:
-            raise ValueError(f"Field 'wind_x_ned_m_s' must be set before converting to C struct")
         c_struct.wind_x_ned_m_s = self.wind_x_ned_m_s
-        # Check for None values in primitive types
-        if self.wind_y_ned_m_s is None:
-            raise ValueError(f"Field 'wind_y_ned_m_s' must be set before converting to C struct")
         c_struct.wind_y_ned_m_s = self.wind_y_ned_m_s
-        # Check for None values in primitive types
-        if self.wind_z_ned_m_s is None:
-            raise ValueError(f"Field 'wind_z_ned_m_s' must be set before converting to C struct")
         c_struct.wind_z_ned_m_s = self.wind_z_ned_m_s
-        # Check for None values in primitive types
-        if self.horizontal_variability_stddev_m_s is None:
-            raise ValueError(f"Field 'horizontal_variability_stddev_m_s' must be set before converting to C struct")
         c_struct.horizontal_variability_stddev_m_s = self.horizontal_variability_stddev_m_s
-        # Check for None values in primitive types
-        if self.vertical_variability_stddev_m_s is None:
-            raise ValueError(f"Field 'vertical_variability_stddev_m_s' must be set before converting to C struct")
         c_struct.vertical_variability_stddev_m_s = self.vertical_variability_stddev_m_s
-        # Check for None values in primitive types
-        if self.wind_altitude_msl_m is None:
-            raise ValueError(f"Field 'wind_altitude_msl_m' must be set before converting to C struct")
         c_struct.wind_altitude_msl_m = self.wind_altitude_msl_m
-        # Check for None values in primitive types
-        if self.horizontal_wind_speed_accuracy_m_s is None:
-            raise ValueError(f"Field 'horizontal_wind_speed_accuracy_m_s' must be set before converting to C struct")
         c_struct.horizontal_wind_speed_accuracy_m_s = self.horizontal_wind_speed_accuracy_m_s
-        # Check for None values in primitive types
-        if self.vertical_wind_speed_accuracy_m_s is None:
-            raise ValueError(f"Field 'vertical_wind_speed_accuracy_m_s' must be set before converting to C struct")
         c_struct.vertical_wind_speed_accuracy_m_s = self.vertical_wind_speed_accuracy_m_s
         return c_struct
 

@@ -121,57 +121,18 @@ class MissionItem:
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = MissionItemCStruct()
-        # Check for None values in primitive types
-        if self.seq is None:
-            raise ValueError(f"Field 'seq' must be set before converting to C struct")
         c_struct.seq = self.seq
-        # Check for None values in primitive types
-        if self.frame is None:
-            raise ValueError(f"Field 'frame' must be set before converting to C struct")
         c_struct.frame = self.frame
-        # Check for None values in primitive types
-        if self.command is None:
-            raise ValueError(f"Field 'command' must be set before converting to C struct")
         c_struct.command = self.command
-        # Check for None values in primitive types
-        if self.current is None:
-            raise ValueError(f"Field 'current' must be set before converting to C struct")
         c_struct.current = self.current
-        # Check for None values in primitive types
-        if self.autocontinue is None:
-            raise ValueError(f"Field 'autocontinue' must be set before converting to C struct")
         c_struct.autocontinue = self.autocontinue
-        # Check for None values in primitive types
-        if self.param1 is None:
-            raise ValueError(f"Field 'param1' must be set before converting to C struct")
         c_struct.param1 = self.param1
-        # Check for None values in primitive types
-        if self.param2 is None:
-            raise ValueError(f"Field 'param2' must be set before converting to C struct")
         c_struct.param2 = self.param2
-        # Check for None values in primitive types
-        if self.param3 is None:
-            raise ValueError(f"Field 'param3' must be set before converting to C struct")
         c_struct.param3 = self.param3
-        # Check for None values in primitive types
-        if self.param4 is None:
-            raise ValueError(f"Field 'param4' must be set before converting to C struct")
         c_struct.param4 = self.param4
-        # Check for None values in primitive types
-        if self.x is None:
-            raise ValueError(f"Field 'x' must be set before converting to C struct")
         c_struct.x = self.x
-        # Check for None values in primitive types
-        if self.y is None:
-            raise ValueError(f"Field 'y' must be set before converting to C struct")
         c_struct.y = self.y
-        # Check for None values in primitive types
-        if self.z is None:
-            raise ValueError(f"Field 'z' must be set before converting to C struct")
         c_struct.z = self.z
-        # Check for None values in primitive types
-        if self.mission_type is None:
-            raise ValueError(f"Field 'mission_type' must be set before converting to C struct")
         c_struct.mission_type = self.mission_type
         return c_struct
 
@@ -215,16 +176,12 @@ class MissionPlan:
         """Convert to C structure for C library calls"""
         c_struct = MissionPlanCStruct()
         # Convert list of Python objects to C array
-        if self.mission_items:
-            array_type = MissionItemCStruct * len(self.mission_items)
-            c_array = array_type()
-            for i, item in enumerate(self.mission_items):
-                c_array[i] = item.to_c_struct()
-            c_struct.mission_items = ctypes.cast(c_array, ctypes.POINTER(MissionItemCStruct))
-            c_struct.mission_items_size = len(self.mission_items)
-        else:
-            c_struct.mission_items = None
-            c_struct.mission_items_size = 0
+        array_type = MissionItemCStruct * len(self.mission_items)
+        c_array = array_type()
+        for i, item in enumerate(self.mission_items):
+            c_array[i] = item.to_c_struct()
+        c_struct.mission_items = ctypes.cast(c_array, ctypes.POINTER(MissionItemCStruct))
+        c_struct.mission_items_size = len(self.mission_items)
         return c_struct
 
     def __str__(self):
@@ -252,13 +209,7 @@ class MissionProgress:
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = MissionProgressCStruct()
-        # Check for None values in primitive types
-        if self.current is None:
-            raise ValueError(f"Field 'current' must be set before converting to C struct")
         c_struct.current = self.current
-        # Check for None values in primitive types
-        if self.total is None:
-            raise ValueError(f"Field 'total' must be set before converting to C struct")
         c_struct.total = self.total
         return c_struct
 

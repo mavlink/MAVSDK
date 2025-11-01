@@ -141,17 +141,11 @@ class Event:
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = EventCStruct()
-        # Check for None values in primitive types
-        if self.compid is None:
-            raise ValueError(f"Field 'compid' must be set before converting to C struct")
         c_struct.compid = self.compid
         # Convert Python string to C string (bytes)
         c_struct.message = self.message.encode('utf-8')
         # Convert Python string to C string (bytes)
         c_struct.description = self.description.encode('utf-8')
-        # Check for None values in enum types
-        if self.log_level is None:
-            raise ValueError(f"Field 'log_level' must be set before converting to C struct")
         c_struct.log_level = int(self.log_level)
         # Convert Python string to C string (bytes)
         c_struct.event_namespace = self.event_namespace.encode('utf-8')
@@ -201,9 +195,6 @@ class HealthAndArmingCheckProblem:
         c_struct.message = self.message.encode('utf-8')
         # Convert Python string to C string (bytes)
         c_struct.description = self.description.encode('utf-8')
-        # Check for None values in enum types
-        if self.log_level is None:
-            raise ValueError(f"Field 'log_level' must be set before converting to C struct")
         c_struct.log_level = int(self.log_level)
         # Convert Python string to C string (bytes)
         c_struct.health_component = self.health_component.encode('utf-8')
@@ -246,21 +237,14 @@ class HealthAndArmingCheckMode:
         c_struct = HealthAndArmingCheckModeCStruct()
         # Convert Python string to C string (bytes)
         c_struct.mode_name = self.mode_name.encode('utf-8')
-        # Check for None values in primitive types
-        if self.can_arm_or_run is None:
-            raise ValueError(f"Field 'can_arm_or_run' must be set before converting to C struct")
         c_struct.can_arm_or_run = self.can_arm_or_run
         # Convert list of Python objects to C array
-        if self.problems:
-            array_type = HealthAndArmingCheckProblemCStruct * len(self.problems)
-            c_array = array_type()
-            for i, item in enumerate(self.problems):
-                c_array[i] = item.to_c_struct()
-            c_struct.problems = ctypes.cast(c_array, ctypes.POINTER(HealthAndArmingCheckProblemCStruct))
-            c_struct.problems_size = len(self.problems)
-        else:
-            c_struct.problems = None
-            c_struct.problems_size = 0
+        array_type = HealthAndArmingCheckProblemCStruct * len(self.problems)
+        c_array = array_type()
+        for i, item in enumerate(self.problems):
+            c_array[i] = item.to_c_struct()
+        c_struct.problems = ctypes.cast(c_array, ctypes.POINTER(HealthAndArmingCheckProblemCStruct))
+        c_struct.problems_size = len(self.problems)
         return c_struct
 
     def __str__(self):
@@ -302,17 +286,8 @@ class HealthComponentReport:
         c_struct.name = self.name.encode('utf-8')
         # Convert Python string to C string (bytes)
         c_struct.label = self.label.encode('utf-8')
-        # Check for None values in primitive types
-        if self.is_present is None:
-            raise ValueError(f"Field 'is_present' must be set before converting to C struct")
         c_struct.is_present = self.is_present
-        # Check for None values in primitive types
-        if self.has_error is None:
-            raise ValueError(f"Field 'has_error' must be set before converting to C struct")
         c_struct.has_error = self.has_error
-        # Check for None values in primitive types
-        if self.has_warning is None:
-            raise ValueError(f"Field 'has_warning' must be set before converting to C struct")
         c_struct.has_warning = self.has_warning
         return c_struct
 
@@ -357,30 +332,21 @@ class HealthAndArmingCheckReport:
         """Convert to C structure for C library calls"""
         c_struct = HealthAndArmingCheckReportCStruct()
         # Convert nested Python object to C struct
-        if self.current_mode_intention is not None:
-            c_struct.current_mode_intention = self.current_mode_intention.to_c_struct()
+        c_struct.current_mode_intention = self.current_mode_intention.to_c_struct()
         # Convert list of Python objects to C array
-        if self.health_components:
-            array_type = HealthComponentReportCStruct * len(self.health_components)
-            c_array = array_type()
-            for i, item in enumerate(self.health_components):
-                c_array[i] = item.to_c_struct()
-            c_struct.health_components = ctypes.cast(c_array, ctypes.POINTER(HealthComponentReportCStruct))
-            c_struct.health_components_size = len(self.health_components)
-        else:
-            c_struct.health_components = None
-            c_struct.health_components_size = 0
+        array_type = HealthComponentReportCStruct * len(self.health_components)
+        c_array = array_type()
+        for i, item in enumerate(self.health_components):
+            c_array[i] = item.to_c_struct()
+        c_struct.health_components = ctypes.cast(c_array, ctypes.POINTER(HealthComponentReportCStruct))
+        c_struct.health_components_size = len(self.health_components)
         # Convert list of Python objects to C array
-        if self.all_problems:
-            array_type = HealthAndArmingCheckProblemCStruct * len(self.all_problems)
-            c_array = array_type()
-            for i, item in enumerate(self.all_problems):
-                c_array[i] = item.to_c_struct()
-            c_struct.all_problems = ctypes.cast(c_array, ctypes.POINTER(HealthAndArmingCheckProblemCStruct))
-            c_struct.all_problems_size = len(self.all_problems)
-        else:
-            c_struct.all_problems = None
-            c_struct.all_problems_size = 0
+        array_type = HealthAndArmingCheckProblemCStruct * len(self.all_problems)
+        c_array = array_type()
+        for i, item in enumerate(self.all_problems):
+            c_array[i] = item.to_c_struct()
+        c_struct.all_problems = ctypes.cast(c_array, ctypes.POINTER(HealthAndArmingCheckProblemCStruct))
+        c_struct.all_problems_size = len(self.all_problems)
         return c_struct
 
     def __str__(self):

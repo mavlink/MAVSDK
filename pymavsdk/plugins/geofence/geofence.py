@@ -101,13 +101,7 @@ class Point:
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = PointCStruct()
-        # Check for None values in primitive types
-        if self.latitude_deg is None:
-            raise ValueError(f"Field 'latitude_deg' must be set before converting to C struct")
         c_struct.latitude_deg = self.latitude_deg
-        # Check for None values in primitive types
-        if self.longitude_deg is None:
-            raise ValueError(f"Field 'longitude_deg' must be set before converting to C struct")
         c_struct.longitude_deg = self.longitude_deg
         return c_struct
 
@@ -143,19 +137,12 @@ class Polygon:
         """Convert to C structure for C library calls"""
         c_struct = PolygonCStruct()
         # Convert list of Python objects to C array
-        if self.points:
-            array_type = PointCStruct * len(self.points)
-            c_array = array_type()
-            for i, item in enumerate(self.points):
-                c_array[i] = item.to_c_struct()
-            c_struct.points = ctypes.cast(c_array, ctypes.POINTER(PointCStruct))
-            c_struct.points_size = len(self.points)
-        else:
-            c_struct.points = None
-            c_struct.points_size = 0
-        # Check for None values in enum types
-        if self.fence_type is None:
-            raise ValueError(f"Field 'fence_type' must be set before converting to C struct")
+        array_type = PointCStruct * len(self.points)
+        c_array = array_type()
+        for i, item in enumerate(self.points):
+            c_array[i] = item.to_c_struct()
+        c_struct.points = ctypes.cast(c_array, ctypes.POINTER(PointCStruct))
+        c_struct.points_size = len(self.points)
         c_struct.fence_type = int(self.fence_type)
         return c_struct
 
@@ -190,15 +177,8 @@ class Circle:
         """Convert to C structure for C library calls"""
         c_struct = CircleCStruct()
         # Convert nested Python object to C struct
-        if self.point is not None:
-            c_struct.point = self.point.to_c_struct()
-        # Check for None values in primitive types
-        if self.radius is None:
-            raise ValueError(f"Field 'radius' must be set before converting to C struct")
+        c_struct.point = self.point.to_c_struct()
         c_struct.radius = self.radius
-        # Check for None values in enum types
-        if self.fence_type is None:
-            raise ValueError(f"Field 'fence_type' must be set before converting to C struct")
         c_struct.fence_type = int(self.fence_type)
         return c_struct
 
@@ -238,27 +218,19 @@ class GeofenceData:
         """Convert to C structure for C library calls"""
         c_struct = GeofenceDataCStruct()
         # Convert list of Python objects to C array
-        if self.polygons:
-            array_type = PolygonCStruct * len(self.polygons)
-            c_array = array_type()
-            for i, item in enumerate(self.polygons):
-                c_array[i] = item.to_c_struct()
-            c_struct.polygons = ctypes.cast(c_array, ctypes.POINTER(PolygonCStruct))
-            c_struct.polygons_size = len(self.polygons)
-        else:
-            c_struct.polygons = None
-            c_struct.polygons_size = 0
+        array_type = PolygonCStruct * len(self.polygons)
+        c_array = array_type()
+        for i, item in enumerate(self.polygons):
+            c_array[i] = item.to_c_struct()
+        c_struct.polygons = ctypes.cast(c_array, ctypes.POINTER(PolygonCStruct))
+        c_struct.polygons_size = len(self.polygons)
         # Convert list of Python objects to C array
-        if self.circles:
-            array_type = CircleCStruct * len(self.circles)
-            c_array = array_type()
-            for i, item in enumerate(self.circles):
-                c_array[i] = item.to_c_struct()
-            c_struct.circles = ctypes.cast(c_array, ctypes.POINTER(CircleCStruct))
-            c_struct.circles_size = len(self.circles)
-        else:
-            c_struct.circles = None
-            c_struct.circles_size = 0
+        array_type = CircleCStruct * len(self.circles)
+        c_array = array_type()
+        for i, item in enumerate(self.circles):
+            c_array[i] = item.to_c_struct()
+        c_struct.circles = ctypes.cast(c_array, ctypes.POINTER(CircleCStruct))
+        c_struct.circles_size = len(self.circles)
         return c_struct
 
     def __str__(self):

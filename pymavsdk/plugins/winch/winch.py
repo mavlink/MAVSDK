@@ -132,61 +132,19 @@ class StatusFlags:
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = StatusFlagsCStruct()
-        # Check for None values in primitive types
-        if self.healthy is None:
-            raise ValueError(f"Field 'healthy' must be set before converting to C struct")
         c_struct.healthy = self.healthy
-        # Check for None values in primitive types
-        if self.fully_retracted is None:
-            raise ValueError(f"Field 'fully_retracted' must be set before converting to C struct")
         c_struct.fully_retracted = self.fully_retracted
-        # Check for None values in primitive types
-        if self.moving is None:
-            raise ValueError(f"Field 'moving' must be set before converting to C struct")
         c_struct.moving = self.moving
-        # Check for None values in primitive types
-        if self.clutch_engaged is None:
-            raise ValueError(f"Field 'clutch_engaged' must be set before converting to C struct")
         c_struct.clutch_engaged = self.clutch_engaged
-        # Check for None values in primitive types
-        if self.locked is None:
-            raise ValueError(f"Field 'locked' must be set before converting to C struct")
         c_struct.locked = self.locked
-        # Check for None values in primitive types
-        if self.dropping is None:
-            raise ValueError(f"Field 'dropping' must be set before converting to C struct")
         c_struct.dropping = self.dropping
-        # Check for None values in primitive types
-        if self.arresting is None:
-            raise ValueError(f"Field 'arresting' must be set before converting to C struct")
         c_struct.arresting = self.arresting
-        # Check for None values in primitive types
-        if self.ground_sense is None:
-            raise ValueError(f"Field 'ground_sense' must be set before converting to C struct")
         c_struct.ground_sense = self.ground_sense
-        # Check for None values in primitive types
-        if self.retracting is None:
-            raise ValueError(f"Field 'retracting' must be set before converting to C struct")
         c_struct.retracting = self.retracting
-        # Check for None values in primitive types
-        if self.redeliver is None:
-            raise ValueError(f"Field 'redeliver' must be set before converting to C struct")
         c_struct.redeliver = self.redeliver
-        # Check for None values in primitive types
-        if self.abandon_line is None:
-            raise ValueError(f"Field 'abandon_line' must be set before converting to C struct")
         c_struct.abandon_line = self.abandon_line
-        # Check for None values in primitive types
-        if self.locking is None:
-            raise ValueError(f"Field 'locking' must be set before converting to C struct")
         c_struct.locking = self.locking
-        # Check for None values in primitive types
-        if self.load_line is None:
-            raise ValueError(f"Field 'load_line' must be set before converting to C struct")
         c_struct.load_line = self.load_line
-        # Check for None values in primitive types
-        if self.load_payload is None:
-            raise ValueError(f"Field 'load_payload' must be set before converting to C struct")
         c_struct.load_payload = self.load_payload
         return c_struct
 
@@ -241,37 +199,15 @@ class Status:
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = StatusCStruct()
-        # Check for None values in primitive types
-        if self.time_usec is None:
-            raise ValueError(f"Field 'time_usec' must be set before converting to C struct")
         c_struct.time_usec = self.time_usec
-        # Check for None values in primitive types
-        if self.line_length_m is None:
-            raise ValueError(f"Field 'line_length_m' must be set before converting to C struct")
         c_struct.line_length_m = self.line_length_m
-        # Check for None values in primitive types
-        if self.speed_m_s is None:
-            raise ValueError(f"Field 'speed_m_s' must be set before converting to C struct")
         c_struct.speed_m_s = self.speed_m_s
-        # Check for None values in primitive types
-        if self.tension_kg is None:
-            raise ValueError(f"Field 'tension_kg' must be set before converting to C struct")
         c_struct.tension_kg = self.tension_kg
-        # Check for None values in primitive types
-        if self.voltage_v is None:
-            raise ValueError(f"Field 'voltage_v' must be set before converting to C struct")
         c_struct.voltage_v = self.voltage_v
-        # Check for None values in primitive types
-        if self.current_a is None:
-            raise ValueError(f"Field 'current_a' must be set before converting to C struct")
         c_struct.current_a = self.current_a
-        # Check for None values in primitive types
-        if self.temperature_c is None:
-            raise ValueError(f"Field 'temperature_c' must be set before converting to C struct")
         c_struct.temperature_c = self.temperature_c
         # Convert nested Python object to C struct
-        if self.status_flags is not None:
-            c_struct.status_flags = self.status_flags.to_c_struct()
+        c_struct.status_flags = self.status_flags.to_c_struct()
         return c_struct
 
     def __str__(self):

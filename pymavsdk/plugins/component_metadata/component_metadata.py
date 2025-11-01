@@ -112,13 +112,7 @@ class MetadataUpdate:
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = MetadataUpdateCStruct()
-        # Check for None values in primitive types
-        if self.compid is None:
-            raise ValueError(f"Field 'compid' must be set before converting to C struct")
         c_struct.compid = self.compid
-        # Check for None values in enum types
-        if self.type is None:
-            raise ValueError(f"Field 'type' must be set before converting to C struct")
         c_struct.type = int(self.type)
         # Convert Python string to C string (bytes)
         c_struct.json_metadata = self.json_metadata.encode('utf-8')

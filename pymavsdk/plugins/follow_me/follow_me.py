@@ -97,29 +97,11 @@ class Config:
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = ConfigCStruct()
-        # Check for None values in primitive types
-        if self.follow_height_m is None:
-            raise ValueError(f"Field 'follow_height_m' must be set before converting to C struct")
         c_struct.follow_height_m = self.follow_height_m
-        # Check for None values in primitive types
-        if self.follow_distance_m is None:
-            raise ValueError(f"Field 'follow_distance_m' must be set before converting to C struct")
         c_struct.follow_distance_m = self.follow_distance_m
-        # Check for None values in primitive types
-        if self.responsiveness is None:
-            raise ValueError(f"Field 'responsiveness' must be set before converting to C struct")
         c_struct.responsiveness = self.responsiveness
-        # Check for None values in enum types
-        if self.altitude_mode is None:
-            raise ValueError(f"Field 'altitude_mode' must be set before converting to C struct")
         c_struct.altitude_mode = int(self.altitude_mode)
-        # Check for None values in primitive types
-        if self.max_tangential_vel_m_s is None:
-            raise ValueError(f"Field 'max_tangential_vel_m_s' must be set before converting to C struct")
         c_struct.max_tangential_vel_m_s = self.max_tangential_vel_m_s
-        # Check for None values in primitive types
-        if self.follow_angle_deg is None:
-            raise ValueError(f"Field 'follow_angle_deg' must be set before converting to C struct")
         c_struct.follow_angle_deg = self.follow_angle_deg
         return c_struct
 
@@ -161,29 +143,11 @@ class TargetLocation:
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = TargetLocationCStruct()
-        # Check for None values in primitive types
-        if self.latitude_deg is None:
-            raise ValueError(f"Field 'latitude_deg' must be set before converting to C struct")
         c_struct.latitude_deg = self.latitude_deg
-        # Check for None values in primitive types
-        if self.longitude_deg is None:
-            raise ValueError(f"Field 'longitude_deg' must be set before converting to C struct")
         c_struct.longitude_deg = self.longitude_deg
-        # Check for None values in primitive types
-        if self.absolute_altitude_m is None:
-            raise ValueError(f"Field 'absolute_altitude_m' must be set before converting to C struct")
         c_struct.absolute_altitude_m = self.absolute_altitude_m
-        # Check for None values in primitive types
-        if self.velocity_x_m_s is None:
-            raise ValueError(f"Field 'velocity_x_m_s' must be set before converting to C struct")
         c_struct.velocity_x_m_s = self.velocity_x_m_s
-        # Check for None values in primitive types
-        if self.velocity_y_m_s is None:
-            raise ValueError(f"Field 'velocity_y_m_s' must be set before converting to C struct")
         c_struct.velocity_y_m_s = self.velocity_y_m_s
-        # Check for None values in primitive types
-        if self.velocity_z_m_s is None:
-            raise ValueError(f"Field 'velocity_z_m_s' must be set before converting to C struct")
         c_struct.velocity_z_m_s = self.velocity_z_m_s
         return c_struct
 

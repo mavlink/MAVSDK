@@ -106,21 +106,9 @@ class FlightInfo:
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = FlightInfoCStruct()
-        # Check for None values in primitive types
-        if self.time_boot_ms is None:
-            raise ValueError(f"Field 'time_boot_ms' must be set before converting to C struct")
         c_struct.time_boot_ms = self.time_boot_ms
-        # Check for None values in primitive types
-        if self.flight_uid is None:
-            raise ValueError(f"Field 'flight_uid' must be set before converting to C struct")
         c_struct.flight_uid = self.flight_uid
-        # Check for None values in primitive types
-        if self.duration_since_arming_ms is None:
-            raise ValueError(f"Field 'duration_since_arming_ms' must be set before converting to C struct")
         c_struct.duration_since_arming_ms = self.duration_since_arming_ms
-        # Check for None values in primitive types
-        if self.duration_since_takeoff_ms is None:
-            raise ValueError(f"Field 'duration_since_takeoff_ms' must be set before converting to C struct")
         c_struct.duration_since_takeoff_ms = self.duration_since_takeoff_ms
         return c_struct
 
@@ -155,9 +143,6 @@ class Identification:
         c_struct = IdentificationCStruct()
         # Convert Python string to C string (bytes)
         c_struct.hardware_uid = self.hardware_uid.encode('utf-8')
-        # Check for None values in primitive types
-        if self.legacy_uid is None:
-            raise ValueError(f"Field 'legacy_uid' must be set before converting to C struct")
         c_struct.legacy_uid = self.legacy_uid
         return c_struct
 
@@ -193,15 +178,9 @@ class Product:
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = ProductCStruct()
-        # Check for None values in primitive types
-        if self.vendor_id is None:
-            raise ValueError(f"Field 'vendor_id' must be set before converting to C struct")
         c_struct.vendor_id = self.vendor_id
         # Convert Python string to C string (bytes)
         c_struct.vendor_name = self.vendor_name.encode('utf-8')
-        # Check for None values in primitive types
-        if self.product_id is None:
-            raise ValueError(f"Field 'product_id' must be set before converting to C struct")
         c_struct.product_id = self.product_id
         # Convert Python string to C string (bytes)
         c_struct.product_name = self.product_name.encode('utf-8')
@@ -267,49 +246,19 @@ class Version:
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = VersionCStruct()
-        # Check for None values in primitive types
-        if self.flight_sw_major is None:
-            raise ValueError(f"Field 'flight_sw_major' must be set before converting to C struct")
         c_struct.flight_sw_major = self.flight_sw_major
-        # Check for None values in primitive types
-        if self.flight_sw_minor is None:
-            raise ValueError(f"Field 'flight_sw_minor' must be set before converting to C struct")
         c_struct.flight_sw_minor = self.flight_sw_minor
-        # Check for None values in primitive types
-        if self.flight_sw_patch is None:
-            raise ValueError(f"Field 'flight_sw_patch' must be set before converting to C struct")
         c_struct.flight_sw_patch = self.flight_sw_patch
-        # Check for None values in primitive types
-        if self.flight_sw_vendor_major is None:
-            raise ValueError(f"Field 'flight_sw_vendor_major' must be set before converting to C struct")
         c_struct.flight_sw_vendor_major = self.flight_sw_vendor_major
-        # Check for None values in primitive types
-        if self.flight_sw_vendor_minor is None:
-            raise ValueError(f"Field 'flight_sw_vendor_minor' must be set before converting to C struct")
         c_struct.flight_sw_vendor_minor = self.flight_sw_vendor_minor
-        # Check for None values in primitive types
-        if self.flight_sw_vendor_patch is None:
-            raise ValueError(f"Field 'flight_sw_vendor_patch' must be set before converting to C struct")
         c_struct.flight_sw_vendor_patch = self.flight_sw_vendor_patch
-        # Check for None values in primitive types
-        if self.os_sw_major is None:
-            raise ValueError(f"Field 'os_sw_major' must be set before converting to C struct")
         c_struct.os_sw_major = self.os_sw_major
-        # Check for None values in primitive types
-        if self.os_sw_minor is None:
-            raise ValueError(f"Field 'os_sw_minor' must be set before converting to C struct")
         c_struct.os_sw_minor = self.os_sw_minor
-        # Check for None values in primitive types
-        if self.os_sw_patch is None:
-            raise ValueError(f"Field 'os_sw_patch' must be set before converting to C struct")
         c_struct.os_sw_patch = self.os_sw_patch
         # Convert Python string to C string (bytes)
         c_struct.flight_sw_git_hash = self.flight_sw_git_hash.encode('utf-8')
         # Convert Python string to C string (bytes)
         c_struct.os_sw_git_hash = self.os_sw_git_hash.encode('utf-8')
-        # Check for None values in enum types
-        if self.flight_sw_version_type is None:
-            raise ValueError(f"Field 'flight_sw_version_type' must be set before converting to C struct")
         c_struct.flight_sw_version_type = int(self.flight_sw_version_type)
         return c_struct
 

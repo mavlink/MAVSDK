@@ -182,17 +182,8 @@ class PositionBody:
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = PositionBodyCStruct()
-        # Check for None values in primitive types
-        if self.x_m is None:
-            raise ValueError(f"Field 'x_m' must be set before converting to C struct")
         c_struct.x_m = self.x_m
-        # Check for None values in primitive types
-        if self.y_m is None:
-            raise ValueError(f"Field 'y_m' must be set before converting to C struct")
         c_struct.y_m = self.y_m
-        # Check for None values in primitive types
-        if self.z_m is None:
-            raise ValueError(f"Field 'z_m' must be set before converting to C struct")
         c_struct.z_m = self.z_m
         return c_struct
 
@@ -225,17 +216,8 @@ class AngleBody:
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = AngleBodyCStruct()
-        # Check for None values in primitive types
-        if self.roll_rad is None:
-            raise ValueError(f"Field 'roll_rad' must be set before converting to C struct")
         c_struct.roll_rad = self.roll_rad
-        # Check for None values in primitive types
-        if self.pitch_rad is None:
-            raise ValueError(f"Field 'pitch_rad' must be set before converting to C struct")
         c_struct.pitch_rad = self.pitch_rad
-        # Check for None values in primitive types
-        if self.yaw_rad is None:
-            raise ValueError(f"Field 'yaw_rad' must be set before converting to C struct")
         c_struct.yaw_rad = self.yaw_rad
         return c_struct
 
@@ -268,17 +250,8 @@ class SpeedBody:
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = SpeedBodyCStruct()
-        # Check for None values in primitive types
-        if self.x_m_s is None:
-            raise ValueError(f"Field 'x_m_s' must be set before converting to C struct")
         c_struct.x_m_s = self.x_m_s
-        # Check for None values in primitive types
-        if self.y_m_s is None:
-            raise ValueError(f"Field 'y_m_s' must be set before converting to C struct")
         c_struct.y_m_s = self.y_m_s
-        # Check for None values in primitive types
-        if self.z_m_s is None:
-            raise ValueError(f"Field 'z_m_s' must be set before converting to C struct")
         c_struct.z_m_s = self.z_m_s
         return c_struct
 
@@ -311,17 +284,8 @@ class SpeedNed:
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = SpeedNedCStruct()
-        # Check for None values in primitive types
-        if self.north_m_s is None:
-            raise ValueError(f"Field 'north_m_s' must be set before converting to C struct")
         c_struct.north_m_s = self.north_m_s
-        # Check for None values in primitive types
-        if self.east_m_s is None:
-            raise ValueError(f"Field 'east_m_s' must be set before converting to C struct")
         c_struct.east_m_s = self.east_m_s
-        # Check for None values in primitive types
-        if self.down_m_s is None:
-            raise ValueError(f"Field 'down_m_s' must be set before converting to C struct")
         c_struct.down_m_s = self.down_m_s
         return c_struct
 
@@ -354,17 +318,8 @@ class AngularVelocityBody:
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = AngularVelocityBodyCStruct()
-        # Check for None values in primitive types
-        if self.roll_rad_s is None:
-            raise ValueError(f"Field 'roll_rad_s' must be set before converting to C struct")
         c_struct.roll_rad_s = self.roll_rad_s
-        # Check for None values in primitive types
-        if self.pitch_rad_s is None:
-            raise ValueError(f"Field 'pitch_rad_s' must be set before converting to C struct")
         c_struct.pitch_rad_s = self.pitch_rad_s
-        # Check for None values in primitive types
-        if self.yaw_rad_s is None:
-            raise ValueError(f"Field 'yaw_rad_s' must be set before converting to C struct")
         c_struct.yaw_rad_s = self.yaw_rad_s
         return c_struct
 
@@ -401,13 +356,9 @@ class Covariance:
         """Convert to C structure for C library calls"""
         c_struct = CovarianceCStruct()
         # Convert Python list to C array
-        if self.covariance_matrix:
-            array_type = ctypes.c_float * len(self.covariance_matrix)
-            c_struct.covariance_matrix = array_type(*self.covariance_matrix)
-            c_struct.covariance_matrix_size = len(self.covariance_matrix)
-        else:
-            c_struct.covariance_matrix = None
-            c_struct.covariance_matrix_size = 0
+        array_type = ctypes.c_float * len(self.covariance_matrix)
+        c_struct.covariance_matrix = array_type(*self.covariance_matrix)
+        c_struct.covariance_matrix_size = len(self.covariance_matrix)
         return c_struct
 
     def __str__(self):
@@ -446,21 +397,9 @@ class Quaternion:
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = QuaternionCStruct()
-        # Check for None values in primitive types
-        if self.w is None:
-            raise ValueError(f"Field 'w' must be set before converting to C struct")
         c_struct.w = self.w
-        # Check for None values in primitive types
-        if self.x is None:
-            raise ValueError(f"Field 'x' must be set before converting to C struct")
         c_struct.x = self.x
-        # Check for None values in primitive types
-        if self.y is None:
-            raise ValueError(f"Field 'y' must be set before converting to C struct")
         c_struct.y = self.y
-        # Check for None values in primitive types
-        if self.z is None:
-            raise ValueError(f"Field 'z' must be set before converting to C struct")
         c_struct.z = self.z
         return c_struct
 
@@ -499,19 +438,13 @@ class VisionPositionEstimate:
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = VisionPositionEstimateCStruct()
-        # Check for None values in primitive types
-        if self.time_usec is None:
-            raise ValueError(f"Field 'time_usec' must be set before converting to C struct")
         c_struct.time_usec = self.time_usec
         # Convert nested Python object to C struct
-        if self.position_body is not None:
-            c_struct.position_body = self.position_body.to_c_struct()
+        c_struct.position_body = self.position_body.to_c_struct()
         # Convert nested Python object to C struct
-        if self.angle_body is not None:
-            c_struct.angle_body = self.angle_body.to_c_struct()
+        c_struct.angle_body = self.angle_body.to_c_struct()
         # Convert nested Python object to C struct
-        if self.pose_covariance is not None:
-            c_struct.pose_covariance = self.pose_covariance.to_c_struct()
+        c_struct.pose_covariance = self.pose_covariance.to_c_struct()
         return c_struct
 
     def __str__(self):
@@ -546,16 +479,11 @@ class VisionSpeedEstimate:
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = VisionSpeedEstimateCStruct()
-        # Check for None values in primitive types
-        if self.time_usec is None:
-            raise ValueError(f"Field 'time_usec' must be set before converting to C struct")
         c_struct.time_usec = self.time_usec
         # Convert nested Python object to C struct
-        if self.speed_ned is not None:
-            c_struct.speed_ned = self.speed_ned.to_c_struct()
+        c_struct.speed_ned = self.speed_ned.to_c_struct()
         # Convert nested Python object to C struct
-        if self.speed_covariance is not None:
-            c_struct.speed_covariance = self.speed_covariance.to_c_struct()
+        c_struct.speed_covariance = self.speed_covariance.to_c_struct()
         return c_struct
 
     def __str__(self):
@@ -592,19 +520,13 @@ class AttitudePositionMocap:
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = AttitudePositionMocapCStruct()
-        # Check for None values in primitive types
-        if self.time_usec is None:
-            raise ValueError(f"Field 'time_usec' must be set before converting to C struct")
         c_struct.time_usec = self.time_usec
         # Convert nested Python object to C struct
-        if self.q is not None:
-            c_struct.q = self.q.to_c_struct()
+        c_struct.q = self.q.to_c_struct()
         # Convert nested Python object to C struct
-        if self.position_body is not None:
-            c_struct.position_body = self.position_body.to_c_struct()
+        c_struct.position_body = self.position_body.to_c_struct()
         # Convert nested Python object to C struct
-        if self.pose_covariance is not None:
-            c_struct.pose_covariance = self.pose_covariance.to_c_struct()
+        c_struct.pose_covariance = self.pose_covariance.to_c_struct()
         return c_struct
 
     def __str__(self):
@@ -659,32 +581,20 @@ class Odometry:
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = OdometryCStruct()
-        # Check for None values in primitive types
-        if self.time_usec is None:
-            raise ValueError(f"Field 'time_usec' must be set before converting to C struct")
         c_struct.time_usec = self.time_usec
-        # Check for None values in enum types
-        if self.frame_id is None:
-            raise ValueError(f"Field 'frame_id' must be set before converting to C struct")
         c_struct.frame_id = int(self.frame_id)
         # Convert nested Python object to C struct
-        if self.position_body is not None:
-            c_struct.position_body = self.position_body.to_c_struct()
+        c_struct.position_body = self.position_body.to_c_struct()
         # Convert nested Python object to C struct
-        if self.q is not None:
-            c_struct.q = self.q.to_c_struct()
+        c_struct.q = self.q.to_c_struct()
         # Convert nested Python object to C struct
-        if self.speed_body is not None:
-            c_struct.speed_body = self.speed_body.to_c_struct()
+        c_struct.speed_body = self.speed_body.to_c_struct()
         # Convert nested Python object to C struct
-        if self.angular_velocity_body is not None:
-            c_struct.angular_velocity_body = self.angular_velocity_body.to_c_struct()
+        c_struct.angular_velocity_body = self.angular_velocity_body.to_c_struct()
         # Convert nested Python object to C struct
-        if self.pose_covariance is not None:
-            c_struct.pose_covariance = self.pose_covariance.to_c_struct()
+        c_struct.pose_covariance = self.pose_covariance.to_c_struct()
         # Convert nested Python object to C struct
-        if self.velocity_covariance is not None:
-            c_struct.velocity_covariance = self.velocity_covariance.to_c_struct()
+        c_struct.velocity_covariance = self.velocity_covariance.to_c_struct()
         return c_struct
 
     def __str__(self):

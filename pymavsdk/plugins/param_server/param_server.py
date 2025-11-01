@@ -98,9 +98,6 @@ class IntParam:
         c_struct = IntParamCStruct()
         # Convert Python string to C string (bytes)
         c_struct.name = self.name.encode('utf-8')
-        # Check for None values in primitive types
-        if self.value is None:
-            raise ValueError(f"Field 'value' must be set before converting to C struct")
         c_struct.value = self.value
         return c_struct
 
@@ -133,9 +130,6 @@ class FloatParam:
         c_struct = FloatParamCStruct()
         # Convert Python string to C string (bytes)
         c_struct.name = self.name.encode('utf-8')
-        # Check for None values in primitive types
-        if self.value is None:
-            raise ValueError(f"Field 'value' must be set before converting to C struct")
         c_struct.value = self.value
         return c_struct
 
@@ -214,38 +208,26 @@ class AllParams:
         """Convert to C structure for C library calls"""
         c_struct = AllParamsCStruct()
         # Convert list of Python objects to C array
-        if self.int_params:
-            array_type = IntParamCStruct * len(self.int_params)
-            c_array = array_type()
-            for i, item in enumerate(self.int_params):
-                c_array[i] = item.to_c_struct()
-            c_struct.int_params = ctypes.cast(c_array, ctypes.POINTER(IntParamCStruct))
-            c_struct.int_params_size = len(self.int_params)
-        else:
-            c_struct.int_params = None
-            c_struct.int_params_size = 0
+        array_type = IntParamCStruct * len(self.int_params)
+        c_array = array_type()
+        for i, item in enumerate(self.int_params):
+            c_array[i] = item.to_c_struct()
+        c_struct.int_params = ctypes.cast(c_array, ctypes.POINTER(IntParamCStruct))
+        c_struct.int_params_size = len(self.int_params)
         # Convert list of Python objects to C array
-        if self.float_params:
-            array_type = FloatParamCStruct * len(self.float_params)
-            c_array = array_type()
-            for i, item in enumerate(self.float_params):
-                c_array[i] = item.to_c_struct()
-            c_struct.float_params = ctypes.cast(c_array, ctypes.POINTER(FloatParamCStruct))
-            c_struct.float_params_size = len(self.float_params)
-        else:
-            c_struct.float_params = None
-            c_struct.float_params_size = 0
+        array_type = FloatParamCStruct * len(self.float_params)
+        c_array = array_type()
+        for i, item in enumerate(self.float_params):
+            c_array[i] = item.to_c_struct()
+        c_struct.float_params = ctypes.cast(c_array, ctypes.POINTER(FloatParamCStruct))
+        c_struct.float_params_size = len(self.float_params)
         # Convert list of Python objects to C array
-        if self.custom_params:
-            array_type = CustomParamCStruct * len(self.custom_params)
-            c_array = array_type()
-            for i, item in enumerate(self.custom_params):
-                c_array[i] = item.to_c_struct()
-            c_struct.custom_params = ctypes.cast(c_array, ctypes.POINTER(CustomParamCStruct))
-            c_struct.custom_params_size = len(self.custom_params)
-        else:
-            c_struct.custom_params = None
-            c_struct.custom_params_size = 0
+        array_type = CustomParamCStruct * len(self.custom_params)
+        c_array = array_type()
+        for i, item in enumerate(self.custom_params):
+            c_array[i] = item.to_c_struct()
+        c_struct.custom_params = ctypes.cast(c_array, ctypes.POINTER(CustomParamCStruct))
+        c_struct.custom_params_size = len(self.custom_params)
         return c_struct
 
     def __str__(self):

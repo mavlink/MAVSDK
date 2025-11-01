@@ -123,51 +123,18 @@ class AdsbVehicle:
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = AdsbVehicleCStruct()
-        # Check for None values in primitive types
-        if self.icao_address is None:
-            raise ValueError(f"Field 'icao_address' must be set before converting to C struct")
         c_struct.icao_address = self.icao_address
-        # Check for None values in primitive types
-        if self.latitude_deg is None:
-            raise ValueError(f"Field 'latitude_deg' must be set before converting to C struct")
         c_struct.latitude_deg = self.latitude_deg
-        # Check for None values in primitive types
-        if self.longitude_deg is None:
-            raise ValueError(f"Field 'longitude_deg' must be set before converting to C struct")
         c_struct.longitude_deg = self.longitude_deg
-        # Check for None values in enum types
-        if self.altitude_type is None:
-            raise ValueError(f"Field 'altitude_type' must be set before converting to C struct")
         c_struct.altitude_type = int(self.altitude_type)
-        # Check for None values in primitive types
-        if self.absolute_altitude_m is None:
-            raise ValueError(f"Field 'absolute_altitude_m' must be set before converting to C struct")
         c_struct.absolute_altitude_m = self.absolute_altitude_m
-        # Check for None values in primitive types
-        if self.heading_deg is None:
-            raise ValueError(f"Field 'heading_deg' must be set before converting to C struct")
         c_struct.heading_deg = self.heading_deg
-        # Check for None values in primitive types
-        if self.horizontal_velocity_m_s is None:
-            raise ValueError(f"Field 'horizontal_velocity_m_s' must be set before converting to C struct")
         c_struct.horizontal_velocity_m_s = self.horizontal_velocity_m_s
-        # Check for None values in primitive types
-        if self.vertical_velocity_m_s is None:
-            raise ValueError(f"Field 'vertical_velocity_m_s' must be set before converting to C struct")
         c_struct.vertical_velocity_m_s = self.vertical_velocity_m_s
         # Convert Python string to C string (bytes)
         c_struct.callsign = self.callsign.encode('utf-8')
-        # Check for None values in enum types
-        if self.emitter_type is None:
-            raise ValueError(f"Field 'emitter_type' must be set before converting to C struct")
         c_struct.emitter_type = int(self.emitter_type)
-        # Check for None values in primitive types
-        if self.squawk is None:
-            raise ValueError(f"Field 'squawk' must be set before converting to C struct")
         c_struct.squawk = self.squawk
-        # Check for None values in primitive types
-        if self.tslc_s is None:
-            raise ValueError(f"Field 'tslc_s' must be set before converting to C struct")
         c_struct.tslc_s = self.tslc_s
         return c_struct
 
