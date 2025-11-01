@@ -1,30 +1,42 @@
 from setuptools import setup, find_packages
 
-with open("README.md", "r", encoding="utf-8") as fh:
-    long_description = fh.read()
+def parse_long_description():
+    """
+    Helper function which parses the readme
+
+    :returns: Content of the Readme
+    """
+    with open(path.join(getcwd(), "README.md"), encoding="utf-8") as f:
+        return f.read()
+
+def version():
+    process = subprocess.Popen(["git", "describe", "--tags"], stdout=subprocess.PIPE)
+    output, _ = process.communicate()
+    exit_code = process.wait()
+    if exit_code != 0:
+        raise RuntimeError(f"git describe command exited with: {exit_code}")
+    git_describe_str = output.decode("utf-8").strip()
+    git_describe_str = git_describe_str.replace("-g", "+g")
+    print(git_describe_str)
+    return git_describe_str
 
 setup(
     name="pymavsdk",
-    version="0.1.0",
-    author="Your Name",
-    author_email="your.email@example.com",
-    description="Python wrapper for cmavsdk C library using ctypes",
-    long_description=long_description,
+    version=version(),
+    maintainer="Jonas Vautherin, Julian Oes",
+    maintainer_email="dev@jonas.vautherin.ch, julian@oes.ch",
+    description="Python wrapper for mavsdk",
+    long_description=parse_long_description(),
     long_description_content_type="text/markdown",
-    url="https://github.com/yourusername/pymavsdk",
-    packages=find_packages(),
+    url="https://github.com/mavlink/MAVSDK-Python",
+    packages=["pymavsdk"],
     classifiers=[
-        "Development Status :: 3 - Alpha",
+        "Development Status :: 5 - Production/Stable",
         "Intended Audience :: Developers",
-        "Topic :: Software Development :: Libraries :: Python Modules",
-        "License :: OSI Approved :: MIT License",
-        "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.8",
-        "Programming Language :: Python :: 3.9",
-        "Programming Language :: Python :: 3.10",
-        "Programming Language :: Python :: 3.11",
+        "License :: OSI Approved :: BSD License",
+        "Programming Language :: Python :: 3.14",
     ],
-    python_requires=">=3.8",
+    python_requires=">=3.7",
     include_package_data=True,
     package_data={
         "pymavsdk": ["lib/*"],
