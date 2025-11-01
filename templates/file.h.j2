@@ -188,7 +188,7 @@ CMAVSDK_EXPORT void mavsdk_{{ plugin_name.lower_snake_case }}_destroy(mavsdk_{{ 
  *
  * @param {{ plugin_name.lower_snake_case }} The {{ plugin_name.lower_snake_case }} instance.
  {% for param in method.params -%}
- * @param {{ param.name.lower_snake_case }} {{ param.description | replace('\n', '\n * ') if param.description else 'The ' + param.name.lower_snake_case + ' parameter.' }}
+ * @param {{ param.name.lower_snake_case }} {{ param.description | replace('\n', '\n * ') }}
  {% endfor %}
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.

@@ -152,7 +152,7 @@ CMAVSDK_EXPORT void mavsdk_gripper_destroy(mavsdk_gripper_t gripper);
  * @brief Gripper grab cargo.
  *
  * @param gripper The gripper instance.
-* @param instance The instance parameter.
+* @param instance 
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -182,7 +182,7 @@ mavsdk_gripper_grab(
  * @brief Gripper release cargo.
  *
  * @param gripper The gripper instance.
-* @param instance The instance parameter.
+* @param instance 
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */

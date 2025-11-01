@@ -335,7 +335,7 @@ mavsdk_winch_status(
  * @brief Allow motor to freewheel.
  *
  * @param winch The winch instance.
-* @param instance The instance parameter.
+* @param instance 
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -404,7 +404,7 @@ mavsdk_winch_relative_length_control(
  * @brief Wind or unwind line at specified rate.
  *
  * @param winch The winch instance.
-* @param instance The instance parameter.
+* @param instance 
 * @param rate_m_s  Rate at which to wind or unwind the line
  * 
  * @param callback Function to call when new data is available.
@@ -438,7 +438,7 @@ mavsdk_winch_rate_control(
  * @brief Perform the locking sequence to relieve motor while in the fully retracted position.
  *
  * @param winch The winch instance.
-* @param instance The instance parameter.
+* @param instance 
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -468,7 +468,7 @@ mavsdk_winch_lock(
  * @brief Sequence of drop, slow down, touch down, reel up, lock.
  *
  * @param winch The winch instance.
-* @param instance The instance parameter.
+* @param instance 
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -498,7 +498,7 @@ mavsdk_winch_deliver(
  * @brief Engage motor and hold current position.
  *
  * @param winch The winch instance.
-* @param instance The instance parameter.
+* @param instance 
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -528,7 +528,7 @@ mavsdk_winch_hold(
  * @brief Return the reel to the fully retracted position.
  *
  * @param winch The winch instance.
-* @param instance The instance parameter.
+* @param instance 
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -560,7 +560,7 @@ mavsdk_winch_retract(
  *  The winch will calculate the total loaded length and stop when the tension exceeds a threshold.
  *
  * @param winch The winch instance.
-* @param instance The instance parameter.
+* @param instance 
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -590,7 +590,7 @@ mavsdk_winch_load_line(
  * @brief Spool out the entire length of the line.
  *
  * @param winch The winch instance.
-* @param instance The instance parameter.
+* @param instance 
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -620,7 +620,7 @@ mavsdk_winch_abandon_line(
  * @brief Spools out just enough to present the hook to the user to load the payload.
  *
  * @param winch The winch instance.
-* @param instance The instance parameter.
+* @param instance 
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
