@@ -10,7 +10,7 @@ def _find_library() -> ctypes.CDLL:
     
     lib_names = {
         'linux': ['libcmavsdk.so'],
-        'darwin': ['libcmavsdk.3.dylib'],
+        'darwin': ['libcmavsdk.dylib'],
         'win32': ['cmavsdk.dll', 'libcmavsdk.dll']
     }
     
@@ -43,7 +43,6 @@ def _find_library() -> ctypes.CDLL:
             dep_path = path / dep_name
             if dep_path.exists():
                 try:
-                    print(f"Loading dependency: {dep_path}")
                     dep_lib = ctypes.CDLL(str(dep_path), mode=ctypes.RTLD_GLOBAL)
                     print(f"✓ Loaded dependency: {dep_name}")
                     break
@@ -56,12 +55,10 @@ def _find_library() -> ctypes.CDLL:
     for path in search_paths:
         for name in names:
             lib_path = path / name
-            print(f"Checking: {lib_path}")
             if lib_path.exists():
-                print(f"✓ Found library at: {lib_path}")
                 try:
                     lib = ctypes.CDLL(str(lib_path))
-                    print("✓ Successfully loaded library!")
+                    print(f"✓ Loaded library: {lib_path}")
                     return lib
                 except OSError as e:
                     print(f"✗ Failed to load {lib_path}: {e}")
