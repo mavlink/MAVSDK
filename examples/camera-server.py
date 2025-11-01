@@ -185,8 +185,8 @@ def subscribe_camera_operation(camera_server):
     camera_server.subscribe_reset_settings(reset_settings_callback, camera_server)
 
 def main():
-    # Create MAVSDK instance as Camera
-    mavsdk = Mavsdk(component_type=ComponentType.CAMERA)
+    configuration = Configuration.create_with_component_type(ComponentType.CAMERA)
+    mavsdk = Mavsdk(configuration)
 
     # 14030 is the default camera port for PX4 SITL
     mavsdk.add_any_connection("udpin://0.0.0.0:14030")

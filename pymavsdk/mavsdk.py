@@ -17,7 +17,7 @@ from .types import (
     NewSystemCallback,
 )
 
-class MavsdkConfiguration:
+class Configuration:
     """Wrapper for mavsdk_configuration_t"""
 
     def __init__(self, handle: ctypes.c_void_p):
@@ -33,10 +33,10 @@ class MavsdkConfiguration:
     @classmethod
     def create_manual(cls, system_id: int, component_id: int, always_send_heartbeats: bool):
         """Create manual configuration"""
-        handle = lib.mavsdk_configuration_create_manual(
+        handle = _cmavsdk_lib.mavsdk_configuration_create_manual(
             system_id, component_id, int(always_send_heartbeats)
         )
-        return cls(_cmavsdk_lib, handle)
+        return cls(handle)
 
     def destroy(self):
         """Destroy configuration"""
@@ -66,111 +66,19 @@ class MavsdkConfiguration:
 class Mavsdk:
     """Python wrapper for cmavsdk library"""
 
-    def __init__(self, configuration: Optional[MavsdkConfiguration] = None, 
-                 component_type: Optional[ComponentType] = None):
+    def __init__(self, configuration: Configuration):
         """
         Initialize the cmavsdk wrapper
 
         Args:
-            configuration: Optional MavsdkConfiguration object
-            component_type: Optional component type (overrides default GROUND_STATION)
+            configuration: Configuration
         """
         self._lib = _cmavsdk_lib
 
         self._callbacks = []  # Keep references to prevent GC
-        self._setup_functions()
 
-        # Handle configuration creation
-        if configuration is None:
-            if component_type is None:
-                component_type = ComponentType.GROUND_STATION
-                print("Creating default configuration...")
-            else:
-                print(f"Creating configuration with component type: {component_type}")
-
-            configuration = MavsdkConfiguration.create_with_component_type(component_type)
-            config_handle = configuration._handle
-            print(f"✓ Created config handle: {config_handle}")
-        else:
-            config_handle = configuration._handle
-            if component_type is not None:
-                print("Warning: Both configuration and component_type provided, using configuration")
-
-        print(f"Creating Mavsdk with config: {config_handle}")
-        self._handle = self._lib.mavsdk_create(config_handle)
+        self._handle = self._lib.mavsdk_create(configuration._handle)
         self._destroyed = False
-        print(f"✓ Created Mavsdk handle: {self._handle}")
-
-    def _setup_functions(self):
-        """Define C function signatures"""
-
-        # Configuration functions
-        self._lib.mavsdk_configuration_create_with_component_type.argtypes = [ctypes.c_int]
-        self._lib.mavsdk_configuration_create_with_component_type.restype = ctypes.c_void_p
-
-        self._lib.mavsdk_configuration_create_manual.argtypes = [
-            ctypes.c_uint8, ctypes.c_uint8, ctypes.c_int
-        ]
-        self._lib.mavsdk_configuration_create_manual.restype = ctypes.c_void_p
-
-        self._lib.mavsdk_configuration_destroy.argtypes = [ctypes.c_void_p]
-        self._lib.mavsdk_configuration_destroy.restype = None
-
-        self._lib.mavsdk_configuration_get_system_id.argtypes = [ctypes.c_void_p]
-        self._lib.mavsdk_configuration_get_system_id.restype = ctypes.c_uint8
-
-        self._lib.mavsdk_configuration_set_system_id.argtypes = [ctypes.c_void_p, ctypes.c_uint8]
-        self._lib.mavsdk_configuration_set_system_id.restype = None
-
-        self._lib.mavsdk_configuration_get_component_id.argtypes = [ctypes.c_void_p]
-        self._lib.mavsdk_configuration_get_component_id.restype = ctypes.c_uint8
-
-        self._lib.mavsdk_configuration_set_component_id.argtypes = [ctypes.c_void_p, ctypes.c_uint8]
-        self._lib.mavsdk_configuration_set_component_id.restype = None
-
-        # Core functions
-        self._lib.mavsdk_create.argtypes = [ctypes.c_void_p]
-        self._lib.mavsdk_create.restype = ctypes.c_void_p
-
-        self._lib.mavsdk_destroy.argtypes = [ctypes.c_void_p]
-        self._lib.mavsdk_destroy.restype = None
-
-        self._lib.mavsdk_version.argtypes = [ctypes.c_void_p]
-        self._lib.mavsdk_version.restype = ctypes.c_char_p
-
-        # Connection functions
-        self._lib.mavsdk_add_any_connection.argtypes = [ctypes.c_void_p, ctypes.c_char_p]
-        self._lib.mavsdk_add_any_connection.restype = ctypes.c_int
-
-        self._lib.mavsdk_add_any_connection_with_handle.argtypes = [
-            ctypes.c_void_p, ctypes.c_char_p
-        ]
-        self._lib.mavsdk_add_any_connection_with_handle.restype = ConnectionResultWithHandle
-
-        self._lib.mavsdk_remove_connection.argtypes = [ctypes.c_void_p, ctypes.c_void_p]
-        self._lib.mavsdk_remove_connection.restype = None
-
-        # System functions
-        self._lib.mavsdk_system_count.argtypes = [ctypes.c_void_p]
-        self._lib.mavsdk_system_count.restype = ctypes.c_size_t
-
-        self._lib.mavsdk_get_systems.argtypes = [ctypes.c_void_p, ctypes.POINTER(ctypes.c_size_t)]
-        self._lib.mavsdk_get_systems.restype = ctypes.POINTER(ctypes.c_void_p)
-
-        self._lib.mavsdk_free_systems_array.argtypes = [ctypes.POINTER(ctypes.c_void_p)]
-        self._lib.mavsdk_free_systems_array.restype = None
-
-        self._lib.mavsdk_first_autopilot.argtypes = [ctypes.c_void_p, ctypes.c_double]
-        self._lib.mavsdk_first_autopilot.restype = ctypes.c_void_p
-
-        # Subscription functions
-        self._lib.mavsdk_subscribe_on_new_system.argtypes = [
-            ctypes.c_void_p, NewSystemCallback, ctypes.c_void_p
-        ]
-        self._lib.mavsdk_subscribe_on_new_system.restype = ctypes.c_void_p
-
-        self._lib.mavsdk_unsubscribe_on_new_system.argtypes = [ctypes.c_void_p, ctypes.c_void_p]
-        self._lib.mavsdk_unsubscribe_on_new_system.restype = None
 
     def version(self) -> str:
         """Get MAVSDK version string"""
@@ -289,3 +197,72 @@ def __del__(self):
     except (ImportError, AttributeError):
         # Python is shutting down, skip cleanup silently
         pass
+
+# Configuration functions
+_cmavsdk_lib.mavsdk_configuration_create_with_component_type.argtypes = [ctypes.c_int]
+_cmavsdk_lib.mavsdk_configuration_create_with_component_type.restype = ctypes.c_void_p
+
+_cmavsdk_lib.mavsdk_configuration_create_manual.argtypes = [
+    ctypes.c_uint8, ctypes.c_uint8, ctypes.c_int
+]
+_cmavsdk_lib.mavsdk_configuration_create_manual.restype = ctypes.c_void_p
+
+_cmavsdk_lib.mavsdk_configuration_destroy.argtypes = [ctypes.c_void_p]
+_cmavsdk_lib.mavsdk_configuration_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_configuration_get_system_id.argtypes = [ctypes.c_void_p]
+_cmavsdk_lib.mavsdk_configuration_get_system_id.restype = ctypes.c_uint8
+
+_cmavsdk_lib.mavsdk_configuration_set_system_id.argtypes = [ctypes.c_void_p, ctypes.c_uint8]
+_cmavsdk_lib.mavsdk_configuration_set_system_id.restype = None
+
+_cmavsdk_lib.mavsdk_configuration_get_component_id.argtypes = [ctypes.c_void_p]
+_cmavsdk_lib.mavsdk_configuration_get_component_id.restype = ctypes.c_uint8
+
+_cmavsdk_lib.mavsdk_configuration_set_component_id.argtypes = [ctypes.c_void_p, ctypes.c_uint8]
+_cmavsdk_lib.mavsdk_configuration_set_component_id.restype = None
+
+# Core functions
+_cmavsdk_lib.mavsdk_create.argtypes = [ctypes.c_void_p]
+_cmavsdk_lib.mavsdk_create.restype = ctypes.c_void_p
+
+_cmavsdk_lib.mavsdk_destroy.argtypes = [ctypes.c_void_p]
+_cmavsdk_lib.mavsdk_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_version.argtypes = [ctypes.c_void_p]
+_cmavsdk_lib.mavsdk_version.restype = ctypes.c_char_p
+
+# Connection functions
+_cmavsdk_lib.mavsdk_add_any_connection.argtypes = [ctypes.c_void_p, ctypes.c_char_p]
+_cmavsdk_lib.mavsdk_add_any_connection.restype = ctypes.c_int
+
+_cmavsdk_lib.mavsdk_add_any_connection_with_handle.argtypes = [
+    ctypes.c_void_p, ctypes.c_char_p
+]
+_cmavsdk_lib.mavsdk_add_any_connection_with_handle.restype = ConnectionResultWithHandle
+
+_cmavsdk_lib.mavsdk_remove_connection.argtypes = [ctypes.c_void_p, ctypes.c_void_p]
+_cmavsdk_lib.mavsdk_remove_connection.restype = None
+
+# System functions
+_cmavsdk_lib.mavsdk_system_count.argtypes = [ctypes.c_void_p]
+_cmavsdk_lib.mavsdk_system_count.restype = ctypes.c_size_t
+
+_cmavsdk_lib.mavsdk_get_systems.argtypes = [ctypes.c_void_p, ctypes.POINTER(ctypes.c_size_t)]
+_cmavsdk_lib.mavsdk_get_systems.restype = ctypes.POINTER(ctypes.c_void_p)
+
+_cmavsdk_lib.mavsdk_free_systems_array.argtypes = [ctypes.POINTER(ctypes.c_void_p)]
+_cmavsdk_lib.mavsdk_free_systems_array.restype = None
+
+_cmavsdk_lib.mavsdk_first_autopilot.argtypes = [ctypes.c_void_p, ctypes.c_double]
+_cmavsdk_lib.mavsdk_first_autopilot.restype = ctypes.c_void_p
+
+# Subscription functions
+_cmavsdk_lib.mavsdk_subscribe_on_new_system.argtypes = [
+    ctypes.c_void_p, NewSystemCallback, ctypes.c_void_p
+]
+_cmavsdk_lib.mavsdk_subscribe_on_new_system.restype = ctypes.c_void_p
+
+_cmavsdk_lib.mavsdk_unsubscribe_on_new_system.argtypes = [ctypes.c_void_p, ctypes.c_void_p]
+_cmavsdk_lib.mavsdk_unsubscribe_on_new_system.restype = None
+

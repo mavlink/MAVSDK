@@ -7,7 +7,7 @@ from .cmavsdk_loader import _cmavsdk_lib
 from .autopilot import Autopilot
 from .connection_result import ConnectionResult
 from .component_type import ComponentType
-from .mavsdk import Mavsdk, MavsdkConfiguration
+from .mavsdk import Mavsdk, Configuration
 from .exceptions import MavsdkError
 from .enums import (
     ForwardingOption,

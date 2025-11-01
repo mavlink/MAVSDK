@@ -7,7 +7,8 @@ def main():
     # Disable the MAVSDK log output
     log_subscribe(lambda level, msg, file, line: True)
 
-    mavsdk = Mavsdk()
+    configuration = Configuration.create_with_component_type(ComponentType.GROUND_STATION)
+    mavsdk = Mavsdk(configuration)
     mavsdk.add_any_connection("udpin://0.0.0.0:14540")
     
     drone = None

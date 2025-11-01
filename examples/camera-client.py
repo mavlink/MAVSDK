@@ -47,8 +47,8 @@ def do_camera_operation(component_id, camera_plugin):
     print(f"Reset camera settings result: {result}")
 
 def main():
-    # Create MAVSDK instance as Ground Station
-    mavsdk = Mavsdk(component_type=ComponentType.GROUND_STATION)
+    configuration = Configuration.create_with_component_type(ComponentType.GROUND_STATION)
+    mavsdk = Mavsdk(configuration)
 
     # Add connection
     result = mavsdk.add_any_connection("udpout://127.0.0.1:14030")

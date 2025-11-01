@@ -1,7 +1,7 @@
 import time
-from pymavsdk import Mavsdk
-from pymavsdk.plugins.action import Action
-from pymavsdk.plugins.telemetry import Telemetry, LandedState
+from pymavsdk import *
+from pymavsdk.plugins.action import *
+from pymavsdk.plugins.telemetry import *
 
 global mavsdk, drone
 mavsdk = None
@@ -28,7 +28,9 @@ def on_position_update(position, user_data=None):
 
 def main():
     global mavsdk
-    mavsdk = Mavsdk()
+
+    configuration = Configuration.create_with_component_type(ComponentType.GROUND_STATION)
+    mavsdk = Mavsdk(configuration)
     mavsdk.add_any_connection("udpin://0.0.0.0:14540")
     
     global drone
