@@ -165,7 +165,6 @@ class MissionPlan:
     def from_c_struct(cls, c_struct):
         """Convert from C structure to Python object"""
         instance = cls()
-        # Convert array of C structs to Python objects
         if c_struct.mission_items_size > 0:
             instance.mission_items = [MissionItem.from_c_struct(c_struct.mission_items[i]) for i in range(c_struct.mission_items_size)]
         else:
@@ -175,7 +174,6 @@ class MissionPlan:
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = MissionPlanCStruct()
-        # Convert list of Python objects to C array
         array_type = MissionItemCStruct * len(self.mission_items)
         c_array = array_type()
         for i, item in enumerate(self.mission_items):

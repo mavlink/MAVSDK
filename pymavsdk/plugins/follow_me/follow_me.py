@@ -88,7 +88,6 @@ class Config:
         instance.follow_height_m = c_struct.follow_height_m
         instance.follow_distance_m = c_struct.follow_distance_m
         instance.responsiveness = c_struct.responsiveness
-        # Convert C enum to Python enum
         instance.altitude_mode = Config.FollowAltitudeMode(c_struct.altitude_mode)
         instance.max_tangential_vel_m_s = c_struct.max_tangential_vel_m_s
         instance.follow_angle_deg = c_struct.follow_angle_deg

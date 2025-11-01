@@ -192,7 +192,6 @@ class Status:
         instance.voltage_v = c_struct.voltage_v
         instance.current_a = c_struct.current_a
         instance.temperature_c = c_struct.temperature_c
-        # Convert nested C struct to Python object
         instance.status_flags = StatusFlags.from_c_struct(c_struct.status_flags)
         return instance
 
@@ -206,7 +205,6 @@ class Status:
         c_struct.voltage_v = self.voltage_v
         c_struct.current_a = self.current_a
         c_struct.temperature_c = self.temperature_c
-        # Convert nested Python object to C struct
         c_struct.status_flags = self.status_flags.to_c_struct()
         return c_struct
 

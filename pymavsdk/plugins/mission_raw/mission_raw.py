@@ -208,17 +208,14 @@ class MissionImportData:
     def from_c_struct(cls, c_struct):
         """Convert from C structure to Python object"""
         instance = cls()
-        # Convert array of C structs to Python objects
         if c_struct.mission_items_size > 0:
             instance.mission_items = [MissionItem.from_c_struct(c_struct.mission_items[i]) for i in range(c_struct.mission_items_size)]
         else:
             instance.mission_items = []
-        # Convert array of C structs to Python objects
         if c_struct.geofence_items_size > 0:
             instance.geofence_items = [MissionItem.from_c_struct(c_struct.geofence_items[i]) for i in range(c_struct.geofence_items_size)]
         else:
             instance.geofence_items = []
-        # Convert array of C structs to Python objects
         if c_struct.rally_items_size > 0:
             instance.rally_items = [MissionItem.from_c_struct(c_struct.rally_items[i]) for i in range(c_struct.rally_items_size)]
         else:
@@ -228,21 +225,18 @@ class MissionImportData:
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = MissionImportDataCStruct()
-        # Convert list of Python objects to C array
         array_type = MissionItemCStruct * len(self.mission_items)
         c_array = array_type()
         for i, item in enumerate(self.mission_items):
             c_array[i] = item.to_c_struct()
         c_struct.mission_items = ctypes.cast(c_array, ctypes.POINTER(MissionItemCStruct))
         c_struct.mission_items_size = len(self.mission_items)
-        # Convert list of Python objects to C array
         array_type = MissionItemCStruct * len(self.geofence_items)
         c_array = array_type()
         for i, item in enumerate(self.geofence_items):
             c_array[i] = item.to_c_struct()
         c_struct.geofence_items = ctypes.cast(c_array, ctypes.POINTER(MissionItemCStruct))
         c_struct.geofence_items_size = len(self.geofence_items)
-        # Convert list of Python objects to C array
         array_type = MissionItemCStruct * len(self.rally_items)
         c_array = array_type()
         for i, item in enumerate(self.rally_items):

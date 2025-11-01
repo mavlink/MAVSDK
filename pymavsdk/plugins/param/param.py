@@ -95,7 +95,6 @@ class IntParam:
     def from_c_struct(cls, c_struct):
         """Convert from C structure to Python object"""
         instance = cls()
-        # Convert C string to Python string
         instance.name = c_struct.name.decode('utf-8')
         instance.value = c_struct.value
         return instance
@@ -103,7 +102,6 @@ class IntParam:
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = IntParamCStruct()
-        # Convert Python string to C string (bytes)
         c_struct.name = self.name.encode('utf-8')
         c_struct.value = self.value
         return c_struct
@@ -127,7 +125,6 @@ class FloatParam:
     def from_c_struct(cls, c_struct):
         """Convert from C structure to Python object"""
         instance = cls()
-        # Convert C string to Python string
         instance.name = c_struct.name.decode('utf-8')
         instance.value = c_struct.value
         return instance
@@ -135,7 +132,6 @@ class FloatParam:
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = FloatParamCStruct()
-        # Convert Python string to C string (bytes)
         c_struct.name = self.name.encode('utf-8')
         c_struct.value = self.value
         return c_struct
@@ -159,18 +155,14 @@ class CustomParam:
     def from_c_struct(cls, c_struct):
         """Convert from C structure to Python object"""
         instance = cls()
-        # Convert C string to Python string
         instance.name = c_struct.name.decode('utf-8')
-        # Convert C string to Python string
         instance.value = c_struct.value.decode('utf-8')
         return instance
 
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = CustomParamCStruct()
-        # Convert Python string to C string (bytes)
         c_struct.name = self.name.encode('utf-8')
-        # Convert Python string to C string (bytes)
         c_struct.value = self.value.encode('utf-8')
         return c_struct
 
@@ -194,17 +186,14 @@ class AllParams:
     def from_c_struct(cls, c_struct):
         """Convert from C structure to Python object"""
         instance = cls()
-        # Convert array of C structs to Python objects
         if c_struct.int_params_size > 0:
             instance.int_params = [IntParam.from_c_struct(c_struct.int_params[i]) for i in range(c_struct.int_params_size)]
         else:
             instance.int_params = []
-        # Convert array of C structs to Python objects
         if c_struct.float_params_size > 0:
             instance.float_params = [FloatParam.from_c_struct(c_struct.float_params[i]) for i in range(c_struct.float_params_size)]
         else:
             instance.float_params = []
-        # Convert array of C structs to Python objects
         if c_struct.custom_params_size > 0:
             instance.custom_params = [CustomParam.from_c_struct(c_struct.custom_params[i]) for i in range(c_struct.custom_params_size)]
         else:
@@ -214,21 +203,18 @@ class AllParams:
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = AllParamsCStruct()
-        # Convert list of Python objects to C array
         array_type = IntParamCStruct * len(self.int_params)
         c_array = array_type()
         for i, item in enumerate(self.int_params):
             c_array[i] = item.to_c_struct()
         c_struct.int_params = ctypes.cast(c_array, ctypes.POINTER(IntParamCStruct))
         c_struct.int_params_size = len(self.int_params)
-        # Convert list of Python objects to C array
         array_type = FloatParamCStruct * len(self.float_params)
         c_array = array_type()
         for i, item in enumerate(self.float_params):
             c_array[i] = item.to_c_struct()
         c_struct.float_params = ctypes.cast(c_array, ctypes.POINTER(FloatParamCStruct))
         c_struct.float_params_size = len(self.float_params)
-        # Convert list of Python objects to C array
         array_type = CustomParamCStruct * len(self.custom_params)
         c_array = array_type()
         for i, item in enumerate(self.custom_params):

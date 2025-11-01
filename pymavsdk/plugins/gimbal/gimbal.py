@@ -272,15 +272,10 @@ class Attitude:
         """Convert from C structure to Python object"""
         instance = cls()
         instance.gimbal_id = c_struct.gimbal_id
-        # Convert nested C struct to Python object
         instance.euler_angle_forward = EulerAngle.from_c_struct(c_struct.euler_angle_forward)
-        # Convert nested C struct to Python object
         instance.quaternion_forward = Quaternion.from_c_struct(c_struct.quaternion_forward)
-        # Convert nested C struct to Python object
         instance.euler_angle_north = EulerAngle.from_c_struct(c_struct.euler_angle_north)
-        # Convert nested C struct to Python object
         instance.quaternion_north = Quaternion.from_c_struct(c_struct.quaternion_north)
-        # Convert nested C struct to Python object
         instance.angular_velocity = AngularVelocityBody.from_c_struct(c_struct.angular_velocity)
         instance.timestamp_us = c_struct.timestamp_us
         return instance
@@ -289,15 +284,10 @@ class Attitude:
         """Convert to C structure for C library calls"""
         c_struct = AttitudeCStruct()
         c_struct.gimbal_id = self.gimbal_id
-        # Convert nested Python object to C struct
         c_struct.euler_angle_forward = self.euler_angle_forward.to_c_struct()
-        # Convert nested Python object to C struct
         c_struct.quaternion_forward = self.quaternion_forward.to_c_struct()
-        # Convert nested Python object to C struct
         c_struct.euler_angle_north = self.euler_angle_north.to_c_struct()
-        # Convert nested Python object to C struct
         c_struct.quaternion_north = self.quaternion_north.to_c_struct()
-        # Convert nested Python object to C struct
         c_struct.angular_velocity = self.angular_velocity.to_c_struct()
         c_struct.timestamp_us = self.timestamp_us
         return c_struct
@@ -331,11 +321,8 @@ class GimbalItem:
         """Convert from C structure to Python object"""
         instance = cls()
         instance.gimbal_id = c_struct.gimbal_id
-        # Convert C string to Python string
         instance.vendor_name = c_struct.vendor_name.decode('utf-8')
-        # Convert C string to Python string
         instance.model_name = c_struct.model_name.decode('utf-8')
-        # Convert C string to Python string
         instance.custom_name = c_struct.custom_name.decode('utf-8')
         instance.gimbal_manager_component_id = c_struct.gimbal_manager_component_id
         instance.gimbal_device_id = c_struct.gimbal_device_id
@@ -345,11 +332,8 @@ class GimbalItem:
         """Convert to C structure for C library calls"""
         c_struct = GimbalItemCStruct()
         c_struct.gimbal_id = self.gimbal_id
-        # Convert Python string to C string (bytes)
         c_struct.vendor_name = self.vendor_name.encode('utf-8')
-        # Convert Python string to C string (bytes)
         c_struct.model_name = self.model_name.encode('utf-8')
-        # Convert Python string to C string (bytes)
         c_struct.custom_name = self.custom_name.encode('utf-8')
         c_struct.gimbal_manager_component_id = self.gimbal_manager_component_id
         c_struct.gimbal_device_id = self.gimbal_device_id
@@ -377,7 +361,6 @@ class GimbalList:
     def from_c_struct(cls, c_struct):
         """Convert from C structure to Python object"""
         instance = cls()
-        # Convert array of C structs to Python objects
         if c_struct.gimbals_size > 0:
             instance.gimbals = [GimbalItem.from_c_struct(c_struct.gimbals[i]) for i in range(c_struct.gimbals_size)]
         else:
@@ -387,7 +370,6 @@ class GimbalList:
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = GimbalListCStruct()
-        # Convert list of Python objects to C array
         array_type = GimbalItemCStruct * len(self.gimbals)
         c_array = array_type()
         for i, item in enumerate(self.gimbals):
@@ -419,7 +401,6 @@ class ControlStatus:
         """Convert from C structure to Python object"""
         instance = cls()
         instance.gimbal_id = c_struct.gimbal_id
-        # Convert C enum to Python enum
         instance.control_mode = ControlMode(c_struct.control_mode)
         instance.sysid_primary_control = c_struct.sysid_primary_control
         instance.compid_primary_control = c_struct.compid_primary_control

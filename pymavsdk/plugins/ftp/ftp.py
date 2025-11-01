@@ -72,18 +72,14 @@ class ListDirectoryData:
     def from_c_struct(cls, c_struct):
         """Convert from C structure to Python object"""
         instance = cls()
-        # Convert C string to Python string
         instance.dirs = c_struct.dirs.decode('utf-8')
-        # Convert C string to Python string
         instance.files = c_struct.files.decode('utf-8')
         return instance
 
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = ListDirectoryDataCStruct()
-        # Convert Python string to C string (bytes)
         c_struct.dirs = self.dirs.encode('utf-8')
-        # Convert Python string to C string (bytes)
         c_struct.files = self.files.encode('utf-8')
         return c_struct
 

@@ -124,19 +124,16 @@ class Polygon:
     def from_c_struct(cls, c_struct):
         """Convert from C structure to Python object"""
         instance = cls()
-        # Convert array of C structs to Python objects
         if c_struct.points_size > 0:
             instance.points = [Point.from_c_struct(c_struct.points[i]) for i in range(c_struct.points_size)]
         else:
             instance.points = []
-        # Convert C enum to Python enum
         instance.fence_type = FenceType(c_struct.fence_type)
         return instance
 
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = PolygonCStruct()
-        # Convert list of Python objects to C array
         array_type = PointCStruct * len(self.points)
         c_array = array_type()
         for i, item in enumerate(self.points):
@@ -166,17 +163,14 @@ class Circle:
     def from_c_struct(cls, c_struct):
         """Convert from C structure to Python object"""
         instance = cls()
-        # Convert nested C struct to Python object
         instance.point = Point.from_c_struct(c_struct.point)
         instance.radius = c_struct.radius
-        # Convert C enum to Python enum
         instance.fence_type = FenceType(c_struct.fence_type)
         return instance
 
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = CircleCStruct()
-        # Convert nested Python object to C struct
         c_struct.point = self.point.to_c_struct()
         c_struct.radius = self.radius
         c_struct.fence_type = int(self.fence_type)
@@ -202,12 +196,10 @@ class GeofenceData:
     def from_c_struct(cls, c_struct):
         """Convert from C structure to Python object"""
         instance = cls()
-        # Convert array of C structs to Python objects
         if c_struct.polygons_size > 0:
             instance.polygons = [Polygon.from_c_struct(c_struct.polygons[i]) for i in range(c_struct.polygons_size)]
         else:
             instance.polygons = []
-        # Convert array of C structs to Python objects
         if c_struct.circles_size > 0:
             instance.circles = [Circle.from_c_struct(c_struct.circles[i]) for i in range(c_struct.circles_size)]
         else:
@@ -217,14 +209,12 @@ class GeofenceData:
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = GeofenceDataCStruct()
-        # Convert list of Python objects to C array
         array_type = PolygonCStruct * len(self.polygons)
         c_array = array_type()
         for i, item in enumerate(self.polygons):
             c_array[i] = item.to_c_struct()
         c_struct.polygons = ctypes.cast(c_array, ctypes.POINTER(PolygonCStruct))
         c_struct.polygons_size = len(self.polygons)
-        # Convert list of Python objects to C array
         array_type = CircleCStruct * len(self.circles)
         c_array = array_type()
         for i, item in enumerate(self.circles):

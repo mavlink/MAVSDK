@@ -592,7 +592,6 @@ class GpsInfo:
         """Convert from C structure to Python object"""
         instance = cls()
         instance.num_satellites = c_struct.num_satellites
-        # Convert C enum to Python enum
         instance.fix_type = FixType(c_struct.fix_type)
         return instance
 
@@ -767,9 +766,7 @@ class StatusText:
     def from_c_struct(cls, c_struct):
         """Convert from C structure to Python object"""
         instance = cls()
-        # Convert C enum to Python enum
         instance.type = StatusTextType(c_struct.type)
-        # Convert C string to Python string
         instance.text = c_struct.text.decode('utf-8')
         return instance
 
@@ -777,7 +774,6 @@ class StatusText:
         """Convert to C structure for C library calls"""
         c_struct = StatusTextCStruct()
         c_struct.type = int(self.type)
-        # Convert Python string to C string (bytes)
         c_struct.text = self.text.encode('utf-8')
         return c_struct
 
@@ -801,7 +797,6 @@ class ActuatorControlTarget:
         """Convert from C structure to Python object"""
         instance = cls()
         instance.group = c_struct.group
-        # Convert C array to Python list
         if c_struct.controls_size > 0:
             instance.controls = [c_struct.controls[i] for i in range(c_struct.controls_size)]
         else:
@@ -812,7 +807,6 @@ class ActuatorControlTarget:
         """Convert to C structure for C library calls"""
         c_struct = ActuatorControlTargetCStruct()
         c_struct.group = self.group
-        # Convert Python list to C array
         array_type = ctypes.c_float * len(self.controls)
         c_struct.controls = array_type(*self.controls)
         c_struct.controls_size = len(self.controls)
@@ -838,7 +832,6 @@ class ActuatorOutputStatus:
         """Convert from C structure to Python object"""
         instance = cls()
         instance.active = c_struct.active
-        # Convert C array to Python list
         if c_struct.actuator_size > 0:
             instance.actuator = [c_struct.actuator[i] for i in range(c_struct.actuator_size)]
         else:
@@ -849,7 +842,6 @@ class ActuatorOutputStatus:
         """Convert to C structure for C library calls"""
         c_struct = ActuatorOutputStatusCStruct()
         c_struct.active = self.active
-        # Convert Python list to C array
         array_type = ctypes.c_float * len(self.actuator)
         c_struct.actuator = array_type(*self.actuator)
         c_struct.actuator_size = len(self.actuator)
@@ -877,7 +869,6 @@ class Covariance:
     def from_c_struct(cls, c_struct):
         """Convert from C structure to Python object"""
         instance = cls()
-        # Convert C array to Python list
         if c_struct.covariance_matrix_size > 0:
             instance.covariance_matrix = [c_struct.covariance_matrix[i] for i in range(c_struct.covariance_matrix_size)]
         else:
@@ -887,7 +878,6 @@ class Covariance:
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = CovarianceCStruct()
-        # Convert Python list to C array
         array_type = ctypes.c_float * len(self.covariance_matrix)
         c_struct.covariance_matrix = array_type(*self.covariance_matrix)
         c_struct.covariance_matrix_size = len(self.covariance_matrix)
@@ -994,21 +984,13 @@ class Odometry:
         """Convert from C structure to Python object"""
         instance = cls()
         instance.time_usec = c_struct.time_usec
-        # Convert C enum to Python enum
         instance.frame_id = Odometry.MavFrame(c_struct.frame_id)
-        # Convert C enum to Python enum
         instance.child_frame_id = Odometry.MavFrame(c_struct.child_frame_id)
-        # Convert nested C struct to Python object
         instance.position_body = PositionBody.from_c_struct(c_struct.position_body)
-        # Convert nested C struct to Python object
         instance.q = Quaternion.from_c_struct(c_struct.q)
-        # Convert nested C struct to Python object
         instance.velocity_body = VelocityBody.from_c_struct(c_struct.velocity_body)
-        # Convert nested C struct to Python object
         instance.angular_velocity_body = AngularVelocityBody.from_c_struct(c_struct.angular_velocity_body)
-        # Convert nested C struct to Python object
         instance.pose_covariance = Covariance.from_c_struct(c_struct.pose_covariance)
-        # Convert nested C struct to Python object
         instance.velocity_covariance = Covariance.from_c_struct(c_struct.velocity_covariance)
         return instance
 
@@ -1018,17 +1000,11 @@ class Odometry:
         c_struct.time_usec = self.time_usec
         c_struct.frame_id = int(self.frame_id)
         c_struct.child_frame_id = int(self.child_frame_id)
-        # Convert nested Python object to C struct
         c_struct.position_body = self.position_body.to_c_struct()
-        # Convert nested Python object to C struct
         c_struct.q = self.q.to_c_struct()
-        # Convert nested Python object to C struct
         c_struct.velocity_body = self.velocity_body.to_c_struct()
-        # Convert nested Python object to C struct
         c_struct.angular_velocity_body = self.angular_velocity_body.to_c_struct()
-        # Convert nested Python object to C struct
         c_struct.pose_covariance = self.pose_covariance.to_c_struct()
-        # Convert nested Python object to C struct
         c_struct.velocity_covariance = self.velocity_covariance.to_c_struct()
         return c_struct
 
@@ -1202,18 +1178,14 @@ class PositionVelocityNed:
     def from_c_struct(cls, c_struct):
         """Convert from C structure to Python object"""
         instance = cls()
-        # Convert nested C struct to Python object
         instance.position = PositionNed.from_c_struct(c_struct.position)
-        # Convert nested C struct to Python object
         instance.velocity = VelocityNed.from_c_struct(c_struct.velocity)
         return instance
 
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = PositionVelocityNedCStruct()
-        # Convert nested Python object to C struct
         c_struct.position = self.position.to_c_struct()
-        # Convert nested Python object to C struct
         c_struct.velocity = self.velocity.to_c_struct()
         return c_struct
 
@@ -1421,11 +1393,8 @@ class Imu:
     def from_c_struct(cls, c_struct):
         """Convert from C structure to Python object"""
         instance = cls()
-        # Convert nested C struct to Python object
         instance.acceleration_frd = AccelerationFrd.from_c_struct(c_struct.acceleration_frd)
-        # Convert nested C struct to Python object
         instance.angular_velocity_frd = AngularVelocityFrd.from_c_struct(c_struct.angular_velocity_frd)
-        # Convert nested C struct to Python object
         instance.magnetic_field_frd = MagneticFieldFrd.from_c_struct(c_struct.magnetic_field_frd)
         instance.temperature_degc = c_struct.temperature_degc
         instance.timestamp_us = c_struct.timestamp_us
@@ -1434,11 +1403,8 @@ class Imu:
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = ImuCStruct()
-        # Convert nested Python object to C struct
         c_struct.acceleration_frd = self.acceleration_frd.to_c_struct()
-        # Convert nested Python object to C struct
         c_struct.angular_velocity_frd = self.angular_velocity_frd.to_c_struct()
-        # Convert nested Python object to C struct
         c_struct.magnetic_field_frd = self.magnetic_field_frd.to_c_struct()
         c_struct.temperature_degc = self.temperature_degc
         c_struct.timestamp_us = self.timestamp_us

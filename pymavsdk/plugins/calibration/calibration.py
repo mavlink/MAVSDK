@@ -68,7 +68,6 @@ class ProgressData:
         instance.has_progress = c_struct.has_progress
         instance.progress = c_struct.progress
         instance.has_status_text = c_struct.has_status_text
-        # Convert C string to Python string
         instance.status_text = c_struct.status_text.decode('utf-8')
         return instance
 
@@ -78,7 +77,6 @@ class ProgressData:
         c_struct.has_progress = self.has_progress
         c_struct.progress = self.progress
         c_struct.has_status_text = self.has_status_text
-        # Convert Python string to C string (bytes)
         c_struct.status_text = self.status_text.encode('utf-8')
         return c_struct
 

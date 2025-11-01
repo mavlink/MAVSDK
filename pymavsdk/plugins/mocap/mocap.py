@@ -345,7 +345,6 @@ class Covariance:
     def from_c_struct(cls, c_struct):
         """Convert from C structure to Python object"""
         instance = cls()
-        # Convert C array to Python list
         if c_struct.covariance_matrix_size > 0:
             instance.covariance_matrix = [c_struct.covariance_matrix[i] for i in range(c_struct.covariance_matrix_size)]
         else:
@@ -355,7 +354,6 @@ class Covariance:
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = CovarianceCStruct()
-        # Convert Python list to C array
         array_type = ctypes.c_float * len(self.covariance_matrix)
         c_struct.covariance_matrix = array_type(*self.covariance_matrix)
         c_struct.covariance_matrix_size = len(self.covariance_matrix)
@@ -427,11 +425,8 @@ class VisionPositionEstimate:
         """Convert from C structure to Python object"""
         instance = cls()
         instance.time_usec = c_struct.time_usec
-        # Convert nested C struct to Python object
         instance.position_body = PositionBody.from_c_struct(c_struct.position_body)
-        # Convert nested C struct to Python object
         instance.angle_body = AngleBody.from_c_struct(c_struct.angle_body)
-        # Convert nested C struct to Python object
         instance.pose_covariance = Covariance.from_c_struct(c_struct.pose_covariance)
         return instance
 
@@ -439,11 +434,8 @@ class VisionPositionEstimate:
         """Convert to C structure for C library calls"""
         c_struct = VisionPositionEstimateCStruct()
         c_struct.time_usec = self.time_usec
-        # Convert nested Python object to C struct
         c_struct.position_body = self.position_body.to_c_struct()
-        # Convert nested Python object to C struct
         c_struct.angle_body = self.angle_body.to_c_struct()
-        # Convert nested Python object to C struct
         c_struct.pose_covariance = self.pose_covariance.to_c_struct()
         return c_struct
 
@@ -470,9 +462,7 @@ class VisionSpeedEstimate:
         """Convert from C structure to Python object"""
         instance = cls()
         instance.time_usec = c_struct.time_usec
-        # Convert nested C struct to Python object
         instance.speed_ned = SpeedNed.from_c_struct(c_struct.speed_ned)
-        # Convert nested C struct to Python object
         instance.speed_covariance = Covariance.from_c_struct(c_struct.speed_covariance)
         return instance
 
@@ -480,9 +470,7 @@ class VisionSpeedEstimate:
         """Convert to C structure for C library calls"""
         c_struct = VisionSpeedEstimateCStruct()
         c_struct.time_usec = self.time_usec
-        # Convert nested Python object to C struct
         c_struct.speed_ned = self.speed_ned.to_c_struct()
-        # Convert nested Python object to C struct
         c_struct.speed_covariance = self.speed_covariance.to_c_struct()
         return c_struct
 
@@ -509,11 +497,8 @@ class AttitudePositionMocap:
         """Convert from C structure to Python object"""
         instance = cls()
         instance.time_usec = c_struct.time_usec
-        # Convert nested C struct to Python object
         instance.q = Quaternion.from_c_struct(c_struct.q)
-        # Convert nested C struct to Python object
         instance.position_body = PositionBody.from_c_struct(c_struct.position_body)
-        # Convert nested C struct to Python object
         instance.pose_covariance = Covariance.from_c_struct(c_struct.pose_covariance)
         return instance
 
@@ -521,11 +506,8 @@ class AttitudePositionMocap:
         """Convert to C structure for C library calls"""
         c_struct = AttitudePositionMocapCStruct()
         c_struct.time_usec = self.time_usec
-        # Convert nested Python object to C struct
         c_struct.q = self.q.to_c_struct()
-        # Convert nested Python object to C struct
         c_struct.position_body = self.position_body.to_c_struct()
-        # Convert nested Python object to C struct
         c_struct.pose_covariance = self.pose_covariance.to_c_struct()
         return c_struct
 
@@ -562,19 +544,12 @@ class Odometry:
         """Convert from C structure to Python object"""
         instance = cls()
         instance.time_usec = c_struct.time_usec
-        # Convert C enum to Python enum
         instance.frame_id = Odometry.MavFrame(c_struct.frame_id)
-        # Convert nested C struct to Python object
         instance.position_body = PositionBody.from_c_struct(c_struct.position_body)
-        # Convert nested C struct to Python object
         instance.q = Quaternion.from_c_struct(c_struct.q)
-        # Convert nested C struct to Python object
         instance.speed_body = SpeedBody.from_c_struct(c_struct.speed_body)
-        # Convert nested C struct to Python object
         instance.angular_velocity_body = AngularVelocityBody.from_c_struct(c_struct.angular_velocity_body)
-        # Convert nested C struct to Python object
         instance.pose_covariance = Covariance.from_c_struct(c_struct.pose_covariance)
-        # Convert nested C struct to Python object
         instance.velocity_covariance = Covariance.from_c_struct(c_struct.velocity_covariance)
         return instance
 
@@ -583,17 +558,11 @@ class Odometry:
         c_struct = OdometryCStruct()
         c_struct.time_usec = self.time_usec
         c_struct.frame_id = int(self.frame_id)
-        # Convert nested Python object to C struct
         c_struct.position_body = self.position_body.to_c_struct()
-        # Convert nested Python object to C struct
         c_struct.q = self.q.to_c_struct()
-        # Convert nested Python object to C struct
         c_struct.speed_body = self.speed_body.to_c_struct()
-        # Convert nested Python object to C struct
         c_struct.angular_velocity_body = self.angular_velocity_body.to_c_struct()
-        # Convert nested Python object to C struct
         c_struct.pose_covariance = self.pose_covariance.to_c_struct()
-        # Convert nested Python object to C struct
         c_struct.velocity_covariance = self.velocity_covariance.to_c_struct()
         return c_struct
 

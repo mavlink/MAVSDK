@@ -77,7 +77,6 @@ class TuneDescription:
     def from_c_struct(cls, c_struct):
         """Convert from C structure to Python object"""
         instance = cls()
-        # Convert C enum to Python enum
         instance.song_elements = (c_struct.song_elements)
         instance.tempo = c_struct.tempo
         return instance

@@ -50,9 +50,7 @@ class Metadata:
     def from_c_struct(cls, c_struct):
         """Convert from C structure to Python object"""
         instance = cls()
-        # Convert C enum to Python enum
         instance.type = MetadataType(c_struct.type)
-        # Convert C string to Python string
         instance.json_metadata = c_struct.json_metadata.decode('utf-8')
         return instance
 
@@ -60,7 +58,6 @@ class Metadata:
         """Convert to C structure for C library calls"""
         c_struct = MetadataCStruct()
         c_struct.type = int(self.type)
-        # Convert Python string to C string (bytes)
         c_struct.json_metadata = self.json_metadata.encode('utf-8')
         return c_struct
 

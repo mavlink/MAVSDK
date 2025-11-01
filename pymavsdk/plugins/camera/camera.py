@@ -278,18 +278,14 @@ class Option:
     def from_c_struct(cls, c_struct):
         """Convert from C structure to Python object"""
         instance = cls()
-        # Convert C string to Python string
         instance.option_id = c_struct.option_id.decode('utf-8')
-        # Convert C string to Python string
         instance.option_description = c_struct.option_description.decode('utf-8')
         return instance
 
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = OptionCStruct()
-        # Convert Python string to C string (bytes)
         c_struct.option_id = self.option_id.encode('utf-8')
-        # Convert Python string to C string (bytes)
         c_struct.option_description = self.option_description.encode('utf-8')
         return c_struct
 
@@ -314,11 +310,8 @@ class Setting:
     def from_c_struct(cls, c_struct):
         """Convert from C structure to Python object"""
         instance = cls()
-        # Convert C string to Python string
         instance.setting_id = c_struct.setting_id.decode('utf-8')
-        # Convert C string to Python string
         instance.setting_description = c_struct.setting_description.decode('utf-8')
-        # Convert nested C struct to Python object
         instance.option = Option.from_c_struct(c_struct.option)
         instance.is_range = c_struct.is_range
         return instance
@@ -326,11 +319,8 @@ class Setting:
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = SettingCStruct()
-        # Convert Python string to C string (bytes)
         c_struct.setting_id = self.setting_id.encode('utf-8')
-        # Convert Python string to C string (bytes)
         c_struct.setting_description = self.setting_description.encode('utf-8')
-        # Convert nested Python object to C struct
         c_struct.option = self.option.to_c_struct()
         c_struct.is_range = self.is_range
         return c_struct
@@ -360,11 +350,8 @@ class SettingOptions:
         """Convert from C structure to Python object"""
         instance = cls()
         instance.component_id = c_struct.component_id
-        # Convert C string to Python string
         instance.setting_id = c_struct.setting_id.decode('utf-8')
-        # Convert C string to Python string
         instance.setting_description = c_struct.setting_description.decode('utf-8')
-        # Convert array of C structs to Python objects
         if c_struct.options_size > 0:
             instance.options = [Option.from_c_struct(c_struct.options[i]) for i in range(c_struct.options_size)]
         else:
@@ -376,11 +363,8 @@ class SettingOptions:
         """Convert to C structure for C library calls"""
         c_struct = SettingOptionsCStruct()
         c_struct.component_id = self.component_id
-        # Convert Python string to C string (bytes)
         c_struct.setting_id = self.setting_id.encode('utf-8')
-        # Convert Python string to C string (bytes)
         c_struct.setting_description = self.setting_description.encode('utf-8')
-        # Convert list of Python objects to C array
         array_type = OptionCStruct * len(self.options)
         c_array = array_type()
         for i, item in enumerate(self.options):
@@ -422,7 +406,6 @@ class VideoStreamSettings:
         instance.vertical_resolution_pix = c_struct.vertical_resolution_pix
         instance.bit_rate_b_s = c_struct.bit_rate_b_s
         instance.rotation_deg = c_struct.rotation_deg
-        # Convert C string to Python string
         instance.uri = c_struct.uri.decode('utf-8')
         instance.horizontal_fov_deg = c_struct.horizontal_fov_deg
         return instance
@@ -435,7 +418,6 @@ class VideoStreamSettings:
         c_struct.vertical_resolution_pix = self.vertical_resolution_pix
         c_struct.bit_rate_b_s = self.bit_rate_b_s
         c_struct.rotation_deg = self.rotation_deg
-        # Convert Python string to C string (bytes)
         c_struct.uri = self.uri.encode('utf-8')
         c_struct.horizontal_fov_deg = self.horizontal_fov_deg
         return c_struct
@@ -478,11 +460,8 @@ class VideoStreamInfo:
         """Convert from C structure to Python object"""
         instance = cls()
         instance.stream_id = c_struct.stream_id
-        # Convert nested C struct to Python object
         instance.settings = VideoStreamSettings.from_c_struct(c_struct.settings)
-        # Convert C enum to Python enum
         instance.status = VideoStreamInfo.VideoStreamStatus(c_struct.status)
-        # Convert C enum to Python enum
         instance.spectrum = VideoStreamInfo.VideoStreamSpectrum(c_struct.spectrum)
         return instance
 
@@ -490,7 +469,6 @@ class VideoStreamInfo:
         """Convert to C structure for C library calls"""
         c_struct = VideoStreamInfoCStruct()
         c_struct.stream_id = self.stream_id
-        # Convert nested Python object to C struct
         c_struct.settings = self.settings.to_c_struct()
         c_struct.status = int(self.status)
         c_struct.spectrum = int(self.spectrum)
@@ -518,7 +496,6 @@ class ModeUpdate:
         """Convert from C structure to Python object"""
         instance = cls()
         instance.component_id = c_struct.component_id
-        # Convert C enum to Python enum
         instance.mode = Mode(c_struct.mode)
         return instance
 
@@ -549,7 +526,6 @@ class VideoStreamUpdate:
         """Convert from C structure to Python object"""
         instance = cls()
         instance.component_id = c_struct.component_id
-        # Convert nested C struct to Python object
         instance.video_stream_info = VideoStreamInfo.from_c_struct(c_struct.video_stream_info)
         return instance
 
@@ -557,7 +533,6 @@ class VideoStreamUpdate:
         """Convert to C structure for C library calls"""
         c_struct = VideoStreamUpdateCStruct()
         c_struct.component_id = self.component_id
-        # Convert nested Python object to C struct
         c_struct.video_stream_info = self.video_stream_info.to_c_struct()
         return c_struct
 
@@ -612,12 +587,9 @@ class Storage:
         instance.available_storage_mib = c_struct.available_storage_mib
         instance.total_storage_mib = c_struct.total_storage_mib
         instance.recording_time_s = c_struct.recording_time_s
-        # Convert C string to Python string
         instance.media_folder_name = c_struct.media_folder_name.decode('utf-8')
-        # Convert C enum to Python enum
         instance.storage_status = Storage.StorageStatus(c_struct.storage_status)
         instance.storage_id = c_struct.storage_id
-        # Convert C enum to Python enum
         instance.storage_type = Storage.StorageType(c_struct.storage_type)
         return instance
 
@@ -631,7 +603,6 @@ class Storage:
         c_struct.available_storage_mib = self.available_storage_mib
         c_struct.total_storage_mib = self.total_storage_mib
         c_struct.recording_time_s = self.recording_time_s
-        # Convert Python string to C string (bytes)
         c_struct.media_folder_name = self.media_folder_name.encode('utf-8')
         c_struct.storage_status = int(self.storage_status)
         c_struct.storage_id = self.storage_id
@@ -667,7 +638,6 @@ class StorageUpdate:
         """Convert from C structure to Python object"""
         instance = cls()
         instance.component_id = c_struct.component_id
-        # Convert nested C struct to Python object
         instance.storage = Storage.from_c_struct(c_struct.storage)
         return instance
 
@@ -675,7 +645,6 @@ class StorageUpdate:
         """Convert to C structure for C library calls"""
         c_struct = StorageUpdateCStruct()
         c_struct.component_id = self.component_id
-        # Convert nested Python object to C struct
         c_struct.storage = self.storage.to_c_struct()
         return c_struct
 
@@ -699,7 +668,6 @@ class CurrentSettingsUpdate:
         """Convert from C structure to Python object"""
         instance = cls()
         instance.component_id = c_struct.component_id
-        # Convert array of C structs to Python objects
         if c_struct.current_settings_size > 0:
             instance.current_settings = [Setting.from_c_struct(c_struct.current_settings[i]) for i in range(c_struct.current_settings_size)]
         else:
@@ -710,7 +678,6 @@ class CurrentSettingsUpdate:
         """Convert to C structure for C library calls"""
         c_struct = CurrentSettingsUpdateCStruct()
         c_struct.component_id = self.component_id
-        # Convert list of Python objects to C array
         array_type = SettingCStruct * len(self.current_settings)
         c_array = array_type()
         for i, item in enumerate(self.current_settings):
@@ -739,7 +706,6 @@ class PossibleSettingOptionsUpdate:
         """Convert from C structure to Python object"""
         instance = cls()
         instance.component_id = c_struct.component_id
-        # Convert array of C structs to Python objects
         if c_struct.setting_options_size > 0:
             instance.setting_options = [SettingOptions.from_c_struct(c_struct.setting_options[i]) for i in range(c_struct.setting_options_size)]
         else:
@@ -750,7 +716,6 @@ class PossibleSettingOptionsUpdate:
         """Convert to C structure for C library calls"""
         c_struct = PossibleSettingOptionsUpdateCStruct()
         c_struct.component_id = self.component_id
-        # Convert list of Python objects to C array
         array_type = SettingOptionsCStruct * len(self.setting_options)
         c_array = array_type()
         for i, item in enumerate(self.setting_options):
@@ -907,16 +872,12 @@ class CaptureInfo:
         """Convert from C structure to Python object"""
         instance = cls()
         instance.component_id = c_struct.component_id
-        # Convert nested C struct to Python object
         instance.position = Position.from_c_struct(c_struct.position)
-        # Convert nested C struct to Python object
         instance.attitude_quaternion = Quaternion.from_c_struct(c_struct.attitude_quaternion)
-        # Convert nested C struct to Python object
         instance.attitude_euler_angle = EulerAngle.from_c_struct(c_struct.attitude_euler_angle)
         instance.time_utc_us = c_struct.time_utc_us
         instance.is_success = c_struct.is_success
         instance.index = c_struct.index
-        # Convert C string to Python string
         instance.file_url = c_struct.file_url.decode('utf-8')
         return instance
 
@@ -924,16 +885,12 @@ class CaptureInfo:
         """Convert to C structure for C library calls"""
         c_struct = CaptureInfoCStruct()
         c_struct.component_id = self.component_id
-        # Convert nested Python object to C struct
         c_struct.position = self.position.to_c_struct()
-        # Convert nested Python object to C struct
         c_struct.attitude_quaternion = self.attitude_quaternion.to_c_struct()
-        # Convert nested Python object to C struct
         c_struct.attitude_euler_angle = self.attitude_euler_angle.to_c_struct()
         c_struct.time_utc_us = self.time_utc_us
         c_struct.is_success = self.is_success
         c_struct.index = self.index
-        # Convert Python string to C string (bytes)
         c_struct.file_url = self.file_url.encode('utf-8')
         return c_struct
 
@@ -969,9 +926,7 @@ class Information:
         """Convert from C structure to Python object"""
         instance = cls()
         instance.component_id = c_struct.component_id
-        # Convert C string to Python string
         instance.vendor_name = c_struct.vendor_name.decode('utf-8')
-        # Convert C string to Python string
         instance.model_name = c_struct.model_name.decode('utf-8')
         instance.focal_length_mm = c_struct.focal_length_mm
         instance.horizontal_sensor_size_mm = c_struct.horizontal_sensor_size_mm
@@ -984,9 +939,7 @@ class Information:
         """Convert to C structure for C library calls"""
         c_struct = InformationCStruct()
         c_struct.component_id = self.component_id
-        # Convert Python string to C string (bytes)
         c_struct.vendor_name = self.vendor_name.encode('utf-8')
-        # Convert Python string to C string (bytes)
         c_struct.model_name = self.model_name.encode('utf-8')
         c_struct.focal_length_mm = self.focal_length_mm
         c_struct.horizontal_sensor_size_mm = self.horizontal_sensor_size_mm
@@ -1019,7 +972,6 @@ class CameraList:
     def from_c_struct(cls, c_struct):
         """Convert from C structure to Python object"""
         instance = cls()
-        # Convert array of C structs to Python objects
         if c_struct.cameras_size > 0:
             instance.cameras = [Information.from_c_struct(c_struct.cameras[i]) for i in range(c_struct.cameras_size)]
         else:
@@ -1029,7 +981,6 @@ class CameraList:
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = CameraListCStruct()
-        # Convert list of Python objects to C array
         array_type = InformationCStruct * len(self.cameras)
         c_array = array_type()
         for i, item in enumerate(self.cameras):

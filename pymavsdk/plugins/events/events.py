@@ -126,15 +126,10 @@ class Event:
         """Convert from C structure to Python object"""
         instance = cls()
         instance.compid = c_struct.compid
-        # Convert C string to Python string
         instance.message = c_struct.message.decode('utf-8')
-        # Convert C string to Python string
         instance.description = c_struct.description.decode('utf-8')
-        # Convert C enum to Python enum
         instance.log_level = LogLevel(c_struct.log_level)
-        # Convert C string to Python string
         instance.event_namespace = c_struct.event_namespace.decode('utf-8')
-        # Convert C string to Python string
         instance.event_name = c_struct.event_name.decode('utf-8')
         return instance
 
@@ -142,14 +137,10 @@ class Event:
         """Convert to C structure for C library calls"""
         c_struct = EventCStruct()
         c_struct.compid = self.compid
-        # Convert Python string to C string (bytes)
         c_struct.message = self.message.encode('utf-8')
-        # Convert Python string to C string (bytes)
         c_struct.description = self.description.encode('utf-8')
         c_struct.log_level = int(self.log_level)
-        # Convert Python string to C string (bytes)
         c_struct.event_namespace = self.event_namespace.encode('utf-8')
-        # Convert Python string to C string (bytes)
         c_struct.event_name = self.event_name.encode('utf-8')
         return c_struct
 
@@ -178,25 +169,18 @@ class HealthAndArmingCheckProblem:
     def from_c_struct(cls, c_struct):
         """Convert from C structure to Python object"""
         instance = cls()
-        # Convert C string to Python string
         instance.message = c_struct.message.decode('utf-8')
-        # Convert C string to Python string
         instance.description = c_struct.description.decode('utf-8')
-        # Convert C enum to Python enum
         instance.log_level = LogLevel(c_struct.log_level)
-        # Convert C string to Python string
         instance.health_component = c_struct.health_component.decode('utf-8')
         return instance
 
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = HealthAndArmingCheckProblemCStruct()
-        # Convert Python string to C string (bytes)
         c_struct.message = self.message.encode('utf-8')
-        # Convert Python string to C string (bytes)
         c_struct.description = self.description.encode('utf-8')
         c_struct.log_level = int(self.log_level)
-        # Convert Python string to C string (bytes)
         c_struct.health_component = self.health_component.encode('utf-8')
         return c_struct
 
@@ -222,10 +206,8 @@ class HealthAndArmingCheckMode:
     def from_c_struct(cls, c_struct):
         """Convert from C structure to Python object"""
         instance = cls()
-        # Convert C string to Python string
         instance.mode_name = c_struct.mode_name.decode('utf-8')
         instance.can_arm_or_run = c_struct.can_arm_or_run
-        # Convert array of C structs to Python objects
         if c_struct.problems_size > 0:
             instance.problems = [HealthAndArmingCheckProblem.from_c_struct(c_struct.problems[i]) for i in range(c_struct.problems_size)]
         else:
@@ -235,10 +217,8 @@ class HealthAndArmingCheckMode:
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = HealthAndArmingCheckModeCStruct()
-        # Convert Python string to C string (bytes)
         c_struct.mode_name = self.mode_name.encode('utf-8')
         c_struct.can_arm_or_run = self.can_arm_or_run
-        # Convert list of Python objects to C array
         array_type = HealthAndArmingCheckProblemCStruct * len(self.problems)
         c_array = array_type()
         for i, item in enumerate(self.problems):
@@ -270,9 +250,7 @@ class HealthComponentReport:
     def from_c_struct(cls, c_struct):
         """Convert from C structure to Python object"""
         instance = cls()
-        # Convert C string to Python string
         instance.name = c_struct.name.decode('utf-8')
-        # Convert C string to Python string
         instance.label = c_struct.label.decode('utf-8')
         instance.is_present = c_struct.is_present
         instance.has_error = c_struct.has_error
@@ -282,9 +260,7 @@ class HealthComponentReport:
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = HealthComponentReportCStruct()
-        # Convert Python string to C string (bytes)
         c_struct.name = self.name.encode('utf-8')
-        # Convert Python string to C string (bytes)
         c_struct.label = self.label.encode('utf-8')
         c_struct.is_present = self.is_present
         c_struct.has_error = self.has_error
@@ -314,14 +290,11 @@ class HealthAndArmingCheckReport:
     def from_c_struct(cls, c_struct):
         """Convert from C structure to Python object"""
         instance = cls()
-        # Convert nested C struct to Python object
         instance.current_mode_intention = HealthAndArmingCheckMode.from_c_struct(c_struct.current_mode_intention)
-        # Convert array of C structs to Python objects
         if c_struct.health_components_size > 0:
             instance.health_components = [HealthComponentReport.from_c_struct(c_struct.health_components[i]) for i in range(c_struct.health_components_size)]
         else:
             instance.health_components = []
-        # Convert array of C structs to Python objects
         if c_struct.all_problems_size > 0:
             instance.all_problems = [HealthAndArmingCheckProblem.from_c_struct(c_struct.all_problems[i]) for i in range(c_struct.all_problems_size)]
         else:
@@ -331,16 +304,13 @@ class HealthAndArmingCheckReport:
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = HealthAndArmingCheckReportCStruct()
-        # Convert nested Python object to C struct
         c_struct.current_mode_intention = self.current_mode_intention.to_c_struct()
-        # Convert list of Python objects to C array
         array_type = HealthComponentReportCStruct * len(self.health_components)
         c_array = array_type()
         for i, item in enumerate(self.health_components):
             c_array[i] = item.to_c_struct()
         c_struct.health_components = ctypes.cast(c_array, ctypes.POINTER(HealthComponentReportCStruct))
         c_struct.health_components_size = len(self.health_components)
-        # Convert list of Python objects to C array
         array_type = HealthAndArmingCheckProblemCStruct * len(self.all_problems)
         c_array = array_type()
         for i, item in enumerate(self.all_problems):

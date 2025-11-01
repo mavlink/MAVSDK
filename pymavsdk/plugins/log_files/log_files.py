@@ -94,7 +94,6 @@ class Entry:
         """Convert from C structure to Python object"""
         instance = cls()
         instance.id = c_struct.id
-        # Convert C string to Python string
         instance.date = c_struct.date.decode('utf-8')
         instance.size_bytes = c_struct.size_bytes
         return instance
@@ -103,7 +102,6 @@ class Entry:
         """Convert to C structure for C library calls"""
         c_struct = EntryCStruct()
         c_struct.id = self.id
-        # Convert Python string to C string (bytes)
         c_struct.date = self.date.encode('utf-8')
         c_struct.size_bytes = self.size_bytes
         return c_struct

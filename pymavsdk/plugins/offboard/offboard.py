@@ -195,7 +195,6 @@ class ActuatorControlGroup:
     def from_c_struct(cls, c_struct):
         """Convert from C structure to Python object"""
         instance = cls()
-        # Convert C array to Python list
         if c_struct.controls_size > 0:
             instance.controls = [c_struct.controls[i] for i in range(c_struct.controls_size)]
         else:
@@ -205,7 +204,6 @@ class ActuatorControlGroup:
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = ActuatorControlGroupCStruct()
-        # Convert Python list to C array
         array_type = ctypes.c_float * len(self.controls)
         c_struct.controls = array_type(*self.controls)
         c_struct.controls_size = len(self.controls)
@@ -242,7 +240,6 @@ class ActuatorControl:
     def from_c_struct(cls, c_struct):
         """Convert from C structure to Python object"""
         instance = cls()
-        # Convert array of C structs to Python objects
         if c_struct.groups_size > 0:
             instance.groups = [ActuatorControlGroup.from_c_struct(c_struct.groups[i]) for i in range(c_struct.groups_size)]
         else:
@@ -252,7 +249,6 @@ class ActuatorControl:
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = ActuatorControlCStruct()
-        # Convert list of Python objects to C array
         array_type = ActuatorControlGroupCStruct * len(self.groups)
         c_array = array_type()
         for i, item in enumerate(self.groups):
@@ -368,7 +364,6 @@ class PositionGlobalYaw:
         instance.lon_deg = c_struct.lon_deg
         instance.alt_m = c_struct.alt_m
         instance.yaw_deg = c_struct.yaw_deg
-        # Convert C enum to Python enum
         instance.altitude_type = PositionGlobalYaw.AltitudeType(c_struct.altitude_type)
         return instance
 

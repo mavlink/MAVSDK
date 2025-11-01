@@ -106,15 +106,12 @@ class AdsbVehicle:
         instance.icao_address = c_struct.icao_address
         instance.latitude_deg = c_struct.latitude_deg
         instance.longitude_deg = c_struct.longitude_deg
-        # Convert C enum to Python enum
         instance.altitude_type = AdsbAltitudeType(c_struct.altitude_type)
         instance.absolute_altitude_m = c_struct.absolute_altitude_m
         instance.heading_deg = c_struct.heading_deg
         instance.horizontal_velocity_m_s = c_struct.horizontal_velocity_m_s
         instance.vertical_velocity_m_s = c_struct.vertical_velocity_m_s
-        # Convert C string to Python string
         instance.callsign = c_struct.callsign.decode('utf-8')
-        # Convert C enum to Python enum
         instance.emitter_type = AdsbEmitterType(c_struct.emitter_type)
         instance.squawk = c_struct.squawk
         instance.tslc_s = c_struct.tslc_s
@@ -131,7 +128,6 @@ class AdsbVehicle:
         c_struct.heading_deg = self.heading_deg
         c_struct.horizontal_velocity_m_s = self.horizontal_velocity_m_s
         c_struct.vertical_velocity_m_s = self.vertical_velocity_m_s
-        # Convert Python string to C string (bytes)
         c_struct.callsign = self.callsign.encode('utf-8')
         c_struct.emitter_type = int(self.emitter_type)
         c_struct.squawk = self.squawk

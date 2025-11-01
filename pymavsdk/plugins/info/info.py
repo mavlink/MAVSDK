@@ -133,7 +133,6 @@ class Identification:
     def from_c_struct(cls, c_struct):
         """Convert from C structure to Python object"""
         instance = cls()
-        # Convert C string to Python string
         instance.hardware_uid = c_struct.hardware_uid.decode('utf-8')
         instance.legacy_uid = c_struct.legacy_uid
         return instance
@@ -141,7 +140,6 @@ class Identification:
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = IdentificationCStruct()
-        # Convert Python string to C string (bytes)
         c_struct.hardware_uid = self.hardware_uid.encode('utf-8')
         c_struct.legacy_uid = self.legacy_uid
         return c_struct
@@ -168,10 +166,8 @@ class Product:
         """Convert from C structure to Python object"""
         instance = cls()
         instance.vendor_id = c_struct.vendor_id
-        # Convert C string to Python string
         instance.vendor_name = c_struct.vendor_name.decode('utf-8')
         instance.product_id = c_struct.product_id
-        # Convert C string to Python string
         instance.product_name = c_struct.product_name.decode('utf-8')
         return instance
 
@@ -179,10 +175,8 @@ class Product:
         """Convert to C structure for C library calls"""
         c_struct = ProductCStruct()
         c_struct.vendor_id = self.vendor_id
-        # Convert Python string to C string (bytes)
         c_struct.vendor_name = self.vendor_name.encode('utf-8')
         c_struct.product_id = self.product_id
-        # Convert Python string to C string (bytes)
         c_struct.product_name = self.product_name.encode('utf-8')
         return c_struct
 
@@ -235,11 +229,8 @@ class Version:
         instance.os_sw_major = c_struct.os_sw_major
         instance.os_sw_minor = c_struct.os_sw_minor
         instance.os_sw_patch = c_struct.os_sw_patch
-        # Convert C string to Python string
         instance.flight_sw_git_hash = c_struct.flight_sw_git_hash.decode('utf-8')
-        # Convert C string to Python string
         instance.os_sw_git_hash = c_struct.os_sw_git_hash.decode('utf-8')
-        # Convert C enum to Python enum
         instance.flight_sw_version_type = Version.FlightSoftwareVersionType(c_struct.flight_sw_version_type)
         return instance
 
@@ -255,9 +246,7 @@ class Version:
         c_struct.os_sw_major = self.os_sw_major
         c_struct.os_sw_minor = self.os_sw_minor
         c_struct.os_sw_patch = self.os_sw_patch
-        # Convert Python string to C string (bytes)
         c_struct.flight_sw_git_hash = self.flight_sw_git_hash.encode('utf-8')
-        # Convert Python string to C string (bytes)
         c_struct.os_sw_git_hash = self.os_sw_git_hash.encode('utf-8')
         c_struct.flight_sw_version_type = int(self.flight_sw_version_type)
         return c_struct

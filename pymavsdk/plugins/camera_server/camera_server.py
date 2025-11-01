@@ -192,11 +192,8 @@ class Information:
     def from_c_struct(cls, c_struct):
         """Convert from C structure to Python object"""
         instance = cls()
-        # Convert C string to Python string
         instance.vendor_name = c_struct.vendor_name.decode('utf-8')
-        # Convert C string to Python string
         instance.model_name = c_struct.model_name.decode('utf-8')
-        # Convert C string to Python string
         instance.firmware_version = c_struct.firmware_version.decode('utf-8')
         instance.focal_length_mm = c_struct.focal_length_mm
         instance.horizontal_sensor_size_mm = c_struct.horizontal_sensor_size_mm
@@ -205,7 +202,6 @@ class Information:
         instance.vertical_resolution_px = c_struct.vertical_resolution_px
         instance.lens_id = c_struct.lens_id
         instance.definition_file_version = c_struct.definition_file_version
-        # Convert C string to Python string
         instance.definition_file_uri = c_struct.definition_file_uri.decode('utf-8')
         instance.image_in_video_mode_supported = c_struct.image_in_video_mode_supported
         instance.video_in_image_mode_supported = c_struct.video_in_image_mode_supported
@@ -214,11 +210,8 @@ class Information:
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = InformationCStruct()
-        # Convert Python string to C string (bytes)
         c_struct.vendor_name = self.vendor_name.encode('utf-8')
-        # Convert Python string to C string (bytes)
         c_struct.model_name = self.model_name.encode('utf-8')
-        # Convert Python string to C string (bytes)
         c_struct.firmware_version = self.firmware_version.encode('utf-8')
         c_struct.focal_length_mm = self.focal_length_mm
         c_struct.horizontal_sensor_size_mm = self.horizontal_sensor_size_mm
@@ -227,7 +220,6 @@ class Information:
         c_struct.vertical_resolution_px = self.vertical_resolution_px
         c_struct.lens_id = self.lens_id
         c_struct.definition_file_version = self.definition_file_version
-        # Convert Python string to C string (bytes)
         c_struct.definition_file_uri = self.definition_file_uri.encode('utf-8')
         c_struct.image_in_video_mode_supported = self.image_in_video_mode_supported
         c_struct.video_in_image_mode_supported = self.video_in_image_mode_supported
@@ -264,7 +256,6 @@ class VideoStreaming:
         """Convert from C structure to Python object"""
         instance = cls()
         instance.has_rtsp_server = c_struct.has_rtsp_server
-        # Convert C string to Python string
         instance.rtsp_uri = c_struct.rtsp_uri.decode('utf-8')
         return instance
 
@@ -272,7 +263,6 @@ class VideoStreaming:
         """Convert to C structure for C library calls"""
         c_struct = VideoStreamingCStruct()
         c_struct.has_rtsp_server = self.has_rtsp_server
-        # Convert Python string to C string (bytes)
         c_struct.rtsp_uri = self.rtsp_uri.encode('utf-8')
         return c_struct
 
@@ -382,28 +372,22 @@ class CaptureInfo:
     def from_c_struct(cls, c_struct):
         """Convert from C structure to Python object"""
         instance = cls()
-        # Convert nested C struct to Python object
         instance.position = Position.from_c_struct(c_struct.position)
-        # Convert nested C struct to Python object
         instance.attitude_quaternion = Quaternion.from_c_struct(c_struct.attitude_quaternion)
         instance.time_utc_us = c_struct.time_utc_us
         instance.is_success = c_struct.is_success
         instance.index = c_struct.index
-        # Convert C string to Python string
         instance.file_url = c_struct.file_url.decode('utf-8')
         return instance
 
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = CaptureInfoCStruct()
-        # Convert nested Python object to C struct
         c_struct.position = self.position.to_c_struct()
-        # Convert nested Python object to C struct
         c_struct.attitude_quaternion = self.attitude_quaternion.to_c_struct()
         c_struct.time_utc_us = self.time_utc_us
         c_struct.is_success = self.is_success
         c_struct.index = self.index
-        # Convert Python string to C string (bytes)
         c_struct.file_url = self.file_url.encode('utf-8')
         return c_struct
 
@@ -455,10 +439,8 @@ class StorageInformation:
         instance.used_storage_mib = c_struct.used_storage_mib
         instance.available_storage_mib = c_struct.available_storage_mib
         instance.total_storage_mib = c_struct.total_storage_mib
-        # Convert C enum to Python enum
         instance.storage_status = StorageInformation.StorageStatus(c_struct.storage_status)
         instance.storage_id = c_struct.storage_id
-        # Convert C enum to Python enum
         instance.storage_type = StorageInformation.StorageType(c_struct.storage_type)
         instance.read_speed_mib_s = c_struct.read_speed_mib_s
         instance.write_speed_mib_s = c_struct.write_speed_mib_s
@@ -521,9 +503,7 @@ class CaptureStatus:
         instance.image_interval_s = c_struct.image_interval_s
         instance.recording_time_s = c_struct.recording_time_s
         instance.available_capacity_mib = c_struct.available_capacity_mib
-        # Convert C enum to Python enum
         instance.image_status = CaptureStatus.ImageStatus(c_struct.image_status)
-        # Convert C enum to Python enum
         instance.video_status = CaptureStatus.VideoStatus(c_struct.video_status)
         instance.image_count = c_struct.image_count
         return instance

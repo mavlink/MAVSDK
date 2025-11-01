@@ -159,14 +159,12 @@ class MissionItem:
         instance.is_fly_through = c_struct.is_fly_through
         instance.gimbal_pitch_deg = c_struct.gimbal_pitch_deg
         instance.gimbal_yaw_deg = c_struct.gimbal_yaw_deg
-        # Convert C enum to Python enum
         instance.camera_action = MissionItem.CameraAction(c_struct.camera_action)
         instance.loiter_time_s = c_struct.loiter_time_s
         instance.camera_photo_interval_s = c_struct.camera_photo_interval_s
         instance.acceptance_radius_m = c_struct.acceptance_radius_m
         instance.yaw_deg = c_struct.yaw_deg
         instance.camera_photo_distance_m = c_struct.camera_photo_distance_m
-        # Convert C enum to Python enum
         instance.vehicle_action = MissionItem.VehicleAction(c_struct.vehicle_action)
         return instance
 
@@ -219,7 +217,6 @@ class MissionPlan:
     def from_c_struct(cls, c_struct):
         """Convert from C structure to Python object"""
         instance = cls()
-        # Convert array of C structs to Python objects
         if c_struct.mission_items_size > 0:
             instance.mission_items = [MissionItem.from_c_struct(c_struct.mission_items[i]) for i in range(c_struct.mission_items_size)]
         else:
@@ -229,7 +226,6 @@ class MissionPlan:
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = MissionPlanCStruct()
-        # Convert list of Python objects to C array
         array_type = MissionItemCStruct * len(self.mission_items)
         c_array = array_type()
         for i, item in enumerate(self.mission_items):
@@ -317,7 +313,6 @@ class ProgressDataOrMission:
         instance.has_progress = c_struct.has_progress
         instance.progress = c_struct.progress
         instance.has_mission = c_struct.has_mission
-        # Convert nested C struct to Python object
         instance.mission_plan = MissionPlan.from_c_struct(c_struct.mission_plan)
         return instance
 
@@ -327,7 +322,6 @@ class ProgressDataOrMission:
         c_struct.has_progress = self.has_progress
         c_struct.progress = self.progress
         c_struct.has_mission = self.has_mission
-        # Convert nested Python object to C struct
         c_struct.mission_plan = self.mission_plan.to_c_struct()
         return c_struct
 

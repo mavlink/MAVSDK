@@ -53,14 +53,12 @@ class LogStreamingRaw:
     def from_c_struct(cls, c_struct):
         """Convert from C structure to Python object"""
         instance = cls()
-        # Convert C string to Python string
         instance.data_base64 = c_struct.data_base64.decode('utf-8')
         return instance
 
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = LogStreamingRawCStruct()
-        # Convert Python string to C string (bytes)
         c_struct.data_base64 = self.data_base64.encode('utf-8')
         return c_struct
 

@@ -63,26 +63,22 @@ class MavlinkMessage:
     def from_c_struct(cls, c_struct):
         """Convert from C structure to Python object"""
         instance = cls()
-        # Convert C string to Python string
         instance.message_name = c_struct.message_name.decode('utf-8')
         instance.system_id = c_struct.system_id
         instance.component_id = c_struct.component_id
         instance.target_system_id = c_struct.target_system_id
         instance.target_component_id = c_struct.target_component_id
-        # Convert C string to Python string
         instance.fields_json = c_struct.fields_json.decode('utf-8')
         return instance
 
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = MavlinkMessageCStruct()
-        # Convert Python string to C string (bytes)
         c_struct.message_name = self.message_name.encode('utf-8')
         c_struct.system_id = self.system_id
         c_struct.component_id = self.component_id
         c_struct.target_system_id = self.target_system_id
         c_struct.target_component_id = self.target_component_id
-        # Convert Python string to C string (bytes)
         c_struct.fields_json = self.fields_json.encode('utf-8')
         return c_struct
 
