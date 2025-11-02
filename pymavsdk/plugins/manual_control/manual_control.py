@@ -16,9 +16,11 @@ from ...cmavsdk_loader import _cmavsdk_lib
 
 # ===== Enums =====
 
+
 # ===== Result Enums =====
 class ManualControlResult(IntEnum):
     """Possible results returned for manual control requests."""
+
     UNKNOWN = 0
     SUCCESS = 1
     NO_SYSTEM = 2
@@ -55,19 +57,19 @@ class ManualControl:
         self._handle = self._lib.mavsdk_manual_control_create(system_handle)
 
         if not self._handle:
-            raise RuntimeError("Failed to create ManualControl plugin - C function returned null handle")
-
+            raise RuntimeError(
+                "Failed to create ManualControl plugin - C function returned null handle"
+            )
 
     def start_position_control_async(self, callback: Callable, user_data: Any = None):
         """Start position control using e.g. joystick input.
 
- Requires manual control input to be sent regularly already.
- Requires a valid position using e.g. GPS, external vision, or optical flow."""
+        Requires manual control input to be sent regularly already.
+        Requires a valid position using e.g. GPS, external vision, or optical flow."""
 
         def c_callback(result, ud):
             try:
                 py_result = ManualControlResult(result)
-
 
                 callback(py_result, user_data)
 
@@ -78,15 +80,11 @@ class ManualControl:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_manual_control_start_position_control_async(
-            self._handle,
-            cb,
-            None
+            self._handle, cb, None
         )
-
 
     def start_position_control(self):
         """Get start_position_control (blocking)"""
-
 
         result_code = self._lib.mavsdk_manual_control_start_position_control(
             self._handle,
@@ -97,17 +95,15 @@ class ManualControl:
 
         return result
 
-
     def start_altitude_control_async(self, callback: Callable, user_data: Any = None):
         """Start altitude control
 
- Requires manual control input to be sent regularly already.
- Does not require a  valid position e.g. GPS."""
+        Requires manual control input to be sent regularly already.
+        Does not require a  valid position e.g. GPS."""
 
         def c_callback(result, ud):
             try:
                 py_result = ManualControlResult(result)
-
 
                 callback(py_result, user_data)
 
@@ -118,15 +114,11 @@ class ManualControl:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_manual_control_start_altitude_control_async(
-            self._handle,
-            cb,
-            None
+            self._handle, cb, None
         )
-
 
     def start_altitude_control(self):
         """Get start_altitude_control (blocking)"""
-
 
         result_code = self._lib.mavsdk_manual_control_start_altitude_control(
             self._handle,
@@ -137,11 +129,8 @@ class ManualControl:
 
         return result
 
-
-
     def set_manual_control_input(self, x, y, z, r):
         """Get set_manual_control_input (blocking)"""
-
 
         result_code = self._lib.mavsdk_manual_control_set_manual_control_input(
             self._handle,
@@ -156,7 +145,6 @@ class ManualControl:
 
         return result
 
-
     def destroy(self):
         """Destroy the plugin instance"""
         if self._handle:
@@ -166,17 +154,10 @@ class ManualControl:
     def __del__(self):
         self.destroy()
 
+
 # ===== Callback Types =====
-StartPositionControlCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-StartAltitudeControlCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
+StartPositionControlCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
+StartAltitudeControlCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
 
 # ===== Setup Functions =====
 _cmavsdk_lib.mavsdk_manual_control_create.argtypes = [ctypes.c_void_p]
@@ -189,7 +170,7 @@ _cmavsdk_lib.mavsdk_manual_control_destroy.restype = None
 _cmavsdk_lib.mavsdk_manual_control_start_position_control_async.argtypes = [
     ctypes.c_void_p,
     StartPositionControlCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_manual_control_start_position_control_async.restype = None
@@ -202,7 +183,7 @@ _cmavsdk_lib.mavsdk_manual_control_start_position_control.restype = ctypes.c_int
 _cmavsdk_lib.mavsdk_manual_control_start_altitude_control_async.argtypes = [
     ctypes.c_void_p,
     StartAltitudeControlCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_manual_control_start_altitude_control_async.restype = None

@@ -17,9 +17,11 @@ from ...cmavsdk_loader import _cmavsdk_lib
 
 # ===== Enums =====
 
+
 # ===== Result Enums =====
 class FollowMeResult(IntEnum):
     """Possible results returned for followme operations"""
+
     UNKNOWN = 0
     SUCCESS = 1
     NO_SYSTEM = 2
@@ -37,6 +39,7 @@ class ConfigCStruct(ctypes.Structure):
     Internal C structure for Config.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("follow_height_m", ctypes.c_float),
         ("follow_distance_m", ctypes.c_float),
@@ -46,11 +49,13 @@ class ConfigCStruct(ctypes.Structure):
         ("follow_angle_deg", ctypes.c_float),
     ]
 
+
 class TargetLocationCStruct(ctypes.Structure):
     """
     Internal C structure for TargetLocation.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("latitude_deg", ctypes.c_double),
         ("longitude_deg", ctypes.c_double),
@@ -66,14 +71,23 @@ class Config:
     """
     Configuration type.
     """
+
     class FollowAltitudeMode(IntEnum):
         """Altitude mode to configure which altitude the follow me will assume the target to be at."""
+
         CONSTANT = 0
         TERRAIN = 1
         TARGET_GPS = 2
 
-
-    def __init__(self, follow_height_m=None, follow_distance_m=None, responsiveness=None, altitude_mode=None, max_tangential_vel_m_s=None, follow_angle_deg=None):
+    def __init__(
+        self,
+        follow_height_m=None,
+        follow_distance_m=None,
+        responsiveness=None,
+        altitude_mode=None,
+        max_tangential_vel_m_s=None,
+        follow_angle_deg=None,
+    ):
         self.follow_height_m = follow_height_m
         self.follow_distance_m = follow_distance_m
         self.responsiveness = responsiveness
@@ -114,12 +128,21 @@ class Config:
         fields.append(f"follow_angle_deg={self.follow_angle_deg}")
         return f"Config({', '.join(fields)})"
 
+
 class TargetLocation:
     """
     Target location for the vehicle to follow
     """
 
-    def __init__(self, latitude_deg=None, longitude_deg=None, absolute_altitude_m=None, velocity_x_m_s=None, velocity_y_m_s=None, velocity_z_m_s=None):
+    def __init__(
+        self,
+        latitude_deg=None,
+        longitude_deg=None,
+        absolute_altitude_m=None,
+        velocity_x_m_s=None,
+        velocity_y_m_s=None,
+        velocity_z_m_s=None,
+    ):
         self.latitude_deg = latitude_deg
         self.longitude_deg = longitude_deg
         self.absolute_altitude_m = absolute_altitude_m
@@ -161,11 +184,10 @@ class TargetLocation:
         return f"TargetLocation({', '.join(fields)})"
 
 
-
 # ===== Plugin =====
 class FollowMe:
     """Allow users to command the vehicle to follow a specific target.
- The target is provided as a GPS coordinate and altitude."""
+    The target is provided as a GPS coordinate and altitude."""
 
     def __init__(self, system):
         self._lib = _cmavsdk_lib
@@ -183,29 +205,23 @@ class FollowMe:
         self._handle = self._lib.mavsdk_follow_me_create(system_handle)
 
         if not self._handle:
-            raise RuntimeError("Failed to create FollowMe plugin - C function returned null handle")
-
-
+            raise RuntimeError(
+                "Failed to create FollowMe plugin - C function returned null handle"
+            )
 
     def get_config(self):
         """Get get_config (blocking)"""
 
         result_out = ConfigCStruct()
 
-        self._lib.mavsdk_follow_me_get_config(
-            self._handle,
-            ctypes.byref(result_out)
-        )
+        self._lib.mavsdk_follow_me_get_config(self._handle, ctypes.byref(result_out))
 
         py_result = Config.from_c_struct(result_out)
         self._lib.mavsdk_follow_me_Config_destroy(ctypes.byref(result_out))
         return py_result
 
-
-
     def set_config(self, config):
         """Get set_config (blocking)"""
-
 
         result_code = self._lib.mavsdk_follow_me_set_config(
             self._handle,
@@ -217,25 +233,17 @@ class FollowMe:
 
         return result
 
-
-
     def is_active(self):
         """Get is_active (blocking)"""
 
         result_out = ctypes.c_bool()
 
-        self._lib.mavsdk_follow_me_is_active(
-            self._handle,
-            ctypes.byref(result_out)
-        )
+        self._lib.mavsdk_follow_me_is_active(self._handle, ctypes.byref(result_out))
 
         return result_out.value
 
-
-
     def set_target_location(self, location):
         """Get set_target_location (blocking)"""
-
 
         result_code = self._lib.mavsdk_follow_me_set_target_location(
             self._handle,
@@ -247,27 +255,21 @@ class FollowMe:
 
         return result
 
-
-
     def get_last_location(self):
         """Get get_last_location (blocking)"""
 
         result_out = TargetLocationCStruct()
 
         self._lib.mavsdk_follow_me_get_last_location(
-            self._handle,
-            ctypes.byref(result_out)
+            self._handle, ctypes.byref(result_out)
         )
 
         py_result = TargetLocation.from_c_struct(result_out)
         self._lib.mavsdk_follow_me_TargetLocation_destroy(ctypes.byref(result_out))
         return py_result
 
-
-
     def start(self):
         """Get start (blocking)"""
-
 
         result_code = self._lib.mavsdk_follow_me_start(
             self._handle,
@@ -278,11 +280,8 @@ class FollowMe:
 
         return result
 
-
-
     def stop(self):
         """Get stop (blocking)"""
-
 
         result_code = self._lib.mavsdk_follow_me_stop(
             self._handle,
@@ -293,7 +292,6 @@ class FollowMe:
 
         return result
 
-
     def destroy(self):
         """Destroy the plugin instance"""
         if self._handle:
@@ -302,6 +300,7 @@ class FollowMe:
 
     def __del__(self):
         self.destroy()
+
 
 # ===== Callback Types =====
 
@@ -312,9 +311,7 @@ _cmavsdk_lib.mavsdk_follow_me_create.restype = ctypes.c_void_p
 _cmavsdk_lib.mavsdk_follow_me_destroy.argtypes = [ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_follow_me_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_follow_me_Config_destroy.argtypes = [
-    ctypes.POINTER(ConfigCStruct)
-]
+_cmavsdk_lib.mavsdk_follow_me_Config_destroy.argtypes = [ctypes.POINTER(ConfigCStruct)]
 _cmavsdk_lib.mavsdk_follow_me_Config_destroy.restype = None
 
 _cmavsdk_lib.mavsdk_follow_me_TargetLocation_destroy.argtypes = [
@@ -323,10 +320,9 @@ _cmavsdk_lib.mavsdk_follow_me_TargetLocation_destroy.argtypes = [
 _cmavsdk_lib.mavsdk_follow_me_TargetLocation_destroy.restype = None
 
 
-
 _cmavsdk_lib.mavsdk_follow_me_get_config.argtypes = [
     ctypes.c_void_p,
-    ctypes.POINTER(ConfigCStruct)
+    ctypes.POINTER(ConfigCStruct),
 ]
 
 _cmavsdk_lib.mavsdk_follow_me_get_config.restype = None
@@ -340,7 +336,7 @@ _cmavsdk_lib.mavsdk_follow_me_set_config.restype = ctypes.c_int
 
 _cmavsdk_lib.mavsdk_follow_me_is_active.argtypes = [
     ctypes.c_void_p,
-    ctypes.POINTER(ctypes.c_bool)
+    ctypes.POINTER(ctypes.c_bool),
 ]
 
 _cmavsdk_lib.mavsdk_follow_me_is_active.restype = None
@@ -354,7 +350,7 @@ _cmavsdk_lib.mavsdk_follow_me_set_target_location.restype = ctypes.c_int
 
 _cmavsdk_lib.mavsdk_follow_me_get_last_location.argtypes = [
     ctypes.c_void_p,
-    ctypes.POINTER(TargetLocationCStruct)
+    ctypes.POINTER(TargetLocationCStruct),
 ]
 
 _cmavsdk_lib.mavsdk_follow_me_get_last_location.restype = None

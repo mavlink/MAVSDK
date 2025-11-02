@@ -16,9 +16,11 @@ from ...cmavsdk_loader import _cmavsdk_lib
 
 # ===== Enums =====
 
+
 # ===== Result Enums =====
 class CalibrationResult(IntEnum):
     """Possible results returned for calibration commands"""
+
     UNKNOWN = 0
     SUCCESS = 1
     NEXT = 2
@@ -39,6 +41,7 @@ class ProgressDataCStruct(ctypes.Structure):
     Internal C structure for ProgressData.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("has_progress", ctypes.c_bool),
         ("progress", ctypes.c_float),
@@ -50,12 +53,14 @@ class ProgressDataCStruct(ctypes.Structure):
 # ===== Structures =====
 class ProgressData:
     """
-    Progress data coming from calibration.
+       Progress data coming from calibration.
 
- Can be a progress percentage, or an instruction text.
+    Can be a progress percentage, or an instruction text.
     """
 
-    def __init__(self, has_progress=None, progress=None, has_status_text=None, status_text=None):
+    def __init__(
+        self, has_progress=None, progress=None, has_status_text=None, status_text=None
+    ):
         self.has_progress = has_progress
         self.progress = progress
         self.has_status_text = has_status_text
@@ -68,7 +73,7 @@ class ProgressData:
         instance.has_progress = c_struct.has_progress
         instance.progress = c_struct.progress
         instance.has_status_text = c_struct.has_status_text
-        instance.status_text = c_struct.status_text.decode('utf-8')
+        instance.status_text = c_struct.status_text.decode("utf-8")
         return instance
 
     def to_c_struct(self):
@@ -77,7 +82,7 @@ class ProgressData:
         c_struct.has_progress = self.has_progress
         c_struct.progress = self.progress
         c_struct.has_status_text = self.has_status_text
-        c_struct.status_text = self.status_text.encode('utf-8')
+        c_struct.status_text = self.status_text.encode("utf-8")
         return c_struct
 
     def __str__(self):
@@ -87,7 +92,6 @@ class ProgressData:
         fields.append(f"has_status_text={self.has_status_text}")
         fields.append(f"status_text={self.status_text}")
         return f"ProgressData({', '.join(fields)})"
-
 
 
 # ===== Plugin =====
@@ -110,8 +114,9 @@ class Calibration:
         self._handle = self._lib.mavsdk_calibration_create(system_handle)
 
         if not self._handle:
-            raise RuntimeError("Failed to create Calibration plugin - C function returned null handle")
-
+            raise RuntimeError(
+                "Failed to create Calibration plugin - C function returned null handle"
+            )
 
     def calibrate_gyro_async(self, callback: Callable, user_data: Any = None):
         """Perform gyro calibration."""
@@ -132,14 +137,7 @@ class Calibration:
         cb = CalibrateGyroCallback(c_callback)
         self._callbacks.append(cb)
 
-        self._lib.mavsdk_calibration_calibrate_gyro_async(
-            self._handle,
-            cb,
-            None
-        )
-
-
-
+        self._lib.mavsdk_calibration_calibrate_gyro_async(self._handle, cb, None)
 
     def calibrate_accelerometer_async(self, callback: Callable, user_data: Any = None):
         """Perform accelerometer calibration."""
@@ -161,13 +159,8 @@ class Calibration:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_calibration_calibrate_accelerometer_async(
-            self._handle,
-            cb,
-            None
+            self._handle, cb, None
         )
-
-
-
 
     def calibrate_magnetometer_async(self, callback: Callable, user_data: Any = None):
         """Perform magnetometer calibration."""
@@ -189,13 +182,8 @@ class Calibration:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_calibration_calibrate_magnetometer_async(
-            self._handle,
-            cb,
-            None
+            self._handle, cb, None
         )
-
-
-
 
     def calibrate_level_horizon_async(self, callback: Callable, user_data: Any = None):
         """Perform board level horizon calibration."""
@@ -217,15 +205,12 @@ class Calibration:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_calibration_calibrate_level_horizon_async(
-            self._handle,
-            cb,
-            None
+            self._handle, cb, None
         )
 
-
-
-
-    def calibrate_gimbal_accelerometer_async(self, callback: Callable, user_data: Any = None):
+    def calibrate_gimbal_accelerometer_async(
+        self, callback: Callable, user_data: Any = None
+    ):
         """Perform gimbal accelerometer calibration."""
 
         def c_callback(result, c_data, ud):
@@ -245,18 +230,11 @@ class Calibration:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_calibration_calibrate_gimbal_accelerometer_async(
-            self._handle,
-            cb,
-            None
+            self._handle, cb, None
         )
-
-
-
-
 
     def cancel(self):
         """Get cancel (blocking)"""
-
 
         result_code = self._lib.mavsdk_calibration_cancel(
             self._handle,
@@ -267,7 +245,6 @@ class Calibration:
 
         return result
 
-
     def destroy(self):
         """Destroy the plugin instance"""
         if self._handle:
@@ -277,36 +254,22 @@ class Calibration:
     def __del__(self):
         self.destroy()
 
+
 # ===== Callback Types =====
 CalibrateGyroCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ProgressDataCStruct,
-    ctypes.c_void_p
+    None, ctypes.c_int, ProgressDataCStruct, ctypes.c_void_p
 )
 CalibrateAccelerometerCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ProgressDataCStruct,
-    ctypes.c_void_p
+    None, ctypes.c_int, ProgressDataCStruct, ctypes.c_void_p
 )
 CalibrateMagnetometerCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ProgressDataCStruct,
-    ctypes.c_void_p
+    None, ctypes.c_int, ProgressDataCStruct, ctypes.c_void_p
 )
 CalibrateLevelHorizonCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ProgressDataCStruct,
-    ctypes.c_void_p
+    None, ctypes.c_int, ProgressDataCStruct, ctypes.c_void_p
 )
 CalibrateGimbalAccelerometerCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ProgressDataCStruct,
-    ctypes.c_void_p
+    None, ctypes.c_int, ProgressDataCStruct, ctypes.c_void_p
 )
 
 # ===== Setup Functions =====
@@ -325,7 +288,7 @@ _cmavsdk_lib.mavsdk_calibration_ProgressData_destroy.restype = None
 _cmavsdk_lib.mavsdk_calibration_calibrate_gyro_async.argtypes = [
     ctypes.c_void_p,
     CalibrateGyroCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_calibration_calibrate_gyro_async.restype = None
@@ -333,7 +296,7 @@ _cmavsdk_lib.mavsdk_calibration_calibrate_gyro_async.restype = None
 _cmavsdk_lib.mavsdk_calibration_calibrate_accelerometer_async.argtypes = [
     ctypes.c_void_p,
     CalibrateAccelerometerCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_calibration_calibrate_accelerometer_async.restype = None
@@ -341,7 +304,7 @@ _cmavsdk_lib.mavsdk_calibration_calibrate_accelerometer_async.restype = None
 _cmavsdk_lib.mavsdk_calibration_calibrate_magnetometer_async.argtypes = [
     ctypes.c_void_p,
     CalibrateMagnetometerCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_calibration_calibrate_magnetometer_async.restype = None
@@ -349,7 +312,7 @@ _cmavsdk_lib.mavsdk_calibration_calibrate_magnetometer_async.restype = None
 _cmavsdk_lib.mavsdk_calibration_calibrate_level_horizon_async.argtypes = [
     ctypes.c_void_p,
     CalibrateLevelHorizonCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_calibration_calibrate_level_horizon_async.restype = None
@@ -357,7 +320,7 @@ _cmavsdk_lib.mavsdk_calibration_calibrate_level_horizon_async.restype = None
 _cmavsdk_lib.mavsdk_calibration_calibrate_gimbal_accelerometer_async.argtypes = [
     ctypes.c_void_p,
     CalibrateGimbalAccelerometerCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_calibration_calibrate_gimbal_accelerometer_async.restype = None

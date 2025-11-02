@@ -1,7 +1,9 @@
 from enum import IntEnum
 
+
 class ConnectionResult(IntEnum):
     """Connection result codes"""
+
     SUCCESS = 0
     TIMEOUT = 1
     SOCKET_ERROR = 2

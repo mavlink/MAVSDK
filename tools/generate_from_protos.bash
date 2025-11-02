@@ -99,6 +99,10 @@ main() {
     for plugin in "${plugins[@]}"; do
         process_plugin "$plugin"
     done
+
+    # Apply formatter
+    echo "Applying ruff to ${project_root}/pymavsdk"
+    python3 -m ruff format "${project_root}/pymavsdk"
     
     echo "All plugins processed successfully!"
 }

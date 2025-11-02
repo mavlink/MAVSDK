@@ -17,6 +17,7 @@ from ...cmavsdk_loader import _cmavsdk_lib
 # ===== Enums =====
 class ProtocolVersion(IntEnum):
     """Parameter version"""
+
     V1 = 0
     EXT = 1
 
@@ -24,6 +25,7 @@ class ProtocolVersion(IntEnum):
 # ===== Result Enums =====
 class ParamResult(IntEnum):
     """Possible results returned for param requests."""
+
     UNKNOWN = 0
     SUCCESS = 1
     TIMEOUT = 2
@@ -41,36 +43,43 @@ class IntParamCStruct(ctypes.Structure):
     Internal C structure for IntParam.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("name", ctypes.c_char_p),
         ("value", ctypes.c_int32),
     ]
+
 
 class FloatParamCStruct(ctypes.Structure):
     """
     Internal C structure for FloatParam.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("name", ctypes.c_char_p),
         ("value", ctypes.c_float),
     ]
+
 
 class CustomParamCStruct(ctypes.Structure):
     """
     Internal C structure for CustomParam.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("name", ctypes.c_char_p),
         ("value", ctypes.c_char_p),
     ]
+
 
 class AllParamsCStruct(ctypes.Structure):
     """
     Internal C structure for AllParams.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("int_params", ctypes.POINTER(IntParamCStruct)),
         ("int_params_size", ctypes.c_size_t),
@@ -95,14 +104,14 @@ class IntParam:
     def from_c_struct(cls, c_struct):
         """Convert from C structure to Python object"""
         instance = cls()
-        instance.name = c_struct.name.decode('utf-8')
+        instance.name = c_struct.name.decode("utf-8")
         instance.value = c_struct.value
         return instance
 
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = IntParamCStruct()
-        c_struct.name = self.name.encode('utf-8')
+        c_struct.name = self.name.encode("utf-8")
         c_struct.value = self.value
         return c_struct
 
@@ -111,6 +120,7 @@ class IntParam:
         fields.append(f"name={self.name}")
         fields.append(f"value={self.value}")
         return f"IntParam({', '.join(fields)})"
+
 
 class FloatParam:
     """
@@ -125,14 +135,14 @@ class FloatParam:
     def from_c_struct(cls, c_struct):
         """Convert from C structure to Python object"""
         instance = cls()
-        instance.name = c_struct.name.decode('utf-8')
+        instance.name = c_struct.name.decode("utf-8")
         instance.value = c_struct.value
         return instance
 
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = FloatParamCStruct()
-        c_struct.name = self.name.encode('utf-8')
+        c_struct.name = self.name.encode("utf-8")
         c_struct.value = self.value
         return c_struct
 
@@ -141,6 +151,7 @@ class FloatParam:
         fields.append(f"name={self.name}")
         fields.append(f"value={self.value}")
         return f"FloatParam({', '.join(fields)})"
+
 
 class CustomParam:
     """
@@ -155,15 +166,15 @@ class CustomParam:
     def from_c_struct(cls, c_struct):
         """Convert from C structure to Python object"""
         instance = cls()
-        instance.name = c_struct.name.decode('utf-8')
-        instance.value = c_struct.value.decode('utf-8')
+        instance.name = c_struct.name.decode("utf-8")
+        instance.value = c_struct.value.decode("utf-8")
         return instance
 
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = CustomParamCStruct()
-        c_struct.name = self.name.encode('utf-8')
-        c_struct.value = self.value.encode('utf-8')
+        c_struct.name = self.name.encode("utf-8")
+        c_struct.value = self.value.encode("utf-8")
         return c_struct
 
     def __str__(self):
@@ -171,6 +182,7 @@ class CustomParam:
         fields.append(f"name={self.name}")
         fields.append(f"value={self.value}")
         return f"CustomParam({', '.join(fields)})"
+
 
 class AllParams:
     """
@@ -187,15 +199,24 @@ class AllParams:
         """Convert from C structure to Python object"""
         instance = cls()
         if c_struct.int_params_size > 0:
-            instance.int_params = [IntParam.from_c_struct(c_struct.int_params[i]) for i in range(c_struct.int_params_size)]
+            instance.int_params = [
+                IntParam.from_c_struct(c_struct.int_params[i])
+                for i in range(c_struct.int_params_size)
+            ]
         else:
             instance.int_params = []
         if c_struct.float_params_size > 0:
-            instance.float_params = [FloatParam.from_c_struct(c_struct.float_params[i]) for i in range(c_struct.float_params_size)]
+            instance.float_params = [
+                FloatParam.from_c_struct(c_struct.float_params[i])
+                for i in range(c_struct.float_params_size)
+            ]
         else:
             instance.float_params = []
         if c_struct.custom_params_size > 0:
-            instance.custom_params = [CustomParam.from_c_struct(c_struct.custom_params[i]) for i in range(c_struct.custom_params_size)]
+            instance.custom_params = [
+                CustomParam.from_c_struct(c_struct.custom_params[i])
+                for i in range(c_struct.custom_params_size)
+            ]
         else:
             instance.custom_params = []
         return instance
@@ -219,7 +240,9 @@ class AllParams:
         c_array = array_type()
         for i, item in enumerate(self.custom_params):
             c_array[i] = item.to_c_struct()
-        c_struct.custom_params = ctypes.cast(c_array, ctypes.POINTER(CustomParamCStruct))
+        c_struct.custom_params = ctypes.cast(
+            c_array, ctypes.POINTER(CustomParamCStruct)
+        )
         c_struct.custom_params_size = len(self.custom_params)
         return c_struct
 
@@ -229,7 +252,6 @@ class AllParams:
         fields.append(f"float_params={self.float_params}")
         fields.append(f"custom_params={self.custom_params}")
         return f"AllParams({', '.join(fields)})"
-
 
 
 # ===== Plugin =====
@@ -252,9 +274,9 @@ class Param:
         self._handle = self._lib.mavsdk_param_create(system_handle)
 
         if not self._handle:
-            raise RuntimeError("Failed to create Param plugin - C function returned null handle")
-
-
+            raise RuntimeError(
+                "Failed to create Param plugin - C function returned null handle"
+            )
 
     def get_param_int(self, name):
         """Get get_param_int (blocking)"""
@@ -262,9 +284,7 @@ class Param:
         result_out = ctypes.c_int32()
 
         result_code = self._lib.mavsdk_param_get_param_int(
-            self._handle,
-            name,
-            ctypes.byref(result_out)
+            self._handle, name, ctypes.byref(result_out)
         )
         result = ParamResult(result_code)
         if result != ParamResult.SUCCESS:
@@ -272,11 +292,8 @@ class Param:
 
         return result_out.value
 
-
-
     def set_param_int(self, name, value):
         """Get set_param_int (blocking)"""
-
 
         result_code = self._lib.mavsdk_param_set_param_int(
             self._handle,
@@ -289,17 +306,13 @@ class Param:
 
         return result
 
-
-
     def get_param_float(self, name):
         """Get get_param_float (blocking)"""
 
         result_out = ctypes.c_float()
 
         result_code = self._lib.mavsdk_param_get_param_float(
-            self._handle,
-            name,
-            ctypes.byref(result_out)
+            self._handle, name, ctypes.byref(result_out)
         )
         result = ParamResult(result_code)
         if result != ParamResult.SUCCESS:
@@ -307,11 +320,8 @@ class Param:
 
         return result_out.value
 
-
-
     def set_param_float(self, name, value):
         """Get set_param_float (blocking)"""
-
 
         result_code = self._lib.mavsdk_param_set_param_float(
             self._handle,
@@ -324,17 +334,13 @@ class Param:
 
         return result
 
-
-
     def get_param_custom(self, name):
         """Get get_param_custom (blocking)"""
 
         result_out = ctypes.c_char_p()
 
         result_code = self._lib.mavsdk_param_get_param_custom(
-            self._handle,
-            name,
-            ctypes.byref(result_out)
+            self._handle, name, ctypes.byref(result_out)
         )
         result = ParamResult(result_code)
         if result != ParamResult.SUCCESS:
@@ -342,11 +348,8 @@ class Param:
 
         return result_out.value
 
-
-
     def set_param_custom(self, name, value):
         """Get set_param_custom (blocking)"""
-
 
         result_code = self._lib.mavsdk_param_set_param_custom(
             self._handle,
@@ -359,27 +362,19 @@ class Param:
 
         return result
 
-
-
     def get_all_params(self):
         """Get get_all_params (blocking)"""
 
         result_out = AllParamsCStruct()
 
-        self._lib.mavsdk_param_get_all_params(
-            self._handle,
-            ctypes.byref(result_out)
-        )
+        self._lib.mavsdk_param_get_all_params(self._handle, ctypes.byref(result_out))
 
         py_result = AllParams.from_c_struct(result_out)
         self._lib.mavsdk_param_AllParams_destroy(ctypes.byref(result_out))
         return py_result
 
-
-
     def select_component(self, component_id, protocol_version):
         """Get select_component (blocking)"""
-
 
         result_code = self._lib.mavsdk_param_select_component(
             self._handle,
@@ -392,7 +387,6 @@ class Param:
 
         return result
 
-
     def destroy(self):
         """Destroy the plugin instance"""
         if self._handle:
@@ -401,6 +395,7 @@ class Param:
 
     def __del__(self):
         self.destroy()
+
 
 # ===== Callback Types =====
 
@@ -411,9 +406,7 @@ _cmavsdk_lib.mavsdk_param_create.restype = ctypes.c_void_p
 _cmavsdk_lib.mavsdk_param_destroy.argtypes = [ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_param_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_param_IntParam_destroy.argtypes = [
-    ctypes.POINTER(IntParamCStruct)
-]
+_cmavsdk_lib.mavsdk_param_IntParam_destroy.argtypes = [ctypes.POINTER(IntParamCStruct)]
 _cmavsdk_lib.mavsdk_param_IntParam_destroy.restype = None
 
 _cmavsdk_lib.mavsdk_param_FloatParam_destroy.argtypes = [
@@ -432,11 +425,10 @@ _cmavsdk_lib.mavsdk_param_AllParams_destroy.argtypes = [
 _cmavsdk_lib.mavsdk_param_AllParams_destroy.restype = None
 
 
-
 _cmavsdk_lib.mavsdk_param_get_param_int.argtypes = [
     ctypes.c_void_p,
     ctypes.c_char_p,
-    ctypes.POINTER(ctypes.c_int32)
+    ctypes.POINTER(ctypes.c_int32),
 ]
 
 _cmavsdk_lib.mavsdk_param_get_param_int.restype = ctypes.c_int
@@ -452,7 +444,7 @@ _cmavsdk_lib.mavsdk_param_set_param_int.restype = ctypes.c_int
 _cmavsdk_lib.mavsdk_param_get_param_float.argtypes = [
     ctypes.c_void_p,
     ctypes.c_char_p,
-    ctypes.POINTER(ctypes.c_float)
+    ctypes.POINTER(ctypes.c_float),
 ]
 
 _cmavsdk_lib.mavsdk_param_get_param_float.restype = ctypes.c_int
@@ -468,7 +460,7 @@ _cmavsdk_lib.mavsdk_param_set_param_float.restype = ctypes.c_int
 _cmavsdk_lib.mavsdk_param_get_param_custom.argtypes = [
     ctypes.c_void_p,
     ctypes.c_char_p,
-    ctypes.POINTER(ctypes.c_char_p)
+    ctypes.POINTER(ctypes.c_char_p),
 ]
 
 _cmavsdk_lib.mavsdk_param_get_param_custom.restype = ctypes.c_int
@@ -483,7 +475,7 @@ _cmavsdk_lib.mavsdk_param_set_param_custom.restype = ctypes.c_int
 
 _cmavsdk_lib.mavsdk_param_get_all_params.argtypes = [
     ctypes.c_void_p,
-    ctypes.POINTER(AllParamsCStruct)
+    ctypes.POINTER(AllParamsCStruct),
 ]
 
 _cmavsdk_lib.mavsdk_param_get_all_params.restype = None

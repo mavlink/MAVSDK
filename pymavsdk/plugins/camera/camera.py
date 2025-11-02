@@ -23,12 +23,15 @@ from ...cmavsdk_loader import _cmavsdk_lib
 # ===== Enums =====
 class Mode(IntEnum):
     """Camera mode type."""
+
     UNKNOWN = 0
     PHOTO = 1
     VIDEO = 2
 
+
 class PhotosRange(IntEnum):
     """Photos range type."""
+
     ALL = 0
     SINCE_CONNECTION = 1
 
@@ -36,6 +39,7 @@ class PhotosRange(IntEnum):
 # ===== Result Enums =====
 class CameraResult(IntEnum):
     """Possible results returned for camera commands"""
+
     UNKNOWN = 0
     SUCCESS = 1
     IN_PROGRESS = 2
@@ -57,16 +61,19 @@ class OptionCStruct(ctypes.Structure):
     Internal C structure for Option.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("option_id", ctypes.c_char_p),
         ("option_description", ctypes.c_char_p),
     ]
+
 
 class SettingCStruct(ctypes.Structure):
     """
     Internal C structure for Setting.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("setting_id", ctypes.c_char_p),
         ("setting_description", ctypes.c_char_p),
@@ -74,11 +81,13 @@ class SettingCStruct(ctypes.Structure):
         ("is_range", ctypes.c_bool),
     ]
 
+
 class SettingOptionsCStruct(ctypes.Structure):
     """
     Internal C structure for SettingOptions.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("component_id", ctypes.c_int32),
         ("setting_id", ctypes.c_char_p),
@@ -88,11 +97,13 @@ class SettingOptionsCStruct(ctypes.Structure):
         ("is_range", ctypes.c_bool),
     ]
 
+
 class VideoStreamSettingsCStruct(ctypes.Structure):
     """
     Internal C structure for VideoStreamSettings.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("frame_rate_hz", ctypes.c_float),
         ("horizontal_resolution_pix", ctypes.c_uint32),
@@ -103,11 +114,13 @@ class VideoStreamSettingsCStruct(ctypes.Structure):
         ("horizontal_fov_deg", ctypes.c_float),
     ]
 
+
 class VideoStreamInfoCStruct(ctypes.Structure):
     """
     Internal C structure for VideoStreamInfo.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("stream_id", ctypes.c_int32),
         ("settings", VideoStreamSettingsCStruct),
@@ -115,31 +128,37 @@ class VideoStreamInfoCStruct(ctypes.Structure):
         ("spectrum", ctypes.c_int),
     ]
 
+
 class ModeUpdateCStruct(ctypes.Structure):
     """
     Internal C structure for ModeUpdate.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("component_id", ctypes.c_int32),
         ("mode", ctypes.c_int),
     ]
+
 
 class VideoStreamUpdateCStruct(ctypes.Structure):
     """
     Internal C structure for VideoStreamUpdate.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("component_id", ctypes.c_int32),
         ("video_stream_info", VideoStreamInfoCStruct),
     ]
+
 
 class StorageCStruct(ctypes.Structure):
     """
     Internal C structure for Storage.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("component_id", ctypes.c_int32),
         ("video_on", ctypes.c_bool),
@@ -154,43 +173,51 @@ class StorageCStruct(ctypes.Structure):
         ("storage_type", ctypes.c_int),
     ]
 
+
 class StorageUpdateCStruct(ctypes.Structure):
     """
     Internal C structure for StorageUpdate.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("component_id", ctypes.c_int32),
         ("storage", StorageCStruct),
     ]
+
 
 class CurrentSettingsUpdateCStruct(ctypes.Structure):
     """
     Internal C structure for CurrentSettingsUpdate.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("component_id", ctypes.c_int32),
         ("current_settings", ctypes.POINTER(SettingCStruct)),
         ("current_settings_size", ctypes.c_size_t),
     ]
 
+
 class PossibleSettingOptionsUpdateCStruct(ctypes.Structure):
     """
     Internal C structure for PossibleSettingOptionsUpdate.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("component_id", ctypes.c_int32),
         ("setting_options", ctypes.POINTER(SettingOptionsCStruct)),
         ("setting_options_size", ctypes.c_size_t),
     ]
 
+
 class PositionCStruct(ctypes.Structure):
     """
     Internal C structure for Position.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("latitude_deg", ctypes.c_double),
         ("longitude_deg", ctypes.c_double),
@@ -198,11 +225,13 @@ class PositionCStruct(ctypes.Structure):
         ("relative_altitude_m", ctypes.c_float),
     ]
 
+
 class QuaternionCStruct(ctypes.Structure):
     """
     Internal C structure for Quaternion.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("w", ctypes.c_float),
         ("x", ctypes.c_float),
@@ -210,22 +239,26 @@ class QuaternionCStruct(ctypes.Structure):
         ("z", ctypes.c_float),
     ]
 
+
 class EulerAngleCStruct(ctypes.Structure):
     """
     Internal C structure for EulerAngle.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("roll_deg", ctypes.c_float),
         ("pitch_deg", ctypes.c_float),
         ("yaw_deg", ctypes.c_float),
     ]
 
+
 class CaptureInfoCStruct(ctypes.Structure):
     """
     Internal C structure for CaptureInfo.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("component_id", ctypes.c_int32),
         ("position", PositionCStruct),
@@ -237,11 +270,13 @@ class CaptureInfoCStruct(ctypes.Structure):
         ("file_url", ctypes.c_char_p),
     ]
 
+
 class InformationCStruct(ctypes.Structure):
     """
     Internal C structure for Information.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("component_id", ctypes.c_int32),
         ("vendor_name", ctypes.c_char_p),
@@ -253,11 +288,13 @@ class InformationCStruct(ctypes.Structure):
         ("vertical_resolution_px", ctypes.c_uint32),
     ]
 
+
 class CameraListCStruct(ctypes.Structure):
     """
     Internal C structure for CameraList.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("cameras", ctypes.POINTER(InformationCStruct)),
         ("cameras_size", ctypes.c_size_t),
@@ -278,15 +315,15 @@ class Option:
     def from_c_struct(cls, c_struct):
         """Convert from C structure to Python object"""
         instance = cls()
-        instance.option_id = c_struct.option_id.decode('utf-8')
-        instance.option_description = c_struct.option_description.decode('utf-8')
+        instance.option_id = c_struct.option_id.decode("utf-8")
+        instance.option_description = c_struct.option_description.decode("utf-8")
         return instance
 
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = OptionCStruct()
-        c_struct.option_id = self.option_id.encode('utf-8')
-        c_struct.option_description = self.option_description.encode('utf-8')
+        c_struct.option_id = self.option_id.encode("utf-8")
+        c_struct.option_description = self.option_description.encode("utf-8")
         return c_struct
 
     def __str__(self):
@@ -295,12 +332,15 @@ class Option:
         fields.append(f"option_description={self.option_description}")
         return f"Option({', '.join(fields)})"
 
+
 class Setting:
     """
     Type to represent a setting with a selected option.
     """
 
-    def __init__(self, setting_id=None, setting_description=None, option=None, is_range=None):
+    def __init__(
+        self, setting_id=None, setting_description=None, option=None, is_range=None
+    ):
         self.setting_id = setting_id
         self.setting_description = setting_description
         self.option = option
@@ -310,8 +350,8 @@ class Setting:
     def from_c_struct(cls, c_struct):
         """Convert from C structure to Python object"""
         instance = cls()
-        instance.setting_id = c_struct.setting_id.decode('utf-8')
-        instance.setting_description = c_struct.setting_description.decode('utf-8')
+        instance.setting_id = c_struct.setting_id.decode("utf-8")
+        instance.setting_description = c_struct.setting_description.decode("utf-8")
         instance.option = Option.from_c_struct(c_struct.option)
         instance.is_range = c_struct.is_range
         return instance
@@ -319,8 +359,8 @@ class Setting:
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = SettingCStruct()
-        c_struct.setting_id = self.setting_id.encode('utf-8')
-        c_struct.setting_description = self.setting_description.encode('utf-8')
+        c_struct.setting_id = self.setting_id.encode("utf-8")
+        c_struct.setting_description = self.setting_description.encode("utf-8")
         c_struct.option = self.option.to_c_struct()
         c_struct.is_range = self.is_range
         return c_struct
@@ -333,12 +373,20 @@ class Setting:
         fields.append(f"is_range={self.is_range}")
         return f"Setting({', '.join(fields)})"
 
+
 class SettingOptions:
     """
     Type to represent a setting with a list of options to choose from.
     """
 
-    def __init__(self, component_id=None, setting_id=None, setting_description=None, options=None, is_range=None):
+    def __init__(
+        self,
+        component_id=None,
+        setting_id=None,
+        setting_description=None,
+        options=None,
+        is_range=None,
+    ):
         self.component_id = component_id
         self.setting_id = setting_id
         self.setting_description = setting_description
@@ -350,10 +398,13 @@ class SettingOptions:
         """Convert from C structure to Python object"""
         instance = cls()
         instance.component_id = c_struct.component_id
-        instance.setting_id = c_struct.setting_id.decode('utf-8')
-        instance.setting_description = c_struct.setting_description.decode('utf-8')
+        instance.setting_id = c_struct.setting_id.decode("utf-8")
+        instance.setting_description = c_struct.setting_description.decode("utf-8")
         if c_struct.options_size > 0:
-            instance.options = [Option.from_c_struct(c_struct.options[i]) for i in range(c_struct.options_size)]
+            instance.options = [
+                Option.from_c_struct(c_struct.options[i])
+                for i in range(c_struct.options_size)
+            ]
         else:
             instance.options = []
         instance.is_range = c_struct.is_range
@@ -363,8 +414,8 @@ class SettingOptions:
         """Convert to C structure for C library calls"""
         c_struct = SettingOptionsCStruct()
         c_struct.component_id = self.component_id
-        c_struct.setting_id = self.setting_id.encode('utf-8')
-        c_struct.setting_description = self.setting_description.encode('utf-8')
+        c_struct.setting_id = self.setting_id.encode("utf-8")
+        c_struct.setting_description = self.setting_description.encode("utf-8")
         array_type = OptionCStruct * len(self.options)
         c_array = array_type()
         for i, item in enumerate(self.options):
@@ -383,12 +434,22 @@ class SettingOptions:
         fields.append(f"is_range={self.is_range}")
         return f"SettingOptions({', '.join(fields)})"
 
+
 class VideoStreamSettings:
     """
     Type for video stream settings.
     """
 
-    def __init__(self, frame_rate_hz=None, horizontal_resolution_pix=None, vertical_resolution_pix=None, bit_rate_b_s=None, rotation_deg=None, uri=None, horizontal_fov_deg=None):
+    def __init__(
+        self,
+        frame_rate_hz=None,
+        horizontal_resolution_pix=None,
+        vertical_resolution_pix=None,
+        bit_rate_b_s=None,
+        rotation_deg=None,
+        uri=None,
+        horizontal_fov_deg=None,
+    ):
         self.frame_rate_hz = frame_rate_hz
         self.horizontal_resolution_pix = horizontal_resolution_pix
         self.vertical_resolution_pix = vertical_resolution_pix
@@ -406,7 +467,7 @@ class VideoStreamSettings:
         instance.vertical_resolution_pix = c_struct.vertical_resolution_pix
         instance.bit_rate_b_s = c_struct.bit_rate_b_s
         instance.rotation_deg = c_struct.rotation_deg
-        instance.uri = c_struct.uri.decode('utf-8')
+        instance.uri = c_struct.uri.decode("utf-8")
         instance.horizontal_fov_deg = c_struct.horizontal_fov_deg
         return instance
 
@@ -418,7 +479,7 @@ class VideoStreamSettings:
         c_struct.vertical_resolution_pix = self.vertical_resolution_pix
         c_struct.bit_rate_b_s = self.bit_rate_b_s
         c_struct.rotation_deg = self.rotation_deg
-        c_struct.uri = self.uri.encode('utf-8')
+        c_struct.uri = self.uri.encode("utf-8")
         c_struct.horizontal_fov_deg = self.horizontal_fov_deg
         return c_struct
 
@@ -433,21 +494,24 @@ class VideoStreamSettings:
         fields.append(f"horizontal_fov_deg={self.horizontal_fov_deg}")
         return f"VideoStreamSettings({', '.join(fields)})"
 
+
 class VideoStreamInfo:
     """
     Information about the video stream.
     """
+
     class VideoStreamStatus(IntEnum):
         """Video stream status type."""
+
         NOT_RUNNING = 0
         IN_PROGRESS = 1
 
     class VideoStreamSpectrum(IntEnum):
         """Video stream light spectrum type"""
+
         UNKNOWN = 0
         VISIBLE_LIGHT = 1
         INFRARED = 2
-
 
     def __init__(self, stream_id=None, settings=None, status=None, spectrum=None):
         self.stream_id = stream_id
@@ -482,6 +546,7 @@ class VideoStreamInfo:
         fields.append(f"spectrum={self.spectrum}")
         return f"VideoStreamInfo({', '.join(fields)})"
 
+
 class ModeUpdate:
     """
     An update about the current mode
@@ -512,6 +577,7 @@ class ModeUpdate:
         fields.append(f"mode={self.mode}")
         return f"ModeUpdate({', '.join(fields)})"
 
+
 class VideoStreamUpdate:
     """
     An update about a video stream
@@ -526,7 +592,9 @@ class VideoStreamUpdate:
         """Convert from C structure to Python object"""
         instance = cls()
         instance.component_id = c_struct.component_id
-        instance.video_stream_info = VideoStreamInfo.from_c_struct(c_struct.video_stream_info)
+        instance.video_stream_info = VideoStreamInfo.from_c_struct(
+            c_struct.video_stream_info
+        )
         return instance
 
     def to_c_struct(self):
@@ -542,12 +610,15 @@ class VideoStreamUpdate:
         fields.append(f"video_stream_info={self.video_stream_info}")
         return f"VideoStreamUpdate({', '.join(fields)})"
 
+
 class Storage:
     """
     Information about the camera's storage status.
     """
+
     class StorageStatus(IntEnum):
         """Storage status type."""
+
         NOT_AVAILABLE = 0
         UNFORMATTED = 1
         FORMATTED = 2
@@ -555,6 +626,7 @@ class Storage:
 
     class StorageType(IntEnum):
         """Storage type."""
+
         UNKNOWN = 0
         USB_STICK = 1
         SD = 2
@@ -562,8 +634,20 @@ class Storage:
         HD = 4
         OTHER = 5
 
-
-    def __init__(self, component_id=None, video_on=None, photo_interval_on=None, used_storage_mib=None, available_storage_mib=None, total_storage_mib=None, recording_time_s=None, media_folder_name=None, storage_status=None, storage_id=None, storage_type=None):
+    def __init__(
+        self,
+        component_id=None,
+        video_on=None,
+        photo_interval_on=None,
+        used_storage_mib=None,
+        available_storage_mib=None,
+        total_storage_mib=None,
+        recording_time_s=None,
+        media_folder_name=None,
+        storage_status=None,
+        storage_id=None,
+        storage_type=None,
+    ):
         self.component_id = component_id
         self.video_on = video_on
         self.photo_interval_on = photo_interval_on
@@ -587,7 +671,7 @@ class Storage:
         instance.available_storage_mib = c_struct.available_storage_mib
         instance.total_storage_mib = c_struct.total_storage_mib
         instance.recording_time_s = c_struct.recording_time_s
-        instance.media_folder_name = c_struct.media_folder_name.decode('utf-8')
+        instance.media_folder_name = c_struct.media_folder_name.decode("utf-8")
         instance.storage_status = Storage.StorageStatus(c_struct.storage_status)
         instance.storage_id = c_struct.storage_id
         instance.storage_type = Storage.StorageType(c_struct.storage_type)
@@ -603,7 +687,7 @@ class Storage:
         c_struct.available_storage_mib = self.available_storage_mib
         c_struct.total_storage_mib = self.total_storage_mib
         c_struct.recording_time_s = self.recording_time_s
-        c_struct.media_folder_name = self.media_folder_name.encode('utf-8')
+        c_struct.media_folder_name = self.media_folder_name.encode("utf-8")
         c_struct.storage_status = int(self.storage_status)
         c_struct.storage_id = self.storage_id
         c_struct.storage_type = int(self.storage_type)
@@ -623,6 +707,7 @@ class Storage:
         fields.append(f"storage_id={self.storage_id}")
         fields.append(f"storage_type={self.storage_type}")
         return f"Storage({', '.join(fields)})"
+
 
 class StorageUpdate:
     """
@@ -654,6 +739,7 @@ class StorageUpdate:
         fields.append(f"storage={self.storage}")
         return f"StorageUpdate({', '.join(fields)})"
 
+
 class CurrentSettingsUpdate:
     """
     An update about a current setting
@@ -669,7 +755,10 @@ class CurrentSettingsUpdate:
         instance = cls()
         instance.component_id = c_struct.component_id
         if c_struct.current_settings_size > 0:
-            instance.current_settings = [Setting.from_c_struct(c_struct.current_settings[i]) for i in range(c_struct.current_settings_size)]
+            instance.current_settings = [
+                Setting.from_c_struct(c_struct.current_settings[i])
+                for i in range(c_struct.current_settings_size)
+            ]
         else:
             instance.current_settings = []
         return instance
@@ -692,6 +781,7 @@ class CurrentSettingsUpdate:
         fields.append(f"current_settings={self.current_settings}")
         return f"CurrentSettingsUpdate({', '.join(fields)})"
 
+
 class PossibleSettingOptionsUpdate:
     """
     An update about possible setting options
@@ -707,7 +797,10 @@ class PossibleSettingOptionsUpdate:
         instance = cls()
         instance.component_id = c_struct.component_id
         if c_struct.setting_options_size > 0:
-            instance.setting_options = [SettingOptions.from_c_struct(c_struct.setting_options[i]) for i in range(c_struct.setting_options_size)]
+            instance.setting_options = [
+                SettingOptions.from_c_struct(c_struct.setting_options[i])
+                for i in range(c_struct.setting_options_size)
+            ]
         else:
             instance.setting_options = []
         return instance
@@ -720,7 +813,9 @@ class PossibleSettingOptionsUpdate:
         c_array = array_type()
         for i, item in enumerate(self.setting_options):
             c_array[i] = item.to_c_struct()
-        c_struct.setting_options = ctypes.cast(c_array, ctypes.POINTER(SettingOptionsCStruct))
+        c_struct.setting_options = ctypes.cast(
+            c_array, ctypes.POINTER(SettingOptionsCStruct)
+        )
         c_struct.setting_options_size = len(self.setting_options)
         return c_struct
 
@@ -730,12 +825,19 @@ class PossibleSettingOptionsUpdate:
         fields.append(f"setting_options={self.setting_options}")
         return f"PossibleSettingOptionsUpdate({', '.join(fields)})"
 
+
 class Position:
     """
     Position type in global coordinates.
     """
 
-    def __init__(self, latitude_deg=None, longitude_deg=None, absolute_altitude_m=None, relative_altitude_m=None):
+    def __init__(
+        self,
+        latitude_deg=None,
+        longitude_deg=None,
+        absolute_altitude_m=None,
+        relative_altitude_m=None,
+    ):
         self.latitude_deg = latitude_deg
         self.longitude_deg = longitude_deg
         self.absolute_altitude_m = absolute_altitude_m
@@ -768,16 +870,17 @@ class Position:
         fields.append(f"relative_altitude_m={self.relative_altitude_m}")
         return f"Position({', '.join(fields)})"
 
+
 class Quaternion:
     """
-    Quaternion type.
+       Quaternion type.
 
- All rotations and axis systems follow the right-hand rule.
- The Hamilton quaternion product definition is used.
- A zero-rotation quaternion is represented by (1,0,0,0).
- The quaternion could also be written as w + xi + yj + zk.
+    All rotations and axis systems follow the right-hand rule.
+    The Hamilton quaternion product definition is used.
+    A zero-rotation quaternion is represented by (1,0,0,0).
+    The quaternion could also be written as w + xi + yj + zk.
 
- For more info see: https://en.wikipedia.org/wiki/Quaternion
+    For more info see: https://en.wikipedia.org/wiki/Quaternion
     """
 
     def __init__(self, w=None, x=None, y=None, z=None):
@@ -813,14 +916,15 @@ class Quaternion:
         fields.append(f"z={self.z}")
         return f"Quaternion({', '.join(fields)})"
 
+
 class EulerAngle:
     """
-    Euler angle type.
+       Euler angle type.
 
- All rotations and axis systems follow the right-hand rule.
- The Euler angles follow the convention of a 3-2-1 intrinsic Tait-Bryan rotation sequence.
+    All rotations and axis systems follow the right-hand rule.
+    The Euler angles follow the convention of a 3-2-1 intrinsic Tait-Bryan rotation sequence.
 
- For more info see https://en.wikipedia.org/wiki/Euler_angles
+    For more info see https://en.wikipedia.org/wiki/Euler_angles
     """
 
     def __init__(self, roll_deg=None, pitch_deg=None, yaw_deg=None):
@@ -852,12 +956,23 @@ class EulerAngle:
         fields.append(f"yaw_deg={self.yaw_deg}")
         return f"EulerAngle({', '.join(fields)})"
 
+
 class CaptureInfo:
     """
     Information about a picture just captured.
     """
 
-    def __init__(self, component_id=None, position=None, attitude_quaternion=None, attitude_euler_angle=None, time_utc_us=None, is_success=None, index=None, file_url=None):
+    def __init__(
+        self,
+        component_id=None,
+        position=None,
+        attitude_quaternion=None,
+        attitude_euler_angle=None,
+        time_utc_us=None,
+        is_success=None,
+        index=None,
+        file_url=None,
+    ):
         self.component_id = component_id
         self.position = position
         self.attitude_quaternion = attitude_quaternion
@@ -873,12 +988,16 @@ class CaptureInfo:
         instance = cls()
         instance.component_id = c_struct.component_id
         instance.position = Position.from_c_struct(c_struct.position)
-        instance.attitude_quaternion = Quaternion.from_c_struct(c_struct.attitude_quaternion)
-        instance.attitude_euler_angle = EulerAngle.from_c_struct(c_struct.attitude_euler_angle)
+        instance.attitude_quaternion = Quaternion.from_c_struct(
+            c_struct.attitude_quaternion
+        )
+        instance.attitude_euler_angle = EulerAngle.from_c_struct(
+            c_struct.attitude_euler_angle
+        )
         instance.time_utc_us = c_struct.time_utc_us
         instance.is_success = c_struct.is_success
         instance.index = c_struct.index
-        instance.file_url = c_struct.file_url.decode('utf-8')
+        instance.file_url = c_struct.file_url.decode("utf-8")
         return instance
 
     def to_c_struct(self):
@@ -891,7 +1010,7 @@ class CaptureInfo:
         c_struct.time_utc_us = self.time_utc_us
         c_struct.is_success = self.is_success
         c_struct.index = self.index
-        c_struct.file_url = self.file_url.encode('utf-8')
+        c_struct.file_url = self.file_url.encode("utf-8")
         return c_struct
 
     def __str__(self):
@@ -906,12 +1025,23 @@ class CaptureInfo:
         fields.append(f"file_url={self.file_url}")
         return f"CaptureInfo({', '.join(fields)})"
 
+
 class Information:
     """
     Type to represent a camera information.
     """
 
-    def __init__(self, component_id=None, vendor_name=None, model_name=None, focal_length_mm=None, horizontal_sensor_size_mm=None, vertical_sensor_size_mm=None, horizontal_resolution_px=None, vertical_resolution_px=None):
+    def __init__(
+        self,
+        component_id=None,
+        vendor_name=None,
+        model_name=None,
+        focal_length_mm=None,
+        horizontal_sensor_size_mm=None,
+        vertical_sensor_size_mm=None,
+        horizontal_resolution_px=None,
+        vertical_resolution_px=None,
+    ):
         self.component_id = component_id
         self.vendor_name = vendor_name
         self.model_name = model_name
@@ -926,8 +1056,8 @@ class Information:
         """Convert from C structure to Python object"""
         instance = cls()
         instance.component_id = c_struct.component_id
-        instance.vendor_name = c_struct.vendor_name.decode('utf-8')
-        instance.model_name = c_struct.model_name.decode('utf-8')
+        instance.vendor_name = c_struct.vendor_name.decode("utf-8")
+        instance.model_name = c_struct.model_name.decode("utf-8")
         instance.focal_length_mm = c_struct.focal_length_mm
         instance.horizontal_sensor_size_mm = c_struct.horizontal_sensor_size_mm
         instance.vertical_sensor_size_mm = c_struct.vertical_sensor_size_mm
@@ -939,8 +1069,8 @@ class Information:
         """Convert to C structure for C library calls"""
         c_struct = InformationCStruct()
         c_struct.component_id = self.component_id
-        c_struct.vendor_name = self.vendor_name.encode('utf-8')
-        c_struct.model_name = self.model_name.encode('utf-8')
+        c_struct.vendor_name = self.vendor_name.encode("utf-8")
+        c_struct.model_name = self.model_name.encode("utf-8")
         c_struct.focal_length_mm = self.focal_length_mm
         c_struct.horizontal_sensor_size_mm = self.horizontal_sensor_size_mm
         c_struct.vertical_sensor_size_mm = self.vertical_sensor_size_mm
@@ -960,6 +1090,7 @@ class Information:
         fields.append(f"vertical_resolution_px={self.vertical_resolution_px}")
         return f"Information({', '.join(fields)})"
 
+
 class CameraList:
     """
     Camera list
@@ -973,7 +1104,10 @@ class CameraList:
         """Convert from C structure to Python object"""
         instance = cls()
         if c_struct.cameras_size > 0:
-            instance.cameras = [Information.from_c_struct(c_struct.cameras[i]) for i in range(c_struct.cameras_size)]
+            instance.cameras = [
+                Information.from_c_struct(c_struct.cameras[i])
+                for i in range(c_struct.cameras_size)
+            ]
         else:
             instance.cameras = []
         return instance
@@ -995,16 +1129,15 @@ class CameraList:
         return f"CameraList({', '.join(fields)})"
 
 
-
 # ===== Plugin =====
 class Camera:
     """Can be used to manage cameras that implement the MAVLink
- Camera Protocol: https://mavlink.io/en/protocol/camera.html.
+    Camera Protocol: https://mavlink.io/en/protocol/camera.html.
 
- Currently only a single camera is supported.
- When multiple cameras are supported the plugin will need to be
- instantiated separately for every camera and the camera selected using
- `select_camera`."""
+    Currently only a single camera is supported.
+    When multiple cameras are supported the plugin will need to be
+    instantiated separately for every camera and the camera selected using
+    `select_camera`."""
 
     def __init__(self, system):
         self._lib = _cmavsdk_lib
@@ -1022,8 +1155,9 @@ class Camera:
         self._handle = self._lib.mavsdk_camera_create(system_handle)
 
         if not self._handle:
-            raise RuntimeError("Failed to create Camera plugin - C function returned null handle")
-
+            raise RuntimeError(
+                "Failed to create Camera plugin - C function returned null handle"
+            )
 
     def take_photo_async(self, component_id, callback: Callable, user_data: Any = None):
         """Take one photo."""
@@ -1031,7 +1165,6 @@ class Camera:
         def c_callback(result, ud):
             try:
                 py_result = CameraResult(result)
-
 
                 callback(py_result, user_data)
 
@@ -1041,17 +1174,10 @@ class Camera:
         cb = TakePhotoCallback(c_callback)
         self._callbacks.append(cb)
 
-        self._lib.mavsdk_camera_take_photo_async(
-            self._handle,
-            component_id,
-            cb,
-            None
-        )
-
+        self._lib.mavsdk_camera_take_photo_async(self._handle, component_id, cb, None)
 
     def take_photo(self, component_id):
         """Get take_photo (blocking)"""
-
 
         result_code = self._lib.mavsdk_camera_take_photo(
             self._handle,
@@ -1063,14 +1189,14 @@ class Camera:
 
         return result
 
-
-    def start_photo_interval_async(self, component_id, interval_s, callback: Callable, user_data: Any = None):
+    def start_photo_interval_async(
+        self, component_id, interval_s, callback: Callable, user_data: Any = None
+    ):
         """Start photo timelapse with a given interval."""
 
         def c_callback(result, ud):
             try:
                 py_result = CameraResult(result)
-
 
                 callback(py_result, user_data)
 
@@ -1081,17 +1207,11 @@ class Camera:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_camera_start_photo_interval_async(
-            self._handle,
-            component_id,
-            interval_s,
-            cb,
-            None
+            self._handle, component_id, interval_s, cb, None
         )
-
 
     def start_photo_interval(self, component_id, interval_s):
         """Get start_photo_interval (blocking)"""
-
 
         result_code = self._lib.mavsdk_camera_start_photo_interval(
             self._handle,
@@ -1104,14 +1224,14 @@ class Camera:
 
         return result
 
-
-    def stop_photo_interval_async(self, component_id, callback: Callable, user_data: Any = None):
+    def stop_photo_interval_async(
+        self, component_id, callback: Callable, user_data: Any = None
+    ):
         """Stop a running photo timelapse."""
 
         def c_callback(result, ud):
             try:
                 py_result = CameraResult(result)
-
 
                 callback(py_result, user_data)
 
@@ -1122,16 +1242,11 @@ class Camera:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_camera_stop_photo_interval_async(
-            self._handle,
-            component_id,
-            cb,
-            None
+            self._handle, component_id, cb, None
         )
-
 
     def stop_photo_interval(self, component_id):
         """Get stop_photo_interval (blocking)"""
-
 
         result_code = self._lib.mavsdk_camera_stop_photo_interval(
             self._handle,
@@ -1143,14 +1258,14 @@ class Camera:
 
         return result
 
-
-    def start_video_async(self, component_id, callback: Callable, user_data: Any = None):
+    def start_video_async(
+        self, component_id, callback: Callable, user_data: Any = None
+    ):
         """Start a video recording."""
 
         def c_callback(result, ud):
             try:
                 py_result = CameraResult(result)
-
 
                 callback(py_result, user_data)
 
@@ -1160,17 +1275,10 @@ class Camera:
         cb = StartVideoCallback(c_callback)
         self._callbacks.append(cb)
 
-        self._lib.mavsdk_camera_start_video_async(
-            self._handle,
-            component_id,
-            cb,
-            None
-        )
-
+        self._lib.mavsdk_camera_start_video_async(self._handle, component_id, cb, None)
 
     def start_video(self, component_id):
         """Get start_video (blocking)"""
-
 
         result_code = self._lib.mavsdk_camera_start_video(
             self._handle,
@@ -1182,14 +1290,12 @@ class Camera:
 
         return result
 
-
     def stop_video_async(self, component_id, callback: Callable, user_data: Any = None):
         """Stop a running video recording."""
 
         def c_callback(result, ud):
             try:
                 py_result = CameraResult(result)
-
 
                 callback(py_result, user_data)
 
@@ -1199,17 +1305,10 @@ class Camera:
         cb = StopVideoCallback(c_callback)
         self._callbacks.append(cb)
 
-        self._lib.mavsdk_camera_stop_video_async(
-            self._handle,
-            component_id,
-            cb,
-            None
-        )
-
+        self._lib.mavsdk_camera_stop_video_async(self._handle, component_id, cb, None)
 
     def stop_video(self, component_id):
         """Get stop_video (blocking)"""
-
 
         result_code = self._lib.mavsdk_camera_stop_video(
             self._handle,
@@ -1221,11 +1320,8 @@ class Camera:
 
         return result
 
-
-
     def start_video_streaming(self, component_id, stream_id):
         """Get start_video_streaming (blocking)"""
-
 
         result_code = self._lib.mavsdk_camera_start_video_streaming(
             self._handle,
@@ -1238,11 +1334,8 @@ class Camera:
 
         return result
 
-
-
     def stop_video_streaming(self, component_id, stream_id):
         """Get stop_video_streaming (blocking)"""
-
 
         result_code = self._lib.mavsdk_camera_stop_video_streaming(
             self._handle,
@@ -1255,14 +1348,14 @@ class Camera:
 
         return result
 
-
-    def set_mode_async(self, component_id, mode, callback: Callable, user_data: Any = None):
+    def set_mode_async(
+        self, component_id, mode, callback: Callable, user_data: Any = None
+    ):
         """Set camera mode."""
 
         def c_callback(result, ud):
             try:
                 py_result = CameraResult(result)
-
 
                 callback(py_result, user_data)
 
@@ -1273,17 +1366,11 @@ class Camera:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_camera_set_mode_async(
-            self._handle,
-            component_id,
-            mode,
-            cb,
-            None
+            self._handle, component_id, mode, cb, None
         )
-
 
     def set_mode(self, component_id, mode):
         """Get set_mode (blocking)"""
-
 
         result_code = self._lib.mavsdk_camera_set_mode(
             self._handle,
@@ -1296,13 +1383,14 @@ class Camera:
 
         return result
 
-
-    def list_photos_async(self, component_id, photos_range, callback: Callable, user_data: Any = None):
+    def list_photos_async(
+        self, component_id, photos_range, callback: Callable, user_data: Any = None
+    ):
         """List photos available on the camera.
 
- Note that this might need to be called initially to set the PhotosRange accordingly.
- Once set to 'all' rather than 'since connection', it will try to request the previous
- images over time."""
+        Note that this might need to be called initially to set the PhotosRange accordingly.
+        Once set to 'all' rather than 'since connection', it will try to request the previous
+        images over time."""
 
         def c_callback(result, c_data, size, ud):
             try:
@@ -1324,13 +1412,8 @@ class Camera:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_camera_list_photos_async(
-            self._handle,
-            component_id,
-            photos_range,
-            cb,
-            None
+            self._handle, component_id, photos_range, cb, None
         )
-
 
     def list_photos(self, component_id, photos_range):
         """Get list_photos (blocking)"""
@@ -1343,26 +1426,26 @@ class Camera:
             component_id,
             photos_range,
             ctypes.byref(result_ptr),
-            ctypes.byref(size)
+            ctypes.byref(size),
         )
         result = CameraResult(result_code)
         if result != CameraResult.SUCCESS:
             raise Exception(f"list_photos failed: {result}")
 
-        py_result = [CaptureInfo.from_c_struct(result_ptr[i]) for i in range(size.value)]
+        py_result = [
+            CaptureInfo.from_c_struct(result_ptr[i]) for i in range(size.value)
+        ]
         self._lib.mavsdk_camera_CaptureInfo_destroy(result_ptr)
         return py_result
-
 
     def subscribe_camera_list(self, callback: Callable, user_data: Any = None):
         """Subscribe to list of cameras.
 
- This allows to find out what cameras are connected to the system.
- Based on the camera ID, we can then address a specific camera."""
+        This allows to find out what cameras are connected to the system.
+        Based on the camera ID, we can then address a specific camera."""
 
         def c_callback(c_data, ud):
             try:
-
                 py_data = CameraList.from_c_struct(c_data)
 
                 self._lib.mavsdk_camera_CameraList_destroy(ctypes.byref(c_data))
@@ -1375,39 +1458,28 @@ class Camera:
         cb = CameraListCallback(c_callback)
         self._callbacks.append(cb)
 
-        return self._lib.mavsdk_camera_subscribe_camera_list(
-            self._handle,
-            cb,
-            None
-        )
+        return self._lib.mavsdk_camera_subscribe_camera_list(self._handle, cb, None)
 
     def unsubscribe_camera_list(self, handle: ctypes.c_void_p):
         """Unsubscribe from camera_list"""
-        self._lib.mavsdk_camera_unsubscribe_camera_list(
-            self._handle, handle
-        )
+        self._lib.mavsdk_camera_unsubscribe_camera_list(self._handle, handle)
 
     def camera_list(self):
         """Get camera_list (blocking)"""
 
         result_out = CameraListCStruct()
 
-        self._lib.mavsdk_camera_camera_list(
-            self._handle,
-            ctypes.byref(result_out)
-        )
+        self._lib.mavsdk_camera_camera_list(self._handle, ctypes.byref(result_out))
 
         py_result = CameraList.from_c_struct(result_out)
         self._lib.mavsdk_camera_CameraList_destroy(ctypes.byref(result_out))
         return py_result
-
 
     def subscribe_mode(self, callback: Callable, user_data: Any = None):
         """Subscribe to camera mode updates."""
 
         def c_callback(c_data, ud):
             try:
-
                 py_data = ModeUpdate.from_c_struct(c_data)
 
                 self._lib.mavsdk_camera_ModeUpdate_destroy(ctypes.byref(c_data))
@@ -1420,20 +1492,11 @@ class Camera:
         cb = ModeCallback(c_callback)
         self._callbacks.append(cb)
 
-        return self._lib.mavsdk_camera_subscribe_mode(
-            self._handle,
-            cb,
-            None
-        )
+        return self._lib.mavsdk_camera_subscribe_mode(self._handle, cb, None)
 
     def unsubscribe_mode(self, handle: ctypes.c_void_p):
         """Unsubscribe from mode"""
-        self._lib.mavsdk_camera_unsubscribe_mode(
-            self._handle, handle
-        )
-
-
-
+        self._lib.mavsdk_camera_unsubscribe_mode(self._handle, handle)
 
     def get_mode(self, component_id):
         """Get get_mode (blocking)"""
@@ -1441,9 +1504,7 @@ class Camera:
         result_out = ModeCStruct()
 
         result_code = self._lib.mavsdk_camera_get_mode(
-            self._handle,
-            component_id,
-            ctypes.byref(result_out)
+            self._handle, component_id, ctypes.byref(result_out)
         )
         result = CameraResult(result_code)
         if result != CameraResult.SUCCESS:
@@ -1453,13 +1514,11 @@ class Camera:
         self._lib.mavsdk_camera_Mode_destroy(ctypes.byref(result_out))
         return py_result
 
-
     def subscribe_video_stream_info(self, callback: Callable, user_data: Any = None):
         """Subscribe to video stream info updates."""
 
         def c_callback(c_data, ud):
             try:
-
                 py_data = VideoStreamUpdate.from_c_struct(c_data)
 
                 self._lib.mavsdk_camera_VideoStreamUpdate_destroy(ctypes.byref(c_data))
@@ -1473,19 +1532,12 @@ class Camera:
         self._callbacks.append(cb)
 
         return self._lib.mavsdk_camera_subscribe_video_stream_info(
-            self._handle,
-            cb,
-            None
+            self._handle, cb, None
         )
 
     def unsubscribe_video_stream_info(self, handle: ctypes.c_void_p):
         """Unsubscribe from video_stream_info"""
-        self._lib.mavsdk_camera_unsubscribe_video_stream_info(
-            self._handle, handle
-        )
-
-
-
+        self._lib.mavsdk_camera_unsubscribe_video_stream_info(self._handle, handle)
 
     def get_video_stream_info(self, component_id):
         """Get get_video_stream_info (blocking)"""
@@ -1493,9 +1545,7 @@ class Camera:
         result_out = VideoStreamInfoCStruct()
 
         result_code = self._lib.mavsdk_camera_get_video_stream_info(
-            self._handle,
-            component_id,
-            ctypes.byref(result_out)
+            self._handle, component_id, ctypes.byref(result_out)
         )
         result = CameraResult(result_code)
         if result != CameraResult.SUCCESS:
@@ -1505,13 +1555,11 @@ class Camera:
         self._lib.mavsdk_camera_VideoStreamInfo_destroy(ctypes.byref(result_out))
         return py_result
 
-
     def subscribe_capture_info(self, callback: Callable, user_data: Any = None):
         """Subscribe to capture info updates."""
 
         def c_callback(c_data, ud):
             try:
-
                 py_data = CaptureInfo.from_c_struct(c_data)
 
                 self._lib.mavsdk_camera_CaptureInfo_destroy(ctypes.byref(c_data))
@@ -1524,26 +1572,17 @@ class Camera:
         cb = CaptureInfoCallback(c_callback)
         self._callbacks.append(cb)
 
-        return self._lib.mavsdk_camera_subscribe_capture_info(
-            self._handle,
-            cb,
-            None
-        )
+        return self._lib.mavsdk_camera_subscribe_capture_info(self._handle, cb, None)
 
     def unsubscribe_capture_info(self, handle: ctypes.c_void_p):
         """Unsubscribe from capture_info"""
-        self._lib.mavsdk_camera_unsubscribe_capture_info(
-            self._handle, handle
-        )
-
-
+        self._lib.mavsdk_camera_unsubscribe_capture_info(self._handle, handle)
 
     def subscribe_storage(self, callback: Callable, user_data: Any = None):
         """Subscribe to camera's storage status updates."""
 
         def c_callback(c_data, ud):
             try:
-
                 py_data = StorageUpdate.from_c_struct(c_data)
 
                 self._lib.mavsdk_camera_StorageUpdate_destroy(ctypes.byref(c_data))
@@ -1556,20 +1595,11 @@ class Camera:
         cb = StorageCallback(c_callback)
         self._callbacks.append(cb)
 
-        return self._lib.mavsdk_camera_subscribe_storage(
-            self._handle,
-            cb,
-            None
-        )
+        return self._lib.mavsdk_camera_subscribe_storage(self._handle, cb, None)
 
     def unsubscribe_storage(self, handle: ctypes.c_void_p):
         """Unsubscribe from storage"""
-        self._lib.mavsdk_camera_unsubscribe_storage(
-            self._handle, handle
-        )
-
-
-
+        self._lib.mavsdk_camera_unsubscribe_storage(self._handle, handle)
 
     def get_storage(self, component_id):
         """Get get_storage (blocking)"""
@@ -1577,9 +1607,7 @@ class Camera:
         result_out = StorageCStruct()
 
         result_code = self._lib.mavsdk_camera_get_storage(
-            self._handle,
-            component_id,
-            ctypes.byref(result_out)
+            self._handle, component_id, ctypes.byref(result_out)
         )
         result = CameraResult(result_code)
         if result != CameraResult.SUCCESS:
@@ -1589,16 +1617,16 @@ class Camera:
         self._lib.mavsdk_camera_Storage_destroy(ctypes.byref(result_out))
         return py_result
 
-
     def subscribe_current_settings(self, callback: Callable, user_data: Any = None):
         """Get the list of current camera settings."""
 
         def c_callback(c_data, ud):
             try:
-
                 py_data = CurrentSettingsUpdate.from_c_struct(c_data)
 
-                self._lib.mavsdk_camera_CurrentSettingsUpdate_destroy(ctypes.byref(c_data))
+                self._lib.mavsdk_camera_CurrentSettingsUpdate_destroy(
+                    ctypes.byref(c_data)
+                )
 
                 callback(py_data, user_data)
 
@@ -1609,19 +1637,12 @@ class Camera:
         self._callbacks.append(cb)
 
         return self._lib.mavsdk_camera_subscribe_current_settings(
-            self._handle,
-            cb,
-            None
+            self._handle, cb, None
         )
 
     def unsubscribe_current_settings(self, handle: ctypes.c_void_p):
         """Unsubscribe from current_settings"""
-        self._lib.mavsdk_camera_unsubscribe_current_settings(
-            self._handle, handle
-        )
-
-
-
+        self._lib.mavsdk_camera_unsubscribe_current_settings(self._handle, handle)
 
     def get_current_settings(self, component_id):
         """Get get_current_settings (blocking)"""
@@ -1630,10 +1651,7 @@ class Camera:
         size = ctypes.c_size_t()
 
         result_code = self._lib.mavsdk_camera_get_current_settings(
-            self._handle,
-            component_id,
-            ctypes.byref(result_ptr),
-            ctypes.byref(size)
+            self._handle, component_id, ctypes.byref(result_ptr), ctypes.byref(size)
         )
         result = CameraResult(result_code)
         if result != CameraResult.SUCCESS:
@@ -1643,16 +1661,18 @@ class Camera:
         self._lib.mavsdk_camera_Setting_destroy(result_ptr)
         return py_result
 
-
-    def subscribe_possible_setting_options(self, callback: Callable, user_data: Any = None):
+    def subscribe_possible_setting_options(
+        self, callback: Callable, user_data: Any = None
+    ):
         """Get the list of settings that can be changed."""
 
         def c_callback(c_data, ud):
             try:
-
                 py_data = PossibleSettingOptionsUpdate.from_c_struct(c_data)
 
-                self._lib.mavsdk_camera_PossibleSettingOptionsUpdate_destroy(ctypes.byref(c_data))
+                self._lib.mavsdk_camera_PossibleSettingOptionsUpdate_destroy(
+                    ctypes.byref(c_data)
+                )
 
                 callback(py_data, user_data)
 
@@ -1663,9 +1683,7 @@ class Camera:
         self._callbacks.append(cb)
 
         return self._lib.mavsdk_camera_subscribe_possible_setting_options(
-            self._handle,
-            cb,
-            None
+            self._handle, cb, None
         )
 
     def unsubscribe_possible_setting_options(self, handle: ctypes.c_void_p):
@@ -1674,9 +1692,6 @@ class Camera:
             self._handle, handle
         )
 
-
-
-
     def get_possible_setting_options(self, component_id):
         """Get get_possible_setting_options (blocking)"""
 
@@ -1684,29 +1699,28 @@ class Camera:
         size = ctypes.c_size_t()
 
         result_code = self._lib.mavsdk_camera_get_possible_setting_options(
-            self._handle,
-            component_id,
-            ctypes.byref(result_ptr),
-            ctypes.byref(size)
+            self._handle, component_id, ctypes.byref(result_ptr), ctypes.byref(size)
         )
         result = CameraResult(result_code)
         if result != CameraResult.SUCCESS:
             raise Exception(f"get_possible_setting_options failed: {result}")
 
-        py_result = [SettingOptions.from_c_struct(result_ptr[i]) for i in range(size.value)]
+        py_result = [
+            SettingOptions.from_c_struct(result_ptr[i]) for i in range(size.value)
+        ]
         self._lib.mavsdk_camera_SettingOptions_destroy(result_ptr)
         return py_result
 
-
-    def set_setting_async(self, component_id, setting, callback: Callable, user_data: Any = None):
+    def set_setting_async(
+        self, component_id, setting, callback: Callable, user_data: Any = None
+    ):
         """Set a setting to some value.
 
- Only setting_id of setting and option_id of option needs to be set."""
+        Only setting_id of setting and option_id of option needs to be set."""
 
         def c_callback(result, ud):
             try:
                 py_result = CameraResult(result)
-
 
                 callback(py_result, user_data)
 
@@ -1717,17 +1731,11 @@ class Camera:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_camera_set_setting_async(
-            self._handle,
-            component_id,
-            setting,
-            cb,
-            None
+            self._handle, component_id, setting, cb, None
         )
-
 
     def set_setting(self, component_id, setting):
         """Get set_setting (blocking)"""
-
 
         result_code = self._lib.mavsdk_camera_set_setting(
             self._handle,
@@ -1740,11 +1748,12 @@ class Camera:
 
         return result
 
-
-    def get_setting_async(self, component_id, setting, callback: Callable, user_data: Any = None):
+    def get_setting_async(
+        self, component_id, setting, callback: Callable, user_data: Any = None
+    ):
         """Get a setting.
 
- Only setting_id of setting needs to be set."""
+        Only setting_id of setting needs to be set."""
 
         def c_callback(result, c_data, ud):
             try:
@@ -1763,13 +1772,8 @@ class Camera:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_camera_get_setting_async(
-            self._handle,
-            component_id,
-            setting,
-            cb,
-            None
+            self._handle, component_id, setting, cb, None
         )
-
 
     def get_setting(self, component_id, setting):
         """Get get_setting (blocking)"""
@@ -1777,10 +1781,7 @@ class Camera:
         result_out = SettingCStruct()
 
         result_code = self._lib.mavsdk_camera_get_setting(
-            self._handle,
-            component_id,
-            setting.to_c_struct(),
-            ctypes.byref(result_out)
+            self._handle, component_id, setting.to_c_struct(), ctypes.byref(result_out)
         )
         result = CameraResult(result_code)
         if result != CameraResult.SUCCESS:
@@ -1790,16 +1791,16 @@ class Camera:
         self._lib.mavsdk_camera_Setting_destroy(ctypes.byref(result_out))
         return py_result
 
-
-    def format_storage_async(self, component_id, storage_id, callback: Callable, user_data: Any = None):
+    def format_storage_async(
+        self, component_id, storage_id, callback: Callable, user_data: Any = None
+    ):
         """Format storage (e.g. SD card) in camera.
 
- This will delete all content of the camera storage!"""
+        This will delete all content of the camera storage!"""
 
         def c_callback(result, ud):
             try:
                 py_result = CameraResult(result)
-
 
                 callback(py_result, user_data)
 
@@ -1810,17 +1811,11 @@ class Camera:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_camera_format_storage_async(
-            self._handle,
-            component_id,
-            storage_id,
-            cb,
-            None
+            self._handle, component_id, storage_id, cb, None
         )
-
 
     def format_storage(self, component_id, storage_id):
         """Get format_storage (blocking)"""
-
 
         result_code = self._lib.mavsdk_camera_format_storage(
             self._handle,
@@ -1833,16 +1828,16 @@ class Camera:
 
         return result
 
-
-    def reset_settings_async(self, component_id, callback: Callable, user_data: Any = None):
+    def reset_settings_async(
+        self, component_id, callback: Callable, user_data: Any = None
+    ):
         """Reset all settings in camera.
 
- This will reset all camera settings to default value"""
+        This will reset all camera settings to default value"""
 
         def c_callback(result, ud):
             try:
                 py_result = CameraResult(result)
-
 
                 callback(py_result, user_data)
 
@@ -1853,16 +1848,11 @@ class Camera:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_camera_reset_settings_async(
-            self._handle,
-            component_id,
-            cb,
-            None
+            self._handle, component_id, cb, None
         )
-
 
     def reset_settings(self, component_id):
         """Get reset_settings (blocking)"""
-
 
         result_code = self._lib.mavsdk_camera_reset_settings(
             self._handle,
@@ -1874,14 +1864,14 @@ class Camera:
 
         return result
 
-
-    def zoom_in_start_async(self, component_id, callback: Callable, user_data: Any = None):
+    def zoom_in_start_async(
+        self, component_id, callback: Callable, user_data: Any = None
+    ):
         """Start zooming in."""
 
         def c_callback(result, ud):
             try:
                 py_result = CameraResult(result)
-
 
                 callback(py_result, user_data)
 
@@ -1892,16 +1882,11 @@ class Camera:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_camera_zoom_in_start_async(
-            self._handle,
-            component_id,
-            cb,
-            None
+            self._handle, component_id, cb, None
         )
-
 
     def zoom_in_start(self, component_id):
         """Get zoom_in_start (blocking)"""
-
 
         result_code = self._lib.mavsdk_camera_zoom_in_start(
             self._handle,
@@ -1913,14 +1898,14 @@ class Camera:
 
         return result
 
-
-    def zoom_out_start_async(self, component_id, callback: Callable, user_data: Any = None):
+    def zoom_out_start_async(
+        self, component_id, callback: Callable, user_data: Any = None
+    ):
         """Start zooming out."""
 
         def c_callback(result, ud):
             try:
                 py_result = CameraResult(result)
-
 
                 callback(py_result, user_data)
 
@@ -1931,16 +1916,11 @@ class Camera:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_camera_zoom_out_start_async(
-            self._handle,
-            component_id,
-            cb,
-            None
+            self._handle, component_id, cb, None
         )
-
 
     def zoom_out_start(self, component_id):
         """Get zoom_out_start (blocking)"""
-
 
         result_code = self._lib.mavsdk_camera_zoom_out_start(
             self._handle,
@@ -1952,14 +1932,12 @@ class Camera:
 
         return result
 
-
     def zoom_stop_async(self, component_id, callback: Callable, user_data: Any = None):
         """Stop zooming."""
 
         def c_callback(result, ud):
             try:
                 py_result = CameraResult(result)
-
 
                 callback(py_result, user_data)
 
@@ -1969,17 +1947,10 @@ class Camera:
         cb = ZoomStopCallback(c_callback)
         self._callbacks.append(cb)
 
-        self._lib.mavsdk_camera_zoom_stop_async(
-            self._handle,
-            component_id,
-            cb,
-            None
-        )
-
+        self._lib.mavsdk_camera_zoom_stop_async(self._handle, component_id, cb, None)
 
     def zoom_stop(self, component_id):
         """Get zoom_stop (blocking)"""
-
 
         result_code = self._lib.mavsdk_camera_zoom_stop(
             self._handle,
@@ -1991,14 +1962,14 @@ class Camera:
 
         return result
 
-
-    def zoom_range_async(self, component_id, range, callback: Callable, user_data: Any = None):
+    def zoom_range_async(
+        self, component_id, range, callback: Callable, user_data: Any = None
+    ):
         """Zoom to value as proportion of full camera range (percentage between 0.0 and 100.0)."""
 
         def c_callback(result, ud):
             try:
                 py_result = CameraResult(result)
-
 
                 callback(py_result, user_data)
 
@@ -2009,17 +1980,11 @@ class Camera:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_camera_zoom_range_async(
-            self._handle,
-            component_id,
-            range,
-            cb,
-            None
+            self._handle, component_id, range, cb, None
         )
-
 
     def zoom_range(self, component_id, range):
         """Get zoom_range (blocking)"""
-
 
         result_code = self._lib.mavsdk_camera_zoom_range(
             self._handle,
@@ -2032,14 +1997,20 @@ class Camera:
 
         return result
 
-
-    def track_point_async(self, component_id, point_x, point_y, radius, callback: Callable, user_data: Any = None):
+    def track_point_async(
+        self,
+        component_id,
+        point_x,
+        point_y,
+        radius,
+        callback: Callable,
+        user_data: Any = None,
+    ):
         """Track point."""
 
         def c_callback(result, ud):
             try:
                 py_result = CameraResult(result)
-
 
                 callback(py_result, user_data)
 
@@ -2050,19 +2021,11 @@ class Camera:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_camera_track_point_async(
-            self._handle,
-            component_id,
-            point_x,
-            point_y,
-            radius,
-            cb,
-            None
+            self._handle, component_id, point_x, point_y, radius, cb, None
         )
-
 
     def track_point(self, component_id, point_x, point_y, radius):
         """Get track_point (blocking)"""
-
 
         result_code = self._lib.mavsdk_camera_track_point(
             self._handle,
@@ -2077,14 +2040,21 @@ class Camera:
 
         return result
 
-
-    def track_rectangle_async(self, component_id, top_left_x, top_left_y, bottom_right_x, bottom_right_y, callback: Callable, user_data: Any = None):
+    def track_rectangle_async(
+        self,
+        component_id,
+        top_left_x,
+        top_left_y,
+        bottom_right_x,
+        bottom_right_y,
+        callback: Callable,
+        user_data: Any = None,
+    ):
         """Track rectangle."""
 
         def c_callback(result, ud):
             try:
                 py_result = CameraResult(result)
-
 
                 callback(py_result, user_data)
 
@@ -2102,13 +2072,13 @@ class Camera:
             bottom_right_x,
             bottom_right_y,
             cb,
-            None
+            None,
         )
 
-
-    def track_rectangle(self, component_id, top_left_x, top_left_y, bottom_right_x, bottom_right_y):
+    def track_rectangle(
+        self, component_id, top_left_x, top_left_y, bottom_right_x, bottom_right_y
+    ):
         """Get track_rectangle (blocking)"""
-
 
         result_code = self._lib.mavsdk_camera_track_rectangle(
             self._handle,
@@ -2124,14 +2094,12 @@ class Camera:
 
         return result
 
-
     def track_stop_async(self, component_id, callback: Callable, user_data: Any = None):
         """Stop tracking."""
 
         def c_callback(result, ud):
             try:
                 py_result = CameraResult(result)
-
 
                 callback(py_result, user_data)
 
@@ -2141,17 +2109,10 @@ class Camera:
         cb = TrackStopCallback(c_callback)
         self._callbacks.append(cb)
 
-        self._lib.mavsdk_camera_track_stop_async(
-            self._handle,
-            component_id,
-            cb,
-            None
-        )
-
+        self._lib.mavsdk_camera_track_stop_async(self._handle, component_id, cb, None)
 
     def track_stop(self, component_id):
         """Get track_stop (blocking)"""
-
 
         result_code = self._lib.mavsdk_camera_track_stop(
             self._handle,
@@ -2163,14 +2124,14 @@ class Camera:
 
         return result
 
-
-    def focus_in_start_async(self, component_id, callback: Callable, user_data: Any = None):
+    def focus_in_start_async(
+        self, component_id, callback: Callable, user_data: Any = None
+    ):
         """Start focusing in."""
 
         def c_callback(result, ud):
             try:
                 py_result = CameraResult(result)
-
 
                 callback(py_result, user_data)
 
@@ -2181,16 +2142,11 @@ class Camera:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_camera_focus_in_start_async(
-            self._handle,
-            component_id,
-            cb,
-            None
+            self._handle, component_id, cb, None
         )
-
 
     def focus_in_start(self, component_id):
         """Get focus_in_start (blocking)"""
-
 
         result_code = self._lib.mavsdk_camera_focus_in_start(
             self._handle,
@@ -2202,14 +2158,14 @@ class Camera:
 
         return result
 
-
-    def focus_out_start_async(self, component_id, callback: Callable, user_data: Any = None):
+    def focus_out_start_async(
+        self, component_id, callback: Callable, user_data: Any = None
+    ):
         """Start focusing out."""
 
         def c_callback(result, ud):
             try:
                 py_result = CameraResult(result)
-
 
                 callback(py_result, user_data)
 
@@ -2220,16 +2176,11 @@ class Camera:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_camera_focus_out_start_async(
-            self._handle,
-            component_id,
-            cb,
-            None
+            self._handle, component_id, cb, None
         )
-
 
     def focus_out_start(self, component_id):
         """Get focus_out_start (blocking)"""
-
 
         result_code = self._lib.mavsdk_camera_focus_out_start(
             self._handle,
@@ -2241,14 +2192,12 @@ class Camera:
 
         return result
 
-
     def focus_stop_async(self, component_id, callback: Callable, user_data: Any = None):
         """Stop focus."""
 
         def c_callback(result, ud):
             try:
                 py_result = CameraResult(result)
-
 
                 callback(py_result, user_data)
 
@@ -2258,17 +2207,10 @@ class Camera:
         cb = FocusStopCallback(c_callback)
         self._callbacks.append(cb)
 
-        self._lib.mavsdk_camera_focus_stop_async(
-            self._handle,
-            component_id,
-            cb,
-            None
-        )
-
+        self._lib.mavsdk_camera_focus_stop_async(self._handle, component_id, cb, None)
 
     def focus_stop(self, component_id):
         """Get focus_stop (blocking)"""
-
 
         result_code = self._lib.mavsdk_camera_focus_stop(
             self._handle,
@@ -2280,14 +2222,14 @@ class Camera:
 
         return result
 
-
-    def focus_range_async(self, component_id, range, callback: Callable, user_data: Any = None):
+    def focus_range_async(
+        self, component_id, range, callback: Callable, user_data: Any = None
+    ):
         """Focus with range value of full range (value between 0.0 and 100.0)."""
 
         def c_callback(result, ud):
             try:
                 py_result = CameraResult(result)
-
 
                 callback(py_result, user_data)
 
@@ -2298,17 +2240,11 @@ class Camera:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_camera_focus_range_async(
-            self._handle,
-            component_id,
-            range,
-            cb,
-            None
+            self._handle, component_id, range, cb, None
         )
-
 
     def focus_range(self, component_id, range):
         """Get focus_range (blocking)"""
-
 
         result_code = self._lib.mavsdk_camera_focus_range(
             self._handle,
@@ -2321,7 +2257,6 @@ class Camera:
 
         return result
 
-
     def destroy(self):
         """Destroy the plugin instance"""
         if self._handle:
@@ -2331,155 +2266,51 @@ class Camera:
     def __del__(self):
         self.destroy()
 
+
 # ===== Callback Types =====
-TakePhotoCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-StartPhotoIntervalCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-StopPhotoIntervalCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-StartVideoCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-StopVideoCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-SetModeCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
+TakePhotoCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
+StartPhotoIntervalCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
+StopPhotoIntervalCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
+StartVideoCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
+StopVideoCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
+SetModeCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
 ListPhotosCallback = ctypes.CFUNCTYPE(
     None,
     ctypes.c_int,
     ctypes.POINTER(CaptureInfoCStruct),
     ctypes.c_size_t,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 )
-CameraListCallback = ctypes.CFUNCTYPE(
-    None,
-    CameraListCStruct,
-    ctypes.c_void_p
-)
-ModeCallback = ctypes.CFUNCTYPE(
-    None,
-    ModeUpdateCStruct,
-    ctypes.c_void_p
-)
+CameraListCallback = ctypes.CFUNCTYPE(None, CameraListCStruct, ctypes.c_void_p)
+ModeCallback = ctypes.CFUNCTYPE(None, ModeUpdateCStruct, ctypes.c_void_p)
 VideoStreamInfoCallback = ctypes.CFUNCTYPE(
-    None,
-    VideoStreamUpdateCStruct,
-    ctypes.c_void_p
+    None, VideoStreamUpdateCStruct, ctypes.c_void_p
 )
-CaptureInfoCallback = ctypes.CFUNCTYPE(
-    None,
-    CaptureInfoCStruct,
-    ctypes.c_void_p
-)
-StorageCallback = ctypes.CFUNCTYPE(
-    None,
-    StorageUpdateCStruct,
-    ctypes.c_void_p
-)
+CaptureInfoCallback = ctypes.CFUNCTYPE(None, CaptureInfoCStruct, ctypes.c_void_p)
+StorageCallback = ctypes.CFUNCTYPE(None, StorageUpdateCStruct, ctypes.c_void_p)
 CurrentSettingsCallback = ctypes.CFUNCTYPE(
-    None,
-    CurrentSettingsUpdateCStruct,
-    ctypes.c_void_p
+    None, CurrentSettingsUpdateCStruct, ctypes.c_void_p
 )
 PossibleSettingOptionsCallback = ctypes.CFUNCTYPE(
-    None,
-    PossibleSettingOptionsUpdateCStruct,
-    ctypes.c_void_p
+    None, PossibleSettingOptionsUpdateCStruct, ctypes.c_void_p
 )
-SetSettingCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
+SetSettingCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
 GetSettingCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    SettingCStruct,
-    ctypes.c_void_p
+    None, ctypes.c_int, SettingCStruct, ctypes.c_void_p
 )
-FormatStorageCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-ResetSettingsCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-ZoomInStartCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-ZoomOutStartCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-ZoomStopCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-ZoomRangeCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-TrackPointCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-TrackRectangleCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-TrackStopCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-FocusInStartCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-FocusOutStartCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-FocusStopCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-FocusRangeCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
+FormatStorageCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
+ResetSettingsCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
+ZoomInStartCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
+ZoomOutStartCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
+ZoomStopCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
+ZoomRangeCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
+TrackPointCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
+TrackRectangleCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
+TrackStopCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
+FocusInStartCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
+FocusOutStartCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
+FocusStopCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
+FocusRangeCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
 
 # ===== Setup Functions =====
 _cmavsdk_lib.mavsdk_camera_create.argtypes = [ctypes.c_void_p]
@@ -2488,14 +2319,10 @@ _cmavsdk_lib.mavsdk_camera_create.restype = ctypes.c_void_p
 _cmavsdk_lib.mavsdk_camera_destroy.argtypes = [ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_camera_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_camera_Option_destroy.argtypes = [
-    ctypes.POINTER(OptionCStruct)
-]
+_cmavsdk_lib.mavsdk_camera_Option_destroy.argtypes = [ctypes.POINTER(OptionCStruct)]
 _cmavsdk_lib.mavsdk_camera_Option_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_camera_Setting_destroy.argtypes = [
-    ctypes.POINTER(SettingCStruct)
-]
+_cmavsdk_lib.mavsdk_camera_Setting_destroy.argtypes = [ctypes.POINTER(SettingCStruct)]
 _cmavsdk_lib.mavsdk_camera_Setting_destroy.restype = None
 
 _cmavsdk_lib.mavsdk_camera_SettingOptions_destroy.argtypes = [
@@ -2523,9 +2350,7 @@ _cmavsdk_lib.mavsdk_camera_VideoStreamUpdate_destroy.argtypes = [
 ]
 _cmavsdk_lib.mavsdk_camera_VideoStreamUpdate_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_camera_Storage_destroy.argtypes = [
-    ctypes.POINTER(StorageCStruct)
-]
+_cmavsdk_lib.mavsdk_camera_Storage_destroy.argtypes = [ctypes.POINTER(StorageCStruct)]
 _cmavsdk_lib.mavsdk_camera_Storage_destroy.restype = None
 
 _cmavsdk_lib.mavsdk_camera_StorageUpdate_destroy.argtypes = [
@@ -2543,9 +2368,7 @@ _cmavsdk_lib.mavsdk_camera_PossibleSettingOptionsUpdate_destroy.argtypes = [
 ]
 _cmavsdk_lib.mavsdk_camera_PossibleSettingOptionsUpdate_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_camera_Position_destroy.argtypes = [
-    ctypes.POINTER(PositionCStruct)
-]
+_cmavsdk_lib.mavsdk_camera_Position_destroy.argtypes = [ctypes.POINTER(PositionCStruct)]
 _cmavsdk_lib.mavsdk_camera_Position_destroy.restype = None
 
 _cmavsdk_lib.mavsdk_camera_Quaternion_destroy.argtypes = [
@@ -2578,7 +2401,7 @@ _cmavsdk_lib.mavsdk_camera_take_photo_async.argtypes = [
     ctypes.c_void_p,
     ctypes.c_int32,
     TakePhotoCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_camera_take_photo_async.restype = None
@@ -2594,7 +2417,7 @@ _cmavsdk_lib.mavsdk_camera_start_photo_interval_async.argtypes = [
     ctypes.c_int32,
     ctypes.c_float,
     StartPhotoIntervalCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_camera_start_photo_interval_async.restype = None
@@ -2610,7 +2433,7 @@ _cmavsdk_lib.mavsdk_camera_stop_photo_interval_async.argtypes = [
     ctypes.c_void_p,
     ctypes.c_int32,
     StopPhotoIntervalCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_camera_stop_photo_interval_async.restype = None
@@ -2625,7 +2448,7 @@ _cmavsdk_lib.mavsdk_camera_start_video_async.argtypes = [
     ctypes.c_void_p,
     ctypes.c_int32,
     StartVideoCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_camera_start_video_async.restype = None
@@ -2640,7 +2463,7 @@ _cmavsdk_lib.mavsdk_camera_stop_video_async.argtypes = [
     ctypes.c_void_p,
     ctypes.c_int32,
     StopVideoCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_camera_stop_video_async.restype = None
@@ -2672,7 +2495,7 @@ _cmavsdk_lib.mavsdk_camera_set_mode_async.argtypes = [
     ctypes.c_int32,
     ctypes.c_int,
     SetModeCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_camera_set_mode_async.restype = None
@@ -2689,7 +2512,7 @@ _cmavsdk_lib.mavsdk_camera_list_photos_async.argtypes = [
     ctypes.c_int32,
     ctypes.c_int,
     ListPhotosCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_camera_list_photos_async.restype = None
@@ -2699,42 +2522,42 @@ _cmavsdk_lib.mavsdk_camera_list_photos.argtypes = [
     ctypes.c_int32,
     ctypes.c_int,
     ctypes.POINTER(ctypes.POINTER(CaptureInfoCStruct)),
-    ctypes.POINTER(ctypes.c_size_t)
+    ctypes.POINTER(ctypes.c_size_t),
 ]
 
 _cmavsdk_lib.mavsdk_camera_list_photos.restype = ctypes.c_int
 _cmavsdk_lib.mavsdk_camera_subscribe_camera_list.argtypes = [
     ctypes.c_void_p,
     CameraListCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_camera_subscribe_camera_list.restype = ctypes.c_void_p
 # Unsubscribe
 _cmavsdk_lib.mavsdk_camera_unsubscribe_camera_list.argtypes = [
     ctypes.c_void_p,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_camera_unsubscribe_camera_list.restype = None
 
 _cmavsdk_lib.mavsdk_camera_camera_list.argtypes = [
     ctypes.c_void_p,
-    ctypes.POINTER(CameraListCStruct)
+    ctypes.POINTER(CameraListCStruct),
 ]
 
 _cmavsdk_lib.mavsdk_camera_camera_list.restype = None
 _cmavsdk_lib.mavsdk_camera_subscribe_mode.argtypes = [
     ctypes.c_void_p,
     ModeCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_camera_subscribe_mode.restype = ctypes.c_void_p
 # Unsubscribe
 _cmavsdk_lib.mavsdk_camera_unsubscribe_mode.argtypes = [
     ctypes.c_void_p,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_camera_unsubscribe_mode.restype = None
@@ -2743,21 +2566,21 @@ _cmavsdk_lib.mavsdk_camera_unsubscribe_mode.restype = None
 _cmavsdk_lib.mavsdk_camera_get_mode.argtypes = [
     ctypes.c_void_p,
     ctypes.c_int32,
-    ctypes.POINTER(ctypes.c_int)
+    ctypes.POINTER(ctypes.c_int),
 ]
 
 _cmavsdk_lib.mavsdk_camera_get_mode.restype = ctypes.c_int
 _cmavsdk_lib.mavsdk_camera_subscribe_video_stream_info.argtypes = [
     ctypes.c_void_p,
     VideoStreamInfoCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_camera_subscribe_video_stream_info.restype = ctypes.c_void_p
 # Unsubscribe
 _cmavsdk_lib.mavsdk_camera_unsubscribe_video_stream_info.argtypes = [
     ctypes.c_void_p,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_camera_unsubscribe_video_stream_info.restype = None
@@ -2766,21 +2589,21 @@ _cmavsdk_lib.mavsdk_camera_unsubscribe_video_stream_info.restype = None
 _cmavsdk_lib.mavsdk_camera_get_video_stream_info.argtypes = [
     ctypes.c_void_p,
     ctypes.c_int32,
-    ctypes.POINTER(VideoStreamInfoCStruct)
+    ctypes.POINTER(VideoStreamInfoCStruct),
 ]
 
 _cmavsdk_lib.mavsdk_camera_get_video_stream_info.restype = ctypes.c_int
 _cmavsdk_lib.mavsdk_camera_subscribe_capture_info.argtypes = [
     ctypes.c_void_p,
     CaptureInfoCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_camera_subscribe_capture_info.restype = ctypes.c_void_p
 # Unsubscribe
 _cmavsdk_lib.mavsdk_camera_unsubscribe_capture_info.argtypes = [
     ctypes.c_void_p,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_camera_unsubscribe_capture_info.restype = None
@@ -2788,14 +2611,14 @@ _cmavsdk_lib.mavsdk_camera_unsubscribe_capture_info.restype = None
 _cmavsdk_lib.mavsdk_camera_subscribe_storage.argtypes = [
     ctypes.c_void_p,
     StorageCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_camera_subscribe_storage.restype = ctypes.c_void_p
 # Unsubscribe
 _cmavsdk_lib.mavsdk_camera_unsubscribe_storage.argtypes = [
     ctypes.c_void_p,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_camera_unsubscribe_storage.restype = None
@@ -2804,21 +2627,21 @@ _cmavsdk_lib.mavsdk_camera_unsubscribe_storage.restype = None
 _cmavsdk_lib.mavsdk_camera_get_storage.argtypes = [
     ctypes.c_void_p,
     ctypes.c_int32,
-    ctypes.POINTER(StorageCStruct)
+    ctypes.POINTER(StorageCStruct),
 ]
 
 _cmavsdk_lib.mavsdk_camera_get_storage.restype = ctypes.c_int
 _cmavsdk_lib.mavsdk_camera_subscribe_current_settings.argtypes = [
     ctypes.c_void_p,
     CurrentSettingsCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_camera_subscribe_current_settings.restype = ctypes.c_void_p
 # Unsubscribe
 _cmavsdk_lib.mavsdk_camera_unsubscribe_current_settings.argtypes = [
     ctypes.c_void_p,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_camera_unsubscribe_current_settings.restype = None
@@ -2828,21 +2651,21 @@ _cmavsdk_lib.mavsdk_camera_get_current_settings.argtypes = [
     ctypes.c_void_p,
     ctypes.c_int32,
     ctypes.POINTER(ctypes.POINTER(SettingCStruct)),
-    ctypes.POINTER(ctypes.c_size_t)
+    ctypes.POINTER(ctypes.c_size_t),
 ]
 
 _cmavsdk_lib.mavsdk_camera_get_current_settings.restype = ctypes.c_int
 _cmavsdk_lib.mavsdk_camera_subscribe_possible_setting_options.argtypes = [
     ctypes.c_void_p,
     PossibleSettingOptionsCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_camera_subscribe_possible_setting_options.restype = ctypes.c_void_p
 # Unsubscribe
 _cmavsdk_lib.mavsdk_camera_unsubscribe_possible_setting_options.argtypes = [
     ctypes.c_void_p,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_camera_unsubscribe_possible_setting_options.restype = None
@@ -2852,7 +2675,7 @@ _cmavsdk_lib.mavsdk_camera_get_possible_setting_options.argtypes = [
     ctypes.c_void_p,
     ctypes.c_int32,
     ctypes.POINTER(ctypes.POINTER(SettingOptionsCStruct)),
-    ctypes.POINTER(ctypes.c_size_t)
+    ctypes.POINTER(ctypes.c_size_t),
 ]
 
 _cmavsdk_lib.mavsdk_camera_get_possible_setting_options.restype = ctypes.c_int
@@ -2861,7 +2684,7 @@ _cmavsdk_lib.mavsdk_camera_set_setting_async.argtypes = [
     ctypes.c_int32,
     SettingCStruct,
     SetSettingCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_camera_set_setting_async.restype = None
@@ -2878,7 +2701,7 @@ _cmavsdk_lib.mavsdk_camera_get_setting_async.argtypes = [
     ctypes.c_int32,
     SettingCStruct,
     GetSettingCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_camera_get_setting_async.restype = None
@@ -2887,7 +2710,7 @@ _cmavsdk_lib.mavsdk_camera_get_setting.argtypes = [
     ctypes.c_void_p,
     ctypes.c_int32,
     SettingCStruct,
-    ctypes.POINTER(SettingCStruct)
+    ctypes.POINTER(SettingCStruct),
 ]
 
 _cmavsdk_lib.mavsdk_camera_get_setting.restype = ctypes.c_int
@@ -2896,7 +2719,7 @@ _cmavsdk_lib.mavsdk_camera_format_storage_async.argtypes = [
     ctypes.c_int32,
     ctypes.c_int32,
     FormatStorageCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_camera_format_storage_async.restype = None
@@ -2912,7 +2735,7 @@ _cmavsdk_lib.mavsdk_camera_reset_settings_async.argtypes = [
     ctypes.c_void_p,
     ctypes.c_int32,
     ResetSettingsCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_camera_reset_settings_async.restype = None
@@ -2927,7 +2750,7 @@ _cmavsdk_lib.mavsdk_camera_zoom_in_start_async.argtypes = [
     ctypes.c_void_p,
     ctypes.c_int32,
     ZoomInStartCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_camera_zoom_in_start_async.restype = None
@@ -2942,7 +2765,7 @@ _cmavsdk_lib.mavsdk_camera_zoom_out_start_async.argtypes = [
     ctypes.c_void_p,
     ctypes.c_int32,
     ZoomOutStartCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_camera_zoom_out_start_async.restype = None
@@ -2957,7 +2780,7 @@ _cmavsdk_lib.mavsdk_camera_zoom_stop_async.argtypes = [
     ctypes.c_void_p,
     ctypes.c_int32,
     ZoomStopCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_camera_zoom_stop_async.restype = None
@@ -2973,7 +2796,7 @@ _cmavsdk_lib.mavsdk_camera_zoom_range_async.argtypes = [
     ctypes.c_int32,
     ctypes.c_float,
     ZoomRangeCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_camera_zoom_range_async.restype = None
@@ -2992,7 +2815,7 @@ _cmavsdk_lib.mavsdk_camera_track_point_async.argtypes = [
     ctypes.c_float,
     ctypes.c_float,
     TrackPointCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_camera_track_point_async.restype = None
@@ -3014,7 +2837,7 @@ _cmavsdk_lib.mavsdk_camera_track_rectangle_async.argtypes = [
     ctypes.c_float,
     ctypes.c_float,
     TrackRectangleCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_camera_track_rectangle_async.restype = None
@@ -3033,7 +2856,7 @@ _cmavsdk_lib.mavsdk_camera_track_stop_async.argtypes = [
     ctypes.c_void_p,
     ctypes.c_int32,
     TrackStopCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_camera_track_stop_async.restype = None
@@ -3048,7 +2871,7 @@ _cmavsdk_lib.mavsdk_camera_focus_in_start_async.argtypes = [
     ctypes.c_void_p,
     ctypes.c_int32,
     FocusInStartCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_camera_focus_in_start_async.restype = None
@@ -3063,7 +2886,7 @@ _cmavsdk_lib.mavsdk_camera_focus_out_start_async.argtypes = [
     ctypes.c_void_p,
     ctypes.c_int32,
     FocusOutStartCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_camera_focus_out_start_async.restype = None
@@ -3078,7 +2901,7 @@ _cmavsdk_lib.mavsdk_camera_focus_stop_async.argtypes = [
     ctypes.c_void_p,
     ctypes.c_int32,
     FocusStopCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_camera_focus_stop_async.restype = None
@@ -3094,7 +2917,7 @@ _cmavsdk_lib.mavsdk_camera_focus_range_async.argtypes = [
     ctypes.c_int32,
     ctypes.c_float,
     FocusRangeCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_camera_focus_range_async.restype = None

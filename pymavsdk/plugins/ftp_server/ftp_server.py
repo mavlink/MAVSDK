@@ -16,9 +16,11 @@ from ...cmavsdk_loader import _cmavsdk_lib
 
 # ===== Enums =====
 
+
 # ===== Result Enums =====
 class FtpServerResult(IntEnum):
     """Possible results returned for FTP server requests."""
+
     UNKNOWN = 0
     SUCCESS = 1
     DOES_NOT_EXIST = 2
@@ -50,13 +52,12 @@ class FtpServer:
         self._handle = self._lib.mavsdk_ftp_server_create(component_handle)
 
         if not self._handle:
-            raise RuntimeError("Failed to create FtpServer plugin - C function returned null handle")
-
-
+            raise RuntimeError(
+                "Failed to create FtpServer plugin - C function returned null handle"
+            )
 
     def set_root_dir(self, path):
         """Get set_root_dir (blocking)"""
-
 
         result_code = self._lib.mavsdk_ftp_server_set_root_dir(
             self._handle,
@@ -68,7 +69,6 @@ class FtpServer:
 
         return result
 
-
     def destroy(self):
         """Destroy the plugin instance"""
         if self._handle:
@@ -78,6 +78,7 @@ class FtpServer:
     def __del__(self):
         self.destroy()
 
+
 # ===== Callback Types =====
 
 # ===== Setup Functions =====
@@ -86,7 +87,6 @@ _cmavsdk_lib.mavsdk_ftp_server_create.restype = ctypes.c_void_p
 
 _cmavsdk_lib.mavsdk_ftp_server_destroy.argtypes = [ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_ftp_server_destroy.restype = None
-
 
 
 _cmavsdk_lib.mavsdk_ftp_server_set_root_dir.argtypes = [

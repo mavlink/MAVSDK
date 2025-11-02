@@ -17,6 +17,7 @@ from ...cmavsdk_loader import _cmavsdk_lib
 # ===== Enums =====
 class LogLevel(IntEnum):
     """Log level type"""
+
     EMERGENCY = 0
     ALERT = 1
     CRITICAL = 2
@@ -30,6 +31,7 @@ class LogLevel(IntEnum):
 # ===== Result Enums =====
 class EventsResult(IntEnum):
     """Possible results returned"""
+
     SUCCESS = 0
     NOT_AVAILABLE = 1
     CONNECTION_ERROR = 2
@@ -47,6 +49,7 @@ class EventCStruct(ctypes.Structure):
     Internal C structure for Event.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("compid", ctypes.c_uint32),
         ("message", ctypes.c_char_p),
@@ -56,11 +59,13 @@ class EventCStruct(ctypes.Structure):
         ("event_name", ctypes.c_char_p),
     ]
 
+
 class HealthAndArmingCheckProblemCStruct(ctypes.Structure):
     """
     Internal C structure for HealthAndArmingCheckProblem.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("message", ctypes.c_char_p),
         ("description", ctypes.c_char_p),
@@ -68,11 +73,13 @@ class HealthAndArmingCheckProblemCStruct(ctypes.Structure):
         ("health_component", ctypes.c_char_p),
     ]
 
+
 class HealthAndArmingCheckModeCStruct(ctypes.Structure):
     """
     Internal C structure for HealthAndArmingCheckMode.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("mode_name", ctypes.c_char_p),
         ("can_arm_or_run", ctypes.c_bool),
@@ -80,11 +87,13 @@ class HealthAndArmingCheckModeCStruct(ctypes.Structure):
         ("problems_size", ctypes.c_size_t),
     ]
 
+
 class HealthComponentReportCStruct(ctypes.Structure):
     """
     Internal C structure for HealthComponentReport.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("name", ctypes.c_char_p),
         ("label", ctypes.c_char_p),
@@ -93,11 +102,13 @@ class HealthComponentReportCStruct(ctypes.Structure):
         ("has_warning", ctypes.c_bool),
     ]
 
+
 class HealthAndArmingCheckReportCStruct(ctypes.Structure):
     """
     Internal C structure for HealthAndArmingCheckReport.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("current_mode_intention", HealthAndArmingCheckModeCStruct),
         ("health_components", ctypes.POINTER(HealthComponentReportCStruct)),
@@ -113,7 +124,15 @@ class Event:
     Event type
     """
 
-    def __init__(self, compid=None, message=None, description=None, log_level=None, event_namespace=None, event_name=None):
+    def __init__(
+        self,
+        compid=None,
+        message=None,
+        description=None,
+        log_level=None,
+        event_namespace=None,
+        event_name=None,
+    ):
         self.compid = compid
         self.message = message
         self.description = description
@@ -126,22 +145,22 @@ class Event:
         """Convert from C structure to Python object"""
         instance = cls()
         instance.compid = c_struct.compid
-        instance.message = c_struct.message.decode('utf-8')
-        instance.description = c_struct.description.decode('utf-8')
+        instance.message = c_struct.message.decode("utf-8")
+        instance.description = c_struct.description.decode("utf-8")
         instance.log_level = LogLevel(c_struct.log_level)
-        instance.event_namespace = c_struct.event_namespace.decode('utf-8')
-        instance.event_name = c_struct.event_name.decode('utf-8')
+        instance.event_namespace = c_struct.event_namespace.decode("utf-8")
+        instance.event_name = c_struct.event_name.decode("utf-8")
         return instance
 
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = EventCStruct()
         c_struct.compid = self.compid
-        c_struct.message = self.message.encode('utf-8')
-        c_struct.description = self.description.encode('utf-8')
+        c_struct.message = self.message.encode("utf-8")
+        c_struct.description = self.description.encode("utf-8")
         c_struct.log_level = int(self.log_level)
-        c_struct.event_namespace = self.event_namespace.encode('utf-8')
-        c_struct.event_name = self.event_name.encode('utf-8')
+        c_struct.event_namespace = self.event_namespace.encode("utf-8")
+        c_struct.event_name = self.event_name.encode("utf-8")
         return c_struct
 
     def __str__(self):
@@ -154,12 +173,15 @@ class Event:
         fields.append(f"event_name={self.event_name}")
         return f"Event({', '.join(fields)})"
 
+
 class HealthAndArmingCheckProblem:
     """
     Health and arming check problem type
     """
 
-    def __init__(self, message=None, description=None, log_level=None, health_component=None):
+    def __init__(
+        self, message=None, description=None, log_level=None, health_component=None
+    ):
         self.message = message
         self.description = description
         self.log_level = log_level
@@ -169,19 +191,19 @@ class HealthAndArmingCheckProblem:
     def from_c_struct(cls, c_struct):
         """Convert from C structure to Python object"""
         instance = cls()
-        instance.message = c_struct.message.decode('utf-8')
-        instance.description = c_struct.description.decode('utf-8')
+        instance.message = c_struct.message.decode("utf-8")
+        instance.description = c_struct.description.decode("utf-8")
         instance.log_level = LogLevel(c_struct.log_level)
-        instance.health_component = c_struct.health_component.decode('utf-8')
+        instance.health_component = c_struct.health_component.decode("utf-8")
         return instance
 
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = HealthAndArmingCheckProblemCStruct()
-        c_struct.message = self.message.encode('utf-8')
-        c_struct.description = self.description.encode('utf-8')
+        c_struct.message = self.message.encode("utf-8")
+        c_struct.description = self.description.encode("utf-8")
         c_struct.log_level = int(self.log_level)
-        c_struct.health_component = self.health_component.encode('utf-8')
+        c_struct.health_component = self.health_component.encode("utf-8")
         return c_struct
 
     def __str__(self):
@@ -191,6 +213,7 @@ class HealthAndArmingCheckProblem:
         fields.append(f"log_level={self.log_level}")
         fields.append(f"health_component={self.health_component}")
         return f"HealthAndArmingCheckProblem({', '.join(fields)})"
+
 
 class HealthAndArmingCheckMode:
     """
@@ -206,10 +229,13 @@ class HealthAndArmingCheckMode:
     def from_c_struct(cls, c_struct):
         """Convert from C structure to Python object"""
         instance = cls()
-        instance.mode_name = c_struct.mode_name.decode('utf-8')
+        instance.mode_name = c_struct.mode_name.decode("utf-8")
         instance.can_arm_or_run = c_struct.can_arm_or_run
         if c_struct.problems_size > 0:
-            instance.problems = [HealthAndArmingCheckProblem.from_c_struct(c_struct.problems[i]) for i in range(c_struct.problems_size)]
+            instance.problems = [
+                HealthAndArmingCheckProblem.from_c_struct(c_struct.problems[i])
+                for i in range(c_struct.problems_size)
+            ]
         else:
             instance.problems = []
         return instance
@@ -217,13 +243,15 @@ class HealthAndArmingCheckMode:
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = HealthAndArmingCheckModeCStruct()
-        c_struct.mode_name = self.mode_name.encode('utf-8')
+        c_struct.mode_name = self.mode_name.encode("utf-8")
         c_struct.can_arm_or_run = self.can_arm_or_run
         array_type = HealthAndArmingCheckProblemCStruct * len(self.problems)
         c_array = array_type()
         for i, item in enumerate(self.problems):
             c_array[i] = item.to_c_struct()
-        c_struct.problems = ctypes.cast(c_array, ctypes.POINTER(HealthAndArmingCheckProblemCStruct))
+        c_struct.problems = ctypes.cast(
+            c_array, ctypes.POINTER(HealthAndArmingCheckProblemCStruct)
+        )
         c_struct.problems_size = len(self.problems)
         return c_struct
 
@@ -234,12 +262,15 @@ class HealthAndArmingCheckMode:
         fields.append(f"problems={self.problems}")
         return f"HealthAndArmingCheckMode({', '.join(fields)})"
 
+
 class HealthComponentReport:
     """
     Health component report type
     """
 
-    def __init__(self, name=None, label=None, is_present=None, has_error=None, has_warning=None):
+    def __init__(
+        self, name=None, label=None, is_present=None, has_error=None, has_warning=None
+    ):
         self.name = name
         self.label = label
         self.is_present = is_present
@@ -250,8 +281,8 @@ class HealthComponentReport:
     def from_c_struct(cls, c_struct):
         """Convert from C structure to Python object"""
         instance = cls()
-        instance.name = c_struct.name.decode('utf-8')
-        instance.label = c_struct.label.decode('utf-8')
+        instance.name = c_struct.name.decode("utf-8")
+        instance.label = c_struct.label.decode("utf-8")
         instance.is_present = c_struct.is_present
         instance.has_error = c_struct.has_error
         instance.has_warning = c_struct.has_warning
@@ -260,8 +291,8 @@ class HealthComponentReport:
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = HealthComponentReportCStruct()
-        c_struct.name = self.name.encode('utf-8')
-        c_struct.label = self.label.encode('utf-8')
+        c_struct.name = self.name.encode("utf-8")
+        c_struct.label = self.label.encode("utf-8")
         c_struct.is_present = self.is_present
         c_struct.has_error = self.has_error
         c_struct.has_warning = self.has_warning
@@ -276,12 +307,15 @@ class HealthComponentReport:
         fields.append(f"has_warning={self.has_warning}")
         return f"HealthComponentReport({', '.join(fields)})"
 
+
 class HealthAndArmingCheckReport:
     """
     Health and arming check report type
     """
 
-    def __init__(self, current_mode_intention=None, health_components=None, all_problems=None):
+    def __init__(
+        self, current_mode_intention=None, health_components=None, all_problems=None
+    ):
         self.current_mode_intention = current_mode_intention
         self.health_components = health_components or []
         self.all_problems = all_problems or []
@@ -290,13 +324,21 @@ class HealthAndArmingCheckReport:
     def from_c_struct(cls, c_struct):
         """Convert from C structure to Python object"""
         instance = cls()
-        instance.current_mode_intention = HealthAndArmingCheckMode.from_c_struct(c_struct.current_mode_intention)
+        instance.current_mode_intention = HealthAndArmingCheckMode.from_c_struct(
+            c_struct.current_mode_intention
+        )
         if c_struct.health_components_size > 0:
-            instance.health_components = [HealthComponentReport.from_c_struct(c_struct.health_components[i]) for i in range(c_struct.health_components_size)]
+            instance.health_components = [
+                HealthComponentReport.from_c_struct(c_struct.health_components[i])
+                for i in range(c_struct.health_components_size)
+            ]
         else:
             instance.health_components = []
         if c_struct.all_problems_size > 0:
-            instance.all_problems = [HealthAndArmingCheckProblem.from_c_struct(c_struct.all_problems[i]) for i in range(c_struct.all_problems_size)]
+            instance.all_problems = [
+                HealthAndArmingCheckProblem.from_c_struct(c_struct.all_problems[i])
+                for i in range(c_struct.all_problems_size)
+            ]
         else:
             instance.all_problems = []
         return instance
@@ -309,13 +351,17 @@ class HealthAndArmingCheckReport:
         c_array = array_type()
         for i, item in enumerate(self.health_components):
             c_array[i] = item.to_c_struct()
-        c_struct.health_components = ctypes.cast(c_array, ctypes.POINTER(HealthComponentReportCStruct))
+        c_struct.health_components = ctypes.cast(
+            c_array, ctypes.POINTER(HealthComponentReportCStruct)
+        )
         c_struct.health_components_size = len(self.health_components)
         array_type = HealthAndArmingCheckProblemCStruct * len(self.all_problems)
         c_array = array_type()
         for i, item in enumerate(self.all_problems):
             c_array[i] = item.to_c_struct()
-        c_struct.all_problems = ctypes.cast(c_array, ctypes.POINTER(HealthAndArmingCheckProblemCStruct))
+        c_struct.all_problems = ctypes.cast(
+            c_array, ctypes.POINTER(HealthAndArmingCheckProblemCStruct)
+        )
         c_struct.all_problems_size = len(self.all_problems)
         return c_struct
 
@@ -325,7 +371,6 @@ class HealthAndArmingCheckReport:
         fields.append(f"health_components={self.health_components}")
         fields.append(f"all_problems={self.all_problems}")
         return f"HealthAndArmingCheckReport({', '.join(fields)})"
-
 
 
 # ===== Plugin =====
@@ -348,15 +393,15 @@ class Events:
         self._handle = self._lib.mavsdk_events_create(system_handle)
 
         if not self._handle:
-            raise RuntimeError("Failed to create Events plugin - C function returned null handle")
-
+            raise RuntimeError(
+                "Failed to create Events plugin - C function returned null handle"
+            )
 
     def subscribe_events(self, callback: Callable, user_data: Any = None):
         """Subscribe to event updates."""
 
         def c_callback(c_data, ud):
             try:
-
                 py_data = Event.from_c_struct(c_data)
 
                 self._lib.mavsdk_events_Event_destroy(ctypes.byref(c_data))
@@ -369,29 +414,24 @@ class Events:
         cb = EventsCallback(c_callback)
         self._callbacks.append(cb)
 
-        return self._lib.mavsdk_events_subscribe_events(
-            self._handle,
-            cb,
-            None
-        )
+        return self._lib.mavsdk_events_subscribe_events(self._handle, cb, None)
 
     def unsubscribe_events(self, handle: ctypes.c_void_p):
         """Unsubscribe from events"""
-        self._lib.mavsdk_events_unsubscribe_events(
-            self._handle, handle
-        )
+        self._lib.mavsdk_events_unsubscribe_events(self._handle, handle)
 
-
-
-    def subscribe_health_and_arming_checks(self, callback: Callable, user_data: Any = None):
+    def subscribe_health_and_arming_checks(
+        self, callback: Callable, user_data: Any = None
+    ):
         """Subscribe to arming check updates."""
 
         def c_callback(c_data, ud):
             try:
-
                 py_data = HealthAndArmingCheckReport.from_c_struct(c_data)
 
-                self._lib.mavsdk_events_HealthAndArmingCheckReport_destroy(ctypes.byref(c_data))
+                self._lib.mavsdk_events_HealthAndArmingCheckReport_destroy(
+                    ctypes.byref(c_data)
+                )
 
                 callback(py_data, user_data)
 
@@ -402,9 +442,7 @@ class Events:
         self._callbacks.append(cb)
 
         return self._lib.mavsdk_events_subscribe_health_and_arming_checks(
-            self._handle,
-            cb,
-            None
+            self._handle, cb, None
         )
 
     def unsubscribe_health_and_arming_checks(self, handle: ctypes.c_void_p):
@@ -413,26 +451,23 @@ class Events:
             self._handle, handle
         )
 
-
-
-
     def get_health_and_arming_checks_report(self):
         """Get get_health_and_arming_checks_report (blocking)"""
 
         result_out = HealthAndArmingCheckReportCStruct()
 
         result_code = self._lib.mavsdk_events_get_health_and_arming_checks_report(
-            self._handle,
-            ctypes.byref(result_out)
+            self._handle, ctypes.byref(result_out)
         )
         result = EventsResult(result_code)
         if result != EventsResult.SUCCESS:
             raise Exception(f"get_health_and_arming_checks_report failed: {result}")
 
         py_result = HealthAndArmingCheckReport.from_c_struct(result_out)
-        self._lib.mavsdk_events_HealthAndArmingCheckReport_destroy(ctypes.byref(result_out))
+        self._lib.mavsdk_events_HealthAndArmingCheckReport_destroy(
+            ctypes.byref(result_out)
+        )
         return py_result
-
 
     def destroy(self):
         """Destroy the plugin instance"""
@@ -443,16 +478,11 @@ class Events:
     def __del__(self):
         self.destroy()
 
+
 # ===== Callback Types =====
-EventsCallback = ctypes.CFUNCTYPE(
-    None,
-    EventCStruct,
-    ctypes.c_void_p
-)
+EventsCallback = ctypes.CFUNCTYPE(None, EventCStruct, ctypes.c_void_p)
 HealthAndArmingChecksCallback = ctypes.CFUNCTYPE(
-    None,
-    HealthAndArmingCheckReportCStruct,
-    ctypes.c_void_p
+    None, HealthAndArmingCheckReportCStruct, ctypes.c_void_p
 )
 
 # ===== Setup Functions =====
@@ -462,9 +492,7 @@ _cmavsdk_lib.mavsdk_events_create.restype = ctypes.c_void_p
 _cmavsdk_lib.mavsdk_events_destroy.argtypes = [ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_events_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_events_Event_destroy.argtypes = [
-    ctypes.POINTER(EventCStruct)
-]
+_cmavsdk_lib.mavsdk_events_Event_destroy.argtypes = [ctypes.POINTER(EventCStruct)]
 _cmavsdk_lib.mavsdk_events_Event_destroy.restype = None
 
 _cmavsdk_lib.mavsdk_events_HealthAndArmingCheckProblem_destroy.argtypes = [
@@ -491,14 +519,14 @@ _cmavsdk_lib.mavsdk_events_HealthAndArmingCheckReport_destroy.restype = None
 _cmavsdk_lib.mavsdk_events_subscribe_events.argtypes = [
     ctypes.c_void_p,
     EventsCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_events_subscribe_events.restype = ctypes.c_void_p
 # Unsubscribe
 _cmavsdk_lib.mavsdk_events_unsubscribe_events.argtypes = [
     ctypes.c_void_p,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_events_unsubscribe_events.restype = None
@@ -506,14 +534,14 @@ _cmavsdk_lib.mavsdk_events_unsubscribe_events.restype = None
 _cmavsdk_lib.mavsdk_events_subscribe_health_and_arming_checks.argtypes = [
     ctypes.c_void_p,
     HealthAndArmingChecksCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_events_subscribe_health_and_arming_checks.restype = ctypes.c_void_p
 # Unsubscribe
 _cmavsdk_lib.mavsdk_events_unsubscribe_health_and_arming_checks.argtypes = [
     ctypes.c_void_p,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_events_unsubscribe_health_and_arming_checks.restype = None
@@ -521,7 +549,7 @@ _cmavsdk_lib.mavsdk_events_unsubscribe_health_and_arming_checks.restype = None
 
 _cmavsdk_lib.mavsdk_events_get_health_and_arming_checks_report.argtypes = [
     ctypes.c_void_p,
-    ctypes.POINTER(HealthAndArmingCheckReportCStruct)
+    ctypes.POINTER(HealthAndArmingCheckReportCStruct),
 ]
 
 _cmavsdk_lib.mavsdk_events_get_health_and_arming_checks_report.restype = ctypes.c_int

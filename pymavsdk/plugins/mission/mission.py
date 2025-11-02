@@ -16,9 +16,11 @@ from ...cmavsdk_loader import _cmavsdk_lib
 
 # ===== Enums =====
 
+
 # ===== Result Enums =====
 class MissionResult(IntEnum):
     """Possible results returned for action requests."""
+
     UNKNOWN = 0
     SUCCESS = 1
     ERROR = 2
@@ -43,6 +45,7 @@ class MissionItemCStruct(ctypes.Structure):
     Internal C structure for MissionItem.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("latitude_deg", ctypes.c_double),
         ("longitude_deg", ctypes.c_double),
@@ -60,40 +63,48 @@ class MissionItemCStruct(ctypes.Structure):
         ("vehicle_action", ctypes.c_int),
     ]
 
+
 class MissionPlanCStruct(ctypes.Structure):
     """
     Internal C structure for MissionPlan.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("mission_items", ctypes.POINTER(MissionItemCStruct)),
         ("mission_items_size", ctypes.c_size_t),
     ]
+
 
 class MissionProgressCStruct(ctypes.Structure):
     """
     Internal C structure for MissionProgress.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("current", ctypes.c_int32),
         ("total", ctypes.c_int32),
     ]
+
 
 class ProgressDataCStruct(ctypes.Structure):
     """
     Internal C structure for ProgressData.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("progress", ctypes.c_float),
     ]
+
 
 class ProgressDataOrMissionCStruct(ctypes.Structure):
     """
     Internal C structure for ProgressDataOrMission.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("has_progress", ctypes.c_bool),
         ("progress", ctypes.c_float),
@@ -105,15 +116,17 @@ class ProgressDataOrMissionCStruct(ctypes.Structure):
 # ===== Structures =====
 class MissionItem:
     """
-    Type representing a mission item.
+       Type representing a mission item.
 
- A MissionItem can contain a position and/or actions.
- Mission items are building blocks to assemble a mission,
- which can be sent to (or received from) a system.
- They cannot be used independently.
+    A MissionItem can contain a position and/or actions.
+    Mission items are building blocks to assemble a mission,
+    which can be sent to (or received from) a system.
+    They cannot be used independently.
     """
+
     class CameraAction(IntEnum):
         """Possible camera actions at a mission item."""
+
         NONE = 0
         TAKE_PHOTO = 1
         START_PHOTO_INTERVAL = 2
@@ -125,14 +138,30 @@ class MissionItem:
 
     class VehicleAction(IntEnum):
         """Possible vehicle actions at a mission item"""
+
         NONE = 0
         TAKEOFF = 1
         LAND = 2
         TRANSITION_TO_FW = 3
         TRANSITION_TO_MC = 4
 
-
-    def __init__(self, latitude_deg=None, longitude_deg=None, relative_altitude_m=None, speed_m_s=None, is_fly_through=None, gimbal_pitch_deg=None, gimbal_yaw_deg=None, camera_action=None, loiter_time_s=None, camera_photo_interval_s=None, acceptance_radius_m=None, yaw_deg=None, camera_photo_distance_m=None, vehicle_action=None):
+    def __init__(
+        self,
+        latitude_deg=None,
+        longitude_deg=None,
+        relative_altitude_m=None,
+        speed_m_s=None,
+        is_fly_through=None,
+        gimbal_pitch_deg=None,
+        gimbal_yaw_deg=None,
+        camera_action=None,
+        loiter_time_s=None,
+        camera_photo_interval_s=None,
+        acceptance_radius_m=None,
+        yaw_deg=None,
+        camera_photo_distance_m=None,
+        vehicle_action=None,
+    ):
         self.latitude_deg = latitude_deg
         self.longitude_deg = longitude_deg
         self.relative_altitude_m = relative_altitude_m
@@ -205,6 +234,7 @@ class MissionItem:
         fields.append(f"vehicle_action={self.vehicle_action}")
         return f"MissionItem({', '.join(fields)})"
 
+
 class MissionPlan:
     """
     Mission plan type
@@ -218,7 +248,10 @@ class MissionPlan:
         """Convert from C structure to Python object"""
         instance = cls()
         if c_struct.mission_items_size > 0:
-            instance.mission_items = [MissionItem.from_c_struct(c_struct.mission_items[i]) for i in range(c_struct.mission_items_size)]
+            instance.mission_items = [
+                MissionItem.from_c_struct(c_struct.mission_items[i])
+                for i in range(c_struct.mission_items_size)
+            ]
         else:
             instance.mission_items = []
         return instance
@@ -230,7 +263,9 @@ class MissionPlan:
         c_array = array_type()
         for i, item in enumerate(self.mission_items):
             c_array[i] = item.to_c_struct()
-        c_struct.mission_items = ctypes.cast(c_array, ctypes.POINTER(MissionItemCStruct))
+        c_struct.mission_items = ctypes.cast(
+            c_array, ctypes.POINTER(MissionItemCStruct)
+        )
         c_struct.mission_items_size = len(self.mission_items)
         return c_struct
 
@@ -238,6 +273,7 @@ class MissionPlan:
         fields = []
         fields.append(f"mission_items={self.mission_items}")
         return f"MissionPlan({', '.join(fields)})"
+
 
 class MissionProgress:
     """
@@ -269,6 +305,7 @@ class MissionProgress:
         fields.append(f"total={self.total}")
         return f"MissionProgress({', '.join(fields)})"
 
+
 class ProgressData:
     """
     Progress data coming from mission upload.
@@ -295,12 +332,15 @@ class ProgressData:
         fields.append(f"progress={self.progress}")
         return f"ProgressData({', '.join(fields)})"
 
+
 class ProgressDataOrMission:
     """
     Progress data coming from mission download, or the mission itself (if the transfer succeeds).
     """
 
-    def __init__(self, has_progress=None, progress=None, has_mission=None, mission_plan=None):
+    def __init__(
+        self, has_progress=None, progress=None, has_mission=None, mission_plan=None
+    ):
         self.has_progress = has_progress
         self.progress = progress
         self.has_mission = has_mission
@@ -334,7 +374,6 @@ class ProgressDataOrMission:
         return f"ProgressDataOrMission({', '.join(fields)})"
 
 
-
 # ===== Plugin =====
 class Mission:
     """Enable waypoint missions."""
@@ -355,19 +394,21 @@ class Mission:
         self._handle = self._lib.mavsdk_mission_create(system_handle)
 
         if not self._handle:
-            raise RuntimeError("Failed to create Mission plugin - C function returned null handle")
+            raise RuntimeError(
+                "Failed to create Mission plugin - C function returned null handle"
+            )
 
-
-    def upload_mission_async(self, mission_plan, callback: Callable, user_data: Any = None):
+    def upload_mission_async(
+        self, mission_plan, callback: Callable, user_data: Any = None
+    ):
         """Upload a list of mission items to the system.
 
- The mission items are uploaded to a drone. Once uploaded the mission can be started and
- executed even if the connection is lost."""
+        The mission items are uploaded to a drone. Once uploaded the mission can be started and
+        executed even if the connection is lost."""
 
         def c_callback(result, ud):
             try:
                 py_result = MissionResult(result)
-
 
                 callback(py_result, user_data)
 
@@ -378,16 +419,11 @@ class Mission:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_mission_upload_mission_async(
-            self._handle,
-            mission_plan,
-            cb,
-            None
+            self._handle, mission_plan, cb, None
         )
-
 
     def upload_mission(self, mission_plan):
         """Get upload_mission (blocking)"""
-
 
         result_code = self._lib.mavsdk_mission_upload_mission(
             self._handle,
@@ -399,12 +435,13 @@ class Mission:
 
         return result
 
-
-    def upload_mission_with_progress_async(self, mission_plan, callback: Callable, user_data: Any = None):
+    def upload_mission_with_progress_async(
+        self, mission_plan, callback: Callable, user_data: Any = None
+    ):
         """Upload a list of mission items to the system and report upload progress.
 
- The mission items are uploaded to a drone. Once uploaded the mission can be started and
- executed even if the connection is lost."""
+        The mission items are uploaded to a drone. Once uploaded the mission can be started and
+        executed even if the connection is lost."""
 
         def c_callback(result, c_data, ud):
             try:
@@ -423,19 +460,11 @@ class Mission:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_mission_upload_mission_with_progress_async(
-            self._handle,
-            mission_plan,
-            cb,
-            None
+            self._handle, mission_plan, cb, None
         )
-
-
-
-
 
     def cancel_mission_upload(self):
         """Get cancel_mission_upload (blocking)"""
-
 
         result_code = self._lib.mavsdk_mission_cancel_mission_upload(
             self._handle,
@@ -446,12 +475,11 @@ class Mission:
 
         return result
 
-
     def download_mission_async(self, callback: Callable, user_data: Any = None):
         """Download a list of mission items from the system (asynchronous).
 
- Will fail if any of the downloaded mission items are not supported
- by the MAVSDK API."""
+        Will fail if any of the downloaded mission items are not supported
+        by the MAVSDK API."""
 
         def c_callback(result, c_data, ud):
             try:
@@ -469,12 +497,7 @@ class Mission:
         cb = DownloadMissionCallback(c_callback)
         self._callbacks.append(cb)
 
-        self._lib.mavsdk_mission_download_mission_async(
-            self._handle,
-            cb,
-            None
-        )
-
+        self._lib.mavsdk_mission_download_mission_async(self._handle, cb, None)
 
     def download_mission(self):
         """Get download_mission (blocking)"""
@@ -482,8 +505,7 @@ class Mission:
         result_out = MissionPlanCStruct()
 
         result_code = self._lib.mavsdk_mission_download_mission(
-            self._handle,
-            ctypes.byref(result_out)
+            self._handle, ctypes.byref(result_out)
         )
         result = MissionResult(result_code)
         if result != MissionResult.SUCCESS:
@@ -493,12 +515,13 @@ class Mission:
         self._lib.mavsdk_mission_MissionPlan_destroy(ctypes.byref(result_out))
         return py_result
 
-
-    def download_mission_with_progress_async(self, callback: Callable, user_data: Any = None):
+    def download_mission_with_progress_async(
+        self, callback: Callable, user_data: Any = None
+    ):
         """Download a list of mission items from the system (asynchronous) and report progress.
 
- Will fail if any of the downloaded mission items are not supported
- by the MAVSDK API."""
+        Will fail if any of the downloaded mission items are not supported
+        by the MAVSDK API."""
 
         def c_callback(result, c_data, ud):
             try:
@@ -506,7 +529,9 @@ class Mission:
 
                 py_data = ProgressDataOrMission.from_c_struct(c_data)
 
-                self._lib.mavsdk_mission_ProgressDataOrMission_destroy(ctypes.byref(c_data))
+                self._lib.mavsdk_mission_ProgressDataOrMission_destroy(
+                    ctypes.byref(c_data)
+                )
 
                 callback(py_result, py_data, user_data)
 
@@ -517,18 +542,11 @@ class Mission:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_mission_download_mission_with_progress_async(
-            self._handle,
-            cb,
-            None
+            self._handle, cb, None
         )
-
-
-
-
 
     def cancel_mission_download(self):
         """Get cancel_mission_download (blocking)"""
-
 
         result_code = self._lib.mavsdk_mission_cancel_mission_download(
             self._handle,
@@ -539,16 +557,14 @@ class Mission:
 
         return result
 
-
     def start_mission_async(self, callback: Callable, user_data: Any = None):
         """Start the mission.
 
- A mission must be uploaded to the vehicle before this can be called."""
+        A mission must be uploaded to the vehicle before this can be called."""
 
         def c_callback(result, ud):
             try:
                 py_result = MissionResult(result)
-
 
                 callback(py_result, user_data)
 
@@ -558,16 +574,10 @@ class Mission:
         cb = StartMissionCallback(c_callback)
         self._callbacks.append(cb)
 
-        self._lib.mavsdk_mission_start_mission_async(
-            self._handle,
-            cb,
-            None
-        )
-
+        self._lib.mavsdk_mission_start_mission_async(self._handle, cb, None)
 
     def start_mission(self):
         """Get start_mission (blocking)"""
-
 
         result_code = self._lib.mavsdk_mission_start_mission(
             self._handle,
@@ -578,19 +588,17 @@ class Mission:
 
         return result
 
-
     def pause_mission_async(self, callback: Callable, user_data: Any = None):
         """Pause the mission.
 
- Pausing the mission puts the vehicle into
- [HOLD mode](https://docs.px4.io/en/flight_modes/hold.html).
- A multicopter should just hover at the spot while a fixedwing vehicle should loiter
- around the location where it paused."""
+        Pausing the mission puts the vehicle into
+        [HOLD mode](https://docs.px4.io/en/flight_modes/hold.html).
+        A multicopter should just hover at the spot while a fixedwing vehicle should loiter
+        around the location where it paused."""
 
         def c_callback(result, ud):
             try:
                 py_result = MissionResult(result)
-
 
                 callback(py_result, user_data)
 
@@ -600,16 +608,10 @@ class Mission:
         cb = PauseMissionCallback(c_callback)
         self._callbacks.append(cb)
 
-        self._lib.mavsdk_mission_pause_mission_async(
-            self._handle,
-            cb,
-            None
-        )
-
+        self._lib.mavsdk_mission_pause_mission_async(self._handle, cb, None)
 
     def pause_mission(self):
         """Get pause_mission (blocking)"""
-
 
         result_code = self._lib.mavsdk_mission_pause_mission(
             self._handle,
@@ -620,14 +622,12 @@ class Mission:
 
         return result
 
-
     def clear_mission_async(self, callback: Callable, user_data: Any = None):
         """Clear the mission saved on the vehicle."""
 
         def c_callback(result, ud):
             try:
                 py_result = MissionResult(result)
-
 
                 callback(py_result, user_data)
 
@@ -637,16 +637,10 @@ class Mission:
         cb = ClearMissionCallback(c_callback)
         self._callbacks.append(cb)
 
-        self._lib.mavsdk_mission_clear_mission_async(
-            self._handle,
-            cb,
-            None
-        )
-
+        self._lib.mavsdk_mission_clear_mission_async(self._handle, cb, None)
 
     def clear_mission(self):
         """Get clear_mission (blocking)"""
-
 
         result_code = self._lib.mavsdk_mission_clear_mission(
             self._handle,
@@ -657,20 +651,20 @@ class Mission:
 
         return result
 
-
-    def set_current_mission_item_async(self, index, callback: Callable, user_data: Any = None):
+    def set_current_mission_item_async(
+        self, index, callback: Callable, user_data: Any = None
+    ):
         """Sets the mission item index to go to.
 
- By setting the current index to 0, the mission is restarted from the beginning. If it is set
- to a specific index of a mission item, the mission will be set to this item.
+        By setting the current index to 0, the mission is restarted from the beginning. If it is set
+        to a specific index of a mission item, the mission will be set to this item.
 
- Note that this is not necessarily true for general missions using MAVLink if loop counters
- are used."""
+        Note that this is not necessarily true for general missions using MAVLink if loop counters
+        are used."""
 
         def c_callback(result, ud):
             try:
                 py_result = MissionResult(result)
-
 
                 callback(py_result, user_data)
 
@@ -681,16 +675,11 @@ class Mission:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_mission_set_current_mission_item_async(
-            self._handle,
-            index,
-            cb,
-            None
+            self._handle, index, cb, None
         )
-
 
     def set_current_mission_item(self, index):
         """Get set_current_mission_item (blocking)"""
-
 
         result_code = self._lib.mavsdk_mission_set_current_mission_item(
             self._handle,
@@ -702,16 +691,13 @@ class Mission:
 
         return result
 
-
-
     def is_mission_finished(self):
         """Get is_mission_finished (blocking)"""
 
         result_out = ctypes.c_bool()
 
         result_code = self._lib.mavsdk_mission_is_mission_finished(
-            self._handle,
-            ctypes.byref(result_out)
+            self._handle, ctypes.byref(result_out)
         )
         result = MissionResult(result_code)
         if result != MissionResult.SUCCESS:
@@ -719,13 +705,11 @@ class Mission:
 
         return result_out.value
 
-
     def subscribe_mission_progress(self, callback: Callable, user_data: Any = None):
         """Subscribe to mission progress updates."""
 
         def c_callback(c_data, ud):
             try:
-
                 py_data = MissionProgress.from_c_struct(c_data)
 
                 self._lib.mavsdk_mission_MissionProgress_destroy(ctypes.byref(c_data))
@@ -739,16 +723,12 @@ class Mission:
         self._callbacks.append(cb)
 
         return self._lib.mavsdk_mission_subscribe_mission_progress(
-            self._handle,
-            cb,
-            None
+            self._handle, cb, None
         )
 
     def unsubscribe_mission_progress(self, handle: ctypes.c_void_p):
         """Unsubscribe from mission_progress"""
-        self._lib.mavsdk_mission_unsubscribe_mission_progress(
-            self._handle, handle
-        )
+        self._lib.mavsdk_mission_unsubscribe_mission_progress(self._handle, handle)
 
     def mission_progress(self):
         """Get mission_progress (blocking)"""
@@ -756,15 +736,12 @@ class Mission:
         result_out = MissionProgressCStruct()
 
         self._lib.mavsdk_mission_mission_progress(
-            self._handle,
-            ctypes.byref(result_out)
+            self._handle, ctypes.byref(result_out)
         )
 
         py_result = MissionProgress.from_c_struct(result_out)
         self._lib.mavsdk_mission_MissionProgress_destroy(ctypes.byref(result_out))
         return py_result
-
-
 
     def get_return_to_launch_after_mission(self):
         """Get get_return_to_launch_after_mission (blocking)"""
@@ -772,8 +749,7 @@ class Mission:
         result_out = ctypes.c_bool()
 
         result_code = self._lib.mavsdk_mission_get_return_to_launch_after_mission(
-            self._handle,
-            ctypes.byref(result_out)
+            self._handle, ctypes.byref(result_out)
         )
         result = MissionResult(result_code)
         if result != MissionResult.SUCCESS:
@@ -781,11 +757,8 @@ class Mission:
 
         return result_out.value
 
-
-
     def set_return_to_launch_after_mission(self, enable):
         """Get set_return_to_launch_after_mission (blocking)"""
-
 
         result_code = self._lib.mavsdk_mission_set_return_to_launch_after_mission(
             self._handle,
@@ -797,7 +770,6 @@ class Mission:
 
         return result
 
-
     def destroy(self):
         """Destroy the plugin instance"""
         if self._handle:
@@ -807,54 +779,24 @@ class Mission:
     def __del__(self):
         self.destroy()
 
+
 # ===== Callback Types =====
-UploadMissionCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
+UploadMissionCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
 UploadMissionWithProgressCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ProgressDataCStruct,
-    ctypes.c_void_p
+    None, ctypes.c_int, ProgressDataCStruct, ctypes.c_void_p
 )
 DownloadMissionCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    MissionPlanCStruct,
-    ctypes.c_void_p
+    None, ctypes.c_int, MissionPlanCStruct, ctypes.c_void_p
 )
 DownloadMissionWithProgressCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ProgressDataOrMissionCStruct,
-    ctypes.c_void_p
+    None, ctypes.c_int, ProgressDataOrMissionCStruct, ctypes.c_void_p
 )
-StartMissionCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-PauseMissionCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-ClearMissionCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-SetCurrentMissionItemCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
+StartMissionCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
+PauseMissionCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
+ClearMissionCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
+SetCurrentMissionItemCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
 MissionProgressCallback = ctypes.CFUNCTYPE(
-    None,
-    MissionProgressCStruct,
-    ctypes.c_void_p
+    None, MissionProgressCStruct, ctypes.c_void_p
 )
 
 # ===== Setup Functions =====
@@ -894,7 +836,7 @@ _cmavsdk_lib.mavsdk_mission_upload_mission_async.argtypes = [
     ctypes.c_void_p,
     MissionPlanCStruct,
     UploadMissionCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_mission_upload_mission_async.restype = None
@@ -909,7 +851,7 @@ _cmavsdk_lib.mavsdk_mission_upload_mission_with_progress_async.argtypes = [
     ctypes.c_void_p,
     MissionPlanCStruct,
     UploadMissionWithProgressCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_mission_upload_mission_with_progress_async.restype = None
@@ -923,21 +865,21 @@ _cmavsdk_lib.mavsdk_mission_cancel_mission_upload.restype = ctypes.c_int
 _cmavsdk_lib.mavsdk_mission_download_mission_async.argtypes = [
     ctypes.c_void_p,
     DownloadMissionCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_mission_download_mission_async.restype = None
 
 _cmavsdk_lib.mavsdk_mission_download_mission.argtypes = [
     ctypes.c_void_p,
-    ctypes.POINTER(MissionPlanCStruct)
+    ctypes.POINTER(MissionPlanCStruct),
 ]
 
 _cmavsdk_lib.mavsdk_mission_download_mission.restype = ctypes.c_int
 _cmavsdk_lib.mavsdk_mission_download_mission_with_progress_async.argtypes = [
     ctypes.c_void_p,
     DownloadMissionWithProgressCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_mission_download_mission_with_progress_async.restype = None
@@ -951,7 +893,7 @@ _cmavsdk_lib.mavsdk_mission_cancel_mission_download.restype = ctypes.c_int
 _cmavsdk_lib.mavsdk_mission_start_mission_async.argtypes = [
     ctypes.c_void_p,
     StartMissionCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_mission_start_mission_async.restype = None
@@ -964,7 +906,7 @@ _cmavsdk_lib.mavsdk_mission_start_mission.restype = ctypes.c_int
 _cmavsdk_lib.mavsdk_mission_pause_mission_async.argtypes = [
     ctypes.c_void_p,
     PauseMissionCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_mission_pause_mission_async.restype = None
@@ -977,7 +919,7 @@ _cmavsdk_lib.mavsdk_mission_pause_mission.restype = ctypes.c_int
 _cmavsdk_lib.mavsdk_mission_clear_mission_async.argtypes = [
     ctypes.c_void_p,
     ClearMissionCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_mission_clear_mission_async.restype = None
@@ -991,7 +933,7 @@ _cmavsdk_lib.mavsdk_mission_set_current_mission_item_async.argtypes = [
     ctypes.c_void_p,
     ctypes.c_int32,
     SetCurrentMissionItemCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_mission_set_current_mission_item_async.restype = None
@@ -1005,35 +947,35 @@ _cmavsdk_lib.mavsdk_mission_set_current_mission_item.restype = ctypes.c_int
 
 _cmavsdk_lib.mavsdk_mission_is_mission_finished.argtypes = [
     ctypes.c_void_p,
-    ctypes.POINTER(ctypes.c_bool)
+    ctypes.POINTER(ctypes.c_bool),
 ]
 
 _cmavsdk_lib.mavsdk_mission_is_mission_finished.restype = ctypes.c_int
 _cmavsdk_lib.mavsdk_mission_subscribe_mission_progress.argtypes = [
     ctypes.c_void_p,
     MissionProgressCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_mission_subscribe_mission_progress.restype = ctypes.c_void_p
 # Unsubscribe
 _cmavsdk_lib.mavsdk_mission_unsubscribe_mission_progress.argtypes = [
     ctypes.c_void_p,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_mission_unsubscribe_mission_progress.restype = None
 
 _cmavsdk_lib.mavsdk_mission_mission_progress.argtypes = [
     ctypes.c_void_p,
-    ctypes.POINTER(MissionProgressCStruct)
+    ctypes.POINTER(MissionProgressCStruct),
 ]
 
 _cmavsdk_lib.mavsdk_mission_mission_progress.restype = None
 
 _cmavsdk_lib.mavsdk_mission_get_return_to_launch_after_mission.argtypes = [
     ctypes.c_void_p,
-    ctypes.POINTER(ctypes.c_bool)
+    ctypes.POINTER(ctypes.c_bool),
 ]
 
 _cmavsdk_lib.mavsdk_mission_get_return_to_launch_after_mission.restype = ctypes.c_int

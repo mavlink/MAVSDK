@@ -3,7 +3,7 @@
 # (see https://github.com/mavlink/MAVSDK-Proto/blob/main/protos/mission_raw_server/mission_raw_server.proto)
 
 """
-Acts as a vehicle and receives incoming missions from GCS (in raw MAVLINK format). 
+Acts as a vehicle and receives incoming missions from GCS (in raw MAVLINK format).
  Provides current mission item state, so the server can progress through missions.
 """
 
@@ -17,9 +17,11 @@ from ...cmavsdk_loader import _cmavsdk_lib
 
 # ===== Enums =====
 
+
 # ===== Result Enums =====
 class MissionRawServerResult(IntEnum):
     """Possible results returned for action requests."""
+
     UNKNOWN = 0
     SUCCESS = 1
     ERROR = 2
@@ -41,6 +43,7 @@ class MissionItemCStruct(ctypes.Structure):
     Internal C structure for MissionItem.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("seq", ctypes.c_uint32),
         ("frame", ctypes.c_uint32),
@@ -57,21 +60,25 @@ class MissionItemCStruct(ctypes.Structure):
         ("mission_type", ctypes.c_uint32),
     ]
 
+
 class MissionPlanCStruct(ctypes.Structure):
     """
     Internal C structure for MissionPlan.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("mission_items", ctypes.POINTER(MissionItemCStruct)),
         ("mission_items_size", ctypes.c_size_t),
     ]
+
 
 class MissionProgressCStruct(ctypes.Structure):
     """
     Internal C structure for MissionProgress.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("current", ctypes.c_int32),
         ("total", ctypes.c_int32),
@@ -84,7 +91,22 @@ class MissionItem:
     Mission item exactly identical to MAVLink MISSION_ITEM_INT.
     """
 
-    def __init__(self, seq=None, frame=None, command=None, current=None, autocontinue=None, param1=None, param2=None, param3=None, param4=None, x=None, y=None, z=None, mission_type=None):
+    def __init__(
+        self,
+        seq=None,
+        frame=None,
+        command=None,
+        current=None,
+        autocontinue=None,
+        param1=None,
+        param2=None,
+        param3=None,
+        param4=None,
+        x=None,
+        y=None,
+        z=None,
+        mission_type=None,
+    ):
         self.seq = seq
         self.frame = frame
         self.command = command
@@ -153,6 +175,7 @@ class MissionItem:
         fields.append(f"mission_type={self.mission_type}")
         return f"MissionItem({', '.join(fields)})"
 
+
 class MissionPlan:
     """
     Mission plan type
@@ -166,7 +189,10 @@ class MissionPlan:
         """Convert from C structure to Python object"""
         instance = cls()
         if c_struct.mission_items_size > 0:
-            instance.mission_items = [MissionItem.from_c_struct(c_struct.mission_items[i]) for i in range(c_struct.mission_items_size)]
+            instance.mission_items = [
+                MissionItem.from_c_struct(c_struct.mission_items[i])
+                for i in range(c_struct.mission_items_size)
+            ]
         else:
             instance.mission_items = []
         return instance
@@ -178,7 +204,9 @@ class MissionPlan:
         c_array = array_type()
         for i, item in enumerate(self.mission_items):
             c_array[i] = item.to_c_struct()
-        c_struct.mission_items = ctypes.cast(c_array, ctypes.POINTER(MissionItemCStruct))
+        c_struct.mission_items = ctypes.cast(
+            c_array, ctypes.POINTER(MissionItemCStruct)
+        )
         c_struct.mission_items_size = len(self.mission_items)
         return c_struct
 
@@ -186,6 +214,7 @@ class MissionPlan:
         fields = []
         fields.append(f"mission_items={self.mission_items}")
         return f"MissionPlan({', '.join(fields)})"
+
 
 class MissionProgress:
     """
@@ -218,11 +247,10 @@ class MissionProgress:
         return f"MissionProgress({', '.join(fields)})"
 
 
-
 # ===== Plugin =====
 class MissionRawServer:
-    """Acts as a vehicle and receives incoming missions from GCS (in raw MAVLINK format). 
- Provides current mission item state, so the server can progress through missions."""
+    """Acts as a vehicle and receives incoming missions from GCS (in raw MAVLINK format).
+    Provides current mission item state, so the server can progress through missions."""
 
     def __init__(self, server_component):
         self._lib = _cmavsdk_lib
@@ -240,8 +268,9 @@ class MissionRawServer:
         self._handle = self._lib.mavsdk_mission_raw_server_create(component_handle)
 
         if not self._handle:
-            raise RuntimeError("Failed to create MissionRawServer plugin - C function returned null handle")
-
+            raise RuntimeError(
+                "Failed to create MissionRawServer plugin - C function returned null handle"
+            )
 
     def subscribe_incoming_mission(self, callback: Callable, user_data: Any = None):
         """Subscribe to when a new mission is uploaded (asynchronous)."""
@@ -252,7 +281,9 @@ class MissionRawServer:
 
                 py_data = MissionPlan.from_c_struct(c_data)
 
-                self._lib.mavsdk_mission_raw_server_MissionPlan_destroy(ctypes.byref(c_data))
+                self._lib.mavsdk_mission_raw_server_MissionPlan_destroy(
+                    ctypes.byref(c_data)
+                )
 
                 callback(py_result, py_data, user_data)
 
@@ -263,9 +294,7 @@ class MissionRawServer:
         self._callbacks.append(cb)
 
         return self._lib.mavsdk_mission_raw_server_subscribe_incoming_mission(
-            self._handle,
-            cb,
-            None
+            self._handle, cb, None
         )
 
     def unsubscribe_incoming_mission(self, handle: ctypes.c_void_p):
@@ -274,17 +303,16 @@ class MissionRawServer:
             self._handle, handle
         )
 
-
-
     def subscribe_current_item_changed(self, callback: Callable, user_data: Any = None):
         """Subscribe to when a new current item is set"""
 
         def c_callback(c_data, ud):
             try:
-
                 py_data = MissionItem.from_c_struct(c_data)
 
-                self._lib.mavsdk_mission_raw_server_MissionItem_destroy(ctypes.byref(c_data))
+                self._lib.mavsdk_mission_raw_server_MissionItem_destroy(
+                    ctypes.byref(c_data)
+                )
 
                 callback(py_data, user_data)
 
@@ -295,9 +323,7 @@ class MissionRawServer:
         self._callbacks.append(cb)
 
         return self._lib.mavsdk_mission_raw_server_subscribe_current_item_changed(
-            self._handle,
-            cb,
-            None
+            self._handle, cb, None
         )
 
     def unsubscribe_current_item_changed(self, handle: ctypes.c_void_p):
@@ -306,25 +332,18 @@ class MissionRawServer:
             self._handle, handle
         )
 
-
-
-
     def set_current_item_complete(self):
         """Get set_current_item_complete (blocking)"""
-
 
         self._lib.mavsdk_mission_raw_server_set_current_item_complete(
             self._handle,
         )
-
-
 
     def subscribe_clear_all(self, callback: Callable, user_data: Any = None):
         """Subscribe when a MISSION_CLEAR_ALL is received"""
 
         def c_callback(c_data, ud):
             try:
-
                 py_data = c_data
 
                 callback(py_data, user_data)
@@ -336,18 +355,12 @@ class MissionRawServer:
         self._callbacks.append(cb)
 
         return self._lib.mavsdk_mission_raw_server_subscribe_clear_all(
-            self._handle,
-            cb,
-            None
+            self._handle, cb, None
         )
 
     def unsubscribe_clear_all(self, handle: ctypes.c_void_p):
         """Unsubscribe from clear_all"""
-        self._lib.mavsdk_mission_raw_server_unsubscribe_clear_all(
-            self._handle, handle
-        )
-
-
+        self._lib.mavsdk_mission_raw_server_unsubscribe_clear_all(self._handle, handle)
 
     def destroy(self):
         """Destroy the plugin instance"""
@@ -358,23 +371,13 @@ class MissionRawServer:
     def __del__(self):
         self.destroy()
 
+
 # ===== Callback Types =====
 IncomingMissionCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    MissionPlanCStruct,
-    ctypes.c_void_p
+    None, ctypes.c_int, MissionPlanCStruct, ctypes.c_void_p
 )
-CurrentItemChangedCallback = ctypes.CFUNCTYPE(
-    None,
-    MissionItemCStruct,
-    ctypes.c_void_p
-)
-ClearAllCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_uint32,
-    ctypes.c_void_p
-)
+CurrentItemChangedCallback = ctypes.CFUNCTYPE(None, MissionItemCStruct, ctypes.c_void_p)
+ClearAllCallback = ctypes.CFUNCTYPE(None, ctypes.c_uint32, ctypes.c_void_p)
 
 # ===== Setup Functions =====
 _cmavsdk_lib.mavsdk_mission_raw_server_create.argtypes = [ctypes.c_void_p]
@@ -402,14 +405,16 @@ _cmavsdk_lib.mavsdk_mission_raw_server_MissionProgress_destroy.restype = None
 _cmavsdk_lib.mavsdk_mission_raw_server_subscribe_incoming_mission.argtypes = [
     ctypes.c_void_p,
     IncomingMissionCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
-_cmavsdk_lib.mavsdk_mission_raw_server_subscribe_incoming_mission.restype = ctypes.c_void_p
+_cmavsdk_lib.mavsdk_mission_raw_server_subscribe_incoming_mission.restype = (
+    ctypes.c_void_p
+)
 # Unsubscribe
 _cmavsdk_lib.mavsdk_mission_raw_server_unsubscribe_incoming_mission.argtypes = [
     ctypes.c_void_p,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_mission_raw_server_unsubscribe_incoming_mission.restype = None
@@ -417,14 +422,16 @@ _cmavsdk_lib.mavsdk_mission_raw_server_unsubscribe_incoming_mission.restype = No
 _cmavsdk_lib.mavsdk_mission_raw_server_subscribe_current_item_changed.argtypes = [
     ctypes.c_void_p,
     CurrentItemChangedCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
-_cmavsdk_lib.mavsdk_mission_raw_server_subscribe_current_item_changed.restype = ctypes.c_void_p
+_cmavsdk_lib.mavsdk_mission_raw_server_subscribe_current_item_changed.restype = (
+    ctypes.c_void_p
+)
 # Unsubscribe
 _cmavsdk_lib.mavsdk_mission_raw_server_unsubscribe_current_item_changed.argtypes = [
     ctypes.c_void_p,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_mission_raw_server_unsubscribe_current_item_changed.restype = None
@@ -438,15 +445,14 @@ _cmavsdk_lib.mavsdk_mission_raw_server_set_current_item_complete.restype = None
 _cmavsdk_lib.mavsdk_mission_raw_server_subscribe_clear_all.argtypes = [
     ctypes.c_void_p,
     ClearAllCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_mission_raw_server_subscribe_clear_all.restype = ctypes.c_void_p
 # Unsubscribe
 _cmavsdk_lib.mavsdk_mission_raw_server_unsubscribe_clear_all.argtypes = [
     ctypes.c_void_p,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_mission_raw_server_unsubscribe_clear_all.restype = None
-

@@ -17,6 +17,7 @@ from ...cmavsdk_loader import _cmavsdk_lib
 # ===== Enums =====
 class MetadataType(IntEnum):
     """The metadata type"""
+
     ALL_COMPLETED = 0
     PARAMETER = 1
     EVENTS = 2
@@ -26,6 +27,7 @@ class MetadataType(IntEnum):
 # ===== Result Enums =====
 class ComponentMetadataResult(IntEnum):
     """Possible results returned"""
+
     SUCCESS = 0
     NOT_AVAILABLE = 1
     CONNECTION_ERROR = 2
@@ -43,15 +45,18 @@ class MetadataDataCStruct(ctypes.Structure):
     Internal C structure for MetadataData.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("json_metadata", ctypes.c_char_p),
     ]
+
 
 class MetadataUpdateCStruct(ctypes.Structure):
     """
     Internal C structure for MetadataUpdate.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("compid", ctypes.c_uint32),
         ("type", ctypes.c_int),
@@ -72,19 +77,20 @@ class MetadataData:
     def from_c_struct(cls, c_struct):
         """Convert from C structure to Python object"""
         instance = cls()
-        instance.json_metadata = c_struct.json_metadata.decode('utf-8')
+        instance.json_metadata = c_struct.json_metadata.decode("utf-8")
         return instance
 
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = MetadataDataCStruct()
-        c_struct.json_metadata = self.json_metadata.encode('utf-8')
+        c_struct.json_metadata = self.json_metadata.encode("utf-8")
         return c_struct
 
     def __str__(self):
         fields = []
         fields.append(f"json_metadata={self.json_metadata}")
         return f"MetadataData({', '.join(fields)})"
+
 
 class MetadataUpdate:
     """
@@ -102,7 +108,7 @@ class MetadataUpdate:
         instance = cls()
         instance.compid = c_struct.compid
         instance.type = MetadataType(c_struct.type)
-        instance.json_metadata = c_struct.json_metadata.decode('utf-8')
+        instance.json_metadata = c_struct.json_metadata.decode("utf-8")
         return instance
 
     def to_c_struct(self):
@@ -110,7 +116,7 @@ class MetadataUpdate:
         c_struct = MetadataUpdateCStruct()
         c_struct.compid = self.compid
         c_struct.type = int(self.type)
-        c_struct.json_metadata = self.json_metadata.encode('utf-8')
+        c_struct.json_metadata = self.json_metadata.encode("utf-8")
         return c_struct
 
     def __str__(self):
@@ -119,7 +125,6 @@ class MetadataUpdate:
         fields.append(f"type={self.type}")
         fields.append(f"json_metadata={self.json_metadata}")
         return f"MetadataUpdate({', '.join(fields)})"
-
 
 
 # ===== Plugin =====
@@ -142,41 +147,35 @@ class ComponentMetadata:
         self._handle = self._lib.mavsdk_component_metadata_create(system_handle)
 
         if not self._handle:
-            raise RuntimeError("Failed to create ComponentMetadata plugin - C function returned null handle")
-
-
+            raise RuntimeError(
+                "Failed to create ComponentMetadata plugin - C function returned null handle"
+            )
 
     def request_component(self, compid):
         """Get request_component (blocking)"""
-
 
         self._lib.mavsdk_component_metadata_request_component(
             self._handle,
             compid,
         )
 
-
-
-
     def request_autopilot_component(self):
         """Get request_autopilot_component (blocking)"""
-
 
         self._lib.mavsdk_component_metadata_request_autopilot_component(
             self._handle,
         )
-
-
 
     def subscribe_metadata_available(self, callback: Callable, user_data: Any = None):
         """Register a callback that gets called when metadata is available"""
 
         def c_callback(c_data, ud):
             try:
-
                 py_data = MetadataUpdate.from_c_struct(c_data)
 
-                self._lib.mavsdk_component_metadata_MetadataUpdate_destroy(ctypes.byref(c_data))
+                self._lib.mavsdk_component_metadata_MetadataUpdate_destroy(
+                    ctypes.byref(c_data)
+                )
 
                 callback(py_data, user_data)
 
@@ -187,9 +186,7 @@ class ComponentMetadata:
         self._callbacks.append(cb)
 
         return self._lib.mavsdk_component_metadata_subscribe_metadata_available(
-            self._handle,
-            cb,
-            None
+            self._handle, cb, None
         )
 
     def unsubscribe_metadata_available(self, handle: ctypes.c_void_p):
@@ -198,28 +195,23 @@ class ComponentMetadata:
             self._handle, handle
         )
 
-
-
-
     def get_metadata(self, compid, metadata_type):
         """Get get_metadata (blocking)"""
 
         result_out = MetadataDataCStruct()
 
         result_code = self._lib.mavsdk_component_metadata_get_metadata(
-            self._handle,
-            compid,
-            metadata_type,
-            ctypes.byref(result_out)
+            self._handle, compid, metadata_type, ctypes.byref(result_out)
         )
         result = ComponentMetadataResult(result_code)
         if result != ComponentMetadataResult.SUCCESS:
             raise Exception(f"get_metadata failed: {result}")
 
         py_result = MetadataData.from_c_struct(result_out)
-        self._lib.mavsdk_component_metadata_MetadataData_destroy(ctypes.byref(result_out))
+        self._lib.mavsdk_component_metadata_MetadataData_destroy(
+            ctypes.byref(result_out)
+        )
         return py_result
-
 
     def destroy(self):
         """Destroy the plugin instance"""
@@ -230,11 +222,10 @@ class ComponentMetadata:
     def __del__(self):
         self.destroy()
 
+
 # ===== Callback Types =====
 MetadataAvailableCallback = ctypes.CFUNCTYPE(
-    None,
-    MetadataUpdateCStruct,
-    ctypes.c_void_p
+    None, MetadataUpdateCStruct, ctypes.c_void_p
 )
 
 # ===== Setup Functions =====
@@ -255,7 +246,6 @@ _cmavsdk_lib.mavsdk_component_metadata_MetadataUpdate_destroy.argtypes = [
 _cmavsdk_lib.mavsdk_component_metadata_MetadataUpdate_destroy.restype = None
 
 
-
 _cmavsdk_lib.mavsdk_component_metadata_request_component.argtypes = [
     ctypes.c_void_p,
     ctypes.c_uint32,
@@ -271,14 +261,16 @@ _cmavsdk_lib.mavsdk_component_metadata_request_autopilot_component.restype = Non
 _cmavsdk_lib.mavsdk_component_metadata_subscribe_metadata_available.argtypes = [
     ctypes.c_void_p,
     MetadataAvailableCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
-_cmavsdk_lib.mavsdk_component_metadata_subscribe_metadata_available.restype = ctypes.c_void_p
+_cmavsdk_lib.mavsdk_component_metadata_subscribe_metadata_available.restype = (
+    ctypes.c_void_p
+)
 # Unsubscribe
 _cmavsdk_lib.mavsdk_component_metadata_unsubscribe_metadata_available.argtypes = [
     ctypes.c_void_p,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_component_metadata_unsubscribe_metadata_available.restype = None
@@ -288,7 +280,7 @@ _cmavsdk_lib.mavsdk_component_metadata_get_metadata.argtypes = [
     ctypes.c_void_p,
     ctypes.c_uint32,
     ctypes.c_int,
-    ctypes.POINTER(MetadataDataCStruct)
+    ctypes.POINTER(MetadataDataCStruct),
 ]
 
 _cmavsdk_lib.mavsdk_component_metadata_get_metadata.restype = ctypes.c_int

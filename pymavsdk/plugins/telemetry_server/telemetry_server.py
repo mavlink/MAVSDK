@@ -18,6 +18,7 @@ from ...cmavsdk_loader import _cmavsdk_lib
 # ===== Enums =====
 class FixType(IntEnum):
     """GPS fix type."""
+
     NO_GPS = 0
     NO_FIX = 1
     FIX_2D = 2
@@ -26,16 +27,20 @@ class FixType(IntEnum):
     RTK_FLOAT = 5
     RTK_FIXED = 6
 
+
 class VtolState(IntEnum):
     """Maps to MAV_VTOL_STATE"""
+
     UNDEFINED = 0
     TRANSITION_TO_FW = 1
     TRANSITION_TO_MC = 2
     MC = 3
     FW = 4
 
+
 class StatusTextType(IntEnum):
     """Status types."""
+
     DEBUG = 0
     INFO = 1
     NOTICE = 2
@@ -45,8 +50,10 @@ class StatusTextType(IntEnum):
     ALERT = 6
     EMERGENCY = 7
 
+
 class LandedState(IntEnum):
     """Landed State enumeration."""
+
     UNKNOWN = 0
     ON_GROUND = 1
     IN_AIR = 2
@@ -57,6 +64,7 @@ class LandedState(IntEnum):
 # ===== Result Enums =====
 class TelemetryServerResult(IntEnum):
     """Possible results returned for telemetry requests."""
+
     UNKNOWN = 0
     SUCCESS = 1
     NO_SYSTEM = 2
@@ -73,6 +81,7 @@ class PositionCStruct(ctypes.Structure):
     Internal C structure for Position.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("latitude_deg", ctypes.c_double),
         ("longitude_deg", ctypes.c_double),
@@ -80,20 +89,24 @@ class PositionCStruct(ctypes.Structure):
         ("relative_altitude_m", ctypes.c_float),
     ]
 
+
 class HeadingCStruct(ctypes.Structure):
     """
     Internal C structure for Heading.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("heading_deg", ctypes.c_double),
     ]
+
 
 class QuaternionCStruct(ctypes.Structure):
     """
     Internal C structure for Quaternion.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("w", ctypes.c_float),
         ("x", ctypes.c_float),
@@ -102,11 +115,13 @@ class QuaternionCStruct(ctypes.Structure):
         ("timestamp_us", ctypes.c_uint64),
     ]
 
+
 class EulerAngleCStruct(ctypes.Structure):
     """
     Internal C structure for EulerAngle.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("roll_deg", ctypes.c_float),
         ("pitch_deg", ctypes.c_float),
@@ -114,32 +129,38 @@ class EulerAngleCStruct(ctypes.Structure):
         ("timestamp_us", ctypes.c_uint64),
     ]
 
+
 class AngularVelocityBodyCStruct(ctypes.Structure):
     """
     Internal C structure for AngularVelocityBody.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("roll_rad_s", ctypes.c_float),
         ("pitch_rad_s", ctypes.c_float),
         ("yaw_rad_s", ctypes.c_float),
     ]
 
+
 class GpsInfoCStruct(ctypes.Structure):
     """
     Internal C structure for GpsInfo.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("num_satellites", ctypes.c_int32),
         ("fix_type", ctypes.c_int),
     ]
+
 
 class RawGpsCStruct(ctypes.Structure):
     """
     Internal C structure for RawGps.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("timestamp_us", ctypes.c_uint64),
         ("latitude_deg", ctypes.c_double),
@@ -157,96 +178,114 @@ class RawGpsCStruct(ctypes.Structure):
         ("yaw_deg", ctypes.c_float),
     ]
 
+
 class BatteryCStruct(ctypes.Structure):
     """
     Internal C structure for Battery.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("voltage_v", ctypes.c_float),
         ("remaining_percent", ctypes.c_float),
     ]
+
 
 class RcStatusCStruct(ctypes.Structure):
     """
     Internal C structure for RcStatus.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("was_available_once", ctypes.c_bool),
         ("is_available", ctypes.c_bool),
         ("signal_strength_percent", ctypes.c_float),
     ]
 
+
 class StatusTextCStruct(ctypes.Structure):
     """
     Internal C structure for StatusText.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("type", ctypes.c_int),
         ("text", ctypes.c_char_p),
     ]
+
 
 class ActuatorControlTargetCStruct(ctypes.Structure):
     """
     Internal C structure for ActuatorControlTarget.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("group", ctypes.c_int32),
         ("controls", ctypes.POINTER(ctypes.c_float)),
         ("controls_size", ctypes.c_size_t),
     ]
 
+
 class ActuatorOutputStatusCStruct(ctypes.Structure):
     """
     Internal C structure for ActuatorOutputStatus.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("active", ctypes.c_uint32),
         ("actuator", ctypes.POINTER(ctypes.c_float)),
         ("actuator_size", ctypes.c_size_t),
     ]
 
+
 class CovarianceCStruct(ctypes.Structure):
     """
     Internal C structure for Covariance.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("covariance_matrix", ctypes.POINTER(ctypes.c_float)),
         ("covariance_matrix_size", ctypes.c_size_t),
     ]
+
 
 class VelocityBodyCStruct(ctypes.Structure):
     """
     Internal C structure for VelocityBody.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("x_m_s", ctypes.c_float),
         ("y_m_s", ctypes.c_float),
         ("z_m_s", ctypes.c_float),
     ]
 
+
 class PositionBodyCStruct(ctypes.Structure):
     """
     Internal C structure for PositionBody.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("x_m", ctypes.c_float),
         ("y_m", ctypes.c_float),
         ("z_m", ctypes.c_float),
     ]
 
+
 class OdometryCStruct(ctypes.Structure):
     """
     Internal C structure for Odometry.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("time_usec", ctypes.c_uint64),
         ("frame_id", ctypes.c_int),
@@ -259,22 +298,26 @@ class OdometryCStruct(ctypes.Structure):
         ("velocity_covariance", CovarianceCStruct),
     ]
 
+
 class DistanceSensorCStruct(ctypes.Structure):
     """
     Internal C structure for DistanceSensor.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("minimum_distance_m", ctypes.c_float),
         ("maximum_distance_m", ctypes.c_float),
         ("current_distance_m", ctypes.c_float),
     ]
 
+
 class ScaledPressureCStruct(ctypes.Structure):
     """
     Internal C structure for ScaledPressure.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("timestamp_us", ctypes.c_uint64),
         ("absolute_pressure_hpa", ctypes.c_float),
@@ -283,54 +326,64 @@ class ScaledPressureCStruct(ctypes.Structure):
         ("differential_pressure_temperature_deg", ctypes.c_float),
     ]
 
+
 class PositionNedCStruct(ctypes.Structure):
     """
     Internal C structure for PositionNed.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("north_m", ctypes.c_float),
         ("east_m", ctypes.c_float),
         ("down_m", ctypes.c_float),
     ]
 
+
 class VelocityNedCStruct(ctypes.Structure):
     """
     Internal C structure for VelocityNed.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("north_m_s", ctypes.c_float),
         ("east_m_s", ctypes.c_float),
         ("down_m_s", ctypes.c_float),
     ]
 
+
 class PositionVelocityNedCStruct(ctypes.Structure):
     """
     Internal C structure for PositionVelocityNed.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("position", PositionNedCStruct),
         ("velocity", VelocityNedCStruct),
     ]
+
 
 class GroundTruthCStruct(ctypes.Structure):
     """
     Internal C structure for GroundTruth.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("latitude_deg", ctypes.c_double),
         ("longitude_deg", ctypes.c_double),
         ("absolute_altitude_m", ctypes.c_float),
     ]
 
+
 class FixedwingMetricsCStruct(ctypes.Structure):
     """
     Internal C structure for FixedwingMetrics.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("airspeed_m_s", ctypes.c_float),
         ("throttle_percentage", ctypes.c_float),
@@ -340,44 +393,52 @@ class FixedwingMetricsCStruct(ctypes.Structure):
         ("absolute_altitude_m", ctypes.c_float),
     ]
 
+
 class AccelerationFrdCStruct(ctypes.Structure):
     """
     Internal C structure for AccelerationFrd.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("forward_m_s2", ctypes.c_float),
         ("right_m_s2", ctypes.c_float),
         ("down_m_s2", ctypes.c_float),
     ]
 
+
 class AngularVelocityFrdCStruct(ctypes.Structure):
     """
     Internal C structure for AngularVelocityFrd.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("forward_rad_s", ctypes.c_float),
         ("right_rad_s", ctypes.c_float),
         ("down_rad_s", ctypes.c_float),
     ]
 
+
 class MagneticFieldFrdCStruct(ctypes.Structure):
     """
     Internal C structure for MagneticFieldFrd.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("forward_gauss", ctypes.c_float),
         ("right_gauss", ctypes.c_float),
         ("down_gauss", ctypes.c_float),
     ]
 
+
 class ImuCStruct(ctypes.Structure):
     """
     Internal C structure for Imu.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("acceleration_frd", AccelerationFrdCStruct),
         ("angular_velocity_frd", AngularVelocityFrdCStruct),
@@ -393,7 +454,13 @@ class Position:
     Position type in global coordinates.
     """
 
-    def __init__(self, latitude_deg=None, longitude_deg=None, absolute_altitude_m=None, relative_altitude_m=None):
+    def __init__(
+        self,
+        latitude_deg=None,
+        longitude_deg=None,
+        absolute_altitude_m=None,
+        relative_altitude_m=None,
+    ):
         self.latitude_deg = latitude_deg
         self.longitude_deg = longitude_deg
         self.absolute_altitude_m = absolute_altitude_m
@@ -426,6 +493,7 @@ class Position:
         fields.append(f"relative_altitude_m={self.relative_altitude_m}")
         return f"Position({', '.join(fields)})"
 
+
 class Heading:
     """
     Heading type used for global position
@@ -452,16 +520,17 @@ class Heading:
         fields.append(f"heading_deg={self.heading_deg}")
         return f"Heading({', '.join(fields)})"
 
+
 class Quaternion:
     """
-    Quaternion type.
+       Quaternion type.
 
- All rotations and axis systems follow the right-hand rule.
- The Hamilton quaternion product definition is used.
- A zero-rotation quaternion is represented by (1,0,0,0).
- The quaternion could also be written as w + xi + yj + zk.
+    All rotations and axis systems follow the right-hand rule.
+    The Hamilton quaternion product definition is used.
+    A zero-rotation quaternion is represented by (1,0,0,0).
+    The quaternion could also be written as w + xi + yj + zk.
 
- For more info see: https://en.wikipedia.org/wiki/Quaternion
+    For more info see: https://en.wikipedia.org/wiki/Quaternion
     """
 
     def __init__(self, w=None, x=None, y=None, z=None, timestamp_us=None):
@@ -501,14 +570,15 @@ class Quaternion:
         fields.append(f"timestamp_us={self.timestamp_us}")
         return f"Quaternion({', '.join(fields)})"
 
+
 class EulerAngle:
     """
-    Euler angle type.
+       Euler angle type.
 
- All rotations and axis systems follow the right-hand rule.
- The Euler angles follow the convention of a 3-2-1 intrinsic Tait-Bryan rotation sequence.
+    All rotations and axis systems follow the right-hand rule.
+    The Euler angles follow the convention of a 3-2-1 intrinsic Tait-Bryan rotation sequence.
 
- For more info see https://en.wikipedia.org/wiki/Euler_angles
+    For more info see https://en.wikipedia.org/wiki/Euler_angles
     """
 
     def __init__(self, roll_deg=None, pitch_deg=None, yaw_deg=None, timestamp_us=None):
@@ -544,6 +614,7 @@ class EulerAngle:
         fields.append(f"timestamp_us={self.timestamp_us}")
         return f"EulerAngle({', '.join(fields)})"
 
+
 class AngularVelocityBody:
     """
     Angular velocity type.
@@ -578,6 +649,7 @@ class AngularVelocityBody:
         fields.append(f"yaw_rad_s={self.yaw_rad_s}")
         return f"AngularVelocityBody({', '.join(fields)})"
 
+
 class GpsInfo:
     """
     GPS information type.
@@ -608,15 +680,32 @@ class GpsInfo:
         fields.append(f"fix_type={self.fix_type}")
         return f"GpsInfo({', '.join(fields)})"
 
+
 class RawGps:
     """
-    Raw GPS information type.
+       Raw GPS information type.
 
- Warning: this is an advanced type! If you want the location of the drone, use
- the position instead. This message exposes the raw values of the GNSS sensor.
+    Warning: this is an advanced type! If you want the location of the drone, use
+    the position instead. This message exposes the raw values of the GNSS sensor.
     """
 
-    def __init__(self, timestamp_us=None, latitude_deg=None, longitude_deg=None, absolute_altitude_m=None, hdop=None, vdop=None, velocity_m_s=None, cog_deg=None, altitude_ellipsoid_m=None, horizontal_uncertainty_m=None, vertical_uncertainty_m=None, velocity_uncertainty_m_s=None, heading_uncertainty_deg=None, yaw_deg=None):
+    def __init__(
+        self,
+        timestamp_us=None,
+        latitude_deg=None,
+        longitude_deg=None,
+        absolute_altitude_m=None,
+        hdop=None,
+        vdop=None,
+        velocity_m_s=None,
+        cog_deg=None,
+        altitude_ellipsoid_m=None,
+        horizontal_uncertainty_m=None,
+        vertical_uncertainty_m=None,
+        velocity_uncertainty_m_s=None,
+        heading_uncertainty_deg=None,
+        yaw_deg=None,
+    ):
         self.timestamp_us = timestamp_us
         self.latitude_deg = latitude_deg
         self.longitude_deg = longitude_deg
@@ -689,6 +778,7 @@ class RawGps:
         fields.append(f"yaw_deg={self.yaw_deg}")
         return f"RawGps({', '.join(fields)})"
 
+
 class Battery:
     """
     Battery type.
@@ -719,12 +809,15 @@ class Battery:
         fields.append(f"remaining_percent={self.remaining_percent}")
         return f"Battery({', '.join(fields)})"
 
+
 class RcStatus:
     """
     Remote control status type.
     """
 
-    def __init__(self, was_available_once=None, is_available=None, signal_strength_percent=None):
+    def __init__(
+        self, was_available_once=None, is_available=None, signal_strength_percent=None
+    ):
         self.was_available_once = was_available_once
         self.is_available = is_available
         self.signal_strength_percent = signal_strength_percent
@@ -753,6 +846,7 @@ class RcStatus:
         fields.append(f"signal_strength_percent={self.signal_strength_percent}")
         return f"RcStatus({', '.join(fields)})"
 
+
 class StatusText:
     """
     StatusText information type.
@@ -767,14 +861,14 @@ class StatusText:
         """Convert from C structure to Python object"""
         instance = cls()
         instance.type = StatusTextType(c_struct.type)
-        instance.text = c_struct.text.decode('utf-8')
+        instance.text = c_struct.text.decode("utf-8")
         return instance
 
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = StatusTextCStruct()
         c_struct.type = int(self.type)
-        c_struct.text = self.text.encode('utf-8')
+        c_struct.text = self.text.encode("utf-8")
         return c_struct
 
     def __str__(self):
@@ -782,6 +876,7 @@ class StatusText:
         fields.append(f"type={self.type}")
         fields.append(f"text={self.text}")
         return f"StatusText({', '.join(fields)})"
+
 
 class ActuatorControlTarget:
     """
@@ -798,7 +893,9 @@ class ActuatorControlTarget:
         instance = cls()
         instance.group = c_struct.group
         if c_struct.controls_size > 0:
-            instance.controls = [c_struct.controls[i] for i in range(c_struct.controls_size)]
+            instance.controls = [
+                c_struct.controls[i] for i in range(c_struct.controls_size)
+            ]
         else:
             instance.controls = []
         return instance
@@ -818,6 +915,7 @@ class ActuatorControlTarget:
         fields.append(f"controls=[{len(self.controls)} items]")
         return f"ActuatorControlTarget({', '.join(fields)})"
 
+
 class ActuatorOutputStatus:
     """
     Actuator output status type.
@@ -833,7 +931,9 @@ class ActuatorOutputStatus:
         instance = cls()
         instance.active = c_struct.active
         if c_struct.actuator_size > 0:
-            instance.actuator = [c_struct.actuator[i] for i in range(c_struct.actuator_size)]
+            instance.actuator = [
+                c_struct.actuator[i] for i in range(c_struct.actuator_size)
+            ]
         else:
             instance.actuator = []
         return instance
@@ -853,13 +953,14 @@ class ActuatorOutputStatus:
         fields.append(f"actuator=[{len(self.actuator)} items]")
         return f"ActuatorOutputStatus({', '.join(fields)})"
 
+
 class Covariance:
     """
-    Covariance type.
+       Covariance type.
 
- Row-major representation of a 6x6 cross-covariance matrix
- upper right triangle.
- Set first to NaN if unknown.
+    Row-major representation of a 6x6 cross-covariance matrix
+    upper right triangle.
+    Set first to NaN if unknown.
     """
 
     def __init__(self, covariance_matrix=None):
@@ -870,7 +971,10 @@ class Covariance:
         """Convert from C structure to Python object"""
         instance = cls()
         if c_struct.covariance_matrix_size > 0:
-            instance.covariance_matrix = [c_struct.covariance_matrix[i] for i in range(c_struct.covariance_matrix_size)]
+            instance.covariance_matrix = [
+                c_struct.covariance_matrix[i]
+                for i in range(c_struct.covariance_matrix_size)
+            ]
         else:
             instance.covariance_matrix = []
         return instance
@@ -887,6 +991,7 @@ class Covariance:
         fields = []
         fields.append(f"covariance_matrix=[{len(self.covariance_matrix)} items]")
         return f"Covariance({', '.join(fields)})"
+
 
 class VelocityBody:
     """
@@ -922,6 +1027,7 @@ class VelocityBody:
         fields.append(f"z_m_s={self.z_m_s}")
         return f"VelocityBody({', '.join(fields)})"
 
+
 class PositionBody:
     """
     Position type, represented in the Body (X Y Z) frame
@@ -956,19 +1062,32 @@ class PositionBody:
         fields.append(f"z_m={self.z_m}")
         return f"PositionBody({', '.join(fields)})"
 
+
 class Odometry:
     """
     Odometry message type.
     """
+
     class MavFrame(IntEnum):
         """Mavlink frame id"""
+
         UNDEF = 0
         BODY_NED = 1
         VISION_NED = 2
         ESTIM_NED = 3
 
-
-    def __init__(self, time_usec=None, frame_id=None, child_frame_id=None, position_body=None, q=None, velocity_body=None, angular_velocity_body=None, pose_covariance=None, velocity_covariance=None):
+    def __init__(
+        self,
+        time_usec=None,
+        frame_id=None,
+        child_frame_id=None,
+        position_body=None,
+        q=None,
+        velocity_body=None,
+        angular_velocity_body=None,
+        pose_covariance=None,
+        velocity_covariance=None,
+    ):
         self.time_usec = time_usec
         self.frame_id = frame_id
         self.child_frame_id = child_frame_id
@@ -989,9 +1108,13 @@ class Odometry:
         instance.position_body = PositionBody.from_c_struct(c_struct.position_body)
         instance.q = Quaternion.from_c_struct(c_struct.q)
         instance.velocity_body = VelocityBody.from_c_struct(c_struct.velocity_body)
-        instance.angular_velocity_body = AngularVelocityBody.from_c_struct(c_struct.angular_velocity_body)
+        instance.angular_velocity_body = AngularVelocityBody.from_c_struct(
+            c_struct.angular_velocity_body
+        )
         instance.pose_covariance = Covariance.from_c_struct(c_struct.pose_covariance)
-        instance.velocity_covariance = Covariance.from_c_struct(c_struct.velocity_covariance)
+        instance.velocity_covariance = Covariance.from_c_struct(
+            c_struct.velocity_covariance
+        )
         return instance
 
     def to_c_struct(self):
@@ -1021,12 +1144,15 @@ class Odometry:
         fields.append(f"velocity_covariance={self.velocity_covariance}")
         return f"Odometry({', '.join(fields)})"
 
+
 class DistanceSensor:
     """
     DistanceSensor message type.
     """
 
-    def __init__(self, minimum_distance_m=None, maximum_distance_m=None, current_distance_m=None):
+    def __init__(
+        self, minimum_distance_m=None, maximum_distance_m=None, current_distance_m=None
+    ):
         self.minimum_distance_m = minimum_distance_m
         self.maximum_distance_m = maximum_distance_m
         self.current_distance_m = current_distance_m
@@ -1055,17 +1181,27 @@ class DistanceSensor:
         fields.append(f"current_distance_m={self.current_distance_m}")
         return f"DistanceSensor({', '.join(fields)})"
 
+
 class ScaledPressure:
     """
     Scaled Pressure message type.
     """
 
-    def __init__(self, timestamp_us=None, absolute_pressure_hpa=None, differential_pressure_hpa=None, temperature_deg=None, differential_pressure_temperature_deg=None):
+    def __init__(
+        self,
+        timestamp_us=None,
+        absolute_pressure_hpa=None,
+        differential_pressure_hpa=None,
+        temperature_deg=None,
+        differential_pressure_temperature_deg=None,
+    ):
         self.timestamp_us = timestamp_us
         self.absolute_pressure_hpa = absolute_pressure_hpa
         self.differential_pressure_hpa = differential_pressure_hpa
         self.temperature_deg = temperature_deg
-        self.differential_pressure_temperature_deg = differential_pressure_temperature_deg
+        self.differential_pressure_temperature_deg = (
+            differential_pressure_temperature_deg
+        )
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -1075,7 +1211,9 @@ class ScaledPressure:
         instance.absolute_pressure_hpa = c_struct.absolute_pressure_hpa
         instance.differential_pressure_hpa = c_struct.differential_pressure_hpa
         instance.temperature_deg = c_struct.temperature_deg
-        instance.differential_pressure_temperature_deg = c_struct.differential_pressure_temperature_deg
+        instance.differential_pressure_temperature_deg = (
+            c_struct.differential_pressure_temperature_deg
+        )
         return instance
 
     def to_c_struct(self):
@@ -1085,7 +1223,9 @@ class ScaledPressure:
         c_struct.absolute_pressure_hpa = self.absolute_pressure_hpa
         c_struct.differential_pressure_hpa = self.differential_pressure_hpa
         c_struct.temperature_deg = self.temperature_deg
-        c_struct.differential_pressure_temperature_deg = self.differential_pressure_temperature_deg
+        c_struct.differential_pressure_temperature_deg = (
+            self.differential_pressure_temperature_deg
+        )
         return c_struct
 
     def __str__(self):
@@ -1094,8 +1234,11 @@ class ScaledPressure:
         fields.append(f"absolute_pressure_hpa={self.absolute_pressure_hpa}")
         fields.append(f"differential_pressure_hpa={self.differential_pressure_hpa}")
         fields.append(f"temperature_deg={self.temperature_deg}")
-        fields.append(f"differential_pressure_temperature_deg={self.differential_pressure_temperature_deg}")
+        fields.append(
+            f"differential_pressure_temperature_deg={self.differential_pressure_temperature_deg}"
+        )
         return f"ScaledPressure({', '.join(fields)})"
+
 
 class PositionNed:
     """
@@ -1131,6 +1274,7 @@ class PositionNed:
         fields.append(f"down_m={self.down_m}")
         return f"PositionNed({', '.join(fields)})"
 
+
 class VelocityNed:
     """
     VelocityNed message type.
@@ -1165,6 +1309,7 @@ class VelocityNed:
         fields.append(f"down_m_s={self.down_m_s}")
         return f"VelocityNed({', '.join(fields)})"
 
+
 class PositionVelocityNed:
     """
     PositionVelocityNed message type.
@@ -1194,6 +1339,7 @@ class PositionVelocityNed:
         fields.append(f"position={self.position}")
         fields.append(f"velocity={self.velocity}")
         return f"PositionVelocityNed({', '.join(fields)})"
+
 
 class GroundTruth:
     """
@@ -1229,12 +1375,21 @@ class GroundTruth:
         fields.append(f"absolute_altitude_m={self.absolute_altitude_m}")
         return f"GroundTruth({', '.join(fields)})"
 
+
 class FixedwingMetrics:
     """
     FixedwingMetrics message type.
     """
 
-    def __init__(self, airspeed_m_s=None, throttle_percentage=None, climb_rate_m_s=None, groundspeed_m_s=None, heading_deg=None, absolute_altitude_m=None):
+    def __init__(
+        self,
+        airspeed_m_s=None,
+        throttle_percentage=None,
+        climb_rate_m_s=None,
+        groundspeed_m_s=None,
+        heading_deg=None,
+        absolute_altitude_m=None,
+    ):
         self.airspeed_m_s = airspeed_m_s
         self.throttle_percentage = throttle_percentage
         self.climb_rate_m_s = climb_rate_m_s
@@ -1275,6 +1430,7 @@ class FixedwingMetrics:
         fields.append(f"absolute_altitude_m={self.absolute_altitude_m}")
         return f"FixedwingMetrics({', '.join(fields)})"
 
+
 class AccelerationFrd:
     """
     AccelerationFrd message type.
@@ -1308,6 +1464,7 @@ class AccelerationFrd:
         fields.append(f"right_m_s2={self.right_m_s2}")
         fields.append(f"down_m_s2={self.down_m_s2}")
         return f"AccelerationFrd({', '.join(fields)})"
+
 
 class AngularVelocityFrd:
     """
@@ -1343,6 +1500,7 @@ class AngularVelocityFrd:
         fields.append(f"down_rad_s={self.down_rad_s}")
         return f"AngularVelocityFrd({', '.join(fields)})"
 
+
 class MagneticFieldFrd:
     """
     MagneticFieldFrd message type.
@@ -1377,12 +1535,20 @@ class MagneticFieldFrd:
         fields.append(f"down_gauss={self.down_gauss}")
         return f"MagneticFieldFrd({', '.join(fields)})"
 
+
 class Imu:
     """
     Imu message type.
     """
 
-    def __init__(self, acceleration_frd=None, angular_velocity_frd=None, magnetic_field_frd=None, temperature_degc=None, timestamp_us=None):
+    def __init__(
+        self,
+        acceleration_frd=None,
+        angular_velocity_frd=None,
+        magnetic_field_frd=None,
+        temperature_degc=None,
+        timestamp_us=None,
+    ):
         self.acceleration_frd = acceleration_frd
         self.angular_velocity_frd = angular_velocity_frd
         self.magnetic_field_frd = magnetic_field_frd
@@ -1393,9 +1559,15 @@ class Imu:
     def from_c_struct(cls, c_struct):
         """Convert from C structure to Python object"""
         instance = cls()
-        instance.acceleration_frd = AccelerationFrd.from_c_struct(c_struct.acceleration_frd)
-        instance.angular_velocity_frd = AngularVelocityFrd.from_c_struct(c_struct.angular_velocity_frd)
-        instance.magnetic_field_frd = MagneticFieldFrd.from_c_struct(c_struct.magnetic_field_frd)
+        instance.acceleration_frd = AccelerationFrd.from_c_struct(
+            c_struct.acceleration_frd
+        )
+        instance.angular_velocity_frd = AngularVelocityFrd.from_c_struct(
+            c_struct.angular_velocity_frd
+        )
+        instance.magnetic_field_frd = MagneticFieldFrd.from_c_struct(
+            c_struct.magnetic_field_frd
+        )
         instance.temperature_degc = c_struct.temperature_degc
         instance.timestamp_us = c_struct.timestamp_us
         return instance
@@ -1420,11 +1592,10 @@ class Imu:
         return f"Imu({', '.join(fields)})"
 
 
-
 # ===== Plugin =====
 class TelemetryServer:
     """Allow users to provide vehicle telemetry and state information
- (e.g. battery, GPS, RC connection, flight mode etc.) and set telemetry update rates."""
+    (e.g. battery, GPS, RC connection, flight mode etc.) and set telemetry update rates."""
 
     def __init__(self, server_component):
         self._lib = _cmavsdk_lib
@@ -1442,13 +1613,12 @@ class TelemetryServer:
         self._handle = self._lib.mavsdk_telemetry_server_create(component_handle)
 
         if not self._handle:
-            raise RuntimeError("Failed to create TelemetryServer plugin - C function returned null handle")
-
-
+            raise RuntimeError(
+                "Failed to create TelemetryServer plugin - C function returned null handle"
+            )
 
     def publish_position(self, position, velocity_ned, heading):
         """Get publish_position (blocking)"""
-
 
         result_code = self._lib.mavsdk_telemetry_server_publish_position(
             self._handle,
@@ -1462,11 +1632,8 @@ class TelemetryServer:
 
         return result
 
-
-
     def publish_home(self, home):
         """Get publish_home (blocking)"""
-
 
         result_code = self._lib.mavsdk_telemetry_server_publish_home(
             self._handle,
@@ -1478,11 +1645,16 @@ class TelemetryServer:
 
         return result
 
-
-
-    def publish_sys_status(self, battery, rc_receiver_status, gyro_status, accel_status, mag_status, gps_status):
+    def publish_sys_status(
+        self,
+        battery,
+        rc_receiver_status,
+        gyro_status,
+        accel_status,
+        mag_status,
+        gps_status,
+    ):
         """Get publish_sys_status (blocking)"""
-
 
         result_code = self._lib.mavsdk_telemetry_server_publish_sys_status(
             self._handle,
@@ -1499,11 +1671,8 @@ class TelemetryServer:
 
         return result
 
-
-
     def publish_extended_sys_state(self, vtol_state, landed_state):
         """Get publish_extended_sys_state (blocking)"""
-
 
         result_code = self._lib.mavsdk_telemetry_server_publish_extended_sys_state(
             self._handle,
@@ -1516,11 +1685,8 @@ class TelemetryServer:
 
         return result
 
-
-
     def publish_raw_gps(self, raw_gps, gps_info):
         """Get publish_raw_gps (blocking)"""
-
 
         result_code = self._lib.mavsdk_telemetry_server_publish_raw_gps(
             self._handle,
@@ -1533,11 +1699,8 @@ class TelemetryServer:
 
         return result
 
-
-
     def publish_battery(self, battery):
         """Get publish_battery (blocking)"""
-
 
         result_code = self._lib.mavsdk_telemetry_server_publish_battery(
             self._handle,
@@ -1549,11 +1712,8 @@ class TelemetryServer:
 
         return result
 
-
-
     def publish_status_text(self, status_text):
         """Get publish_status_text (blocking)"""
-
 
         result_code = self._lib.mavsdk_telemetry_server_publish_status_text(
             self._handle,
@@ -1565,11 +1725,8 @@ class TelemetryServer:
 
         return result
 
-
-
     def publish_odometry(self, odometry):
         """Get publish_odometry (blocking)"""
-
 
         result_code = self._lib.mavsdk_telemetry_server_publish_odometry(
             self._handle,
@@ -1581,11 +1738,8 @@ class TelemetryServer:
 
         return result
 
-
-
     def publish_position_velocity_ned(self, position_velocity_ned):
         """Get publish_position_velocity_ned (blocking)"""
-
 
         result_code = self._lib.mavsdk_telemetry_server_publish_position_velocity_ned(
             self._handle,
@@ -1597,11 +1751,8 @@ class TelemetryServer:
 
         return result
 
-
-
     def publish_ground_truth(self, ground_truth):
         """Get publish_ground_truth (blocking)"""
-
 
         result_code = self._lib.mavsdk_telemetry_server_publish_ground_truth(
             self._handle,
@@ -1613,11 +1764,8 @@ class TelemetryServer:
 
         return result
 
-
-
     def publish_imu(self, imu):
         """Get publish_imu (blocking)"""
-
 
         result_code = self._lib.mavsdk_telemetry_server_publish_imu(
             self._handle,
@@ -1629,11 +1777,8 @@ class TelemetryServer:
 
         return result
 
-
-
     def publish_scaled_imu(self, imu):
         """Get publish_scaled_imu (blocking)"""
-
 
         result_code = self._lib.mavsdk_telemetry_server_publish_scaled_imu(
             self._handle,
@@ -1645,11 +1790,8 @@ class TelemetryServer:
 
         return result
 
-
-
     def publish_raw_imu(self, imu):
         """Get publish_raw_imu (blocking)"""
-
 
         result_code = self._lib.mavsdk_telemetry_server_publish_raw_imu(
             self._handle,
@@ -1661,11 +1803,8 @@ class TelemetryServer:
 
         return result
 
-
-
     def publish_unix_epoch_time(self, time_us):
         """Get publish_unix_epoch_time (blocking)"""
-
 
         result_code = self._lib.mavsdk_telemetry_server_publish_unix_epoch_time(
             self._handle,
@@ -1677,11 +1816,8 @@ class TelemetryServer:
 
         return result
 
-
-
     def publish_distance_sensor(self, distance_sensor):
         """Get publish_distance_sensor (blocking)"""
-
 
         result_code = self._lib.mavsdk_telemetry_server_publish_distance_sensor(
             self._handle,
@@ -1693,11 +1829,8 @@ class TelemetryServer:
 
         return result
 
-
-
     def publish_attitude(self, angle, angular_velocity):
         """Get publish_attitude (blocking)"""
-
 
         result_code = self._lib.mavsdk_telemetry_server_publish_attitude(
             self._handle,
@@ -1710,11 +1843,8 @@ class TelemetryServer:
 
         return result
 
-
-
     def publish_visual_flight_rules_hud(self, fixed_wing_metrics):
         """Get publish_visual_flight_rules_hud (blocking)"""
-
 
         result_code = self._lib.mavsdk_telemetry_server_publish_visual_flight_rules_hud(
             self._handle,
@@ -1726,7 +1856,6 @@ class TelemetryServer:
 
         return result
 
-
     def destroy(self):
         """Destroy the plugin instance"""
         if self._handle:
@@ -1735,6 +1864,7 @@ class TelemetryServer:
 
     def __del__(self):
         self.destroy()
+
 
 # ===== Callback Types =====
 
@@ -1875,11 +2005,8 @@ _cmavsdk_lib.mavsdk_telemetry_server_MagneticFieldFrd_destroy.argtypes = [
 ]
 _cmavsdk_lib.mavsdk_telemetry_server_MagneticFieldFrd_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_telemetry_server_Imu_destroy.argtypes = [
-    ctypes.POINTER(ImuCStruct)
-]
+_cmavsdk_lib.mavsdk_telemetry_server_Imu_destroy.argtypes = [ctypes.POINTER(ImuCStruct)]
 _cmavsdk_lib.mavsdk_telemetry_server_Imu_destroy.restype = None
-
 
 
 _cmavsdk_lib.mavsdk_telemetry_server_publish_position.argtypes = [
@@ -1952,7 +2079,9 @@ _cmavsdk_lib.mavsdk_telemetry_server_publish_position_velocity_ned.argtypes = [
     PositionVelocityNedCStruct,
 ]
 
-_cmavsdk_lib.mavsdk_telemetry_server_publish_position_velocity_ned.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_telemetry_server_publish_position_velocity_ned.restype = (
+    ctypes.c_int
+)
 
 _cmavsdk_lib.mavsdk_telemetry_server_publish_ground_truth.argtypes = [
     ctypes.c_void_p,
@@ -2009,4 +2138,6 @@ _cmavsdk_lib.mavsdk_telemetry_server_publish_visual_flight_rules_hud.argtypes = 
     FixedwingMetricsCStruct,
 ]
 
-_cmavsdk_lib.mavsdk_telemetry_server_publish_visual_flight_rules_hud.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_telemetry_server_publish_visual_flight_rules_hud.restype = (
+    ctypes.c_int
+)

@@ -16,9 +16,11 @@ from ...cmavsdk_loader import _cmavsdk_lib
 
 # ===== Enums =====
 
+
 # ===== Result Enums =====
 class InfoResult(IntEnum):
     """Possible results returned for info requests."""
+
     UNKNOWN = 0
     SUCCESS = 1
     INFORMATION_NOT_RECEIVED_YET = 2
@@ -31,6 +33,7 @@ class FlightInfoCStruct(ctypes.Structure):
     Internal C structure for FlightInfo.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("time_boot_ms", ctypes.c_uint32),
         ("flight_uid", ctypes.c_uint64),
@@ -38,21 +41,25 @@ class FlightInfoCStruct(ctypes.Structure):
         ("duration_since_takeoff_ms", ctypes.c_uint32),
     ]
 
+
 class IdentificationCStruct(ctypes.Structure):
     """
     Internal C structure for Identification.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("hardware_uid", ctypes.c_char_p),
         ("legacy_uid", ctypes.c_uint64),
     ]
+
 
 class ProductCStruct(ctypes.Structure):
     """
     Internal C structure for Product.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("vendor_id", ctypes.c_int32),
         ("vendor_name", ctypes.c_char_p),
@@ -60,11 +67,13 @@ class ProductCStruct(ctypes.Structure):
         ("product_name", ctypes.c_char_p),
     ]
 
+
 class VersionCStruct(ctypes.Structure):
     """
     Internal C structure for Version.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("flight_sw_major", ctypes.c_int32),
         ("flight_sw_minor", ctypes.c_int32),
@@ -87,7 +96,13 @@ class FlightInfo:
     System flight information.
     """
 
-    def __init__(self, time_boot_ms=None, flight_uid=None, duration_since_arming_ms=None, duration_since_takeoff_ms=None):
+    def __init__(
+        self,
+        time_boot_ms=None,
+        flight_uid=None,
+        duration_since_arming_ms=None,
+        duration_since_takeoff_ms=None,
+    ):
         self.time_boot_ms = time_boot_ms
         self.flight_uid = flight_uid
         self.duration_since_arming_ms = duration_since_arming_ms
@@ -120,6 +135,7 @@ class FlightInfo:
         fields.append(f"duration_since_takeoff_ms={self.duration_since_takeoff_ms}")
         return f"FlightInfo({', '.join(fields)})"
 
+
 class Identification:
     """
     System identification.
@@ -133,14 +149,14 @@ class Identification:
     def from_c_struct(cls, c_struct):
         """Convert from C structure to Python object"""
         instance = cls()
-        instance.hardware_uid = c_struct.hardware_uid.decode('utf-8')
+        instance.hardware_uid = c_struct.hardware_uid.decode("utf-8")
         instance.legacy_uid = c_struct.legacy_uid
         return instance
 
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = IdentificationCStruct()
-        c_struct.hardware_uid = self.hardware_uid.encode('utf-8')
+        c_struct.hardware_uid = self.hardware_uid.encode("utf-8")
         c_struct.legacy_uid = self.legacy_uid
         return c_struct
 
@@ -150,12 +166,15 @@ class Identification:
         fields.append(f"legacy_uid={self.legacy_uid}")
         return f"Identification({', '.join(fields)})"
 
+
 class Product:
     """
     System product information.
     """
 
-    def __init__(self, vendor_id=None, vendor_name=None, product_id=None, product_name=None):
+    def __init__(
+        self, vendor_id=None, vendor_name=None, product_id=None, product_name=None
+    ):
         self.vendor_id = vendor_id
         self.vendor_name = vendor_name
         self.product_id = product_id
@@ -166,18 +185,18 @@ class Product:
         """Convert from C structure to Python object"""
         instance = cls()
         instance.vendor_id = c_struct.vendor_id
-        instance.vendor_name = c_struct.vendor_name.decode('utf-8')
+        instance.vendor_name = c_struct.vendor_name.decode("utf-8")
         instance.product_id = c_struct.product_id
-        instance.product_name = c_struct.product_name.decode('utf-8')
+        instance.product_name = c_struct.product_name.decode("utf-8")
         return instance
 
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = ProductCStruct()
         c_struct.vendor_id = self.vendor_id
-        c_struct.vendor_name = self.vendor_name.encode('utf-8')
+        c_struct.vendor_name = self.vendor_name.encode("utf-8")
         c_struct.product_id = self.product_id
-        c_struct.product_name = self.product_name.encode('utf-8')
+        c_struct.product_name = self.product_name.encode("utf-8")
         return c_struct
 
     def __str__(self):
@@ -188,12 +207,15 @@ class Product:
         fields.append(f"product_name={self.product_name}")
         return f"Product({', '.join(fields)})"
 
+
 class Version:
     """
     System version information.
     """
+
     class FlightSoftwareVersionType(IntEnum):
         """These values define the type of firmware/flight software release"""
+
         UNKNOWN = 0
         DEV = 1
         ALPHA = 2
@@ -201,8 +223,21 @@ class Version:
         RC = 4
         RELEASE = 5
 
-
-    def __init__(self, flight_sw_major=None, flight_sw_minor=None, flight_sw_patch=None, flight_sw_vendor_major=None, flight_sw_vendor_minor=None, flight_sw_vendor_patch=None, os_sw_major=None, os_sw_minor=None, os_sw_patch=None, flight_sw_git_hash=None, os_sw_git_hash=None, flight_sw_version_type=None):
+    def __init__(
+        self,
+        flight_sw_major=None,
+        flight_sw_minor=None,
+        flight_sw_patch=None,
+        flight_sw_vendor_major=None,
+        flight_sw_vendor_minor=None,
+        flight_sw_vendor_patch=None,
+        os_sw_major=None,
+        os_sw_minor=None,
+        os_sw_patch=None,
+        flight_sw_git_hash=None,
+        os_sw_git_hash=None,
+        flight_sw_version_type=None,
+    ):
         self.flight_sw_major = flight_sw_major
         self.flight_sw_minor = flight_sw_minor
         self.flight_sw_patch = flight_sw_patch
@@ -229,9 +264,11 @@ class Version:
         instance.os_sw_major = c_struct.os_sw_major
         instance.os_sw_minor = c_struct.os_sw_minor
         instance.os_sw_patch = c_struct.os_sw_patch
-        instance.flight_sw_git_hash = c_struct.flight_sw_git_hash.decode('utf-8')
-        instance.os_sw_git_hash = c_struct.os_sw_git_hash.decode('utf-8')
-        instance.flight_sw_version_type = Version.FlightSoftwareVersionType(c_struct.flight_sw_version_type)
+        instance.flight_sw_git_hash = c_struct.flight_sw_git_hash.decode("utf-8")
+        instance.os_sw_git_hash = c_struct.os_sw_git_hash.decode("utf-8")
+        instance.flight_sw_version_type = Version.FlightSoftwareVersionType(
+            c_struct.flight_sw_version_type
+        )
         return instance
 
     def to_c_struct(self):
@@ -246,8 +283,8 @@ class Version:
         c_struct.os_sw_major = self.os_sw_major
         c_struct.os_sw_minor = self.os_sw_minor
         c_struct.os_sw_patch = self.os_sw_patch
-        c_struct.flight_sw_git_hash = self.flight_sw_git_hash.encode('utf-8')
-        c_struct.os_sw_git_hash = self.os_sw_git_hash.encode('utf-8')
+        c_struct.flight_sw_git_hash = self.flight_sw_git_hash.encode("utf-8")
+        c_struct.os_sw_git_hash = self.os_sw_git_hash.encode("utf-8")
         c_struct.flight_sw_version_type = int(self.flight_sw_version_type)
         return c_struct
 
@@ -266,7 +303,6 @@ class Version:
         fields.append(f"os_sw_git_hash={self.os_sw_git_hash}")
         fields.append(f"flight_sw_version_type={self.flight_sw_version_type}")
         return f"Version({', '.join(fields)})"
-
 
 
 # ===== Plugin =====
@@ -289,9 +325,9 @@ class Info:
         self._handle = self._lib.mavsdk_info_create(system_handle)
 
         if not self._handle:
-            raise RuntimeError("Failed to create Info plugin - C function returned null handle")
-
-
+            raise RuntimeError(
+                "Failed to create Info plugin - C function returned null handle"
+            )
 
     def get_flight_information(self):
         """Get get_flight_information (blocking)"""
@@ -299,8 +335,7 @@ class Info:
         result_out = FlightInfoCStruct()
 
         result_code = self._lib.mavsdk_info_get_flight_information(
-            self._handle,
-            ctypes.byref(result_out)
+            self._handle, ctypes.byref(result_out)
         )
         result = InfoResult(result_code)
         if result != InfoResult.SUCCESS:
@@ -310,16 +345,13 @@ class Info:
         self._lib.mavsdk_info_FlightInfo_destroy(ctypes.byref(result_out))
         return py_result
 
-
-
     def get_identification(self):
         """Get get_identification (blocking)"""
 
         result_out = IdentificationCStruct()
 
         result_code = self._lib.mavsdk_info_get_identification(
-            self._handle,
-            ctypes.byref(result_out)
+            self._handle, ctypes.byref(result_out)
         )
         result = InfoResult(result_code)
         if result != InfoResult.SUCCESS:
@@ -329,16 +361,13 @@ class Info:
         self._lib.mavsdk_info_Identification_destroy(ctypes.byref(result_out))
         return py_result
 
-
-
     def get_product(self):
         """Get get_product (blocking)"""
 
         result_out = ProductCStruct()
 
         result_code = self._lib.mavsdk_info_get_product(
-            self._handle,
-            ctypes.byref(result_out)
+            self._handle, ctypes.byref(result_out)
         )
         result = InfoResult(result_code)
         if result != InfoResult.SUCCESS:
@@ -348,16 +377,13 @@ class Info:
         self._lib.mavsdk_info_Product_destroy(ctypes.byref(result_out))
         return py_result
 
-
-
     def get_version(self):
         """Get get_version (blocking)"""
 
         result_out = VersionCStruct()
 
         result_code = self._lib.mavsdk_info_get_version(
-            self._handle,
-            ctypes.byref(result_out)
+            self._handle, ctypes.byref(result_out)
         )
         result = InfoResult(result_code)
         if result != InfoResult.SUCCESS:
@@ -367,16 +393,13 @@ class Info:
         self._lib.mavsdk_info_Version_destroy(ctypes.byref(result_out))
         return py_result
 
-
-
     def get_speed_factor(self):
         """Get get_speed_factor (blocking)"""
 
         result_out = ctypes.c_double()
 
         result_code = self._lib.mavsdk_info_get_speed_factor(
-            self._handle,
-            ctypes.byref(result_out)
+            self._handle, ctypes.byref(result_out)
         )
         result = InfoResult(result_code)
         if result != InfoResult.SUCCESS:
@@ -384,13 +407,11 @@ class Info:
 
         return result_out.value
 
-
     def subscribe_flight_information(self, callback: Callable, user_data: Any = None):
         """Subscribe to 'flight information' updates."""
 
         def c_callback(c_data, ud):
             try:
-
                 py_data = FlightInfo.from_c_struct(c_data)
 
                 self._lib.mavsdk_info_FlightInfo_destroy(ctypes.byref(c_data))
@@ -404,18 +425,12 @@ class Info:
         self._callbacks.append(cb)
 
         return self._lib.mavsdk_info_subscribe_flight_information(
-            self._handle,
-            cb,
-            None
+            self._handle, cb, None
         )
 
     def unsubscribe_flight_information(self, handle: ctypes.c_void_p):
         """Unsubscribe from flight_information"""
-        self._lib.mavsdk_info_unsubscribe_flight_information(
-            self._handle, handle
-        )
-
-
+        self._lib.mavsdk_info_unsubscribe_flight_information(self._handle, handle)
 
     def destroy(self):
         """Destroy the plugin instance"""
@@ -426,12 +441,9 @@ class Info:
     def __del__(self):
         self.destroy()
 
+
 # ===== Callback Types =====
-FlightInformationCallback = ctypes.CFUNCTYPE(
-    None,
-    FlightInfoCStruct,
-    ctypes.c_void_p
-)
+FlightInformationCallback = ctypes.CFUNCTYPE(None, FlightInfoCStruct, ctypes.c_void_p)
 
 # ===== Setup Functions =====
 _cmavsdk_lib.mavsdk_info_create.argtypes = [ctypes.c_void_p]
@@ -450,64 +462,58 @@ _cmavsdk_lib.mavsdk_info_Identification_destroy.argtypes = [
 ]
 _cmavsdk_lib.mavsdk_info_Identification_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_info_Product_destroy.argtypes = [
-    ctypes.POINTER(ProductCStruct)
-]
+_cmavsdk_lib.mavsdk_info_Product_destroy.argtypes = [ctypes.POINTER(ProductCStruct)]
 _cmavsdk_lib.mavsdk_info_Product_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_info_Version_destroy.argtypes = [
-    ctypes.POINTER(VersionCStruct)
-]
+_cmavsdk_lib.mavsdk_info_Version_destroy.argtypes = [ctypes.POINTER(VersionCStruct)]
 _cmavsdk_lib.mavsdk_info_Version_destroy.restype = None
-
 
 
 _cmavsdk_lib.mavsdk_info_get_flight_information.argtypes = [
     ctypes.c_void_p,
-    ctypes.POINTER(FlightInfoCStruct)
+    ctypes.POINTER(FlightInfoCStruct),
 ]
 
 _cmavsdk_lib.mavsdk_info_get_flight_information.restype = ctypes.c_int
 
 _cmavsdk_lib.mavsdk_info_get_identification.argtypes = [
     ctypes.c_void_p,
-    ctypes.POINTER(IdentificationCStruct)
+    ctypes.POINTER(IdentificationCStruct),
 ]
 
 _cmavsdk_lib.mavsdk_info_get_identification.restype = ctypes.c_int
 
 _cmavsdk_lib.mavsdk_info_get_product.argtypes = [
     ctypes.c_void_p,
-    ctypes.POINTER(ProductCStruct)
+    ctypes.POINTER(ProductCStruct),
 ]
 
 _cmavsdk_lib.mavsdk_info_get_product.restype = ctypes.c_int
 
 _cmavsdk_lib.mavsdk_info_get_version.argtypes = [
     ctypes.c_void_p,
-    ctypes.POINTER(VersionCStruct)
+    ctypes.POINTER(VersionCStruct),
 ]
 
 _cmavsdk_lib.mavsdk_info_get_version.restype = ctypes.c_int
 
 _cmavsdk_lib.mavsdk_info_get_speed_factor.argtypes = [
     ctypes.c_void_p,
-    ctypes.POINTER(ctypes.c_double)
+    ctypes.POINTER(ctypes.c_double),
 ]
 
 _cmavsdk_lib.mavsdk_info_get_speed_factor.restype = ctypes.c_int
 _cmavsdk_lib.mavsdk_info_subscribe_flight_information.argtypes = [
     ctypes.c_void_p,
     FlightInformationCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_info_subscribe_flight_information.restype = ctypes.c_void_p
 # Unsubscribe
 _cmavsdk_lib.mavsdk_info_unsubscribe_flight_information.argtypes = [
     ctypes.c_void_p,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_info_unsubscribe_flight_information.restype = None
-

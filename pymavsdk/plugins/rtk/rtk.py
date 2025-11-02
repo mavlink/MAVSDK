@@ -16,9 +16,11 @@ from ...cmavsdk_loader import _cmavsdk_lib
 
 # ===== Enums =====
 
+
 # ===== Result Enums =====
 class RtkResult(IntEnum):
     """Possible results returned for rtk requests."""
+
     UNKNOWN = 0
     SUCCESS = 1
     TOO_LONG = 2
@@ -32,6 +34,7 @@ class RtcmDataCStruct(ctypes.Structure):
     Internal C structure for RtcmData.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("data_base64", ctypes.c_char_p),
     ]
@@ -50,20 +53,19 @@ class RtcmData:
     def from_c_struct(cls, c_struct):
         """Convert from C structure to Python object"""
         instance = cls()
-        instance.data_base64 = c_struct.data_base64.decode('utf-8')
+        instance.data_base64 = c_struct.data_base64.decode("utf-8")
         return instance
 
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = RtcmDataCStruct()
-        c_struct.data_base64 = self.data_base64.encode('utf-8')
+        c_struct.data_base64 = self.data_base64.encode("utf-8")
         return c_struct
 
     def __str__(self):
         fields = []
         fields.append(f"data_base64={self.data_base64}")
         return f"RtcmData({', '.join(fields)})"
-
 
 
 # ===== Plugin =====
@@ -86,13 +88,12 @@ class Rtk:
         self._handle = self._lib.mavsdk_rtk_create(system_handle)
 
         if not self._handle:
-            raise RuntimeError("Failed to create Rtk plugin - C function returned null handle")
-
-
+            raise RuntimeError(
+                "Failed to create Rtk plugin - C function returned null handle"
+            )
 
     def send_rtcm_data(self, rtcm_data):
         """Get send_rtcm_data (blocking)"""
-
 
         result_code = self._lib.mavsdk_rtk_send_rtcm_data(
             self._handle,
@@ -104,7 +105,6 @@ class Rtk:
 
         return result
 
-
     def destroy(self):
         """Destroy the plugin instance"""
         if self._handle:
@@ -113,6 +113,7 @@ class Rtk:
 
     def __del__(self):
         self.destroy()
+
 
 # ===== Callback Types =====
 
@@ -123,11 +124,8 @@ _cmavsdk_lib.mavsdk_rtk_create.restype = ctypes.c_void_p
 _cmavsdk_lib.mavsdk_rtk_destroy.argtypes = [ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_rtk_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_rtk_RtcmData_destroy.argtypes = [
-    ctypes.POINTER(RtcmDataCStruct)
-]
+_cmavsdk_lib.mavsdk_rtk_RtcmData_destroy.argtypes = [ctypes.POINTER(RtcmDataCStruct)]
 _cmavsdk_lib.mavsdk_rtk_RtcmData_destroy.restype = None
-
 
 
 _cmavsdk_lib.mavsdk_rtk_send_rtcm_data.argtypes = [

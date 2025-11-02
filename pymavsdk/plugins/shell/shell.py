@@ -16,9 +16,11 @@ from ...cmavsdk_loader import _cmavsdk_lib
 
 # ===== Enums =====
 
+
 # ===== Result Enums =====
 class ShellResult(IntEnum):
     """Possible results returned for shell requests"""
+
     UNKNOWN = 0
     SUCCESS = 1
     NO_SYSTEM = 2
@@ -52,13 +54,12 @@ class Shell:
         self._handle = self._lib.mavsdk_shell_create(system_handle)
 
         if not self._handle:
-            raise RuntimeError("Failed to create Shell plugin - C function returned null handle")
-
-
+            raise RuntimeError(
+                "Failed to create Shell plugin - C function returned null handle"
+            )
 
     def send(self, command):
         """Get send (blocking)"""
-
 
         result_code = self._lib.mavsdk_shell_send(
             self._handle,
@@ -70,15 +71,13 @@ class Shell:
 
         return result
 
-
     def subscribe_receive(self, callback: Callable, user_data: Any = None):
         """Receive feedback from a sent command line.
 
- This subscription needs to be made before a command line is sent, otherwise, no response will be sent."""
+        This subscription needs to be made before a command line is sent, otherwise, no response will be sent."""
 
         def c_callback(c_data, ud):
             try:
-
                 py_data = c_data
 
                 callback(py_data, user_data)
@@ -89,19 +88,11 @@ class Shell:
         cb = ReceiveCallback(c_callback)
         self._callbacks.append(cb)
 
-        return self._lib.mavsdk_shell_subscribe_receive(
-            self._handle,
-            cb,
-            None
-        )
+        return self._lib.mavsdk_shell_subscribe_receive(self._handle, cb, None)
 
     def unsubscribe_receive(self, handle: ctypes.c_void_p):
         """Unsubscribe from receive"""
-        self._lib.mavsdk_shell_unsubscribe_receive(
-            self._handle, handle
-        )
-
-
+        self._lib.mavsdk_shell_unsubscribe_receive(self._handle, handle)
 
     def destroy(self):
         """Destroy the plugin instance"""
@@ -112,12 +103,9 @@ class Shell:
     def __del__(self):
         self.destroy()
 
+
 # ===== Callback Types =====
-ReceiveCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_char_p,
-    ctypes.c_void_p
-)
+ReceiveCallback = ctypes.CFUNCTYPE(None, ctypes.c_char_p, ctypes.c_void_p)
 
 # ===== Setup Functions =====
 _cmavsdk_lib.mavsdk_shell_create.argtypes = [ctypes.c_void_p]
@@ -125,7 +113,6 @@ _cmavsdk_lib.mavsdk_shell_create.restype = ctypes.c_void_p
 
 _cmavsdk_lib.mavsdk_shell_destroy.argtypes = [ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_shell_destroy.restype = None
-
 
 
 _cmavsdk_lib.mavsdk_shell_send.argtypes = [
@@ -137,15 +124,14 @@ _cmavsdk_lib.mavsdk_shell_send.restype = ctypes.c_int
 _cmavsdk_lib.mavsdk_shell_subscribe_receive.argtypes = [
     ctypes.c_void_p,
     ReceiveCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_shell_subscribe_receive.restype = ctypes.c_void_p
 # Unsubscribe
 _cmavsdk_lib.mavsdk_shell_unsubscribe_receive.argtypes = [
     ctypes.c_void_p,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_shell_unsubscribe_receive.restype = None
-

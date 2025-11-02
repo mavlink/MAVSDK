@@ -17,6 +17,7 @@ from ...cmavsdk_loader import _cmavsdk_lib
 # ===== Enums =====
 class MetadataType(IntEnum):
     """The metadata type"""
+
     PARAMETER = 0
     EVENTS = 1
     ACTUATORS = 2
@@ -24,12 +25,14 @@ class MetadataType(IntEnum):
 
 # ===== Result Enums =====
 
+
 # ===== Internal C Structures =====
 class MetadataCStruct(ctypes.Structure):
     """
     Internal C structure for Metadata.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("type", ctypes.c_int),
         ("json_metadata", ctypes.c_char_p),
@@ -51,14 +54,14 @@ class Metadata:
         """Convert from C structure to Python object"""
         instance = cls()
         instance.type = MetadataType(c_struct.type)
-        instance.json_metadata = c_struct.json_metadata.decode('utf-8')
+        instance.json_metadata = c_struct.json_metadata.decode("utf-8")
         return instance
 
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = MetadataCStruct()
         c_struct.type = int(self.type)
-        c_struct.json_metadata = self.json_metadata.encode('utf-8')
+        c_struct.json_metadata = self.json_metadata.encode("utf-8")
         return c_struct
 
     def __str__(self):
@@ -66,7 +69,6 @@ class Metadata:
         fields.append(f"type={self.type}")
         fields.append(f"json_metadata={self.json_metadata}")
         return f"Metadata({', '.join(fields)})"
-
 
 
 # ===== Plugin =====
@@ -86,23 +88,22 @@ class ComponentMetadataServer:
         if not component_handle:
             raise ValueError("server_component handle is null")
 
-        self._handle = self._lib.mavsdk_component_metadata_server_create(component_handle)
+        self._handle = self._lib.mavsdk_component_metadata_server_create(
+            component_handle
+        )
 
         if not self._handle:
-            raise RuntimeError("Failed to create ComponentMetadataServer plugin - C function returned null handle")
-
-
+            raise RuntimeError(
+                "Failed to create ComponentMetadataServer plugin - C function returned null handle"
+            )
 
     def set_metadata(self, metadata):
         """Get set_metadata (blocking)"""
-
 
         self._lib.mavsdk_component_metadata_server_set_metadata(
             self._handle,
             metadata.to_c_struct(),
         )
-
-
 
     def destroy(self):
         """Destroy the plugin instance"""
@@ -112,6 +113,7 @@ class ComponentMetadataServer:
 
     def __del__(self):
         self.destroy()
+
 
 # ===== Callback Types =====
 
@@ -126,7 +128,6 @@ _cmavsdk_lib.mavsdk_component_metadata_server_Metadata_destroy.argtypes = [
     ctypes.POINTER(MetadataCStruct)
 ]
 _cmavsdk_lib.mavsdk_component_metadata_server_Metadata_destroy.restype = None
-
 
 
 _cmavsdk_lib.mavsdk_component_metadata_server_set_metadata.argtypes = [

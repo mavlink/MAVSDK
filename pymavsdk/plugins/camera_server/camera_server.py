@@ -17,13 +17,16 @@ from ...cmavsdk_loader import _cmavsdk_lib
 # ===== Enums =====
 class CameraFeedback(IntEnum):
     """Possible feedback results for camera respond command."""
+
     UNKNOWN = 0
     OK = 1
     BUSY = 2
     FAILED = 3
 
+
 class Mode(IntEnum):
     """Camera mode type."""
+
     UNKNOWN = 0
     PHOTO = 1
     VIDEO = 2
@@ -32,6 +35,7 @@ class Mode(IntEnum):
 # ===== Result Enums =====
 class CameraServerResult(IntEnum):
     """Possible results returned for action requests."""
+
     UNKNOWN = 0
     SUCCESS = 1
     IN_PROGRESS = 2
@@ -49,6 +53,7 @@ class InformationCStruct(ctypes.Structure):
     Internal C structure for Information.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("vendor_name", ctypes.c_char_p),
         ("model_name", ctypes.c_char_p),
@@ -65,21 +70,25 @@ class InformationCStruct(ctypes.Structure):
         ("video_in_image_mode_supported", ctypes.c_bool),
     ]
 
+
 class VideoStreamingCStruct(ctypes.Structure):
     """
     Internal C structure for VideoStreaming.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("has_rtsp_server", ctypes.c_bool),
         ("rtsp_uri", ctypes.c_char_p),
     ]
+
 
 class PositionCStruct(ctypes.Structure):
     """
     Internal C structure for Position.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("latitude_deg", ctypes.c_double),
         ("longitude_deg", ctypes.c_double),
@@ -87,11 +96,13 @@ class PositionCStruct(ctypes.Structure):
         ("relative_altitude_m", ctypes.c_float),
     ]
 
+
 class QuaternionCStruct(ctypes.Structure):
     """
     Internal C structure for Quaternion.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("w", ctypes.c_float),
         ("x", ctypes.c_float),
@@ -99,11 +110,13 @@ class QuaternionCStruct(ctypes.Structure):
         ("z", ctypes.c_float),
     ]
 
+
 class CaptureInfoCStruct(ctypes.Structure):
     """
     Internal C structure for CaptureInfo.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("position", PositionCStruct),
         ("attitude_quaternion", QuaternionCStruct),
@@ -113,11 +126,13 @@ class CaptureInfoCStruct(ctypes.Structure):
         ("file_url", ctypes.c_char_p),
     ]
 
+
 class StorageInformationCStruct(ctypes.Structure):
     """
     Internal C structure for StorageInformation.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("used_storage_mib", ctypes.c_float),
         ("available_storage_mib", ctypes.c_float),
@@ -129,11 +144,13 @@ class StorageInformationCStruct(ctypes.Structure):
         ("write_speed_mib_s", ctypes.c_float),
     ]
 
+
 class CaptureStatusCStruct(ctypes.Structure):
     """
     Internal C structure for CaptureStatus.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("image_interval_s", ctypes.c_float),
         ("recording_time_s", ctypes.c_float),
@@ -143,22 +160,26 @@ class CaptureStatusCStruct(ctypes.Structure):
         ("image_count", ctypes.c_int32),
     ]
 
+
 class TrackPointCStruct(ctypes.Structure):
     """
     Internal C structure for TrackPoint.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("point_x", ctypes.c_float),
         ("point_y", ctypes.c_float),
         ("radius", ctypes.c_float),
     ]
 
+
 class TrackRectangleCStruct(ctypes.Structure):
     """
     Internal C structure for TrackRectangle.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("top_left_corner_x", ctypes.c_float),
         ("top_left_corner_y", ctypes.c_float),
@@ -173,7 +194,22 @@ class Information:
     Type to represent a camera information.
     """
 
-    def __init__(self, vendor_name=None, model_name=None, firmware_version=None, focal_length_mm=None, horizontal_sensor_size_mm=None, vertical_sensor_size_mm=None, horizontal_resolution_px=None, vertical_resolution_px=None, lens_id=None, definition_file_version=None, definition_file_uri=None, image_in_video_mode_supported=None, video_in_image_mode_supported=None):
+    def __init__(
+        self,
+        vendor_name=None,
+        model_name=None,
+        firmware_version=None,
+        focal_length_mm=None,
+        horizontal_sensor_size_mm=None,
+        vertical_sensor_size_mm=None,
+        horizontal_resolution_px=None,
+        vertical_resolution_px=None,
+        lens_id=None,
+        definition_file_version=None,
+        definition_file_uri=None,
+        image_in_video_mode_supported=None,
+        video_in_image_mode_supported=None,
+    ):
         self.vendor_name = vendor_name
         self.model_name = model_name
         self.firmware_version = firmware_version
@@ -192,9 +228,9 @@ class Information:
     def from_c_struct(cls, c_struct):
         """Convert from C structure to Python object"""
         instance = cls()
-        instance.vendor_name = c_struct.vendor_name.decode('utf-8')
-        instance.model_name = c_struct.model_name.decode('utf-8')
-        instance.firmware_version = c_struct.firmware_version.decode('utf-8')
+        instance.vendor_name = c_struct.vendor_name.decode("utf-8")
+        instance.model_name = c_struct.model_name.decode("utf-8")
+        instance.firmware_version = c_struct.firmware_version.decode("utf-8")
         instance.focal_length_mm = c_struct.focal_length_mm
         instance.horizontal_sensor_size_mm = c_struct.horizontal_sensor_size_mm
         instance.vertical_sensor_size_mm = c_struct.vertical_sensor_size_mm
@@ -202,7 +238,7 @@ class Information:
         instance.vertical_resolution_px = c_struct.vertical_resolution_px
         instance.lens_id = c_struct.lens_id
         instance.definition_file_version = c_struct.definition_file_version
-        instance.definition_file_uri = c_struct.definition_file_uri.decode('utf-8')
+        instance.definition_file_uri = c_struct.definition_file_uri.decode("utf-8")
         instance.image_in_video_mode_supported = c_struct.image_in_video_mode_supported
         instance.video_in_image_mode_supported = c_struct.video_in_image_mode_supported
         return instance
@@ -210,9 +246,9 @@ class Information:
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = InformationCStruct()
-        c_struct.vendor_name = self.vendor_name.encode('utf-8')
-        c_struct.model_name = self.model_name.encode('utf-8')
-        c_struct.firmware_version = self.firmware_version.encode('utf-8')
+        c_struct.vendor_name = self.vendor_name.encode("utf-8")
+        c_struct.model_name = self.model_name.encode("utf-8")
+        c_struct.firmware_version = self.firmware_version.encode("utf-8")
         c_struct.focal_length_mm = self.focal_length_mm
         c_struct.horizontal_sensor_size_mm = self.horizontal_sensor_size_mm
         c_struct.vertical_sensor_size_mm = self.vertical_sensor_size_mm
@@ -220,7 +256,7 @@ class Information:
         c_struct.vertical_resolution_px = self.vertical_resolution_px
         c_struct.lens_id = self.lens_id
         c_struct.definition_file_version = self.definition_file_version
-        c_struct.definition_file_uri = self.definition_file_uri.encode('utf-8')
+        c_struct.definition_file_uri = self.definition_file_uri.encode("utf-8")
         c_struct.image_in_video_mode_supported = self.image_in_video_mode_supported
         c_struct.video_in_image_mode_supported = self.video_in_image_mode_supported
         return c_struct
@@ -238,9 +274,14 @@ class Information:
         fields.append(f"lens_id={self.lens_id}")
         fields.append(f"definition_file_version={self.definition_file_version}")
         fields.append(f"definition_file_uri={self.definition_file_uri}")
-        fields.append(f"image_in_video_mode_supported={self.image_in_video_mode_supported}")
-        fields.append(f"video_in_image_mode_supported={self.video_in_image_mode_supported}")
+        fields.append(
+            f"image_in_video_mode_supported={self.image_in_video_mode_supported}"
+        )
+        fields.append(
+            f"video_in_image_mode_supported={self.video_in_image_mode_supported}"
+        )
         return f"Information({', '.join(fields)})"
+
 
 class VideoStreaming:
     """
@@ -256,14 +297,14 @@ class VideoStreaming:
         """Convert from C structure to Python object"""
         instance = cls()
         instance.has_rtsp_server = c_struct.has_rtsp_server
-        instance.rtsp_uri = c_struct.rtsp_uri.decode('utf-8')
+        instance.rtsp_uri = c_struct.rtsp_uri.decode("utf-8")
         return instance
 
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = VideoStreamingCStruct()
         c_struct.has_rtsp_server = self.has_rtsp_server
-        c_struct.rtsp_uri = self.rtsp_uri.encode('utf-8')
+        c_struct.rtsp_uri = self.rtsp_uri.encode("utf-8")
         return c_struct
 
     def __str__(self):
@@ -272,12 +313,19 @@ class VideoStreaming:
         fields.append(f"rtsp_uri={self.rtsp_uri}")
         return f"VideoStreaming({', '.join(fields)})"
 
+
 class Position:
     """
     Position type in global coordinates.
     """
 
-    def __init__(self, latitude_deg=None, longitude_deg=None, absolute_altitude_m=None, relative_altitude_m=None):
+    def __init__(
+        self,
+        latitude_deg=None,
+        longitude_deg=None,
+        absolute_altitude_m=None,
+        relative_altitude_m=None,
+    ):
         self.latitude_deg = latitude_deg
         self.longitude_deg = longitude_deg
         self.absolute_altitude_m = absolute_altitude_m
@@ -310,16 +358,17 @@ class Position:
         fields.append(f"relative_altitude_m={self.relative_altitude_m}")
         return f"Position({', '.join(fields)})"
 
+
 class Quaternion:
     """
-    Quaternion type.
+       Quaternion type.
 
- All rotations and axis systems follow the right-hand rule.
- The Hamilton quaternion product definition is used.
- A zero-rotation quaternion is represented by (1,0,0,0).
- The quaternion could also be written as w + xi + yj + zk.
+    All rotations and axis systems follow the right-hand rule.
+    The Hamilton quaternion product definition is used.
+    A zero-rotation quaternion is represented by (1,0,0,0).
+    The quaternion could also be written as w + xi + yj + zk.
 
- For more info see: https://en.wikipedia.org/wiki/Quaternion
+    For more info see: https://en.wikipedia.org/wiki/Quaternion
     """
 
     def __init__(self, w=None, x=None, y=None, z=None):
@@ -355,12 +404,21 @@ class Quaternion:
         fields.append(f"z={self.z}")
         return f"Quaternion({', '.join(fields)})"
 
+
 class CaptureInfo:
     """
     Information about a picture just captured.
     """
 
-    def __init__(self, position=None, attitude_quaternion=None, time_utc_us=None, is_success=None, index=None, file_url=None):
+    def __init__(
+        self,
+        position=None,
+        attitude_quaternion=None,
+        time_utc_us=None,
+        is_success=None,
+        index=None,
+        file_url=None,
+    ):
         self.position = position
         self.attitude_quaternion = attitude_quaternion
         self.time_utc_us = time_utc_us
@@ -373,11 +431,13 @@ class CaptureInfo:
         """Convert from C structure to Python object"""
         instance = cls()
         instance.position = Position.from_c_struct(c_struct.position)
-        instance.attitude_quaternion = Quaternion.from_c_struct(c_struct.attitude_quaternion)
+        instance.attitude_quaternion = Quaternion.from_c_struct(
+            c_struct.attitude_quaternion
+        )
         instance.time_utc_us = c_struct.time_utc_us
         instance.is_success = c_struct.is_success
         instance.index = c_struct.index
-        instance.file_url = c_struct.file_url.decode('utf-8')
+        instance.file_url = c_struct.file_url.decode("utf-8")
         return instance
 
     def to_c_struct(self):
@@ -388,7 +448,7 @@ class CaptureInfo:
         c_struct.time_utc_us = self.time_utc_us
         c_struct.is_success = self.is_success
         c_struct.index = self.index
-        c_struct.file_url = self.file_url.encode('utf-8')
+        c_struct.file_url = self.file_url.encode("utf-8")
         return c_struct
 
     def __str__(self):
@@ -401,12 +461,15 @@ class CaptureInfo:
         fields.append(f"file_url={self.file_url}")
         return f"CaptureInfo({', '.join(fields)})"
 
+
 class StorageInformation:
     """
     Information about the camera storage.
     """
+
     class StorageStatus(IntEnum):
         """Storage status type."""
+
         NOT_AVAILABLE = 0
         UNFORMATTED = 1
         FORMATTED = 2
@@ -414,6 +477,7 @@ class StorageInformation:
 
     class StorageType(IntEnum):
         """Storage type."""
+
         UNKNOWN = 0
         USB_STICK = 1
         SD = 2
@@ -421,8 +485,17 @@ class StorageInformation:
         HD = 4
         OTHER = 5
 
-
-    def __init__(self, used_storage_mib=None, available_storage_mib=None, total_storage_mib=None, storage_status=None, storage_id=None, storage_type=None, read_speed_mib_s=None, write_speed_mib_s=None):
+    def __init__(
+        self,
+        used_storage_mib=None,
+        available_storage_mib=None,
+        total_storage_mib=None,
+        storage_status=None,
+        storage_id=None,
+        storage_type=None,
+        read_speed_mib_s=None,
+        write_speed_mib_s=None,
+    ):
         self.used_storage_mib = used_storage_mib
         self.available_storage_mib = available_storage_mib
         self.total_storage_mib = total_storage_mib
@@ -439,7 +512,9 @@ class StorageInformation:
         instance.used_storage_mib = c_struct.used_storage_mib
         instance.available_storage_mib = c_struct.available_storage_mib
         instance.total_storage_mib = c_struct.total_storage_mib
-        instance.storage_status = StorageInformation.StorageStatus(c_struct.storage_status)
+        instance.storage_status = StorageInformation.StorageStatus(
+            c_struct.storage_status
+        )
         instance.storage_id = c_struct.storage_id
         instance.storage_type = StorageInformation.StorageType(c_struct.storage_type)
         instance.read_speed_mib_s = c_struct.read_speed_mib_s
@@ -471,12 +546,15 @@ class StorageInformation:
         fields.append(f"write_speed_mib_s={self.write_speed_mib_s}")
         return f"StorageInformation({', '.join(fields)})"
 
+
 class CaptureStatus:
     """
     Capture status
     """
+
     class ImageStatus(IntEnum):
         """The image status"""
+
         IDLE = 0
         CAPTURE_IN_PROGRESS = 1
         INTERVAL_IDLE = 2
@@ -484,11 +562,19 @@ class CaptureStatus:
 
     class VideoStatus(IntEnum):
         """The video status"""
+
         IDLE = 0
         CAPTURE_IN_PROGRESS = 1
 
-
-    def __init__(self, image_interval_s=None, recording_time_s=None, available_capacity_mib=None, image_status=None, video_status=None, image_count=None):
+    def __init__(
+        self,
+        image_interval_s=None,
+        recording_time_s=None,
+        available_capacity_mib=None,
+        image_status=None,
+        video_status=None,
+        image_count=None,
+    ):
         self.image_interval_s = image_interval_s
         self.recording_time_s = recording_time_s
         self.available_capacity_mib = available_capacity_mib
@@ -529,6 +615,7 @@ class CaptureStatus:
         fields.append(f"image_count={self.image_count}")
         return f"CaptureStatus({', '.join(fields)})"
 
+
 class TrackPoint:
     """
     Point description type
@@ -563,12 +650,19 @@ class TrackPoint:
         fields.append(f"radius={self.radius}")
         return f"TrackPoint({', '.join(fields)})"
 
+
 class TrackRectangle:
     """
     Rectangle description type
     """
 
-    def __init__(self, top_left_corner_x=None, top_left_corner_y=None, bottom_right_corner_x=None, bottom_right_corner_y=None):
+    def __init__(
+        self,
+        top_left_corner_x=None,
+        top_left_corner_y=None,
+        bottom_right_corner_x=None,
+        bottom_right_corner_y=None,
+    ):
         self.top_left_corner_x = top_left_corner_x
         self.top_left_corner_y = top_left_corner_y
         self.bottom_right_corner_x = bottom_right_corner_x
@@ -602,7 +696,6 @@ class TrackRectangle:
         return f"TrackRectangle({', '.join(fields)})"
 
 
-
 # ===== Plugin =====
 class CameraServer:
     """Provides handling of camera interface"""
@@ -623,13 +716,12 @@ class CameraServer:
         self._handle = self._lib.mavsdk_camera_server_create(component_handle)
 
         if not self._handle:
-            raise RuntimeError("Failed to create CameraServer plugin - C function returned null handle")
-
-
+            raise RuntimeError(
+                "Failed to create CameraServer plugin - C function returned null handle"
+            )
 
     def set_information(self, information):
         """Get set_information (blocking)"""
-
 
         result_code = self._lib.mavsdk_camera_server_set_information(
             self._handle,
@@ -641,11 +733,8 @@ class CameraServer:
 
         return result
 
-
-
     def set_video_streaming(self, video_streaming):
         """Get set_video_streaming (blocking)"""
-
 
         result_code = self._lib.mavsdk_camera_server_set_video_streaming(
             self._handle,
@@ -657,11 +746,8 @@ class CameraServer:
 
         return result
 
-
-
     def set_in_progress(self, in_progress):
         """Get set_in_progress (blocking)"""
-
 
         result_code = self._lib.mavsdk_camera_server_set_in_progress(
             self._handle,
@@ -673,13 +759,11 @@ class CameraServer:
 
         return result
 
-
     def subscribe_take_photo(self, callback: Callable, user_data: Any = None):
         """Subscribe to image capture requests. Each request received should respond to using RespondTakePhoto."""
 
         def c_callback(c_data, ud):
             try:
-
                 py_data = c_data
 
                 callback(py_data, user_data)
@@ -691,23 +775,15 @@ class CameraServer:
         self._callbacks.append(cb)
 
         return self._lib.mavsdk_camera_server_subscribe_take_photo(
-            self._handle,
-            cb,
-            None
+            self._handle, cb, None
         )
 
     def unsubscribe_take_photo(self, handle: ctypes.c_void_p):
         """Unsubscribe from take_photo"""
-        self._lib.mavsdk_camera_server_unsubscribe_take_photo(
-            self._handle, handle
-        )
-
-
-
+        self._lib.mavsdk_camera_server_unsubscribe_take_photo(self._handle, handle)
 
     def respond_take_photo(self, take_photo_feedback, capture_info):
         """Get respond_take_photo (blocking)"""
-
 
         result_code = self._lib.mavsdk_camera_server_respond_take_photo(
             self._handle,
@@ -720,13 +796,11 @@ class CameraServer:
 
         return result
 
-
     def subscribe_start_video(self, callback: Callable, user_data: Any = None):
         """Subscribe to start video requests. Each request received should respond to using RespondStartVideo"""
 
         def c_callback(c_data, ud):
             try:
-
                 py_data = c_data
 
                 callback(py_data, user_data)
@@ -738,23 +812,15 @@ class CameraServer:
         self._callbacks.append(cb)
 
         return self._lib.mavsdk_camera_server_subscribe_start_video(
-            self._handle,
-            cb,
-            None
+            self._handle, cb, None
         )
 
     def unsubscribe_start_video(self, handle: ctypes.c_void_p):
         """Unsubscribe from start_video"""
-        self._lib.mavsdk_camera_server_unsubscribe_start_video(
-            self._handle, handle
-        )
-
-
-
+        self._lib.mavsdk_camera_server_unsubscribe_start_video(self._handle, handle)
 
     def respond_start_video(self, start_video_feedback):
         """Get respond_start_video (blocking)"""
-
 
         result_code = self._lib.mavsdk_camera_server_respond_start_video(
             self._handle,
@@ -766,13 +832,11 @@ class CameraServer:
 
         return result
 
-
     def subscribe_stop_video(self, callback: Callable, user_data: Any = None):
         """Subscribe to stop video requests. Each request received should response to using RespondStopVideo"""
 
         def c_callback(c_data, ud):
             try:
-
                 py_data = c_data
 
                 callback(py_data, user_data)
@@ -784,23 +848,15 @@ class CameraServer:
         self._callbacks.append(cb)
 
         return self._lib.mavsdk_camera_server_subscribe_stop_video(
-            self._handle,
-            cb,
-            None
+            self._handle, cb, None
         )
 
     def unsubscribe_stop_video(self, handle: ctypes.c_void_p):
         """Unsubscribe from stop_video"""
-        self._lib.mavsdk_camera_server_unsubscribe_stop_video(
-            self._handle, handle
-        )
-
-
-
+        self._lib.mavsdk_camera_server_unsubscribe_stop_video(self._handle, handle)
 
     def respond_stop_video(self, stop_video_feedback):
         """Get respond_stop_video (blocking)"""
-
 
         result_code = self._lib.mavsdk_camera_server_respond_stop_video(
             self._handle,
@@ -812,13 +868,13 @@ class CameraServer:
 
         return result
 
-
-    def subscribe_start_video_streaming(self, callback: Callable, user_data: Any = None):
+    def subscribe_start_video_streaming(
+        self, callback: Callable, user_data: Any = None
+    ):
         """Subscribe to start video streaming requests. Each request received should response to using RespondStartVideoStreaming"""
 
         def c_callback(c_data, ud):
             try:
-
                 py_data = c_data
 
                 callback(py_data, user_data)
@@ -830,9 +886,7 @@ class CameraServer:
         self._callbacks.append(cb)
 
         return self._lib.mavsdk_camera_server_subscribe_start_video_streaming(
-            self._handle,
-            cb,
-            None
+            self._handle, cb, None
         )
 
     def unsubscribe_start_video_streaming(self, handle: ctypes.c_void_p):
@@ -841,12 +895,8 @@ class CameraServer:
             self._handle, handle
         )
 
-
-
-
     def respond_start_video_streaming(self, start_video_streaming_feedback):
         """Get respond_start_video_streaming (blocking)"""
-
 
         result_code = self._lib.mavsdk_camera_server_respond_start_video_streaming(
             self._handle,
@@ -858,13 +908,11 @@ class CameraServer:
 
         return result
 
-
     def subscribe_stop_video_streaming(self, callback: Callable, user_data: Any = None):
         """Subscribe to stop video streaming requests. Each request received should response to using RespondStopVideoStreaming"""
 
         def c_callback(c_data, ud):
             try:
-
                 py_data = c_data
 
                 callback(py_data, user_data)
@@ -876,9 +924,7 @@ class CameraServer:
         self._callbacks.append(cb)
 
         return self._lib.mavsdk_camera_server_subscribe_stop_video_streaming(
-            self._handle,
-            cb,
-            None
+            self._handle, cb, None
         )
 
     def unsubscribe_stop_video_streaming(self, handle: ctypes.c_void_p):
@@ -887,12 +933,8 @@ class CameraServer:
             self._handle, handle
         )
 
-
-
-
     def respond_stop_video_streaming(self, stop_video_streaming_feedback):
         """Get respond_stop_video_streaming (blocking)"""
-
 
         result_code = self._lib.mavsdk_camera_server_respond_stop_video_streaming(
             self._handle,
@@ -904,13 +946,11 @@ class CameraServer:
 
         return result
 
-
     def subscribe_set_mode(self, callback: Callable, user_data: Any = None):
         """Subscribe to set camera mode requests. Each request received should response to using RespondSetMode"""
 
         def c_callback(c_data, ud):
             try:
-
                 py_data = Mode(c_data)
 
                 callback(py_data, user_data)
@@ -921,24 +961,14 @@ class CameraServer:
         cb = SetModeCallback(c_callback)
         self._callbacks.append(cb)
 
-        return self._lib.mavsdk_camera_server_subscribe_set_mode(
-            self._handle,
-            cb,
-            None
-        )
+        return self._lib.mavsdk_camera_server_subscribe_set_mode(self._handle, cb, None)
 
     def unsubscribe_set_mode(self, handle: ctypes.c_void_p):
         """Unsubscribe from set_mode"""
-        self._lib.mavsdk_camera_server_unsubscribe_set_mode(
-            self._handle, handle
-        )
-
-
-
+        self._lib.mavsdk_camera_server_unsubscribe_set_mode(self._handle, handle)
 
     def respond_set_mode(self, set_mode_feedback):
         """Get respond_set_mode (blocking)"""
-
 
         result_code = self._lib.mavsdk_camera_server_respond_set_mode(
             self._handle,
@@ -950,13 +980,11 @@ class CameraServer:
 
         return result
 
-
     def subscribe_storage_information(self, callback: Callable, user_data: Any = None):
         """Subscribe to camera storage information requests. Each request received should response to using RespondStorageInformation"""
 
         def c_callback(c_data, ud):
             try:
-
                 py_data = c_data
 
                 callback(py_data, user_data)
@@ -968,9 +996,7 @@ class CameraServer:
         self._callbacks.append(cb)
 
         return self._lib.mavsdk_camera_server_subscribe_storage_information(
-            self._handle,
-            cb,
-            None
+            self._handle, cb, None
         )
 
     def unsubscribe_storage_information(self, handle: ctypes.c_void_p):
@@ -979,12 +1005,10 @@ class CameraServer:
             self._handle, handle
         )
 
-
-
-
-    def respond_storage_information(self, storage_information_feedback, storage_information):
+    def respond_storage_information(
+        self, storage_information_feedback, storage_information
+    ):
         """Get respond_storage_information (blocking)"""
-
 
         result_code = self._lib.mavsdk_camera_server_respond_storage_information(
             self._handle,
@@ -997,13 +1021,11 @@ class CameraServer:
 
         return result
 
-
     def subscribe_capture_status(self, callback: Callable, user_data: Any = None):
         """Subscribe to camera capture status requests. Each request received should response to using RespondCaptureStatus"""
 
         def c_callback(c_data, ud):
             try:
-
                 py_data = c_data
 
                 callback(py_data, user_data)
@@ -1015,23 +1037,15 @@ class CameraServer:
         self._callbacks.append(cb)
 
         return self._lib.mavsdk_camera_server_subscribe_capture_status(
-            self._handle,
-            cb,
-            None
+            self._handle, cb, None
         )
 
     def unsubscribe_capture_status(self, handle: ctypes.c_void_p):
         """Unsubscribe from capture_status"""
-        self._lib.mavsdk_camera_server_unsubscribe_capture_status(
-            self._handle, handle
-        )
-
-
-
+        self._lib.mavsdk_camera_server_unsubscribe_capture_status(self._handle, handle)
 
     def respond_capture_status(self, capture_status_feedback, capture_status):
         """Get respond_capture_status (blocking)"""
-
 
         result_code = self._lib.mavsdk_camera_server_respond_capture_status(
             self._handle,
@@ -1044,13 +1058,11 @@ class CameraServer:
 
         return result
 
-
     def subscribe_format_storage(self, callback: Callable, user_data: Any = None):
         """Subscribe to format storage requests. Each request received should response to using RespondFormatStorage"""
 
         def c_callback(c_data, ud):
             try:
-
                 py_data = c_data
 
                 callback(py_data, user_data)
@@ -1062,23 +1074,15 @@ class CameraServer:
         self._callbacks.append(cb)
 
         return self._lib.mavsdk_camera_server_subscribe_format_storage(
-            self._handle,
-            cb,
-            None
+            self._handle, cb, None
         )
 
     def unsubscribe_format_storage(self, handle: ctypes.c_void_p):
         """Unsubscribe from format_storage"""
-        self._lib.mavsdk_camera_server_unsubscribe_format_storage(
-            self._handle, handle
-        )
-
-
-
+        self._lib.mavsdk_camera_server_unsubscribe_format_storage(self._handle, handle)
 
     def respond_format_storage(self, format_storage_feedback):
         """Get respond_format_storage (blocking)"""
-
 
         result_code = self._lib.mavsdk_camera_server_respond_format_storage(
             self._handle,
@@ -1090,13 +1094,11 @@ class CameraServer:
 
         return result
 
-
     def subscribe_reset_settings(self, callback: Callable, user_data: Any = None):
         """Subscribe to reset settings requests. Each request received should response to using RespondResetSettings"""
 
         def c_callback(c_data, ud):
             try:
-
                 py_data = c_data
 
                 callback(py_data, user_data)
@@ -1108,23 +1110,15 @@ class CameraServer:
         self._callbacks.append(cb)
 
         return self._lib.mavsdk_camera_server_subscribe_reset_settings(
-            self._handle,
-            cb,
-            None
+            self._handle, cb, None
         )
 
     def unsubscribe_reset_settings(self, handle: ctypes.c_void_p):
         """Unsubscribe from reset_settings"""
-        self._lib.mavsdk_camera_server_unsubscribe_reset_settings(
-            self._handle, handle
-        )
-
-
-
+        self._lib.mavsdk_camera_server_unsubscribe_reset_settings(self._handle, handle)
 
     def respond_reset_settings(self, reset_settings_feedback):
         """Get respond_reset_settings (blocking)"""
-
 
         result_code = self._lib.mavsdk_camera_server_respond_reset_settings(
             self._handle,
@@ -1136,13 +1130,11 @@ class CameraServer:
 
         return result
 
-
     def subscribe_zoom_in_start(self, callback: Callable, user_data: Any = None):
         """Subscribe to zoom in start command"""
 
         def c_callback(c_data, ud):
             try:
-
                 py_data = c_data
 
                 callback(py_data, user_data)
@@ -1154,23 +1146,15 @@ class CameraServer:
         self._callbacks.append(cb)
 
         return self._lib.mavsdk_camera_server_subscribe_zoom_in_start(
-            self._handle,
-            cb,
-            None
+            self._handle, cb, None
         )
 
     def unsubscribe_zoom_in_start(self, handle: ctypes.c_void_p):
         """Unsubscribe from zoom_in_start"""
-        self._lib.mavsdk_camera_server_unsubscribe_zoom_in_start(
-            self._handle, handle
-        )
-
-
-
+        self._lib.mavsdk_camera_server_unsubscribe_zoom_in_start(self._handle, handle)
 
     def respond_zoom_in_start(self, zoom_in_start_feedback):
         """Get respond_zoom_in_start (blocking)"""
-
 
         result_code = self._lib.mavsdk_camera_server_respond_zoom_in_start(
             self._handle,
@@ -1182,13 +1166,11 @@ class CameraServer:
 
         return result
 
-
     def subscribe_zoom_out_start(self, callback: Callable, user_data: Any = None):
         """Subscribe to zoom out start command"""
 
         def c_callback(c_data, ud):
             try:
-
                 py_data = c_data
 
                 callback(py_data, user_data)
@@ -1200,23 +1182,15 @@ class CameraServer:
         self._callbacks.append(cb)
 
         return self._lib.mavsdk_camera_server_subscribe_zoom_out_start(
-            self._handle,
-            cb,
-            None
+            self._handle, cb, None
         )
 
     def unsubscribe_zoom_out_start(self, handle: ctypes.c_void_p):
         """Unsubscribe from zoom_out_start"""
-        self._lib.mavsdk_camera_server_unsubscribe_zoom_out_start(
-            self._handle, handle
-        )
-
-
-
+        self._lib.mavsdk_camera_server_unsubscribe_zoom_out_start(self._handle, handle)
 
     def respond_zoom_out_start(self, zoom_out_start_feedback):
         """Get respond_zoom_out_start (blocking)"""
-
 
         result_code = self._lib.mavsdk_camera_server_respond_zoom_out_start(
             self._handle,
@@ -1228,13 +1202,11 @@ class CameraServer:
 
         return result
 
-
     def subscribe_zoom_stop(self, callback: Callable, user_data: Any = None):
         """Subscribe to zoom stop command"""
 
         def c_callback(c_data, ud):
             try:
-
                 py_data = c_data
 
                 callback(py_data, user_data)
@@ -1246,23 +1218,15 @@ class CameraServer:
         self._callbacks.append(cb)
 
         return self._lib.mavsdk_camera_server_subscribe_zoom_stop(
-            self._handle,
-            cb,
-            None
+            self._handle, cb, None
         )
 
     def unsubscribe_zoom_stop(self, handle: ctypes.c_void_p):
         """Unsubscribe from zoom_stop"""
-        self._lib.mavsdk_camera_server_unsubscribe_zoom_stop(
-            self._handle, handle
-        )
-
-
-
+        self._lib.mavsdk_camera_server_unsubscribe_zoom_stop(self._handle, handle)
 
     def respond_zoom_stop(self, zoom_stop_feedback):
         """Get respond_zoom_stop (blocking)"""
-
 
         result_code = self._lib.mavsdk_camera_server_respond_zoom_stop(
             self._handle,
@@ -1274,13 +1238,11 @@ class CameraServer:
 
         return result
 
-
     def subscribe_zoom_range(self, callback: Callable, user_data: Any = None):
         """Subscribe to zoom range command"""
 
         def c_callback(c_data, ud):
             try:
-
                 py_data = c_data
 
                 callback(py_data, user_data)
@@ -1292,23 +1254,15 @@ class CameraServer:
         self._callbacks.append(cb)
 
         return self._lib.mavsdk_camera_server_subscribe_zoom_range(
-            self._handle,
-            cb,
-            None
+            self._handle, cb, None
         )
 
     def unsubscribe_zoom_range(self, handle: ctypes.c_void_p):
         """Unsubscribe from zoom_range"""
-        self._lib.mavsdk_camera_server_unsubscribe_zoom_range(
-            self._handle, handle
-        )
-
-
-
+        self._lib.mavsdk_camera_server_unsubscribe_zoom_range(self._handle, handle)
 
     def respond_zoom_range(self, zoom_range_feedback):
         """Get respond_zoom_range (blocking)"""
-
 
         result_code = self._lib.mavsdk_camera_server_respond_zoom_range(
             self._handle,
@@ -1320,36 +1274,28 @@ class CameraServer:
 
         return result
 
-
-
     def set_tracking_rectangle_status(self, tracked_rectangle):
         """Get set_tracking_rectangle_status (blocking)"""
-
 
         self._lib.mavsdk_camera_server_set_tracking_rectangle_status(
             self._handle,
             tracked_rectangle.to_c_struct(),
         )
 
-
-
-
     def set_tracking_off_status(self):
         """Get set_tracking_off_status (blocking)"""
-
 
         self._lib.mavsdk_camera_server_set_tracking_off_status(
             self._handle,
         )
 
-
-
-    def subscribe_tracking_point_command(self, callback: Callable, user_data: Any = None):
+    def subscribe_tracking_point_command(
+        self, callback: Callable, user_data: Any = None
+    ):
         """Subscribe to incoming tracking point command."""
 
         def c_callback(c_data, ud):
             try:
-
                 py_data = TrackPoint.from_c_struct(c_data)
 
                 self._lib.mavsdk_camera_server_TrackPoint_destroy(ctypes.byref(c_data))
@@ -1363,9 +1309,7 @@ class CameraServer:
         self._callbacks.append(cb)
 
         return self._lib.mavsdk_camera_server_subscribe_tracking_point_command(
-            self._handle,
-            cb,
-            None
+            self._handle, cb, None
         )
 
     def unsubscribe_tracking_point_command(self, handle: ctypes.c_void_p):
@@ -1374,17 +1318,18 @@ class CameraServer:
             self._handle, handle
         )
 
-
-
-    def subscribe_tracking_rectangle_command(self, callback: Callable, user_data: Any = None):
+    def subscribe_tracking_rectangle_command(
+        self, callback: Callable, user_data: Any = None
+    ):
         """Subscribe to incoming tracking rectangle command."""
 
         def c_callback(c_data, ud):
             try:
-
                 py_data = TrackRectangle.from_c_struct(c_data)
 
-                self._lib.mavsdk_camera_server_TrackRectangle_destroy(ctypes.byref(c_data))
+                self._lib.mavsdk_camera_server_TrackRectangle_destroy(
+                    ctypes.byref(c_data)
+                )
 
                 callback(py_data, user_data)
 
@@ -1395,9 +1340,7 @@ class CameraServer:
         self._callbacks.append(cb)
 
         return self._lib.mavsdk_camera_server_subscribe_tracking_rectangle_command(
-            self._handle,
-            cb,
-            None
+            self._handle, cb, None
         )
 
     def unsubscribe_tracking_rectangle_command(self, handle: ctypes.c_void_p):
@@ -1406,14 +1349,11 @@ class CameraServer:
             self._handle, handle
         )
 
-
-
     def subscribe_tracking_off_command(self, callback: Callable, user_data: Any = None):
         """Subscribe to incoming tracking off command."""
 
         def c_callback(c_data, ud):
             try:
-
                 py_data = c_data
 
                 callback(py_data, user_data)
@@ -1425,9 +1365,7 @@ class CameraServer:
         self._callbacks.append(cb)
 
         return self._lib.mavsdk_camera_server_subscribe_tracking_off_command(
-            self._handle,
-            cb,
-            None
+            self._handle, cb, None
         )
 
     def unsubscribe_tracking_off_command(self, handle: ctypes.c_void_p):
@@ -1436,12 +1374,8 @@ class CameraServer:
             self._handle, handle
         )
 
-
-
-
     def respond_tracking_point_command(self, stop_video_feedback):
         """Get respond_tracking_point_command (blocking)"""
-
 
         result_code = self._lib.mavsdk_camera_server_respond_tracking_point_command(
             self._handle,
@@ -1453,11 +1387,8 @@ class CameraServer:
 
         return result
 
-
-
     def respond_tracking_rectangle_command(self, stop_video_feedback):
         """Get respond_tracking_rectangle_command (blocking)"""
-
 
         result_code = self._lib.mavsdk_camera_server_respond_tracking_rectangle_command(
             self._handle,
@@ -1469,11 +1400,8 @@ class CameraServer:
 
         return result
 
-
-
     def respond_tracking_off_command(self, stop_video_feedback):
         """Get respond_tracking_off_command (blocking)"""
-
 
         result_code = self._lib.mavsdk_camera_server_respond_tracking_off_command(
             self._handle,
@@ -1485,7 +1413,6 @@ class CameraServer:
 
         return result
 
-
     def destroy(self):
         """Destroy the plugin instance"""
         if self._handle:
@@ -1495,92 +1422,29 @@ class CameraServer:
     def __del__(self):
         self.destroy()
 
+
 # ===== Callback Types =====
-TakePhotoCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int32,
-    ctypes.c_void_p
-)
-StartVideoCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int32,
-    ctypes.c_void_p
-)
-StopVideoCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int32,
-    ctypes.c_void_p
-)
-StartVideoStreamingCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int32,
-    ctypes.c_void_p
-)
-StopVideoStreamingCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int32,
-    ctypes.c_void_p
-)
-SetModeCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-StorageInformationCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int32,
-    ctypes.c_void_p
-)
-CaptureStatusCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int32,
-    ctypes.c_void_p
-)
-FormatStorageCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int32,
-    ctypes.c_void_p
-)
-ResetSettingsCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int32,
-    ctypes.c_void_p
-)
-ZoomInStartCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int32,
-    ctypes.c_void_p
-)
-ZoomOutStartCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int32,
-    ctypes.c_void_p
-)
-ZoomStopCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int32,
-    ctypes.c_void_p
-)
-ZoomRangeCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_float,
-    ctypes.c_void_p
-)
+TakePhotoCallback = ctypes.CFUNCTYPE(None, ctypes.c_int32, ctypes.c_void_p)
+StartVideoCallback = ctypes.CFUNCTYPE(None, ctypes.c_int32, ctypes.c_void_p)
+StopVideoCallback = ctypes.CFUNCTYPE(None, ctypes.c_int32, ctypes.c_void_p)
+StartVideoStreamingCallback = ctypes.CFUNCTYPE(None, ctypes.c_int32, ctypes.c_void_p)
+StopVideoStreamingCallback = ctypes.CFUNCTYPE(None, ctypes.c_int32, ctypes.c_void_p)
+SetModeCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
+StorageInformationCallback = ctypes.CFUNCTYPE(None, ctypes.c_int32, ctypes.c_void_p)
+CaptureStatusCallback = ctypes.CFUNCTYPE(None, ctypes.c_int32, ctypes.c_void_p)
+FormatStorageCallback = ctypes.CFUNCTYPE(None, ctypes.c_int32, ctypes.c_void_p)
+ResetSettingsCallback = ctypes.CFUNCTYPE(None, ctypes.c_int32, ctypes.c_void_p)
+ZoomInStartCallback = ctypes.CFUNCTYPE(None, ctypes.c_int32, ctypes.c_void_p)
+ZoomOutStartCallback = ctypes.CFUNCTYPE(None, ctypes.c_int32, ctypes.c_void_p)
+ZoomStopCallback = ctypes.CFUNCTYPE(None, ctypes.c_int32, ctypes.c_void_p)
+ZoomRangeCallback = ctypes.CFUNCTYPE(None, ctypes.c_float, ctypes.c_void_p)
 TrackingPointCommandCallback = ctypes.CFUNCTYPE(
-    None,
-    TrackPointCStruct,
-    ctypes.c_void_p
+    None, TrackPointCStruct, ctypes.c_void_p
 )
 TrackingRectangleCommandCallback = ctypes.CFUNCTYPE(
-    None,
-    TrackRectangleCStruct,
-    ctypes.c_void_p
+    None, TrackRectangleCStruct, ctypes.c_void_p
 )
-TrackingOffCommandCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int32,
-    ctypes.c_void_p
-)
+TrackingOffCommandCallback = ctypes.CFUNCTYPE(None, ctypes.c_int32, ctypes.c_void_p)
 
 # ===== Setup Functions =====
 _cmavsdk_lib.mavsdk_camera_server_create.argtypes = [ctypes.c_void_p]
@@ -1635,7 +1499,6 @@ _cmavsdk_lib.mavsdk_camera_server_TrackRectangle_destroy.argtypes = [
 _cmavsdk_lib.mavsdk_camera_server_TrackRectangle_destroy.restype = None
 
 
-
 _cmavsdk_lib.mavsdk_camera_server_set_information.argtypes = [
     ctypes.c_void_p,
     InformationCStruct,
@@ -1659,14 +1522,14 @@ _cmavsdk_lib.mavsdk_camera_server_set_in_progress.restype = ctypes.c_int
 _cmavsdk_lib.mavsdk_camera_server_subscribe_take_photo.argtypes = [
     ctypes.c_void_p,
     TakePhotoCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_camera_server_subscribe_take_photo.restype = ctypes.c_void_p
 # Unsubscribe
 _cmavsdk_lib.mavsdk_camera_server_unsubscribe_take_photo.argtypes = [
     ctypes.c_void_p,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_camera_server_unsubscribe_take_photo.restype = None
@@ -1682,14 +1545,14 @@ _cmavsdk_lib.mavsdk_camera_server_respond_take_photo.restype = ctypes.c_int
 _cmavsdk_lib.mavsdk_camera_server_subscribe_start_video.argtypes = [
     ctypes.c_void_p,
     StartVideoCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_camera_server_subscribe_start_video.restype = ctypes.c_void_p
 # Unsubscribe
 _cmavsdk_lib.mavsdk_camera_server_unsubscribe_start_video.argtypes = [
     ctypes.c_void_p,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_camera_server_unsubscribe_start_video.restype = None
@@ -1704,14 +1567,14 @@ _cmavsdk_lib.mavsdk_camera_server_respond_start_video.restype = ctypes.c_int
 _cmavsdk_lib.mavsdk_camera_server_subscribe_stop_video.argtypes = [
     ctypes.c_void_p,
     StopVideoCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_camera_server_subscribe_stop_video.restype = ctypes.c_void_p
 # Unsubscribe
 _cmavsdk_lib.mavsdk_camera_server_unsubscribe_stop_video.argtypes = [
     ctypes.c_void_p,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_camera_server_unsubscribe_stop_video.restype = None
@@ -1726,14 +1589,16 @@ _cmavsdk_lib.mavsdk_camera_server_respond_stop_video.restype = ctypes.c_int
 _cmavsdk_lib.mavsdk_camera_server_subscribe_start_video_streaming.argtypes = [
     ctypes.c_void_p,
     StartVideoStreamingCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
-_cmavsdk_lib.mavsdk_camera_server_subscribe_start_video_streaming.restype = ctypes.c_void_p
+_cmavsdk_lib.mavsdk_camera_server_subscribe_start_video_streaming.restype = (
+    ctypes.c_void_p
+)
 # Unsubscribe
 _cmavsdk_lib.mavsdk_camera_server_unsubscribe_start_video_streaming.argtypes = [
     ctypes.c_void_p,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_camera_server_unsubscribe_start_video_streaming.restype = None
@@ -1748,14 +1613,16 @@ _cmavsdk_lib.mavsdk_camera_server_respond_start_video_streaming.restype = ctypes
 _cmavsdk_lib.mavsdk_camera_server_subscribe_stop_video_streaming.argtypes = [
     ctypes.c_void_p,
     StopVideoStreamingCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
-_cmavsdk_lib.mavsdk_camera_server_subscribe_stop_video_streaming.restype = ctypes.c_void_p
+_cmavsdk_lib.mavsdk_camera_server_subscribe_stop_video_streaming.restype = (
+    ctypes.c_void_p
+)
 # Unsubscribe
 _cmavsdk_lib.mavsdk_camera_server_unsubscribe_stop_video_streaming.argtypes = [
     ctypes.c_void_p,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_camera_server_unsubscribe_stop_video_streaming.restype = None
@@ -1770,14 +1637,14 @@ _cmavsdk_lib.mavsdk_camera_server_respond_stop_video_streaming.restype = ctypes.
 _cmavsdk_lib.mavsdk_camera_server_subscribe_set_mode.argtypes = [
     ctypes.c_void_p,
     SetModeCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_camera_server_subscribe_set_mode.restype = ctypes.c_void_p
 # Unsubscribe
 _cmavsdk_lib.mavsdk_camera_server_unsubscribe_set_mode.argtypes = [
     ctypes.c_void_p,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_camera_server_unsubscribe_set_mode.restype = None
@@ -1792,14 +1659,16 @@ _cmavsdk_lib.mavsdk_camera_server_respond_set_mode.restype = ctypes.c_int
 _cmavsdk_lib.mavsdk_camera_server_subscribe_storage_information.argtypes = [
     ctypes.c_void_p,
     StorageInformationCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
-_cmavsdk_lib.mavsdk_camera_server_subscribe_storage_information.restype = ctypes.c_void_p
+_cmavsdk_lib.mavsdk_camera_server_subscribe_storage_information.restype = (
+    ctypes.c_void_p
+)
 # Unsubscribe
 _cmavsdk_lib.mavsdk_camera_server_unsubscribe_storage_information.argtypes = [
     ctypes.c_void_p,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_camera_server_unsubscribe_storage_information.restype = None
@@ -1815,14 +1684,14 @@ _cmavsdk_lib.mavsdk_camera_server_respond_storage_information.restype = ctypes.c
 _cmavsdk_lib.mavsdk_camera_server_subscribe_capture_status.argtypes = [
     ctypes.c_void_p,
     CaptureStatusCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_camera_server_subscribe_capture_status.restype = ctypes.c_void_p
 # Unsubscribe
 _cmavsdk_lib.mavsdk_camera_server_unsubscribe_capture_status.argtypes = [
     ctypes.c_void_p,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_camera_server_unsubscribe_capture_status.restype = None
@@ -1838,14 +1707,14 @@ _cmavsdk_lib.mavsdk_camera_server_respond_capture_status.restype = ctypes.c_int
 _cmavsdk_lib.mavsdk_camera_server_subscribe_format_storage.argtypes = [
     ctypes.c_void_p,
     FormatStorageCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_camera_server_subscribe_format_storage.restype = ctypes.c_void_p
 # Unsubscribe
 _cmavsdk_lib.mavsdk_camera_server_unsubscribe_format_storage.argtypes = [
     ctypes.c_void_p,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_camera_server_unsubscribe_format_storage.restype = None
@@ -1860,14 +1729,14 @@ _cmavsdk_lib.mavsdk_camera_server_respond_format_storage.restype = ctypes.c_int
 _cmavsdk_lib.mavsdk_camera_server_subscribe_reset_settings.argtypes = [
     ctypes.c_void_p,
     ResetSettingsCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_camera_server_subscribe_reset_settings.restype = ctypes.c_void_p
 # Unsubscribe
 _cmavsdk_lib.mavsdk_camera_server_unsubscribe_reset_settings.argtypes = [
     ctypes.c_void_p,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_camera_server_unsubscribe_reset_settings.restype = None
@@ -1882,14 +1751,14 @@ _cmavsdk_lib.mavsdk_camera_server_respond_reset_settings.restype = ctypes.c_int
 _cmavsdk_lib.mavsdk_camera_server_subscribe_zoom_in_start.argtypes = [
     ctypes.c_void_p,
     ZoomInStartCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_camera_server_subscribe_zoom_in_start.restype = ctypes.c_void_p
 # Unsubscribe
 _cmavsdk_lib.mavsdk_camera_server_unsubscribe_zoom_in_start.argtypes = [
     ctypes.c_void_p,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_camera_server_unsubscribe_zoom_in_start.restype = None
@@ -1904,14 +1773,14 @@ _cmavsdk_lib.mavsdk_camera_server_respond_zoom_in_start.restype = ctypes.c_int
 _cmavsdk_lib.mavsdk_camera_server_subscribe_zoom_out_start.argtypes = [
     ctypes.c_void_p,
     ZoomOutStartCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_camera_server_subscribe_zoom_out_start.restype = ctypes.c_void_p
 # Unsubscribe
 _cmavsdk_lib.mavsdk_camera_server_unsubscribe_zoom_out_start.argtypes = [
     ctypes.c_void_p,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_camera_server_unsubscribe_zoom_out_start.restype = None
@@ -1926,14 +1795,14 @@ _cmavsdk_lib.mavsdk_camera_server_respond_zoom_out_start.restype = ctypes.c_int
 _cmavsdk_lib.mavsdk_camera_server_subscribe_zoom_stop.argtypes = [
     ctypes.c_void_p,
     ZoomStopCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_camera_server_subscribe_zoom_stop.restype = ctypes.c_void_p
 # Unsubscribe
 _cmavsdk_lib.mavsdk_camera_server_unsubscribe_zoom_stop.argtypes = [
     ctypes.c_void_p,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_camera_server_unsubscribe_zoom_stop.restype = None
@@ -1948,14 +1817,14 @@ _cmavsdk_lib.mavsdk_camera_server_respond_zoom_stop.restype = ctypes.c_int
 _cmavsdk_lib.mavsdk_camera_server_subscribe_zoom_range.argtypes = [
     ctypes.c_void_p,
     ZoomRangeCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_camera_server_subscribe_zoom_range.restype = ctypes.c_void_p
 # Unsubscribe
 _cmavsdk_lib.mavsdk_camera_server_unsubscribe_zoom_range.argtypes = [
     ctypes.c_void_p,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_camera_server_unsubscribe_zoom_range.restype = None
@@ -1983,14 +1852,16 @@ _cmavsdk_lib.mavsdk_camera_server_set_tracking_off_status.restype = None
 _cmavsdk_lib.mavsdk_camera_server_subscribe_tracking_point_command.argtypes = [
     ctypes.c_void_p,
     TrackingPointCommandCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
-_cmavsdk_lib.mavsdk_camera_server_subscribe_tracking_point_command.restype = ctypes.c_void_p
+_cmavsdk_lib.mavsdk_camera_server_subscribe_tracking_point_command.restype = (
+    ctypes.c_void_p
+)
 # Unsubscribe
 _cmavsdk_lib.mavsdk_camera_server_unsubscribe_tracking_point_command.argtypes = [
     ctypes.c_void_p,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_camera_server_unsubscribe_tracking_point_command.restype = None
@@ -1998,14 +1869,16 @@ _cmavsdk_lib.mavsdk_camera_server_unsubscribe_tracking_point_command.restype = N
 _cmavsdk_lib.mavsdk_camera_server_subscribe_tracking_rectangle_command.argtypes = [
     ctypes.c_void_p,
     TrackingRectangleCommandCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
-_cmavsdk_lib.mavsdk_camera_server_subscribe_tracking_rectangle_command.restype = ctypes.c_void_p
+_cmavsdk_lib.mavsdk_camera_server_subscribe_tracking_rectangle_command.restype = (
+    ctypes.c_void_p
+)
 # Unsubscribe
 _cmavsdk_lib.mavsdk_camera_server_unsubscribe_tracking_rectangle_command.argtypes = [
     ctypes.c_void_p,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_camera_server_unsubscribe_tracking_rectangle_command.restype = None
@@ -2013,14 +1886,16 @@ _cmavsdk_lib.mavsdk_camera_server_unsubscribe_tracking_rectangle_command.restype
 _cmavsdk_lib.mavsdk_camera_server_subscribe_tracking_off_command.argtypes = [
     ctypes.c_void_p,
     TrackingOffCommandCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
-_cmavsdk_lib.mavsdk_camera_server_subscribe_tracking_off_command.restype = ctypes.c_void_p
+_cmavsdk_lib.mavsdk_camera_server_subscribe_tracking_off_command.restype = (
+    ctypes.c_void_p
+)
 # Unsubscribe
 _cmavsdk_lib.mavsdk_camera_server_unsubscribe_tracking_off_command.argtypes = [
     ctypes.c_void_p,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_camera_server_unsubscribe_tracking_off_command.restype = None
@@ -2038,7 +1913,9 @@ _cmavsdk_lib.mavsdk_camera_server_respond_tracking_rectangle_command.argtypes = 
     ctypes.c_int,
 ]
 
-_cmavsdk_lib.mavsdk_camera_server_respond_tracking_rectangle_command.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_camera_server_respond_tracking_rectangle_command.restype = (
+    ctypes.c_int
+)
 
 _cmavsdk_lib.mavsdk_camera_server_respond_tracking_off_command.argtypes = [
     ctypes.c_void_p,

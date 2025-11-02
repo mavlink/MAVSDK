@@ -18,6 +18,7 @@ from ...cmavsdk_loader import _cmavsdk_lib
 # ===== Enums =====
 class AdsbEmitterType(IntEnum):
     """ADSB classification for the type of vehicle emitting the transponder signal."""
+
     NO_INFO = 0
     LIGHT = 1
     SMALL = 2
@@ -39,8 +40,10 @@ class AdsbEmitterType(IntEnum):
     SERVICE_SURFACE = 18
     POINT_OBSTACLE = 19
 
+
 class AdsbAltitudeType(IntEnum):
     """Altitude type used in AdsbVehicle message"""
+
     PRESSURE_QNH = 0
     GEOMETRIC = 1
 
@@ -48,6 +51,7 @@ class AdsbAltitudeType(IntEnum):
 # ===== Result Enums =====
 class TransponderResult(IntEnum):
     """Possible results returned for transponder requests."""
+
     UNKNOWN = 0
     SUCCESS = 1
     NO_SYSTEM = 2
@@ -63,6 +67,7 @@ class AdsbVehicleCStruct(ctypes.Structure):
     Internal C structure for AdsbVehicle.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("icao_address", ctypes.c_uint32),
         ("latitude_deg", ctypes.c_double),
@@ -85,7 +90,21 @@ class AdsbVehicle:
     ADSB Vehicle type.
     """
 
-    def __init__(self, icao_address=None, latitude_deg=None, longitude_deg=None, altitude_type=None, absolute_altitude_m=None, heading_deg=None, horizontal_velocity_m_s=None, vertical_velocity_m_s=None, callsign=None, emitter_type=None, squawk=None, tslc_s=None):
+    def __init__(
+        self,
+        icao_address=None,
+        latitude_deg=None,
+        longitude_deg=None,
+        altitude_type=None,
+        absolute_altitude_m=None,
+        heading_deg=None,
+        horizontal_velocity_m_s=None,
+        vertical_velocity_m_s=None,
+        callsign=None,
+        emitter_type=None,
+        squawk=None,
+        tslc_s=None,
+    ):
         self.icao_address = icao_address
         self.latitude_deg = latitude_deg
         self.longitude_deg = longitude_deg
@@ -111,7 +130,7 @@ class AdsbVehicle:
         instance.heading_deg = c_struct.heading_deg
         instance.horizontal_velocity_m_s = c_struct.horizontal_velocity_m_s
         instance.vertical_velocity_m_s = c_struct.vertical_velocity_m_s
-        instance.callsign = c_struct.callsign.decode('utf-8')
+        instance.callsign = c_struct.callsign.decode("utf-8")
         instance.emitter_type = AdsbEmitterType(c_struct.emitter_type)
         instance.squawk = c_struct.squawk
         instance.tslc_s = c_struct.tslc_s
@@ -128,7 +147,7 @@ class AdsbVehicle:
         c_struct.heading_deg = self.heading_deg
         c_struct.horizontal_velocity_m_s = self.horizontal_velocity_m_s
         c_struct.vertical_velocity_m_s = self.vertical_velocity_m_s
-        c_struct.callsign = self.callsign.encode('utf-8')
+        c_struct.callsign = self.callsign.encode("utf-8")
         c_struct.emitter_type = int(self.emitter_type)
         c_struct.squawk = self.squawk
         c_struct.tslc_s = self.tslc_s
@@ -151,11 +170,10 @@ class AdsbVehicle:
         return f"AdsbVehicle({', '.join(fields)})"
 
 
-
 # ===== Plugin =====
 class Transponder:
     """Allow users to get ADS-B information
- and set ADS-B update rates."""
+    and set ADS-B update rates."""
 
     def __init__(self, system):
         self._lib = _cmavsdk_lib
@@ -173,15 +191,15 @@ class Transponder:
         self._handle = self._lib.mavsdk_transponder_create(system_handle)
 
         if not self._handle:
-            raise RuntimeError("Failed to create Transponder plugin - C function returned null handle")
-
+            raise RuntimeError(
+                "Failed to create Transponder plugin - C function returned null handle"
+            )
 
     def subscribe_transponder(self, callback: Callable, user_data: Any = None):
         """Subscribe to 'transponder' updates."""
 
         def c_callback(c_data, ud):
             try:
-
                 py_data = AdsbVehicle.from_c_struct(c_data)
 
                 self._lib.mavsdk_transponder_AdsbVehicle_destroy(ctypes.byref(c_data))
@@ -195,39 +213,32 @@ class Transponder:
         self._callbacks.append(cb)
 
         return self._lib.mavsdk_transponder_subscribe_transponder(
-            self._handle,
-            cb,
-            None
+            self._handle, cb, None
         )
 
     def unsubscribe_transponder(self, handle: ctypes.c_void_p):
         """Unsubscribe from transponder"""
-        self._lib.mavsdk_transponder_unsubscribe_transponder(
-            self._handle, handle
-        )
+        self._lib.mavsdk_transponder_unsubscribe_transponder(self._handle, handle)
 
     def transponder(self):
         """Get transponder (blocking)"""
 
         result_out = AdsbVehicleCStruct()
 
-        self._lib.mavsdk_transponder_transponder(
-            self._handle,
-            ctypes.byref(result_out)
-        )
+        self._lib.mavsdk_transponder_transponder(self._handle, ctypes.byref(result_out))
 
         py_result = AdsbVehicle.from_c_struct(result_out)
         self._lib.mavsdk_transponder_AdsbVehicle_destroy(ctypes.byref(result_out))
         return py_result
 
-
-    def set_rate_transponder_async(self, rate_hz, callback: Callable, user_data: Any = None):
+    def set_rate_transponder_async(
+        self, rate_hz, callback: Callable, user_data: Any = None
+    ):
         """Set rate to 'transponder' updates."""
 
         def c_callback(result, ud):
             try:
                 py_result = TransponderResult(result)
-
 
                 callback(py_result, user_data)
 
@@ -238,16 +249,11 @@ class Transponder:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_transponder_set_rate_transponder_async(
-            self._handle,
-            rate_hz,
-            cb,
-            None
+            self._handle, rate_hz, cb, None
         )
-
 
     def set_rate_transponder(self, rate_hz):
         """Get set_rate_transponder (blocking)"""
-
 
         result_code = self._lib.mavsdk_transponder_set_rate_transponder(
             self._handle,
@@ -259,7 +265,6 @@ class Transponder:
 
         return result
 
-
     def destroy(self):
         """Destroy the plugin instance"""
         if self._handle:
@@ -269,17 +274,10 @@ class Transponder:
     def __del__(self):
         self.destroy()
 
+
 # ===== Callback Types =====
-TransponderCallback = ctypes.CFUNCTYPE(
-    None,
-    AdsbVehicleCStruct,
-    ctypes.c_void_p
-)
-SetRateTransponderCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
+TransponderCallback = ctypes.CFUNCTYPE(None, AdsbVehicleCStruct, ctypes.c_void_p)
+SetRateTransponderCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
 
 # ===== Setup Functions =====
 _cmavsdk_lib.mavsdk_transponder_create.argtypes = [ctypes.c_void_p]
@@ -297,21 +295,21 @@ _cmavsdk_lib.mavsdk_transponder_AdsbVehicle_destroy.restype = None
 _cmavsdk_lib.mavsdk_transponder_subscribe_transponder.argtypes = [
     ctypes.c_void_p,
     TransponderCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_transponder_subscribe_transponder.restype = ctypes.c_void_p
 # Unsubscribe
 _cmavsdk_lib.mavsdk_transponder_unsubscribe_transponder.argtypes = [
     ctypes.c_void_p,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_transponder_unsubscribe_transponder.restype = None
 
 _cmavsdk_lib.mavsdk_transponder_transponder.argtypes = [
     ctypes.c_void_p,
-    ctypes.POINTER(AdsbVehicleCStruct)
+    ctypes.POINTER(AdsbVehicleCStruct),
 ]
 
 _cmavsdk_lib.mavsdk_transponder_transponder.restype = None
@@ -319,7 +317,7 @@ _cmavsdk_lib.mavsdk_transponder_set_rate_transponder_async.argtypes = [
     ctypes.c_void_p,
     ctypes.c_double,
     SetRateTransponderCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_transponder_set_rate_transponder_async.restype = None

@@ -16,9 +16,11 @@ from ...cmavsdk_loader import _cmavsdk_lib
 
 # ===== Enums =====
 
+
 # ===== Result Enums =====
 class MavlinkDirectResult(IntEnum):
     """Possible results returned for action requests."""
+
     UNKNOWN = 0
     SUCCESS = 1
     ERROR = 2
@@ -35,6 +37,7 @@ class MavlinkMessageCStruct(ctypes.Structure):
     Internal C structure for MavlinkMessage.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("message_name", ctypes.c_char_p),
         ("system_id", ctypes.c_uint32),
@@ -51,7 +54,15 @@ class MavlinkMessage:
     A complete MAVLink message with all header information and fields
     """
 
-    def __init__(self, message_name=None, system_id=None, component_id=None, target_system_id=None, target_component_id=None, fields_json=None):
+    def __init__(
+        self,
+        message_name=None,
+        system_id=None,
+        component_id=None,
+        target_system_id=None,
+        target_component_id=None,
+        fields_json=None,
+    ):
         self.message_name = message_name
         self.system_id = system_id
         self.component_id = component_id
@@ -63,23 +74,23 @@ class MavlinkMessage:
     def from_c_struct(cls, c_struct):
         """Convert from C structure to Python object"""
         instance = cls()
-        instance.message_name = c_struct.message_name.decode('utf-8')
+        instance.message_name = c_struct.message_name.decode("utf-8")
         instance.system_id = c_struct.system_id
         instance.component_id = c_struct.component_id
         instance.target_system_id = c_struct.target_system_id
         instance.target_component_id = c_struct.target_component_id
-        instance.fields_json = c_struct.fields_json.decode('utf-8')
+        instance.fields_json = c_struct.fields_json.decode("utf-8")
         return instance
 
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = MavlinkMessageCStruct()
-        c_struct.message_name = self.message_name.encode('utf-8')
+        c_struct.message_name = self.message_name.encode("utf-8")
         c_struct.system_id = self.system_id
         c_struct.component_id = self.component_id
         c_struct.target_system_id = self.target_system_id
         c_struct.target_component_id = self.target_component_id
-        c_struct.fields_json = self.fields_json.encode('utf-8')
+        c_struct.fields_json = self.fields_json.encode("utf-8")
         return c_struct
 
     def __str__(self):
@@ -91,7 +102,6 @@ class MavlinkMessage:
         fields.append(f"target_component_id={self.target_component_id}")
         fields.append(f"fields_json={self.fields_json}")
         return f"MavlinkMessage({', '.join(fields)})"
-
 
 
 # ===== Plugin =====
@@ -114,13 +124,12 @@ class MavlinkDirect:
         self._handle = self._lib.mavsdk_mavlink_direct_create(system_handle)
 
         if not self._handle:
-            raise RuntimeError("Failed to create MavlinkDirect plugin - C function returned null handle")
-
-
+            raise RuntimeError(
+                "Failed to create MavlinkDirect plugin - C function returned null handle"
+            )
 
     def send_message(self, message):
         """Get send_message (blocking)"""
-
 
         result_code = self._lib.mavsdk_mavlink_direct_send_message(
             self._handle,
@@ -132,20 +141,22 @@ class MavlinkDirect:
 
         return result
 
-
-    def subscribe_message(self, message_name, callback: Callable, user_data: Any = None):
+    def subscribe_message(
+        self, message_name, callback: Callable, user_data: Any = None
+    ):
         """Subscribe to incoming MAVLink messages.
 
- This provides direct access to incoming MAVLink messages. Use an empty string
- in message_name to subscribe to all messages, or specify a message name
- (e.g., "HEARTBEAT") to filter for specific message types."""
+        This provides direct access to incoming MAVLink messages. Use an empty string
+        in message_name to subscribe to all messages, or specify a message name
+        (e.g., "HEARTBEAT") to filter for specific message types."""
 
         def c_callback(c_data, ud):
             try:
-
                 py_data = MavlinkMessage.from_c_struct(c_data)
 
-                self._lib.mavsdk_mavlink_direct_MavlinkMessage_destroy(ctypes.byref(c_data))
+                self._lib.mavsdk_mavlink_direct_MavlinkMessage_destroy(
+                    ctypes.byref(c_data)
+                )
 
                 callback(py_data, user_data)
 
@@ -156,24 +167,15 @@ class MavlinkDirect:
         self._callbacks.append(cb)
 
         return self._lib.mavsdk_mavlink_direct_subscribe_message(
-            self._handle,
-            message_name,
-            cb,
-            None
+            self._handle, message_name, cb, None
         )
 
     def unsubscribe_message(self, handle: ctypes.c_void_p):
         """Unsubscribe from message"""
-        self._lib.mavsdk_mavlink_direct_unsubscribe_message(
-            self._handle, handle
-        )
-
-
-
+        self._lib.mavsdk_mavlink_direct_unsubscribe_message(self._handle, handle)
 
     def load_custom_xml(self, xml_content):
         """Get load_custom_xml (blocking)"""
-
 
         result_code = self._lib.mavsdk_mavlink_direct_load_custom_xml(
             self._handle,
@@ -185,7 +187,6 @@ class MavlinkDirect:
 
         return result
 
-
     def destroy(self):
         """Destroy the plugin instance"""
         if self._handle:
@@ -195,12 +196,9 @@ class MavlinkDirect:
     def __del__(self):
         self.destroy()
 
+
 # ===== Callback Types =====
-MessageCallback = ctypes.CFUNCTYPE(
-    None,
-    MavlinkMessageCStruct,
-    ctypes.c_void_p
-)
+MessageCallback = ctypes.CFUNCTYPE(None, MavlinkMessageCStruct, ctypes.c_void_p)
 
 # ===== Setup Functions =====
 _cmavsdk_lib.mavsdk_mavlink_direct_create.argtypes = [ctypes.c_void_p]
@@ -215,7 +213,6 @@ _cmavsdk_lib.mavsdk_mavlink_direct_MavlinkMessage_destroy.argtypes = [
 _cmavsdk_lib.mavsdk_mavlink_direct_MavlinkMessage_destroy.restype = None
 
 
-
 _cmavsdk_lib.mavsdk_mavlink_direct_send_message.argtypes = [
     ctypes.c_void_p,
     MavlinkMessageCStruct,
@@ -226,14 +223,14 @@ _cmavsdk_lib.mavsdk_mavlink_direct_subscribe_message.argtypes = [
     ctypes.c_void_p,
     ctypes.c_char_p,
     MessageCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_mavlink_direct_subscribe_message.restype = ctypes.c_void_p
 # Unsubscribe
 _cmavsdk_lib.mavsdk_mavlink_direct_unsubscribe_message.argtypes = [
     ctypes.c_void_p,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_mavlink_direct_unsubscribe_message.restype = None

@@ -16,9 +16,11 @@ from ...cmavsdk_loader import _cmavsdk_lib
 
 # ===== Enums =====
 
+
 # ===== Result Enums =====
 class FtpResult(IntEnum):
     """Possible results returned for FTP commands"""
+
     UNKNOWN = 0
     SUCCESS = 1
     NEXT = 2
@@ -40,6 +42,7 @@ class ListDirectoryDataCStruct(ctypes.Structure):
     Internal C structure for ListDirectoryData.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("dirs", ctypes.POINTER(ctypes.c_char_p)),
         ("dirs_size", ctypes.c_size_t),
@@ -47,11 +50,13 @@ class ListDirectoryDataCStruct(ctypes.Structure):
         ("files_size", ctypes.c_size_t),
     ]
 
+
 class ProgressDataCStruct(ctypes.Structure):
     """
     Internal C structure for ProgressData.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("bytes_transferred", ctypes.c_uint32),
         ("total_bytes", ctypes.c_uint32),
@@ -72,15 +77,15 @@ class ListDirectoryData:
     def from_c_struct(cls, c_struct):
         """Convert from C structure to Python object"""
         instance = cls()
-        instance.dirs = c_struct.dirs.decode('utf-8')
-        instance.files = c_struct.files.decode('utf-8')
+        instance.dirs = c_struct.dirs.decode("utf-8")
+        instance.files = c_struct.files.decode("utf-8")
         return instance
 
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = ListDirectoryDataCStruct()
-        c_struct.dirs = self.dirs.encode('utf-8')
-        c_struct.files = self.files.encode('utf-8')
+        c_struct.dirs = self.dirs.encode("utf-8")
+        c_struct.files = self.files.encode("utf-8")
         return c_struct
 
     def __str__(self):
@@ -88,6 +93,7 @@ class ListDirectoryData:
         fields.append(f"dirs=[{len(self.dirs)} items]")
         fields.append(f"files=[{len(self.files)} items]")
         return f"ListDirectoryData({', '.join(fields)})"
+
 
 class ProgressData:
     """
@@ -120,7 +126,6 @@ class ProgressData:
         return f"ProgressData({', '.join(fields)})"
 
 
-
 # ===== Plugin =====
 class Ftp:
     """Implements file transfer functionality using MAVLink FTP."""
@@ -141,10 +146,18 @@ class Ftp:
         self._handle = self._lib.mavsdk_ftp_create(system_handle)
 
         if not self._handle:
-            raise RuntimeError("Failed to create Ftp plugin - C function returned null handle")
+            raise RuntimeError(
+                "Failed to create Ftp plugin - C function returned null handle"
+            )
 
-
-    def download_async(self, remote_file_path, local_dir, use_burst, callback: Callable, user_data: Any = None):
+    def download_async(
+        self,
+        remote_file_path,
+        local_dir,
+        use_burst,
+        callback: Callable,
+        user_data: Any = None,
+    ):
         """Downloads a file to local directory."""
 
         def c_callback(result, c_data, ud):
@@ -164,18 +177,12 @@ class Ftp:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_ftp_download_async(
-            self._handle,
-            remote_file_path,
-            local_dir,
-            use_burst,
-            cb,
-            None
+            self._handle, remote_file_path, local_dir, use_burst, cb, None
         )
 
-
-
-
-    def upload_async(self, local_file_path, remote_dir, callback: Callable, user_data: Any = None):
+    def upload_async(
+        self, local_file_path, remote_dir, callback: Callable, user_data: Any = None
+    ):
         """Uploads local file to remote directory."""
 
         def c_callback(result, c_data, ud):
@@ -195,17 +202,12 @@ class Ftp:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_ftp_upload_async(
-            self._handle,
-            local_file_path,
-            remote_dir,
-            cb,
-            None
+            self._handle, local_file_path, remote_dir, cb, None
         )
 
-
-
-
-    def list_directory_async(self, remote_dir, callback: Callable, user_data: Any = None):
+    def list_directory_async(
+        self, remote_dir, callback: Callable, user_data: Any = None
+    ):
         """Lists items from a remote directory."""
 
         def c_callback(result, c_data, ud):
@@ -224,13 +226,7 @@ class Ftp:
         cb = ListDirectoryCallback(c_callback)
         self._callbacks.append(cb)
 
-        self._lib.mavsdk_ftp_list_directory_async(
-            self._handle,
-            remote_dir,
-            cb,
-            None
-        )
-
+        self._lib.mavsdk_ftp_list_directory_async(self._handle, remote_dir, cb, None)
 
     def list_directory(self, remote_dir):
         """Get list_directory (blocking)"""
@@ -238,9 +234,7 @@ class Ftp:
         result_out = ListDirectoryDataCStruct()
 
         result_code = self._lib.mavsdk_ftp_list_directory(
-            self._handle,
-            remote_dir,
-            ctypes.byref(result_out)
+            self._handle, remote_dir, ctypes.byref(result_out)
         )
         result = FtpResult(result_code)
         if result != FtpResult.SUCCESS:
@@ -250,14 +244,14 @@ class Ftp:
         self._lib.mavsdk_ftp_ListDirectoryData_destroy(ctypes.byref(result_out))
         return py_result
 
-
-    def create_directory_async(self, remote_dir, callback: Callable, user_data: Any = None):
+    def create_directory_async(
+        self, remote_dir, callback: Callable, user_data: Any = None
+    ):
         """Creates a remote directory."""
 
         def c_callback(result, ud):
             try:
                 py_result = FtpResult(result)
-
 
                 callback(py_result, user_data)
 
@@ -267,17 +261,10 @@ class Ftp:
         cb = CreateDirectoryCallback(c_callback)
         self._callbacks.append(cb)
 
-        self._lib.mavsdk_ftp_create_directory_async(
-            self._handle,
-            remote_dir,
-            cb,
-            None
-        )
-
+        self._lib.mavsdk_ftp_create_directory_async(self._handle, remote_dir, cb, None)
 
     def create_directory(self, remote_dir):
         """Get create_directory (blocking)"""
-
 
         result_code = self._lib.mavsdk_ftp_create_directory(
             self._handle,
@@ -289,14 +276,14 @@ class Ftp:
 
         return result
 
-
-    def remove_directory_async(self, remote_dir, callback: Callable, user_data: Any = None):
+    def remove_directory_async(
+        self, remote_dir, callback: Callable, user_data: Any = None
+    ):
         """Removes a remote directory."""
 
         def c_callback(result, ud):
             try:
                 py_result = FtpResult(result)
-
 
                 callback(py_result, user_data)
 
@@ -306,17 +293,10 @@ class Ftp:
         cb = RemoveDirectoryCallback(c_callback)
         self._callbacks.append(cb)
 
-        self._lib.mavsdk_ftp_remove_directory_async(
-            self._handle,
-            remote_dir,
-            cb,
-            None
-        )
-
+        self._lib.mavsdk_ftp_remove_directory_async(self._handle, remote_dir, cb, None)
 
     def remove_directory(self, remote_dir):
         """Get remove_directory (blocking)"""
-
 
         result_code = self._lib.mavsdk_ftp_remove_directory(
             self._handle,
@@ -328,14 +308,14 @@ class Ftp:
 
         return result
 
-
-    def remove_file_async(self, remote_file_path, callback: Callable, user_data: Any = None):
+    def remove_file_async(
+        self, remote_file_path, callback: Callable, user_data: Any = None
+    ):
         """Removes a remote file."""
 
         def c_callback(result, ud):
             try:
                 py_result = FtpResult(result)
-
 
                 callback(py_result, user_data)
 
@@ -345,17 +325,10 @@ class Ftp:
         cb = RemoveFileCallback(c_callback)
         self._callbacks.append(cb)
 
-        self._lib.mavsdk_ftp_remove_file_async(
-            self._handle,
-            remote_file_path,
-            cb,
-            None
-        )
-
+        self._lib.mavsdk_ftp_remove_file_async(self._handle, remote_file_path, cb, None)
 
     def remove_file(self, remote_file_path):
         """Get remove_file (blocking)"""
-
 
         result_code = self._lib.mavsdk_ftp_remove_file(
             self._handle,
@@ -367,14 +340,18 @@ class Ftp:
 
         return result
 
-
-    def rename_async(self, remote_from_path, remote_to_path, callback: Callable, user_data: Any = None):
+    def rename_async(
+        self,
+        remote_from_path,
+        remote_to_path,
+        callback: Callable,
+        user_data: Any = None,
+    ):
         """Renames a remote file or remote directory."""
 
         def c_callback(result, ud):
             try:
                 py_result = FtpResult(result)
-
 
                 callback(py_result, user_data)
 
@@ -385,17 +362,11 @@ class Ftp:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_ftp_rename_async(
-            self._handle,
-            remote_from_path,
-            remote_to_path,
-            cb,
-            None
+            self._handle, remote_from_path, remote_to_path, cb, None
         )
-
 
     def rename(self, remote_from_path, remote_to_path):
         """Get rename (blocking)"""
-
 
         result_code = self._lib.mavsdk_ftp_rename(
             self._handle,
@@ -408,8 +379,13 @@ class Ftp:
 
         return result
 
-
-    def are_files_identical_async(self, local_file_path, remote_file_path, callback: Callable, user_data: Any = None):
+    def are_files_identical_async(
+        self,
+        local_file_path,
+        remote_file_path,
+        callback: Callable,
+        user_data: Any = None,
+    ):
         """Compares a local file to a remote file using a CRC32 checksum."""
 
         def c_callback(result, c_data, ud):
@@ -427,13 +403,8 @@ class Ftp:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_ftp_are_files_identical_async(
-            self._handle,
-            local_file_path,
-            remote_file_path,
-            cb,
-            None
+            self._handle, local_file_path, remote_file_path, cb, None
         )
-
 
     def are_files_identical(self, local_file_path, remote_file_path):
         """Get are_files_identical (blocking)"""
@@ -441,10 +412,7 @@ class Ftp:
         result_out = ctypes.c_bool()
 
         result_code = self._lib.mavsdk_ftp_are_files_identical(
-            self._handle,
-            local_file_path,
-            remote_file_path,
-            ctypes.byref(result_out)
+            self._handle, local_file_path, remote_file_path, ctypes.byref(result_out)
         )
         result = FtpResult(result_code)
         if result != FtpResult.SUCCESS:
@@ -452,11 +420,8 @@ class Ftp:
 
         return result_out.value
 
-
-
     def set_target_compid(self, compid):
         """Get set_target_compid (blocking)"""
-
 
         result_code = self._lib.mavsdk_ftp_set_target_compid(
             self._handle,
@@ -468,7 +433,6 @@ class Ftp:
 
         return result
 
-
     def destroy(self):
         """Destroy the plugin instance"""
         if self._handle:
@@ -478,50 +442,23 @@ class Ftp:
     def __del__(self):
         self.destroy()
 
+
 # ===== Callback Types =====
 DownloadCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ProgressDataCStruct,
-    ctypes.c_void_p
+    None, ctypes.c_int, ProgressDataCStruct, ctypes.c_void_p
 )
 UploadCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ProgressDataCStruct,
-    ctypes.c_void_p
+    None, ctypes.c_int, ProgressDataCStruct, ctypes.c_void_p
 )
 ListDirectoryCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ListDirectoryDataCStruct,
-    ctypes.c_void_p
+    None, ctypes.c_int, ListDirectoryDataCStruct, ctypes.c_void_p
 )
-CreateDirectoryCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-RemoveDirectoryCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-RemoveFileCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-RenameCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
+CreateDirectoryCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
+RemoveDirectoryCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
+RemoveFileCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
+RenameCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
 AreFilesIdenticalCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_bool,
-    ctypes.c_void_p
+    None, ctypes.c_int, ctypes.c_bool, ctypes.c_void_p
 )
 
 # ===== Setup Functions =====
@@ -548,7 +485,7 @@ _cmavsdk_lib.mavsdk_ftp_download_async.argtypes = [
     ctypes.c_char_p,
     ctypes.c_bool,
     DownloadCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_ftp_download_async.restype = None
@@ -558,7 +495,7 @@ _cmavsdk_lib.mavsdk_ftp_upload_async.argtypes = [
     ctypes.c_char_p,
     ctypes.c_char_p,
     UploadCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_ftp_upload_async.restype = None
@@ -567,7 +504,7 @@ _cmavsdk_lib.mavsdk_ftp_list_directory_async.argtypes = [
     ctypes.c_void_p,
     ctypes.c_char_p,
     ListDirectoryCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_ftp_list_directory_async.restype = None
@@ -575,7 +512,7 @@ _cmavsdk_lib.mavsdk_ftp_list_directory_async.restype = None
 _cmavsdk_lib.mavsdk_ftp_list_directory.argtypes = [
     ctypes.c_void_p,
     ctypes.c_char_p,
-    ctypes.POINTER(ListDirectoryDataCStruct)
+    ctypes.POINTER(ListDirectoryDataCStruct),
 ]
 
 _cmavsdk_lib.mavsdk_ftp_list_directory.restype = ctypes.c_int
@@ -583,7 +520,7 @@ _cmavsdk_lib.mavsdk_ftp_create_directory_async.argtypes = [
     ctypes.c_void_p,
     ctypes.c_char_p,
     CreateDirectoryCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_ftp_create_directory_async.restype = None
@@ -598,7 +535,7 @@ _cmavsdk_lib.mavsdk_ftp_remove_directory_async.argtypes = [
     ctypes.c_void_p,
     ctypes.c_char_p,
     RemoveDirectoryCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_ftp_remove_directory_async.restype = None
@@ -613,7 +550,7 @@ _cmavsdk_lib.mavsdk_ftp_remove_file_async.argtypes = [
     ctypes.c_void_p,
     ctypes.c_char_p,
     RemoveFileCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_ftp_remove_file_async.restype = None
@@ -629,7 +566,7 @@ _cmavsdk_lib.mavsdk_ftp_rename_async.argtypes = [
     ctypes.c_char_p,
     ctypes.c_char_p,
     RenameCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_ftp_rename_async.restype = None
@@ -646,7 +583,7 @@ _cmavsdk_lib.mavsdk_ftp_are_files_identical_async.argtypes = [
     ctypes.c_char_p,
     ctypes.c_char_p,
     AreFilesIdenticalCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_ftp_are_files_identical_async.restype = None
@@ -655,7 +592,7 @@ _cmavsdk_lib.mavsdk_ftp_are_files_identical.argtypes = [
     ctypes.c_void_p,
     ctypes.c_char_p,
     ctypes.c_char_p,
-    ctypes.POINTER(ctypes.c_bool)
+    ctypes.POINTER(ctypes.c_bool),
 ]
 
 _cmavsdk_lib.mavsdk_ftp_are_files_identical.restype = ctypes.c_int

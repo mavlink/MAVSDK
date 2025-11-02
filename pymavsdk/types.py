@@ -6,6 +6,7 @@ from typing import Optional
 
 class ConnectionError(ctypes.Structure):
     """Connection error information"""
+
     _fields_ = [
         ("error_description", ctypes.c_char_p),
         ("connection_handle", ctypes.c_void_p),
@@ -14,6 +15,7 @@ class ConnectionError(ctypes.Structure):
 
 class MavsdkMessage(ctypes.Structure):
     """MAVLink message representation"""
+
     _fields_ = [
         ("message_name", ctypes.c_char_p),
         ("system_id", ctypes.c_uint32),
@@ -26,6 +28,7 @@ class MavsdkMessage(ctypes.Structure):
 
 class ConnectionResultWithHandle(ctypes.Structure):
     """Connection result with handle"""
+
     _fields_ = [
         ("result", ctypes.c_int),  # mavsdk_connection_result_t
         ("handle", ctypes.c_void_p),
@@ -34,32 +37,22 @@ class ConnectionResultWithHandle(ctypes.Structure):
 
 # Callback type definitions
 ConnectionErrorCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.POINTER(ConnectionError),
-    ctypes.c_void_p
+    None, ctypes.POINTER(ConnectionError), ctypes.c_void_p
 )
 
-NewSystemCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_void_p
-)
+NewSystemCallback = ctypes.CFUNCTYPE(None, ctypes.c_void_p)
 
-InterceptJsonCallback = ctypes.CFUNCTYPE(
-    ctypes.c_int,
-    MavsdkMessage,
-    ctypes.c_void_p
-)
+InterceptJsonCallback = ctypes.CFUNCTYPE(ctypes.c_int, MavsdkMessage, ctypes.c_void_p)
 
 ComponentDiscoveredCallback = ctypes.CFUNCTYPE(
     None,
     ctypes.c_int,  # mavsdk_component_type_t
-    ctypes.c_void_p
+    ctypes.c_void_p,
 )
 
 ComponentDiscoveredIdCallback = ctypes.CFUNCTYPE(
     None,
     ctypes.c_int,  # mavsdk_component_type_t
     ctypes.c_uint8,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 )
-

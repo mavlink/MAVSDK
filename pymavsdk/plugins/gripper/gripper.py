@@ -18,8 +18,9 @@ from ...cmavsdk_loader import _cmavsdk_lib
 class GripperAction(IntEnum):
     """Gripper Actions.
 
- Available gripper actions are defined in mavlink under
- https://mavlink.io/en/messages/common.html#GRIPPER_ACTIONS"""
+    Available gripper actions are defined in mavlink under
+    https://mavlink.io/en/messages/common.html#GRIPPER_ACTIONS"""
+
     RELEASE = 0
     GRAB = 1
 
@@ -27,6 +28,7 @@ class GripperAction(IntEnum):
 # ===== Result Enums =====
 class GripperResult(IntEnum):
     """Possible results returned for gripper action requests."""
+
     UNKNOWN = 0
     SUCCESS = 1
     NO_SYSTEM = 2
@@ -61,8 +63,9 @@ class Gripper:
         self._handle = self._lib.mavsdk_gripper_create(system_handle)
 
         if not self._handle:
-            raise RuntimeError("Failed to create Gripper plugin - C function returned null handle")
-
+            raise RuntimeError(
+                "Failed to create Gripper plugin - C function returned null handle"
+            )
 
     def grab_async(self, instance, callback: Callable, user_data: Any = None):
         """Gripper grab cargo."""
@@ -70,7 +73,6 @@ class Gripper:
         def c_callback(result, ud):
             try:
                 py_result = GripperResult(result)
-
 
                 callback(py_result, user_data)
 
@@ -80,17 +82,10 @@ class Gripper:
         cb = GrabCallback(c_callback)
         self._callbacks.append(cb)
 
-        self._lib.mavsdk_gripper_grab_async(
-            self._handle,
-            instance,
-            cb,
-            None
-        )
-
+        self._lib.mavsdk_gripper_grab_async(self._handle, instance, cb, None)
 
     def grab(self, instance):
         """Get grab (blocking)"""
-
 
         result_code = self._lib.mavsdk_gripper_grab(
             self._handle,
@@ -102,14 +97,12 @@ class Gripper:
 
         return result
 
-
     def release_async(self, instance, callback: Callable, user_data: Any = None):
         """Gripper release cargo."""
 
         def c_callback(result, ud):
             try:
                 py_result = GripperResult(result)
-
 
                 callback(py_result, user_data)
 
@@ -119,17 +112,10 @@ class Gripper:
         cb = ReleaseCallback(c_callback)
         self._callbacks.append(cb)
 
-        self._lib.mavsdk_gripper_release_async(
-            self._handle,
-            instance,
-            cb,
-            None
-        )
-
+        self._lib.mavsdk_gripper_release_async(self._handle, instance, cb, None)
 
     def release(self, instance):
         """Get release (blocking)"""
-
 
         result_code = self._lib.mavsdk_gripper_release(
             self._handle,
@@ -141,7 +127,6 @@ class Gripper:
 
         return result
 
-
     def destroy(self):
         """Destroy the plugin instance"""
         if self._handle:
@@ -151,17 +136,10 @@ class Gripper:
     def __del__(self):
         self.destroy()
 
+
 # ===== Callback Types =====
-GrabCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-ReleaseCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
+GrabCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
+ReleaseCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
 
 # ===== Setup Functions =====
 _cmavsdk_lib.mavsdk_gripper_create.argtypes = [ctypes.c_void_p]
@@ -175,7 +153,7 @@ _cmavsdk_lib.mavsdk_gripper_grab_async.argtypes = [
     ctypes.c_void_p,
     ctypes.c_uint32,
     GrabCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_gripper_grab_async.restype = None
@@ -190,7 +168,7 @@ _cmavsdk_lib.mavsdk_gripper_release_async.argtypes = [
     ctypes.c_void_p,
     ctypes.c_uint32,
     ReleaseCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_gripper_release_async.restype = None

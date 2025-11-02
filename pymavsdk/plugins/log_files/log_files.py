@@ -17,9 +17,11 @@ from ...cmavsdk_loader import _cmavsdk_lib
 
 # ===== Enums =====
 
+
 # ===== Result Enums =====
 class LogFilesResult(IntEnum):
     """Possible results returned for calibration commands"""
+
     UNKNOWN = 0
     SUCCESS = 1
     NEXT = 2
@@ -36,15 +38,18 @@ class ProgressDataCStruct(ctypes.Structure):
     Internal C structure for ProgressData.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("progress", ctypes.c_float),
     ]
+
 
 class EntryCStruct(ctypes.Structure):
     """
     Internal C structure for Entry.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("id", ctypes.c_uint32),
         ("date", ctypes.c_char_p),
@@ -79,6 +84,7 @@ class ProgressData:
         fields.append(f"progress={self.progress}")
         return f"ProgressData({', '.join(fields)})"
 
+
 class Entry:
     """
     Log file entry type.
@@ -94,7 +100,7 @@ class Entry:
         """Convert from C structure to Python object"""
         instance = cls()
         instance.id = c_struct.id
-        instance.date = c_struct.date.decode('utf-8')
+        instance.date = c_struct.date.decode("utf-8")
         instance.size_bytes = c_struct.size_bytes
         return instance
 
@@ -102,7 +108,7 @@ class Entry:
         """Convert to C structure for C library calls"""
         c_struct = EntryCStruct()
         c_struct.id = self.id
-        c_struct.date = self.date.encode('utf-8')
+        c_struct.date = self.date.encode("utf-8")
         c_struct.size_bytes = self.size_bytes
         return c_struct
 
@@ -114,11 +120,10 @@ class Entry:
         return f"Entry({', '.join(fields)})"
 
 
-
 # ===== Plugin =====
 class LogFiles:
     """Allow to download log files from the vehicle after a flight is complete.
- For log streaming during flight check the logging plugin."""
+    For log streaming during flight check the logging plugin."""
 
     def __init__(self, system):
         self._lib = _cmavsdk_lib
@@ -136,8 +141,9 @@ class LogFiles:
         self._handle = self._lib.mavsdk_log_files_create(system_handle)
 
         if not self._handle:
-            raise RuntimeError("Failed to create LogFiles plugin - C function returned null handle")
-
+            raise RuntimeError(
+                "Failed to create LogFiles plugin - C function returned null handle"
+            )
 
     def get_entries_async(self, callback: Callable, user_data: Any = None):
         """Get List of log files."""
@@ -161,12 +167,7 @@ class LogFiles:
         cb = GetEntriesCallback(c_callback)
         self._callbacks.append(cb)
 
-        self._lib.mavsdk_log_files_get_entries_async(
-            self._handle,
-            cb,
-            None
-        )
-
+        self._lib.mavsdk_log_files_get_entries_async(self._handle, cb, None)
 
     def get_entries(self):
         """Get get_entries (blocking)"""
@@ -175,9 +176,7 @@ class LogFiles:
         size = ctypes.c_size_t()
 
         result_code = self._lib.mavsdk_log_files_get_entries(
-            self._handle,
-            ctypes.byref(result_ptr),
-            ctypes.byref(size)
+            self._handle, ctypes.byref(result_ptr), ctypes.byref(size)
         )
         result = LogFilesResult(result_code)
         if result != LogFilesResult.SUCCESS:
@@ -187,8 +186,9 @@ class LogFiles:
         self._lib.mavsdk_log_files_Entry_destroy(result_ptr)
         return py_result
 
-
-    def download_log_file_async(self, entry, path, callback: Callable, user_data: Any = None):
+    def download_log_file_async(
+        self, entry, path, callback: Callable, user_data: Any = None
+    ):
         """Download log file."""
 
         def c_callback(result, c_data, ud):
@@ -208,20 +208,11 @@ class LogFiles:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_log_files_download_log_file_async(
-            self._handle,
-            entry,
-            path,
-            cb,
-            None
+            self._handle, entry, path, cb, None
         )
-
-
-
-
 
     def erase_all_log_files(self):
         """Get erase_all_log_files (blocking)"""
-
 
         result_code = self._lib.mavsdk_log_files_erase_all_log_files(
             self._handle,
@@ -232,7 +223,6 @@ class LogFiles:
 
         return result
 
-
     def destroy(self):
         """Destroy the plugin instance"""
         if self._handle:
@@ -242,19 +232,13 @@ class LogFiles:
     def __del__(self):
         self.destroy()
 
+
 # ===== Callback Types =====
 GetEntriesCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.POINTER(EntryCStruct),
-    ctypes.c_size_t,
-    ctypes.c_void_p
+    None, ctypes.c_int, ctypes.POINTER(EntryCStruct), ctypes.c_size_t, ctypes.c_void_p
 )
 DownloadLogFileCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ProgressDataCStruct,
-    ctypes.c_void_p
+    None, ctypes.c_int, ProgressDataCStruct, ctypes.c_void_p
 )
 
 # ===== Setup Functions =====
@@ -269,16 +253,14 @@ _cmavsdk_lib.mavsdk_log_files_ProgressData_destroy.argtypes = [
 ]
 _cmavsdk_lib.mavsdk_log_files_ProgressData_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_log_files_Entry_destroy.argtypes = [
-    ctypes.POINTER(EntryCStruct)
-]
+_cmavsdk_lib.mavsdk_log_files_Entry_destroy.argtypes = [ctypes.POINTER(EntryCStruct)]
 _cmavsdk_lib.mavsdk_log_files_Entry_destroy.restype = None
 
 
 _cmavsdk_lib.mavsdk_log_files_get_entries_async.argtypes = [
     ctypes.c_void_p,
     GetEntriesCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_log_files_get_entries_async.restype = None
@@ -286,7 +268,7 @@ _cmavsdk_lib.mavsdk_log_files_get_entries_async.restype = None
 _cmavsdk_lib.mavsdk_log_files_get_entries.argtypes = [
     ctypes.c_void_p,
     ctypes.POINTER(ctypes.POINTER(EntryCStruct)),
-    ctypes.POINTER(ctypes.c_size_t)
+    ctypes.POINTER(ctypes.c_size_t),
 ]
 
 _cmavsdk_lib.mavsdk_log_files_get_entries.restype = ctypes.c_int
@@ -295,7 +277,7 @@ _cmavsdk_lib.mavsdk_log_files_download_log_file_async.argtypes = [
     EntryCStruct,
     ctypes.c_char_p,
     DownloadLogFileCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_log_files_download_log_file_async.restype = None

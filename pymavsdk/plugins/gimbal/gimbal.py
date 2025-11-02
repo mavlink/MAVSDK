@@ -17,17 +17,22 @@ from ...cmavsdk_loader import _cmavsdk_lib
 # ===== Enums =====
 class GimbalMode(IntEnum):
     """Gimbal mode type."""
+
     YAW_FOLLOW = 0
     YAW_LOCK = 1
 
+
 class ControlMode(IntEnum):
     """Control mode"""
+
     NONE = 0
     PRIMARY = 1
     SECONDARY = 2
 
+
 class SendMode(IntEnum):
     """The send mode type"""
+
     ONCE = 0
     STREAM = 1
 
@@ -35,6 +40,7 @@ class SendMode(IntEnum):
 # ===== Result Enums =====
 class GimbalResult(IntEnum):
     """Possible results returned for gimbal commands."""
+
     UNKNOWN = 0
     SUCCESS = 1
     ERROR = 2
@@ -50,6 +56,7 @@ class QuaternionCStruct(ctypes.Structure):
     Internal C structure for Quaternion.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("w", ctypes.c_float),
         ("x", ctypes.c_float),
@@ -57,33 +64,39 @@ class QuaternionCStruct(ctypes.Structure):
         ("z", ctypes.c_float),
     ]
 
+
 class EulerAngleCStruct(ctypes.Structure):
     """
     Internal C structure for EulerAngle.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("roll_deg", ctypes.c_float),
         ("pitch_deg", ctypes.c_float),
         ("yaw_deg", ctypes.c_float),
     ]
 
+
 class AngularVelocityBodyCStruct(ctypes.Structure):
     """
     Internal C structure for AngularVelocityBody.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("roll_rad_s", ctypes.c_float),
         ("pitch_rad_s", ctypes.c_float),
         ("yaw_rad_s", ctypes.c_float),
     ]
 
+
 class AttitudeCStruct(ctypes.Structure):
     """
     Internal C structure for Attitude.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("gimbal_id", ctypes.c_int32),
         ("euler_angle_forward", EulerAngleCStruct),
@@ -94,11 +107,13 @@ class AttitudeCStruct(ctypes.Structure):
         ("timestamp_us", ctypes.c_uint64),
     ]
 
+
 class GimbalItemCStruct(ctypes.Structure):
     """
     Internal C structure for GimbalItem.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("gimbal_id", ctypes.c_int32),
         ("vendor_name", ctypes.c_char_p),
@@ -108,21 +123,25 @@ class GimbalItemCStruct(ctypes.Structure):
         ("gimbal_device_id", ctypes.c_int32),
     ]
 
+
 class GimbalListCStruct(ctypes.Structure):
     """
     Internal C structure for GimbalList.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("gimbals", ctypes.POINTER(GimbalItemCStruct)),
         ("gimbals_size", ctypes.c_size_t),
     ]
+
 
 class ControlStatusCStruct(ctypes.Structure):
     """
     Internal C structure for ControlStatus.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("gimbal_id", ctypes.c_int32),
         ("control_mode", ctypes.c_int),
@@ -136,14 +155,14 @@ class ControlStatusCStruct(ctypes.Structure):
 # ===== Structures =====
 class Quaternion:
     """
-    Quaternion type.
+       Quaternion type.
 
- All rotations and axis systems follow the right-hand rule.
- The Hamilton quaternion product definition is used.
- A zero-rotation quaternion is represented by (1,0,0,0).
- The quaternion could also be written as w + xi + yj + zk.
+    All rotations and axis systems follow the right-hand rule.
+    The Hamilton quaternion product definition is used.
+    A zero-rotation quaternion is represented by (1,0,0,0).
+    The quaternion could also be written as w + xi + yj + zk.
 
- For more info see: https://en.wikipedia.org/wiki/Quaternion
+    For more info see: https://en.wikipedia.org/wiki/Quaternion
     """
 
     def __init__(self, w=None, x=None, y=None, z=None):
@@ -179,15 +198,16 @@ class Quaternion:
         fields.append(f"z={self.z}")
         return f"Quaternion({', '.join(fields)})"
 
+
 class EulerAngle:
     """
-    Euler angle type.
+       Euler angle type.
 
- All rotations and axis systems follow the right-hand rule.
- The Euler angles are converted using the 3-1-2 sequence instead of standard 3-2-1 in order
- to avoid the gimbal lock at 90 degrees down.
+    All rotations and axis systems follow the right-hand rule.
+    The Euler angles are converted using the 3-1-2 sequence instead of standard 3-2-1 in order
+    to avoid the gimbal lock at 90 degrees down.
 
- For more info see https://en.wikipedia.org/wiki/Euler_angles
+    For more info see https://en.wikipedia.org/wiki/Euler_angles
     """
 
     def __init__(self, roll_deg=None, pitch_deg=None, yaw_deg=None):
@@ -218,6 +238,7 @@ class EulerAngle:
         fields.append(f"pitch_deg={self.pitch_deg}")
         fields.append(f"yaw_deg={self.yaw_deg}")
         return f"EulerAngle({', '.join(fields)})"
+
 
 class AngularVelocityBody:
     """
@@ -253,12 +274,22 @@ class AngularVelocityBody:
         fields.append(f"yaw_rad_s={self.yaw_rad_s}")
         return f"AngularVelocityBody({', '.join(fields)})"
 
+
 class Attitude:
     """
     Gimbal attitude type
     """
 
-    def __init__(self, gimbal_id=None, euler_angle_forward=None, quaternion_forward=None, euler_angle_north=None, quaternion_north=None, angular_velocity=None, timestamp_us=None):
+    def __init__(
+        self,
+        gimbal_id=None,
+        euler_angle_forward=None,
+        quaternion_forward=None,
+        euler_angle_north=None,
+        quaternion_north=None,
+        angular_velocity=None,
+        timestamp_us=None,
+    ):
         self.gimbal_id = gimbal_id
         self.euler_angle_forward = euler_angle_forward
         self.quaternion_forward = quaternion_forward
@@ -272,11 +303,19 @@ class Attitude:
         """Convert from C structure to Python object"""
         instance = cls()
         instance.gimbal_id = c_struct.gimbal_id
-        instance.euler_angle_forward = EulerAngle.from_c_struct(c_struct.euler_angle_forward)
-        instance.quaternion_forward = Quaternion.from_c_struct(c_struct.quaternion_forward)
-        instance.euler_angle_north = EulerAngle.from_c_struct(c_struct.euler_angle_north)
+        instance.euler_angle_forward = EulerAngle.from_c_struct(
+            c_struct.euler_angle_forward
+        )
+        instance.quaternion_forward = Quaternion.from_c_struct(
+            c_struct.quaternion_forward
+        )
+        instance.euler_angle_north = EulerAngle.from_c_struct(
+            c_struct.euler_angle_north
+        )
         instance.quaternion_north = Quaternion.from_c_struct(c_struct.quaternion_north)
-        instance.angular_velocity = AngularVelocityBody.from_c_struct(c_struct.angular_velocity)
+        instance.angular_velocity = AngularVelocityBody.from_c_struct(
+            c_struct.angular_velocity
+        )
         instance.timestamp_us = c_struct.timestamp_us
         return instance
 
@@ -303,12 +342,21 @@ class Attitude:
         fields.append(f"timestamp_us={self.timestamp_us}")
         return f"Attitude({', '.join(fields)})"
 
+
 class GimbalItem:
     """
     Gimbal list item
     """
 
-    def __init__(self, gimbal_id=None, vendor_name=None, model_name=None, custom_name=None, gimbal_manager_component_id=None, gimbal_device_id=None):
+    def __init__(
+        self,
+        gimbal_id=None,
+        vendor_name=None,
+        model_name=None,
+        custom_name=None,
+        gimbal_manager_component_id=None,
+        gimbal_device_id=None,
+    ):
         self.gimbal_id = gimbal_id
         self.vendor_name = vendor_name
         self.model_name = model_name
@@ -321,9 +369,9 @@ class GimbalItem:
         """Convert from C structure to Python object"""
         instance = cls()
         instance.gimbal_id = c_struct.gimbal_id
-        instance.vendor_name = c_struct.vendor_name.decode('utf-8')
-        instance.model_name = c_struct.model_name.decode('utf-8')
-        instance.custom_name = c_struct.custom_name.decode('utf-8')
+        instance.vendor_name = c_struct.vendor_name.decode("utf-8")
+        instance.model_name = c_struct.model_name.decode("utf-8")
+        instance.custom_name = c_struct.custom_name.decode("utf-8")
         instance.gimbal_manager_component_id = c_struct.gimbal_manager_component_id
         instance.gimbal_device_id = c_struct.gimbal_device_id
         return instance
@@ -332,9 +380,9 @@ class GimbalItem:
         """Convert to C structure for C library calls"""
         c_struct = GimbalItemCStruct()
         c_struct.gimbal_id = self.gimbal_id
-        c_struct.vendor_name = self.vendor_name.encode('utf-8')
-        c_struct.model_name = self.model_name.encode('utf-8')
-        c_struct.custom_name = self.custom_name.encode('utf-8')
+        c_struct.vendor_name = self.vendor_name.encode("utf-8")
+        c_struct.model_name = self.model_name.encode("utf-8")
+        c_struct.custom_name = self.custom_name.encode("utf-8")
         c_struct.gimbal_manager_component_id = self.gimbal_manager_component_id
         c_struct.gimbal_device_id = self.gimbal_device_id
         return c_struct
@@ -349,6 +397,7 @@ class GimbalItem:
         fields.append(f"gimbal_device_id={self.gimbal_device_id}")
         return f"GimbalItem({', '.join(fields)})"
 
+
 class GimbalList:
     """
     Gimbal list
@@ -362,7 +411,10 @@ class GimbalList:
         """Convert from C structure to Python object"""
         instance = cls()
         if c_struct.gimbals_size > 0:
-            instance.gimbals = [GimbalItem.from_c_struct(c_struct.gimbals[i]) for i in range(c_struct.gimbals_size)]
+            instance.gimbals = [
+                GimbalItem.from_c_struct(c_struct.gimbals[i])
+                for i in range(c_struct.gimbals_size)
+            ]
         else:
             instance.gimbals = []
         return instance
@@ -383,12 +435,21 @@ class GimbalList:
         fields.append(f"gimbals={self.gimbals}")
         return f"GimbalList({', '.join(fields)})"
 
+
 class ControlStatus:
     """
     Control status
     """
 
-    def __init__(self, gimbal_id=None, control_mode=None, sysid_primary_control=None, compid_primary_control=None, sysid_secondary_control=None, compid_secondary_control=None):
+    def __init__(
+        self,
+        gimbal_id=None,
+        control_mode=None,
+        sysid_primary_control=None,
+        compid_primary_control=None,
+        sysid_secondary_control=None,
+        compid_secondary_control=None,
+    ):
         self.gimbal_id = gimbal_id
         self.control_mode = control_mode
         self.sysid_primary_control = sysid_primary_control
@@ -430,7 +491,6 @@ class ControlStatus:
         return f"ControlStatus({', '.join(fields)})"
 
 
-
 # ===== Plugin =====
 class Gimbal:
     """Provide control over a gimbal."""
@@ -451,22 +511,32 @@ class Gimbal:
         self._handle = self._lib.mavsdk_gimbal_create(system_handle)
 
         if not self._handle:
-            raise RuntimeError("Failed to create Gimbal plugin - C function returned null handle")
+            raise RuntimeError(
+                "Failed to create Gimbal plugin - C function returned null handle"
+            )
 
-
-    def set_angles_async(self, gimbal_id, roll_deg, pitch_deg, yaw_deg, gimbal_mode, send_mode, callback: Callable, user_data: Any = None):
+    def set_angles_async(
+        self,
+        gimbal_id,
+        roll_deg,
+        pitch_deg,
+        yaw_deg,
+        gimbal_mode,
+        send_mode,
+        callback: Callable,
+        user_data: Any = None,
+    ):
         """Set gimbal roll, pitch and yaw angles.
 
- This sets the desired roll, pitch and yaw angles of a gimbal.
- Will return when the command is accepted, however, it might
- take the gimbal longer to actually be set to the new angles.
+        This sets the desired roll, pitch and yaw angles of a gimbal.
+        Will return when the command is accepted, however, it might
+        take the gimbal longer to actually be set to the new angles.
 
- Note that the roll angle needs to be set to 0 when send_mode is Once."""
+        Note that the roll angle needs to be set to 0 when send_mode is Once."""
 
         def c_callback(result, ud):
             try:
                 py_result = GimbalResult(result)
-
 
                 callback(py_result, user_data)
 
@@ -485,13 +555,13 @@ class Gimbal:
             gimbal_mode,
             send_mode,
             cb,
-            None
+            None,
         )
 
-
-    def set_angles(self, gimbal_id, roll_deg, pitch_deg, yaw_deg, gimbal_mode, send_mode):
+    def set_angles(
+        self, gimbal_id, roll_deg, pitch_deg, yaw_deg, gimbal_mode, send_mode
+    ):
         """Get set_angles (blocking)"""
-
 
         result_code = self._lib.mavsdk_gimbal_set_angles(
             self._handle,
@@ -508,20 +578,28 @@ class Gimbal:
 
         return result
 
-
-    def set_angular_rates_async(self, gimbal_id, roll_rate_deg_s, pitch_rate_deg_s, yaw_rate_deg_s, gimbal_mode, send_mode, callback: Callable, user_data: Any = None):
+    def set_angular_rates_async(
+        self,
+        gimbal_id,
+        roll_rate_deg_s,
+        pitch_rate_deg_s,
+        yaw_rate_deg_s,
+        gimbal_mode,
+        send_mode,
+        callback: Callable,
+        user_data: Any = None,
+    ):
         """Set gimbal angular rates.
 
- This sets the desired angular rates around roll, pitch and yaw axes of a gimbal.
- Will return when the command is accepted, however, it might
- take the gimbal longer to actually reach the angular rate.
+        This sets the desired angular rates around roll, pitch and yaw axes of a gimbal.
+        Will return when the command is accepted, however, it might
+        take the gimbal longer to actually reach the angular rate.
 
- Note that the roll angle needs to be set to 0 when send_mode is Once."""
+        Note that the roll angle needs to be set to 0 when send_mode is Once."""
 
         def c_callback(result, ud):
             try:
                 py_result = GimbalResult(result)
-
 
                 callback(py_result, user_data)
 
@@ -540,13 +618,19 @@ class Gimbal:
             gimbal_mode,
             send_mode,
             cb,
-            None
+            None,
         )
 
-
-    def set_angular_rates(self, gimbal_id, roll_rate_deg_s, pitch_rate_deg_s, yaw_rate_deg_s, gimbal_mode, send_mode):
+    def set_angular_rates(
+        self,
+        gimbal_id,
+        roll_rate_deg_s,
+        pitch_rate_deg_s,
+        yaw_rate_deg_s,
+        gimbal_mode,
+        send_mode,
+    ):
         """Get set_angular_rates (blocking)"""
-
 
         result_code = self._lib.mavsdk_gimbal_set_angular_rates(
             self._handle,
@@ -563,20 +647,26 @@ class Gimbal:
 
         return result
 
-
-    def set_roi_location_async(self, gimbal_id, latitude_deg, longitude_deg, altitude_m, callback: Callable, user_data: Any = None):
+    def set_roi_location_async(
+        self,
+        gimbal_id,
+        latitude_deg,
+        longitude_deg,
+        altitude_m,
+        callback: Callable,
+        user_data: Any = None,
+    ):
         """Set gimbal region of interest (ROI).
 
- This sets a region of interest that the gimbal will point to.
- The gimbal will continue to point to the specified region until it
- receives a new command.
- The function will return when the command is accepted, however, it might
- take the gimbal longer to actually rotate to the ROI."""
+        This sets a region of interest that the gimbal will point to.
+        The gimbal will continue to point to the specified region until it
+        receives a new command.
+        The function will return when the command is accepted, however, it might
+        take the gimbal longer to actually rotate to the ROI."""
 
         def c_callback(result, ud):
             try:
                 py_result = GimbalResult(result)
-
 
                 callback(py_result, user_data)
 
@@ -587,19 +677,11 @@ class Gimbal:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_gimbal_set_roi_location_async(
-            self._handle,
-            gimbal_id,
-            latitude_deg,
-            longitude_deg,
-            altitude_m,
-            cb,
-            None
+            self._handle, gimbal_id, latitude_deg, longitude_deg, altitude_m, cb, None
         )
-
 
     def set_roi_location(self, gimbal_id, latitude_deg, longitude_deg, altitude_m):
         """Get set_roi_location (blocking)"""
-
 
         result_code = self._lib.mavsdk_gimbal_set_roi_location(
             self._handle,
@@ -614,22 +696,22 @@ class Gimbal:
 
         return result
 
-
-    def take_control_async(self, gimbal_id, control_mode, callback: Callable, user_data: Any = None):
+    def take_control_async(
+        self, gimbal_id, control_mode, callback: Callable, user_data: Any = None
+    ):
         """Take control.
 
- There can be only two components in control of a gimbal at any given time.
- One with "primary" control, and one with "secondary" control. The way the
- secondary control is implemented is not specified and hence depends on the
- vehicle.
+        There can be only two components in control of a gimbal at any given time.
+        One with "primary" control, and one with "secondary" control. The way the
+        secondary control is implemented is not specified and hence depends on the
+        vehicle.
 
- Components are expected to be cooperative, which means that they can
- override each other and should therefore do it carefully."""
+        Components are expected to be cooperative, which means that they can
+        override each other and should therefore do it carefully."""
 
         def c_callback(result, ud):
             try:
                 py_result = GimbalResult(result)
-
 
                 callback(py_result, user_data)
 
@@ -640,17 +722,11 @@ class Gimbal:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_gimbal_take_control_async(
-            self._handle,
-            gimbal_id,
-            control_mode,
-            cb,
-            None
+            self._handle, gimbal_id, control_mode, cb, None
         )
-
 
     def take_control(self, gimbal_id, control_mode):
         """Get take_control (blocking)"""
-
 
         result_code = self._lib.mavsdk_gimbal_take_control(
             self._handle,
@@ -663,16 +739,16 @@ class Gimbal:
 
         return result
 
-
-    def release_control_async(self, gimbal_id, callback: Callable, user_data: Any = None):
+    def release_control_async(
+        self, gimbal_id, callback: Callable, user_data: Any = None
+    ):
         """Release control.
 
- Release control, such that other components can control the gimbal."""
+        Release control, such that other components can control the gimbal."""
 
         def c_callback(result, ud):
             try:
                 py_result = GimbalResult(result)
-
 
                 callback(py_result, user_data)
 
@@ -682,17 +758,10 @@ class Gimbal:
         cb = ReleaseControlCallback(c_callback)
         self._callbacks.append(cb)
 
-        self._lib.mavsdk_gimbal_release_control_async(
-            self._handle,
-            gimbal_id,
-            cb,
-            None
-        )
-
+        self._lib.mavsdk_gimbal_release_control_async(self._handle, gimbal_id, cb, None)
 
     def release_control(self, gimbal_id):
         """Get release_control (blocking)"""
-
 
         result_code = self._lib.mavsdk_gimbal_release_control(
             self._handle,
@@ -704,16 +773,14 @@ class Gimbal:
 
         return result
 
-
     def subscribe_gimbal_list(self, callback: Callable, user_data: Any = None):
         """Subscribe to list of gimbals.
 
- This allows to find out what gimbals are connected to the system.
- Based on the gimbal ID, we can then address a specific gimbal."""
+        This allows to find out what gimbals are connected to the system.
+        Based on the gimbal ID, we can then address a specific gimbal."""
 
         def c_callback(c_data, ud):
             try:
-
                 py_data = GimbalList.from_c_struct(c_data)
 
                 self._lib.mavsdk_gimbal_GimbalList_destroy(ctypes.byref(c_data))
@@ -726,43 +793,32 @@ class Gimbal:
         cb = GimbalListCallback(c_callback)
         self._callbacks.append(cb)
 
-        return self._lib.mavsdk_gimbal_subscribe_gimbal_list(
-            self._handle,
-            cb,
-            None
-        )
+        return self._lib.mavsdk_gimbal_subscribe_gimbal_list(self._handle, cb, None)
 
     def unsubscribe_gimbal_list(self, handle: ctypes.c_void_p):
         """Unsubscribe from gimbal_list"""
-        self._lib.mavsdk_gimbal_unsubscribe_gimbal_list(
-            self._handle, handle
-        )
+        self._lib.mavsdk_gimbal_unsubscribe_gimbal_list(self._handle, handle)
 
     def gimbal_list(self):
         """Get gimbal_list (blocking)"""
 
         result_out = GimbalListCStruct()
 
-        self._lib.mavsdk_gimbal_gimbal_list(
-            self._handle,
-            ctypes.byref(result_out)
-        )
+        self._lib.mavsdk_gimbal_gimbal_list(self._handle, ctypes.byref(result_out))
 
         py_result = GimbalList.from_c_struct(result_out)
         self._lib.mavsdk_gimbal_GimbalList_destroy(ctypes.byref(result_out))
         return py_result
 
-
     def subscribe_control_status(self, callback: Callable, user_data: Any = None):
         """Subscribe to control status updates.
 
- This allows a component to know if it has primary, secondary or
- no control over the gimbal. Also, it gives the system and component ids
- of the other components in control (if any)."""
+        This allows a component to know if it has primary, secondary or
+        no control over the gimbal. Also, it gives the system and component ids
+        of the other components in control (if any)."""
 
         def c_callback(c_data, ud):
             try:
-
                 py_data = ControlStatus.from_c_struct(c_data)
 
                 self._lib.mavsdk_gimbal_ControlStatus_destroy(ctypes.byref(c_data))
@@ -775,20 +831,11 @@ class Gimbal:
         cb = ControlStatusCallback(c_callback)
         self._callbacks.append(cb)
 
-        return self._lib.mavsdk_gimbal_subscribe_control_status(
-            self._handle,
-            cb,
-            None
-        )
+        return self._lib.mavsdk_gimbal_subscribe_control_status(self._handle, cb, None)
 
     def unsubscribe_control_status(self, handle: ctypes.c_void_p):
         """Unsubscribe from control_status"""
-        self._lib.mavsdk_gimbal_unsubscribe_control_status(
-            self._handle, handle
-        )
-
-
-
+        self._lib.mavsdk_gimbal_unsubscribe_control_status(self._handle, handle)
 
     def get_control_status(self, gimbal_id):
         """Get get_control_status (blocking)"""
@@ -796,9 +843,7 @@ class Gimbal:
         result_out = ControlStatusCStruct()
 
         result_code = self._lib.mavsdk_gimbal_get_control_status(
-            self._handle,
-            gimbal_id,
-            ctypes.byref(result_out)
+            self._handle, gimbal_id, ctypes.byref(result_out)
         )
         result = GimbalResult(result_code)
         if result != GimbalResult.SUCCESS:
@@ -808,15 +853,13 @@ class Gimbal:
         self._lib.mavsdk_gimbal_ControlStatus_destroy(ctypes.byref(result_out))
         return py_result
 
-
     def subscribe_attitude(self, callback: Callable, user_data: Any = None):
         """Subscribe to attitude updates.
 
- This gets you the gimbal's attitude and angular rate."""
+        This gets you the gimbal's attitude and angular rate."""
 
         def c_callback(c_data, ud):
             try:
-
                 py_data = Attitude.from_c_struct(c_data)
 
                 self._lib.mavsdk_gimbal_Attitude_destroy(ctypes.byref(c_data))
@@ -829,20 +872,11 @@ class Gimbal:
         cb = AttitudeCallback(c_callback)
         self._callbacks.append(cb)
 
-        return self._lib.mavsdk_gimbal_subscribe_attitude(
-            self._handle,
-            cb,
-            None
-        )
+        return self._lib.mavsdk_gimbal_subscribe_attitude(self._handle, cb, None)
 
     def unsubscribe_attitude(self, handle: ctypes.c_void_p):
         """Unsubscribe from attitude"""
-        self._lib.mavsdk_gimbal_unsubscribe_attitude(
-            self._handle, handle
-        )
-
-
-
+        self._lib.mavsdk_gimbal_unsubscribe_attitude(self._handle, handle)
 
     def get_attitude(self, gimbal_id):
         """Get get_attitude (blocking)"""
@@ -850,9 +884,7 @@ class Gimbal:
         result_out = AttitudeCStruct()
 
         result_code = self._lib.mavsdk_gimbal_get_attitude(
-            self._handle,
-            gimbal_id,
-            ctypes.byref(result_out)
+            self._handle, gimbal_id, ctypes.byref(result_out)
         )
         result = GimbalResult(result_code)
         if result != GimbalResult.SUCCESS:
@@ -861,7 +893,6 @@ class Gimbal:
         py_result = Attitude.from_c_struct(result_out)
         self._lib.mavsdk_gimbal_Attitude_destroy(ctypes.byref(result_out))
         return py_result
-
 
     def destroy(self):
         """Destroy the plugin instance"""
@@ -872,47 +903,16 @@ class Gimbal:
     def __del__(self):
         self.destroy()
 
+
 # ===== Callback Types =====
-SetAnglesCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-SetAngularRatesCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-SetRoiLocationCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-TakeControlCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-ReleaseControlCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-GimbalListCallback = ctypes.CFUNCTYPE(
-    None,
-    GimbalListCStruct,
-    ctypes.c_void_p
-)
-ControlStatusCallback = ctypes.CFUNCTYPE(
-    None,
-    ControlStatusCStruct,
-    ctypes.c_void_p
-)
-AttitudeCallback = ctypes.CFUNCTYPE(
-    None,
-    AttitudeCStruct,
-    ctypes.c_void_p
-)
+SetAnglesCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
+SetAngularRatesCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
+SetRoiLocationCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
+TakeControlCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
+ReleaseControlCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
+GimbalListCallback = ctypes.CFUNCTYPE(None, GimbalListCStruct, ctypes.c_void_p)
+ControlStatusCallback = ctypes.CFUNCTYPE(None, ControlStatusCStruct, ctypes.c_void_p)
+AttitudeCallback = ctypes.CFUNCTYPE(None, AttitudeCStruct, ctypes.c_void_p)
 
 # ===== Setup Functions =====
 _cmavsdk_lib.mavsdk_gimbal_create.argtypes = [ctypes.c_void_p]
@@ -936,9 +936,7 @@ _cmavsdk_lib.mavsdk_gimbal_AngularVelocityBody_destroy.argtypes = [
 ]
 _cmavsdk_lib.mavsdk_gimbal_AngularVelocityBody_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_gimbal_Attitude_destroy.argtypes = [
-    ctypes.POINTER(AttitudeCStruct)
-]
+_cmavsdk_lib.mavsdk_gimbal_Attitude_destroy.argtypes = [ctypes.POINTER(AttitudeCStruct)]
 _cmavsdk_lib.mavsdk_gimbal_Attitude_destroy.restype = None
 
 _cmavsdk_lib.mavsdk_gimbal_GimbalItem_destroy.argtypes = [
@@ -966,7 +964,7 @@ _cmavsdk_lib.mavsdk_gimbal_set_angles_async.argtypes = [
     ctypes.c_int,
     ctypes.c_int,
     SetAnglesCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_gimbal_set_angles_async.restype = None
@@ -991,7 +989,7 @@ _cmavsdk_lib.mavsdk_gimbal_set_angular_rates_async.argtypes = [
     ctypes.c_int,
     ctypes.c_int,
     SetAngularRatesCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_gimbal_set_angular_rates_async.restype = None
@@ -1014,7 +1012,7 @@ _cmavsdk_lib.mavsdk_gimbal_set_roi_location_async.argtypes = [
     ctypes.c_double,
     ctypes.c_float,
     SetRoiLocationCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_gimbal_set_roi_location_async.restype = None
@@ -1033,7 +1031,7 @@ _cmavsdk_lib.mavsdk_gimbal_take_control_async.argtypes = [
     ctypes.c_int32,
     ctypes.c_int,
     TakeControlCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_gimbal_take_control_async.restype = None
@@ -1049,7 +1047,7 @@ _cmavsdk_lib.mavsdk_gimbal_release_control_async.argtypes = [
     ctypes.c_void_p,
     ctypes.c_int32,
     ReleaseControlCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_gimbal_release_control_async.restype = None
@@ -1063,35 +1061,35 @@ _cmavsdk_lib.mavsdk_gimbal_release_control.restype = ctypes.c_int
 _cmavsdk_lib.mavsdk_gimbal_subscribe_gimbal_list.argtypes = [
     ctypes.c_void_p,
     GimbalListCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_gimbal_subscribe_gimbal_list.restype = ctypes.c_void_p
 # Unsubscribe
 _cmavsdk_lib.mavsdk_gimbal_unsubscribe_gimbal_list.argtypes = [
     ctypes.c_void_p,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_gimbal_unsubscribe_gimbal_list.restype = None
 
 _cmavsdk_lib.mavsdk_gimbal_gimbal_list.argtypes = [
     ctypes.c_void_p,
-    ctypes.POINTER(GimbalListCStruct)
+    ctypes.POINTER(GimbalListCStruct),
 ]
 
 _cmavsdk_lib.mavsdk_gimbal_gimbal_list.restype = None
 _cmavsdk_lib.mavsdk_gimbal_subscribe_control_status.argtypes = [
     ctypes.c_void_p,
     ControlStatusCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_gimbal_subscribe_control_status.restype = ctypes.c_void_p
 # Unsubscribe
 _cmavsdk_lib.mavsdk_gimbal_unsubscribe_control_status.argtypes = [
     ctypes.c_void_p,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_gimbal_unsubscribe_control_status.restype = None
@@ -1100,21 +1098,21 @@ _cmavsdk_lib.mavsdk_gimbal_unsubscribe_control_status.restype = None
 _cmavsdk_lib.mavsdk_gimbal_get_control_status.argtypes = [
     ctypes.c_void_p,
     ctypes.c_int32,
-    ctypes.POINTER(ControlStatusCStruct)
+    ctypes.POINTER(ControlStatusCStruct),
 ]
 
 _cmavsdk_lib.mavsdk_gimbal_get_control_status.restype = ctypes.c_int
 _cmavsdk_lib.mavsdk_gimbal_subscribe_attitude.argtypes = [
     ctypes.c_void_p,
     AttitudeCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_gimbal_subscribe_attitude.restype = ctypes.c_void_p
 # Unsubscribe
 _cmavsdk_lib.mavsdk_gimbal_unsubscribe_attitude.argtypes = [
     ctypes.c_void_p,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_gimbal_unsubscribe_attitude.restype = None
@@ -1123,7 +1121,7 @@ _cmavsdk_lib.mavsdk_gimbal_unsubscribe_attitude.restype = None
 _cmavsdk_lib.mavsdk_gimbal_get_attitude.argtypes = [
     ctypes.c_void_p,
     ctypes.c_int32,
-    ctypes.POINTER(AttitudeCStruct)
+    ctypes.POINTER(AttitudeCStruct),
 ]
 
 _cmavsdk_lib.mavsdk_gimbal_get_attitude.restype = ctypes.c_int

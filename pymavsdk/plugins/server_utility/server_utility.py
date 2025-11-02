@@ -17,6 +17,7 @@ from ...cmavsdk_loader import _cmavsdk_lib
 # ===== Enums =====
 class StatusTextType(IntEnum):
     """Status types."""
+
     DEBUG = 0
     INFO = 1
     NOTICE = 2
@@ -30,6 +31,7 @@ class StatusTextType(IntEnum):
 # ===== Result Enums =====
 class ServerUtilityResult(IntEnum):
     """Possible results returned for server utility requests."""
+
     UNKNOWN = 0
     SUCCESS = 1
     NO_SYSTEM = 2
@@ -62,13 +64,12 @@ class ServerUtility:
         self._handle = self._lib.mavsdk_server_utility_create(system_handle)
 
         if not self._handle:
-            raise RuntimeError("Failed to create ServerUtility plugin - C function returned null handle")
-
-
+            raise RuntimeError(
+                "Failed to create ServerUtility plugin - C function returned null handle"
+            )
 
     def send_status_text(self, type, text):
         """Get send_status_text (blocking)"""
-
 
         result_code = self._lib.mavsdk_server_utility_send_status_text(
             self._handle,
@@ -81,7 +82,6 @@ class ServerUtility:
 
         return result
 
-
     def destroy(self):
         """Destroy the plugin instance"""
         if self._handle:
@@ -91,6 +91,7 @@ class ServerUtility:
     def __del__(self):
         self.destroy()
 
+
 # ===== Callback Types =====
 
 # ===== Setup Functions =====
@@ -99,7 +100,6 @@ _cmavsdk_lib.mavsdk_server_utility_create.restype = ctypes.c_void_p
 
 _cmavsdk_lib.mavsdk_server_utility_destroy.argtypes = [ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_server_utility_destroy.restype = None
-
 
 
 _cmavsdk_lib.mavsdk_server_utility_send_status_text.argtypes = [

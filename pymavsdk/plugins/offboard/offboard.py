@@ -23,9 +23,11 @@ from ...cmavsdk_loader import _cmavsdk_lib
 
 # ===== Enums =====
 
+
 # ===== Result Enums =====
 class OffboardResult(IntEnum):
     """Possible results returned for offboard requests"""
+
     UNKNOWN = 0
     SUCCESS = 1
     NO_SYSTEM = 2
@@ -43,6 +45,7 @@ class AttitudeCStruct(ctypes.Structure):
     Internal C structure for Attitude.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("roll_deg", ctypes.c_float),
         ("pitch_deg", ctypes.c_float),
@@ -50,31 +53,37 @@ class AttitudeCStruct(ctypes.Structure):
         ("thrust_value", ctypes.c_float),
     ]
 
+
 class ActuatorControlGroupCStruct(ctypes.Structure):
     """
     Internal C structure for ActuatorControlGroup.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("controls", ctypes.POINTER(ctypes.c_float)),
         ("controls_size", ctypes.c_size_t),
     ]
+
 
 class ActuatorControlCStruct(ctypes.Structure):
     """
     Internal C structure for ActuatorControl.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("groups", ctypes.POINTER(ActuatorControlGroupCStruct)),
         ("groups_size", ctypes.c_size_t),
     ]
+
 
 class AttitudeRateCStruct(ctypes.Structure):
     """
     Internal C structure for AttitudeRate.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("roll_deg_s", ctypes.c_float),
         ("pitch_deg_s", ctypes.c_float),
@@ -82,11 +91,13 @@ class AttitudeRateCStruct(ctypes.Structure):
         ("thrust_value", ctypes.c_float),
     ]
 
+
 class PositionNedYawCStruct(ctypes.Structure):
     """
     Internal C structure for PositionNedYaw.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("north_m", ctypes.c_float),
         ("east_m", ctypes.c_float),
@@ -94,11 +105,13 @@ class PositionNedYawCStruct(ctypes.Structure):
         ("yaw_deg", ctypes.c_float),
     ]
 
+
 class PositionGlobalYawCStruct(ctypes.Structure):
     """
     Internal C structure for PositionGlobalYaw.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("lat_deg", ctypes.c_double),
         ("lon_deg", ctypes.c_double),
@@ -107,11 +120,13 @@ class PositionGlobalYawCStruct(ctypes.Structure):
         ("altitude_type", ctypes.c_int),
     ]
 
+
 class VelocityBodyYawspeedCStruct(ctypes.Structure):
     """
     Internal C structure for VelocityBodyYawspeed.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("forward_m_s", ctypes.c_float),
         ("right_m_s", ctypes.c_float),
@@ -119,11 +134,13 @@ class VelocityBodyYawspeedCStruct(ctypes.Structure):
         ("yawspeed_deg_s", ctypes.c_float),
     ]
 
+
 class VelocityNedYawCStruct(ctypes.Structure):
     """
     Internal C structure for VelocityNedYaw.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("north_m_s", ctypes.c_float),
         ("east_m_s", ctypes.c_float),
@@ -131,11 +148,13 @@ class VelocityNedYawCStruct(ctypes.Structure):
         ("yaw_deg", ctypes.c_float),
     ]
 
+
 class AccelerationNedCStruct(ctypes.Structure):
     """
     Internal C structure for AccelerationNed.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("north_m_s2", ctypes.c_float),
         ("east_m_s2", ctypes.c_float),
@@ -182,10 +201,11 @@ class Attitude:
         fields.append(f"thrust_value={self.thrust_value}")
         return f"Attitude({', '.join(fields)})"
 
+
 class ActuatorControlGroup:
     """
-    Eight controls that will be given to the group. Each control is a normalized
- (-1..+1) command value, which will be mapped and scaled through the mixer.
+       Eight controls that will be given to the group. Each control is a normalized
+    (-1..+1) command value, which will be mapped and scaled through the mixer.
     """
 
     def __init__(self, controls=None):
@@ -196,7 +216,9 @@ class ActuatorControlGroup:
         """Convert from C structure to Python object"""
         instance = cls()
         if c_struct.controls_size > 0:
-            instance.controls = [c_struct.controls[i] for i in range(c_struct.controls_size)]
+            instance.controls = [
+                c_struct.controls[i] for i in range(c_struct.controls_size)
+            ]
         else:
             instance.controls = []
         return instance
@@ -214,23 +236,24 @@ class ActuatorControlGroup:
         fields.append(f"controls=[{len(self.controls)} items]")
         return f"ActuatorControlGroup({', '.join(fields)})"
 
+
 class ActuatorControl:
     """
-    Type for actuator control.
+       Type for actuator control.
 
- Control members should be normed to -1..+1 where 0 is neutral position.
- Throttle for single rotation direction motors is 0..1, negative range for reverse direction.
+    Control members should be normed to -1..+1 where 0 is neutral position.
+    Throttle for single rotation direction motors is 0..1, negative range for reverse direction.
 
- One group support eight controls.
+    One group support eight controls.
 
- Up to 16 actuator controls can be set. To ignore an output group, set all it controls to NaN.
- If one or more controls in group is not NaN, then all NaN controls will sent as zero.
- The first 8 actuator controls internally map to control group 0, the latter 8 actuator
- controls map to control group 1. Depending on what controls are set (instead of NaN) 1 or 2
- MAVLink messages are actually sent.
+    Up to 16 actuator controls can be set. To ignore an output group, set all it controls to NaN.
+    If one or more controls in group is not NaN, then all NaN controls will sent as zero.
+    The first 8 actuator controls internally map to control group 0, the latter 8 actuator
+    controls map to control group 1. Depending on what controls are set (instead of NaN) 1 or 2
+    MAVLink messages are actually sent.
 
- In PX4 v1.9.0 Only first four Control Groups are supported
- (https://github.com/PX4/Firmware/blob/v1.9.0/src/modules/mavlink/mavlink_receiver.cpp#L980).
+    In PX4 v1.9.0 Only first four Control Groups are supported
+    (https://github.com/PX4/Firmware/blob/v1.9.0/src/modules/mavlink/mavlink_receiver.cpp#L980).
     """
 
     def __init__(self, groups=None):
@@ -241,7 +264,10 @@ class ActuatorControl:
         """Convert from C structure to Python object"""
         instance = cls()
         if c_struct.groups_size > 0:
-            instance.groups = [ActuatorControlGroup.from_c_struct(c_struct.groups[i]) for i in range(c_struct.groups_size)]
+            instance.groups = [
+                ActuatorControlGroup.from_c_struct(c_struct.groups[i])
+                for i in range(c_struct.groups_size)
+            ]
         else:
             instance.groups = []
         return instance
@@ -253,7 +279,9 @@ class ActuatorControl:
         c_array = array_type()
         for i, item in enumerate(self.groups):
             c_array[i] = item.to_c_struct()
-        c_struct.groups = ctypes.cast(c_array, ctypes.POINTER(ActuatorControlGroupCStruct))
+        c_struct.groups = ctypes.cast(
+            c_array, ctypes.POINTER(ActuatorControlGroupCStruct)
+        )
         c_struct.groups_size = len(self.groups)
         return c_struct
 
@@ -262,12 +290,15 @@ class ActuatorControl:
         fields.append(f"groups={self.groups}")
         return f"ActuatorControl({', '.join(fields)})"
 
+
 class AttitudeRate:
     """
     Type for attitude rate commands in body coordinates (roll, pitch, yaw angular rate and thrust)
     """
 
-    def __init__(self, roll_deg_s=None, pitch_deg_s=None, yaw_deg_s=None, thrust_value=None):
+    def __init__(
+        self, roll_deg_s=None, pitch_deg_s=None, yaw_deg_s=None, thrust_value=None
+    ):
         self.roll_deg_s = roll_deg_s
         self.pitch_deg_s = pitch_deg_s
         self.yaw_deg_s = yaw_deg_s
@@ -299,6 +330,7 @@ class AttitudeRate:
         fields.append(f"yaw_deg_s={self.yaw_deg_s}")
         fields.append(f"thrust_value={self.thrust_value}")
         return f"AttitudeRate({', '.join(fields)})"
+
 
 class PositionNedYaw:
     """
@@ -338,18 +370,22 @@ class PositionNedYaw:
         fields.append(f"yaw_deg={self.yaw_deg}")
         return f"PositionNedYaw({', '.join(fields)})"
 
+
 class PositionGlobalYaw:
     """
     Type for position commands in Global (Latitude, Longitude, Altitude) coordinates and yaw.
     """
+
     class AltitudeType(IntEnum):
         """Possible altitude options"""
+
         REL_HOME = 0
         AMSL = 1
         AGL = 2
 
-
-    def __init__(self, lat_deg=None, lon_deg=None, alt_m=None, yaw_deg=None, altitude_type=None):
+    def __init__(
+        self, lat_deg=None, lon_deg=None, alt_m=None, yaw_deg=None, altitude_type=None
+    ):
         self.lat_deg = lat_deg
         self.lon_deg = lon_deg
         self.alt_m = alt_m
@@ -386,12 +422,15 @@ class PositionGlobalYaw:
         fields.append(f"altitude_type={self.altitude_type}")
         return f"PositionGlobalYaw({', '.join(fields)})"
 
+
 class VelocityBodyYawspeed:
     """
     Type for velocity commands in body coordinates.
     """
 
-    def __init__(self, forward_m_s=None, right_m_s=None, down_m_s=None, yawspeed_deg_s=None):
+    def __init__(
+        self, forward_m_s=None, right_m_s=None, down_m_s=None, yawspeed_deg_s=None
+    ):
         self.forward_m_s = forward_m_s
         self.right_m_s = right_m_s
         self.down_m_s = down_m_s
@@ -423,6 +462,7 @@ class VelocityBodyYawspeed:
         fields.append(f"down_m_s={self.down_m_s}")
         fields.append(f"yawspeed_deg_s={self.yawspeed_deg_s}")
         return f"VelocityBodyYawspeed({', '.join(fields)})"
+
 
 class VelocityNedYaw:
     """
@@ -462,6 +502,7 @@ class VelocityNedYaw:
         fields.append(f"yaw_deg={self.yaw_deg}")
         return f"VelocityNedYaw({', '.join(fields)})"
 
+
 class AccelerationNed:
     """
     Type for acceleration commands in NED (North East Down) coordinates.
@@ -497,17 +538,16 @@ class AccelerationNed:
         return f"AccelerationNed({', '.join(fields)})"
 
 
-
 # ===== Plugin =====
 class Offboard:
     """Control a drone with position, velocity, attitude or motor commands.
 
- The module is called offboard because the commands can be sent from external sources
- as opposed to onboard control right inside the autopilot "board".
+    The module is called offboard because the commands can be sent from external sources
+    as opposed to onboard control right inside the autopilot "board".
 
- Client code must specify a setpoint before starting offboard mode.
- Mavsdk automatically sends setpoints at 20Hz (PX4 Offboard mode requires that setpoints
- are minimally sent at 2Hz)."""
+    Client code must specify a setpoint before starting offboard mode.
+    Mavsdk automatically sends setpoints at 20Hz (PX4 Offboard mode requires that setpoints
+    are minimally sent at 2Hz)."""
 
     def __init__(self, system):
         self._lib = _cmavsdk_lib
@@ -525,8 +565,9 @@ class Offboard:
         self._handle = self._lib.mavsdk_offboard_create(system_handle)
 
         if not self._handle:
-            raise RuntimeError("Failed to create Offboard plugin - C function returned null handle")
-
+            raise RuntimeError(
+                "Failed to create Offboard plugin - C function returned null handle"
+            )
 
     def start_async(self, callback: Callable, user_data: Any = None):
         """Start offboard control."""
@@ -534,7 +575,6 @@ class Offboard:
         def c_callback(result, ud):
             try:
                 py_result = OffboardResult(result)
-
 
                 callback(py_result, user_data)
 
@@ -544,16 +584,10 @@ class Offboard:
         cb = StartCallback(c_callback)
         self._callbacks.append(cb)
 
-        self._lib.mavsdk_offboard_start_async(
-            self._handle,
-            cb,
-            None
-        )
-
+        self._lib.mavsdk_offboard_start_async(self._handle, cb, None)
 
     def start(self):
         """Get start (blocking)"""
-
 
         result_code = self._lib.mavsdk_offboard_start(
             self._handle,
@@ -564,16 +598,14 @@ class Offboard:
 
         return result
 
-
     def stop_async(self, callback: Callable, user_data: Any = None):
         """Stop offboard control.
 
- The vehicle will be put into Hold mode: https://docs.px4.io/en/flight_modes/hold.html"""
+        The vehicle will be put into Hold mode: https://docs.px4.io/en/flight_modes/hold.html"""
 
         def c_callback(result, ud):
             try:
                 py_result = OffboardResult(result)
-
 
                 callback(py_result, user_data)
 
@@ -583,16 +615,10 @@ class Offboard:
         cb = StopCallback(c_callback)
         self._callbacks.append(cb)
 
-        self._lib.mavsdk_offboard_stop_async(
-            self._handle,
-            cb,
-            None
-        )
-
+        self._lib.mavsdk_offboard_stop_async(self._handle, cb, None)
 
     def stop(self):
         """Get stop (blocking)"""
-
 
         result_code = self._lib.mavsdk_offboard_stop(
             self._handle,
@@ -603,25 +629,17 @@ class Offboard:
 
         return result
 
-
-
     def is_active(self):
         """Get is_active (blocking)"""
 
         result_out = ctypes.c_bool()
 
-        self._lib.mavsdk_offboard_is_active(
-            self._handle,
-            ctypes.byref(result_out)
-        )
+        self._lib.mavsdk_offboard_is_active(self._handle, ctypes.byref(result_out))
 
         return result_out.value
 
-
-
     def set_attitude(self, attitude):
         """Get set_attitude (blocking)"""
-
 
         result_code = self._lib.mavsdk_offboard_set_attitude(
             self._handle,
@@ -633,11 +651,8 @@ class Offboard:
 
         return result
 
-
-
     def set_actuator_control(self, actuator_control):
         """Get set_actuator_control (blocking)"""
-
 
         result_code = self._lib.mavsdk_offboard_set_actuator_control(
             self._handle,
@@ -649,11 +664,8 @@ class Offboard:
 
         return result
 
-
-
     def set_attitude_rate(self, attitude_rate):
         """Get set_attitude_rate (blocking)"""
-
 
         result_code = self._lib.mavsdk_offboard_set_attitude_rate(
             self._handle,
@@ -665,11 +677,8 @@ class Offboard:
 
         return result
 
-
-
     def set_position_ned(self, position_ned_yaw):
         """Get set_position_ned (blocking)"""
-
 
         result_code = self._lib.mavsdk_offboard_set_position_ned(
             self._handle,
@@ -681,11 +690,8 @@ class Offboard:
 
         return result
 
-
-
     def set_position_global(self, position_global_yaw):
         """Get set_position_global (blocking)"""
-
 
         result_code = self._lib.mavsdk_offboard_set_position_global(
             self._handle,
@@ -697,11 +703,8 @@ class Offboard:
 
         return result
 
-
-
     def set_velocity_body(self, velocity_body_yawspeed):
         """Get set_velocity_body (blocking)"""
-
 
         result_code = self._lib.mavsdk_offboard_set_velocity_body(
             self._handle,
@@ -713,11 +716,8 @@ class Offboard:
 
         return result
 
-
-
     def set_velocity_ned(self, velocity_ned_yaw):
         """Get set_velocity_ned (blocking)"""
-
 
         result_code = self._lib.mavsdk_offboard_set_velocity_ned(
             self._handle,
@@ -729,11 +729,8 @@ class Offboard:
 
         return result
 
-
-
     def set_position_velocity_ned(self, position_ned_yaw, velocity_ned_yaw):
         """Get set_position_velocity_ned (blocking)"""
-
 
         result_code = self._lib.mavsdk_offboard_set_position_velocity_ned(
             self._handle,
@@ -746,11 +743,10 @@ class Offboard:
 
         return result
 
-
-
-    def set_position_velocity_acceleration_ned(self, position_ned_yaw, velocity_ned_yaw, acceleration_ned):
+    def set_position_velocity_acceleration_ned(
+        self, position_ned_yaw, velocity_ned_yaw, acceleration_ned
+    ):
         """Get set_position_velocity_acceleration_ned (blocking)"""
-
 
         result_code = self._lib.mavsdk_offboard_set_position_velocity_acceleration_ned(
             self._handle,
@@ -764,11 +760,8 @@ class Offboard:
 
         return result
 
-
-
     def set_acceleration_ned(self, acceleration_ned):
         """Get set_acceleration_ned (blocking)"""
-
 
         result_code = self._lib.mavsdk_offboard_set_acceleration_ned(
             self._handle,
@@ -780,7 +773,6 @@ class Offboard:
 
         return result
 
-
     def destroy(self):
         """Destroy the plugin instance"""
         if self._handle:
@@ -790,17 +782,10 @@ class Offboard:
     def __del__(self):
         self.destroy()
 
+
 # ===== Callback Types =====
-StartCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-StopCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
+StartCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
+StopCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
 
 # ===== Setup Functions =====
 _cmavsdk_lib.mavsdk_offboard_create.argtypes = [ctypes.c_void_p]
@@ -858,7 +843,7 @@ _cmavsdk_lib.mavsdk_offboard_AccelerationNed_destroy.restype = None
 _cmavsdk_lib.mavsdk_offboard_start_async.argtypes = [
     ctypes.c_void_p,
     StartCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_offboard_start_async.restype = None
@@ -871,7 +856,7 @@ _cmavsdk_lib.mavsdk_offboard_start.restype = ctypes.c_int
 _cmavsdk_lib.mavsdk_offboard_stop_async.argtypes = [
     ctypes.c_void_p,
     StopCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_offboard_stop_async.restype = None
@@ -884,7 +869,7 @@ _cmavsdk_lib.mavsdk_offboard_stop.restype = ctypes.c_int
 
 _cmavsdk_lib.mavsdk_offboard_is_active.argtypes = [
     ctypes.c_void_p,
-    ctypes.POINTER(ctypes.c_bool)
+    ctypes.POINTER(ctypes.c_bool),
 ]
 
 _cmavsdk_lib.mavsdk_offboard_is_active.restype = None
@@ -953,7 +938,9 @@ _cmavsdk_lib.mavsdk_offboard_set_position_velocity_acceleration_ned.argtypes = [
     AccelerationNedCStruct,
 ]
 
-_cmavsdk_lib.mavsdk_offboard_set_position_velocity_acceleration_ned.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_offboard_set_position_velocity_acceleration_ned.restype = (
+    ctypes.c_int
+)
 
 _cmavsdk_lib.mavsdk_offboard_set_acceleration_ned.argtypes = [
     ctypes.c_void_p,

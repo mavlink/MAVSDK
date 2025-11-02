@@ -18,9 +18,11 @@ from ...cmavsdk_loader import _cmavsdk_lib
 
 # ===== Enums =====
 
+
 # ===== Result Enums =====
 class MocapResult(IntEnum):
     """Possible results returned for mocap requests"""
+
     UNKNOWN = 0
     SUCCESS = 1
     NO_SYSTEM = 2
@@ -35,71 +37,84 @@ class PositionBodyCStruct(ctypes.Structure):
     Internal C structure for PositionBody.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("x_m", ctypes.c_float),
         ("y_m", ctypes.c_float),
         ("z_m", ctypes.c_float),
     ]
 
+
 class AngleBodyCStruct(ctypes.Structure):
     """
     Internal C structure for AngleBody.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("roll_rad", ctypes.c_float),
         ("pitch_rad", ctypes.c_float),
         ("yaw_rad", ctypes.c_float),
     ]
 
+
 class SpeedBodyCStruct(ctypes.Structure):
     """
     Internal C structure for SpeedBody.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("x_m_s", ctypes.c_float),
         ("y_m_s", ctypes.c_float),
         ("z_m_s", ctypes.c_float),
     ]
 
+
 class SpeedNedCStruct(ctypes.Structure):
     """
     Internal C structure for SpeedNed.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("north_m_s", ctypes.c_float),
         ("east_m_s", ctypes.c_float),
         ("down_m_s", ctypes.c_float),
     ]
 
+
 class AngularVelocityBodyCStruct(ctypes.Structure):
     """
     Internal C structure for AngularVelocityBody.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("roll_rad_s", ctypes.c_float),
         ("pitch_rad_s", ctypes.c_float),
         ("yaw_rad_s", ctypes.c_float),
     ]
 
+
 class CovarianceCStruct(ctypes.Structure):
     """
     Internal C structure for Covariance.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("covariance_matrix", ctypes.POINTER(ctypes.c_float)),
         ("covariance_matrix_size", ctypes.c_size_t),
     ]
+
 
 class QuaternionCStruct(ctypes.Structure):
     """
     Internal C structure for Quaternion.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("w", ctypes.c_float),
         ("x", ctypes.c_float),
@@ -107,11 +122,13 @@ class QuaternionCStruct(ctypes.Structure):
         ("z", ctypes.c_float),
     ]
 
+
 class VisionPositionEstimateCStruct(ctypes.Structure):
     """
     Internal C structure for VisionPositionEstimate.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("time_usec", ctypes.c_uint64),
         ("position_body", PositionBodyCStruct),
@@ -119,22 +136,26 @@ class VisionPositionEstimateCStruct(ctypes.Structure):
         ("pose_covariance", CovarianceCStruct),
     ]
 
+
 class VisionSpeedEstimateCStruct(ctypes.Structure):
     """
     Internal C structure for VisionSpeedEstimate.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("time_usec", ctypes.c_uint64),
         ("speed_ned", SpeedNedCStruct),
         ("speed_covariance", CovarianceCStruct),
     ]
 
+
 class AttitudePositionMocapCStruct(ctypes.Structure):
     """
     Internal C structure for AttitudePositionMocap.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("time_usec", ctypes.c_uint64),
         ("q", QuaternionCStruct),
@@ -142,11 +163,13 @@ class AttitudePositionMocapCStruct(ctypes.Structure):
         ("pose_covariance", CovarianceCStruct),
     ]
 
+
 class OdometryCStruct(ctypes.Structure):
     """
     Internal C structure for Odometry.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("time_usec", ctypes.c_uint64),
         ("frame_id", ctypes.c_int),
@@ -194,6 +217,7 @@ class PositionBody:
         fields.append(f"z_m={self.z_m}")
         return f"PositionBody({', '.join(fields)})"
 
+
 class AngleBody:
     """
     Body angle type
@@ -227,6 +251,7 @@ class AngleBody:
         fields.append(f"pitch_rad={self.pitch_rad}")
         fields.append(f"yaw_rad={self.yaw_rad}")
         return f"AngleBody({', '.join(fields)})"
+
 
 class SpeedBody:
     """
@@ -262,6 +287,7 @@ class SpeedBody:
         fields.append(f"z_m_s={self.z_m_s}")
         return f"SpeedBody({', '.join(fields)})"
 
+
 class SpeedNed:
     """
     Speed type, represented in NED (North East Down) coordinates.
@@ -295,6 +321,7 @@ class SpeedNed:
         fields.append(f"east_m_s={self.east_m_s}")
         fields.append(f"down_m_s={self.down_m_s}")
         return f"SpeedNed({', '.join(fields)})"
+
 
 class AngularVelocityBody:
     """
@@ -330,12 +357,13 @@ class AngularVelocityBody:
         fields.append(f"yaw_rad_s={self.yaw_rad_s}")
         return f"AngularVelocityBody({', '.join(fields)})"
 
+
 class Covariance:
     """
-    Covariance type.
- Row-major representation of a 6x6 cross-covariance matrix upper
- right triangle.
- Needs to be 21 entries or 1 entry with NaN if unknown.
+       Covariance type.
+    Row-major representation of a 6x6 cross-covariance matrix upper
+    right triangle.
+    Needs to be 21 entries or 1 entry with NaN if unknown.
     """
 
     def __init__(self, covariance_matrix=None):
@@ -346,7 +374,10 @@ class Covariance:
         """Convert from C structure to Python object"""
         instance = cls()
         if c_struct.covariance_matrix_size > 0:
-            instance.covariance_matrix = [c_struct.covariance_matrix[i] for i in range(c_struct.covariance_matrix_size)]
+            instance.covariance_matrix = [
+                c_struct.covariance_matrix[i]
+                for i in range(c_struct.covariance_matrix_size)
+            ]
         else:
             instance.covariance_matrix = []
         return instance
@@ -364,16 +395,17 @@ class Covariance:
         fields.append(f"covariance_matrix=[{len(self.covariance_matrix)} items]")
         return f"Covariance({', '.join(fields)})"
 
+
 class Quaternion:
     """
-    Quaternion type.
+       Quaternion type.
 
- All rotations and axis systems follow the right-hand rule.
- The Hamilton quaternion product definition is used.
- A zero-rotation quaternion is represented by (1,0,0,0).
- The quaternion could also be written as w + xi + yj + zk.
+    All rotations and axis systems follow the right-hand rule.
+    The Hamilton quaternion product definition is used.
+    A zero-rotation quaternion is represented by (1,0,0,0).
+    The quaternion could also be written as w + xi + yj + zk.
 
- For more info see: https://en.wikipedia.org/wiki/Quaternion
+    For more info see: https://en.wikipedia.org/wiki/Quaternion
     """
 
     def __init__(self, w=None, x=None, y=None, z=None):
@@ -409,12 +441,15 @@ class Quaternion:
         fields.append(f"z={self.z}")
         return f"Quaternion({', '.join(fields)})"
 
+
 class VisionPositionEstimate:
     """
     Global position/attitude estimate from a vision source.
     """
 
-    def __init__(self, time_usec=None, position_body=None, angle_body=None, pose_covariance=None):
+    def __init__(
+        self, time_usec=None, position_body=None, angle_body=None, pose_covariance=None
+    ):
         self.time_usec = time_usec
         self.position_body = position_body
         self.angle_body = angle_body
@@ -446,6 +481,7 @@ class VisionPositionEstimate:
         fields.append(f"angle_body={self.angle_body}")
         fields.append(f"pose_covariance={self.pose_covariance}")
         return f"VisionPositionEstimate({', '.join(fields)})"
+
 
 class VisionSpeedEstimate:
     """
@@ -481,12 +517,15 @@ class VisionSpeedEstimate:
         fields.append(f"speed_covariance={self.speed_covariance}")
         return f"VisionSpeedEstimate({', '.join(fields)})"
 
+
 class AttitudePositionMocap:
     """
     Motion capture attitude and position
     """
 
-    def __init__(self, time_usec=None, q=None, position_body=None, pose_covariance=None):
+    def __init__(
+        self, time_usec=None, q=None, position_body=None, pose_covariance=None
+    ):
         self.time_usec = time_usec
         self.q = q
         self.position_body = position_body
@@ -519,17 +558,29 @@ class AttitudePositionMocap:
         fields.append(f"pose_covariance={self.pose_covariance}")
         return f"AttitudePositionMocap({', '.join(fields)})"
 
+
 class Odometry:
     """
     Odometry message to communicate odometry information with an external interface.
     """
+
     class MavFrame(IntEnum):
         """Mavlink frame id"""
+
         MOCAP_NED = 0
         LOCAL_FRD = 1
 
-
-    def __init__(self, time_usec=None, frame_id=None, position_body=None, q=None, speed_body=None, angular_velocity_body=None, pose_covariance=None, velocity_covariance=None):
+    def __init__(
+        self,
+        time_usec=None,
+        frame_id=None,
+        position_body=None,
+        q=None,
+        speed_body=None,
+        angular_velocity_body=None,
+        pose_covariance=None,
+        velocity_covariance=None,
+    ):
         self.time_usec = time_usec
         self.frame_id = frame_id
         self.position_body = position_body
@@ -548,9 +599,13 @@ class Odometry:
         instance.position_body = PositionBody.from_c_struct(c_struct.position_body)
         instance.q = Quaternion.from_c_struct(c_struct.q)
         instance.speed_body = SpeedBody.from_c_struct(c_struct.speed_body)
-        instance.angular_velocity_body = AngularVelocityBody.from_c_struct(c_struct.angular_velocity_body)
+        instance.angular_velocity_body = AngularVelocityBody.from_c_struct(
+            c_struct.angular_velocity_body
+        )
         instance.pose_covariance = Covariance.from_c_struct(c_struct.pose_covariance)
-        instance.velocity_covariance = Covariance.from_c_struct(c_struct.velocity_covariance)
+        instance.velocity_covariance = Covariance.from_c_struct(
+            c_struct.velocity_covariance
+        )
         return instance
 
     def to_c_struct(self):
@@ -579,12 +634,11 @@ class Odometry:
         return f"Odometry({', '.join(fields)})"
 
 
-
 # ===== Plugin =====
 class Mocap:
     """Allows interfacing a vehicle with a motion capture system in
- order to allow navigation without global positioning sources available
- (e.g. indoors, or when flying under a bridge. etc.)."""
+    order to allow navigation without global positioning sources available
+    (e.g. indoors, or when flying under a bridge. etc.)."""
 
     def __init__(self, system):
         self._lib = _cmavsdk_lib
@@ -602,13 +656,12 @@ class Mocap:
         self._handle = self._lib.mavsdk_mocap_create(system_handle)
 
         if not self._handle:
-            raise RuntimeError("Failed to create Mocap plugin - C function returned null handle")
-
-
+            raise RuntimeError(
+                "Failed to create Mocap plugin - C function returned null handle"
+            )
 
     def set_vision_position_estimate(self, vision_position_estimate):
         """Get set_vision_position_estimate (blocking)"""
-
 
         result_code = self._lib.mavsdk_mocap_set_vision_position_estimate(
             self._handle,
@@ -620,11 +673,8 @@ class Mocap:
 
         return result
 
-
-
     def set_vision_speed_estimate(self, vision_speed_estimate):
         """Get set_vision_speed_estimate (blocking)"""
-
 
         result_code = self._lib.mavsdk_mocap_set_vision_speed_estimate(
             self._handle,
@@ -636,11 +686,8 @@ class Mocap:
 
         return result
 
-
-
     def set_attitude_position_mocap(self, attitude_position_mocap):
         """Get set_attitude_position_mocap (blocking)"""
-
 
         result_code = self._lib.mavsdk_mocap_set_attitude_position_mocap(
             self._handle,
@@ -652,11 +699,8 @@ class Mocap:
 
         return result
 
-
-
     def set_odometry(self, odometry):
         """Get set_odometry (blocking)"""
-
 
         result_code = self._lib.mavsdk_mocap_set_odometry(
             self._handle,
@@ -668,7 +712,6 @@ class Mocap:
 
         return result
 
-
     def destroy(self):
         """Destroy the plugin instance"""
         if self._handle:
@@ -677,6 +720,7 @@ class Mocap:
 
     def __del__(self):
         self.destroy()
+
 
 # ===== Callback Types =====
 
@@ -702,9 +746,7 @@ _cmavsdk_lib.mavsdk_mocap_SpeedBody_destroy.argtypes = [
 ]
 _cmavsdk_lib.mavsdk_mocap_SpeedBody_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_mocap_SpeedNed_destroy.argtypes = [
-    ctypes.POINTER(SpeedNedCStruct)
-]
+_cmavsdk_lib.mavsdk_mocap_SpeedNed_destroy.argtypes = [ctypes.POINTER(SpeedNedCStruct)]
 _cmavsdk_lib.mavsdk_mocap_SpeedNed_destroy.restype = None
 
 _cmavsdk_lib.mavsdk_mocap_AngularVelocityBody_destroy.argtypes = [
@@ -737,11 +779,8 @@ _cmavsdk_lib.mavsdk_mocap_AttitudePositionMocap_destroy.argtypes = [
 ]
 _cmavsdk_lib.mavsdk_mocap_AttitudePositionMocap_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_mocap_Odometry_destroy.argtypes = [
-    ctypes.POINTER(OdometryCStruct)
-]
+_cmavsdk_lib.mavsdk_mocap_Odometry_destroy.argtypes = [ctypes.POINTER(OdometryCStruct)]
 _cmavsdk_lib.mavsdk_mocap_Odometry_destroy.restype = None
-
 
 
 _cmavsdk_lib.mavsdk_mocap_set_vision_position_estimate.argtypes = [

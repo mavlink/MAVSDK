@@ -17,6 +17,7 @@ from ...cmavsdk_loader import _cmavsdk_lib
 # ===== Enums =====
 class SongElement(IntEnum):
     """An element of the tune"""
+
     STYLE_LEGATO = 0
     STYLE_NORMAL = 1
     STYLE_STACCATO = 2
@@ -43,6 +44,7 @@ class SongElement(IntEnum):
 # ===== Result Enums =====
 class TuneResult(IntEnum):
     """Possible results returned for tune requests."""
+
     UNKNOWN = 0
     SUCCESS = 1
     INVALID_TEMPO = 2
@@ -57,6 +59,7 @@ class TuneDescriptionCStruct(ctypes.Structure):
     Internal C structure for TuneDescription.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("song_elements", ctypes.c_int),
         ("tempo", ctypes.c_int32),
@@ -95,7 +98,6 @@ class TuneDescription:
         return f"TuneDescription({', '.join(fields)})"
 
 
-
 # ===== Plugin =====
 class Tune:
     """Enable creating and sending a tune to be played on the system."""
@@ -116,16 +118,18 @@ class Tune:
         self._handle = self._lib.mavsdk_tune_create(system_handle)
 
         if not self._handle:
-            raise RuntimeError("Failed to create Tune plugin - C function returned null handle")
+            raise RuntimeError(
+                "Failed to create Tune plugin - C function returned null handle"
+            )
 
-
-    def play_tune_async(self, tune_description, callback: Callable, user_data: Any = None):
+    def play_tune_async(
+        self, tune_description, callback: Callable, user_data: Any = None
+    ):
         """Send a tune to be played by the system."""
 
         def c_callback(result, ud):
             try:
                 py_result = TuneResult(result)
-
 
                 callback(py_result, user_data)
 
@@ -135,17 +139,10 @@ class Tune:
         cb = PlayTuneCallback(c_callback)
         self._callbacks.append(cb)
 
-        self._lib.mavsdk_tune_play_tune_async(
-            self._handle,
-            tune_description,
-            cb,
-            None
-        )
-
+        self._lib.mavsdk_tune_play_tune_async(self._handle, tune_description, cb, None)
 
     def play_tune(self, tune_description):
         """Get play_tune (blocking)"""
-
 
         result_code = self._lib.mavsdk_tune_play_tune(
             self._handle,
@@ -157,7 +154,6 @@ class Tune:
 
         return result
 
-
     def destroy(self):
         """Destroy the plugin instance"""
         if self._handle:
@@ -167,12 +163,9 @@ class Tune:
     def __del__(self):
         self.destroy()
 
+
 # ===== Callback Types =====
-PlayTuneCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
+PlayTuneCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
 
 # ===== Setup Functions =====
 _cmavsdk_lib.mavsdk_tune_create.argtypes = [ctypes.c_void_p]
@@ -191,7 +184,7 @@ _cmavsdk_lib.mavsdk_tune_play_tune_async.argtypes = [
     ctypes.c_void_p,
     TuneDescriptionCStruct,
     PlayTuneCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_tune_play_tune_async.restype = None

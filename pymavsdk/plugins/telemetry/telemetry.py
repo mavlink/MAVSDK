@@ -19,6 +19,7 @@ from ...cmavsdk_loader import _cmavsdk_lib
 # ===== Enums =====
 class FixType(IntEnum):
     """GPS fix type."""
+
     NO_GPS = 0
     NO_FIX = 1
     FIX_2D = 2
@@ -27,19 +28,23 @@ class FixType(IntEnum):
     RTK_FLOAT = 5
     RTK_FIXED = 6
 
+
 class BatteryFunction(IntEnum):
     """Battery function type."""
+
     UNKNOWN = 0
     ALL = 1
     PROPULSION = 2
     AVIONICS = 3
     PAYLOAD = 4
 
+
 class FlightMode(IntEnum):
     """Flight modes.
 
- For more information about flight modes, check out
- https://docs.px4.io/master/en/config/flight_mode.html."""
+    For more information about flight modes, check out
+    https://docs.px4.io/master/en/config/flight_mode.html."""
+
     UNKNOWN = 0
     READY = 1
     TAKEOFF = 2
@@ -56,8 +61,10 @@ class FlightMode(IntEnum):
     STABILIZED = 13
     RATTITUDE = 14
 
+
 class StatusTextType(IntEnum):
     """Status types."""
+
     DEBUG = 0
     INFO = 1
     NOTICE = 2
@@ -67,16 +74,20 @@ class StatusTextType(IntEnum):
     ALERT = 6
     EMERGENCY = 7
 
+
 class LandedState(IntEnum):
     """Landed State enumeration."""
+
     UNKNOWN = 0
     ON_GROUND = 1
     IN_AIR = 2
     TAKING_OFF = 3
     LANDING = 4
 
+
 class VtolState(IntEnum):
     """VTOL State enumeration"""
+
     UNDEFINED = 0
     TRANSITION_TO_FW = 1
     TRANSITION_TO_MC = 2
@@ -87,6 +98,7 @@ class VtolState(IntEnum):
 # ===== Result Enums =====
 class TelemetryResult(IntEnum):
     """Possible results returned for telemetry requests."""
+
     UNKNOWN = 0
     SUCCESS = 1
     NO_SYSTEM = 2
@@ -103,6 +115,7 @@ class PositionCStruct(ctypes.Structure):
     Internal C structure for Position.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("latitude_deg", ctypes.c_double),
         ("longitude_deg", ctypes.c_double),
@@ -110,20 +123,24 @@ class PositionCStruct(ctypes.Structure):
         ("relative_altitude_m", ctypes.c_float),
     ]
 
+
 class HeadingCStruct(ctypes.Structure):
     """
     Internal C structure for Heading.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("heading_deg", ctypes.c_double),
     ]
+
 
 class QuaternionCStruct(ctypes.Structure):
     """
     Internal C structure for Quaternion.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("w", ctypes.c_float),
         ("x", ctypes.c_float),
@@ -132,11 +149,13 @@ class QuaternionCStruct(ctypes.Structure):
         ("timestamp_us", ctypes.c_uint64),
     ]
 
+
 class EulerAngleCStruct(ctypes.Structure):
     """
     Internal C structure for EulerAngle.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("roll_deg", ctypes.c_float),
         ("pitch_deg", ctypes.c_float),
@@ -144,32 +163,38 @@ class EulerAngleCStruct(ctypes.Structure):
         ("timestamp_us", ctypes.c_uint64),
     ]
 
+
 class AngularVelocityBodyCStruct(ctypes.Structure):
     """
     Internal C structure for AngularVelocityBody.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("roll_rad_s", ctypes.c_float),
         ("pitch_rad_s", ctypes.c_float),
         ("yaw_rad_s", ctypes.c_float),
     ]
 
+
 class GpsInfoCStruct(ctypes.Structure):
     """
     Internal C structure for GpsInfo.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("num_satellites", ctypes.c_int32),
         ("fix_type", ctypes.c_int),
     ]
+
 
 class RawGpsCStruct(ctypes.Structure):
     """
     Internal C structure for RawGps.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("timestamp_us", ctypes.c_uint64),
         ("latitude_deg", ctypes.c_double),
@@ -187,11 +212,13 @@ class RawGpsCStruct(ctypes.Structure):
         ("yaw_deg", ctypes.c_float),
     ]
 
+
 class BatteryCStruct(ctypes.Structure):
     """
     Internal C structure for Battery.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("id", ctypes.c_uint32),
         ("temperature_degc", ctypes.c_float),
@@ -203,11 +230,13 @@ class BatteryCStruct(ctypes.Structure):
         ("battery_function", ctypes.c_int),
     ]
 
+
 class HealthCStruct(ctypes.Structure):
     """
     Internal C structure for Health.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("is_gyrometer_calibration_ok", ctypes.c_bool),
         ("is_accelerometer_calibration_ok", ctypes.c_bool),
@@ -218,86 +247,102 @@ class HealthCStruct(ctypes.Structure):
         ("is_armable", ctypes.c_bool),
     ]
 
+
 class RcStatusCStruct(ctypes.Structure):
     """
     Internal C structure for RcStatus.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("was_available_once", ctypes.c_bool),
         ("is_available", ctypes.c_bool),
         ("signal_strength_percent", ctypes.c_float),
     ]
 
+
 class StatusTextCStruct(ctypes.Structure):
     """
     Internal C structure for StatusText.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("type", ctypes.c_int),
         ("text", ctypes.c_char_p),
     ]
+
 
 class ActuatorControlTargetCStruct(ctypes.Structure):
     """
     Internal C structure for ActuatorControlTarget.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("group", ctypes.c_int32),
         ("controls", ctypes.POINTER(ctypes.c_float)),
         ("controls_size", ctypes.c_size_t),
     ]
 
+
 class ActuatorOutputStatusCStruct(ctypes.Structure):
     """
     Internal C structure for ActuatorOutputStatus.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("active", ctypes.c_uint32),
         ("actuator", ctypes.POINTER(ctypes.c_float)),
         ("actuator_size", ctypes.c_size_t),
     ]
 
+
 class CovarianceCStruct(ctypes.Structure):
     """
     Internal C structure for Covariance.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("covariance_matrix", ctypes.POINTER(ctypes.c_float)),
         ("covariance_matrix_size", ctypes.c_size_t),
     ]
+
 
 class VelocityBodyCStruct(ctypes.Structure):
     """
     Internal C structure for VelocityBody.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("x_m_s", ctypes.c_float),
         ("y_m_s", ctypes.c_float),
         ("z_m_s", ctypes.c_float),
     ]
 
+
 class PositionBodyCStruct(ctypes.Structure):
     """
     Internal C structure for PositionBody.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("x_m", ctypes.c_float),
         ("y_m", ctypes.c_float),
         ("z_m", ctypes.c_float),
     ]
 
+
 class OdometryCStruct(ctypes.Structure):
     """
     Internal C structure for Odometry.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("time_usec", ctypes.c_uint64),
         ("frame_id", ctypes.c_int),
@@ -310,11 +355,13 @@ class OdometryCStruct(ctypes.Structure):
         ("velocity_covariance", CovarianceCStruct),
     ]
 
+
 class DistanceSensorCStruct(ctypes.Structure):
     """
     Internal C structure for DistanceSensor.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("minimum_distance_m", ctypes.c_float),
         ("maximum_distance_m", ctypes.c_float),
@@ -322,11 +369,13 @@ class DistanceSensorCStruct(ctypes.Structure):
         ("orientation", EulerAngleCStruct),
     ]
 
+
 class ScaledPressureCStruct(ctypes.Structure):
     """
     Internal C structure for ScaledPressure.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("timestamp_us", ctypes.c_uint64),
         ("absolute_pressure_hpa", ctypes.c_float),
@@ -335,54 +384,64 @@ class ScaledPressureCStruct(ctypes.Structure):
         ("differential_pressure_temperature_deg", ctypes.c_float),
     ]
 
+
 class PositionNedCStruct(ctypes.Structure):
     """
     Internal C structure for PositionNed.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("north_m", ctypes.c_float),
         ("east_m", ctypes.c_float),
         ("down_m", ctypes.c_float),
     ]
 
+
 class VelocityNedCStruct(ctypes.Structure):
     """
     Internal C structure for VelocityNed.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("north_m_s", ctypes.c_float),
         ("east_m_s", ctypes.c_float),
         ("down_m_s", ctypes.c_float),
     ]
 
+
 class PositionVelocityNedCStruct(ctypes.Structure):
     """
     Internal C structure for PositionVelocityNed.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("position", PositionNedCStruct),
         ("velocity", VelocityNedCStruct),
     ]
+
 
 class GroundTruthCStruct(ctypes.Structure):
     """
     Internal C structure for GroundTruth.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("latitude_deg", ctypes.c_double),
         ("longitude_deg", ctypes.c_double),
         ("absolute_altitude_m", ctypes.c_float),
     ]
 
+
 class FixedwingMetricsCStruct(ctypes.Structure):
     """
     Internal C structure for FixedwingMetrics.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("airspeed_m_s", ctypes.c_float),
         ("throttle_percentage", ctypes.c_float),
@@ -392,44 +451,52 @@ class FixedwingMetricsCStruct(ctypes.Structure):
         ("absolute_altitude_m", ctypes.c_float),
     ]
 
+
 class AccelerationFrdCStruct(ctypes.Structure):
     """
     Internal C structure for AccelerationFrd.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("forward_m_s2", ctypes.c_float),
         ("right_m_s2", ctypes.c_float),
         ("down_m_s2", ctypes.c_float),
     ]
 
+
 class AngularVelocityFrdCStruct(ctypes.Structure):
     """
     Internal C structure for AngularVelocityFrd.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("forward_rad_s", ctypes.c_float),
         ("right_rad_s", ctypes.c_float),
         ("down_rad_s", ctypes.c_float),
     ]
 
+
 class MagneticFieldFrdCStruct(ctypes.Structure):
     """
     Internal C structure for MagneticFieldFrd.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("forward_gauss", ctypes.c_float),
         ("right_gauss", ctypes.c_float),
         ("down_gauss", ctypes.c_float),
     ]
 
+
 class ImuCStruct(ctypes.Structure):
     """
     Internal C structure for Imu.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("acceleration_frd", AccelerationFrdCStruct),
         ("angular_velocity_frd", AngularVelocityFrdCStruct),
@@ -438,22 +505,26 @@ class ImuCStruct(ctypes.Structure):
         ("timestamp_us", ctypes.c_uint64),
     ]
 
+
 class GpsGlobalOriginCStruct(ctypes.Structure):
     """
     Internal C structure for GpsGlobalOrigin.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("latitude_deg", ctypes.c_double),
         ("longitude_deg", ctypes.c_double),
         ("altitude_m", ctypes.c_float),
     ]
 
+
 class AltitudeCStruct(ctypes.Structure):
     """
     Internal C structure for Altitude.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("altitude_monotonic_m", ctypes.c_float),
         ("altitude_amsl_m", ctypes.c_float),
@@ -463,11 +534,13 @@ class AltitudeCStruct(ctypes.Structure):
         ("bottom_clearance_m", ctypes.c_float),
     ]
 
+
 class WindCStruct(ctypes.Structure):
     """
     Internal C structure for Wind.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("wind_x_ned_m_s", ctypes.c_float),
         ("wind_y_ned_m_s", ctypes.c_float),
@@ -486,7 +559,13 @@ class Position:
     Position type in global coordinates.
     """
 
-    def __init__(self, latitude_deg=None, longitude_deg=None, absolute_altitude_m=None, relative_altitude_m=None):
+    def __init__(
+        self,
+        latitude_deg=None,
+        longitude_deg=None,
+        absolute_altitude_m=None,
+        relative_altitude_m=None,
+    ):
         self.latitude_deg = latitude_deg
         self.longitude_deg = longitude_deg
         self.absolute_altitude_m = absolute_altitude_m
@@ -519,6 +598,7 @@ class Position:
         fields.append(f"relative_altitude_m={self.relative_altitude_m}")
         return f"Position({', '.join(fields)})"
 
+
 class Heading:
     """
     Heading type used for global position
@@ -545,16 +625,17 @@ class Heading:
         fields.append(f"heading_deg={self.heading_deg}")
         return f"Heading({', '.join(fields)})"
 
+
 class Quaternion:
     """
-    Quaternion type.
+       Quaternion type.
 
- All rotations and axis systems follow the right-hand rule.
- The Hamilton quaternion product definition is used.
- A zero-rotation quaternion is represented by (1,0,0,0).
- The quaternion could also be written as w + xi + yj + zk.
+    All rotations and axis systems follow the right-hand rule.
+    The Hamilton quaternion product definition is used.
+    A zero-rotation quaternion is represented by (1,0,0,0).
+    The quaternion could also be written as w + xi + yj + zk.
 
- For more info see: https://en.wikipedia.org/wiki/Quaternion
+    For more info see: https://en.wikipedia.org/wiki/Quaternion
     """
 
     def __init__(self, w=None, x=None, y=None, z=None, timestamp_us=None):
@@ -594,14 +675,15 @@ class Quaternion:
         fields.append(f"timestamp_us={self.timestamp_us}")
         return f"Quaternion({', '.join(fields)})"
 
+
 class EulerAngle:
     """
-    Euler angle type.
+       Euler angle type.
 
- All rotations and axis systems follow the right-hand rule.
- The Euler angles follow the convention of a 3-2-1 intrinsic Tait-Bryan rotation sequence.
+    All rotations and axis systems follow the right-hand rule.
+    The Euler angles follow the convention of a 3-2-1 intrinsic Tait-Bryan rotation sequence.
 
- For more info see https://en.wikipedia.org/wiki/Euler_angles
+    For more info see https://en.wikipedia.org/wiki/Euler_angles
     """
 
     def __init__(self, roll_deg=None, pitch_deg=None, yaw_deg=None, timestamp_us=None):
@@ -637,6 +719,7 @@ class EulerAngle:
         fields.append(f"timestamp_us={self.timestamp_us}")
         return f"EulerAngle({', '.join(fields)})"
 
+
 class AngularVelocityBody:
     """
     Angular velocity type.
@@ -671,6 +754,7 @@ class AngularVelocityBody:
         fields.append(f"yaw_rad_s={self.yaw_rad_s}")
         return f"AngularVelocityBody({', '.join(fields)})"
 
+
 class GpsInfo:
     """
     GPS information type.
@@ -701,15 +785,32 @@ class GpsInfo:
         fields.append(f"fix_type={self.fix_type}")
         return f"GpsInfo({', '.join(fields)})"
 
+
 class RawGps:
     """
-    Raw GPS information type.
+       Raw GPS information type.
 
- Warning: this is an advanced type! If you want the location of the drone, use
- the position instead. This message exposes the raw values of the GNSS sensor.
+    Warning: this is an advanced type! If you want the location of the drone, use
+    the position instead. This message exposes the raw values of the GNSS sensor.
     """
 
-    def __init__(self, timestamp_us=None, latitude_deg=None, longitude_deg=None, absolute_altitude_m=None, hdop=None, vdop=None, velocity_m_s=None, cog_deg=None, altitude_ellipsoid_m=None, horizontal_uncertainty_m=None, vertical_uncertainty_m=None, velocity_uncertainty_m_s=None, heading_uncertainty_deg=None, yaw_deg=None):
+    def __init__(
+        self,
+        timestamp_us=None,
+        latitude_deg=None,
+        longitude_deg=None,
+        absolute_altitude_m=None,
+        hdop=None,
+        vdop=None,
+        velocity_m_s=None,
+        cog_deg=None,
+        altitude_ellipsoid_m=None,
+        horizontal_uncertainty_m=None,
+        vertical_uncertainty_m=None,
+        velocity_uncertainty_m_s=None,
+        heading_uncertainty_deg=None,
+        yaw_deg=None,
+    ):
         self.timestamp_us = timestamp_us
         self.latitude_deg = latitude_deg
         self.longitude_deg = longitude_deg
@@ -782,12 +883,23 @@ class RawGps:
         fields.append(f"yaw_deg={self.yaw_deg}")
         return f"RawGps({', '.join(fields)})"
 
+
 class Battery:
     """
     Battery type.
     """
 
-    def __init__(self, id=None, temperature_degc=None, voltage_v=None, current_battery_a=None, capacity_consumed_ah=None, remaining_percent=None, time_remaining_s=None, battery_function=None):
+    def __init__(
+        self,
+        id=None,
+        temperature_degc=None,
+        voltage_v=None,
+        current_battery_a=None,
+        capacity_consumed_ah=None,
+        remaining_percent=None,
+        time_remaining_s=None,
+        battery_function=None,
+    ):
         self.id = id
         self.temperature_degc = temperature_degc
         self.voltage_v = voltage_v
@@ -836,12 +948,22 @@ class Battery:
         fields.append(f"battery_function={self.battery_function}")
         return f"Battery({', '.join(fields)})"
 
+
 class Health:
     """
     Health type.
     """
 
-    def __init__(self, is_gyrometer_calibration_ok=None, is_accelerometer_calibration_ok=None, is_magnetometer_calibration_ok=None, is_local_position_ok=None, is_global_position_ok=None, is_home_position_ok=None, is_armable=None):
+    def __init__(
+        self,
+        is_gyrometer_calibration_ok=None,
+        is_accelerometer_calibration_ok=None,
+        is_magnetometer_calibration_ok=None,
+        is_local_position_ok=None,
+        is_global_position_ok=None,
+        is_home_position_ok=None,
+        is_armable=None,
+    ):
         self.is_gyrometer_calibration_ok = is_gyrometer_calibration_ok
         self.is_accelerometer_calibration_ok = is_accelerometer_calibration_ok
         self.is_magnetometer_calibration_ok = is_magnetometer_calibration_ok
@@ -855,8 +977,12 @@ class Health:
         """Convert from C structure to Python object"""
         instance = cls()
         instance.is_gyrometer_calibration_ok = c_struct.is_gyrometer_calibration_ok
-        instance.is_accelerometer_calibration_ok = c_struct.is_accelerometer_calibration_ok
-        instance.is_magnetometer_calibration_ok = c_struct.is_magnetometer_calibration_ok
+        instance.is_accelerometer_calibration_ok = (
+            c_struct.is_accelerometer_calibration_ok
+        )
+        instance.is_magnetometer_calibration_ok = (
+            c_struct.is_magnetometer_calibration_ok
+        )
         instance.is_local_position_ok = c_struct.is_local_position_ok
         instance.is_global_position_ok = c_struct.is_global_position_ok
         instance.is_home_position_ok = c_struct.is_home_position_ok
@@ -878,20 +1004,27 @@ class Health:
     def __str__(self):
         fields = []
         fields.append(f"is_gyrometer_calibration_ok={self.is_gyrometer_calibration_ok}")
-        fields.append(f"is_accelerometer_calibration_ok={self.is_accelerometer_calibration_ok}")
-        fields.append(f"is_magnetometer_calibration_ok={self.is_magnetometer_calibration_ok}")
+        fields.append(
+            f"is_accelerometer_calibration_ok={self.is_accelerometer_calibration_ok}"
+        )
+        fields.append(
+            f"is_magnetometer_calibration_ok={self.is_magnetometer_calibration_ok}"
+        )
         fields.append(f"is_local_position_ok={self.is_local_position_ok}")
         fields.append(f"is_global_position_ok={self.is_global_position_ok}")
         fields.append(f"is_home_position_ok={self.is_home_position_ok}")
         fields.append(f"is_armable={self.is_armable}")
         return f"Health({', '.join(fields)})"
 
+
 class RcStatus:
     """
     Remote control status type.
     """
 
-    def __init__(self, was_available_once=None, is_available=None, signal_strength_percent=None):
+    def __init__(
+        self, was_available_once=None, is_available=None, signal_strength_percent=None
+    ):
         self.was_available_once = was_available_once
         self.is_available = is_available
         self.signal_strength_percent = signal_strength_percent
@@ -920,6 +1053,7 @@ class RcStatus:
         fields.append(f"signal_strength_percent={self.signal_strength_percent}")
         return f"RcStatus({', '.join(fields)})"
 
+
 class StatusText:
     """
     StatusText information type.
@@ -934,14 +1068,14 @@ class StatusText:
         """Convert from C structure to Python object"""
         instance = cls()
         instance.type = StatusTextType(c_struct.type)
-        instance.text = c_struct.text.decode('utf-8')
+        instance.text = c_struct.text.decode("utf-8")
         return instance
 
     def to_c_struct(self):
         """Convert to C structure for C library calls"""
         c_struct = StatusTextCStruct()
         c_struct.type = int(self.type)
-        c_struct.text = self.text.encode('utf-8')
+        c_struct.text = self.text.encode("utf-8")
         return c_struct
 
     def __str__(self):
@@ -949,6 +1083,7 @@ class StatusText:
         fields.append(f"type={self.type}")
         fields.append(f"text={self.text}")
         return f"StatusText({', '.join(fields)})"
+
 
 class ActuatorControlTarget:
     """
@@ -965,7 +1100,9 @@ class ActuatorControlTarget:
         instance = cls()
         instance.group = c_struct.group
         if c_struct.controls_size > 0:
-            instance.controls = [c_struct.controls[i] for i in range(c_struct.controls_size)]
+            instance.controls = [
+                c_struct.controls[i] for i in range(c_struct.controls_size)
+            ]
         else:
             instance.controls = []
         return instance
@@ -985,6 +1122,7 @@ class ActuatorControlTarget:
         fields.append(f"controls=[{len(self.controls)} items]")
         return f"ActuatorControlTarget({', '.join(fields)})"
 
+
 class ActuatorOutputStatus:
     """
     Actuator output status type.
@@ -1000,7 +1138,9 @@ class ActuatorOutputStatus:
         instance = cls()
         instance.active = c_struct.active
         if c_struct.actuator_size > 0:
-            instance.actuator = [c_struct.actuator[i] for i in range(c_struct.actuator_size)]
+            instance.actuator = [
+                c_struct.actuator[i] for i in range(c_struct.actuator_size)
+            ]
         else:
             instance.actuator = []
         return instance
@@ -1020,13 +1160,14 @@ class ActuatorOutputStatus:
         fields.append(f"actuator=[{len(self.actuator)} items]")
         return f"ActuatorOutputStatus({', '.join(fields)})"
 
+
 class Covariance:
     """
-    Covariance type.
+       Covariance type.
 
- Row-major representation of a 6x6 cross-covariance matrix
- upper right triangle.
- Set first to NaN if unknown.
+    Row-major representation of a 6x6 cross-covariance matrix
+    upper right triangle.
+    Set first to NaN if unknown.
     """
 
     def __init__(self, covariance_matrix=None):
@@ -1037,7 +1178,10 @@ class Covariance:
         """Convert from C structure to Python object"""
         instance = cls()
         if c_struct.covariance_matrix_size > 0:
-            instance.covariance_matrix = [c_struct.covariance_matrix[i] for i in range(c_struct.covariance_matrix_size)]
+            instance.covariance_matrix = [
+                c_struct.covariance_matrix[i]
+                for i in range(c_struct.covariance_matrix_size)
+            ]
         else:
             instance.covariance_matrix = []
         return instance
@@ -1054,6 +1198,7 @@ class Covariance:
         fields = []
         fields.append(f"covariance_matrix=[{len(self.covariance_matrix)} items]")
         return f"Covariance({', '.join(fields)})"
+
 
 class VelocityBody:
     """
@@ -1089,6 +1234,7 @@ class VelocityBody:
         fields.append(f"z_m_s={self.z_m_s}")
         return f"VelocityBody({', '.join(fields)})"
 
+
 class PositionBody:
     """
     Position type, represented in the Body (X Y Z) frame
@@ -1123,19 +1269,32 @@ class PositionBody:
         fields.append(f"z_m={self.z_m}")
         return f"PositionBody({', '.join(fields)})"
 
+
 class Odometry:
     """
     Odometry message type.
     """
+
     class MavFrame(IntEnum):
         """Mavlink frame id"""
+
         UNDEF = 0
         BODY_NED = 1
         VISION_NED = 2
         ESTIM_NED = 3
 
-
-    def __init__(self, time_usec=None, frame_id=None, child_frame_id=None, position_body=None, q=None, velocity_body=None, angular_velocity_body=None, pose_covariance=None, velocity_covariance=None):
+    def __init__(
+        self,
+        time_usec=None,
+        frame_id=None,
+        child_frame_id=None,
+        position_body=None,
+        q=None,
+        velocity_body=None,
+        angular_velocity_body=None,
+        pose_covariance=None,
+        velocity_covariance=None,
+    ):
         self.time_usec = time_usec
         self.frame_id = frame_id
         self.child_frame_id = child_frame_id
@@ -1156,9 +1315,13 @@ class Odometry:
         instance.position_body = PositionBody.from_c_struct(c_struct.position_body)
         instance.q = Quaternion.from_c_struct(c_struct.q)
         instance.velocity_body = VelocityBody.from_c_struct(c_struct.velocity_body)
-        instance.angular_velocity_body = AngularVelocityBody.from_c_struct(c_struct.angular_velocity_body)
+        instance.angular_velocity_body = AngularVelocityBody.from_c_struct(
+            c_struct.angular_velocity_body
+        )
         instance.pose_covariance = Covariance.from_c_struct(c_struct.pose_covariance)
-        instance.velocity_covariance = Covariance.from_c_struct(c_struct.velocity_covariance)
+        instance.velocity_covariance = Covariance.from_c_struct(
+            c_struct.velocity_covariance
+        )
         return instance
 
     def to_c_struct(self):
@@ -1188,12 +1351,19 @@ class Odometry:
         fields.append(f"velocity_covariance={self.velocity_covariance}")
         return f"Odometry({', '.join(fields)})"
 
+
 class DistanceSensor:
     """
     DistanceSensor message type.
     """
 
-    def __init__(self, minimum_distance_m=None, maximum_distance_m=None, current_distance_m=None, orientation=None):
+    def __init__(
+        self,
+        minimum_distance_m=None,
+        maximum_distance_m=None,
+        current_distance_m=None,
+        orientation=None,
+    ):
         self.minimum_distance_m = minimum_distance_m
         self.maximum_distance_m = maximum_distance_m
         self.current_distance_m = current_distance_m
@@ -1226,17 +1396,27 @@ class DistanceSensor:
         fields.append(f"orientation={self.orientation}")
         return f"DistanceSensor({', '.join(fields)})"
 
+
 class ScaledPressure:
     """
     Scaled Pressure message type.
     """
 
-    def __init__(self, timestamp_us=None, absolute_pressure_hpa=None, differential_pressure_hpa=None, temperature_deg=None, differential_pressure_temperature_deg=None):
+    def __init__(
+        self,
+        timestamp_us=None,
+        absolute_pressure_hpa=None,
+        differential_pressure_hpa=None,
+        temperature_deg=None,
+        differential_pressure_temperature_deg=None,
+    ):
         self.timestamp_us = timestamp_us
         self.absolute_pressure_hpa = absolute_pressure_hpa
         self.differential_pressure_hpa = differential_pressure_hpa
         self.temperature_deg = temperature_deg
-        self.differential_pressure_temperature_deg = differential_pressure_temperature_deg
+        self.differential_pressure_temperature_deg = (
+            differential_pressure_temperature_deg
+        )
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -1246,7 +1426,9 @@ class ScaledPressure:
         instance.absolute_pressure_hpa = c_struct.absolute_pressure_hpa
         instance.differential_pressure_hpa = c_struct.differential_pressure_hpa
         instance.temperature_deg = c_struct.temperature_deg
-        instance.differential_pressure_temperature_deg = c_struct.differential_pressure_temperature_deg
+        instance.differential_pressure_temperature_deg = (
+            c_struct.differential_pressure_temperature_deg
+        )
         return instance
 
     def to_c_struct(self):
@@ -1256,7 +1438,9 @@ class ScaledPressure:
         c_struct.absolute_pressure_hpa = self.absolute_pressure_hpa
         c_struct.differential_pressure_hpa = self.differential_pressure_hpa
         c_struct.temperature_deg = self.temperature_deg
-        c_struct.differential_pressure_temperature_deg = self.differential_pressure_temperature_deg
+        c_struct.differential_pressure_temperature_deg = (
+            self.differential_pressure_temperature_deg
+        )
         return c_struct
 
     def __str__(self):
@@ -1265,8 +1449,11 @@ class ScaledPressure:
         fields.append(f"absolute_pressure_hpa={self.absolute_pressure_hpa}")
         fields.append(f"differential_pressure_hpa={self.differential_pressure_hpa}")
         fields.append(f"temperature_deg={self.temperature_deg}")
-        fields.append(f"differential_pressure_temperature_deg={self.differential_pressure_temperature_deg}")
+        fields.append(
+            f"differential_pressure_temperature_deg={self.differential_pressure_temperature_deg}"
+        )
         return f"ScaledPressure({', '.join(fields)})"
+
 
 class PositionNed:
     """
@@ -1302,6 +1489,7 @@ class PositionNed:
         fields.append(f"down_m={self.down_m}")
         return f"PositionNed({', '.join(fields)})"
 
+
 class VelocityNed:
     """
     VelocityNed message type.
@@ -1336,6 +1524,7 @@ class VelocityNed:
         fields.append(f"down_m_s={self.down_m_s}")
         return f"VelocityNed({', '.join(fields)})"
 
+
 class PositionVelocityNed:
     """
     PositionVelocityNed message type.
@@ -1365,6 +1554,7 @@ class PositionVelocityNed:
         fields.append(f"position={self.position}")
         fields.append(f"velocity={self.velocity}")
         return f"PositionVelocityNed({', '.join(fields)})"
+
 
 class GroundTruth:
     """
@@ -1400,12 +1590,21 @@ class GroundTruth:
         fields.append(f"absolute_altitude_m={self.absolute_altitude_m}")
         return f"GroundTruth({', '.join(fields)})"
 
+
 class FixedwingMetrics:
     """
     FixedwingMetrics message type.
     """
 
-    def __init__(self, airspeed_m_s=None, throttle_percentage=None, climb_rate_m_s=None, groundspeed_m_s=None, heading_deg=None, absolute_altitude_m=None):
+    def __init__(
+        self,
+        airspeed_m_s=None,
+        throttle_percentage=None,
+        climb_rate_m_s=None,
+        groundspeed_m_s=None,
+        heading_deg=None,
+        absolute_altitude_m=None,
+    ):
         self.airspeed_m_s = airspeed_m_s
         self.throttle_percentage = throttle_percentage
         self.climb_rate_m_s = climb_rate_m_s
@@ -1446,6 +1645,7 @@ class FixedwingMetrics:
         fields.append(f"absolute_altitude_m={self.absolute_altitude_m}")
         return f"FixedwingMetrics({', '.join(fields)})"
 
+
 class AccelerationFrd:
     """
     AccelerationFrd message type.
@@ -1479,6 +1679,7 @@ class AccelerationFrd:
         fields.append(f"right_m_s2={self.right_m_s2}")
         fields.append(f"down_m_s2={self.down_m_s2}")
         return f"AccelerationFrd({', '.join(fields)})"
+
 
 class AngularVelocityFrd:
     """
@@ -1514,6 +1715,7 @@ class AngularVelocityFrd:
         fields.append(f"down_rad_s={self.down_rad_s}")
         return f"AngularVelocityFrd({', '.join(fields)})"
 
+
 class MagneticFieldFrd:
     """
     MagneticFieldFrd message type.
@@ -1548,12 +1750,20 @@ class MagneticFieldFrd:
         fields.append(f"down_gauss={self.down_gauss}")
         return f"MagneticFieldFrd({', '.join(fields)})"
 
+
 class Imu:
     """
     Imu message type.
     """
 
-    def __init__(self, acceleration_frd=None, angular_velocity_frd=None, magnetic_field_frd=None, temperature_degc=None, timestamp_us=None):
+    def __init__(
+        self,
+        acceleration_frd=None,
+        angular_velocity_frd=None,
+        magnetic_field_frd=None,
+        temperature_degc=None,
+        timestamp_us=None,
+    ):
         self.acceleration_frd = acceleration_frd
         self.angular_velocity_frd = angular_velocity_frd
         self.magnetic_field_frd = magnetic_field_frd
@@ -1564,9 +1774,15 @@ class Imu:
     def from_c_struct(cls, c_struct):
         """Convert from C structure to Python object"""
         instance = cls()
-        instance.acceleration_frd = AccelerationFrd.from_c_struct(c_struct.acceleration_frd)
-        instance.angular_velocity_frd = AngularVelocityFrd.from_c_struct(c_struct.angular_velocity_frd)
-        instance.magnetic_field_frd = MagneticFieldFrd.from_c_struct(c_struct.magnetic_field_frd)
+        instance.acceleration_frd = AccelerationFrd.from_c_struct(
+            c_struct.acceleration_frd
+        )
+        instance.angular_velocity_frd = AngularVelocityFrd.from_c_struct(
+            c_struct.angular_velocity_frd
+        )
+        instance.magnetic_field_frd = MagneticFieldFrd.from_c_struct(
+            c_struct.magnetic_field_frd
+        )
         instance.temperature_degc = c_struct.temperature_degc
         instance.timestamp_us = c_struct.timestamp_us
         return instance
@@ -1589,6 +1805,7 @@ class Imu:
         fields.append(f"temperature_degc={self.temperature_degc}")
         fields.append(f"timestamp_us={self.timestamp_us}")
         return f"Imu({', '.join(fields)})"
+
 
 class GpsGlobalOrigin:
     """
@@ -1624,12 +1841,21 @@ class GpsGlobalOrigin:
         fields.append(f"altitude_m={self.altitude_m}")
         return f"GpsGlobalOrigin({', '.join(fields)})"
 
+
 class Altitude:
     """
     Altitude message type
     """
 
-    def __init__(self, altitude_monotonic_m=None, altitude_amsl_m=None, altitude_local_m=None, altitude_relative_m=None, altitude_terrain_m=None, bottom_clearance_m=None):
+    def __init__(
+        self,
+        altitude_monotonic_m=None,
+        altitude_amsl_m=None,
+        altitude_local_m=None,
+        altitude_relative_m=None,
+        altitude_terrain_m=None,
+        bottom_clearance_m=None,
+    ):
         self.altitude_monotonic_m = altitude_monotonic_m
         self.altitude_amsl_m = altitude_amsl_m
         self.altitude_local_m = altitude_local_m
@@ -1670,12 +1896,23 @@ class Altitude:
         fields.append(f"bottom_clearance_m={self.bottom_clearance_m}")
         return f"Altitude({', '.join(fields)})"
 
+
 class Wind:
     """
     Wind message type
     """
 
-    def __init__(self, wind_x_ned_m_s=None, wind_y_ned_m_s=None, wind_z_ned_m_s=None, horizontal_variability_stddev_m_s=None, vertical_variability_stddev_m_s=None, wind_altitude_msl_m=None, horizontal_wind_speed_accuracy_m_s=None, vertical_wind_speed_accuracy_m_s=None):
+    def __init__(
+        self,
+        wind_x_ned_m_s=None,
+        wind_y_ned_m_s=None,
+        wind_z_ned_m_s=None,
+        horizontal_variability_stddev_m_s=None,
+        vertical_variability_stddev_m_s=None,
+        wind_altitude_msl_m=None,
+        horizontal_wind_speed_accuracy_m_s=None,
+        vertical_wind_speed_accuracy_m_s=None,
+    ):
         self.wind_x_ned_m_s = wind_x_ned_m_s
         self.wind_y_ned_m_s = wind_y_ned_m_s
         self.wind_z_ned_m_s = wind_z_ned_m_s
@@ -1692,11 +1929,19 @@ class Wind:
         instance.wind_x_ned_m_s = c_struct.wind_x_ned_m_s
         instance.wind_y_ned_m_s = c_struct.wind_y_ned_m_s
         instance.wind_z_ned_m_s = c_struct.wind_z_ned_m_s
-        instance.horizontal_variability_stddev_m_s = c_struct.horizontal_variability_stddev_m_s
-        instance.vertical_variability_stddev_m_s = c_struct.vertical_variability_stddev_m_s
+        instance.horizontal_variability_stddev_m_s = (
+            c_struct.horizontal_variability_stddev_m_s
+        )
+        instance.vertical_variability_stddev_m_s = (
+            c_struct.vertical_variability_stddev_m_s
+        )
         instance.wind_altitude_msl_m = c_struct.wind_altitude_msl_m
-        instance.horizontal_wind_speed_accuracy_m_s = c_struct.horizontal_wind_speed_accuracy_m_s
-        instance.vertical_wind_speed_accuracy_m_s = c_struct.vertical_wind_speed_accuracy_m_s
+        instance.horizontal_wind_speed_accuracy_m_s = (
+            c_struct.horizontal_wind_speed_accuracy_m_s
+        )
+        instance.vertical_wind_speed_accuracy_m_s = (
+            c_struct.vertical_wind_speed_accuracy_m_s
+        )
         return instance
 
     def to_c_struct(self):
@@ -1705,11 +1950,17 @@ class Wind:
         c_struct.wind_x_ned_m_s = self.wind_x_ned_m_s
         c_struct.wind_y_ned_m_s = self.wind_y_ned_m_s
         c_struct.wind_z_ned_m_s = self.wind_z_ned_m_s
-        c_struct.horizontal_variability_stddev_m_s = self.horizontal_variability_stddev_m_s
+        c_struct.horizontal_variability_stddev_m_s = (
+            self.horizontal_variability_stddev_m_s
+        )
         c_struct.vertical_variability_stddev_m_s = self.vertical_variability_stddev_m_s
         c_struct.wind_altitude_msl_m = self.wind_altitude_msl_m
-        c_struct.horizontal_wind_speed_accuracy_m_s = self.horizontal_wind_speed_accuracy_m_s
-        c_struct.vertical_wind_speed_accuracy_m_s = self.vertical_wind_speed_accuracy_m_s
+        c_struct.horizontal_wind_speed_accuracy_m_s = (
+            self.horizontal_wind_speed_accuracy_m_s
+        )
+        c_struct.vertical_wind_speed_accuracy_m_s = (
+            self.vertical_wind_speed_accuracy_m_s
+        )
         return c_struct
 
     def __str__(self):
@@ -1717,20 +1968,27 @@ class Wind:
         fields.append(f"wind_x_ned_m_s={self.wind_x_ned_m_s}")
         fields.append(f"wind_y_ned_m_s={self.wind_y_ned_m_s}")
         fields.append(f"wind_z_ned_m_s={self.wind_z_ned_m_s}")
-        fields.append(f"horizontal_variability_stddev_m_s={self.horizontal_variability_stddev_m_s}")
-        fields.append(f"vertical_variability_stddev_m_s={self.vertical_variability_stddev_m_s}")
+        fields.append(
+            f"horizontal_variability_stddev_m_s={self.horizontal_variability_stddev_m_s}"
+        )
+        fields.append(
+            f"vertical_variability_stddev_m_s={self.vertical_variability_stddev_m_s}"
+        )
         fields.append(f"wind_altitude_msl_m={self.wind_altitude_msl_m}")
-        fields.append(f"horizontal_wind_speed_accuracy_m_s={self.horizontal_wind_speed_accuracy_m_s}")
-        fields.append(f"vertical_wind_speed_accuracy_m_s={self.vertical_wind_speed_accuracy_m_s}")
+        fields.append(
+            f"horizontal_wind_speed_accuracy_m_s={self.horizontal_wind_speed_accuracy_m_s}"
+        )
+        fields.append(
+            f"vertical_wind_speed_accuracy_m_s={self.vertical_wind_speed_accuracy_m_s}"
+        )
         return f"Wind({', '.join(fields)})"
-
 
 
 # ===== Plugin =====
 class Telemetry:
     """Allow users to get vehicle telemetry and state information
- (e.g. battery, GPS, RC connection, flight mode etc.) and set telemetry update rates.
- Certain Telemetry Topics such as, Position or Velocity_Ned require GPS Fix before data gets published."""
+    (e.g. battery, GPS, RC connection, flight mode etc.) and set telemetry update rates.
+    Certain Telemetry Topics such as, Position or Velocity_Ned require GPS Fix before data gets published."""
 
     def __init__(self, system):
         self._lib = _cmavsdk_lib
@@ -1748,15 +2006,15 @@ class Telemetry:
         self._handle = self._lib.mavsdk_telemetry_create(system_handle)
 
         if not self._handle:
-            raise RuntimeError("Failed to create Telemetry plugin - C function returned null handle")
-
+            raise RuntimeError(
+                "Failed to create Telemetry plugin - C function returned null handle"
+            )
 
     def subscribe_position(self, callback: Callable, user_data: Any = None):
         """Subscribe to 'position' updates."""
 
         def c_callback(c_data, ud):
             try:
-
                 py_data = Position.from_c_struct(c_data)
 
                 self._lib.mavsdk_telemetry_Position_destroy(ctypes.byref(c_data))
@@ -1769,39 +2027,28 @@ class Telemetry:
         cb = PositionCallback(c_callback)
         self._callbacks.append(cb)
 
-        return self._lib.mavsdk_telemetry_subscribe_position(
-            self._handle,
-            cb,
-            None
-        )
+        return self._lib.mavsdk_telemetry_subscribe_position(self._handle, cb, None)
 
     def unsubscribe_position(self, handle: ctypes.c_void_p):
         """Unsubscribe from position"""
-        self._lib.mavsdk_telemetry_unsubscribe_position(
-            self._handle, handle
-        )
+        self._lib.mavsdk_telemetry_unsubscribe_position(self._handle, handle)
 
     def position(self):
         """Get position (blocking)"""
 
         result_out = PositionCStruct()
 
-        self._lib.mavsdk_telemetry_position(
-            self._handle,
-            ctypes.byref(result_out)
-        )
+        self._lib.mavsdk_telemetry_position(self._handle, ctypes.byref(result_out))
 
         py_result = Position.from_c_struct(result_out)
         self._lib.mavsdk_telemetry_Position_destroy(ctypes.byref(result_out))
         return py_result
-
 
     def subscribe_home(self, callback: Callable, user_data: Any = None):
         """Subscribe to 'home position' updates."""
 
         def c_callback(c_data, ud):
             try:
-
                 py_data = Position.from_c_struct(c_data)
 
                 self._lib.mavsdk_telemetry_Position_destroy(ctypes.byref(c_data))
@@ -1814,39 +2061,28 @@ class Telemetry:
         cb = HomeCallback(c_callback)
         self._callbacks.append(cb)
 
-        return self._lib.mavsdk_telemetry_subscribe_home(
-            self._handle,
-            cb,
-            None
-        )
+        return self._lib.mavsdk_telemetry_subscribe_home(self._handle, cb, None)
 
     def unsubscribe_home(self, handle: ctypes.c_void_p):
         """Unsubscribe from home"""
-        self._lib.mavsdk_telemetry_unsubscribe_home(
-            self._handle, handle
-        )
+        self._lib.mavsdk_telemetry_unsubscribe_home(self._handle, handle)
 
     def home(self):
         """Get home (blocking)"""
 
         result_out = PositionCStruct()
 
-        self._lib.mavsdk_telemetry_home(
-            self._handle,
-            ctypes.byref(result_out)
-        )
+        self._lib.mavsdk_telemetry_home(self._handle, ctypes.byref(result_out))
 
         py_result = Position.from_c_struct(result_out)
         self._lib.mavsdk_telemetry_Position_destroy(ctypes.byref(result_out))
         return py_result
-
 
     def subscribe_in_air(self, callback: Callable, user_data: Any = None):
         """Subscribe to in-air updates."""
 
         def c_callback(c_data, ud):
             try:
-
                 py_data = c_data
 
                 callback(py_data, user_data)
@@ -1857,37 +2093,26 @@ class Telemetry:
         cb = InAirCallback(c_callback)
         self._callbacks.append(cb)
 
-        return self._lib.mavsdk_telemetry_subscribe_in_air(
-            self._handle,
-            cb,
-            None
-        )
+        return self._lib.mavsdk_telemetry_subscribe_in_air(self._handle, cb, None)
 
     def unsubscribe_in_air(self, handle: ctypes.c_void_p):
         """Unsubscribe from in_air"""
-        self._lib.mavsdk_telemetry_unsubscribe_in_air(
-            self._handle, handle
-        )
+        self._lib.mavsdk_telemetry_unsubscribe_in_air(self._handle, handle)
 
     def in_air(self):
         """Get in_air (blocking)"""
 
         result_out = ctypes.c_bool()
 
-        self._lib.mavsdk_telemetry_in_air(
-            self._handle,
-            ctypes.byref(result_out)
-        )
+        self._lib.mavsdk_telemetry_in_air(self._handle, ctypes.byref(result_out))
 
         return result_out.value
-
 
     def subscribe_landed_state(self, callback: Callable, user_data: Any = None):
         """Subscribe to landed state updates"""
 
         def c_callback(c_data, ud):
             try:
-
                 py_data = LandedState(c_data)
 
                 callback(py_data, user_data)
@@ -1898,39 +2123,28 @@ class Telemetry:
         cb = LandedStateCallback(c_callback)
         self._callbacks.append(cb)
 
-        return self._lib.mavsdk_telemetry_subscribe_landed_state(
-            self._handle,
-            cb,
-            None
-        )
+        return self._lib.mavsdk_telemetry_subscribe_landed_state(self._handle, cb, None)
 
     def unsubscribe_landed_state(self, handle: ctypes.c_void_p):
         """Unsubscribe from landed_state"""
-        self._lib.mavsdk_telemetry_unsubscribe_landed_state(
-            self._handle, handle
-        )
+        self._lib.mavsdk_telemetry_unsubscribe_landed_state(self._handle, handle)
 
     def landed_state(self):
         """Get landed_state (blocking)"""
 
         result_out = LandedStateCStruct()
 
-        self._lib.mavsdk_telemetry_landed_state(
-            self._handle,
-            ctypes.byref(result_out)
-        )
+        self._lib.mavsdk_telemetry_landed_state(self._handle, ctypes.byref(result_out))
 
         py_result = LandedState.from_c_struct(result_out)
         self._lib.mavsdk_telemetry_LandedState_destroy(ctypes.byref(result_out))
         return py_result
-
 
     def subscribe_armed(self, callback: Callable, user_data: Any = None):
         """Subscribe to armed updates."""
 
         def c_callback(c_data, ud):
             try:
-
                 py_data = c_data
 
                 callback(py_data, user_data)
@@ -1941,37 +2155,26 @@ class Telemetry:
         cb = ArmedCallback(c_callback)
         self._callbacks.append(cb)
 
-        return self._lib.mavsdk_telemetry_subscribe_armed(
-            self._handle,
-            cb,
-            None
-        )
+        return self._lib.mavsdk_telemetry_subscribe_armed(self._handle, cb, None)
 
     def unsubscribe_armed(self, handle: ctypes.c_void_p):
         """Unsubscribe from armed"""
-        self._lib.mavsdk_telemetry_unsubscribe_armed(
-            self._handle, handle
-        )
+        self._lib.mavsdk_telemetry_unsubscribe_armed(self._handle, handle)
 
     def armed(self):
         """Get armed (blocking)"""
 
         result_out = ctypes.c_bool()
 
-        self._lib.mavsdk_telemetry_armed(
-            self._handle,
-            ctypes.byref(result_out)
-        )
+        self._lib.mavsdk_telemetry_armed(self._handle, ctypes.byref(result_out))
 
         return result_out.value
-
 
     def subscribe_vtol_state(self, callback: Callable, user_data: Any = None):
         """subscribe to vtol state Updates"""
 
         def c_callback(c_data, ud):
             try:
-
                 py_data = VtolState(c_data)
 
                 callback(py_data, user_data)
@@ -1982,39 +2185,28 @@ class Telemetry:
         cb = VtolStateCallback(c_callback)
         self._callbacks.append(cb)
 
-        return self._lib.mavsdk_telemetry_subscribe_vtol_state(
-            self._handle,
-            cb,
-            None
-        )
+        return self._lib.mavsdk_telemetry_subscribe_vtol_state(self._handle, cb, None)
 
     def unsubscribe_vtol_state(self, handle: ctypes.c_void_p):
         """Unsubscribe from vtol_state"""
-        self._lib.mavsdk_telemetry_unsubscribe_vtol_state(
-            self._handle, handle
-        )
+        self._lib.mavsdk_telemetry_unsubscribe_vtol_state(self._handle, handle)
 
     def vtol_state(self):
         """Get vtol_state (blocking)"""
 
         result_out = VtolStateCStruct()
 
-        self._lib.mavsdk_telemetry_vtol_state(
-            self._handle,
-            ctypes.byref(result_out)
-        )
+        self._lib.mavsdk_telemetry_vtol_state(self._handle, ctypes.byref(result_out))
 
         py_result = VtolState.from_c_struct(result_out)
         self._lib.mavsdk_telemetry_VtolState_destroy(ctypes.byref(result_out))
         return py_result
-
 
     def subscribe_attitude_quaternion(self, callback: Callable, user_data: Any = None):
         """Subscribe to 'attitude' updates (quaternion)."""
 
         def c_callback(c_data, ud):
             try:
-
                 py_data = Quaternion.from_c_struct(c_data)
 
                 self._lib.mavsdk_telemetry_Quaternion_destroy(ctypes.byref(c_data))
@@ -2028,16 +2220,12 @@ class Telemetry:
         self._callbacks.append(cb)
 
         return self._lib.mavsdk_telemetry_subscribe_attitude_quaternion(
-            self._handle,
-            cb,
-            None
+            self._handle, cb, None
         )
 
     def unsubscribe_attitude_quaternion(self, handle: ctypes.c_void_p):
         """Unsubscribe from attitude_quaternion"""
-        self._lib.mavsdk_telemetry_unsubscribe_attitude_quaternion(
-            self._handle, handle
-        )
+        self._lib.mavsdk_telemetry_unsubscribe_attitude_quaternion(self._handle, handle)
 
     def attitude_quaternion(self):
         """Get attitude_quaternion (blocking)"""
@@ -2045,21 +2233,18 @@ class Telemetry:
         result_out = QuaternionCStruct()
 
         self._lib.mavsdk_telemetry_attitude_quaternion(
-            self._handle,
-            ctypes.byref(result_out)
+            self._handle, ctypes.byref(result_out)
         )
 
         py_result = Quaternion.from_c_struct(result_out)
         self._lib.mavsdk_telemetry_Quaternion_destroy(ctypes.byref(result_out))
         return py_result
 
-
     def subscribe_attitude_euler(self, callback: Callable, user_data: Any = None):
         """Subscribe to 'attitude' updates (Euler)."""
 
         def c_callback(c_data, ud):
             try:
-
                 py_data = EulerAngle.from_c_struct(c_data)
 
                 self._lib.mavsdk_telemetry_EulerAngle_destroy(ctypes.byref(c_data))
@@ -2073,16 +2258,12 @@ class Telemetry:
         self._callbacks.append(cb)
 
         return self._lib.mavsdk_telemetry_subscribe_attitude_euler(
-            self._handle,
-            cb,
-            None
+            self._handle, cb, None
         )
 
     def unsubscribe_attitude_euler(self, handle: ctypes.c_void_p):
         """Unsubscribe from attitude_euler"""
-        self._lib.mavsdk_telemetry_unsubscribe_attitude_euler(
-            self._handle, handle
-        )
+        self._lib.mavsdk_telemetry_unsubscribe_attitude_euler(self._handle, handle)
 
     def attitude_euler(self):
         """Get attitude_euler (blocking)"""
@@ -2090,24 +2271,25 @@ class Telemetry:
         result_out = EulerAngleCStruct()
 
         self._lib.mavsdk_telemetry_attitude_euler(
-            self._handle,
-            ctypes.byref(result_out)
+            self._handle, ctypes.byref(result_out)
         )
 
         py_result = EulerAngle.from_c_struct(result_out)
         self._lib.mavsdk_telemetry_EulerAngle_destroy(ctypes.byref(result_out))
         return py_result
 
-
-    def subscribe_attitude_angular_velocity_body(self, callback: Callable, user_data: Any = None):
+    def subscribe_attitude_angular_velocity_body(
+        self, callback: Callable, user_data: Any = None
+    ):
         """Subscribe to 'attitude' updates (angular velocity)"""
 
         def c_callback(c_data, ud):
             try:
-
                 py_data = AngularVelocityBody.from_c_struct(c_data)
 
-                self._lib.mavsdk_telemetry_AngularVelocityBody_destroy(ctypes.byref(c_data))
+                self._lib.mavsdk_telemetry_AngularVelocityBody_destroy(
+                    ctypes.byref(c_data)
+                )
 
                 callback(py_data, user_data)
 
@@ -2118,9 +2300,7 @@ class Telemetry:
         self._callbacks.append(cb)
 
         return self._lib.mavsdk_telemetry_subscribe_attitude_angular_velocity_body(
-            self._handle,
-            cb,
-            None
+            self._handle, cb, None
         )
 
     def unsubscribe_attitude_angular_velocity_body(self, handle: ctypes.c_void_p):
@@ -2135,21 +2315,18 @@ class Telemetry:
         result_out = AngularVelocityBodyCStruct()
 
         self._lib.mavsdk_telemetry_attitude_angular_velocity_body(
-            self._handle,
-            ctypes.byref(result_out)
+            self._handle, ctypes.byref(result_out)
         )
 
         py_result = AngularVelocityBody.from_c_struct(result_out)
         self._lib.mavsdk_telemetry_AngularVelocityBody_destroy(ctypes.byref(result_out))
         return py_result
 
-
     def subscribe_velocity_ned(self, callback: Callable, user_data: Any = None):
         """Subscribe to 'ground speed' updates (NED)."""
 
         def c_callback(c_data, ud):
             try:
-
                 py_data = VelocityNed.from_c_struct(c_data)
 
                 self._lib.mavsdk_telemetry_VelocityNed_destroy(ctypes.byref(c_data))
@@ -2162,39 +2339,28 @@ class Telemetry:
         cb = VelocityNedCallback(c_callback)
         self._callbacks.append(cb)
 
-        return self._lib.mavsdk_telemetry_subscribe_velocity_ned(
-            self._handle,
-            cb,
-            None
-        )
+        return self._lib.mavsdk_telemetry_subscribe_velocity_ned(self._handle, cb, None)
 
     def unsubscribe_velocity_ned(self, handle: ctypes.c_void_p):
         """Unsubscribe from velocity_ned"""
-        self._lib.mavsdk_telemetry_unsubscribe_velocity_ned(
-            self._handle, handle
-        )
+        self._lib.mavsdk_telemetry_unsubscribe_velocity_ned(self._handle, handle)
 
     def velocity_ned(self):
         """Get velocity_ned (blocking)"""
 
         result_out = VelocityNedCStruct()
 
-        self._lib.mavsdk_telemetry_velocity_ned(
-            self._handle,
-            ctypes.byref(result_out)
-        )
+        self._lib.mavsdk_telemetry_velocity_ned(self._handle, ctypes.byref(result_out))
 
         py_result = VelocityNed.from_c_struct(result_out)
         self._lib.mavsdk_telemetry_VelocityNed_destroy(ctypes.byref(result_out))
         return py_result
-
 
     def subscribe_gps_info(self, callback: Callable, user_data: Any = None):
         """Subscribe to 'GPS info' updates."""
 
         def c_callback(c_data, ud):
             try:
-
                 py_data = GpsInfo.from_c_struct(c_data)
 
                 self._lib.mavsdk_telemetry_GpsInfo_destroy(ctypes.byref(c_data))
@@ -2207,39 +2373,28 @@ class Telemetry:
         cb = GpsInfoCallback(c_callback)
         self._callbacks.append(cb)
 
-        return self._lib.mavsdk_telemetry_subscribe_gps_info(
-            self._handle,
-            cb,
-            None
-        )
+        return self._lib.mavsdk_telemetry_subscribe_gps_info(self._handle, cb, None)
 
     def unsubscribe_gps_info(self, handle: ctypes.c_void_p):
         """Unsubscribe from gps_info"""
-        self._lib.mavsdk_telemetry_unsubscribe_gps_info(
-            self._handle, handle
-        )
+        self._lib.mavsdk_telemetry_unsubscribe_gps_info(self._handle, handle)
 
     def gps_info(self):
         """Get gps_info (blocking)"""
 
         result_out = GpsInfoCStruct()
 
-        self._lib.mavsdk_telemetry_gps_info(
-            self._handle,
-            ctypes.byref(result_out)
-        )
+        self._lib.mavsdk_telemetry_gps_info(self._handle, ctypes.byref(result_out))
 
         py_result = GpsInfo.from_c_struct(result_out)
         self._lib.mavsdk_telemetry_GpsInfo_destroy(ctypes.byref(result_out))
         return py_result
-
 
     def subscribe_raw_gps(self, callback: Callable, user_data: Any = None):
         """Subscribe to 'Raw GPS' updates."""
 
         def c_callback(c_data, ud):
             try:
-
                 py_data = RawGps.from_c_struct(c_data)
 
                 self._lib.mavsdk_telemetry_RawGps_destroy(ctypes.byref(c_data))
@@ -2252,39 +2407,28 @@ class Telemetry:
         cb = RawGpsCallback(c_callback)
         self._callbacks.append(cb)
 
-        return self._lib.mavsdk_telemetry_subscribe_raw_gps(
-            self._handle,
-            cb,
-            None
-        )
+        return self._lib.mavsdk_telemetry_subscribe_raw_gps(self._handle, cb, None)
 
     def unsubscribe_raw_gps(self, handle: ctypes.c_void_p):
         """Unsubscribe from raw_gps"""
-        self._lib.mavsdk_telemetry_unsubscribe_raw_gps(
-            self._handle, handle
-        )
+        self._lib.mavsdk_telemetry_unsubscribe_raw_gps(self._handle, handle)
 
     def raw_gps(self):
         """Get raw_gps (blocking)"""
 
         result_out = RawGpsCStruct()
 
-        self._lib.mavsdk_telemetry_raw_gps(
-            self._handle,
-            ctypes.byref(result_out)
-        )
+        self._lib.mavsdk_telemetry_raw_gps(self._handle, ctypes.byref(result_out))
 
         py_result = RawGps.from_c_struct(result_out)
         self._lib.mavsdk_telemetry_RawGps_destroy(ctypes.byref(result_out))
         return py_result
-
 
     def subscribe_battery(self, callback: Callable, user_data: Any = None):
         """Subscribe to 'battery' updates."""
 
         def c_callback(c_data, ud):
             try:
-
                 py_data = Battery.from_c_struct(c_data)
 
                 self._lib.mavsdk_telemetry_Battery_destroy(ctypes.byref(c_data))
@@ -2297,39 +2441,28 @@ class Telemetry:
         cb = BatteryCallback(c_callback)
         self._callbacks.append(cb)
 
-        return self._lib.mavsdk_telemetry_subscribe_battery(
-            self._handle,
-            cb,
-            None
-        )
+        return self._lib.mavsdk_telemetry_subscribe_battery(self._handle, cb, None)
 
     def unsubscribe_battery(self, handle: ctypes.c_void_p):
         """Unsubscribe from battery"""
-        self._lib.mavsdk_telemetry_unsubscribe_battery(
-            self._handle, handle
-        )
+        self._lib.mavsdk_telemetry_unsubscribe_battery(self._handle, handle)
 
     def battery(self):
         """Get battery (blocking)"""
 
         result_out = BatteryCStruct()
 
-        self._lib.mavsdk_telemetry_battery(
-            self._handle,
-            ctypes.byref(result_out)
-        )
+        self._lib.mavsdk_telemetry_battery(self._handle, ctypes.byref(result_out))
 
         py_result = Battery.from_c_struct(result_out)
         self._lib.mavsdk_telemetry_Battery_destroy(ctypes.byref(result_out))
         return py_result
-
 
     def subscribe_flight_mode(self, callback: Callable, user_data: Any = None):
         """Subscribe to 'flight mode' updates."""
 
         def c_callback(c_data, ud):
             try:
-
                 py_data = FlightMode(c_data)
 
                 callback(py_data, user_data)
@@ -2340,39 +2473,28 @@ class Telemetry:
         cb = FlightModeCallback(c_callback)
         self._callbacks.append(cb)
 
-        return self._lib.mavsdk_telemetry_subscribe_flight_mode(
-            self._handle,
-            cb,
-            None
-        )
+        return self._lib.mavsdk_telemetry_subscribe_flight_mode(self._handle, cb, None)
 
     def unsubscribe_flight_mode(self, handle: ctypes.c_void_p):
         """Unsubscribe from flight_mode"""
-        self._lib.mavsdk_telemetry_unsubscribe_flight_mode(
-            self._handle, handle
-        )
+        self._lib.mavsdk_telemetry_unsubscribe_flight_mode(self._handle, handle)
 
     def flight_mode(self):
         """Get flight_mode (blocking)"""
 
         result_out = FlightModeCStruct()
 
-        self._lib.mavsdk_telemetry_flight_mode(
-            self._handle,
-            ctypes.byref(result_out)
-        )
+        self._lib.mavsdk_telemetry_flight_mode(self._handle, ctypes.byref(result_out))
 
         py_result = FlightMode.from_c_struct(result_out)
         self._lib.mavsdk_telemetry_FlightMode_destroy(ctypes.byref(result_out))
         return py_result
-
 
     def subscribe_health(self, callback: Callable, user_data: Any = None):
         """Subscribe to 'health' updates."""
 
         def c_callback(c_data, ud):
             try:
-
                 py_data = Health.from_c_struct(c_data)
 
                 self._lib.mavsdk_telemetry_Health_destroy(ctypes.byref(c_data))
@@ -2385,39 +2507,28 @@ class Telemetry:
         cb = HealthCallback(c_callback)
         self._callbacks.append(cb)
 
-        return self._lib.mavsdk_telemetry_subscribe_health(
-            self._handle,
-            cb,
-            None
-        )
+        return self._lib.mavsdk_telemetry_subscribe_health(self._handle, cb, None)
 
     def unsubscribe_health(self, handle: ctypes.c_void_p):
         """Unsubscribe from health"""
-        self._lib.mavsdk_telemetry_unsubscribe_health(
-            self._handle, handle
-        )
+        self._lib.mavsdk_telemetry_unsubscribe_health(self._handle, handle)
 
     def health(self):
         """Get health (blocking)"""
 
         result_out = HealthCStruct()
 
-        self._lib.mavsdk_telemetry_health(
-            self._handle,
-            ctypes.byref(result_out)
-        )
+        self._lib.mavsdk_telemetry_health(self._handle, ctypes.byref(result_out))
 
         py_result = Health.from_c_struct(result_out)
         self._lib.mavsdk_telemetry_Health_destroy(ctypes.byref(result_out))
         return py_result
-
 
     def subscribe_rc_status(self, callback: Callable, user_data: Any = None):
         """Subscribe to 'RC status' updates."""
 
         def c_callback(c_data, ud):
             try:
-
                 py_data = RcStatus.from_c_struct(c_data)
 
                 self._lib.mavsdk_telemetry_RcStatus_destroy(ctypes.byref(c_data))
@@ -2430,39 +2541,28 @@ class Telemetry:
         cb = RcStatusCallback(c_callback)
         self._callbacks.append(cb)
 
-        return self._lib.mavsdk_telemetry_subscribe_rc_status(
-            self._handle,
-            cb,
-            None
-        )
+        return self._lib.mavsdk_telemetry_subscribe_rc_status(self._handle, cb, None)
 
     def unsubscribe_rc_status(self, handle: ctypes.c_void_p):
         """Unsubscribe from rc_status"""
-        self._lib.mavsdk_telemetry_unsubscribe_rc_status(
-            self._handle, handle
-        )
+        self._lib.mavsdk_telemetry_unsubscribe_rc_status(self._handle, handle)
 
     def rc_status(self):
         """Get rc_status (blocking)"""
 
         result_out = RcStatusCStruct()
 
-        self._lib.mavsdk_telemetry_rc_status(
-            self._handle,
-            ctypes.byref(result_out)
-        )
+        self._lib.mavsdk_telemetry_rc_status(self._handle, ctypes.byref(result_out))
 
         py_result = RcStatus.from_c_struct(result_out)
         self._lib.mavsdk_telemetry_RcStatus_destroy(ctypes.byref(result_out))
         return py_result
-
 
     def subscribe_status_text(self, callback: Callable, user_data: Any = None):
         """Subscribe to 'status text' updates."""
 
         def c_callback(c_data, ud):
             try:
-
                 py_data = StatusText.from_c_struct(c_data)
 
                 self._lib.mavsdk_telemetry_StatusText_destroy(ctypes.byref(c_data))
@@ -2475,42 +2575,35 @@ class Telemetry:
         cb = StatusTextCallback(c_callback)
         self._callbacks.append(cb)
 
-        return self._lib.mavsdk_telemetry_subscribe_status_text(
-            self._handle,
-            cb,
-            None
-        )
+        return self._lib.mavsdk_telemetry_subscribe_status_text(self._handle, cb, None)
 
     def unsubscribe_status_text(self, handle: ctypes.c_void_p):
         """Unsubscribe from status_text"""
-        self._lib.mavsdk_telemetry_unsubscribe_status_text(
-            self._handle, handle
-        )
+        self._lib.mavsdk_telemetry_unsubscribe_status_text(self._handle, handle)
 
     def status_text(self):
         """Get status_text (blocking)"""
 
         result_out = StatusTextCStruct()
 
-        self._lib.mavsdk_telemetry_status_text(
-            self._handle,
-            ctypes.byref(result_out)
-        )
+        self._lib.mavsdk_telemetry_status_text(self._handle, ctypes.byref(result_out))
 
         py_result = StatusText.from_c_struct(result_out)
         self._lib.mavsdk_telemetry_StatusText_destroy(ctypes.byref(result_out))
         return py_result
 
-
-    def subscribe_actuator_control_target(self, callback: Callable, user_data: Any = None):
+    def subscribe_actuator_control_target(
+        self, callback: Callable, user_data: Any = None
+    ):
         """Subscribe to 'actuator control target' updates."""
 
         def c_callback(c_data, ud):
             try:
-
                 py_data = ActuatorControlTarget.from_c_struct(c_data)
 
-                self._lib.mavsdk_telemetry_ActuatorControlTarget_destroy(ctypes.byref(c_data))
+                self._lib.mavsdk_telemetry_ActuatorControlTarget_destroy(
+                    ctypes.byref(c_data)
+                )
 
                 callback(py_data, user_data)
 
@@ -2521,9 +2614,7 @@ class Telemetry:
         self._callbacks.append(cb)
 
         return self._lib.mavsdk_telemetry_subscribe_actuator_control_target(
-            self._handle,
-            cb,
-            None
+            self._handle, cb, None
         )
 
     def unsubscribe_actuator_control_target(self, handle: ctypes.c_void_p):
@@ -2538,24 +2629,27 @@ class Telemetry:
         result_out = ActuatorControlTargetCStruct()
 
         self._lib.mavsdk_telemetry_actuator_control_target(
-            self._handle,
-            ctypes.byref(result_out)
+            self._handle, ctypes.byref(result_out)
         )
 
         py_result = ActuatorControlTarget.from_c_struct(result_out)
-        self._lib.mavsdk_telemetry_ActuatorControlTarget_destroy(ctypes.byref(result_out))
+        self._lib.mavsdk_telemetry_ActuatorControlTarget_destroy(
+            ctypes.byref(result_out)
+        )
         return py_result
 
-
-    def subscribe_actuator_output_status(self, callback: Callable, user_data: Any = None):
+    def subscribe_actuator_output_status(
+        self, callback: Callable, user_data: Any = None
+    ):
         """Subscribe to 'actuator output status' updates."""
 
         def c_callback(c_data, ud):
             try:
-
                 py_data = ActuatorOutputStatus.from_c_struct(c_data)
 
-                self._lib.mavsdk_telemetry_ActuatorOutputStatus_destroy(ctypes.byref(c_data))
+                self._lib.mavsdk_telemetry_ActuatorOutputStatus_destroy(
+                    ctypes.byref(c_data)
+                )
 
                 callback(py_data, user_data)
 
@@ -2566,9 +2660,7 @@ class Telemetry:
         self._callbacks.append(cb)
 
         return self._lib.mavsdk_telemetry_subscribe_actuator_output_status(
-            self._handle,
-            cb,
-            None
+            self._handle, cb, None
         )
 
     def unsubscribe_actuator_output_status(self, handle: ctypes.c_void_p):
@@ -2583,21 +2675,20 @@ class Telemetry:
         result_out = ActuatorOutputStatusCStruct()
 
         self._lib.mavsdk_telemetry_actuator_output_status(
-            self._handle,
-            ctypes.byref(result_out)
+            self._handle, ctypes.byref(result_out)
         )
 
         py_result = ActuatorOutputStatus.from_c_struct(result_out)
-        self._lib.mavsdk_telemetry_ActuatorOutputStatus_destroy(ctypes.byref(result_out))
+        self._lib.mavsdk_telemetry_ActuatorOutputStatus_destroy(
+            ctypes.byref(result_out)
+        )
         return py_result
-
 
     def subscribe_odometry(self, callback: Callable, user_data: Any = None):
         """Subscribe to 'odometry' updates."""
 
         def c_callback(c_data, ud):
             try:
-
                 py_data = Odometry.from_c_struct(c_data)
 
                 self._lib.mavsdk_telemetry_Odometry_destroy(ctypes.byref(c_data))
@@ -2610,42 +2701,35 @@ class Telemetry:
         cb = OdometryCallback(c_callback)
         self._callbacks.append(cb)
 
-        return self._lib.mavsdk_telemetry_subscribe_odometry(
-            self._handle,
-            cb,
-            None
-        )
+        return self._lib.mavsdk_telemetry_subscribe_odometry(self._handle, cb, None)
 
     def unsubscribe_odometry(self, handle: ctypes.c_void_p):
         """Unsubscribe from odometry"""
-        self._lib.mavsdk_telemetry_unsubscribe_odometry(
-            self._handle, handle
-        )
+        self._lib.mavsdk_telemetry_unsubscribe_odometry(self._handle, handle)
 
     def odometry(self):
         """Get odometry (blocking)"""
 
         result_out = OdometryCStruct()
 
-        self._lib.mavsdk_telemetry_odometry(
-            self._handle,
-            ctypes.byref(result_out)
-        )
+        self._lib.mavsdk_telemetry_odometry(self._handle, ctypes.byref(result_out))
 
         py_result = Odometry.from_c_struct(result_out)
         self._lib.mavsdk_telemetry_Odometry_destroy(ctypes.byref(result_out))
         return py_result
 
-
-    def subscribe_position_velocity_ned(self, callback: Callable, user_data: Any = None):
+    def subscribe_position_velocity_ned(
+        self, callback: Callable, user_data: Any = None
+    ):
         """Subscribe to 'position velocity' updates."""
 
         def c_callback(c_data, ud):
             try:
-
                 py_data = PositionVelocityNed.from_c_struct(c_data)
 
-                self._lib.mavsdk_telemetry_PositionVelocityNed_destroy(ctypes.byref(c_data))
+                self._lib.mavsdk_telemetry_PositionVelocityNed_destroy(
+                    ctypes.byref(c_data)
+                )
 
                 callback(py_data, user_data)
 
@@ -2656,9 +2740,7 @@ class Telemetry:
         self._callbacks.append(cb)
 
         return self._lib.mavsdk_telemetry_subscribe_position_velocity_ned(
-            self._handle,
-            cb,
-            None
+            self._handle, cb, None
         )
 
     def unsubscribe_position_velocity_ned(self, handle: ctypes.c_void_p):
@@ -2673,21 +2755,18 @@ class Telemetry:
         result_out = PositionVelocityNedCStruct()
 
         self._lib.mavsdk_telemetry_position_velocity_ned(
-            self._handle,
-            ctypes.byref(result_out)
+            self._handle, ctypes.byref(result_out)
         )
 
         py_result = PositionVelocityNed.from_c_struct(result_out)
         self._lib.mavsdk_telemetry_PositionVelocityNed_destroy(ctypes.byref(result_out))
         return py_result
 
-
     def subscribe_ground_truth(self, callback: Callable, user_data: Any = None):
         """Subscribe to 'ground truth' updates."""
 
         def c_callback(c_data, ud):
             try:
-
                 py_data = GroundTruth.from_c_struct(c_data)
 
                 self._lib.mavsdk_telemetry_GroundTruth_destroy(ctypes.byref(c_data))
@@ -2700,42 +2779,33 @@ class Telemetry:
         cb = GroundTruthCallback(c_callback)
         self._callbacks.append(cb)
 
-        return self._lib.mavsdk_telemetry_subscribe_ground_truth(
-            self._handle,
-            cb,
-            None
-        )
+        return self._lib.mavsdk_telemetry_subscribe_ground_truth(self._handle, cb, None)
 
     def unsubscribe_ground_truth(self, handle: ctypes.c_void_p):
         """Unsubscribe from ground_truth"""
-        self._lib.mavsdk_telemetry_unsubscribe_ground_truth(
-            self._handle, handle
-        )
+        self._lib.mavsdk_telemetry_unsubscribe_ground_truth(self._handle, handle)
 
     def ground_truth(self):
         """Get ground_truth (blocking)"""
 
         result_out = GroundTruthCStruct()
 
-        self._lib.mavsdk_telemetry_ground_truth(
-            self._handle,
-            ctypes.byref(result_out)
-        )
+        self._lib.mavsdk_telemetry_ground_truth(self._handle, ctypes.byref(result_out))
 
         py_result = GroundTruth.from_c_struct(result_out)
         self._lib.mavsdk_telemetry_GroundTruth_destroy(ctypes.byref(result_out))
         return py_result
-
 
     def subscribe_fixedwing_metrics(self, callback: Callable, user_data: Any = None):
         """Subscribe to 'fixedwing metrics' updates."""
 
         def c_callback(c_data, ud):
             try:
-
                 py_data = FixedwingMetrics.from_c_struct(c_data)
 
-                self._lib.mavsdk_telemetry_FixedwingMetrics_destroy(ctypes.byref(c_data))
+                self._lib.mavsdk_telemetry_FixedwingMetrics_destroy(
+                    ctypes.byref(c_data)
+                )
 
                 callback(py_data, user_data)
 
@@ -2746,16 +2816,12 @@ class Telemetry:
         self._callbacks.append(cb)
 
         return self._lib.mavsdk_telemetry_subscribe_fixedwing_metrics(
-            self._handle,
-            cb,
-            None
+            self._handle, cb, None
         )
 
     def unsubscribe_fixedwing_metrics(self, handle: ctypes.c_void_p):
         """Unsubscribe from fixedwing_metrics"""
-        self._lib.mavsdk_telemetry_unsubscribe_fixedwing_metrics(
-            self._handle, handle
-        )
+        self._lib.mavsdk_telemetry_unsubscribe_fixedwing_metrics(self._handle, handle)
 
     def fixedwing_metrics(self):
         """Get fixedwing_metrics (blocking)"""
@@ -2763,21 +2829,18 @@ class Telemetry:
         result_out = FixedwingMetricsCStruct()
 
         self._lib.mavsdk_telemetry_fixedwing_metrics(
-            self._handle,
-            ctypes.byref(result_out)
+            self._handle, ctypes.byref(result_out)
         )
 
         py_result = FixedwingMetrics.from_c_struct(result_out)
         self._lib.mavsdk_telemetry_FixedwingMetrics_destroy(ctypes.byref(result_out))
         return py_result
 
-
     def subscribe_imu(self, callback: Callable, user_data: Any = None):
         """Subscribe to 'IMU' updates (in SI units in NED body frame)."""
 
         def c_callback(c_data, ud):
             try:
-
                 py_data = Imu.from_c_struct(c_data)
 
                 self._lib.mavsdk_telemetry_Imu_destroy(ctypes.byref(c_data))
@@ -2790,39 +2853,28 @@ class Telemetry:
         cb = ImuCallback(c_callback)
         self._callbacks.append(cb)
 
-        return self._lib.mavsdk_telemetry_subscribe_imu(
-            self._handle,
-            cb,
-            None
-        )
+        return self._lib.mavsdk_telemetry_subscribe_imu(self._handle, cb, None)
 
     def unsubscribe_imu(self, handle: ctypes.c_void_p):
         """Unsubscribe from imu"""
-        self._lib.mavsdk_telemetry_unsubscribe_imu(
-            self._handle, handle
-        )
+        self._lib.mavsdk_telemetry_unsubscribe_imu(self._handle, handle)
 
     def imu(self):
         """Get imu (blocking)"""
 
         result_out = ImuCStruct()
 
-        self._lib.mavsdk_telemetry_imu(
-            self._handle,
-            ctypes.byref(result_out)
-        )
+        self._lib.mavsdk_telemetry_imu(self._handle, ctypes.byref(result_out))
 
         py_result = Imu.from_c_struct(result_out)
         self._lib.mavsdk_telemetry_Imu_destroy(ctypes.byref(result_out))
         return py_result
-
 
     def subscribe_scaled_imu(self, callback: Callable, user_data: Any = None):
         """Subscribe to 'Scaled IMU' updates."""
 
         def c_callback(c_data, ud):
             try:
-
                 py_data = Imu.from_c_struct(c_data)
 
                 self._lib.mavsdk_telemetry_Imu_destroy(ctypes.byref(c_data))
@@ -2835,39 +2887,28 @@ class Telemetry:
         cb = ScaledImuCallback(c_callback)
         self._callbacks.append(cb)
 
-        return self._lib.mavsdk_telemetry_subscribe_scaled_imu(
-            self._handle,
-            cb,
-            None
-        )
+        return self._lib.mavsdk_telemetry_subscribe_scaled_imu(self._handle, cb, None)
 
     def unsubscribe_scaled_imu(self, handle: ctypes.c_void_p):
         """Unsubscribe from scaled_imu"""
-        self._lib.mavsdk_telemetry_unsubscribe_scaled_imu(
-            self._handle, handle
-        )
+        self._lib.mavsdk_telemetry_unsubscribe_scaled_imu(self._handle, handle)
 
     def scaled_imu(self):
         """Get scaled_imu (blocking)"""
 
         result_out = ImuCStruct()
 
-        self._lib.mavsdk_telemetry_scaled_imu(
-            self._handle,
-            ctypes.byref(result_out)
-        )
+        self._lib.mavsdk_telemetry_scaled_imu(self._handle, ctypes.byref(result_out))
 
         py_result = Imu.from_c_struct(result_out)
         self._lib.mavsdk_telemetry_Imu_destroy(ctypes.byref(result_out))
         return py_result
-
 
     def subscribe_raw_imu(self, callback: Callable, user_data: Any = None):
         """Subscribe to 'Raw IMU' updates (note that units are are incorrect and "raw" as provided by the sensor)"""
 
         def c_callback(c_data, ud):
             try:
-
                 py_data = Imu.from_c_struct(c_data)
 
                 self._lib.mavsdk_telemetry_Imu_destroy(ctypes.byref(c_data))
@@ -2880,39 +2921,28 @@ class Telemetry:
         cb = RawImuCallback(c_callback)
         self._callbacks.append(cb)
 
-        return self._lib.mavsdk_telemetry_subscribe_raw_imu(
-            self._handle,
-            cb,
-            None
-        )
+        return self._lib.mavsdk_telemetry_subscribe_raw_imu(self._handle, cb, None)
 
     def unsubscribe_raw_imu(self, handle: ctypes.c_void_p):
         """Unsubscribe from raw_imu"""
-        self._lib.mavsdk_telemetry_unsubscribe_raw_imu(
-            self._handle, handle
-        )
+        self._lib.mavsdk_telemetry_unsubscribe_raw_imu(self._handle, handle)
 
     def raw_imu(self):
         """Get raw_imu (blocking)"""
 
         result_out = ImuCStruct()
 
-        self._lib.mavsdk_telemetry_raw_imu(
-            self._handle,
-            ctypes.byref(result_out)
-        )
+        self._lib.mavsdk_telemetry_raw_imu(self._handle, ctypes.byref(result_out))
 
         py_result = Imu.from_c_struct(result_out)
         self._lib.mavsdk_telemetry_Imu_destroy(ctypes.byref(result_out))
         return py_result
-
 
     def subscribe_health_all_ok(self, callback: Callable, user_data: Any = None):
         """Subscribe to 'HealthAllOk' updates."""
 
         def c_callback(c_data, ud):
             try:
-
                 py_data = c_data
 
                 callback(py_data, user_data)
@@ -2924,36 +2954,27 @@ class Telemetry:
         self._callbacks.append(cb)
 
         return self._lib.mavsdk_telemetry_subscribe_health_all_ok(
-            self._handle,
-            cb,
-            None
+            self._handle, cb, None
         )
 
     def unsubscribe_health_all_ok(self, handle: ctypes.c_void_p):
         """Unsubscribe from health_all_ok"""
-        self._lib.mavsdk_telemetry_unsubscribe_health_all_ok(
-            self._handle, handle
-        )
+        self._lib.mavsdk_telemetry_unsubscribe_health_all_ok(self._handle, handle)
 
     def health_all_ok(self):
         """Get health_all_ok (blocking)"""
 
         result_out = ctypes.c_bool()
 
-        self._lib.mavsdk_telemetry_health_all_ok(
-            self._handle,
-            ctypes.byref(result_out)
-        )
+        self._lib.mavsdk_telemetry_health_all_ok(self._handle, ctypes.byref(result_out))
 
         return result_out.value
-
 
     def subscribe_unix_epoch_time(self, callback: Callable, user_data: Any = None):
         """Subscribe to 'unix epoch time' updates."""
 
         def c_callback(c_data, ud):
             try:
-
                 py_data = c_data
 
                 callback(py_data, user_data)
@@ -2965,16 +2986,12 @@ class Telemetry:
         self._callbacks.append(cb)
 
         return self._lib.mavsdk_telemetry_subscribe_unix_epoch_time(
-            self._handle,
-            cb,
-            None
+            self._handle, cb, None
         )
 
     def unsubscribe_unix_epoch_time(self, handle: ctypes.c_void_p):
         """Unsubscribe from unix_epoch_time"""
-        self._lib.mavsdk_telemetry_unsubscribe_unix_epoch_time(
-            self._handle, handle
-        )
+        self._lib.mavsdk_telemetry_unsubscribe_unix_epoch_time(self._handle, handle)
 
     def unix_epoch_time(self):
         """Get unix_epoch_time (blocking)"""
@@ -2982,19 +2999,16 @@ class Telemetry:
         result_out = ctypes.c_uint64()
 
         self._lib.mavsdk_telemetry_unix_epoch_time(
-            self._handle,
-            ctypes.byref(result_out)
+            self._handle, ctypes.byref(result_out)
         )
 
         return result_out.value
-
 
     def subscribe_distance_sensor(self, callback: Callable, user_data: Any = None):
         """Subscribe to 'Distance Sensor' updates."""
 
         def c_callback(c_data, ud):
             try:
-
                 py_data = DistanceSensor.from_c_struct(c_data)
 
                 self._lib.mavsdk_telemetry_DistanceSensor_destroy(ctypes.byref(c_data))
@@ -3008,16 +3022,12 @@ class Telemetry:
         self._callbacks.append(cb)
 
         return self._lib.mavsdk_telemetry_subscribe_distance_sensor(
-            self._handle,
-            cb,
-            None
+            self._handle, cb, None
         )
 
     def unsubscribe_distance_sensor(self, handle: ctypes.c_void_p):
         """Unsubscribe from distance_sensor"""
-        self._lib.mavsdk_telemetry_unsubscribe_distance_sensor(
-            self._handle, handle
-        )
+        self._lib.mavsdk_telemetry_unsubscribe_distance_sensor(self._handle, handle)
 
     def distance_sensor(self):
         """Get distance_sensor (blocking)"""
@@ -3025,21 +3035,18 @@ class Telemetry:
         result_out = DistanceSensorCStruct()
 
         self._lib.mavsdk_telemetry_distance_sensor(
-            self._handle,
-            ctypes.byref(result_out)
+            self._handle, ctypes.byref(result_out)
         )
 
         py_result = DistanceSensor.from_c_struct(result_out)
         self._lib.mavsdk_telemetry_DistanceSensor_destroy(ctypes.byref(result_out))
         return py_result
 
-
     def subscribe_scaled_pressure(self, callback: Callable, user_data: Any = None):
         """Subscribe to 'Scaled Pressure' updates."""
 
         def c_callback(c_data, ud):
             try:
-
                 py_data = ScaledPressure.from_c_struct(c_data)
 
                 self._lib.mavsdk_telemetry_ScaledPressure_destroy(ctypes.byref(c_data))
@@ -3053,16 +3060,12 @@ class Telemetry:
         self._callbacks.append(cb)
 
         return self._lib.mavsdk_telemetry_subscribe_scaled_pressure(
-            self._handle,
-            cb,
-            None
+            self._handle, cb, None
         )
 
     def unsubscribe_scaled_pressure(self, handle: ctypes.c_void_p):
         """Unsubscribe from scaled_pressure"""
-        self._lib.mavsdk_telemetry_unsubscribe_scaled_pressure(
-            self._handle, handle
-        )
+        self._lib.mavsdk_telemetry_unsubscribe_scaled_pressure(self._handle, handle)
 
     def scaled_pressure(self):
         """Get scaled_pressure (blocking)"""
@@ -3070,21 +3073,18 @@ class Telemetry:
         result_out = ScaledPressureCStruct()
 
         self._lib.mavsdk_telemetry_scaled_pressure(
-            self._handle,
-            ctypes.byref(result_out)
+            self._handle, ctypes.byref(result_out)
         )
 
         py_result = ScaledPressure.from_c_struct(result_out)
         self._lib.mavsdk_telemetry_ScaledPressure_destroy(ctypes.byref(result_out))
         return py_result
 
-
     def subscribe_heading(self, callback: Callable, user_data: Any = None):
         """Subscribe to 'Heading' updates."""
 
         def c_callback(c_data, ud):
             try:
-
                 py_data = Heading.from_c_struct(c_data)
 
                 self._lib.mavsdk_telemetry_Heading_destroy(ctypes.byref(c_data))
@@ -3097,39 +3097,28 @@ class Telemetry:
         cb = HeadingCallback(c_callback)
         self._callbacks.append(cb)
 
-        return self._lib.mavsdk_telemetry_subscribe_heading(
-            self._handle,
-            cb,
-            None
-        )
+        return self._lib.mavsdk_telemetry_subscribe_heading(self._handle, cb, None)
 
     def unsubscribe_heading(self, handle: ctypes.c_void_p):
         """Unsubscribe from heading"""
-        self._lib.mavsdk_telemetry_unsubscribe_heading(
-            self._handle, handle
-        )
+        self._lib.mavsdk_telemetry_unsubscribe_heading(self._handle, handle)
 
     def heading(self):
         """Get heading (blocking)"""
 
         result_out = HeadingCStruct()
 
-        self._lib.mavsdk_telemetry_heading(
-            self._handle,
-            ctypes.byref(result_out)
-        )
+        self._lib.mavsdk_telemetry_heading(self._handle, ctypes.byref(result_out))
 
         py_result = Heading.from_c_struct(result_out)
         self._lib.mavsdk_telemetry_Heading_destroy(ctypes.byref(result_out))
         return py_result
-
 
     def subscribe_altitude(self, callback: Callable, user_data: Any = None):
         """Subscribe to 'Altitude' updates."""
 
         def c_callback(c_data, ud):
             try:
-
                 py_data = Altitude.from_c_struct(c_data)
 
                 self._lib.mavsdk_telemetry_Altitude_destroy(ctypes.byref(c_data))
@@ -3142,39 +3131,28 @@ class Telemetry:
         cb = AltitudeCallback(c_callback)
         self._callbacks.append(cb)
 
-        return self._lib.mavsdk_telemetry_subscribe_altitude(
-            self._handle,
-            cb,
-            None
-        )
+        return self._lib.mavsdk_telemetry_subscribe_altitude(self._handle, cb, None)
 
     def unsubscribe_altitude(self, handle: ctypes.c_void_p):
         """Unsubscribe from altitude"""
-        self._lib.mavsdk_telemetry_unsubscribe_altitude(
-            self._handle, handle
-        )
+        self._lib.mavsdk_telemetry_unsubscribe_altitude(self._handle, handle)
 
     def altitude(self):
         """Get altitude (blocking)"""
 
         result_out = AltitudeCStruct()
 
-        self._lib.mavsdk_telemetry_altitude(
-            self._handle,
-            ctypes.byref(result_out)
-        )
+        self._lib.mavsdk_telemetry_altitude(self._handle, ctypes.byref(result_out))
 
         py_result = Altitude.from_c_struct(result_out)
         self._lib.mavsdk_telemetry_Altitude_destroy(ctypes.byref(result_out))
         return py_result
-
 
     def subscribe_wind(self, callback: Callable, user_data: Any = None):
         """Subscribe to 'Wind Estimated' updates."""
 
         def c_callback(c_data, ud):
             try:
-
                 py_data = Wind.from_c_struct(c_data)
 
                 self._lib.mavsdk_telemetry_Wind_destroy(ctypes.byref(c_data))
@@ -3187,40 +3165,31 @@ class Telemetry:
         cb = WindCallback(c_callback)
         self._callbacks.append(cb)
 
-        return self._lib.mavsdk_telemetry_subscribe_wind(
-            self._handle,
-            cb,
-            None
-        )
+        return self._lib.mavsdk_telemetry_subscribe_wind(self._handle, cb, None)
 
     def unsubscribe_wind(self, handle: ctypes.c_void_p):
         """Unsubscribe from wind"""
-        self._lib.mavsdk_telemetry_unsubscribe_wind(
-            self._handle, handle
-        )
+        self._lib.mavsdk_telemetry_unsubscribe_wind(self._handle, handle)
 
     def wind(self):
         """Get wind (blocking)"""
 
         result_out = WindCStruct()
 
-        self._lib.mavsdk_telemetry_wind(
-            self._handle,
-            ctypes.byref(result_out)
-        )
+        self._lib.mavsdk_telemetry_wind(self._handle, ctypes.byref(result_out))
 
         py_result = Wind.from_c_struct(result_out)
         self._lib.mavsdk_telemetry_Wind_destroy(ctypes.byref(result_out))
         return py_result
 
-
-    def set_rate_position_async(self, rate_hz, callback: Callable, user_data: Any = None):
+    def set_rate_position_async(
+        self, rate_hz, callback: Callable, user_data: Any = None
+    ):
         """Set rate to 'position' updates."""
 
         def c_callback(result, ud):
             try:
                 py_result = TelemetryResult(result)
-
 
                 callback(py_result, user_data)
 
@@ -3231,16 +3200,11 @@ class Telemetry:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_telemetry_set_rate_position_async(
-            self._handle,
-            rate_hz,
-            cb,
-            None
+            self._handle, rate_hz, cb, None
         )
-
 
     def set_rate_position(self, rate_hz):
         """Get set_rate_position (blocking)"""
-
 
         result_code = self._lib.mavsdk_telemetry_set_rate_position(
             self._handle,
@@ -3252,14 +3216,12 @@ class Telemetry:
 
         return result
 
-
     def set_rate_home_async(self, rate_hz, callback: Callable, user_data: Any = None):
         """Set rate to 'home position' updates."""
 
         def c_callback(result, ud):
             try:
                 py_result = TelemetryResult(result)
-
 
                 callback(py_result, user_data)
 
@@ -3269,17 +3231,10 @@ class Telemetry:
         cb = SetRateHomeCallback(c_callback)
         self._callbacks.append(cb)
 
-        self._lib.mavsdk_telemetry_set_rate_home_async(
-            self._handle,
-            rate_hz,
-            cb,
-            None
-        )
-
+        self._lib.mavsdk_telemetry_set_rate_home_async(self._handle, rate_hz, cb, None)
 
     def set_rate_home(self, rate_hz):
         """Get set_rate_home (blocking)"""
-
 
         result_code = self._lib.mavsdk_telemetry_set_rate_home(
             self._handle,
@@ -3291,14 +3246,12 @@ class Telemetry:
 
         return result
 
-
     def set_rate_in_air_async(self, rate_hz, callback: Callable, user_data: Any = None):
         """Set rate to in-air updates."""
 
         def c_callback(result, ud):
             try:
                 py_result = TelemetryResult(result)
-
 
                 callback(py_result, user_data)
 
@@ -3309,16 +3262,11 @@ class Telemetry:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_telemetry_set_rate_in_air_async(
-            self._handle,
-            rate_hz,
-            cb,
-            None
+            self._handle, rate_hz, cb, None
         )
-
 
     def set_rate_in_air(self, rate_hz):
         """Get set_rate_in_air (blocking)"""
-
 
         result_code = self._lib.mavsdk_telemetry_set_rate_in_air(
             self._handle,
@@ -3330,14 +3278,14 @@ class Telemetry:
 
         return result
 
-
-    def set_rate_landed_state_async(self, rate_hz, callback: Callable, user_data: Any = None):
+    def set_rate_landed_state_async(
+        self, rate_hz, callback: Callable, user_data: Any = None
+    ):
         """Set rate to landed state updates"""
 
         def c_callback(result, ud):
             try:
                 py_result = TelemetryResult(result)
-
 
                 callback(py_result, user_data)
 
@@ -3348,16 +3296,11 @@ class Telemetry:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_telemetry_set_rate_landed_state_async(
-            self._handle,
-            rate_hz,
-            cb,
-            None
+            self._handle, rate_hz, cb, None
         )
-
 
     def set_rate_landed_state(self, rate_hz):
         """Get set_rate_landed_state (blocking)"""
-
 
         result_code = self._lib.mavsdk_telemetry_set_rate_landed_state(
             self._handle,
@@ -3369,14 +3312,14 @@ class Telemetry:
 
         return result
 
-
-    def set_rate_vtol_state_async(self, rate_hz, callback: Callable, user_data: Any = None):
+    def set_rate_vtol_state_async(
+        self, rate_hz, callback: Callable, user_data: Any = None
+    ):
         """Set rate to VTOL state updates"""
 
         def c_callback(result, ud):
             try:
                 py_result = TelemetryResult(result)
-
 
                 callback(py_result, user_data)
 
@@ -3387,16 +3330,11 @@ class Telemetry:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_telemetry_set_rate_vtol_state_async(
-            self._handle,
-            rate_hz,
-            cb,
-            None
+            self._handle, rate_hz, cb, None
         )
-
 
     def set_rate_vtol_state(self, rate_hz):
         """Get set_rate_vtol_state (blocking)"""
-
 
         result_code = self._lib.mavsdk_telemetry_set_rate_vtol_state(
             self._handle,
@@ -3408,14 +3346,14 @@ class Telemetry:
 
         return result
 
-
-    def set_rate_attitude_quaternion_async(self, rate_hz, callback: Callable, user_data: Any = None):
+    def set_rate_attitude_quaternion_async(
+        self, rate_hz, callback: Callable, user_data: Any = None
+    ):
         """Set rate to 'attitude euler angle' updates."""
 
         def c_callback(result, ud):
             try:
                 py_result = TelemetryResult(result)
-
 
                 callback(py_result, user_data)
 
@@ -3426,16 +3364,11 @@ class Telemetry:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_telemetry_set_rate_attitude_quaternion_async(
-            self._handle,
-            rate_hz,
-            cb,
-            None
+            self._handle, rate_hz, cb, None
         )
-
 
     def set_rate_attitude_quaternion(self, rate_hz):
         """Get set_rate_attitude_quaternion (blocking)"""
-
 
         result_code = self._lib.mavsdk_telemetry_set_rate_attitude_quaternion(
             self._handle,
@@ -3447,14 +3380,14 @@ class Telemetry:
 
         return result
 
-
-    def set_rate_attitude_euler_async(self, rate_hz, callback: Callable, user_data: Any = None):
+    def set_rate_attitude_euler_async(
+        self, rate_hz, callback: Callable, user_data: Any = None
+    ):
         """Set rate to 'attitude quaternion' updates."""
 
         def c_callback(result, ud):
             try:
                 py_result = TelemetryResult(result)
-
 
                 callback(py_result, user_data)
 
@@ -3465,16 +3398,11 @@ class Telemetry:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_telemetry_set_rate_attitude_euler_async(
-            self._handle,
-            rate_hz,
-            cb,
-            None
+            self._handle, rate_hz, cb, None
         )
-
 
     def set_rate_attitude_euler(self, rate_hz):
         """Get set_rate_attitude_euler (blocking)"""
-
 
         result_code = self._lib.mavsdk_telemetry_set_rate_attitude_euler(
             self._handle,
@@ -3486,15 +3414,15 @@ class Telemetry:
 
         return result
 
-
-    def set_rate_velocity_ned_async(self, rate_hz, callback: Callable, user_data: Any = None):
+    def set_rate_velocity_ned_async(
+        self, rate_hz, callback: Callable, user_data: Any = None
+    ):
         """Set rate of camera attitude updates.
- Set rate to 'ground speed' updates (NED)."""
+        Set rate to 'ground speed' updates (NED)."""
 
         def c_callback(result, ud):
             try:
                 py_result = TelemetryResult(result)
-
 
                 callback(py_result, user_data)
 
@@ -3505,16 +3433,11 @@ class Telemetry:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_telemetry_set_rate_velocity_ned_async(
-            self._handle,
-            rate_hz,
-            cb,
-            None
+            self._handle, rate_hz, cb, None
         )
-
 
     def set_rate_velocity_ned(self, rate_hz):
         """Get set_rate_velocity_ned (blocking)"""
-
 
         result_code = self._lib.mavsdk_telemetry_set_rate_velocity_ned(
             self._handle,
@@ -3526,14 +3449,14 @@ class Telemetry:
 
         return result
 
-
-    def set_rate_gps_info_async(self, rate_hz, callback: Callable, user_data: Any = None):
+    def set_rate_gps_info_async(
+        self, rate_hz, callback: Callable, user_data: Any = None
+    ):
         """Set rate to 'GPS info' updates."""
 
         def c_callback(result, ud):
             try:
                 py_result = TelemetryResult(result)
-
 
                 callback(py_result, user_data)
 
@@ -3544,16 +3467,11 @@ class Telemetry:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_telemetry_set_rate_gps_info_async(
-            self._handle,
-            rate_hz,
-            cb,
-            None
+            self._handle, rate_hz, cb, None
         )
-
 
     def set_rate_gps_info(self, rate_hz):
         """Get set_rate_gps_info (blocking)"""
-
 
         result_code = self._lib.mavsdk_telemetry_set_rate_gps_info(
             self._handle,
@@ -3565,14 +3483,14 @@ class Telemetry:
 
         return result
 
-
-    def set_rate_battery_async(self, rate_hz, callback: Callable, user_data: Any = None):
+    def set_rate_battery_async(
+        self, rate_hz, callback: Callable, user_data: Any = None
+    ):
         """Set rate to 'battery' updates."""
 
         def c_callback(result, ud):
             try:
                 py_result = TelemetryResult(result)
-
 
                 callback(py_result, user_data)
 
@@ -3583,16 +3501,11 @@ class Telemetry:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_telemetry_set_rate_battery_async(
-            self._handle,
-            rate_hz,
-            cb,
-            None
+            self._handle, rate_hz, cb, None
         )
-
 
     def set_rate_battery(self, rate_hz):
         """Get set_rate_battery (blocking)"""
-
 
         result_code = self._lib.mavsdk_telemetry_set_rate_battery(
             self._handle,
@@ -3604,14 +3517,14 @@ class Telemetry:
 
         return result
 
-
-    def set_rate_rc_status_async(self, rate_hz, callback: Callable, user_data: Any = None):
+    def set_rate_rc_status_async(
+        self, rate_hz, callback: Callable, user_data: Any = None
+    ):
         """Set rate to 'RC status' updates."""
 
         def c_callback(result, ud):
             try:
                 py_result = TelemetryResult(result)
-
 
                 callback(py_result, user_data)
 
@@ -3622,16 +3535,11 @@ class Telemetry:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_telemetry_set_rate_rc_status_async(
-            self._handle,
-            rate_hz,
-            cb,
-            None
+            self._handle, rate_hz, cb, None
         )
-
 
     def set_rate_rc_status(self, rate_hz):
         """Get set_rate_rc_status (blocking)"""
-
 
         result_code = self._lib.mavsdk_telemetry_set_rate_rc_status(
             self._handle,
@@ -3643,14 +3551,14 @@ class Telemetry:
 
         return result
 
-
-    def set_rate_actuator_control_target_async(self, rate_hz, callback: Callable, user_data: Any = None):
+    def set_rate_actuator_control_target_async(
+        self, rate_hz, callback: Callable, user_data: Any = None
+    ):
         """Set rate to 'actuator control target' updates."""
 
         def c_callback(result, ud):
             try:
                 py_result = TelemetryResult(result)
-
 
                 callback(py_result, user_data)
 
@@ -3661,16 +3569,11 @@ class Telemetry:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_telemetry_set_rate_actuator_control_target_async(
-            self._handle,
-            rate_hz,
-            cb,
-            None
+            self._handle, rate_hz, cb, None
         )
-
 
     def set_rate_actuator_control_target(self, rate_hz):
         """Get set_rate_actuator_control_target (blocking)"""
-
 
         result_code = self._lib.mavsdk_telemetry_set_rate_actuator_control_target(
             self._handle,
@@ -3682,14 +3585,14 @@ class Telemetry:
 
         return result
 
-
-    def set_rate_actuator_output_status_async(self, rate_hz, callback: Callable, user_data: Any = None):
+    def set_rate_actuator_output_status_async(
+        self, rate_hz, callback: Callable, user_data: Any = None
+    ):
         """Set rate to 'actuator output status' updates."""
 
         def c_callback(result, ud):
             try:
                 py_result = TelemetryResult(result)
-
 
                 callback(py_result, user_data)
 
@@ -3700,16 +3603,11 @@ class Telemetry:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_telemetry_set_rate_actuator_output_status_async(
-            self._handle,
-            rate_hz,
-            cb,
-            None
+            self._handle, rate_hz, cb, None
         )
-
 
     def set_rate_actuator_output_status(self, rate_hz):
         """Get set_rate_actuator_output_status (blocking)"""
-
 
         result_code = self._lib.mavsdk_telemetry_set_rate_actuator_output_status(
             self._handle,
@@ -3721,14 +3619,14 @@ class Telemetry:
 
         return result
 
-
-    def set_rate_odometry_async(self, rate_hz, callback: Callable, user_data: Any = None):
+    def set_rate_odometry_async(
+        self, rate_hz, callback: Callable, user_data: Any = None
+    ):
         """Set rate to 'odometry' updates."""
 
         def c_callback(result, ud):
             try:
                 py_result = TelemetryResult(result)
-
 
                 callback(py_result, user_data)
 
@@ -3739,16 +3637,11 @@ class Telemetry:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_telemetry_set_rate_odometry_async(
-            self._handle,
-            rate_hz,
-            cb,
-            None
+            self._handle, rate_hz, cb, None
         )
-
 
     def set_rate_odometry(self, rate_hz):
         """Get set_rate_odometry (blocking)"""
-
 
         result_code = self._lib.mavsdk_telemetry_set_rate_odometry(
             self._handle,
@@ -3760,14 +3653,14 @@ class Telemetry:
 
         return result
 
-
-    def set_rate_position_velocity_ned_async(self, rate_hz, callback: Callable, user_data: Any = None):
+    def set_rate_position_velocity_ned_async(
+        self, rate_hz, callback: Callable, user_data: Any = None
+    ):
         """Set rate to 'position velocity' updates."""
 
         def c_callback(result, ud):
             try:
                 py_result = TelemetryResult(result)
-
 
                 callback(py_result, user_data)
 
@@ -3778,16 +3671,11 @@ class Telemetry:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_telemetry_set_rate_position_velocity_ned_async(
-            self._handle,
-            rate_hz,
-            cb,
-            None
+            self._handle, rate_hz, cb, None
         )
-
 
     def set_rate_position_velocity_ned(self, rate_hz):
         """Get set_rate_position_velocity_ned (blocking)"""
-
 
         result_code = self._lib.mavsdk_telemetry_set_rate_position_velocity_ned(
             self._handle,
@@ -3799,14 +3687,14 @@ class Telemetry:
 
         return result
 
-
-    def set_rate_ground_truth_async(self, rate_hz, callback: Callable, user_data: Any = None):
+    def set_rate_ground_truth_async(
+        self, rate_hz, callback: Callable, user_data: Any = None
+    ):
         """Set rate to 'ground truth' updates."""
 
         def c_callback(result, ud):
             try:
                 py_result = TelemetryResult(result)
-
 
                 callback(py_result, user_data)
 
@@ -3817,16 +3705,11 @@ class Telemetry:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_telemetry_set_rate_ground_truth_async(
-            self._handle,
-            rate_hz,
-            cb,
-            None
+            self._handle, rate_hz, cb, None
         )
-
 
     def set_rate_ground_truth(self, rate_hz):
         """Get set_rate_ground_truth (blocking)"""
-
 
         result_code = self._lib.mavsdk_telemetry_set_rate_ground_truth(
             self._handle,
@@ -3838,14 +3721,14 @@ class Telemetry:
 
         return result
 
-
-    def set_rate_fixedwing_metrics_async(self, rate_hz, callback: Callable, user_data: Any = None):
+    def set_rate_fixedwing_metrics_async(
+        self, rate_hz, callback: Callable, user_data: Any = None
+    ):
         """Set rate to 'fixedwing metrics' updates."""
 
         def c_callback(result, ud):
             try:
                 py_result = TelemetryResult(result)
-
 
                 callback(py_result, user_data)
 
@@ -3856,16 +3739,11 @@ class Telemetry:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_telemetry_set_rate_fixedwing_metrics_async(
-            self._handle,
-            rate_hz,
-            cb,
-            None
+            self._handle, rate_hz, cb, None
         )
-
 
     def set_rate_fixedwing_metrics(self, rate_hz):
         """Get set_rate_fixedwing_metrics (blocking)"""
-
 
         result_code = self._lib.mavsdk_telemetry_set_rate_fixedwing_metrics(
             self._handle,
@@ -3877,14 +3755,12 @@ class Telemetry:
 
         return result
 
-
     def set_rate_imu_async(self, rate_hz, callback: Callable, user_data: Any = None):
         """Set rate to 'IMU' updates."""
 
         def c_callback(result, ud):
             try:
                 py_result = TelemetryResult(result)
-
 
                 callback(py_result, user_data)
 
@@ -3894,17 +3770,10 @@ class Telemetry:
         cb = SetRateImuCallback(c_callback)
         self._callbacks.append(cb)
 
-        self._lib.mavsdk_telemetry_set_rate_imu_async(
-            self._handle,
-            rate_hz,
-            cb,
-            None
-        )
-
+        self._lib.mavsdk_telemetry_set_rate_imu_async(self._handle, rate_hz, cb, None)
 
     def set_rate_imu(self, rate_hz):
         """Get set_rate_imu (blocking)"""
-
 
         result_code = self._lib.mavsdk_telemetry_set_rate_imu(
             self._handle,
@@ -3916,14 +3785,14 @@ class Telemetry:
 
         return result
 
-
-    def set_rate_scaled_imu_async(self, rate_hz, callback: Callable, user_data: Any = None):
+    def set_rate_scaled_imu_async(
+        self, rate_hz, callback: Callable, user_data: Any = None
+    ):
         """Set rate to 'Scaled IMU' updates."""
 
         def c_callback(result, ud):
             try:
                 py_result = TelemetryResult(result)
-
 
                 callback(py_result, user_data)
 
@@ -3934,16 +3803,11 @@ class Telemetry:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_telemetry_set_rate_scaled_imu_async(
-            self._handle,
-            rate_hz,
-            cb,
-            None
+            self._handle, rate_hz, cb, None
         )
-
 
     def set_rate_scaled_imu(self, rate_hz):
         """Get set_rate_scaled_imu (blocking)"""
-
 
         result_code = self._lib.mavsdk_telemetry_set_rate_scaled_imu(
             self._handle,
@@ -3955,14 +3819,14 @@ class Telemetry:
 
         return result
 
-
-    def set_rate_raw_imu_async(self, rate_hz, callback: Callable, user_data: Any = None):
+    def set_rate_raw_imu_async(
+        self, rate_hz, callback: Callable, user_data: Any = None
+    ):
         """Set rate to 'Raw IMU' updates."""
 
         def c_callback(result, ud):
             try:
                 py_result = TelemetryResult(result)
-
 
                 callback(py_result, user_data)
 
@@ -3973,16 +3837,11 @@ class Telemetry:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_telemetry_set_rate_raw_imu_async(
-            self._handle,
-            rate_hz,
-            cb,
-            None
+            self._handle, rate_hz, cb, None
         )
-
 
     def set_rate_raw_imu(self, rate_hz):
         """Get set_rate_raw_imu (blocking)"""
-
 
         result_code = self._lib.mavsdk_telemetry_set_rate_raw_imu(
             self._handle,
@@ -3994,14 +3853,14 @@ class Telemetry:
 
         return result
 
-
-    def set_rate_unix_epoch_time_async(self, rate_hz, callback: Callable, user_data: Any = None):
+    def set_rate_unix_epoch_time_async(
+        self, rate_hz, callback: Callable, user_data: Any = None
+    ):
         """Set rate to 'unix epoch time' updates."""
 
         def c_callback(result, ud):
             try:
                 py_result = TelemetryResult(result)
-
 
                 callback(py_result, user_data)
 
@@ -4012,16 +3871,11 @@ class Telemetry:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_telemetry_set_rate_unix_epoch_time_async(
-            self._handle,
-            rate_hz,
-            cb,
-            None
+            self._handle, rate_hz, cb, None
         )
-
 
     def set_rate_unix_epoch_time(self, rate_hz):
         """Get set_rate_unix_epoch_time (blocking)"""
-
 
         result_code = self._lib.mavsdk_telemetry_set_rate_unix_epoch_time(
             self._handle,
@@ -4033,14 +3887,14 @@ class Telemetry:
 
         return result
 
-
-    def set_rate_distance_sensor_async(self, rate_hz, callback: Callable, user_data: Any = None):
+    def set_rate_distance_sensor_async(
+        self, rate_hz, callback: Callable, user_data: Any = None
+    ):
         """Set rate to 'Distance Sensor' updates."""
 
         def c_callback(result, ud):
             try:
                 py_result = TelemetryResult(result)
-
 
                 callback(py_result, user_data)
 
@@ -4051,16 +3905,11 @@ class Telemetry:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_telemetry_set_rate_distance_sensor_async(
-            self._handle,
-            rate_hz,
-            cb,
-            None
+            self._handle, rate_hz, cb, None
         )
-
 
     def set_rate_distance_sensor(self, rate_hz):
         """Get set_rate_distance_sensor (blocking)"""
-
 
         result_code = self._lib.mavsdk_telemetry_set_rate_distance_sensor(
             self._handle,
@@ -4072,14 +3921,14 @@ class Telemetry:
 
         return result
 
-
-    def set_rate_altitude_async(self, rate_hz, callback: Callable, user_data: Any = None):
+    def set_rate_altitude_async(
+        self, rate_hz, callback: Callable, user_data: Any = None
+    ):
         """Set rate to 'Altitude' updates."""
 
         def c_callback(result, ud):
             try:
                 py_result = TelemetryResult(result)
-
 
                 callback(py_result, user_data)
 
@@ -4090,16 +3939,11 @@ class Telemetry:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_telemetry_set_rate_altitude_async(
-            self._handle,
-            rate_hz,
-            cb,
-            None
+            self._handle, rate_hz, cb, None
         )
-
 
     def set_rate_altitude(self, rate_hz):
         """Get set_rate_altitude (blocking)"""
-
 
         result_code = self._lib.mavsdk_telemetry_set_rate_altitude(
             self._handle,
@@ -4111,14 +3955,12 @@ class Telemetry:
 
         return result
 
-
     def set_rate_health_async(self, rate_hz, callback: Callable, user_data: Any = None):
         """Set rate to 'Health' updates."""
 
         def c_callback(result, ud):
             try:
                 py_result = TelemetryResult(result)
-
 
                 callback(py_result, user_data)
 
@@ -4129,16 +3971,11 @@ class Telemetry:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_telemetry_set_rate_health_async(
-            self._handle,
-            rate_hz,
-            cb,
-            None
+            self._handle, rate_hz, cb, None
         )
-
 
     def set_rate_health(self, rate_hz):
         """Get set_rate_health (blocking)"""
-
 
         result_code = self._lib.mavsdk_telemetry_set_rate_health(
             self._handle,
@@ -4149,7 +3986,6 @@ class Telemetry:
             raise Exception(f"set_rate_health failed: {result}")
 
         return result
-
 
     def get_gps_global_origin_async(self, callback: Callable, user_data: Any = None):
         """Get the GPS location of where the estimator has been initialized."""
@@ -4170,12 +4006,7 @@ class Telemetry:
         cb = GetGpsGlobalOriginCallback(c_callback)
         self._callbacks.append(cb)
 
-        self._lib.mavsdk_telemetry_get_gps_global_origin_async(
-            self._handle,
-            cb,
-            None
-        )
-
+        self._lib.mavsdk_telemetry_get_gps_global_origin_async(self._handle, cb, None)
 
     def get_gps_global_origin(self):
         """Get get_gps_global_origin (blocking)"""
@@ -4183,8 +4014,7 @@ class Telemetry:
         result_out = GpsGlobalOriginCStruct()
 
         result_code = self._lib.mavsdk_telemetry_get_gps_global_origin(
-            self._handle,
-            ctypes.byref(result_out)
+            self._handle, ctypes.byref(result_out)
         )
         result = TelemetryResult(result_code)
         if result != TelemetryResult.SUCCESS:
@@ -4193,7 +4023,6 @@ class Telemetry:
         py_result = GpsGlobalOrigin.from_c_struct(result_out)
         self._lib.mavsdk_telemetry_GpsGlobalOrigin_destroy(ctypes.byref(result_out))
         return py_result
-
 
     def destroy(self):
         """Destroy the plugin instance"""
@@ -4204,297 +4033,85 @@ class Telemetry:
     def __del__(self):
         self.destroy()
 
+
 # ===== Callback Types =====
-PositionCallback = ctypes.CFUNCTYPE(
-    None,
-    PositionCStruct,
-    ctypes.c_void_p
-)
-HomeCallback = ctypes.CFUNCTYPE(
-    None,
-    PositionCStruct,
-    ctypes.c_void_p
-)
-InAirCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_bool,
-    ctypes.c_void_p
-)
-LandedStateCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-ArmedCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_bool,
-    ctypes.c_void_p
-)
-VtolStateCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-AttitudeQuaternionCallback = ctypes.CFUNCTYPE(
-    None,
-    QuaternionCStruct,
-    ctypes.c_void_p
-)
-AttitudeEulerCallback = ctypes.CFUNCTYPE(
-    None,
-    EulerAngleCStruct,
-    ctypes.c_void_p
-)
+PositionCallback = ctypes.CFUNCTYPE(None, PositionCStruct, ctypes.c_void_p)
+HomeCallback = ctypes.CFUNCTYPE(None, PositionCStruct, ctypes.c_void_p)
+InAirCallback = ctypes.CFUNCTYPE(None, ctypes.c_bool, ctypes.c_void_p)
+LandedStateCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
+ArmedCallback = ctypes.CFUNCTYPE(None, ctypes.c_bool, ctypes.c_void_p)
+VtolStateCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
+AttitudeQuaternionCallback = ctypes.CFUNCTYPE(None, QuaternionCStruct, ctypes.c_void_p)
+AttitudeEulerCallback = ctypes.CFUNCTYPE(None, EulerAngleCStruct, ctypes.c_void_p)
 AttitudeAngularVelocityBodyCallback = ctypes.CFUNCTYPE(
-    None,
-    AngularVelocityBodyCStruct,
-    ctypes.c_void_p
+    None, AngularVelocityBodyCStruct, ctypes.c_void_p
 )
-VelocityNedCallback = ctypes.CFUNCTYPE(
-    None,
-    VelocityNedCStruct,
-    ctypes.c_void_p
-)
-GpsInfoCallback = ctypes.CFUNCTYPE(
-    None,
-    GpsInfoCStruct,
-    ctypes.c_void_p
-)
-RawGpsCallback = ctypes.CFUNCTYPE(
-    None,
-    RawGpsCStruct,
-    ctypes.c_void_p
-)
-BatteryCallback = ctypes.CFUNCTYPE(
-    None,
-    BatteryCStruct,
-    ctypes.c_void_p
-)
-FlightModeCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-HealthCallback = ctypes.CFUNCTYPE(
-    None,
-    HealthCStruct,
-    ctypes.c_void_p
-)
-RcStatusCallback = ctypes.CFUNCTYPE(
-    None,
-    RcStatusCStruct,
-    ctypes.c_void_p
-)
-StatusTextCallback = ctypes.CFUNCTYPE(
-    None,
-    StatusTextCStruct,
-    ctypes.c_void_p
-)
+VelocityNedCallback = ctypes.CFUNCTYPE(None, VelocityNedCStruct, ctypes.c_void_p)
+GpsInfoCallback = ctypes.CFUNCTYPE(None, GpsInfoCStruct, ctypes.c_void_p)
+RawGpsCallback = ctypes.CFUNCTYPE(None, RawGpsCStruct, ctypes.c_void_p)
+BatteryCallback = ctypes.CFUNCTYPE(None, BatteryCStruct, ctypes.c_void_p)
+FlightModeCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
+HealthCallback = ctypes.CFUNCTYPE(None, HealthCStruct, ctypes.c_void_p)
+RcStatusCallback = ctypes.CFUNCTYPE(None, RcStatusCStruct, ctypes.c_void_p)
+StatusTextCallback = ctypes.CFUNCTYPE(None, StatusTextCStruct, ctypes.c_void_p)
 ActuatorControlTargetCallback = ctypes.CFUNCTYPE(
-    None,
-    ActuatorControlTargetCStruct,
-    ctypes.c_void_p
+    None, ActuatorControlTargetCStruct, ctypes.c_void_p
 )
 ActuatorOutputStatusCallback = ctypes.CFUNCTYPE(
-    None,
-    ActuatorOutputStatusCStruct,
-    ctypes.c_void_p
+    None, ActuatorOutputStatusCStruct, ctypes.c_void_p
 )
-OdometryCallback = ctypes.CFUNCTYPE(
-    None,
-    OdometryCStruct,
-    ctypes.c_void_p
-)
+OdometryCallback = ctypes.CFUNCTYPE(None, OdometryCStruct, ctypes.c_void_p)
 PositionVelocityNedCallback = ctypes.CFUNCTYPE(
-    None,
-    PositionVelocityNedCStruct,
-    ctypes.c_void_p
+    None, PositionVelocityNedCStruct, ctypes.c_void_p
 )
-GroundTruthCallback = ctypes.CFUNCTYPE(
-    None,
-    GroundTruthCStruct,
-    ctypes.c_void_p
-)
+GroundTruthCallback = ctypes.CFUNCTYPE(None, GroundTruthCStruct, ctypes.c_void_p)
 FixedwingMetricsCallback = ctypes.CFUNCTYPE(
-    None,
-    FixedwingMetricsCStruct,
-    ctypes.c_void_p
+    None, FixedwingMetricsCStruct, ctypes.c_void_p
 )
-ImuCallback = ctypes.CFUNCTYPE(
-    None,
-    ImuCStruct,
-    ctypes.c_void_p
-)
-ScaledImuCallback = ctypes.CFUNCTYPE(
-    None,
-    ImuCStruct,
-    ctypes.c_void_p
-)
-RawImuCallback = ctypes.CFUNCTYPE(
-    None,
-    ImuCStruct,
-    ctypes.c_void_p
-)
-HealthAllOkCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_bool,
-    ctypes.c_void_p
-)
-UnixEpochTimeCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_uint64,
-    ctypes.c_void_p
-)
-DistanceSensorCallback = ctypes.CFUNCTYPE(
-    None,
-    DistanceSensorCStruct,
-    ctypes.c_void_p
-)
-ScaledPressureCallback = ctypes.CFUNCTYPE(
-    None,
-    ScaledPressureCStruct,
-    ctypes.c_void_p
-)
-HeadingCallback = ctypes.CFUNCTYPE(
-    None,
-    HeadingCStruct,
-    ctypes.c_void_p
-)
-AltitudeCallback = ctypes.CFUNCTYPE(
-    None,
-    AltitudeCStruct,
-    ctypes.c_void_p
-)
-WindCallback = ctypes.CFUNCTYPE(
-    None,
-    WindCStruct,
-    ctypes.c_void_p
-)
-SetRatePositionCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-SetRateHomeCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-SetRateInAirCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-SetRateLandedStateCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-SetRateVtolStateCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
+ImuCallback = ctypes.CFUNCTYPE(None, ImuCStruct, ctypes.c_void_p)
+ScaledImuCallback = ctypes.CFUNCTYPE(None, ImuCStruct, ctypes.c_void_p)
+RawImuCallback = ctypes.CFUNCTYPE(None, ImuCStruct, ctypes.c_void_p)
+HealthAllOkCallback = ctypes.CFUNCTYPE(None, ctypes.c_bool, ctypes.c_void_p)
+UnixEpochTimeCallback = ctypes.CFUNCTYPE(None, ctypes.c_uint64, ctypes.c_void_p)
+DistanceSensorCallback = ctypes.CFUNCTYPE(None, DistanceSensorCStruct, ctypes.c_void_p)
+ScaledPressureCallback = ctypes.CFUNCTYPE(None, ScaledPressureCStruct, ctypes.c_void_p)
+HeadingCallback = ctypes.CFUNCTYPE(None, HeadingCStruct, ctypes.c_void_p)
+AltitudeCallback = ctypes.CFUNCTYPE(None, AltitudeCStruct, ctypes.c_void_p)
+WindCallback = ctypes.CFUNCTYPE(None, WindCStruct, ctypes.c_void_p)
+SetRatePositionCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
+SetRateHomeCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
+SetRateInAirCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
+SetRateLandedStateCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
+SetRateVtolStateCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
 SetRateAttitudeQuaternionCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
+    None, ctypes.c_int, ctypes.c_void_p
 )
-SetRateAttitudeEulerCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-SetRateVelocityNedCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-SetRateGpsInfoCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-SetRateBatteryCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-SetRateRcStatusCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
+SetRateAttitudeEulerCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
+SetRateVelocityNedCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
+SetRateGpsInfoCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
+SetRateBatteryCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
+SetRateRcStatusCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
 SetRateActuatorControlTargetCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
+    None, ctypes.c_int, ctypes.c_void_p
 )
 SetRateActuatorOutputStatusCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
+    None, ctypes.c_int, ctypes.c_void_p
 )
-SetRateOdometryCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
+SetRateOdometryCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
 SetRatePositionVelocityNedCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
+    None, ctypes.c_int, ctypes.c_void_p
 )
-SetRateGroundTruthCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-SetRateFixedwingMetricsCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-SetRateImuCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-SetRateScaledImuCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-SetRateRawImuCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-SetRateUnixEpochTimeCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-SetRateDistanceSensorCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-SetRateAltitudeCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-SetRateHealthCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
+SetRateGroundTruthCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
+SetRateFixedwingMetricsCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
+SetRateImuCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
+SetRateScaledImuCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
+SetRateRawImuCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
+SetRateUnixEpochTimeCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
+SetRateDistanceSensorCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
+SetRateAltitudeCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
+SetRateHealthCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
 GetGpsGlobalOriginCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    GpsGlobalOriginCStruct,
-    ctypes.c_void_p
+    None, ctypes.c_int, GpsGlobalOriginCStruct, ctypes.c_void_p
 )
 
 # ===== Setup Functions =====
@@ -4534,9 +4151,7 @@ _cmavsdk_lib.mavsdk_telemetry_GpsInfo_destroy.argtypes = [
 ]
 _cmavsdk_lib.mavsdk_telemetry_GpsInfo_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_telemetry_RawGps_destroy.argtypes = [
-    ctypes.POINTER(RawGpsCStruct)
-]
+_cmavsdk_lib.mavsdk_telemetry_RawGps_destroy.argtypes = [ctypes.POINTER(RawGpsCStruct)]
 _cmavsdk_lib.mavsdk_telemetry_RawGps_destroy.restype = None
 
 _cmavsdk_lib.mavsdk_telemetry_Battery_destroy.argtypes = [
@@ -4544,9 +4159,7 @@ _cmavsdk_lib.mavsdk_telemetry_Battery_destroy.argtypes = [
 ]
 _cmavsdk_lib.mavsdk_telemetry_Battery_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_telemetry_Health_destroy.argtypes = [
-    ctypes.POINTER(HealthCStruct)
-]
+_cmavsdk_lib.mavsdk_telemetry_Health_destroy.argtypes = [ctypes.POINTER(HealthCStruct)]
 _cmavsdk_lib.mavsdk_telemetry_Health_destroy.restype = None
 
 _cmavsdk_lib.mavsdk_telemetry_RcStatus_destroy.argtypes = [
@@ -4639,9 +4252,7 @@ _cmavsdk_lib.mavsdk_telemetry_MagneticFieldFrd_destroy.argtypes = [
 ]
 _cmavsdk_lib.mavsdk_telemetry_MagneticFieldFrd_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_telemetry_Imu_destroy.argtypes = [
-    ctypes.POINTER(ImuCStruct)
-]
+_cmavsdk_lib.mavsdk_telemetry_Imu_destroy.argtypes = [ctypes.POINTER(ImuCStruct)]
 _cmavsdk_lib.mavsdk_telemetry_Imu_destroy.restype = None
 
 _cmavsdk_lib.mavsdk_telemetry_GpsGlobalOrigin_destroy.argtypes = [
@@ -4654,702 +4265,704 @@ _cmavsdk_lib.mavsdk_telemetry_Altitude_destroy.argtypes = [
 ]
 _cmavsdk_lib.mavsdk_telemetry_Altitude_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_telemetry_Wind_destroy.argtypes = [
-    ctypes.POINTER(WindCStruct)
-]
+_cmavsdk_lib.mavsdk_telemetry_Wind_destroy.argtypes = [ctypes.POINTER(WindCStruct)]
 _cmavsdk_lib.mavsdk_telemetry_Wind_destroy.restype = None
 
 
 _cmavsdk_lib.mavsdk_telemetry_subscribe_position.argtypes = [
     ctypes.c_void_p,
     PositionCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_subscribe_position.restype = ctypes.c_void_p
 # Unsubscribe
 _cmavsdk_lib.mavsdk_telemetry_unsubscribe_position.argtypes = [
     ctypes.c_void_p,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_unsubscribe_position.restype = None
 
 _cmavsdk_lib.mavsdk_telemetry_position.argtypes = [
     ctypes.c_void_p,
-    ctypes.POINTER(PositionCStruct)
+    ctypes.POINTER(PositionCStruct),
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_position.restype = None
 _cmavsdk_lib.mavsdk_telemetry_subscribe_home.argtypes = [
     ctypes.c_void_p,
     HomeCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_subscribe_home.restype = ctypes.c_void_p
 # Unsubscribe
 _cmavsdk_lib.mavsdk_telemetry_unsubscribe_home.argtypes = [
     ctypes.c_void_p,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_unsubscribe_home.restype = None
 
 _cmavsdk_lib.mavsdk_telemetry_home.argtypes = [
     ctypes.c_void_p,
-    ctypes.POINTER(PositionCStruct)
+    ctypes.POINTER(PositionCStruct),
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_home.restype = None
 _cmavsdk_lib.mavsdk_telemetry_subscribe_in_air.argtypes = [
     ctypes.c_void_p,
     InAirCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_subscribe_in_air.restype = ctypes.c_void_p
 # Unsubscribe
 _cmavsdk_lib.mavsdk_telemetry_unsubscribe_in_air.argtypes = [
     ctypes.c_void_p,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_unsubscribe_in_air.restype = None
 
 _cmavsdk_lib.mavsdk_telemetry_in_air.argtypes = [
     ctypes.c_void_p,
-    ctypes.POINTER(ctypes.c_bool)
+    ctypes.POINTER(ctypes.c_bool),
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_in_air.restype = None
 _cmavsdk_lib.mavsdk_telemetry_subscribe_landed_state.argtypes = [
     ctypes.c_void_p,
     LandedStateCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_subscribe_landed_state.restype = ctypes.c_void_p
 # Unsubscribe
 _cmavsdk_lib.mavsdk_telemetry_unsubscribe_landed_state.argtypes = [
     ctypes.c_void_p,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_unsubscribe_landed_state.restype = None
 
 _cmavsdk_lib.mavsdk_telemetry_landed_state.argtypes = [
     ctypes.c_void_p,
-    ctypes.POINTER(ctypes.c_int)
+    ctypes.POINTER(ctypes.c_int),
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_landed_state.restype = None
 _cmavsdk_lib.mavsdk_telemetry_subscribe_armed.argtypes = [
     ctypes.c_void_p,
     ArmedCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_subscribe_armed.restype = ctypes.c_void_p
 # Unsubscribe
 _cmavsdk_lib.mavsdk_telemetry_unsubscribe_armed.argtypes = [
     ctypes.c_void_p,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_unsubscribe_armed.restype = None
 
 _cmavsdk_lib.mavsdk_telemetry_armed.argtypes = [
     ctypes.c_void_p,
-    ctypes.POINTER(ctypes.c_bool)
+    ctypes.POINTER(ctypes.c_bool),
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_armed.restype = None
 _cmavsdk_lib.mavsdk_telemetry_subscribe_vtol_state.argtypes = [
     ctypes.c_void_p,
     VtolStateCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_subscribe_vtol_state.restype = ctypes.c_void_p
 # Unsubscribe
 _cmavsdk_lib.mavsdk_telemetry_unsubscribe_vtol_state.argtypes = [
     ctypes.c_void_p,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_unsubscribe_vtol_state.restype = None
 
 _cmavsdk_lib.mavsdk_telemetry_vtol_state.argtypes = [
     ctypes.c_void_p,
-    ctypes.POINTER(ctypes.c_int)
+    ctypes.POINTER(ctypes.c_int),
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_vtol_state.restype = None
 _cmavsdk_lib.mavsdk_telemetry_subscribe_attitude_quaternion.argtypes = [
     ctypes.c_void_p,
     AttitudeQuaternionCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_subscribe_attitude_quaternion.restype = ctypes.c_void_p
 # Unsubscribe
 _cmavsdk_lib.mavsdk_telemetry_unsubscribe_attitude_quaternion.argtypes = [
     ctypes.c_void_p,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_unsubscribe_attitude_quaternion.restype = None
 
 _cmavsdk_lib.mavsdk_telemetry_attitude_quaternion.argtypes = [
     ctypes.c_void_p,
-    ctypes.POINTER(QuaternionCStruct)
+    ctypes.POINTER(QuaternionCStruct),
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_attitude_quaternion.restype = None
 _cmavsdk_lib.mavsdk_telemetry_subscribe_attitude_euler.argtypes = [
     ctypes.c_void_p,
     AttitudeEulerCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_subscribe_attitude_euler.restype = ctypes.c_void_p
 # Unsubscribe
 _cmavsdk_lib.mavsdk_telemetry_unsubscribe_attitude_euler.argtypes = [
     ctypes.c_void_p,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_unsubscribe_attitude_euler.restype = None
 
 _cmavsdk_lib.mavsdk_telemetry_attitude_euler.argtypes = [
     ctypes.c_void_p,
-    ctypes.POINTER(EulerAngleCStruct)
+    ctypes.POINTER(EulerAngleCStruct),
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_attitude_euler.restype = None
 _cmavsdk_lib.mavsdk_telemetry_subscribe_attitude_angular_velocity_body.argtypes = [
     ctypes.c_void_p,
     AttitudeAngularVelocityBodyCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
-_cmavsdk_lib.mavsdk_telemetry_subscribe_attitude_angular_velocity_body.restype = ctypes.c_void_p
+_cmavsdk_lib.mavsdk_telemetry_subscribe_attitude_angular_velocity_body.restype = (
+    ctypes.c_void_p
+)
 # Unsubscribe
 _cmavsdk_lib.mavsdk_telemetry_unsubscribe_attitude_angular_velocity_body.argtypes = [
     ctypes.c_void_p,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_unsubscribe_attitude_angular_velocity_body.restype = None
 
 _cmavsdk_lib.mavsdk_telemetry_attitude_angular_velocity_body.argtypes = [
     ctypes.c_void_p,
-    ctypes.POINTER(AngularVelocityBodyCStruct)
+    ctypes.POINTER(AngularVelocityBodyCStruct),
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_attitude_angular_velocity_body.restype = None
 _cmavsdk_lib.mavsdk_telemetry_subscribe_velocity_ned.argtypes = [
     ctypes.c_void_p,
     VelocityNedCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_subscribe_velocity_ned.restype = ctypes.c_void_p
 # Unsubscribe
 _cmavsdk_lib.mavsdk_telemetry_unsubscribe_velocity_ned.argtypes = [
     ctypes.c_void_p,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_unsubscribe_velocity_ned.restype = None
 
 _cmavsdk_lib.mavsdk_telemetry_velocity_ned.argtypes = [
     ctypes.c_void_p,
-    ctypes.POINTER(VelocityNedCStruct)
+    ctypes.POINTER(VelocityNedCStruct),
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_velocity_ned.restype = None
 _cmavsdk_lib.mavsdk_telemetry_subscribe_gps_info.argtypes = [
     ctypes.c_void_p,
     GpsInfoCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_subscribe_gps_info.restype = ctypes.c_void_p
 # Unsubscribe
 _cmavsdk_lib.mavsdk_telemetry_unsubscribe_gps_info.argtypes = [
     ctypes.c_void_p,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_unsubscribe_gps_info.restype = None
 
 _cmavsdk_lib.mavsdk_telemetry_gps_info.argtypes = [
     ctypes.c_void_p,
-    ctypes.POINTER(GpsInfoCStruct)
+    ctypes.POINTER(GpsInfoCStruct),
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_gps_info.restype = None
 _cmavsdk_lib.mavsdk_telemetry_subscribe_raw_gps.argtypes = [
     ctypes.c_void_p,
     RawGpsCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_subscribe_raw_gps.restype = ctypes.c_void_p
 # Unsubscribe
 _cmavsdk_lib.mavsdk_telemetry_unsubscribe_raw_gps.argtypes = [
     ctypes.c_void_p,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_unsubscribe_raw_gps.restype = None
 
 _cmavsdk_lib.mavsdk_telemetry_raw_gps.argtypes = [
     ctypes.c_void_p,
-    ctypes.POINTER(RawGpsCStruct)
+    ctypes.POINTER(RawGpsCStruct),
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_raw_gps.restype = None
 _cmavsdk_lib.mavsdk_telemetry_subscribe_battery.argtypes = [
     ctypes.c_void_p,
     BatteryCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_subscribe_battery.restype = ctypes.c_void_p
 # Unsubscribe
 _cmavsdk_lib.mavsdk_telemetry_unsubscribe_battery.argtypes = [
     ctypes.c_void_p,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_unsubscribe_battery.restype = None
 
 _cmavsdk_lib.mavsdk_telemetry_battery.argtypes = [
     ctypes.c_void_p,
-    ctypes.POINTER(BatteryCStruct)
+    ctypes.POINTER(BatteryCStruct),
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_battery.restype = None
 _cmavsdk_lib.mavsdk_telemetry_subscribe_flight_mode.argtypes = [
     ctypes.c_void_p,
     FlightModeCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_subscribe_flight_mode.restype = ctypes.c_void_p
 # Unsubscribe
 _cmavsdk_lib.mavsdk_telemetry_unsubscribe_flight_mode.argtypes = [
     ctypes.c_void_p,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_unsubscribe_flight_mode.restype = None
 
 _cmavsdk_lib.mavsdk_telemetry_flight_mode.argtypes = [
     ctypes.c_void_p,
-    ctypes.POINTER(ctypes.c_int)
+    ctypes.POINTER(ctypes.c_int),
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_flight_mode.restype = None
 _cmavsdk_lib.mavsdk_telemetry_subscribe_health.argtypes = [
     ctypes.c_void_p,
     HealthCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_subscribe_health.restype = ctypes.c_void_p
 # Unsubscribe
 _cmavsdk_lib.mavsdk_telemetry_unsubscribe_health.argtypes = [
     ctypes.c_void_p,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_unsubscribe_health.restype = None
 
 _cmavsdk_lib.mavsdk_telemetry_health.argtypes = [
     ctypes.c_void_p,
-    ctypes.POINTER(HealthCStruct)
+    ctypes.POINTER(HealthCStruct),
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_health.restype = None
 _cmavsdk_lib.mavsdk_telemetry_subscribe_rc_status.argtypes = [
     ctypes.c_void_p,
     RcStatusCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_subscribe_rc_status.restype = ctypes.c_void_p
 # Unsubscribe
 _cmavsdk_lib.mavsdk_telemetry_unsubscribe_rc_status.argtypes = [
     ctypes.c_void_p,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_unsubscribe_rc_status.restype = None
 
 _cmavsdk_lib.mavsdk_telemetry_rc_status.argtypes = [
     ctypes.c_void_p,
-    ctypes.POINTER(RcStatusCStruct)
+    ctypes.POINTER(RcStatusCStruct),
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_rc_status.restype = None
 _cmavsdk_lib.mavsdk_telemetry_subscribe_status_text.argtypes = [
     ctypes.c_void_p,
     StatusTextCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_subscribe_status_text.restype = ctypes.c_void_p
 # Unsubscribe
 _cmavsdk_lib.mavsdk_telemetry_unsubscribe_status_text.argtypes = [
     ctypes.c_void_p,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_unsubscribe_status_text.restype = None
 
 _cmavsdk_lib.mavsdk_telemetry_status_text.argtypes = [
     ctypes.c_void_p,
-    ctypes.POINTER(StatusTextCStruct)
+    ctypes.POINTER(StatusTextCStruct),
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_status_text.restype = None
 _cmavsdk_lib.mavsdk_telemetry_subscribe_actuator_control_target.argtypes = [
     ctypes.c_void_p,
     ActuatorControlTargetCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
-_cmavsdk_lib.mavsdk_telemetry_subscribe_actuator_control_target.restype = ctypes.c_void_p
+_cmavsdk_lib.mavsdk_telemetry_subscribe_actuator_control_target.restype = (
+    ctypes.c_void_p
+)
 # Unsubscribe
 _cmavsdk_lib.mavsdk_telemetry_unsubscribe_actuator_control_target.argtypes = [
     ctypes.c_void_p,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_unsubscribe_actuator_control_target.restype = None
 
 _cmavsdk_lib.mavsdk_telemetry_actuator_control_target.argtypes = [
     ctypes.c_void_p,
-    ctypes.POINTER(ActuatorControlTargetCStruct)
+    ctypes.POINTER(ActuatorControlTargetCStruct),
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_actuator_control_target.restype = None
 _cmavsdk_lib.mavsdk_telemetry_subscribe_actuator_output_status.argtypes = [
     ctypes.c_void_p,
     ActuatorOutputStatusCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_subscribe_actuator_output_status.restype = ctypes.c_void_p
 # Unsubscribe
 _cmavsdk_lib.mavsdk_telemetry_unsubscribe_actuator_output_status.argtypes = [
     ctypes.c_void_p,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_unsubscribe_actuator_output_status.restype = None
 
 _cmavsdk_lib.mavsdk_telemetry_actuator_output_status.argtypes = [
     ctypes.c_void_p,
-    ctypes.POINTER(ActuatorOutputStatusCStruct)
+    ctypes.POINTER(ActuatorOutputStatusCStruct),
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_actuator_output_status.restype = None
 _cmavsdk_lib.mavsdk_telemetry_subscribe_odometry.argtypes = [
     ctypes.c_void_p,
     OdometryCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_subscribe_odometry.restype = ctypes.c_void_p
 # Unsubscribe
 _cmavsdk_lib.mavsdk_telemetry_unsubscribe_odometry.argtypes = [
     ctypes.c_void_p,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_unsubscribe_odometry.restype = None
 
 _cmavsdk_lib.mavsdk_telemetry_odometry.argtypes = [
     ctypes.c_void_p,
-    ctypes.POINTER(OdometryCStruct)
+    ctypes.POINTER(OdometryCStruct),
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_odometry.restype = None
 _cmavsdk_lib.mavsdk_telemetry_subscribe_position_velocity_ned.argtypes = [
     ctypes.c_void_p,
     PositionVelocityNedCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_subscribe_position_velocity_ned.restype = ctypes.c_void_p
 # Unsubscribe
 _cmavsdk_lib.mavsdk_telemetry_unsubscribe_position_velocity_ned.argtypes = [
     ctypes.c_void_p,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_unsubscribe_position_velocity_ned.restype = None
 
 _cmavsdk_lib.mavsdk_telemetry_position_velocity_ned.argtypes = [
     ctypes.c_void_p,
-    ctypes.POINTER(PositionVelocityNedCStruct)
+    ctypes.POINTER(PositionVelocityNedCStruct),
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_position_velocity_ned.restype = None
 _cmavsdk_lib.mavsdk_telemetry_subscribe_ground_truth.argtypes = [
     ctypes.c_void_p,
     GroundTruthCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_subscribe_ground_truth.restype = ctypes.c_void_p
 # Unsubscribe
 _cmavsdk_lib.mavsdk_telemetry_unsubscribe_ground_truth.argtypes = [
     ctypes.c_void_p,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_unsubscribe_ground_truth.restype = None
 
 _cmavsdk_lib.mavsdk_telemetry_ground_truth.argtypes = [
     ctypes.c_void_p,
-    ctypes.POINTER(GroundTruthCStruct)
+    ctypes.POINTER(GroundTruthCStruct),
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_ground_truth.restype = None
 _cmavsdk_lib.mavsdk_telemetry_subscribe_fixedwing_metrics.argtypes = [
     ctypes.c_void_p,
     FixedwingMetricsCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_subscribe_fixedwing_metrics.restype = ctypes.c_void_p
 # Unsubscribe
 _cmavsdk_lib.mavsdk_telemetry_unsubscribe_fixedwing_metrics.argtypes = [
     ctypes.c_void_p,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_unsubscribe_fixedwing_metrics.restype = None
 
 _cmavsdk_lib.mavsdk_telemetry_fixedwing_metrics.argtypes = [
     ctypes.c_void_p,
-    ctypes.POINTER(FixedwingMetricsCStruct)
+    ctypes.POINTER(FixedwingMetricsCStruct),
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_fixedwing_metrics.restype = None
 _cmavsdk_lib.mavsdk_telemetry_subscribe_imu.argtypes = [
     ctypes.c_void_p,
     ImuCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_subscribe_imu.restype = ctypes.c_void_p
 # Unsubscribe
 _cmavsdk_lib.mavsdk_telemetry_unsubscribe_imu.argtypes = [
     ctypes.c_void_p,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_unsubscribe_imu.restype = None
 
 _cmavsdk_lib.mavsdk_telemetry_imu.argtypes = [
     ctypes.c_void_p,
-    ctypes.POINTER(ImuCStruct)
+    ctypes.POINTER(ImuCStruct),
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_imu.restype = None
 _cmavsdk_lib.mavsdk_telemetry_subscribe_scaled_imu.argtypes = [
     ctypes.c_void_p,
     ScaledImuCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_subscribe_scaled_imu.restype = ctypes.c_void_p
 # Unsubscribe
 _cmavsdk_lib.mavsdk_telemetry_unsubscribe_scaled_imu.argtypes = [
     ctypes.c_void_p,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_unsubscribe_scaled_imu.restype = None
 
 _cmavsdk_lib.mavsdk_telemetry_scaled_imu.argtypes = [
     ctypes.c_void_p,
-    ctypes.POINTER(ImuCStruct)
+    ctypes.POINTER(ImuCStruct),
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_scaled_imu.restype = None
 _cmavsdk_lib.mavsdk_telemetry_subscribe_raw_imu.argtypes = [
     ctypes.c_void_p,
     RawImuCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_subscribe_raw_imu.restype = ctypes.c_void_p
 # Unsubscribe
 _cmavsdk_lib.mavsdk_telemetry_unsubscribe_raw_imu.argtypes = [
     ctypes.c_void_p,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_unsubscribe_raw_imu.restype = None
 
 _cmavsdk_lib.mavsdk_telemetry_raw_imu.argtypes = [
     ctypes.c_void_p,
-    ctypes.POINTER(ImuCStruct)
+    ctypes.POINTER(ImuCStruct),
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_raw_imu.restype = None
 _cmavsdk_lib.mavsdk_telemetry_subscribe_health_all_ok.argtypes = [
     ctypes.c_void_p,
     HealthAllOkCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_subscribe_health_all_ok.restype = ctypes.c_void_p
 # Unsubscribe
 _cmavsdk_lib.mavsdk_telemetry_unsubscribe_health_all_ok.argtypes = [
     ctypes.c_void_p,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_unsubscribe_health_all_ok.restype = None
 
 _cmavsdk_lib.mavsdk_telemetry_health_all_ok.argtypes = [
     ctypes.c_void_p,
-    ctypes.POINTER(ctypes.c_bool)
+    ctypes.POINTER(ctypes.c_bool),
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_health_all_ok.restype = None
 _cmavsdk_lib.mavsdk_telemetry_subscribe_unix_epoch_time.argtypes = [
     ctypes.c_void_p,
     UnixEpochTimeCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_subscribe_unix_epoch_time.restype = ctypes.c_void_p
 # Unsubscribe
 _cmavsdk_lib.mavsdk_telemetry_unsubscribe_unix_epoch_time.argtypes = [
     ctypes.c_void_p,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_unsubscribe_unix_epoch_time.restype = None
 
 _cmavsdk_lib.mavsdk_telemetry_unix_epoch_time.argtypes = [
     ctypes.c_void_p,
-    ctypes.POINTER(ctypes.c_uint64)
+    ctypes.POINTER(ctypes.c_uint64),
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_unix_epoch_time.restype = None
 _cmavsdk_lib.mavsdk_telemetry_subscribe_distance_sensor.argtypes = [
     ctypes.c_void_p,
     DistanceSensorCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_subscribe_distance_sensor.restype = ctypes.c_void_p
 # Unsubscribe
 _cmavsdk_lib.mavsdk_telemetry_unsubscribe_distance_sensor.argtypes = [
     ctypes.c_void_p,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_unsubscribe_distance_sensor.restype = None
 
 _cmavsdk_lib.mavsdk_telemetry_distance_sensor.argtypes = [
     ctypes.c_void_p,
-    ctypes.POINTER(DistanceSensorCStruct)
+    ctypes.POINTER(DistanceSensorCStruct),
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_distance_sensor.restype = None
 _cmavsdk_lib.mavsdk_telemetry_subscribe_scaled_pressure.argtypes = [
     ctypes.c_void_p,
     ScaledPressureCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_subscribe_scaled_pressure.restype = ctypes.c_void_p
 # Unsubscribe
 _cmavsdk_lib.mavsdk_telemetry_unsubscribe_scaled_pressure.argtypes = [
     ctypes.c_void_p,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_unsubscribe_scaled_pressure.restype = None
 
 _cmavsdk_lib.mavsdk_telemetry_scaled_pressure.argtypes = [
     ctypes.c_void_p,
-    ctypes.POINTER(ScaledPressureCStruct)
+    ctypes.POINTER(ScaledPressureCStruct),
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_scaled_pressure.restype = None
 _cmavsdk_lib.mavsdk_telemetry_subscribe_heading.argtypes = [
     ctypes.c_void_p,
     HeadingCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_subscribe_heading.restype = ctypes.c_void_p
 # Unsubscribe
 _cmavsdk_lib.mavsdk_telemetry_unsubscribe_heading.argtypes = [
     ctypes.c_void_p,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_unsubscribe_heading.restype = None
 
 _cmavsdk_lib.mavsdk_telemetry_heading.argtypes = [
     ctypes.c_void_p,
-    ctypes.POINTER(HeadingCStruct)
+    ctypes.POINTER(HeadingCStruct),
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_heading.restype = None
 _cmavsdk_lib.mavsdk_telemetry_subscribe_altitude.argtypes = [
     ctypes.c_void_p,
     AltitudeCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_subscribe_altitude.restype = ctypes.c_void_p
 # Unsubscribe
 _cmavsdk_lib.mavsdk_telemetry_unsubscribe_altitude.argtypes = [
     ctypes.c_void_p,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_unsubscribe_altitude.restype = None
 
 _cmavsdk_lib.mavsdk_telemetry_altitude.argtypes = [
     ctypes.c_void_p,
-    ctypes.POINTER(AltitudeCStruct)
+    ctypes.POINTER(AltitudeCStruct),
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_altitude.restype = None
 _cmavsdk_lib.mavsdk_telemetry_subscribe_wind.argtypes = [
     ctypes.c_void_p,
     WindCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_subscribe_wind.restype = ctypes.c_void_p
 # Unsubscribe
 _cmavsdk_lib.mavsdk_telemetry_unsubscribe_wind.argtypes = [
     ctypes.c_void_p,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_unsubscribe_wind.restype = None
 
 _cmavsdk_lib.mavsdk_telemetry_wind.argtypes = [
     ctypes.c_void_p,
-    ctypes.POINTER(WindCStruct)
+    ctypes.POINTER(WindCStruct),
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_wind.restype = None
@@ -5357,7 +4970,7 @@ _cmavsdk_lib.mavsdk_telemetry_set_rate_position_async.argtypes = [
     ctypes.c_void_p,
     ctypes.c_double,
     SetRatePositionCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_set_rate_position_async.restype = None
@@ -5372,7 +4985,7 @@ _cmavsdk_lib.mavsdk_telemetry_set_rate_home_async.argtypes = [
     ctypes.c_void_p,
     ctypes.c_double,
     SetRateHomeCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_set_rate_home_async.restype = None
@@ -5387,7 +5000,7 @@ _cmavsdk_lib.mavsdk_telemetry_set_rate_in_air_async.argtypes = [
     ctypes.c_void_p,
     ctypes.c_double,
     SetRateInAirCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_set_rate_in_air_async.restype = None
@@ -5402,7 +5015,7 @@ _cmavsdk_lib.mavsdk_telemetry_set_rate_landed_state_async.argtypes = [
     ctypes.c_void_p,
     ctypes.c_double,
     SetRateLandedStateCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_set_rate_landed_state_async.restype = None
@@ -5417,7 +5030,7 @@ _cmavsdk_lib.mavsdk_telemetry_set_rate_vtol_state_async.argtypes = [
     ctypes.c_void_p,
     ctypes.c_double,
     SetRateVtolStateCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_set_rate_vtol_state_async.restype = None
@@ -5432,7 +5045,7 @@ _cmavsdk_lib.mavsdk_telemetry_set_rate_attitude_quaternion_async.argtypes = [
     ctypes.c_void_p,
     ctypes.c_double,
     SetRateAttitudeQuaternionCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_set_rate_attitude_quaternion_async.restype = None
@@ -5447,7 +5060,7 @@ _cmavsdk_lib.mavsdk_telemetry_set_rate_attitude_euler_async.argtypes = [
     ctypes.c_void_p,
     ctypes.c_double,
     SetRateAttitudeEulerCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_set_rate_attitude_euler_async.restype = None
@@ -5462,7 +5075,7 @@ _cmavsdk_lib.mavsdk_telemetry_set_rate_velocity_ned_async.argtypes = [
     ctypes.c_void_p,
     ctypes.c_double,
     SetRateVelocityNedCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_set_rate_velocity_ned_async.restype = None
@@ -5477,7 +5090,7 @@ _cmavsdk_lib.mavsdk_telemetry_set_rate_gps_info_async.argtypes = [
     ctypes.c_void_p,
     ctypes.c_double,
     SetRateGpsInfoCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_set_rate_gps_info_async.restype = None
@@ -5492,7 +5105,7 @@ _cmavsdk_lib.mavsdk_telemetry_set_rate_battery_async.argtypes = [
     ctypes.c_void_p,
     ctypes.c_double,
     SetRateBatteryCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_set_rate_battery_async.restype = None
@@ -5507,7 +5120,7 @@ _cmavsdk_lib.mavsdk_telemetry_set_rate_rc_status_async.argtypes = [
     ctypes.c_void_p,
     ctypes.c_double,
     SetRateRcStatusCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_set_rate_rc_status_async.restype = None
@@ -5522,7 +5135,7 @@ _cmavsdk_lib.mavsdk_telemetry_set_rate_actuator_control_target_async.argtypes = 
     ctypes.c_void_p,
     ctypes.c_double,
     SetRateActuatorControlTargetCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_set_rate_actuator_control_target_async.restype = None
@@ -5537,7 +5150,7 @@ _cmavsdk_lib.mavsdk_telemetry_set_rate_actuator_output_status_async.argtypes = [
     ctypes.c_void_p,
     ctypes.c_double,
     SetRateActuatorOutputStatusCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_set_rate_actuator_output_status_async.restype = None
@@ -5552,7 +5165,7 @@ _cmavsdk_lib.mavsdk_telemetry_set_rate_odometry_async.argtypes = [
     ctypes.c_void_p,
     ctypes.c_double,
     SetRateOdometryCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_set_rate_odometry_async.restype = None
@@ -5567,7 +5180,7 @@ _cmavsdk_lib.mavsdk_telemetry_set_rate_position_velocity_ned_async.argtypes = [
     ctypes.c_void_p,
     ctypes.c_double,
     SetRatePositionVelocityNedCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_set_rate_position_velocity_ned_async.restype = None
@@ -5582,7 +5195,7 @@ _cmavsdk_lib.mavsdk_telemetry_set_rate_ground_truth_async.argtypes = [
     ctypes.c_void_p,
     ctypes.c_double,
     SetRateGroundTruthCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_set_rate_ground_truth_async.restype = None
@@ -5597,7 +5210,7 @@ _cmavsdk_lib.mavsdk_telemetry_set_rate_fixedwing_metrics_async.argtypes = [
     ctypes.c_void_p,
     ctypes.c_double,
     SetRateFixedwingMetricsCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_set_rate_fixedwing_metrics_async.restype = None
@@ -5612,7 +5225,7 @@ _cmavsdk_lib.mavsdk_telemetry_set_rate_imu_async.argtypes = [
     ctypes.c_void_p,
     ctypes.c_double,
     SetRateImuCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_set_rate_imu_async.restype = None
@@ -5627,7 +5240,7 @@ _cmavsdk_lib.mavsdk_telemetry_set_rate_scaled_imu_async.argtypes = [
     ctypes.c_void_p,
     ctypes.c_double,
     SetRateScaledImuCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_set_rate_scaled_imu_async.restype = None
@@ -5642,7 +5255,7 @@ _cmavsdk_lib.mavsdk_telemetry_set_rate_raw_imu_async.argtypes = [
     ctypes.c_void_p,
     ctypes.c_double,
     SetRateRawImuCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_set_rate_raw_imu_async.restype = None
@@ -5657,7 +5270,7 @@ _cmavsdk_lib.mavsdk_telemetry_set_rate_unix_epoch_time_async.argtypes = [
     ctypes.c_void_p,
     ctypes.c_double,
     SetRateUnixEpochTimeCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_set_rate_unix_epoch_time_async.restype = None
@@ -5672,7 +5285,7 @@ _cmavsdk_lib.mavsdk_telemetry_set_rate_distance_sensor_async.argtypes = [
     ctypes.c_void_p,
     ctypes.c_double,
     SetRateDistanceSensorCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_set_rate_distance_sensor_async.restype = None
@@ -5687,7 +5300,7 @@ _cmavsdk_lib.mavsdk_telemetry_set_rate_altitude_async.argtypes = [
     ctypes.c_void_p,
     ctypes.c_double,
     SetRateAltitudeCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_set_rate_altitude_async.restype = None
@@ -5702,7 +5315,7 @@ _cmavsdk_lib.mavsdk_telemetry_set_rate_health_async.argtypes = [
     ctypes.c_void_p,
     ctypes.c_double,
     SetRateHealthCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_set_rate_health_async.restype = None
@@ -5716,14 +5329,14 @@ _cmavsdk_lib.mavsdk_telemetry_set_rate_health.restype = ctypes.c_int
 _cmavsdk_lib.mavsdk_telemetry_get_gps_global_origin_async.argtypes = [
     ctypes.c_void_p,
     GetGpsGlobalOriginCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_get_gps_global_origin_async.restype = None
 
 _cmavsdk_lib.mavsdk_telemetry_get_gps_global_origin.argtypes = [
     ctypes.c_void_p,
-    ctypes.POINTER(GpsGlobalOriginCStruct)
+    ctypes.POINTER(GpsGlobalOriginCStruct),
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_get_gps_global_origin.restype = ctypes.c_int

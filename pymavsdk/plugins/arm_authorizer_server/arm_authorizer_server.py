@@ -17,6 +17,7 @@ from ...cmavsdk_loader import _cmavsdk_lib
 # ===== Enums =====
 class RejectionReason(IntEnum):
     """The rejection reason"""
+
     GENERIC = 0
     NONE = 1
     INVALID_WAYPOINT = 2
@@ -28,6 +29,7 @@ class RejectionReason(IntEnum):
 # ===== Result Enums =====
 class ArmAuthorizerServerResult(IntEnum):
     """The result"""
+
     UNKNOWN = 0
     SUCCESS = 1
     FAILED = 2
@@ -58,15 +60,15 @@ class ArmAuthorizerServer:
         self._handle = self._lib.mavsdk_arm_authorizer_server_create(component_handle)
 
         if not self._handle:
-            raise RuntimeError("Failed to create ArmAuthorizerServer plugin - C function returned null handle")
-
+            raise RuntimeError(
+                "Failed to create ArmAuthorizerServer plugin - C function returned null handle"
+            )
 
     def subscribe_arm_authorization(self, callback: Callable, user_data: Any = None):
         """Subscribe to arm authorization request messages. Each request received should respond to using RespondArmAuthorization"""
 
         def c_callback(c_data, ud):
             try:
-
                 py_data = c_data
 
                 callback(py_data, user_data)
@@ -78,9 +80,7 @@ class ArmAuthorizerServer:
         self._callbacks.append(cb)
 
         return self._lib.mavsdk_arm_authorizer_server_subscribe_arm_authorization(
-            self._handle,
-            cb,
-            None
+            self._handle, cb, None
         )
 
     def unsubscribe_arm_authorization(self, handle: ctypes.c_void_p):
@@ -89,12 +89,8 @@ class ArmAuthorizerServer:
             self._handle, handle
         )
 
-
-
-
     def accept_arm_authorization(self, valid_time_s):
         """Get accept_arm_authorization (blocking)"""
-
 
         result_code = self._lib.mavsdk_arm_authorizer_server_accept_arm_authorization(
             self._handle,
@@ -106,11 +102,8 @@ class ArmAuthorizerServer:
 
         return result
 
-
-
     def reject_arm_authorization(self, temporarily, reason, extra_info):
         """Get reject_arm_authorization (blocking)"""
-
 
         result_code = self._lib.mavsdk_arm_authorizer_server_reject_arm_authorization(
             self._handle,
@@ -124,7 +117,6 @@ class ArmAuthorizerServer:
 
         return result
 
-
     def destroy(self):
         """Destroy the plugin instance"""
         if self._handle:
@@ -134,12 +126,9 @@ class ArmAuthorizerServer:
     def __del__(self):
         self.destroy()
 
+
 # ===== Callback Types =====
-ArmAuthorizationCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_uint32,
-    ctypes.c_void_p
-)
+ArmAuthorizationCallback = ctypes.CFUNCTYPE(None, ctypes.c_uint32, ctypes.c_void_p)
 
 # ===== Setup Functions =====
 _cmavsdk_lib.mavsdk_arm_authorizer_server_create.argtypes = [ctypes.c_void_p]
@@ -152,14 +141,16 @@ _cmavsdk_lib.mavsdk_arm_authorizer_server_destroy.restype = None
 _cmavsdk_lib.mavsdk_arm_authorizer_server_subscribe_arm_authorization.argtypes = [
     ctypes.c_void_p,
     ArmAuthorizationCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
-_cmavsdk_lib.mavsdk_arm_authorizer_server_subscribe_arm_authorization.restype = ctypes.c_void_p
+_cmavsdk_lib.mavsdk_arm_authorizer_server_subscribe_arm_authorization.restype = (
+    ctypes.c_void_p
+)
 # Unsubscribe
 _cmavsdk_lib.mavsdk_arm_authorizer_server_unsubscribe_arm_authorization.argtypes = [
     ctypes.c_void_p,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_arm_authorizer_server_unsubscribe_arm_authorization.restype = None
@@ -170,7 +161,9 @@ _cmavsdk_lib.mavsdk_arm_authorizer_server_accept_arm_authorization.argtypes = [
     ctypes.c_int32,
 ]
 
-_cmavsdk_lib.mavsdk_arm_authorizer_server_accept_arm_authorization.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_arm_authorizer_server_accept_arm_authorization.restype = (
+    ctypes.c_int
+)
 
 _cmavsdk_lib.mavsdk_arm_authorizer_server_reject_arm_authorization.argtypes = [
     ctypes.c_void_p,
@@ -179,4 +172,6 @@ _cmavsdk_lib.mavsdk_arm_authorizer_server_reject_arm_authorization.argtypes = [
     ctypes.c_int32,
 ]
 
-_cmavsdk_lib.mavsdk_arm_authorizer_server_reject_arm_authorization.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_arm_authorizer_server_reject_arm_authorization.restype = (
+    ctypes.c_int
+)

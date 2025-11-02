@@ -18,8 +18,9 @@ from ...cmavsdk_loader import _cmavsdk_lib
 class FlightMode(IntEnum):
     """Flight modes.
 
- For more information about flight modes, check out
- https://docs.px4.io/master/en/config/flight_mode.html."""
+    For more information about flight modes, check out
+    https://docs.px4.io/master/en/config/flight_mode.html."""
+
     UNKNOWN = 0
     READY = 1
     TAKEOFF = 2
@@ -39,6 +40,7 @@ class FlightMode(IntEnum):
 # ===== Result Enums =====
 class ActionServerResult(IntEnum):
     """Possible results returned for action requests."""
+
     UNKNOWN = 0
     SUCCESS = 1
     NO_SYSTEM = 2
@@ -60,17 +62,20 @@ class AllowableFlightModesCStruct(ctypes.Structure):
     Internal C structure for AllowableFlightModes.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("can_auto_mode", ctypes.c_bool),
         ("can_guided_mode", ctypes.c_bool),
         ("can_stabilize_mode", ctypes.c_bool),
     ]
 
+
 class ArmDisarmCStruct(ctypes.Structure):
     """
     Internal C structure for ArmDisarm.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("arm", ctypes.c_bool),
         ("force", ctypes.c_bool),
@@ -80,11 +85,13 @@ class ArmDisarmCStruct(ctypes.Structure):
 # ===== Structures =====
 class AllowableFlightModes:
     """
-    State to check if the vehicle can transition to
- respective flightmodes
+       State to check if the vehicle can transition to
+    respective flightmodes
     """
 
-    def __init__(self, can_auto_mode=None, can_guided_mode=None, can_stabilize_mode=None):
+    def __init__(
+        self, can_auto_mode=None, can_guided_mode=None, can_stabilize_mode=None
+    ):
         self.can_auto_mode = can_auto_mode
         self.can_guided_mode = can_guided_mode
         self.can_stabilize_mode = can_stabilize_mode
@@ -112,6 +119,7 @@ class AllowableFlightModes:
         fields.append(f"can_guided_mode={self.can_guided_mode}")
         fields.append(f"can_stabilize_mode={self.can_stabilize_mode}")
         return f"AllowableFlightModes({', '.join(fields)})"
+
 
 class ArmDisarm:
     """
@@ -144,7 +152,6 @@ class ArmDisarm:
         return f"ArmDisarm({', '.join(fields)})"
 
 
-
 # ===== Plugin =====
 class ActionServer:
     """Provide vehicle actions (as a server) such as arming, taking off, and landing."""
@@ -165,8 +172,9 @@ class ActionServer:
         self._handle = self._lib.mavsdk_action_server_create(component_handle)
 
         if not self._handle:
-            raise RuntimeError("Failed to create ActionServer plugin - C function returned null handle")
-
+            raise RuntimeError(
+                "Failed to create ActionServer plugin - C function returned null handle"
+            )
 
     def subscribe_arm_disarm(self, callback: Callable, user_data: Any = None):
         """Subscribe to ARM/DISARM commands"""
@@ -188,18 +196,12 @@ class ActionServer:
         self._callbacks.append(cb)
 
         return self._lib.mavsdk_action_server_subscribe_arm_disarm(
-            self._handle,
-            cb,
-            None
+            self._handle, cb, None
         )
 
     def unsubscribe_arm_disarm(self, handle: ctypes.c_void_p):
         """Unsubscribe from arm_disarm"""
-        self._lib.mavsdk_action_server_unsubscribe_arm_disarm(
-            self._handle, handle
-        )
-
-
+        self._lib.mavsdk_action_server_unsubscribe_arm_disarm(self._handle, handle)
 
     def subscribe_flight_mode_change(self, callback: Callable, user_data: Any = None):
         """Subscribe to DO_SET_MODE"""
@@ -219,9 +221,7 @@ class ActionServer:
         self._callbacks.append(cb)
 
         return self._lib.mavsdk_action_server_subscribe_flight_mode_change(
-            self._handle,
-            cb,
-            None
+            self._handle, cb, None
         )
 
     def unsubscribe_flight_mode_change(self, handle: ctypes.c_void_p):
@@ -229,8 +229,6 @@ class ActionServer:
         self._lib.mavsdk_action_server_unsubscribe_flight_mode_change(
             self._handle, handle
         )
-
-
 
     def subscribe_takeoff(self, callback: Callable, user_data: Any = None):
         """Subscribe to takeoff command"""
@@ -249,19 +247,11 @@ class ActionServer:
         cb = TakeoffCallback(c_callback)
         self._callbacks.append(cb)
 
-        return self._lib.mavsdk_action_server_subscribe_takeoff(
-            self._handle,
-            cb,
-            None
-        )
+        return self._lib.mavsdk_action_server_subscribe_takeoff(self._handle, cb, None)
 
     def unsubscribe_takeoff(self, handle: ctypes.c_void_p):
         """Unsubscribe from takeoff"""
-        self._lib.mavsdk_action_server_unsubscribe_takeoff(
-            self._handle, handle
-        )
-
-
+        self._lib.mavsdk_action_server_unsubscribe_takeoff(self._handle, handle)
 
     def subscribe_land(self, callback: Callable, user_data: Any = None):
         """Subscribe to land command"""
@@ -280,19 +270,11 @@ class ActionServer:
         cb = LandCallback(c_callback)
         self._callbacks.append(cb)
 
-        return self._lib.mavsdk_action_server_subscribe_land(
-            self._handle,
-            cb,
-            None
-        )
+        return self._lib.mavsdk_action_server_subscribe_land(self._handle, cb, None)
 
     def unsubscribe_land(self, handle: ctypes.c_void_p):
         """Unsubscribe from land"""
-        self._lib.mavsdk_action_server_unsubscribe_land(
-            self._handle, handle
-        )
-
-
+        self._lib.mavsdk_action_server_unsubscribe_land(self._handle, handle)
 
     def subscribe_reboot(self, callback: Callable, user_data: Any = None):
         """Subscribe to reboot command"""
@@ -311,19 +293,11 @@ class ActionServer:
         cb = RebootCallback(c_callback)
         self._callbacks.append(cb)
 
-        return self._lib.mavsdk_action_server_subscribe_reboot(
-            self._handle,
-            cb,
-            None
-        )
+        return self._lib.mavsdk_action_server_subscribe_reboot(self._handle, cb, None)
 
     def unsubscribe_reboot(self, handle: ctypes.c_void_p):
         """Unsubscribe from reboot"""
-        self._lib.mavsdk_action_server_unsubscribe_reboot(
-            self._handle, handle
-        )
-
-
+        self._lib.mavsdk_action_server_unsubscribe_reboot(self._handle, handle)
 
     def subscribe_shutdown(self, callback: Callable, user_data: Any = None):
         """Subscribe to shutdown command"""
@@ -342,19 +316,11 @@ class ActionServer:
         cb = ShutdownCallback(c_callback)
         self._callbacks.append(cb)
 
-        return self._lib.mavsdk_action_server_subscribe_shutdown(
-            self._handle,
-            cb,
-            None
-        )
+        return self._lib.mavsdk_action_server_subscribe_shutdown(self._handle, cb, None)
 
     def unsubscribe_shutdown(self, handle: ctypes.c_void_p):
         """Unsubscribe from shutdown"""
-        self._lib.mavsdk_action_server_unsubscribe_shutdown(
-            self._handle, handle
-        )
-
-
+        self._lib.mavsdk_action_server_unsubscribe_shutdown(self._handle, handle)
 
     def subscribe_terminate(self, callback: Callable, user_data: Any = None):
         """Subscribe to terminate command"""
@@ -374,23 +340,15 @@ class ActionServer:
         self._callbacks.append(cb)
 
         return self._lib.mavsdk_action_server_subscribe_terminate(
-            self._handle,
-            cb,
-            None
+            self._handle, cb, None
         )
 
     def unsubscribe_terminate(self, handle: ctypes.c_void_p):
         """Unsubscribe from terminate"""
-        self._lib.mavsdk_action_server_unsubscribe_terminate(
-            self._handle, handle
-        )
-
-
-
+        self._lib.mavsdk_action_server_unsubscribe_terminate(self._handle, handle)
 
     def set_allow_takeoff(self, allow_takeoff):
         """Get set_allow_takeoff (blocking)"""
-
 
         result_code = self._lib.mavsdk_action_server_set_allow_takeoff(
             self._handle,
@@ -402,11 +360,8 @@ class ActionServer:
 
         return result
 
-
-
     def set_armable(self, armable, force_armable):
         """Get set_armable (blocking)"""
-
 
         result_code = self._lib.mavsdk_action_server_set_armable(
             self._handle,
@@ -419,11 +374,8 @@ class ActionServer:
 
         return result
 
-
-
     def set_disarmable(self, disarmable, force_disarmable):
         """Get set_disarmable (blocking)"""
-
 
         result_code = self._lib.mavsdk_action_server_set_disarmable(
             self._handle,
@@ -436,11 +388,8 @@ class ActionServer:
 
         return result
 
-
-
     def set_allowable_flight_modes(self, flight_modes):
         """Get set_allowable_flight_modes (blocking)"""
-
 
         result_code = self._lib.mavsdk_action_server_set_allowable_flight_modes(
             self._handle,
@@ -452,27 +401,23 @@ class ActionServer:
 
         return result
 
-
-
     def get_allowable_flight_modes(self):
         """Get get_allowable_flight_modes (blocking)"""
 
         result_out = AllowableFlightModesCStruct()
 
         self._lib.mavsdk_action_server_get_allowable_flight_modes(
-            self._handle,
-            ctypes.byref(result_out)
+            self._handle, ctypes.byref(result_out)
         )
 
         py_result = AllowableFlightModes.from_c_struct(result_out)
-        self._lib.mavsdk_action_server_AllowableFlightModes_destroy(ctypes.byref(result_out))
+        self._lib.mavsdk_action_server_AllowableFlightModes_destroy(
+            ctypes.byref(result_out)
+        )
         return py_result
-
-
 
     def set_armed_state(self, is_armed):
         """Get set_armed_state (blocking)"""
-
 
         result_code = self._lib.mavsdk_action_server_set_armed_state(
             self._handle,
@@ -484,11 +429,8 @@ class ActionServer:
 
         return result
 
-
-
     def set_flight_mode(self, flight_mode):
         """Get set_flight_mode (blocking)"""
-
 
         result_code = self._lib.mavsdk_action_server_set_flight_mode(
             self._handle,
@@ -500,7 +442,6 @@ class ActionServer:
 
         return result
 
-
     def destroy(self):
         """Destroy the plugin instance"""
         if self._handle:
@@ -510,49 +451,19 @@ class ActionServer:
     def __del__(self):
         self.destroy()
 
+
 # ===== Callback Types =====
 ArmDisarmCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ArmDisarmCStruct,
-    ctypes.c_void_p
+    None, ctypes.c_int, ArmDisarmCStruct, ctypes.c_void_p
 )
 FlightModeChangeCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_int,
-    ctypes.c_void_p
+    None, ctypes.c_int, ctypes.c_int, ctypes.c_void_p
 )
-TakeoffCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_bool,
-    ctypes.c_void_p
-)
-LandCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_bool,
-    ctypes.c_void_p
-)
-RebootCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_bool,
-    ctypes.c_void_p
-)
-ShutdownCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_bool,
-    ctypes.c_void_p
-)
-TerminateCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_bool,
-    ctypes.c_void_p
-)
+TakeoffCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_bool, ctypes.c_void_p)
+LandCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_bool, ctypes.c_void_p)
+RebootCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_bool, ctypes.c_void_p)
+ShutdownCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_bool, ctypes.c_void_p)
+TerminateCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_bool, ctypes.c_void_p)
 
 # ===== Setup Functions =====
 _cmavsdk_lib.mavsdk_action_server_create.argtypes = [ctypes.c_void_p]
@@ -575,14 +486,14 @@ _cmavsdk_lib.mavsdk_action_server_ArmDisarm_destroy.restype = None
 _cmavsdk_lib.mavsdk_action_server_subscribe_arm_disarm.argtypes = [
     ctypes.c_void_p,
     ArmDisarmCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_action_server_subscribe_arm_disarm.restype = ctypes.c_void_p
 # Unsubscribe
 _cmavsdk_lib.mavsdk_action_server_unsubscribe_arm_disarm.argtypes = [
     ctypes.c_void_p,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_action_server_unsubscribe_arm_disarm.restype = None
@@ -590,14 +501,14 @@ _cmavsdk_lib.mavsdk_action_server_unsubscribe_arm_disarm.restype = None
 _cmavsdk_lib.mavsdk_action_server_subscribe_flight_mode_change.argtypes = [
     ctypes.c_void_p,
     FlightModeChangeCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_action_server_subscribe_flight_mode_change.restype = ctypes.c_void_p
 # Unsubscribe
 _cmavsdk_lib.mavsdk_action_server_unsubscribe_flight_mode_change.argtypes = [
     ctypes.c_void_p,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_action_server_unsubscribe_flight_mode_change.restype = None
@@ -605,14 +516,14 @@ _cmavsdk_lib.mavsdk_action_server_unsubscribe_flight_mode_change.restype = None
 _cmavsdk_lib.mavsdk_action_server_subscribe_takeoff.argtypes = [
     ctypes.c_void_p,
     TakeoffCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_action_server_subscribe_takeoff.restype = ctypes.c_void_p
 # Unsubscribe
 _cmavsdk_lib.mavsdk_action_server_unsubscribe_takeoff.argtypes = [
     ctypes.c_void_p,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_action_server_unsubscribe_takeoff.restype = None
@@ -620,14 +531,14 @@ _cmavsdk_lib.mavsdk_action_server_unsubscribe_takeoff.restype = None
 _cmavsdk_lib.mavsdk_action_server_subscribe_land.argtypes = [
     ctypes.c_void_p,
     LandCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_action_server_subscribe_land.restype = ctypes.c_void_p
 # Unsubscribe
 _cmavsdk_lib.mavsdk_action_server_unsubscribe_land.argtypes = [
     ctypes.c_void_p,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_action_server_unsubscribe_land.restype = None
@@ -635,14 +546,14 @@ _cmavsdk_lib.mavsdk_action_server_unsubscribe_land.restype = None
 _cmavsdk_lib.mavsdk_action_server_subscribe_reboot.argtypes = [
     ctypes.c_void_p,
     RebootCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_action_server_subscribe_reboot.restype = ctypes.c_void_p
 # Unsubscribe
 _cmavsdk_lib.mavsdk_action_server_unsubscribe_reboot.argtypes = [
     ctypes.c_void_p,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_action_server_unsubscribe_reboot.restype = None
@@ -650,14 +561,14 @@ _cmavsdk_lib.mavsdk_action_server_unsubscribe_reboot.restype = None
 _cmavsdk_lib.mavsdk_action_server_subscribe_shutdown.argtypes = [
     ctypes.c_void_p,
     ShutdownCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_action_server_subscribe_shutdown.restype = ctypes.c_void_p
 # Unsubscribe
 _cmavsdk_lib.mavsdk_action_server_unsubscribe_shutdown.argtypes = [
     ctypes.c_void_p,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_action_server_unsubscribe_shutdown.restype = None
@@ -665,14 +576,14 @@ _cmavsdk_lib.mavsdk_action_server_unsubscribe_shutdown.restype = None
 _cmavsdk_lib.mavsdk_action_server_subscribe_terminate.argtypes = [
     ctypes.c_void_p,
     TerminateCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_action_server_subscribe_terminate.restype = ctypes.c_void_p
 # Unsubscribe
 _cmavsdk_lib.mavsdk_action_server_unsubscribe_terminate.argtypes = [
     ctypes.c_void_p,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_action_server_unsubscribe_terminate.restype = None
@@ -710,7 +621,7 @@ _cmavsdk_lib.mavsdk_action_server_set_allowable_flight_modes.restype = ctypes.c_
 
 _cmavsdk_lib.mavsdk_action_server_get_allowable_flight_modes.argtypes = [
     ctypes.c_void_p,
-    ctypes.POINTER(AllowableFlightModesCStruct)
+    ctypes.POINTER(AllowableFlightModesCStruct),
 ]
 
 _cmavsdk_lib.mavsdk_action_server_get_allowable_flight_modes.restype = None

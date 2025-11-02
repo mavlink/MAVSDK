@@ -17,6 +17,7 @@ from ...cmavsdk_loader import _cmavsdk_lib
 # ===== Enums =====
 class FenceType(IntEnum):
     """Geofence types."""
+
     INCLUSION = 0
     EXCLUSION = 1
 
@@ -24,6 +25,7 @@ class FenceType(IntEnum):
 # ===== Result Enums =====
 class GeofenceResult(IntEnum):
     """Possible results returned for geofence requests."""
+
     UNKNOWN = 0
     SUCCESS = 1
     ERROR = 2
@@ -40,38 +42,45 @@ class PointCStruct(ctypes.Structure):
     Internal C structure for Point.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("latitude_deg", ctypes.c_double),
         ("longitude_deg", ctypes.c_double),
     ]
+
 
 class PolygonCStruct(ctypes.Structure):
     """
     Internal C structure for Polygon.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("points", ctypes.POINTER(PointCStruct)),
         ("points_size", ctypes.c_size_t),
         ("fence_type", ctypes.c_int),
     ]
 
+
 class CircleCStruct(ctypes.Structure):
     """
     Internal C structure for Circle.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("point", PointCStruct),
         ("radius", ctypes.c_float),
         ("fence_type", ctypes.c_int),
     ]
 
+
 class GeofenceDataCStruct(ctypes.Structure):
     """
     Internal C structure for GeofenceData.
     Used only for C library communication.
     """
+
     _fields_ = [
         ("polygons", ctypes.POINTER(PolygonCStruct)),
         ("polygons_size", ctypes.c_size_t),
@@ -111,6 +120,7 @@ class Point:
         fields.append(f"longitude_deg={self.longitude_deg}")
         return f"Point({', '.join(fields)})"
 
+
 class Polygon:
     """
     Polygon type.
@@ -125,7 +135,10 @@ class Polygon:
         """Convert from C structure to Python object"""
         instance = cls()
         if c_struct.points_size > 0:
-            instance.points = [Point.from_c_struct(c_struct.points[i]) for i in range(c_struct.points_size)]
+            instance.points = [
+                Point.from_c_struct(c_struct.points[i])
+                for i in range(c_struct.points_size)
+            ]
         else:
             instance.points = []
         instance.fence_type = FenceType(c_struct.fence_type)
@@ -148,6 +161,7 @@ class Polygon:
         fields.append(f"points={self.points}")
         fields.append(f"fence_type={self.fence_type}")
         return f"Polygon({', '.join(fields)})"
+
 
 class Circle:
     """
@@ -183,6 +197,7 @@ class Circle:
         fields.append(f"fence_type={self.fence_type}")
         return f"Circle({', '.join(fields)})"
 
+
 class GeofenceData:
     """
     Geofence data type.
@@ -197,11 +212,17 @@ class GeofenceData:
         """Convert from C structure to Python object"""
         instance = cls()
         if c_struct.polygons_size > 0:
-            instance.polygons = [Polygon.from_c_struct(c_struct.polygons[i]) for i in range(c_struct.polygons_size)]
+            instance.polygons = [
+                Polygon.from_c_struct(c_struct.polygons[i])
+                for i in range(c_struct.polygons_size)
+            ]
         else:
             instance.polygons = []
         if c_struct.circles_size > 0:
-            instance.circles = [Circle.from_c_struct(c_struct.circles[i]) for i in range(c_struct.circles_size)]
+            instance.circles = [
+                Circle.from_c_struct(c_struct.circles[i])
+                for i in range(c_struct.circles_size)
+            ]
         else:
             instance.circles = []
         return instance
@@ -230,7 +251,6 @@ class GeofenceData:
         return f"GeofenceData({', '.join(fields)})"
 
 
-
 # ===== Plugin =====
 class Geofence:
     """Enable setting a geofence."""
@@ -251,19 +271,21 @@ class Geofence:
         self._handle = self._lib.mavsdk_geofence_create(system_handle)
 
         if not self._handle:
-            raise RuntimeError("Failed to create Geofence plugin - C function returned null handle")
+            raise RuntimeError(
+                "Failed to create Geofence plugin - C function returned null handle"
+            )
 
-
-    def upload_geofence_async(self, geofence_data, callback: Callable, user_data: Any = None):
+    def upload_geofence_async(
+        self, geofence_data, callback: Callable, user_data: Any = None
+    ):
         """Upload geofences.
 
- Polygon and Circular geofences are uploaded to a drone. Once uploaded, the geofence will remain
- on the drone even if a connection is lost."""
+        Polygon and Circular geofences are uploaded to a drone. Once uploaded, the geofence will remain
+        on the drone even if a connection is lost."""
 
         def c_callback(result, ud):
             try:
                 py_result = GeofenceResult(result)
-
 
                 callback(py_result, user_data)
 
@@ -274,16 +296,11 @@ class Geofence:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_geofence_upload_geofence_async(
-            self._handle,
-            geofence_data,
-            cb,
-            None
+            self._handle, geofence_data, cb, None
         )
-
 
     def upload_geofence(self, geofence_data):
         """Get upload_geofence (blocking)"""
-
 
         result_code = self._lib.mavsdk_geofence_upload_geofence(
             self._handle,
@@ -295,14 +312,12 @@ class Geofence:
 
         return result
 
-
     def clear_geofence_async(self, callback: Callable, user_data: Any = None):
         """Clear all geofences saved on the vehicle."""
 
         def c_callback(result, ud):
             try:
                 py_result = GeofenceResult(result)
-
 
                 callback(py_result, user_data)
 
@@ -312,16 +327,10 @@ class Geofence:
         cb = ClearGeofenceCallback(c_callback)
         self._callbacks.append(cb)
 
-        self._lib.mavsdk_geofence_clear_geofence_async(
-            self._handle,
-            cb,
-            None
-        )
-
+        self._lib.mavsdk_geofence_clear_geofence_async(self._handle, cb, None)
 
     def clear_geofence(self):
         """Get clear_geofence (blocking)"""
-
 
         result_code = self._lib.mavsdk_geofence_clear_geofence(
             self._handle,
@@ -332,7 +341,6 @@ class Geofence:
 
         return result
 
-
     def destroy(self):
         """Destroy the plugin instance"""
         if self._handle:
@@ -342,17 +350,10 @@ class Geofence:
     def __del__(self):
         self.destroy()
 
+
 # ===== Callback Types =====
-UploadGeofenceCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
-ClearGeofenceCallback = ctypes.CFUNCTYPE(
-    None,
-    ctypes.c_int,
-    ctypes.c_void_p
-)
+UploadGeofenceCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
+ClearGeofenceCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
 
 # ===== Setup Functions =====
 _cmavsdk_lib.mavsdk_geofence_create.argtypes = [ctypes.c_void_p]
@@ -361,19 +362,13 @@ _cmavsdk_lib.mavsdk_geofence_create.restype = ctypes.c_void_p
 _cmavsdk_lib.mavsdk_geofence_destroy.argtypes = [ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_geofence_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_geofence_Point_destroy.argtypes = [
-    ctypes.POINTER(PointCStruct)
-]
+_cmavsdk_lib.mavsdk_geofence_Point_destroy.argtypes = [ctypes.POINTER(PointCStruct)]
 _cmavsdk_lib.mavsdk_geofence_Point_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_geofence_Polygon_destroy.argtypes = [
-    ctypes.POINTER(PolygonCStruct)
-]
+_cmavsdk_lib.mavsdk_geofence_Polygon_destroy.argtypes = [ctypes.POINTER(PolygonCStruct)]
 _cmavsdk_lib.mavsdk_geofence_Polygon_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_geofence_Circle_destroy.argtypes = [
-    ctypes.POINTER(CircleCStruct)
-]
+_cmavsdk_lib.mavsdk_geofence_Circle_destroy.argtypes = [ctypes.POINTER(CircleCStruct)]
 _cmavsdk_lib.mavsdk_geofence_Circle_destroy.restype = None
 
 _cmavsdk_lib.mavsdk_geofence_GeofenceData_destroy.argtypes = [
@@ -386,7 +381,7 @@ _cmavsdk_lib.mavsdk_geofence_upload_geofence_async.argtypes = [
     ctypes.c_void_p,
     GeofenceDataCStruct,
     UploadGeofenceCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_geofence_upload_geofence_async.restype = None
@@ -400,7 +395,7 @@ _cmavsdk_lib.mavsdk_geofence_upload_geofence.restype = ctypes.c_int
 _cmavsdk_lib.mavsdk_geofence_clear_geofence_async.argtypes = [
     ctypes.c_void_p,
     ClearGeofenceCallback,
-    ctypes.c_void_p
+    ctypes.c_void_p,
 ]
 
 _cmavsdk_lib.mavsdk_geofence_clear_geofence_async.restype = None

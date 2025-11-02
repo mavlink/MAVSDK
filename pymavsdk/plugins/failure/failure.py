@@ -17,6 +17,7 @@ from ...cmavsdk_loader import _cmavsdk_lib
 # ===== Enums =====
 class FailureUnit(IntEnum):
     """A failure unit."""
+
     SENSOR_GYRO = 0
     SENSOR_ACCEL = 1
     SENSOR_MAG = 2
@@ -33,8 +34,10 @@ class FailureUnit(IntEnum):
     SYSTEM_RC_SIGNAL = 13
     SYSTEM_MAVLINK_SIGNAL = 14
 
+
 class FailureType(IntEnum):
     """A failure type"""
+
     OK = 0
     OFF = 1
     STUCK = 2
@@ -48,6 +51,7 @@ class FailureType(IntEnum):
 # ===== Result Enums =====
 class FailureResult(IntEnum):
     """Possible results returned for failure requests."""
+
     UNKNOWN = 0
     SUCCESS = 1
     NO_SYSTEM = 2
@@ -83,13 +87,12 @@ class Failure:
         self._handle = self._lib.mavsdk_failure_create(system_handle)
 
         if not self._handle:
-            raise RuntimeError("Failed to create Failure plugin - C function returned null handle")
-
-
+            raise RuntimeError(
+                "Failed to create Failure plugin - C function returned null handle"
+            )
 
     def inject(self, failure_unit, failure_type, instance):
         """Get inject (blocking)"""
-
 
         result_code = self._lib.mavsdk_failure_inject(
             self._handle,
@@ -103,7 +106,6 @@ class Failure:
 
         return result
 
-
     def destroy(self):
         """Destroy the plugin instance"""
         if self._handle:
@@ -113,6 +115,7 @@ class Failure:
     def __del__(self):
         self.destroy()
 
+
 # ===== Callback Types =====
 
 # ===== Setup Functions =====
@@ -121,7 +124,6 @@ _cmavsdk_lib.mavsdk_failure_create.restype = ctypes.c_void_p
 
 _cmavsdk_lib.mavsdk_failure_destroy.argtypes = [ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_failure_destroy.restype = None
-
 
 
 _cmavsdk_lib.mavsdk_failure_inject.argtypes = [
