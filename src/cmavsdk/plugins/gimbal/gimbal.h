@@ -36,7 +36,7 @@ typedef enum {
     MAVSDK_GIMBAL_GIMBAL_MODE_YAW_FOLLOW = 0,
     /**  Yaw lock will fix the gimbal pointing to an absolute direction. */
     MAVSDK_GIMBAL_GIMBAL_MODE_YAW_LOCK = 1,
-} mavsdk_gimbal_gimbal_mode_t;
+} mavsdk_gimbal_GimbalMode_t;
 
 /**
  * @brief Control mode
@@ -48,7 +48,7 @@ typedef enum {
     MAVSDK_GIMBAL_CONTROL_MODE_PRIMARY = 1,
     /**  To take secondary control over the gimbal. */
     MAVSDK_GIMBAL_CONTROL_MODE_SECONDARY = 2,
-} mavsdk_gimbal_control_mode_t;
+} mavsdk_gimbal_ControlMode_t;
 
 /**
  * @brief The send mode type
@@ -58,7 +58,7 @@ typedef enum {
     MAVSDK_GIMBAL_SEND_MODE_ONCE = 0,
     /**  Stream setpoint without quality of service (use for setpoints faster than 1 Hz).. */
     MAVSDK_GIMBAL_SEND_MODE_STREAM = 1,
-} mavsdk_gimbal_send_mode_t;
+} mavsdk_gimbal_SendMode_t;
 
 
 // ===== Structs =====
@@ -73,7 +73,7 @@ typedef enum {
  *  For more info see: https://en.wikipedia.org/wiki/Quaternion
  *
  * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_gimbal_quaternion_destroy() when done to avoid memory leaks.
+ *       mavsdk_gimbal_Quaternion_destroy() when done to avoid memory leaks.
  */
 typedef struct CMAVSDK_EXPORT {
     /**  Quaternion entry 0, also denoted as a */
@@ -84,10 +84,10 @@ typedef struct CMAVSDK_EXPORT {
     float y;
     /**  Quaternion entry 3, also denoted as d */
     float z;
-} mavsdk_gimbal_quaternion_t;
+} mavsdk_gimbal_Quaternion_t;
 
 /**
- * @brief Destroy a quaternion struct.
+ * @brief Destroy a Quaternion struct.
  *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
@@ -96,11 +96,11 @@ typedef struct CMAVSDK_EXPORT {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-CMAVSDK_EXPORT void mavsdk_gimbal_quaternion_destroy(
-    mavsdk_gimbal_quaternion_t* target);
+CMAVSDK_EXPORT void mavsdk_gimbal_Quaternion_destroy(
+    mavsdk_gimbal_Quaternion_t* target);
 
 /**
- * @brief Destroy an array of quaternion structs.
+ * @brief Destroy an array of Quaternion structs.
  *
  * Frees all memory allocated for the array and its elements, including any
  * nested dynamic allocations. Must be called to avoid memory leaks.
@@ -108,8 +108,8 @@ CMAVSDK_EXPORT void mavsdk_gimbal_quaternion_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-CMAVSDK_EXPORT void mavsdk_gimbal_quaternion_array_destroy(
-    mavsdk_gimbal_quaternion_t** array,
+CMAVSDK_EXPORT void mavsdk_gimbal_Quaternion_array_destroy(
+    mavsdk_gimbal_Quaternion_t** array,
     size_t size);
 
 /**
@@ -122,7 +122,7 @@ CMAVSDK_EXPORT void mavsdk_gimbal_quaternion_array_destroy(
  *  For more info see https://en.wikipedia.org/wiki/Euler_angles
  *
  * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_gimbal_euler_angle_destroy() when done to avoid memory leaks.
+ *       mavsdk_gimbal_EulerAngle_destroy() when done to avoid memory leaks.
  */
 typedef struct CMAVSDK_EXPORT {
     /**  Roll angle in degrees, positive is banking to the right */
@@ -131,10 +131,10 @@ typedef struct CMAVSDK_EXPORT {
     float pitch_deg;
     /**  Yaw angle in degrees, positive is clock-wise seen from above */
     float yaw_deg;
-} mavsdk_gimbal_euler_angle_t;
+} mavsdk_gimbal_EulerAngle_t;
 
 /**
- * @brief Destroy a euler_angle struct.
+ * @brief Destroy a EulerAngle struct.
  *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
@@ -143,11 +143,11 @@ typedef struct CMAVSDK_EXPORT {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-CMAVSDK_EXPORT void mavsdk_gimbal_euler_angle_destroy(
-    mavsdk_gimbal_euler_angle_t* target);
+CMAVSDK_EXPORT void mavsdk_gimbal_EulerAngle_destroy(
+    mavsdk_gimbal_EulerAngle_t* target);
 
 /**
- * @brief Destroy an array of euler_angle structs.
+ * @brief Destroy an array of EulerAngle structs.
  *
  * Frees all memory allocated for the array and its elements, including any
  * nested dynamic allocations. Must be called to avoid memory leaks.
@@ -155,15 +155,15 @@ CMAVSDK_EXPORT void mavsdk_gimbal_euler_angle_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-CMAVSDK_EXPORT void mavsdk_gimbal_euler_angle_array_destroy(
-    mavsdk_gimbal_euler_angle_t** array,
+CMAVSDK_EXPORT void mavsdk_gimbal_EulerAngle_array_destroy(
+    mavsdk_gimbal_EulerAngle_t** array,
     size_t size);
 
 /**
  * @brief Gimbal angular rate type
  *
  * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_gimbal_angular_velocity_body_destroy() when done to avoid memory leaks.
+ *       mavsdk_gimbal_AngularVelocityBody_destroy() when done to avoid memory leaks.
  */
 typedef struct CMAVSDK_EXPORT {
     /**  Roll angular velocity */
@@ -172,10 +172,10 @@ typedef struct CMAVSDK_EXPORT {
     float pitch_rad_s;
     /**  Yaw angular velocity */
     float yaw_rad_s;
-} mavsdk_gimbal_angular_velocity_body_t;
+} mavsdk_gimbal_AngularVelocityBody_t;
 
 /**
- * @brief Destroy a angular_velocity_body struct.
+ * @brief Destroy a AngularVelocityBody struct.
  *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
@@ -184,11 +184,11 @@ typedef struct CMAVSDK_EXPORT {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-CMAVSDK_EXPORT void mavsdk_gimbal_angular_velocity_body_destroy(
-    mavsdk_gimbal_angular_velocity_body_t* target);
+CMAVSDK_EXPORT void mavsdk_gimbal_AngularVelocityBody_destroy(
+    mavsdk_gimbal_AngularVelocityBody_t* target);
 
 /**
- * @brief Destroy an array of angular_velocity_body structs.
+ * @brief Destroy an array of AngularVelocityBody structs.
  *
  * Frees all memory allocated for the array and its elements, including any
  * nested dynamic allocations. Must be called to avoid memory leaks.
@@ -196,35 +196,35 @@ CMAVSDK_EXPORT void mavsdk_gimbal_angular_velocity_body_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-CMAVSDK_EXPORT void mavsdk_gimbal_angular_velocity_body_array_destroy(
-    mavsdk_gimbal_angular_velocity_body_t** array,
+CMAVSDK_EXPORT void mavsdk_gimbal_AngularVelocityBody_array_destroy(
+    mavsdk_gimbal_AngularVelocityBody_t** array,
     size_t size);
 
 /**
  * @brief Gimbal attitude type
  *
  * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_gimbal_attitude_destroy() when done to avoid memory leaks.
+ *       mavsdk_gimbal_Attitude_destroy() when done to avoid memory leaks.
  */
 typedef struct CMAVSDK_EXPORT {
     /**  Gimbal ID */
     int32_t gimbal_id;
     /**  Euler angle relative to forward */
-    mavsdk_gimbal_euler_angle_t euler_angle_forward;
+    mavsdk_gimbal_EulerAngle_t euler_angle_forward;
     /**  Quaternion relative to forward */
-    mavsdk_gimbal_quaternion_t quaternion_forward;
+    mavsdk_gimbal_Quaternion_t quaternion_forward;
     /**  Euler angle relative to North */
-    mavsdk_gimbal_euler_angle_t euler_angle_north;
+    mavsdk_gimbal_EulerAngle_t euler_angle_north;
     /**  Quaternion relative to North */
-    mavsdk_gimbal_quaternion_t quaternion_north;
+    mavsdk_gimbal_Quaternion_t quaternion_north;
     /**  The angular rate */
-    mavsdk_gimbal_angular_velocity_body_t angular_velocity;
+    mavsdk_gimbal_AngularVelocityBody_t angular_velocity;
     /**  Timestamp in microseconds */
     uint64_t timestamp_us;
-} mavsdk_gimbal_attitude_t;
+} mavsdk_gimbal_Attitude_t;
 
 /**
- * @brief Destroy a attitude struct.
+ * @brief Destroy a Attitude struct.
  *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
@@ -233,11 +233,11 @@ typedef struct CMAVSDK_EXPORT {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-CMAVSDK_EXPORT void mavsdk_gimbal_attitude_destroy(
-    mavsdk_gimbal_attitude_t* target);
+CMAVSDK_EXPORT void mavsdk_gimbal_Attitude_destroy(
+    mavsdk_gimbal_Attitude_t* target);
 
 /**
- * @brief Destroy an array of attitude structs.
+ * @brief Destroy an array of Attitude structs.
  *
  * Frees all memory allocated for the array and its elements, including any
  * nested dynamic allocations. Must be called to avoid memory leaks.
@@ -245,15 +245,15 @@ CMAVSDK_EXPORT void mavsdk_gimbal_attitude_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-CMAVSDK_EXPORT void mavsdk_gimbal_attitude_array_destroy(
-    mavsdk_gimbal_attitude_t** array,
+CMAVSDK_EXPORT void mavsdk_gimbal_Attitude_array_destroy(
+    mavsdk_gimbal_Attitude_t** array,
     size_t size);
 
 /**
  * @brief Gimbal list item
  *
  * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_gimbal_gimbal_item_destroy() when done to avoid memory leaks.
+ *       mavsdk_gimbal_GimbalItem_destroy() when done to avoid memory leaks.
  */
 typedef struct CMAVSDK_EXPORT {
     /**  ID to address it, starting at 1 (0 means all gimbals) */
@@ -268,10 +268,10 @@ typedef struct CMAVSDK_EXPORT {
     int32_t gimbal_manager_component_id;
     /**  MAVLink component of gimbal device */
     int32_t gimbal_device_id;
-} mavsdk_gimbal_gimbal_item_t;
+} mavsdk_gimbal_GimbalItem_t;
 
 /**
- * @brief Destroy a gimbal_item struct.
+ * @brief Destroy a GimbalItem struct.
  *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
@@ -280,11 +280,11 @@ typedef struct CMAVSDK_EXPORT {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-CMAVSDK_EXPORT void mavsdk_gimbal_gimbal_item_destroy(
-    mavsdk_gimbal_gimbal_item_t* target);
+CMAVSDK_EXPORT void mavsdk_gimbal_GimbalItem_destroy(
+    mavsdk_gimbal_GimbalItem_t* target);
 
 /**
- * @brief Destroy an array of gimbal_item structs.
+ * @brief Destroy an array of GimbalItem structs.
  *
  * Frees all memory allocated for the array and its elements, including any
  * nested dynamic allocations. Must be called to avoid memory leaks.
@@ -292,24 +292,24 @@ CMAVSDK_EXPORT void mavsdk_gimbal_gimbal_item_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-CMAVSDK_EXPORT void mavsdk_gimbal_gimbal_item_array_destroy(
-    mavsdk_gimbal_gimbal_item_t** array,
+CMAVSDK_EXPORT void mavsdk_gimbal_GimbalItem_array_destroy(
+    mavsdk_gimbal_GimbalItem_t** array,
     size_t size);
 
 /**
  * @brief Gimbal list
  *
  * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_gimbal_gimbal_list_destroy() when done to avoid memory leaks.
+ *       mavsdk_gimbal_GimbalList_destroy() when done to avoid memory leaks.
  */
 typedef struct CMAVSDK_EXPORT {
     /**  Gimbal items. */
-    mavsdk_gimbal_gimbal_item_t* gimbals;
+    mavsdk_gimbal_GimbalItem_t* gimbals;
     size_t gimbals_size;
-} mavsdk_gimbal_gimbal_list_t;
+} mavsdk_gimbal_GimbalList_t;
 
 /**
- * @brief Destroy a gimbal_list struct.
+ * @brief Destroy a GimbalList struct.
  *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
@@ -318,11 +318,11 @@ typedef struct CMAVSDK_EXPORT {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-CMAVSDK_EXPORT void mavsdk_gimbal_gimbal_list_destroy(
-    mavsdk_gimbal_gimbal_list_t* target);
+CMAVSDK_EXPORT void mavsdk_gimbal_GimbalList_destroy(
+    mavsdk_gimbal_GimbalList_t* target);
 
 /**
- * @brief Destroy an array of gimbal_list structs.
+ * @brief Destroy an array of GimbalList structs.
  *
  * Frees all memory allocated for the array and its elements, including any
  * nested dynamic allocations. Must be called to avoid memory leaks.
@@ -330,21 +330,21 @@ CMAVSDK_EXPORT void mavsdk_gimbal_gimbal_list_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-CMAVSDK_EXPORT void mavsdk_gimbal_gimbal_list_array_destroy(
-    mavsdk_gimbal_gimbal_list_t** array,
+CMAVSDK_EXPORT void mavsdk_gimbal_GimbalList_array_destroy(
+    mavsdk_gimbal_GimbalList_t** array,
     size_t size);
 
 /**
  * @brief Control status
  *
  * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_gimbal_control_status_destroy() when done to avoid memory leaks.
+ *       mavsdk_gimbal_ControlStatus_destroy() when done to avoid memory leaks.
  */
 typedef struct CMAVSDK_EXPORT {
     /**  Gimbal ID */
     int32_t gimbal_id;
     /**  Control mode (none, primary or secondary) */
-    mavsdk_gimbal_control_mode_t control_mode;
+    mavsdk_gimbal_ControlMode_t control_mode;
     /**  Sysid of the component that has primary control over the gimbal (0 if no one is in control) */
     int32_t sysid_primary_control;
     /**  Compid of the component that has primary control over the gimbal (0 if no one is in control) */
@@ -353,10 +353,10 @@ typedef struct CMAVSDK_EXPORT {
     int32_t sysid_secondary_control;
     /**  Compid of the component that has secondary control over the gimbal (0 if no one is in control) */
     int32_t compid_secondary_control;
-} mavsdk_gimbal_control_status_t;
+} mavsdk_gimbal_ControlStatus_t;
 
 /**
- * @brief Destroy a control_status struct.
+ * @brief Destroy a ControlStatus struct.
  *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
@@ -365,11 +365,11 @@ typedef struct CMAVSDK_EXPORT {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-CMAVSDK_EXPORT void mavsdk_gimbal_control_status_destroy(
-    mavsdk_gimbal_control_status_t* target);
+CMAVSDK_EXPORT void mavsdk_gimbal_ControlStatus_destroy(
+    mavsdk_gimbal_ControlStatus_t* target);
 
 /**
- * @brief Destroy an array of control_status structs.
+ * @brief Destroy an array of ControlStatus structs.
  *
  * Frees all memory allocated for the array and its elements, including any
  * nested dynamic allocations. Must be called to avoid memory leaks.
@@ -377,8 +377,8 @@ CMAVSDK_EXPORT void mavsdk_gimbal_control_status_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-CMAVSDK_EXPORT void mavsdk_gimbal_control_status_array_destroy(
-    mavsdk_gimbal_control_status_t** array,
+CMAVSDK_EXPORT void mavsdk_gimbal_ControlStatus_array_destroy(
+    mavsdk_gimbal_ControlStatus_t** array,
     size_t size);
 
 /**
@@ -485,9 +485,9 @@ typedef void (*mavsdk_gimbal_set_angular_rates_callback_t)(const mavsdk_gimbal_r
 typedef void (*mavsdk_gimbal_set_roi_location_callback_t)(const mavsdk_gimbal_result_t result, void* user_data);
 typedef void (*mavsdk_gimbal_take_control_callback_t)(const mavsdk_gimbal_result_t result, void* user_data);
 typedef void (*mavsdk_gimbal_release_control_callback_t)(const mavsdk_gimbal_result_t result, void* user_data);
-typedef void (*mavsdk_gimbal_gimbal_list_callback_t)(const mavsdk_gimbal_gimbal_list_t gimbal_list, void* user_data);
-typedef void (*mavsdk_gimbal_control_status_callback_t)(const mavsdk_gimbal_control_status_t control_status, void* user_data);
-typedef void (*mavsdk_gimbal_attitude_callback_t)(const mavsdk_gimbal_attitude_t attitude, void* user_data);
+typedef void (*mavsdk_gimbal_gimbal_list_callback_t)(const mavsdk_gimbal_GimbalList_t gimbal_list, void* user_data);
+typedef void (*mavsdk_gimbal_control_status_callback_t)(const mavsdk_gimbal_ControlStatus_t control_status, void* user_data);
+typedef void (*mavsdk_gimbal_attitude_callback_t)(const mavsdk_gimbal_Attitude_t attitude, void* user_data);
 
 // ===== Gimbal Creation/Destruction =====
 CMAVSDK_EXPORT mavsdk_gimbal_t mavsdk_gimbal_create(mavsdk_system_t system);
@@ -526,8 +526,8 @@ CMAVSDK_EXPORT void mavsdk_gimbal_set_angles_async(
     float roll_deg,
     float pitch_deg,
     float yaw_deg,
-    mavsdk_gimbal_gimbal_mode_t gimbal_mode,
-    mavsdk_gimbal_send_mode_t send_mode,
+    mavsdk_gimbal_GimbalMode_t gimbal_mode,
+    mavsdk_gimbal_SendMode_t send_mode,
     mavsdk_gimbal_set_angles_callback_t callback,
     void* user_data);
 
@@ -548,8 +548,8 @@ mavsdk_gimbal_set_angles(
     float roll_deg,
     float pitch_deg,
     float yaw_deg,
-    mavsdk_gimbal_gimbal_mode_t gimbal_mode,
-    mavsdk_gimbal_send_mode_t send_mode);
+    mavsdk_gimbal_GimbalMode_t gimbal_mode,
+    mavsdk_gimbal_SendMode_t send_mode);
 
 
 /**
@@ -583,8 +583,8 @@ CMAVSDK_EXPORT void mavsdk_gimbal_set_angular_rates_async(
     float roll_rate_deg_s,
     float pitch_rate_deg_s,
     float yaw_rate_deg_s,
-    mavsdk_gimbal_gimbal_mode_t gimbal_mode,
-    mavsdk_gimbal_send_mode_t send_mode,
+    mavsdk_gimbal_GimbalMode_t gimbal_mode,
+    mavsdk_gimbal_SendMode_t send_mode,
     mavsdk_gimbal_set_angular_rates_callback_t callback,
     void* user_data);
 
@@ -605,8 +605,8 @@ mavsdk_gimbal_set_angular_rates(
     float roll_rate_deg_s,
     float pitch_rate_deg_s,
     float yaw_rate_deg_s,
-    mavsdk_gimbal_gimbal_mode_t gimbal_mode,
-    mavsdk_gimbal_send_mode_t send_mode);
+    mavsdk_gimbal_GimbalMode_t gimbal_mode,
+    mavsdk_gimbal_SendMode_t send_mode);
 
 
 /**
@@ -680,7 +680,7 @@ mavsdk_gimbal_set_roi_location(
 CMAVSDK_EXPORT void mavsdk_gimbal_take_control_async(
     mavsdk_gimbal_t gimbal,
     int32_t gimbal_id,
-    mavsdk_gimbal_control_mode_t control_mode,
+    mavsdk_gimbal_ControlMode_t control_mode,
     mavsdk_gimbal_take_control_callback_t callback,
     void* user_data);
 
@@ -698,7 +698,7 @@ mavsdk_gimbal_result_t
 mavsdk_gimbal_take_control(
     mavsdk_gimbal_t gimbal,
     int32_t gimbal_id,
-    mavsdk_gimbal_control_mode_t control_mode);
+    mavsdk_gimbal_ControlMode_t control_mode);
 
 
 /**
@@ -774,7 +774,7 @@ CMAVSDK_EXPORT
 void
 mavsdk_gimbal_gimbal_list(
     mavsdk_gimbal_t gimbal,
-    mavsdk_gimbal_gimbal_list_t* gimbal_list_out);
+    mavsdk_gimbal_GimbalList_t* gimbal_list_out);
 
 
 /**
@@ -820,7 +820,7 @@ mavsdk_gimbal_result_t
 mavsdk_gimbal_get_control_status(
     mavsdk_gimbal_t gimbal,
     int32_t gimbal_id,
-    mavsdk_gimbal_control_status_t* control_status_out);
+    mavsdk_gimbal_ControlStatus_t* control_status_out);
 
 
 /**
@@ -864,7 +864,7 @@ mavsdk_gimbal_result_t
 mavsdk_gimbal_get_attitude(
     mavsdk_gimbal_t gimbal,
     int32_t gimbal_id,
-    mavsdk_gimbal_attitude_t* attitude_out);
+    mavsdk_gimbal_Attitude_t* attitude_out);
 
 
 #ifdef __cplusplus

@@ -38,7 +38,7 @@ typedef void* mavsdk_offboard_t;
  * @brief Type for attitude body angles in NED reference frame (roll, pitch, yaw and thrust)
  *
  * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_offboard_attitude_destroy() when done to avoid memory leaks.
+ *       mavsdk_offboard_Attitude_destroy() when done to avoid memory leaks.
  */
 typedef struct CMAVSDK_EXPORT {
     /**  Roll angle (in degrees, positive is right side down) */
@@ -49,10 +49,10 @@ typedef struct CMAVSDK_EXPORT {
     float yaw_deg;
     /**  Thrust (range: 0 to 1) */
     float thrust_value;
-} mavsdk_offboard_attitude_t;
+} mavsdk_offboard_Attitude_t;
 
 /**
- * @brief Destroy a attitude struct.
+ * @brief Destroy a Attitude struct.
  *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
@@ -61,11 +61,11 @@ typedef struct CMAVSDK_EXPORT {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-CMAVSDK_EXPORT void mavsdk_offboard_attitude_destroy(
-    mavsdk_offboard_attitude_t* target);
+CMAVSDK_EXPORT void mavsdk_offboard_Attitude_destroy(
+    mavsdk_offboard_Attitude_t* target);
 
 /**
- * @brief Destroy an array of attitude structs.
+ * @brief Destroy an array of Attitude structs.
  *
  * Frees all memory allocated for the array and its elements, including any
  * nested dynamic allocations. Must be called to avoid memory leaks.
@@ -73,8 +73,8 @@ CMAVSDK_EXPORT void mavsdk_offboard_attitude_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-CMAVSDK_EXPORT void mavsdk_offboard_attitude_array_destroy(
-    mavsdk_offboard_attitude_t** array,
+CMAVSDK_EXPORT void mavsdk_offboard_Attitude_array_destroy(
+    mavsdk_offboard_Attitude_t** array,
     size_t size);
 
 /**
@@ -82,16 +82,16 @@ CMAVSDK_EXPORT void mavsdk_offboard_attitude_array_destroy(
  *  (-1..+1) command value, which will be mapped and scaled through the mixer.
  *
  * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_offboard_actuator_control_group_destroy() when done to avoid memory leaks.
+ *       mavsdk_offboard_ActuatorControlGroup_destroy() when done to avoid memory leaks.
  */
 typedef struct CMAVSDK_EXPORT {
     /**  Controls in the group */
     float* controls;
     size_t controls_size;
-} mavsdk_offboard_actuator_control_group_t;
+} mavsdk_offboard_ActuatorControlGroup_t;
 
 /**
- * @brief Destroy a actuator_control_group struct.
+ * @brief Destroy a ActuatorControlGroup struct.
  *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
@@ -100,11 +100,11 @@ typedef struct CMAVSDK_EXPORT {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-CMAVSDK_EXPORT void mavsdk_offboard_actuator_control_group_destroy(
-    mavsdk_offboard_actuator_control_group_t* target);
+CMAVSDK_EXPORT void mavsdk_offboard_ActuatorControlGroup_destroy(
+    mavsdk_offboard_ActuatorControlGroup_t* target);
 
 /**
- * @brief Destroy an array of actuator_control_group structs.
+ * @brief Destroy an array of ActuatorControlGroup structs.
  *
  * Frees all memory allocated for the array and its elements, including any
  * nested dynamic allocations. Must be called to avoid memory leaks.
@@ -112,8 +112,8 @@ CMAVSDK_EXPORT void mavsdk_offboard_actuator_control_group_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-CMAVSDK_EXPORT void mavsdk_offboard_actuator_control_group_array_destroy(
-    mavsdk_offboard_actuator_control_group_t** array,
+CMAVSDK_EXPORT void mavsdk_offboard_ActuatorControlGroup_array_destroy(
+    mavsdk_offboard_ActuatorControlGroup_t** array,
     size_t size);
 
 /**
@@ -134,16 +134,16 @@ CMAVSDK_EXPORT void mavsdk_offboard_actuator_control_group_array_destroy(
  *  (https://github.com/PX4/Firmware/blob/v1.9.0/src/modules/mavlink/mavlink_receiver.cpp#L980).
  *
  * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_offboard_actuator_control_destroy() when done to avoid memory leaks.
+ *       mavsdk_offboard_ActuatorControl_destroy() when done to avoid memory leaks.
  */
 typedef struct CMAVSDK_EXPORT {
     /**  Control groups. */
-    mavsdk_offboard_actuator_control_group_t* groups;
+    mavsdk_offboard_ActuatorControlGroup_t* groups;
     size_t groups_size;
-} mavsdk_offboard_actuator_control_t;
+} mavsdk_offboard_ActuatorControl_t;
 
 /**
- * @brief Destroy a actuator_control struct.
+ * @brief Destroy a ActuatorControl struct.
  *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
@@ -152,11 +152,11 @@ typedef struct CMAVSDK_EXPORT {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-CMAVSDK_EXPORT void mavsdk_offboard_actuator_control_destroy(
-    mavsdk_offboard_actuator_control_t* target);
+CMAVSDK_EXPORT void mavsdk_offboard_ActuatorControl_destroy(
+    mavsdk_offboard_ActuatorControl_t* target);
 
 /**
- * @brief Destroy an array of actuator_control structs.
+ * @brief Destroy an array of ActuatorControl structs.
  *
  * Frees all memory allocated for the array and its elements, including any
  * nested dynamic allocations. Must be called to avoid memory leaks.
@@ -164,15 +164,15 @@ CMAVSDK_EXPORT void mavsdk_offboard_actuator_control_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-CMAVSDK_EXPORT void mavsdk_offboard_actuator_control_array_destroy(
-    mavsdk_offboard_actuator_control_t** array,
+CMAVSDK_EXPORT void mavsdk_offboard_ActuatorControl_array_destroy(
+    mavsdk_offboard_ActuatorControl_t** array,
     size_t size);
 
 /**
  * @brief Type for attitude rate commands in body coordinates (roll, pitch, yaw angular rate and thrust)
  *
  * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_offboard_attitude_rate_destroy() when done to avoid memory leaks.
+ *       mavsdk_offboard_AttitudeRate_destroy() when done to avoid memory leaks.
  */
 typedef struct CMAVSDK_EXPORT {
     /**  Roll angular rate (in degrees/second, positive for clock-wise looking from front) */
@@ -183,10 +183,10 @@ typedef struct CMAVSDK_EXPORT {
     float yaw_deg_s;
     /**  Thrust (range: 0 to 1) */
     float thrust_value;
-} mavsdk_offboard_attitude_rate_t;
+} mavsdk_offboard_AttitudeRate_t;
 
 /**
- * @brief Destroy a attitude_rate struct.
+ * @brief Destroy a AttitudeRate struct.
  *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
@@ -195,11 +195,11 @@ typedef struct CMAVSDK_EXPORT {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-CMAVSDK_EXPORT void mavsdk_offboard_attitude_rate_destroy(
-    mavsdk_offboard_attitude_rate_t* target);
+CMAVSDK_EXPORT void mavsdk_offboard_AttitudeRate_destroy(
+    mavsdk_offboard_AttitudeRate_t* target);
 
 /**
- * @brief Destroy an array of attitude_rate structs.
+ * @brief Destroy an array of AttitudeRate structs.
  *
  * Frees all memory allocated for the array and its elements, including any
  * nested dynamic allocations. Must be called to avoid memory leaks.
@@ -207,15 +207,15 @@ CMAVSDK_EXPORT void mavsdk_offboard_attitude_rate_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-CMAVSDK_EXPORT void mavsdk_offboard_attitude_rate_array_destroy(
-    mavsdk_offboard_attitude_rate_t** array,
+CMAVSDK_EXPORT void mavsdk_offboard_AttitudeRate_array_destroy(
+    mavsdk_offboard_AttitudeRate_t** array,
     size_t size);
 
 /**
  * @brief Type for position commands in NED (North East Down) coordinates and yaw.
  *
  * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_offboard_position_ned_yaw_destroy() when done to avoid memory leaks.
+ *       mavsdk_offboard_PositionNedYaw_destroy() when done to avoid memory leaks.
  */
 typedef struct CMAVSDK_EXPORT {
     /**  Position North (in metres) */
@@ -226,10 +226,10 @@ typedef struct CMAVSDK_EXPORT {
     float down_m;
     /**  Yaw in degrees (0 North, positive is clock-wise looking from above) */
     float yaw_deg;
-} mavsdk_offboard_position_ned_yaw_t;
+} mavsdk_offboard_PositionNedYaw_t;
 
 /**
- * @brief Destroy a position_ned_yaw struct.
+ * @brief Destroy a PositionNedYaw struct.
  *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
@@ -238,11 +238,11 @@ typedef struct CMAVSDK_EXPORT {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-CMAVSDK_EXPORT void mavsdk_offboard_position_ned_yaw_destroy(
-    mavsdk_offboard_position_ned_yaw_t* target);
+CMAVSDK_EXPORT void mavsdk_offboard_PositionNedYaw_destroy(
+    mavsdk_offboard_PositionNedYaw_t* target);
 
 /**
- * @brief Destroy an array of position_ned_yaw structs.
+ * @brief Destroy an array of PositionNedYaw structs.
  *
  * Frees all memory allocated for the array and its elements, including any
  * nested dynamic allocations. Must be called to avoid memory leaks.
@@ -250,8 +250,8 @@ CMAVSDK_EXPORT void mavsdk_offboard_position_ned_yaw_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-CMAVSDK_EXPORT void mavsdk_offboard_position_ned_yaw_array_destroy(
-    mavsdk_offboard_position_ned_yaw_t** array,
+CMAVSDK_EXPORT void mavsdk_offboard_PositionNedYaw_array_destroy(
+    mavsdk_offboard_PositionNedYaw_t** array,
     size_t size);
 
 /**
@@ -264,13 +264,13 @@ typedef enum {
     MAVSDK_OFFBOARD_POSITION_GLOBAL_YAW_ALTITUDE_TYPE_AMSL = 1,
     /**  Altitude above ground level (AGL). */
     MAVSDK_OFFBOARD_POSITION_GLOBAL_YAW_ALTITUDE_TYPE_AGL = 2,
-} mavsdk_offboard_position_global_yaw_altitude_type_t;
+} mavsdk_offboard_PositionGlobalYaw_AltitudeType_t;
 
 /**
  * @brief Type for position commands in Global (Latitude, Longitude, Altitude) coordinates and yaw.
  *
  * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_offboard_position_global_yaw_destroy() when done to avoid memory leaks.
+ *       mavsdk_offboard_PositionGlobalYaw_destroy() when done to avoid memory leaks.
  */
 typedef struct CMAVSDK_EXPORT {
     /**  Latitude (in degrees) */
@@ -282,11 +282,11 @@ typedef struct CMAVSDK_EXPORT {
     /**  Yaw in degrees (0 North, positive is clock-wise looking from above) */
     float yaw_deg;
     /**  altitude type for this position */
-    mavsdk_offboard_position_global_yaw_altitude_type_t altitude_type;
-} mavsdk_offboard_position_global_yaw_t;
+    mavsdk_offboard_PositionGlobalYaw_AltitudeType_t altitude_type;
+} mavsdk_offboard_PositionGlobalYaw_t;
 
 /**
- * @brief Destroy a position_global_yaw struct.
+ * @brief Destroy a PositionGlobalYaw struct.
  *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
@@ -295,11 +295,11 @@ typedef struct CMAVSDK_EXPORT {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-CMAVSDK_EXPORT void mavsdk_offboard_position_global_yaw_destroy(
-    mavsdk_offboard_position_global_yaw_t* target);
+CMAVSDK_EXPORT void mavsdk_offboard_PositionGlobalYaw_destroy(
+    mavsdk_offboard_PositionGlobalYaw_t* target);
 
 /**
- * @brief Destroy an array of position_global_yaw structs.
+ * @brief Destroy an array of PositionGlobalYaw structs.
  *
  * Frees all memory allocated for the array and its elements, including any
  * nested dynamic allocations. Must be called to avoid memory leaks.
@@ -307,15 +307,15 @@ CMAVSDK_EXPORT void mavsdk_offboard_position_global_yaw_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-CMAVSDK_EXPORT void mavsdk_offboard_position_global_yaw_array_destroy(
-    mavsdk_offboard_position_global_yaw_t** array,
+CMAVSDK_EXPORT void mavsdk_offboard_PositionGlobalYaw_array_destroy(
+    mavsdk_offboard_PositionGlobalYaw_t** array,
     size_t size);
 
 /**
  * @brief Type for velocity commands in body coordinates.
  *
  * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_offboard_velocity_body_yawspeed_destroy() when done to avoid memory leaks.
+ *       mavsdk_offboard_VelocityBodyYawspeed_destroy() when done to avoid memory leaks.
  */
 typedef struct CMAVSDK_EXPORT {
     /**  Velocity forward (in metres/second) */
@@ -326,10 +326,10 @@ typedef struct CMAVSDK_EXPORT {
     float down_m_s;
     /**  Yaw angular rate (in degrees/second, positive for clock-wise looking from above) */
     float yawspeed_deg_s;
-} mavsdk_offboard_velocity_body_yawspeed_t;
+} mavsdk_offboard_VelocityBodyYawspeed_t;
 
 /**
- * @brief Destroy a velocity_body_yawspeed struct.
+ * @brief Destroy a VelocityBodyYawspeed struct.
  *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
@@ -338,11 +338,11 @@ typedef struct CMAVSDK_EXPORT {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-CMAVSDK_EXPORT void mavsdk_offboard_velocity_body_yawspeed_destroy(
-    mavsdk_offboard_velocity_body_yawspeed_t* target);
+CMAVSDK_EXPORT void mavsdk_offboard_VelocityBodyYawspeed_destroy(
+    mavsdk_offboard_VelocityBodyYawspeed_t* target);
 
 /**
- * @brief Destroy an array of velocity_body_yawspeed structs.
+ * @brief Destroy an array of VelocityBodyYawspeed structs.
  *
  * Frees all memory allocated for the array and its elements, including any
  * nested dynamic allocations. Must be called to avoid memory leaks.
@@ -350,15 +350,15 @@ CMAVSDK_EXPORT void mavsdk_offboard_velocity_body_yawspeed_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-CMAVSDK_EXPORT void mavsdk_offboard_velocity_body_yawspeed_array_destroy(
-    mavsdk_offboard_velocity_body_yawspeed_t** array,
+CMAVSDK_EXPORT void mavsdk_offboard_VelocityBodyYawspeed_array_destroy(
+    mavsdk_offboard_VelocityBodyYawspeed_t** array,
     size_t size);
 
 /**
  * @brief Type for velocity commands in NED (North East Down) coordinates and yaw.
  *
  * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_offboard_velocity_ned_yaw_destroy() when done to avoid memory leaks.
+ *       mavsdk_offboard_VelocityNedYaw_destroy() when done to avoid memory leaks.
  */
 typedef struct CMAVSDK_EXPORT {
     /**  Velocity North (in metres/second) */
@@ -369,10 +369,10 @@ typedef struct CMAVSDK_EXPORT {
     float down_m_s;
     /**  Yaw in degrees (0 North, positive is clock-wise looking from above) */
     float yaw_deg;
-} mavsdk_offboard_velocity_ned_yaw_t;
+} mavsdk_offboard_VelocityNedYaw_t;
 
 /**
- * @brief Destroy a velocity_ned_yaw struct.
+ * @brief Destroy a VelocityNedYaw struct.
  *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
@@ -381,11 +381,11 @@ typedef struct CMAVSDK_EXPORT {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-CMAVSDK_EXPORT void mavsdk_offboard_velocity_ned_yaw_destroy(
-    mavsdk_offboard_velocity_ned_yaw_t* target);
+CMAVSDK_EXPORT void mavsdk_offboard_VelocityNedYaw_destroy(
+    mavsdk_offboard_VelocityNedYaw_t* target);
 
 /**
- * @brief Destroy an array of velocity_ned_yaw structs.
+ * @brief Destroy an array of VelocityNedYaw structs.
  *
  * Frees all memory allocated for the array and its elements, including any
  * nested dynamic allocations. Must be called to avoid memory leaks.
@@ -393,15 +393,15 @@ CMAVSDK_EXPORT void mavsdk_offboard_velocity_ned_yaw_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-CMAVSDK_EXPORT void mavsdk_offboard_velocity_ned_yaw_array_destroy(
-    mavsdk_offboard_velocity_ned_yaw_t** array,
+CMAVSDK_EXPORT void mavsdk_offboard_VelocityNedYaw_array_destroy(
+    mavsdk_offboard_VelocityNedYaw_t** array,
     size_t size);
 
 /**
  * @brief Type for acceleration commands in NED (North East Down) coordinates.
  *
  * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_offboard_acceleration_ned_destroy() when done to avoid memory leaks.
+ *       mavsdk_offboard_AccelerationNed_destroy() when done to avoid memory leaks.
  */
 typedef struct CMAVSDK_EXPORT {
     /**  Acceleration North (in metres/second^2) */
@@ -410,10 +410,10 @@ typedef struct CMAVSDK_EXPORT {
     float east_m_s2;
     /**  Acceleration Down (in metres/second^2) */
     float down_m_s2;
-} mavsdk_offboard_acceleration_ned_t;
+} mavsdk_offboard_AccelerationNed_t;
 
 /**
- * @brief Destroy a acceleration_ned struct.
+ * @brief Destroy a AccelerationNed struct.
  *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
@@ -422,11 +422,11 @@ typedef struct CMAVSDK_EXPORT {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-CMAVSDK_EXPORT void mavsdk_offboard_acceleration_ned_destroy(
-    mavsdk_offboard_acceleration_ned_t* target);
+CMAVSDK_EXPORT void mavsdk_offboard_AccelerationNed_destroy(
+    mavsdk_offboard_AccelerationNed_t* target);
 
 /**
- * @brief Destroy an array of acceleration_ned structs.
+ * @brief Destroy an array of AccelerationNed structs.
  *
  * Frees all memory allocated for the array and its elements, including any
  * nested dynamic allocations. Must be called to avoid memory leaks.
@@ -434,8 +434,8 @@ CMAVSDK_EXPORT void mavsdk_offboard_acceleration_ned_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-CMAVSDK_EXPORT void mavsdk_offboard_acceleration_ned_array_destroy(
-    mavsdk_offboard_acceleration_ned_t** array,
+CMAVSDK_EXPORT void mavsdk_offboard_AccelerationNed_array_destroy(
+    mavsdk_offboard_AccelerationNed_t** array,
     size_t size);
 
 /**
@@ -633,7 +633,7 @@ CMAVSDK_EXPORT
 mavsdk_offboard_result_t
 mavsdk_offboard_set_attitude(
     mavsdk_offboard_t offboard,
-    mavsdk_offboard_attitude_t attitude);
+    mavsdk_offboard_Attitude_t attitude);
 
 
 /**
@@ -648,7 +648,7 @@ CMAVSDK_EXPORT
 mavsdk_offboard_result_t
 mavsdk_offboard_set_actuator_control(
     mavsdk_offboard_t offboard,
-    mavsdk_offboard_actuator_control_t actuator_control);
+    mavsdk_offboard_ActuatorControl_t actuator_control);
 
 
 /**
@@ -663,7 +663,7 @@ CMAVSDK_EXPORT
 mavsdk_offboard_result_t
 mavsdk_offboard_set_attitude_rate(
     mavsdk_offboard_t offboard,
-    mavsdk_offboard_attitude_rate_t attitude_rate);
+    mavsdk_offboard_AttitudeRate_t attitude_rate);
 
 
 /**
@@ -678,7 +678,7 @@ CMAVSDK_EXPORT
 mavsdk_offboard_result_t
 mavsdk_offboard_set_position_ned(
     mavsdk_offboard_t offboard,
-    mavsdk_offboard_position_ned_yaw_t position_ned_yaw);
+    mavsdk_offboard_PositionNedYaw_t position_ned_yaw);
 
 
 /**
@@ -693,7 +693,7 @@ CMAVSDK_EXPORT
 mavsdk_offboard_result_t
 mavsdk_offboard_set_position_global(
     mavsdk_offboard_t offboard,
-    mavsdk_offboard_position_global_yaw_t position_global_yaw);
+    mavsdk_offboard_PositionGlobalYaw_t position_global_yaw);
 
 
 /**
@@ -708,7 +708,7 @@ CMAVSDK_EXPORT
 mavsdk_offboard_result_t
 mavsdk_offboard_set_velocity_body(
     mavsdk_offboard_t offboard,
-    mavsdk_offboard_velocity_body_yawspeed_t velocity_body_yawspeed);
+    mavsdk_offboard_VelocityBodyYawspeed_t velocity_body_yawspeed);
 
 
 /**
@@ -723,7 +723,7 @@ CMAVSDK_EXPORT
 mavsdk_offboard_result_t
 mavsdk_offboard_set_velocity_ned(
     mavsdk_offboard_t offboard,
-    mavsdk_offboard_velocity_ned_yaw_t velocity_ned_yaw);
+    mavsdk_offboard_VelocityNedYaw_t velocity_ned_yaw);
 
 
 /**
@@ -738,8 +738,8 @@ CMAVSDK_EXPORT
 mavsdk_offboard_result_t
 mavsdk_offboard_set_position_velocity_ned(
     mavsdk_offboard_t offboard,
-    mavsdk_offboard_position_ned_yaw_t position_ned_yaw,
-    mavsdk_offboard_velocity_ned_yaw_t velocity_ned_yaw);
+    mavsdk_offboard_PositionNedYaw_t position_ned_yaw,
+    mavsdk_offboard_VelocityNedYaw_t velocity_ned_yaw);
 
 
 /**
@@ -754,9 +754,9 @@ CMAVSDK_EXPORT
 mavsdk_offboard_result_t
 mavsdk_offboard_set_position_velocity_acceleration_ned(
     mavsdk_offboard_t offboard,
-    mavsdk_offboard_position_ned_yaw_t position_ned_yaw,
-    mavsdk_offboard_velocity_ned_yaw_t velocity_ned_yaw,
-    mavsdk_offboard_acceleration_ned_t acceleration_ned);
+    mavsdk_offboard_PositionNedYaw_t position_ned_yaw,
+    mavsdk_offboard_VelocityNedYaw_t velocity_ned_yaw,
+    mavsdk_offboard_AccelerationNed_t acceleration_ned);
 
 
 /**
@@ -771,7 +771,7 @@ CMAVSDK_EXPORT
 mavsdk_offboard_result_t
 mavsdk_offboard_set_acceleration_ned(
     mavsdk_offboard_t offboard,
-    mavsdk_offboard_acceleration_ned_t acceleration_ned);
+    mavsdk_offboard_AccelerationNed_t acceleration_ned);
 
 
 #ifdef __cplusplus

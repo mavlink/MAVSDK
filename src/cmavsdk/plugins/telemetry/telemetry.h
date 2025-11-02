@@ -78,7 +78,7 @@ typedef enum {
     MAVSDK_TELEMETRY_FIX_TYPE_RTK_FLOAT = 5,
     /**  RTK Fixed, 3D position. */
     MAVSDK_TELEMETRY_FIX_TYPE_RTK_FIXED = 6,
-} mavsdk_telemetry_fix_type_t;
+} mavsdk_telemetry_FixType_t;
 
 /**
  * @brief Battery function type.
@@ -94,7 +94,7 @@ typedef enum {
     MAVSDK_TELEMETRY_BATTERY_FUNCTION_AVIONICS = 3,
     /**  Payload battery. */
     MAVSDK_TELEMETRY_BATTERY_FUNCTION_PAYLOAD = 4,
-} mavsdk_telemetry_battery_function_t;
+} mavsdk_telemetry_BatteryFunction_t;
 
 /**
  * @brief Flight modes.
@@ -133,7 +133,7 @@ typedef enum {
     MAVSDK_TELEMETRY_FLIGHT_MODE_STABILIZED = 13,
     /**  In 'Rattitude' mode. */
     MAVSDK_TELEMETRY_FLIGHT_MODE_RATTITUDE = 14,
-} mavsdk_telemetry_flight_mode_t;
+} mavsdk_telemetry_FlightMode_t;
 
 /**
  * @brief Status types.
@@ -155,7 +155,7 @@ typedef enum {
     MAVSDK_TELEMETRY_STATUS_TEXT_TYPE_ALERT = 6,
     /**  Emergency. */
     MAVSDK_TELEMETRY_STATUS_TEXT_TYPE_EMERGENCY = 7,
-} mavsdk_telemetry_status_text_type_t;
+} mavsdk_telemetry_StatusTextType_t;
 
 /**
  * @brief Landed State enumeration.
@@ -171,7 +171,7 @@ typedef enum {
     MAVSDK_TELEMETRY_LANDED_STATE_TAKING_OFF = 3,
     /**  The vehicle is landing. */
     MAVSDK_TELEMETRY_LANDED_STATE_LANDING = 4,
-} mavsdk_telemetry_landed_state_t;
+} mavsdk_telemetry_LandedState_t;
 
 /**
  * @brief VTOL State enumeration
@@ -187,7 +187,7 @@ typedef enum {
     MAVSDK_TELEMETRY_VTOL_STATE_MC = 3,
     /**  VTOL is in fixed-wing state. */
     MAVSDK_TELEMETRY_VTOL_STATE_FW = 4,
-} mavsdk_telemetry_vtol_state_t;
+} mavsdk_telemetry_VtolState_t;
 
 
 // ===== Structs =====
@@ -195,7 +195,7 @@ typedef enum {
  * @brief Position type in global coordinates.
  *
  * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_telemetry_position_destroy() when done to avoid memory leaks.
+ *       mavsdk_telemetry_Position_destroy() when done to avoid memory leaks.
  */
 typedef struct CMAVSDK_EXPORT {
     /**  Latitude in degrees (range: -90 to +90) */
@@ -206,10 +206,10 @@ typedef struct CMAVSDK_EXPORT {
     float absolute_altitude_m;
     /**  Altitude relative to takeoff altitude in metres */
     float relative_altitude_m;
-} mavsdk_telemetry_position_t;
+} mavsdk_telemetry_Position_t;
 
 /**
- * @brief Destroy a position struct.
+ * @brief Destroy a Position struct.
  *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
@@ -218,11 +218,11 @@ typedef struct CMAVSDK_EXPORT {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-CMAVSDK_EXPORT void mavsdk_telemetry_position_destroy(
-    mavsdk_telemetry_position_t* target);
+CMAVSDK_EXPORT void mavsdk_telemetry_Position_destroy(
+    mavsdk_telemetry_Position_t* target);
 
 /**
- * @brief Destroy an array of position structs.
+ * @brief Destroy an array of Position structs.
  *
  * Frees all memory allocated for the array and its elements, including any
  * nested dynamic allocations. Must be called to avoid memory leaks.
@@ -230,23 +230,23 @@ CMAVSDK_EXPORT void mavsdk_telemetry_position_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-CMAVSDK_EXPORT void mavsdk_telemetry_position_array_destroy(
-    mavsdk_telemetry_position_t** array,
+CMAVSDK_EXPORT void mavsdk_telemetry_Position_array_destroy(
+    mavsdk_telemetry_Position_t** array,
     size_t size);
 
 /**
  * @brief Heading type used for global position
  *
  * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_telemetry_heading_destroy() when done to avoid memory leaks.
+ *       mavsdk_telemetry_Heading_destroy() when done to avoid memory leaks.
  */
 typedef struct CMAVSDK_EXPORT {
     /**  Heading in degrees (range: 0 to +360) */
     double heading_deg;
-} mavsdk_telemetry_heading_t;
+} mavsdk_telemetry_Heading_t;
 
 /**
- * @brief Destroy a heading struct.
+ * @brief Destroy a Heading struct.
  *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
@@ -255,11 +255,11 @@ typedef struct CMAVSDK_EXPORT {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-CMAVSDK_EXPORT void mavsdk_telemetry_heading_destroy(
-    mavsdk_telemetry_heading_t* target);
+CMAVSDK_EXPORT void mavsdk_telemetry_Heading_destroy(
+    mavsdk_telemetry_Heading_t* target);
 
 /**
- * @brief Destroy an array of heading structs.
+ * @brief Destroy an array of Heading structs.
  *
  * Frees all memory allocated for the array and its elements, including any
  * nested dynamic allocations. Must be called to avoid memory leaks.
@@ -267,8 +267,8 @@ CMAVSDK_EXPORT void mavsdk_telemetry_heading_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-CMAVSDK_EXPORT void mavsdk_telemetry_heading_array_destroy(
-    mavsdk_telemetry_heading_t** array,
+CMAVSDK_EXPORT void mavsdk_telemetry_Heading_array_destroy(
+    mavsdk_telemetry_Heading_t** array,
     size_t size);
 
 /**
@@ -282,7 +282,7 @@ CMAVSDK_EXPORT void mavsdk_telemetry_heading_array_destroy(
  *  For more info see: https://en.wikipedia.org/wiki/Quaternion
  *
  * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_telemetry_quaternion_destroy() when done to avoid memory leaks.
+ *       mavsdk_telemetry_Quaternion_destroy() when done to avoid memory leaks.
  */
 typedef struct CMAVSDK_EXPORT {
     /**  Quaternion entry 0, also denoted as a */
@@ -295,10 +295,10 @@ typedef struct CMAVSDK_EXPORT {
     float z;
     /**  Timestamp in microseconds */
     uint64_t timestamp_us;
-} mavsdk_telemetry_quaternion_t;
+} mavsdk_telemetry_Quaternion_t;
 
 /**
- * @brief Destroy a quaternion struct.
+ * @brief Destroy a Quaternion struct.
  *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
@@ -307,11 +307,11 @@ typedef struct CMAVSDK_EXPORT {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-CMAVSDK_EXPORT void mavsdk_telemetry_quaternion_destroy(
-    mavsdk_telemetry_quaternion_t* target);
+CMAVSDK_EXPORT void mavsdk_telemetry_Quaternion_destroy(
+    mavsdk_telemetry_Quaternion_t* target);
 
 /**
- * @brief Destroy an array of quaternion structs.
+ * @brief Destroy an array of Quaternion structs.
  *
  * Frees all memory allocated for the array and its elements, including any
  * nested dynamic allocations. Must be called to avoid memory leaks.
@@ -319,8 +319,8 @@ CMAVSDK_EXPORT void mavsdk_telemetry_quaternion_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-CMAVSDK_EXPORT void mavsdk_telemetry_quaternion_array_destroy(
-    mavsdk_telemetry_quaternion_t** array,
+CMAVSDK_EXPORT void mavsdk_telemetry_Quaternion_array_destroy(
+    mavsdk_telemetry_Quaternion_t** array,
     size_t size);
 
 /**
@@ -332,7 +332,7 @@ CMAVSDK_EXPORT void mavsdk_telemetry_quaternion_array_destroy(
  *  For more info see https://en.wikipedia.org/wiki/Euler_angles
  *
  * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_telemetry_euler_angle_destroy() when done to avoid memory leaks.
+ *       mavsdk_telemetry_EulerAngle_destroy() when done to avoid memory leaks.
  */
 typedef struct CMAVSDK_EXPORT {
     /**  Roll angle in degrees, positive is banking to the right */
@@ -343,10 +343,10 @@ typedef struct CMAVSDK_EXPORT {
     float yaw_deg;
     /**  Timestamp in microseconds */
     uint64_t timestamp_us;
-} mavsdk_telemetry_euler_angle_t;
+} mavsdk_telemetry_EulerAngle_t;
 
 /**
- * @brief Destroy a euler_angle struct.
+ * @brief Destroy a EulerAngle struct.
  *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
@@ -355,11 +355,11 @@ typedef struct CMAVSDK_EXPORT {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-CMAVSDK_EXPORT void mavsdk_telemetry_euler_angle_destroy(
-    mavsdk_telemetry_euler_angle_t* target);
+CMAVSDK_EXPORT void mavsdk_telemetry_EulerAngle_destroy(
+    mavsdk_telemetry_EulerAngle_t* target);
 
 /**
- * @brief Destroy an array of euler_angle structs.
+ * @brief Destroy an array of EulerAngle structs.
  *
  * Frees all memory allocated for the array and its elements, including any
  * nested dynamic allocations. Must be called to avoid memory leaks.
@@ -367,15 +367,15 @@ CMAVSDK_EXPORT void mavsdk_telemetry_euler_angle_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-CMAVSDK_EXPORT void mavsdk_telemetry_euler_angle_array_destroy(
-    mavsdk_telemetry_euler_angle_t** array,
+CMAVSDK_EXPORT void mavsdk_telemetry_EulerAngle_array_destroy(
+    mavsdk_telemetry_EulerAngle_t** array,
     size_t size);
 
 /**
  * @brief Angular velocity type.
  *
  * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_telemetry_angular_velocity_body_destroy() when done to avoid memory leaks.
+ *       mavsdk_telemetry_AngularVelocityBody_destroy() when done to avoid memory leaks.
  */
 typedef struct CMAVSDK_EXPORT {
     /**  Roll angular velocity */
@@ -384,10 +384,10 @@ typedef struct CMAVSDK_EXPORT {
     float pitch_rad_s;
     /**  Yaw angular velocity */
     float yaw_rad_s;
-} mavsdk_telemetry_angular_velocity_body_t;
+} mavsdk_telemetry_AngularVelocityBody_t;
 
 /**
- * @brief Destroy a angular_velocity_body struct.
+ * @brief Destroy a AngularVelocityBody struct.
  *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
@@ -396,11 +396,11 @@ typedef struct CMAVSDK_EXPORT {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-CMAVSDK_EXPORT void mavsdk_telemetry_angular_velocity_body_destroy(
-    mavsdk_telemetry_angular_velocity_body_t* target);
+CMAVSDK_EXPORT void mavsdk_telemetry_AngularVelocityBody_destroy(
+    mavsdk_telemetry_AngularVelocityBody_t* target);
 
 /**
- * @brief Destroy an array of angular_velocity_body structs.
+ * @brief Destroy an array of AngularVelocityBody structs.
  *
  * Frees all memory allocated for the array and its elements, including any
  * nested dynamic allocations. Must be called to avoid memory leaks.
@@ -408,25 +408,25 @@ CMAVSDK_EXPORT void mavsdk_telemetry_angular_velocity_body_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-CMAVSDK_EXPORT void mavsdk_telemetry_angular_velocity_body_array_destroy(
-    mavsdk_telemetry_angular_velocity_body_t** array,
+CMAVSDK_EXPORT void mavsdk_telemetry_AngularVelocityBody_array_destroy(
+    mavsdk_telemetry_AngularVelocityBody_t** array,
     size_t size);
 
 /**
  * @brief GPS information type.
  *
  * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_telemetry_gps_info_destroy() when done to avoid memory leaks.
+ *       mavsdk_telemetry_GpsInfo_destroy() when done to avoid memory leaks.
  */
 typedef struct CMAVSDK_EXPORT {
     /**  Number of visible satellites in use */
     int32_t num_satellites;
     /**  Fix type */
-    mavsdk_telemetry_fix_type_t fix_type;
-} mavsdk_telemetry_gps_info_t;
+    mavsdk_telemetry_FixType_t fix_type;
+} mavsdk_telemetry_GpsInfo_t;
 
 /**
- * @brief Destroy a gps_info struct.
+ * @brief Destroy a GpsInfo struct.
  *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
@@ -435,11 +435,11 @@ typedef struct CMAVSDK_EXPORT {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-CMAVSDK_EXPORT void mavsdk_telemetry_gps_info_destroy(
-    mavsdk_telemetry_gps_info_t* target);
+CMAVSDK_EXPORT void mavsdk_telemetry_GpsInfo_destroy(
+    mavsdk_telemetry_GpsInfo_t* target);
 
 /**
- * @brief Destroy an array of gps_info structs.
+ * @brief Destroy an array of GpsInfo structs.
  *
  * Frees all memory allocated for the array and its elements, including any
  * nested dynamic allocations. Must be called to avoid memory leaks.
@@ -447,8 +447,8 @@ CMAVSDK_EXPORT void mavsdk_telemetry_gps_info_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-CMAVSDK_EXPORT void mavsdk_telemetry_gps_info_array_destroy(
-    mavsdk_telemetry_gps_info_t** array,
+CMAVSDK_EXPORT void mavsdk_telemetry_GpsInfo_array_destroy(
+    mavsdk_telemetry_GpsInfo_t** array,
     size_t size);
 
 /**
@@ -458,7 +458,7 @@ CMAVSDK_EXPORT void mavsdk_telemetry_gps_info_array_destroy(
  *  the position instead. This message exposes the raw values of the GNSS sensor.
  *
  * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_telemetry_raw_gps_destroy() when done to avoid memory leaks.
+ *       mavsdk_telemetry_RawGps_destroy() when done to avoid memory leaks.
  */
 typedef struct CMAVSDK_EXPORT {
     /**  Timestamp in microseconds (UNIX Epoch time or time since system boot, to be inferred) */
@@ -489,10 +489,10 @@ typedef struct CMAVSDK_EXPORT {
     float heading_uncertainty_deg;
     /**  Yaw in earth frame from north. */
     float yaw_deg;
-} mavsdk_telemetry_raw_gps_t;
+} mavsdk_telemetry_RawGps_t;
 
 /**
- * @brief Destroy a raw_gps struct.
+ * @brief Destroy a RawGps struct.
  *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
@@ -501,11 +501,11 @@ typedef struct CMAVSDK_EXPORT {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-CMAVSDK_EXPORT void mavsdk_telemetry_raw_gps_destroy(
-    mavsdk_telemetry_raw_gps_t* target);
+CMAVSDK_EXPORT void mavsdk_telemetry_RawGps_destroy(
+    mavsdk_telemetry_RawGps_t* target);
 
 /**
- * @brief Destroy an array of raw_gps structs.
+ * @brief Destroy an array of RawGps structs.
  *
  * Frees all memory allocated for the array and its elements, including any
  * nested dynamic allocations. Must be called to avoid memory leaks.
@@ -513,15 +513,15 @@ CMAVSDK_EXPORT void mavsdk_telemetry_raw_gps_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-CMAVSDK_EXPORT void mavsdk_telemetry_raw_gps_array_destroy(
-    mavsdk_telemetry_raw_gps_t** array,
+CMAVSDK_EXPORT void mavsdk_telemetry_RawGps_array_destroy(
+    mavsdk_telemetry_RawGps_t** array,
     size_t size);
 
 /**
  * @brief Battery type.
  *
  * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_telemetry_battery_destroy() when done to avoid memory leaks.
+ *       mavsdk_telemetry_Battery_destroy() when done to avoid memory leaks.
  */
 typedef struct CMAVSDK_EXPORT {
     /**  Battery ID, for systems with multiple batteries */
@@ -539,11 +539,11 @@ typedef struct CMAVSDK_EXPORT {
     /**  Estimated battery usage time remaining */
     float time_remaining_s;
     /**  Function of the battery */
-    mavsdk_telemetry_battery_function_t battery_function;
-} mavsdk_telemetry_battery_t;
+    mavsdk_telemetry_BatteryFunction_t battery_function;
+} mavsdk_telemetry_Battery_t;
 
 /**
- * @brief Destroy a battery struct.
+ * @brief Destroy a Battery struct.
  *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
@@ -552,11 +552,11 @@ typedef struct CMAVSDK_EXPORT {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-CMAVSDK_EXPORT void mavsdk_telemetry_battery_destroy(
-    mavsdk_telemetry_battery_t* target);
+CMAVSDK_EXPORT void mavsdk_telemetry_Battery_destroy(
+    mavsdk_telemetry_Battery_t* target);
 
 /**
- * @brief Destroy an array of battery structs.
+ * @brief Destroy an array of Battery structs.
  *
  * Frees all memory allocated for the array and its elements, including any
  * nested dynamic allocations. Must be called to avoid memory leaks.
@@ -564,15 +564,15 @@ CMAVSDK_EXPORT void mavsdk_telemetry_battery_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-CMAVSDK_EXPORT void mavsdk_telemetry_battery_array_destroy(
-    mavsdk_telemetry_battery_t** array,
+CMAVSDK_EXPORT void mavsdk_telemetry_Battery_array_destroy(
+    mavsdk_telemetry_Battery_t** array,
     size_t size);
 
 /**
  * @brief Health type.
  *
  * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_telemetry_health_destroy() when done to avoid memory leaks.
+ *       mavsdk_telemetry_Health_destroy() when done to avoid memory leaks.
  */
 typedef struct CMAVSDK_EXPORT {
     /**  True if the gyrometer is calibrated */
@@ -589,10 +589,10 @@ typedef struct CMAVSDK_EXPORT {
     bool is_home_position_ok;
     /**  True if system can be armed */
     bool is_armable;
-} mavsdk_telemetry_health_t;
+} mavsdk_telemetry_Health_t;
 
 /**
- * @brief Destroy a health struct.
+ * @brief Destroy a Health struct.
  *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
@@ -601,11 +601,11 @@ typedef struct CMAVSDK_EXPORT {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-CMAVSDK_EXPORT void mavsdk_telemetry_health_destroy(
-    mavsdk_telemetry_health_t* target);
+CMAVSDK_EXPORT void mavsdk_telemetry_Health_destroy(
+    mavsdk_telemetry_Health_t* target);
 
 /**
- * @brief Destroy an array of health structs.
+ * @brief Destroy an array of Health structs.
  *
  * Frees all memory allocated for the array and its elements, including any
  * nested dynamic allocations. Must be called to avoid memory leaks.
@@ -613,15 +613,15 @@ CMAVSDK_EXPORT void mavsdk_telemetry_health_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-CMAVSDK_EXPORT void mavsdk_telemetry_health_array_destroy(
-    mavsdk_telemetry_health_t** array,
+CMAVSDK_EXPORT void mavsdk_telemetry_Health_array_destroy(
+    mavsdk_telemetry_Health_t** array,
     size_t size);
 
 /**
  * @brief Remote control status type.
  *
  * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_telemetry_rc_status_destroy() when done to avoid memory leaks.
+ *       mavsdk_telemetry_RcStatus_destroy() when done to avoid memory leaks.
  */
 typedef struct CMAVSDK_EXPORT {
     /**  True if an RC signal has been available once */
@@ -630,10 +630,10 @@ typedef struct CMAVSDK_EXPORT {
     bool is_available;
     /**  Signal strength (range: 0 to 100, NaN if unknown) */
     float signal_strength_percent;
-} mavsdk_telemetry_rc_status_t;
+} mavsdk_telemetry_RcStatus_t;
 
 /**
- * @brief Destroy a rc_status struct.
+ * @brief Destroy a RcStatus struct.
  *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
@@ -642,11 +642,11 @@ typedef struct CMAVSDK_EXPORT {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-CMAVSDK_EXPORT void mavsdk_telemetry_rc_status_destroy(
-    mavsdk_telemetry_rc_status_t* target);
+CMAVSDK_EXPORT void mavsdk_telemetry_RcStatus_destroy(
+    mavsdk_telemetry_RcStatus_t* target);
 
 /**
- * @brief Destroy an array of rc_status structs.
+ * @brief Destroy an array of RcStatus structs.
  *
  * Frees all memory allocated for the array and its elements, including any
  * nested dynamic allocations. Must be called to avoid memory leaks.
@@ -654,25 +654,25 @@ CMAVSDK_EXPORT void mavsdk_telemetry_rc_status_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-CMAVSDK_EXPORT void mavsdk_telemetry_rc_status_array_destroy(
-    mavsdk_telemetry_rc_status_t** array,
+CMAVSDK_EXPORT void mavsdk_telemetry_RcStatus_array_destroy(
+    mavsdk_telemetry_RcStatus_t** array,
     size_t size);
 
 /**
  * @brief StatusText information type.
  *
  * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_telemetry_status_text_destroy() when done to avoid memory leaks.
+ *       mavsdk_telemetry_StatusText_destroy() when done to avoid memory leaks.
  */
 typedef struct CMAVSDK_EXPORT {
     /**  Message type */
-    mavsdk_telemetry_status_text_type_t type;
+    mavsdk_telemetry_StatusTextType_t type;
     /**  MAVLink status message */
     char* text;
-} mavsdk_telemetry_status_text_t;
+} mavsdk_telemetry_StatusText_t;
 
 /**
- * @brief Destroy a status_text struct.
+ * @brief Destroy a StatusText struct.
  *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
@@ -681,11 +681,11 @@ typedef struct CMAVSDK_EXPORT {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-CMAVSDK_EXPORT void mavsdk_telemetry_status_text_destroy(
-    mavsdk_telemetry_status_text_t* target);
+CMAVSDK_EXPORT void mavsdk_telemetry_StatusText_destroy(
+    mavsdk_telemetry_StatusText_t* target);
 
 /**
- * @brief Destroy an array of status_text structs.
+ * @brief Destroy an array of StatusText structs.
  *
  * Frees all memory allocated for the array and its elements, including any
  * nested dynamic allocations. Must be called to avoid memory leaks.
@@ -693,15 +693,15 @@ CMAVSDK_EXPORT void mavsdk_telemetry_status_text_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-CMAVSDK_EXPORT void mavsdk_telemetry_status_text_array_destroy(
-    mavsdk_telemetry_status_text_t** array,
+CMAVSDK_EXPORT void mavsdk_telemetry_StatusText_array_destroy(
+    mavsdk_telemetry_StatusText_t** array,
     size_t size);
 
 /**
  * @brief Actuator control target type.
  *
  * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_telemetry_actuator_control_target_destroy() when done to avoid memory leaks.
+ *       mavsdk_telemetry_ActuatorControlTarget_destroy() when done to avoid memory leaks.
  */
 typedef struct CMAVSDK_EXPORT {
     /**  An actuator control group is e.g. 'attitude' for the core flight controls, or 'gimbal' for a payload. */
@@ -709,10 +709,10 @@ typedef struct CMAVSDK_EXPORT {
     /**  Controls normed from -1 to 1, where 0 is neutral position. */
     float* controls;
     size_t controls_size;
-} mavsdk_telemetry_actuator_control_target_t;
+} mavsdk_telemetry_ActuatorControlTarget_t;
 
 /**
- * @brief Destroy a actuator_control_target struct.
+ * @brief Destroy a ActuatorControlTarget struct.
  *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
@@ -721,11 +721,11 @@ typedef struct CMAVSDK_EXPORT {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-CMAVSDK_EXPORT void mavsdk_telemetry_actuator_control_target_destroy(
-    mavsdk_telemetry_actuator_control_target_t* target);
+CMAVSDK_EXPORT void mavsdk_telemetry_ActuatorControlTarget_destroy(
+    mavsdk_telemetry_ActuatorControlTarget_t* target);
 
 /**
- * @brief Destroy an array of actuator_control_target structs.
+ * @brief Destroy an array of ActuatorControlTarget structs.
  *
  * Frees all memory allocated for the array and its elements, including any
  * nested dynamic allocations. Must be called to avoid memory leaks.
@@ -733,15 +733,15 @@ CMAVSDK_EXPORT void mavsdk_telemetry_actuator_control_target_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-CMAVSDK_EXPORT void mavsdk_telemetry_actuator_control_target_array_destroy(
-    mavsdk_telemetry_actuator_control_target_t** array,
+CMAVSDK_EXPORT void mavsdk_telemetry_ActuatorControlTarget_array_destroy(
+    mavsdk_telemetry_ActuatorControlTarget_t** array,
     size_t size);
 
 /**
  * @brief Actuator output status type.
  *
  * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_telemetry_actuator_output_status_destroy() when done to avoid memory leaks.
+ *       mavsdk_telemetry_ActuatorOutputStatus_destroy() when done to avoid memory leaks.
  */
 typedef struct CMAVSDK_EXPORT {
     /**  Active outputs */
@@ -749,10 +749,10 @@ typedef struct CMAVSDK_EXPORT {
     /**  Servo/motor output values */
     float* actuator;
     size_t actuator_size;
-} mavsdk_telemetry_actuator_output_status_t;
+} mavsdk_telemetry_ActuatorOutputStatus_t;
 
 /**
- * @brief Destroy a actuator_output_status struct.
+ * @brief Destroy a ActuatorOutputStatus struct.
  *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
@@ -761,11 +761,11 @@ typedef struct CMAVSDK_EXPORT {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-CMAVSDK_EXPORT void mavsdk_telemetry_actuator_output_status_destroy(
-    mavsdk_telemetry_actuator_output_status_t* target);
+CMAVSDK_EXPORT void mavsdk_telemetry_ActuatorOutputStatus_destroy(
+    mavsdk_telemetry_ActuatorOutputStatus_t* target);
 
 /**
- * @brief Destroy an array of actuator_output_status structs.
+ * @brief Destroy an array of ActuatorOutputStatus structs.
  *
  * Frees all memory allocated for the array and its elements, including any
  * nested dynamic allocations. Must be called to avoid memory leaks.
@@ -773,8 +773,8 @@ CMAVSDK_EXPORT void mavsdk_telemetry_actuator_output_status_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-CMAVSDK_EXPORT void mavsdk_telemetry_actuator_output_status_array_destroy(
-    mavsdk_telemetry_actuator_output_status_t** array,
+CMAVSDK_EXPORT void mavsdk_telemetry_ActuatorOutputStatus_array_destroy(
+    mavsdk_telemetry_ActuatorOutputStatus_t** array,
     size_t size);
 
 /**
@@ -785,16 +785,16 @@ CMAVSDK_EXPORT void mavsdk_telemetry_actuator_output_status_array_destroy(
  *  Set first to NaN if unknown.
  *
  * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_telemetry_covariance_destroy() when done to avoid memory leaks.
+ *       mavsdk_telemetry_Covariance_destroy() when done to avoid memory leaks.
  */
 typedef struct CMAVSDK_EXPORT {
     /**  Representation of a covariance matrix. */
     float* covariance_matrix;
     size_t covariance_matrix_size;
-} mavsdk_telemetry_covariance_t;
+} mavsdk_telemetry_Covariance_t;
 
 /**
- * @brief Destroy a covariance struct.
+ * @brief Destroy a Covariance struct.
  *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
@@ -803,11 +803,11 @@ typedef struct CMAVSDK_EXPORT {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-CMAVSDK_EXPORT void mavsdk_telemetry_covariance_destroy(
-    mavsdk_telemetry_covariance_t* target);
+CMAVSDK_EXPORT void mavsdk_telemetry_Covariance_destroy(
+    mavsdk_telemetry_Covariance_t* target);
 
 /**
- * @brief Destroy an array of covariance structs.
+ * @brief Destroy an array of Covariance structs.
  *
  * Frees all memory allocated for the array and its elements, including any
  * nested dynamic allocations. Must be called to avoid memory leaks.
@@ -815,15 +815,15 @@ CMAVSDK_EXPORT void mavsdk_telemetry_covariance_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-CMAVSDK_EXPORT void mavsdk_telemetry_covariance_array_destroy(
-    mavsdk_telemetry_covariance_t** array,
+CMAVSDK_EXPORT void mavsdk_telemetry_Covariance_array_destroy(
+    mavsdk_telemetry_Covariance_t** array,
     size_t size);
 
 /**
  * @brief Velocity type, represented in the Body (X Y Z) frame and in metres/second.
  *
  * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_telemetry_velocity_body_destroy() when done to avoid memory leaks.
+ *       mavsdk_telemetry_VelocityBody_destroy() when done to avoid memory leaks.
  */
 typedef struct CMAVSDK_EXPORT {
     /**  Velocity in X in metres/second */
@@ -832,10 +832,10 @@ typedef struct CMAVSDK_EXPORT {
     float y_m_s;
     /**  Velocity in Z in metres/second */
     float z_m_s;
-} mavsdk_telemetry_velocity_body_t;
+} mavsdk_telemetry_VelocityBody_t;
 
 /**
- * @brief Destroy a velocity_body struct.
+ * @brief Destroy a VelocityBody struct.
  *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
@@ -844,11 +844,11 @@ typedef struct CMAVSDK_EXPORT {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-CMAVSDK_EXPORT void mavsdk_telemetry_velocity_body_destroy(
-    mavsdk_telemetry_velocity_body_t* target);
+CMAVSDK_EXPORT void mavsdk_telemetry_VelocityBody_destroy(
+    mavsdk_telemetry_VelocityBody_t* target);
 
 /**
- * @brief Destroy an array of velocity_body structs.
+ * @brief Destroy an array of VelocityBody structs.
  *
  * Frees all memory allocated for the array and its elements, including any
  * nested dynamic allocations. Must be called to avoid memory leaks.
@@ -856,15 +856,15 @@ CMAVSDK_EXPORT void mavsdk_telemetry_velocity_body_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-CMAVSDK_EXPORT void mavsdk_telemetry_velocity_body_array_destroy(
-    mavsdk_telemetry_velocity_body_t** array,
+CMAVSDK_EXPORT void mavsdk_telemetry_VelocityBody_array_destroy(
+    mavsdk_telemetry_VelocityBody_t** array,
     size_t size);
 
 /**
  * @brief Position type, represented in the Body (X Y Z) frame
  *
  * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_telemetry_position_body_destroy() when done to avoid memory leaks.
+ *       mavsdk_telemetry_PositionBody_destroy() when done to avoid memory leaks.
  */
 typedef struct CMAVSDK_EXPORT {
     /**  X Position in metres. */
@@ -873,10 +873,10 @@ typedef struct CMAVSDK_EXPORT {
     float y_m;
     /**  Z Position in metres. */
     float z_m;
-} mavsdk_telemetry_position_body_t;
+} mavsdk_telemetry_PositionBody_t;
 
 /**
- * @brief Destroy a position_body struct.
+ * @brief Destroy a PositionBody struct.
  *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
@@ -885,11 +885,11 @@ typedef struct CMAVSDK_EXPORT {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-CMAVSDK_EXPORT void mavsdk_telemetry_position_body_destroy(
-    mavsdk_telemetry_position_body_t* target);
+CMAVSDK_EXPORT void mavsdk_telemetry_PositionBody_destroy(
+    mavsdk_telemetry_PositionBody_t* target);
 
 /**
- * @brief Destroy an array of position_body structs.
+ * @brief Destroy an array of PositionBody structs.
  *
  * Frees all memory allocated for the array and its elements, including any
  * nested dynamic allocations. Must be called to avoid memory leaks.
@@ -897,8 +897,8 @@ CMAVSDK_EXPORT void mavsdk_telemetry_position_body_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-CMAVSDK_EXPORT void mavsdk_telemetry_position_body_array_destroy(
-    mavsdk_telemetry_position_body_t** array,
+CMAVSDK_EXPORT void mavsdk_telemetry_PositionBody_array_destroy(
+    mavsdk_telemetry_PositionBody_t** array,
     size_t size);
 
 /**
@@ -913,37 +913,37 @@ typedef enum {
     MAVSDK_TELEMETRY_ODOMETRY_MAV_FRAME_VISION_NED = 2,
     /**  Odometry local coordinate frame of data given by an estimator running onboard the vehicle, Z-down (x: north, y: east, z: down).. */
     MAVSDK_TELEMETRY_ODOMETRY_MAV_FRAME_ESTIM_NED = 3,
-} mavsdk_telemetry_odometry_mav_frame_t;
+} mavsdk_telemetry_Odometry_MavFrame_t;
 
 /**
  * @brief Odometry message type.
  *
  * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_telemetry_odometry_destroy() when done to avoid memory leaks.
+ *       mavsdk_telemetry_Odometry_destroy() when done to avoid memory leaks.
  */
 typedef struct CMAVSDK_EXPORT {
     /**  Timestamp (0 to use Backend timestamp). */
     uint64_t time_usec;
     /**  Coordinate frame of reference for the pose data. */
-    mavsdk_telemetry_odometry_mav_frame_t frame_id;
+    mavsdk_telemetry_Odometry_MavFrame_t frame_id;
     /**  Coordinate frame of reference for the velocity in free space (twist) data. */
-    mavsdk_telemetry_odometry_mav_frame_t child_frame_id;
+    mavsdk_telemetry_Odometry_MavFrame_t child_frame_id;
     /**  Position. */
-    mavsdk_telemetry_position_body_t position_body;
+    mavsdk_telemetry_PositionBody_t position_body;
     /**  Quaternion components, w, x, y, z (1 0 0 0 is the null-rotation). */
-    mavsdk_telemetry_quaternion_t q;
+    mavsdk_telemetry_Quaternion_t q;
     /**  Linear velocity (m/s). */
-    mavsdk_telemetry_velocity_body_t velocity_body;
+    mavsdk_telemetry_VelocityBody_t velocity_body;
     /**  Angular velocity (rad/s). */
-    mavsdk_telemetry_angular_velocity_body_t angular_velocity_body;
+    mavsdk_telemetry_AngularVelocityBody_t angular_velocity_body;
     /**  Pose cross-covariance matrix. */
-    mavsdk_telemetry_covariance_t pose_covariance;
+    mavsdk_telemetry_Covariance_t pose_covariance;
     /**  Velocity cross-covariance matrix. */
-    mavsdk_telemetry_covariance_t velocity_covariance;
-} mavsdk_telemetry_odometry_t;
+    mavsdk_telemetry_Covariance_t velocity_covariance;
+} mavsdk_telemetry_Odometry_t;
 
 /**
- * @brief Destroy a odometry struct.
+ * @brief Destroy a Odometry struct.
  *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
@@ -952,11 +952,11 @@ typedef struct CMAVSDK_EXPORT {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-CMAVSDK_EXPORT void mavsdk_telemetry_odometry_destroy(
-    mavsdk_telemetry_odometry_t* target);
+CMAVSDK_EXPORT void mavsdk_telemetry_Odometry_destroy(
+    mavsdk_telemetry_Odometry_t* target);
 
 /**
- * @brief Destroy an array of odometry structs.
+ * @brief Destroy an array of Odometry structs.
  *
  * Frees all memory allocated for the array and its elements, including any
  * nested dynamic allocations. Must be called to avoid memory leaks.
@@ -964,15 +964,15 @@ CMAVSDK_EXPORT void mavsdk_telemetry_odometry_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-CMAVSDK_EXPORT void mavsdk_telemetry_odometry_array_destroy(
-    mavsdk_telemetry_odometry_t** array,
+CMAVSDK_EXPORT void mavsdk_telemetry_Odometry_array_destroy(
+    mavsdk_telemetry_Odometry_t** array,
     size_t size);
 
 /**
  * @brief DistanceSensor message type.
  *
  * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_telemetry_distance_sensor_destroy() when done to avoid memory leaks.
+ *       mavsdk_telemetry_DistanceSensor_destroy() when done to avoid memory leaks.
  */
 typedef struct CMAVSDK_EXPORT {
     /**  Minimum distance the sensor can measure, NaN if unknown. */
@@ -982,11 +982,11 @@ typedef struct CMAVSDK_EXPORT {
     /**  Current distance reading, NaN if unknown. */
     float current_distance_m;
     /**  Sensor Orientation reading. */
-    mavsdk_telemetry_euler_angle_t orientation;
-} mavsdk_telemetry_distance_sensor_t;
+    mavsdk_telemetry_EulerAngle_t orientation;
+} mavsdk_telemetry_DistanceSensor_t;
 
 /**
- * @brief Destroy a distance_sensor struct.
+ * @brief Destroy a DistanceSensor struct.
  *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
@@ -995,11 +995,11 @@ typedef struct CMAVSDK_EXPORT {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-CMAVSDK_EXPORT void mavsdk_telemetry_distance_sensor_destroy(
-    mavsdk_telemetry_distance_sensor_t* target);
+CMAVSDK_EXPORT void mavsdk_telemetry_DistanceSensor_destroy(
+    mavsdk_telemetry_DistanceSensor_t* target);
 
 /**
- * @brief Destroy an array of distance_sensor structs.
+ * @brief Destroy an array of DistanceSensor structs.
  *
  * Frees all memory allocated for the array and its elements, including any
  * nested dynamic allocations. Must be called to avoid memory leaks.
@@ -1007,15 +1007,15 @@ CMAVSDK_EXPORT void mavsdk_telemetry_distance_sensor_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-CMAVSDK_EXPORT void mavsdk_telemetry_distance_sensor_array_destroy(
-    mavsdk_telemetry_distance_sensor_t** array,
+CMAVSDK_EXPORT void mavsdk_telemetry_DistanceSensor_array_destroy(
+    mavsdk_telemetry_DistanceSensor_t** array,
     size_t size);
 
 /**
  * @brief Scaled Pressure message type.
  *
  * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_telemetry_scaled_pressure_destroy() when done to avoid memory leaks.
+ *       mavsdk_telemetry_ScaledPressure_destroy() when done to avoid memory leaks.
  */
 typedef struct CMAVSDK_EXPORT {
     /**  Timestamp (time since system boot) */
@@ -1028,10 +1028,10 @@ typedef struct CMAVSDK_EXPORT {
     float temperature_deg;
     /**  Differential pressure temperature (in celsius, 0 if not available) */
     float differential_pressure_temperature_deg;
-} mavsdk_telemetry_scaled_pressure_t;
+} mavsdk_telemetry_ScaledPressure_t;
 
 /**
- * @brief Destroy a scaled_pressure struct.
+ * @brief Destroy a ScaledPressure struct.
  *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
@@ -1040,11 +1040,11 @@ typedef struct CMAVSDK_EXPORT {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-CMAVSDK_EXPORT void mavsdk_telemetry_scaled_pressure_destroy(
-    mavsdk_telemetry_scaled_pressure_t* target);
+CMAVSDK_EXPORT void mavsdk_telemetry_ScaledPressure_destroy(
+    mavsdk_telemetry_ScaledPressure_t* target);
 
 /**
- * @brief Destroy an array of scaled_pressure structs.
+ * @brief Destroy an array of ScaledPressure structs.
  *
  * Frees all memory allocated for the array and its elements, including any
  * nested dynamic allocations. Must be called to avoid memory leaks.
@@ -1052,15 +1052,15 @@ CMAVSDK_EXPORT void mavsdk_telemetry_scaled_pressure_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-CMAVSDK_EXPORT void mavsdk_telemetry_scaled_pressure_array_destroy(
-    mavsdk_telemetry_scaled_pressure_t** array,
+CMAVSDK_EXPORT void mavsdk_telemetry_ScaledPressure_array_destroy(
+    mavsdk_telemetry_ScaledPressure_t** array,
     size_t size);
 
 /**
  * @brief PositionNed message type.
  *
  * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_telemetry_position_ned_destroy() when done to avoid memory leaks.
+ *       mavsdk_telemetry_PositionNed_destroy() when done to avoid memory leaks.
  */
 typedef struct CMAVSDK_EXPORT {
     /**  Position along north direction in metres */
@@ -1069,10 +1069,10 @@ typedef struct CMAVSDK_EXPORT {
     float east_m;
     /**  Position along down direction in metres */
     float down_m;
-} mavsdk_telemetry_position_ned_t;
+} mavsdk_telemetry_PositionNed_t;
 
 /**
- * @brief Destroy a position_ned struct.
+ * @brief Destroy a PositionNed struct.
  *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
@@ -1081,11 +1081,11 @@ typedef struct CMAVSDK_EXPORT {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-CMAVSDK_EXPORT void mavsdk_telemetry_position_ned_destroy(
-    mavsdk_telemetry_position_ned_t* target);
+CMAVSDK_EXPORT void mavsdk_telemetry_PositionNed_destroy(
+    mavsdk_telemetry_PositionNed_t* target);
 
 /**
- * @brief Destroy an array of position_ned structs.
+ * @brief Destroy an array of PositionNed structs.
  *
  * Frees all memory allocated for the array and its elements, including any
  * nested dynamic allocations. Must be called to avoid memory leaks.
@@ -1093,15 +1093,15 @@ CMAVSDK_EXPORT void mavsdk_telemetry_position_ned_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-CMAVSDK_EXPORT void mavsdk_telemetry_position_ned_array_destroy(
-    mavsdk_telemetry_position_ned_t** array,
+CMAVSDK_EXPORT void mavsdk_telemetry_PositionNed_array_destroy(
+    mavsdk_telemetry_PositionNed_t** array,
     size_t size);
 
 /**
  * @brief VelocityNed message type.
  *
  * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_telemetry_velocity_ned_destroy() when done to avoid memory leaks.
+ *       mavsdk_telemetry_VelocityNed_destroy() when done to avoid memory leaks.
  */
 typedef struct CMAVSDK_EXPORT {
     /**  Velocity along north direction in metres per second */
@@ -1110,10 +1110,10 @@ typedef struct CMAVSDK_EXPORT {
     float east_m_s;
     /**  Velocity along down direction in metres per second */
     float down_m_s;
-} mavsdk_telemetry_velocity_ned_t;
+} mavsdk_telemetry_VelocityNed_t;
 
 /**
- * @brief Destroy a velocity_ned struct.
+ * @brief Destroy a VelocityNed struct.
  *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
@@ -1122,11 +1122,11 @@ typedef struct CMAVSDK_EXPORT {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-CMAVSDK_EXPORT void mavsdk_telemetry_velocity_ned_destroy(
-    mavsdk_telemetry_velocity_ned_t* target);
+CMAVSDK_EXPORT void mavsdk_telemetry_VelocityNed_destroy(
+    mavsdk_telemetry_VelocityNed_t* target);
 
 /**
- * @brief Destroy an array of velocity_ned structs.
+ * @brief Destroy an array of VelocityNed structs.
  *
  * Frees all memory allocated for the array and its elements, including any
  * nested dynamic allocations. Must be called to avoid memory leaks.
@@ -1134,25 +1134,25 @@ CMAVSDK_EXPORT void mavsdk_telemetry_velocity_ned_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-CMAVSDK_EXPORT void mavsdk_telemetry_velocity_ned_array_destroy(
-    mavsdk_telemetry_velocity_ned_t** array,
+CMAVSDK_EXPORT void mavsdk_telemetry_VelocityNed_array_destroy(
+    mavsdk_telemetry_VelocityNed_t** array,
     size_t size);
 
 /**
  * @brief PositionVelocityNed message type.
  *
  * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_telemetry_position_velocity_ned_destroy() when done to avoid memory leaks.
+ *       mavsdk_telemetry_PositionVelocityNed_destroy() when done to avoid memory leaks.
  */
 typedef struct CMAVSDK_EXPORT {
     /**  Position (NED) */
-    mavsdk_telemetry_position_ned_t position;
+    mavsdk_telemetry_PositionNed_t position;
     /**  Velocity (NED) */
-    mavsdk_telemetry_velocity_ned_t velocity;
-} mavsdk_telemetry_position_velocity_ned_t;
+    mavsdk_telemetry_VelocityNed_t velocity;
+} mavsdk_telemetry_PositionVelocityNed_t;
 
 /**
- * @brief Destroy a position_velocity_ned struct.
+ * @brief Destroy a PositionVelocityNed struct.
  *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
@@ -1161,11 +1161,11 @@ typedef struct CMAVSDK_EXPORT {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-CMAVSDK_EXPORT void mavsdk_telemetry_position_velocity_ned_destroy(
-    mavsdk_telemetry_position_velocity_ned_t* target);
+CMAVSDK_EXPORT void mavsdk_telemetry_PositionVelocityNed_destroy(
+    mavsdk_telemetry_PositionVelocityNed_t* target);
 
 /**
- * @brief Destroy an array of position_velocity_ned structs.
+ * @brief Destroy an array of PositionVelocityNed structs.
  *
  * Frees all memory allocated for the array and its elements, including any
  * nested dynamic allocations. Must be called to avoid memory leaks.
@@ -1173,15 +1173,15 @@ CMAVSDK_EXPORT void mavsdk_telemetry_position_velocity_ned_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-CMAVSDK_EXPORT void mavsdk_telemetry_position_velocity_ned_array_destroy(
-    mavsdk_telemetry_position_velocity_ned_t** array,
+CMAVSDK_EXPORT void mavsdk_telemetry_PositionVelocityNed_array_destroy(
+    mavsdk_telemetry_PositionVelocityNed_t** array,
     size_t size);
 
 /**
  * @brief GroundTruth message type.
  *
  * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_telemetry_ground_truth_destroy() when done to avoid memory leaks.
+ *       mavsdk_telemetry_GroundTruth_destroy() when done to avoid memory leaks.
  */
 typedef struct CMAVSDK_EXPORT {
     /**  Latitude in degrees (range: -90 to +90) */
@@ -1190,10 +1190,10 @@ typedef struct CMAVSDK_EXPORT {
     double longitude_deg;
     /**  Altitude AMSL (above mean sea level) in metres */
     float absolute_altitude_m;
-} mavsdk_telemetry_ground_truth_t;
+} mavsdk_telemetry_GroundTruth_t;
 
 /**
- * @brief Destroy a ground_truth struct.
+ * @brief Destroy a GroundTruth struct.
  *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
@@ -1202,11 +1202,11 @@ typedef struct CMAVSDK_EXPORT {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-CMAVSDK_EXPORT void mavsdk_telemetry_ground_truth_destroy(
-    mavsdk_telemetry_ground_truth_t* target);
+CMAVSDK_EXPORT void mavsdk_telemetry_GroundTruth_destroy(
+    mavsdk_telemetry_GroundTruth_t* target);
 
 /**
- * @brief Destroy an array of ground_truth structs.
+ * @brief Destroy an array of GroundTruth structs.
  *
  * Frees all memory allocated for the array and its elements, including any
  * nested dynamic allocations. Must be called to avoid memory leaks.
@@ -1214,15 +1214,15 @@ CMAVSDK_EXPORT void mavsdk_telemetry_ground_truth_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-CMAVSDK_EXPORT void mavsdk_telemetry_ground_truth_array_destroy(
-    mavsdk_telemetry_ground_truth_t** array,
+CMAVSDK_EXPORT void mavsdk_telemetry_GroundTruth_array_destroy(
+    mavsdk_telemetry_GroundTruth_t** array,
     size_t size);
 
 /**
  * @brief FixedwingMetrics message type.
  *
  * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_telemetry_fixedwing_metrics_destroy() when done to avoid memory leaks.
+ *       mavsdk_telemetry_FixedwingMetrics_destroy() when done to avoid memory leaks.
  */
 typedef struct CMAVSDK_EXPORT {
     /**  Current indicated airspeed (IAS) in metres per second */
@@ -1237,10 +1237,10 @@ typedef struct CMAVSDK_EXPORT {
     float heading_deg;
     /**  Current altitude in metres (MSL) */
     float absolute_altitude_m;
-} mavsdk_telemetry_fixedwing_metrics_t;
+} mavsdk_telemetry_FixedwingMetrics_t;
 
 /**
- * @brief Destroy a fixedwing_metrics struct.
+ * @brief Destroy a FixedwingMetrics struct.
  *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
@@ -1249,11 +1249,11 @@ typedef struct CMAVSDK_EXPORT {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-CMAVSDK_EXPORT void mavsdk_telemetry_fixedwing_metrics_destroy(
-    mavsdk_telemetry_fixedwing_metrics_t* target);
+CMAVSDK_EXPORT void mavsdk_telemetry_FixedwingMetrics_destroy(
+    mavsdk_telemetry_FixedwingMetrics_t* target);
 
 /**
- * @brief Destroy an array of fixedwing_metrics structs.
+ * @brief Destroy an array of FixedwingMetrics structs.
  *
  * Frees all memory allocated for the array and its elements, including any
  * nested dynamic allocations. Must be called to avoid memory leaks.
@@ -1261,15 +1261,15 @@ CMAVSDK_EXPORT void mavsdk_telemetry_fixedwing_metrics_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-CMAVSDK_EXPORT void mavsdk_telemetry_fixedwing_metrics_array_destroy(
-    mavsdk_telemetry_fixedwing_metrics_t** array,
+CMAVSDK_EXPORT void mavsdk_telemetry_FixedwingMetrics_array_destroy(
+    mavsdk_telemetry_FixedwingMetrics_t** array,
     size_t size);
 
 /**
  * @brief AccelerationFrd message type.
  *
  * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_telemetry_acceleration_frd_destroy() when done to avoid memory leaks.
+ *       mavsdk_telemetry_AccelerationFrd_destroy() when done to avoid memory leaks.
  */
 typedef struct CMAVSDK_EXPORT {
     /**  Acceleration in forward direction in metres per second^2 */
@@ -1278,10 +1278,10 @@ typedef struct CMAVSDK_EXPORT {
     float right_m_s2;
     /**  Acceleration in down direction in metres per second^2 */
     float down_m_s2;
-} mavsdk_telemetry_acceleration_frd_t;
+} mavsdk_telemetry_AccelerationFrd_t;
 
 /**
- * @brief Destroy a acceleration_frd struct.
+ * @brief Destroy a AccelerationFrd struct.
  *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
@@ -1290,11 +1290,11 @@ typedef struct CMAVSDK_EXPORT {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-CMAVSDK_EXPORT void mavsdk_telemetry_acceleration_frd_destroy(
-    mavsdk_telemetry_acceleration_frd_t* target);
+CMAVSDK_EXPORT void mavsdk_telemetry_AccelerationFrd_destroy(
+    mavsdk_telemetry_AccelerationFrd_t* target);
 
 /**
- * @brief Destroy an array of acceleration_frd structs.
+ * @brief Destroy an array of AccelerationFrd structs.
  *
  * Frees all memory allocated for the array and its elements, including any
  * nested dynamic allocations. Must be called to avoid memory leaks.
@@ -1302,15 +1302,15 @@ CMAVSDK_EXPORT void mavsdk_telemetry_acceleration_frd_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-CMAVSDK_EXPORT void mavsdk_telemetry_acceleration_frd_array_destroy(
-    mavsdk_telemetry_acceleration_frd_t** array,
+CMAVSDK_EXPORT void mavsdk_telemetry_AccelerationFrd_array_destroy(
+    mavsdk_telemetry_AccelerationFrd_t** array,
     size_t size);
 
 /**
  * @brief AngularVelocityFrd message type.
  *
  * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_telemetry_angular_velocity_frd_destroy() when done to avoid memory leaks.
+ *       mavsdk_telemetry_AngularVelocityFrd_destroy() when done to avoid memory leaks.
  */
 typedef struct CMAVSDK_EXPORT {
     /**  Angular velocity in forward direction in radians per second */
@@ -1319,10 +1319,10 @@ typedef struct CMAVSDK_EXPORT {
     float right_rad_s;
     /**  Angular velocity in Down direction in radians per second */
     float down_rad_s;
-} mavsdk_telemetry_angular_velocity_frd_t;
+} mavsdk_telemetry_AngularVelocityFrd_t;
 
 /**
- * @brief Destroy a angular_velocity_frd struct.
+ * @brief Destroy a AngularVelocityFrd struct.
  *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
@@ -1331,11 +1331,11 @@ typedef struct CMAVSDK_EXPORT {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-CMAVSDK_EXPORT void mavsdk_telemetry_angular_velocity_frd_destroy(
-    mavsdk_telemetry_angular_velocity_frd_t* target);
+CMAVSDK_EXPORT void mavsdk_telemetry_AngularVelocityFrd_destroy(
+    mavsdk_telemetry_AngularVelocityFrd_t* target);
 
 /**
- * @brief Destroy an array of angular_velocity_frd structs.
+ * @brief Destroy an array of AngularVelocityFrd structs.
  *
  * Frees all memory allocated for the array and its elements, including any
  * nested dynamic allocations. Must be called to avoid memory leaks.
@@ -1343,15 +1343,15 @@ CMAVSDK_EXPORT void mavsdk_telemetry_angular_velocity_frd_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-CMAVSDK_EXPORT void mavsdk_telemetry_angular_velocity_frd_array_destroy(
-    mavsdk_telemetry_angular_velocity_frd_t** array,
+CMAVSDK_EXPORT void mavsdk_telemetry_AngularVelocityFrd_array_destroy(
+    mavsdk_telemetry_AngularVelocityFrd_t** array,
     size_t size);
 
 /**
  * @brief MagneticFieldFrd message type.
  *
  * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_telemetry_magnetic_field_frd_destroy() when done to avoid memory leaks.
+ *       mavsdk_telemetry_MagneticFieldFrd_destroy() when done to avoid memory leaks.
  */
 typedef struct CMAVSDK_EXPORT {
     /**  Magnetic field in forward direction measured in Gauss */
@@ -1360,10 +1360,10 @@ typedef struct CMAVSDK_EXPORT {
     float right_gauss;
     /**  Magnetic field in Down direction measured in Gauss */
     float down_gauss;
-} mavsdk_telemetry_magnetic_field_frd_t;
+} mavsdk_telemetry_MagneticFieldFrd_t;
 
 /**
- * @brief Destroy a magnetic_field_frd struct.
+ * @brief Destroy a MagneticFieldFrd struct.
  *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
@@ -1372,11 +1372,11 @@ typedef struct CMAVSDK_EXPORT {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-CMAVSDK_EXPORT void mavsdk_telemetry_magnetic_field_frd_destroy(
-    mavsdk_telemetry_magnetic_field_frd_t* target);
+CMAVSDK_EXPORT void mavsdk_telemetry_MagneticFieldFrd_destroy(
+    mavsdk_telemetry_MagneticFieldFrd_t* target);
 
 /**
- * @brief Destroy an array of magnetic_field_frd structs.
+ * @brief Destroy an array of MagneticFieldFrd structs.
  *
  * Frees all memory allocated for the array and its elements, including any
  * nested dynamic allocations. Must be called to avoid memory leaks.
@@ -1384,31 +1384,31 @@ CMAVSDK_EXPORT void mavsdk_telemetry_magnetic_field_frd_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-CMAVSDK_EXPORT void mavsdk_telemetry_magnetic_field_frd_array_destroy(
-    mavsdk_telemetry_magnetic_field_frd_t** array,
+CMAVSDK_EXPORT void mavsdk_telemetry_MagneticFieldFrd_array_destroy(
+    mavsdk_telemetry_MagneticFieldFrd_t** array,
     size_t size);
 
 /**
  * @brief Imu message type.
  *
  * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_telemetry_imu_destroy() when done to avoid memory leaks.
+ *       mavsdk_telemetry_Imu_destroy() when done to avoid memory leaks.
  */
 typedef struct CMAVSDK_EXPORT {
     /**  Acceleration */
-    mavsdk_telemetry_acceleration_frd_t acceleration_frd;
+    mavsdk_telemetry_AccelerationFrd_t acceleration_frd;
     /**  Angular velocity */
-    mavsdk_telemetry_angular_velocity_frd_t angular_velocity_frd;
+    mavsdk_telemetry_AngularVelocityFrd_t angular_velocity_frd;
     /**  Magnetic field */
-    mavsdk_telemetry_magnetic_field_frd_t magnetic_field_frd;
+    mavsdk_telemetry_MagneticFieldFrd_t magnetic_field_frd;
     /**  Temperature */
     float temperature_degc;
     /**  Timestamp in microseconds */
     uint64_t timestamp_us;
-} mavsdk_telemetry_imu_t;
+} mavsdk_telemetry_Imu_t;
 
 /**
- * @brief Destroy a imu struct.
+ * @brief Destroy a Imu struct.
  *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
@@ -1417,11 +1417,11 @@ typedef struct CMAVSDK_EXPORT {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-CMAVSDK_EXPORT void mavsdk_telemetry_imu_destroy(
-    mavsdk_telemetry_imu_t* target);
+CMAVSDK_EXPORT void mavsdk_telemetry_Imu_destroy(
+    mavsdk_telemetry_Imu_t* target);
 
 /**
- * @brief Destroy an array of imu structs.
+ * @brief Destroy an array of Imu structs.
  *
  * Frees all memory allocated for the array and its elements, including any
  * nested dynamic allocations. Must be called to avoid memory leaks.
@@ -1429,15 +1429,15 @@ CMAVSDK_EXPORT void mavsdk_telemetry_imu_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-CMAVSDK_EXPORT void mavsdk_telemetry_imu_array_destroy(
-    mavsdk_telemetry_imu_t** array,
+CMAVSDK_EXPORT void mavsdk_telemetry_Imu_array_destroy(
+    mavsdk_telemetry_Imu_t** array,
     size_t size);
 
 /**
  * @brief Gps global origin type.
  *
  * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_telemetry_gps_global_origin_destroy() when done to avoid memory leaks.
+ *       mavsdk_telemetry_GpsGlobalOrigin_destroy() when done to avoid memory leaks.
  */
 typedef struct CMAVSDK_EXPORT {
     /**  Latitude of the origin */
@@ -1446,10 +1446,10 @@ typedef struct CMAVSDK_EXPORT {
     double longitude_deg;
     /**  Altitude AMSL (above mean sea level) in metres */
     float altitude_m;
-} mavsdk_telemetry_gps_global_origin_t;
+} mavsdk_telemetry_GpsGlobalOrigin_t;
 
 /**
- * @brief Destroy a gps_global_origin struct.
+ * @brief Destroy a GpsGlobalOrigin struct.
  *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
@@ -1458,11 +1458,11 @@ typedef struct CMAVSDK_EXPORT {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-CMAVSDK_EXPORT void mavsdk_telemetry_gps_global_origin_destroy(
-    mavsdk_telemetry_gps_global_origin_t* target);
+CMAVSDK_EXPORT void mavsdk_telemetry_GpsGlobalOrigin_destroy(
+    mavsdk_telemetry_GpsGlobalOrigin_t* target);
 
 /**
- * @brief Destroy an array of gps_global_origin structs.
+ * @brief Destroy an array of GpsGlobalOrigin structs.
  *
  * Frees all memory allocated for the array and its elements, including any
  * nested dynamic allocations. Must be called to avoid memory leaks.
@@ -1470,15 +1470,15 @@ CMAVSDK_EXPORT void mavsdk_telemetry_gps_global_origin_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-CMAVSDK_EXPORT void mavsdk_telemetry_gps_global_origin_array_destroy(
-    mavsdk_telemetry_gps_global_origin_t** array,
+CMAVSDK_EXPORT void mavsdk_telemetry_GpsGlobalOrigin_array_destroy(
+    mavsdk_telemetry_GpsGlobalOrigin_t** array,
     size_t size);
 
 /**
  * @brief Altitude message type
  *
  * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_telemetry_altitude_destroy() when done to avoid memory leaks.
+ *       mavsdk_telemetry_Altitude_destroy() when done to avoid memory leaks.
  */
 typedef struct CMAVSDK_EXPORT {
     /**  Altitude in meters is initialized on system boot and monotonic */
@@ -1493,10 +1493,10 @@ typedef struct CMAVSDK_EXPORT {
     float altitude_terrain_m;
     /**  This is not the altitude, but the clear space below the system according to the fused clearance estimate in meters. */
     float bottom_clearance_m;
-} mavsdk_telemetry_altitude_t;
+} mavsdk_telemetry_Altitude_t;
 
 /**
- * @brief Destroy a altitude struct.
+ * @brief Destroy a Altitude struct.
  *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
@@ -1505,11 +1505,11 @@ typedef struct CMAVSDK_EXPORT {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-CMAVSDK_EXPORT void mavsdk_telemetry_altitude_destroy(
-    mavsdk_telemetry_altitude_t* target);
+CMAVSDK_EXPORT void mavsdk_telemetry_Altitude_destroy(
+    mavsdk_telemetry_Altitude_t* target);
 
 /**
- * @brief Destroy an array of altitude structs.
+ * @brief Destroy an array of Altitude structs.
  *
  * Frees all memory allocated for the array and its elements, including any
  * nested dynamic allocations. Must be called to avoid memory leaks.
@@ -1517,15 +1517,15 @@ CMAVSDK_EXPORT void mavsdk_telemetry_altitude_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-CMAVSDK_EXPORT void mavsdk_telemetry_altitude_array_destroy(
-    mavsdk_telemetry_altitude_t** array,
+CMAVSDK_EXPORT void mavsdk_telemetry_Altitude_array_destroy(
+    mavsdk_telemetry_Altitude_t** array,
     size_t size);
 
 /**
  * @brief Wind message type
  *
  * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_telemetry_wind_destroy() when done to avoid memory leaks.
+ *       mavsdk_telemetry_Wind_destroy() when done to avoid memory leaks.
  */
 typedef struct CMAVSDK_EXPORT {
     /**  Wind in North (NED) direction */
@@ -1544,10 +1544,10 @@ typedef struct CMAVSDK_EXPORT {
     float horizontal_wind_speed_accuracy_m_s;
     /**  Vertical speed 1-STD accuracy */
     float vertical_wind_speed_accuracy_m_s;
-} mavsdk_telemetry_wind_t;
+} mavsdk_telemetry_Wind_t;
 
 /**
- * @brief Destroy a wind struct.
+ * @brief Destroy a Wind struct.
  *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
@@ -1556,11 +1556,11 @@ typedef struct CMAVSDK_EXPORT {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-CMAVSDK_EXPORT void mavsdk_telemetry_wind_destroy(
-    mavsdk_telemetry_wind_t* target);
+CMAVSDK_EXPORT void mavsdk_telemetry_Wind_destroy(
+    mavsdk_telemetry_Wind_t* target);
 
 /**
- * @brief Destroy an array of wind structs.
+ * @brief Destroy an array of Wind structs.
  *
  * Frees all memory allocated for the array and its elements, including any
  * nested dynamic allocations. Must be called to avoid memory leaks.
@@ -1568,8 +1568,8 @@ CMAVSDK_EXPORT void mavsdk_telemetry_wind_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-CMAVSDK_EXPORT void mavsdk_telemetry_wind_array_destroy(
-    mavsdk_telemetry_wind_t** array,
+CMAVSDK_EXPORT void mavsdk_telemetry_Wind_array_destroy(
+    mavsdk_telemetry_Wind_t** array,
     size_t size);
 
 /**
@@ -1673,39 +1673,39 @@ CMAVSDK_EXPORT void mavsdk_telemetry_string_destroy(char** str);
 CMAVSDK_EXPORT void mavsdk_telemetry_byte_buffer_destroy(uint8_t** buffer);
 
 // ===== Callback Typedefs =====
-typedef void (*mavsdk_telemetry_position_callback_t)(const mavsdk_telemetry_position_t position, void* user_data);
-typedef void (*mavsdk_telemetry_home_callback_t)(const mavsdk_telemetry_position_t home, void* user_data);
+typedef void (*mavsdk_telemetry_position_callback_t)(const mavsdk_telemetry_Position_t position, void* user_data);
+typedef void (*mavsdk_telemetry_home_callback_t)(const mavsdk_telemetry_Position_t home, void* user_data);
 typedef void (*mavsdk_telemetry_in_air_callback_t)(const bool is_in_air, void* user_data);
-typedef void (*mavsdk_telemetry_landed_state_callback_t)(const mavsdk_telemetry_landed_state_t landed_state, void* user_data);
+typedef void (*mavsdk_telemetry_landed_state_callback_t)(const mavsdk_telemetry_LandedState_t landed_state, void* user_data);
 typedef void (*mavsdk_telemetry_armed_callback_t)(const bool is_armed, void* user_data);
-typedef void (*mavsdk_telemetry_vtol_state_callback_t)(const mavsdk_telemetry_vtol_state_t vtol_state, void* user_data);
-typedef void (*mavsdk_telemetry_attitude_quaternion_callback_t)(const mavsdk_telemetry_quaternion_t attitude_quaternion, void* user_data);
-typedef void (*mavsdk_telemetry_attitude_euler_callback_t)(const mavsdk_telemetry_euler_angle_t attitude_euler, void* user_data);
-typedef void (*mavsdk_telemetry_attitude_angular_velocity_body_callback_t)(const mavsdk_telemetry_angular_velocity_body_t attitude_angular_velocity_body, void* user_data);
-typedef void (*mavsdk_telemetry_velocity_ned_callback_t)(const mavsdk_telemetry_velocity_ned_t velocity_ned, void* user_data);
-typedef void (*mavsdk_telemetry_gps_info_callback_t)(const mavsdk_telemetry_gps_info_t gps_info, void* user_data);
-typedef void (*mavsdk_telemetry_raw_gps_callback_t)(const mavsdk_telemetry_raw_gps_t raw_gps, void* user_data);
-typedef void (*mavsdk_telemetry_battery_callback_t)(const mavsdk_telemetry_battery_t battery, void* user_data);
-typedef void (*mavsdk_telemetry_flight_mode_callback_t)(const mavsdk_telemetry_flight_mode_t flight_mode, void* user_data);
-typedef void (*mavsdk_telemetry_health_callback_t)(const mavsdk_telemetry_health_t health, void* user_data);
-typedef void (*mavsdk_telemetry_rc_status_callback_t)(const mavsdk_telemetry_rc_status_t rc_status, void* user_data);
-typedef void (*mavsdk_telemetry_status_text_callback_t)(const mavsdk_telemetry_status_text_t status_text, void* user_data);
-typedef void (*mavsdk_telemetry_actuator_control_target_callback_t)(const mavsdk_telemetry_actuator_control_target_t actuator_control_target, void* user_data);
-typedef void (*mavsdk_telemetry_actuator_output_status_callback_t)(const mavsdk_telemetry_actuator_output_status_t actuator_output_status, void* user_data);
-typedef void (*mavsdk_telemetry_odometry_callback_t)(const mavsdk_telemetry_odometry_t odometry, void* user_data);
-typedef void (*mavsdk_telemetry_position_velocity_ned_callback_t)(const mavsdk_telemetry_position_velocity_ned_t position_velocity_ned, void* user_data);
-typedef void (*mavsdk_telemetry_ground_truth_callback_t)(const mavsdk_telemetry_ground_truth_t ground_truth, void* user_data);
-typedef void (*mavsdk_telemetry_fixedwing_metrics_callback_t)(const mavsdk_telemetry_fixedwing_metrics_t fixedwing_metrics, void* user_data);
-typedef void (*mavsdk_telemetry_imu_callback_t)(const mavsdk_telemetry_imu_t imu, void* user_data);
-typedef void (*mavsdk_telemetry_scaled_imu_callback_t)(const mavsdk_telemetry_imu_t imu, void* user_data);
-typedef void (*mavsdk_telemetry_raw_imu_callback_t)(const mavsdk_telemetry_imu_t imu, void* user_data);
+typedef void (*mavsdk_telemetry_vtol_state_callback_t)(const mavsdk_telemetry_VtolState_t vtol_state, void* user_data);
+typedef void (*mavsdk_telemetry_attitude_quaternion_callback_t)(const mavsdk_telemetry_Quaternion_t attitude_quaternion, void* user_data);
+typedef void (*mavsdk_telemetry_attitude_euler_callback_t)(const mavsdk_telemetry_EulerAngle_t attitude_euler, void* user_data);
+typedef void (*mavsdk_telemetry_attitude_angular_velocity_body_callback_t)(const mavsdk_telemetry_AngularVelocityBody_t attitude_angular_velocity_body, void* user_data);
+typedef void (*mavsdk_telemetry_velocity_ned_callback_t)(const mavsdk_telemetry_VelocityNed_t velocity_ned, void* user_data);
+typedef void (*mavsdk_telemetry_gps_info_callback_t)(const mavsdk_telemetry_GpsInfo_t gps_info, void* user_data);
+typedef void (*mavsdk_telemetry_raw_gps_callback_t)(const mavsdk_telemetry_RawGps_t raw_gps, void* user_data);
+typedef void (*mavsdk_telemetry_battery_callback_t)(const mavsdk_telemetry_Battery_t battery, void* user_data);
+typedef void (*mavsdk_telemetry_flight_mode_callback_t)(const mavsdk_telemetry_FlightMode_t flight_mode, void* user_data);
+typedef void (*mavsdk_telemetry_health_callback_t)(const mavsdk_telemetry_Health_t health, void* user_data);
+typedef void (*mavsdk_telemetry_rc_status_callback_t)(const mavsdk_telemetry_RcStatus_t rc_status, void* user_data);
+typedef void (*mavsdk_telemetry_status_text_callback_t)(const mavsdk_telemetry_StatusText_t status_text, void* user_data);
+typedef void (*mavsdk_telemetry_actuator_control_target_callback_t)(const mavsdk_telemetry_ActuatorControlTarget_t actuator_control_target, void* user_data);
+typedef void (*mavsdk_telemetry_actuator_output_status_callback_t)(const mavsdk_telemetry_ActuatorOutputStatus_t actuator_output_status, void* user_data);
+typedef void (*mavsdk_telemetry_odometry_callback_t)(const mavsdk_telemetry_Odometry_t odometry, void* user_data);
+typedef void (*mavsdk_telemetry_position_velocity_ned_callback_t)(const mavsdk_telemetry_PositionVelocityNed_t position_velocity_ned, void* user_data);
+typedef void (*mavsdk_telemetry_ground_truth_callback_t)(const mavsdk_telemetry_GroundTruth_t ground_truth, void* user_data);
+typedef void (*mavsdk_telemetry_fixedwing_metrics_callback_t)(const mavsdk_telemetry_FixedwingMetrics_t fixedwing_metrics, void* user_data);
+typedef void (*mavsdk_telemetry_imu_callback_t)(const mavsdk_telemetry_Imu_t imu, void* user_data);
+typedef void (*mavsdk_telemetry_scaled_imu_callback_t)(const mavsdk_telemetry_Imu_t imu, void* user_data);
+typedef void (*mavsdk_telemetry_raw_imu_callback_t)(const mavsdk_telemetry_Imu_t imu, void* user_data);
 typedef void (*mavsdk_telemetry_health_all_ok_callback_t)(const bool is_health_all_ok, void* user_data);
 typedef void (*mavsdk_telemetry_unix_epoch_time_callback_t)(const uint64_t time_us, void* user_data);
-typedef void (*mavsdk_telemetry_distance_sensor_callback_t)(const mavsdk_telemetry_distance_sensor_t distance_sensor, void* user_data);
-typedef void (*mavsdk_telemetry_scaled_pressure_callback_t)(const mavsdk_telemetry_scaled_pressure_t scaled_pressure, void* user_data);
-typedef void (*mavsdk_telemetry_heading_callback_t)(const mavsdk_telemetry_heading_t heading_deg, void* user_data);
-typedef void (*mavsdk_telemetry_altitude_callback_t)(const mavsdk_telemetry_altitude_t altitude, void* user_data);
-typedef void (*mavsdk_telemetry_wind_callback_t)(const mavsdk_telemetry_wind_t wind, void* user_data);
+typedef void (*mavsdk_telemetry_distance_sensor_callback_t)(const mavsdk_telemetry_DistanceSensor_t distance_sensor, void* user_data);
+typedef void (*mavsdk_telemetry_scaled_pressure_callback_t)(const mavsdk_telemetry_ScaledPressure_t scaled_pressure, void* user_data);
+typedef void (*mavsdk_telemetry_heading_callback_t)(const mavsdk_telemetry_Heading_t heading_deg, void* user_data);
+typedef void (*mavsdk_telemetry_altitude_callback_t)(const mavsdk_telemetry_Altitude_t altitude, void* user_data);
+typedef void (*mavsdk_telemetry_wind_callback_t)(const mavsdk_telemetry_Wind_t wind, void* user_data);
 typedef void (*mavsdk_telemetry_set_rate_position_callback_t)(const mavsdk_telemetry_result_t result, void* user_data);
 typedef void (*mavsdk_telemetry_set_rate_home_callback_t)(const mavsdk_telemetry_result_t result, void* user_data);
 typedef void (*mavsdk_telemetry_set_rate_in_air_callback_t)(const mavsdk_telemetry_result_t result, void* user_data);
@@ -1730,7 +1730,7 @@ typedef void (*mavsdk_telemetry_set_rate_unix_epoch_time_callback_t)(const mavsd
 typedef void (*mavsdk_telemetry_set_rate_distance_sensor_callback_t)(const mavsdk_telemetry_result_t result, void* user_data);
 typedef void (*mavsdk_telemetry_set_rate_altitude_callback_t)(const mavsdk_telemetry_result_t result, void* user_data);
 typedef void (*mavsdk_telemetry_set_rate_health_callback_t)(const mavsdk_telemetry_result_t result, void* user_data);
-typedef void (*mavsdk_telemetry_get_gps_global_origin_callback_t)(const mavsdk_telemetry_result_t result, const mavsdk_telemetry_gps_global_origin_t gps_global_origin, void* user_data);
+typedef void (*mavsdk_telemetry_get_gps_global_origin_callback_t)(const mavsdk_telemetry_result_t result, const mavsdk_telemetry_GpsGlobalOrigin_t gps_global_origin, void* user_data);
 
 // ===== Telemetry Creation/Destruction =====
 CMAVSDK_EXPORT mavsdk_telemetry_t mavsdk_telemetry_create(mavsdk_system_t system);
@@ -1775,7 +1775,7 @@ CMAVSDK_EXPORT
 void
 mavsdk_telemetry_position(
     mavsdk_telemetry_t telemetry,
-    mavsdk_telemetry_position_t* position_out);
+    mavsdk_telemetry_Position_t* position_out);
 
 
 /**
@@ -1815,7 +1815,7 @@ CMAVSDK_EXPORT
 void
 mavsdk_telemetry_home(
     mavsdk_telemetry_t telemetry,
-    mavsdk_telemetry_position_t* home_out);
+    mavsdk_telemetry_Position_t* home_out);
 
 
 /**
@@ -1895,7 +1895,7 @@ CMAVSDK_EXPORT
 void
 mavsdk_telemetry_landed_state(
     mavsdk_telemetry_t telemetry,
-    mavsdk_telemetry_landed_state_t* landed_state_out);
+    mavsdk_telemetry_LandedState_t* landed_state_out);
 
 
 /**
@@ -1975,7 +1975,7 @@ CMAVSDK_EXPORT
 void
 mavsdk_telemetry_vtol_state(
     mavsdk_telemetry_t telemetry,
-    mavsdk_telemetry_vtol_state_t* vtol_state_out);
+    mavsdk_telemetry_VtolState_t* vtol_state_out);
 
 
 /**
@@ -2015,7 +2015,7 @@ CMAVSDK_EXPORT
 void
 mavsdk_telemetry_attitude_quaternion(
     mavsdk_telemetry_t telemetry,
-    mavsdk_telemetry_quaternion_t* attitude_quaternion_out);
+    mavsdk_telemetry_Quaternion_t* attitude_quaternion_out);
 
 
 /**
@@ -2055,7 +2055,7 @@ CMAVSDK_EXPORT
 void
 mavsdk_telemetry_attitude_euler(
     mavsdk_telemetry_t telemetry,
-    mavsdk_telemetry_euler_angle_t* attitude_euler_out);
+    mavsdk_telemetry_EulerAngle_t* attitude_euler_out);
 
 
 /**
@@ -2095,7 +2095,7 @@ CMAVSDK_EXPORT
 void
 mavsdk_telemetry_attitude_angular_velocity_body(
     mavsdk_telemetry_t telemetry,
-    mavsdk_telemetry_angular_velocity_body_t* attitude_angular_velocity_body_out);
+    mavsdk_telemetry_AngularVelocityBody_t* attitude_angular_velocity_body_out);
 
 
 /**
@@ -2135,7 +2135,7 @@ CMAVSDK_EXPORT
 void
 mavsdk_telemetry_velocity_ned(
     mavsdk_telemetry_t telemetry,
-    mavsdk_telemetry_velocity_ned_t* velocity_ned_out);
+    mavsdk_telemetry_VelocityNed_t* velocity_ned_out);
 
 
 /**
@@ -2175,7 +2175,7 @@ CMAVSDK_EXPORT
 void
 mavsdk_telemetry_gps_info(
     mavsdk_telemetry_t telemetry,
-    mavsdk_telemetry_gps_info_t* gps_info_out);
+    mavsdk_telemetry_GpsInfo_t* gps_info_out);
 
 
 /**
@@ -2215,7 +2215,7 @@ CMAVSDK_EXPORT
 void
 mavsdk_telemetry_raw_gps(
     mavsdk_telemetry_t telemetry,
-    mavsdk_telemetry_raw_gps_t* raw_gps_out);
+    mavsdk_telemetry_RawGps_t* raw_gps_out);
 
 
 /**
@@ -2255,7 +2255,7 @@ CMAVSDK_EXPORT
 void
 mavsdk_telemetry_battery(
     mavsdk_telemetry_t telemetry,
-    mavsdk_telemetry_battery_t* battery_out);
+    mavsdk_telemetry_Battery_t* battery_out);
 
 
 /**
@@ -2295,7 +2295,7 @@ CMAVSDK_EXPORT
 void
 mavsdk_telemetry_flight_mode(
     mavsdk_telemetry_t telemetry,
-    mavsdk_telemetry_flight_mode_t* flight_mode_out);
+    mavsdk_telemetry_FlightMode_t* flight_mode_out);
 
 
 /**
@@ -2335,7 +2335,7 @@ CMAVSDK_EXPORT
 void
 mavsdk_telemetry_health(
     mavsdk_telemetry_t telemetry,
-    mavsdk_telemetry_health_t* health_out);
+    mavsdk_telemetry_Health_t* health_out);
 
 
 /**
@@ -2375,7 +2375,7 @@ CMAVSDK_EXPORT
 void
 mavsdk_telemetry_rc_status(
     mavsdk_telemetry_t telemetry,
-    mavsdk_telemetry_rc_status_t* rc_status_out);
+    mavsdk_telemetry_RcStatus_t* rc_status_out);
 
 
 /**
@@ -2415,7 +2415,7 @@ CMAVSDK_EXPORT
 void
 mavsdk_telemetry_status_text(
     mavsdk_telemetry_t telemetry,
-    mavsdk_telemetry_status_text_t* status_text_out);
+    mavsdk_telemetry_StatusText_t* status_text_out);
 
 
 /**
@@ -2455,7 +2455,7 @@ CMAVSDK_EXPORT
 void
 mavsdk_telemetry_actuator_control_target(
     mavsdk_telemetry_t telemetry,
-    mavsdk_telemetry_actuator_control_target_t* actuator_control_target_out);
+    mavsdk_telemetry_ActuatorControlTarget_t* actuator_control_target_out);
 
 
 /**
@@ -2495,7 +2495,7 @@ CMAVSDK_EXPORT
 void
 mavsdk_telemetry_actuator_output_status(
     mavsdk_telemetry_t telemetry,
-    mavsdk_telemetry_actuator_output_status_t* actuator_output_status_out);
+    mavsdk_telemetry_ActuatorOutputStatus_t* actuator_output_status_out);
 
 
 /**
@@ -2535,7 +2535,7 @@ CMAVSDK_EXPORT
 void
 mavsdk_telemetry_odometry(
     mavsdk_telemetry_t telemetry,
-    mavsdk_telemetry_odometry_t* odometry_out);
+    mavsdk_telemetry_Odometry_t* odometry_out);
 
 
 /**
@@ -2575,7 +2575,7 @@ CMAVSDK_EXPORT
 void
 mavsdk_telemetry_position_velocity_ned(
     mavsdk_telemetry_t telemetry,
-    mavsdk_telemetry_position_velocity_ned_t* position_velocity_ned_out);
+    mavsdk_telemetry_PositionVelocityNed_t* position_velocity_ned_out);
 
 
 /**
@@ -2615,7 +2615,7 @@ CMAVSDK_EXPORT
 void
 mavsdk_telemetry_ground_truth(
     mavsdk_telemetry_t telemetry,
-    mavsdk_telemetry_ground_truth_t* ground_truth_out);
+    mavsdk_telemetry_GroundTruth_t* ground_truth_out);
 
 
 /**
@@ -2655,7 +2655,7 @@ CMAVSDK_EXPORT
 void
 mavsdk_telemetry_fixedwing_metrics(
     mavsdk_telemetry_t telemetry,
-    mavsdk_telemetry_fixedwing_metrics_t* fixedwing_metrics_out);
+    mavsdk_telemetry_FixedwingMetrics_t* fixedwing_metrics_out);
 
 
 /**
@@ -2695,7 +2695,7 @@ CMAVSDK_EXPORT
 void
 mavsdk_telemetry_imu(
     mavsdk_telemetry_t telemetry,
-    mavsdk_telemetry_imu_t* imu_out);
+    mavsdk_telemetry_Imu_t* imu_out);
 
 
 /**
@@ -2735,7 +2735,7 @@ CMAVSDK_EXPORT
 void
 mavsdk_telemetry_scaled_imu(
     mavsdk_telemetry_t telemetry,
-    mavsdk_telemetry_imu_t* imu_out);
+    mavsdk_telemetry_Imu_t* imu_out);
 
 
 /**
@@ -2775,7 +2775,7 @@ CMAVSDK_EXPORT
 void
 mavsdk_telemetry_raw_imu(
     mavsdk_telemetry_t telemetry,
-    mavsdk_telemetry_imu_t* imu_out);
+    mavsdk_telemetry_Imu_t* imu_out);
 
 
 /**
@@ -2895,7 +2895,7 @@ CMAVSDK_EXPORT
 void
 mavsdk_telemetry_distance_sensor(
     mavsdk_telemetry_t telemetry,
-    mavsdk_telemetry_distance_sensor_t* distance_sensor_out);
+    mavsdk_telemetry_DistanceSensor_t* distance_sensor_out);
 
 
 /**
@@ -2935,7 +2935,7 @@ CMAVSDK_EXPORT
 void
 mavsdk_telemetry_scaled_pressure(
     mavsdk_telemetry_t telemetry,
-    mavsdk_telemetry_scaled_pressure_t* scaled_pressure_out);
+    mavsdk_telemetry_ScaledPressure_t* scaled_pressure_out);
 
 
 /**
@@ -2975,7 +2975,7 @@ CMAVSDK_EXPORT
 void
 mavsdk_telemetry_heading(
     mavsdk_telemetry_t telemetry,
-    mavsdk_telemetry_heading_t* heading_deg_out);
+    mavsdk_telemetry_Heading_t* heading_deg_out);
 
 
 /**
@@ -3015,7 +3015,7 @@ CMAVSDK_EXPORT
 void
 mavsdk_telemetry_altitude(
     mavsdk_telemetry_t telemetry,
-    mavsdk_telemetry_altitude_t* altitude_out);
+    mavsdk_telemetry_Altitude_t* altitude_out);
 
 
 /**
@@ -3055,7 +3055,7 @@ CMAVSDK_EXPORT
 void
 mavsdk_telemetry_wind(
     mavsdk_telemetry_t telemetry,
-    mavsdk_telemetry_wind_t* wind_out);
+    mavsdk_telemetry_Wind_t* wind_out);
 
 
 /**
@@ -3828,7 +3828,7 @@ CMAVSDK_EXPORT
 mavsdk_telemetry_result_t
 mavsdk_telemetry_get_gps_global_origin(
     mavsdk_telemetry_t telemetry,
-    mavsdk_telemetry_gps_global_origin_t* gps_global_origin_out);
+    mavsdk_telemetry_GpsGlobalOrigin_t* gps_global_origin_out);
 
 
 #ifdef __cplusplus
