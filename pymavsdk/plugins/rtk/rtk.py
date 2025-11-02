@@ -123,10 +123,10 @@ _cmavsdk_lib.mavsdk_rtk_create.restype = ctypes.c_void_p
 _cmavsdk_lib.mavsdk_rtk_destroy.argtypes = [ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_rtk_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_rtk_rtcm_data_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_rtk_RtcmData_destroy.argtypes = [
     ctypes.POINTER(RtcmDataCStruct)
 ]
-_cmavsdk_lib.mavsdk_rtk_rtcm_data_destroy.restype = None
+_cmavsdk_lib.mavsdk_rtk_RtcmData_destroy.restype = None
 
 
 

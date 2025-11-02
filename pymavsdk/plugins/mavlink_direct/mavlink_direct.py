@@ -145,7 +145,7 @@ class MavlinkDirect:
 
                 py_data = MavlinkMessage.from_c_struct(c_data)
 
-                self._lib.mavsdk_mavlink_direct_mavlink_message_destroy(ctypes.byref(c_data))
+                self._lib.mavsdk_mavlink_direct_MavlinkMessage_destroy(ctypes.byref(c_data))
 
                 callback(py_data, user_data)
 
@@ -209,10 +209,10 @@ _cmavsdk_lib.mavsdk_mavlink_direct_create.restype = ctypes.c_void_p
 _cmavsdk_lib.mavsdk_mavlink_direct_destroy.argtypes = [ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_mavlink_direct_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_mavlink_direct_mavlink_message_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_mavlink_direct_MavlinkMessage_destroy.argtypes = [
     ctypes.POINTER(MavlinkMessageCStruct)
 ]
-_cmavsdk_lib.mavsdk_mavlink_direct_mavlink_message_destroy.restype = None
+_cmavsdk_lib.mavsdk_mavlink_direct_MavlinkMessage_destroy.restype = None
 
 
 

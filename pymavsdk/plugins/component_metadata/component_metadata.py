@@ -176,7 +176,7 @@ class ComponentMetadata:
 
                 py_data = MetadataUpdate.from_c_struct(c_data)
 
-                self._lib.mavsdk_component_metadata_metadata_update_destroy(ctypes.byref(c_data))
+                self._lib.mavsdk_component_metadata_MetadataUpdate_destroy(ctypes.byref(c_data))
 
                 callback(py_data, user_data)
 
@@ -217,7 +217,7 @@ class ComponentMetadata:
             raise Exception(f"get_metadata failed: {result}")
 
         py_result = MetadataData.from_c_struct(result_out)
-        self._lib.mavsdk_component_metadata_metadata_data_destroy(ctypes.byref(result_out))
+        self._lib.mavsdk_component_metadata_MetadataData_destroy(ctypes.byref(result_out))
         return py_result
 
 
@@ -244,15 +244,15 @@ _cmavsdk_lib.mavsdk_component_metadata_create.restype = ctypes.c_void_p
 _cmavsdk_lib.mavsdk_component_metadata_destroy.argtypes = [ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_component_metadata_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_component_metadata_metadata_data_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_component_metadata_MetadataData_destroy.argtypes = [
     ctypes.POINTER(MetadataDataCStruct)
 ]
-_cmavsdk_lib.mavsdk_component_metadata_metadata_data_destroy.restype = None
+_cmavsdk_lib.mavsdk_component_metadata_MetadataData_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_component_metadata_metadata_update_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_component_metadata_MetadataUpdate_destroy.argtypes = [
     ctypes.POINTER(MetadataUpdateCStruct)
 ]
-_cmavsdk_lib.mavsdk_component_metadata_metadata_update_destroy.restype = None
+_cmavsdk_lib.mavsdk_component_metadata_MetadataUpdate_destroy.restype = None
 
 
 

@@ -151,7 +151,7 @@ class LogFiles:
                     for i in range(size.value):
                         py_data.append(Entry.from_c_struct(c_data[i]))
 
-                self._lib.mavsdk_log_files_entry_destroy(c_data)
+                self._lib.mavsdk_log_files_Entry_destroy(c_data)
 
                 callback(py_result, py_data, user_data)
 
@@ -184,7 +184,7 @@ class LogFiles:
             raise Exception(f"get_entries failed: {result}")
 
         py_result = [Entry.from_c_struct(result_ptr[i]) for i in range(size.value)]
-        self._lib.mavsdk_log_files_entry_destroy(result_ptr)
+        self._lib.mavsdk_log_files_Entry_destroy(result_ptr)
         return py_result
 
 
@@ -197,7 +197,7 @@ class LogFiles:
 
                 py_data = ProgressData.from_c_struct(c_data)
 
-                self._lib.mavsdk_log_files_progress_data_destroy(ctypes.byref(c_data))
+                self._lib.mavsdk_log_files_ProgressData_destroy(ctypes.byref(c_data))
 
                 callback(py_result, py_data, user_data)
 
@@ -264,15 +264,15 @@ _cmavsdk_lib.mavsdk_log_files_create.restype = ctypes.c_void_p
 _cmavsdk_lib.mavsdk_log_files_destroy.argtypes = [ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_log_files_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_log_files_progress_data_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_log_files_ProgressData_destroy.argtypes = [
     ctypes.POINTER(ProgressDataCStruct)
 ]
-_cmavsdk_lib.mavsdk_log_files_progress_data_destroy.restype = None
+_cmavsdk_lib.mavsdk_log_files_ProgressData_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_log_files_entry_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_log_files_Entry_destroy.argtypes = [
     ctypes.POINTER(EntryCStruct)
 ]
-_cmavsdk_lib.mavsdk_log_files_entry_destroy.restype = None
+_cmavsdk_lib.mavsdk_log_files_Entry_destroy.restype = None
 
 
 _cmavsdk_lib.mavsdk_log_files_get_entries_async.argtypes = [

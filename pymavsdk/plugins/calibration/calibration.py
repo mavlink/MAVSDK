@@ -122,7 +122,7 @@ class Calibration:
 
                 py_data = ProgressData.from_c_struct(c_data)
 
-                self._lib.mavsdk_calibration_progress_data_destroy(ctypes.byref(c_data))
+                self._lib.mavsdk_calibration_ProgressData_destroy(ctypes.byref(c_data))
 
                 callback(py_result, py_data, user_data)
 
@@ -150,7 +150,7 @@ class Calibration:
 
                 py_data = ProgressData.from_c_struct(c_data)
 
-                self._lib.mavsdk_calibration_progress_data_destroy(ctypes.byref(c_data))
+                self._lib.mavsdk_calibration_ProgressData_destroy(ctypes.byref(c_data))
 
                 callback(py_result, py_data, user_data)
 
@@ -178,7 +178,7 @@ class Calibration:
 
                 py_data = ProgressData.from_c_struct(c_data)
 
-                self._lib.mavsdk_calibration_progress_data_destroy(ctypes.byref(c_data))
+                self._lib.mavsdk_calibration_ProgressData_destroy(ctypes.byref(c_data))
 
                 callback(py_result, py_data, user_data)
 
@@ -206,7 +206,7 @@ class Calibration:
 
                 py_data = ProgressData.from_c_struct(c_data)
 
-                self._lib.mavsdk_calibration_progress_data_destroy(ctypes.byref(c_data))
+                self._lib.mavsdk_calibration_ProgressData_destroy(ctypes.byref(c_data))
 
                 callback(py_result, py_data, user_data)
 
@@ -234,7 +234,7 @@ class Calibration:
 
                 py_data = ProgressData.from_c_struct(c_data)
 
-                self._lib.mavsdk_calibration_progress_data_destroy(ctypes.byref(c_data))
+                self._lib.mavsdk_calibration_ProgressData_destroy(ctypes.byref(c_data))
 
                 callback(py_result, py_data, user_data)
 
@@ -316,10 +316,10 @@ _cmavsdk_lib.mavsdk_calibration_create.restype = ctypes.c_void_p
 _cmavsdk_lib.mavsdk_calibration_destroy.argtypes = [ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_calibration_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_calibration_progress_data_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_calibration_ProgressData_destroy.argtypes = [
     ctypes.POINTER(ProgressDataCStruct)
 ]
-_cmavsdk_lib.mavsdk_calibration_progress_data_destroy.restype = None
+_cmavsdk_lib.mavsdk_calibration_ProgressData_destroy.restype = None
 
 
 _cmavsdk_lib.mavsdk_calibration_calibrate_gyro_async.argtypes = [

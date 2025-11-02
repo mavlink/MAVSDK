@@ -424,7 +424,7 @@ class MissionRaw:
                     for i in range(size.value):
                         py_data.append(MissionItem.from_c_struct(c_data[i]))
 
-                self._lib.mavsdk_mission_raw_mission_item_destroy(c_data)
+                self._lib.mavsdk_mission_raw_MissionItem_destroy(c_data)
 
                 callback(py_result, py_data, user_data)
 
@@ -457,7 +457,7 @@ class MissionRaw:
             raise Exception(f"download_mission failed: {result}")
 
         py_result = [MissionItem.from_c_struct(result_ptr[i]) for i in range(size.value)]
-        self._lib.mavsdk_mission_raw_mission_item_destroy(result_ptr)
+        self._lib.mavsdk_mission_raw_MissionItem_destroy(result_ptr)
         return py_result
 
 
@@ -473,7 +473,7 @@ class MissionRaw:
                     for i in range(size.value):
                         py_data.append(MissionItem.from_c_struct(c_data[i]))
 
-                self._lib.mavsdk_mission_raw_mission_item_destroy(c_data)
+                self._lib.mavsdk_mission_raw_MissionItem_destroy(c_data)
 
                 callback(py_result, py_data, user_data)
 
@@ -506,7 +506,7 @@ class MissionRaw:
             raise Exception(f"download_geofence failed: {result}")
 
         py_result = [MissionItem.from_c_struct(result_ptr[i]) for i in range(size.value)]
-        self._lib.mavsdk_mission_raw_mission_item_destroy(result_ptr)
+        self._lib.mavsdk_mission_raw_MissionItem_destroy(result_ptr)
         return py_result
 
 
@@ -522,7 +522,7 @@ class MissionRaw:
                     for i in range(size.value):
                         py_data.append(MissionItem.from_c_struct(c_data[i]))
 
-                self._lib.mavsdk_mission_raw_mission_item_destroy(c_data)
+                self._lib.mavsdk_mission_raw_MissionItem_destroy(c_data)
 
                 callback(py_result, py_data, user_data)
 
@@ -555,7 +555,7 @@ class MissionRaw:
             raise Exception(f"download_rallypoints failed: {result}")
 
         py_result = [MissionItem.from_c_struct(result_ptr[i]) for i in range(size.value)]
-        self._lib.mavsdk_mission_raw_mission_item_destroy(result_ptr)
+        self._lib.mavsdk_mission_raw_MissionItem_destroy(result_ptr)
         return py_result
 
 
@@ -742,7 +742,7 @@ class MissionRaw:
 
                 py_data = MissionProgress.from_c_struct(c_data)
 
-                self._lib.mavsdk_mission_raw_mission_progress_destroy(ctypes.byref(c_data))
+                self._lib.mavsdk_mission_raw_MissionProgress_destroy(ctypes.byref(c_data))
 
                 callback(py_data, user_data)
 
@@ -775,7 +775,7 @@ class MissionRaw:
         )
 
         py_result = MissionProgress.from_c_struct(result_out)
-        self._lib.mavsdk_mission_raw_mission_progress_destroy(ctypes.byref(result_out))
+        self._lib.mavsdk_mission_raw_MissionProgress_destroy(ctypes.byref(result_out))
         return py_result
 
 
@@ -830,7 +830,7 @@ class MissionRaw:
             raise Exception(f"import_qgroundcontrol_mission failed: {result}")
 
         py_result = MissionImportData.from_c_struct(result_out)
-        self._lib.mavsdk_mission_raw_mission_import_data_destroy(ctypes.byref(result_out))
+        self._lib.mavsdk_mission_raw_MissionImportData_destroy(ctypes.byref(result_out))
         return py_result
 
 
@@ -850,7 +850,7 @@ class MissionRaw:
             raise Exception(f"import_qgroundcontrol_mission_from_string failed: {result}")
 
         py_result = MissionImportData.from_c_struct(result_out)
-        self._lib.mavsdk_mission_raw_mission_import_data_destroy(ctypes.byref(result_out))
+        self._lib.mavsdk_mission_raw_MissionImportData_destroy(ctypes.byref(result_out))
         return py_result
 
 
@@ -870,7 +870,7 @@ class MissionRaw:
             raise Exception(f"import_mission_planner_mission failed: {result}")
 
         py_result = MissionImportData.from_c_struct(result_out)
-        self._lib.mavsdk_mission_raw_mission_import_data_destroy(ctypes.byref(result_out))
+        self._lib.mavsdk_mission_raw_MissionImportData_destroy(ctypes.byref(result_out))
         return py_result
 
 
@@ -890,7 +890,7 @@ class MissionRaw:
             raise Exception(f"import_mission_planner_mission_from_string failed: {result}")
 
         py_result = MissionImportData.from_c_struct(result_out)
-        self._lib.mavsdk_mission_raw_mission_import_data_destroy(ctypes.byref(result_out))
+        self._lib.mavsdk_mission_raw_MissionImportData_destroy(ctypes.byref(result_out))
         return py_result
 
 
@@ -995,20 +995,20 @@ _cmavsdk_lib.mavsdk_mission_raw_create.restype = ctypes.c_void_p
 _cmavsdk_lib.mavsdk_mission_raw_destroy.argtypes = [ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_mission_raw_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_mission_raw_mission_progress_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_mission_raw_MissionProgress_destroy.argtypes = [
     ctypes.POINTER(MissionProgressCStruct)
 ]
-_cmavsdk_lib.mavsdk_mission_raw_mission_progress_destroy.restype = None
+_cmavsdk_lib.mavsdk_mission_raw_MissionProgress_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_mission_raw_mission_item_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_mission_raw_MissionItem_destroy.argtypes = [
     ctypes.POINTER(MissionItemCStruct)
 ]
-_cmavsdk_lib.mavsdk_mission_raw_mission_item_destroy.restype = None
+_cmavsdk_lib.mavsdk_mission_raw_MissionItem_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_mission_raw_mission_import_data_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_mission_raw_MissionImportData_destroy.argtypes = [
     ctypes.POINTER(MissionImportDataCStruct)
 ]
-_cmavsdk_lib.mavsdk_mission_raw_mission_import_data_destroy.restype = None
+_cmavsdk_lib.mavsdk_mission_raw_MissionImportData_destroy.restype = None
 
 
 _cmavsdk_lib.mavsdk_mission_raw_upload_mission_async.argtypes = [

@@ -381,7 +381,7 @@ class ParamServer:
         )
 
         py_result = AllParams.from_c_struct(result_out)
-        self._lib.mavsdk_param_server_all_params_destroy(ctypes.byref(result_out))
+        self._lib.mavsdk_param_server_AllParams_destroy(ctypes.byref(result_out))
         return py_result
 
 
@@ -393,7 +393,7 @@ class ParamServer:
 
                 py_data = IntParam.from_c_struct(c_data)
 
-                self._lib.mavsdk_param_server_int_param_destroy(ctypes.byref(c_data))
+                self._lib.mavsdk_param_server_IntParam_destroy(ctypes.byref(c_data))
 
                 callback(py_data, user_data)
 
@@ -425,7 +425,7 @@ class ParamServer:
 
                 py_data = FloatParam.from_c_struct(c_data)
 
-                self._lib.mavsdk_param_server_float_param_destroy(ctypes.byref(c_data))
+                self._lib.mavsdk_param_server_FloatParam_destroy(ctypes.byref(c_data))
 
                 callback(py_data, user_data)
 
@@ -457,7 +457,7 @@ class ParamServer:
 
                 py_data = CustomParam.from_c_struct(c_data)
 
-                self._lib.mavsdk_param_server_custom_param_destroy(ctypes.byref(c_data))
+                self._lib.mavsdk_param_server_CustomParam_destroy(ctypes.byref(c_data))
 
                 callback(py_data, user_data)
 
@@ -514,25 +514,25 @@ _cmavsdk_lib.mavsdk_param_server_create.restype = ctypes.c_void_p
 _cmavsdk_lib.mavsdk_param_server_destroy.argtypes = [ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_param_server_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_param_server_int_param_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_param_server_IntParam_destroy.argtypes = [
     ctypes.POINTER(IntParamCStruct)
 ]
-_cmavsdk_lib.mavsdk_param_server_int_param_destroy.restype = None
+_cmavsdk_lib.mavsdk_param_server_IntParam_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_param_server_float_param_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_param_server_FloatParam_destroy.argtypes = [
     ctypes.POINTER(FloatParamCStruct)
 ]
-_cmavsdk_lib.mavsdk_param_server_float_param_destroy.restype = None
+_cmavsdk_lib.mavsdk_param_server_FloatParam_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_param_server_custom_param_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_param_server_CustomParam_destroy.argtypes = [
     ctypes.POINTER(CustomParamCStruct)
 ]
-_cmavsdk_lib.mavsdk_param_server_custom_param_destroy.restype = None
+_cmavsdk_lib.mavsdk_param_server_CustomParam_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_param_server_all_params_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_param_server_AllParams_destroy.argtypes = [
     ctypes.POINTER(AllParamsCStruct)
 ]
-_cmavsdk_lib.mavsdk_param_server_all_params_destroy.restype = None
+_cmavsdk_lib.mavsdk_param_server_AllParams_destroy.restype = None
 
 
 

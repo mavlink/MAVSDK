@@ -130,8 +130,8 @@ def main():
         print_usage(sys.argv[0])
         return 1
     
-    # Create MAVSDK instance as Ground Station
-    mavsdk = Mavsdk(component_type=ComponentType.GROUND_STATION)
+    configuration = Configuration.create_with_component_type(ComponentType.GROUND_STATION)
+    mavsdk = Mavsdk(configuration)
     
     # Add connection
     connection_result = mavsdk.add_any_connection(args["connection"])

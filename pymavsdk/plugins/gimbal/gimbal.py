@@ -716,7 +716,7 @@ class Gimbal:
 
                 py_data = GimbalList.from_c_struct(c_data)
 
-                self._lib.mavsdk_gimbal_gimbal_list_destroy(ctypes.byref(c_data))
+                self._lib.mavsdk_gimbal_GimbalList_destroy(ctypes.byref(c_data))
 
                 callback(py_data, user_data)
 
@@ -749,7 +749,7 @@ class Gimbal:
         )
 
         py_result = GimbalList.from_c_struct(result_out)
-        self._lib.mavsdk_gimbal_gimbal_list_destroy(ctypes.byref(result_out))
+        self._lib.mavsdk_gimbal_GimbalList_destroy(ctypes.byref(result_out))
         return py_result
 
 
@@ -765,7 +765,7 @@ class Gimbal:
 
                 py_data = ControlStatus.from_c_struct(c_data)
 
-                self._lib.mavsdk_gimbal_control_status_destroy(ctypes.byref(c_data))
+                self._lib.mavsdk_gimbal_ControlStatus_destroy(ctypes.byref(c_data))
 
                 callback(py_data, user_data)
 
@@ -805,7 +805,7 @@ class Gimbal:
             raise Exception(f"get_control_status failed: {result}")
 
         py_result = ControlStatus.from_c_struct(result_out)
-        self._lib.mavsdk_gimbal_control_status_destroy(ctypes.byref(result_out))
+        self._lib.mavsdk_gimbal_ControlStatus_destroy(ctypes.byref(result_out))
         return py_result
 
 
@@ -819,7 +819,7 @@ class Gimbal:
 
                 py_data = Attitude.from_c_struct(c_data)
 
-                self._lib.mavsdk_gimbal_attitude_destroy(ctypes.byref(c_data))
+                self._lib.mavsdk_gimbal_Attitude_destroy(ctypes.byref(c_data))
 
                 callback(py_data, user_data)
 
@@ -859,7 +859,7 @@ class Gimbal:
             raise Exception(f"get_attitude failed: {result}")
 
         py_result = Attitude.from_c_struct(result_out)
-        self._lib.mavsdk_gimbal_attitude_destroy(ctypes.byref(result_out))
+        self._lib.mavsdk_gimbal_Attitude_destroy(ctypes.byref(result_out))
         return py_result
 
 
@@ -921,40 +921,40 @@ _cmavsdk_lib.mavsdk_gimbal_create.restype = ctypes.c_void_p
 _cmavsdk_lib.mavsdk_gimbal_destroy.argtypes = [ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_gimbal_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_gimbal_quaternion_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_gimbal_Quaternion_destroy.argtypes = [
     ctypes.POINTER(QuaternionCStruct)
 ]
-_cmavsdk_lib.mavsdk_gimbal_quaternion_destroy.restype = None
+_cmavsdk_lib.mavsdk_gimbal_Quaternion_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_gimbal_euler_angle_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_gimbal_EulerAngle_destroy.argtypes = [
     ctypes.POINTER(EulerAngleCStruct)
 ]
-_cmavsdk_lib.mavsdk_gimbal_euler_angle_destroy.restype = None
+_cmavsdk_lib.mavsdk_gimbal_EulerAngle_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_gimbal_angular_velocity_body_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_gimbal_AngularVelocityBody_destroy.argtypes = [
     ctypes.POINTER(AngularVelocityBodyCStruct)
 ]
-_cmavsdk_lib.mavsdk_gimbal_angular_velocity_body_destroy.restype = None
+_cmavsdk_lib.mavsdk_gimbal_AngularVelocityBody_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_gimbal_attitude_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_gimbal_Attitude_destroy.argtypes = [
     ctypes.POINTER(AttitudeCStruct)
 ]
-_cmavsdk_lib.mavsdk_gimbal_attitude_destroy.restype = None
+_cmavsdk_lib.mavsdk_gimbal_Attitude_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_gimbal_gimbal_item_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_gimbal_GimbalItem_destroy.argtypes = [
     ctypes.POINTER(GimbalItemCStruct)
 ]
-_cmavsdk_lib.mavsdk_gimbal_gimbal_item_destroy.restype = None
+_cmavsdk_lib.mavsdk_gimbal_GimbalItem_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_gimbal_gimbal_list_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_gimbal_GimbalList_destroy.argtypes = [
     ctypes.POINTER(GimbalListCStruct)
 ]
-_cmavsdk_lib.mavsdk_gimbal_gimbal_list_destroy.restype = None
+_cmavsdk_lib.mavsdk_gimbal_GimbalList_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_gimbal_control_status_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_gimbal_ControlStatus_destroy.argtypes = [
     ctypes.POINTER(ControlStatusCStruct)
 ]
-_cmavsdk_lib.mavsdk_gimbal_control_status_destroy.restype = None
+_cmavsdk_lib.mavsdk_gimbal_ControlStatus_destroy.restype = None
 
 
 _cmavsdk_lib.mavsdk_gimbal_set_angles_async.argtypes = [

@@ -184,7 +184,7 @@ class Transponder:
 
                 py_data = AdsbVehicle.from_c_struct(c_data)
 
-                self._lib.mavsdk_transponder_adsb_vehicle_destroy(ctypes.byref(c_data))
+                self._lib.mavsdk_transponder_AdsbVehicle_destroy(ctypes.byref(c_data))
 
                 callback(py_data, user_data)
 
@@ -217,7 +217,7 @@ class Transponder:
         )
 
         py_result = AdsbVehicle.from_c_struct(result_out)
-        self._lib.mavsdk_transponder_adsb_vehicle_destroy(ctypes.byref(result_out))
+        self._lib.mavsdk_transponder_AdsbVehicle_destroy(ctypes.byref(result_out))
         return py_result
 
 
@@ -288,10 +288,10 @@ _cmavsdk_lib.mavsdk_transponder_create.restype = ctypes.c_void_p
 _cmavsdk_lib.mavsdk_transponder_destroy.argtypes = [ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_transponder_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_transponder_adsb_vehicle_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_transponder_AdsbVehicle_destroy.argtypes = [
     ctypes.POINTER(AdsbVehicleCStruct)
 ]
-_cmavsdk_lib.mavsdk_transponder_adsb_vehicle_destroy.restype = None
+_cmavsdk_lib.mavsdk_transponder_AdsbVehicle_destroy.restype = None
 
 
 _cmavsdk_lib.mavsdk_transponder_subscribe_transponder.argtypes = [

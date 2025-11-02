@@ -253,7 +253,7 @@ class Winch:
 
                 py_data = Status.from_c_struct(c_data)
 
-                self._lib.mavsdk_winch_status_destroy(ctypes.byref(c_data))
+                self._lib.mavsdk_winch_Status_destroy(ctypes.byref(c_data))
 
                 callback(py_data, user_data)
 
@@ -286,7 +286,7 @@ class Winch:
         )
 
         py_result = Status.from_c_struct(result_out)
-        self._lib.mavsdk_winch_status_destroy(ctypes.byref(result_out))
+        self._lib.mavsdk_winch_Status_destroy(ctypes.byref(result_out))
         return py_result
 
 
@@ -761,15 +761,15 @@ _cmavsdk_lib.mavsdk_winch_create.restype = ctypes.c_void_p
 _cmavsdk_lib.mavsdk_winch_destroy.argtypes = [ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_winch_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_winch_status_flags_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_winch_StatusFlags_destroy.argtypes = [
     ctypes.POINTER(StatusFlagsCStruct)
 ]
-_cmavsdk_lib.mavsdk_winch_status_flags_destroy.restype = None
+_cmavsdk_lib.mavsdk_winch_StatusFlags_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_winch_status_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_winch_Status_destroy.argtypes = [
     ctypes.POINTER(StatusCStruct)
 ]
-_cmavsdk_lib.mavsdk_winch_status_destroy.restype = None
+_cmavsdk_lib.mavsdk_winch_Status_destroy.restype = None
 
 
 _cmavsdk_lib.mavsdk_winch_subscribe_status.argtypes = [

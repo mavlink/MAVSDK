@@ -177,7 +177,7 @@ class ActionServer:
 
                 py_data = ArmDisarm.from_c_struct(c_data)
 
-                self._lib.mavsdk_action_server_arm_disarm_destroy(ctypes.byref(c_data))
+                self._lib.mavsdk_action_server_ArmDisarm_destroy(ctypes.byref(c_data))
 
                 callback(py_result, py_data, user_data)
 
@@ -465,7 +465,7 @@ class ActionServer:
         )
 
         py_result = AllowableFlightModes.from_c_struct(result_out)
-        self._lib.mavsdk_action_server_allowable_flight_modes_destroy(ctypes.byref(result_out))
+        self._lib.mavsdk_action_server_AllowableFlightModes_destroy(ctypes.byref(result_out))
         return py_result
 
 
@@ -561,15 +561,15 @@ _cmavsdk_lib.mavsdk_action_server_create.restype = ctypes.c_void_p
 _cmavsdk_lib.mavsdk_action_server_destroy.argtypes = [ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_action_server_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_action_server_allowable_flight_modes_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_action_server_AllowableFlightModes_destroy.argtypes = [
     ctypes.POINTER(AllowableFlightModesCStruct)
 ]
-_cmavsdk_lib.mavsdk_action_server_allowable_flight_modes_destroy.restype = None
+_cmavsdk_lib.mavsdk_action_server_AllowableFlightModes_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_action_server_arm_disarm_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_action_server_ArmDisarm_destroy.argtypes = [
     ctypes.POINTER(ArmDisarmCStruct)
 ]
-_cmavsdk_lib.mavsdk_action_server_arm_disarm_destroy.restype = None
+_cmavsdk_lib.mavsdk_action_server_ArmDisarm_destroy.restype = None
 
 
 _cmavsdk_lib.mavsdk_action_server_subscribe_arm_disarm.argtypes = [

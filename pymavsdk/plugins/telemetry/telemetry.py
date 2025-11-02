@@ -1759,7 +1759,7 @@ class Telemetry:
 
                 py_data = Position.from_c_struct(c_data)
 
-                self._lib.mavsdk_telemetry_position_destroy(ctypes.byref(c_data))
+                self._lib.mavsdk_telemetry_Position_destroy(ctypes.byref(c_data))
 
                 callback(py_data, user_data)
 
@@ -1792,7 +1792,7 @@ class Telemetry:
         )
 
         py_result = Position.from_c_struct(result_out)
-        self._lib.mavsdk_telemetry_position_destroy(ctypes.byref(result_out))
+        self._lib.mavsdk_telemetry_Position_destroy(ctypes.byref(result_out))
         return py_result
 
 
@@ -1804,7 +1804,7 @@ class Telemetry:
 
                 py_data = Position.from_c_struct(c_data)
 
-                self._lib.mavsdk_telemetry_position_destroy(ctypes.byref(c_data))
+                self._lib.mavsdk_telemetry_Position_destroy(ctypes.byref(c_data))
 
                 callback(py_data, user_data)
 
@@ -1837,7 +1837,7 @@ class Telemetry:
         )
 
         py_result = Position.from_c_struct(result_out)
-        self._lib.mavsdk_telemetry_position_destroy(ctypes.byref(result_out))
+        self._lib.mavsdk_telemetry_Position_destroy(ctypes.byref(result_out))
         return py_result
 
 
@@ -1921,7 +1921,7 @@ class Telemetry:
         )
 
         py_result = LandedState.from_c_struct(result_out)
-        self._lib.mavsdk_telemetry_landed_state_destroy(ctypes.byref(result_out))
+        self._lib.mavsdk_telemetry_LandedState_destroy(ctypes.byref(result_out))
         return py_result
 
 
@@ -2005,7 +2005,7 @@ class Telemetry:
         )
 
         py_result = VtolState.from_c_struct(result_out)
-        self._lib.mavsdk_telemetry_vtol_state_destroy(ctypes.byref(result_out))
+        self._lib.mavsdk_telemetry_VtolState_destroy(ctypes.byref(result_out))
         return py_result
 
 
@@ -2017,7 +2017,7 @@ class Telemetry:
 
                 py_data = Quaternion.from_c_struct(c_data)
 
-                self._lib.mavsdk_telemetry_quaternion_destroy(ctypes.byref(c_data))
+                self._lib.mavsdk_telemetry_Quaternion_destroy(ctypes.byref(c_data))
 
                 callback(py_data, user_data)
 
@@ -2050,7 +2050,7 @@ class Telemetry:
         )
 
         py_result = Quaternion.from_c_struct(result_out)
-        self._lib.mavsdk_telemetry_quaternion_destroy(ctypes.byref(result_out))
+        self._lib.mavsdk_telemetry_Quaternion_destroy(ctypes.byref(result_out))
         return py_result
 
 
@@ -2062,7 +2062,7 @@ class Telemetry:
 
                 py_data = EulerAngle.from_c_struct(c_data)
 
-                self._lib.mavsdk_telemetry_euler_angle_destroy(ctypes.byref(c_data))
+                self._lib.mavsdk_telemetry_EulerAngle_destroy(ctypes.byref(c_data))
 
                 callback(py_data, user_data)
 
@@ -2095,7 +2095,7 @@ class Telemetry:
         )
 
         py_result = EulerAngle.from_c_struct(result_out)
-        self._lib.mavsdk_telemetry_euler_angle_destroy(ctypes.byref(result_out))
+        self._lib.mavsdk_telemetry_EulerAngle_destroy(ctypes.byref(result_out))
         return py_result
 
 
@@ -2107,7 +2107,7 @@ class Telemetry:
 
                 py_data = AngularVelocityBody.from_c_struct(c_data)
 
-                self._lib.mavsdk_telemetry_angular_velocity_body_destroy(ctypes.byref(c_data))
+                self._lib.mavsdk_telemetry_AngularVelocityBody_destroy(ctypes.byref(c_data))
 
                 callback(py_data, user_data)
 
@@ -2140,7 +2140,7 @@ class Telemetry:
         )
 
         py_result = AngularVelocityBody.from_c_struct(result_out)
-        self._lib.mavsdk_telemetry_angular_velocity_body_destroy(ctypes.byref(result_out))
+        self._lib.mavsdk_telemetry_AngularVelocityBody_destroy(ctypes.byref(result_out))
         return py_result
 
 
@@ -2152,7 +2152,7 @@ class Telemetry:
 
                 py_data = VelocityNed.from_c_struct(c_data)
 
-                self._lib.mavsdk_telemetry_velocity_ned_destroy(ctypes.byref(c_data))
+                self._lib.mavsdk_telemetry_VelocityNed_destroy(ctypes.byref(c_data))
 
                 callback(py_data, user_data)
 
@@ -2185,7 +2185,7 @@ class Telemetry:
         )
 
         py_result = VelocityNed.from_c_struct(result_out)
-        self._lib.mavsdk_telemetry_velocity_ned_destroy(ctypes.byref(result_out))
+        self._lib.mavsdk_telemetry_VelocityNed_destroy(ctypes.byref(result_out))
         return py_result
 
 
@@ -2197,7 +2197,7 @@ class Telemetry:
 
                 py_data = GpsInfo.from_c_struct(c_data)
 
-                self._lib.mavsdk_telemetry_gps_info_destroy(ctypes.byref(c_data))
+                self._lib.mavsdk_telemetry_GpsInfo_destroy(ctypes.byref(c_data))
 
                 callback(py_data, user_data)
 
@@ -2230,7 +2230,7 @@ class Telemetry:
         )
 
         py_result = GpsInfo.from_c_struct(result_out)
-        self._lib.mavsdk_telemetry_gps_info_destroy(ctypes.byref(result_out))
+        self._lib.mavsdk_telemetry_GpsInfo_destroy(ctypes.byref(result_out))
         return py_result
 
 
@@ -2242,7 +2242,7 @@ class Telemetry:
 
                 py_data = RawGps.from_c_struct(c_data)
 
-                self._lib.mavsdk_telemetry_raw_gps_destroy(ctypes.byref(c_data))
+                self._lib.mavsdk_telemetry_RawGps_destroy(ctypes.byref(c_data))
 
                 callback(py_data, user_data)
 
@@ -2275,7 +2275,7 @@ class Telemetry:
         )
 
         py_result = RawGps.from_c_struct(result_out)
-        self._lib.mavsdk_telemetry_raw_gps_destroy(ctypes.byref(result_out))
+        self._lib.mavsdk_telemetry_RawGps_destroy(ctypes.byref(result_out))
         return py_result
 
 
@@ -2287,7 +2287,7 @@ class Telemetry:
 
                 py_data = Battery.from_c_struct(c_data)
 
-                self._lib.mavsdk_telemetry_battery_destroy(ctypes.byref(c_data))
+                self._lib.mavsdk_telemetry_Battery_destroy(ctypes.byref(c_data))
 
                 callback(py_data, user_data)
 
@@ -2320,7 +2320,7 @@ class Telemetry:
         )
 
         py_result = Battery.from_c_struct(result_out)
-        self._lib.mavsdk_telemetry_battery_destroy(ctypes.byref(result_out))
+        self._lib.mavsdk_telemetry_Battery_destroy(ctypes.byref(result_out))
         return py_result
 
 
@@ -2363,7 +2363,7 @@ class Telemetry:
         )
 
         py_result = FlightMode.from_c_struct(result_out)
-        self._lib.mavsdk_telemetry_flight_mode_destroy(ctypes.byref(result_out))
+        self._lib.mavsdk_telemetry_FlightMode_destroy(ctypes.byref(result_out))
         return py_result
 
 
@@ -2375,7 +2375,7 @@ class Telemetry:
 
                 py_data = Health.from_c_struct(c_data)
 
-                self._lib.mavsdk_telemetry_health_destroy(ctypes.byref(c_data))
+                self._lib.mavsdk_telemetry_Health_destroy(ctypes.byref(c_data))
 
                 callback(py_data, user_data)
 
@@ -2408,7 +2408,7 @@ class Telemetry:
         )
 
         py_result = Health.from_c_struct(result_out)
-        self._lib.mavsdk_telemetry_health_destroy(ctypes.byref(result_out))
+        self._lib.mavsdk_telemetry_Health_destroy(ctypes.byref(result_out))
         return py_result
 
 
@@ -2420,7 +2420,7 @@ class Telemetry:
 
                 py_data = RcStatus.from_c_struct(c_data)
 
-                self._lib.mavsdk_telemetry_rc_status_destroy(ctypes.byref(c_data))
+                self._lib.mavsdk_telemetry_RcStatus_destroy(ctypes.byref(c_data))
 
                 callback(py_data, user_data)
 
@@ -2453,7 +2453,7 @@ class Telemetry:
         )
 
         py_result = RcStatus.from_c_struct(result_out)
-        self._lib.mavsdk_telemetry_rc_status_destroy(ctypes.byref(result_out))
+        self._lib.mavsdk_telemetry_RcStatus_destroy(ctypes.byref(result_out))
         return py_result
 
 
@@ -2465,7 +2465,7 @@ class Telemetry:
 
                 py_data = StatusText.from_c_struct(c_data)
 
-                self._lib.mavsdk_telemetry_status_text_destroy(ctypes.byref(c_data))
+                self._lib.mavsdk_telemetry_StatusText_destroy(ctypes.byref(c_data))
 
                 callback(py_data, user_data)
 
@@ -2498,7 +2498,7 @@ class Telemetry:
         )
 
         py_result = StatusText.from_c_struct(result_out)
-        self._lib.mavsdk_telemetry_status_text_destroy(ctypes.byref(result_out))
+        self._lib.mavsdk_telemetry_StatusText_destroy(ctypes.byref(result_out))
         return py_result
 
 
@@ -2510,7 +2510,7 @@ class Telemetry:
 
                 py_data = ActuatorControlTarget.from_c_struct(c_data)
 
-                self._lib.mavsdk_telemetry_actuator_control_target_destroy(ctypes.byref(c_data))
+                self._lib.mavsdk_telemetry_ActuatorControlTarget_destroy(ctypes.byref(c_data))
 
                 callback(py_data, user_data)
 
@@ -2543,7 +2543,7 @@ class Telemetry:
         )
 
         py_result = ActuatorControlTarget.from_c_struct(result_out)
-        self._lib.mavsdk_telemetry_actuator_control_target_destroy(ctypes.byref(result_out))
+        self._lib.mavsdk_telemetry_ActuatorControlTarget_destroy(ctypes.byref(result_out))
         return py_result
 
 
@@ -2555,7 +2555,7 @@ class Telemetry:
 
                 py_data = ActuatorOutputStatus.from_c_struct(c_data)
 
-                self._lib.mavsdk_telemetry_actuator_output_status_destroy(ctypes.byref(c_data))
+                self._lib.mavsdk_telemetry_ActuatorOutputStatus_destroy(ctypes.byref(c_data))
 
                 callback(py_data, user_data)
 
@@ -2588,7 +2588,7 @@ class Telemetry:
         )
 
         py_result = ActuatorOutputStatus.from_c_struct(result_out)
-        self._lib.mavsdk_telemetry_actuator_output_status_destroy(ctypes.byref(result_out))
+        self._lib.mavsdk_telemetry_ActuatorOutputStatus_destroy(ctypes.byref(result_out))
         return py_result
 
 
@@ -2600,7 +2600,7 @@ class Telemetry:
 
                 py_data = Odometry.from_c_struct(c_data)
 
-                self._lib.mavsdk_telemetry_odometry_destroy(ctypes.byref(c_data))
+                self._lib.mavsdk_telemetry_Odometry_destroy(ctypes.byref(c_data))
 
                 callback(py_data, user_data)
 
@@ -2633,7 +2633,7 @@ class Telemetry:
         )
 
         py_result = Odometry.from_c_struct(result_out)
-        self._lib.mavsdk_telemetry_odometry_destroy(ctypes.byref(result_out))
+        self._lib.mavsdk_telemetry_Odometry_destroy(ctypes.byref(result_out))
         return py_result
 
 
@@ -2645,7 +2645,7 @@ class Telemetry:
 
                 py_data = PositionVelocityNed.from_c_struct(c_data)
 
-                self._lib.mavsdk_telemetry_position_velocity_ned_destroy(ctypes.byref(c_data))
+                self._lib.mavsdk_telemetry_PositionVelocityNed_destroy(ctypes.byref(c_data))
 
                 callback(py_data, user_data)
 
@@ -2678,7 +2678,7 @@ class Telemetry:
         )
 
         py_result = PositionVelocityNed.from_c_struct(result_out)
-        self._lib.mavsdk_telemetry_position_velocity_ned_destroy(ctypes.byref(result_out))
+        self._lib.mavsdk_telemetry_PositionVelocityNed_destroy(ctypes.byref(result_out))
         return py_result
 
 
@@ -2690,7 +2690,7 @@ class Telemetry:
 
                 py_data = GroundTruth.from_c_struct(c_data)
 
-                self._lib.mavsdk_telemetry_ground_truth_destroy(ctypes.byref(c_data))
+                self._lib.mavsdk_telemetry_GroundTruth_destroy(ctypes.byref(c_data))
 
                 callback(py_data, user_data)
 
@@ -2723,7 +2723,7 @@ class Telemetry:
         )
 
         py_result = GroundTruth.from_c_struct(result_out)
-        self._lib.mavsdk_telemetry_ground_truth_destroy(ctypes.byref(result_out))
+        self._lib.mavsdk_telemetry_GroundTruth_destroy(ctypes.byref(result_out))
         return py_result
 
 
@@ -2735,7 +2735,7 @@ class Telemetry:
 
                 py_data = FixedwingMetrics.from_c_struct(c_data)
 
-                self._lib.mavsdk_telemetry_fixedwing_metrics_destroy(ctypes.byref(c_data))
+                self._lib.mavsdk_telemetry_FixedwingMetrics_destroy(ctypes.byref(c_data))
 
                 callback(py_data, user_data)
 
@@ -2768,7 +2768,7 @@ class Telemetry:
         )
 
         py_result = FixedwingMetrics.from_c_struct(result_out)
-        self._lib.mavsdk_telemetry_fixedwing_metrics_destroy(ctypes.byref(result_out))
+        self._lib.mavsdk_telemetry_FixedwingMetrics_destroy(ctypes.byref(result_out))
         return py_result
 
 
@@ -2780,7 +2780,7 @@ class Telemetry:
 
                 py_data = Imu.from_c_struct(c_data)
 
-                self._lib.mavsdk_telemetry_imu_destroy(ctypes.byref(c_data))
+                self._lib.mavsdk_telemetry_Imu_destroy(ctypes.byref(c_data))
 
                 callback(py_data, user_data)
 
@@ -2813,7 +2813,7 @@ class Telemetry:
         )
 
         py_result = Imu.from_c_struct(result_out)
-        self._lib.mavsdk_telemetry_imu_destroy(ctypes.byref(result_out))
+        self._lib.mavsdk_telemetry_Imu_destroy(ctypes.byref(result_out))
         return py_result
 
 
@@ -2825,7 +2825,7 @@ class Telemetry:
 
                 py_data = Imu.from_c_struct(c_data)
 
-                self._lib.mavsdk_telemetry_imu_destroy(ctypes.byref(c_data))
+                self._lib.mavsdk_telemetry_Imu_destroy(ctypes.byref(c_data))
 
                 callback(py_data, user_data)
 
@@ -2858,7 +2858,7 @@ class Telemetry:
         )
 
         py_result = Imu.from_c_struct(result_out)
-        self._lib.mavsdk_telemetry_imu_destroy(ctypes.byref(result_out))
+        self._lib.mavsdk_telemetry_Imu_destroy(ctypes.byref(result_out))
         return py_result
 
 
@@ -2870,7 +2870,7 @@ class Telemetry:
 
                 py_data = Imu.from_c_struct(c_data)
 
-                self._lib.mavsdk_telemetry_imu_destroy(ctypes.byref(c_data))
+                self._lib.mavsdk_telemetry_Imu_destroy(ctypes.byref(c_data))
 
                 callback(py_data, user_data)
 
@@ -2903,7 +2903,7 @@ class Telemetry:
         )
 
         py_result = Imu.from_c_struct(result_out)
-        self._lib.mavsdk_telemetry_imu_destroy(ctypes.byref(result_out))
+        self._lib.mavsdk_telemetry_Imu_destroy(ctypes.byref(result_out))
         return py_result
 
 
@@ -2997,7 +2997,7 @@ class Telemetry:
 
                 py_data = DistanceSensor.from_c_struct(c_data)
 
-                self._lib.mavsdk_telemetry_distance_sensor_destroy(ctypes.byref(c_data))
+                self._lib.mavsdk_telemetry_DistanceSensor_destroy(ctypes.byref(c_data))
 
                 callback(py_data, user_data)
 
@@ -3030,7 +3030,7 @@ class Telemetry:
         )
 
         py_result = DistanceSensor.from_c_struct(result_out)
-        self._lib.mavsdk_telemetry_distance_sensor_destroy(ctypes.byref(result_out))
+        self._lib.mavsdk_telemetry_DistanceSensor_destroy(ctypes.byref(result_out))
         return py_result
 
 
@@ -3042,7 +3042,7 @@ class Telemetry:
 
                 py_data = ScaledPressure.from_c_struct(c_data)
 
-                self._lib.mavsdk_telemetry_scaled_pressure_destroy(ctypes.byref(c_data))
+                self._lib.mavsdk_telemetry_ScaledPressure_destroy(ctypes.byref(c_data))
 
                 callback(py_data, user_data)
 
@@ -3075,7 +3075,7 @@ class Telemetry:
         )
 
         py_result = ScaledPressure.from_c_struct(result_out)
-        self._lib.mavsdk_telemetry_scaled_pressure_destroy(ctypes.byref(result_out))
+        self._lib.mavsdk_telemetry_ScaledPressure_destroy(ctypes.byref(result_out))
         return py_result
 
 
@@ -3087,7 +3087,7 @@ class Telemetry:
 
                 py_data = Heading.from_c_struct(c_data)
 
-                self._lib.mavsdk_telemetry_heading_destroy(ctypes.byref(c_data))
+                self._lib.mavsdk_telemetry_Heading_destroy(ctypes.byref(c_data))
 
                 callback(py_data, user_data)
 
@@ -3120,7 +3120,7 @@ class Telemetry:
         )
 
         py_result = Heading.from_c_struct(result_out)
-        self._lib.mavsdk_telemetry_heading_destroy(ctypes.byref(result_out))
+        self._lib.mavsdk_telemetry_Heading_destroy(ctypes.byref(result_out))
         return py_result
 
 
@@ -3132,7 +3132,7 @@ class Telemetry:
 
                 py_data = Altitude.from_c_struct(c_data)
 
-                self._lib.mavsdk_telemetry_altitude_destroy(ctypes.byref(c_data))
+                self._lib.mavsdk_telemetry_Altitude_destroy(ctypes.byref(c_data))
 
                 callback(py_data, user_data)
 
@@ -3165,7 +3165,7 @@ class Telemetry:
         )
 
         py_result = Altitude.from_c_struct(result_out)
-        self._lib.mavsdk_telemetry_altitude_destroy(ctypes.byref(result_out))
+        self._lib.mavsdk_telemetry_Altitude_destroy(ctypes.byref(result_out))
         return py_result
 
 
@@ -3177,7 +3177,7 @@ class Telemetry:
 
                 py_data = Wind.from_c_struct(c_data)
 
-                self._lib.mavsdk_telemetry_wind_destroy(ctypes.byref(c_data))
+                self._lib.mavsdk_telemetry_Wind_destroy(ctypes.byref(c_data))
 
                 callback(py_data, user_data)
 
@@ -3210,7 +3210,7 @@ class Telemetry:
         )
 
         py_result = Wind.from_c_struct(result_out)
-        self._lib.mavsdk_telemetry_wind_destroy(ctypes.byref(result_out))
+        self._lib.mavsdk_telemetry_Wind_destroy(ctypes.byref(result_out))
         return py_result
 
 
@@ -4160,7 +4160,7 @@ class Telemetry:
 
                 py_data = GpsGlobalOrigin.from_c_struct(c_data)
 
-                self._lib.mavsdk_telemetry_gps_global_origin_destroy(ctypes.byref(c_data))
+                self._lib.mavsdk_telemetry_GpsGlobalOrigin_destroy(ctypes.byref(c_data))
 
                 callback(py_result, py_data, user_data)
 
@@ -4191,7 +4191,7 @@ class Telemetry:
             raise Exception(f"get_gps_global_origin failed: {result}")
 
         py_result = GpsGlobalOrigin.from_c_struct(result_out)
-        self._lib.mavsdk_telemetry_gps_global_origin_destroy(ctypes.byref(result_out))
+        self._lib.mavsdk_telemetry_GpsGlobalOrigin_destroy(ctypes.byref(result_out))
         return py_result
 
 
@@ -4504,160 +4504,160 @@ _cmavsdk_lib.mavsdk_telemetry_create.restype = ctypes.c_void_p
 _cmavsdk_lib.mavsdk_telemetry_destroy.argtypes = [ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_telemetry_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_telemetry_position_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_telemetry_Position_destroy.argtypes = [
     ctypes.POINTER(PositionCStruct)
 ]
-_cmavsdk_lib.mavsdk_telemetry_position_destroy.restype = None
+_cmavsdk_lib.mavsdk_telemetry_Position_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_telemetry_heading_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_telemetry_Heading_destroy.argtypes = [
     ctypes.POINTER(HeadingCStruct)
 ]
-_cmavsdk_lib.mavsdk_telemetry_heading_destroy.restype = None
+_cmavsdk_lib.mavsdk_telemetry_Heading_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_telemetry_quaternion_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_telemetry_Quaternion_destroy.argtypes = [
     ctypes.POINTER(QuaternionCStruct)
 ]
-_cmavsdk_lib.mavsdk_telemetry_quaternion_destroy.restype = None
+_cmavsdk_lib.mavsdk_telemetry_Quaternion_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_telemetry_euler_angle_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_telemetry_EulerAngle_destroy.argtypes = [
     ctypes.POINTER(EulerAngleCStruct)
 ]
-_cmavsdk_lib.mavsdk_telemetry_euler_angle_destroy.restype = None
+_cmavsdk_lib.mavsdk_telemetry_EulerAngle_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_telemetry_angular_velocity_body_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_telemetry_AngularVelocityBody_destroy.argtypes = [
     ctypes.POINTER(AngularVelocityBodyCStruct)
 ]
-_cmavsdk_lib.mavsdk_telemetry_angular_velocity_body_destroy.restype = None
+_cmavsdk_lib.mavsdk_telemetry_AngularVelocityBody_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_telemetry_gps_info_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_telemetry_GpsInfo_destroy.argtypes = [
     ctypes.POINTER(GpsInfoCStruct)
 ]
-_cmavsdk_lib.mavsdk_telemetry_gps_info_destroy.restype = None
+_cmavsdk_lib.mavsdk_telemetry_GpsInfo_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_telemetry_raw_gps_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_telemetry_RawGps_destroy.argtypes = [
     ctypes.POINTER(RawGpsCStruct)
 ]
-_cmavsdk_lib.mavsdk_telemetry_raw_gps_destroy.restype = None
+_cmavsdk_lib.mavsdk_telemetry_RawGps_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_telemetry_battery_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_telemetry_Battery_destroy.argtypes = [
     ctypes.POINTER(BatteryCStruct)
 ]
-_cmavsdk_lib.mavsdk_telemetry_battery_destroy.restype = None
+_cmavsdk_lib.mavsdk_telemetry_Battery_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_telemetry_health_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_telemetry_Health_destroy.argtypes = [
     ctypes.POINTER(HealthCStruct)
 ]
-_cmavsdk_lib.mavsdk_telemetry_health_destroy.restype = None
+_cmavsdk_lib.mavsdk_telemetry_Health_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_telemetry_rc_status_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_telemetry_RcStatus_destroy.argtypes = [
     ctypes.POINTER(RcStatusCStruct)
 ]
-_cmavsdk_lib.mavsdk_telemetry_rc_status_destroy.restype = None
+_cmavsdk_lib.mavsdk_telemetry_RcStatus_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_telemetry_status_text_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_telemetry_StatusText_destroy.argtypes = [
     ctypes.POINTER(StatusTextCStruct)
 ]
-_cmavsdk_lib.mavsdk_telemetry_status_text_destroy.restype = None
+_cmavsdk_lib.mavsdk_telemetry_StatusText_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_telemetry_actuator_control_target_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_telemetry_ActuatorControlTarget_destroy.argtypes = [
     ctypes.POINTER(ActuatorControlTargetCStruct)
 ]
-_cmavsdk_lib.mavsdk_telemetry_actuator_control_target_destroy.restype = None
+_cmavsdk_lib.mavsdk_telemetry_ActuatorControlTarget_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_telemetry_actuator_output_status_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_telemetry_ActuatorOutputStatus_destroy.argtypes = [
     ctypes.POINTER(ActuatorOutputStatusCStruct)
 ]
-_cmavsdk_lib.mavsdk_telemetry_actuator_output_status_destroy.restype = None
+_cmavsdk_lib.mavsdk_telemetry_ActuatorOutputStatus_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_telemetry_covariance_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_telemetry_Covariance_destroy.argtypes = [
     ctypes.POINTER(CovarianceCStruct)
 ]
-_cmavsdk_lib.mavsdk_telemetry_covariance_destroy.restype = None
+_cmavsdk_lib.mavsdk_telemetry_Covariance_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_telemetry_velocity_body_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_telemetry_VelocityBody_destroy.argtypes = [
     ctypes.POINTER(VelocityBodyCStruct)
 ]
-_cmavsdk_lib.mavsdk_telemetry_velocity_body_destroy.restype = None
+_cmavsdk_lib.mavsdk_telemetry_VelocityBody_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_telemetry_position_body_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_telemetry_PositionBody_destroy.argtypes = [
     ctypes.POINTER(PositionBodyCStruct)
 ]
-_cmavsdk_lib.mavsdk_telemetry_position_body_destroy.restype = None
+_cmavsdk_lib.mavsdk_telemetry_PositionBody_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_telemetry_odometry_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_telemetry_Odometry_destroy.argtypes = [
     ctypes.POINTER(OdometryCStruct)
 ]
-_cmavsdk_lib.mavsdk_telemetry_odometry_destroy.restype = None
+_cmavsdk_lib.mavsdk_telemetry_Odometry_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_telemetry_distance_sensor_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_telemetry_DistanceSensor_destroy.argtypes = [
     ctypes.POINTER(DistanceSensorCStruct)
 ]
-_cmavsdk_lib.mavsdk_telemetry_distance_sensor_destroy.restype = None
+_cmavsdk_lib.mavsdk_telemetry_DistanceSensor_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_telemetry_scaled_pressure_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_telemetry_ScaledPressure_destroy.argtypes = [
     ctypes.POINTER(ScaledPressureCStruct)
 ]
-_cmavsdk_lib.mavsdk_telemetry_scaled_pressure_destroy.restype = None
+_cmavsdk_lib.mavsdk_telemetry_ScaledPressure_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_telemetry_position_ned_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_telemetry_PositionNed_destroy.argtypes = [
     ctypes.POINTER(PositionNedCStruct)
 ]
-_cmavsdk_lib.mavsdk_telemetry_position_ned_destroy.restype = None
+_cmavsdk_lib.mavsdk_telemetry_PositionNed_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_telemetry_velocity_ned_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_telemetry_VelocityNed_destroy.argtypes = [
     ctypes.POINTER(VelocityNedCStruct)
 ]
-_cmavsdk_lib.mavsdk_telemetry_velocity_ned_destroy.restype = None
+_cmavsdk_lib.mavsdk_telemetry_VelocityNed_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_telemetry_position_velocity_ned_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_telemetry_PositionVelocityNed_destroy.argtypes = [
     ctypes.POINTER(PositionVelocityNedCStruct)
 ]
-_cmavsdk_lib.mavsdk_telemetry_position_velocity_ned_destroy.restype = None
+_cmavsdk_lib.mavsdk_telemetry_PositionVelocityNed_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_telemetry_ground_truth_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_telemetry_GroundTruth_destroy.argtypes = [
     ctypes.POINTER(GroundTruthCStruct)
 ]
-_cmavsdk_lib.mavsdk_telemetry_ground_truth_destroy.restype = None
+_cmavsdk_lib.mavsdk_telemetry_GroundTruth_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_telemetry_fixedwing_metrics_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_telemetry_FixedwingMetrics_destroy.argtypes = [
     ctypes.POINTER(FixedwingMetricsCStruct)
 ]
-_cmavsdk_lib.mavsdk_telemetry_fixedwing_metrics_destroy.restype = None
+_cmavsdk_lib.mavsdk_telemetry_FixedwingMetrics_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_telemetry_acceleration_frd_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_telemetry_AccelerationFrd_destroy.argtypes = [
     ctypes.POINTER(AccelerationFrdCStruct)
 ]
-_cmavsdk_lib.mavsdk_telemetry_acceleration_frd_destroy.restype = None
+_cmavsdk_lib.mavsdk_telemetry_AccelerationFrd_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_telemetry_angular_velocity_frd_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_telemetry_AngularVelocityFrd_destroy.argtypes = [
     ctypes.POINTER(AngularVelocityFrdCStruct)
 ]
-_cmavsdk_lib.mavsdk_telemetry_angular_velocity_frd_destroy.restype = None
+_cmavsdk_lib.mavsdk_telemetry_AngularVelocityFrd_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_telemetry_magnetic_field_frd_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_telemetry_MagneticFieldFrd_destroy.argtypes = [
     ctypes.POINTER(MagneticFieldFrdCStruct)
 ]
-_cmavsdk_lib.mavsdk_telemetry_magnetic_field_frd_destroy.restype = None
+_cmavsdk_lib.mavsdk_telemetry_MagneticFieldFrd_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_telemetry_imu_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_telemetry_Imu_destroy.argtypes = [
     ctypes.POINTER(ImuCStruct)
 ]
-_cmavsdk_lib.mavsdk_telemetry_imu_destroy.restype = None
+_cmavsdk_lib.mavsdk_telemetry_Imu_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_telemetry_gps_global_origin_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_telemetry_GpsGlobalOrigin_destroy.argtypes = [
     ctypes.POINTER(GpsGlobalOriginCStruct)
 ]
-_cmavsdk_lib.mavsdk_telemetry_gps_global_origin_destroy.restype = None
+_cmavsdk_lib.mavsdk_telemetry_GpsGlobalOrigin_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_telemetry_altitude_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_telemetry_Altitude_destroy.argtypes = [
     ctypes.POINTER(AltitudeCStruct)
 ]
-_cmavsdk_lib.mavsdk_telemetry_altitude_destroy.restype = None
+_cmavsdk_lib.mavsdk_telemetry_Altitude_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_telemetry_wind_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_telemetry_Wind_destroy.argtypes = [
     ctypes.POINTER(WindCStruct)
 ]
-_cmavsdk_lib.mavsdk_telemetry_wind_destroy.restype = None
+_cmavsdk_lib.mavsdk_telemetry_Wind_destroy.restype = None
 
 
 _cmavsdk_lib.mavsdk_telemetry_subscribe_position.argtypes = [

@@ -174,7 +174,7 @@ class LogStreaming:
 
                 py_data = LogStreamingRaw.from_c_struct(c_data)
 
-                self._lib.mavsdk_log_streaming_log_streaming_raw_destroy(ctypes.byref(c_data))
+                self._lib.mavsdk_log_streaming_LogStreamingRaw_destroy(ctypes.byref(c_data))
 
                 callback(py_data, user_data)
 
@@ -231,10 +231,10 @@ _cmavsdk_lib.mavsdk_log_streaming_create.restype = ctypes.c_void_p
 _cmavsdk_lib.mavsdk_log_streaming_destroy.argtypes = [ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_log_streaming_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_log_streaming_log_streaming_raw_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_log_streaming_LogStreamingRaw_destroy.argtypes = [
     ctypes.POINTER(LogStreamingRawCStruct)
 ]
-_cmavsdk_lib.mavsdk_log_streaming_log_streaming_raw_destroy.restype = None
+_cmavsdk_lib.mavsdk_log_streaming_LogStreamingRaw_destroy.restype = None
 
 
 _cmavsdk_lib.mavsdk_log_streaming_start_log_streaming_async.argtypes = [

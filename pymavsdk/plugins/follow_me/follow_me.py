@@ -198,7 +198,7 @@ class FollowMe:
         )
 
         py_result = Config.from_c_struct(result_out)
-        self._lib.mavsdk_follow_me_config_destroy(ctypes.byref(result_out))
+        self._lib.mavsdk_follow_me_Config_destroy(ctypes.byref(result_out))
         return py_result
 
 
@@ -260,7 +260,7 @@ class FollowMe:
         )
 
         py_result = TargetLocation.from_c_struct(result_out)
-        self._lib.mavsdk_follow_me_target_location_destroy(ctypes.byref(result_out))
+        self._lib.mavsdk_follow_me_TargetLocation_destroy(ctypes.byref(result_out))
         return py_result
 
 
@@ -312,15 +312,15 @@ _cmavsdk_lib.mavsdk_follow_me_create.restype = ctypes.c_void_p
 _cmavsdk_lib.mavsdk_follow_me_destroy.argtypes = [ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_follow_me_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_follow_me_config_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_follow_me_Config_destroy.argtypes = [
     ctypes.POINTER(ConfigCStruct)
 ]
-_cmavsdk_lib.mavsdk_follow_me_config_destroy.restype = None
+_cmavsdk_lib.mavsdk_follow_me_Config_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_follow_me_target_location_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_follow_me_TargetLocation_destroy.argtypes = [
     ctypes.POINTER(TargetLocationCStruct)
 ]
-_cmavsdk_lib.mavsdk_follow_me_target_location_destroy.restype = None
+_cmavsdk_lib.mavsdk_follow_me_TargetLocation_destroy.restype = None
 
 
 
