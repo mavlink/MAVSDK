@@ -35,6 +35,7 @@ MavsdkImpl::MavsdkImpl(const Mavsdk::Configuration& configuration) :
         if (std::string(env_p) == "1") {
             LogDebug() << "Callback debugging is on.";
             _callback_debugging = true;
+            _callback_tracker = std::make_unique<CallbackTracker>();
         }
     }
 
@@ -1113,18 +1114,26 @@ void MavsdkImpl::call_user_callback_located(
     }
 
     auto callback_size = _user_callback_queue.size();
-    if (callback_size == 10) {
-        LogWarn()
-            << "User callback queue too slow.\n"
-               "See: https://mavsdk.mavlink.io/main/en/cpp/troubleshooting.html#user_callbacks";
+
+    if (_callback_tracker) {
+        _callback_tracker->record_queued(filename, linenumber);
+        _callback_tracker->maybe_print_stats(callback_size);
+    }
+
+    if (callback_size >= 100) {
+        return;
 
     } else if (callback_size == 99) {
         LogErr()
             << "User callback queue overflown\n"
                "See: https://mavsdk.mavlink.io/main/en/cpp/troubleshooting.html#user_callbacks";
-
-    } else if (callback_size == 100) {
         return;
+
+    } else if (callback_size >= 10) {
+        LogWarn()
+            << "User callback queue slow (queue size: " << callback_size
+            << ").\n"
+               "See: https://mavsdk.mavlink.io/main/en/cpp/troubleshooting.html#user_callbacks";
     }
 
     // We only need to keep track of filename and linenumber if we're actually debugging this.
@@ -1171,8 +1180,18 @@ void MavsdkImpl::process_user_callbacks_thread()
                 }
             },
             timeout_s);
+        auto callback_start = std::chrono::steady_clock::now();
         callback.func();
+        auto callback_end = std::chrono::steady_clock::now();
         timeout_handler.remove(cookie);
+
+        if (_callback_tracker) {
+            auto callback_duration_us =
+                std::chrono::duration_cast<std::chrono::microseconds>(callback_end - callback_start)
+                    .count();
+            _callback_tracker->record_executed(
+                callback.filename, callback.linenumber, callback_duration_us);
+        }
     }
 }
 
