@@ -1,13 +1,11 @@
-From src/:
+#CMAVSDK
 
-Action:
+CMake configure step (on macOS, I had to define OPENSSL_ROOT_DIR):
 
-protoc action.proto --plugin=protoc-gen-custom=$(which protoc-gen-mavsdk) -I. --custom_out=. --custom_opt=output_file=action/action.h --custom_opt=template_file=file.h.j2 --custom_opt=lstrip_blocks=True --custom_opt=trim_blocks=True
-
-protoc action.proto --plugin=protoc-gen-custom=$(which protoc-gen-mavsdk) -I. --custom_out=. --custom_opt=output_file=action/action.cpp --custom_opt=template_file=file.cpp.j2 --custom_opt=lstrip_blocks=True --custom_opt=trim_blocks=True
-
-Telemetry:
-
-protoc telemetry.proto --plugin=protoc-gen-custom=$(which protoc-gen-mavsdk) -I. --custom_out=. --custom_opt=output_file=telemetry/telemetry.h --custom_opt=template_file=file.h.j2 --custom_opt=lstrip_blocks=True --custom_opt=trim_blocks=True
-
-protoc telemetry.proto --plugin=protoc-gen-custom=$(which protoc-gen-mavsdk) -I. --custom_out=. --custom_opt=output_file=telemetry/telemetry.cpp --custom_opt=template_file=file.cpp.j2 --custom_opt=lstrip_blocks=True --custom_opt=trim_blocks=True
+```
+OPENSSL_ROOT_DIR=/path/to/mavsdk/build/third_party/install \
+cmake -DCMAKE_INSTALL_PREFIX=build/install \
+-DCMAKE_PREFIX_PATH="/path/to/mavsdk/build/install;/path/to/mavsdk/build/third_party/install" \
+-DBUILD_SHARED_LIBS=ON \
+-Bbuild -S.
+```
