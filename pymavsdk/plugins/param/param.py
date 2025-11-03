@@ -37,6 +37,14 @@ class ParamResult(IntEnum):
     NO_SYSTEM = 6
     PARAM_VALUE_TOO_LONG = 7
     FAILED = 8
+    DOES_NOT_EXIST = 9
+    VALUE_OUT_OF_RANGE = 10
+    PERMISSION_DENIED = 11
+    COMPONENT_NOT_FOUND = 12
+    READ_ONLY = 13
+    TYPE_UNSUPPORTED = 14
+    TYPE_MISMATCH = 15
+    READ_FAIL = 16
 
 
 # ===== Internal C Structures =====
