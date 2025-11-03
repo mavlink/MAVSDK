@@ -1,7 +1,6 @@
 """Main ctypes wrapper for cmavsdk library"""
 
 import ctypes
-import sys
 
 from typing import Optional, List, Callable, Any
 
@@ -9,7 +8,6 @@ from .cmavsdk_loader import _cmavsdk_lib
 from .connection_result import ConnectionResult
 from .component_type import ComponentType
 from .exceptions import ConnectionError
-from .enums import ForwardingOption
 from .server_component import ServerComponent
 from .system import System
 from .types import (

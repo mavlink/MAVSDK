@@ -1,7 +1,6 @@
 """Type definitions for cmavsdk structures"""
 
 import ctypes
-from typing import Optional
 
 
 class ConnectionError(ctypes.Structure):

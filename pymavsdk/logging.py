@@ -7,6 +7,25 @@ from typing import Optional, Callable
 
 from .cmavsdk_loader import _cmavsdk_lib
 
+
+class LogLevel(IntEnum):
+    """Log levels"""
+
+    DEBUG = 0
+    INFO = 1
+    WARN = 2
+    ERROR = 3
+
+
+LogCallback = ctypes.CFUNCTYPE(
+    ctypes.c_bool,
+    ctypes.c_int,  # mavsdk_log_level_t
+    ctypes.c_char_p,  # message
+    ctypes.c_char_p,  # file
+    ctypes.c_int,  # line
+    ctypes.c_void_p,  # user_data
+)
+
 # Global reference to keep callback alive
 _log_callback_ref: Optional[LogCallback] = None
 
@@ -56,24 +75,6 @@ def log_unsubscribe():
     lib.mavsdk_log_unsubscribe()
     _log_callback_ref = None
 
-
-class LogLevel(IntEnum):
-    """Log levels"""
-
-    DEBUG = 0
-    INFO = 1
-    WARN = 2
-    ERROR = 3
-
-
-LogCallback = ctypes.CFUNCTYPE(
-    ctypes.c_bool,
-    ctypes.c_int,  # mavsdk_log_level_t
-    ctypes.c_char_p,  # message
-    ctypes.c_char_p,  # file
-    ctypes.c_int,  # line
-    ctypes.c_void_p,  # user_data
-)
 
 _cmavsdk_lib.mavsdk_log_subscribe.argtypes = [LogCallback, ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_log_subscribe.restype = None
