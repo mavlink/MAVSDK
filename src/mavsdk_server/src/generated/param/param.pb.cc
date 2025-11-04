@@ -891,39 +891,44 @@ const char descriptor_table_protodef_param_2fparam_2eproto[] ABSL_ATTRIBUTE_SECT
     " \003(\0132\032.mavsdk.rpc.param.IntParam\0222\n\014floa"
     "t_params\030\002 \003(\0132\034.mavsdk.rpc.param.FloatP"
     "aram\0224\n\rcustom_params\030\003 \003(\0132\035.mavsdk.rpc"
-    ".param.CustomParam\"\274\002\n\013ParamResult\0224\n\006re"
+    ".param.CustomParam\"\227\004\n\013ParamResult\0224\n\006re"
     "sult\030\001 \001(\0162$.mavsdk.rpc.param.ParamResul"
-    "t.Result\022\022\n\nresult_str\030\002 \001(\t\"\342\001\n\006Result\022"
+    "t.Result\022\022\n\nresult_str\030\002 \001(\t\"\275\003\n\006Result\022"
     "\022\n\016RESULT_UNKNOWN\020\000\022\022\n\016RESULT_SUCCESS\020\001\022"
     "\022\n\016RESULT_TIMEOUT\020\002\022\033\n\027RESULT_CONNECTION"
     "_ERROR\020\003\022\025\n\021RESULT_WRONG_TYPE\020\004\022\036\n\032RESUL"
     "T_PARAM_NAME_TOO_LONG\020\005\022\024\n\020RESULT_NO_SYS"
     "TEM\020\006\022\037\n\033RESULT_PARAM_VALUE_TOO_LONG\020\007\022\021"
-    "\n\rRESULT_FAILED\020\010*D\n\017ProtocolVersion\022\027\n\023"
-    "PROTOCOL_VERSION_V1\020\000\022\030\n\024PROTOCOL_VERSIO"
-    "N_EXT\020\0012\313\006\n\014ParamService\022`\n\013GetParamInt\022"
-    "$.mavsdk.rpc.param.GetParamIntRequest\032%."
-    "mavsdk.rpc.param.GetParamIntResponse\"\004\200\265"
-    "\030\001\022`\n\013SetParamInt\022$.mavsdk.rpc.param.Set"
-    "ParamIntRequest\032%.mavsdk.rpc.param.SetPa"
-    "ramIntResponse\"\004\200\265\030\001\022f\n\rGetParamFloat\022&."
-    "mavsdk.rpc.param.GetParamFloatRequest\032\'."
-    "mavsdk.rpc.param.GetParamFloatResponse\"\004"
-    "\200\265\030\001\022f\n\rSetParamFloat\022&.mavsdk.rpc.param"
-    ".SetParamFloatRequest\032\'.mavsdk.rpc.param"
-    ".SetParamFloatResponse\"\004\200\265\030\001\022i\n\016GetParam"
-    "Custom\022\'.mavsdk.rpc.param.GetParamCustom"
-    "Request\032(.mavsdk.rpc.param.GetParamCusto"
-    "mResponse\"\004\200\265\030\001\022i\n\016SetParamCustom\022\'.mavs"
-    "dk.rpc.param.SetParamCustomRequest\032(.mav"
-    "sdk.rpc.param.SetParamCustomResponse\"\004\200\265"
-    "\030\001\022c\n\014GetAllParams\022%.mavsdk.rpc.param.Ge"
-    "tAllParamsRequest\032&.mavsdk.rpc.param.Get"
-    "AllParamsResponse\"\004\200\265\030\001\022l\n\017SelectCompone"
-    "nt\022(.mavsdk.rpc.param.SelectComponentReq"
-    "uest\032).mavsdk.rpc.param.SelectComponentR"
-    "esponse\"\004\200\265\030\001B\035\n\017io.mavsdk.paramB\nParamP"
-    "rotob\006proto3"
+    "\n\rRESULT_FAILED\020\010\022\031\n\025RESULT_DOES_NOT_EXI"
+    "ST\020\t\022\035\n\031RESULT_VALUE_OUT_OF_RANGE\020\n\022\034\n\030R"
+    "ESULT_PERMISSION_DENIED\020\013\022\036\n\032RESULT_COMP"
+    "ONENT_NOT_FOUND\020\014\022\024\n\020RESULT_READ_ONLY\020\r\022"
+    "\033\n\027RESULT_TYPE_UNSUPPORTED\020\016\022\030\n\024RESULT_T"
+    "YPE_MISMATCH\020\017\022\024\n\020RESULT_READ_FAIL\020\020*D\n\017"
+    "ProtocolVersion\022\027\n\023PROTOCOL_VERSION_V1\020\000"
+    "\022\030\n\024PROTOCOL_VERSION_EXT\020\0012\313\006\n\014ParamServ"
+    "ice\022`\n\013GetParamInt\022$.mavsdk.rpc.param.Ge"
+    "tParamIntRequest\032%.mavsdk.rpc.param.GetP"
+    "aramIntResponse\"\004\200\265\030\001\022`\n\013SetParamInt\022$.m"
+    "avsdk.rpc.param.SetParamIntRequest\032%.mav"
+    "sdk.rpc.param.SetParamIntResponse\"\004\200\265\030\001\022"
+    "f\n\rGetParamFloat\022&.mavsdk.rpc.param.GetP"
+    "aramFloatRequest\032\'.mavsdk.rpc.param.GetP"
+    "aramFloatResponse\"\004\200\265\030\001\022f\n\rSetParamFloat"
+    "\022&.mavsdk.rpc.param.SetParamFloatRequest"
+    "\032\'.mavsdk.rpc.param.SetParamFloatRespons"
+    "e\"\004\200\265\030\001\022i\n\016GetParamCustom\022\'.mavsdk.rpc.p"
+    "aram.GetParamCustomRequest\032(.mavsdk.rpc."
+    "param.GetParamCustomResponse\"\004\200\265\030\001\022i\n\016Se"
+    "tParamCustom\022\'.mavsdk.rpc.param.SetParam"
+    "CustomRequest\032(.mavsdk.rpc.param.SetPara"
+    "mCustomResponse\"\004\200\265\030\001\022c\n\014GetAllParams\022%."
+    "mavsdk.rpc.param.GetAllParamsRequest\032&.m"
+    "avsdk.rpc.param.GetAllParamsResponse\"\004\200\265"
+    "\030\001\022l\n\017SelectComponent\022(.mavsdk.rpc.param"
+    ".SelectComponentRequest\032).mavsdk.rpc.par"
+    "am.SelectComponentResponse\"\004\200\265\030\001B\035\n\017io.m"
+    "avsdk.paramB\nParamProtob\006proto3"
 };
 static const ::_pbi::DescriptorTable* const descriptor_table_param_2fparam_2eproto_deps[1] =
     {
@@ -933,7 +938,7 @@ static ::absl::once_flag descriptor_table_param_2fparam_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_param_2fparam_2eproto = {
     false,
     false,
-    2692,
+    2911,
     descriptor_table_protodef_param_2fparam_2eproto,
     "param/param.proto",
     &descriptor_table_param_2fparam_2eproto_once,
@@ -954,9 +959,9 @@ const ::google::protobuf::EnumDescriptor* ParamResult_Result_descriptor() {
   return file_level_enum_descriptors_param_2fparam_2eproto[0];
 }
 PROTOBUF_CONSTINIT const uint32_t ParamResult_Result_internal_data_[] = {
-    589824u, 0u, };
+    1114112u, 0u, };
 bool ParamResult_Result_IsValid(int value) {
-  return 0 <= value && value <= 8;
+  return 0 <= value && value <= 16;
 }
 #if (__cplusplus < 201703) && \
   (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
@@ -970,6 +975,14 @@ constexpr ParamResult_Result ParamResult::RESULT_PARAM_NAME_TOO_LONG;
 constexpr ParamResult_Result ParamResult::RESULT_NO_SYSTEM;
 constexpr ParamResult_Result ParamResult::RESULT_PARAM_VALUE_TOO_LONG;
 constexpr ParamResult_Result ParamResult::RESULT_FAILED;
+constexpr ParamResult_Result ParamResult::RESULT_DOES_NOT_EXIST;
+constexpr ParamResult_Result ParamResult::RESULT_VALUE_OUT_OF_RANGE;
+constexpr ParamResult_Result ParamResult::RESULT_PERMISSION_DENIED;
+constexpr ParamResult_Result ParamResult::RESULT_COMPONENT_NOT_FOUND;
+constexpr ParamResult_Result ParamResult::RESULT_READ_ONLY;
+constexpr ParamResult_Result ParamResult::RESULT_TYPE_UNSUPPORTED;
+constexpr ParamResult_Result ParamResult::RESULT_TYPE_MISMATCH;
+constexpr ParamResult_Result ParamResult::RESULT_READ_FAIL;
 constexpr ParamResult_Result ParamResult::Result_MIN;
 constexpr ParamResult_Result ParamResult::Result_MAX;
 constexpr int ParamResult::Result_ARRAYSIZE;

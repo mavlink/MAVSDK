@@ -152,6 +152,14 @@ Value | Description
 <span id="classmavsdk_1_1_param_1afde69c8b60c41e2f21db148d211881dfa1119faf72ba0dfb23aeea644fed960ad"></span> `NoSystem` | No system connected. 
 <span id="classmavsdk_1_1_param_1afde69c8b60c41e2f21db148d211881dfa1fc93bc695e2e3e1903029eb77228234"></span> `ParamValueTooLong` | [Param](classmavsdk_1_1_param.md) value too long (> 128). 
 <span id="classmavsdk_1_1_param_1afde69c8b60c41e2f21db148d211881dfad7c8c85bf79bbe1b7188497c32c3b0ca"></span> `Failed` | Operation failed.. 
+<span id="classmavsdk_1_1_param_1afde69c8b60c41e2f21db148d211881dfac47c93cf49de211bba5d62d65225f128"></span> `DoesNotExist` | Parameter does not exist. 
+<span id="classmavsdk_1_1_param_1afde69c8b60c41e2f21db148d211881dfaf3bd760221d37f5f1a973f094ea02478"></span> `ValueOutOfRange` | Parameter value does not fit within accepted range. 
+<span id="classmavsdk_1_1_param_1afde69c8b60c41e2f21db148d211881dfa4b33a686be73bb172407d73b26356275"></span> `PermissionDenied` | Caller is not permitted to set the value of this parameter. 
+<span id="classmavsdk_1_1_param_1afde69c8b60c41e2f21db148d211881dfab43f027b5acb9fb70fafef6a3de8e646"></span> `ComponentNotFound` | Unknown component specified. 
+<span id="classmavsdk_1_1_param_1afde69c8b60c41e2f21db148d211881dfa131fb182a881796e7606ed6da27f1197"></span> `ReadOnly` | Parameter is read-only. 
+<span id="classmavsdk_1_1_param_1afde69c8b60c41e2f21db148d211881dfa849c937b23fd724a14c4597eef61ce29"></span> `TypeUnsupported` | Parameter data type is not supported by flight stack. 
+<span id="classmavsdk_1_1_param_1afde69c8b60c41e2f21db148d211881dfa2782c4707c245684aa95545098e1b70b"></span> `TypeMismatch` | Parameter type does not match expected type. 
+<span id="classmavsdk_1_1_param_1afde69c8b60c41e2f21db148d211881dfa61d8b4448684ca1db22e9894cf995e0a"></span> `ReadFail` | Parameter exists but reading failed. 
 
 ## Member Function Documentation
 

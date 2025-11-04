@@ -213,6 +213,22 @@ public:
                 return rpc::param::ParamResult_Result_RESULT_PARAM_VALUE_TOO_LONG;
             case mavsdk::Param::Result::Failed:
                 return rpc::param::ParamResult_Result_RESULT_FAILED;
+            case mavsdk::Param::Result::DoesNotExist:
+                return rpc::param::ParamResult_Result_RESULT_DOES_NOT_EXIST;
+            case mavsdk::Param::Result::ValueOutOfRange:
+                return rpc::param::ParamResult_Result_RESULT_VALUE_OUT_OF_RANGE;
+            case mavsdk::Param::Result::PermissionDenied:
+                return rpc::param::ParamResult_Result_RESULT_PERMISSION_DENIED;
+            case mavsdk::Param::Result::ComponentNotFound:
+                return rpc::param::ParamResult_Result_RESULT_COMPONENT_NOT_FOUND;
+            case mavsdk::Param::Result::ReadOnly:
+                return rpc::param::ParamResult_Result_RESULT_READ_ONLY;
+            case mavsdk::Param::Result::TypeUnsupported:
+                return rpc::param::ParamResult_Result_RESULT_TYPE_UNSUPPORTED;
+            case mavsdk::Param::Result::TypeMismatch:
+                return rpc::param::ParamResult_Result_RESULT_TYPE_MISMATCH;
+            case mavsdk::Param::Result::ReadFail:
+                return rpc::param::ParamResult_Result_RESULT_READ_FAIL;
         }
     }
 
@@ -241,6 +257,22 @@ public:
                 return mavsdk::Param::Result::ParamValueTooLong;
             case rpc::param::ParamResult_Result_RESULT_FAILED:
                 return mavsdk::Param::Result::Failed;
+            case rpc::param::ParamResult_Result_RESULT_DOES_NOT_EXIST:
+                return mavsdk::Param::Result::DoesNotExist;
+            case rpc::param::ParamResult_Result_RESULT_VALUE_OUT_OF_RANGE:
+                return mavsdk::Param::Result::ValueOutOfRange;
+            case rpc::param::ParamResult_Result_RESULT_PERMISSION_DENIED:
+                return mavsdk::Param::Result::PermissionDenied;
+            case rpc::param::ParamResult_Result_RESULT_COMPONENT_NOT_FOUND:
+                return mavsdk::Param::Result::ComponentNotFound;
+            case rpc::param::ParamResult_Result_RESULT_READ_ONLY:
+                return mavsdk::Param::Result::ReadOnly;
+            case rpc::param::ParamResult_Result_RESULT_TYPE_UNSUPPORTED:
+                return mavsdk::Param::Result::TypeUnsupported;
+            case rpc::param::ParamResult_Result_RESULT_TYPE_MISMATCH:
+                return mavsdk::Param::Result::TypeMismatch;
+            case rpc::param::ParamResult_Result_RESULT_READ_FAIL:
+                return mavsdk::Param::Result::ReadFail;
         }
     }
 

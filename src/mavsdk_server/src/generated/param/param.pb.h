@@ -141,6 +141,14 @@ enum ParamResult_Result : int {
   ParamResult_Result_RESULT_NO_SYSTEM = 6,
   ParamResult_Result_RESULT_PARAM_VALUE_TOO_LONG = 7,
   ParamResult_Result_RESULT_FAILED = 8,
+  ParamResult_Result_RESULT_DOES_NOT_EXIST = 9,
+  ParamResult_Result_RESULT_VALUE_OUT_OF_RANGE = 10,
+  ParamResult_Result_RESULT_PERMISSION_DENIED = 11,
+  ParamResult_Result_RESULT_COMPONENT_NOT_FOUND = 12,
+  ParamResult_Result_RESULT_READ_ONLY = 13,
+  ParamResult_Result_RESULT_TYPE_UNSUPPORTED = 14,
+  ParamResult_Result_RESULT_TYPE_MISMATCH = 15,
+  ParamResult_Result_RESULT_READ_FAIL = 16,
   ParamResult_Result_ParamResult_Result_INT_MIN_SENTINEL_DO_NOT_USE_ =
       std::numeric_limits<::int32_t>::min(),
   ParamResult_Result_ParamResult_Result_INT_MAX_SENTINEL_DO_NOT_USE_ =
@@ -150,8 +158,8 @@ enum ParamResult_Result : int {
 bool ParamResult_Result_IsValid(int value);
 extern const uint32_t ParamResult_Result_internal_data_[];
 constexpr ParamResult_Result ParamResult_Result_Result_MIN = static_cast<ParamResult_Result>(0);
-constexpr ParamResult_Result ParamResult_Result_Result_MAX = static_cast<ParamResult_Result>(8);
-constexpr int ParamResult_Result_Result_ARRAYSIZE = 8 + 1;
+constexpr ParamResult_Result ParamResult_Result_Result_MAX = static_cast<ParamResult_Result>(16);
+constexpr int ParamResult_Result_Result_ARRAYSIZE = 16 + 1;
 const ::google::protobuf::EnumDescriptor*
 ParamResult_Result_descriptor();
 template <typename T>
@@ -164,7 +172,7 @@ const std::string& ParamResult_Result_Name(T value) {
 template <>
 inline const std::string& ParamResult_Result_Name(ParamResult_Result value) {
   return ::google::protobuf::internal::NameOfDenseEnum<ParamResult_Result_descriptor,
-                                                 0, 8>(
+                                                 0, 16>(
       static_cast<int>(value));
 }
 inline bool ParamResult_Result_Parse(absl::string_view name, ParamResult_Result* value) {
@@ -1200,6 +1208,14 @@ class ParamResult final
   static constexpr Result RESULT_NO_SYSTEM = ParamResult_Result_RESULT_NO_SYSTEM;
   static constexpr Result RESULT_PARAM_VALUE_TOO_LONG = ParamResult_Result_RESULT_PARAM_VALUE_TOO_LONG;
   static constexpr Result RESULT_FAILED = ParamResult_Result_RESULT_FAILED;
+  static constexpr Result RESULT_DOES_NOT_EXIST = ParamResult_Result_RESULT_DOES_NOT_EXIST;
+  static constexpr Result RESULT_VALUE_OUT_OF_RANGE = ParamResult_Result_RESULT_VALUE_OUT_OF_RANGE;
+  static constexpr Result RESULT_PERMISSION_DENIED = ParamResult_Result_RESULT_PERMISSION_DENIED;
+  static constexpr Result RESULT_COMPONENT_NOT_FOUND = ParamResult_Result_RESULT_COMPONENT_NOT_FOUND;
+  static constexpr Result RESULT_READ_ONLY = ParamResult_Result_RESULT_READ_ONLY;
+  static constexpr Result RESULT_TYPE_UNSUPPORTED = ParamResult_Result_RESULT_TYPE_UNSUPPORTED;
+  static constexpr Result RESULT_TYPE_MISMATCH = ParamResult_Result_RESULT_TYPE_MISMATCH;
+  static constexpr Result RESULT_READ_FAIL = ParamResult_Result_RESULT_READ_FAIL;
   static inline bool Result_IsValid(int value) {
     return ParamResult_Result_IsValid(value);
   }
