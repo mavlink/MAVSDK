@@ -55,7 +55,7 @@ setup(
     long_description=parse_long_description(),
     long_description_content_type="text/markdown",
     url="https://github.com/mavlink/MAVSDK-Python",
-    packages=["pymavsdk"],
+    packages=find_packages(),
     license="BSD-3-Clause",
     classifiers=[
         "Development Status :: 5 - Production/Stable",
