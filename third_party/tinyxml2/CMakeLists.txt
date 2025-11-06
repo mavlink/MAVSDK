@@ -29,8 +29,7 @@ endforeach()
 ExternalProject_add(
     tinyxml2
     GIT_REPOSITORY https://github.com/leethomason/tinyxml2
-    GIT_TAG 9.0.0
+    GIT_TAG 11.0.0
     PREFIX tinyxml2
-    PATCH_COMMAND git checkout . && git apply ${PROJECT_SOURCE_DIR}/cmake-3.10.2.patch && git apply ${PROJECT_SOURCE_DIR}/no-lfs64.patch
     CMAKE_ARGS "${CMAKE_ARGS}"
     )
