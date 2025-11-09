@@ -5,7 +5,7 @@
 #include <limits>
 #include <string>
 
-static auto constexpr default_connection = "udp://:14540";
+static auto constexpr default_connection = "udpin://0.0.0.0:14540";
 static auto constexpr default_mavsdk_server_port = 50051;
 static auto constexpr default_sysid = 245;
 static auto constexpr default_compid = 190;
@@ -112,11 +112,13 @@ void usage(const char* bin_name)
     std::cout << "Usage: " << bin_name << " [Options] [Connection URL]" << '\n'
               << '\n'
               << "Connection URL format should be:" << '\n'
-              << "  Serial: serial:///path/to/serial/dev[:baudrate]" << '\n'
-              << "  UDP:    udp://[bind_host][:bind_port]" << '\n'
-              << "  TCP:    tcp://[server_host][:server_port]" << '\n'
+              << "  Serial:  serial:///path/to/serial/dev[:baudrate]" << '\n'
+              << "  UDP in:  udpin://[bind_host][:bind_port]" << '\n'
+              << "  UDP out: udpout://[remote_host][:remote_port]" << '\n'
+              << "  TCP in:  tcpin://[bind_host][:bind_port]" << '\n'
+              << "  TCP out: tcpout://[remote_host][:remote_port]" << '\n'
               << '\n'
-              << "For example to connect to SITL use: udp://:14540" << '\n'
+              << "For example to connect to SITL use: udpin://0.0.0.0:14540" << '\n'
               << '\n'
               << "Options:" << '\n'
               << "  -h | --help : show this help" << '\n'
