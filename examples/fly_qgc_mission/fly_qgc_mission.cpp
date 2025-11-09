@@ -33,7 +33,7 @@ using std::this_thread::sleep_for;
 
 void usage(const std::string& bin_name)
 {
-    std::cerr << "Usage : " << bin_name << " <connection_url>\n"
+    std::cerr << "Usage : " << bin_name << " <connection_url> <mission_plan_file>\n"
               << "Connection URL format should be :\n"
               << " For TCP server: tcpin://<our_ip>:<port>\n"
               << " For TCP client: tcpout://<remote_ip>:<port>\n"
