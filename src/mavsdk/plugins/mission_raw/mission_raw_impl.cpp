@@ -49,14 +49,12 @@ void MissionRawImpl::init()
 
 void MissionRawImpl::enable() {}
 
-void MissionRawImpl::disable()
-{
-    reset_mission_progress();
-}
+void MissionRawImpl::disable() {}
 
 void MissionRawImpl::deinit()
 {
     _system_impl->unregister_all_mavlink_message_handlers(this);
+    reset_mission_progress();
 }
 
 void MissionRawImpl::reset_mission_progress()
