@@ -5,10 +5,13 @@
 #include "plugin_impl_base.h"
 #include "system.h"
 #include <fstream>
+#include <optional>
 
 namespace mavsdk {
 
-static constexpr uint32_t TABLE_BINS = 512;
+// We need to keep this smaller, otherwise we end up running over the UDP buffer in Linux when PX4
+// sends too much all at once.
+static constexpr uint32_t TABLE_BINS = 128;
 static constexpr uint32_t CHUNK_SIZE = (TABLE_BINS * MAVLINK_MSG_LOG_DATA_FIELD_DATA_LEN);
 
 struct LogData {
@@ -31,7 +34,6 @@ struct LogData {
     uint32_t current_chunk{};
     std::vector<bool> chunk_bin_table{};
 
-    uint32_t chunk_bytes_written{};
     uint32_t total_bytes_written{};
 
     TimeoutHandler::Cookie timeout_cookie{};
@@ -70,6 +72,8 @@ private:
 
     void process_log_data(const mavlink_message_t& message);
     void data_timeout();
+    void check_and_request_missing_bins();
+    void check_and_request_missing_entries();
 
     void request_log_list(uint16_t index_min, uint16_t index_max);
     void request_log_data(unsigned id, unsigned start, unsigned count);
@@ -77,8 +81,9 @@ private:
     void request_end();
 
     std::mutex _entries_mutex;
-    std::unordered_map<uint16_t, LogFiles::Entry> _log_entries;
+    std::vector<std::optional<LogFiles::Entry>> _log_entries;
     uint32_t _total_entries{0};
+    uint32_t _entries_retry_count{0};
     TimeoutHandler::Cookie _entries_timeout_cookie{};
     LogFiles::GetEntriesCallback _entries_user_callback{};
 
