@@ -85,6 +85,10 @@ if(BUILD_TESTING)
     add_subdirectory(system_tests)
 endif()
 
+if(BUILD_FUZZ_TESTS)
+    add_subdirectory(fuzz_tests)
+endif()
+
 if (BUILD_MAVSDK_SERVER)
     message(STATUS "Building mavsdk server")
     add_subdirectory(mavsdk_server)
