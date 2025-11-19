@@ -2,5 +2,5 @@ FROM dockcross/linux-arm64:20250109-7bf589c
 
 ENV DEFAULT_DOCKCROSS_IMAGE=mavsdk/mavsdk-dockcross-linux-arm64-custom
 
-RUN apt install rubygems -y
+RUN apt update && apt install rubygems -y
 RUN gem install fpm
