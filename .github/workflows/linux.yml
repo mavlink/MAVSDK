@@ -597,6 +597,9 @@ jobs:
         with:
           submodules: recursive
           fetch-depth: 0
+      - name: Free Disk Space
+        uses: jlumbroso/free-disk-space@v1.3.1
+        continue-on-error: true
       - name: setup dockcross
         run: docker run --rm ${{ env.ARG_IMAGE }} > ./dockcross-linux-${{ matrix.docker_name }}-custom; chmod +x ./dockcross-linux-${{ matrix.docker_name }}-custom
       - uses: actions/cache@v4
