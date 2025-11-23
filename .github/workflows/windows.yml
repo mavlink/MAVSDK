@@ -18,7 +18,7 @@ on:
 jobs:
   Windows-mavsdk_server:
     name: Windows mavsdk_server build
-    runs-on: windows-2022
+    runs-on: windows-2025
     strategy:
       fail-fast: false
       matrix:
@@ -87,7 +87,7 @@ jobs:
 
   Windows-mavsdk-library-builds:
     name: Windows mavsdk library build (${{ matrix.arch }}-${{ matrix.config }})
-    runs-on: windows-2022
+    runs-on: windows-2025
     strategy:
       fail-fast: false
       matrix:
@@ -174,7 +174,7 @@ jobs:
 
   Windows-mavsdk-library-combine:
     name: Combine Windows mavsdk library artifacts
-    runs-on: windows-2022
+    runs-on: windows-2025
     needs: Windows-mavsdk-library-builds
     strategy:
       matrix:
