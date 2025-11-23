@@ -173,16 +173,13 @@ std::pair<bool, std::string> TcpClientConnection::send_raw_bytes(const char* byt
         return result;
     }
 
-    // Get socket fd with mutex protection, then release mutex before blocking send
-    SocketHolder::DescriptorType socket_fd;
-    {
-        std::lock_guard<std::mutex> lock(_mutex);
-        if (_socket_fd.empty()) {
-            result.first = false;
-            result.second = "Not connected";
-            return result;
-        }
-        socket_fd = _socket_fd.get();
+    // Hold mutex during send to prevent socket from being closed mid-send
+    std::lock_guard<std::mutex> lock(_mutex);
+
+    if (_socket_fd.empty()) {
+        result.first = false;
+        result.second = "Not connected";
+        return result;
     }
 
 #if !defined(MSG_NOSIGNAL)
@@ -191,7 +188,7 @@ std::pair<bool, std::string> TcpClientConnection::send_raw_bytes(const char* byt
     auto flags = MSG_NOSIGNAL;
 #endif
 
-    const auto send_len = send(socket_fd, bytes, length, flags);
+    const auto send_len = send(_socket_fd.get(), bytes, length, flags);
 
     if (send_len != static_cast<std::remove_cv_t<decltype(send_len)>>(length)) {
         std::stringstream ss;
