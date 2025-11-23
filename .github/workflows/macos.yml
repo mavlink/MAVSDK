@@ -23,21 +23,21 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - name: macOS x64
+          - name: macOS 15 x64
             build-framework: OFF
-            runner: macos-13
+            runner: macos-15-intel
             architecture: 'x64'
-          - name: macOS arm64
+          - name: macOS 15 arm64
             build-framework: OFF
-            runner: macos-14
+            runner: macos-15
             architecture: 'arm64'
-          - name: macOS framework x64
+          - name: macOS 15 framework x64
             build-framework: ON
-            runner: macos-13
+            runner: macos-15-intel
             architecture: 'x64'
-          - name: macOS framework arm64
+          - name: macOS 15 framework arm64
             build-framework: ON
-            runner: macos-14
+            runner: macos-15
             architecture: 'arm64'
     steps:
       - name: Install Python
