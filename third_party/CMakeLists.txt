@@ -13,9 +13,9 @@ if (CMAKE_CROSSCOMPILING)
 endif()
 
 if(SUPERBUILD)
-    set(MAVSDK_MAVLINK_HASH "d6a7eeaf43319ce6da19a1973ca40180a4210643"
+    set(MAVLINK_HASH "d6a7eeaf43319ce6da19a1973ca40180a4210643"
         CACHE STRING "Hash for the MAVLink Repository")
-    set(MAVSDK_MAVLINK_URL "https://github.com/mavlink/mavlink"
+    set(MAVLINK_URL "https://github.com/mavlink/mavlink"
         CACHE STRING "URL for the MAVLink Repository")
 
     build_target(mavlink)
