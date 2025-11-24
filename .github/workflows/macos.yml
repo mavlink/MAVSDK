@@ -48,16 +48,16 @@ jobs:
         with:
           submodules: recursive
           fetch-depth: 0
-      #- uses: actions/cache@v4
-      #  id: cache
-      #  with:
-      #    path: ./build/macos/third_party/install
-      #    key: ${{ github.job }}-${{ matrix.name }}-${{ hashFiles('./third_party/**') }}
-      #- name: disable superbuild on cache hit
-      #  if: steps.cache.outputs.cache-hit == 'true'
-      #  run: |
-      #    echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV
-      #    echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/macos/third_party/install" >> $GITHUB_ENV
+      - uses: actions/cache@v4
+        id: cache
+        with:
+          path: ./build/macos/third_party/install
+          key: ${{ github.job }}-${{ matrix.name }}-${{ hashFiles('./third_party/**') }}
+      - name: disable superbuild on cache hit
+        if: steps.cache.outputs.cache-hit == 'true'
+        run: |
+          echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV
+          echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/macos/third_party/install" >> $GITHUB_ENV
       - name: set SDKROOT value
         run: echo "SDKROOT=$(xcrun --sdk macosx --show-sdk-path)" >> $GITHUB_ENV
       - name: configure
@@ -123,16 +123,16 @@ jobs:
         with:
           submodules: recursive
           fetch-depth: 0
-      #- uses: actions/cache@v4
-      #  id: cache
-      #  with:
-      #    path: ./build/${{ matrix.name }}/third_party/install
-      #    key: ${{ github.job }}-${{ matrix.name }}-${{ hashFiles('./third_party/**', './cmake/ios.toolchain.cmake') }}
-      #- name: disable superbuild on cache hit
-      #  if: steps.cache.outputs.cache-hit == 'true'
-      #  run: |
-      #    echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV
-      #    echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/${{ matrix.name }}/third_party/install" << $GITHUB_ENV
+      - uses: actions/cache@v4
+        id: cache
+        with:
+          path: ./build/${{ matrix.name }}/third_party/install
+          key: ${{ github.job }}-${{ matrix.name }}-${{ hashFiles('./third_party/**', './cmake/ios.toolchain.cmake') }}
+      - name: disable superbuild on cache hit
+        if: steps.cache.outputs.cache-hit == 'true'
+        run: |
+          echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV
+          echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/${{ matrix.name }}/third_party/install" << $GITHUB_ENV
       - name: set SDK-related environment variables (for non-cmake deps)
         run: |
           echo "SDKROOT=$(xcrun --sdk ${{ matrix.sdk }} --show-sdk-path)" >> $GITHUB_ENV
