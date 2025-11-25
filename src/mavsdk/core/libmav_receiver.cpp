@@ -338,9 +338,11 @@ std::string LibmavReceiver::libmav_message_to_json(const mav::Message& msg) cons
             if (variant_opt) {
                 const auto& variant = variant_opt.value();
 
-                // Convert variant to JSON string using extracted function
+                // Convert variant to JSON string using optimized function
                 std::visit(
-                    [&json_stream](const auto& value) { value_to_json_stream(json_stream, value); },
+                    [&json_stream](const auto& value) {
+                        value_to_json_stream_fast(json_stream, value);
+                    },
                     variant);
             } else {
                 // Field not present or failed to extract
