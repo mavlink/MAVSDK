@@ -5,6 +5,8 @@
 #include <cstdint>
 #include <optional>
 #include <memory>
+#include <ostream>
+#include <vector>
 #include "mavlink_include.h"
 #include "mavsdk.h"
 
@@ -22,6 +24,32 @@ namespace mavsdk {
 
 // Forward declaration for thread-safe MessageSet operations
 class MavsdkImpl;
+
+// Original implementation using std::ostream << for float/double conversion.
+template<typename T> void value_to_json_stream(std::ostream& json_stream, const T& value);
+
+// Optimized implementation using std::to_chars for float/double conversion.
+template<typename T> void value_to_json_stream_fast(std::ostream& json_stream, const T& value);
+
+// Explicit template declarations - original
+extern template void value_to_json_stream<float>(std::ostream&, const float&);
+extern template void value_to_json_stream<double>(std::ostream&, const double&);
+extern template void value_to_json_stream<int32_t>(std::ostream&, const int32_t&);
+extern template void value_to_json_stream<uint32_t>(std::ostream&, const uint32_t&);
+extern template void
+value_to_json_stream<std::vector<float>>(std::ostream&, const std::vector<float>&);
+extern template void
+value_to_json_stream<std::vector<double>>(std::ostream&, const std::vector<double>&);
+
+// Explicit template declarations - optimized
+extern template void value_to_json_stream_fast<float>(std::ostream&, const float&);
+extern template void value_to_json_stream_fast<double>(std::ostream&, const double&);
+extern template void value_to_json_stream_fast<int32_t>(std::ostream&, const int32_t&);
+extern template void value_to_json_stream_fast<uint32_t>(std::ostream&, const uint32_t&);
+extern template void
+value_to_json_stream_fast<std::vector<float>>(std::ostream&, const std::vector<float>&);
+extern template void
+value_to_json_stream_fast<std::vector<double>>(std::ostream&, const std::vector<double>&);
 
 class LibmavReceiver {
 public:

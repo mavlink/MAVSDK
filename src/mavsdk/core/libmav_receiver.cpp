@@ -6,10 +6,185 @@
 #include <variant>
 #include <cstring>
 #include <sstream>
+#include <charconv>
 #include <cmath>
 #include "log.h"
 
 namespace mavsdk {
+
+// Original implementation using std::ostream << for float/double conversion.
+// Kept for benchmark comparison.
+template<typename T> void value_to_json_stream(std::ostream& json_stream, const T& value)
+{
+    if constexpr (
+        std::is_same_v<T, uint8_t> || std::is_same_v<T, uint16_t> || std::is_same_v<T, uint32_t> ||
+        std::is_same_v<T, uint64_t> || std::is_same_v<T, int8_t> || std::is_same_v<T, int16_t> ||
+        std::is_same_v<T, int32_t> || std::is_same_v<T, int64_t>) {
+        json_stream << static_cast<int64_t>(value);
+    } else if constexpr (std::is_same_v<T, char>) {
+        json_stream << static_cast<int>(value);
+    } else if constexpr (std::is_same_v<T, float> || std::is_same_v<T, double>) {
+        if (!std::isfinite(value)) {
+            json_stream << "null";
+        } else {
+            json_stream << value;
+        }
+    } else if constexpr (std::is_same_v<T, std::string>) {
+        json_stream << "\"" << value << "\"";
+    } else if constexpr (
+        std::is_same_v<T, std::vector<uint8_t>> || std::is_same_v<T, std::vector<int8_t>>) {
+        // Handle uint8_t/int8_t vectors specially to avoid character output
+        json_stream << "[";
+        bool first = true;
+        for (const auto& elem : value) {
+            if (!first)
+                json_stream << ",";
+            first = false;
+            json_stream << static_cast<int>(elem);
+        }
+        json_stream << "]";
+    } else if constexpr (
+        std::is_same_v<T, std::vector<uint16_t>> || std::is_same_v<T, std::vector<uint32_t>> ||
+        std::is_same_v<T, std::vector<uint64_t>> || std::is_same_v<T, std::vector<int16_t>> ||
+        std::is_same_v<T, std::vector<int32_t>> || std::is_same_v<T, std::vector<int64_t>>) {
+        // Handle integer vector types
+        json_stream << "[";
+        bool first = true;
+        for (const auto& elem : value) {
+            if (!first)
+                json_stream << ",";
+            first = false;
+            json_stream << elem;
+        }
+        json_stream << "]";
+    } else if constexpr (
+        std::is_same_v<T, std::vector<float>> || std::is_same_v<T, std::vector<double>>) {
+        // Handle float/double vector types with NaN check
+        json_stream << "[";
+        bool first = true;
+        for (const auto& elem : value) {
+            if (!first)
+                json_stream << ",";
+            first = false;
+            if (!std::isfinite(elem)) {
+                json_stream << "null";
+            } else {
+                json_stream << elem;
+            }
+        }
+        json_stream << "]";
+    } else {
+        // Fallback for unknown types
+        json_stream << "null";
+    }
+}
+
+// Optimized implementation using std::to_chars for float/double conversion.
+template<typename T> void value_to_json_stream_fast(std::ostream& json_stream, const T& value)
+{
+    if constexpr (
+        std::is_same_v<T, uint8_t> || std::is_same_v<T, uint16_t> || std::is_same_v<T, uint32_t> ||
+        std::is_same_v<T, uint64_t> || std::is_same_v<T, int8_t> || std::is_same_v<T, int16_t> ||
+        std::is_same_v<T, int32_t> || std::is_same_v<T, int64_t>) {
+        char buf[32];
+        auto [ptr, ec] = std::to_chars(buf, buf + sizeof(buf), value);
+        json_stream.write(buf, ptr - buf);
+    } else if constexpr (std::is_same_v<T, char>) {
+        char buf[8];
+        auto [ptr, ec] = std::to_chars(buf, buf + sizeof(buf), static_cast<int>(value));
+        json_stream.write(buf, ptr - buf);
+    } else if constexpr (std::is_same_v<T, float> || std::is_same_v<T, double>) {
+        if (!std::isfinite(value)) {
+            json_stream << "null";
+        } else {
+            char buf[32];
+            auto [ptr, ec] = std::to_chars(buf, buf + sizeof(buf), value);
+            json_stream.write(buf, ptr - buf);
+        }
+    } else if constexpr (std::is_same_v<T, std::string>) {
+        json_stream << "\"" << value << "\"";
+    } else if constexpr (
+        std::is_same_v<T, std::vector<uint8_t>> || std::is_same_v<T, std::vector<int8_t>>) {
+        json_stream << "[";
+        bool first = true;
+        for (const auto& elem : value) {
+            if (!first)
+                json_stream << ",";
+            first = false;
+            char buf[8];
+            auto [ptr, ec] = std::to_chars(buf, buf + sizeof(buf), static_cast<int>(elem));
+            json_stream.write(buf, ptr - buf);
+        }
+        json_stream << "]";
+    } else if constexpr (
+        std::is_same_v<T, std::vector<uint16_t>> || std::is_same_v<T, std::vector<uint32_t>> ||
+        std::is_same_v<T, std::vector<uint64_t>> || std::is_same_v<T, std::vector<int16_t>> ||
+        std::is_same_v<T, std::vector<int32_t>> || std::is_same_v<T, std::vector<int64_t>>) {
+        json_stream << "[";
+        bool first = true;
+        for (const auto& elem : value) {
+            if (!first)
+                json_stream << ",";
+            first = false;
+            char buf[32];
+            auto [ptr, ec] = std::to_chars(buf, buf + sizeof(buf), elem);
+            json_stream.write(buf, ptr - buf);
+        }
+        json_stream << "]";
+    } else if constexpr (
+        std::is_same_v<T, std::vector<float>> || std::is_same_v<T, std::vector<double>>) {
+        json_stream << "[";
+        bool first = true;
+        for (const auto& elem : value) {
+            if (!first)
+                json_stream << ",";
+            first = false;
+            if (!std::isfinite(elem)) {
+                json_stream << "null";
+            } else {
+                char buf[32];
+                auto [ptr, ec] = std::to_chars(buf, buf + sizeof(buf), elem);
+                json_stream.write(buf, ptr - buf);
+            }
+        }
+        json_stream << "]";
+    } else {
+        // Fallback for unknown types
+        json_stream << "null";
+    }
+}
+
+// Explicit instantiations for benchmark testing - original
+template void value_to_json_stream<float>(std::ostream&, const float&);
+template void value_to_json_stream<double>(std::ostream&, const double&);
+template void value_to_json_stream<int8_t>(std::ostream&, const int8_t&);
+template void value_to_json_stream<int16_t>(std::ostream&, const int16_t&);
+template void value_to_json_stream<int32_t>(std::ostream&, const int32_t&);
+template void value_to_json_stream<int64_t>(std::ostream&, const int64_t&);
+template void value_to_json_stream<uint8_t>(std::ostream&, const uint8_t&);
+template void value_to_json_stream<uint16_t>(std::ostream&, const uint16_t&);
+template void value_to_json_stream<uint32_t>(std::ostream&, const uint32_t&);
+template void value_to_json_stream<uint64_t>(std::ostream&, const uint64_t&);
+template void value_to_json_stream<std::string>(std::ostream&, const std::string&);
+template void value_to_json_stream<std::vector<float>>(std::ostream&, const std::vector<float>&);
+template void value_to_json_stream<std::vector<double>>(std::ostream&, const std::vector<double>&);
+
+// Explicit instantiations for benchmark testing - optimized
+template void value_to_json_stream_fast<float>(std::ostream&, const float&);
+template void value_to_json_stream_fast<double>(std::ostream&, const double&);
+template void value_to_json_stream_fast<int8_t>(std::ostream&, const int8_t&);
+template void value_to_json_stream_fast<int16_t>(std::ostream&, const int16_t&);
+template void value_to_json_stream_fast<int32_t>(std::ostream&, const int32_t&);
+template void value_to_json_stream_fast<int64_t>(std::ostream&, const int64_t&);
+template void value_to_json_stream_fast<uint8_t>(std::ostream&, const uint8_t&);
+template void value_to_json_stream_fast<uint16_t>(std::ostream&, const uint16_t&);
+template void value_to_json_stream_fast<uint32_t>(std::ostream&, const uint32_t&);
+template void value_to_json_stream_fast<uint64_t>(std::ostream&, const uint64_t&);
+template void value_to_json_stream_fast<std::string>(std::ostream&, const std::string&);
+template void
+value_to_json_stream_fast<std::vector<float>>(std::ostream&, const std::vector<float>&);
+template void
+value_to_json_stream_fast<std::vector<double>>(std::ostream&, const std::vector<double>&);
 
 LibmavReceiver::LibmavReceiver(MavsdkImpl& mavsdk_impl) : _mavsdk_impl(mavsdk_impl)
 {
@@ -116,80 +291,9 @@ std::string LibmavReceiver::libmav_message_to_json(const mav::Message& msg) cons
             if (variant_opt) {
                 const auto& variant = variant_opt.value();
 
-                // Convert variant to JSON string based on the field type
+                // Convert variant to JSON string using extracted function
                 std::visit(
-                    [&json_stream](const auto& value) {
-                        using T = std::decay_t<decltype(value)>;
-
-                        if constexpr (
-                            std::is_same_v<T, uint8_t> || std::is_same_v<T, uint16_t> ||
-                            std::is_same_v<T, uint32_t> || std::is_same_v<T, uint64_t> ||
-                            std::is_same_v<T, int8_t> || std::is_same_v<T, int16_t> ||
-                            std::is_same_v<T, int32_t> || std::is_same_v<T, int64_t>) {
-                            json_stream << static_cast<int64_t>(value);
-                        } else if constexpr (std::is_same_v<T, char>) {
-                            json_stream << static_cast<int>(value);
-                        } else if constexpr (
-                            std::is_same_v<T, float> || std::is_same_v<T, double>) {
-                            if (!std::isfinite(value)) {
-                                json_stream << "null";
-                            } else {
-                                json_stream << value;
-                            }
-                        } else if constexpr (std::is_same_v<T, std::string>) {
-                            json_stream << "\"" << value << "\"";
-                        } else if constexpr (
-                            std::is_same_v<T, std::vector<uint8_t>> ||
-                            std::is_same_v<T, std::vector<int8_t>>) {
-                            // Handle uint8_t/int8_t vectors specially to avoid character output
-                            json_stream << "[";
-                            bool first = true;
-                            for (const auto& elem : value) {
-                                if (!first)
-                                    json_stream << ",";
-                                first = false;
-                                json_stream << static_cast<int>(elem);
-                            }
-                            json_stream << "]";
-                        } else if constexpr (
-                            std::is_same_v<T, std::vector<uint16_t>> ||
-                            std::is_same_v<T, std::vector<uint32_t>> ||
-                            std::is_same_v<T, std::vector<uint64_t>> ||
-                            std::is_same_v<T, std::vector<int16_t>> ||
-                            std::is_same_v<T, std::vector<int32_t>> ||
-                            std::is_same_v<T, std::vector<int64_t>>) {
-                            // Handle integer vector types
-                            json_stream << "[";
-                            bool first = true;
-                            for (const auto& elem : value) {
-                                if (!first)
-                                    json_stream << ",";
-                                first = false;
-                                json_stream << elem;
-                            }
-                            json_stream << "]";
-                        } else if constexpr (
-                            std::is_same_v<T, std::vector<float>> ||
-                            std::is_same_v<T, std::vector<double>>) {
-                            // Handle float/double vector types with NaN check
-                            json_stream << "[";
-                            bool first = true;
-                            for (const auto& elem : value) {
-                                if (!first)
-                                    json_stream << ",";
-                                first = false;
-                                if (!std::isfinite(elem)) {
-                                    json_stream << "null";
-                                } else {
-                                    json_stream << elem;
-                                }
-                            }
-                            json_stream << "]";
-                        } else {
-                            // Fallback for unknown types
-                            json_stream << "null";
-                        }
-                    },
+                    [&json_stream](const auto& value) { value_to_json_stream(json_stream, value); },
                     variant);
             } else {
                 // Field not present or failed to extract
