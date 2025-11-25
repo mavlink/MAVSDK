@@ -10,6 +10,43 @@
 #include <cmath>
 #include "log.h"
 
+#ifdef __APPLE__
+#include <TargetConditionals.h>
+#endif
+
+// Check if std::to_chars supports floating-point types
+// - GCC 11+ (libstdc++) - use __GNUC__ version, not __GLIBCXX__ date
+// - MSVC 2019 16.4+
+// - macOS with libc++ 14+
+// - iOS: disabled because Apple marks it unavailable for iOS < 16.3
+#if defined(__APPLE__) && (TARGET_OS_IOS || TARGET_OS_TV || TARGET_OS_WATCH)
+// Disable on iOS/tvOS/watchOS - function is marked unavailable for older deployment targets
+#define MAVSDK_HAS_FLOAT_TO_CHARS 0
+#elif defined(__GNUC__) && !defined(__clang__)
+// GCC: floating-point to_chars was added in GCC 11
+#if __GNUC__ >= 11
+#define MAVSDK_HAS_FLOAT_TO_CHARS 1
+#else
+#define MAVSDK_HAS_FLOAT_TO_CHARS 0
+#endif
+#elif defined(_LIBCPP_VERSION)
+// libc++ has had floating-point to_chars since version 14 (macOS 13.3+)
+#if _LIBCPP_VERSION >= 14000
+#define MAVSDK_HAS_FLOAT_TO_CHARS 1
+#else
+#define MAVSDK_HAS_FLOAT_TO_CHARS 0
+#endif
+#elif defined(_MSC_VER)
+// MSVC has had it since VS 2019 16.4
+#if _MSC_VER >= 1924
+#define MAVSDK_HAS_FLOAT_TO_CHARS 1
+#else
+#define MAVSDK_HAS_FLOAT_TO_CHARS 0
+#endif
+#else
+#define MAVSDK_HAS_FLOAT_TO_CHARS 0
+#endif
+
 namespace mavsdk {
 
 // Original implementation using std::ostream << for float/double conversion.
@@ -97,9 +134,14 @@ template<typename T> void value_to_json_stream_fast(std::ostream& json_stream, c
         if (!std::isfinite(value)) {
             json_stream << "null";
         } else {
+#if MAVSDK_HAS_FLOAT_TO_CHARS
             char buf[32];
             auto [ptr, ec] = std::to_chars(buf, buf + sizeof(buf), value);
             json_stream.write(buf, ptr - buf);
+#else
+            // Fallback for older compilers without floating-point to_chars
+            json_stream << value;
+#endif
         }
     } else if constexpr (std::is_same_v<T, std::string>) {
         json_stream << "\"" << value << "\"";
@@ -142,9 +184,14 @@ template<typename T> void value_to_json_stream_fast(std::ostream& json_stream, c
             if (!std::isfinite(elem)) {
                 json_stream << "null";
             } else {
+#if MAVSDK_HAS_FLOAT_TO_CHARS
                 char buf[32];
                 auto [ptr, ec] = std::to_chars(buf, buf + sizeof(buf), elem);
                 json_stream.write(buf, ptr - buf);
+#else
+                // Fallback for older compilers without floating-point to_chars
+                json_stream << elem;
+#endif
             }
         }
         json_stream << "]";
