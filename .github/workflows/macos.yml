@@ -104,15 +104,15 @@ jobs:
           - name: ios
             platform: OS64
             sdk: iphoneos
-            runner: macos-14
+            runner: macos-15
           - name: ios_simulator_x64
             platform: SIMULATOR64
             sdk: iphonesimulator
-            runner: macos-13
+            runner: macos-15-intel
           - name: ios_simulator_arm64
             platform: SIMULATORARM64
             sdk: iphonesimulator
-            runner: macos-14
+            runner: macos-15
     steps:
       - name: Install Python
         uses: actions/setup-python@v5
@@ -154,7 +154,7 @@ jobs:
   iOS-XCFramework:
     name: iOS XCFramework
     needs: [macOS, iOS]
-    runs-on: macos-13
+    runs-on: macos-15
     steps:
       - uses: actions/checkout@v4
         with:
