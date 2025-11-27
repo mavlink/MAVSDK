@@ -32,7 +32,7 @@ add_custom_command(
         -DCOMMON_XML_PATH=${MAVLINK_COMMON_XML}
         -DARDUPILOTMEGA_XML_PATH=${MAVLINK_ARDUPILOTMEGA_XML}
         -DOUTPUT_HEADER=${EMBEDDED_XML_HEADER}
-        -P ${CMAKE_SOURCE_DIR}/cmake/generate_embedded_xml.cmake
+        -P ${CMAKE_CURRENT_SOURCE_DIR}/../../../cmake/generate_embedded_xml.cmake
     DEPENDS ${MAVLINK_MINIMAL_XML} ${MAVLINK_STANDARD_XML} ${MAVLINK_COMMON_XML} ${MAVLINK_ARDUPILOTMEGA_XML}
     COMMENT "Generating embedded MAVLink XML header for core"
     VERBATIM
