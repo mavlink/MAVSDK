@@ -30,7 +30,7 @@ void TransponderImpl::init()
 
 void TransponderImpl::deinit()
 {
-    _system_impl->unregister_all_mavlink_message_handlers(this);
+    _system_impl->unregister_all_mavlink_message_handlers_blocking(this);
 }
 
 void TransponderImpl::enable() {}

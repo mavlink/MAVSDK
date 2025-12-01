@@ -97,7 +97,7 @@ void LogFilesImpl::deinit()
         std::lock_guard<std::mutex> lock(_download_data_mutex);
         _system_impl->unregister_timeout_handler(_download_data.timeout_cookie);
     }
-    _system_impl->unregister_all_mavlink_message_handlers(this);
+    _system_impl->unregister_all_mavlink_message_handlers_blocking(this);
 }
 
 std::pair<LogFiles::Result, std::vector<LogFiles::Entry>> LogFilesImpl::get_entries()

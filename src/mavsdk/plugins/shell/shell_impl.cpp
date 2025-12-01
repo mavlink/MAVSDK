@@ -17,7 +17,7 @@ void ShellImpl::init()
 
 void ShellImpl::deinit()
 {
-    _system_impl->unregister_all_mavlink_message_handlers(this);
+    _system_impl->unregister_all_mavlink_message_handlers_blocking(this);
 }
 
 void ShellImpl::enable() {}

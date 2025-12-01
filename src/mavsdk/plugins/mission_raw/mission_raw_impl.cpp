@@ -53,7 +53,7 @@ void MissionRawImpl::disable() {}
 
 void MissionRawImpl::deinit()
 {
-    _system_impl->unregister_all_mavlink_message_handlers(this);
+    _system_impl->unregister_all_mavlink_message_handlers_blocking(this);
     reset_mission_progress();
 }
 

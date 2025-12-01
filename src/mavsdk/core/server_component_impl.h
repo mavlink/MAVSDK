@@ -97,6 +97,7 @@ public:
 
     void unregister_mavlink_message_handler(uint16_t msg_id, const void* cookie);
     void unregister_all_mavlink_message_handlers(const void* cookie);
+    void unregister_all_mavlink_message_handlers_blocking(const void* cookie);
 
     TimeoutHandler::Cookie
     register_timeout_handler(const std::function<void()>& callback, double duration_s);

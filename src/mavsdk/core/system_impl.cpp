@@ -49,7 +49,8 @@ SystemImpl::SystemImpl(MavsdkImpl& mavsdk_impl) :
 SystemImpl::~SystemImpl()
 {
     _should_exit = true;
-    _mavlink_message_handler.unregister_all(this);
+    // Use blocking version to ensure any in-flight callbacks complete before destruction.
+    _mavlink_message_handler.unregister_all_blocking(this);
     // Clear all libmav message callbacks
     _libmav_message_callbacks.clear();
 
@@ -114,6 +115,11 @@ void SystemImpl::unregister_mavlink_message_handler(uint16_t msg_id, const void*
 void SystemImpl::unregister_all_mavlink_message_handlers(const void* cookie)
 {
     _mavlink_message_handler.unregister_all(cookie);
+}
+
+void SystemImpl::unregister_all_mavlink_message_handlers_blocking(const void* cookie)
+{
+    _mavlink_message_handler.unregister_all_blocking(cookie);
 }
 
 void SystemImpl::update_component_id_messages_handler(

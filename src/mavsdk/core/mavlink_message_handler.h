@@ -27,6 +27,7 @@ public:
         uint16_t msg_id, uint8_t component_id, const Callback& callback, const void* cookie);
     void unregister_one(uint16_t msg_id, const void* cookie);
     void unregister_all(const void* cookie);
+    void unregister_all_blocking(const void* cookie);
     void process_message(const mavlink_message_t& message);
     void update_component_id(uint16_t msg_id, uint8_t cmp_id, const void* cookie);
 

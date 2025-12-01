@@ -83,8 +83,9 @@ EventHandler::~EventHandler()
     if (_timer_cookie != 0) {
         _system_impl.unregister_timeout_handler(_timer_cookie);
     }
-    for (const auto& cookie : _message_handler_cookies) {
-        _system_impl.unregister_all_mavlink_message_handlers(cookie);
+    // Use blocking version to ensure any in-flight callbacks complete before destruction.
+    for (size_t i = 0; i < _message_handler_cookies.size(); ++i) {
+        _system_impl.unregister_all_mavlink_message_handlers_blocking(_message_handler_cookies[i]);
     }
 }
 void EventHandler::set_metadata(const std::string& metadata_json)

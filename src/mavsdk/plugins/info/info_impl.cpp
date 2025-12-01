@@ -45,7 +45,7 @@ void InfoImpl::init()
 
 void InfoImpl::deinit()
 {
-    _system_impl->unregister_all_mavlink_message_handlers(this);
+    _system_impl->unregister_all_mavlink_message_handlers_blocking(this);
 }
 
 void InfoImpl::enable()
