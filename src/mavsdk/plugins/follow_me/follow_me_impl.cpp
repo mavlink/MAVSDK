@@ -35,7 +35,7 @@ void FollowMeImpl::init()
 
 void FollowMeImpl::deinit()
 {
-    _system_impl->unregister_all_mavlink_message_handlers(this);
+    _system_impl->unregister_all_mavlink_message_handlers_blocking(this);
 }
 
 void FollowMeImpl::enable()

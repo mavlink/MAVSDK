@@ -54,6 +54,17 @@ void MavlinkMessageHandler::unregister_all(const void* cookie)
     unregister_impl({}, cookie);
 }
 
+void MavlinkMessageHandler::unregister_all_blocking(const void* cookie)
+{
+    // Blocking version for use in destructors - waits for any in-flight callbacks to complete.
+    // WARNING: Do NOT call this from within a message handler callback - it will deadlock.
+    std::lock_guard<std::mutex> lock(_mutex);
+    _table.erase(
+        std::remove_if(
+            _table.begin(), _table.end(), [&](auto& entry) { return entry.cookie == cookie; }),
+        _table.end());
+}
+
 void MavlinkMessageHandler::unregister_impl(
     std::optional<uint16_t> maybe_msg_id, const void* cookie)
 {

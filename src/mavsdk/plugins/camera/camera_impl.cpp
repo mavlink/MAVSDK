@@ -122,7 +122,7 @@ void CameraImpl::init()
 
 void CameraImpl::deinit()
 {
-    _system_impl->unregister_all_mavlink_message_handlers(this);
+    _system_impl->unregister_all_mavlink_message_handlers_blocking(this);
 
     _system_impl->cancel_all_param(this);
 

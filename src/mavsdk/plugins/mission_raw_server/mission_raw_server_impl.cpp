@@ -159,7 +159,7 @@ void MissionRawServerImpl::init()
 
 void MissionRawServerImpl::deinit()
 {
-    _server_component_impl->unregister_all_mavlink_message_handlers(this);
+    _server_component_impl->unregister_all_mavlink_message_handlers_blocking(this);
 }
 
 void MissionRawServerImpl::process_mission_count(const mavlink_message_t& message)

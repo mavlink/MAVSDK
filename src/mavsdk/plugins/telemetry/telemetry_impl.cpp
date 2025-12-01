@@ -188,7 +188,8 @@ void TelemetryImpl::init()
 void TelemetryImpl::deinit()
 {
     _system_impl->unregister_statustext_handler(this);
-    _system_impl->unregister_all_mavlink_message_handlers(this);
+    // Use blocking version to ensure any in-flight callbacks complete before destruction.
+    _system_impl->unregister_all_mavlink_message_handlers_blocking(this);
 }
 
 void TelemetryImpl::enable()

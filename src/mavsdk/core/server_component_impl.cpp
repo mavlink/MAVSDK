@@ -122,6 +122,11 @@ void ServerComponentImpl::unregister_all_mavlink_message_handlers(const void* co
     _mavsdk_impl.mavlink_message_handler.unregister_all(cookie);
 }
 
+void ServerComponentImpl::unregister_all_mavlink_message_handlers_blocking(const void* cookie)
+{
+    _mavsdk_impl.mavlink_message_handler.unregister_all_blocking(cookie);
+}
+
 void ServerComponentImpl::do_work()
 {
     _mavlink_parameter_server.do_work();

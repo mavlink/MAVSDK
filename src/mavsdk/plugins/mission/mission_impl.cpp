@@ -51,7 +51,7 @@ void MissionImpl::disable()
 void MissionImpl::deinit()
 {
     _system_impl->unregister_timeout_handler(_timeout_cookie);
-    _system_impl->unregister_all_mavlink_message_handlers(this);
+    _system_impl->unregister_all_mavlink_message_handlers_blocking(this);
 }
 
 void MissionImpl::reset_mission_progress()

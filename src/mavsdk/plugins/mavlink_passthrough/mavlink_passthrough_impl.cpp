@@ -28,7 +28,7 @@ void MavlinkPassthroughImpl::init() {}
 
 void MavlinkPassthroughImpl::deinit()
 {
-    _system_impl->unregister_all_mavlink_message_handlers(this);
+    _system_impl->unregister_all_mavlink_message_handlers_blocking(this);
     _message_subscriptions.clear();
 }
 
