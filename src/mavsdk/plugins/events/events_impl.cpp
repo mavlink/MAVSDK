@@ -55,14 +55,9 @@ void EventsImpl::deinit()
     _system_impl->component_metadata().unsubscribe_metadata_available(_subscribe_metadata_handle);
 
     // Use blocking version to ensure any in-flight callbacks complete before destruction.
-    if (_current_mode_cookie) {
-        _system_impl->unregister_all_mavlink_message_handlers_blocking(_current_mode_cookie);
-        _current_mode_cookie = nullptr;
-    }
-    if (_heartbeat_mode_cookie) {
-        _system_impl->unregister_all_mavlink_message_handlers_blocking(_heartbeat_mode_cookie);
-        _heartbeat_mode_cookie = nullptr;
-    }
+    // Pass the ADDRESS of the cookie (same as was passed during registration).
+    _system_impl->unregister_all_mavlink_message_handlers_blocking(&_current_mode_cookie);
+    _system_impl->unregister_all_mavlink_message_handlers_blocking(&_heartbeat_mode_cookie);
 
     // Clear all EventHandlers - their destructors will unregister message handlers
     {
