@@ -86,9 +86,14 @@ bool LibmavReceiver::parse_libmav_message_from_buffer(const uint8_t* buffer, siz
 
     _last_message.fields_json = json;
 
-    // Clear the original datagram since we processed it
-    _datagram = nullptr;
-    _datagram_len = 0;
+    // Advance the datagram pointer by the bytes we actually consumed,
+    // in case there are more messages in the same datagram.
+    _datagram += bytes_consumed;
+    _datagram_len -= bytes_consumed;
+
+    if (_datagram_len == 0) {
+        _datagram = nullptr;
+    }
 
     return true;
 }
