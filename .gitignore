@@ -1,6 +1,8 @@
 # build & install folders
 build*/
 install/
+deps/
+deps-install/
 logs/
 .vscode
 # auto-generated files (below) from Qt Creator
