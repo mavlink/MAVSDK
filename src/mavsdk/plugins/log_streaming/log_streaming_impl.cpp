@@ -132,7 +132,7 @@ void LogStreamingImpl::start_log_streaming_async(const LogStreaming::ResultCallb
 
     // Autopilot type unknown - wait for it with polling.
     // Use timeout_s() for the total wait time, polling every 0.1s.
-    const double poll_interval_s = 0.1;
+    const float poll_interval_s = 0.1f;
     const unsigned max_polls = static_cast<unsigned>(_system_impl->timeout_s() / poll_interval_s);
 
     _start_callback = callback;
