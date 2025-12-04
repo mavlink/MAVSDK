@@ -94,6 +94,35 @@ During the configure step you can set various flags using `-DFLAG=Value`:
 - `LSAN`: Set to `ON` to enable leak sanitizer
 - `WERROR`: Set to `ON` to treat warnings as errors
 
+### MAVLink Configuration
+
+MAVSDK supports configuring the MAVLink dialect and repository:
+
+- `MAVLINK_DIALECT`: MAVLink dialect to use (default: `ardupilotmega`)
+- `MAVLINK_XML_PATH`: Path to local MAVLink XML definition files. If not set, definitions are fetched automatically.
+- `MAVLINK_URL`: URL for the MAVLink repository (default: `https://github.com/mavlink/mavlink`)
+- `MAVLINK_HASH`: Git commit hash to use from the MAVLink repository
+
+> **Note:** You can also load custom MAVLink message definitions at runtime using the [MavlinkDirect](../api_reference/classmavsdk_1_1_mavlink_direct.md) plugin, without needing to rebuild MAVSDK.
+
+Examples:
+
+```bash
+# Build with development dialect
+cmake -DCMAKE_BUILD_TYPE=Debug -DMAVLINK_DIALECT=development -Bbuild -S.
+
+# Use a custom MAVLink repository fork
+cmake -DCMAKE_BUILD_TYPE=Debug \
+    -DMAVLINK_URL=https://github.com/yourfork/mavlink \
+    -DMAVLINK_HASH=abc123def456 \
+    -Bbuild -S.
+
+# Use local MAVLink XML files
+cmake -DCMAKE_BUILD_TYPE=Debug \
+    -DMAVLINK_XML_PATH=/path/to/mavlink/message_definitions/v1.0 \
+    -Bbuild -S.
+```
+
 ## Building without Superbuild
 
 By default, MAVSDK uses a "superbuild" that automatically downloads and builds all required dependencies. If you prefer to provide dependencies yourself (e.g., from system packages or custom builds), you can disable this with `SUPERBUILD=OFF`.
