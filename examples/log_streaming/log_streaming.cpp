@@ -1,11 +1,13 @@
 //
-// Example how to stream ulog from PX4 with MAVSDK.
+// Example how to stream logs from PX4 or ArduPilot with MAVSDK.
 //
 
 #include <mavsdk/mavsdk.h>
 #include <mavsdk/base64.h>
 #include <mavsdk/plugins/log_streaming/log_streaming.h>
+#include <mavsdk/plugins/param/param.h>
 
+#include <atomic>
 #include <chrono>
 #include <iostream>
 #include <thread>
@@ -59,19 +61,55 @@ int main(int argc, char** argv)
             [&](const mavlink_message_t&) { return counter++ % 10 != 0; });
     }
 
+    // Wait for autopilot type to be determined (from heartbeat)
+    Autopilot autopilot_type = Autopilot::Unknown;
+    for (unsigned i = 0; i < 30; ++i) {
+        autopilot_type = system.value()->autopilot_type();
+        if (autopilot_type != Autopilot::Unknown) {
+            break;
+        }
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    }
+
+    bool is_ardupilot = autopilot_type == Autopilot::ArduPilot;
+
+    std::cout << "Autopilot type: " << autopilot_type << std::endl;
+
+    // For ArduPilot, check LOG_BACKEND_TYPE parameter
+    if (is_ardupilot) {
+        auto param = Param{system.value()};
+        auto log_backend_result = param.get_param_int("LOG_BACKEND_TYPE");
+        if (log_backend_result.first == Param::Result::Success) {
+            int log_backend_type = log_backend_result.second;
+            // Check if MAVLink backend is enabled (bit 1 = value 2)
+            if ((log_backend_type & 2) == 0) {
+                std::cerr << "Error: ArduPilot LOG_BACKEND_TYPE=" << log_backend_type
+                          << " does not have MAVLink logging enabled (bit 1).\n"
+                          << "Set LOG_BACKEND_TYPE to include 2 (e.g., 3 for File+MAVLink)."
+                          << std::endl;
+                return 1;
+            }
+            std::cout << "LOG_BACKEND_TYPE=" << log_backend_type << " (MAVLink logging enabled)"
+                      << std::endl;
+        } else {
+            std::cerr << "Warning: Could not read LOG_BACKEND_TYPE parameter" << std::endl;
+        }
+    }
+
     // Create file to log to.
     auto now = std::chrono::system_clock::now();
     const auto time_point = std::chrono::system_clock::to_time_t(now);
     struct tm timeinfo;
 #ifdef _WIN32
     // Windows version
-    localtime_s(&timeinfo, &time_point); // Changed from in_time_t to time_point
+    localtime_s(&timeinfo, &time_point);
 #else
     // POSIX version (Linux, macOS, etc.)
-    localtime_r(&time_point, &timeinfo); // Changed from in_time_t to time_point
+    localtime_r(&time_point, &timeinfo);
 #endif
     std::stringstream ss;
-    ss << std::put_time(&timeinfo, "%Y-%m-%d_%H-%M-%S") << ".ulg";
+    // ArduPilot uses .bin (DataFlash), PX4 uses .ulg (ULog)
+    ss << std::put_time(&timeinfo, "%Y-%m-%d_%H-%M-%S") << (is_ardupilot ? ".bin" : ".ulg");
     std::string filename = ss.str();
     // Open the file
     std::ofstream file(filename, std::ios::binary);
@@ -84,31 +122,14 @@ int main(int argc, char** argv)
     // Instantiate plugins.
     auto log_streaming = LogStreaming{system.value()};
 
-    size_t bytes_written = 0;
-    size_t bytes_written_since_last = 0;
-    auto last_time = std::chrono::steady_clock::now();
+    std::atomic<size_t> bytes_written{0};
+    std::atomic<size_t> bytes_written_since_last{0};
 
     log_streaming.subscribe_log_streaming_raw([&](LogStreaming::LogStreamingRaw raw) {
         const auto bytes = mavsdk::base64_decode(raw.data_base64);
         file.write(reinterpret_cast<const char*>(bytes.data()), bytes.size());
         bytes_written += bytes.size();
         bytes_written_since_last += bytes.size();
-
-        auto now = std::chrono::steady_clock::now();
-        std::chrono::duration<double> elapsed = now - last_time;
-
-        if (elapsed.count() >= 1.0) {
-            // More than or equal to one second has passed
-            double seconds = elapsed.count();
-            double rate_kib_per_second = (bytes_written_since_last / 1024.0) / seconds;
-
-            std::cout << "Wrote " << std::setprecision(3) << bytes_written / 1024.0 / 1024.0
-                      << " MiB (" << rate_kib_per_second << " KiB/s)" << std::endl;
-
-            // Reset timer and counter
-            last_time = now;
-            bytes_written_since_last = 0;
-        }
     });
 
     auto result = log_streaming.start_log_streaming();
@@ -117,8 +138,18 @@ int main(int argc, char** argv)
         return 1;
     }
 
-    for (unsigned i = 0; i < 10; ++i) {
-        std::this_thread::sleep_for(std::chrono::seconds(1));
+    std::cout << "Log streaming started, writing to " << filename << std::endl;
+
+    // Run for 60 seconds, printing stats every 10 seconds
+    for (unsigned i = 0; i < 6; ++i) {
+        std::this_thread::sleep_for(std::chrono::seconds(10));
+
+        double rate_kib_per_second = (bytes_written_since_last / 1024.0) / 10.0;
+        std::cout << "Stats: " << std::fixed << std::setprecision(2)
+                  << bytes_written / 1024.0 / 1024.0 << " MiB total, " << rate_kib_per_second
+                  << " KiB/s" << std::endl;
+
+        bytes_written_since_last = 0;
     }
 
     result = log_streaming.stop_log_streaming();

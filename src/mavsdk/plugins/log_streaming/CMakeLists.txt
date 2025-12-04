@@ -2,6 +2,8 @@ target_sources(mavsdk
     PRIVATE
     log_streaming.cpp
     log_streaming_impl.cpp
+    log_streaming_backend_px4.cpp
+    log_streaming_backend_ardupilot.cpp
 )
 
 target_include_directories(mavsdk PUBLIC
