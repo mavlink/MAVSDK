@@ -85,7 +85,7 @@ During the configure step you can set various flags using `-DFLAG=Value`:
 - `CMAKE_BUILD_TYPE`: Choose between `Debug`, `Release`, or `RelWithDebInfo` (optimizations and debug symbols)
 - `CMAKE_INSTALL_PREFIX`: Specify directory to install library artifacts
 - `BUILD_SHARED_LIBS`: Set to `ON` for dynamic libraries (.so), `OFF` for static libraries (.a)
-- `SUPERBUILD`: Set to `OFF` to use system dependencies instead of third party dependencies
+- `SUPERBUILD`: Set to `OFF` to use system dependencies instead of third party dependencies (see [Building without Superbuild](#building-without-superbuild))
 - `CMAKE_PREFIX_PATH`: Set path where dependencies can be found if `SUPERBUILD` is `OFF`
 - `BUILD_MAVSDK_SERVER`: Set to `ON` to build mavsdk_server
 - `BUILD_WITHOUT_CURL`: Set to `ON` to build without CURL support
@@ -93,6 +93,28 @@ During the configure step you can set various flags using `-DFLAG=Value`:
 - `UBSAN`: Set to `ON` to enable undefined behavior sanitizer
 - `LSAN`: Set to `ON` to enable leak sanitizer
 - `WERROR`: Set to `ON` to treat warnings as errors
+
+## Building without Superbuild
+
+By default, MAVSDK uses a "superbuild" that automatically downloads and builds all required dependencies. If you prefer to provide dependencies yourself (e.g., from system packages or custom builds), you can disable this with `SUPERBUILD=OFF`.
+
+A script is provided that demonstrates how to build all dependencies and MAVSDK:
+
+```bash
+./tools/build-with-system-deps.sh
+```
+
+This script:
+1. Clones and builds the required dependencies (MAVLink, libevents, PicoSHA2, libmav) into a local `deps/` directory
+2. Installs them to `deps-install/`
+3. Builds MAVSDK with `SUPERBUILD=OFF` using these dependencies
+
+Prerequisites (install before running the script):
+```bash
+sudo apt install build-essential cmake git python3 python3-pip \
+                 liblzma-dev libtinyxml2-dev libjsoncpp-dev \
+                 libcurl4-openssl-dev libssl-dev
+```
 
 ## Troubleshooting
 
