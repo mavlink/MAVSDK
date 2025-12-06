@@ -402,8 +402,6 @@ private:
     std::thread* _system_thread{nullptr};
     std::atomic<bool> _should_exit{false};
 
-    static constexpr double HEARTBEAT_TIMEOUT_S = 3.0;
-
     std::atomic<bool> _connected{false};
     CallbackList<bool> _is_connected_callbacks{};
     TimeoutHandler::Cookie _heartbeat_timeout_cookie{};
