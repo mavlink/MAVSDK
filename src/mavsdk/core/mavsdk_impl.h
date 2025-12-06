@@ -122,8 +122,10 @@ public:
         const std::string& filename, int linenumber, const std::function<void()>& func);
 
     void set_timeout_s(double timeout_s) { _timeout_s = timeout_s; }
+    double timeout_s() const { return _timeout_s; }
 
-    double timeout_s() const { return _timeout_s; };
+    void set_heartbeat_timeout_s(double timeout_s) { _heartbeat_timeout_s = timeout_s; }
+    double heartbeat_timeout_s() const { return _heartbeat_timeout_s; }
 
     MavlinkMessageHandler mavlink_message_handler{};
 
@@ -149,6 +151,7 @@ public:
 
 private:
     static constexpr float DEFAULT_TIMEOUT_S = 0.5f;
+    static constexpr double DEFAULT_HEARTBEAT_TIMEOUT_S = 3.0;
 
     std::pair<ConnectionResult, Mavsdk::ConnectionHandle>
     add_udp_connection(const CliArg::Udp& udp, ForwardingOption forwarding_option);
@@ -263,6 +266,7 @@ private:
     CallbackList<const char*, size_t> _raw_bytes_subscriptions{};
 
     std::atomic<double> _timeout_s{DEFAULT_TIMEOUT_S};
+    std::atomic<double> _heartbeat_timeout_s{DEFAULT_HEARTBEAT_TIMEOUT_S};
 
     struct ReceivedMessage {
         mavlink_message_t message;

@@ -55,6 +55,8 @@ std::vector< std::shared_ptr< [System](classmavsdk_1_1_system.md) > > | [systems
 std::optional< std::shared_ptr< [System](classmavsdk_1_1_system.md) > > | [first_autopilot](#classmavsdk_1_1_mavsdk_1aa1bcb865693dbd140478e75ce58699b7) (double timeout_s)const | Get the first autopilot that has been discovered.
 void | [set_configuration](#classmavsdk_1_1_mavsdk_1acaeea86253493dc15b6540d2100a1b86) ([Configuration](classmavsdk_1_1_mavsdk_1_1_configuration.md) configuration) | Set [Configuration](classmavsdk_1_1_mavsdk_1_1_configuration.md) of SDK.
 void | [set_timeout_s](#classmavsdk_1_1_mavsdk_1a765f37b61462addcfd961e720585d2c6) (double timeout_s) | Set timeout of MAVLink transfers.
+void | [set_heartbeat_timeout_s](#classmavsdk_1_1_mavsdk_1afbab63cf2a795e4ca7262836d5fe4b46) (double timeout_s) | Set heartbeat timeout.
+double | [get_heartbeat_timeout_s](#classmavsdk_1_1_mavsdk_1a6179b858f74415251ef43da11bc6edbc) () const | Get heartbeat timeout.
 [NewSystemHandle](classmavsdk_1_1_mavsdk.md#classmavsdk_1_1_mavsdk_1ae0727f2bed9cbf276d161ada0a432b8c) | [subscribe_on_new_system](#classmavsdk_1_1_mavsdk_1a5b7c958ad2e4529dc7b950ab26618575) (const [NewSystemCallback](classmavsdk_1_1_mavsdk.md#classmavsdk_1_1_mavsdk_1a7a283c6a75e852a56be4c5862f8a3fab) & callback) | Get notification about a change in systems.
 void | [unsubscribe_on_new_system](#classmavsdk_1_1_mavsdk_1ad7f77f1295a700ee73cccc345019c1ff) ([NewSystemHandle](classmavsdk_1_1_mavsdk.md#classmavsdk_1_1_mavsdk_1ae0727f2bed9cbf276d161ada0a432b8c) handle) | unsubscribe from subscribe_on_new_system.
 std::shared_ptr< [ServerComponent](classmavsdk_1_1_server_component.md) > | [server_component](#classmavsdk_1_1_mavsdk_1a693a2f665c35d6b01d6144819d353280) (unsigned instance=0) | Get server component with default type of [Mavsdk](classmavsdk_1_1_mavsdk.md) instance.
@@ -422,6 +424,33 @@ The default timeout used is generally DEFAULT_SERIAL_BAUDRATE (0.5 seconds) seco
 **Parameters**
 
 * double **timeout_s** - 
+
+### set_heartbeat_timeout_s() {#classmavsdk_1_1_mavsdk_1afbab63cf2a795e4ca7262836d5fe4b46}
+```cpp
+void mavsdk::Mavsdk::set_heartbeat_timeout_s(double timeout_s)
+```
+
+
+Set heartbeat timeout.
+
+The default heartbeat timeout is 3 seconds. If no heartbeat is received within this time, the system is considered disconnected.
+
+**Parameters**
+
+* double **timeout_s** - Timeout in seconds.
+
+### get_heartbeat_timeout_s() {#classmavsdk_1_1_mavsdk_1a6179b858f74415251ef43da11bc6edbc}
+```cpp
+double mavsdk::Mavsdk::get_heartbeat_timeout_s() const
+```
+
+
+Get heartbeat timeout.
+
+
+**Returns**
+
+&emsp;double - Timeout in seconds.
 
 ### subscribe_on_new_system() {#classmavsdk_1_1_mavsdk_1a5b7c958ad2e4529dc7b950ab26618575}
 ```cpp

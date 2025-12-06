@@ -625,8 +625,8 @@ void SystemImpl::set_connected()
                 });
             }
 
-            _heartbeat_timeout_cookie =
-                register_timeout_handler([this] { heartbeats_timed_out(); }, HEARTBEAT_TIMEOUT_S);
+            _heartbeat_timeout_cookie = register_timeout_handler(
+                [this] { heartbeats_timed_out(); }, _mavsdk_impl.heartbeat_timeout_s());
 
             enable_needed = true;
 

@@ -318,6 +318,23 @@ public:
     void set_timeout_s(double timeout_s);
 
     /**
+     * @brief Set heartbeat timeout.
+     *
+     * The default heartbeat timeout is 3 seconds. If no heartbeat is received
+     * within this time, the system is considered disconnected.
+     *
+     * @param timeout_s Timeout in seconds.
+     */
+    void set_heartbeat_timeout_s(double timeout_s);
+
+    /**
+     * @brief Get heartbeat timeout.
+     *
+     * @return Timeout in seconds.
+     */
+    double get_heartbeat_timeout_s() const;
+
+    /**
      * @brief Callback type discover and timeout notifications.
      */
     using NewSystemCallback = std::function<void()>;

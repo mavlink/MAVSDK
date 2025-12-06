@@ -53,6 +53,16 @@ void Mavsdk::set_timeout_s(double timeout_s)
     _impl->set_timeout_s(timeout_s);
 }
 
+void Mavsdk::set_heartbeat_timeout_s(double timeout_s)
+{
+    _impl->set_heartbeat_timeout_s(timeout_s);
+}
+
+double Mavsdk::get_heartbeat_timeout_s() const
+{
+    return _impl->heartbeat_timeout_s();
+}
+
 Mavsdk::NewSystemHandle Mavsdk::subscribe_on_new_system(const NewSystemCallback& callback)
 {
     return _impl->subscribe_on_new_system(callback);
