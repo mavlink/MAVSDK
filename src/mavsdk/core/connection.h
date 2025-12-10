@@ -15,8 +15,8 @@ class MavsdkImpl; // Forward declaration
 
 class Connection {
 public:
-    using ReceiverCallback =
-        std::function<void(mavlink_message_t& message, Connection* connection)>;
+    using ReceiverCallback = std::function<void(
+        MavlinkReceiver::ParseResult result, mavlink_message_t& message, Connection* connection)>;
     using LibmavReceiverCallback =
         std::function<void(const Mavsdk::MavlinkMessage& message, Connection* connection)>;
 
@@ -49,7 +49,8 @@ public:
 protected:
     bool start_mavlink_receiver();
     void stop_mavlink_receiver();
-    void receive_message(mavlink_message_t& message, Connection* connection);
+    void receive_message(
+        MavlinkReceiver::ParseResult result, mavlink_message_t& message, Connection* connection);
 
     bool start_libmav_receiver();
     void stop_libmav_receiver();
