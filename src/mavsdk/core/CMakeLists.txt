@@ -14,7 +14,9 @@ configure_file(include/mavsdk/mavlink_include.h.in include/mavsdk/mavlink_includ
 
 # Generate embedded XML header for libmav
 if(NOT MAVLINK_XML_PATH)
-    set(MAVLINK_XML_PATH "${DEPS_INSTALL_PATH}/include/mavlink/message_definitions/v1.0")
+    # Derive from MAVLINK_INCLUDE_DIR which is set by find_package(MAVLink)
+    # MAVLINK_INCLUDE_DIR points to .../include, so we append mavlink/message_definitions/v1.0
+    set(MAVLINK_XML_PATH "${MAVLINK_INCLUDE_DIR}/mavlink/message_definitions/v1.0")
 endif()
 
 set(MAVLINK_MINIMAL_XML "${MAVLINK_XML_PATH}/minimal.xml")

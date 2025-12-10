@@ -416,6 +416,25 @@ jobs:
       - name: build
         run: cmake --build build/release -j$(nproc)
 
+  ubuntu-superbuild-off:
+    name: Ubuntu 24.04 (SUPERBUILD=OFF)
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y liblzma-dev libtinyxml2-dev libjsoncpp-dev libcurl4-openssl-dev libssl-dev
+      - name: Build with system dependencies
+        run: ./tools/build-with-system-deps.sh
+      - name: unit tests
+        run: ./build-release/src/unit_tests/unit_tests_runner
+      - name: system tests
+        run: ./build-release/src/system_tests/system_tests_runner
+
   ubuntu24-style-and-proto-check:
     name: ubuntu-24.04 (style and proto check)
     needs: [check-docker-changes, update-docker-images]
