@@ -4,14 +4,14 @@ option(SUPERBUILD "Build dependencies" ON)
 option(BUILD_MAVSDK_SERVER "Build mavsdk_server" OFF)
 option(BUILD_WITH_PROTO_REFLECTION "Build mavsdk_server with proto reflection" OFF)
 option(BUILD_SHARED_LIBS "Build core as shared libraries instead of static ones" ON)
-option(MAVLINK_DIALECT "MAVLink dialect. Default: common" "common")
+option(MAVLINK_DIALECT "MAVLink dialect. Default: ardupilotmega" "ardupilotmega")
 option(BUILD_TESTING "Build tests" ON)
 option(BUILD_WITHOUT_CURL "Build without CURL" OFF)
 
 message("Using cmake version: ${CMAKE_VERSION}")
 
 if (NOT MAVLINK_DIALECT)
-    set(MAVLINK_DIALECT "common")
+    set(MAVLINK_DIALECT "ardupilotmega")
 endif()
 
 execute_process(
