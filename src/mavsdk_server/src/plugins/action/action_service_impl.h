@@ -692,6 +692,35 @@ public:
         return grpc::Status::OK;
     }
 
+    grpc::Status SetGpsGlobalOrigin(
+        grpc::ServerContext* /* context */,
+        const rpc::action::SetGpsGlobalOriginRequest* request,
+        rpc::action::SetGpsGlobalOriginResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                auto result = mavsdk::Action::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        if (request == nullptr) {
+            LogWarn() << "SetGpsGlobalOrigin sent with a null request! Ignoring...";
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->set_gps_global_origin(
+            request->latitude_deg(), request->longitude_deg(), request->absolute_altitude_m());
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+
+        return grpc::Status::OK;
+    }
+
     void stop()
     {
         _stopped.store(true);
