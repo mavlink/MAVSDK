@@ -154,6 +154,11 @@
 #include "param_server/param_server_service_impl.h"
 #endif
 
+#ifdef REMOTE_ID_ENABLED
+#include "plugins/remote_id/remote_id.h"
+#include "remote_id/remote_id_service_impl.h"
+#endif
+
 #ifdef RTK_ENABLED
 #include "plugins/rtk/rtk.h"
 #include "rtk/rtk_service_impl.h"
@@ -340,6 +345,11 @@ public:
 #ifdef PARAM_SERVER_ENABLED
         _param_server_lazy_plugin(mavsdk),
         _param_server_service(_param_server_lazy_plugin),
+#endif
+
+#ifdef REMOTE_ID_ENABLED
+        _remote_id_lazy_plugin(mavsdk),
+        _remote_id_service(_remote_id_lazy_plugin),
 #endif
 
 #ifdef RTK_ENABLED
@@ -588,6 +598,13 @@ private:
     LazyServerPlugin<ParamServer> _param_server_lazy_plugin;
 
     ParamServerServiceImpl<> _param_server_service;
+#endif
+
+#ifdef REMOTE_ID_ENABLED
+
+    LazyPlugin<RemoteId> _remote_id_lazy_plugin;
+
+    RemoteIdServiceImpl<> _remote_id_service;
 #endif
 
 #ifdef RTK_ENABLED

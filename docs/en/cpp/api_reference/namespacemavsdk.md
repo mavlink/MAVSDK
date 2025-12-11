@@ -42,6 +42,7 @@ Namespace for all mavsdk types.
 * [mavsdk::Param](classmavsdk_1_1_param.md)
 * [mavsdk::ParamServer](classmavsdk_1_1_param_server.md)
 * [mavsdk::PluginBase](classmavsdk_1_1_plugin_base.md)
+* [mavsdk::RemoteId](classmavsdk_1_1_remote_id.md)
 * [mavsdk::Rtk](classmavsdk_1_1_rtk.md)
 * [mavsdk::ServerComponent](classmavsdk_1_1_server_component.md)
 * [mavsdk::ServerPluginBase](classmavsdk_1_1_server_plugin_base.md)
@@ -113,7 +114,7 @@ Value | Description
 <span id="namespacemavsdk_1a20fe7f7c8312779a187017111bf33d12a967d35e40f3f95b1f538bd248640bf3b"></span> `Camera` |  
 <span id="namespacemavsdk_1a20fe7f7c8312779a187017111bf33d12acda0f2848103fd4a833697ac64b9ad8d"></span> `Gimbal` | SDK is used as a camera. <
 <span id="namespacemavsdk_1a20fe7f7c8312779a187017111bf33d12a9b61d83cce82349f154b47131680be37"></span> `RemoteId` | SDK is used as a gimbal. <
-<span id="namespacemavsdk_1a20fe7f7c8312779a187017111bf33d12a90589c47f06eb971d548591f23c285af"></span> `Custom` | SDK is used as a RemoteId system. <
+<span id="namespacemavsdk_1a20fe7f7c8312779a187017111bf33d12a90589c47f06eb971d548591f23c285af"></span> `Custom` | SDK is used as a [RemoteId](classmavsdk_1_1_remote_id.md) system. <
 
 
 the SDK is used in a custom configuration, no automatic ID will be provided
