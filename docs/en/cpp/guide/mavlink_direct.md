@@ -1,6 +1,6 @@
 # MavlinkDirect
 
-The [MavlinkDirect](../cpp/api_reference/classmavsdk_1_1_mavlink_direct.md) plugin enables direct MAVLink communication with runtime message parsing and JSON field representation.
+The [MavlinkDirect](../api_reference/classmavsdk_1_1_mavlink_direct.md) plugin enables direct MAVLink communication with runtime message parsing and JSON field representation.
 
 ::: warning
 The MavlinkDirect API is quite new and is not necessarily stabilized yet.
@@ -8,7 +8,7 @@ The functionality is here to stay but the specifics and types might still change
 :::
 
 ::: tip
-MavlinkDirect is the recommended replacement for [MavlinkPassthrough](../cpp/api_reference/classmavsdk_1_1_mavlink_passthrough.md).
+MavlinkDirect is the recommended replacement for [MavlinkPassthrough](../api_reference/classmavsdk_1_1_mavlink_passthrough.md).
 In MAVSDK v4, MavlinkPassthrough will only be available as a compile-time option.
 :::
 
