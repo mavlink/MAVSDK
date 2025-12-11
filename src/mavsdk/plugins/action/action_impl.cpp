@@ -767,6 +767,67 @@ Action::Result ActionImpl::set_current_speed(float speed_m_s)
     return fut.get();
 }
 
+Action::Result ActionImpl::set_gps_global_origin(
+    double latitude_deg, double longitude_deg, float absolute_altitude_m) const
+{
+    const int32_t latitude_e7 = static_cast<int32_t>(std::round(latitude_deg * 1e7));
+    const int32_t longitude_e7 = static_cast<int32_t>(std::round(longitude_deg * 1e7));
+    const int32_t altitude_mm = static_cast<int32_t>(std::round(absolute_altitude_m * 1000.0f));
+
+    auto prom = std::promise<Action::Result>();
+    auto fut = prom.get_future();
+
+    // Use a unique cookie for this handler
+    const void* cookie = this;
+
+    // Register handler for GPS_GLOBAL_ORIGIN response
+    _system_impl->register_mavlink_message_handler(
+        MAVLINK_MSG_ID_GPS_GLOBAL_ORIGIN,
+        [&prom, latitude_e7, longitude_e7, altitude_mm](const mavlink_message_t& message) {
+            mavlink_gps_global_origin_t origin;
+            mavlink_msg_gps_global_origin_decode(&message, &origin);
+
+            // Verify the values match what we sent
+            if (origin.latitude == latitude_e7 && origin.longitude == longitude_e7 &&
+                origin.altitude == altitude_mm) {
+                prom.set_value(Action::Result::Success);
+            } else {
+                prom.set_value(Action::Result::Failed);
+            }
+        },
+        cookie);
+
+    // Send the SET_GPS_GLOBAL_ORIGIN message
+    if (!_system_impl->queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
+            mavlink_message_t message;
+            mavlink_msg_set_gps_global_origin_pack_chan(
+                mavlink_address.system_id,
+                mavlink_address.component_id,
+                channel,
+                &message,
+                _system_impl->get_system_id(),
+                latitude_e7,
+                longitude_e7,
+                altitude_mm,
+                0);
+            return message;
+        })) {
+        _system_impl->unregister_mavlink_message_handler(MAVLINK_MSG_ID_GPS_GLOBAL_ORIGIN, cookie);
+        return Action::Result::ConnectionError;
+    }
+
+    // Wait for response with timeout
+    auto status = fut.wait_for(std::chrono::duration<double>(_system_impl->timeout_s()));
+
+    _system_impl->unregister_mavlink_message_handler(MAVLINK_MSG_ID_GPS_GLOBAL_ORIGIN, cookie);
+
+    if (status == std::future_status::timeout) {
+        return Action::Result::Timeout;
+    }
+
+    return fut.get();
+}
+
 Action::Result ActionImpl::action_result_from_command_result(MavlinkCommandSender::Result result)
 {
     switch (result) {

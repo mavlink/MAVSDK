@@ -45,6 +45,7 @@ static const char* ActionService_method_names[] = {
   "/mavsdk.rpc.action.ActionService/GetReturnToLaunchAltitude",
   "/mavsdk.rpc.action.ActionService/SetReturnToLaunchAltitude",
   "/mavsdk.rpc.action.ActionService/SetCurrentSpeed",
+  "/mavsdk.rpc.action.ActionService/SetGpsGlobalOrigin",
 };
 
 std::unique_ptr< ActionService::Stub> ActionService::NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options) {
@@ -75,6 +76,7 @@ ActionService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& chan
   , rpcmethod_GetReturnToLaunchAltitude_(ActionService_method_names[18], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_SetReturnToLaunchAltitude_(ActionService_method_names[19], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_SetCurrentSpeed_(ActionService_method_names[20], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SetGpsGlobalOrigin_(ActionService_method_names[21], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   {}
 
 ::grpc::Status ActionService::Stub::Arm(::grpc::ClientContext* context, const ::mavsdk::rpc::action::ArmRequest& request, ::mavsdk::rpc::action::ArmResponse* response) {
@@ -560,6 +562,29 @@ void ActionService::Stub::async::SetCurrentSpeed(::grpc::ClientContext* context,
   return result;
 }
 
+::grpc::Status ActionService::Stub::SetGpsGlobalOrigin(::grpc::ClientContext* context, const ::mavsdk::rpc::action::SetGpsGlobalOriginRequest& request, ::mavsdk::rpc::action::SetGpsGlobalOriginResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::action::SetGpsGlobalOriginRequest, ::mavsdk::rpc::action::SetGpsGlobalOriginResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_SetGpsGlobalOrigin_, context, request, response);
+}
+
+void ActionService::Stub::async::SetGpsGlobalOrigin(::grpc::ClientContext* context, const ::mavsdk::rpc::action::SetGpsGlobalOriginRequest* request, ::mavsdk::rpc::action::SetGpsGlobalOriginResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::action::SetGpsGlobalOriginRequest, ::mavsdk::rpc::action::SetGpsGlobalOriginResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SetGpsGlobalOrigin_, context, request, response, std::move(f));
+}
+
+void ActionService::Stub::async::SetGpsGlobalOrigin(::grpc::ClientContext* context, const ::mavsdk::rpc::action::SetGpsGlobalOriginRequest* request, ::mavsdk::rpc::action::SetGpsGlobalOriginResponse* response, ::grpc::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SetGpsGlobalOrigin_, context, request, response, reactor);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action::SetGpsGlobalOriginResponse>* ActionService::Stub::PrepareAsyncSetGpsGlobalOriginRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action::SetGpsGlobalOriginRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::action::SetGpsGlobalOriginResponse, ::mavsdk::rpc::action::SetGpsGlobalOriginRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_SetGpsGlobalOrigin_, context, request);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action::SetGpsGlobalOriginResponse>* ActionService::Stub::AsyncSetGpsGlobalOriginRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action::SetGpsGlobalOriginRequest& request, ::grpc::CompletionQueue* cq) {
+  auto* result =
+    this->PrepareAsyncSetGpsGlobalOriginRaw(context, request, cq);
+  result->StartCall();
+  return result;
+}
+
 ActionService::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       ActionService_method_names[0],
@@ -771,6 +796,16 @@ ActionService::Service::Service() {
              ::mavsdk::rpc::action::SetCurrentSpeedResponse* resp) {
                return service->SetCurrentSpeed(ctx, req, resp);
              }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      ActionService_method_names[21],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< ActionService::Service, ::mavsdk::rpc::action::SetGpsGlobalOriginRequest, ::mavsdk::rpc::action::SetGpsGlobalOriginResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+          [](ActionService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::mavsdk::rpc::action::SetGpsGlobalOriginRequest* req,
+             ::mavsdk::rpc::action::SetGpsGlobalOriginResponse* resp) {
+               return service->SetGpsGlobalOrigin(ctx, req, resp);
+             }, this)));
 }
 
 ActionService::Service::~Service() {
@@ -917,6 +952,13 @@ ActionService::Service::~Service() {
 }
 
 ::grpc::Status ActionService::Service::SetCurrentSpeed(::grpc::ServerContext* context, const ::mavsdk::rpc::action::SetCurrentSpeedRequest* request, ::mavsdk::rpc::action::SetCurrentSpeedResponse* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status ActionService::Service::SetGpsGlobalOrigin(::grpc::ServerContext* context, const ::mavsdk::rpc::action::SetGpsGlobalOriginRequest* request, ::mavsdk::rpc::action::SetGpsGlobalOriginResponse* response) {
   (void) context;
   (void) request;
   (void) response;

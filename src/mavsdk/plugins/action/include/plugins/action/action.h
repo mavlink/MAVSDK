@@ -645,6 +645,20 @@ public:
     Result set_current_speed(float speed_m_s) const;
 
     /**
+     * @brief Set GPS Global Origin.
+     *
+     * Sets the GPS coordinates of the vehicle local origin (0,0,0) position.
+     *
+     * This function is blocking.
+     *
+
+     * @return Result of request.
+
+     */
+    Result set_gps_global_origin(
+        double latitude_deg, double longitude_deg, float absolute_altitude_m) const;
+
+    /**
      * @brief Copy constructor.
      */
     Action(const Action& other);
