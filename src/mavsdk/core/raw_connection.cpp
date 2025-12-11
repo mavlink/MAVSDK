@@ -57,10 +57,11 @@ void RawConnection::receive(const char* bytes, size_t length)
     // This is safe because the receivers only read from the buffer
     _mavlink_receiver->set_new_datagram(const_cast<char*>(bytes), static_cast<int>(length));
 
-    // Parse all mavlink messages in one datagram. Once exhausted, we'll exit while.
-    while (_mavlink_receiver->parse_message()) {
-        // Handle parsed message
-        receive_message(_mavlink_receiver->get_last_message(), this);
+    // Parse all mavlink messages in one datagram. Once exhausted, we'll exit loop.
+    auto parse_result = _mavlink_receiver->parse_message();
+    while (parse_result != MavlinkReceiver::ParseResult::NoneAvailable) {
+        receive_message(parse_result, _mavlink_receiver->get_last_message(), this);
+        parse_result = _mavlink_receiver->parse_message();
     }
 
     // Also parse with libmav if available

@@ -8,6 +8,12 @@ namespace mavsdk {
 
 class MavlinkReceiver {
 public:
+    enum class ParseResult {
+        MessageParsed, // Valid message ready for processing and forwarding
+        BadCrc, // Corrupted message - forward raw bytes only, don't process
+        NoneAvailable // No more messages in datagram
+    };
+
     MavlinkReceiver();
 
     mavlink_message_t& get_last_message() { return _last_message; }
@@ -16,7 +22,7 @@ public:
 
     void set_new_datagram(char* datagram, unsigned datagram_len);
 
-    bool parse_message();
+    ParseResult parse_message();
 
     void debug_drop_rate();
     void print_line(

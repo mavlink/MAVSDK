@@ -345,18 +345,28 @@ void MavsdkImpl::forward_message(mavlink_message_t& message, Connection* connect
             }
         }
         if (successful_emissions == 0) {
-            LogErr() << "Message forwarding failed";
+            if (_system_debugging) {
+                LogErr() << "Message forwarding failed";
+            }
         }
     }
 }
 
-void MavsdkImpl::receive_message(mavlink_message_t& message, Connection* connection)
+void MavsdkImpl::receive_message(
+    MavlinkReceiver::ParseResult result, mavlink_message_t& message, Connection* connection)
 {
-    {
-        std::lock_guard lock(_received_messages_mutex);
-        _received_messages.emplace(ReceivedMessage{std::move(message), connection});
+    if (result == MavlinkReceiver::ParseResult::MessageParsed) {
+        // Valid message: queue for full processing (which includes forwarding)
+        {
+            std::lock_guard lock(_received_messages_mutex);
+            _received_messages.emplace(ReceivedMessage{std::move(message), connection});
+        }
+        _received_messages_cv.notify_one();
+
+    } else if (result == MavlinkReceiver::ParseResult::BadCrc) {
+        // Unknown message: forward only, don't process locally
+        forward_message(message, connection);
     }
-    _received_messages_cv.notify_one();
 }
 
 void MavsdkImpl::receive_libmav_message(
@@ -802,9 +812,10 @@ std::pair<ConnectionResult, Mavsdk::ConnectionHandle>
 MavsdkImpl::add_udp_connection(const CliArg::Udp& udp, ForwardingOption forwarding_option)
 {
     auto new_conn = std::make_unique<UdpConnection>(
-        [this](mavlink_message_t& message, Connection* connection) {
-            receive_message(message, connection);
-        },
+        [this](
+            MavlinkReceiver::ParseResult result,
+            mavlink_message_t& message,
+            Connection* connection) { receive_message(result, message, connection); },
         [this](const Mavsdk::MavlinkMessage& message, Connection* connection) {
             receive_libmav_message(message, connection);
         },
@@ -851,9 +862,10 @@ MavsdkImpl::add_tcp_connection(const CliArg::Tcp& tcp, ForwardingOption forwardi
 {
     if (tcp.mode == CliArg::Tcp::Mode::Out) {
         auto new_conn = std::make_unique<TcpClientConnection>(
-            [this](mavlink_message_t& message, Connection* connection) {
-                receive_message(message, connection);
-            },
+            [this](
+                MavlinkReceiver::ParseResult result,
+                mavlink_message_t& message,
+                Connection* connection) { receive_message(result, message, connection); },
             [this](const Mavsdk::MavlinkMessage& message, Connection* connection) {
                 receive_libmav_message(message, connection);
             },
@@ -872,9 +884,10 @@ MavsdkImpl::add_tcp_connection(const CliArg::Tcp& tcp, ForwardingOption forwardi
         }
     } else {
         auto new_conn = std::make_unique<TcpServerConnection>(
-            [this](mavlink_message_t& message, Connection* connection) {
-                receive_message(message, connection);
-            },
+            [this](
+                MavlinkReceiver::ParseResult result,
+                mavlink_message_t& message,
+                Connection* connection) { receive_message(result, message, connection); },
             [this](const Mavsdk::MavlinkMessage& message, Connection* connection) {
                 receive_libmav_message(message, connection);
             },
@@ -901,9 +914,10 @@ std::pair<ConnectionResult, Mavsdk::ConnectionHandle> MavsdkImpl::add_serial_con
     ForwardingOption forwarding_option)
 {
     auto new_conn = std::make_unique<SerialConnection>(
-        [this](mavlink_message_t& message, Connection* connection) {
-            receive_message(message, connection);
-        },
+        [this](
+            MavlinkReceiver::ParseResult result,
+            mavlink_message_t& message,
+            Connection* connection) { receive_message(result, message, connection); },
         [this](const Mavsdk::MavlinkMessage& message, Connection* connection) {
             receive_libmav_message(message, connection);
         },
@@ -944,9 +958,10 @@ MavsdkImpl::add_raw_connection(ForwardingOption forwarding_option)
     }
 
     auto new_conn = std::make_unique<RawConnection>(
-        [this](mavlink_message_t& message, Connection* connection) {
-            receive_message(message, connection);
-        },
+        [this](
+            MavlinkReceiver::ParseResult result,
+            mavlink_message_t& message,
+            Connection* connection) { receive_message(result, message, connection); },
         [this](const Mavsdk::MavlinkMessage& message, Connection* connection) {
             receive_libmav_message(message, connection);
         },

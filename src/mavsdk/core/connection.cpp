@@ -97,13 +97,17 @@ void Connection::receive_libmav_message(
     }
 }
 
-void Connection::receive_message(mavlink_message_t& message, Connection* connection)
+void Connection::receive_message(
+    MavlinkReceiver::ParseResult result, mavlink_message_t& message, Connection* connection)
 {
-    // Register system ID when receiving a message from a new system.
-    if (_system_ids.find(message.sysid) == _system_ids.end()) {
-        _system_ids.insert(message.sysid);
+    // Register system ID for valid messages
+    if (result == MavlinkReceiver::ParseResult::MessageParsed) {
+        if (_system_ids.find(message.sysid) == _system_ids.end()) {
+            _system_ids.insert(message.sysid);
+        }
     }
-    _receiver_callback(message, connection);
+    // Let MavsdkImpl handle the ParseResult (queue for processing or forward-only)
+    _receiver_callback(result, message, connection);
 }
 
 bool Connection::should_forward_messages() const

@@ -280,9 +280,11 @@ void TcpServerConnection::receive()
 
         _mavlink_receiver->set_new_datagram(buffer.data(), static_cast<int>(recv_len));
 
-        // Parse all mavlink messages in one data packet. Once exhausted, we'll exit while.
-        while (_mavlink_receiver->parse_message()) {
-            receive_message(_mavlink_receiver->get_last_message(), this);
+        // Parse all mavlink messages in one data packet. Once exhausted, we'll exit loop.
+        auto parse_result = _mavlink_receiver->parse_message();
+        while (parse_result != MavlinkReceiver::ParseResult::NoneAvailable) {
+            receive_message(parse_result, _mavlink_receiver->get_last_message(), this);
+            parse_result = _mavlink_receiver->parse_message();
         }
 
         // Also parse with libmav if available

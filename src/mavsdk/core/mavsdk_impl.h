@@ -54,7 +54,8 @@ public:
     static std::string version();
 
     void forward_message(mavlink_message_t& message, Connection* connection);
-    void receive_message(mavlink_message_t& message, Connection* connection);
+    void receive_message(
+        MavlinkReceiver::ParseResult result, mavlink_message_t& message, Connection* connection);
     void receive_libmav_message(const Mavsdk::MavlinkMessage& message, Connection* connection);
 
     std::pair<ConnectionResult, Mavsdk::ConnectionHandle>
