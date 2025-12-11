@@ -118,6 +118,28 @@ You can [read more about the auto-generation](cpp/contributing/autogen.md), and 
 
 We are not ruling out direct-bindings for the future, there is e.g. a [prototype for Python using pybind11](https://github.com/mavlink/MAVSDK/pull/1283), so this is an ongoing topic.
 
+## What is mavsdk_server?
+
+MAVSDK (C++) is a library. In contrast, `mavsdk_server` is a C++ application that uses the library `libmavsdk` and exposes a gRPC API.
+
+This gRPC interface is what enables language wrappers like Python, Swift, and others to communicate with MAVSDK's functionality.
+
+- **C++ examples don't use mavsdk_server**: Examples like `takeoff_and_land` directly use the C++ library.
+- **Language wrappers need mavsdk_server**: Python, Swift, and other wrappers communicate with `mavsdk_server` via gRPC.
+
+## What are the API differences of gRPC vs the C++ library
+
+- The C++ API has a few more advanced features such as setting timeouts, intercepting messages, etc.
+- The C++ API supports server side (vehicle side) plugins (e.g., `TelemetryServer`, `ActionServer`)
+- The C++ library supports multiple vehicles per MAVSDK instance (mavsdk_server is limited to one vehicle)
+
+## Building or using precompiled binaries?
+
+For most users it's recommended to use the pre-compiled releases from [GitHub releases](https://github.com/mavlink/MAVSDK/releases) unless you need specific modifications. You should find:
+- Packages for the library libmavsdk for most common platforms.
+- Binaries for the mavsdk_server application for most common platforms.
+- A musl based mavsdk_server binary which is statically built and has no dependencies (this is used for the distribution with pip/PyPi.org).
+
 ## Use of deleted function Mavsdk()
 
 ```

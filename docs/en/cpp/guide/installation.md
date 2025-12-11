@@ -29,7 +29,7 @@ brew install mavsdk
 
 ### Windows
 
-For Windows you can download the **mavsdk-windows-x64-release.zip** file from [MAVSDK releases](https://github.com/mavlink/MAVSDK/releases) containing the headers and library and extract it locally (see [information how to use a locally installed library](guide/toolchain.md#sdk_local_install)).
+For Windows you can download the **mavsdk-windows-x64-release.zip** file from [MAVSDK releases](https://github.com/mavlink/MAVSDK/releases) containing the headers and library and extract it locally (see [information how to use a locally installed library](toolchain.md#sdk_local_install)).
 
-For more detailed instructions or other platforms check out the [installation notes](guide/installation.md).
+For more detailed instructions or other platforms check out how to [build from source](build.md).
 
