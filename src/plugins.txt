@@ -26,6 +26,7 @@ mocap
 offboard
 param
 param_server
+remote_id
 rtk
 server_utility
 shell

@@ -134,6 +134,10 @@ int GrpcServer::run()
     builder.RegisterService(&_param_server_service);
 #endif
 
+#ifdef REMOTE_ID_ENABLED
+    builder.RegisterService(&_remote_id_service);
+#endif
+
 #ifdef RTK_ENABLED
     builder.RegisterService(&_rtk_service);
 #endif
@@ -307,6 +311,10 @@ void GrpcServer::stop()
 
 #ifdef PARAM_SERVER_ENABLED
         _param_server_service.stop();
+#endif
+
+#ifdef REMOTE_ID_ENABLED
+        _remote_id_service.stop();
 #endif
 
 #ifdef RTK_ENABLED
