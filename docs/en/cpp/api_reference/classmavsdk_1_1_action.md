@@ -69,6 +69,7 @@ void | [set_return_to_launch_altitude_async](#classmavsdk_1_1_action_1acdc4360c2
 [Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) | [set_return_to_launch_altitude](#classmavsdk_1_1_action_1a5b05e84d35fad5b0ba2837aae1b3686e) (float relative_altitude_m)const | Set the return to launch minimum return altitude (in meters).
 void | [set_current_speed_async](#classmavsdk_1_1_action_1afd210be0eba436c81da79107562a0b6c) (float speed_m_s, const [ResultCallback](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1a70a7b6e742d0c86728dc2e1827dacccd) callback) | Set current speed.
 [Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) | [set_current_speed](#classmavsdk_1_1_action_1af3b74cf3912411d9476b6eeac0984afb) (float speed_m_s)const | Set current speed.
+[Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) | [set_gps_global_origin](#classmavsdk_1_1_action_1abf97620153fca87f2dd89a6eb96a8479) (double latitude_deg, double longitude_deg, float absolute_altitude_m)const | Set GPS Global Origin.
 const [Action](classmavsdk_1_1_action.md) & | [operator=](#classmavsdk_1_1_action_1a89482740f533e194fade200103b5adef) (const [Action](classmavsdk_1_1_action.md) &)=delete | Equality operator (object is not copyable).
 
 
@@ -967,6 +968,29 @@ This function is blocking. See 'set_current_speed_async' for the non-blocking co
 **Parameters**
 
 * float **speed_m_s** - 
+
+**Returns**
+
+&emsp;[Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) - Result of request.
+
+### set_gps_global_origin() {#classmavsdk_1_1_action_1abf97620153fca87f2dd89a6eb96a8479}
+```cpp
+Result mavsdk::Action::set_gps_global_origin(double latitude_deg, double longitude_deg, float absolute_altitude_m) const
+```
+
+
+Set GPS Global Origin.
+
+Sets the GPS coordinates of the vehicle local origin (0,0,0) position.
+
+
+This function is blocking.
+
+**Parameters**
+
+* double **latitude_deg** - 
+* double **longitude_deg** - 
+* float **absolute_altitude_m** - 
 
 **Returns**
 
