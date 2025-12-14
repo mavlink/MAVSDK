@@ -776,24 +776,32 @@ Action::Result ActionImpl::set_gps_global_origin(
 
     auto prom = std::promise<Action::Result>();
     auto fut = prom.get_future();
+    std::atomic<bool> prom_already_set{false};
 
     // Use a unique cookie for this handler
     const void* cookie = this;
 
-    // Register handler for GPS_GLOBAL_ORIGIN response
+    // Register handler for GPS_GLOBAL_ORIGIN response.
+    // Note: Older PX4 versions (pre-v1.17) had a race condition where they would
+    // broadcast GPS_GLOBAL_ORIGIN with stale values immediately after receiving
+    // SET_GPS_GLOBAL_ORIGIN, before EKF2 had processed the command. To handle
+    // this, we wait for a response with matching values rather than accepting
+    // the first response.
     _system_impl->register_mavlink_message_handler(
         MAVLINK_MSG_ID_GPS_GLOBAL_ORIGIN,
-        [&prom, latitude_e7, longitude_e7, altitude_mm](const mavlink_message_t& message) {
+        [&prom, &prom_already_set, latitude_e7, longitude_e7, altitude_mm](
+            const mavlink_message_t& message) {
             mavlink_gps_global_origin_t origin;
             mavlink_msg_gps_global_origin_decode(&message, &origin);
 
-            // Verify the values match what we sent
+            // Only signal success when we receive the values we set
             if (origin.latitude == latitude_e7 && origin.longitude == longitude_e7 &&
                 origin.altitude == altitude_mm) {
-                prom.set_value(Action::Result::Success);
-            } else {
-                prom.set_value(Action::Result::Failed);
+                if (!prom_already_set.exchange(true)) {
+                    prom.set_value(Action::Result::Success);
+                }
             }
+            // Otherwise, keep waiting for the correct values (or timeout)
         },
         cookie);
 
