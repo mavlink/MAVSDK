@@ -62,6 +62,11 @@ ParamServer::Result ParamServerImpl::provide_param_int(std::string name, int32_t
     if (name.size() > 16) {
         return ParamServer::Result::ParamNameTooLong;
     }
+
+    if (_server_component_impl->mavlink_parameter_server().params_locked_down()) {
+        return ParamServer::Result::ParamProvidedTooLate;
+    }
+
     const auto ret =
         _server_component_impl->mavlink_parameter_server().provide_server_param_int(name, value);
     if (ret == MavlinkParameterServer::Result::Ok) {
@@ -90,6 +95,11 @@ ParamServer::Result ParamServerImpl::provide_param_float(std::string name, float
     if (name.size() > 16) {
         return ParamServer::Result::ParamNameTooLong;
     }
+
+    if (_server_component_impl->mavlink_parameter_server().params_locked_down()) {
+        return ParamServer::Result::ParamProvidedTooLate;
+    }
+
     const auto ret =
         _server_component_impl->mavlink_parameter_server().provide_server_param_float(name, value);
     if (ret == MavlinkParameterServer::Result::Ok) {

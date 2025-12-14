@@ -187,6 +187,8 @@ std::ostream& operator<<(std::ostream& str, ParamServer::Result const& result)
             return str << "No System";
         case ParamServer::Result::ParamValueTooLong:
             return str << "Param Value Too Long";
+        case ParamServer::Result::ParamProvidedTooLate:
+            return str << "Param Provided Too Late";
         default:
             return str << "Unknown";
     }

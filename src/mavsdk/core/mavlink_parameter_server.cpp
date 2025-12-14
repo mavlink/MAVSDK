@@ -482,6 +482,10 @@ void MavlinkParameterServer::process_param_ext_request_list(const mavlink_messag
 void MavlinkParameterServer::broadcast_all_parameters(const bool extended)
 {
     std::lock_guard<std::mutex> lock(_all_params_mutex);
+
+    // Param used with index, we should no longer change the index
+    _params_locked_down = true;
+
     const auto all_params = _param_cache.all_parameters(extended);
     if (_parameter_debugging) {
         LogDebug() << "broadcast_all_parameters " << (extended ? "extended" : "") << ": "
@@ -685,6 +689,13 @@ MavlinkParameterServer::extract_request_read_param_identifier(
         }
         return {static_cast<std::uint16_t>(param_index)};
     }
+}
+
+bool MavlinkParameterServer::params_locked_down() const
+{
+    std::lock_guard<std::mutex> lock(_all_params_mutex);
+
+    return _params_locked_down;
 }
 
 } // namespace mavsdk
