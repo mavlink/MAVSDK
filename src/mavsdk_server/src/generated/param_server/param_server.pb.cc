@@ -1097,54 +1097,55 @@ const char descriptor_table_protodef_param_5fserver_2fparam_5fserver_2eproto[] A
     "\003(\0132!.mavsdk.rpc.param_server.IntParam\0229"
     "\n\014float_params\030\002 \003(\0132#.mavsdk.rpc.param_"
     "server.FloatParam\022;\n\rcustom_params\030\003 \003(\013"
-    "2$.mavsdk.rpc.param_server.CustomParam\"\241"
+    "2$.mavsdk.rpc.param_server.CustomParam\"\305"
     "\002\n\021ParamServerResult\022A\n\006result\030\001 \001(\01621.m"
     "avsdk.rpc.param_server.ParamServerResult"
-    ".Result\022\022\n\nresult_str\030\002 \001(\t\"\264\001\n\006Result\022\022"
+    ".Result\022\022\n\nresult_str\030\002 \001(\t\"\330\001\n\006Result\022\022"
     "\n\016RESULT_UNKNOWN\020\000\022\022\n\016RESULT_SUCCESS\020\001\022\024"
     "\n\020RESULT_NOT_FOUND\020\002\022\025\n\021RESULT_WRONG_TYP"
     "E\020\003\022\036\n\032RESULT_PARAM_NAME_TOO_LONG\020\004\022\024\n\020R"
     "ESULT_NO_SYSTEM\020\005\022\037\n\033RESULT_PARAM_VALUE_"
-    "TOO_LONG\020\0062\334\013\n\022ParamServerService\022n\n\013Set"
-    "Protocol\022+.mavsdk.rpc.param_server.SetPr"
-    "otocolRequest\032,.mavsdk.rpc.param_server."
-    "SetProtocolResponse\"\004\200\265\030\001\022}\n\020RetrievePar"
-    "amInt\0220.mavsdk.rpc.param_server.Retrieve"
-    "ParamIntRequest\0321.mavsdk.rpc.param_serve"
-    "r.RetrieveParamIntResponse\"\004\200\265\030\001\022z\n\017Prov"
-    "ideParamInt\022/.mavsdk.rpc.param_server.Pr"
-    "ovideParamIntRequest\0320.mavsdk.rpc.param_"
-    "server.ProvideParamIntResponse\"\004\200\265\030\001\022\203\001\n"
-    "\022RetrieveParamFloat\0222.mavsdk.rpc.param_s"
-    "erver.RetrieveParamFloatRequest\0323.mavsdk"
-    ".rpc.param_server.RetrieveParamFloatResp"
-    "onse\"\004\200\265\030\001\022\200\001\n\021ProvideParamFloat\0221.mavsd"
-    "k.rpc.param_server.ProvideParamFloatRequ"
-    "est\0322.mavsdk.rpc.param_server.ProvidePar"
-    "amFloatResponse\"\004\200\265\030\001\022\206\001\n\023RetrieveParamC"
-    "ustom\0223.mavsdk.rpc.param_server.Retrieve"
-    "ParamCustomRequest\0324.mavsdk.rpc.param_se"
-    "rver.RetrieveParamCustomResponse\"\004\200\265\030\001\022\203"
-    "\001\n\022ProvideParamCustom\0222.mavsdk.rpc.param"
-    "_server.ProvideParamCustomRequest\0323.mavs"
-    "dk.rpc.param_server.ProvideParamCustomRe"
-    "sponse\"\004\200\265\030\001\022\200\001\n\021RetrieveAllParams\0221.mav"
-    "sdk.rpc.param_server.RetrieveAllParamsRe"
-    "quest\0322.mavsdk.rpc.param_server.Retrieve"
-    "AllParamsResponse\"\004\200\265\030\001\022\216\001\n\030SubscribeCha"
-    "ngedParamInt\0228.mavsdk.rpc.param_server.S"
-    "ubscribeChangedParamIntRequest\0320.mavsdk."
-    "rpc.param_server.ChangedParamIntResponse"
-    "\"\004\200\265\030\0000\001\022\224\001\n\032SubscribeChangedParamFloat\022"
-    ":.mavsdk.rpc.param_server.SubscribeChang"
-    "edParamFloatRequest\0322.mavsdk.rpc.param_s"
-    "erver.ChangedParamFloatResponse\"\004\200\265\030\0000\001\022"
-    "\227\001\n\033SubscribeChangedParamCustom\022;.mavsdk"
-    ".rpc.param_server.SubscribeChangedParamC"
-    "ustomRequest\0323.mavsdk.rpc.param_server.C"
-    "hangedParamCustomResponse\"\004\200\265\030\0000\001B*\n\026io."
-    "mavsdk.param_serverB\020ParamServerProtob\006p"
-    "roto3"
+    "TOO_LONG\020\006\022\"\n\036RESULT_PARAM_PROVIDED_TOO_"
+    "LATE\020\0072\334\013\n\022ParamServerService\022n\n\013SetProt"
+    "ocol\022+.mavsdk.rpc.param_server.SetProtoc"
+    "olRequest\032,.mavsdk.rpc.param_server.SetP"
+    "rotocolResponse\"\004\200\265\030\001\022}\n\020RetrieveParamIn"
+    "t\0220.mavsdk.rpc.param_server.RetrievePara"
+    "mIntRequest\0321.mavsdk.rpc.param_server.Re"
+    "trieveParamIntResponse\"\004\200\265\030\001\022z\n\017ProvideP"
+    "aramInt\022/.mavsdk.rpc.param_server.Provid"
+    "eParamIntRequest\0320.mavsdk.rpc.param_serv"
+    "er.ProvideParamIntResponse\"\004\200\265\030\001\022\203\001\n\022Ret"
+    "rieveParamFloat\0222.mavsdk.rpc.param_serve"
+    "r.RetrieveParamFloatRequest\0323.mavsdk.rpc"
+    ".param_server.RetrieveParamFloatResponse"
+    "\"\004\200\265\030\001\022\200\001\n\021ProvideParamFloat\0221.mavsdk.rp"
+    "c.param_server.ProvideParamFloatRequest\032"
+    "2.mavsdk.rpc.param_server.ProvideParamFl"
+    "oatResponse\"\004\200\265\030\001\022\206\001\n\023RetrieveParamCusto"
+    "m\0223.mavsdk.rpc.param_server.RetrievePara"
+    "mCustomRequest\0324.mavsdk.rpc.param_server"
+    ".RetrieveParamCustomResponse\"\004\200\265\030\001\022\203\001\n\022P"
+    "rovideParamCustom\0222.mavsdk.rpc.param_ser"
+    "ver.ProvideParamCustomRequest\0323.mavsdk.r"
+    "pc.param_server.ProvideParamCustomRespon"
+    "se\"\004\200\265\030\001\022\200\001\n\021RetrieveAllParams\0221.mavsdk."
+    "rpc.param_server.RetrieveAllParamsReques"
+    "t\0322.mavsdk.rpc.param_server.RetrieveAllP"
+    "aramsResponse\"\004\200\265\030\001\022\216\001\n\030SubscribeChanged"
+    "ParamInt\0228.mavsdk.rpc.param_server.Subsc"
+    "ribeChangedParamIntRequest\0320.mavsdk.rpc."
+    "param_server.ChangedParamIntResponse\"\004\200\265"
+    "\030\0000\001\022\224\001\n\032SubscribeChangedParamFloat\022:.ma"
+    "vsdk.rpc.param_server.SubscribeChangedPa"
+    "ramFloatRequest\0322.mavsdk.rpc.param_serve"
+    "r.ChangedParamFloatResponse\"\004\200\265\030\0000\001\022\227\001\n\033"
+    "SubscribeChangedParamCustom\022;.mavsdk.rpc"
+    ".param_server.SubscribeChangedParamCusto"
+    "mRequest\0323.mavsdk.rpc.param_server.Chang"
+    "edParamCustomResponse\"\004\200\265\030\0000\001B*\n\026io.mavs"
+    "dk.param_serverB\020ParamServerProtob\006proto"
+    "3"
 };
 static const ::_pbi::DescriptorTable* const descriptor_table_param_5fserver_2fparam_5fserver_2eproto_deps[1] =
     {
@@ -1154,7 +1155,7 @@ static ::absl::once_flag descriptor_table_param_5fserver_2fparam_5fserver_2eprot
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_param_5fserver_2fparam_5fserver_2eproto = {
     false,
     false,
-    3805,
+    3841,
     descriptor_table_protodef_param_5fserver_2fparam_5fserver_2eproto,
     "param_server/param_server.proto",
     &descriptor_table_param_5fserver_2fparam_5fserver_2eproto_once,
@@ -1175,9 +1176,9 @@ const ::google::protobuf::EnumDescriptor* ParamServerResult_Result_descriptor() 
   return file_level_enum_descriptors_param_5fserver_2fparam_5fserver_2eproto[0];
 }
 PROTOBUF_CONSTINIT const uint32_t ParamServerResult_Result_internal_data_[] = {
-    458752u, 0u, };
+    524288u, 0u, };
 bool ParamServerResult_Result_IsValid(int value) {
-  return 0 <= value && value <= 6;
+  return 0 <= value && value <= 7;
 }
 #if (__cplusplus < 201703) && \
   (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
@@ -1189,6 +1190,7 @@ constexpr ParamServerResult_Result ParamServerResult::RESULT_WRONG_TYPE;
 constexpr ParamServerResult_Result ParamServerResult::RESULT_PARAM_NAME_TOO_LONG;
 constexpr ParamServerResult_Result ParamServerResult::RESULT_NO_SYSTEM;
 constexpr ParamServerResult_Result ParamServerResult::RESULT_PARAM_VALUE_TOO_LONG;
+constexpr ParamServerResult_Result ParamServerResult::RESULT_PARAM_PROVIDED_TOO_LATE;
 constexpr ParamServerResult_Result ParamServerResult::Result_MIN;
 constexpr ParamServerResult_Result ParamServerResult::Result_MAX;
 constexpr int ParamServerResult::Result_ARRAYSIZE;

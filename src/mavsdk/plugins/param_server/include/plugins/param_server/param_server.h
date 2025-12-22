@@ -150,6 +150,7 @@ public:
         ParamNameTooLong, /**< @brief Parameter name too long (> 16). */
         NoSystem, /**< @brief No system available. */
         ParamValueTooLong, /**< @brief Parameter name too long (> 128). */
+        ParamProvidedTooLate, /**< @brief All parameters have to be provided upfront. */
     };
 
     /**
@@ -195,6 +196,10 @@ public:
      *
      * If the type is wrong, the result will be `WRONG_TYPE`.
      *
+     * Note that all params need to be provided upfront. Once a client has
+     * requested a param list, the indices are locked and no more params
+     * can be added.
+     *
      * This function is blocking.
      *
 
@@ -207,6 +212,10 @@ public:
      * @brief Retrieve a float parameter.
      *
      * If the type is wrong, the result will be `WRONG_TYPE`.
+     *
+     * Note that all params need to be provided upfront. Once a client has
+     * requested a param list, the indices are locked and no more params
+     * can be added.
      *
      * This function is blocking.
      *
@@ -231,6 +240,10 @@ public:
      * @brief Retrieve a custom parameter.
      *
      * If the type is wrong, the result will be `WRONG_TYPE`.
+     *
+     * Note that all params need to be provided upfront. Once a client has
+     * requested a param list, the indices are locked and no more params
+     * can be added.
      *
      * This function is blocking.
      *

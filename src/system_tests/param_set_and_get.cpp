@@ -180,3 +180,118 @@ TEST(SystemTest, ParamSetAndGetLossy)
     mavsdk_groundstation.intercept_incoming_messages_async(nullptr);
     mavsdk_groundstation.intercept_incoming_messages_async(nullptr);
 }
+
+TEST(SystemTest, ParamGetAndChange)
+{
+    Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
+    mavsdk_groundstation.set_timeout_s(reduced_timeout_s);
+
+    Mavsdk mavsdk_autopilot{Mavsdk::Configuration{ComponentType::Autopilot}};
+    mavsdk_autopilot.set_timeout_s(reduced_timeout_s);
+
+    ASSERT_EQ(
+        mavsdk_groundstation.add_any_connection("udpin://0.0.0.0:17000"),
+        ConnectionResult::Success);
+    ASSERT_EQ(
+        mavsdk_autopilot.add_any_connection("udpout://127.0.0.1:17000"), ConnectionResult::Success);
+
+    auto param_server = ParamServer{mavsdk_autopilot.server_component()};
+
+    auto maybe_system = mavsdk_groundstation.first_autopilot(10.0);
+    ASSERT_TRUE(maybe_system);
+    auto system = maybe_system.value();
+
+    ASSERT_TRUE(system->has_autopilot());
+
+    auto param = Param{system};
+
+    // First we try to get a param before it is available.
+    auto result_pair_float = param.get_param_float(param_name_float);
+    EXPECT_EQ(result_pair_float.first, Param::Result::DoesNotExist);
+    auto result_pair_int = param.get_param_int(param_name_int);
+    EXPECT_EQ(result_pair_int.first, Param::Result::DoesNotExist);
+
+    // Then we make it available.
+    EXPECT_EQ(
+        param_server.provide_param_float(param_name_float, param_value_float),
+        ParamServer::Result::Success);
+    EXPECT_EQ(
+        param_server.provide_param_int(param_name_int, param_value_int),
+        ParamServer::Result::Success);
+
+    // Now it should be available
+    result_pair_float = param.get_param_float(param_name_float);
+    EXPECT_EQ(result_pair_float.first, Param::Result::Success);
+    EXPECT_EQ(result_pair_float.second, param_value_float);
+
+    result_pair_int = param.get_param_int(param_name_int);
+    EXPECT_EQ(result_pair_int.first, Param::Result::Success);
+    EXPECT_EQ(result_pair_int.second, param_value_int);
+
+    // Now, the server changes the values
+    EXPECT_EQ(
+        param_server.provide_param_float(param_name_float, param_value_float + 1.0f),
+        ParamServer::Result::Success);
+    EXPECT_EQ(
+        param_server.provide_param_int(param_name_int, param_value_int + 1),
+        ParamServer::Result::Success);
+
+    // Check if it has been changed correctly
+    result_pair_float = param.get_param_float(param_name_float);
+    EXPECT_EQ(result_pair_float.first, Param::Result::Success);
+    EXPECT_EQ(result_pair_float.second, param_value_float + 1.0f);
+
+    result_pair_int = param.get_param_int(param_name_int);
+    EXPECT_EQ(result_pair_int.first, Param::Result::Success);
+    EXPECT_EQ(result_pair_int.second, param_value_int + 1);
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+}
+
+TEST(SystemTest, ParamGetAndChangeTooLate)
+{
+    Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
+    mavsdk_groundstation.set_timeout_s(reduced_timeout_s);
+
+    Mavsdk mavsdk_autopilot{Mavsdk::Configuration{ComponentType::Autopilot}};
+    mavsdk_autopilot.set_timeout_s(reduced_timeout_s);
+
+    ASSERT_EQ(
+        mavsdk_groundstation.add_any_connection("udpin://0.0.0.0:17000"),
+        ConnectionResult::Success);
+    ASSERT_EQ(
+        mavsdk_autopilot.add_any_connection("udpout://127.0.0.1:17000"), ConnectionResult::Success);
+
+    auto param_server = ParamServer{mavsdk_autopilot.server_component()};
+
+    auto maybe_system = mavsdk_groundstation.first_autopilot(10.0);
+    ASSERT_TRUE(maybe_system);
+    auto system = maybe_system.value();
+
+    ASSERT_TRUE(system->has_autopilot());
+
+    auto param = Param{system};
+
+    // Then we make it available.
+    EXPECT_EQ(
+        param_server.provide_param_float(param_name_float, param_value_float),
+        ParamServer::Result::Success);
+    EXPECT_EQ(
+        param_server.provide_param_int(param_name_int, param_value_int),
+        ParamServer::Result::Success);
+
+    // Once we use all params, the indices are set and we can't provide more params.
+    const auto all_params = param.get_all_params();
+    ASSERT_EQ(all_params.float_params.size(), 1);
+    ASSERT_EQ(all_params.int_params.size(), 1);
+    EXPECT_EQ(all_params.float_params[0].value, param_value_float);
+    EXPECT_EQ(all_params.int_params[0].value, param_value_int);
+
+    // Now that the params have be used, we are not able to "provide" more parameters. We can only
+    // do so initially.
+    EXPECT_EQ(
+        param_server.provide_param_int("ANOTHER_ONE", 67),
+        ParamServer::Result::ParamProvidedTooLate);
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+}

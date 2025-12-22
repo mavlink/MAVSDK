@@ -64,6 +64,8 @@ public:
     void set_extended_protocol(bool extended_protocol) { _extended_protocol = extended_protocol; };
     void do_work();
 
+    bool params_locked_down() const;
+
     friend std::ostream& operator<<(std::ostream&, const Result&);
 
     // Non-copyable
@@ -121,7 +123,7 @@ private:
     Sender& _sender;
     MavlinkMessageHandler& _message_handler;
 
-    std::mutex _all_params_mutex{};
+    mutable std::mutex _all_params_mutex{};
     MavlinkParameterCache _param_cache{};
 
     LockedQueue<WorkItem> _work_queue{};
@@ -129,6 +131,8 @@ private:
     bool _extended_protocol = true;
     bool _parameter_debugging = false;
     bool _last_extended = true;
+
+    bool _params_locked_down = false;
 };
 
 } // namespace mavsdk
