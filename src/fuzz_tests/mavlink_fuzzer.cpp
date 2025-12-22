@@ -1,13 +1,13 @@
 #include <cstdint>
 #include <cstddef>
 #include <cstring>
+#include <cstdlib>
 #include <thread>
 #include <chrono>
 #include <memory>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <unistd.h>
+#include <atomic>
+#include <mutex>
+#include <condition_variable>
 
 #include <mavsdk/mavsdk.h>
 #include "mavlink_include.h"
@@ -45,32 +45,68 @@
 
 using namespace mavsdk;
 
-// RAII socket wrapper
-class SocketWrapper {
+// Watchdog to detect stalls/deadlocks - aborts if not reset within timeout
+class Watchdog {
 public:
-    SocketWrapper() : fd_(-1) {}
-
-    ~SocketWrapper()
+    explicit Watchdog(std::chrono::milliseconds timeout) : timeout_(timeout), running_(true)
     {
-        if (fd_ >= 0) {
-            close(fd_);
+        thread_ = std::thread([this]() { run(); });
+    }
+
+    ~Watchdog()
+    {
+        {
+            std::lock_guard<std::mutex> lock(mutex_);
+            running_ = false;
+        }
+        cv_.notify_all();
+        if (thread_.joinable()) {
+            thread_.join();
         }
     }
 
-    bool create()
+    // Call this before each operation to reset the watchdog
+    void reset()
     {
-        fd_ = socket(AF_INET, SOCK_DGRAM, 0);
-        return fd_ >= 0;
+        std::lock_guard<std::mutex> lock(mutex_);
+        last_reset_ = std::chrono::steady_clock::now();
     }
 
-    int get() const { return fd_; }
-
     // Non-copyable
-    SocketWrapper(const SocketWrapper&) = delete;
-    SocketWrapper& operator=(const SocketWrapper&) = delete;
+    Watchdog(const Watchdog&) = delete;
+    Watchdog& operator=(const Watchdog&) = delete;
 
 private:
-    int fd_;
+    void run()
+    {
+        while (true) {
+            std::unique_lock<std::mutex> lock(mutex_);
+
+            // Wait for timeout or stop signal
+            cv_.wait_for(lock, timeout_ / 2);
+
+            if (!running_) {
+                return;
+            }
+
+            auto now = std::chrono::steady_clock::now();
+            auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(now - last_reset_);
+
+            if (elapsed > timeout_) {
+                // Stall detected - abort to generate core dump
+                LogErr() << "WATCHDOG: Stall detected! No activity for " << elapsed.count()
+                         << "ms. Aborting to generate core dump.";
+                std::abort();
+            }
+        }
+    }
+
+    std::chrono::milliseconds timeout_;
+    std::chrono::steady_clock::time_point last_reset_{std::chrono::steady_clock::now()};
+    std::atomic<bool> running_;
+    std::mutex mutex_;
+    std::condition_variable cv_;
+    std::thread thread_;
 };
 
 // Plugin instances per system to maximize message processing coverage
@@ -109,8 +145,6 @@ struct SystemPlugins {
 // Main fuzzer class that manages MAVSDK connection and plugin instances
 class MavsdkFuzzer {
 public:
-    static constexpr int FUZZ_PORT = 14999;
-
     MavsdkFuzzer() = default;
     ~MavsdkFuzzer() = default;
 
@@ -133,9 +167,8 @@ private:
         size_t output_buffer_size);
 
     std::unique_ptr<Mavsdk> mavsdk_;
-    std::unique_ptr<SocketWrapper> socket_;
+    std::unique_ptr<Watchdog> watchdog_;
     std::vector<std::unique_ptr<SystemPlugins>> system_plugins_;
-    struct sockaddr_in dest_addr_{};
     std::chrono::steady_clock::time_point last_heartbeat_{std::chrono::steady_clock::now()};
     bool initialized_{false};
 };
@@ -157,13 +190,8 @@ void MavsdkFuzzer::send_heartbeat()
     uint8_t heartbeat_buffer[MAVLINK_MAX_PACKET_LEN];
     size_t heartbeat_size = mavlink_msg_to_send_buffer(heartbeat_buffer, &heartbeat_msg);
 
-    sendto(
-        socket_->get(),
-        heartbeat_buffer,
-        heartbeat_size,
-        0,
-        reinterpret_cast<const struct sockaddr*>(&dest_addr_),
-        sizeof(dest_addr_));
+    mavsdk_->pass_received_raw_bytes(
+        reinterpret_cast<const char*>(heartbeat_buffer), heartbeat_size);
 }
 
 void MavsdkFuzzer::create_plugins_for_system(std::shared_ptr<System> system)
@@ -220,22 +248,18 @@ bool MavsdkFuzzer::initialize()
     // Create MAVSDK instance
     mavsdk_ = std::make_unique<Mavsdk>(Mavsdk::Configuration{ComponentType::GroundStation});
 
-    // Add UDP connection that listens on our fuzz port
-    std::string connection_url = "udpin://127.0.0.1:" + std::to_string(FUZZ_PORT);
-    ConnectionResult result = mavsdk_->add_any_connection(connection_url);
+    // Add raw connection for direct byte injection (no network overhead)
+    ConnectionResult result = mavsdk_->add_any_connection("raw://");
 
     if (result != ConnectionResult::Success) {
         mavsdk_.reset();
         return false;
     }
 
-    // Create socket for sending fuzzed data
-    socket_ = std::make_unique<SocketWrapper>();
-    if (!socket_->create()) {
-        mavsdk_.reset();
-        socket_.reset();
-        return false;
-    }
+    // Subscribe to outgoing bytes and discard them (required for raw connection to work)
+    mavsdk_->subscribe_raw_bytes_to_be_sent([](const char*, size_t) {
+        // Discard outgoing messages - we don't need them for fuzzing
+    });
 
     // Subscribe to new systems and create plugins for each one dynamically
     mavsdk_->subscribe_on_new_system([this]() {
@@ -269,11 +293,6 @@ bool MavsdkFuzzer::initialize()
         create_plugins_for_system(system);
     }
 
-    // Set up destination address for all messages
-    dest_addr_.sin_family = AF_INET;
-    dest_addr_.sin_port = htons(FUZZ_PORT);
-    inet_pton(AF_INET, "127.0.0.1", &dest_addr_.sin_addr);
-
     // Send initial heartbeat to trigger system discovery
     LogDebug() << "Sending initial heartbeat to trigger system discovery";
     send_heartbeat();
@@ -301,6 +320,9 @@ bool MavsdkFuzzer::initialize()
             LogDebug() << "Post-heartbeat system already has plugins";
         }
     }
+
+    // Start watchdog with 3 second timeout to detect stalls/deadlocks
+    watchdog_ = std::make_unique<Watchdog>(std::chrono::milliseconds(3000));
 
     initialized_ = true;
     return true;
@@ -377,9 +399,12 @@ void MavsdkFuzzer::process_fuzz_input(const uint8_t* data, size_t size)
         return;
     }
 
-    if (!initialized_ || !mavsdk_ || !socket_) {
+    if (!initialized_ || !mavsdk_ || !watchdog_) {
         return;
     }
+
+    // Reset watchdog at start of each input processing
+    watchdog_->reset();
 
     // Send heartbeat every second to keep the system alive
     auto now = std::chrono::steady_clock::now();
@@ -398,31 +423,12 @@ void MavsdkFuzzer::process_fuzz_input(const uint8_t* data, size_t size)
         return;
     }
 
-    // Send all generated MAVLink messages as UDP packets to MAVSDK
-    size_t offset = 0;
-    while (offset < total_mavlink_size) {
-        // Parse each individual message from the buffer to get its length
-        if (offset + 1 >= total_mavlink_size)
-            break;
+    // Pass all generated MAVLink messages directly to MAVSDK via raw connection
+    mavsdk_->pass_received_raw_bytes(
+        reinterpret_cast<const char*>(mavlink_buffer), total_mavlink_size);
 
-        uint8_t msg_len = mavlink_buffer[offset + 1]; // MAVLink v2 length field
-        size_t full_msg_size = msg_len + 12; // MAVLink v2 overhead
-
-        if (offset + full_msg_size > total_mavlink_size) {
-            break; // Incomplete message
-        }
-
-        // Send this individual message
-        sendto(
-            socket_->get(),
-            mavlink_buffer + offset,
-            full_msg_size,
-            0,
-            reinterpret_cast<const struct sockaddr*>(&dest_addr_),
-            sizeof(dest_addr_));
-
-        offset += full_msg_size;
-    }
+    // Reset watchdog after successful processing
+    watchdog_->reset();
 }
 
 // Global fuzzer instance
