@@ -1,0 +1,139 @@
+name: Fuzzing
+
+on:
+  push:
+    branches:
+    - 'main'
+    paths-ignore:
+    - 'docs/**'
+  pull_request:
+    branches:
+    - '*'
+    paths-ignore:
+    - 'docs/**'
+
+jobs:
+  fuzz:
+    name: MAVLink Fuzzing
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clang ninja-build
+
+      - name: Cache third party dependencies
+        uses: actions/cache@v4
+        id: cache-deps
+        with:
+          path: ./build/fuzz/third_party/install
+          key: fuzz-deps-${{ hashFiles('./third_party/**') }}-1
+
+      - name: Disable superbuild on cache hit
+        if: steps.cache-deps.outputs.cache-hit == 'true'
+        run: |
+          echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV
+          echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/fuzz/third_party/install" >> $GITHUB_ENV
+
+      - name: Configure
+        run: |
+          export CC=clang
+          export CXX=clang++
+          cmake $superbuild $cmake_prefix_path \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DBUILD_FUZZ_TESTS=ON \
+            -GNinja \
+            -Bbuild/fuzz -H.
+
+      - name: Build
+        run: cmake --build build/fuzz -j$(nproc)
+
+      - name: Restore fuzzing corpus cache
+        uses: actions/cache/restore@v4
+        id: cache-corpus
+        with:
+          path: ./fuzz_corpus
+          key: fuzz-corpus-${{ github.run_id }}
+          restore-keys: |
+            fuzz-corpus-
+
+      - name: Create corpus directory
+        run: mkdir -p fuzz_corpus
+
+      - name: Configure core dumps
+        run: |
+          ulimit -c unlimited
+          echo '/tmp/core.%h.%e.%t' | sudo tee /proc/sys/kernel/core_pattern
+          # Disable ASAN's signal handler so we get proper core dumps
+          echo "ASAN_OPTIONS=abort_on_error=1:disable_coredump=0" >> $GITHUB_ENV
+
+      - name: Run fuzzer (10 minutes)
+        run: |
+          # Use timeout to detect stalls - sends SIGABRT after 11 min (1 min grace period)
+          # SIGABRT generates a core dump with all thread stacks
+          timeout --signal=ABRT 660 \
+            ./build/fuzz/src/fuzz_tests/mavlink_fuzzer \
+            fuzz_corpus \
+            -max_total_time=600 \
+            -timeout=10 \
+            -print_final_stats=1 \
+            -jobs=$(nproc) \
+            -workers=$(nproc) \
+          || exit_code=$?
+          # Exit code 124 means timeout killed it (stall/deadlock)
+          if [ "${exit_code:-0}" -eq 124 ]; then
+            echo "::error::Fuzzer stalled/deadlocked - check core dump"
+            exit 1
+          fi
+          exit ${exit_code:-0}
+
+      - name: Save fuzzing corpus cache
+        uses: actions/cache/save@v4
+        if: always()
+        with:
+          path: ./fuzz_corpus
+          key: fuzz-corpus-${{ github.run_id }}
+
+      - name: Upload crash artifacts
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fuzzer-crashes-${{ github.run_id }}
+          path: |
+            crash-*
+            leak-*
+            timeout-*
+          retention-days: 30
+          if-no-files-found: ignore
+
+      - name: Upload core dumps
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fuzzer-coredumps-${{ github.run_id }}
+          path: /tmp/core.*
+          retention-days: 30
+          if-no-files-found: ignore
+
+      - name: Upload fuzzer binary for core dump analysis
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fuzzer-binary-${{ github.run_id }}
+          path: |
+            ./build/fuzz/src/fuzz_tests/mavlink_fuzzer
+            ./build/fuzz/src/mavsdk/libmavsdk.so*
+          retention-days: 30
+
+      - name: Upload corpus on crash
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fuzzer-corpus-${{ github.run_id }}
+          path: fuzz_corpus
+          retention-days: 30
