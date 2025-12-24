@@ -26,30 +26,49 @@ LibmavReceiver::~LibmavReceiver() = default;
 
 void LibmavReceiver::set_new_datagram(char* datagram, unsigned datagram_len)
 {
-    _datagram = datagram;
-    _datagram_len = datagram_len;
+    // Append new data to accumulation buffer (for serial where messages can span multiple reads)
+    _accumulation_buffer.insert(
+        _accumulation_buffer.end(),
+        reinterpret_cast<uint8_t*>(datagram),
+        reinterpret_cast<uint8_t*>(datagram) + datagram_len);
+
+    // Prevent unbounded growth
+    if (_accumulation_buffer.size() > ACCUMULATION_BUFFER_SIZE) {
+        // Drop oldest bytes to make room
+        size_t bytes_to_drop = _accumulation_buffer.size() - ACCUMULATION_BUFFER_SIZE;
+        _accumulation_buffer.erase(
+            _accumulation_buffer.begin(),
+            _accumulation_buffer.begin() + static_cast<ptrdiff_t>(bytes_to_drop));
+    }
 }
 
 bool LibmavReceiver::parse_message()
 {
-    if (!_datagram || _datagram_len == 0) {
+    if (_accumulation_buffer.empty()) {
         return false;
     }
 
-    // Use libmav to parse messages directly from the buffer
-    return parse_libmav_message_from_buffer(
-        reinterpret_cast<const uint8_t*>(_datagram), _datagram_len);
+    // Use libmav to parse messages from the accumulation buffer
+    return parse_libmav_message_from_buffer();
 }
 
-bool LibmavReceiver::parse_libmav_message_from_buffer(const uint8_t* buffer, size_t buffer_len)
+bool LibmavReceiver::parse_libmav_message_from_buffer()
 {
     size_t bytes_consumed = 0;
 
     // Use thread-safe parsing from MavsdkImpl (handles MessageSet synchronization internally)
-    auto message_opt = _mavsdk_impl.parse_message_safe(buffer, buffer_len, bytes_consumed);
+    auto message_opt = _mavsdk_impl.parse_message_safe(
+        _accumulation_buffer.data(), _accumulation_buffer.size(), bytes_consumed);
 
     if (!message_opt) {
-        return false; // No complete message found
+        // No complete message found - consume bytes before the magic byte (if any)
+        // to avoid reprocessing garbage bytes on the next attempt
+        if (bytes_consumed > 0) {
+            _accumulation_buffer.erase(
+                _accumulation_buffer.begin(),
+                _accumulation_buffer.begin() + static_cast<ptrdiff_t>(bytes_consumed));
+        }
+        return false;
     }
 
     auto message = message_opt.value();
@@ -86,14 +105,10 @@ bool LibmavReceiver::parse_libmav_message_from_buffer(const uint8_t* buffer, siz
 
     _last_message.fields_json = json;
 
-    // Advance the datagram pointer by the bytes we actually consumed,
-    // in case there are more messages in the same datagram.
-    _datagram += bytes_consumed;
-    _datagram_len -= bytes_consumed;
-
-    if (_datagram_len == 0) {
-        _datagram = nullptr;
-    }
+    // Remove the consumed bytes from the accumulation buffer
+    _accumulation_buffer.erase(
+        _accumulation_buffer.begin(),
+        _accumulation_buffer.begin() + static_cast<ptrdiff_t>(bytes_consumed));
 
     return true;
 }
