@@ -1,10 +1,12 @@
 #pragma once
 
 #include <mav/Message.h>
+#include <mav/MessageDefinition.h>
 #include <string>
 #include <cstdint>
 #include <optional>
 #include <memory>
+#include <vector>
 #include "mavlink_include.h"
 #include "mavsdk.h"
 
@@ -57,13 +59,15 @@ private:
     Mavsdk::MavlinkMessage _last_message;
     std::optional<mav::Message> _last_libmav_message; // Separate libmav message for integration
 
-    char* _datagram = nullptr;
-    unsigned _datagram_len = 0;
+    // Accumulation buffer for serial connections where messages can span multiple reads
+    // Buffer size is max message size (280 bytes: 255 payload + 10 header + 2 CRC + 13 signature)
+    static constexpr size_t ACCUMULATION_BUFFER_SIZE = mav::MessageDefinition::MAX_MESSAGE_SIZE;
+    std::vector<uint8_t> _accumulation_buffer;
 
     bool _debugging = false;
 
     // Helper methods
-    bool parse_libmav_message_from_buffer(const uint8_t* buffer, size_t buffer_len);
+    bool parse_libmav_message_from_buffer();
 };
 
 } // namespace mavsdk
