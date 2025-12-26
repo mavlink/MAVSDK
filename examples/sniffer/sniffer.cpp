@@ -112,8 +112,6 @@ int main(int argc, char** argv)
 
     // Statistics tracking for stat mode
     std::map<std::string, size_t> message_counts;
-    std::map<std::string, std::chrono::steady_clock::time_point> last_message_time;
-    std::map<std::string, double> message_frequencies;
     auto start_time = std::chrono::steady_clock::now();
 
     auto handle = mavsdk.subscribe_incoming_messages_json([&](Mavsdk::MavlinkMessage message) {
@@ -126,21 +124,7 @@ int main(int argc, char** argv)
                 break;
             case DisplayMode::Stat:
                 // Track statistics for stat mode
-                {
-                    auto now = std::chrono::steady_clock::now();
-                    message_counts[message.message_name]++;
-
-                    // Calculate frequency (Hz) based on time since last message of this type
-                    if (last_message_time.find(message.message_name) != last_message_time.end()) {
-                        auto time_diff = std::chrono::duration_cast<std::chrono::milliseconds>(
-                                             now - last_message_time[message.message_name])
-                                             .count();
-                        if (time_diff > 0) {
-                            message_frequencies[message.message_name] = 1000.0 / time_diff;
-                        }
-                    }
-                    last_message_time[message.message_name] = now;
-                }
+                message_counts[message.message_name]++;
                 break;
             case DisplayMode::Selective:
                 should_display =
@@ -201,13 +185,16 @@ int main(int argc, char** argv)
                 std::cout << std::string(55, '-') << std::endl;
                 lines_printed = 3;
 
+                // Calculate elapsed time since start for Hz calculation
+                auto elapsed_since_start =
+                    std::chrono::duration_cast<std::chrono::milliseconds>(now - start_time).count();
+
                 // Print statistics
                 for (const auto& pair : sorted_messages) {
                     const std::string& msg_name = pair.first;
                     size_t count = pair.second;
-                    double hz = message_frequencies.find(msg_name) != message_frequencies.end() ?
-                                    message_frequencies[msg_name] :
-                                    0.0;
+                    double hz =
+                        elapsed_since_start > 0 ? (count * 1000.0 / elapsed_since_start) : 0.0;
 
                     std::cout << std::left << std::setw(35) << msg_name << std::setw(10) << count
                               << std::setw(10) << std::fixed << std::setprecision(1) << hz
