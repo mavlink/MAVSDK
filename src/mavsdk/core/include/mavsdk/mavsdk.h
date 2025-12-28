@@ -260,6 +260,13 @@ public:
          */
         void set_mav_type(uint8_t mav_type);
 
+        /**
+         * @brief Get the mav type for a given component type.
+         * @param component_type The component type
+         * @return The corresponding mav type
+         */
+        static uint8_t mav_type_for_component_type(ComponentType component_type);
+
     private:
         uint8_t _system_id;
         uint8_t _component_id;
@@ -268,7 +275,6 @@ public:
         MAV_TYPE _mav_type;
 
         static ComponentType component_type_for_component_id(uint8_t component_id);
-        static MAV_TYPE mav_type_for_component_type(ComponentType component_type);
     };
 
     /**

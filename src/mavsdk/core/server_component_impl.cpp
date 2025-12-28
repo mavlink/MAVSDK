@@ -4,9 +4,11 @@
 
 namespace mavsdk {
 
-ServerComponentImpl::ServerComponentImpl(MavsdkImpl& mavsdk_impl, uint8_t component_id) :
+ServerComponentImpl::ServerComponentImpl(
+    MavsdkImpl& mavsdk_impl, uint8_t component_id, uint8_t mav_type) :
     _mavsdk_impl(mavsdk_impl),
     _own_component_id(component_id),
+    _own_mav_type(mav_type),
     _our_sender(*this),
     _mavlink_command_receiver(*this),
     _mission_transfer_server(
@@ -244,7 +246,7 @@ void ServerComponentImpl::send_heartbeat()
             mavlink_address.component_id,
             channel,
             &message,
-            _mavsdk_impl.get_mav_type(),
+            _own_mav_type,
             mavlink_address.component_id == MAV_COMP_ID_AUTOPILOT1 ? MAV_AUTOPILOT_GENERIC :
                                                                      MAV_AUTOPILOT_INVALID,
             mavlink_address.component_id == MAV_COMP_ID_AUTOPILOT1 ? _base_mode.load() : 0,

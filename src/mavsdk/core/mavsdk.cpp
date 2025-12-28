@@ -86,7 +86,7 @@ Mavsdk::server_component_by_type(ComponentType server_component_type, unsigned i
 
 std::shared_ptr<ServerComponent> Mavsdk::server_component_by_id(uint8_t component_id)
 {
-    return _impl->server_component_by_id(component_id);
+    return _impl->server_component_by_id(component_id, _impl->get_mav_type());
 }
 
 Mavsdk::Configuration::Configuration(
@@ -95,7 +95,8 @@ Mavsdk::Configuration::Configuration(
     _component_id(component_id),
     _always_send_heartbeats(always_send_heartbeats),
     _component_type(component_type_for_component_id(component_id)),
-    _mav_type(mav_type_for_component_type(component_type_for_component_id(component_id)))
+    _mav_type(static_cast<MAV_TYPE>(
+        mav_type_for_component_type(component_type_for_component_id(component_id))))
 {}
 
 ComponentType Mavsdk::Configuration::component_type_for_component_id(uint8_t component_id)
@@ -118,7 +119,7 @@ ComponentType Mavsdk::Configuration::component_type_for_component_id(uint8_t com
     }
 }
 
-MAV_TYPE Mavsdk::Configuration::mav_type_for_component_type(ComponentType component_type)
+uint8_t Mavsdk::Configuration::mav_type_for_component_type(ComponentType component_type)
 {
     switch (component_type) {
         case ComponentType::Autopilot:
@@ -145,7 +146,7 @@ Mavsdk::Configuration::Configuration(ComponentType component_type) :
     _component_id(Mavsdk::DEFAULT_COMPONENT_ID_GCS),
     _always_send_heartbeats(false),
     _component_type(component_type),
-    _mav_type(mav_type_for_component_type(component_type))
+    _mav_type(static_cast<MAV_TYPE>(mav_type_for_component_type(component_type)))
 {
     switch (component_type) {
         case ComponentType::GroundStation:

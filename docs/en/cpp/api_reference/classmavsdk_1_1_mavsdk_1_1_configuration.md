@@ -27,6 +27,13 @@ void | [set_component_type](#classmavsdk_1_1_mavsdk_1_1_configuration_1a06461b86
 uint8_t | [get_mav_type](#classmavsdk_1_1_mavsdk_1_1_configuration_1aafe9e8fc11dd0b688a836c123357e9ba) () const | Get the mav type (vehicle type) of this configuration.
 void | [set_mav_type](#classmavsdk_1_1_mavsdk_1_1_configuration_1a16db98d8802c3427b1be10f0b72b977b) (uint8_t mav_type) | Set the mav type (vehicle type) of this configuration.
 
+## Static Public Member Functions
+
+
+Type | Name | Description
+---: | --- | ---
+uint8_t | [mav_type_for_component_type](#classmavsdk_1_1_mavsdk_1_1_configuration_1a9c5b385d4097b9f486acfbfb1191adc8) ([ComponentType](namespacemavsdk.md#namespacemavsdk_1a20fe7f7c8312779a187017111bf33d12) component_type) | Get the mav type for a given component type.
+
 
 ## Constructor & Destructor Documentation
 
@@ -203,3 +210,20 @@ Set the mav type (vehicle type) of this configuration.
 **Parameters**
 
 * uint8_t **mav_type** - 
+
+### mav_type_for_component_type() {#classmavsdk_1_1_mavsdk_1_1_configuration_1a9c5b385d4097b9f486acfbfb1191adc8}
+```cpp
+static uint8_t mavsdk::Mavsdk::Configuration::mav_type_for_component_type(ComponentType component_type)
+```
+
+
+Get the mav type for a given component type.
+
+
+**Parameters**
+
+* [ComponentType](namespacemavsdk.md#namespacemavsdk_1a20fe7f7c8312779a187017111bf33d12) **component_type** - The component type
+
+**Returns**
+
+&emsp;uint8_t - The corresponding mav type
