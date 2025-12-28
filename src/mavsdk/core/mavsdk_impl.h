@@ -72,8 +72,6 @@ public:
     bool send_message(mavlink_message_t& message);
     uint8_t get_own_system_id() const;
     uint8_t get_own_component_id() const;
-    uint8_t channel() const;
-    Autopilot autopilot() const;
 
     Sender& sender();
 
