@@ -1046,18 +1046,6 @@ uint8_t MavsdkImpl::get_own_component_id() const
     return _our_component_id;
 }
 
-uint8_t MavsdkImpl::channel() const
-{
-    // TODO
-    return 0;
-}
-
-Autopilot MavsdkImpl::autopilot() const
-{
-    // TODO
-    return Autopilot::Px4;
-}
-
 // FIXME: this should be per component
 uint8_t MavsdkImpl::get_mav_type() const
 {
