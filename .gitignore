@@ -34,3 +34,6 @@ mavlink-headers
 docs/node_modules/
 docs/.vitepress/cache/
 docs/.vitepress/dist/
+
+# Fuzzing
+fuzz_corpus
