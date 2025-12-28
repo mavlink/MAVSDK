@@ -111,7 +111,7 @@ public:
 
     std::shared_ptr<ServerComponent>
     server_component_by_type(ComponentType server_component_type, unsigned instance = 0);
-    std::shared_ptr<ServerComponent> server_component_by_id(uint8_t component_id);
+    std::shared_ptr<ServerComponent> server_component_by_id(uint8_t component_id, uint8_t mav_type);
 
     Time time{};
     TimeoutHandler timeout_handler;
@@ -184,7 +184,8 @@ private:
 
     bool is_any_system_connected() const;
 
-    std::shared_ptr<ServerComponent> server_component_by_id_with_lock(uint8_t component_id);
+    std::shared_ptr<ServerComponent>
+    server_component_by_id_with_lock(uint8_t component_id, uint8_t mav_type);
     ServerComponentImpl& default_server_component_with_lock();
 
     static uint8_t get_target_system_id(const mavlink_message_t& message);

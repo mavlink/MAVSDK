@@ -33,7 +33,7 @@ public:
         {}, // library version hash (unused for now)
     };
 
-    ServerComponentImpl(MavsdkImpl& mavsdk_impl, uint8_t component_id);
+    ServerComponentImpl(MavsdkImpl& mavsdk_impl, uint8_t component_id, uint8_t mav_type);
     ~ServerComponentImpl();
 
     void register_plugin(ServerPluginImplBase* server_plugin_impl);
@@ -161,6 +161,7 @@ public:
 private:
     MavsdkImpl& _mavsdk_impl;
     uint8_t _own_component_id{MAV_COMP_ID_AUTOPILOT1};
+    uint8_t _own_mav_type;
 
     std::mutex _mavlink_pack_mutex{};
     uint8_t _channel{0};
