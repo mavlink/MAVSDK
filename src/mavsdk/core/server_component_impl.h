@@ -51,14 +51,9 @@ public:
         [[nodiscard]] uint8_t get_own_component_id() const override;
         [[nodiscard]] Autopilot autopilot() const override;
 
-        uint8_t current_target_system_id{0};
-
     private:
         ServerComponentImpl& _server_component_impl;
     };
-
-    // FIXME: remove this hack again by writing the proper mission transfer server part
-    void set_our_current_target_system_id(uint8_t id) { _our_sender.current_target_system_id = id; }
 
     struct AutopilotVersion {
         /** @brief MAVLink autopilot_version capabilities. */
