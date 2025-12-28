@@ -1046,7 +1046,6 @@ uint8_t MavsdkImpl::get_own_component_id() const
     return _our_component_id;
 }
 
-// FIXME: this should be per component
 uint8_t MavsdkImpl::get_mav_type() const
 {
     return _configuration.get_mav_type();
