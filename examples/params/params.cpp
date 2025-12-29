@@ -18,9 +18,27 @@ std::from_chars_result our_from_chars_float(const char* first, const char* last,
 
 using namespace mavsdk;
 
+// Parsed value that can be either int or float
+struct ParsedValue {
+    bool is_float;
+    int int_val;
+    float float_val;
+};
+
+// Parse value string, detecting type based on presence of '.'
+bool parse_value(const std::string& value, ParsedValue& parsed);
+
+// Set a parameter with type fallback, returns success and the type actually used
+bool set_param_with_fallback(
+    Param& param, const std::string& name, const ParsedValue& value, bool& used_float);
+
+// Get a parameter value given the type
+bool get_param_value(Param& param, const std::string& name, bool is_float, ParsedValue& result);
+
 void get_all(Param& param);
 void get(Param& param, std::string name);
 void set(Param& param, std::string name, std::string value);
+void set_and_verify(Param& param, std::string name, std::string value);
 
 class CommandLineParser {
 public:
@@ -40,6 +58,7 @@ public:
                   << "  get_all:          Print all parameters\n"
                   << "  get <param name>: Get one param\n"
                   << "  set <param name> <value>: Set one param\n"
+                  << "  set_and_verify <param name> <value>: Set param and verify by reading back\n"
                   << std::flush;
     }
 
@@ -52,6 +71,7 @@ public:
         GetAll,
         Get,
         Set,
+        SetAndVerify,
     };
 
     struct Args {
@@ -93,6 +113,15 @@ public:
             }
 
             args.action = Action::Set;
+            args.param_name = argv[3];
+            args.value = argv[4];
+        } else if (action_str == "set_and_verify") {
+            if (argc != 5) {
+                std::cerr << "set_and_verify requires a parameter name and value" << std::endl;
+                return {Result::Invalid, {}};
+            }
+
+            args.action = Action::SetAndVerify;
             args.param_name = argv[3];
             args.value = argv[4];
         } else {
@@ -169,6 +198,10 @@ int main(int argc, char** argv)
         case CommandLineParser::Action::Set:
             set(param, args.param_name, args.value);
             break;
+
+        case CommandLineParser::Action::SetAndVerify:
+            set_and_verify(param, args.param_name, args.value);
+            break;
     };
 
     return 0;
@@ -227,53 +260,167 @@ void get(Param& param, std::string name)
               << std::endl;
 }
 
+bool parse_value(const std::string& value, ParsedValue& parsed)
+{
+    parsed.is_float = (value.find('.') != std::string::npos);
+
+    std::cout << "Detected type: " << (parsed.is_float ? "float" : "int") << " (based on "
+              << (parsed.is_float ? "presence" : "absence") << " of '.')" << std::endl;
+
+    if (parsed.is_float) {
+        const auto result =
+            our_from_chars_float(value.data(), value.data() + value.size(), parsed.float_val);
+        if (result.ec != std::errc() || result.ptr != value.data() + value.size()) {
+            std::cerr << "Failed to parse '" << value << "' as float" << std::endl;
+            return false;
+        }
+        parsed.int_val = static_cast<int>(parsed.float_val);
+    } else {
+        const auto result =
+            std::from_chars(value.data(), value.data() + value.size(), parsed.int_val);
+        if (result.ec != std::errc() || result.ptr != value.data() + value.size()) {
+            std::cerr << "Failed to parse '" << value << "' as int" << std::endl;
+            return false;
+        }
+        parsed.float_val = static_cast<float>(parsed.int_val);
+    }
+    return true;
+}
+
+bool set_param_with_fallback(
+    Param& param, const std::string& name, const ParsedValue& value, bool& used_float)
+{
+    used_float = value.is_float;
+
+    if (value.is_float) {
+        std::cout << "Setting " << name << " to " << value.float_val << " as float..."
+                  << std::flush;
+        auto result = param.set_param_float(name, value.float_val);
+
+        if (result == Param::Result::Success) {
+            std::cout << "Ok" << std::endl;
+            return true;
+        }
+
+        if (result != Param::Result::WrongType) {
+            std::cout << "Failed: " << result << std::endl;
+            return false;
+        }
+
+        // Fallback to int
+        std::cout << "WrongType, trying as int..." << std::flush;
+        used_float = false;
+        result = param.set_param_int(name, value.int_val);
+
+        if (result == Param::Result::Success) {
+            std::cout << "Ok" << std::endl;
+            return true;
+        }
+
+        std::cout << "Failed: " << result << std::endl;
+        return false;
+
+    } else {
+        std::cout << "Setting " << name << " to " << value.int_val << " as int..." << std::flush;
+        auto result = param.set_param_int(name, value.int_val);
+
+        if (result == Param::Result::Success) {
+            std::cout << "Ok" << std::endl;
+            return true;
+        }
+
+        if (result != Param::Result::WrongType) {
+            std::cout << "Failed: " << result << std::endl;
+            return false;
+        }
+
+        // Fallback to float
+        std::cout << "WrongType, trying as float..." << std::flush;
+        used_float = true;
+        result = param.set_param_float(name, value.float_val);
+
+        if (result == Param::Result::Success) {
+            std::cout << "Ok" << std::endl;
+            return true;
+        }
+
+        std::cout << "Failed: " << result << std::endl;
+        return false;
+    }
+}
+
+bool get_param_value(Param& param, const std::string& name, bool is_float, ParsedValue& result)
+{
+    std::cout << "Reading back " << name << " as " << (is_float ? "float" : "int") << "..."
+              << std::flush;
+
+    if (is_float) {
+        auto get_result = param.get_param_float(name);
+        if (get_result.first != Param::Result::Success) {
+            std::cout << "Failed: " << get_result.first << std::endl;
+            return false;
+        }
+        result.is_float = true;
+        result.float_val = get_result.second;
+        result.int_val = static_cast<int>(get_result.second);
+    } else {
+        auto get_result = param.get_param_int(name);
+        if (get_result.first != Param::Result::Success) {
+            std::cout << "Failed: " << get_result.first << std::endl;
+            return false;
+        }
+        result.is_float = false;
+        result.int_val = get_result.second;
+        result.float_val = static_cast<float>(get_result.second);
+    }
+
+    std::cout << "Ok" << std::endl;
+    return true;
+}
+
 void set(Param& param, std::string name, std::string value)
 {
-    // Assume integer first
-    int int_value;
-    const auto int_result = std::from_chars(value.data(), value.data() + value.size(), int_value);
-    if (int_result.ec == std::errc() && int_result.ptr == value.data() + value.size()) {
-        std::cerr << "Setting " << value << " as integer..." << std::flush;
-
-        auto result = param.set_param_int(name, int_value);
-
-        if (result == Param::Result::Success) {
-            std::cerr << "Ok" << std::endl;
-            return;
-        }
-
-        if (result != Param::Result::WrongType) {
-            std::cerr << "Failed: " << result << std::endl;
-            return;
-        }
-
-        // If we got the type wrong, we try as float next.
+    ParsedValue parsed;
+    if (!parse_value(value, parsed)) {
+        return;
     }
 
-    // Try float if integer failed
-    float float_value;
-    const auto float_result =
-        our_from_chars_float(value.data(), value.data() + value.size(), float_value);
-    if (float_result.ec == std::errc() && float_result.ptr == value.data() + value.size()) {
-        std::cerr << "Setting " << value << " as float..." << std::flush;
+    bool used_float;
+    set_param_with_fallback(param, name, parsed, used_float);
+}
 
-        auto result = param.set_param_float(name, float_value);
-
-        if (result == Param::Result::Success) {
-            std::cerr << "Ok" << std::endl;
-            return;
-        }
-
-        if (result != Param::Result::WrongType) {
-            std::cerr << "Failed: " << result << std::endl;
-            return;
-        }
-
-        std::cerr << "Failed: " << result << std::endl;
+void set_and_verify(Param& param, std::string name, std::string value)
+{
+    ParsedValue parsed;
+    if (!parse_value(value, parsed)) {
+        return;
     }
 
-    std::cerr << "Neither int or float worked, should maybe try custom? (not implemented)"
-              << std::endl;
+    bool used_float;
+    if (!set_param_with_fallback(param, name, parsed, used_float)) {
+        return;
+    }
+
+    ParsedValue readback;
+    if (!get_param_value(param, name, used_float, readback)) {
+        return;
+    }
+
+    if (used_float) {
+        std::cout << "Verifying: set=" << parsed.float_val << ", got=" << readback.float_val;
+        if (parsed.float_val == readback.float_val) {
+            std::cout << " -> MATCH" << std::endl;
+        } else {
+            std::cout << " -> MISMATCH!" << std::endl;
+        }
+    } else {
+        std::cout << "Verifying: set=" << parsed.int_val << ", got=" << readback.int_val;
+        if (parsed.int_val == readback.int_val) {
+            std::cout << " -> MATCH" << std::endl;
+        } else {
+            std::cout << " -> MISMATCH!" << std::endl;
+        }
+    }
 }
 
 // GCC 9/10 don't have std::from_chars for float yet, so we have to have our own (simplified) one.
