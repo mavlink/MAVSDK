@@ -247,8 +247,9 @@ void ServerComponentImpl::send_heartbeat()
             channel,
             &message,
             _own_mav_type,
-            mavlink_address.component_id == MAV_COMP_ID_AUTOPILOT1 ? MAV_AUTOPILOT_GENERIC :
-                                                                     MAV_AUTOPILOT_INVALID,
+            mavlink_address.component_id == MAV_COMP_ID_AUTOPILOT1 ?
+                _mavsdk_impl.get_mav_autopilot() :
+                static_cast<uint8_t>(MAV_AUTOPILOT_INVALID),
             mavlink_address.component_id == MAV_COMP_ID_AUTOPILOT1 ? _base_mode.load() : 0,
             mavlink_address.component_id == MAV_COMP_ID_AUTOPILOT1 ? _custom_mode.load() : 0,
             get_system_status());
@@ -437,10 +438,9 @@ uint8_t ServerComponentImpl::OurSender::get_own_component_id() const
     return _server_component_impl.get_own_component_id();
 }
 
-Autopilot ServerComponentImpl::OurSender::autopilot() const
+CompatibilityMode ServerComponentImpl::OurSender::compatibility_mode() const
 {
-    // FIXME: hard-coded to PX4 for now to avoid the dependency into mavsdk_impl.
-    return Autopilot::Px4;
+    return _server_component_impl._mavsdk_impl.get_compatibility_mode();
 }
 
 } // namespace mavsdk

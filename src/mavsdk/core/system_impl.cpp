@@ -694,6 +694,11 @@ uint8_t SystemImpl::get_system_id() const
     return _target_address.system_id;
 }
 
+Autopilot SystemImpl::effective_autopilot() const
+{
+    return _mavsdk_impl.effective_autopilot(_autopilot);
+}
+
 std::vector<uint8_t> SystemImpl::component_ids() const
 {
     std::lock_guard<std::mutex> lock(_components_mutex);

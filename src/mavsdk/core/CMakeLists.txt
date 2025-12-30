@@ -46,6 +46,7 @@ target_sources(mavsdk
     PRIVATE
     autopilot.cpp
     base64.cpp
+    compatibility_mode.cpp
     call_every_handler.cpp
     callback_tracker.cpp
     connection.cpp
@@ -202,6 +203,7 @@ install(TARGETS mavsdk
 install(FILES
     include/mavsdk/autopilot.h
     include/mavsdk/base64.h
+    include/mavsdk/compatibility_mode.h
     include/mavsdk/component_type.h
     include/mavsdk/connection_result.h
     include/mavsdk/deprecated.h

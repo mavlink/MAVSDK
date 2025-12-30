@@ -235,6 +235,26 @@ void Mavsdk::Configuration::set_mav_type(uint8_t mav_type)
     _mav_type = static_cast<MAV_TYPE>(mav_type);
 }
 
+Autopilot Mavsdk::Configuration::get_autopilot() const
+{
+    return _autopilot;
+}
+
+void Mavsdk::Configuration::set_autopilot(Autopilot autopilot)
+{
+    _autopilot = autopilot;
+}
+
+CompatibilityMode Mavsdk::Configuration::get_compatibility_mode() const
+{
+    return _compatibility_mode;
+}
+
+void Mavsdk::Configuration::set_compatibility_mode(CompatibilityMode mode)
+{
+    _compatibility_mode = mode;
+}
+
 void Mavsdk::intercept_incoming_messages_async(std::function<bool(mavlink_message_t&)> callback)
 {
     _impl->intercept_incoming_messages_async(callback);

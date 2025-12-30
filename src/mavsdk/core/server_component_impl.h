@@ -1,5 +1,6 @@
 #pragma once
 
+#include "compatibility_mode.h"
 #include "mavlink_include.h"
 #include "mavlink_address.h"
 #include "mavlink_channels.h"
@@ -49,7 +50,7 @@ public:
             override;
         [[nodiscard]] uint8_t get_own_system_id() const override;
         [[nodiscard]] uint8_t get_own_component_id() const override;
-        [[nodiscard]] Autopilot autopilot() const override;
+        [[nodiscard]] CompatibilityMode compatibility_mode() const override;
 
     private:
         ServerComponentImpl& _server_component_impl;

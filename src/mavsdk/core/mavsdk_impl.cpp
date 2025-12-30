@@ -1075,6 +1075,45 @@ uint8_t MavsdkImpl::get_mav_type() const
     return _configuration.get_mav_type();
 }
 
+Autopilot MavsdkImpl::get_autopilot() const
+{
+    return _configuration.get_autopilot();
+}
+
+uint8_t MavsdkImpl::get_mav_autopilot() const
+{
+    switch (_configuration.get_autopilot()) {
+        case Autopilot::Px4:
+            return MAV_AUTOPILOT_PX4;
+        case Autopilot::ArduPilot:
+            return MAV_AUTOPILOT_ARDUPILOTMEGA;
+        case Autopilot::Unknown:
+        default:
+            return MAV_AUTOPILOT_GENERIC;
+    }
+}
+
+CompatibilityMode MavsdkImpl::get_compatibility_mode() const
+{
+    return _configuration.get_compatibility_mode();
+}
+
+Autopilot MavsdkImpl::effective_autopilot(Autopilot detected) const
+{
+    switch (_configuration.get_compatibility_mode()) {
+        case CompatibilityMode::Auto:
+            return detected;
+        case CompatibilityMode::Pure:
+            return Autopilot::Unknown; // Unknown = no quirks
+        case CompatibilityMode::Px4:
+            return Autopilot::Px4;
+        case CompatibilityMode::ArduPilot:
+            return Autopilot::ArduPilot;
+        default:
+            return detected;
+    }
+}
+
 void MavsdkImpl::make_system_with_component(uint8_t system_id, uint8_t comp_id)
 {
     // Needs _systems_lock
