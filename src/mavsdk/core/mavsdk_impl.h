@@ -11,6 +11,7 @@
 #include <queue>
 
 #include "autopilot.h"
+#include "compatibility_mode.h"
 #include "call_every_handler.h"
 #include "component_type.h"
 #include "connection.h"
@@ -76,6 +77,18 @@ public:
     Sender& sender();
 
     uint8_t get_mav_type() const;
+
+    // Server identification (what MAV_AUTOPILOT we send in heartbeats)
+    Autopilot get_autopilot() const;
+    uint8_t get_mav_autopilot() const;
+
+    // Compatibility mode
+    CompatibilityMode get_compatibility_mode() const;
+
+    // Returns effective autopilot for behavior decisions
+    // If compatibility_mode is Auto, returns detected autopilot
+    // Otherwise returns the forced mode (Pure/Px4/ArduPilot)
+    Autopilot effective_autopilot(Autopilot detected) const;
 
     Mavsdk::NewSystemHandle subscribe_on_new_system(const Mavsdk::NewSystemCallback& callback);
     void unsubscribe_on_new_system(Mavsdk::NewSystemHandle handle);

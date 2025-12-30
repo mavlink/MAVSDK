@@ -48,7 +48,7 @@ protected:
         ON_CALL(mock_sender, get_own_system_id()).WillByDefault(Return(own_address.system_id));
         ON_CALL(mock_sender, get_own_component_id())
             .WillByDefault(Return(own_address.component_id));
-        ON_CALL(mock_sender, autopilot()).WillByDefault(Return(Autopilot::Px4));
+        ON_CALL(mock_sender, compatibility_mode()).WillByDefault(Return(CompatibilityMode::Auto));
     }
 
     static ItemInt make_item(uint8_t type, uint16_t sequence)

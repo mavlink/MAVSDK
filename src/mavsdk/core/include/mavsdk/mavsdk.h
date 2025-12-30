@@ -6,6 +6,8 @@
 #include <vector>
 #include <functional>
 
+#include "autopilot.h"
+#include "compatibility_mode.h"
 #include "deprecated.h"
 #include "handle.h"
 #include "system.h"
@@ -267,12 +269,49 @@ public:
          */
         static uint8_t mav_type_for_component_type(ComponentType component_type);
 
+        /**
+         * @brief Get the autopilot type for server identification in heartbeats.
+         * @return The autopilot type used in outgoing heartbeats.
+         */
+        Autopilot get_autopilot() const;
+
+        /**
+         * @brief Set the autopilot type for server identification.
+         *
+         * When MAVSDK acts as an autopilot server, this determines
+         * the MAV_AUTOPILOT value sent in heartbeats.
+         *
+         * Default: Autopilot::Unknown (maps to MAV_AUTOPILOT_GENERIC)
+         */
+        void set_autopilot(Autopilot autopilot);
+
+        /**
+         * @brief Get the compatibility mode.
+         * @return The current compatibility mode.
+         */
+        CompatibilityMode get_compatibility_mode() const;
+
+        /**
+         * @brief Set the compatibility mode.
+         *
+         * This determines which autopilot-specific quirks are used:
+         * - Auto: Use detected autopilot (default, current behavior)
+         * - Pure: Pure standard MAVLink, no autopilot-specific quirks
+         * - Px4: Force PX4 quirks regardless of detection
+         * - ArduPilot: Force ArduPilot quirks regardless of detection
+         *
+         * Default: CompatibilityMode::Auto
+         */
+        void set_compatibility_mode(CompatibilityMode mode);
+
     private:
         uint8_t _system_id;
         uint8_t _component_id;
         bool _always_send_heartbeats;
         ComponentType _component_type;
         MAV_TYPE _mav_type;
+        Autopilot _autopilot{Autopilot::Unknown};
+        CompatibilityMode _compatibility_mode{CompatibilityMode::Auto};
 
         static ComponentType component_type_for_component_id(uint8_t component_id);
     };
