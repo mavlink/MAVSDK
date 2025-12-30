@@ -31,7 +31,7 @@ SystemImpl::SystemImpl(MavsdkImpl& mavsdk_impl) :
         _mavlink_message_handler,
         _mavsdk_impl.timeout_handler,
         [this]() { return timeout_s(); },
-        [this]() { return autopilot(); }),
+        [this]() { return effective_autopilot(); }),
     _mavlink_request_message(
         *this, _command_sender, _mavlink_message_handler, _mavsdk_impl.timeout_handler),
     _mavlink_ftp_client(*this),
@@ -1433,7 +1433,7 @@ MavlinkParameterClient* SystemImpl::param_sender(uint8_t component_id, bool exte
              _mavlink_message_handler,
              _mavsdk_impl.timeout_handler,
              [this]() { return timeout_s(); },
-             [this]() { return autopilot(); },
+             [this]() { return effective_autopilot(); },
              get_system_id(),
              component_id,
              extended),

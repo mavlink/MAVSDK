@@ -835,7 +835,9 @@ void OffboardImpl::process_heartbeat(const mavlink_message_t& message)
     bool offboard_mode_active = false;
     if (heartbeat.base_mode & MAV_MODE_FLAG_CUSTOM_MODE_ENABLED) {
         FlightMode flight_mode = to_flight_mode_from_custom_mode(
-            _system_impl->autopilot(), _system_impl->get_vehicle_type(), heartbeat.custom_mode);
+            _system_impl->effective_autopilot(),
+            _system_impl->get_vehicle_type(),
+            heartbeat.custom_mode);
 
         if (flight_mode == FlightMode::Offboard) {
             offboard_mode_active = true;

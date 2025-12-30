@@ -277,7 +277,7 @@ void ActionImpl::arm_async(const Action::ResultCallback& callback) const
 
 bool ActionImpl::need_hold_before_arm() const
 {
-    if (_system_impl->autopilot() == Autopilot::Px4) {
+    if (_system_impl->effective_autopilot() == Autopilot::Px4) {
         return need_hold_before_arm_px4();
     } else {
         return need_hold_before_arm_apm();
@@ -393,7 +393,7 @@ void ActionImpl::shutdown_async(const Action::ResultCallback& callback) const
 
 void ActionImpl::takeoff_async(const Action::ResultCallback& callback) const
 {
-    if (_system_impl->autopilot() == Autopilot::Px4) {
+    if (_system_impl->effective_autopilot() == Autopilot::Px4) {
         takeoff_async_px4(callback);
     } else {
         takeoff_async_apm(callback);
@@ -493,7 +493,7 @@ void ActionImpl::goto_location_async(
                 });
         };
     FlightMode goto_flight_mode;
-    if (_system_impl->autopilot() == Autopilot::Px4) {
+    if (_system_impl->effective_autopilot() == Autopilot::Px4) {
         goto_flight_mode = FlightMode::Hold;
     } else {
         goto_flight_mode = FlightMode::Offboard;
@@ -555,7 +555,7 @@ void ActionImpl::set_actuator_async(
     MavlinkCommandSender::CommandLong command{};
     command.target_component_id = _system_impl->get_autopilot_id();
 
-    if (_system_impl->autopilot() == Autopilot::ArduPilot) {
+    if (_system_impl->effective_autopilot() == Autopilot::ArduPilot) {
         command.command = MAV_CMD_DO_SET_SERVO;
         command.params.maybe_param1 = static_cast<float>(index);
         command.params.maybe_param2 = value;
@@ -706,7 +706,7 @@ void ActionImpl::set_takeoff_altitude_async(
 
 Action::Result ActionImpl::set_takeoff_altitude(float relative_altitude_m)
 {
-    if (_system_impl->autopilot() == Autopilot::Px4) {
+    if (_system_impl->effective_autopilot() == Autopilot::Px4) {
         return set_takeoff_altitude_px4(relative_altitude_m);
     } else {
         return set_takeoff_altitude_apm(relative_altitude_m);
@@ -738,7 +738,7 @@ void ActionImpl::get_takeoff_altitude_async(
 
 std::pair<Action::Result, float> ActionImpl::get_takeoff_altitude() const
 {
-    if (_system_impl->autopilot() == Autopilot::ArduPilot) {
+    if (_system_impl->effective_autopilot() == Autopilot::ArduPilot) {
         return std::make_pair<>(Action::Result::Success, _takeoff_altitude);
     } else {
         auto result = _system_impl->get_param_float(TAKEOFF_ALT_PARAM);

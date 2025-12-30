@@ -72,7 +72,7 @@ bool LogStreamingImpl::maybe_create_backend()
         return true;
     }
 
-    auto autopilot = _system_impl->autopilot();
+    auto autopilot = _system_impl->effective_autopilot();
 
     // Don't create backend yet if autopilot type is unknown
     if (autopilot == Autopilot::Unknown) {
