@@ -267,7 +267,7 @@ void ActionImpl::arm_async(const Action::ResultCallback& callback) const
 
 bool ActionImpl::need_hold_before_arm() const
 {
-    if (_system_impl->autopilot() == Autopilot::Px4) {
+    if (_system_impl->effective_autopilot() == Autopilot::Px4) {
         return need_hold_before_arm_px4();
     } else {
         return need_hold_before_arm_apm();
@@ -383,7 +383,7 @@ void ActionImpl::shutdown_async(const Action::ResultCallback& callback) const
 
 void ActionImpl::takeoff_async(const Action::ResultCallback& callback) const
 {
-    if (_system_impl->autopilot() == Autopilot::Px4) {
+    if (_system_impl->effective_autopilot() == Autopilot::Px4) {
         takeoff_async_px4(callback);
     } else {
         takeoff_async_apm(callback);
@@ -483,7 +483,7 @@ void ActionImpl::goto_location_async(
                 });
         };
     FlightMode goto_flight_mode;
-    if (_system_impl->autopilot() == Autopilot::Px4) {
+    if (_system_impl->effective_autopilot() == Autopilot::Px4) {
         goto_flight_mode = FlightMode::Hold;
     } else {
         goto_flight_mode = FlightMode::Offboard;
@@ -514,6 +514,15 @@ void ActionImpl::do_orbit_async(
     const double absolute_altitude_m,
     const Action::ResultCallback& callback)
 {
+    // MAV_CMD_DO_ORBIT is marked as WIP, only supported for PX4 for now.
+    if (_system_impl->effective_autopilot() != Autopilot::Px4) {
+        if (callback) {
+            _system_impl->call_user_callback(
+                [callback]() { callback(Action::Result::Unsupported); });
+        }
+        return;
+    }
+
     MavlinkCommandSender::CommandInt command{};
 
     command.command = MAV_CMD_DO_ORBIT;
@@ -545,7 +554,7 @@ void ActionImpl::set_actuator_async(
     MavlinkCommandSender::CommandLong command{};
     command.target_component_id = _system_impl->get_autopilot_id();
 
-    if (_system_impl->autopilot() == Autopilot::ArduPilot) {
+    if (_system_impl->effective_autopilot() == Autopilot::ArduPilot) {
         command.command = MAV_CMD_DO_SET_SERVO;
         command.params.maybe_param1 = static_cast<float>(index);
         command.params.maybe_param2 = value;
@@ -666,7 +675,7 @@ void ActionImpl::set_takeoff_altitude_async(
 
 Action::Result ActionImpl::set_takeoff_altitude(float relative_altitude_m)
 {
-    if (_system_impl->autopilot() == Autopilot::Px4) {
+    if (_system_impl->effective_autopilot() == Autopilot::Px4) {
         return set_takeoff_altitude_px4(relative_altitude_m);
     } else {
         return set_takeoff_altitude_apm(relative_altitude_m);
@@ -698,7 +707,7 @@ void ActionImpl::get_takeoff_altitude_async(
 
 std::pair<Action::Result, float> ActionImpl::get_takeoff_altitude() const
 {
-    if (_system_impl->autopilot() == Autopilot::ArduPilot) {
+    if (_system_impl->effective_autopilot() == Autopilot::ArduPilot) {
         return std::make_pair<>(Action::Result::Success, _takeoff_altitude);
     } else {
         auto result = _system_impl->get_param_float(TAKEOFF_ALT_PARAM);
@@ -713,11 +722,24 @@ std::pair<Action::Result, float> ActionImpl::get_takeoff_altitude() const
 void ActionImpl::set_return_to_launch_altitude_async(
     const float relative_altitude_m, const Action::ResultCallback& callback) const
 {
+    // RTL_RETURN_ALT param is PX4-specific.
+    if (_system_impl->effective_autopilot() != Autopilot::Px4) {
+        if (callback) {
+            _system_impl->call_user_callback(
+                [callback]() { callback(Action::Result::Unsupported); });
+        }
+        return;
+    }
     callback(set_return_to_launch_altitude(relative_altitude_m));
 }
 
 Action::Result ActionImpl::set_return_to_launch_altitude(const float relative_altitude_m) const
 {
+    // RTL_RETURN_ALT param is PX4-specific.
+    if (_system_impl->effective_autopilot() != Autopilot::Px4) {
+        return Action::Result::Unsupported;
+    }
+
     const MavlinkParameterClient::Result result =
         _system_impl->set_param_float(RTL_RETURN_ALTITUDE_PARAM, relative_altitude_m);
     return (result == MavlinkParameterClient::Result::Success) ? Action::Result::Success :
@@ -727,12 +749,25 @@ Action::Result ActionImpl::set_return_to_launch_altitude(const float relative_al
 void ActionImpl::get_return_to_launch_altitude_async(
     const Action::GetReturnToLaunchAltitudeCallback& callback) const
 {
+    // RTL_RETURN_ALT param is PX4-specific.
+    if (_system_impl->effective_autopilot() != Autopilot::Px4) {
+        if (callback) {
+            _system_impl->call_user_callback(
+                [callback]() { callback(Action::Result::Unsupported, NAN); });
+        }
+        return;
+    }
     const auto get_result = get_return_to_launch_altitude();
     callback(get_result.first, get_result.second);
 }
 
 std::pair<Action::Result, float> ActionImpl::get_return_to_launch_altitude() const
 {
+    // RTL_RETURN_ALT param is PX4-specific.
+    if (_system_impl->effective_autopilot() != Autopilot::Px4) {
+        return std::make_pair(Action::Result::Unsupported, NAN);
+    }
+
     auto result = _system_impl->get_param_float(RTL_RETURN_ALTITUDE_PARAM);
     return std::make_pair<>(
         (result.first == MavlinkParameterClient::Result::Success) ? Action::Result::Success :

@@ -1,6 +1,7 @@
 #include <gmock/gmock.h>
 #include <cstdint>
 #include <functional>
+#include "compatibility_mode.h"
 #include "mavlink_address.h"
 
 namespace mavsdk {
@@ -17,7 +18,7 @@ public:
         (override));
     MOCK_METHOD(uint8_t, get_own_system_id, (), (const, override));
     MOCK_METHOD(uint8_t, get_own_component_id, (), (const, override));
-    MOCK_METHOD(Autopilot, autopilot, (), (const, override));
+    MOCK_METHOD(CompatibilityMode, compatibility_mode, (), (const, override));
 };
 
 } // namespace testing

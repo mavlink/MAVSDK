@@ -539,7 +539,7 @@ void MavlinkParameterServer::do_work()
                 } else {
                     LogWarn() << "sending not extended message";
                     float param_value;
-                    if (_sender.autopilot() == Autopilot::ArduPilot) {
+                    if (_sender.compatibility_mode() == CompatibilityMode::ArduPilot) {
                         param_value = work->param_value.get_4_float_bytes_cast();
                     } else {
                         param_value = work->param_value.get_4_float_bytes_bytewise();
