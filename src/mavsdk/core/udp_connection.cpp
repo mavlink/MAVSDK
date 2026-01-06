@@ -261,7 +261,7 @@ void UdpConnection::add_remote_impl(
         // by MAVSDK. As such, it should not be advertised as a newly discovered system.
         if (static_cast<int>(remote_sysid) != 0) {
             LogInfo() << "New system on: " << new_remote.ip << ":" << new_remote.port_number
-                      << " (with system ID: " << static_cast<int>(remote_sysid) << ")";
+                      << " (system ID: " << static_cast<int>(remote_sysid) << ")";
         }
         _remotes.push_back(new_remote);
     } else {

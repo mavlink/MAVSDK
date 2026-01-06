@@ -490,8 +490,8 @@ void SystemImpl::add_new_component(uint8_t component_id)
             component_type(component_id), component_id, [this](const auto& func) {
                 call_user_callback(func);
             });
-        LogDebug() << "Component " << component_name(component_id) << " (" << int(component_id)
-                   << ") added.";
+        LogDebug() << "Component " << component_name(component_id)
+                   << " (component ID: " << int(component_id) << ") added.";
     }
 }
 
@@ -610,7 +610,8 @@ void SystemImpl::set_connected()
             {
                 std::lock_guard<std::mutex> lock(_components_mutex);
                 if (!_components.empty()) {
-                    LogDebug() << "Discovered " << _components.size() << " component(s)";
+                    LogDebug() << "Discovered " << _components.size()
+                               << (_components.size() == 1 ? " component" : " components");
                 }
             }
 
