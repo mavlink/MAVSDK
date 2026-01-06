@@ -437,6 +437,7 @@ private:
     std::unordered_map<const void*, ParamChangedCallback> _param_changed_callbacks{};
 
     MAV_TYPE _vehicle_type{MAV_TYPE::MAV_TYPE_GENERIC};
+    bool _vehicle_type_set{false};
 
     std::atomic<FlightMode> _flight_mode{FlightMode::Unknown};
 
