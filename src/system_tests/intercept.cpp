@@ -156,22 +156,21 @@ TEST(SystemTest, InterceptIncomingModifyLocal)
     EXPECT_NEAR(interceptor_position.longitude_deg, modified_lon, 1e-6);
     EXPECT_NEAR(interceptor_position.absolute_altitude_m, original_alt, 1.0f);
 
-    // FIXED BEHAVIOR: Receiver gets original coordinates (forwarded message not affected by
-    // intercept)
+    // Receiver also gets modified coordinates because intercept happens BEFORE forwarding
     EXPECT_NEAR(
         receiver_position.latitude_deg,
-        original_lat,
-        1e-6); // Should be original Zurich coordinates
+        modified_lat,
+        1e-6); // Should be modified San Francisco coordinates
     EXPECT_NEAR(
         receiver_position.longitude_deg,
-        original_lon,
-        1e-6); // Should be original Zurich coordinates
+        modified_lon,
+        1e-6); // Should be modified San Francisco coordinates
     EXPECT_NEAR(receiver_position.absolute_altitude_m, original_alt, 1.0f);
 
-    LogInfo() << "Test completed successfully - intercept bug FIXED:";
+    LogInfo() << "Test completed successfully:";
     LogInfo() << "  - Interceptor saw modified coordinates (San Francisco)";
-    LogInfo() << "  - Receiver saw original coordinates (Zurich)";
-    LogInfo() << "  - This proves intercept affects local processing but NOT forwarding";
+    LogInfo() << "  - Receiver also saw modified coordinates (San Francisco)";
+    LogInfo() << "  - This proves intercept affects BOTH local processing AND forwarding";
 
     // Cleanup
     telemetry_interceptor.unsubscribe_position(interceptor_handle);

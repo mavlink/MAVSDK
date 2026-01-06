@@ -416,11 +416,34 @@ void MavsdkImpl::process_message(mavlink_message_t& message, Connection* connect
     {
         std::lock_guard lock(_mutex);
 
-        /** @note: Forward message FIRST (before intercept) if option is enabled and multiple
-         * interfaces are connected. This ensures that forwarded messages are not affected by
-         * intercept modifications. Performs message forwarding checks for every messages if message
-         * forwarding is enabled on at least one connection, and in case of a single forwarding
-         * connection, we check that it is not the one which received the current message.
+        // This is a low level interface where incoming messages can be tampered
+        // with or even dropped. This happens BEFORE forwarding, so modifications
+        // and drops affect both local processing AND forwarded messages.
+        {
+            bool keep = true;
+            {
+                std::lock_guard<std::mutex> intercept_lock(_intercept_callbacks_mutex);
+                if (_intercept_incoming_messages_callback != nullptr) {
+                    keep = _intercept_incoming_messages_callback(message);
+                }
+            }
+
+            if (!keep) {
+                LogDebug() << "Dropped incoming message: " << int(message.msgid);
+                return;
+            }
+        }
+
+        if (_should_exit) {
+            // If we're meant to clean up, let's not try to acquire any more locks but bail.
+            return;
+        }
+
+        /* Forward message (after intercept) if option is enabled and multiple interfaces
+         * are connected.
+         * Performs message forwarding checks for every message if message forwarding is
+         * enabled on at least one connection, and in case of a single forwarding connection,
+         * we check that it is not the one which received the current message.
          *
          * Conditions:
          * 1. At least 2 connections.
@@ -437,28 +460,6 @@ void MavsdkImpl::process_message(mavlink_message_t& message, Connection* connect
                            << static_cast<int>(message.compid);
             }
             forward_message(message, connection);
-        }
-
-        if (_should_exit) {
-            // If we're meant to clean up, let's not try to acquire any more locks but bail.
-            return;
-        }
-
-        // This is a low level interface where incoming messages can be tampered
-        // with or even dropped FOR LOCAL PROCESSING ONLY (after forwarding).
-        {
-            bool keep = true;
-            {
-                std::lock_guard<std::mutex> intercept_lock(_intercept_callbacks_mutex);
-                if (_intercept_incoming_messages_callback != nullptr) {
-                    keep = _intercept_incoming_messages_callback(message);
-                }
-            }
-
-            if (!keep) {
-                LogDebug() << "Dropped incoming message: " << int(message.msgid);
-                return;
-            }
         }
 
         // Don't ever create a system with sysid 0.
