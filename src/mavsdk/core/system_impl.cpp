@@ -324,11 +324,14 @@ void SystemImpl::process_heartbeat(const mavlink_message_t& message)
         LogErr() << "type received in HEARTBEAT was not recognized";
     } else {
         const auto new_vehicle_type = static_cast<MAV_TYPE>(heartbeat.type);
-        if (heartbeat.autopilot != MAV_AUTOPILOT_INVALID && _vehicle_type != new_vehicle_type &&
-            new_vehicle_type != MAV_TYPE_GENERIC) {
-            LogWarn() << "Vehicle type changed (new type: " << static_cast<unsigned>(heartbeat.type)
-                      << ", old type: " << static_cast<unsigned>(_vehicle_type) << ")";
+        if (heartbeat.autopilot != MAV_AUTOPILOT_INVALID && new_vehicle_type != MAV_TYPE_GENERIC) {
+            if (_vehicle_type_set && _vehicle_type != new_vehicle_type) {
+                LogWarn() << "Vehicle type changed (new type: "
+                          << static_cast<unsigned>(heartbeat.type)
+                          << ", old type: " << static_cast<unsigned>(_vehicle_type) << ")";
+            }
             _vehicle_type = new_vehicle_type;
+            _vehicle_type_set = true;
         }
     }
 
@@ -490,8 +493,8 @@ void SystemImpl::add_new_component(uint8_t component_id)
             component_type(component_id), component_id, [this](const auto& func) {
                 call_user_callback(func);
             });
-        LogDebug() << "Component " << component_name(component_id) << " (" << int(component_id)
-                   << ") added.";
+        LogDebug() << "Component " << component_name(component_id)
+                   << " (component ID: " << int(component_id) << ") added.";
     }
 }
 
@@ -610,7 +613,8 @@ void SystemImpl::set_connected()
             {
                 std::lock_guard<std::mutex> lock(_components_mutex);
                 if (!_components.empty()) {
-                    LogDebug() << "Discovered " << _components.size() << " component(s)";
+                    LogDebug() << "Discovered " << _components.size()
+                               << (_components.size() == 1 ? " component" : " components");
                 }
             }
 
