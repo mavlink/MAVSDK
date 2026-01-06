@@ -1075,9 +1075,6 @@ void MavsdkImpl::make_system_with_component(uint8_t system_id, uint8_t comp_id)
 
     if (static_cast<int>(system_id) == 0 && static_cast<int>(comp_id) == 0) {
         LogDebug() << "Initializing connection to remote system...";
-    } else {
-        LogDebug() << "New system ID: " << static_cast<int>(system_id)
-                   << " Comp ID: " << static_cast<int>(comp_id);
     }
 
     // Make a system with its first component
