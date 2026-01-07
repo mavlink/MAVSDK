@@ -19,7 +19,7 @@ public:
      *
      * This constructor is not (and should not be) directly called by application code.
      */
-    ServerComponent(MavsdkImpl& mavsdk_impl, uint8_t component_id);
+    ServerComponent(MavsdkImpl& mavsdk_impl, uint8_t component_id, uint8_t mav_type);
 
     /**
      * @brief Destructor.

@@ -356,7 +356,7 @@ std::string EventsImpl::mode_name_from_custom_mode(uint32_t custom_mode) const
 {
     // TODO: use Standard Modes MAVLink interface
     switch (to_flight_mode_from_custom_mode(
-        _system_impl->autopilot(), _system_impl->get_vehicle_type(), custom_mode)) {
+        _system_impl->effective_autopilot(), _system_impl->get_vehicle_type(), custom_mode)) {
         case FlightMode::FBWA:
             return "FBWA";
         case FlightMode::FBWB:
