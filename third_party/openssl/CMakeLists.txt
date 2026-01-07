@@ -141,7 +141,7 @@ else()
         openssl
         URL https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz
         PREFIX openssl
-        CONFIGURE_COMMAND <SOURCE_DIR>/config ${OPENSSL_BUILD_TYPE} --prefix=${CMAKE_INSTALL_PREFIX} no-shared
+        CONFIGURE_COMMAND <SOURCE_DIR>/config ${OPENSSL_BUILD_TYPE} --prefix=${CMAKE_INSTALL_PREFIX} --libdir=lib no-shared
         BUILD_COMMAND make -j${BUILD_PARALLEL_JOBS} build_libs
         INSTALL_COMMAND make install_dev
         )
