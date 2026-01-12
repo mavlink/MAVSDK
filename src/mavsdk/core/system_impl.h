@@ -114,6 +114,9 @@ public:
 
     Autopilot autopilot() const { return _autopilot; };
 
+    // Returns effective autopilot considering compatibility mode override
+    Autopilot effective_autopilot() const;
+
     using CommandResultCallback = MavlinkCommandSender::CommandResultCallback;
 
     MavlinkCommandSender::Result send_command(MavlinkCommandSender::CommandLong& command);

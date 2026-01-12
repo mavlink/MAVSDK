@@ -1,5 +1,6 @@
 #pragma once
 
+#include "compatibility_mode.h"
 #include "mavlink_include.h"
 #include "mavlink_address.h"
 #include "mavlink_channels.h"
@@ -33,7 +34,7 @@ public:
         {}, // library version hash (unused for now)
     };
 
-    ServerComponentImpl(MavsdkImpl& mavsdk_impl, uint8_t component_id);
+    ServerComponentImpl(MavsdkImpl& mavsdk_impl, uint8_t component_id, uint8_t mav_type);
     ~ServerComponentImpl();
 
     void register_plugin(ServerPluginImplBase* server_plugin_impl);
@@ -49,16 +50,11 @@ public:
             override;
         [[nodiscard]] uint8_t get_own_system_id() const override;
         [[nodiscard]] uint8_t get_own_component_id() const override;
-        [[nodiscard]] Autopilot autopilot() const override;
-
-        uint8_t current_target_system_id{0};
+        [[nodiscard]] CompatibilityMode compatibility_mode() const override;
 
     private:
         ServerComponentImpl& _server_component_impl;
     };
-
-    // FIXME: remove this hack again by writing the proper mission transfer server part
-    void set_our_current_target_system_id(uint8_t id) { _our_sender.current_target_system_id = id; }
 
     struct AutopilotVersion {
         /** @brief MAVLink autopilot_version capabilities. */
@@ -166,6 +162,7 @@ public:
 private:
     MavsdkImpl& _mavsdk_impl;
     uint8_t _own_component_id{MAV_COMP_ID_AUTOPILOT1};
+    uint8_t _own_mav_type;
 
     std::mutex _mavlink_pack_mutex{};
     uint8_t _channel{0};
