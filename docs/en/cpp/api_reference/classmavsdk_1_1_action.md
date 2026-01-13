@@ -55,6 +55,8 @@ void | [hold_async](#classmavsdk_1_1_action_1aad198c883e7ace1cf4556c3b15bd8ad8) 
 [Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) | [hold](#classmavsdk_1_1_action_1a3440724492453e88d2399be7bae6e7c4) () const | Send command to hold position (a.k.a. "Loiter").
 void | [set_actuator_async](#classmavsdk_1_1_action_1a2206033eb3469d2ae81b9cf994bfda98) (int32_t index, float value, const [ResultCallback](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1a70a7b6e742d0c86728dc2e1827dacccd) callback) | Send command to set the value of an actuator.
 [Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) | [set_actuator](#classmavsdk_1_1_action_1ad30beac27f05c62dcf6a3d0928b86e4c) (int32_t index, float value)const | Send command to set the value of an actuator.
+void | [set_relay_async](#classmavsdk_1_1_action_1ab4c1c0db9d541ca9862836bf0227b486) (int32_t index, int32_t setting, const [ResultCallback](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1a70a7b6e742d0c86728dc2e1827dacccd) callback) | Send command to set the value of a relay.
+[Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) | [set_relay](#classmavsdk_1_1_action_1a25dd885d3da8dc533e82ba1b0bf13dde) (int32_t index, int32_t setting)const | Send command to set the value of a relay.
 void | [transition_to_fixedwing_async](#classmavsdk_1_1_action_1aa56181441cd64e092a8fb91a38c7c9fd) (const [ResultCallback](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1a70a7b6e742d0c86728dc2e1827dacccd) callback) | Send command to transition the drone to fixedwing.
 [Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) | [transition_to_fixedwing](#classmavsdk_1_1_action_1a8d5cf999a48ea3859ec75db27cf4fbda) () const | Send command to transition the drone to fixedwing.
 void | [transition_to_multicopter_async](#classmavsdk_1_1_action_1a8c109076641b5c9aa6dd78ea8b913529) (const [ResultCallback](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1a70a7b6e742d0c86728dc2e1827dacccd) callback) | Send command to transition the drone to multicopter.
@@ -739,6 +741,47 @@ This function is blocking. See 'set_actuator_async' for the non-blocking counter
 
 * int32_t **index** - 
 * float **value** - 
+
+**Returns**
+
+&emsp;[Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) - Result of request.
+
+### set_relay_async() {#classmavsdk_1_1_action_1ab4c1c0db9d541ca9862836bf0227b486}
+```cpp
+void mavsdk::Action::set_relay_async(int32_t index, int32_t setting, const ResultCallback callback)
+```
+
+
+Send command to set the value of a relay.
+
+Note that the index of the relay starts at 0 and that the setting is 0 for off or 1 for on.
+
+
+This function is non-blocking. See 'set_relay' for the blocking counterpart.
+
+**Parameters**
+
+* int32_t **index** - 
+* int32_t **setting** - 
+* const [ResultCallback](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1a70a7b6e742d0c86728dc2e1827dacccd) **callback** - 
+
+### set_relay() {#classmavsdk_1_1_action_1a25dd885d3da8dc533e82ba1b0bf13dde}
+```cpp
+Result mavsdk::Action::set_relay(int32_t index, int32_t setting) const
+```
+
+
+Send command to set the value of a relay.
+
+Note that the index of the relay starts at 0 and that the setting is 0 for off or 1 for on.
+
+
+This function is blocking. See 'set_relay_async' for the non-blocking counterpart.
+
+**Parameters**
+
+* int32_t **index** - 
+* int32_t **setting** - 
 
 **Returns**
 

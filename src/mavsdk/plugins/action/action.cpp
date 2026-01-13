@@ -185,6 +185,11 @@ Action::Result Action::set_actuator(int32_t index, float value) const
     return _impl->set_actuator(index, value);
 }
 
+Action::Result Action::set_relay(int32_t index, int32_t setting) const
+{
+    return _impl->set_relay(index, setting);
+}
+
 void Action::transition_to_fixedwing_async(const ResultCallback callback)
 {
     _impl->transition_to_fixedwing_async(callback);

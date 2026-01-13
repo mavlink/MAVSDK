@@ -23,6 +23,7 @@ public:
     };
     MOCK_CONST_METHOD0(terminate, Action::Result()) {};
     MOCK_CONST_METHOD2(set_actuator, Action::Result(int, float)) {};
+    MOCK_CONST_METHOD2(set_relay, Action::Result(int, int)) {};
     MOCK_CONST_METHOD0(kill, Action::Result()) {};
     MOCK_CONST_METHOD0(return_to_launch, Action::Result()) {};
     MOCK_CONST_METHOD0(hold, Action::Result()) {};

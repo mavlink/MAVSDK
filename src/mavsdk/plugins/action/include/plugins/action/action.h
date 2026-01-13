@@ -484,6 +484,28 @@ public:
     Result set_actuator(int32_t index, float value) const;
 
     /**
+     * @brief Send command to set the value of a relay.
+     *
+     * Note that the index of the relay starts at 0 and that the setting is 0 for off or 1 for on.
+     *
+     * This function is non-blocking. See 'set_relay' for the blocking counterpart.
+     */
+    void set_relay_async(int32_t index, int32_t setting, const ResultCallback callback);
+
+    /**
+     * @brief Send command to set the value of a relay.
+     *
+     * Note that the index of the relay starts at 0 and that the setting is 0 for off or 1 for on.
+     *
+     * This function is blocking. See 'set_relay_async' for the non-blocking counterpart.
+     *
+
+     * @return Result of request.
+
+     */
+    Result set_relay(int32_t index, int32_t setting) const;
+
+    /**
      * @brief Send command to transition the drone to fixedwing.
      *
      * The associated action will only be executed for VTOL vehicles (on other vehicle types the
