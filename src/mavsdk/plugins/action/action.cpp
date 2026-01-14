@@ -185,6 +185,11 @@ Action::Result Action::set_actuator(int32_t index, float value) const
     return _impl->set_actuator(index, value);
 }
 
+void Action::set_relay_async(int32_t index, int32_t setting, const ResultCallback callback)
+{
+    _impl->set_relay_async(index, setting, callback);
+}
+
 Action::Result Action::set_relay(int32_t index, int32_t setting) const
 {
     return _impl->set_relay(index, setting);
