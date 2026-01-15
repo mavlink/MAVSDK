@@ -754,7 +754,7 @@ void mavsdk::Action::set_relay_async(int32_t index, int32_t setting, const Resul
 
 Send command to set the value of a relay.
 
-Note that the index of the relay starts at 0 and that the setting is 0 for off or 1 for on.
+The index of the relay starts at 0. For the relay value, 1=on, 0=off, others possible depending on system hardware
 
 
 This function is non-blocking. See 'set_relay' for the blocking counterpart.
@@ -773,7 +773,7 @@ Result mavsdk::Action::set_relay(int32_t index, int32_t setting) const
 
 Send command to set the value of a relay.
 
-Note that the index of the relay starts at 0 and that the setting is 0 for off or 1 for on.
+The index of the relay starts at 0. For the relay value, 1=on, 0=off, others possible depending on system hardware
 
 
 This function is blocking. See 'set_relay_async' for the non-blocking counterpart.
