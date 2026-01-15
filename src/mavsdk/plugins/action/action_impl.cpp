@@ -609,7 +609,7 @@ void ActionImpl::set_relay_async(
     if (setting >= 0) {
         command.command = MAV_CMD_DO_SET_RELAY;
         command.params.maybe_param1 = static_cast<float>(index);
-        command.params.maybe_param2 = setting;
+        command.params.maybe_param2 = static_cast<float>(setting);
     } else {
         if (callback) {
             _system_impl->call_user_callback(
