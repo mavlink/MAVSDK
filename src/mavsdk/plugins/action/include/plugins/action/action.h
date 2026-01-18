@@ -79,6 +79,21 @@ public:
     operator<<(std::ostream& str, Action::OrbitYawBehavior const& orbit_yaw_behavior);
 
     /**
+     * @brief Commanded values for relays
+     */
+    enum class RelayCommand {
+        On, /**< @brief Turn the relay off. */
+        Off, /**< @brief Turn the relay on.. */
+    };
+
+    /**
+     * @brief Stream operator to print information about a `Action::RelayCommand`.
+     *
+     * @return A reference to the stream.
+     */
+    friend std::ostream& operator<<(std::ostream& str, Action::RelayCommand const& relay_command);
+
+    /**
      * @brief Possible results returned for action requests.
      */
     enum class Result {
@@ -491,7 +506,7 @@ public:
      *
      * This function is non-blocking. See 'set_relay' for the blocking counterpart.
      */
-    void set_relay_async(int32_t index, int32_t setting, const ResultCallback callback);
+    void set_relay_async(int32_t index, RelayCommand setting, const ResultCallback callback);
 
     /**
      * @brief Send command to set the value of a relay.
@@ -505,7 +520,7 @@ public:
      * @return Result of request.
 
      */
-    Result set_relay(int32_t index, int32_t setting) const;
+    Result set_relay(int32_t index, RelayCommand setting) const;
 
     /**
      * @brief Send command to transition the drone to fixedwing.

@@ -19,17 +19,15 @@ using namespace mavsdk;
 
 void usage(const std::string& bin_name)
 {
-    std::cerr
-        << "Usage : " << bin_name << " <connection_url> <index> <setting>\n"
-        << "Connection URL format should be :\n"
-        << " For TCP server: tcpin://<our_ip>:<port>\n"
-        << " For TCP client: tcpout://<remote_ip>:<port>\n"
-        << " For UDP server: udp://<our_ip>:<port>\n"
-        << " For UDP client: udp://<remote_ip>:<port>\n"
-        << " For Serial : serial://</path/to/serial/dev>:<baudrate>]\n"
-        << "For example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n"
-        << "Index is the relay instance number, 0 or great.\n"
-        << "Setting is the relay value. 1=on, 0=off, others possible depending on system hardware.\n";
+    std::cerr << "Usage : " << bin_name << " <connection_url> <index> <on|off>\n"
+              << "Connection URL format should be :\n"
+              << " For TCP server: tcpin://<our_ip>:<port>\n"
+              << " For TCP client: tcpout://<remote_ip>:<port>\n"
+              << " For UDP server: udp://<our_ip>:<port>\n"
+              << " For UDP client: udp://<remote_ip>:<port>\n"
+              << " For Serial : serial://</path/to/serial/dev>:<baudrate>]\n"
+              << "For example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n"
+              << "Index is the relay instance number, 0 or greater.\n";
 }
 
 int main(int argc, char** argv)
@@ -41,7 +39,18 @@ int main(int argc, char** argv)
 
     const std::string connection_url = argv[1];
     const int index = std::stod(argv[2]);
-    const int setting = std::stod(argv[3]);
+    const std::string setting_str = argv[3];
+
+    Action::RelayCommand setting;
+    if (setting_str == "on") {
+        setting = Action::RelayCommand::On;
+    } else if (setting_str == "off") {
+        setting = Action::RelayCommand::Off;
+    } else {
+        std::cerr << "Invalid setting '" << setting_str << "'. Use 'on' or 'off'.\n";
+        usage(argv[0]);
+        return 1;
+    }
 
     Mavsdk mavsdk{Mavsdk::Configuration{ComponentType::GroundStation}};
     const ConnectionResult connection_result = mavsdk.add_any_connection(connection_url);
@@ -82,7 +91,7 @@ int main(int argc, char** argv)
     // Instantiate plugins.
     auto action = Action{system};
 
-    std::cout << "Setting relay " << index << " to " << setting << "...\n";
+    std::cout << "Setting relay " << index << " to " << setting_str << "...\n";
     const Action::Result set_relay_result = action.set_relay(index, setting);
 
     if (set_relay_result != Action::Result::Success) {
