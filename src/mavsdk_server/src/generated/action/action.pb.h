@@ -291,6 +291,39 @@ inline bool OrbitYawBehavior_Parse(absl::string_view name, OrbitYawBehavior* val
   return ::google::protobuf::internal::ParseNamedEnum<OrbitYawBehavior>(
       OrbitYawBehavior_descriptor(), name, value);
 }
+enum RelayCommand : int {
+  RELAY_COMMAND_ON = 0,
+  RELAY_COMMAND_OFF = 1,
+  RelayCommand_INT_MIN_SENTINEL_DO_NOT_USE_ =
+      std::numeric_limits<::int32_t>::min(),
+  RelayCommand_INT_MAX_SENTINEL_DO_NOT_USE_ =
+      std::numeric_limits<::int32_t>::max(),
+};
+
+bool RelayCommand_IsValid(int value);
+extern const uint32_t RelayCommand_internal_data_[];
+constexpr RelayCommand RelayCommand_MIN = static_cast<RelayCommand>(0);
+constexpr RelayCommand RelayCommand_MAX = static_cast<RelayCommand>(1);
+constexpr int RelayCommand_ARRAYSIZE = 1 + 1;
+const ::google::protobuf::EnumDescriptor*
+RelayCommand_descriptor();
+template <typename T>
+const std::string& RelayCommand_Name(T value) {
+  static_assert(std::is_same<T, RelayCommand>::value ||
+                    std::is_integral<T>::value,
+                "Incorrect type passed to RelayCommand_Name().");
+  return RelayCommand_Name(static_cast<RelayCommand>(value));
+}
+template <>
+inline const std::string& RelayCommand_Name(RelayCommand value) {
+  return ::google::protobuf::internal::NameOfDenseEnum<RelayCommand_descriptor,
+                                                 0, 1>(
+      static_cast<int>(value));
+}
+inline bool RelayCommand_Parse(absl::string_view name, RelayCommand* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<RelayCommand>(
+      RelayCommand_descriptor(), name, value);
+}
 
 // ===================================================================
 
@@ -1569,14 +1602,14 @@ class SetRelayRequest final
   void _internal_set_index(::int32_t value);
 
   public:
-  // int32 setting = 2;
+  // .mavsdk.rpc.action.RelayCommand setting = 2;
   void clear_setting() ;
-  ::int32_t setting() const;
-  void set_setting(::int32_t value);
+  ::mavsdk::rpc::action::RelayCommand setting() const;
+  void set_setting(::mavsdk::rpc::action::RelayCommand value);
 
   private:
-  ::int32_t _internal_setting() const;
-  void _internal_set_setting(::int32_t value);
+  ::mavsdk::rpc::action::RelayCommand _internal_setting() const;
+  void _internal_set_setting(::mavsdk::rpc::action::RelayCommand value);
 
   public:
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.action.SetRelayRequest)
@@ -1603,7 +1636,7 @@ class SetRelayRequest final
                           ::google::protobuf::Arena* arena, const Impl_& from,
                           const SetRelayRequest& from_msg);
     ::int32_t index_;
-    ::int32_t setting_;
+    int setting_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -10712,24 +10745,24 @@ inline void SetRelayRequest::_internal_set_index(::int32_t value) {
   _impl_.index_ = value;
 }
 
-// int32 setting = 2;
+// .mavsdk.rpc.action.RelayCommand setting = 2;
 inline void SetRelayRequest::clear_setting() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.setting_ = 0;
 }
-inline ::int32_t SetRelayRequest::setting() const {
+inline ::mavsdk::rpc::action::RelayCommand SetRelayRequest::setting() const {
   // @@protoc_insertion_point(field_get:mavsdk.rpc.action.SetRelayRequest.setting)
   return _internal_setting();
 }
-inline void SetRelayRequest::set_setting(::int32_t value) {
+inline void SetRelayRequest::set_setting(::mavsdk::rpc::action::RelayCommand value) {
   _internal_set_setting(value);
   // @@protoc_insertion_point(field_set:mavsdk.rpc.action.SetRelayRequest.setting)
 }
-inline ::int32_t SetRelayRequest::_internal_setting() const {
+inline ::mavsdk::rpc::action::RelayCommand SetRelayRequest::_internal_setting() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.setting_;
+  return static_cast<::mavsdk::rpc::action::RelayCommand>(_impl_.setting_);
 }
-inline void SetRelayRequest::_internal_set_setting(::int32_t value) {
+inline void SetRelayRequest::_internal_set_setting(::mavsdk::rpc::action::RelayCommand value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.setting_ = value;
 }
@@ -11940,6 +11973,12 @@ struct is_proto_enum<::mavsdk::rpc::action::OrbitYawBehavior> : std::true_type {
 template <>
 inline const EnumDescriptor* GetEnumDescriptor<::mavsdk::rpc::action::OrbitYawBehavior>() {
   return ::mavsdk::rpc::action::OrbitYawBehavior_descriptor();
+}
+template <>
+struct is_proto_enum<::mavsdk::rpc::action::RelayCommand> : std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor<::mavsdk::rpc::action::RelayCommand>() {
+  return ::mavsdk::rpc::action::RelayCommand_descriptor();
 }
 
 }  // namespace protobuf
