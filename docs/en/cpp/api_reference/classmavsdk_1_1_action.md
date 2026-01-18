@@ -13,6 +13,7 @@ Enable simple actions such as arming, taking off, and landing.
 Type | Description
 --- | ---
 enum [OrbitYawBehavior](#classmavsdk_1_1_action_1ad9dd7c5e85dda1ae188df75998375c92) | Yaw behaviour during orbit flight.
+enum [RelayCommand](#classmavsdk_1_1_action_1a074487be5ea2fa534ce7bd779682ee21) | Commanded values for relays.
 enum [Result](#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) | Possible results returned for action requests.
 std::function< void([Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51))> [ResultCallback](#classmavsdk_1_1_action_1a70a7b6e742d0c86728dc2e1827dacccd) | Callback type for asynchronous [Action](classmavsdk_1_1_action.md) calls.
 std::function< void([Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51), float)> [GetTakeoffAltitudeCallback](#classmavsdk_1_1_action_1ad1ae6edb8ea375a3472ef14313b591e2) | Callback type for get_takeoff_altitude_async.
@@ -55,6 +56,8 @@ void | [hold_async](#classmavsdk_1_1_action_1aad198c883e7ace1cf4556c3b15bd8ad8) 
 [Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) | [hold](#classmavsdk_1_1_action_1a3440724492453e88d2399be7bae6e7c4) () const | Send command to hold position (a.k.a. "Loiter").
 void | [set_actuator_async](#classmavsdk_1_1_action_1a2206033eb3469d2ae81b9cf994bfda98) (int32_t index, float value, const [ResultCallback](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1a70a7b6e742d0c86728dc2e1827dacccd) callback) | Send command to set the value of an actuator.
 [Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) | [set_actuator](#classmavsdk_1_1_action_1ad30beac27f05c62dcf6a3d0928b86e4c) (int32_t index, float value)const | Send command to set the value of an actuator.
+void | [set_relay_async](#classmavsdk_1_1_action_1a7c4f46fe008477d60e7c2ed13edd00d0) (int32_t index, [RelayCommand](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1a074487be5ea2fa534ce7bd779682ee21) setting, const [ResultCallback](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1a70a7b6e742d0c86728dc2e1827dacccd) callback) | Send command to set the value of a relay.
+[Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) | [set_relay](#classmavsdk_1_1_action_1a8d2cb20c06de07acab02d5f0c0d672a7) (int32_t index, [RelayCommand](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1a074487be5ea2fa534ce7bd779682ee21) setting)const | Send command to set the value of a relay.
 void | [transition_to_fixedwing_async](#classmavsdk_1_1_action_1aa56181441cd64e092a8fb91a38c7c9fd) (const [ResultCallback](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1a70a7b6e742d0c86728dc2e1827dacccd) callback) | Send command to transition the drone to fixedwing.
 [Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) | [transition_to_fixedwing](#classmavsdk_1_1_action_1a8d5cf999a48ea3859ec75db27cf4fbda) () const | Send command to transition the drone to fixedwing.
 void | [transition_to_multicopter_async](#classmavsdk_1_1_action_1a8c109076641b5c9aa6dd78ea8b913529) (const [ResultCallback](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1a70a7b6e742d0c86728dc2e1827dacccd) callback) | Send command to transition the drone to multicopter.
@@ -183,6 +186,17 @@ Value | Description
 <span id="classmavsdk_1_1_action_1ad9dd7c5e85dda1ae188df75998375c92a3cbc75230c11ca34e25123273980f413"></span> `Uncontrolled` | Yaw uncontrolled. 
 <span id="classmavsdk_1_1_action_1ad9dd7c5e85dda1ae188df75998375c92a03aac6c04bac9cc0876336d842763dd0"></span> `HoldFrontTangentToCircle` | Vehicle front follows flight path (tangential to circle). 
 <span id="classmavsdk_1_1_action_1ad9dd7c5e85dda1ae188df75998375c92ac48baeef91367bc4132d164d920ff697"></span> `RcControlled` | Yaw controlled by RC input. 
+
+### enum RelayCommand {#classmavsdk_1_1_action_1a074487be5ea2fa534ce7bd779682ee21}
+
+
+Commanded values for relays.
+
+
+Value | Description
+--- | ---
+<span id="classmavsdk_1_1_action_1a074487be5ea2fa534ce7bd779682ee21a521c36a31c2762741cf0f8890cbe05e3"></span> `On` | Turn the relay off. 
+<span id="classmavsdk_1_1_action_1a074487be5ea2fa534ce7bd779682ee21ad15305d7a4e34e02489c74a5ef542f36"></span> `Off` | Turn the relay on.. 
 
 ### enum Result {#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51}
 
@@ -739,6 +753,47 @@ This function is blocking. See 'set_actuator_async' for the non-blocking counter
 
 * int32_t **index** - 
 * float **value** - 
+
+**Returns**
+
+&emsp;[Result](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1adc2e13257ef13de0e7610cf879a0ec51) - Result of request.
+
+### set_relay_async() {#classmavsdk_1_1_action_1a7c4f46fe008477d60e7c2ed13edd00d0}
+```cpp
+void mavsdk::Action::set_relay_async(int32_t index, RelayCommand setting, const ResultCallback callback)
+```
+
+
+Send command to set the value of a relay.
+
+The index of the relay starts at 0. For the relay value, 1=on, 0=off, others possible depending on system hardware
+
+
+This function is non-blocking. See 'set_relay' for the blocking counterpart.
+
+**Parameters**
+
+* int32_t **index** - 
+* [RelayCommand](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1a074487be5ea2fa534ce7bd779682ee21) **setting** - 
+* const [ResultCallback](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1a70a7b6e742d0c86728dc2e1827dacccd) **callback** - 
+
+### set_relay() {#classmavsdk_1_1_action_1a8d2cb20c06de07acab02d5f0c0d672a7}
+```cpp
+Result mavsdk::Action::set_relay(int32_t index, RelayCommand setting) const
+```
+
+
+Send command to set the value of a relay.
+
+The index of the relay starts at 0. For the relay value, 1=on, 0=off, others possible depending on system hardware
+
+
+This function is blocking. See 'set_relay_async' for the non-blocking counterpart.
+
+**Parameters**
+
+* int32_t **index** - 
+* [RelayCommand](classmavsdk_1_1_action.md#classmavsdk_1_1_action_1a074487be5ea2fa534ce7bd779682ee21) **setting** - 
 
 **Returns**
 
