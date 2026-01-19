@@ -44,6 +44,7 @@ public:
         const double absolute_altitude_m);
     Action::Result hold() const;
     Action::Result set_actuator(const int index, const float value);
+    Action::Result set_relay(const int index, const Action::RelayCommand setting);
     Action::Result transition_to_fixedwing() const;
     Action::Result transition_to_multicopter() const;
 
@@ -74,6 +75,10 @@ public:
     void hold_async(const Action::ResultCallback& callback) const;
     void
     set_actuator_async(const int index, const float value, const Action::ResultCallback& callback);
+    void set_relay_async(
+        const int index,
+        const Action::RelayCommand setting,
+        const Action::ResultCallback& callback);
     void transition_to_fixedwing_async(const Action::ResultCallback& callback) const;
     void transition_to_multicopter_async(const Action::ResultCallback& callback) const;
 

@@ -212,6 +212,16 @@ Action::Result ActionImpl::set_actuator(const int index, const float value)
     return fut.get();
 }
 
+Action::Result ActionImpl::set_relay(const int index, Action::RelayCommand setting)
+{
+    auto prom = std::promise<Action::Result>();
+    auto fut = prom.get_future();
+
+    set_relay_async(index, setting, [&prom](Action::Result result) { prom.set_value(result); });
+
+    return fut.get();
+}
+
 Action::Result ActionImpl::transition_to_fixedwing() const
 {
     auto prom = std::promise<Action::Result>();
@@ -583,6 +593,36 @@ void ActionImpl::set_actuator_async(
             return;
         }
     }
+
+    _system_impl->send_command_async(
+        command, [this, callback](MavlinkCommandSender::Result result, float) {
+            command_result_callback(result, callback);
+        });
+}
+
+void ActionImpl::set_relay_async(
+    const int index, Action::RelayCommand setting, const Action::ResultCallback& callback)
+{
+    MavlinkCommandSender::CommandLong command{};
+    command.target_component_id = _system_impl->get_autopilot_id();
+    command.params.maybe_param1 = static_cast<float>(index);
+    command.command = MAV_CMD_DO_SET_RELAY;
+
+    switch (setting) {
+        case Action::RelayCommand::On:
+            command.params.maybe_param2 = 1.0f;
+            break;
+        case Action::RelayCommand::Off:
+            command.params.maybe_param2 = 0.0f;
+            break;
+        default:
+            if (callback) {
+                _system_impl->call_user_callback([temp_callback = callback]() {
+                    temp_callback(Action::Result::InvalidArgument);
+                });
+            }
+            return;
+    };
 
     _system_impl->send_command_async(
         command, [this, callback](MavlinkCommandSender::Result result, float) {

@@ -168,6 +168,32 @@ struct SetReturnToLaunchAltitudeRequestDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SetReturnToLaunchAltitudeRequestDefaultTypeInternal _SetReturnToLaunchAltitudeRequest_default_instance_;
 
+inline constexpr SetRelayRequest::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : index_{0},
+        setting_{static_cast< ::mavsdk::rpc::action::RelayCommand >(0)},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR SetRelayRequest::SetRelayRequest(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct SetRelayRequestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR SetRelayRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~SetRelayRequestDefaultTypeInternal() {}
+  union {
+    SetRelayRequest _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SetRelayRequestDefaultTypeInternal _SetRelayRequest_default_instance_;
+
 inline constexpr SetGpsGlobalOriginRequest::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : latitude_deg_{0},
@@ -687,6 +713,31 @@ struct SetReturnToLaunchAltitudeResponseDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SetReturnToLaunchAltitudeResponseDefaultTypeInternal _SetReturnToLaunchAltitudeResponse_default_instance_;
 
+inline constexpr SetRelayResponse::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        action_result_{nullptr} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR SetRelayResponse::SetRelayResponse(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct SetRelayResponseDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR SetRelayResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~SetRelayResponseDefaultTypeInternal() {}
+  union {
+    SetRelayResponse _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SetRelayResponseDefaultTypeInternal _SetRelayResponse_default_instance_;
+
 inline constexpr SetGpsGlobalOriginResponse::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : _cached_size_{0},
@@ -1066,7 +1117,7 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
 }  // namespace action
 }  // namespace rpc
 }  // namespace mavsdk
-static const ::_pb::EnumDescriptor* file_level_enum_descriptors_action_2faction_2eproto[2];
+static const ::_pb::EnumDescriptor* file_level_enum_descriptors_action_2faction_2eproto[3];
 static constexpr const ::_pb::ServiceDescriptor**
     file_level_service_descriptors_action_2faction_2eproto = nullptr;
 const ::uint32_t
@@ -1337,6 +1388,26 @@ const ::uint32_t
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::action::SetActuatorResponse, _impl_.action_result_),
         0,
         ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::action::SetRelayRequest, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::action::SetRelayRequest, _impl_.index_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::action::SetRelayRequest, _impl_.setting_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::action::SetRelayResponse, _impl_._has_bits_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::action::SetRelayResponse, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::action::SetRelayResponse, _impl_.action_result_),
+        0,
+        ~0u,  // no _has_bits_
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::action::TransitionToFixedwingRequest, _internal_metadata_),
         ~0u,  // no _extensions_
         ~0u,  // no _oneof_case_
@@ -1532,23 +1603,25 @@ static const ::_pbi::MigrationSchema
         {234, 243, -1, sizeof(::mavsdk::rpc::action::HoldResponse)},
         {244, -1, -1, sizeof(::mavsdk::rpc::action::SetActuatorRequest)},
         {254, 263, -1, sizeof(::mavsdk::rpc::action::SetActuatorResponse)},
-        {264, -1, -1, sizeof(::mavsdk::rpc::action::TransitionToFixedwingRequest)},
-        {272, 281, -1, sizeof(::mavsdk::rpc::action::TransitionToFixedwingResponse)},
-        {282, -1, -1, sizeof(::mavsdk::rpc::action::TransitionToMulticopterRequest)},
-        {290, 299, -1, sizeof(::mavsdk::rpc::action::TransitionToMulticopterResponse)},
-        {300, -1, -1, sizeof(::mavsdk::rpc::action::GetTakeoffAltitudeRequest)},
-        {308, 318, -1, sizeof(::mavsdk::rpc::action::GetTakeoffAltitudeResponse)},
-        {320, -1, -1, sizeof(::mavsdk::rpc::action::SetTakeoffAltitudeRequest)},
-        {329, 338, -1, sizeof(::mavsdk::rpc::action::SetTakeoffAltitudeResponse)},
-        {339, -1, -1, sizeof(::mavsdk::rpc::action::GetReturnToLaunchAltitudeRequest)},
-        {347, 357, -1, sizeof(::mavsdk::rpc::action::GetReturnToLaunchAltitudeResponse)},
-        {359, -1, -1, sizeof(::mavsdk::rpc::action::SetReturnToLaunchAltitudeRequest)},
-        {368, 377, -1, sizeof(::mavsdk::rpc::action::SetReturnToLaunchAltitudeResponse)},
-        {378, -1, -1, sizeof(::mavsdk::rpc::action::SetCurrentSpeedRequest)},
-        {387, 396, -1, sizeof(::mavsdk::rpc::action::SetCurrentSpeedResponse)},
-        {397, -1, -1, sizeof(::mavsdk::rpc::action::SetGpsGlobalOriginRequest)},
-        {408, 417, -1, sizeof(::mavsdk::rpc::action::SetGpsGlobalOriginResponse)},
-        {418, -1, -1, sizeof(::mavsdk::rpc::action::ActionResult)},
+        {264, -1, -1, sizeof(::mavsdk::rpc::action::SetRelayRequest)},
+        {274, 283, -1, sizeof(::mavsdk::rpc::action::SetRelayResponse)},
+        {284, -1, -1, sizeof(::mavsdk::rpc::action::TransitionToFixedwingRequest)},
+        {292, 301, -1, sizeof(::mavsdk::rpc::action::TransitionToFixedwingResponse)},
+        {302, -1, -1, sizeof(::mavsdk::rpc::action::TransitionToMulticopterRequest)},
+        {310, 319, -1, sizeof(::mavsdk::rpc::action::TransitionToMulticopterResponse)},
+        {320, -1, -1, sizeof(::mavsdk::rpc::action::GetTakeoffAltitudeRequest)},
+        {328, 338, -1, sizeof(::mavsdk::rpc::action::GetTakeoffAltitudeResponse)},
+        {340, -1, -1, sizeof(::mavsdk::rpc::action::SetTakeoffAltitudeRequest)},
+        {349, 358, -1, sizeof(::mavsdk::rpc::action::SetTakeoffAltitudeResponse)},
+        {359, -1, -1, sizeof(::mavsdk::rpc::action::GetReturnToLaunchAltitudeRequest)},
+        {367, 377, -1, sizeof(::mavsdk::rpc::action::GetReturnToLaunchAltitudeResponse)},
+        {379, -1, -1, sizeof(::mavsdk::rpc::action::SetReturnToLaunchAltitudeRequest)},
+        {388, 397, -1, sizeof(::mavsdk::rpc::action::SetReturnToLaunchAltitudeResponse)},
+        {398, -1, -1, sizeof(::mavsdk::rpc::action::SetCurrentSpeedRequest)},
+        {407, 416, -1, sizeof(::mavsdk::rpc::action::SetCurrentSpeedResponse)},
+        {417, -1, -1, sizeof(::mavsdk::rpc::action::SetGpsGlobalOriginRequest)},
+        {428, 437, -1, sizeof(::mavsdk::rpc::action::SetGpsGlobalOriginResponse)},
+        {438, -1, -1, sizeof(::mavsdk::rpc::action::ActionResult)},
 };
 static const ::_pb::Message* const file_default_instances[] = {
     &::mavsdk::rpc::action::_ArmRequest_default_instance_._instance,
@@ -1579,6 +1652,8 @@ static const ::_pb::Message* const file_default_instances[] = {
     &::mavsdk::rpc::action::_HoldResponse_default_instance_._instance,
     &::mavsdk::rpc::action::_SetActuatorRequest_default_instance_._instance,
     &::mavsdk::rpc::action::_SetActuatorResponse_default_instance_._instance,
+    &::mavsdk::rpc::action::_SetRelayRequest_default_instance_._instance,
+    &::mavsdk::rpc::action::_SetRelayResponse_default_instance_._instance,
     &::mavsdk::rpc::action::_TransitionToFixedwingRequest_default_instance_._instance,
     &::mavsdk::rpc::action::_TransitionToFixedwingResponse_default_instance_._instance,
     &::mavsdk::rpc::action::_TransitionToMulticopterRequest_default_instance_._instance,
@@ -1641,6 +1716,10 @@ const char descriptor_table_protodef_action_2faction_2eproto[] ABSL_ATTRIBUTE_SE
     "sult\"2\n\022SetActuatorRequest\022\r\n\005index\030\001 \001("
     "\005\022\r\n\005value\030\002 \001(\002\"M\n\023SetActuatorResponse\022"
     "6\n\raction_result\030\001 \001(\0132\037.mavsdk.rpc.acti"
+    "on.ActionResult\"R\n\017SetRelayRequest\022\r\n\005in"
+    "dex\030\001 \001(\005\0220\n\007setting\030\002 \001(\0162\037.mavsdk.rpc."
+    "action.RelayCommand\"J\n\020SetRelayResponse\022"
+    "6\n\raction_result\030\001 \001(\0132\037.mavsdk.rpc.acti"
     "on.ActionResult\"\036\n\034TransitionToFixedwing"
     "Request\"W\n\035TransitionToFixedwingResponse"
     "\0226\n\raction_result\030\001 \001(\0132\037.mavsdk.rpc.act"
@@ -1689,63 +1768,67 @@ const char descriptor_table_protodef_action_2faction_2eproto[] ABSL_ATTRIBUTE_SE
     "DING\020\001\022#\n\037ORBIT_YAW_BEHAVIOR_UNCONTROLLE"
     "D\020\002\0223\n/ORBIT_YAW_BEHAVIOR_HOLD_FRONT_TAN"
     "GENT_TO_CIRCLE\020\003\022$\n ORBIT_YAW_BEHAVIOR_R"
-    "C_CONTROLLED\020\0042\236\021\n\rActionService\022F\n\003Arm\022"
-    "\035.mavsdk.rpc.action.ArmRequest\032\036.mavsdk."
-    "rpc.action.ArmResponse\"\000\022U\n\010ArmForce\022\".m"
-    "avsdk.rpc.action.ArmForceRequest\032#.mavsd"
-    "k.rpc.action.ArmForceResponse\"\000\022O\n\006Disar"
-    "m\022 .mavsdk.rpc.action.DisarmRequest\032!.ma"
-    "vsdk.rpc.action.DisarmResponse\"\000\022R\n\007Take"
-    "off\022!.mavsdk.rpc.action.TakeoffRequest\032\""
-    ".mavsdk.rpc.action.TakeoffResponse\"\000\022I\n\004"
-    "Land\022\036.mavsdk.rpc.action.LandRequest\032\037.m"
-    "avsdk.rpc.action.LandResponse\"\000\022O\n\006Reboo"
-    "t\022 .mavsdk.rpc.action.RebootRequest\032!.ma"
-    "vsdk.rpc.action.RebootResponse\"\000\022U\n\010Shut"
-    "down\022\".mavsdk.rpc.action.ShutdownRequest"
-    "\032#.mavsdk.rpc.action.ShutdownResponse\"\000\022"
-    "X\n\tTerminate\022#.mavsdk.rpc.action.Termina"
-    "teRequest\032$.mavsdk.rpc.action.TerminateR"
-    "esponse\"\000\022I\n\004Kill\022\036.mavsdk.rpc.action.Ki"
-    "llRequest\032\037.mavsdk.rpc.action.KillRespon"
-    "se\"\000\022g\n\016ReturnToLaunch\022(.mavsdk.rpc.acti"
-    "on.ReturnToLaunchRequest\032).mavsdk.rpc.ac"
-    "tion.ReturnToLaunchResponse\"\000\022a\n\014GotoLoc"
-    "ation\022&.mavsdk.rpc.action.GotoLocationRe"
-    "quest\032\'.mavsdk.rpc.action.GotoLocationRe"
-    "sponse\"\000\022R\n\007DoOrbit\022!.mavsdk.rpc.action."
-    "DoOrbitRequest\032\".mavsdk.rpc.action.DoOrb"
-    "itResponse\"\000\022I\n\004Hold\022\036.mavsdk.rpc.action"
-    ".HoldRequest\032\037.mavsdk.rpc.action.HoldRes"
-    "ponse\"\000\022^\n\013SetActuator\022%.mavsdk.rpc.acti"
-    "on.SetActuatorRequest\032&.mavsdk.rpc.actio"
-    "n.SetActuatorResponse\"\000\022|\n\025TransitionToF"
-    "ixedwing\022/.mavsdk.rpc.action.TransitionT"
-    "oFixedwingRequest\0320.mavsdk.rpc.action.Tr"
-    "ansitionToFixedwingResponse\"\000\022\202\001\n\027Transi"
-    "tionToMulticopter\0221.mavsdk.rpc.action.Tr"
-    "ansitionToMulticopterRequest\0322.mavsdk.rp"
-    "c.action.TransitionToMulticopterResponse"
-    "\"\000\022s\n\022GetTakeoffAltitude\022,.mavsdk.rpc.ac"
-    "tion.GetTakeoffAltitudeRequest\032-.mavsdk."
-    "rpc.action.GetTakeoffAltitudeResponse\"\000\022"
-    "s\n\022SetTakeoffAltitude\022,.mavsdk.rpc.actio"
-    "n.SetTakeoffAltitudeRequest\032-.mavsdk.rpc"
-    ".action.SetTakeoffAltitudeResponse\"\000\022\210\001\n"
-    "\031GetReturnToLaunchAltitude\0223.mavsdk.rpc."
-    "action.GetReturnToLaunchAltitudeRequest\032"
-    "4.mavsdk.rpc.action.GetReturnToLaunchAlt"
-    "itudeResponse\"\000\022\210\001\n\031SetReturnToLaunchAlt"
-    "itude\0223.mavsdk.rpc.action.SetReturnToLau"
-    "nchAltitudeRequest\0324.mavsdk.rpc.action.S"
-    "etReturnToLaunchAltitudeResponse\"\000\022j\n\017Se"
-    "tCurrentSpeed\022).mavsdk.rpc.action.SetCur"
-    "rentSpeedRequest\032*.mavsdk.rpc.action.Set"
-    "CurrentSpeedResponse\"\000\022w\n\022SetGpsGlobalOr"
-    "igin\022,.mavsdk.rpc.action.SetGpsGlobalOri"
-    "ginRequest\032-.mavsdk.rpc.action.SetGpsGlo"
-    "balOriginResponse\"\004\200\265\030\001B\037\n\020io.mavsdk.act"
-    "ionB\013ActionProtob\006proto3"
+    "C_CONTROLLED\020\004*;\n\014RelayCommand\022\024\n\020RELAY_"
+    "COMMAND_ON\020\000\022\025\n\021RELAY_COMMAND_OFF\020\0012\365\021\n\r"
+    "ActionService\022F\n\003Arm\022\035.mavsdk.rpc.action"
+    ".ArmRequest\032\036.mavsdk.rpc.action.ArmRespo"
+    "nse\"\000\022U\n\010ArmForce\022\".mavsdk.rpc.action.Ar"
+    "mForceRequest\032#.mavsdk.rpc.action.ArmFor"
+    "ceResponse\"\000\022O\n\006Disarm\022 .mavsdk.rpc.acti"
+    "on.DisarmRequest\032!.mavsdk.rpc.action.Dis"
+    "armResponse\"\000\022R\n\007Takeoff\022!.mavsdk.rpc.ac"
+    "tion.TakeoffRequest\032\".mavsdk.rpc.action."
+    "TakeoffResponse\"\000\022I\n\004Land\022\036.mavsdk.rpc.a"
+    "ction.LandRequest\032\037.mavsdk.rpc.action.La"
+    "ndResponse\"\000\022O\n\006Reboot\022 .mavsdk.rpc.acti"
+    "on.RebootRequest\032!.mavsdk.rpc.action.Reb"
+    "ootResponse\"\000\022U\n\010Shutdown\022\".mavsdk.rpc.a"
+    "ction.ShutdownRequest\032#.mavsdk.rpc.actio"
+    "n.ShutdownResponse\"\000\022X\n\tTerminate\022#.mavs"
+    "dk.rpc.action.TerminateRequest\032$.mavsdk."
+    "rpc.action.TerminateResponse\"\000\022I\n\004Kill\022\036"
+    ".mavsdk.rpc.action.KillRequest\032\037.mavsdk."
+    "rpc.action.KillResponse\"\000\022g\n\016ReturnToLau"
+    "nch\022(.mavsdk.rpc.action.ReturnToLaunchRe"
+    "quest\032).mavsdk.rpc.action.ReturnToLaunch"
+    "Response\"\000\022a\n\014GotoLocation\022&.mavsdk.rpc."
+    "action.GotoLocationRequest\032\'.mavsdk.rpc."
+    "action.GotoLocationResponse\"\000\022R\n\007DoOrbit"
+    "\022!.mavsdk.rpc.action.DoOrbitRequest\032\".ma"
+    "vsdk.rpc.action.DoOrbitResponse\"\000\022I\n\004Hol"
+    "d\022\036.mavsdk.rpc.action.HoldRequest\032\037.mavs"
+    "dk.rpc.action.HoldResponse\"\000\022^\n\013SetActua"
+    "tor\022%.mavsdk.rpc.action.SetActuatorReque"
+    "st\032&.mavsdk.rpc.action.SetActuatorRespon"
+    "se\"\000\022U\n\010SetRelay\022\".mavsdk.rpc.action.Set"
+    "RelayRequest\032#.mavsdk.rpc.action.SetRela"
+    "yResponse\"\000\022|\n\025TransitionToFixedwing\022/.m"
+    "avsdk.rpc.action.TransitionToFixedwingRe"
+    "quest\0320.mavsdk.rpc.action.TransitionToFi"
+    "xedwingResponse\"\000\022\202\001\n\027TransitionToMultic"
+    "opter\0221.mavsdk.rpc.action.TransitionToMu"
+    "lticopterRequest\0322.mavsdk.rpc.action.Tra"
+    "nsitionToMulticopterResponse\"\000\022s\n\022GetTak"
+    "eoffAltitude\022,.mavsdk.rpc.action.GetTake"
+    "offAltitudeRequest\032-.mavsdk.rpc.action.G"
+    "etTakeoffAltitudeResponse\"\000\022s\n\022SetTakeof"
+    "fAltitude\022,.mavsdk.rpc.action.SetTakeoff"
+    "AltitudeRequest\032-.mavsdk.rpc.action.SetT"
+    "akeoffAltitudeResponse\"\000\022\210\001\n\031GetReturnTo"
+    "LaunchAltitude\0223.mavsdk.rpc.action.GetRe"
+    "turnToLaunchAltitudeRequest\0324.mavsdk.rpc"
+    ".action.GetReturnToLaunchAltitudeRespons"
+    "e\"\000\022\210\001\n\031SetReturnToLaunchAltitude\0223.mavs"
+    "dk.rpc.action.SetReturnToLaunchAltitudeR"
+    "equest\0324.mavsdk.rpc.action.SetReturnToLa"
+    "unchAltitudeResponse\"\000\022j\n\017SetCurrentSpee"
+    "d\022).mavsdk.rpc.action.SetCurrentSpeedReq"
+    "uest\032*.mavsdk.rpc.action.SetCurrentSpeed"
+    "Response\"\000\022w\n\022SetGpsGlobalOrigin\022,.mavsd"
+    "k.rpc.action.SetGpsGlobalOriginRequest\032-"
+    ".mavsdk.rpc.action.SetGpsGlobalOriginRes"
+    "ponse\"\004\200\265\030\001B\037\n\020io.mavsdk.actionB\013ActionP"
+    "rotob\006proto3"
 };
 static const ::_pbi::DescriptorTable* const descriptor_table_action_2faction_2eproto_deps[1] =
     {
@@ -1755,13 +1838,13 @@ static ::absl::once_flag descriptor_table_action_2faction_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_action_2faction_2eproto = {
     false,
     false,
-    5864,
+    6172,
     descriptor_table_protodef_action_2faction_2eproto,
     "action/action.proto",
     &descriptor_table_action_2faction_2eproto_once,
     descriptor_table_action_2faction_2eproto_deps,
     1,
-    45,
+    47,
     schemas,
     file_default_instances,
     TableStruct_action_2faction_2eproto::offsets,
@@ -1812,6 +1895,15 @@ PROTOBUF_CONSTINIT const uint32_t OrbitYawBehavior_internal_data_[] = {
     327680u, 0u, };
 bool OrbitYawBehavior_IsValid(int value) {
   return 0 <= value && value <= 4;
+}
+const ::google::protobuf::EnumDescriptor* RelayCommand_descriptor() {
+  ::google::protobuf::internal::AssignDescriptors(&descriptor_table_action_2faction_2eproto);
+  return file_level_enum_descriptors_action_2faction_2eproto[2];
+}
+PROTOBUF_CONSTINIT const uint32_t RelayCommand_internal_data_[] = {
+    131072u, 0u, };
+bool RelayCommand_IsValid(int value) {
+  return 0 <= value && value <= 1;
 }
 // ===================================================================
 
@@ -7285,6 +7377,497 @@ void SetActuatorResponse::InternalSwap(SetActuatorResponse* PROTOBUF_RESTRICT ot
 }
 
 ::google::protobuf::Metadata SetActuatorResponse::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class SetRelayRequest::_Internal {
+ public:
+};
+
+SetRelayRequest::SetRelayRequest(::google::protobuf::Arena* arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.action.SetRelayRequest)
+}
+SetRelayRequest::SetRelayRequest(
+    ::google::protobuf::Arena* arena, const SetRelayRequest& from)
+    : SetRelayRequest(arena) {
+  MergeFrom(from);
+}
+inline PROTOBUF_NDEBUG_INLINE SetRelayRequest::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
+
+inline void SetRelayRequest::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, index_),
+           0,
+           offsetof(Impl_, setting_) -
+               offsetof(Impl_, index_) +
+               sizeof(Impl_::setting_));
+}
+SetRelayRequest::~SetRelayRequest() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.action.SetRelayRequest)
+  SharedDtor(*this);
+}
+inline void SetRelayRequest::SharedDtor(MessageLite& self) {
+  SetRelayRequest& this_ = static_cast<SetRelayRequest&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.~Impl_();
+}
+
+inline void* SetRelayRequest::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) SetRelayRequest(arena);
+}
+constexpr auto SetRelayRequest::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(SetRelayRequest),
+                                            alignof(SetRelayRequest));
+}
+PROTOBUF_CONSTINIT
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::google::protobuf::internal::ClassDataFull SetRelayRequest::_class_data_ = {
+    ::google::protobuf::internal::ClassData{
+        &_SetRelayRequest_default_instance_._instance,
+        &_table_.header,
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
+        &SetRelayRequest::MergeImpl,
+        ::google::protobuf::Message::GetNewImpl<SetRelayRequest>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        &SetRelayRequest::SharedDtor,
+        ::google::protobuf::Message::GetClearImpl<SetRelayRequest>(), &SetRelayRequest::ByteSizeLong,
+            &SetRelayRequest::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+        PROTOBUF_FIELD_OFFSET(SetRelayRequest, _impl_._cached_size_),
+        false,
+    },
+    &SetRelayRequest::kDescriptorMethods,
+    &descriptor_table_action_2faction_2eproto,
+    nullptr,  // tracker
+};
+const ::google::protobuf::internal::ClassData* SetRelayRequest::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<1, 2, 0, 0, 2> SetRelayRequest::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    2, 8,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967292,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    2,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::mavsdk::rpc::action::SetRelayRequest>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    // .mavsdk.rpc.action.RelayCommand setting = 2;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(SetRelayRequest, _impl_.setting_), 63>(),
+     {16, 63, 0, PROTOBUF_FIELD_OFFSET(SetRelayRequest, _impl_.setting_)}},
+    // int32 index = 1;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(SetRelayRequest, _impl_.index_), 63>(),
+     {8, 63, 0, PROTOBUF_FIELD_OFFSET(SetRelayRequest, _impl_.index_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // int32 index = 1;
+    {PROTOBUF_FIELD_OFFSET(SetRelayRequest, _impl_.index_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kInt32)},
+    // .mavsdk.rpc.action.RelayCommand setting = 2;
+    {PROTOBUF_FIELD_OFFSET(SetRelayRequest, _impl_.setting_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
+
+PROTOBUF_NOINLINE void SetRelayRequest::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.action.SetRelayRequest)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  ::memset(&_impl_.index_, 0, static_cast<::size_t>(
+      reinterpret_cast<char*>(&_impl_.setting_) -
+      reinterpret_cast<char*>(&_impl_.index_)) + sizeof(_impl_.setting_));
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::uint8_t* SetRelayRequest::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const SetRelayRequest& this_ = static_cast<const SetRelayRequest&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* SetRelayRequest::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const SetRelayRequest& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.action.SetRelayRequest)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
+
+          // int32 index = 1;
+          if (this_._internal_index() != 0) {
+            target = ::google::protobuf::internal::WireFormatLite::
+                WriteInt32ToArrayWithField<1>(
+                    stream, this_._internal_index(), target);
+          }
+
+          // .mavsdk.rpc.action.RelayCommand setting = 2;
+          if (this_._internal_setting() != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteEnumToArray(
+                2, this_._internal_setting(), target);
+          }
+
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.action.SetRelayRequest)
+          return target;
+        }
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t SetRelayRequest::ByteSizeLong(const MessageLite& base) {
+          const SetRelayRequest& this_ = static_cast<const SetRelayRequest&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t SetRelayRequest::ByteSizeLong() const {
+          const SetRelayRequest& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.action.SetRelayRequest)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+          ::_pbi::Prefetch5LinesFrom7Lines(&this_);
+           {
+            // int32 index = 1;
+            if (this_._internal_index() != 0) {
+              total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+                  this_._internal_index());
+            }
+            // .mavsdk.rpc.action.RelayCommand setting = 2;
+            if (this_._internal_setting() != 0) {
+              total_size += 1 +
+                            ::_pbi::WireFormatLite::EnumSize(this_._internal_setting());
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
+        }
+
+void SetRelayRequest::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<SetRelayRequest*>(&to_msg);
+  auto& from = static_cast<const SetRelayRequest&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.action.SetRelayRequest)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from._internal_index() != 0) {
+    _this->_impl_.index_ = from._impl_.index_;
+  }
+  if (from._internal_setting() != 0) {
+    _this->_impl_.setting_ = from._impl_.setting_;
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void SetRelayRequest::CopyFrom(const SetRelayRequest& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.action.SetRelayRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void SetRelayRequest::InternalSwap(SetRelayRequest* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::google::protobuf::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(SetRelayRequest, _impl_.setting_)
+      + sizeof(SetRelayRequest::_impl_.setting_)
+      - PROTOBUF_FIELD_OFFSET(SetRelayRequest, _impl_.index_)>(
+          reinterpret_cast<char*>(&_impl_.index_),
+          reinterpret_cast<char*>(&other->_impl_.index_));
+}
+
+::google::protobuf::Metadata SetRelayRequest::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class SetRelayResponse::_Internal {
+ public:
+  using HasBits =
+      decltype(std::declval<SetRelayResponse>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+      8 * PROTOBUF_FIELD_OFFSET(SetRelayResponse, _impl_._has_bits_);
+};
+
+SetRelayResponse::SetRelayResponse(::google::protobuf::Arena* arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.action.SetRelayResponse)
+}
+inline PROTOBUF_NDEBUG_INLINE SetRelayResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from, const ::mavsdk::rpc::action::SetRelayResponse& from_msg)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0} {}
+
+SetRelayResponse::SetRelayResponse(
+    ::google::protobuf::Arena* arena,
+    const SetRelayResponse& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SetRelayResponse* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.action_result_ = (cached_has_bits & 0x00000001u) ? ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::action::ActionResult>(
+                              arena, *from._impl_.action_result_)
+                        : nullptr;
+
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.action.SetRelayResponse)
+}
+inline PROTOBUF_NDEBUG_INLINE SetRelayResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
+
+inline void SetRelayResponse::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.action_result_ = {};
+}
+SetRelayResponse::~SetRelayResponse() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.action.SetRelayResponse)
+  SharedDtor(*this);
+}
+inline void SetRelayResponse::SharedDtor(MessageLite& self) {
+  SetRelayResponse& this_ = static_cast<SetRelayResponse&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  delete this_._impl_.action_result_;
+  this_._impl_.~Impl_();
+}
+
+inline void* SetRelayResponse::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) SetRelayResponse(arena);
+}
+constexpr auto SetRelayResponse::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(SetRelayResponse),
+                                            alignof(SetRelayResponse));
+}
+PROTOBUF_CONSTINIT
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::google::protobuf::internal::ClassDataFull SetRelayResponse::_class_data_ = {
+    ::google::protobuf::internal::ClassData{
+        &_SetRelayResponse_default_instance_._instance,
+        &_table_.header,
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
+        &SetRelayResponse::MergeImpl,
+        ::google::protobuf::Message::GetNewImpl<SetRelayResponse>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        &SetRelayResponse::SharedDtor,
+        ::google::protobuf::Message::GetClearImpl<SetRelayResponse>(), &SetRelayResponse::ByteSizeLong,
+            &SetRelayResponse::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+        PROTOBUF_FIELD_OFFSET(SetRelayResponse, _impl_._cached_size_),
+        false,
+    },
+    &SetRelayResponse::kDescriptorMethods,
+    &descriptor_table_action_2faction_2eproto,
+    nullptr,  // tracker
+};
+const ::google::protobuf::internal::ClassData* SetRelayResponse::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 1, 0, 2> SetRelayResponse::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(SetRelayResponse, _impl_._has_bits_),
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::mavsdk::rpc::action::SetRelayResponse>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    // .mavsdk.rpc.action.ActionResult action_result = 1;
+    {::_pbi::TcParser::FastMtS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(SetRelayResponse, _impl_.action_result_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.action.ActionResult action_result = 1;
+    {PROTOBUF_FIELD_OFFSET(SetRelayResponse, _impl_.action_result_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::action::ActionResult>()},
+  }}, {{
+  }},
+};
+
+PROTOBUF_NOINLINE void SetRelayResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.action.SetRelayResponse)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(_impl_.action_result_ != nullptr);
+    _impl_.action_result_->Clear();
+  }
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::uint8_t* SetRelayResponse::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const SetRelayResponse& this_ = static_cast<const SetRelayResponse&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* SetRelayResponse::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const SetRelayResponse& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.action.SetRelayResponse)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
+
+          cached_has_bits = this_._impl_._has_bits_[0];
+          // .mavsdk.rpc.action.ActionResult action_result = 1;
+          if (cached_has_bits & 0x00000001u) {
+            target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+                1, *this_._impl_.action_result_, this_._impl_.action_result_->GetCachedSize(), target,
+                stream);
+          }
+
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.action.SetRelayResponse)
+          return target;
+        }
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t SetRelayResponse::ByteSizeLong(const MessageLite& base) {
+          const SetRelayResponse& this_ = static_cast<const SetRelayResponse&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t SetRelayResponse::ByteSizeLong() const {
+          const SetRelayResponse& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.action.SetRelayResponse)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+           {
+            // .mavsdk.rpc.action.ActionResult action_result = 1;
+            cached_has_bits = this_._impl_._has_bits_[0];
+            if (cached_has_bits & 0x00000001u) {
+              total_size += 1 +
+                            ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.action_result_);
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
+        }
+
+void SetRelayResponse::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<SetRelayResponse*>(&to_msg);
+  auto& from = static_cast<const SetRelayResponse&>(from_msg);
+  ::google::protobuf::Arena* arena = _this->GetArena();
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.action.SetRelayResponse)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  cached_has_bits = from._impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(from._impl_.action_result_ != nullptr);
+    if (_this->_impl_.action_result_ == nullptr) {
+      _this->_impl_.action_result_ =
+          ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::action::ActionResult>(arena, *from._impl_.action_result_);
+    } else {
+      _this->_impl_.action_result_->MergeFrom(*from._impl_.action_result_);
+    }
+  }
+  _this->_impl_._has_bits_[0] |= cached_has_bits;
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void SetRelayResponse::CopyFrom(const SetRelayResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.action.SetRelayResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void SetRelayResponse::InternalSwap(SetRelayResponse* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  swap(_impl_.action_result_, other->_impl_.action_result_);
+}
+
+::google::protobuf::Metadata SetRelayResponse::GetMetadata() const {
   return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // ===================================================================

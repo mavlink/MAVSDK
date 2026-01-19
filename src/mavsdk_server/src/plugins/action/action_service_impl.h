@@ -84,6 +84,34 @@ public:
         }
     }
 
+    static rpc::action::RelayCommand
+    translateToRpcRelayCommand(const mavsdk::Action::RelayCommand& relay_command)
+    {
+        switch (relay_command) {
+            default:
+                LogErr() << "Unknown relay_command enum value: " << static_cast<int>(relay_command);
+            // FALLTHROUGH
+            case mavsdk::Action::RelayCommand::On:
+                return rpc::action::RELAY_COMMAND_ON;
+            case mavsdk::Action::RelayCommand::Off:
+                return rpc::action::RELAY_COMMAND_OFF;
+        }
+    }
+
+    static mavsdk::Action::RelayCommand
+    translateFromRpcRelayCommand(const rpc::action::RelayCommand relay_command)
+    {
+        switch (relay_command) {
+            default:
+                LogErr() << "Unknown relay_command enum value: " << static_cast<int>(relay_command);
+            // FALLTHROUGH
+            case rpc::action::RELAY_COMMAND_ON:
+                return mavsdk::Action::RelayCommand::On;
+            case rpc::action::RELAY_COMMAND_OFF:
+                return mavsdk::Action::RelayCommand::Off;
+        }
+    }
+
     static rpc::action::ActionResult::Result
     translateToRpcResult(const mavsdk::Action::Result& result)
     {
@@ -503,6 +531,35 @@ public:
         }
 
         auto result = _lazy_plugin.maybe_plugin()->set_actuator(request->index(), request->value());
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status SetRelay(
+        grpc::ServerContext* /* context */,
+        const rpc::action::SetRelayRequest* request,
+        rpc::action::SetRelayResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                auto result = mavsdk::Action::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        if (request == nullptr) {
+            LogWarn() << "SetRelay sent with a null request! Ignoring...";
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->set_relay(
+            request->index(), translateFromRpcRelayCommand(request->setting()));
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
