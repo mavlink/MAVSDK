@@ -28,6 +28,9 @@ add_executable(system_tests_runner
     intercept.cpp
     mavlink_direct.cpp
     mavlink_direct_forwarding.cpp
+    mission_cancellation.cpp
+    mission_changed.cpp
+    mission_transfer_lossy.cpp
     connections.cpp
     raw_bytes.cpp
     system_tests_runner.cpp

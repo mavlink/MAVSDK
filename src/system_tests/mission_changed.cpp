@@ -1,8 +1,12 @@
-#include "integration_test_helper.h"
+#include "log.h"
 #include "mavsdk.h"
 #include "plugins/mission_raw/mission_raw.h"
+#include "plugins/mission_raw_server/mission_raw_server.h"
 #include <cmath>
+#include <atomic>
 #include <future>
+#include <thread>
+#include <gtest/gtest.h>
 
 using namespace mavsdk;
 
@@ -14,21 +18,28 @@ static constexpr unsigned NUM_SOME_ITEMS = sizeof(SOME_LATITUDES) / sizeof(SOME_
 
 static void validate_items(const std::vector<MissionRaw::MissionItem>& items);
 
-TEST(SitlTest, PX4MissionRawMissionChanged)
+TEST(SystemTest, MissionChanged)
 {
-    Mavsdk mavsdk{Mavsdk::Configuration{ComponentType::GroundStation}};
+    // Create two MAVSDK instances: groundstation and autopilot
+    Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
+    Mavsdk mavsdk_autopilot{Mavsdk::Configuration{ComponentType::Autopilot}};
 
-    ConnectionResult ret = mavsdk.add_any_connection("udpin://0.0.0.0:14540");
-    ASSERT_EQ(ret, ConnectionResult::Success);
+    ASSERT_EQ(
+        mavsdk_groundstation.add_any_connection("udpin://0.0.0.0:17000"),
+        ConnectionResult::Success);
+    ASSERT_EQ(
+        mavsdk_autopilot.add_any_connection("udpout://127.0.0.1:17000"), ConnectionResult::Success);
 
-    // Wait for system to connect via heartbeat.
-    std::this_thread::sleep_for(std::chrono::seconds(2));
+    // Set up the autopilot side with MissionRawServer
+    auto mission_raw_server = MissionRawServer{mavsdk_autopilot.server_component()};
 
-    auto system = mavsdk.systems().at(0);
-    ASSERT_TRUE(system->is_connected());
+    // Wait for groundstation to discover autopilot
+    auto maybe_system = mavsdk_groundstation.first_autopilot(10.0);
+    ASSERT_TRUE(maybe_system);
+    auto system = maybe_system.value();
     ASSERT_TRUE(system->has_autopilot());
 
-    auto mission_raw = std::make_shared<MissionRaw>(system);
+    auto mission_raw = MissionRaw{system};
 
     std::promise<void> prom_changed{};
     std::future<void> fut_changed = prom_changed.get_future();
@@ -36,9 +47,10 @@ TEST(SitlTest, PX4MissionRawMissionChanged)
     std::atomic<bool> called_once{false};
 
     LogInfo() << "Subscribe for mission changed notification";
-    mission_raw->subscribe_mission_changed([&prom_changed, &called_once](bool) {
+    mission_raw.subscribe_mission_changed([&prom_changed, &called_once](bool) {
         bool flag = false;
         if (called_once.compare_exchange_strong(flag, true)) {
+            LogInfo() << "Mission changed notification received!";
             prom_changed.set_value();
         }
     });
@@ -46,6 +58,7 @@ TEST(SitlTest, PX4MissionRawMissionChanged)
     // The mission change callback should not trigger yet.
     EXPECT_EQ(fut_changed.wait_for(std::chrono::milliseconds(500)), std::future_status::timeout);
 
+    // Create mission items
     std::vector<MissionRaw::MissionItem> mission_raw_items;
 
     for (unsigned i = 0; i < NUM_SOME_ITEMS; ++i) {
@@ -88,11 +101,9 @@ TEST(SitlTest, PX4MissionRawMissionChanged)
 
     {
         LogInfo() << "Uploading mission...";
-        // We only have the upload_mission function asynchronous for now, so we wrap it using
-        // std::future.
         std::promise<void> prom{};
         std::future<void> fut = prom.get_future();
-        mission_raw->upload_mission_async(mission_raw_items, [&prom](MissionRaw::Result result) {
+        mission_raw.upload_mission_async(mission_raw_items, [&prom](MissionRaw::Result result) {
             ASSERT_EQ(result, MissionRaw::Result::Success);
             prom.set_value();
             LogInfo() << "Mission uploaded.";
@@ -105,21 +116,23 @@ TEST(SitlTest, PX4MissionRawMissionChanged)
 
     // The mission change callback should have triggered now because we have uploaded a mission.
     EXPECT_EQ(fut_changed.wait_for(std::chrono::milliseconds(500)), std::future_status::ready);
+    LogInfo() << "Mission changed notification was triggered as expected.";
 
     {
         std::promise<void> prom{};
         std::future<void> fut = prom.get_future();
         LogInfo() << "Download raw mission items.";
-        mission_raw->download_mission_async(
+        mission_raw.download_mission_async(
             [&prom](MissionRaw::Result result, const std::vector<MissionRaw::MissionItem> items) {
                 EXPECT_EQ(result, MissionRaw::Result::Success);
-                // TODO: validate items
                 validate_items(items);
                 prom.set_value();
             });
         auto status = fut.wait_for(std::chrono::seconds(2));
         ASSERT_EQ(status, std::future_status::ready);
     }
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
 void validate_items(const std::vector<MissionRaw::MissionItem>& items)

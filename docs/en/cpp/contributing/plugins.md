@@ -3,7 +3,7 @@
 MAVSDK-C++ is split into a [core](https://github.com/mavlink/MAVSDK/tree/main/src/core) and multiple independent [plugins](https://github.com/mavlink/MAVSDK/tree/main/src/mavsdk/plugins).
 
 Plugins that are located in the *correct location* (a subfolder of **/plugins**) and have the *correct structure* are built at compile time.
-The [CMakeLists.txt](https://github.com/mavlink/MAVSDK/blob/main/CMakeLists.txt) takes care of including the plugin folders and integration tests.
+The [CMakeLists.txt](https://github.com/mavlink/MAVSDK/blob/main/CMakeLists.txt) takes care of including the plugin folders.
 
 ## Plugin Architecture
 
@@ -11,7 +11,7 @@ Plugins should be written so that they are independent of each other (they will 
 This allows plugins to be removed/replaced as needed at the cost of some duplicated functionality across the plugin modules.
 
 The code for each plugin (and its unit test if one has been defined) is stored in a sub-folder of the **plugins** directory.
-Integration tests for all plugins in the library are stored in **integration_tests**.
+System tests are stored in **system_tests**.
 
 A simplified view of the folder structure is shown below:
 
@@ -306,11 +306,10 @@ Unit tests typically include the header file of the class to be tested and `<gte
 
 ### Integration tests {#integration_tests}
 
-We have opted to slowly fade out integration tests and use a few examples instead.
+Integration tests have been removed from MAVSDK. They required an external SITL simulator and were slow to run, making them impractical for CI. The functionality they covered is now addressed through:
 
-The rationale is as follows: the integration tests were used to test functionality against SITL (sofware in the loop) simulation. However, we learnt that it was slow to start up the simulatoin and then run a test all the way through. It was also cumbersome to keep track of the potential test matrix including both MAVSDK and PX4 as well as ArduPilot versions. In reality it's only really possible to test a few full integrations like this, so only a small part of the functionality/code coverage.
-
-At this point, the integration tests ended up quite similar to the examples. For contributors it was then often confusing whether they should provide an integration test or an example, or both. Given the integration tests weren't useful as we had to remove them from CI, we decided to move away from them and instead focus on readable examples instead.
+- **System tests**: Test MAVLink protocol logic using two MAVSDK instances (client and server) without external dependencies
+- **Examples**: Demonstrate realistic usage patterns that users can run against SITL when needed
 
 ### Examples {#examples}
 
