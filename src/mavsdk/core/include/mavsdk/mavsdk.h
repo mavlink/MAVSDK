@@ -263,13 +263,6 @@ public:
         void set_mav_type(uint8_t mav_type);
 
         /**
-         * @brief Get the mav type for a given component type.
-         * @param component_type The component type
-         * @return The corresponding mav type
-         */
-        static uint8_t mav_type_for_component_type(ComponentType component_type);
-
-        /**
          * @brief Get the autopilot type for server identification in heartbeats.
          * @return The autopilot type used in outgoing heartbeats.
          */

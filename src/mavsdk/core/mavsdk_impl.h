@@ -53,6 +53,7 @@ public:
     void operator=(const MavsdkImpl&) = delete;
 
     static std::string version();
+    static uint8_t mav_type_for_component_type(ComponentType component_type);
 
     void forward_message(mavlink_message_t& message, Connection* connection);
     void receive_message(

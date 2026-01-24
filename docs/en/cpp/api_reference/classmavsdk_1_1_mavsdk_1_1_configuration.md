@@ -31,13 +31,6 @@ void | [set_autopilot](#classmavsdk_1_1_mavsdk_1_1_configuration_1a9798ed5eb7fb6
 [CompatibilityMode](namespacemavsdk.md#namespacemavsdk_1af0f9146b2086797ae56671d20bd29d00) | [get_compatibility_mode](#classmavsdk_1_1_mavsdk_1_1_configuration_1abfe7d151a85c65dc6454ebeb645732ef) () const | Get the compatibility mode.
 void | [set_compatibility_mode](#classmavsdk_1_1_mavsdk_1_1_configuration_1ab26137a0ead379a702b404f6e92d624f) ([CompatibilityMode](namespacemavsdk.md#namespacemavsdk_1af0f9146b2086797ae56671d20bd29d00) mode) | Set the compatibility mode.
 
-## Static Public Member Functions
-
-
-Type | Name | Description
----: | --- | ---
-uint8_t | [mav_type_for_component_type](#classmavsdk_1_1_mavsdk_1_1_configuration_1a9c5b385d4097b9f486acfbfb1191adc8) ([ComponentType](namespacemavsdk.md#namespacemavsdk_1a20fe7f7c8312779a187017111bf33d12) component_type) | Get the mav type for a given component type.
-
 
 ## Constructor & Destructor Documentation
 
@@ -284,20 +277,3 @@ Default: [CompatibilityMode::Auto](namespacemavsdk.md#namespacemavsdk_1af0f9146b
 **Parameters**
 
 * [CompatibilityMode](namespacemavsdk.md#namespacemavsdk_1af0f9146b2086797ae56671d20bd29d00) **mode** - 
-
-### mav_type_for_component_type() {#classmavsdk_1_1_mavsdk_1_1_configuration_1a9c5b385d4097b9f486acfbfb1191adc8}
-```cpp
-static uint8_t mavsdk::Mavsdk::Configuration::mav_type_for_component_type(ComponentType component_type)
-```
-
-
-Get the mav type for a given component type.
-
-
-**Parameters**
-
-* [ComponentType](namespacemavsdk.md#namespacemavsdk_1a20fe7f7c8312779a187017111bf33d12) **component_type** - The component type
-
-**Returns**
-
-&emsp;uint8_t - The corresponding mav type

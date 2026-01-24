@@ -224,7 +224,7 @@ std::shared_ptr<ServerComponent> MavsdkImpl::server_component(unsigned instance)
 std::shared_ptr<ServerComponent>
 MavsdkImpl::server_component_by_type(ComponentType server_component_type, unsigned instance)
 {
-    const auto mav_type = Mavsdk::Configuration::mav_type_for_component_type(server_component_type);
+    const auto mav_type = mav_type_for_component_type(server_component_type);
 
     switch (server_component_type) {
         case ComponentType::Autopilot:
@@ -1111,6 +1111,28 @@ Autopilot MavsdkImpl::effective_autopilot(Autopilot detected) const
             return Autopilot::ArduPilot;
         default:
             return detected;
+    }
+}
+
+uint8_t MavsdkImpl::mav_type_for_component_type(ComponentType component_type)
+{
+    switch (component_type) {
+        case ComponentType::Autopilot:
+            return MAV_TYPE_GENERIC;
+        case ComponentType::GroundStation:
+            return MAV_TYPE_GCS;
+        case ComponentType::CompanionComputer:
+            return MAV_TYPE_ONBOARD_CONTROLLER;
+        case ComponentType::Camera:
+            return MAV_TYPE_CAMERA;
+        case ComponentType::Gimbal:
+            return MAV_TYPE_GIMBAL;
+        case ComponentType::RemoteId:
+            return MAV_TYPE_ODID;
+        case ComponentType::Custom:
+            return MAV_TYPE_GENERIC;
+        default:
+            return MAV_TYPE_GENERIC;
     }
 }
 

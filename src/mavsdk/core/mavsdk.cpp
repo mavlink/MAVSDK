@@ -96,7 +96,7 @@ Mavsdk::Configuration::Configuration(
     _always_send_heartbeats(always_send_heartbeats),
     _component_type(component_type_for_component_id(component_id)),
     _mav_type(static_cast<MAV_TYPE>(
-        mav_type_for_component_type(component_type_for_component_id(component_id))))
+        MavsdkImpl::mav_type_for_component_type(component_type_for_component_id(component_id))))
 {}
 
 ComponentType Mavsdk::Configuration::component_type_for_component_id(uint8_t component_id)
@@ -119,34 +119,12 @@ ComponentType Mavsdk::Configuration::component_type_for_component_id(uint8_t com
     }
 }
 
-uint8_t Mavsdk::Configuration::mav_type_for_component_type(ComponentType component_type)
-{
-    switch (component_type) {
-        case ComponentType::Autopilot:
-            return MAV_TYPE_GENERIC;
-        case ComponentType::GroundStation:
-            return MAV_TYPE_GCS;
-        case ComponentType::CompanionComputer:
-            return MAV_TYPE_ONBOARD_CONTROLLER;
-        case ComponentType::Camera:
-            return MAV_TYPE_CAMERA;
-        case ComponentType::Gimbal:
-            return MAV_TYPE_GIMBAL;
-        case ComponentType::RemoteId:
-            return MAV_TYPE_ODID;
-        case ComponentType::Custom:
-            return MAV_TYPE_GENERIC;
-        default:
-            return MAV_TYPE_GENERIC;
-    }
-}
-
 Mavsdk::Configuration::Configuration(ComponentType component_type) :
     _system_id(Mavsdk::DEFAULT_SYSTEM_ID_GCS),
     _component_id(Mavsdk::DEFAULT_COMPONENT_ID_GCS),
     _always_send_heartbeats(false),
     _component_type(component_type),
-    _mav_type(static_cast<MAV_TYPE>(mav_type_for_component_type(component_type)))
+    _mav_type(static_cast<MAV_TYPE>(MavsdkImpl::mav_type_for_component_type(component_type)))
 {
     switch (component_type) {
         case ComponentType::GroundStation:
