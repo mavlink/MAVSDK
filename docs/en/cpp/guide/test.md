@@ -89,3 +89,26 @@ To run all telemetry tests:
 ./build/default/src/integration_tests/integration_tests_runner --gtest_filter="SitlTest.Telemetry*"
 ```
 
+## Fuzz Testing
+
+MAVSDK includes a MAVLink fuzzer using libfuzzer to find bugs through randomized input testing. Fuzzing requires the Clang compiler.
+
+### Building the Fuzzer
+
+```bash
+cmake -Bbuild-fuzz -S. -GNinja -DBUILD_FUZZ_TESTS=ON -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++
+cmake --build build-fuzz
+```
+
+### Running the Fuzzer
+
+```bash
+# Run for 60 seconds
+./build-fuzz/src/fuzz_tests/mavlink_fuzzer fuzz_corpus -max_total_time=60
+
+# Run with more options
+./build-fuzz/src/fuzz_tests/mavlink_fuzzer -help
+```
+
+The `fuzz_corpus/` directory stores test cases that the fuzzer discovers. This corpus grows over time and improves fuzzing effectiveness.
+
