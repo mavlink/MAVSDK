@@ -150,13 +150,11 @@ mavsdk::Mavsdk mavsdk;
 
 The API to construct `Mavsdk` has changed with v2. Check [API changes](cpp/api_changes.md):
 
-## What is the difference between unit, system, and integration tests?
+## What is the difference between unit and system tests?
 
 The unit tests are only concerned with one class or less. It's often used for MAVSDK internal logic or helpers.
 
-System tests are used to test the MAVLink implementation, by running a plugin against it's server plugin counterpart. This way we can test both at the same time while keeping the tests fast because they don't rely on an simulation that would need to be started up.
-
-We have opted to slowly fade out integration tests and use a few examples instead (also see (explanation)[documentation.md#integration_tests]).
+System tests are used to test the MAVLink implementation, by running a plugin against its server plugin counterpart. This way we can test both at the same time while keeping the tests fast because they don't rely on a simulation that would need to be started up.
 
 ## Why are the plugins called plugins?
 

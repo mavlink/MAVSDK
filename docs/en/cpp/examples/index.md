@@ -1,7 +1,7 @@
 # C++ Examples
 
 ::: tip
-Information about *writing* example code is covered in the [Contributing > Writing Plugins](../contributing/plugins.md) (*plugin developers* should initially create [integration tests](../contributing/plugins.md#integration_tests) rather than examples for new code).
+Information about *writing* example code is covered in the [Contributing > Writing Plugins](../contributing/plugins.md).
 :::
 
 This section contains examples showing how to use MAVSDK.

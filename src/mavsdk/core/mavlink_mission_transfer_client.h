@@ -1,5 +1,6 @@
 #pragma once
 
+#include <atomic>
 #include <chrono>
 #include <cstdint>
 #include <functional>
@@ -316,7 +317,7 @@ private:
 
     LockedQueue<WorkItem> _work_queue{};
 
-    bool _int_messages_supported{true};
+    std::atomic<bool> _int_messages_supported{true};
     bool _debugging{false};
 };
 

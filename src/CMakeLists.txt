@@ -80,7 +80,6 @@ include(../cmake/static_analyzers.cmake)
 if(BUILD_TESTING)
     enable_testing()
 
-    add_subdirectory(integration_tests)
     add_subdirectory(unit_tests)
     add_subdirectory(system_tests)
 endif()

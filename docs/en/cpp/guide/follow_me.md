@@ -116,5 +116,3 @@ Before a target position is first set this API will return `Nan`.
 Additional information/examples for the Follow Me API are linked below:
 
 * [Example:Follow Me Mode](../examples/follow_me.md)
-* Integration tests:
-  * [follow_me.cpp](https://github.com/mavlink/MAVSDK/blob/main/src/integration_tests/follow_me.cpp)

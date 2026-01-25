@@ -218,7 +218,5 @@ Depending on the particular use case, offboard code may need to explicitly monit
 Additional information/examples for the Offboard API are linked below:
 
 * [Example: Offboard Velocity](../examples/offboard_velocity.md)
-* Integration tests:
-  * [offboard_velocity.cpp](https://github.com/mavlink/MAVSDK/blob/main/src/integration_tests/offboard_velocity.cpp)
 
 

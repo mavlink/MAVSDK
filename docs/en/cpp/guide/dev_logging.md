@@ -1,6 +1,6 @@
 # Plugin/Test Logging
 
-The MAVSDK provides an API that developers can use for console logging in plugins and integration tests.
+The MAVSDK provides an API that developers can use for console logging in plugins and tests.
 Basic [message logging](#message_logging) can be enabled by building with a specific `#define`.
 
 
@@ -15,7 +15,7 @@ It is not exported, or intended, for use in SDK apps (and we do not commit to ma
 
 ### Usage
 
-The API is defined in [src/core/log.h](https://github.com/mavlink/MAVSDK/blob/main/src/core/log.h) (and made available to integration tests via [/src/integration_tests/integration_test_helper.h](https://github.com/mavlink/MAVSDK/blob/main/src/integration_tests/integration_test_helper.h)).
+The API is defined in [src/core/log.h](https://github.com/mavlink/MAVSDK/blob/main/src/core/log.h).
 
 The API methods are called as shown below for `LogDebug()`, with the insertion operator (`<<`) used to append the message-specific text.
 
