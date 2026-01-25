@@ -44,8 +44,9 @@ void CalibrationImpl::disable() {}
 
 void CalibrationImpl::calibrate_gyro_async(const CalibrationCallback& callback)
 {
-    // The calibration is currently implemented using a PX4 specific
-    // API based on statustext for progress and instructions.
+    // The calibration command (MAV_CMD_PREFLIGHT_CALIBRATION) is standard MAVLink,
+    // but progress reporting is currently implemented using PX4-specific statustext parsing.
+    // TODO: Check if ArduPilot calibration works and add support if needed.
     if (_system_impl->effective_autopilot() != Autopilot::Px4) {
         call_callback(callback, Calibration::Result::Unsupported, {});
         return;
@@ -95,8 +96,9 @@ void CalibrationImpl::call_callback(
 
 void CalibrationImpl::calibrate_accelerometer_async(const CalibrationCallback& callback)
 {
-    // The calibration is currently implemented using a PX4 specific
-    // API based on statustext for progress and instructions.
+    // The calibration command (MAV_CMD_PREFLIGHT_CALIBRATION) is standard MAVLink,
+    // but progress reporting is currently implemented using PX4-specific statustext parsing.
+    // TODO: Check if ArduPilot calibration works and add support if needed.
     if (_system_impl->effective_autopilot() != Autopilot::Px4) {
         call_callback(callback, Calibration::Result::Unsupported, {});
         return;
@@ -135,8 +137,9 @@ void CalibrationImpl::calibrate_accelerometer_async(const CalibrationCallback& c
 
 void CalibrationImpl::calibrate_magnetometer_async(const CalibrationCallback& callback)
 {
-    // The calibration is currently implemented using a PX4 specific
-    // API based on statustext for progress and instructions.
+    // The calibration command (MAV_CMD_PREFLIGHT_CALIBRATION) is standard MAVLink,
+    // but progress reporting is currently implemented using PX4-specific statustext parsing.
+    // TODO: Check if ArduPilot calibration works and add support if needed.
     if (_system_impl->effective_autopilot() != Autopilot::Px4) {
         call_callback(callback, Calibration::Result::Unsupported, {});
         return;
@@ -175,8 +178,9 @@ void CalibrationImpl::calibrate_magnetometer_async(const CalibrationCallback& ca
 
 void CalibrationImpl::calibrate_level_horizon_async(const CalibrationCallback& callback)
 {
-    // The calibration is currently implemented using a PX4 specific
-    // API based on statustext for progress and instructions.
+    // The calibration command (MAV_CMD_PREFLIGHT_CALIBRATION) is standard MAVLink,
+    // but progress reporting is currently implemented using PX4-specific statustext parsing.
+    // TODO: Check if ArduPilot calibration works and add support if needed.
     if (_system_impl->effective_autopilot() != Autopilot::Px4) {
         call_callback(callback, Calibration::Result::Unsupported, {});
         return;
@@ -215,8 +219,9 @@ void CalibrationImpl::calibrate_level_horizon_async(const CalibrationCallback& c
 
 void CalibrationImpl::calibrate_gimbal_accelerometer_async(const CalibrationCallback& callback)
 {
-    // The calibration is currently implemented using a PX4 specific
-    // API based on statustext for progress and instructions.
+    // The calibration command (MAV_CMD_PREFLIGHT_CALIBRATION) is standard MAVLink,
+    // but progress reporting is currently implemented using PX4-specific statustext parsing.
+    // TODO: Check if ArduPilot calibration works and add support if needed.
     if (_system_impl->effective_autopilot() != Autopilot::Px4) {
         call_callback(callback, Calibration::Result::Unsupported, {});
         return;
@@ -260,8 +265,9 @@ void CalibrationImpl::calibrate_gimbal_accelerometer_async(const CalibrationCall
 
 Calibration::Result CalibrationImpl::cancel()
 {
-    // The calibration is currently implemented using a PX4 specific
-    // API based on statustext for progress and instructions.
+    // The calibration command (MAV_CMD_PREFLIGHT_CALIBRATION) is standard MAVLink,
+    // but progress reporting is currently implemented using PX4-specific statustext parsing.
+    // TODO: Check if ArduPilot calibration works and add support if needed.
     if (_system_impl->effective_autopilot() != Autopilot::Px4) {
         return Calibration::Result::Unsupported;
     }

@@ -24,7 +24,8 @@ void FailureImpl::deinit() {}
 
 void FailureImpl::enable()
 {
-    // Only PX4 implements the SYS_FAILURE_EN param.
+    // Only PX4 has the SYS_FAILURE_EN param to guard failure injection.
+    // For ArduPilot and Pure mode, we assume Unknown and let inject() try anyway.
     if (_system_impl->effective_autopilot() != Autopilot::Px4) {
         _enabled = EnabledState::Unknown;
         return;
