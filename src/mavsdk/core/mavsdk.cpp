@@ -86,7 +86,7 @@ Mavsdk::server_component_by_type(ComponentType server_component_type, unsigned i
 
 std::shared_ptr<ServerComponent> Mavsdk::server_component_by_id(uint8_t component_id)
 {
-    return _impl->server_component_by_id(component_id);
+    return _impl->server_component_by_id(component_id, _impl->get_mav_type());
 }
 
 Mavsdk::Configuration::Configuration(
@@ -95,7 +95,8 @@ Mavsdk::Configuration::Configuration(
     _component_id(component_id),
     _always_send_heartbeats(always_send_heartbeats),
     _component_type(component_type_for_component_id(component_id)),
-    _mav_type(mav_type_for_component_type(component_type_for_component_id(component_id)))
+    _mav_type(static_cast<MAV_TYPE>(
+        MavsdkImpl::mav_type_for_component_type(component_type_for_component_id(component_id))))
 {}
 
 ComponentType Mavsdk::Configuration::component_type_for_component_id(uint8_t component_id)
@@ -118,34 +119,12 @@ ComponentType Mavsdk::Configuration::component_type_for_component_id(uint8_t com
     }
 }
 
-MAV_TYPE Mavsdk::Configuration::mav_type_for_component_type(ComponentType component_type)
-{
-    switch (component_type) {
-        case ComponentType::Autopilot:
-            return MAV_TYPE_GENERIC;
-        case ComponentType::GroundStation:
-            return MAV_TYPE_GCS;
-        case ComponentType::CompanionComputer:
-            return MAV_TYPE_ONBOARD_CONTROLLER;
-        case ComponentType::Camera:
-            return MAV_TYPE_CAMERA;
-        case ComponentType::Gimbal:
-            return MAV_TYPE_GIMBAL;
-        case ComponentType::RemoteId:
-            return MAV_TYPE_ODID;
-        case ComponentType::Custom:
-            return MAV_TYPE_GENERIC;
-        default:
-            return MAV_TYPE_GENERIC;
-    }
-}
-
 Mavsdk::Configuration::Configuration(ComponentType component_type) :
     _system_id(Mavsdk::DEFAULT_SYSTEM_ID_GCS),
     _component_id(Mavsdk::DEFAULT_COMPONENT_ID_GCS),
     _always_send_heartbeats(false),
     _component_type(component_type),
-    _mav_type(mav_type_for_component_type(component_type))
+    _mav_type(static_cast<MAV_TYPE>(MavsdkImpl::mav_type_for_component_type(component_type)))
 {
     switch (component_type) {
         case ComponentType::GroundStation:
@@ -232,6 +211,26 @@ uint8_t Mavsdk::Configuration::get_mav_type() const
 void Mavsdk::Configuration::set_mav_type(uint8_t mav_type)
 {
     _mav_type = static_cast<MAV_TYPE>(mav_type);
+}
+
+Autopilot Mavsdk::Configuration::get_autopilot() const
+{
+    return _autopilot;
+}
+
+void Mavsdk::Configuration::set_autopilot(Autopilot autopilot)
+{
+    _autopilot = autopilot;
+}
+
+CompatibilityMode Mavsdk::Configuration::get_compatibility_mode() const
+{
+    return _compatibility_mode;
+}
+
+void Mavsdk::Configuration::set_compatibility_mode(CompatibilityMode mode)
+{
+    _compatibility_mode = mode;
 }
 
 void Mavsdk::intercept_incoming_messages_async(std::function<bool(mavlink_message_t&)> callback)

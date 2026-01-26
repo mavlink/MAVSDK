@@ -3,8 +3,8 @@
 
 namespace mavsdk {
 
-ServerComponent::ServerComponent(MavsdkImpl& mavsdk_impl, uint8_t component_id) :
-    _impl(std::make_unique<ServerComponentImpl>(mavsdk_impl, component_id))
+ServerComponent::ServerComponent(MavsdkImpl& mavsdk_impl, uint8_t component_id, uint8_t mav_type) :
+    _impl(std::make_unique<ServerComponentImpl>(mavsdk_impl, component_id, mav_type))
 {}
 
 uint8_t ServerComponent::component_id() const

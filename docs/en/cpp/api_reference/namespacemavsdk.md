@@ -59,6 +59,7 @@ Namespace for all mavsdk types.
 Type | Description
 --- | ---
 enum [Autopilot](#namespacemavsdk_1aba05635d1785223a4d7b457ae0407297) | Autopilot type.
+enum [CompatibilityMode](#namespacemavsdk_1af0f9146b2086797ae56671d20bd29d00) | Compatibility mode for MAVLink protocol behavior.
 enum [ComponentType](#namespacemavsdk_1a20fe7f7c8312779a187017111bf33d12) | ComponentType of configurations, used for automatic ID setting.
 enum [ConnectionResult](#namespacemavsdk_1a0bad93f6d037051ac3906a0bcc09f992) | Result type returned when adding a connection.
 enum [ForwardingOption](#namespacemavsdk_1a7066729108eae8a605d4dd169e4581b9) | ForwardingOption for Connection, used to set message forwarding option.
@@ -71,6 +72,7 @@ Type | Name | Description
 std::ostream & | [operator<<](#namespacemavsdk_1ad782054ca8c33116d0210acca8c55ce6) (std::ostream & os, const [Autopilot](namespacemavsdk.md#namespacemavsdk_1aba05635d1785223a4d7b457ae0407297) & autopilot) | Stream operator to print information about an `Autopilot`.
 std::string | [base64_encode](#namespacemavsdk_1a57a9962be22a61e5c36a66bc17e6a2a7) (std::vector< uint8_t > & raw) | Encode raw bytes to a base64 string.
 std::vector< uint8_t > | [base64_decode](#namespacemavsdk_1a34e7609c9e2ddcc72a74bbc79daf9c19) (const std::string & str) | Decode a base64 string into raw bytes.
+std::ostream & | [operator<<](#namespacemavsdk_1aab2fde9b1e274959eb378afef9e0747f) (std::ostream & os, const [CompatibilityMode](namespacemavsdk.md#namespacemavsdk_1af0f9146b2086797ae56671d20bd29d00) & mode) | Stream operator to print information about a `CompatibilityMode`.
 std::ostream & | [operator<<](#namespacemavsdk_1a2aa91d8b846b07fe7f305b399375ce5f) (std::ostream & str, const [ConnectionResult](namespacemavsdk.md#namespacemavsdk_1a0bad93f6d037051ac3906a0bcc09f992) & result) | Stream operator to print information about a `ConnectionResult`.
 &nbsp; | [overloaded](#namespacemavsdk_1a724e321aaff91eb2ba28279e0292e552) (Ts...)-> overloaded< Ts... > | Template deduction helper for `overloaded`
 std::ostream & | [operator<<](#namespacemavsdk_1a3e7a55e89629afd2a079d79c047e8dbd) (std::ostream & os, const [Vehicle](namespacemavsdk.md#namespacemavsdk_1a9e3a3a502dc8313cb931a8a44cc6f95b) & vehicle) | Stream operator to print information about a `Vehicle`.
@@ -94,6 +96,24 @@ Value | Description
 <span id="namespacemavsdk_1aba05635d1785223a4d7b457ae0407297a88183b946cc5f0e8c96b2e66e1c74a7e"></span> `Unknown` |  
 <span id="namespacemavsdk_1aba05635d1785223a4d7b457ae0407297a31e54e53a62995611ff9ccc0dd9cb510"></span> `Px4` |  
 <span id="namespacemavsdk_1aba05635d1785223a4d7b457ae0407297a1f79341042063f30812f2942a48d19ed"></span> `ArduPilot` |  
+
+### enum CompatibilityMode {#namespacemavsdk_1af0f9146b2086797ae56671d20bd29d00}
+
+```
+#include: compatibility_mode.h
+```
+
+
+Compatibility mode for MAVLink protocol behavior.
+
+This setting determines which autopilot-specific quirks and behaviors are used when communicating via MAVLink.
+
+Value | Description
+--- | ---
+<span id="namespacemavsdk_1af0f9146b2086797ae56671d20bd29d00a06b9281e396db002010bde1de57262eb"></span> `Auto` | Use detected autopilot (default, current behavior) 
+<span id="namespacemavsdk_1af0f9146b2086797ae56671d20bd29d00ad30973809f2e4238b7eb2bac9241674c"></span> `Pure` | Pure standard MAVLink - no autopilot-specific quirks. 
+<span id="namespacemavsdk_1af0f9146b2086797ae56671d20bd29d00a31e54e53a62995611ff9ccc0dd9cb510"></span> `Px4` | Force PX4 quirks regardless of detection. 
+<span id="namespacemavsdk_1af0f9146b2086797ae56671d20bd29d00a1f79341042063f30812f2942a48d19ed"></span> `ArduPilot` | Force ArduPilot quirks regardless of detection. 
 
 ### enum ComponentType {#namespacemavsdk_1a20fe7f7c8312779a187017111bf33d12}
 
@@ -268,6 +288,28 @@ Decode a base64 string into raw bytes.
 **Returns**
 
 &emsp;std::vector< uint8_t > - Raw bytes
+
+### operator<<() {#namespacemavsdk_1aab2fde9b1e274959eb378afef9e0747f}
+
+```
+#include: compatibility_mode.h
+```
+```cpp
+std::ostream & mavsdk::operator<<(std::ostream &os, const CompatibilityMode &mode)
+```
+
+
+Stream operator to print information about a `CompatibilityMode`.
+
+
+**Parameters**
+
+* std::ostream& **os** - 
+* const [CompatibilityMode](namespacemavsdk.md#namespacemavsdk_1af0f9146b2086797ae56671d20bd29d00)& **mode** - 
+
+**Returns**
+
+&emsp;std::ostream & - A reference to the stream.
 
 ### operator<<() {#namespacemavsdk_1a2aa91d8b846b07fe7f305b399375ce5f}
 

@@ -3,6 +3,7 @@
 #include <functional>
 #include <string>
 
+#include "autopilot.h"
 #include "px4_custom_mode.h"
 #include "system.h"
 
@@ -43,6 +44,14 @@ void CalibrationImpl::disable() {}
 
 void CalibrationImpl::calibrate_gyro_async(const CalibrationCallback& callback)
 {
+    // The calibration command (MAV_CMD_PREFLIGHT_CALIBRATION) is standard MAVLink,
+    // but progress reporting is currently implemented using PX4-specific statustext parsing.
+    // TODO: Check if ArduPilot calibration works and add support if needed.
+    if (_system_impl->effective_autopilot() != Autopilot::Px4) {
+        call_callback(callback, Calibration::Result::Unsupported, {});
+        return;
+    }
+
     std::lock_guard<std::mutex> lock(_calibration_mutex);
 
     if (_system_impl->is_armed()) {
@@ -87,6 +96,14 @@ void CalibrationImpl::call_callback(
 
 void CalibrationImpl::calibrate_accelerometer_async(const CalibrationCallback& callback)
 {
+    // The calibration command (MAV_CMD_PREFLIGHT_CALIBRATION) is standard MAVLink,
+    // but progress reporting is currently implemented using PX4-specific statustext parsing.
+    // TODO: Check if ArduPilot calibration works and add support if needed.
+    if (_system_impl->effective_autopilot() != Autopilot::Px4) {
+        call_callback(callback, Calibration::Result::Unsupported, {});
+        return;
+    }
+
     std::lock_guard<std::mutex> lock(_calibration_mutex);
 
     if (_system_impl->is_armed()) {
@@ -120,6 +137,14 @@ void CalibrationImpl::calibrate_accelerometer_async(const CalibrationCallback& c
 
 void CalibrationImpl::calibrate_magnetometer_async(const CalibrationCallback& callback)
 {
+    // The calibration command (MAV_CMD_PREFLIGHT_CALIBRATION) is standard MAVLink,
+    // but progress reporting is currently implemented using PX4-specific statustext parsing.
+    // TODO: Check if ArduPilot calibration works and add support if needed.
+    if (_system_impl->effective_autopilot() != Autopilot::Px4) {
+        call_callback(callback, Calibration::Result::Unsupported, {});
+        return;
+    }
+
     std::lock_guard<std::mutex> lock(_calibration_mutex);
 
     if (_system_impl->is_armed()) {
@@ -153,6 +178,14 @@ void CalibrationImpl::calibrate_magnetometer_async(const CalibrationCallback& ca
 
 void CalibrationImpl::calibrate_level_horizon_async(const CalibrationCallback& callback)
 {
+    // The calibration command (MAV_CMD_PREFLIGHT_CALIBRATION) is standard MAVLink,
+    // but progress reporting is currently implemented using PX4-specific statustext parsing.
+    // TODO: Check if ArduPilot calibration works and add support if needed.
+    if (_system_impl->effective_autopilot() != Autopilot::Px4) {
+        call_callback(callback, Calibration::Result::Unsupported, {});
+        return;
+    }
+
     std::lock_guard<std::mutex> lock(_calibration_mutex);
 
     if (_system_impl->is_armed()) {
@@ -186,6 +219,14 @@ void CalibrationImpl::calibrate_level_horizon_async(const CalibrationCallback& c
 
 void CalibrationImpl::calibrate_gimbal_accelerometer_async(const CalibrationCallback& callback)
 {
+    // The calibration command (MAV_CMD_PREFLIGHT_CALIBRATION) is standard MAVLink,
+    // but progress reporting is currently implemented using PX4-specific statustext parsing.
+    // TODO: Check if ArduPilot calibration works and add support if needed.
+    if (_system_impl->effective_autopilot() != Autopilot::Px4) {
+        call_callback(callback, Calibration::Result::Unsupported, {});
+        return;
+    }
+
     std::lock_guard<std::mutex> lock(_calibration_mutex);
 
     if (_system_impl->is_armed()) {
@@ -224,6 +265,13 @@ void CalibrationImpl::calibrate_gimbal_accelerometer_async(const CalibrationCall
 
 Calibration::Result CalibrationImpl::cancel()
 {
+    // The calibration command (MAV_CMD_PREFLIGHT_CALIBRATION) is standard MAVLink,
+    // but progress reporting is currently implemented using PX4-specific statustext parsing.
+    // TODO: Check if ArduPilot calibration works and add support if needed.
+    if (_system_impl->effective_autopilot() != Autopilot::Px4) {
+        return Calibration::Result::Unsupported;
+    }
+
     std::lock_guard<std::mutex> lock(_calibration_mutex);
 
     uint8_t target_component_id = MAV_COMP_ID_AUTOPILOT1;

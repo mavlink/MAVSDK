@@ -117,6 +117,7 @@ private:
 
     void takeoff_async_px4(const Action::ResultCallback& callback) const;
     void takeoff_async_apm(const Action::ResultCallback& callback) const;
+    void takeoff_async_standard(const Action::ResultCallback& callback) const;
 
     Action::Result set_takeoff_altitude_px4(float relative_altitude_m);
     Action::Result set_takeoff_altitude_apm(float relative_altitude_m);

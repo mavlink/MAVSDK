@@ -530,7 +530,7 @@ void MissionRawImpl::clear_mission_async(const MissionRaw::ResultCallback& callb
     reset_mission_progress();
 
     // For ArduPilot to clear a mission we need to upload an empty mission.
-    if (_system_impl->autopilot() == Autopilot::ArduPilot) {
+    if (_system_impl->effective_autopilot() == Autopilot::ArduPilot) {
         std::vector<MissionRaw::MissionItem> mission_items{empty_item};
         upload_mission_async(mission_items, callback);
     } else {
@@ -655,13 +655,13 @@ MissionRawImpl::import_qgroundcontrol_mission(std::string qgc_plan_path)
     buf << file.rdbuf();
     file.close();
 
-    return MissionImport::parse_json(buf.str(), _system_impl->autopilot());
+    return MissionImport::parse_json(buf.str(), _system_impl->effective_autopilot());
 }
 
 std::pair<MissionRaw::Result, MissionRaw::MissionImportData>
 MissionRawImpl::import_qgroundcontrol_mission_from_string(const std::string& qgc_plan)
 {
-    return MissionImport::parse_json(qgc_plan, _system_impl->autopilot());
+    return MissionImport::parse_json(qgc_plan, _system_impl->effective_autopilot());
 }
 
 std::pair<MissionRaw::Result, MissionRaw::MissionImportData>
@@ -677,14 +677,15 @@ MissionRawImpl::import_mission_planner_mission(std::string mission_planner_path)
     buf << file.rdbuf();
     file.close();
 
-    return MissionImport::parse_mission_planner(buf.str(), _system_impl->autopilot());
+    return MissionImport::parse_mission_planner(buf.str(), _system_impl->effective_autopilot());
 }
 
 std::pair<MissionRaw::Result, MissionRaw::MissionImportData>
 MissionRawImpl::import_mission_planner_mission_from_string(
     const std::string& mission_planner_mission)
 {
-    return MissionImport::parse_mission_planner(mission_planner_mission, _system_impl->autopilot());
+    return MissionImport::parse_mission_planner(
+        mission_planner_mission, _system_impl->effective_autopilot());
 }
 
 MissionRaw::Result MissionRawImpl::convert_result(MavlinkMissionTransferClient::Result result)

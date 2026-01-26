@@ -1,4 +1,5 @@
 #include "failure_impl.h"
+#include "autopilot.h"
 
 namespace mavsdk {
 
@@ -23,6 +24,13 @@ void FailureImpl::deinit() {}
 
 void FailureImpl::enable()
 {
+    // Only PX4 has the SYS_FAILURE_EN param to guard failure injection.
+    // For ArduPilot and Pure mode, we assume Unknown and let inject() try anyway.
+    if (_system_impl->effective_autopilot() != Autopilot::Px4) {
+        _enabled = EnabledState::Unknown;
+        return;
+    }
+
     constexpr auto param_name = "SYS_FAILURE_EN";
 
     _system_impl->get_param_int_async(

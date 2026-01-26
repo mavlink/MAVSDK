@@ -8,6 +8,8 @@
 
 namespace mavsdk {
 
+// TODO: Implement MAVLink standard modes (MAV_STANDARD_MODE) for Pure mode.
+// Both PX4 and ArduPilot currently use custom/non-standard mode definitions.
 FlightMode
 to_flight_mode_from_custom_mode(Autopilot autopilot, MAV_TYPE mav_type, uint32_t custom_mode)
 {

@@ -26,6 +26,10 @@ void | [set_always_send_heartbeats](#classmavsdk_1_1_mavsdk_1_1_configuration_1a
 void | [set_component_type](#classmavsdk_1_1_mavsdk_1_1_configuration_1a06461b86734eaa9544e80a4a907c9754) ([ComponentType](namespacemavsdk.md#namespacemavsdk_1a20fe7f7c8312779a187017111bf33d12) component_type) | Set the component type of this configuration.
 uint8_t | [get_mav_type](#classmavsdk_1_1_mavsdk_1_1_configuration_1aafe9e8fc11dd0b688a836c123357e9ba) () const | Get the mav type (vehicle type) of this configuration.
 void | [set_mav_type](#classmavsdk_1_1_mavsdk_1_1_configuration_1a16db98d8802c3427b1be10f0b72b977b) (uint8_t mav_type) | Set the mav type (vehicle type) of this configuration.
+[Autopilot](namespacemavsdk.md#namespacemavsdk_1aba05635d1785223a4d7b457ae0407297) | [get_autopilot](#classmavsdk_1_1_mavsdk_1_1_configuration_1a107d3f21ade989a58b976475ea7b7672) () const | Get the autopilot type for server identification in heartbeats.
+void | [set_autopilot](#classmavsdk_1_1_mavsdk_1_1_configuration_1a9798ed5eb7fb64c492275e970fadc1e7) ([Autopilot](namespacemavsdk.md#namespacemavsdk_1aba05635d1785223a4d7b457ae0407297) autopilot) | Set the autopilot type for server identification.
+[CompatibilityMode](namespacemavsdk.md#namespacemavsdk_1af0f9146b2086797ae56671d20bd29d00) | [get_compatibility_mode](#classmavsdk_1_1_mavsdk_1_1_configuration_1abfe7d151a85c65dc6454ebeb645732ef) () const | Get the compatibility mode.
+void | [set_compatibility_mode](#classmavsdk_1_1_mavsdk_1_1_configuration_1ab26137a0ead379a702b404f6e92d624f) ([CompatibilityMode](namespacemavsdk.md#namespacemavsdk_1af0f9146b2086797ae56671d20bd29d00) mode) | Set the compatibility mode.
 
 
 ## Constructor & Destructor Documentation
@@ -203,3 +207,73 @@ Set the mav type (vehicle type) of this configuration.
 **Parameters**
 
 * uint8_t **mav_type** - 
+
+### get_autopilot() {#classmavsdk_1_1_mavsdk_1_1_configuration_1a107d3f21ade989a58b976475ea7b7672}
+```cpp
+Autopilot mavsdk::Mavsdk::Configuration::get_autopilot() const
+```
+
+
+Get the autopilot type for server identification in heartbeats.
+
+
+**Returns**
+
+&emsp;[Autopilot](namespacemavsdk.md#namespacemavsdk_1aba05635d1785223a4d7b457ae0407297) - The autopilot type used in outgoing heartbeats.
+
+### set_autopilot() {#classmavsdk_1_1_mavsdk_1_1_configuration_1a9798ed5eb7fb64c492275e970fadc1e7}
+```cpp
+void mavsdk::Mavsdk::Configuration::set_autopilot(Autopilot autopilot)
+```
+
+
+Set the autopilot type for server identification.
+
+When MAVSDK acts as an autopilot server, this determines the MAV_AUTOPILOT value sent in heartbeats.
+
+
+Default: Autopilot::Unknown (maps to MAV_AUTOPILOT_GENERIC)
+
+**Parameters**
+
+* [Autopilot](namespacemavsdk.md#namespacemavsdk_1aba05635d1785223a4d7b457ae0407297) **autopilot** - 
+
+### get_compatibility_mode() {#classmavsdk_1_1_mavsdk_1_1_configuration_1abfe7d151a85c65dc6454ebeb645732ef}
+```cpp
+CompatibilityMode mavsdk::Mavsdk::Configuration::get_compatibility_mode() const
+```
+
+
+Get the compatibility mode.
+
+
+**Returns**
+
+&emsp;[CompatibilityMode](namespacemavsdk.md#namespacemavsdk_1af0f9146b2086797ae56671d20bd29d00) - The current compatibility mode.
+
+### set_compatibility_mode() {#classmavsdk_1_1_mavsdk_1_1_configuration_1ab26137a0ead379a702b404f6e92d624f}
+```cpp
+void mavsdk::Mavsdk::Configuration::set_compatibility_mode(CompatibilityMode mode)
+```
+
+
+Set the compatibility mode.
+
+This determines which autopilot-specific quirks are used:
+<ul>
+<li><p>Auto: Use detected autopilot (default, current behavior)</p>
+</li>
+<li><p>Pure: Pure standard MAVLink, no autopilot-specific quirks</p>
+</li>
+<li><p>Px4: Force PX4 quirks regardless of detection</p>
+</li>
+<li><p>ArduPilot: Force ArduPilot quirks regardless of detection</p>
+</li>
+</ul>
+
+
+Default: [CompatibilityMode::Auto](namespacemavsdk.md#namespacemavsdk_1af0f9146b2086797ae56671d20bd29d00a06b9281e396db002010bde1de57262eb)
+
+**Parameters**
+
+* [CompatibilityMode](namespacemavsdk.md#namespacemavsdk_1af0f9146b2086797ae56671d20bd29d00) **mode** - 

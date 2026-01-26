@@ -11,6 +11,7 @@
 #include <queue>
 
 #include "autopilot.h"
+#include "compatibility_mode.h"
 #include "call_every_handler.h"
 #include "component_type.h"
 #include "connection.h"
@@ -52,6 +53,7 @@ public:
     void operator=(const MavsdkImpl&) = delete;
 
     static std::string version();
+    static uint8_t mav_type_for_component_type(ComponentType component_type);
 
     void forward_message(mavlink_message_t& message, Connection* connection);
     void receive_message(
@@ -72,12 +74,22 @@ public:
     bool send_message(mavlink_message_t& message);
     uint8_t get_own_system_id() const;
     uint8_t get_own_component_id() const;
-    uint8_t channel() const;
-    Autopilot autopilot() const;
 
     Sender& sender();
 
     uint8_t get_mav_type() const;
+
+    // Server identification (what MAV_AUTOPILOT we send in heartbeats)
+    Autopilot get_autopilot() const;
+    uint8_t get_mav_autopilot() const;
+
+    // Compatibility mode
+    CompatibilityMode get_compatibility_mode() const;
+
+    // Returns effective autopilot for behavior decisions
+    // If compatibility_mode is Auto, returns detected autopilot
+    // Otherwise returns the forced mode (Pure/Px4/ArduPilot)
+    Autopilot effective_autopilot(Autopilot detected) const;
 
     Mavsdk::NewSystemHandle subscribe_on_new_system(const Mavsdk::NewSystemCallback& callback);
     void unsubscribe_on_new_system(Mavsdk::NewSystemHandle handle);
@@ -113,7 +125,7 @@ public:
 
     std::shared_ptr<ServerComponent>
     server_component_by_type(ComponentType server_component_type, unsigned instance = 0);
-    std::shared_ptr<ServerComponent> server_component_by_id(uint8_t component_id);
+    std::shared_ptr<ServerComponent> server_component_by_id(uint8_t component_id, uint8_t mav_type);
 
     Time time{};
     TimeoutHandler timeout_handler;
@@ -186,7 +198,8 @@ private:
 
     bool is_any_system_connected() const;
 
-    std::shared_ptr<ServerComponent> server_component_by_id_with_lock(uint8_t component_id);
+    std::shared_ptr<ServerComponent>
+    server_component_by_id_with_lock(uint8_t component_id, uint8_t mav_type);
     ServerComponentImpl& default_server_component_with_lock();
 
     static uint8_t get_target_system_id(const mavlink_message_t& message);

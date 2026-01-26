@@ -224,10 +224,12 @@ std::shared_ptr<ServerComponent> MavsdkImpl::server_component(unsigned instance)
 std::shared_ptr<ServerComponent>
 MavsdkImpl::server_component_by_type(ComponentType server_component_type, unsigned instance)
 {
+    const auto mav_type = mav_type_for_component_type(server_component_type);
+
     switch (server_component_type) {
         case ComponentType::Autopilot:
             if (instance == 0) {
-                return server_component_by_id(MAV_COMP_ID_AUTOPILOT1);
+                return server_component_by_id(MAV_COMP_ID_AUTOPILOT1, mav_type);
             } else {
                 LogErr() << "Only autopilot instance 0 is valid";
                 return {};
@@ -235,7 +237,7 @@ MavsdkImpl::server_component_by_type(ComponentType server_component_type, unsign
 
         case ComponentType::GroundStation:
             if (instance == 0) {
-                return server_component_by_id(MAV_COMP_ID_MISSIONPLANNER);
+                return server_component_by_id(MAV_COMP_ID_MISSIONPLANNER, mav_type);
             } else {
                 LogErr() << "Only one ground station supported at this time";
                 return {};
@@ -243,13 +245,13 @@ MavsdkImpl::server_component_by_type(ComponentType server_component_type, unsign
 
         case ComponentType::CompanionComputer:
             if (instance == 0) {
-                return server_component_by_id(MAV_COMP_ID_ONBOARD_COMPUTER);
+                return server_component_by_id(MAV_COMP_ID_ONBOARD_COMPUTER, mav_type);
             } else if (instance == 1) {
-                return server_component_by_id(MAV_COMP_ID_ONBOARD_COMPUTER2);
+                return server_component_by_id(MAV_COMP_ID_ONBOARD_COMPUTER2, mav_type);
             } else if (instance == 2) {
-                return server_component_by_id(MAV_COMP_ID_ONBOARD_COMPUTER3);
+                return server_component_by_id(MAV_COMP_ID_ONBOARD_COMPUTER3, mav_type);
             } else if (instance == 3) {
-                return server_component_by_id(MAV_COMP_ID_ONBOARD_COMPUTER4);
+                return server_component_by_id(MAV_COMP_ID_ONBOARD_COMPUTER4, mav_type);
             } else {
                 LogErr() << "Only companion computer 0..3 are supported";
                 return {};
@@ -257,21 +259,41 @@ MavsdkImpl::server_component_by_type(ComponentType server_component_type, unsign
 
         case ComponentType::Camera:
             if (instance == 0) {
-                return server_component_by_id(MAV_COMP_ID_CAMERA);
+                return server_component_by_id(MAV_COMP_ID_CAMERA, mav_type);
             } else if (instance == 1) {
-                return server_component_by_id(MAV_COMP_ID_CAMERA2);
+                return server_component_by_id(MAV_COMP_ID_CAMERA2, mav_type);
             } else if (instance == 2) {
-                return server_component_by_id(MAV_COMP_ID_CAMERA3);
+                return server_component_by_id(MAV_COMP_ID_CAMERA3, mav_type);
             } else if (instance == 3) {
-                return server_component_by_id(MAV_COMP_ID_CAMERA4);
+                return server_component_by_id(MAV_COMP_ID_CAMERA4, mav_type);
             } else if (instance == 4) {
-                return server_component_by_id(MAV_COMP_ID_CAMERA5);
+                return server_component_by_id(MAV_COMP_ID_CAMERA5, mav_type);
             } else if (instance == 5) {
-                return server_component_by_id(MAV_COMP_ID_CAMERA6);
+                return server_component_by_id(MAV_COMP_ID_CAMERA6, mav_type);
             } else {
                 LogErr() << "Only camera 0..5 are supported";
                 return {};
             }
+
+        case ComponentType::Gimbal:
+            if (instance == 0) {
+                return server_component_by_id(MAV_COMP_ID_GIMBAL, mav_type);
+            } else {
+                LogErr() << "Only gimbal instance 0 is valid";
+                return {};
+            }
+
+        case ComponentType::RemoteId:
+            if (instance == 0) {
+                return server_component_by_id(MAV_COMP_ID_ODID_TXRX_1, mav_type);
+            } else {
+                LogErr() << "Only remote ID instance 0 is valid";
+                return {};
+            }
+
+        case ComponentType::Custom:
+            LogErr() << "Custom component type requires explicit component ID";
+            return {};
 
         default:
             LogErr() << "Unknown server component type";
@@ -279,7 +301,8 @@ MavsdkImpl::server_component_by_type(ComponentType server_component_type, unsign
     }
 }
 
-std::shared_ptr<ServerComponent> MavsdkImpl::server_component_by_id(uint8_t component_id)
+std::shared_ptr<ServerComponent>
+MavsdkImpl::server_component_by_id(uint8_t component_id, uint8_t mav_type)
 {
     if (component_id == 0) {
         LogErr() << "Server component with component ID 0 not allowed";
@@ -288,23 +311,24 @@ std::shared_ptr<ServerComponent> MavsdkImpl::server_component_by_id(uint8_t comp
 
     std::lock_guard lock(_server_components_mutex);
 
-    return server_component_by_id_with_lock(component_id);
+    return server_component_by_id_with_lock(component_id, mav_type);
 }
 
-std::shared_ptr<ServerComponent> MavsdkImpl::server_component_by_id_with_lock(uint8_t component_id)
+std::shared_ptr<ServerComponent>
+MavsdkImpl::server_component_by_id_with_lock(uint8_t component_id, uint8_t mav_type)
 {
     for (auto& it : _server_components) {
         if (it.first == component_id) {
             if (it.second != nullptr) {
                 return it.second;
             } else {
-                it.second = std::make_shared<ServerComponent>(*this, component_id);
+                it.second = std::make_shared<ServerComponent>(*this, component_id, mav_type);
             }
         }
     }
 
     _server_components.emplace_back(std::pair<uint8_t, std::shared_ptr<ServerComponent>>(
-        component_id, std::make_shared<ServerComponent>(*this, component_id)));
+        component_id, std::make_shared<ServerComponent>(*this, component_id, mav_type)));
 
     return _server_components.back().second;
 }
@@ -1018,8 +1042,8 @@ void MavsdkImpl::set_configuration(Mavsdk::Configuration new_configuration)
     // We just point the default to the newly created component. This means
     // that the previous default component will be deleted if it is not
     // used/referenced anywhere.
-    _default_server_component =
-        server_component_by_id_with_lock(new_configuration.get_component_id());
+    _default_server_component = server_component_by_id_with_lock(
+        new_configuration.get_component_id(), new_configuration.get_mav_type());
 
     if (new_configuration.get_always_send_heartbeats() &&
         !_configuration.get_always_send_heartbeats()) {
@@ -1046,22 +1070,70 @@ uint8_t MavsdkImpl::get_own_component_id() const
     return _our_component_id;
 }
 
-uint8_t MavsdkImpl::channel() const
-{
-    // TODO
-    return 0;
-}
-
-Autopilot MavsdkImpl::autopilot() const
-{
-    // TODO
-    return Autopilot::Px4;
-}
-
-// FIXME: this should be per component
 uint8_t MavsdkImpl::get_mav_type() const
 {
     return _configuration.get_mav_type();
+}
+
+Autopilot MavsdkImpl::get_autopilot() const
+{
+    return _configuration.get_autopilot();
+}
+
+uint8_t MavsdkImpl::get_mav_autopilot() const
+{
+    switch (_configuration.get_autopilot()) {
+        case Autopilot::Px4:
+            return MAV_AUTOPILOT_PX4;
+        case Autopilot::ArduPilot:
+            return MAV_AUTOPILOT_ARDUPILOTMEGA;
+        case Autopilot::Unknown:
+        default:
+            return MAV_AUTOPILOT_GENERIC;
+    }
+}
+
+CompatibilityMode MavsdkImpl::get_compatibility_mode() const
+{
+    return _configuration.get_compatibility_mode();
+}
+
+Autopilot MavsdkImpl::effective_autopilot(Autopilot detected) const
+{
+    switch (_configuration.get_compatibility_mode()) {
+        case CompatibilityMode::Auto:
+            return detected;
+        case CompatibilityMode::Pure:
+            return Autopilot::Unknown; // Unknown = no quirks
+        case CompatibilityMode::Px4:
+            return Autopilot::Px4;
+        case CompatibilityMode::ArduPilot:
+            return Autopilot::ArduPilot;
+        default:
+            return detected;
+    }
+}
+
+uint8_t MavsdkImpl::mav_type_for_component_type(ComponentType component_type)
+{
+    switch (component_type) {
+        case ComponentType::Autopilot:
+            return MAV_TYPE_GENERIC;
+        case ComponentType::GroundStation:
+            return MAV_TYPE_GCS;
+        case ComponentType::CompanionComputer:
+            return MAV_TYPE_ONBOARD_CONTROLLER;
+        case ComponentType::Camera:
+            return MAV_TYPE_CAMERA;
+        case ComponentType::Gimbal:
+            return MAV_TYPE_GIMBAL;
+        case ComponentType::RemoteId:
+            return MAV_TYPE_ODID;
+        case ComponentType::Custom:
+            return MAV_TYPE_GENERIC;
+        default:
+            return MAV_TYPE_GENERIC;
+    }
 }
 
 void MavsdkImpl::make_system_with_component(uint8_t system_id, uint8_t comp_id)
@@ -1286,7 +1358,8 @@ ServerComponentImpl& MavsdkImpl::default_server_component_impl()
 ServerComponentImpl& MavsdkImpl::default_server_component_with_lock()
 {
     if (_default_server_component == nullptr) {
-        _default_server_component = server_component_by_id_with_lock(_our_component_id);
+        _default_server_component =
+            server_component_by_id_with_lock(_our_component_id, get_mav_type());
     }
     return *_default_server_component->_impl;
 }
