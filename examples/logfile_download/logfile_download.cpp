@@ -35,7 +35,7 @@ void usage(const std::string& bin_name)
 
 int main(int argc, char** argv)
 {
-    if (argc < 3) {
+    if (argc < 2) {
         usage(argv[0]);
         return 1;
     }
