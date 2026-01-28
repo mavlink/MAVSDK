@@ -110,11 +110,7 @@ std::pair<LogFiles::Result, std::vector<LogFiles::Entry>> LogFilesImpl::get_entr
         prom->set_value(std::make_pair<>(result, entries));
     });
 
-    auto result = future_result.get();
-
-    _entries_user_callback = nullptr;
-
-    return result;
+    return future_result.get();
 }
 
 void LogFilesImpl::get_entries_async(LogFiles::GetEntriesCallback callback)
@@ -159,12 +155,17 @@ void LogFilesImpl::process_log_entry(const mavlink_message_t& message)
     _system_impl->refresh_timeout_handler(_entries_timeout_cookie);
 
     // Bad data handling
-    if (msg.num_logs == 0 || msg.id >= msg.num_logs) {
+    // PX4 uses 0-based indexing: valid IDs are 0 to num_logs-1
+    // ArduPilot uses 1-based indexing: valid IDs are 1 to num_logs
+    // We detect the scheme by tracking the minimum ID seen
+    if (msg.num_logs == 0 || msg.id > msg.num_logs) {
         LogWarn() << "No logs available";
 
         _system_impl->unregister_timeout_handler(_entries_timeout_cookie);
 
+        // Clear callback before invoking to prevent double-invocation
         const auto cb = _entries_user_callback;
+        _entries_user_callback = nullptr;
         if (cb) {
             _system_impl->call_user_callback(
                 [cb]() { cb(LogFiles::Result::NoLogfiles, std::vector<LogFiles::Entry>()); });
@@ -221,7 +222,10 @@ void LogFilesImpl::process_log_entry(const mavlink_message_t& message)
             std::back_inserter(entry_list),
             [](const auto& entry_opt) { return entry_opt.value(); });
 
+        // Clear callback before invoking to prevent double-invocation if another
+        // LOG_ENTRY message arrives before the async callback runs
         const auto cb = _entries_user_callback;
+        _entries_user_callback = nullptr;
         if (cb) {
             _system_impl->call_user_callback(
                 [cb, entry_list]() { cb(LogFiles::Result::Success, entry_list); });
@@ -265,7 +269,9 @@ void LogFilesImpl::entries_timeout()
     }
 
     // Max retries exceeded - give up and call user with timeout error
+    // Clear callback before invoking to prevent double-invocation
     const auto cb = _entries_user_callback;
+    _entries_user_callback = nullptr;
     if (cb) {
         _system_impl->call_user_callback(
             [cb]() { cb(LogFiles::Result::Timeout, std::vector<LogFiles::Entry>()); });
