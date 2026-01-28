@@ -67,6 +67,12 @@ int main(int argc, char** argv)
 
     auto log_files = LogFiles{system.value()};
 
+    // Determine file extension based on autopilot type
+    std::string file_extension = ".bin"; // Default for ArduPilot and unknown
+    if (system.value()->autopilot_type() == Autopilot::Px4) {
+        file_extension = ".ulg";
+    }
+
     auto get_entries_result = log_files.get_entries();
     if (get_entries_result.first == LogFiles::Result::Success) {
         bool download_failure = false;
@@ -78,7 +84,7 @@ int main(int argc, char** argv)
             auto future_result = prom.get_future();
             log_files.download_log_file_async(
                 entry,
-                std::string("log-") + entry.date + ".ulg",
+                std::string("log-") + entry.date + file_extension,
                 [&prom](LogFiles::Result result, LogFiles::ProgressData progress) {
                     if (result != LogFiles::Result::Next) {
                         prom.set_value(result);
