@@ -95,6 +95,7 @@ public:
         enum class VehicleAction {
             None, /**< @brief No action. */
             Takeoff, /**< @brief Vehicle will takeoff and go to defined waypoint. */
+            LandStart, /**< @brief Upon reaching the checkpoint, the vehicle begins to land.. */
             Land, /**< @brief When a waypoint is reached vehicle will land at current position. */
             TransitionToFw, /**< @brief When a waypoint is reached vehicle will transition to
                                fixed-wing mode. */

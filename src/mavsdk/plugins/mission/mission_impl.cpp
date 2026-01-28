@@ -655,8 +655,11 @@ std::pair<Mission::Result, Mission::MissionPlan> MissionImpl::convert_to_result_
             LogDebug() << "Assembling Message: " << int(int_item.seq);
 
             if (int_item.command == MAV_CMD_NAV_WAYPOINT ||
-                int_item.command == MAV_CMD_NAV_TAKEOFF) {
-                if (int_item.frame != MAV_FRAME_GLOBAL_RELATIVE_ALT_INT) {
+                int_item.command == MAV_CMD_NAV_TAKEOFF ||
+                int_item.command == MAV_CMD_DO_LAND_START) {
+                if (int_item.frame != MAV_FRAME_GLOBAL_RELATIVE_ALT_INT && 
+                    int_item.frame != MAV_FRAME_GLOBAL_RELATIVE_ALT &&
+                    int_item.frame != MAV_FRAME_GLOBAL) {
                     LogErr() << "Waypoint frame not supported unsupported";
                     result_pair.first = Mission::Result::Unsupported;
                     break;
@@ -678,7 +681,11 @@ std::pair<Mission::Result, Mission::MissionPlan> MissionImpl::convert_to_result_
                     new_mission_item.acceptance_radius_m = 1;
                     new_mission_item.is_fly_through = false;
                     new_mission_item.vehicle_action = VehicleAction::Takeoff;
-                } else {
+                } else if (int_item.command == MAV_CMD_DO_LAND_START) {
+                    new_mission_item.acceptance_radius_m = 1;
+                    new_mission_item.is_fly_through = true;
+                    new_mission_item.vehicle_action = VehicleAction::LandStart;
+                } else { 
                     new_mission_item.acceptance_radius_m = int_item.param2;
                     new_mission_item.is_fly_through = !(int_item.param1 > 0);
                 }
@@ -737,7 +744,8 @@ std::pair<Mission::Result, Mission::MissionPlan> MissionImpl::convert_to_result_
                 new_mission_item.vehicle_action = VehicleAction::Takeoff;
             } else if (int_item.command == MAV_CMD_NAV_LAND) {
                 new_mission_item.vehicle_action = VehicleAction::Land;
-            } else if (int_item.command == MAV_CMD_DO_VTOL_TRANSITION) {
+            } else if (int_item.command == MAV_CMD_DO_VTOL_TRANSITION)
+                {
                 if (int_item.param1 == MAV_VTOL_STATE_FW) {
                     new_mission_item.vehicle_action = VehicleAction::TransitionToFw;
                 } else {
@@ -745,7 +753,7 @@ std::pair<Mission::Result, Mission::MissionPlan> MissionImpl::convert_to_result_
                 }
 
             } else if (int_item.command == MAV_CMD_DO_CHANGE_SPEED) {
-                if (int(int_item.param1) == 1 && int_item.param3 < 0 && int(int_item.param4) == 0) {
+                if (int(int_item.param1) >= 0 && int(int_item.param4) == 0) {
                     new_mission_item.speed_m_s = int_item.param2;
                 } else {
                     LogErr() << "Mission item DO_CHANGE_SPEED params unsupported";
