@@ -84,6 +84,7 @@ private:
     std::vector<std::optional<LogFiles::Entry>> _log_entries;
     uint32_t _total_entries{0};
     uint32_t _entries_retry_count{0};
+    uint16_t _min_entry_id{0xFFFF}; // Track min ID to detect 0-based vs 1-based indexing
     TimeoutHandler::Cookie _entries_timeout_cookie{};
     LogFiles::GetEntriesCallback _entries_user_callback{};
 
