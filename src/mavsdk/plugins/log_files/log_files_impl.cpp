@@ -110,11 +110,7 @@ std::pair<LogFiles::Result, std::vector<LogFiles::Entry>> LogFilesImpl::get_entr
         prom->set_value(std::make_pair<>(result, entries));
     });
 
-    auto result = future_result.get();
-
-    _entries_user_callback = nullptr;
-
-    return result;
+    return future_result.get();
 }
 
 void LogFilesImpl::get_entries_async(LogFiles::GetEntriesCallback callback)
@@ -124,6 +120,7 @@ void LogFilesImpl::get_entries_async(LogFiles::GetEntriesCallback callback)
     _entries_user_callback = callback;
     _total_entries = 0;
     _entries_retry_count = 0;
+    _min_entry_id = 0xFFFF; // Reset to detect indexing scheme
 
     _entries_timeout_cookie = _system_impl->register_timeout_handler(
         [this]() { entries_timeout(); }, _system_impl->timeout_s() * 10.0);
@@ -158,17 +155,27 @@ void LogFilesImpl::process_log_entry(const mavlink_message_t& message)
     _system_impl->refresh_timeout_handler(_entries_timeout_cookie);
 
     // Bad data handling
-    if (msg.num_logs == 0 || msg.id >= msg.num_logs) {
+    // PX4 uses 0-based indexing: valid IDs are 0 to num_logs-1
+    // ArduPilot uses 1-based indexing: valid IDs are 1 to num_logs
+    // We detect the scheme by tracking the minimum ID seen
+    if (msg.num_logs == 0 || msg.id > msg.num_logs) {
         LogWarn() << "No logs available";
 
         _system_impl->unregister_timeout_handler(_entries_timeout_cookie);
 
+        // Clear callback before invoking to prevent double-invocation
         const auto cb = _entries_user_callback;
+        _entries_user_callback = nullptr;
         if (cb) {
             _system_impl->call_user_callback(
                 [cb]() { cb(LogFiles::Result::NoLogfiles, std::vector<LogFiles::Entry>()); });
         }
         return;
+    }
+
+    // Track minimum ID to determine indexing scheme (0-based vs 1-based)
+    if (msg.id < _min_entry_id) {
+        _min_entry_id = msg.id;
     }
 
     // Initialize vector if this is the first entry
@@ -189,8 +196,13 @@ void LogFilesImpl::process_log_entry(const mavlink_message_t& message)
     new_entry.date = buf;
     new_entry.size_bytes = msg.size;
 
-    // Store entry at direct index
-    _log_entries[msg.id] = new_entry;
+    // Store entry using 0-based index (subtract min_entry_id to handle both schemes)
+    const uint16_t storage_index = msg.id - _min_entry_id;
+    if (storage_index >= _log_entries.size()) {
+        LogWarn() << "Log entry ID out of range: " << msg.id;
+        return;
+    }
+    _log_entries[storage_index] = new_entry;
 
     // Check if all entries are received
     bool all_received =
@@ -210,7 +222,10 @@ void LogFilesImpl::process_log_entry(const mavlink_message_t& message)
             std::back_inserter(entry_list),
             [](const auto& entry_opt) { return entry_opt.value(); });
 
+        // Clear callback before invoking to prevent double-invocation if another
+        // LOG_ENTRY message arrives before the async callback runs
         const auto cb = _entries_user_callback;
+        _entries_user_callback = nullptr;
         if (cb) {
             _system_impl->call_user_callback(
                 [cb, entry_list]() { cb(LogFiles::Result::Success, entry_list); });
@@ -220,11 +235,12 @@ void LogFilesImpl::process_log_entry(const mavlink_message_t& message)
         // This handles: receiving the last expected entry AND receiving retried entries that might
         // complete the set
         if (_total_entries > 0) {
-            const uint32_t expected_last_entry_id = _total_entries - 1;
+            // Expected last ID depends on indexing scheme: min_entry_id + num_logs - 1
+            const uint32_t expected_last_entry_id = _min_entry_id + _total_entries - 1;
+            const uint32_t last_storage_index = _total_entries - 1;
             // Check if this could be the last entry we need (either the expected last one, or a
             // retried one)
-            if (msg.id == expected_last_entry_id ||
-                _log_entries[expected_last_entry_id].has_value()) {
+            if (msg.id == expected_last_entry_id || _log_entries[last_storage_index].has_value()) {
                 check_and_request_missing_entries();
             }
         }
@@ -253,7 +269,9 @@ void LogFilesImpl::entries_timeout()
     }
 
     // Max retries exceeded - give up and call user with timeout error
+    // Clear callback before invoking to prevent double-invocation
     const auto cb = _entries_user_callback;
+    _entries_user_callback = nullptr;
     if (cb) {
         _system_impl->call_user_callback(
             [cb]() { cb(LogFiles::Result::Timeout, std::vector<LogFiles::Entry>()); });
@@ -282,7 +300,13 @@ void LogFilesImpl::download_log_file_async(
 {
     std::lock_guard<std::mutex> lock(_entries_mutex);
 
-    bool error = entry.id >= _log_entries.size() || !_log_entries[entry.id].has_value() ||
+    // Convert entry.id to storage index using detected min_entry_id
+    // Handles both 0-based (PX4) and 1-based (ArduPilot) indexing
+    const bool id_in_range =
+        entry.id >= _min_entry_id && (entry.id - _min_entry_id) < _log_entries.size();
+    const uint16_t storage_index = entry.id - _min_entry_id;
+
+    bool error = !id_in_range || !_log_entries[storage_index].has_value() ||
                  fs::is_directory(fs::path(file_path)) || fs::exists(file_path);
 
     if (error) {
@@ -296,7 +320,7 @@ void LogFilesImpl::download_log_file_async(
         return;
     }
 
-    const auto& found_entry = _log_entries[entry.id].value();
+    const auto& found_entry = _log_entries[storage_index].value();
 
     // Check for zero-sized file and abort early
     if (found_entry.size_bytes == 0) {
@@ -507,7 +531,9 @@ void LogFilesImpl::check_and_request_missing_entries()
     std::vector<uint16_t> missing_ids;
     for (uint16_t i = 0; i < _log_entries.size(); ++i) {
         if (!_log_entries[i].has_value()) {
-            missing_ids.push_back(i);
+            // Convert storage index back to MAVLink ID using min_entry_id
+            // Works for both 0-based (PX4) and 1-based (ArduPilot) indexing
+            missing_ids.push_back(i + _min_entry_id);
         }
     }
 
