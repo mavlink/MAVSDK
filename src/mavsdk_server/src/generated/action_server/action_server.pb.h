@@ -2756,6 +2756,10 @@ class AllowableFlightModes final
     kCanAutoModeFieldNumber = 1,
     kCanGuidedModeFieldNumber = 2,
     kCanStabilizeModeFieldNumber = 3,
+    kCanAutoRtlModeFieldNumber = 4,
+    kCanAutoTakeoffModeFieldNumber = 5,
+    kCanAutoLandModeFieldNumber = 6,
+    kCanAutoLoiterModeFieldNumber = 7,
   };
   // bool can_auto_mode = 1;
   void clear_can_auto_mode() ;
@@ -2787,12 +2791,52 @@ class AllowableFlightModes final
   void _internal_set_can_stabilize_mode(bool value);
 
   public:
+  // bool can_auto_rtl_mode = 4;
+  void clear_can_auto_rtl_mode() ;
+  bool can_auto_rtl_mode() const;
+  void set_can_auto_rtl_mode(bool value);
+
+  private:
+  bool _internal_can_auto_rtl_mode() const;
+  void _internal_set_can_auto_rtl_mode(bool value);
+
+  public:
+  // bool can_auto_takeoff_mode = 5;
+  void clear_can_auto_takeoff_mode() ;
+  bool can_auto_takeoff_mode() const;
+  void set_can_auto_takeoff_mode(bool value);
+
+  private:
+  bool _internal_can_auto_takeoff_mode() const;
+  void _internal_set_can_auto_takeoff_mode(bool value);
+
+  public:
+  // bool can_auto_land_mode = 6;
+  void clear_can_auto_land_mode() ;
+  bool can_auto_land_mode() const;
+  void set_can_auto_land_mode(bool value);
+
+  private:
+  bool _internal_can_auto_land_mode() const;
+  void _internal_set_can_auto_land_mode(bool value);
+
+  public:
+  // bool can_auto_loiter_mode = 7;
+  void clear_can_auto_loiter_mode() ;
+  bool can_auto_loiter_mode() const;
+  void set_can_auto_loiter_mode(bool value);
+
+  private:
+  bool _internal_can_auto_loiter_mode() const;
+  void _internal_set_can_auto_loiter_mode(bool value);
+
+  public:
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.action_server.AllowableFlightModes)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      2, 3, 0,
+      3, 7, 0,
       0, 2>
       _table_;
 
@@ -2813,6 +2857,10 @@ class AllowableFlightModes final
     bool can_auto_mode_;
     bool can_guided_mode_;
     bool can_stabilize_mode_;
+    bool can_auto_rtl_mode_;
+    bool can_auto_takeoff_mode_;
+    bool can_auto_land_mode_;
+    bool can_auto_loiter_mode_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -8117,6 +8165,94 @@ inline bool AllowableFlightModes::_internal_can_stabilize_mode() const {
 inline void AllowableFlightModes::_internal_set_can_stabilize_mode(bool value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.can_stabilize_mode_ = value;
+}
+
+// bool can_auto_rtl_mode = 4;
+inline void AllowableFlightModes::clear_can_auto_rtl_mode() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.can_auto_rtl_mode_ = false;
+}
+inline bool AllowableFlightModes::can_auto_rtl_mode() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.action_server.AllowableFlightModes.can_auto_rtl_mode)
+  return _internal_can_auto_rtl_mode();
+}
+inline void AllowableFlightModes::set_can_auto_rtl_mode(bool value) {
+  _internal_set_can_auto_rtl_mode(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.action_server.AllowableFlightModes.can_auto_rtl_mode)
+}
+inline bool AllowableFlightModes::_internal_can_auto_rtl_mode() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.can_auto_rtl_mode_;
+}
+inline void AllowableFlightModes::_internal_set_can_auto_rtl_mode(bool value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.can_auto_rtl_mode_ = value;
+}
+
+// bool can_auto_takeoff_mode = 5;
+inline void AllowableFlightModes::clear_can_auto_takeoff_mode() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.can_auto_takeoff_mode_ = false;
+}
+inline bool AllowableFlightModes::can_auto_takeoff_mode() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.action_server.AllowableFlightModes.can_auto_takeoff_mode)
+  return _internal_can_auto_takeoff_mode();
+}
+inline void AllowableFlightModes::set_can_auto_takeoff_mode(bool value) {
+  _internal_set_can_auto_takeoff_mode(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.action_server.AllowableFlightModes.can_auto_takeoff_mode)
+}
+inline bool AllowableFlightModes::_internal_can_auto_takeoff_mode() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.can_auto_takeoff_mode_;
+}
+inline void AllowableFlightModes::_internal_set_can_auto_takeoff_mode(bool value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.can_auto_takeoff_mode_ = value;
+}
+
+// bool can_auto_land_mode = 6;
+inline void AllowableFlightModes::clear_can_auto_land_mode() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.can_auto_land_mode_ = false;
+}
+inline bool AllowableFlightModes::can_auto_land_mode() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.action_server.AllowableFlightModes.can_auto_land_mode)
+  return _internal_can_auto_land_mode();
+}
+inline void AllowableFlightModes::set_can_auto_land_mode(bool value) {
+  _internal_set_can_auto_land_mode(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.action_server.AllowableFlightModes.can_auto_land_mode)
+}
+inline bool AllowableFlightModes::_internal_can_auto_land_mode() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.can_auto_land_mode_;
+}
+inline void AllowableFlightModes::_internal_set_can_auto_land_mode(bool value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.can_auto_land_mode_ = value;
+}
+
+// bool can_auto_loiter_mode = 7;
+inline void AllowableFlightModes::clear_can_auto_loiter_mode() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.can_auto_loiter_mode_ = false;
+}
+inline bool AllowableFlightModes::can_auto_loiter_mode() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.action_server.AllowableFlightModes.can_auto_loiter_mode)
+  return _internal_can_auto_loiter_mode();
+}
+inline void AllowableFlightModes::set_can_auto_loiter_mode(bool value) {
+  _internal_set_can_auto_loiter_mode(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.action_server.AllowableFlightModes.can_auto_loiter_mode)
+}
+inline bool AllowableFlightModes::_internal_can_auto_loiter_mode() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.can_auto_loiter_mode_;
+}
+inline void AllowableFlightModes::_internal_set_can_auto_loiter_mode(bool value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.can_auto_loiter_mode_ = value;
 }
 
 // -------------------------------------------------------------------

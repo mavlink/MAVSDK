@@ -133,6 +133,14 @@ public:
 
         rpc_obj->set_can_stabilize_mode(allowable_flight_modes.can_stabilize_mode);
 
+        rpc_obj->set_can_auto_rtl_mode(allowable_flight_modes.can_auto_rtl_mode);
+
+        rpc_obj->set_can_auto_takeoff_mode(allowable_flight_modes.can_auto_takeoff_mode);
+
+        rpc_obj->set_can_auto_land_mode(allowable_flight_modes.can_auto_land_mode);
+
+        rpc_obj->set_can_auto_loiter_mode(allowable_flight_modes.can_auto_loiter_mode);
+
         return rpc_obj;
     }
 
@@ -146,6 +154,14 @@ public:
         obj.can_guided_mode = allowable_flight_modes.can_guided_mode();
 
         obj.can_stabilize_mode = allowable_flight_modes.can_stabilize_mode();
+
+        obj.can_auto_rtl_mode = allowable_flight_modes.can_auto_rtl_mode();
+
+        obj.can_auto_takeoff_mode = allowable_flight_modes.can_auto_takeoff_mode();
+
+        obj.can_auto_land_mode = allowable_flight_modes.can_auto_land_mode();
+
+        obj.can_auto_loiter_mode = allowable_flight_modes.can_auto_loiter_mode();
 
         return obj;
     }
@@ -839,6 +855,37 @@ public:
         }
 
         auto result = _lazy_plugin.maybe_plugin()->set_flight_mode(
+            translateFromRpcFlightMode(request->flight_mode()));
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status SetFlightModeInternal(
+        grpc::ServerContext* /* context */,
+        const rpc::action_server::SetFlightModeInternalRequest* request,
+        rpc::action_server::SetFlightModeInternalResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                // For server plugins, this should never happen, they should always be
+                // constructible.
+                auto result = mavsdk::ActionServer::Result::Unknown;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        if (request == nullptr) {
+            LogWarn() << "SetFlightModeInternal sent with a null request! Ignoring...";
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->set_flight_mode_internal(
             translateFromRpcFlightMode(request->flight_mode()));
 
         if (response != nullptr) {

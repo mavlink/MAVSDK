@@ -188,7 +188,7 @@ void ActionServerImpl::init()
         },
         this);
 
-    // Flight mode
+    // Flight mode (long)
     _server_component_impl->register_mavlink_command_handler(
         MAV_CMD_DO_SET_MODE,
         [this](const MavlinkCommandReceiver::CommandLong& command) {
@@ -230,6 +230,15 @@ void ActionServerImpl::init()
                     case ActionServer::FlightMode::Mission:
                         allow_mode = _allowed_flight_modes.can_auto_mode;
                         break;
+                    case ActionServer::FlightMode::ReturnToLaunch:
+                        allow_mode = _allowed_flight_modes.can_auto_rtl_mode;
+                        break;
+                    case ActionServer::FlightMode::Takeoff:
+                        allow_mode = _allowed_flight_modes.can_auto_takeoff_mode;
+                        break;
+                    case ActionServer::FlightMode::Land:
+                        allow_mode = _allowed_flight_modes.can_auto_land_mode;
+                        break;
                     case ActionServer::FlightMode::Stabilized:
                         allow_mode = _allowed_flight_modes.can_stabilize_mode;
                         break;
@@ -249,6 +258,9 @@ void ActionServerImpl::init()
             if (allow_mode) {
                 px4_mode.main_mode = custom_mode;
                 px4_mode.sub_mode = sub_custom_mode;
+                uint8_t system_base_mode = get_base_mode();
+                system_base_mode |= MAV_MODE_FLAG_CUSTOM_MODE_ENABLED;
+                set_base_mode(system_base_mode);
                 set_custom_mode(px4_mode.data);
             }
 
@@ -264,6 +276,96 @@ void ActionServerImpl::init()
             return _server_component_impl->make_command_ack_message(
                 command,
                 allow_mode ? MAV_RESULT::MAV_RESULT_ACCEPTED : MAV_RESULT_TEMPORARILY_REJECTED);
+        },
+        this);
+
+    // Flight mode (legacy int, standard for PX4)
+    _server_component_impl->register_mavlink_message_handler(
+        MAVLINK_MSG_ID_SET_MODE,
+        [this](const mavlink_message_t& message) {
+            mavlink_set_mode_t set_mode;
+            mavlink_msg_set_mode_decode(&message, &set_mode);
+
+            auto base_mode = set_mode.base_mode;
+            auto is_custom = (base_mode & MAV_MODE_FLAG_CUSTOM_MODE_ENABLED) ==
+                             MAV_MODE_FLAG_CUSTOM_MODE_ENABLED;
+            ActionServer::FlightMode request_flight_mode = ActionServer::FlightMode::Unknown;
+
+            std::lock_guard<std::mutex> lock(_callback_mutex);
+
+            if (is_custom) {
+                // for now, custom mode is assumed to be PX4
+                auto system_flight_mode = to_flight_mode_from_px4_mode(set_mode.custom_mode);
+                request_flight_mode = telemetry_flight_mode_from_flight_mode(system_flight_mode);
+            } else {
+                // TO DO: non PX4 flight modes...
+                // Just bug out now if not using PX4 modes
+                _flight_mode_change_callbacks.queue(
+                    ActionServer::Result::ParameterError,
+                    request_flight_mode,
+                    [this](const auto& func) { _server_component_impl->call_user_callback(func); });
+
+                // make_command_ack_message
+                mavlink_command_ack_t command_ack{};
+                command_ack.command = MAVLINK_MSG_ID_SET_MODE;
+                command_ack.result = MAV_RESULT::MAV_RESULT_UNSUPPORTED;
+                command_ack.progress = std::numeric_limits<uint8_t>::max();
+                command_ack.result_param2 = 0;
+                command_ack.target_system = message.sysid;
+                command_ack.target_component = message.compid;
+                _server_component_impl->send_command_ack(command_ack);
+            }
+
+            bool allow_mode = false;
+            switch (request_flight_mode) {
+                case ActionServer::FlightMode::Manual:
+                    allow_mode = true;
+                    break;
+                case ActionServer::FlightMode::Mission:
+                    allow_mode = _allowed_flight_modes.can_auto_mode;
+                    break;
+                case ActionServer::FlightMode::ReturnToLaunch:
+                    allow_mode = _allowed_flight_modes.can_auto_rtl_mode;
+                    break;
+                case ActionServer::FlightMode::Takeoff:
+                    allow_mode = _allowed_flight_modes.can_auto_takeoff_mode;
+                    break;
+                case ActionServer::FlightMode::Land:
+                    allow_mode = _allowed_flight_modes.can_auto_land_mode;
+                    break;
+                case ActionServer::FlightMode::Stabilized:
+                    allow_mode = _allowed_flight_modes.can_stabilize_mode;
+                    break;
+                case ActionServer::FlightMode::Offboard:
+                    allow_mode = _allowed_flight_modes.can_guided_mode;
+                    break;
+                default:
+                    allow_mode = false;
+                    break;
+            }
+
+            if (allow_mode) {
+                uint8_t system_base_mode = get_base_mode();
+                system_base_mode |= MAV_MODE_FLAG_CUSTOM_MODE_ENABLED;
+                set_base_mode(system_base_mode);
+                set_custom_mode(set_mode.custom_mode);
+            }
+
+            _flight_mode_change_callbacks.queue(
+                allow_mode ? ActionServer::Result::Success : ActionServer::Result::CommandDenied,
+                request_flight_mode,
+                [this](const auto& func) { _server_component_impl->call_user_callback(func); });
+
+            // make_command_ack_message
+            mavlink_command_ack_t command_ack{};
+            command_ack.command = MAVLINK_MSG_ID_SET_MODE;
+            command_ack.result =
+                allow_mode ? MAV_RESULT::MAV_RESULT_ACCEPTED : MAV_RESULT_TEMPORARILY_REJECTED;
+            command_ack.progress = std::numeric_limits<uint8_t>::max();
+            command_ack.result_param2 = 0;
+            command_ack.target_system = message.sysid;
+            command_ack.target_component = message.compid;
+            _server_component_impl->send_command_ack(command_ack);
         },
         this);
 }
@@ -423,7 +525,18 @@ ActionServer::Result ActionServerImpl::set_armed_state(bool armed)
 
 ActionServer::Result ActionServerImpl::set_flight_mode(ActionServer::FlightMode flight_mode)
 {
-    // note: currently on receipt of MAV_CMD_DO_SET_MODE, we error out if the mode
+    ActionServer::Result res = set_flight_mode_internal(flight_mode);
+    _flight_mode_change_callbacks.queue(res, flight_mode, [this](const auto& func) {
+        _server_component_impl->call_user_callback(func);
+    });
+
+    return res;
+}
+
+ActionServer::Result
+ActionServerImpl::set_flight_mode_internal(ActionServer::FlightMode flight_mode)
+{
+    // note: currently on receipt of MAV_CMD_DO_SET_MODE/MAV_CMD_SET_MODE, we error out if the mode
     // is *not* PX4 custom. For symmetry we will also convert from FlightMode to
     // PX4 custom when set directly.
     std::lock_guard<std::mutex> lock(_callback_mutex);
@@ -435,12 +548,6 @@ ActionServer::Result ActionServerImpl::set_flight_mode(ActionServer::FlightMode 
     base_mode |= MAV_MODE_FLAG_CUSTOM_MODE_ENABLED;
     set_base_mode(base_mode);
     set_custom_mode(px4_mode.data);
-
-    _flight_mode_change_callbacks.queue(
-        ActionServer::Result::Success, flight_mode, [this](const auto& func) {
-            _server_component_impl->call_user_callback(func);
-        });
-
     return ActionServer::Result::Success;
 }
 

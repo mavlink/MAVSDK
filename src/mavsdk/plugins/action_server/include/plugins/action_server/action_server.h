@@ -83,6 +83,10 @@ public:
         bool can_auto_mode{}; /**< @brief Auto/mission mode */
         bool can_guided_mode{}; /**< @brief Guided mode */
         bool can_stabilize_mode{}; /**< @brief Stabilize mode */
+        bool can_auto_rtl_mode{}; /**< @brief Auto RTL mode */
+        bool can_auto_takeoff_mode{}; /**< @brief Auto takeoff mode */
+        bool can_auto_land_mode{}; /**< @brief Auto land mode */
+        bool can_auto_loiter_mode{}; /**< @brief Auto hold/loiter mode */
     };
 
     /**
@@ -371,6 +375,17 @@ public:
 
      */
     Result set_flight_mode(FlightMode flight_mode) const;
+
+    /**
+     * @brief Set/override the flight mode of the vehicle directly, and *do not* notify subscribers
+     *
+     * This function is blocking.
+     *
+
+     * @return Result of request.
+
+     */
+    Result set_flight_mode_internal(FlightMode flight_mode) const;
 
     /**
      * @brief Copy constructor.

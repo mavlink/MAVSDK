@@ -330,6 +330,10 @@ inline constexpr AllowableFlightModes::Impl_::Impl_(
       : can_auto_mode_{false},
         can_guided_mode_{false},
         can_stabilize_mode_{false},
+        can_auto_rtl_mode_{false},
+        can_auto_takeoff_mode_{false},
+        can_auto_land_mode_{false},
+        can_auto_loiter_mode_{false},
         _cached_size_{0} {}
 
 template <typename>
@@ -1056,6 +1060,10 @@ const ::uint32_t
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::action_server::AllowableFlightModes, _impl_.can_auto_mode_),
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::action_server::AllowableFlightModes, _impl_.can_guided_mode_),
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::action_server::AllowableFlightModes, _impl_.can_stabilize_mode_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::action_server::AllowableFlightModes, _impl_.can_auto_rtl_mode_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::action_server::AllowableFlightModes, _impl_.can_auto_takeoff_mode_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::action_server::AllowableFlightModes, _impl_.can_auto_land_mode_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::action_server::AllowableFlightModes, _impl_.can_auto_loiter_mode_),
         ~0u,  // no _has_bits_
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::action_server::ArmDisarm, _internal_metadata_),
         ~0u,  // no _extensions_
@@ -1109,8 +1117,8 @@ static const ::_pbi::MigrationSchema
         {255, 264, -1, sizeof(::mavsdk::rpc::action_server::SetArmedStateResponse)},
         {265, 274, -1, sizeof(::mavsdk::rpc::action_server::SetFlightModeResponse)},
         {275, -1, -1, sizeof(::mavsdk::rpc::action_server::AllowableFlightModes)},
-        {286, -1, -1, sizeof(::mavsdk::rpc::action_server::ArmDisarm)},
-        {296, -1, -1, sizeof(::mavsdk::rpc::action_server::ActionServerResult)},
+        {290, -1, -1, sizeof(::mavsdk::rpc::action_server::ArmDisarm)},
+        {300, -1, -1, sizeof(::mavsdk::rpc::action_server::ActionServerResult)},
 };
 static const ::_pb::Message* const file_default_instances[] = {
     &::mavsdk::rpc::action_server::_SetAllowTakeoffRequest_default_instance_._instance,
@@ -1204,79 +1212,85 @@ const char descriptor_table_protodef_action_5fserver_2faction_5fserver_2eproto[]
     "lt\030\001 \001(\0132,.mavsdk.rpc.action_server.Acti"
     "onServerResult\"c\n\025SetFlightModeResponse\022"
     "J\n\024action_server_result\030\001 \001(\0132,.mavsdk.r"
-    "pc.action_server.ActionServerResult\"b\n\024A"
-    "llowableFlightModes\022\025\n\rcan_auto_mode\030\001 \001"
-    "(\010\022\027\n\017can_guided_mode\030\002 \001(\010\022\032\n\022can_stabi"
-    "lize_mode\030\003 \001(\010\"\'\n\tArmDisarm\022\013\n\003arm\030\001 \001("
-    "\010\022\r\n\005force\030\002 \001(\010\"\351\003\n\022ActionServerResult\022"
-    "C\n\006result\030\001 \001(\01623.mavsdk.rpc.action_serv"
-    "er.ActionServerResult.Result\022\022\n\nresult_s"
-    "tr\030\002 \001(\t\"\371\002\n\006Result\022\022\n\016RESULT_UNKNOWN\020\000\022"
-    "\022\n\016RESULT_SUCCESS\020\001\022\024\n\020RESULT_NO_SYSTEM\020"
-    "\002\022\033\n\027RESULT_CONNECTION_ERROR\020\003\022\017\n\013RESULT"
-    "_BUSY\020\004\022\031\n\025RESULT_COMMAND_DENIED\020\005\022.\n*RE"
-    "SULT_COMMAND_DENIED_LANDED_STATE_UNKNOWN"
-    "\020\006\022$\n RESULT_COMMAND_DENIED_NOT_LANDED\020\007"
-    "\022\022\n\016RESULT_TIMEOUT\020\010\022*\n&RESULT_VTOL_TRAN"
-    "SITION_SUPPORT_UNKNOWN\020\t\022%\n!RESULT_NO_VT"
-    "OL_TRANSITION_SUPPORT\020\n\022\032\n\026RESULT_PARAME"
-    "TER_ERROR\020\013\022\017\n\013RESULT_NEXT\020\014*\353\002\n\nFlightM"
-    "ode\022\027\n\023FLIGHT_MODE_UNKNOWN\020\000\022\025\n\021FLIGHT_M"
-    "ODE_READY\020\001\022\027\n\023FLIGHT_MODE_TAKEOFF\020\002\022\024\n\020"
-    "FLIGHT_MODE_HOLD\020\003\022\027\n\023FLIGHT_MODE_MISSIO"
-    "N\020\004\022 \n\034FLIGHT_MODE_RETURN_TO_LAUNCH\020\005\022\024\n"
-    "\020FLIGHT_MODE_LAND\020\006\022\030\n\024FLIGHT_MODE_OFFBO"
-    "ARD\020\007\022\031\n\025FLIGHT_MODE_FOLLOW_ME\020\010\022\026\n\022FLIG"
-    "HT_MODE_MANUAL\020\t\022\026\n\022FLIGHT_MODE_ALTCTL\020\n"
-    "\022\026\n\022FLIGHT_MODE_POSCTL\020\013\022\024\n\020FLIGHT_MODE_"
-    "ACRO\020\014\022\032\n\026FLIGHT_MODE_STABILIZED\020\r2\215\016\n\023A"
-    "ctionServerService\022~\n\022SubscribeArmDisarm"
-    "\0223.mavsdk.rpc.action_server.SubscribeArm"
-    "DisarmRequest\032+.mavsdk.rpc.action_server"
-    ".ArmDisarmResponse\"\004\200\265\030\0000\001\022\223\001\n\031Subscribe"
-    "FlightModeChange\022:.mavsdk.rpc.action_ser"
-    "ver.SubscribeFlightModeChangeRequest\0322.m"
-    "avsdk.rpc.action_server.FlightModeChange"
-    "Response\"\004\200\265\030\0000\001\022x\n\020SubscribeTakeoff\0221.m"
-    "avsdk.rpc.action_server.SubscribeTakeoff"
-    "Request\032).mavsdk.rpc.action_server.Takeo"
-    "ffResponse\"\004\200\265\030\0000\001\022o\n\rSubscribeLand\022..ma"
-    "vsdk.rpc.action_server.SubscribeLandRequ"
-    "est\032&.mavsdk.rpc.action_server.LandRespo"
-    "nse\"\004\200\265\030\0000\001\022u\n\017SubscribeReboot\0220.mavsdk."
-    "rpc.action_server.SubscribeRebootRequest"
-    "\032(.mavsdk.rpc.action_server.RebootRespon"
-    "se\"\004\200\265\030\0000\001\022{\n\021SubscribeShutdown\0222.mavsdk"
-    ".rpc.action_server.SubscribeShutdownRequ"
-    "est\032*.mavsdk.rpc.action_server.ShutdownR"
-    "esponse\"\004\200\265\030\0000\001\022~\n\022SubscribeTerminate\0223."
-    "mavsdk.rpc.action_server.SubscribeTermin"
-    "ateRequest\032+.mavsdk.rpc.action_server.Te"
-    "rminateResponse\"\004\200\265\030\0000\001\022|\n\017SetAllowTakeo"
-    "ff\0220.mavsdk.rpc.action_server.SetAllowTa"
-    "keoffRequest\0321.mavsdk.rpc.action_server."
-    "SetAllowTakeoffResponse\"\004\200\265\030\001\022m\n\nSetArma"
-    "ble\022+.mavsdk.rpc.action_server.SetArmabl"
-    "eRequest\032,.mavsdk.rpc.action_server.SetA"
-    "rmableResponse\"\004\200\265\030\001\022v\n\rSetDisarmable\022.."
-    "mavsdk.rpc.action_server.SetDisarmableRe"
-    "quest\032/.mavsdk.rpc.action_server.SetDisa"
-    "rmableResponse\"\004\200\265\030\001\022\224\001\n\027SetAllowableFli"
-    "ghtModes\0228.mavsdk.rpc.action_server.SetA"
-    "llowableFlightModesRequest\0329.mavsdk.rpc."
-    "action_server.SetAllowableFlightModesRes"
-    "ponse\"\004\200\265\030\001\022\224\001\n\027GetAllowableFlightModes\022"
-    "8.mavsdk.rpc.action_server.GetAllowableF"
-    "lightModesRequest\0329.mavsdk.rpc.action_se"
-    "rver.GetAllowableFlightModesResponse\"\004\200\265"
-    "\030\001\022v\n\rSetArmedState\022..mavsdk.rpc.action_"
-    "server.SetArmedStateRequest\032/.mavsdk.rpc"
-    ".action_server.SetArmedStateResponse\"\004\200\265"
-    "\030\001\022v\n\rSetFlightMode\022..mavsdk.rpc.action_"
-    "server.SetFlightModeRequest\032/.mavsdk.rpc"
-    ".action_server.SetFlightModeResponse\"\004\200\265"
-    "\030\001B,\n\027io.mavsdk.action_serverB\021ActionSer"
-    "verProtob\006proto3"
+    "pc.action_server.ActionServerResult\"\326\001\n\024"
+    "AllowableFlightModes\022\025\n\rcan_auto_mode\030\001 "
+    "\001(\010\022\027\n\017can_guided_mode\030\002 \001(\010\022\032\n\022can_stab"
+    "ilize_mode\030\003 \001(\010\022\031\n\021can_auto_rtl_mode\030\004 "
+    "\001(\010\022\035\n\025can_auto_takeoff_mode\030\005 \001(\010\022\032\n\022ca"
+    "n_auto_land_mode\030\006 \001(\010\022\034\n\024can_auto_loite"
+    "r_mode\030\007 \001(\010\"\'\n\tArmDisarm\022\013\n\003arm\030\001 \001(\010\022\r"
+    "\n\005force\030\002 \001(\010\"\351\003\n\022ActionServerResult\022C\n\006"
+    "result\030\001 \001(\01623.mavsdk.rpc.action_server."
+    "ActionServerResult.Result\022\022\n\nresult_str\030"
+    "\002 \001(\t\"\371\002\n\006Result\022\022\n\016RESULT_UNKNOWN\020\000\022\022\n\016"
+    "RESULT_SUCCESS\020\001\022\024\n\020RESULT_NO_SYSTEM\020\002\022\033"
+    "\n\027RESULT_CONNECTION_ERROR\020\003\022\017\n\013RESULT_BU"
+    "SY\020\004\022\031\n\025RESULT_COMMAND_DENIED\020\005\022.\n*RESUL"
+    "T_COMMAND_DENIED_LANDED_STATE_UNKNOWN\020\006\022"
+    "$\n RESULT_COMMAND_DENIED_NOT_LANDED\020\007\022\022\n"
+    "\016RESULT_TIMEOUT\020\010\022*\n&RESULT_VTOL_TRANSIT"
+    "ION_SUPPORT_UNKNOWN\020\t\022%\n!RESULT_NO_VTOL_"
+    "TRANSITION_SUPPORT\020\n\022\032\n\026RESULT_PARAMETER"
+    "_ERROR\020\013\022\017\n\013RESULT_NEXT\020\014*\353\002\n\nFlightMode"
+    "\022\027\n\023FLIGHT_MODE_UNKNOWN\020\000\022\025\n\021FLIGHT_MODE"
+    "_READY\020\001\022\027\n\023FLIGHT_MODE_TAKEOFF\020\002\022\024\n\020FLI"
+    "GHT_MODE_HOLD\020\003\022\027\n\023FLIGHT_MODE_MISSION\020\004"
+    "\022 \n\034FLIGHT_MODE_RETURN_TO_LAUNCH\020\005\022\024\n\020FL"
+    "IGHT_MODE_LAND\020\006\022\030\n\024FLIGHT_MODE_OFFBOARD"
+    "\020\007\022\031\n\025FLIGHT_MODE_FOLLOW_ME\020\010\022\026\n\022FLIGHT_"
+    "MODE_MANUAL\020\t\022\026\n\022FLIGHT_MODE_ALTCTL\020\n\022\026\n"
+    "\022FLIGHT_MODE_POSCTL\020\013\022\024\n\020FLIGHT_MODE_ACR"
+    "O\020\014\022\032\n\026FLIGHT_MODE_STABILIZED\020\r2\215\017\n\023Acti"
+    "onServerService\022~\n\022SubscribeArmDisarm\0223."
+    "mavsdk.rpc.action_server.SubscribeArmDis"
+    "armRequest\032+.mavsdk.rpc.action_server.Ar"
+    "mDisarmResponse\"\004\200\265\030\0000\001\022\223\001\n\031SubscribeFli"
+    "ghtModeChange\022:.mavsdk.rpc.action_server"
+    ".SubscribeFlightModeChangeRequest\0322.mavs"
+    "dk.rpc.action_server.FlightModeChangeRes"
+    "ponse\"\004\200\265\030\0000\001\022x\n\020SubscribeTakeoff\0221.mavs"
+    "dk.rpc.action_server.SubscribeTakeoffReq"
+    "uest\032).mavsdk.rpc.action_server.TakeoffR"
+    "esponse\"\004\200\265\030\0000\001\022o\n\rSubscribeLand\022..mavsd"
+    "k.rpc.action_server.SubscribeLandRequest"
+    "\032&.mavsdk.rpc.action_server.LandResponse"
+    "\"\004\200\265\030\0000\001\022u\n\017SubscribeReboot\0220.mavsdk.rpc"
+    ".action_server.SubscribeRebootRequest\032(."
+    "mavsdk.rpc.action_server.RebootResponse\""
+    "\004\200\265\030\0000\001\022{\n\021SubscribeShutdown\0222.mavsdk.rp"
+    "c.action_server.SubscribeShutdownRequest"
+    "\032*.mavsdk.rpc.action_server.ShutdownResp"
+    "onse\"\004\200\265\030\0000\001\022~\n\022SubscribeTerminate\0223.mav"
+    "sdk.rpc.action_server.SubscribeTerminate"
+    "Request\032+.mavsdk.rpc.action_server.Termi"
+    "nateResponse\"\004\200\265\030\0000\001\022|\n\017SetAllowTakeoff\022"
+    "0.mavsdk.rpc.action_server.SetAllowTakeo"
+    "ffRequest\0321.mavsdk.rpc.action_server.Set"
+    "AllowTakeoffResponse\"\004\200\265\030\001\022m\n\nSetArmable"
+    "\022+.mavsdk.rpc.action_server.SetArmableRe"
+    "quest\032,.mavsdk.rpc.action_server.SetArma"
+    "bleResponse\"\004\200\265\030\001\022v\n\rSetDisarmable\022..mav"
+    "sdk.rpc.action_server.SetDisarmableReque"
+    "st\032/.mavsdk.rpc.action_server.SetDisarma"
+    "bleResponse\"\004\200\265\030\001\022\224\001\n\027SetAllowableFlight"
+    "Modes\0228.mavsdk.rpc.action_server.SetAllo"
+    "wableFlightModesRequest\0329.mavsdk.rpc.act"
+    "ion_server.SetAllowableFlightModesRespon"
+    "se\"\004\200\265\030\001\022\224\001\n\027GetAllowableFlightModes\0228.m"
+    "avsdk.rpc.action_server.GetAllowableFlig"
+    "htModesRequest\0329.mavsdk.rpc.action_serve"
+    "r.GetAllowableFlightModesResponse\"\004\200\265\030\001\022"
+    "v\n\rSetArmedState\022..mavsdk.rpc.action_ser"
+    "ver.SetArmedStateRequest\032/.mavsdk.rpc.ac"
+    "tion_server.SetArmedStateResponse\"\004\200\265\030\001\022"
+    "v\n\rSetFlightMode\022..mavsdk.rpc.action_ser"
+    "ver.SetFlightModeRequest\032/.mavsdk.rpc.ac"
+    "tion_server.SetFlightModeResponse\"\004\200\265\030\001\022"
+    "~\n\025SetFlightModeInternal\022..mavsdk.rpc.ac"
+    "tion_server.SetFlightModeRequest\032/.mavsd"
+    "k.rpc.action_server.SetFlightModeRespons"
+    "e\"\004\200\265\030\001B,\n\027io.mavsdk.action_serverB\021Acti"
+    "onServerProtob\006proto3"
 };
 static const ::_pbi::DescriptorTable* const descriptor_table_action_5fserver_2faction_5fserver_2eproto_deps[1] =
     {
@@ -1286,7 +1300,7 @@ static ::absl::once_flag descriptor_table_action_5fserver_2faction_5fserver_2epr
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_action_5fserver_2faction_5fserver_2eproto = {
     false,
     false,
-    5176,
+    5421,
     descriptor_table_protodef_action_5fserver_2faction_5fserver_2eproto,
     "action_server/action_server.proto",
     &descriptor_table_action_5fserver_2faction_5fserver_2eproto_once,
@@ -7305,9 +7319,9 @@ inline void AllowableFlightModes::SharedCtor(::_pb::Arena* arena) {
   ::memset(reinterpret_cast<char *>(&_impl_) +
                offsetof(Impl_, can_auto_mode_),
            0,
-           offsetof(Impl_, can_stabilize_mode_) -
+           offsetof(Impl_, can_auto_loiter_mode_) -
                offsetof(Impl_, can_auto_mode_) +
-               sizeof(Impl_::can_stabilize_mode_));
+               sizeof(Impl_::can_auto_loiter_mode_));
 }
 AllowableFlightModes::~AllowableFlightModes() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.action_server.AllowableFlightModes)
@@ -7356,15 +7370,15 @@ const ::google::protobuf::internal::ClassData* AllowableFlightModes::GetClassDat
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<2, 3, 0, 0, 2> AllowableFlightModes::_table_ = {
+const ::_pbi::TcParseTable<3, 7, 0, 0, 2> AllowableFlightModes::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
-    3, 24,  // max_field_number, fast_idx_mask
+    7, 56,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967288,  // skipmap
+    4294967168,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    3,  // num_field_entries
+    7,  // num_field_entries
     0,  // num_aux_entries
     offsetof(decltype(_table_), field_names),  // no aux_entries
     _class_data_.base(),
@@ -7384,6 +7398,18 @@ const ::_pbi::TcParseTable<2, 3, 0, 0, 2> AllowableFlightModes::_table_ = {
     // bool can_stabilize_mode = 3;
     {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(AllowableFlightModes, _impl_.can_stabilize_mode_), 63>(),
      {24, 63, 0, PROTOBUF_FIELD_OFFSET(AllowableFlightModes, _impl_.can_stabilize_mode_)}},
+    // bool can_auto_rtl_mode = 4;
+    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(AllowableFlightModes, _impl_.can_auto_rtl_mode_), 63>(),
+     {32, 63, 0, PROTOBUF_FIELD_OFFSET(AllowableFlightModes, _impl_.can_auto_rtl_mode_)}},
+    // bool can_auto_takeoff_mode = 5;
+    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(AllowableFlightModes, _impl_.can_auto_takeoff_mode_), 63>(),
+     {40, 63, 0, PROTOBUF_FIELD_OFFSET(AllowableFlightModes, _impl_.can_auto_takeoff_mode_)}},
+    // bool can_auto_land_mode = 6;
+    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(AllowableFlightModes, _impl_.can_auto_land_mode_), 63>(),
+     {48, 63, 0, PROTOBUF_FIELD_OFFSET(AllowableFlightModes, _impl_.can_auto_land_mode_)}},
+    // bool can_auto_loiter_mode = 7;
+    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(AllowableFlightModes, _impl_.can_auto_loiter_mode_), 63>(),
+     {56, 63, 0, PROTOBUF_FIELD_OFFSET(AllowableFlightModes, _impl_.can_auto_loiter_mode_)}},
   }}, {{
     65535, 65535
   }}, {{
@@ -7395,6 +7421,18 @@ const ::_pbi::TcParseTable<2, 3, 0, 0, 2> AllowableFlightModes::_table_ = {
     (0 | ::_fl::kFcSingular | ::_fl::kBool)},
     // bool can_stabilize_mode = 3;
     {PROTOBUF_FIELD_OFFSET(AllowableFlightModes, _impl_.can_stabilize_mode_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kBool)},
+    // bool can_auto_rtl_mode = 4;
+    {PROTOBUF_FIELD_OFFSET(AllowableFlightModes, _impl_.can_auto_rtl_mode_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kBool)},
+    // bool can_auto_takeoff_mode = 5;
+    {PROTOBUF_FIELD_OFFSET(AllowableFlightModes, _impl_.can_auto_takeoff_mode_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kBool)},
+    // bool can_auto_land_mode = 6;
+    {PROTOBUF_FIELD_OFFSET(AllowableFlightModes, _impl_.can_auto_land_mode_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kBool)},
+    // bool can_auto_loiter_mode = 7;
+    {PROTOBUF_FIELD_OFFSET(AllowableFlightModes, _impl_.can_auto_loiter_mode_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kBool)},
   }},
   // no aux_entries
@@ -7410,8 +7448,8 @@ PROTOBUF_NOINLINE void AllowableFlightModes::Clear() {
   (void) cached_has_bits;
 
   ::memset(&_impl_.can_auto_mode_, 0, static_cast<::size_t>(
-      reinterpret_cast<char*>(&_impl_.can_stabilize_mode_) -
-      reinterpret_cast<char*>(&_impl_.can_auto_mode_)) + sizeof(_impl_.can_stabilize_mode_));
+      reinterpret_cast<char*>(&_impl_.can_auto_loiter_mode_) -
+      reinterpret_cast<char*>(&_impl_.can_auto_mode_)) + sizeof(_impl_.can_auto_loiter_mode_));
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
@@ -7451,6 +7489,34 @@ PROTOBUF_NOINLINE void AllowableFlightModes::Clear() {
                 3, this_._internal_can_stabilize_mode(), target);
           }
 
+          // bool can_auto_rtl_mode = 4;
+          if (this_._internal_can_auto_rtl_mode() != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteBoolToArray(
+                4, this_._internal_can_auto_rtl_mode(), target);
+          }
+
+          // bool can_auto_takeoff_mode = 5;
+          if (this_._internal_can_auto_takeoff_mode() != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteBoolToArray(
+                5, this_._internal_can_auto_takeoff_mode(), target);
+          }
+
+          // bool can_auto_land_mode = 6;
+          if (this_._internal_can_auto_land_mode() != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteBoolToArray(
+                6, this_._internal_can_auto_land_mode(), target);
+          }
+
+          // bool can_auto_loiter_mode = 7;
+          if (this_._internal_can_auto_loiter_mode() != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteBoolToArray(
+                7, this_._internal_can_auto_loiter_mode(), target);
+          }
+
           if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
             target =
                 ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
@@ -7488,6 +7554,22 @@ PROTOBUF_NOINLINE void AllowableFlightModes::Clear() {
             if (this_._internal_can_stabilize_mode() != 0) {
               total_size += 2;
             }
+            // bool can_auto_rtl_mode = 4;
+            if (this_._internal_can_auto_rtl_mode() != 0) {
+              total_size += 2;
+            }
+            // bool can_auto_takeoff_mode = 5;
+            if (this_._internal_can_auto_takeoff_mode() != 0) {
+              total_size += 2;
+            }
+            // bool can_auto_land_mode = 6;
+            if (this_._internal_can_auto_land_mode() != 0) {
+              total_size += 2;
+            }
+            // bool can_auto_loiter_mode = 7;
+            if (this_._internal_can_auto_loiter_mode() != 0) {
+              total_size += 2;
+            }
           }
           return this_.MaybeComputeUnknownFieldsSize(total_size,
                                                      &this_._impl_._cached_size_);
@@ -7510,6 +7592,18 @@ void AllowableFlightModes::MergeImpl(::google::protobuf::MessageLite& to_msg, co
   if (from._internal_can_stabilize_mode() != 0) {
     _this->_impl_.can_stabilize_mode_ = from._impl_.can_stabilize_mode_;
   }
+  if (from._internal_can_auto_rtl_mode() != 0) {
+    _this->_impl_.can_auto_rtl_mode_ = from._impl_.can_auto_rtl_mode_;
+  }
+  if (from._internal_can_auto_takeoff_mode() != 0) {
+    _this->_impl_.can_auto_takeoff_mode_ = from._impl_.can_auto_takeoff_mode_;
+  }
+  if (from._internal_can_auto_land_mode() != 0) {
+    _this->_impl_.can_auto_land_mode_ = from._impl_.can_auto_land_mode_;
+  }
+  if (from._internal_can_auto_loiter_mode() != 0) {
+    _this->_impl_.can_auto_loiter_mode_ = from._impl_.can_auto_loiter_mode_;
+  }
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
@@ -7525,8 +7619,8 @@ void AllowableFlightModes::InternalSwap(AllowableFlightModes* PROTOBUF_RESTRICT 
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   ::google::protobuf::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(AllowableFlightModes, _impl_.can_stabilize_mode_)
-      + sizeof(AllowableFlightModes::_impl_.can_stabilize_mode_)
+      PROTOBUF_FIELD_OFFSET(AllowableFlightModes, _impl_.can_auto_loiter_mode_)
+      + sizeof(AllowableFlightModes::_impl_.can_auto_loiter_mode_)
       - PROTOBUF_FIELD_OFFSET(AllowableFlightModes, _impl_.can_auto_mode_)>(
           reinterpret_cast<char*>(&_impl_.can_auto_mode_),
           reinterpret_cast<char*>(&other->_impl_.can_auto_mode_));

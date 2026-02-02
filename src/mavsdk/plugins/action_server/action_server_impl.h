@@ -55,6 +55,8 @@ public:
 
     ActionServer::Result set_flight_mode(ActionServer::FlightMode flight_mode);
 
+    ActionServer::Result set_flight_mode_internal(ActionServer::FlightMode flight_mode);
+
 private:
     static ActionServer::FlightMode telemetry_flight_mode_from_flight_mode(FlightMode flight_mode);
     static uint32_t to_px4_mode_from_flight_mode(ActionServer::FlightMode flight_mode);
