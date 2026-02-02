@@ -338,23 +338,23 @@ void ActionServerService::Stub::async::SetFlightMode(::grpc::ClientContext* cont
   return result;
 }
 
-::grpc::Status ActionServerService::Stub::SetFlightModeInternal(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetFlightModeRequest& request, ::mavsdk::rpc::action_server::SetFlightModeResponse* response) {
-  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::action_server::SetFlightModeRequest, ::mavsdk::rpc::action_server::SetFlightModeResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_SetFlightModeInternal_, context, request, response);
+::grpc::Status ActionServerService::Stub::SetFlightModeInternal(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetFlightModeInternalRequest& request, ::mavsdk::rpc::action_server::SetFlightModeInternalResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::action_server::SetFlightModeInternalRequest, ::mavsdk::rpc::action_server::SetFlightModeInternalResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_SetFlightModeInternal_, context, request, response);
 }
 
-void ActionServerService::Stub::async::SetFlightModeInternal(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetFlightModeRequest* request, ::mavsdk::rpc::action_server::SetFlightModeResponse* response, std::function<void(::grpc::Status)> f) {
-  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::action_server::SetFlightModeRequest, ::mavsdk::rpc::action_server::SetFlightModeResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SetFlightModeInternal_, context, request, response, std::move(f));
+void ActionServerService::Stub::async::SetFlightModeInternal(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetFlightModeInternalRequest* request, ::mavsdk::rpc::action_server::SetFlightModeInternalResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::action_server::SetFlightModeInternalRequest, ::mavsdk::rpc::action_server::SetFlightModeInternalResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SetFlightModeInternal_, context, request, response, std::move(f));
 }
 
-void ActionServerService::Stub::async::SetFlightModeInternal(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetFlightModeRequest* request, ::mavsdk::rpc::action_server::SetFlightModeResponse* response, ::grpc::ClientUnaryReactor* reactor) {
+void ActionServerService::Stub::async::SetFlightModeInternal(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetFlightModeInternalRequest* request, ::mavsdk::rpc::action_server::SetFlightModeInternalResponse* response, ::grpc::ClientUnaryReactor* reactor) {
   ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SetFlightModeInternal_, context, request, response, reactor);
 }
 
-::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action_server::SetFlightModeResponse>* ActionServerService::Stub::PrepareAsyncSetFlightModeInternalRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetFlightModeRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::action_server::SetFlightModeResponse, ::mavsdk::rpc::action_server::SetFlightModeRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_SetFlightModeInternal_, context, request);
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action_server::SetFlightModeInternalResponse>* ActionServerService::Stub::PrepareAsyncSetFlightModeInternalRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetFlightModeInternalRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::action_server::SetFlightModeInternalResponse, ::mavsdk::rpc::action_server::SetFlightModeInternalRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_SetFlightModeInternal_, context, request);
 }
 
-::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action_server::SetFlightModeResponse>* ActionServerService::Stub::AsyncSetFlightModeInternalRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetFlightModeRequest& request, ::grpc::CompletionQueue* cq) {
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action_server::SetFlightModeInternalResponse>* ActionServerService::Stub::AsyncSetFlightModeInternalRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetFlightModeInternalRequest& request, ::grpc::CompletionQueue* cq) {
   auto* result =
     this->PrepareAsyncSetFlightModeInternalRaw(context, request, cq);
   result->StartCall();
@@ -505,11 +505,11 @@ ActionServerService::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       ActionServerService_method_names[14],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
-      new ::grpc::internal::RpcMethodHandler< ActionServerService::Service, ::mavsdk::rpc::action_server::SetFlightModeRequest, ::mavsdk::rpc::action_server::SetFlightModeResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+      new ::grpc::internal::RpcMethodHandler< ActionServerService::Service, ::mavsdk::rpc::action_server::SetFlightModeInternalRequest, ::mavsdk::rpc::action_server::SetFlightModeInternalResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](ActionServerService::Service* service,
              ::grpc::ServerContext* ctx,
-             const ::mavsdk::rpc::action_server::SetFlightModeRequest* req,
-             ::mavsdk::rpc::action_server::SetFlightModeResponse* resp) {
+             const ::mavsdk::rpc::action_server::SetFlightModeInternalRequest* req,
+             ::mavsdk::rpc::action_server::SetFlightModeInternalResponse* resp) {
                return service->SetFlightModeInternal(ctx, req, resp);
              }, this)));
 }
@@ -615,7 +615,7 @@ ActionServerService::Service::~Service() {
   return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
 }
 
-::grpc::Status ActionServerService::Service::SetFlightModeInternal(::grpc::ServerContext* context, const ::mavsdk::rpc::action_server::SetFlightModeRequest* request, ::mavsdk::rpc::action_server::SetFlightModeResponse* response) {
+::grpc::Status ActionServerService::Service::SetFlightModeInternal(::grpc::ServerContext* context, const ::mavsdk::rpc::action_server::SetFlightModeInternalRequest* request, ::mavsdk::rpc::action_server::SetFlightModeInternalResponse* response) {
   (void) context;
   (void) request;
   (void) response;
