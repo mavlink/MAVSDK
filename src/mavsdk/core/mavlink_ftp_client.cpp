@@ -130,8 +130,10 @@ void MavlinkFtpClient::process_mavlink_ftp_message(const mavlink_message_t& msg)
     } else {
         if (_debugging) {
             LogDebug() << "FTP: opcode: " << (int)payload->opcode
+                       << ", req_opcode: " << (int)payload->req_opcode
                        << ", size: " << (int)payload->size << ", offset: " << (int)payload->offset
-                       << ", seq: " << payload->seq_number;
+                       << ", seq: " << payload->seq_number << " from: " << (int)msg.sysid << "/"
+                       << (int)msg.compid;
         }
     }
 
@@ -397,7 +399,7 @@ bool MavlinkFtpClient::download_start(Work& work, DownloadItem& item)
 
     work.last_opcode = CMD_OPEN_FILE_RO;
     work.payload = {};
-    work.payload.seq_number = work.last_sent_seq_number++;
+    work.payload.seq_number = _last_sent_seq_number++;
     work.payload.session = _session;
     work.payload.opcode = work.last_opcode;
     work.payload.offset = 0;
@@ -448,7 +450,7 @@ bool MavlinkFtpClient::download_continue(Work& work, DownloadItem& item, Payload
     if (item.bytes_transferred < item.file_size) {
         work.last_opcode = CMD_READ_FILE;
         work.payload = {};
-        work.payload.seq_number = work.last_sent_seq_number++;
+        work.payload.seq_number = _last_sent_seq_number++;
         work.payload.session = _session;
         work.payload.opcode = work.last_opcode;
         work.payload.offset = item.bytes_transferred;
@@ -495,7 +497,7 @@ bool MavlinkFtpClient::download_burst_start(Work& work, DownloadBurstItem& item)
 
     work.last_opcode = CMD_OPEN_FILE_RO;
     work.payload = {};
-    work.payload.seq_number = work.last_sent_seq_number++;
+    work.payload.seq_number = _last_sent_seq_number++;
     work.payload.session = _session;
     work.payload.opcode = work.last_opcode;
     work.payload.offset = 0;
@@ -673,7 +675,7 @@ void MavlinkFtpClient::download_burst_end(Work& work)
     work.last_opcode = CMD_TERMINATE_SESSION;
 
     work.payload = {};
-    work.payload.seq_number = work.last_sent_seq_number++;
+    work.payload.seq_number = _last_sent_seq_number++;
     work.payload.session = _session;
 
     work.payload.opcode = work.last_opcode;
@@ -690,7 +692,7 @@ void MavlinkFtpClient::request_burst(Work& work, DownloadBurstItem& item)
 
     work.last_opcode = CMD_BURST_READ_FILE;
     work.payload = {};
-    work.payload.seq_number = work.last_sent_seq_number++;
+    work.payload.seq_number = _last_sent_seq_number++;
     work.payload.session = _session;
     work.payload.opcode = work.last_opcode;
     work.payload.offset = item.current_offset;
@@ -713,7 +715,7 @@ void MavlinkFtpClient::request_next_rest(Work& work, DownloadBurstItem& item)
 
     work.last_opcode = CMD_READ_FILE;
     work.payload = {};
-    work.payload.seq_number = work.last_sent_seq_number++;
+    work.payload.seq_number = _last_sent_seq_number++;
     work.payload.session = _session;
     work.payload.opcode = work.last_opcode;
     work.payload.offset = missing.offset;
@@ -766,7 +768,7 @@ bool MavlinkFtpClient::upload_start(Work& work, UploadItem& item)
 
     work.last_opcode = CMD_CREATE_FILE;
     work.payload = {};
-    work.payload.seq_number = work.last_sent_seq_number++;
+    work.payload.seq_number = _last_sent_seq_number++;
     work.payload.session = _session;
     work.payload.opcode = work.last_opcode;
     work.payload.offset = 0;
@@ -788,7 +790,7 @@ bool MavlinkFtpClient::upload_continue(Work& work, UploadItem& item)
         work.last_opcode = CMD_WRITE_FILE;
 
         work.payload = {};
-        work.payload.seq_number = work.last_sent_seq_number++;
+        work.payload.seq_number = _last_sent_seq_number++;
         work.payload.session = _session;
 
         work.payload.opcode = work.last_opcode;
@@ -818,7 +820,7 @@ bool MavlinkFtpClient::upload_continue(Work& work, UploadItem& item)
         work.last_opcode = CMD_TERMINATE_SESSION;
 
         work.payload = {};
-        work.payload.seq_number = work.last_sent_seq_number++;
+        work.payload.seq_number = _last_sent_seq_number++;
         work.payload.session = _session;
 
         work.payload.opcode = work.last_opcode;
@@ -846,7 +848,7 @@ bool MavlinkFtpClient::remove_start(Work& work, RemoveItem& item)
 
     work.last_opcode = CMD_REMOVE_FILE;
     work.payload = {};
-    work.payload.seq_number = work.last_sent_seq_number++;
+    work.payload.seq_number = _last_sent_seq_number++;
     work.payload.session = _session;
     work.payload.opcode = work.last_opcode;
     work.payload.offset = 0;
@@ -868,7 +870,7 @@ bool MavlinkFtpClient::rename_start(Work& work, RenameItem& item)
 
     work.last_opcode = CMD_RENAME;
     work.payload = {};
-    work.payload.seq_number = work.last_sent_seq_number++;
+    work.payload.seq_number = _last_sent_seq_number++;
     work.payload.session = _session;
     work.payload.opcode = work.last_opcode;
     work.payload.offset = 0;
@@ -896,7 +898,7 @@ bool MavlinkFtpClient::create_dir_start(Work& work, CreateDirItem& item)
 
     work.last_opcode = CMD_CREATE_DIRECTORY;
     work.payload = {};
-    work.payload.seq_number = work.last_sent_seq_number++;
+    work.payload.seq_number = _last_sent_seq_number++;
     work.payload.session = _session;
     work.payload.opcode = work.last_opcode;
     work.payload.offset = 0;
@@ -918,7 +920,7 @@ bool MavlinkFtpClient::remove_dir_start(Work& work, RemoveDirItem& item)
 
     work.last_opcode = CMD_REMOVE_DIRECTORY;
     work.payload = {};
-    work.payload.seq_number = work.last_sent_seq_number++;
+    work.payload.seq_number = _last_sent_seq_number++;
     work.payload.session = _session;
     work.payload.opcode = work.last_opcode;
     work.payload.offset = 0;
@@ -946,7 +948,7 @@ bool MavlinkFtpClient::compare_files_start(Work& work, CompareFilesItem& item)
 
     work.last_opcode = CMD_CALC_FILE_CRC32;
     work.payload = {};
-    work.payload.seq_number = work.last_sent_seq_number++;
+    work.payload.seq_number = _last_sent_seq_number++;
     work.payload.session = _session;
     work.payload.opcode = work.last_opcode;
     work.payload.offset = 0;
@@ -969,7 +971,7 @@ bool MavlinkFtpClient::list_dir_start(Work& work, ListDirItem& item)
 
     work.last_opcode = CMD_LIST_DIRECTORY;
     work.payload = {};
-    work.payload.seq_number = work.last_sent_seq_number++;
+    work.payload.seq_number = _last_sent_seq_number++;
     work.payload.session = _session;
     work.payload.opcode = work.last_opcode;
     work.payload.offset = 0;
@@ -1036,7 +1038,7 @@ bool MavlinkFtpClient::list_dir_continue(Work& work, ListDirItem& item, PayloadH
 
     work.last_opcode = CMD_LIST_DIRECTORY;
     work.payload = {};
-    work.payload.seq_number = work.last_sent_seq_number++;
+    work.payload.seq_number = _last_sent_seq_number++;
     work.payload.session = _session;
     work.payload.opcode = work.last_opcode;
     work.payload.offset = item.offset;
@@ -1203,6 +1205,10 @@ void MavlinkFtpClient::are_files_identical_async(
 
 void MavlinkFtpClient::send_mavlink_ftp_message(const PayloadHeader& payload, uint8_t target_compid)
 {
+    if (_debugging) {
+        LogDebug() << "FTP send: opcode: " << (int)payload.opcode << ", seq: " << payload.seq_number
+                   << " to: " << (int)_system_impl.get_system_id() << "/" << (int)target_compid;
+    }
     _system_impl.queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
         mavlink_message_t message;
         mavlink_msg_file_transfer_protocol_pack_chan(
@@ -1254,6 +1260,7 @@ void MavlinkFtpClient::timeout()
                     LogDebug() << "Retries left: " << work->retries;
                 }
 
+                work->payload.seq_number = _last_sent_seq_number++;
                 start_timer();
                 send_mavlink_ftp_message(work->payload, work->target_compid);
             },
@@ -1311,6 +1318,7 @@ void MavlinkFtpClient::timeout()
                     LogDebug() << "Retries left: " << work->retries;
                 }
 
+                work->payload.seq_number = _last_sent_seq_number++;
                 start_timer();
                 send_mavlink_ftp_message(work->payload, work->target_compid);
             },
@@ -1324,6 +1332,7 @@ void MavlinkFtpClient::timeout()
                     LogDebug() << "Retries left: " << work->retries;
                 }
 
+                work->payload.seq_number = _last_sent_seq_number++;
                 start_timer();
                 send_mavlink_ftp_message(work->payload, work->target_compid);
             },
@@ -1337,6 +1346,7 @@ void MavlinkFtpClient::timeout()
                     LogDebug() << "Retries left: " << work->retries;
                 }
 
+                work->payload.seq_number = _last_sent_seq_number++;
                 start_timer();
                 send_mavlink_ftp_message(work->payload, work->target_compid);
             },
@@ -1350,6 +1360,7 @@ void MavlinkFtpClient::timeout()
                     LogDebug() << "Retries left: " << work->retries;
                 }
 
+                work->payload.seq_number = _last_sent_seq_number++;
                 start_timer();
                 send_mavlink_ftp_message(work->payload, work->target_compid);
             },
@@ -1363,6 +1374,7 @@ void MavlinkFtpClient::timeout()
                     LogDebug() << "Retries left: " << work->retries;
                 }
 
+                work->payload.seq_number = _last_sent_seq_number++;
                 start_timer();
                 send_mavlink_ftp_message(work->payload, work->target_compid);
             },
@@ -1376,6 +1388,7 @@ void MavlinkFtpClient::timeout()
                     LogDebug() << "Retries left: " << work->retries;
                 }
 
+                work->payload.seq_number = _last_sent_seq_number++;
                 start_timer();
                 send_mavlink_ftp_message(work->payload, work->target_compid);
             },
@@ -1389,6 +1402,7 @@ void MavlinkFtpClient::timeout()
                     LogDebug() << "Retries left: " << work->retries;
                 }
 
+                work->payload.seq_number = _last_sent_seq_number++;
                 start_timer();
                 send_mavlink_ftp_message(work->payload, work->target_compid);
             }},
@@ -1429,7 +1443,7 @@ void MavlinkFtpClient::terminate_session(Work& work)
     work.last_opcode = CMD_TERMINATE_SESSION;
 
     work.payload = {};
-    work.payload.seq_number = work.last_sent_seq_number++;
+    work.payload.seq_number = _last_sent_seq_number++;
     work.payload.session = _session;
 
     work.payload.opcode = work.last_opcode;
