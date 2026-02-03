@@ -32,7 +32,7 @@ typedef void* mavsdk_info_flight_information_handle_t;
  * @brief System flight information.
  *
  * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_info_FlightInfo_destroy() when done to avoid memory leaks.
+ *       mavsdk_info_flight_info_destroy() when done to avoid memory leaks.
  */
 typedef struct CMAVSDK_EXPORT {
     /**  Time since system boot */
@@ -43,10 +43,10 @@ typedef struct CMAVSDK_EXPORT {
     uint32_t duration_since_arming_ms;
     /**  Duration since takeoff in milliseconds */
     uint32_t duration_since_takeoff_ms;
-} mavsdk_info_FlightInfo_t;
+} mavsdk_info_flight_info_t;
 
 /**
- * @brief Destroy a FlightInfo struct.
+ * @brief Destroy a flight_info struct.
  *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
@@ -55,11 +55,11 @@ typedef struct CMAVSDK_EXPORT {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-CMAVSDK_EXPORT void mavsdk_info_FlightInfo_destroy(
-    mavsdk_info_FlightInfo_t* target);
+CMAVSDK_EXPORT void mavsdk_info_flight_info_destroy(
+    mavsdk_info_flight_info_t* target);
 
 /**
- * @brief Destroy an array of FlightInfo structs.
+ * @brief Destroy an array of flight_info structs.
  *
  * Frees all memory allocated for the array and its elements, including any
  * nested dynamic allocations. Must be called to avoid memory leaks.
@@ -67,25 +67,25 @@ CMAVSDK_EXPORT void mavsdk_info_FlightInfo_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-CMAVSDK_EXPORT void mavsdk_info_FlightInfo_array_destroy(
-    mavsdk_info_FlightInfo_t** array,
+CMAVSDK_EXPORT void mavsdk_info_flight_info_array_destroy(
+    mavsdk_info_flight_info_t** array,
     size_t size);
 
 /**
  * @brief System identification.
  *
  * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_info_Identification_destroy() when done to avoid memory leaks.
+ *       mavsdk_info_identification_destroy() when done to avoid memory leaks.
  */
 typedef struct CMAVSDK_EXPORT {
     /**  UID of the hardware. This refers to uid2 of MAVLink. If the system does not support uid2 yet, this is all zeros. */
     char* hardware_uid;
     /**  Legacy UID of the hardware, referred to as uid in MAVLink (formerly exposed during system discovery as UUID). */
     uint64_t legacy_uid;
-} mavsdk_info_Identification_t;
+} mavsdk_info_identification_t;
 
 /**
- * @brief Destroy a Identification struct.
+ * @brief Destroy a identification struct.
  *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
@@ -94,11 +94,11 @@ typedef struct CMAVSDK_EXPORT {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-CMAVSDK_EXPORT void mavsdk_info_Identification_destroy(
-    mavsdk_info_Identification_t* target);
+CMAVSDK_EXPORT void mavsdk_info_identification_destroy(
+    mavsdk_info_identification_t* target);
 
 /**
- * @brief Destroy an array of Identification structs.
+ * @brief Destroy an array of identification structs.
  *
  * Frees all memory allocated for the array and its elements, including any
  * nested dynamic allocations. Must be called to avoid memory leaks.
@@ -106,15 +106,15 @@ CMAVSDK_EXPORT void mavsdk_info_Identification_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-CMAVSDK_EXPORT void mavsdk_info_Identification_array_destroy(
-    mavsdk_info_Identification_t** array,
+CMAVSDK_EXPORT void mavsdk_info_identification_array_destroy(
+    mavsdk_info_identification_t** array,
     size_t size);
 
 /**
  * @brief System product information.
  *
  * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_info_Product_destroy() when done to avoid memory leaks.
+ *       mavsdk_info_product_destroy() when done to avoid memory leaks.
  */
 typedef struct CMAVSDK_EXPORT {
     /**  ID of the board vendor */
@@ -125,10 +125,10 @@ typedef struct CMAVSDK_EXPORT {
     int32_t product_id;
     /**  Name of the product */
     char* product_name;
-} mavsdk_info_Product_t;
+} mavsdk_info_product_t;
 
 /**
- * @brief Destroy a Product struct.
+ * @brief Destroy a product struct.
  *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
@@ -137,11 +137,11 @@ typedef struct CMAVSDK_EXPORT {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-CMAVSDK_EXPORT void mavsdk_info_Product_destroy(
-    mavsdk_info_Product_t* target);
+CMAVSDK_EXPORT void mavsdk_info_product_destroy(
+    mavsdk_info_product_t* target);
 
 /**
- * @brief Destroy an array of Product structs.
+ * @brief Destroy an array of product structs.
  *
  * Frees all memory allocated for the array and its elements, including any
  * nested dynamic allocations. Must be called to avoid memory leaks.
@@ -149,8 +149,8 @@ CMAVSDK_EXPORT void mavsdk_info_Product_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-CMAVSDK_EXPORT void mavsdk_info_Product_array_destroy(
-    mavsdk_info_Product_t** array,
+CMAVSDK_EXPORT void mavsdk_info_product_array_destroy(
+    mavsdk_info_product_t** array,
     size_t size);
 
 /**
@@ -169,13 +169,13 @@ typedef enum {
     MAVSDK_INFO_VERSION_FLIGHT_SOFTWARE_VERSION_TYPE_RC = 4,
     /**  Official stable release. */
     MAVSDK_INFO_VERSION_FLIGHT_SOFTWARE_VERSION_TYPE_RELEASE = 5,
-} mavsdk_info_Version_FlightSoftwareVersionType_t;
+} mavsdk_info_version_flight_software_version_type_t;
 
 /**
  * @brief System version information.
  *
  * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_info_Version_destroy() when done to avoid memory leaks.
+ *       mavsdk_info_version_destroy() when done to avoid memory leaks.
  */
 typedef struct CMAVSDK_EXPORT {
     /**  Flight software major version */
@@ -201,11 +201,11 @@ typedef struct CMAVSDK_EXPORT {
     /**  Operating system software git hash */
     char* os_sw_git_hash;
     /**  Flight software version type */
-    mavsdk_info_Version_FlightSoftwareVersionType_t flight_sw_version_type;
-} mavsdk_info_Version_t;
+    mavsdk_info_version_flight_software_version_type_t flight_sw_version_type;
+} mavsdk_info_version_t;
 
 /**
- * @brief Destroy a Version struct.
+ * @brief Destroy a version struct.
  *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
@@ -214,11 +214,11 @@ typedef struct CMAVSDK_EXPORT {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-CMAVSDK_EXPORT void mavsdk_info_Version_destroy(
-    mavsdk_info_Version_t* target);
+CMAVSDK_EXPORT void mavsdk_info_version_destroy(
+    mavsdk_info_version_t* target);
 
 /**
- * @brief Destroy an array of Version structs.
+ * @brief Destroy an array of version structs.
  *
  * Frees all memory allocated for the array and its elements, including any
  * nested dynamic allocations. Must be called to avoid memory leaks.
@@ -226,8 +226,8 @@ CMAVSDK_EXPORT void mavsdk_info_Version_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-CMAVSDK_EXPORT void mavsdk_info_Version_array_destroy(
-    mavsdk_info_Version_t** array,
+CMAVSDK_EXPORT void mavsdk_info_version_array_destroy(
+    mavsdk_info_version_t** array,
     size_t size);
 
 /**
@@ -323,7 +323,7 @@ CMAVSDK_EXPORT void mavsdk_info_string_destroy(char** str);
 CMAVSDK_EXPORT void mavsdk_info_byte_buffer_destroy(uint8_t** buffer);
 
 // ===== Callback Typedefs =====
-typedef void (*mavsdk_info_flight_information_callback_t)(const mavsdk_info_FlightInfo_t flight_info, void* user_data);
+typedef void (*mavsdk_info_flight_information_callback_t)(const mavsdk_info_flight_info_t flight_info, void* user_data);
 
 // ===== Info Creation/Destruction =====
 CMAVSDK_EXPORT mavsdk_info_t mavsdk_info_create(mavsdk_system_t system);
@@ -343,7 +343,7 @@ CMAVSDK_EXPORT
 mavsdk_info_result_t
 mavsdk_info_get_flight_information(
     mavsdk_info_t info,
-    mavsdk_info_FlightInfo_t* flight_info_out);
+    mavsdk_info_flight_info_t* flight_info_out);
 
 
 /**
@@ -358,7 +358,7 @@ CMAVSDK_EXPORT
 mavsdk_info_result_t
 mavsdk_info_get_identification(
     mavsdk_info_t info,
-    mavsdk_info_Identification_t* identification_out);
+    mavsdk_info_identification_t* identification_out);
 
 
 /**
@@ -373,7 +373,7 @@ CMAVSDK_EXPORT
 mavsdk_info_result_t
 mavsdk_info_get_product(
     mavsdk_info_t info,
-    mavsdk_info_Product_t* product_out);
+    mavsdk_info_product_t* product_out);
 
 
 /**
@@ -388,7 +388,7 @@ CMAVSDK_EXPORT
 mavsdk_info_result_t
 mavsdk_info_get_version(
     mavsdk_info_t info,
-    mavsdk_info_Version_t* version_out);
+    mavsdk_info_version_t* version_out);
 
 
 /**

@@ -33,15 +33,15 @@ typedef void* mavsdk_log_files_download_log_file_handle_t;
  * @brief Progress data coming when downloading a log file.
  *
  * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_log_files_ProgressData_destroy() when done to avoid memory leaks.
+ *       mavsdk_log_files_progress_data_destroy() when done to avoid memory leaks.
  */
 typedef struct CMAVSDK_EXPORT {
     /**  Progress from 0 to 1 */
     float progress;
-} mavsdk_log_files_ProgressData_t;
+} mavsdk_log_files_progress_data_t;
 
 /**
- * @brief Destroy a ProgressData struct.
+ * @brief Destroy a progress_data struct.
  *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
@@ -50,11 +50,11 @@ typedef struct CMAVSDK_EXPORT {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-CMAVSDK_EXPORT void mavsdk_log_files_ProgressData_destroy(
-    mavsdk_log_files_ProgressData_t* target);
+CMAVSDK_EXPORT void mavsdk_log_files_progress_data_destroy(
+    mavsdk_log_files_progress_data_t* target);
 
 /**
- * @brief Destroy an array of ProgressData structs.
+ * @brief Destroy an array of progress_data structs.
  *
  * Frees all memory allocated for the array and its elements, including any
  * nested dynamic allocations. Must be called to avoid memory leaks.
@@ -62,15 +62,15 @@ CMAVSDK_EXPORT void mavsdk_log_files_ProgressData_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-CMAVSDK_EXPORT void mavsdk_log_files_ProgressData_array_destroy(
-    mavsdk_log_files_ProgressData_t** array,
+CMAVSDK_EXPORT void mavsdk_log_files_progress_data_array_destroy(
+    mavsdk_log_files_progress_data_t** array,
     size_t size);
 
 /**
  * @brief Log file entry type.
  *
  * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_log_files_Entry_destroy() when done to avoid memory leaks.
+ *       mavsdk_log_files_entry_destroy() when done to avoid memory leaks.
  */
 typedef struct CMAVSDK_EXPORT {
     /**  ID of the log file, to specify a file to be downloaded */
@@ -79,10 +79,10 @@ typedef struct CMAVSDK_EXPORT {
     char* date;
     /**  Size of file in bytes */
     uint32_t size_bytes;
-} mavsdk_log_files_Entry_t;
+} mavsdk_log_files_entry_t;
 
 /**
- * @brief Destroy a Entry struct.
+ * @brief Destroy a entry struct.
  *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
@@ -91,11 +91,11 @@ typedef struct CMAVSDK_EXPORT {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-CMAVSDK_EXPORT void mavsdk_log_files_Entry_destroy(
-    mavsdk_log_files_Entry_t* target);
+CMAVSDK_EXPORT void mavsdk_log_files_entry_destroy(
+    mavsdk_log_files_entry_t* target);
 
 /**
- * @brief Destroy an array of Entry structs.
+ * @brief Destroy an array of entry structs.
  *
  * Frees all memory allocated for the array and its elements, including any
  * nested dynamic allocations. Must be called to avoid memory leaks.
@@ -103,8 +103,8 @@ CMAVSDK_EXPORT void mavsdk_log_files_Entry_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-CMAVSDK_EXPORT void mavsdk_log_files_Entry_array_destroy(
-    mavsdk_log_files_Entry_t** array,
+CMAVSDK_EXPORT void mavsdk_log_files_entry_array_destroy(
+    mavsdk_log_files_entry_t** array,
     size_t size);
 
 /**
@@ -208,8 +208,8 @@ CMAVSDK_EXPORT void mavsdk_log_files_string_destroy(char** str);
 CMAVSDK_EXPORT void mavsdk_log_files_byte_buffer_destroy(uint8_t** buffer);
 
 // ===== Callback Typedefs =====
-typedef void (*mavsdk_log_files_get_entries_callback_t)(const mavsdk_log_files_result_t result, const mavsdk_log_files_Entry_t* entries, size_t entries_size, void* user_data);
-typedef void (*mavsdk_log_files_download_log_file_callback_t)(const mavsdk_log_files_result_t result, const mavsdk_log_files_ProgressData_t progress, void* user_data);
+typedef void (*mavsdk_log_files_get_entries_callback_t)(const mavsdk_log_files_result_t result, const mavsdk_log_files_entry_t* entries, size_t entries_size, void* user_data);
+typedef void (*mavsdk_log_files_download_log_file_callback_t)(const mavsdk_log_files_result_t result, const mavsdk_log_files_progress_data_t progress, void* user_data);
 
 // ===== LogFiles Creation/Destruction =====
 CMAVSDK_EXPORT mavsdk_log_files_t mavsdk_log_files_create(mavsdk_system_t system);
@@ -242,7 +242,7 @@ CMAVSDK_EXPORT
 mavsdk_log_files_result_t
 mavsdk_log_files_get_entries(
     mavsdk_log_files_t log_files,
-    mavsdk_log_files_Entry_t** entries_out,
+    mavsdk_log_files_entry_t** entries_out,
     size_t* entries_size_out);
 
 
@@ -259,7 +259,7 @@ mavsdk_log_files_get_entries(
  */
 CMAVSDK_EXPORT void mavsdk_log_files_download_log_file_async(
     mavsdk_log_files_t log_files,
-    mavsdk_log_files_Entry_t entry,
+    mavsdk_log_files_entry_t entry,
     char* path,
     mavsdk_log_files_download_log_file_callback_t callback,
     void* user_data);

@@ -35,7 +35,7 @@ translate_result(mavsdk::Param::Result cpp_result) {
 }
 
 static mavsdk::Param::ProtocolVersion
-translate_ProtocolVersion_from_c(mavsdk_param_ProtocolVersion_t c_enum) {
+translate_protocol_version_from_c(mavsdk_param_protocol_version_t c_enum) {
     switch(c_enum) {
         case MAVSDK_PARAM_PROTOCOL_VERSION_V1:
             return mavsdk::Param::ProtocolVersion::V1;
@@ -45,8 +45,8 @@ translate_ProtocolVersion_from_c(mavsdk_param_ProtocolVersion_t c_enum) {
     return mavsdk::Param::ProtocolVersion::V1;
 }
 
-static mavsdk_param_ProtocolVersion_t
-translate_ProtocolVersion_to_c(mavsdk::Param::ProtocolVersion cpp_enum) {
+static mavsdk_param_protocol_version_t
+translate_protocol_version_to_c(mavsdk::Param::ProtocolVersion cpp_enum) {
     switch(cpp_enum) {
         case mavsdk::Param::ProtocolVersion::V1:
             return MAVSDK_PARAM_PROTOCOL_VERSION_V1;
@@ -59,7 +59,7 @@ translate_ProtocolVersion_to_c(mavsdk::Param::ProtocolVersion cpp_enum) {
 
 
 static mavsdk::Param::IntParam
-translate_IntParam_from_c(const mavsdk_param_IntParam_t& c_struct) {
+translate_int_param_from_c(const mavsdk_param_int_param_t& c_struct) {
     mavsdk::Param::IntParam cpp_struct{};
     if (c_struct.name) {
         cpp_struct.name = c_struct.name;
@@ -68,16 +68,16 @@ translate_IntParam_from_c(const mavsdk_param_IntParam_t& c_struct) {
     return cpp_struct;
 }
 
-static mavsdk_param_IntParam_t
-translate_IntParam_to_c(const mavsdk::Param::IntParam& cpp_struct) {
-    mavsdk_param_IntParam_t c_struct{};
+static mavsdk_param_int_param_t
+translate_int_param_to_c(const mavsdk::Param::IntParam& cpp_struct) {
+    mavsdk_param_int_param_t c_struct{};
     c_struct.name = strdup(cpp_struct.name.c_str());
     c_struct.value = cpp_struct.value;
     return c_struct;
 }
 
-void mavsdk_param_IntParam_destroy(
-    mavsdk_param_IntParam_t* target) {
+void mavsdk_param_int_param_destroy(
+    mavsdk_param_int_param_t* target) {
     if (!target) return;
     if (target->name) {
         free((void*)target->name);
@@ -85,13 +85,13 @@ void mavsdk_param_IntParam_destroy(
     }
 }
 
-void mavsdk_param_IntParam_array_destroy(
-    mavsdk_param_IntParam_t** array,
+void mavsdk_param_int_param_array_destroy(
+    mavsdk_param_int_param_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_param_IntParam_destroy(&(*array)[i]);
+        mavsdk_param_int_param_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -100,7 +100,7 @@ void mavsdk_param_IntParam_array_destroy(
 
 
 static mavsdk::Param::FloatParam
-translate_FloatParam_from_c(const mavsdk_param_FloatParam_t& c_struct) {
+translate_float_param_from_c(const mavsdk_param_float_param_t& c_struct) {
     mavsdk::Param::FloatParam cpp_struct{};
     if (c_struct.name) {
         cpp_struct.name = c_struct.name;
@@ -109,16 +109,16 @@ translate_FloatParam_from_c(const mavsdk_param_FloatParam_t& c_struct) {
     return cpp_struct;
 }
 
-static mavsdk_param_FloatParam_t
-translate_FloatParam_to_c(const mavsdk::Param::FloatParam& cpp_struct) {
-    mavsdk_param_FloatParam_t c_struct{};
+static mavsdk_param_float_param_t
+translate_float_param_to_c(const mavsdk::Param::FloatParam& cpp_struct) {
+    mavsdk_param_float_param_t c_struct{};
     c_struct.name = strdup(cpp_struct.name.c_str());
     c_struct.value = cpp_struct.value;
     return c_struct;
 }
 
-void mavsdk_param_FloatParam_destroy(
-    mavsdk_param_FloatParam_t* target) {
+void mavsdk_param_float_param_destroy(
+    mavsdk_param_float_param_t* target) {
     if (!target) return;
     if (target->name) {
         free((void*)target->name);
@@ -126,13 +126,13 @@ void mavsdk_param_FloatParam_destroy(
     }
 }
 
-void mavsdk_param_FloatParam_array_destroy(
-    mavsdk_param_FloatParam_t** array,
+void mavsdk_param_float_param_array_destroy(
+    mavsdk_param_float_param_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_param_FloatParam_destroy(&(*array)[i]);
+        mavsdk_param_float_param_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -141,7 +141,7 @@ void mavsdk_param_FloatParam_array_destroy(
 
 
 static mavsdk::Param::CustomParam
-translate_CustomParam_from_c(const mavsdk_param_CustomParam_t& c_struct) {
+translate_custom_param_from_c(const mavsdk_param_custom_param_t& c_struct) {
     mavsdk::Param::CustomParam cpp_struct{};
     if (c_struct.name) {
         cpp_struct.name = c_struct.name;
@@ -152,16 +152,16 @@ translate_CustomParam_from_c(const mavsdk_param_CustomParam_t& c_struct) {
     return cpp_struct;
 }
 
-static mavsdk_param_CustomParam_t
-translate_CustomParam_to_c(const mavsdk::Param::CustomParam& cpp_struct) {
-    mavsdk_param_CustomParam_t c_struct{};
+static mavsdk_param_custom_param_t
+translate_custom_param_to_c(const mavsdk::Param::CustomParam& cpp_struct) {
+    mavsdk_param_custom_param_t c_struct{};
     c_struct.name = strdup(cpp_struct.name.c_str());
     c_struct.value = strdup(cpp_struct.value.c_str());
     return c_struct;
 }
 
-void mavsdk_param_CustomParam_destroy(
-    mavsdk_param_CustomParam_t* target) {
+void mavsdk_param_custom_param_destroy(
+    mavsdk_param_custom_param_t* target) {
     if (!target) return;
     if (target->name) {
         free((void*)target->name);
@@ -173,13 +173,13 @@ void mavsdk_param_CustomParam_destroy(
     }
 }
 
-void mavsdk_param_CustomParam_array_destroy(
-    mavsdk_param_CustomParam_t** array,
+void mavsdk_param_custom_param_array_destroy(
+    mavsdk_param_custom_param_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_param_CustomParam_destroy(&(*array)[i]);
+        mavsdk_param_custom_param_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -188,53 +188,53 @@ void mavsdk_param_CustomParam_array_destroy(
 
 
 static mavsdk::Param::AllParams
-translate_AllParams_from_c(const mavsdk_param_AllParams_t& c_struct) {
+translate_all_params_from_c(const mavsdk_param_all_params_t& c_struct) {
     mavsdk::Param::AllParams cpp_struct{};
     cpp_struct.int_params.reserve(c_struct.int_params_size);
     for (size_t i = 0; i < c_struct.int_params_size; i++) {
         cpp_struct.int_params.push_back(
-            translate_IntParam_from_c(c_struct.int_params[i]));
+            translate_int_param_from_c(c_struct.int_params[i]));
     }
     cpp_struct.float_params.reserve(c_struct.float_params_size);
     for (size_t i = 0; i < c_struct.float_params_size; i++) {
         cpp_struct.float_params.push_back(
-            translate_FloatParam_from_c(c_struct.float_params[i]));
+            translate_float_param_from_c(c_struct.float_params[i]));
     }
     cpp_struct.custom_params.reserve(c_struct.custom_params_size);
     for (size_t i = 0; i < c_struct.custom_params_size; i++) {
         cpp_struct.custom_params.push_back(
-            translate_CustomParam_from_c(c_struct.custom_params[i]));
+            translate_custom_param_from_c(c_struct.custom_params[i]));
     }
     return cpp_struct;
 }
 
-static mavsdk_param_AllParams_t
-translate_AllParams_to_c(const mavsdk::Param::AllParams& cpp_struct) {
-    mavsdk_param_AllParams_t c_struct{};
+static mavsdk_param_all_params_t
+translate_all_params_to_c(const mavsdk::Param::AllParams& cpp_struct) {
+    mavsdk_param_all_params_t c_struct{};
     c_struct.int_params_size = cpp_struct.int_params.size();
-    c_struct.int_params = new mavsdk_param_IntParam_t[c_struct.int_params_size];
+    c_struct.int_params = new mavsdk_param_int_param_t[c_struct.int_params_size];
     for (size_t i = 0; i < c_struct.int_params_size; i++) {
-        c_struct.int_params[i] = translate_IntParam_to_c(cpp_struct.int_params[i]);
+        c_struct.int_params[i] = translate_int_param_to_c(cpp_struct.int_params[i]);
     }
     c_struct.float_params_size = cpp_struct.float_params.size();
-    c_struct.float_params = new mavsdk_param_FloatParam_t[c_struct.float_params_size];
+    c_struct.float_params = new mavsdk_param_float_param_t[c_struct.float_params_size];
     for (size_t i = 0; i < c_struct.float_params_size; i++) {
-        c_struct.float_params[i] = translate_FloatParam_to_c(cpp_struct.float_params[i]);
+        c_struct.float_params[i] = translate_float_param_to_c(cpp_struct.float_params[i]);
     }
     c_struct.custom_params_size = cpp_struct.custom_params.size();
-    c_struct.custom_params = new mavsdk_param_CustomParam_t[c_struct.custom_params_size];
+    c_struct.custom_params = new mavsdk_param_custom_param_t[c_struct.custom_params_size];
     for (size_t i = 0; i < c_struct.custom_params_size; i++) {
-        c_struct.custom_params[i] = translate_CustomParam_to_c(cpp_struct.custom_params[i]);
+        c_struct.custom_params[i] = translate_custom_param_to_c(cpp_struct.custom_params[i]);
     }
     return c_struct;
 }
 
-void mavsdk_param_AllParams_destroy(
-    mavsdk_param_AllParams_t* target) {
+void mavsdk_param_all_params_destroy(
+    mavsdk_param_all_params_t* target) {
     if (!target) return;
     if (target->int_params) {
         for (size_t i = 0; i < target->int_params_size; i++) {
-            mavsdk_param_IntParam_destroy(&target->int_params[i]);
+            mavsdk_param_int_param_destroy(&target->int_params[i]);
         }
         delete[] target->int_params;
         target->int_params = nullptr;
@@ -242,7 +242,7 @@ void mavsdk_param_AllParams_destroy(
     }
     if (target->float_params) {
         for (size_t i = 0; i < target->float_params_size; i++) {
-            mavsdk_param_FloatParam_destroy(&target->float_params[i]);
+            mavsdk_param_float_param_destroy(&target->float_params[i]);
         }
         delete[] target->float_params;
         target->float_params = nullptr;
@@ -250,7 +250,7 @@ void mavsdk_param_AllParams_destroy(
     }
     if (target->custom_params) {
         for (size_t i = 0; i < target->custom_params_size; i++) {
-            mavsdk_param_CustomParam_destroy(&target->custom_params[i]);
+            mavsdk_param_custom_param_destroy(&target->custom_params[i]);
         }
         delete[] target->custom_params;
         target->custom_params = nullptr;
@@ -258,13 +258,13 @@ void mavsdk_param_AllParams_destroy(
     }
 }
 
-void mavsdk_param_AllParams_array_destroy(
-    mavsdk_param_AllParams_t** array,
+void mavsdk_param_all_params_array_destroy(
+    mavsdk_param_all_params_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_param_AllParams_destroy(&(*array)[i]);
+        mavsdk_param_all_params_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -465,14 +465,14 @@ mavsdk_param_set_param_custom(
 void
 mavsdk_param_get_all_params(
     mavsdk_param_t param,
-    mavsdk_param_AllParams_t* params_out)
+    mavsdk_param_all_params_t* params_out)
 {
     auto wrapper = static_cast<mavsdk_param_wrapper*>(param);
 
     auto ret_value = wrapper->cpp_plugin->get_all_params();
 
     if (params_out != nullptr) {
-        *params_out = translate_AllParams_to_c(ret_value);
+        *params_out = translate_all_params_to_c(ret_value);
     }
 }
 
@@ -482,11 +482,11 @@ mavsdk_param_result_t
 mavsdk_param_select_component(
     mavsdk_param_t param,
     int32_t component_id,
-    mavsdk_param_ProtocolVersion_t protocol_version)
+    mavsdk_param_protocol_version_t protocol_version)
 {
     auto wrapper = static_cast<mavsdk_param_wrapper*>(param);
 
-    auto ret_value = wrapper->cpp_plugin->select_component(        component_id,        translate_ProtocolVersion_from_c(protocol_version));
+    auto ret_value = wrapper->cpp_plugin->select_component(        component_id,        translate_protocol_version_from_c(protocol_version));
 
     return translate_result(ret_value);
 }

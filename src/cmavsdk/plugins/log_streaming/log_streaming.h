@@ -32,15 +32,15 @@ typedef void* mavsdk_log_streaming_log_streaming_raw_handle_t;
  * @brief Raw logging data type
  *
  * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_log_streaming_LogStreamingRaw_destroy() when done to avoid memory leaks.
+ *       mavsdk_log_streaming_log_streaming_raw_destroy() when done to avoid memory leaks.
  */
 typedef struct CMAVSDK_EXPORT {
     /**  Ulog file stream data encoded as base64 */
     char* data_base64;
-} mavsdk_log_streaming_LogStreamingRaw_t;
+} mavsdk_log_streaming_log_streaming_raw_t;
 
 /**
- * @brief Destroy a LogStreamingRaw struct.
+ * @brief Destroy a log_streaming_raw struct.
  *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
@@ -49,11 +49,11 @@ typedef struct CMAVSDK_EXPORT {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-CMAVSDK_EXPORT void mavsdk_log_streaming_LogStreamingRaw_destroy(
-    mavsdk_log_streaming_LogStreamingRaw_t* target);
+CMAVSDK_EXPORT void mavsdk_log_streaming_log_streaming_raw_destroy(
+    mavsdk_log_streaming_log_streaming_raw_t* target);
 
 /**
- * @brief Destroy an array of LogStreamingRaw structs.
+ * @brief Destroy an array of log_streaming_raw structs.
  *
  * Frees all memory allocated for the array and its elements, including any
  * nested dynamic allocations. Must be called to avoid memory leaks.
@@ -61,8 +61,8 @@ CMAVSDK_EXPORT void mavsdk_log_streaming_LogStreamingRaw_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-CMAVSDK_EXPORT void mavsdk_log_streaming_LogStreamingRaw_array_destroy(
-    mavsdk_log_streaming_LogStreamingRaw_t** array,
+CMAVSDK_EXPORT void mavsdk_log_streaming_log_streaming_raw_array_destroy(
+    mavsdk_log_streaming_log_streaming_raw_t** array,
     size_t size);
 
 /**
@@ -168,7 +168,7 @@ CMAVSDK_EXPORT void mavsdk_log_streaming_byte_buffer_destroy(uint8_t** buffer);
 // ===== Callback Typedefs =====
 typedef void (*mavsdk_log_streaming_start_log_streaming_callback_t)(const mavsdk_log_streaming_result_t result, void* user_data);
 typedef void (*mavsdk_log_streaming_stop_log_streaming_callback_t)(const mavsdk_log_streaming_result_t result, void* user_data);
-typedef void (*mavsdk_log_streaming_log_streaming_raw_callback_t)(const mavsdk_log_streaming_LogStreamingRaw_t logging_raw, void* user_data);
+typedef void (*mavsdk_log_streaming_log_streaming_raw_callback_t)(const mavsdk_log_streaming_log_streaming_raw_t logging_raw, void* user_data);
 
 // ===== LogStreaming Creation/Destruction =====
 CMAVSDK_EXPORT mavsdk_log_streaming_t mavsdk_log_streaming_create(mavsdk_system_t system);

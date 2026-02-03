@@ -38,13 +38,13 @@ typedef enum {
     MAVSDK_FOLLOW_ME_CONFIG_FOLLOW_ALTITUDE_MODE_TERRAIN = 1,
     /**  Target GPS altitude taken into account to do 3D tracking. */
     MAVSDK_FOLLOW_ME_CONFIG_FOLLOW_ALTITUDE_MODE_TARGET_GPS = 2,
-} mavsdk_follow_me_Config_FollowAltitudeMode_t;
+} mavsdk_follow_me_config_follow_altitude_mode_t;
 
 /**
  * @brief Configuration type.
  *
  * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_follow_me_Config_destroy() when done to avoid memory leaks.
+ *       mavsdk_follow_me_config_destroy() when done to avoid memory leaks.
  */
 typedef struct CMAVSDK_EXPORT {
     /**  [m] Follow height in meters (recommended minimum 8 meters) */
@@ -54,15 +54,15 @@ typedef struct CMAVSDK_EXPORT {
     /**  How responsive the vehicle is to the motion of the target, Lower value = More responsive (range 0.0 to 1.0) */
     float responsiveness;
     /**  Follow Altitude control mode */
-    mavsdk_follow_me_Config_FollowAltitudeMode_t altitude_mode;
+    mavsdk_follow_me_config_follow_altitude_mode_t altitude_mode;
     /**  [m/s] Maximum orbit tangential velocity relative to the target, in meters per second. Higher value = More aggressive follow angle tracking. */
     float max_tangential_vel_m_s;
     /**  [deg] Follow Angle relative to the target. 0 equals following in front of the target's direction. Angle increases in Clockwise direction, so following from right would be 90 degrees, from the left is -90 degrees, and so on. */
     float follow_angle_deg;
-} mavsdk_follow_me_Config_t;
+} mavsdk_follow_me_config_t;
 
 /**
- * @brief Destroy a Config struct.
+ * @brief Destroy a config struct.
  *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
@@ -71,11 +71,11 @@ typedef struct CMAVSDK_EXPORT {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-CMAVSDK_EXPORT void mavsdk_follow_me_Config_destroy(
-    mavsdk_follow_me_Config_t* target);
+CMAVSDK_EXPORT void mavsdk_follow_me_config_destroy(
+    mavsdk_follow_me_config_t* target);
 
 /**
- * @brief Destroy an array of Config structs.
+ * @brief Destroy an array of config structs.
  *
  * Frees all memory allocated for the array and its elements, including any
  * nested dynamic allocations. Must be called to avoid memory leaks.
@@ -83,15 +83,15 @@ CMAVSDK_EXPORT void mavsdk_follow_me_Config_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-CMAVSDK_EXPORT void mavsdk_follow_me_Config_array_destroy(
-    mavsdk_follow_me_Config_t** array,
+CMAVSDK_EXPORT void mavsdk_follow_me_config_array_destroy(
+    mavsdk_follow_me_config_t** array,
     size_t size);
 
 /**
  * @brief Target location for the vehicle to follow
  *
  * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_follow_me_TargetLocation_destroy() when done to avoid memory leaks.
+ *       mavsdk_follow_me_target_location_destroy() when done to avoid memory leaks.
  */
 typedef struct CMAVSDK_EXPORT {
     /**  Target latitude in degrees */
@@ -106,10 +106,10 @@ typedef struct CMAVSDK_EXPORT {
     float velocity_y_m_s;
     /**  Target velocity in Z axis, in meters per second */
     float velocity_z_m_s;
-} mavsdk_follow_me_TargetLocation_t;
+} mavsdk_follow_me_target_location_t;
 
 /**
- * @brief Destroy a TargetLocation struct.
+ * @brief Destroy a target_location struct.
  *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
@@ -118,11 +118,11 @@ typedef struct CMAVSDK_EXPORT {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-CMAVSDK_EXPORT void mavsdk_follow_me_TargetLocation_destroy(
-    mavsdk_follow_me_TargetLocation_t* target);
+CMAVSDK_EXPORT void mavsdk_follow_me_target_location_destroy(
+    mavsdk_follow_me_target_location_t* target);
 
 /**
- * @brief Destroy an array of TargetLocation structs.
+ * @brief Destroy an array of target_location structs.
  *
  * Frees all memory allocated for the array and its elements, including any
  * nested dynamic allocations. Must be called to avoid memory leaks.
@@ -130,8 +130,8 @@ CMAVSDK_EXPORT void mavsdk_follow_me_TargetLocation_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-CMAVSDK_EXPORT void mavsdk_follow_me_TargetLocation_array_destroy(
-    mavsdk_follow_me_TargetLocation_t** array,
+CMAVSDK_EXPORT void mavsdk_follow_me_target_location_array_destroy(
+    mavsdk_follow_me_target_location_t** array,
     size_t size);
 
 /**
@@ -256,7 +256,7 @@ CMAVSDK_EXPORT
 void
 mavsdk_follow_me_get_config(
     mavsdk_follow_me_t follow_me,
-    mavsdk_follow_me_Config_t* config_out);
+    mavsdk_follow_me_config_t* config_out);
 
 
 /**
@@ -271,7 +271,7 @@ CMAVSDK_EXPORT
 mavsdk_follow_me_result_t
 mavsdk_follow_me_set_config(
     mavsdk_follow_me_t follow_me,
-    mavsdk_follow_me_Config_t config);
+    mavsdk_follow_me_config_t config);
 
 
 /**
@@ -301,7 +301,7 @@ CMAVSDK_EXPORT
 mavsdk_follow_me_result_t
 mavsdk_follow_me_set_target_location(
     mavsdk_follow_me_t follow_me,
-    mavsdk_follow_me_TargetLocation_t location);
+    mavsdk_follow_me_target_location_t location);
 
 
 /**
@@ -316,7 +316,7 @@ CMAVSDK_EXPORT
 void
 mavsdk_follow_me_get_last_location(
     mavsdk_follow_me_t follow_me,
-    mavsdk_follow_me_TargetLocation_t* location_out);
+    mavsdk_follow_me_target_location_t* location_out);
 
 
 /**

@@ -31,15 +31,15 @@ typedef void* mavsdk_rtk_t;
  * @brief RTCM data type
  *
  * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_rtk_RtcmData_destroy() when done to avoid memory leaks.
+ *       mavsdk_rtk_rtcm_data_destroy() when done to avoid memory leaks.
  */
 typedef struct CMAVSDK_EXPORT {
     /**  The data encoded as a base64 string */
     char* data_base64;
-} mavsdk_rtk_RtcmData_t;
+} mavsdk_rtk_rtcm_data_t;
 
 /**
- * @brief Destroy a RtcmData struct.
+ * @brief Destroy a rtcm_data struct.
  *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
@@ -48,11 +48,11 @@ typedef struct CMAVSDK_EXPORT {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-CMAVSDK_EXPORT void mavsdk_rtk_RtcmData_destroy(
-    mavsdk_rtk_RtcmData_t* target);
+CMAVSDK_EXPORT void mavsdk_rtk_rtcm_data_destroy(
+    mavsdk_rtk_rtcm_data_t* target);
 
 /**
- * @brief Destroy an array of RtcmData structs.
+ * @brief Destroy an array of rtcm_data structs.
  *
  * Frees all memory allocated for the array and its elements, including any
  * nested dynamic allocations. Must be called to avoid memory leaks.
@@ -60,8 +60,8 @@ CMAVSDK_EXPORT void mavsdk_rtk_RtcmData_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-CMAVSDK_EXPORT void mavsdk_rtk_RtcmData_array_destroy(
-    mavsdk_rtk_RtcmData_t** array,
+CMAVSDK_EXPORT void mavsdk_rtk_rtcm_data_array_destroy(
+    mavsdk_rtk_rtcm_data_t** array,
     size_t size);
 
 /**
@@ -178,7 +178,7 @@ CMAVSDK_EXPORT
 mavsdk_rtk_result_t
 mavsdk_rtk_send_rtcm_data(
     mavsdk_rtk_t rtk,
-    mavsdk_rtk_RtcmData_t rtcm_data);
+    mavsdk_rtk_rtcm_data_t rtcm_data);
 
 
 #ifdef __cplusplus

@@ -59,7 +59,7 @@ typedef enum {
     MAVSDK_FAILURE_FAILURE_UNIT_SYSTEM_RC_SIGNAL = 13,
     /**  MAVLink signal. */
     MAVSDK_FAILURE_FAILURE_UNIT_SYSTEM_MAVLINK_SIGNAL = 14,
-} mavsdk_failure_FailureUnit_t;
+} mavsdk_failure_failure_unit_t;
 
 /**
  * @brief A failure type
@@ -81,7 +81,7 @@ typedef enum {
     MAVSDK_FAILURE_FAILURE_TYPE_DELAYED = 6,
     /**  Unit is sometimes working, sometimes not. */
     MAVSDK_FAILURE_FAILURE_TYPE_INTERMITTENT = 7,
-} mavsdk_failure_FailureType_t;
+} mavsdk_failure_failure_type_t;
 
 
 // ===== Structs =====
@@ -205,8 +205,8 @@ CMAVSDK_EXPORT
 mavsdk_failure_result_t
 mavsdk_failure_inject(
     mavsdk_failure_t failure,
-    mavsdk_failure_FailureUnit_t failure_unit,
-    mavsdk_failure_FailureType_t failure_type,
+    mavsdk_failure_failure_unit_t failure_unit,
+    mavsdk_failure_failure_type_t failure_type,
     int32_t instance);
 
 

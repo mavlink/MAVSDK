@@ -33,7 +33,7 @@ translate_result(mavsdk::Failure::Result cpp_result) {
 }
 
 static mavsdk::Failure::FailureUnit
-translate_FailureUnit_from_c(mavsdk_failure_FailureUnit_t c_enum) {
+translate_failure_unit_from_c(mavsdk_failure_failure_unit_t c_enum) {
     switch(c_enum) {
         case MAVSDK_FAILURE_FAILURE_UNIT_SENSOR_GYRO:
             return mavsdk::Failure::FailureUnit::SensorGyro;
@@ -69,8 +69,8 @@ translate_FailureUnit_from_c(mavsdk_failure_FailureUnit_t c_enum) {
     return mavsdk::Failure::FailureUnit::SensorGyro;
 }
 
-static mavsdk_failure_FailureUnit_t
-translate_FailureUnit_to_c(mavsdk::Failure::FailureUnit cpp_enum) {
+static mavsdk_failure_failure_unit_t
+translate_failure_unit_to_c(mavsdk::Failure::FailureUnit cpp_enum) {
     switch(cpp_enum) {
         case mavsdk::Failure::FailureUnit::SensorGyro:
             return MAVSDK_FAILURE_FAILURE_UNIT_SENSOR_GYRO;
@@ -107,7 +107,7 @@ translate_FailureUnit_to_c(mavsdk::Failure::FailureUnit cpp_enum) {
 }
 
 static mavsdk::Failure::FailureType
-translate_FailureType_from_c(mavsdk_failure_FailureType_t c_enum) {
+translate_failure_type_from_c(mavsdk_failure_failure_type_t c_enum) {
     switch(c_enum) {
         case MAVSDK_FAILURE_FAILURE_TYPE_OK:
             return mavsdk::Failure::FailureType::Ok;
@@ -129,8 +129,8 @@ translate_FailureType_from_c(mavsdk_failure_FailureType_t c_enum) {
     return mavsdk::Failure::FailureType::Ok;
 }
 
-static mavsdk_failure_FailureType_t
-translate_FailureType_to_c(mavsdk::Failure::FailureType cpp_enum) {
+static mavsdk_failure_failure_type_t
+translate_failure_type_to_c(mavsdk::Failure::FailureType cpp_enum) {
     switch(cpp_enum) {
         case mavsdk::Failure::FailureType::Ok:
             return MAVSDK_FAILURE_FAILURE_TYPE_OK;
@@ -246,13 +246,13 @@ void mavsdk_failure_destroy(mavsdk_failure_t failure) {
 mavsdk_failure_result_t
 mavsdk_failure_inject(
     mavsdk_failure_t failure,
-    mavsdk_failure_FailureUnit_t failure_unit,
-    mavsdk_failure_FailureType_t failure_type,
+    mavsdk_failure_failure_unit_t failure_unit,
+    mavsdk_failure_failure_type_t failure_type,
     int32_t instance)
 {
     auto wrapper = static_cast<mavsdk_failure_wrapper*>(failure);
 
-    auto ret_value = wrapper->cpp_plugin->inject(        translate_FailureUnit_from_c(failure_unit),        translate_FailureType_from_c(failure_type),        instance);
+    auto ret_value = wrapper->cpp_plugin->inject(        translate_failure_unit_from_c(failure_unit),        translate_failure_type_from_c(failure_type),        instance);
 
     return translate_result(ret_value);
 }

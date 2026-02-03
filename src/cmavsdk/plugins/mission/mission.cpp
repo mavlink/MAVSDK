@@ -51,7 +51,7 @@ translate_result(mavsdk::Mission::Result cpp_result) {
 
 
 static mavsdk::Mission::MissionItem::CameraAction
-translate_MissionItem_CameraAction_from_c(mavsdk_mission_MissionItem_CameraAction_t c_enum) {
+translate_mission_item_camera_action_from_c(mavsdk_mission_mission_item_camera_action_t c_enum) {
     switch(c_enum) {
         case MAVSDK_MISSION_MISSION_ITEM_CAMERA_ACTION_NONE:
             return mavsdk::Mission::MissionItem::CameraAction::None;
@@ -75,7 +75,7 @@ translate_MissionItem_CameraAction_from_c(mavsdk_mission_MissionItem_CameraActio
 
 
 static mavsdk::Mission::MissionItem::VehicleAction
-translate_MissionItem_VehicleAction_from_c(mavsdk_mission_MissionItem_VehicleAction_t c_enum) {
+translate_mission_item_vehicle_action_from_c(mavsdk_mission_mission_item_vehicle_action_t c_enum) {
     switch(c_enum) {
         case MAVSDK_MISSION_MISSION_ITEM_VEHICLE_ACTION_NONE:
             return mavsdk::Mission::MissionItem::VehicleAction::None;
@@ -93,7 +93,7 @@ translate_MissionItem_VehicleAction_from_c(mavsdk_mission_MissionItem_VehicleAct
 
 
 static mavsdk::Mission::MissionItem
-translate_MissionItem_from_c(const mavsdk_mission_MissionItem_t& c_struct) {
+translate_mission_item_from_c(const mavsdk_mission_mission_item_t& c_struct) {
     mavsdk::Mission::MissionItem cpp_struct{};
     cpp_struct.latitude_deg = c_struct.latitude_deg;
     cpp_struct.longitude_deg = c_struct.longitude_deg;
@@ -102,19 +102,19 @@ translate_MissionItem_from_c(const mavsdk_mission_MissionItem_t& c_struct) {
     cpp_struct.is_fly_through = c_struct.is_fly_through;
     cpp_struct.gimbal_pitch_deg = c_struct.gimbal_pitch_deg;
     cpp_struct.gimbal_yaw_deg = c_struct.gimbal_yaw_deg;
-    cpp_struct.camera_action = translate_MissionItem_CameraAction_from_c(c_struct.camera_action);
+    cpp_struct.camera_action = translate_mission_item_camera_action_from_c(c_struct.camera_action);
     cpp_struct.loiter_time_s = c_struct.loiter_time_s;
     cpp_struct.camera_photo_interval_s = c_struct.camera_photo_interval_s;
     cpp_struct.acceptance_radius_m = c_struct.acceptance_radius_m;
     cpp_struct.yaw_deg = c_struct.yaw_deg;
     cpp_struct.camera_photo_distance_m = c_struct.camera_photo_distance_m;
-    cpp_struct.vehicle_action = translate_MissionItem_VehicleAction_from_c(c_struct.vehicle_action);
+    cpp_struct.vehicle_action = translate_mission_item_vehicle_action_from_c(c_struct.vehicle_action);
     return cpp_struct;
 }
 
 
-static mavsdk_mission_MissionItem_CameraAction_t
-translate_MissionItem_CameraAction_to_c(mavsdk::Mission::MissionItem::CameraAction cpp_enum) {
+static mavsdk_mission_mission_item_camera_action_t
+translate_mission_item_camera_action_to_c(mavsdk::Mission::MissionItem::CameraAction cpp_enum) {
     switch(cpp_enum) {
         case mavsdk::Mission::MissionItem::CameraAction::None:
             return MAVSDK_MISSION_MISSION_ITEM_CAMERA_ACTION_NONE;
@@ -137,8 +137,8 @@ translate_MissionItem_CameraAction_to_c(mavsdk::Mission::MissionItem::CameraActi
 }
 
 
-static mavsdk_mission_MissionItem_VehicleAction_t
-translate_MissionItem_VehicleAction_to_c(mavsdk::Mission::MissionItem::VehicleAction cpp_enum) {
+static mavsdk_mission_mission_item_vehicle_action_t
+translate_mission_item_vehicle_action_to_c(mavsdk::Mission::MissionItem::VehicleAction cpp_enum) {
     switch(cpp_enum) {
         case mavsdk::Mission::MissionItem::VehicleAction::None:
             return MAVSDK_MISSION_MISSION_ITEM_VEHICLE_ACTION_NONE;
@@ -154,9 +154,9 @@ translate_MissionItem_VehicleAction_to_c(mavsdk::Mission::MissionItem::VehicleAc
     return MAVSDK_MISSION_MISSION_ITEM_VEHICLE_ACTION_NONE;
 }
 
-static mavsdk_mission_MissionItem_t
-translate_MissionItem_to_c(const mavsdk::Mission::MissionItem& cpp_struct) {
-    mavsdk_mission_MissionItem_t c_struct{};
+static mavsdk_mission_mission_item_t
+translate_mission_item_to_c(const mavsdk::Mission::MissionItem& cpp_struct) {
+    mavsdk_mission_mission_item_t c_struct{};
     c_struct.latitude_deg = cpp_struct.latitude_deg;
     c_struct.longitude_deg = cpp_struct.longitude_deg;
     c_struct.relative_altitude_m = cpp_struct.relative_altitude_m;
@@ -164,28 +164,28 @@ translate_MissionItem_to_c(const mavsdk::Mission::MissionItem& cpp_struct) {
     c_struct.is_fly_through = cpp_struct.is_fly_through;
     c_struct.gimbal_pitch_deg = cpp_struct.gimbal_pitch_deg;
     c_struct.gimbal_yaw_deg = cpp_struct.gimbal_yaw_deg;
-    c_struct.camera_action = translate_MissionItem_CameraAction_to_c(cpp_struct.camera_action);
+    c_struct.camera_action = translate_mission_item_camera_action_to_c(cpp_struct.camera_action);
     c_struct.loiter_time_s = cpp_struct.loiter_time_s;
     c_struct.camera_photo_interval_s = cpp_struct.camera_photo_interval_s;
     c_struct.acceptance_radius_m = cpp_struct.acceptance_radius_m;
     c_struct.yaw_deg = cpp_struct.yaw_deg;
     c_struct.camera_photo_distance_m = cpp_struct.camera_photo_distance_m;
-    c_struct.vehicle_action = translate_MissionItem_VehicleAction_to_c(cpp_struct.vehicle_action);
+    c_struct.vehicle_action = translate_mission_item_vehicle_action_to_c(cpp_struct.vehicle_action);
     return c_struct;
 }
 
-void mavsdk_mission_MissionItem_destroy(
-    mavsdk_mission_MissionItem_t* target) {
+void mavsdk_mission_mission_item_destroy(
+    mavsdk_mission_mission_item_t* target) {
     if (!target) return;
 }
 
-void mavsdk_mission_MissionItem_array_destroy(
-    mavsdk_mission_MissionItem_t** array,
+void mavsdk_mission_mission_item_array_destroy(
+    mavsdk_mission_mission_item_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_mission_MissionItem_destroy(&(*array)[i]);
+        mavsdk_mission_mission_item_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -194,33 +194,33 @@ void mavsdk_mission_MissionItem_array_destroy(
 
 
 static mavsdk::Mission::MissionPlan
-translate_MissionPlan_from_c(const mavsdk_mission_MissionPlan_t& c_struct) {
+translate_mission_plan_from_c(const mavsdk_mission_mission_plan_t& c_struct) {
     mavsdk::Mission::MissionPlan cpp_struct{};
     cpp_struct.mission_items.reserve(c_struct.mission_items_size);
     for (size_t i = 0; i < c_struct.mission_items_size; i++) {
         cpp_struct.mission_items.push_back(
-            translate_MissionItem_from_c(c_struct.mission_items[i]));
+            translate_mission_item_from_c(c_struct.mission_items[i]));
     }
     return cpp_struct;
 }
 
-static mavsdk_mission_MissionPlan_t
-translate_MissionPlan_to_c(const mavsdk::Mission::MissionPlan& cpp_struct) {
-    mavsdk_mission_MissionPlan_t c_struct{};
+static mavsdk_mission_mission_plan_t
+translate_mission_plan_to_c(const mavsdk::Mission::MissionPlan& cpp_struct) {
+    mavsdk_mission_mission_plan_t c_struct{};
     c_struct.mission_items_size = cpp_struct.mission_items.size();
-    c_struct.mission_items = new mavsdk_mission_MissionItem_t[c_struct.mission_items_size];
+    c_struct.mission_items = new mavsdk_mission_mission_item_t[c_struct.mission_items_size];
     for (size_t i = 0; i < c_struct.mission_items_size; i++) {
-        c_struct.mission_items[i] = translate_MissionItem_to_c(cpp_struct.mission_items[i]);
+        c_struct.mission_items[i] = translate_mission_item_to_c(cpp_struct.mission_items[i]);
     }
     return c_struct;
 }
 
-void mavsdk_mission_MissionPlan_destroy(
-    mavsdk_mission_MissionPlan_t* target) {
+void mavsdk_mission_mission_plan_destroy(
+    mavsdk_mission_mission_plan_t* target) {
     if (!target) return;
     if (target->mission_items) {
         for (size_t i = 0; i < target->mission_items_size; i++) {
-            mavsdk_mission_MissionItem_destroy(&target->mission_items[i]);
+            mavsdk_mission_mission_item_destroy(&target->mission_items[i]);
         }
         delete[] target->mission_items;
         target->mission_items = nullptr;
@@ -228,13 +228,13 @@ void mavsdk_mission_MissionPlan_destroy(
     }
 }
 
-void mavsdk_mission_MissionPlan_array_destroy(
-    mavsdk_mission_MissionPlan_t** array,
+void mavsdk_mission_mission_plan_array_destroy(
+    mavsdk_mission_mission_plan_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_mission_MissionPlan_destroy(&(*array)[i]);
+        mavsdk_mission_mission_plan_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -243,33 +243,33 @@ void mavsdk_mission_MissionPlan_array_destroy(
 
 
 static mavsdk::Mission::MissionProgress
-translate_MissionProgress_from_c(const mavsdk_mission_MissionProgress_t& c_struct) {
+translate_mission_progress_from_c(const mavsdk_mission_mission_progress_t& c_struct) {
     mavsdk::Mission::MissionProgress cpp_struct{};
     cpp_struct.current = c_struct.current;
     cpp_struct.total = c_struct.total;
     return cpp_struct;
 }
 
-static mavsdk_mission_MissionProgress_t
-translate_MissionProgress_to_c(const mavsdk::Mission::MissionProgress& cpp_struct) {
-    mavsdk_mission_MissionProgress_t c_struct{};
+static mavsdk_mission_mission_progress_t
+translate_mission_progress_to_c(const mavsdk::Mission::MissionProgress& cpp_struct) {
+    mavsdk_mission_mission_progress_t c_struct{};
     c_struct.current = cpp_struct.current;
     c_struct.total = cpp_struct.total;
     return c_struct;
 }
 
-void mavsdk_mission_MissionProgress_destroy(
-    mavsdk_mission_MissionProgress_t* target) {
+void mavsdk_mission_mission_progress_destroy(
+    mavsdk_mission_mission_progress_t* target) {
     if (!target) return;
 }
 
-void mavsdk_mission_MissionProgress_array_destroy(
-    mavsdk_mission_MissionProgress_t** array,
+void mavsdk_mission_mission_progress_array_destroy(
+    mavsdk_mission_mission_progress_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_mission_MissionProgress_destroy(&(*array)[i]);
+        mavsdk_mission_mission_progress_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -279,31 +279,31 @@ void mavsdk_mission_MissionProgress_array_destroy(
 
 
 static mavsdk::Mission::ProgressData
-translate_ProgressData_from_c(const mavsdk_mission_ProgressData_t& c_struct) {
+translate_progress_data_from_c(const mavsdk_mission_progress_data_t& c_struct) {
     mavsdk::Mission::ProgressData cpp_struct{};
     cpp_struct.progress = c_struct.progress;
     return cpp_struct;
 }
 
-static mavsdk_mission_ProgressData_t
-translate_ProgressData_to_c(const mavsdk::Mission::ProgressData& cpp_struct) {
-    mavsdk_mission_ProgressData_t c_struct{};
+static mavsdk_mission_progress_data_t
+translate_progress_data_to_c(const mavsdk::Mission::ProgressData& cpp_struct) {
+    mavsdk_mission_progress_data_t c_struct{};
     c_struct.progress = cpp_struct.progress;
     return c_struct;
 }
 
-void mavsdk_mission_ProgressData_destroy(
-    mavsdk_mission_ProgressData_t* target) {
+void mavsdk_mission_progress_data_destroy(
+    mavsdk_mission_progress_data_t* target) {
     if (!target) return;
 }
 
-void mavsdk_mission_ProgressData_array_destroy(
-    mavsdk_mission_ProgressData_t** array,
+void mavsdk_mission_progress_data_array_destroy(
+    mavsdk_mission_progress_data_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_mission_ProgressData_destroy(&(*array)[i]);
+        mavsdk_mission_progress_data_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -312,37 +312,37 @@ void mavsdk_mission_ProgressData_array_destroy(
 
 
 static mavsdk::Mission::ProgressDataOrMission
-translate_ProgressDataOrMission_from_c(const mavsdk_mission_ProgressDataOrMission_t& c_struct) {
+translate_progress_data_or_mission_from_c(const mavsdk_mission_progress_data_or_mission_t& c_struct) {
     mavsdk::Mission::ProgressDataOrMission cpp_struct{};
     cpp_struct.has_progress = c_struct.has_progress;
     cpp_struct.progress = c_struct.progress;
     cpp_struct.has_mission = c_struct.has_mission;
-    cpp_struct.mission_plan = translate_MissionPlan_from_c(c_struct.mission_plan);
+    cpp_struct.mission_plan = translate_mission_plan_from_c(c_struct.mission_plan);
     return cpp_struct;
 }
 
-static mavsdk_mission_ProgressDataOrMission_t
-translate_ProgressDataOrMission_to_c(const mavsdk::Mission::ProgressDataOrMission& cpp_struct) {
-    mavsdk_mission_ProgressDataOrMission_t c_struct{};
+static mavsdk_mission_progress_data_or_mission_t
+translate_progress_data_or_mission_to_c(const mavsdk::Mission::ProgressDataOrMission& cpp_struct) {
+    mavsdk_mission_progress_data_or_mission_t c_struct{};
     c_struct.has_progress = cpp_struct.has_progress;
     c_struct.progress = cpp_struct.progress;
     c_struct.has_mission = cpp_struct.has_mission;
-    c_struct.mission_plan = translate_MissionPlan_to_c(cpp_struct.mission_plan);
+    c_struct.mission_plan = translate_mission_plan_to_c(cpp_struct.mission_plan);
     return c_struct;
 }
 
-void mavsdk_mission_ProgressDataOrMission_destroy(
-    mavsdk_mission_ProgressDataOrMission_t* target) {
+void mavsdk_mission_progress_data_or_mission_destroy(
+    mavsdk_mission_progress_data_or_mission_t* target) {
     if (!target) return;
 }
 
-void mavsdk_mission_ProgressDataOrMission_array_destroy(
-    mavsdk_mission_ProgressDataOrMission_t** array,
+void mavsdk_mission_progress_data_or_mission_array_destroy(
+    mavsdk_mission_progress_data_or_mission_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_mission_ProgressDataOrMission_destroy(&(*array)[i]);
+        mavsdk_mission_progress_data_or_mission_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -439,14 +439,14 @@ void mavsdk_mission_destroy(mavsdk_mission_t mission) {
 // UploadMission async
 void mavsdk_mission_upload_mission_async(
     mavsdk_mission_t mission,
-    mavsdk_mission_MissionPlan_t mission_plan,
+    mavsdk_mission_mission_plan_t mission_plan,
     mavsdk_mission_upload_mission_callback_t callback,
     void* user_data)
 {
     auto wrapper = static_cast<mavsdk_mission_wrapper*>(mission);
 
     wrapper->cpp_plugin->upload_mission_async(
-        translate_MissionPlan_from_c(mission_plan),
+        translate_mission_plan_from_c(mission_plan),
         [callback, user_data](
             mavsdk::Mission::Result result) {
                 if (callback) {
@@ -462,11 +462,11 @@ void mavsdk_mission_upload_mission_async(
 mavsdk_mission_result_t
 mavsdk_mission_upload_mission(
     mavsdk_mission_t mission,
-    mavsdk_mission_MissionPlan_t mission_plan)
+    mavsdk_mission_mission_plan_t mission_plan)
 {
     auto wrapper = static_cast<mavsdk_mission_wrapper*>(mission);
 
-    auto ret_value = wrapper->cpp_plugin->upload_mission(        translate_MissionPlan_from_c(mission_plan));
+    auto ret_value = wrapper->cpp_plugin->upload_mission(        translate_mission_plan_from_c(mission_plan));
 
     return translate_result(ret_value);
 }
@@ -474,21 +474,21 @@ mavsdk_mission_upload_mission(
 // UploadMissionWithProgress async
 void mavsdk_mission_upload_mission_with_progress_async(
     mavsdk_mission_t mission,
-    mavsdk_mission_MissionPlan_t mission_plan,
+    mavsdk_mission_mission_plan_t mission_plan,
     mavsdk_mission_upload_mission_with_progress_callback_t callback,
     void* user_data)
 {
     auto wrapper = static_cast<mavsdk_mission_wrapper*>(mission);
 
     wrapper->cpp_plugin->upload_mission_with_progress_async(
-        translate_MissionPlan_from_c(mission_plan),
+        translate_mission_plan_from_c(mission_plan),
         [callback, user_data](
             mavsdk::Mission::Result result,
             mavsdk::Mission::ProgressData value) {
                 if (callback) {
                     callback(
                         translate_result(result),
-                        translate_ProgressData_to_c(value),
+                        translate_progress_data_to_c(value),
                         user_data);
                 }
         });
@@ -524,7 +524,7 @@ void mavsdk_mission_download_mission_async(
                 if (callback) {
                     callback(
                         translate_result(result),
-                        translate_MissionPlan_to_c(value),
+                        translate_mission_plan_to_c(value),
                         user_data);
                 }
         });
@@ -535,7 +535,7 @@ void mavsdk_mission_download_mission_async(
 mavsdk_mission_result_t
 mavsdk_mission_download_mission(
     mavsdk_mission_t mission,
-    mavsdk_mission_MissionPlan_t* mission_plan_out)
+    mavsdk_mission_mission_plan_t* mission_plan_out)
 {
     auto wrapper = static_cast<mavsdk_mission_wrapper*>(mission);
 
@@ -543,7 +543,7 @@ mavsdk_mission_download_mission(
 );
 
     if (mission_plan_out != nullptr) {
-        *mission_plan_out = translate_MissionPlan_to_c(result_pair.second);
+        *mission_plan_out = translate_mission_plan_to_c(result_pair.second);
     }
 
     return translate_result(result_pair.first);
@@ -564,7 +564,7 @@ void mavsdk_mission_download_mission_with_progress_async(
                 if (callback) {
                     callback(
                         translate_result(result),
-                        translate_ProgressDataOrMission_to_c(value),
+                        translate_progress_data_or_mission_to_c(value),
                         user_data);
                 }
         });
@@ -746,7 +746,7 @@ mavsdk_mission_mission_progress_handle_t mavsdk_mission_subscribe_mission_progre
             mavsdk::Mission::MissionProgress value) {
                 if (callback) {
                     callback(
-                        translate_MissionProgress_to_c(value),
+                        translate_mission_progress_to_c(value),
                         user_data);
                 }
         });
@@ -771,14 +771,14 @@ void mavsdk_mission_unsubscribe_mission_progress(
 void
 mavsdk_mission_mission_progress(
     mavsdk_mission_t mission,
-    mavsdk_mission_MissionProgress_t* mission_progress_out)
+    mavsdk_mission_mission_progress_t* mission_progress_out)
 {
     auto wrapper = static_cast<mavsdk_mission_wrapper*>(mission);
 
     auto ret_value = wrapper->cpp_plugin->mission_progress();
 
     if (mission_progress_out != nullptr) {
-        *mission_progress_out = translate_MissionProgress_to_c(ret_value);
+        *mission_progress_out = translate_mission_progress_to_c(ret_value);
     }
 }
 

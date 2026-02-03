@@ -37,7 +37,7 @@ translate_result(mavsdk::FollowMe::Result cpp_result) {
 
 
 static mavsdk::FollowMe::Config::FollowAltitudeMode
-translate_Config_FollowAltitudeMode_from_c(mavsdk_follow_me_Config_FollowAltitudeMode_t c_enum) {
+translate_config_follow_altitude_mode_from_c(mavsdk_follow_me_config_follow_altitude_mode_t c_enum) {
     switch(c_enum) {
         case MAVSDK_FOLLOW_ME_CONFIG_FOLLOW_ALTITUDE_MODE_CONSTANT:
             return mavsdk::FollowMe::Config::FollowAltitudeMode::Constant;
@@ -51,20 +51,20 @@ translate_Config_FollowAltitudeMode_from_c(mavsdk_follow_me_Config_FollowAltitud
 
 
 static mavsdk::FollowMe::Config
-translate_Config_from_c(const mavsdk_follow_me_Config_t& c_struct) {
+translate_config_from_c(const mavsdk_follow_me_config_t& c_struct) {
     mavsdk::FollowMe::Config cpp_struct{};
     cpp_struct.follow_height_m = c_struct.follow_height_m;
     cpp_struct.follow_distance_m = c_struct.follow_distance_m;
     cpp_struct.responsiveness = c_struct.responsiveness;
-    cpp_struct.altitude_mode = translate_Config_FollowAltitudeMode_from_c(c_struct.altitude_mode);
+    cpp_struct.altitude_mode = translate_config_follow_altitude_mode_from_c(c_struct.altitude_mode);
     cpp_struct.max_tangential_vel_m_s = c_struct.max_tangential_vel_m_s;
     cpp_struct.follow_angle_deg = c_struct.follow_angle_deg;
     return cpp_struct;
 }
 
 
-static mavsdk_follow_me_Config_FollowAltitudeMode_t
-translate_Config_FollowAltitudeMode_to_c(mavsdk::FollowMe::Config::FollowAltitudeMode cpp_enum) {
+static mavsdk_follow_me_config_follow_altitude_mode_t
+translate_config_follow_altitude_mode_to_c(mavsdk::FollowMe::Config::FollowAltitudeMode cpp_enum) {
     switch(cpp_enum) {
         case mavsdk::FollowMe::Config::FollowAltitudeMode::Constant:
             return MAVSDK_FOLLOW_ME_CONFIG_FOLLOW_ALTITUDE_MODE_CONSTANT;
@@ -76,30 +76,30 @@ translate_Config_FollowAltitudeMode_to_c(mavsdk::FollowMe::Config::FollowAltitud
     return MAVSDK_FOLLOW_ME_CONFIG_FOLLOW_ALTITUDE_MODE_CONSTANT;
 }
 
-static mavsdk_follow_me_Config_t
-translate_Config_to_c(const mavsdk::FollowMe::Config& cpp_struct) {
-    mavsdk_follow_me_Config_t c_struct{};
+static mavsdk_follow_me_config_t
+translate_config_to_c(const mavsdk::FollowMe::Config& cpp_struct) {
+    mavsdk_follow_me_config_t c_struct{};
     c_struct.follow_height_m = cpp_struct.follow_height_m;
     c_struct.follow_distance_m = cpp_struct.follow_distance_m;
     c_struct.responsiveness = cpp_struct.responsiveness;
-    c_struct.altitude_mode = translate_Config_FollowAltitudeMode_to_c(cpp_struct.altitude_mode);
+    c_struct.altitude_mode = translate_config_follow_altitude_mode_to_c(cpp_struct.altitude_mode);
     c_struct.max_tangential_vel_m_s = cpp_struct.max_tangential_vel_m_s;
     c_struct.follow_angle_deg = cpp_struct.follow_angle_deg;
     return c_struct;
 }
 
-void mavsdk_follow_me_Config_destroy(
-    mavsdk_follow_me_Config_t* target) {
+void mavsdk_follow_me_config_destroy(
+    mavsdk_follow_me_config_t* target) {
     if (!target) return;
 }
 
-void mavsdk_follow_me_Config_array_destroy(
-    mavsdk_follow_me_Config_t** array,
+void mavsdk_follow_me_config_array_destroy(
+    mavsdk_follow_me_config_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_follow_me_Config_destroy(&(*array)[i]);
+        mavsdk_follow_me_config_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -108,7 +108,7 @@ void mavsdk_follow_me_Config_array_destroy(
 
 
 static mavsdk::FollowMe::TargetLocation
-translate_TargetLocation_from_c(const mavsdk_follow_me_TargetLocation_t& c_struct) {
+translate_target_location_from_c(const mavsdk_follow_me_target_location_t& c_struct) {
     mavsdk::FollowMe::TargetLocation cpp_struct{};
     cpp_struct.latitude_deg = c_struct.latitude_deg;
     cpp_struct.longitude_deg = c_struct.longitude_deg;
@@ -119,9 +119,9 @@ translate_TargetLocation_from_c(const mavsdk_follow_me_TargetLocation_t& c_struc
     return cpp_struct;
 }
 
-static mavsdk_follow_me_TargetLocation_t
-translate_TargetLocation_to_c(const mavsdk::FollowMe::TargetLocation& cpp_struct) {
-    mavsdk_follow_me_TargetLocation_t c_struct{};
+static mavsdk_follow_me_target_location_t
+translate_target_location_to_c(const mavsdk::FollowMe::TargetLocation& cpp_struct) {
+    mavsdk_follow_me_target_location_t c_struct{};
     c_struct.latitude_deg = cpp_struct.latitude_deg;
     c_struct.longitude_deg = cpp_struct.longitude_deg;
     c_struct.absolute_altitude_m = cpp_struct.absolute_altitude_m;
@@ -131,18 +131,18 @@ translate_TargetLocation_to_c(const mavsdk::FollowMe::TargetLocation& cpp_struct
     return c_struct;
 }
 
-void mavsdk_follow_me_TargetLocation_destroy(
-    mavsdk_follow_me_TargetLocation_t* target) {
+void mavsdk_follow_me_target_location_destroy(
+    mavsdk_follow_me_target_location_t* target) {
     if (!target) return;
 }
 
-void mavsdk_follow_me_TargetLocation_array_destroy(
-    mavsdk_follow_me_TargetLocation_t** array,
+void mavsdk_follow_me_target_location_array_destroy(
+    mavsdk_follow_me_target_location_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_follow_me_TargetLocation_destroy(&(*array)[i]);
+        mavsdk_follow_me_target_location_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -242,14 +242,14 @@ void mavsdk_follow_me_destroy(mavsdk_follow_me_t follow_me) {
 void
 mavsdk_follow_me_get_config(
     mavsdk_follow_me_t follow_me,
-    mavsdk_follow_me_Config_t* config_out)
+    mavsdk_follow_me_config_t* config_out)
 {
     auto wrapper = static_cast<mavsdk_follow_me_wrapper*>(follow_me);
 
     auto ret_value = wrapper->cpp_plugin->get_config();
 
     if (config_out != nullptr) {
-        *config_out = translate_Config_to_c(ret_value);
+        *config_out = translate_config_to_c(ret_value);
     }
 }
 
@@ -258,11 +258,11 @@ mavsdk_follow_me_get_config(
 mavsdk_follow_me_result_t
 mavsdk_follow_me_set_config(
     mavsdk_follow_me_t follow_me,
-    mavsdk_follow_me_Config_t config)
+    mavsdk_follow_me_config_t config)
 {
     auto wrapper = static_cast<mavsdk_follow_me_wrapper*>(follow_me);
 
-    auto ret_value = wrapper->cpp_plugin->set_config(        translate_Config_from_c(config));
+    auto ret_value = wrapper->cpp_plugin->set_config(        translate_config_from_c(config));
 
     return translate_result(ret_value);
 }
@@ -286,11 +286,11 @@ mavsdk_follow_me_is_active(
 mavsdk_follow_me_result_t
 mavsdk_follow_me_set_target_location(
     mavsdk_follow_me_t follow_me,
-    mavsdk_follow_me_TargetLocation_t location)
+    mavsdk_follow_me_target_location_t location)
 {
     auto wrapper = static_cast<mavsdk_follow_me_wrapper*>(follow_me);
 
-    auto ret_value = wrapper->cpp_plugin->set_target_location(        translate_TargetLocation_from_c(location));
+    auto ret_value = wrapper->cpp_plugin->set_target_location(        translate_target_location_from_c(location));
 
     return translate_result(ret_value);
 }
@@ -300,14 +300,14 @@ mavsdk_follow_me_set_target_location(
 void
 mavsdk_follow_me_get_last_location(
     mavsdk_follow_me_t follow_me,
-    mavsdk_follow_me_TargetLocation_t* location_out)
+    mavsdk_follow_me_target_location_t* location_out)
 {
     auto wrapper = static_cast<mavsdk_follow_me_wrapper*>(follow_me);
 
     auto ret_value = wrapper->cpp_plugin->get_last_location();
 
     if (location_out != nullptr) {
-        *location_out = translate_TargetLocation_to_c(ret_value);
+        *location_out = translate_target_location_to_c(ret_value);
     }
 }
 

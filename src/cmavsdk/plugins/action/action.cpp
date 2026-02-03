@@ -47,7 +47,7 @@ translate_result(mavsdk::Action::Result cpp_result) {
 }
 
 static mavsdk::Action::OrbitYawBehavior
-translate_OrbitYawBehavior_from_c(mavsdk_action_OrbitYawBehavior_t c_enum) {
+translate_orbit_yaw_behavior_from_c(mavsdk_action_orbit_yaw_behavior_t c_enum) {
     switch(c_enum) {
         case MAVSDK_ACTION_ORBIT_YAW_BEHAVIOR_HOLD_FRONT_TO_CIRCLE_CENTER:
             return mavsdk::Action::OrbitYawBehavior::HoldFrontToCircleCenter;
@@ -63,8 +63,8 @@ translate_OrbitYawBehavior_from_c(mavsdk_action_OrbitYawBehavior_t c_enum) {
     return mavsdk::Action::OrbitYawBehavior::HoldFrontToCircleCenter;
 }
 
-static mavsdk_action_OrbitYawBehavior_t
-translate_OrbitYawBehavior_to_c(mavsdk::Action::OrbitYawBehavior cpp_enum) {
+static mavsdk_action_orbit_yaw_behavior_t
+translate_orbit_yaw_behavior_to_c(mavsdk::Action::OrbitYawBehavior cpp_enum) {
     switch(cpp_enum) {
         case mavsdk::Action::OrbitYawBehavior::HoldFrontToCircleCenter:
             return MAVSDK_ACTION_ORBIT_YAW_BEHAVIOR_HOLD_FRONT_TO_CIRCLE_CENTER;
@@ -538,7 +538,7 @@ void mavsdk_action_do_orbit_async(
     mavsdk_action_t action,
     float radius_m,
     float velocity_ms,
-    mavsdk_action_OrbitYawBehavior_t yaw_behavior,
+    mavsdk_action_orbit_yaw_behavior_t yaw_behavior,
     double latitude_deg,
     double longitude_deg,
     double absolute_altitude_m,
@@ -550,7 +550,7 @@ void mavsdk_action_do_orbit_async(
     wrapper->cpp_plugin->do_orbit_async(
         radius_m,
         velocity_ms,
-        translate_OrbitYawBehavior_from_c(yaw_behavior),        latitude_deg,
+        translate_orbit_yaw_behavior_from_c(yaw_behavior),        latitude_deg,
         longitude_deg,
         absolute_altitude_m,
         [callback, user_data](
@@ -570,14 +570,14 @@ mavsdk_action_do_orbit(
     mavsdk_action_t action,
     float radius_m,
     float velocity_ms,
-    mavsdk_action_OrbitYawBehavior_t yaw_behavior,
+    mavsdk_action_orbit_yaw_behavior_t yaw_behavior,
     double latitude_deg,
     double longitude_deg,
     double absolute_altitude_m)
 {
     auto wrapper = static_cast<mavsdk_action_wrapper*>(action);
 
-    auto ret_value = wrapper->cpp_plugin->do_orbit(        radius_m,        velocity_ms,        translate_OrbitYawBehavior_from_c(yaw_behavior),        latitude_deg,        longitude_deg,        absolute_altitude_m);
+    auto ret_value = wrapper->cpp_plugin->do_orbit(        radius_m,        velocity_ms,        translate_orbit_yaw_behavior_from_c(yaw_behavior),        latitude_deg,        longitude_deg,        absolute_altitude_m);
 
     return translate_result(ret_value);
 }

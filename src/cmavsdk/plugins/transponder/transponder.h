@@ -71,7 +71,7 @@ typedef enum {
     MAVSDK_TRANSPONDER_ADSB_EMITTER_TYPE_SERVICE_SURFACE = 18,
     /**  Point obstacle emitter.. */
     MAVSDK_TRANSPONDER_ADSB_EMITTER_TYPE_POINT_OBSTACLE = 19,
-} mavsdk_transponder_AdsbEmitterType_t;
+} mavsdk_transponder_adsb_emitter_type_t;
 
 /**
  * @brief Altitude type used in AdsbVehicle message
@@ -81,7 +81,7 @@ typedef enum {
     MAVSDK_TRANSPONDER_ADSB_ALTITUDE_TYPE_PRESSURE_QNH = 0,
     /**  Altitude reported from a GNSS source. */
     MAVSDK_TRANSPONDER_ADSB_ALTITUDE_TYPE_GEOMETRIC = 1,
-} mavsdk_transponder_AdsbAltitudeType_t;
+} mavsdk_transponder_adsb_altitude_type_t;
 
 
 // ===== Structs =====
@@ -89,7 +89,7 @@ typedef enum {
  * @brief ADSB Vehicle type.
  *
  * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_transponder_AdsbVehicle_destroy() when done to avoid memory leaks.
+ *       mavsdk_transponder_adsb_vehicle_destroy() when done to avoid memory leaks.
  */
 typedef struct CMAVSDK_EXPORT {
     /**  ICAO (International Civil Aviation Organization) unique worldwide identifier */
@@ -99,7 +99,7 @@ typedef struct CMAVSDK_EXPORT {
     /**  Longitude in degrees (range: -180 to +180). */
     double longitude_deg;
     /**  ADSB altitude type. */
-    mavsdk_transponder_AdsbAltitudeType_t altitude_type;
+    mavsdk_transponder_adsb_altitude_type_t altitude_type;
     /**  Altitude in metres according to altitude_type */
     float absolute_altitude_m;
     /**  Course over ground, in degrees */
@@ -111,15 +111,15 @@ typedef struct CMAVSDK_EXPORT {
     /**  The callsign */
     char* callsign;
     /**  ADSB emitter type. */
-    mavsdk_transponder_AdsbEmitterType_t emitter_type;
+    mavsdk_transponder_adsb_emitter_type_t emitter_type;
     /**  Squawk code. */
     uint32_t squawk;
     /**  Time Since Last Communication in seconds. */
     uint32_t tslc_s;
-} mavsdk_transponder_AdsbVehicle_t;
+} mavsdk_transponder_adsb_vehicle_t;
 
 /**
- * @brief Destroy a AdsbVehicle struct.
+ * @brief Destroy a adsb_vehicle struct.
  *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
@@ -128,11 +128,11 @@ typedef struct CMAVSDK_EXPORT {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-CMAVSDK_EXPORT void mavsdk_transponder_AdsbVehicle_destroy(
-    mavsdk_transponder_AdsbVehicle_t* target);
+CMAVSDK_EXPORT void mavsdk_transponder_adsb_vehicle_destroy(
+    mavsdk_transponder_adsb_vehicle_t* target);
 
 /**
- * @brief Destroy an array of AdsbVehicle structs.
+ * @brief Destroy an array of adsb_vehicle structs.
  *
  * Frees all memory allocated for the array and its elements, including any
  * nested dynamic allocations. Must be called to avoid memory leaks.
@@ -140,8 +140,8 @@ CMAVSDK_EXPORT void mavsdk_transponder_AdsbVehicle_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-CMAVSDK_EXPORT void mavsdk_transponder_AdsbVehicle_array_destroy(
-    mavsdk_transponder_AdsbVehicle_t** array,
+CMAVSDK_EXPORT void mavsdk_transponder_adsb_vehicle_array_destroy(
+    mavsdk_transponder_adsb_vehicle_t** array,
     size_t size);
 
 /**
@@ -243,7 +243,7 @@ CMAVSDK_EXPORT void mavsdk_transponder_string_destroy(char** str);
 CMAVSDK_EXPORT void mavsdk_transponder_byte_buffer_destroy(uint8_t** buffer);
 
 // ===== Callback Typedefs =====
-typedef void (*mavsdk_transponder_transponder_callback_t)(const mavsdk_transponder_AdsbVehicle_t transponder, void* user_data);
+typedef void (*mavsdk_transponder_transponder_callback_t)(const mavsdk_transponder_adsb_vehicle_t transponder, void* user_data);
 typedef void (*mavsdk_transponder_set_rate_transponder_callback_t)(const mavsdk_transponder_result_t result, void* user_data);
 
 // ===== Transponder Creation/Destruction =====
@@ -289,7 +289,7 @@ CMAVSDK_EXPORT
 void
 mavsdk_transponder_transponder(
     mavsdk_transponder_t transponder,
-    mavsdk_transponder_AdsbVehicle_t* transponder_out);
+    mavsdk_transponder_adsb_vehicle_t* transponder_out);
 
 
 /**

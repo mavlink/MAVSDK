@@ -69,7 +69,7 @@ typedef enum {
  *  Can be a progress percentage, or an instruction text.
  *
  * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_calibration_ProgressData_destroy() when done to avoid memory leaks.
+ *       mavsdk_calibration_progress_data_destroy() when done to avoid memory leaks.
  */
 typedef struct CMAVSDK_EXPORT {
     /**  Whether this ProgressData contains a 'progress' status or not */
@@ -80,10 +80,10 @@ typedef struct CMAVSDK_EXPORT {
     bool has_status_text;
     /**  Instruction text */
     char* status_text;
-} mavsdk_calibration_ProgressData_t;
+} mavsdk_calibration_progress_data_t;
 
 /**
- * @brief Destroy a ProgressData struct.
+ * @brief Destroy a progress_data struct.
  *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
@@ -92,11 +92,11 @@ typedef struct CMAVSDK_EXPORT {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-CMAVSDK_EXPORT void mavsdk_calibration_ProgressData_destroy(
-    mavsdk_calibration_ProgressData_t* target);
+CMAVSDK_EXPORT void mavsdk_calibration_progress_data_destroy(
+    mavsdk_calibration_progress_data_t* target);
 
 /**
- * @brief Destroy an array of ProgressData structs.
+ * @brief Destroy an array of progress_data structs.
  *
  * Frees all memory allocated for the array and its elements, including any
  * nested dynamic allocations. Must be called to avoid memory leaks.
@@ -104,8 +104,8 @@ CMAVSDK_EXPORT void mavsdk_calibration_ProgressData_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-CMAVSDK_EXPORT void mavsdk_calibration_ProgressData_array_destroy(
-    mavsdk_calibration_ProgressData_t** array,
+CMAVSDK_EXPORT void mavsdk_calibration_progress_data_array_destroy(
+    mavsdk_calibration_progress_data_t** array,
     size_t size);
 
 
@@ -186,11 +186,11 @@ CMAVSDK_EXPORT void mavsdk_calibration_string_destroy(char** str);
 CMAVSDK_EXPORT void mavsdk_calibration_byte_buffer_destroy(uint8_t** buffer);
 
 // ===== Callback Typedefs =====
-typedef void (*mavsdk_calibration_calibrate_gyro_callback_t)(const mavsdk_calibration_result_t result, const mavsdk_calibration_ProgressData_t progress_data, void* user_data);
-typedef void (*mavsdk_calibration_calibrate_accelerometer_callback_t)(const mavsdk_calibration_result_t result, const mavsdk_calibration_ProgressData_t progress_data, void* user_data);
-typedef void (*mavsdk_calibration_calibrate_magnetometer_callback_t)(const mavsdk_calibration_result_t result, const mavsdk_calibration_ProgressData_t progress_data, void* user_data);
-typedef void (*mavsdk_calibration_calibrate_level_horizon_callback_t)(const mavsdk_calibration_result_t result, const mavsdk_calibration_ProgressData_t progress_data, void* user_data);
-typedef void (*mavsdk_calibration_calibrate_gimbal_accelerometer_callback_t)(const mavsdk_calibration_result_t result, const mavsdk_calibration_ProgressData_t progress_data, void* user_data);
+typedef void (*mavsdk_calibration_calibrate_gyro_callback_t)(const mavsdk_calibration_result_t result, const mavsdk_calibration_progress_data_t progress_data, void* user_data);
+typedef void (*mavsdk_calibration_calibrate_accelerometer_callback_t)(const mavsdk_calibration_result_t result, const mavsdk_calibration_progress_data_t progress_data, void* user_data);
+typedef void (*mavsdk_calibration_calibrate_magnetometer_callback_t)(const mavsdk_calibration_result_t result, const mavsdk_calibration_progress_data_t progress_data, void* user_data);
+typedef void (*mavsdk_calibration_calibrate_level_horizon_callback_t)(const mavsdk_calibration_result_t result, const mavsdk_calibration_progress_data_t progress_data, void* user_data);
+typedef void (*mavsdk_calibration_calibrate_gimbal_accelerometer_callback_t)(const mavsdk_calibration_result_t result, const mavsdk_calibration_progress_data_t progress_data, void* user_data);
 
 // ===== Calibration Creation/Destruction =====
 CMAVSDK_EXPORT mavsdk_calibration_t mavsdk_calibration_create(mavsdk_system_t system);

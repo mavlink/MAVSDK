@@ -43,7 +43,7 @@ translate_result(mavsdk::Camera::Result cpp_result) {
 }
 
 static mavsdk::Camera::Mode
-translate_Mode_from_c(mavsdk_camera_Mode_t c_enum) {
+translate_mode_from_c(mavsdk_camera_mode_t c_enum) {
     switch(c_enum) {
         case MAVSDK_CAMERA_MODE_UNKNOWN:
             return mavsdk::Camera::Mode::Unknown;
@@ -55,8 +55,8 @@ translate_Mode_from_c(mavsdk_camera_Mode_t c_enum) {
     return mavsdk::Camera::Mode::Unknown;
 }
 
-static mavsdk_camera_Mode_t
-translate_Mode_to_c(mavsdk::Camera::Mode cpp_enum) {
+static mavsdk_camera_mode_t
+translate_mode_to_c(mavsdk::Camera::Mode cpp_enum) {
     switch(cpp_enum) {
         case mavsdk::Camera::Mode::Unknown:
             return MAVSDK_CAMERA_MODE_UNKNOWN;
@@ -69,7 +69,7 @@ translate_Mode_to_c(mavsdk::Camera::Mode cpp_enum) {
 }
 
 static mavsdk::Camera::PhotosRange
-translate_PhotosRange_from_c(mavsdk_camera_PhotosRange_t c_enum) {
+translate_photos_range_from_c(mavsdk_camera_photos_range_t c_enum) {
     switch(c_enum) {
         case MAVSDK_CAMERA_PHOTOS_RANGE_ALL:
             return mavsdk::Camera::PhotosRange::All;
@@ -79,8 +79,8 @@ translate_PhotosRange_from_c(mavsdk_camera_PhotosRange_t c_enum) {
     return mavsdk::Camera::PhotosRange::All;
 }
 
-static mavsdk_camera_PhotosRange_t
-translate_PhotosRange_to_c(mavsdk::Camera::PhotosRange cpp_enum) {
+static mavsdk_camera_photos_range_t
+translate_photos_range_to_c(mavsdk::Camera::PhotosRange cpp_enum) {
     switch(cpp_enum) {
         case mavsdk::Camera::PhotosRange::All:
             return MAVSDK_CAMERA_PHOTOS_RANGE_ALL;
@@ -93,7 +93,7 @@ translate_PhotosRange_to_c(mavsdk::Camera::PhotosRange cpp_enum) {
 
 
 static mavsdk::Camera::Option
-translate_Option_from_c(const mavsdk_camera_Option_t& c_struct) {
+translate_option_from_c(const mavsdk_camera_option_t& c_struct) {
     mavsdk::Camera::Option cpp_struct{};
     if (c_struct.option_id) {
         cpp_struct.option_id = c_struct.option_id;
@@ -104,16 +104,16 @@ translate_Option_from_c(const mavsdk_camera_Option_t& c_struct) {
     return cpp_struct;
 }
 
-static mavsdk_camera_Option_t
-translate_Option_to_c(const mavsdk::Camera::Option& cpp_struct) {
-    mavsdk_camera_Option_t c_struct{};
+static mavsdk_camera_option_t
+translate_option_to_c(const mavsdk::Camera::Option& cpp_struct) {
+    mavsdk_camera_option_t c_struct{};
     c_struct.option_id = strdup(cpp_struct.option_id.c_str());
     c_struct.option_description = strdup(cpp_struct.option_description.c_str());
     return c_struct;
 }
 
-void mavsdk_camera_Option_destroy(
-    mavsdk_camera_Option_t* target) {
+void mavsdk_camera_option_destroy(
+    mavsdk_camera_option_t* target) {
     if (!target) return;
     if (target->option_id) {
         free((void*)target->option_id);
@@ -125,13 +125,13 @@ void mavsdk_camera_Option_destroy(
     }
 }
 
-void mavsdk_camera_Option_array_destroy(
-    mavsdk_camera_Option_t** array,
+void mavsdk_camera_option_array_destroy(
+    mavsdk_camera_option_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_camera_Option_destroy(&(*array)[i]);
+        mavsdk_camera_option_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -140,7 +140,7 @@ void mavsdk_camera_Option_array_destroy(
 
 
 static mavsdk::Camera::Setting
-translate_Setting_from_c(const mavsdk_camera_Setting_t& c_struct) {
+translate_setting_from_c(const mavsdk_camera_setting_t& c_struct) {
     mavsdk::Camera::Setting cpp_struct{};
     if (c_struct.setting_id) {
         cpp_struct.setting_id = c_struct.setting_id;
@@ -148,23 +148,23 @@ translate_Setting_from_c(const mavsdk_camera_Setting_t& c_struct) {
     if (c_struct.setting_description) {
         cpp_struct.setting_description = c_struct.setting_description;
     }
-    cpp_struct.option = translate_Option_from_c(c_struct.option);
+    cpp_struct.option = translate_option_from_c(c_struct.option);
     cpp_struct.is_range = c_struct.is_range;
     return cpp_struct;
 }
 
-static mavsdk_camera_Setting_t
-translate_Setting_to_c(const mavsdk::Camera::Setting& cpp_struct) {
-    mavsdk_camera_Setting_t c_struct{};
+static mavsdk_camera_setting_t
+translate_setting_to_c(const mavsdk::Camera::Setting& cpp_struct) {
+    mavsdk_camera_setting_t c_struct{};
     c_struct.setting_id = strdup(cpp_struct.setting_id.c_str());
     c_struct.setting_description = strdup(cpp_struct.setting_description.c_str());
-    c_struct.option = translate_Option_to_c(cpp_struct.option);
+    c_struct.option = translate_option_to_c(cpp_struct.option);
     c_struct.is_range = cpp_struct.is_range;
     return c_struct;
 }
 
-void mavsdk_camera_Setting_destroy(
-    mavsdk_camera_Setting_t* target) {
+void mavsdk_camera_setting_destroy(
+    mavsdk_camera_setting_t* target) {
     if (!target) return;
     if (target->setting_id) {
         free((void*)target->setting_id);
@@ -176,13 +176,13 @@ void mavsdk_camera_Setting_destroy(
     }
 }
 
-void mavsdk_camera_Setting_array_destroy(
-    mavsdk_camera_Setting_t** array,
+void mavsdk_camera_setting_array_destroy(
+    mavsdk_camera_setting_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_camera_Setting_destroy(&(*array)[i]);
+        mavsdk_camera_setting_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -191,7 +191,7 @@ void mavsdk_camera_Setting_array_destroy(
 
 
 static mavsdk::Camera::SettingOptions
-translate_SettingOptions_from_c(const mavsdk_camera_SettingOptions_t& c_struct) {
+translate_setting_options_from_c(const mavsdk_camera_setting_options_t& c_struct) {
     mavsdk::Camera::SettingOptions cpp_struct{};
     cpp_struct.component_id = c_struct.component_id;
     if (c_struct.setting_id) {
@@ -203,29 +203,29 @@ translate_SettingOptions_from_c(const mavsdk_camera_SettingOptions_t& c_struct) 
     cpp_struct.options.reserve(c_struct.options_size);
     for (size_t i = 0; i < c_struct.options_size; i++) {
         cpp_struct.options.push_back(
-            translate_Option_from_c(c_struct.options[i]));
+            translate_option_from_c(c_struct.options[i]));
     }
     cpp_struct.is_range = c_struct.is_range;
     return cpp_struct;
 }
 
-static mavsdk_camera_SettingOptions_t
-translate_SettingOptions_to_c(const mavsdk::Camera::SettingOptions& cpp_struct) {
-    mavsdk_camera_SettingOptions_t c_struct{};
+static mavsdk_camera_setting_options_t
+translate_setting_options_to_c(const mavsdk::Camera::SettingOptions& cpp_struct) {
+    mavsdk_camera_setting_options_t c_struct{};
     c_struct.component_id = cpp_struct.component_id;
     c_struct.setting_id = strdup(cpp_struct.setting_id.c_str());
     c_struct.setting_description = strdup(cpp_struct.setting_description.c_str());
     c_struct.options_size = cpp_struct.options.size();
-    c_struct.options = new mavsdk_camera_Option_t[c_struct.options_size];
+    c_struct.options = new mavsdk_camera_option_t[c_struct.options_size];
     for (size_t i = 0; i < c_struct.options_size; i++) {
-        c_struct.options[i] = translate_Option_to_c(cpp_struct.options[i]);
+        c_struct.options[i] = translate_option_to_c(cpp_struct.options[i]);
     }
     c_struct.is_range = cpp_struct.is_range;
     return c_struct;
 }
 
-void mavsdk_camera_SettingOptions_destroy(
-    mavsdk_camera_SettingOptions_t* target) {
+void mavsdk_camera_setting_options_destroy(
+    mavsdk_camera_setting_options_t* target) {
     if (!target) return;
     if (target->setting_id) {
         free((void*)target->setting_id);
@@ -237,7 +237,7 @@ void mavsdk_camera_SettingOptions_destroy(
     }
     if (target->options) {
         for (size_t i = 0; i < target->options_size; i++) {
-            mavsdk_camera_Option_destroy(&target->options[i]);
+            mavsdk_camera_option_destroy(&target->options[i]);
         }
         delete[] target->options;
         target->options = nullptr;
@@ -245,13 +245,13 @@ void mavsdk_camera_SettingOptions_destroy(
     }
 }
 
-void mavsdk_camera_SettingOptions_array_destroy(
-    mavsdk_camera_SettingOptions_t** array,
+void mavsdk_camera_setting_options_array_destroy(
+    mavsdk_camera_setting_options_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_camera_SettingOptions_destroy(&(*array)[i]);
+        mavsdk_camera_setting_options_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -260,7 +260,7 @@ void mavsdk_camera_SettingOptions_array_destroy(
 
 
 static mavsdk::Camera::VideoStreamSettings
-translate_VideoStreamSettings_from_c(const mavsdk_camera_VideoStreamSettings_t& c_struct) {
+translate_video_stream_settings_from_c(const mavsdk_camera_video_stream_settings_t& c_struct) {
     mavsdk::Camera::VideoStreamSettings cpp_struct{};
     cpp_struct.frame_rate_hz = c_struct.frame_rate_hz;
     cpp_struct.horizontal_resolution_pix = c_struct.horizontal_resolution_pix;
@@ -274,9 +274,9 @@ translate_VideoStreamSettings_from_c(const mavsdk_camera_VideoStreamSettings_t& 
     return cpp_struct;
 }
 
-static mavsdk_camera_VideoStreamSettings_t
-translate_VideoStreamSettings_to_c(const mavsdk::Camera::VideoStreamSettings& cpp_struct) {
-    mavsdk_camera_VideoStreamSettings_t c_struct{};
+static mavsdk_camera_video_stream_settings_t
+translate_video_stream_settings_to_c(const mavsdk::Camera::VideoStreamSettings& cpp_struct) {
+    mavsdk_camera_video_stream_settings_t c_struct{};
     c_struct.frame_rate_hz = cpp_struct.frame_rate_hz;
     c_struct.horizontal_resolution_pix = cpp_struct.horizontal_resolution_pix;
     c_struct.vertical_resolution_pix = cpp_struct.vertical_resolution_pix;
@@ -287,8 +287,8 @@ translate_VideoStreamSettings_to_c(const mavsdk::Camera::VideoStreamSettings& cp
     return c_struct;
 }
 
-void mavsdk_camera_VideoStreamSettings_destroy(
-    mavsdk_camera_VideoStreamSettings_t* target) {
+void mavsdk_camera_video_stream_settings_destroy(
+    mavsdk_camera_video_stream_settings_t* target) {
     if (!target) return;
     if (target->uri) {
         free((void*)target->uri);
@@ -296,13 +296,13 @@ void mavsdk_camera_VideoStreamSettings_destroy(
     }
 }
 
-void mavsdk_camera_VideoStreamSettings_array_destroy(
-    mavsdk_camera_VideoStreamSettings_t** array,
+void mavsdk_camera_video_stream_settings_array_destroy(
+    mavsdk_camera_video_stream_settings_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_camera_VideoStreamSettings_destroy(&(*array)[i]);
+        mavsdk_camera_video_stream_settings_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -311,7 +311,7 @@ void mavsdk_camera_VideoStreamSettings_array_destroy(
 
 
 static mavsdk::Camera::VideoStreamInfo::VideoStreamStatus
-translate_VideoStreamInfo_VideoStreamStatus_from_c(mavsdk_camera_VideoStreamInfo_VideoStreamStatus_t c_enum) {
+translate_video_stream_info_video_stream_status_from_c(mavsdk_camera_video_stream_info_video_stream_status_t c_enum) {
     switch(c_enum) {
         case MAVSDK_CAMERA_VIDEO_STREAM_INFO_VIDEO_STREAM_STATUS_NOT_RUNNING:
             return mavsdk::Camera::VideoStreamInfo::VideoStreamStatus::NotRunning;
@@ -323,7 +323,7 @@ translate_VideoStreamInfo_VideoStreamStatus_from_c(mavsdk_camera_VideoStreamInfo
 
 
 static mavsdk::Camera::VideoStreamInfo::VideoStreamSpectrum
-translate_VideoStreamInfo_VideoStreamSpectrum_from_c(mavsdk_camera_VideoStreamInfo_VideoStreamSpectrum_t c_enum) {
+translate_video_stream_info_video_stream_spectrum_from_c(mavsdk_camera_video_stream_info_video_stream_spectrum_t c_enum) {
     switch(c_enum) {
         case MAVSDK_CAMERA_VIDEO_STREAM_INFO_VIDEO_STREAM_SPECTRUM_UNKNOWN:
             return mavsdk::Camera::VideoStreamInfo::VideoStreamSpectrum::Unknown;
@@ -337,18 +337,18 @@ translate_VideoStreamInfo_VideoStreamSpectrum_from_c(mavsdk_camera_VideoStreamIn
 
 
 static mavsdk::Camera::VideoStreamInfo
-translate_VideoStreamInfo_from_c(const mavsdk_camera_VideoStreamInfo_t& c_struct) {
+translate_video_stream_info_from_c(const mavsdk_camera_video_stream_info_t& c_struct) {
     mavsdk::Camera::VideoStreamInfo cpp_struct{};
     cpp_struct.stream_id = c_struct.stream_id;
-    cpp_struct.settings = translate_VideoStreamSettings_from_c(c_struct.settings);
-    cpp_struct.status = translate_VideoStreamInfo_VideoStreamStatus_from_c(c_struct.status);
-    cpp_struct.spectrum = translate_VideoStreamInfo_VideoStreamSpectrum_from_c(c_struct.spectrum);
+    cpp_struct.settings = translate_video_stream_settings_from_c(c_struct.settings);
+    cpp_struct.status = translate_video_stream_info_video_stream_status_from_c(c_struct.status);
+    cpp_struct.spectrum = translate_video_stream_info_video_stream_spectrum_from_c(c_struct.spectrum);
     return cpp_struct;
 }
 
 
-static mavsdk_camera_VideoStreamInfo_VideoStreamStatus_t
-translate_VideoStreamInfo_VideoStreamStatus_to_c(mavsdk::Camera::VideoStreamInfo::VideoStreamStatus cpp_enum) {
+static mavsdk_camera_video_stream_info_video_stream_status_t
+translate_video_stream_info_video_stream_status_to_c(mavsdk::Camera::VideoStreamInfo::VideoStreamStatus cpp_enum) {
     switch(cpp_enum) {
         case mavsdk::Camera::VideoStreamInfo::VideoStreamStatus::NotRunning:
             return MAVSDK_CAMERA_VIDEO_STREAM_INFO_VIDEO_STREAM_STATUS_NOT_RUNNING;
@@ -359,8 +359,8 @@ translate_VideoStreamInfo_VideoStreamStatus_to_c(mavsdk::Camera::VideoStreamInfo
 }
 
 
-static mavsdk_camera_VideoStreamInfo_VideoStreamSpectrum_t
-translate_VideoStreamInfo_VideoStreamSpectrum_to_c(mavsdk::Camera::VideoStreamInfo::VideoStreamSpectrum cpp_enum) {
+static mavsdk_camera_video_stream_info_video_stream_spectrum_t
+translate_video_stream_info_video_stream_spectrum_to_c(mavsdk::Camera::VideoStreamInfo::VideoStreamSpectrum cpp_enum) {
     switch(cpp_enum) {
         case mavsdk::Camera::VideoStreamInfo::VideoStreamSpectrum::Unknown:
             return MAVSDK_CAMERA_VIDEO_STREAM_INFO_VIDEO_STREAM_SPECTRUM_UNKNOWN;
@@ -372,28 +372,28 @@ translate_VideoStreamInfo_VideoStreamSpectrum_to_c(mavsdk::Camera::VideoStreamIn
     return MAVSDK_CAMERA_VIDEO_STREAM_INFO_VIDEO_STREAM_SPECTRUM_UNKNOWN;
 }
 
-static mavsdk_camera_VideoStreamInfo_t
-translate_VideoStreamInfo_to_c(const mavsdk::Camera::VideoStreamInfo& cpp_struct) {
-    mavsdk_camera_VideoStreamInfo_t c_struct{};
+static mavsdk_camera_video_stream_info_t
+translate_video_stream_info_to_c(const mavsdk::Camera::VideoStreamInfo& cpp_struct) {
+    mavsdk_camera_video_stream_info_t c_struct{};
     c_struct.stream_id = cpp_struct.stream_id;
-    c_struct.settings = translate_VideoStreamSettings_to_c(cpp_struct.settings);
-    c_struct.status = translate_VideoStreamInfo_VideoStreamStatus_to_c(cpp_struct.status);
-    c_struct.spectrum = translate_VideoStreamInfo_VideoStreamSpectrum_to_c(cpp_struct.spectrum);
+    c_struct.settings = translate_video_stream_settings_to_c(cpp_struct.settings);
+    c_struct.status = translate_video_stream_info_video_stream_status_to_c(cpp_struct.status);
+    c_struct.spectrum = translate_video_stream_info_video_stream_spectrum_to_c(cpp_struct.spectrum);
     return c_struct;
 }
 
-void mavsdk_camera_VideoStreamInfo_destroy(
-    mavsdk_camera_VideoStreamInfo_t* target) {
+void mavsdk_camera_video_stream_info_destroy(
+    mavsdk_camera_video_stream_info_t* target) {
     if (!target) return;
 }
 
-void mavsdk_camera_VideoStreamInfo_array_destroy(
-    mavsdk_camera_VideoStreamInfo_t** array,
+void mavsdk_camera_video_stream_info_array_destroy(
+    mavsdk_camera_video_stream_info_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_camera_VideoStreamInfo_destroy(&(*array)[i]);
+        mavsdk_camera_video_stream_info_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -402,33 +402,33 @@ void mavsdk_camera_VideoStreamInfo_array_destroy(
 
 
 static mavsdk::Camera::ModeUpdate
-translate_ModeUpdate_from_c(const mavsdk_camera_ModeUpdate_t& c_struct) {
+translate_mode_update_from_c(const mavsdk_camera_mode_update_t& c_struct) {
     mavsdk::Camera::ModeUpdate cpp_struct{};
     cpp_struct.component_id = c_struct.component_id;
-    cpp_struct.mode = translate_Mode_from_c(c_struct.mode);
+    cpp_struct.mode = translate_mode_from_c(c_struct.mode);
     return cpp_struct;
 }
 
-static mavsdk_camera_ModeUpdate_t
-translate_ModeUpdate_to_c(const mavsdk::Camera::ModeUpdate& cpp_struct) {
-    mavsdk_camera_ModeUpdate_t c_struct{};
+static mavsdk_camera_mode_update_t
+translate_mode_update_to_c(const mavsdk::Camera::ModeUpdate& cpp_struct) {
+    mavsdk_camera_mode_update_t c_struct{};
     c_struct.component_id = cpp_struct.component_id;
-    c_struct.mode = translate_Mode_to_c(cpp_struct.mode);
+    c_struct.mode = translate_mode_to_c(cpp_struct.mode);
     return c_struct;
 }
 
-void mavsdk_camera_ModeUpdate_destroy(
-    mavsdk_camera_ModeUpdate_t* target) {
+void mavsdk_camera_mode_update_destroy(
+    mavsdk_camera_mode_update_t* target) {
     if (!target) return;
 }
 
-void mavsdk_camera_ModeUpdate_array_destroy(
-    mavsdk_camera_ModeUpdate_t** array,
+void mavsdk_camera_mode_update_array_destroy(
+    mavsdk_camera_mode_update_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_camera_ModeUpdate_destroy(&(*array)[i]);
+        mavsdk_camera_mode_update_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -437,33 +437,33 @@ void mavsdk_camera_ModeUpdate_array_destroy(
 
 
 static mavsdk::Camera::VideoStreamUpdate
-translate_VideoStreamUpdate_from_c(const mavsdk_camera_VideoStreamUpdate_t& c_struct) {
+translate_video_stream_update_from_c(const mavsdk_camera_video_stream_update_t& c_struct) {
     mavsdk::Camera::VideoStreamUpdate cpp_struct{};
     cpp_struct.component_id = c_struct.component_id;
-    cpp_struct.video_stream_info = translate_VideoStreamInfo_from_c(c_struct.video_stream_info);
+    cpp_struct.video_stream_info = translate_video_stream_info_from_c(c_struct.video_stream_info);
     return cpp_struct;
 }
 
-static mavsdk_camera_VideoStreamUpdate_t
-translate_VideoStreamUpdate_to_c(const mavsdk::Camera::VideoStreamUpdate& cpp_struct) {
-    mavsdk_camera_VideoStreamUpdate_t c_struct{};
+static mavsdk_camera_video_stream_update_t
+translate_video_stream_update_to_c(const mavsdk::Camera::VideoStreamUpdate& cpp_struct) {
+    mavsdk_camera_video_stream_update_t c_struct{};
     c_struct.component_id = cpp_struct.component_id;
-    c_struct.video_stream_info = translate_VideoStreamInfo_to_c(cpp_struct.video_stream_info);
+    c_struct.video_stream_info = translate_video_stream_info_to_c(cpp_struct.video_stream_info);
     return c_struct;
 }
 
-void mavsdk_camera_VideoStreamUpdate_destroy(
-    mavsdk_camera_VideoStreamUpdate_t* target) {
+void mavsdk_camera_video_stream_update_destroy(
+    mavsdk_camera_video_stream_update_t* target) {
     if (!target) return;
 }
 
-void mavsdk_camera_VideoStreamUpdate_array_destroy(
-    mavsdk_camera_VideoStreamUpdate_t** array,
+void mavsdk_camera_video_stream_update_array_destroy(
+    mavsdk_camera_video_stream_update_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_camera_VideoStreamUpdate_destroy(&(*array)[i]);
+        mavsdk_camera_video_stream_update_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -472,7 +472,7 @@ void mavsdk_camera_VideoStreamUpdate_array_destroy(
 
 
 static mavsdk::Camera::Storage::StorageStatus
-translate_Storage_StorageStatus_from_c(mavsdk_camera_Storage_StorageStatus_t c_enum) {
+translate_storage_storage_status_from_c(mavsdk_camera_storage_storage_status_t c_enum) {
     switch(c_enum) {
         case MAVSDK_CAMERA_STORAGE_STORAGE_STATUS_NOT_AVAILABLE:
             return mavsdk::Camera::Storage::StorageStatus::NotAvailable;
@@ -488,7 +488,7 @@ translate_Storage_StorageStatus_from_c(mavsdk_camera_Storage_StorageStatus_t c_e
 
 
 static mavsdk::Camera::Storage::StorageType
-translate_Storage_StorageType_from_c(mavsdk_camera_Storage_StorageType_t c_enum) {
+translate_storage_storage_type_from_c(mavsdk_camera_storage_storage_type_t c_enum) {
     switch(c_enum) {
         case MAVSDK_CAMERA_STORAGE_STORAGE_TYPE_UNKNOWN:
             return mavsdk::Camera::Storage::StorageType::Unknown;
@@ -508,7 +508,7 @@ translate_Storage_StorageType_from_c(mavsdk_camera_Storage_StorageType_t c_enum)
 
 
 static mavsdk::Camera::Storage
-translate_Storage_from_c(const mavsdk_camera_Storage_t& c_struct) {
+translate_storage_from_c(const mavsdk_camera_storage_t& c_struct) {
     mavsdk::Camera::Storage cpp_struct{};
     cpp_struct.component_id = c_struct.component_id;
     cpp_struct.video_on = c_struct.video_on;
@@ -520,15 +520,15 @@ translate_Storage_from_c(const mavsdk_camera_Storage_t& c_struct) {
     if (c_struct.media_folder_name) {
         cpp_struct.media_folder_name = c_struct.media_folder_name;
     }
-    cpp_struct.storage_status = translate_Storage_StorageStatus_from_c(c_struct.storage_status);
+    cpp_struct.storage_status = translate_storage_storage_status_from_c(c_struct.storage_status);
     cpp_struct.storage_id = c_struct.storage_id;
-    cpp_struct.storage_type = translate_Storage_StorageType_from_c(c_struct.storage_type);
+    cpp_struct.storage_type = translate_storage_storage_type_from_c(c_struct.storage_type);
     return cpp_struct;
 }
 
 
-static mavsdk_camera_Storage_StorageStatus_t
-translate_Storage_StorageStatus_to_c(mavsdk::Camera::Storage::StorageStatus cpp_enum) {
+static mavsdk_camera_storage_storage_status_t
+translate_storage_storage_status_to_c(mavsdk::Camera::Storage::StorageStatus cpp_enum) {
     switch(cpp_enum) {
         case mavsdk::Camera::Storage::StorageStatus::NotAvailable:
             return MAVSDK_CAMERA_STORAGE_STORAGE_STATUS_NOT_AVAILABLE;
@@ -543,8 +543,8 @@ translate_Storage_StorageStatus_to_c(mavsdk::Camera::Storage::StorageStatus cpp_
 }
 
 
-static mavsdk_camera_Storage_StorageType_t
-translate_Storage_StorageType_to_c(mavsdk::Camera::Storage::StorageType cpp_enum) {
+static mavsdk_camera_storage_storage_type_t
+translate_storage_storage_type_to_c(mavsdk::Camera::Storage::StorageType cpp_enum) {
     switch(cpp_enum) {
         case mavsdk::Camera::Storage::StorageType::Unknown:
             return MAVSDK_CAMERA_STORAGE_STORAGE_TYPE_UNKNOWN;
@@ -562,9 +562,9 @@ translate_Storage_StorageType_to_c(mavsdk::Camera::Storage::StorageType cpp_enum
     return MAVSDK_CAMERA_STORAGE_STORAGE_TYPE_UNKNOWN;
 }
 
-static mavsdk_camera_Storage_t
-translate_Storage_to_c(const mavsdk::Camera::Storage& cpp_struct) {
-    mavsdk_camera_Storage_t c_struct{};
+static mavsdk_camera_storage_t
+translate_storage_to_c(const mavsdk::Camera::Storage& cpp_struct) {
+    mavsdk_camera_storage_t c_struct{};
     c_struct.component_id = cpp_struct.component_id;
     c_struct.video_on = cpp_struct.video_on;
     c_struct.photo_interval_on = cpp_struct.photo_interval_on;
@@ -573,14 +573,14 @@ translate_Storage_to_c(const mavsdk::Camera::Storage& cpp_struct) {
     c_struct.total_storage_mib = cpp_struct.total_storage_mib;
     c_struct.recording_time_s = cpp_struct.recording_time_s;
     c_struct.media_folder_name = strdup(cpp_struct.media_folder_name.c_str());
-    c_struct.storage_status = translate_Storage_StorageStatus_to_c(cpp_struct.storage_status);
+    c_struct.storage_status = translate_storage_storage_status_to_c(cpp_struct.storage_status);
     c_struct.storage_id = cpp_struct.storage_id;
-    c_struct.storage_type = translate_Storage_StorageType_to_c(cpp_struct.storage_type);
+    c_struct.storage_type = translate_storage_storage_type_to_c(cpp_struct.storage_type);
     return c_struct;
 }
 
-void mavsdk_camera_Storage_destroy(
-    mavsdk_camera_Storage_t* target) {
+void mavsdk_camera_storage_destroy(
+    mavsdk_camera_storage_t* target) {
     if (!target) return;
     if (target->media_folder_name) {
         free((void*)target->media_folder_name);
@@ -588,13 +588,13 @@ void mavsdk_camera_Storage_destroy(
     }
 }
 
-void mavsdk_camera_Storage_array_destroy(
-    mavsdk_camera_Storage_t** array,
+void mavsdk_camera_storage_array_destroy(
+    mavsdk_camera_storage_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_camera_Storage_destroy(&(*array)[i]);
+        mavsdk_camera_storage_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -603,33 +603,33 @@ void mavsdk_camera_Storage_array_destroy(
 
 
 static mavsdk::Camera::StorageUpdate
-translate_StorageUpdate_from_c(const mavsdk_camera_StorageUpdate_t& c_struct) {
+translate_storage_update_from_c(const mavsdk_camera_storage_update_t& c_struct) {
     mavsdk::Camera::StorageUpdate cpp_struct{};
     cpp_struct.component_id = c_struct.component_id;
-    cpp_struct.storage = translate_Storage_from_c(c_struct.storage);
+    cpp_struct.storage = translate_storage_from_c(c_struct.storage);
     return cpp_struct;
 }
 
-static mavsdk_camera_StorageUpdate_t
-translate_StorageUpdate_to_c(const mavsdk::Camera::StorageUpdate& cpp_struct) {
-    mavsdk_camera_StorageUpdate_t c_struct{};
+static mavsdk_camera_storage_update_t
+translate_storage_update_to_c(const mavsdk::Camera::StorageUpdate& cpp_struct) {
+    mavsdk_camera_storage_update_t c_struct{};
     c_struct.component_id = cpp_struct.component_id;
-    c_struct.storage = translate_Storage_to_c(cpp_struct.storage);
+    c_struct.storage = translate_storage_to_c(cpp_struct.storage);
     return c_struct;
 }
 
-void mavsdk_camera_StorageUpdate_destroy(
-    mavsdk_camera_StorageUpdate_t* target) {
+void mavsdk_camera_storage_update_destroy(
+    mavsdk_camera_storage_update_t* target) {
     if (!target) return;
 }
 
-void mavsdk_camera_StorageUpdate_array_destroy(
-    mavsdk_camera_StorageUpdate_t** array,
+void mavsdk_camera_storage_update_array_destroy(
+    mavsdk_camera_storage_update_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_camera_StorageUpdate_destroy(&(*array)[i]);
+        mavsdk_camera_storage_update_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -638,35 +638,35 @@ void mavsdk_camera_StorageUpdate_array_destroy(
 
 
 static mavsdk::Camera::CurrentSettingsUpdate
-translate_CurrentSettingsUpdate_from_c(const mavsdk_camera_CurrentSettingsUpdate_t& c_struct) {
+translate_current_settings_update_from_c(const mavsdk_camera_current_settings_update_t& c_struct) {
     mavsdk::Camera::CurrentSettingsUpdate cpp_struct{};
     cpp_struct.component_id = c_struct.component_id;
     cpp_struct.current_settings.reserve(c_struct.current_settings_size);
     for (size_t i = 0; i < c_struct.current_settings_size; i++) {
         cpp_struct.current_settings.push_back(
-            translate_Setting_from_c(c_struct.current_settings[i]));
+            translate_setting_from_c(c_struct.current_settings[i]));
     }
     return cpp_struct;
 }
 
-static mavsdk_camera_CurrentSettingsUpdate_t
-translate_CurrentSettingsUpdate_to_c(const mavsdk::Camera::CurrentSettingsUpdate& cpp_struct) {
-    mavsdk_camera_CurrentSettingsUpdate_t c_struct{};
+static mavsdk_camera_current_settings_update_t
+translate_current_settings_update_to_c(const mavsdk::Camera::CurrentSettingsUpdate& cpp_struct) {
+    mavsdk_camera_current_settings_update_t c_struct{};
     c_struct.component_id = cpp_struct.component_id;
     c_struct.current_settings_size = cpp_struct.current_settings.size();
-    c_struct.current_settings = new mavsdk_camera_Setting_t[c_struct.current_settings_size];
+    c_struct.current_settings = new mavsdk_camera_setting_t[c_struct.current_settings_size];
     for (size_t i = 0; i < c_struct.current_settings_size; i++) {
-        c_struct.current_settings[i] = translate_Setting_to_c(cpp_struct.current_settings[i]);
+        c_struct.current_settings[i] = translate_setting_to_c(cpp_struct.current_settings[i]);
     }
     return c_struct;
 }
 
-void mavsdk_camera_CurrentSettingsUpdate_destroy(
-    mavsdk_camera_CurrentSettingsUpdate_t* target) {
+void mavsdk_camera_current_settings_update_destroy(
+    mavsdk_camera_current_settings_update_t* target) {
     if (!target) return;
     if (target->current_settings) {
         for (size_t i = 0; i < target->current_settings_size; i++) {
-            mavsdk_camera_Setting_destroy(&target->current_settings[i]);
+            mavsdk_camera_setting_destroy(&target->current_settings[i]);
         }
         delete[] target->current_settings;
         target->current_settings = nullptr;
@@ -674,13 +674,13 @@ void mavsdk_camera_CurrentSettingsUpdate_destroy(
     }
 }
 
-void mavsdk_camera_CurrentSettingsUpdate_array_destroy(
-    mavsdk_camera_CurrentSettingsUpdate_t** array,
+void mavsdk_camera_current_settings_update_array_destroy(
+    mavsdk_camera_current_settings_update_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_camera_CurrentSettingsUpdate_destroy(&(*array)[i]);
+        mavsdk_camera_current_settings_update_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -689,35 +689,35 @@ void mavsdk_camera_CurrentSettingsUpdate_array_destroy(
 
 
 static mavsdk::Camera::PossibleSettingOptionsUpdate
-translate_PossibleSettingOptionsUpdate_from_c(const mavsdk_camera_PossibleSettingOptionsUpdate_t& c_struct) {
+translate_possible_setting_options_update_from_c(const mavsdk_camera_possible_setting_options_update_t& c_struct) {
     mavsdk::Camera::PossibleSettingOptionsUpdate cpp_struct{};
     cpp_struct.component_id = c_struct.component_id;
     cpp_struct.setting_options.reserve(c_struct.setting_options_size);
     for (size_t i = 0; i < c_struct.setting_options_size; i++) {
         cpp_struct.setting_options.push_back(
-            translate_SettingOptions_from_c(c_struct.setting_options[i]));
+            translate_setting_options_from_c(c_struct.setting_options[i]));
     }
     return cpp_struct;
 }
 
-static mavsdk_camera_PossibleSettingOptionsUpdate_t
-translate_PossibleSettingOptionsUpdate_to_c(const mavsdk::Camera::PossibleSettingOptionsUpdate& cpp_struct) {
-    mavsdk_camera_PossibleSettingOptionsUpdate_t c_struct{};
+static mavsdk_camera_possible_setting_options_update_t
+translate_possible_setting_options_update_to_c(const mavsdk::Camera::PossibleSettingOptionsUpdate& cpp_struct) {
+    mavsdk_camera_possible_setting_options_update_t c_struct{};
     c_struct.component_id = cpp_struct.component_id;
     c_struct.setting_options_size = cpp_struct.setting_options.size();
-    c_struct.setting_options = new mavsdk_camera_SettingOptions_t[c_struct.setting_options_size];
+    c_struct.setting_options = new mavsdk_camera_setting_options_t[c_struct.setting_options_size];
     for (size_t i = 0; i < c_struct.setting_options_size; i++) {
-        c_struct.setting_options[i] = translate_SettingOptions_to_c(cpp_struct.setting_options[i]);
+        c_struct.setting_options[i] = translate_setting_options_to_c(cpp_struct.setting_options[i]);
     }
     return c_struct;
 }
 
-void mavsdk_camera_PossibleSettingOptionsUpdate_destroy(
-    mavsdk_camera_PossibleSettingOptionsUpdate_t* target) {
+void mavsdk_camera_possible_setting_options_update_destroy(
+    mavsdk_camera_possible_setting_options_update_t* target) {
     if (!target) return;
     if (target->setting_options) {
         for (size_t i = 0; i < target->setting_options_size; i++) {
-            mavsdk_camera_SettingOptions_destroy(&target->setting_options[i]);
+            mavsdk_camera_setting_options_destroy(&target->setting_options[i]);
         }
         delete[] target->setting_options;
         target->setting_options = nullptr;
@@ -725,13 +725,13 @@ void mavsdk_camera_PossibleSettingOptionsUpdate_destroy(
     }
 }
 
-void mavsdk_camera_PossibleSettingOptionsUpdate_array_destroy(
-    mavsdk_camera_PossibleSettingOptionsUpdate_t** array,
+void mavsdk_camera_possible_setting_options_update_array_destroy(
+    mavsdk_camera_possible_setting_options_update_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_camera_PossibleSettingOptionsUpdate_destroy(&(*array)[i]);
+        mavsdk_camera_possible_setting_options_update_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -741,7 +741,7 @@ void mavsdk_camera_PossibleSettingOptionsUpdate_array_destroy(
 
 
 static mavsdk::Camera::Position
-translate_Position_from_c(const mavsdk_camera_Position_t& c_struct) {
+translate_position_from_c(const mavsdk_camera_position_t& c_struct) {
     mavsdk::Camera::Position cpp_struct{};
     cpp_struct.latitude_deg = c_struct.latitude_deg;
     cpp_struct.longitude_deg = c_struct.longitude_deg;
@@ -750,9 +750,9 @@ translate_Position_from_c(const mavsdk_camera_Position_t& c_struct) {
     return cpp_struct;
 }
 
-static mavsdk_camera_Position_t
-translate_Position_to_c(const mavsdk::Camera::Position& cpp_struct) {
-    mavsdk_camera_Position_t c_struct{};
+static mavsdk_camera_position_t
+translate_position_to_c(const mavsdk::Camera::Position& cpp_struct) {
+    mavsdk_camera_position_t c_struct{};
     c_struct.latitude_deg = cpp_struct.latitude_deg;
     c_struct.longitude_deg = cpp_struct.longitude_deg;
     c_struct.absolute_altitude_m = cpp_struct.absolute_altitude_m;
@@ -760,18 +760,18 @@ translate_Position_to_c(const mavsdk::Camera::Position& cpp_struct) {
     return c_struct;
 }
 
-void mavsdk_camera_Position_destroy(
-    mavsdk_camera_Position_t* target) {
+void mavsdk_camera_position_destroy(
+    mavsdk_camera_position_t* target) {
     if (!target) return;
 }
 
-void mavsdk_camera_Position_array_destroy(
-    mavsdk_camera_Position_t** array,
+void mavsdk_camera_position_array_destroy(
+    mavsdk_camera_position_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_camera_Position_destroy(&(*array)[i]);
+        mavsdk_camera_position_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -780,7 +780,7 @@ void mavsdk_camera_Position_array_destroy(
 
 
 static mavsdk::Camera::Quaternion
-translate_Quaternion_from_c(const mavsdk_camera_Quaternion_t& c_struct) {
+translate_quaternion_from_c(const mavsdk_camera_quaternion_t& c_struct) {
     mavsdk::Camera::Quaternion cpp_struct{};
     cpp_struct.w = c_struct.w;
     cpp_struct.x = c_struct.x;
@@ -789,9 +789,9 @@ translate_Quaternion_from_c(const mavsdk_camera_Quaternion_t& c_struct) {
     return cpp_struct;
 }
 
-static mavsdk_camera_Quaternion_t
-translate_Quaternion_to_c(const mavsdk::Camera::Quaternion& cpp_struct) {
-    mavsdk_camera_Quaternion_t c_struct{};
+static mavsdk_camera_quaternion_t
+translate_quaternion_to_c(const mavsdk::Camera::Quaternion& cpp_struct) {
+    mavsdk_camera_quaternion_t c_struct{};
     c_struct.w = cpp_struct.w;
     c_struct.x = cpp_struct.x;
     c_struct.y = cpp_struct.y;
@@ -799,18 +799,18 @@ translate_Quaternion_to_c(const mavsdk::Camera::Quaternion& cpp_struct) {
     return c_struct;
 }
 
-void mavsdk_camera_Quaternion_destroy(
-    mavsdk_camera_Quaternion_t* target) {
+void mavsdk_camera_quaternion_destroy(
+    mavsdk_camera_quaternion_t* target) {
     if (!target) return;
 }
 
-void mavsdk_camera_Quaternion_array_destroy(
-    mavsdk_camera_Quaternion_t** array,
+void mavsdk_camera_quaternion_array_destroy(
+    mavsdk_camera_quaternion_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_camera_Quaternion_destroy(&(*array)[i]);
+        mavsdk_camera_quaternion_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -819,7 +819,7 @@ void mavsdk_camera_Quaternion_array_destroy(
 
 
 static mavsdk::Camera::EulerAngle
-translate_EulerAngle_from_c(const mavsdk_camera_EulerAngle_t& c_struct) {
+translate_euler_angle_from_c(const mavsdk_camera_euler_angle_t& c_struct) {
     mavsdk::Camera::EulerAngle cpp_struct{};
     cpp_struct.roll_deg = c_struct.roll_deg;
     cpp_struct.pitch_deg = c_struct.pitch_deg;
@@ -827,27 +827,27 @@ translate_EulerAngle_from_c(const mavsdk_camera_EulerAngle_t& c_struct) {
     return cpp_struct;
 }
 
-static mavsdk_camera_EulerAngle_t
-translate_EulerAngle_to_c(const mavsdk::Camera::EulerAngle& cpp_struct) {
-    mavsdk_camera_EulerAngle_t c_struct{};
+static mavsdk_camera_euler_angle_t
+translate_euler_angle_to_c(const mavsdk::Camera::EulerAngle& cpp_struct) {
+    mavsdk_camera_euler_angle_t c_struct{};
     c_struct.roll_deg = cpp_struct.roll_deg;
     c_struct.pitch_deg = cpp_struct.pitch_deg;
     c_struct.yaw_deg = cpp_struct.yaw_deg;
     return c_struct;
 }
 
-void mavsdk_camera_EulerAngle_destroy(
-    mavsdk_camera_EulerAngle_t* target) {
+void mavsdk_camera_euler_angle_destroy(
+    mavsdk_camera_euler_angle_t* target) {
     if (!target) return;
 }
 
-void mavsdk_camera_EulerAngle_array_destroy(
-    mavsdk_camera_EulerAngle_t** array,
+void mavsdk_camera_euler_angle_array_destroy(
+    mavsdk_camera_euler_angle_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_camera_EulerAngle_destroy(&(*array)[i]);
+        mavsdk_camera_euler_angle_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -856,12 +856,12 @@ void mavsdk_camera_EulerAngle_array_destroy(
 
 
 static mavsdk::Camera::CaptureInfo
-translate_CaptureInfo_from_c(const mavsdk_camera_CaptureInfo_t& c_struct) {
+translate_capture_info_from_c(const mavsdk_camera_capture_info_t& c_struct) {
     mavsdk::Camera::CaptureInfo cpp_struct{};
     cpp_struct.component_id = c_struct.component_id;
-    cpp_struct.position = translate_Position_from_c(c_struct.position);
-    cpp_struct.attitude_quaternion = translate_Quaternion_from_c(c_struct.attitude_quaternion);
-    cpp_struct.attitude_euler_angle = translate_EulerAngle_from_c(c_struct.attitude_euler_angle);
+    cpp_struct.position = translate_position_from_c(c_struct.position);
+    cpp_struct.attitude_quaternion = translate_quaternion_from_c(c_struct.attitude_quaternion);
+    cpp_struct.attitude_euler_angle = translate_euler_angle_from_c(c_struct.attitude_euler_angle);
     cpp_struct.time_utc_us = c_struct.time_utc_us;
     cpp_struct.is_success = c_struct.is_success;
     cpp_struct.index = c_struct.index;
@@ -871,13 +871,13 @@ translate_CaptureInfo_from_c(const mavsdk_camera_CaptureInfo_t& c_struct) {
     return cpp_struct;
 }
 
-static mavsdk_camera_CaptureInfo_t
-translate_CaptureInfo_to_c(const mavsdk::Camera::CaptureInfo& cpp_struct) {
-    mavsdk_camera_CaptureInfo_t c_struct{};
+static mavsdk_camera_capture_info_t
+translate_capture_info_to_c(const mavsdk::Camera::CaptureInfo& cpp_struct) {
+    mavsdk_camera_capture_info_t c_struct{};
     c_struct.component_id = cpp_struct.component_id;
-    c_struct.position = translate_Position_to_c(cpp_struct.position);
-    c_struct.attitude_quaternion = translate_Quaternion_to_c(cpp_struct.attitude_quaternion);
-    c_struct.attitude_euler_angle = translate_EulerAngle_to_c(cpp_struct.attitude_euler_angle);
+    c_struct.position = translate_position_to_c(cpp_struct.position);
+    c_struct.attitude_quaternion = translate_quaternion_to_c(cpp_struct.attitude_quaternion);
+    c_struct.attitude_euler_angle = translate_euler_angle_to_c(cpp_struct.attitude_euler_angle);
     c_struct.time_utc_us = cpp_struct.time_utc_us;
     c_struct.is_success = cpp_struct.is_success;
     c_struct.index = cpp_struct.index;
@@ -885,8 +885,8 @@ translate_CaptureInfo_to_c(const mavsdk::Camera::CaptureInfo& cpp_struct) {
     return c_struct;
 }
 
-void mavsdk_camera_CaptureInfo_destroy(
-    mavsdk_camera_CaptureInfo_t* target) {
+void mavsdk_camera_capture_info_destroy(
+    mavsdk_camera_capture_info_t* target) {
     if (!target) return;
     if (target->file_url) {
         free((void*)target->file_url);
@@ -894,13 +894,13 @@ void mavsdk_camera_CaptureInfo_destroy(
     }
 }
 
-void mavsdk_camera_CaptureInfo_array_destroy(
-    mavsdk_camera_CaptureInfo_t** array,
+void mavsdk_camera_capture_info_array_destroy(
+    mavsdk_camera_capture_info_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_camera_CaptureInfo_destroy(&(*array)[i]);
+        mavsdk_camera_capture_info_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -909,7 +909,7 @@ void mavsdk_camera_CaptureInfo_array_destroy(
 
 
 static mavsdk::Camera::Information
-translate_Information_from_c(const mavsdk_camera_Information_t& c_struct) {
+translate_information_from_c(const mavsdk_camera_information_t& c_struct) {
     mavsdk::Camera::Information cpp_struct{};
     cpp_struct.component_id = c_struct.component_id;
     if (c_struct.vendor_name) {
@@ -926,9 +926,9 @@ translate_Information_from_c(const mavsdk_camera_Information_t& c_struct) {
     return cpp_struct;
 }
 
-static mavsdk_camera_Information_t
-translate_Information_to_c(const mavsdk::Camera::Information& cpp_struct) {
-    mavsdk_camera_Information_t c_struct{};
+static mavsdk_camera_information_t
+translate_information_to_c(const mavsdk::Camera::Information& cpp_struct) {
+    mavsdk_camera_information_t c_struct{};
     c_struct.component_id = cpp_struct.component_id;
     c_struct.vendor_name = strdup(cpp_struct.vendor_name.c_str());
     c_struct.model_name = strdup(cpp_struct.model_name.c_str());
@@ -940,8 +940,8 @@ translate_Information_to_c(const mavsdk::Camera::Information& cpp_struct) {
     return c_struct;
 }
 
-void mavsdk_camera_Information_destroy(
-    mavsdk_camera_Information_t* target) {
+void mavsdk_camera_information_destroy(
+    mavsdk_camera_information_t* target) {
     if (!target) return;
     if (target->vendor_name) {
         free((void*)target->vendor_name);
@@ -953,13 +953,13 @@ void mavsdk_camera_Information_destroy(
     }
 }
 
-void mavsdk_camera_Information_array_destroy(
-    mavsdk_camera_Information_t** array,
+void mavsdk_camera_information_array_destroy(
+    mavsdk_camera_information_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_camera_Information_destroy(&(*array)[i]);
+        mavsdk_camera_information_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -968,33 +968,33 @@ void mavsdk_camera_Information_array_destroy(
 
 
 static mavsdk::Camera::CameraList
-translate_CameraList_from_c(const mavsdk_camera_CameraList_t& c_struct) {
+translate_camera_list_from_c(const mavsdk_camera_camera_list_t& c_struct) {
     mavsdk::Camera::CameraList cpp_struct{};
     cpp_struct.cameras.reserve(c_struct.cameras_size);
     for (size_t i = 0; i < c_struct.cameras_size; i++) {
         cpp_struct.cameras.push_back(
-            translate_Information_from_c(c_struct.cameras[i]));
+            translate_information_from_c(c_struct.cameras[i]));
     }
     return cpp_struct;
 }
 
-static mavsdk_camera_CameraList_t
-translate_CameraList_to_c(const mavsdk::Camera::CameraList& cpp_struct) {
-    mavsdk_camera_CameraList_t c_struct{};
+static mavsdk_camera_camera_list_t
+translate_camera_list_to_c(const mavsdk::Camera::CameraList& cpp_struct) {
+    mavsdk_camera_camera_list_t c_struct{};
     c_struct.cameras_size = cpp_struct.cameras.size();
-    c_struct.cameras = new mavsdk_camera_Information_t[c_struct.cameras_size];
+    c_struct.cameras = new mavsdk_camera_information_t[c_struct.cameras_size];
     for (size_t i = 0; i < c_struct.cameras_size; i++) {
-        c_struct.cameras[i] = translate_Information_to_c(cpp_struct.cameras[i]);
+        c_struct.cameras[i] = translate_information_to_c(cpp_struct.cameras[i]);
     }
     return c_struct;
 }
 
-void mavsdk_camera_CameraList_destroy(
-    mavsdk_camera_CameraList_t* target) {
+void mavsdk_camera_camera_list_destroy(
+    mavsdk_camera_camera_list_t* target) {
     if (!target) return;
     if (target->cameras) {
         for (size_t i = 0; i < target->cameras_size; i++) {
-            mavsdk_camera_Information_destroy(&target->cameras[i]);
+            mavsdk_camera_information_destroy(&target->cameras[i]);
         }
         delete[] target->cameras;
         target->cameras = nullptr;
@@ -1002,13 +1002,13 @@ void mavsdk_camera_CameraList_destroy(
     }
 }
 
-void mavsdk_camera_CameraList_array_destroy(
-    mavsdk_camera_CameraList_t** array,
+void mavsdk_camera_camera_list_array_destroy(
+    mavsdk_camera_camera_list_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_camera_CameraList_destroy(&(*array)[i]);
+        mavsdk_camera_camera_list_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -1314,7 +1314,7 @@ mavsdk_camera_stop_video_streaming(
 void mavsdk_camera_set_mode_async(
     mavsdk_camera_t camera,
     int32_t component_id,
-    mavsdk_camera_Mode_t mode,
+    mavsdk_camera_mode_t mode,
     mavsdk_camera_set_mode_callback_t callback,
     void* user_data)
 {
@@ -1322,7 +1322,7 @@ void mavsdk_camera_set_mode_async(
 
     wrapper->cpp_plugin->set_mode_async(
         component_id,
-        translate_Mode_from_c(mode),
+        translate_mode_from_c(mode),
         [callback, user_data](
             mavsdk::Camera::Result result) {
                 if (callback) {
@@ -1339,11 +1339,11 @@ mavsdk_camera_result_t
 mavsdk_camera_set_mode(
     mavsdk_camera_t camera,
     int32_t component_id,
-    mavsdk_camera_Mode_t mode)
+    mavsdk_camera_mode_t mode)
 {
     auto wrapper = static_cast<mavsdk_camera_wrapper*>(camera);
 
-    auto ret_value = wrapper->cpp_plugin->set_mode(        component_id,        translate_Mode_from_c(mode));
+    auto ret_value = wrapper->cpp_plugin->set_mode(        component_id,        translate_mode_from_c(mode));
 
     return translate_result(ret_value);
 }
@@ -1352,7 +1352,7 @@ mavsdk_camera_set_mode(
 void mavsdk_camera_list_photos_async(
     mavsdk_camera_t camera,
     int32_t component_id,
-    mavsdk_camera_PhotosRange_t photos_range,
+    mavsdk_camera_photos_range_t photos_range,
     mavsdk_camera_list_photos_callback_t callback,
     void* user_data)
 {
@@ -1360,18 +1360,18 @@ void mavsdk_camera_list_photos_async(
 
     wrapper->cpp_plugin->list_photos_async(
         component_id,
-        translate_PhotosRange_from_c(photos_range),
+        translate_photos_range_from_c(photos_range),
         [callback, user_data](
             mavsdk::Camera::Result result,
             std::vector<mavsdk::Camera::CaptureInfo> value) {
                 if (callback) {
                     size_t count = value.size();
-                    mavsdk_camera_CaptureInfo_t* capture_infos = nullptr;
+                    mavsdk_camera_capture_info_t* capture_infos = nullptr;
 
                     if (count > 0) {
-                        capture_infos = new mavsdk_camera_CaptureInfo_t[count];
+                        capture_infos = new mavsdk_camera_capture_info_t[count];
                         for (size_t i = 0; i < count; i++) {
-                            capture_infos[i] = translate_CaptureInfo_to_c(value[i]);
+                            capture_infos[i] = translate_capture_info_to_c(value[i]);
                         }
                     }
 
@@ -1390,23 +1390,23 @@ mavsdk_camera_result_t
 mavsdk_camera_list_photos(
     mavsdk_camera_t camera,
     int32_t component_id,
-    mavsdk_camera_PhotosRange_t photos_range,
-    mavsdk_camera_CaptureInfo_t** capture_infos_out,
+    mavsdk_camera_photos_range_t photos_range,
+    mavsdk_camera_capture_info_t** capture_infos_out,
     size_t* capture_infos_size_out)
 {
     auto wrapper = static_cast<mavsdk_camera_wrapper*>(camera);
 
     auto result_pair = wrapper->cpp_plugin->list_photos(
         component_id,
-        translate_PhotosRange_from_c(photos_range));
+        translate_photos_range_from_c(photos_range));
 
     if (capture_infos_out != nullptr) {
         size_t count = result_pair.second.size();
 
-        *capture_infos_out = new mavsdk_camera_CaptureInfo_t[count];
+        *capture_infos_out = new mavsdk_camera_capture_info_t[count];
 
         for (size_t i = 0; i < count; i++) {
-            (*capture_infos_out)[i] = translate_CaptureInfo_to_c(result_pair.second[i]);
+            (*capture_infos_out)[i] = translate_capture_info_to_c(result_pair.second[i]);
         }
 
         if (capture_infos_size_out != nullptr) {
@@ -1430,7 +1430,7 @@ mavsdk_camera_camera_list_handle_t mavsdk_camera_subscribe_camera_list(
             mavsdk::Camera::CameraList value) {
                 if (callback) {
                     callback(
-                        translate_CameraList_to_c(value),
+                        translate_camera_list_to_c(value),
                         user_data);
                 }
         });
@@ -1455,14 +1455,14 @@ void mavsdk_camera_unsubscribe_camera_list(
 void
 mavsdk_camera_camera_list(
     mavsdk_camera_t camera,
-    mavsdk_camera_CameraList_t* camera_list_out)
+    mavsdk_camera_camera_list_t* camera_list_out)
 {
     auto wrapper = static_cast<mavsdk_camera_wrapper*>(camera);
 
     auto ret_value = wrapper->cpp_plugin->camera_list();
 
     if (camera_list_out != nullptr) {
-        *camera_list_out = translate_CameraList_to_c(ret_value);
+        *camera_list_out = translate_camera_list_to_c(ret_value);
     }
 }
 
@@ -1479,7 +1479,7 @@ mavsdk_camera_mode_handle_t mavsdk_camera_subscribe_mode(
             mavsdk::Camera::ModeUpdate value) {
                 if (callback) {
                     callback(
-                        translate_ModeUpdate_to_c(value),
+                        translate_mode_update_to_c(value),
                         user_data);
                 }
         });
@@ -1507,7 +1507,7 @@ mavsdk_camera_result_t
 mavsdk_camera_get_mode(
     mavsdk_camera_t camera,
     int32_t component_id,
-    mavsdk_camera_Mode_t* mode_out)
+    mavsdk_camera_mode_t* mode_out)
 {
     auto wrapper = static_cast<mavsdk_camera_wrapper*>(camera);
 
@@ -1515,7 +1515,7 @@ mavsdk_camera_get_mode(
         component_id);
 
     if (mode_out != nullptr) {
-        *mode_out = translate_Mode_to_c(result_pair.second);
+        *mode_out = translate_mode_to_c(result_pair.second);
     }
 
     return translate_result(result_pair.first);
@@ -1534,7 +1534,7 @@ mavsdk_camera_video_stream_info_handle_t mavsdk_camera_subscribe_video_stream_in
             mavsdk::Camera::VideoStreamUpdate value) {
                 if (callback) {
                     callback(
-                        translate_VideoStreamUpdate_to_c(value),
+                        translate_video_stream_update_to_c(value),
                         user_data);
                 }
         });
@@ -1562,7 +1562,7 @@ mavsdk_camera_result_t
 mavsdk_camera_get_video_stream_info(
     mavsdk_camera_t camera,
     int32_t component_id,
-    mavsdk_camera_VideoStreamInfo_t* video_stream_info_out)
+    mavsdk_camera_video_stream_info_t* video_stream_info_out)
 {
     auto wrapper = static_cast<mavsdk_camera_wrapper*>(camera);
 
@@ -1570,7 +1570,7 @@ mavsdk_camera_get_video_stream_info(
         component_id);
 
     if (video_stream_info_out != nullptr) {
-        *video_stream_info_out = translate_VideoStreamInfo_to_c(result_pair.second);
+        *video_stream_info_out = translate_video_stream_info_to_c(result_pair.second);
     }
 
     return translate_result(result_pair.first);
@@ -1589,7 +1589,7 @@ mavsdk_camera_capture_info_handle_t mavsdk_camera_subscribe_capture_info(
             mavsdk::Camera::CaptureInfo value) {
                 if (callback) {
                     callback(
-                        translate_CaptureInfo_to_c(value),
+                        translate_capture_info_to_c(value),
                         user_data);
                 }
         });
@@ -1624,7 +1624,7 @@ mavsdk_camera_storage_handle_t mavsdk_camera_subscribe_storage(
             mavsdk::Camera::StorageUpdate value) {
                 if (callback) {
                     callback(
-                        translate_StorageUpdate_to_c(value),
+                        translate_storage_update_to_c(value),
                         user_data);
                 }
         });
@@ -1652,7 +1652,7 @@ mavsdk_camera_result_t
 mavsdk_camera_get_storage(
     mavsdk_camera_t camera,
     int32_t component_id,
-    mavsdk_camera_Storage_t* storage_out)
+    mavsdk_camera_storage_t* storage_out)
 {
     auto wrapper = static_cast<mavsdk_camera_wrapper*>(camera);
 
@@ -1660,7 +1660,7 @@ mavsdk_camera_get_storage(
         component_id);
 
     if (storage_out != nullptr) {
-        *storage_out = translate_Storage_to_c(result_pair.second);
+        *storage_out = translate_storage_to_c(result_pair.second);
     }
 
     return translate_result(result_pair.first);
@@ -1679,7 +1679,7 @@ mavsdk_camera_current_settings_handle_t mavsdk_camera_subscribe_current_settings
             mavsdk::Camera::CurrentSettingsUpdate value) {
                 if (callback) {
                     callback(
-                        translate_CurrentSettingsUpdate_to_c(value),
+                        translate_current_settings_update_to_c(value),
                         user_data);
                 }
         });
@@ -1707,7 +1707,7 @@ mavsdk_camera_result_t
 mavsdk_camera_get_current_settings(
     mavsdk_camera_t camera,
     int32_t component_id,
-    mavsdk_camera_Setting_t** current_settings_out,
+    mavsdk_camera_setting_t** current_settings_out,
     size_t* current_settings_size_out)
 {
     auto wrapper = static_cast<mavsdk_camera_wrapper*>(camera);
@@ -1718,10 +1718,10 @@ mavsdk_camera_get_current_settings(
     if (current_settings_out != nullptr) {
         size_t count = result_pair.second.size();
 
-        *current_settings_out = new mavsdk_camera_Setting_t[count];
+        *current_settings_out = new mavsdk_camera_setting_t[count];
 
         for (size_t i = 0; i < count; i++) {
-            (*current_settings_out)[i] = translate_Setting_to_c(result_pair.second[i]);
+            (*current_settings_out)[i] = translate_setting_to_c(result_pair.second[i]);
         }
 
         if (current_settings_size_out != nullptr) {
@@ -1745,7 +1745,7 @@ mavsdk_camera_possible_setting_options_handle_t mavsdk_camera_subscribe_possible
             mavsdk::Camera::PossibleSettingOptionsUpdate value) {
                 if (callback) {
                     callback(
-                        translate_PossibleSettingOptionsUpdate_to_c(value),
+                        translate_possible_setting_options_update_to_c(value),
                         user_data);
                 }
         });
@@ -1773,7 +1773,7 @@ mavsdk_camera_result_t
 mavsdk_camera_get_possible_setting_options(
     mavsdk_camera_t camera,
     int32_t component_id,
-    mavsdk_camera_SettingOptions_t** setting_options_out,
+    mavsdk_camera_setting_options_t** setting_options_out,
     size_t* setting_options_size_out)
 {
     auto wrapper = static_cast<mavsdk_camera_wrapper*>(camera);
@@ -1784,10 +1784,10 @@ mavsdk_camera_get_possible_setting_options(
     if (setting_options_out != nullptr) {
         size_t count = result_pair.second.size();
 
-        *setting_options_out = new mavsdk_camera_SettingOptions_t[count];
+        *setting_options_out = new mavsdk_camera_setting_options_t[count];
 
         for (size_t i = 0; i < count; i++) {
-            (*setting_options_out)[i] = translate_SettingOptions_to_c(result_pair.second[i]);
+            (*setting_options_out)[i] = translate_setting_options_to_c(result_pair.second[i]);
         }
 
         if (setting_options_size_out != nullptr) {
@@ -1802,7 +1802,7 @@ mavsdk_camera_get_possible_setting_options(
 void mavsdk_camera_set_setting_async(
     mavsdk_camera_t camera,
     int32_t component_id,
-    mavsdk_camera_Setting_t setting,
+    mavsdk_camera_setting_t setting,
     mavsdk_camera_set_setting_callback_t callback,
     void* user_data)
 {
@@ -1810,7 +1810,7 @@ void mavsdk_camera_set_setting_async(
 
     wrapper->cpp_plugin->set_setting_async(
         component_id,
-        translate_Setting_from_c(setting),
+        translate_setting_from_c(setting),
         [callback, user_data](
             mavsdk::Camera::Result result) {
                 if (callback) {
@@ -1827,11 +1827,11 @@ mavsdk_camera_result_t
 mavsdk_camera_set_setting(
     mavsdk_camera_t camera,
     int32_t component_id,
-    mavsdk_camera_Setting_t setting)
+    mavsdk_camera_setting_t setting)
 {
     auto wrapper = static_cast<mavsdk_camera_wrapper*>(camera);
 
-    auto ret_value = wrapper->cpp_plugin->set_setting(        component_id,        translate_Setting_from_c(setting));
+    auto ret_value = wrapper->cpp_plugin->set_setting(        component_id,        translate_setting_from_c(setting));
 
     return translate_result(ret_value);
 }
@@ -1840,7 +1840,7 @@ mavsdk_camera_set_setting(
 void mavsdk_camera_get_setting_async(
     mavsdk_camera_t camera,
     int32_t component_id,
-    mavsdk_camera_Setting_t setting,
+    mavsdk_camera_setting_t setting,
     mavsdk_camera_get_setting_callback_t callback,
     void* user_data)
 {
@@ -1848,14 +1848,14 @@ void mavsdk_camera_get_setting_async(
 
     wrapper->cpp_plugin->get_setting_async(
         component_id,
-        translate_Setting_from_c(setting),
+        translate_setting_from_c(setting),
         [callback, user_data](
             mavsdk::Camera::Result result,
             mavsdk::Camera::Setting value) {
                 if (callback) {
                     callback(
                         translate_result(result),
-                        translate_Setting_to_c(value),
+                        translate_setting_to_c(value),
                         user_data);
                 }
         });
@@ -1867,17 +1867,17 @@ mavsdk_camera_result_t
 mavsdk_camera_get_setting(
     mavsdk_camera_t camera,
     int32_t component_id,
-    mavsdk_camera_Setting_t setting,
-    mavsdk_camera_Setting_t* setting_out)
+    mavsdk_camera_setting_t setting,
+    mavsdk_camera_setting_t* setting_out)
 {
     auto wrapper = static_cast<mavsdk_camera_wrapper*>(camera);
 
     auto result_pair = wrapper->cpp_plugin->get_setting(
         component_id,
-        translate_Setting_from_c(setting));
+        translate_setting_from_c(setting));
 
     if (setting_out != nullptr) {
-        *setting_out = translate_Setting_to_c(result_pair.second);
+        *setting_out = translate_setting_to_c(result_pair.second);
     }
 
     return translate_result(result_pair.first);

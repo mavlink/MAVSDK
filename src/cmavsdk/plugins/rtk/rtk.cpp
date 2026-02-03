@@ -29,7 +29,7 @@ translate_result(mavsdk::Rtk::Result cpp_result) {
 
 
 static mavsdk::Rtk::RtcmData
-translate_RtcmData_from_c(const mavsdk_rtk_RtcmData_t& c_struct) {
+translate_rtcm_data_from_c(const mavsdk_rtk_rtcm_data_t& c_struct) {
     mavsdk::Rtk::RtcmData cpp_struct{};
     if (c_struct.data_base64) {
         cpp_struct.data_base64 = c_struct.data_base64;
@@ -37,15 +37,15 @@ translate_RtcmData_from_c(const mavsdk_rtk_RtcmData_t& c_struct) {
     return cpp_struct;
 }
 
-static mavsdk_rtk_RtcmData_t
-translate_RtcmData_to_c(const mavsdk::Rtk::RtcmData& cpp_struct) {
-    mavsdk_rtk_RtcmData_t c_struct{};
+static mavsdk_rtk_rtcm_data_t
+translate_rtcm_data_to_c(const mavsdk::Rtk::RtcmData& cpp_struct) {
+    mavsdk_rtk_rtcm_data_t c_struct{};
     c_struct.data_base64 = strdup(cpp_struct.data_base64.c_str());
     return c_struct;
 }
 
-void mavsdk_rtk_RtcmData_destroy(
-    mavsdk_rtk_RtcmData_t* target) {
+void mavsdk_rtk_rtcm_data_destroy(
+    mavsdk_rtk_rtcm_data_t* target) {
     if (!target) return;
     if (target->data_base64) {
         free((void*)target->data_base64);
@@ -53,13 +53,13 @@ void mavsdk_rtk_RtcmData_destroy(
     }
 }
 
-void mavsdk_rtk_RtcmData_array_destroy(
-    mavsdk_rtk_RtcmData_t** array,
+void mavsdk_rtk_rtcm_data_array_destroy(
+    mavsdk_rtk_rtcm_data_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_rtk_RtcmData_destroy(&(*array)[i]);
+        mavsdk_rtk_rtcm_data_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -159,11 +159,11 @@ void mavsdk_rtk_destroy(mavsdk_rtk_t rtk) {
 mavsdk_rtk_result_t
 mavsdk_rtk_send_rtcm_data(
     mavsdk_rtk_t rtk,
-    mavsdk_rtk_RtcmData_t rtcm_data)
+    mavsdk_rtk_rtcm_data_t rtcm_data)
 {
     auto wrapper = static_cast<mavsdk_rtk_wrapper*>(rtk);
 
-    auto ret_value = wrapper->cpp_plugin->send_rtcm_data(        translate_RtcmData_from_c(rtcm_data));
+    auto ret_value = wrapper->cpp_plugin->send_rtcm_data(        translate_rtcm_data_from_c(rtcm_data));
 
     return translate_result(ret_value);
 }

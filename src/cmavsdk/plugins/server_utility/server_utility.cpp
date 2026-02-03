@@ -27,7 +27,7 @@ translate_result(mavsdk::ServerUtility::Result cpp_result) {
 }
 
 static mavsdk::ServerUtility::StatusTextType
-translate_StatusTextType_from_c(mavsdk_server_utility_StatusTextType_t c_enum) {
+translate_status_text_type_from_c(mavsdk_server_utility_status_text_type_t c_enum) {
     switch(c_enum) {
         case MAVSDK_SERVER_UTILITY_STATUS_TEXT_TYPE_DEBUG:
             return mavsdk::ServerUtility::StatusTextType::Debug;
@@ -49,8 +49,8 @@ translate_StatusTextType_from_c(mavsdk_server_utility_StatusTextType_t c_enum) {
     return mavsdk::ServerUtility::StatusTextType::Debug;
 }
 
-static mavsdk_server_utility_StatusTextType_t
-translate_StatusTextType_to_c(mavsdk::ServerUtility::StatusTextType cpp_enum) {
+static mavsdk_server_utility_status_text_type_t
+translate_status_text_type_to_c(mavsdk::ServerUtility::StatusTextType cpp_enum) {
     switch(cpp_enum) {
         case mavsdk::ServerUtility::StatusTextType::Debug:
             return MAVSDK_SERVER_UTILITY_STATUS_TEXT_TYPE_DEBUG;
@@ -166,12 +166,12 @@ void mavsdk_server_utility_destroy(mavsdk_server_utility_t server_utility) {
 mavsdk_server_utility_result_t
 mavsdk_server_utility_send_status_text(
     mavsdk_server_utility_t server_utility,
-    mavsdk_server_utility_StatusTextType_t type,
+    mavsdk_server_utility_status_text_type_t type,
     char* text)
 {
     auto wrapper = static_cast<mavsdk_server_utility_wrapper*>(server_utility);
 
-    auto ret_value = wrapper->cpp_plugin->send_status_text(        translate_StatusTextType_from_c(type),        text);
+    auto ret_value = wrapper->cpp_plugin->send_status_text(        translate_status_text_type_from_c(type),        text);
 
     return translate_result(ret_value);
 }

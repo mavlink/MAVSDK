@@ -42,7 +42,7 @@ typedef enum {
     MAVSDK_ARM_AUTHORIZER_SERVER_REJECTION_REASON_AIRSPACE_IN_USE = 4,
     /**  Weather is not good to fly. */
     MAVSDK_ARM_AUTHORIZER_SERVER_REJECTION_REASON_BAD_WEATHER = 5,
-} mavsdk_arm_authorizer_server_RejectionReason_t;
+} mavsdk_arm_authorizer_server_rejection_reason_t;
 
 
 // ===== Structs =====
@@ -199,7 +199,7 @@ mavsdk_arm_authorizer_server_result_t
 mavsdk_arm_authorizer_server_reject_arm_authorization(
     mavsdk_arm_authorizer_server_t arm_authorizer_server,
     bool temporarily,
-    mavsdk_arm_authorizer_server_RejectionReason_t reason,
+    mavsdk_arm_authorizer_server_rejection_reason_t reason,
     int32_t extra_info);
 
 

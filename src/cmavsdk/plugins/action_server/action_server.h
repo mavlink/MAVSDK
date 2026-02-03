@@ -67,7 +67,7 @@ typedef enum {
     MAVSDK_ACTION_SERVER_FLIGHT_MODE_ACRO = 12,
     /**  In 'Stabilize' mode. */
     MAVSDK_ACTION_SERVER_FLIGHT_MODE_STABILIZED = 13,
-} mavsdk_action_server_FlightMode_t;
+} mavsdk_action_server_flight_mode_t;
 
 
 // ===== Structs =====
@@ -76,7 +76,7 @@ typedef enum {
  *  respective flightmodes
  *
  * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_action_server_AllowableFlightModes_destroy() when done to avoid memory leaks.
+ *       mavsdk_action_server_allowable_flight_modes_destroy() when done to avoid memory leaks.
  */
 typedef struct CMAVSDK_EXPORT {
     /**  Auto/mission mode */
@@ -85,10 +85,10 @@ typedef struct CMAVSDK_EXPORT {
     bool can_guided_mode;
     /**  Stabilize mode */
     bool can_stabilize_mode;
-} mavsdk_action_server_AllowableFlightModes_t;
+} mavsdk_action_server_allowable_flight_modes_t;
 
 /**
- * @brief Destroy a AllowableFlightModes struct.
+ * @brief Destroy a allowable_flight_modes struct.
  *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
@@ -97,11 +97,11 @@ typedef struct CMAVSDK_EXPORT {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-CMAVSDK_EXPORT void mavsdk_action_server_AllowableFlightModes_destroy(
-    mavsdk_action_server_AllowableFlightModes_t* target);
+CMAVSDK_EXPORT void mavsdk_action_server_allowable_flight_modes_destroy(
+    mavsdk_action_server_allowable_flight_modes_t* target);
 
 /**
- * @brief Destroy an array of AllowableFlightModes structs.
+ * @brief Destroy an array of allowable_flight_modes structs.
  *
  * Frees all memory allocated for the array and its elements, including any
  * nested dynamic allocations. Must be called to avoid memory leaks.
@@ -109,25 +109,25 @@ CMAVSDK_EXPORT void mavsdk_action_server_AllowableFlightModes_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-CMAVSDK_EXPORT void mavsdk_action_server_AllowableFlightModes_array_destroy(
-    mavsdk_action_server_AllowableFlightModes_t** array,
+CMAVSDK_EXPORT void mavsdk_action_server_allowable_flight_modes_array_destroy(
+    mavsdk_action_server_allowable_flight_modes_t** array,
     size_t size);
 
 /**
  * @brief Arming message type
  *
  * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_action_server_ArmDisarm_destroy() when done to avoid memory leaks.
+ *       mavsdk_action_server_arm_disarm_destroy() when done to avoid memory leaks.
  */
 typedef struct CMAVSDK_EXPORT {
     /**  Should vehicle arm */
     bool arm;
     /**  Should arm override pre-flight checks */
     bool force;
-} mavsdk_action_server_ArmDisarm_t;
+} mavsdk_action_server_arm_disarm_t;
 
 /**
- * @brief Destroy a ArmDisarm struct.
+ * @brief Destroy a arm_disarm struct.
  *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
@@ -136,11 +136,11 @@ typedef struct CMAVSDK_EXPORT {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-CMAVSDK_EXPORT void mavsdk_action_server_ArmDisarm_destroy(
-    mavsdk_action_server_ArmDisarm_t* target);
+CMAVSDK_EXPORT void mavsdk_action_server_arm_disarm_destroy(
+    mavsdk_action_server_arm_disarm_t* target);
 
 /**
- * @brief Destroy an array of ArmDisarm structs.
+ * @brief Destroy an array of arm_disarm structs.
  *
  * Frees all memory allocated for the array and its elements, including any
  * nested dynamic allocations. Must be called to avoid memory leaks.
@@ -148,8 +148,8 @@ CMAVSDK_EXPORT void mavsdk_action_server_ArmDisarm_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-CMAVSDK_EXPORT void mavsdk_action_server_ArmDisarm_array_destroy(
-    mavsdk_action_server_ArmDisarm_t** array,
+CMAVSDK_EXPORT void mavsdk_action_server_arm_disarm_array_destroy(
+    mavsdk_action_server_arm_disarm_t** array,
     size_t size);
 
 /**
@@ -263,8 +263,8 @@ CMAVSDK_EXPORT void mavsdk_action_server_string_destroy(char** str);
 CMAVSDK_EXPORT void mavsdk_action_server_byte_buffer_destroy(uint8_t** buffer);
 
 // ===== Callback Typedefs =====
-typedef void (*mavsdk_action_server_arm_disarm_callback_t)(const mavsdk_action_server_result_t result, const mavsdk_action_server_ArmDisarm_t arm, void* user_data);
-typedef void (*mavsdk_action_server_flight_mode_change_callback_t)(const mavsdk_action_server_result_t result, const mavsdk_action_server_FlightMode_t flight_mode, void* user_data);
+typedef void (*mavsdk_action_server_arm_disarm_callback_t)(const mavsdk_action_server_result_t result, const mavsdk_action_server_arm_disarm_t arm, void* user_data);
+typedef void (*mavsdk_action_server_flight_mode_change_callback_t)(const mavsdk_action_server_result_t result, const mavsdk_action_server_flight_mode_t flight_mode, void* user_data);
 typedef void (*mavsdk_action_server_takeoff_callback_t)(const mavsdk_action_server_result_t result, const bool takeoff, void* user_data);
 typedef void (*mavsdk_action_server_land_callback_t)(const mavsdk_action_server_result_t result, const bool land, void* user_data);
 typedef void (*mavsdk_action_server_reboot_callback_t)(const mavsdk_action_server_result_t result, const bool reboot, void* user_data);
@@ -518,7 +518,7 @@ CMAVSDK_EXPORT
 mavsdk_action_server_result_t
 mavsdk_action_server_set_allowable_flight_modes(
     mavsdk_action_server_t action_server,
-    mavsdk_action_server_AllowableFlightModes_t flight_modes);
+    mavsdk_action_server_allowable_flight_modes_t flight_modes);
 
 
 /**
@@ -533,7 +533,7 @@ CMAVSDK_EXPORT
 void
 mavsdk_action_server_get_allowable_flight_modes(
     mavsdk_action_server_t action_server,
-    mavsdk_action_server_AllowableFlightModes_t* flight_modes_out);
+    mavsdk_action_server_allowable_flight_modes_t* flight_modes_out);
 
 
 /**
@@ -563,7 +563,7 @@ CMAVSDK_EXPORT
 mavsdk_action_server_result_t
 mavsdk_action_server_set_flight_mode(
     mavsdk_action_server_t action_server,
-    mavsdk_action_server_FlightMode_t flight_mode);
+    mavsdk_action_server_flight_mode_t flight_mode);
 
 
 #ifdef __cplusplus

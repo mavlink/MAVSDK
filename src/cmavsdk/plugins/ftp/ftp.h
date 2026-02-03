@@ -33,7 +33,7 @@ typedef void* mavsdk_ftp_upload_handle_t;
  * @brief The output of a directory list
  *
  * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_ftp_ListDirectoryData_destroy() when done to avoid memory leaks.
+ *       mavsdk_ftp_list_directory_data_destroy() when done to avoid memory leaks.
  */
 typedef struct CMAVSDK_EXPORT {
     /**  The found directories. */
@@ -42,10 +42,10 @@ typedef struct CMAVSDK_EXPORT {
     /**  The found files. */
     char** files;
     size_t files_size;
-} mavsdk_ftp_ListDirectoryData_t;
+} mavsdk_ftp_list_directory_data_t;
 
 /**
- * @brief Destroy a ListDirectoryData struct.
+ * @brief Destroy a list_directory_data struct.
  *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
@@ -54,11 +54,11 @@ typedef struct CMAVSDK_EXPORT {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-CMAVSDK_EXPORT void mavsdk_ftp_ListDirectoryData_destroy(
-    mavsdk_ftp_ListDirectoryData_t* target);
+CMAVSDK_EXPORT void mavsdk_ftp_list_directory_data_destroy(
+    mavsdk_ftp_list_directory_data_t* target);
 
 /**
- * @brief Destroy an array of ListDirectoryData structs.
+ * @brief Destroy an array of list_directory_data structs.
  *
  * Frees all memory allocated for the array and its elements, including any
  * nested dynamic allocations. Must be called to avoid memory leaks.
@@ -66,25 +66,25 @@ CMAVSDK_EXPORT void mavsdk_ftp_ListDirectoryData_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-CMAVSDK_EXPORT void mavsdk_ftp_ListDirectoryData_array_destroy(
-    mavsdk_ftp_ListDirectoryData_t** array,
+CMAVSDK_EXPORT void mavsdk_ftp_list_directory_data_array_destroy(
+    mavsdk_ftp_list_directory_data_t** array,
     size_t size);
 
 /**
  * @brief Progress data type for file transfer.
  *
  * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_ftp_ProgressData_destroy() when done to avoid memory leaks.
+ *       mavsdk_ftp_progress_data_destroy() when done to avoid memory leaks.
  */
 typedef struct CMAVSDK_EXPORT {
     /**  The number of bytes already transferred. */
     uint32_t bytes_transferred;
     /**  The total bytes to transfer. */
     uint32_t total_bytes;
-} mavsdk_ftp_ProgressData_t;
+} mavsdk_ftp_progress_data_t;
 
 /**
- * @brief Destroy a ProgressData struct.
+ * @brief Destroy a progress_data struct.
  *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
@@ -93,11 +93,11 @@ typedef struct CMAVSDK_EXPORT {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-CMAVSDK_EXPORT void mavsdk_ftp_ProgressData_destroy(
-    mavsdk_ftp_ProgressData_t* target);
+CMAVSDK_EXPORT void mavsdk_ftp_progress_data_destroy(
+    mavsdk_ftp_progress_data_t* target);
 
 /**
- * @brief Destroy an array of ProgressData structs.
+ * @brief Destroy an array of progress_data structs.
  *
  * Frees all memory allocated for the array and its elements, including any
  * nested dynamic allocations. Must be called to avoid memory leaks.
@@ -105,8 +105,8 @@ CMAVSDK_EXPORT void mavsdk_ftp_ProgressData_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-CMAVSDK_EXPORT void mavsdk_ftp_ProgressData_array_destroy(
-    mavsdk_ftp_ProgressData_t** array,
+CMAVSDK_EXPORT void mavsdk_ftp_progress_data_array_destroy(
+    mavsdk_ftp_progress_data_t** array,
     size_t size);
 
 /**
@@ -220,9 +220,9 @@ CMAVSDK_EXPORT void mavsdk_ftp_string_destroy(char** str);
 CMAVSDK_EXPORT void mavsdk_ftp_byte_buffer_destroy(uint8_t** buffer);
 
 // ===== Callback Typedefs =====
-typedef void (*mavsdk_ftp_download_callback_t)(const mavsdk_ftp_result_t result, const mavsdk_ftp_ProgressData_t progress_data, void* user_data);
-typedef void (*mavsdk_ftp_upload_callback_t)(const mavsdk_ftp_result_t result, const mavsdk_ftp_ProgressData_t progress_data, void* user_data);
-typedef void (*mavsdk_ftp_list_directory_callback_t)(const mavsdk_ftp_result_t result, const mavsdk_ftp_ListDirectoryData_t data, void* user_data);
+typedef void (*mavsdk_ftp_download_callback_t)(const mavsdk_ftp_result_t result, const mavsdk_ftp_progress_data_t progress_data, void* user_data);
+typedef void (*mavsdk_ftp_upload_callback_t)(const mavsdk_ftp_result_t result, const mavsdk_ftp_progress_data_t progress_data, void* user_data);
+typedef void (*mavsdk_ftp_list_directory_callback_t)(const mavsdk_ftp_result_t result, const mavsdk_ftp_list_directory_data_t data, void* user_data);
 typedef void (*mavsdk_ftp_create_directory_callback_t)(const mavsdk_ftp_result_t result, void* user_data);
 typedef void (*mavsdk_ftp_remove_directory_callback_t)(const mavsdk_ftp_result_t result, void* user_data);
 typedef void (*mavsdk_ftp_remove_file_callback_t)(const mavsdk_ftp_result_t result, void* user_data);
@@ -307,7 +307,7 @@ mavsdk_ftp_result_t
 mavsdk_ftp_list_directory(
     mavsdk_ftp_t ftp,
     char* remote_dir,
-    mavsdk_ftp_ListDirectoryData_t* data_out);
+    mavsdk_ftp_list_directory_data_t* data_out);
 
 
 /**

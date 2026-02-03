@@ -31,7 +31,7 @@ translate_result(mavsdk::Transponder::Result cpp_result) {
 }
 
 static mavsdk::Transponder::AdsbEmitterType
-translate_AdsbEmitterType_from_c(mavsdk_transponder_AdsbEmitterType_t c_enum) {
+translate_adsb_emitter_type_from_c(mavsdk_transponder_adsb_emitter_type_t c_enum) {
     switch(c_enum) {
         case MAVSDK_TRANSPONDER_ADSB_EMITTER_TYPE_NO_INFO:
             return mavsdk::Transponder::AdsbEmitterType::NoInfo;
@@ -77,8 +77,8 @@ translate_AdsbEmitterType_from_c(mavsdk_transponder_AdsbEmitterType_t c_enum) {
     return mavsdk::Transponder::AdsbEmitterType::NoInfo;
 }
 
-static mavsdk_transponder_AdsbEmitterType_t
-translate_AdsbEmitterType_to_c(mavsdk::Transponder::AdsbEmitterType cpp_enum) {
+static mavsdk_transponder_adsb_emitter_type_t
+translate_adsb_emitter_type_to_c(mavsdk::Transponder::AdsbEmitterType cpp_enum) {
     switch(cpp_enum) {
         case mavsdk::Transponder::AdsbEmitterType::NoInfo:
             return MAVSDK_TRANSPONDER_ADSB_EMITTER_TYPE_NO_INFO;
@@ -125,7 +125,7 @@ translate_AdsbEmitterType_to_c(mavsdk::Transponder::AdsbEmitterType cpp_enum) {
 }
 
 static mavsdk::Transponder::AdsbAltitudeType
-translate_AdsbAltitudeType_from_c(mavsdk_transponder_AdsbAltitudeType_t c_enum) {
+translate_adsb_altitude_type_from_c(mavsdk_transponder_adsb_altitude_type_t c_enum) {
     switch(c_enum) {
         case MAVSDK_TRANSPONDER_ADSB_ALTITUDE_TYPE_PRESSURE_QNH:
             return mavsdk::Transponder::AdsbAltitudeType::PressureQnh;
@@ -135,8 +135,8 @@ translate_AdsbAltitudeType_from_c(mavsdk_transponder_AdsbAltitudeType_t c_enum) 
     return mavsdk::Transponder::AdsbAltitudeType::PressureQnh;
 }
 
-static mavsdk_transponder_AdsbAltitudeType_t
-translate_AdsbAltitudeType_to_c(mavsdk::Transponder::AdsbAltitudeType cpp_enum) {
+static mavsdk_transponder_adsb_altitude_type_t
+translate_adsb_altitude_type_to_c(mavsdk::Transponder::AdsbAltitudeType cpp_enum) {
     switch(cpp_enum) {
         case mavsdk::Transponder::AdsbAltitudeType::PressureQnh:
             return MAVSDK_TRANSPONDER_ADSB_ALTITUDE_TYPE_PRESSURE_QNH;
@@ -149,12 +149,12 @@ translate_AdsbAltitudeType_to_c(mavsdk::Transponder::AdsbAltitudeType cpp_enum) 
 
 
 static mavsdk::Transponder::AdsbVehicle
-translate_AdsbVehicle_from_c(const mavsdk_transponder_AdsbVehicle_t& c_struct) {
+translate_adsb_vehicle_from_c(const mavsdk_transponder_adsb_vehicle_t& c_struct) {
     mavsdk::Transponder::AdsbVehicle cpp_struct{};
     cpp_struct.icao_address = c_struct.icao_address;
     cpp_struct.latitude_deg = c_struct.latitude_deg;
     cpp_struct.longitude_deg = c_struct.longitude_deg;
-    cpp_struct.altitude_type = translate_AdsbAltitudeType_from_c(c_struct.altitude_type);
+    cpp_struct.altitude_type = translate_adsb_altitude_type_from_c(c_struct.altitude_type);
     cpp_struct.absolute_altitude_m = c_struct.absolute_altitude_m;
     cpp_struct.heading_deg = c_struct.heading_deg;
     cpp_struct.horizontal_velocity_m_s = c_struct.horizontal_velocity_m_s;
@@ -162,32 +162,32 @@ translate_AdsbVehicle_from_c(const mavsdk_transponder_AdsbVehicle_t& c_struct) {
     if (c_struct.callsign) {
         cpp_struct.callsign = c_struct.callsign;
     }
-    cpp_struct.emitter_type = translate_AdsbEmitterType_from_c(c_struct.emitter_type);
+    cpp_struct.emitter_type = translate_adsb_emitter_type_from_c(c_struct.emitter_type);
     cpp_struct.squawk = c_struct.squawk;
     cpp_struct.tslc_s = c_struct.tslc_s;
     return cpp_struct;
 }
 
-static mavsdk_transponder_AdsbVehicle_t
-translate_AdsbVehicle_to_c(const mavsdk::Transponder::AdsbVehicle& cpp_struct) {
-    mavsdk_transponder_AdsbVehicle_t c_struct{};
+static mavsdk_transponder_adsb_vehicle_t
+translate_adsb_vehicle_to_c(const mavsdk::Transponder::AdsbVehicle& cpp_struct) {
+    mavsdk_transponder_adsb_vehicle_t c_struct{};
     c_struct.icao_address = cpp_struct.icao_address;
     c_struct.latitude_deg = cpp_struct.latitude_deg;
     c_struct.longitude_deg = cpp_struct.longitude_deg;
-    c_struct.altitude_type = translate_AdsbAltitudeType_to_c(cpp_struct.altitude_type);
+    c_struct.altitude_type = translate_adsb_altitude_type_to_c(cpp_struct.altitude_type);
     c_struct.absolute_altitude_m = cpp_struct.absolute_altitude_m;
     c_struct.heading_deg = cpp_struct.heading_deg;
     c_struct.horizontal_velocity_m_s = cpp_struct.horizontal_velocity_m_s;
     c_struct.vertical_velocity_m_s = cpp_struct.vertical_velocity_m_s;
     c_struct.callsign = strdup(cpp_struct.callsign.c_str());
-    c_struct.emitter_type = translate_AdsbEmitterType_to_c(cpp_struct.emitter_type);
+    c_struct.emitter_type = translate_adsb_emitter_type_to_c(cpp_struct.emitter_type);
     c_struct.squawk = cpp_struct.squawk;
     c_struct.tslc_s = cpp_struct.tslc_s;
     return c_struct;
 }
 
-void mavsdk_transponder_AdsbVehicle_destroy(
-    mavsdk_transponder_AdsbVehicle_t* target) {
+void mavsdk_transponder_adsb_vehicle_destroy(
+    mavsdk_transponder_adsb_vehicle_t* target) {
     if (!target) return;
     if (target->callsign) {
         free((void*)target->callsign);
@@ -195,13 +195,13 @@ void mavsdk_transponder_AdsbVehicle_destroy(
     }
 }
 
-void mavsdk_transponder_AdsbVehicle_array_destroy(
-    mavsdk_transponder_AdsbVehicle_t** array,
+void mavsdk_transponder_adsb_vehicle_array_destroy(
+    mavsdk_transponder_adsb_vehicle_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_transponder_AdsbVehicle_destroy(&(*array)[i]);
+        mavsdk_transponder_adsb_vehicle_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -309,7 +309,7 @@ mavsdk_transponder_transponder_handle_t mavsdk_transponder_subscribe_transponder
             mavsdk::Transponder::AdsbVehicle value) {
                 if (callback) {
                     callback(
-                        translate_AdsbVehicle_to_c(value),
+                        translate_adsb_vehicle_to_c(value),
                         user_data);
                 }
         });
@@ -334,14 +334,14 @@ void mavsdk_transponder_unsubscribe_transponder(
 void
 mavsdk_transponder_transponder(
     mavsdk_transponder_t transponder,
-    mavsdk_transponder_AdsbVehicle_t* transponder_out)
+    mavsdk_transponder_adsb_vehicle_t* transponder_out)
 {
     auto wrapper = static_cast<mavsdk_transponder_wrapper*>(transponder);
 
     auto ret_value = wrapper->cpp_plugin->transponder();
 
     if (transponder_out != nullptr) {
-        *transponder_out = translate_AdsbVehicle_to_c(ret_value);
+        *transponder_out = translate_adsb_vehicle_to_c(ret_value);
     }
 }
 

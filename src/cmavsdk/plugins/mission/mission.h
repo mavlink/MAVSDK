@@ -50,7 +50,7 @@ typedef enum {
     MAVSDK_MISSION_MISSION_ITEM_CAMERA_ACTION_START_PHOTO_DISTANCE = 6,
     /**  Stop capturing photos at regular distance. */
     MAVSDK_MISSION_MISSION_ITEM_CAMERA_ACTION_STOP_PHOTO_DISTANCE = 7,
-} mavsdk_mission_MissionItem_CameraAction_t;
+} mavsdk_mission_mission_item_camera_action_t;
 
 /**
  * @brief Possible vehicle actions at a mission item
@@ -66,7 +66,7 @@ typedef enum {
     MAVSDK_MISSION_MISSION_ITEM_VEHICLE_ACTION_TRANSITION_TO_FW = 3,
     /**  When a waypoint is reached vehicle will transition to multi-copter mode. */
     MAVSDK_MISSION_MISSION_ITEM_VEHICLE_ACTION_TRANSITION_TO_MC = 4,
-} mavsdk_mission_MissionItem_VehicleAction_t;
+} mavsdk_mission_mission_item_vehicle_action_t;
 
 /**
  * @brief Type representing a mission item.
@@ -77,7 +77,7 @@ typedef enum {
  *  They cannot be used independently.
  *
  * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_mission_MissionItem_destroy() when done to avoid memory leaks.
+ *       mavsdk_mission_mission_item_destroy() when done to avoid memory leaks.
  */
 typedef struct CMAVSDK_EXPORT {
     /**  Latitude in degrees (range: -90 to +90) */
@@ -95,7 +95,7 @@ typedef struct CMAVSDK_EXPORT {
     /**  Gimbal yaw (in degrees) */
     float gimbal_yaw_deg;
     /**  Camera action to trigger at this mission item */
-    mavsdk_mission_MissionItem_CameraAction_t camera_action;
+    mavsdk_mission_mission_item_camera_action_t camera_action;
     /**  Loiter time (in seconds) */
     float loiter_time_s;
     /**  Camera photo interval to use after this mission item (in seconds) */
@@ -107,11 +107,11 @@ typedef struct CMAVSDK_EXPORT {
     /**  Camera photo distance to use after this mission item (in meters) */
     float camera_photo_distance_m;
     /**  Vehicle action to trigger at this mission item. */
-    mavsdk_mission_MissionItem_VehicleAction_t vehicle_action;
-} mavsdk_mission_MissionItem_t;
+    mavsdk_mission_mission_item_vehicle_action_t vehicle_action;
+} mavsdk_mission_mission_item_t;
 
 /**
- * @brief Destroy a MissionItem struct.
+ * @brief Destroy a mission_item struct.
  *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
@@ -120,11 +120,11 @@ typedef struct CMAVSDK_EXPORT {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-CMAVSDK_EXPORT void mavsdk_mission_MissionItem_destroy(
-    mavsdk_mission_MissionItem_t* target);
+CMAVSDK_EXPORT void mavsdk_mission_mission_item_destroy(
+    mavsdk_mission_mission_item_t* target);
 
 /**
- * @brief Destroy an array of MissionItem structs.
+ * @brief Destroy an array of mission_item structs.
  *
  * Frees all memory allocated for the array and its elements, including any
  * nested dynamic allocations. Must be called to avoid memory leaks.
@@ -132,24 +132,24 @@ CMAVSDK_EXPORT void mavsdk_mission_MissionItem_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-CMAVSDK_EXPORT void mavsdk_mission_MissionItem_array_destroy(
-    mavsdk_mission_MissionItem_t** array,
+CMAVSDK_EXPORT void mavsdk_mission_mission_item_array_destroy(
+    mavsdk_mission_mission_item_t** array,
     size_t size);
 
 /**
  * @brief Mission plan type
  *
  * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_mission_MissionPlan_destroy() when done to avoid memory leaks.
+ *       mavsdk_mission_mission_plan_destroy() when done to avoid memory leaks.
  */
 typedef struct CMAVSDK_EXPORT {
     /**  The mission items */
-    mavsdk_mission_MissionItem_t* mission_items;
+    mavsdk_mission_mission_item_t* mission_items;
     size_t mission_items_size;
-} mavsdk_mission_MissionPlan_t;
+} mavsdk_mission_mission_plan_t;
 
 /**
- * @brief Destroy a MissionPlan struct.
+ * @brief Destroy a mission_plan struct.
  *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
@@ -158,11 +158,11 @@ typedef struct CMAVSDK_EXPORT {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-CMAVSDK_EXPORT void mavsdk_mission_MissionPlan_destroy(
-    mavsdk_mission_MissionPlan_t* target);
+CMAVSDK_EXPORT void mavsdk_mission_mission_plan_destroy(
+    mavsdk_mission_mission_plan_t* target);
 
 /**
- * @brief Destroy an array of MissionPlan structs.
+ * @brief Destroy an array of mission_plan structs.
  *
  * Frees all memory allocated for the array and its elements, including any
  * nested dynamic allocations. Must be called to avoid memory leaks.
@@ -170,25 +170,25 @@ CMAVSDK_EXPORT void mavsdk_mission_MissionPlan_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-CMAVSDK_EXPORT void mavsdk_mission_MissionPlan_array_destroy(
-    mavsdk_mission_MissionPlan_t** array,
+CMAVSDK_EXPORT void mavsdk_mission_mission_plan_array_destroy(
+    mavsdk_mission_mission_plan_t** array,
     size_t size);
 
 /**
  * @brief Mission progress type.
  *
  * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_mission_MissionProgress_destroy() when done to avoid memory leaks.
+ *       mavsdk_mission_mission_progress_destroy() when done to avoid memory leaks.
  */
 typedef struct CMAVSDK_EXPORT {
     /**  Current mission item index (0-based), if equal to total, the mission is finished */
     int32_t current;
     /**  Total number of mission items */
     int32_t total;
-} mavsdk_mission_MissionProgress_t;
+} mavsdk_mission_mission_progress_t;
 
 /**
- * @brief Destroy a MissionProgress struct.
+ * @brief Destroy a mission_progress struct.
  *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
@@ -197,11 +197,11 @@ typedef struct CMAVSDK_EXPORT {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-CMAVSDK_EXPORT void mavsdk_mission_MissionProgress_destroy(
-    mavsdk_mission_MissionProgress_t* target);
+CMAVSDK_EXPORT void mavsdk_mission_mission_progress_destroy(
+    mavsdk_mission_mission_progress_t* target);
 
 /**
- * @brief Destroy an array of MissionProgress structs.
+ * @brief Destroy an array of mission_progress structs.
  *
  * Frees all memory allocated for the array and its elements, including any
  * nested dynamic allocations. Must be called to avoid memory leaks.
@@ -209,8 +209,8 @@ CMAVSDK_EXPORT void mavsdk_mission_MissionProgress_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-CMAVSDK_EXPORT void mavsdk_mission_MissionProgress_array_destroy(
-    mavsdk_mission_MissionProgress_t** array,
+CMAVSDK_EXPORT void mavsdk_mission_mission_progress_array_destroy(
+    mavsdk_mission_mission_progress_t** array,
     size_t size);
 
 /**
@@ -256,15 +256,15 @@ typedef enum {
  * @brief Progress data coming from mission upload.
  *
  * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_mission_ProgressData_destroy() when done to avoid memory leaks.
+ *       mavsdk_mission_progress_data_destroy() when done to avoid memory leaks.
  */
 typedef struct CMAVSDK_EXPORT {
     /**  Progress (0..1.0) */
     float progress;
-} mavsdk_mission_ProgressData_t;
+} mavsdk_mission_progress_data_t;
 
 /**
- * @brief Destroy a ProgressData struct.
+ * @brief Destroy a progress_data struct.
  *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
@@ -273,11 +273,11 @@ typedef struct CMAVSDK_EXPORT {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-CMAVSDK_EXPORT void mavsdk_mission_ProgressData_destroy(
-    mavsdk_mission_ProgressData_t* target);
+CMAVSDK_EXPORT void mavsdk_mission_progress_data_destroy(
+    mavsdk_mission_progress_data_t* target);
 
 /**
- * @brief Destroy an array of ProgressData structs.
+ * @brief Destroy an array of progress_data structs.
  *
  * Frees all memory allocated for the array and its elements, including any
  * nested dynamic allocations. Must be called to avoid memory leaks.
@@ -285,15 +285,15 @@ CMAVSDK_EXPORT void mavsdk_mission_ProgressData_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-CMAVSDK_EXPORT void mavsdk_mission_ProgressData_array_destroy(
-    mavsdk_mission_ProgressData_t** array,
+CMAVSDK_EXPORT void mavsdk_mission_progress_data_array_destroy(
+    mavsdk_mission_progress_data_t** array,
     size_t size);
 
 /**
  * @brief Progress data coming from mission download, or the mission itself (if the transfer succeeds).
  *
  * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_mission_ProgressDataOrMission_destroy() when done to avoid memory leaks.
+ *       mavsdk_mission_progress_data_or_mission_destroy() when done to avoid memory leaks.
  */
 typedef struct CMAVSDK_EXPORT {
     /**  Whether this ProgressData contains a 'progress' status or not */
@@ -303,11 +303,11 @@ typedef struct CMAVSDK_EXPORT {
     /**  Whether this ProgressData contains a 'mission_plan' or not */
     bool has_mission;
     /**  Mission plan */
-    mavsdk_mission_MissionPlan_t mission_plan;
-} mavsdk_mission_ProgressDataOrMission_t;
+    mavsdk_mission_mission_plan_t mission_plan;
+} mavsdk_mission_progress_data_or_mission_t;
 
 /**
- * @brief Destroy a ProgressDataOrMission struct.
+ * @brief Destroy a progress_data_or_mission struct.
  *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
@@ -316,11 +316,11 @@ typedef struct CMAVSDK_EXPORT {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-CMAVSDK_EXPORT void mavsdk_mission_ProgressDataOrMission_destroy(
-    mavsdk_mission_ProgressDataOrMission_t* target);
+CMAVSDK_EXPORT void mavsdk_mission_progress_data_or_mission_destroy(
+    mavsdk_mission_progress_data_or_mission_t* target);
 
 /**
- * @brief Destroy an array of ProgressDataOrMission structs.
+ * @brief Destroy an array of progress_data_or_mission structs.
  *
  * Frees all memory allocated for the array and its elements, including any
  * nested dynamic allocations. Must be called to avoid memory leaks.
@@ -328,8 +328,8 @@ CMAVSDK_EXPORT void mavsdk_mission_ProgressDataOrMission_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-CMAVSDK_EXPORT void mavsdk_mission_ProgressDataOrMission_array_destroy(
-    mavsdk_mission_ProgressDataOrMission_t** array,
+CMAVSDK_EXPORT void mavsdk_mission_progress_data_or_mission_array_destroy(
+    mavsdk_mission_progress_data_or_mission_t** array,
     size_t size);
 
 
@@ -411,14 +411,14 @@ CMAVSDK_EXPORT void mavsdk_mission_byte_buffer_destroy(uint8_t** buffer);
 
 // ===== Callback Typedefs =====
 typedef void (*mavsdk_mission_upload_mission_callback_t)(const mavsdk_mission_result_t result, void* user_data);
-typedef void (*mavsdk_mission_upload_mission_with_progress_callback_t)(const mavsdk_mission_result_t result, const mavsdk_mission_ProgressData_t progress_data, void* user_data);
-typedef void (*mavsdk_mission_download_mission_callback_t)(const mavsdk_mission_result_t result, const mavsdk_mission_MissionPlan_t mission_plan, void* user_data);
-typedef void (*mavsdk_mission_download_mission_with_progress_callback_t)(const mavsdk_mission_result_t result, const mavsdk_mission_ProgressDataOrMission_t progress_data, void* user_data);
+typedef void (*mavsdk_mission_upload_mission_with_progress_callback_t)(const mavsdk_mission_result_t result, const mavsdk_mission_progress_data_t progress_data, void* user_data);
+typedef void (*mavsdk_mission_download_mission_callback_t)(const mavsdk_mission_result_t result, const mavsdk_mission_mission_plan_t mission_plan, void* user_data);
+typedef void (*mavsdk_mission_download_mission_with_progress_callback_t)(const mavsdk_mission_result_t result, const mavsdk_mission_progress_data_or_mission_t progress_data, void* user_data);
 typedef void (*mavsdk_mission_start_mission_callback_t)(const mavsdk_mission_result_t result, void* user_data);
 typedef void (*mavsdk_mission_pause_mission_callback_t)(const mavsdk_mission_result_t result, void* user_data);
 typedef void (*mavsdk_mission_clear_mission_callback_t)(const mavsdk_mission_result_t result, void* user_data);
 typedef void (*mavsdk_mission_set_current_mission_item_callback_t)(const mavsdk_mission_result_t result, void* user_data);
-typedef void (*mavsdk_mission_mission_progress_callback_t)(const mavsdk_mission_MissionProgress_t mission_progress, void* user_data);
+typedef void (*mavsdk_mission_mission_progress_callback_t)(const mavsdk_mission_mission_progress_t mission_progress, void* user_data);
 
 // ===== Mission Creation/Destruction =====
 CMAVSDK_EXPORT mavsdk_mission_t mavsdk_mission_create(mavsdk_system_t system);
@@ -440,7 +440,7 @@ CMAVSDK_EXPORT void mavsdk_mission_destroy(mavsdk_mission_t mission);
  */
 CMAVSDK_EXPORT void mavsdk_mission_upload_mission_async(
     mavsdk_mission_t mission,
-    mavsdk_mission_MissionPlan_t mission_plan,
+    mavsdk_mission_mission_plan_t mission_plan,
     mavsdk_mission_upload_mission_callback_t callback,
     void* user_data);
 
@@ -457,7 +457,7 @@ CMAVSDK_EXPORT
 mavsdk_mission_result_t
 mavsdk_mission_upload_mission(
     mavsdk_mission_t mission,
-    mavsdk_mission_MissionPlan_t mission_plan);
+    mavsdk_mission_mission_plan_t mission_plan);
 
 
 /**
@@ -474,7 +474,7 @@ mavsdk_mission_upload_mission(
  */
 CMAVSDK_EXPORT void mavsdk_mission_upload_mission_with_progress_async(
     mavsdk_mission_t mission,
-    mavsdk_mission_MissionPlan_t mission_plan,
+    mavsdk_mission_mission_plan_t mission_plan,
     mavsdk_mission_upload_mission_with_progress_callback_t callback,
     void* user_data);
 
@@ -522,7 +522,7 @@ CMAVSDK_EXPORT
 mavsdk_mission_result_t
 mavsdk_mission_download_mission(
     mavsdk_mission_t mission,
-    mavsdk_mission_MissionPlan_t* mission_plan_out);
+    mavsdk_mission_mission_plan_t* mission_plan_out);
 
 
 /**
@@ -733,7 +733,7 @@ CMAVSDK_EXPORT
 void
 mavsdk_mission_mission_progress(
     mavsdk_mission_t mission,
-    mavsdk_mission_MissionProgress_t* mission_progress_out);
+    mavsdk_mission_mission_progress_t* mission_progress_out);
 
 
 /**

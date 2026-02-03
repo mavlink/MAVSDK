@@ -50,7 +50,7 @@ typedef enum {
     MAVSDK_WINCH_WINCH_ACTION_ABANDON_LINE = 8,
     /**  Spools out just enough to present the hook to the user to load the payload. */
     MAVSDK_WINCH_WINCH_ACTION_LOAD_PAYLOAD = 9,
-} mavsdk_winch_WinchAction_t;
+} mavsdk_winch_winch_action_t;
 
 
 // ===== Structs =====
@@ -64,7 +64,7 @@ typedef enum {
  *  not specify which states are mutually exclusive.
  *
  * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_winch_StatusFlags_destroy() when done to avoid memory leaks.
+ *       mavsdk_winch_status_flags_destroy() when done to avoid memory leaks.
  */
 typedef struct CMAVSDK_EXPORT {
     /**  Winch is healthy */
@@ -95,10 +95,10 @@ typedef struct CMAVSDK_EXPORT {
     bool load_line;
     /**  Winch is loading a payload */
     bool load_payload;
-} mavsdk_winch_StatusFlags_t;
+} mavsdk_winch_status_flags_t;
 
 /**
- * @brief Destroy a StatusFlags struct.
+ * @brief Destroy a status_flags struct.
  *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
@@ -107,11 +107,11 @@ typedef struct CMAVSDK_EXPORT {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-CMAVSDK_EXPORT void mavsdk_winch_StatusFlags_destroy(
-    mavsdk_winch_StatusFlags_t* target);
+CMAVSDK_EXPORT void mavsdk_winch_status_flags_destroy(
+    mavsdk_winch_status_flags_t* target);
 
 /**
- * @brief Destroy an array of StatusFlags structs.
+ * @brief Destroy an array of status_flags structs.
  *
  * Frees all memory allocated for the array and its elements, including any
  * nested dynamic allocations. Must be called to avoid memory leaks.
@@ -119,15 +119,15 @@ CMAVSDK_EXPORT void mavsdk_winch_StatusFlags_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-CMAVSDK_EXPORT void mavsdk_winch_StatusFlags_array_destroy(
-    mavsdk_winch_StatusFlags_t** array,
+CMAVSDK_EXPORT void mavsdk_winch_status_flags_array_destroy(
+    mavsdk_winch_status_flags_t** array,
     size_t size);
 
 /**
  * @brief Status type.
  *
  * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_winch_Status_destroy() when done to avoid memory leaks.
+ *       mavsdk_winch_status_destroy() when done to avoid memory leaks.
  */
 typedef struct CMAVSDK_EXPORT {
     /**  Time in usec */
@@ -145,11 +145,11 @@ typedef struct CMAVSDK_EXPORT {
     /**  Temperature in Celsius */
     int32_t temperature_c;
     /**  Status flags */
-    mavsdk_winch_StatusFlags_t status_flags;
-} mavsdk_winch_Status_t;
+    mavsdk_winch_status_flags_t status_flags;
+} mavsdk_winch_status_t;
 
 /**
- * @brief Destroy a Status struct.
+ * @brief Destroy a status struct.
  *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
@@ -158,11 +158,11 @@ typedef struct CMAVSDK_EXPORT {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-CMAVSDK_EXPORT void mavsdk_winch_Status_destroy(
-    mavsdk_winch_Status_t* target);
+CMAVSDK_EXPORT void mavsdk_winch_status_destroy(
+    mavsdk_winch_status_t* target);
 
 /**
- * @brief Destroy an array of Status structs.
+ * @brief Destroy an array of status structs.
  *
  * Frees all memory allocated for the array and its elements, including any
  * nested dynamic allocations. Must be called to avoid memory leaks.
@@ -170,8 +170,8 @@ CMAVSDK_EXPORT void mavsdk_winch_Status_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-CMAVSDK_EXPORT void mavsdk_winch_Status_array_destroy(
-    mavsdk_winch_Status_t** array,
+CMAVSDK_EXPORT void mavsdk_winch_status_array_destroy(
+    mavsdk_winch_status_t** array,
     size_t size);
 
 /**
@@ -273,7 +273,7 @@ CMAVSDK_EXPORT void mavsdk_winch_string_destroy(char** str);
 CMAVSDK_EXPORT void mavsdk_winch_byte_buffer_destroy(uint8_t** buffer);
 
 // ===== Callback Typedefs =====
-typedef void (*mavsdk_winch_status_callback_t)(const mavsdk_winch_Status_t status, void* user_data);
+typedef void (*mavsdk_winch_status_callback_t)(const mavsdk_winch_status_t status, void* user_data);
 typedef void (*mavsdk_winch_relax_callback_t)(const mavsdk_winch_result_t result, void* user_data);
 typedef void (*mavsdk_winch_relative_length_control_callback_t)(const mavsdk_winch_result_t result, void* user_data);
 typedef void (*mavsdk_winch_rate_control_callback_t)(const mavsdk_winch_result_t result, void* user_data);
@@ -328,7 +328,7 @@ CMAVSDK_EXPORT
 void
 mavsdk_winch_status(
     mavsdk_winch_t winch,
-    mavsdk_winch_Status_t* status_out);
+    mavsdk_winch_status_t* status_out);
 
 
 /**

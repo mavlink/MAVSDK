@@ -36,7 +36,7 @@ typedef enum {
     MAVSDK_GRIPPER_GRIPPER_ACTION_RELEASE = 0,
     /**  Close the gripper and grab onto cargo. */
     MAVSDK_GRIPPER_GRIPPER_ACTION_GRAB = 1,
-} mavsdk_gripper_GripperAction_t;
+} mavsdk_gripper_gripper_action_t;
 
 
 // ===== Structs =====

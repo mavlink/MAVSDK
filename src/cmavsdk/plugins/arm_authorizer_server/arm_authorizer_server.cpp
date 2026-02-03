@@ -23,7 +23,7 @@ translate_result(mavsdk::ArmAuthorizerServer::Result cpp_result) {
 }
 
 static mavsdk::ArmAuthorizerServer::RejectionReason
-translate_RejectionReason_from_c(mavsdk_arm_authorizer_server_RejectionReason_t c_enum) {
+translate_rejection_reason_from_c(mavsdk_arm_authorizer_server_rejection_reason_t c_enum) {
     switch(c_enum) {
         case MAVSDK_ARM_AUTHORIZER_SERVER_REJECTION_REASON_GENERIC:
             return mavsdk::ArmAuthorizerServer::RejectionReason::Generic;
@@ -41,8 +41,8 @@ translate_RejectionReason_from_c(mavsdk_arm_authorizer_server_RejectionReason_t 
     return mavsdk::ArmAuthorizerServer::RejectionReason::Generic;
 }
 
-static mavsdk_arm_authorizer_server_RejectionReason_t
-translate_RejectionReason_to_c(mavsdk::ArmAuthorizerServer::RejectionReason cpp_enum) {
+static mavsdk_arm_authorizer_server_rejection_reason_t
+translate_rejection_reason_to_c(mavsdk::ArmAuthorizerServer::RejectionReason cpp_enum) {
     switch(cpp_enum) {
         case mavsdk::ArmAuthorizerServer::RejectionReason::Generic:
             return MAVSDK_ARM_AUTHORIZER_SERVER_REJECTION_REASON_GENERIC;
@@ -204,12 +204,12 @@ mavsdk_arm_authorizer_server_result_t
 mavsdk_arm_authorizer_server_reject_arm_authorization(
     mavsdk_arm_authorizer_server_t arm_authorizer_server,
     bool temporarily,
-    mavsdk_arm_authorizer_server_RejectionReason_t reason,
+    mavsdk_arm_authorizer_server_rejection_reason_t reason,
     int32_t extra_info)
 {
     auto wrapper = static_cast<mavsdk_arm_authorizer_server_wrapper*>(arm_authorizer_server);
 
-    auto ret_value = wrapper->cpp_plugin->reject_arm_authorization(        temporarily,        translate_RejectionReason_from_c(reason),        extra_info);
+    auto ret_value = wrapper->cpp_plugin->reject_arm_authorization(        temporarily,        translate_rejection_reason_from_c(reason),        extra_info);
 
     return translate_result(ret_value);
 }

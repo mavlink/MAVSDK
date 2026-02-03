@@ -31,7 +31,7 @@ translate_result(mavsdk::Gimbal::Result cpp_result) {
 }
 
 static mavsdk::Gimbal::GimbalMode
-translate_GimbalMode_from_c(mavsdk_gimbal_GimbalMode_t c_enum) {
+translate_gimbal_mode_from_c(mavsdk_gimbal_gimbal_mode_t c_enum) {
     switch(c_enum) {
         case MAVSDK_GIMBAL_GIMBAL_MODE_YAW_FOLLOW:
             return mavsdk::Gimbal::GimbalMode::YawFollow;
@@ -41,8 +41,8 @@ translate_GimbalMode_from_c(mavsdk_gimbal_GimbalMode_t c_enum) {
     return mavsdk::Gimbal::GimbalMode::YawFollow;
 }
 
-static mavsdk_gimbal_GimbalMode_t
-translate_GimbalMode_to_c(mavsdk::Gimbal::GimbalMode cpp_enum) {
+static mavsdk_gimbal_gimbal_mode_t
+translate_gimbal_mode_to_c(mavsdk::Gimbal::GimbalMode cpp_enum) {
     switch(cpp_enum) {
         case mavsdk::Gimbal::GimbalMode::YawFollow:
             return MAVSDK_GIMBAL_GIMBAL_MODE_YAW_FOLLOW;
@@ -53,7 +53,7 @@ translate_GimbalMode_to_c(mavsdk::Gimbal::GimbalMode cpp_enum) {
 }
 
 static mavsdk::Gimbal::ControlMode
-translate_ControlMode_from_c(mavsdk_gimbal_ControlMode_t c_enum) {
+translate_control_mode_from_c(mavsdk_gimbal_control_mode_t c_enum) {
     switch(c_enum) {
         case MAVSDK_GIMBAL_CONTROL_MODE_NONE:
             return mavsdk::Gimbal::ControlMode::None;
@@ -65,8 +65,8 @@ translate_ControlMode_from_c(mavsdk_gimbal_ControlMode_t c_enum) {
     return mavsdk::Gimbal::ControlMode::None;
 }
 
-static mavsdk_gimbal_ControlMode_t
-translate_ControlMode_to_c(mavsdk::Gimbal::ControlMode cpp_enum) {
+static mavsdk_gimbal_control_mode_t
+translate_control_mode_to_c(mavsdk::Gimbal::ControlMode cpp_enum) {
     switch(cpp_enum) {
         case mavsdk::Gimbal::ControlMode::None:
             return MAVSDK_GIMBAL_CONTROL_MODE_NONE;
@@ -79,7 +79,7 @@ translate_ControlMode_to_c(mavsdk::Gimbal::ControlMode cpp_enum) {
 }
 
 static mavsdk::Gimbal::SendMode
-translate_SendMode_from_c(mavsdk_gimbal_SendMode_t c_enum) {
+translate_send_mode_from_c(mavsdk_gimbal_send_mode_t c_enum) {
     switch(c_enum) {
         case MAVSDK_GIMBAL_SEND_MODE_ONCE:
             return mavsdk::Gimbal::SendMode::Once;
@@ -89,8 +89,8 @@ translate_SendMode_from_c(mavsdk_gimbal_SendMode_t c_enum) {
     return mavsdk::Gimbal::SendMode::Once;
 }
 
-static mavsdk_gimbal_SendMode_t
-translate_SendMode_to_c(mavsdk::Gimbal::SendMode cpp_enum) {
+static mavsdk_gimbal_send_mode_t
+translate_send_mode_to_c(mavsdk::Gimbal::SendMode cpp_enum) {
     switch(cpp_enum) {
         case mavsdk::Gimbal::SendMode::Once:
             return MAVSDK_GIMBAL_SEND_MODE_ONCE;
@@ -103,7 +103,7 @@ translate_SendMode_to_c(mavsdk::Gimbal::SendMode cpp_enum) {
 
 
 static mavsdk::Gimbal::Quaternion
-translate_Quaternion_from_c(const mavsdk_gimbal_Quaternion_t& c_struct) {
+translate_quaternion_from_c(const mavsdk_gimbal_quaternion_t& c_struct) {
     mavsdk::Gimbal::Quaternion cpp_struct{};
     cpp_struct.w = c_struct.w;
     cpp_struct.x = c_struct.x;
@@ -112,9 +112,9 @@ translate_Quaternion_from_c(const mavsdk_gimbal_Quaternion_t& c_struct) {
     return cpp_struct;
 }
 
-static mavsdk_gimbal_Quaternion_t
-translate_Quaternion_to_c(const mavsdk::Gimbal::Quaternion& cpp_struct) {
-    mavsdk_gimbal_Quaternion_t c_struct{};
+static mavsdk_gimbal_quaternion_t
+translate_quaternion_to_c(const mavsdk::Gimbal::Quaternion& cpp_struct) {
+    mavsdk_gimbal_quaternion_t c_struct{};
     c_struct.w = cpp_struct.w;
     c_struct.x = cpp_struct.x;
     c_struct.y = cpp_struct.y;
@@ -122,18 +122,18 @@ translate_Quaternion_to_c(const mavsdk::Gimbal::Quaternion& cpp_struct) {
     return c_struct;
 }
 
-void mavsdk_gimbal_Quaternion_destroy(
-    mavsdk_gimbal_Quaternion_t* target) {
+void mavsdk_gimbal_quaternion_destroy(
+    mavsdk_gimbal_quaternion_t* target) {
     if (!target) return;
 }
 
-void mavsdk_gimbal_Quaternion_array_destroy(
-    mavsdk_gimbal_Quaternion_t** array,
+void mavsdk_gimbal_quaternion_array_destroy(
+    mavsdk_gimbal_quaternion_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_gimbal_Quaternion_destroy(&(*array)[i]);
+        mavsdk_gimbal_quaternion_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -142,7 +142,7 @@ void mavsdk_gimbal_Quaternion_array_destroy(
 
 
 static mavsdk::Gimbal::EulerAngle
-translate_EulerAngle_from_c(const mavsdk_gimbal_EulerAngle_t& c_struct) {
+translate_euler_angle_from_c(const mavsdk_gimbal_euler_angle_t& c_struct) {
     mavsdk::Gimbal::EulerAngle cpp_struct{};
     cpp_struct.roll_deg = c_struct.roll_deg;
     cpp_struct.pitch_deg = c_struct.pitch_deg;
@@ -150,27 +150,27 @@ translate_EulerAngle_from_c(const mavsdk_gimbal_EulerAngle_t& c_struct) {
     return cpp_struct;
 }
 
-static mavsdk_gimbal_EulerAngle_t
-translate_EulerAngle_to_c(const mavsdk::Gimbal::EulerAngle& cpp_struct) {
-    mavsdk_gimbal_EulerAngle_t c_struct{};
+static mavsdk_gimbal_euler_angle_t
+translate_euler_angle_to_c(const mavsdk::Gimbal::EulerAngle& cpp_struct) {
+    mavsdk_gimbal_euler_angle_t c_struct{};
     c_struct.roll_deg = cpp_struct.roll_deg;
     c_struct.pitch_deg = cpp_struct.pitch_deg;
     c_struct.yaw_deg = cpp_struct.yaw_deg;
     return c_struct;
 }
 
-void mavsdk_gimbal_EulerAngle_destroy(
-    mavsdk_gimbal_EulerAngle_t* target) {
+void mavsdk_gimbal_euler_angle_destroy(
+    mavsdk_gimbal_euler_angle_t* target) {
     if (!target) return;
 }
 
-void mavsdk_gimbal_EulerAngle_array_destroy(
-    mavsdk_gimbal_EulerAngle_t** array,
+void mavsdk_gimbal_euler_angle_array_destroy(
+    mavsdk_gimbal_euler_angle_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_gimbal_EulerAngle_destroy(&(*array)[i]);
+        mavsdk_gimbal_euler_angle_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -179,7 +179,7 @@ void mavsdk_gimbal_EulerAngle_array_destroy(
 
 
 static mavsdk::Gimbal::AngularVelocityBody
-translate_AngularVelocityBody_from_c(const mavsdk_gimbal_AngularVelocityBody_t& c_struct) {
+translate_angular_velocity_body_from_c(const mavsdk_gimbal_angular_velocity_body_t& c_struct) {
     mavsdk::Gimbal::AngularVelocityBody cpp_struct{};
     cpp_struct.roll_rad_s = c_struct.roll_rad_s;
     cpp_struct.pitch_rad_s = c_struct.pitch_rad_s;
@@ -187,27 +187,27 @@ translate_AngularVelocityBody_from_c(const mavsdk_gimbal_AngularVelocityBody_t& 
     return cpp_struct;
 }
 
-static mavsdk_gimbal_AngularVelocityBody_t
-translate_AngularVelocityBody_to_c(const mavsdk::Gimbal::AngularVelocityBody& cpp_struct) {
-    mavsdk_gimbal_AngularVelocityBody_t c_struct{};
+static mavsdk_gimbal_angular_velocity_body_t
+translate_angular_velocity_body_to_c(const mavsdk::Gimbal::AngularVelocityBody& cpp_struct) {
+    mavsdk_gimbal_angular_velocity_body_t c_struct{};
     c_struct.roll_rad_s = cpp_struct.roll_rad_s;
     c_struct.pitch_rad_s = cpp_struct.pitch_rad_s;
     c_struct.yaw_rad_s = cpp_struct.yaw_rad_s;
     return c_struct;
 }
 
-void mavsdk_gimbal_AngularVelocityBody_destroy(
-    mavsdk_gimbal_AngularVelocityBody_t* target) {
+void mavsdk_gimbal_angular_velocity_body_destroy(
+    mavsdk_gimbal_angular_velocity_body_t* target) {
     if (!target) return;
 }
 
-void mavsdk_gimbal_AngularVelocityBody_array_destroy(
-    mavsdk_gimbal_AngularVelocityBody_t** array,
+void mavsdk_gimbal_angular_velocity_body_array_destroy(
+    mavsdk_gimbal_angular_velocity_body_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_gimbal_AngularVelocityBody_destroy(&(*array)[i]);
+        mavsdk_gimbal_angular_velocity_body_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -216,43 +216,43 @@ void mavsdk_gimbal_AngularVelocityBody_array_destroy(
 
 
 static mavsdk::Gimbal::Attitude
-translate_Attitude_from_c(const mavsdk_gimbal_Attitude_t& c_struct) {
+translate_attitude_from_c(const mavsdk_gimbal_attitude_t& c_struct) {
     mavsdk::Gimbal::Attitude cpp_struct{};
     cpp_struct.gimbal_id = c_struct.gimbal_id;
-    cpp_struct.euler_angle_forward = translate_EulerAngle_from_c(c_struct.euler_angle_forward);
-    cpp_struct.quaternion_forward = translate_Quaternion_from_c(c_struct.quaternion_forward);
-    cpp_struct.euler_angle_north = translate_EulerAngle_from_c(c_struct.euler_angle_north);
-    cpp_struct.quaternion_north = translate_Quaternion_from_c(c_struct.quaternion_north);
-    cpp_struct.angular_velocity = translate_AngularVelocityBody_from_c(c_struct.angular_velocity);
+    cpp_struct.euler_angle_forward = translate_euler_angle_from_c(c_struct.euler_angle_forward);
+    cpp_struct.quaternion_forward = translate_quaternion_from_c(c_struct.quaternion_forward);
+    cpp_struct.euler_angle_north = translate_euler_angle_from_c(c_struct.euler_angle_north);
+    cpp_struct.quaternion_north = translate_quaternion_from_c(c_struct.quaternion_north);
+    cpp_struct.angular_velocity = translate_angular_velocity_body_from_c(c_struct.angular_velocity);
     cpp_struct.timestamp_us = c_struct.timestamp_us;
     return cpp_struct;
 }
 
-static mavsdk_gimbal_Attitude_t
-translate_Attitude_to_c(const mavsdk::Gimbal::Attitude& cpp_struct) {
-    mavsdk_gimbal_Attitude_t c_struct{};
+static mavsdk_gimbal_attitude_t
+translate_attitude_to_c(const mavsdk::Gimbal::Attitude& cpp_struct) {
+    mavsdk_gimbal_attitude_t c_struct{};
     c_struct.gimbal_id = cpp_struct.gimbal_id;
-    c_struct.euler_angle_forward = translate_EulerAngle_to_c(cpp_struct.euler_angle_forward);
-    c_struct.quaternion_forward = translate_Quaternion_to_c(cpp_struct.quaternion_forward);
-    c_struct.euler_angle_north = translate_EulerAngle_to_c(cpp_struct.euler_angle_north);
-    c_struct.quaternion_north = translate_Quaternion_to_c(cpp_struct.quaternion_north);
-    c_struct.angular_velocity = translate_AngularVelocityBody_to_c(cpp_struct.angular_velocity);
+    c_struct.euler_angle_forward = translate_euler_angle_to_c(cpp_struct.euler_angle_forward);
+    c_struct.quaternion_forward = translate_quaternion_to_c(cpp_struct.quaternion_forward);
+    c_struct.euler_angle_north = translate_euler_angle_to_c(cpp_struct.euler_angle_north);
+    c_struct.quaternion_north = translate_quaternion_to_c(cpp_struct.quaternion_north);
+    c_struct.angular_velocity = translate_angular_velocity_body_to_c(cpp_struct.angular_velocity);
     c_struct.timestamp_us = cpp_struct.timestamp_us;
     return c_struct;
 }
 
-void mavsdk_gimbal_Attitude_destroy(
-    mavsdk_gimbal_Attitude_t* target) {
+void mavsdk_gimbal_attitude_destroy(
+    mavsdk_gimbal_attitude_t* target) {
     if (!target) return;
 }
 
-void mavsdk_gimbal_Attitude_array_destroy(
-    mavsdk_gimbal_Attitude_t** array,
+void mavsdk_gimbal_attitude_array_destroy(
+    mavsdk_gimbal_attitude_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_gimbal_Attitude_destroy(&(*array)[i]);
+        mavsdk_gimbal_attitude_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -261,7 +261,7 @@ void mavsdk_gimbal_Attitude_array_destroy(
 
 
 static mavsdk::Gimbal::GimbalItem
-translate_GimbalItem_from_c(const mavsdk_gimbal_GimbalItem_t& c_struct) {
+translate_gimbal_item_from_c(const mavsdk_gimbal_gimbal_item_t& c_struct) {
     mavsdk::Gimbal::GimbalItem cpp_struct{};
     cpp_struct.gimbal_id = c_struct.gimbal_id;
     if (c_struct.vendor_name) {
@@ -278,9 +278,9 @@ translate_GimbalItem_from_c(const mavsdk_gimbal_GimbalItem_t& c_struct) {
     return cpp_struct;
 }
 
-static mavsdk_gimbal_GimbalItem_t
-translate_GimbalItem_to_c(const mavsdk::Gimbal::GimbalItem& cpp_struct) {
-    mavsdk_gimbal_GimbalItem_t c_struct{};
+static mavsdk_gimbal_gimbal_item_t
+translate_gimbal_item_to_c(const mavsdk::Gimbal::GimbalItem& cpp_struct) {
+    mavsdk_gimbal_gimbal_item_t c_struct{};
     c_struct.gimbal_id = cpp_struct.gimbal_id;
     c_struct.vendor_name = strdup(cpp_struct.vendor_name.c_str());
     c_struct.model_name = strdup(cpp_struct.model_name.c_str());
@@ -290,8 +290,8 @@ translate_GimbalItem_to_c(const mavsdk::Gimbal::GimbalItem& cpp_struct) {
     return c_struct;
 }
 
-void mavsdk_gimbal_GimbalItem_destroy(
-    mavsdk_gimbal_GimbalItem_t* target) {
+void mavsdk_gimbal_gimbal_item_destroy(
+    mavsdk_gimbal_gimbal_item_t* target) {
     if (!target) return;
     if (target->vendor_name) {
         free((void*)target->vendor_name);
@@ -307,13 +307,13 @@ void mavsdk_gimbal_GimbalItem_destroy(
     }
 }
 
-void mavsdk_gimbal_GimbalItem_array_destroy(
-    mavsdk_gimbal_GimbalItem_t** array,
+void mavsdk_gimbal_gimbal_item_array_destroy(
+    mavsdk_gimbal_gimbal_item_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_gimbal_GimbalItem_destroy(&(*array)[i]);
+        mavsdk_gimbal_gimbal_item_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -322,33 +322,33 @@ void mavsdk_gimbal_GimbalItem_array_destroy(
 
 
 static mavsdk::Gimbal::GimbalList
-translate_GimbalList_from_c(const mavsdk_gimbal_GimbalList_t& c_struct) {
+translate_gimbal_list_from_c(const mavsdk_gimbal_gimbal_list_t& c_struct) {
     mavsdk::Gimbal::GimbalList cpp_struct{};
     cpp_struct.gimbals.reserve(c_struct.gimbals_size);
     for (size_t i = 0; i < c_struct.gimbals_size; i++) {
         cpp_struct.gimbals.push_back(
-            translate_GimbalItem_from_c(c_struct.gimbals[i]));
+            translate_gimbal_item_from_c(c_struct.gimbals[i]));
     }
     return cpp_struct;
 }
 
-static mavsdk_gimbal_GimbalList_t
-translate_GimbalList_to_c(const mavsdk::Gimbal::GimbalList& cpp_struct) {
-    mavsdk_gimbal_GimbalList_t c_struct{};
+static mavsdk_gimbal_gimbal_list_t
+translate_gimbal_list_to_c(const mavsdk::Gimbal::GimbalList& cpp_struct) {
+    mavsdk_gimbal_gimbal_list_t c_struct{};
     c_struct.gimbals_size = cpp_struct.gimbals.size();
-    c_struct.gimbals = new mavsdk_gimbal_GimbalItem_t[c_struct.gimbals_size];
+    c_struct.gimbals = new mavsdk_gimbal_gimbal_item_t[c_struct.gimbals_size];
     for (size_t i = 0; i < c_struct.gimbals_size; i++) {
-        c_struct.gimbals[i] = translate_GimbalItem_to_c(cpp_struct.gimbals[i]);
+        c_struct.gimbals[i] = translate_gimbal_item_to_c(cpp_struct.gimbals[i]);
     }
     return c_struct;
 }
 
-void mavsdk_gimbal_GimbalList_destroy(
-    mavsdk_gimbal_GimbalList_t* target) {
+void mavsdk_gimbal_gimbal_list_destroy(
+    mavsdk_gimbal_gimbal_list_t* target) {
     if (!target) return;
     if (target->gimbals) {
         for (size_t i = 0; i < target->gimbals_size; i++) {
-            mavsdk_gimbal_GimbalItem_destroy(&target->gimbals[i]);
+            mavsdk_gimbal_gimbal_item_destroy(&target->gimbals[i]);
         }
         delete[] target->gimbals;
         target->gimbals = nullptr;
@@ -356,13 +356,13 @@ void mavsdk_gimbal_GimbalList_destroy(
     }
 }
 
-void mavsdk_gimbal_GimbalList_array_destroy(
-    mavsdk_gimbal_GimbalList_t** array,
+void mavsdk_gimbal_gimbal_list_array_destroy(
+    mavsdk_gimbal_gimbal_list_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_gimbal_GimbalList_destroy(&(*array)[i]);
+        mavsdk_gimbal_gimbal_list_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -371,10 +371,10 @@ void mavsdk_gimbal_GimbalList_array_destroy(
 
 
 static mavsdk::Gimbal::ControlStatus
-translate_ControlStatus_from_c(const mavsdk_gimbal_ControlStatus_t& c_struct) {
+translate_control_status_from_c(const mavsdk_gimbal_control_status_t& c_struct) {
     mavsdk::Gimbal::ControlStatus cpp_struct{};
     cpp_struct.gimbal_id = c_struct.gimbal_id;
-    cpp_struct.control_mode = translate_ControlMode_from_c(c_struct.control_mode);
+    cpp_struct.control_mode = translate_control_mode_from_c(c_struct.control_mode);
     cpp_struct.sysid_primary_control = c_struct.sysid_primary_control;
     cpp_struct.compid_primary_control = c_struct.compid_primary_control;
     cpp_struct.sysid_secondary_control = c_struct.sysid_secondary_control;
@@ -382,11 +382,11 @@ translate_ControlStatus_from_c(const mavsdk_gimbal_ControlStatus_t& c_struct) {
     return cpp_struct;
 }
 
-static mavsdk_gimbal_ControlStatus_t
-translate_ControlStatus_to_c(const mavsdk::Gimbal::ControlStatus& cpp_struct) {
-    mavsdk_gimbal_ControlStatus_t c_struct{};
+static mavsdk_gimbal_control_status_t
+translate_control_status_to_c(const mavsdk::Gimbal::ControlStatus& cpp_struct) {
+    mavsdk_gimbal_control_status_t c_struct{};
     c_struct.gimbal_id = cpp_struct.gimbal_id;
-    c_struct.control_mode = translate_ControlMode_to_c(cpp_struct.control_mode);
+    c_struct.control_mode = translate_control_mode_to_c(cpp_struct.control_mode);
     c_struct.sysid_primary_control = cpp_struct.sysid_primary_control;
     c_struct.compid_primary_control = cpp_struct.compid_primary_control;
     c_struct.sysid_secondary_control = cpp_struct.sysid_secondary_control;
@@ -394,18 +394,18 @@ translate_ControlStatus_to_c(const mavsdk::Gimbal::ControlStatus& cpp_struct) {
     return c_struct;
 }
 
-void mavsdk_gimbal_ControlStatus_destroy(
-    mavsdk_gimbal_ControlStatus_t* target) {
+void mavsdk_gimbal_control_status_destroy(
+    mavsdk_gimbal_control_status_t* target) {
     if (!target) return;
 }
 
-void mavsdk_gimbal_ControlStatus_array_destroy(
-    mavsdk_gimbal_ControlStatus_t** array,
+void mavsdk_gimbal_control_status_array_destroy(
+    mavsdk_gimbal_control_status_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_gimbal_ControlStatus_destroy(&(*array)[i]);
+        mavsdk_gimbal_control_status_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -507,8 +507,8 @@ void mavsdk_gimbal_set_angles_async(
     float roll_deg,
     float pitch_deg,
     float yaw_deg,
-    mavsdk_gimbal_GimbalMode_t gimbal_mode,
-    mavsdk_gimbal_SendMode_t send_mode,
+    mavsdk_gimbal_gimbal_mode_t gimbal_mode,
+    mavsdk_gimbal_send_mode_t send_mode,
     mavsdk_gimbal_set_angles_callback_t callback,
     void* user_data)
 {
@@ -519,7 +519,7 @@ void mavsdk_gimbal_set_angles_async(
         roll_deg,
         pitch_deg,
         yaw_deg,
-        translate_GimbalMode_from_c(gimbal_mode),        translate_SendMode_from_c(send_mode),
+        translate_gimbal_mode_from_c(gimbal_mode),        translate_send_mode_from_c(send_mode),
         [callback, user_data](
             mavsdk::Gimbal::Result result) {
                 if (callback) {
@@ -539,12 +539,12 @@ mavsdk_gimbal_set_angles(
     float roll_deg,
     float pitch_deg,
     float yaw_deg,
-    mavsdk_gimbal_GimbalMode_t gimbal_mode,
-    mavsdk_gimbal_SendMode_t send_mode)
+    mavsdk_gimbal_gimbal_mode_t gimbal_mode,
+    mavsdk_gimbal_send_mode_t send_mode)
 {
     auto wrapper = static_cast<mavsdk_gimbal_wrapper*>(gimbal);
 
-    auto ret_value = wrapper->cpp_plugin->set_angles(        gimbal_id,        roll_deg,        pitch_deg,        yaw_deg,        translate_GimbalMode_from_c(gimbal_mode),        translate_SendMode_from_c(send_mode));
+    auto ret_value = wrapper->cpp_plugin->set_angles(        gimbal_id,        roll_deg,        pitch_deg,        yaw_deg,        translate_gimbal_mode_from_c(gimbal_mode),        translate_send_mode_from_c(send_mode));
 
     return translate_result(ret_value);
 }
@@ -556,8 +556,8 @@ void mavsdk_gimbal_set_angular_rates_async(
     float roll_rate_deg_s,
     float pitch_rate_deg_s,
     float yaw_rate_deg_s,
-    mavsdk_gimbal_GimbalMode_t gimbal_mode,
-    mavsdk_gimbal_SendMode_t send_mode,
+    mavsdk_gimbal_gimbal_mode_t gimbal_mode,
+    mavsdk_gimbal_send_mode_t send_mode,
     mavsdk_gimbal_set_angular_rates_callback_t callback,
     void* user_data)
 {
@@ -568,7 +568,7 @@ void mavsdk_gimbal_set_angular_rates_async(
         roll_rate_deg_s,
         pitch_rate_deg_s,
         yaw_rate_deg_s,
-        translate_GimbalMode_from_c(gimbal_mode),        translate_SendMode_from_c(send_mode),
+        translate_gimbal_mode_from_c(gimbal_mode),        translate_send_mode_from_c(send_mode),
         [callback, user_data](
             mavsdk::Gimbal::Result result) {
                 if (callback) {
@@ -588,12 +588,12 @@ mavsdk_gimbal_set_angular_rates(
     float roll_rate_deg_s,
     float pitch_rate_deg_s,
     float yaw_rate_deg_s,
-    mavsdk_gimbal_GimbalMode_t gimbal_mode,
-    mavsdk_gimbal_SendMode_t send_mode)
+    mavsdk_gimbal_gimbal_mode_t gimbal_mode,
+    mavsdk_gimbal_send_mode_t send_mode)
 {
     auto wrapper = static_cast<mavsdk_gimbal_wrapper*>(gimbal);
 
-    auto ret_value = wrapper->cpp_plugin->set_angular_rates(        gimbal_id,        roll_rate_deg_s,        pitch_rate_deg_s,        yaw_rate_deg_s,        translate_GimbalMode_from_c(gimbal_mode),        translate_SendMode_from_c(send_mode));
+    auto ret_value = wrapper->cpp_plugin->set_angular_rates(        gimbal_id,        roll_rate_deg_s,        pitch_rate_deg_s,        yaw_rate_deg_s,        translate_gimbal_mode_from_c(gimbal_mode),        translate_send_mode_from_c(send_mode));
 
     return translate_result(ret_value);
 }
@@ -646,7 +646,7 @@ mavsdk_gimbal_set_roi_location(
 void mavsdk_gimbal_take_control_async(
     mavsdk_gimbal_t gimbal,
     int32_t gimbal_id,
-    mavsdk_gimbal_ControlMode_t control_mode,
+    mavsdk_gimbal_control_mode_t control_mode,
     mavsdk_gimbal_take_control_callback_t callback,
     void* user_data)
 {
@@ -654,7 +654,7 @@ void mavsdk_gimbal_take_control_async(
 
     wrapper->cpp_plugin->take_control_async(
         gimbal_id,
-        translate_ControlMode_from_c(control_mode),
+        translate_control_mode_from_c(control_mode),
         [callback, user_data](
             mavsdk::Gimbal::Result result) {
                 if (callback) {
@@ -671,11 +671,11 @@ mavsdk_gimbal_result_t
 mavsdk_gimbal_take_control(
     mavsdk_gimbal_t gimbal,
     int32_t gimbal_id,
-    mavsdk_gimbal_ControlMode_t control_mode)
+    mavsdk_gimbal_control_mode_t control_mode)
 {
     auto wrapper = static_cast<mavsdk_gimbal_wrapper*>(gimbal);
 
-    auto ret_value = wrapper->cpp_plugin->take_control(        gimbal_id,        translate_ControlMode_from_c(control_mode));
+    auto ret_value = wrapper->cpp_plugin->take_control(        gimbal_id,        translate_control_mode_from_c(control_mode));
 
     return translate_result(ret_value);
 }
@@ -728,7 +728,7 @@ mavsdk_gimbal_gimbal_list_handle_t mavsdk_gimbal_subscribe_gimbal_list(
             mavsdk::Gimbal::GimbalList value) {
                 if (callback) {
                     callback(
-                        translate_GimbalList_to_c(value),
+                        translate_gimbal_list_to_c(value),
                         user_data);
                 }
         });
@@ -753,14 +753,14 @@ void mavsdk_gimbal_unsubscribe_gimbal_list(
 void
 mavsdk_gimbal_gimbal_list(
     mavsdk_gimbal_t gimbal,
-    mavsdk_gimbal_GimbalList_t* gimbal_list_out)
+    mavsdk_gimbal_gimbal_list_t* gimbal_list_out)
 {
     auto wrapper = static_cast<mavsdk_gimbal_wrapper*>(gimbal);
 
     auto ret_value = wrapper->cpp_plugin->gimbal_list();
 
     if (gimbal_list_out != nullptr) {
-        *gimbal_list_out = translate_GimbalList_to_c(ret_value);
+        *gimbal_list_out = translate_gimbal_list_to_c(ret_value);
     }
 }
 
@@ -777,7 +777,7 @@ mavsdk_gimbal_control_status_handle_t mavsdk_gimbal_subscribe_control_status(
             mavsdk::Gimbal::ControlStatus value) {
                 if (callback) {
                     callback(
-                        translate_ControlStatus_to_c(value),
+                        translate_control_status_to_c(value),
                         user_data);
                 }
         });
@@ -805,7 +805,7 @@ mavsdk_gimbal_result_t
 mavsdk_gimbal_get_control_status(
     mavsdk_gimbal_t gimbal,
     int32_t gimbal_id,
-    mavsdk_gimbal_ControlStatus_t* control_status_out)
+    mavsdk_gimbal_control_status_t* control_status_out)
 {
     auto wrapper = static_cast<mavsdk_gimbal_wrapper*>(gimbal);
 
@@ -813,7 +813,7 @@ mavsdk_gimbal_get_control_status(
         gimbal_id);
 
     if (control_status_out != nullptr) {
-        *control_status_out = translate_ControlStatus_to_c(result_pair.second);
+        *control_status_out = translate_control_status_to_c(result_pair.second);
     }
 
     return translate_result(result_pair.first);
@@ -832,7 +832,7 @@ mavsdk_gimbal_attitude_handle_t mavsdk_gimbal_subscribe_attitude(
             mavsdk::Gimbal::Attitude value) {
                 if (callback) {
                     callback(
-                        translate_Attitude_to_c(value),
+                        translate_attitude_to_c(value),
                         user_data);
                 }
         });
@@ -860,7 +860,7 @@ mavsdk_gimbal_result_t
 mavsdk_gimbal_get_attitude(
     mavsdk_gimbal_t gimbal,
     int32_t gimbal_id,
-    mavsdk_gimbal_Attitude_t* attitude_out)
+    mavsdk_gimbal_attitude_t* attitude_out)
 {
     auto wrapper = static_cast<mavsdk_gimbal_wrapper*>(gimbal);
 
@@ -868,7 +868,7 @@ mavsdk_gimbal_get_attitude(
         gimbal_id);
 
     if (attitude_out != nullptr) {
-        *attitude_out = translate_Attitude_to_c(result_pair.second);
+        *attitude_out = translate_attitude_to_c(result_pair.second);
     }
 
     return translate_result(result_pair.first);

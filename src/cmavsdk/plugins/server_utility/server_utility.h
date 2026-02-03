@@ -45,7 +45,7 @@ typedef enum {
     MAVSDK_SERVER_UTILITY_STATUS_TEXT_TYPE_ALERT = 6,
     /**  Emergency. */
     MAVSDK_SERVER_UTILITY_STATUS_TEXT_TYPE_EMERGENCY = 7,
-} mavsdk_server_utility_StatusTextType_t;
+} mavsdk_server_utility_status_text_type_t;
 
 
 // ===== Structs =====
@@ -163,7 +163,7 @@ CMAVSDK_EXPORT
 mavsdk_server_utility_result_t
 mavsdk_server_utility_send_status_text(
     mavsdk_server_utility_t server_utility,
-    mavsdk_server_utility_StatusTextType_t type,
+    mavsdk_server_utility_status_text_type_t type,
     char* text);
 
 

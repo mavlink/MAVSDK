@@ -33,7 +33,7 @@ translate_result(mavsdk::Telemetry::Result cpp_result) {
 }
 
 static mavsdk::Telemetry::FixType
-translate_FixType_from_c(mavsdk_telemetry_FixType_t c_enum) {
+translate_fix_type_from_c(mavsdk_telemetry_fix_type_t c_enum) {
     switch(c_enum) {
         case MAVSDK_TELEMETRY_FIX_TYPE_NO_GPS:
             return mavsdk::Telemetry::FixType::NoGps;
@@ -53,8 +53,8 @@ translate_FixType_from_c(mavsdk_telemetry_FixType_t c_enum) {
     return mavsdk::Telemetry::FixType::NoGps;
 }
 
-static mavsdk_telemetry_FixType_t
-translate_FixType_to_c(mavsdk::Telemetry::FixType cpp_enum) {
+static mavsdk_telemetry_fix_type_t
+translate_fix_type_to_c(mavsdk::Telemetry::FixType cpp_enum) {
     switch(cpp_enum) {
         case mavsdk::Telemetry::FixType::NoGps:
             return MAVSDK_TELEMETRY_FIX_TYPE_NO_GPS;
@@ -75,7 +75,7 @@ translate_FixType_to_c(mavsdk::Telemetry::FixType cpp_enum) {
 }
 
 static mavsdk::Telemetry::BatteryFunction
-translate_BatteryFunction_from_c(mavsdk_telemetry_BatteryFunction_t c_enum) {
+translate_battery_function_from_c(mavsdk_telemetry_battery_function_t c_enum) {
     switch(c_enum) {
         case MAVSDK_TELEMETRY_BATTERY_FUNCTION_UNKNOWN:
             return mavsdk::Telemetry::BatteryFunction::Unknown;
@@ -91,8 +91,8 @@ translate_BatteryFunction_from_c(mavsdk_telemetry_BatteryFunction_t c_enum) {
     return mavsdk::Telemetry::BatteryFunction::Unknown;
 }
 
-static mavsdk_telemetry_BatteryFunction_t
-translate_BatteryFunction_to_c(mavsdk::Telemetry::BatteryFunction cpp_enum) {
+static mavsdk_telemetry_battery_function_t
+translate_battery_function_to_c(mavsdk::Telemetry::BatteryFunction cpp_enum) {
     switch(cpp_enum) {
         case mavsdk::Telemetry::BatteryFunction::Unknown:
             return MAVSDK_TELEMETRY_BATTERY_FUNCTION_UNKNOWN;
@@ -109,7 +109,7 @@ translate_BatteryFunction_to_c(mavsdk::Telemetry::BatteryFunction cpp_enum) {
 }
 
 static mavsdk::Telemetry::FlightMode
-translate_FlightMode_from_c(mavsdk_telemetry_FlightMode_t c_enum) {
+translate_flight_mode_from_c(mavsdk_telemetry_flight_mode_t c_enum) {
     switch(c_enum) {
         case MAVSDK_TELEMETRY_FLIGHT_MODE_UNKNOWN:
             return mavsdk::Telemetry::FlightMode::Unknown;
@@ -145,8 +145,8 @@ translate_FlightMode_from_c(mavsdk_telemetry_FlightMode_t c_enum) {
     return mavsdk::Telemetry::FlightMode::Unknown;
 }
 
-static mavsdk_telemetry_FlightMode_t
-translate_FlightMode_to_c(mavsdk::Telemetry::FlightMode cpp_enum) {
+static mavsdk_telemetry_flight_mode_t
+translate_flight_mode_to_c(mavsdk::Telemetry::FlightMode cpp_enum) {
     switch(cpp_enum) {
         case mavsdk::Telemetry::FlightMode::Unknown:
             return MAVSDK_TELEMETRY_FLIGHT_MODE_UNKNOWN;
@@ -183,7 +183,7 @@ translate_FlightMode_to_c(mavsdk::Telemetry::FlightMode cpp_enum) {
 }
 
 static mavsdk::Telemetry::StatusTextType
-translate_StatusTextType_from_c(mavsdk_telemetry_StatusTextType_t c_enum) {
+translate_status_text_type_from_c(mavsdk_telemetry_status_text_type_t c_enum) {
     switch(c_enum) {
         case MAVSDK_TELEMETRY_STATUS_TEXT_TYPE_DEBUG:
             return mavsdk::Telemetry::StatusTextType::Debug;
@@ -205,8 +205,8 @@ translate_StatusTextType_from_c(mavsdk_telemetry_StatusTextType_t c_enum) {
     return mavsdk::Telemetry::StatusTextType::Debug;
 }
 
-static mavsdk_telemetry_StatusTextType_t
-translate_StatusTextType_to_c(mavsdk::Telemetry::StatusTextType cpp_enum) {
+static mavsdk_telemetry_status_text_type_t
+translate_status_text_type_to_c(mavsdk::Telemetry::StatusTextType cpp_enum) {
     switch(cpp_enum) {
         case mavsdk::Telemetry::StatusTextType::Debug:
             return MAVSDK_TELEMETRY_STATUS_TEXT_TYPE_DEBUG;
@@ -229,7 +229,7 @@ translate_StatusTextType_to_c(mavsdk::Telemetry::StatusTextType cpp_enum) {
 }
 
 static mavsdk::Telemetry::LandedState
-translate_LandedState_from_c(mavsdk_telemetry_LandedState_t c_enum) {
+translate_landed_state_from_c(mavsdk_telemetry_landed_state_t c_enum) {
     switch(c_enum) {
         case MAVSDK_TELEMETRY_LANDED_STATE_UNKNOWN:
             return mavsdk::Telemetry::LandedState::Unknown;
@@ -245,8 +245,8 @@ translate_LandedState_from_c(mavsdk_telemetry_LandedState_t c_enum) {
     return mavsdk::Telemetry::LandedState::Unknown;
 }
 
-static mavsdk_telemetry_LandedState_t
-translate_LandedState_to_c(mavsdk::Telemetry::LandedState cpp_enum) {
+static mavsdk_telemetry_landed_state_t
+translate_landed_state_to_c(mavsdk::Telemetry::LandedState cpp_enum) {
     switch(cpp_enum) {
         case mavsdk::Telemetry::LandedState::Unknown:
             return MAVSDK_TELEMETRY_LANDED_STATE_UNKNOWN;
@@ -263,7 +263,7 @@ translate_LandedState_to_c(mavsdk::Telemetry::LandedState cpp_enum) {
 }
 
 static mavsdk::Telemetry::VtolState
-translate_VtolState_from_c(mavsdk_telemetry_VtolState_t c_enum) {
+translate_vtol_state_from_c(mavsdk_telemetry_vtol_state_t c_enum) {
     switch(c_enum) {
         case MAVSDK_TELEMETRY_VTOL_STATE_UNDEFINED:
             return mavsdk::Telemetry::VtolState::Undefined;
@@ -279,8 +279,8 @@ translate_VtolState_from_c(mavsdk_telemetry_VtolState_t c_enum) {
     return mavsdk::Telemetry::VtolState::Undefined;
 }
 
-static mavsdk_telemetry_VtolState_t
-translate_VtolState_to_c(mavsdk::Telemetry::VtolState cpp_enum) {
+static mavsdk_telemetry_vtol_state_t
+translate_vtol_state_to_c(mavsdk::Telemetry::VtolState cpp_enum) {
     switch(cpp_enum) {
         case mavsdk::Telemetry::VtolState::Undefined:
             return MAVSDK_TELEMETRY_VTOL_STATE_UNDEFINED;
@@ -299,7 +299,7 @@ translate_VtolState_to_c(mavsdk::Telemetry::VtolState cpp_enum) {
 
 
 static mavsdk::Telemetry::Position
-translate_Position_from_c(const mavsdk_telemetry_Position_t& c_struct) {
+translate_position_from_c(const mavsdk_telemetry_position_t& c_struct) {
     mavsdk::Telemetry::Position cpp_struct{};
     cpp_struct.latitude_deg = c_struct.latitude_deg;
     cpp_struct.longitude_deg = c_struct.longitude_deg;
@@ -308,9 +308,9 @@ translate_Position_from_c(const mavsdk_telemetry_Position_t& c_struct) {
     return cpp_struct;
 }
 
-static mavsdk_telemetry_Position_t
-translate_Position_to_c(const mavsdk::Telemetry::Position& cpp_struct) {
-    mavsdk_telemetry_Position_t c_struct{};
+static mavsdk_telemetry_position_t
+translate_position_to_c(const mavsdk::Telemetry::Position& cpp_struct) {
+    mavsdk_telemetry_position_t c_struct{};
     c_struct.latitude_deg = cpp_struct.latitude_deg;
     c_struct.longitude_deg = cpp_struct.longitude_deg;
     c_struct.absolute_altitude_m = cpp_struct.absolute_altitude_m;
@@ -318,18 +318,18 @@ translate_Position_to_c(const mavsdk::Telemetry::Position& cpp_struct) {
     return c_struct;
 }
 
-void mavsdk_telemetry_Position_destroy(
-    mavsdk_telemetry_Position_t* target) {
+void mavsdk_telemetry_position_destroy(
+    mavsdk_telemetry_position_t* target) {
     if (!target) return;
 }
 
-void mavsdk_telemetry_Position_array_destroy(
-    mavsdk_telemetry_Position_t** array,
+void mavsdk_telemetry_position_array_destroy(
+    mavsdk_telemetry_position_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_telemetry_Position_destroy(&(*array)[i]);
+        mavsdk_telemetry_position_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -338,31 +338,31 @@ void mavsdk_telemetry_Position_array_destroy(
 
 
 static mavsdk::Telemetry::Heading
-translate_Heading_from_c(const mavsdk_telemetry_Heading_t& c_struct) {
+translate_heading_from_c(const mavsdk_telemetry_heading_t& c_struct) {
     mavsdk::Telemetry::Heading cpp_struct{};
     cpp_struct.heading_deg = c_struct.heading_deg;
     return cpp_struct;
 }
 
-static mavsdk_telemetry_Heading_t
-translate_Heading_to_c(const mavsdk::Telemetry::Heading& cpp_struct) {
-    mavsdk_telemetry_Heading_t c_struct{};
+static mavsdk_telemetry_heading_t
+translate_heading_to_c(const mavsdk::Telemetry::Heading& cpp_struct) {
+    mavsdk_telemetry_heading_t c_struct{};
     c_struct.heading_deg = cpp_struct.heading_deg;
     return c_struct;
 }
 
-void mavsdk_telemetry_Heading_destroy(
-    mavsdk_telemetry_Heading_t* target) {
+void mavsdk_telemetry_heading_destroy(
+    mavsdk_telemetry_heading_t* target) {
     if (!target) return;
 }
 
-void mavsdk_telemetry_Heading_array_destroy(
-    mavsdk_telemetry_Heading_t** array,
+void mavsdk_telemetry_heading_array_destroy(
+    mavsdk_telemetry_heading_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_telemetry_Heading_destroy(&(*array)[i]);
+        mavsdk_telemetry_heading_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -371,7 +371,7 @@ void mavsdk_telemetry_Heading_array_destroy(
 
 
 static mavsdk::Telemetry::Quaternion
-translate_Quaternion_from_c(const mavsdk_telemetry_Quaternion_t& c_struct) {
+translate_quaternion_from_c(const mavsdk_telemetry_quaternion_t& c_struct) {
     mavsdk::Telemetry::Quaternion cpp_struct{};
     cpp_struct.w = c_struct.w;
     cpp_struct.x = c_struct.x;
@@ -381,9 +381,9 @@ translate_Quaternion_from_c(const mavsdk_telemetry_Quaternion_t& c_struct) {
     return cpp_struct;
 }
 
-static mavsdk_telemetry_Quaternion_t
-translate_Quaternion_to_c(const mavsdk::Telemetry::Quaternion& cpp_struct) {
-    mavsdk_telemetry_Quaternion_t c_struct{};
+static mavsdk_telemetry_quaternion_t
+translate_quaternion_to_c(const mavsdk::Telemetry::Quaternion& cpp_struct) {
+    mavsdk_telemetry_quaternion_t c_struct{};
     c_struct.w = cpp_struct.w;
     c_struct.x = cpp_struct.x;
     c_struct.y = cpp_struct.y;
@@ -392,18 +392,18 @@ translate_Quaternion_to_c(const mavsdk::Telemetry::Quaternion& cpp_struct) {
     return c_struct;
 }
 
-void mavsdk_telemetry_Quaternion_destroy(
-    mavsdk_telemetry_Quaternion_t* target) {
+void mavsdk_telemetry_quaternion_destroy(
+    mavsdk_telemetry_quaternion_t* target) {
     if (!target) return;
 }
 
-void mavsdk_telemetry_Quaternion_array_destroy(
-    mavsdk_telemetry_Quaternion_t** array,
+void mavsdk_telemetry_quaternion_array_destroy(
+    mavsdk_telemetry_quaternion_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_telemetry_Quaternion_destroy(&(*array)[i]);
+        mavsdk_telemetry_quaternion_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -412,7 +412,7 @@ void mavsdk_telemetry_Quaternion_array_destroy(
 
 
 static mavsdk::Telemetry::EulerAngle
-translate_EulerAngle_from_c(const mavsdk_telemetry_EulerAngle_t& c_struct) {
+translate_euler_angle_from_c(const mavsdk_telemetry_euler_angle_t& c_struct) {
     mavsdk::Telemetry::EulerAngle cpp_struct{};
     cpp_struct.roll_deg = c_struct.roll_deg;
     cpp_struct.pitch_deg = c_struct.pitch_deg;
@@ -421,9 +421,9 @@ translate_EulerAngle_from_c(const mavsdk_telemetry_EulerAngle_t& c_struct) {
     return cpp_struct;
 }
 
-static mavsdk_telemetry_EulerAngle_t
-translate_EulerAngle_to_c(const mavsdk::Telemetry::EulerAngle& cpp_struct) {
-    mavsdk_telemetry_EulerAngle_t c_struct{};
+static mavsdk_telemetry_euler_angle_t
+translate_euler_angle_to_c(const mavsdk::Telemetry::EulerAngle& cpp_struct) {
+    mavsdk_telemetry_euler_angle_t c_struct{};
     c_struct.roll_deg = cpp_struct.roll_deg;
     c_struct.pitch_deg = cpp_struct.pitch_deg;
     c_struct.yaw_deg = cpp_struct.yaw_deg;
@@ -431,18 +431,18 @@ translate_EulerAngle_to_c(const mavsdk::Telemetry::EulerAngle& cpp_struct) {
     return c_struct;
 }
 
-void mavsdk_telemetry_EulerAngle_destroy(
-    mavsdk_telemetry_EulerAngle_t* target) {
+void mavsdk_telemetry_euler_angle_destroy(
+    mavsdk_telemetry_euler_angle_t* target) {
     if (!target) return;
 }
 
-void mavsdk_telemetry_EulerAngle_array_destroy(
-    mavsdk_telemetry_EulerAngle_t** array,
+void mavsdk_telemetry_euler_angle_array_destroy(
+    mavsdk_telemetry_euler_angle_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_telemetry_EulerAngle_destroy(&(*array)[i]);
+        mavsdk_telemetry_euler_angle_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -451,7 +451,7 @@ void mavsdk_telemetry_EulerAngle_array_destroy(
 
 
 static mavsdk::Telemetry::AngularVelocityBody
-translate_AngularVelocityBody_from_c(const mavsdk_telemetry_AngularVelocityBody_t& c_struct) {
+translate_angular_velocity_body_from_c(const mavsdk_telemetry_angular_velocity_body_t& c_struct) {
     mavsdk::Telemetry::AngularVelocityBody cpp_struct{};
     cpp_struct.roll_rad_s = c_struct.roll_rad_s;
     cpp_struct.pitch_rad_s = c_struct.pitch_rad_s;
@@ -459,27 +459,27 @@ translate_AngularVelocityBody_from_c(const mavsdk_telemetry_AngularVelocityBody_
     return cpp_struct;
 }
 
-static mavsdk_telemetry_AngularVelocityBody_t
-translate_AngularVelocityBody_to_c(const mavsdk::Telemetry::AngularVelocityBody& cpp_struct) {
-    mavsdk_telemetry_AngularVelocityBody_t c_struct{};
+static mavsdk_telemetry_angular_velocity_body_t
+translate_angular_velocity_body_to_c(const mavsdk::Telemetry::AngularVelocityBody& cpp_struct) {
+    mavsdk_telemetry_angular_velocity_body_t c_struct{};
     c_struct.roll_rad_s = cpp_struct.roll_rad_s;
     c_struct.pitch_rad_s = cpp_struct.pitch_rad_s;
     c_struct.yaw_rad_s = cpp_struct.yaw_rad_s;
     return c_struct;
 }
 
-void mavsdk_telemetry_AngularVelocityBody_destroy(
-    mavsdk_telemetry_AngularVelocityBody_t* target) {
+void mavsdk_telemetry_angular_velocity_body_destroy(
+    mavsdk_telemetry_angular_velocity_body_t* target) {
     if (!target) return;
 }
 
-void mavsdk_telemetry_AngularVelocityBody_array_destroy(
-    mavsdk_telemetry_AngularVelocityBody_t** array,
+void mavsdk_telemetry_angular_velocity_body_array_destroy(
+    mavsdk_telemetry_angular_velocity_body_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_telemetry_AngularVelocityBody_destroy(&(*array)[i]);
+        mavsdk_telemetry_angular_velocity_body_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -488,33 +488,33 @@ void mavsdk_telemetry_AngularVelocityBody_array_destroy(
 
 
 static mavsdk::Telemetry::GpsInfo
-translate_GpsInfo_from_c(const mavsdk_telemetry_GpsInfo_t& c_struct) {
+translate_gps_info_from_c(const mavsdk_telemetry_gps_info_t& c_struct) {
     mavsdk::Telemetry::GpsInfo cpp_struct{};
     cpp_struct.num_satellites = c_struct.num_satellites;
-    cpp_struct.fix_type = translate_FixType_from_c(c_struct.fix_type);
+    cpp_struct.fix_type = translate_fix_type_from_c(c_struct.fix_type);
     return cpp_struct;
 }
 
-static mavsdk_telemetry_GpsInfo_t
-translate_GpsInfo_to_c(const mavsdk::Telemetry::GpsInfo& cpp_struct) {
-    mavsdk_telemetry_GpsInfo_t c_struct{};
+static mavsdk_telemetry_gps_info_t
+translate_gps_info_to_c(const mavsdk::Telemetry::GpsInfo& cpp_struct) {
+    mavsdk_telemetry_gps_info_t c_struct{};
     c_struct.num_satellites = cpp_struct.num_satellites;
-    c_struct.fix_type = translate_FixType_to_c(cpp_struct.fix_type);
+    c_struct.fix_type = translate_fix_type_to_c(cpp_struct.fix_type);
     return c_struct;
 }
 
-void mavsdk_telemetry_GpsInfo_destroy(
-    mavsdk_telemetry_GpsInfo_t* target) {
+void mavsdk_telemetry_gps_info_destroy(
+    mavsdk_telemetry_gps_info_t* target) {
     if (!target) return;
 }
 
-void mavsdk_telemetry_GpsInfo_array_destroy(
-    mavsdk_telemetry_GpsInfo_t** array,
+void mavsdk_telemetry_gps_info_array_destroy(
+    mavsdk_telemetry_gps_info_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_telemetry_GpsInfo_destroy(&(*array)[i]);
+        mavsdk_telemetry_gps_info_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -523,7 +523,7 @@ void mavsdk_telemetry_GpsInfo_array_destroy(
 
 
 static mavsdk::Telemetry::RawGps
-translate_RawGps_from_c(const mavsdk_telemetry_RawGps_t& c_struct) {
+translate_raw_gps_from_c(const mavsdk_telemetry_raw_gps_t& c_struct) {
     mavsdk::Telemetry::RawGps cpp_struct{};
     cpp_struct.timestamp_us = c_struct.timestamp_us;
     cpp_struct.latitude_deg = c_struct.latitude_deg;
@@ -542,9 +542,9 @@ translate_RawGps_from_c(const mavsdk_telemetry_RawGps_t& c_struct) {
     return cpp_struct;
 }
 
-static mavsdk_telemetry_RawGps_t
-translate_RawGps_to_c(const mavsdk::Telemetry::RawGps& cpp_struct) {
-    mavsdk_telemetry_RawGps_t c_struct{};
+static mavsdk_telemetry_raw_gps_t
+translate_raw_gps_to_c(const mavsdk::Telemetry::RawGps& cpp_struct) {
+    mavsdk_telemetry_raw_gps_t c_struct{};
     c_struct.timestamp_us = cpp_struct.timestamp_us;
     c_struct.latitude_deg = cpp_struct.latitude_deg;
     c_struct.longitude_deg = cpp_struct.longitude_deg;
@@ -562,18 +562,18 @@ translate_RawGps_to_c(const mavsdk::Telemetry::RawGps& cpp_struct) {
     return c_struct;
 }
 
-void mavsdk_telemetry_RawGps_destroy(
-    mavsdk_telemetry_RawGps_t* target) {
+void mavsdk_telemetry_raw_gps_destroy(
+    mavsdk_telemetry_raw_gps_t* target) {
     if (!target) return;
 }
 
-void mavsdk_telemetry_RawGps_array_destroy(
-    mavsdk_telemetry_RawGps_t** array,
+void mavsdk_telemetry_raw_gps_array_destroy(
+    mavsdk_telemetry_raw_gps_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_telemetry_RawGps_destroy(&(*array)[i]);
+        mavsdk_telemetry_raw_gps_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -582,7 +582,7 @@ void mavsdk_telemetry_RawGps_array_destroy(
 
 
 static mavsdk::Telemetry::Battery
-translate_Battery_from_c(const mavsdk_telemetry_Battery_t& c_struct) {
+translate_battery_from_c(const mavsdk_telemetry_battery_t& c_struct) {
     mavsdk::Telemetry::Battery cpp_struct{};
     cpp_struct.id = c_struct.id;
     cpp_struct.temperature_degc = c_struct.temperature_degc;
@@ -591,13 +591,13 @@ translate_Battery_from_c(const mavsdk_telemetry_Battery_t& c_struct) {
     cpp_struct.capacity_consumed_ah = c_struct.capacity_consumed_ah;
     cpp_struct.remaining_percent = c_struct.remaining_percent;
     cpp_struct.time_remaining_s = c_struct.time_remaining_s;
-    cpp_struct.battery_function = translate_BatteryFunction_from_c(c_struct.battery_function);
+    cpp_struct.battery_function = translate_battery_function_from_c(c_struct.battery_function);
     return cpp_struct;
 }
 
-static mavsdk_telemetry_Battery_t
-translate_Battery_to_c(const mavsdk::Telemetry::Battery& cpp_struct) {
-    mavsdk_telemetry_Battery_t c_struct{};
+static mavsdk_telemetry_battery_t
+translate_battery_to_c(const mavsdk::Telemetry::Battery& cpp_struct) {
+    mavsdk_telemetry_battery_t c_struct{};
     c_struct.id = cpp_struct.id;
     c_struct.temperature_degc = cpp_struct.temperature_degc;
     c_struct.voltage_v = cpp_struct.voltage_v;
@@ -605,22 +605,22 @@ translate_Battery_to_c(const mavsdk::Telemetry::Battery& cpp_struct) {
     c_struct.capacity_consumed_ah = cpp_struct.capacity_consumed_ah;
     c_struct.remaining_percent = cpp_struct.remaining_percent;
     c_struct.time_remaining_s = cpp_struct.time_remaining_s;
-    c_struct.battery_function = translate_BatteryFunction_to_c(cpp_struct.battery_function);
+    c_struct.battery_function = translate_battery_function_to_c(cpp_struct.battery_function);
     return c_struct;
 }
 
-void mavsdk_telemetry_Battery_destroy(
-    mavsdk_telemetry_Battery_t* target) {
+void mavsdk_telemetry_battery_destroy(
+    mavsdk_telemetry_battery_t* target) {
     if (!target) return;
 }
 
-void mavsdk_telemetry_Battery_array_destroy(
-    mavsdk_telemetry_Battery_t** array,
+void mavsdk_telemetry_battery_array_destroy(
+    mavsdk_telemetry_battery_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_telemetry_Battery_destroy(&(*array)[i]);
+        mavsdk_telemetry_battery_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -629,7 +629,7 @@ void mavsdk_telemetry_Battery_array_destroy(
 
 
 static mavsdk::Telemetry::Health
-translate_Health_from_c(const mavsdk_telemetry_Health_t& c_struct) {
+translate_health_from_c(const mavsdk_telemetry_health_t& c_struct) {
     mavsdk::Telemetry::Health cpp_struct{};
     cpp_struct.is_gyrometer_calibration_ok = c_struct.is_gyrometer_calibration_ok;
     cpp_struct.is_accelerometer_calibration_ok = c_struct.is_accelerometer_calibration_ok;
@@ -641,9 +641,9 @@ translate_Health_from_c(const mavsdk_telemetry_Health_t& c_struct) {
     return cpp_struct;
 }
 
-static mavsdk_telemetry_Health_t
-translate_Health_to_c(const mavsdk::Telemetry::Health& cpp_struct) {
-    mavsdk_telemetry_Health_t c_struct{};
+static mavsdk_telemetry_health_t
+translate_health_to_c(const mavsdk::Telemetry::Health& cpp_struct) {
+    mavsdk_telemetry_health_t c_struct{};
     c_struct.is_gyrometer_calibration_ok = cpp_struct.is_gyrometer_calibration_ok;
     c_struct.is_accelerometer_calibration_ok = cpp_struct.is_accelerometer_calibration_ok;
     c_struct.is_magnetometer_calibration_ok = cpp_struct.is_magnetometer_calibration_ok;
@@ -654,18 +654,18 @@ translate_Health_to_c(const mavsdk::Telemetry::Health& cpp_struct) {
     return c_struct;
 }
 
-void mavsdk_telemetry_Health_destroy(
-    mavsdk_telemetry_Health_t* target) {
+void mavsdk_telemetry_health_destroy(
+    mavsdk_telemetry_health_t* target) {
     if (!target) return;
 }
 
-void mavsdk_telemetry_Health_array_destroy(
-    mavsdk_telemetry_Health_t** array,
+void mavsdk_telemetry_health_array_destroy(
+    mavsdk_telemetry_health_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_telemetry_Health_destroy(&(*array)[i]);
+        mavsdk_telemetry_health_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -674,7 +674,7 @@ void mavsdk_telemetry_Health_array_destroy(
 
 
 static mavsdk::Telemetry::RcStatus
-translate_RcStatus_from_c(const mavsdk_telemetry_RcStatus_t& c_struct) {
+translate_rc_status_from_c(const mavsdk_telemetry_rc_status_t& c_struct) {
     mavsdk::Telemetry::RcStatus cpp_struct{};
     cpp_struct.was_available_once = c_struct.was_available_once;
     cpp_struct.is_available = c_struct.is_available;
@@ -682,27 +682,27 @@ translate_RcStatus_from_c(const mavsdk_telemetry_RcStatus_t& c_struct) {
     return cpp_struct;
 }
 
-static mavsdk_telemetry_RcStatus_t
-translate_RcStatus_to_c(const mavsdk::Telemetry::RcStatus& cpp_struct) {
-    mavsdk_telemetry_RcStatus_t c_struct{};
+static mavsdk_telemetry_rc_status_t
+translate_rc_status_to_c(const mavsdk::Telemetry::RcStatus& cpp_struct) {
+    mavsdk_telemetry_rc_status_t c_struct{};
     c_struct.was_available_once = cpp_struct.was_available_once;
     c_struct.is_available = cpp_struct.is_available;
     c_struct.signal_strength_percent = cpp_struct.signal_strength_percent;
     return c_struct;
 }
 
-void mavsdk_telemetry_RcStatus_destroy(
-    mavsdk_telemetry_RcStatus_t* target) {
+void mavsdk_telemetry_rc_status_destroy(
+    mavsdk_telemetry_rc_status_t* target) {
     if (!target) return;
 }
 
-void mavsdk_telemetry_RcStatus_array_destroy(
-    mavsdk_telemetry_RcStatus_t** array,
+void mavsdk_telemetry_rc_status_array_destroy(
+    mavsdk_telemetry_rc_status_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_telemetry_RcStatus_destroy(&(*array)[i]);
+        mavsdk_telemetry_rc_status_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -711,25 +711,25 @@ void mavsdk_telemetry_RcStatus_array_destroy(
 
 
 static mavsdk::Telemetry::StatusText
-translate_StatusText_from_c(const mavsdk_telemetry_StatusText_t& c_struct) {
+translate_status_text_from_c(const mavsdk_telemetry_status_text_t& c_struct) {
     mavsdk::Telemetry::StatusText cpp_struct{};
-    cpp_struct.type = translate_StatusTextType_from_c(c_struct.type);
+    cpp_struct.type = translate_status_text_type_from_c(c_struct.type);
     if (c_struct.text) {
         cpp_struct.text = c_struct.text;
     }
     return cpp_struct;
 }
 
-static mavsdk_telemetry_StatusText_t
-translate_StatusText_to_c(const mavsdk::Telemetry::StatusText& cpp_struct) {
-    mavsdk_telemetry_StatusText_t c_struct{};
-    c_struct.type = translate_StatusTextType_to_c(cpp_struct.type);
+static mavsdk_telemetry_status_text_t
+translate_status_text_to_c(const mavsdk::Telemetry::StatusText& cpp_struct) {
+    mavsdk_telemetry_status_text_t c_struct{};
+    c_struct.type = translate_status_text_type_to_c(cpp_struct.type);
     c_struct.text = strdup(cpp_struct.text.c_str());
     return c_struct;
 }
 
-void mavsdk_telemetry_StatusText_destroy(
-    mavsdk_telemetry_StatusText_t* target) {
+void mavsdk_telemetry_status_text_destroy(
+    mavsdk_telemetry_status_text_t* target) {
     if (!target) return;
     if (target->text) {
         free((void*)target->text);
@@ -737,13 +737,13 @@ void mavsdk_telemetry_StatusText_destroy(
     }
 }
 
-void mavsdk_telemetry_StatusText_array_destroy(
-    mavsdk_telemetry_StatusText_t** array,
+void mavsdk_telemetry_status_text_array_destroy(
+    mavsdk_telemetry_status_text_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_telemetry_StatusText_destroy(&(*array)[i]);
+        mavsdk_telemetry_status_text_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -752,7 +752,7 @@ void mavsdk_telemetry_StatusText_array_destroy(
 
 
 static mavsdk::Telemetry::ActuatorControlTarget
-translate_ActuatorControlTarget_from_c(const mavsdk_telemetry_ActuatorControlTarget_t& c_struct) {
+translate_actuator_control_target_from_c(const mavsdk_telemetry_actuator_control_target_t& c_struct) {
     mavsdk::Telemetry::ActuatorControlTarget cpp_struct{};
     cpp_struct.group = c_struct.group;
     cpp_struct.controls.assign(
@@ -761,9 +761,9 @@ translate_ActuatorControlTarget_from_c(const mavsdk_telemetry_ActuatorControlTar
     return cpp_struct;
 }
 
-static mavsdk_telemetry_ActuatorControlTarget_t
-translate_ActuatorControlTarget_to_c(const mavsdk::Telemetry::ActuatorControlTarget& cpp_struct) {
-    mavsdk_telemetry_ActuatorControlTarget_t c_struct{};
+static mavsdk_telemetry_actuator_control_target_t
+translate_actuator_control_target_to_c(const mavsdk::Telemetry::ActuatorControlTarget& cpp_struct) {
+    mavsdk_telemetry_actuator_control_target_t c_struct{};
     c_struct.group = cpp_struct.group;
     c_struct.controls_size = cpp_struct.controls.size();
     c_struct.controls = new float[c_struct.controls_size];
@@ -771,8 +771,8 @@ translate_ActuatorControlTarget_to_c(const mavsdk::Telemetry::ActuatorControlTar
     return c_struct;
 }
 
-void mavsdk_telemetry_ActuatorControlTarget_destroy(
-    mavsdk_telemetry_ActuatorControlTarget_t* target) {
+void mavsdk_telemetry_actuator_control_target_destroy(
+    mavsdk_telemetry_actuator_control_target_t* target) {
     if (!target) return;
     if (target->controls) {
         delete[] target->controls;
@@ -781,13 +781,13 @@ void mavsdk_telemetry_ActuatorControlTarget_destroy(
     }
 }
 
-void mavsdk_telemetry_ActuatorControlTarget_array_destroy(
-    mavsdk_telemetry_ActuatorControlTarget_t** array,
+void mavsdk_telemetry_actuator_control_target_array_destroy(
+    mavsdk_telemetry_actuator_control_target_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_telemetry_ActuatorControlTarget_destroy(&(*array)[i]);
+        mavsdk_telemetry_actuator_control_target_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -796,7 +796,7 @@ void mavsdk_telemetry_ActuatorControlTarget_array_destroy(
 
 
 static mavsdk::Telemetry::ActuatorOutputStatus
-translate_ActuatorOutputStatus_from_c(const mavsdk_telemetry_ActuatorOutputStatus_t& c_struct) {
+translate_actuator_output_status_from_c(const mavsdk_telemetry_actuator_output_status_t& c_struct) {
     mavsdk::Telemetry::ActuatorOutputStatus cpp_struct{};
     cpp_struct.active = c_struct.active;
     cpp_struct.actuator.assign(
@@ -805,9 +805,9 @@ translate_ActuatorOutputStatus_from_c(const mavsdk_telemetry_ActuatorOutputStatu
     return cpp_struct;
 }
 
-static mavsdk_telemetry_ActuatorOutputStatus_t
-translate_ActuatorOutputStatus_to_c(const mavsdk::Telemetry::ActuatorOutputStatus& cpp_struct) {
-    mavsdk_telemetry_ActuatorOutputStatus_t c_struct{};
+static mavsdk_telemetry_actuator_output_status_t
+translate_actuator_output_status_to_c(const mavsdk::Telemetry::ActuatorOutputStatus& cpp_struct) {
+    mavsdk_telemetry_actuator_output_status_t c_struct{};
     c_struct.active = cpp_struct.active;
     c_struct.actuator_size = cpp_struct.actuator.size();
     c_struct.actuator = new float[c_struct.actuator_size];
@@ -815,8 +815,8 @@ translate_ActuatorOutputStatus_to_c(const mavsdk::Telemetry::ActuatorOutputStatu
     return c_struct;
 }
 
-void mavsdk_telemetry_ActuatorOutputStatus_destroy(
-    mavsdk_telemetry_ActuatorOutputStatus_t* target) {
+void mavsdk_telemetry_actuator_output_status_destroy(
+    mavsdk_telemetry_actuator_output_status_t* target) {
     if (!target) return;
     if (target->actuator) {
         delete[] target->actuator;
@@ -825,13 +825,13 @@ void mavsdk_telemetry_ActuatorOutputStatus_destroy(
     }
 }
 
-void mavsdk_telemetry_ActuatorOutputStatus_array_destroy(
-    mavsdk_telemetry_ActuatorOutputStatus_t** array,
+void mavsdk_telemetry_actuator_output_status_array_destroy(
+    mavsdk_telemetry_actuator_output_status_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_telemetry_ActuatorOutputStatus_destroy(&(*array)[i]);
+        mavsdk_telemetry_actuator_output_status_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -840,7 +840,7 @@ void mavsdk_telemetry_ActuatorOutputStatus_array_destroy(
 
 
 static mavsdk::Telemetry::Covariance
-translate_Covariance_from_c(const mavsdk_telemetry_Covariance_t& c_struct) {
+translate_covariance_from_c(const mavsdk_telemetry_covariance_t& c_struct) {
     mavsdk::Telemetry::Covariance cpp_struct{};
     cpp_struct.covariance_matrix.assign(
         c_struct.covariance_matrix,
@@ -848,17 +848,17 @@ translate_Covariance_from_c(const mavsdk_telemetry_Covariance_t& c_struct) {
     return cpp_struct;
 }
 
-static mavsdk_telemetry_Covariance_t
-translate_Covariance_to_c(const mavsdk::Telemetry::Covariance& cpp_struct) {
-    mavsdk_telemetry_Covariance_t c_struct{};
+static mavsdk_telemetry_covariance_t
+translate_covariance_to_c(const mavsdk::Telemetry::Covariance& cpp_struct) {
+    mavsdk_telemetry_covariance_t c_struct{};
     c_struct.covariance_matrix_size = cpp_struct.covariance_matrix.size();
     c_struct.covariance_matrix = new float[c_struct.covariance_matrix_size];
     std::copy(cpp_struct.covariance_matrix.begin(), cpp_struct.covariance_matrix.end(), c_struct.covariance_matrix);
     return c_struct;
 }
 
-void mavsdk_telemetry_Covariance_destroy(
-    mavsdk_telemetry_Covariance_t* target) {
+void mavsdk_telemetry_covariance_destroy(
+    mavsdk_telemetry_covariance_t* target) {
     if (!target) return;
     if (target->covariance_matrix) {
         delete[] target->covariance_matrix;
@@ -867,13 +867,13 @@ void mavsdk_telemetry_Covariance_destroy(
     }
 }
 
-void mavsdk_telemetry_Covariance_array_destroy(
-    mavsdk_telemetry_Covariance_t** array,
+void mavsdk_telemetry_covariance_array_destroy(
+    mavsdk_telemetry_covariance_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_telemetry_Covariance_destroy(&(*array)[i]);
+        mavsdk_telemetry_covariance_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -882,7 +882,7 @@ void mavsdk_telemetry_Covariance_array_destroy(
 
 
 static mavsdk::Telemetry::VelocityBody
-translate_VelocityBody_from_c(const mavsdk_telemetry_VelocityBody_t& c_struct) {
+translate_velocity_body_from_c(const mavsdk_telemetry_velocity_body_t& c_struct) {
     mavsdk::Telemetry::VelocityBody cpp_struct{};
     cpp_struct.x_m_s = c_struct.x_m_s;
     cpp_struct.y_m_s = c_struct.y_m_s;
@@ -890,27 +890,27 @@ translate_VelocityBody_from_c(const mavsdk_telemetry_VelocityBody_t& c_struct) {
     return cpp_struct;
 }
 
-static mavsdk_telemetry_VelocityBody_t
-translate_VelocityBody_to_c(const mavsdk::Telemetry::VelocityBody& cpp_struct) {
-    mavsdk_telemetry_VelocityBody_t c_struct{};
+static mavsdk_telemetry_velocity_body_t
+translate_velocity_body_to_c(const mavsdk::Telemetry::VelocityBody& cpp_struct) {
+    mavsdk_telemetry_velocity_body_t c_struct{};
     c_struct.x_m_s = cpp_struct.x_m_s;
     c_struct.y_m_s = cpp_struct.y_m_s;
     c_struct.z_m_s = cpp_struct.z_m_s;
     return c_struct;
 }
 
-void mavsdk_telemetry_VelocityBody_destroy(
-    mavsdk_telemetry_VelocityBody_t* target) {
+void mavsdk_telemetry_velocity_body_destroy(
+    mavsdk_telemetry_velocity_body_t* target) {
     if (!target) return;
 }
 
-void mavsdk_telemetry_VelocityBody_array_destroy(
-    mavsdk_telemetry_VelocityBody_t** array,
+void mavsdk_telemetry_velocity_body_array_destroy(
+    mavsdk_telemetry_velocity_body_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_telemetry_VelocityBody_destroy(&(*array)[i]);
+        mavsdk_telemetry_velocity_body_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -919,7 +919,7 @@ void mavsdk_telemetry_VelocityBody_array_destroy(
 
 
 static mavsdk::Telemetry::PositionBody
-translate_PositionBody_from_c(const mavsdk_telemetry_PositionBody_t& c_struct) {
+translate_position_body_from_c(const mavsdk_telemetry_position_body_t& c_struct) {
     mavsdk::Telemetry::PositionBody cpp_struct{};
     cpp_struct.x_m = c_struct.x_m;
     cpp_struct.y_m = c_struct.y_m;
@@ -927,27 +927,27 @@ translate_PositionBody_from_c(const mavsdk_telemetry_PositionBody_t& c_struct) {
     return cpp_struct;
 }
 
-static mavsdk_telemetry_PositionBody_t
-translate_PositionBody_to_c(const mavsdk::Telemetry::PositionBody& cpp_struct) {
-    mavsdk_telemetry_PositionBody_t c_struct{};
+static mavsdk_telemetry_position_body_t
+translate_position_body_to_c(const mavsdk::Telemetry::PositionBody& cpp_struct) {
+    mavsdk_telemetry_position_body_t c_struct{};
     c_struct.x_m = cpp_struct.x_m;
     c_struct.y_m = cpp_struct.y_m;
     c_struct.z_m = cpp_struct.z_m;
     return c_struct;
 }
 
-void mavsdk_telemetry_PositionBody_destroy(
-    mavsdk_telemetry_PositionBody_t* target) {
+void mavsdk_telemetry_position_body_destroy(
+    mavsdk_telemetry_position_body_t* target) {
     if (!target) return;
 }
 
-void mavsdk_telemetry_PositionBody_array_destroy(
-    mavsdk_telemetry_PositionBody_t** array,
+void mavsdk_telemetry_position_body_array_destroy(
+    mavsdk_telemetry_position_body_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_telemetry_PositionBody_destroy(&(*array)[i]);
+        mavsdk_telemetry_position_body_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -956,7 +956,7 @@ void mavsdk_telemetry_PositionBody_array_destroy(
 
 
 static mavsdk::Telemetry::Odometry::MavFrame
-translate_Odometry_MavFrame_from_c(mavsdk_telemetry_Odometry_MavFrame_t c_enum) {
+translate_odometry_mav_frame_from_c(mavsdk_telemetry_odometry_mav_frame_t c_enum) {
     switch(c_enum) {
         case MAVSDK_TELEMETRY_ODOMETRY_MAV_FRAME_UNDEF:
             return mavsdk::Telemetry::Odometry::MavFrame::Undef;
@@ -972,23 +972,23 @@ translate_Odometry_MavFrame_from_c(mavsdk_telemetry_Odometry_MavFrame_t c_enum) 
 
 
 static mavsdk::Telemetry::Odometry
-translate_Odometry_from_c(const mavsdk_telemetry_Odometry_t& c_struct) {
+translate_odometry_from_c(const mavsdk_telemetry_odometry_t& c_struct) {
     mavsdk::Telemetry::Odometry cpp_struct{};
     cpp_struct.time_usec = c_struct.time_usec;
-    cpp_struct.frame_id = translate_Odometry_MavFrame_from_c(c_struct.frame_id);
-    cpp_struct.child_frame_id = translate_Odometry_MavFrame_from_c(c_struct.child_frame_id);
-    cpp_struct.position_body = translate_PositionBody_from_c(c_struct.position_body);
-    cpp_struct.q = translate_Quaternion_from_c(c_struct.q);
-    cpp_struct.velocity_body = translate_VelocityBody_from_c(c_struct.velocity_body);
-    cpp_struct.angular_velocity_body = translate_AngularVelocityBody_from_c(c_struct.angular_velocity_body);
-    cpp_struct.pose_covariance = translate_Covariance_from_c(c_struct.pose_covariance);
-    cpp_struct.velocity_covariance = translate_Covariance_from_c(c_struct.velocity_covariance);
+    cpp_struct.frame_id = translate_odometry_mav_frame_from_c(c_struct.frame_id);
+    cpp_struct.child_frame_id = translate_odometry_mav_frame_from_c(c_struct.child_frame_id);
+    cpp_struct.position_body = translate_position_body_from_c(c_struct.position_body);
+    cpp_struct.q = translate_quaternion_from_c(c_struct.q);
+    cpp_struct.velocity_body = translate_velocity_body_from_c(c_struct.velocity_body);
+    cpp_struct.angular_velocity_body = translate_angular_velocity_body_from_c(c_struct.angular_velocity_body);
+    cpp_struct.pose_covariance = translate_covariance_from_c(c_struct.pose_covariance);
+    cpp_struct.velocity_covariance = translate_covariance_from_c(c_struct.velocity_covariance);
     return cpp_struct;
 }
 
 
-static mavsdk_telemetry_Odometry_MavFrame_t
-translate_Odometry_MavFrame_to_c(mavsdk::Telemetry::Odometry::MavFrame cpp_enum) {
+static mavsdk_telemetry_odometry_mav_frame_t
+translate_odometry_mav_frame_to_c(mavsdk::Telemetry::Odometry::MavFrame cpp_enum) {
     switch(cpp_enum) {
         case mavsdk::Telemetry::Odometry::MavFrame::Undef:
             return MAVSDK_TELEMETRY_ODOMETRY_MAV_FRAME_UNDEF;
@@ -1002,33 +1002,33 @@ translate_Odometry_MavFrame_to_c(mavsdk::Telemetry::Odometry::MavFrame cpp_enum)
     return MAVSDK_TELEMETRY_ODOMETRY_MAV_FRAME_UNDEF;
 }
 
-static mavsdk_telemetry_Odometry_t
-translate_Odometry_to_c(const mavsdk::Telemetry::Odometry& cpp_struct) {
-    mavsdk_telemetry_Odometry_t c_struct{};
+static mavsdk_telemetry_odometry_t
+translate_odometry_to_c(const mavsdk::Telemetry::Odometry& cpp_struct) {
+    mavsdk_telemetry_odometry_t c_struct{};
     c_struct.time_usec = cpp_struct.time_usec;
-    c_struct.frame_id = translate_Odometry_MavFrame_to_c(cpp_struct.frame_id);
-    c_struct.child_frame_id = translate_Odometry_MavFrame_to_c(cpp_struct.child_frame_id);
-    c_struct.position_body = translate_PositionBody_to_c(cpp_struct.position_body);
-    c_struct.q = translate_Quaternion_to_c(cpp_struct.q);
-    c_struct.velocity_body = translate_VelocityBody_to_c(cpp_struct.velocity_body);
-    c_struct.angular_velocity_body = translate_AngularVelocityBody_to_c(cpp_struct.angular_velocity_body);
-    c_struct.pose_covariance = translate_Covariance_to_c(cpp_struct.pose_covariance);
-    c_struct.velocity_covariance = translate_Covariance_to_c(cpp_struct.velocity_covariance);
+    c_struct.frame_id = translate_odometry_mav_frame_to_c(cpp_struct.frame_id);
+    c_struct.child_frame_id = translate_odometry_mav_frame_to_c(cpp_struct.child_frame_id);
+    c_struct.position_body = translate_position_body_to_c(cpp_struct.position_body);
+    c_struct.q = translate_quaternion_to_c(cpp_struct.q);
+    c_struct.velocity_body = translate_velocity_body_to_c(cpp_struct.velocity_body);
+    c_struct.angular_velocity_body = translate_angular_velocity_body_to_c(cpp_struct.angular_velocity_body);
+    c_struct.pose_covariance = translate_covariance_to_c(cpp_struct.pose_covariance);
+    c_struct.velocity_covariance = translate_covariance_to_c(cpp_struct.velocity_covariance);
     return c_struct;
 }
 
-void mavsdk_telemetry_Odometry_destroy(
-    mavsdk_telemetry_Odometry_t* target) {
+void mavsdk_telemetry_odometry_destroy(
+    mavsdk_telemetry_odometry_t* target) {
     if (!target) return;
 }
 
-void mavsdk_telemetry_Odometry_array_destroy(
-    mavsdk_telemetry_Odometry_t** array,
+void mavsdk_telemetry_odometry_array_destroy(
+    mavsdk_telemetry_odometry_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_telemetry_Odometry_destroy(&(*array)[i]);
+        mavsdk_telemetry_odometry_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -1037,37 +1037,37 @@ void mavsdk_telemetry_Odometry_array_destroy(
 
 
 static mavsdk::Telemetry::DistanceSensor
-translate_DistanceSensor_from_c(const mavsdk_telemetry_DistanceSensor_t& c_struct) {
+translate_distance_sensor_from_c(const mavsdk_telemetry_distance_sensor_t& c_struct) {
     mavsdk::Telemetry::DistanceSensor cpp_struct{};
     cpp_struct.minimum_distance_m = c_struct.minimum_distance_m;
     cpp_struct.maximum_distance_m = c_struct.maximum_distance_m;
     cpp_struct.current_distance_m = c_struct.current_distance_m;
-    cpp_struct.orientation = translate_EulerAngle_from_c(c_struct.orientation);
+    cpp_struct.orientation = translate_euler_angle_from_c(c_struct.orientation);
     return cpp_struct;
 }
 
-static mavsdk_telemetry_DistanceSensor_t
-translate_DistanceSensor_to_c(const mavsdk::Telemetry::DistanceSensor& cpp_struct) {
-    mavsdk_telemetry_DistanceSensor_t c_struct{};
+static mavsdk_telemetry_distance_sensor_t
+translate_distance_sensor_to_c(const mavsdk::Telemetry::DistanceSensor& cpp_struct) {
+    mavsdk_telemetry_distance_sensor_t c_struct{};
     c_struct.minimum_distance_m = cpp_struct.minimum_distance_m;
     c_struct.maximum_distance_m = cpp_struct.maximum_distance_m;
     c_struct.current_distance_m = cpp_struct.current_distance_m;
-    c_struct.orientation = translate_EulerAngle_to_c(cpp_struct.orientation);
+    c_struct.orientation = translate_euler_angle_to_c(cpp_struct.orientation);
     return c_struct;
 }
 
-void mavsdk_telemetry_DistanceSensor_destroy(
-    mavsdk_telemetry_DistanceSensor_t* target) {
+void mavsdk_telemetry_distance_sensor_destroy(
+    mavsdk_telemetry_distance_sensor_t* target) {
     if (!target) return;
 }
 
-void mavsdk_telemetry_DistanceSensor_array_destroy(
-    mavsdk_telemetry_DistanceSensor_t** array,
+void mavsdk_telemetry_distance_sensor_array_destroy(
+    mavsdk_telemetry_distance_sensor_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_telemetry_DistanceSensor_destroy(&(*array)[i]);
+        mavsdk_telemetry_distance_sensor_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -1076,7 +1076,7 @@ void mavsdk_telemetry_DistanceSensor_array_destroy(
 
 
 static mavsdk::Telemetry::ScaledPressure
-translate_ScaledPressure_from_c(const mavsdk_telemetry_ScaledPressure_t& c_struct) {
+translate_scaled_pressure_from_c(const mavsdk_telemetry_scaled_pressure_t& c_struct) {
     mavsdk::Telemetry::ScaledPressure cpp_struct{};
     cpp_struct.timestamp_us = c_struct.timestamp_us;
     cpp_struct.absolute_pressure_hpa = c_struct.absolute_pressure_hpa;
@@ -1086,9 +1086,9 @@ translate_ScaledPressure_from_c(const mavsdk_telemetry_ScaledPressure_t& c_struc
     return cpp_struct;
 }
 
-static mavsdk_telemetry_ScaledPressure_t
-translate_ScaledPressure_to_c(const mavsdk::Telemetry::ScaledPressure& cpp_struct) {
-    mavsdk_telemetry_ScaledPressure_t c_struct{};
+static mavsdk_telemetry_scaled_pressure_t
+translate_scaled_pressure_to_c(const mavsdk::Telemetry::ScaledPressure& cpp_struct) {
+    mavsdk_telemetry_scaled_pressure_t c_struct{};
     c_struct.timestamp_us = cpp_struct.timestamp_us;
     c_struct.absolute_pressure_hpa = cpp_struct.absolute_pressure_hpa;
     c_struct.differential_pressure_hpa = cpp_struct.differential_pressure_hpa;
@@ -1097,18 +1097,18 @@ translate_ScaledPressure_to_c(const mavsdk::Telemetry::ScaledPressure& cpp_struc
     return c_struct;
 }
 
-void mavsdk_telemetry_ScaledPressure_destroy(
-    mavsdk_telemetry_ScaledPressure_t* target) {
+void mavsdk_telemetry_scaled_pressure_destroy(
+    mavsdk_telemetry_scaled_pressure_t* target) {
     if (!target) return;
 }
 
-void mavsdk_telemetry_ScaledPressure_array_destroy(
-    mavsdk_telemetry_ScaledPressure_t** array,
+void mavsdk_telemetry_scaled_pressure_array_destroy(
+    mavsdk_telemetry_scaled_pressure_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_telemetry_ScaledPressure_destroy(&(*array)[i]);
+        mavsdk_telemetry_scaled_pressure_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -1117,7 +1117,7 @@ void mavsdk_telemetry_ScaledPressure_array_destroy(
 
 
 static mavsdk::Telemetry::PositionNed
-translate_PositionNed_from_c(const mavsdk_telemetry_PositionNed_t& c_struct) {
+translate_position_ned_from_c(const mavsdk_telemetry_position_ned_t& c_struct) {
     mavsdk::Telemetry::PositionNed cpp_struct{};
     cpp_struct.north_m = c_struct.north_m;
     cpp_struct.east_m = c_struct.east_m;
@@ -1125,27 +1125,27 @@ translate_PositionNed_from_c(const mavsdk_telemetry_PositionNed_t& c_struct) {
     return cpp_struct;
 }
 
-static mavsdk_telemetry_PositionNed_t
-translate_PositionNed_to_c(const mavsdk::Telemetry::PositionNed& cpp_struct) {
-    mavsdk_telemetry_PositionNed_t c_struct{};
+static mavsdk_telemetry_position_ned_t
+translate_position_ned_to_c(const mavsdk::Telemetry::PositionNed& cpp_struct) {
+    mavsdk_telemetry_position_ned_t c_struct{};
     c_struct.north_m = cpp_struct.north_m;
     c_struct.east_m = cpp_struct.east_m;
     c_struct.down_m = cpp_struct.down_m;
     return c_struct;
 }
 
-void mavsdk_telemetry_PositionNed_destroy(
-    mavsdk_telemetry_PositionNed_t* target) {
+void mavsdk_telemetry_position_ned_destroy(
+    mavsdk_telemetry_position_ned_t* target) {
     if (!target) return;
 }
 
-void mavsdk_telemetry_PositionNed_array_destroy(
-    mavsdk_telemetry_PositionNed_t** array,
+void mavsdk_telemetry_position_ned_array_destroy(
+    mavsdk_telemetry_position_ned_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_telemetry_PositionNed_destroy(&(*array)[i]);
+        mavsdk_telemetry_position_ned_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -1154,7 +1154,7 @@ void mavsdk_telemetry_PositionNed_array_destroy(
 
 
 static mavsdk::Telemetry::VelocityNed
-translate_VelocityNed_from_c(const mavsdk_telemetry_VelocityNed_t& c_struct) {
+translate_velocity_ned_from_c(const mavsdk_telemetry_velocity_ned_t& c_struct) {
     mavsdk::Telemetry::VelocityNed cpp_struct{};
     cpp_struct.north_m_s = c_struct.north_m_s;
     cpp_struct.east_m_s = c_struct.east_m_s;
@@ -1162,27 +1162,27 @@ translate_VelocityNed_from_c(const mavsdk_telemetry_VelocityNed_t& c_struct) {
     return cpp_struct;
 }
 
-static mavsdk_telemetry_VelocityNed_t
-translate_VelocityNed_to_c(const mavsdk::Telemetry::VelocityNed& cpp_struct) {
-    mavsdk_telemetry_VelocityNed_t c_struct{};
+static mavsdk_telemetry_velocity_ned_t
+translate_velocity_ned_to_c(const mavsdk::Telemetry::VelocityNed& cpp_struct) {
+    mavsdk_telemetry_velocity_ned_t c_struct{};
     c_struct.north_m_s = cpp_struct.north_m_s;
     c_struct.east_m_s = cpp_struct.east_m_s;
     c_struct.down_m_s = cpp_struct.down_m_s;
     return c_struct;
 }
 
-void mavsdk_telemetry_VelocityNed_destroy(
-    mavsdk_telemetry_VelocityNed_t* target) {
+void mavsdk_telemetry_velocity_ned_destroy(
+    mavsdk_telemetry_velocity_ned_t* target) {
     if (!target) return;
 }
 
-void mavsdk_telemetry_VelocityNed_array_destroy(
-    mavsdk_telemetry_VelocityNed_t** array,
+void mavsdk_telemetry_velocity_ned_array_destroy(
+    mavsdk_telemetry_velocity_ned_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_telemetry_VelocityNed_destroy(&(*array)[i]);
+        mavsdk_telemetry_velocity_ned_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -1191,33 +1191,33 @@ void mavsdk_telemetry_VelocityNed_array_destroy(
 
 
 static mavsdk::Telemetry::PositionVelocityNed
-translate_PositionVelocityNed_from_c(const mavsdk_telemetry_PositionVelocityNed_t& c_struct) {
+translate_position_velocity_ned_from_c(const mavsdk_telemetry_position_velocity_ned_t& c_struct) {
     mavsdk::Telemetry::PositionVelocityNed cpp_struct{};
-    cpp_struct.position = translate_PositionNed_from_c(c_struct.position);
-    cpp_struct.velocity = translate_VelocityNed_from_c(c_struct.velocity);
+    cpp_struct.position = translate_position_ned_from_c(c_struct.position);
+    cpp_struct.velocity = translate_velocity_ned_from_c(c_struct.velocity);
     return cpp_struct;
 }
 
-static mavsdk_telemetry_PositionVelocityNed_t
-translate_PositionVelocityNed_to_c(const mavsdk::Telemetry::PositionVelocityNed& cpp_struct) {
-    mavsdk_telemetry_PositionVelocityNed_t c_struct{};
-    c_struct.position = translate_PositionNed_to_c(cpp_struct.position);
-    c_struct.velocity = translate_VelocityNed_to_c(cpp_struct.velocity);
+static mavsdk_telemetry_position_velocity_ned_t
+translate_position_velocity_ned_to_c(const mavsdk::Telemetry::PositionVelocityNed& cpp_struct) {
+    mavsdk_telemetry_position_velocity_ned_t c_struct{};
+    c_struct.position = translate_position_ned_to_c(cpp_struct.position);
+    c_struct.velocity = translate_velocity_ned_to_c(cpp_struct.velocity);
     return c_struct;
 }
 
-void mavsdk_telemetry_PositionVelocityNed_destroy(
-    mavsdk_telemetry_PositionVelocityNed_t* target) {
+void mavsdk_telemetry_position_velocity_ned_destroy(
+    mavsdk_telemetry_position_velocity_ned_t* target) {
     if (!target) return;
 }
 
-void mavsdk_telemetry_PositionVelocityNed_array_destroy(
-    mavsdk_telemetry_PositionVelocityNed_t** array,
+void mavsdk_telemetry_position_velocity_ned_array_destroy(
+    mavsdk_telemetry_position_velocity_ned_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_telemetry_PositionVelocityNed_destroy(&(*array)[i]);
+        mavsdk_telemetry_position_velocity_ned_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -1226,7 +1226,7 @@ void mavsdk_telemetry_PositionVelocityNed_array_destroy(
 
 
 static mavsdk::Telemetry::GroundTruth
-translate_GroundTruth_from_c(const mavsdk_telemetry_GroundTruth_t& c_struct) {
+translate_ground_truth_from_c(const mavsdk_telemetry_ground_truth_t& c_struct) {
     mavsdk::Telemetry::GroundTruth cpp_struct{};
     cpp_struct.latitude_deg = c_struct.latitude_deg;
     cpp_struct.longitude_deg = c_struct.longitude_deg;
@@ -1234,27 +1234,27 @@ translate_GroundTruth_from_c(const mavsdk_telemetry_GroundTruth_t& c_struct) {
     return cpp_struct;
 }
 
-static mavsdk_telemetry_GroundTruth_t
-translate_GroundTruth_to_c(const mavsdk::Telemetry::GroundTruth& cpp_struct) {
-    mavsdk_telemetry_GroundTruth_t c_struct{};
+static mavsdk_telemetry_ground_truth_t
+translate_ground_truth_to_c(const mavsdk::Telemetry::GroundTruth& cpp_struct) {
+    mavsdk_telemetry_ground_truth_t c_struct{};
     c_struct.latitude_deg = cpp_struct.latitude_deg;
     c_struct.longitude_deg = cpp_struct.longitude_deg;
     c_struct.absolute_altitude_m = cpp_struct.absolute_altitude_m;
     return c_struct;
 }
 
-void mavsdk_telemetry_GroundTruth_destroy(
-    mavsdk_telemetry_GroundTruth_t* target) {
+void mavsdk_telemetry_ground_truth_destroy(
+    mavsdk_telemetry_ground_truth_t* target) {
     if (!target) return;
 }
 
-void mavsdk_telemetry_GroundTruth_array_destroy(
-    mavsdk_telemetry_GroundTruth_t** array,
+void mavsdk_telemetry_ground_truth_array_destroy(
+    mavsdk_telemetry_ground_truth_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_telemetry_GroundTruth_destroy(&(*array)[i]);
+        mavsdk_telemetry_ground_truth_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -1263,7 +1263,7 @@ void mavsdk_telemetry_GroundTruth_array_destroy(
 
 
 static mavsdk::Telemetry::FixedwingMetrics
-translate_FixedwingMetrics_from_c(const mavsdk_telemetry_FixedwingMetrics_t& c_struct) {
+translate_fixedwing_metrics_from_c(const mavsdk_telemetry_fixedwing_metrics_t& c_struct) {
     mavsdk::Telemetry::FixedwingMetrics cpp_struct{};
     cpp_struct.airspeed_m_s = c_struct.airspeed_m_s;
     cpp_struct.throttle_percentage = c_struct.throttle_percentage;
@@ -1274,9 +1274,9 @@ translate_FixedwingMetrics_from_c(const mavsdk_telemetry_FixedwingMetrics_t& c_s
     return cpp_struct;
 }
 
-static mavsdk_telemetry_FixedwingMetrics_t
-translate_FixedwingMetrics_to_c(const mavsdk::Telemetry::FixedwingMetrics& cpp_struct) {
-    mavsdk_telemetry_FixedwingMetrics_t c_struct{};
+static mavsdk_telemetry_fixedwing_metrics_t
+translate_fixedwing_metrics_to_c(const mavsdk::Telemetry::FixedwingMetrics& cpp_struct) {
+    mavsdk_telemetry_fixedwing_metrics_t c_struct{};
     c_struct.airspeed_m_s = cpp_struct.airspeed_m_s;
     c_struct.throttle_percentage = cpp_struct.throttle_percentage;
     c_struct.climb_rate_m_s = cpp_struct.climb_rate_m_s;
@@ -1286,18 +1286,18 @@ translate_FixedwingMetrics_to_c(const mavsdk::Telemetry::FixedwingMetrics& cpp_s
     return c_struct;
 }
 
-void mavsdk_telemetry_FixedwingMetrics_destroy(
-    mavsdk_telemetry_FixedwingMetrics_t* target) {
+void mavsdk_telemetry_fixedwing_metrics_destroy(
+    mavsdk_telemetry_fixedwing_metrics_t* target) {
     if (!target) return;
 }
 
-void mavsdk_telemetry_FixedwingMetrics_array_destroy(
-    mavsdk_telemetry_FixedwingMetrics_t** array,
+void mavsdk_telemetry_fixedwing_metrics_array_destroy(
+    mavsdk_telemetry_fixedwing_metrics_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_telemetry_FixedwingMetrics_destroy(&(*array)[i]);
+        mavsdk_telemetry_fixedwing_metrics_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -1306,7 +1306,7 @@ void mavsdk_telemetry_FixedwingMetrics_array_destroy(
 
 
 static mavsdk::Telemetry::AccelerationFrd
-translate_AccelerationFrd_from_c(const mavsdk_telemetry_AccelerationFrd_t& c_struct) {
+translate_acceleration_frd_from_c(const mavsdk_telemetry_acceleration_frd_t& c_struct) {
     mavsdk::Telemetry::AccelerationFrd cpp_struct{};
     cpp_struct.forward_m_s2 = c_struct.forward_m_s2;
     cpp_struct.right_m_s2 = c_struct.right_m_s2;
@@ -1314,27 +1314,27 @@ translate_AccelerationFrd_from_c(const mavsdk_telemetry_AccelerationFrd_t& c_str
     return cpp_struct;
 }
 
-static mavsdk_telemetry_AccelerationFrd_t
-translate_AccelerationFrd_to_c(const mavsdk::Telemetry::AccelerationFrd& cpp_struct) {
-    mavsdk_telemetry_AccelerationFrd_t c_struct{};
+static mavsdk_telemetry_acceleration_frd_t
+translate_acceleration_frd_to_c(const mavsdk::Telemetry::AccelerationFrd& cpp_struct) {
+    mavsdk_telemetry_acceleration_frd_t c_struct{};
     c_struct.forward_m_s2 = cpp_struct.forward_m_s2;
     c_struct.right_m_s2 = cpp_struct.right_m_s2;
     c_struct.down_m_s2 = cpp_struct.down_m_s2;
     return c_struct;
 }
 
-void mavsdk_telemetry_AccelerationFrd_destroy(
-    mavsdk_telemetry_AccelerationFrd_t* target) {
+void mavsdk_telemetry_acceleration_frd_destroy(
+    mavsdk_telemetry_acceleration_frd_t* target) {
     if (!target) return;
 }
 
-void mavsdk_telemetry_AccelerationFrd_array_destroy(
-    mavsdk_telemetry_AccelerationFrd_t** array,
+void mavsdk_telemetry_acceleration_frd_array_destroy(
+    mavsdk_telemetry_acceleration_frd_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_telemetry_AccelerationFrd_destroy(&(*array)[i]);
+        mavsdk_telemetry_acceleration_frd_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -1343,7 +1343,7 @@ void mavsdk_telemetry_AccelerationFrd_array_destroy(
 
 
 static mavsdk::Telemetry::AngularVelocityFrd
-translate_AngularVelocityFrd_from_c(const mavsdk_telemetry_AngularVelocityFrd_t& c_struct) {
+translate_angular_velocity_frd_from_c(const mavsdk_telemetry_angular_velocity_frd_t& c_struct) {
     mavsdk::Telemetry::AngularVelocityFrd cpp_struct{};
     cpp_struct.forward_rad_s = c_struct.forward_rad_s;
     cpp_struct.right_rad_s = c_struct.right_rad_s;
@@ -1351,27 +1351,27 @@ translate_AngularVelocityFrd_from_c(const mavsdk_telemetry_AngularVelocityFrd_t&
     return cpp_struct;
 }
 
-static mavsdk_telemetry_AngularVelocityFrd_t
-translate_AngularVelocityFrd_to_c(const mavsdk::Telemetry::AngularVelocityFrd& cpp_struct) {
-    mavsdk_telemetry_AngularVelocityFrd_t c_struct{};
+static mavsdk_telemetry_angular_velocity_frd_t
+translate_angular_velocity_frd_to_c(const mavsdk::Telemetry::AngularVelocityFrd& cpp_struct) {
+    mavsdk_telemetry_angular_velocity_frd_t c_struct{};
     c_struct.forward_rad_s = cpp_struct.forward_rad_s;
     c_struct.right_rad_s = cpp_struct.right_rad_s;
     c_struct.down_rad_s = cpp_struct.down_rad_s;
     return c_struct;
 }
 
-void mavsdk_telemetry_AngularVelocityFrd_destroy(
-    mavsdk_telemetry_AngularVelocityFrd_t* target) {
+void mavsdk_telemetry_angular_velocity_frd_destroy(
+    mavsdk_telemetry_angular_velocity_frd_t* target) {
     if (!target) return;
 }
 
-void mavsdk_telemetry_AngularVelocityFrd_array_destroy(
-    mavsdk_telemetry_AngularVelocityFrd_t** array,
+void mavsdk_telemetry_angular_velocity_frd_array_destroy(
+    mavsdk_telemetry_angular_velocity_frd_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_telemetry_AngularVelocityFrd_destroy(&(*array)[i]);
+        mavsdk_telemetry_angular_velocity_frd_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -1380,7 +1380,7 @@ void mavsdk_telemetry_AngularVelocityFrd_array_destroy(
 
 
 static mavsdk::Telemetry::MagneticFieldFrd
-translate_MagneticFieldFrd_from_c(const mavsdk_telemetry_MagneticFieldFrd_t& c_struct) {
+translate_magnetic_field_frd_from_c(const mavsdk_telemetry_magnetic_field_frd_t& c_struct) {
     mavsdk::Telemetry::MagneticFieldFrd cpp_struct{};
     cpp_struct.forward_gauss = c_struct.forward_gauss;
     cpp_struct.right_gauss = c_struct.right_gauss;
@@ -1388,27 +1388,27 @@ translate_MagneticFieldFrd_from_c(const mavsdk_telemetry_MagneticFieldFrd_t& c_s
     return cpp_struct;
 }
 
-static mavsdk_telemetry_MagneticFieldFrd_t
-translate_MagneticFieldFrd_to_c(const mavsdk::Telemetry::MagneticFieldFrd& cpp_struct) {
-    mavsdk_telemetry_MagneticFieldFrd_t c_struct{};
+static mavsdk_telemetry_magnetic_field_frd_t
+translate_magnetic_field_frd_to_c(const mavsdk::Telemetry::MagneticFieldFrd& cpp_struct) {
+    mavsdk_telemetry_magnetic_field_frd_t c_struct{};
     c_struct.forward_gauss = cpp_struct.forward_gauss;
     c_struct.right_gauss = cpp_struct.right_gauss;
     c_struct.down_gauss = cpp_struct.down_gauss;
     return c_struct;
 }
 
-void mavsdk_telemetry_MagneticFieldFrd_destroy(
-    mavsdk_telemetry_MagneticFieldFrd_t* target) {
+void mavsdk_telemetry_magnetic_field_frd_destroy(
+    mavsdk_telemetry_magnetic_field_frd_t* target) {
     if (!target) return;
 }
 
-void mavsdk_telemetry_MagneticFieldFrd_array_destroy(
-    mavsdk_telemetry_MagneticFieldFrd_t** array,
+void mavsdk_telemetry_magnetic_field_frd_array_destroy(
+    mavsdk_telemetry_magnetic_field_frd_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_telemetry_MagneticFieldFrd_destroy(&(*array)[i]);
+        mavsdk_telemetry_magnetic_field_frd_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -1417,39 +1417,39 @@ void mavsdk_telemetry_MagneticFieldFrd_array_destroy(
 
 
 static mavsdk::Telemetry::Imu
-translate_Imu_from_c(const mavsdk_telemetry_Imu_t& c_struct) {
+translate_imu_from_c(const mavsdk_telemetry_imu_t& c_struct) {
     mavsdk::Telemetry::Imu cpp_struct{};
-    cpp_struct.acceleration_frd = translate_AccelerationFrd_from_c(c_struct.acceleration_frd);
-    cpp_struct.angular_velocity_frd = translate_AngularVelocityFrd_from_c(c_struct.angular_velocity_frd);
-    cpp_struct.magnetic_field_frd = translate_MagneticFieldFrd_from_c(c_struct.magnetic_field_frd);
+    cpp_struct.acceleration_frd = translate_acceleration_frd_from_c(c_struct.acceleration_frd);
+    cpp_struct.angular_velocity_frd = translate_angular_velocity_frd_from_c(c_struct.angular_velocity_frd);
+    cpp_struct.magnetic_field_frd = translate_magnetic_field_frd_from_c(c_struct.magnetic_field_frd);
     cpp_struct.temperature_degc = c_struct.temperature_degc;
     cpp_struct.timestamp_us = c_struct.timestamp_us;
     return cpp_struct;
 }
 
-static mavsdk_telemetry_Imu_t
-translate_Imu_to_c(const mavsdk::Telemetry::Imu& cpp_struct) {
-    mavsdk_telemetry_Imu_t c_struct{};
-    c_struct.acceleration_frd = translate_AccelerationFrd_to_c(cpp_struct.acceleration_frd);
-    c_struct.angular_velocity_frd = translate_AngularVelocityFrd_to_c(cpp_struct.angular_velocity_frd);
-    c_struct.magnetic_field_frd = translate_MagneticFieldFrd_to_c(cpp_struct.magnetic_field_frd);
+static mavsdk_telemetry_imu_t
+translate_imu_to_c(const mavsdk::Telemetry::Imu& cpp_struct) {
+    mavsdk_telemetry_imu_t c_struct{};
+    c_struct.acceleration_frd = translate_acceleration_frd_to_c(cpp_struct.acceleration_frd);
+    c_struct.angular_velocity_frd = translate_angular_velocity_frd_to_c(cpp_struct.angular_velocity_frd);
+    c_struct.magnetic_field_frd = translate_magnetic_field_frd_to_c(cpp_struct.magnetic_field_frd);
     c_struct.temperature_degc = cpp_struct.temperature_degc;
     c_struct.timestamp_us = cpp_struct.timestamp_us;
     return c_struct;
 }
 
-void mavsdk_telemetry_Imu_destroy(
-    mavsdk_telemetry_Imu_t* target) {
+void mavsdk_telemetry_imu_destroy(
+    mavsdk_telemetry_imu_t* target) {
     if (!target) return;
 }
 
-void mavsdk_telemetry_Imu_array_destroy(
-    mavsdk_telemetry_Imu_t** array,
+void mavsdk_telemetry_imu_array_destroy(
+    mavsdk_telemetry_imu_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_telemetry_Imu_destroy(&(*array)[i]);
+        mavsdk_telemetry_imu_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -1458,7 +1458,7 @@ void mavsdk_telemetry_Imu_array_destroy(
 
 
 static mavsdk::Telemetry::GpsGlobalOrigin
-translate_GpsGlobalOrigin_from_c(const mavsdk_telemetry_GpsGlobalOrigin_t& c_struct) {
+translate_gps_global_origin_from_c(const mavsdk_telemetry_gps_global_origin_t& c_struct) {
     mavsdk::Telemetry::GpsGlobalOrigin cpp_struct{};
     cpp_struct.latitude_deg = c_struct.latitude_deg;
     cpp_struct.longitude_deg = c_struct.longitude_deg;
@@ -1466,27 +1466,27 @@ translate_GpsGlobalOrigin_from_c(const mavsdk_telemetry_GpsGlobalOrigin_t& c_str
     return cpp_struct;
 }
 
-static mavsdk_telemetry_GpsGlobalOrigin_t
-translate_GpsGlobalOrigin_to_c(const mavsdk::Telemetry::GpsGlobalOrigin& cpp_struct) {
-    mavsdk_telemetry_GpsGlobalOrigin_t c_struct{};
+static mavsdk_telemetry_gps_global_origin_t
+translate_gps_global_origin_to_c(const mavsdk::Telemetry::GpsGlobalOrigin& cpp_struct) {
+    mavsdk_telemetry_gps_global_origin_t c_struct{};
     c_struct.latitude_deg = cpp_struct.latitude_deg;
     c_struct.longitude_deg = cpp_struct.longitude_deg;
     c_struct.altitude_m = cpp_struct.altitude_m;
     return c_struct;
 }
 
-void mavsdk_telemetry_GpsGlobalOrigin_destroy(
-    mavsdk_telemetry_GpsGlobalOrigin_t* target) {
+void mavsdk_telemetry_gps_global_origin_destroy(
+    mavsdk_telemetry_gps_global_origin_t* target) {
     if (!target) return;
 }
 
-void mavsdk_telemetry_GpsGlobalOrigin_array_destroy(
-    mavsdk_telemetry_GpsGlobalOrigin_t** array,
+void mavsdk_telemetry_gps_global_origin_array_destroy(
+    mavsdk_telemetry_gps_global_origin_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_telemetry_GpsGlobalOrigin_destroy(&(*array)[i]);
+        mavsdk_telemetry_gps_global_origin_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -1495,7 +1495,7 @@ void mavsdk_telemetry_GpsGlobalOrigin_array_destroy(
 
 
 static mavsdk::Telemetry::Altitude
-translate_Altitude_from_c(const mavsdk_telemetry_Altitude_t& c_struct) {
+translate_altitude_from_c(const mavsdk_telemetry_altitude_t& c_struct) {
     mavsdk::Telemetry::Altitude cpp_struct{};
     cpp_struct.altitude_monotonic_m = c_struct.altitude_monotonic_m;
     cpp_struct.altitude_amsl_m = c_struct.altitude_amsl_m;
@@ -1506,9 +1506,9 @@ translate_Altitude_from_c(const mavsdk_telemetry_Altitude_t& c_struct) {
     return cpp_struct;
 }
 
-static mavsdk_telemetry_Altitude_t
-translate_Altitude_to_c(const mavsdk::Telemetry::Altitude& cpp_struct) {
-    mavsdk_telemetry_Altitude_t c_struct{};
+static mavsdk_telemetry_altitude_t
+translate_altitude_to_c(const mavsdk::Telemetry::Altitude& cpp_struct) {
+    mavsdk_telemetry_altitude_t c_struct{};
     c_struct.altitude_monotonic_m = cpp_struct.altitude_monotonic_m;
     c_struct.altitude_amsl_m = cpp_struct.altitude_amsl_m;
     c_struct.altitude_local_m = cpp_struct.altitude_local_m;
@@ -1518,18 +1518,18 @@ translate_Altitude_to_c(const mavsdk::Telemetry::Altitude& cpp_struct) {
     return c_struct;
 }
 
-void mavsdk_telemetry_Altitude_destroy(
-    mavsdk_telemetry_Altitude_t* target) {
+void mavsdk_telemetry_altitude_destroy(
+    mavsdk_telemetry_altitude_t* target) {
     if (!target) return;
 }
 
-void mavsdk_telemetry_Altitude_array_destroy(
-    mavsdk_telemetry_Altitude_t** array,
+void mavsdk_telemetry_altitude_array_destroy(
+    mavsdk_telemetry_altitude_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_telemetry_Altitude_destroy(&(*array)[i]);
+        mavsdk_telemetry_altitude_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -1538,7 +1538,7 @@ void mavsdk_telemetry_Altitude_array_destroy(
 
 
 static mavsdk::Telemetry::Wind
-translate_Wind_from_c(const mavsdk_telemetry_Wind_t& c_struct) {
+translate_wind_from_c(const mavsdk_telemetry_wind_t& c_struct) {
     mavsdk::Telemetry::Wind cpp_struct{};
     cpp_struct.wind_x_ned_m_s = c_struct.wind_x_ned_m_s;
     cpp_struct.wind_y_ned_m_s = c_struct.wind_y_ned_m_s;
@@ -1551,9 +1551,9 @@ translate_Wind_from_c(const mavsdk_telemetry_Wind_t& c_struct) {
     return cpp_struct;
 }
 
-static mavsdk_telemetry_Wind_t
-translate_Wind_to_c(const mavsdk::Telemetry::Wind& cpp_struct) {
-    mavsdk_telemetry_Wind_t c_struct{};
+static mavsdk_telemetry_wind_t
+translate_wind_to_c(const mavsdk::Telemetry::Wind& cpp_struct) {
+    mavsdk_telemetry_wind_t c_struct{};
     c_struct.wind_x_ned_m_s = cpp_struct.wind_x_ned_m_s;
     c_struct.wind_y_ned_m_s = cpp_struct.wind_y_ned_m_s;
     c_struct.wind_z_ned_m_s = cpp_struct.wind_z_ned_m_s;
@@ -1565,18 +1565,18 @@ translate_Wind_to_c(const mavsdk::Telemetry::Wind& cpp_struct) {
     return c_struct;
 }
 
-void mavsdk_telemetry_Wind_destroy(
-    mavsdk_telemetry_Wind_t* target) {
+void mavsdk_telemetry_wind_destroy(
+    mavsdk_telemetry_wind_t* target) {
     if (!target) return;
 }
 
-void mavsdk_telemetry_Wind_array_destroy(
-    mavsdk_telemetry_Wind_t** array,
+void mavsdk_telemetry_wind_array_destroy(
+    mavsdk_telemetry_wind_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_telemetry_Wind_destroy(&(*array)[i]);
+        mavsdk_telemetry_wind_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -1684,7 +1684,7 @@ mavsdk_telemetry_position_handle_t mavsdk_telemetry_subscribe_position(
             mavsdk::Telemetry::Position value) {
                 if (callback) {
                     callback(
-                        translate_Position_to_c(value),
+                        translate_position_to_c(value),
                         user_data);
                 }
         });
@@ -1709,14 +1709,14 @@ void mavsdk_telemetry_unsubscribe_position(
 void
 mavsdk_telemetry_position(
     mavsdk_telemetry_t telemetry,
-    mavsdk_telemetry_Position_t* position_out)
+    mavsdk_telemetry_position_t* position_out)
 {
     auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto ret_value = wrapper->cpp_plugin->position();
 
     if (position_out != nullptr) {
-        *position_out = translate_Position_to_c(ret_value);
+        *position_out = translate_position_to_c(ret_value);
     }
 }
 
@@ -1733,7 +1733,7 @@ mavsdk_telemetry_home_handle_t mavsdk_telemetry_subscribe_home(
             mavsdk::Telemetry::Position value) {
                 if (callback) {
                     callback(
-                        translate_Position_to_c(value),
+                        translate_position_to_c(value),
                         user_data);
                 }
         });
@@ -1758,14 +1758,14 @@ void mavsdk_telemetry_unsubscribe_home(
 void
 mavsdk_telemetry_home(
     mavsdk_telemetry_t telemetry,
-    mavsdk_telemetry_Position_t* home_out)
+    mavsdk_telemetry_position_t* home_out)
 {
     auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto ret_value = wrapper->cpp_plugin->home();
 
     if (home_out != nullptr) {
-        *home_out = translate_Position_to_c(ret_value);
+        *home_out = translate_position_to_c(ret_value);
     }
 }
 
@@ -1829,7 +1829,7 @@ mavsdk_telemetry_landed_state_handle_t mavsdk_telemetry_subscribe_landed_state(
             mavsdk::Telemetry::LandedState value) {
                 if (callback) {
                     callback(
-                        translate_LandedState_to_c(value),
+                        translate_landed_state_to_c(value),
                         user_data);
                 }
         });
@@ -1854,14 +1854,14 @@ void mavsdk_telemetry_unsubscribe_landed_state(
 void
 mavsdk_telemetry_landed_state(
     mavsdk_telemetry_t telemetry,
-    mavsdk_telemetry_LandedState_t* landed_state_out)
+    mavsdk_telemetry_landed_state_t* landed_state_out)
 {
     auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto ret_value = wrapper->cpp_plugin->landed_state();
 
     if (landed_state_out != nullptr) {
-        *landed_state_out = translate_LandedState_to_c(ret_value);
+        *landed_state_out = translate_landed_state_to_c(ret_value);
     }
 }
 
@@ -1925,7 +1925,7 @@ mavsdk_telemetry_vtol_state_handle_t mavsdk_telemetry_subscribe_vtol_state(
             mavsdk::Telemetry::VtolState value) {
                 if (callback) {
                     callback(
-                        translate_VtolState_to_c(value),
+                        translate_vtol_state_to_c(value),
                         user_data);
                 }
         });
@@ -1950,14 +1950,14 @@ void mavsdk_telemetry_unsubscribe_vtol_state(
 void
 mavsdk_telemetry_vtol_state(
     mavsdk_telemetry_t telemetry,
-    mavsdk_telemetry_VtolState_t* vtol_state_out)
+    mavsdk_telemetry_vtol_state_t* vtol_state_out)
 {
     auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto ret_value = wrapper->cpp_plugin->vtol_state();
 
     if (vtol_state_out != nullptr) {
-        *vtol_state_out = translate_VtolState_to_c(ret_value);
+        *vtol_state_out = translate_vtol_state_to_c(ret_value);
     }
 }
 
@@ -1974,7 +1974,7 @@ mavsdk_telemetry_attitude_quaternion_handle_t mavsdk_telemetry_subscribe_attitud
             mavsdk::Telemetry::Quaternion value) {
                 if (callback) {
                     callback(
-                        translate_Quaternion_to_c(value),
+                        translate_quaternion_to_c(value),
                         user_data);
                 }
         });
@@ -1999,14 +1999,14 @@ void mavsdk_telemetry_unsubscribe_attitude_quaternion(
 void
 mavsdk_telemetry_attitude_quaternion(
     mavsdk_telemetry_t telemetry,
-    mavsdk_telemetry_Quaternion_t* attitude_quaternion_out)
+    mavsdk_telemetry_quaternion_t* attitude_quaternion_out)
 {
     auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto ret_value = wrapper->cpp_plugin->attitude_quaternion();
 
     if (attitude_quaternion_out != nullptr) {
-        *attitude_quaternion_out = translate_Quaternion_to_c(ret_value);
+        *attitude_quaternion_out = translate_quaternion_to_c(ret_value);
     }
 }
 
@@ -2023,7 +2023,7 @@ mavsdk_telemetry_attitude_euler_handle_t mavsdk_telemetry_subscribe_attitude_eul
             mavsdk::Telemetry::EulerAngle value) {
                 if (callback) {
                     callback(
-                        translate_EulerAngle_to_c(value),
+                        translate_euler_angle_to_c(value),
                         user_data);
                 }
         });
@@ -2048,14 +2048,14 @@ void mavsdk_telemetry_unsubscribe_attitude_euler(
 void
 mavsdk_telemetry_attitude_euler(
     mavsdk_telemetry_t telemetry,
-    mavsdk_telemetry_EulerAngle_t* attitude_euler_out)
+    mavsdk_telemetry_euler_angle_t* attitude_euler_out)
 {
     auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto ret_value = wrapper->cpp_plugin->attitude_euler();
 
     if (attitude_euler_out != nullptr) {
-        *attitude_euler_out = translate_EulerAngle_to_c(ret_value);
+        *attitude_euler_out = translate_euler_angle_to_c(ret_value);
     }
 }
 
@@ -2072,7 +2072,7 @@ mavsdk_telemetry_attitude_angular_velocity_body_handle_t mavsdk_telemetry_subscr
             mavsdk::Telemetry::AngularVelocityBody value) {
                 if (callback) {
                     callback(
-                        translate_AngularVelocityBody_to_c(value),
+                        translate_angular_velocity_body_to_c(value),
                         user_data);
                 }
         });
@@ -2097,14 +2097,14 @@ void mavsdk_telemetry_unsubscribe_attitude_angular_velocity_body(
 void
 mavsdk_telemetry_attitude_angular_velocity_body(
     mavsdk_telemetry_t telemetry,
-    mavsdk_telemetry_AngularVelocityBody_t* attitude_angular_velocity_body_out)
+    mavsdk_telemetry_angular_velocity_body_t* attitude_angular_velocity_body_out)
 {
     auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto ret_value = wrapper->cpp_plugin->attitude_angular_velocity_body();
 
     if (attitude_angular_velocity_body_out != nullptr) {
-        *attitude_angular_velocity_body_out = translate_AngularVelocityBody_to_c(ret_value);
+        *attitude_angular_velocity_body_out = translate_angular_velocity_body_to_c(ret_value);
     }
 }
 
@@ -2121,7 +2121,7 @@ mavsdk_telemetry_velocity_ned_handle_t mavsdk_telemetry_subscribe_velocity_ned(
             mavsdk::Telemetry::VelocityNed value) {
                 if (callback) {
                     callback(
-                        translate_VelocityNed_to_c(value),
+                        translate_velocity_ned_to_c(value),
                         user_data);
                 }
         });
@@ -2146,14 +2146,14 @@ void mavsdk_telemetry_unsubscribe_velocity_ned(
 void
 mavsdk_telemetry_velocity_ned(
     mavsdk_telemetry_t telemetry,
-    mavsdk_telemetry_VelocityNed_t* velocity_ned_out)
+    mavsdk_telemetry_velocity_ned_t* velocity_ned_out)
 {
     auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto ret_value = wrapper->cpp_plugin->velocity_ned();
 
     if (velocity_ned_out != nullptr) {
-        *velocity_ned_out = translate_VelocityNed_to_c(ret_value);
+        *velocity_ned_out = translate_velocity_ned_to_c(ret_value);
     }
 }
 
@@ -2170,7 +2170,7 @@ mavsdk_telemetry_gps_info_handle_t mavsdk_telemetry_subscribe_gps_info(
             mavsdk::Telemetry::GpsInfo value) {
                 if (callback) {
                     callback(
-                        translate_GpsInfo_to_c(value),
+                        translate_gps_info_to_c(value),
                         user_data);
                 }
         });
@@ -2195,14 +2195,14 @@ void mavsdk_telemetry_unsubscribe_gps_info(
 void
 mavsdk_telemetry_gps_info(
     mavsdk_telemetry_t telemetry,
-    mavsdk_telemetry_GpsInfo_t* gps_info_out)
+    mavsdk_telemetry_gps_info_t* gps_info_out)
 {
     auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto ret_value = wrapper->cpp_plugin->gps_info();
 
     if (gps_info_out != nullptr) {
-        *gps_info_out = translate_GpsInfo_to_c(ret_value);
+        *gps_info_out = translate_gps_info_to_c(ret_value);
     }
 }
 
@@ -2219,7 +2219,7 @@ mavsdk_telemetry_raw_gps_handle_t mavsdk_telemetry_subscribe_raw_gps(
             mavsdk::Telemetry::RawGps value) {
                 if (callback) {
                     callback(
-                        translate_RawGps_to_c(value),
+                        translate_raw_gps_to_c(value),
                         user_data);
                 }
         });
@@ -2244,14 +2244,14 @@ void mavsdk_telemetry_unsubscribe_raw_gps(
 void
 mavsdk_telemetry_raw_gps(
     mavsdk_telemetry_t telemetry,
-    mavsdk_telemetry_RawGps_t* raw_gps_out)
+    mavsdk_telemetry_raw_gps_t* raw_gps_out)
 {
     auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto ret_value = wrapper->cpp_plugin->raw_gps();
 
     if (raw_gps_out != nullptr) {
-        *raw_gps_out = translate_RawGps_to_c(ret_value);
+        *raw_gps_out = translate_raw_gps_to_c(ret_value);
     }
 }
 
@@ -2268,7 +2268,7 @@ mavsdk_telemetry_battery_handle_t mavsdk_telemetry_subscribe_battery(
             mavsdk::Telemetry::Battery value) {
                 if (callback) {
                     callback(
-                        translate_Battery_to_c(value),
+                        translate_battery_to_c(value),
                         user_data);
                 }
         });
@@ -2293,14 +2293,14 @@ void mavsdk_telemetry_unsubscribe_battery(
 void
 mavsdk_telemetry_battery(
     mavsdk_telemetry_t telemetry,
-    mavsdk_telemetry_Battery_t* battery_out)
+    mavsdk_telemetry_battery_t* battery_out)
 {
     auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto ret_value = wrapper->cpp_plugin->battery();
 
     if (battery_out != nullptr) {
-        *battery_out = translate_Battery_to_c(ret_value);
+        *battery_out = translate_battery_to_c(ret_value);
     }
 }
 
@@ -2317,7 +2317,7 @@ mavsdk_telemetry_flight_mode_handle_t mavsdk_telemetry_subscribe_flight_mode(
             mavsdk::Telemetry::FlightMode value) {
                 if (callback) {
                     callback(
-                        translate_FlightMode_to_c(value),
+                        translate_flight_mode_to_c(value),
                         user_data);
                 }
         });
@@ -2342,14 +2342,14 @@ void mavsdk_telemetry_unsubscribe_flight_mode(
 void
 mavsdk_telemetry_flight_mode(
     mavsdk_telemetry_t telemetry,
-    mavsdk_telemetry_FlightMode_t* flight_mode_out)
+    mavsdk_telemetry_flight_mode_t* flight_mode_out)
 {
     auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto ret_value = wrapper->cpp_plugin->flight_mode();
 
     if (flight_mode_out != nullptr) {
-        *flight_mode_out = translate_FlightMode_to_c(ret_value);
+        *flight_mode_out = translate_flight_mode_to_c(ret_value);
     }
 }
 
@@ -2366,7 +2366,7 @@ mavsdk_telemetry_health_handle_t mavsdk_telemetry_subscribe_health(
             mavsdk::Telemetry::Health value) {
                 if (callback) {
                     callback(
-                        translate_Health_to_c(value),
+                        translate_health_to_c(value),
                         user_data);
                 }
         });
@@ -2391,14 +2391,14 @@ void mavsdk_telemetry_unsubscribe_health(
 void
 mavsdk_telemetry_health(
     mavsdk_telemetry_t telemetry,
-    mavsdk_telemetry_Health_t* health_out)
+    mavsdk_telemetry_health_t* health_out)
 {
     auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto ret_value = wrapper->cpp_plugin->health();
 
     if (health_out != nullptr) {
-        *health_out = translate_Health_to_c(ret_value);
+        *health_out = translate_health_to_c(ret_value);
     }
 }
 
@@ -2415,7 +2415,7 @@ mavsdk_telemetry_rc_status_handle_t mavsdk_telemetry_subscribe_rc_status(
             mavsdk::Telemetry::RcStatus value) {
                 if (callback) {
                     callback(
-                        translate_RcStatus_to_c(value),
+                        translate_rc_status_to_c(value),
                         user_data);
                 }
         });
@@ -2440,14 +2440,14 @@ void mavsdk_telemetry_unsubscribe_rc_status(
 void
 mavsdk_telemetry_rc_status(
     mavsdk_telemetry_t telemetry,
-    mavsdk_telemetry_RcStatus_t* rc_status_out)
+    mavsdk_telemetry_rc_status_t* rc_status_out)
 {
     auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto ret_value = wrapper->cpp_plugin->rc_status();
 
     if (rc_status_out != nullptr) {
-        *rc_status_out = translate_RcStatus_to_c(ret_value);
+        *rc_status_out = translate_rc_status_to_c(ret_value);
     }
 }
 
@@ -2464,7 +2464,7 @@ mavsdk_telemetry_status_text_handle_t mavsdk_telemetry_subscribe_status_text(
             mavsdk::Telemetry::StatusText value) {
                 if (callback) {
                     callback(
-                        translate_StatusText_to_c(value),
+                        translate_status_text_to_c(value),
                         user_data);
                 }
         });
@@ -2489,14 +2489,14 @@ void mavsdk_telemetry_unsubscribe_status_text(
 void
 mavsdk_telemetry_status_text(
     mavsdk_telemetry_t telemetry,
-    mavsdk_telemetry_StatusText_t* status_text_out)
+    mavsdk_telemetry_status_text_t* status_text_out)
 {
     auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto ret_value = wrapper->cpp_plugin->status_text();
 
     if (status_text_out != nullptr) {
-        *status_text_out = translate_StatusText_to_c(ret_value);
+        *status_text_out = translate_status_text_to_c(ret_value);
     }
 }
 
@@ -2513,7 +2513,7 @@ mavsdk_telemetry_actuator_control_target_handle_t mavsdk_telemetry_subscribe_act
             mavsdk::Telemetry::ActuatorControlTarget value) {
                 if (callback) {
                     callback(
-                        translate_ActuatorControlTarget_to_c(value),
+                        translate_actuator_control_target_to_c(value),
                         user_data);
                 }
         });
@@ -2538,14 +2538,14 @@ void mavsdk_telemetry_unsubscribe_actuator_control_target(
 void
 mavsdk_telemetry_actuator_control_target(
     mavsdk_telemetry_t telemetry,
-    mavsdk_telemetry_ActuatorControlTarget_t* actuator_control_target_out)
+    mavsdk_telemetry_actuator_control_target_t* actuator_control_target_out)
 {
     auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto ret_value = wrapper->cpp_plugin->actuator_control_target();
 
     if (actuator_control_target_out != nullptr) {
-        *actuator_control_target_out = translate_ActuatorControlTarget_to_c(ret_value);
+        *actuator_control_target_out = translate_actuator_control_target_to_c(ret_value);
     }
 }
 
@@ -2562,7 +2562,7 @@ mavsdk_telemetry_actuator_output_status_handle_t mavsdk_telemetry_subscribe_actu
             mavsdk::Telemetry::ActuatorOutputStatus value) {
                 if (callback) {
                     callback(
-                        translate_ActuatorOutputStatus_to_c(value),
+                        translate_actuator_output_status_to_c(value),
                         user_data);
                 }
         });
@@ -2587,14 +2587,14 @@ void mavsdk_telemetry_unsubscribe_actuator_output_status(
 void
 mavsdk_telemetry_actuator_output_status(
     mavsdk_telemetry_t telemetry,
-    mavsdk_telemetry_ActuatorOutputStatus_t* actuator_output_status_out)
+    mavsdk_telemetry_actuator_output_status_t* actuator_output_status_out)
 {
     auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto ret_value = wrapper->cpp_plugin->actuator_output_status();
 
     if (actuator_output_status_out != nullptr) {
-        *actuator_output_status_out = translate_ActuatorOutputStatus_to_c(ret_value);
+        *actuator_output_status_out = translate_actuator_output_status_to_c(ret_value);
     }
 }
 
@@ -2611,7 +2611,7 @@ mavsdk_telemetry_odometry_handle_t mavsdk_telemetry_subscribe_odometry(
             mavsdk::Telemetry::Odometry value) {
                 if (callback) {
                     callback(
-                        translate_Odometry_to_c(value),
+                        translate_odometry_to_c(value),
                         user_data);
                 }
         });
@@ -2636,14 +2636,14 @@ void mavsdk_telemetry_unsubscribe_odometry(
 void
 mavsdk_telemetry_odometry(
     mavsdk_telemetry_t telemetry,
-    mavsdk_telemetry_Odometry_t* odometry_out)
+    mavsdk_telemetry_odometry_t* odometry_out)
 {
     auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto ret_value = wrapper->cpp_plugin->odometry();
 
     if (odometry_out != nullptr) {
-        *odometry_out = translate_Odometry_to_c(ret_value);
+        *odometry_out = translate_odometry_to_c(ret_value);
     }
 }
 
@@ -2660,7 +2660,7 @@ mavsdk_telemetry_position_velocity_ned_handle_t mavsdk_telemetry_subscribe_posit
             mavsdk::Telemetry::PositionVelocityNed value) {
                 if (callback) {
                     callback(
-                        translate_PositionVelocityNed_to_c(value),
+                        translate_position_velocity_ned_to_c(value),
                         user_data);
                 }
         });
@@ -2685,14 +2685,14 @@ void mavsdk_telemetry_unsubscribe_position_velocity_ned(
 void
 mavsdk_telemetry_position_velocity_ned(
     mavsdk_telemetry_t telemetry,
-    mavsdk_telemetry_PositionVelocityNed_t* position_velocity_ned_out)
+    mavsdk_telemetry_position_velocity_ned_t* position_velocity_ned_out)
 {
     auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto ret_value = wrapper->cpp_plugin->position_velocity_ned();
 
     if (position_velocity_ned_out != nullptr) {
-        *position_velocity_ned_out = translate_PositionVelocityNed_to_c(ret_value);
+        *position_velocity_ned_out = translate_position_velocity_ned_to_c(ret_value);
     }
 }
 
@@ -2709,7 +2709,7 @@ mavsdk_telemetry_ground_truth_handle_t mavsdk_telemetry_subscribe_ground_truth(
             mavsdk::Telemetry::GroundTruth value) {
                 if (callback) {
                     callback(
-                        translate_GroundTruth_to_c(value),
+                        translate_ground_truth_to_c(value),
                         user_data);
                 }
         });
@@ -2734,14 +2734,14 @@ void mavsdk_telemetry_unsubscribe_ground_truth(
 void
 mavsdk_telemetry_ground_truth(
     mavsdk_telemetry_t telemetry,
-    mavsdk_telemetry_GroundTruth_t* ground_truth_out)
+    mavsdk_telemetry_ground_truth_t* ground_truth_out)
 {
     auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto ret_value = wrapper->cpp_plugin->ground_truth();
 
     if (ground_truth_out != nullptr) {
-        *ground_truth_out = translate_GroundTruth_to_c(ret_value);
+        *ground_truth_out = translate_ground_truth_to_c(ret_value);
     }
 }
 
@@ -2758,7 +2758,7 @@ mavsdk_telemetry_fixedwing_metrics_handle_t mavsdk_telemetry_subscribe_fixedwing
             mavsdk::Telemetry::FixedwingMetrics value) {
                 if (callback) {
                     callback(
-                        translate_FixedwingMetrics_to_c(value),
+                        translate_fixedwing_metrics_to_c(value),
                         user_data);
                 }
         });
@@ -2783,14 +2783,14 @@ void mavsdk_telemetry_unsubscribe_fixedwing_metrics(
 void
 mavsdk_telemetry_fixedwing_metrics(
     mavsdk_telemetry_t telemetry,
-    mavsdk_telemetry_FixedwingMetrics_t* fixedwing_metrics_out)
+    mavsdk_telemetry_fixedwing_metrics_t* fixedwing_metrics_out)
 {
     auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto ret_value = wrapper->cpp_plugin->fixedwing_metrics();
 
     if (fixedwing_metrics_out != nullptr) {
-        *fixedwing_metrics_out = translate_FixedwingMetrics_to_c(ret_value);
+        *fixedwing_metrics_out = translate_fixedwing_metrics_to_c(ret_value);
     }
 }
 
@@ -2807,7 +2807,7 @@ mavsdk_telemetry_imu_handle_t mavsdk_telemetry_subscribe_imu(
             mavsdk::Telemetry::Imu value) {
                 if (callback) {
                     callback(
-                        translate_Imu_to_c(value),
+                        translate_imu_to_c(value),
                         user_data);
                 }
         });
@@ -2832,14 +2832,14 @@ void mavsdk_telemetry_unsubscribe_imu(
 void
 mavsdk_telemetry_imu(
     mavsdk_telemetry_t telemetry,
-    mavsdk_telemetry_Imu_t* imu_out)
+    mavsdk_telemetry_imu_t* imu_out)
 {
     auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto ret_value = wrapper->cpp_plugin->imu();
 
     if (imu_out != nullptr) {
-        *imu_out = translate_Imu_to_c(ret_value);
+        *imu_out = translate_imu_to_c(ret_value);
     }
 }
 
@@ -2856,7 +2856,7 @@ mavsdk_telemetry_scaled_imu_handle_t mavsdk_telemetry_subscribe_scaled_imu(
             mavsdk::Telemetry::Imu value) {
                 if (callback) {
                     callback(
-                        translate_Imu_to_c(value),
+                        translate_imu_to_c(value),
                         user_data);
                 }
         });
@@ -2881,14 +2881,14 @@ void mavsdk_telemetry_unsubscribe_scaled_imu(
 void
 mavsdk_telemetry_scaled_imu(
     mavsdk_telemetry_t telemetry,
-    mavsdk_telemetry_Imu_t* imu_out)
+    mavsdk_telemetry_imu_t* imu_out)
 {
     auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto ret_value = wrapper->cpp_plugin->scaled_imu();
 
     if (imu_out != nullptr) {
-        *imu_out = translate_Imu_to_c(ret_value);
+        *imu_out = translate_imu_to_c(ret_value);
     }
 }
 
@@ -2905,7 +2905,7 @@ mavsdk_telemetry_raw_imu_handle_t mavsdk_telemetry_subscribe_raw_imu(
             mavsdk::Telemetry::Imu value) {
                 if (callback) {
                     callback(
-                        translate_Imu_to_c(value),
+                        translate_imu_to_c(value),
                         user_data);
                 }
         });
@@ -2930,14 +2930,14 @@ void mavsdk_telemetry_unsubscribe_raw_imu(
 void
 mavsdk_telemetry_raw_imu(
     mavsdk_telemetry_t telemetry,
-    mavsdk_telemetry_Imu_t* imu_out)
+    mavsdk_telemetry_imu_t* imu_out)
 {
     auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto ret_value = wrapper->cpp_plugin->raw_imu();
 
     if (imu_out != nullptr) {
-        *imu_out = translate_Imu_to_c(ret_value);
+        *imu_out = translate_imu_to_c(ret_value);
     }
 }
 
@@ -3048,7 +3048,7 @@ mavsdk_telemetry_distance_sensor_handle_t mavsdk_telemetry_subscribe_distance_se
             mavsdk::Telemetry::DistanceSensor value) {
                 if (callback) {
                     callback(
-                        translate_DistanceSensor_to_c(value),
+                        translate_distance_sensor_to_c(value),
                         user_data);
                 }
         });
@@ -3073,14 +3073,14 @@ void mavsdk_telemetry_unsubscribe_distance_sensor(
 void
 mavsdk_telemetry_distance_sensor(
     mavsdk_telemetry_t telemetry,
-    mavsdk_telemetry_DistanceSensor_t* distance_sensor_out)
+    mavsdk_telemetry_distance_sensor_t* distance_sensor_out)
 {
     auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto ret_value = wrapper->cpp_plugin->distance_sensor();
 
     if (distance_sensor_out != nullptr) {
-        *distance_sensor_out = translate_DistanceSensor_to_c(ret_value);
+        *distance_sensor_out = translate_distance_sensor_to_c(ret_value);
     }
 }
 
@@ -3097,7 +3097,7 @@ mavsdk_telemetry_scaled_pressure_handle_t mavsdk_telemetry_subscribe_scaled_pres
             mavsdk::Telemetry::ScaledPressure value) {
                 if (callback) {
                     callback(
-                        translate_ScaledPressure_to_c(value),
+                        translate_scaled_pressure_to_c(value),
                         user_data);
                 }
         });
@@ -3122,14 +3122,14 @@ void mavsdk_telemetry_unsubscribe_scaled_pressure(
 void
 mavsdk_telemetry_scaled_pressure(
     mavsdk_telemetry_t telemetry,
-    mavsdk_telemetry_ScaledPressure_t* scaled_pressure_out)
+    mavsdk_telemetry_scaled_pressure_t* scaled_pressure_out)
 {
     auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto ret_value = wrapper->cpp_plugin->scaled_pressure();
 
     if (scaled_pressure_out != nullptr) {
-        *scaled_pressure_out = translate_ScaledPressure_to_c(ret_value);
+        *scaled_pressure_out = translate_scaled_pressure_to_c(ret_value);
     }
 }
 
@@ -3146,7 +3146,7 @@ mavsdk_telemetry_heading_handle_t mavsdk_telemetry_subscribe_heading(
             mavsdk::Telemetry::Heading value) {
                 if (callback) {
                     callback(
-                        translate_Heading_to_c(value),
+                        translate_heading_to_c(value),
                         user_data);
                 }
         });
@@ -3171,14 +3171,14 @@ void mavsdk_telemetry_unsubscribe_heading(
 void
 mavsdk_telemetry_heading(
     mavsdk_telemetry_t telemetry,
-    mavsdk_telemetry_Heading_t* heading_deg_out)
+    mavsdk_telemetry_heading_t* heading_deg_out)
 {
     auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto ret_value = wrapper->cpp_plugin->heading();
 
     if (heading_deg_out != nullptr) {
-        *heading_deg_out = translate_Heading_to_c(ret_value);
+        *heading_deg_out = translate_heading_to_c(ret_value);
     }
 }
 
@@ -3195,7 +3195,7 @@ mavsdk_telemetry_altitude_handle_t mavsdk_telemetry_subscribe_altitude(
             mavsdk::Telemetry::Altitude value) {
                 if (callback) {
                     callback(
-                        translate_Altitude_to_c(value),
+                        translate_altitude_to_c(value),
                         user_data);
                 }
         });
@@ -3220,14 +3220,14 @@ void mavsdk_telemetry_unsubscribe_altitude(
 void
 mavsdk_telemetry_altitude(
     mavsdk_telemetry_t telemetry,
-    mavsdk_telemetry_Altitude_t* altitude_out)
+    mavsdk_telemetry_altitude_t* altitude_out)
 {
     auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto ret_value = wrapper->cpp_plugin->altitude();
 
     if (altitude_out != nullptr) {
-        *altitude_out = translate_Altitude_to_c(ret_value);
+        *altitude_out = translate_altitude_to_c(ret_value);
     }
 }
 
@@ -3244,7 +3244,7 @@ mavsdk_telemetry_wind_handle_t mavsdk_telemetry_subscribe_wind(
             mavsdk::Telemetry::Wind value) {
                 if (callback) {
                     callback(
-                        translate_Wind_to_c(value),
+                        translate_wind_to_c(value),
                         user_data);
                 }
         });
@@ -3269,14 +3269,14 @@ void mavsdk_telemetry_unsubscribe_wind(
 void
 mavsdk_telemetry_wind(
     mavsdk_telemetry_t telemetry,
-    mavsdk_telemetry_Wind_t* wind_out)
+    mavsdk_telemetry_wind_t* wind_out)
 {
     auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto ret_value = wrapper->cpp_plugin->wind();
 
     if (wind_out != nullptr) {
-        *wind_out = translate_Wind_to_c(ret_value);
+        *wind_out = translate_wind_to_c(ret_value);
     }
 }
 
@@ -4135,7 +4135,7 @@ void mavsdk_telemetry_get_gps_global_origin_async(
                 if (callback) {
                     callback(
                         translate_result(result),
-                        translate_GpsGlobalOrigin_to_c(value),
+                        translate_gps_global_origin_to_c(value),
                         user_data);
                 }
         });
@@ -4146,7 +4146,7 @@ void mavsdk_telemetry_get_gps_global_origin_async(
 mavsdk_telemetry_result_t
 mavsdk_telemetry_get_gps_global_origin(
     mavsdk_telemetry_t telemetry,
-    mavsdk_telemetry_GpsGlobalOrigin_t* gps_global_origin_out)
+    mavsdk_telemetry_gps_global_origin_t* gps_global_origin_out)
 {
     auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
@@ -4154,7 +4154,7 @@ mavsdk_telemetry_get_gps_global_origin(
 );
 
     if (gps_global_origin_out != nullptr) {
-        *gps_global_origin_out = translate_GpsGlobalOrigin_to_c(result_pair.second);
+        *gps_global_origin_out = translate_gps_global_origin_to_c(result_pair.second);
     }
 
     return translate_result(result_pair.first);

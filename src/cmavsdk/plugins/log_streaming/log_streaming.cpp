@@ -35,7 +35,7 @@ translate_result(mavsdk::LogStreaming::Result cpp_result) {
 
 
 static mavsdk::LogStreaming::LogStreamingRaw
-translate_LogStreamingRaw_from_c(const mavsdk_log_streaming_LogStreamingRaw_t& c_struct) {
+translate_log_streaming_raw_from_c(const mavsdk_log_streaming_log_streaming_raw_t& c_struct) {
     mavsdk::LogStreaming::LogStreamingRaw cpp_struct{};
     if (c_struct.data_base64) {
         cpp_struct.data_base64 = c_struct.data_base64;
@@ -43,15 +43,15 @@ translate_LogStreamingRaw_from_c(const mavsdk_log_streaming_LogStreamingRaw_t& c
     return cpp_struct;
 }
 
-static mavsdk_log_streaming_LogStreamingRaw_t
-translate_LogStreamingRaw_to_c(const mavsdk::LogStreaming::LogStreamingRaw& cpp_struct) {
-    mavsdk_log_streaming_LogStreamingRaw_t c_struct{};
+static mavsdk_log_streaming_log_streaming_raw_t
+translate_log_streaming_raw_to_c(const mavsdk::LogStreaming::LogStreamingRaw& cpp_struct) {
+    mavsdk_log_streaming_log_streaming_raw_t c_struct{};
     c_struct.data_base64 = strdup(cpp_struct.data_base64.c_str());
     return c_struct;
 }
 
-void mavsdk_log_streaming_LogStreamingRaw_destroy(
-    mavsdk_log_streaming_LogStreamingRaw_t* target) {
+void mavsdk_log_streaming_log_streaming_raw_destroy(
+    mavsdk_log_streaming_log_streaming_raw_t* target) {
     if (!target) return;
     if (target->data_base64) {
         free((void*)target->data_base64);
@@ -59,13 +59,13 @@ void mavsdk_log_streaming_LogStreamingRaw_destroy(
     }
 }
 
-void mavsdk_log_streaming_LogStreamingRaw_array_destroy(
-    mavsdk_log_streaming_LogStreamingRaw_t** array,
+void mavsdk_log_streaming_log_streaming_raw_array_destroy(
+    mavsdk_log_streaming_log_streaming_raw_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_log_streaming_LogStreamingRaw_destroy(&(*array)[i]);
+        mavsdk_log_streaming_log_streaming_raw_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -237,7 +237,7 @@ mavsdk_log_streaming_log_streaming_raw_handle_t mavsdk_log_streaming_subscribe_l
             mavsdk::LogStreaming::LogStreamingRaw value) {
                 if (callback) {
                     callback(
-                        translate_LogStreamingRaw_to_c(value),
+                        translate_log_streaming_raw_to_c(value),
                         user_data);
                 }
         });

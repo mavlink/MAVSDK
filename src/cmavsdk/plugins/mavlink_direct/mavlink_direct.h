@@ -32,7 +32,7 @@ typedef void* mavsdk_mavlink_direct_message_handle_t;
  * @brief A complete MAVLink message with all header information and fields
  *
  * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_mavlink_direct_MavlinkMessage_destroy() when done to avoid memory leaks.
+ *       mavsdk_mavlink_direct_mavlink_message_destroy() when done to avoid memory leaks.
  */
 typedef struct CMAVSDK_EXPORT {
     /**  MAVLink message name (e.g., "HEARTBEAT", "GLOBAL_POSITION_INT") */
@@ -47,10 +47,10 @@ typedef struct CMAVSDK_EXPORT {
     uint32_t target_component_id;
     /**  All message fields as single JSON object */
     char* fields_json;
-} mavsdk_mavlink_direct_MavlinkMessage_t;
+} mavsdk_mavlink_direct_mavlink_message_t;
 
 /**
- * @brief Destroy a MavlinkMessage struct.
+ * @brief Destroy a mavlink_message struct.
  *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
@@ -59,11 +59,11 @@ typedef struct CMAVSDK_EXPORT {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-CMAVSDK_EXPORT void mavsdk_mavlink_direct_MavlinkMessage_destroy(
-    mavsdk_mavlink_direct_MavlinkMessage_t* target);
+CMAVSDK_EXPORT void mavsdk_mavlink_direct_mavlink_message_destroy(
+    mavsdk_mavlink_direct_mavlink_message_t* target);
 
 /**
- * @brief Destroy an array of MavlinkMessage structs.
+ * @brief Destroy an array of mavlink_message structs.
  *
  * Frees all memory allocated for the array and its elements, including any
  * nested dynamic allocations. Must be called to avoid memory leaks.
@@ -71,8 +71,8 @@ CMAVSDK_EXPORT void mavsdk_mavlink_direct_MavlinkMessage_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-CMAVSDK_EXPORT void mavsdk_mavlink_direct_MavlinkMessage_array_destroy(
-    mavsdk_mavlink_direct_MavlinkMessage_t** array,
+CMAVSDK_EXPORT void mavsdk_mavlink_direct_mavlink_message_array_destroy(
+    mavsdk_mavlink_direct_mavlink_message_t** array,
     size_t size);
 
 /**
@@ -176,7 +176,7 @@ CMAVSDK_EXPORT void mavsdk_mavlink_direct_string_destroy(char** str);
 CMAVSDK_EXPORT void mavsdk_mavlink_direct_byte_buffer_destroy(uint8_t** buffer);
 
 // ===== Callback Typedefs =====
-typedef void (*mavsdk_mavlink_direct_message_callback_t)(const mavsdk_mavlink_direct_MavlinkMessage_t message, void* user_data);
+typedef void (*mavsdk_mavlink_direct_message_callback_t)(const mavsdk_mavlink_direct_mavlink_message_t message, void* user_data);
 
 // ===== MavlinkDirect Creation/Destruction =====
 CMAVSDK_EXPORT mavsdk_mavlink_direct_t mavsdk_mavlink_direct_create(mavsdk_system_t system);
@@ -196,7 +196,7 @@ CMAVSDK_EXPORT
 mavsdk_mavlink_direct_result_t
 mavsdk_mavlink_direct_send_message(
     mavsdk_mavlink_direct_t mavlink_direct,
-    mavsdk_mavlink_direct_MavlinkMessage_t message);
+    mavsdk_mavlink_direct_mavlink_message_t message);
 
 
 /**

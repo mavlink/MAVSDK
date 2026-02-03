@@ -31,7 +31,7 @@ translate_result(mavsdk::Mocap::Result cpp_result) {
 
 
 static mavsdk::Mocap::PositionBody
-translate_PositionBody_from_c(const mavsdk_mocap_PositionBody_t& c_struct) {
+translate_position_body_from_c(const mavsdk_mocap_position_body_t& c_struct) {
     mavsdk::Mocap::PositionBody cpp_struct{};
     cpp_struct.x_m = c_struct.x_m;
     cpp_struct.y_m = c_struct.y_m;
@@ -39,27 +39,27 @@ translate_PositionBody_from_c(const mavsdk_mocap_PositionBody_t& c_struct) {
     return cpp_struct;
 }
 
-static mavsdk_mocap_PositionBody_t
-translate_PositionBody_to_c(const mavsdk::Mocap::PositionBody& cpp_struct) {
-    mavsdk_mocap_PositionBody_t c_struct{};
+static mavsdk_mocap_position_body_t
+translate_position_body_to_c(const mavsdk::Mocap::PositionBody& cpp_struct) {
+    mavsdk_mocap_position_body_t c_struct{};
     c_struct.x_m = cpp_struct.x_m;
     c_struct.y_m = cpp_struct.y_m;
     c_struct.z_m = cpp_struct.z_m;
     return c_struct;
 }
 
-void mavsdk_mocap_PositionBody_destroy(
-    mavsdk_mocap_PositionBody_t* target) {
+void mavsdk_mocap_position_body_destroy(
+    mavsdk_mocap_position_body_t* target) {
     if (!target) return;
 }
 
-void mavsdk_mocap_PositionBody_array_destroy(
-    mavsdk_mocap_PositionBody_t** array,
+void mavsdk_mocap_position_body_array_destroy(
+    mavsdk_mocap_position_body_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_mocap_PositionBody_destroy(&(*array)[i]);
+        mavsdk_mocap_position_body_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -68,7 +68,7 @@ void mavsdk_mocap_PositionBody_array_destroy(
 
 
 static mavsdk::Mocap::AngleBody
-translate_AngleBody_from_c(const mavsdk_mocap_AngleBody_t& c_struct) {
+translate_angle_body_from_c(const mavsdk_mocap_angle_body_t& c_struct) {
     mavsdk::Mocap::AngleBody cpp_struct{};
     cpp_struct.roll_rad = c_struct.roll_rad;
     cpp_struct.pitch_rad = c_struct.pitch_rad;
@@ -76,27 +76,27 @@ translate_AngleBody_from_c(const mavsdk_mocap_AngleBody_t& c_struct) {
     return cpp_struct;
 }
 
-static mavsdk_mocap_AngleBody_t
-translate_AngleBody_to_c(const mavsdk::Mocap::AngleBody& cpp_struct) {
-    mavsdk_mocap_AngleBody_t c_struct{};
+static mavsdk_mocap_angle_body_t
+translate_angle_body_to_c(const mavsdk::Mocap::AngleBody& cpp_struct) {
+    mavsdk_mocap_angle_body_t c_struct{};
     c_struct.roll_rad = cpp_struct.roll_rad;
     c_struct.pitch_rad = cpp_struct.pitch_rad;
     c_struct.yaw_rad = cpp_struct.yaw_rad;
     return c_struct;
 }
 
-void mavsdk_mocap_AngleBody_destroy(
-    mavsdk_mocap_AngleBody_t* target) {
+void mavsdk_mocap_angle_body_destroy(
+    mavsdk_mocap_angle_body_t* target) {
     if (!target) return;
 }
 
-void mavsdk_mocap_AngleBody_array_destroy(
-    mavsdk_mocap_AngleBody_t** array,
+void mavsdk_mocap_angle_body_array_destroy(
+    mavsdk_mocap_angle_body_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_mocap_AngleBody_destroy(&(*array)[i]);
+        mavsdk_mocap_angle_body_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -105,7 +105,7 @@ void mavsdk_mocap_AngleBody_array_destroy(
 
 
 static mavsdk::Mocap::SpeedBody
-translate_SpeedBody_from_c(const mavsdk_mocap_SpeedBody_t& c_struct) {
+translate_speed_body_from_c(const mavsdk_mocap_speed_body_t& c_struct) {
     mavsdk::Mocap::SpeedBody cpp_struct{};
     cpp_struct.x_m_s = c_struct.x_m_s;
     cpp_struct.y_m_s = c_struct.y_m_s;
@@ -113,27 +113,27 @@ translate_SpeedBody_from_c(const mavsdk_mocap_SpeedBody_t& c_struct) {
     return cpp_struct;
 }
 
-static mavsdk_mocap_SpeedBody_t
-translate_SpeedBody_to_c(const mavsdk::Mocap::SpeedBody& cpp_struct) {
-    mavsdk_mocap_SpeedBody_t c_struct{};
+static mavsdk_mocap_speed_body_t
+translate_speed_body_to_c(const mavsdk::Mocap::SpeedBody& cpp_struct) {
+    mavsdk_mocap_speed_body_t c_struct{};
     c_struct.x_m_s = cpp_struct.x_m_s;
     c_struct.y_m_s = cpp_struct.y_m_s;
     c_struct.z_m_s = cpp_struct.z_m_s;
     return c_struct;
 }
 
-void mavsdk_mocap_SpeedBody_destroy(
-    mavsdk_mocap_SpeedBody_t* target) {
+void mavsdk_mocap_speed_body_destroy(
+    mavsdk_mocap_speed_body_t* target) {
     if (!target) return;
 }
 
-void mavsdk_mocap_SpeedBody_array_destroy(
-    mavsdk_mocap_SpeedBody_t** array,
+void mavsdk_mocap_speed_body_array_destroy(
+    mavsdk_mocap_speed_body_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_mocap_SpeedBody_destroy(&(*array)[i]);
+        mavsdk_mocap_speed_body_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -142,7 +142,7 @@ void mavsdk_mocap_SpeedBody_array_destroy(
 
 
 static mavsdk::Mocap::SpeedNed
-translate_SpeedNed_from_c(const mavsdk_mocap_SpeedNed_t& c_struct) {
+translate_speed_ned_from_c(const mavsdk_mocap_speed_ned_t& c_struct) {
     mavsdk::Mocap::SpeedNed cpp_struct{};
     cpp_struct.north_m_s = c_struct.north_m_s;
     cpp_struct.east_m_s = c_struct.east_m_s;
@@ -150,27 +150,27 @@ translate_SpeedNed_from_c(const mavsdk_mocap_SpeedNed_t& c_struct) {
     return cpp_struct;
 }
 
-static mavsdk_mocap_SpeedNed_t
-translate_SpeedNed_to_c(const mavsdk::Mocap::SpeedNed& cpp_struct) {
-    mavsdk_mocap_SpeedNed_t c_struct{};
+static mavsdk_mocap_speed_ned_t
+translate_speed_ned_to_c(const mavsdk::Mocap::SpeedNed& cpp_struct) {
+    mavsdk_mocap_speed_ned_t c_struct{};
     c_struct.north_m_s = cpp_struct.north_m_s;
     c_struct.east_m_s = cpp_struct.east_m_s;
     c_struct.down_m_s = cpp_struct.down_m_s;
     return c_struct;
 }
 
-void mavsdk_mocap_SpeedNed_destroy(
-    mavsdk_mocap_SpeedNed_t* target) {
+void mavsdk_mocap_speed_ned_destroy(
+    mavsdk_mocap_speed_ned_t* target) {
     if (!target) return;
 }
 
-void mavsdk_mocap_SpeedNed_array_destroy(
-    mavsdk_mocap_SpeedNed_t** array,
+void mavsdk_mocap_speed_ned_array_destroy(
+    mavsdk_mocap_speed_ned_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_mocap_SpeedNed_destroy(&(*array)[i]);
+        mavsdk_mocap_speed_ned_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -179,7 +179,7 @@ void mavsdk_mocap_SpeedNed_array_destroy(
 
 
 static mavsdk::Mocap::AngularVelocityBody
-translate_AngularVelocityBody_from_c(const mavsdk_mocap_AngularVelocityBody_t& c_struct) {
+translate_angular_velocity_body_from_c(const mavsdk_mocap_angular_velocity_body_t& c_struct) {
     mavsdk::Mocap::AngularVelocityBody cpp_struct{};
     cpp_struct.roll_rad_s = c_struct.roll_rad_s;
     cpp_struct.pitch_rad_s = c_struct.pitch_rad_s;
@@ -187,27 +187,27 @@ translate_AngularVelocityBody_from_c(const mavsdk_mocap_AngularVelocityBody_t& c
     return cpp_struct;
 }
 
-static mavsdk_mocap_AngularVelocityBody_t
-translate_AngularVelocityBody_to_c(const mavsdk::Mocap::AngularVelocityBody& cpp_struct) {
-    mavsdk_mocap_AngularVelocityBody_t c_struct{};
+static mavsdk_mocap_angular_velocity_body_t
+translate_angular_velocity_body_to_c(const mavsdk::Mocap::AngularVelocityBody& cpp_struct) {
+    mavsdk_mocap_angular_velocity_body_t c_struct{};
     c_struct.roll_rad_s = cpp_struct.roll_rad_s;
     c_struct.pitch_rad_s = cpp_struct.pitch_rad_s;
     c_struct.yaw_rad_s = cpp_struct.yaw_rad_s;
     return c_struct;
 }
 
-void mavsdk_mocap_AngularVelocityBody_destroy(
-    mavsdk_mocap_AngularVelocityBody_t* target) {
+void mavsdk_mocap_angular_velocity_body_destroy(
+    mavsdk_mocap_angular_velocity_body_t* target) {
     if (!target) return;
 }
 
-void mavsdk_mocap_AngularVelocityBody_array_destroy(
-    mavsdk_mocap_AngularVelocityBody_t** array,
+void mavsdk_mocap_angular_velocity_body_array_destroy(
+    mavsdk_mocap_angular_velocity_body_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_mocap_AngularVelocityBody_destroy(&(*array)[i]);
+        mavsdk_mocap_angular_velocity_body_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -216,7 +216,7 @@ void mavsdk_mocap_AngularVelocityBody_array_destroy(
 
 
 static mavsdk::Mocap::Covariance
-translate_Covariance_from_c(const mavsdk_mocap_Covariance_t& c_struct) {
+translate_covariance_from_c(const mavsdk_mocap_covariance_t& c_struct) {
     mavsdk::Mocap::Covariance cpp_struct{};
     cpp_struct.covariance_matrix.assign(
         c_struct.covariance_matrix,
@@ -224,17 +224,17 @@ translate_Covariance_from_c(const mavsdk_mocap_Covariance_t& c_struct) {
     return cpp_struct;
 }
 
-static mavsdk_mocap_Covariance_t
-translate_Covariance_to_c(const mavsdk::Mocap::Covariance& cpp_struct) {
-    mavsdk_mocap_Covariance_t c_struct{};
+static mavsdk_mocap_covariance_t
+translate_covariance_to_c(const mavsdk::Mocap::Covariance& cpp_struct) {
+    mavsdk_mocap_covariance_t c_struct{};
     c_struct.covariance_matrix_size = cpp_struct.covariance_matrix.size();
     c_struct.covariance_matrix = new float[c_struct.covariance_matrix_size];
     std::copy(cpp_struct.covariance_matrix.begin(), cpp_struct.covariance_matrix.end(), c_struct.covariance_matrix);
     return c_struct;
 }
 
-void mavsdk_mocap_Covariance_destroy(
-    mavsdk_mocap_Covariance_t* target) {
+void mavsdk_mocap_covariance_destroy(
+    mavsdk_mocap_covariance_t* target) {
     if (!target) return;
     if (target->covariance_matrix) {
         delete[] target->covariance_matrix;
@@ -243,13 +243,13 @@ void mavsdk_mocap_Covariance_destroy(
     }
 }
 
-void mavsdk_mocap_Covariance_array_destroy(
-    mavsdk_mocap_Covariance_t** array,
+void mavsdk_mocap_covariance_array_destroy(
+    mavsdk_mocap_covariance_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_mocap_Covariance_destroy(&(*array)[i]);
+        mavsdk_mocap_covariance_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -258,7 +258,7 @@ void mavsdk_mocap_Covariance_array_destroy(
 
 
 static mavsdk::Mocap::Quaternion
-translate_Quaternion_from_c(const mavsdk_mocap_Quaternion_t& c_struct) {
+translate_quaternion_from_c(const mavsdk_mocap_quaternion_t& c_struct) {
     mavsdk::Mocap::Quaternion cpp_struct{};
     cpp_struct.w = c_struct.w;
     cpp_struct.x = c_struct.x;
@@ -267,9 +267,9 @@ translate_Quaternion_from_c(const mavsdk_mocap_Quaternion_t& c_struct) {
     return cpp_struct;
 }
 
-static mavsdk_mocap_Quaternion_t
-translate_Quaternion_to_c(const mavsdk::Mocap::Quaternion& cpp_struct) {
-    mavsdk_mocap_Quaternion_t c_struct{};
+static mavsdk_mocap_quaternion_t
+translate_quaternion_to_c(const mavsdk::Mocap::Quaternion& cpp_struct) {
+    mavsdk_mocap_quaternion_t c_struct{};
     c_struct.w = cpp_struct.w;
     c_struct.x = cpp_struct.x;
     c_struct.y = cpp_struct.y;
@@ -277,18 +277,18 @@ translate_Quaternion_to_c(const mavsdk::Mocap::Quaternion& cpp_struct) {
     return c_struct;
 }
 
-void mavsdk_mocap_Quaternion_destroy(
-    mavsdk_mocap_Quaternion_t* target) {
+void mavsdk_mocap_quaternion_destroy(
+    mavsdk_mocap_quaternion_t* target) {
     if (!target) return;
 }
 
-void mavsdk_mocap_Quaternion_array_destroy(
-    mavsdk_mocap_Quaternion_t** array,
+void mavsdk_mocap_quaternion_array_destroy(
+    mavsdk_mocap_quaternion_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_mocap_Quaternion_destroy(&(*array)[i]);
+        mavsdk_mocap_quaternion_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -297,37 +297,37 @@ void mavsdk_mocap_Quaternion_array_destroy(
 
 
 static mavsdk::Mocap::VisionPositionEstimate
-translate_VisionPositionEstimate_from_c(const mavsdk_mocap_VisionPositionEstimate_t& c_struct) {
+translate_vision_position_estimate_from_c(const mavsdk_mocap_vision_position_estimate_t& c_struct) {
     mavsdk::Mocap::VisionPositionEstimate cpp_struct{};
     cpp_struct.time_usec = c_struct.time_usec;
-    cpp_struct.position_body = translate_PositionBody_from_c(c_struct.position_body);
-    cpp_struct.angle_body = translate_AngleBody_from_c(c_struct.angle_body);
-    cpp_struct.pose_covariance = translate_Covariance_from_c(c_struct.pose_covariance);
+    cpp_struct.position_body = translate_position_body_from_c(c_struct.position_body);
+    cpp_struct.angle_body = translate_angle_body_from_c(c_struct.angle_body);
+    cpp_struct.pose_covariance = translate_covariance_from_c(c_struct.pose_covariance);
     return cpp_struct;
 }
 
-static mavsdk_mocap_VisionPositionEstimate_t
-translate_VisionPositionEstimate_to_c(const mavsdk::Mocap::VisionPositionEstimate& cpp_struct) {
-    mavsdk_mocap_VisionPositionEstimate_t c_struct{};
+static mavsdk_mocap_vision_position_estimate_t
+translate_vision_position_estimate_to_c(const mavsdk::Mocap::VisionPositionEstimate& cpp_struct) {
+    mavsdk_mocap_vision_position_estimate_t c_struct{};
     c_struct.time_usec = cpp_struct.time_usec;
-    c_struct.position_body = translate_PositionBody_to_c(cpp_struct.position_body);
-    c_struct.angle_body = translate_AngleBody_to_c(cpp_struct.angle_body);
-    c_struct.pose_covariance = translate_Covariance_to_c(cpp_struct.pose_covariance);
+    c_struct.position_body = translate_position_body_to_c(cpp_struct.position_body);
+    c_struct.angle_body = translate_angle_body_to_c(cpp_struct.angle_body);
+    c_struct.pose_covariance = translate_covariance_to_c(cpp_struct.pose_covariance);
     return c_struct;
 }
 
-void mavsdk_mocap_VisionPositionEstimate_destroy(
-    mavsdk_mocap_VisionPositionEstimate_t* target) {
+void mavsdk_mocap_vision_position_estimate_destroy(
+    mavsdk_mocap_vision_position_estimate_t* target) {
     if (!target) return;
 }
 
-void mavsdk_mocap_VisionPositionEstimate_array_destroy(
-    mavsdk_mocap_VisionPositionEstimate_t** array,
+void mavsdk_mocap_vision_position_estimate_array_destroy(
+    mavsdk_mocap_vision_position_estimate_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_mocap_VisionPositionEstimate_destroy(&(*array)[i]);
+        mavsdk_mocap_vision_position_estimate_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -336,35 +336,35 @@ void mavsdk_mocap_VisionPositionEstimate_array_destroy(
 
 
 static mavsdk::Mocap::VisionSpeedEstimate
-translate_VisionSpeedEstimate_from_c(const mavsdk_mocap_VisionSpeedEstimate_t& c_struct) {
+translate_vision_speed_estimate_from_c(const mavsdk_mocap_vision_speed_estimate_t& c_struct) {
     mavsdk::Mocap::VisionSpeedEstimate cpp_struct{};
     cpp_struct.time_usec = c_struct.time_usec;
-    cpp_struct.speed_ned = translate_SpeedNed_from_c(c_struct.speed_ned);
-    cpp_struct.speed_covariance = translate_Covariance_from_c(c_struct.speed_covariance);
+    cpp_struct.speed_ned = translate_speed_ned_from_c(c_struct.speed_ned);
+    cpp_struct.speed_covariance = translate_covariance_from_c(c_struct.speed_covariance);
     return cpp_struct;
 }
 
-static mavsdk_mocap_VisionSpeedEstimate_t
-translate_VisionSpeedEstimate_to_c(const mavsdk::Mocap::VisionSpeedEstimate& cpp_struct) {
-    mavsdk_mocap_VisionSpeedEstimate_t c_struct{};
+static mavsdk_mocap_vision_speed_estimate_t
+translate_vision_speed_estimate_to_c(const mavsdk::Mocap::VisionSpeedEstimate& cpp_struct) {
+    mavsdk_mocap_vision_speed_estimate_t c_struct{};
     c_struct.time_usec = cpp_struct.time_usec;
-    c_struct.speed_ned = translate_SpeedNed_to_c(cpp_struct.speed_ned);
-    c_struct.speed_covariance = translate_Covariance_to_c(cpp_struct.speed_covariance);
+    c_struct.speed_ned = translate_speed_ned_to_c(cpp_struct.speed_ned);
+    c_struct.speed_covariance = translate_covariance_to_c(cpp_struct.speed_covariance);
     return c_struct;
 }
 
-void mavsdk_mocap_VisionSpeedEstimate_destroy(
-    mavsdk_mocap_VisionSpeedEstimate_t* target) {
+void mavsdk_mocap_vision_speed_estimate_destroy(
+    mavsdk_mocap_vision_speed_estimate_t* target) {
     if (!target) return;
 }
 
-void mavsdk_mocap_VisionSpeedEstimate_array_destroy(
-    mavsdk_mocap_VisionSpeedEstimate_t** array,
+void mavsdk_mocap_vision_speed_estimate_array_destroy(
+    mavsdk_mocap_vision_speed_estimate_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_mocap_VisionSpeedEstimate_destroy(&(*array)[i]);
+        mavsdk_mocap_vision_speed_estimate_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -373,37 +373,37 @@ void mavsdk_mocap_VisionSpeedEstimate_array_destroy(
 
 
 static mavsdk::Mocap::AttitudePositionMocap
-translate_AttitudePositionMocap_from_c(const mavsdk_mocap_AttitudePositionMocap_t& c_struct) {
+translate_attitude_position_mocap_from_c(const mavsdk_mocap_attitude_position_mocap_t& c_struct) {
     mavsdk::Mocap::AttitudePositionMocap cpp_struct{};
     cpp_struct.time_usec = c_struct.time_usec;
-    cpp_struct.q = translate_Quaternion_from_c(c_struct.q);
-    cpp_struct.position_body = translate_PositionBody_from_c(c_struct.position_body);
-    cpp_struct.pose_covariance = translate_Covariance_from_c(c_struct.pose_covariance);
+    cpp_struct.q = translate_quaternion_from_c(c_struct.q);
+    cpp_struct.position_body = translate_position_body_from_c(c_struct.position_body);
+    cpp_struct.pose_covariance = translate_covariance_from_c(c_struct.pose_covariance);
     return cpp_struct;
 }
 
-static mavsdk_mocap_AttitudePositionMocap_t
-translate_AttitudePositionMocap_to_c(const mavsdk::Mocap::AttitudePositionMocap& cpp_struct) {
-    mavsdk_mocap_AttitudePositionMocap_t c_struct{};
+static mavsdk_mocap_attitude_position_mocap_t
+translate_attitude_position_mocap_to_c(const mavsdk::Mocap::AttitudePositionMocap& cpp_struct) {
+    mavsdk_mocap_attitude_position_mocap_t c_struct{};
     c_struct.time_usec = cpp_struct.time_usec;
-    c_struct.q = translate_Quaternion_to_c(cpp_struct.q);
-    c_struct.position_body = translate_PositionBody_to_c(cpp_struct.position_body);
-    c_struct.pose_covariance = translate_Covariance_to_c(cpp_struct.pose_covariance);
+    c_struct.q = translate_quaternion_to_c(cpp_struct.q);
+    c_struct.position_body = translate_position_body_to_c(cpp_struct.position_body);
+    c_struct.pose_covariance = translate_covariance_to_c(cpp_struct.pose_covariance);
     return c_struct;
 }
 
-void mavsdk_mocap_AttitudePositionMocap_destroy(
-    mavsdk_mocap_AttitudePositionMocap_t* target) {
+void mavsdk_mocap_attitude_position_mocap_destroy(
+    mavsdk_mocap_attitude_position_mocap_t* target) {
     if (!target) return;
 }
 
-void mavsdk_mocap_AttitudePositionMocap_array_destroy(
-    mavsdk_mocap_AttitudePositionMocap_t** array,
+void mavsdk_mocap_attitude_position_mocap_array_destroy(
+    mavsdk_mocap_attitude_position_mocap_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_mocap_AttitudePositionMocap_destroy(&(*array)[i]);
+        mavsdk_mocap_attitude_position_mocap_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -412,7 +412,7 @@ void mavsdk_mocap_AttitudePositionMocap_array_destroy(
 
 
 static mavsdk::Mocap::Odometry::MavFrame
-translate_Odometry_MavFrame_from_c(mavsdk_mocap_Odometry_MavFrame_t c_enum) {
+translate_odometry_mav_frame_from_c(mavsdk_mocap_odometry_mav_frame_t c_enum) {
     switch(c_enum) {
         case MAVSDK_MOCAP_ODOMETRY_MAV_FRAME_MOCAP_NED:
             return mavsdk::Mocap::Odometry::MavFrame::MocapNed;
@@ -424,22 +424,22 @@ translate_Odometry_MavFrame_from_c(mavsdk_mocap_Odometry_MavFrame_t c_enum) {
 
 
 static mavsdk::Mocap::Odometry
-translate_Odometry_from_c(const mavsdk_mocap_Odometry_t& c_struct) {
+translate_odometry_from_c(const mavsdk_mocap_odometry_t& c_struct) {
     mavsdk::Mocap::Odometry cpp_struct{};
     cpp_struct.time_usec = c_struct.time_usec;
-    cpp_struct.frame_id = translate_Odometry_MavFrame_from_c(c_struct.frame_id);
-    cpp_struct.position_body = translate_PositionBody_from_c(c_struct.position_body);
-    cpp_struct.q = translate_Quaternion_from_c(c_struct.q);
-    cpp_struct.speed_body = translate_SpeedBody_from_c(c_struct.speed_body);
-    cpp_struct.angular_velocity_body = translate_AngularVelocityBody_from_c(c_struct.angular_velocity_body);
-    cpp_struct.pose_covariance = translate_Covariance_from_c(c_struct.pose_covariance);
-    cpp_struct.velocity_covariance = translate_Covariance_from_c(c_struct.velocity_covariance);
+    cpp_struct.frame_id = translate_odometry_mav_frame_from_c(c_struct.frame_id);
+    cpp_struct.position_body = translate_position_body_from_c(c_struct.position_body);
+    cpp_struct.q = translate_quaternion_from_c(c_struct.q);
+    cpp_struct.speed_body = translate_speed_body_from_c(c_struct.speed_body);
+    cpp_struct.angular_velocity_body = translate_angular_velocity_body_from_c(c_struct.angular_velocity_body);
+    cpp_struct.pose_covariance = translate_covariance_from_c(c_struct.pose_covariance);
+    cpp_struct.velocity_covariance = translate_covariance_from_c(c_struct.velocity_covariance);
     return cpp_struct;
 }
 
 
-static mavsdk_mocap_Odometry_MavFrame_t
-translate_Odometry_MavFrame_to_c(mavsdk::Mocap::Odometry::MavFrame cpp_enum) {
+static mavsdk_mocap_odometry_mav_frame_t
+translate_odometry_mav_frame_to_c(mavsdk::Mocap::Odometry::MavFrame cpp_enum) {
     switch(cpp_enum) {
         case mavsdk::Mocap::Odometry::MavFrame::MocapNed:
             return MAVSDK_MOCAP_ODOMETRY_MAV_FRAME_MOCAP_NED;
@@ -449,32 +449,32 @@ translate_Odometry_MavFrame_to_c(mavsdk::Mocap::Odometry::MavFrame cpp_enum) {
     return MAVSDK_MOCAP_ODOMETRY_MAV_FRAME_MOCAP_NED;
 }
 
-static mavsdk_mocap_Odometry_t
-translate_Odometry_to_c(const mavsdk::Mocap::Odometry& cpp_struct) {
-    mavsdk_mocap_Odometry_t c_struct{};
+static mavsdk_mocap_odometry_t
+translate_odometry_to_c(const mavsdk::Mocap::Odometry& cpp_struct) {
+    mavsdk_mocap_odometry_t c_struct{};
     c_struct.time_usec = cpp_struct.time_usec;
-    c_struct.frame_id = translate_Odometry_MavFrame_to_c(cpp_struct.frame_id);
-    c_struct.position_body = translate_PositionBody_to_c(cpp_struct.position_body);
-    c_struct.q = translate_Quaternion_to_c(cpp_struct.q);
-    c_struct.speed_body = translate_SpeedBody_to_c(cpp_struct.speed_body);
-    c_struct.angular_velocity_body = translate_AngularVelocityBody_to_c(cpp_struct.angular_velocity_body);
-    c_struct.pose_covariance = translate_Covariance_to_c(cpp_struct.pose_covariance);
-    c_struct.velocity_covariance = translate_Covariance_to_c(cpp_struct.velocity_covariance);
+    c_struct.frame_id = translate_odometry_mav_frame_to_c(cpp_struct.frame_id);
+    c_struct.position_body = translate_position_body_to_c(cpp_struct.position_body);
+    c_struct.q = translate_quaternion_to_c(cpp_struct.q);
+    c_struct.speed_body = translate_speed_body_to_c(cpp_struct.speed_body);
+    c_struct.angular_velocity_body = translate_angular_velocity_body_to_c(cpp_struct.angular_velocity_body);
+    c_struct.pose_covariance = translate_covariance_to_c(cpp_struct.pose_covariance);
+    c_struct.velocity_covariance = translate_covariance_to_c(cpp_struct.velocity_covariance);
     return c_struct;
 }
 
-void mavsdk_mocap_Odometry_destroy(
-    mavsdk_mocap_Odometry_t* target) {
+void mavsdk_mocap_odometry_destroy(
+    mavsdk_mocap_odometry_t* target) {
     if (!target) return;
 }
 
-void mavsdk_mocap_Odometry_array_destroy(
-    mavsdk_mocap_Odometry_t** array,
+void mavsdk_mocap_odometry_array_destroy(
+    mavsdk_mocap_odometry_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_mocap_Odometry_destroy(&(*array)[i]);
+        mavsdk_mocap_odometry_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -574,11 +574,11 @@ void mavsdk_mocap_destroy(mavsdk_mocap_t mocap) {
 mavsdk_mocap_result_t
 mavsdk_mocap_set_vision_position_estimate(
     mavsdk_mocap_t mocap,
-    mavsdk_mocap_VisionPositionEstimate_t vision_position_estimate)
+    mavsdk_mocap_vision_position_estimate_t vision_position_estimate)
 {
     auto wrapper = static_cast<mavsdk_mocap_wrapper*>(mocap);
 
-    auto ret_value = wrapper->cpp_plugin->set_vision_position_estimate(        translate_VisionPositionEstimate_from_c(vision_position_estimate));
+    auto ret_value = wrapper->cpp_plugin->set_vision_position_estimate(        translate_vision_position_estimate_from_c(vision_position_estimate));
 
     return translate_result(ret_value);
 }
@@ -588,11 +588,11 @@ mavsdk_mocap_set_vision_position_estimate(
 mavsdk_mocap_result_t
 mavsdk_mocap_set_vision_speed_estimate(
     mavsdk_mocap_t mocap,
-    mavsdk_mocap_VisionSpeedEstimate_t vision_speed_estimate)
+    mavsdk_mocap_vision_speed_estimate_t vision_speed_estimate)
 {
     auto wrapper = static_cast<mavsdk_mocap_wrapper*>(mocap);
 
-    auto ret_value = wrapper->cpp_plugin->set_vision_speed_estimate(        translate_VisionSpeedEstimate_from_c(vision_speed_estimate));
+    auto ret_value = wrapper->cpp_plugin->set_vision_speed_estimate(        translate_vision_speed_estimate_from_c(vision_speed_estimate));
 
     return translate_result(ret_value);
 }
@@ -602,11 +602,11 @@ mavsdk_mocap_set_vision_speed_estimate(
 mavsdk_mocap_result_t
 mavsdk_mocap_set_attitude_position_mocap(
     mavsdk_mocap_t mocap,
-    mavsdk_mocap_AttitudePositionMocap_t attitude_position_mocap)
+    mavsdk_mocap_attitude_position_mocap_t attitude_position_mocap)
 {
     auto wrapper = static_cast<mavsdk_mocap_wrapper*>(mocap);
 
-    auto ret_value = wrapper->cpp_plugin->set_attitude_position_mocap(        translate_AttitudePositionMocap_from_c(attitude_position_mocap));
+    auto ret_value = wrapper->cpp_plugin->set_attitude_position_mocap(        translate_attitude_position_mocap_from_c(attitude_position_mocap));
 
     return translate_result(ret_value);
 }
@@ -616,11 +616,11 @@ mavsdk_mocap_set_attitude_position_mocap(
 mavsdk_mocap_result_t
 mavsdk_mocap_set_odometry(
     mavsdk_mocap_t mocap,
-    mavsdk_mocap_Odometry_t odometry)
+    mavsdk_mocap_odometry_t odometry)
 {
     auto wrapper = static_cast<mavsdk_mocap_wrapper*>(mocap);
 
-    auto ret_value = wrapper->cpp_plugin->set_odometry(        translate_Odometry_from_c(odometry));
+    auto ret_value = wrapper->cpp_plugin->set_odometry(        translate_odometry_from_c(odometry));
 
     return translate_result(ret_value);
 }

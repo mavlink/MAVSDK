@@ -35,31 +35,31 @@ translate_result(mavsdk::LogFiles::Result cpp_result) {
 
 
 static mavsdk::LogFiles::ProgressData
-translate_ProgressData_from_c(const mavsdk_log_files_ProgressData_t& c_struct) {
+translate_progress_data_from_c(const mavsdk_log_files_progress_data_t& c_struct) {
     mavsdk::LogFiles::ProgressData cpp_struct{};
     cpp_struct.progress = c_struct.progress;
     return cpp_struct;
 }
 
-static mavsdk_log_files_ProgressData_t
-translate_ProgressData_to_c(const mavsdk::LogFiles::ProgressData& cpp_struct) {
-    mavsdk_log_files_ProgressData_t c_struct{};
+static mavsdk_log_files_progress_data_t
+translate_progress_data_to_c(const mavsdk::LogFiles::ProgressData& cpp_struct) {
+    mavsdk_log_files_progress_data_t c_struct{};
     c_struct.progress = cpp_struct.progress;
     return c_struct;
 }
 
-void mavsdk_log_files_ProgressData_destroy(
-    mavsdk_log_files_ProgressData_t* target) {
+void mavsdk_log_files_progress_data_destroy(
+    mavsdk_log_files_progress_data_t* target) {
     if (!target) return;
 }
 
-void mavsdk_log_files_ProgressData_array_destroy(
-    mavsdk_log_files_ProgressData_t** array,
+void mavsdk_log_files_progress_data_array_destroy(
+    mavsdk_log_files_progress_data_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_log_files_ProgressData_destroy(&(*array)[i]);
+        mavsdk_log_files_progress_data_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -68,7 +68,7 @@ void mavsdk_log_files_ProgressData_array_destroy(
 
 
 static mavsdk::LogFiles::Entry
-translate_Entry_from_c(const mavsdk_log_files_Entry_t& c_struct) {
+translate_entry_from_c(const mavsdk_log_files_entry_t& c_struct) {
     mavsdk::LogFiles::Entry cpp_struct{};
     cpp_struct.id = c_struct.id;
     if (c_struct.date) {
@@ -78,17 +78,17 @@ translate_Entry_from_c(const mavsdk_log_files_Entry_t& c_struct) {
     return cpp_struct;
 }
 
-static mavsdk_log_files_Entry_t
-translate_Entry_to_c(const mavsdk::LogFiles::Entry& cpp_struct) {
-    mavsdk_log_files_Entry_t c_struct{};
+static mavsdk_log_files_entry_t
+translate_entry_to_c(const mavsdk::LogFiles::Entry& cpp_struct) {
+    mavsdk_log_files_entry_t c_struct{};
     c_struct.id = cpp_struct.id;
     c_struct.date = strdup(cpp_struct.date.c_str());
     c_struct.size_bytes = cpp_struct.size_bytes;
     return c_struct;
 }
 
-void mavsdk_log_files_Entry_destroy(
-    mavsdk_log_files_Entry_t* target) {
+void mavsdk_log_files_entry_destroy(
+    mavsdk_log_files_entry_t* target) {
     if (!target) return;
     if (target->date) {
         free((void*)target->date);
@@ -96,13 +96,13 @@ void mavsdk_log_files_Entry_destroy(
     }
 }
 
-void mavsdk_log_files_Entry_array_destroy(
-    mavsdk_log_files_Entry_t** array,
+void mavsdk_log_files_entry_array_destroy(
+    mavsdk_log_files_entry_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_log_files_Entry_destroy(&(*array)[i]);
+        mavsdk_log_files_entry_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -211,12 +211,12 @@ void mavsdk_log_files_get_entries_async(
             std::vector<mavsdk::LogFiles::Entry> value) {
                 if (callback) {
                     size_t count = value.size();
-                    mavsdk_log_files_Entry_t* entries = nullptr;
+                    mavsdk_log_files_entry_t* entries = nullptr;
 
                     if (count > 0) {
-                        entries = new mavsdk_log_files_Entry_t[count];
+                        entries = new mavsdk_log_files_entry_t[count];
                         for (size_t i = 0; i < count; i++) {
-                            entries[i] = translate_Entry_to_c(value[i]);
+                            entries[i] = translate_entry_to_c(value[i]);
                         }
                     }
 
@@ -234,7 +234,7 @@ void mavsdk_log_files_get_entries_async(
 mavsdk_log_files_result_t
 mavsdk_log_files_get_entries(
     mavsdk_log_files_t log_files,
-    mavsdk_log_files_Entry_t** entries_out,
+    mavsdk_log_files_entry_t** entries_out,
     size_t* entries_size_out)
 {
     auto wrapper = static_cast<mavsdk_log_files_wrapper*>(log_files);
@@ -245,10 +245,10 @@ mavsdk_log_files_get_entries(
     if (entries_out != nullptr) {
         size_t count = result_pair.second.size();
 
-        *entries_out = new mavsdk_log_files_Entry_t[count];
+        *entries_out = new mavsdk_log_files_entry_t[count];
 
         for (size_t i = 0; i < count; i++) {
-            (*entries_out)[i] = translate_Entry_to_c(result_pair.second[i]);
+            (*entries_out)[i] = translate_entry_to_c(result_pair.second[i]);
         }
 
         if (entries_size_out != nullptr) {
@@ -262,7 +262,7 @@ mavsdk_log_files_get_entries(
 // DownloadLogFile async
 void mavsdk_log_files_download_log_file_async(
     mavsdk_log_files_t log_files,
-    mavsdk_log_files_Entry_t entry,
+    mavsdk_log_files_entry_t entry,
     char* path,
     mavsdk_log_files_download_log_file_callback_t callback,
     void* user_data)
@@ -270,14 +270,14 @@ void mavsdk_log_files_download_log_file_async(
     auto wrapper = static_cast<mavsdk_log_files_wrapper*>(log_files);
 
     wrapper->cpp_plugin->download_log_file_async(
-        translate_Entry_from_c(entry),        path,
+        translate_entry_from_c(entry),        path,
         [callback, user_data](
             mavsdk::LogFiles::Result result,
             mavsdk::LogFiles::ProgressData value) {
                 if (callback) {
                     callback(
                         translate_result(result),
-                        translate_ProgressData_to_c(value),
+                        translate_progress_data_to_c(value),
                         user_data);
                 }
         });

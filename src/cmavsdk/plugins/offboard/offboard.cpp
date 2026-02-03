@@ -37,7 +37,7 @@ translate_result(mavsdk::Offboard::Result cpp_result) {
 
 
 static mavsdk::Offboard::Attitude
-translate_Attitude_from_c(const mavsdk_offboard_Attitude_t& c_struct) {
+translate_attitude_from_c(const mavsdk_offboard_attitude_t& c_struct) {
     mavsdk::Offboard::Attitude cpp_struct{};
     cpp_struct.roll_deg = c_struct.roll_deg;
     cpp_struct.pitch_deg = c_struct.pitch_deg;
@@ -46,9 +46,9 @@ translate_Attitude_from_c(const mavsdk_offboard_Attitude_t& c_struct) {
     return cpp_struct;
 }
 
-static mavsdk_offboard_Attitude_t
-translate_Attitude_to_c(const mavsdk::Offboard::Attitude& cpp_struct) {
-    mavsdk_offboard_Attitude_t c_struct{};
+static mavsdk_offboard_attitude_t
+translate_attitude_to_c(const mavsdk::Offboard::Attitude& cpp_struct) {
+    mavsdk_offboard_attitude_t c_struct{};
     c_struct.roll_deg = cpp_struct.roll_deg;
     c_struct.pitch_deg = cpp_struct.pitch_deg;
     c_struct.yaw_deg = cpp_struct.yaw_deg;
@@ -56,18 +56,18 @@ translate_Attitude_to_c(const mavsdk::Offboard::Attitude& cpp_struct) {
     return c_struct;
 }
 
-void mavsdk_offboard_Attitude_destroy(
-    mavsdk_offboard_Attitude_t* target) {
+void mavsdk_offboard_attitude_destroy(
+    mavsdk_offboard_attitude_t* target) {
     if (!target) return;
 }
 
-void mavsdk_offboard_Attitude_array_destroy(
-    mavsdk_offboard_Attitude_t** array,
+void mavsdk_offboard_attitude_array_destroy(
+    mavsdk_offboard_attitude_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_offboard_Attitude_destroy(&(*array)[i]);
+        mavsdk_offboard_attitude_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -76,7 +76,7 @@ void mavsdk_offboard_Attitude_array_destroy(
 
 
 static mavsdk::Offboard::ActuatorControlGroup
-translate_ActuatorControlGroup_from_c(const mavsdk_offboard_ActuatorControlGroup_t& c_struct) {
+translate_actuator_control_group_from_c(const mavsdk_offboard_actuator_control_group_t& c_struct) {
     mavsdk::Offboard::ActuatorControlGroup cpp_struct{};
     cpp_struct.controls.assign(
         c_struct.controls,
@@ -84,17 +84,17 @@ translate_ActuatorControlGroup_from_c(const mavsdk_offboard_ActuatorControlGroup
     return cpp_struct;
 }
 
-static mavsdk_offboard_ActuatorControlGroup_t
-translate_ActuatorControlGroup_to_c(const mavsdk::Offboard::ActuatorControlGroup& cpp_struct) {
-    mavsdk_offboard_ActuatorControlGroup_t c_struct{};
+static mavsdk_offboard_actuator_control_group_t
+translate_actuator_control_group_to_c(const mavsdk::Offboard::ActuatorControlGroup& cpp_struct) {
+    mavsdk_offboard_actuator_control_group_t c_struct{};
     c_struct.controls_size = cpp_struct.controls.size();
     c_struct.controls = new float[c_struct.controls_size];
     std::copy(cpp_struct.controls.begin(), cpp_struct.controls.end(), c_struct.controls);
     return c_struct;
 }
 
-void mavsdk_offboard_ActuatorControlGroup_destroy(
-    mavsdk_offboard_ActuatorControlGroup_t* target) {
+void mavsdk_offboard_actuator_control_group_destroy(
+    mavsdk_offboard_actuator_control_group_t* target) {
     if (!target) return;
     if (target->controls) {
         delete[] target->controls;
@@ -103,13 +103,13 @@ void mavsdk_offboard_ActuatorControlGroup_destroy(
     }
 }
 
-void mavsdk_offboard_ActuatorControlGroup_array_destroy(
-    mavsdk_offboard_ActuatorControlGroup_t** array,
+void mavsdk_offboard_actuator_control_group_array_destroy(
+    mavsdk_offboard_actuator_control_group_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_offboard_ActuatorControlGroup_destroy(&(*array)[i]);
+        mavsdk_offboard_actuator_control_group_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -118,33 +118,33 @@ void mavsdk_offboard_ActuatorControlGroup_array_destroy(
 
 
 static mavsdk::Offboard::ActuatorControl
-translate_ActuatorControl_from_c(const mavsdk_offboard_ActuatorControl_t& c_struct) {
+translate_actuator_control_from_c(const mavsdk_offboard_actuator_control_t& c_struct) {
     mavsdk::Offboard::ActuatorControl cpp_struct{};
     cpp_struct.groups.reserve(c_struct.groups_size);
     for (size_t i = 0; i < c_struct.groups_size; i++) {
         cpp_struct.groups.push_back(
-            translate_ActuatorControlGroup_from_c(c_struct.groups[i]));
+            translate_actuator_control_group_from_c(c_struct.groups[i]));
     }
     return cpp_struct;
 }
 
-static mavsdk_offboard_ActuatorControl_t
-translate_ActuatorControl_to_c(const mavsdk::Offboard::ActuatorControl& cpp_struct) {
-    mavsdk_offboard_ActuatorControl_t c_struct{};
+static mavsdk_offboard_actuator_control_t
+translate_actuator_control_to_c(const mavsdk::Offboard::ActuatorControl& cpp_struct) {
+    mavsdk_offboard_actuator_control_t c_struct{};
     c_struct.groups_size = cpp_struct.groups.size();
-    c_struct.groups = new mavsdk_offboard_ActuatorControlGroup_t[c_struct.groups_size];
+    c_struct.groups = new mavsdk_offboard_actuator_control_group_t[c_struct.groups_size];
     for (size_t i = 0; i < c_struct.groups_size; i++) {
-        c_struct.groups[i] = translate_ActuatorControlGroup_to_c(cpp_struct.groups[i]);
+        c_struct.groups[i] = translate_actuator_control_group_to_c(cpp_struct.groups[i]);
     }
     return c_struct;
 }
 
-void mavsdk_offboard_ActuatorControl_destroy(
-    mavsdk_offboard_ActuatorControl_t* target) {
+void mavsdk_offboard_actuator_control_destroy(
+    mavsdk_offboard_actuator_control_t* target) {
     if (!target) return;
     if (target->groups) {
         for (size_t i = 0; i < target->groups_size; i++) {
-            mavsdk_offboard_ActuatorControlGroup_destroy(&target->groups[i]);
+            mavsdk_offboard_actuator_control_group_destroy(&target->groups[i]);
         }
         delete[] target->groups;
         target->groups = nullptr;
@@ -152,13 +152,13 @@ void mavsdk_offboard_ActuatorControl_destroy(
     }
 }
 
-void mavsdk_offboard_ActuatorControl_array_destroy(
-    mavsdk_offboard_ActuatorControl_t** array,
+void mavsdk_offboard_actuator_control_array_destroy(
+    mavsdk_offboard_actuator_control_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_offboard_ActuatorControl_destroy(&(*array)[i]);
+        mavsdk_offboard_actuator_control_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -167,7 +167,7 @@ void mavsdk_offboard_ActuatorControl_array_destroy(
 
 
 static mavsdk::Offboard::AttitudeRate
-translate_AttitudeRate_from_c(const mavsdk_offboard_AttitudeRate_t& c_struct) {
+translate_attitude_rate_from_c(const mavsdk_offboard_attitude_rate_t& c_struct) {
     mavsdk::Offboard::AttitudeRate cpp_struct{};
     cpp_struct.roll_deg_s = c_struct.roll_deg_s;
     cpp_struct.pitch_deg_s = c_struct.pitch_deg_s;
@@ -176,9 +176,9 @@ translate_AttitudeRate_from_c(const mavsdk_offboard_AttitudeRate_t& c_struct) {
     return cpp_struct;
 }
 
-static mavsdk_offboard_AttitudeRate_t
-translate_AttitudeRate_to_c(const mavsdk::Offboard::AttitudeRate& cpp_struct) {
-    mavsdk_offboard_AttitudeRate_t c_struct{};
+static mavsdk_offboard_attitude_rate_t
+translate_attitude_rate_to_c(const mavsdk::Offboard::AttitudeRate& cpp_struct) {
+    mavsdk_offboard_attitude_rate_t c_struct{};
     c_struct.roll_deg_s = cpp_struct.roll_deg_s;
     c_struct.pitch_deg_s = cpp_struct.pitch_deg_s;
     c_struct.yaw_deg_s = cpp_struct.yaw_deg_s;
@@ -186,18 +186,18 @@ translate_AttitudeRate_to_c(const mavsdk::Offboard::AttitudeRate& cpp_struct) {
     return c_struct;
 }
 
-void mavsdk_offboard_AttitudeRate_destroy(
-    mavsdk_offboard_AttitudeRate_t* target) {
+void mavsdk_offboard_attitude_rate_destroy(
+    mavsdk_offboard_attitude_rate_t* target) {
     if (!target) return;
 }
 
-void mavsdk_offboard_AttitudeRate_array_destroy(
-    mavsdk_offboard_AttitudeRate_t** array,
+void mavsdk_offboard_attitude_rate_array_destroy(
+    mavsdk_offboard_attitude_rate_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_offboard_AttitudeRate_destroy(&(*array)[i]);
+        mavsdk_offboard_attitude_rate_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -206,7 +206,7 @@ void mavsdk_offboard_AttitudeRate_array_destroy(
 
 
 static mavsdk::Offboard::PositionNedYaw
-translate_PositionNedYaw_from_c(const mavsdk_offboard_PositionNedYaw_t& c_struct) {
+translate_position_ned_yaw_from_c(const mavsdk_offboard_position_ned_yaw_t& c_struct) {
     mavsdk::Offboard::PositionNedYaw cpp_struct{};
     cpp_struct.north_m = c_struct.north_m;
     cpp_struct.east_m = c_struct.east_m;
@@ -215,9 +215,9 @@ translate_PositionNedYaw_from_c(const mavsdk_offboard_PositionNedYaw_t& c_struct
     return cpp_struct;
 }
 
-static mavsdk_offboard_PositionNedYaw_t
-translate_PositionNedYaw_to_c(const mavsdk::Offboard::PositionNedYaw& cpp_struct) {
-    mavsdk_offboard_PositionNedYaw_t c_struct{};
+static mavsdk_offboard_position_ned_yaw_t
+translate_position_ned_yaw_to_c(const mavsdk::Offboard::PositionNedYaw& cpp_struct) {
+    mavsdk_offboard_position_ned_yaw_t c_struct{};
     c_struct.north_m = cpp_struct.north_m;
     c_struct.east_m = cpp_struct.east_m;
     c_struct.down_m = cpp_struct.down_m;
@@ -225,18 +225,18 @@ translate_PositionNedYaw_to_c(const mavsdk::Offboard::PositionNedYaw& cpp_struct
     return c_struct;
 }
 
-void mavsdk_offboard_PositionNedYaw_destroy(
-    mavsdk_offboard_PositionNedYaw_t* target) {
+void mavsdk_offboard_position_ned_yaw_destroy(
+    mavsdk_offboard_position_ned_yaw_t* target) {
     if (!target) return;
 }
 
-void mavsdk_offboard_PositionNedYaw_array_destroy(
-    mavsdk_offboard_PositionNedYaw_t** array,
+void mavsdk_offboard_position_ned_yaw_array_destroy(
+    mavsdk_offboard_position_ned_yaw_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_offboard_PositionNedYaw_destroy(&(*array)[i]);
+        mavsdk_offboard_position_ned_yaw_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -245,7 +245,7 @@ void mavsdk_offboard_PositionNedYaw_array_destroy(
 
 
 static mavsdk::Offboard::PositionGlobalYaw::AltitudeType
-translate_PositionGlobalYaw_AltitudeType_from_c(mavsdk_offboard_PositionGlobalYaw_AltitudeType_t c_enum) {
+translate_position_global_yaw_altitude_type_from_c(mavsdk_offboard_position_global_yaw_altitude_type_t c_enum) {
     switch(c_enum) {
         case MAVSDK_OFFBOARD_POSITION_GLOBAL_YAW_ALTITUDE_TYPE_REL_HOME:
             return mavsdk::Offboard::PositionGlobalYaw::AltitudeType::RelHome;
@@ -259,19 +259,19 @@ translate_PositionGlobalYaw_AltitudeType_from_c(mavsdk_offboard_PositionGlobalYa
 
 
 static mavsdk::Offboard::PositionGlobalYaw
-translate_PositionGlobalYaw_from_c(const mavsdk_offboard_PositionGlobalYaw_t& c_struct) {
+translate_position_global_yaw_from_c(const mavsdk_offboard_position_global_yaw_t& c_struct) {
     mavsdk::Offboard::PositionGlobalYaw cpp_struct{};
     cpp_struct.lat_deg = c_struct.lat_deg;
     cpp_struct.lon_deg = c_struct.lon_deg;
     cpp_struct.alt_m = c_struct.alt_m;
     cpp_struct.yaw_deg = c_struct.yaw_deg;
-    cpp_struct.altitude_type = translate_PositionGlobalYaw_AltitudeType_from_c(c_struct.altitude_type);
+    cpp_struct.altitude_type = translate_position_global_yaw_altitude_type_from_c(c_struct.altitude_type);
     return cpp_struct;
 }
 
 
-static mavsdk_offboard_PositionGlobalYaw_AltitudeType_t
-translate_PositionGlobalYaw_AltitudeType_to_c(mavsdk::Offboard::PositionGlobalYaw::AltitudeType cpp_enum) {
+static mavsdk_offboard_position_global_yaw_altitude_type_t
+translate_position_global_yaw_altitude_type_to_c(mavsdk::Offboard::PositionGlobalYaw::AltitudeType cpp_enum) {
     switch(cpp_enum) {
         case mavsdk::Offboard::PositionGlobalYaw::AltitudeType::RelHome:
             return MAVSDK_OFFBOARD_POSITION_GLOBAL_YAW_ALTITUDE_TYPE_REL_HOME;
@@ -283,29 +283,29 @@ translate_PositionGlobalYaw_AltitudeType_to_c(mavsdk::Offboard::PositionGlobalYa
     return MAVSDK_OFFBOARD_POSITION_GLOBAL_YAW_ALTITUDE_TYPE_REL_HOME;
 }
 
-static mavsdk_offboard_PositionGlobalYaw_t
-translate_PositionGlobalYaw_to_c(const mavsdk::Offboard::PositionGlobalYaw& cpp_struct) {
-    mavsdk_offboard_PositionGlobalYaw_t c_struct{};
+static mavsdk_offboard_position_global_yaw_t
+translate_position_global_yaw_to_c(const mavsdk::Offboard::PositionGlobalYaw& cpp_struct) {
+    mavsdk_offboard_position_global_yaw_t c_struct{};
     c_struct.lat_deg = cpp_struct.lat_deg;
     c_struct.lon_deg = cpp_struct.lon_deg;
     c_struct.alt_m = cpp_struct.alt_m;
     c_struct.yaw_deg = cpp_struct.yaw_deg;
-    c_struct.altitude_type = translate_PositionGlobalYaw_AltitudeType_to_c(cpp_struct.altitude_type);
+    c_struct.altitude_type = translate_position_global_yaw_altitude_type_to_c(cpp_struct.altitude_type);
     return c_struct;
 }
 
-void mavsdk_offboard_PositionGlobalYaw_destroy(
-    mavsdk_offboard_PositionGlobalYaw_t* target) {
+void mavsdk_offboard_position_global_yaw_destroy(
+    mavsdk_offboard_position_global_yaw_t* target) {
     if (!target) return;
 }
 
-void mavsdk_offboard_PositionGlobalYaw_array_destroy(
-    mavsdk_offboard_PositionGlobalYaw_t** array,
+void mavsdk_offboard_position_global_yaw_array_destroy(
+    mavsdk_offboard_position_global_yaw_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_offboard_PositionGlobalYaw_destroy(&(*array)[i]);
+        mavsdk_offboard_position_global_yaw_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -314,7 +314,7 @@ void mavsdk_offboard_PositionGlobalYaw_array_destroy(
 
 
 static mavsdk::Offboard::VelocityBodyYawspeed
-translate_VelocityBodyYawspeed_from_c(const mavsdk_offboard_VelocityBodyYawspeed_t& c_struct) {
+translate_velocity_body_yawspeed_from_c(const mavsdk_offboard_velocity_body_yawspeed_t& c_struct) {
     mavsdk::Offboard::VelocityBodyYawspeed cpp_struct{};
     cpp_struct.forward_m_s = c_struct.forward_m_s;
     cpp_struct.right_m_s = c_struct.right_m_s;
@@ -323,9 +323,9 @@ translate_VelocityBodyYawspeed_from_c(const mavsdk_offboard_VelocityBodyYawspeed
     return cpp_struct;
 }
 
-static mavsdk_offboard_VelocityBodyYawspeed_t
-translate_VelocityBodyYawspeed_to_c(const mavsdk::Offboard::VelocityBodyYawspeed& cpp_struct) {
-    mavsdk_offboard_VelocityBodyYawspeed_t c_struct{};
+static mavsdk_offboard_velocity_body_yawspeed_t
+translate_velocity_body_yawspeed_to_c(const mavsdk::Offboard::VelocityBodyYawspeed& cpp_struct) {
+    mavsdk_offboard_velocity_body_yawspeed_t c_struct{};
     c_struct.forward_m_s = cpp_struct.forward_m_s;
     c_struct.right_m_s = cpp_struct.right_m_s;
     c_struct.down_m_s = cpp_struct.down_m_s;
@@ -333,18 +333,18 @@ translate_VelocityBodyYawspeed_to_c(const mavsdk::Offboard::VelocityBodyYawspeed
     return c_struct;
 }
 
-void mavsdk_offboard_VelocityBodyYawspeed_destroy(
-    mavsdk_offboard_VelocityBodyYawspeed_t* target) {
+void mavsdk_offboard_velocity_body_yawspeed_destroy(
+    mavsdk_offboard_velocity_body_yawspeed_t* target) {
     if (!target) return;
 }
 
-void mavsdk_offboard_VelocityBodyYawspeed_array_destroy(
-    mavsdk_offboard_VelocityBodyYawspeed_t** array,
+void mavsdk_offboard_velocity_body_yawspeed_array_destroy(
+    mavsdk_offboard_velocity_body_yawspeed_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_offboard_VelocityBodyYawspeed_destroy(&(*array)[i]);
+        mavsdk_offboard_velocity_body_yawspeed_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -353,7 +353,7 @@ void mavsdk_offboard_VelocityBodyYawspeed_array_destroy(
 
 
 static mavsdk::Offboard::VelocityNedYaw
-translate_VelocityNedYaw_from_c(const mavsdk_offboard_VelocityNedYaw_t& c_struct) {
+translate_velocity_ned_yaw_from_c(const mavsdk_offboard_velocity_ned_yaw_t& c_struct) {
     mavsdk::Offboard::VelocityNedYaw cpp_struct{};
     cpp_struct.north_m_s = c_struct.north_m_s;
     cpp_struct.east_m_s = c_struct.east_m_s;
@@ -362,9 +362,9 @@ translate_VelocityNedYaw_from_c(const mavsdk_offboard_VelocityNedYaw_t& c_struct
     return cpp_struct;
 }
 
-static mavsdk_offboard_VelocityNedYaw_t
-translate_VelocityNedYaw_to_c(const mavsdk::Offboard::VelocityNedYaw& cpp_struct) {
-    mavsdk_offboard_VelocityNedYaw_t c_struct{};
+static mavsdk_offboard_velocity_ned_yaw_t
+translate_velocity_ned_yaw_to_c(const mavsdk::Offboard::VelocityNedYaw& cpp_struct) {
+    mavsdk_offboard_velocity_ned_yaw_t c_struct{};
     c_struct.north_m_s = cpp_struct.north_m_s;
     c_struct.east_m_s = cpp_struct.east_m_s;
     c_struct.down_m_s = cpp_struct.down_m_s;
@@ -372,18 +372,18 @@ translate_VelocityNedYaw_to_c(const mavsdk::Offboard::VelocityNedYaw& cpp_struct
     return c_struct;
 }
 
-void mavsdk_offboard_VelocityNedYaw_destroy(
-    mavsdk_offboard_VelocityNedYaw_t* target) {
+void mavsdk_offboard_velocity_ned_yaw_destroy(
+    mavsdk_offboard_velocity_ned_yaw_t* target) {
     if (!target) return;
 }
 
-void mavsdk_offboard_VelocityNedYaw_array_destroy(
-    mavsdk_offboard_VelocityNedYaw_t** array,
+void mavsdk_offboard_velocity_ned_yaw_array_destroy(
+    mavsdk_offboard_velocity_ned_yaw_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_offboard_VelocityNedYaw_destroy(&(*array)[i]);
+        mavsdk_offboard_velocity_ned_yaw_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -392,7 +392,7 @@ void mavsdk_offboard_VelocityNedYaw_array_destroy(
 
 
 static mavsdk::Offboard::AccelerationNed
-translate_AccelerationNed_from_c(const mavsdk_offboard_AccelerationNed_t& c_struct) {
+translate_acceleration_ned_from_c(const mavsdk_offboard_acceleration_ned_t& c_struct) {
     mavsdk::Offboard::AccelerationNed cpp_struct{};
     cpp_struct.north_m_s2 = c_struct.north_m_s2;
     cpp_struct.east_m_s2 = c_struct.east_m_s2;
@@ -400,27 +400,27 @@ translate_AccelerationNed_from_c(const mavsdk_offboard_AccelerationNed_t& c_stru
     return cpp_struct;
 }
 
-static mavsdk_offboard_AccelerationNed_t
-translate_AccelerationNed_to_c(const mavsdk::Offboard::AccelerationNed& cpp_struct) {
-    mavsdk_offboard_AccelerationNed_t c_struct{};
+static mavsdk_offboard_acceleration_ned_t
+translate_acceleration_ned_to_c(const mavsdk::Offboard::AccelerationNed& cpp_struct) {
+    mavsdk_offboard_acceleration_ned_t c_struct{};
     c_struct.north_m_s2 = cpp_struct.north_m_s2;
     c_struct.east_m_s2 = cpp_struct.east_m_s2;
     c_struct.down_m_s2 = cpp_struct.down_m_s2;
     return c_struct;
 }
 
-void mavsdk_offboard_AccelerationNed_destroy(
-    mavsdk_offboard_AccelerationNed_t* target) {
+void mavsdk_offboard_acceleration_ned_destroy(
+    mavsdk_offboard_acceleration_ned_t* target) {
     if (!target) return;
 }
 
-void mavsdk_offboard_AccelerationNed_array_destroy(
-    mavsdk_offboard_AccelerationNed_t** array,
+void mavsdk_offboard_acceleration_ned_array_destroy(
+    mavsdk_offboard_acceleration_ned_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_offboard_AccelerationNed_destroy(&(*array)[i]);
+        mavsdk_offboard_acceleration_ned_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -598,11 +598,11 @@ mavsdk_offboard_is_active(
 mavsdk_offboard_result_t
 mavsdk_offboard_set_attitude(
     mavsdk_offboard_t offboard,
-    mavsdk_offboard_Attitude_t attitude)
+    mavsdk_offboard_attitude_t attitude)
 {
     auto wrapper = static_cast<mavsdk_offboard_wrapper*>(offboard);
 
-    auto ret_value = wrapper->cpp_plugin->set_attitude(        translate_Attitude_from_c(attitude));
+    auto ret_value = wrapper->cpp_plugin->set_attitude(        translate_attitude_from_c(attitude));
 
     return translate_result(ret_value);
 }
@@ -612,11 +612,11 @@ mavsdk_offboard_set_attitude(
 mavsdk_offboard_result_t
 mavsdk_offboard_set_actuator_control(
     mavsdk_offboard_t offboard,
-    mavsdk_offboard_ActuatorControl_t actuator_control)
+    mavsdk_offboard_actuator_control_t actuator_control)
 {
     auto wrapper = static_cast<mavsdk_offboard_wrapper*>(offboard);
 
-    auto ret_value = wrapper->cpp_plugin->set_actuator_control(        translate_ActuatorControl_from_c(actuator_control));
+    auto ret_value = wrapper->cpp_plugin->set_actuator_control(        translate_actuator_control_from_c(actuator_control));
 
     return translate_result(ret_value);
 }
@@ -626,11 +626,11 @@ mavsdk_offboard_set_actuator_control(
 mavsdk_offboard_result_t
 mavsdk_offboard_set_attitude_rate(
     mavsdk_offboard_t offboard,
-    mavsdk_offboard_AttitudeRate_t attitude_rate)
+    mavsdk_offboard_attitude_rate_t attitude_rate)
 {
     auto wrapper = static_cast<mavsdk_offboard_wrapper*>(offboard);
 
-    auto ret_value = wrapper->cpp_plugin->set_attitude_rate(        translate_AttitudeRate_from_c(attitude_rate));
+    auto ret_value = wrapper->cpp_plugin->set_attitude_rate(        translate_attitude_rate_from_c(attitude_rate));
 
     return translate_result(ret_value);
 }
@@ -640,11 +640,11 @@ mavsdk_offboard_set_attitude_rate(
 mavsdk_offboard_result_t
 mavsdk_offboard_set_position_ned(
     mavsdk_offboard_t offboard,
-    mavsdk_offboard_PositionNedYaw_t position_ned_yaw)
+    mavsdk_offboard_position_ned_yaw_t position_ned_yaw)
 {
     auto wrapper = static_cast<mavsdk_offboard_wrapper*>(offboard);
 
-    auto ret_value = wrapper->cpp_plugin->set_position_ned(        translate_PositionNedYaw_from_c(position_ned_yaw));
+    auto ret_value = wrapper->cpp_plugin->set_position_ned(        translate_position_ned_yaw_from_c(position_ned_yaw));
 
     return translate_result(ret_value);
 }
@@ -654,11 +654,11 @@ mavsdk_offboard_set_position_ned(
 mavsdk_offboard_result_t
 mavsdk_offboard_set_position_global(
     mavsdk_offboard_t offboard,
-    mavsdk_offboard_PositionGlobalYaw_t position_global_yaw)
+    mavsdk_offboard_position_global_yaw_t position_global_yaw)
 {
     auto wrapper = static_cast<mavsdk_offboard_wrapper*>(offboard);
 
-    auto ret_value = wrapper->cpp_plugin->set_position_global(        translate_PositionGlobalYaw_from_c(position_global_yaw));
+    auto ret_value = wrapper->cpp_plugin->set_position_global(        translate_position_global_yaw_from_c(position_global_yaw));
 
     return translate_result(ret_value);
 }
@@ -668,11 +668,11 @@ mavsdk_offboard_set_position_global(
 mavsdk_offboard_result_t
 mavsdk_offboard_set_velocity_body(
     mavsdk_offboard_t offboard,
-    mavsdk_offboard_VelocityBodyYawspeed_t velocity_body_yawspeed)
+    mavsdk_offboard_velocity_body_yawspeed_t velocity_body_yawspeed)
 {
     auto wrapper = static_cast<mavsdk_offboard_wrapper*>(offboard);
 
-    auto ret_value = wrapper->cpp_plugin->set_velocity_body(        translate_VelocityBodyYawspeed_from_c(velocity_body_yawspeed));
+    auto ret_value = wrapper->cpp_plugin->set_velocity_body(        translate_velocity_body_yawspeed_from_c(velocity_body_yawspeed));
 
     return translate_result(ret_value);
 }
@@ -682,11 +682,11 @@ mavsdk_offboard_set_velocity_body(
 mavsdk_offboard_result_t
 mavsdk_offboard_set_velocity_ned(
     mavsdk_offboard_t offboard,
-    mavsdk_offboard_VelocityNedYaw_t velocity_ned_yaw)
+    mavsdk_offboard_velocity_ned_yaw_t velocity_ned_yaw)
 {
     auto wrapper = static_cast<mavsdk_offboard_wrapper*>(offboard);
 
-    auto ret_value = wrapper->cpp_plugin->set_velocity_ned(        translate_VelocityNedYaw_from_c(velocity_ned_yaw));
+    auto ret_value = wrapper->cpp_plugin->set_velocity_ned(        translate_velocity_ned_yaw_from_c(velocity_ned_yaw));
 
     return translate_result(ret_value);
 }
@@ -696,12 +696,12 @@ mavsdk_offboard_set_velocity_ned(
 mavsdk_offboard_result_t
 mavsdk_offboard_set_position_velocity_ned(
     mavsdk_offboard_t offboard,
-    mavsdk_offboard_PositionNedYaw_t position_ned_yaw,
-    mavsdk_offboard_VelocityNedYaw_t velocity_ned_yaw)
+    mavsdk_offboard_position_ned_yaw_t position_ned_yaw,
+    mavsdk_offboard_velocity_ned_yaw_t velocity_ned_yaw)
 {
     auto wrapper = static_cast<mavsdk_offboard_wrapper*>(offboard);
 
-    auto ret_value = wrapper->cpp_plugin->set_position_velocity_ned(        translate_PositionNedYaw_from_c(position_ned_yaw),        translate_VelocityNedYaw_from_c(velocity_ned_yaw));
+    auto ret_value = wrapper->cpp_plugin->set_position_velocity_ned(        translate_position_ned_yaw_from_c(position_ned_yaw),        translate_velocity_ned_yaw_from_c(velocity_ned_yaw));
 
     return translate_result(ret_value);
 }
@@ -711,13 +711,13 @@ mavsdk_offboard_set_position_velocity_ned(
 mavsdk_offboard_result_t
 mavsdk_offboard_set_position_velocity_acceleration_ned(
     mavsdk_offboard_t offboard,
-    mavsdk_offboard_PositionNedYaw_t position_ned_yaw,
-    mavsdk_offboard_VelocityNedYaw_t velocity_ned_yaw,
-    mavsdk_offboard_AccelerationNed_t acceleration_ned)
+    mavsdk_offboard_position_ned_yaw_t position_ned_yaw,
+    mavsdk_offboard_velocity_ned_yaw_t velocity_ned_yaw,
+    mavsdk_offboard_acceleration_ned_t acceleration_ned)
 {
     auto wrapper = static_cast<mavsdk_offboard_wrapper*>(offboard);
 
-    auto ret_value = wrapper->cpp_plugin->set_position_velocity_acceleration_ned(        translate_PositionNedYaw_from_c(position_ned_yaw),        translate_VelocityNedYaw_from_c(velocity_ned_yaw),        translate_AccelerationNed_from_c(acceleration_ned));
+    auto ret_value = wrapper->cpp_plugin->set_position_velocity_acceleration_ned(        translate_position_ned_yaw_from_c(position_ned_yaw),        translate_velocity_ned_yaw_from_c(velocity_ned_yaw),        translate_acceleration_ned_from_c(acceleration_ned));
 
     return translate_result(ret_value);
 }
@@ -727,11 +727,11 @@ mavsdk_offboard_set_position_velocity_acceleration_ned(
 mavsdk_offboard_result_t
 mavsdk_offboard_set_acceleration_ned(
     mavsdk_offboard_t offboard,
-    mavsdk_offboard_AccelerationNed_t acceleration_ned)
+    mavsdk_offboard_acceleration_ned_t acceleration_ned)
 {
     auto wrapper = static_cast<mavsdk_offboard_wrapper*>(offboard);
 
-    auto ret_value = wrapper->cpp_plugin->set_acceleration_ned(        translate_AccelerationNed_from_c(acceleration_ned));
+    auto ret_value = wrapper->cpp_plugin->set_acceleration_ned(        translate_acceleration_ned_from_c(acceleration_ned));
 
     return translate_result(ret_value);
 }

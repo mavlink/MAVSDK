@@ -12,7 +12,7 @@
 
 
 static mavsdk::ComponentMetadataServer::MetadataType
-translate_MetadataType_from_c(mavsdk_component_metadata_server_MetadataType_t c_enum) {
+translate_metadata_type_from_c(mavsdk_component_metadata_server_metadata_type_t c_enum) {
     switch(c_enum) {
         case MAVSDK_COMPONENT_METADATA_SERVER_METADATA_TYPE_PARAMETER:
             return mavsdk::ComponentMetadataServer::MetadataType::Parameter;
@@ -24,8 +24,8 @@ translate_MetadataType_from_c(mavsdk_component_metadata_server_MetadataType_t c_
     return mavsdk::ComponentMetadataServer::MetadataType::Parameter;
 }
 
-static mavsdk_component_metadata_server_MetadataType_t
-translate_MetadataType_to_c(mavsdk::ComponentMetadataServer::MetadataType cpp_enum) {
+static mavsdk_component_metadata_server_metadata_type_t
+translate_metadata_type_to_c(mavsdk::ComponentMetadataServer::MetadataType cpp_enum) {
     switch(cpp_enum) {
         case mavsdk::ComponentMetadataServer::MetadataType::Parameter:
             return MAVSDK_COMPONENT_METADATA_SERVER_METADATA_TYPE_PARAMETER;
@@ -40,25 +40,25 @@ translate_MetadataType_to_c(mavsdk::ComponentMetadataServer::MetadataType cpp_en
 
 
 static mavsdk::ComponentMetadataServer::Metadata
-translate_Metadata_from_c(const mavsdk_component_metadata_server_Metadata_t& c_struct) {
+translate_metadata_from_c(const mavsdk_component_metadata_server_metadata_t& c_struct) {
     mavsdk::ComponentMetadataServer::Metadata cpp_struct{};
-    cpp_struct.type = translate_MetadataType_from_c(c_struct.type);
+    cpp_struct.type = translate_metadata_type_from_c(c_struct.type);
     if (c_struct.json_metadata) {
         cpp_struct.json_metadata = c_struct.json_metadata;
     }
     return cpp_struct;
 }
 
-static mavsdk_component_metadata_server_Metadata_t
-translate_Metadata_to_c(const mavsdk::ComponentMetadataServer::Metadata& cpp_struct) {
-    mavsdk_component_metadata_server_Metadata_t c_struct{};
-    c_struct.type = translate_MetadataType_to_c(cpp_struct.type);
+static mavsdk_component_metadata_server_metadata_t
+translate_metadata_to_c(const mavsdk::ComponentMetadataServer::Metadata& cpp_struct) {
+    mavsdk_component_metadata_server_metadata_t c_struct{};
+    c_struct.type = translate_metadata_type_to_c(cpp_struct.type);
     c_struct.json_metadata = strdup(cpp_struct.json_metadata.c_str());
     return c_struct;
 }
 
-void mavsdk_component_metadata_server_Metadata_destroy(
-    mavsdk_component_metadata_server_Metadata_t* target) {
+void mavsdk_component_metadata_server_metadata_destroy(
+    mavsdk_component_metadata_server_metadata_t* target) {
     if (!target) return;
     if (target->json_metadata) {
         free((void*)target->json_metadata);
@@ -66,13 +66,13 @@ void mavsdk_component_metadata_server_Metadata_destroy(
     }
 }
 
-void mavsdk_component_metadata_server_Metadata_array_destroy(
-    mavsdk_component_metadata_server_Metadata_t** array,
+void mavsdk_component_metadata_server_metadata_array_destroy(
+    mavsdk_component_metadata_server_metadata_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_component_metadata_server_Metadata_destroy(&(*array)[i]);
+        mavsdk_component_metadata_server_metadata_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -171,7 +171,7 @@ void mavsdk_component_metadata_server_destroy(mavsdk_component_metadata_server_t
 void
 mavsdk_component_metadata_server_set_metadata(
     mavsdk_component_metadata_server_t component_metadata_server,
-    const mavsdk_component_metadata_server_Metadata_t* metadata,
+    const mavsdk_component_metadata_server_metadata_t* metadata,
     size_t metadata_size)
 {
     auto wrapper = static_cast<mavsdk_component_metadata_server_wrapper*>(component_metadata_server);
@@ -180,7 +180,7 @@ wrapper->cpp_plugin->set_metadata(        [&metadata, metadata_size]() {
             std::vector<mavsdk::ComponentMetadataServer::Metadata> vec;
             vec.reserve(metadata_size);
             for (size_t i = 0; i < metadata_size; i++) {
-                vec.push_back(translate_Metadata_from_c(metadata[i]));
+                vec.push_back(translate_metadata_from_c(metadata[i]));
             }
             return vec;
         }());

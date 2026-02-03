@@ -43,7 +43,7 @@ translate_result(mavsdk::ActionServer::Result cpp_result) {
 }
 
 static mavsdk::ActionServer::FlightMode
-translate_FlightMode_from_c(mavsdk_action_server_FlightMode_t c_enum) {
+translate_flight_mode_from_c(mavsdk_action_server_flight_mode_t c_enum) {
     switch(c_enum) {
         case MAVSDK_ACTION_SERVER_FLIGHT_MODE_UNKNOWN:
             return mavsdk::ActionServer::FlightMode::Unknown;
@@ -77,8 +77,8 @@ translate_FlightMode_from_c(mavsdk_action_server_FlightMode_t c_enum) {
     return mavsdk::ActionServer::FlightMode::Unknown;
 }
 
-static mavsdk_action_server_FlightMode_t
-translate_FlightMode_to_c(mavsdk::ActionServer::FlightMode cpp_enum) {
+static mavsdk_action_server_flight_mode_t
+translate_flight_mode_to_c(mavsdk::ActionServer::FlightMode cpp_enum) {
     switch(cpp_enum) {
         case mavsdk::ActionServer::FlightMode::Unknown:
             return MAVSDK_ACTION_SERVER_FLIGHT_MODE_UNKNOWN;
@@ -115,7 +115,7 @@ translate_FlightMode_to_c(mavsdk::ActionServer::FlightMode cpp_enum) {
 
 
 static mavsdk::ActionServer::AllowableFlightModes
-translate_AllowableFlightModes_from_c(const mavsdk_action_server_AllowableFlightModes_t& c_struct) {
+translate_allowable_flight_modes_from_c(const mavsdk_action_server_allowable_flight_modes_t& c_struct) {
     mavsdk::ActionServer::AllowableFlightModes cpp_struct{};
     cpp_struct.can_auto_mode = c_struct.can_auto_mode;
     cpp_struct.can_guided_mode = c_struct.can_guided_mode;
@@ -123,27 +123,27 @@ translate_AllowableFlightModes_from_c(const mavsdk_action_server_AllowableFlight
     return cpp_struct;
 }
 
-static mavsdk_action_server_AllowableFlightModes_t
-translate_AllowableFlightModes_to_c(const mavsdk::ActionServer::AllowableFlightModes& cpp_struct) {
-    mavsdk_action_server_AllowableFlightModes_t c_struct{};
+static mavsdk_action_server_allowable_flight_modes_t
+translate_allowable_flight_modes_to_c(const mavsdk::ActionServer::AllowableFlightModes& cpp_struct) {
+    mavsdk_action_server_allowable_flight_modes_t c_struct{};
     c_struct.can_auto_mode = cpp_struct.can_auto_mode;
     c_struct.can_guided_mode = cpp_struct.can_guided_mode;
     c_struct.can_stabilize_mode = cpp_struct.can_stabilize_mode;
     return c_struct;
 }
 
-void mavsdk_action_server_AllowableFlightModes_destroy(
-    mavsdk_action_server_AllowableFlightModes_t* target) {
+void mavsdk_action_server_allowable_flight_modes_destroy(
+    mavsdk_action_server_allowable_flight_modes_t* target) {
     if (!target) return;
 }
 
-void mavsdk_action_server_AllowableFlightModes_array_destroy(
-    mavsdk_action_server_AllowableFlightModes_t** array,
+void mavsdk_action_server_allowable_flight_modes_array_destroy(
+    mavsdk_action_server_allowable_flight_modes_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_action_server_AllowableFlightModes_destroy(&(*array)[i]);
+        mavsdk_action_server_allowable_flight_modes_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -152,33 +152,33 @@ void mavsdk_action_server_AllowableFlightModes_array_destroy(
 
 
 static mavsdk::ActionServer::ArmDisarm
-translate_ArmDisarm_from_c(const mavsdk_action_server_ArmDisarm_t& c_struct) {
+translate_arm_disarm_from_c(const mavsdk_action_server_arm_disarm_t& c_struct) {
     mavsdk::ActionServer::ArmDisarm cpp_struct{};
     cpp_struct.arm = c_struct.arm;
     cpp_struct.force = c_struct.force;
     return cpp_struct;
 }
 
-static mavsdk_action_server_ArmDisarm_t
-translate_ArmDisarm_to_c(const mavsdk::ActionServer::ArmDisarm& cpp_struct) {
-    mavsdk_action_server_ArmDisarm_t c_struct{};
+static mavsdk_action_server_arm_disarm_t
+translate_arm_disarm_to_c(const mavsdk::ActionServer::ArmDisarm& cpp_struct) {
+    mavsdk_action_server_arm_disarm_t c_struct{};
     c_struct.arm = cpp_struct.arm;
     c_struct.force = cpp_struct.force;
     return c_struct;
 }
 
-void mavsdk_action_server_ArmDisarm_destroy(
-    mavsdk_action_server_ArmDisarm_t* target) {
+void mavsdk_action_server_arm_disarm_destroy(
+    mavsdk_action_server_arm_disarm_t* target) {
     if (!target) return;
 }
 
-void mavsdk_action_server_ArmDisarm_array_destroy(
-    mavsdk_action_server_ArmDisarm_t** array,
+void mavsdk_action_server_arm_disarm_array_destroy(
+    mavsdk_action_server_arm_disarm_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_action_server_ArmDisarm_destroy(&(*array)[i]);
+        mavsdk_action_server_arm_disarm_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -288,7 +288,7 @@ mavsdk_action_server_arm_disarm_handle_t mavsdk_action_server_subscribe_arm_disa
                 if (callback) {
                     callback(
                         translate_result(result),
-                        translate_ArmDisarm_to_c(value),
+                        translate_arm_disarm_to_c(value),
                         user_data);
                 }
         });
@@ -325,7 +325,7 @@ mavsdk_action_server_flight_mode_change_handle_t mavsdk_action_server_subscribe_
                 if (callback) {
                     callback(
                         translate_result(result),
-                        translate_FlightMode_to_c(value),
+                        translate_flight_mode_to_c(value),
                         user_data);
                 }
         });
@@ -581,11 +581,11 @@ mavsdk_action_server_set_disarmable(
 mavsdk_action_server_result_t
 mavsdk_action_server_set_allowable_flight_modes(
     mavsdk_action_server_t action_server,
-    mavsdk_action_server_AllowableFlightModes_t flight_modes)
+    mavsdk_action_server_allowable_flight_modes_t flight_modes)
 {
     auto wrapper = static_cast<mavsdk_action_server_wrapper*>(action_server);
 
-    auto ret_value = wrapper->cpp_plugin->set_allowable_flight_modes(        translate_AllowableFlightModes_from_c(flight_modes));
+    auto ret_value = wrapper->cpp_plugin->set_allowable_flight_modes(        translate_allowable_flight_modes_from_c(flight_modes));
 
     return translate_result(ret_value);
 }
@@ -595,14 +595,14 @@ mavsdk_action_server_set_allowable_flight_modes(
 void
 mavsdk_action_server_get_allowable_flight_modes(
     mavsdk_action_server_t action_server,
-    mavsdk_action_server_AllowableFlightModes_t* flight_modes_out)
+    mavsdk_action_server_allowable_flight_modes_t* flight_modes_out)
 {
     auto wrapper = static_cast<mavsdk_action_server_wrapper*>(action_server);
 
     auto ret_value = wrapper->cpp_plugin->get_allowable_flight_modes();
 
     if (flight_modes_out != nullptr) {
-        *flight_modes_out = translate_AllowableFlightModes_to_c(ret_value);
+        *flight_modes_out = translate_allowable_flight_modes_to_c(ret_value);
     }
 }
 
@@ -625,11 +625,11 @@ mavsdk_action_server_set_armed_state(
 mavsdk_action_server_result_t
 mavsdk_action_server_set_flight_mode(
     mavsdk_action_server_t action_server,
-    mavsdk_action_server_FlightMode_t flight_mode)
+    mavsdk_action_server_flight_mode_t flight_mode)
 {
     auto wrapper = static_cast<mavsdk_action_server_wrapper*>(action_server);
 
-    auto ret_value = wrapper->cpp_plugin->set_flight_mode(        translate_FlightMode_from_c(flight_mode));
+    auto ret_value = wrapper->cpp_plugin->set_flight_mode(        translate_flight_mode_from_c(flight_mode));
 
     return translate_result(ret_value);
 }

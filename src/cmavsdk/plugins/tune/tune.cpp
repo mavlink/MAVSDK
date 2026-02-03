@@ -29,7 +29,7 @@ translate_result(mavsdk::Tune::Result cpp_result) {
 }
 
 static mavsdk::Tune::SongElement
-translate_SongElement_from_c(mavsdk_tune_SongElement_t c_enum) {
+translate_song_element_from_c(mavsdk_tune_song_element_t c_enum) {
     switch(c_enum) {
         case MAVSDK_TUNE_SONG_ELEMENT_STYLE_LEGATO:
             return mavsdk::Tune::SongElement::StyleLegato;
@@ -77,8 +77,8 @@ translate_SongElement_from_c(mavsdk_tune_SongElement_t c_enum) {
     return mavsdk::Tune::SongElement::StyleLegato;
 }
 
-static mavsdk_tune_SongElement_t
-translate_SongElement_to_c(mavsdk::Tune::SongElement cpp_enum) {
+static mavsdk_tune_song_element_t
+translate_song_element_to_c(mavsdk::Tune::SongElement cpp_enum) {
     switch(cpp_enum) {
         case mavsdk::Tune::SongElement::StyleLegato:
             return MAVSDK_TUNE_SONG_ELEMENT_STYLE_LEGATO;
@@ -129,31 +129,31 @@ translate_SongElement_to_c(mavsdk::Tune::SongElement cpp_enum) {
 
 
 static mavsdk::Tune::TuneDescription
-translate_TuneDescription_from_c(const mavsdk_tune_TuneDescription_t& c_struct) {
+translate_tune_description_from_c(const mavsdk_tune_tune_description_t& c_struct) {
     mavsdk::Tune::TuneDescription cpp_struct{};
     cpp_struct.song_elements.reserve(c_struct.song_elements_size);
     for (size_t i = 0; i < c_struct.song_elements_size; i++) {
         cpp_struct.song_elements.push_back(
-            translate_SongElement_from_c(c_struct.song_elements[i]));
+            translate_song_element_from_c(c_struct.song_elements[i]));
     }
     cpp_struct.tempo = c_struct.tempo;
     return cpp_struct;
 }
 
-static mavsdk_tune_TuneDescription_t
-translate_TuneDescription_to_c(const mavsdk::Tune::TuneDescription& cpp_struct) {
-    mavsdk_tune_TuneDescription_t c_struct{};
+static mavsdk_tune_tune_description_t
+translate_tune_description_to_c(const mavsdk::Tune::TuneDescription& cpp_struct) {
+    mavsdk_tune_tune_description_t c_struct{};
     c_struct.song_elements_size = cpp_struct.song_elements.size();
-    c_struct.song_elements = new mavsdk_tune_SongElement_t[c_struct.song_elements_size];
+    c_struct.song_elements = new mavsdk_tune_song_element_t[c_struct.song_elements_size];
     for (size_t i = 0; i < c_struct.song_elements_size; i++) {
-        c_struct.song_elements[i] = translate_SongElement_to_c(cpp_struct.song_elements[i]);
+        c_struct.song_elements[i] = translate_song_element_to_c(cpp_struct.song_elements[i]);
     }
     c_struct.tempo = cpp_struct.tempo;
     return c_struct;
 }
 
-void mavsdk_tune_TuneDescription_destroy(
-    mavsdk_tune_TuneDescription_t* target) {
+void mavsdk_tune_tune_description_destroy(
+    mavsdk_tune_tune_description_t* target) {
     if (!target) return;
     if (target->song_elements) {
         delete[] target->song_elements;
@@ -162,13 +162,13 @@ void mavsdk_tune_TuneDescription_destroy(
     }
 }
 
-void mavsdk_tune_TuneDescription_array_destroy(
-    mavsdk_tune_TuneDescription_t** array,
+void mavsdk_tune_tune_description_array_destroy(
+    mavsdk_tune_tune_description_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_tune_TuneDescription_destroy(&(*array)[i]);
+        mavsdk_tune_tune_description_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -266,14 +266,14 @@ void mavsdk_tune_destroy(mavsdk_tune_t tune) {
 // PlayTune async
 void mavsdk_tune_play_tune_async(
     mavsdk_tune_t tune,
-    mavsdk_tune_TuneDescription_t tune_description,
+    mavsdk_tune_tune_description_t tune_description,
     mavsdk_tune_play_tune_callback_t callback,
     void* user_data)
 {
     auto wrapper = static_cast<mavsdk_tune_wrapper*>(tune);
 
     wrapper->cpp_plugin->play_tune_async(
-        translate_TuneDescription_from_c(tune_description),
+        translate_tune_description_from_c(tune_description),
         [callback, user_data](
             mavsdk::Tune::Result result) {
                 if (callback) {
@@ -289,11 +289,11 @@ void mavsdk_tune_play_tune_async(
 mavsdk_tune_result_t
 mavsdk_tune_play_tune(
     mavsdk_tune_t tune,
-    mavsdk_tune_TuneDescription_t tune_description)
+    mavsdk_tune_tune_description_t tune_description)
 {
     auto wrapper = static_cast<mavsdk_tune_wrapper*>(tune);
 
-    auto ret_value = wrapper->cpp_plugin->play_tune(        translate_TuneDescription_from_c(tune_description));
+    auto ret_value = wrapper->cpp_plugin->play_tune(        translate_tune_description_from_c(tune_description));
 
     return translate_result(ret_value);
 }

@@ -31,7 +31,7 @@ translate_result(mavsdk::Gripper::Result cpp_result) {
 }
 
 static mavsdk::Gripper::GripperAction
-translate_GripperAction_from_c(mavsdk_gripper_GripperAction_t c_enum) {
+translate_gripper_action_from_c(mavsdk_gripper_gripper_action_t c_enum) {
     switch(c_enum) {
         case MAVSDK_GRIPPER_GRIPPER_ACTION_RELEASE:
             return mavsdk::Gripper::GripperAction::Release;
@@ -41,8 +41,8 @@ translate_GripperAction_from_c(mavsdk_gripper_GripperAction_t c_enum) {
     return mavsdk::Gripper::GripperAction::Release;
 }
 
-static mavsdk_gripper_GripperAction_t
-translate_GripperAction_to_c(mavsdk::Gripper::GripperAction cpp_enum) {
+static mavsdk_gripper_gripper_action_t
+translate_gripper_action_to_c(mavsdk::Gripper::GripperAction cpp_enum) {
     switch(cpp_enum) {
         case mavsdk::Gripper::GripperAction::Release:
             return MAVSDK_GRIPPER_GRIPPER_ACTION_RELEASE;

@@ -39,7 +39,7 @@ typedef enum {
     MAVSDK_ACTION_ORBIT_YAW_BEHAVIOR_HOLD_FRONT_TANGENT_TO_CIRCLE = 3,
     /**  Yaw controlled by RC input. */
     MAVSDK_ACTION_ORBIT_YAW_BEHAVIOR_RC_CONTROLLED = 4,
-} mavsdk_action_OrbitYawBehavior_t;
+} mavsdk_action_orbit_yaw_behavior_t;
 
 
 // ===== Structs =====
@@ -562,7 +562,7 @@ CMAVSDK_EXPORT void mavsdk_action_do_orbit_async(
     mavsdk_action_t action,
     float radius_m,
     float velocity_ms,
-    mavsdk_action_OrbitYawBehavior_t yaw_behavior,
+    mavsdk_action_orbit_yaw_behavior_t yaw_behavior,
     double latitude_deg,
     double longitude_deg,
     double absolute_altitude_m,
@@ -584,7 +584,7 @@ mavsdk_action_do_orbit(
     mavsdk_action_t action,
     float radius_m,
     float velocity_ms,
-    mavsdk_action_OrbitYawBehavior_t yaw_behavior,
+    mavsdk_action_orbit_yaw_behavior_t yaw_behavior,
     double latitude_deg,
     double longitude_deg,
     double absolute_altitude_m);

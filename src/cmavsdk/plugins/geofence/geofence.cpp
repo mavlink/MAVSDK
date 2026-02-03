@@ -33,7 +33,7 @@ translate_result(mavsdk::Geofence::Result cpp_result) {
 }
 
 static mavsdk::Geofence::FenceType
-translate_FenceType_from_c(mavsdk_geofence_FenceType_t c_enum) {
+translate_fence_type_from_c(mavsdk_geofence_fence_type_t c_enum) {
     switch(c_enum) {
         case MAVSDK_GEOFENCE_FENCE_TYPE_INCLUSION:
             return mavsdk::Geofence::FenceType::Inclusion;
@@ -43,8 +43,8 @@ translate_FenceType_from_c(mavsdk_geofence_FenceType_t c_enum) {
     return mavsdk::Geofence::FenceType::Inclusion;
 }
 
-static mavsdk_geofence_FenceType_t
-translate_FenceType_to_c(mavsdk::Geofence::FenceType cpp_enum) {
+static mavsdk_geofence_fence_type_t
+translate_fence_type_to_c(mavsdk::Geofence::FenceType cpp_enum) {
     switch(cpp_enum) {
         case mavsdk::Geofence::FenceType::Inclusion:
             return MAVSDK_GEOFENCE_FENCE_TYPE_INCLUSION;
@@ -57,33 +57,33 @@ translate_FenceType_to_c(mavsdk::Geofence::FenceType cpp_enum) {
 
 
 static mavsdk::Geofence::Point
-translate_Point_from_c(const mavsdk_geofence_Point_t& c_struct) {
+translate_point_from_c(const mavsdk_geofence_point_t& c_struct) {
     mavsdk::Geofence::Point cpp_struct{};
     cpp_struct.latitude_deg = c_struct.latitude_deg;
     cpp_struct.longitude_deg = c_struct.longitude_deg;
     return cpp_struct;
 }
 
-static mavsdk_geofence_Point_t
-translate_Point_to_c(const mavsdk::Geofence::Point& cpp_struct) {
-    mavsdk_geofence_Point_t c_struct{};
+static mavsdk_geofence_point_t
+translate_point_to_c(const mavsdk::Geofence::Point& cpp_struct) {
+    mavsdk_geofence_point_t c_struct{};
     c_struct.latitude_deg = cpp_struct.latitude_deg;
     c_struct.longitude_deg = cpp_struct.longitude_deg;
     return c_struct;
 }
 
-void mavsdk_geofence_Point_destroy(
-    mavsdk_geofence_Point_t* target) {
+void mavsdk_geofence_point_destroy(
+    mavsdk_geofence_point_t* target) {
     if (!target) return;
 }
 
-void mavsdk_geofence_Point_array_destroy(
-    mavsdk_geofence_Point_t** array,
+void mavsdk_geofence_point_array_destroy(
+    mavsdk_geofence_point_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_geofence_Point_destroy(&(*array)[i]);
+        mavsdk_geofence_point_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -92,35 +92,35 @@ void mavsdk_geofence_Point_array_destroy(
 
 
 static mavsdk::Geofence::Polygon
-translate_Polygon_from_c(const mavsdk_geofence_Polygon_t& c_struct) {
+translate_polygon_from_c(const mavsdk_geofence_polygon_t& c_struct) {
     mavsdk::Geofence::Polygon cpp_struct{};
     cpp_struct.points.reserve(c_struct.points_size);
     for (size_t i = 0; i < c_struct.points_size; i++) {
         cpp_struct.points.push_back(
-            translate_Point_from_c(c_struct.points[i]));
+            translate_point_from_c(c_struct.points[i]));
     }
-    cpp_struct.fence_type = translate_FenceType_from_c(c_struct.fence_type);
+    cpp_struct.fence_type = translate_fence_type_from_c(c_struct.fence_type);
     return cpp_struct;
 }
 
-static mavsdk_geofence_Polygon_t
-translate_Polygon_to_c(const mavsdk::Geofence::Polygon& cpp_struct) {
-    mavsdk_geofence_Polygon_t c_struct{};
+static mavsdk_geofence_polygon_t
+translate_polygon_to_c(const mavsdk::Geofence::Polygon& cpp_struct) {
+    mavsdk_geofence_polygon_t c_struct{};
     c_struct.points_size = cpp_struct.points.size();
-    c_struct.points = new mavsdk_geofence_Point_t[c_struct.points_size];
+    c_struct.points = new mavsdk_geofence_point_t[c_struct.points_size];
     for (size_t i = 0; i < c_struct.points_size; i++) {
-        c_struct.points[i] = translate_Point_to_c(cpp_struct.points[i]);
+        c_struct.points[i] = translate_point_to_c(cpp_struct.points[i]);
     }
-    c_struct.fence_type = translate_FenceType_to_c(cpp_struct.fence_type);
+    c_struct.fence_type = translate_fence_type_to_c(cpp_struct.fence_type);
     return c_struct;
 }
 
-void mavsdk_geofence_Polygon_destroy(
-    mavsdk_geofence_Polygon_t* target) {
+void mavsdk_geofence_polygon_destroy(
+    mavsdk_geofence_polygon_t* target) {
     if (!target) return;
     if (target->points) {
         for (size_t i = 0; i < target->points_size; i++) {
-            mavsdk_geofence_Point_destroy(&target->points[i]);
+            mavsdk_geofence_point_destroy(&target->points[i]);
         }
         delete[] target->points;
         target->points = nullptr;
@@ -128,13 +128,13 @@ void mavsdk_geofence_Polygon_destroy(
     }
 }
 
-void mavsdk_geofence_Polygon_array_destroy(
-    mavsdk_geofence_Polygon_t** array,
+void mavsdk_geofence_polygon_array_destroy(
+    mavsdk_geofence_polygon_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_geofence_Polygon_destroy(&(*array)[i]);
+        mavsdk_geofence_polygon_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -143,35 +143,35 @@ void mavsdk_geofence_Polygon_array_destroy(
 
 
 static mavsdk::Geofence::Circle
-translate_Circle_from_c(const mavsdk_geofence_Circle_t& c_struct) {
+translate_circle_from_c(const mavsdk_geofence_circle_t& c_struct) {
     mavsdk::Geofence::Circle cpp_struct{};
-    cpp_struct.point = translate_Point_from_c(c_struct.point);
+    cpp_struct.point = translate_point_from_c(c_struct.point);
     cpp_struct.radius = c_struct.radius;
-    cpp_struct.fence_type = translate_FenceType_from_c(c_struct.fence_type);
+    cpp_struct.fence_type = translate_fence_type_from_c(c_struct.fence_type);
     return cpp_struct;
 }
 
-static mavsdk_geofence_Circle_t
-translate_Circle_to_c(const mavsdk::Geofence::Circle& cpp_struct) {
-    mavsdk_geofence_Circle_t c_struct{};
-    c_struct.point = translate_Point_to_c(cpp_struct.point);
+static mavsdk_geofence_circle_t
+translate_circle_to_c(const mavsdk::Geofence::Circle& cpp_struct) {
+    mavsdk_geofence_circle_t c_struct{};
+    c_struct.point = translate_point_to_c(cpp_struct.point);
     c_struct.radius = cpp_struct.radius;
-    c_struct.fence_type = translate_FenceType_to_c(cpp_struct.fence_type);
+    c_struct.fence_type = translate_fence_type_to_c(cpp_struct.fence_type);
     return c_struct;
 }
 
-void mavsdk_geofence_Circle_destroy(
-    mavsdk_geofence_Circle_t* target) {
+void mavsdk_geofence_circle_destroy(
+    mavsdk_geofence_circle_t* target) {
     if (!target) return;
 }
 
-void mavsdk_geofence_Circle_array_destroy(
-    mavsdk_geofence_Circle_t** array,
+void mavsdk_geofence_circle_array_destroy(
+    mavsdk_geofence_circle_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_geofence_Circle_destroy(&(*array)[i]);
+        mavsdk_geofence_circle_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -180,43 +180,43 @@ void mavsdk_geofence_Circle_array_destroy(
 
 
 static mavsdk::Geofence::GeofenceData
-translate_GeofenceData_from_c(const mavsdk_geofence_GeofenceData_t& c_struct) {
+translate_geofence_data_from_c(const mavsdk_geofence_geofence_data_t& c_struct) {
     mavsdk::Geofence::GeofenceData cpp_struct{};
     cpp_struct.polygons.reserve(c_struct.polygons_size);
     for (size_t i = 0; i < c_struct.polygons_size; i++) {
         cpp_struct.polygons.push_back(
-            translate_Polygon_from_c(c_struct.polygons[i]));
+            translate_polygon_from_c(c_struct.polygons[i]));
     }
     cpp_struct.circles.reserve(c_struct.circles_size);
     for (size_t i = 0; i < c_struct.circles_size; i++) {
         cpp_struct.circles.push_back(
-            translate_Circle_from_c(c_struct.circles[i]));
+            translate_circle_from_c(c_struct.circles[i]));
     }
     return cpp_struct;
 }
 
-static mavsdk_geofence_GeofenceData_t
-translate_GeofenceData_to_c(const mavsdk::Geofence::GeofenceData& cpp_struct) {
-    mavsdk_geofence_GeofenceData_t c_struct{};
+static mavsdk_geofence_geofence_data_t
+translate_geofence_data_to_c(const mavsdk::Geofence::GeofenceData& cpp_struct) {
+    mavsdk_geofence_geofence_data_t c_struct{};
     c_struct.polygons_size = cpp_struct.polygons.size();
-    c_struct.polygons = new mavsdk_geofence_Polygon_t[c_struct.polygons_size];
+    c_struct.polygons = new mavsdk_geofence_polygon_t[c_struct.polygons_size];
     for (size_t i = 0; i < c_struct.polygons_size; i++) {
-        c_struct.polygons[i] = translate_Polygon_to_c(cpp_struct.polygons[i]);
+        c_struct.polygons[i] = translate_polygon_to_c(cpp_struct.polygons[i]);
     }
     c_struct.circles_size = cpp_struct.circles.size();
-    c_struct.circles = new mavsdk_geofence_Circle_t[c_struct.circles_size];
+    c_struct.circles = new mavsdk_geofence_circle_t[c_struct.circles_size];
     for (size_t i = 0; i < c_struct.circles_size; i++) {
-        c_struct.circles[i] = translate_Circle_to_c(cpp_struct.circles[i]);
+        c_struct.circles[i] = translate_circle_to_c(cpp_struct.circles[i]);
     }
     return c_struct;
 }
 
-void mavsdk_geofence_GeofenceData_destroy(
-    mavsdk_geofence_GeofenceData_t* target) {
+void mavsdk_geofence_geofence_data_destroy(
+    mavsdk_geofence_geofence_data_t* target) {
     if (!target) return;
     if (target->polygons) {
         for (size_t i = 0; i < target->polygons_size; i++) {
-            mavsdk_geofence_Polygon_destroy(&target->polygons[i]);
+            mavsdk_geofence_polygon_destroy(&target->polygons[i]);
         }
         delete[] target->polygons;
         target->polygons = nullptr;
@@ -224,7 +224,7 @@ void mavsdk_geofence_GeofenceData_destroy(
     }
     if (target->circles) {
         for (size_t i = 0; i < target->circles_size; i++) {
-            mavsdk_geofence_Circle_destroy(&target->circles[i]);
+            mavsdk_geofence_circle_destroy(&target->circles[i]);
         }
         delete[] target->circles;
         target->circles = nullptr;
@@ -232,13 +232,13 @@ void mavsdk_geofence_GeofenceData_destroy(
     }
 }
 
-void mavsdk_geofence_GeofenceData_array_destroy(
-    mavsdk_geofence_GeofenceData_t** array,
+void mavsdk_geofence_geofence_data_array_destroy(
+    mavsdk_geofence_geofence_data_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_geofence_GeofenceData_destroy(&(*array)[i]);
+        mavsdk_geofence_geofence_data_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -336,14 +336,14 @@ void mavsdk_geofence_destroy(mavsdk_geofence_t geofence) {
 // UploadGeofence async
 void mavsdk_geofence_upload_geofence_async(
     mavsdk_geofence_t geofence,
-    mavsdk_geofence_GeofenceData_t geofence_data,
+    mavsdk_geofence_geofence_data_t geofence_data,
     mavsdk_geofence_upload_geofence_callback_t callback,
     void* user_data)
 {
     auto wrapper = static_cast<mavsdk_geofence_wrapper*>(geofence);
 
     wrapper->cpp_plugin->upload_geofence_async(
-        translate_GeofenceData_from_c(geofence_data),
+        translate_geofence_data_from_c(geofence_data),
         [callback, user_data](
             mavsdk::Geofence::Result result) {
                 if (callback) {
@@ -359,11 +359,11 @@ void mavsdk_geofence_upload_geofence_async(
 mavsdk_geofence_result_t
 mavsdk_geofence_upload_geofence(
     mavsdk_geofence_t geofence,
-    mavsdk_geofence_GeofenceData_t geofence_data)
+    mavsdk_geofence_geofence_data_t geofence_data)
 {
     auto wrapper = static_cast<mavsdk_geofence_wrapper*>(geofence);
 
-    auto ret_value = wrapper->cpp_plugin->upload_geofence(        translate_GeofenceData_from_c(geofence_data));
+    auto ret_value = wrapper->cpp_plugin->upload_geofence(        translate_geofence_data_from_c(geofence_data));
 
     return translate_result(ret_value);
 }

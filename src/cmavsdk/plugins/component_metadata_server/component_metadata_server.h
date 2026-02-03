@@ -35,7 +35,7 @@ typedef enum {
     MAVSDK_COMPONENT_METADATA_SERVER_METADATA_TYPE_EVENTS = 1,
     /**  Actuator definitions. */
     MAVSDK_COMPONENT_METADATA_SERVER_METADATA_TYPE_ACTUATORS = 2,
-} mavsdk_component_metadata_server_MetadataType_t;
+} mavsdk_component_metadata_server_metadata_type_t;
 
 
 // ===== Structs =====
@@ -43,17 +43,17 @@ typedef enum {
  * @brief The metadata type and content
  *
  * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_component_metadata_server_Metadata_destroy() when done to avoid memory leaks.
+ *       mavsdk_component_metadata_server_metadata_destroy() when done to avoid memory leaks.
  */
 typedef struct CMAVSDK_EXPORT {
     /**  The metadata type */
-    mavsdk_component_metadata_server_MetadataType_t type;
+    mavsdk_component_metadata_server_metadata_type_t type;
     /**  The JSON metadata */
     char* json_metadata;
-} mavsdk_component_metadata_server_Metadata_t;
+} mavsdk_component_metadata_server_metadata_t;
 
 /**
- * @brief Destroy a Metadata struct.
+ * @brief Destroy a metadata struct.
  *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
@@ -62,11 +62,11 @@ typedef struct CMAVSDK_EXPORT {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-CMAVSDK_EXPORT void mavsdk_component_metadata_server_Metadata_destroy(
-    mavsdk_component_metadata_server_Metadata_t* target);
+CMAVSDK_EXPORT void mavsdk_component_metadata_server_metadata_destroy(
+    mavsdk_component_metadata_server_metadata_t* target);
 
 /**
- * @brief Destroy an array of Metadata structs.
+ * @brief Destroy an array of metadata structs.
  *
  * Frees all memory allocated for the array and its elements, including any
  * nested dynamic allocations. Must be called to avoid memory leaks.
@@ -74,8 +74,8 @@ CMAVSDK_EXPORT void mavsdk_component_metadata_server_Metadata_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-CMAVSDK_EXPORT void mavsdk_component_metadata_server_Metadata_array_destroy(
-    mavsdk_component_metadata_server_Metadata_t** array,
+CMAVSDK_EXPORT void mavsdk_component_metadata_server_metadata_array_destroy(
+    mavsdk_component_metadata_server_metadata_t** array,
     size_t size);
 
 
@@ -175,7 +175,7 @@ CMAVSDK_EXPORT
 void
 mavsdk_component_metadata_server_set_metadata(
     mavsdk_component_metadata_server_t component_metadata_server,
-    const mavsdk_component_metadata_server_Metadata_t* metadata,
+    const mavsdk_component_metadata_server_metadata_t* metadata,
     size_t metadata_size);
 
 

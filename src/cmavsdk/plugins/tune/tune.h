@@ -71,7 +71,7 @@ typedef enum {
     MAVSDK_TUNE_SONG_ELEMENT_OCTAVE_UP = 19,
     /**  After this element, shift the note 1 octave down. */
     MAVSDK_TUNE_SONG_ELEMENT_OCTAVE_DOWN = 20,
-} mavsdk_tune_SongElement_t;
+} mavsdk_tune_song_element_t;
 
 
 // ===== Structs =====
@@ -79,18 +79,18 @@ typedef enum {
  * @brief Tune description, containing song elements and tempo.
  *
  * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_tune_TuneDescription_destroy() when done to avoid memory leaks.
+ *       mavsdk_tune_tune_description_destroy() when done to avoid memory leaks.
  */
 typedef struct CMAVSDK_EXPORT {
     /**  The list of song elements (notes, pauses, ...) to be played */
-    mavsdk_tune_SongElement_t* song_elements;
+    mavsdk_tune_song_element_t* song_elements;
     size_t song_elements_size;
     /**  The tempo of the song (range: 32 - 255) */
     int32_t tempo;
-} mavsdk_tune_TuneDescription_t;
+} mavsdk_tune_tune_description_t;
 
 /**
- * @brief Destroy a TuneDescription struct.
+ * @brief Destroy a tune_description struct.
  *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
@@ -99,11 +99,11 @@ typedef struct CMAVSDK_EXPORT {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-CMAVSDK_EXPORT void mavsdk_tune_TuneDescription_destroy(
-    mavsdk_tune_TuneDescription_t* target);
+CMAVSDK_EXPORT void mavsdk_tune_tune_description_destroy(
+    mavsdk_tune_tune_description_t* target);
 
 /**
- * @brief Destroy an array of TuneDescription structs.
+ * @brief Destroy an array of tune_description structs.
  *
  * Frees all memory allocated for the array and its elements, including any
  * nested dynamic allocations. Must be called to avoid memory leaks.
@@ -111,8 +111,8 @@ CMAVSDK_EXPORT void mavsdk_tune_TuneDescription_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-CMAVSDK_EXPORT void mavsdk_tune_TuneDescription_array_destroy(
-    mavsdk_tune_TuneDescription_t** array,
+CMAVSDK_EXPORT void mavsdk_tune_tune_description_array_destroy(
+    mavsdk_tune_tune_description_t** array,
     size_t size);
 
 /**
@@ -231,7 +231,7 @@ CMAVSDK_EXPORT void mavsdk_tune_destroy(mavsdk_tune_t tune);
  */
 CMAVSDK_EXPORT void mavsdk_tune_play_tune_async(
     mavsdk_tune_t tune,
-    mavsdk_tune_TuneDescription_t tune_description,
+    mavsdk_tune_tune_description_t tune_description,
     mavsdk_tune_play_tune_callback_t callback,
     void* user_data);
 
@@ -248,7 +248,7 @@ CMAVSDK_EXPORT
 mavsdk_tune_result_t
 mavsdk_tune_play_tune(
     mavsdk_tune_t tune,
-    mavsdk_tune_TuneDescription_t tune_description);
+    mavsdk_tune_tune_description_t tune_description);
 
 
 #ifdef __cplusplus

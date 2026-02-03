@@ -27,7 +27,7 @@ translate_result(mavsdk::Info::Result cpp_result) {
 
 
 static mavsdk::Info::FlightInfo
-translate_FlightInfo_from_c(const mavsdk_info_FlightInfo_t& c_struct) {
+translate_flight_info_from_c(const mavsdk_info_flight_info_t& c_struct) {
     mavsdk::Info::FlightInfo cpp_struct{};
     cpp_struct.time_boot_ms = c_struct.time_boot_ms;
     cpp_struct.flight_uid = c_struct.flight_uid;
@@ -36,9 +36,9 @@ translate_FlightInfo_from_c(const mavsdk_info_FlightInfo_t& c_struct) {
     return cpp_struct;
 }
 
-static mavsdk_info_FlightInfo_t
-translate_FlightInfo_to_c(const mavsdk::Info::FlightInfo& cpp_struct) {
-    mavsdk_info_FlightInfo_t c_struct{};
+static mavsdk_info_flight_info_t
+translate_flight_info_to_c(const mavsdk::Info::FlightInfo& cpp_struct) {
+    mavsdk_info_flight_info_t c_struct{};
     c_struct.time_boot_ms = cpp_struct.time_boot_ms;
     c_struct.flight_uid = cpp_struct.flight_uid;
     c_struct.duration_since_arming_ms = cpp_struct.duration_since_arming_ms;
@@ -46,18 +46,18 @@ translate_FlightInfo_to_c(const mavsdk::Info::FlightInfo& cpp_struct) {
     return c_struct;
 }
 
-void mavsdk_info_FlightInfo_destroy(
-    mavsdk_info_FlightInfo_t* target) {
+void mavsdk_info_flight_info_destroy(
+    mavsdk_info_flight_info_t* target) {
     if (!target) return;
 }
 
-void mavsdk_info_FlightInfo_array_destroy(
-    mavsdk_info_FlightInfo_t** array,
+void mavsdk_info_flight_info_array_destroy(
+    mavsdk_info_flight_info_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_info_FlightInfo_destroy(&(*array)[i]);
+        mavsdk_info_flight_info_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -66,7 +66,7 @@ void mavsdk_info_FlightInfo_array_destroy(
 
 
 static mavsdk::Info::Identification
-translate_Identification_from_c(const mavsdk_info_Identification_t& c_struct) {
+translate_identification_from_c(const mavsdk_info_identification_t& c_struct) {
     mavsdk::Info::Identification cpp_struct{};
     if (c_struct.hardware_uid) {
         cpp_struct.hardware_uid = c_struct.hardware_uid;
@@ -75,16 +75,16 @@ translate_Identification_from_c(const mavsdk_info_Identification_t& c_struct) {
     return cpp_struct;
 }
 
-static mavsdk_info_Identification_t
-translate_Identification_to_c(const mavsdk::Info::Identification& cpp_struct) {
-    mavsdk_info_Identification_t c_struct{};
+static mavsdk_info_identification_t
+translate_identification_to_c(const mavsdk::Info::Identification& cpp_struct) {
+    mavsdk_info_identification_t c_struct{};
     c_struct.hardware_uid = strdup(cpp_struct.hardware_uid.c_str());
     c_struct.legacy_uid = cpp_struct.legacy_uid;
     return c_struct;
 }
 
-void mavsdk_info_Identification_destroy(
-    mavsdk_info_Identification_t* target) {
+void mavsdk_info_identification_destroy(
+    mavsdk_info_identification_t* target) {
     if (!target) return;
     if (target->hardware_uid) {
         free((void*)target->hardware_uid);
@@ -92,13 +92,13 @@ void mavsdk_info_Identification_destroy(
     }
 }
 
-void mavsdk_info_Identification_array_destroy(
-    mavsdk_info_Identification_t** array,
+void mavsdk_info_identification_array_destroy(
+    mavsdk_info_identification_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_info_Identification_destroy(&(*array)[i]);
+        mavsdk_info_identification_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -107,7 +107,7 @@ void mavsdk_info_Identification_array_destroy(
 
 
 static mavsdk::Info::Product
-translate_Product_from_c(const mavsdk_info_Product_t& c_struct) {
+translate_product_from_c(const mavsdk_info_product_t& c_struct) {
     mavsdk::Info::Product cpp_struct{};
     cpp_struct.vendor_id = c_struct.vendor_id;
     if (c_struct.vendor_name) {
@@ -120,9 +120,9 @@ translate_Product_from_c(const mavsdk_info_Product_t& c_struct) {
     return cpp_struct;
 }
 
-static mavsdk_info_Product_t
-translate_Product_to_c(const mavsdk::Info::Product& cpp_struct) {
-    mavsdk_info_Product_t c_struct{};
+static mavsdk_info_product_t
+translate_product_to_c(const mavsdk::Info::Product& cpp_struct) {
+    mavsdk_info_product_t c_struct{};
     c_struct.vendor_id = cpp_struct.vendor_id;
     c_struct.vendor_name = strdup(cpp_struct.vendor_name.c_str());
     c_struct.product_id = cpp_struct.product_id;
@@ -130,8 +130,8 @@ translate_Product_to_c(const mavsdk::Info::Product& cpp_struct) {
     return c_struct;
 }
 
-void mavsdk_info_Product_destroy(
-    mavsdk_info_Product_t* target) {
+void mavsdk_info_product_destroy(
+    mavsdk_info_product_t* target) {
     if (!target) return;
     if (target->vendor_name) {
         free((void*)target->vendor_name);
@@ -143,13 +143,13 @@ void mavsdk_info_Product_destroy(
     }
 }
 
-void mavsdk_info_Product_array_destroy(
-    mavsdk_info_Product_t** array,
+void mavsdk_info_product_array_destroy(
+    mavsdk_info_product_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_info_Product_destroy(&(*array)[i]);
+        mavsdk_info_product_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -158,7 +158,7 @@ void mavsdk_info_Product_array_destroy(
 
 
 static mavsdk::Info::Version::FlightSoftwareVersionType
-translate_Version_FlightSoftwareVersionType_from_c(mavsdk_info_Version_FlightSoftwareVersionType_t c_enum) {
+translate_version_flight_software_version_type_from_c(mavsdk_info_version_flight_software_version_type_t c_enum) {
     switch(c_enum) {
         case MAVSDK_INFO_VERSION_FLIGHT_SOFTWARE_VERSION_TYPE_UNKNOWN:
             return mavsdk::Info::Version::FlightSoftwareVersionType::Unknown;
@@ -178,7 +178,7 @@ translate_Version_FlightSoftwareVersionType_from_c(mavsdk_info_Version_FlightSof
 
 
 static mavsdk::Info::Version
-translate_Version_from_c(const mavsdk_info_Version_t& c_struct) {
+translate_version_from_c(const mavsdk_info_version_t& c_struct) {
     mavsdk::Info::Version cpp_struct{};
     cpp_struct.flight_sw_major = c_struct.flight_sw_major;
     cpp_struct.flight_sw_minor = c_struct.flight_sw_minor;
@@ -195,13 +195,13 @@ translate_Version_from_c(const mavsdk_info_Version_t& c_struct) {
     if (c_struct.os_sw_git_hash) {
         cpp_struct.os_sw_git_hash = c_struct.os_sw_git_hash;
     }
-    cpp_struct.flight_sw_version_type = translate_Version_FlightSoftwareVersionType_from_c(c_struct.flight_sw_version_type);
+    cpp_struct.flight_sw_version_type = translate_version_flight_software_version_type_from_c(c_struct.flight_sw_version_type);
     return cpp_struct;
 }
 
 
-static mavsdk_info_Version_FlightSoftwareVersionType_t
-translate_Version_FlightSoftwareVersionType_to_c(mavsdk::Info::Version::FlightSoftwareVersionType cpp_enum) {
+static mavsdk_info_version_flight_software_version_type_t
+translate_version_flight_software_version_type_to_c(mavsdk::Info::Version::FlightSoftwareVersionType cpp_enum) {
     switch(cpp_enum) {
         case mavsdk::Info::Version::FlightSoftwareVersionType::Unknown:
             return MAVSDK_INFO_VERSION_FLIGHT_SOFTWARE_VERSION_TYPE_UNKNOWN;
@@ -219,9 +219,9 @@ translate_Version_FlightSoftwareVersionType_to_c(mavsdk::Info::Version::FlightSo
     return MAVSDK_INFO_VERSION_FLIGHT_SOFTWARE_VERSION_TYPE_UNKNOWN;
 }
 
-static mavsdk_info_Version_t
-translate_Version_to_c(const mavsdk::Info::Version& cpp_struct) {
-    mavsdk_info_Version_t c_struct{};
+static mavsdk_info_version_t
+translate_version_to_c(const mavsdk::Info::Version& cpp_struct) {
+    mavsdk_info_version_t c_struct{};
     c_struct.flight_sw_major = cpp_struct.flight_sw_major;
     c_struct.flight_sw_minor = cpp_struct.flight_sw_minor;
     c_struct.flight_sw_patch = cpp_struct.flight_sw_patch;
@@ -233,12 +233,12 @@ translate_Version_to_c(const mavsdk::Info::Version& cpp_struct) {
     c_struct.os_sw_patch = cpp_struct.os_sw_patch;
     c_struct.flight_sw_git_hash = strdup(cpp_struct.flight_sw_git_hash.c_str());
     c_struct.os_sw_git_hash = strdup(cpp_struct.os_sw_git_hash.c_str());
-    c_struct.flight_sw_version_type = translate_Version_FlightSoftwareVersionType_to_c(cpp_struct.flight_sw_version_type);
+    c_struct.flight_sw_version_type = translate_version_flight_software_version_type_to_c(cpp_struct.flight_sw_version_type);
     return c_struct;
 }
 
-void mavsdk_info_Version_destroy(
-    mavsdk_info_Version_t* target) {
+void mavsdk_info_version_destroy(
+    mavsdk_info_version_t* target) {
     if (!target) return;
     if (target->flight_sw_git_hash) {
         free((void*)target->flight_sw_git_hash);
@@ -250,13 +250,13 @@ void mavsdk_info_Version_destroy(
     }
 }
 
-void mavsdk_info_Version_array_destroy(
-    mavsdk_info_Version_t** array,
+void mavsdk_info_version_array_destroy(
+    mavsdk_info_version_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_info_Version_destroy(&(*array)[i]);
+        mavsdk_info_version_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -356,7 +356,7 @@ void mavsdk_info_destroy(mavsdk_info_t info) {
 mavsdk_info_result_t
 mavsdk_info_get_flight_information(
     mavsdk_info_t info,
-    mavsdk_info_FlightInfo_t* flight_info_out)
+    mavsdk_info_flight_info_t* flight_info_out)
 {
     auto wrapper = static_cast<mavsdk_info_wrapper*>(info);
 
@@ -364,7 +364,7 @@ mavsdk_info_get_flight_information(
 );
 
     if (flight_info_out != nullptr) {
-        *flight_info_out = translate_FlightInfo_to_c(result_pair.second);
+        *flight_info_out = translate_flight_info_to_c(result_pair.second);
     }
 
     return translate_result(result_pair.first);
@@ -375,7 +375,7 @@ mavsdk_info_get_flight_information(
 mavsdk_info_result_t
 mavsdk_info_get_identification(
     mavsdk_info_t info,
-    mavsdk_info_Identification_t* identification_out)
+    mavsdk_info_identification_t* identification_out)
 {
     auto wrapper = static_cast<mavsdk_info_wrapper*>(info);
 
@@ -383,7 +383,7 @@ mavsdk_info_get_identification(
 );
 
     if (identification_out != nullptr) {
-        *identification_out = translate_Identification_to_c(result_pair.second);
+        *identification_out = translate_identification_to_c(result_pair.second);
     }
 
     return translate_result(result_pair.first);
@@ -394,7 +394,7 @@ mavsdk_info_get_identification(
 mavsdk_info_result_t
 mavsdk_info_get_product(
     mavsdk_info_t info,
-    mavsdk_info_Product_t* product_out)
+    mavsdk_info_product_t* product_out)
 {
     auto wrapper = static_cast<mavsdk_info_wrapper*>(info);
 
@@ -402,7 +402,7 @@ mavsdk_info_get_product(
 );
 
     if (product_out != nullptr) {
-        *product_out = translate_Product_to_c(result_pair.second);
+        *product_out = translate_product_to_c(result_pair.second);
     }
 
     return translate_result(result_pair.first);
@@ -413,7 +413,7 @@ mavsdk_info_get_product(
 mavsdk_info_result_t
 mavsdk_info_get_version(
     mavsdk_info_t info,
-    mavsdk_info_Version_t* version_out)
+    mavsdk_info_version_t* version_out)
 {
     auto wrapper = static_cast<mavsdk_info_wrapper*>(info);
 
@@ -421,7 +421,7 @@ mavsdk_info_get_version(
 );
 
     if (version_out != nullptr) {
-        *version_out = translate_Version_to_c(result_pair.second);
+        *version_out = translate_version_to_c(result_pair.second);
     }
 
     return translate_result(result_pair.first);
@@ -457,7 +457,7 @@ mavsdk_info_flight_information_handle_t mavsdk_info_subscribe_flight_information
             mavsdk::Info::FlightInfo value) {
                 if (callback) {
                     callback(
-                        translate_FlightInfo_to_c(value),
+                        translate_flight_info_to_c(value),
                         user_data);
                 }
         });

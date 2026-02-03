@@ -35,7 +35,7 @@ translate_result(mavsdk::CameraServer::Result cpp_result) {
 }
 
 static mavsdk::CameraServer::CameraFeedback
-translate_CameraFeedback_from_c(mavsdk_camera_server_CameraFeedback_t c_enum) {
+translate_camera_feedback_from_c(mavsdk_camera_server_camera_feedback_t c_enum) {
     switch(c_enum) {
         case MAVSDK_CAMERA_SERVER_CAMERA_FEEDBACK_UNKNOWN:
             return mavsdk::CameraServer::CameraFeedback::Unknown;
@@ -49,8 +49,8 @@ translate_CameraFeedback_from_c(mavsdk_camera_server_CameraFeedback_t c_enum) {
     return mavsdk::CameraServer::CameraFeedback::Unknown;
 }
 
-static mavsdk_camera_server_CameraFeedback_t
-translate_CameraFeedback_to_c(mavsdk::CameraServer::CameraFeedback cpp_enum) {
+static mavsdk_camera_server_camera_feedback_t
+translate_camera_feedback_to_c(mavsdk::CameraServer::CameraFeedback cpp_enum) {
     switch(cpp_enum) {
         case mavsdk::CameraServer::CameraFeedback::Unknown:
             return MAVSDK_CAMERA_SERVER_CAMERA_FEEDBACK_UNKNOWN;
@@ -65,7 +65,7 @@ translate_CameraFeedback_to_c(mavsdk::CameraServer::CameraFeedback cpp_enum) {
 }
 
 static mavsdk::CameraServer::Mode
-translate_Mode_from_c(mavsdk_camera_server_Mode_t c_enum) {
+translate_mode_from_c(mavsdk_camera_server_mode_t c_enum) {
     switch(c_enum) {
         case MAVSDK_CAMERA_SERVER_MODE_UNKNOWN:
             return mavsdk::CameraServer::Mode::Unknown;
@@ -77,8 +77,8 @@ translate_Mode_from_c(mavsdk_camera_server_Mode_t c_enum) {
     return mavsdk::CameraServer::Mode::Unknown;
 }
 
-static mavsdk_camera_server_Mode_t
-translate_Mode_to_c(mavsdk::CameraServer::Mode cpp_enum) {
+static mavsdk_camera_server_mode_t
+translate_mode_to_c(mavsdk::CameraServer::Mode cpp_enum) {
     switch(cpp_enum) {
         case mavsdk::CameraServer::Mode::Unknown:
             return MAVSDK_CAMERA_SERVER_MODE_UNKNOWN;
@@ -93,7 +93,7 @@ translate_Mode_to_c(mavsdk::CameraServer::Mode cpp_enum) {
 
 
 static mavsdk::CameraServer::Information
-translate_Information_from_c(const mavsdk_camera_server_Information_t& c_struct) {
+translate_information_from_c(const mavsdk_camera_server_information_t& c_struct) {
     mavsdk::CameraServer::Information cpp_struct{};
     if (c_struct.vendor_name) {
         cpp_struct.vendor_name = c_struct.vendor_name;
@@ -119,9 +119,9 @@ translate_Information_from_c(const mavsdk_camera_server_Information_t& c_struct)
     return cpp_struct;
 }
 
-static mavsdk_camera_server_Information_t
-translate_Information_to_c(const mavsdk::CameraServer::Information& cpp_struct) {
-    mavsdk_camera_server_Information_t c_struct{};
+static mavsdk_camera_server_information_t
+translate_information_to_c(const mavsdk::CameraServer::Information& cpp_struct) {
+    mavsdk_camera_server_information_t c_struct{};
     c_struct.vendor_name = strdup(cpp_struct.vendor_name.c_str());
     c_struct.model_name = strdup(cpp_struct.model_name.c_str());
     c_struct.firmware_version = strdup(cpp_struct.firmware_version.c_str());
@@ -138,8 +138,8 @@ translate_Information_to_c(const mavsdk::CameraServer::Information& cpp_struct) 
     return c_struct;
 }
 
-void mavsdk_camera_server_Information_destroy(
-    mavsdk_camera_server_Information_t* target) {
+void mavsdk_camera_server_information_destroy(
+    mavsdk_camera_server_information_t* target) {
     if (!target) return;
     if (target->vendor_name) {
         free((void*)target->vendor_name);
@@ -159,13 +159,13 @@ void mavsdk_camera_server_Information_destroy(
     }
 }
 
-void mavsdk_camera_server_Information_array_destroy(
-    mavsdk_camera_server_Information_t** array,
+void mavsdk_camera_server_information_array_destroy(
+    mavsdk_camera_server_information_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_camera_server_Information_destroy(&(*array)[i]);
+        mavsdk_camera_server_information_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -174,7 +174,7 @@ void mavsdk_camera_server_Information_array_destroy(
 
 
 static mavsdk::CameraServer::VideoStreaming
-translate_VideoStreaming_from_c(const mavsdk_camera_server_VideoStreaming_t& c_struct) {
+translate_video_streaming_from_c(const mavsdk_camera_server_video_streaming_t& c_struct) {
     mavsdk::CameraServer::VideoStreaming cpp_struct{};
     cpp_struct.has_rtsp_server = c_struct.has_rtsp_server;
     if (c_struct.rtsp_uri) {
@@ -183,16 +183,16 @@ translate_VideoStreaming_from_c(const mavsdk_camera_server_VideoStreaming_t& c_s
     return cpp_struct;
 }
 
-static mavsdk_camera_server_VideoStreaming_t
-translate_VideoStreaming_to_c(const mavsdk::CameraServer::VideoStreaming& cpp_struct) {
-    mavsdk_camera_server_VideoStreaming_t c_struct{};
+static mavsdk_camera_server_video_streaming_t
+translate_video_streaming_to_c(const mavsdk::CameraServer::VideoStreaming& cpp_struct) {
+    mavsdk_camera_server_video_streaming_t c_struct{};
     c_struct.has_rtsp_server = cpp_struct.has_rtsp_server;
     c_struct.rtsp_uri = strdup(cpp_struct.rtsp_uri.c_str());
     return c_struct;
 }
 
-void mavsdk_camera_server_VideoStreaming_destroy(
-    mavsdk_camera_server_VideoStreaming_t* target) {
+void mavsdk_camera_server_video_streaming_destroy(
+    mavsdk_camera_server_video_streaming_t* target) {
     if (!target) return;
     if (target->rtsp_uri) {
         free((void*)target->rtsp_uri);
@@ -200,13 +200,13 @@ void mavsdk_camera_server_VideoStreaming_destroy(
     }
 }
 
-void mavsdk_camera_server_VideoStreaming_array_destroy(
-    mavsdk_camera_server_VideoStreaming_t** array,
+void mavsdk_camera_server_video_streaming_array_destroy(
+    mavsdk_camera_server_video_streaming_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_camera_server_VideoStreaming_destroy(&(*array)[i]);
+        mavsdk_camera_server_video_streaming_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -215,7 +215,7 @@ void mavsdk_camera_server_VideoStreaming_array_destroy(
 
 
 static mavsdk::CameraServer::Position
-translate_Position_from_c(const mavsdk_camera_server_Position_t& c_struct) {
+translate_position_from_c(const mavsdk_camera_server_position_t& c_struct) {
     mavsdk::CameraServer::Position cpp_struct{};
     cpp_struct.latitude_deg = c_struct.latitude_deg;
     cpp_struct.longitude_deg = c_struct.longitude_deg;
@@ -224,9 +224,9 @@ translate_Position_from_c(const mavsdk_camera_server_Position_t& c_struct) {
     return cpp_struct;
 }
 
-static mavsdk_camera_server_Position_t
-translate_Position_to_c(const mavsdk::CameraServer::Position& cpp_struct) {
-    mavsdk_camera_server_Position_t c_struct{};
+static mavsdk_camera_server_position_t
+translate_position_to_c(const mavsdk::CameraServer::Position& cpp_struct) {
+    mavsdk_camera_server_position_t c_struct{};
     c_struct.latitude_deg = cpp_struct.latitude_deg;
     c_struct.longitude_deg = cpp_struct.longitude_deg;
     c_struct.absolute_altitude_m = cpp_struct.absolute_altitude_m;
@@ -234,18 +234,18 @@ translate_Position_to_c(const mavsdk::CameraServer::Position& cpp_struct) {
     return c_struct;
 }
 
-void mavsdk_camera_server_Position_destroy(
-    mavsdk_camera_server_Position_t* target) {
+void mavsdk_camera_server_position_destroy(
+    mavsdk_camera_server_position_t* target) {
     if (!target) return;
 }
 
-void mavsdk_camera_server_Position_array_destroy(
-    mavsdk_camera_server_Position_t** array,
+void mavsdk_camera_server_position_array_destroy(
+    mavsdk_camera_server_position_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_camera_server_Position_destroy(&(*array)[i]);
+        mavsdk_camera_server_position_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -254,7 +254,7 @@ void mavsdk_camera_server_Position_array_destroy(
 
 
 static mavsdk::CameraServer::Quaternion
-translate_Quaternion_from_c(const mavsdk_camera_server_Quaternion_t& c_struct) {
+translate_quaternion_from_c(const mavsdk_camera_server_quaternion_t& c_struct) {
     mavsdk::CameraServer::Quaternion cpp_struct{};
     cpp_struct.w = c_struct.w;
     cpp_struct.x = c_struct.x;
@@ -263,9 +263,9 @@ translate_Quaternion_from_c(const mavsdk_camera_server_Quaternion_t& c_struct) {
     return cpp_struct;
 }
 
-static mavsdk_camera_server_Quaternion_t
-translate_Quaternion_to_c(const mavsdk::CameraServer::Quaternion& cpp_struct) {
-    mavsdk_camera_server_Quaternion_t c_struct{};
+static mavsdk_camera_server_quaternion_t
+translate_quaternion_to_c(const mavsdk::CameraServer::Quaternion& cpp_struct) {
+    mavsdk_camera_server_quaternion_t c_struct{};
     c_struct.w = cpp_struct.w;
     c_struct.x = cpp_struct.x;
     c_struct.y = cpp_struct.y;
@@ -273,18 +273,18 @@ translate_Quaternion_to_c(const mavsdk::CameraServer::Quaternion& cpp_struct) {
     return c_struct;
 }
 
-void mavsdk_camera_server_Quaternion_destroy(
-    mavsdk_camera_server_Quaternion_t* target) {
+void mavsdk_camera_server_quaternion_destroy(
+    mavsdk_camera_server_quaternion_t* target) {
     if (!target) return;
 }
 
-void mavsdk_camera_server_Quaternion_array_destroy(
-    mavsdk_camera_server_Quaternion_t** array,
+void mavsdk_camera_server_quaternion_array_destroy(
+    mavsdk_camera_server_quaternion_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_camera_server_Quaternion_destroy(&(*array)[i]);
+        mavsdk_camera_server_quaternion_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -293,10 +293,10 @@ void mavsdk_camera_server_Quaternion_array_destroy(
 
 
 static mavsdk::CameraServer::CaptureInfo
-translate_CaptureInfo_from_c(const mavsdk_camera_server_CaptureInfo_t& c_struct) {
+translate_capture_info_from_c(const mavsdk_camera_server_capture_info_t& c_struct) {
     mavsdk::CameraServer::CaptureInfo cpp_struct{};
-    cpp_struct.position = translate_Position_from_c(c_struct.position);
-    cpp_struct.attitude_quaternion = translate_Quaternion_from_c(c_struct.attitude_quaternion);
+    cpp_struct.position = translate_position_from_c(c_struct.position);
+    cpp_struct.attitude_quaternion = translate_quaternion_from_c(c_struct.attitude_quaternion);
     cpp_struct.time_utc_us = c_struct.time_utc_us;
     cpp_struct.is_success = c_struct.is_success;
     cpp_struct.index = c_struct.index;
@@ -306,11 +306,11 @@ translate_CaptureInfo_from_c(const mavsdk_camera_server_CaptureInfo_t& c_struct)
     return cpp_struct;
 }
 
-static mavsdk_camera_server_CaptureInfo_t
-translate_CaptureInfo_to_c(const mavsdk::CameraServer::CaptureInfo& cpp_struct) {
-    mavsdk_camera_server_CaptureInfo_t c_struct{};
-    c_struct.position = translate_Position_to_c(cpp_struct.position);
-    c_struct.attitude_quaternion = translate_Quaternion_to_c(cpp_struct.attitude_quaternion);
+static mavsdk_camera_server_capture_info_t
+translate_capture_info_to_c(const mavsdk::CameraServer::CaptureInfo& cpp_struct) {
+    mavsdk_camera_server_capture_info_t c_struct{};
+    c_struct.position = translate_position_to_c(cpp_struct.position);
+    c_struct.attitude_quaternion = translate_quaternion_to_c(cpp_struct.attitude_quaternion);
     c_struct.time_utc_us = cpp_struct.time_utc_us;
     c_struct.is_success = cpp_struct.is_success;
     c_struct.index = cpp_struct.index;
@@ -318,8 +318,8 @@ translate_CaptureInfo_to_c(const mavsdk::CameraServer::CaptureInfo& cpp_struct) 
     return c_struct;
 }
 
-void mavsdk_camera_server_CaptureInfo_destroy(
-    mavsdk_camera_server_CaptureInfo_t* target) {
+void mavsdk_camera_server_capture_info_destroy(
+    mavsdk_camera_server_capture_info_t* target) {
     if (!target) return;
     if (target->file_url) {
         free((void*)target->file_url);
@@ -327,13 +327,13 @@ void mavsdk_camera_server_CaptureInfo_destroy(
     }
 }
 
-void mavsdk_camera_server_CaptureInfo_array_destroy(
-    mavsdk_camera_server_CaptureInfo_t** array,
+void mavsdk_camera_server_capture_info_array_destroy(
+    mavsdk_camera_server_capture_info_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_camera_server_CaptureInfo_destroy(&(*array)[i]);
+        mavsdk_camera_server_capture_info_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -343,7 +343,7 @@ void mavsdk_camera_server_CaptureInfo_array_destroy(
 
 
 static mavsdk::CameraServer::StorageInformation::StorageStatus
-translate_StorageInformation_StorageStatus_from_c(mavsdk_camera_server_StorageInformation_StorageStatus_t c_enum) {
+translate_storage_information_storage_status_from_c(mavsdk_camera_server_storage_information_storage_status_t c_enum) {
     switch(c_enum) {
         case MAVSDK_CAMERA_SERVER_STORAGE_INFORMATION_STORAGE_STATUS_NOT_AVAILABLE:
             return mavsdk::CameraServer::StorageInformation::StorageStatus::NotAvailable;
@@ -359,7 +359,7 @@ translate_StorageInformation_StorageStatus_from_c(mavsdk_camera_server_StorageIn
 
 
 static mavsdk::CameraServer::StorageInformation::StorageType
-translate_StorageInformation_StorageType_from_c(mavsdk_camera_server_StorageInformation_StorageType_t c_enum) {
+translate_storage_information_storage_type_from_c(mavsdk_camera_server_storage_information_storage_type_t c_enum) {
     switch(c_enum) {
         case MAVSDK_CAMERA_SERVER_STORAGE_INFORMATION_STORAGE_TYPE_UNKNOWN:
             return mavsdk::CameraServer::StorageInformation::StorageType::Unknown;
@@ -379,22 +379,22 @@ translate_StorageInformation_StorageType_from_c(mavsdk_camera_server_StorageInfo
 
 
 static mavsdk::CameraServer::StorageInformation
-translate_StorageInformation_from_c(const mavsdk_camera_server_StorageInformation_t& c_struct) {
+translate_storage_information_from_c(const mavsdk_camera_server_storage_information_t& c_struct) {
     mavsdk::CameraServer::StorageInformation cpp_struct{};
     cpp_struct.used_storage_mib = c_struct.used_storage_mib;
     cpp_struct.available_storage_mib = c_struct.available_storage_mib;
     cpp_struct.total_storage_mib = c_struct.total_storage_mib;
-    cpp_struct.storage_status = translate_StorageInformation_StorageStatus_from_c(c_struct.storage_status);
+    cpp_struct.storage_status = translate_storage_information_storage_status_from_c(c_struct.storage_status);
     cpp_struct.storage_id = c_struct.storage_id;
-    cpp_struct.storage_type = translate_StorageInformation_StorageType_from_c(c_struct.storage_type);
+    cpp_struct.storage_type = translate_storage_information_storage_type_from_c(c_struct.storage_type);
     cpp_struct.read_speed_mib_s = c_struct.read_speed_mib_s;
     cpp_struct.write_speed_mib_s = c_struct.write_speed_mib_s;
     return cpp_struct;
 }
 
 
-static mavsdk_camera_server_StorageInformation_StorageStatus_t
-translate_StorageInformation_StorageStatus_to_c(mavsdk::CameraServer::StorageInformation::StorageStatus cpp_enum) {
+static mavsdk_camera_server_storage_information_storage_status_t
+translate_storage_information_storage_status_to_c(mavsdk::CameraServer::StorageInformation::StorageStatus cpp_enum) {
     switch(cpp_enum) {
         case mavsdk::CameraServer::StorageInformation::StorageStatus::NotAvailable:
             return MAVSDK_CAMERA_SERVER_STORAGE_INFORMATION_STORAGE_STATUS_NOT_AVAILABLE;
@@ -409,8 +409,8 @@ translate_StorageInformation_StorageStatus_to_c(mavsdk::CameraServer::StorageInf
 }
 
 
-static mavsdk_camera_server_StorageInformation_StorageType_t
-translate_StorageInformation_StorageType_to_c(mavsdk::CameraServer::StorageInformation::StorageType cpp_enum) {
+static mavsdk_camera_server_storage_information_storage_type_t
+translate_storage_information_storage_type_to_c(mavsdk::CameraServer::StorageInformation::StorageType cpp_enum) {
     switch(cpp_enum) {
         case mavsdk::CameraServer::StorageInformation::StorageType::Unknown:
             return MAVSDK_CAMERA_SERVER_STORAGE_INFORMATION_STORAGE_TYPE_UNKNOWN;
@@ -428,32 +428,32 @@ translate_StorageInformation_StorageType_to_c(mavsdk::CameraServer::StorageInfor
     return MAVSDK_CAMERA_SERVER_STORAGE_INFORMATION_STORAGE_TYPE_UNKNOWN;
 }
 
-static mavsdk_camera_server_StorageInformation_t
-translate_StorageInformation_to_c(const mavsdk::CameraServer::StorageInformation& cpp_struct) {
-    mavsdk_camera_server_StorageInformation_t c_struct{};
+static mavsdk_camera_server_storage_information_t
+translate_storage_information_to_c(const mavsdk::CameraServer::StorageInformation& cpp_struct) {
+    mavsdk_camera_server_storage_information_t c_struct{};
     c_struct.used_storage_mib = cpp_struct.used_storage_mib;
     c_struct.available_storage_mib = cpp_struct.available_storage_mib;
     c_struct.total_storage_mib = cpp_struct.total_storage_mib;
-    c_struct.storage_status = translate_StorageInformation_StorageStatus_to_c(cpp_struct.storage_status);
+    c_struct.storage_status = translate_storage_information_storage_status_to_c(cpp_struct.storage_status);
     c_struct.storage_id = cpp_struct.storage_id;
-    c_struct.storage_type = translate_StorageInformation_StorageType_to_c(cpp_struct.storage_type);
+    c_struct.storage_type = translate_storage_information_storage_type_to_c(cpp_struct.storage_type);
     c_struct.read_speed_mib_s = cpp_struct.read_speed_mib_s;
     c_struct.write_speed_mib_s = cpp_struct.write_speed_mib_s;
     return c_struct;
 }
 
-void mavsdk_camera_server_StorageInformation_destroy(
-    mavsdk_camera_server_StorageInformation_t* target) {
+void mavsdk_camera_server_storage_information_destroy(
+    mavsdk_camera_server_storage_information_t* target) {
     if (!target) return;
 }
 
-void mavsdk_camera_server_StorageInformation_array_destroy(
-    mavsdk_camera_server_StorageInformation_t** array,
+void mavsdk_camera_server_storage_information_array_destroy(
+    mavsdk_camera_server_storage_information_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_camera_server_StorageInformation_destroy(&(*array)[i]);
+        mavsdk_camera_server_storage_information_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -462,7 +462,7 @@ void mavsdk_camera_server_StorageInformation_array_destroy(
 
 
 static mavsdk::CameraServer::CaptureStatus::ImageStatus
-translate_CaptureStatus_ImageStatus_from_c(mavsdk_camera_server_CaptureStatus_ImageStatus_t c_enum) {
+translate_capture_status_image_status_from_c(mavsdk_camera_server_capture_status_image_status_t c_enum) {
     switch(c_enum) {
         case MAVSDK_CAMERA_SERVER_CAPTURE_STATUS_IMAGE_STATUS_IDLE:
             return mavsdk::CameraServer::CaptureStatus::ImageStatus::Idle;
@@ -478,7 +478,7 @@ translate_CaptureStatus_ImageStatus_from_c(mavsdk_camera_server_CaptureStatus_Im
 
 
 static mavsdk::CameraServer::CaptureStatus::VideoStatus
-translate_CaptureStatus_VideoStatus_from_c(mavsdk_camera_server_CaptureStatus_VideoStatus_t c_enum) {
+translate_capture_status_video_status_from_c(mavsdk_camera_server_capture_status_video_status_t c_enum) {
     switch(c_enum) {
         case MAVSDK_CAMERA_SERVER_CAPTURE_STATUS_VIDEO_STATUS_IDLE:
             return mavsdk::CameraServer::CaptureStatus::VideoStatus::Idle;
@@ -490,20 +490,20 @@ translate_CaptureStatus_VideoStatus_from_c(mavsdk_camera_server_CaptureStatus_Vi
 
 
 static mavsdk::CameraServer::CaptureStatus
-translate_CaptureStatus_from_c(const mavsdk_camera_server_CaptureStatus_t& c_struct) {
+translate_capture_status_from_c(const mavsdk_camera_server_capture_status_t& c_struct) {
     mavsdk::CameraServer::CaptureStatus cpp_struct{};
     cpp_struct.image_interval_s = c_struct.image_interval_s;
     cpp_struct.recording_time_s = c_struct.recording_time_s;
     cpp_struct.available_capacity_mib = c_struct.available_capacity_mib;
-    cpp_struct.image_status = translate_CaptureStatus_ImageStatus_from_c(c_struct.image_status);
-    cpp_struct.video_status = translate_CaptureStatus_VideoStatus_from_c(c_struct.video_status);
+    cpp_struct.image_status = translate_capture_status_image_status_from_c(c_struct.image_status);
+    cpp_struct.video_status = translate_capture_status_video_status_from_c(c_struct.video_status);
     cpp_struct.image_count = c_struct.image_count;
     return cpp_struct;
 }
 
 
-static mavsdk_camera_server_CaptureStatus_ImageStatus_t
-translate_CaptureStatus_ImageStatus_to_c(mavsdk::CameraServer::CaptureStatus::ImageStatus cpp_enum) {
+static mavsdk_camera_server_capture_status_image_status_t
+translate_capture_status_image_status_to_c(mavsdk::CameraServer::CaptureStatus::ImageStatus cpp_enum) {
     switch(cpp_enum) {
         case mavsdk::CameraServer::CaptureStatus::ImageStatus::Idle:
             return MAVSDK_CAMERA_SERVER_CAPTURE_STATUS_IMAGE_STATUS_IDLE;
@@ -518,8 +518,8 @@ translate_CaptureStatus_ImageStatus_to_c(mavsdk::CameraServer::CaptureStatus::Im
 }
 
 
-static mavsdk_camera_server_CaptureStatus_VideoStatus_t
-translate_CaptureStatus_VideoStatus_to_c(mavsdk::CameraServer::CaptureStatus::VideoStatus cpp_enum) {
+static mavsdk_camera_server_capture_status_video_status_t
+translate_capture_status_video_status_to_c(mavsdk::CameraServer::CaptureStatus::VideoStatus cpp_enum) {
     switch(cpp_enum) {
         case mavsdk::CameraServer::CaptureStatus::VideoStatus::Idle:
             return MAVSDK_CAMERA_SERVER_CAPTURE_STATUS_VIDEO_STATUS_IDLE;
@@ -529,30 +529,30 @@ translate_CaptureStatus_VideoStatus_to_c(mavsdk::CameraServer::CaptureStatus::Vi
     return MAVSDK_CAMERA_SERVER_CAPTURE_STATUS_VIDEO_STATUS_IDLE;
 }
 
-static mavsdk_camera_server_CaptureStatus_t
-translate_CaptureStatus_to_c(const mavsdk::CameraServer::CaptureStatus& cpp_struct) {
-    mavsdk_camera_server_CaptureStatus_t c_struct{};
+static mavsdk_camera_server_capture_status_t
+translate_capture_status_to_c(const mavsdk::CameraServer::CaptureStatus& cpp_struct) {
+    mavsdk_camera_server_capture_status_t c_struct{};
     c_struct.image_interval_s = cpp_struct.image_interval_s;
     c_struct.recording_time_s = cpp_struct.recording_time_s;
     c_struct.available_capacity_mib = cpp_struct.available_capacity_mib;
-    c_struct.image_status = translate_CaptureStatus_ImageStatus_to_c(cpp_struct.image_status);
-    c_struct.video_status = translate_CaptureStatus_VideoStatus_to_c(cpp_struct.video_status);
+    c_struct.image_status = translate_capture_status_image_status_to_c(cpp_struct.image_status);
+    c_struct.video_status = translate_capture_status_video_status_to_c(cpp_struct.video_status);
     c_struct.image_count = cpp_struct.image_count;
     return c_struct;
 }
 
-void mavsdk_camera_server_CaptureStatus_destroy(
-    mavsdk_camera_server_CaptureStatus_t* target) {
+void mavsdk_camera_server_capture_status_destroy(
+    mavsdk_camera_server_capture_status_t* target) {
     if (!target) return;
 }
 
-void mavsdk_camera_server_CaptureStatus_array_destroy(
-    mavsdk_camera_server_CaptureStatus_t** array,
+void mavsdk_camera_server_capture_status_array_destroy(
+    mavsdk_camera_server_capture_status_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_camera_server_CaptureStatus_destroy(&(*array)[i]);
+        mavsdk_camera_server_capture_status_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -561,7 +561,7 @@ void mavsdk_camera_server_CaptureStatus_array_destroy(
 
 
 static mavsdk::CameraServer::TrackPoint
-translate_TrackPoint_from_c(const mavsdk_camera_server_TrackPoint_t& c_struct) {
+translate_track_point_from_c(const mavsdk_camera_server_track_point_t& c_struct) {
     mavsdk::CameraServer::TrackPoint cpp_struct{};
     cpp_struct.point_x = c_struct.point_x;
     cpp_struct.point_y = c_struct.point_y;
@@ -569,27 +569,27 @@ translate_TrackPoint_from_c(const mavsdk_camera_server_TrackPoint_t& c_struct) {
     return cpp_struct;
 }
 
-static mavsdk_camera_server_TrackPoint_t
-translate_TrackPoint_to_c(const mavsdk::CameraServer::TrackPoint& cpp_struct) {
-    mavsdk_camera_server_TrackPoint_t c_struct{};
+static mavsdk_camera_server_track_point_t
+translate_track_point_to_c(const mavsdk::CameraServer::TrackPoint& cpp_struct) {
+    mavsdk_camera_server_track_point_t c_struct{};
     c_struct.point_x = cpp_struct.point_x;
     c_struct.point_y = cpp_struct.point_y;
     c_struct.radius = cpp_struct.radius;
     return c_struct;
 }
 
-void mavsdk_camera_server_TrackPoint_destroy(
-    mavsdk_camera_server_TrackPoint_t* target) {
+void mavsdk_camera_server_track_point_destroy(
+    mavsdk_camera_server_track_point_t* target) {
     if (!target) return;
 }
 
-void mavsdk_camera_server_TrackPoint_array_destroy(
-    mavsdk_camera_server_TrackPoint_t** array,
+void mavsdk_camera_server_track_point_array_destroy(
+    mavsdk_camera_server_track_point_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_camera_server_TrackPoint_destroy(&(*array)[i]);
+        mavsdk_camera_server_track_point_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -598,7 +598,7 @@ void mavsdk_camera_server_TrackPoint_array_destroy(
 
 
 static mavsdk::CameraServer::TrackRectangle
-translate_TrackRectangle_from_c(const mavsdk_camera_server_TrackRectangle_t& c_struct) {
+translate_track_rectangle_from_c(const mavsdk_camera_server_track_rectangle_t& c_struct) {
     mavsdk::CameraServer::TrackRectangle cpp_struct{};
     cpp_struct.top_left_corner_x = c_struct.top_left_corner_x;
     cpp_struct.top_left_corner_y = c_struct.top_left_corner_y;
@@ -607,9 +607,9 @@ translate_TrackRectangle_from_c(const mavsdk_camera_server_TrackRectangle_t& c_s
     return cpp_struct;
 }
 
-static mavsdk_camera_server_TrackRectangle_t
-translate_TrackRectangle_to_c(const mavsdk::CameraServer::TrackRectangle& cpp_struct) {
-    mavsdk_camera_server_TrackRectangle_t c_struct{};
+static mavsdk_camera_server_track_rectangle_t
+translate_track_rectangle_to_c(const mavsdk::CameraServer::TrackRectangle& cpp_struct) {
+    mavsdk_camera_server_track_rectangle_t c_struct{};
     c_struct.top_left_corner_x = cpp_struct.top_left_corner_x;
     c_struct.top_left_corner_y = cpp_struct.top_left_corner_y;
     c_struct.bottom_right_corner_x = cpp_struct.bottom_right_corner_x;
@@ -617,18 +617,18 @@ translate_TrackRectangle_to_c(const mavsdk::CameraServer::TrackRectangle& cpp_st
     return c_struct;
 }
 
-void mavsdk_camera_server_TrackRectangle_destroy(
-    mavsdk_camera_server_TrackRectangle_t* target) {
+void mavsdk_camera_server_track_rectangle_destroy(
+    mavsdk_camera_server_track_rectangle_t* target) {
     if (!target) return;
 }
 
-void mavsdk_camera_server_TrackRectangle_array_destroy(
-    mavsdk_camera_server_TrackRectangle_t** array,
+void mavsdk_camera_server_track_rectangle_array_destroy(
+    mavsdk_camera_server_track_rectangle_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_camera_server_TrackRectangle_destroy(&(*array)[i]);
+        mavsdk_camera_server_track_rectangle_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -727,11 +727,11 @@ void mavsdk_camera_server_destroy(mavsdk_camera_server_t camera_server) {
 mavsdk_camera_server_result_t
 mavsdk_camera_server_set_information(
     mavsdk_camera_server_t camera_server,
-    mavsdk_camera_server_Information_t information)
+    mavsdk_camera_server_information_t information)
 {
     auto wrapper = static_cast<mavsdk_camera_server_wrapper*>(camera_server);
 
-    auto ret_value = wrapper->cpp_plugin->set_information(        translate_Information_from_c(information));
+    auto ret_value = wrapper->cpp_plugin->set_information(        translate_information_from_c(information));
 
     return translate_result(ret_value);
 }
@@ -741,11 +741,11 @@ mavsdk_camera_server_set_information(
 mavsdk_camera_server_result_t
 mavsdk_camera_server_set_video_streaming(
     mavsdk_camera_server_t camera_server,
-    mavsdk_camera_server_VideoStreaming_t video_streaming)
+    mavsdk_camera_server_video_streaming_t video_streaming)
 {
     auto wrapper = static_cast<mavsdk_camera_server_wrapper*>(camera_server);
 
-    auto ret_value = wrapper->cpp_plugin->set_video_streaming(        translate_VideoStreaming_from_c(video_streaming));
+    auto ret_value = wrapper->cpp_plugin->set_video_streaming(        translate_video_streaming_from_c(video_streaming));
 
     return translate_result(ret_value);
 }
@@ -804,12 +804,12 @@ void mavsdk_camera_server_unsubscribe_take_photo(
 mavsdk_camera_server_result_t
 mavsdk_camera_server_respond_take_photo(
     mavsdk_camera_server_t camera_server,
-    mavsdk_camera_server_CameraFeedback_t take_photo_feedback,
-    mavsdk_camera_server_CaptureInfo_t capture_info)
+    mavsdk_camera_server_camera_feedback_t take_photo_feedback,
+    mavsdk_camera_server_capture_info_t capture_info)
 {
     auto wrapper = static_cast<mavsdk_camera_server_wrapper*>(camera_server);
 
-    auto ret_value = wrapper->cpp_plugin->respond_take_photo(        translate_CameraFeedback_from_c(take_photo_feedback),        translate_CaptureInfo_from_c(capture_info));
+    auto ret_value = wrapper->cpp_plugin->respond_take_photo(        translate_camera_feedback_from_c(take_photo_feedback),        translate_capture_info_from_c(capture_info));
 
     return translate_result(ret_value);
 }
@@ -854,11 +854,11 @@ void mavsdk_camera_server_unsubscribe_start_video(
 mavsdk_camera_server_result_t
 mavsdk_camera_server_respond_start_video(
     mavsdk_camera_server_t camera_server,
-    mavsdk_camera_server_CameraFeedback_t start_video_feedback)
+    mavsdk_camera_server_camera_feedback_t start_video_feedback)
 {
     auto wrapper = static_cast<mavsdk_camera_server_wrapper*>(camera_server);
 
-    auto ret_value = wrapper->cpp_plugin->respond_start_video(        translate_CameraFeedback_from_c(start_video_feedback));
+    auto ret_value = wrapper->cpp_plugin->respond_start_video(        translate_camera_feedback_from_c(start_video_feedback));
 
     return translate_result(ret_value);
 }
@@ -903,11 +903,11 @@ void mavsdk_camera_server_unsubscribe_stop_video(
 mavsdk_camera_server_result_t
 mavsdk_camera_server_respond_stop_video(
     mavsdk_camera_server_t camera_server,
-    mavsdk_camera_server_CameraFeedback_t stop_video_feedback)
+    mavsdk_camera_server_camera_feedback_t stop_video_feedback)
 {
     auto wrapper = static_cast<mavsdk_camera_server_wrapper*>(camera_server);
 
-    auto ret_value = wrapper->cpp_plugin->respond_stop_video(        translate_CameraFeedback_from_c(stop_video_feedback));
+    auto ret_value = wrapper->cpp_plugin->respond_stop_video(        translate_camera_feedback_from_c(stop_video_feedback));
 
     return translate_result(ret_value);
 }
@@ -952,11 +952,11 @@ void mavsdk_camera_server_unsubscribe_start_video_streaming(
 mavsdk_camera_server_result_t
 mavsdk_camera_server_respond_start_video_streaming(
     mavsdk_camera_server_t camera_server,
-    mavsdk_camera_server_CameraFeedback_t start_video_streaming_feedback)
+    mavsdk_camera_server_camera_feedback_t start_video_streaming_feedback)
 {
     auto wrapper = static_cast<mavsdk_camera_server_wrapper*>(camera_server);
 
-    auto ret_value = wrapper->cpp_plugin->respond_start_video_streaming(        translate_CameraFeedback_from_c(start_video_streaming_feedback));
+    auto ret_value = wrapper->cpp_plugin->respond_start_video_streaming(        translate_camera_feedback_from_c(start_video_streaming_feedback));
 
     return translate_result(ret_value);
 }
@@ -1001,11 +1001,11 @@ void mavsdk_camera_server_unsubscribe_stop_video_streaming(
 mavsdk_camera_server_result_t
 mavsdk_camera_server_respond_stop_video_streaming(
     mavsdk_camera_server_t camera_server,
-    mavsdk_camera_server_CameraFeedback_t stop_video_streaming_feedback)
+    mavsdk_camera_server_camera_feedback_t stop_video_streaming_feedback)
 {
     auto wrapper = static_cast<mavsdk_camera_server_wrapper*>(camera_server);
 
-    auto ret_value = wrapper->cpp_plugin->respond_stop_video_streaming(        translate_CameraFeedback_from_c(stop_video_streaming_feedback));
+    auto ret_value = wrapper->cpp_plugin->respond_stop_video_streaming(        translate_camera_feedback_from_c(stop_video_streaming_feedback));
 
     return translate_result(ret_value);
 }
@@ -1023,7 +1023,7 @@ mavsdk_camera_server_set_mode_handle_t mavsdk_camera_server_subscribe_set_mode(
             mavsdk::CameraServer::Mode value) {
                 if (callback) {
                     callback(
-                        translate_Mode_to_c(value),
+                        translate_mode_to_c(value),
                         user_data);
                 }
         });
@@ -1050,11 +1050,11 @@ void mavsdk_camera_server_unsubscribe_set_mode(
 mavsdk_camera_server_result_t
 mavsdk_camera_server_respond_set_mode(
     mavsdk_camera_server_t camera_server,
-    mavsdk_camera_server_CameraFeedback_t set_mode_feedback)
+    mavsdk_camera_server_camera_feedback_t set_mode_feedback)
 {
     auto wrapper = static_cast<mavsdk_camera_server_wrapper*>(camera_server);
 
-    auto ret_value = wrapper->cpp_plugin->respond_set_mode(        translate_CameraFeedback_from_c(set_mode_feedback));
+    auto ret_value = wrapper->cpp_plugin->respond_set_mode(        translate_camera_feedback_from_c(set_mode_feedback));
 
     return translate_result(ret_value);
 }
@@ -1099,12 +1099,12 @@ void mavsdk_camera_server_unsubscribe_storage_information(
 mavsdk_camera_server_result_t
 mavsdk_camera_server_respond_storage_information(
     mavsdk_camera_server_t camera_server,
-    mavsdk_camera_server_CameraFeedback_t storage_information_feedback,
-    mavsdk_camera_server_StorageInformation_t storage_information)
+    mavsdk_camera_server_camera_feedback_t storage_information_feedback,
+    mavsdk_camera_server_storage_information_t storage_information)
 {
     auto wrapper = static_cast<mavsdk_camera_server_wrapper*>(camera_server);
 
-    auto ret_value = wrapper->cpp_plugin->respond_storage_information(        translate_CameraFeedback_from_c(storage_information_feedback),        translate_StorageInformation_from_c(storage_information));
+    auto ret_value = wrapper->cpp_plugin->respond_storage_information(        translate_camera_feedback_from_c(storage_information_feedback),        translate_storage_information_from_c(storage_information));
 
     return translate_result(ret_value);
 }
@@ -1149,12 +1149,12 @@ void mavsdk_camera_server_unsubscribe_capture_status(
 mavsdk_camera_server_result_t
 mavsdk_camera_server_respond_capture_status(
     mavsdk_camera_server_t camera_server,
-    mavsdk_camera_server_CameraFeedback_t capture_status_feedback,
-    mavsdk_camera_server_CaptureStatus_t capture_status)
+    mavsdk_camera_server_camera_feedback_t capture_status_feedback,
+    mavsdk_camera_server_capture_status_t capture_status)
 {
     auto wrapper = static_cast<mavsdk_camera_server_wrapper*>(camera_server);
 
-    auto ret_value = wrapper->cpp_plugin->respond_capture_status(        translate_CameraFeedback_from_c(capture_status_feedback),        translate_CaptureStatus_from_c(capture_status));
+    auto ret_value = wrapper->cpp_plugin->respond_capture_status(        translate_camera_feedback_from_c(capture_status_feedback),        translate_capture_status_from_c(capture_status));
 
     return translate_result(ret_value);
 }
@@ -1199,11 +1199,11 @@ void mavsdk_camera_server_unsubscribe_format_storage(
 mavsdk_camera_server_result_t
 mavsdk_camera_server_respond_format_storage(
     mavsdk_camera_server_t camera_server,
-    mavsdk_camera_server_CameraFeedback_t format_storage_feedback)
+    mavsdk_camera_server_camera_feedback_t format_storage_feedback)
 {
     auto wrapper = static_cast<mavsdk_camera_server_wrapper*>(camera_server);
 
-    auto ret_value = wrapper->cpp_plugin->respond_format_storage(        translate_CameraFeedback_from_c(format_storage_feedback));
+    auto ret_value = wrapper->cpp_plugin->respond_format_storage(        translate_camera_feedback_from_c(format_storage_feedback));
 
     return translate_result(ret_value);
 }
@@ -1248,11 +1248,11 @@ void mavsdk_camera_server_unsubscribe_reset_settings(
 mavsdk_camera_server_result_t
 mavsdk_camera_server_respond_reset_settings(
     mavsdk_camera_server_t camera_server,
-    mavsdk_camera_server_CameraFeedback_t reset_settings_feedback)
+    mavsdk_camera_server_camera_feedback_t reset_settings_feedback)
 {
     auto wrapper = static_cast<mavsdk_camera_server_wrapper*>(camera_server);
 
-    auto ret_value = wrapper->cpp_plugin->respond_reset_settings(        translate_CameraFeedback_from_c(reset_settings_feedback));
+    auto ret_value = wrapper->cpp_plugin->respond_reset_settings(        translate_camera_feedback_from_c(reset_settings_feedback));
 
     return translate_result(ret_value);
 }
@@ -1297,11 +1297,11 @@ void mavsdk_camera_server_unsubscribe_zoom_in_start(
 mavsdk_camera_server_result_t
 mavsdk_camera_server_respond_zoom_in_start(
     mavsdk_camera_server_t camera_server,
-    mavsdk_camera_server_CameraFeedback_t zoom_in_start_feedback)
+    mavsdk_camera_server_camera_feedback_t zoom_in_start_feedback)
 {
     auto wrapper = static_cast<mavsdk_camera_server_wrapper*>(camera_server);
 
-    auto ret_value = wrapper->cpp_plugin->respond_zoom_in_start(        translate_CameraFeedback_from_c(zoom_in_start_feedback));
+    auto ret_value = wrapper->cpp_plugin->respond_zoom_in_start(        translate_camera_feedback_from_c(zoom_in_start_feedback));
 
     return translate_result(ret_value);
 }
@@ -1346,11 +1346,11 @@ void mavsdk_camera_server_unsubscribe_zoom_out_start(
 mavsdk_camera_server_result_t
 mavsdk_camera_server_respond_zoom_out_start(
     mavsdk_camera_server_t camera_server,
-    mavsdk_camera_server_CameraFeedback_t zoom_out_start_feedback)
+    mavsdk_camera_server_camera_feedback_t zoom_out_start_feedback)
 {
     auto wrapper = static_cast<mavsdk_camera_server_wrapper*>(camera_server);
 
-    auto ret_value = wrapper->cpp_plugin->respond_zoom_out_start(        translate_CameraFeedback_from_c(zoom_out_start_feedback));
+    auto ret_value = wrapper->cpp_plugin->respond_zoom_out_start(        translate_camera_feedback_from_c(zoom_out_start_feedback));
 
     return translate_result(ret_value);
 }
@@ -1395,11 +1395,11 @@ void mavsdk_camera_server_unsubscribe_zoom_stop(
 mavsdk_camera_server_result_t
 mavsdk_camera_server_respond_zoom_stop(
     mavsdk_camera_server_t camera_server,
-    mavsdk_camera_server_CameraFeedback_t zoom_stop_feedback)
+    mavsdk_camera_server_camera_feedback_t zoom_stop_feedback)
 {
     auto wrapper = static_cast<mavsdk_camera_server_wrapper*>(camera_server);
 
-    auto ret_value = wrapper->cpp_plugin->respond_zoom_stop(        translate_CameraFeedback_from_c(zoom_stop_feedback));
+    auto ret_value = wrapper->cpp_plugin->respond_zoom_stop(        translate_camera_feedback_from_c(zoom_stop_feedback));
 
     return translate_result(ret_value);
 }
@@ -1444,11 +1444,11 @@ void mavsdk_camera_server_unsubscribe_zoom_range(
 mavsdk_camera_server_result_t
 mavsdk_camera_server_respond_zoom_range(
     mavsdk_camera_server_t camera_server,
-    mavsdk_camera_server_CameraFeedback_t zoom_range_feedback)
+    mavsdk_camera_server_camera_feedback_t zoom_range_feedback)
 {
     auto wrapper = static_cast<mavsdk_camera_server_wrapper*>(camera_server);
 
-    auto ret_value = wrapper->cpp_plugin->respond_zoom_range(        translate_CameraFeedback_from_c(zoom_range_feedback));
+    auto ret_value = wrapper->cpp_plugin->respond_zoom_range(        translate_camera_feedback_from_c(zoom_range_feedback));
 
     return translate_result(ret_value);
 }
@@ -1458,11 +1458,11 @@ mavsdk_camera_server_respond_zoom_range(
 void
 mavsdk_camera_server_set_tracking_rectangle_status(
     mavsdk_camera_server_t camera_server,
-    mavsdk_camera_server_TrackRectangle_t tracked_rectangle)
+    mavsdk_camera_server_track_rectangle_t tracked_rectangle)
 {
     auto wrapper = static_cast<mavsdk_camera_server_wrapper*>(camera_server);
 
-wrapper->cpp_plugin->set_tracking_rectangle_status(        translate_TrackRectangle_from_c(tracked_rectangle));
+wrapper->cpp_plugin->set_tracking_rectangle_status(        translate_track_rectangle_from_c(tracked_rectangle));
 
 }
 
@@ -1491,7 +1491,7 @@ mavsdk_camera_server_tracking_point_command_handle_t mavsdk_camera_server_subscr
             mavsdk::CameraServer::TrackPoint value) {
                 if (callback) {
                     callback(
-                        translate_TrackPoint_to_c(value),
+                        translate_track_point_to_c(value),
                         user_data);
                 }
         });
@@ -1526,7 +1526,7 @@ mavsdk_camera_server_tracking_rectangle_command_handle_t mavsdk_camera_server_su
             mavsdk::CameraServer::TrackRectangle value) {
                 if (callback) {
                     callback(
-                        translate_TrackRectangle_to_c(value),
+                        translate_track_rectangle_to_c(value),
                         user_data);
                 }
         });
@@ -1588,11 +1588,11 @@ void mavsdk_camera_server_unsubscribe_tracking_off_command(
 mavsdk_camera_server_result_t
 mavsdk_camera_server_respond_tracking_point_command(
     mavsdk_camera_server_t camera_server,
-    mavsdk_camera_server_CameraFeedback_t stop_video_feedback)
+    mavsdk_camera_server_camera_feedback_t stop_video_feedback)
 {
     auto wrapper = static_cast<mavsdk_camera_server_wrapper*>(camera_server);
 
-    auto ret_value = wrapper->cpp_plugin->respond_tracking_point_command(        translate_CameraFeedback_from_c(stop_video_feedback));
+    auto ret_value = wrapper->cpp_plugin->respond_tracking_point_command(        translate_camera_feedback_from_c(stop_video_feedback));
 
     return translate_result(ret_value);
 }
@@ -1602,11 +1602,11 @@ mavsdk_camera_server_respond_tracking_point_command(
 mavsdk_camera_server_result_t
 mavsdk_camera_server_respond_tracking_rectangle_command(
     mavsdk_camera_server_t camera_server,
-    mavsdk_camera_server_CameraFeedback_t stop_video_feedback)
+    mavsdk_camera_server_camera_feedback_t stop_video_feedback)
 {
     auto wrapper = static_cast<mavsdk_camera_server_wrapper*>(camera_server);
 
-    auto ret_value = wrapper->cpp_plugin->respond_tracking_rectangle_command(        translate_CameraFeedback_from_c(stop_video_feedback));
+    auto ret_value = wrapper->cpp_plugin->respond_tracking_rectangle_command(        translate_camera_feedback_from_c(stop_video_feedback));
 
     return translate_result(ret_value);
 }
@@ -1616,11 +1616,11 @@ mavsdk_camera_server_respond_tracking_rectangle_command(
 mavsdk_camera_server_result_t
 mavsdk_camera_server_respond_tracking_off_command(
     mavsdk_camera_server_t camera_server,
-    mavsdk_camera_server_CameraFeedback_t stop_video_feedback)
+    mavsdk_camera_server_camera_feedback_t stop_video_feedback)
 {
     auto wrapper = static_cast<mavsdk_camera_server_wrapper*>(camera_server);
 
-    auto ret_value = wrapper->cpp_plugin->respond_tracking_off_command(        translate_CameraFeedback_from_c(stop_video_feedback));
+    auto ret_value = wrapper->cpp_plugin->respond_tracking_off_command(        translate_camera_feedback_from_c(stop_video_feedback));
 
     return translate_result(ret_value);
 }

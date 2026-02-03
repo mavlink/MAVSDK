@@ -33,17 +33,17 @@ typedef void* mavsdk_mission_raw_mission_changed_handle_t;
  * @brief Mission progress type.
  *
  * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_mission_raw_MissionProgress_destroy() when done to avoid memory leaks.
+ *       mavsdk_mission_raw_mission_progress_destroy() when done to avoid memory leaks.
  */
 typedef struct CMAVSDK_EXPORT {
     /**  Current mission item index (0-based), if equal to total, the mission is finished */
     int32_t current;
     /**  Total number of mission items */
     int32_t total;
-} mavsdk_mission_raw_MissionProgress_t;
+} mavsdk_mission_raw_mission_progress_t;
 
 /**
- * @brief Destroy a MissionProgress struct.
+ * @brief Destroy a mission_progress struct.
  *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
@@ -52,11 +52,11 @@ typedef struct CMAVSDK_EXPORT {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-CMAVSDK_EXPORT void mavsdk_mission_raw_MissionProgress_destroy(
-    mavsdk_mission_raw_MissionProgress_t* target);
+CMAVSDK_EXPORT void mavsdk_mission_raw_mission_progress_destroy(
+    mavsdk_mission_raw_mission_progress_t* target);
 
 /**
- * @brief Destroy an array of MissionProgress structs.
+ * @brief Destroy an array of mission_progress structs.
  *
  * Frees all memory allocated for the array and its elements, including any
  * nested dynamic allocations. Must be called to avoid memory leaks.
@@ -64,15 +64,15 @@ CMAVSDK_EXPORT void mavsdk_mission_raw_MissionProgress_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-CMAVSDK_EXPORT void mavsdk_mission_raw_MissionProgress_array_destroy(
-    mavsdk_mission_raw_MissionProgress_t** array,
+CMAVSDK_EXPORT void mavsdk_mission_raw_mission_progress_array_destroy(
+    mavsdk_mission_raw_mission_progress_t** array,
     size_t size);
 
 /**
  * @brief Mission item exactly identical to MAVLink MISSION_ITEM_INT.
  *
  * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_mission_raw_MissionItem_destroy() when done to avoid memory leaks.
+ *       mavsdk_mission_raw_mission_item_destroy() when done to avoid memory leaks.
  */
 typedef struct CMAVSDK_EXPORT {
     /**  Sequence (uint16_t) */
@@ -101,10 +101,10 @@ typedef struct CMAVSDK_EXPORT {
     float z;
     /**  Mission type (actually uint8_t) */
     uint32_t mission_type;
-} mavsdk_mission_raw_MissionItem_t;
+} mavsdk_mission_raw_mission_item_t;
 
 /**
- * @brief Destroy a MissionItem struct.
+ * @brief Destroy a mission_item struct.
  *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
@@ -113,11 +113,11 @@ typedef struct CMAVSDK_EXPORT {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-CMAVSDK_EXPORT void mavsdk_mission_raw_MissionItem_destroy(
-    mavsdk_mission_raw_MissionItem_t* target);
+CMAVSDK_EXPORT void mavsdk_mission_raw_mission_item_destroy(
+    mavsdk_mission_raw_mission_item_t* target);
 
 /**
- * @brief Destroy an array of MissionItem structs.
+ * @brief Destroy an array of mission_item structs.
  *
  * Frees all memory allocated for the array and its elements, including any
  * nested dynamic allocations. Must be called to avoid memory leaks.
@@ -125,30 +125,30 @@ CMAVSDK_EXPORT void mavsdk_mission_raw_MissionItem_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-CMAVSDK_EXPORT void mavsdk_mission_raw_MissionItem_array_destroy(
-    mavsdk_mission_raw_MissionItem_t** array,
+CMAVSDK_EXPORT void mavsdk_mission_raw_mission_item_array_destroy(
+    mavsdk_mission_raw_mission_item_t** array,
     size_t size);
 
 /**
  * @brief Mission import data
  *
  * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_mission_raw_MissionImportData_destroy() when done to avoid memory leaks.
+ *       mavsdk_mission_raw_mission_import_data_destroy() when done to avoid memory leaks.
  */
 typedef struct CMAVSDK_EXPORT {
     /**  Mission items */
-    mavsdk_mission_raw_MissionItem_t* mission_items;
+    mavsdk_mission_raw_mission_item_t* mission_items;
     size_t mission_items_size;
     /**  Geofence items */
-    mavsdk_mission_raw_MissionItem_t* geofence_items;
+    mavsdk_mission_raw_mission_item_t* geofence_items;
     size_t geofence_items_size;
     /**  Rally items */
-    mavsdk_mission_raw_MissionItem_t* rally_items;
+    mavsdk_mission_raw_mission_item_t* rally_items;
     size_t rally_items_size;
-} mavsdk_mission_raw_MissionImportData_t;
+} mavsdk_mission_raw_mission_import_data_t;
 
 /**
- * @brief Destroy a MissionImportData struct.
+ * @brief Destroy a mission_import_data struct.
  *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
@@ -157,11 +157,11 @@ typedef struct CMAVSDK_EXPORT {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-CMAVSDK_EXPORT void mavsdk_mission_raw_MissionImportData_destroy(
-    mavsdk_mission_raw_MissionImportData_t* target);
+CMAVSDK_EXPORT void mavsdk_mission_raw_mission_import_data_destroy(
+    mavsdk_mission_raw_mission_import_data_t* target);
 
 /**
- * @brief Destroy an array of MissionImportData structs.
+ * @brief Destroy an array of mission_import_data structs.
  *
  * Frees all memory allocated for the array and its elements, including any
  * nested dynamic allocations. Must be called to avoid memory leaks.
@@ -169,8 +169,8 @@ CMAVSDK_EXPORT void mavsdk_mission_raw_MissionImportData_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-CMAVSDK_EXPORT void mavsdk_mission_raw_MissionImportData_array_destroy(
-    mavsdk_mission_raw_MissionImportData_t** array,
+CMAVSDK_EXPORT void mavsdk_mission_raw_mission_import_data_array_destroy(
+    mavsdk_mission_raw_mission_import_data_t** array,
     size_t size);
 
 /**
@@ -303,14 +303,14 @@ CMAVSDK_EXPORT void mavsdk_mission_raw_byte_buffer_destroy(uint8_t** buffer);
 typedef void (*mavsdk_mission_raw_upload_mission_callback_t)(const mavsdk_mission_raw_result_t result, void* user_data);
 typedef void (*mavsdk_mission_raw_upload_geofence_callback_t)(const mavsdk_mission_raw_result_t result, void* user_data);
 typedef void (*mavsdk_mission_raw_upload_rally_points_callback_t)(const mavsdk_mission_raw_result_t result, void* user_data);
-typedef void (*mavsdk_mission_raw_download_mission_callback_t)(const mavsdk_mission_raw_result_t result, const mavsdk_mission_raw_MissionItem_t* mission_items, size_t mission_items_size, void* user_data);
-typedef void (*mavsdk_mission_raw_download_geofence_callback_t)(const mavsdk_mission_raw_result_t result, const mavsdk_mission_raw_MissionItem_t* geofence_items, size_t geofence_items_size, void* user_data);
-typedef void (*mavsdk_mission_raw_download_rallypoints_callback_t)(const mavsdk_mission_raw_result_t result, const mavsdk_mission_raw_MissionItem_t* rallypoint_items, size_t rallypoint_items_size, void* user_data);
+typedef void (*mavsdk_mission_raw_download_mission_callback_t)(const mavsdk_mission_raw_result_t result, const mavsdk_mission_raw_mission_item_t* mission_items, size_t mission_items_size, void* user_data);
+typedef void (*mavsdk_mission_raw_download_geofence_callback_t)(const mavsdk_mission_raw_result_t result, const mavsdk_mission_raw_mission_item_t* geofence_items, size_t geofence_items_size, void* user_data);
+typedef void (*mavsdk_mission_raw_download_rallypoints_callback_t)(const mavsdk_mission_raw_result_t result, const mavsdk_mission_raw_mission_item_t* rallypoint_items, size_t rallypoint_items_size, void* user_data);
 typedef void (*mavsdk_mission_raw_start_mission_callback_t)(const mavsdk_mission_raw_result_t result, void* user_data);
 typedef void (*mavsdk_mission_raw_pause_mission_callback_t)(const mavsdk_mission_raw_result_t result, void* user_data);
 typedef void (*mavsdk_mission_raw_clear_mission_callback_t)(const mavsdk_mission_raw_result_t result, void* user_data);
 typedef void (*mavsdk_mission_raw_set_current_mission_item_callback_t)(const mavsdk_mission_raw_result_t result, void* user_data);
-typedef void (*mavsdk_mission_raw_mission_progress_callback_t)(const mavsdk_mission_raw_MissionProgress_t mission_progress, void* user_data);
+typedef void (*mavsdk_mission_raw_mission_progress_callback_t)(const mavsdk_mission_raw_mission_progress_t mission_progress, void* user_data);
 typedef void (*mavsdk_mission_raw_mission_changed_callback_t)(const bool mission_changed, void* user_data);
 
 // ===== MissionRaw Creation/Destruction =====
@@ -333,7 +333,7 @@ CMAVSDK_EXPORT void mavsdk_mission_raw_destroy(mavsdk_mission_raw_t mission_raw)
  */
 CMAVSDK_EXPORT void mavsdk_mission_raw_upload_mission_async(
     mavsdk_mission_raw_t mission_raw,
-    const mavsdk_mission_raw_MissionItem_t* mission_items,
+    const mavsdk_mission_raw_mission_item_t* mission_items,
     size_t mission_items_size,
     mavsdk_mission_raw_upload_mission_callback_t callback,
     void* user_data);
@@ -351,7 +351,7 @@ CMAVSDK_EXPORT
 mavsdk_mission_raw_result_t
 mavsdk_mission_raw_upload_mission(
     mavsdk_mission_raw_t mission_raw,
-    const mavsdk_mission_raw_MissionItem_t* mission_items,
+    const mavsdk_mission_raw_mission_item_t* mission_items,
     size_t mission_items_size);
 
 
@@ -366,7 +366,7 @@ mavsdk_mission_raw_upload_mission(
  */
 CMAVSDK_EXPORT void mavsdk_mission_raw_upload_geofence_async(
     mavsdk_mission_raw_t mission_raw,
-    const mavsdk_mission_raw_MissionItem_t* mission_items,
+    const mavsdk_mission_raw_mission_item_t* mission_items,
     size_t mission_items_size,
     mavsdk_mission_raw_upload_geofence_callback_t callback,
     void* user_data);
@@ -384,7 +384,7 @@ CMAVSDK_EXPORT
 mavsdk_mission_raw_result_t
 mavsdk_mission_raw_upload_geofence(
     mavsdk_mission_raw_t mission_raw,
-    const mavsdk_mission_raw_MissionItem_t* mission_items,
+    const mavsdk_mission_raw_mission_item_t* mission_items,
     size_t mission_items_size);
 
 
@@ -399,7 +399,7 @@ mavsdk_mission_raw_upload_geofence(
  */
 CMAVSDK_EXPORT void mavsdk_mission_raw_upload_rally_points_async(
     mavsdk_mission_raw_t mission_raw,
-    const mavsdk_mission_raw_MissionItem_t* mission_items,
+    const mavsdk_mission_raw_mission_item_t* mission_items,
     size_t mission_items_size,
     mavsdk_mission_raw_upload_rally_points_callback_t callback,
     void* user_data);
@@ -417,7 +417,7 @@ CMAVSDK_EXPORT
 mavsdk_mission_raw_result_t
 mavsdk_mission_raw_upload_rally_points(
     mavsdk_mission_raw_t mission_raw,
-    const mavsdk_mission_raw_MissionItem_t* mission_items,
+    const mavsdk_mission_raw_mission_item_t* mission_items,
     size_t mission_items_size);
 
 
@@ -460,7 +460,7 @@ CMAVSDK_EXPORT
 mavsdk_mission_raw_result_t
 mavsdk_mission_raw_download_mission(
     mavsdk_mission_raw_t mission_raw,
-    mavsdk_mission_raw_MissionItem_t** mission_items_out,
+    mavsdk_mission_raw_mission_item_t** mission_items_out,
     size_t* mission_items_size_out);
 
 
@@ -489,7 +489,7 @@ CMAVSDK_EXPORT
 mavsdk_mission_raw_result_t
 mavsdk_mission_raw_download_geofence(
     mavsdk_mission_raw_t mission_raw,
-    mavsdk_mission_raw_MissionItem_t** geofence_items_out,
+    mavsdk_mission_raw_mission_item_t** geofence_items_out,
     size_t* geofence_items_size_out);
 
 
@@ -518,7 +518,7 @@ CMAVSDK_EXPORT
 mavsdk_mission_raw_result_t
 mavsdk_mission_raw_download_rallypoints(
     mavsdk_mission_raw_t mission_raw,
-    mavsdk_mission_raw_MissionItem_t** rallypoint_items_out,
+    mavsdk_mission_raw_mission_item_t** rallypoint_items_out,
     size_t* rallypoint_items_size_out);
 
 
@@ -695,7 +695,7 @@ CMAVSDK_EXPORT
 void
 mavsdk_mission_raw_mission_progress(
     mavsdk_mission_raw_t mission_raw,
-    mavsdk_mission_raw_MissionProgress_t* mission_progress_out);
+    mavsdk_mission_raw_mission_progress_t* mission_progress_out);
 
 
 /**
@@ -742,7 +742,7 @@ mavsdk_mission_raw_result_t
 mavsdk_mission_raw_import_qgroundcontrol_mission(
     mavsdk_mission_raw_t mission_raw,
     char* qgc_plan_path,
-    mavsdk_mission_raw_MissionImportData_t* mission_import_data_out);
+    mavsdk_mission_raw_mission_import_data_t* mission_import_data_out);
 
 
 /**
@@ -758,7 +758,7 @@ mavsdk_mission_raw_result_t
 mavsdk_mission_raw_import_qgroundcontrol_mission_from_string(
     mavsdk_mission_raw_t mission_raw,
     char* qgc_plan,
-    mavsdk_mission_raw_MissionImportData_t* mission_import_data_out);
+    mavsdk_mission_raw_mission_import_data_t* mission_import_data_out);
 
 
 /**
@@ -774,7 +774,7 @@ mavsdk_mission_raw_result_t
 mavsdk_mission_raw_import_mission_planner_mission(
     mavsdk_mission_raw_t mission_raw,
     char* mission_planner_path,
-    mavsdk_mission_raw_MissionImportData_t* mission_import_data_out);
+    mavsdk_mission_raw_mission_import_data_t* mission_import_data_out);
 
 
 /**
@@ -790,7 +790,7 @@ mavsdk_mission_raw_result_t
 mavsdk_mission_raw_import_mission_planner_mission_from_string(
     mavsdk_mission_raw_t mission_raw,
     char* mission_planner_mission,
-    mavsdk_mission_raw_MissionImportData_t* mission_import_data_out);
+    mavsdk_mission_raw_mission_import_data_t* mission_import_data_out);
 
 
 /**

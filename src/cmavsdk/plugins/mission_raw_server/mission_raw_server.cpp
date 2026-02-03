@@ -45,7 +45,7 @@ translate_result(mavsdk::MissionRawServer::Result cpp_result) {
 
 
 static mavsdk::MissionRawServer::MissionItem
-translate_MissionItem_from_c(const mavsdk_mission_raw_server_MissionItem_t& c_struct) {
+translate_mission_item_from_c(const mavsdk_mission_raw_server_mission_item_t& c_struct) {
     mavsdk::MissionRawServer::MissionItem cpp_struct{};
     cpp_struct.seq = c_struct.seq;
     cpp_struct.frame = c_struct.frame;
@@ -63,9 +63,9 @@ translate_MissionItem_from_c(const mavsdk_mission_raw_server_MissionItem_t& c_st
     return cpp_struct;
 }
 
-static mavsdk_mission_raw_server_MissionItem_t
-translate_MissionItem_to_c(const mavsdk::MissionRawServer::MissionItem& cpp_struct) {
-    mavsdk_mission_raw_server_MissionItem_t c_struct{};
+static mavsdk_mission_raw_server_mission_item_t
+translate_mission_item_to_c(const mavsdk::MissionRawServer::MissionItem& cpp_struct) {
+    mavsdk_mission_raw_server_mission_item_t c_struct{};
     c_struct.seq = cpp_struct.seq;
     c_struct.frame = cpp_struct.frame;
     c_struct.command = cpp_struct.command;
@@ -82,18 +82,18 @@ translate_MissionItem_to_c(const mavsdk::MissionRawServer::MissionItem& cpp_stru
     return c_struct;
 }
 
-void mavsdk_mission_raw_server_MissionItem_destroy(
-    mavsdk_mission_raw_server_MissionItem_t* target) {
+void mavsdk_mission_raw_server_mission_item_destroy(
+    mavsdk_mission_raw_server_mission_item_t* target) {
     if (!target) return;
 }
 
-void mavsdk_mission_raw_server_MissionItem_array_destroy(
-    mavsdk_mission_raw_server_MissionItem_t** array,
+void mavsdk_mission_raw_server_mission_item_array_destroy(
+    mavsdk_mission_raw_server_mission_item_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_mission_raw_server_MissionItem_destroy(&(*array)[i]);
+        mavsdk_mission_raw_server_mission_item_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -102,33 +102,33 @@ void mavsdk_mission_raw_server_MissionItem_array_destroy(
 
 
 static mavsdk::MissionRawServer::MissionPlan
-translate_MissionPlan_from_c(const mavsdk_mission_raw_server_MissionPlan_t& c_struct) {
+translate_mission_plan_from_c(const mavsdk_mission_raw_server_mission_plan_t& c_struct) {
     mavsdk::MissionRawServer::MissionPlan cpp_struct{};
     cpp_struct.mission_items.reserve(c_struct.mission_items_size);
     for (size_t i = 0; i < c_struct.mission_items_size; i++) {
         cpp_struct.mission_items.push_back(
-            translate_MissionItem_from_c(c_struct.mission_items[i]));
+            translate_mission_item_from_c(c_struct.mission_items[i]));
     }
     return cpp_struct;
 }
 
-static mavsdk_mission_raw_server_MissionPlan_t
-translate_MissionPlan_to_c(const mavsdk::MissionRawServer::MissionPlan& cpp_struct) {
-    mavsdk_mission_raw_server_MissionPlan_t c_struct{};
+static mavsdk_mission_raw_server_mission_plan_t
+translate_mission_plan_to_c(const mavsdk::MissionRawServer::MissionPlan& cpp_struct) {
+    mavsdk_mission_raw_server_mission_plan_t c_struct{};
     c_struct.mission_items_size = cpp_struct.mission_items.size();
-    c_struct.mission_items = new mavsdk_mission_raw_server_MissionItem_t[c_struct.mission_items_size];
+    c_struct.mission_items = new mavsdk_mission_raw_server_mission_item_t[c_struct.mission_items_size];
     for (size_t i = 0; i < c_struct.mission_items_size; i++) {
-        c_struct.mission_items[i] = translate_MissionItem_to_c(cpp_struct.mission_items[i]);
+        c_struct.mission_items[i] = translate_mission_item_to_c(cpp_struct.mission_items[i]);
     }
     return c_struct;
 }
 
-void mavsdk_mission_raw_server_MissionPlan_destroy(
-    mavsdk_mission_raw_server_MissionPlan_t* target) {
+void mavsdk_mission_raw_server_mission_plan_destroy(
+    mavsdk_mission_raw_server_mission_plan_t* target) {
     if (!target) return;
     if (target->mission_items) {
         for (size_t i = 0; i < target->mission_items_size; i++) {
-            mavsdk_mission_raw_server_MissionItem_destroy(&target->mission_items[i]);
+            mavsdk_mission_raw_server_mission_item_destroy(&target->mission_items[i]);
         }
         delete[] target->mission_items;
         target->mission_items = nullptr;
@@ -136,13 +136,13 @@ void mavsdk_mission_raw_server_MissionPlan_destroy(
     }
 }
 
-void mavsdk_mission_raw_server_MissionPlan_array_destroy(
-    mavsdk_mission_raw_server_MissionPlan_t** array,
+void mavsdk_mission_raw_server_mission_plan_array_destroy(
+    mavsdk_mission_raw_server_mission_plan_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_mission_raw_server_MissionPlan_destroy(&(*array)[i]);
+        mavsdk_mission_raw_server_mission_plan_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -151,33 +151,33 @@ void mavsdk_mission_raw_server_MissionPlan_array_destroy(
 
 
 static mavsdk::MissionRawServer::MissionProgress
-translate_MissionProgress_from_c(const mavsdk_mission_raw_server_MissionProgress_t& c_struct) {
+translate_mission_progress_from_c(const mavsdk_mission_raw_server_mission_progress_t& c_struct) {
     mavsdk::MissionRawServer::MissionProgress cpp_struct{};
     cpp_struct.current = c_struct.current;
     cpp_struct.total = c_struct.total;
     return cpp_struct;
 }
 
-static mavsdk_mission_raw_server_MissionProgress_t
-translate_MissionProgress_to_c(const mavsdk::MissionRawServer::MissionProgress& cpp_struct) {
-    mavsdk_mission_raw_server_MissionProgress_t c_struct{};
+static mavsdk_mission_raw_server_mission_progress_t
+translate_mission_progress_to_c(const mavsdk::MissionRawServer::MissionProgress& cpp_struct) {
+    mavsdk_mission_raw_server_mission_progress_t c_struct{};
     c_struct.current = cpp_struct.current;
     c_struct.total = cpp_struct.total;
     return c_struct;
 }
 
-void mavsdk_mission_raw_server_MissionProgress_destroy(
-    mavsdk_mission_raw_server_MissionProgress_t* target) {
+void mavsdk_mission_raw_server_mission_progress_destroy(
+    mavsdk_mission_raw_server_mission_progress_t* target) {
     if (!target) return;
 }
 
-void mavsdk_mission_raw_server_MissionProgress_array_destroy(
-    mavsdk_mission_raw_server_MissionProgress_t** array,
+void mavsdk_mission_raw_server_mission_progress_array_destroy(
+    mavsdk_mission_raw_server_mission_progress_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_mission_raw_server_MissionProgress_destroy(&(*array)[i]);
+        mavsdk_mission_raw_server_mission_progress_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -287,7 +287,7 @@ mavsdk_mission_raw_server_incoming_mission_handle_t mavsdk_mission_raw_server_su
                 if (callback) {
                     callback(
                         translate_result(result),
-                        translate_MissionPlan_to_c(value),
+                        translate_mission_plan_to_c(value),
                         user_data);
                 }
         });
@@ -322,7 +322,7 @@ mavsdk_mission_raw_server_current_item_changed_handle_t mavsdk_mission_raw_serve
             mavsdk::MissionRawServer::MissionItem value) {
                 if (callback) {
                     callback(
-                        translate_MissionItem_to_c(value),
+                        translate_mission_item_to_c(value),
                         user_data);
                 }
         });

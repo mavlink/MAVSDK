@@ -38,7 +38,7 @@ typedef enum {
     MAVSDK_COMPONENT_METADATA_METADATA_TYPE_EVENTS = 2,
     /**  Actuator definitions. */
     MAVSDK_COMPONENT_METADATA_METADATA_TYPE_ACTUATORS = 3,
-} mavsdk_component_metadata_MetadataType_t;
+} mavsdk_component_metadata_metadata_type_t;
 
 
 // ===== Structs =====
@@ -46,15 +46,15 @@ typedef enum {
  * @brief Metadata response
  *
  * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_component_metadata_MetadataData_destroy() when done to avoid memory leaks.
+ *       mavsdk_component_metadata_metadata_data_destroy() when done to avoid memory leaks.
  */
 typedef struct CMAVSDK_EXPORT {
     /**  The JSON metadata */
     char* json_metadata;
-} mavsdk_component_metadata_MetadataData_t;
+} mavsdk_component_metadata_metadata_data_t;
 
 /**
- * @brief Destroy a MetadataData struct.
+ * @brief Destroy a metadata_data struct.
  *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
@@ -63,11 +63,11 @@ typedef struct CMAVSDK_EXPORT {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-CMAVSDK_EXPORT void mavsdk_component_metadata_MetadataData_destroy(
-    mavsdk_component_metadata_MetadataData_t* target);
+CMAVSDK_EXPORT void mavsdk_component_metadata_metadata_data_destroy(
+    mavsdk_component_metadata_metadata_data_t* target);
 
 /**
- * @brief Destroy an array of MetadataData structs.
+ * @brief Destroy an array of metadata_data structs.
  *
  * Frees all memory allocated for the array and its elements, including any
  * nested dynamic allocations. Must be called to avoid memory leaks.
@@ -75,8 +75,8 @@ CMAVSDK_EXPORT void mavsdk_component_metadata_MetadataData_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-CMAVSDK_EXPORT void mavsdk_component_metadata_MetadataData_array_destroy(
-    mavsdk_component_metadata_MetadataData_t** array,
+CMAVSDK_EXPORT void mavsdk_component_metadata_metadata_data_array_destroy(
+    mavsdk_component_metadata_metadata_data_t** array,
     size_t size);
 
 /**
@@ -108,19 +108,19 @@ typedef enum {
  * @brief Metadata for a given component and type
  *
  * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_component_metadata_MetadataUpdate_destroy() when done to avoid memory leaks.
+ *       mavsdk_component_metadata_metadata_update_destroy() when done to avoid memory leaks.
  */
 typedef struct CMAVSDK_EXPORT {
     /**  The component ID */
     uint32_t compid;
     /**  The metadata type */
-    mavsdk_component_metadata_MetadataType_t type;
+    mavsdk_component_metadata_metadata_type_t type;
     /**  The JSON metadata */
     char* json_metadata;
-} mavsdk_component_metadata_MetadataUpdate_t;
+} mavsdk_component_metadata_metadata_update_t;
 
 /**
- * @brief Destroy a MetadataUpdate struct.
+ * @brief Destroy a metadata_update struct.
  *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
@@ -129,11 +129,11 @@ typedef struct CMAVSDK_EXPORT {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-CMAVSDK_EXPORT void mavsdk_component_metadata_MetadataUpdate_destroy(
-    mavsdk_component_metadata_MetadataUpdate_t* target);
+CMAVSDK_EXPORT void mavsdk_component_metadata_metadata_update_destroy(
+    mavsdk_component_metadata_metadata_update_t* target);
 
 /**
- * @brief Destroy an array of MetadataUpdate structs.
+ * @brief Destroy an array of metadata_update structs.
  *
  * Frees all memory allocated for the array and its elements, including any
  * nested dynamic allocations. Must be called to avoid memory leaks.
@@ -141,8 +141,8 @@ CMAVSDK_EXPORT void mavsdk_component_metadata_MetadataUpdate_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-CMAVSDK_EXPORT void mavsdk_component_metadata_MetadataUpdate_array_destroy(
-    mavsdk_component_metadata_MetadataUpdate_t** array,
+CMAVSDK_EXPORT void mavsdk_component_metadata_metadata_update_array_destroy(
+    mavsdk_component_metadata_metadata_update_t** array,
     size_t size);
 
 
@@ -223,7 +223,7 @@ CMAVSDK_EXPORT void mavsdk_component_metadata_string_destroy(char** str);
 CMAVSDK_EXPORT void mavsdk_component_metadata_byte_buffer_destroy(uint8_t** buffer);
 
 // ===== Callback Typedefs =====
-typedef void (*mavsdk_component_metadata_metadata_available_callback_t)(const mavsdk_component_metadata_MetadataUpdate_t data, void* user_data);
+typedef void (*mavsdk_component_metadata_metadata_available_callback_t)(const mavsdk_component_metadata_metadata_update_t data, void* user_data);
 
 // ===== ComponentMetadata Creation/Destruction =====
 CMAVSDK_EXPORT mavsdk_component_metadata_t mavsdk_component_metadata_create(mavsdk_system_t system);
@@ -299,8 +299,8 @@ mavsdk_component_metadata_result_t
 mavsdk_component_metadata_get_metadata(
     mavsdk_component_metadata_t component_metadata,
     uint32_t compid,
-    mavsdk_component_metadata_MetadataType_t metadata_type,
-    mavsdk_component_metadata_MetadataData_t* response_out);
+    mavsdk_component_metadata_metadata_type_t metadata_type,
+    mavsdk_component_metadata_metadata_data_t* response_out);
 
 
 #ifdef __cplusplus

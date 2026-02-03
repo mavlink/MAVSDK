@@ -33,7 +33,7 @@ typedef enum {
     MAVSDK_GEOFENCE_FENCE_TYPE_INCLUSION = 0,
     /**  Type representing an exclusion fence. */
     MAVSDK_GEOFENCE_FENCE_TYPE_EXCLUSION = 1,
-} mavsdk_geofence_FenceType_t;
+} mavsdk_geofence_fence_type_t;
 
 
 // ===== Structs =====
@@ -41,17 +41,17 @@ typedef enum {
  * @brief Point type.
  *
  * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_geofence_Point_destroy() when done to avoid memory leaks.
+ *       mavsdk_geofence_point_destroy() when done to avoid memory leaks.
  */
 typedef struct CMAVSDK_EXPORT {
     /**  Latitude in degrees (range: -90 to +90) */
     double latitude_deg;
     /**  Longitude in degrees (range: -180 to +180) */
     double longitude_deg;
-} mavsdk_geofence_Point_t;
+} mavsdk_geofence_point_t;
 
 /**
- * @brief Destroy a Point struct.
+ * @brief Destroy a point struct.
  *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
@@ -60,11 +60,11 @@ typedef struct CMAVSDK_EXPORT {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-CMAVSDK_EXPORT void mavsdk_geofence_Point_destroy(
-    mavsdk_geofence_Point_t* target);
+CMAVSDK_EXPORT void mavsdk_geofence_point_destroy(
+    mavsdk_geofence_point_t* target);
 
 /**
- * @brief Destroy an array of Point structs.
+ * @brief Destroy an array of point structs.
  *
  * Frees all memory allocated for the array and its elements, including any
  * nested dynamic allocations. Must be called to avoid memory leaks.
@@ -72,26 +72,26 @@ CMAVSDK_EXPORT void mavsdk_geofence_Point_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-CMAVSDK_EXPORT void mavsdk_geofence_Point_array_destroy(
-    mavsdk_geofence_Point_t** array,
+CMAVSDK_EXPORT void mavsdk_geofence_point_array_destroy(
+    mavsdk_geofence_point_t** array,
     size_t size);
 
 /**
  * @brief Polygon type.
  *
  * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_geofence_Polygon_destroy() when done to avoid memory leaks.
+ *       mavsdk_geofence_polygon_destroy() when done to avoid memory leaks.
  */
 typedef struct CMAVSDK_EXPORT {
     /**  Points defining the polygon */
-    mavsdk_geofence_Point_t* points;
+    mavsdk_geofence_point_t* points;
     size_t points_size;
     /**  Fence type */
-    mavsdk_geofence_FenceType_t fence_type;
-} mavsdk_geofence_Polygon_t;
+    mavsdk_geofence_fence_type_t fence_type;
+} mavsdk_geofence_polygon_t;
 
 /**
- * @brief Destroy a Polygon struct.
+ * @brief Destroy a polygon struct.
  *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
@@ -100,11 +100,11 @@ typedef struct CMAVSDK_EXPORT {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-CMAVSDK_EXPORT void mavsdk_geofence_Polygon_destroy(
-    mavsdk_geofence_Polygon_t* target);
+CMAVSDK_EXPORT void mavsdk_geofence_polygon_destroy(
+    mavsdk_geofence_polygon_t* target);
 
 /**
- * @brief Destroy an array of Polygon structs.
+ * @brief Destroy an array of polygon structs.
  *
  * Frees all memory allocated for the array and its elements, including any
  * nested dynamic allocations. Must be called to avoid memory leaks.
@@ -112,27 +112,27 @@ CMAVSDK_EXPORT void mavsdk_geofence_Polygon_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-CMAVSDK_EXPORT void mavsdk_geofence_Polygon_array_destroy(
-    mavsdk_geofence_Polygon_t** array,
+CMAVSDK_EXPORT void mavsdk_geofence_polygon_array_destroy(
+    mavsdk_geofence_polygon_t** array,
     size_t size);
 
 /**
  * @brief Circular type.
  *
  * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_geofence_Circle_destroy() when done to avoid memory leaks.
+ *       mavsdk_geofence_circle_destroy() when done to avoid memory leaks.
  */
 typedef struct CMAVSDK_EXPORT {
     /**  Point defining the center */
-    mavsdk_geofence_Point_t point;
+    mavsdk_geofence_point_t point;
     /**  Radius of the circular fence */
     float radius;
     /**  Fence type */
-    mavsdk_geofence_FenceType_t fence_type;
-} mavsdk_geofence_Circle_t;
+    mavsdk_geofence_fence_type_t fence_type;
+} mavsdk_geofence_circle_t;
 
 /**
- * @brief Destroy a Circle struct.
+ * @brief Destroy a circle struct.
  *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
@@ -141,11 +141,11 @@ typedef struct CMAVSDK_EXPORT {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-CMAVSDK_EXPORT void mavsdk_geofence_Circle_destroy(
-    mavsdk_geofence_Circle_t* target);
+CMAVSDK_EXPORT void mavsdk_geofence_circle_destroy(
+    mavsdk_geofence_circle_t* target);
 
 /**
- * @brief Destroy an array of Circle structs.
+ * @brief Destroy an array of circle structs.
  *
  * Frees all memory allocated for the array and its elements, including any
  * nested dynamic allocations. Must be called to avoid memory leaks.
@@ -153,27 +153,27 @@ CMAVSDK_EXPORT void mavsdk_geofence_Circle_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-CMAVSDK_EXPORT void mavsdk_geofence_Circle_array_destroy(
-    mavsdk_geofence_Circle_t** array,
+CMAVSDK_EXPORT void mavsdk_geofence_circle_array_destroy(
+    mavsdk_geofence_circle_t** array,
     size_t size);
 
 /**
  * @brief Geofence data type.
  *
  * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_geofence_GeofenceData_destroy() when done to avoid memory leaks.
+ *       mavsdk_geofence_geofence_data_destroy() when done to avoid memory leaks.
  */
 typedef struct CMAVSDK_EXPORT {
     /**  Polygon(s) representing the geofence(s) */
-    mavsdk_geofence_Polygon_t* polygons;
+    mavsdk_geofence_polygon_t* polygons;
     size_t polygons_size;
     /**  Circle(s) representing the geofence(s) */
-    mavsdk_geofence_Circle_t* circles;
+    mavsdk_geofence_circle_t* circles;
     size_t circles_size;
-} mavsdk_geofence_GeofenceData_t;
+} mavsdk_geofence_geofence_data_t;
 
 /**
- * @brief Destroy a GeofenceData struct.
+ * @brief Destroy a geofence_data struct.
  *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
@@ -182,11 +182,11 @@ typedef struct CMAVSDK_EXPORT {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-CMAVSDK_EXPORT void mavsdk_geofence_GeofenceData_destroy(
-    mavsdk_geofence_GeofenceData_t* target);
+CMAVSDK_EXPORT void mavsdk_geofence_geofence_data_destroy(
+    mavsdk_geofence_geofence_data_t* target);
 
 /**
- * @brief Destroy an array of GeofenceData structs.
+ * @brief Destroy an array of geofence_data structs.
  *
  * Frees all memory allocated for the array and its elements, including any
  * nested dynamic allocations. Must be called to avoid memory leaks.
@@ -194,8 +194,8 @@ CMAVSDK_EXPORT void mavsdk_geofence_GeofenceData_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-CMAVSDK_EXPORT void mavsdk_geofence_GeofenceData_array_destroy(
-    mavsdk_geofence_GeofenceData_t** array,
+CMAVSDK_EXPORT void mavsdk_geofence_geofence_data_array_destroy(
+    mavsdk_geofence_geofence_data_t** array,
     size_t size);
 
 /**
@@ -322,7 +322,7 @@ CMAVSDK_EXPORT void mavsdk_geofence_destroy(mavsdk_geofence_t geofence);
  */
 CMAVSDK_EXPORT void mavsdk_geofence_upload_geofence_async(
     mavsdk_geofence_t geofence,
-    mavsdk_geofence_GeofenceData_t geofence_data,
+    mavsdk_geofence_geofence_data_t geofence_data,
     mavsdk_geofence_upload_geofence_callback_t callback,
     void* user_data);
 
@@ -339,7 +339,7 @@ CMAVSDK_EXPORT
 mavsdk_geofence_result_t
 mavsdk_geofence_upload_geofence(
     mavsdk_geofence_t geofence,
-    mavsdk_geofence_GeofenceData_t geofence_data);
+    mavsdk_geofence_geofence_data_t geofence_data);
 
 
 /**

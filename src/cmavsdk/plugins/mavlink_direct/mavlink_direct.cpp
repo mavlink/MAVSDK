@@ -35,7 +35,7 @@ translate_result(mavsdk::MavlinkDirect::Result cpp_result) {
 
 
 static mavsdk::MavlinkDirect::MavlinkMessage
-translate_MavlinkMessage_from_c(const mavsdk_mavlink_direct_MavlinkMessage_t& c_struct) {
+translate_mavlink_message_from_c(const mavsdk_mavlink_direct_mavlink_message_t& c_struct) {
     mavsdk::MavlinkDirect::MavlinkMessage cpp_struct{};
     if (c_struct.message_name) {
         cpp_struct.message_name = c_struct.message_name;
@@ -50,9 +50,9 @@ translate_MavlinkMessage_from_c(const mavsdk_mavlink_direct_MavlinkMessage_t& c_
     return cpp_struct;
 }
 
-static mavsdk_mavlink_direct_MavlinkMessage_t
-translate_MavlinkMessage_to_c(const mavsdk::MavlinkDirect::MavlinkMessage& cpp_struct) {
-    mavsdk_mavlink_direct_MavlinkMessage_t c_struct{};
+static mavsdk_mavlink_direct_mavlink_message_t
+translate_mavlink_message_to_c(const mavsdk::MavlinkDirect::MavlinkMessage& cpp_struct) {
+    mavsdk_mavlink_direct_mavlink_message_t c_struct{};
     c_struct.message_name = strdup(cpp_struct.message_name.c_str());
     c_struct.system_id = cpp_struct.system_id;
     c_struct.component_id = cpp_struct.component_id;
@@ -62,8 +62,8 @@ translate_MavlinkMessage_to_c(const mavsdk::MavlinkDirect::MavlinkMessage& cpp_s
     return c_struct;
 }
 
-void mavsdk_mavlink_direct_MavlinkMessage_destroy(
-    mavsdk_mavlink_direct_MavlinkMessage_t* target) {
+void mavsdk_mavlink_direct_mavlink_message_destroy(
+    mavsdk_mavlink_direct_mavlink_message_t* target) {
     if (!target) return;
     if (target->message_name) {
         free((void*)target->message_name);
@@ -75,13 +75,13 @@ void mavsdk_mavlink_direct_MavlinkMessage_destroy(
     }
 }
 
-void mavsdk_mavlink_direct_MavlinkMessage_array_destroy(
-    mavsdk_mavlink_direct_MavlinkMessage_t** array,
+void mavsdk_mavlink_direct_mavlink_message_array_destroy(
+    mavsdk_mavlink_direct_mavlink_message_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_mavlink_direct_MavlinkMessage_destroy(&(*array)[i]);
+        mavsdk_mavlink_direct_mavlink_message_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -181,11 +181,11 @@ void mavsdk_mavlink_direct_destroy(mavsdk_mavlink_direct_t mavlink_direct) {
 mavsdk_mavlink_direct_result_t
 mavsdk_mavlink_direct_send_message(
     mavsdk_mavlink_direct_t mavlink_direct,
-    mavsdk_mavlink_direct_MavlinkMessage_t message)
+    mavsdk_mavlink_direct_mavlink_message_t message)
 {
     auto wrapper = static_cast<mavsdk_mavlink_direct_wrapper*>(mavlink_direct);
 
-    auto ret_value = wrapper->cpp_plugin->send_message(        translate_MavlinkMessage_from_c(message));
+    auto ret_value = wrapper->cpp_plugin->send_message(        translate_mavlink_message_from_c(message));
 
     return translate_result(ret_value);
 }
@@ -205,7 +205,7 @@ mavsdk_mavlink_direct_message_handle_t mavsdk_mavlink_direct_subscribe_message(
             mavsdk::MavlinkDirect::MavlinkMessage value) {
                 if (callback) {
                     callback(
-                        translate_MavlinkMessage_to_c(value),
+                        translate_mavlink_message_to_c(value),
                         user_data);
                 }
         });

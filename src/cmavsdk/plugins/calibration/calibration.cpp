@@ -44,7 +44,7 @@ translate_result(mavsdk::Calibration::Result cpp_result) {
 
 
 static mavsdk::Calibration::ProgressData
-translate_ProgressData_from_c(const mavsdk_calibration_ProgressData_t& c_struct) {
+translate_progress_data_from_c(const mavsdk_calibration_progress_data_t& c_struct) {
     mavsdk::Calibration::ProgressData cpp_struct{};
     cpp_struct.has_progress = c_struct.has_progress;
     cpp_struct.progress = c_struct.progress;
@@ -55,9 +55,9 @@ translate_ProgressData_from_c(const mavsdk_calibration_ProgressData_t& c_struct)
     return cpp_struct;
 }
 
-static mavsdk_calibration_ProgressData_t
-translate_ProgressData_to_c(const mavsdk::Calibration::ProgressData& cpp_struct) {
-    mavsdk_calibration_ProgressData_t c_struct{};
+static mavsdk_calibration_progress_data_t
+translate_progress_data_to_c(const mavsdk::Calibration::ProgressData& cpp_struct) {
+    mavsdk_calibration_progress_data_t c_struct{};
     c_struct.has_progress = cpp_struct.has_progress;
     c_struct.progress = cpp_struct.progress;
     c_struct.has_status_text = cpp_struct.has_status_text;
@@ -65,8 +65,8 @@ translate_ProgressData_to_c(const mavsdk::Calibration::ProgressData& cpp_struct)
     return c_struct;
 }
 
-void mavsdk_calibration_ProgressData_destroy(
-    mavsdk_calibration_ProgressData_t* target) {
+void mavsdk_calibration_progress_data_destroy(
+    mavsdk_calibration_progress_data_t* target) {
     if (!target) return;
     if (target->status_text) {
         free((void*)target->status_text);
@@ -74,13 +74,13 @@ void mavsdk_calibration_ProgressData_destroy(
     }
 }
 
-void mavsdk_calibration_ProgressData_array_destroy(
-    mavsdk_calibration_ProgressData_t** array,
+void mavsdk_calibration_progress_data_array_destroy(
+    mavsdk_calibration_progress_data_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_calibration_ProgressData_destroy(&(*array)[i]);
+        mavsdk_calibration_progress_data_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -189,7 +189,7 @@ void mavsdk_calibration_calibrate_gyro_async(
                 if (callback) {
                     callback(
                         translate_result(result),
-                        translate_ProgressData_to_c(value),
+                        translate_progress_data_to_c(value),
                         user_data);
                 }
         });
@@ -212,7 +212,7 @@ void mavsdk_calibration_calibrate_accelerometer_async(
                 if (callback) {
                     callback(
                         translate_result(result),
-                        translate_ProgressData_to_c(value),
+                        translate_progress_data_to_c(value),
                         user_data);
                 }
         });
@@ -235,7 +235,7 @@ void mavsdk_calibration_calibrate_magnetometer_async(
                 if (callback) {
                     callback(
                         translate_result(result),
-                        translate_ProgressData_to_c(value),
+                        translate_progress_data_to_c(value),
                         user_data);
                 }
         });
@@ -258,7 +258,7 @@ void mavsdk_calibration_calibrate_level_horizon_async(
                 if (callback) {
                     callback(
                         translate_result(result),
-                        translate_ProgressData_to_c(value),
+                        translate_progress_data_to_c(value),
                         user_data);
                 }
         });
@@ -281,7 +281,7 @@ void mavsdk_calibration_calibrate_gimbal_accelerometer_async(
                 if (callback) {
                     callback(
                         translate_result(result),
-                        translate_ProgressData_to_c(value),
+                        translate_progress_data_to_c(value),
                         user_data);
                 }
         });

@@ -31,7 +31,7 @@ translate_result(mavsdk::Winch::Result cpp_result) {
 }
 
 static mavsdk::Winch::WinchAction
-translate_WinchAction_from_c(mavsdk_winch_WinchAction_t c_enum) {
+translate_winch_action_from_c(mavsdk_winch_winch_action_t c_enum) {
     switch(c_enum) {
         case MAVSDK_WINCH_WINCH_ACTION_RELAXED:
             return mavsdk::Winch::WinchAction::Relaxed;
@@ -57,8 +57,8 @@ translate_WinchAction_from_c(mavsdk_winch_WinchAction_t c_enum) {
     return mavsdk::Winch::WinchAction::Relaxed;
 }
 
-static mavsdk_winch_WinchAction_t
-translate_WinchAction_to_c(mavsdk::Winch::WinchAction cpp_enum) {
+static mavsdk_winch_winch_action_t
+translate_winch_action_to_c(mavsdk::Winch::WinchAction cpp_enum) {
     switch(cpp_enum) {
         case mavsdk::Winch::WinchAction::Relaxed:
             return MAVSDK_WINCH_WINCH_ACTION_RELAXED;
@@ -87,7 +87,7 @@ translate_WinchAction_to_c(mavsdk::Winch::WinchAction cpp_enum) {
 
 
 static mavsdk::Winch::StatusFlags
-translate_StatusFlags_from_c(const mavsdk_winch_StatusFlags_t& c_struct) {
+translate_status_flags_from_c(const mavsdk_winch_status_flags_t& c_struct) {
     mavsdk::Winch::StatusFlags cpp_struct{};
     cpp_struct.healthy = c_struct.healthy;
     cpp_struct.fully_retracted = c_struct.fully_retracted;
@@ -106,9 +106,9 @@ translate_StatusFlags_from_c(const mavsdk_winch_StatusFlags_t& c_struct) {
     return cpp_struct;
 }
 
-static mavsdk_winch_StatusFlags_t
-translate_StatusFlags_to_c(const mavsdk::Winch::StatusFlags& cpp_struct) {
-    mavsdk_winch_StatusFlags_t c_struct{};
+static mavsdk_winch_status_flags_t
+translate_status_flags_to_c(const mavsdk::Winch::StatusFlags& cpp_struct) {
+    mavsdk_winch_status_flags_t c_struct{};
     c_struct.healthy = cpp_struct.healthy;
     c_struct.fully_retracted = cpp_struct.fully_retracted;
     c_struct.moving = cpp_struct.moving;
@@ -126,18 +126,18 @@ translate_StatusFlags_to_c(const mavsdk::Winch::StatusFlags& cpp_struct) {
     return c_struct;
 }
 
-void mavsdk_winch_StatusFlags_destroy(
-    mavsdk_winch_StatusFlags_t* target) {
+void mavsdk_winch_status_flags_destroy(
+    mavsdk_winch_status_flags_t* target) {
     if (!target) return;
 }
 
-void mavsdk_winch_StatusFlags_array_destroy(
-    mavsdk_winch_StatusFlags_t** array,
+void mavsdk_winch_status_flags_array_destroy(
+    mavsdk_winch_status_flags_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_winch_StatusFlags_destroy(&(*array)[i]);
+        mavsdk_winch_status_flags_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -146,7 +146,7 @@ void mavsdk_winch_StatusFlags_array_destroy(
 
 
 static mavsdk::Winch::Status
-translate_Status_from_c(const mavsdk_winch_Status_t& c_struct) {
+translate_status_from_c(const mavsdk_winch_status_t& c_struct) {
     mavsdk::Winch::Status cpp_struct{};
     cpp_struct.time_usec = c_struct.time_usec;
     cpp_struct.line_length_m = c_struct.line_length_m;
@@ -155,13 +155,13 @@ translate_Status_from_c(const mavsdk_winch_Status_t& c_struct) {
     cpp_struct.voltage_v = c_struct.voltage_v;
     cpp_struct.current_a = c_struct.current_a;
     cpp_struct.temperature_c = c_struct.temperature_c;
-    cpp_struct.status_flags = translate_StatusFlags_from_c(c_struct.status_flags);
+    cpp_struct.status_flags = translate_status_flags_from_c(c_struct.status_flags);
     return cpp_struct;
 }
 
-static mavsdk_winch_Status_t
-translate_Status_to_c(const mavsdk::Winch::Status& cpp_struct) {
-    mavsdk_winch_Status_t c_struct{};
+static mavsdk_winch_status_t
+translate_status_to_c(const mavsdk::Winch::Status& cpp_struct) {
+    mavsdk_winch_status_t c_struct{};
     c_struct.time_usec = cpp_struct.time_usec;
     c_struct.line_length_m = cpp_struct.line_length_m;
     c_struct.speed_m_s = cpp_struct.speed_m_s;
@@ -169,22 +169,22 @@ translate_Status_to_c(const mavsdk::Winch::Status& cpp_struct) {
     c_struct.voltage_v = cpp_struct.voltage_v;
     c_struct.current_a = cpp_struct.current_a;
     c_struct.temperature_c = cpp_struct.temperature_c;
-    c_struct.status_flags = translate_StatusFlags_to_c(cpp_struct.status_flags);
+    c_struct.status_flags = translate_status_flags_to_c(cpp_struct.status_flags);
     return c_struct;
 }
 
-void mavsdk_winch_Status_destroy(
-    mavsdk_winch_Status_t* target) {
+void mavsdk_winch_status_destroy(
+    mavsdk_winch_status_t* target) {
     if (!target) return;
 }
 
-void mavsdk_winch_Status_array_destroy(
-    mavsdk_winch_Status_t** array,
+void mavsdk_winch_status_array_destroy(
+    mavsdk_winch_status_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_winch_Status_destroy(&(*array)[i]);
+        mavsdk_winch_status_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -292,7 +292,7 @@ mavsdk_winch_status_handle_t mavsdk_winch_subscribe_status(
             mavsdk::Winch::Status value) {
                 if (callback) {
                     callback(
-                        translate_Status_to_c(value),
+                        translate_status_to_c(value),
                         user_data);
                 }
         });
@@ -317,14 +317,14 @@ void mavsdk_winch_unsubscribe_status(
 void
 mavsdk_winch_status(
     mavsdk_winch_t winch,
-    mavsdk_winch_Status_t* status_out)
+    mavsdk_winch_status_t* status_out)
 {
     auto wrapper = static_cast<mavsdk_winch_wrapper*>(winch);
 
     auto ret_value = wrapper->cpp_plugin->status();
 
     if (status_out != nullptr) {
-        *status_out = translate_Status_to_c(ret_value);
+        *status_out = translate_status_to_c(ret_value);
     }
 }
 

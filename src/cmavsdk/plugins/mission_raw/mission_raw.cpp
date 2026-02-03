@@ -61,33 +61,33 @@ translate_result(mavsdk::MissionRaw::Result cpp_result) {
 
 
 static mavsdk::MissionRaw::MissionProgress
-translate_MissionProgress_from_c(const mavsdk_mission_raw_MissionProgress_t& c_struct) {
+translate_mission_progress_from_c(const mavsdk_mission_raw_mission_progress_t& c_struct) {
     mavsdk::MissionRaw::MissionProgress cpp_struct{};
     cpp_struct.current = c_struct.current;
     cpp_struct.total = c_struct.total;
     return cpp_struct;
 }
 
-static mavsdk_mission_raw_MissionProgress_t
-translate_MissionProgress_to_c(const mavsdk::MissionRaw::MissionProgress& cpp_struct) {
-    mavsdk_mission_raw_MissionProgress_t c_struct{};
+static mavsdk_mission_raw_mission_progress_t
+translate_mission_progress_to_c(const mavsdk::MissionRaw::MissionProgress& cpp_struct) {
+    mavsdk_mission_raw_mission_progress_t c_struct{};
     c_struct.current = cpp_struct.current;
     c_struct.total = cpp_struct.total;
     return c_struct;
 }
 
-void mavsdk_mission_raw_MissionProgress_destroy(
-    mavsdk_mission_raw_MissionProgress_t* target) {
+void mavsdk_mission_raw_mission_progress_destroy(
+    mavsdk_mission_raw_mission_progress_t* target) {
     if (!target) return;
 }
 
-void mavsdk_mission_raw_MissionProgress_array_destroy(
-    mavsdk_mission_raw_MissionProgress_t** array,
+void mavsdk_mission_raw_mission_progress_array_destroy(
+    mavsdk_mission_raw_mission_progress_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_mission_raw_MissionProgress_destroy(&(*array)[i]);
+        mavsdk_mission_raw_mission_progress_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -96,7 +96,7 @@ void mavsdk_mission_raw_MissionProgress_array_destroy(
 
 
 static mavsdk::MissionRaw::MissionItem
-translate_MissionItem_from_c(const mavsdk_mission_raw_MissionItem_t& c_struct) {
+translate_mission_item_from_c(const mavsdk_mission_raw_mission_item_t& c_struct) {
     mavsdk::MissionRaw::MissionItem cpp_struct{};
     cpp_struct.seq = c_struct.seq;
     cpp_struct.frame = c_struct.frame;
@@ -114,9 +114,9 @@ translate_MissionItem_from_c(const mavsdk_mission_raw_MissionItem_t& c_struct) {
     return cpp_struct;
 }
 
-static mavsdk_mission_raw_MissionItem_t
-translate_MissionItem_to_c(const mavsdk::MissionRaw::MissionItem& cpp_struct) {
-    mavsdk_mission_raw_MissionItem_t c_struct{};
+static mavsdk_mission_raw_mission_item_t
+translate_mission_item_to_c(const mavsdk::MissionRaw::MissionItem& cpp_struct) {
+    mavsdk_mission_raw_mission_item_t c_struct{};
     c_struct.seq = cpp_struct.seq;
     c_struct.frame = cpp_struct.frame;
     c_struct.command = cpp_struct.command;
@@ -133,18 +133,18 @@ translate_MissionItem_to_c(const mavsdk::MissionRaw::MissionItem& cpp_struct) {
     return c_struct;
 }
 
-void mavsdk_mission_raw_MissionItem_destroy(
-    mavsdk_mission_raw_MissionItem_t* target) {
+void mavsdk_mission_raw_mission_item_destroy(
+    mavsdk_mission_raw_mission_item_t* target) {
     if (!target) return;
 }
 
-void mavsdk_mission_raw_MissionItem_array_destroy(
-    mavsdk_mission_raw_MissionItem_t** array,
+void mavsdk_mission_raw_mission_item_array_destroy(
+    mavsdk_mission_raw_mission_item_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_mission_raw_MissionItem_destroy(&(*array)[i]);
+        mavsdk_mission_raw_mission_item_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -153,53 +153,53 @@ void mavsdk_mission_raw_MissionItem_array_destroy(
 
 
 static mavsdk::MissionRaw::MissionImportData
-translate_MissionImportData_from_c(const mavsdk_mission_raw_MissionImportData_t& c_struct) {
+translate_mission_import_data_from_c(const mavsdk_mission_raw_mission_import_data_t& c_struct) {
     mavsdk::MissionRaw::MissionImportData cpp_struct{};
     cpp_struct.mission_items.reserve(c_struct.mission_items_size);
     for (size_t i = 0; i < c_struct.mission_items_size; i++) {
         cpp_struct.mission_items.push_back(
-            translate_MissionItem_from_c(c_struct.mission_items[i]));
+            translate_mission_item_from_c(c_struct.mission_items[i]));
     }
     cpp_struct.geofence_items.reserve(c_struct.geofence_items_size);
     for (size_t i = 0; i < c_struct.geofence_items_size; i++) {
         cpp_struct.geofence_items.push_back(
-            translate_MissionItem_from_c(c_struct.geofence_items[i]));
+            translate_mission_item_from_c(c_struct.geofence_items[i]));
     }
     cpp_struct.rally_items.reserve(c_struct.rally_items_size);
     for (size_t i = 0; i < c_struct.rally_items_size; i++) {
         cpp_struct.rally_items.push_back(
-            translate_MissionItem_from_c(c_struct.rally_items[i]));
+            translate_mission_item_from_c(c_struct.rally_items[i]));
     }
     return cpp_struct;
 }
 
-static mavsdk_mission_raw_MissionImportData_t
-translate_MissionImportData_to_c(const mavsdk::MissionRaw::MissionImportData& cpp_struct) {
-    mavsdk_mission_raw_MissionImportData_t c_struct{};
+static mavsdk_mission_raw_mission_import_data_t
+translate_mission_import_data_to_c(const mavsdk::MissionRaw::MissionImportData& cpp_struct) {
+    mavsdk_mission_raw_mission_import_data_t c_struct{};
     c_struct.mission_items_size = cpp_struct.mission_items.size();
-    c_struct.mission_items = new mavsdk_mission_raw_MissionItem_t[c_struct.mission_items_size];
+    c_struct.mission_items = new mavsdk_mission_raw_mission_item_t[c_struct.mission_items_size];
     for (size_t i = 0; i < c_struct.mission_items_size; i++) {
-        c_struct.mission_items[i] = translate_MissionItem_to_c(cpp_struct.mission_items[i]);
+        c_struct.mission_items[i] = translate_mission_item_to_c(cpp_struct.mission_items[i]);
     }
     c_struct.geofence_items_size = cpp_struct.geofence_items.size();
-    c_struct.geofence_items = new mavsdk_mission_raw_MissionItem_t[c_struct.geofence_items_size];
+    c_struct.geofence_items = new mavsdk_mission_raw_mission_item_t[c_struct.geofence_items_size];
     for (size_t i = 0; i < c_struct.geofence_items_size; i++) {
-        c_struct.geofence_items[i] = translate_MissionItem_to_c(cpp_struct.geofence_items[i]);
+        c_struct.geofence_items[i] = translate_mission_item_to_c(cpp_struct.geofence_items[i]);
     }
     c_struct.rally_items_size = cpp_struct.rally_items.size();
-    c_struct.rally_items = new mavsdk_mission_raw_MissionItem_t[c_struct.rally_items_size];
+    c_struct.rally_items = new mavsdk_mission_raw_mission_item_t[c_struct.rally_items_size];
     for (size_t i = 0; i < c_struct.rally_items_size; i++) {
-        c_struct.rally_items[i] = translate_MissionItem_to_c(cpp_struct.rally_items[i]);
+        c_struct.rally_items[i] = translate_mission_item_to_c(cpp_struct.rally_items[i]);
     }
     return c_struct;
 }
 
-void mavsdk_mission_raw_MissionImportData_destroy(
-    mavsdk_mission_raw_MissionImportData_t* target) {
+void mavsdk_mission_raw_mission_import_data_destroy(
+    mavsdk_mission_raw_mission_import_data_t* target) {
     if (!target) return;
     if (target->mission_items) {
         for (size_t i = 0; i < target->mission_items_size; i++) {
-            mavsdk_mission_raw_MissionItem_destroy(&target->mission_items[i]);
+            mavsdk_mission_raw_mission_item_destroy(&target->mission_items[i]);
         }
         delete[] target->mission_items;
         target->mission_items = nullptr;
@@ -207,7 +207,7 @@ void mavsdk_mission_raw_MissionImportData_destroy(
     }
     if (target->geofence_items) {
         for (size_t i = 0; i < target->geofence_items_size; i++) {
-            mavsdk_mission_raw_MissionItem_destroy(&target->geofence_items[i]);
+            mavsdk_mission_raw_mission_item_destroy(&target->geofence_items[i]);
         }
         delete[] target->geofence_items;
         target->geofence_items = nullptr;
@@ -215,7 +215,7 @@ void mavsdk_mission_raw_MissionImportData_destroy(
     }
     if (target->rally_items) {
         for (size_t i = 0; i < target->rally_items_size; i++) {
-            mavsdk_mission_raw_MissionItem_destroy(&target->rally_items[i]);
+            mavsdk_mission_raw_mission_item_destroy(&target->rally_items[i]);
         }
         delete[] target->rally_items;
         target->rally_items = nullptr;
@@ -223,13 +223,13 @@ void mavsdk_mission_raw_MissionImportData_destroy(
     }
 }
 
-void mavsdk_mission_raw_MissionImportData_array_destroy(
-    mavsdk_mission_raw_MissionImportData_t** array,
+void mavsdk_mission_raw_mission_import_data_array_destroy(
+    mavsdk_mission_raw_mission_import_data_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_mission_raw_MissionImportData_destroy(&(*array)[i]);
+        mavsdk_mission_raw_mission_import_data_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -327,7 +327,7 @@ void mavsdk_mission_raw_destroy(mavsdk_mission_raw_t mission_raw) {
 // UploadMission async
 void mavsdk_mission_raw_upload_mission_async(
     mavsdk_mission_raw_t mission_raw,
-    const mavsdk_mission_raw_MissionItem_t* mission_items,
+    const mavsdk_mission_raw_mission_item_t* mission_items,
     size_t mission_items_size,
     mavsdk_mission_raw_upload_mission_callback_t callback,
     void* user_data)
@@ -339,7 +339,7 @@ void mavsdk_mission_raw_upload_mission_async(
             std::vector<mavsdk::MissionRaw::MissionItem> vec;
             vec.reserve(mission_items_size);
             for (size_t i = 0; i < mission_items_size; i++) {
-                vec.push_back(translate_MissionItem_from_c(mission_items[i]));
+                vec.push_back(translate_mission_item_from_c(mission_items[i]));
             }
             return vec;
         }(),
@@ -358,7 +358,7 @@ void mavsdk_mission_raw_upload_mission_async(
 mavsdk_mission_raw_result_t
 mavsdk_mission_raw_upload_mission(
     mavsdk_mission_raw_t mission_raw,
-    const mavsdk_mission_raw_MissionItem_t* mission_items,
+    const mavsdk_mission_raw_mission_item_t* mission_items,
     size_t mission_items_size)
 {
     auto wrapper = static_cast<mavsdk_mission_raw_wrapper*>(mission_raw);
@@ -367,7 +367,7 @@ mavsdk_mission_raw_upload_mission(
             std::vector<mavsdk::MissionRaw::MissionItem> vec;
             vec.reserve(mission_items_size);
             for (size_t i = 0; i < mission_items_size; i++) {
-                vec.push_back(translate_MissionItem_from_c(mission_items[i]));
+                vec.push_back(translate_mission_item_from_c(mission_items[i]));
             }
             return vec;
         }());
@@ -378,7 +378,7 @@ mavsdk_mission_raw_upload_mission(
 // UploadGeofence async
 void mavsdk_mission_raw_upload_geofence_async(
     mavsdk_mission_raw_t mission_raw,
-    const mavsdk_mission_raw_MissionItem_t* mission_items,
+    const mavsdk_mission_raw_mission_item_t* mission_items,
     size_t mission_items_size,
     mavsdk_mission_raw_upload_geofence_callback_t callback,
     void* user_data)
@@ -390,7 +390,7 @@ void mavsdk_mission_raw_upload_geofence_async(
             std::vector<mavsdk::MissionRaw::MissionItem> vec;
             vec.reserve(mission_items_size);
             for (size_t i = 0; i < mission_items_size; i++) {
-                vec.push_back(translate_MissionItem_from_c(mission_items[i]));
+                vec.push_back(translate_mission_item_from_c(mission_items[i]));
             }
             return vec;
         }(),
@@ -409,7 +409,7 @@ void mavsdk_mission_raw_upload_geofence_async(
 mavsdk_mission_raw_result_t
 mavsdk_mission_raw_upload_geofence(
     mavsdk_mission_raw_t mission_raw,
-    const mavsdk_mission_raw_MissionItem_t* mission_items,
+    const mavsdk_mission_raw_mission_item_t* mission_items,
     size_t mission_items_size)
 {
     auto wrapper = static_cast<mavsdk_mission_raw_wrapper*>(mission_raw);
@@ -418,7 +418,7 @@ mavsdk_mission_raw_upload_geofence(
             std::vector<mavsdk::MissionRaw::MissionItem> vec;
             vec.reserve(mission_items_size);
             for (size_t i = 0; i < mission_items_size; i++) {
-                vec.push_back(translate_MissionItem_from_c(mission_items[i]));
+                vec.push_back(translate_mission_item_from_c(mission_items[i]));
             }
             return vec;
         }());
@@ -429,7 +429,7 @@ mavsdk_mission_raw_upload_geofence(
 // UploadRallyPoints async
 void mavsdk_mission_raw_upload_rally_points_async(
     mavsdk_mission_raw_t mission_raw,
-    const mavsdk_mission_raw_MissionItem_t* mission_items,
+    const mavsdk_mission_raw_mission_item_t* mission_items,
     size_t mission_items_size,
     mavsdk_mission_raw_upload_rally_points_callback_t callback,
     void* user_data)
@@ -441,7 +441,7 @@ void mavsdk_mission_raw_upload_rally_points_async(
             std::vector<mavsdk::MissionRaw::MissionItem> vec;
             vec.reserve(mission_items_size);
             for (size_t i = 0; i < mission_items_size; i++) {
-                vec.push_back(translate_MissionItem_from_c(mission_items[i]));
+                vec.push_back(translate_mission_item_from_c(mission_items[i]));
             }
             return vec;
         }(),
@@ -460,7 +460,7 @@ void mavsdk_mission_raw_upload_rally_points_async(
 mavsdk_mission_raw_result_t
 mavsdk_mission_raw_upload_rally_points(
     mavsdk_mission_raw_t mission_raw,
-    const mavsdk_mission_raw_MissionItem_t* mission_items,
+    const mavsdk_mission_raw_mission_item_t* mission_items,
     size_t mission_items_size)
 {
     auto wrapper = static_cast<mavsdk_mission_raw_wrapper*>(mission_raw);
@@ -469,7 +469,7 @@ mavsdk_mission_raw_upload_rally_points(
             std::vector<mavsdk::MissionRaw::MissionItem> vec;
             vec.reserve(mission_items_size);
             for (size_t i = 0; i < mission_items_size; i++) {
-                vec.push_back(translate_MissionItem_from_c(mission_items[i]));
+                vec.push_back(translate_mission_item_from_c(mission_items[i]));
             }
             return vec;
         }());
@@ -504,12 +504,12 @@ void mavsdk_mission_raw_download_mission_async(
             std::vector<mavsdk::MissionRaw::MissionItem> value) {
                 if (callback) {
                     size_t count = value.size();
-                    mavsdk_mission_raw_MissionItem_t* mission_items = nullptr;
+                    mavsdk_mission_raw_mission_item_t* mission_items = nullptr;
 
                     if (count > 0) {
-                        mission_items = new mavsdk_mission_raw_MissionItem_t[count];
+                        mission_items = new mavsdk_mission_raw_mission_item_t[count];
                         for (size_t i = 0; i < count; i++) {
-                            mission_items[i] = translate_MissionItem_to_c(value[i]);
+                            mission_items[i] = translate_mission_item_to_c(value[i]);
                         }
                     }
 
@@ -527,7 +527,7 @@ void mavsdk_mission_raw_download_mission_async(
 mavsdk_mission_raw_result_t
 mavsdk_mission_raw_download_mission(
     mavsdk_mission_raw_t mission_raw,
-    mavsdk_mission_raw_MissionItem_t** mission_items_out,
+    mavsdk_mission_raw_mission_item_t** mission_items_out,
     size_t* mission_items_size_out)
 {
     auto wrapper = static_cast<mavsdk_mission_raw_wrapper*>(mission_raw);
@@ -538,10 +538,10 @@ mavsdk_mission_raw_download_mission(
     if (mission_items_out != nullptr) {
         size_t count = result_pair.second.size();
 
-        *mission_items_out = new mavsdk_mission_raw_MissionItem_t[count];
+        *mission_items_out = new mavsdk_mission_raw_mission_item_t[count];
 
         for (size_t i = 0; i < count; i++) {
-            (*mission_items_out)[i] = translate_MissionItem_to_c(result_pair.second[i]);
+            (*mission_items_out)[i] = translate_mission_item_to_c(result_pair.second[i]);
         }
 
         if (mission_items_size_out != nullptr) {
@@ -566,12 +566,12 @@ void mavsdk_mission_raw_download_geofence_async(
             std::vector<mavsdk::MissionRaw::MissionItem> value) {
                 if (callback) {
                     size_t count = value.size();
-                    mavsdk_mission_raw_MissionItem_t* geofence_items = nullptr;
+                    mavsdk_mission_raw_mission_item_t* geofence_items = nullptr;
 
                     if (count > 0) {
-                        geofence_items = new mavsdk_mission_raw_MissionItem_t[count];
+                        geofence_items = new mavsdk_mission_raw_mission_item_t[count];
                         for (size_t i = 0; i < count; i++) {
-                            geofence_items[i] = translate_MissionItem_to_c(value[i]);
+                            geofence_items[i] = translate_mission_item_to_c(value[i]);
                         }
                     }
 
@@ -589,7 +589,7 @@ void mavsdk_mission_raw_download_geofence_async(
 mavsdk_mission_raw_result_t
 mavsdk_mission_raw_download_geofence(
     mavsdk_mission_raw_t mission_raw,
-    mavsdk_mission_raw_MissionItem_t** geofence_items_out,
+    mavsdk_mission_raw_mission_item_t** geofence_items_out,
     size_t* geofence_items_size_out)
 {
     auto wrapper = static_cast<mavsdk_mission_raw_wrapper*>(mission_raw);
@@ -600,10 +600,10 @@ mavsdk_mission_raw_download_geofence(
     if (geofence_items_out != nullptr) {
         size_t count = result_pair.second.size();
 
-        *geofence_items_out = new mavsdk_mission_raw_MissionItem_t[count];
+        *geofence_items_out = new mavsdk_mission_raw_mission_item_t[count];
 
         for (size_t i = 0; i < count; i++) {
-            (*geofence_items_out)[i] = translate_MissionItem_to_c(result_pair.second[i]);
+            (*geofence_items_out)[i] = translate_mission_item_to_c(result_pair.second[i]);
         }
 
         if (geofence_items_size_out != nullptr) {
@@ -628,12 +628,12 @@ void mavsdk_mission_raw_download_rallypoints_async(
             std::vector<mavsdk::MissionRaw::MissionItem> value) {
                 if (callback) {
                     size_t count = value.size();
-                    mavsdk_mission_raw_MissionItem_t* rallypoint_items = nullptr;
+                    mavsdk_mission_raw_mission_item_t* rallypoint_items = nullptr;
 
                     if (count > 0) {
-                        rallypoint_items = new mavsdk_mission_raw_MissionItem_t[count];
+                        rallypoint_items = new mavsdk_mission_raw_mission_item_t[count];
                         for (size_t i = 0; i < count; i++) {
-                            rallypoint_items[i] = translate_MissionItem_to_c(value[i]);
+                            rallypoint_items[i] = translate_mission_item_to_c(value[i]);
                         }
                     }
 
@@ -651,7 +651,7 @@ void mavsdk_mission_raw_download_rallypoints_async(
 mavsdk_mission_raw_result_t
 mavsdk_mission_raw_download_rallypoints(
     mavsdk_mission_raw_t mission_raw,
-    mavsdk_mission_raw_MissionItem_t** rallypoint_items_out,
+    mavsdk_mission_raw_mission_item_t** rallypoint_items_out,
     size_t* rallypoint_items_size_out)
 {
     auto wrapper = static_cast<mavsdk_mission_raw_wrapper*>(mission_raw);
@@ -662,10 +662,10 @@ mavsdk_mission_raw_download_rallypoints(
     if (rallypoint_items_out != nullptr) {
         size_t count = result_pair.second.size();
 
-        *rallypoint_items_out = new mavsdk_mission_raw_MissionItem_t[count];
+        *rallypoint_items_out = new mavsdk_mission_raw_mission_item_t[count];
 
         for (size_t i = 0; i < count; i++) {
-            (*rallypoint_items_out)[i] = translate_MissionItem_to_c(result_pair.second[i]);
+            (*rallypoint_items_out)[i] = translate_mission_item_to_c(result_pair.second[i]);
         }
 
         if (rallypoint_items_size_out != nullptr) {
@@ -833,7 +833,7 @@ mavsdk_mission_raw_mission_progress_handle_t mavsdk_mission_raw_subscribe_missio
             mavsdk::MissionRaw::MissionProgress value) {
                 if (callback) {
                     callback(
-                        translate_MissionProgress_to_c(value),
+                        translate_mission_progress_to_c(value),
                         user_data);
                 }
         });
@@ -858,14 +858,14 @@ void mavsdk_mission_raw_unsubscribe_mission_progress(
 void
 mavsdk_mission_raw_mission_progress(
     mavsdk_mission_raw_t mission_raw,
-    mavsdk_mission_raw_MissionProgress_t* mission_progress_out)
+    mavsdk_mission_raw_mission_progress_t* mission_progress_out)
 {
     auto wrapper = static_cast<mavsdk_mission_raw_wrapper*>(mission_raw);
 
     auto ret_value = wrapper->cpp_plugin->mission_progress();
 
     if (mission_progress_out != nullptr) {
-        *mission_progress_out = translate_MissionProgress_to_c(ret_value);
+        *mission_progress_out = translate_mission_progress_to_c(ret_value);
     }
 }
 
@@ -910,7 +910,7 @@ mavsdk_mission_raw_result_t
 mavsdk_mission_raw_import_qgroundcontrol_mission(
     mavsdk_mission_raw_t mission_raw,
     char* qgc_plan_path,
-    mavsdk_mission_raw_MissionImportData_t* mission_import_data_out)
+    mavsdk_mission_raw_mission_import_data_t* mission_import_data_out)
 {
     auto wrapper = static_cast<mavsdk_mission_raw_wrapper*>(mission_raw);
 
@@ -918,7 +918,7 @@ mavsdk_mission_raw_import_qgroundcontrol_mission(
         qgc_plan_path);
 
     if (mission_import_data_out != nullptr) {
-        *mission_import_data_out = translate_MissionImportData_to_c(result_pair.second);
+        *mission_import_data_out = translate_mission_import_data_to_c(result_pair.second);
     }
 
     return translate_result(result_pair.first);
@@ -930,7 +930,7 @@ mavsdk_mission_raw_result_t
 mavsdk_mission_raw_import_qgroundcontrol_mission_from_string(
     mavsdk_mission_raw_t mission_raw,
     char* qgc_plan,
-    mavsdk_mission_raw_MissionImportData_t* mission_import_data_out)
+    mavsdk_mission_raw_mission_import_data_t* mission_import_data_out)
 {
     auto wrapper = static_cast<mavsdk_mission_raw_wrapper*>(mission_raw);
 
@@ -938,7 +938,7 @@ mavsdk_mission_raw_import_qgroundcontrol_mission_from_string(
         qgc_plan);
 
     if (mission_import_data_out != nullptr) {
-        *mission_import_data_out = translate_MissionImportData_to_c(result_pair.second);
+        *mission_import_data_out = translate_mission_import_data_to_c(result_pair.second);
     }
 
     return translate_result(result_pair.first);
@@ -950,7 +950,7 @@ mavsdk_mission_raw_result_t
 mavsdk_mission_raw_import_mission_planner_mission(
     mavsdk_mission_raw_t mission_raw,
     char* mission_planner_path,
-    mavsdk_mission_raw_MissionImportData_t* mission_import_data_out)
+    mavsdk_mission_raw_mission_import_data_t* mission_import_data_out)
 {
     auto wrapper = static_cast<mavsdk_mission_raw_wrapper*>(mission_raw);
 
@@ -958,7 +958,7 @@ mavsdk_mission_raw_import_mission_planner_mission(
         mission_planner_path);
 
     if (mission_import_data_out != nullptr) {
-        *mission_import_data_out = translate_MissionImportData_to_c(result_pair.second);
+        *mission_import_data_out = translate_mission_import_data_to_c(result_pair.second);
     }
 
     return translate_result(result_pair.first);
@@ -970,7 +970,7 @@ mavsdk_mission_raw_result_t
 mavsdk_mission_raw_import_mission_planner_mission_from_string(
     mavsdk_mission_raw_t mission_raw,
     char* mission_planner_mission,
-    mavsdk_mission_raw_MissionImportData_t* mission_import_data_out)
+    mavsdk_mission_raw_mission_import_data_t* mission_import_data_out)
 {
     auto wrapper = static_cast<mavsdk_mission_raw_wrapper*>(mission_raw);
 
@@ -978,7 +978,7 @@ mavsdk_mission_raw_import_mission_planner_mission_from_string(
         mission_planner_mission);
 
     if (mission_import_data_out != nullptr) {
-        *mission_import_data_out = translate_MissionImportData_to_c(result_pair.second);
+        *mission_import_data_out = translate_mission_import_data_to_c(result_pair.second);
     }
 
     return translate_result(result_pair.first);

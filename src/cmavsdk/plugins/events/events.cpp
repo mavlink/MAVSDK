@@ -35,7 +35,7 @@ translate_result(mavsdk::Events::Result cpp_result) {
 }
 
 static mavsdk::Events::LogLevel
-translate_LogLevel_from_c(mavsdk_events_LogLevel_t c_enum) {
+translate_log_level_from_c(mavsdk_events_log_level_t c_enum) {
     switch(c_enum) {
         case MAVSDK_EVENTS_LOG_LEVEL_EMERGENCY:
             return mavsdk::Events::LogLevel::Emergency;
@@ -57,8 +57,8 @@ translate_LogLevel_from_c(mavsdk_events_LogLevel_t c_enum) {
     return mavsdk::Events::LogLevel::Emergency;
 }
 
-static mavsdk_events_LogLevel_t
-translate_LogLevel_to_c(mavsdk::Events::LogLevel cpp_enum) {
+static mavsdk_events_log_level_t
+translate_log_level_to_c(mavsdk::Events::LogLevel cpp_enum) {
     switch(cpp_enum) {
         case mavsdk::Events::LogLevel::Emergency:
             return MAVSDK_EVENTS_LOG_LEVEL_EMERGENCY;
@@ -83,7 +83,7 @@ translate_LogLevel_to_c(mavsdk::Events::LogLevel cpp_enum) {
 
 
 static mavsdk::Events::Event
-translate_Event_from_c(const mavsdk_events_Event_t& c_struct) {
+translate_event_from_c(const mavsdk_events_event_t& c_struct) {
     mavsdk::Events::Event cpp_struct{};
     cpp_struct.compid = c_struct.compid;
     if (c_struct.message) {
@@ -92,7 +92,7 @@ translate_Event_from_c(const mavsdk_events_Event_t& c_struct) {
     if (c_struct.description) {
         cpp_struct.description = c_struct.description;
     }
-    cpp_struct.log_level = translate_LogLevel_from_c(c_struct.log_level);
+    cpp_struct.log_level = translate_log_level_from_c(c_struct.log_level);
     if (c_struct.event_namespace) {
         cpp_struct.event_namespace = c_struct.event_namespace;
     }
@@ -102,20 +102,20 @@ translate_Event_from_c(const mavsdk_events_Event_t& c_struct) {
     return cpp_struct;
 }
 
-static mavsdk_events_Event_t
-translate_Event_to_c(const mavsdk::Events::Event& cpp_struct) {
-    mavsdk_events_Event_t c_struct{};
+static mavsdk_events_event_t
+translate_event_to_c(const mavsdk::Events::Event& cpp_struct) {
+    mavsdk_events_event_t c_struct{};
     c_struct.compid = cpp_struct.compid;
     c_struct.message = strdup(cpp_struct.message.c_str());
     c_struct.description = strdup(cpp_struct.description.c_str());
-    c_struct.log_level = translate_LogLevel_to_c(cpp_struct.log_level);
+    c_struct.log_level = translate_log_level_to_c(cpp_struct.log_level);
     c_struct.event_namespace = strdup(cpp_struct.event_namespace.c_str());
     c_struct.event_name = strdup(cpp_struct.event_name.c_str());
     return c_struct;
 }
 
-void mavsdk_events_Event_destroy(
-    mavsdk_events_Event_t* target) {
+void mavsdk_events_event_destroy(
+    mavsdk_events_event_t* target) {
     if (!target) return;
     if (target->message) {
         free((void*)target->message);
@@ -135,13 +135,13 @@ void mavsdk_events_Event_destroy(
     }
 }
 
-void mavsdk_events_Event_array_destroy(
-    mavsdk_events_Event_t** array,
+void mavsdk_events_event_array_destroy(
+    mavsdk_events_event_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_events_Event_destroy(&(*array)[i]);
+        mavsdk_events_event_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -150,7 +150,7 @@ void mavsdk_events_Event_array_destroy(
 
 
 static mavsdk::Events::HealthAndArmingCheckProblem
-translate_HealthAndArmingCheckProblem_from_c(const mavsdk_events_HealthAndArmingCheckProblem_t& c_struct) {
+translate_health_and_arming_check_problem_from_c(const mavsdk_events_health_and_arming_check_problem_t& c_struct) {
     mavsdk::Events::HealthAndArmingCheckProblem cpp_struct{};
     if (c_struct.message) {
         cpp_struct.message = c_struct.message;
@@ -158,25 +158,25 @@ translate_HealthAndArmingCheckProblem_from_c(const mavsdk_events_HealthAndArming
     if (c_struct.description) {
         cpp_struct.description = c_struct.description;
     }
-    cpp_struct.log_level = translate_LogLevel_from_c(c_struct.log_level);
+    cpp_struct.log_level = translate_log_level_from_c(c_struct.log_level);
     if (c_struct.health_component) {
         cpp_struct.health_component = c_struct.health_component;
     }
     return cpp_struct;
 }
 
-static mavsdk_events_HealthAndArmingCheckProblem_t
-translate_HealthAndArmingCheckProblem_to_c(const mavsdk::Events::HealthAndArmingCheckProblem& cpp_struct) {
-    mavsdk_events_HealthAndArmingCheckProblem_t c_struct{};
+static mavsdk_events_health_and_arming_check_problem_t
+translate_health_and_arming_check_problem_to_c(const mavsdk::Events::HealthAndArmingCheckProblem& cpp_struct) {
+    mavsdk_events_health_and_arming_check_problem_t c_struct{};
     c_struct.message = strdup(cpp_struct.message.c_str());
     c_struct.description = strdup(cpp_struct.description.c_str());
-    c_struct.log_level = translate_LogLevel_to_c(cpp_struct.log_level);
+    c_struct.log_level = translate_log_level_to_c(cpp_struct.log_level);
     c_struct.health_component = strdup(cpp_struct.health_component.c_str());
     return c_struct;
 }
 
-void mavsdk_events_HealthAndArmingCheckProblem_destroy(
-    mavsdk_events_HealthAndArmingCheckProblem_t* target) {
+void mavsdk_events_health_and_arming_check_problem_destroy(
+    mavsdk_events_health_and_arming_check_problem_t* target) {
     if (!target) return;
     if (target->message) {
         free((void*)target->message);
@@ -192,13 +192,13 @@ void mavsdk_events_HealthAndArmingCheckProblem_destroy(
     }
 }
 
-void mavsdk_events_HealthAndArmingCheckProblem_array_destroy(
-    mavsdk_events_HealthAndArmingCheckProblem_t** array,
+void mavsdk_events_health_and_arming_check_problem_array_destroy(
+    mavsdk_events_health_and_arming_check_problem_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_events_HealthAndArmingCheckProblem_destroy(&(*array)[i]);
+        mavsdk_events_health_and_arming_check_problem_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -207,7 +207,7 @@ void mavsdk_events_HealthAndArmingCheckProblem_array_destroy(
 
 
 static mavsdk::Events::HealthAndArmingCheckMode
-translate_HealthAndArmingCheckMode_from_c(const mavsdk_events_HealthAndArmingCheckMode_t& c_struct) {
+translate_health_and_arming_check_mode_from_c(const mavsdk_events_health_and_arming_check_mode_t& c_struct) {
     mavsdk::Events::HealthAndArmingCheckMode cpp_struct{};
     if (c_struct.mode_name) {
         cpp_struct.mode_name = c_struct.mode_name;
@@ -216,26 +216,26 @@ translate_HealthAndArmingCheckMode_from_c(const mavsdk_events_HealthAndArmingChe
     cpp_struct.problems.reserve(c_struct.problems_size);
     for (size_t i = 0; i < c_struct.problems_size; i++) {
         cpp_struct.problems.push_back(
-            translate_HealthAndArmingCheckProblem_from_c(c_struct.problems[i]));
+            translate_health_and_arming_check_problem_from_c(c_struct.problems[i]));
     }
     return cpp_struct;
 }
 
-static mavsdk_events_HealthAndArmingCheckMode_t
-translate_HealthAndArmingCheckMode_to_c(const mavsdk::Events::HealthAndArmingCheckMode& cpp_struct) {
-    mavsdk_events_HealthAndArmingCheckMode_t c_struct{};
+static mavsdk_events_health_and_arming_check_mode_t
+translate_health_and_arming_check_mode_to_c(const mavsdk::Events::HealthAndArmingCheckMode& cpp_struct) {
+    mavsdk_events_health_and_arming_check_mode_t c_struct{};
     c_struct.mode_name = strdup(cpp_struct.mode_name.c_str());
     c_struct.can_arm_or_run = cpp_struct.can_arm_or_run;
     c_struct.problems_size = cpp_struct.problems.size();
-    c_struct.problems = new mavsdk_events_HealthAndArmingCheckProblem_t[c_struct.problems_size];
+    c_struct.problems = new mavsdk_events_health_and_arming_check_problem_t[c_struct.problems_size];
     for (size_t i = 0; i < c_struct.problems_size; i++) {
-        c_struct.problems[i] = translate_HealthAndArmingCheckProblem_to_c(cpp_struct.problems[i]);
+        c_struct.problems[i] = translate_health_and_arming_check_problem_to_c(cpp_struct.problems[i]);
     }
     return c_struct;
 }
 
-void mavsdk_events_HealthAndArmingCheckMode_destroy(
-    mavsdk_events_HealthAndArmingCheckMode_t* target) {
+void mavsdk_events_health_and_arming_check_mode_destroy(
+    mavsdk_events_health_and_arming_check_mode_t* target) {
     if (!target) return;
     if (target->mode_name) {
         free((void*)target->mode_name);
@@ -243,7 +243,7 @@ void mavsdk_events_HealthAndArmingCheckMode_destroy(
     }
     if (target->problems) {
         for (size_t i = 0; i < target->problems_size; i++) {
-            mavsdk_events_HealthAndArmingCheckProblem_destroy(&target->problems[i]);
+            mavsdk_events_health_and_arming_check_problem_destroy(&target->problems[i]);
         }
         delete[] target->problems;
         target->problems = nullptr;
@@ -251,13 +251,13 @@ void mavsdk_events_HealthAndArmingCheckMode_destroy(
     }
 }
 
-void mavsdk_events_HealthAndArmingCheckMode_array_destroy(
-    mavsdk_events_HealthAndArmingCheckMode_t** array,
+void mavsdk_events_health_and_arming_check_mode_array_destroy(
+    mavsdk_events_health_and_arming_check_mode_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_events_HealthAndArmingCheckMode_destroy(&(*array)[i]);
+        mavsdk_events_health_and_arming_check_mode_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -266,7 +266,7 @@ void mavsdk_events_HealthAndArmingCheckMode_array_destroy(
 
 
 static mavsdk::Events::HealthComponentReport
-translate_HealthComponentReport_from_c(const mavsdk_events_HealthComponentReport_t& c_struct) {
+translate_health_component_report_from_c(const mavsdk_events_health_component_report_t& c_struct) {
     mavsdk::Events::HealthComponentReport cpp_struct{};
     if (c_struct.name) {
         cpp_struct.name = c_struct.name;
@@ -280,9 +280,9 @@ translate_HealthComponentReport_from_c(const mavsdk_events_HealthComponentReport
     return cpp_struct;
 }
 
-static mavsdk_events_HealthComponentReport_t
-translate_HealthComponentReport_to_c(const mavsdk::Events::HealthComponentReport& cpp_struct) {
-    mavsdk_events_HealthComponentReport_t c_struct{};
+static mavsdk_events_health_component_report_t
+translate_health_component_report_to_c(const mavsdk::Events::HealthComponentReport& cpp_struct) {
+    mavsdk_events_health_component_report_t c_struct{};
     c_struct.name = strdup(cpp_struct.name.c_str());
     c_struct.label = strdup(cpp_struct.label.c_str());
     c_struct.is_present = cpp_struct.is_present;
@@ -291,8 +291,8 @@ translate_HealthComponentReport_to_c(const mavsdk::Events::HealthComponentReport
     return c_struct;
 }
 
-void mavsdk_events_HealthComponentReport_destroy(
-    mavsdk_events_HealthComponentReport_t* target) {
+void mavsdk_events_health_component_report_destroy(
+    mavsdk_events_health_component_report_t* target) {
     if (!target) return;
     if (target->name) {
         free((void*)target->name);
@@ -304,13 +304,13 @@ void mavsdk_events_HealthComponentReport_destroy(
     }
 }
 
-void mavsdk_events_HealthComponentReport_array_destroy(
-    mavsdk_events_HealthComponentReport_t** array,
+void mavsdk_events_health_component_report_array_destroy(
+    mavsdk_events_health_component_report_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_events_HealthComponentReport_destroy(&(*array)[i]);
+        mavsdk_events_health_component_report_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -319,45 +319,45 @@ void mavsdk_events_HealthComponentReport_array_destroy(
 
 
 static mavsdk::Events::HealthAndArmingCheckReport
-translate_HealthAndArmingCheckReport_from_c(const mavsdk_events_HealthAndArmingCheckReport_t& c_struct) {
+translate_health_and_arming_check_report_from_c(const mavsdk_events_health_and_arming_check_report_t& c_struct) {
     mavsdk::Events::HealthAndArmingCheckReport cpp_struct{};
-    cpp_struct.current_mode_intention = translate_HealthAndArmingCheckMode_from_c(c_struct.current_mode_intention);
+    cpp_struct.current_mode_intention = translate_health_and_arming_check_mode_from_c(c_struct.current_mode_intention);
     cpp_struct.health_components.reserve(c_struct.health_components_size);
     for (size_t i = 0; i < c_struct.health_components_size; i++) {
         cpp_struct.health_components.push_back(
-            translate_HealthComponentReport_from_c(c_struct.health_components[i]));
+            translate_health_component_report_from_c(c_struct.health_components[i]));
     }
     cpp_struct.all_problems.reserve(c_struct.all_problems_size);
     for (size_t i = 0; i < c_struct.all_problems_size; i++) {
         cpp_struct.all_problems.push_back(
-            translate_HealthAndArmingCheckProblem_from_c(c_struct.all_problems[i]));
+            translate_health_and_arming_check_problem_from_c(c_struct.all_problems[i]));
     }
     return cpp_struct;
 }
 
-static mavsdk_events_HealthAndArmingCheckReport_t
-translate_HealthAndArmingCheckReport_to_c(const mavsdk::Events::HealthAndArmingCheckReport& cpp_struct) {
-    mavsdk_events_HealthAndArmingCheckReport_t c_struct{};
-    c_struct.current_mode_intention = translate_HealthAndArmingCheckMode_to_c(cpp_struct.current_mode_intention);
+static mavsdk_events_health_and_arming_check_report_t
+translate_health_and_arming_check_report_to_c(const mavsdk::Events::HealthAndArmingCheckReport& cpp_struct) {
+    mavsdk_events_health_and_arming_check_report_t c_struct{};
+    c_struct.current_mode_intention = translate_health_and_arming_check_mode_to_c(cpp_struct.current_mode_intention);
     c_struct.health_components_size = cpp_struct.health_components.size();
-    c_struct.health_components = new mavsdk_events_HealthComponentReport_t[c_struct.health_components_size];
+    c_struct.health_components = new mavsdk_events_health_component_report_t[c_struct.health_components_size];
     for (size_t i = 0; i < c_struct.health_components_size; i++) {
-        c_struct.health_components[i] = translate_HealthComponentReport_to_c(cpp_struct.health_components[i]);
+        c_struct.health_components[i] = translate_health_component_report_to_c(cpp_struct.health_components[i]);
     }
     c_struct.all_problems_size = cpp_struct.all_problems.size();
-    c_struct.all_problems = new mavsdk_events_HealthAndArmingCheckProblem_t[c_struct.all_problems_size];
+    c_struct.all_problems = new mavsdk_events_health_and_arming_check_problem_t[c_struct.all_problems_size];
     for (size_t i = 0; i < c_struct.all_problems_size; i++) {
-        c_struct.all_problems[i] = translate_HealthAndArmingCheckProblem_to_c(cpp_struct.all_problems[i]);
+        c_struct.all_problems[i] = translate_health_and_arming_check_problem_to_c(cpp_struct.all_problems[i]);
     }
     return c_struct;
 }
 
-void mavsdk_events_HealthAndArmingCheckReport_destroy(
-    mavsdk_events_HealthAndArmingCheckReport_t* target) {
+void mavsdk_events_health_and_arming_check_report_destroy(
+    mavsdk_events_health_and_arming_check_report_t* target) {
     if (!target) return;
     if (target->health_components) {
         for (size_t i = 0; i < target->health_components_size; i++) {
-            mavsdk_events_HealthComponentReport_destroy(&target->health_components[i]);
+            mavsdk_events_health_component_report_destroy(&target->health_components[i]);
         }
         delete[] target->health_components;
         target->health_components = nullptr;
@@ -365,7 +365,7 @@ void mavsdk_events_HealthAndArmingCheckReport_destroy(
     }
     if (target->all_problems) {
         for (size_t i = 0; i < target->all_problems_size; i++) {
-            mavsdk_events_HealthAndArmingCheckProblem_destroy(&target->all_problems[i]);
+            mavsdk_events_health_and_arming_check_problem_destroy(&target->all_problems[i]);
         }
         delete[] target->all_problems;
         target->all_problems = nullptr;
@@ -373,13 +373,13 @@ void mavsdk_events_HealthAndArmingCheckReport_destroy(
     }
 }
 
-void mavsdk_events_HealthAndArmingCheckReport_array_destroy(
-    mavsdk_events_HealthAndArmingCheckReport_t** array,
+void mavsdk_events_health_and_arming_check_report_array_destroy(
+    mavsdk_events_health_and_arming_check_report_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_events_HealthAndArmingCheckReport_destroy(&(*array)[i]);
+        mavsdk_events_health_and_arming_check_report_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -487,7 +487,7 @@ mavsdk_events_events_handle_t mavsdk_events_subscribe_events(
             mavsdk::Events::Event value) {
                 if (callback) {
                     callback(
-                        translate_Event_to_c(value),
+                        translate_event_to_c(value),
                         user_data);
                 }
         });
@@ -522,7 +522,7 @@ mavsdk_events_health_and_arming_checks_handle_t mavsdk_events_subscribe_health_a
             mavsdk::Events::HealthAndArmingCheckReport value) {
                 if (callback) {
                     callback(
-                        translate_HealthAndArmingCheckReport_to_c(value),
+                        translate_health_and_arming_check_report_to_c(value),
                         user_data);
                 }
         });
@@ -549,7 +549,7 @@ void mavsdk_events_unsubscribe_health_and_arming_checks(
 mavsdk_events_result_t
 mavsdk_events_get_health_and_arming_checks_report(
     mavsdk_events_t events,
-    mavsdk_events_HealthAndArmingCheckReport_t* report_out)
+    mavsdk_events_health_and_arming_check_report_t* report_out)
 {
     auto wrapper = static_cast<mavsdk_events_wrapper*>(events);
 
@@ -557,7 +557,7 @@ mavsdk_events_get_health_and_arming_checks_report(
 );
 
     if (report_out != nullptr) {
-        *report_out = translate_HealthAndArmingCheckReport_to_c(result_pair.second);
+        *report_out = translate_health_and_arming_check_report_to_c(result_pair.second);
     }
 
     return translate_result(result_pair.first);

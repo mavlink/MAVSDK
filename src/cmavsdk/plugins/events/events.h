@@ -47,7 +47,7 @@ typedef enum {
     MAVSDK_EVENTS_LOG_LEVEL_INFO = 6,
     /**  Debug. */
     MAVSDK_EVENTS_LOG_LEVEL_DEBUG = 7,
-} mavsdk_events_LogLevel_t;
+} mavsdk_events_log_level_t;
 
 
 // ===== Structs =====
@@ -55,7 +55,7 @@ typedef enum {
  * @brief Event type
  *
  * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_events_Event_destroy() when done to avoid memory leaks.
+ *       mavsdk_events_event_destroy() when done to avoid memory leaks.
  */
 typedef struct CMAVSDK_EXPORT {
     /**  The source component ID of the event */
@@ -65,15 +65,15 @@ typedef struct CMAVSDK_EXPORT {
     /**  Detailed description (optional, might be multiple lines) */
     char* description;
     /**  Log level of message */
-    mavsdk_events_LogLevel_t log_level;
+    mavsdk_events_log_level_t log_level;
     /**  Namespace, e.g. "px4" */
     char* event_namespace;
     /**  Event name (unique within the namespace) */
     char* event_name;
-} mavsdk_events_Event_t;
+} mavsdk_events_event_t;
 
 /**
- * @brief Destroy a Event struct.
+ * @brief Destroy a event struct.
  *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
@@ -82,11 +82,11 @@ typedef struct CMAVSDK_EXPORT {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-CMAVSDK_EXPORT void mavsdk_events_Event_destroy(
-    mavsdk_events_Event_t* target);
+CMAVSDK_EXPORT void mavsdk_events_event_destroy(
+    mavsdk_events_event_t* target);
 
 /**
- * @brief Destroy an array of Event structs.
+ * @brief Destroy an array of event structs.
  *
  * Frees all memory allocated for the array and its elements, including any
  * nested dynamic allocations. Must be called to avoid memory leaks.
@@ -94,15 +94,15 @@ CMAVSDK_EXPORT void mavsdk_events_Event_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-CMAVSDK_EXPORT void mavsdk_events_Event_array_destroy(
-    mavsdk_events_Event_t** array,
+CMAVSDK_EXPORT void mavsdk_events_event_array_destroy(
+    mavsdk_events_event_t** array,
     size_t size);
 
 /**
  * @brief Health and arming check problem type
  *
  * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_events_HealthAndArmingCheckProblem_destroy() when done to avoid memory leaks.
+ *       mavsdk_events_health_and_arming_check_problem_destroy() when done to avoid memory leaks.
  */
 typedef struct CMAVSDK_EXPORT {
     /**  Short, single-line message */
@@ -110,13 +110,13 @@ typedef struct CMAVSDK_EXPORT {
     /**  Detailed description (optional, might be multiple lines) */
     char* description;
     /**  Log level of message */
-    mavsdk_events_LogLevel_t log_level;
+    mavsdk_events_log_level_t log_level;
     /**  Associated health component, e.g. "gps" */
     char* health_component;
-} mavsdk_events_HealthAndArmingCheckProblem_t;
+} mavsdk_events_health_and_arming_check_problem_t;
 
 /**
- * @brief Destroy a HealthAndArmingCheckProblem struct.
+ * @brief Destroy a health_and_arming_check_problem struct.
  *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
@@ -125,11 +125,11 @@ typedef struct CMAVSDK_EXPORT {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-CMAVSDK_EXPORT void mavsdk_events_HealthAndArmingCheckProblem_destroy(
-    mavsdk_events_HealthAndArmingCheckProblem_t* target);
+CMAVSDK_EXPORT void mavsdk_events_health_and_arming_check_problem_destroy(
+    mavsdk_events_health_and_arming_check_problem_t* target);
 
 /**
- * @brief Destroy an array of HealthAndArmingCheckProblem structs.
+ * @brief Destroy an array of health_and_arming_check_problem structs.
  *
  * Frees all memory allocated for the array and its elements, including any
  * nested dynamic allocations. Must be called to avoid memory leaks.
@@ -137,15 +137,15 @@ CMAVSDK_EXPORT void mavsdk_events_HealthAndArmingCheckProblem_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-CMAVSDK_EXPORT void mavsdk_events_HealthAndArmingCheckProblem_array_destroy(
-    mavsdk_events_HealthAndArmingCheckProblem_t** array,
+CMAVSDK_EXPORT void mavsdk_events_health_and_arming_check_problem_array_destroy(
+    mavsdk_events_health_and_arming_check_problem_t** array,
     size_t size);
 
 /**
  * @brief Arming checks for a specific mode
  *
  * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_events_HealthAndArmingCheckMode_destroy() when done to avoid memory leaks.
+ *       mavsdk_events_health_and_arming_check_mode_destroy() when done to avoid memory leaks.
  */
 typedef struct CMAVSDK_EXPORT {
     /**  Mode name, e.g. "Position" */
@@ -153,12 +153,12 @@ typedef struct CMAVSDK_EXPORT {
     /**  If disarmed: indicates if arming is possible. If armed: indicates if the mode can be selected */
     bool can_arm_or_run;
     /**  List of reported problems for the mode */
-    mavsdk_events_HealthAndArmingCheckProblem_t* problems;
+    mavsdk_events_health_and_arming_check_problem_t* problems;
     size_t problems_size;
-} mavsdk_events_HealthAndArmingCheckMode_t;
+} mavsdk_events_health_and_arming_check_mode_t;
 
 /**
- * @brief Destroy a HealthAndArmingCheckMode struct.
+ * @brief Destroy a health_and_arming_check_mode struct.
  *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
@@ -167,11 +167,11 @@ typedef struct CMAVSDK_EXPORT {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-CMAVSDK_EXPORT void mavsdk_events_HealthAndArmingCheckMode_destroy(
-    mavsdk_events_HealthAndArmingCheckMode_t* target);
+CMAVSDK_EXPORT void mavsdk_events_health_and_arming_check_mode_destroy(
+    mavsdk_events_health_and_arming_check_mode_t* target);
 
 /**
- * @brief Destroy an array of HealthAndArmingCheckMode structs.
+ * @brief Destroy an array of health_and_arming_check_mode structs.
  *
  * Frees all memory allocated for the array and its elements, including any
  * nested dynamic allocations. Must be called to avoid memory leaks.
@@ -179,15 +179,15 @@ CMAVSDK_EXPORT void mavsdk_events_HealthAndArmingCheckMode_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-CMAVSDK_EXPORT void mavsdk_events_HealthAndArmingCheckMode_array_destroy(
-    mavsdk_events_HealthAndArmingCheckMode_t** array,
+CMAVSDK_EXPORT void mavsdk_events_health_and_arming_check_mode_array_destroy(
+    mavsdk_events_health_and_arming_check_mode_t** array,
     size_t size);
 
 /**
  * @brief Health component report type
  *
  * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_events_HealthComponentReport_destroy() when done to avoid memory leaks.
+ *       mavsdk_events_health_component_report_destroy() when done to avoid memory leaks.
  */
 typedef struct CMAVSDK_EXPORT {
     /**  Unique component name, e.g. "gps" */
@@ -200,10 +200,10 @@ typedef struct CMAVSDK_EXPORT {
     bool has_error;
     /**  If the component has warnings */
     bool has_warning;
-} mavsdk_events_HealthComponentReport_t;
+} mavsdk_events_health_component_report_t;
 
 /**
- * @brief Destroy a HealthComponentReport struct.
+ * @brief Destroy a health_component_report struct.
  *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
@@ -212,11 +212,11 @@ typedef struct CMAVSDK_EXPORT {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-CMAVSDK_EXPORT void mavsdk_events_HealthComponentReport_destroy(
-    mavsdk_events_HealthComponentReport_t* target);
+CMAVSDK_EXPORT void mavsdk_events_health_component_report_destroy(
+    mavsdk_events_health_component_report_t* target);
 
 /**
- * @brief Destroy an array of HealthComponentReport structs.
+ * @brief Destroy an array of health_component_report structs.
  *
  * Frees all memory allocated for the array and its elements, including any
  * nested dynamic allocations. Must be called to avoid memory leaks.
@@ -224,29 +224,29 @@ CMAVSDK_EXPORT void mavsdk_events_HealthComponentReport_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-CMAVSDK_EXPORT void mavsdk_events_HealthComponentReport_array_destroy(
-    mavsdk_events_HealthComponentReport_t** array,
+CMAVSDK_EXPORT void mavsdk_events_health_component_report_array_destroy(
+    mavsdk_events_health_component_report_t** array,
     size_t size);
 
 /**
  * @brief Health and arming check report type
  *
  * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_events_HealthAndArmingCheckReport_destroy() when done to avoid memory leaks.
+ *       mavsdk_events_health_and_arming_check_report_destroy() when done to avoid memory leaks.
  */
 typedef struct CMAVSDK_EXPORT {
     /**  Report for currently intended mode */
-    mavsdk_events_HealthAndArmingCheckMode_t current_mode_intention;
+    mavsdk_events_health_and_arming_check_mode_t current_mode_intention;
     /**  Health components list (e.g. for "gps") */
-    mavsdk_events_HealthComponentReport_t* health_components;
+    mavsdk_events_health_component_report_t* health_components;
     size_t health_components_size;
     /**  Complete list of problems */
-    mavsdk_events_HealthAndArmingCheckProblem_t* all_problems;
+    mavsdk_events_health_and_arming_check_problem_t* all_problems;
     size_t all_problems_size;
-} mavsdk_events_HealthAndArmingCheckReport_t;
+} mavsdk_events_health_and_arming_check_report_t;
 
 /**
- * @brief Destroy a HealthAndArmingCheckReport struct.
+ * @brief Destroy a health_and_arming_check_report struct.
  *
  * Frees all memory allocated by MAVSDK for this struct, including any
  * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
@@ -255,11 +255,11 @@ typedef struct CMAVSDK_EXPORT {
  *
  * @param target Pointer to the struct to destroy. Can be NULL (no-op).
  */
-CMAVSDK_EXPORT void mavsdk_events_HealthAndArmingCheckReport_destroy(
-    mavsdk_events_HealthAndArmingCheckReport_t* target);
+CMAVSDK_EXPORT void mavsdk_events_health_and_arming_check_report_destroy(
+    mavsdk_events_health_and_arming_check_report_t* target);
 
 /**
- * @brief Destroy an array of HealthAndArmingCheckReport structs.
+ * @brief Destroy an array of health_and_arming_check_report structs.
  *
  * Frees all memory allocated for the array and its elements, including any
  * nested dynamic allocations. Must be called to avoid memory leaks.
@@ -267,8 +267,8 @@ CMAVSDK_EXPORT void mavsdk_events_HealthAndArmingCheckReport_destroy(
  * @param array Pointer to the array pointer. Will be set to NULL after freeing.
  * @param size Number of elements in the array.
  */
-CMAVSDK_EXPORT void mavsdk_events_HealthAndArmingCheckReport_array_destroy(
-    mavsdk_events_HealthAndArmingCheckReport_t** array,
+CMAVSDK_EXPORT void mavsdk_events_health_and_arming_check_report_array_destroy(
+    mavsdk_events_health_and_arming_check_report_t** array,
     size_t size);
 
 /**
@@ -374,8 +374,8 @@ CMAVSDK_EXPORT void mavsdk_events_string_destroy(char** str);
 CMAVSDK_EXPORT void mavsdk_events_byte_buffer_destroy(uint8_t** buffer);
 
 // ===== Callback Typedefs =====
-typedef void (*mavsdk_events_events_callback_t)(const mavsdk_events_Event_t event, void* user_data);
-typedef void (*mavsdk_events_health_and_arming_checks_callback_t)(const mavsdk_events_HealthAndArmingCheckReport_t report, void* user_data);
+typedef void (*mavsdk_events_events_callback_t)(const mavsdk_events_event_t event, void* user_data);
+typedef void (*mavsdk_events_health_and_arming_checks_callback_t)(const mavsdk_events_health_and_arming_check_report_t report, void* user_data);
 
 // ===== Events Creation/Destruction =====
 CMAVSDK_EXPORT mavsdk_events_t mavsdk_events_create(mavsdk_system_t system);
@@ -447,7 +447,7 @@ CMAVSDK_EXPORT
 mavsdk_events_result_t
 mavsdk_events_get_health_and_arming_checks_report(
     mavsdk_events_t events,
-    mavsdk_events_HealthAndArmingCheckReport_t* report_out);
+    mavsdk_events_health_and_arming_check_report_t* report_out);
 
 
 #ifdef __cplusplus

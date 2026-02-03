@@ -35,7 +35,7 @@ translate_result(mavsdk::ComponentMetadata::Result cpp_result) {
 }
 
 static mavsdk::ComponentMetadata::MetadataType
-translate_MetadataType_from_c(mavsdk_component_metadata_MetadataType_t c_enum) {
+translate_metadata_type_from_c(mavsdk_component_metadata_metadata_type_t c_enum) {
     switch(c_enum) {
         case MAVSDK_COMPONENT_METADATA_METADATA_TYPE_ALL_COMPLETED:
             return mavsdk::ComponentMetadata::MetadataType::AllCompleted;
@@ -49,8 +49,8 @@ translate_MetadataType_from_c(mavsdk_component_metadata_MetadataType_t c_enum) {
     return mavsdk::ComponentMetadata::MetadataType::AllCompleted;
 }
 
-static mavsdk_component_metadata_MetadataType_t
-translate_MetadataType_to_c(mavsdk::ComponentMetadata::MetadataType cpp_enum) {
+static mavsdk_component_metadata_metadata_type_t
+translate_metadata_type_to_c(mavsdk::ComponentMetadata::MetadataType cpp_enum) {
     switch(cpp_enum) {
         case mavsdk::ComponentMetadata::MetadataType::AllCompleted:
             return MAVSDK_COMPONENT_METADATA_METADATA_TYPE_ALL_COMPLETED;
@@ -67,7 +67,7 @@ translate_MetadataType_to_c(mavsdk::ComponentMetadata::MetadataType cpp_enum) {
 
 
 static mavsdk::ComponentMetadata::MetadataData
-translate_MetadataData_from_c(const mavsdk_component_metadata_MetadataData_t& c_struct) {
+translate_metadata_data_from_c(const mavsdk_component_metadata_metadata_data_t& c_struct) {
     mavsdk::ComponentMetadata::MetadataData cpp_struct{};
     if (c_struct.json_metadata) {
         cpp_struct.json_metadata = c_struct.json_metadata;
@@ -75,15 +75,15 @@ translate_MetadataData_from_c(const mavsdk_component_metadata_MetadataData_t& c_
     return cpp_struct;
 }
 
-static mavsdk_component_metadata_MetadataData_t
-translate_MetadataData_to_c(const mavsdk::ComponentMetadata::MetadataData& cpp_struct) {
-    mavsdk_component_metadata_MetadataData_t c_struct{};
+static mavsdk_component_metadata_metadata_data_t
+translate_metadata_data_to_c(const mavsdk::ComponentMetadata::MetadataData& cpp_struct) {
+    mavsdk_component_metadata_metadata_data_t c_struct{};
     c_struct.json_metadata = strdup(cpp_struct.json_metadata.c_str());
     return c_struct;
 }
 
-void mavsdk_component_metadata_MetadataData_destroy(
-    mavsdk_component_metadata_MetadataData_t* target) {
+void mavsdk_component_metadata_metadata_data_destroy(
+    mavsdk_component_metadata_metadata_data_t* target) {
     if (!target) return;
     if (target->json_metadata) {
         free((void*)target->json_metadata);
@@ -91,13 +91,13 @@ void mavsdk_component_metadata_MetadataData_destroy(
     }
 }
 
-void mavsdk_component_metadata_MetadataData_array_destroy(
-    mavsdk_component_metadata_MetadataData_t** array,
+void mavsdk_component_metadata_metadata_data_array_destroy(
+    mavsdk_component_metadata_metadata_data_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_component_metadata_MetadataData_destroy(&(*array)[i]);
+        mavsdk_component_metadata_metadata_data_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -107,27 +107,27 @@ void mavsdk_component_metadata_MetadataData_array_destroy(
 
 
 static mavsdk::ComponentMetadata::MetadataUpdate
-translate_MetadataUpdate_from_c(const mavsdk_component_metadata_MetadataUpdate_t& c_struct) {
+translate_metadata_update_from_c(const mavsdk_component_metadata_metadata_update_t& c_struct) {
     mavsdk::ComponentMetadata::MetadataUpdate cpp_struct{};
     cpp_struct.compid = c_struct.compid;
-    cpp_struct.type = translate_MetadataType_from_c(c_struct.type);
+    cpp_struct.type = translate_metadata_type_from_c(c_struct.type);
     if (c_struct.json_metadata) {
         cpp_struct.json_metadata = c_struct.json_metadata;
     }
     return cpp_struct;
 }
 
-static mavsdk_component_metadata_MetadataUpdate_t
-translate_MetadataUpdate_to_c(const mavsdk::ComponentMetadata::MetadataUpdate& cpp_struct) {
-    mavsdk_component_metadata_MetadataUpdate_t c_struct{};
+static mavsdk_component_metadata_metadata_update_t
+translate_metadata_update_to_c(const mavsdk::ComponentMetadata::MetadataUpdate& cpp_struct) {
+    mavsdk_component_metadata_metadata_update_t c_struct{};
     c_struct.compid = cpp_struct.compid;
-    c_struct.type = translate_MetadataType_to_c(cpp_struct.type);
+    c_struct.type = translate_metadata_type_to_c(cpp_struct.type);
     c_struct.json_metadata = strdup(cpp_struct.json_metadata.c_str());
     return c_struct;
 }
 
-void mavsdk_component_metadata_MetadataUpdate_destroy(
-    mavsdk_component_metadata_MetadataUpdate_t* target) {
+void mavsdk_component_metadata_metadata_update_destroy(
+    mavsdk_component_metadata_metadata_update_t* target) {
     if (!target) return;
     if (target->json_metadata) {
         free((void*)target->json_metadata);
@@ -135,13 +135,13 @@ void mavsdk_component_metadata_MetadataUpdate_destroy(
     }
 }
 
-void mavsdk_component_metadata_MetadataUpdate_array_destroy(
-    mavsdk_component_metadata_MetadataUpdate_t** array,
+void mavsdk_component_metadata_metadata_update_array_destroy(
+    mavsdk_component_metadata_metadata_update_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_component_metadata_MetadataUpdate_destroy(&(*array)[i]);
+        mavsdk_component_metadata_metadata_update_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -273,7 +273,7 @@ mavsdk_component_metadata_metadata_available_handle_t mavsdk_component_metadata_
             mavsdk::ComponentMetadata::MetadataUpdate value) {
                 if (callback) {
                     callback(
-                        translate_MetadataUpdate_to_c(value),
+                        translate_metadata_update_to_c(value),
                         user_data);
                 }
         });
@@ -301,17 +301,17 @@ mavsdk_component_metadata_result_t
 mavsdk_component_metadata_get_metadata(
     mavsdk_component_metadata_t component_metadata,
     uint32_t compid,
-    mavsdk_component_metadata_MetadataType_t metadata_type,
-    mavsdk_component_metadata_MetadataData_t* response_out)
+    mavsdk_component_metadata_metadata_type_t metadata_type,
+    mavsdk_component_metadata_metadata_data_t* response_out)
 {
     auto wrapper = static_cast<mavsdk_component_metadata_wrapper*>(component_metadata);
 
     auto result_pair = wrapper->cpp_plugin->get_metadata(
         compid,
-        translate_MetadataType_from_c(metadata_type));
+        translate_metadata_type_from_c(metadata_type));
 
     if (response_out != nullptr) {
-        *response_out = translate_MetadataData_to_c(result_pair.second);
+        *response_out = translate_metadata_data_to_c(result_pair.second);
     }
 
     return translate_result(result_pair.first);

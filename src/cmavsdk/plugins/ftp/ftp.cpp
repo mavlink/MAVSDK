@@ -45,7 +45,7 @@ translate_result(mavsdk::Ftp::Result cpp_result) {
 
 
 static mavsdk::Ftp::ListDirectoryData
-translate_ListDirectoryData_from_c(const mavsdk_ftp_ListDirectoryData_t& c_struct) {
+translate_list_directory_data_from_c(const mavsdk_ftp_list_directory_data_t& c_struct) {
     mavsdk::Ftp::ListDirectoryData cpp_struct{};
     cpp_struct.dirs.reserve(c_struct.dirs_size);
     for (size_t i = 0; i < c_struct.dirs_size; i++) {
@@ -62,9 +62,9 @@ translate_ListDirectoryData_from_c(const mavsdk_ftp_ListDirectoryData_t& c_struc
     return cpp_struct;
 }
 
-static mavsdk_ftp_ListDirectoryData_t
-translate_ListDirectoryData_to_c(const mavsdk::Ftp::ListDirectoryData& cpp_struct) {
-    mavsdk_ftp_ListDirectoryData_t c_struct{};
+static mavsdk_ftp_list_directory_data_t
+translate_list_directory_data_to_c(const mavsdk::Ftp::ListDirectoryData& cpp_struct) {
+    mavsdk_ftp_list_directory_data_t c_struct{};
     c_struct.dirs_size = cpp_struct.dirs.size();
     c_struct.dirs = new char*[c_struct.dirs_size];
     for (size_t i = 0; i < c_struct.dirs_size; i++) {
@@ -78,8 +78,8 @@ translate_ListDirectoryData_to_c(const mavsdk::Ftp::ListDirectoryData& cpp_struc
     return c_struct;
 }
 
-void mavsdk_ftp_ListDirectoryData_destroy(
-    mavsdk_ftp_ListDirectoryData_t* target) {
+void mavsdk_ftp_list_directory_data_destroy(
+    mavsdk_ftp_list_directory_data_t* target) {
     if (!target) return;
     if (target->dirs) {
         for (size_t i = 0; i < target->dirs_size; i++) {
@@ -103,13 +103,13 @@ void mavsdk_ftp_ListDirectoryData_destroy(
     }
 }
 
-void mavsdk_ftp_ListDirectoryData_array_destroy(
-    mavsdk_ftp_ListDirectoryData_t** array,
+void mavsdk_ftp_list_directory_data_array_destroy(
+    mavsdk_ftp_list_directory_data_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_ftp_ListDirectoryData_destroy(&(*array)[i]);
+        mavsdk_ftp_list_directory_data_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -118,33 +118,33 @@ void mavsdk_ftp_ListDirectoryData_array_destroy(
 
 
 static mavsdk::Ftp::ProgressData
-translate_ProgressData_from_c(const mavsdk_ftp_ProgressData_t& c_struct) {
+translate_progress_data_from_c(const mavsdk_ftp_progress_data_t& c_struct) {
     mavsdk::Ftp::ProgressData cpp_struct{};
     cpp_struct.bytes_transferred = c_struct.bytes_transferred;
     cpp_struct.total_bytes = c_struct.total_bytes;
     return cpp_struct;
 }
 
-static mavsdk_ftp_ProgressData_t
-translate_ProgressData_to_c(const mavsdk::Ftp::ProgressData& cpp_struct) {
-    mavsdk_ftp_ProgressData_t c_struct{};
+static mavsdk_ftp_progress_data_t
+translate_progress_data_to_c(const mavsdk::Ftp::ProgressData& cpp_struct) {
+    mavsdk_ftp_progress_data_t c_struct{};
     c_struct.bytes_transferred = cpp_struct.bytes_transferred;
     c_struct.total_bytes = cpp_struct.total_bytes;
     return c_struct;
 }
 
-void mavsdk_ftp_ProgressData_destroy(
-    mavsdk_ftp_ProgressData_t* target) {
+void mavsdk_ftp_progress_data_destroy(
+    mavsdk_ftp_progress_data_t* target) {
     if (!target) return;
 }
 
-void mavsdk_ftp_ProgressData_array_destroy(
-    mavsdk_ftp_ProgressData_t** array,
+void mavsdk_ftp_progress_data_array_destroy(
+    mavsdk_ftp_progress_data_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_ftp_ProgressData_destroy(&(*array)[i]);
+        mavsdk_ftp_progress_data_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -260,7 +260,7 @@ void mavsdk_ftp_download_async(
                 if (callback) {
                     callback(
                         translate_result(result),
-                        translate_ProgressData_to_c(value),
+                        translate_progress_data_to_c(value),
                         user_data);
                 }
         });
@@ -287,7 +287,7 @@ void mavsdk_ftp_upload_async(
                 if (callback) {
                     callback(
                         translate_result(result),
-                        translate_ProgressData_to_c(value),
+                        translate_progress_data_to_c(value),
                         user_data);
                 }
         });
@@ -312,7 +312,7 @@ void mavsdk_ftp_list_directory_async(
                 if (callback) {
                     callback(
                         translate_result(result),
-                        translate_ListDirectoryData_to_c(value),
+                        translate_list_directory_data_to_c(value),
                         user_data);
                 }
         });
@@ -324,7 +324,7 @@ mavsdk_ftp_result_t
 mavsdk_ftp_list_directory(
     mavsdk_ftp_t ftp,
     char* remote_dir,
-    mavsdk_ftp_ListDirectoryData_t* data_out)
+    mavsdk_ftp_list_directory_data_t* data_out)
 {
     auto wrapper = static_cast<mavsdk_ftp_wrapper*>(ftp);
 
@@ -332,7 +332,7 @@ mavsdk_ftp_list_directory(
         remote_dir);
 
     if (data_out != nullptr) {
-        *data_out = translate_ListDirectoryData_to_c(result_pair.second);
+        *data_out = translate_list_directory_data_to_c(result_pair.second);
     }
 
     return translate_result(result_pair.first);
