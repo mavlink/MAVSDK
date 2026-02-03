@@ -93,12 +93,12 @@ typedef struct CMAVSDK_EXPORT {
     {% endif %}
     {% else %}
     {% if field.type_info.parent_type %}
-    mavsdk_{{ plugin_name.lower_snake_case }}_{{ field.type_info.parent_type }}_{{ field.type_info.name }}_t {{ field.name.lower_snake_case }};
+    mavsdk_{{ plugin_name.lower_snake_case }}_{{ field.type_info.parent_type }}_{{ field.type_info.name.lower_snake_case }}_t {{ field.name.lower_snake_case }};
     {% elif field.type_info.is_repeated %}
-    mavsdk_{{ plugin_name.lower_snake_case }}_{{ field.type_info.inner_name }}_t* {{ field.name.lower_snake_case }};
+    mavsdk_{{ plugin_name.lower_snake_case }}_{{ field.type_info.inner_name.lower_snake_case }}_t* {{ field.name.lower_snake_case }};
     size_t {{ field.name.lower_snake_case }}_size;
     {% else %}
-    mavsdk_{{ plugin_name.lower_snake_case }}_{{ field.type_info.name }}_t {{ field.name.lower_snake_case }};
+    mavsdk_{{ plugin_name.lower_snake_case }}_{{ field.type_info.name.lower_snake_case }}_t {{ field.name.lower_snake_case }};
     {% endif %}
     {% endif %}
     {% endfor %}
@@ -204,15 +204,15 @@ CMAVSDK_EXPORT {% if method.is_stream and not method.is_finite%}mavsdk_{{ plugin
     const {{ param.type_info.inner_name }}* {{ param.name.lower_snake_case }},
     size_t {{ param.name.lower_snake_case }}_size,
     {% else %}
-    const mavsdk_{{ plugin_name.lower_snake_case }}_{{ param.type_info.inner_name }}_t* {{ param.name.lower_snake_case }},
+    const mavsdk_{{ plugin_name.lower_snake_case }}_{{ param.type_info.inner_name.lower_snake_case }}_t* {{ param.name.lower_snake_case }},
     size_t {{ param.name.lower_snake_case }}_size,
     {% endif %}
     {% elif param.type_info.is_primitive %}
     {{ param.type_info.name }} {{ param.name.lower_snake_case }},
     {% elif param.type_info.parent_type %}
-    mavsdk_{{ plugin_name.lower_snake_case }}_{{ param.type_info.parent_type }}_{{ param.type_info.name }}_t {{ param.name.lower_snake_case }},
+    mavsdk_{{ plugin_name.lower_snake_case }}_{{ param.type_info.parent_type }}_{{ param.type_info.name.lower_snake_case }}_t {{ param.name.lower_snake_case }},
     {% else %}
-    mavsdk_{{ plugin_name.lower_snake_case }}_{{ param.type_info.name }}_t {{ param.name.lower_snake_case }},
+    mavsdk_{{ plugin_name.lower_snake_case }}_{{ param.type_info.name.lower_snake_case }}_t {{ param.name.lower_snake_case }},
     {% endif %}
     {% endfor %}
     mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}_callback_t callback,
@@ -257,7 +257,7 @@ mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}(
     size_t {{ param.name.lower_snake_case }}_size{% if not loop.last %},
     {% endif %}
     {% else %}
-    const mavsdk_{{ plugin_name.lower_snake_case }}_{{ param.type_info.inner_name }}_t* {{ param.name.lower_snake_case }},
+    const mavsdk_{{ plugin_name.lower_snake_case }}_{{ param.type_info.inner_name.lower_snake_case }}_t* {{ param.name.lower_snake_case }},
     size_t {{ param.name.lower_snake_case }}_size{% if not loop.last %},
     {% endif %}
     {% endif %}
@@ -265,10 +265,10 @@ mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}(
     {{ param.type_info.name }} {{ param.name.lower_snake_case }}{% if not loop.last %},
     {% endif %}
     {% elif param.type_info.parent_type %}
-    mavsdk_{{ plugin_name.lower_snake_case }}_{{ param.type_info.parent_type }}_{{ param.type_info.name }}_t {{ param.name.lower_snake_case }}{% if not loop.last %},
+    mavsdk_{{ plugin_name.lower_snake_case }}_{{ param.type_info.parent_type }}_{{ param.type_info.name.lower_snake_case }}_t {{ param.name.lower_snake_case }}{% if not loop.last %},
     {% endif %}
     {% else %}
-    mavsdk_{{ plugin_name.lower_snake_case }}_{{ param.type_info.name }}_t {{ param.name.lower_snake_case }}{% if not loop.last %},
+    mavsdk_{{ plugin_name.lower_snake_case }}_{{ param.type_info.name.lower_snake_case }}_t {{ param.name.lower_snake_case }}{% if not loop.last %},
     {% endif %}
     {% endif %}
     {% endfor %}{% endif %}{% if method.return_name %},

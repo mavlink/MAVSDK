@@ -94,7 +94,7 @@ translate_{{ struct.name.lower_snake_case }}_from_c(const mavsdk_{{ plugin_name.
     cpp_struct.{{ field.name.lower_snake_case }}.reserve(c_struct.{{ field.name.lower_snake_case }}_size);
     for (size_t i = 0; i < c_struct.{{ field.name.lower_snake_case }}_size; i++) {
         cpp_struct.{{ field.name.lower_snake_case }}.push_back(
-            translate_{{ field.type_info.inner_name }}_from_c(c_struct.{{ field.name.lower_snake_case }}[i]));
+            translate_{{ field.type_info.inner_name.lower_snake_case }}_from_c(c_struct.{{ field.name.lower_snake_case }}[i]));
     }
     {% endif %}
     {% elif field.type_info.is_string %}
@@ -104,9 +104,9 @@ translate_{{ struct.name.lower_snake_case }}_from_c(const mavsdk_{{ plugin_name.
     {% elif field.type_info.is_primitive %}
     cpp_struct.{{ field.name.lower_snake_case }} = c_struct.{{ field.name.lower_snake_case }};
     {% elif field.type_info.parent_type %}
-    cpp_struct.{{ field.name.lower_snake_case }} = translate_{{ field.type_info.parent_type }}_{{ field.type_info.name }}_from_c(c_struct.{{ field.name.lower_snake_case }});
+    cpp_struct.{{ field.name.lower_snake_case }} = translate_{{ field.type_info.parent_type }}_{{ field.type_info.name.lower_snake_case }}_from_c(c_struct.{{ field.name.lower_snake_case }});
     {% else %}
-    cpp_struct.{{ field.name.lower_snake_case }} = translate_{{ field.type_info.name }}_from_c(c_struct.{{ field.name.lower_snake_case }});
+    cpp_struct.{{ field.name.lower_snake_case }} = translate_{{ field.type_info.name.lower_snake_case }}_from_c(c_struct.{{ field.name.lower_snake_case }});
     {% endif %}
     {% endfor %}
     return cpp_struct;
@@ -143,9 +143,9 @@ translate_{{ struct.name.lower_snake_case }}_to_c(const mavsdk::{{ plugin_name.u
     c_struct.{{ field.name.lower_snake_case }} = new {{ field.type_info.inner_name }}[c_struct.{{ field.name.lower_snake_case }}_size];
     std::copy(cpp_struct.{{ field.name.lower_snake_case }}.begin(), cpp_struct.{{ field.name.lower_snake_case }}.end(), c_struct.{{ field.name.lower_snake_case }});
     {% else %}
-    c_struct.{{ field.name.lower_snake_case }} = new mavsdk_{{ plugin_name.lower_snake_case }}_{{ field.type_info.inner_name }}_t[c_struct.{{ field.name.lower_snake_case }}_size];
+    c_struct.{{ field.name.lower_snake_case }} = new mavsdk_{{ plugin_name.lower_snake_case }}_{{ field.type_info.inner_name.lower_snake_case }}_t[c_struct.{{ field.name.lower_snake_case }}_size];
     for (size_t i = 0; i < c_struct.{{ field.name.lower_snake_case }}_size; i++) {
-        c_struct.{{ field.name.lower_snake_case }}[i] = translate_{{ field.type_info.inner_name }}_to_c(cpp_struct.{{ field.name.lower_snake_case }}[i]);
+        c_struct.{{ field.name.lower_snake_case }}[i] = translate_{{ field.type_info.inner_name.lower_snake_case }}_to_c(cpp_struct.{{ field.name.lower_snake_case }}[i]);
     }
     {% endif %}
     {% elif field.type_info.is_string %}
@@ -153,9 +153,9 @@ translate_{{ struct.name.lower_snake_case }}_to_c(const mavsdk::{{ plugin_name.u
     {% elif field.type_info.is_primitive %}
     c_struct.{{ field.name.lower_snake_case }} = cpp_struct.{{ field.name.lower_snake_case }};
     {% elif field.type_info.parent_type %}
-    c_struct.{{ field.name.lower_snake_case }} = translate_{{ field.type_info.parent_type }}_{{ field.type_info.name }}_to_c(cpp_struct.{{ field.name.lower_snake_case }});
+    c_struct.{{ field.name.lower_snake_case }} = translate_{{ field.type_info.parent_type }}_{{ field.type_info.name.lower_snake_case }}_to_c(cpp_struct.{{ field.name.lower_snake_case }});
     {% else %}
-    c_struct.{{ field.name.lower_snake_case }} = translate_{{ field.type_info.name }}_to_c(cpp_struct.{{ field.name.lower_snake_case }});
+    c_struct.{{ field.name.lower_snake_case }} = translate_{{ field.type_info.name.lower_snake_case }}_to_c(cpp_struct.{{ field.name.lower_snake_case }});
     {% endif %}
     {% endfor %}
     return c_struct;
@@ -178,7 +178,7 @@ void mavsdk_{{ plugin_name.lower_snake_case }}_{{ struct.name.lower_snake_case }
         delete[] target->{{ field.name.lower_snake_case }};
         {% elif not field.type_info.is_primitive %}
         for (size_t i = 0; i < target->{{ field.name.lower_snake_case }}_size; i++) {
-            mavsdk_{{ plugin_name.lower_snake_case }}_{{ field.type_info.inner_name }}_destroy(&target->{{ field.name.lower_snake_case }}[i]);
+            mavsdk_{{ plugin_name.lower_snake_case }}_{{ field.type_info.inner_name.lower_snake_case }}_destroy(&target->{{ field.name.lower_snake_case }}[i]);
         }
         delete[] target->{{ field.name.lower_snake_case }};
         {% else %}
@@ -291,15 +291,15 @@ void mavsdk_{{ plugin_name.lower_snake_case }}_destroy(mavsdk_{{ plugin_name.low
     const {{ param.type_info.inner_name }}* {{ param.name.lower_snake_case }},
     size_t {{ param.name.lower_snake_case }}_size,
     {% else %}
-    const mavsdk_{{ plugin_name.lower_snake_case }}_{{ param.type_info.inner_name }}_t* {{ param.name.lower_snake_case }},
+    const mavsdk_{{ plugin_name.lower_snake_case }}_{{ param.type_info.inner_name.lower_snake_case }}_t* {{ param.name.lower_snake_case }},
     size_t {{ param.name.lower_snake_case }}_size,
     {% endif %}
     {% elif param.type_info.is_primitive %}
     {{ param.type_info.name }} {{ param.name.lower_snake_case }},
     {% elif param.type_info.parent_type %}
-    mavsdk_{{ plugin_name.lower_snake_case }}_{{ param.type_info.parent_type }}_{{ param.type_info.name }}_t {{ param.name.lower_snake_case }},
+    mavsdk_{{ plugin_name.lower_snake_case }}_{{ param.type_info.parent_type }}_{{ param.type_info.name.lower_snake_case }}_t {{ param.name.lower_snake_case }},
     {% else %}
-    mavsdk_{{ plugin_name.lower_snake_case }}_{{ param.type_info.name }}_t {{ param.name.lower_snake_case }},
+    mavsdk_{{ plugin_name.lower_snake_case }}_{{ param.type_info.name.lower_snake_case }}_t {{ param.name.lower_snake_case }},
     {% endif %}
     {% endfor %}
     mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}_callback_t callback,
@@ -317,10 +317,10 @@ void mavsdk_{{ plugin_name.lower_snake_case }}_destroy(mavsdk_{{ plugin_name.low
         {% endif %}
         {% else %}
         [&{{ param.name.lower_snake_case }}, {{ param.name.lower_snake_case }}_size]() {
-            std::vector<mavsdk::{{ plugin_name.upper_camel_case }}::{{ param.type_info.inner_name }}> vec;
+            std::vector<mavsdk::{{ plugin_name.upper_camel_case }}::{{ param.type_info.inner_name.upper_camel_case }}> vec;
             vec.reserve({{ param.name.lower_snake_case }}_size);
             for (size_t i = 0; i < {{ param.name.lower_snake_case }}_size; i++) {
-                vec.push_back(translate_{{ param.type_info.inner_name }}_from_c({{ param.name.lower_snake_case }}[i]));
+                vec.push_back(translate_{{ param.type_info.inner_name.lower_snake_case }}_from_c({{ param.name.lower_snake_case }}[i]));
             }
             return vec;
         }(){% if not loop.last %},
@@ -330,10 +330,10 @@ void mavsdk_{{ plugin_name.lower_snake_case }}_destroy(mavsdk_{{ plugin_name.low
         {{ param.name.lower_snake_case }}{% if not loop.last %},
         {% endif %}
         {% elif param.type_info.parent_type %}
-        translate_{{ param.type_info.parent_type }}_{{ param.type_info.name }}_from_c({{ param.name.lower_snake_case }}){% if not loop.last %},
+        translate_{{ param.type_info.parent_type }}_{{ param.type_info.name.lower_snake_case }}_from_c({{ param.name.lower_snake_case }}){% if not loop.last %},
         {% endif %}
         {% else %}
-        translate_{{ param.type_info.name }}_from_c({{ param.name.lower_snake_case }}){% if not loop.last %},{% endif %}
+        translate_{{ param.type_info.name.lower_snake_case }}_from_c({{ param.name.lower_snake_case }}){% if not loop.last %},{% endif %}
         {% endif %}
         {% endfor %}{% if method.params %},
         {% endif %}
@@ -423,7 +423,7 @@ mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}(
     size_t {{ param.name.lower_snake_case }}_size{% if not loop.last %},
     {% endif %}
     {% else %}
-    const mavsdk_{{ plugin_name.lower_snake_case }}_{{ param.type_info.inner_name }}_t* {{ param.name.lower_snake_case }},
+    const mavsdk_{{ plugin_name.lower_snake_case }}_{{ param.type_info.inner_name.lower_snake_case }}_t* {{ param.name.lower_snake_case }},
     size_t {{ param.name.lower_snake_case }}_size{% if not loop.last %},
     {% endif %}
     {% endif %}
@@ -431,10 +431,10 @@ mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}(
     {{ param.type_info.name }} {{ param.name.lower_snake_case }}{% if not loop.last %},
     {% endif %}
     {% elif param.type_info.parent_type %}
-    mavsdk_{{ plugin_name.lower_snake_case }}_{{ param.type_info.parent_type }}_{{ param.type_info.name }}_t {{ param.name.lower_snake_case }}{% if not loop.last %},
+    mavsdk_{{ plugin_name.lower_snake_case }}_{{ param.type_info.parent_type }}_{{ param.type_info.name.lower_snake_case }}_t {{ param.name.lower_snake_case }}{% if not loop.last %},
     {% endif %}
     {% else %}
-    mavsdk_{{ plugin_name.lower_snake_case }}_{{ param.type_info.name }}_t {{ param.name.lower_snake_case }}{% if not loop.last %},
+    mavsdk_{{ plugin_name.lower_snake_case }}_{{ param.type_info.name.lower_snake_case }}_t {{ param.name.lower_snake_case }}{% if not loop.last %},
     {% endif %}
     {% endif %}
     {% endfor %}{% endif %}{% if method.return_name %},
@@ -460,10 +460,10 @@ mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}(
         {% endif %}
         {% else %}
         [&{{ param.name.lower_snake_case }}, {{ param.name.lower_snake_case }}_size]() {
-            std::vector<mavsdk::{{ plugin_name.upper_camel_case }}::{{ param.type_info.inner_name }}> vec;
+            std::vector<mavsdk::{{ plugin_name.upper_camel_case }}::{{ param.type_info.inner_name.upper_camel_case }}> vec;
             vec.reserve({{ param.name.lower_snake_case }}_size);
             for (size_t i = 0; i < {{ param.name.lower_snake_case }}_size; i++) {
-                vec.push_back(translate_{{ param.type_info.inner_name }}_from_c({{ param.name.lower_snake_case }}[i]));
+                vec.push_back(translate_{{ param.type_info.inner_name.lower_snake_case }}_from_c({{ param.name.lower_snake_case }}[i]));
             }
             return vec;
         }(){% if not loop.last %},
@@ -473,10 +473,10 @@ mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}(
         {{ param.name.lower_snake_case }}{% if not loop.last %},
         {% endif %}
         {% elif param.type_info.parent_type %}
-        translate_{{ param.type_info.parent_type }}_{{ param.type_info.name }}_from_c({{ param.name.lower_snake_case }}){% if not loop.last %},
+        translate_{{ param.type_info.parent_type }}_{{ param.type_info.name.lower_snake_case }}_from_c({{ param.name.lower_snake_case }}){% if not loop.last %},
         {% endif %}
         {% else %}
-        translate_{{ param.type_info.name }}_from_c({{ param.name.lower_snake_case }}){% if not loop.last %},
+        translate_{{ param.type_info.name.lower_snake_case }}_from_c({{ param.name.lower_snake_case }}){% if not loop.last %},
         {% endif %}
         {% endif %}
         {% endfor %});
@@ -518,10 +518,10 @@ mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}(
         std::vector<{{ param.type_info.inner_name }}>({{ param.name.lower_snake_case }}, {{ param.name.lower_snake_case }} + {{ param.name.lower_snake_case }}_size){% if not loop.last %},{% endif %}
         {% else %}
         [&{{ param.name.lower_snake_case }}, {{ param.name.lower_snake_case }}_size]() {
-            std::vector<mavsdk::{{ plugin_name.upper_camel_case }}::{{ param.type_info.inner_name }}> vec;
+            std::vector<mavsdk::{{ plugin_name.upper_camel_case }}::{{ param.type_info.inner_name.upper_camel_case }}> vec;
             vec.reserve({{ param.name.lower_snake_case }}_size);
             for (size_t i = 0; i < {{ param.name.lower_snake_case }}_size; i++) {
-                vec.push_back(translate_{{ param.type_info.inner_name }}_from_c({{ param.name.lower_snake_case }}[i]));
+                vec.push_back(translate_{{ param.type_info.inner_name.lower_snake_case }}_from_c({{ param.name.lower_snake_case }}[i]));
             }
             return vec;
         }(){% if not loop.last %},{% endif %}
@@ -529,9 +529,9 @@ mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}(
         {% elif param.type_info.is_primitive %}
         {{ param.name.lower_snake_case }}{% if not loop.last %},{% endif %}
         {% elif param.type_info.parent_type %}
-        translate_{{ param.type_info.parent_type }}_{{ param.type_info.name }}_from_c({{ param.name.lower_snake_case }}){% if not loop.last %},{% endif %}
+        translate_{{ param.type_info.parent_type }}_{{ param.type_info.name.lower_snake_case }}_from_c({{ param.name.lower_snake_case }}){% if not loop.last %},{% endif %}
         {% else %}
-        translate_{{ param.type_info.name }}_from_c({{ param.name.lower_snake_case }}){% if not loop.last %},{% endif %}
+        translate_{{ param.type_info.name.lower_snake_case }}_from_c({{ param.name.lower_snake_case }}){% if not loop.last %},{% endif %}
         {% endif %}
         {% endfor %});
 
