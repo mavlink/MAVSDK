@@ -220,6 +220,22 @@ typedef enum {
     MAVSDK_PARAM_RESULT_PARAM_VALUE_TOO_LONG = 7,
     /**  Operation failed.. */
     MAVSDK_PARAM_RESULT_FAILED = 8,
+    /**  Parameter does not exist. */
+    MAVSDK_PARAM_RESULT_DOES_NOT_EXIST = 9,
+    /**  Parameter value does not fit within accepted range. */
+    MAVSDK_PARAM_RESULT_VALUE_OUT_OF_RANGE = 10,
+    /**  Caller is not permitted to set the value of this parameter. */
+    MAVSDK_PARAM_RESULT_PERMISSION_DENIED = 11,
+    /**  Unknown component specified. */
+    MAVSDK_PARAM_RESULT_COMPONENT_NOT_FOUND = 12,
+    /**  Parameter is read-only. */
+    MAVSDK_PARAM_RESULT_READ_ONLY = 13,
+    /**  Parameter data type is not supported by flight stack. */
+    MAVSDK_PARAM_RESULT_TYPE_UNSUPPORTED = 14,
+    /**  Parameter type does not match expected type. */
+    MAVSDK_PARAM_RESULT_TYPE_MISMATCH = 15,
+    /**  Parameter exists but reading failed. */
+    MAVSDK_PARAM_RESULT_READ_FAIL = 16,
 } mavsdk_param_result_t;
 
 

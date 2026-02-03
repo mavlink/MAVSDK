@@ -27,6 +27,8 @@ translate_result(mavsdk::ParamServer::Result cpp_result) {
             return MAVSDK_PARAM_SERVER_RESULT_NO_SYSTEM;
         case mavsdk::ParamServer::Result::ParamValueTooLong:
             return MAVSDK_PARAM_SERVER_RESULT_PARAM_VALUE_TOO_LONG;
+        case mavsdk::ParamServer::Result::ParamProvidedTooLate:
+            return MAVSDK_PARAM_SERVER_RESULT_PARAM_PROVIDED_TOO_LATE;
     }
 }
 

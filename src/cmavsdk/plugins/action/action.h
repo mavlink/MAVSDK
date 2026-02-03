@@ -41,6 +41,16 @@ typedef enum {
     MAVSDK_ACTION_ORBIT_YAW_BEHAVIOR_RC_CONTROLLED = 4,
 } mavsdk_action_orbit_yaw_behavior_t;
 
+/**
+ * @brief Commanded values for relays
+ */
+typedef enum {
+    /**  Turn the relay off. */
+    MAVSDK_ACTION_RELAY_COMMAND_ON = 0,
+    /**  Turn the relay on.. */
+    MAVSDK_ACTION_RELAY_COMMAND_OFF = 1,
+} mavsdk_action_relay_command_t;
+
 
 // ===== Structs =====
 /**
@@ -172,6 +182,7 @@ typedef void (*mavsdk_action_goto_location_callback_t)(const mavsdk_action_resul
 typedef void (*mavsdk_action_do_orbit_callback_t)(const mavsdk_action_result_t result, void* user_data);
 typedef void (*mavsdk_action_hold_callback_t)(const mavsdk_action_result_t result, void* user_data);
 typedef void (*mavsdk_action_set_actuator_callback_t)(const mavsdk_action_result_t result, void* user_data);
+typedef void (*mavsdk_action_set_relay_callback_t)(const mavsdk_action_result_t result, void* user_data);
 typedef void (*mavsdk_action_transition_to_fixedwing_callback_t)(const mavsdk_action_result_t result, void* user_data);
 typedef void (*mavsdk_action_transition_to_multicopter_callback_t)(const mavsdk_action_result_t result, void* user_data);
 typedef void (*mavsdk_action_get_takeoff_altitude_callback_t)(const mavsdk_action_result_t result, const float altitude, void* user_data);
@@ -661,6 +672,44 @@ mavsdk_action_set_actuator(
 
 
 /**
+ * @brief Send command to set the value of a relay.
+ * 
+ *  The index of the relay starts at 0.
+ *  For the relay value, 1=on, 0=off, others possible depending on system hardware
+ *
+ * @param action The action instance.
+* @param index  Index of relay (starting with 0)
+ * 
+* @param setting  Value to set the relay to
+ * 
+ * @param callback Function to call when new data is available.
+ * @param user_data User data to pass to the callback.
+ */
+CMAVSDK_EXPORT void mavsdk_action_set_relay_async(
+    mavsdk_action_t action,
+    int32_t index,
+    mavsdk_action_relay_command_t setting,
+    mavsdk_action_set_relay_callback_t callback,
+    void* user_data);
+
+
+/**
+ * @brief Get the current set relay (blocking).
+ *
+ * This function blocks until a value is available.
+ *
+ * @param telemetry The telemetry instance.
+ * @param set_relay_out Pointer to store the result.
+ */
+CMAVSDK_EXPORT
+mavsdk_action_result_t
+mavsdk_action_set_relay(
+    mavsdk_action_t action,
+    int32_t index,
+    mavsdk_action_relay_command_t setting);
+
+
+/**
  * @brief Send command to transition the drone to fixedwing.
  * 
  *  The associated action will only be executed for VTOL vehicles (on other vehicle types the
@@ -872,6 +921,23 @@ mavsdk_action_result_t
 mavsdk_action_set_current_speed(
     mavsdk_action_t action,
     float speed_m_s);
+
+
+/**
+ * @brief Get the current set gps global origin (blocking).
+ *
+ * This function blocks until a value is available.
+ *
+ * @param telemetry The telemetry instance.
+ * @param set_gps_global_origin_out Pointer to store the result.
+ */
+CMAVSDK_EXPORT
+mavsdk_action_result_t
+mavsdk_action_set_gps_global_origin(
+    mavsdk_action_t action,
+    double latitude_deg,
+    double longitude_deg,
+    float absolute_altitude_m);
 
 
 #ifdef __cplusplus

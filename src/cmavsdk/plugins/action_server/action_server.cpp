@@ -120,6 +120,10 @@ translate_allowable_flight_modes_from_c(const mavsdk_action_server_allowable_fli
     cpp_struct.can_auto_mode = c_struct.can_auto_mode;
     cpp_struct.can_guided_mode = c_struct.can_guided_mode;
     cpp_struct.can_stabilize_mode = c_struct.can_stabilize_mode;
+    cpp_struct.can_auto_rtl_mode = c_struct.can_auto_rtl_mode;
+    cpp_struct.can_auto_takeoff_mode = c_struct.can_auto_takeoff_mode;
+    cpp_struct.can_auto_land_mode = c_struct.can_auto_land_mode;
+    cpp_struct.can_auto_loiter_mode = c_struct.can_auto_loiter_mode;
     return cpp_struct;
 }
 
@@ -129,6 +133,10 @@ translate_allowable_flight_modes_to_c(const mavsdk::ActionServer::AllowableFligh
     c_struct.can_auto_mode = cpp_struct.can_auto_mode;
     c_struct.can_guided_mode = cpp_struct.can_guided_mode;
     c_struct.can_stabilize_mode = cpp_struct.can_stabilize_mode;
+    c_struct.can_auto_rtl_mode = cpp_struct.can_auto_rtl_mode;
+    c_struct.can_auto_takeoff_mode = cpp_struct.can_auto_takeoff_mode;
+    c_struct.can_auto_land_mode = cpp_struct.can_auto_land_mode;
+    c_struct.can_auto_loiter_mode = cpp_struct.can_auto_loiter_mode;
     return c_struct;
 }
 
@@ -630,6 +638,20 @@ mavsdk_action_server_set_flight_mode(
     auto wrapper = static_cast<mavsdk_action_server_wrapper*>(action_server);
 
     auto ret_value = wrapper->cpp_plugin->set_flight_mode(        translate_flight_mode_from_c(flight_mode));
+
+    return translate_result(ret_value);
+}
+
+
+// SetFlightModeInternal sync
+mavsdk_action_server_result_t
+mavsdk_action_server_set_flight_mode_internal(
+    mavsdk_action_server_t action_server,
+    mavsdk_action_server_flight_mode_t flight_mode)
+{
+    auto wrapper = static_cast<mavsdk_action_server_wrapper*>(action_server);
+
+    auto ret_value = wrapper->cpp_plugin->set_flight_mode_internal(        translate_flight_mode_from_c(flight_mode));
 
     return translate_result(ret_value);
 }

@@ -85,6 +85,14 @@ typedef struct CMAVSDK_EXPORT {
     bool can_guided_mode;
     /**  Stabilize mode */
     bool can_stabilize_mode;
+    /**  Auto RTL mode */
+    bool can_auto_rtl_mode;
+    /**  Auto takeoff mode */
+    bool can_auto_takeoff_mode;
+    /**  Auto land mode */
+    bool can_auto_land_mode;
+    /**  Auto hold/loiter mode */
+    bool can_auto_loiter_mode;
 } mavsdk_action_server_allowable_flight_modes_t;
 
 /**
@@ -562,6 +570,21 @@ mavsdk_action_server_set_armed_state(
 CMAVSDK_EXPORT
 mavsdk_action_server_result_t
 mavsdk_action_server_set_flight_mode(
+    mavsdk_action_server_t action_server,
+    mavsdk_action_server_flight_mode_t flight_mode);
+
+
+/**
+ * @brief Get the current set flight mode internal (blocking).
+ *
+ * This function blocks until a value is available.
+ *
+ * @param telemetry The telemetry instance.
+ * @param set_flight_mode_internal_out Pointer to store the result.
+ */
+CMAVSDK_EXPORT
+mavsdk_action_server_result_t
+mavsdk_action_server_set_flight_mode_internal(
     mavsdk_action_server_t action_server,
     mavsdk_action_server_flight_mode_t flight_mode);
 

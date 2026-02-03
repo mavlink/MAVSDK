@@ -209,6 +209,8 @@ typedef enum {
     MAVSDK_PARAM_SERVER_RESULT_NO_SYSTEM = 5,
     /**  Parameter name too long (> 128). */
     MAVSDK_PARAM_SERVER_RESULT_PARAM_VALUE_TOO_LONG = 6,
+    /**  All parameters have to be provided upfront. */
+    MAVSDK_PARAM_SERVER_RESULT_PARAM_PROVIDED_TOO_LATE = 7,
 } mavsdk_param_server_result_t;
 
 

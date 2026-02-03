@@ -31,6 +31,22 @@ translate_result(mavsdk::Param::Result cpp_result) {
             return MAVSDK_PARAM_RESULT_PARAM_VALUE_TOO_LONG;
         case mavsdk::Param::Result::Failed:
             return MAVSDK_PARAM_RESULT_FAILED;
+        case mavsdk::Param::Result::DoesNotExist:
+            return MAVSDK_PARAM_RESULT_DOES_NOT_EXIST;
+        case mavsdk::Param::Result::ValueOutOfRange:
+            return MAVSDK_PARAM_RESULT_VALUE_OUT_OF_RANGE;
+        case mavsdk::Param::Result::PermissionDenied:
+            return MAVSDK_PARAM_RESULT_PERMISSION_DENIED;
+        case mavsdk::Param::Result::ComponentNotFound:
+            return MAVSDK_PARAM_RESULT_COMPONENT_NOT_FOUND;
+        case mavsdk::Param::Result::ReadOnly:
+            return MAVSDK_PARAM_RESULT_READ_ONLY;
+        case mavsdk::Param::Result::TypeUnsupported:
+            return MAVSDK_PARAM_RESULT_TYPE_UNSUPPORTED;
+        case mavsdk::Param::Result::TypeMismatch:
+            return MAVSDK_PARAM_RESULT_TYPE_MISMATCH;
+        case mavsdk::Param::Result::ReadFail:
+            return MAVSDK_PARAM_RESULT_READ_FAIL;
     }
 }
 

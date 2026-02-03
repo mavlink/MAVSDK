@@ -80,6 +80,28 @@ translate_orbit_yaw_behavior_to_c(mavsdk::Action::OrbitYawBehavior cpp_enum) {
     return MAVSDK_ACTION_ORBIT_YAW_BEHAVIOR_HOLD_FRONT_TO_CIRCLE_CENTER;
 }
 
+static mavsdk::Action::RelayCommand
+translate_relay_command_from_c(mavsdk_action_relay_command_t c_enum) {
+    switch(c_enum) {
+        case MAVSDK_ACTION_RELAY_COMMAND_ON:
+            return mavsdk::Action::RelayCommand::On;
+        case MAVSDK_ACTION_RELAY_COMMAND_OFF:
+            return mavsdk::Action::RelayCommand::Off;
+    }
+    return mavsdk::Action::RelayCommand::On;
+}
+
+static mavsdk_action_relay_command_t
+translate_relay_command_to_c(mavsdk::Action::RelayCommand cpp_enum) {
+    switch(cpp_enum) {
+        case mavsdk::Action::RelayCommand::On:
+            return MAVSDK_ACTION_RELAY_COMMAND_ON;
+        case mavsdk::Action::RelayCommand::Off:
+            return MAVSDK_ACTION_RELAY_COMMAND_OFF;
+    }
+    return MAVSDK_ACTION_RELAY_COMMAND_ON;
+}
+
 
 
 
@@ -652,6 +674,44 @@ mavsdk_action_set_actuator(
     return translate_result(ret_value);
 }
 
+// SetRelay async
+void mavsdk_action_set_relay_async(
+    mavsdk_action_t action,
+    int32_t index,
+    mavsdk_action_relay_command_t setting,
+    mavsdk_action_set_relay_callback_t callback,
+    void* user_data)
+{
+    auto wrapper = static_cast<mavsdk_action_wrapper*>(action);
+
+    wrapper->cpp_plugin->set_relay_async(
+        index,
+        translate_relay_command_from_c(setting),
+        [callback, user_data](
+            mavsdk::Action::Result result) {
+                if (callback) {
+                    callback(
+                        translate_result(result),
+                        user_data);
+                }
+        });
+}
+
+
+// SetRelay sync
+mavsdk_action_result_t
+mavsdk_action_set_relay(
+    mavsdk_action_t action,
+    int32_t index,
+    mavsdk_action_relay_command_t setting)
+{
+    auto wrapper = static_cast<mavsdk_action_wrapper*>(action);
+
+    auto ret_value = wrapper->cpp_plugin->set_relay(        index,        translate_relay_command_from_c(setting));
+
+    return translate_result(ret_value);
+}
+
 // TransitionToFixedwing async
 void mavsdk_action_transition_to_fixedwing_async(
     mavsdk_action_t action,
@@ -893,6 +953,22 @@ mavsdk_action_set_current_speed(
     auto wrapper = static_cast<mavsdk_action_wrapper*>(action);
 
     auto ret_value = wrapper->cpp_plugin->set_current_speed(        speed_m_s);
+
+    return translate_result(ret_value);
+}
+
+
+// SetGpsGlobalOrigin sync
+mavsdk_action_result_t
+mavsdk_action_set_gps_global_origin(
+    mavsdk_action_t action,
+    double latitude_deg,
+    double longitude_deg,
+    float absolute_altitude_m)
+{
+    auto wrapper = static_cast<mavsdk_action_wrapper*>(action);
+
+    auto ret_value = wrapper->cpp_plugin->set_gps_global_origin(        latitude_deg,        longitude_deg,        absolute_altitude_m);
 
     return translate_result(ret_value);
 }
