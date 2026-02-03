@@ -1403,7 +1403,7 @@ class Camera:
                     for i in range(size.value):
                         py_data.append(CaptureInfo.from_c_struct(c_data[i]))
 
-                self._lib.mavsdk_camera_CaptureInfo_destroy(c_data)
+                self._lib.mavsdk_camera_capture_info_destroy(c_data)
 
                 callback(py_result, py_data, user_data)
 
@@ -1437,7 +1437,7 @@ class Camera:
         py_result = [
             CaptureInfo.from_c_struct(result_ptr[i]) for i in range(size.value)
         ]
-        self._lib.mavsdk_camera_CaptureInfo_destroy(result_ptr)
+        self._lib.mavsdk_camera_capture_info_destroy(result_ptr)
         return py_result
 
     def subscribe_camera_list(self, callback: Callable, user_data: Any = None):
@@ -1450,7 +1450,7 @@ class Camera:
             try:
                 py_data = CameraList.from_c_struct(c_data)
 
-                self._lib.mavsdk_camera_CameraList_destroy(ctypes.byref(c_data))
+                self._lib.mavsdk_camera_camera_list_destroy(ctypes.byref(c_data))
 
                 callback(py_data, user_data)
 
@@ -1474,7 +1474,7 @@ class Camera:
         self._lib.mavsdk_camera_camera_list(self._handle, ctypes.byref(result_out))
 
         py_result = CameraList.from_c_struct(result_out)
-        self._lib.mavsdk_camera_CameraList_destroy(ctypes.byref(result_out))
+        self._lib.mavsdk_camera_camera_list_destroy(ctypes.byref(result_out))
         return py_result
 
     def subscribe_mode(self, callback: Callable, user_data: Any = None):
@@ -1484,7 +1484,7 @@ class Camera:
             try:
                 py_data = ModeUpdate.from_c_struct(c_data)
 
-                self._lib.mavsdk_camera_ModeUpdate_destroy(ctypes.byref(c_data))
+                self._lib.mavsdk_camera_mode_update_destroy(ctypes.byref(c_data))
 
                 callback(py_data, user_data)
 
@@ -1512,7 +1512,7 @@ class Camera:
         if result != CameraResult.SUCCESS:
             raise Exception(f"get_mode failed: {result}")
 
-        return Mode(result_out.value)
+        return mode(result_out.value)
 
     def subscribe_video_stream_info(self, callback: Callable, user_data: Any = None):
         """Subscribe to video stream info updates."""
@@ -1521,7 +1521,9 @@ class Camera:
             try:
                 py_data = VideoStreamUpdate.from_c_struct(c_data)
 
-                self._lib.mavsdk_camera_VideoStreamUpdate_destroy(ctypes.byref(c_data))
+                self._lib.mavsdk_camera_video_stream_update_destroy(
+                    ctypes.byref(c_data)
+                )
 
                 callback(py_data, user_data)
 
@@ -1552,7 +1554,7 @@ class Camera:
             raise Exception(f"get_video_stream_info failed: {result}")
 
         py_result = VideoStreamInfo.from_c_struct(result_out)
-        self._lib.mavsdk_camera_VideoStreamInfo_destroy(ctypes.byref(result_out))
+        self._lib.mavsdk_camera_video_stream_info_destroy(ctypes.byref(result_out))
         return py_result
 
     def subscribe_capture_info(self, callback: Callable, user_data: Any = None):
@@ -1562,7 +1564,7 @@ class Camera:
             try:
                 py_data = CaptureInfo.from_c_struct(c_data)
 
-                self._lib.mavsdk_camera_CaptureInfo_destroy(ctypes.byref(c_data))
+                self._lib.mavsdk_camera_capture_info_destroy(ctypes.byref(c_data))
 
                 callback(py_data, user_data)
 
@@ -1585,7 +1587,7 @@ class Camera:
             try:
                 py_data = StorageUpdate.from_c_struct(c_data)
 
-                self._lib.mavsdk_camera_StorageUpdate_destroy(ctypes.byref(c_data))
+                self._lib.mavsdk_camera_storage_update_destroy(ctypes.byref(c_data))
 
                 callback(py_data, user_data)
 
@@ -1614,7 +1616,7 @@ class Camera:
             raise Exception(f"get_storage failed: {result}")
 
         py_result = Storage.from_c_struct(result_out)
-        self._lib.mavsdk_camera_Storage_destroy(ctypes.byref(result_out))
+        self._lib.mavsdk_camera_storage_destroy(ctypes.byref(result_out))
         return py_result
 
     def subscribe_current_settings(self, callback: Callable, user_data: Any = None):
@@ -1624,7 +1626,7 @@ class Camera:
             try:
                 py_data = CurrentSettingsUpdate.from_c_struct(c_data)
 
-                self._lib.mavsdk_camera_CurrentSettingsUpdate_destroy(
+                self._lib.mavsdk_camera_current_settings_update_destroy(
                     ctypes.byref(c_data)
                 )
 
@@ -1658,7 +1660,7 @@ class Camera:
             raise Exception(f"get_current_settings failed: {result}")
 
         py_result = [Setting.from_c_struct(result_ptr[i]) for i in range(size.value)]
-        self._lib.mavsdk_camera_Setting_destroy(result_ptr)
+        self._lib.mavsdk_camera_setting_destroy(result_ptr)
         return py_result
 
     def subscribe_possible_setting_options(
@@ -1670,7 +1672,7 @@ class Camera:
             try:
                 py_data = PossibleSettingOptionsUpdate.from_c_struct(c_data)
 
-                self._lib.mavsdk_camera_PossibleSettingOptionsUpdate_destroy(
+                self._lib.mavsdk_camera_possible_setting_options_update_destroy(
                     ctypes.byref(c_data)
                 )
 
@@ -1708,7 +1710,7 @@ class Camera:
         py_result = [
             SettingOptions.from_c_struct(result_ptr[i]) for i in range(size.value)
         ]
-        self._lib.mavsdk_camera_SettingOptions_destroy(result_ptr)
+        self._lib.mavsdk_camera_setting_options_destroy(result_ptr)
         return py_result
 
     def set_setting_async(
@@ -1761,7 +1763,7 @@ class Camera:
 
                 py_data = Setting.from_c_struct(c_data)
 
-                self._lib.mavsdk_camera_Setting_destroy(ctypes.byref(c_data))
+                self._lib.mavsdk_camera_setting_destroy(ctypes.byref(c_data))
 
                 callback(py_result, py_data, user_data)
 
@@ -1788,7 +1790,7 @@ class Camera:
             raise Exception(f"get_setting failed: {result}")
 
         py_result = Setting.from_c_struct(result_out)
-        self._lib.mavsdk_camera_Setting_destroy(ctypes.byref(result_out))
+        self._lib.mavsdk_camera_setting_destroy(ctypes.byref(result_out))
         return py_result
 
     def format_storage_async(
@@ -2319,82 +2321,82 @@ _cmavsdk_lib.mavsdk_camera_create.restype = ctypes.c_void_p
 _cmavsdk_lib.mavsdk_camera_destroy.argtypes = [ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_camera_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_camera_Option_destroy.argtypes = [ctypes.POINTER(OptionCStruct)]
-_cmavsdk_lib.mavsdk_camera_Option_destroy.restype = None
+_cmavsdk_lib.mavsdk_camera_option_destroy.argtypes = [ctypes.POINTER(OptionCStruct)]
+_cmavsdk_lib.mavsdk_camera_option_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_camera_Setting_destroy.argtypes = [ctypes.POINTER(SettingCStruct)]
-_cmavsdk_lib.mavsdk_camera_Setting_destroy.restype = None
+_cmavsdk_lib.mavsdk_camera_setting_destroy.argtypes = [ctypes.POINTER(SettingCStruct)]
+_cmavsdk_lib.mavsdk_camera_setting_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_camera_SettingOptions_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_camera_setting_options_destroy.argtypes = [
     ctypes.POINTER(SettingOptionsCStruct)
 ]
-_cmavsdk_lib.mavsdk_camera_SettingOptions_destroy.restype = None
+_cmavsdk_lib.mavsdk_camera_setting_options_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_camera_VideoStreamSettings_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_camera_video_stream_settings_destroy.argtypes = [
     ctypes.POINTER(VideoStreamSettingsCStruct)
 ]
-_cmavsdk_lib.mavsdk_camera_VideoStreamSettings_destroy.restype = None
+_cmavsdk_lib.mavsdk_camera_video_stream_settings_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_camera_VideoStreamInfo_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_camera_video_stream_info_destroy.argtypes = [
     ctypes.POINTER(VideoStreamInfoCStruct)
 ]
-_cmavsdk_lib.mavsdk_camera_VideoStreamInfo_destroy.restype = None
+_cmavsdk_lib.mavsdk_camera_video_stream_info_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_camera_ModeUpdate_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_camera_mode_update_destroy.argtypes = [
     ctypes.POINTER(ModeUpdateCStruct)
 ]
-_cmavsdk_lib.mavsdk_camera_ModeUpdate_destroy.restype = None
+_cmavsdk_lib.mavsdk_camera_mode_update_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_camera_VideoStreamUpdate_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_camera_video_stream_update_destroy.argtypes = [
     ctypes.POINTER(VideoStreamUpdateCStruct)
 ]
-_cmavsdk_lib.mavsdk_camera_VideoStreamUpdate_destroy.restype = None
+_cmavsdk_lib.mavsdk_camera_video_stream_update_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_camera_Storage_destroy.argtypes = [ctypes.POINTER(StorageCStruct)]
-_cmavsdk_lib.mavsdk_camera_Storage_destroy.restype = None
+_cmavsdk_lib.mavsdk_camera_storage_destroy.argtypes = [ctypes.POINTER(StorageCStruct)]
+_cmavsdk_lib.mavsdk_camera_storage_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_camera_StorageUpdate_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_camera_storage_update_destroy.argtypes = [
     ctypes.POINTER(StorageUpdateCStruct)
 ]
-_cmavsdk_lib.mavsdk_camera_StorageUpdate_destroy.restype = None
+_cmavsdk_lib.mavsdk_camera_storage_update_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_camera_CurrentSettingsUpdate_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_camera_current_settings_update_destroy.argtypes = [
     ctypes.POINTER(CurrentSettingsUpdateCStruct)
 ]
-_cmavsdk_lib.mavsdk_camera_CurrentSettingsUpdate_destroy.restype = None
+_cmavsdk_lib.mavsdk_camera_current_settings_update_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_camera_PossibleSettingOptionsUpdate_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_camera_possible_setting_options_update_destroy.argtypes = [
     ctypes.POINTER(PossibleSettingOptionsUpdateCStruct)
 ]
-_cmavsdk_lib.mavsdk_camera_PossibleSettingOptionsUpdate_destroy.restype = None
+_cmavsdk_lib.mavsdk_camera_possible_setting_options_update_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_camera_Position_destroy.argtypes = [ctypes.POINTER(PositionCStruct)]
-_cmavsdk_lib.mavsdk_camera_Position_destroy.restype = None
+_cmavsdk_lib.mavsdk_camera_position_destroy.argtypes = [ctypes.POINTER(PositionCStruct)]
+_cmavsdk_lib.mavsdk_camera_position_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_camera_Quaternion_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_camera_quaternion_destroy.argtypes = [
     ctypes.POINTER(QuaternionCStruct)
 ]
-_cmavsdk_lib.mavsdk_camera_Quaternion_destroy.restype = None
+_cmavsdk_lib.mavsdk_camera_quaternion_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_camera_EulerAngle_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_camera_euler_angle_destroy.argtypes = [
     ctypes.POINTER(EulerAngleCStruct)
 ]
-_cmavsdk_lib.mavsdk_camera_EulerAngle_destroy.restype = None
+_cmavsdk_lib.mavsdk_camera_euler_angle_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_camera_CaptureInfo_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_camera_capture_info_destroy.argtypes = [
     ctypes.POINTER(CaptureInfoCStruct)
 ]
-_cmavsdk_lib.mavsdk_camera_CaptureInfo_destroy.restype = None
+_cmavsdk_lib.mavsdk_camera_capture_info_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_camera_Information_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_camera_information_destroy.argtypes = [
     ctypes.POINTER(InformationCStruct)
 ]
-_cmavsdk_lib.mavsdk_camera_Information_destroy.restype = None
+_cmavsdk_lib.mavsdk_camera_information_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_camera_CameraList_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_camera_camera_list_destroy.argtypes = [
     ctypes.POINTER(CameraListCStruct)
 ]
-_cmavsdk_lib.mavsdk_camera_CameraList_destroy.restype = None
+_cmavsdk_lib.mavsdk_camera_camera_list_destroy.restype = None
 
 
 _cmavsdk_lib.mavsdk_camera_take_photo_async.argtypes = [

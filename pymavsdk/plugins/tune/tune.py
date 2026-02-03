@@ -82,7 +82,7 @@ class TuneDescription:
     def from_c_struct(cls, c_struct):
         """Convert from C structure to Python object"""
         instance = cls()
-        instance.song_elements = [SongElement](c_struct.song_elements)
+        instance.song_elements = c_struct.song_elements
         instance.tempo = c_struct.tempo
         return instance
 
@@ -176,10 +176,10 @@ _cmavsdk_lib.mavsdk_tune_create.restype = ctypes.c_void_p
 _cmavsdk_lib.mavsdk_tune_destroy.argtypes = [ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_tune_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_tune_TuneDescription_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_tune_tune_description_destroy.argtypes = [
     ctypes.POINTER(TuneDescriptionCStruct)
 ]
-_cmavsdk_lib.mavsdk_tune_TuneDescription_destroy.restype = None
+_cmavsdk_lib.mavsdk_tune_tune_description_destroy.restype = None
 
 
 _cmavsdk_lib.mavsdk_tune_play_tune_async.argtypes = [

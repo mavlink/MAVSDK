@@ -27,6 +27,13 @@ class OrbitYawBehavior(IntEnum):
     RC_CONTROLLED = 4
 
 
+class RelayCommand(IntEnum):
+    """Commanded values for relays"""
+
+    ON = 0
+    OFF = 1
+
+
 # ===== Result Enums =====
 class ActionResult(IntEnum):
     """Possible results returned for action requests."""
@@ -589,6 +596,42 @@ class Action:
 
         return result
 
+    def set_relay_async(
+        self, index, setting, callback: Callable, user_data: Any = None
+    ):
+        """Send command to set the value of a relay.
+
+        The index of the relay starts at 0.
+        For the relay value, 1=on, 0=off, others possible depending on system hardware"""
+
+        def c_callback(result, ud):
+            try:
+                py_result = ActionResult(result)
+
+                callback(py_result, user_data)
+
+            except Exception as e:
+                print(f"Error in set_relay callback: {e}")
+
+        cb = SetRelayCallback(c_callback)
+        self._callbacks.append(cb)
+
+        self._lib.mavsdk_action_set_relay_async(self._handle, index, setting, cb, None)
+
+    def set_relay(self, index, setting):
+        """Get set_relay (blocking)"""
+
+        result_code = self._lib.mavsdk_action_set_relay(
+            self._handle,
+            index,
+            setting,
+        )
+        result = ActionResult(result_code)
+        if result != ActionResult.SUCCESS:
+            raise Exception(f"set_relay failed: {result}")
+
+        return result
+
     def transition_to_fixedwing_async(self, callback: Callable, user_data: Any = None):
         """Send command to transition the drone to fixedwing.
 
@@ -832,6 +875,21 @@ class Action:
 
         return result
 
+    def set_gps_global_origin(self, latitude_deg, longitude_deg, absolute_altitude_m):
+        """Get set_gps_global_origin (blocking)"""
+
+        result_code = self._lib.mavsdk_action_set_gps_global_origin(
+            self._handle,
+            latitude_deg,
+            longitude_deg,
+            absolute_altitude_m,
+        )
+        result = ActionResult(result_code)
+        if result != ActionResult.SUCCESS:
+            raise Exception(f"set_gps_global_origin failed: {result}")
+
+        return result
+
     def destroy(self):
         """Destroy the plugin instance"""
         if self._handle:
@@ -857,6 +915,7 @@ GotoLocationCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
 DoOrbitCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
 HoldCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
 SetActuatorCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
+SetRelayCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
 TransitionToFixedwingCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
 TransitionToMulticopterCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
 GetTakeoffAltitudeCallback = ctypes.CFUNCTYPE(
@@ -1085,6 +1144,23 @@ _cmavsdk_lib.mavsdk_action_set_actuator.argtypes = [
 ]
 
 _cmavsdk_lib.mavsdk_action_set_actuator.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_action_set_relay_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+    ctypes.c_int,
+    SetRelayCallback,
+    ctypes.c_void_p,
+]
+
+_cmavsdk_lib.mavsdk_action_set_relay_async.restype = None
+
+_cmavsdk_lib.mavsdk_action_set_relay.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+    ctypes.c_int,
+]
+
+_cmavsdk_lib.mavsdk_action_set_relay.restype = ctypes.c_int
 _cmavsdk_lib.mavsdk_action_transition_to_fixedwing_async.argtypes = [
     ctypes.c_void_p,
     TransitionToFixedwingCallback,
@@ -1184,3 +1260,12 @@ _cmavsdk_lib.mavsdk_action_set_current_speed.argtypes = [
 ]
 
 _cmavsdk_lib.mavsdk_action_set_current_speed.restype = ctypes.c_int
+
+_cmavsdk_lib.mavsdk_action_set_gps_global_origin.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_double,
+    ctypes.c_double,
+    ctypes.c_float,
+]
+
+_cmavsdk_lib.mavsdk_action_set_gps_global_origin.restype = ctypes.c_int

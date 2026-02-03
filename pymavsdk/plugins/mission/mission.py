@@ -451,7 +451,7 @@ class Mission:
 
                 py_data = ProgressData.from_c_struct(c_data)
 
-                self._lib.mavsdk_mission_ProgressData_destroy(ctypes.byref(c_data))
+                self._lib.mavsdk_mission_progress_data_destroy(ctypes.byref(c_data))
 
                 callback(py_result, py_data, user_data)
 
@@ -489,7 +489,7 @@ class Mission:
 
                 py_data = MissionPlan.from_c_struct(c_data)
 
-                self._lib.mavsdk_mission_MissionPlan_destroy(ctypes.byref(c_data))
+                self._lib.mavsdk_mission_mission_plan_destroy(ctypes.byref(c_data))
 
                 callback(py_result, py_data, user_data)
 
@@ -514,7 +514,7 @@ class Mission:
             raise Exception(f"download_mission failed: {result}")
 
         py_result = MissionPlan.from_c_struct(result_out)
-        self._lib.mavsdk_mission_MissionPlan_destroy(ctypes.byref(result_out))
+        self._lib.mavsdk_mission_mission_plan_destroy(ctypes.byref(result_out))
         return py_result
 
     def download_mission_with_progress_async(
@@ -531,7 +531,7 @@ class Mission:
 
                 py_data = ProgressDataOrMission.from_c_struct(c_data)
 
-                self._lib.mavsdk_mission_ProgressDataOrMission_destroy(
+                self._lib.mavsdk_mission_progress_data_or_mission_destroy(
                     ctypes.byref(c_data)
                 )
 
@@ -714,7 +714,7 @@ class Mission:
             try:
                 py_data = MissionProgress.from_c_struct(c_data)
 
-                self._lib.mavsdk_mission_MissionProgress_destroy(ctypes.byref(c_data))
+                self._lib.mavsdk_mission_mission_progress_destroy(ctypes.byref(c_data))
 
                 callback(py_data, user_data)
 
@@ -742,7 +742,7 @@ class Mission:
         )
 
         py_result = MissionProgress.from_c_struct(result_out)
-        self._lib.mavsdk_mission_MissionProgress_destroy(ctypes.byref(result_out))
+        self._lib.mavsdk_mission_mission_progress_destroy(ctypes.byref(result_out))
         return py_result
 
     def get_return_to_launch_after_mission(self):
@@ -808,30 +808,30 @@ _cmavsdk_lib.mavsdk_mission_create.restype = ctypes.c_void_p
 _cmavsdk_lib.mavsdk_mission_destroy.argtypes = [ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_mission_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_mission_MissionItem_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_mission_mission_item_destroy.argtypes = [
     ctypes.POINTER(MissionItemCStruct)
 ]
-_cmavsdk_lib.mavsdk_mission_MissionItem_destroy.restype = None
+_cmavsdk_lib.mavsdk_mission_mission_item_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_mission_MissionPlan_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_mission_mission_plan_destroy.argtypes = [
     ctypes.POINTER(MissionPlanCStruct)
 ]
-_cmavsdk_lib.mavsdk_mission_MissionPlan_destroy.restype = None
+_cmavsdk_lib.mavsdk_mission_mission_plan_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_mission_MissionProgress_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_mission_mission_progress_destroy.argtypes = [
     ctypes.POINTER(MissionProgressCStruct)
 ]
-_cmavsdk_lib.mavsdk_mission_MissionProgress_destroy.restype = None
+_cmavsdk_lib.mavsdk_mission_mission_progress_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_mission_ProgressData_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_mission_progress_data_destroy.argtypes = [
     ctypes.POINTER(ProgressDataCStruct)
 ]
-_cmavsdk_lib.mavsdk_mission_ProgressData_destroy.restype = None
+_cmavsdk_lib.mavsdk_mission_progress_data_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_mission_ProgressDataOrMission_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_mission_progress_data_or_mission_destroy.argtypes = [
     ctypes.POINTER(ProgressDataOrMissionCStruct)
 ]
-_cmavsdk_lib.mavsdk_mission_ProgressDataOrMission_destroy.restype = None
+_cmavsdk_lib.mavsdk_mission_progress_data_or_mission_destroy.restype = None
 
 
 _cmavsdk_lib.mavsdk_mission_upload_mission_async.argtypes = [

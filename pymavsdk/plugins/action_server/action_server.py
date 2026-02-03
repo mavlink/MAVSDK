@@ -69,6 +69,10 @@ class AllowableFlightModesCStruct(ctypes.Structure):
         ("can_auto_mode", ctypes.c_bool),
         ("can_guided_mode", ctypes.c_bool),
         ("can_stabilize_mode", ctypes.c_bool),
+        ("can_auto_rtl_mode", ctypes.c_bool),
+        ("can_auto_takeoff_mode", ctypes.c_bool),
+        ("can_auto_land_mode", ctypes.c_bool),
+        ("can_auto_loiter_mode", ctypes.c_bool),
     ]
 
 
@@ -92,11 +96,22 @@ class AllowableFlightModes:
     """
 
     def __init__(
-        self, can_auto_mode=None, can_guided_mode=None, can_stabilize_mode=None
+        self,
+        can_auto_mode=None,
+        can_guided_mode=None,
+        can_stabilize_mode=None,
+        can_auto_rtl_mode=None,
+        can_auto_takeoff_mode=None,
+        can_auto_land_mode=None,
+        can_auto_loiter_mode=None,
     ):
         self.can_auto_mode = can_auto_mode
         self.can_guided_mode = can_guided_mode
         self.can_stabilize_mode = can_stabilize_mode
+        self.can_auto_rtl_mode = can_auto_rtl_mode
+        self.can_auto_takeoff_mode = can_auto_takeoff_mode
+        self.can_auto_land_mode = can_auto_land_mode
+        self.can_auto_loiter_mode = can_auto_loiter_mode
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -105,6 +120,10 @@ class AllowableFlightModes:
         instance.can_auto_mode = c_struct.can_auto_mode
         instance.can_guided_mode = c_struct.can_guided_mode
         instance.can_stabilize_mode = c_struct.can_stabilize_mode
+        instance.can_auto_rtl_mode = c_struct.can_auto_rtl_mode
+        instance.can_auto_takeoff_mode = c_struct.can_auto_takeoff_mode
+        instance.can_auto_land_mode = c_struct.can_auto_land_mode
+        instance.can_auto_loiter_mode = c_struct.can_auto_loiter_mode
         return instance
 
     def to_c_struct(self):
@@ -113,6 +132,10 @@ class AllowableFlightModes:
         c_struct.can_auto_mode = self.can_auto_mode
         c_struct.can_guided_mode = self.can_guided_mode
         c_struct.can_stabilize_mode = self.can_stabilize_mode
+        c_struct.can_auto_rtl_mode = self.can_auto_rtl_mode
+        c_struct.can_auto_takeoff_mode = self.can_auto_takeoff_mode
+        c_struct.can_auto_land_mode = self.can_auto_land_mode
+        c_struct.can_auto_loiter_mode = self.can_auto_loiter_mode
         return c_struct
 
     def __str__(self):
@@ -120,6 +143,10 @@ class AllowableFlightModes:
         fields.append(f"can_auto_mode={self.can_auto_mode}")
         fields.append(f"can_guided_mode={self.can_guided_mode}")
         fields.append(f"can_stabilize_mode={self.can_stabilize_mode}")
+        fields.append(f"can_auto_rtl_mode={self.can_auto_rtl_mode}")
+        fields.append(f"can_auto_takeoff_mode={self.can_auto_takeoff_mode}")
+        fields.append(f"can_auto_land_mode={self.can_auto_land_mode}")
+        fields.append(f"can_auto_loiter_mode={self.can_auto_loiter_mode}")
         return f"AllowableFlightModes({', '.join(fields)})"
 
 
@@ -187,7 +214,7 @@ class ActionServer:
 
                 py_data = ArmDisarm.from_c_struct(c_data)
 
-                self._lib.mavsdk_action_server_ArmDisarm_destroy(ctypes.byref(c_data))
+                self._lib.mavsdk_action_server_arm_disarm_destroy(ctypes.byref(c_data))
 
                 callback(py_result, py_data, user_data)
 
@@ -413,7 +440,7 @@ class ActionServer:
         )
 
         py_result = AllowableFlightModes.from_c_struct(result_out)
-        self._lib.mavsdk_action_server_AllowableFlightModes_destroy(
+        self._lib.mavsdk_action_server_allowable_flight_modes_destroy(
             ctypes.byref(result_out)
         )
         return py_result
@@ -441,6 +468,19 @@ class ActionServer:
         result = ActionServerResult(result_code)
         if result != ActionServerResult.SUCCESS:
             raise Exception(f"set_flight_mode failed: {result}")
+
+        return result
+
+    def set_flight_mode_internal(self, flight_mode):
+        """Get set_flight_mode_internal (blocking)"""
+
+        result_code = self._lib.mavsdk_action_server_set_flight_mode_internal(
+            self._handle,
+            flight_mode,
+        )
+        result = ActionServerResult(result_code)
+        if result != ActionServerResult.SUCCESS:
+            raise Exception(f"set_flight_mode_internal failed: {result}")
 
         return result
 
@@ -474,15 +514,15 @@ _cmavsdk_lib.mavsdk_action_server_create.restype = ctypes.c_void_p
 _cmavsdk_lib.mavsdk_action_server_destroy.argtypes = [ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_action_server_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_action_server_AllowableFlightModes_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_action_server_allowable_flight_modes_destroy.argtypes = [
     ctypes.POINTER(AllowableFlightModesCStruct)
 ]
-_cmavsdk_lib.mavsdk_action_server_AllowableFlightModes_destroy.restype = None
+_cmavsdk_lib.mavsdk_action_server_allowable_flight_modes_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_action_server_ArmDisarm_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_action_server_arm_disarm_destroy.argtypes = [
     ctypes.POINTER(ArmDisarmCStruct)
 ]
-_cmavsdk_lib.mavsdk_action_server_ArmDisarm_destroy.restype = None
+_cmavsdk_lib.mavsdk_action_server_arm_disarm_destroy.restype = None
 
 
 _cmavsdk_lib.mavsdk_action_server_subscribe_arm_disarm.argtypes = [
@@ -641,3 +681,10 @@ _cmavsdk_lib.mavsdk_action_server_set_flight_mode.argtypes = [
 ]
 
 _cmavsdk_lib.mavsdk_action_server_set_flight_mode.restype = ctypes.c_int
+
+_cmavsdk_lib.mavsdk_action_server_set_flight_mode_internal.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int,
+]
+
+_cmavsdk_lib.mavsdk_action_server_set_flight_mode_internal.restype = ctypes.c_int

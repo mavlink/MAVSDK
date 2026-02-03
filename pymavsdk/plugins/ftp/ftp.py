@@ -168,7 +168,7 @@ class Ftp:
 
                 py_data = ProgressData.from_c_struct(c_data)
 
-                self._lib.mavsdk_ftp_ProgressData_destroy(ctypes.byref(c_data))
+                self._lib.mavsdk_ftp_progress_data_destroy(ctypes.byref(c_data))
 
                 callback(py_result, py_data, user_data)
 
@@ -193,7 +193,7 @@ class Ftp:
 
                 py_data = ProgressData.from_c_struct(c_data)
 
-                self._lib.mavsdk_ftp_ProgressData_destroy(ctypes.byref(c_data))
+                self._lib.mavsdk_ftp_progress_data_destroy(ctypes.byref(c_data))
 
                 callback(py_result, py_data, user_data)
 
@@ -218,7 +218,7 @@ class Ftp:
 
                 py_data = ListDirectoryData.from_c_struct(c_data)
 
-                self._lib.mavsdk_ftp_ListDirectoryData_destroy(ctypes.byref(c_data))
+                self._lib.mavsdk_ftp_list_directory_data_destroy(ctypes.byref(c_data))
 
                 callback(py_result, py_data, user_data)
 
@@ -243,7 +243,7 @@ class Ftp:
             raise Exception(f"list_directory failed: {result}")
 
         py_result = ListDirectoryData.from_c_struct(result_out)
-        self._lib.mavsdk_ftp_ListDirectoryData_destroy(ctypes.byref(result_out))
+        self._lib.mavsdk_ftp_list_directory_data_destroy(ctypes.byref(result_out))
         return py_result
 
     def create_directory_async(
@@ -470,15 +470,15 @@ _cmavsdk_lib.mavsdk_ftp_create.restype = ctypes.c_void_p
 _cmavsdk_lib.mavsdk_ftp_destroy.argtypes = [ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_ftp_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_ftp_ListDirectoryData_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_ftp_list_directory_data_destroy.argtypes = [
     ctypes.POINTER(ListDirectoryDataCStruct)
 ]
-_cmavsdk_lib.mavsdk_ftp_ListDirectoryData_destroy.restype = None
+_cmavsdk_lib.mavsdk_ftp_list_directory_data_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_ftp_ProgressData_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_ftp_progress_data_destroy.argtypes = [
     ctypes.POINTER(ProgressDataCStruct)
 ]
-_cmavsdk_lib.mavsdk_ftp_ProgressData_destroy.restype = None
+_cmavsdk_lib.mavsdk_ftp_progress_data_destroy.restype = None
 
 
 _cmavsdk_lib.mavsdk_ftp_download_async.argtypes = [

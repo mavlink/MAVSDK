@@ -283,7 +283,7 @@ class MissionRawServer:
 
                 py_data = MissionPlan.from_c_struct(c_data)
 
-                self._lib.mavsdk_mission_raw_server_MissionPlan_destroy(
+                self._lib.mavsdk_mission_raw_server_mission_plan_destroy(
                     ctypes.byref(c_data)
                 )
 
@@ -312,7 +312,7 @@ class MissionRawServer:
             try:
                 py_data = MissionItem.from_c_struct(c_data)
 
-                self._lib.mavsdk_mission_raw_server_MissionItem_destroy(
+                self._lib.mavsdk_mission_raw_server_mission_item_destroy(
                     ctypes.byref(c_data)
                 )
 
@@ -388,20 +388,20 @@ _cmavsdk_lib.mavsdk_mission_raw_server_create.restype = ctypes.c_void_p
 _cmavsdk_lib.mavsdk_mission_raw_server_destroy.argtypes = [ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_mission_raw_server_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_mission_raw_server_MissionItem_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_mission_raw_server_mission_item_destroy.argtypes = [
     ctypes.POINTER(MissionItemCStruct)
 ]
-_cmavsdk_lib.mavsdk_mission_raw_server_MissionItem_destroy.restype = None
+_cmavsdk_lib.mavsdk_mission_raw_server_mission_item_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_mission_raw_server_MissionPlan_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_mission_raw_server_mission_plan_destroy.argtypes = [
     ctypes.POINTER(MissionPlanCStruct)
 ]
-_cmavsdk_lib.mavsdk_mission_raw_server_MissionPlan_destroy.restype = None
+_cmavsdk_lib.mavsdk_mission_raw_server_mission_plan_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_mission_raw_server_MissionProgress_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_mission_raw_server_mission_progress_destroy.argtypes = [
     ctypes.POINTER(MissionProgressCStruct)
 ]
-_cmavsdk_lib.mavsdk_mission_raw_server_MissionProgress_destroy.restype = None
+_cmavsdk_lib.mavsdk_mission_raw_server_mission_progress_destroy.restype = None
 
 
 _cmavsdk_lib.mavsdk_mission_raw_server_subscribe_incoming_mission.argtypes = [

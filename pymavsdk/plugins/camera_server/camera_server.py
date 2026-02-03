@@ -1300,7 +1300,7 @@ class CameraServer:
             try:
                 py_data = TrackPoint.from_c_struct(c_data)
 
-                self._lib.mavsdk_camera_server_TrackPoint_destroy(ctypes.byref(c_data))
+                self._lib.mavsdk_camera_server_track_point_destroy(ctypes.byref(c_data))
 
                 callback(py_data, user_data)
 
@@ -1329,7 +1329,7 @@ class CameraServer:
             try:
                 py_data = TrackRectangle.from_c_struct(c_data)
 
-                self._lib.mavsdk_camera_server_TrackRectangle_destroy(
+                self._lib.mavsdk_camera_server_track_rectangle_destroy(
                     ctypes.byref(c_data)
                 )
 
@@ -1455,50 +1455,50 @@ _cmavsdk_lib.mavsdk_camera_server_create.restype = ctypes.c_void_p
 _cmavsdk_lib.mavsdk_camera_server_destroy.argtypes = [ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_camera_server_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_camera_server_Information_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_camera_server_information_destroy.argtypes = [
     ctypes.POINTER(InformationCStruct)
 ]
-_cmavsdk_lib.mavsdk_camera_server_Information_destroy.restype = None
+_cmavsdk_lib.mavsdk_camera_server_information_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_camera_server_VideoStreaming_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_camera_server_video_streaming_destroy.argtypes = [
     ctypes.POINTER(VideoStreamingCStruct)
 ]
-_cmavsdk_lib.mavsdk_camera_server_VideoStreaming_destroy.restype = None
+_cmavsdk_lib.mavsdk_camera_server_video_streaming_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_camera_server_Position_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_camera_server_position_destroy.argtypes = [
     ctypes.POINTER(PositionCStruct)
 ]
-_cmavsdk_lib.mavsdk_camera_server_Position_destroy.restype = None
+_cmavsdk_lib.mavsdk_camera_server_position_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_camera_server_Quaternion_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_camera_server_quaternion_destroy.argtypes = [
     ctypes.POINTER(QuaternionCStruct)
 ]
-_cmavsdk_lib.mavsdk_camera_server_Quaternion_destroy.restype = None
+_cmavsdk_lib.mavsdk_camera_server_quaternion_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_camera_server_CaptureInfo_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_camera_server_capture_info_destroy.argtypes = [
     ctypes.POINTER(CaptureInfoCStruct)
 ]
-_cmavsdk_lib.mavsdk_camera_server_CaptureInfo_destroy.restype = None
+_cmavsdk_lib.mavsdk_camera_server_capture_info_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_camera_server_StorageInformation_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_camera_server_storage_information_destroy.argtypes = [
     ctypes.POINTER(StorageInformationCStruct)
 ]
-_cmavsdk_lib.mavsdk_camera_server_StorageInformation_destroy.restype = None
+_cmavsdk_lib.mavsdk_camera_server_storage_information_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_camera_server_CaptureStatus_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_camera_server_capture_status_destroy.argtypes = [
     ctypes.POINTER(CaptureStatusCStruct)
 ]
-_cmavsdk_lib.mavsdk_camera_server_CaptureStatus_destroy.restype = None
+_cmavsdk_lib.mavsdk_camera_server_capture_status_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_camera_server_TrackPoint_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_camera_server_track_point_destroy.argtypes = [
     ctypes.POINTER(TrackPointCStruct)
 ]
-_cmavsdk_lib.mavsdk_camera_server_TrackPoint_destroy.restype = None
+_cmavsdk_lib.mavsdk_camera_server_track_point_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_camera_server_TrackRectangle_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_camera_server_track_rectangle_destroy.argtypes = [
     ctypes.POINTER(TrackRectangleCStruct)
 ]
-_cmavsdk_lib.mavsdk_camera_server_TrackRectangle_destroy.restype = None
+_cmavsdk_lib.mavsdk_camera_server_track_rectangle_destroy.restype = None
 
 
 _cmavsdk_lib.mavsdk_camera_server_set_information.argtypes = [

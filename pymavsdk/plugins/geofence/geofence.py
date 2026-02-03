@@ -364,19 +364,19 @@ _cmavsdk_lib.mavsdk_geofence_create.restype = ctypes.c_void_p
 _cmavsdk_lib.mavsdk_geofence_destroy.argtypes = [ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_geofence_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_geofence_Point_destroy.argtypes = [ctypes.POINTER(PointCStruct)]
-_cmavsdk_lib.mavsdk_geofence_Point_destroy.restype = None
+_cmavsdk_lib.mavsdk_geofence_point_destroy.argtypes = [ctypes.POINTER(PointCStruct)]
+_cmavsdk_lib.mavsdk_geofence_point_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_geofence_Polygon_destroy.argtypes = [ctypes.POINTER(PolygonCStruct)]
-_cmavsdk_lib.mavsdk_geofence_Polygon_destroy.restype = None
+_cmavsdk_lib.mavsdk_geofence_polygon_destroy.argtypes = [ctypes.POINTER(PolygonCStruct)]
+_cmavsdk_lib.mavsdk_geofence_polygon_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_geofence_Circle_destroy.argtypes = [ctypes.POINTER(CircleCStruct)]
-_cmavsdk_lib.mavsdk_geofence_Circle_destroy.restype = None
+_cmavsdk_lib.mavsdk_geofence_circle_destroy.argtypes = [ctypes.POINTER(CircleCStruct)]
+_cmavsdk_lib.mavsdk_geofence_circle_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_geofence_GeofenceData_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_geofence_geofence_data_destroy.argtypes = [
     ctypes.POINTER(GeofenceDataCStruct)
 ]
-_cmavsdk_lib.mavsdk_geofence_GeofenceData_destroy.restype = None
+_cmavsdk_lib.mavsdk_geofence_geofence_data_destroy.restype = None
 
 
 _cmavsdk_lib.mavsdk_geofence_upload_geofence_async.argtypes = [

@@ -126,10 +126,10 @@ _cmavsdk_lib.mavsdk_component_metadata_server_create.restype = ctypes.c_void_p
 _cmavsdk_lib.mavsdk_component_metadata_server_destroy.argtypes = [ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_component_metadata_server_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_component_metadata_server_Metadata_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_component_metadata_server_metadata_destroy.argtypes = [
     ctypes.POINTER(MetadataCStruct)
 ]
-_cmavsdk_lib.mavsdk_component_metadata_server_Metadata_destroy.restype = None
+_cmavsdk_lib.mavsdk_component_metadata_server_metadata_destroy.restype = None
 
 
 _cmavsdk_lib.mavsdk_component_metadata_server_set_metadata.argtypes = [

@@ -733,56 +733,56 @@ _cmavsdk_lib.mavsdk_mocap_create.restype = ctypes.c_void_p
 _cmavsdk_lib.mavsdk_mocap_destroy.argtypes = [ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_mocap_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_mocap_PositionBody_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_mocap_position_body_destroy.argtypes = [
     ctypes.POINTER(PositionBodyCStruct)
 ]
-_cmavsdk_lib.mavsdk_mocap_PositionBody_destroy.restype = None
+_cmavsdk_lib.mavsdk_mocap_position_body_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_mocap_AngleBody_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_mocap_angle_body_destroy.argtypes = [
     ctypes.POINTER(AngleBodyCStruct)
 ]
-_cmavsdk_lib.mavsdk_mocap_AngleBody_destroy.restype = None
+_cmavsdk_lib.mavsdk_mocap_angle_body_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_mocap_SpeedBody_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_mocap_speed_body_destroy.argtypes = [
     ctypes.POINTER(SpeedBodyCStruct)
 ]
-_cmavsdk_lib.mavsdk_mocap_SpeedBody_destroy.restype = None
+_cmavsdk_lib.mavsdk_mocap_speed_body_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_mocap_SpeedNed_destroy.argtypes = [ctypes.POINTER(SpeedNedCStruct)]
-_cmavsdk_lib.mavsdk_mocap_SpeedNed_destroy.restype = None
+_cmavsdk_lib.mavsdk_mocap_speed_ned_destroy.argtypes = [ctypes.POINTER(SpeedNedCStruct)]
+_cmavsdk_lib.mavsdk_mocap_speed_ned_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_mocap_AngularVelocityBody_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_mocap_angular_velocity_body_destroy.argtypes = [
     ctypes.POINTER(AngularVelocityBodyCStruct)
 ]
-_cmavsdk_lib.mavsdk_mocap_AngularVelocityBody_destroy.restype = None
+_cmavsdk_lib.mavsdk_mocap_angular_velocity_body_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_mocap_Covariance_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_mocap_covariance_destroy.argtypes = [
     ctypes.POINTER(CovarianceCStruct)
 ]
-_cmavsdk_lib.mavsdk_mocap_Covariance_destroy.restype = None
+_cmavsdk_lib.mavsdk_mocap_covariance_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_mocap_Quaternion_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_mocap_quaternion_destroy.argtypes = [
     ctypes.POINTER(QuaternionCStruct)
 ]
-_cmavsdk_lib.mavsdk_mocap_Quaternion_destroy.restype = None
+_cmavsdk_lib.mavsdk_mocap_quaternion_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_mocap_VisionPositionEstimate_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_mocap_vision_position_estimate_destroy.argtypes = [
     ctypes.POINTER(VisionPositionEstimateCStruct)
 ]
-_cmavsdk_lib.mavsdk_mocap_VisionPositionEstimate_destroy.restype = None
+_cmavsdk_lib.mavsdk_mocap_vision_position_estimate_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_mocap_VisionSpeedEstimate_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_mocap_vision_speed_estimate_destroy.argtypes = [
     ctypes.POINTER(VisionSpeedEstimateCStruct)
 ]
-_cmavsdk_lib.mavsdk_mocap_VisionSpeedEstimate_destroy.restype = None
+_cmavsdk_lib.mavsdk_mocap_vision_speed_estimate_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_mocap_AttitudePositionMocap_destroy.argtypes = [
+_cmavsdk_lib.mavsdk_mocap_attitude_position_mocap_destroy.argtypes = [
     ctypes.POINTER(AttitudePositionMocapCStruct)
 ]
-_cmavsdk_lib.mavsdk_mocap_AttitudePositionMocap_destroy.restype = None
+_cmavsdk_lib.mavsdk_mocap_attitude_position_mocap_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_mocap_Odometry_destroy.argtypes = [ctypes.POINTER(OdometryCStruct)]
-_cmavsdk_lib.mavsdk_mocap_Odometry_destroy.restype = None
+_cmavsdk_lib.mavsdk_mocap_odometry_destroy.argtypes = [ctypes.POINTER(OdometryCStruct)]
+_cmavsdk_lib.mavsdk_mocap_odometry_destroy.restype = None
 
 
 _cmavsdk_lib.mavsdk_mocap_set_vision_position_estimate.argtypes = [

@@ -11,6 +11,7 @@ from .action import Action
 
 # Import enums
 from .action import OrbitYawBehavior
+from .action import RelayCommand
 
 # Import result enum
 from .action import ActionResult
@@ -21,5 +22,6 @@ from .action import ActionResult
 __all__ = [
     "Action",
     "OrbitYawBehavior",
+    "RelayCommand",
     "ActionResult",
 ]
