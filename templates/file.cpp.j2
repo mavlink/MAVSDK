@@ -348,7 +348,7 @@ void mavsdk_{{ plugin_name.lower_snake_case }}_destroy(mavsdk_{{ plugin_name.low
             {%- elif method.return_type.is_primitive %}
             {{ method.return_type.name }} value
             {%- elif method.return_type.is_repeated %}
-            std::vector<mavsdk::{{ plugin_name.upper_camel_case }}::{{ method.return_type.inner_name }}> value
+            std::vector<mavsdk::{{ plugin_name.upper_camel_case }}::{{ method.return_type.inner_name.upper_camel_case }}> value
             {%- else %}
             mavsdk::{{ plugin_name.upper_camel_case }}::{{ method.return_type.name.upper_camel_case }} value
             {%- endif %}
@@ -356,12 +356,12 @@ void mavsdk_{{ plugin_name.lower_snake_case }}_destroy(mavsdk_{{ plugin_name.low
                 if (callback) {
                     {% if method.return_name and method.return_type.is_repeated %}
                     size_t count = value.size();
-                    mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.return_type.inner_name }}_t* {{ method.return_name.lower_snake_case }} = nullptr;
+                    mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.return_type.inner_name.lower_snake_case }}_t* {{ method.return_name.lower_snake_case }} = nullptr;
 
                     if (count > 0) {
-                        {{ method.return_name.lower_snake_case }} = new mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.return_type.inner_name }}_t[count];
+                        {{ method.return_name.lower_snake_case }} = new mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.return_type.inner_name.lower_snake_case }}_t[count];
                         for (size_t i = 0; i < count; i++) {
-                            {{ method.return_name.lower_snake_case }}[i] = translate_{{ method.return_type.inner_name }}_to_c(value[i]);
+                            {{ method.return_name.lower_snake_case }}[i] = translate_{{ method.return_type.inner_name.lower_snake_case }}_to_c(value[i]);
                         }
                     }
 
@@ -441,10 +441,10 @@ mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}(
     {% if method.return_type.is_primitive %}
     {{ method.return_type.name }}* {{ method.return_name.lower_snake_case }}_out)
     {% elif method.return_type.is_repeated %}
-    mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.return_type.inner_name }}_t** {{ method.return_name.lower_snake_case }}_out,
+    mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.return_type.inner_name.lower_snake_case }}_t** {{ method.return_name.lower_snake_case }}_out,
     size_t* {{ method.return_name.lower_snake_case }}_size_out)
     {% else %}
-    mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.return_type.inner_name }}_t* {{ method.return_name.lower_snake_case }}_out)
+    mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.return_type.inner_name.lower_snake_case }}_t* {{ method.return_name.lower_snake_case }}_out)
     {% endif %}
     {% else %})
     {% endif %}
@@ -493,10 +493,10 @@ mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}(
     if ({{ method.return_name.lower_snake_case }}_out != nullptr) {
         size_t count = result_pair.second.size();
 
-        *{{ method.return_name.lower_snake_case }}_out = new mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.return_type.inner_name }}_t[count];
+        *{{ method.return_name.lower_snake_case }}_out = new mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.return_type.inner_name.lower_snake_case }}_t[count];
 
         for (size_t i = 0; i < count; i++) {
-            (*{{ method.return_name.lower_snake_case }}_out)[i] = translate_{{ method.return_type.inner_name }}_to_c(result_pair.second[i]);
+            (*{{ method.return_name.lower_snake_case }}_out)[i] = translate_{{ method.return_type.inner_name.lower_snake_case }}_to_c(result_pair.second[i]);
         }
 
         if ({{ method.return_name.lower_snake_case }}_size_out != nullptr) {

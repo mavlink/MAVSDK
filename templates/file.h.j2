@@ -167,7 +167,7 @@ CMAVSDK_EXPORT void mavsdk_{{ plugin_name.lower_snake_case }}_byte_buffer_destro
 // ===== Callback Typedefs =====
 {% for method in methods %}
 {% if method.is_async %}
-typedef void (*mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}_callback_t)({% if method.has_result %}const mavsdk_{{ plugin_name.lower_snake_case }}_result_t result, {% endif %}{% if method.return_type %}const {% if method.return_type.is_primitive %}{{ method.return_type.name }}{% else %}mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.return_type.inner_name }}_t{% if method.return_type.is_repeated %}*{% endif %}{% endif %} {{ method.return_name.lower_snake_case }}, {% if method.return_type.is_repeated %}size_t {{ method.return_name.lower_snake_case }}_size, {% endif %}{% endif %}void* user_data);
+typedef void (*mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}_callback_t)({% if method.has_result %}const mavsdk_{{ plugin_name.lower_snake_case }}_result_t result, {% endif %}{% if method.return_type %}const {% if method.return_type.is_primitive %}{{ method.return_type.name }}{% else %}mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.return_type.inner_name.lower_snake_case }}_t{% if method.return_type.is_repeated %}*{% endif %}{% endif %} {{ method.return_name.lower_snake_case }}, {% if method.return_type.is_repeated %}size_t {{ method.return_name.lower_snake_case }}_size, {% endif %}{% endif %}void* user_data);
 {% endif %}
 {% endfor %}
 
@@ -275,10 +275,10 @@ mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}(
     {% if method.return_type.is_primitive %}
     {{ method.return_type.name }}* {{ method.return_name.lower_snake_case }}_out);
     {% elif method.return_type.is_repeated %}
-    mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.return_type.inner_name }}_t** {{ method.return_name.lower_snake_case }}_out,
+    mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.return_type.inner_name.lower_snake_case }}_t** {{ method.return_name.lower_snake_case }}_out,
     size_t* {{ method.return_name.lower_snake_case }}_size_out);
     {% else %}
-    mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.return_type.inner_name }}_t* {{ method.return_name.lower_snake_case }}_out);
+    mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.return_type.inner_name.lower_snake_case }}_t* {{ method.return_name.lower_snake_case }}_out);
     {% endif %}
     {% else %});
     {% endif %}
