@@ -350,7 +350,7 @@ void mavsdk_{{ plugin_name.lower_snake_case }}_destroy(mavsdk_{{ plugin_name.low
             {%- elif method.return_type.is_repeated %}
             std::vector<mavsdk::{{ plugin_name.upper_camel_case }}::{{ method.return_type.inner_name }}> value
             {%- else %}
-            mavsdk::{{ plugin_name.upper_camel_case }}::{{ method.return_type.name }} value
+            mavsdk::{{ plugin_name.upper_camel_case }}::{{ method.return_type.name.upper_camel_case }} value
             {%- endif %}
             {% endif %}) {
                 if (callback) {
@@ -379,7 +379,7 @@ void mavsdk_{{ plugin_name.lower_snake_case }}_destroy(mavsdk_{{ plugin_name.low
                         {{ method.return_name.lower_snake_case }},
                         count,
                         {% else %}
-                        translate_{{ method.return_type.name }}_to_c(value),
+                        translate_{{ method.return_type.name.lower_snake_case }}_to_c(value),
                         {% endif %}
                         {% endif %}
                         user_data);
@@ -505,7 +505,7 @@ mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}(
     }
     {% else %}
     if ({{ method.return_name.lower_snake_case }}_out != nullptr) {
-        *{{ method.return_name.lower_snake_case }}_out = translate_{{ method.return_type.name }}_to_c(result_pair.second);
+        *{{ method.return_name.lower_snake_case }}_out = translate_{{ method.return_type.name.lower_snake_case }}_to_c(result_pair.second);
     }
     {% endif %}
 
@@ -546,7 +546,7 @@ mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}(
     {% endif %}
     {% else %}
     if ({{ method.return_name.lower_snake_case }}_out != nullptr) {
-        *{{ method.return_name.lower_snake_case }}_out = translate_{{ method.return_type.name }}_to_c(ret_value);
+        *{{ method.return_name.lower_snake_case }}_out = translate_{{ method.return_type.name.lower_snake_case }}_to_c(ret_value);
     }
     {% endif %}
     {% endif %}
