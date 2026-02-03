@@ -104,7 +104,7 @@ translate_{{ struct.name.lower_snake_case }}_from_c(const mavsdk_{{ plugin_name.
     {% elif field.type_info.is_primitive %}
     cpp_struct.{{ field.name.lower_snake_case }} = c_struct.{{ field.name.lower_snake_case }};
     {% elif field.type_info.parent_type %}
-    cpp_struct.{{ field.name.lower_snake_case }} = translate_{{ field.type_info.parent_type }}_{{ field.type_info.name.lower_snake_case }}_from_c(c_struct.{{ field.name.lower_snake_case }});
+    cpp_struct.{{ field.name.lower_snake_case }} = translate_{{ field.type_info.parent_type.lower_snake_case }}_{{ field.type_info.name.lower_snake_case }}_from_c(c_struct.{{ field.name.lower_snake_case }});
     {% else %}
     cpp_struct.{{ field.name.lower_snake_case }} = translate_{{ field.type_info.name.lower_snake_case }}_from_c(c_struct.{{ field.name.lower_snake_case }});
     {% endif %}
@@ -153,7 +153,7 @@ translate_{{ struct.name.lower_snake_case }}_to_c(const mavsdk::{{ plugin_name.u
     {% elif field.type_info.is_primitive %}
     c_struct.{{ field.name.lower_snake_case }} = cpp_struct.{{ field.name.lower_snake_case }};
     {% elif field.type_info.parent_type %}
-    c_struct.{{ field.name.lower_snake_case }} = translate_{{ field.type_info.parent_type }}_{{ field.type_info.name.lower_snake_case }}_to_c(cpp_struct.{{ field.name.lower_snake_case }});
+    c_struct.{{ field.name.lower_snake_case }} = translate_{{ field.type_info.parent_type.lower_snake_case }}_{{ field.type_info.name.lower_snake_case }}_to_c(cpp_struct.{{ field.name.lower_snake_case }});
     {% else %}
     c_struct.{{ field.name.lower_snake_case }} = translate_{{ field.type_info.name.lower_snake_case }}_to_c(cpp_struct.{{ field.name.lower_snake_case }});
     {% endif %}
@@ -297,7 +297,7 @@ void mavsdk_{{ plugin_name.lower_snake_case }}_destroy(mavsdk_{{ plugin_name.low
     {% elif param.type_info.is_primitive %}
     {{ param.type_info.name }} {{ param.name.lower_snake_case }},
     {% elif param.type_info.parent_type %}
-    mavsdk_{{ plugin_name.lower_snake_case }}_{{ param.type_info.parent_type }}_{{ param.type_info.name.lower_snake_case }}_t {{ param.name.lower_snake_case }},
+    mavsdk_{{ plugin_name.lower_snake_case }}_{{ param.type_info.parent_type.lower_snake_case }}_{{ param.type_info.name.lower_snake_case }}_t {{ param.name.lower_snake_case }},
     {% else %}
     mavsdk_{{ plugin_name.lower_snake_case }}_{{ param.type_info.name.lower_snake_case }}_t {{ param.name.lower_snake_case }},
     {% endif %}
@@ -330,7 +330,7 @@ void mavsdk_{{ plugin_name.lower_snake_case }}_destroy(mavsdk_{{ plugin_name.low
         {{ param.name.lower_snake_case }}{% if not loop.last %},
         {% endif %}
         {% elif param.type_info.parent_type %}
-        translate_{{ param.type_info.parent_type }}_{{ param.type_info.name.lower_snake_case }}_from_c({{ param.name.lower_snake_case }}){% if not loop.last %},
+        translate_{{ param.type_info.parent_type.lower_snake_case }}_{{ param.type_info.name.lower_snake_case }}_from_c({{ param.name.lower_snake_case }}){% if not loop.last %},
         {% endif %}
         {% else %}
         translate_{{ param.type_info.name.lower_snake_case }}_from_c({{ param.name.lower_snake_case }}){% if not loop.last %},{% endif %}
@@ -431,7 +431,7 @@ mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}(
     {{ param.type_info.name }} {{ param.name.lower_snake_case }}{% if not loop.last %},
     {% endif %}
     {% elif param.type_info.parent_type %}
-    mavsdk_{{ plugin_name.lower_snake_case }}_{{ param.type_info.parent_type }}_{{ param.type_info.name.lower_snake_case }}_t {{ param.name.lower_snake_case }}{% if not loop.last %},
+    mavsdk_{{ plugin_name.lower_snake_case }}_{{ param.type_info.parent_type.lower_snake_case }}_{{ param.type_info.name.lower_snake_case }}_t {{ param.name.lower_snake_case }}{% if not loop.last %},
     {% endif %}
     {% else %}
     mavsdk_{{ plugin_name.lower_snake_case }}_{{ param.type_info.name.lower_snake_case }}_t {{ param.name.lower_snake_case }}{% if not loop.last %},
@@ -473,7 +473,7 @@ mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}(
         {{ param.name.lower_snake_case }}{% if not loop.last %},
         {% endif %}
         {% elif param.type_info.parent_type %}
-        translate_{{ param.type_info.parent_type }}_{{ param.type_info.name.lower_snake_case }}_from_c({{ param.name.lower_snake_case }}){% if not loop.last %},
+        translate_{{ param.type_info.parent_type.lower_snake_case }}_{{ param.type_info.name.lower_snake_case }}_from_c({{ param.name.lower_snake_case }}){% if not loop.last %},
         {% endif %}
         {% else %}
         translate_{{ param.type_info.name.lower_snake_case }}_from_c({{ param.name.lower_snake_case }}){% if not loop.last %},
@@ -529,7 +529,7 @@ mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}(
         {% elif param.type_info.is_primitive %}
         {{ param.name.lower_snake_case }}{% if not loop.last %},{% endif %}
         {% elif param.type_info.parent_type %}
-        translate_{{ param.type_info.parent_type }}_{{ param.type_info.name.lower_snake_case }}_from_c({{ param.name.lower_snake_case }}){% if not loop.last %},{% endif %}
+        translate_{{ param.type_info.parent_type.lower_snake_case }}_{{ param.type_info.name.lower_snake_case }}_from_c({{ param.name.lower_snake_case }}){% if not loop.last %},{% endif %}
         {% else %}
         translate_{{ param.type_info.name.lower_snake_case }}_from_c({{ param.name.lower_snake_case }}){% if not loop.last %},{% endif %}
         {% endif %}
