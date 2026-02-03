@@ -34,7 +34,7 @@ translate_result(mavsdk::{{ plugin_name.upper_camel_case }}::Result cpp_result) 
 
 {% for enum in enums %}
 static mavsdk::{{ plugin_name.upper_camel_case }}::{{ enum.name.upper_camel_case }}
-translate_{{ enum.name.upper_camel_case }}_from_c(mavsdk_{{ plugin_name.lower_snake_case }}_{{ enum.name.upper_camel_case }}_t c_enum) {
+translate_{{ enum.name.lower_snake_case }}_from_c(mavsdk_{{ plugin_name.lower_snake_case }}_{{ enum.name.lower_snake_case }}_t c_enum) {
     switch(c_enum) {
         {% for value in enum.values %}
         case MAVSDK_{{ plugin_name.uppercase }}_{{ enum.name.uppercase }}_{{ value.name.uppercase }}:
@@ -44,8 +44,8 @@ translate_{{ enum.name.upper_camel_case }}_from_c(mavsdk_{{ plugin_name.lower_sn
     return mavsdk::{{ plugin_name.upper_camel_case }}::{{ enum.name.upper_camel_case }}::{{ enum.values[0].name.upper_camel_case }};
 }
 
-static mavsdk_{{ plugin_name.lower_snake_case }}_{{ enum.name.upper_camel_case }}_t
-translate_{{ enum.name.upper_camel_case }}_to_c(mavsdk::{{ plugin_name.upper_camel_case }}::{{ enum.name.upper_camel_case }} cpp_enum) {
+static mavsdk_{{ plugin_name.lower_snake_case }}_{{ enum.name.lower_snake_case }}_t
+translate_{{ enum.name.lower_snake_case }}_to_c(mavsdk::{{ plugin_name.upper_camel_case }}::{{ enum.name.upper_camel_case }} cpp_enum) {
     switch(cpp_enum) {
         {% for value in enum.values %}
         case mavsdk::{{ plugin_name.upper_camel_case }}::{{ enum.name.upper_camel_case }}::{{ value.name.upper_camel_case }}:
@@ -62,7 +62,7 @@ translate_{{ enum.name.upper_camel_case }}_to_c(mavsdk::{{ plugin_name.upper_cam
 {% for nested_enum_name, nested_enum in struct.nested_enums.items() %}
 
 static mavsdk::{{ plugin_name.upper_camel_case }}::{{ struct.name.upper_camel_case }}::{{ nested_enum.name.upper_camel_case }}
-translate_{{ struct.name.upper_camel_case }}_{{ nested_enum.name.upper_camel_case }}_from_c(mavsdk_{{ plugin_name.lower_snake_case }}_{{ struct.name.upper_camel_case }}_{{ nested_enum.name.upper_camel_case }}_t c_enum) {
+translate_{{ struct.name.lower_snake_case }}_{{ nested_enum.name.lower_snake_case }}_from_c(mavsdk_{{ plugin_name.lower_snake_case }}_{{ struct.name.lower_snake_case }}_{{ nested_enum.name.lower_snake_case }}_t c_enum) {
     switch(c_enum) {
         {% for value in nested_enum.values %}
         case MAVSDK_{{ plugin_name.uppercase }}_{{ struct.name.uppercase }}_{{ nested_enum.name.uppercase }}_{{ value.name.uppercase }}:
@@ -75,7 +75,7 @@ translate_{{ struct.name.upper_camel_case }}_{{ nested_enum.name.upper_camel_cas
 {% endfor %}
 
 static mavsdk::{{ plugin_name.upper_camel_case }}::{{ struct.name.upper_camel_case }}
-translate_{{ struct.name.upper_camel_case }}_from_c(const mavsdk_{{ plugin_name.lower_snake_case }}_{{ struct.name.upper_camel_case }}_t& c_struct) {
+translate_{{ struct.name.lower_snake_case }}_from_c(const mavsdk_{{ plugin_name.lower_snake_case }}_{{ struct.name.lower_snake_case }}_t& c_struct) {
     mavsdk::{{ plugin_name.upper_camel_case }}::{{ struct.name.upper_camel_case }} cpp_struct{};
     {% for field in struct.fields %}
     {% if field.type_info.is_repeated %}
@@ -116,8 +116,8 @@ translate_{{ struct.name.upper_camel_case }}_from_c(const mavsdk_{{ plugin_name.
 {% if not struct.name.upper_camel_case.endswith('Result') %}
 {% for nested_enum_name, nested_enum in struct.nested_enums.items() %}
 
-static mavsdk_{{ plugin_name.lower_snake_case }}_{{ struct.name.upper_camel_case }}_{{ nested_enum.name.upper_camel_case }}_t
-translate_{{ struct.name.upper_camel_case }}_{{ nested_enum.name.upper_camel_case }}_to_c(mavsdk::{{ plugin_name.upper_camel_case }}::{{ struct.name.upper_camel_case }}::{{ nested_enum.name.upper_camel_case }} cpp_enum) {
+static mavsdk_{{ plugin_name.lower_snake_case }}_{{ struct.name.lower_snake_case }}_{{ nested_enum.name.lower_snake_case }}_t
+translate_{{ struct.name.lower_snake_case }}_{{ nested_enum.name.lower_snake_case }}_to_c(mavsdk::{{ plugin_name.upper_camel_case }}::{{ struct.name.upper_camel_case }}::{{ nested_enum.name.upper_camel_case }} cpp_enum) {
     switch(cpp_enum) {
         {% for value in nested_enum.values %}
         case mavsdk::{{ plugin_name.upper_camel_case }}::{{ struct.name.upper_camel_case }}::{{ nested_enum.name.upper_camel_case }}::{{ value.name.upper_camel_case }}:
@@ -128,9 +128,9 @@ translate_{{ struct.name.upper_camel_case }}_{{ nested_enum.name.upper_camel_cas
 }
 
 {% endfor %}
-static mavsdk_{{ plugin_name.lower_snake_case }}_{{ struct.name.upper_camel_case }}_t
-translate_{{ struct.name.upper_camel_case }}_to_c(const mavsdk::{{ plugin_name.upper_camel_case }}::{{ struct.name.upper_camel_case }}& cpp_struct) {
-    mavsdk_{{ plugin_name.lower_snake_case }}_{{ struct.name.upper_camel_case }}_t c_struct{};
+static mavsdk_{{ plugin_name.lower_snake_case }}_{{ struct.name.lower_snake_case }}_t
+translate_{{ struct.name.lower_snake_case }}_to_c(const mavsdk::{{ plugin_name.upper_camel_case }}::{{ struct.name.upper_camel_case }}& cpp_struct) {
+    mavsdk_{{ plugin_name.lower_snake_case }}_{{ struct.name.lower_snake_case }}_t c_struct{};
     {% for field in struct.fields %}
     {% if field.type_info.is_repeated %}
     c_struct.{{ field.name.lower_snake_case }}_size = cpp_struct.{{ field.name.lower_snake_case }}.size();
@@ -161,8 +161,8 @@ translate_{{ struct.name.upper_camel_case }}_to_c(const mavsdk::{{ plugin_name.u
     return c_struct;
 }
 
-void mavsdk_{{ plugin_name.lower_snake_case }}_{{ struct.name.upper_camel_case }}_destroy(
-    mavsdk_{{ plugin_name.lower_snake_case }}_{{ struct.name.upper_camel_case }}_t* target) {
+void mavsdk_{{ plugin_name.lower_snake_case }}_{{ struct.name.lower_snake_case }}_destroy(
+    mavsdk_{{ plugin_name.lower_snake_case }}_{{ struct.name.lower_snake_case }}_t* target) {
     if (!target) return;
     {% for field in struct.fields %}
     {% if field.type_info.is_repeated %}
@@ -196,13 +196,13 @@ void mavsdk_{{ plugin_name.lower_snake_case }}_{{ struct.name.upper_camel_case }
     {% endfor %}
 }
 
-void mavsdk_{{ plugin_name.lower_snake_case }}_{{ struct.name.upper_camel_case }}_array_destroy(
-    mavsdk_{{ plugin_name.lower_snake_case }}_{{ struct.name.upper_camel_case }}_t** array,
+void mavsdk_{{ plugin_name.lower_snake_case }}_{{ struct.name.lower_snake_case }}_array_destroy(
+    mavsdk_{{ plugin_name.lower_snake_case }}_{{ struct.name.lower_snake_case }}_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_{{ plugin_name.lower_snake_case }}_{{ struct.name.upper_camel_case }}_destroy(&(*array)[i]);
+        mavsdk_{{ plugin_name.lower_snake_case }}_{{ struct.name.lower_snake_case }}_destroy(&(*array)[i]);
     }
 
     delete[] *array;
