@@ -45,7 +45,7 @@ int main(int argc, char** argv)
     mavsdk_camera_server_set_in_progress(camera_server, false);
 
     // Set camera information to "activate" the camera plugin
-    mavsdk_camera_server_Information_t information = {0};
+    mavsdk_camera_server_information_t information = {0};
     information.vendor_name = "MAVSDK";
     information.model_name = "Example Camera Server";
     information.firmware_version = "1.0.0";
@@ -91,7 +91,7 @@ static void take_photo_callback(int32_t index, void* user_data) {
     usleep(500000); // 500ms
 
     // Populate capture info
-    mavsdk_camera_server_CaptureInfo_t capture_info = {0};
+    mavsdk_camera_server_capture_info_t capture_info = {0};
     capture_info.position.latitude_deg = 0.0;
     capture_info.position.longitude_deg = 0.0;
     capture_info.position.absolute_altitude_m = 0.0f;
@@ -163,7 +163,7 @@ static void stop_video_streaming_callback(int32_t stream_id, void* user_data) {
         MAVSDK_CAMERA_SERVER_CAMERA_FEEDBACK_OK);
 }
 
-static void set_mode_callback(mavsdk_camera_server_Mode_t mode, void* user_data) {
+static void set_mode_callback(mavsdk_camera_server_mode_t mode, void* user_data) {
     mavsdk_camera_server_t camera_server = (mavsdk_camera_server_t)user_data;
 
     printf("Set camera mode %d\n", mode);
@@ -176,7 +176,7 @@ static void set_mode_callback(mavsdk_camera_server_Mode_t mode, void* user_data)
 static void storage_information_callback(int32_t storage_id, void* user_data) {
     mavsdk_camera_server_t camera_server = (mavsdk_camera_server_t)user_data;
 
-    mavsdk_camera_server_StorageInformation_t storage_information = {0};
+    mavsdk_camera_server_storage_information_t storage_information = {0};
     const int kTotalStorage = 4 * 1024 * 1024;
     storage_information.total_storage_mib = kTotalStorage;
     storage_information.used_storage_mib = 100.0f;
@@ -196,7 +196,7 @@ static void storage_information_callback(int32_t storage_id, void* user_data) {
 static void capture_status_callback(int32_t reserved, void* user_data) {
     mavsdk_camera_server_t camera_server = (mavsdk_camera_server_t)user_data;
 
-    mavsdk_camera_server_CaptureStatus_t capture_status = {0};
+    mavsdk_camera_server_capture_status_t capture_status = {0};
     capture_status.image_count = image_count;
     capture_status.image_status = is_capture_in_progress ?
         MAVSDK_CAMERA_SERVER_CAPTURE_STATUS_IMAGE_STATUS_CAPTURE_IN_PROGRESS :

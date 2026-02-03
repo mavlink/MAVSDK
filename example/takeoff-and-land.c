@@ -25,7 +25,7 @@ static bool my_log_callback(mavsdk_log_level_t level, const char* message, const
     return true;
 }
 
-static void position_callback(const mavsdk_telemetry_Position_t position, void* user_data) {
+static void position_callback(const mavsdk_telemetry_position_t position, void* user_data) {
     (void)user_data; // Unused parameter
     
     printf("Altitude: %.1f m\n", position.absolute_altitude_m);

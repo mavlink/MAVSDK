@@ -8,7 +8,7 @@
 #include "cmavsdk/plugins/mission/mission.h"
 #include "cmavsdk/plugins/telemetry/telemetry.h"
 
-mavsdk_mission_MissionItem_t make_mission_item(
+mavsdk_mission_mission_item_t make_mission_item(
     double latitude_deg,
     double longitude_deg,
     float relative_altitude_m,
@@ -16,9 +16,9 @@ mavsdk_mission_MissionItem_t make_mission_item(
     bool is_fly_through,
     float gimbal_pitch_deg,
     float gimbal_yaw_deg,
-    mavsdk_mission_MissionItem_CameraAction_t camera_action)
+    mavsdk_mission_mission_item_camera_action_t camera_action)
 {
-    mavsdk_mission_MissionItem_t item = {0};
+    mavsdk_mission_mission_item_t item = {0};
     item.latitude_deg = latitude_deg;
     item.longitude_deg = longitude_deg;
     item.relative_altitude_m = relative_altitude_m;
@@ -51,7 +51,7 @@ void usage(const char* bin_name)
 static volatile bool want_to_pause = false;
 
 static void mission_progress_callback(
-    const mavsdk_mission_MissionProgress_t mission_progress,
+    const mavsdk_mission_mission_progress_t mission_progress,
     void* user_data)
 {
     (void)user_data; // Unused
@@ -114,7 +114,7 @@ int main(int argc, char** argv)
     while (!health_ok) {
         printf("Waiting for system to be ready\n");
         sleep(1);
-        mavsdk_telemetry_Health_t health;
+        mavsdk_telemetry_health_t health;
         mavsdk_telemetry_health(telemetry, &health);
         health_ok = health.is_gyrometer_calibration_ok &&
                     health.is_accelerometer_calibration_ok &&
@@ -128,8 +128,8 @@ int main(int argc, char** argv)
     printf("Creating and uploading mission\n");
     
     // Create mission items array
-    mavsdk_mission_MissionItem_t* mission_items = 
-        malloc(6 * sizeof(mavsdk_mission_MissionItem_t));
+    mavsdk_mission_mission_item_t* mission_items = 
+        malloc(6 * sizeof(mavsdk_mission_mission_item_t));
     
     mission_items[0] = make_mission_item(
         47.398170327054473, 8.5456490218639658, 10.0f, 5.0f, false,
@@ -156,7 +156,7 @@ int main(int argc, char** argv)
         0.0f, 0.0f, MAVSDK_MISSION_MISSION_ITEM_CAMERA_ACTION_STOP_PHOTO_INTERVAL);
     
     // Create mission plan
-    mavsdk_mission_MissionPlan_t mission_plan = {0};
+    mavsdk_mission_mission_plan_t mission_plan = {0};
     mission_plan.mission_items = mission_items;
     mission_plan.mission_items_size = 6;
     

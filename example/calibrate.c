@@ -31,7 +31,7 @@ static bool my_log_callback(mavsdk_log_level_t level, const char* message, const
 
 static void calibration_callback(
     const mavsdk_calibration_result_t result,
-    const mavsdk_calibration_ProgressData_t progress_data,
+    const mavsdk_calibration_progress_data_t progress_data,
     void* user_data)
 {
     CalibrationState* state = (CalibrationState*)user_data;

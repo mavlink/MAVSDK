@@ -8,7 +8,7 @@
 
 static void do_camera_operation(int32_t component_id, mavsdk_camera_t camera);
 
-static void storage_callback(const mavsdk_camera_StorageUpdate_t update, void* user_data) {
+static void storage_callback(const mavsdk_camera_storage_update_t update, void* user_data) {
     printf("Camera storage update:\n");
     printf("  Component ID: %d\n", update.storage.component_id);
     printf("  Storage ID: %d\n", update.storage.storage_id);
@@ -47,7 +47,7 @@ int main(int argc, const char* argv[])
     }
 
     printf("Waiting for cameras...\n");
-    mavsdk_camera_CameraList_t camera_list;
+    mavsdk_camera_camera_list_t camera_list;
     do {
         mavsdk_camera_camera_list(camera_plugin, &camera_list);
         sleep(1);
@@ -68,7 +68,7 @@ int main(int argc, const char* argv[])
     int32_t component_id = camera_list.cameras[0].component_id;
 
     // Clean up camera list
-    mavsdk_camera_CameraList_destroy(&camera_list);
+    mavsdk_camera_camera_list_destroy(&camera_list);
 
     // Subscribe to storage updates
     mavsdk_camera_storage_handle_t storage_handle = 

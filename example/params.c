@@ -85,7 +85,7 @@ bool parse_args(int argc, char** argv, Args* args)
 
 void get_all(mavsdk_param_t param)
 {
-    mavsdk_param_AllParams_t all_params;
+    mavsdk_param_all_params_t all_params;
     mavsdk_param_get_all_params(param, &all_params);
 
     printf("Int params: \n");
@@ -99,7 +99,7 @@ void get_all(mavsdk_param_t param)
     }
 
     // Clean up
-    mavsdk_param_AllParams_destroy(&all_params);
+    mavsdk_param_all_params_destroy(&all_params);
 }
 
 void get(mavsdk_param_t param, const char* name)
