@@ -66,6 +66,7 @@ void | [unsubscribe_terminate](#classmavsdk_1_1_action_server_1a3e236694f1f0beae
 [ActionServer::AllowableFlightModes](structmavsdk_1_1_action_server_1_1_allowable_flight_modes.md) | [get_allowable_flight_modes](#classmavsdk_1_1_action_server_1a0960a6ec243823729a418a3c68feaf2a) () const | Get which modes the vehicle can transition to (Manual always allowed)
 [Result](classmavsdk_1_1_action_server.md#classmavsdk_1_1_action_server_1a4a8eb4fe9d098a5b7891232fc5bf32f8) | [set_armed_state](#classmavsdk_1_1_action_server_1a8830660884933029f104c49c31b7af24) (bool is_armed)const | Set/override the armed/disarmed state of the vehicle directly, and notify subscribers.
 [Result](classmavsdk_1_1_action_server.md#classmavsdk_1_1_action_server_1a4a8eb4fe9d098a5b7891232fc5bf32f8) | [set_flight_mode](#classmavsdk_1_1_action_server_1ac5ba6d26aef83881826361aa20a9bd65) ([FlightMode](classmavsdk_1_1_action_server.md#classmavsdk_1_1_action_server_1aee12027f5d9380f2c13fa7813c6ae1d8) flight_mode)const | Set/override the flight mode of the vehicle directly, and notify subscribers.
+[Result](classmavsdk_1_1_action_server.md#classmavsdk_1_1_action_server_1a4a8eb4fe9d098a5b7891232fc5bf32f8) | [set_flight_mode_internal](#classmavsdk_1_1_action_server_1a428bdf9077437da3300ef06487f4ee14) ([FlightMode](classmavsdk_1_1_action_server.md#classmavsdk_1_1_action_server_1aee12027f5d9380f2c13fa7813c6ae1d8) flight_mode)const | Set/override the flight mode of the vehicle directly, and *do not* notify subscribers.
 const [ActionServer](classmavsdk_1_1_action_server.md) & | [operator=](#classmavsdk_1_1_action_server_1aa80e34dd72d2e31005085c78892bab8c) (const [ActionServer](classmavsdk_1_1_action_server.md) &)=delete | Equality operator (object is not copyable).
 
 
@@ -640,6 +641,24 @@ Result mavsdk::ActionServer::set_flight_mode(FlightMode flight_mode) const
 
 
 Set/override the flight mode of the vehicle directly, and notify subscribers.
+
+This function is blocking.
+
+**Parameters**
+
+* [FlightMode](classmavsdk_1_1_action_server.md#classmavsdk_1_1_action_server_1aee12027f5d9380f2c13fa7813c6ae1d8) **flight_mode** - 
+
+**Returns**
+
+&emsp;[Result](classmavsdk_1_1_action_server.md#classmavsdk_1_1_action_server_1a4a8eb4fe9d098a5b7891232fc5bf32f8) - Result of request.
+
+### set_flight_mode_internal() {#classmavsdk_1_1_action_server_1a428bdf9077437da3300ef06487f4ee14}
+```cpp
+Result mavsdk::ActionServer::set_flight_mode_internal(FlightMode flight_mode) const
+```
+
+
+Set/override the flight mode of the vehicle directly, and *do not* notify subscribers.
 
 This function is blocking.
 
