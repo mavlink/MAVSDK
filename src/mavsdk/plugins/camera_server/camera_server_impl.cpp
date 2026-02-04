@@ -1769,27 +1769,29 @@ std::optional<mavlink_command_ack_t> CameraServerImpl::process_video_stream_info
 
         _video_streaming.rtsp_uri.resize(sizeof(mavlink_video_stream_information_t::uri));
 
-        mavlink_message_t msg{};
-        mavlink_msg_video_stream_information_pack(
-            _server_component_impl->get_own_system_id(),
-            _server_component_impl->get_own_component_id(),
-            &msg,
-            0, // Stream id
-            0, // Count
-            VIDEO_STREAM_TYPE_RTSP,
-            VIDEO_STREAM_STATUS_FLAGS_RUNNING,
-            0, // famerate
-            0, // resolution horizontal
-            0, // resolution vertical
-            0, // bitrate
-            0, // rotation
-            0, // horizontal field of view
-            name,
-            _video_streaming.rtsp_uri.c_str(),
-            0,
-            0);
-
-        _server_component_impl->send_message(msg);
+        _server_component_impl->queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
+            mavlink_message_t msg{};
+            mavlink_msg_video_stream_information_pack_chan(
+                mavlink_address.system_id,
+                mavlink_address.component_id,
+                channel,
+                &msg,
+                0, // Stream id
+                0, // Count
+                VIDEO_STREAM_TYPE_RTSP,
+                VIDEO_STREAM_STATUS_FLAGS_RUNNING,
+                0, // famerate
+                0, // resolution horizontal
+                0, // resolution vertical
+                0, // bitrate
+                0, // rotation
+                0, // horizontal field of view
+                name,
+                _video_streaming.rtsp_uri.c_str(),
+                0,
+                0);
+            return msg;
+        });
 
         // Ack already sent.
         return std::nullopt;
@@ -1819,21 +1821,24 @@ std::optional<mavlink_command_ack_t> CameraServerImpl::process_video_stream_stat
     _server_component_impl->send_command_ack(command_ack);
     LogDebug() << "sent video streaming ack";
 
-    mavlink_message_t msg{};
-    mavlink_msg_video_stream_status_pack(
-        _server_component_impl->get_own_system_id(),
-        _server_component_impl->get_own_component_id(),
-        &msg,
-        0, // Stream id
-        VIDEO_STREAM_STATUS_FLAGS_RUNNING,
-        0, // framerate
-        0, // resolution horizontal
-        0, // resolution vertical
-        0, // bitrate
-        0, // rotation
-        0, // horizontal field of view
-        0);
-    _server_component_impl->send_message(msg);
+    _server_component_impl->queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
+        mavlink_message_t msg{};
+        mavlink_msg_video_stream_status_pack_chan(
+            mavlink_address.system_id,
+            mavlink_address.component_id,
+            channel,
+            &msg,
+            0, // Stream id
+            VIDEO_STREAM_STATUS_FLAGS_RUNNING,
+            0, // framerate
+            0, // resolution horizontal
+            0, // resolution vertical
+            0, // bitrate
+            0, // rotation
+            0, // horizontal field of view
+            0);
+        return msg;
+    });
 
     // ack was already sent
     return std::nullopt;
