@@ -1,3 +1,8 @@
 #pragma once
 
+#include "mavlink/mavlink_types.h"
+
+#define MAVLINK_GET_CHANNEL_STATUS
+mavlink_status_t* mavlink_get_channel_status(uint8_t chan);
+
 #include "mavlink/@MAVLINK_DIALECT@/mavlink.h"
