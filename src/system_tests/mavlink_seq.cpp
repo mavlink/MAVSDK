@@ -14,10 +14,10 @@ TEST(SystemTest, MavlinkSeqSequential)
     Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
 
     ASSERT_EQ(
-        mavsdk_groundstation.add_any_connection("udpin://0.0.0.0:17012"),
+        mavsdk_groundstation.add_any_connection("tcpin://0.0.0.0:17012"),
         ConnectionResult::Success);
     ASSERT_EQ(
-        mavsdk_autopilot.add_any_connection("udpout://127.0.0.1:17012"), ConnectionResult::Success);
+        mavsdk_autopilot.add_any_connection("tcpout://127.0.0.1:17012"), ConnectionResult::Success);
 
     auto maybe_system = mavsdk_groundstation.first_autopilot(10.0);
     ASSERT_TRUE(maybe_system);
