@@ -86,8 +86,10 @@ TEST(SystemTest, InterceptIncomingModifyLocal)
             pos.lat = static_cast<int32_t>(modified_lat * 1e7);
             pos.lon = static_cast<int32_t>(modified_lon * 1e7);
 
-            // Re-encode the modified message
-            mavlink_msg_global_position_int_encode(message.sysid, message.compid, &message, &pos);
+            // Re-encode the modified message using a dedicated channel to avoid
+            // racing with ServerComponentImpl::queue_message on channel 0.
+            mavlink_msg_global_position_int_encode_chan(
+                message.sysid, message.compid, MAVLINK_COMM_NUM_BUFFERS - 1, &message, &pos);
 
             LogInfo() << "Modified coordinates to San Francisco: lat=" << (pos.lat / 1e7)
                       << ", lon=" << (pos.lon / 1e7);

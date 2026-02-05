@@ -62,6 +62,7 @@ target_sources(mavsdk
     math_utils.cpp
     mavsdk.cpp
     mavsdk_impl.cpp
+    mavlink_channel_status.cpp
     mavlink_channels.cpp
     mavlink_command_receiver.cpp
     mavlink_command_sender.cpp

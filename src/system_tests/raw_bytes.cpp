@@ -85,7 +85,7 @@ TEST(SystemTest, RawBytesSendReceive)
     ping.target_system = 0; // Broadcast
     ping.target_component = 0;
 
-    mavlink_msg_ping_encode(1, 1, &ping_msg, &ping);
+    mavlink_msg_ping_encode_chan(1, 1, MAVLINK_COMM_NUM_BUFFERS - 1, &ping_msg, &ping);
 
     // Serialize to bytes
     std::vector<uint8_t> ping_bytes(MAVLINK_MAX_PACKET_LEN);

@@ -38,10 +38,12 @@ EventHandler::EventHandler(
     };
 
     const auto send_request_cb = [this](const mavlink_request_event_t& msg) {
-        mavlink_message_t message;
-        mavlink_msg_request_event_encode(
-            _system_impl.get_own_system_id(), _system_impl.get_own_component_id(), &message, &msg);
-        _system_impl.send_message(message);
+        _system_impl.queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
+            mavlink_message_t message;
+            mavlink_msg_request_event_encode_chan(
+                mavlink_address.system_id, mavlink_address.component_id, channel, &message, &msg);
+            return message;
+        });
     };
 
     _parser.setProfile(profile);
