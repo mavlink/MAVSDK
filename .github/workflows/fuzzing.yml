@@ -5,12 +5,16 @@ on:
     branches:
     - 'main'
     paths-ignore:
-    - 'docs/**'
+    - 'cpp/docs/**'
   pull_request:
     branches:
     - '*'
     paths-ignore:
-    - 'docs/**'
+    - 'cpp/docs/**'
+
+defaults:
+  run:
+    working-directory: cpp
 
 jobs:
   fuzz:

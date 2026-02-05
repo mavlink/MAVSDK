@@ -7,13 +7,17 @@ on:
     tags:
     - 'v*'
     paths-ignore:
-    - 'docs/**'
+    - 'cpp/docs/**'
   pull_request:
     branches:
     - '*'
     paths-ignore:
-    - 'docs/**'
+    - 'cpp/docs/**'
     - '.github/workflows/docs_deploy.yml'
+
+defaults:
+  run:
+    working-directory: cpp
 
 jobs:
   Windows-mavsdk_server:

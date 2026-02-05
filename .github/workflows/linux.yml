@@ -7,14 +7,18 @@ on:
     tags:
     - 'v*'
     paths-ignore:
-    - 'docs/**'
+    - 'cpp/docs/**'
   pull_request:
     branches:
     - '*'
     paths-ignore:
-    - 'docs/**'
+    - 'cpp/docs/**'
     - '.github/workflows/docs_deploy.yml'
   workflow_dispatch:
+
+defaults:
+  run:
+    working-directory: cpp
 
 jobs:
   check-docker-changes:
@@ -31,7 +35,7 @@ jobs:
         id: check-changes
         uses: tj-actions/changed-files@ed68ef82c095e0d48ec87eccea555d944a631a4c # v46
         with:
-          files: docker/**
+          files: ../docker/**
           since_last_remote_commit: true
       - name: List all changed files
         id: set-any-changed
@@ -636,7 +640,8 @@ jobs:
       - name: build
         run: ./dockcross-linux-${{ matrix.docker_name }}-custom cmake --build build/linux-${{ matrix.docker_name }} -j$(nproc) --target install
       - name: create deb packages
-        run: ./dockcross-linux-${{ matrix.docker_name }}-custom tools/create_packages.sh ./build/linux-${{ matrix.docker_name }}/install . ${{ matrix.arch_name }} libmavsdk-dev
+        working-directory: .
+        run: ./cpp/dockcross-linux-${{ matrix.docker_name }}-custom cpp/tools/create_packages.sh ./cpp/build/linux-${{ matrix.docker_name }}/install . ${{ matrix.arch_name }} libmavsdk-dev
       - if: ${{ matrix.rename_distro }}
         name: Rename LTS versions from debian12 to debian11
         run: |
@@ -659,6 +664,7 @@ jobs:
     container: alpine:3.19.0
     steps:
       - name: install tools
+        working-directory: .
         run: apk update && apk add build-base cmake git linux-headers perl tar python3 py3-pip rust cargo
       - uses: actions/checkout@v4
         with:

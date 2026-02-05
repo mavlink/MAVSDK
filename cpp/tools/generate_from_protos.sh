@@ -12,9 +12,9 @@ EOF
 }
 
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-proto_dir="${script_dir}/../proto/protos"
+proto_dir="${script_dir}/../../proto/protos"
 build_dir="${script_dir}/../build/default"
-repo_dir="${script_dir}/../"
+repo_dir="${script_dir}/../../"
 options=$(getopt -l "help,build-dir:" -o "hb:" -a -- "$@")
 
 eval set -- "$options"
@@ -97,8 +97,8 @@ protoc_gen_mavsdk="${build_dir}/pb_plugins/bin/protoc-gen-mavsdk"
 export PYTHONPATH="${build_dir}/pb_plugins:${PYTHONPATH}"
 echo "Using protoc_gen_mavsdk: ${protoc_gen_mavsdk}"
 
-plugin_list_and_core=$(cd ${script_dir}/../proto/protos && ls -d */ | sed 's:/*$::')
-plugin_list=$(cd ${script_dir}/../proto/protos && ls -d */ | sed 's:/*$::' | grep -v core)
+plugin_list_and_core=$(cd ${proto_dir} && ls -d */ | sed 's:/*$::')
+plugin_list=$(cd ${proto_dir} && ls -d */ | sed 's:/*$::' | grep -v core)
 
 echo "Processing mavsdk_options.proto"
 ${protoc_binary} -I ${proto_dir} --cpp_out=${mavsdk_server_generated_dir} --grpc_out=${mavsdk_server_generated_dir} --plugin=protoc-gen-grpc=${protoc_grpc_binary} ${proto_dir}/mavsdk_options.proto
