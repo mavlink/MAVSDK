@@ -55,7 +55,7 @@ jobs:
       - uses: actions/cache@v4
         id: cache
         with:
-          path: ./build/macos/third_party/install
+          path: ./cpp/build/macos/third_party/install
           key: ${{ github.job }}-${{ matrix.name }}-${{ hashFiles('./third_party/**') }}-2
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
@@ -130,7 +130,7 @@ jobs:
       - uses: actions/cache@v4
         id: cache
         with:
-          path: ./build/${{ matrix.name }}/third_party/install
+          path: ./cpp/build/${{ matrix.name }}/third_party/install
           key: ${{ github.job }}-${{ matrix.name }}-${{ hashFiles('./third_party/**', './cmake/ios.toolchain.cmake') }}-2
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'

@@ -35,7 +35,7 @@ jobs:
         uses: actions/cache@v4
         id: cache-deps
         with:
-          path: ./build/fuzz/third_party/install
+          path: ./cpp/build/fuzz/third_party/install
           key: fuzz-deps-${{ hashFiles('./third_party/**') }}-1
 
       - name: Disable superbuild on cache hit
