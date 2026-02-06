@@ -8,10 +8,10 @@ on:
     #tags:
     #  - 'v*'
     paths:
-      - 'docs/**'
+      - 'cpp/docs/**'
   pull_request:
     paths:
-      - 'docs/**'
+      - 'cpp/docs/**'
 
   workflow_dispatch:
 
@@ -31,13 +31,13 @@ jobs:
           node-version: 20
           cache: npm
           # Specify the path to lock file for correct caching
-          cache-dependency-path: ./docs/yarn.lock
+          cache-dependency-path: ./cpp/docs/yarn.lock
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile --cwd ./docs
+        run: yarn install --frozen-lockfile --cwd ./cpp/docs
 
       - name: Build with VitePress
-        working-directory: ./docs
+        working-directory: ./cpp/docs
         run: |
           npm run docs:build
           touch .vitepress/dist/.nojekyll
@@ -46,7 +46,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: mavsdk_docs_build
-          path: docs/.vitepress/dist/
+          path: cpp/docs/.vitepress/dist/
           retention-days: 1
 
   deploy:
