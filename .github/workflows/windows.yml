@@ -195,12 +195,12 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: mavsdk-windows-${{ matrix.arch }}-Debug
-          path: debug-files
+          path: cpp/debug-files
       - name: Download RelWithDebInfo artifact
         uses: actions/download-artifact@v4
         with:
           name: mavsdk-windows-${{ matrix.arch }}-RelWithDebInfo
-          path: release-files
+          path: cpp/release-files
       - name: Create combined directory structure
         run: |
           mkdir combined\Debug

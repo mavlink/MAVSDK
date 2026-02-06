@@ -166,23 +166,23 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: mavsdk_server_ios.framework
-          path: ./build/ios/src/mavsdk_server/src/mavsdk_server.framework
+          path: ./cpp/build/ios/src/mavsdk_server/src/mavsdk_server.framework
       - uses: actions/download-artifact@v4
         with:
           name: mavsdk_server_ios_simulator_x64.framework
-          path: ./build/ios_simulator_x64/src/mavsdk_server/src/mavsdk_server.framework
+          path: ./cpp/build/ios_simulator_x64/src/mavsdk_server/src/mavsdk_server.framework
       - uses: actions/download-artifact@v4
         with:
           name: mavsdk_server_ios_simulator_arm64.framework
-          path: ./build/ios_simulator_arm64/src/mavsdk_server/src/mavsdk_server.framework
+          path: ./cpp/build/ios_simulator_arm64/src/mavsdk_server/src/mavsdk_server.framework
       - uses: actions/download-artifact@v4
         with:
           name: mavsdk_server_macos_x64.framework
-          path: ./build/macos_x64/src/mavsdk_server/src/mavsdk_server.framework
+          path: ./cpp/build/macos_x64/src/mavsdk_server/src/mavsdk_server.framework
       - uses: actions/download-artifact@v4
         with:
           name: mavsdk_server_macos_arm64.framework
-          path: ./build/macos_arm64/src/mavsdk_server/src/mavsdk_server.framework
+          path: ./cpp/build/macos_arm64/src/mavsdk_server/src/mavsdk_server.framework
       - name: Install tree
         run: brew install tree
       - name: Package
