@@ -227,7 +227,7 @@ jobs:
             -DCMAKE_BUILD_TYPE=Debug ^
             -DCMAKE_PREFIX_PATH=%GITHUB_WORKSPACE%\combined ^
             -Bbuild-examples-debug ^
-            -Sexamples
+            -Scpp/examples
 
           cmake --build build-examples-debug --config Debug
       - name: Test dual-config setup by building examples (RelWithDebInfo)
@@ -239,7 +239,7 @@ jobs:
             -DCMAKE_BUILD_TYPE=RelWithDebInfo ^
             -DCMAKE_PREFIX_PATH=%GITHUB_WORKSPACE%\combined ^
             -Bbuild-examples-release ^
-            -Sexamples
+            -Scpp/examples
 
           cmake --build build-examples-release --config RelWithDebInfo
       - name: Create final ZIP file
