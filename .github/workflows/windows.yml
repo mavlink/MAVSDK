@@ -225,9 +225,9 @@ jobs:
           cd /d %GITHUB_WORKSPACE%
           cmake -G"Visual Studio 17 2022" -A ${{ matrix.platform }} ^
             -DCMAKE_BUILD_TYPE=Debug ^
-            -DCMAKE_PREFIX_PATH=%GITHUB_WORKSPACE%\combined ^
+            -DCMAKE_PREFIX_PATH=%GITHUB_WORKSPACE%\cpp\combined ^
             -Bbuild-examples-debug ^
-            -Scpp/examples
+            -Scpp\examples
 
           cmake --build build-examples-debug --config Debug
       - name: Test dual-config setup by building examples (RelWithDebInfo)
@@ -237,9 +237,9 @@ jobs:
           cd /d %GITHUB_WORKSPACE%
           cmake -G"Visual Studio 17 2022" -A ${{ matrix.platform }} ^
             -DCMAKE_BUILD_TYPE=RelWithDebInfo ^
-            -DCMAKE_PREFIX_PATH=%GITHUB_WORKSPACE%\combined ^
+            -DCMAKE_PREFIX_PATH=%GITHUB_WORKSPACE%\cpp\combined ^
             -Bbuild-examples-release ^
-            -Scpp/examples
+            -Scpp\examples
 
           cmake --build build-examples-release --config RelWithDebInfo
       - name: Create final ZIP file
