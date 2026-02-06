@@ -122,10 +122,10 @@ jobs:
         with:
           name: test-binary-coverage-${{ github.run_id }}
           path: |
-            ./build/src/unit_tests/unit_tests_runner
-            ./build/src/system_tests/system_tests_runner
-            ./build/src/mavsdk/libmavsdk.so*
-            ./build/src/mavsdk_server/src/libmavsdk_server.so*
+            ./cpp/build/src/unit_tests/unit_tests_runner
+            ./cpp/build/src/system_tests/system_tests_runner
+            ./cpp/build/src/mavsdk/libmavsdk.so*
+            ./cpp/build/src/mavsdk_server/src/libmavsdk_server.so*
           retention-days: 7
       - name: run lcov
         run: lcov --capture --directory . --no-external --exclude "*/third_party/*"  --output-file lcov.info
@@ -385,11 +385,11 @@ jobs:
         with:
           name: test-binaries-${{ matrix.description }}-${{ github.run_id }}
           path: |
-            ./build/src/unit_tests/unit_tests_runner
-            ./build/release/src/system_tests/system_tests_runner
-            ./build/release/src/mavsdk_server/test/unit_tests_mavsdk_server
-            ./build/release/src/mavsdk/libmavsdk.so*
-            ./build/release/src/mavsdk_server/src/libmavsdk_server.so*
+            ./cpp/build/src/unit_tests/unit_tests_runner
+            ./cpp/build/release/src/system_tests/system_tests_runner
+            ./cpp/build/release/src/mavsdk_server/test/unit_tests_mavsdk_server
+            ./cpp/build/release/src/mavsdk/libmavsdk.so*
+            ./cpp/build/release/src/mavsdk_server/src/libmavsdk_server.so*
           retention-days: 7
 
   ubuntu-no-curl:
@@ -568,12 +568,12 @@ jobs:
         with:
           name: test-binaries-${{ matrix.os_type }}-${{ matrix.os_version }}-${{ github.run_id }}
           path: |
-            ./build/release/src/unit_tests/unit_tests_runner
-            ./build/release/src/system_tests/system_tests_runner
-            ./build/release/src/system_tests/standalone_param_test
-            ./build/release/src/system_tests/standalone_ftp_test
-            ./build/release/src/mavsdk/libmavsdk.so*
-            ./build/release/src/mavsdk_server/src/libmavsdk_server.so*
+            ./cpp/build/release/src/unit_tests/unit_tests_runner
+            ./cpp/build/release/src/system_tests/system_tests_runner
+            ./cpp/build/release/src/system_tests/standalone_param_test
+            ./cpp/build/release/src/system_tests/standalone_ftp_test
+            ./cpp/build/release/src/mavsdk/libmavsdk.so*
+            ./cpp/build/release/src/mavsdk_server/src/libmavsdk_server.so*
           retention-days: 7
       - name: install
         run: cmake --build build/release --target install
@@ -700,7 +700,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: mavsdk_server_musl_x86_64
-          path: ./install/bin/mavsdk_server
+          path: ./cpp/install/bin/mavsdk_server
           retention-days: 2
       - name: Publish artifacts
         if: startsWith(github.ref, 'refs/tags/v')
@@ -744,14 +744,14 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: mavsdk_server_${{ matrix.arch_name }}
-          path: 'build/${{ matrix.arch_name }}/install/bin/mavsdk_server'
+          path: 'cpp/build/${{ matrix.arch_name }}/install/bin/mavsdk_server'
           retention-days: 2
       - name: Publish artifacts
         if: startsWith(github.ref, 'refs/tags/v')
         uses: svenstaro/upload-release-action@v1-release
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: 'build/${{ matrix.arch_name }}/install/bin/mavsdk_server'
+          file: 'cpp/build/${{ matrix.arch_name }}/install/bin/mavsdk_server'
           asset_name: 'mavsdk_server_${{ matrix.arch_name }}'
           tag: ${{ github.ref }}
           overwrite: true
@@ -801,14 +801,14 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: mavsdk_server_${{ matrix.name }}.tar
-          path: 'build/${{ matrix.name }}/export/mavsdk_server_${{ matrix.name }}.tar'
+          path: 'cpp/build/${{ matrix.name }}/export/mavsdk_server_${{ matrix.name }}.tar'
           retention-days: 2
       - name: Publish artifacts
         if: startsWith(github.ref, 'refs/tags/v')
         uses: svenstaro/upload-release-action@v1-release
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: 'build/${{ matrix.name }}/export/mavsdk_server_${{ matrix.name }}.tar'
+          file: 'cpp/build/${{ matrix.name }}/export/mavsdk_server_${{ matrix.name }}.tar'
           asset_name: 'mavsdk_server_${{ matrix.name }}.tar'
           tag: ${{ github.ref }}
           overwrite: true

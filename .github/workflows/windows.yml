@@ -77,14 +77,14 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: mavsdk_server-windows-${{ matrix.arch }}-release
-          path: 'install/bin/mavsdk_server_bin.exe'
+          path: 'cpp/install/bin/mavsdk_server_bin.exe'
           retention-days: 2
       - name: Publish mavsdk_server binary to release
         if: startsWith(github.ref, 'refs/tags/v')
         uses: svenstaro/upload-release-action@v1-release
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: 'install/bin/mavsdk_server_bin.exe'
+          file: 'cpp/install/bin/mavsdk_server_bin.exe'
           asset_name: mavsdk_server_win_${{ matrix.arch }}.exe
           tag: ${{ github.ref }}
           overwrite: true
@@ -164,7 +164,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: mavsdk-windows-${{ matrix.arch }}-${{ matrix.config }}
-          path: 'install/'
+          path: 'cpp/install/'
           retention-days: 2
       - name: Publish mavsdk library to release
         if: startsWith(github.ref, 'refs/tags/v')

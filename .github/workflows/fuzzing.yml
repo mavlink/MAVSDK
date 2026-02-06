@@ -130,8 +130,8 @@ jobs:
         with:
           name: fuzzer-binary-${{ github.run_id }}
           path: |
-            ./build/fuzz/src/fuzz_tests/mavlink_fuzzer
-            ./build/fuzz/src/mavsdk/libmavsdk.so*
+            ./cpp/build/fuzz/src/fuzz_tests/mavlink_fuzzer
+            ./cpp/build/fuzz/src/mavsdk/libmavsdk.so*
           retention-days: 30
 
       - name: Upload corpus on crash

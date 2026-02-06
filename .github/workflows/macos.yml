@@ -79,21 +79,21 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: mavsdk_server_macos_${{ matrix.architecture }}.framework
-          path: ./build/macos/src/mavsdk_server/src/mavsdk_server.framework
+          path: ./cpp/build/macos/src/mavsdk_server/src/mavsdk_server.framework
           retention-days: 2
       - name: Upload binary as artefact
         if: ${{ matrix.build-framework == 'OFF' }}
         uses: actions/upload-artifact@v4
         with:
           name: mavsdk_server_macos_${{ matrix.architecture }}
-          path: build/macos/install/bin/mavsdk_server
+          path: cpp/build/macos/install/bin/mavsdk_server
           retention-days: 2
       - name: Publish mavsdk_server_macos to github release
         if: ${{ startsWith(github.ref, 'refs/tags/v') && matrix.build-framework == 'OFF' }}
         uses: svenstaro/upload-release-action@v1-release
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: build/macos/install/bin/mavsdk_server
+          file: cpp/build/macos/install/bin/mavsdk_server
           asset_name: mavsdk_server_macos_${{ matrix.architecture }}
           tag: ${{ github.ref }}
           overwrite: true
@@ -152,7 +152,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: mavsdk_server_${{ matrix.name }}.framework
-          path: ./build/${{ matrix.name }}/src/mavsdk_server/src/mavsdk_server.framework
+          path: ./cpp/build/${{ matrix.name }}/src/mavsdk_server/src/mavsdk_server.framework
           retention-days: 2
 
   iOS-XCFramework:
@@ -190,14 +190,14 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: mavsdk_server.xcframework
-          path: ./build/mavsdk_server.xcframework
+          path: ./cpp/build/mavsdk_server.xcframework
           retention-days: 2
       - name: Publish xcframework
         if: startsWith(github.ref, 'refs/tags/v')
         uses: svenstaro/upload-release-action@v1-release
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: 'build/mavsdk_server.xcframework.zip'
+          file: 'cpp/build/mavsdk_server.xcframework.zip'
           asset_name: 'mavsdk_server.xcframework.zip'
           tag: ${{ github.ref }}
           overwrite: true
@@ -206,7 +206,7 @@ jobs:
         uses: svenstaro/upload-release-action@v1-release
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: 'build/mavsdk_server.xcframework.zip.sha256'
+          file: 'cpp/build/mavsdk_server.xcframework.zip.sha256'
           asset_name: 'mavsdk_server.xcframework.zip.sha256'
           tag: ${{ github.ref }}
           overwrite: true
