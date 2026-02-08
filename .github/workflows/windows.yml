@@ -7,13 +7,17 @@ on:
     tags:
     - 'v*'
     paths-ignore:
-    - 'docs/**'
+    - 'cpp/docs/**'
   pull_request:
     branches:
     - '*'
     paths-ignore:
-    - 'docs/**'
+    - 'cpp/docs/**'
     - '.github/workflows/docs_deploy.yml'
+
+defaults:
+  run:
+    working-directory: cpp
 
 jobs:
   Windows-mavsdk_server:
@@ -43,7 +47,7 @@ jobs:
       - uses: actions/cache@v4
         id: cache
         with:
-          path: ./build/third_party/install
+          path: ./cpp/build/third_party/install
           key: ${{ github.job }}-${{ matrix.arch }}-${{ hashFiles('./third_party/**') }}-2
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
@@ -73,14 +77,14 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: mavsdk_server-windows-${{ matrix.arch }}-release
-          path: 'install/bin/mavsdk_server_bin.exe'
+          path: 'cpp/install/bin/mavsdk_server_bin.exe'
           retention-days: 2
       - name: Publish mavsdk_server binary to release
         if: startsWith(github.ref, 'refs/tags/v')
         uses: svenstaro/upload-release-action@v1-release
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: 'install/bin/mavsdk_server_bin.exe'
+          file: 'cpp/install/bin/mavsdk_server_bin.exe'
           asset_name: mavsdk_server_win_${{ matrix.arch }}.exe
           tag: ${{ github.ref }}
           overwrite: true
@@ -128,7 +132,7 @@ jobs:
       - uses: actions/cache@v4
         id: cache
         with:
-          path: ./build/third_party/install
+          path: ./cpp/build/third_party/install
           key: ${{ github.job }}-${{ matrix.arch }}-${{ matrix.config }}-${{ hashFiles('./third_party/**') }}-2
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
@@ -160,7 +164,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: mavsdk-windows-${{ matrix.arch }}-${{ matrix.config }}
-          path: 'install/'
+          path: 'cpp/install/'
           retention-days: 2
       - name: Publish mavsdk library to release
         if: startsWith(github.ref, 'refs/tags/v')
@@ -191,12 +195,12 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: mavsdk-windows-${{ matrix.arch }}-Debug
-          path: debug-files
+          path: cpp/debug-files
       - name: Download RelWithDebInfo artifact
         uses: actions/download-artifact@v4
         with:
           name: mavsdk-windows-${{ matrix.arch }}-RelWithDebInfo
-          path: release-files
+          path: cpp/release-files
       - name: Create combined directory structure
         run: |
           mkdir combined\Debug
@@ -221,9 +225,9 @@ jobs:
           cd /d %GITHUB_WORKSPACE%
           cmake -G"Visual Studio 17 2022" -A ${{ matrix.platform }} ^
             -DCMAKE_BUILD_TYPE=Debug ^
-            -DCMAKE_PREFIX_PATH=%GITHUB_WORKSPACE%\combined ^
+            -DCMAKE_PREFIX_PATH=%GITHUB_WORKSPACE%\cpp\combined ^
             -Bbuild-examples-debug ^
-            -Sexamples
+            -Scpp\examples
 
           cmake --build build-examples-debug --config Debug
       - name: Test dual-config setup by building examples (RelWithDebInfo)
@@ -233,9 +237,9 @@ jobs:
           cd /d %GITHUB_WORKSPACE%
           cmake -G"Visual Studio 17 2022" -A ${{ matrix.platform }} ^
             -DCMAKE_BUILD_TYPE=RelWithDebInfo ^
-            -DCMAKE_PREFIX_PATH=%GITHUB_WORKSPACE%\combined ^
+            -DCMAKE_PREFIX_PATH=%GITHUB_WORKSPACE%\cpp\combined ^
             -Bbuild-examples-release ^
-            -Sexamples
+            -Scpp\examples
 
           cmake --build build-examples-release --config RelWithDebInfo
       - name: Create final ZIP file

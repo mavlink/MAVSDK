@@ -5,12 +5,16 @@ on:
     branches:
     - 'main'
     paths-ignore:
-    - 'docs/**'
+    - 'cpp/docs/**'
   pull_request:
     branches:
     - '*'
     paths-ignore:
-    - 'docs/**'
+    - 'cpp/docs/**'
+
+defaults:
+  run:
+    working-directory: cpp
 
 jobs:
   fuzz:
@@ -31,7 +35,7 @@ jobs:
         uses: actions/cache@v4
         id: cache-deps
         with:
-          path: ./build/fuzz/third_party/install
+          path: ./cpp/build/fuzz/third_party/install
           key: fuzz-deps-${{ hashFiles('./third_party/**') }}-1
 
       - name: Disable superbuild on cache hit
@@ -126,8 +130,8 @@ jobs:
         with:
           name: fuzzer-binary-${{ github.run_id }}
           path: |
-            ./build/fuzz/src/fuzz_tests/mavlink_fuzzer
-            ./build/fuzz/src/mavsdk/libmavsdk.so*
+            ./cpp/build/fuzz/src/fuzz_tests/mavlink_fuzzer
+            ./cpp/build/fuzz/src/mavsdk/libmavsdk.so*
           retention-days: 30
 
       - name: Upload corpus on crash
