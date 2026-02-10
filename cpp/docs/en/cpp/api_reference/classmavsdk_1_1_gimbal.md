@@ -4,7 +4,7 @@
 ----
 
 
-Provide control over a gimbal. 
+Provide control over a gimbal. Protocol: [Gimbal Protocol v2](https://mavlink.io/en/services/gimbal_v2.html)
 
 
 ## Data Structures

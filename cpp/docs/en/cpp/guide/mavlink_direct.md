@@ -70,7 +70,7 @@ In the example below we load in the AIRSPEED message as it is drafted in develop
     }
 ```
 
-Check out the [full example on GitHub](https://github.com/mavlink/MAVSDK/tree/main/examples/mavlink_direct_sender_custom)
+Check out the [full example on GitHub](https://github.com/mavlink/MAVSDK/tree/main/cpp/examples/mavlink_direct_sender_custom)
 
 
 ## Sending messages
@@ -136,7 +136,7 @@ while (true) {
 }
 ```
 
-Check the full example on [GitHub](https://github.com/mavlink/MAVSDK/tree/main/examples/mavlink_direct_sender).
+Check the full example on [GitHub](https://github.com/mavlink/MAVSDK/tree/main/cpp/examples/mavlink_direct_sender).
 
 ## Receiving messages
 
@@ -184,7 +184,7 @@ mavlink_direct.unsubscribe_message(handle);
 
 ## Sniffing all messages
 
-There is also [an example that demonstrates a generic MAVLink message sniffer](https://github.com/mavlink/MAVSDK/tree/main/examples/sniffer).
+There is also [an example that demonstrates a generic MAVLink message sniffer](https://github.com/mavlink/MAVSDK/tree/main/cpp/examples/sniffer).
 
 ::: info
 : This example uses the mavsdk.h intercept API rather than the MavlinkDirect plugin API, however, they are very similar.

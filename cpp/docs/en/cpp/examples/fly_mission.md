@@ -1,6 +1,6 @@
 # Example: Fly Mission
 
-The [Fly Mission](https://github.com/mavlink/MAVSDK/tree/main/examples/fly_mission) example shows how to create, upload, and run, pause, and restart missions using the SDK.
+The [Fly Mission](https://github.com/mavlink/MAVSDK/tree/main/cpp/examples/fly_mission) example shows how to create, upload, and run, pause, and restart missions using the SDK.
 
 ![Fly Mission QGC Screenshot](../../../assets/examples/fly_mission/fly_mission_example_qgc.jpg)
 
@@ -99,5 +99,5 @@ The operation of most of this code is discussed in the guide: [Missions](../guid
 
 ## Source code {#source_code}
 
-- [CMakeLists.txt](https://github.com/mavlink/MAVSDK/blob/main/examples/fly_mission/CMakeLists.txt)
-- [fly_mission.cpp](https://github.com/mavlink/MAVSDK/blob/main/examples/fly_mission/fly_mission.cpp)
+- [CMakeLists.txt](https://github.com/mavlink/MAVSDK/blob/main/cpp/examples/fly_mission/CMakeLists.txt)
+- [fly_mission.cpp](https://github.com/mavlink/MAVSDK/blob/main/cpp/examples/fly_mission/fly_mission.cpp)

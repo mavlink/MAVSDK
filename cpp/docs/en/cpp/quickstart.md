@@ -65,9 +65,9 @@ git clone https://github.com/mavlink/MAVSDK.git --recursive
 cd MAVSDK
 ```
 
-The examples can be found in the examples directory:
+The examples can be found in the `cpp/examples` directory:
 ```
-cd examples
+cd cpp/examples
 ```
 
 To build the takeoff and land example, you can do:
@@ -86,7 +86,7 @@ The examples match the MAVSDK version from your current branch. If you have anot
 
 First start PX4 in SITL (Simulation) and *QGroundControl* as described above.
 
-Then run the example app (from the **example/takeoff_land/build** directory) as shown:
+Then run the example app (from the **cpp/examples/takeoff_land/build** directory) as shown:
 ```sh
 build/takeoff_and_land udpin://0.0.0.0:14540
 ```
