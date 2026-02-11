@@ -62,4 +62,4 @@ You can extract the documentation to markdown files (one per class) on macOS or 
 
 In order to include new API reference in the *SDK Documentation* it must be manually added to the [Github repository](https://github.com/mavlink/MAVSDK-docs):
 - Copy the files into the [/en/cpp/api_reference](https://github.com/mavlink/MAVSDK-docs/tree/main/en/cpp/api_reference) folder
-- *New* APIs should be added to appropriate sections in the [MAVSDK-docs/en/SUMMARY.md](https://github.com/mavlink/MAVSDK-docs/blob/main/en/SUMMARY.md) and [/en/cpp/api_reference/index.md](https://github.com/mavlink/MAVSDK-docs/blob/main/en/cpp/api_reference/index.md).
+- *New* APIs should be added to appropriate sections in the [MAVSDK-docs/en/SUMMARY.md](https://github.com/mavlink/MAVSDK-docs/blob/main/en/SUMMARY.md) and [/en/cpp/api_reference/README.md](https://github.com/mavlink/MAVSDK-docs/blob/main/en/cpp/api_reference/README.md).
