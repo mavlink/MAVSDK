@@ -81,7 +81,7 @@ You can set the rate for *each* type of telemetry, and both synchronous or async
 
 ::: info
 For PX4 running on hardware the *default* rates are set on a per-mode basis in [mavlink_main.cpp](https://github.com/PX4/Firmware/blob/master/src/modules/mavlink/mavlink_main.cpp#L2025) (search on `configure_stream`).
-For PX4 running on SITL, the default rates are defined in the [startup file](https://docs.px4.io/master/en/concept/system_startup.html).
+For PX4 running on SITL, the default rates are defined in the [startup file](https://docs.px4.io/main/en/concept/system_startup).
 :::
 
 The rate-setting methods are all used in the same way, so we just show one example for both the asynchronous and synchronous methods below.
@@ -227,4 +227,5 @@ Additional information/examples for the Telemetry API are linked below:
 
 * [SDK Examples](../examples/index.md)
 * System tests:
-  * [telemetry_subscription.cpp](https://github.com/mavlink/MAVSDK/blob/main/src/system_tests/telemetry_subscription.cpp)
+  * [telemetry_subscription.cpp](https://github.com/mavlink/MAVSDK/blob/main/cpp/src/system_tests/telemetry_subscription.cpp)
+  * [PX4 System Startup](https://docs.px4.io/main/en/concept/system_startup.html)

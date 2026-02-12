@@ -26,6 +26,6 @@ The plugins developed specifically for this case are usually suffixed with `Serv
 - [MissionRawServer](./api_reference/classmavsdk_1_1_mission_raw_server.md)
 - [ParamServer](./api_reference/classmavsdk_1_1_param_server.md)
 - [TelemetryServer](./api_reference/classmavsdk_1_1_telemetry_server.md)
-- [TrackingServer](./api_reference/classmavsdk_1_1_tracking_server.md)
+- [CameraServer](./api_reference/classmavsdk_1_1_camera_server.md)
 
 These server plugins can potentially also be used to test the "client" plugins of MAVSDK in the future. The [Autopilot Server](./examples/autopilot_server.md) example uses multiple MAVSDK instances in this way.

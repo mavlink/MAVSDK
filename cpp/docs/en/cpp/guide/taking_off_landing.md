@@ -46,7 +46,7 @@ Some of the sections below additionally assume you have created a `Telemetry` in
 
 ## Taking Off
 
-The recommended way to take off using the SDK (and PX4) is to use either of the [takeoff()](../api_reference/classmavsdk_1_1_action.md#classmavsdk_1_1_action_1a0121d39baf922b1d88283230207ab5d0) or [takeoff_async()](../api_reference/classmavsdk_1_1_action.md#classmavsdk_1_1_action_1ab658d938970326db41709d83e02b41e6) methods. If a takeoff command is accepted the vehicle will change to the [Takeoff mode](https://docs.px4.io/master/en/flight_modes/takeoff.html), fly to the takeoff altitude, and then hover (in takeoff mode) until another instruction is received.
+The recommended way to take off using the SDK (and PX4) is to use either of the [takeoff()](../api_reference/classmavsdk_1_1_action.md#classmavsdk_1_1_action_1a0121d39baf922b1d88283230207ab5d0) or [takeoff_async()](../api_reference/classmavsdk_1_1_action.md#classmavsdk_1_1_action_1ab658d938970326db41709d83e02b41e6) methods. If a takeoff command is accepted the vehicle will change to the [Takeoff mode](https://docs.px4.io/main/en/flight_modes/takeoff.html), fly to the takeoff altitude, and then hover (in takeoff mode) until another instruction is received.
 
 ::: info
 PX4/SDK also provides other ways to take off:
@@ -182,7 +182,7 @@ while (current_position<target_alt) {
 ## Landing
 
 The best way to land the vehicle at the current location is to use the [land()](../api_reference/classmavsdk_1_1_action.md#classmavsdk_1_1_action_1af6429e1bdb2875deebfe98ed53da3d41) or [land_async()](../api_reference/classmavsdk_1_1_action.md#classmavsdk_1_1_action_1a89d146a766d49f1c706c66a3e2b9252d) methods.
-If the command is accepted the vehicle will change to the [Land mode](https://docs.px4.io/master/en/flight_modes/land.html) and land at the current point.
+If the command is accepted the vehicle will change to the [Land mode](https://docs.px4.io/main/en/flight_modes_mc/land) and land at the current point.
 
 ::: info
 The SDK does not at time of writing recommend other approaches for landing: land mission items are not supported and manually landing the vehicle using the offboard is not as safe.
@@ -211,7 +211,7 @@ std::cout << "Disarmed, exiting." << '\n';
 
 ## Return/RTL
 
-[Return mode](https://docs.px4.io/master/en/flight_modes/return.html) (also known as "Return to Launch", "Return to Land", "Return to Home") flies the vehicle back to the home position and may also land the vehicle (depending on vehicle configuration).
+[Return mode](https://docs.px4.io/main/en/flight_modes/return.html) (also known as "Return to Launch", "Return to Land", "Return to Home") flies the vehicle back to the home position and may also land the vehicle (depending on vehicle configuration).
 This mode is invoked from `Action` using the [return_to_launch()](../api_reference/classmavsdk_1_1_action.md#classmavsdk_1_1_action_1afd7c225df0495b0947f00e7d2dd64877) or [return_to_launch_async()](../api_reference/classmavsdk_1_1_action.md#classmavsdk_1_1_action_1afd7c225df0495b0947f00e7d2dd64877) methods.
 
 The code below shows how to use the synchronous method:
@@ -242,12 +242,12 @@ PX4 will automatically disarm the vehicle after landing. The disarm methods expl
 
 ## Get/Set Cruise Speed
 
-You can get/set the normal horizontal velocity used in *Return mode*, *Hold mode*, *Takeoff* (and other [AUTO Flight Modes](https://docs.px4.io/master/en/getting_started/flight_modes.html#categories) using the following methods:
+You can get/set the normal horizontal velocity used in *Return mode*, *Hold mode*, *Takeoff* (and other [AUTO Flight Modes](https://docs.px4.io/main/en/getting_started/px4_basic_concepts#flight-modes) using the following methods:
 * [set_maximum_speed()](../api_reference/classmavsdk_1_1_action.md#classmavsdk_1_1_action_1a5fccee1636215bccf8d77d9dca15134e)
 * [get_maximum_speed](../api_reference/classmavsdk_1_1_action.md#classmavsdk_1_1_action_1a128bf73fe8d0d359f36a3a9a327799ee)
 
 ::: info
-These methods get/set the [MPC_XY_CRUISE](https://docs.px4.io/master/en/advanced_config/parameter_reference.html#MPC_XY_CRUISE) parameter.
+These methods get/set the [MPC_XY_CRUISE](https://docs.px4.io/main/en/advanced_config/parameter_reference#MPC_XY_CRUISE) parameter.
 They are used in the same way as the other `Action` methods.
 :::
 
@@ -281,6 +281,6 @@ Additional information/examples for the Action API are linked below:
 
 * [Example: Takeoff and Land](../examples/takeoff_and_land.md)
 * [Example: VTOL Transitions](../examples/transition_vtol_fixed_wing.md)
-* [Example: Goto Location](https://github.com/mavlink/MAVSDK/blob/main/examples/goto_location/goto_location.cpp)
-* [Example: Hold](https://github.com/mavlink/MAVSDK/blob/main/examples/hold/hold.cpp)
+* [Example: Goto Location](https://github.com/mavlink/MAVSDK/blob/main/cpp/examples/goto_location/goto_location.cpp)
+* [Example: Hold](https://github.com/mavlink/MAVSDK/blob/main/cpp/examples/hold/hold.cpp)
 

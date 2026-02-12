@@ -21,7 +21,7 @@ Special notes for this example:
   sudo apt-get install libboost-all-dev
   ```
 * To use *QGroundControl* with this example you **must** ensure that *GSC Position Streaming* is disabled (otherwise QGC and the SDK will both send position updates and they will conflict).
-  To do this use the latest *QGC Daily Build* and ensure that the **[Application Setting > General](https://docs.qgroundcontrol.com/en/SettingsView/General.html) > Miscellaneous > Stream GCS Position** is set to *Never*.
+  To do this use the latest *QGC Daily Build* and ensure that the **[Application Setting > General](https://docs.qgroundcontrol.com/Stable_V5.0/en/qgc-user-guide/settings_view/general.html) > Miscellaneous > Stream GCS Position** is set to *Never*.
 
 Otherwise the example is built and run in the normal way ([as described here](../examples/index.md#trying_the_examples)).
 
@@ -114,5 +114,5 @@ The operation of the "SDK-specific" part of this code is discussed in the guide:
 
 ## Source code {#source_code}
 
-- [CMakeLists.txt](https://github.com/mavlink/MAVSDK/blob/main/examples/follow_me/CMakeLists.txt)
-- [follow_me.cpp](https://github.com/mavlink/MAVSDK/blob/main/examples/follow_me/CMakeLists.txt)
+- [CMakeLists.txt](https://github.com/mavlink/MAVSDK/blob/main/cpp/examples/follow_me/CMakeLists.txt)
+- [follow_me.cpp](https://github.com/mavlink/MAVSDK/blob/main/cpp/examples/follow_me/CMakeLists.txt)

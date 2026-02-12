@@ -11,7 +11,7 @@ The example must be run against a VTOL aircraft (simulated or otherwise).
 Otherwise the example is built and run [in the standard way](../examples/index.md#trying_the_examples).
 
 ::: tip
-Instructions for running the Gazebo simulator for a standard VTOL can be found here: [PX4 Development Guide > Gazebo Simulation](https://docs.px4.io/master/en/simulation/gazebo.html#standard-vtol).
+Instructions for running the Gazebo simulator for a standard VTOL can be found here: [PX4 Development Guide > Gazebo Simulation](https://docs.px4.io/main/en/sim_gazebo_gz/vehicles#standard-vtol).
 jMAVSim does not support VTOL simulation.
 :::
 
@@ -74,5 +74,5 @@ The operation of the transition code is discussed in the guide: [Takeoff and Lan
 
 ## Source code {#source_code}
 
-- [CMakeLists.txt](https://github.com/mavlink/MAVSDK/blob/main/examples/transition_vtol_fixed_wing/CMakeLists.txt)
-- [transition_vtol_fixed_wing.cpp](https://github.com/mavlink/MAVSDK/blob/main/examples/transition_vtol_fixed_wing/transition_vtol_fixed_wing.cpp)
+- [CMakeLists.txt](https://github.com/JoC2000/MAVSDK/blob/main/cpp/examples/vtol_transition/CMakeLists.txt)
+- [transition_vtol_fixed_wing.cpp](https://github.com/JoC2000/MAVSDK/blob/main/cpp/examples/vtol_transition/vtol_transition.cpp)

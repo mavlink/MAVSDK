@@ -29,7 +29,9 @@ namespace mavsdk {
 namespace rpc {
 namespace gimbal {
 
-// Provide control over a gimbal.
+//
+// Provide control over a gimbal within the MAVLink
+// Gimbal Protocol: https://mavlink.io/en/services/gimbal_v2.html
 class GimbalService final {
  public:
   static constexpr char const* service_full_name() {

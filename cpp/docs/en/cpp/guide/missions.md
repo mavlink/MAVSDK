@@ -267,10 +267,10 @@ The code fragment below shows how to download a mission:
 
 ## Further Information
 
-* [Mission Flight Mode](https://docs.px4.io/master/en/flight_modes/mission.html) (PX4 User Guide)
+* [Mission Flight Mode](https://docs.px4.io/main/en/flight_modes/mission.html) (PX4 User Guide)
 * [Example:Fly Mission](../examples/fly_mission.md)
 * System tests:
-  * [mission_raw_upload.cpp](https://github.com/mavlink/MAVSDK/blob/main/src/system_tests/mission_raw_upload.cpp)
-  * [mission_cancellation.cpp](https://github.com/mavlink/MAVSDK/blob/main/src/system_tests/mission_cancellation.cpp)
-  * [mission_changed.cpp](https://github.com/mavlink/MAVSDK/blob/main/src/system_tests/mission_changed.cpp)
-  * [mission_transfer_lossy.cpp](https://github.com/mavlink/MAVSDK/blob/main/src/system_tests/mission_transfer_lossy.cpp)
+  * [mission_raw_upload.cpp](https://github.com/mavlink/MAVSDK/blob/main/cpp/src/system_tests/mission_raw_upload.cpp)
+  * [mission_cancellation.cpp](https://github.com/mavlink/MAVSDK/blob/main/cpp/src/system_tests/mission_cancellation.cpp)
+  * [mission_changed.cpp](https://github.com/mavlink/MAVSDK/blob/main/cpp/src/system_tests/mission_changed.cpp)
+  * [mission_transfer_lossy.cpp](https://github.com/mavlink/MAVSDK/blob/main/cpp/src/system_tests/mission_transfer_lossy.cpp)

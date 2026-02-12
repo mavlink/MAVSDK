@@ -15,7 +15,7 @@ It is not exported, or intended, for use in SDK apps (and we do not commit to ma
 
 ### Usage
 
-The API is defined in [src/core/log.h](https://github.com/mavlink/MAVSDK/blob/main/src/core/log.h).
+The API is defined in [src/core/log.h](https://github.com/JoC2000/MAVSDK/blob/main/cpp/src/mavsdk/core/log.h).
 
 The API methods are called as shown below for `LogDebug()`, with the insertion operator (`<<`) used to append the message-specific text.
 
@@ -40,6 +40,6 @@ Function | Description | Example
 Basic logging is defined in source for both incoming (handled/ignored) and sent MAVLink messages.
 
 This functionality is disabled by default, and available only in debug build when built from source.
-To enable the logs, set `#define MESSAGE_DEBUGGING 1` in [src/core/system.cpp](https://github.com/mavlink/MAVSDK/blob/main/src/core/system.cpp)
+To enable the logs, set `#define MESSAGE_DEBUGGING 1` in [src/core/system.cpp](https://github.com/JoC2000/MAVSDK/blob/main/cpp/src/mavsdk/core/system.cpp)
 
 <!-- Added: https://github.com/mavlink/MAVSDK/pull/194 -->

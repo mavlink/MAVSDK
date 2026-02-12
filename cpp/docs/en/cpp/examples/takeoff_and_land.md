@@ -7,7 +7,7 @@ After a short wait the vehicle lands.
 While flying the vehicle receives telemetry. The example is implemented in C++ (only).
 
 ::: tip
-The full source code for the example [can be found here](https://github.com/mavlink/MAVSDK/tree/main/examples/takeoff_and_land).
+The full source code for the example [can be found here](https://github.com/mavlink/MAVSDK/tree/main/cpp/examples/takeoff_and_land).
 :::
 
 ## Running the Example {#run_example}
@@ -62,8 +62,8 @@ Finished...
 ## Source code {#source_code}
 
 ::: tip
-The full source code for the example [can be found on Github here](https://github.com/mavlink/MAVSDK/tree/main/examples/takeoff_and_land).
+The full source code for the example [can be found on Github here](https://github.com/mavlink/MAVSDK/tree/main/cpp/examples/takeoff_and_land).
 :::
 
-- [CMakeLists.txt](https://github.com/mavlink/MAVSDK/blob/main/examples/takeoff_and_land/CMakeLists.txt)
-- [takeoff_and_land.cpp](https://github.com/mavlink/MAVSDK/blob/main/examples/takeoff_and_land/takeoff_and_land.cpp)
+- [CMakeLists.txt](https://github.com/mavlink/MAVSDK/blob/main/cpp/examples/takeoff_and_land/CMakeLists.txt)
+- [takeoff_and_land.cpp](https://github.com/mavlink/MAVSDK/blob/main/cpp/examples/takeoff_and_land/takeoff_and_land.cpp)

@@ -1,6 +1,6 @@
 # Follow Me
 
-The [Follow Me](../api_reference/classmavsdk_1_1_follow_me.md) class is used to engage the PX4 [Follow Me Mode](https://docs.px4.io/master/en/flight_modes/follow_me.html) (multicopter only).
+The [Follow Me](../api_reference/classmavsdk_1_1_follow_me.md) class is used to engage the PX4 [Follow Me Mode](https://docs.px4.io/main/en/flight_modes/follow_me.html) (multicopter only).
 In this mode a copter will automatically yaw to face and follow a user at a specified position and distance.
 
 The API is used to supply the position(s) for the [target](../api_reference/structmavsdk_1_1_follow_me_1_1_target_location.md) and the relative [follow position](../api_reference/structmavsdk_1_1_follow_me_1_1_config.md) of the vehicle.
@@ -12,7 +12,7 @@ Applications must get target position information from the underlying platform (
 ::: warning
 Running *QGroundControl* at the same time as the SDK *Follow Me* may result in unpredictable behaviour as both send position updates.
 You **must** ensure that *GSC Position Streaming* is disabled.
-Use the latest *QGC Daily Build* and ensure that the **[Application Setting > General](https://docs.qgroundcontrol.com/en/SettingsView/General.html) > Miscellaneous > Stream GCS Position** is set to *Never*.
+Use the latest *QGC Daily Build* and ensure that the **[Application Setting > General](https://docs.qgroundcontrol.com/Stable_V5.0/en/qgc-user-guide/settings_view/general.html) > Miscellaneous > Stream GCS Position** is set to *Never*.
 :::
 
 ## Create the Plugin
@@ -74,7 +74,7 @@ auto curr_config = follow_me.get_config();
 
 ## Following a Target
 
-To start and stop following a target, call [start()](../api_reference/classmavsdk_1_1_follow_me.md#classmavsdk_1_1_follow_me_1a4b6ae3ec1ff07d8b3a79038e04992003) and [stop()](../api_reference/classmavsdk_1_1_follow_me.md#classmavsdk_1_1_follow_me_1a202a7b9edf56d9b883c974a09c14ba7d), respectively - `start()` puts the vehicle into [Follow-Me mode](https://docs.px4.io/master/en/flight_modes/follow_me.html) and `stop()` puts it into [Hold mode](https://docs.px4.io/master/en/flight_modes/hold.html).
+To start and stop following a target, call [start()](../api_reference/classmavsdk_1_1_follow_me.md#classmavsdk_1_1_follow_me_1a4b6ae3ec1ff07d8b3a79038e04992003) and [stop()](../api_reference/classmavsdk_1_1_follow_me.md#classmavsdk_1_1_follow_me_1a202a7b9edf56d9b883c974a09c14ba7d), respectively - `start()` puts the vehicle into [Follow-Me mode](https://docs.px4.io/main/en/flight_modes/follow_me.html) and `stop()` puts it into [Hold mode](https://docs.px4.io/main/en/flight_modes/hold.html).
 
 Use [set_target_location()](../api_reference/classmavsdk_1_1_follow_me.md#classmavsdk_1_1_follow_me_1a1a99e282472235f726bfde430873ffd5) to set the target position(s) for the vehicle to follow (the app typically passes its host's current position, which it would obtain using OS-specific methods).
 This can be called at any time, but messages will only be sent once following is started.
