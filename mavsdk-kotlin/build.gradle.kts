@@ -62,57 +62,9 @@ configure<LibraryExtension> {
         }
     }
     
-    externalNativeBuild {
-        cmake {
-            path = file("src/androidMain/cpp/CMakeLists.txt")
-        }
-    }
-    
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_21
         targetCompatibility = JavaVersion.VERSION_21
     }
 }
 
-// Build JNI library for JVM target
-tasks.register<Exec>("configureCMake") {
-    description = "Configure CMake for JNI build"
-    
-    doFirst {
-        mkdir("build/jni")
-    }
-    
-    workingDir = file("build/jni")
-    commandLine("cmake", "../../src/androidMain/cpp")
-}
-
-tasks.register<Exec>("buildJniJvm") {
-    description = "Build JNI library using CMake"
-    dependsOn("configureCMake")
-    
-    val outputLib = file("build/jni/libmavsdk_jni.dylib")
-    outputs.file(outputLib)
-    inputs.dir("src/androidMain/cpp")
-    
-    workingDir = file("build/jni")
-    commandLine("cmake", "--build", ".")
-}
-
-tasks.register<Copy>("copyJniToResources") {
-    dependsOn("buildJniJvm")
-    
-    from(fileTree("build/jni") {
-        include("*.dylib", "*.so", "*.dll")
-    })
-    into("src/jvmMain/resources/native")
-}
-
-tasks.register<Copy>("copyCmavsdkToResources") {
-    from("libs")
-    into("src/jvmMain/resources/native")
-    include("*.dylib", "*.so", "*.dll")
-}
-
-tasks.named("jvmProcessResources") {
-    dependsOn("copyJniToResources", "copyCmavsdkToResources")
-}
