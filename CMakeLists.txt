@@ -21,6 +21,7 @@ if(ANDROID)
     
     # Build JNI wrapper
     add_library(mavsdk_jni SHARED
+        plugins/telemetry/telemetry_jni.cpp
         mavsdk_jni.cpp
         configuration_jni.cpp
         log_jni.cpp
@@ -41,6 +42,7 @@ else()
     
     # Build JNI wrapper
     add_library(mavsdk_jni SHARED
+        plugins/telemetry/telemetry_jni.cpp
         mavsdk_jni.cpp
         configuration_jni.cpp
         log_jni.cpp
