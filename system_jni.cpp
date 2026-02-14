@@ -4,12 +4,18 @@
 
 using namespace mavsdk::jni;
 
-// Global JavaVM pointer - needed for attaching threads in callbacks
-static JavaVM* g_jvm = nullptr;
+namespace mavsdk {
+namespace jni {
+
+// Global JavaVM pointer - defined here, declared in jni_utils.h
+JavaVM* g_jvm = nullptr;
+
+} // namespace jni
+} // namespace mavsdk
 
 // Initialize JVM pointer (call this from JNI_OnLoad)
 extern "C" JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM* vm, void* reserved) {
-    g_jvm = vm;
+    mavsdk::jni::g_jvm = vm;
     return JNI_VERSION_1_6;
 }
 

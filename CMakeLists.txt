@@ -23,6 +23,7 @@ if(ANDROID)
     add_library(mavsdk_jni SHARED
         mavsdk_jni.cpp
         configuration_jni.cpp
+        log_jni.cpp
         system_jni.cpp
     )
     
@@ -42,6 +43,7 @@ else()
     add_library(mavsdk_jni SHARED
         mavsdk_jni.cpp
         configuration_jni.cpp
+        log_jni.cpp
         system_jni.cpp
     )
     

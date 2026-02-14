@@ -7,6 +7,10 @@
 namespace mavsdk {
 namespace jni {
 
+// Global JavaVM pointer - shared across all JNI files
+// Initialized in JNI_OnLoad, used for thread attachment in callbacks
+extern JavaVM* g_jvm;
+
 /**
  * RAII wrapper for JNI string
  */
