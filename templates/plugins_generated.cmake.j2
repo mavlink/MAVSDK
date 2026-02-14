@@ -1,0 +1,13 @@
+# This file is auto-generated - do not edit manually
+
+set(PLUGIN_SOURCES
+{%- for plugin in plugins %}
+    cmavsdk/plugins/{{ plugin }}/{{ plugin }}.cpp
+{%- endfor %}
+)
+
+set(PLUGIN_HEADERS
+{%- for plugin in plugins %}
+    cmavsdk/plugins/{{ plugin }}/{{ plugin }}.h
+{%- endfor %}
+)
