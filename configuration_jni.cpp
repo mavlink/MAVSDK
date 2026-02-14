@@ -1,5 +1,5 @@
 #include <jni.h>
-#include "mavsdk.h"
+#include "cmavsdk/mavsdk.h"
 #include "jni_utils.h"
 
 using namespace mavsdk::jni;

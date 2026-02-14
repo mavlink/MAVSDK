@@ -1,6 +1,6 @@
 #include <jni.h>
 #include <vector>
-#include "mavsdk.h"
+#include "cmavsdk/mavsdk.h"
 #include "jni_utils.h"
 
 using namespace mavsdk::jni;
