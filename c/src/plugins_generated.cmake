@@ -1,0 +1,79 @@
+# This file is auto-generated - do not edit manually
+
+set(PLUGIN_SOURCES
+    cmavsdk/plugins/action/action.cpp
+    cmavsdk/plugins/action_server/action_server.cpp
+    cmavsdk/plugins/arm_authorizer_server/arm_authorizer_server.cpp
+    cmavsdk/plugins/calibration/calibration.cpp
+    cmavsdk/plugins/camera/camera.cpp
+    cmavsdk/plugins/camera_server/camera_server.cpp
+    cmavsdk/plugins/component_metadata/component_metadata.cpp
+    cmavsdk/plugins/component_metadata_server/component_metadata_server.cpp
+    cmavsdk/plugins/events/events.cpp
+    cmavsdk/plugins/failure/failure.cpp
+    cmavsdk/plugins/follow_me/follow_me.cpp
+    cmavsdk/plugins/ftp/ftp.cpp
+    cmavsdk/plugins/ftp_server/ftp_server.cpp
+    cmavsdk/plugins/geofence/geofence.cpp
+    cmavsdk/plugins/gimbal/gimbal.cpp
+    cmavsdk/plugins/gripper/gripper.cpp
+    cmavsdk/plugins/info/info.cpp
+    cmavsdk/plugins/log_files/log_files.cpp
+    cmavsdk/plugins/log_streaming/log_streaming.cpp
+    cmavsdk/plugins/manual_control/manual_control.cpp
+    cmavsdk/plugins/mavlink_direct/mavlink_direct.cpp
+    cmavsdk/plugins/mission/mission.cpp
+    cmavsdk/plugins/mission_raw/mission_raw.cpp
+    cmavsdk/plugins/mission_raw_server/mission_raw_server.cpp
+    cmavsdk/plugins/mocap/mocap.cpp
+    cmavsdk/plugins/offboard/offboard.cpp
+    cmavsdk/plugins/param/param.cpp
+    cmavsdk/plugins/param_server/param_server.cpp
+    cmavsdk/plugins/rtk/rtk.cpp
+    cmavsdk/plugins/server_utility/server_utility.cpp
+    cmavsdk/plugins/shell/shell.cpp
+    cmavsdk/plugins/telemetry/telemetry.cpp
+    cmavsdk/plugins/telemetry_server/telemetry_server.cpp
+    cmavsdk/plugins/transponder/transponder.cpp
+    cmavsdk/plugins/tune/tune.cpp
+    cmavsdk/plugins/winch/winch.cpp
+)
+
+set(PLUGIN_HEADERS
+    cmavsdk/plugins/action/action.h
+    cmavsdk/plugins/action_server/action_server.h
+    cmavsdk/plugins/arm_authorizer_server/arm_authorizer_server.h
+    cmavsdk/plugins/calibration/calibration.h
+    cmavsdk/plugins/camera/camera.h
+    cmavsdk/plugins/camera_server/camera_server.h
+    cmavsdk/plugins/component_metadata/component_metadata.h
+    cmavsdk/plugins/component_metadata_server/component_metadata_server.h
+    cmavsdk/plugins/events/events.h
+    cmavsdk/plugins/failure/failure.h
+    cmavsdk/plugins/follow_me/follow_me.h
+    cmavsdk/plugins/ftp/ftp.h
+    cmavsdk/plugins/ftp_server/ftp_server.h
+    cmavsdk/plugins/geofence/geofence.h
+    cmavsdk/plugins/gimbal/gimbal.h
+    cmavsdk/plugins/gripper/gripper.h
+    cmavsdk/plugins/info/info.h
+    cmavsdk/plugins/log_files/log_files.h
+    cmavsdk/plugins/log_streaming/log_streaming.h
+    cmavsdk/plugins/manual_control/manual_control.h
+    cmavsdk/plugins/mavlink_direct/mavlink_direct.h
+    cmavsdk/plugins/mission/mission.h
+    cmavsdk/plugins/mission_raw/mission_raw.h
+    cmavsdk/plugins/mission_raw_server/mission_raw_server.h
+    cmavsdk/plugins/mocap/mocap.h
+    cmavsdk/plugins/offboard/offboard.h
+    cmavsdk/plugins/param/param.h
+    cmavsdk/plugins/param_server/param_server.h
+    cmavsdk/plugins/rtk/rtk.h
+    cmavsdk/plugins/server_utility/server_utility.h
+    cmavsdk/plugins/shell/shell.h
+    cmavsdk/plugins/telemetry/telemetry.h
+    cmavsdk/plugins/telemetry_server/telemetry_server.h
+    cmavsdk/plugins/transponder/transponder.h
+    cmavsdk/plugins/tune/tune.h
+    cmavsdk/plugins/winch/winch.h
+)

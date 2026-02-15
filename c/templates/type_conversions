@@ -1,0 +1,12 @@
+{
+    "double": "double",
+    "float": "float",
+    "int64_t": "int64_t", 
+    "uint64_t": "uint64_t",
+    "int32_t": "int32_t",
+    "bool": "bool",
+    "std::string": "char*",
+    "std::byte": "uint8_t*",
+    "uint32_t": "uint32_t",
+    "repeated": { "prefix": "", "suffix": "*" }
+}

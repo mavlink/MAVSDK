@@ -1,0 +1,11 @@
+#CMAVSDK
+
+CMake configure step (on macOS, I had to define OPENSSL_ROOT_DIR):
+
+```
+OPENSSL_ROOT_DIR=/path/to/mavsdk/build/third_party/install \
+cmake -DCMAKE_INSTALL_PREFIX=build/install \
+-DCMAKE_PREFIX_PATH="/path/to/mavsdk/build/install;/path/to/mavsdk/build/third_party/install" \
+-DBUILD_SHARED_LIBS=ON \
+-Bbuild -S.
+```
