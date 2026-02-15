@@ -35,8 +35,7 @@ actual class System internal constructor(private val handle: Long) {
     private external fun getAutopilotTypeNative(): Int
     private external fun getVehicleTypeNative(): Int
 
-    @Suppress("NON_PUBLIC_CALL_FROM_PUBLIC_INLINE")
-    fun getHandle(): Long = handle
+    actual internal fun getHandle(): Long = handle
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

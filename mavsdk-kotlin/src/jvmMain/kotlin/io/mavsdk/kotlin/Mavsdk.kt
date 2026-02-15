@@ -59,8 +59,7 @@ actual class Mavsdk actual constructor(configuration: Configuration) : AutoClose
         }
     }
 
-    @Suppress("NON_PUBLIC_CALL_FROM_PUBLIC_INLINE")
-    fun getHandle(): Long = handle
+    internal fun getHandle(): Long = handle
 
     companion object {
         init {

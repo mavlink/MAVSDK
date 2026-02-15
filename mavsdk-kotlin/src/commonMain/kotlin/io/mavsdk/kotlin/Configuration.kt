@@ -16,6 +16,8 @@ expect class Configuration : AutoCloseable {
 
     override fun close()
 
+    internal fun getHandle(): Long
+
     companion object {
         /**
          * Create configuration with component type

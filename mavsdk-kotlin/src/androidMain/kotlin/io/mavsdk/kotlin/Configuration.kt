@@ -20,7 +20,7 @@ actual class Configuration private constructor(private val handle: Long) : AutoC
         destroy()
     }
 
-    internal fun getHandle(): Long = handle
+    actual internal fun getHandle(): Long = handle
 
     actual companion object {
         init {

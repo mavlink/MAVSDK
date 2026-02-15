@@ -38,6 +38,14 @@ kotlin {
             kotlinOptions.jvmTarget = "21"
         }
     }
+
+    targets.all {
+        compilations.all {
+            kotlinOptions {
+                freeCompilerArgs += "-Xexpect-actual-classes"
+            }
+        }
+    }
     
     sourceSets {
         val commonMain by getting {

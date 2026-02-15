@@ -20,8 +20,7 @@ actual class Configuration private constructor(private val handle: Long) : AutoC
         destroy()
     }
 
-    @Suppress("NON_PUBLIC_CALL_FROM_PUBLIC_INLINE")
-    fun getHandle(): Long = handle
+    actual internal fun getHandle(): Long = handle
 
     actual companion object {
         init {

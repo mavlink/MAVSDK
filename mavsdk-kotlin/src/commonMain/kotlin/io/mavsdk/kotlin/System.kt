@@ -64,4 +64,9 @@ expect class System {
      * Enable time synchronization
      */
     fun enableTimesync()
+
+    /**
+     * Get native handle (internal use only for plugins)
+     */
+    internal fun getHandle(): Long
 }
