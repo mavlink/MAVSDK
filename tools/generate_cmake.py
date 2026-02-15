@@ -7,7 +7,7 @@ def main():
     parser.add_argument("plugins", nargs="+", help="enabled plugins")
     args = parser.parse_args()
     
-    plugins = args.plugins  # Simpler - no need for vars()
+    plugins = args.plugins
     
     env = jinja2.Environment(loader=jinja2.FileSystemLoader('templates'))
     template = env.get_template("plugins_generated.cmake.j2")
