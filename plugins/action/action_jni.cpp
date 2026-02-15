@@ -46,9 +46,9 @@ struct ArmCallbackWrapper {
 
 extern "C" {
 
-// Action.create
+// Action.Companion.createNative
 JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_Action_create(
+Java_io_mavsdk_kotlin_plugins_action_Action_00024Companion_createNative(
     JNIEnv* env,
     jclass clazz,
     jlong systemHandle) {
@@ -72,23 +72,23 @@ Java_io_mavsdk_kotlin_Action_create(
 
 // Action.destroy
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_Action_destroy(
+Java_io_mavsdk_kotlin_plugins_action_Action_destroy(
     JNIEnv* env,
     jobject obj) {
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/Action");
+    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/action/Action");
     if (!handle) return;
 
     mavsdk_action_destroy(reinterpret_cast<mavsdk_action_t>(handle));
 }
 
-// Action.arm (blocking)
+// Action.armBlocking
 JNIEXPORT jint JNICALL
-Java_io_mavsdk_kotlin_Action_arm(
+Java_io_mavsdk_kotlin_plugins_action_Action_armBlocking(
     JNIEnv* env,
     jobject obj) {
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/Action");
+    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/action/Action");
     if (!handle) return MAVSDK_ACTION_RESULT_UNKNOWN;
 
     mavsdk_action_result_t result = mavsdk_action_arm(
@@ -98,14 +98,14 @@ Java_io_mavsdk_kotlin_Action_arm(
     return static_cast<jint>(result);
 }
 
-// Action.armAsync
+// Action.armAsyncNative
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_Action_armAsync(
+Java_io_mavsdk_kotlin_plugins_action_Action_armAsyncNative(
     JNIEnv* env,
     jobject obj,
     jobject callback) {
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/Action");
+    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/action/Action");
     if (!handle || !callback) return;
 
     // Create wrapper with GlobalRef to callback

@@ -14,10 +14,10 @@ struct PositionCallbackWrapper {
 
         if (callback.isValid()) {
             // Cache the method ID for the callback interface
-            // Signature: (Lio/mavsdk/kotlin/Telemetry$Position;)V
+            // Signature: (Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$Position;)V
             jclass callbackClass = env->GetObjectClass(callback_obj);
             invokeMethod = env->GetMethodID(callbackClass, "invoke",
-                "(Lio/mavsdk/kotlin/Telemetry$Position;)V");
+                "(Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$Position;)V");
             env->DeleteLocalRef(callbackClass);
         }
     }
@@ -35,7 +35,7 @@ struct PositionCallbackWrapper {
         }
 
         // Create Position object
-        jclass positionClass = env->FindClass("io/mavsdk/kotlin/Telemetry$Position");
+        jclass positionClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$Position");
         jmethodID positionConstructor = env->GetMethodID(positionClass, "<init>", "(DDFF)V");
 
         jobject positionObj = env->NewObject(
@@ -64,9 +64,9 @@ struct PositionCallbackWrapper {
 
 extern "C" {
 
-// Telemetry.create
+// Telemetry.Companion.createNative
 JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_Telemetry_create(
+Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_00024Companion_createNative(
     JNIEnv* env,
     jclass clazz,
     jlong systemHandle) {
@@ -90,11 +90,11 @@ Java_io_mavsdk_kotlin_Telemetry_create(
 
 // Telemetry.destroy
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_Telemetry_destroy(
+Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_destroy(
     JNIEnv* env,
     jobject obj) {
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/Telemetry");
+    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
     if (!handle) return;
 
     mavsdk_telemetry_destroy(reinterpret_cast<mavsdk_telemetry_t>(handle));
@@ -102,12 +102,12 @@ Java_io_mavsdk_kotlin_Telemetry_destroy(
 
 // Telemetry.subscribePositionNative
 JNIEXPORT jlong JNICALL
-Java_io_mavsdk_kotlin_Telemetry_subscribePositionNative(
+Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_subscribePositionNative(
     JNIEnv* env,
     jobject obj,
     jobject callback) {
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/Telemetry");
+    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
     if (!handle || !callback) return 0;
 
     // Create wrapper with GlobalRef to callback
@@ -134,12 +134,12 @@ Java_io_mavsdk_kotlin_Telemetry_subscribePositionNative(
 
 // Telemetry.unsubscribePosition
 JNIEXPORT void JNICALL
-Java_io_mavsdk_kotlin_Telemetry_unsubscribePosition(
+Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_unsubscribePosition(
     JNIEnv* env,
     jobject obj,
     jlong subscriptionHandle) {
 
-    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/Telemetry");
+    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry/Telemetry");
     if (!handle || !subscriptionHandle) return;
 
     auto* handle_pair = reinterpret_cast<

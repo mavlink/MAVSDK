@@ -160,18 +160,18 @@ private:
 };
 
 /**
- * Get handle from Java object
+ * Get handle from Java object by accessing the private handle field directly
  */
 inline jlong getHandle(JNIEnv* env, jobject obj, const char* className) {
     jclass clazz = env->FindClass(className);
     if (!clazz) return 0;
     
-    jmethodID getHandleMethod = env->GetMethodID(clazz, "getHandle", "()J");
+    jfieldID handleField = env->GetFieldID(clazz, "handle", "J");
     env->DeleteLocalRef(clazz);
     
-    if (!getHandleMethod) return 0;
+    if (!handleField) return 0;
     
-    return env->CallLongMethod(obj, getHandleMethod);
+    return env->GetLongField(obj, handleField);
 }
 
 } // namespace jni
