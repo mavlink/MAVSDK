@@ -373,6 +373,31 @@ public:
     double get_heartbeat_timeout_s() const;
 
     /**
+     * @brief Set a custom callback executor.
+     *
+     * By default, MAVSDK runs all user callbacks on an internal thread.
+     * Setting a custom executor replaces this: the executor function is called
+     * for each pending callback, and the internal callback thread is stopped.
+     *
+     * The executor is called from MAVSDK's internal work thread, so it must
+     * be fast (e.g., just post/queue the callback for later execution).
+     *
+     * This is useful for integrating with an existing event loop or ensuring
+     * callbacks run on a specific thread.
+     *
+     * @note When a custom executor is set, blocking/synchronous APIs (e.g.,
+     *       first_autopilot(), or any sync plugin method) must not be called
+     *       from the thread that drains the executor queue, as they internally
+     *       wait for a callback that the blocked thread would need to process.
+     *       Use async APIs and drain callbacks in your event loop instead,
+     *       or call sync APIs from a separate thread.
+     *
+     * @param executor Function that will be called with each callback to execute.
+     *                 Pass nullptr/empty to revert to the default internal thread.
+     */
+    void set_callback_executor(std::function<void(std::function<void()>)> executor);
+
+    /**
      * @brief Callback type discover and timeout notifications.
      */
     using NewSystemCallback = std::function<void()>;

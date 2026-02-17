@@ -32,6 +32,12 @@ public:
         _condition_var.notify_all();
     }
 
+    void restart()
+    {
+        std::lock_guard<std::mutex> lock(_mutex);
+        _should_exit = false;
+    }
+
     using iterator = typename std::deque<std::shared_ptr<T>>::iterator;
     iterator begin() { return _queue.begin(); }
 

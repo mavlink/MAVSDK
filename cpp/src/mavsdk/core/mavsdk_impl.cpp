@@ -1232,12 +1232,59 @@ void MavsdkImpl::work_thread()
     }
 }
 
+void MavsdkImpl::set_callback_executor(std::function<void(std::function<void()>)> executor)
+{
+    bool has_executor;
+    {
+        std::lock_guard<std::mutex> lock(_callback_executor_mutex);
+        _callback_executor = std::move(executor);
+        has_executor = !!_callback_executor;
+    }
+
+    if (has_executor) {
+        // Stop the internal callback thread since user will handle callbacks
+        if (_process_user_callbacks_thread != nullptr) {
+            _user_callback_queue.stop();
+            _process_user_callbacks_thread->join();
+            delete _process_user_callbacks_thread;
+            _process_user_callbacks_thread = nullptr;
+        }
+
+        // Drain any remaining callbacks through the executor
+        {
+            std::lock_guard<std::mutex> lock(_callback_executor_mutex);
+            if (_callback_executor) {
+                LockedQueue<UserCallback>::Guard guard(_user_callback_queue);
+                while (auto ptr = guard.get_front()) {
+                    _callback_executor(ptr->func);
+                    guard.pop_front();
+                }
+            }
+        }
+    } else {
+        // Revert to default internal callback thread
+        if (_process_user_callbacks_thread == nullptr) {
+            _user_callback_queue.restart();
+            _process_user_callbacks_thread =
+                new std::thread(&MavsdkImpl::process_user_callbacks_thread, this);
+        }
+    }
+}
+
 void MavsdkImpl::call_user_callback_located(
     const std::string& filename, const int linenumber, const std::function<void()>& func)
 {
     // Don't enqueue callbacks if we're shutting down
     if (_should_exit) {
         return;
+    }
+
+    {
+        std::lock_guard<std::mutex> lock(_callback_executor_mutex);
+        if (_callback_executor) {
+            _callback_executor(func);
+            return;
+        }
     }
 
     auto callback_size = _user_callback_queue.size();
@@ -1278,7 +1325,7 @@ void MavsdkImpl::process_user_callbacks_thread()
             LockedQueue<UserCallback>::Guard guard(_user_callback_queue);
             auto ptr = guard.wait_and_pop_front();
             if (!ptr) {
-                continue;
+                break;
             }
             // We need to get a copy instead of just a shared_ptr because the queue might
             // be invalidated when the lock is released.
