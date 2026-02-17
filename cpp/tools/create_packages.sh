@@ -29,9 +29,9 @@ mkdir -p "${working_dir}/install"
 cp -r "${install_dir}" "${working_dir}/install/usr"
 
 # We need the relative path of all files.
-library_files=$(find "${working_dir}/install" -type f | cut -sd / -f 5-)
+mapfile -t library_files < <(find "${working_dir}/install" -type f | cut -sd / -f 5-)
 echo "Files to be packaged:"
-echo "${library_files}"
+printf "%s\n" "${library_files[@]}"
 
 # This creates a version such as "v1.2.3-5-g123abc".
 version=$(git describe --always --tags)
@@ -59,7 +59,7 @@ then
     fpm "${common_args[@]}" \
         --output-type deb \
         --deb-no-default-config-files \
-        "${library_files}"
+        "${library_files[@]}"
 
     dist_version=$(grep VERSION_ID /etc/os-release | sed 's/[^0-9.]*//g')
 
@@ -75,7 +75,7 @@ then
     fpm "${common_args[@]}" \
         --output-type deb \
         --deb-no-default-config-files \
-        "${library_files}"
+        "${library_files[@]}"
 
     dist_version=$(grep VERSION_ID /etc/os-release | sed 's/[^0-9.]*//g')
 
@@ -90,7 +90,7 @@ then
     fpm "${common_args[@]}" \
         --output-type rpm \
         --rpm-rpmbuild-define "_build_id_links none" \
-        "${library_files}"
+        "${library_files[@]}"
 
     dist_version=$(grep VERSION_ID /etc/os-release | sed 's/[^0-9]*//g')
 
