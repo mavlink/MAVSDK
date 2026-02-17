@@ -31,9 +31,9 @@ mavlink-headers
 
 
 # vitepress - Docs guide
-docs/node_modules/
-docs/.vitepress/cache/
-docs/.vitepress/dist/
+cpp/docs/node_modules/
+cpp/docs/.vitepress/cache/
+cpp/docs/.vitepress/dist/
 
 # Fuzzing
 fuzz_corpus

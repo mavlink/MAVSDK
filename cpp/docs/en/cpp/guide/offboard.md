@@ -4,7 +4,7 @@ The [Offboard](../api_reference/classmavsdk_1_1_offboard.md) MAVSDK plugin provi
 It is useful for tasks requiring direct control from a companion computer; for example to implement collision avoidance.
 
 ::: info
-The API uses the PX4 [Offboard flight mode](https://docs.px4.io/master/en/flight_modes/offboard.html).
+The API uses the PX4 [Offboard flight mode](https://docs.px4.io/main/en/flight_modes/offboard.html).
 The class can only be used with copter and VTOL vehicles (not fixed wing - a PX4 limitation) and currently only supports *velocity setpoint commands* (PX4 additionally supports position and thrust setpoints).
 :::
 
@@ -66,7 +66,7 @@ Above we use the synchronous API, and then print a human readable string for the
 You can change the setpoints as needed (new setpoints replace any old setpoints).
 
 To stop offboard mode call [Offboard::stop()](../api_reference/classmavsdk_1_1_offboard.md#classmavsdk_1_1_offboard_1a626810cbfa02b36019dde2d2fd4c3da9) or [stop_async()](../api_reference/classmavsdk_1_1_offboard.md#classmavsdk_1_1_offboard_1a86c163d7fa1217b4e82a03daf52065c3).
-The SDK will then clear the current setpoint and put the vehicle into [Hold flight mode](https://docs.px4.io/master/en/flight_modes/hold.html).
+The SDK will then clear the current setpoint and put the vehicle into [Hold flight mode](https://docs.px4.io/main/en/flight_modes/hold.html).
 The synchronous API is used as shown below:
 
 ```cpp

@@ -40,7 +40,7 @@ The main parts are:
 
 * [`protoc-gen-mavsdk`](https://github.com/mavlink/MAVSDK-Proto/tree/main/pb_plugins), which is a `protoc` custom plugin generating MAVSDK's code.
 * [The API definition](https://github.com/mavlink/MAVSDK-Proto/tree/main/protos), in the form of proto files.
-* Template files (per language, see e.g. the [Python templates](https://github.com/mavlink/MAVSDK-Python/tree/main/other/templates/py) or the [C++ templates](https://github.com/mavlink/MAVSDK/tree/main/templates)).
+* Template files (per language, see e.g. the [Python templates](https://github.com/mavlink/MAVSDK-Python/tree/main/other/templates/py) or the [C++ templates](https://github.com/mavlink/MAVSDK/tree/main/cpp/templates)).
 
 
 `protoc` takes the custom plugin (`protoc-gen-mavsdk`) and the template files as inputs, and generate source code out of it.
@@ -50,7 +50,7 @@ In some languages (typically C++), we need to generate multiple source files out
 
 All the MAVSDK repositories contain some kind of `generate_from_proto.sh` file, and a `templates/` directory:
 
-* MAVSDK-C++: [script](https://github.com/mavlink/MAVSDK/blob/main/tools/generate_from_protos.sh), [templates](https://github.com/mavlink/MAVSDK/tree/main/templates)
+* MAVSDK-C++: [script](https://github.com/mavlink/MAVSDK/blob/main/cpp/tools/generate_from_protos.sh), [templates](https://github.com/mavlink/MAVSDK/tree/main/cpp/templates)
 * MAVSDK-Python: [script](https://github.com/mavlink/MAVSDK-Python/blob/main/other/tools/run_protoc.sh), [templates](https://github.com/mavlink/MAVSDK-Python/tree/main/other/templates/py)
 * MAVSDK-Swift: [script](https://github.com/mavlink/MAVSDK-Swift/blob/main/Sources/Mavsdk/tools/generate_from_protos.bash), [templates](https://github.com/mavlink/MAVSDK-Swift/tree/main/Sources/Mavsdk/templates)
 * MAVSDK-Java: [script](https://github.com/mavlink/MAVSDK-Java/blob/983b361aa42b9088abbf17037d762ac174b44308/sdk/build.gradle#L54-L73), [templates](https://github.com/mavlink/MAVSDK-Java/tree/main/sdk/templates)

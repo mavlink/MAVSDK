@@ -39,9 +39,9 @@ export default defineConfig({
           pattern: ({ filePath, frontmatter }) => {
             if (frontmatter.newEditLink) {
               //newEditLink defines a frontmatter key you can use to append a path to main
-              return `https://github.com/mavlink/MAVSDK/edit/main/docs/${frontmatter.newEditLink}`;
+              return `https://github.com/mavlink/MAVSDK/edit/main/cpp/docs/${frontmatter.newEditLink}`;
             } else {
-              return `https://github.com/mavlink/MAVSDK/edit/main/docs/${filePath}`;
+              return `https://github.com/mavlink/MAVSDK/edit/main/cpp/docs/${filePath}`;
             }
           },
           text: "Edit on GitHub",

@@ -1,9 +1,9 @@
 # Writing Plugins
 
-MAVSDK-C++ is split into a [core](https://github.com/mavlink/MAVSDK/tree/main/src/core) and multiple independent [plugins](https://github.com/mavlink/MAVSDK/tree/main/src/mavsdk/plugins).
+MAVSDK-C++ is split into a [core](https://github.com/mavlink/MAVSDK/tree/main/cpp/src/mavsdk/core) and multiple independent [plugins](https://github.com/mavlink/MAVSDK/tree/main/cpp/src/mavsdk/plugins).
 
 Plugins that are located in the *correct location* (a subfolder of **/plugins**) and have the *correct structure* are built at compile time.
-The [CMakeLists.txt](https://github.com/mavlink/MAVSDK/blob/main/CMakeLists.txt) takes care of including the plugin folders.
+The [CMakeLists.txt](https://github.com/mavlink/MAVSDK/blob/main/cpp/CMakeLists.txt) takes care of including the plugin folders.
 
 ## Plugin Architecture
 
@@ -211,7 +211,7 @@ All implementation goes into the files `my_new_plugin_impl.h` and `my_new_plugin
 
 You can also add unit tests with `unittest_source_files`, as [discussed below](#adding_unit_tests).
 
-The [standard plugins](https://github.com/mavlink/MAVSDK/tree/main/src/plugins) can be reviewed for guidance on
+The [standard plugins](https://github.com/mavlink/MAVSDK/tree/main/cpp/src/mavsdk/plugins) can be reviewed for guidance on
 how to write plugin code, including how to send and process MAVLink messages.
 
 ## Plugin Code
