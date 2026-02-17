@@ -13,4 +13,4 @@ fi
 DOCKER_IMAGE=${DOCKER_IMAGE:-docker.io/mavsdk/mavsdk-dev}
 
 # Use the found container runtime
-$DOCKER_CMD run -it --rm -v $(pwd):/home/user/MAVSDK:z -u `stat -c "%u:%g" $(pwd)` $DOCKER_IMAGE "$@"
+$DOCKER_CMD run -it --rm -v "$(pwd)":/home/user/MAVSDK:z -u "$(stat -c "%u:%g" "$(pwd)")" "${DOCKER_IMAGE}" "$@"
