@@ -890,11 +890,11 @@ void MissionImpl::clear_mission_async(const Mission::ResultCallback& callback)
 
 Mission::Result MissionImpl::set_current_mission_item(int current)
 {
-    auto prom = std::promise<Mission::Result>();
-    auto fut = prom.get_future();
+    auto prom = std::make_shared<std::promise<Mission::Result>>();
+    auto fut = prom->get_future();
 
     set_current_mission_item_async(
-        current, [&prom](Mission::Result result) { prom.set_value(result); });
+        current, [prom](Mission::Result result) { prom->set_value(result); });
     return fut.get();
 }
 
@@ -924,9 +924,9 @@ void MissionImpl::set_current_mission_item_async(
             if (callback) {
                 // FIXME: come up with better error code.
                 callback(Mission::Result::InvalidArgument);
-                return;
             }
         });
+        return;
     }
 
     _system_impl->mission_transfer_client().set_current_item_async(
