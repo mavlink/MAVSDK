@@ -51,33 +51,33 @@ BUILD_DIR="${SCRIPT_DIR}/../build-docs"
 INSTALL_DIR="${BUILD_DIR}/install"
 
 # Build and install locally.
-cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=${INSTALL_DIR} -B${BUILD_DIR} -H.
-make -C${BUILD_DIR} install -j$(nproc --all)
+cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="${INSTALL_DIR}" -B"${BUILD_DIR}" -S.
+make -C"${BUILD_DIR}" install -j"$(nproc --all)"
 
 return_result=0
 # Doxygen likes to run where the source is (because INPUT in .doxygen is empty),
 # so we cd there.
-pushd ${INSTALL_DIR}/include/mavsdk
+pushd "${INSTALL_DIR}/include/mavsdk"
 
 # If any warnings are thrown, we should not flag this as a success.
 doxygen_output_file=".doxygen_output.tmp"
-doxygen ${SCRIPT_DIR}/.doxygen &> $doxygen_output_file
+doxygen "${SCRIPT_DIR}/.doxygen" &> $doxygen_output_file
 cat $doxygen_output_file
-if cat $doxygen_output_file | grep "warning" | grep -v "ignoring unsupported tag" | grep -v "operator"
+
+if grep "warning" "${doxygen_output_file}" | grep -v "ignoring unsupported tag" | grep -v "operator" > /dev/null
 then
     return_result=1
     echo "Please check doxygen warnings."
+else
+    "${SCRIPT_DIR}/generate_markdown_from_doxygen_xml.py" "${INSTALL_DIR}/docs" "${INSTALL_DIR}/docs"
 fi
 
-# TODO (Jonas): is there a reason for generating markdown if doxygen failed above?
-${SCRIPT_DIR}/generate_markdown_from_doxygen_xml.py ${INSTALL_DIR}/docs ${INSTALL_DIR}/docs
 popd
-
 
 if [ "$overwrite" = true ]; then
     # Clear folder first except index.md
-    find ${SCRIPT_DIR}/../docs/en/cpp/api_reference/ -type f -not -name 'index.md' -delete
-    cp ${INSTALL_DIR}/docs/markdown/* ${SCRIPT_DIR}/../docs/en/cpp/api_reference/
+    find "${SCRIPT_DIR}/../docs/en/cpp/api_reference/" -type f -not -name 'index.md' -delete
+    cp "${INSTALL_DIR}/docs/markdown/"* "${SCRIPT_DIR}/../docs/en/cpp/api_reference/"
 fi
 
 exit $return_result
