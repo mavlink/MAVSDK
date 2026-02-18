@@ -57,6 +57,7 @@ void | [set_configuration](#classmavsdk_1_1_mavsdk_1acaeea86253493dc15b6540d2100
 void | [set_timeout_s](#classmavsdk_1_1_mavsdk_1a765f37b61462addcfd961e720585d2c6) (double timeout_s) | Set timeout of MAVLink transfers.
 void | [set_heartbeat_timeout_s](#classmavsdk_1_1_mavsdk_1afbab63cf2a795e4ca7262836d5fe4b46) (double timeout_s) | Set heartbeat timeout.
 double | [get_heartbeat_timeout_s](#classmavsdk_1_1_mavsdk_1a6179b858f74415251ef43da11bc6edbc) () const | Get heartbeat timeout.
+void | [set_callback_executor](#classmavsdk_1_1_mavsdk_1a5de0ff39a51efe3b235fe022e6b58034) (std::function< void(std::function< void()>)> executor) | Set a custom callback executor.
 [NewSystemHandle](classmavsdk_1_1_mavsdk.md#classmavsdk_1_1_mavsdk_1ae0727f2bed9cbf276d161ada0a432b8c) | [subscribe_on_new_system](#classmavsdk_1_1_mavsdk_1a5b7c958ad2e4529dc7b950ab26618575) (const [NewSystemCallback](classmavsdk_1_1_mavsdk.md#classmavsdk_1_1_mavsdk_1a7a283c6a75e852a56be4c5862f8a3fab) & callback) | Get notification about a change in systems.
 void | [unsubscribe_on_new_system](#classmavsdk_1_1_mavsdk_1ad7f77f1295a700ee73cccc345019c1ff) ([NewSystemHandle](classmavsdk_1_1_mavsdk.md#classmavsdk_1_1_mavsdk_1ae0727f2bed9cbf276d161ada0a432b8c) handle) | unsubscribe from subscribe_on_new_system.
 std::shared_ptr< [ServerComponent](classmavsdk_1_1_server_component.md) > | [server_component](#classmavsdk_1_1_mavsdk_1a693a2f665c35d6b01d6144819d353280) (unsigned instance=0) | Get server component with default type of [Mavsdk](classmavsdk_1_1_mavsdk.md) instance.
@@ -451,6 +452,31 @@ Get heartbeat timeout.
 **Returns**
 
 &emsp;double - Timeout in seconds.
+
+### set_callback_executor() {#classmavsdk_1_1_mavsdk_1a5de0ff39a51efe3b235fe022e6b58034}
+```cpp
+void mavsdk::Mavsdk::set_callback_executor(std::function< void(std::function< void()>)> executor)
+```
+
+
+Set a custom callback executor.
+
+By default, MAVSDK runs all user callbacks on an internal thread. Setting a custom executor replaces this: the executor function is called for each pending callback, and the internal callback thread is stopped.
+
+
+The executor is called from MAVSDK's internal work thread, so it must be fast (e.g., just post/queue the callback for later execution).
+
+
+This is useful for integrating with an existing event loop or ensuring callbacks run on a specific thread.
+
+
+::: info
+When a custom executor is set, blocking/synchronous APIs (e.g., [first_autopilot()](classmavsdk_1_1_mavsdk.md#classmavsdk_1_1_mavsdk_1aa1bcb865693dbd140478e75ce58699b7), or any sync plugin method) must not be called from the thread that drains the executor queue, as they internally wait for a callback that the blocked thread would need to process. Use async APIs and drain callbacks in your event loop instead, or call sync APIs from a separate thread.
+:::
+
+**Parameters**
+
+* std::function< void(std::function< void()>)> **executor** - Function that will be called with each callback to execute. Pass nullptr/empty to revert to the default internal thread.
 
 ### subscribe_on_new_system() {#classmavsdk_1_1_mavsdk_1a5b7c958ad2e4529dc7b950ab26618575}
 ```cpp

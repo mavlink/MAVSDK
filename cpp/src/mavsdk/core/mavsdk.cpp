@@ -63,6 +63,11 @@ double Mavsdk::get_heartbeat_timeout_s() const
     return _impl->heartbeat_timeout_s();
 }
 
+void Mavsdk::set_callback_executor(std::function<void(std::function<void()>)> executor)
+{
+    _impl->set_callback_executor(std::move(executor));
+}
+
 Mavsdk::NewSystemHandle Mavsdk::subscribe_on_new_system(const NewSystemCallback& callback)
 {
     return _impl->subscribe_on_new_system(callback);
