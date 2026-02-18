@@ -98,8 +98,8 @@ protoc_gen_mavsdk="${build_dir}/pb_plugins/bin/protoc-gen-mavsdk"
 export PYTHONPATH="${build_dir}/pb_plugins:${PYTHONPATH}"
 echo "Using protoc_gen_mavsdk: ${protoc_gen_mavsdk}"
 
-plugin_list_and_core=$(find "${proto_dir}" -maxdepth 1 -mindepth 1 -type d -exec basename {} \; | sort)
-plugin_list=$(find "${proto_dir}" -maxdepth 1 -mindepth 1 -type d -exec basename {} \; | sort | grep -v core)
+mapfile -t plugin_list_and_core < <(find "${proto_dir}" -maxdepth 1 -mindepth 1 -type d -exec basename {} \; | sort)
+mapfile -t plugin_list < <(find "${proto_dir}" -maxdepth 1 -mindepth 1 -type d -exec basename {} \; | sort | grep -v core)
 
 echo "Processing mavsdk_options.proto"
 ${protoc_binary} -I "${proto_dir}" --cpp_out="${mavsdk_server_generated_dir}" --grpc_out="${mavsdk_server_generated_dir}" --plugin=protoc-gen-grpc="${protoc_grpc_binary}" "${proto_dir}/mavsdk_options.proto"
@@ -116,7 +116,7 @@ plugins_file="${script_dir}/../src/plugins.txt"
 # Overwrite plugins file to be empty
 true > "${plugins_file}"
 
-for plugin in ${plugin_list_and_core}; do
+for plugin in "${plugin_list_and_core[@]}"; do
 
     echo "Processing ${plugin}/${plugin}.proto"
 
@@ -178,4 +178,4 @@ for plugin in ${plugin_list_and_core}; do
 done
 
 # Generate grpc_server.h and grpc_server.cpp files according to plugin list
-python3 "${script_dir}/grpc_server_jinja.py" "$plugin_list"
+python3 "${script_dir}/grpc_server_jinja.py" "${plugin_list[@]}"
