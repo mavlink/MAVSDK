@@ -257,8 +257,8 @@ private:
         int linenumber{};
     };
 
-    std::thread* _work_thread{nullptr};
-    std::thread* _process_user_callbacks_thread{nullptr};
+    std::unique_ptr<std::thread> _work_thread{};
+    std::unique_ptr<std::thread> _process_user_callbacks_thread{};
     LockedQueue<UserCallback> _user_callback_queue{};
 
     bool _message_logging_on{false};

@@ -71,9 +71,9 @@ MavsdkImpl::MavsdkImpl(const Mavsdk::Configuration& configuration) :
     // the work thread.
 
     _process_user_callbacks_thread =
-        new std::thread(&MavsdkImpl::process_user_callbacks_thread, this);
+        std::make_unique<std::thread>(&MavsdkImpl::process_user_callbacks_thread, this);
 
-    _work_thread = new std::thread(&MavsdkImpl::work_thread, this);
+    _work_thread = std::make_unique<std::thread>(&MavsdkImpl::work_thread, this);
 }
 
 MavsdkImpl::~MavsdkImpl()
@@ -88,17 +88,15 @@ MavsdkImpl::~MavsdkImpl()
     // Stop work first because we don't want to trigger anything that would
     // potentially want to call into user code.
 
-    if (_work_thread != nullptr) {
+    if (_work_thread) {
         _work_thread->join();
-        delete _work_thread;
-        _work_thread = nullptr;
+        _work_thread.reset();
     }
 
-    if (_process_user_callbacks_thread != nullptr) {
+    if (_process_user_callbacks_thread) {
         _user_callback_queue.stop();
         _process_user_callbacks_thread->join();
-        delete _process_user_callbacks_thread;
-        _process_user_callbacks_thread = nullptr;
+        _process_user_callbacks_thread.reset();
     }
 
     std::lock_guard lock(_mutex);
@@ -1243,11 +1241,10 @@ void MavsdkImpl::set_callback_executor(std::function<void(std::function<void()>)
 
     if (has_executor) {
         // Stop the internal callback thread since user will handle callbacks
-        if (_process_user_callbacks_thread != nullptr) {
+        if (_process_user_callbacks_thread) {
             _user_callback_queue.stop();
             _process_user_callbacks_thread->join();
-            delete _process_user_callbacks_thread;
-            _process_user_callbacks_thread = nullptr;
+            _process_user_callbacks_thread.reset();
         }
 
         // Drain any remaining callbacks through the executor
@@ -1263,10 +1260,10 @@ void MavsdkImpl::set_callback_executor(std::function<void(std::function<void()>)
         }
     } else {
         // Revert to default internal callback thread
-        if (_process_user_callbacks_thread == nullptr) {
+        if (!_process_user_callbacks_thread) {
             _user_callback_queue.restart();
             _process_user_callbacks_thread =
-                new std::thread(&MavsdkImpl::process_user_callbacks_thread, this);
+                std::make_unique<std::thread>(&MavsdkImpl::process_user_callbacks_thread, this);
         }
     }
 }
