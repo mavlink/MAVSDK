@@ -1,0 +1,7 @@
+services:
+  mavsdk:
+    build:
+      context: ../../
+      dockerfile: ./docker/mavsdk-server/Dockerfile
+    command: ${MAV_CONNECTION:-}
+    network_mode: "host"
