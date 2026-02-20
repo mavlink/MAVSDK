@@ -279,10 +279,10 @@ mavsdk_transponder_create(mavsdk_system_t system) {
     }
 
     auto wrapper = new mavsdk_transponder_wrapper();
-    auto system_ptr = static_cast<std::shared_ptr<mavsdk::System>*>(system);
+    auto system_ptr = reinterpret_cast<std::shared_ptr<mavsdk::System>*>(system);
     wrapper->cpp_plugin = std::make_shared<mavsdk::Transponder>(*system_ptr);
 
-    return wrapper;
+    return reinterpret_cast<mavsdk_transponder_t>(wrapper);
 }
 
 void mavsdk_transponder_destroy(mavsdk_transponder_t transponder) {
@@ -290,7 +290,7 @@ void mavsdk_transponder_destroy(mavsdk_transponder_t transponder) {
         return;
     }
 
-    auto wrapper = static_cast<mavsdk_transponder_wrapper*>(transponder);
+    auto wrapper = reinterpret_cast<mavsdk_transponder_wrapper*>(transponder);
     delete wrapper;
 }
 
@@ -302,7 +302,7 @@ mavsdk_transponder_transponder_handle_t mavsdk_transponder_subscribe_transponder
     mavsdk_transponder_transponder_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_transponder_wrapper*>(transponder);
+    auto wrapper = reinterpret_cast<mavsdk_transponder_wrapper*>(transponder);
 
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_transponder(
         [callback, user_data](
@@ -315,7 +315,7 @@ mavsdk_transponder_transponder_handle_t mavsdk_transponder_subscribe_transponder
         });
 
     auto handle_wrapper = new mavsdk::Transponder::TransponderHandle(std::move(cpp_handle));
-    return static_cast<mavsdk_transponder_transponder_handle_t>(handle_wrapper);
+    return reinterpret_cast<mavsdk_transponder_transponder_handle_t>(handle_wrapper);
 }
 
 void mavsdk_transponder_unsubscribe_transponder(
@@ -323,8 +323,8 @@ void mavsdk_transponder_unsubscribe_transponder(
     mavsdk_transponder_transponder_handle_t handle)
 {
     if (handle) {
-        auto wrapper = static_cast<mavsdk_transponder_wrapper*>(transponder);
-        auto cpp_handle = static_cast<mavsdk::Transponder::TransponderHandle*>(handle);
+        auto wrapper = reinterpret_cast<mavsdk_transponder_wrapper*>(transponder);
+        auto cpp_handle = reinterpret_cast<mavsdk::Transponder::TransponderHandle*>(handle);
         wrapper->cpp_plugin->unsubscribe_transponder(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -336,7 +336,7 @@ mavsdk_transponder_transponder(
     mavsdk_transponder_t transponder,
     mavsdk_transponder_adsb_vehicle_t* transponder_out)
 {
-    auto wrapper = static_cast<mavsdk_transponder_wrapper*>(transponder);
+    auto wrapper = reinterpret_cast<mavsdk_transponder_wrapper*>(transponder);
 
     auto ret_value = wrapper->cpp_plugin->transponder();
 
@@ -352,7 +352,7 @@ void mavsdk_transponder_set_rate_transponder_async(
     mavsdk_transponder_set_rate_transponder_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_transponder_wrapper*>(transponder);
+    auto wrapper = reinterpret_cast<mavsdk_transponder_wrapper*>(transponder);
 
     wrapper->cpp_plugin->set_rate_transponder_async(
         rate_hz,
@@ -373,7 +373,7 @@ mavsdk_transponder_set_rate_transponder(
     mavsdk_transponder_t transponder,
     double rate_hz)
 {
-    auto wrapper = static_cast<mavsdk_transponder_wrapper*>(transponder);
+    auto wrapper = reinterpret_cast<mavsdk_transponder_wrapper*>(transponder);
 
     auto ret_value = wrapper->cpp_plugin->set_rate_transponder(        rate_hz);
 

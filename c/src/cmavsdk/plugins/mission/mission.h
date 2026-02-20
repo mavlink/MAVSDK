@@ -19,13 +19,13 @@ extern "C" {
  */
 
 // ===== Forward Declarations =====
-typedef void* mavsdk_system_t;
+typedef struct mavsdk_system_s *mavsdk_system_t;
 
 // ===== Opaque Handles =====
-typedef void* mavsdk_mission_t;
-typedef void* mavsdk_mission_upload_mission_with_progress_handle_t;
-typedef void* mavsdk_mission_download_mission_with_progress_handle_t;
-typedef void* mavsdk_mission_mission_progress_handle_t;
+typedef struct mavsdk_mission_s *mavsdk_mission_t;
+typedef struct mavsdk_mission_upload_mission_with_progress_handle_s *mavsdk_mission_upload_mission_with_progress_handle_t;
+typedef struct mavsdk_mission_download_mission_with_progress_handle_s *mavsdk_mission_download_mission_with_progress_handle_t;
+typedef struct mavsdk_mission_mission_progress_handle_s *mavsdk_mission_mission_progress_handle_t;
 
 // ===== Enums =====
 

@@ -25,17 +25,17 @@ extern "C" {
  */
 
 // ===== Forward Declarations =====
-typedef void* mavsdk_system_t;
+typedef struct mavsdk_system_s *mavsdk_system_t;
 
 // ===== Opaque Handles =====
-typedef void* mavsdk_camera_t;
-typedef void* mavsdk_camera_camera_list_handle_t;
-typedef void* mavsdk_camera_mode_handle_t;
-typedef void* mavsdk_camera_video_stream_info_handle_t;
-typedef void* mavsdk_camera_capture_info_handle_t;
-typedef void* mavsdk_camera_storage_handle_t;
-typedef void* mavsdk_camera_current_settings_handle_t;
-typedef void* mavsdk_camera_possible_setting_options_handle_t;
+typedef struct mavsdk_camera_s *mavsdk_camera_t;
+typedef struct mavsdk_camera_camera_list_handle_s *mavsdk_camera_camera_list_handle_t;
+typedef struct mavsdk_camera_mode_handle_s *mavsdk_camera_mode_handle_t;
+typedef struct mavsdk_camera_video_stream_info_handle_s *mavsdk_camera_video_stream_info_handle_t;
+typedef struct mavsdk_camera_capture_info_handle_s *mavsdk_camera_capture_info_handle_t;
+typedef struct mavsdk_camera_storage_handle_s *mavsdk_camera_storage_handle_t;
+typedef struct mavsdk_camera_current_settings_handle_s *mavsdk_camera_current_settings_handle_t;
+typedef struct mavsdk_camera_possible_setting_options_handle_s *mavsdk_camera_possible_setting_options_handle_t;
 
 // ===== Enums =====
 /**

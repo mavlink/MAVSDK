@@ -19,10 +19,10 @@ extern "C" {
  */
 
 // ===== Forward Declarations =====
-typedef void* mavsdk_system_t;
+typedef struct mavsdk_system_s *mavsdk_system_t;
 
 // ===== Opaque Handles =====
-typedef void* mavsdk_rtk_t;
+typedef struct mavsdk_rtk_s *mavsdk_rtk_t;
 
 // ===== Enums =====
 

@@ -222,10 +222,10 @@ mavsdk_ftp_create(mavsdk_system_t system) {
     }
 
     auto wrapper = new mavsdk_ftp_wrapper();
-    auto system_ptr = static_cast<std::shared_ptr<mavsdk::System>*>(system);
+    auto system_ptr = reinterpret_cast<std::shared_ptr<mavsdk::System>*>(system);
     wrapper->cpp_plugin = std::make_shared<mavsdk::Ftp>(*system_ptr);
 
-    return wrapper;
+    return reinterpret_cast<mavsdk_ftp_t>(wrapper);
 }
 
 void mavsdk_ftp_destroy(mavsdk_ftp_t ftp) {
@@ -233,7 +233,7 @@ void mavsdk_ftp_destroy(mavsdk_ftp_t ftp) {
         return;
     }
 
-    auto wrapper = static_cast<mavsdk_ftp_wrapper*>(ftp);
+    auto wrapper = reinterpret_cast<mavsdk_ftp_wrapper*>(ftp);
     delete wrapper;
 }
 
@@ -248,7 +248,7 @@ void mavsdk_ftp_download_async(
     mavsdk_ftp_download_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_ftp_wrapper*>(ftp);
+    auto wrapper = reinterpret_cast<mavsdk_ftp_wrapper*>(ftp);
 
     wrapper->cpp_plugin->download_async(
         remote_file_path,
@@ -276,7 +276,7 @@ void mavsdk_ftp_upload_async(
     mavsdk_ftp_upload_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_ftp_wrapper*>(ftp);
+    auto wrapper = reinterpret_cast<mavsdk_ftp_wrapper*>(ftp);
 
     wrapper->cpp_plugin->upload_async(
         local_file_path,
@@ -302,7 +302,7 @@ void mavsdk_ftp_list_directory_async(
     mavsdk_ftp_list_directory_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_ftp_wrapper*>(ftp);
+    auto wrapper = reinterpret_cast<mavsdk_ftp_wrapper*>(ftp);
 
     wrapper->cpp_plugin->list_directory_async(
         remote_dir,
@@ -326,7 +326,7 @@ mavsdk_ftp_list_directory(
     char* remote_dir,
     mavsdk_ftp_list_directory_data_t* data_out)
 {
-    auto wrapper = static_cast<mavsdk_ftp_wrapper*>(ftp);
+    auto wrapper = reinterpret_cast<mavsdk_ftp_wrapper*>(ftp);
 
     auto result_pair = wrapper->cpp_plugin->list_directory(
         remote_dir);
@@ -345,7 +345,7 @@ void mavsdk_ftp_create_directory_async(
     mavsdk_ftp_create_directory_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_ftp_wrapper*>(ftp);
+    auto wrapper = reinterpret_cast<mavsdk_ftp_wrapper*>(ftp);
 
     wrapper->cpp_plugin->create_directory_async(
         remote_dir,
@@ -366,7 +366,7 @@ mavsdk_ftp_create_directory(
     mavsdk_ftp_t ftp,
     char* remote_dir)
 {
-    auto wrapper = static_cast<mavsdk_ftp_wrapper*>(ftp);
+    auto wrapper = reinterpret_cast<mavsdk_ftp_wrapper*>(ftp);
 
     auto ret_value = wrapper->cpp_plugin->create_directory(        remote_dir);
 
@@ -380,7 +380,7 @@ void mavsdk_ftp_remove_directory_async(
     mavsdk_ftp_remove_directory_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_ftp_wrapper*>(ftp);
+    auto wrapper = reinterpret_cast<mavsdk_ftp_wrapper*>(ftp);
 
     wrapper->cpp_plugin->remove_directory_async(
         remote_dir,
@@ -401,7 +401,7 @@ mavsdk_ftp_remove_directory(
     mavsdk_ftp_t ftp,
     char* remote_dir)
 {
-    auto wrapper = static_cast<mavsdk_ftp_wrapper*>(ftp);
+    auto wrapper = reinterpret_cast<mavsdk_ftp_wrapper*>(ftp);
 
     auto ret_value = wrapper->cpp_plugin->remove_directory(        remote_dir);
 
@@ -415,7 +415,7 @@ void mavsdk_ftp_remove_file_async(
     mavsdk_ftp_remove_file_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_ftp_wrapper*>(ftp);
+    auto wrapper = reinterpret_cast<mavsdk_ftp_wrapper*>(ftp);
 
     wrapper->cpp_plugin->remove_file_async(
         remote_file_path,
@@ -436,7 +436,7 @@ mavsdk_ftp_remove_file(
     mavsdk_ftp_t ftp,
     char* remote_file_path)
 {
-    auto wrapper = static_cast<mavsdk_ftp_wrapper*>(ftp);
+    auto wrapper = reinterpret_cast<mavsdk_ftp_wrapper*>(ftp);
 
     auto ret_value = wrapper->cpp_plugin->remove_file(        remote_file_path);
 
@@ -451,7 +451,7 @@ void mavsdk_ftp_rename_async(
     mavsdk_ftp_rename_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_ftp_wrapper*>(ftp);
+    auto wrapper = reinterpret_cast<mavsdk_ftp_wrapper*>(ftp);
 
     wrapper->cpp_plugin->rename_async(
         remote_from_path,
@@ -474,7 +474,7 @@ mavsdk_ftp_rename(
     char* remote_from_path,
     char* remote_to_path)
 {
-    auto wrapper = static_cast<mavsdk_ftp_wrapper*>(ftp);
+    auto wrapper = reinterpret_cast<mavsdk_ftp_wrapper*>(ftp);
 
     auto ret_value = wrapper->cpp_plugin->rename(        remote_from_path,        remote_to_path);
 
@@ -489,7 +489,7 @@ void mavsdk_ftp_are_files_identical_async(
     mavsdk_ftp_are_files_identical_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_ftp_wrapper*>(ftp);
+    auto wrapper = reinterpret_cast<mavsdk_ftp_wrapper*>(ftp);
 
     wrapper->cpp_plugin->are_files_identical_async(
         local_file_path,
@@ -515,7 +515,7 @@ mavsdk_ftp_are_files_identical(
     char* remote_file_path,
     bool* are_identical_out)
 {
-    auto wrapper = static_cast<mavsdk_ftp_wrapper*>(ftp);
+    auto wrapper = reinterpret_cast<mavsdk_ftp_wrapper*>(ftp);
 
     auto result_pair = wrapper->cpp_plugin->are_files_identical(
         local_file_path,
@@ -533,7 +533,7 @@ mavsdk_ftp_set_target_compid(
     mavsdk_ftp_t ftp,
     uint32_t compid)
 {
-    auto wrapper = static_cast<mavsdk_ftp_wrapper*>(ftp);
+    auto wrapper = reinterpret_cast<mavsdk_ftp_wrapper*>(ftp);
 
     auto ret_value = wrapper->cpp_plugin->set_target_compid(        compid);
 

@@ -246,10 +246,10 @@ mavsdk_tune_create(mavsdk_system_t system) {
     }
 
     auto wrapper = new mavsdk_tune_wrapper();
-    auto system_ptr = static_cast<std::shared_ptr<mavsdk::System>*>(system);
+    auto system_ptr = reinterpret_cast<std::shared_ptr<mavsdk::System>*>(system);
     wrapper->cpp_plugin = std::make_shared<mavsdk::Tune>(*system_ptr);
 
-    return wrapper;
+    return reinterpret_cast<mavsdk_tune_t>(wrapper);
 }
 
 void mavsdk_tune_destroy(mavsdk_tune_t tune) {
@@ -257,7 +257,7 @@ void mavsdk_tune_destroy(mavsdk_tune_t tune) {
         return;
     }
 
-    auto wrapper = static_cast<mavsdk_tune_wrapper*>(tune);
+    auto wrapper = reinterpret_cast<mavsdk_tune_wrapper*>(tune);
     delete wrapper;
 }
 
@@ -270,7 +270,7 @@ void mavsdk_tune_play_tune_async(
     mavsdk_tune_play_tune_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_tune_wrapper*>(tune);
+    auto wrapper = reinterpret_cast<mavsdk_tune_wrapper*>(tune);
 
     wrapper->cpp_plugin->play_tune_async(
         translate_tune_description_from_c(tune_description),
@@ -291,7 +291,7 @@ mavsdk_tune_play_tune(
     mavsdk_tune_t tune,
     mavsdk_tune_tune_description_t tune_description)
 {
-    auto wrapper = static_cast<mavsdk_tune_wrapper*>(tune);
+    auto wrapper = reinterpret_cast<mavsdk_tune_wrapper*>(tune);
 
     auto ret_value = wrapper->cpp_plugin->play_tune(        translate_tune_description_from_c(tune_description));
 

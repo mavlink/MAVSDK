@@ -106,10 +106,10 @@ mavsdk_manual_control_create(mavsdk_system_t system) {
     }
 
     auto wrapper = new mavsdk_manual_control_wrapper();
-    auto system_ptr = static_cast<std::shared_ptr<mavsdk::System>*>(system);
+    auto system_ptr = reinterpret_cast<std::shared_ptr<mavsdk::System>*>(system);
     wrapper->cpp_plugin = std::make_shared<mavsdk::ManualControl>(*system_ptr);
 
-    return wrapper;
+    return reinterpret_cast<mavsdk_manual_control_t>(wrapper);
 }
 
 void mavsdk_manual_control_destroy(mavsdk_manual_control_t manual_control) {
@@ -117,7 +117,7 @@ void mavsdk_manual_control_destroy(mavsdk_manual_control_t manual_control) {
         return;
     }
 
-    auto wrapper = static_cast<mavsdk_manual_control_wrapper*>(manual_control);
+    auto wrapper = reinterpret_cast<mavsdk_manual_control_wrapper*>(manual_control);
     delete wrapper;
 }
 
@@ -129,7 +129,7 @@ void mavsdk_manual_control_start_position_control_async(
     mavsdk_manual_control_start_position_control_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_manual_control_wrapper*>(manual_control);
+    auto wrapper = reinterpret_cast<mavsdk_manual_control_wrapper*>(manual_control);
 
     wrapper->cpp_plugin->start_position_control_async(
         [callback, user_data](
@@ -148,7 +148,7 @@ mavsdk_manual_control_result_t
 mavsdk_manual_control_start_position_control(
     mavsdk_manual_control_t manual_control)
 {
-    auto wrapper = static_cast<mavsdk_manual_control_wrapper*>(manual_control);
+    auto wrapper = reinterpret_cast<mavsdk_manual_control_wrapper*>(manual_control);
 
     auto ret_value = wrapper->cpp_plugin->start_position_control();
 
@@ -161,7 +161,7 @@ void mavsdk_manual_control_start_altitude_control_async(
     mavsdk_manual_control_start_altitude_control_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_manual_control_wrapper*>(manual_control);
+    auto wrapper = reinterpret_cast<mavsdk_manual_control_wrapper*>(manual_control);
 
     wrapper->cpp_plugin->start_altitude_control_async(
         [callback, user_data](
@@ -180,7 +180,7 @@ mavsdk_manual_control_result_t
 mavsdk_manual_control_start_altitude_control(
     mavsdk_manual_control_t manual_control)
 {
-    auto wrapper = static_cast<mavsdk_manual_control_wrapper*>(manual_control);
+    auto wrapper = reinterpret_cast<mavsdk_manual_control_wrapper*>(manual_control);
 
     auto ret_value = wrapper->cpp_plugin->start_altitude_control();
 
@@ -197,7 +197,7 @@ mavsdk_manual_control_set_manual_control_input(
     float z,
     float r)
 {
-    auto wrapper = static_cast<mavsdk_manual_control_wrapper*>(manual_control);
+    auto wrapper = reinterpret_cast<mavsdk_manual_control_wrapper*>(manual_control);
 
     auto ret_value = wrapper->cpp_plugin->set_manual_control_input(        x,        y,        z,        r);
 

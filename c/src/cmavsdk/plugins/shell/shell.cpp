@@ -100,10 +100,10 @@ mavsdk_shell_create(mavsdk_system_t system) {
     }
 
     auto wrapper = new mavsdk_shell_wrapper();
-    auto system_ptr = static_cast<std::shared_ptr<mavsdk::System>*>(system);
+    auto system_ptr = reinterpret_cast<std::shared_ptr<mavsdk::System>*>(system);
     wrapper->cpp_plugin = std::make_shared<mavsdk::Shell>(*system_ptr);
 
-    return wrapper;
+    return reinterpret_cast<mavsdk_shell_t>(wrapper);
 }
 
 void mavsdk_shell_destroy(mavsdk_shell_t shell) {
@@ -111,7 +111,7 @@ void mavsdk_shell_destroy(mavsdk_shell_t shell) {
         return;
     }
 
-    auto wrapper = static_cast<mavsdk_shell_wrapper*>(shell);
+    auto wrapper = reinterpret_cast<mavsdk_shell_wrapper*>(shell);
     delete wrapper;
 }
 
@@ -124,7 +124,7 @@ mavsdk_shell_send(
     mavsdk_shell_t shell,
     char* command)
 {
-    auto wrapper = static_cast<mavsdk_shell_wrapper*>(shell);
+    auto wrapper = reinterpret_cast<mavsdk_shell_wrapper*>(shell);
 
     auto ret_value = wrapper->cpp_plugin->send(        command);
 
@@ -137,7 +137,7 @@ mavsdk_shell_receive_handle_t mavsdk_shell_subscribe_receive(
     mavsdk_shell_receive_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_shell_wrapper*>(shell);
+    auto wrapper = reinterpret_cast<mavsdk_shell_wrapper*>(shell);
 
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_receive(
         [callback, user_data](
@@ -150,7 +150,7 @@ mavsdk_shell_receive_handle_t mavsdk_shell_subscribe_receive(
         });
 
     auto handle_wrapper = new mavsdk::Shell::ReceiveHandle(std::move(cpp_handle));
-    return static_cast<mavsdk_shell_receive_handle_t>(handle_wrapper);
+    return reinterpret_cast<mavsdk_shell_receive_handle_t>(handle_wrapper);
 }
 
 void mavsdk_shell_unsubscribe_receive(
@@ -158,8 +158,8 @@ void mavsdk_shell_unsubscribe_receive(
     mavsdk_shell_receive_handle_t handle)
 {
     if (handle) {
-        auto wrapper = static_cast<mavsdk_shell_wrapper*>(shell);
-        auto cpp_handle = static_cast<mavsdk::Shell::ReceiveHandle*>(handle);
+        auto wrapper = reinterpret_cast<mavsdk_shell_wrapper*>(shell);
+        auto cpp_handle = reinterpret_cast<mavsdk::Shell::ReceiveHandle*>(handle);
         wrapper->cpp_plugin->unsubscribe_receive(std::move(*cpp_handle));
         delete cpp_handle;
     }

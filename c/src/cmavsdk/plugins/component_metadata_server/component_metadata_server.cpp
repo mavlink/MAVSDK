@@ -149,10 +149,10 @@ mavsdk_component_metadata_server_create(mavsdk_server_component_t server_compone
     }
 
     auto wrapper = new mavsdk_component_metadata_server_wrapper();
-    auto server_component_ptr = static_cast<std::shared_ptr<mavsdk::ServerComponent>*>(server_component);
+    auto server_component_ptr = reinterpret_cast<std::shared_ptr<mavsdk::ServerComponent>*>(server_component);
     wrapper->cpp_plugin = std::make_shared<mavsdk::ComponentMetadataServer>(*server_component_ptr);
 
-    return wrapper;
+    return reinterpret_cast<mavsdk_component_metadata_server_t>(wrapper);
 }
 
 void mavsdk_component_metadata_server_destroy(mavsdk_component_metadata_server_t component_metadata_server) {
@@ -160,7 +160,7 @@ void mavsdk_component_metadata_server_destroy(mavsdk_component_metadata_server_t
         return;
     }
 
-    auto wrapper = static_cast<mavsdk_component_metadata_server_wrapper*>(component_metadata_server);
+    auto wrapper = reinterpret_cast<mavsdk_component_metadata_server_wrapper*>(component_metadata_server);
     delete wrapper;
 }
 
@@ -174,7 +174,7 @@ mavsdk_component_metadata_server_set_metadata(
     const mavsdk_component_metadata_server_metadata_t* metadata,
     size_t metadata_size)
 {
-    auto wrapper = static_cast<mavsdk_component_metadata_server_wrapper*>(component_metadata_server);
+    auto wrapper = reinterpret_cast<mavsdk_component_metadata_server_wrapper*>(component_metadata_server);
 
 wrapper->cpp_plugin->set_metadata(        [&metadata, metadata_size]() {
             std::vector<mavsdk::ComponentMetadataServer::Metadata> vec;

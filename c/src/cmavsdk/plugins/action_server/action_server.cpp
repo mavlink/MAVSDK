@@ -264,10 +264,10 @@ mavsdk_action_server_create(mavsdk_server_component_t server_component) {
     }
 
     auto wrapper = new mavsdk_action_server_wrapper();
-    auto server_component_ptr = static_cast<std::shared_ptr<mavsdk::ServerComponent>*>(server_component);
+    auto server_component_ptr = reinterpret_cast<std::shared_ptr<mavsdk::ServerComponent>*>(server_component);
     wrapper->cpp_plugin = std::make_shared<mavsdk::ActionServer>(*server_component_ptr);
 
-    return wrapper;
+    return reinterpret_cast<mavsdk_action_server_t>(wrapper);
 }
 
 void mavsdk_action_server_destroy(mavsdk_action_server_t action_server) {
@@ -275,7 +275,7 @@ void mavsdk_action_server_destroy(mavsdk_action_server_t action_server) {
         return;
     }
 
-    auto wrapper = static_cast<mavsdk_action_server_wrapper*>(action_server);
+    auto wrapper = reinterpret_cast<mavsdk_action_server_wrapper*>(action_server);
     delete wrapper;
 }
 
@@ -287,7 +287,7 @@ mavsdk_action_server_arm_disarm_handle_t mavsdk_action_server_subscribe_arm_disa
     mavsdk_action_server_arm_disarm_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_action_server_wrapper*>(action_server);
+    auto wrapper = reinterpret_cast<mavsdk_action_server_wrapper*>(action_server);
 
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_arm_disarm(
         [callback, user_data](
@@ -302,7 +302,7 @@ mavsdk_action_server_arm_disarm_handle_t mavsdk_action_server_subscribe_arm_disa
         });
 
     auto handle_wrapper = new mavsdk::ActionServer::ArmDisarmHandle(std::move(cpp_handle));
-    return static_cast<mavsdk_action_server_arm_disarm_handle_t>(handle_wrapper);
+    return reinterpret_cast<mavsdk_action_server_arm_disarm_handle_t>(handle_wrapper);
 }
 
 void mavsdk_action_server_unsubscribe_arm_disarm(
@@ -310,8 +310,8 @@ void mavsdk_action_server_unsubscribe_arm_disarm(
     mavsdk_action_server_arm_disarm_handle_t handle)
 {
     if (handle) {
-        auto wrapper = static_cast<mavsdk_action_server_wrapper*>(action_server);
-        auto cpp_handle = static_cast<mavsdk::ActionServer::ArmDisarmHandle*>(handle);
+        auto wrapper = reinterpret_cast<mavsdk_action_server_wrapper*>(action_server);
+        auto cpp_handle = reinterpret_cast<mavsdk::ActionServer::ArmDisarmHandle*>(handle);
         wrapper->cpp_plugin->unsubscribe_arm_disarm(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -324,7 +324,7 @@ mavsdk_action_server_flight_mode_change_handle_t mavsdk_action_server_subscribe_
     mavsdk_action_server_flight_mode_change_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_action_server_wrapper*>(action_server);
+    auto wrapper = reinterpret_cast<mavsdk_action_server_wrapper*>(action_server);
 
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_flight_mode_change(
         [callback, user_data](
@@ -339,7 +339,7 @@ mavsdk_action_server_flight_mode_change_handle_t mavsdk_action_server_subscribe_
         });
 
     auto handle_wrapper = new mavsdk::ActionServer::FlightModeChangeHandle(std::move(cpp_handle));
-    return static_cast<mavsdk_action_server_flight_mode_change_handle_t>(handle_wrapper);
+    return reinterpret_cast<mavsdk_action_server_flight_mode_change_handle_t>(handle_wrapper);
 }
 
 void mavsdk_action_server_unsubscribe_flight_mode_change(
@@ -347,8 +347,8 @@ void mavsdk_action_server_unsubscribe_flight_mode_change(
     mavsdk_action_server_flight_mode_change_handle_t handle)
 {
     if (handle) {
-        auto wrapper = static_cast<mavsdk_action_server_wrapper*>(action_server);
-        auto cpp_handle = static_cast<mavsdk::ActionServer::FlightModeChangeHandle*>(handle);
+        auto wrapper = reinterpret_cast<mavsdk_action_server_wrapper*>(action_server);
+        auto cpp_handle = reinterpret_cast<mavsdk::ActionServer::FlightModeChangeHandle*>(handle);
         wrapper->cpp_plugin->unsubscribe_flight_mode_change(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -361,7 +361,7 @@ mavsdk_action_server_takeoff_handle_t mavsdk_action_server_subscribe_takeoff(
     mavsdk_action_server_takeoff_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_action_server_wrapper*>(action_server);
+    auto wrapper = reinterpret_cast<mavsdk_action_server_wrapper*>(action_server);
 
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_takeoff(
         [callback, user_data](
@@ -376,7 +376,7 @@ mavsdk_action_server_takeoff_handle_t mavsdk_action_server_subscribe_takeoff(
         });
 
     auto handle_wrapper = new mavsdk::ActionServer::TakeoffHandle(std::move(cpp_handle));
-    return static_cast<mavsdk_action_server_takeoff_handle_t>(handle_wrapper);
+    return reinterpret_cast<mavsdk_action_server_takeoff_handle_t>(handle_wrapper);
 }
 
 void mavsdk_action_server_unsubscribe_takeoff(
@@ -384,8 +384,8 @@ void mavsdk_action_server_unsubscribe_takeoff(
     mavsdk_action_server_takeoff_handle_t handle)
 {
     if (handle) {
-        auto wrapper = static_cast<mavsdk_action_server_wrapper*>(action_server);
-        auto cpp_handle = static_cast<mavsdk::ActionServer::TakeoffHandle*>(handle);
+        auto wrapper = reinterpret_cast<mavsdk_action_server_wrapper*>(action_server);
+        auto cpp_handle = reinterpret_cast<mavsdk::ActionServer::TakeoffHandle*>(handle);
         wrapper->cpp_plugin->unsubscribe_takeoff(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -398,7 +398,7 @@ mavsdk_action_server_land_handle_t mavsdk_action_server_subscribe_land(
     mavsdk_action_server_land_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_action_server_wrapper*>(action_server);
+    auto wrapper = reinterpret_cast<mavsdk_action_server_wrapper*>(action_server);
 
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_land(
         [callback, user_data](
@@ -413,7 +413,7 @@ mavsdk_action_server_land_handle_t mavsdk_action_server_subscribe_land(
         });
 
     auto handle_wrapper = new mavsdk::ActionServer::LandHandle(std::move(cpp_handle));
-    return static_cast<mavsdk_action_server_land_handle_t>(handle_wrapper);
+    return reinterpret_cast<mavsdk_action_server_land_handle_t>(handle_wrapper);
 }
 
 void mavsdk_action_server_unsubscribe_land(
@@ -421,8 +421,8 @@ void mavsdk_action_server_unsubscribe_land(
     mavsdk_action_server_land_handle_t handle)
 {
     if (handle) {
-        auto wrapper = static_cast<mavsdk_action_server_wrapper*>(action_server);
-        auto cpp_handle = static_cast<mavsdk::ActionServer::LandHandle*>(handle);
+        auto wrapper = reinterpret_cast<mavsdk_action_server_wrapper*>(action_server);
+        auto cpp_handle = reinterpret_cast<mavsdk::ActionServer::LandHandle*>(handle);
         wrapper->cpp_plugin->unsubscribe_land(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -435,7 +435,7 @@ mavsdk_action_server_reboot_handle_t mavsdk_action_server_subscribe_reboot(
     mavsdk_action_server_reboot_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_action_server_wrapper*>(action_server);
+    auto wrapper = reinterpret_cast<mavsdk_action_server_wrapper*>(action_server);
 
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_reboot(
         [callback, user_data](
@@ -450,7 +450,7 @@ mavsdk_action_server_reboot_handle_t mavsdk_action_server_subscribe_reboot(
         });
 
     auto handle_wrapper = new mavsdk::ActionServer::RebootHandle(std::move(cpp_handle));
-    return static_cast<mavsdk_action_server_reboot_handle_t>(handle_wrapper);
+    return reinterpret_cast<mavsdk_action_server_reboot_handle_t>(handle_wrapper);
 }
 
 void mavsdk_action_server_unsubscribe_reboot(
@@ -458,8 +458,8 @@ void mavsdk_action_server_unsubscribe_reboot(
     mavsdk_action_server_reboot_handle_t handle)
 {
     if (handle) {
-        auto wrapper = static_cast<mavsdk_action_server_wrapper*>(action_server);
-        auto cpp_handle = static_cast<mavsdk::ActionServer::RebootHandle*>(handle);
+        auto wrapper = reinterpret_cast<mavsdk_action_server_wrapper*>(action_server);
+        auto cpp_handle = reinterpret_cast<mavsdk::ActionServer::RebootHandle*>(handle);
         wrapper->cpp_plugin->unsubscribe_reboot(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -472,7 +472,7 @@ mavsdk_action_server_shutdown_handle_t mavsdk_action_server_subscribe_shutdown(
     mavsdk_action_server_shutdown_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_action_server_wrapper*>(action_server);
+    auto wrapper = reinterpret_cast<mavsdk_action_server_wrapper*>(action_server);
 
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_shutdown(
         [callback, user_data](
@@ -487,7 +487,7 @@ mavsdk_action_server_shutdown_handle_t mavsdk_action_server_subscribe_shutdown(
         });
 
     auto handle_wrapper = new mavsdk::ActionServer::ShutdownHandle(std::move(cpp_handle));
-    return static_cast<mavsdk_action_server_shutdown_handle_t>(handle_wrapper);
+    return reinterpret_cast<mavsdk_action_server_shutdown_handle_t>(handle_wrapper);
 }
 
 void mavsdk_action_server_unsubscribe_shutdown(
@@ -495,8 +495,8 @@ void mavsdk_action_server_unsubscribe_shutdown(
     mavsdk_action_server_shutdown_handle_t handle)
 {
     if (handle) {
-        auto wrapper = static_cast<mavsdk_action_server_wrapper*>(action_server);
-        auto cpp_handle = static_cast<mavsdk::ActionServer::ShutdownHandle*>(handle);
+        auto wrapper = reinterpret_cast<mavsdk_action_server_wrapper*>(action_server);
+        auto cpp_handle = reinterpret_cast<mavsdk::ActionServer::ShutdownHandle*>(handle);
         wrapper->cpp_plugin->unsubscribe_shutdown(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -509,7 +509,7 @@ mavsdk_action_server_terminate_handle_t mavsdk_action_server_subscribe_terminate
     mavsdk_action_server_terminate_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_action_server_wrapper*>(action_server);
+    auto wrapper = reinterpret_cast<mavsdk_action_server_wrapper*>(action_server);
 
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_terminate(
         [callback, user_data](
@@ -524,7 +524,7 @@ mavsdk_action_server_terminate_handle_t mavsdk_action_server_subscribe_terminate
         });
 
     auto handle_wrapper = new mavsdk::ActionServer::TerminateHandle(std::move(cpp_handle));
-    return static_cast<mavsdk_action_server_terminate_handle_t>(handle_wrapper);
+    return reinterpret_cast<mavsdk_action_server_terminate_handle_t>(handle_wrapper);
 }
 
 void mavsdk_action_server_unsubscribe_terminate(
@@ -532,8 +532,8 @@ void mavsdk_action_server_unsubscribe_terminate(
     mavsdk_action_server_terminate_handle_t handle)
 {
     if (handle) {
-        auto wrapper = static_cast<mavsdk_action_server_wrapper*>(action_server);
-        auto cpp_handle = static_cast<mavsdk::ActionServer::TerminateHandle*>(handle);
+        auto wrapper = reinterpret_cast<mavsdk_action_server_wrapper*>(action_server);
+        auto cpp_handle = reinterpret_cast<mavsdk::ActionServer::TerminateHandle*>(handle);
         wrapper->cpp_plugin->unsubscribe_terminate(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -547,7 +547,7 @@ mavsdk_action_server_set_allow_takeoff(
     mavsdk_action_server_t action_server,
     bool allow_takeoff)
 {
-    auto wrapper = static_cast<mavsdk_action_server_wrapper*>(action_server);
+    auto wrapper = reinterpret_cast<mavsdk_action_server_wrapper*>(action_server);
 
     auto ret_value = wrapper->cpp_plugin->set_allow_takeoff(        allow_takeoff);
 
@@ -562,7 +562,7 @@ mavsdk_action_server_set_armable(
     bool armable,
     bool force_armable)
 {
-    auto wrapper = static_cast<mavsdk_action_server_wrapper*>(action_server);
+    auto wrapper = reinterpret_cast<mavsdk_action_server_wrapper*>(action_server);
 
     auto ret_value = wrapper->cpp_plugin->set_armable(        armable,        force_armable);
 
@@ -577,7 +577,7 @@ mavsdk_action_server_set_disarmable(
     bool disarmable,
     bool force_disarmable)
 {
-    auto wrapper = static_cast<mavsdk_action_server_wrapper*>(action_server);
+    auto wrapper = reinterpret_cast<mavsdk_action_server_wrapper*>(action_server);
 
     auto ret_value = wrapper->cpp_plugin->set_disarmable(        disarmable,        force_disarmable);
 
@@ -591,7 +591,7 @@ mavsdk_action_server_set_allowable_flight_modes(
     mavsdk_action_server_t action_server,
     mavsdk_action_server_allowable_flight_modes_t flight_modes)
 {
-    auto wrapper = static_cast<mavsdk_action_server_wrapper*>(action_server);
+    auto wrapper = reinterpret_cast<mavsdk_action_server_wrapper*>(action_server);
 
     auto ret_value = wrapper->cpp_plugin->set_allowable_flight_modes(        translate_allowable_flight_modes_from_c(flight_modes));
 
@@ -605,7 +605,7 @@ mavsdk_action_server_get_allowable_flight_modes(
     mavsdk_action_server_t action_server,
     mavsdk_action_server_allowable_flight_modes_t* flight_modes_out)
 {
-    auto wrapper = static_cast<mavsdk_action_server_wrapper*>(action_server);
+    auto wrapper = reinterpret_cast<mavsdk_action_server_wrapper*>(action_server);
 
     auto ret_value = wrapper->cpp_plugin->get_allowable_flight_modes();
 
@@ -621,7 +621,7 @@ mavsdk_action_server_set_armed_state(
     mavsdk_action_server_t action_server,
     bool is_armed)
 {
-    auto wrapper = static_cast<mavsdk_action_server_wrapper*>(action_server);
+    auto wrapper = reinterpret_cast<mavsdk_action_server_wrapper*>(action_server);
 
     auto ret_value = wrapper->cpp_plugin->set_armed_state(        is_armed);
 
@@ -635,7 +635,7 @@ mavsdk_action_server_set_flight_mode(
     mavsdk_action_server_t action_server,
     mavsdk_action_server_flight_mode_t flight_mode)
 {
-    auto wrapper = static_cast<mavsdk_action_server_wrapper*>(action_server);
+    auto wrapper = reinterpret_cast<mavsdk_action_server_wrapper*>(action_server);
 
     auto ret_value = wrapper->cpp_plugin->set_flight_mode(        translate_flight_mode_from_c(flight_mode));
 
@@ -649,7 +649,7 @@ mavsdk_action_server_set_flight_mode_internal(
     mavsdk_action_server_t action_server,
     mavsdk_action_server_flight_mode_t flight_mode)
 {
-    auto wrapper = static_cast<mavsdk_action_server_wrapper*>(action_server);
+    auto wrapper = reinterpret_cast<mavsdk_action_server_wrapper*>(action_server);
 
     auto ret_value = wrapper->cpp_plugin->set_flight_mode_internal(        translate_flight_mode_from_c(flight_mode));
 

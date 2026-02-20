@@ -220,10 +220,10 @@ mavsdk_follow_me_create(mavsdk_system_t system) {
     }
 
     auto wrapper = new mavsdk_follow_me_wrapper();
-    auto system_ptr = static_cast<std::shared_ptr<mavsdk::System>*>(system);
+    auto system_ptr = reinterpret_cast<std::shared_ptr<mavsdk::System>*>(system);
     wrapper->cpp_plugin = std::make_shared<mavsdk::FollowMe>(*system_ptr);
 
-    return wrapper;
+    return reinterpret_cast<mavsdk_follow_me_t>(wrapper);
 }
 
 void mavsdk_follow_me_destroy(mavsdk_follow_me_t follow_me) {
@@ -231,7 +231,7 @@ void mavsdk_follow_me_destroy(mavsdk_follow_me_t follow_me) {
         return;
     }
 
-    auto wrapper = static_cast<mavsdk_follow_me_wrapper*>(follow_me);
+    auto wrapper = reinterpret_cast<mavsdk_follow_me_wrapper*>(follow_me);
     delete wrapper;
 }
 
@@ -244,7 +244,7 @@ mavsdk_follow_me_get_config(
     mavsdk_follow_me_t follow_me,
     mavsdk_follow_me_config_t* config_out)
 {
-    auto wrapper = static_cast<mavsdk_follow_me_wrapper*>(follow_me);
+    auto wrapper = reinterpret_cast<mavsdk_follow_me_wrapper*>(follow_me);
 
     auto ret_value = wrapper->cpp_plugin->get_config();
 
@@ -260,7 +260,7 @@ mavsdk_follow_me_set_config(
     mavsdk_follow_me_t follow_me,
     mavsdk_follow_me_config_t config)
 {
-    auto wrapper = static_cast<mavsdk_follow_me_wrapper*>(follow_me);
+    auto wrapper = reinterpret_cast<mavsdk_follow_me_wrapper*>(follow_me);
 
     auto ret_value = wrapper->cpp_plugin->set_config(        translate_config_from_c(config));
 
@@ -274,7 +274,7 @@ mavsdk_follow_me_is_active(
     mavsdk_follow_me_t follow_me,
     bool* is_active_out)
 {
-    auto wrapper = static_cast<mavsdk_follow_me_wrapper*>(follow_me);
+    auto wrapper = reinterpret_cast<mavsdk_follow_me_wrapper*>(follow_me);
 
     auto ret_value = wrapper->cpp_plugin->is_active();
 
@@ -288,7 +288,7 @@ mavsdk_follow_me_set_target_location(
     mavsdk_follow_me_t follow_me,
     mavsdk_follow_me_target_location_t location)
 {
-    auto wrapper = static_cast<mavsdk_follow_me_wrapper*>(follow_me);
+    auto wrapper = reinterpret_cast<mavsdk_follow_me_wrapper*>(follow_me);
 
     auto ret_value = wrapper->cpp_plugin->set_target_location(        translate_target_location_from_c(location));
 
@@ -302,7 +302,7 @@ mavsdk_follow_me_get_last_location(
     mavsdk_follow_me_t follow_me,
     mavsdk_follow_me_target_location_t* location_out)
 {
-    auto wrapper = static_cast<mavsdk_follow_me_wrapper*>(follow_me);
+    auto wrapper = reinterpret_cast<mavsdk_follow_me_wrapper*>(follow_me);
 
     auto ret_value = wrapper->cpp_plugin->get_last_location();
 
@@ -317,7 +317,7 @@ mavsdk_follow_me_result_t
 mavsdk_follow_me_start(
     mavsdk_follow_me_t follow_me)
 {
-    auto wrapper = static_cast<mavsdk_follow_me_wrapper*>(follow_me);
+    auto wrapper = reinterpret_cast<mavsdk_follow_me_wrapper*>(follow_me);
 
     auto ret_value = wrapper->cpp_plugin->start();
 
@@ -330,7 +330,7 @@ mavsdk_follow_me_result_t
 mavsdk_follow_me_stop(
     mavsdk_follow_me_t follow_me)
 {
-    auto wrapper = static_cast<mavsdk_follow_me_wrapper*>(follow_me);
+    auto wrapper = reinterpret_cast<mavsdk_follow_me_wrapper*>(follow_me);
 
     auto ret_value = wrapper->cpp_plugin->stop();
 

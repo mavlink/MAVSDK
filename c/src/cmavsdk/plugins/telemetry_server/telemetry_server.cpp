@@ -1360,10 +1360,10 @@ mavsdk_telemetry_server_create(mavsdk_server_component_t server_component) {
     }
 
     auto wrapper = new mavsdk_telemetry_server_wrapper();
-    auto server_component_ptr = static_cast<std::shared_ptr<mavsdk::ServerComponent>*>(server_component);
+    auto server_component_ptr = reinterpret_cast<std::shared_ptr<mavsdk::ServerComponent>*>(server_component);
     wrapper->cpp_plugin = std::make_shared<mavsdk::TelemetryServer>(*server_component_ptr);
 
-    return wrapper;
+    return reinterpret_cast<mavsdk_telemetry_server_t>(wrapper);
 }
 
 void mavsdk_telemetry_server_destroy(mavsdk_telemetry_server_t telemetry_server) {
@@ -1371,7 +1371,7 @@ void mavsdk_telemetry_server_destroy(mavsdk_telemetry_server_t telemetry_server)
         return;
     }
 
-    auto wrapper = static_cast<mavsdk_telemetry_server_wrapper*>(telemetry_server);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_server_wrapper*>(telemetry_server);
     delete wrapper;
 }
 
@@ -1386,7 +1386,7 @@ mavsdk_telemetry_server_publish_position(
     mavsdk_telemetry_server_velocity_ned_t velocity_ned,
     mavsdk_telemetry_server_heading_t heading)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_server_wrapper*>(telemetry_server);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_server_wrapper*>(telemetry_server);
 
     auto ret_value = wrapper->cpp_plugin->publish_position(        translate_position_from_c(position),        translate_velocity_ned_from_c(velocity_ned),        translate_heading_from_c(heading));
 
@@ -1400,7 +1400,7 @@ mavsdk_telemetry_server_publish_home(
     mavsdk_telemetry_server_t telemetry_server,
     mavsdk_telemetry_server_position_t home)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_server_wrapper*>(telemetry_server);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_server_wrapper*>(telemetry_server);
 
     auto ret_value = wrapper->cpp_plugin->publish_home(        translate_position_from_c(home));
 
@@ -1419,7 +1419,7 @@ mavsdk_telemetry_server_publish_sys_status(
     bool mag_status,
     bool gps_status)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_server_wrapper*>(telemetry_server);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_server_wrapper*>(telemetry_server);
 
     auto ret_value = wrapper->cpp_plugin->publish_sys_status(        translate_battery_from_c(battery),        rc_receiver_status,        gyro_status,        accel_status,        mag_status,        gps_status);
 
@@ -1434,7 +1434,7 @@ mavsdk_telemetry_server_publish_extended_sys_state(
     mavsdk_telemetry_server_vtol_state_t vtol_state,
     mavsdk_telemetry_server_landed_state_t landed_state)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_server_wrapper*>(telemetry_server);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_server_wrapper*>(telemetry_server);
 
     auto ret_value = wrapper->cpp_plugin->publish_extended_sys_state(        translate_vtol_state_from_c(vtol_state),        translate_landed_state_from_c(landed_state));
 
@@ -1449,7 +1449,7 @@ mavsdk_telemetry_server_publish_raw_gps(
     mavsdk_telemetry_server_raw_gps_t raw_gps,
     mavsdk_telemetry_server_gps_info_t gps_info)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_server_wrapper*>(telemetry_server);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_server_wrapper*>(telemetry_server);
 
     auto ret_value = wrapper->cpp_plugin->publish_raw_gps(        translate_raw_gps_from_c(raw_gps),        translate_gps_info_from_c(gps_info));
 
@@ -1463,7 +1463,7 @@ mavsdk_telemetry_server_publish_battery(
     mavsdk_telemetry_server_t telemetry_server,
     mavsdk_telemetry_server_battery_t battery)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_server_wrapper*>(telemetry_server);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_server_wrapper*>(telemetry_server);
 
     auto ret_value = wrapper->cpp_plugin->publish_battery(        translate_battery_from_c(battery));
 
@@ -1477,7 +1477,7 @@ mavsdk_telemetry_server_publish_status_text(
     mavsdk_telemetry_server_t telemetry_server,
     mavsdk_telemetry_server_status_text_t status_text)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_server_wrapper*>(telemetry_server);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_server_wrapper*>(telemetry_server);
 
     auto ret_value = wrapper->cpp_plugin->publish_status_text(        translate_status_text_from_c(status_text));
 
@@ -1491,7 +1491,7 @@ mavsdk_telemetry_server_publish_odometry(
     mavsdk_telemetry_server_t telemetry_server,
     mavsdk_telemetry_server_odometry_t odometry)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_server_wrapper*>(telemetry_server);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_server_wrapper*>(telemetry_server);
 
     auto ret_value = wrapper->cpp_plugin->publish_odometry(        translate_odometry_from_c(odometry));
 
@@ -1505,7 +1505,7 @@ mavsdk_telemetry_server_publish_position_velocity_ned(
     mavsdk_telemetry_server_t telemetry_server,
     mavsdk_telemetry_server_position_velocity_ned_t position_velocity_ned)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_server_wrapper*>(telemetry_server);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_server_wrapper*>(telemetry_server);
 
     auto ret_value = wrapper->cpp_plugin->publish_position_velocity_ned(        translate_position_velocity_ned_from_c(position_velocity_ned));
 
@@ -1519,7 +1519,7 @@ mavsdk_telemetry_server_publish_ground_truth(
     mavsdk_telemetry_server_t telemetry_server,
     mavsdk_telemetry_server_ground_truth_t ground_truth)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_server_wrapper*>(telemetry_server);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_server_wrapper*>(telemetry_server);
 
     auto ret_value = wrapper->cpp_plugin->publish_ground_truth(        translate_ground_truth_from_c(ground_truth));
 
@@ -1533,7 +1533,7 @@ mavsdk_telemetry_server_publish_imu(
     mavsdk_telemetry_server_t telemetry_server,
     mavsdk_telemetry_server_imu_t imu)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_server_wrapper*>(telemetry_server);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_server_wrapper*>(telemetry_server);
 
     auto ret_value = wrapper->cpp_plugin->publish_imu(        translate_imu_from_c(imu));
 
@@ -1547,7 +1547,7 @@ mavsdk_telemetry_server_publish_scaled_imu(
     mavsdk_telemetry_server_t telemetry_server,
     mavsdk_telemetry_server_imu_t imu)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_server_wrapper*>(telemetry_server);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_server_wrapper*>(telemetry_server);
 
     auto ret_value = wrapper->cpp_plugin->publish_scaled_imu(        translate_imu_from_c(imu));
 
@@ -1561,7 +1561,7 @@ mavsdk_telemetry_server_publish_raw_imu(
     mavsdk_telemetry_server_t telemetry_server,
     mavsdk_telemetry_server_imu_t imu)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_server_wrapper*>(telemetry_server);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_server_wrapper*>(telemetry_server);
 
     auto ret_value = wrapper->cpp_plugin->publish_raw_imu(        translate_imu_from_c(imu));
 
@@ -1575,7 +1575,7 @@ mavsdk_telemetry_server_publish_unix_epoch_time(
     mavsdk_telemetry_server_t telemetry_server,
     uint64_t time_us)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_server_wrapper*>(telemetry_server);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_server_wrapper*>(telemetry_server);
 
     auto ret_value = wrapper->cpp_plugin->publish_unix_epoch_time(        time_us);
 
@@ -1589,7 +1589,7 @@ mavsdk_telemetry_server_publish_distance_sensor(
     mavsdk_telemetry_server_t telemetry_server,
     mavsdk_telemetry_server_distance_sensor_t distance_sensor)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_server_wrapper*>(telemetry_server);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_server_wrapper*>(telemetry_server);
 
     auto ret_value = wrapper->cpp_plugin->publish_distance_sensor(        translate_distance_sensor_from_c(distance_sensor));
 
@@ -1604,7 +1604,7 @@ mavsdk_telemetry_server_publish_attitude(
     mavsdk_telemetry_server_euler_angle_t angle,
     mavsdk_telemetry_server_angular_velocity_body_t angular_velocity)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_server_wrapper*>(telemetry_server);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_server_wrapper*>(telemetry_server);
 
     auto ret_value = wrapper->cpp_plugin->publish_attitude(        translate_euler_angle_from_c(angle),        translate_angular_velocity_body_from_c(angular_velocity));
 
@@ -1618,7 +1618,7 @@ mavsdk_telemetry_server_publish_visual_flight_rules_hud(
     mavsdk_telemetry_server_t telemetry_server,
     mavsdk_telemetry_server_fixedwing_metrics_t fixed_wing_metrics)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_server_wrapper*>(telemetry_server);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_server_wrapper*>(telemetry_server);
 
     auto ret_value = wrapper->cpp_plugin->publish_visual_flight_rules_hud(        translate_fixedwing_metrics_from_c(fixed_wing_metrics));
 

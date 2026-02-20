@@ -10,14 +10,14 @@
 extern "C" {
 #endif
 
-typedef void* mavsdk_t;
-typedef void* mavsdk_configuration_t;
-typedef void* mavsdk_system_t;
-typedef void* mavsdk_server_component_t;
-typedef void* mavsdk_connection_handle_t;
-typedef void* mavsdk_connection_error_handle_t;
-typedef void* mavsdk_new_system_handle_t;
-typedef void* mavsdk_intercept_json_handle_t;
+typedef struct mavsdk_s *mavsdk_t;
+typedef struct mavsdk_configuration_s *mavsdk_configuration_t;
+typedef struct mavsdk_system_s *mavsdk_system_t;
+typedef struct mavsdk_server_component_s *mavsdk_server_component_t;
+typedef struct mavsdk_connection_handle_s *mavsdk_connection_handle_t;
+typedef struct mavsdk_connection_error_handle_s *mavsdk_connection_error_handle_t;
+typedef struct mavsdk_new_system_handle_s *mavsdk_new_system_handle_t;
+typedef struct mavsdk_intercept_json_handle_s *mavsdk_intercept_json_handle_t;
 
 typedef enum {
     MAVSDK_COMPONENT_TYPE_AUTOPILOT = 0,

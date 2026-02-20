@@ -358,10 +358,10 @@ mavsdk_param_create(mavsdk_system_t system) {
     }
 
     auto wrapper = new mavsdk_param_wrapper();
-    auto system_ptr = static_cast<std::shared_ptr<mavsdk::System>*>(system);
+    auto system_ptr = reinterpret_cast<std::shared_ptr<mavsdk::System>*>(system);
     wrapper->cpp_plugin = std::make_shared<mavsdk::Param>(*system_ptr);
 
-    return wrapper;
+    return reinterpret_cast<mavsdk_param_t>(wrapper);
 }
 
 void mavsdk_param_destroy(mavsdk_param_t param) {
@@ -369,7 +369,7 @@ void mavsdk_param_destroy(mavsdk_param_t param) {
         return;
     }
 
-    auto wrapper = static_cast<mavsdk_param_wrapper*>(param);
+    auto wrapper = reinterpret_cast<mavsdk_param_wrapper*>(param);
     delete wrapper;
 }
 
@@ -383,7 +383,7 @@ mavsdk_param_get_param_int(
     char* name,
     int32_t* value_out)
 {
-    auto wrapper = static_cast<mavsdk_param_wrapper*>(param);
+    auto wrapper = reinterpret_cast<mavsdk_param_wrapper*>(param);
 
     auto result_pair = wrapper->cpp_plugin->get_param_int(
         name);
@@ -401,7 +401,7 @@ mavsdk_param_set_param_int(
     char* name,
     int32_t value)
 {
-    auto wrapper = static_cast<mavsdk_param_wrapper*>(param);
+    auto wrapper = reinterpret_cast<mavsdk_param_wrapper*>(param);
 
     auto ret_value = wrapper->cpp_plugin->set_param_int(        name,        value);
 
@@ -416,7 +416,7 @@ mavsdk_param_get_param_float(
     char* name,
     float* value_out)
 {
-    auto wrapper = static_cast<mavsdk_param_wrapper*>(param);
+    auto wrapper = reinterpret_cast<mavsdk_param_wrapper*>(param);
 
     auto result_pair = wrapper->cpp_plugin->get_param_float(
         name);
@@ -434,7 +434,7 @@ mavsdk_param_set_param_float(
     char* name,
     float value)
 {
-    auto wrapper = static_cast<mavsdk_param_wrapper*>(param);
+    auto wrapper = reinterpret_cast<mavsdk_param_wrapper*>(param);
 
     auto ret_value = wrapper->cpp_plugin->set_param_float(        name,        value);
 
@@ -449,7 +449,7 @@ mavsdk_param_get_param_custom(
     char* name,
     char** value_out)
 {
-    auto wrapper = static_cast<mavsdk_param_wrapper*>(param);
+    auto wrapper = reinterpret_cast<mavsdk_param_wrapper*>(param);
 
     auto result_pair = wrapper->cpp_plugin->get_param_custom(
         name);
@@ -469,7 +469,7 @@ mavsdk_param_set_param_custom(
     char* name,
     char* value)
 {
-    auto wrapper = static_cast<mavsdk_param_wrapper*>(param);
+    auto wrapper = reinterpret_cast<mavsdk_param_wrapper*>(param);
 
     auto ret_value = wrapper->cpp_plugin->set_param_custom(        name,        value);
 
@@ -483,7 +483,7 @@ mavsdk_param_get_all_params(
     mavsdk_param_t param,
     mavsdk_param_all_params_t* params_out)
 {
-    auto wrapper = static_cast<mavsdk_param_wrapper*>(param);
+    auto wrapper = reinterpret_cast<mavsdk_param_wrapper*>(param);
 
     auto ret_value = wrapper->cpp_plugin->get_all_params();
 
@@ -500,7 +500,7 @@ mavsdk_param_select_component(
     int32_t component_id,
     mavsdk_param_protocol_version_t protocol_version)
 {
-    auto wrapper = static_cast<mavsdk_param_wrapper*>(param);
+    auto wrapper = reinterpret_cast<mavsdk_param_wrapper*>(param);
 
     auto ret_value = wrapper->cpp_plugin->select_component(        component_id,        translate_protocol_version_from_c(protocol_version));
 

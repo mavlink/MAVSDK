@@ -180,10 +180,10 @@ mavsdk_log_files_create(mavsdk_system_t system) {
     }
 
     auto wrapper = new mavsdk_log_files_wrapper();
-    auto system_ptr = static_cast<std::shared_ptr<mavsdk::System>*>(system);
+    auto system_ptr = reinterpret_cast<std::shared_ptr<mavsdk::System>*>(system);
     wrapper->cpp_plugin = std::make_shared<mavsdk::LogFiles>(*system_ptr);
 
-    return wrapper;
+    return reinterpret_cast<mavsdk_log_files_t>(wrapper);
 }
 
 void mavsdk_log_files_destroy(mavsdk_log_files_t log_files) {
@@ -191,7 +191,7 @@ void mavsdk_log_files_destroy(mavsdk_log_files_t log_files) {
         return;
     }
 
-    auto wrapper = static_cast<mavsdk_log_files_wrapper*>(log_files);
+    auto wrapper = reinterpret_cast<mavsdk_log_files_wrapper*>(log_files);
     delete wrapper;
 }
 
@@ -203,7 +203,7 @@ void mavsdk_log_files_get_entries_async(
     mavsdk_log_files_get_entries_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_log_files_wrapper*>(log_files);
+    auto wrapper = reinterpret_cast<mavsdk_log_files_wrapper*>(log_files);
 
     wrapper->cpp_plugin->get_entries_async(
         [callback, user_data](
@@ -237,7 +237,7 @@ mavsdk_log_files_get_entries(
     mavsdk_log_files_entry_t** entries_out,
     size_t* entries_size_out)
 {
-    auto wrapper = static_cast<mavsdk_log_files_wrapper*>(log_files);
+    auto wrapper = reinterpret_cast<mavsdk_log_files_wrapper*>(log_files);
 
     auto result_pair = wrapper->cpp_plugin->get_entries(
 );
@@ -267,7 +267,7 @@ void mavsdk_log_files_download_log_file_async(
     mavsdk_log_files_download_log_file_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_log_files_wrapper*>(log_files);
+    auto wrapper = reinterpret_cast<mavsdk_log_files_wrapper*>(log_files);
 
     wrapper->cpp_plugin->download_log_file_async(
         translate_entry_from_c(entry),        path,
@@ -291,7 +291,7 @@ mavsdk_log_files_result_t
 mavsdk_log_files_erase_all_log_files(
     mavsdk_log_files_t log_files)
 {
-    auto wrapper = static_cast<mavsdk_log_files_wrapper*>(log_files);
+    auto wrapper = reinterpret_cast<mavsdk_log_files_wrapper*>(log_files);
 
     auto ret_value = wrapper->cpp_plugin->erase_all_log_files();
 

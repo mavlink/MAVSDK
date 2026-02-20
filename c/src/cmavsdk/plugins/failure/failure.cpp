@@ -224,10 +224,10 @@ mavsdk_failure_create(mavsdk_system_t system) {
     }
 
     auto wrapper = new mavsdk_failure_wrapper();
-    auto system_ptr = static_cast<std::shared_ptr<mavsdk::System>*>(system);
+    auto system_ptr = reinterpret_cast<std::shared_ptr<mavsdk::System>*>(system);
     wrapper->cpp_plugin = std::make_shared<mavsdk::Failure>(*system_ptr);
 
-    return wrapper;
+    return reinterpret_cast<mavsdk_failure_t>(wrapper);
 }
 
 void mavsdk_failure_destroy(mavsdk_failure_t failure) {
@@ -235,7 +235,7 @@ void mavsdk_failure_destroy(mavsdk_failure_t failure) {
         return;
     }
 
-    auto wrapper = static_cast<mavsdk_failure_wrapper*>(failure);
+    auto wrapper = reinterpret_cast<mavsdk_failure_wrapper*>(failure);
     delete wrapper;
 }
 
@@ -250,7 +250,7 @@ mavsdk_failure_inject(
     mavsdk_failure_failure_type_t failure_type,
     int32_t instance)
 {
-    auto wrapper = static_cast<mavsdk_failure_wrapper*>(failure);
+    auto wrapper = reinterpret_cast<mavsdk_failure_wrapper*>(failure);
 
     auto ret_value = wrapper->cpp_plugin->inject(        translate_failure_unit_from_c(failure_unit),        translate_failure_type_from_c(failure_type),        instance);
 

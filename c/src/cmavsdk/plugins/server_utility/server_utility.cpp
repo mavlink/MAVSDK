@@ -144,10 +144,10 @@ mavsdk_server_utility_create(mavsdk_system_t system) {
     }
 
     auto wrapper = new mavsdk_server_utility_wrapper();
-    auto system_ptr = static_cast<std::shared_ptr<mavsdk::System>*>(system);
+    auto system_ptr = reinterpret_cast<std::shared_ptr<mavsdk::System>*>(system);
     wrapper->cpp_plugin = std::make_shared<mavsdk::ServerUtility>(*system_ptr);
 
-    return wrapper;
+    return reinterpret_cast<mavsdk_server_utility_t>(wrapper);
 }
 
 void mavsdk_server_utility_destroy(mavsdk_server_utility_t server_utility) {
@@ -155,7 +155,7 @@ void mavsdk_server_utility_destroy(mavsdk_server_utility_t server_utility) {
         return;
     }
 
-    auto wrapper = static_cast<mavsdk_server_utility_wrapper*>(server_utility);
+    auto wrapper = reinterpret_cast<mavsdk_server_utility_wrapper*>(server_utility);
     delete wrapper;
 }
 
@@ -169,7 +169,7 @@ mavsdk_server_utility_send_status_text(
     mavsdk_server_utility_status_text_type_t type,
     char* text)
 {
-    auto wrapper = static_cast<mavsdk_server_utility_wrapper*>(server_utility);
+    auto wrapper = reinterpret_cast<mavsdk_server_utility_wrapper*>(server_utility);
 
     auto ret_value = wrapper->cpp_plugin->send_status_text(        translate_status_text_type_from_c(type),        text);
 

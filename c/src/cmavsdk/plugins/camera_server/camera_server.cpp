@@ -705,10 +705,10 @@ mavsdk_camera_server_create(mavsdk_server_component_t server_component) {
     }
 
     auto wrapper = new mavsdk_camera_server_wrapper();
-    auto server_component_ptr = static_cast<std::shared_ptr<mavsdk::ServerComponent>*>(server_component);
+    auto server_component_ptr = reinterpret_cast<std::shared_ptr<mavsdk::ServerComponent>*>(server_component);
     wrapper->cpp_plugin = std::make_shared<mavsdk::CameraServer>(*server_component_ptr);
 
-    return wrapper;
+    return reinterpret_cast<mavsdk_camera_server_t>(wrapper);
 }
 
 void mavsdk_camera_server_destroy(mavsdk_camera_server_t camera_server) {
@@ -716,7 +716,7 @@ void mavsdk_camera_server_destroy(mavsdk_camera_server_t camera_server) {
         return;
     }
 
-    auto wrapper = static_cast<mavsdk_camera_server_wrapper*>(camera_server);
+    auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
     delete wrapper;
 }
 
@@ -729,7 +729,7 @@ mavsdk_camera_server_set_information(
     mavsdk_camera_server_t camera_server,
     mavsdk_camera_server_information_t information)
 {
-    auto wrapper = static_cast<mavsdk_camera_server_wrapper*>(camera_server);
+    auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
 
     auto ret_value = wrapper->cpp_plugin->set_information(        translate_information_from_c(information));
 
@@ -743,7 +743,7 @@ mavsdk_camera_server_set_video_streaming(
     mavsdk_camera_server_t camera_server,
     mavsdk_camera_server_video_streaming_t video_streaming)
 {
-    auto wrapper = static_cast<mavsdk_camera_server_wrapper*>(camera_server);
+    auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
 
     auto ret_value = wrapper->cpp_plugin->set_video_streaming(        translate_video_streaming_from_c(video_streaming));
 
@@ -757,7 +757,7 @@ mavsdk_camera_server_set_in_progress(
     mavsdk_camera_server_t camera_server,
     bool in_progress)
 {
-    auto wrapper = static_cast<mavsdk_camera_server_wrapper*>(camera_server);
+    auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
 
     auto ret_value = wrapper->cpp_plugin->set_in_progress(        in_progress);
 
@@ -770,7 +770,7 @@ mavsdk_camera_server_take_photo_handle_t mavsdk_camera_server_subscribe_take_pho
     mavsdk_camera_server_take_photo_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_camera_server_wrapper*>(camera_server);
+    auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
 
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_take_photo(
         [callback, user_data](
@@ -783,7 +783,7 @@ mavsdk_camera_server_take_photo_handle_t mavsdk_camera_server_subscribe_take_pho
         });
 
     auto handle_wrapper = new mavsdk::CameraServer::TakePhotoHandle(std::move(cpp_handle));
-    return static_cast<mavsdk_camera_server_take_photo_handle_t>(handle_wrapper);
+    return reinterpret_cast<mavsdk_camera_server_take_photo_handle_t>(handle_wrapper);
 }
 
 void mavsdk_camera_server_unsubscribe_take_photo(
@@ -791,8 +791,8 @@ void mavsdk_camera_server_unsubscribe_take_photo(
     mavsdk_camera_server_take_photo_handle_t handle)
 {
     if (handle) {
-        auto wrapper = static_cast<mavsdk_camera_server_wrapper*>(camera_server);
-        auto cpp_handle = static_cast<mavsdk::CameraServer::TakePhotoHandle*>(handle);
+        auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
+        auto cpp_handle = reinterpret_cast<mavsdk::CameraServer::TakePhotoHandle*>(handle);
         wrapper->cpp_plugin->unsubscribe_take_photo(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -807,7 +807,7 @@ mavsdk_camera_server_respond_take_photo(
     mavsdk_camera_server_camera_feedback_t take_photo_feedback,
     mavsdk_camera_server_capture_info_t capture_info)
 {
-    auto wrapper = static_cast<mavsdk_camera_server_wrapper*>(camera_server);
+    auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
 
     auto ret_value = wrapper->cpp_plugin->respond_take_photo(        translate_camera_feedback_from_c(take_photo_feedback),        translate_capture_info_from_c(capture_info));
 
@@ -820,7 +820,7 @@ mavsdk_camera_server_start_video_handle_t mavsdk_camera_server_subscribe_start_v
     mavsdk_camera_server_start_video_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_camera_server_wrapper*>(camera_server);
+    auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
 
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_start_video(
         [callback, user_data](
@@ -833,7 +833,7 @@ mavsdk_camera_server_start_video_handle_t mavsdk_camera_server_subscribe_start_v
         });
 
     auto handle_wrapper = new mavsdk::CameraServer::StartVideoHandle(std::move(cpp_handle));
-    return static_cast<mavsdk_camera_server_start_video_handle_t>(handle_wrapper);
+    return reinterpret_cast<mavsdk_camera_server_start_video_handle_t>(handle_wrapper);
 }
 
 void mavsdk_camera_server_unsubscribe_start_video(
@@ -841,8 +841,8 @@ void mavsdk_camera_server_unsubscribe_start_video(
     mavsdk_camera_server_start_video_handle_t handle)
 {
     if (handle) {
-        auto wrapper = static_cast<mavsdk_camera_server_wrapper*>(camera_server);
-        auto cpp_handle = static_cast<mavsdk::CameraServer::StartVideoHandle*>(handle);
+        auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
+        auto cpp_handle = reinterpret_cast<mavsdk::CameraServer::StartVideoHandle*>(handle);
         wrapper->cpp_plugin->unsubscribe_start_video(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -856,7 +856,7 @@ mavsdk_camera_server_respond_start_video(
     mavsdk_camera_server_t camera_server,
     mavsdk_camera_server_camera_feedback_t start_video_feedback)
 {
-    auto wrapper = static_cast<mavsdk_camera_server_wrapper*>(camera_server);
+    auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
 
     auto ret_value = wrapper->cpp_plugin->respond_start_video(        translate_camera_feedback_from_c(start_video_feedback));
 
@@ -869,7 +869,7 @@ mavsdk_camera_server_stop_video_handle_t mavsdk_camera_server_subscribe_stop_vid
     mavsdk_camera_server_stop_video_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_camera_server_wrapper*>(camera_server);
+    auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
 
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_stop_video(
         [callback, user_data](
@@ -882,7 +882,7 @@ mavsdk_camera_server_stop_video_handle_t mavsdk_camera_server_subscribe_stop_vid
         });
 
     auto handle_wrapper = new mavsdk::CameraServer::StopVideoHandle(std::move(cpp_handle));
-    return static_cast<mavsdk_camera_server_stop_video_handle_t>(handle_wrapper);
+    return reinterpret_cast<mavsdk_camera_server_stop_video_handle_t>(handle_wrapper);
 }
 
 void mavsdk_camera_server_unsubscribe_stop_video(
@@ -890,8 +890,8 @@ void mavsdk_camera_server_unsubscribe_stop_video(
     mavsdk_camera_server_stop_video_handle_t handle)
 {
     if (handle) {
-        auto wrapper = static_cast<mavsdk_camera_server_wrapper*>(camera_server);
-        auto cpp_handle = static_cast<mavsdk::CameraServer::StopVideoHandle*>(handle);
+        auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
+        auto cpp_handle = reinterpret_cast<mavsdk::CameraServer::StopVideoHandle*>(handle);
         wrapper->cpp_plugin->unsubscribe_stop_video(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -905,7 +905,7 @@ mavsdk_camera_server_respond_stop_video(
     mavsdk_camera_server_t camera_server,
     mavsdk_camera_server_camera_feedback_t stop_video_feedback)
 {
-    auto wrapper = static_cast<mavsdk_camera_server_wrapper*>(camera_server);
+    auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
 
     auto ret_value = wrapper->cpp_plugin->respond_stop_video(        translate_camera_feedback_from_c(stop_video_feedback));
 
@@ -918,7 +918,7 @@ mavsdk_camera_server_start_video_streaming_handle_t mavsdk_camera_server_subscri
     mavsdk_camera_server_start_video_streaming_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_camera_server_wrapper*>(camera_server);
+    auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
 
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_start_video_streaming(
         [callback, user_data](
@@ -931,7 +931,7 @@ mavsdk_camera_server_start_video_streaming_handle_t mavsdk_camera_server_subscri
         });
 
     auto handle_wrapper = new mavsdk::CameraServer::StartVideoStreamingHandle(std::move(cpp_handle));
-    return static_cast<mavsdk_camera_server_start_video_streaming_handle_t>(handle_wrapper);
+    return reinterpret_cast<mavsdk_camera_server_start_video_streaming_handle_t>(handle_wrapper);
 }
 
 void mavsdk_camera_server_unsubscribe_start_video_streaming(
@@ -939,8 +939,8 @@ void mavsdk_camera_server_unsubscribe_start_video_streaming(
     mavsdk_camera_server_start_video_streaming_handle_t handle)
 {
     if (handle) {
-        auto wrapper = static_cast<mavsdk_camera_server_wrapper*>(camera_server);
-        auto cpp_handle = static_cast<mavsdk::CameraServer::StartVideoStreamingHandle*>(handle);
+        auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
+        auto cpp_handle = reinterpret_cast<mavsdk::CameraServer::StartVideoStreamingHandle*>(handle);
         wrapper->cpp_plugin->unsubscribe_start_video_streaming(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -954,7 +954,7 @@ mavsdk_camera_server_respond_start_video_streaming(
     mavsdk_camera_server_t camera_server,
     mavsdk_camera_server_camera_feedback_t start_video_streaming_feedback)
 {
-    auto wrapper = static_cast<mavsdk_camera_server_wrapper*>(camera_server);
+    auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
 
     auto ret_value = wrapper->cpp_plugin->respond_start_video_streaming(        translate_camera_feedback_from_c(start_video_streaming_feedback));
 
@@ -967,7 +967,7 @@ mavsdk_camera_server_stop_video_streaming_handle_t mavsdk_camera_server_subscrib
     mavsdk_camera_server_stop_video_streaming_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_camera_server_wrapper*>(camera_server);
+    auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
 
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_stop_video_streaming(
         [callback, user_data](
@@ -980,7 +980,7 @@ mavsdk_camera_server_stop_video_streaming_handle_t mavsdk_camera_server_subscrib
         });
 
     auto handle_wrapper = new mavsdk::CameraServer::StopVideoStreamingHandle(std::move(cpp_handle));
-    return static_cast<mavsdk_camera_server_stop_video_streaming_handle_t>(handle_wrapper);
+    return reinterpret_cast<mavsdk_camera_server_stop_video_streaming_handle_t>(handle_wrapper);
 }
 
 void mavsdk_camera_server_unsubscribe_stop_video_streaming(
@@ -988,8 +988,8 @@ void mavsdk_camera_server_unsubscribe_stop_video_streaming(
     mavsdk_camera_server_stop_video_streaming_handle_t handle)
 {
     if (handle) {
-        auto wrapper = static_cast<mavsdk_camera_server_wrapper*>(camera_server);
-        auto cpp_handle = static_cast<mavsdk::CameraServer::StopVideoStreamingHandle*>(handle);
+        auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
+        auto cpp_handle = reinterpret_cast<mavsdk::CameraServer::StopVideoStreamingHandle*>(handle);
         wrapper->cpp_plugin->unsubscribe_stop_video_streaming(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -1003,7 +1003,7 @@ mavsdk_camera_server_respond_stop_video_streaming(
     mavsdk_camera_server_t camera_server,
     mavsdk_camera_server_camera_feedback_t stop_video_streaming_feedback)
 {
-    auto wrapper = static_cast<mavsdk_camera_server_wrapper*>(camera_server);
+    auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
 
     auto ret_value = wrapper->cpp_plugin->respond_stop_video_streaming(        translate_camera_feedback_from_c(stop_video_streaming_feedback));
 
@@ -1016,7 +1016,7 @@ mavsdk_camera_server_set_mode_handle_t mavsdk_camera_server_subscribe_set_mode(
     mavsdk_camera_server_set_mode_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_camera_server_wrapper*>(camera_server);
+    auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
 
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_set_mode(
         [callback, user_data](
@@ -1029,7 +1029,7 @@ mavsdk_camera_server_set_mode_handle_t mavsdk_camera_server_subscribe_set_mode(
         });
 
     auto handle_wrapper = new mavsdk::CameraServer::SetModeHandle(std::move(cpp_handle));
-    return static_cast<mavsdk_camera_server_set_mode_handle_t>(handle_wrapper);
+    return reinterpret_cast<mavsdk_camera_server_set_mode_handle_t>(handle_wrapper);
 }
 
 void mavsdk_camera_server_unsubscribe_set_mode(
@@ -1037,8 +1037,8 @@ void mavsdk_camera_server_unsubscribe_set_mode(
     mavsdk_camera_server_set_mode_handle_t handle)
 {
     if (handle) {
-        auto wrapper = static_cast<mavsdk_camera_server_wrapper*>(camera_server);
-        auto cpp_handle = static_cast<mavsdk::CameraServer::SetModeHandle*>(handle);
+        auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
+        auto cpp_handle = reinterpret_cast<mavsdk::CameraServer::SetModeHandle*>(handle);
         wrapper->cpp_plugin->unsubscribe_set_mode(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -1052,7 +1052,7 @@ mavsdk_camera_server_respond_set_mode(
     mavsdk_camera_server_t camera_server,
     mavsdk_camera_server_camera_feedback_t set_mode_feedback)
 {
-    auto wrapper = static_cast<mavsdk_camera_server_wrapper*>(camera_server);
+    auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
 
     auto ret_value = wrapper->cpp_plugin->respond_set_mode(        translate_camera_feedback_from_c(set_mode_feedback));
 
@@ -1065,7 +1065,7 @@ mavsdk_camera_server_storage_information_handle_t mavsdk_camera_server_subscribe
     mavsdk_camera_server_storage_information_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_camera_server_wrapper*>(camera_server);
+    auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
 
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_storage_information(
         [callback, user_data](
@@ -1078,7 +1078,7 @@ mavsdk_camera_server_storage_information_handle_t mavsdk_camera_server_subscribe
         });
 
     auto handle_wrapper = new mavsdk::CameraServer::StorageInformationHandle(std::move(cpp_handle));
-    return static_cast<mavsdk_camera_server_storage_information_handle_t>(handle_wrapper);
+    return reinterpret_cast<mavsdk_camera_server_storage_information_handle_t>(handle_wrapper);
 }
 
 void mavsdk_camera_server_unsubscribe_storage_information(
@@ -1086,8 +1086,8 @@ void mavsdk_camera_server_unsubscribe_storage_information(
     mavsdk_camera_server_storage_information_handle_t handle)
 {
     if (handle) {
-        auto wrapper = static_cast<mavsdk_camera_server_wrapper*>(camera_server);
-        auto cpp_handle = static_cast<mavsdk::CameraServer::StorageInformationHandle*>(handle);
+        auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
+        auto cpp_handle = reinterpret_cast<mavsdk::CameraServer::StorageInformationHandle*>(handle);
         wrapper->cpp_plugin->unsubscribe_storage_information(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -1102,7 +1102,7 @@ mavsdk_camera_server_respond_storage_information(
     mavsdk_camera_server_camera_feedback_t storage_information_feedback,
     mavsdk_camera_server_storage_information_t storage_information)
 {
-    auto wrapper = static_cast<mavsdk_camera_server_wrapper*>(camera_server);
+    auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
 
     auto ret_value = wrapper->cpp_plugin->respond_storage_information(        translate_camera_feedback_from_c(storage_information_feedback),        translate_storage_information_from_c(storage_information));
 
@@ -1115,7 +1115,7 @@ mavsdk_camera_server_capture_status_handle_t mavsdk_camera_server_subscribe_capt
     mavsdk_camera_server_capture_status_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_camera_server_wrapper*>(camera_server);
+    auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
 
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_capture_status(
         [callback, user_data](
@@ -1128,7 +1128,7 @@ mavsdk_camera_server_capture_status_handle_t mavsdk_camera_server_subscribe_capt
         });
 
     auto handle_wrapper = new mavsdk::CameraServer::CaptureStatusHandle(std::move(cpp_handle));
-    return static_cast<mavsdk_camera_server_capture_status_handle_t>(handle_wrapper);
+    return reinterpret_cast<mavsdk_camera_server_capture_status_handle_t>(handle_wrapper);
 }
 
 void mavsdk_camera_server_unsubscribe_capture_status(
@@ -1136,8 +1136,8 @@ void mavsdk_camera_server_unsubscribe_capture_status(
     mavsdk_camera_server_capture_status_handle_t handle)
 {
     if (handle) {
-        auto wrapper = static_cast<mavsdk_camera_server_wrapper*>(camera_server);
-        auto cpp_handle = static_cast<mavsdk::CameraServer::CaptureStatusHandle*>(handle);
+        auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
+        auto cpp_handle = reinterpret_cast<mavsdk::CameraServer::CaptureStatusHandle*>(handle);
         wrapper->cpp_plugin->unsubscribe_capture_status(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -1152,7 +1152,7 @@ mavsdk_camera_server_respond_capture_status(
     mavsdk_camera_server_camera_feedback_t capture_status_feedback,
     mavsdk_camera_server_capture_status_t capture_status)
 {
-    auto wrapper = static_cast<mavsdk_camera_server_wrapper*>(camera_server);
+    auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
 
     auto ret_value = wrapper->cpp_plugin->respond_capture_status(        translate_camera_feedback_from_c(capture_status_feedback),        translate_capture_status_from_c(capture_status));
 
@@ -1165,7 +1165,7 @@ mavsdk_camera_server_format_storage_handle_t mavsdk_camera_server_subscribe_form
     mavsdk_camera_server_format_storage_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_camera_server_wrapper*>(camera_server);
+    auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
 
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_format_storage(
         [callback, user_data](
@@ -1178,7 +1178,7 @@ mavsdk_camera_server_format_storage_handle_t mavsdk_camera_server_subscribe_form
         });
 
     auto handle_wrapper = new mavsdk::CameraServer::FormatStorageHandle(std::move(cpp_handle));
-    return static_cast<mavsdk_camera_server_format_storage_handle_t>(handle_wrapper);
+    return reinterpret_cast<mavsdk_camera_server_format_storage_handle_t>(handle_wrapper);
 }
 
 void mavsdk_camera_server_unsubscribe_format_storage(
@@ -1186,8 +1186,8 @@ void mavsdk_camera_server_unsubscribe_format_storage(
     mavsdk_camera_server_format_storage_handle_t handle)
 {
     if (handle) {
-        auto wrapper = static_cast<mavsdk_camera_server_wrapper*>(camera_server);
-        auto cpp_handle = static_cast<mavsdk::CameraServer::FormatStorageHandle*>(handle);
+        auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
+        auto cpp_handle = reinterpret_cast<mavsdk::CameraServer::FormatStorageHandle*>(handle);
         wrapper->cpp_plugin->unsubscribe_format_storage(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -1201,7 +1201,7 @@ mavsdk_camera_server_respond_format_storage(
     mavsdk_camera_server_t camera_server,
     mavsdk_camera_server_camera_feedback_t format_storage_feedback)
 {
-    auto wrapper = static_cast<mavsdk_camera_server_wrapper*>(camera_server);
+    auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
 
     auto ret_value = wrapper->cpp_plugin->respond_format_storage(        translate_camera_feedback_from_c(format_storage_feedback));
 
@@ -1214,7 +1214,7 @@ mavsdk_camera_server_reset_settings_handle_t mavsdk_camera_server_subscribe_rese
     mavsdk_camera_server_reset_settings_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_camera_server_wrapper*>(camera_server);
+    auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
 
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_reset_settings(
         [callback, user_data](
@@ -1227,7 +1227,7 @@ mavsdk_camera_server_reset_settings_handle_t mavsdk_camera_server_subscribe_rese
         });
 
     auto handle_wrapper = new mavsdk::CameraServer::ResetSettingsHandle(std::move(cpp_handle));
-    return static_cast<mavsdk_camera_server_reset_settings_handle_t>(handle_wrapper);
+    return reinterpret_cast<mavsdk_camera_server_reset_settings_handle_t>(handle_wrapper);
 }
 
 void mavsdk_camera_server_unsubscribe_reset_settings(
@@ -1235,8 +1235,8 @@ void mavsdk_camera_server_unsubscribe_reset_settings(
     mavsdk_camera_server_reset_settings_handle_t handle)
 {
     if (handle) {
-        auto wrapper = static_cast<mavsdk_camera_server_wrapper*>(camera_server);
-        auto cpp_handle = static_cast<mavsdk::CameraServer::ResetSettingsHandle*>(handle);
+        auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
+        auto cpp_handle = reinterpret_cast<mavsdk::CameraServer::ResetSettingsHandle*>(handle);
         wrapper->cpp_plugin->unsubscribe_reset_settings(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -1250,7 +1250,7 @@ mavsdk_camera_server_respond_reset_settings(
     mavsdk_camera_server_t camera_server,
     mavsdk_camera_server_camera_feedback_t reset_settings_feedback)
 {
-    auto wrapper = static_cast<mavsdk_camera_server_wrapper*>(camera_server);
+    auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
 
     auto ret_value = wrapper->cpp_plugin->respond_reset_settings(        translate_camera_feedback_from_c(reset_settings_feedback));
 
@@ -1263,7 +1263,7 @@ mavsdk_camera_server_zoom_in_start_handle_t mavsdk_camera_server_subscribe_zoom_
     mavsdk_camera_server_zoom_in_start_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_camera_server_wrapper*>(camera_server);
+    auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
 
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_zoom_in_start(
         [callback, user_data](
@@ -1276,7 +1276,7 @@ mavsdk_camera_server_zoom_in_start_handle_t mavsdk_camera_server_subscribe_zoom_
         });
 
     auto handle_wrapper = new mavsdk::CameraServer::ZoomInStartHandle(std::move(cpp_handle));
-    return static_cast<mavsdk_camera_server_zoom_in_start_handle_t>(handle_wrapper);
+    return reinterpret_cast<mavsdk_camera_server_zoom_in_start_handle_t>(handle_wrapper);
 }
 
 void mavsdk_camera_server_unsubscribe_zoom_in_start(
@@ -1284,8 +1284,8 @@ void mavsdk_camera_server_unsubscribe_zoom_in_start(
     mavsdk_camera_server_zoom_in_start_handle_t handle)
 {
     if (handle) {
-        auto wrapper = static_cast<mavsdk_camera_server_wrapper*>(camera_server);
-        auto cpp_handle = static_cast<mavsdk::CameraServer::ZoomInStartHandle*>(handle);
+        auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
+        auto cpp_handle = reinterpret_cast<mavsdk::CameraServer::ZoomInStartHandle*>(handle);
         wrapper->cpp_plugin->unsubscribe_zoom_in_start(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -1299,7 +1299,7 @@ mavsdk_camera_server_respond_zoom_in_start(
     mavsdk_camera_server_t camera_server,
     mavsdk_camera_server_camera_feedback_t zoom_in_start_feedback)
 {
-    auto wrapper = static_cast<mavsdk_camera_server_wrapper*>(camera_server);
+    auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
 
     auto ret_value = wrapper->cpp_plugin->respond_zoom_in_start(        translate_camera_feedback_from_c(zoom_in_start_feedback));
 
@@ -1312,7 +1312,7 @@ mavsdk_camera_server_zoom_out_start_handle_t mavsdk_camera_server_subscribe_zoom
     mavsdk_camera_server_zoom_out_start_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_camera_server_wrapper*>(camera_server);
+    auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
 
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_zoom_out_start(
         [callback, user_data](
@@ -1325,7 +1325,7 @@ mavsdk_camera_server_zoom_out_start_handle_t mavsdk_camera_server_subscribe_zoom
         });
 
     auto handle_wrapper = new mavsdk::CameraServer::ZoomOutStartHandle(std::move(cpp_handle));
-    return static_cast<mavsdk_camera_server_zoom_out_start_handle_t>(handle_wrapper);
+    return reinterpret_cast<mavsdk_camera_server_zoom_out_start_handle_t>(handle_wrapper);
 }
 
 void mavsdk_camera_server_unsubscribe_zoom_out_start(
@@ -1333,8 +1333,8 @@ void mavsdk_camera_server_unsubscribe_zoom_out_start(
     mavsdk_camera_server_zoom_out_start_handle_t handle)
 {
     if (handle) {
-        auto wrapper = static_cast<mavsdk_camera_server_wrapper*>(camera_server);
-        auto cpp_handle = static_cast<mavsdk::CameraServer::ZoomOutStartHandle*>(handle);
+        auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
+        auto cpp_handle = reinterpret_cast<mavsdk::CameraServer::ZoomOutStartHandle*>(handle);
         wrapper->cpp_plugin->unsubscribe_zoom_out_start(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -1348,7 +1348,7 @@ mavsdk_camera_server_respond_zoom_out_start(
     mavsdk_camera_server_t camera_server,
     mavsdk_camera_server_camera_feedback_t zoom_out_start_feedback)
 {
-    auto wrapper = static_cast<mavsdk_camera_server_wrapper*>(camera_server);
+    auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
 
     auto ret_value = wrapper->cpp_plugin->respond_zoom_out_start(        translate_camera_feedback_from_c(zoom_out_start_feedback));
 
@@ -1361,7 +1361,7 @@ mavsdk_camera_server_zoom_stop_handle_t mavsdk_camera_server_subscribe_zoom_stop
     mavsdk_camera_server_zoom_stop_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_camera_server_wrapper*>(camera_server);
+    auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
 
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_zoom_stop(
         [callback, user_data](
@@ -1374,7 +1374,7 @@ mavsdk_camera_server_zoom_stop_handle_t mavsdk_camera_server_subscribe_zoom_stop
         });
 
     auto handle_wrapper = new mavsdk::CameraServer::ZoomStopHandle(std::move(cpp_handle));
-    return static_cast<mavsdk_camera_server_zoom_stop_handle_t>(handle_wrapper);
+    return reinterpret_cast<mavsdk_camera_server_zoom_stop_handle_t>(handle_wrapper);
 }
 
 void mavsdk_camera_server_unsubscribe_zoom_stop(
@@ -1382,8 +1382,8 @@ void mavsdk_camera_server_unsubscribe_zoom_stop(
     mavsdk_camera_server_zoom_stop_handle_t handle)
 {
     if (handle) {
-        auto wrapper = static_cast<mavsdk_camera_server_wrapper*>(camera_server);
-        auto cpp_handle = static_cast<mavsdk::CameraServer::ZoomStopHandle*>(handle);
+        auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
+        auto cpp_handle = reinterpret_cast<mavsdk::CameraServer::ZoomStopHandle*>(handle);
         wrapper->cpp_plugin->unsubscribe_zoom_stop(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -1397,7 +1397,7 @@ mavsdk_camera_server_respond_zoom_stop(
     mavsdk_camera_server_t camera_server,
     mavsdk_camera_server_camera_feedback_t zoom_stop_feedback)
 {
-    auto wrapper = static_cast<mavsdk_camera_server_wrapper*>(camera_server);
+    auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
 
     auto ret_value = wrapper->cpp_plugin->respond_zoom_stop(        translate_camera_feedback_from_c(zoom_stop_feedback));
 
@@ -1410,7 +1410,7 @@ mavsdk_camera_server_zoom_range_handle_t mavsdk_camera_server_subscribe_zoom_ran
     mavsdk_camera_server_zoom_range_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_camera_server_wrapper*>(camera_server);
+    auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
 
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_zoom_range(
         [callback, user_data](
@@ -1423,7 +1423,7 @@ mavsdk_camera_server_zoom_range_handle_t mavsdk_camera_server_subscribe_zoom_ran
         });
 
     auto handle_wrapper = new mavsdk::CameraServer::ZoomRangeHandle(std::move(cpp_handle));
-    return static_cast<mavsdk_camera_server_zoom_range_handle_t>(handle_wrapper);
+    return reinterpret_cast<mavsdk_camera_server_zoom_range_handle_t>(handle_wrapper);
 }
 
 void mavsdk_camera_server_unsubscribe_zoom_range(
@@ -1431,8 +1431,8 @@ void mavsdk_camera_server_unsubscribe_zoom_range(
     mavsdk_camera_server_zoom_range_handle_t handle)
 {
     if (handle) {
-        auto wrapper = static_cast<mavsdk_camera_server_wrapper*>(camera_server);
-        auto cpp_handle = static_cast<mavsdk::CameraServer::ZoomRangeHandle*>(handle);
+        auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
+        auto cpp_handle = reinterpret_cast<mavsdk::CameraServer::ZoomRangeHandle*>(handle);
         wrapper->cpp_plugin->unsubscribe_zoom_range(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -1446,7 +1446,7 @@ mavsdk_camera_server_respond_zoom_range(
     mavsdk_camera_server_t camera_server,
     mavsdk_camera_server_camera_feedback_t zoom_range_feedback)
 {
-    auto wrapper = static_cast<mavsdk_camera_server_wrapper*>(camera_server);
+    auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
 
     auto ret_value = wrapper->cpp_plugin->respond_zoom_range(        translate_camera_feedback_from_c(zoom_range_feedback));
 
@@ -1460,7 +1460,7 @@ mavsdk_camera_server_set_tracking_rectangle_status(
     mavsdk_camera_server_t camera_server,
     mavsdk_camera_server_track_rectangle_t tracked_rectangle)
 {
-    auto wrapper = static_cast<mavsdk_camera_server_wrapper*>(camera_server);
+    auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
 
 wrapper->cpp_plugin->set_tracking_rectangle_status(        translate_track_rectangle_from_c(tracked_rectangle));
 
@@ -1472,7 +1472,7 @@ void
 mavsdk_camera_server_set_tracking_off_status(
     mavsdk_camera_server_t camera_server)
 {
-    auto wrapper = static_cast<mavsdk_camera_server_wrapper*>(camera_server);
+    auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
 
 wrapper->cpp_plugin->set_tracking_off_status();
 
@@ -1484,7 +1484,7 @@ mavsdk_camera_server_tracking_point_command_handle_t mavsdk_camera_server_subscr
     mavsdk_camera_server_tracking_point_command_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_camera_server_wrapper*>(camera_server);
+    auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
 
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_tracking_point_command(
         [callback, user_data](
@@ -1497,7 +1497,7 @@ mavsdk_camera_server_tracking_point_command_handle_t mavsdk_camera_server_subscr
         });
 
     auto handle_wrapper = new mavsdk::CameraServer::TrackingPointCommandHandle(std::move(cpp_handle));
-    return static_cast<mavsdk_camera_server_tracking_point_command_handle_t>(handle_wrapper);
+    return reinterpret_cast<mavsdk_camera_server_tracking_point_command_handle_t>(handle_wrapper);
 }
 
 void mavsdk_camera_server_unsubscribe_tracking_point_command(
@@ -1505,8 +1505,8 @@ void mavsdk_camera_server_unsubscribe_tracking_point_command(
     mavsdk_camera_server_tracking_point_command_handle_t handle)
 {
     if (handle) {
-        auto wrapper = static_cast<mavsdk_camera_server_wrapper*>(camera_server);
-        auto cpp_handle = static_cast<mavsdk::CameraServer::TrackingPointCommandHandle*>(handle);
+        auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
+        auto cpp_handle = reinterpret_cast<mavsdk::CameraServer::TrackingPointCommandHandle*>(handle);
         wrapper->cpp_plugin->unsubscribe_tracking_point_command(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -1519,7 +1519,7 @@ mavsdk_camera_server_tracking_rectangle_command_handle_t mavsdk_camera_server_su
     mavsdk_camera_server_tracking_rectangle_command_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_camera_server_wrapper*>(camera_server);
+    auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
 
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_tracking_rectangle_command(
         [callback, user_data](
@@ -1532,7 +1532,7 @@ mavsdk_camera_server_tracking_rectangle_command_handle_t mavsdk_camera_server_su
         });
 
     auto handle_wrapper = new mavsdk::CameraServer::TrackingRectangleCommandHandle(std::move(cpp_handle));
-    return static_cast<mavsdk_camera_server_tracking_rectangle_command_handle_t>(handle_wrapper);
+    return reinterpret_cast<mavsdk_camera_server_tracking_rectangle_command_handle_t>(handle_wrapper);
 }
 
 void mavsdk_camera_server_unsubscribe_tracking_rectangle_command(
@@ -1540,8 +1540,8 @@ void mavsdk_camera_server_unsubscribe_tracking_rectangle_command(
     mavsdk_camera_server_tracking_rectangle_command_handle_t handle)
 {
     if (handle) {
-        auto wrapper = static_cast<mavsdk_camera_server_wrapper*>(camera_server);
-        auto cpp_handle = static_cast<mavsdk::CameraServer::TrackingRectangleCommandHandle*>(handle);
+        auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
+        auto cpp_handle = reinterpret_cast<mavsdk::CameraServer::TrackingRectangleCommandHandle*>(handle);
         wrapper->cpp_plugin->unsubscribe_tracking_rectangle_command(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -1554,7 +1554,7 @@ mavsdk_camera_server_tracking_off_command_handle_t mavsdk_camera_server_subscrib
     mavsdk_camera_server_tracking_off_command_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_camera_server_wrapper*>(camera_server);
+    auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
 
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_tracking_off_command(
         [callback, user_data](
@@ -1567,7 +1567,7 @@ mavsdk_camera_server_tracking_off_command_handle_t mavsdk_camera_server_subscrib
         });
 
     auto handle_wrapper = new mavsdk::CameraServer::TrackingOffCommandHandle(std::move(cpp_handle));
-    return static_cast<mavsdk_camera_server_tracking_off_command_handle_t>(handle_wrapper);
+    return reinterpret_cast<mavsdk_camera_server_tracking_off_command_handle_t>(handle_wrapper);
 }
 
 void mavsdk_camera_server_unsubscribe_tracking_off_command(
@@ -1575,8 +1575,8 @@ void mavsdk_camera_server_unsubscribe_tracking_off_command(
     mavsdk_camera_server_tracking_off_command_handle_t handle)
 {
     if (handle) {
-        auto wrapper = static_cast<mavsdk_camera_server_wrapper*>(camera_server);
-        auto cpp_handle = static_cast<mavsdk::CameraServer::TrackingOffCommandHandle*>(handle);
+        auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
+        auto cpp_handle = reinterpret_cast<mavsdk::CameraServer::TrackingOffCommandHandle*>(handle);
         wrapper->cpp_plugin->unsubscribe_tracking_off_command(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -1590,7 +1590,7 @@ mavsdk_camera_server_respond_tracking_point_command(
     mavsdk_camera_server_t camera_server,
     mavsdk_camera_server_camera_feedback_t stop_video_feedback)
 {
-    auto wrapper = static_cast<mavsdk_camera_server_wrapper*>(camera_server);
+    auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
 
     auto ret_value = wrapper->cpp_plugin->respond_tracking_point_command(        translate_camera_feedback_from_c(stop_video_feedback));
 
@@ -1604,7 +1604,7 @@ mavsdk_camera_server_respond_tracking_rectangle_command(
     mavsdk_camera_server_t camera_server,
     mavsdk_camera_server_camera_feedback_t stop_video_feedback)
 {
-    auto wrapper = static_cast<mavsdk_camera_server_wrapper*>(camera_server);
+    auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
 
     auto ret_value = wrapper->cpp_plugin->respond_tracking_rectangle_command(        translate_camera_feedback_from_c(stop_video_feedback));
 
@@ -1618,7 +1618,7 @@ mavsdk_camera_server_respond_tracking_off_command(
     mavsdk_camera_server_t camera_server,
     mavsdk_camera_server_camera_feedback_t stop_video_feedback)
 {
-    auto wrapper = static_cast<mavsdk_camera_server_wrapper*>(camera_server);
+    auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
 
     auto ret_value = wrapper->cpp_plugin->respond_tracking_off_command(        translate_camera_feedback_from_c(stop_video_feedback));
 

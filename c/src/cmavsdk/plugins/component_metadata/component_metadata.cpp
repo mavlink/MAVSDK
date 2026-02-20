@@ -218,10 +218,10 @@ mavsdk_component_metadata_create(mavsdk_system_t system) {
     }
 
     auto wrapper = new mavsdk_component_metadata_wrapper();
-    auto system_ptr = static_cast<std::shared_ptr<mavsdk::System>*>(system);
+    auto system_ptr = reinterpret_cast<std::shared_ptr<mavsdk::System>*>(system);
     wrapper->cpp_plugin = std::make_shared<mavsdk::ComponentMetadata>(*system_ptr);
 
-    return wrapper;
+    return reinterpret_cast<mavsdk_component_metadata_t>(wrapper);
 }
 
 void mavsdk_component_metadata_destroy(mavsdk_component_metadata_t component_metadata) {
@@ -229,7 +229,7 @@ void mavsdk_component_metadata_destroy(mavsdk_component_metadata_t component_met
         return;
     }
 
-    auto wrapper = static_cast<mavsdk_component_metadata_wrapper*>(component_metadata);
+    auto wrapper = reinterpret_cast<mavsdk_component_metadata_wrapper*>(component_metadata);
     delete wrapper;
 }
 
@@ -242,7 +242,7 @@ mavsdk_component_metadata_request_component(
     mavsdk_component_metadata_t component_metadata,
     uint32_t compid)
 {
-    auto wrapper = static_cast<mavsdk_component_metadata_wrapper*>(component_metadata);
+    auto wrapper = reinterpret_cast<mavsdk_component_metadata_wrapper*>(component_metadata);
 
 wrapper->cpp_plugin->request_component(        compid);
 
@@ -254,7 +254,7 @@ void
 mavsdk_component_metadata_request_autopilot_component(
     mavsdk_component_metadata_t component_metadata)
 {
-    auto wrapper = static_cast<mavsdk_component_metadata_wrapper*>(component_metadata);
+    auto wrapper = reinterpret_cast<mavsdk_component_metadata_wrapper*>(component_metadata);
 
 wrapper->cpp_plugin->request_autopilot_component();
 
@@ -266,7 +266,7 @@ mavsdk_component_metadata_metadata_available_handle_t mavsdk_component_metadata_
     mavsdk_component_metadata_metadata_available_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_component_metadata_wrapper*>(component_metadata);
+    auto wrapper = reinterpret_cast<mavsdk_component_metadata_wrapper*>(component_metadata);
 
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_metadata_available(
         [callback, user_data](
@@ -279,7 +279,7 @@ mavsdk_component_metadata_metadata_available_handle_t mavsdk_component_metadata_
         });
 
     auto handle_wrapper = new mavsdk::ComponentMetadata::MetadataAvailableHandle(std::move(cpp_handle));
-    return static_cast<mavsdk_component_metadata_metadata_available_handle_t>(handle_wrapper);
+    return reinterpret_cast<mavsdk_component_metadata_metadata_available_handle_t>(handle_wrapper);
 }
 
 void mavsdk_component_metadata_unsubscribe_metadata_available(
@@ -287,8 +287,8 @@ void mavsdk_component_metadata_unsubscribe_metadata_available(
     mavsdk_component_metadata_metadata_available_handle_t handle)
 {
     if (handle) {
-        auto wrapper = static_cast<mavsdk_component_metadata_wrapper*>(component_metadata);
-        auto cpp_handle = static_cast<mavsdk::ComponentMetadata::MetadataAvailableHandle*>(handle);
+        auto wrapper = reinterpret_cast<mavsdk_component_metadata_wrapper*>(component_metadata);
+        auto cpp_handle = reinterpret_cast<mavsdk::ComponentMetadata::MetadataAvailableHandle*>(handle);
         wrapper->cpp_plugin->unsubscribe_metadata_available(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -304,7 +304,7 @@ mavsdk_component_metadata_get_metadata(
     mavsdk_component_metadata_metadata_type_t metadata_type,
     mavsdk_component_metadata_metadata_data_t* response_out)
 {
-    auto wrapper = static_cast<mavsdk_component_metadata_wrapper*>(component_metadata);
+    auto wrapper = reinterpret_cast<mavsdk_component_metadata_wrapper*>(component_metadata);
 
     auto result_pair = wrapper->cpp_plugin->get_metadata(
         compid,

@@ -19,15 +19,15 @@ extern "C" {
  */
 
 // ===== Forward Declarations =====
-typedef void* mavsdk_system_t;
+typedef struct mavsdk_system_s *mavsdk_system_t;
 
 // ===== Opaque Handles =====
-typedef void* mavsdk_calibration_t;
-typedef void* mavsdk_calibration_calibrate_gyro_handle_t;
-typedef void* mavsdk_calibration_calibrate_accelerometer_handle_t;
-typedef void* mavsdk_calibration_calibrate_magnetometer_handle_t;
-typedef void* mavsdk_calibration_calibrate_level_horizon_handle_t;
-typedef void* mavsdk_calibration_calibrate_gimbal_accelerometer_handle_t;
+typedef struct mavsdk_calibration_s *mavsdk_calibration_t;
+typedef struct mavsdk_calibration_calibrate_gyro_handle_s *mavsdk_calibration_calibrate_gyro_handle_t;
+typedef struct mavsdk_calibration_calibrate_accelerometer_handle_s *mavsdk_calibration_calibrate_accelerometer_handle_t;
+typedef struct mavsdk_calibration_calibrate_magnetometer_handle_s *mavsdk_calibration_calibrate_magnetometer_handle_t;
+typedef struct mavsdk_calibration_calibrate_level_horizon_handle_s *mavsdk_calibration_calibrate_level_horizon_handle_t;
+typedef struct mavsdk_calibration_calibrate_gimbal_accelerometer_handle_s *mavsdk_calibration_calibrate_gimbal_accelerometer_handle_t;
 
 // ===== Enums =====
 

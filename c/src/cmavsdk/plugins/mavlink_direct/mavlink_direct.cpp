@@ -159,10 +159,10 @@ mavsdk_mavlink_direct_create(mavsdk_system_t system) {
     }
 
     auto wrapper = new mavsdk_mavlink_direct_wrapper();
-    auto system_ptr = static_cast<std::shared_ptr<mavsdk::System>*>(system);
+    auto system_ptr = reinterpret_cast<std::shared_ptr<mavsdk::System>*>(system);
     wrapper->cpp_plugin = std::make_shared<mavsdk::MavlinkDirect>(*system_ptr);
 
-    return wrapper;
+    return reinterpret_cast<mavsdk_mavlink_direct_t>(wrapper);
 }
 
 void mavsdk_mavlink_direct_destroy(mavsdk_mavlink_direct_t mavlink_direct) {
@@ -170,7 +170,7 @@ void mavsdk_mavlink_direct_destroy(mavsdk_mavlink_direct_t mavlink_direct) {
         return;
     }
 
-    auto wrapper = static_cast<mavsdk_mavlink_direct_wrapper*>(mavlink_direct);
+    auto wrapper = reinterpret_cast<mavsdk_mavlink_direct_wrapper*>(mavlink_direct);
     delete wrapper;
 }
 
@@ -183,7 +183,7 @@ mavsdk_mavlink_direct_send_message(
     mavsdk_mavlink_direct_t mavlink_direct,
     mavsdk_mavlink_direct_mavlink_message_t message)
 {
-    auto wrapper = static_cast<mavsdk_mavlink_direct_wrapper*>(mavlink_direct);
+    auto wrapper = reinterpret_cast<mavsdk_mavlink_direct_wrapper*>(mavlink_direct);
 
     auto ret_value = wrapper->cpp_plugin->send_message(        translate_mavlink_message_from_c(message));
 
@@ -197,7 +197,7 @@ mavsdk_mavlink_direct_message_handle_t mavsdk_mavlink_direct_subscribe_message(
     mavsdk_mavlink_direct_message_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_mavlink_direct_wrapper*>(mavlink_direct);
+    auto wrapper = reinterpret_cast<mavsdk_mavlink_direct_wrapper*>(mavlink_direct);
 
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_message(
         message_name,
@@ -211,7 +211,7 @@ mavsdk_mavlink_direct_message_handle_t mavsdk_mavlink_direct_subscribe_message(
         });
 
     auto handle_wrapper = new mavsdk::MavlinkDirect::MessageHandle(std::move(cpp_handle));
-    return static_cast<mavsdk_mavlink_direct_message_handle_t>(handle_wrapper);
+    return reinterpret_cast<mavsdk_mavlink_direct_message_handle_t>(handle_wrapper);
 }
 
 void mavsdk_mavlink_direct_unsubscribe_message(
@@ -219,8 +219,8 @@ void mavsdk_mavlink_direct_unsubscribe_message(
     mavsdk_mavlink_direct_message_handle_t handle)
 {
     if (handle) {
-        auto wrapper = static_cast<mavsdk_mavlink_direct_wrapper*>(mavlink_direct);
-        auto cpp_handle = static_cast<mavsdk::MavlinkDirect::MessageHandle*>(handle);
+        auto wrapper = reinterpret_cast<mavsdk_mavlink_direct_wrapper*>(mavlink_direct);
+        auto cpp_handle = reinterpret_cast<mavsdk::MavlinkDirect::MessageHandle*>(handle);
         wrapper->cpp_plugin->unsubscribe_message(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -234,7 +234,7 @@ mavsdk_mavlink_direct_load_custom_xml(
     mavsdk_mavlink_direct_t mavlink_direct,
     char* xml_content)
 {
-    auto wrapper = static_cast<mavsdk_mavlink_direct_wrapper*>(mavlink_direct);
+    auto wrapper = reinterpret_cast<mavsdk_mavlink_direct_wrapper*>(mavlink_direct);
 
     auto ret_value = wrapper->cpp_plugin->load_custom_xml(        xml_content);
 

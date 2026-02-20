@@ -249,10 +249,10 @@ mavsdk_{{ plugin_name.lower_snake_case }}_create(mavsdk_server_component_t serve
     }
 
     auto wrapper = new mavsdk_{{ plugin_name.lower_snake_case }}_wrapper();
-    auto server_component_ptr = static_cast<std::shared_ptr<mavsdk::ServerComponent>*>(server_component);
+    auto server_component_ptr = reinterpret_cast<std::shared_ptr<mavsdk::ServerComponent>*>(server_component);
     wrapper->cpp_plugin = std::make_shared<mavsdk::{{ plugin_name.upper_camel_case }}>(*server_component_ptr);
 
-    return wrapper;
+    return reinterpret_cast<mavsdk_{{ plugin_name.lower_snake_case }}_t>(wrapper);
 }
 {% else %}
 mavsdk_{{ plugin_name.lower_snake_case }}_t
@@ -262,10 +262,10 @@ mavsdk_{{ plugin_name.lower_snake_case }}_create(mavsdk_system_t system) {
     }
 
     auto wrapper = new mavsdk_{{ plugin_name.lower_snake_case }}_wrapper();
-    auto system_ptr = static_cast<std::shared_ptr<mavsdk::System>*>(system);
+    auto system_ptr = reinterpret_cast<std::shared_ptr<mavsdk::System>*>(system);
     wrapper->cpp_plugin = std::make_shared<mavsdk::{{ plugin_name.upper_camel_case }}>(*system_ptr);
 
-    return wrapper;
+    return reinterpret_cast<mavsdk_{{ plugin_name.lower_snake_case }}_t>(wrapper);
 }
 {% endif %}
 
@@ -274,7 +274,7 @@ void mavsdk_{{ plugin_name.lower_snake_case }}_destroy(mavsdk_{{ plugin_name.low
         return;
     }
 
-    auto wrapper = static_cast<mavsdk_{{ plugin_name.lower_snake_case }}_wrapper*>({{ plugin_name.lower_snake_case }});
+    auto wrapper = reinterpret_cast<mavsdk_{{ plugin_name.lower_snake_case }}_wrapper*>({{ plugin_name.lower_snake_case }});
     delete wrapper;
 }
 
@@ -305,7 +305,7 @@ void mavsdk_{{ plugin_name.lower_snake_case }}_destroy(mavsdk_{{ plugin_name.low
     mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_{{ plugin_name.lower_snake_case }}_wrapper*>({{ plugin_name.lower_snake_case }});
+    auto wrapper = reinterpret_cast<mavsdk_{{ plugin_name.lower_snake_case }}_wrapper*>({{ plugin_name.lower_snake_case }});
 
     {% if method.is_stream and not method.is_finite %}
     auto cpp_handle = {%- endif %}
@@ -388,7 +388,7 @@ void mavsdk_{{ plugin_name.lower_snake_case }}_destroy(mavsdk_{{ plugin_name.low
     {% if method.is_stream and not method.is_finite %}
 
     auto handle_wrapper = new mavsdk::{{ plugin_name.upper_camel_case }}::{{ method.name.upper_camel_case }}Handle(std::move(cpp_handle));
-    return static_cast<mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}_handle_t>(handle_wrapper);
+    return reinterpret_cast<mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}_handle_t>(handle_wrapper);
     {% endif %}
 }
 
@@ -398,8 +398,8 @@ void mavsdk_{{ plugin_name.lower_snake_case }}_unsubscribe_{{ method.name.lower_
     mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}_handle_t handle)
 {
     if (handle) {
-        auto wrapper = static_cast<mavsdk_{{ plugin_name.lower_snake_case }}_wrapper*>({{ plugin_name.lower_snake_case }});
-        auto cpp_handle = static_cast<mavsdk::{{ plugin_name.upper_camel_case }}::{{ method.name.upper_camel_case }}Handle*>(handle);
+        auto wrapper = reinterpret_cast<mavsdk_{{ plugin_name.lower_snake_case }}_wrapper*>({{ plugin_name.lower_snake_case }});
+        auto cpp_handle = reinterpret_cast<mavsdk::{{ plugin_name.upper_camel_case }}::{{ method.name.upper_camel_case }}Handle*>(handle);
         wrapper->cpp_plugin->unsubscribe_{{ method.name.lower_snake_case }}(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -449,7 +449,7 @@ mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}(
     {% else %})
     {% endif %}
 {
-    auto wrapper = static_cast<mavsdk_{{ plugin_name.lower_snake_case }}_wrapper*>({{ plugin_name.lower_snake_case }});
+    auto wrapper = reinterpret_cast<mavsdk_{{ plugin_name.lower_snake_case }}_wrapper*>({{ plugin_name.lower_snake_case }});
 
     {% if method.has_result and method.return_name %}
     auto result_pair = wrapper->cpp_plugin->{{ method.name.lower_snake_case }}(

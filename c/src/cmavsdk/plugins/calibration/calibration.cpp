@@ -157,10 +157,10 @@ mavsdk_calibration_create(mavsdk_system_t system) {
     }
 
     auto wrapper = new mavsdk_calibration_wrapper();
-    auto system_ptr = static_cast<std::shared_ptr<mavsdk::System>*>(system);
+    auto system_ptr = reinterpret_cast<std::shared_ptr<mavsdk::System>*>(system);
     wrapper->cpp_plugin = std::make_shared<mavsdk::Calibration>(*system_ptr);
 
-    return wrapper;
+    return reinterpret_cast<mavsdk_calibration_t>(wrapper);
 }
 
 void mavsdk_calibration_destroy(mavsdk_calibration_t calibration) {
@@ -168,7 +168,7 @@ void mavsdk_calibration_destroy(mavsdk_calibration_t calibration) {
         return;
     }
 
-    auto wrapper = static_cast<mavsdk_calibration_wrapper*>(calibration);
+    auto wrapper = reinterpret_cast<mavsdk_calibration_wrapper*>(calibration);
     delete wrapper;
 }
 
@@ -180,7 +180,7 @@ void mavsdk_calibration_calibrate_gyro_async(
     mavsdk_calibration_calibrate_gyro_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_calibration_wrapper*>(calibration);
+    auto wrapper = reinterpret_cast<mavsdk_calibration_wrapper*>(calibration);
 
     wrapper->cpp_plugin->calibrate_gyro_async(
         [callback, user_data](
@@ -203,7 +203,7 @@ void mavsdk_calibration_calibrate_accelerometer_async(
     mavsdk_calibration_calibrate_accelerometer_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_calibration_wrapper*>(calibration);
+    auto wrapper = reinterpret_cast<mavsdk_calibration_wrapper*>(calibration);
 
     wrapper->cpp_plugin->calibrate_accelerometer_async(
         [callback, user_data](
@@ -226,7 +226,7 @@ void mavsdk_calibration_calibrate_magnetometer_async(
     mavsdk_calibration_calibrate_magnetometer_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_calibration_wrapper*>(calibration);
+    auto wrapper = reinterpret_cast<mavsdk_calibration_wrapper*>(calibration);
 
     wrapper->cpp_plugin->calibrate_magnetometer_async(
         [callback, user_data](
@@ -249,7 +249,7 @@ void mavsdk_calibration_calibrate_level_horizon_async(
     mavsdk_calibration_calibrate_level_horizon_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_calibration_wrapper*>(calibration);
+    auto wrapper = reinterpret_cast<mavsdk_calibration_wrapper*>(calibration);
 
     wrapper->cpp_plugin->calibrate_level_horizon_async(
         [callback, user_data](
@@ -272,7 +272,7 @@ void mavsdk_calibration_calibrate_gimbal_accelerometer_async(
     mavsdk_calibration_calibrate_gimbal_accelerometer_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_calibration_wrapper*>(calibration);
+    auto wrapper = reinterpret_cast<mavsdk_calibration_wrapper*>(calibration);
 
     wrapper->cpp_plugin->calibrate_gimbal_accelerometer_async(
         [callback, user_data](
@@ -295,7 +295,7 @@ mavsdk_calibration_result_t
 mavsdk_calibration_cancel(
     mavsdk_calibration_t calibration)
 {
-    auto wrapper = static_cast<mavsdk_calibration_wrapper*>(calibration);
+    auto wrapper = reinterpret_cast<mavsdk_calibration_wrapper*>(calibration);
 
     auto ret_value = wrapper->cpp_plugin->cancel();
 

@@ -307,10 +307,10 @@ mavsdk_mission_raw_create(mavsdk_system_t system) {
     }
 
     auto wrapper = new mavsdk_mission_raw_wrapper();
-    auto system_ptr = static_cast<std::shared_ptr<mavsdk::System>*>(system);
+    auto system_ptr = reinterpret_cast<std::shared_ptr<mavsdk::System>*>(system);
     wrapper->cpp_plugin = std::make_shared<mavsdk::MissionRaw>(*system_ptr);
 
-    return wrapper;
+    return reinterpret_cast<mavsdk_mission_raw_t>(wrapper);
 }
 
 void mavsdk_mission_raw_destroy(mavsdk_mission_raw_t mission_raw) {
@@ -318,7 +318,7 @@ void mavsdk_mission_raw_destroy(mavsdk_mission_raw_t mission_raw) {
         return;
     }
 
-    auto wrapper = static_cast<mavsdk_mission_raw_wrapper*>(mission_raw);
+    auto wrapper = reinterpret_cast<mavsdk_mission_raw_wrapper*>(mission_raw);
     delete wrapper;
 }
 
@@ -332,7 +332,7 @@ void mavsdk_mission_raw_upload_mission_async(
     mavsdk_mission_raw_upload_mission_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_mission_raw_wrapper*>(mission_raw);
+    auto wrapper = reinterpret_cast<mavsdk_mission_raw_wrapper*>(mission_raw);
 
     wrapper->cpp_plugin->upload_mission_async(
         [&mission_items, mission_items_size]() {
@@ -361,7 +361,7 @@ mavsdk_mission_raw_upload_mission(
     const mavsdk_mission_raw_mission_item_t* mission_items,
     size_t mission_items_size)
 {
-    auto wrapper = static_cast<mavsdk_mission_raw_wrapper*>(mission_raw);
+    auto wrapper = reinterpret_cast<mavsdk_mission_raw_wrapper*>(mission_raw);
 
     auto ret_value = wrapper->cpp_plugin->upload_mission(        [&mission_items, mission_items_size]() {
             std::vector<mavsdk::MissionRaw::MissionItem> vec;
@@ -383,7 +383,7 @@ void mavsdk_mission_raw_upload_geofence_async(
     mavsdk_mission_raw_upload_geofence_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_mission_raw_wrapper*>(mission_raw);
+    auto wrapper = reinterpret_cast<mavsdk_mission_raw_wrapper*>(mission_raw);
 
     wrapper->cpp_plugin->upload_geofence_async(
         [&mission_items, mission_items_size]() {
@@ -412,7 +412,7 @@ mavsdk_mission_raw_upload_geofence(
     const mavsdk_mission_raw_mission_item_t* mission_items,
     size_t mission_items_size)
 {
-    auto wrapper = static_cast<mavsdk_mission_raw_wrapper*>(mission_raw);
+    auto wrapper = reinterpret_cast<mavsdk_mission_raw_wrapper*>(mission_raw);
 
     auto ret_value = wrapper->cpp_plugin->upload_geofence(        [&mission_items, mission_items_size]() {
             std::vector<mavsdk::MissionRaw::MissionItem> vec;
@@ -434,7 +434,7 @@ void mavsdk_mission_raw_upload_rally_points_async(
     mavsdk_mission_raw_upload_rally_points_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_mission_raw_wrapper*>(mission_raw);
+    auto wrapper = reinterpret_cast<mavsdk_mission_raw_wrapper*>(mission_raw);
 
     wrapper->cpp_plugin->upload_rally_points_async(
         [&mission_items, mission_items_size]() {
@@ -463,7 +463,7 @@ mavsdk_mission_raw_upload_rally_points(
     const mavsdk_mission_raw_mission_item_t* mission_items,
     size_t mission_items_size)
 {
-    auto wrapper = static_cast<mavsdk_mission_raw_wrapper*>(mission_raw);
+    auto wrapper = reinterpret_cast<mavsdk_mission_raw_wrapper*>(mission_raw);
 
     auto ret_value = wrapper->cpp_plugin->upload_rally_points(        [&mission_items, mission_items_size]() {
             std::vector<mavsdk::MissionRaw::MissionItem> vec;
@@ -483,7 +483,7 @@ mavsdk_mission_raw_result_t
 mavsdk_mission_raw_cancel_mission_upload(
     mavsdk_mission_raw_t mission_raw)
 {
-    auto wrapper = static_cast<mavsdk_mission_raw_wrapper*>(mission_raw);
+    auto wrapper = reinterpret_cast<mavsdk_mission_raw_wrapper*>(mission_raw);
 
     auto ret_value = wrapper->cpp_plugin->cancel_mission_upload();
 
@@ -496,7 +496,7 @@ void mavsdk_mission_raw_download_mission_async(
     mavsdk_mission_raw_download_mission_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_mission_raw_wrapper*>(mission_raw);
+    auto wrapper = reinterpret_cast<mavsdk_mission_raw_wrapper*>(mission_raw);
 
     wrapper->cpp_plugin->download_mission_async(
         [callback, user_data](
@@ -530,7 +530,7 @@ mavsdk_mission_raw_download_mission(
     mavsdk_mission_raw_mission_item_t** mission_items_out,
     size_t* mission_items_size_out)
 {
-    auto wrapper = static_cast<mavsdk_mission_raw_wrapper*>(mission_raw);
+    auto wrapper = reinterpret_cast<mavsdk_mission_raw_wrapper*>(mission_raw);
 
     auto result_pair = wrapper->cpp_plugin->download_mission(
 );
@@ -558,7 +558,7 @@ void mavsdk_mission_raw_download_geofence_async(
     mavsdk_mission_raw_download_geofence_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_mission_raw_wrapper*>(mission_raw);
+    auto wrapper = reinterpret_cast<mavsdk_mission_raw_wrapper*>(mission_raw);
 
     wrapper->cpp_plugin->download_geofence_async(
         [callback, user_data](
@@ -592,7 +592,7 @@ mavsdk_mission_raw_download_geofence(
     mavsdk_mission_raw_mission_item_t** geofence_items_out,
     size_t* geofence_items_size_out)
 {
-    auto wrapper = static_cast<mavsdk_mission_raw_wrapper*>(mission_raw);
+    auto wrapper = reinterpret_cast<mavsdk_mission_raw_wrapper*>(mission_raw);
 
     auto result_pair = wrapper->cpp_plugin->download_geofence(
 );
@@ -620,7 +620,7 @@ void mavsdk_mission_raw_download_rallypoints_async(
     mavsdk_mission_raw_download_rallypoints_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_mission_raw_wrapper*>(mission_raw);
+    auto wrapper = reinterpret_cast<mavsdk_mission_raw_wrapper*>(mission_raw);
 
     wrapper->cpp_plugin->download_rallypoints_async(
         [callback, user_data](
@@ -654,7 +654,7 @@ mavsdk_mission_raw_download_rallypoints(
     mavsdk_mission_raw_mission_item_t** rallypoint_items_out,
     size_t* rallypoint_items_size_out)
 {
-    auto wrapper = static_cast<mavsdk_mission_raw_wrapper*>(mission_raw);
+    auto wrapper = reinterpret_cast<mavsdk_mission_raw_wrapper*>(mission_raw);
 
     auto result_pair = wrapper->cpp_plugin->download_rallypoints(
 );
@@ -682,7 +682,7 @@ mavsdk_mission_raw_result_t
 mavsdk_mission_raw_cancel_mission_download(
     mavsdk_mission_raw_t mission_raw)
 {
-    auto wrapper = static_cast<mavsdk_mission_raw_wrapper*>(mission_raw);
+    auto wrapper = reinterpret_cast<mavsdk_mission_raw_wrapper*>(mission_raw);
 
     auto ret_value = wrapper->cpp_plugin->cancel_mission_download();
 
@@ -695,7 +695,7 @@ void mavsdk_mission_raw_start_mission_async(
     mavsdk_mission_raw_start_mission_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_mission_raw_wrapper*>(mission_raw);
+    auto wrapper = reinterpret_cast<mavsdk_mission_raw_wrapper*>(mission_raw);
 
     wrapper->cpp_plugin->start_mission_async(
         [callback, user_data](
@@ -714,7 +714,7 @@ mavsdk_mission_raw_result_t
 mavsdk_mission_raw_start_mission(
     mavsdk_mission_raw_t mission_raw)
 {
-    auto wrapper = static_cast<mavsdk_mission_raw_wrapper*>(mission_raw);
+    auto wrapper = reinterpret_cast<mavsdk_mission_raw_wrapper*>(mission_raw);
 
     auto ret_value = wrapper->cpp_plugin->start_mission();
 
@@ -727,7 +727,7 @@ void mavsdk_mission_raw_pause_mission_async(
     mavsdk_mission_raw_pause_mission_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_mission_raw_wrapper*>(mission_raw);
+    auto wrapper = reinterpret_cast<mavsdk_mission_raw_wrapper*>(mission_raw);
 
     wrapper->cpp_plugin->pause_mission_async(
         [callback, user_data](
@@ -746,7 +746,7 @@ mavsdk_mission_raw_result_t
 mavsdk_mission_raw_pause_mission(
     mavsdk_mission_raw_t mission_raw)
 {
-    auto wrapper = static_cast<mavsdk_mission_raw_wrapper*>(mission_raw);
+    auto wrapper = reinterpret_cast<mavsdk_mission_raw_wrapper*>(mission_raw);
 
     auto ret_value = wrapper->cpp_plugin->pause_mission();
 
@@ -759,7 +759,7 @@ void mavsdk_mission_raw_clear_mission_async(
     mavsdk_mission_raw_clear_mission_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_mission_raw_wrapper*>(mission_raw);
+    auto wrapper = reinterpret_cast<mavsdk_mission_raw_wrapper*>(mission_raw);
 
     wrapper->cpp_plugin->clear_mission_async(
         [callback, user_data](
@@ -778,7 +778,7 @@ mavsdk_mission_raw_result_t
 mavsdk_mission_raw_clear_mission(
     mavsdk_mission_raw_t mission_raw)
 {
-    auto wrapper = static_cast<mavsdk_mission_raw_wrapper*>(mission_raw);
+    auto wrapper = reinterpret_cast<mavsdk_mission_raw_wrapper*>(mission_raw);
 
     auto ret_value = wrapper->cpp_plugin->clear_mission();
 
@@ -792,7 +792,7 @@ void mavsdk_mission_raw_set_current_mission_item_async(
     mavsdk_mission_raw_set_current_mission_item_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_mission_raw_wrapper*>(mission_raw);
+    auto wrapper = reinterpret_cast<mavsdk_mission_raw_wrapper*>(mission_raw);
 
     wrapper->cpp_plugin->set_current_mission_item_async(
         index,
@@ -813,7 +813,7 @@ mavsdk_mission_raw_set_current_mission_item(
     mavsdk_mission_raw_t mission_raw,
     int32_t index)
 {
-    auto wrapper = static_cast<mavsdk_mission_raw_wrapper*>(mission_raw);
+    auto wrapper = reinterpret_cast<mavsdk_mission_raw_wrapper*>(mission_raw);
 
     auto ret_value = wrapper->cpp_plugin->set_current_mission_item(        index);
 
@@ -826,7 +826,7 @@ mavsdk_mission_raw_mission_progress_handle_t mavsdk_mission_raw_subscribe_missio
     mavsdk_mission_raw_mission_progress_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_mission_raw_wrapper*>(mission_raw);
+    auto wrapper = reinterpret_cast<mavsdk_mission_raw_wrapper*>(mission_raw);
 
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_mission_progress(
         [callback, user_data](
@@ -839,7 +839,7 @@ mavsdk_mission_raw_mission_progress_handle_t mavsdk_mission_raw_subscribe_missio
         });
 
     auto handle_wrapper = new mavsdk::MissionRaw::MissionProgressHandle(std::move(cpp_handle));
-    return static_cast<mavsdk_mission_raw_mission_progress_handle_t>(handle_wrapper);
+    return reinterpret_cast<mavsdk_mission_raw_mission_progress_handle_t>(handle_wrapper);
 }
 
 void mavsdk_mission_raw_unsubscribe_mission_progress(
@@ -847,8 +847,8 @@ void mavsdk_mission_raw_unsubscribe_mission_progress(
     mavsdk_mission_raw_mission_progress_handle_t handle)
 {
     if (handle) {
-        auto wrapper = static_cast<mavsdk_mission_raw_wrapper*>(mission_raw);
-        auto cpp_handle = static_cast<mavsdk::MissionRaw::MissionProgressHandle*>(handle);
+        auto wrapper = reinterpret_cast<mavsdk_mission_raw_wrapper*>(mission_raw);
+        auto cpp_handle = reinterpret_cast<mavsdk::MissionRaw::MissionProgressHandle*>(handle);
         wrapper->cpp_plugin->unsubscribe_mission_progress(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -860,7 +860,7 @@ mavsdk_mission_raw_mission_progress(
     mavsdk_mission_raw_t mission_raw,
     mavsdk_mission_raw_mission_progress_t* mission_progress_out)
 {
-    auto wrapper = static_cast<mavsdk_mission_raw_wrapper*>(mission_raw);
+    auto wrapper = reinterpret_cast<mavsdk_mission_raw_wrapper*>(mission_raw);
 
     auto ret_value = wrapper->cpp_plugin->mission_progress();
 
@@ -875,7 +875,7 @@ mavsdk_mission_raw_mission_changed_handle_t mavsdk_mission_raw_subscribe_mission
     mavsdk_mission_raw_mission_changed_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_mission_raw_wrapper*>(mission_raw);
+    auto wrapper = reinterpret_cast<mavsdk_mission_raw_wrapper*>(mission_raw);
 
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_mission_changed(
         [callback, user_data](
@@ -888,7 +888,7 @@ mavsdk_mission_raw_mission_changed_handle_t mavsdk_mission_raw_subscribe_mission
         });
 
     auto handle_wrapper = new mavsdk::MissionRaw::MissionChangedHandle(std::move(cpp_handle));
-    return static_cast<mavsdk_mission_raw_mission_changed_handle_t>(handle_wrapper);
+    return reinterpret_cast<mavsdk_mission_raw_mission_changed_handle_t>(handle_wrapper);
 }
 
 void mavsdk_mission_raw_unsubscribe_mission_changed(
@@ -896,8 +896,8 @@ void mavsdk_mission_raw_unsubscribe_mission_changed(
     mavsdk_mission_raw_mission_changed_handle_t handle)
 {
     if (handle) {
-        auto wrapper = static_cast<mavsdk_mission_raw_wrapper*>(mission_raw);
-        auto cpp_handle = static_cast<mavsdk::MissionRaw::MissionChangedHandle*>(handle);
+        auto wrapper = reinterpret_cast<mavsdk_mission_raw_wrapper*>(mission_raw);
+        auto cpp_handle = reinterpret_cast<mavsdk::MissionRaw::MissionChangedHandle*>(handle);
         wrapper->cpp_plugin->unsubscribe_mission_changed(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -912,7 +912,7 @@ mavsdk_mission_raw_import_qgroundcontrol_mission(
     char* qgc_plan_path,
     mavsdk_mission_raw_mission_import_data_t* mission_import_data_out)
 {
-    auto wrapper = static_cast<mavsdk_mission_raw_wrapper*>(mission_raw);
+    auto wrapper = reinterpret_cast<mavsdk_mission_raw_wrapper*>(mission_raw);
 
     auto result_pair = wrapper->cpp_plugin->import_qgroundcontrol_mission(
         qgc_plan_path);
@@ -932,7 +932,7 @@ mavsdk_mission_raw_import_qgroundcontrol_mission_from_string(
     char* qgc_plan,
     mavsdk_mission_raw_mission_import_data_t* mission_import_data_out)
 {
-    auto wrapper = static_cast<mavsdk_mission_raw_wrapper*>(mission_raw);
+    auto wrapper = reinterpret_cast<mavsdk_mission_raw_wrapper*>(mission_raw);
 
     auto result_pair = wrapper->cpp_plugin->import_qgroundcontrol_mission_from_string(
         qgc_plan);
@@ -952,7 +952,7 @@ mavsdk_mission_raw_import_mission_planner_mission(
     char* mission_planner_path,
     mavsdk_mission_raw_mission_import_data_t* mission_import_data_out)
 {
-    auto wrapper = static_cast<mavsdk_mission_raw_wrapper*>(mission_raw);
+    auto wrapper = reinterpret_cast<mavsdk_mission_raw_wrapper*>(mission_raw);
 
     auto result_pair = wrapper->cpp_plugin->import_mission_planner_mission(
         mission_planner_path);
@@ -972,7 +972,7 @@ mavsdk_mission_raw_import_mission_planner_mission_from_string(
     char* mission_planner_mission,
     mavsdk_mission_raw_mission_import_data_t* mission_import_data_out)
 {
-    auto wrapper = static_cast<mavsdk_mission_raw_wrapper*>(mission_raw);
+    auto wrapper = reinterpret_cast<mavsdk_mission_raw_wrapper*>(mission_raw);
 
     auto result_pair = wrapper->cpp_plugin->import_mission_planner_mission_from_string(
         mission_planner_mission);
@@ -991,7 +991,7 @@ mavsdk_mission_raw_is_mission_finished(
     mavsdk_mission_raw_t mission_raw,
     bool* is_finished_out)
 {
-    auto wrapper = static_cast<mavsdk_mission_raw_wrapper*>(mission_raw);
+    auto wrapper = reinterpret_cast<mavsdk_mission_raw_wrapper*>(mission_raw);
 
     auto result_pair = wrapper->cpp_plugin->is_mission_finished(
 );

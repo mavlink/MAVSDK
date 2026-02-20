@@ -552,10 +552,10 @@ mavsdk_mocap_create(mavsdk_system_t system) {
     }
 
     auto wrapper = new mavsdk_mocap_wrapper();
-    auto system_ptr = static_cast<std::shared_ptr<mavsdk::System>*>(system);
+    auto system_ptr = reinterpret_cast<std::shared_ptr<mavsdk::System>*>(system);
     wrapper->cpp_plugin = std::make_shared<mavsdk::Mocap>(*system_ptr);
 
-    return wrapper;
+    return reinterpret_cast<mavsdk_mocap_t>(wrapper);
 }
 
 void mavsdk_mocap_destroy(mavsdk_mocap_t mocap) {
@@ -563,7 +563,7 @@ void mavsdk_mocap_destroy(mavsdk_mocap_t mocap) {
         return;
     }
 
-    auto wrapper = static_cast<mavsdk_mocap_wrapper*>(mocap);
+    auto wrapper = reinterpret_cast<mavsdk_mocap_wrapper*>(mocap);
     delete wrapper;
 }
 
@@ -576,7 +576,7 @@ mavsdk_mocap_set_vision_position_estimate(
     mavsdk_mocap_t mocap,
     mavsdk_mocap_vision_position_estimate_t vision_position_estimate)
 {
-    auto wrapper = static_cast<mavsdk_mocap_wrapper*>(mocap);
+    auto wrapper = reinterpret_cast<mavsdk_mocap_wrapper*>(mocap);
 
     auto ret_value = wrapper->cpp_plugin->set_vision_position_estimate(        translate_vision_position_estimate_from_c(vision_position_estimate));
 
@@ -590,7 +590,7 @@ mavsdk_mocap_set_vision_speed_estimate(
     mavsdk_mocap_t mocap,
     mavsdk_mocap_vision_speed_estimate_t vision_speed_estimate)
 {
-    auto wrapper = static_cast<mavsdk_mocap_wrapper*>(mocap);
+    auto wrapper = reinterpret_cast<mavsdk_mocap_wrapper*>(mocap);
 
     auto ret_value = wrapper->cpp_plugin->set_vision_speed_estimate(        translate_vision_speed_estimate_from_c(vision_speed_estimate));
 
@@ -604,7 +604,7 @@ mavsdk_mocap_set_attitude_position_mocap(
     mavsdk_mocap_t mocap,
     mavsdk_mocap_attitude_position_mocap_t attitude_position_mocap)
 {
-    auto wrapper = static_cast<mavsdk_mocap_wrapper*>(mocap);
+    auto wrapper = reinterpret_cast<mavsdk_mocap_wrapper*>(mocap);
 
     auto ret_value = wrapper->cpp_plugin->set_attitude_position_mocap(        translate_attitude_position_mocap_from_c(attitude_position_mocap));
 
@@ -618,7 +618,7 @@ mavsdk_mocap_set_odometry(
     mavsdk_mocap_t mocap,
     mavsdk_mocap_odometry_t odometry)
 {
-    auto wrapper = static_cast<mavsdk_mocap_wrapper*>(mocap);
+    auto wrapper = reinterpret_cast<mavsdk_mocap_wrapper*>(mocap);
 
     auto ret_value = wrapper->cpp_plugin->set_odometry(        translate_odometry_from_c(odometry));
 

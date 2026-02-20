@@ -124,10 +124,10 @@ mavsdk_gripper_create(mavsdk_system_t system) {
     }
 
     auto wrapper = new mavsdk_gripper_wrapper();
-    auto system_ptr = static_cast<std::shared_ptr<mavsdk::System>*>(system);
+    auto system_ptr = reinterpret_cast<std::shared_ptr<mavsdk::System>*>(system);
     wrapper->cpp_plugin = std::make_shared<mavsdk::Gripper>(*system_ptr);
 
-    return wrapper;
+    return reinterpret_cast<mavsdk_gripper_t>(wrapper);
 }
 
 void mavsdk_gripper_destroy(mavsdk_gripper_t gripper) {
@@ -135,7 +135,7 @@ void mavsdk_gripper_destroy(mavsdk_gripper_t gripper) {
         return;
     }
 
-    auto wrapper = static_cast<mavsdk_gripper_wrapper*>(gripper);
+    auto wrapper = reinterpret_cast<mavsdk_gripper_wrapper*>(gripper);
     delete wrapper;
 }
 
@@ -148,7 +148,7 @@ void mavsdk_gripper_grab_async(
     mavsdk_gripper_grab_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_gripper_wrapper*>(gripper);
+    auto wrapper = reinterpret_cast<mavsdk_gripper_wrapper*>(gripper);
 
     wrapper->cpp_plugin->grab_async(
         instance,
@@ -169,7 +169,7 @@ mavsdk_gripper_grab(
     mavsdk_gripper_t gripper,
     uint32_t instance)
 {
-    auto wrapper = static_cast<mavsdk_gripper_wrapper*>(gripper);
+    auto wrapper = reinterpret_cast<mavsdk_gripper_wrapper*>(gripper);
 
     auto ret_value = wrapper->cpp_plugin->grab(        instance);
 
@@ -183,7 +183,7 @@ void mavsdk_gripper_release_async(
     mavsdk_gripper_release_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_gripper_wrapper*>(gripper);
+    auto wrapper = reinterpret_cast<mavsdk_gripper_wrapper*>(gripper);
 
     wrapper->cpp_plugin->release_async(
         instance,
@@ -204,7 +204,7 @@ mavsdk_gripper_release(
     mavsdk_gripper_t gripper,
     uint32_t instance)
 {
-    auto wrapper = static_cast<mavsdk_gripper_wrapper*>(gripper);
+    auto wrapper = reinterpret_cast<mavsdk_gripper_wrapper*>(gripper);
 
     auto ret_value = wrapper->cpp_plugin->release(        instance);
 

@@ -498,10 +498,10 @@ mavsdk_offboard_create(mavsdk_system_t system) {
     }
 
     auto wrapper = new mavsdk_offboard_wrapper();
-    auto system_ptr = static_cast<std::shared_ptr<mavsdk::System>*>(system);
+    auto system_ptr = reinterpret_cast<std::shared_ptr<mavsdk::System>*>(system);
     wrapper->cpp_plugin = std::make_shared<mavsdk::Offboard>(*system_ptr);
 
-    return wrapper;
+    return reinterpret_cast<mavsdk_offboard_t>(wrapper);
 }
 
 void mavsdk_offboard_destroy(mavsdk_offboard_t offboard) {
@@ -509,7 +509,7 @@ void mavsdk_offboard_destroy(mavsdk_offboard_t offboard) {
         return;
     }
 
-    auto wrapper = static_cast<mavsdk_offboard_wrapper*>(offboard);
+    auto wrapper = reinterpret_cast<mavsdk_offboard_wrapper*>(offboard);
     delete wrapper;
 }
 
@@ -521,7 +521,7 @@ void mavsdk_offboard_start_async(
     mavsdk_offboard_start_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_offboard_wrapper*>(offboard);
+    auto wrapper = reinterpret_cast<mavsdk_offboard_wrapper*>(offboard);
 
     wrapper->cpp_plugin->start_async(
         [callback, user_data](
@@ -540,7 +540,7 @@ mavsdk_offboard_result_t
 mavsdk_offboard_start(
     mavsdk_offboard_t offboard)
 {
-    auto wrapper = static_cast<mavsdk_offboard_wrapper*>(offboard);
+    auto wrapper = reinterpret_cast<mavsdk_offboard_wrapper*>(offboard);
 
     auto ret_value = wrapper->cpp_plugin->start();
 
@@ -553,7 +553,7 @@ void mavsdk_offboard_stop_async(
     mavsdk_offboard_stop_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_offboard_wrapper*>(offboard);
+    auto wrapper = reinterpret_cast<mavsdk_offboard_wrapper*>(offboard);
 
     wrapper->cpp_plugin->stop_async(
         [callback, user_data](
@@ -572,7 +572,7 @@ mavsdk_offboard_result_t
 mavsdk_offboard_stop(
     mavsdk_offboard_t offboard)
 {
-    auto wrapper = static_cast<mavsdk_offboard_wrapper*>(offboard);
+    auto wrapper = reinterpret_cast<mavsdk_offboard_wrapper*>(offboard);
 
     auto ret_value = wrapper->cpp_plugin->stop();
 
@@ -586,7 +586,7 @@ mavsdk_offboard_is_active(
     mavsdk_offboard_t offboard,
     bool* is_active_out)
 {
-    auto wrapper = static_cast<mavsdk_offboard_wrapper*>(offboard);
+    auto wrapper = reinterpret_cast<mavsdk_offboard_wrapper*>(offboard);
 
     auto ret_value = wrapper->cpp_plugin->is_active();
 
@@ -600,7 +600,7 @@ mavsdk_offboard_set_attitude(
     mavsdk_offboard_t offboard,
     mavsdk_offboard_attitude_t attitude)
 {
-    auto wrapper = static_cast<mavsdk_offboard_wrapper*>(offboard);
+    auto wrapper = reinterpret_cast<mavsdk_offboard_wrapper*>(offboard);
 
     auto ret_value = wrapper->cpp_plugin->set_attitude(        translate_attitude_from_c(attitude));
 
@@ -614,7 +614,7 @@ mavsdk_offboard_set_actuator_control(
     mavsdk_offboard_t offboard,
     mavsdk_offboard_actuator_control_t actuator_control)
 {
-    auto wrapper = static_cast<mavsdk_offboard_wrapper*>(offboard);
+    auto wrapper = reinterpret_cast<mavsdk_offboard_wrapper*>(offboard);
 
     auto ret_value = wrapper->cpp_plugin->set_actuator_control(        translate_actuator_control_from_c(actuator_control));
 
@@ -628,7 +628,7 @@ mavsdk_offboard_set_attitude_rate(
     mavsdk_offboard_t offboard,
     mavsdk_offboard_attitude_rate_t attitude_rate)
 {
-    auto wrapper = static_cast<mavsdk_offboard_wrapper*>(offboard);
+    auto wrapper = reinterpret_cast<mavsdk_offboard_wrapper*>(offboard);
 
     auto ret_value = wrapper->cpp_plugin->set_attitude_rate(        translate_attitude_rate_from_c(attitude_rate));
 
@@ -642,7 +642,7 @@ mavsdk_offboard_set_position_ned(
     mavsdk_offboard_t offboard,
     mavsdk_offboard_position_ned_yaw_t position_ned_yaw)
 {
-    auto wrapper = static_cast<mavsdk_offboard_wrapper*>(offboard);
+    auto wrapper = reinterpret_cast<mavsdk_offboard_wrapper*>(offboard);
 
     auto ret_value = wrapper->cpp_plugin->set_position_ned(        translate_position_ned_yaw_from_c(position_ned_yaw));
 
@@ -656,7 +656,7 @@ mavsdk_offboard_set_position_global(
     mavsdk_offboard_t offboard,
     mavsdk_offboard_position_global_yaw_t position_global_yaw)
 {
-    auto wrapper = static_cast<mavsdk_offboard_wrapper*>(offboard);
+    auto wrapper = reinterpret_cast<mavsdk_offboard_wrapper*>(offboard);
 
     auto ret_value = wrapper->cpp_plugin->set_position_global(        translate_position_global_yaw_from_c(position_global_yaw));
 
@@ -670,7 +670,7 @@ mavsdk_offboard_set_velocity_body(
     mavsdk_offboard_t offboard,
     mavsdk_offboard_velocity_body_yawspeed_t velocity_body_yawspeed)
 {
-    auto wrapper = static_cast<mavsdk_offboard_wrapper*>(offboard);
+    auto wrapper = reinterpret_cast<mavsdk_offboard_wrapper*>(offboard);
 
     auto ret_value = wrapper->cpp_plugin->set_velocity_body(        translate_velocity_body_yawspeed_from_c(velocity_body_yawspeed));
 
@@ -684,7 +684,7 @@ mavsdk_offboard_set_velocity_ned(
     mavsdk_offboard_t offboard,
     mavsdk_offboard_velocity_ned_yaw_t velocity_ned_yaw)
 {
-    auto wrapper = static_cast<mavsdk_offboard_wrapper*>(offboard);
+    auto wrapper = reinterpret_cast<mavsdk_offboard_wrapper*>(offboard);
 
     auto ret_value = wrapper->cpp_plugin->set_velocity_ned(        translate_velocity_ned_yaw_from_c(velocity_ned_yaw));
 
@@ -699,7 +699,7 @@ mavsdk_offboard_set_position_velocity_ned(
     mavsdk_offboard_position_ned_yaw_t position_ned_yaw,
     mavsdk_offboard_velocity_ned_yaw_t velocity_ned_yaw)
 {
-    auto wrapper = static_cast<mavsdk_offboard_wrapper*>(offboard);
+    auto wrapper = reinterpret_cast<mavsdk_offboard_wrapper*>(offboard);
 
     auto ret_value = wrapper->cpp_plugin->set_position_velocity_ned(        translate_position_ned_yaw_from_c(position_ned_yaw),        translate_velocity_ned_yaw_from_c(velocity_ned_yaw));
 
@@ -715,7 +715,7 @@ mavsdk_offboard_set_position_velocity_acceleration_ned(
     mavsdk_offboard_velocity_ned_yaw_t velocity_ned_yaw,
     mavsdk_offboard_acceleration_ned_t acceleration_ned)
 {
-    auto wrapper = static_cast<mavsdk_offboard_wrapper*>(offboard);
+    auto wrapper = reinterpret_cast<mavsdk_offboard_wrapper*>(offboard);
 
     auto ret_value = wrapper->cpp_plugin->set_position_velocity_acceleration_ned(        translate_position_ned_yaw_from_c(position_ned_yaw),        translate_velocity_ned_yaw_from_c(velocity_ned_yaw),        translate_acceleration_ned_from_c(acceleration_ned));
 
@@ -729,7 +729,7 @@ mavsdk_offboard_set_acceleration_ned(
     mavsdk_offboard_t offboard,
     mavsdk_offboard_acceleration_ned_t acceleration_ned)
 {
-    auto wrapper = static_cast<mavsdk_offboard_wrapper*>(offboard);
+    auto wrapper = reinterpret_cast<mavsdk_offboard_wrapper*>(offboard);
 
     auto ret_value = wrapper->cpp_plugin->set_acceleration_ned(        translate_acceleration_ned_from_c(acceleration_ned));
 

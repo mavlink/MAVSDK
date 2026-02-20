@@ -132,10 +132,10 @@ mavsdk_arm_authorizer_server_create(mavsdk_server_component_t server_component) 
     }
 
     auto wrapper = new mavsdk_arm_authorizer_server_wrapper();
-    auto server_component_ptr = static_cast<std::shared_ptr<mavsdk::ServerComponent>*>(server_component);
+    auto server_component_ptr = reinterpret_cast<std::shared_ptr<mavsdk::ServerComponent>*>(server_component);
     wrapper->cpp_plugin = std::make_shared<mavsdk::ArmAuthorizerServer>(*server_component_ptr);
 
-    return wrapper;
+    return reinterpret_cast<mavsdk_arm_authorizer_server_t>(wrapper);
 }
 
 void mavsdk_arm_authorizer_server_destroy(mavsdk_arm_authorizer_server_t arm_authorizer_server) {
@@ -143,7 +143,7 @@ void mavsdk_arm_authorizer_server_destroy(mavsdk_arm_authorizer_server_t arm_aut
         return;
     }
 
-    auto wrapper = static_cast<mavsdk_arm_authorizer_server_wrapper*>(arm_authorizer_server);
+    auto wrapper = reinterpret_cast<mavsdk_arm_authorizer_server_wrapper*>(arm_authorizer_server);
     delete wrapper;
 }
 
@@ -155,7 +155,7 @@ mavsdk_arm_authorizer_server_arm_authorization_handle_t mavsdk_arm_authorizer_se
     mavsdk_arm_authorizer_server_arm_authorization_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_arm_authorizer_server_wrapper*>(arm_authorizer_server);
+    auto wrapper = reinterpret_cast<mavsdk_arm_authorizer_server_wrapper*>(arm_authorizer_server);
 
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_arm_authorization(
         [callback, user_data](
@@ -168,7 +168,7 @@ mavsdk_arm_authorizer_server_arm_authorization_handle_t mavsdk_arm_authorizer_se
         });
 
     auto handle_wrapper = new mavsdk::ArmAuthorizerServer::ArmAuthorizationHandle(std::move(cpp_handle));
-    return static_cast<mavsdk_arm_authorizer_server_arm_authorization_handle_t>(handle_wrapper);
+    return reinterpret_cast<mavsdk_arm_authorizer_server_arm_authorization_handle_t>(handle_wrapper);
 }
 
 void mavsdk_arm_authorizer_server_unsubscribe_arm_authorization(
@@ -176,8 +176,8 @@ void mavsdk_arm_authorizer_server_unsubscribe_arm_authorization(
     mavsdk_arm_authorizer_server_arm_authorization_handle_t handle)
 {
     if (handle) {
-        auto wrapper = static_cast<mavsdk_arm_authorizer_server_wrapper*>(arm_authorizer_server);
-        auto cpp_handle = static_cast<mavsdk::ArmAuthorizerServer::ArmAuthorizationHandle*>(handle);
+        auto wrapper = reinterpret_cast<mavsdk_arm_authorizer_server_wrapper*>(arm_authorizer_server);
+        auto cpp_handle = reinterpret_cast<mavsdk::ArmAuthorizerServer::ArmAuthorizationHandle*>(handle);
         wrapper->cpp_plugin->unsubscribe_arm_authorization(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -191,7 +191,7 @@ mavsdk_arm_authorizer_server_accept_arm_authorization(
     mavsdk_arm_authorizer_server_t arm_authorizer_server,
     int32_t valid_time_s)
 {
-    auto wrapper = static_cast<mavsdk_arm_authorizer_server_wrapper*>(arm_authorizer_server);
+    auto wrapper = reinterpret_cast<mavsdk_arm_authorizer_server_wrapper*>(arm_authorizer_server);
 
     auto ret_value = wrapper->cpp_plugin->accept_arm_authorization(        valid_time_s);
 
@@ -207,7 +207,7 @@ mavsdk_arm_authorizer_server_reject_arm_authorization(
     mavsdk_arm_authorizer_server_rejection_reason_t reason,
     int32_t extra_info)
 {
-    auto wrapper = static_cast<mavsdk_arm_authorizer_server_wrapper*>(arm_authorizer_server);
+    auto wrapper = reinterpret_cast<mavsdk_arm_authorizer_server_wrapper*>(arm_authorizer_server);
 
     auto ret_value = wrapper->cpp_plugin->reject_arm_authorization(        temporarily,        translate_rejection_reason_from_c(reason),        extra_info);
 

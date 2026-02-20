@@ -316,10 +316,10 @@ mavsdk_geofence_create(mavsdk_system_t system) {
     }
 
     auto wrapper = new mavsdk_geofence_wrapper();
-    auto system_ptr = static_cast<std::shared_ptr<mavsdk::System>*>(system);
+    auto system_ptr = reinterpret_cast<std::shared_ptr<mavsdk::System>*>(system);
     wrapper->cpp_plugin = std::make_shared<mavsdk::Geofence>(*system_ptr);
 
-    return wrapper;
+    return reinterpret_cast<mavsdk_geofence_t>(wrapper);
 }
 
 void mavsdk_geofence_destroy(mavsdk_geofence_t geofence) {
@@ -327,7 +327,7 @@ void mavsdk_geofence_destroy(mavsdk_geofence_t geofence) {
         return;
     }
 
-    auto wrapper = static_cast<mavsdk_geofence_wrapper*>(geofence);
+    auto wrapper = reinterpret_cast<mavsdk_geofence_wrapper*>(geofence);
     delete wrapper;
 }
 
@@ -340,7 +340,7 @@ void mavsdk_geofence_upload_geofence_async(
     mavsdk_geofence_upload_geofence_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_geofence_wrapper*>(geofence);
+    auto wrapper = reinterpret_cast<mavsdk_geofence_wrapper*>(geofence);
 
     wrapper->cpp_plugin->upload_geofence_async(
         translate_geofence_data_from_c(geofence_data),
@@ -361,7 +361,7 @@ mavsdk_geofence_upload_geofence(
     mavsdk_geofence_t geofence,
     mavsdk_geofence_geofence_data_t geofence_data)
 {
-    auto wrapper = static_cast<mavsdk_geofence_wrapper*>(geofence);
+    auto wrapper = reinterpret_cast<mavsdk_geofence_wrapper*>(geofence);
 
     auto ret_value = wrapper->cpp_plugin->upload_geofence(        translate_geofence_data_from_c(geofence_data));
 
@@ -374,7 +374,7 @@ void mavsdk_geofence_clear_geofence_async(
     mavsdk_geofence_clear_geofence_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_geofence_wrapper*>(geofence);
+    auto wrapper = reinterpret_cast<mavsdk_geofence_wrapper*>(geofence);
 
     wrapper->cpp_plugin->clear_geofence_async(
         [callback, user_data](
@@ -393,7 +393,7 @@ mavsdk_geofence_result_t
 mavsdk_geofence_clear_geofence(
     mavsdk_geofence_t geofence)
 {
-    auto wrapper = static_cast<mavsdk_geofence_wrapper*>(geofence);
+    auto wrapper = reinterpret_cast<mavsdk_geofence_wrapper*>(geofence);
 
     auto ret_value = wrapper->cpp_plugin->clear_geofence();
 

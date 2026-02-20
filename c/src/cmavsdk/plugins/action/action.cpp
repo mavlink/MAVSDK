@@ -174,10 +174,10 @@ mavsdk_action_create(mavsdk_system_t system) {
     }
 
     auto wrapper = new mavsdk_action_wrapper();
-    auto system_ptr = static_cast<std::shared_ptr<mavsdk::System>*>(system);
+    auto system_ptr = reinterpret_cast<std::shared_ptr<mavsdk::System>*>(system);
     wrapper->cpp_plugin = std::make_shared<mavsdk::Action>(*system_ptr);
 
-    return wrapper;
+    return reinterpret_cast<mavsdk_action_t>(wrapper);
 }
 
 void mavsdk_action_destroy(mavsdk_action_t action) {
@@ -185,7 +185,7 @@ void mavsdk_action_destroy(mavsdk_action_t action) {
         return;
     }
 
-    auto wrapper = static_cast<mavsdk_action_wrapper*>(action);
+    auto wrapper = reinterpret_cast<mavsdk_action_wrapper*>(action);
     delete wrapper;
 }
 
@@ -197,7 +197,7 @@ void mavsdk_action_arm_async(
     mavsdk_action_arm_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_action_wrapper*>(action);
+    auto wrapper = reinterpret_cast<mavsdk_action_wrapper*>(action);
 
     wrapper->cpp_plugin->arm_async(
         [callback, user_data](
@@ -216,7 +216,7 @@ mavsdk_action_result_t
 mavsdk_action_arm(
     mavsdk_action_t action)
 {
-    auto wrapper = static_cast<mavsdk_action_wrapper*>(action);
+    auto wrapper = reinterpret_cast<mavsdk_action_wrapper*>(action);
 
     auto ret_value = wrapper->cpp_plugin->arm();
 
@@ -229,7 +229,7 @@ void mavsdk_action_arm_force_async(
     mavsdk_action_arm_force_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_action_wrapper*>(action);
+    auto wrapper = reinterpret_cast<mavsdk_action_wrapper*>(action);
 
     wrapper->cpp_plugin->arm_force_async(
         [callback, user_data](
@@ -248,7 +248,7 @@ mavsdk_action_result_t
 mavsdk_action_arm_force(
     mavsdk_action_t action)
 {
-    auto wrapper = static_cast<mavsdk_action_wrapper*>(action);
+    auto wrapper = reinterpret_cast<mavsdk_action_wrapper*>(action);
 
     auto ret_value = wrapper->cpp_plugin->arm_force();
 
@@ -261,7 +261,7 @@ void mavsdk_action_disarm_async(
     mavsdk_action_disarm_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_action_wrapper*>(action);
+    auto wrapper = reinterpret_cast<mavsdk_action_wrapper*>(action);
 
     wrapper->cpp_plugin->disarm_async(
         [callback, user_data](
@@ -280,7 +280,7 @@ mavsdk_action_result_t
 mavsdk_action_disarm(
     mavsdk_action_t action)
 {
-    auto wrapper = static_cast<mavsdk_action_wrapper*>(action);
+    auto wrapper = reinterpret_cast<mavsdk_action_wrapper*>(action);
 
     auto ret_value = wrapper->cpp_plugin->disarm();
 
@@ -293,7 +293,7 @@ void mavsdk_action_takeoff_async(
     mavsdk_action_takeoff_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_action_wrapper*>(action);
+    auto wrapper = reinterpret_cast<mavsdk_action_wrapper*>(action);
 
     wrapper->cpp_plugin->takeoff_async(
         [callback, user_data](
@@ -312,7 +312,7 @@ mavsdk_action_result_t
 mavsdk_action_takeoff(
     mavsdk_action_t action)
 {
-    auto wrapper = static_cast<mavsdk_action_wrapper*>(action);
+    auto wrapper = reinterpret_cast<mavsdk_action_wrapper*>(action);
 
     auto ret_value = wrapper->cpp_plugin->takeoff();
 
@@ -325,7 +325,7 @@ void mavsdk_action_land_async(
     mavsdk_action_land_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_action_wrapper*>(action);
+    auto wrapper = reinterpret_cast<mavsdk_action_wrapper*>(action);
 
     wrapper->cpp_plugin->land_async(
         [callback, user_data](
@@ -344,7 +344,7 @@ mavsdk_action_result_t
 mavsdk_action_land(
     mavsdk_action_t action)
 {
-    auto wrapper = static_cast<mavsdk_action_wrapper*>(action);
+    auto wrapper = reinterpret_cast<mavsdk_action_wrapper*>(action);
 
     auto ret_value = wrapper->cpp_plugin->land();
 
@@ -357,7 +357,7 @@ void mavsdk_action_reboot_async(
     mavsdk_action_reboot_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_action_wrapper*>(action);
+    auto wrapper = reinterpret_cast<mavsdk_action_wrapper*>(action);
 
     wrapper->cpp_plugin->reboot_async(
         [callback, user_data](
@@ -376,7 +376,7 @@ mavsdk_action_result_t
 mavsdk_action_reboot(
     mavsdk_action_t action)
 {
-    auto wrapper = static_cast<mavsdk_action_wrapper*>(action);
+    auto wrapper = reinterpret_cast<mavsdk_action_wrapper*>(action);
 
     auto ret_value = wrapper->cpp_plugin->reboot();
 
@@ -389,7 +389,7 @@ void mavsdk_action_shutdown_async(
     mavsdk_action_shutdown_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_action_wrapper*>(action);
+    auto wrapper = reinterpret_cast<mavsdk_action_wrapper*>(action);
 
     wrapper->cpp_plugin->shutdown_async(
         [callback, user_data](
@@ -408,7 +408,7 @@ mavsdk_action_result_t
 mavsdk_action_shutdown(
     mavsdk_action_t action)
 {
-    auto wrapper = static_cast<mavsdk_action_wrapper*>(action);
+    auto wrapper = reinterpret_cast<mavsdk_action_wrapper*>(action);
 
     auto ret_value = wrapper->cpp_plugin->shutdown();
 
@@ -421,7 +421,7 @@ void mavsdk_action_terminate_async(
     mavsdk_action_terminate_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_action_wrapper*>(action);
+    auto wrapper = reinterpret_cast<mavsdk_action_wrapper*>(action);
 
     wrapper->cpp_plugin->terminate_async(
         [callback, user_data](
@@ -440,7 +440,7 @@ mavsdk_action_result_t
 mavsdk_action_terminate(
     mavsdk_action_t action)
 {
-    auto wrapper = static_cast<mavsdk_action_wrapper*>(action);
+    auto wrapper = reinterpret_cast<mavsdk_action_wrapper*>(action);
 
     auto ret_value = wrapper->cpp_plugin->terminate();
 
@@ -453,7 +453,7 @@ void mavsdk_action_kill_async(
     mavsdk_action_kill_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_action_wrapper*>(action);
+    auto wrapper = reinterpret_cast<mavsdk_action_wrapper*>(action);
 
     wrapper->cpp_plugin->kill_async(
         [callback, user_data](
@@ -472,7 +472,7 @@ mavsdk_action_result_t
 mavsdk_action_kill(
     mavsdk_action_t action)
 {
-    auto wrapper = static_cast<mavsdk_action_wrapper*>(action);
+    auto wrapper = reinterpret_cast<mavsdk_action_wrapper*>(action);
 
     auto ret_value = wrapper->cpp_plugin->kill();
 
@@ -485,7 +485,7 @@ void mavsdk_action_return_to_launch_async(
     mavsdk_action_return_to_launch_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_action_wrapper*>(action);
+    auto wrapper = reinterpret_cast<mavsdk_action_wrapper*>(action);
 
     wrapper->cpp_plugin->return_to_launch_async(
         [callback, user_data](
@@ -504,7 +504,7 @@ mavsdk_action_result_t
 mavsdk_action_return_to_launch(
     mavsdk_action_t action)
 {
-    auto wrapper = static_cast<mavsdk_action_wrapper*>(action);
+    auto wrapper = reinterpret_cast<mavsdk_action_wrapper*>(action);
 
     auto ret_value = wrapper->cpp_plugin->return_to_launch();
 
@@ -521,7 +521,7 @@ void mavsdk_action_goto_location_async(
     mavsdk_action_goto_location_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_action_wrapper*>(action);
+    auto wrapper = reinterpret_cast<mavsdk_action_wrapper*>(action);
 
     wrapper->cpp_plugin->goto_location_async(
         latitude_deg,
@@ -548,7 +548,7 @@ mavsdk_action_goto_location(
     float absolute_altitude_m,
     float yaw_deg)
 {
-    auto wrapper = static_cast<mavsdk_action_wrapper*>(action);
+    auto wrapper = reinterpret_cast<mavsdk_action_wrapper*>(action);
 
     auto ret_value = wrapper->cpp_plugin->goto_location(        latitude_deg,        longitude_deg,        absolute_altitude_m,        yaw_deg);
 
@@ -567,7 +567,7 @@ void mavsdk_action_do_orbit_async(
     mavsdk_action_do_orbit_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_action_wrapper*>(action);
+    auto wrapper = reinterpret_cast<mavsdk_action_wrapper*>(action);
 
     wrapper->cpp_plugin->do_orbit_async(
         radius_m,
@@ -597,7 +597,7 @@ mavsdk_action_do_orbit(
     double longitude_deg,
     double absolute_altitude_m)
 {
-    auto wrapper = static_cast<mavsdk_action_wrapper*>(action);
+    auto wrapper = reinterpret_cast<mavsdk_action_wrapper*>(action);
 
     auto ret_value = wrapper->cpp_plugin->do_orbit(        radius_m,        velocity_ms,        translate_orbit_yaw_behavior_from_c(yaw_behavior),        latitude_deg,        longitude_deg,        absolute_altitude_m);
 
@@ -610,7 +610,7 @@ void mavsdk_action_hold_async(
     mavsdk_action_hold_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_action_wrapper*>(action);
+    auto wrapper = reinterpret_cast<mavsdk_action_wrapper*>(action);
 
     wrapper->cpp_plugin->hold_async(
         [callback, user_data](
@@ -629,7 +629,7 @@ mavsdk_action_result_t
 mavsdk_action_hold(
     mavsdk_action_t action)
 {
-    auto wrapper = static_cast<mavsdk_action_wrapper*>(action);
+    auto wrapper = reinterpret_cast<mavsdk_action_wrapper*>(action);
 
     auto ret_value = wrapper->cpp_plugin->hold();
 
@@ -644,7 +644,7 @@ void mavsdk_action_set_actuator_async(
     mavsdk_action_set_actuator_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_action_wrapper*>(action);
+    auto wrapper = reinterpret_cast<mavsdk_action_wrapper*>(action);
 
     wrapper->cpp_plugin->set_actuator_async(
         index,
@@ -667,7 +667,7 @@ mavsdk_action_set_actuator(
     int32_t index,
     float value)
 {
-    auto wrapper = static_cast<mavsdk_action_wrapper*>(action);
+    auto wrapper = reinterpret_cast<mavsdk_action_wrapper*>(action);
 
     auto ret_value = wrapper->cpp_plugin->set_actuator(        index,        value);
 
@@ -682,7 +682,7 @@ void mavsdk_action_set_relay_async(
     mavsdk_action_set_relay_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_action_wrapper*>(action);
+    auto wrapper = reinterpret_cast<mavsdk_action_wrapper*>(action);
 
     wrapper->cpp_plugin->set_relay_async(
         index,
@@ -705,7 +705,7 @@ mavsdk_action_set_relay(
     int32_t index,
     mavsdk_action_relay_command_t setting)
 {
-    auto wrapper = static_cast<mavsdk_action_wrapper*>(action);
+    auto wrapper = reinterpret_cast<mavsdk_action_wrapper*>(action);
 
     auto ret_value = wrapper->cpp_plugin->set_relay(        index,        translate_relay_command_from_c(setting));
 
@@ -718,7 +718,7 @@ void mavsdk_action_transition_to_fixedwing_async(
     mavsdk_action_transition_to_fixedwing_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_action_wrapper*>(action);
+    auto wrapper = reinterpret_cast<mavsdk_action_wrapper*>(action);
 
     wrapper->cpp_plugin->transition_to_fixedwing_async(
         [callback, user_data](
@@ -737,7 +737,7 @@ mavsdk_action_result_t
 mavsdk_action_transition_to_fixedwing(
     mavsdk_action_t action)
 {
-    auto wrapper = static_cast<mavsdk_action_wrapper*>(action);
+    auto wrapper = reinterpret_cast<mavsdk_action_wrapper*>(action);
 
     auto ret_value = wrapper->cpp_plugin->transition_to_fixedwing();
 
@@ -750,7 +750,7 @@ void mavsdk_action_transition_to_multicopter_async(
     mavsdk_action_transition_to_multicopter_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_action_wrapper*>(action);
+    auto wrapper = reinterpret_cast<mavsdk_action_wrapper*>(action);
 
     wrapper->cpp_plugin->transition_to_multicopter_async(
         [callback, user_data](
@@ -769,7 +769,7 @@ mavsdk_action_result_t
 mavsdk_action_transition_to_multicopter(
     mavsdk_action_t action)
 {
-    auto wrapper = static_cast<mavsdk_action_wrapper*>(action);
+    auto wrapper = reinterpret_cast<mavsdk_action_wrapper*>(action);
 
     auto ret_value = wrapper->cpp_plugin->transition_to_multicopter();
 
@@ -782,7 +782,7 @@ void mavsdk_action_get_takeoff_altitude_async(
     mavsdk_action_get_takeoff_altitude_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_action_wrapper*>(action);
+    auto wrapper = reinterpret_cast<mavsdk_action_wrapper*>(action);
 
     wrapper->cpp_plugin->get_takeoff_altitude_async(
         [callback, user_data](
@@ -804,7 +804,7 @@ mavsdk_action_get_takeoff_altitude(
     mavsdk_action_t action,
     float* altitude_out)
 {
-    auto wrapper = static_cast<mavsdk_action_wrapper*>(action);
+    auto wrapper = reinterpret_cast<mavsdk_action_wrapper*>(action);
 
     auto result_pair = wrapper->cpp_plugin->get_takeoff_altitude(
 );
@@ -821,7 +821,7 @@ void mavsdk_action_set_takeoff_altitude_async(
     mavsdk_action_set_takeoff_altitude_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_action_wrapper*>(action);
+    auto wrapper = reinterpret_cast<mavsdk_action_wrapper*>(action);
 
     wrapper->cpp_plugin->set_takeoff_altitude_async(
         altitude,
@@ -842,7 +842,7 @@ mavsdk_action_set_takeoff_altitude(
     mavsdk_action_t action,
     float altitude)
 {
-    auto wrapper = static_cast<mavsdk_action_wrapper*>(action);
+    auto wrapper = reinterpret_cast<mavsdk_action_wrapper*>(action);
 
     auto ret_value = wrapper->cpp_plugin->set_takeoff_altitude(        altitude);
 
@@ -855,7 +855,7 @@ void mavsdk_action_get_return_to_launch_altitude_async(
     mavsdk_action_get_return_to_launch_altitude_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_action_wrapper*>(action);
+    auto wrapper = reinterpret_cast<mavsdk_action_wrapper*>(action);
 
     wrapper->cpp_plugin->get_return_to_launch_altitude_async(
         [callback, user_data](
@@ -877,7 +877,7 @@ mavsdk_action_get_return_to_launch_altitude(
     mavsdk_action_t action,
     float* relative_altitude_m_out)
 {
-    auto wrapper = static_cast<mavsdk_action_wrapper*>(action);
+    auto wrapper = reinterpret_cast<mavsdk_action_wrapper*>(action);
 
     auto result_pair = wrapper->cpp_plugin->get_return_to_launch_altitude(
 );
@@ -894,7 +894,7 @@ void mavsdk_action_set_return_to_launch_altitude_async(
     mavsdk_action_set_return_to_launch_altitude_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_action_wrapper*>(action);
+    auto wrapper = reinterpret_cast<mavsdk_action_wrapper*>(action);
 
     wrapper->cpp_plugin->set_return_to_launch_altitude_async(
         relative_altitude_m,
@@ -915,7 +915,7 @@ mavsdk_action_set_return_to_launch_altitude(
     mavsdk_action_t action,
     float relative_altitude_m)
 {
-    auto wrapper = static_cast<mavsdk_action_wrapper*>(action);
+    auto wrapper = reinterpret_cast<mavsdk_action_wrapper*>(action);
 
     auto ret_value = wrapper->cpp_plugin->set_return_to_launch_altitude(        relative_altitude_m);
 
@@ -929,7 +929,7 @@ void mavsdk_action_set_current_speed_async(
     mavsdk_action_set_current_speed_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_action_wrapper*>(action);
+    auto wrapper = reinterpret_cast<mavsdk_action_wrapper*>(action);
 
     wrapper->cpp_plugin->set_current_speed_async(
         speed_m_s,
@@ -950,7 +950,7 @@ mavsdk_action_set_current_speed(
     mavsdk_action_t action,
     float speed_m_s)
 {
-    auto wrapper = static_cast<mavsdk_action_wrapper*>(action);
+    auto wrapper = reinterpret_cast<mavsdk_action_wrapper*>(action);
 
     auto ret_value = wrapper->cpp_plugin->set_current_speed(        speed_m_s);
 
@@ -966,7 +966,7 @@ mavsdk_action_set_gps_global_origin(
     double longitude_deg,
     float absolute_altitude_m)
 {
-    auto wrapper = static_cast<mavsdk_action_wrapper*>(action);
+    auto wrapper = reinterpret_cast<mavsdk_action_wrapper*>(action);
 
     auto ret_value = wrapper->cpp_plugin->set_gps_global_origin(        latitude_deg,        longitude_deg,        absolute_altitude_m);
 

@@ -137,10 +137,10 @@ mavsdk_rtk_create(mavsdk_system_t system) {
     }
 
     auto wrapper = new mavsdk_rtk_wrapper();
-    auto system_ptr = static_cast<std::shared_ptr<mavsdk::System>*>(system);
+    auto system_ptr = reinterpret_cast<std::shared_ptr<mavsdk::System>*>(system);
     wrapper->cpp_plugin = std::make_shared<mavsdk::Rtk>(*system_ptr);
 
-    return wrapper;
+    return reinterpret_cast<mavsdk_rtk_t>(wrapper);
 }
 
 void mavsdk_rtk_destroy(mavsdk_rtk_t rtk) {
@@ -148,7 +148,7 @@ void mavsdk_rtk_destroy(mavsdk_rtk_t rtk) {
         return;
     }
 
-    auto wrapper = static_cast<mavsdk_rtk_wrapper*>(rtk);
+    auto wrapper = reinterpret_cast<mavsdk_rtk_wrapper*>(rtk);
     delete wrapper;
 }
 
@@ -161,7 +161,7 @@ mavsdk_rtk_send_rtcm_data(
     mavsdk_rtk_t rtk,
     mavsdk_rtk_rtcm_data_t rtcm_data)
 {
-    auto wrapper = static_cast<mavsdk_rtk_wrapper*>(rtk);
+    auto wrapper = reinterpret_cast<mavsdk_rtk_wrapper*>(rtk);
 
     auto ret_value = wrapper->cpp_plugin->send_rtcm_data(        translate_rtcm_data_from_c(rtcm_data));
 

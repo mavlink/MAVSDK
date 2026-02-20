@@ -419,10 +419,10 @@ mavsdk_mission_create(mavsdk_system_t system) {
     }
 
     auto wrapper = new mavsdk_mission_wrapper();
-    auto system_ptr = static_cast<std::shared_ptr<mavsdk::System>*>(system);
+    auto system_ptr = reinterpret_cast<std::shared_ptr<mavsdk::System>*>(system);
     wrapper->cpp_plugin = std::make_shared<mavsdk::Mission>(*system_ptr);
 
-    return wrapper;
+    return reinterpret_cast<mavsdk_mission_t>(wrapper);
 }
 
 void mavsdk_mission_destroy(mavsdk_mission_t mission) {
@@ -430,7 +430,7 @@ void mavsdk_mission_destroy(mavsdk_mission_t mission) {
         return;
     }
 
-    auto wrapper = static_cast<mavsdk_mission_wrapper*>(mission);
+    auto wrapper = reinterpret_cast<mavsdk_mission_wrapper*>(mission);
     delete wrapper;
 }
 
@@ -443,7 +443,7 @@ void mavsdk_mission_upload_mission_async(
     mavsdk_mission_upload_mission_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_mission_wrapper*>(mission);
+    auto wrapper = reinterpret_cast<mavsdk_mission_wrapper*>(mission);
 
     wrapper->cpp_plugin->upload_mission_async(
         translate_mission_plan_from_c(mission_plan),
@@ -464,7 +464,7 @@ mavsdk_mission_upload_mission(
     mavsdk_mission_t mission,
     mavsdk_mission_mission_plan_t mission_plan)
 {
-    auto wrapper = static_cast<mavsdk_mission_wrapper*>(mission);
+    auto wrapper = reinterpret_cast<mavsdk_mission_wrapper*>(mission);
 
     auto ret_value = wrapper->cpp_plugin->upload_mission(        translate_mission_plan_from_c(mission_plan));
 
@@ -478,7 +478,7 @@ void mavsdk_mission_upload_mission_with_progress_async(
     mavsdk_mission_upload_mission_with_progress_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_mission_wrapper*>(mission);
+    auto wrapper = reinterpret_cast<mavsdk_mission_wrapper*>(mission);
 
     wrapper->cpp_plugin->upload_mission_with_progress_async(
         translate_mission_plan_from_c(mission_plan),
@@ -502,7 +502,7 @@ mavsdk_mission_result_t
 mavsdk_mission_cancel_mission_upload(
     mavsdk_mission_t mission)
 {
-    auto wrapper = static_cast<mavsdk_mission_wrapper*>(mission);
+    auto wrapper = reinterpret_cast<mavsdk_mission_wrapper*>(mission);
 
     auto ret_value = wrapper->cpp_plugin->cancel_mission_upload();
 
@@ -515,7 +515,7 @@ void mavsdk_mission_download_mission_async(
     mavsdk_mission_download_mission_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_mission_wrapper*>(mission);
+    auto wrapper = reinterpret_cast<mavsdk_mission_wrapper*>(mission);
 
     wrapper->cpp_plugin->download_mission_async(
         [callback, user_data](
@@ -537,7 +537,7 @@ mavsdk_mission_download_mission(
     mavsdk_mission_t mission,
     mavsdk_mission_mission_plan_t* mission_plan_out)
 {
-    auto wrapper = static_cast<mavsdk_mission_wrapper*>(mission);
+    auto wrapper = reinterpret_cast<mavsdk_mission_wrapper*>(mission);
 
     auto result_pair = wrapper->cpp_plugin->download_mission(
 );
@@ -555,7 +555,7 @@ void mavsdk_mission_download_mission_with_progress_async(
     mavsdk_mission_download_mission_with_progress_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_mission_wrapper*>(mission);
+    auto wrapper = reinterpret_cast<mavsdk_mission_wrapper*>(mission);
 
     wrapper->cpp_plugin->download_mission_with_progress_async(
         [callback, user_data](
@@ -578,7 +578,7 @@ mavsdk_mission_result_t
 mavsdk_mission_cancel_mission_download(
     mavsdk_mission_t mission)
 {
-    auto wrapper = static_cast<mavsdk_mission_wrapper*>(mission);
+    auto wrapper = reinterpret_cast<mavsdk_mission_wrapper*>(mission);
 
     auto ret_value = wrapper->cpp_plugin->cancel_mission_download();
 
@@ -591,7 +591,7 @@ void mavsdk_mission_start_mission_async(
     mavsdk_mission_start_mission_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_mission_wrapper*>(mission);
+    auto wrapper = reinterpret_cast<mavsdk_mission_wrapper*>(mission);
 
     wrapper->cpp_plugin->start_mission_async(
         [callback, user_data](
@@ -610,7 +610,7 @@ mavsdk_mission_result_t
 mavsdk_mission_start_mission(
     mavsdk_mission_t mission)
 {
-    auto wrapper = static_cast<mavsdk_mission_wrapper*>(mission);
+    auto wrapper = reinterpret_cast<mavsdk_mission_wrapper*>(mission);
 
     auto ret_value = wrapper->cpp_plugin->start_mission();
 
@@ -623,7 +623,7 @@ void mavsdk_mission_pause_mission_async(
     mavsdk_mission_pause_mission_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_mission_wrapper*>(mission);
+    auto wrapper = reinterpret_cast<mavsdk_mission_wrapper*>(mission);
 
     wrapper->cpp_plugin->pause_mission_async(
         [callback, user_data](
@@ -642,7 +642,7 @@ mavsdk_mission_result_t
 mavsdk_mission_pause_mission(
     mavsdk_mission_t mission)
 {
-    auto wrapper = static_cast<mavsdk_mission_wrapper*>(mission);
+    auto wrapper = reinterpret_cast<mavsdk_mission_wrapper*>(mission);
 
     auto ret_value = wrapper->cpp_plugin->pause_mission();
 
@@ -655,7 +655,7 @@ void mavsdk_mission_clear_mission_async(
     mavsdk_mission_clear_mission_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_mission_wrapper*>(mission);
+    auto wrapper = reinterpret_cast<mavsdk_mission_wrapper*>(mission);
 
     wrapper->cpp_plugin->clear_mission_async(
         [callback, user_data](
@@ -674,7 +674,7 @@ mavsdk_mission_result_t
 mavsdk_mission_clear_mission(
     mavsdk_mission_t mission)
 {
-    auto wrapper = static_cast<mavsdk_mission_wrapper*>(mission);
+    auto wrapper = reinterpret_cast<mavsdk_mission_wrapper*>(mission);
 
     auto ret_value = wrapper->cpp_plugin->clear_mission();
 
@@ -688,7 +688,7 @@ void mavsdk_mission_set_current_mission_item_async(
     mavsdk_mission_set_current_mission_item_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_mission_wrapper*>(mission);
+    auto wrapper = reinterpret_cast<mavsdk_mission_wrapper*>(mission);
 
     wrapper->cpp_plugin->set_current_mission_item_async(
         index,
@@ -709,7 +709,7 @@ mavsdk_mission_set_current_mission_item(
     mavsdk_mission_t mission,
     int32_t index)
 {
-    auto wrapper = static_cast<mavsdk_mission_wrapper*>(mission);
+    auto wrapper = reinterpret_cast<mavsdk_mission_wrapper*>(mission);
 
     auto ret_value = wrapper->cpp_plugin->set_current_mission_item(        index);
 
@@ -723,7 +723,7 @@ mavsdk_mission_is_mission_finished(
     mavsdk_mission_t mission,
     bool* is_finished_out)
 {
-    auto wrapper = static_cast<mavsdk_mission_wrapper*>(mission);
+    auto wrapper = reinterpret_cast<mavsdk_mission_wrapper*>(mission);
 
     auto result_pair = wrapper->cpp_plugin->is_mission_finished(
 );
@@ -739,7 +739,7 @@ mavsdk_mission_mission_progress_handle_t mavsdk_mission_subscribe_mission_progre
     mavsdk_mission_mission_progress_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_mission_wrapper*>(mission);
+    auto wrapper = reinterpret_cast<mavsdk_mission_wrapper*>(mission);
 
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_mission_progress(
         [callback, user_data](
@@ -752,7 +752,7 @@ mavsdk_mission_mission_progress_handle_t mavsdk_mission_subscribe_mission_progre
         });
 
     auto handle_wrapper = new mavsdk::Mission::MissionProgressHandle(std::move(cpp_handle));
-    return static_cast<mavsdk_mission_mission_progress_handle_t>(handle_wrapper);
+    return reinterpret_cast<mavsdk_mission_mission_progress_handle_t>(handle_wrapper);
 }
 
 void mavsdk_mission_unsubscribe_mission_progress(
@@ -760,8 +760,8 @@ void mavsdk_mission_unsubscribe_mission_progress(
     mavsdk_mission_mission_progress_handle_t handle)
 {
     if (handle) {
-        auto wrapper = static_cast<mavsdk_mission_wrapper*>(mission);
-        auto cpp_handle = static_cast<mavsdk::Mission::MissionProgressHandle*>(handle);
+        auto wrapper = reinterpret_cast<mavsdk_mission_wrapper*>(mission);
+        auto cpp_handle = reinterpret_cast<mavsdk::Mission::MissionProgressHandle*>(handle);
         wrapper->cpp_plugin->unsubscribe_mission_progress(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -773,7 +773,7 @@ mavsdk_mission_mission_progress(
     mavsdk_mission_t mission,
     mavsdk_mission_mission_progress_t* mission_progress_out)
 {
-    auto wrapper = static_cast<mavsdk_mission_wrapper*>(mission);
+    auto wrapper = reinterpret_cast<mavsdk_mission_wrapper*>(mission);
 
     auto ret_value = wrapper->cpp_plugin->mission_progress();
 
@@ -789,7 +789,7 @@ mavsdk_mission_get_return_to_launch_after_mission(
     mavsdk_mission_t mission,
     bool* enable_out)
 {
-    auto wrapper = static_cast<mavsdk_mission_wrapper*>(mission);
+    auto wrapper = reinterpret_cast<mavsdk_mission_wrapper*>(mission);
 
     auto result_pair = wrapper->cpp_plugin->get_return_to_launch_after_mission(
 );
@@ -806,7 +806,7 @@ mavsdk_mission_set_return_to_launch_after_mission(
     mavsdk_mission_t mission,
     bool enable)
 {
-    auto wrapper = static_cast<mavsdk_mission_wrapper*>(mission);
+    auto wrapper = reinterpret_cast<mavsdk_mission_wrapper*>(mission);
 
     auto ret_value = wrapper->cpp_plugin->set_return_to_launch_after_mission(        enable);
 

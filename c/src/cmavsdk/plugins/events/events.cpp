@@ -457,10 +457,10 @@ mavsdk_events_create(mavsdk_system_t system) {
     }
 
     auto wrapper = new mavsdk_events_wrapper();
-    auto system_ptr = static_cast<std::shared_ptr<mavsdk::System>*>(system);
+    auto system_ptr = reinterpret_cast<std::shared_ptr<mavsdk::System>*>(system);
     wrapper->cpp_plugin = std::make_shared<mavsdk::Events>(*system_ptr);
 
-    return wrapper;
+    return reinterpret_cast<mavsdk_events_t>(wrapper);
 }
 
 void mavsdk_events_destroy(mavsdk_events_t events) {
@@ -468,7 +468,7 @@ void mavsdk_events_destroy(mavsdk_events_t events) {
         return;
     }
 
-    auto wrapper = static_cast<mavsdk_events_wrapper*>(events);
+    auto wrapper = reinterpret_cast<mavsdk_events_wrapper*>(events);
     delete wrapper;
 }
 
@@ -480,7 +480,7 @@ mavsdk_events_events_handle_t mavsdk_events_subscribe_events(
     mavsdk_events_events_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_events_wrapper*>(events);
+    auto wrapper = reinterpret_cast<mavsdk_events_wrapper*>(events);
 
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_events(
         [callback, user_data](
@@ -493,7 +493,7 @@ mavsdk_events_events_handle_t mavsdk_events_subscribe_events(
         });
 
     auto handle_wrapper = new mavsdk::Events::EventsHandle(std::move(cpp_handle));
-    return static_cast<mavsdk_events_events_handle_t>(handle_wrapper);
+    return reinterpret_cast<mavsdk_events_events_handle_t>(handle_wrapper);
 }
 
 void mavsdk_events_unsubscribe_events(
@@ -501,8 +501,8 @@ void mavsdk_events_unsubscribe_events(
     mavsdk_events_events_handle_t handle)
 {
     if (handle) {
-        auto wrapper = static_cast<mavsdk_events_wrapper*>(events);
-        auto cpp_handle = static_cast<mavsdk::Events::EventsHandle*>(handle);
+        auto wrapper = reinterpret_cast<mavsdk_events_wrapper*>(events);
+        auto cpp_handle = reinterpret_cast<mavsdk::Events::EventsHandle*>(handle);
         wrapper->cpp_plugin->unsubscribe_events(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -515,7 +515,7 @@ mavsdk_events_health_and_arming_checks_handle_t mavsdk_events_subscribe_health_a
     mavsdk_events_health_and_arming_checks_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_events_wrapper*>(events);
+    auto wrapper = reinterpret_cast<mavsdk_events_wrapper*>(events);
 
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_health_and_arming_checks(
         [callback, user_data](
@@ -528,7 +528,7 @@ mavsdk_events_health_and_arming_checks_handle_t mavsdk_events_subscribe_health_a
         });
 
     auto handle_wrapper = new mavsdk::Events::HealthAndArmingChecksHandle(std::move(cpp_handle));
-    return static_cast<mavsdk_events_health_and_arming_checks_handle_t>(handle_wrapper);
+    return reinterpret_cast<mavsdk_events_health_and_arming_checks_handle_t>(handle_wrapper);
 }
 
 void mavsdk_events_unsubscribe_health_and_arming_checks(
@@ -536,8 +536,8 @@ void mavsdk_events_unsubscribe_health_and_arming_checks(
     mavsdk_events_health_and_arming_checks_handle_t handle)
 {
     if (handle) {
-        auto wrapper = static_cast<mavsdk_events_wrapper*>(events);
-        auto cpp_handle = static_cast<mavsdk::Events::HealthAndArmingChecksHandle*>(handle);
+        auto wrapper = reinterpret_cast<mavsdk_events_wrapper*>(events);
+        auto cpp_handle = reinterpret_cast<mavsdk::Events::HealthAndArmingChecksHandle*>(handle);
         wrapper->cpp_plugin->unsubscribe_health_and_arming_checks(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -551,7 +551,7 @@ mavsdk_events_get_health_and_arming_checks_report(
     mavsdk_events_t events,
     mavsdk_events_health_and_arming_check_report_t* report_out)
 {
-    auto wrapper = static_cast<mavsdk_events_wrapper*>(events);
+    auto wrapper = reinterpret_cast<mavsdk_events_wrapper*>(events);
 
     auto result_pair = wrapper->cpp_plugin->get_health_and_arming_checks_report(
 );

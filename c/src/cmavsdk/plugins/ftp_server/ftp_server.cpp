@@ -96,10 +96,10 @@ mavsdk_ftp_server_create(mavsdk_server_component_t server_component) {
     }
 
     auto wrapper = new mavsdk_ftp_server_wrapper();
-    auto server_component_ptr = static_cast<std::shared_ptr<mavsdk::ServerComponent>*>(server_component);
+    auto server_component_ptr = reinterpret_cast<std::shared_ptr<mavsdk::ServerComponent>*>(server_component);
     wrapper->cpp_plugin = std::make_shared<mavsdk::FtpServer>(*server_component_ptr);
 
-    return wrapper;
+    return reinterpret_cast<mavsdk_ftp_server_t>(wrapper);
 }
 
 void mavsdk_ftp_server_destroy(mavsdk_ftp_server_t ftp_server) {
@@ -107,7 +107,7 @@ void mavsdk_ftp_server_destroy(mavsdk_ftp_server_t ftp_server) {
         return;
     }
 
-    auto wrapper = static_cast<mavsdk_ftp_server_wrapper*>(ftp_server);
+    auto wrapper = reinterpret_cast<mavsdk_ftp_server_wrapper*>(ftp_server);
     delete wrapper;
 }
 
@@ -120,7 +120,7 @@ mavsdk_ftp_server_set_root_dir(
     mavsdk_ftp_server_t ftp_server,
     char* path)
 {
-    auto wrapper = static_cast<mavsdk_ftp_server_wrapper*>(ftp_server);
+    auto wrapper = reinterpret_cast<mavsdk_ftp_server_wrapper*>(ftp_server);
 
     auto ret_value = wrapper->cpp_plugin->set_root_dir(        path);
 

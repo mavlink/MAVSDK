@@ -255,10 +255,10 @@ mavsdk_mission_raw_server_create(mavsdk_server_component_t server_component) {
     }
 
     auto wrapper = new mavsdk_mission_raw_server_wrapper();
-    auto server_component_ptr = static_cast<std::shared_ptr<mavsdk::ServerComponent>*>(server_component);
+    auto server_component_ptr = reinterpret_cast<std::shared_ptr<mavsdk::ServerComponent>*>(server_component);
     wrapper->cpp_plugin = std::make_shared<mavsdk::MissionRawServer>(*server_component_ptr);
 
-    return wrapper;
+    return reinterpret_cast<mavsdk_mission_raw_server_t>(wrapper);
 }
 
 void mavsdk_mission_raw_server_destroy(mavsdk_mission_raw_server_t mission_raw_server) {
@@ -266,7 +266,7 @@ void mavsdk_mission_raw_server_destroy(mavsdk_mission_raw_server_t mission_raw_s
         return;
     }
 
-    auto wrapper = static_cast<mavsdk_mission_raw_server_wrapper*>(mission_raw_server);
+    auto wrapper = reinterpret_cast<mavsdk_mission_raw_server_wrapper*>(mission_raw_server);
     delete wrapper;
 }
 
@@ -278,7 +278,7 @@ mavsdk_mission_raw_server_incoming_mission_handle_t mavsdk_mission_raw_server_su
     mavsdk_mission_raw_server_incoming_mission_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_mission_raw_server_wrapper*>(mission_raw_server);
+    auto wrapper = reinterpret_cast<mavsdk_mission_raw_server_wrapper*>(mission_raw_server);
 
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_incoming_mission(
         [callback, user_data](
@@ -293,7 +293,7 @@ mavsdk_mission_raw_server_incoming_mission_handle_t mavsdk_mission_raw_server_su
         });
 
     auto handle_wrapper = new mavsdk::MissionRawServer::IncomingMissionHandle(std::move(cpp_handle));
-    return static_cast<mavsdk_mission_raw_server_incoming_mission_handle_t>(handle_wrapper);
+    return reinterpret_cast<mavsdk_mission_raw_server_incoming_mission_handle_t>(handle_wrapper);
 }
 
 void mavsdk_mission_raw_server_unsubscribe_incoming_mission(
@@ -301,8 +301,8 @@ void mavsdk_mission_raw_server_unsubscribe_incoming_mission(
     mavsdk_mission_raw_server_incoming_mission_handle_t handle)
 {
     if (handle) {
-        auto wrapper = static_cast<mavsdk_mission_raw_server_wrapper*>(mission_raw_server);
-        auto cpp_handle = static_cast<mavsdk::MissionRawServer::IncomingMissionHandle*>(handle);
+        auto wrapper = reinterpret_cast<mavsdk_mission_raw_server_wrapper*>(mission_raw_server);
+        auto cpp_handle = reinterpret_cast<mavsdk::MissionRawServer::IncomingMissionHandle*>(handle);
         wrapper->cpp_plugin->unsubscribe_incoming_mission(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -315,7 +315,7 @@ mavsdk_mission_raw_server_current_item_changed_handle_t mavsdk_mission_raw_serve
     mavsdk_mission_raw_server_current_item_changed_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_mission_raw_server_wrapper*>(mission_raw_server);
+    auto wrapper = reinterpret_cast<mavsdk_mission_raw_server_wrapper*>(mission_raw_server);
 
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_current_item_changed(
         [callback, user_data](
@@ -328,7 +328,7 @@ mavsdk_mission_raw_server_current_item_changed_handle_t mavsdk_mission_raw_serve
         });
 
     auto handle_wrapper = new mavsdk::MissionRawServer::CurrentItemChangedHandle(std::move(cpp_handle));
-    return static_cast<mavsdk_mission_raw_server_current_item_changed_handle_t>(handle_wrapper);
+    return reinterpret_cast<mavsdk_mission_raw_server_current_item_changed_handle_t>(handle_wrapper);
 }
 
 void mavsdk_mission_raw_server_unsubscribe_current_item_changed(
@@ -336,8 +336,8 @@ void mavsdk_mission_raw_server_unsubscribe_current_item_changed(
     mavsdk_mission_raw_server_current_item_changed_handle_t handle)
 {
     if (handle) {
-        auto wrapper = static_cast<mavsdk_mission_raw_server_wrapper*>(mission_raw_server);
-        auto cpp_handle = static_cast<mavsdk::MissionRawServer::CurrentItemChangedHandle*>(handle);
+        auto wrapper = reinterpret_cast<mavsdk_mission_raw_server_wrapper*>(mission_raw_server);
+        auto cpp_handle = reinterpret_cast<mavsdk::MissionRawServer::CurrentItemChangedHandle*>(handle);
         wrapper->cpp_plugin->unsubscribe_current_item_changed(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -350,7 +350,7 @@ void
 mavsdk_mission_raw_server_set_current_item_complete(
     mavsdk_mission_raw_server_t mission_raw_server)
 {
-    auto wrapper = static_cast<mavsdk_mission_raw_server_wrapper*>(mission_raw_server);
+    auto wrapper = reinterpret_cast<mavsdk_mission_raw_server_wrapper*>(mission_raw_server);
 
 wrapper->cpp_plugin->set_current_item_complete();
 
@@ -362,7 +362,7 @@ mavsdk_mission_raw_server_clear_all_handle_t mavsdk_mission_raw_server_subscribe
     mavsdk_mission_raw_server_clear_all_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_mission_raw_server_wrapper*>(mission_raw_server);
+    auto wrapper = reinterpret_cast<mavsdk_mission_raw_server_wrapper*>(mission_raw_server);
 
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_clear_all(
         [callback, user_data](
@@ -375,7 +375,7 @@ mavsdk_mission_raw_server_clear_all_handle_t mavsdk_mission_raw_server_subscribe
         });
 
     auto handle_wrapper = new mavsdk::MissionRawServer::ClearAllHandle(std::move(cpp_handle));
-    return static_cast<mavsdk_mission_raw_server_clear_all_handle_t>(handle_wrapper);
+    return reinterpret_cast<mavsdk_mission_raw_server_clear_all_handle_t>(handle_wrapper);
 }
 
 void mavsdk_mission_raw_server_unsubscribe_clear_all(
@@ -383,8 +383,8 @@ void mavsdk_mission_raw_server_unsubscribe_clear_all(
     mavsdk_mission_raw_server_clear_all_handle_t handle)
 {
     if (handle) {
-        auto wrapper = static_cast<mavsdk_mission_raw_server_wrapper*>(mission_raw_server);
-        auto cpp_handle = static_cast<mavsdk::MissionRawServer::ClearAllHandle*>(handle);
+        auto wrapper = reinterpret_cast<mavsdk_mission_raw_server_wrapper*>(mission_raw_server);
+        auto cpp_handle = reinterpret_cast<mavsdk::MissionRawServer::ClearAllHandle*>(handle);
         wrapper->cpp_plugin->unsubscribe_clear_all(std::move(*cpp_handle));
         delete cpp_handle;
     }

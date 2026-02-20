@@ -20,16 +20,16 @@ extern "C" {
 
 // ===== Forward Declarations =====
 {% if is_server %}
-typedef void* mavsdk_server_component_t;
+typedef struct mavsdk_server_component_s *mavsdk_server_component_t;
 {% else %}
-typedef void* mavsdk_system_t;
+typedef struct mavsdk_system_s *mavsdk_system_t;
 {% endif %}
 
 // ===== Opaque Handles =====
-typedef void* mavsdk_{{ plugin_name.lower_snake_case }}_t;
+typedef struct mavsdk_{{ plugin_name.lower_snake_case }}_s *mavsdk_{{ plugin_name.lower_snake_case }}_t;
 {% for method in methods %}
 {% if method.is_stream %}
-typedef void* mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}_handle_t;
+typedef struct mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}_handle_s *mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}_handle_t;
 {% endif %}
 {% endfor %}
 

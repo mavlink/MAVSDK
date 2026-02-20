@@ -19,27 +19,27 @@ extern "C" {
  */
 
 // ===== Forward Declarations =====
-typedef void* mavsdk_server_component_t;
+typedef struct mavsdk_server_component_s *mavsdk_server_component_t;
 
 // ===== Opaque Handles =====
-typedef void* mavsdk_camera_server_t;
-typedef void* mavsdk_camera_server_take_photo_handle_t;
-typedef void* mavsdk_camera_server_start_video_handle_t;
-typedef void* mavsdk_camera_server_stop_video_handle_t;
-typedef void* mavsdk_camera_server_start_video_streaming_handle_t;
-typedef void* mavsdk_camera_server_stop_video_streaming_handle_t;
-typedef void* mavsdk_camera_server_set_mode_handle_t;
-typedef void* mavsdk_camera_server_storage_information_handle_t;
-typedef void* mavsdk_camera_server_capture_status_handle_t;
-typedef void* mavsdk_camera_server_format_storage_handle_t;
-typedef void* mavsdk_camera_server_reset_settings_handle_t;
-typedef void* mavsdk_camera_server_zoom_in_start_handle_t;
-typedef void* mavsdk_camera_server_zoom_out_start_handle_t;
-typedef void* mavsdk_camera_server_zoom_stop_handle_t;
-typedef void* mavsdk_camera_server_zoom_range_handle_t;
-typedef void* mavsdk_camera_server_tracking_point_command_handle_t;
-typedef void* mavsdk_camera_server_tracking_rectangle_command_handle_t;
-typedef void* mavsdk_camera_server_tracking_off_command_handle_t;
+typedef struct mavsdk_camera_server_s *mavsdk_camera_server_t;
+typedef struct mavsdk_camera_server_take_photo_handle_s *mavsdk_camera_server_take_photo_handle_t;
+typedef struct mavsdk_camera_server_start_video_handle_s *mavsdk_camera_server_start_video_handle_t;
+typedef struct mavsdk_camera_server_stop_video_handle_s *mavsdk_camera_server_stop_video_handle_t;
+typedef struct mavsdk_camera_server_start_video_streaming_handle_s *mavsdk_camera_server_start_video_streaming_handle_t;
+typedef struct mavsdk_camera_server_stop_video_streaming_handle_s *mavsdk_camera_server_stop_video_streaming_handle_t;
+typedef struct mavsdk_camera_server_set_mode_handle_s *mavsdk_camera_server_set_mode_handle_t;
+typedef struct mavsdk_camera_server_storage_information_handle_s *mavsdk_camera_server_storage_information_handle_t;
+typedef struct mavsdk_camera_server_capture_status_handle_s *mavsdk_camera_server_capture_status_handle_t;
+typedef struct mavsdk_camera_server_format_storage_handle_s *mavsdk_camera_server_format_storage_handle_t;
+typedef struct mavsdk_camera_server_reset_settings_handle_s *mavsdk_camera_server_reset_settings_handle_t;
+typedef struct mavsdk_camera_server_zoom_in_start_handle_s *mavsdk_camera_server_zoom_in_start_handle_t;
+typedef struct mavsdk_camera_server_zoom_out_start_handle_s *mavsdk_camera_server_zoom_out_start_handle_t;
+typedef struct mavsdk_camera_server_zoom_stop_handle_s *mavsdk_camera_server_zoom_stop_handle_t;
+typedef struct mavsdk_camera_server_zoom_range_handle_s *mavsdk_camera_server_zoom_range_handle_t;
+typedef struct mavsdk_camera_server_tracking_point_command_handle_s *mavsdk_camera_server_tracking_point_command_handle_t;
+typedef struct mavsdk_camera_server_tracking_rectangle_command_handle_s *mavsdk_camera_server_tracking_rectangle_command_handle_t;
+typedef struct mavsdk_camera_server_tracking_off_command_handle_s *mavsdk_camera_server_tracking_off_command_handle_t;
 
 // ===== Enums =====
 /**

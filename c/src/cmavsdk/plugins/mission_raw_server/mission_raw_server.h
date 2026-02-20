@@ -20,13 +20,13 @@ extern "C" {
  */
 
 // ===== Forward Declarations =====
-typedef void* mavsdk_server_component_t;
+typedef struct mavsdk_server_component_s *mavsdk_server_component_t;
 
 // ===== Opaque Handles =====
-typedef void* mavsdk_mission_raw_server_t;
-typedef void* mavsdk_mission_raw_server_incoming_mission_handle_t;
-typedef void* mavsdk_mission_raw_server_current_item_changed_handle_t;
-typedef void* mavsdk_mission_raw_server_clear_all_handle_t;
+typedef struct mavsdk_mission_raw_server_s *mavsdk_mission_raw_server_t;
+typedef struct mavsdk_mission_raw_server_incoming_mission_handle_s *mavsdk_mission_raw_server_incoming_mission_handle_t;
+typedef struct mavsdk_mission_raw_server_current_item_changed_handle_s *mavsdk_mission_raw_server_current_item_changed_handle_t;
+typedef struct mavsdk_mission_raw_server_clear_all_handle_s *mavsdk_mission_raw_server_clear_all_handle_t;
 
 // ===== Enums =====
 

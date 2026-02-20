@@ -19,17 +19,17 @@ extern "C" {
  */
 
 // ===== Forward Declarations =====
-typedef void* mavsdk_server_component_t;
+typedef struct mavsdk_server_component_s *mavsdk_server_component_t;
 
 // ===== Opaque Handles =====
-typedef void* mavsdk_action_server_t;
-typedef void* mavsdk_action_server_arm_disarm_handle_t;
-typedef void* mavsdk_action_server_flight_mode_change_handle_t;
-typedef void* mavsdk_action_server_takeoff_handle_t;
-typedef void* mavsdk_action_server_land_handle_t;
-typedef void* mavsdk_action_server_reboot_handle_t;
-typedef void* mavsdk_action_server_shutdown_handle_t;
-typedef void* mavsdk_action_server_terminate_handle_t;
+typedef struct mavsdk_action_server_s *mavsdk_action_server_t;
+typedef struct mavsdk_action_server_arm_disarm_handle_s *mavsdk_action_server_arm_disarm_handle_t;
+typedef struct mavsdk_action_server_flight_mode_change_handle_s *mavsdk_action_server_flight_mode_change_handle_t;
+typedef struct mavsdk_action_server_takeoff_handle_s *mavsdk_action_server_takeoff_handle_t;
+typedef struct mavsdk_action_server_land_handle_s *mavsdk_action_server_land_handle_t;
+typedef struct mavsdk_action_server_reboot_handle_s *mavsdk_action_server_reboot_handle_t;
+typedef struct mavsdk_action_server_shutdown_handle_s *mavsdk_action_server_shutdown_handle_t;
+typedef struct mavsdk_action_server_terminate_handle_s *mavsdk_action_server_terminate_handle_t;
 
 // ===== Enums =====
 /**

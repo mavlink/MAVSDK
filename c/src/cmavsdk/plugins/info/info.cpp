@@ -334,10 +334,10 @@ mavsdk_info_create(mavsdk_system_t system) {
     }
 
     auto wrapper = new mavsdk_info_wrapper();
-    auto system_ptr = static_cast<std::shared_ptr<mavsdk::System>*>(system);
+    auto system_ptr = reinterpret_cast<std::shared_ptr<mavsdk::System>*>(system);
     wrapper->cpp_plugin = std::make_shared<mavsdk::Info>(*system_ptr);
 
-    return wrapper;
+    return reinterpret_cast<mavsdk_info_t>(wrapper);
 }
 
 void mavsdk_info_destroy(mavsdk_info_t info) {
@@ -345,7 +345,7 @@ void mavsdk_info_destroy(mavsdk_info_t info) {
         return;
     }
 
-    auto wrapper = static_cast<mavsdk_info_wrapper*>(info);
+    auto wrapper = reinterpret_cast<mavsdk_info_wrapper*>(info);
     delete wrapper;
 }
 
@@ -358,7 +358,7 @@ mavsdk_info_get_flight_information(
     mavsdk_info_t info,
     mavsdk_info_flight_info_t* flight_info_out)
 {
-    auto wrapper = static_cast<mavsdk_info_wrapper*>(info);
+    auto wrapper = reinterpret_cast<mavsdk_info_wrapper*>(info);
 
     auto result_pair = wrapper->cpp_plugin->get_flight_information(
 );
@@ -377,7 +377,7 @@ mavsdk_info_get_identification(
     mavsdk_info_t info,
     mavsdk_info_identification_t* identification_out)
 {
-    auto wrapper = static_cast<mavsdk_info_wrapper*>(info);
+    auto wrapper = reinterpret_cast<mavsdk_info_wrapper*>(info);
 
     auto result_pair = wrapper->cpp_plugin->get_identification(
 );
@@ -396,7 +396,7 @@ mavsdk_info_get_product(
     mavsdk_info_t info,
     mavsdk_info_product_t* product_out)
 {
-    auto wrapper = static_cast<mavsdk_info_wrapper*>(info);
+    auto wrapper = reinterpret_cast<mavsdk_info_wrapper*>(info);
 
     auto result_pair = wrapper->cpp_plugin->get_product(
 );
@@ -415,7 +415,7 @@ mavsdk_info_get_version(
     mavsdk_info_t info,
     mavsdk_info_version_t* version_out)
 {
-    auto wrapper = static_cast<mavsdk_info_wrapper*>(info);
+    auto wrapper = reinterpret_cast<mavsdk_info_wrapper*>(info);
 
     auto result_pair = wrapper->cpp_plugin->get_version(
 );
@@ -434,7 +434,7 @@ mavsdk_info_get_speed_factor(
     mavsdk_info_t info,
     double* speed_factor_out)
 {
-    auto wrapper = static_cast<mavsdk_info_wrapper*>(info);
+    auto wrapper = reinterpret_cast<mavsdk_info_wrapper*>(info);
 
     auto result_pair = wrapper->cpp_plugin->get_speed_factor(
 );
@@ -450,7 +450,7 @@ mavsdk_info_flight_information_handle_t mavsdk_info_subscribe_flight_information
     mavsdk_info_flight_information_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_info_wrapper*>(info);
+    auto wrapper = reinterpret_cast<mavsdk_info_wrapper*>(info);
 
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_flight_information(
         [callback, user_data](
@@ -463,7 +463,7 @@ mavsdk_info_flight_information_handle_t mavsdk_info_subscribe_flight_information
         });
 
     auto handle_wrapper = new mavsdk::Info::FlightInformationHandle(std::move(cpp_handle));
-    return static_cast<mavsdk_info_flight_information_handle_t>(handle_wrapper);
+    return reinterpret_cast<mavsdk_info_flight_information_handle_t>(handle_wrapper);
 }
 
 void mavsdk_info_unsubscribe_flight_information(
@@ -471,8 +471,8 @@ void mavsdk_info_unsubscribe_flight_information(
     mavsdk_info_flight_information_handle_t handle)
 {
     if (handle) {
-        auto wrapper = static_cast<mavsdk_info_wrapper*>(info);
-        auto cpp_handle = static_cast<mavsdk::Info::FlightInformationHandle*>(handle);
+        auto wrapper = reinterpret_cast<mavsdk_info_wrapper*>(info);
+        auto cpp_handle = reinterpret_cast<mavsdk::Info::FlightInformationHandle*>(handle);
         wrapper->cpp_plugin->unsubscribe_flight_information(std::move(*cpp_handle));
         delete cpp_handle;
     }

@@ -21,43 +21,43 @@ extern "C" {
  */
 
 // ===== Forward Declarations =====
-typedef void* mavsdk_system_t;
+typedef struct mavsdk_system_s *mavsdk_system_t;
 
 // ===== Opaque Handles =====
-typedef void* mavsdk_telemetry_t;
-typedef void* mavsdk_telemetry_position_handle_t;
-typedef void* mavsdk_telemetry_home_handle_t;
-typedef void* mavsdk_telemetry_in_air_handle_t;
-typedef void* mavsdk_telemetry_landed_state_handle_t;
-typedef void* mavsdk_telemetry_armed_handle_t;
-typedef void* mavsdk_telemetry_vtol_state_handle_t;
-typedef void* mavsdk_telemetry_attitude_quaternion_handle_t;
-typedef void* mavsdk_telemetry_attitude_euler_handle_t;
-typedef void* mavsdk_telemetry_attitude_angular_velocity_body_handle_t;
-typedef void* mavsdk_telemetry_velocity_ned_handle_t;
-typedef void* mavsdk_telemetry_gps_info_handle_t;
-typedef void* mavsdk_telemetry_raw_gps_handle_t;
-typedef void* mavsdk_telemetry_battery_handle_t;
-typedef void* mavsdk_telemetry_flight_mode_handle_t;
-typedef void* mavsdk_telemetry_health_handle_t;
-typedef void* mavsdk_telemetry_rc_status_handle_t;
-typedef void* mavsdk_telemetry_status_text_handle_t;
-typedef void* mavsdk_telemetry_actuator_control_target_handle_t;
-typedef void* mavsdk_telemetry_actuator_output_status_handle_t;
-typedef void* mavsdk_telemetry_odometry_handle_t;
-typedef void* mavsdk_telemetry_position_velocity_ned_handle_t;
-typedef void* mavsdk_telemetry_ground_truth_handle_t;
-typedef void* mavsdk_telemetry_fixedwing_metrics_handle_t;
-typedef void* mavsdk_telemetry_imu_handle_t;
-typedef void* mavsdk_telemetry_scaled_imu_handle_t;
-typedef void* mavsdk_telemetry_raw_imu_handle_t;
-typedef void* mavsdk_telemetry_health_all_ok_handle_t;
-typedef void* mavsdk_telemetry_unix_epoch_time_handle_t;
-typedef void* mavsdk_telemetry_distance_sensor_handle_t;
-typedef void* mavsdk_telemetry_scaled_pressure_handle_t;
-typedef void* mavsdk_telemetry_heading_handle_t;
-typedef void* mavsdk_telemetry_altitude_handle_t;
-typedef void* mavsdk_telemetry_wind_handle_t;
+typedef struct mavsdk_telemetry_s *mavsdk_telemetry_t;
+typedef struct mavsdk_telemetry_position_handle_s *mavsdk_telemetry_position_handle_t;
+typedef struct mavsdk_telemetry_home_handle_s *mavsdk_telemetry_home_handle_t;
+typedef struct mavsdk_telemetry_in_air_handle_s *mavsdk_telemetry_in_air_handle_t;
+typedef struct mavsdk_telemetry_landed_state_handle_s *mavsdk_telemetry_landed_state_handle_t;
+typedef struct mavsdk_telemetry_armed_handle_s *mavsdk_telemetry_armed_handle_t;
+typedef struct mavsdk_telemetry_vtol_state_handle_s *mavsdk_telemetry_vtol_state_handle_t;
+typedef struct mavsdk_telemetry_attitude_quaternion_handle_s *mavsdk_telemetry_attitude_quaternion_handle_t;
+typedef struct mavsdk_telemetry_attitude_euler_handle_s *mavsdk_telemetry_attitude_euler_handle_t;
+typedef struct mavsdk_telemetry_attitude_angular_velocity_body_handle_s *mavsdk_telemetry_attitude_angular_velocity_body_handle_t;
+typedef struct mavsdk_telemetry_velocity_ned_handle_s *mavsdk_telemetry_velocity_ned_handle_t;
+typedef struct mavsdk_telemetry_gps_info_handle_s *mavsdk_telemetry_gps_info_handle_t;
+typedef struct mavsdk_telemetry_raw_gps_handle_s *mavsdk_telemetry_raw_gps_handle_t;
+typedef struct mavsdk_telemetry_battery_handle_s *mavsdk_telemetry_battery_handle_t;
+typedef struct mavsdk_telemetry_flight_mode_handle_s *mavsdk_telemetry_flight_mode_handle_t;
+typedef struct mavsdk_telemetry_health_handle_s *mavsdk_telemetry_health_handle_t;
+typedef struct mavsdk_telemetry_rc_status_handle_s *mavsdk_telemetry_rc_status_handle_t;
+typedef struct mavsdk_telemetry_status_text_handle_s *mavsdk_telemetry_status_text_handle_t;
+typedef struct mavsdk_telemetry_actuator_control_target_handle_s *mavsdk_telemetry_actuator_control_target_handle_t;
+typedef struct mavsdk_telemetry_actuator_output_status_handle_s *mavsdk_telemetry_actuator_output_status_handle_t;
+typedef struct mavsdk_telemetry_odometry_handle_s *mavsdk_telemetry_odometry_handle_t;
+typedef struct mavsdk_telemetry_position_velocity_ned_handle_s *mavsdk_telemetry_position_velocity_ned_handle_t;
+typedef struct mavsdk_telemetry_ground_truth_handle_s *mavsdk_telemetry_ground_truth_handle_t;
+typedef struct mavsdk_telemetry_fixedwing_metrics_handle_s *mavsdk_telemetry_fixedwing_metrics_handle_t;
+typedef struct mavsdk_telemetry_imu_handle_s *mavsdk_telemetry_imu_handle_t;
+typedef struct mavsdk_telemetry_scaled_imu_handle_s *mavsdk_telemetry_scaled_imu_handle_t;
+typedef struct mavsdk_telemetry_raw_imu_handle_s *mavsdk_telemetry_raw_imu_handle_t;
+typedef struct mavsdk_telemetry_health_all_ok_handle_s *mavsdk_telemetry_health_all_ok_handle_t;
+typedef struct mavsdk_telemetry_unix_epoch_time_handle_s *mavsdk_telemetry_unix_epoch_time_handle_t;
+typedef struct mavsdk_telemetry_distance_sensor_handle_s *mavsdk_telemetry_distance_sensor_handle_t;
+typedef struct mavsdk_telemetry_scaled_pressure_handle_s *mavsdk_telemetry_scaled_pressure_handle_t;
+typedef struct mavsdk_telemetry_heading_handle_s *mavsdk_telemetry_heading_handle_t;
+typedef struct mavsdk_telemetry_altitude_handle_s *mavsdk_telemetry_altitude_handle_t;
+typedef struct mavsdk_telemetry_wind_handle_s *mavsdk_telemetry_wind_handle_t;
 
 // ===== Enums =====
 /**

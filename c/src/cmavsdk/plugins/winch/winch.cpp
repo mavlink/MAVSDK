@@ -262,10 +262,10 @@ mavsdk_winch_create(mavsdk_system_t system) {
     }
 
     auto wrapper = new mavsdk_winch_wrapper();
-    auto system_ptr = static_cast<std::shared_ptr<mavsdk::System>*>(system);
+    auto system_ptr = reinterpret_cast<std::shared_ptr<mavsdk::System>*>(system);
     wrapper->cpp_plugin = std::make_shared<mavsdk::Winch>(*system_ptr);
 
-    return wrapper;
+    return reinterpret_cast<mavsdk_winch_t>(wrapper);
 }
 
 void mavsdk_winch_destroy(mavsdk_winch_t winch) {
@@ -273,7 +273,7 @@ void mavsdk_winch_destroy(mavsdk_winch_t winch) {
         return;
     }
 
-    auto wrapper = static_cast<mavsdk_winch_wrapper*>(winch);
+    auto wrapper = reinterpret_cast<mavsdk_winch_wrapper*>(winch);
     delete wrapper;
 }
 
@@ -285,7 +285,7 @@ mavsdk_winch_status_handle_t mavsdk_winch_subscribe_status(
     mavsdk_winch_status_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_winch_wrapper*>(winch);
+    auto wrapper = reinterpret_cast<mavsdk_winch_wrapper*>(winch);
 
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_status(
         [callback, user_data](
@@ -298,7 +298,7 @@ mavsdk_winch_status_handle_t mavsdk_winch_subscribe_status(
         });
 
     auto handle_wrapper = new mavsdk::Winch::StatusHandle(std::move(cpp_handle));
-    return static_cast<mavsdk_winch_status_handle_t>(handle_wrapper);
+    return reinterpret_cast<mavsdk_winch_status_handle_t>(handle_wrapper);
 }
 
 void mavsdk_winch_unsubscribe_status(
@@ -306,8 +306,8 @@ void mavsdk_winch_unsubscribe_status(
     mavsdk_winch_status_handle_t handle)
 {
     if (handle) {
-        auto wrapper = static_cast<mavsdk_winch_wrapper*>(winch);
-        auto cpp_handle = static_cast<mavsdk::Winch::StatusHandle*>(handle);
+        auto wrapper = reinterpret_cast<mavsdk_winch_wrapper*>(winch);
+        auto cpp_handle = reinterpret_cast<mavsdk::Winch::StatusHandle*>(handle);
         wrapper->cpp_plugin->unsubscribe_status(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -319,7 +319,7 @@ mavsdk_winch_status(
     mavsdk_winch_t winch,
     mavsdk_winch_status_t* status_out)
 {
-    auto wrapper = static_cast<mavsdk_winch_wrapper*>(winch);
+    auto wrapper = reinterpret_cast<mavsdk_winch_wrapper*>(winch);
 
     auto ret_value = wrapper->cpp_plugin->status();
 
@@ -335,7 +335,7 @@ void mavsdk_winch_relax_async(
     mavsdk_winch_relax_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_winch_wrapper*>(winch);
+    auto wrapper = reinterpret_cast<mavsdk_winch_wrapper*>(winch);
 
     wrapper->cpp_plugin->relax_async(
         instance,
@@ -356,7 +356,7 @@ mavsdk_winch_relax(
     mavsdk_winch_t winch,
     uint32_t instance)
 {
-    auto wrapper = static_cast<mavsdk_winch_wrapper*>(winch);
+    auto wrapper = reinterpret_cast<mavsdk_winch_wrapper*>(winch);
 
     auto ret_value = wrapper->cpp_plugin->relax(        instance);
 
@@ -372,7 +372,7 @@ void mavsdk_winch_relative_length_control_async(
     mavsdk_winch_relative_length_control_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_winch_wrapper*>(winch);
+    auto wrapper = reinterpret_cast<mavsdk_winch_wrapper*>(winch);
 
     wrapper->cpp_plugin->relative_length_control_async(
         instance,
@@ -397,7 +397,7 @@ mavsdk_winch_relative_length_control(
     float length_m,
     float rate_m_s)
 {
-    auto wrapper = static_cast<mavsdk_winch_wrapper*>(winch);
+    auto wrapper = reinterpret_cast<mavsdk_winch_wrapper*>(winch);
 
     auto ret_value = wrapper->cpp_plugin->relative_length_control(        instance,        length_m,        rate_m_s);
 
@@ -412,7 +412,7 @@ void mavsdk_winch_rate_control_async(
     mavsdk_winch_rate_control_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_winch_wrapper*>(winch);
+    auto wrapper = reinterpret_cast<mavsdk_winch_wrapper*>(winch);
 
     wrapper->cpp_plugin->rate_control_async(
         instance,
@@ -435,7 +435,7 @@ mavsdk_winch_rate_control(
     uint32_t instance,
     float rate_m_s)
 {
-    auto wrapper = static_cast<mavsdk_winch_wrapper*>(winch);
+    auto wrapper = reinterpret_cast<mavsdk_winch_wrapper*>(winch);
 
     auto ret_value = wrapper->cpp_plugin->rate_control(        instance,        rate_m_s);
 
@@ -449,7 +449,7 @@ void mavsdk_winch_lock_async(
     mavsdk_winch_lock_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_winch_wrapper*>(winch);
+    auto wrapper = reinterpret_cast<mavsdk_winch_wrapper*>(winch);
 
     wrapper->cpp_plugin->lock_async(
         instance,
@@ -470,7 +470,7 @@ mavsdk_winch_lock(
     mavsdk_winch_t winch,
     uint32_t instance)
 {
-    auto wrapper = static_cast<mavsdk_winch_wrapper*>(winch);
+    auto wrapper = reinterpret_cast<mavsdk_winch_wrapper*>(winch);
 
     auto ret_value = wrapper->cpp_plugin->lock(        instance);
 
@@ -484,7 +484,7 @@ void mavsdk_winch_deliver_async(
     mavsdk_winch_deliver_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_winch_wrapper*>(winch);
+    auto wrapper = reinterpret_cast<mavsdk_winch_wrapper*>(winch);
 
     wrapper->cpp_plugin->deliver_async(
         instance,
@@ -505,7 +505,7 @@ mavsdk_winch_deliver(
     mavsdk_winch_t winch,
     uint32_t instance)
 {
-    auto wrapper = static_cast<mavsdk_winch_wrapper*>(winch);
+    auto wrapper = reinterpret_cast<mavsdk_winch_wrapper*>(winch);
 
     auto ret_value = wrapper->cpp_plugin->deliver(        instance);
 
@@ -519,7 +519,7 @@ void mavsdk_winch_hold_async(
     mavsdk_winch_hold_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_winch_wrapper*>(winch);
+    auto wrapper = reinterpret_cast<mavsdk_winch_wrapper*>(winch);
 
     wrapper->cpp_plugin->hold_async(
         instance,
@@ -540,7 +540,7 @@ mavsdk_winch_hold(
     mavsdk_winch_t winch,
     uint32_t instance)
 {
-    auto wrapper = static_cast<mavsdk_winch_wrapper*>(winch);
+    auto wrapper = reinterpret_cast<mavsdk_winch_wrapper*>(winch);
 
     auto ret_value = wrapper->cpp_plugin->hold(        instance);
 
@@ -554,7 +554,7 @@ void mavsdk_winch_retract_async(
     mavsdk_winch_retract_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_winch_wrapper*>(winch);
+    auto wrapper = reinterpret_cast<mavsdk_winch_wrapper*>(winch);
 
     wrapper->cpp_plugin->retract_async(
         instance,
@@ -575,7 +575,7 @@ mavsdk_winch_retract(
     mavsdk_winch_t winch,
     uint32_t instance)
 {
-    auto wrapper = static_cast<mavsdk_winch_wrapper*>(winch);
+    auto wrapper = reinterpret_cast<mavsdk_winch_wrapper*>(winch);
 
     auto ret_value = wrapper->cpp_plugin->retract(        instance);
 
@@ -589,7 +589,7 @@ void mavsdk_winch_load_line_async(
     mavsdk_winch_load_line_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_winch_wrapper*>(winch);
+    auto wrapper = reinterpret_cast<mavsdk_winch_wrapper*>(winch);
 
     wrapper->cpp_plugin->load_line_async(
         instance,
@@ -610,7 +610,7 @@ mavsdk_winch_load_line(
     mavsdk_winch_t winch,
     uint32_t instance)
 {
-    auto wrapper = static_cast<mavsdk_winch_wrapper*>(winch);
+    auto wrapper = reinterpret_cast<mavsdk_winch_wrapper*>(winch);
 
     auto ret_value = wrapper->cpp_plugin->load_line(        instance);
 
@@ -624,7 +624,7 @@ void mavsdk_winch_abandon_line_async(
     mavsdk_winch_abandon_line_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_winch_wrapper*>(winch);
+    auto wrapper = reinterpret_cast<mavsdk_winch_wrapper*>(winch);
 
     wrapper->cpp_plugin->abandon_line_async(
         instance,
@@ -645,7 +645,7 @@ mavsdk_winch_abandon_line(
     mavsdk_winch_t winch,
     uint32_t instance)
 {
-    auto wrapper = static_cast<mavsdk_winch_wrapper*>(winch);
+    auto wrapper = reinterpret_cast<mavsdk_winch_wrapper*>(winch);
 
     auto ret_value = wrapper->cpp_plugin->abandon_line(        instance);
 
@@ -659,7 +659,7 @@ void mavsdk_winch_load_payload_async(
     mavsdk_winch_load_payload_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_winch_wrapper*>(winch);
+    auto wrapper = reinterpret_cast<mavsdk_winch_wrapper*>(winch);
 
     wrapper->cpp_plugin->load_payload_async(
         instance,
@@ -680,7 +680,7 @@ mavsdk_winch_load_payload(
     mavsdk_winch_t winch,
     uint32_t instance)
 {
-    auto wrapper = static_cast<mavsdk_winch_wrapper*>(winch);
+    auto wrapper = reinterpret_cast<mavsdk_winch_wrapper*>(winch);
 
     auto ret_value = wrapper->cpp_plugin->load_payload(        instance);
 

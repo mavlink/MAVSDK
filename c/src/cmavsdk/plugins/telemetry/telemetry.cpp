@@ -1654,10 +1654,10 @@ mavsdk_telemetry_create(mavsdk_system_t system) {
     }
 
     auto wrapper = new mavsdk_telemetry_wrapper();
-    auto system_ptr = static_cast<std::shared_ptr<mavsdk::System>*>(system);
+    auto system_ptr = reinterpret_cast<std::shared_ptr<mavsdk::System>*>(system);
     wrapper->cpp_plugin = std::make_shared<mavsdk::Telemetry>(*system_ptr);
 
-    return wrapper;
+    return reinterpret_cast<mavsdk_telemetry_t>(wrapper);
 }
 
 void mavsdk_telemetry_destroy(mavsdk_telemetry_t telemetry) {
@@ -1665,7 +1665,7 @@ void mavsdk_telemetry_destroy(mavsdk_telemetry_t telemetry) {
         return;
     }
 
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
     delete wrapper;
 }
 
@@ -1677,7 +1677,7 @@ mavsdk_telemetry_position_handle_t mavsdk_telemetry_subscribe_position(
     mavsdk_telemetry_position_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_position(
         [callback, user_data](
@@ -1690,7 +1690,7 @@ mavsdk_telemetry_position_handle_t mavsdk_telemetry_subscribe_position(
         });
 
     auto handle_wrapper = new mavsdk::Telemetry::PositionHandle(std::move(cpp_handle));
-    return static_cast<mavsdk_telemetry_position_handle_t>(handle_wrapper);
+    return reinterpret_cast<mavsdk_telemetry_position_handle_t>(handle_wrapper);
 }
 
 void mavsdk_telemetry_unsubscribe_position(
@@ -1698,8 +1698,8 @@ void mavsdk_telemetry_unsubscribe_position(
     mavsdk_telemetry_position_handle_t handle)
 {
     if (handle) {
-        auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
-        auto cpp_handle = static_cast<mavsdk::Telemetry::PositionHandle*>(handle);
+        auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
+        auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::PositionHandle*>(handle);
         wrapper->cpp_plugin->unsubscribe_position(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -1711,7 +1711,7 @@ mavsdk_telemetry_position(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_position_t* position_out)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto ret_value = wrapper->cpp_plugin->position();
 
@@ -1726,7 +1726,7 @@ mavsdk_telemetry_home_handle_t mavsdk_telemetry_subscribe_home(
     mavsdk_telemetry_home_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_home(
         [callback, user_data](
@@ -1739,7 +1739,7 @@ mavsdk_telemetry_home_handle_t mavsdk_telemetry_subscribe_home(
         });
 
     auto handle_wrapper = new mavsdk::Telemetry::HomeHandle(std::move(cpp_handle));
-    return static_cast<mavsdk_telemetry_home_handle_t>(handle_wrapper);
+    return reinterpret_cast<mavsdk_telemetry_home_handle_t>(handle_wrapper);
 }
 
 void mavsdk_telemetry_unsubscribe_home(
@@ -1747,8 +1747,8 @@ void mavsdk_telemetry_unsubscribe_home(
     mavsdk_telemetry_home_handle_t handle)
 {
     if (handle) {
-        auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
-        auto cpp_handle = static_cast<mavsdk::Telemetry::HomeHandle*>(handle);
+        auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
+        auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::HomeHandle*>(handle);
         wrapper->cpp_plugin->unsubscribe_home(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -1760,7 +1760,7 @@ mavsdk_telemetry_home(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_position_t* home_out)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto ret_value = wrapper->cpp_plugin->home();
 
@@ -1775,7 +1775,7 @@ mavsdk_telemetry_in_air_handle_t mavsdk_telemetry_subscribe_in_air(
     mavsdk_telemetry_in_air_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_in_air(
         [callback, user_data](
@@ -1788,7 +1788,7 @@ mavsdk_telemetry_in_air_handle_t mavsdk_telemetry_subscribe_in_air(
         });
 
     auto handle_wrapper = new mavsdk::Telemetry::InAirHandle(std::move(cpp_handle));
-    return static_cast<mavsdk_telemetry_in_air_handle_t>(handle_wrapper);
+    return reinterpret_cast<mavsdk_telemetry_in_air_handle_t>(handle_wrapper);
 }
 
 void mavsdk_telemetry_unsubscribe_in_air(
@@ -1796,8 +1796,8 @@ void mavsdk_telemetry_unsubscribe_in_air(
     mavsdk_telemetry_in_air_handle_t handle)
 {
     if (handle) {
-        auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
-        auto cpp_handle = static_cast<mavsdk::Telemetry::InAirHandle*>(handle);
+        auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
+        auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::InAirHandle*>(handle);
         wrapper->cpp_plugin->unsubscribe_in_air(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -1809,7 +1809,7 @@ mavsdk_telemetry_in_air(
     mavsdk_telemetry_t telemetry,
     bool* is_in_air_out)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto ret_value = wrapper->cpp_plugin->in_air();
 
@@ -1822,7 +1822,7 @@ mavsdk_telemetry_landed_state_handle_t mavsdk_telemetry_subscribe_landed_state(
     mavsdk_telemetry_landed_state_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_landed_state(
         [callback, user_data](
@@ -1835,7 +1835,7 @@ mavsdk_telemetry_landed_state_handle_t mavsdk_telemetry_subscribe_landed_state(
         });
 
     auto handle_wrapper = new mavsdk::Telemetry::LandedStateHandle(std::move(cpp_handle));
-    return static_cast<mavsdk_telemetry_landed_state_handle_t>(handle_wrapper);
+    return reinterpret_cast<mavsdk_telemetry_landed_state_handle_t>(handle_wrapper);
 }
 
 void mavsdk_telemetry_unsubscribe_landed_state(
@@ -1843,8 +1843,8 @@ void mavsdk_telemetry_unsubscribe_landed_state(
     mavsdk_telemetry_landed_state_handle_t handle)
 {
     if (handle) {
-        auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
-        auto cpp_handle = static_cast<mavsdk::Telemetry::LandedStateHandle*>(handle);
+        auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
+        auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::LandedStateHandle*>(handle);
         wrapper->cpp_plugin->unsubscribe_landed_state(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -1856,7 +1856,7 @@ mavsdk_telemetry_landed_state(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_landed_state_t* landed_state_out)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto ret_value = wrapper->cpp_plugin->landed_state();
 
@@ -1871,7 +1871,7 @@ mavsdk_telemetry_armed_handle_t mavsdk_telemetry_subscribe_armed(
     mavsdk_telemetry_armed_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_armed(
         [callback, user_data](
@@ -1884,7 +1884,7 @@ mavsdk_telemetry_armed_handle_t mavsdk_telemetry_subscribe_armed(
         });
 
     auto handle_wrapper = new mavsdk::Telemetry::ArmedHandle(std::move(cpp_handle));
-    return static_cast<mavsdk_telemetry_armed_handle_t>(handle_wrapper);
+    return reinterpret_cast<mavsdk_telemetry_armed_handle_t>(handle_wrapper);
 }
 
 void mavsdk_telemetry_unsubscribe_armed(
@@ -1892,8 +1892,8 @@ void mavsdk_telemetry_unsubscribe_armed(
     mavsdk_telemetry_armed_handle_t handle)
 {
     if (handle) {
-        auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
-        auto cpp_handle = static_cast<mavsdk::Telemetry::ArmedHandle*>(handle);
+        auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
+        auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::ArmedHandle*>(handle);
         wrapper->cpp_plugin->unsubscribe_armed(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -1905,7 +1905,7 @@ mavsdk_telemetry_armed(
     mavsdk_telemetry_t telemetry,
     bool* is_armed_out)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto ret_value = wrapper->cpp_plugin->armed();
 
@@ -1918,7 +1918,7 @@ mavsdk_telemetry_vtol_state_handle_t mavsdk_telemetry_subscribe_vtol_state(
     mavsdk_telemetry_vtol_state_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_vtol_state(
         [callback, user_data](
@@ -1931,7 +1931,7 @@ mavsdk_telemetry_vtol_state_handle_t mavsdk_telemetry_subscribe_vtol_state(
         });
 
     auto handle_wrapper = new mavsdk::Telemetry::VtolStateHandle(std::move(cpp_handle));
-    return static_cast<mavsdk_telemetry_vtol_state_handle_t>(handle_wrapper);
+    return reinterpret_cast<mavsdk_telemetry_vtol_state_handle_t>(handle_wrapper);
 }
 
 void mavsdk_telemetry_unsubscribe_vtol_state(
@@ -1939,8 +1939,8 @@ void mavsdk_telemetry_unsubscribe_vtol_state(
     mavsdk_telemetry_vtol_state_handle_t handle)
 {
     if (handle) {
-        auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
-        auto cpp_handle = static_cast<mavsdk::Telemetry::VtolStateHandle*>(handle);
+        auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
+        auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::VtolStateHandle*>(handle);
         wrapper->cpp_plugin->unsubscribe_vtol_state(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -1952,7 +1952,7 @@ mavsdk_telemetry_vtol_state(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_vtol_state_t* vtol_state_out)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto ret_value = wrapper->cpp_plugin->vtol_state();
 
@@ -1967,7 +1967,7 @@ mavsdk_telemetry_attitude_quaternion_handle_t mavsdk_telemetry_subscribe_attitud
     mavsdk_telemetry_attitude_quaternion_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_attitude_quaternion(
         [callback, user_data](
@@ -1980,7 +1980,7 @@ mavsdk_telemetry_attitude_quaternion_handle_t mavsdk_telemetry_subscribe_attitud
         });
 
     auto handle_wrapper = new mavsdk::Telemetry::AttitudeQuaternionHandle(std::move(cpp_handle));
-    return static_cast<mavsdk_telemetry_attitude_quaternion_handle_t>(handle_wrapper);
+    return reinterpret_cast<mavsdk_telemetry_attitude_quaternion_handle_t>(handle_wrapper);
 }
 
 void mavsdk_telemetry_unsubscribe_attitude_quaternion(
@@ -1988,8 +1988,8 @@ void mavsdk_telemetry_unsubscribe_attitude_quaternion(
     mavsdk_telemetry_attitude_quaternion_handle_t handle)
 {
     if (handle) {
-        auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
-        auto cpp_handle = static_cast<mavsdk::Telemetry::AttitudeQuaternionHandle*>(handle);
+        auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
+        auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::AttitudeQuaternionHandle*>(handle);
         wrapper->cpp_plugin->unsubscribe_attitude_quaternion(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -2001,7 +2001,7 @@ mavsdk_telemetry_attitude_quaternion(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_quaternion_t* attitude_quaternion_out)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto ret_value = wrapper->cpp_plugin->attitude_quaternion();
 
@@ -2016,7 +2016,7 @@ mavsdk_telemetry_attitude_euler_handle_t mavsdk_telemetry_subscribe_attitude_eul
     mavsdk_telemetry_attitude_euler_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_attitude_euler(
         [callback, user_data](
@@ -2029,7 +2029,7 @@ mavsdk_telemetry_attitude_euler_handle_t mavsdk_telemetry_subscribe_attitude_eul
         });
 
     auto handle_wrapper = new mavsdk::Telemetry::AttitudeEulerHandle(std::move(cpp_handle));
-    return static_cast<mavsdk_telemetry_attitude_euler_handle_t>(handle_wrapper);
+    return reinterpret_cast<mavsdk_telemetry_attitude_euler_handle_t>(handle_wrapper);
 }
 
 void mavsdk_telemetry_unsubscribe_attitude_euler(
@@ -2037,8 +2037,8 @@ void mavsdk_telemetry_unsubscribe_attitude_euler(
     mavsdk_telemetry_attitude_euler_handle_t handle)
 {
     if (handle) {
-        auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
-        auto cpp_handle = static_cast<mavsdk::Telemetry::AttitudeEulerHandle*>(handle);
+        auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
+        auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::AttitudeEulerHandle*>(handle);
         wrapper->cpp_plugin->unsubscribe_attitude_euler(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -2050,7 +2050,7 @@ mavsdk_telemetry_attitude_euler(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_euler_angle_t* attitude_euler_out)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto ret_value = wrapper->cpp_plugin->attitude_euler();
 
@@ -2065,7 +2065,7 @@ mavsdk_telemetry_attitude_angular_velocity_body_handle_t mavsdk_telemetry_subscr
     mavsdk_telemetry_attitude_angular_velocity_body_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_attitude_angular_velocity_body(
         [callback, user_data](
@@ -2078,7 +2078,7 @@ mavsdk_telemetry_attitude_angular_velocity_body_handle_t mavsdk_telemetry_subscr
         });
 
     auto handle_wrapper = new mavsdk::Telemetry::AttitudeAngularVelocityBodyHandle(std::move(cpp_handle));
-    return static_cast<mavsdk_telemetry_attitude_angular_velocity_body_handle_t>(handle_wrapper);
+    return reinterpret_cast<mavsdk_telemetry_attitude_angular_velocity_body_handle_t>(handle_wrapper);
 }
 
 void mavsdk_telemetry_unsubscribe_attitude_angular_velocity_body(
@@ -2086,8 +2086,8 @@ void mavsdk_telemetry_unsubscribe_attitude_angular_velocity_body(
     mavsdk_telemetry_attitude_angular_velocity_body_handle_t handle)
 {
     if (handle) {
-        auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
-        auto cpp_handle = static_cast<mavsdk::Telemetry::AttitudeAngularVelocityBodyHandle*>(handle);
+        auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
+        auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::AttitudeAngularVelocityBodyHandle*>(handle);
         wrapper->cpp_plugin->unsubscribe_attitude_angular_velocity_body(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -2099,7 +2099,7 @@ mavsdk_telemetry_attitude_angular_velocity_body(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_angular_velocity_body_t* attitude_angular_velocity_body_out)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto ret_value = wrapper->cpp_plugin->attitude_angular_velocity_body();
 
@@ -2114,7 +2114,7 @@ mavsdk_telemetry_velocity_ned_handle_t mavsdk_telemetry_subscribe_velocity_ned(
     mavsdk_telemetry_velocity_ned_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_velocity_ned(
         [callback, user_data](
@@ -2127,7 +2127,7 @@ mavsdk_telemetry_velocity_ned_handle_t mavsdk_telemetry_subscribe_velocity_ned(
         });
 
     auto handle_wrapper = new mavsdk::Telemetry::VelocityNedHandle(std::move(cpp_handle));
-    return static_cast<mavsdk_telemetry_velocity_ned_handle_t>(handle_wrapper);
+    return reinterpret_cast<mavsdk_telemetry_velocity_ned_handle_t>(handle_wrapper);
 }
 
 void mavsdk_telemetry_unsubscribe_velocity_ned(
@@ -2135,8 +2135,8 @@ void mavsdk_telemetry_unsubscribe_velocity_ned(
     mavsdk_telemetry_velocity_ned_handle_t handle)
 {
     if (handle) {
-        auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
-        auto cpp_handle = static_cast<mavsdk::Telemetry::VelocityNedHandle*>(handle);
+        auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
+        auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::VelocityNedHandle*>(handle);
         wrapper->cpp_plugin->unsubscribe_velocity_ned(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -2148,7 +2148,7 @@ mavsdk_telemetry_velocity_ned(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_velocity_ned_t* velocity_ned_out)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto ret_value = wrapper->cpp_plugin->velocity_ned();
 
@@ -2163,7 +2163,7 @@ mavsdk_telemetry_gps_info_handle_t mavsdk_telemetry_subscribe_gps_info(
     mavsdk_telemetry_gps_info_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_gps_info(
         [callback, user_data](
@@ -2176,7 +2176,7 @@ mavsdk_telemetry_gps_info_handle_t mavsdk_telemetry_subscribe_gps_info(
         });
 
     auto handle_wrapper = new mavsdk::Telemetry::GpsInfoHandle(std::move(cpp_handle));
-    return static_cast<mavsdk_telemetry_gps_info_handle_t>(handle_wrapper);
+    return reinterpret_cast<mavsdk_telemetry_gps_info_handle_t>(handle_wrapper);
 }
 
 void mavsdk_telemetry_unsubscribe_gps_info(
@@ -2184,8 +2184,8 @@ void mavsdk_telemetry_unsubscribe_gps_info(
     mavsdk_telemetry_gps_info_handle_t handle)
 {
     if (handle) {
-        auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
-        auto cpp_handle = static_cast<mavsdk::Telemetry::GpsInfoHandle*>(handle);
+        auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
+        auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::GpsInfoHandle*>(handle);
         wrapper->cpp_plugin->unsubscribe_gps_info(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -2197,7 +2197,7 @@ mavsdk_telemetry_gps_info(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_gps_info_t* gps_info_out)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto ret_value = wrapper->cpp_plugin->gps_info();
 
@@ -2212,7 +2212,7 @@ mavsdk_telemetry_raw_gps_handle_t mavsdk_telemetry_subscribe_raw_gps(
     mavsdk_telemetry_raw_gps_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_raw_gps(
         [callback, user_data](
@@ -2225,7 +2225,7 @@ mavsdk_telemetry_raw_gps_handle_t mavsdk_telemetry_subscribe_raw_gps(
         });
 
     auto handle_wrapper = new mavsdk::Telemetry::RawGpsHandle(std::move(cpp_handle));
-    return static_cast<mavsdk_telemetry_raw_gps_handle_t>(handle_wrapper);
+    return reinterpret_cast<mavsdk_telemetry_raw_gps_handle_t>(handle_wrapper);
 }
 
 void mavsdk_telemetry_unsubscribe_raw_gps(
@@ -2233,8 +2233,8 @@ void mavsdk_telemetry_unsubscribe_raw_gps(
     mavsdk_telemetry_raw_gps_handle_t handle)
 {
     if (handle) {
-        auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
-        auto cpp_handle = static_cast<mavsdk::Telemetry::RawGpsHandle*>(handle);
+        auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
+        auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::RawGpsHandle*>(handle);
         wrapper->cpp_plugin->unsubscribe_raw_gps(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -2246,7 +2246,7 @@ mavsdk_telemetry_raw_gps(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_raw_gps_t* raw_gps_out)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto ret_value = wrapper->cpp_plugin->raw_gps();
 
@@ -2261,7 +2261,7 @@ mavsdk_telemetry_battery_handle_t mavsdk_telemetry_subscribe_battery(
     mavsdk_telemetry_battery_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_battery(
         [callback, user_data](
@@ -2274,7 +2274,7 @@ mavsdk_telemetry_battery_handle_t mavsdk_telemetry_subscribe_battery(
         });
 
     auto handle_wrapper = new mavsdk::Telemetry::BatteryHandle(std::move(cpp_handle));
-    return static_cast<mavsdk_telemetry_battery_handle_t>(handle_wrapper);
+    return reinterpret_cast<mavsdk_telemetry_battery_handle_t>(handle_wrapper);
 }
 
 void mavsdk_telemetry_unsubscribe_battery(
@@ -2282,8 +2282,8 @@ void mavsdk_telemetry_unsubscribe_battery(
     mavsdk_telemetry_battery_handle_t handle)
 {
     if (handle) {
-        auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
-        auto cpp_handle = static_cast<mavsdk::Telemetry::BatteryHandle*>(handle);
+        auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
+        auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::BatteryHandle*>(handle);
         wrapper->cpp_plugin->unsubscribe_battery(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -2295,7 +2295,7 @@ mavsdk_telemetry_battery(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_battery_t* battery_out)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto ret_value = wrapper->cpp_plugin->battery();
 
@@ -2310,7 +2310,7 @@ mavsdk_telemetry_flight_mode_handle_t mavsdk_telemetry_subscribe_flight_mode(
     mavsdk_telemetry_flight_mode_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_flight_mode(
         [callback, user_data](
@@ -2323,7 +2323,7 @@ mavsdk_telemetry_flight_mode_handle_t mavsdk_telemetry_subscribe_flight_mode(
         });
 
     auto handle_wrapper = new mavsdk::Telemetry::FlightModeHandle(std::move(cpp_handle));
-    return static_cast<mavsdk_telemetry_flight_mode_handle_t>(handle_wrapper);
+    return reinterpret_cast<mavsdk_telemetry_flight_mode_handle_t>(handle_wrapper);
 }
 
 void mavsdk_telemetry_unsubscribe_flight_mode(
@@ -2331,8 +2331,8 @@ void mavsdk_telemetry_unsubscribe_flight_mode(
     mavsdk_telemetry_flight_mode_handle_t handle)
 {
     if (handle) {
-        auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
-        auto cpp_handle = static_cast<mavsdk::Telemetry::FlightModeHandle*>(handle);
+        auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
+        auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::FlightModeHandle*>(handle);
         wrapper->cpp_plugin->unsubscribe_flight_mode(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -2344,7 +2344,7 @@ mavsdk_telemetry_flight_mode(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_flight_mode_t* flight_mode_out)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto ret_value = wrapper->cpp_plugin->flight_mode();
 
@@ -2359,7 +2359,7 @@ mavsdk_telemetry_health_handle_t mavsdk_telemetry_subscribe_health(
     mavsdk_telemetry_health_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_health(
         [callback, user_data](
@@ -2372,7 +2372,7 @@ mavsdk_telemetry_health_handle_t mavsdk_telemetry_subscribe_health(
         });
 
     auto handle_wrapper = new mavsdk::Telemetry::HealthHandle(std::move(cpp_handle));
-    return static_cast<mavsdk_telemetry_health_handle_t>(handle_wrapper);
+    return reinterpret_cast<mavsdk_telemetry_health_handle_t>(handle_wrapper);
 }
 
 void mavsdk_telemetry_unsubscribe_health(
@@ -2380,8 +2380,8 @@ void mavsdk_telemetry_unsubscribe_health(
     mavsdk_telemetry_health_handle_t handle)
 {
     if (handle) {
-        auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
-        auto cpp_handle = static_cast<mavsdk::Telemetry::HealthHandle*>(handle);
+        auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
+        auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::HealthHandle*>(handle);
         wrapper->cpp_plugin->unsubscribe_health(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -2393,7 +2393,7 @@ mavsdk_telemetry_health(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_health_t* health_out)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto ret_value = wrapper->cpp_plugin->health();
 
@@ -2408,7 +2408,7 @@ mavsdk_telemetry_rc_status_handle_t mavsdk_telemetry_subscribe_rc_status(
     mavsdk_telemetry_rc_status_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_rc_status(
         [callback, user_data](
@@ -2421,7 +2421,7 @@ mavsdk_telemetry_rc_status_handle_t mavsdk_telemetry_subscribe_rc_status(
         });
 
     auto handle_wrapper = new mavsdk::Telemetry::RcStatusHandle(std::move(cpp_handle));
-    return static_cast<mavsdk_telemetry_rc_status_handle_t>(handle_wrapper);
+    return reinterpret_cast<mavsdk_telemetry_rc_status_handle_t>(handle_wrapper);
 }
 
 void mavsdk_telemetry_unsubscribe_rc_status(
@@ -2429,8 +2429,8 @@ void mavsdk_telemetry_unsubscribe_rc_status(
     mavsdk_telemetry_rc_status_handle_t handle)
 {
     if (handle) {
-        auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
-        auto cpp_handle = static_cast<mavsdk::Telemetry::RcStatusHandle*>(handle);
+        auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
+        auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::RcStatusHandle*>(handle);
         wrapper->cpp_plugin->unsubscribe_rc_status(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -2442,7 +2442,7 @@ mavsdk_telemetry_rc_status(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_rc_status_t* rc_status_out)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto ret_value = wrapper->cpp_plugin->rc_status();
 
@@ -2457,7 +2457,7 @@ mavsdk_telemetry_status_text_handle_t mavsdk_telemetry_subscribe_status_text(
     mavsdk_telemetry_status_text_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_status_text(
         [callback, user_data](
@@ -2470,7 +2470,7 @@ mavsdk_telemetry_status_text_handle_t mavsdk_telemetry_subscribe_status_text(
         });
 
     auto handle_wrapper = new mavsdk::Telemetry::StatusTextHandle(std::move(cpp_handle));
-    return static_cast<mavsdk_telemetry_status_text_handle_t>(handle_wrapper);
+    return reinterpret_cast<mavsdk_telemetry_status_text_handle_t>(handle_wrapper);
 }
 
 void mavsdk_telemetry_unsubscribe_status_text(
@@ -2478,8 +2478,8 @@ void mavsdk_telemetry_unsubscribe_status_text(
     mavsdk_telemetry_status_text_handle_t handle)
 {
     if (handle) {
-        auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
-        auto cpp_handle = static_cast<mavsdk::Telemetry::StatusTextHandle*>(handle);
+        auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
+        auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::StatusTextHandle*>(handle);
         wrapper->cpp_plugin->unsubscribe_status_text(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -2491,7 +2491,7 @@ mavsdk_telemetry_status_text(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_status_text_t* status_text_out)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto ret_value = wrapper->cpp_plugin->status_text();
 
@@ -2506,7 +2506,7 @@ mavsdk_telemetry_actuator_control_target_handle_t mavsdk_telemetry_subscribe_act
     mavsdk_telemetry_actuator_control_target_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_actuator_control_target(
         [callback, user_data](
@@ -2519,7 +2519,7 @@ mavsdk_telemetry_actuator_control_target_handle_t mavsdk_telemetry_subscribe_act
         });
 
     auto handle_wrapper = new mavsdk::Telemetry::ActuatorControlTargetHandle(std::move(cpp_handle));
-    return static_cast<mavsdk_telemetry_actuator_control_target_handle_t>(handle_wrapper);
+    return reinterpret_cast<mavsdk_telemetry_actuator_control_target_handle_t>(handle_wrapper);
 }
 
 void mavsdk_telemetry_unsubscribe_actuator_control_target(
@@ -2527,8 +2527,8 @@ void mavsdk_telemetry_unsubscribe_actuator_control_target(
     mavsdk_telemetry_actuator_control_target_handle_t handle)
 {
     if (handle) {
-        auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
-        auto cpp_handle = static_cast<mavsdk::Telemetry::ActuatorControlTargetHandle*>(handle);
+        auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
+        auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::ActuatorControlTargetHandle*>(handle);
         wrapper->cpp_plugin->unsubscribe_actuator_control_target(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -2540,7 +2540,7 @@ mavsdk_telemetry_actuator_control_target(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_actuator_control_target_t* actuator_control_target_out)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto ret_value = wrapper->cpp_plugin->actuator_control_target();
 
@@ -2555,7 +2555,7 @@ mavsdk_telemetry_actuator_output_status_handle_t mavsdk_telemetry_subscribe_actu
     mavsdk_telemetry_actuator_output_status_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_actuator_output_status(
         [callback, user_data](
@@ -2568,7 +2568,7 @@ mavsdk_telemetry_actuator_output_status_handle_t mavsdk_telemetry_subscribe_actu
         });
 
     auto handle_wrapper = new mavsdk::Telemetry::ActuatorOutputStatusHandle(std::move(cpp_handle));
-    return static_cast<mavsdk_telemetry_actuator_output_status_handle_t>(handle_wrapper);
+    return reinterpret_cast<mavsdk_telemetry_actuator_output_status_handle_t>(handle_wrapper);
 }
 
 void mavsdk_telemetry_unsubscribe_actuator_output_status(
@@ -2576,8 +2576,8 @@ void mavsdk_telemetry_unsubscribe_actuator_output_status(
     mavsdk_telemetry_actuator_output_status_handle_t handle)
 {
     if (handle) {
-        auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
-        auto cpp_handle = static_cast<mavsdk::Telemetry::ActuatorOutputStatusHandle*>(handle);
+        auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
+        auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::ActuatorOutputStatusHandle*>(handle);
         wrapper->cpp_plugin->unsubscribe_actuator_output_status(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -2589,7 +2589,7 @@ mavsdk_telemetry_actuator_output_status(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_actuator_output_status_t* actuator_output_status_out)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto ret_value = wrapper->cpp_plugin->actuator_output_status();
 
@@ -2604,7 +2604,7 @@ mavsdk_telemetry_odometry_handle_t mavsdk_telemetry_subscribe_odometry(
     mavsdk_telemetry_odometry_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_odometry(
         [callback, user_data](
@@ -2617,7 +2617,7 @@ mavsdk_telemetry_odometry_handle_t mavsdk_telemetry_subscribe_odometry(
         });
 
     auto handle_wrapper = new mavsdk::Telemetry::OdometryHandle(std::move(cpp_handle));
-    return static_cast<mavsdk_telemetry_odometry_handle_t>(handle_wrapper);
+    return reinterpret_cast<mavsdk_telemetry_odometry_handle_t>(handle_wrapper);
 }
 
 void mavsdk_telemetry_unsubscribe_odometry(
@@ -2625,8 +2625,8 @@ void mavsdk_telemetry_unsubscribe_odometry(
     mavsdk_telemetry_odometry_handle_t handle)
 {
     if (handle) {
-        auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
-        auto cpp_handle = static_cast<mavsdk::Telemetry::OdometryHandle*>(handle);
+        auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
+        auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::OdometryHandle*>(handle);
         wrapper->cpp_plugin->unsubscribe_odometry(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -2638,7 +2638,7 @@ mavsdk_telemetry_odometry(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_odometry_t* odometry_out)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto ret_value = wrapper->cpp_plugin->odometry();
 
@@ -2653,7 +2653,7 @@ mavsdk_telemetry_position_velocity_ned_handle_t mavsdk_telemetry_subscribe_posit
     mavsdk_telemetry_position_velocity_ned_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_position_velocity_ned(
         [callback, user_data](
@@ -2666,7 +2666,7 @@ mavsdk_telemetry_position_velocity_ned_handle_t mavsdk_telemetry_subscribe_posit
         });
 
     auto handle_wrapper = new mavsdk::Telemetry::PositionVelocityNedHandle(std::move(cpp_handle));
-    return static_cast<mavsdk_telemetry_position_velocity_ned_handle_t>(handle_wrapper);
+    return reinterpret_cast<mavsdk_telemetry_position_velocity_ned_handle_t>(handle_wrapper);
 }
 
 void mavsdk_telemetry_unsubscribe_position_velocity_ned(
@@ -2674,8 +2674,8 @@ void mavsdk_telemetry_unsubscribe_position_velocity_ned(
     mavsdk_telemetry_position_velocity_ned_handle_t handle)
 {
     if (handle) {
-        auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
-        auto cpp_handle = static_cast<mavsdk::Telemetry::PositionVelocityNedHandle*>(handle);
+        auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
+        auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::PositionVelocityNedHandle*>(handle);
         wrapper->cpp_plugin->unsubscribe_position_velocity_ned(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -2687,7 +2687,7 @@ mavsdk_telemetry_position_velocity_ned(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_position_velocity_ned_t* position_velocity_ned_out)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto ret_value = wrapper->cpp_plugin->position_velocity_ned();
 
@@ -2702,7 +2702,7 @@ mavsdk_telemetry_ground_truth_handle_t mavsdk_telemetry_subscribe_ground_truth(
     mavsdk_telemetry_ground_truth_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_ground_truth(
         [callback, user_data](
@@ -2715,7 +2715,7 @@ mavsdk_telemetry_ground_truth_handle_t mavsdk_telemetry_subscribe_ground_truth(
         });
 
     auto handle_wrapper = new mavsdk::Telemetry::GroundTruthHandle(std::move(cpp_handle));
-    return static_cast<mavsdk_telemetry_ground_truth_handle_t>(handle_wrapper);
+    return reinterpret_cast<mavsdk_telemetry_ground_truth_handle_t>(handle_wrapper);
 }
 
 void mavsdk_telemetry_unsubscribe_ground_truth(
@@ -2723,8 +2723,8 @@ void mavsdk_telemetry_unsubscribe_ground_truth(
     mavsdk_telemetry_ground_truth_handle_t handle)
 {
     if (handle) {
-        auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
-        auto cpp_handle = static_cast<mavsdk::Telemetry::GroundTruthHandle*>(handle);
+        auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
+        auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::GroundTruthHandle*>(handle);
         wrapper->cpp_plugin->unsubscribe_ground_truth(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -2736,7 +2736,7 @@ mavsdk_telemetry_ground_truth(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_ground_truth_t* ground_truth_out)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto ret_value = wrapper->cpp_plugin->ground_truth();
 
@@ -2751,7 +2751,7 @@ mavsdk_telemetry_fixedwing_metrics_handle_t mavsdk_telemetry_subscribe_fixedwing
     mavsdk_telemetry_fixedwing_metrics_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_fixedwing_metrics(
         [callback, user_data](
@@ -2764,7 +2764,7 @@ mavsdk_telemetry_fixedwing_metrics_handle_t mavsdk_telemetry_subscribe_fixedwing
         });
 
     auto handle_wrapper = new mavsdk::Telemetry::FixedwingMetricsHandle(std::move(cpp_handle));
-    return static_cast<mavsdk_telemetry_fixedwing_metrics_handle_t>(handle_wrapper);
+    return reinterpret_cast<mavsdk_telemetry_fixedwing_metrics_handle_t>(handle_wrapper);
 }
 
 void mavsdk_telemetry_unsubscribe_fixedwing_metrics(
@@ -2772,8 +2772,8 @@ void mavsdk_telemetry_unsubscribe_fixedwing_metrics(
     mavsdk_telemetry_fixedwing_metrics_handle_t handle)
 {
     if (handle) {
-        auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
-        auto cpp_handle = static_cast<mavsdk::Telemetry::FixedwingMetricsHandle*>(handle);
+        auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
+        auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::FixedwingMetricsHandle*>(handle);
         wrapper->cpp_plugin->unsubscribe_fixedwing_metrics(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -2785,7 +2785,7 @@ mavsdk_telemetry_fixedwing_metrics(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_fixedwing_metrics_t* fixedwing_metrics_out)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto ret_value = wrapper->cpp_plugin->fixedwing_metrics();
 
@@ -2800,7 +2800,7 @@ mavsdk_telemetry_imu_handle_t mavsdk_telemetry_subscribe_imu(
     mavsdk_telemetry_imu_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_imu(
         [callback, user_data](
@@ -2813,7 +2813,7 @@ mavsdk_telemetry_imu_handle_t mavsdk_telemetry_subscribe_imu(
         });
 
     auto handle_wrapper = new mavsdk::Telemetry::ImuHandle(std::move(cpp_handle));
-    return static_cast<mavsdk_telemetry_imu_handle_t>(handle_wrapper);
+    return reinterpret_cast<mavsdk_telemetry_imu_handle_t>(handle_wrapper);
 }
 
 void mavsdk_telemetry_unsubscribe_imu(
@@ -2821,8 +2821,8 @@ void mavsdk_telemetry_unsubscribe_imu(
     mavsdk_telemetry_imu_handle_t handle)
 {
     if (handle) {
-        auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
-        auto cpp_handle = static_cast<mavsdk::Telemetry::ImuHandle*>(handle);
+        auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
+        auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::ImuHandle*>(handle);
         wrapper->cpp_plugin->unsubscribe_imu(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -2834,7 +2834,7 @@ mavsdk_telemetry_imu(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_imu_t* imu_out)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto ret_value = wrapper->cpp_plugin->imu();
 
@@ -2849,7 +2849,7 @@ mavsdk_telemetry_scaled_imu_handle_t mavsdk_telemetry_subscribe_scaled_imu(
     mavsdk_telemetry_scaled_imu_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_scaled_imu(
         [callback, user_data](
@@ -2862,7 +2862,7 @@ mavsdk_telemetry_scaled_imu_handle_t mavsdk_telemetry_subscribe_scaled_imu(
         });
 
     auto handle_wrapper = new mavsdk::Telemetry::ScaledImuHandle(std::move(cpp_handle));
-    return static_cast<mavsdk_telemetry_scaled_imu_handle_t>(handle_wrapper);
+    return reinterpret_cast<mavsdk_telemetry_scaled_imu_handle_t>(handle_wrapper);
 }
 
 void mavsdk_telemetry_unsubscribe_scaled_imu(
@@ -2870,8 +2870,8 @@ void mavsdk_telemetry_unsubscribe_scaled_imu(
     mavsdk_telemetry_scaled_imu_handle_t handle)
 {
     if (handle) {
-        auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
-        auto cpp_handle = static_cast<mavsdk::Telemetry::ScaledImuHandle*>(handle);
+        auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
+        auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::ScaledImuHandle*>(handle);
         wrapper->cpp_plugin->unsubscribe_scaled_imu(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -2883,7 +2883,7 @@ mavsdk_telemetry_scaled_imu(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_imu_t* imu_out)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto ret_value = wrapper->cpp_plugin->scaled_imu();
 
@@ -2898,7 +2898,7 @@ mavsdk_telemetry_raw_imu_handle_t mavsdk_telemetry_subscribe_raw_imu(
     mavsdk_telemetry_raw_imu_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_raw_imu(
         [callback, user_data](
@@ -2911,7 +2911,7 @@ mavsdk_telemetry_raw_imu_handle_t mavsdk_telemetry_subscribe_raw_imu(
         });
 
     auto handle_wrapper = new mavsdk::Telemetry::RawImuHandle(std::move(cpp_handle));
-    return static_cast<mavsdk_telemetry_raw_imu_handle_t>(handle_wrapper);
+    return reinterpret_cast<mavsdk_telemetry_raw_imu_handle_t>(handle_wrapper);
 }
 
 void mavsdk_telemetry_unsubscribe_raw_imu(
@@ -2919,8 +2919,8 @@ void mavsdk_telemetry_unsubscribe_raw_imu(
     mavsdk_telemetry_raw_imu_handle_t handle)
 {
     if (handle) {
-        auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
-        auto cpp_handle = static_cast<mavsdk::Telemetry::RawImuHandle*>(handle);
+        auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
+        auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::RawImuHandle*>(handle);
         wrapper->cpp_plugin->unsubscribe_raw_imu(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -2932,7 +2932,7 @@ mavsdk_telemetry_raw_imu(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_imu_t* imu_out)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto ret_value = wrapper->cpp_plugin->raw_imu();
 
@@ -2947,7 +2947,7 @@ mavsdk_telemetry_health_all_ok_handle_t mavsdk_telemetry_subscribe_health_all_ok
     mavsdk_telemetry_health_all_ok_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_health_all_ok(
         [callback, user_data](
@@ -2960,7 +2960,7 @@ mavsdk_telemetry_health_all_ok_handle_t mavsdk_telemetry_subscribe_health_all_ok
         });
 
     auto handle_wrapper = new mavsdk::Telemetry::HealthAllOkHandle(std::move(cpp_handle));
-    return static_cast<mavsdk_telemetry_health_all_ok_handle_t>(handle_wrapper);
+    return reinterpret_cast<mavsdk_telemetry_health_all_ok_handle_t>(handle_wrapper);
 }
 
 void mavsdk_telemetry_unsubscribe_health_all_ok(
@@ -2968,8 +2968,8 @@ void mavsdk_telemetry_unsubscribe_health_all_ok(
     mavsdk_telemetry_health_all_ok_handle_t handle)
 {
     if (handle) {
-        auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
-        auto cpp_handle = static_cast<mavsdk::Telemetry::HealthAllOkHandle*>(handle);
+        auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
+        auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::HealthAllOkHandle*>(handle);
         wrapper->cpp_plugin->unsubscribe_health_all_ok(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -2981,7 +2981,7 @@ mavsdk_telemetry_health_all_ok(
     mavsdk_telemetry_t telemetry,
     bool* is_health_all_ok_out)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto ret_value = wrapper->cpp_plugin->health_all_ok();
 
@@ -2994,7 +2994,7 @@ mavsdk_telemetry_unix_epoch_time_handle_t mavsdk_telemetry_subscribe_unix_epoch_
     mavsdk_telemetry_unix_epoch_time_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_unix_epoch_time(
         [callback, user_data](
@@ -3007,7 +3007,7 @@ mavsdk_telemetry_unix_epoch_time_handle_t mavsdk_telemetry_subscribe_unix_epoch_
         });
 
     auto handle_wrapper = new mavsdk::Telemetry::UnixEpochTimeHandle(std::move(cpp_handle));
-    return static_cast<mavsdk_telemetry_unix_epoch_time_handle_t>(handle_wrapper);
+    return reinterpret_cast<mavsdk_telemetry_unix_epoch_time_handle_t>(handle_wrapper);
 }
 
 void mavsdk_telemetry_unsubscribe_unix_epoch_time(
@@ -3015,8 +3015,8 @@ void mavsdk_telemetry_unsubscribe_unix_epoch_time(
     mavsdk_telemetry_unix_epoch_time_handle_t handle)
 {
     if (handle) {
-        auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
-        auto cpp_handle = static_cast<mavsdk::Telemetry::UnixEpochTimeHandle*>(handle);
+        auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
+        auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::UnixEpochTimeHandle*>(handle);
         wrapper->cpp_plugin->unsubscribe_unix_epoch_time(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -3028,7 +3028,7 @@ mavsdk_telemetry_unix_epoch_time(
     mavsdk_telemetry_t telemetry,
     uint64_t* time_us_out)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto ret_value = wrapper->cpp_plugin->unix_epoch_time();
 
@@ -3041,7 +3041,7 @@ mavsdk_telemetry_distance_sensor_handle_t mavsdk_telemetry_subscribe_distance_se
     mavsdk_telemetry_distance_sensor_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_distance_sensor(
         [callback, user_data](
@@ -3054,7 +3054,7 @@ mavsdk_telemetry_distance_sensor_handle_t mavsdk_telemetry_subscribe_distance_se
         });
 
     auto handle_wrapper = new mavsdk::Telemetry::DistanceSensorHandle(std::move(cpp_handle));
-    return static_cast<mavsdk_telemetry_distance_sensor_handle_t>(handle_wrapper);
+    return reinterpret_cast<mavsdk_telemetry_distance_sensor_handle_t>(handle_wrapper);
 }
 
 void mavsdk_telemetry_unsubscribe_distance_sensor(
@@ -3062,8 +3062,8 @@ void mavsdk_telemetry_unsubscribe_distance_sensor(
     mavsdk_telemetry_distance_sensor_handle_t handle)
 {
     if (handle) {
-        auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
-        auto cpp_handle = static_cast<mavsdk::Telemetry::DistanceSensorHandle*>(handle);
+        auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
+        auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::DistanceSensorHandle*>(handle);
         wrapper->cpp_plugin->unsubscribe_distance_sensor(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -3075,7 +3075,7 @@ mavsdk_telemetry_distance_sensor(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_distance_sensor_t* distance_sensor_out)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto ret_value = wrapper->cpp_plugin->distance_sensor();
 
@@ -3090,7 +3090,7 @@ mavsdk_telemetry_scaled_pressure_handle_t mavsdk_telemetry_subscribe_scaled_pres
     mavsdk_telemetry_scaled_pressure_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_scaled_pressure(
         [callback, user_data](
@@ -3103,7 +3103,7 @@ mavsdk_telemetry_scaled_pressure_handle_t mavsdk_telemetry_subscribe_scaled_pres
         });
 
     auto handle_wrapper = new mavsdk::Telemetry::ScaledPressureHandle(std::move(cpp_handle));
-    return static_cast<mavsdk_telemetry_scaled_pressure_handle_t>(handle_wrapper);
+    return reinterpret_cast<mavsdk_telemetry_scaled_pressure_handle_t>(handle_wrapper);
 }
 
 void mavsdk_telemetry_unsubscribe_scaled_pressure(
@@ -3111,8 +3111,8 @@ void mavsdk_telemetry_unsubscribe_scaled_pressure(
     mavsdk_telemetry_scaled_pressure_handle_t handle)
 {
     if (handle) {
-        auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
-        auto cpp_handle = static_cast<mavsdk::Telemetry::ScaledPressureHandle*>(handle);
+        auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
+        auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::ScaledPressureHandle*>(handle);
         wrapper->cpp_plugin->unsubscribe_scaled_pressure(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -3124,7 +3124,7 @@ mavsdk_telemetry_scaled_pressure(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_scaled_pressure_t* scaled_pressure_out)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto ret_value = wrapper->cpp_plugin->scaled_pressure();
 
@@ -3139,7 +3139,7 @@ mavsdk_telemetry_heading_handle_t mavsdk_telemetry_subscribe_heading(
     mavsdk_telemetry_heading_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_heading(
         [callback, user_data](
@@ -3152,7 +3152,7 @@ mavsdk_telemetry_heading_handle_t mavsdk_telemetry_subscribe_heading(
         });
 
     auto handle_wrapper = new mavsdk::Telemetry::HeadingHandle(std::move(cpp_handle));
-    return static_cast<mavsdk_telemetry_heading_handle_t>(handle_wrapper);
+    return reinterpret_cast<mavsdk_telemetry_heading_handle_t>(handle_wrapper);
 }
 
 void mavsdk_telemetry_unsubscribe_heading(
@@ -3160,8 +3160,8 @@ void mavsdk_telemetry_unsubscribe_heading(
     mavsdk_telemetry_heading_handle_t handle)
 {
     if (handle) {
-        auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
-        auto cpp_handle = static_cast<mavsdk::Telemetry::HeadingHandle*>(handle);
+        auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
+        auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::HeadingHandle*>(handle);
         wrapper->cpp_plugin->unsubscribe_heading(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -3173,7 +3173,7 @@ mavsdk_telemetry_heading(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_heading_t* heading_deg_out)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto ret_value = wrapper->cpp_plugin->heading();
 
@@ -3188,7 +3188,7 @@ mavsdk_telemetry_altitude_handle_t mavsdk_telemetry_subscribe_altitude(
     mavsdk_telemetry_altitude_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_altitude(
         [callback, user_data](
@@ -3201,7 +3201,7 @@ mavsdk_telemetry_altitude_handle_t mavsdk_telemetry_subscribe_altitude(
         });
 
     auto handle_wrapper = new mavsdk::Telemetry::AltitudeHandle(std::move(cpp_handle));
-    return static_cast<mavsdk_telemetry_altitude_handle_t>(handle_wrapper);
+    return reinterpret_cast<mavsdk_telemetry_altitude_handle_t>(handle_wrapper);
 }
 
 void mavsdk_telemetry_unsubscribe_altitude(
@@ -3209,8 +3209,8 @@ void mavsdk_telemetry_unsubscribe_altitude(
     mavsdk_telemetry_altitude_handle_t handle)
 {
     if (handle) {
-        auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
-        auto cpp_handle = static_cast<mavsdk::Telemetry::AltitudeHandle*>(handle);
+        auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
+        auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::AltitudeHandle*>(handle);
         wrapper->cpp_plugin->unsubscribe_altitude(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -3222,7 +3222,7 @@ mavsdk_telemetry_altitude(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_altitude_t* altitude_out)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto ret_value = wrapper->cpp_plugin->altitude();
 
@@ -3237,7 +3237,7 @@ mavsdk_telemetry_wind_handle_t mavsdk_telemetry_subscribe_wind(
     mavsdk_telemetry_wind_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_wind(
         [callback, user_data](
@@ -3250,7 +3250,7 @@ mavsdk_telemetry_wind_handle_t mavsdk_telemetry_subscribe_wind(
         });
 
     auto handle_wrapper = new mavsdk::Telemetry::WindHandle(std::move(cpp_handle));
-    return static_cast<mavsdk_telemetry_wind_handle_t>(handle_wrapper);
+    return reinterpret_cast<mavsdk_telemetry_wind_handle_t>(handle_wrapper);
 }
 
 void mavsdk_telemetry_unsubscribe_wind(
@@ -3258,8 +3258,8 @@ void mavsdk_telemetry_unsubscribe_wind(
     mavsdk_telemetry_wind_handle_t handle)
 {
     if (handle) {
-        auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
-        auto cpp_handle = static_cast<mavsdk::Telemetry::WindHandle*>(handle);
+        auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
+        auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::WindHandle*>(handle);
         wrapper->cpp_plugin->unsubscribe_wind(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -3271,7 +3271,7 @@ mavsdk_telemetry_wind(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_wind_t* wind_out)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto ret_value = wrapper->cpp_plugin->wind();
 
@@ -3287,7 +3287,7 @@ void mavsdk_telemetry_set_rate_position_async(
     mavsdk_telemetry_set_rate_position_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     wrapper->cpp_plugin->set_rate_position_async(
         rate_hz,
@@ -3308,7 +3308,7 @@ mavsdk_telemetry_set_rate_position(
     mavsdk_telemetry_t telemetry,
     double rate_hz)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto ret_value = wrapper->cpp_plugin->set_rate_position(        rate_hz);
 
@@ -3322,7 +3322,7 @@ void mavsdk_telemetry_set_rate_home_async(
     mavsdk_telemetry_set_rate_home_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     wrapper->cpp_plugin->set_rate_home_async(
         rate_hz,
@@ -3343,7 +3343,7 @@ mavsdk_telemetry_set_rate_home(
     mavsdk_telemetry_t telemetry,
     double rate_hz)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto ret_value = wrapper->cpp_plugin->set_rate_home(        rate_hz);
 
@@ -3357,7 +3357,7 @@ void mavsdk_telemetry_set_rate_in_air_async(
     mavsdk_telemetry_set_rate_in_air_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     wrapper->cpp_plugin->set_rate_in_air_async(
         rate_hz,
@@ -3378,7 +3378,7 @@ mavsdk_telemetry_set_rate_in_air(
     mavsdk_telemetry_t telemetry,
     double rate_hz)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto ret_value = wrapper->cpp_plugin->set_rate_in_air(        rate_hz);
 
@@ -3392,7 +3392,7 @@ void mavsdk_telemetry_set_rate_landed_state_async(
     mavsdk_telemetry_set_rate_landed_state_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     wrapper->cpp_plugin->set_rate_landed_state_async(
         rate_hz,
@@ -3413,7 +3413,7 @@ mavsdk_telemetry_set_rate_landed_state(
     mavsdk_telemetry_t telemetry,
     double rate_hz)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto ret_value = wrapper->cpp_plugin->set_rate_landed_state(        rate_hz);
 
@@ -3427,7 +3427,7 @@ void mavsdk_telemetry_set_rate_vtol_state_async(
     mavsdk_telemetry_set_rate_vtol_state_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     wrapper->cpp_plugin->set_rate_vtol_state_async(
         rate_hz,
@@ -3448,7 +3448,7 @@ mavsdk_telemetry_set_rate_vtol_state(
     mavsdk_telemetry_t telemetry,
     double rate_hz)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto ret_value = wrapper->cpp_plugin->set_rate_vtol_state(        rate_hz);
 
@@ -3462,7 +3462,7 @@ void mavsdk_telemetry_set_rate_attitude_quaternion_async(
     mavsdk_telemetry_set_rate_attitude_quaternion_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     wrapper->cpp_plugin->set_rate_attitude_quaternion_async(
         rate_hz,
@@ -3483,7 +3483,7 @@ mavsdk_telemetry_set_rate_attitude_quaternion(
     mavsdk_telemetry_t telemetry,
     double rate_hz)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto ret_value = wrapper->cpp_plugin->set_rate_attitude_quaternion(        rate_hz);
 
@@ -3497,7 +3497,7 @@ void mavsdk_telemetry_set_rate_attitude_euler_async(
     mavsdk_telemetry_set_rate_attitude_euler_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     wrapper->cpp_plugin->set_rate_attitude_euler_async(
         rate_hz,
@@ -3518,7 +3518,7 @@ mavsdk_telemetry_set_rate_attitude_euler(
     mavsdk_telemetry_t telemetry,
     double rate_hz)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto ret_value = wrapper->cpp_plugin->set_rate_attitude_euler(        rate_hz);
 
@@ -3532,7 +3532,7 @@ void mavsdk_telemetry_set_rate_velocity_ned_async(
     mavsdk_telemetry_set_rate_velocity_ned_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     wrapper->cpp_plugin->set_rate_velocity_ned_async(
         rate_hz,
@@ -3553,7 +3553,7 @@ mavsdk_telemetry_set_rate_velocity_ned(
     mavsdk_telemetry_t telemetry,
     double rate_hz)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto ret_value = wrapper->cpp_plugin->set_rate_velocity_ned(        rate_hz);
 
@@ -3567,7 +3567,7 @@ void mavsdk_telemetry_set_rate_gps_info_async(
     mavsdk_telemetry_set_rate_gps_info_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     wrapper->cpp_plugin->set_rate_gps_info_async(
         rate_hz,
@@ -3588,7 +3588,7 @@ mavsdk_telemetry_set_rate_gps_info(
     mavsdk_telemetry_t telemetry,
     double rate_hz)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto ret_value = wrapper->cpp_plugin->set_rate_gps_info(        rate_hz);
 
@@ -3602,7 +3602,7 @@ void mavsdk_telemetry_set_rate_battery_async(
     mavsdk_telemetry_set_rate_battery_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     wrapper->cpp_plugin->set_rate_battery_async(
         rate_hz,
@@ -3623,7 +3623,7 @@ mavsdk_telemetry_set_rate_battery(
     mavsdk_telemetry_t telemetry,
     double rate_hz)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto ret_value = wrapper->cpp_plugin->set_rate_battery(        rate_hz);
 
@@ -3637,7 +3637,7 @@ void mavsdk_telemetry_set_rate_rc_status_async(
     mavsdk_telemetry_set_rate_rc_status_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     wrapper->cpp_plugin->set_rate_rc_status_async(
         rate_hz,
@@ -3658,7 +3658,7 @@ mavsdk_telemetry_set_rate_rc_status(
     mavsdk_telemetry_t telemetry,
     double rate_hz)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto ret_value = wrapper->cpp_plugin->set_rate_rc_status(        rate_hz);
 
@@ -3672,7 +3672,7 @@ void mavsdk_telemetry_set_rate_actuator_control_target_async(
     mavsdk_telemetry_set_rate_actuator_control_target_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     wrapper->cpp_plugin->set_rate_actuator_control_target_async(
         rate_hz,
@@ -3693,7 +3693,7 @@ mavsdk_telemetry_set_rate_actuator_control_target(
     mavsdk_telemetry_t telemetry,
     double rate_hz)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto ret_value = wrapper->cpp_plugin->set_rate_actuator_control_target(        rate_hz);
 
@@ -3707,7 +3707,7 @@ void mavsdk_telemetry_set_rate_actuator_output_status_async(
     mavsdk_telemetry_set_rate_actuator_output_status_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     wrapper->cpp_plugin->set_rate_actuator_output_status_async(
         rate_hz,
@@ -3728,7 +3728,7 @@ mavsdk_telemetry_set_rate_actuator_output_status(
     mavsdk_telemetry_t telemetry,
     double rate_hz)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto ret_value = wrapper->cpp_plugin->set_rate_actuator_output_status(        rate_hz);
 
@@ -3742,7 +3742,7 @@ void mavsdk_telemetry_set_rate_odometry_async(
     mavsdk_telemetry_set_rate_odometry_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     wrapper->cpp_plugin->set_rate_odometry_async(
         rate_hz,
@@ -3763,7 +3763,7 @@ mavsdk_telemetry_set_rate_odometry(
     mavsdk_telemetry_t telemetry,
     double rate_hz)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto ret_value = wrapper->cpp_plugin->set_rate_odometry(        rate_hz);
 
@@ -3777,7 +3777,7 @@ void mavsdk_telemetry_set_rate_position_velocity_ned_async(
     mavsdk_telemetry_set_rate_position_velocity_ned_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     wrapper->cpp_plugin->set_rate_position_velocity_ned_async(
         rate_hz,
@@ -3798,7 +3798,7 @@ mavsdk_telemetry_set_rate_position_velocity_ned(
     mavsdk_telemetry_t telemetry,
     double rate_hz)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto ret_value = wrapper->cpp_plugin->set_rate_position_velocity_ned(        rate_hz);
 
@@ -3812,7 +3812,7 @@ void mavsdk_telemetry_set_rate_ground_truth_async(
     mavsdk_telemetry_set_rate_ground_truth_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     wrapper->cpp_plugin->set_rate_ground_truth_async(
         rate_hz,
@@ -3833,7 +3833,7 @@ mavsdk_telemetry_set_rate_ground_truth(
     mavsdk_telemetry_t telemetry,
     double rate_hz)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto ret_value = wrapper->cpp_plugin->set_rate_ground_truth(        rate_hz);
 
@@ -3847,7 +3847,7 @@ void mavsdk_telemetry_set_rate_fixedwing_metrics_async(
     mavsdk_telemetry_set_rate_fixedwing_metrics_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     wrapper->cpp_plugin->set_rate_fixedwing_metrics_async(
         rate_hz,
@@ -3868,7 +3868,7 @@ mavsdk_telemetry_set_rate_fixedwing_metrics(
     mavsdk_telemetry_t telemetry,
     double rate_hz)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto ret_value = wrapper->cpp_plugin->set_rate_fixedwing_metrics(        rate_hz);
 
@@ -3882,7 +3882,7 @@ void mavsdk_telemetry_set_rate_imu_async(
     mavsdk_telemetry_set_rate_imu_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     wrapper->cpp_plugin->set_rate_imu_async(
         rate_hz,
@@ -3903,7 +3903,7 @@ mavsdk_telemetry_set_rate_imu(
     mavsdk_telemetry_t telemetry,
     double rate_hz)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto ret_value = wrapper->cpp_plugin->set_rate_imu(        rate_hz);
 
@@ -3917,7 +3917,7 @@ void mavsdk_telemetry_set_rate_scaled_imu_async(
     mavsdk_telemetry_set_rate_scaled_imu_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     wrapper->cpp_plugin->set_rate_scaled_imu_async(
         rate_hz,
@@ -3938,7 +3938,7 @@ mavsdk_telemetry_set_rate_scaled_imu(
     mavsdk_telemetry_t telemetry,
     double rate_hz)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto ret_value = wrapper->cpp_plugin->set_rate_scaled_imu(        rate_hz);
 
@@ -3952,7 +3952,7 @@ void mavsdk_telemetry_set_rate_raw_imu_async(
     mavsdk_telemetry_set_rate_raw_imu_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     wrapper->cpp_plugin->set_rate_raw_imu_async(
         rate_hz,
@@ -3973,7 +3973,7 @@ mavsdk_telemetry_set_rate_raw_imu(
     mavsdk_telemetry_t telemetry,
     double rate_hz)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto ret_value = wrapper->cpp_plugin->set_rate_raw_imu(        rate_hz);
 
@@ -3987,7 +3987,7 @@ void mavsdk_telemetry_set_rate_unix_epoch_time_async(
     mavsdk_telemetry_set_rate_unix_epoch_time_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     wrapper->cpp_plugin->set_rate_unix_epoch_time_async(
         rate_hz,
@@ -4008,7 +4008,7 @@ mavsdk_telemetry_set_rate_unix_epoch_time(
     mavsdk_telemetry_t telemetry,
     double rate_hz)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto ret_value = wrapper->cpp_plugin->set_rate_unix_epoch_time(        rate_hz);
 
@@ -4022,7 +4022,7 @@ void mavsdk_telemetry_set_rate_distance_sensor_async(
     mavsdk_telemetry_set_rate_distance_sensor_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     wrapper->cpp_plugin->set_rate_distance_sensor_async(
         rate_hz,
@@ -4043,7 +4043,7 @@ mavsdk_telemetry_set_rate_distance_sensor(
     mavsdk_telemetry_t telemetry,
     double rate_hz)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto ret_value = wrapper->cpp_plugin->set_rate_distance_sensor(        rate_hz);
 
@@ -4057,7 +4057,7 @@ void mavsdk_telemetry_set_rate_altitude_async(
     mavsdk_telemetry_set_rate_altitude_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     wrapper->cpp_plugin->set_rate_altitude_async(
         rate_hz,
@@ -4078,7 +4078,7 @@ mavsdk_telemetry_set_rate_altitude(
     mavsdk_telemetry_t telemetry,
     double rate_hz)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto ret_value = wrapper->cpp_plugin->set_rate_altitude(        rate_hz);
 
@@ -4092,7 +4092,7 @@ void mavsdk_telemetry_set_rate_health_async(
     mavsdk_telemetry_set_rate_health_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     wrapper->cpp_plugin->set_rate_health_async(
         rate_hz,
@@ -4113,7 +4113,7 @@ mavsdk_telemetry_set_rate_health(
     mavsdk_telemetry_t telemetry,
     double rate_hz)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto ret_value = wrapper->cpp_plugin->set_rate_health(        rate_hz);
 
@@ -4126,7 +4126,7 @@ void mavsdk_telemetry_get_gps_global_origin_async(
     mavsdk_telemetry_get_gps_global_origin_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     wrapper->cpp_plugin->get_gps_global_origin_async(
         [callback, user_data](
@@ -4148,7 +4148,7 @@ mavsdk_telemetry_get_gps_global_origin(
     mavsdk_telemetry_t telemetry,
     mavsdk_telemetry_gps_global_origin_t* gps_global_origin_out)
 {
-    auto wrapper = static_cast<mavsdk_telemetry_wrapper*>(telemetry);
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
 
     auto result_pair = wrapper->cpp_plugin->get_gps_global_origin(
 );

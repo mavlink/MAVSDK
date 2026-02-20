@@ -318,10 +318,10 @@ mavsdk_param_server_create(mavsdk_server_component_t server_component) {
     }
 
     auto wrapper = new mavsdk_param_server_wrapper();
-    auto server_component_ptr = static_cast<std::shared_ptr<mavsdk::ServerComponent>*>(server_component);
+    auto server_component_ptr = reinterpret_cast<std::shared_ptr<mavsdk::ServerComponent>*>(server_component);
     wrapper->cpp_plugin = std::make_shared<mavsdk::ParamServer>(*server_component_ptr);
 
-    return wrapper;
+    return reinterpret_cast<mavsdk_param_server_t>(wrapper);
 }
 
 void mavsdk_param_server_destroy(mavsdk_param_server_t param_server) {
@@ -329,7 +329,7 @@ void mavsdk_param_server_destroy(mavsdk_param_server_t param_server) {
         return;
     }
 
-    auto wrapper = static_cast<mavsdk_param_server_wrapper*>(param_server);
+    auto wrapper = reinterpret_cast<mavsdk_param_server_wrapper*>(param_server);
     delete wrapper;
 }
 
@@ -342,7 +342,7 @@ mavsdk_param_server_set_protocol(
     mavsdk_param_server_t param_server,
     bool extended_protocol)
 {
-    auto wrapper = static_cast<mavsdk_param_server_wrapper*>(param_server);
+    auto wrapper = reinterpret_cast<mavsdk_param_server_wrapper*>(param_server);
 
     auto ret_value = wrapper->cpp_plugin->set_protocol(        extended_protocol);
 
@@ -357,7 +357,7 @@ mavsdk_param_server_retrieve_param_int(
     char* name,
     int32_t* value_out)
 {
-    auto wrapper = static_cast<mavsdk_param_server_wrapper*>(param_server);
+    auto wrapper = reinterpret_cast<mavsdk_param_server_wrapper*>(param_server);
 
     auto result_pair = wrapper->cpp_plugin->retrieve_param_int(
         name);
@@ -375,7 +375,7 @@ mavsdk_param_server_provide_param_int(
     char* name,
     int32_t value)
 {
-    auto wrapper = static_cast<mavsdk_param_server_wrapper*>(param_server);
+    auto wrapper = reinterpret_cast<mavsdk_param_server_wrapper*>(param_server);
 
     auto ret_value = wrapper->cpp_plugin->provide_param_int(        name,        value);
 
@@ -390,7 +390,7 @@ mavsdk_param_server_retrieve_param_float(
     char* name,
     float* value_out)
 {
-    auto wrapper = static_cast<mavsdk_param_server_wrapper*>(param_server);
+    auto wrapper = reinterpret_cast<mavsdk_param_server_wrapper*>(param_server);
 
     auto result_pair = wrapper->cpp_plugin->retrieve_param_float(
         name);
@@ -408,7 +408,7 @@ mavsdk_param_server_provide_param_float(
     char* name,
     float value)
 {
-    auto wrapper = static_cast<mavsdk_param_server_wrapper*>(param_server);
+    auto wrapper = reinterpret_cast<mavsdk_param_server_wrapper*>(param_server);
 
     auto ret_value = wrapper->cpp_plugin->provide_param_float(        name,        value);
 
@@ -423,7 +423,7 @@ mavsdk_param_server_retrieve_param_custom(
     char* name,
     char** value_out)
 {
-    auto wrapper = static_cast<mavsdk_param_server_wrapper*>(param_server);
+    auto wrapper = reinterpret_cast<mavsdk_param_server_wrapper*>(param_server);
 
     auto result_pair = wrapper->cpp_plugin->retrieve_param_custom(
         name);
@@ -443,7 +443,7 @@ mavsdk_param_server_provide_param_custom(
     char* name,
     char* value)
 {
-    auto wrapper = static_cast<mavsdk_param_server_wrapper*>(param_server);
+    auto wrapper = reinterpret_cast<mavsdk_param_server_wrapper*>(param_server);
 
     auto ret_value = wrapper->cpp_plugin->provide_param_custom(        name,        value);
 
@@ -457,7 +457,7 @@ mavsdk_param_server_retrieve_all_params(
     mavsdk_param_server_t param_server,
     mavsdk_param_server_all_params_t* params_out)
 {
-    auto wrapper = static_cast<mavsdk_param_server_wrapper*>(param_server);
+    auto wrapper = reinterpret_cast<mavsdk_param_server_wrapper*>(param_server);
 
     auto ret_value = wrapper->cpp_plugin->retrieve_all_params();
 
@@ -472,7 +472,7 @@ mavsdk_param_server_changed_param_int_handle_t mavsdk_param_server_subscribe_cha
     mavsdk_param_server_changed_param_int_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_param_server_wrapper*>(param_server);
+    auto wrapper = reinterpret_cast<mavsdk_param_server_wrapper*>(param_server);
 
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_changed_param_int(
         [callback, user_data](
@@ -485,7 +485,7 @@ mavsdk_param_server_changed_param_int_handle_t mavsdk_param_server_subscribe_cha
         });
 
     auto handle_wrapper = new mavsdk::ParamServer::ChangedParamIntHandle(std::move(cpp_handle));
-    return static_cast<mavsdk_param_server_changed_param_int_handle_t>(handle_wrapper);
+    return reinterpret_cast<mavsdk_param_server_changed_param_int_handle_t>(handle_wrapper);
 }
 
 void mavsdk_param_server_unsubscribe_changed_param_int(
@@ -493,8 +493,8 @@ void mavsdk_param_server_unsubscribe_changed_param_int(
     mavsdk_param_server_changed_param_int_handle_t handle)
 {
     if (handle) {
-        auto wrapper = static_cast<mavsdk_param_server_wrapper*>(param_server);
-        auto cpp_handle = static_cast<mavsdk::ParamServer::ChangedParamIntHandle*>(handle);
+        auto wrapper = reinterpret_cast<mavsdk_param_server_wrapper*>(param_server);
+        auto cpp_handle = reinterpret_cast<mavsdk::ParamServer::ChangedParamIntHandle*>(handle);
         wrapper->cpp_plugin->unsubscribe_changed_param_int(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -507,7 +507,7 @@ mavsdk_param_server_changed_param_float_handle_t mavsdk_param_server_subscribe_c
     mavsdk_param_server_changed_param_float_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_param_server_wrapper*>(param_server);
+    auto wrapper = reinterpret_cast<mavsdk_param_server_wrapper*>(param_server);
 
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_changed_param_float(
         [callback, user_data](
@@ -520,7 +520,7 @@ mavsdk_param_server_changed_param_float_handle_t mavsdk_param_server_subscribe_c
         });
 
     auto handle_wrapper = new mavsdk::ParamServer::ChangedParamFloatHandle(std::move(cpp_handle));
-    return static_cast<mavsdk_param_server_changed_param_float_handle_t>(handle_wrapper);
+    return reinterpret_cast<mavsdk_param_server_changed_param_float_handle_t>(handle_wrapper);
 }
 
 void mavsdk_param_server_unsubscribe_changed_param_float(
@@ -528,8 +528,8 @@ void mavsdk_param_server_unsubscribe_changed_param_float(
     mavsdk_param_server_changed_param_float_handle_t handle)
 {
     if (handle) {
-        auto wrapper = static_cast<mavsdk_param_server_wrapper*>(param_server);
-        auto cpp_handle = static_cast<mavsdk::ParamServer::ChangedParamFloatHandle*>(handle);
+        auto wrapper = reinterpret_cast<mavsdk_param_server_wrapper*>(param_server);
+        auto cpp_handle = reinterpret_cast<mavsdk::ParamServer::ChangedParamFloatHandle*>(handle);
         wrapper->cpp_plugin->unsubscribe_changed_param_float(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -542,7 +542,7 @@ mavsdk_param_server_changed_param_custom_handle_t mavsdk_param_server_subscribe_
     mavsdk_param_server_changed_param_custom_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_param_server_wrapper*>(param_server);
+    auto wrapper = reinterpret_cast<mavsdk_param_server_wrapper*>(param_server);
 
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_changed_param_custom(
         [callback, user_data](
@@ -555,7 +555,7 @@ mavsdk_param_server_changed_param_custom_handle_t mavsdk_param_server_subscribe_
         });
 
     auto handle_wrapper = new mavsdk::ParamServer::ChangedParamCustomHandle(std::move(cpp_handle));
-    return static_cast<mavsdk_param_server_changed_param_custom_handle_t>(handle_wrapper);
+    return reinterpret_cast<mavsdk_param_server_changed_param_custom_handle_t>(handle_wrapper);
 }
 
 void mavsdk_param_server_unsubscribe_changed_param_custom(
@@ -563,8 +563,8 @@ void mavsdk_param_server_unsubscribe_changed_param_custom(
     mavsdk_param_server_changed_param_custom_handle_t handle)
 {
     if (handle) {
-        auto wrapper = static_cast<mavsdk_param_server_wrapper*>(param_server);
-        auto cpp_handle = static_cast<mavsdk::ParamServer::ChangedParamCustomHandle*>(handle);
+        auto wrapper = reinterpret_cast<mavsdk_param_server_wrapper*>(param_server);
+        auto cpp_handle = reinterpret_cast<mavsdk::ParamServer::ChangedParamCustomHandle*>(handle);
         wrapper->cpp_plugin->unsubscribe_changed_param_custom(std::move(*cpp_handle));
         delete cpp_handle;
     }

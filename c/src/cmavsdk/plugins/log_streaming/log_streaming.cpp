@@ -143,10 +143,10 @@ mavsdk_log_streaming_create(mavsdk_system_t system) {
     }
 
     auto wrapper = new mavsdk_log_streaming_wrapper();
-    auto system_ptr = static_cast<std::shared_ptr<mavsdk::System>*>(system);
+    auto system_ptr = reinterpret_cast<std::shared_ptr<mavsdk::System>*>(system);
     wrapper->cpp_plugin = std::make_shared<mavsdk::LogStreaming>(*system_ptr);
 
-    return wrapper;
+    return reinterpret_cast<mavsdk_log_streaming_t>(wrapper);
 }
 
 void mavsdk_log_streaming_destroy(mavsdk_log_streaming_t log_streaming) {
@@ -154,7 +154,7 @@ void mavsdk_log_streaming_destroy(mavsdk_log_streaming_t log_streaming) {
         return;
     }
 
-    auto wrapper = static_cast<mavsdk_log_streaming_wrapper*>(log_streaming);
+    auto wrapper = reinterpret_cast<mavsdk_log_streaming_wrapper*>(log_streaming);
     delete wrapper;
 }
 
@@ -166,7 +166,7 @@ void mavsdk_log_streaming_start_log_streaming_async(
     mavsdk_log_streaming_start_log_streaming_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_log_streaming_wrapper*>(log_streaming);
+    auto wrapper = reinterpret_cast<mavsdk_log_streaming_wrapper*>(log_streaming);
 
     wrapper->cpp_plugin->start_log_streaming_async(
         [callback, user_data](
@@ -185,7 +185,7 @@ mavsdk_log_streaming_result_t
 mavsdk_log_streaming_start_log_streaming(
     mavsdk_log_streaming_t log_streaming)
 {
-    auto wrapper = static_cast<mavsdk_log_streaming_wrapper*>(log_streaming);
+    auto wrapper = reinterpret_cast<mavsdk_log_streaming_wrapper*>(log_streaming);
 
     auto ret_value = wrapper->cpp_plugin->start_log_streaming();
 
@@ -198,7 +198,7 @@ void mavsdk_log_streaming_stop_log_streaming_async(
     mavsdk_log_streaming_stop_log_streaming_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_log_streaming_wrapper*>(log_streaming);
+    auto wrapper = reinterpret_cast<mavsdk_log_streaming_wrapper*>(log_streaming);
 
     wrapper->cpp_plugin->stop_log_streaming_async(
         [callback, user_data](
@@ -217,7 +217,7 @@ mavsdk_log_streaming_result_t
 mavsdk_log_streaming_stop_log_streaming(
     mavsdk_log_streaming_t log_streaming)
 {
-    auto wrapper = static_cast<mavsdk_log_streaming_wrapper*>(log_streaming);
+    auto wrapper = reinterpret_cast<mavsdk_log_streaming_wrapper*>(log_streaming);
 
     auto ret_value = wrapper->cpp_plugin->stop_log_streaming();
 
@@ -230,7 +230,7 @@ mavsdk_log_streaming_log_streaming_raw_handle_t mavsdk_log_streaming_subscribe_l
     mavsdk_log_streaming_log_streaming_raw_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_log_streaming_wrapper*>(log_streaming);
+    auto wrapper = reinterpret_cast<mavsdk_log_streaming_wrapper*>(log_streaming);
 
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_log_streaming_raw(
         [callback, user_data](
@@ -243,7 +243,7 @@ mavsdk_log_streaming_log_streaming_raw_handle_t mavsdk_log_streaming_subscribe_l
         });
 
     auto handle_wrapper = new mavsdk::LogStreaming::LogStreamingRawHandle(std::move(cpp_handle));
-    return static_cast<mavsdk_log_streaming_log_streaming_raw_handle_t>(handle_wrapper);
+    return reinterpret_cast<mavsdk_log_streaming_log_streaming_raw_handle_t>(handle_wrapper);
 }
 
 void mavsdk_log_streaming_unsubscribe_log_streaming_raw(
@@ -251,8 +251,8 @@ void mavsdk_log_streaming_unsubscribe_log_streaming_raw(
     mavsdk_log_streaming_log_streaming_raw_handle_t handle)
 {
     if (handle) {
-        auto wrapper = static_cast<mavsdk_log_streaming_wrapper*>(log_streaming);
-        auto cpp_handle = static_cast<mavsdk::LogStreaming::LogStreamingRawHandle*>(handle);
+        auto wrapper = reinterpret_cast<mavsdk_log_streaming_wrapper*>(log_streaming);
+        auto cpp_handle = reinterpret_cast<mavsdk::LogStreaming::LogStreamingRawHandle*>(handle);
         wrapper->cpp_plugin->unsubscribe_log_streaming_raw(std::move(*cpp_handle));
         delete cpp_handle;
     }

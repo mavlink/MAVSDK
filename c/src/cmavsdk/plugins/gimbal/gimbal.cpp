@@ -483,10 +483,10 @@ mavsdk_gimbal_create(mavsdk_system_t system) {
     }
 
     auto wrapper = new mavsdk_gimbal_wrapper();
-    auto system_ptr = static_cast<std::shared_ptr<mavsdk::System>*>(system);
+    auto system_ptr = reinterpret_cast<std::shared_ptr<mavsdk::System>*>(system);
     wrapper->cpp_plugin = std::make_shared<mavsdk::Gimbal>(*system_ptr);
 
-    return wrapper;
+    return reinterpret_cast<mavsdk_gimbal_t>(wrapper);
 }
 
 void mavsdk_gimbal_destroy(mavsdk_gimbal_t gimbal) {
@@ -494,7 +494,7 @@ void mavsdk_gimbal_destroy(mavsdk_gimbal_t gimbal) {
         return;
     }
 
-    auto wrapper = static_cast<mavsdk_gimbal_wrapper*>(gimbal);
+    auto wrapper = reinterpret_cast<mavsdk_gimbal_wrapper*>(gimbal);
     delete wrapper;
 }
 
@@ -512,7 +512,7 @@ void mavsdk_gimbal_set_angles_async(
     mavsdk_gimbal_set_angles_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_gimbal_wrapper*>(gimbal);
+    auto wrapper = reinterpret_cast<mavsdk_gimbal_wrapper*>(gimbal);
 
     wrapper->cpp_plugin->set_angles_async(
         gimbal_id,
@@ -542,7 +542,7 @@ mavsdk_gimbal_set_angles(
     mavsdk_gimbal_gimbal_mode_t gimbal_mode,
     mavsdk_gimbal_send_mode_t send_mode)
 {
-    auto wrapper = static_cast<mavsdk_gimbal_wrapper*>(gimbal);
+    auto wrapper = reinterpret_cast<mavsdk_gimbal_wrapper*>(gimbal);
 
     auto ret_value = wrapper->cpp_plugin->set_angles(        gimbal_id,        roll_deg,        pitch_deg,        yaw_deg,        translate_gimbal_mode_from_c(gimbal_mode),        translate_send_mode_from_c(send_mode));
 
@@ -561,7 +561,7 @@ void mavsdk_gimbal_set_angular_rates_async(
     mavsdk_gimbal_set_angular_rates_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_gimbal_wrapper*>(gimbal);
+    auto wrapper = reinterpret_cast<mavsdk_gimbal_wrapper*>(gimbal);
 
     wrapper->cpp_plugin->set_angular_rates_async(
         gimbal_id,
@@ -591,7 +591,7 @@ mavsdk_gimbal_set_angular_rates(
     mavsdk_gimbal_gimbal_mode_t gimbal_mode,
     mavsdk_gimbal_send_mode_t send_mode)
 {
-    auto wrapper = static_cast<mavsdk_gimbal_wrapper*>(gimbal);
+    auto wrapper = reinterpret_cast<mavsdk_gimbal_wrapper*>(gimbal);
 
     auto ret_value = wrapper->cpp_plugin->set_angular_rates(        gimbal_id,        roll_rate_deg_s,        pitch_rate_deg_s,        yaw_rate_deg_s,        translate_gimbal_mode_from_c(gimbal_mode),        translate_send_mode_from_c(send_mode));
 
@@ -608,7 +608,7 @@ void mavsdk_gimbal_set_roi_location_async(
     mavsdk_gimbal_set_roi_location_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_gimbal_wrapper*>(gimbal);
+    auto wrapper = reinterpret_cast<mavsdk_gimbal_wrapper*>(gimbal);
 
     wrapper->cpp_plugin->set_roi_location_async(
         gimbal_id,
@@ -635,7 +635,7 @@ mavsdk_gimbal_set_roi_location(
     double longitude_deg,
     float altitude_m)
 {
-    auto wrapper = static_cast<mavsdk_gimbal_wrapper*>(gimbal);
+    auto wrapper = reinterpret_cast<mavsdk_gimbal_wrapper*>(gimbal);
 
     auto ret_value = wrapper->cpp_plugin->set_roi_location(        gimbal_id,        latitude_deg,        longitude_deg,        altitude_m);
 
@@ -650,7 +650,7 @@ void mavsdk_gimbal_take_control_async(
     mavsdk_gimbal_take_control_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_gimbal_wrapper*>(gimbal);
+    auto wrapper = reinterpret_cast<mavsdk_gimbal_wrapper*>(gimbal);
 
     wrapper->cpp_plugin->take_control_async(
         gimbal_id,
@@ -673,7 +673,7 @@ mavsdk_gimbal_take_control(
     int32_t gimbal_id,
     mavsdk_gimbal_control_mode_t control_mode)
 {
-    auto wrapper = static_cast<mavsdk_gimbal_wrapper*>(gimbal);
+    auto wrapper = reinterpret_cast<mavsdk_gimbal_wrapper*>(gimbal);
 
     auto ret_value = wrapper->cpp_plugin->take_control(        gimbal_id,        translate_control_mode_from_c(control_mode));
 
@@ -687,7 +687,7 @@ void mavsdk_gimbal_release_control_async(
     mavsdk_gimbal_release_control_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_gimbal_wrapper*>(gimbal);
+    auto wrapper = reinterpret_cast<mavsdk_gimbal_wrapper*>(gimbal);
 
     wrapper->cpp_plugin->release_control_async(
         gimbal_id,
@@ -708,7 +708,7 @@ mavsdk_gimbal_release_control(
     mavsdk_gimbal_t gimbal,
     int32_t gimbal_id)
 {
-    auto wrapper = static_cast<mavsdk_gimbal_wrapper*>(gimbal);
+    auto wrapper = reinterpret_cast<mavsdk_gimbal_wrapper*>(gimbal);
 
     auto ret_value = wrapper->cpp_plugin->release_control(        gimbal_id);
 
@@ -721,7 +721,7 @@ mavsdk_gimbal_gimbal_list_handle_t mavsdk_gimbal_subscribe_gimbal_list(
     mavsdk_gimbal_gimbal_list_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_gimbal_wrapper*>(gimbal);
+    auto wrapper = reinterpret_cast<mavsdk_gimbal_wrapper*>(gimbal);
 
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_gimbal_list(
         [callback, user_data](
@@ -734,7 +734,7 @@ mavsdk_gimbal_gimbal_list_handle_t mavsdk_gimbal_subscribe_gimbal_list(
         });
 
     auto handle_wrapper = new mavsdk::Gimbal::GimbalListHandle(std::move(cpp_handle));
-    return static_cast<mavsdk_gimbal_gimbal_list_handle_t>(handle_wrapper);
+    return reinterpret_cast<mavsdk_gimbal_gimbal_list_handle_t>(handle_wrapper);
 }
 
 void mavsdk_gimbal_unsubscribe_gimbal_list(
@@ -742,8 +742,8 @@ void mavsdk_gimbal_unsubscribe_gimbal_list(
     mavsdk_gimbal_gimbal_list_handle_t handle)
 {
     if (handle) {
-        auto wrapper = static_cast<mavsdk_gimbal_wrapper*>(gimbal);
-        auto cpp_handle = static_cast<mavsdk::Gimbal::GimbalListHandle*>(handle);
+        auto wrapper = reinterpret_cast<mavsdk_gimbal_wrapper*>(gimbal);
+        auto cpp_handle = reinterpret_cast<mavsdk::Gimbal::GimbalListHandle*>(handle);
         wrapper->cpp_plugin->unsubscribe_gimbal_list(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -755,7 +755,7 @@ mavsdk_gimbal_gimbal_list(
     mavsdk_gimbal_t gimbal,
     mavsdk_gimbal_gimbal_list_t* gimbal_list_out)
 {
-    auto wrapper = static_cast<mavsdk_gimbal_wrapper*>(gimbal);
+    auto wrapper = reinterpret_cast<mavsdk_gimbal_wrapper*>(gimbal);
 
     auto ret_value = wrapper->cpp_plugin->gimbal_list();
 
@@ -770,7 +770,7 @@ mavsdk_gimbal_control_status_handle_t mavsdk_gimbal_subscribe_control_status(
     mavsdk_gimbal_control_status_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_gimbal_wrapper*>(gimbal);
+    auto wrapper = reinterpret_cast<mavsdk_gimbal_wrapper*>(gimbal);
 
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_control_status(
         [callback, user_data](
@@ -783,7 +783,7 @@ mavsdk_gimbal_control_status_handle_t mavsdk_gimbal_subscribe_control_status(
         });
 
     auto handle_wrapper = new mavsdk::Gimbal::ControlStatusHandle(std::move(cpp_handle));
-    return static_cast<mavsdk_gimbal_control_status_handle_t>(handle_wrapper);
+    return reinterpret_cast<mavsdk_gimbal_control_status_handle_t>(handle_wrapper);
 }
 
 void mavsdk_gimbal_unsubscribe_control_status(
@@ -791,8 +791,8 @@ void mavsdk_gimbal_unsubscribe_control_status(
     mavsdk_gimbal_control_status_handle_t handle)
 {
     if (handle) {
-        auto wrapper = static_cast<mavsdk_gimbal_wrapper*>(gimbal);
-        auto cpp_handle = static_cast<mavsdk::Gimbal::ControlStatusHandle*>(handle);
+        auto wrapper = reinterpret_cast<mavsdk_gimbal_wrapper*>(gimbal);
+        auto cpp_handle = reinterpret_cast<mavsdk::Gimbal::ControlStatusHandle*>(handle);
         wrapper->cpp_plugin->unsubscribe_control_status(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -807,7 +807,7 @@ mavsdk_gimbal_get_control_status(
     int32_t gimbal_id,
     mavsdk_gimbal_control_status_t* control_status_out)
 {
-    auto wrapper = static_cast<mavsdk_gimbal_wrapper*>(gimbal);
+    auto wrapper = reinterpret_cast<mavsdk_gimbal_wrapper*>(gimbal);
 
     auto result_pair = wrapper->cpp_plugin->get_control_status(
         gimbal_id);
@@ -825,7 +825,7 @@ mavsdk_gimbal_attitude_handle_t mavsdk_gimbal_subscribe_attitude(
     mavsdk_gimbal_attitude_callback_t callback,
     void* user_data)
 {
-    auto wrapper = static_cast<mavsdk_gimbal_wrapper*>(gimbal);
+    auto wrapper = reinterpret_cast<mavsdk_gimbal_wrapper*>(gimbal);
 
     auto cpp_handle =    wrapper->cpp_plugin->subscribe_attitude(
         [callback, user_data](
@@ -838,7 +838,7 @@ mavsdk_gimbal_attitude_handle_t mavsdk_gimbal_subscribe_attitude(
         });
 
     auto handle_wrapper = new mavsdk::Gimbal::AttitudeHandle(std::move(cpp_handle));
-    return static_cast<mavsdk_gimbal_attitude_handle_t>(handle_wrapper);
+    return reinterpret_cast<mavsdk_gimbal_attitude_handle_t>(handle_wrapper);
 }
 
 void mavsdk_gimbal_unsubscribe_attitude(
@@ -846,8 +846,8 @@ void mavsdk_gimbal_unsubscribe_attitude(
     mavsdk_gimbal_attitude_handle_t handle)
 {
     if (handle) {
-        auto wrapper = static_cast<mavsdk_gimbal_wrapper*>(gimbal);
-        auto cpp_handle = static_cast<mavsdk::Gimbal::AttitudeHandle*>(handle);
+        auto wrapper = reinterpret_cast<mavsdk_gimbal_wrapper*>(gimbal);
+        auto cpp_handle = reinterpret_cast<mavsdk::Gimbal::AttitudeHandle*>(handle);
         wrapper->cpp_plugin->unsubscribe_attitude(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -862,7 +862,7 @@ mavsdk_gimbal_get_attitude(
     int32_t gimbal_id,
     mavsdk_gimbal_attitude_t* attitude_out)
 {
-    auto wrapper = static_cast<mavsdk_gimbal_wrapper*>(gimbal);
+    auto wrapper = reinterpret_cast<mavsdk_gimbal_wrapper*>(gimbal);
 
     auto result_pair = wrapper->cpp_plugin->get_attitude(
         gimbal_id);
