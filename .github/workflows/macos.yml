@@ -74,6 +74,11 @@ jobs:
         run: ./build/macos/src/system_tests/system_tests_runner
       - name: test (mavsdk_server)
         run: ./build/macos/src/mavsdk_server/test/unit_tests_mavsdk_server
+      - name: build C wrapper
+        working-directory: ./c
+        run: |
+          cmake -DCMAKE_INSTALL_PREFIX=build/install -DCMAKE_PREFIX_PATH="$(pwd)/../cpp/build/macos/install;$(pwd)/../cpp/build/macos/third_party/install" -DBUILD_SHARED_LIBS=ON -Bbuild -S.
+          cmake --build build --target install
       - name: Upload framework as artefact
         if: ${{ matrix.build-framework == 'ON' }}
         uses: actions/upload-artifact@v4
