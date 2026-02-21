@@ -20,9 +20,9 @@ In order to support multiple programming languages, MAVSDK implements a gRPC ser
 This architecture allows the clients to be implemented in idiomatic patterns, so using the tooling and syntax expected by end users. For example, the Python library can be installed from PyPi using `pip`.
 
 The MAVSDK C++ part consists of:
-- The [core library](https://github.com/mavlink/MAVSDK/tree/main/src/mavsdk/core) implementing the basic MAVLink communication.
-- The [plugin libraries](https://github.com/mavlink/MAVSDK/tree/main/src/mavsdk/plugins) implementing the MAVLink communication specific to a feature.
-- The [mavsdk_server](https://github.com/mavlink/MAVSDK/tree/main/src/mavsdk_server) implementing the gRPC server for the language clients.
+- The [core library](https://github.com/mavlink/MAVSDK/tree/main/cpp/src/mavsdk/core) implementing the basic MAVLink communication.
+- The [plugin libraries](https://github.com/mavlink/MAVSDK/tree/main/cpp/src/mavsdk/plugins) implementing the MAVLink communication specific to a feature.
+- The [mavsdk_server](https://github.com/mavlink/MAVSDK/tree/main/cpp/src/mavsdk_server) implementing the gRPC server for the language clients.
 
 ## Repos
 
