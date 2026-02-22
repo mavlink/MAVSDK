@@ -5,6 +5,7 @@ set -e  # Exit on any error
 # Get the directory where this script is located
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 project_root="$(cd "$script_dir/.." && pwd)"
+proto_dir="$project_root/../proto/protos"
 
 # Default plugins if none provided
 default_plugins=("action" "action_server" "arm_authorizer_server" "calibration" "camera" "camera_server" "component_metadata" "component_metadata_server" "events" "failure" "follow_me" "ftp" "ftp_server" "geofence" "gimbal" "gripper" "info" "log_files" "log_streaming" "manual_control" "mavlink_direct" "mission" "mission_raw" "mission_raw_server" "mocap" "offboard" "param" "param_server" "rtk" "server_utility" "shell" "telemetry" "telemetry_server" "transponder" "tune" "winch")
@@ -26,8 +27,8 @@ setup_venv() {
         source "$project_root/venv/bin/activate"
         
         echo "Installing dependencies..."
-        pip install -r "$project_root/proto/pb_plugins/requirements.txt"
-        pip install -e "$project_root/proto/pb_plugins"
+        pip install protoc-gen-mavsdk
+        pip install ruff
         
         echo "Virtual environment setup complete."
     else
@@ -38,7 +39,7 @@ setup_venv() {
 # Function to run protoc commands for a plugin
 process_plugin() {
     local plugin=$1
-    local proto_file="$project_root/proto/protos/${plugin}/${plugin}.proto"
+    local proto_file="${proto_dir}/${plugin}/${plugin}.proto"
     local output_dir="$project_root/pymavsdk/plugins"
     local template_path="$project_root/templates"
     
@@ -62,8 +63,8 @@ process_plugin() {
     # Generate __init__.py
     protoc "$proto_file" \
         --plugin=protoc-gen-custom="$(which protoc-gen-mavsdk)" \
-        -I"$project_root/proto/protos/${plugin}" \
-        -I"$project_root/proto/protos" \
+        -I"${proto_dir}/${plugin}" \
+        -I"${proto_dir}" \
         --custom_out="$output_dir" \
         --custom_opt="output_file=${plugin}/__init__.py" \
         --custom_opt="template_path=$template_path" \
@@ -75,8 +76,8 @@ process_plugin() {
     echo "  Generating ${plugin}.py..."
     protoc "$proto_file" \
         --plugin=protoc-gen-custom="$(which protoc-gen-mavsdk)" \
-        -I"$project_root/proto/protos/${plugin}" \
-        -I"$project_root/proto/protos" \
+        -I"${proto_dir}/${plugin}" \
+        -I"${proto_dir}" \
         --custom_out="$output_dir" \
         --custom_opt="output_file=${plugin}/${plugin}.py" \
         --custom_opt="template_path=$template_path" \

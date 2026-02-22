@@ -3,7 +3,8 @@
 # (see https://github.com/mavlink/MAVSDK-Proto/blob/main/protos/gimbal/gimbal.proto)
 
 """
-Provide control over a gimbal.
+Provide control over a gimbal within the MAVLink
+ Gimbal Protocol: https://mavlink.io/en/services/gimbal_v2.html
 """
 
 # Import main plugin class

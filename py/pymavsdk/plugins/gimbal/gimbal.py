@@ -5,7 +5,8 @@
 # (see https://github.com/mavlink/MAVSDK-Proto/blob/main/protos/gimbal/gimbal.proto)
 
 """
-Provide control over a gimbal.
+Provide control over a gimbal within the MAVLink
+ Gimbal Protocol: https://mavlink.io/en/services/gimbal_v2.html
 """
 
 import ctypes
@@ -495,7 +496,8 @@ class ControlStatus:
 
 # ===== Plugin =====
 class Gimbal:
-    """Provide control over a gimbal."""
+    """Provide control over a gimbal within the MAVLink
+    Gimbal Protocol: https://mavlink.io/en/services/gimbal_v2.html"""
 
     def __init__(self, system):
         self._lib = _cmavsdk_lib
