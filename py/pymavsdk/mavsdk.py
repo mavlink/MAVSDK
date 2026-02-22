@@ -83,6 +83,7 @@ class Mavsdk:
 
         self._handle = self._lib.mavsdk_create(configuration._handle)
         self._destroyed = False
+        configuration._handle = None
 
     def version(self) -> str:
         """Get MAVSDK version string"""
@@ -194,22 +195,22 @@ class Mavsdk:
         self.destroy()
 
 
-def __del__(self):
-    try:
-        import sys
+    def __del__(self):
+        try:
+            import sys
 
-        if sys is not None and hasattr(self, "_handle") and self._handle:
-            import warnings
+            if sys is not None and hasattr(self, "_handle") and self._handle:
+                import warnings
 
-            warnings.warn(
-                "Mavsdk destroyed by garbage collector. Use context manager or call destroy() explicitly.",
-                ResourceWarning,
-                stacklevel=2,
-            )
-            self.destroy()
-    except (ImportError, AttributeError):
-        # Python is shutting down, skip cleanup silently
-        pass
+                warnings.warn(
+                    "Mavsdk destroyed by garbage collector. Use context manager or call destroy() explicitly.",
+                    ResourceWarning,
+                    stacklevel=2,
+                )
+                self.destroy()
+        except (ImportError, AttributeError):
+            # Python is shutting down, skip cleanup silently
+            pass
 
 
 # Configuration functions
