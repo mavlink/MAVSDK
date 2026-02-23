@@ -46,8 +46,18 @@ class BinaryDistribution(Distribution):
     def is_pure(self):
         return False
 
+ver = version()
+
+if not ver.startswith("v4"):
+    raise RuntimeError(
+        f"Version '{ver}' does not start with 'v4'. "
+        "This is a reminder that if you're releasing a new major version,"
+        "you need to update the package name below from 'mavsdk4' to"
+        "'mavsdk5' (or whatever the new major is)."
+    )
+
 setup(
-    name="pymavsdk",
+    name="mavsdk4",
     version=version(),
     maintainer="Jonas Vautherin, Julian Oes",
     maintainer_email="dev@jonas.vautherin.ch, julian@oes.ch",
