@@ -4,6 +4,7 @@ services:
       context: ../../
       dockerfile: ./docker/mavsdk-server/Dockerfile
       args:
-        MAVLINK_DIALECT: ""
+        MAVLINK_DIALECT: ${MAVLINK_DIALECT:-}
+        BUILD_THREADS: ${BUILD_THREADS:-6}
     command: ${MAV_CONNECTION:-}
     network_mode: "host"
