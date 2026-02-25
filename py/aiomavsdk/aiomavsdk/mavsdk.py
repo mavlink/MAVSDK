@@ -113,9 +113,7 @@ class Mavsdk:
             expires before one appears.
         """
         loop = asyncio.get_running_loop()
-        raw = await loop.run_in_executor(
-            None, self._mavsdk.first_autopilot, timeout_s
-        )
+        raw = await loop.run_in_executor(None, self._mavsdk.first_autopilot, timeout_s)
         return System(raw) if raw is not None else None
 
     async def server_component(self, instance: int = 0) -> Optional[ServerComponent]:
@@ -157,10 +155,10 @@ class Mavsdk:
 
         loop = asyncio.get_running_loop()
         queue: asyncio.Queue = asyncio.Queue()
-    
+
         def callback(_user_data):
             loop.call_soon_threadsafe(queue.put_nowait, None)
-    
+
         handle = self._mavsdk.subscribe_on_new_system(callback)
         self._subscription_handles[id(queue)] = handle
         try:
@@ -170,7 +168,6 @@ class Mavsdk:
             if id(queue) in self._subscription_handles:
                 self._subscription_handles.pop(id(queue))
                 self._mavsdk.unsubscribe_on_new_system(handle)
-
 
     # ------------------------------------------------------------------
     # Lifecycle

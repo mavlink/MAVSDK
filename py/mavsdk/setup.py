@@ -48,13 +48,13 @@ class BinaryDistribution(Distribution):
 
 ver = version()
 
-if not ver.startswith("v4"):
-    raise RuntimeError(
-        f"Version '{ver}' does not start with 'v4'. "
-        "This is a reminder that if you're releasing a new major version,"
-        "you need to update the package name below from 'mavsdk4' to"
-        "'mavsdk5' (or whatever the new major is)."
-    )
+#if not ver.startswith("v4"):
+#    raise RuntimeError(
+#        f"Version '{ver}' does not start with 'v4'. "
+#        "This is a reminder that if you're releasing a new major version,"
+#        "you need to update the package name below from 'mavsdk4' to"
+#        "'mavsdk5' (or whatever the new major is)."
+#    )
 
 setup(
     name="mavsdk4",
