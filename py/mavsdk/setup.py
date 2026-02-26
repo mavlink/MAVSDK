@@ -81,7 +81,7 @@ setup(
     python_requires=">=3.8",
     include_package_data=True,
     package_data={
-        "pymavsdk": ["lib/*"],
+        "mavsdk": ["lib/*"],
     },
     distclass=BinaryDistribution,
     options={

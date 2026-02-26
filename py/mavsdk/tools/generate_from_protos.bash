@@ -40,7 +40,7 @@ setup_venv() {
 process_plugin() {
     local plugin=$1
     local proto_file="${proto_dir}/${plugin}/${plugin}.proto"
-    local output_dir="$project_root/pymavsdk/plugins"
+    local output_dir="$project_root/mavsdk/plugins"
     local template_path="$project_root/templates"
     
     # Check if proto file exists
@@ -102,8 +102,8 @@ main() {
     done
 
     # Apply formatter
-    echo "Applying ruff to ${project_root}/pymavsdk"
-    python3 -m ruff format "${project_root}/pymavsdk"
+    echo "Applying ruff to ${project_root}/mavsdk"
+    python3 -m ruff format "${project_root}/mavsdk"
     
     echo "All plugins processed successfully!"
 }
