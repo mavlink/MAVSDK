@@ -8,6 +8,7 @@
 {{ class_description }}
 """
 
+import atexit
 import ctypes
 
 from typing import Callable, Any
@@ -227,6 +228,8 @@ class {{ plugin_name.upper_camel_case }}:
         if not self._handle:
             raise RuntimeError("Failed to create {{ plugin_name.upper_camel_case }} plugin - C function returned null handle")
 
+        atexit.register(self.destroy)
+
     {% for method in methods %}
 
     {% if method.is_async %}
@@ -292,7 +295,11 @@ class {{ plugin_name.upper_camel_case }}:
         {% endif %}
             self._handle,
             {% for param in method.params %}
+            {% if param.type_info.is_string %}
+            {{ param.name.lower_snake_case }}.encode('utf-8') if isinstance({{ param.name.lower_snake_case }}, str) else {{ param.name.lower_snake_case }},
+            {% else %}
             {{ param.name.lower_snake_case }},
+            {% endif %}
             {% endfor %}
             cb,
             None
@@ -332,7 +339,9 @@ class {{ plugin_name.upper_camel_case }}:
         result_code = self._lib.mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}(
             self._handle,
           {% for param in method.params %}
-            {% if param.type_info.is_primitive or param.type_info.is_enum %}
+            {% if param.type_info.is_string %}
+            {{ param.name.lower_snake_case }}.encode('utf-8') if isinstance({{ param.name.lower_snake_case }}, str) else {{ param.name.lower_snake_case }},
+            {% elif param.type_info.is_primitive or param.type_info.is_enum %}
             {{ param.name.lower_snake_case }},
             {% else %}
             {{ param.name.lower_snake_case }}.to_c_struct(),
@@ -354,7 +363,9 @@ class {{ plugin_name.upper_camel_case }}:
         self._lib.mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}(
             self._handle,
           {% for param in method.params %}
-            {% if param.type_info.is_primitive or param.type_info.is_enum %}
+            {% if param.type_info.is_string %}
+            {{ param.name.lower_snake_case }}.encode('utf-8') if isinstance({{ param.name.lower_snake_case }}, str) else {{ param.name.lower_snake_case }},
+            {% elif param.type_info.is_primitive or param.type_info.is_enum %}
             {{ param.name.lower_snake_case }},
             {% else %}
             {{ param.name.lower_snake_case }}.to_c_struct(),

@@ -35,9 +35,6 @@ __all__ = [
     {% for struct in structs %}
       {% if not struct.name.upper_camel_case.endswith('Result') %}
     '{{ struct.name.upper_camel_case }}',
-        {% for nested_enum_name, nested_enum in struct.nested_enums.items() %}
-    '{{ nested_enum.name.upper_camel_case }}',  {# This will be accessible as VideoStreamInfo.VideoStreamStatus #}
-        {% endfor %}
       {% endif %}
     {% endfor %}
 ]
