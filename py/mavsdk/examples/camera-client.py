@@ -2,8 +2,8 @@ import time
 from pymavsdk import *
 from pymavsdk.plugins.camera import *
 
+
 def storage_callback(update, user_data=None):
-    """Callback for camera storage updates"""
     print("Camera storage update:")
     print(f"  Component ID: {update.storage.component_id}")
     print(f"  Storage ID: {update.storage.storage_id}")
@@ -13,69 +13,54 @@ def storage_callback(update, user_data=None):
     print(f"  Storage status: {update.storage.storage_status}")
     print(f"  Storage type: {update.storage.storage_type}")
 
+
 def do_camera_operation(component_id, camera_plugin):
-    """Perform various camera operations"""
-    # Switch to photo mode to take photo
-    result = camera_plugin.set_mode(component_id, Mode.PHOTO)
-    print(f"Set camera to photo mode result: {result}")
+    camera_plugin.set_mode(component_id, Mode.PHOTO)
+    print("Set camera to photo mode")
 
-    result = camera_plugin.take_photo(component_id)
-    print(f"Take photo result: {result}")
+    camera_plugin.take_photo(component_id)
+    print("Took photo")
 
-    # Switch to video mode to record video
-    result = camera_plugin.set_mode(component_id, Mode.VIDEO)
-    print(f"Set camera to video mode result: {result}")
+    camera_plugin.set_mode(component_id, Mode.VIDEO)
+    print("Set camera to video mode")
 
-    result = camera_plugin.start_video(component_id)
-    print(f"Start video result: {result}")
+    camera_plugin.start_video(component_id)
+    print("Started video")
 
-    result = camera_plugin.stop_video(component_id)
-    print(f"Stop video result: {result}")
+    camera_plugin.stop_video(component_id)
+    print("Stopped video")
 
-    # The camera can have multi video stream so may need the stream id
-    result = camera_plugin.start_video_streaming(component_id, 0)
-    print(f"Start video streaming result: {result}")
+    camera_plugin.start_video_streaming(component_id, 0)
+    print("Started video streaming")
 
-    result = camera_plugin.stop_video_streaming(component_id, 0)
-    print(f"Stop video streaming result: {result}")
+    camera_plugin.stop_video_streaming(component_id, 0)
+    print("Stopped video streaming")
 
-    # Format the storage with special storage id test
-    result = camera_plugin.format_storage(component_id, 0)
-    print(f"Format storage result: {result}")
+    camera_plugin.format_storage(component_id, 0)
+    print("Formatted storage")
 
-    result = camera_plugin.reset_settings(component_id)
-    print(f"Reset camera settings result: {result}")
+    camera_plugin.reset_settings(component_id)
+    print("Reset camera settings")
+
 
 def main():
     configuration = Configuration.create_with_component_type(ComponentType.GROUND_STATION)
     mavsdk = Mavsdk(configuration)
-
-    # Add connection
-    result = mavsdk.add_any_connection("udpout://127.0.0.1:14030")
-    if result == ConnectionResult.SUCCESS:
-        print("Connected!")
+    mavsdk.add_any_connection("udpout://127.0.0.1:14030")
+    print("Connected!")
 
     print("Waiting for camera system...")
-    
-    # Wait for camera system
     camera_server = None
     while camera_server is None:
         systems = mavsdk.get_systems()
-        if len(systems) > 0:
+        if systems:
             camera_server = systems[0]
         else:
             time.sleep(1)
 
-    # Create camera plugin
     camera_plugin = Camera(camera_server)
-    if not camera_plugin:
-        print("Failed to create camera plugin")
-        return -1
 
     print("Waiting for cameras...")
-    
-    # Wait for cameras to be discovered
-    camera_list = None
     while True:
         camera_list = camera_plugin.camera_list()
         if camera_list and len(camera_list.cameras) > 0:
@@ -91,23 +76,17 @@ def main():
 
     component_id = camera_list.cameras[0].component_id
 
-    # Subscribe to storage updates
-    storage_handle = camera_plugin.subscribe_storage(storage_callback)
+    camera_plugin.subscribe_storage(storage_callback)
 
-    # Perform camera operations
     do_camera_operation(component_id, camera_plugin)
 
     print("Camera operations completed. Keeping running to receive updates...")
-    
-    # Keep running to receive updates
     try:
         while True:
             time.sleep(1)
     except KeyboardInterrupt:
         print("Shutting down...")
 
-    # Cleanup
-    camera_plugin.unsubscribe_storage(storage_handle)
 
 if __name__ == "__main__":
     main()

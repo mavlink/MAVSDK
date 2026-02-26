@@ -1,5 +1,5 @@
 import time
-from pymavsdk import Mavsdk
+from pymavsdk import Mavsdk, Configuration, ComponentType
 from pymavsdk.plugins.calibration import Calibration, CalibrationResult
 
 # Global variables for the callback state
@@ -102,7 +102,8 @@ def calibrate_magnetometer(calibration):
 
 def main():
     # Create MAVSDK instance
-    mavsdk = Mavsdk()
+    configuration = Configuration.create_with_component_type(ComponentType.GROUND_STATION)
+    mavsdk = Mavsdk(configuration)
     
     # Add connection
     mavsdk.add_any_connection("udpin://0.0.0.0:14540")
