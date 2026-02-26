@@ -5,7 +5,9 @@
 #include "log_streaming.h"
 
 #include <mavsdk/plugins/log_streaming/log_streaming.h>
+#include <algorithm>
 #include <cstring>
+#include <mutex>
 #include <vector>
 
 // ===== C++ to C Type Conversions =====
@@ -134,6 +136,8 @@ void mavsdk_log_streaming_byte_buffer_destroy(uint8_t** buffer) {
 
 struct mavsdk_log_streaming_wrapper {
     std::shared_ptr<mavsdk::LogStreaming> cpp_plugin;
+    std::mutex handles_mutex;
+    std::vector<mavsdk::LogStreaming::LogStreamingRawHandle*> log_streaming_raw_handles;
 };
 
 mavsdk_log_streaming_t
@@ -155,6 +159,18 @@ void mavsdk_log_streaming_destroy(mavsdk_log_streaming_t log_streaming) {
     }
 
     auto wrapper = reinterpret_cast<mavsdk_log_streaming_wrapper*>(log_streaming);
+
+    // Unsubscribe all active streams before destroying to prevent
+    // callbacks firing into a destroyed object
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        for (auto* h : wrapper->log_streaming_raw_handles) {
+            wrapper->cpp_plugin->unsubscribe_log_streaming_raw(std::move(*h));
+            delete h;
+        }
+        wrapper->log_streaming_raw_handles.clear();
+    }
+
     delete wrapper;
 }
 
@@ -242,8 +258,14 @@ mavsdk_log_streaming_log_streaming_raw_handle_t mavsdk_log_streaming_subscribe_l
                 }
         });
 
-    auto handle_wrapper = new mavsdk::LogStreaming::LogStreamingRawHandle(std::move(cpp_handle));
-    return reinterpret_cast<mavsdk_log_streaming_log_streaming_raw_handle_t>(handle_wrapper);
+    auto cpp_handle_ptr = new mavsdk::LogStreaming::LogStreamingRawHandle(std::move(cpp_handle));
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        wrapper->log_streaming_raw_handles.push_back(cpp_handle_ptr);
+    }
+
+    return reinterpret_cast<mavsdk_log_streaming_log_streaming_raw_handle_t>(cpp_handle_ptr);
 }
 
 void mavsdk_log_streaming_unsubscribe_log_streaming_raw(
@@ -253,6 +275,13 @@ void mavsdk_log_streaming_unsubscribe_log_streaming_raw(
     if (handle) {
         auto wrapper = reinterpret_cast<mavsdk_log_streaming_wrapper*>(log_streaming);
         auto cpp_handle = reinterpret_cast<mavsdk::LogStreaming::LogStreamingRawHandle*>(handle);
+
+        {
+            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+            auto& vec = wrapper->log_streaming_raw_handles;
+            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
+        }
+
         wrapper->cpp_plugin->unsubscribe_log_streaming_raw(std::move(*cpp_handle));
         delete cpp_handle;
     }

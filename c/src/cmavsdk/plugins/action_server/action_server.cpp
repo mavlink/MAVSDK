@@ -5,7 +5,9 @@
 #include "action_server.h"
 
 #include <mavsdk/plugins/action_server/action_server.h>
+#include <algorithm>
 #include <cstring>
+#include <mutex>
 #include <vector>
 
 // ===== C++ to C Type Conversions =====
@@ -255,6 +257,14 @@ void mavsdk_action_server_byte_buffer_destroy(uint8_t** buffer) {
 
 struct mavsdk_action_server_wrapper {
     std::shared_ptr<mavsdk::ActionServer> cpp_plugin;
+    std::mutex handles_mutex;
+    std::vector<mavsdk::ActionServer::ArmDisarmHandle*> arm_disarm_handles;
+    std::vector<mavsdk::ActionServer::FlightModeChangeHandle*> flight_mode_change_handles;
+    std::vector<mavsdk::ActionServer::TakeoffHandle*> takeoff_handles;
+    std::vector<mavsdk::ActionServer::LandHandle*> land_handles;
+    std::vector<mavsdk::ActionServer::RebootHandle*> reboot_handles;
+    std::vector<mavsdk::ActionServer::ShutdownHandle*> shutdown_handles;
+    std::vector<mavsdk::ActionServer::TerminateHandle*> terminate_handles;
 };
 
 mavsdk_action_server_t
@@ -276,6 +286,48 @@ void mavsdk_action_server_destroy(mavsdk_action_server_t action_server) {
     }
 
     auto wrapper = reinterpret_cast<mavsdk_action_server_wrapper*>(action_server);
+
+    // Unsubscribe all active streams before destroying to prevent
+    // callbacks firing into a destroyed object
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        for (auto* h : wrapper->arm_disarm_handles) {
+            wrapper->cpp_plugin->unsubscribe_arm_disarm(std::move(*h));
+            delete h;
+        }
+        wrapper->arm_disarm_handles.clear();
+        for (auto* h : wrapper->flight_mode_change_handles) {
+            wrapper->cpp_plugin->unsubscribe_flight_mode_change(std::move(*h));
+            delete h;
+        }
+        wrapper->flight_mode_change_handles.clear();
+        for (auto* h : wrapper->takeoff_handles) {
+            wrapper->cpp_plugin->unsubscribe_takeoff(std::move(*h));
+            delete h;
+        }
+        wrapper->takeoff_handles.clear();
+        for (auto* h : wrapper->land_handles) {
+            wrapper->cpp_plugin->unsubscribe_land(std::move(*h));
+            delete h;
+        }
+        wrapper->land_handles.clear();
+        for (auto* h : wrapper->reboot_handles) {
+            wrapper->cpp_plugin->unsubscribe_reboot(std::move(*h));
+            delete h;
+        }
+        wrapper->reboot_handles.clear();
+        for (auto* h : wrapper->shutdown_handles) {
+            wrapper->cpp_plugin->unsubscribe_shutdown(std::move(*h));
+            delete h;
+        }
+        wrapper->shutdown_handles.clear();
+        for (auto* h : wrapper->terminate_handles) {
+            wrapper->cpp_plugin->unsubscribe_terminate(std::move(*h));
+            delete h;
+        }
+        wrapper->terminate_handles.clear();
+    }
+
     delete wrapper;
 }
 
@@ -301,8 +353,14 @@ mavsdk_action_server_arm_disarm_handle_t mavsdk_action_server_subscribe_arm_disa
                 }
         });
 
-    auto handle_wrapper = new mavsdk::ActionServer::ArmDisarmHandle(std::move(cpp_handle));
-    return reinterpret_cast<mavsdk_action_server_arm_disarm_handle_t>(handle_wrapper);
+    auto cpp_handle_ptr = new mavsdk::ActionServer::ArmDisarmHandle(std::move(cpp_handle));
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        wrapper->arm_disarm_handles.push_back(cpp_handle_ptr);
+    }
+
+    return reinterpret_cast<mavsdk_action_server_arm_disarm_handle_t>(cpp_handle_ptr);
 }
 
 void mavsdk_action_server_unsubscribe_arm_disarm(
@@ -312,6 +370,13 @@ void mavsdk_action_server_unsubscribe_arm_disarm(
     if (handle) {
         auto wrapper = reinterpret_cast<mavsdk_action_server_wrapper*>(action_server);
         auto cpp_handle = reinterpret_cast<mavsdk::ActionServer::ArmDisarmHandle*>(handle);
+
+        {
+            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+            auto& vec = wrapper->arm_disarm_handles;
+            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
+        }
+
         wrapper->cpp_plugin->unsubscribe_arm_disarm(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -338,8 +403,14 @@ mavsdk_action_server_flight_mode_change_handle_t mavsdk_action_server_subscribe_
                 }
         });
 
-    auto handle_wrapper = new mavsdk::ActionServer::FlightModeChangeHandle(std::move(cpp_handle));
-    return reinterpret_cast<mavsdk_action_server_flight_mode_change_handle_t>(handle_wrapper);
+    auto cpp_handle_ptr = new mavsdk::ActionServer::FlightModeChangeHandle(std::move(cpp_handle));
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        wrapper->flight_mode_change_handles.push_back(cpp_handle_ptr);
+    }
+
+    return reinterpret_cast<mavsdk_action_server_flight_mode_change_handle_t>(cpp_handle_ptr);
 }
 
 void mavsdk_action_server_unsubscribe_flight_mode_change(
@@ -349,6 +420,13 @@ void mavsdk_action_server_unsubscribe_flight_mode_change(
     if (handle) {
         auto wrapper = reinterpret_cast<mavsdk_action_server_wrapper*>(action_server);
         auto cpp_handle = reinterpret_cast<mavsdk::ActionServer::FlightModeChangeHandle*>(handle);
+
+        {
+            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+            auto& vec = wrapper->flight_mode_change_handles;
+            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
+        }
+
         wrapper->cpp_plugin->unsubscribe_flight_mode_change(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -375,8 +453,14 @@ mavsdk_action_server_takeoff_handle_t mavsdk_action_server_subscribe_takeoff(
                 }
         });
 
-    auto handle_wrapper = new mavsdk::ActionServer::TakeoffHandle(std::move(cpp_handle));
-    return reinterpret_cast<mavsdk_action_server_takeoff_handle_t>(handle_wrapper);
+    auto cpp_handle_ptr = new mavsdk::ActionServer::TakeoffHandle(std::move(cpp_handle));
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        wrapper->takeoff_handles.push_back(cpp_handle_ptr);
+    }
+
+    return reinterpret_cast<mavsdk_action_server_takeoff_handle_t>(cpp_handle_ptr);
 }
 
 void mavsdk_action_server_unsubscribe_takeoff(
@@ -386,6 +470,13 @@ void mavsdk_action_server_unsubscribe_takeoff(
     if (handle) {
         auto wrapper = reinterpret_cast<mavsdk_action_server_wrapper*>(action_server);
         auto cpp_handle = reinterpret_cast<mavsdk::ActionServer::TakeoffHandle*>(handle);
+
+        {
+            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+            auto& vec = wrapper->takeoff_handles;
+            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
+        }
+
         wrapper->cpp_plugin->unsubscribe_takeoff(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -412,8 +503,14 @@ mavsdk_action_server_land_handle_t mavsdk_action_server_subscribe_land(
                 }
         });
 
-    auto handle_wrapper = new mavsdk::ActionServer::LandHandle(std::move(cpp_handle));
-    return reinterpret_cast<mavsdk_action_server_land_handle_t>(handle_wrapper);
+    auto cpp_handle_ptr = new mavsdk::ActionServer::LandHandle(std::move(cpp_handle));
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        wrapper->land_handles.push_back(cpp_handle_ptr);
+    }
+
+    return reinterpret_cast<mavsdk_action_server_land_handle_t>(cpp_handle_ptr);
 }
 
 void mavsdk_action_server_unsubscribe_land(
@@ -423,6 +520,13 @@ void mavsdk_action_server_unsubscribe_land(
     if (handle) {
         auto wrapper = reinterpret_cast<mavsdk_action_server_wrapper*>(action_server);
         auto cpp_handle = reinterpret_cast<mavsdk::ActionServer::LandHandle*>(handle);
+
+        {
+            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+            auto& vec = wrapper->land_handles;
+            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
+        }
+
         wrapper->cpp_plugin->unsubscribe_land(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -449,8 +553,14 @@ mavsdk_action_server_reboot_handle_t mavsdk_action_server_subscribe_reboot(
                 }
         });
 
-    auto handle_wrapper = new mavsdk::ActionServer::RebootHandle(std::move(cpp_handle));
-    return reinterpret_cast<mavsdk_action_server_reboot_handle_t>(handle_wrapper);
+    auto cpp_handle_ptr = new mavsdk::ActionServer::RebootHandle(std::move(cpp_handle));
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        wrapper->reboot_handles.push_back(cpp_handle_ptr);
+    }
+
+    return reinterpret_cast<mavsdk_action_server_reboot_handle_t>(cpp_handle_ptr);
 }
 
 void mavsdk_action_server_unsubscribe_reboot(
@@ -460,6 +570,13 @@ void mavsdk_action_server_unsubscribe_reboot(
     if (handle) {
         auto wrapper = reinterpret_cast<mavsdk_action_server_wrapper*>(action_server);
         auto cpp_handle = reinterpret_cast<mavsdk::ActionServer::RebootHandle*>(handle);
+
+        {
+            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+            auto& vec = wrapper->reboot_handles;
+            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
+        }
+
         wrapper->cpp_plugin->unsubscribe_reboot(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -486,8 +603,14 @@ mavsdk_action_server_shutdown_handle_t mavsdk_action_server_subscribe_shutdown(
                 }
         });
 
-    auto handle_wrapper = new mavsdk::ActionServer::ShutdownHandle(std::move(cpp_handle));
-    return reinterpret_cast<mavsdk_action_server_shutdown_handle_t>(handle_wrapper);
+    auto cpp_handle_ptr = new mavsdk::ActionServer::ShutdownHandle(std::move(cpp_handle));
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        wrapper->shutdown_handles.push_back(cpp_handle_ptr);
+    }
+
+    return reinterpret_cast<mavsdk_action_server_shutdown_handle_t>(cpp_handle_ptr);
 }
 
 void mavsdk_action_server_unsubscribe_shutdown(
@@ -497,6 +620,13 @@ void mavsdk_action_server_unsubscribe_shutdown(
     if (handle) {
         auto wrapper = reinterpret_cast<mavsdk_action_server_wrapper*>(action_server);
         auto cpp_handle = reinterpret_cast<mavsdk::ActionServer::ShutdownHandle*>(handle);
+
+        {
+            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+            auto& vec = wrapper->shutdown_handles;
+            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
+        }
+
         wrapper->cpp_plugin->unsubscribe_shutdown(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -523,8 +653,14 @@ mavsdk_action_server_terminate_handle_t mavsdk_action_server_subscribe_terminate
                 }
         });
 
-    auto handle_wrapper = new mavsdk::ActionServer::TerminateHandle(std::move(cpp_handle));
-    return reinterpret_cast<mavsdk_action_server_terminate_handle_t>(handle_wrapper);
+    auto cpp_handle_ptr = new mavsdk::ActionServer::TerminateHandle(std::move(cpp_handle));
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        wrapper->terminate_handles.push_back(cpp_handle_ptr);
+    }
+
+    return reinterpret_cast<mavsdk_action_server_terminate_handle_t>(cpp_handle_ptr);
 }
 
 void mavsdk_action_server_unsubscribe_terminate(
@@ -534,6 +670,13 @@ void mavsdk_action_server_unsubscribe_terminate(
     if (handle) {
         auto wrapper = reinterpret_cast<mavsdk_action_server_wrapper*>(action_server);
         auto cpp_handle = reinterpret_cast<mavsdk::ActionServer::TerminateHandle*>(handle);
+
+        {
+            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+            auto& vec = wrapper->terminate_handles;
+            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
+        }
+
         wrapper->cpp_plugin->unsubscribe_terminate(std::move(*cpp_handle));
         delete cpp_handle;
     }

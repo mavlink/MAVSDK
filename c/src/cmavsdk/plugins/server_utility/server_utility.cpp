@@ -5,7 +5,9 @@
 #include "server_utility.h"
 
 #include <mavsdk/plugins/server_utility/server_utility.h>
+#include <algorithm>
 #include <cstring>
+#include <mutex>
 #include <vector>
 
 // ===== C++ to C Type Conversions =====
@@ -135,6 +137,7 @@ void mavsdk_server_utility_byte_buffer_destroy(uint8_t** buffer) {
 
 struct mavsdk_server_utility_wrapper {
     std::shared_ptr<mavsdk::ServerUtility> cpp_plugin;
+    std::mutex handles_mutex;
 };
 
 mavsdk_server_utility_t
@@ -156,6 +159,13 @@ void mavsdk_server_utility_destroy(mavsdk_server_utility_t server_utility) {
     }
 
     auto wrapper = reinterpret_cast<mavsdk_server_utility_wrapper*>(server_utility);
+
+    // Unsubscribe all active streams before destroying to prevent
+    // callbacks firing into a destroyed object
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+    }
+
     delete wrapper;
 }
 

@@ -5,7 +5,9 @@
 #include "param_server.h"
 
 #include <mavsdk/plugins/param_server/param_server.h>
+#include <algorithm>
 #include <cstring>
+#include <mutex>
 #include <vector>
 
 // ===== C++ to C Type Conversions =====
@@ -309,6 +311,10 @@ void mavsdk_param_server_byte_buffer_destroy(uint8_t** buffer) {
 
 struct mavsdk_param_server_wrapper {
     std::shared_ptr<mavsdk::ParamServer> cpp_plugin;
+    std::mutex handles_mutex;
+    std::vector<mavsdk::ParamServer::ChangedParamIntHandle*> changed_param_int_handles;
+    std::vector<mavsdk::ParamServer::ChangedParamFloatHandle*> changed_param_float_handles;
+    std::vector<mavsdk::ParamServer::ChangedParamCustomHandle*> changed_param_custom_handles;
 };
 
 mavsdk_param_server_t
@@ -330,6 +336,28 @@ void mavsdk_param_server_destroy(mavsdk_param_server_t param_server) {
     }
 
     auto wrapper = reinterpret_cast<mavsdk_param_server_wrapper*>(param_server);
+
+    // Unsubscribe all active streams before destroying to prevent
+    // callbacks firing into a destroyed object
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        for (auto* h : wrapper->changed_param_int_handles) {
+            wrapper->cpp_plugin->unsubscribe_changed_param_int(std::move(*h));
+            delete h;
+        }
+        wrapper->changed_param_int_handles.clear();
+        for (auto* h : wrapper->changed_param_float_handles) {
+            wrapper->cpp_plugin->unsubscribe_changed_param_float(std::move(*h));
+            delete h;
+        }
+        wrapper->changed_param_float_handles.clear();
+        for (auto* h : wrapper->changed_param_custom_handles) {
+            wrapper->cpp_plugin->unsubscribe_changed_param_custom(std::move(*h));
+            delete h;
+        }
+        wrapper->changed_param_custom_handles.clear();
+    }
+
     delete wrapper;
 }
 
@@ -484,8 +512,14 @@ mavsdk_param_server_changed_param_int_handle_t mavsdk_param_server_subscribe_cha
                 }
         });
 
-    auto handle_wrapper = new mavsdk::ParamServer::ChangedParamIntHandle(std::move(cpp_handle));
-    return reinterpret_cast<mavsdk_param_server_changed_param_int_handle_t>(handle_wrapper);
+    auto cpp_handle_ptr = new mavsdk::ParamServer::ChangedParamIntHandle(std::move(cpp_handle));
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        wrapper->changed_param_int_handles.push_back(cpp_handle_ptr);
+    }
+
+    return reinterpret_cast<mavsdk_param_server_changed_param_int_handle_t>(cpp_handle_ptr);
 }
 
 void mavsdk_param_server_unsubscribe_changed_param_int(
@@ -495,6 +529,13 @@ void mavsdk_param_server_unsubscribe_changed_param_int(
     if (handle) {
         auto wrapper = reinterpret_cast<mavsdk_param_server_wrapper*>(param_server);
         auto cpp_handle = reinterpret_cast<mavsdk::ParamServer::ChangedParamIntHandle*>(handle);
+
+        {
+            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+            auto& vec = wrapper->changed_param_int_handles;
+            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
+        }
+
         wrapper->cpp_plugin->unsubscribe_changed_param_int(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -519,8 +560,14 @@ mavsdk_param_server_changed_param_float_handle_t mavsdk_param_server_subscribe_c
                 }
         });
 
-    auto handle_wrapper = new mavsdk::ParamServer::ChangedParamFloatHandle(std::move(cpp_handle));
-    return reinterpret_cast<mavsdk_param_server_changed_param_float_handle_t>(handle_wrapper);
+    auto cpp_handle_ptr = new mavsdk::ParamServer::ChangedParamFloatHandle(std::move(cpp_handle));
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        wrapper->changed_param_float_handles.push_back(cpp_handle_ptr);
+    }
+
+    return reinterpret_cast<mavsdk_param_server_changed_param_float_handle_t>(cpp_handle_ptr);
 }
 
 void mavsdk_param_server_unsubscribe_changed_param_float(
@@ -530,6 +577,13 @@ void mavsdk_param_server_unsubscribe_changed_param_float(
     if (handle) {
         auto wrapper = reinterpret_cast<mavsdk_param_server_wrapper*>(param_server);
         auto cpp_handle = reinterpret_cast<mavsdk::ParamServer::ChangedParamFloatHandle*>(handle);
+
+        {
+            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+            auto& vec = wrapper->changed_param_float_handles;
+            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
+        }
+
         wrapper->cpp_plugin->unsubscribe_changed_param_float(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -554,8 +608,14 @@ mavsdk_param_server_changed_param_custom_handle_t mavsdk_param_server_subscribe_
                 }
         });
 
-    auto handle_wrapper = new mavsdk::ParamServer::ChangedParamCustomHandle(std::move(cpp_handle));
-    return reinterpret_cast<mavsdk_param_server_changed_param_custom_handle_t>(handle_wrapper);
+    auto cpp_handle_ptr = new mavsdk::ParamServer::ChangedParamCustomHandle(std::move(cpp_handle));
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        wrapper->changed_param_custom_handles.push_back(cpp_handle_ptr);
+    }
+
+    return reinterpret_cast<mavsdk_param_server_changed_param_custom_handle_t>(cpp_handle_ptr);
 }
 
 void mavsdk_param_server_unsubscribe_changed_param_custom(
@@ -565,6 +625,13 @@ void mavsdk_param_server_unsubscribe_changed_param_custom(
     if (handle) {
         auto wrapper = reinterpret_cast<mavsdk_param_server_wrapper*>(param_server);
         auto cpp_handle = reinterpret_cast<mavsdk::ParamServer::ChangedParamCustomHandle*>(handle);
+
+        {
+            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+            auto& vec = wrapper->changed_param_custom_handles;
+            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
+        }
+
         wrapper->cpp_plugin->unsubscribe_changed_param_custom(std::move(*cpp_handle));
         delete cpp_handle;
     }

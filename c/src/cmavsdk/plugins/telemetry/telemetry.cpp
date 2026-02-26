@@ -5,7 +5,9 @@
 #include "telemetry.h"
 
 #include <mavsdk/plugins/telemetry/telemetry.h>
+#include <algorithm>
 #include <cstring>
+#include <mutex>
 #include <vector>
 
 // ===== C++ to C Type Conversions =====
@@ -1645,6 +1647,40 @@ void mavsdk_telemetry_byte_buffer_destroy(uint8_t** buffer) {
 
 struct mavsdk_telemetry_wrapper {
     std::shared_ptr<mavsdk::Telemetry> cpp_plugin;
+    std::mutex handles_mutex;
+    std::vector<mavsdk::Telemetry::PositionHandle*> position_handles;
+    std::vector<mavsdk::Telemetry::HomeHandle*> home_handles;
+    std::vector<mavsdk::Telemetry::InAirHandle*> in_air_handles;
+    std::vector<mavsdk::Telemetry::LandedStateHandle*> landed_state_handles;
+    std::vector<mavsdk::Telemetry::ArmedHandle*> armed_handles;
+    std::vector<mavsdk::Telemetry::VtolStateHandle*> vtol_state_handles;
+    std::vector<mavsdk::Telemetry::AttitudeQuaternionHandle*> attitude_quaternion_handles;
+    std::vector<mavsdk::Telemetry::AttitudeEulerHandle*> attitude_euler_handles;
+    std::vector<mavsdk::Telemetry::AttitudeAngularVelocityBodyHandle*> attitude_angular_velocity_body_handles;
+    std::vector<mavsdk::Telemetry::VelocityNedHandle*> velocity_ned_handles;
+    std::vector<mavsdk::Telemetry::GpsInfoHandle*> gps_info_handles;
+    std::vector<mavsdk::Telemetry::RawGpsHandle*> raw_gps_handles;
+    std::vector<mavsdk::Telemetry::BatteryHandle*> battery_handles;
+    std::vector<mavsdk::Telemetry::FlightModeHandle*> flight_mode_handles;
+    std::vector<mavsdk::Telemetry::HealthHandle*> health_handles;
+    std::vector<mavsdk::Telemetry::RcStatusHandle*> rc_status_handles;
+    std::vector<mavsdk::Telemetry::StatusTextHandle*> status_text_handles;
+    std::vector<mavsdk::Telemetry::ActuatorControlTargetHandle*> actuator_control_target_handles;
+    std::vector<mavsdk::Telemetry::ActuatorOutputStatusHandle*> actuator_output_status_handles;
+    std::vector<mavsdk::Telemetry::OdometryHandle*> odometry_handles;
+    std::vector<mavsdk::Telemetry::PositionVelocityNedHandle*> position_velocity_ned_handles;
+    std::vector<mavsdk::Telemetry::GroundTruthHandle*> ground_truth_handles;
+    std::vector<mavsdk::Telemetry::FixedwingMetricsHandle*> fixedwing_metrics_handles;
+    std::vector<mavsdk::Telemetry::ImuHandle*> imu_handles;
+    std::vector<mavsdk::Telemetry::ScaledImuHandle*> scaled_imu_handles;
+    std::vector<mavsdk::Telemetry::RawImuHandle*> raw_imu_handles;
+    std::vector<mavsdk::Telemetry::HealthAllOkHandle*> health_all_ok_handles;
+    std::vector<mavsdk::Telemetry::UnixEpochTimeHandle*> unix_epoch_time_handles;
+    std::vector<mavsdk::Telemetry::DistanceSensorHandle*> distance_sensor_handles;
+    std::vector<mavsdk::Telemetry::ScaledPressureHandle*> scaled_pressure_handles;
+    std::vector<mavsdk::Telemetry::HeadingHandle*> heading_handles;
+    std::vector<mavsdk::Telemetry::AltitudeHandle*> altitude_handles;
+    std::vector<mavsdk::Telemetry::WindHandle*> wind_handles;
 };
 
 mavsdk_telemetry_t
@@ -1666,6 +1702,178 @@ void mavsdk_telemetry_destroy(mavsdk_telemetry_t telemetry) {
     }
 
     auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
+
+    // Unsubscribe all active streams before destroying to prevent
+    // callbacks firing into a destroyed object
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        for (auto* h : wrapper->position_handles) {
+            wrapper->cpp_plugin->unsubscribe_position(std::move(*h));
+            delete h;
+        }
+        wrapper->position_handles.clear();
+        for (auto* h : wrapper->home_handles) {
+            wrapper->cpp_plugin->unsubscribe_home(std::move(*h));
+            delete h;
+        }
+        wrapper->home_handles.clear();
+        for (auto* h : wrapper->in_air_handles) {
+            wrapper->cpp_plugin->unsubscribe_in_air(std::move(*h));
+            delete h;
+        }
+        wrapper->in_air_handles.clear();
+        for (auto* h : wrapper->landed_state_handles) {
+            wrapper->cpp_plugin->unsubscribe_landed_state(std::move(*h));
+            delete h;
+        }
+        wrapper->landed_state_handles.clear();
+        for (auto* h : wrapper->armed_handles) {
+            wrapper->cpp_plugin->unsubscribe_armed(std::move(*h));
+            delete h;
+        }
+        wrapper->armed_handles.clear();
+        for (auto* h : wrapper->vtol_state_handles) {
+            wrapper->cpp_plugin->unsubscribe_vtol_state(std::move(*h));
+            delete h;
+        }
+        wrapper->vtol_state_handles.clear();
+        for (auto* h : wrapper->attitude_quaternion_handles) {
+            wrapper->cpp_plugin->unsubscribe_attitude_quaternion(std::move(*h));
+            delete h;
+        }
+        wrapper->attitude_quaternion_handles.clear();
+        for (auto* h : wrapper->attitude_euler_handles) {
+            wrapper->cpp_plugin->unsubscribe_attitude_euler(std::move(*h));
+            delete h;
+        }
+        wrapper->attitude_euler_handles.clear();
+        for (auto* h : wrapper->attitude_angular_velocity_body_handles) {
+            wrapper->cpp_plugin->unsubscribe_attitude_angular_velocity_body(std::move(*h));
+            delete h;
+        }
+        wrapper->attitude_angular_velocity_body_handles.clear();
+        for (auto* h : wrapper->velocity_ned_handles) {
+            wrapper->cpp_plugin->unsubscribe_velocity_ned(std::move(*h));
+            delete h;
+        }
+        wrapper->velocity_ned_handles.clear();
+        for (auto* h : wrapper->gps_info_handles) {
+            wrapper->cpp_plugin->unsubscribe_gps_info(std::move(*h));
+            delete h;
+        }
+        wrapper->gps_info_handles.clear();
+        for (auto* h : wrapper->raw_gps_handles) {
+            wrapper->cpp_plugin->unsubscribe_raw_gps(std::move(*h));
+            delete h;
+        }
+        wrapper->raw_gps_handles.clear();
+        for (auto* h : wrapper->battery_handles) {
+            wrapper->cpp_plugin->unsubscribe_battery(std::move(*h));
+            delete h;
+        }
+        wrapper->battery_handles.clear();
+        for (auto* h : wrapper->flight_mode_handles) {
+            wrapper->cpp_plugin->unsubscribe_flight_mode(std::move(*h));
+            delete h;
+        }
+        wrapper->flight_mode_handles.clear();
+        for (auto* h : wrapper->health_handles) {
+            wrapper->cpp_plugin->unsubscribe_health(std::move(*h));
+            delete h;
+        }
+        wrapper->health_handles.clear();
+        for (auto* h : wrapper->rc_status_handles) {
+            wrapper->cpp_plugin->unsubscribe_rc_status(std::move(*h));
+            delete h;
+        }
+        wrapper->rc_status_handles.clear();
+        for (auto* h : wrapper->status_text_handles) {
+            wrapper->cpp_plugin->unsubscribe_status_text(std::move(*h));
+            delete h;
+        }
+        wrapper->status_text_handles.clear();
+        for (auto* h : wrapper->actuator_control_target_handles) {
+            wrapper->cpp_plugin->unsubscribe_actuator_control_target(std::move(*h));
+            delete h;
+        }
+        wrapper->actuator_control_target_handles.clear();
+        for (auto* h : wrapper->actuator_output_status_handles) {
+            wrapper->cpp_plugin->unsubscribe_actuator_output_status(std::move(*h));
+            delete h;
+        }
+        wrapper->actuator_output_status_handles.clear();
+        for (auto* h : wrapper->odometry_handles) {
+            wrapper->cpp_plugin->unsubscribe_odometry(std::move(*h));
+            delete h;
+        }
+        wrapper->odometry_handles.clear();
+        for (auto* h : wrapper->position_velocity_ned_handles) {
+            wrapper->cpp_plugin->unsubscribe_position_velocity_ned(std::move(*h));
+            delete h;
+        }
+        wrapper->position_velocity_ned_handles.clear();
+        for (auto* h : wrapper->ground_truth_handles) {
+            wrapper->cpp_plugin->unsubscribe_ground_truth(std::move(*h));
+            delete h;
+        }
+        wrapper->ground_truth_handles.clear();
+        for (auto* h : wrapper->fixedwing_metrics_handles) {
+            wrapper->cpp_plugin->unsubscribe_fixedwing_metrics(std::move(*h));
+            delete h;
+        }
+        wrapper->fixedwing_metrics_handles.clear();
+        for (auto* h : wrapper->imu_handles) {
+            wrapper->cpp_plugin->unsubscribe_imu(std::move(*h));
+            delete h;
+        }
+        wrapper->imu_handles.clear();
+        for (auto* h : wrapper->scaled_imu_handles) {
+            wrapper->cpp_plugin->unsubscribe_scaled_imu(std::move(*h));
+            delete h;
+        }
+        wrapper->scaled_imu_handles.clear();
+        for (auto* h : wrapper->raw_imu_handles) {
+            wrapper->cpp_plugin->unsubscribe_raw_imu(std::move(*h));
+            delete h;
+        }
+        wrapper->raw_imu_handles.clear();
+        for (auto* h : wrapper->health_all_ok_handles) {
+            wrapper->cpp_plugin->unsubscribe_health_all_ok(std::move(*h));
+            delete h;
+        }
+        wrapper->health_all_ok_handles.clear();
+        for (auto* h : wrapper->unix_epoch_time_handles) {
+            wrapper->cpp_plugin->unsubscribe_unix_epoch_time(std::move(*h));
+            delete h;
+        }
+        wrapper->unix_epoch_time_handles.clear();
+        for (auto* h : wrapper->distance_sensor_handles) {
+            wrapper->cpp_plugin->unsubscribe_distance_sensor(std::move(*h));
+            delete h;
+        }
+        wrapper->distance_sensor_handles.clear();
+        for (auto* h : wrapper->scaled_pressure_handles) {
+            wrapper->cpp_plugin->unsubscribe_scaled_pressure(std::move(*h));
+            delete h;
+        }
+        wrapper->scaled_pressure_handles.clear();
+        for (auto* h : wrapper->heading_handles) {
+            wrapper->cpp_plugin->unsubscribe_heading(std::move(*h));
+            delete h;
+        }
+        wrapper->heading_handles.clear();
+        for (auto* h : wrapper->altitude_handles) {
+            wrapper->cpp_plugin->unsubscribe_altitude(std::move(*h));
+            delete h;
+        }
+        wrapper->altitude_handles.clear();
+        for (auto* h : wrapper->wind_handles) {
+            wrapper->cpp_plugin->unsubscribe_wind(std::move(*h));
+            delete h;
+        }
+        wrapper->wind_handles.clear();
+    }
+
     delete wrapper;
 }
 
@@ -1689,8 +1897,14 @@ mavsdk_telemetry_position_handle_t mavsdk_telemetry_subscribe_position(
                 }
         });
 
-    auto handle_wrapper = new mavsdk::Telemetry::PositionHandle(std::move(cpp_handle));
-    return reinterpret_cast<mavsdk_telemetry_position_handle_t>(handle_wrapper);
+    auto cpp_handle_ptr = new mavsdk::Telemetry::PositionHandle(std::move(cpp_handle));
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        wrapper->position_handles.push_back(cpp_handle_ptr);
+    }
+
+    return reinterpret_cast<mavsdk_telemetry_position_handle_t>(cpp_handle_ptr);
 }
 
 void mavsdk_telemetry_unsubscribe_position(
@@ -1700,6 +1914,13 @@ void mavsdk_telemetry_unsubscribe_position(
     if (handle) {
         auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
         auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::PositionHandle*>(handle);
+
+        {
+            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+            auto& vec = wrapper->position_handles;
+            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
+        }
+
         wrapper->cpp_plugin->unsubscribe_position(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -1738,8 +1959,14 @@ mavsdk_telemetry_home_handle_t mavsdk_telemetry_subscribe_home(
                 }
         });
 
-    auto handle_wrapper = new mavsdk::Telemetry::HomeHandle(std::move(cpp_handle));
-    return reinterpret_cast<mavsdk_telemetry_home_handle_t>(handle_wrapper);
+    auto cpp_handle_ptr = new mavsdk::Telemetry::HomeHandle(std::move(cpp_handle));
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        wrapper->home_handles.push_back(cpp_handle_ptr);
+    }
+
+    return reinterpret_cast<mavsdk_telemetry_home_handle_t>(cpp_handle_ptr);
 }
 
 void mavsdk_telemetry_unsubscribe_home(
@@ -1749,6 +1976,13 @@ void mavsdk_telemetry_unsubscribe_home(
     if (handle) {
         auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
         auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::HomeHandle*>(handle);
+
+        {
+            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+            auto& vec = wrapper->home_handles;
+            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
+        }
+
         wrapper->cpp_plugin->unsubscribe_home(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -1787,8 +2021,14 @@ mavsdk_telemetry_in_air_handle_t mavsdk_telemetry_subscribe_in_air(
                 }
         });
 
-    auto handle_wrapper = new mavsdk::Telemetry::InAirHandle(std::move(cpp_handle));
-    return reinterpret_cast<mavsdk_telemetry_in_air_handle_t>(handle_wrapper);
+    auto cpp_handle_ptr = new mavsdk::Telemetry::InAirHandle(std::move(cpp_handle));
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        wrapper->in_air_handles.push_back(cpp_handle_ptr);
+    }
+
+    return reinterpret_cast<mavsdk_telemetry_in_air_handle_t>(cpp_handle_ptr);
 }
 
 void mavsdk_telemetry_unsubscribe_in_air(
@@ -1798,6 +2038,13 @@ void mavsdk_telemetry_unsubscribe_in_air(
     if (handle) {
         auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
         auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::InAirHandle*>(handle);
+
+        {
+            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+            auto& vec = wrapper->in_air_handles;
+            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
+        }
+
         wrapper->cpp_plugin->unsubscribe_in_air(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -1834,8 +2081,14 @@ mavsdk_telemetry_landed_state_handle_t mavsdk_telemetry_subscribe_landed_state(
                 }
         });
 
-    auto handle_wrapper = new mavsdk::Telemetry::LandedStateHandle(std::move(cpp_handle));
-    return reinterpret_cast<mavsdk_telemetry_landed_state_handle_t>(handle_wrapper);
+    auto cpp_handle_ptr = new mavsdk::Telemetry::LandedStateHandle(std::move(cpp_handle));
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        wrapper->landed_state_handles.push_back(cpp_handle_ptr);
+    }
+
+    return reinterpret_cast<mavsdk_telemetry_landed_state_handle_t>(cpp_handle_ptr);
 }
 
 void mavsdk_telemetry_unsubscribe_landed_state(
@@ -1845,6 +2098,13 @@ void mavsdk_telemetry_unsubscribe_landed_state(
     if (handle) {
         auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
         auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::LandedStateHandle*>(handle);
+
+        {
+            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+            auto& vec = wrapper->landed_state_handles;
+            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
+        }
+
         wrapper->cpp_plugin->unsubscribe_landed_state(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -1883,8 +2143,14 @@ mavsdk_telemetry_armed_handle_t mavsdk_telemetry_subscribe_armed(
                 }
         });
 
-    auto handle_wrapper = new mavsdk::Telemetry::ArmedHandle(std::move(cpp_handle));
-    return reinterpret_cast<mavsdk_telemetry_armed_handle_t>(handle_wrapper);
+    auto cpp_handle_ptr = new mavsdk::Telemetry::ArmedHandle(std::move(cpp_handle));
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        wrapper->armed_handles.push_back(cpp_handle_ptr);
+    }
+
+    return reinterpret_cast<mavsdk_telemetry_armed_handle_t>(cpp_handle_ptr);
 }
 
 void mavsdk_telemetry_unsubscribe_armed(
@@ -1894,6 +2160,13 @@ void mavsdk_telemetry_unsubscribe_armed(
     if (handle) {
         auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
         auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::ArmedHandle*>(handle);
+
+        {
+            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+            auto& vec = wrapper->armed_handles;
+            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
+        }
+
         wrapper->cpp_plugin->unsubscribe_armed(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -1930,8 +2203,14 @@ mavsdk_telemetry_vtol_state_handle_t mavsdk_telemetry_subscribe_vtol_state(
                 }
         });
 
-    auto handle_wrapper = new mavsdk::Telemetry::VtolStateHandle(std::move(cpp_handle));
-    return reinterpret_cast<mavsdk_telemetry_vtol_state_handle_t>(handle_wrapper);
+    auto cpp_handle_ptr = new mavsdk::Telemetry::VtolStateHandle(std::move(cpp_handle));
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        wrapper->vtol_state_handles.push_back(cpp_handle_ptr);
+    }
+
+    return reinterpret_cast<mavsdk_telemetry_vtol_state_handle_t>(cpp_handle_ptr);
 }
 
 void mavsdk_telemetry_unsubscribe_vtol_state(
@@ -1941,6 +2220,13 @@ void mavsdk_telemetry_unsubscribe_vtol_state(
     if (handle) {
         auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
         auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::VtolStateHandle*>(handle);
+
+        {
+            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+            auto& vec = wrapper->vtol_state_handles;
+            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
+        }
+
         wrapper->cpp_plugin->unsubscribe_vtol_state(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -1979,8 +2265,14 @@ mavsdk_telemetry_attitude_quaternion_handle_t mavsdk_telemetry_subscribe_attitud
                 }
         });
 
-    auto handle_wrapper = new mavsdk::Telemetry::AttitudeQuaternionHandle(std::move(cpp_handle));
-    return reinterpret_cast<mavsdk_telemetry_attitude_quaternion_handle_t>(handle_wrapper);
+    auto cpp_handle_ptr = new mavsdk::Telemetry::AttitudeQuaternionHandle(std::move(cpp_handle));
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        wrapper->attitude_quaternion_handles.push_back(cpp_handle_ptr);
+    }
+
+    return reinterpret_cast<mavsdk_telemetry_attitude_quaternion_handle_t>(cpp_handle_ptr);
 }
 
 void mavsdk_telemetry_unsubscribe_attitude_quaternion(
@@ -1990,6 +2282,13 @@ void mavsdk_telemetry_unsubscribe_attitude_quaternion(
     if (handle) {
         auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
         auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::AttitudeQuaternionHandle*>(handle);
+
+        {
+            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+            auto& vec = wrapper->attitude_quaternion_handles;
+            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
+        }
+
         wrapper->cpp_plugin->unsubscribe_attitude_quaternion(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -2028,8 +2327,14 @@ mavsdk_telemetry_attitude_euler_handle_t mavsdk_telemetry_subscribe_attitude_eul
                 }
         });
 
-    auto handle_wrapper = new mavsdk::Telemetry::AttitudeEulerHandle(std::move(cpp_handle));
-    return reinterpret_cast<mavsdk_telemetry_attitude_euler_handle_t>(handle_wrapper);
+    auto cpp_handle_ptr = new mavsdk::Telemetry::AttitudeEulerHandle(std::move(cpp_handle));
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        wrapper->attitude_euler_handles.push_back(cpp_handle_ptr);
+    }
+
+    return reinterpret_cast<mavsdk_telemetry_attitude_euler_handle_t>(cpp_handle_ptr);
 }
 
 void mavsdk_telemetry_unsubscribe_attitude_euler(
@@ -2039,6 +2344,13 @@ void mavsdk_telemetry_unsubscribe_attitude_euler(
     if (handle) {
         auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
         auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::AttitudeEulerHandle*>(handle);
+
+        {
+            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+            auto& vec = wrapper->attitude_euler_handles;
+            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
+        }
+
         wrapper->cpp_plugin->unsubscribe_attitude_euler(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -2077,8 +2389,14 @@ mavsdk_telemetry_attitude_angular_velocity_body_handle_t mavsdk_telemetry_subscr
                 }
         });
 
-    auto handle_wrapper = new mavsdk::Telemetry::AttitudeAngularVelocityBodyHandle(std::move(cpp_handle));
-    return reinterpret_cast<mavsdk_telemetry_attitude_angular_velocity_body_handle_t>(handle_wrapper);
+    auto cpp_handle_ptr = new mavsdk::Telemetry::AttitudeAngularVelocityBodyHandle(std::move(cpp_handle));
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        wrapper->attitude_angular_velocity_body_handles.push_back(cpp_handle_ptr);
+    }
+
+    return reinterpret_cast<mavsdk_telemetry_attitude_angular_velocity_body_handle_t>(cpp_handle_ptr);
 }
 
 void mavsdk_telemetry_unsubscribe_attitude_angular_velocity_body(
@@ -2088,6 +2406,13 @@ void mavsdk_telemetry_unsubscribe_attitude_angular_velocity_body(
     if (handle) {
         auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
         auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::AttitudeAngularVelocityBodyHandle*>(handle);
+
+        {
+            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+            auto& vec = wrapper->attitude_angular_velocity_body_handles;
+            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
+        }
+
         wrapper->cpp_plugin->unsubscribe_attitude_angular_velocity_body(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -2126,8 +2451,14 @@ mavsdk_telemetry_velocity_ned_handle_t mavsdk_telemetry_subscribe_velocity_ned(
                 }
         });
 
-    auto handle_wrapper = new mavsdk::Telemetry::VelocityNedHandle(std::move(cpp_handle));
-    return reinterpret_cast<mavsdk_telemetry_velocity_ned_handle_t>(handle_wrapper);
+    auto cpp_handle_ptr = new mavsdk::Telemetry::VelocityNedHandle(std::move(cpp_handle));
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        wrapper->velocity_ned_handles.push_back(cpp_handle_ptr);
+    }
+
+    return reinterpret_cast<mavsdk_telemetry_velocity_ned_handle_t>(cpp_handle_ptr);
 }
 
 void mavsdk_telemetry_unsubscribe_velocity_ned(
@@ -2137,6 +2468,13 @@ void mavsdk_telemetry_unsubscribe_velocity_ned(
     if (handle) {
         auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
         auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::VelocityNedHandle*>(handle);
+
+        {
+            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+            auto& vec = wrapper->velocity_ned_handles;
+            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
+        }
+
         wrapper->cpp_plugin->unsubscribe_velocity_ned(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -2175,8 +2513,14 @@ mavsdk_telemetry_gps_info_handle_t mavsdk_telemetry_subscribe_gps_info(
                 }
         });
 
-    auto handle_wrapper = new mavsdk::Telemetry::GpsInfoHandle(std::move(cpp_handle));
-    return reinterpret_cast<mavsdk_telemetry_gps_info_handle_t>(handle_wrapper);
+    auto cpp_handle_ptr = new mavsdk::Telemetry::GpsInfoHandle(std::move(cpp_handle));
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        wrapper->gps_info_handles.push_back(cpp_handle_ptr);
+    }
+
+    return reinterpret_cast<mavsdk_telemetry_gps_info_handle_t>(cpp_handle_ptr);
 }
 
 void mavsdk_telemetry_unsubscribe_gps_info(
@@ -2186,6 +2530,13 @@ void mavsdk_telemetry_unsubscribe_gps_info(
     if (handle) {
         auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
         auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::GpsInfoHandle*>(handle);
+
+        {
+            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+            auto& vec = wrapper->gps_info_handles;
+            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
+        }
+
         wrapper->cpp_plugin->unsubscribe_gps_info(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -2224,8 +2575,14 @@ mavsdk_telemetry_raw_gps_handle_t mavsdk_telemetry_subscribe_raw_gps(
                 }
         });
 
-    auto handle_wrapper = new mavsdk::Telemetry::RawGpsHandle(std::move(cpp_handle));
-    return reinterpret_cast<mavsdk_telemetry_raw_gps_handle_t>(handle_wrapper);
+    auto cpp_handle_ptr = new mavsdk::Telemetry::RawGpsHandle(std::move(cpp_handle));
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        wrapper->raw_gps_handles.push_back(cpp_handle_ptr);
+    }
+
+    return reinterpret_cast<mavsdk_telemetry_raw_gps_handle_t>(cpp_handle_ptr);
 }
 
 void mavsdk_telemetry_unsubscribe_raw_gps(
@@ -2235,6 +2592,13 @@ void mavsdk_telemetry_unsubscribe_raw_gps(
     if (handle) {
         auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
         auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::RawGpsHandle*>(handle);
+
+        {
+            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+            auto& vec = wrapper->raw_gps_handles;
+            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
+        }
+
         wrapper->cpp_plugin->unsubscribe_raw_gps(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -2273,8 +2637,14 @@ mavsdk_telemetry_battery_handle_t mavsdk_telemetry_subscribe_battery(
                 }
         });
 
-    auto handle_wrapper = new mavsdk::Telemetry::BatteryHandle(std::move(cpp_handle));
-    return reinterpret_cast<mavsdk_telemetry_battery_handle_t>(handle_wrapper);
+    auto cpp_handle_ptr = new mavsdk::Telemetry::BatteryHandle(std::move(cpp_handle));
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        wrapper->battery_handles.push_back(cpp_handle_ptr);
+    }
+
+    return reinterpret_cast<mavsdk_telemetry_battery_handle_t>(cpp_handle_ptr);
 }
 
 void mavsdk_telemetry_unsubscribe_battery(
@@ -2284,6 +2654,13 @@ void mavsdk_telemetry_unsubscribe_battery(
     if (handle) {
         auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
         auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::BatteryHandle*>(handle);
+
+        {
+            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+            auto& vec = wrapper->battery_handles;
+            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
+        }
+
         wrapper->cpp_plugin->unsubscribe_battery(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -2322,8 +2699,14 @@ mavsdk_telemetry_flight_mode_handle_t mavsdk_telemetry_subscribe_flight_mode(
                 }
         });
 
-    auto handle_wrapper = new mavsdk::Telemetry::FlightModeHandle(std::move(cpp_handle));
-    return reinterpret_cast<mavsdk_telemetry_flight_mode_handle_t>(handle_wrapper);
+    auto cpp_handle_ptr = new mavsdk::Telemetry::FlightModeHandle(std::move(cpp_handle));
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        wrapper->flight_mode_handles.push_back(cpp_handle_ptr);
+    }
+
+    return reinterpret_cast<mavsdk_telemetry_flight_mode_handle_t>(cpp_handle_ptr);
 }
 
 void mavsdk_telemetry_unsubscribe_flight_mode(
@@ -2333,6 +2716,13 @@ void mavsdk_telemetry_unsubscribe_flight_mode(
     if (handle) {
         auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
         auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::FlightModeHandle*>(handle);
+
+        {
+            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+            auto& vec = wrapper->flight_mode_handles;
+            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
+        }
+
         wrapper->cpp_plugin->unsubscribe_flight_mode(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -2371,8 +2761,14 @@ mavsdk_telemetry_health_handle_t mavsdk_telemetry_subscribe_health(
                 }
         });
 
-    auto handle_wrapper = new mavsdk::Telemetry::HealthHandle(std::move(cpp_handle));
-    return reinterpret_cast<mavsdk_telemetry_health_handle_t>(handle_wrapper);
+    auto cpp_handle_ptr = new mavsdk::Telemetry::HealthHandle(std::move(cpp_handle));
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        wrapper->health_handles.push_back(cpp_handle_ptr);
+    }
+
+    return reinterpret_cast<mavsdk_telemetry_health_handle_t>(cpp_handle_ptr);
 }
 
 void mavsdk_telemetry_unsubscribe_health(
@@ -2382,6 +2778,13 @@ void mavsdk_telemetry_unsubscribe_health(
     if (handle) {
         auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
         auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::HealthHandle*>(handle);
+
+        {
+            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+            auto& vec = wrapper->health_handles;
+            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
+        }
+
         wrapper->cpp_plugin->unsubscribe_health(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -2420,8 +2823,14 @@ mavsdk_telemetry_rc_status_handle_t mavsdk_telemetry_subscribe_rc_status(
                 }
         });
 
-    auto handle_wrapper = new mavsdk::Telemetry::RcStatusHandle(std::move(cpp_handle));
-    return reinterpret_cast<mavsdk_telemetry_rc_status_handle_t>(handle_wrapper);
+    auto cpp_handle_ptr = new mavsdk::Telemetry::RcStatusHandle(std::move(cpp_handle));
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        wrapper->rc_status_handles.push_back(cpp_handle_ptr);
+    }
+
+    return reinterpret_cast<mavsdk_telemetry_rc_status_handle_t>(cpp_handle_ptr);
 }
 
 void mavsdk_telemetry_unsubscribe_rc_status(
@@ -2431,6 +2840,13 @@ void mavsdk_telemetry_unsubscribe_rc_status(
     if (handle) {
         auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
         auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::RcStatusHandle*>(handle);
+
+        {
+            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+            auto& vec = wrapper->rc_status_handles;
+            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
+        }
+
         wrapper->cpp_plugin->unsubscribe_rc_status(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -2469,8 +2885,14 @@ mavsdk_telemetry_status_text_handle_t mavsdk_telemetry_subscribe_status_text(
                 }
         });
 
-    auto handle_wrapper = new mavsdk::Telemetry::StatusTextHandle(std::move(cpp_handle));
-    return reinterpret_cast<mavsdk_telemetry_status_text_handle_t>(handle_wrapper);
+    auto cpp_handle_ptr = new mavsdk::Telemetry::StatusTextHandle(std::move(cpp_handle));
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        wrapper->status_text_handles.push_back(cpp_handle_ptr);
+    }
+
+    return reinterpret_cast<mavsdk_telemetry_status_text_handle_t>(cpp_handle_ptr);
 }
 
 void mavsdk_telemetry_unsubscribe_status_text(
@@ -2480,6 +2902,13 @@ void mavsdk_telemetry_unsubscribe_status_text(
     if (handle) {
         auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
         auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::StatusTextHandle*>(handle);
+
+        {
+            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+            auto& vec = wrapper->status_text_handles;
+            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
+        }
+
         wrapper->cpp_plugin->unsubscribe_status_text(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -2518,8 +2947,14 @@ mavsdk_telemetry_actuator_control_target_handle_t mavsdk_telemetry_subscribe_act
                 }
         });
 
-    auto handle_wrapper = new mavsdk::Telemetry::ActuatorControlTargetHandle(std::move(cpp_handle));
-    return reinterpret_cast<mavsdk_telemetry_actuator_control_target_handle_t>(handle_wrapper);
+    auto cpp_handle_ptr = new mavsdk::Telemetry::ActuatorControlTargetHandle(std::move(cpp_handle));
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        wrapper->actuator_control_target_handles.push_back(cpp_handle_ptr);
+    }
+
+    return reinterpret_cast<mavsdk_telemetry_actuator_control_target_handle_t>(cpp_handle_ptr);
 }
 
 void mavsdk_telemetry_unsubscribe_actuator_control_target(
@@ -2529,6 +2964,13 @@ void mavsdk_telemetry_unsubscribe_actuator_control_target(
     if (handle) {
         auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
         auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::ActuatorControlTargetHandle*>(handle);
+
+        {
+            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+            auto& vec = wrapper->actuator_control_target_handles;
+            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
+        }
+
         wrapper->cpp_plugin->unsubscribe_actuator_control_target(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -2567,8 +3009,14 @@ mavsdk_telemetry_actuator_output_status_handle_t mavsdk_telemetry_subscribe_actu
                 }
         });
 
-    auto handle_wrapper = new mavsdk::Telemetry::ActuatorOutputStatusHandle(std::move(cpp_handle));
-    return reinterpret_cast<mavsdk_telemetry_actuator_output_status_handle_t>(handle_wrapper);
+    auto cpp_handle_ptr = new mavsdk::Telemetry::ActuatorOutputStatusHandle(std::move(cpp_handle));
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        wrapper->actuator_output_status_handles.push_back(cpp_handle_ptr);
+    }
+
+    return reinterpret_cast<mavsdk_telemetry_actuator_output_status_handle_t>(cpp_handle_ptr);
 }
 
 void mavsdk_telemetry_unsubscribe_actuator_output_status(
@@ -2578,6 +3026,13 @@ void mavsdk_telemetry_unsubscribe_actuator_output_status(
     if (handle) {
         auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
         auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::ActuatorOutputStatusHandle*>(handle);
+
+        {
+            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+            auto& vec = wrapper->actuator_output_status_handles;
+            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
+        }
+
         wrapper->cpp_plugin->unsubscribe_actuator_output_status(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -2616,8 +3071,14 @@ mavsdk_telemetry_odometry_handle_t mavsdk_telemetry_subscribe_odometry(
                 }
         });
 
-    auto handle_wrapper = new mavsdk::Telemetry::OdometryHandle(std::move(cpp_handle));
-    return reinterpret_cast<mavsdk_telemetry_odometry_handle_t>(handle_wrapper);
+    auto cpp_handle_ptr = new mavsdk::Telemetry::OdometryHandle(std::move(cpp_handle));
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        wrapper->odometry_handles.push_back(cpp_handle_ptr);
+    }
+
+    return reinterpret_cast<mavsdk_telemetry_odometry_handle_t>(cpp_handle_ptr);
 }
 
 void mavsdk_telemetry_unsubscribe_odometry(
@@ -2627,6 +3088,13 @@ void mavsdk_telemetry_unsubscribe_odometry(
     if (handle) {
         auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
         auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::OdometryHandle*>(handle);
+
+        {
+            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+            auto& vec = wrapper->odometry_handles;
+            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
+        }
+
         wrapper->cpp_plugin->unsubscribe_odometry(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -2665,8 +3133,14 @@ mavsdk_telemetry_position_velocity_ned_handle_t mavsdk_telemetry_subscribe_posit
                 }
         });
 
-    auto handle_wrapper = new mavsdk::Telemetry::PositionVelocityNedHandle(std::move(cpp_handle));
-    return reinterpret_cast<mavsdk_telemetry_position_velocity_ned_handle_t>(handle_wrapper);
+    auto cpp_handle_ptr = new mavsdk::Telemetry::PositionVelocityNedHandle(std::move(cpp_handle));
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        wrapper->position_velocity_ned_handles.push_back(cpp_handle_ptr);
+    }
+
+    return reinterpret_cast<mavsdk_telemetry_position_velocity_ned_handle_t>(cpp_handle_ptr);
 }
 
 void mavsdk_telemetry_unsubscribe_position_velocity_ned(
@@ -2676,6 +3150,13 @@ void mavsdk_telemetry_unsubscribe_position_velocity_ned(
     if (handle) {
         auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
         auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::PositionVelocityNedHandle*>(handle);
+
+        {
+            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+            auto& vec = wrapper->position_velocity_ned_handles;
+            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
+        }
+
         wrapper->cpp_plugin->unsubscribe_position_velocity_ned(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -2714,8 +3195,14 @@ mavsdk_telemetry_ground_truth_handle_t mavsdk_telemetry_subscribe_ground_truth(
                 }
         });
 
-    auto handle_wrapper = new mavsdk::Telemetry::GroundTruthHandle(std::move(cpp_handle));
-    return reinterpret_cast<mavsdk_telemetry_ground_truth_handle_t>(handle_wrapper);
+    auto cpp_handle_ptr = new mavsdk::Telemetry::GroundTruthHandle(std::move(cpp_handle));
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        wrapper->ground_truth_handles.push_back(cpp_handle_ptr);
+    }
+
+    return reinterpret_cast<mavsdk_telemetry_ground_truth_handle_t>(cpp_handle_ptr);
 }
 
 void mavsdk_telemetry_unsubscribe_ground_truth(
@@ -2725,6 +3212,13 @@ void mavsdk_telemetry_unsubscribe_ground_truth(
     if (handle) {
         auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
         auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::GroundTruthHandle*>(handle);
+
+        {
+            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+            auto& vec = wrapper->ground_truth_handles;
+            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
+        }
+
         wrapper->cpp_plugin->unsubscribe_ground_truth(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -2763,8 +3257,14 @@ mavsdk_telemetry_fixedwing_metrics_handle_t mavsdk_telemetry_subscribe_fixedwing
                 }
         });
 
-    auto handle_wrapper = new mavsdk::Telemetry::FixedwingMetricsHandle(std::move(cpp_handle));
-    return reinterpret_cast<mavsdk_telemetry_fixedwing_metrics_handle_t>(handle_wrapper);
+    auto cpp_handle_ptr = new mavsdk::Telemetry::FixedwingMetricsHandle(std::move(cpp_handle));
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        wrapper->fixedwing_metrics_handles.push_back(cpp_handle_ptr);
+    }
+
+    return reinterpret_cast<mavsdk_telemetry_fixedwing_metrics_handle_t>(cpp_handle_ptr);
 }
 
 void mavsdk_telemetry_unsubscribe_fixedwing_metrics(
@@ -2774,6 +3274,13 @@ void mavsdk_telemetry_unsubscribe_fixedwing_metrics(
     if (handle) {
         auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
         auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::FixedwingMetricsHandle*>(handle);
+
+        {
+            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+            auto& vec = wrapper->fixedwing_metrics_handles;
+            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
+        }
+
         wrapper->cpp_plugin->unsubscribe_fixedwing_metrics(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -2812,8 +3319,14 @@ mavsdk_telemetry_imu_handle_t mavsdk_telemetry_subscribe_imu(
                 }
         });
 
-    auto handle_wrapper = new mavsdk::Telemetry::ImuHandle(std::move(cpp_handle));
-    return reinterpret_cast<mavsdk_telemetry_imu_handle_t>(handle_wrapper);
+    auto cpp_handle_ptr = new mavsdk::Telemetry::ImuHandle(std::move(cpp_handle));
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        wrapper->imu_handles.push_back(cpp_handle_ptr);
+    }
+
+    return reinterpret_cast<mavsdk_telemetry_imu_handle_t>(cpp_handle_ptr);
 }
 
 void mavsdk_telemetry_unsubscribe_imu(
@@ -2823,6 +3336,13 @@ void mavsdk_telemetry_unsubscribe_imu(
     if (handle) {
         auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
         auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::ImuHandle*>(handle);
+
+        {
+            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+            auto& vec = wrapper->imu_handles;
+            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
+        }
+
         wrapper->cpp_plugin->unsubscribe_imu(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -2861,8 +3381,14 @@ mavsdk_telemetry_scaled_imu_handle_t mavsdk_telemetry_subscribe_scaled_imu(
                 }
         });
 
-    auto handle_wrapper = new mavsdk::Telemetry::ScaledImuHandle(std::move(cpp_handle));
-    return reinterpret_cast<mavsdk_telemetry_scaled_imu_handle_t>(handle_wrapper);
+    auto cpp_handle_ptr = new mavsdk::Telemetry::ScaledImuHandle(std::move(cpp_handle));
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        wrapper->scaled_imu_handles.push_back(cpp_handle_ptr);
+    }
+
+    return reinterpret_cast<mavsdk_telemetry_scaled_imu_handle_t>(cpp_handle_ptr);
 }
 
 void mavsdk_telemetry_unsubscribe_scaled_imu(
@@ -2872,6 +3398,13 @@ void mavsdk_telemetry_unsubscribe_scaled_imu(
     if (handle) {
         auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
         auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::ScaledImuHandle*>(handle);
+
+        {
+            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+            auto& vec = wrapper->scaled_imu_handles;
+            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
+        }
+
         wrapper->cpp_plugin->unsubscribe_scaled_imu(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -2910,8 +3443,14 @@ mavsdk_telemetry_raw_imu_handle_t mavsdk_telemetry_subscribe_raw_imu(
                 }
         });
 
-    auto handle_wrapper = new mavsdk::Telemetry::RawImuHandle(std::move(cpp_handle));
-    return reinterpret_cast<mavsdk_telemetry_raw_imu_handle_t>(handle_wrapper);
+    auto cpp_handle_ptr = new mavsdk::Telemetry::RawImuHandle(std::move(cpp_handle));
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        wrapper->raw_imu_handles.push_back(cpp_handle_ptr);
+    }
+
+    return reinterpret_cast<mavsdk_telemetry_raw_imu_handle_t>(cpp_handle_ptr);
 }
 
 void mavsdk_telemetry_unsubscribe_raw_imu(
@@ -2921,6 +3460,13 @@ void mavsdk_telemetry_unsubscribe_raw_imu(
     if (handle) {
         auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
         auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::RawImuHandle*>(handle);
+
+        {
+            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+            auto& vec = wrapper->raw_imu_handles;
+            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
+        }
+
         wrapper->cpp_plugin->unsubscribe_raw_imu(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -2959,8 +3505,14 @@ mavsdk_telemetry_health_all_ok_handle_t mavsdk_telemetry_subscribe_health_all_ok
                 }
         });
 
-    auto handle_wrapper = new mavsdk::Telemetry::HealthAllOkHandle(std::move(cpp_handle));
-    return reinterpret_cast<mavsdk_telemetry_health_all_ok_handle_t>(handle_wrapper);
+    auto cpp_handle_ptr = new mavsdk::Telemetry::HealthAllOkHandle(std::move(cpp_handle));
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        wrapper->health_all_ok_handles.push_back(cpp_handle_ptr);
+    }
+
+    return reinterpret_cast<mavsdk_telemetry_health_all_ok_handle_t>(cpp_handle_ptr);
 }
 
 void mavsdk_telemetry_unsubscribe_health_all_ok(
@@ -2970,6 +3522,13 @@ void mavsdk_telemetry_unsubscribe_health_all_ok(
     if (handle) {
         auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
         auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::HealthAllOkHandle*>(handle);
+
+        {
+            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+            auto& vec = wrapper->health_all_ok_handles;
+            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
+        }
+
         wrapper->cpp_plugin->unsubscribe_health_all_ok(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -3006,8 +3565,14 @@ mavsdk_telemetry_unix_epoch_time_handle_t mavsdk_telemetry_subscribe_unix_epoch_
                 }
         });
 
-    auto handle_wrapper = new mavsdk::Telemetry::UnixEpochTimeHandle(std::move(cpp_handle));
-    return reinterpret_cast<mavsdk_telemetry_unix_epoch_time_handle_t>(handle_wrapper);
+    auto cpp_handle_ptr = new mavsdk::Telemetry::UnixEpochTimeHandle(std::move(cpp_handle));
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        wrapper->unix_epoch_time_handles.push_back(cpp_handle_ptr);
+    }
+
+    return reinterpret_cast<mavsdk_telemetry_unix_epoch_time_handle_t>(cpp_handle_ptr);
 }
 
 void mavsdk_telemetry_unsubscribe_unix_epoch_time(
@@ -3017,6 +3582,13 @@ void mavsdk_telemetry_unsubscribe_unix_epoch_time(
     if (handle) {
         auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
         auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::UnixEpochTimeHandle*>(handle);
+
+        {
+            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+            auto& vec = wrapper->unix_epoch_time_handles;
+            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
+        }
+
         wrapper->cpp_plugin->unsubscribe_unix_epoch_time(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -3053,8 +3625,14 @@ mavsdk_telemetry_distance_sensor_handle_t mavsdk_telemetry_subscribe_distance_se
                 }
         });
 
-    auto handle_wrapper = new mavsdk::Telemetry::DistanceSensorHandle(std::move(cpp_handle));
-    return reinterpret_cast<mavsdk_telemetry_distance_sensor_handle_t>(handle_wrapper);
+    auto cpp_handle_ptr = new mavsdk::Telemetry::DistanceSensorHandle(std::move(cpp_handle));
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        wrapper->distance_sensor_handles.push_back(cpp_handle_ptr);
+    }
+
+    return reinterpret_cast<mavsdk_telemetry_distance_sensor_handle_t>(cpp_handle_ptr);
 }
 
 void mavsdk_telemetry_unsubscribe_distance_sensor(
@@ -3064,6 +3642,13 @@ void mavsdk_telemetry_unsubscribe_distance_sensor(
     if (handle) {
         auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
         auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::DistanceSensorHandle*>(handle);
+
+        {
+            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+            auto& vec = wrapper->distance_sensor_handles;
+            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
+        }
+
         wrapper->cpp_plugin->unsubscribe_distance_sensor(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -3102,8 +3687,14 @@ mavsdk_telemetry_scaled_pressure_handle_t mavsdk_telemetry_subscribe_scaled_pres
                 }
         });
 
-    auto handle_wrapper = new mavsdk::Telemetry::ScaledPressureHandle(std::move(cpp_handle));
-    return reinterpret_cast<mavsdk_telemetry_scaled_pressure_handle_t>(handle_wrapper);
+    auto cpp_handle_ptr = new mavsdk::Telemetry::ScaledPressureHandle(std::move(cpp_handle));
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        wrapper->scaled_pressure_handles.push_back(cpp_handle_ptr);
+    }
+
+    return reinterpret_cast<mavsdk_telemetry_scaled_pressure_handle_t>(cpp_handle_ptr);
 }
 
 void mavsdk_telemetry_unsubscribe_scaled_pressure(
@@ -3113,6 +3704,13 @@ void mavsdk_telemetry_unsubscribe_scaled_pressure(
     if (handle) {
         auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
         auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::ScaledPressureHandle*>(handle);
+
+        {
+            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+            auto& vec = wrapper->scaled_pressure_handles;
+            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
+        }
+
         wrapper->cpp_plugin->unsubscribe_scaled_pressure(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -3151,8 +3749,14 @@ mavsdk_telemetry_heading_handle_t mavsdk_telemetry_subscribe_heading(
                 }
         });
 
-    auto handle_wrapper = new mavsdk::Telemetry::HeadingHandle(std::move(cpp_handle));
-    return reinterpret_cast<mavsdk_telemetry_heading_handle_t>(handle_wrapper);
+    auto cpp_handle_ptr = new mavsdk::Telemetry::HeadingHandle(std::move(cpp_handle));
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        wrapper->heading_handles.push_back(cpp_handle_ptr);
+    }
+
+    return reinterpret_cast<mavsdk_telemetry_heading_handle_t>(cpp_handle_ptr);
 }
 
 void mavsdk_telemetry_unsubscribe_heading(
@@ -3162,6 +3766,13 @@ void mavsdk_telemetry_unsubscribe_heading(
     if (handle) {
         auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
         auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::HeadingHandle*>(handle);
+
+        {
+            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+            auto& vec = wrapper->heading_handles;
+            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
+        }
+
         wrapper->cpp_plugin->unsubscribe_heading(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -3200,8 +3811,14 @@ mavsdk_telemetry_altitude_handle_t mavsdk_telemetry_subscribe_altitude(
                 }
         });
 
-    auto handle_wrapper = new mavsdk::Telemetry::AltitudeHandle(std::move(cpp_handle));
-    return reinterpret_cast<mavsdk_telemetry_altitude_handle_t>(handle_wrapper);
+    auto cpp_handle_ptr = new mavsdk::Telemetry::AltitudeHandle(std::move(cpp_handle));
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        wrapper->altitude_handles.push_back(cpp_handle_ptr);
+    }
+
+    return reinterpret_cast<mavsdk_telemetry_altitude_handle_t>(cpp_handle_ptr);
 }
 
 void mavsdk_telemetry_unsubscribe_altitude(
@@ -3211,6 +3828,13 @@ void mavsdk_telemetry_unsubscribe_altitude(
     if (handle) {
         auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
         auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::AltitudeHandle*>(handle);
+
+        {
+            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+            auto& vec = wrapper->altitude_handles;
+            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
+        }
+
         wrapper->cpp_plugin->unsubscribe_altitude(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -3249,8 +3873,14 @@ mavsdk_telemetry_wind_handle_t mavsdk_telemetry_subscribe_wind(
                 }
         });
 
-    auto handle_wrapper = new mavsdk::Telemetry::WindHandle(std::move(cpp_handle));
-    return reinterpret_cast<mavsdk_telemetry_wind_handle_t>(handle_wrapper);
+    auto cpp_handle_ptr = new mavsdk::Telemetry::WindHandle(std::move(cpp_handle));
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        wrapper->wind_handles.push_back(cpp_handle_ptr);
+    }
+
+    return reinterpret_cast<mavsdk_telemetry_wind_handle_t>(cpp_handle_ptr);
 }
 
 void mavsdk_telemetry_unsubscribe_wind(
@@ -3260,6 +3890,13 @@ void mavsdk_telemetry_unsubscribe_wind(
     if (handle) {
         auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
         auto cpp_handle = reinterpret_cast<mavsdk::Telemetry::WindHandle*>(handle);
+
+        {
+            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+            auto& vec = wrapper->wind_handles;
+            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
+        }
+
         wrapper->cpp_plugin->unsubscribe_wind(std::move(*cpp_handle));
         delete cpp_handle;
     }
