@@ -28,12 +28,13 @@ setup_venv() {
         
         echo "Installing dependencies..."
         pip install protoc-gen-mavsdk
-        pip install ruff
         
         echo "Virtual environment setup complete."
     else
         echo "Already in a virtual environment: $VIRTUAL_ENV"
     fi
+
+    pip install ruff
 }
 
 # Function to run protoc commands for a plugin
