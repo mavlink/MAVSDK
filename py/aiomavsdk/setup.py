@@ -1,5 +1,4 @@
 import os
-import subprocess
 from os.path import join as path_join
 from setuptools import setup, find_packages
 
@@ -12,36 +11,20 @@ def parse_long_description():
         return "Asyncio wrapper for MAVSDK"
 
 
-def version():
-    try:
-        process = subprocess.Popen(
-            ["git", "describe", "--tags"],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-        )
-        output, _ = process.communicate()
-        exit_code = process.wait()
-        if exit_code != 0:
-            print("No git tags found, using default version")
-            return "0.1.0"
-        git_describe_str = output.decode("utf-8").strip()
-        git_describe_str = git_describe_str.replace("-g", "+g")
-        print(f"Version from git: {git_describe_str}")
-        return git_describe_str
-    except Exception as e:
-        print(f"Could not determine version from git: {e}")
-        return "0.1.0"
-
-
 setup(
     name="aiomavsdk",
-    version=version(),
+    use_scm_version={
+        "root": "../..",
+        "relative_to": __file__,
+        "version_scheme": "post-release",
+    },
+    setup_requires=["setuptools-scm"],
     maintainer="Jonas Vautherin, Julian Oes",
     maintainer_email="dev@jonas.vautherin.ch, julian@oes.ch",
     description="Asyncio wrapper for MAVSDK",
     long_description=parse_long_description(),
     long_description_content_type="text/markdown",
-    url="https://github.com/mavlink/MAVSDK-Python",
+    url="https://github.com/mavlink/MAVSDK",
     packages=find_packages(),
     license="BSD-3-Clause",
     classifiers=[
