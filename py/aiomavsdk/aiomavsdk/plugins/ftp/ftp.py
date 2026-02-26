@@ -8,7 +8,7 @@ Implements file transfer functionality using MAVLink FTP.
 
 import asyncio
 from typing import AsyncGenerator
-from pymavsdk.plugins.ftp import (
+from mavsdk.plugins.ftp import (
     Ftp,
     FtpResult,
     ListDirectoryData,
@@ -83,7 +83,7 @@ class FtpAsync:
         remote_dir : std::string
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x108170590> : ListDirectoryData
+        <protoc_gen_mavsdk.name_parser.NameParser object at 0x108758050> : ListDirectoryData
         Raises
         ------
         FtpError
@@ -173,7 +173,7 @@ class FtpAsync:
         remote_file_path : std::string
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x108171130> :
+        <protoc_gen_mavsdk.name_parser.NameParser object at 0x108758bf0> :
         Raises
         ------
         FtpError

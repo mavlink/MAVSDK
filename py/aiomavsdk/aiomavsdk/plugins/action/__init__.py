@@ -7,7 +7,7 @@ Enable simple actions such as arming, taking off, and landing.
 
 from .action import ActionAsync
 
-from pymavsdk.plugins.action import (
+from mavsdk.plugins.action import (
     Action,
     OrbitYawBehavior,
     RelayCommand,

@@ -8,7 +8,7 @@ Enable waypoint missions.
 
 import asyncio
 from typing import AsyncGenerator
-from pymavsdk.plugins.mission import (
+from mavsdk.plugins.mission import (
     Mission,
     MissionResult,
     MissionItem,
@@ -52,7 +52,7 @@ class MissionAsync:
 
                Parameters
                ----------
-               mission_plan : <protoc_gen_mavsdk.name_parser.NameParser object at 0x107ebf3b0>
+               mission_plan : <protoc_gen_mavsdk.name_parser.NameParser object at 0x10678ae70>
                Raises
                ------
                MissionError
@@ -106,7 +106,7 @@ class MissionAsync:
 
                Returns
                -------
-               <protoc_gen_mavsdk.name_parser.NameParser object at 0x107ebe390> : MissionPlan
+               <protoc_gen_mavsdk.name_parser.NameParser object at 0x106789e50> : MissionPlan
                Raises
                ------
                MissionError
@@ -221,7 +221,7 @@ class MissionAsync:
 
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x107ebedb0> :
+        <protoc_gen_mavsdk.name_parser.NameParser object at 0x10678a870> :
         Raises
         ------
         MissionError
@@ -263,7 +263,7 @@ class MissionAsync:
 
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x107ebef90> : MissionProgress
+        <protoc_gen_mavsdk.name_parser.NameParser object at 0x10678aa50> : MissionProgress
         Raises
         ------
         MissionError
@@ -281,7 +281,7 @@ class MissionAsync:
 
                Returns
                -------
-               <protoc_gen_mavsdk.name_parser.NameParser object at 0x107ebf170> :
+               <protoc_gen_mavsdk.name_parser.NameParser object at 0x10678ac30> :
                Raises
                ------
                MissionError

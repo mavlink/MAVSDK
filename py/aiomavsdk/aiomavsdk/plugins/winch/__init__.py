@@ -7,7 +7,7 @@ Allows users to send winch actions, as well as receive status information from w
 
 from .winch import WinchAsync
 
-from pymavsdk.plugins.winch import (
+from mavsdk.plugins.winch import (
     Winch,
     WinchAction,
     WinchResult,

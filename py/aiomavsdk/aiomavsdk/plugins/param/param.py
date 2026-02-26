@@ -8,7 +8,7 @@ Provide raw access to get and set parameters.
 
 import asyncio
 from typing import AsyncGenerator
-from pymavsdk.plugins.param import (
+from mavsdk.plugins.param import (
     Param,
     ParamResult,
     ProtocolVersion,
@@ -54,7 +54,7 @@ class ParamAsync:
                name : std::string
                Returns
                -------
-               <protoc_gen_mavsdk.name_parser.NameParser object at 0x107ba0770> :
+               <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a3dc230> :
                Raises
                ------
                ParamError
@@ -96,7 +96,7 @@ class ParamAsync:
                name : std::string
                Returns
                -------
-               <protoc_gen_mavsdk.name_parser.NameParser object at 0x107ba0b30> :
+               <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a3dc5f0> :
                Raises
                ------
                ParamError
@@ -138,7 +138,7 @@ class ParamAsync:
                name : std::string
                Returns
                -------
-               <protoc_gen_mavsdk.name_parser.NameParser object at 0x107ba0f50> :
+               <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a3dca10> :
                Raises
                ------
                ParamError
@@ -175,7 +175,7 @@ class ParamAsync:
 
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x107ba12b0> : AllParams
+        <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a3dcd70> : AllParams
         Raises
         ------
         ParamError
@@ -193,7 +193,7 @@ class ParamAsync:
                Parameters
                ----------
                component_id : int32_t
-               protocol_version : <protoc_gen_mavsdk.name_parser.NameParser object at 0x107ba2090>
+               protocol_version : <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a3ddb50>
                Raises
                ------
                ParamError

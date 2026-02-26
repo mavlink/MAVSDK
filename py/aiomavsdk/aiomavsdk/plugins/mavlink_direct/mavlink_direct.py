@@ -8,7 +8,7 @@ Enable direct MAVLink communication using libmav.
 
 import asyncio
 from typing import AsyncGenerator
-from pymavsdk.plugins.mavlink_direct import (
+from mavsdk.plugins.mavlink_direct import (
     MavlinkDirect,
     MavlinkDirectResult,
     MavlinkMessage,
@@ -47,7 +47,7 @@ class MavlinkDirectAsync:
 
                Parameters
                ----------
-               message : <protoc_gen_mavsdk.name_parser.NameParser object at 0x108584c50>
+               message : <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a8f7cb0>
                Raises
                ------
                MavlinkDirectError

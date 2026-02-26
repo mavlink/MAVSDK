@@ -9,7 +9,7 @@ Allow users to get vehicle telemetry and state information
 
 from .telemetry import TelemetryAsync
 
-from pymavsdk.plugins.telemetry import (
+from mavsdk.plugins.telemetry import (
     Telemetry,
     FixType,
     BatteryFunction,

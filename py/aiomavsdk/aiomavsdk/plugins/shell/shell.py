@@ -8,7 +8,7 @@ Allow to communicate with the vehicle's system shell.
 
 import asyncio
 from typing import AsyncGenerator
-from pymavsdk.plugins.shell import (
+from mavsdk.plugins.shell import (
     Shell,
     ShellResult,
 )

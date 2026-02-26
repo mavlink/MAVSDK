@@ -8,7 +8,7 @@ Provides handling of camera interface
 
 import asyncio
 from typing import AsyncGenerator
-from pymavsdk.plugins.camera_server import (
+from mavsdk.plugins.camera_server import (
     CameraServer,
     CameraServerResult,
     CameraFeedback,
@@ -55,7 +55,7 @@ class CameraServerAsync:
 
         Parameters
         ----------
-        information : <protoc_gen_mavsdk.name_parser.NameParser object at 0x106332870>
+        information : <protoc_gen_mavsdk.name_parser.NameParser object at 0x105da6330>
         Raises
         ------
         CameraServerError
@@ -72,7 +72,7 @@ class CameraServerAsync:
 
         Parameters
         ----------
-        video_streaming : <protoc_gen_mavsdk.name_parser.NameParser object at 0x106333290>
+        video_streaming : <protoc_gen_mavsdk.name_parser.NameParser object at 0x105da6d50>
         Raises
         ------
         CameraServerError
@@ -131,8 +131,8 @@ class CameraServerAsync:
 
         Parameters
         ----------
-        take_photo_feedback : <protoc_gen_mavsdk.name_parser.NameParser object at 0x106333290>
-        capture_info : <protoc_gen_mavsdk.name_parser.NameParser object at 0x106333290>
+        take_photo_feedback : <protoc_gen_mavsdk.name_parser.NameParser object at 0x105da6d50>
+        capture_info : <protoc_gen_mavsdk.name_parser.NameParser object at 0x105da6d50>
         Raises
         ------
         CameraServerError
@@ -175,7 +175,7 @@ class CameraServerAsync:
 
         Parameters
         ----------
-        start_video_feedback : <protoc_gen_mavsdk.name_parser.NameParser object at 0x106333290>
+        start_video_feedback : <protoc_gen_mavsdk.name_parser.NameParser object at 0x105da6d50>
         Raises
         ------
         CameraServerError
@@ -217,7 +217,7 @@ class CameraServerAsync:
 
         Parameters
         ----------
-        stop_video_feedback : <protoc_gen_mavsdk.name_parser.NameParser object at 0x106333290>
+        stop_video_feedback : <protoc_gen_mavsdk.name_parser.NameParser object at 0x105da6d50>
         Raises
         ------
         CameraServerError
@@ -259,7 +259,7 @@ class CameraServerAsync:
 
         Parameters
         ----------
-        start_video_streaming_feedback : <protoc_gen_mavsdk.name_parser.NameParser object at 0x106333290>
+        start_video_streaming_feedback : <protoc_gen_mavsdk.name_parser.NameParser object at 0x105da6d50>
         Raises
         ------
         CameraServerError
@@ -304,7 +304,7 @@ class CameraServerAsync:
 
         Parameters
         ----------
-        stop_video_streaming_feedback : <protoc_gen_mavsdk.name_parser.NameParser object at 0x106333290>
+        stop_video_streaming_feedback : <protoc_gen_mavsdk.name_parser.NameParser object at 0x105da6d50>
         Raises
         ------
         CameraServerError
@@ -349,7 +349,7 @@ class CameraServerAsync:
 
         Parameters
         ----------
-        set_mode_feedback : <protoc_gen_mavsdk.name_parser.NameParser object at 0x106332870>
+        set_mode_feedback : <protoc_gen_mavsdk.name_parser.NameParser object at 0x105da6330>
         Raises
         ------
         CameraServerError
@@ -393,8 +393,8 @@ class CameraServerAsync:
 
         Parameters
         ----------
-        storage_information_feedback : <protoc_gen_mavsdk.name_parser.NameParser object at 0x106332870>
-        storage_information : <protoc_gen_mavsdk.name_parser.NameParser object at 0x106333290>
+        storage_information_feedback : <protoc_gen_mavsdk.name_parser.NameParser object at 0x105da6330>
+        storage_information : <protoc_gen_mavsdk.name_parser.NameParser object at 0x105da6d50>
         Raises
         ------
         CameraServerError
@@ -439,8 +439,8 @@ class CameraServerAsync:
 
         Parameters
         ----------
-        capture_status_feedback : <protoc_gen_mavsdk.name_parser.NameParser object at 0x106333290>
-        capture_status : <protoc_gen_mavsdk.name_parser.NameParser object at 0x106333290>
+        capture_status_feedback : <protoc_gen_mavsdk.name_parser.NameParser object at 0x105da6d50>
+        capture_status : <protoc_gen_mavsdk.name_parser.NameParser object at 0x105da6d50>
         Raises
         ------
         CameraServerError
@@ -485,7 +485,7 @@ class CameraServerAsync:
 
         Parameters
         ----------
-        format_storage_feedback : <protoc_gen_mavsdk.name_parser.NameParser object at 0x106333290>
+        format_storage_feedback : <protoc_gen_mavsdk.name_parser.NameParser object at 0x105da6d50>
         Raises
         ------
         CameraServerError
@@ -527,7 +527,7 @@ class CameraServerAsync:
 
         Parameters
         ----------
-        reset_settings_feedback : <protoc_gen_mavsdk.name_parser.NameParser object at 0x106333290>
+        reset_settings_feedback : <protoc_gen_mavsdk.name_parser.NameParser object at 0x105da6d50>
         Raises
         ------
         CameraServerError
@@ -569,7 +569,7 @@ class CameraServerAsync:
 
         Parameters
         ----------
-        zoom_in_start_feedback : <protoc_gen_mavsdk.name_parser.NameParser object at 0x106333290>
+        zoom_in_start_feedback : <protoc_gen_mavsdk.name_parser.NameParser object at 0x105da6d50>
         Raises
         ------
         CameraServerError
@@ -611,7 +611,7 @@ class CameraServerAsync:
 
         Parameters
         ----------
-        zoom_out_start_feedback : <protoc_gen_mavsdk.name_parser.NameParser object at 0x106333290>
+        zoom_out_start_feedback : <protoc_gen_mavsdk.name_parser.NameParser object at 0x105da6d50>
         Raises
         ------
         CameraServerError
@@ -653,7 +653,7 @@ class CameraServerAsync:
 
         Parameters
         ----------
-        zoom_stop_feedback : <protoc_gen_mavsdk.name_parser.NameParser object at 0x106333290>
+        zoom_stop_feedback : <protoc_gen_mavsdk.name_parser.NameParser object at 0x105da6d50>
         Raises
         ------
         CameraServerError
@@ -695,7 +695,7 @@ class CameraServerAsync:
 
         Parameters
         ----------
-        zoom_range_feedback : <protoc_gen_mavsdk.name_parser.NameParser object at 0x106333290>
+        zoom_range_feedback : <protoc_gen_mavsdk.name_parser.NameParser object at 0x105da6d50>
         Raises
         ------
         CameraServerError
@@ -712,7 +712,7 @@ class CameraServerAsync:
 
         Parameters
         ----------
-        tracked_rectangle : <protoc_gen_mavsdk.name_parser.NameParser object at 0x106332870>
+        tracked_rectangle : <protoc_gen_mavsdk.name_parser.NameParser object at 0x105da6330>
         Raises
         ------
         CameraServerError
@@ -822,7 +822,7 @@ class CameraServerAsync:
 
         Parameters
         ----------
-        stop_video_feedback : <protoc_gen_mavsdk.name_parser.NameParser object at 0x106333290>
+        stop_video_feedback : <protoc_gen_mavsdk.name_parser.NameParser object at 0x105da6d50>
         Raises
         ------
         CameraServerError
@@ -840,7 +840,7 @@ class CameraServerAsync:
 
         Parameters
         ----------
-        stop_video_feedback : <protoc_gen_mavsdk.name_parser.NameParser object at 0x106332870>
+        stop_video_feedback : <protoc_gen_mavsdk.name_parser.NameParser object at 0x105da6330>
         Raises
         ------
         CameraServerError
@@ -860,7 +860,7 @@ class CameraServerAsync:
 
         Parameters
         ----------
-        stop_video_feedback : <protoc_gen_mavsdk.name_parser.NameParser object at 0x106333290>
+        stop_video_feedback : <protoc_gen_mavsdk.name_parser.NameParser object at 0x105da6d50>
         Raises
         ------
         CameraServerError

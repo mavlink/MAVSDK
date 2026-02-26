@@ -8,7 +8,7 @@ Allow users to provide vehicle telemetry and state information
 
 from .telemetry_server import TelemetryServerAsync
 
-from pymavsdk.plugins.telemetry_server import (
+from mavsdk.plugins.telemetry_server import (
     TelemetryServer,
     FixType,
     VtolState,

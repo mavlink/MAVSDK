@@ -9,7 +9,7 @@ Provide control over a gimbal within the MAVLink
 
 import asyncio
 from typing import AsyncGenerator
-from pymavsdk.plugins.gimbal import (
+from mavsdk.plugins.gimbal import (
     Gimbal,
     GimbalResult,
     GimbalMode,
@@ -68,8 +68,8 @@ class GimbalAsync:
                roll_deg : float
                pitch_deg : float
                yaw_deg : float
-               gimbal_mode : <protoc_gen_mavsdk.name_parser.NameParser object at 0x10833ba70>
-               send_mode : <protoc_gen_mavsdk.name_parser.NameParser object at 0x10833ba70>
+               gimbal_mode : <protoc_gen_mavsdk.name_parser.NameParser object at 0x109e6f530>
+               send_mode : <protoc_gen_mavsdk.name_parser.NameParser object at 0x109e6f530>
                Raises
                ------
                GimbalError
@@ -107,8 +107,8 @@ class GimbalAsync:
                roll_rate_deg_s : float
                pitch_rate_deg_s : float
                yaw_rate_deg_s : float
-               gimbal_mode : <protoc_gen_mavsdk.name_parser.NameParser object at 0x10833ba70>
-               send_mode : <protoc_gen_mavsdk.name_parser.NameParser object at 0x10833ba70>
+               gimbal_mode : <protoc_gen_mavsdk.name_parser.NameParser object at 0x109e6f530>
+               send_mode : <protoc_gen_mavsdk.name_parser.NameParser object at 0x109e6f530>
                Raises
                ------
                GimbalError
@@ -173,7 +173,7 @@ class GimbalAsync:
                Parameters
                ----------
                gimbal_id : int32_t
-               control_mode : <protoc_gen_mavsdk.name_parser.NameParser object at 0x10833ba70>
+               control_mode : <protoc_gen_mavsdk.name_parser.NameParser object at 0x109e6f530>
                Raises
                ------
                GimbalError
@@ -240,7 +240,7 @@ class GimbalAsync:
 
                Returns
                -------
-               <protoc_gen_mavsdk.name_parser.NameParser object at 0x10833aff0> : GimbalList
+               <protoc_gen_mavsdk.name_parser.NameParser object at 0x109e6eab0> : GimbalList
                Raises
                ------
                GimbalError
@@ -287,7 +287,7 @@ class GimbalAsync:
         gimbal_id : int32_t
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x10833b4d0> : ControlStatus
+        <protoc_gen_mavsdk.name_parser.NameParser object at 0x109e6ef90> : ControlStatus
         Raises
         ------
         GimbalError
@@ -334,7 +334,7 @@ class GimbalAsync:
         gimbal_id : int32_t
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x10833ba10> : Attitude
+        <protoc_gen_mavsdk.name_parser.NameParser object at 0x109e6f4d0> : Attitude
         Raises
         ------
         GimbalError

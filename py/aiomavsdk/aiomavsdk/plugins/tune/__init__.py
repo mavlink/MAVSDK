@@ -7,7 +7,7 @@ Enable creating and sending a tune to be played on the system.
 
 from .tune import TuneAsync
 
-from pymavsdk.plugins.tune import (
+from mavsdk.plugins.tune import (
     Tune,
     SongElement,
     TuneResult,

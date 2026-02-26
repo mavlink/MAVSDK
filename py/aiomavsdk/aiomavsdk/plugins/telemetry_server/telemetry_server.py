@@ -9,7 +9,7 @@ Allow users to provide vehicle telemetry and state information
 
 import asyncio
 from typing import AsyncGenerator
-from pymavsdk.plugins.telemetry_server import (
+from mavsdk.plugins.telemetry_server import (
     TelemetryServer,
     TelemetryServerResult,
     FixType,
@@ -77,9 +77,9 @@ class TelemetryServerAsync:
 
         Parameters
         ----------
-        position : <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a43f830>
-        velocity_ned : <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a43fd10>
-        heading : <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a43fd10>
+        position : <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a0832f0>
+        velocity_ned : <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a083d70>
+        heading : <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a083d70>
         Raises
         ------
         TelemetryServerError
@@ -96,7 +96,7 @@ class TelemetryServerAsync:
 
         Parameters
         ----------
-        home : <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a43fd10>
+        home : <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a083d70>
         Raises
         ------
         TelemetryServerError
@@ -119,7 +119,7 @@ class TelemetryServerAsync:
 
         Parameters
         ----------
-        battery : <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a43fd10>
+        battery : <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a083d70>
         rc_receiver_status : bool
         gyro_status : bool
         accel_status : bool
@@ -149,8 +149,8 @@ class TelemetryServerAsync:
 
         Parameters
         ----------
-        vtol_state : <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a43fd10>
-        landed_state : <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a43f830>
+        vtol_state : <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a083d70>
+        landed_state : <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a0832f0>
         Raises
         ------
         TelemetryServerError
@@ -168,8 +168,8 @@ class TelemetryServerAsync:
 
         Parameters
         ----------
-        raw_gps : <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a43f830>
-        gps_info : <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a43f830>
+        raw_gps : <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a0832f0>
+        gps_info : <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a0832f0>
         Raises
         ------
         TelemetryServerError
@@ -186,7 +186,7 @@ class TelemetryServerAsync:
 
         Parameters
         ----------
-        battery : <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a43f830>
+        battery : <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a0832f0>
         Raises
         ------
         TelemetryServerError
@@ -203,7 +203,7 @@ class TelemetryServerAsync:
 
         Parameters
         ----------
-        status_text : <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a43f830>
+        status_text : <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a0832f0>
         Raises
         ------
         TelemetryServerError
@@ -220,7 +220,7 @@ class TelemetryServerAsync:
 
         Parameters
         ----------
-        odometry : <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a43f830>
+        odometry : <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a0832f0>
         Raises
         ------
         TelemetryServerError
@@ -237,7 +237,7 @@ class TelemetryServerAsync:
 
         Parameters
         ----------
-        position_velocity_ned : <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a43fd10>
+        position_velocity_ned : <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a083d70>
         Raises
         ------
         TelemetryServerError
@@ -255,7 +255,7 @@ class TelemetryServerAsync:
 
         Parameters
         ----------
-        ground_truth : <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a43f830>
+        ground_truth : <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a0832f0>
         Raises
         ------
         TelemetryServerError
@@ -272,7 +272,7 @@ class TelemetryServerAsync:
 
         Parameters
         ----------
-        imu : <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a43f830>
+        imu : <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a0832f0>
         Raises
         ------
         TelemetryServerError
@@ -287,7 +287,7 @@ class TelemetryServerAsync:
 
         Parameters
         ----------
-        imu : <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a43f830>
+        imu : <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a0832f0>
         Raises
         ------
         TelemetryServerError
@@ -304,7 +304,7 @@ class TelemetryServerAsync:
 
         Parameters
         ----------
-        imu : <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a43f830>
+        imu : <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a0832f0>
         Raises
         ------
         TelemetryServerError
@@ -338,7 +338,7 @@ class TelemetryServerAsync:
 
         Parameters
         ----------
-        distance_sensor : <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a43fd10>
+        distance_sensor : <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a083d70>
         Raises
         ------
         TelemetryServerError
@@ -355,8 +355,8 @@ class TelemetryServerAsync:
 
         Parameters
         ----------
-        angle : <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a43fd10>
-        angular_velocity : <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a43f830>
+        angle : <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a083d70>
+        angular_velocity : <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a0832f0>
         Raises
         ------
         TelemetryServerError
@@ -373,7 +373,7 @@ class TelemetryServerAsync:
 
         Parameters
         ----------
-        fixed_wing_metrics : <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a43fd10>
+        fixed_wing_metrics : <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a083d70>
         Raises
         ------
         TelemetryServerError

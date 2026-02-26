@@ -7,7 +7,7 @@ Use arm authorization.
 
 from .arm_authorizer_server import ArmAuthorizerServerAsync
 
-from pymavsdk.plugins.arm_authorizer_server import (
+from mavsdk.plugins.arm_authorizer_server import (
     ArmAuthorizerServer,
     RejectionReason,
     ArmAuthorizerServerResult,

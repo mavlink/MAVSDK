@@ -7,7 +7,7 @@ Get event notifications, such as takeoff, or arming checks
 
 from .events import EventsAsync
 
-from pymavsdk.plugins.events import (
+from mavsdk.plugins.events import (
     Events,
     LogLevel,
     EventsResult,

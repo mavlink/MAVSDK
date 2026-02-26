@@ -4,12 +4,12 @@ import asyncio
 
 from typing import AsyncGenerator, List
 
-from pymavsdk.system import System as _System
+from mavsdk.system import System as _System
 
 
 class System:
     """
-    Async wrapper around pymavsdk's :class:`~pymavsdk.system.System`.
+    Async wrapper around mavsdk's :class:`~mavsdk.system.System`.
 
     Simple accessors are exposed as ``async def`` for a uniform ``await``
     style. The connection-state subscription is exposed as an async generator.

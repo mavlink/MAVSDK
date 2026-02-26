@@ -8,7 +8,7 @@ Provide information about the hardware and/or software of a system.
 
 import asyncio
 from typing import AsyncGenerator
-from pymavsdk.plugins.info import (
+from mavsdk.plugins.info import (
     Info,
     InfoResult,
     FlightInfo,
@@ -48,7 +48,7 @@ class InfoAsync:
 
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x10620c410> : FlightInfo
+        <protoc_gen_mavsdk.name_parser.NameParser object at 0x109e5be90> : FlightInfo
         Raises
         ------
         InfoError
@@ -65,7 +65,7 @@ class InfoAsync:
 
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x10620c590> : Identification
+        <protoc_gen_mavsdk.name_parser.NameParser object at 0x109ed0050> : Identification
         Raises
         ------
         InfoError
@@ -82,7 +82,7 @@ class InfoAsync:
 
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x10620c770> : Product
+        <protoc_gen_mavsdk.name_parser.NameParser object at 0x109ed0230> : Product
         Raises
         ------
         InfoError
@@ -97,7 +97,7 @@ class InfoAsync:
 
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x10620c9b0> : Version
+        <protoc_gen_mavsdk.name_parser.NameParser object at 0x109ed0470> : Version
         Raises
         ------
         InfoError
@@ -112,7 +112,7 @@ class InfoAsync:
 
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x10620cb90> :
+        <protoc_gen_mavsdk.name_parser.NameParser object at 0x109ed0650> :
         Raises
         ------
         InfoError

@@ -1,6 +1,5 @@
 """
 Asyncio wrapper for MAVSDK.
-Mirrors the gRPC-based asyncio API while using pymavsdk (ctypes-based) directly.
 """
 
 from .autopilot import Autopilot

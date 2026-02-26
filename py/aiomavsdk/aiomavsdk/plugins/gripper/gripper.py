@@ -8,7 +8,7 @@ Allows users to send gripper actions.
 
 import asyncio
 from typing import AsyncGenerator
-from pymavsdk.plugins.gripper import (
+from mavsdk.plugins.gripper import (
     Gripper,
     GripperResult,
     GripperAction,

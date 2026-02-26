@@ -9,7 +9,7 @@ Allows interfacing a vehicle with a motion capture system in
 
 from .mocap import MocapAsync
 
-from pymavsdk.plugins.mocap import (
+from mavsdk.plugins.mocap import (
     Mocap,
     MocapResult,
     PositionBody,

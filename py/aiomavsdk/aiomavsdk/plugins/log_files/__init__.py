@@ -8,7 +8,7 @@ Allow to download log files from the vehicle after a flight is complete.
 
 from .log_files import LogFilesAsync
 
-from pymavsdk.plugins.log_files import (
+from mavsdk.plugins.log_files import (
     LogFiles,
     LogFilesResult,
     ProgressData,

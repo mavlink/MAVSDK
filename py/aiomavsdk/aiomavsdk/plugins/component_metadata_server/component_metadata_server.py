@@ -8,7 +8,7 @@ Provide component metadata json definitions, such as parameters.
 
 import asyncio
 from typing import AsyncGenerator
-from pymavsdk.plugins.component_metadata_server import (
+from mavsdk.plugins.component_metadata_server import (
     ComponentMetadataServer,
     ComponentMetadataServerResult,
     MetadataType,
@@ -46,7 +46,7 @@ class ComponentMetadataServerAsync:
 
         Parameters
         ----------
-        metadata : std::vector<<protoc_gen_mavsdk.name_parser.NameParser object at 0x107e5acd0>>
+        metadata : std::vector<<protoc_gen_mavsdk.name_parser.NameParser object at 0x107faa8d0>>
         Raises
         ------
         ComponentMetadataServerError

@@ -9,7 +9,7 @@ Allow users to command the vehicle to follow a specific target.
 
 import asyncio
 from typing import AsyncGenerator
-from pymavsdk.plugins.follow_me import (
+from mavsdk.plugins.follow_me import (
     FollowMe,
     FollowMeResult,
     Config,
@@ -48,7 +48,7 @@ class FollowMeAsync:
 
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a47c350> : Config
+        <protoc_gen_mavsdk.name_parser.NameParser object at 0x109bf3dd0> : Config
         Raises
         ------
         FollowMeError
@@ -63,7 +63,7 @@ class FollowMeAsync:
 
         Parameters
         ----------
-        config : <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a47ce90>
+        config : <protoc_gen_mavsdk.name_parser.NameParser object at 0x109c68950>
         Raises
         ------
         FollowMeError
@@ -78,7 +78,7 @@ class FollowMeAsync:
 
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a47c770> :
+        <protoc_gen_mavsdk.name_parser.NameParser object at 0x109c68230> :
         Raises
         ------
         FollowMeError
@@ -93,7 +93,7 @@ class FollowMeAsync:
 
         Parameters
         ----------
-        location : <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a47d8b0>
+        location : <protoc_gen_mavsdk.name_parser.NameParser object at 0x109c69370>
         Raises
         ------
         FollowMeError
@@ -110,7 +110,7 @@ class FollowMeAsync:
 
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a47cb30> : TargetLocation
+        <protoc_gen_mavsdk.name_parser.NameParser object at 0x109c685f0> : TargetLocation
         Raises
         ------
         FollowMeError

@@ -7,7 +7,7 @@ Enable direct MAVLink communication using libmav.
 
 from .mavlink_direct import MavlinkDirectAsync
 
-from pymavsdk.plugins.mavlink_direct import (
+from mavsdk.plugins.mavlink_direct import (
     MavlinkDirect,
     MavlinkDirectResult,
     MavlinkMessage,

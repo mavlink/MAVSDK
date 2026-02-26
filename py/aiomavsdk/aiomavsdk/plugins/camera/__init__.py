@@ -13,7 +13,7 @@ Can be used to manage cameras that implement the MAVLink
 
 from .camera import CameraAsync
 
-from pymavsdk.plugins.camera import (
+from mavsdk.plugins.camera import (
     Camera,
     Mode,
     PhotosRange,

@@ -7,7 +7,7 @@ Enable setting a geofence.
 
 from .geofence import GeofenceAsync
 
-from pymavsdk.plugins.geofence import (
+from mavsdk.plugins.geofence import (
     Geofence,
     FenceType,
     GeofenceResult,

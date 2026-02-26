@@ -8,7 +8,7 @@ Inject failures into system to test failsafes.
 
 import asyncio
 from typing import AsyncGenerator
-from pymavsdk.plugins.failure import (
+from mavsdk.plugins.failure import (
     Failure,
     FailureResult,
     FailureUnit,
@@ -46,8 +46,8 @@ class FailureAsync:
 
         Parameters
         ----------
-        failure_unit : <protoc_gen_mavsdk.name_parser.NameParser object at 0x105c38ad0>
-        failure_type : <protoc_gen_mavsdk.name_parser.NameParser object at 0x105c38ad0>
+        failure_unit : <protoc_gen_mavsdk.name_parser.NameParser object at 0x1088a8590>
+        failure_type : <protoc_gen_mavsdk.name_parser.NameParser object at 0x1088a8590>
         instance : int32_t
         Raises
         ------

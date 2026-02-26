@@ -7,7 +7,7 @@ Provide log streaming data.
 
 from .log_streaming import LogStreamingAsync
 
-from pymavsdk.plugins.log_streaming import (
+from mavsdk.plugins.log_streaming import (
     LogStreaming,
     LogStreamingResult,
     LogStreamingRaw,

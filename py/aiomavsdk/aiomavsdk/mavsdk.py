@@ -4,21 +4,21 @@ import asyncio
 
 from typing import Optional, List, AsyncGenerator
 
-from pymavsdk.mavsdk import Mavsdk as _Mavsdk, Configuration
-from pymavsdk.component_type import ComponentType
-from pymavsdk.server_component import ServerComponent
+from mavsdk.mavsdk import Mavsdk as _Mavsdk, Configuration
+from mavsdk.component_type import ComponentType
+from mavsdk.server_component import ServerComponent
 from .system import System
 from .exceptions import MavsdkConnectionError
 
 
 # Configuration has no blocking calls and no subscriptions — re-export as-is
-# so users construct it exactly the same way as with pymavsdk.
+# so users construct it exactly the same way as with mavsdk.
 __all__ = ["Configuration", "Mavsdk"]
 
 
 class Mavsdk:
     """
-    Async wrapper around pymavsdk's :class:`~pymavsdk.mavsdk.Mavsdk`.
+    Async wrapper around mavsdk's :class:`~mavsdk.mavsdk.Mavsdk`.
 
     Usage mirrors the gRPC-based asyncio API:
 
@@ -27,7 +27,7 @@ class Mavsdk:
     - ``on_new_system`` is an async generator instead of a callback-based
       subscription.
     - Returned :class:`System` objects are the aiomavsdk async wrapper, not
-      the raw pymavsdk ones.
+      the raw mavsdk ones.
     - Use as an async context manager (``async with``) or call
       :meth:`destroy` explicitly.
 

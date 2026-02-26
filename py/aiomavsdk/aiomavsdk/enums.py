@@ -1,4 +1,4 @@
-# Re-export from pymavsdk — no async wrapper needed for pure enums.
-from pymavsdk.enums import ForwardingOption
+# Re-export from mavsdk — no async wrapper needed for pure enums.
+from mavsdk.enums import ForwardingOption
 
 __all__ = ["ForwardingOption"]

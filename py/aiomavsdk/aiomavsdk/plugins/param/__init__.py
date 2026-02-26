@@ -7,7 +7,7 @@ Provide raw access to get and set parameters.
 
 from .param import ParamAsync
 
-from pymavsdk.plugins.param import (
+from mavsdk.plugins.param import (
     Param,
     ProtocolVersion,
     ParamResult,

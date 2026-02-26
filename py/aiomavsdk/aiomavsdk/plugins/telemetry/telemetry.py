@@ -10,7 +10,7 @@ Allow users to get vehicle telemetry and state information
 
 import asyncio
 from typing import AsyncGenerator
-from pymavsdk.plugins.telemetry import (
+from mavsdk.plugins.telemetry import (
     Telemetry,
     TelemetryResult,
     FixType,
@@ -110,7 +110,7 @@ class TelemetryAsync:
 
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x10854ab70> : Position
+        <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a1d6630> : Position
         Raises
         ------
         TelemetryError
@@ -150,7 +150,7 @@ class TelemetryAsync:
 
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x10854ad50> : Position
+        <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a1d6810> : Position
         Raises
         ------
         TelemetryError
@@ -190,7 +190,7 @@ class TelemetryAsync:
 
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x10854af30> :
+        <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a1d69f0> :
         Raises
         ------
         TelemetryError
@@ -230,7 +230,7 @@ class TelemetryAsync:
 
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x10854b170> : LandedState
+        <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a1d6c30> : LandedState
         Raises
         ------
         TelemetryError
@@ -270,7 +270,7 @@ class TelemetryAsync:
 
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x10854b2f0> :
+        <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a1d6db0> :
         Raises
         ------
         TelemetryError
@@ -310,7 +310,7 @@ class TelemetryAsync:
 
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x10854b4d0> : VtolState
+        <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a1d6f90> : VtolState
         Raises
         ------
         TelemetryError
@@ -350,7 +350,7 @@ class TelemetryAsync:
 
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x10854b710> : Quaternion
+        <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a1d71d0> : Quaternion
         Raises
         ------
         TelemetryError
@@ -392,7 +392,7 @@ class TelemetryAsync:
 
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x10854b9b0> : EulerAngle
+        <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a1d7470> : EulerAngle
         Raises
         ------
         TelemetryError
@@ -434,7 +434,7 @@ class TelemetryAsync:
 
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x10854bb90> : AngularVelocityBody
+        <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a1d7650> : AngularVelocityBody
         Raises
         ------
         TelemetryError
@@ -476,7 +476,7 @@ class TelemetryAsync:
 
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x10854be30> : VelocityNed
+        <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a1d78f0> : VelocityNed
         Raises
         ------
         TelemetryError
@@ -516,7 +516,7 @@ class TelemetryAsync:
 
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x108560050> : GpsInfo
+        <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a1d7a70> : GpsInfo
         Raises
         ------
         TelemetryError
@@ -556,7 +556,7 @@ class TelemetryAsync:
 
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x1085601d0> : RawGps
+        <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a1d7c50> : RawGps
         Raises
         ------
         TelemetryError
@@ -596,7 +596,7 @@ class TelemetryAsync:
 
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x1085603b0> : Battery
+        <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a1d7e30> : Battery
         Raises
         ------
         TelemetryError
@@ -636,7 +636,7 @@ class TelemetryAsync:
 
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x1085605f0> : FlightMode
+        <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a1ec0b0> : FlightMode
         Raises
         ------
         TelemetryError
@@ -676,7 +676,7 @@ class TelemetryAsync:
 
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x108560770> : Health
+        <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a1ec230> : Health
         Raises
         ------
         TelemetryError
@@ -716,7 +716,7 @@ class TelemetryAsync:
 
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x108560950> : RcStatus
+        <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a1ec410> : RcStatus
         Raises
         ------
         TelemetryError
@@ -756,7 +756,7 @@ class TelemetryAsync:
 
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x108560b90> : StatusText
+        <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a1ec650> : StatusText
         Raises
         ------
         TelemetryError
@@ -798,7 +798,7 @@ class TelemetryAsync:
 
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x108560d70> : ActuatorControlTarget
+        <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a1ec830> : ActuatorControlTarget
         Raises
         ------
         TelemetryError
@@ -842,7 +842,7 @@ class TelemetryAsync:
 
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x108560fb0> : ActuatorOutputStatus
+        <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a1eca70> : ActuatorOutputStatus
         Raises
         ------
         TelemetryError
@@ -884,7 +884,7 @@ class TelemetryAsync:
 
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x108561190> : Odometry
+        <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a1ecc50> : Odometry
         Raises
         ------
         TelemetryError
@@ -926,7 +926,7 @@ class TelemetryAsync:
 
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x1085613d0> : PositionVelocityNed
+        <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a1ece90> : PositionVelocityNed
         Raises
         ------
         TelemetryError
@@ -968,7 +968,7 @@ class TelemetryAsync:
 
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x108561610> : GroundTruth
+        <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a1ed0d0> : GroundTruth
         Raises
         ------
         TelemetryError
@@ -1010,7 +1010,7 @@ class TelemetryAsync:
 
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x108561850> : FixedwingMetrics
+        <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a1ed310> : FixedwingMetrics
         Raises
         ------
         TelemetryError
@@ -1052,7 +1052,7 @@ class TelemetryAsync:
 
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x1085619d0> : Imu
+        <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a1ed490> : Imu
         Raises
         ------
         TelemetryError
@@ -1092,7 +1092,7 @@ class TelemetryAsync:
 
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x108561bb0> : Imu
+        <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a1ed670> : Imu
         Raises
         ------
         TelemetryError
@@ -1132,7 +1132,7 @@ class TelemetryAsync:
 
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x108561d90> : Imu
+        <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a1ed850> : Imu
         Raises
         ------
         TelemetryError
@@ -1172,7 +1172,7 @@ class TelemetryAsync:
 
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x108561fd0> :
+        <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a1eda90> :
         Raises
         ------
         TelemetryError
@@ -1212,7 +1212,7 @@ class TelemetryAsync:
 
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x1085621b0> :
+        <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a1edc70> :
         Raises
         ------
         TelemetryError
@@ -1252,7 +1252,7 @@ class TelemetryAsync:
 
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x108562390> : DistanceSensor
+        <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a1ede50> : DistanceSensor
         Raises
         ------
         TelemetryError
@@ -1292,7 +1292,7 @@ class TelemetryAsync:
 
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x108562570> : ScaledPressure
+        <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a1ee030> : ScaledPressure
         Raises
         ------
         TelemetryError
@@ -1332,7 +1332,7 @@ class TelemetryAsync:
 
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x1085626f0> : Heading
+        <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a1ee1b0> : Heading
         Raises
         ------
         TelemetryError
@@ -1372,7 +1372,7 @@ class TelemetryAsync:
 
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x1085628d0> : Altitude
+        <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a1ee390> : Altitude
         Raises
         ------
         TelemetryError
@@ -1412,7 +1412,7 @@ class TelemetryAsync:
 
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x108562ab0> : Wind
+        <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a1ee570> : Wind
         Raises
         ------
         TelemetryError
@@ -1836,7 +1836,7 @@ class TelemetryAsync:
 
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x108569c70> : GpsGlobalOrigin
+        <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a1f9730> : GpsGlobalOrigin
         Raises
         ------
         TelemetryError

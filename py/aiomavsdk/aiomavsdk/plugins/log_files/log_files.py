@@ -9,7 +9,7 @@ Allow to download log files from the vehicle after a flight is complete.
 
 import asyncio
 from typing import AsyncGenerator
-from pymavsdk.plugins.log_files import (
+from mavsdk.plugins.log_files import (
     LogFiles,
     LogFilesResult,
     ProgressData,
@@ -48,7 +48,7 @@ class LogFilesAsync:
 
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a837bf0> : Entry
+        <protoc_gen_mavsdk.name_parser.NameParser object at 0x1064576b0> : Entry
         Raises
         ------
         LogFilesError

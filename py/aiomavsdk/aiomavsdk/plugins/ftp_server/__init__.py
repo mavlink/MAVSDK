@@ -7,7 +7,7 @@ Provide files or directories to transfer.
 
 from .ftp_server import FtpServerAsync
 
-from pymavsdk.plugins.ftp_server import (
+from mavsdk.plugins.ftp_server import (
     FtpServer,
     FtpServerResult,
 )

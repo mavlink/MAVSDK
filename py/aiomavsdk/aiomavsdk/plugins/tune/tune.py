@@ -8,7 +8,7 @@ Enable creating and sending a tune to be played on the system.
 
 import asyncio
 from typing import AsyncGenerator
-from pymavsdk.plugins.tune import (
+from mavsdk.plugins.tune import (
     Tune,
     TuneResult,
     SongElement,
@@ -46,7 +46,7 @@ class TuneAsync:
 
         Parameters
         ----------
-        tune_description : <protoc_gen_mavsdk.name_parser.NameParser object at 0x108814c50>
+        tune_description : <protoc_gen_mavsdk.name_parser.NameParser object at 0x1066ec710>
         Raises
         ------
         TuneError

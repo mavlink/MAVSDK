@@ -10,7 +10,7 @@ Allows interfacing a vehicle with a motion capture system in
 
 import asyncio
 from typing import AsyncGenerator
-from pymavsdk.plugins.mocap import (
+from mavsdk.plugins.mocap import (
     Mocap,
     MocapResult,
     PositionBody,
@@ -59,7 +59,7 @@ class MocapAsync:
 
         Parameters
         ----------
-        vision_position_estimate : <protoc_gen_mavsdk.name_parser.NameParser object at 0x10801ec90>
+        vision_position_estimate : <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a71a750>
         Raises
         ------
         MocapError
@@ -77,7 +77,7 @@ class MocapAsync:
 
         Parameters
         ----------
-        vision_speed_estimate : <protoc_gen_mavsdk.name_parser.NameParser object at 0x10801ec90>
+        vision_speed_estimate : <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a71a750>
         Raises
         ------
         MocapError
@@ -94,7 +94,7 @@ class MocapAsync:
 
         Parameters
         ----------
-        attitude_position_mocap : <protoc_gen_mavsdk.name_parser.NameParser object at 0x10801ec90>
+        attitude_position_mocap : <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a71a750>
         Raises
         ------
         MocapError
@@ -112,7 +112,7 @@ class MocapAsync:
 
         Parameters
         ----------
-        odometry : <protoc_gen_mavsdk.name_parser.NameParser object at 0x10801ec90>
+        odometry : <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a71a750>
         Raises
         ------
         MocapError

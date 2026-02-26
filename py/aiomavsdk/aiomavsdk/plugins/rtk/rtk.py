@@ -8,7 +8,7 @@ Service to send RTK corrections to the vehicle.
 
 import asyncio
 from typing import AsyncGenerator
-from pymavsdk.plugins.rtk import (
+from mavsdk.plugins.rtk import (
     Rtk,
     RtkResult,
     RtcmData,
@@ -45,7 +45,7 @@ class RtkAsync:
 
         Parameters
         ----------
-        rtcm_data : <protoc_gen_mavsdk.name_parser.NameParser object at 0x10893f650>
+        rtcm_data : <protoc_gen_mavsdk.name_parser.NameParser object at 0x1065af110>
         Raises
         ------
         RtkError

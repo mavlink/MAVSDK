@@ -1,7 +1,7 @@
 import asyncio
 from aiomavsdk import Mavsdk, Configuration, ComponentType
 from aiomavsdk.plugins.action import ActionAsync
-from pymavsdk.logging import log_subscribe
+from mavsdk.logging import log_subscribe
 
 async def main():
     log_subscribe(lambda level, msg, file, line: True)

@@ -7,7 +7,7 @@ Provide information about the hardware and/or software of a system.
 
 from .info import InfoAsync
 
-from pymavsdk.plugins.info import (
+from mavsdk.plugins.info import (
     Info,
     InfoResult,
     FlightInfo,

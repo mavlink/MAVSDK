@@ -7,7 +7,7 @@ Enable waypoint missions.
 
 from .mission import MissionAsync
 
-from pymavsdk.plugins.mission import (
+from mavsdk.plugins.mission import (
     Mission,
     MissionResult,
     MissionItem,

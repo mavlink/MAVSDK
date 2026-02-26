@@ -7,7 +7,7 @@ Provides handling of camera interface
 
 from .camera_server import CameraServerAsync
 
-from pymavsdk.plugins.camera_server import (
+from mavsdk.plugins.camera_server import (
     CameraServer,
     CameraFeedback,
     Mode,

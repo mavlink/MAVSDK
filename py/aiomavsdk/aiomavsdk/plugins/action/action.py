@@ -8,7 +8,7 @@ Enable simple actions such as arming, taking off, and landing.
 
 import asyncio
 from typing import AsyncGenerator
-from pymavsdk.plugins.action import (
+from mavsdk.plugins.action import (
     Action,
     ActionResult,
     OrbitYawBehavior,
@@ -241,7 +241,7 @@ class ActionAsync:
                ----------
                radius_m : float
                velocity_ms : float
-               yaw_behavior : <protoc_gen_mavsdk.name_parser.NameParser object at 0x109e06ff0>
+               yaw_behavior : <protoc_gen_mavsdk.name_parser.NameParser object at 0x10880aab0>
                latitude_deg : double
                longitude_deg : double
                absolute_altitude_m : double
@@ -311,7 +311,7 @@ class ActionAsync:
                Parameters
                ----------
                index : int32_t
-               setting : <protoc_gen_mavsdk.name_parser.NameParser object at 0x109e06ff0>
+               setting : <protoc_gen_mavsdk.name_parser.NameParser object at 0x10880aab0>
                Raises
                ------
                ActionError
@@ -364,7 +364,7 @@ class ActionAsync:
 
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x109e06210> :
+        <protoc_gen_mavsdk.name_parser.NameParser object at 0x108809cd0> :
         Raises
         ------
         ActionError
@@ -398,7 +398,7 @@ class ActionAsync:
 
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x109e06630> :
+        <protoc_gen_mavsdk.name_parser.NameParser object at 0x10880a0f0> :
         Raises
         ------
         ActionError

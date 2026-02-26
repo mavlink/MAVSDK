@@ -7,7 +7,7 @@ Enable raw missions as exposed by MAVLink.
 
 from .mission_raw import MissionRawAsync
 
-from pymavsdk.plugins.mission_raw import (
+from mavsdk.plugins.mission_raw import (
     MissionRaw,
     MissionRawResult,
     MissionProgress,

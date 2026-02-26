@@ -8,7 +8,7 @@ Enable setting a geofence.
 
 import asyncio
 from typing import AsyncGenerator
-from pymavsdk.plugins.geofence import (
+from mavsdk.plugins.geofence import (
     Geofence,
     GeofenceResult,
     FenceType,
@@ -52,7 +52,7 @@ class GeofenceAsync:
 
                Parameters
                ----------
-               geofence_data : <protoc_gen_mavsdk.name_parser.NameParser object at 0x1061801d0>
+               geofence_data : <protoc_gen_mavsdk.name_parser.NameParser object at 0x1082dbc50>
                Raises
                ------
                GeofenceError

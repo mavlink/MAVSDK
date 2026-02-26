@@ -7,7 +7,7 @@ Utility for onboard MAVSDK instances for common "server" tasks.
 
 from .server_utility import ServerUtilityAsync
 
-from pymavsdk.plugins.server_utility import (
+from mavsdk.plugins.server_utility import (
     ServerUtility,
     StatusTextType,
     ServerUtilityResult,

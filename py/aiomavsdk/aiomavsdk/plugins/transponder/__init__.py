@@ -8,7 +8,7 @@ Allow users to get ADS-B information
 
 from .transponder import TransponderAsync
 
-from pymavsdk.plugins.transponder import (
+from mavsdk.plugins.transponder import (
     Transponder,
     AdsbEmitterType,
     AdsbAltitudeType,

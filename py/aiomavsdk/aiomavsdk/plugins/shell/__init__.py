@@ -7,7 +7,7 @@ Allow to communicate with the vehicle's system shell.
 
 from .shell import ShellAsync
 
-from pymavsdk.plugins.shell import (
+from mavsdk.plugins.shell import (
     Shell,
     ShellResult,
 )

@@ -8,7 +8,7 @@ Get event notifications, such as takeoff, or arming checks
 
 import asyncio
 from typing import AsyncGenerator
-from pymavsdk.plugins.events import (
+from mavsdk.plugins.events import (
     Events,
     EventsResult,
     LogLevel,
@@ -102,7 +102,7 @@ class EventsAsync:
 
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x107b18bf0> : HealthAndArmingCheckReport
+        <protoc_gen_mavsdk.name_parser.NameParser object at 0x1084886b0> : HealthAndArmingCheckReport
         Raises
         ------
         EventsError

@@ -9,7 +9,7 @@ Acts as a vehicle and receives incoming missions from GCS (in raw MAVLINK format
 
 import asyncio
 from typing import AsyncGenerator
-from pymavsdk.plugins.mission_raw_server import (
+from mavsdk.plugins.mission_raw_server import (
     MissionRawServer,
     MissionRawServerResult,
     MissionItem,

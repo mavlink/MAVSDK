@@ -8,7 +8,7 @@ Allow users to command the vehicle to follow a specific target.
 
 from .follow_me import FollowMeAsync
 
-from pymavsdk.plugins.follow_me import (
+from mavsdk.plugins.follow_me import (
     FollowMe,
     FollowMeResult,
     Config,

@@ -1,4 +1,4 @@
-# Re-export from pymavsdk — no async wrapper needed for pure enums.
-from pymavsdk.vehicle import Vehicle
+# Re-export from mavsdk — no async wrapper needed for pure enums.
+from mavsdk.vehicle import Vehicle
 
 __all__ = ["Vehicle"]

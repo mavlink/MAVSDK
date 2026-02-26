@@ -8,7 +8,7 @@ Access component metadata json definitions, such as parameters.
 
 import asyncio
 from typing import AsyncGenerator
-from pymavsdk.plugins.component_metadata import (
+from mavsdk.plugins.component_metadata import (
     ComponentMetadata,
     ComponentMetadataResult,
     MetadataType,
@@ -109,10 +109,10 @@ class ComponentMetadataAsync:
                Parameters
                ----------
                compid : uint32_t
-               metadata_type : <protoc_gen_mavsdk.name_parser.NameParser object at 0x1081e4530>
+               metadata_type : <protoc_gen_mavsdk.name_parser.NameParser object at 0x109e60050>
                Returns
                -------
-               <protoc_gen_mavsdk.name_parser.NameParser object at 0x1081e4590> : MetadataData
+               <protoc_gen_mavsdk.name_parser.NameParser object at 0x109deffb0> : MetadataData
                Raises
                ------
                ComponentMetadataError

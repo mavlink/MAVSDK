@@ -6,7 +6,7 @@
 """
 from .{{ plugin_name.lower_snake_case }} import {{ plugin_name.upper_camel_case }}Async
 
-from pymavsdk.plugins.{{ plugin_name.lower_snake_case }} import (
+from mavsdk.plugins.{{ plugin_name.lower_snake_case }} import (
     {{ plugin_name.upper_camel_case }},
     {% for enum in enums %}
     {{ enum.name.upper_camel_case }},

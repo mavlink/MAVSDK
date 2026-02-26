@@ -7,7 +7,7 @@ Provide raw access to retrieve and provide server parameters.
 
 from .param_server import ParamServerAsync
 
-from pymavsdk.plugins.param_server import (
+from mavsdk.plugins.param_server import (
     ParamServer,
     ParamServerResult,
     IntParam,

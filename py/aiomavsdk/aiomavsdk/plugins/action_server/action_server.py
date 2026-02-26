@@ -8,7 +8,7 @@ Provide vehicle actions (as a server) such as arming, taking off, and landing.
 
 import asyncio
 from typing import AsyncGenerator
-from pymavsdk.plugins.action_server import (
+from mavsdk.plugins.action_server import (
     ActionServer,
     ActionServerResult,
     FlightMode,
@@ -275,7 +275,7 @@ class ActionServerAsync:
 
         Parameters
         ----------
-        flight_modes : <protoc_gen_mavsdk.name_parser.NameParser object at 0x106586b70>
+        flight_modes : <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a09e630>
         Raises
         ------
         ActionServerError
@@ -292,7 +292,7 @@ class ActionServerAsync:
 
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x106586330> : AllowableFlightModes
+        <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a09ddf0> : AllowableFlightModes
         Raises
         ------
         ActionServerError
@@ -326,7 +326,7 @@ class ActionServerAsync:
 
         Parameters
         ----------
-        flight_mode : <protoc_gen_mavsdk.name_parser.NameParser object at 0x106587530>
+        flight_mode : <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a09eff0>
         Raises
         ------
         ActionServerError
@@ -343,7 +343,7 @@ class ActionServerAsync:
 
         Parameters
         ----------
-        flight_mode : <protoc_gen_mavsdk.name_parser.NameParser object at 0x106587530>
+        flight_mode : <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a09eff0>
         Raises
         ------
         ActionServerError

@@ -8,7 +8,7 @@ Utility for onboard MAVSDK instances for common "server" tasks.
 
 import asyncio
 from typing import AsyncGenerator
-from pymavsdk.plugins.server_utility import (
+from mavsdk.plugins.server_utility import (
     ServerUtility,
     ServerUtilityResult,
     StatusTextType,
@@ -45,7 +45,7 @@ class ServerUtilityAsync:
 
         Parameters
         ----------
-        type : <protoc_gen_mavsdk.name_parser.NameParser object at 0x107ccffb0>
+        type : <protoc_gen_mavsdk.name_parser.NameParser object at 0x107fb77d0>
         text : std::string
         Raises
         ------

@@ -7,7 +7,7 @@ Provide component metadata json definitions, such as parameters.
 
 from .component_metadata_server import ComponentMetadataServerAsync
 
-from pymavsdk.plugins.component_metadata_server import (
+from mavsdk.plugins.component_metadata_server import (
     ComponentMetadataServer,
     MetadataType,
     ComponentMetadataServerResult,

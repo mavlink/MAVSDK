@@ -8,7 +8,7 @@ Provide raw access to retrieve and provide server parameters.
 
 import asyncio
 from typing import AsyncGenerator
-from pymavsdk.plugins.param_server import (
+from mavsdk.plugins.param_server import (
     ParamServer,
     ParamServerResult,
     IntParam,
@@ -74,7 +74,7 @@ class ParamServerAsync:
                name : std::string
                Returns
                -------
-               <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a4fc230> :
+               <protoc_gen_mavsdk.name_parser.NameParser object at 0x105febcb0> :
                Raises
                ------
                ParamServerError
@@ -124,7 +124,7 @@ class ParamServerAsync:
                name : std::string
                Returns
                -------
-               <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a4fc6b0> :
+               <protoc_gen_mavsdk.name_parser.NameParser object at 0x106064170> :
                Raises
                ------
                ParamServerError
@@ -170,7 +170,7 @@ class ParamServerAsync:
                name : std::string
                Returns
                -------
-               <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a4fcb30> :
+               <protoc_gen_mavsdk.name_parser.NameParser object at 0x1060645f0> :
                Raises
                ------
                ParamServerError
@@ -207,7 +207,7 @@ class ParamServerAsync:
 
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a4fd010> : AllParams
+        <protoc_gen_mavsdk.name_parser.NameParser object at 0x106064ad0> : AllParams
         Raises
         ------
         ParamServerError

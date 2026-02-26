@@ -7,7 +7,7 @@ Enable manual control using e.g. a joystick or gamepad.
 
 from .manual_control import ManualControlAsync
 
-from pymavsdk.plugins.manual_control import (
+from mavsdk.plugins.manual_control import (
     ManualControl,
     ManualControlResult,
 )

@@ -1,4 +1,4 @@
-# Re-export from pymavsdk — no async wrapper needed for pure enums.
-from pymavsdk.connection_result import ConnectionResult
+# Re-export from mavsdk — no async wrapper needed for pure enums.
+from mavsdk.connection_result import ConnectionResult
 
 __all__ = ["ConnectionResult"]

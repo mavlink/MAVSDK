@@ -9,7 +9,7 @@ Allow users to get ADS-B information
 
 import asyncio
 from typing import AsyncGenerator
-from pymavsdk.plugins.transponder import (
+from mavsdk.plugins.transponder import (
     Transponder,
     TransponderResult,
     AdsbEmitterType,
@@ -74,7 +74,7 @@ class TransponderAsync:
 
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x106530bf0> : AdsbVehicle
+        <protoc_gen_mavsdk.name_parser.NameParser object at 0x1084346b0> : AdsbVehicle
         Raises
         ------
         TransponderError

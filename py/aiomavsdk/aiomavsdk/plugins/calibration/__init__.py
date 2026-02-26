@@ -7,7 +7,7 @@ Enable to calibrate sensors of a drone such as gyro, accelerometer, and magnetom
 
 from .calibration import CalibrationAsync
 
-from pymavsdk.plugins.calibration import (
+from mavsdk.plugins.calibration import (
     Calibration,
     CalibrationResult,
     ProgressData,

@@ -14,7 +14,7 @@ Can be used to manage cameras that implement the MAVLink
 
 import asyncio
 from typing import AsyncGenerator
-from pymavsdk.plugins.camera import (
+from mavsdk.plugins.camera import (
     Camera,
     CameraResult,
     Mode,
@@ -198,7 +198,7 @@ class CameraAsync:
         Parameters
         ----------
         component_id : int32_t
-        mode : <protoc_gen_mavsdk.name_parser.NameParser object at 0x1063639b0>
+        mode : <protoc_gen_mavsdk.name_parser.NameParser object at 0x1080cb470>
         Raises
         ------
         CameraError
@@ -220,10 +220,10 @@ class CameraAsync:
                Parameters
                ----------
                component_id : int32_t
-               photos_range : <protoc_gen_mavsdk.name_parser.NameParser object at 0x1063639b0>
+               photos_range : <protoc_gen_mavsdk.name_parser.NameParser object at 0x1080cb470>
                Returns
                -------
-               <protoc_gen_mavsdk.name_parser.NameParser object at 0x106352e70> : CaptureInfo
+               <protoc_gen_mavsdk.name_parser.NameParser object at 0x1080be930> : CaptureInfo
                Raises
                ------
                CameraError
@@ -271,7 +271,7 @@ class CameraAsync:
 
                Returns
                -------
-               <protoc_gen_mavsdk.name_parser.NameParser object at 0x106352ff0> : CameraList
+               <protoc_gen_mavsdk.name_parser.NameParser object at 0x1080beab0> : CameraList
                Raises
                ------
                CameraError
@@ -314,7 +314,7 @@ class CameraAsync:
         component_id : int32_t
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x106353530> : Mode
+        <protoc_gen_mavsdk.name_parser.NameParser object at 0x1080beff0> : Mode
         Raises
         ------
         CameraError
@@ -361,7 +361,7 @@ class CameraAsync:
         component_id : int32_t
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x1063539b0> : VideoStreamInfo
+        <protoc_gen_mavsdk.name_parser.NameParser object at 0x1080bf470> : VideoStreamInfo
         Raises
         ------
         CameraError
@@ -431,7 +431,7 @@ class CameraAsync:
         component_id : int32_t
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x106360170> : Storage
+        <protoc_gen_mavsdk.name_parser.NameParser object at 0x1080bfbf0> : Storage
         Raises
         ------
         CameraError
@@ -478,7 +478,7 @@ class CameraAsync:
         component_id : int32_t
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x106360650> : Setting
+        <protoc_gen_mavsdk.name_parser.NameParser object at 0x1080c8110> : Setting
         Raises
         ------
         CameraError
@@ -525,7 +525,7 @@ class CameraAsync:
         component_id : int32_t
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x106360b90> : SettingOptions
+        <protoc_gen_mavsdk.name_parser.NameParser object at 0x1080c8650> : SettingOptions
         Raises
         ------
         CameraError
@@ -545,7 +545,7 @@ class CameraAsync:
                Parameters
                ----------
                component_id : int32_t
-               setting : <protoc_gen_mavsdk.name_parser.NameParser object at 0x1063639b0>
+               setting : <protoc_gen_mavsdk.name_parser.NameParser object at 0x1080cb470>
                Raises
                ------
                CameraError
@@ -565,10 +565,10 @@ class CameraAsync:
                Parameters
                ----------
                component_id : int32_t
-               setting : <protoc_gen_mavsdk.name_parser.NameParser object at 0x1063639b0>
+               setting : <protoc_gen_mavsdk.name_parser.NameParser object at 0x1080cb470>
                Returns
                -------
-               <protoc_gen_mavsdk.name_parser.NameParser object at 0x1063612b0> : Setting
+               <protoc_gen_mavsdk.name_parser.NameParser object at 0x1080c8d70> : Setting
                Raises
                ------
                CameraError

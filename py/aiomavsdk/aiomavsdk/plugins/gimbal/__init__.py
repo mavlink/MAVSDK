@@ -8,7 +8,7 @@ Provide control over a gimbal within the MAVLink
 
 from .gimbal import GimbalAsync
 
-from pymavsdk.plugins.gimbal import (
+from mavsdk.plugins.gimbal import (
     Gimbal,
     GimbalMode,
     ControlMode,

@@ -8,7 +8,7 @@ Use arm authorization.
 
 import asyncio
 from typing import AsyncGenerator
-from pymavsdk.plugins.arm_authorizer_server import (
+from mavsdk.plugins.arm_authorizer_server import (
     ArmAuthorizerServer,
     ArmAuthorizerServerResult,
     RejectionReason,
@@ -88,7 +88,7 @@ class ArmAuthorizerServerAsync:
         Parameters
         ----------
         temporarily : bool
-        reason : <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a577f50>
+        reason : <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a897a10>
         extra_info : int32_t
         Raises
         ------

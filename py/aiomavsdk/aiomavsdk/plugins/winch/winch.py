@@ -8,7 +8,7 @@ Allows users to send winch actions, as well as receive status information from w
 
 import asyncio
 from typing import AsyncGenerator
-from pymavsdk.plugins.winch import (
+from mavsdk.plugins.winch import (
     Winch,
     WinchResult,
     WinchAction,
@@ -72,7 +72,7 @@ class WinchAsync:
 
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a4b0c50> : Status
+        <protoc_gen_mavsdk.name_parser.NameParser object at 0x107c58710> : Status
         Raises
         ------
         WinchError

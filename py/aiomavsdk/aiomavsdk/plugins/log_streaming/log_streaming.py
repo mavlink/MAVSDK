@@ -8,7 +8,7 @@ Provide log streaming data.
 
 import asyncio
 from typing import AsyncGenerator
-from pymavsdk.plugins.log_streaming import (
+from mavsdk.plugins.log_streaming import (
     LogStreaming,
     LogStreamingResult,
     LogStreamingRaw,

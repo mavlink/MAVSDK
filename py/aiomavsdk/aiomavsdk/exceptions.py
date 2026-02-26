@@ -1,6 +1,6 @@
 """Custom exceptions for aiomavsdk."""
 
-from pymavsdk.exceptions import MavsdkError, LibraryNotFoundError
+from mavsdk.exceptions import MavsdkError, LibraryNotFoundError
 
 
 class MavsdkConnectionError(MavsdkError):

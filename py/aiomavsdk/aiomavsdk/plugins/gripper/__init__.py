@@ -7,7 +7,7 @@ Allows users to send gripper actions.
 
 from .gripper import GripperAsync
 
-from pymavsdk.plugins.gripper import (
+from mavsdk.plugins.gripper import (
     Gripper,
     GripperAction,
     GripperResult,

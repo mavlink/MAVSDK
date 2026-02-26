@@ -7,7 +7,7 @@ Provide vehicle actions (as a server) such as arming, taking off, and landing.
 
 from .action_server import ActionServerAsync
 
-from pymavsdk.plugins.action_server import (
+from mavsdk.plugins.action_server import (
     ActionServer,
     FlightMode,
     ActionServerResult,

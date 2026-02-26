@@ -8,7 +8,7 @@ Provide files or directories to transfer.
 
 import asyncio
 from typing import AsyncGenerator
-from pymavsdk.plugins.ftp_server import (
+from mavsdk.plugins.ftp_server import (
     FtpServer,
     FtpServerResult,
 )

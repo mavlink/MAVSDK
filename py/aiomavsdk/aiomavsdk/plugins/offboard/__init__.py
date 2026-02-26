@@ -14,7 +14,7 @@ Control a drone with position, velocity, attitude or motor commands.
 
 from .offboard import OffboardAsync
 
-from pymavsdk.plugins.offboard import (
+from mavsdk.plugins.offboard import (
     Offboard,
     OffboardResult,
     Attitude,

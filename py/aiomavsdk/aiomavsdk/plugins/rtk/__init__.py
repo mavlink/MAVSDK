@@ -7,7 +7,7 @@ Service to send RTK corrections to the vehicle.
 
 from .rtk import RtkAsync
 
-from pymavsdk.plugins.rtk import (
+from mavsdk.plugins.rtk import (
     Rtk,
     RtkResult,
     RtcmData,

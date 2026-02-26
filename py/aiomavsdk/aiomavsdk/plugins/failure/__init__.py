@@ -7,7 +7,7 @@ Inject failures into system to test failsafes.
 
 from .failure import FailureAsync
 
-from pymavsdk.plugins.failure import (
+from mavsdk.plugins.failure import (
     Failure,
     FailureUnit,
     FailureType,

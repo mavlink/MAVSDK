@@ -7,7 +7,7 @@ Implements file transfer functionality using MAVLink FTP.
 
 from .ftp import FtpAsync
 
-from pymavsdk.plugins.ftp import (
+from mavsdk.plugins.ftp import (
     Ftp,
     FtpResult,
     ListDirectoryData,
