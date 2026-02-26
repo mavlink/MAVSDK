@@ -1,6 +1,6 @@
 import time
-from pymavsdk import *
-from pymavsdk.plugins.camera import *
+from mavsdk import *
+from mavsdk.plugins.camera import *
 
 
 def storage_callback(update, user_data=None):

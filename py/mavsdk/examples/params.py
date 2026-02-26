@@ -1,8 +1,8 @@
 import time
 import sys
 
-from pymavsdk import *
-from pymavsdk.plugins.param import *
+from mavsdk import *
+from mavsdk.plugins.param import *
 
 
 def print_usage(bin_name):

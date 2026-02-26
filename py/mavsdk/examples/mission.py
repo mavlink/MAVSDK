@@ -1,9 +1,9 @@
 import time
 import sys
-from pymavsdk import *
-from pymavsdk.plugins.action import *
-from pymavsdk.plugins.mission import *
-from pymavsdk.plugins.telemetry import *
+from mavsdk import *
+from mavsdk.plugins.action import *
+from mavsdk.plugins.mission import *
+from mavsdk.plugins.telemetry import *
 
 def usage(bin_name):
     print(f"Usage : {bin_name} <connection_url>")

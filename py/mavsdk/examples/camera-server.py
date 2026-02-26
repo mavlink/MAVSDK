@@ -1,6 +1,6 @@
 import time
-from pymavsdk import *
-from pymavsdk.plugins.camera_server import *
+from mavsdk import *
+from mavsdk.plugins.camera_server import *
 
 start_video_time = 0
 is_recording_video = False

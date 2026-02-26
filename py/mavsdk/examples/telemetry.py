@@ -1,7 +1,7 @@
 import time
-from pymavsdk import *
-from pymavsdk.plugins.action import *
-from pymavsdk.plugins.telemetry import *
+from mavsdk import *
+from mavsdk.plugins.action import *
+from mavsdk.plugins.telemetry import *
 
 global mavsdk, drone
 mavsdk = None

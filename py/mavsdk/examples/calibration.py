@@ -1,6 +1,6 @@
 import time
-from pymavsdk import Mavsdk, Configuration, ComponentType
-from pymavsdk.plugins.calibration import Calibration, CalibrationResult
+from mavsdk import Mavsdk, Configuration, ComponentType
+from mavsdk.plugins.calibration import Calibration, CalibrationResult
 
 # Global variables for the callback state
 calibration_completed = False

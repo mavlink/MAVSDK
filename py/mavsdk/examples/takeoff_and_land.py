@@ -1,6 +1,6 @@
 import time
-from pymavsdk import *
-from pymavsdk.plugins.action import *
+from mavsdk import *
+from mavsdk.plugins.action import *
 
 def main():
     log_subscribe(lambda level, msg, file, line: True)
