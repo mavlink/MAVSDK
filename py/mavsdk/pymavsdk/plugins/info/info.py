@@ -8,6 +8,7 @@
 Provide information about the hardware and/or software of a system.
 """
 
+import atexit
 import ctypes
 
 from typing import Callable, Any
@@ -330,6 +331,8 @@ class Info:
             raise RuntimeError(
                 "Failed to create Info plugin - C function returned null handle"
             )
+
+        atexit.register(self.destroy)
 
     def get_flight_information(self):
         """Get get_flight_information (blocking)"""

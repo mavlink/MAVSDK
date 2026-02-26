@@ -9,6 +9,7 @@ Allow users to get ADS-B information
  and set ADS-B update rates.
 """
 
+import atexit
 import ctypes
 
 from typing import Callable, Any
@@ -196,6 +197,8 @@ class Transponder:
             raise RuntimeError(
                 "Failed to create Transponder plugin - C function returned null handle"
             )
+
+        atexit.register(self.destroy)
 
     def subscribe_transponder(self, callback: Callable, user_data: Any = None):
         """Subscribe to 'transponder' updates."""

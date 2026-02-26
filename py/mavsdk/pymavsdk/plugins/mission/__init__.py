@@ -26,8 +26,6 @@ __all__ = [
     "Mission",
     "MissionResult",
     "MissionItem",
-    "CameraAction",
-    "VehicleAction",
     "MissionPlan",
     "MissionProgress",
     "ProgressData",

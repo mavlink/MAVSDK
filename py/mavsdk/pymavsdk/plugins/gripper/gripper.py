@@ -8,6 +8,7 @@
 Allows users to send gripper actions.
 """
 
+import atexit
 import ctypes
 
 from typing import Callable, Any
@@ -68,6 +69,8 @@ class Gripper:
             raise RuntimeError(
                 "Failed to create Gripper plugin - C function returned null handle"
             )
+
+        atexit.register(self.destroy)
 
     def grab_async(self, instance, callback: Callable, user_data: Any = None):
         """Gripper grab cargo."""

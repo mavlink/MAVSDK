@@ -24,6 +24,5 @@ __all__ = [
     "FollowMe",
     "FollowMeResult",
     "Config",
-    "FollowAltitudeMode",
     "TargetLocation",
 ]

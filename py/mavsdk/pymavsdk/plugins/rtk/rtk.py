@@ -8,6 +8,7 @@
 Service to send RTK corrections to the vehicle.
 """
 
+import atexit
 import ctypes
 
 from typing import Callable, Any
@@ -93,6 +94,8 @@ class Rtk:
             raise RuntimeError(
                 "Failed to create Rtk plugin - C function returned null handle"
             )
+
+        atexit.register(self.destroy)
 
     def send_rtcm_data(self, rtcm_data):
         """Get send_rtcm_data (blocking)"""

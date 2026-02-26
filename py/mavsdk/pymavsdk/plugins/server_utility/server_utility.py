@@ -8,6 +8,7 @@
 Utility for onboard MAVSDK instances for common "server" tasks.
 """
 
+import atexit
 import ctypes
 
 from typing import Callable, Any
@@ -70,13 +71,15 @@ class ServerUtility:
                 "Failed to create ServerUtility plugin - C function returned null handle"
             )
 
+        atexit.register(self.destroy)
+
     def send_status_text(self, type, text):
         """Get send_status_text (blocking)"""
 
         result_code = self._lib.mavsdk_server_utility_send_status_text(
             self._handle,
             type,
-            text,
+            text.encode("utf-8") if isinstance(text, str) else text,
         )
         result = ServerUtilityResult(result_code)
         if result != ServerUtilityResult.SUCCESS:

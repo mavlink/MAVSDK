@@ -44,5 +44,4 @@ __all__ = [
     "VisionSpeedEstimate",
     "AttitudePositionMocap",
     "Odometry",
-    "MavFrame",
 ]

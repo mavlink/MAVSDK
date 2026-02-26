@@ -8,6 +8,7 @@
 Implements file transfer functionality using MAVLink FTP.
 """
 
+import atexit
 import ctypes
 
 from typing import Callable, Any
@@ -152,6 +153,8 @@ class Ftp:
                 "Failed to create Ftp plugin - C function returned null handle"
             )
 
+        atexit.register(self.destroy)
+
     def download_async(
         self,
         remote_file_path,
@@ -179,7 +182,14 @@ class Ftp:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_ftp_download_async(
-            self._handle, remote_file_path, local_dir, use_burst, cb, None
+            self._handle,
+            remote_file_path.encode("utf-8")
+            if isinstance(remote_file_path, str)
+            else remote_file_path,
+            local_dir.encode("utf-8") if isinstance(local_dir, str) else local_dir,
+            use_burst,
+            cb,
+            None,
         )
 
     def upload_async(
@@ -204,7 +214,13 @@ class Ftp:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_ftp_upload_async(
-            self._handle, local_file_path, remote_dir, cb, None
+            self._handle,
+            local_file_path.encode("utf-8")
+            if isinstance(local_file_path, str)
+            else local_file_path,
+            remote_dir.encode("utf-8") if isinstance(remote_dir, str) else remote_dir,
+            cb,
+            None,
         )
 
     def list_directory_async(
@@ -228,7 +244,12 @@ class Ftp:
         cb = ListDirectoryCallback(c_callback)
         self._callbacks.append(cb)
 
-        self._lib.mavsdk_ftp_list_directory_async(self._handle, remote_dir, cb, None)
+        self._lib.mavsdk_ftp_list_directory_async(
+            self._handle,
+            remote_dir.encode("utf-8") if isinstance(remote_dir, str) else remote_dir,
+            cb,
+            None,
+        )
 
     def list_directory(self, remote_dir):
         """Get list_directory (blocking)"""
@@ -236,7 +257,9 @@ class Ftp:
         result_out = ListDirectoryDataCStruct()
 
         result_code = self._lib.mavsdk_ftp_list_directory(
-            self._handle, remote_dir, ctypes.byref(result_out)
+            self._handle,
+            remote_dir.encode("utf-8") if isinstance(remote_dir, str) else remote_dir,
+            ctypes.byref(result_out),
         )
         result = FtpResult(result_code)
         if result != FtpResult.SUCCESS:
@@ -263,14 +286,19 @@ class Ftp:
         cb = CreateDirectoryCallback(c_callback)
         self._callbacks.append(cb)
 
-        self._lib.mavsdk_ftp_create_directory_async(self._handle, remote_dir, cb, None)
+        self._lib.mavsdk_ftp_create_directory_async(
+            self._handle,
+            remote_dir.encode("utf-8") if isinstance(remote_dir, str) else remote_dir,
+            cb,
+            None,
+        )
 
     def create_directory(self, remote_dir):
         """Get create_directory (blocking)"""
 
         result_code = self._lib.mavsdk_ftp_create_directory(
             self._handle,
-            remote_dir,
+            remote_dir.encode("utf-8") if isinstance(remote_dir, str) else remote_dir,
         )
         result = FtpResult(result_code)
         if result != FtpResult.SUCCESS:
@@ -295,14 +323,19 @@ class Ftp:
         cb = RemoveDirectoryCallback(c_callback)
         self._callbacks.append(cb)
 
-        self._lib.mavsdk_ftp_remove_directory_async(self._handle, remote_dir, cb, None)
+        self._lib.mavsdk_ftp_remove_directory_async(
+            self._handle,
+            remote_dir.encode("utf-8") if isinstance(remote_dir, str) else remote_dir,
+            cb,
+            None,
+        )
 
     def remove_directory(self, remote_dir):
         """Get remove_directory (blocking)"""
 
         result_code = self._lib.mavsdk_ftp_remove_directory(
             self._handle,
-            remote_dir,
+            remote_dir.encode("utf-8") if isinstance(remote_dir, str) else remote_dir,
         )
         result = FtpResult(result_code)
         if result != FtpResult.SUCCESS:
@@ -327,14 +360,23 @@ class Ftp:
         cb = RemoveFileCallback(c_callback)
         self._callbacks.append(cb)
 
-        self._lib.mavsdk_ftp_remove_file_async(self._handle, remote_file_path, cb, None)
+        self._lib.mavsdk_ftp_remove_file_async(
+            self._handle,
+            remote_file_path.encode("utf-8")
+            if isinstance(remote_file_path, str)
+            else remote_file_path,
+            cb,
+            None,
+        )
 
     def remove_file(self, remote_file_path):
         """Get remove_file (blocking)"""
 
         result_code = self._lib.mavsdk_ftp_remove_file(
             self._handle,
-            remote_file_path,
+            remote_file_path.encode("utf-8")
+            if isinstance(remote_file_path, str)
+            else remote_file_path,
         )
         result = FtpResult(result_code)
         if result != FtpResult.SUCCESS:
@@ -364,7 +406,15 @@ class Ftp:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_ftp_rename_async(
-            self._handle, remote_from_path, remote_to_path, cb, None
+            self._handle,
+            remote_from_path.encode("utf-8")
+            if isinstance(remote_from_path, str)
+            else remote_from_path,
+            remote_to_path.encode("utf-8")
+            if isinstance(remote_to_path, str)
+            else remote_to_path,
+            cb,
+            None,
         )
 
     def rename(self, remote_from_path, remote_to_path):
@@ -372,8 +422,12 @@ class Ftp:
 
         result_code = self._lib.mavsdk_ftp_rename(
             self._handle,
-            remote_from_path,
-            remote_to_path,
+            remote_from_path.encode("utf-8")
+            if isinstance(remote_from_path, str)
+            else remote_from_path,
+            remote_to_path.encode("utf-8")
+            if isinstance(remote_to_path, str)
+            else remote_to_path,
         )
         result = FtpResult(result_code)
         if result != FtpResult.SUCCESS:
@@ -405,7 +459,15 @@ class Ftp:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_ftp_are_files_identical_async(
-            self._handle, local_file_path, remote_file_path, cb, None
+            self._handle,
+            local_file_path.encode("utf-8")
+            if isinstance(local_file_path, str)
+            else local_file_path,
+            remote_file_path.encode("utf-8")
+            if isinstance(remote_file_path, str)
+            else remote_file_path,
+            cb,
+            None,
         )
 
     def are_files_identical(self, local_file_path, remote_file_path):
@@ -414,7 +476,14 @@ class Ftp:
         result_out = ctypes.c_bool()
 
         result_code = self._lib.mavsdk_ftp_are_files_identical(
-            self._handle, local_file_path, remote_file_path, ctypes.byref(result_out)
+            self._handle,
+            local_file_path.encode("utf-8")
+            if isinstance(local_file_path, str)
+            else local_file_path,
+            remote_file_path.encode("utf-8")
+            if isinstance(remote_file_path, str)
+            else remote_file_path,
+            ctypes.byref(result_out),
         )
         result = FtpResult(result_code)
         if result != FtpResult.SUCCESS:

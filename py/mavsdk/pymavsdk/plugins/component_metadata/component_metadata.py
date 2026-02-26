@@ -8,6 +8,7 @@
 Access component metadata json definitions, such as parameters.
 """
 
+import atexit
 import ctypes
 
 from typing import Callable, Any
@@ -152,6 +153,8 @@ class ComponentMetadata:
             raise RuntimeError(
                 "Failed to create ComponentMetadata plugin - C function returned null handle"
             )
+
+        atexit.register(self.destroy)
 
     def request_component(self, compid):
         """Get request_component (blocking)"""

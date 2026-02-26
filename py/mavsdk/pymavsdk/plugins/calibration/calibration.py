@@ -8,6 +8,7 @@
 Enable to calibrate sensors of a drone such as gyro, accelerometer, and magnetometer.
 """
 
+import atexit
 import ctypes
 
 from typing import Callable, Any
@@ -119,6 +120,8 @@ class Calibration:
             raise RuntimeError(
                 "Failed to create Calibration plugin - C function returned null handle"
             )
+
+        atexit.register(self.destroy)
 
     def calibrate_gyro_async(self, callback: Callable, user_data: Any = None):
         """Perform gyro calibration."""

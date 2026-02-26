@@ -39,11 +39,7 @@ __all__ = [
     "Quaternion",
     "CaptureInfo",
     "StorageInformation",
-    "StorageStatus",
-    "StorageType",
     "CaptureStatus",
-    "ImageStatus",
-    "VideoStatus",
     "TrackPoint",
     "TrackRectangle",
 ]

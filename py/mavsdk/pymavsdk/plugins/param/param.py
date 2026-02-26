@@ -8,6 +8,7 @@
 Provide raw access to get and set parameters.
 """
 
+import atexit
 import ctypes
 
 from typing import Callable, Any
@@ -288,13 +289,17 @@ class Param:
                 "Failed to create Param plugin - C function returned null handle"
             )
 
+        atexit.register(self.destroy)
+
     def get_param_int(self, name):
         """Get get_param_int (blocking)"""
 
         result_out = ctypes.c_int32()
 
         result_code = self._lib.mavsdk_param_get_param_int(
-            self._handle, name, ctypes.byref(result_out)
+            self._handle,
+            name.encode("utf-8") if isinstance(name, str) else name,
+            ctypes.byref(result_out),
         )
         result = ParamResult(result_code)
         if result != ParamResult.SUCCESS:
@@ -307,7 +312,7 @@ class Param:
 
         result_code = self._lib.mavsdk_param_set_param_int(
             self._handle,
-            name,
+            name.encode("utf-8") if isinstance(name, str) else name,
             value,
         )
         result = ParamResult(result_code)
@@ -322,7 +327,9 @@ class Param:
         result_out = ctypes.c_float()
 
         result_code = self._lib.mavsdk_param_get_param_float(
-            self._handle, name, ctypes.byref(result_out)
+            self._handle,
+            name.encode("utf-8") if isinstance(name, str) else name,
+            ctypes.byref(result_out),
         )
         result = ParamResult(result_code)
         if result != ParamResult.SUCCESS:
@@ -335,7 +342,7 @@ class Param:
 
         result_code = self._lib.mavsdk_param_set_param_float(
             self._handle,
-            name,
+            name.encode("utf-8") if isinstance(name, str) else name,
             value,
         )
         result = ParamResult(result_code)
@@ -350,7 +357,9 @@ class Param:
         result_out = ctypes.c_char_p()
 
         result_code = self._lib.mavsdk_param_get_param_custom(
-            self._handle, name, ctypes.byref(result_out)
+            self._handle,
+            name.encode("utf-8") if isinstance(name, str) else name,
+            ctypes.byref(result_out),
         )
         result = ParamResult(result_code)
         if result != ParamResult.SUCCESS:
@@ -363,8 +372,8 @@ class Param:
 
         result_code = self._lib.mavsdk_param_set_param_custom(
             self._handle,
-            name,
-            value,
+            name.encode("utf-8") if isinstance(name, str) else name,
+            value.encode("utf-8") if isinstance(value, str) else value,
         )
         result = ParamResult(result_code)
         if result != ParamResult.SUCCESS:

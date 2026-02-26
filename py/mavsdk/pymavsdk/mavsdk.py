@@ -1,5 +1,6 @@
 """Main ctypes wrapper for cmavsdk library"""
 
+import atexit
 import ctypes
 
 from typing import Optional, List, Callable, Any
@@ -84,6 +85,8 @@ class Mavsdk:
         self._handle = self._lib.mavsdk_create(configuration._handle)
         self._destroyed = False
         configuration._handle = None
+
+        atexit.register(self.destroy)
 
     def version(self) -> str:
         """Get MAVSDK version string"""

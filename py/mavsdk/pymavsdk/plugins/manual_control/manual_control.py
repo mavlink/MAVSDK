@@ -8,6 +8,7 @@
 Enable manual control using e.g. a joystick or gamepad.
 """
 
+import atexit
 import ctypes
 
 from typing import Callable, Any
@@ -62,6 +63,8 @@ class ManualControl:
             raise RuntimeError(
                 "Failed to create ManualControl plugin - C function returned null handle"
             )
+
+        atexit.register(self.destroy)
 
     def start_position_control_async(self, callback: Callable, user_data: Any = None):
         """Start position control using e.g. joystick input.

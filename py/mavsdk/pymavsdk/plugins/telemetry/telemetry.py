@@ -10,6 +10,7 @@ Allow users to get vehicle telemetry and state information
  Certain Telemetry Topics such as, Position or Velocity_Ned require GPS Fix before data gets published.
 """
 
+import atexit
 import ctypes
 
 from typing import Callable, Any
@@ -2011,6 +2012,8 @@ class Telemetry:
             raise RuntimeError(
                 "Failed to create Telemetry plugin - C function returned null handle"
             )
+
+        atexit.register(self.destroy)
 
     def subscribe_position(self, callback: Callable, user_data: Any = None):
         """Subscribe to 'position' updates."""

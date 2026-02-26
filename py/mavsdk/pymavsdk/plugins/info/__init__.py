@@ -28,5 +28,4 @@ __all__ = [
     "Identification",
     "Product",
     "Version",
-    "FlightSoftwareVersionType",
 ]

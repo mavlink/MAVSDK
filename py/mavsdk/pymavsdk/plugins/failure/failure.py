@@ -8,6 +8,7 @@
 Inject failures into system to test failsafes.
 """
 
+import atexit
 import ctypes
 
 from typing import Callable, Any
@@ -92,6 +93,8 @@ class Failure:
             raise RuntimeError(
                 "Failed to create Failure plugin - C function returned null handle"
             )
+
+        atexit.register(self.destroy)
 
     def inject(self, failure_unit, failure_type, instance):
         """Get inject (blocking)"""

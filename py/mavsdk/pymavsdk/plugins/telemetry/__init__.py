@@ -82,7 +82,6 @@ __all__ = [
     "VelocityBody",
     "PositionBody",
     "Odometry",
-    "MavFrame",
     "DistanceSensor",
     "ScaledPressure",
     "PositionNed",

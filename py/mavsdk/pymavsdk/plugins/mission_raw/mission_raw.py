@@ -8,6 +8,7 @@
 Enable raw missions as exposed by MAVLink.
 """
 
+import atexit
 import ctypes
 
 from typing import Callable, Any
@@ -315,6 +316,8 @@ class MissionRaw:
             raise RuntimeError(
                 "Failed to create MissionRaw plugin - C function returned null handle"
             )
+
+        atexit.register(self.destroy)
 
     def upload_mission_async(
         self, mission_items, callback: Callable, user_data: Any = None
@@ -779,7 +782,11 @@ class MissionRaw:
         result_out = MissionImportDataCStruct()
 
         result_code = self._lib.mavsdk_mission_raw_import_qgroundcontrol_mission(
-            self._handle, qgc_plan_path, ctypes.byref(result_out)
+            self._handle,
+            qgc_plan_path.encode("utf-8")
+            if isinstance(qgc_plan_path, str)
+            else qgc_plan_path,
+            ctypes.byref(result_out),
         )
         result = MissionRawResult(result_code)
         if result != MissionRawResult.SUCCESS:
@@ -798,7 +805,9 @@ class MissionRaw:
 
         result_code = (
             self._lib.mavsdk_mission_raw_import_qgroundcontrol_mission_from_string(
-                self._handle, qgc_plan, ctypes.byref(result_out)
+                self._handle,
+                qgc_plan.encode("utf-8") if isinstance(qgc_plan, str) else qgc_plan,
+                ctypes.byref(result_out),
             )
         )
         result = MissionRawResult(result_code)
@@ -819,7 +828,11 @@ class MissionRaw:
         result_out = MissionImportDataCStruct()
 
         result_code = self._lib.mavsdk_mission_raw_import_mission_planner_mission(
-            self._handle, mission_planner_path, ctypes.byref(result_out)
+            self._handle,
+            mission_planner_path.encode("utf-8")
+            if isinstance(mission_planner_path, str)
+            else mission_planner_path,
+            ctypes.byref(result_out),
         )
         result = MissionRawResult(result_code)
         if result != MissionRawResult.SUCCESS:
@@ -838,7 +851,11 @@ class MissionRaw:
 
         result_code = (
             self._lib.mavsdk_mission_raw_import_mission_planner_mission_from_string(
-                self._handle, mission_planner_mission, ctypes.byref(result_out)
+                self._handle,
+                mission_planner_mission.encode("utf-8")
+                if isinstance(mission_planner_mission, str)
+                else mission_planner_mission,
+                ctypes.byref(result_out),
             )
         )
         result = MissionRawResult(result_code)

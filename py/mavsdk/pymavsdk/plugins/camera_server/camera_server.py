@@ -8,6 +8,7 @@
 Provides handling of camera interface
 """
 
+import atexit
 import ctypes
 
 from typing import Callable, Any
@@ -721,6 +722,8 @@ class CameraServer:
             raise RuntimeError(
                 "Failed to create CameraServer plugin - C function returned null handle"
             )
+
+        atexit.register(self.destroy)
 
     def set_information(self, information):
         """Get set_information (blocking)"""

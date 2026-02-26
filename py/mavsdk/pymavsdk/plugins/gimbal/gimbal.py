@@ -9,6 +9,7 @@ Provide control over a gimbal within the MAVLink
  Gimbal Protocol: https://mavlink.io/en/services/gimbal_v2.html
 """
 
+import atexit
 import ctypes
 
 from typing import Callable, Any
@@ -518,6 +519,8 @@ class Gimbal:
             raise RuntimeError(
                 "Failed to create Gimbal plugin - C function returned null handle"
             )
+
+        atexit.register(self.destroy)
 
     def set_angles_async(
         self,

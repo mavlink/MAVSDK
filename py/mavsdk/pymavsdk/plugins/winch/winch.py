@@ -8,6 +8,7 @@
 Allows users to send winch actions, as well as receive status information from winch systems.
 """
 
+import atexit
 import ctypes
 
 from typing import Callable, Any
@@ -278,6 +279,8 @@ class Winch:
             raise RuntimeError(
                 "Failed to create Winch plugin - C function returned null handle"
             )
+
+        atexit.register(self.destroy)
 
     def subscribe_status(self, callback: Callable, user_data: Any = None):
         """Subscribe to 'winch status' updates."""

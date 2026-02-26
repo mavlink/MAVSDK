@@ -8,6 +8,7 @@
 Provide vehicle actions (as a server) such as arming, taking off, and landing.
 """
 
+import atexit
 import ctypes
 
 from typing import Callable, Any
@@ -204,6 +205,8 @@ class ActionServer:
             raise RuntimeError(
                 "Failed to create ActionServer plugin - C function returned null handle"
             )
+
+        atexit.register(self.destroy)
 
     def subscribe_arm_disarm(self, callback: Callable, user_data: Any = None):
         """Subscribe to ARM/DISARM commands"""

@@ -9,6 +9,7 @@ Allow to download log files from the vehicle after a flight is complete.
  For log streaming during flight check the logging plugin.
 """
 
+import atexit
 import ctypes
 
 from typing import Callable, Any
@@ -147,6 +148,8 @@ class LogFiles:
                 "Failed to create LogFiles plugin - C function returned null handle"
             )
 
+        atexit.register(self.destroy)
+
     def get_entries_async(self, callback: Callable, user_data: Any = None):
         """Get List of log files."""
 
@@ -210,7 +213,11 @@ class LogFiles:
         self._callbacks.append(cb)
 
         self._lib.mavsdk_log_files_download_log_file_async(
-            self._handle, entry, path, cb, None
+            self._handle,
+            entry,
+            path.encode("utf-8") if isinstance(path, str) else path,
+            cb,
+            None,
         )
 
     def erase_all_log_files(self):

@@ -8,6 +8,7 @@
 Use arm authorization.
 """
 
+import atexit
 import ctypes
 
 from typing import Callable, Any
@@ -65,6 +66,8 @@ class ArmAuthorizerServer:
             raise RuntimeError(
                 "Failed to create ArmAuthorizerServer plugin - C function returned null handle"
             )
+
+        atexit.register(self.destroy)
 
     def subscribe_arm_authorization(self, callback: Callable, user_data: Any = None):
         """Subscribe to arm authorization request messages. Each request received should respond to using RespondArmAuthorization"""

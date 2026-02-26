@@ -8,6 +8,7 @@
 Get event notifications, such as takeoff, or arming checks
 """
 
+import atexit
 import ctypes
 
 from typing import Callable, Any
@@ -398,6 +399,8 @@ class Events:
             raise RuntimeError(
                 "Failed to create Events plugin - C function returned null handle"
             )
+
+        atexit.register(self.destroy)
 
     def subscribe_events(self, callback: Callable, user_data: Any = None):
         """Subscribe to event updates."""

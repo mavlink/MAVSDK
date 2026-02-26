@@ -8,6 +8,7 @@
 Provide files or directories to transfer.
 """
 
+import atexit
 import ctypes
 
 from typing import Callable, Any
@@ -58,12 +59,14 @@ class FtpServer:
                 "Failed to create FtpServer plugin - C function returned null handle"
             )
 
+        atexit.register(self.destroy)
+
     def set_root_dir(self, path):
         """Get set_root_dir (blocking)"""
 
         result_code = self._lib.mavsdk_ftp_server_set_root_dir(
             self._handle,
-            path,
+            path.encode("utf-8") if isinstance(path, str) else path,
         )
         result = FtpServerResult(result_code)
         if result != FtpServerResult.SUCCESS:

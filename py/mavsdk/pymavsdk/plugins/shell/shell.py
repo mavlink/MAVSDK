@@ -8,6 +8,7 @@
 Allow to communicate with the vehicle's system shell.
 """
 
+import atexit
 import ctypes
 
 from typing import Callable, Any
@@ -60,12 +61,14 @@ class Shell:
                 "Failed to create Shell plugin - C function returned null handle"
             )
 
+        atexit.register(self.destroy)
+
     def send(self, command):
         """Get send (blocking)"""
 
         result_code = self._lib.mavsdk_shell_send(
             self._handle,
-            command,
+            command.encode("utf-8") if isinstance(command, str) else command,
         )
         result = ShellResult(result_code)
         if result != ShellResult.SUCCESS:

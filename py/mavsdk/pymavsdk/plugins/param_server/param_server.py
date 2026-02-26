@@ -8,6 +8,7 @@
 Provide raw access to retrieve and provide server parameters.
 """
 
+import atexit
 import ctypes
 
 from typing import Callable, Any
@@ -274,6 +275,8 @@ class ParamServer:
                 "Failed to create ParamServer plugin - C function returned null handle"
             )
 
+        atexit.register(self.destroy)
+
     def set_protocol(self, extended_protocol):
         """Get set_protocol (blocking)"""
 
@@ -293,7 +296,9 @@ class ParamServer:
         result_out = ctypes.c_int32()
 
         result_code = self._lib.mavsdk_param_server_retrieve_param_int(
-            self._handle, name, ctypes.byref(result_out)
+            self._handle,
+            name.encode("utf-8") if isinstance(name, str) else name,
+            ctypes.byref(result_out),
         )
         result = ParamServerResult(result_code)
         if result != ParamServerResult.SUCCESS:
@@ -306,7 +311,7 @@ class ParamServer:
 
         result_code = self._lib.mavsdk_param_server_provide_param_int(
             self._handle,
-            name,
+            name.encode("utf-8") if isinstance(name, str) else name,
             value,
         )
         result = ParamServerResult(result_code)
@@ -321,7 +326,9 @@ class ParamServer:
         result_out = ctypes.c_float()
 
         result_code = self._lib.mavsdk_param_server_retrieve_param_float(
-            self._handle, name, ctypes.byref(result_out)
+            self._handle,
+            name.encode("utf-8") if isinstance(name, str) else name,
+            ctypes.byref(result_out),
         )
         result = ParamServerResult(result_code)
         if result != ParamServerResult.SUCCESS:
@@ -334,7 +341,7 @@ class ParamServer:
 
         result_code = self._lib.mavsdk_param_server_provide_param_float(
             self._handle,
-            name,
+            name.encode("utf-8") if isinstance(name, str) else name,
             value,
         )
         result = ParamServerResult(result_code)
@@ -349,7 +356,9 @@ class ParamServer:
         result_out = ctypes.c_char_p()
 
         result_code = self._lib.mavsdk_param_server_retrieve_param_custom(
-            self._handle, name, ctypes.byref(result_out)
+            self._handle,
+            name.encode("utf-8") if isinstance(name, str) else name,
+            ctypes.byref(result_out),
         )
         result = ParamServerResult(result_code)
         if result != ParamServerResult.SUCCESS:
@@ -362,8 +371,8 @@ class ParamServer:
 
         result_code = self._lib.mavsdk_param_server_provide_param_custom(
             self._handle,
-            name,
-            value,
+            name.encode("utf-8") if isinstance(name, str) else name,
+            value.encode("utf-8") if isinstance(value, str) else value,
         )
         result = ParamServerResult(result_code)
         if result != ParamServerResult.SUCCESS:

@@ -42,7 +42,6 @@ __all__ = [
     "AttitudeRate",
     "PositionNedYaw",
     "PositionGlobalYaw",
-    "AltitudeType",
     "VelocityBodyYawspeed",
     "VelocityNedYaw",
     "AccelerationNed",

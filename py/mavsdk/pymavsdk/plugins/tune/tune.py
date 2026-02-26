@@ -8,6 +8,7 @@
 Enable creating and sending a tune to be played on the system.
 """
 
+import atexit
 import ctypes
 
 from typing import Callable, Any
@@ -123,6 +124,8 @@ class Tune:
             raise RuntimeError(
                 "Failed to create Tune plugin - C function returned null handle"
             )
+
+        atexit.register(self.destroy)
 
     def play_tune_async(
         self, tune_description, callback: Callable, user_data: Any = None
