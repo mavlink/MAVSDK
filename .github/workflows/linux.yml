@@ -470,7 +470,8 @@ jobs:
       - name: build necessary protoc tooling
         run: cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Debug -DBUILD_MAVSDK_SERVER=ON -Bbuild/default -H.
       - name: generate code from protos
-        run: PATH="$PATH:$HOME/.local/bin" tools/generate_from_protos.sh
+        working-directory: .
+        run: PATH="$PATH:$HOME/.local/bin" tools/generate_from_protos.bash
       - name: fix style
         run: tools/fix_style.py . || true
       - name: check for diff
