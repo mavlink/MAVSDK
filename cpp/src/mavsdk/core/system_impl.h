@@ -331,6 +331,8 @@ public:
 
     double timeout_s() const;
 
+    void signal_exit() { _should_exit = true; }
+
 private:
     static bool is_autopilot(uint8_t comp_id);
     static bool is_camera(uint8_t comp_id);
