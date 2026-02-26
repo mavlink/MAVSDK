@@ -15,7 +15,8 @@ extern "C" {
 #endif
 
 /**
- * @brief Provide control over a gimbal.
+ * @brief Provide control over a gimbal within the MAVLink
+ * Gimbal Protocol: https://mavlink.io/en/services/gimbal_v2.html
  */
 
 // ===== Forward Declarations =====

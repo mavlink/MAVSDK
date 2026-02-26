@@ -36,7 +36,7 @@ typedef struct mavsdk_action_server_terminate_handle_s *mavsdk_action_server_ter
  * @brief Flight modes.
  *
  * For more information about flight modes, check out
- * https://docs.px4.io/master/en/config/flight_mode.html.
+ * https://docs.px4.io/main/en/config/flight_mode.html.
  */
 typedef enum {
     /**  Mode not known. */
