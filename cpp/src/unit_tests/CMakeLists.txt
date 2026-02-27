@@ -1,5 +1,3 @@
-find_package(jsoncpp REQUIRED)
-
 add_executable(unit_tests_runner
     ${UNIT_TEST_SOURCES}
 )
@@ -11,7 +9,8 @@ set_target_properties(unit_tests_runner
 )
 
 find_package(GTest REQUIRED)
-find_package(tinyxml2 REQUIRED)
+find_package(tinyxml2 CONFIG REQUIRED)
+find_package(jsoncpp CONFIG REQUIRED)
 
 target_link_libraries(unit_tests_runner
     mavsdk

@@ -1,0 +1,43 @@
+{
+    "name": "mavsdk",
+    "version": "0.1.0",
+    "builtin-baseline": "b1b19307e2d2ec1eefbdb7ea069de7d4bcd31f01",
+    "dependencies": [
+        "tinyxml2",
+        "jsoncpp",
+        "liblzma",
+        {
+            "name": "openssl",
+            "platform": "!android"
+        },
+        {
+            "name": "boringssl",
+            "platform": "android"
+        }
+    ],
+    "features": {
+        "mavsdk-server": {
+            "description": "Enable MAVSDK server support",
+            "dependencies": [
+                "grpc",
+                "protobuf",
+                "re2",
+                "abseil",
+                "c-ares"
+            ]
+        },
+        "curl": {
+            "description": "Enable curl support",
+            "dependencies": [
+                "curl"
+            ]
+        },
+        "testing": {
+            "description": "Enable testing support",
+            "dependencies": [
+                "gtest",
+                "cpptrace"
+            ]
+        }
+    }
+}

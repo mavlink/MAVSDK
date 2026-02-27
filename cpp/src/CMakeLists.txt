@@ -31,36 +31,12 @@ include(../cmake/compiler_flags.cmake)
 
 find_package(Threads REQUIRED)
 
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../cmake/Modules/common")
-
-if(NOT MSVC)
-    list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../cmake/Modules/non-msvc")
-endif()
-
-
 message(STATUS "Build with CMAKE_PREFIX_PATH: ${CMAKE_PREFIX_PATH}")
 message(STATUS "CMAKE_FIND_ROOT_PATHS: ${CMAKE_FIND_ROOT_PATH}")
-
-if(NOT BUILD_WITHOUT_CURL)
-    find_package(CURL REQUIRED)
-endif()
-if (CMAKE_CROSSCOMPILING)
-    find_package(LibLZMA HINTS "${CMAKE_PREFIX_PATH}" REQUIRED)
-else()
-    find_package(LibLZMA REQUIRED)
-endif()
 
 if(BUILD_TESTING AND (IOS OR ANDROID))
     message(STATUS "Building for iOS or Android: forcing BUILD_TESTING to FALSE...")
     set(BUILD_TESTING OFF)
-endif()
-
-if(ANDROID)
-    set(lib_path "lib/android/${ANDROID_ABI}")
-elseif(IOS)
-    set(lib_path "lib/ios")
-else()
-    set(lib_path "lib")
 endif()
 
 if (ENABLED_PLUGINS)

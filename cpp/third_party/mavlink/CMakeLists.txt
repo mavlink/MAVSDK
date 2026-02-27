@@ -1,46 +1,29 @@
-cmake_minimum_required(VERSION 3.13)
+include(FetchContent)
 
-project(external-mavlink)
-include(ExternalProject)
+set(MAVLINK_HASH d6a7eeaf43319ce6da19a1973ca40180a4210643)
+set(MAVLINK_URL "https://github.com/mavlink/mavlink")
+set(MAVLINK_DIALECT ${MAVLINK_DIALECT} CACHE STRING "MAVLink dialect to generate")
 
-list(APPEND CMAKE_ARGS
-    "-DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_INSTALL_PREFIX}"
-    "-DCMAKE_TOOLCHAIN_FILE:PATH=${CMAKE_TOOLCHAIN_FILE}"
-    "-DMAVLINK_DIALECT=${MAVLINK_DIALECT}"
-    )
-
-set(MAVLINK_GIT_HASH d6a7eeaf43319ce6da19a1973ca40180a4210643)
-
-if(IOS)
-    ExternalProject_add(
-        mavlink
-        GIT_REPOSITORY "${MAVLINK_URL}"
-        GIT_TAG "${MAVLINK_HASH}"
-        PREFIX mavlink
-        PATCH_COMMAND git checkout .
-        COMMAND git apply ${PROJECT_SOURCE_DIR}/mavlink.patch
-        COMMAND git apply ${PROJECT_SOURCE_DIR}/mavlink_ios.patch
-        CMAKE_ARGS "${CMAKE_ARGS}"
-        INSTALL_COMMAND ${CMAKE_COMMAND} --build <BINARY_DIR> --target install
-                COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_INSTALL_PREFIX}/include/mavlink/message_definitions/v1.0
-                COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/message_definitions/v1.0/minimal.xml ${CMAKE_INSTALL_PREFIX}/include/mavlink/message_definitions/v1.0/
-                COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/message_definitions/v1.0/standard.xml ${CMAKE_INSTALL_PREFIX}/include/mavlink/message_definitions/v1.0/
-                COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/message_definitions/v1.0/common.xml ${CMAKE_INSTALL_PREFIX}/include/mavlink/message_definitions/v1.0/
-                COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/message_definitions/v1.0/ardupilotmega.xml ${CMAKE_INSTALL_PREFIX}/include/mavlink/message_definitions/v1.0/
-    )
-else()
-    ExternalProject_add(
-        mavlink
-        GIT_REPOSITORY "${MAVLINK_URL}"
-        GIT_TAG "${MAVLINK_HASH}"
-        PREFIX mavlink
-        PATCH_COMMAND git checkout . && git apply ${PROJECT_SOURCE_DIR}/mavlink.patch
-        CMAKE_ARGS "${CMAKE_ARGS}"
-        INSTALL_COMMAND ${CMAKE_COMMAND} --build <BINARY_DIR> --target install
-                COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_INSTALL_PREFIX}/include/mavlink/message_definitions/v1.0
-                COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/message_definitions/v1.0/minimal.xml ${CMAKE_INSTALL_PREFIX}/include/mavlink/message_definitions/v1.0/
-                COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/message_definitions/v1.0/standard.xml ${CMAKE_INSTALL_PREFIX}/include/mavlink/message_definitions/v1.0/
-                COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/message_definitions/v1.0/common.xml ${CMAKE_INSTALL_PREFIX}/include/mavlink/message_definitions/v1.0/
-                COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/message_definitions/v1.0/ardupilotmega.xml ${CMAKE_INSTALL_PREFIX}/include/mavlink/message_definitions/v1.0/
-    )
+FetchContent_Declare(
+    mavlink
+    GIT_REPOSITORY ${MAVLINK_URL}
+    GIT_TAG ${MAVLINK_HASH}
+)
+FetchContent_GetProperties(mavlink)
+if(NOT mavlink_POPULATED)
+    FetchContent_Populate(mavlink)
+    if(IOS)
+        execute_process(
+            COMMAND "git apply ${PROJECT_SOURCE_DIR}/mavlink_ios.patch"
+            WORKING_DIRECTORY ${mavlink_SOURCE_DIR}
+        )
+    endif()
 endif()
+
+add_subdirectory(${mavlink_SOURCE_DIR} ${mavlink_BINARY_DIR})
+
+target_include_directories(mavlink INTERFACE
+    $<BUILD_INTERFACE:${mavlink_BINARY_DIR}/include>
+)
+
+set(MAVLINK_SOURCE_DIR ${mavlink_SOURCE_DIR} CACHE PATH "Where the MAVLink is located.")

@@ -1,0 +1,38 @@
+{
+    "version": 5,
+    "configurePresets": [
+        {
+            "name": "base",
+            "hidden": true,
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/build/${presetName}",
+            "cacheVariables": {
+                "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
+            }
+        },
+        {
+            "name": "mavsdk-core",
+            "inherits": "base",
+            "cacheVariables": {
+                "BUILD_MAVSDK_SERVER": "OFF",
+                "BUILD_TESTING": "OFF"
+            }
+        },
+        {
+            "name": "testing",
+            "inherits": "mavsdk-core",
+            "cacheVariables": {
+                "BUILD_TESTING": "ON",
+                "VCPKG_MANIFEST_FEATURES": "testing"
+            }
+        },
+        {
+            "name": "mavsdk-server",
+            "inherits": "mavsdk-core",
+            "cacheVariables": {
+                "BUILD_MAVSDK_SERVER": "ON",
+                "VCPKG_MANIFEST_FEATURES": "mavsdk-server"
+            }
+        }
+    ]
+}

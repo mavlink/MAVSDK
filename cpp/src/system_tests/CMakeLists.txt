@@ -43,8 +43,7 @@ target_include_directories(system_tests_runner
 )
 
 find_package(GTest REQUIRED)
-
-find_package(jsoncpp REQUIRED)
+find_package(jsoncpp CONFIG REQUIRED)
 
 target_link_libraries(system_tests_runner
     PRIVATE

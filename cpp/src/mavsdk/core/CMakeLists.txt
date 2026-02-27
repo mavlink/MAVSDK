@@ -1,22 +1,12 @@
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 
-find_package(MAVLink REQUIRED)
-
-get_target_property(
-    MAVLINK_INCLUDE_DIR
-    MAVLink::mavlink
-    INTERFACE_INCLUDE_DIRECTORIES
-)
-
 configure_file(version.h.in version.h)
 configure_file(include/mavsdk/mavlink_include.h.in include/mavsdk/mavlink_include.h)
 
 # Generate embedded XML header for libmav
 if(NOT MAVLINK_XML_PATH)
-    # Derive from MAVLINK_INCLUDE_DIR which is set by find_package(MAVLink)
-    # MAVLINK_INCLUDE_DIR points to .../include, so we append mavlink/message_definitions/v1.0
-    set(MAVLINK_XML_PATH "${MAVLINK_INCLUDE_DIR}/mavlink/message_definitions/v1.0")
+    set(MAVLINK_XML_PATH "${MAVLINK_SOURCE_DIR}/message_definitions/v1.0")
 endif()
 
 set(MAVLINK_MINIMAL_XML "${MAVLINK_XML_PATH}/minimal.xml")
@@ -105,13 +95,26 @@ target_sources(mavsdk
 )
 
 cmake_policy(SET CMP0079 NEW)
+
+if (CMAKE_CROSSCOMPILING)
+    find_package(LibLZMA HINTS "${CMAKE_PREFIX_PATH}" REQUIRED)
+else()
+    find_package(LibLZMA REQUIRED)
+endif()
+
 target_link_libraries(mavsdk
     PRIVATE
     Threads::Threads
     LibLZMA::LibLZMA
+    PUBLIC
+    mavlink
+    mav
+    libevents
 )
 
 if (NOT BUILD_WITHOUT_CURL)
+    find_package(CURL REQUIRED)
+
     target_sources(mavsdk
         PRIVATE
         curl_wrapper.cpp
@@ -181,7 +184,6 @@ target_include_directories(mavsdk
     PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/mavsdk>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include/mavsdk>
-    $<BUILD_INTERFACE:${MAVLINK_INCLUDE_DIR}>
     $<INSTALL_INTERFACE:include>
     PRIVATE
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
@@ -220,10 +222,6 @@ install(FILES
     include/mavsdk/vehicle.h
     include/mavsdk/overloaded.h
     ${CMAKE_CURRENT_BINARY_DIR}/include/mavsdk/mavlink_include.h
-    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/mavsdk"
-)
-
-install(DIRECTORY ${MAVLINK_INCLUDE_DIR}/mavlink
     DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/mavsdk"
 )
 
