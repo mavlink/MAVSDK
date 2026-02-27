@@ -108,13 +108,15 @@ class {{ plugin_name.upper_camel_case }}Async:
         Parameters
         ----------
         {% for param in method.params %}
-        {{ param.name.lower_snake_case }} : {{ param.type_info.name }}
+        {{ param.name.lower_snake_case }} : {% if param.type_info.is_primitive %}{{ param.type_info.name }}{% else %}{{ param.type_info.name.upper_camel_case }}{% endif %}
+
         {% endfor %}
         {% endif %}
         {% if method.return_name %}
         Returns
         -------
-        {{ method.return_name }} : {{ method.return_type.inner_name.upper_camel_case }}
+        {{ method.return_name.lower_snake_case }} : {% if method.return_type.is_primitive %}{{ method.return_type.name }}{% else %}{{ method.return_type.inner_name.upper_camel_case }}{% endif %}
+
         {% endif %}
         Raises
         ------
