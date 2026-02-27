@@ -206,8 +206,8 @@ class ActionAsync:
 
                Parameters
                ----------
-               latitude_deg : double
-               longitude_deg : double
+               latitude_deg : float
+               longitude_deg : float
                absolute_altitude_m : float
                yaw_deg : float
                Raises
@@ -241,10 +241,10 @@ class ActionAsync:
                ----------
                radius_m : float
                velocity_ms : float
-               yaw_behavior : <protoc_gen_mavsdk.name_parser.NameParser object at 0x10880aab0>
-               latitude_deg : double
-               longitude_deg : double
-               absolute_altitude_m : double
+               yaw_behavior : OrbitYawBehavior
+               latitude_deg : float
+               longitude_deg : float
+               absolute_altitude_m : float
                Raises
                ------
                ActionError
@@ -289,7 +289,7 @@ class ActionAsync:
 
                Parameters
                ----------
-               index : int32_t
+               index : int
                value : float
                Raises
                ------
@@ -310,8 +310,8 @@ class ActionAsync:
 
                Parameters
                ----------
-               index : int32_t
-               setting : <protoc_gen_mavsdk.name_parser.NameParser object at 0x10880aab0>
+               index : int
+               setting : RelayCommand
                Raises
                ------
                ActionError
@@ -364,7 +364,7 @@ class ActionAsync:
 
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x108809cd0> :
+        altitude : float
         Raises
         ------
         ActionError
@@ -398,7 +398,7 @@ class ActionAsync:
 
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x10880a0f0> :
+        relative_altitude_m : float
         Raises
         ------
         ActionError
@@ -457,8 +457,8 @@ class ActionAsync:
 
                Parameters
                ----------
-               latitude_deg : double
-               longitude_deg : double
+               latitude_deg : float
+               longitude_deg : float
                absolute_altitude_m : float
                Raises
                ------

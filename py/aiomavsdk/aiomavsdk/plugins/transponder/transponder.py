@@ -74,7 +74,7 @@ class TransponderAsync:
 
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x1084346b0> : AdsbVehicle
+        transponder : AdsbVehicle
         Raises
         ------
         TransponderError
@@ -89,7 +89,7 @@ class TransponderAsync:
 
         Parameters
         ----------
-        rate_hz : double
+        rate_hz : float
         Raises
         ------
         TransponderError

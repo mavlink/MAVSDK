@@ -80,10 +80,10 @@ class FtpAsync:
 
         Parameters
         ----------
-        remote_dir : std::string
+        remote_dir : str
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x108758050> : ListDirectoryData
+        data : ListDirectoryData
         Raises
         ------
         FtpError
@@ -100,7 +100,7 @@ class FtpAsync:
 
         Parameters
         ----------
-        remote_dir : std::string
+        remote_dir : str
         Raises
         ------
         FtpError
@@ -117,7 +117,7 @@ class FtpAsync:
 
         Parameters
         ----------
-        remote_dir : std::string
+        remote_dir : str
         Raises
         ------
         FtpError
@@ -134,7 +134,7 @@ class FtpAsync:
 
         Parameters
         ----------
-        remote_file_path : std::string
+        remote_file_path : str
         Raises
         ------
         FtpError
@@ -151,8 +151,8 @@ class FtpAsync:
 
         Parameters
         ----------
-        remote_from_path : std::string
-        remote_to_path : std::string
+        remote_from_path : str
+        remote_to_path : str
         Raises
         ------
         FtpError
@@ -169,11 +169,11 @@ class FtpAsync:
 
         Parameters
         ----------
-        local_file_path : std::string
-        remote_file_path : std::string
+        local_file_path : str
+        remote_file_path : str
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x108758bf0> :
+        are_identical : bool
         Raises
         ------
         FtpError
@@ -191,7 +191,7 @@ class FtpAsync:
 
         Parameters
         ----------
-        compid : uint32_t
+        compid : int
         Raises
         ------
         FtpError

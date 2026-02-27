@@ -107,13 +107,13 @@ class MissionRawServerAsync:
             None, lambda: self._plugin.set_current_item_complete()
         )
 
-    async def subscribe_clear_all(self) -> AsyncGenerator[uint32_t, None]:
+    async def subscribe_clear_all(self) -> AsyncGenerator[int, None]:
         """
         Subscribe when a MISSION_CLEAR_ALL is received
 
         Yields
         ------
-         : uint32_t
+         : int
              The next update
         """
         loop = asyncio.get_running_loop()

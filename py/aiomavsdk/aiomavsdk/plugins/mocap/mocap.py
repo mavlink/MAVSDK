@@ -59,7 +59,7 @@ class MocapAsync:
 
         Parameters
         ----------
-        vision_position_estimate : <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a71a750>
+        vision_position_estimate : VisionPositionEstimate
         Raises
         ------
         MocapError
@@ -77,7 +77,7 @@ class MocapAsync:
 
         Parameters
         ----------
-        vision_speed_estimate : <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a71a750>
+        vision_speed_estimate : VisionSpeedEstimate
         Raises
         ------
         MocapError
@@ -94,7 +94,7 @@ class MocapAsync:
 
         Parameters
         ----------
-        attitude_position_mocap : <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a71a750>
+        attitude_position_mocap : AttitudePositionMocap
         Raises
         ------
         MocapError
@@ -112,7 +112,7 @@ class MocapAsync:
 
         Parameters
         ----------
-        odometry : <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a71a750>
+        odometry : Odometry
         Raises
         ------
         MocapError

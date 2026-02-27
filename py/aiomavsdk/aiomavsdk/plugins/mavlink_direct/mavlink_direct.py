@@ -47,7 +47,7 @@ class MavlinkDirectAsync:
 
                Parameters
                ----------
-               message : <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a8f7cb0>
+               message : MavlinkMessage
                Raises
                ------
                MavlinkDirectError
@@ -96,7 +96,7 @@ class MavlinkDirectAsync:
 
                Parameters
                ----------
-               xml_content : std::string
+               xml_content : str
                Raises
                ------
                MavlinkDirectError

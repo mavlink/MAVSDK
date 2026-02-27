@@ -44,7 +44,7 @@ class ShellAsync:
 
         Parameters
         ----------
-        command : std::string
+        command : str
         Raises
         ------
         ShellError
@@ -53,7 +53,7 @@ class ShellAsync:
         loop = asyncio.get_running_loop()
         return await loop.run_in_executor(None, lambda: self._plugin.send(command))
 
-    async def subscribe_receive(self) -> AsyncGenerator[std::string, None]:
+    async def subscribe_receive(self) -> AsyncGenerator[str, None]:
         """
                Receive feedback from a sent command line.
 
@@ -61,7 +61,7 @@ class ShellAsync:
 
                Yields
                ------
-                : std::string
+                : str
                     The next update
         """
         loop = asyncio.get_running_loop()

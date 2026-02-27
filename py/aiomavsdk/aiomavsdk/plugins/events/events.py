@@ -102,7 +102,7 @@ class EventsAsync:
 
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x1084886b0> : HealthAndArmingCheckReport
+        report : HealthAndArmingCheckReport
         Raises
         ------
         EventsError

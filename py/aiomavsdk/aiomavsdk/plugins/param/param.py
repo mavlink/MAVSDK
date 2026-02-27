@@ -51,10 +51,10 @@ class ParamAsync:
 
                Parameters
                ----------
-               name : std::string
+               name : str
                Returns
                -------
-               <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a3dc230> :
+               value : int
                Raises
                ------
                ParamError
@@ -73,8 +73,8 @@ class ParamAsync:
 
                Parameters
                ----------
-               name : std::string
-               value : int32_t
+               name : str
+               value : int
                Raises
                ------
                ParamError
@@ -93,10 +93,10 @@ class ParamAsync:
 
                Parameters
                ----------
-               name : std::string
+               name : str
                Returns
                -------
-               <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a3dc5f0> :
+               value : float
                Raises
                ------
                ParamError
@@ -115,7 +115,7 @@ class ParamAsync:
 
                Parameters
                ----------
-               name : std::string
+               name : str
                value : float
                Raises
                ------
@@ -135,10 +135,10 @@ class ParamAsync:
 
                Parameters
                ----------
-               name : std::string
+               name : str
                Returns
                -------
-               <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a3dca10> :
+               value : str
                Raises
                ------
                ParamError
@@ -157,8 +157,8 @@ class ParamAsync:
 
                Parameters
                ----------
-               name : std::string
-               value : std::string
+               name : str
+               value : str
                Raises
                ------
                ParamError
@@ -175,7 +175,7 @@ class ParamAsync:
 
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a3dcd70> : AllParams
+        params : AllParams
         Raises
         ------
         ParamError
@@ -192,8 +192,8 @@ class ParamAsync:
 
                Parameters
                ----------
-               component_id : int32_t
-               protocol_version : <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a3ddb50>
+               component_id : int
+               protocol_version : ProtocolVersion
                Raises
                ------
                ParamError

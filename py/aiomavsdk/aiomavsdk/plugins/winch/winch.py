@@ -72,7 +72,7 @@ class WinchAsync:
 
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x107c58710> : Status
+        status : Status
         Raises
         ------
         WinchError
@@ -87,7 +87,7 @@ class WinchAsync:
 
         Parameters
         ----------
-        instance : uint32_t
+        instance : int
         Raises
         ------
         WinchError
@@ -102,7 +102,7 @@ class WinchAsync:
 
         Parameters
         ----------
-        instance : uint32_t
+        instance : int
         length_m : float
         rate_m_s : float
         Raises
@@ -122,7 +122,7 @@ class WinchAsync:
 
         Parameters
         ----------
-        instance : uint32_t
+        instance : int
         rate_m_s : float
         Raises
         ------
@@ -140,7 +140,7 @@ class WinchAsync:
 
         Parameters
         ----------
-        instance : uint32_t
+        instance : int
         Raises
         ------
         WinchError
@@ -155,7 +155,7 @@ class WinchAsync:
 
         Parameters
         ----------
-        instance : uint32_t
+        instance : int
         Raises
         ------
         WinchError
@@ -170,7 +170,7 @@ class WinchAsync:
 
         Parameters
         ----------
-        instance : uint32_t
+        instance : int
         Raises
         ------
         WinchError
@@ -185,7 +185,7 @@ class WinchAsync:
 
         Parameters
         ----------
-        instance : uint32_t
+        instance : int
         Raises
         ------
         WinchError
@@ -202,7 +202,7 @@ class WinchAsync:
 
                Parameters
                ----------
-               instance : uint32_t
+               instance : int
                Raises
                ------
                WinchError
@@ -219,7 +219,7 @@ class WinchAsync:
 
         Parameters
         ----------
-        instance : uint32_t
+        instance : int
         Raises
         ------
         WinchError
@@ -236,7 +236,7 @@ class WinchAsync:
 
         Parameters
         ----------
-        instance : uint32_t
+        instance : int
         Raises
         ------
         WinchError

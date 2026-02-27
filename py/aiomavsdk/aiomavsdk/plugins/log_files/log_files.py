@@ -48,7 +48,7 @@ class LogFilesAsync:
 
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x1064576b0> : Entry
+        entries : Entry
         Raises
         ------
         LogFilesError

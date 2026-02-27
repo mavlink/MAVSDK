@@ -48,7 +48,7 @@ class FollowMeAsync:
 
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x109bf3dd0> : Config
+        config : Config
         Raises
         ------
         FollowMeError
@@ -63,7 +63,7 @@ class FollowMeAsync:
 
         Parameters
         ----------
-        config : <protoc_gen_mavsdk.name_parser.NameParser object at 0x109c68950>
+        config : Config
         Raises
         ------
         FollowMeError
@@ -78,7 +78,7 @@ class FollowMeAsync:
 
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x109c68230> :
+        is_active : bool
         Raises
         ------
         FollowMeError
@@ -93,7 +93,7 @@ class FollowMeAsync:
 
         Parameters
         ----------
-        location : <protoc_gen_mavsdk.name_parser.NameParser object at 0x109c69370>
+        location : TargetLocation
         Raises
         ------
         FollowMeError
@@ -110,7 +110,7 @@ class FollowMeAsync:
 
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x109c685f0> : TargetLocation
+        location : TargetLocation
         Raises
         ------
         FollowMeError

@@ -48,7 +48,7 @@ class InfoAsync:
 
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x109e5be90> : FlightInfo
+        flight_info : FlightInfo
         Raises
         ------
         InfoError
@@ -65,7 +65,7 @@ class InfoAsync:
 
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x109ed0050> : Identification
+        identification : Identification
         Raises
         ------
         InfoError
@@ -82,7 +82,7 @@ class InfoAsync:
 
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x109ed0230> : Product
+        product : Product
         Raises
         ------
         InfoError
@@ -97,7 +97,7 @@ class InfoAsync:
 
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x109ed0470> : Version
+        version : Version
         Raises
         ------
         InfoError
@@ -112,7 +112,7 @@ class InfoAsync:
 
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x109ed0650> :
+        speed_factor : float
         Raises
         ------
         InfoError

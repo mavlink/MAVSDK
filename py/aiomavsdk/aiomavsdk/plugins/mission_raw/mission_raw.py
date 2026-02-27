@@ -50,7 +50,7 @@ class MissionRawAsync:
 
                Parameters
                ----------
-               mission_items : std::vector<<protoc_gen_mavsdk.name_parser.NameParser object at 0x10639f470>>
+               mission_items :
                Raises
                ------
                MissionRawError
@@ -67,7 +67,7 @@ class MissionRawAsync:
 
         Parameters
         ----------
-        mission_items : std::vector<<protoc_gen_mavsdk.name_parser.NameParser object at 0x10639f470>>
+        mission_items :
         Raises
         ------
         MissionRawError
@@ -84,7 +84,7 @@ class MissionRawAsync:
 
         Parameters
         ----------
-        mission_items : std::vector<<protoc_gen_mavsdk.name_parser.NameParser object at 0x10639f470>>
+        mission_items :
         Raises
         ------
         MissionRawError
@@ -115,7 +115,7 @@ class MissionRawAsync:
 
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x10639d370> : MissionItem
+        mission_items : MissionItem
         Raises
         ------
         MissionRawError
@@ -130,7 +130,7 @@ class MissionRawAsync:
 
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x10639d5b0> : MissionItem
+        geofence_items : MissionItem
         Raises
         ------
         MissionRawError
@@ -147,7 +147,7 @@ class MissionRawAsync:
 
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x10639d7f0> : MissionItem
+        rallypoint_items : MissionItem
         Raises
         ------
         MissionRawError
@@ -224,7 +224,7 @@ class MissionRawAsync:
 
                Parameters
                ----------
-               index : int32_t
+               index : int
                Raises
                ------
                MissionRawError
@@ -266,7 +266,7 @@ class MissionRawAsync:
 
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x10639e270> : MissionProgress
+        mission_progress : MissionProgress
         Raises
         ------
         MissionRawError
@@ -317,10 +317,10 @@ class MissionRawAsync:
 
                Parameters
                ----------
-               qgc_plan_path : std::string
+               qgc_plan_path : str
                Returns
                -------
-               <protoc_gen_mavsdk.name_parser.NameParser object at 0x10639e810> : MissionImportData
+               mission_import_data : MissionImportData
                Raises
                ------
                MissionRawError
@@ -343,10 +343,10 @@ class MissionRawAsync:
 
                Parameters
                ----------
-               qgc_plan : std::string
+               qgc_plan : str
                Returns
                -------
-               <protoc_gen_mavsdk.name_parser.NameParser object at 0x10639eb70> : MissionImportData
+               mission_import_data : MissionImportData
                Raises
                ------
                MissionRawError
@@ -368,10 +368,10 @@ class MissionRawAsync:
 
                Parameters
                ----------
-               mission_planner_path : std::string
+               mission_planner_path : str
                Returns
                -------
-               <protoc_gen_mavsdk.name_parser.NameParser object at 0x10639ee70> : MissionImportData
+               mission_import_data : MissionImportData
                Raises
                ------
                MissionRawError
@@ -393,10 +393,10 @@ class MissionRawAsync:
 
                Parameters
                ----------
-               mission_planner_mission : std::string
+               mission_planner_mission : str
                Returns
                -------
-               <protoc_gen_mavsdk.name_parser.NameParser object at 0x10639f230> : MissionImportData
+               mission_import_data : MissionImportData
                Raises
                ------
                MissionRawError
@@ -418,7 +418,7 @@ class MissionRawAsync:
 
                Returns
                -------
-               <protoc_gen_mavsdk.name_parser.NameParser object at 0x10639f410> :
+               is_finished : bool
                Raises
                ------
                MissionRawError

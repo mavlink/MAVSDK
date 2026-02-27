@@ -64,12 +64,12 @@ class GimbalAsync:
 
                Parameters
                ----------
-               gimbal_id : int32_t
+               gimbal_id : int
                roll_deg : float
                pitch_deg : float
                yaw_deg : float
-               gimbal_mode : <protoc_gen_mavsdk.name_parser.NameParser object at 0x109e6f530>
-               send_mode : <protoc_gen_mavsdk.name_parser.NameParser object at 0x109e6f530>
+               gimbal_mode : GimbalMode
+               send_mode : SendMode
                Raises
                ------
                GimbalError
@@ -103,12 +103,12 @@ class GimbalAsync:
 
                Parameters
                ----------
-               gimbal_id : int32_t
+               gimbal_id : int
                roll_rate_deg_s : float
                pitch_rate_deg_s : float
                yaw_rate_deg_s : float
-               gimbal_mode : <protoc_gen_mavsdk.name_parser.NameParser object at 0x109e6f530>
-               send_mode : <protoc_gen_mavsdk.name_parser.NameParser object at 0x109e6f530>
+               gimbal_mode : GimbalMode
+               send_mode : SendMode
                Raises
                ------
                GimbalError
@@ -141,9 +141,9 @@ class GimbalAsync:
 
                Parameters
                ----------
-               gimbal_id : int32_t
-               latitude_deg : double
-               longitude_deg : double
+               gimbal_id : int
+               latitude_deg : float
+               longitude_deg : float
                altitude_m : float
                Raises
                ------
@@ -172,8 +172,8 @@ class GimbalAsync:
 
                Parameters
                ----------
-               gimbal_id : int32_t
-               control_mode : <protoc_gen_mavsdk.name_parser.NameParser object at 0x109e6f530>
+               gimbal_id : int
+               control_mode : ControlMode
                Raises
                ------
                GimbalError
@@ -192,7 +192,7 @@ class GimbalAsync:
 
                Parameters
                ----------
-               gimbal_id : int32_t
+               gimbal_id : int
                Raises
                ------
                GimbalError
@@ -240,7 +240,7 @@ class GimbalAsync:
 
                Returns
                -------
-               <protoc_gen_mavsdk.name_parser.NameParser object at 0x109e6eab0> : GimbalList
+               gimbal_list : GimbalList
                Raises
                ------
                GimbalError
@@ -284,10 +284,10 @@ class GimbalAsync:
 
         Parameters
         ----------
-        gimbal_id : int32_t
+        gimbal_id : int
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x109e6ef90> : ControlStatus
+        control_status : ControlStatus
         Raises
         ------
         GimbalError
@@ -331,10 +331,10 @@ class GimbalAsync:
 
         Parameters
         ----------
-        gimbal_id : int32_t
+        gimbal_id : int
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x109e6f4d0> : Attitude
+        attitude : Attitude
         Raises
         ------
         GimbalError

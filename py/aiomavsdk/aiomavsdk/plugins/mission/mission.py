@@ -52,7 +52,7 @@ class MissionAsync:
 
                Parameters
                ----------
-               mission_plan : <protoc_gen_mavsdk.name_parser.NameParser object at 0x10678ae70>
+               mission_plan : MissionPlan
                Raises
                ------
                MissionError
@@ -106,7 +106,7 @@ class MissionAsync:
 
                Returns
                -------
-               <protoc_gen_mavsdk.name_parser.NameParser object at 0x106789e50> : MissionPlan
+               mission_plan : MissionPlan
                Raises
                ------
                MissionError
@@ -204,7 +204,7 @@ class MissionAsync:
 
                Parameters
                ----------
-               index : int32_t
+               index : int
                Raises
                ------
                MissionError
@@ -221,7 +221,7 @@ class MissionAsync:
 
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x10678a870> :
+        is_finished : bool
         Raises
         ------
         MissionError
@@ -263,7 +263,7 @@ class MissionAsync:
 
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x10678aa50> : MissionProgress
+        mission_progress : MissionProgress
         Raises
         ------
         MissionError
@@ -281,7 +281,7 @@ class MissionAsync:
 
                Returns
                -------
-               <protoc_gen_mavsdk.name_parser.NameParser object at 0x10678ac30> :
+               enable : bool
                Raises
                ------
                MissionError

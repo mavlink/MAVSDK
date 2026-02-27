@@ -46,7 +46,7 @@ class ComponentMetadataServerAsync:
 
         Parameters
         ----------
-        metadata : std::vector<<protoc_gen_mavsdk.name_parser.NameParser object at 0x107faa8d0>>
+        metadata :
         Raises
         ------
         ComponentMetadataServerError

@@ -75,7 +75,7 @@ class CameraAsync:
 
         Parameters
         ----------
-        component_id : int32_t
+        component_id : int
         Raises
         ------
         CameraError
@@ -92,7 +92,7 @@ class CameraAsync:
 
         Parameters
         ----------
-        component_id : int32_t
+        component_id : int
         interval_s : float
         Raises
         ------
@@ -110,7 +110,7 @@ class CameraAsync:
 
         Parameters
         ----------
-        component_id : int32_t
+        component_id : int
         Raises
         ------
         CameraError
@@ -127,7 +127,7 @@ class CameraAsync:
 
         Parameters
         ----------
-        component_id : int32_t
+        component_id : int
         Raises
         ------
         CameraError
@@ -144,7 +144,7 @@ class CameraAsync:
 
         Parameters
         ----------
-        component_id : int32_t
+        component_id : int
         Raises
         ------
         CameraError
@@ -161,8 +161,8 @@ class CameraAsync:
 
         Parameters
         ----------
-        component_id : int32_t
-        stream_id : int32_t
+        component_id : int
+        stream_id : int
         Raises
         ------
         CameraError
@@ -179,8 +179,8 @@ class CameraAsync:
 
         Parameters
         ----------
-        component_id : int32_t
-        stream_id : int32_t
+        component_id : int
+        stream_id : int
         Raises
         ------
         CameraError
@@ -197,8 +197,8 @@ class CameraAsync:
 
         Parameters
         ----------
-        component_id : int32_t
-        mode : <protoc_gen_mavsdk.name_parser.NameParser object at 0x1080cb470>
+        component_id : int
+        mode : Mode
         Raises
         ------
         CameraError
@@ -219,11 +219,11 @@ class CameraAsync:
 
                Parameters
                ----------
-               component_id : int32_t
-               photos_range : <protoc_gen_mavsdk.name_parser.NameParser object at 0x1080cb470>
+               component_id : int
+               photos_range : PhotosRange
                Returns
                -------
-               <protoc_gen_mavsdk.name_parser.NameParser object at 0x1080be930> : CaptureInfo
+               capture_infos : CaptureInfo
                Raises
                ------
                CameraError
@@ -271,7 +271,7 @@ class CameraAsync:
 
                Returns
                -------
-               <protoc_gen_mavsdk.name_parser.NameParser object at 0x1080beab0> : CameraList
+               camera_list : CameraList
                Raises
                ------
                CameraError
@@ -311,10 +311,10 @@ class CameraAsync:
 
         Parameters
         ----------
-        component_id : int32_t
+        component_id : int
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x1080beff0> : Mode
+        mode : Mode
         Raises
         ------
         CameraError
@@ -358,10 +358,10 @@ class CameraAsync:
 
         Parameters
         ----------
-        component_id : int32_t
+        component_id : int
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x1080bf470> : VideoStreamInfo
+        video_stream_info : VideoStreamInfo
         Raises
         ------
         CameraError
@@ -428,10 +428,10 @@ class CameraAsync:
 
         Parameters
         ----------
-        component_id : int32_t
+        component_id : int
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x1080bfbf0> : Storage
+        storage : Storage
         Raises
         ------
         CameraError
@@ -475,10 +475,10 @@ class CameraAsync:
 
         Parameters
         ----------
-        component_id : int32_t
+        component_id : int
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x1080c8110> : Setting
+        current_settings : Setting
         Raises
         ------
         CameraError
@@ -522,10 +522,10 @@ class CameraAsync:
 
         Parameters
         ----------
-        component_id : int32_t
+        component_id : int
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x1080c8650> : SettingOptions
+        setting_options : SettingOptions
         Raises
         ------
         CameraError
@@ -544,8 +544,8 @@ class CameraAsync:
 
                Parameters
                ----------
-               component_id : int32_t
-               setting : <protoc_gen_mavsdk.name_parser.NameParser object at 0x1080cb470>
+               component_id : int
+               setting : Setting
                Raises
                ------
                CameraError
@@ -564,11 +564,11 @@ class CameraAsync:
 
                Parameters
                ----------
-               component_id : int32_t
-               setting : <protoc_gen_mavsdk.name_parser.NameParser object at 0x1080cb470>
+               component_id : int
+               setting : Setting
                Returns
                -------
-               <protoc_gen_mavsdk.name_parser.NameParser object at 0x1080c8d70> : Setting
+               setting : Setting
                Raises
                ------
                CameraError
@@ -587,8 +587,8 @@ class CameraAsync:
 
                Parameters
                ----------
-               component_id : int32_t
-               storage_id : int32_t
+               component_id : int
+               storage_id : int
                Raises
                ------
                CameraError
@@ -607,7 +607,7 @@ class CameraAsync:
 
                Parameters
                ----------
-               component_id : int32_t
+               component_id : int
                Raises
                ------
                CameraError
@@ -624,7 +624,7 @@ class CameraAsync:
 
         Parameters
         ----------
-        component_id : int32_t
+        component_id : int
         Raises
         ------
         CameraError
@@ -641,7 +641,7 @@ class CameraAsync:
 
         Parameters
         ----------
-        component_id : int32_t
+        component_id : int
         Raises
         ------
         CameraError
@@ -658,7 +658,7 @@ class CameraAsync:
 
         Parameters
         ----------
-        component_id : int32_t
+        component_id : int
         Raises
         ------
         CameraError
@@ -675,7 +675,7 @@ class CameraAsync:
 
         Parameters
         ----------
-        component_id : int32_t
+        component_id : int
         range : float
         Raises
         ------
@@ -693,7 +693,7 @@ class CameraAsync:
 
         Parameters
         ----------
-        component_id : int32_t
+        component_id : int
         point_x : float
         point_y : float
         radius : float
@@ -716,7 +716,7 @@ class CameraAsync:
 
         Parameters
         ----------
-        component_id : int32_t
+        component_id : int
         top_left_x : float
         top_left_y : float
         bottom_right_x : float
@@ -740,7 +740,7 @@ class CameraAsync:
 
         Parameters
         ----------
-        component_id : int32_t
+        component_id : int
         Raises
         ------
         CameraError
@@ -757,7 +757,7 @@ class CameraAsync:
 
         Parameters
         ----------
-        component_id : int32_t
+        component_id : int
         Raises
         ------
         CameraError
@@ -774,7 +774,7 @@ class CameraAsync:
 
         Parameters
         ----------
-        component_id : int32_t
+        component_id : int
         Raises
         ------
         CameraError
@@ -791,7 +791,7 @@ class CameraAsync:
 
         Parameters
         ----------
-        component_id : int32_t
+        component_id : int
         Raises
         ------
         CameraError
@@ -808,7 +808,7 @@ class CameraAsync:
 
         Parameters
         ----------
-        component_id : int32_t
+        component_id : int
         range : float
         Raises
         ------

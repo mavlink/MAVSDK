@@ -45,7 +45,7 @@ class GripperAsync:
 
         Parameters
         ----------
-        instance : uint32_t
+        instance : int
         Raises
         ------
         GripperError
@@ -60,7 +60,7 @@ class GripperAsync:
 
         Parameters
         ----------
-        instance : uint32_t
+        instance : int
         Raises
         ------
         GripperError

@@ -45,8 +45,8 @@ class ServerUtilityAsync:
 
         Parameters
         ----------
-        type : <protoc_gen_mavsdk.name_parser.NameParser object at 0x107fb77d0>
-        text : std::string
+        type : StatusTextType
+        text : str
         Raises
         ------
         ServerUtilityError

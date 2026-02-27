@@ -46,9 +46,9 @@ class FailureAsync:
 
         Parameters
         ----------
-        failure_unit : <protoc_gen_mavsdk.name_parser.NameParser object at 0x1088a8590>
-        failure_type : <protoc_gen_mavsdk.name_parser.NameParser object at 0x1088a8590>
-        instance : int32_t
+        failure_unit : FailureUnit
+        failure_type : FailureType
+        instance : int
         Raises
         ------
         FailureError

@@ -46,7 +46,7 @@ class TuneAsync:
 
         Parameters
         ----------
-        tune_description : <protoc_gen_mavsdk.name_parser.NameParser object at 0x1066ec710>
+        tune_description : TuneDescription
         Raises
         ------
         TuneError

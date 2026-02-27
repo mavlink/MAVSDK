@@ -71,10 +71,10 @@ class ParamServerAsync:
 
                Parameters
                ----------
-               name : std::string
+               name : str
                Returns
                -------
-               <protoc_gen_mavsdk.name_parser.NameParser object at 0x105febcb0> :
+               value : int
                Raises
                ------
                ParamServerError
@@ -97,8 +97,8 @@ class ParamServerAsync:
 
                Parameters
                ----------
-               name : std::string
-               value : int32_t
+               name : str
+               value : int
                Raises
                ------
                ParamServerError
@@ -121,10 +121,10 @@ class ParamServerAsync:
 
                Parameters
                ----------
-               name : std::string
+               name : str
                Returns
                -------
-               <protoc_gen_mavsdk.name_parser.NameParser object at 0x106064170> :
+               value : float
                Raises
                ------
                ParamServerError
@@ -143,7 +143,7 @@ class ParamServerAsync:
 
                Parameters
                ----------
-               name : std::string
+               name : str
                value : float
                Raises
                ------
@@ -167,10 +167,10 @@ class ParamServerAsync:
 
                Parameters
                ----------
-               name : std::string
+               name : str
                Returns
                -------
-               <protoc_gen_mavsdk.name_parser.NameParser object at 0x1060645f0> :
+               value : str
                Raises
                ------
                ParamServerError
@@ -189,8 +189,8 @@ class ParamServerAsync:
 
                Parameters
                ----------
-               name : std::string
-               value : std::string
+               name : str
+               value : str
                Raises
                ------
                ParamServerError
@@ -207,7 +207,7 @@ class ParamServerAsync:
 
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x106064ad0> : AllParams
+        params : AllParams
         Raises
         ------
         ParamServerError

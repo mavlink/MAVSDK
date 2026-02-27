@@ -52,7 +52,7 @@ class GeofenceAsync:
 
                Parameters
                ----------
-               geofence_data : <protoc_gen_mavsdk.name_parser.NameParser object at 0x1082dbc50>
+               geofence_data : GeofenceData
                Raises
                ------
                GeofenceError

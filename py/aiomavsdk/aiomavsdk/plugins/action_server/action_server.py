@@ -275,7 +275,7 @@ class ActionServerAsync:
 
         Parameters
         ----------
-        flight_modes : <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a09e630>
+        flight_modes : AllowableFlightModes
         Raises
         ------
         ActionServerError
@@ -292,7 +292,7 @@ class ActionServerAsync:
 
         Returns
         -------
-        <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a09ddf0> : AllowableFlightModes
+        flight_modes : AllowableFlightModes
         Raises
         ------
         ActionServerError
@@ -326,7 +326,7 @@ class ActionServerAsync:
 
         Parameters
         ----------
-        flight_mode : <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a09eff0>
+        flight_mode : FlightMode
         Raises
         ------
         ActionServerError
@@ -343,7 +343,7 @@ class ActionServerAsync:
 
         Parameters
         ----------
-        flight_mode : <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a09eff0>
+        flight_mode : FlightMode
         Raises
         ------
         ActionServerError

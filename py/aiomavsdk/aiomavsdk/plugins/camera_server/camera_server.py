@@ -55,7 +55,7 @@ class CameraServerAsync:
 
         Parameters
         ----------
-        information : <protoc_gen_mavsdk.name_parser.NameParser object at 0x105da6330>
+        information : Information
         Raises
         ------
         CameraServerError
@@ -72,7 +72,7 @@ class CameraServerAsync:
 
         Parameters
         ----------
-        video_streaming : <protoc_gen_mavsdk.name_parser.NameParser object at 0x105da6d50>
+        video_streaming : VideoStreaming
         Raises
         ------
         CameraServerError
@@ -100,13 +100,13 @@ class CameraServerAsync:
             None, lambda: self._plugin.set_in_progress(in_progress)
         )
 
-    async def subscribe_take_photo(self) -> AsyncGenerator[int32_t, None]:
+    async def subscribe_take_photo(self) -> AsyncGenerator[int, None]:
         """
         Subscribe to image capture requests. Each request received should respond to using RespondTakePhoto.
 
         Yields
         ------
-         : int32_t
+         : int
              The next update
         """
         loop = asyncio.get_running_loop()
@@ -131,8 +131,8 @@ class CameraServerAsync:
 
         Parameters
         ----------
-        take_photo_feedback : <protoc_gen_mavsdk.name_parser.NameParser object at 0x105da6d50>
-        capture_info : <protoc_gen_mavsdk.name_parser.NameParser object at 0x105da6d50>
+        take_photo_feedback : CameraFeedback
+        capture_info : CaptureInfo
         Raises
         ------
         CameraServerError
@@ -144,13 +144,13 @@ class CameraServerAsync:
             lambda: self._plugin.respond_take_photo(take_photo_feedback, capture_info),
         )
 
-    async def subscribe_start_video(self) -> AsyncGenerator[int32_t, None]:
+    async def subscribe_start_video(self) -> AsyncGenerator[int, None]:
         """
         Subscribe to start video requests. Each request received should respond to using RespondStartVideo
 
         Yields
         ------
-         : int32_t
+         : int
              The next update
         """
         loop = asyncio.get_running_loop()
@@ -175,7 +175,7 @@ class CameraServerAsync:
 
         Parameters
         ----------
-        start_video_feedback : <protoc_gen_mavsdk.name_parser.NameParser object at 0x105da6d50>
+        start_video_feedback : CameraFeedback
         Raises
         ------
         CameraServerError
@@ -186,13 +186,13 @@ class CameraServerAsync:
             None, lambda: self._plugin.respond_start_video(start_video_feedback)
         )
 
-    async def subscribe_stop_video(self) -> AsyncGenerator[int32_t, None]:
+    async def subscribe_stop_video(self) -> AsyncGenerator[int, None]:
         """
         Subscribe to stop video requests. Each request received should response to using RespondStopVideo
 
         Yields
         ------
-         : int32_t
+         : int
              The next update
         """
         loop = asyncio.get_running_loop()
@@ -217,7 +217,7 @@ class CameraServerAsync:
 
         Parameters
         ----------
-        stop_video_feedback : <protoc_gen_mavsdk.name_parser.NameParser object at 0x105da6d50>
+        stop_video_feedback : CameraFeedback
         Raises
         ------
         CameraServerError
@@ -228,13 +228,13 @@ class CameraServerAsync:
             None, lambda: self._plugin.respond_stop_video(stop_video_feedback)
         )
 
-    async def subscribe_start_video_streaming(self) -> AsyncGenerator[int32_t, None]:
+    async def subscribe_start_video_streaming(self) -> AsyncGenerator[int, None]:
         """
         Subscribe to start video streaming requests. Each request received should response to using RespondStartVideoStreaming
 
         Yields
         ------
-         : int32_t
+         : int
              The next update
         """
         loop = asyncio.get_running_loop()
@@ -259,7 +259,7 @@ class CameraServerAsync:
 
         Parameters
         ----------
-        start_video_streaming_feedback : <protoc_gen_mavsdk.name_parser.NameParser object at 0x105da6d50>
+        start_video_streaming_feedback : CameraFeedback
         Raises
         ------
         CameraServerError
@@ -273,13 +273,13 @@ class CameraServerAsync:
             ),
         )
 
-    async def subscribe_stop_video_streaming(self) -> AsyncGenerator[int32_t, None]:
+    async def subscribe_stop_video_streaming(self) -> AsyncGenerator[int, None]:
         """
         Subscribe to stop video streaming requests. Each request received should response to using RespondStopVideoStreaming
 
         Yields
         ------
-         : int32_t
+         : int
              The next update
         """
         loop = asyncio.get_running_loop()
@@ -304,7 +304,7 @@ class CameraServerAsync:
 
         Parameters
         ----------
-        stop_video_streaming_feedback : <protoc_gen_mavsdk.name_parser.NameParser object at 0x105da6d50>
+        stop_video_streaming_feedback : CameraFeedback
         Raises
         ------
         CameraServerError
@@ -349,7 +349,7 @@ class CameraServerAsync:
 
         Parameters
         ----------
-        set_mode_feedback : <protoc_gen_mavsdk.name_parser.NameParser object at 0x105da6330>
+        set_mode_feedback : CameraFeedback
         Raises
         ------
         CameraServerError
@@ -360,13 +360,13 @@ class CameraServerAsync:
             None, lambda: self._plugin.respond_set_mode(set_mode_feedback)
         )
 
-    async def subscribe_storage_information(self) -> AsyncGenerator[int32_t, None]:
+    async def subscribe_storage_information(self) -> AsyncGenerator[int, None]:
         """
         Subscribe to camera storage information requests. Each request received should response to using RespondStorageInformation
 
         Yields
         ------
-         : int32_t
+         : int
              The next update
         """
         loop = asyncio.get_running_loop()
@@ -393,8 +393,8 @@ class CameraServerAsync:
 
         Parameters
         ----------
-        storage_information_feedback : <protoc_gen_mavsdk.name_parser.NameParser object at 0x105da6330>
-        storage_information : <protoc_gen_mavsdk.name_parser.NameParser object at 0x105da6d50>
+        storage_information_feedback : CameraFeedback
+        storage_information : StorageInformation
         Raises
         ------
         CameraServerError
@@ -408,13 +408,13 @@ class CameraServerAsync:
             ),
         )
 
-    async def subscribe_capture_status(self) -> AsyncGenerator[int32_t, None]:
+    async def subscribe_capture_status(self) -> AsyncGenerator[int, None]:
         """
         Subscribe to camera capture status requests. Each request received should response to using RespondCaptureStatus
 
         Yields
         ------
-         : int32_t
+         : int
              The next update
         """
         loop = asyncio.get_running_loop()
@@ -439,8 +439,8 @@ class CameraServerAsync:
 
         Parameters
         ----------
-        capture_status_feedback : <protoc_gen_mavsdk.name_parser.NameParser object at 0x105da6d50>
-        capture_status : <protoc_gen_mavsdk.name_parser.NameParser object at 0x105da6d50>
+        capture_status_feedback : CameraFeedback
+        capture_status : CaptureStatus
         Raises
         ------
         CameraServerError
@@ -454,13 +454,13 @@ class CameraServerAsync:
             ),
         )
 
-    async def subscribe_format_storage(self) -> AsyncGenerator[int32_t, None]:
+    async def subscribe_format_storage(self) -> AsyncGenerator[int, None]:
         """
         Subscribe to format storage requests. Each request received should response to using RespondFormatStorage
 
         Yields
         ------
-         : int32_t
+         : int
              The next update
         """
         loop = asyncio.get_running_loop()
@@ -485,7 +485,7 @@ class CameraServerAsync:
 
         Parameters
         ----------
-        format_storage_feedback : <protoc_gen_mavsdk.name_parser.NameParser object at 0x105da6d50>
+        format_storage_feedback : CameraFeedback
         Raises
         ------
         CameraServerError
@@ -496,13 +496,13 @@ class CameraServerAsync:
             None, lambda: self._plugin.respond_format_storage(format_storage_feedback)
         )
 
-    async def subscribe_reset_settings(self) -> AsyncGenerator[int32_t, None]:
+    async def subscribe_reset_settings(self) -> AsyncGenerator[int, None]:
         """
         Subscribe to reset settings requests. Each request received should response to using RespondResetSettings
 
         Yields
         ------
-         : int32_t
+         : int
              The next update
         """
         loop = asyncio.get_running_loop()
@@ -527,7 +527,7 @@ class CameraServerAsync:
 
         Parameters
         ----------
-        reset_settings_feedback : <protoc_gen_mavsdk.name_parser.NameParser object at 0x105da6d50>
+        reset_settings_feedback : CameraFeedback
         Raises
         ------
         CameraServerError
@@ -538,13 +538,13 @@ class CameraServerAsync:
             None, lambda: self._plugin.respond_reset_settings(reset_settings_feedback)
         )
 
-    async def subscribe_zoom_in_start(self) -> AsyncGenerator[int32_t, None]:
+    async def subscribe_zoom_in_start(self) -> AsyncGenerator[int, None]:
         """
         Subscribe to zoom in start command
 
         Yields
         ------
-         : int32_t
+         : int
              The next update
         """
         loop = asyncio.get_running_loop()
@@ -569,7 +569,7 @@ class CameraServerAsync:
 
         Parameters
         ----------
-        zoom_in_start_feedback : <protoc_gen_mavsdk.name_parser.NameParser object at 0x105da6d50>
+        zoom_in_start_feedback : CameraFeedback
         Raises
         ------
         CameraServerError
@@ -580,13 +580,13 @@ class CameraServerAsync:
             None, lambda: self._plugin.respond_zoom_in_start(zoom_in_start_feedback)
         )
 
-    async def subscribe_zoom_out_start(self) -> AsyncGenerator[int32_t, None]:
+    async def subscribe_zoom_out_start(self) -> AsyncGenerator[int, None]:
         """
         Subscribe to zoom out start command
 
         Yields
         ------
-         : int32_t
+         : int
              The next update
         """
         loop = asyncio.get_running_loop()
@@ -611,7 +611,7 @@ class CameraServerAsync:
 
         Parameters
         ----------
-        zoom_out_start_feedback : <protoc_gen_mavsdk.name_parser.NameParser object at 0x105da6d50>
+        zoom_out_start_feedback : CameraFeedback
         Raises
         ------
         CameraServerError
@@ -622,13 +622,13 @@ class CameraServerAsync:
             None, lambda: self._plugin.respond_zoom_out_start(zoom_out_start_feedback)
         )
 
-    async def subscribe_zoom_stop(self) -> AsyncGenerator[int32_t, None]:
+    async def subscribe_zoom_stop(self) -> AsyncGenerator[int, None]:
         """
         Subscribe to zoom stop command
 
         Yields
         ------
-         : int32_t
+         : int
              The next update
         """
         loop = asyncio.get_running_loop()
@@ -653,7 +653,7 @@ class CameraServerAsync:
 
         Parameters
         ----------
-        zoom_stop_feedback : <protoc_gen_mavsdk.name_parser.NameParser object at 0x105da6d50>
+        zoom_stop_feedback : CameraFeedback
         Raises
         ------
         CameraServerError
@@ -695,7 +695,7 @@ class CameraServerAsync:
 
         Parameters
         ----------
-        zoom_range_feedback : <protoc_gen_mavsdk.name_parser.NameParser object at 0x105da6d50>
+        zoom_range_feedback : CameraFeedback
         Raises
         ------
         CameraServerError
@@ -712,7 +712,7 @@ class CameraServerAsync:
 
         Parameters
         ----------
-        tracked_rectangle : <protoc_gen_mavsdk.name_parser.NameParser object at 0x105da6330>
+        tracked_rectangle : TrackRectangle
         Raises
         ------
         CameraServerError
@@ -791,13 +791,13 @@ class CameraServerAsync:
                 self._subscription_handles.pop(id(queue))
                 self._plugin.unsubscribe_tracking_rectangle_command(handle)
 
-    async def subscribe_tracking_off_command(self) -> AsyncGenerator[int32_t, None]:
+    async def subscribe_tracking_off_command(self) -> AsyncGenerator[int, None]:
         """
         Subscribe to incoming tracking off command.
 
         Yields
         ------
-         : int32_t
+         : int
              The next update
         """
         loop = asyncio.get_running_loop()
@@ -822,7 +822,7 @@ class CameraServerAsync:
 
         Parameters
         ----------
-        stop_video_feedback : <protoc_gen_mavsdk.name_parser.NameParser object at 0x105da6d50>
+        stop_video_feedback : CameraFeedback
         Raises
         ------
         CameraServerError
@@ -840,7 +840,7 @@ class CameraServerAsync:
 
         Parameters
         ----------
-        stop_video_feedback : <protoc_gen_mavsdk.name_parser.NameParser object at 0x105da6330>
+        stop_video_feedback : CameraFeedback
         Raises
         ------
         CameraServerError
@@ -860,7 +860,7 @@ class CameraServerAsync:
 
         Parameters
         ----------
-        stop_video_feedback : <protoc_gen_mavsdk.name_parser.NameParser object at 0x105da6d50>
+        stop_video_feedback : CameraFeedback
         Raises
         ------
         CameraServerError

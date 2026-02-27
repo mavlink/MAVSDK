@@ -48,7 +48,7 @@ class ComponentMetadataAsync:
 
                Parameters
                ----------
-               compid : uint32_t
+               compid : int
                Raises
                ------
                ComponentMetadataError
@@ -108,11 +108,11 @@ class ComponentMetadataAsync:
 
                Parameters
                ----------
-               compid : uint32_t
-               metadata_type : <protoc_gen_mavsdk.name_parser.NameParser object at 0x109e60050>
+               compid : int
+               metadata_type : MetadataType
                Returns
                -------
-               <protoc_gen_mavsdk.name_parser.NameParser object at 0x109deffb0> : MetadataData
+               response : MetadataData
                Raises
                ------
                ComponentMetadataError

@@ -96,7 +96,7 @@ class OffboardAsync:
 
                Returns
                -------
-               <protoc_gen_mavsdk.name_parser.NameParser object at 0x107ff9010> :
+               is_active : bool
                Raises
                ------
                OffboardError
@@ -111,7 +111,7 @@ class OffboardAsync:
 
         Parameters
         ----------
-        attitude : <protoc_gen_mavsdk.name_parser.NameParser object at 0x107ffb470>
+        attitude : Attitude
         Raises
         ------
         OffboardError
@@ -131,7 +131,7 @@ class OffboardAsync:
 
                Parameters
                ----------
-               actuator_control : <protoc_gen_mavsdk.name_parser.NameParser object at 0x107ffb470>
+               actuator_control : ActuatorControl
                Raises
                ------
                OffboardError
@@ -148,7 +148,7 @@ class OffboardAsync:
 
         Parameters
         ----------
-        attitude_rate : <protoc_gen_mavsdk.name_parser.NameParser object at 0x107ffb470>
+        attitude_rate : AttitudeRate
         Raises
         ------
         OffboardError
@@ -165,7 +165,7 @@ class OffboardAsync:
 
         Parameters
         ----------
-        position_ned_yaw : <protoc_gen_mavsdk.name_parser.NameParser object at 0x107ffb470>
+        position_ned_yaw : PositionNedYaw
         Raises
         ------
         OffboardError
@@ -182,7 +182,7 @@ class OffboardAsync:
 
         Parameters
         ----------
-        position_global_yaw : <protoc_gen_mavsdk.name_parser.NameParser object at 0x107ffb470>
+        position_global_yaw : PositionGlobalYaw
         Raises
         ------
         OffboardError
@@ -199,7 +199,7 @@ class OffboardAsync:
 
         Parameters
         ----------
-        velocity_body_yawspeed : <protoc_gen_mavsdk.name_parser.NameParser object at 0x107ffab10>
+        velocity_body_yawspeed : VelocityBodyYawspeed
         Raises
         ------
         OffboardError
@@ -216,7 +216,7 @@ class OffboardAsync:
 
         Parameters
         ----------
-        velocity_ned_yaw : <protoc_gen_mavsdk.name_parser.NameParser object at 0x107ffab10>
+        velocity_ned_yaw : VelocityNedYaw
         Raises
         ------
         OffboardError
@@ -233,8 +233,8 @@ class OffboardAsync:
 
         Parameters
         ----------
-        position_ned_yaw : <protoc_gen_mavsdk.name_parser.NameParser object at 0x107ffab10>
-        velocity_ned_yaw : <protoc_gen_mavsdk.name_parser.NameParser object at 0x107ffab10>
+        position_ned_yaw : PositionNedYaw
+        velocity_ned_yaw : VelocityNedYaw
         Raises
         ------
         OffboardError
@@ -256,9 +256,9 @@ class OffboardAsync:
 
         Parameters
         ----------
-        position_ned_yaw : <protoc_gen_mavsdk.name_parser.NameParser object at 0x107ffab10>
-        velocity_ned_yaw : <protoc_gen_mavsdk.name_parser.NameParser object at 0x107ffab10>
-        acceleration_ned : <protoc_gen_mavsdk.name_parser.NameParser object at 0x107ffab10>
+        position_ned_yaw : PositionNedYaw
+        velocity_ned_yaw : VelocityNedYaw
+        acceleration_ned : AccelerationNed
         Raises
         ------
         OffboardError
@@ -278,7 +278,7 @@ class OffboardAsync:
 
         Parameters
         ----------
-        acceleration_ned : <protoc_gen_mavsdk.name_parser.NameParser object at 0x107ffab10>
+        acceleration_ned : AccelerationNed
         Raises
         ------
         OffboardError

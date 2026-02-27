@@ -49,7 +49,7 @@ class FtpServerAsync:
 
                Parameters
                ----------
-               path : std::string
+               path : str
                Raises
                ------
                FtpServerError

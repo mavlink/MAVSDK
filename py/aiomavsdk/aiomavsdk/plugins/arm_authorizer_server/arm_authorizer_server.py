@@ -39,13 +39,13 @@ class ArmAuthorizerServerAsync:
         self._subscription_handles: dict = {}
         self._plugin = ArmAuthorizerServer(server_component)
 
-    async def subscribe_arm_authorization(self) -> AsyncGenerator[uint32_t, None]:
+    async def subscribe_arm_authorization(self) -> AsyncGenerator[int, None]:
         """
         Subscribe to arm authorization request messages. Each request received should respond to using RespondArmAuthorization
 
         Yields
         ------
-         : uint32_t
+         : int
              The next update
         """
         loop = asyncio.get_running_loop()
@@ -70,7 +70,7 @@ class ArmAuthorizerServerAsync:
 
         Parameters
         ----------
-        valid_time_s : int32_t
+        valid_time_s : int
         Raises
         ------
         ArmAuthorizerServerError
@@ -88,8 +88,8 @@ class ArmAuthorizerServerAsync:
         Parameters
         ----------
         temporarily : bool
-        reason : <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a897a10>
-        extra_info : int32_t
+        reason : RejectionReason
+        extra_info : int
         Raises
         ------
         ArmAuthorizerServerError

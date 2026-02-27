@@ -45,7 +45,7 @@ class RtkAsync:
 
         Parameters
         ----------
-        rtcm_data : <protoc_gen_mavsdk.name_parser.NameParser object at 0x1065af110>
+        rtcm_data : RtcmData
         Raises
         ------
         RtkError
