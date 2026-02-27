@@ -18,6 +18,7 @@ This guide explains how to build MAVSDK using dockcross for cross-compilation an
 git clone https://github.com/mavlink/MAVSDK.git
 cd MAVSDK
 git submodule update --init --recursive
+cd cpp
 ```
 
 2. Pull and run the appropriate dockcross image for your target platform
@@ -60,6 +61,7 @@ chmod +x ./dockcross-linux-armv7
 git clone https://github.com/mavlink/MAVSDK.git
 cd MAVSDK
 git submodule update --init --recursive
+cd cpp
 ```
 
 2. Set up environment variables:

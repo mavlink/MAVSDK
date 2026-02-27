@@ -5,6 +5,8 @@ The unit tests are run every time new code is committed to the library, and must
 
 This topic shows how to run the existing tests.
 
+> **Note:** All commands on this page assume you are in the `cpp/` directory of the repository.
+
 ::: tip
 For information on _writing_ tests see: [Writing Plugins > Test Code](../contributing/plugins.md#testing).
 :::

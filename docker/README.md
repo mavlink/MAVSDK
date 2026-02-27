@@ -31,7 +31,7 @@ Docker images are built by the project and are hosted on Docker Hub. You can use
 
 ```bash
 cd /whereever/MAVSDK
-./tools/run-docker.sh
+./cpp/tools/run-docker.sh
 ```
 
 By default, this will use the `mavsdk/mavsdk-dev` image, which is an alias for the Ubuntu 24.04 image.
@@ -40,7 +40,7 @@ To use a specific Ubuntu version:
 
 ```bash
 cd /whereever/MAVSDK
-DOCKER_IMAGE=mavsdk/mavsdk-ubuntu-24.04 ./tools/run-docker.sh
+DOCKER_IMAGE=mavsdk/mavsdk-ubuntu-24.04 ./cpp/tools/run-docker.sh
 ```
 
 ## CI Integration

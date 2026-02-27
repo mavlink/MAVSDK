@@ -44,6 +44,7 @@ Download the source using git:
 git clone https://github.com/mavlink/MAVSDK.git
 cd MAVSDK
 git submodule update --init --recursive
+cd cpp
 ```
 
 ## Building the MAVSDK library only
