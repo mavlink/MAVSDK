@@ -5,7 +5,9 @@
 #include "mocap.h"
 
 #include <mavsdk/plugins/mocap/mocap.h>
+#include <algorithm>
 #include <cstring>
+#include <mutex>
 #include <vector>
 
 // ===== C++ to C Type Conversions =====
@@ -543,6 +545,7 @@ void mavsdk_mocap_byte_buffer_destroy(uint8_t** buffer) {
 
 struct mavsdk_mocap_wrapper {
     std::shared_ptr<mavsdk::Mocap> cpp_plugin;
+    std::mutex handles_mutex;
 };
 
 mavsdk_mocap_t
@@ -564,6 +567,13 @@ void mavsdk_mocap_destroy(mavsdk_mocap_t mocap) {
     }
 
     auto wrapper = reinterpret_cast<mavsdk_mocap_wrapper*>(mocap);
+
+    // Unsubscribe all active streams before destroying to prevent
+    // callbacks firing into a destroyed object
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+    }
+
     delete wrapper;
 }
 

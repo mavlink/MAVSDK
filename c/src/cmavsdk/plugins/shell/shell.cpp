@@ -5,7 +5,9 @@
 #include "shell.h"
 
 #include <mavsdk/plugins/shell/shell.h>
+#include <algorithm>
 #include <cstring>
+#include <mutex>
 #include <vector>
 
 // ===== C++ to C Type Conversions =====
@@ -91,6 +93,8 @@ void mavsdk_shell_byte_buffer_destroy(uint8_t** buffer) {
 
 struct mavsdk_shell_wrapper {
     std::shared_ptr<mavsdk::Shell> cpp_plugin;
+    std::mutex handles_mutex;
+    std::vector<mavsdk::Shell::ReceiveHandle*> receive_handles;
 };
 
 mavsdk_shell_t
@@ -112,6 +116,18 @@ void mavsdk_shell_destroy(mavsdk_shell_t shell) {
     }
 
     auto wrapper = reinterpret_cast<mavsdk_shell_wrapper*>(shell);
+
+    // Unsubscribe all active streams before destroying to prevent
+    // callbacks firing into a destroyed object
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        for (auto* h : wrapper->receive_handles) {
+            wrapper->cpp_plugin->unsubscribe_receive(std::move(*h));
+            delete h;
+        }
+        wrapper->receive_handles.clear();
+    }
+
     delete wrapper;
 }
 
@@ -149,8 +165,14 @@ mavsdk_shell_receive_handle_t mavsdk_shell_subscribe_receive(
                 }
         });
 
-    auto handle_wrapper = new mavsdk::Shell::ReceiveHandle(std::move(cpp_handle));
-    return reinterpret_cast<mavsdk_shell_receive_handle_t>(handle_wrapper);
+    auto cpp_handle_ptr = new mavsdk::Shell::ReceiveHandle(std::move(cpp_handle));
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        wrapper->receive_handles.push_back(cpp_handle_ptr);
+    }
+
+    return reinterpret_cast<mavsdk_shell_receive_handle_t>(cpp_handle_ptr);
 }
 
 void mavsdk_shell_unsubscribe_receive(
@@ -160,6 +182,13 @@ void mavsdk_shell_unsubscribe_receive(
     if (handle) {
         auto wrapper = reinterpret_cast<mavsdk_shell_wrapper*>(shell);
         auto cpp_handle = reinterpret_cast<mavsdk::Shell::ReceiveHandle*>(handle);
+
+        {
+            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+            auto& vec = wrapper->receive_handles;
+            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
+        }
+
         wrapper->cpp_plugin->unsubscribe_receive(std::move(*cpp_handle));
         delete cpp_handle;
     }

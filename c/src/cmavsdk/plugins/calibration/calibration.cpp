@@ -5,7 +5,9 @@
 #include "calibration.h"
 
 #include <mavsdk/plugins/calibration/calibration.h>
+#include <algorithm>
 #include <cstring>
+#include <mutex>
 #include <vector>
 
 // ===== C++ to C Type Conversions =====
@@ -148,6 +150,7 @@ void mavsdk_calibration_byte_buffer_destroy(uint8_t** buffer) {
 
 struct mavsdk_calibration_wrapper {
     std::shared_ptr<mavsdk::Calibration> cpp_plugin;
+    std::mutex handles_mutex;
 };
 
 mavsdk_calibration_t
@@ -169,6 +172,13 @@ void mavsdk_calibration_destroy(mavsdk_calibration_t calibration) {
     }
 
     auto wrapper = reinterpret_cast<mavsdk_calibration_wrapper*>(calibration);
+
+    // Unsubscribe all active streams before destroying to prevent
+    // callbacks firing into a destroyed object
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+    }
+
     delete wrapper;
 }
 

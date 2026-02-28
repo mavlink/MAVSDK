@@ -5,7 +5,9 @@
 #include "info.h"
 
 #include <mavsdk/plugins/info/info.h>
+#include <algorithm>
 #include <cstring>
+#include <mutex>
 #include <vector>
 
 // ===== C++ to C Type Conversions =====
@@ -325,6 +327,8 @@ void mavsdk_info_byte_buffer_destroy(uint8_t** buffer) {
 
 struct mavsdk_info_wrapper {
     std::shared_ptr<mavsdk::Info> cpp_plugin;
+    std::mutex handles_mutex;
+    std::vector<mavsdk::Info::FlightInformationHandle*> flight_information_handles;
 };
 
 mavsdk_info_t
@@ -346,6 +350,18 @@ void mavsdk_info_destroy(mavsdk_info_t info) {
     }
 
     auto wrapper = reinterpret_cast<mavsdk_info_wrapper*>(info);
+
+    // Unsubscribe all active streams before destroying to prevent
+    // callbacks firing into a destroyed object
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        for (auto* h : wrapper->flight_information_handles) {
+            wrapper->cpp_plugin->unsubscribe_flight_information(std::move(*h));
+            delete h;
+        }
+        wrapper->flight_information_handles.clear();
+    }
+
     delete wrapper;
 }
 
@@ -462,8 +478,14 @@ mavsdk_info_flight_information_handle_t mavsdk_info_subscribe_flight_information
                 }
         });
 
-    auto handle_wrapper = new mavsdk::Info::FlightInformationHandle(std::move(cpp_handle));
-    return reinterpret_cast<mavsdk_info_flight_information_handle_t>(handle_wrapper);
+    auto cpp_handle_ptr = new mavsdk::Info::FlightInformationHandle(std::move(cpp_handle));
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        wrapper->flight_information_handles.push_back(cpp_handle_ptr);
+    }
+
+    return reinterpret_cast<mavsdk_info_flight_information_handle_t>(cpp_handle_ptr);
 }
 
 void mavsdk_info_unsubscribe_flight_information(
@@ -473,6 +495,13 @@ void mavsdk_info_unsubscribe_flight_information(
     if (handle) {
         auto wrapper = reinterpret_cast<mavsdk_info_wrapper*>(info);
         auto cpp_handle = reinterpret_cast<mavsdk::Info::FlightInformationHandle*>(handle);
+
+        {
+            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+            auto& vec = wrapper->flight_information_handles;
+            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
+        }
+
         wrapper->cpp_plugin->unsubscribe_flight_information(std::move(*cpp_handle));
         delete cpp_handle;
     }

@@ -5,7 +5,9 @@
 #include "manual_control.h"
 
 #include <mavsdk/plugins/manual_control/manual_control.h>
+#include <algorithm>
 #include <cstring>
+#include <mutex>
 #include <vector>
 
 // ===== C++ to C Type Conversions =====
@@ -97,6 +99,7 @@ void mavsdk_manual_control_byte_buffer_destroy(uint8_t** buffer) {
 
 struct mavsdk_manual_control_wrapper {
     std::shared_ptr<mavsdk::ManualControl> cpp_plugin;
+    std::mutex handles_mutex;
 };
 
 mavsdk_manual_control_t
@@ -118,6 +121,13 @@ void mavsdk_manual_control_destroy(mavsdk_manual_control_t manual_control) {
     }
 
     auto wrapper = reinterpret_cast<mavsdk_manual_control_wrapper*>(manual_control);
+
+    // Unsubscribe all active streams before destroying to prevent
+    // callbacks firing into a destroyed object
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+    }
+
     delete wrapper;
 }
 

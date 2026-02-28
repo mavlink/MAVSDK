@@ -5,7 +5,9 @@
 #include "param.h"
 
 #include <mavsdk/plugins/param/param.h>
+#include <algorithm>
 #include <cstring>
+#include <mutex>
 #include <vector>
 
 // ===== C++ to C Type Conversions =====
@@ -349,6 +351,7 @@ void mavsdk_param_byte_buffer_destroy(uint8_t** buffer) {
 
 struct mavsdk_param_wrapper {
     std::shared_ptr<mavsdk::Param> cpp_plugin;
+    std::mutex handles_mutex;
 };
 
 mavsdk_param_t
@@ -370,6 +373,13 @@ void mavsdk_param_destroy(mavsdk_param_t param) {
     }
 
     auto wrapper = reinterpret_cast<mavsdk_param_wrapper*>(param);
+
+    // Unsubscribe all active streams before destroying to prevent
+    // callbacks firing into a destroyed object
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+    }
+
     delete wrapper;
 }
 

@@ -5,7 +5,9 @@
 #include "camera_server.h"
 
 #include <mavsdk/plugins/camera_server/camera_server.h>
+#include <algorithm>
 #include <cstring>
+#include <mutex>
 #include <vector>
 
 // ===== C++ to C Type Conversions =====
@@ -696,6 +698,24 @@ void mavsdk_camera_server_byte_buffer_destroy(uint8_t** buffer) {
 
 struct mavsdk_camera_server_wrapper {
     std::shared_ptr<mavsdk::CameraServer> cpp_plugin;
+    std::mutex handles_mutex;
+    std::vector<mavsdk::CameraServer::TakePhotoHandle*> take_photo_handles;
+    std::vector<mavsdk::CameraServer::StartVideoHandle*> start_video_handles;
+    std::vector<mavsdk::CameraServer::StopVideoHandle*> stop_video_handles;
+    std::vector<mavsdk::CameraServer::StartVideoStreamingHandle*> start_video_streaming_handles;
+    std::vector<mavsdk::CameraServer::StopVideoStreamingHandle*> stop_video_streaming_handles;
+    std::vector<mavsdk::CameraServer::SetModeHandle*> set_mode_handles;
+    std::vector<mavsdk::CameraServer::StorageInformationHandle*> storage_information_handles;
+    std::vector<mavsdk::CameraServer::CaptureStatusHandle*> capture_status_handles;
+    std::vector<mavsdk::CameraServer::FormatStorageHandle*> format_storage_handles;
+    std::vector<mavsdk::CameraServer::ResetSettingsHandle*> reset_settings_handles;
+    std::vector<mavsdk::CameraServer::ZoomInStartHandle*> zoom_in_start_handles;
+    std::vector<mavsdk::CameraServer::ZoomOutStartHandle*> zoom_out_start_handles;
+    std::vector<mavsdk::CameraServer::ZoomStopHandle*> zoom_stop_handles;
+    std::vector<mavsdk::CameraServer::ZoomRangeHandle*> zoom_range_handles;
+    std::vector<mavsdk::CameraServer::TrackingPointCommandHandle*> tracking_point_command_handles;
+    std::vector<mavsdk::CameraServer::TrackingRectangleCommandHandle*> tracking_rectangle_command_handles;
+    std::vector<mavsdk::CameraServer::TrackingOffCommandHandle*> tracking_off_command_handles;
 };
 
 mavsdk_camera_server_t
@@ -717,6 +737,98 @@ void mavsdk_camera_server_destroy(mavsdk_camera_server_t camera_server) {
     }
 
     auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
+
+    // Unsubscribe all active streams before destroying to prevent
+    // callbacks firing into a destroyed object
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        for (auto* h : wrapper->take_photo_handles) {
+            wrapper->cpp_plugin->unsubscribe_take_photo(std::move(*h));
+            delete h;
+        }
+        wrapper->take_photo_handles.clear();
+        for (auto* h : wrapper->start_video_handles) {
+            wrapper->cpp_plugin->unsubscribe_start_video(std::move(*h));
+            delete h;
+        }
+        wrapper->start_video_handles.clear();
+        for (auto* h : wrapper->stop_video_handles) {
+            wrapper->cpp_plugin->unsubscribe_stop_video(std::move(*h));
+            delete h;
+        }
+        wrapper->stop_video_handles.clear();
+        for (auto* h : wrapper->start_video_streaming_handles) {
+            wrapper->cpp_plugin->unsubscribe_start_video_streaming(std::move(*h));
+            delete h;
+        }
+        wrapper->start_video_streaming_handles.clear();
+        for (auto* h : wrapper->stop_video_streaming_handles) {
+            wrapper->cpp_plugin->unsubscribe_stop_video_streaming(std::move(*h));
+            delete h;
+        }
+        wrapper->stop_video_streaming_handles.clear();
+        for (auto* h : wrapper->set_mode_handles) {
+            wrapper->cpp_plugin->unsubscribe_set_mode(std::move(*h));
+            delete h;
+        }
+        wrapper->set_mode_handles.clear();
+        for (auto* h : wrapper->storage_information_handles) {
+            wrapper->cpp_plugin->unsubscribe_storage_information(std::move(*h));
+            delete h;
+        }
+        wrapper->storage_information_handles.clear();
+        for (auto* h : wrapper->capture_status_handles) {
+            wrapper->cpp_plugin->unsubscribe_capture_status(std::move(*h));
+            delete h;
+        }
+        wrapper->capture_status_handles.clear();
+        for (auto* h : wrapper->format_storage_handles) {
+            wrapper->cpp_plugin->unsubscribe_format_storage(std::move(*h));
+            delete h;
+        }
+        wrapper->format_storage_handles.clear();
+        for (auto* h : wrapper->reset_settings_handles) {
+            wrapper->cpp_plugin->unsubscribe_reset_settings(std::move(*h));
+            delete h;
+        }
+        wrapper->reset_settings_handles.clear();
+        for (auto* h : wrapper->zoom_in_start_handles) {
+            wrapper->cpp_plugin->unsubscribe_zoom_in_start(std::move(*h));
+            delete h;
+        }
+        wrapper->zoom_in_start_handles.clear();
+        for (auto* h : wrapper->zoom_out_start_handles) {
+            wrapper->cpp_plugin->unsubscribe_zoom_out_start(std::move(*h));
+            delete h;
+        }
+        wrapper->zoom_out_start_handles.clear();
+        for (auto* h : wrapper->zoom_stop_handles) {
+            wrapper->cpp_plugin->unsubscribe_zoom_stop(std::move(*h));
+            delete h;
+        }
+        wrapper->zoom_stop_handles.clear();
+        for (auto* h : wrapper->zoom_range_handles) {
+            wrapper->cpp_plugin->unsubscribe_zoom_range(std::move(*h));
+            delete h;
+        }
+        wrapper->zoom_range_handles.clear();
+        for (auto* h : wrapper->tracking_point_command_handles) {
+            wrapper->cpp_plugin->unsubscribe_tracking_point_command(std::move(*h));
+            delete h;
+        }
+        wrapper->tracking_point_command_handles.clear();
+        for (auto* h : wrapper->tracking_rectangle_command_handles) {
+            wrapper->cpp_plugin->unsubscribe_tracking_rectangle_command(std::move(*h));
+            delete h;
+        }
+        wrapper->tracking_rectangle_command_handles.clear();
+        for (auto* h : wrapper->tracking_off_command_handles) {
+            wrapper->cpp_plugin->unsubscribe_tracking_off_command(std::move(*h));
+            delete h;
+        }
+        wrapper->tracking_off_command_handles.clear();
+    }
+
     delete wrapper;
 }
 
@@ -782,8 +894,14 @@ mavsdk_camera_server_take_photo_handle_t mavsdk_camera_server_subscribe_take_pho
                 }
         });
 
-    auto handle_wrapper = new mavsdk::CameraServer::TakePhotoHandle(std::move(cpp_handle));
-    return reinterpret_cast<mavsdk_camera_server_take_photo_handle_t>(handle_wrapper);
+    auto cpp_handle_ptr = new mavsdk::CameraServer::TakePhotoHandle(std::move(cpp_handle));
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        wrapper->take_photo_handles.push_back(cpp_handle_ptr);
+    }
+
+    return reinterpret_cast<mavsdk_camera_server_take_photo_handle_t>(cpp_handle_ptr);
 }
 
 void mavsdk_camera_server_unsubscribe_take_photo(
@@ -793,6 +911,13 @@ void mavsdk_camera_server_unsubscribe_take_photo(
     if (handle) {
         auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
         auto cpp_handle = reinterpret_cast<mavsdk::CameraServer::TakePhotoHandle*>(handle);
+
+        {
+            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+            auto& vec = wrapper->take_photo_handles;
+            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
+        }
+
         wrapper->cpp_plugin->unsubscribe_take_photo(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -832,8 +957,14 @@ mavsdk_camera_server_start_video_handle_t mavsdk_camera_server_subscribe_start_v
                 }
         });
 
-    auto handle_wrapper = new mavsdk::CameraServer::StartVideoHandle(std::move(cpp_handle));
-    return reinterpret_cast<mavsdk_camera_server_start_video_handle_t>(handle_wrapper);
+    auto cpp_handle_ptr = new mavsdk::CameraServer::StartVideoHandle(std::move(cpp_handle));
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        wrapper->start_video_handles.push_back(cpp_handle_ptr);
+    }
+
+    return reinterpret_cast<mavsdk_camera_server_start_video_handle_t>(cpp_handle_ptr);
 }
 
 void mavsdk_camera_server_unsubscribe_start_video(
@@ -843,6 +974,13 @@ void mavsdk_camera_server_unsubscribe_start_video(
     if (handle) {
         auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
         auto cpp_handle = reinterpret_cast<mavsdk::CameraServer::StartVideoHandle*>(handle);
+
+        {
+            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+            auto& vec = wrapper->start_video_handles;
+            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
+        }
+
         wrapper->cpp_plugin->unsubscribe_start_video(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -881,8 +1019,14 @@ mavsdk_camera_server_stop_video_handle_t mavsdk_camera_server_subscribe_stop_vid
                 }
         });
 
-    auto handle_wrapper = new mavsdk::CameraServer::StopVideoHandle(std::move(cpp_handle));
-    return reinterpret_cast<mavsdk_camera_server_stop_video_handle_t>(handle_wrapper);
+    auto cpp_handle_ptr = new mavsdk::CameraServer::StopVideoHandle(std::move(cpp_handle));
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        wrapper->stop_video_handles.push_back(cpp_handle_ptr);
+    }
+
+    return reinterpret_cast<mavsdk_camera_server_stop_video_handle_t>(cpp_handle_ptr);
 }
 
 void mavsdk_camera_server_unsubscribe_stop_video(
@@ -892,6 +1036,13 @@ void mavsdk_camera_server_unsubscribe_stop_video(
     if (handle) {
         auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
         auto cpp_handle = reinterpret_cast<mavsdk::CameraServer::StopVideoHandle*>(handle);
+
+        {
+            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+            auto& vec = wrapper->stop_video_handles;
+            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
+        }
+
         wrapper->cpp_plugin->unsubscribe_stop_video(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -930,8 +1081,14 @@ mavsdk_camera_server_start_video_streaming_handle_t mavsdk_camera_server_subscri
                 }
         });
 
-    auto handle_wrapper = new mavsdk::CameraServer::StartVideoStreamingHandle(std::move(cpp_handle));
-    return reinterpret_cast<mavsdk_camera_server_start_video_streaming_handle_t>(handle_wrapper);
+    auto cpp_handle_ptr = new mavsdk::CameraServer::StartVideoStreamingHandle(std::move(cpp_handle));
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        wrapper->start_video_streaming_handles.push_back(cpp_handle_ptr);
+    }
+
+    return reinterpret_cast<mavsdk_camera_server_start_video_streaming_handle_t>(cpp_handle_ptr);
 }
 
 void mavsdk_camera_server_unsubscribe_start_video_streaming(
@@ -941,6 +1098,13 @@ void mavsdk_camera_server_unsubscribe_start_video_streaming(
     if (handle) {
         auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
         auto cpp_handle = reinterpret_cast<mavsdk::CameraServer::StartVideoStreamingHandle*>(handle);
+
+        {
+            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+            auto& vec = wrapper->start_video_streaming_handles;
+            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
+        }
+
         wrapper->cpp_plugin->unsubscribe_start_video_streaming(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -979,8 +1143,14 @@ mavsdk_camera_server_stop_video_streaming_handle_t mavsdk_camera_server_subscrib
                 }
         });
 
-    auto handle_wrapper = new mavsdk::CameraServer::StopVideoStreamingHandle(std::move(cpp_handle));
-    return reinterpret_cast<mavsdk_camera_server_stop_video_streaming_handle_t>(handle_wrapper);
+    auto cpp_handle_ptr = new mavsdk::CameraServer::StopVideoStreamingHandle(std::move(cpp_handle));
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        wrapper->stop_video_streaming_handles.push_back(cpp_handle_ptr);
+    }
+
+    return reinterpret_cast<mavsdk_camera_server_stop_video_streaming_handle_t>(cpp_handle_ptr);
 }
 
 void mavsdk_camera_server_unsubscribe_stop_video_streaming(
@@ -990,6 +1160,13 @@ void mavsdk_camera_server_unsubscribe_stop_video_streaming(
     if (handle) {
         auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
         auto cpp_handle = reinterpret_cast<mavsdk::CameraServer::StopVideoStreamingHandle*>(handle);
+
+        {
+            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+            auto& vec = wrapper->stop_video_streaming_handles;
+            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
+        }
+
         wrapper->cpp_plugin->unsubscribe_stop_video_streaming(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -1028,8 +1205,14 @@ mavsdk_camera_server_set_mode_handle_t mavsdk_camera_server_subscribe_set_mode(
                 }
         });
 
-    auto handle_wrapper = new mavsdk::CameraServer::SetModeHandle(std::move(cpp_handle));
-    return reinterpret_cast<mavsdk_camera_server_set_mode_handle_t>(handle_wrapper);
+    auto cpp_handle_ptr = new mavsdk::CameraServer::SetModeHandle(std::move(cpp_handle));
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        wrapper->set_mode_handles.push_back(cpp_handle_ptr);
+    }
+
+    return reinterpret_cast<mavsdk_camera_server_set_mode_handle_t>(cpp_handle_ptr);
 }
 
 void mavsdk_camera_server_unsubscribe_set_mode(
@@ -1039,6 +1222,13 @@ void mavsdk_camera_server_unsubscribe_set_mode(
     if (handle) {
         auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
         auto cpp_handle = reinterpret_cast<mavsdk::CameraServer::SetModeHandle*>(handle);
+
+        {
+            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+            auto& vec = wrapper->set_mode_handles;
+            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
+        }
+
         wrapper->cpp_plugin->unsubscribe_set_mode(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -1077,8 +1267,14 @@ mavsdk_camera_server_storage_information_handle_t mavsdk_camera_server_subscribe
                 }
         });
 
-    auto handle_wrapper = new mavsdk::CameraServer::StorageInformationHandle(std::move(cpp_handle));
-    return reinterpret_cast<mavsdk_camera_server_storage_information_handle_t>(handle_wrapper);
+    auto cpp_handle_ptr = new mavsdk::CameraServer::StorageInformationHandle(std::move(cpp_handle));
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        wrapper->storage_information_handles.push_back(cpp_handle_ptr);
+    }
+
+    return reinterpret_cast<mavsdk_camera_server_storage_information_handle_t>(cpp_handle_ptr);
 }
 
 void mavsdk_camera_server_unsubscribe_storage_information(
@@ -1088,6 +1284,13 @@ void mavsdk_camera_server_unsubscribe_storage_information(
     if (handle) {
         auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
         auto cpp_handle = reinterpret_cast<mavsdk::CameraServer::StorageInformationHandle*>(handle);
+
+        {
+            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+            auto& vec = wrapper->storage_information_handles;
+            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
+        }
+
         wrapper->cpp_plugin->unsubscribe_storage_information(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -1127,8 +1330,14 @@ mavsdk_camera_server_capture_status_handle_t mavsdk_camera_server_subscribe_capt
                 }
         });
 
-    auto handle_wrapper = new mavsdk::CameraServer::CaptureStatusHandle(std::move(cpp_handle));
-    return reinterpret_cast<mavsdk_camera_server_capture_status_handle_t>(handle_wrapper);
+    auto cpp_handle_ptr = new mavsdk::CameraServer::CaptureStatusHandle(std::move(cpp_handle));
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        wrapper->capture_status_handles.push_back(cpp_handle_ptr);
+    }
+
+    return reinterpret_cast<mavsdk_camera_server_capture_status_handle_t>(cpp_handle_ptr);
 }
 
 void mavsdk_camera_server_unsubscribe_capture_status(
@@ -1138,6 +1347,13 @@ void mavsdk_camera_server_unsubscribe_capture_status(
     if (handle) {
         auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
         auto cpp_handle = reinterpret_cast<mavsdk::CameraServer::CaptureStatusHandle*>(handle);
+
+        {
+            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+            auto& vec = wrapper->capture_status_handles;
+            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
+        }
+
         wrapper->cpp_plugin->unsubscribe_capture_status(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -1177,8 +1393,14 @@ mavsdk_camera_server_format_storage_handle_t mavsdk_camera_server_subscribe_form
                 }
         });
 
-    auto handle_wrapper = new mavsdk::CameraServer::FormatStorageHandle(std::move(cpp_handle));
-    return reinterpret_cast<mavsdk_camera_server_format_storage_handle_t>(handle_wrapper);
+    auto cpp_handle_ptr = new mavsdk::CameraServer::FormatStorageHandle(std::move(cpp_handle));
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        wrapper->format_storage_handles.push_back(cpp_handle_ptr);
+    }
+
+    return reinterpret_cast<mavsdk_camera_server_format_storage_handle_t>(cpp_handle_ptr);
 }
 
 void mavsdk_camera_server_unsubscribe_format_storage(
@@ -1188,6 +1410,13 @@ void mavsdk_camera_server_unsubscribe_format_storage(
     if (handle) {
         auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
         auto cpp_handle = reinterpret_cast<mavsdk::CameraServer::FormatStorageHandle*>(handle);
+
+        {
+            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+            auto& vec = wrapper->format_storage_handles;
+            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
+        }
+
         wrapper->cpp_plugin->unsubscribe_format_storage(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -1226,8 +1455,14 @@ mavsdk_camera_server_reset_settings_handle_t mavsdk_camera_server_subscribe_rese
                 }
         });
 
-    auto handle_wrapper = new mavsdk::CameraServer::ResetSettingsHandle(std::move(cpp_handle));
-    return reinterpret_cast<mavsdk_camera_server_reset_settings_handle_t>(handle_wrapper);
+    auto cpp_handle_ptr = new mavsdk::CameraServer::ResetSettingsHandle(std::move(cpp_handle));
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        wrapper->reset_settings_handles.push_back(cpp_handle_ptr);
+    }
+
+    return reinterpret_cast<mavsdk_camera_server_reset_settings_handle_t>(cpp_handle_ptr);
 }
 
 void mavsdk_camera_server_unsubscribe_reset_settings(
@@ -1237,6 +1472,13 @@ void mavsdk_camera_server_unsubscribe_reset_settings(
     if (handle) {
         auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
         auto cpp_handle = reinterpret_cast<mavsdk::CameraServer::ResetSettingsHandle*>(handle);
+
+        {
+            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+            auto& vec = wrapper->reset_settings_handles;
+            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
+        }
+
         wrapper->cpp_plugin->unsubscribe_reset_settings(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -1275,8 +1517,14 @@ mavsdk_camera_server_zoom_in_start_handle_t mavsdk_camera_server_subscribe_zoom_
                 }
         });
 
-    auto handle_wrapper = new mavsdk::CameraServer::ZoomInStartHandle(std::move(cpp_handle));
-    return reinterpret_cast<mavsdk_camera_server_zoom_in_start_handle_t>(handle_wrapper);
+    auto cpp_handle_ptr = new mavsdk::CameraServer::ZoomInStartHandle(std::move(cpp_handle));
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        wrapper->zoom_in_start_handles.push_back(cpp_handle_ptr);
+    }
+
+    return reinterpret_cast<mavsdk_camera_server_zoom_in_start_handle_t>(cpp_handle_ptr);
 }
 
 void mavsdk_camera_server_unsubscribe_zoom_in_start(
@@ -1286,6 +1534,13 @@ void mavsdk_camera_server_unsubscribe_zoom_in_start(
     if (handle) {
         auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
         auto cpp_handle = reinterpret_cast<mavsdk::CameraServer::ZoomInStartHandle*>(handle);
+
+        {
+            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+            auto& vec = wrapper->zoom_in_start_handles;
+            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
+        }
+
         wrapper->cpp_plugin->unsubscribe_zoom_in_start(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -1324,8 +1579,14 @@ mavsdk_camera_server_zoom_out_start_handle_t mavsdk_camera_server_subscribe_zoom
                 }
         });
 
-    auto handle_wrapper = new mavsdk::CameraServer::ZoomOutStartHandle(std::move(cpp_handle));
-    return reinterpret_cast<mavsdk_camera_server_zoom_out_start_handle_t>(handle_wrapper);
+    auto cpp_handle_ptr = new mavsdk::CameraServer::ZoomOutStartHandle(std::move(cpp_handle));
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        wrapper->zoom_out_start_handles.push_back(cpp_handle_ptr);
+    }
+
+    return reinterpret_cast<mavsdk_camera_server_zoom_out_start_handle_t>(cpp_handle_ptr);
 }
 
 void mavsdk_camera_server_unsubscribe_zoom_out_start(
@@ -1335,6 +1596,13 @@ void mavsdk_camera_server_unsubscribe_zoom_out_start(
     if (handle) {
         auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
         auto cpp_handle = reinterpret_cast<mavsdk::CameraServer::ZoomOutStartHandle*>(handle);
+
+        {
+            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+            auto& vec = wrapper->zoom_out_start_handles;
+            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
+        }
+
         wrapper->cpp_plugin->unsubscribe_zoom_out_start(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -1373,8 +1641,14 @@ mavsdk_camera_server_zoom_stop_handle_t mavsdk_camera_server_subscribe_zoom_stop
                 }
         });
 
-    auto handle_wrapper = new mavsdk::CameraServer::ZoomStopHandle(std::move(cpp_handle));
-    return reinterpret_cast<mavsdk_camera_server_zoom_stop_handle_t>(handle_wrapper);
+    auto cpp_handle_ptr = new mavsdk::CameraServer::ZoomStopHandle(std::move(cpp_handle));
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        wrapper->zoom_stop_handles.push_back(cpp_handle_ptr);
+    }
+
+    return reinterpret_cast<mavsdk_camera_server_zoom_stop_handle_t>(cpp_handle_ptr);
 }
 
 void mavsdk_camera_server_unsubscribe_zoom_stop(
@@ -1384,6 +1658,13 @@ void mavsdk_camera_server_unsubscribe_zoom_stop(
     if (handle) {
         auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
         auto cpp_handle = reinterpret_cast<mavsdk::CameraServer::ZoomStopHandle*>(handle);
+
+        {
+            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+            auto& vec = wrapper->zoom_stop_handles;
+            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
+        }
+
         wrapper->cpp_plugin->unsubscribe_zoom_stop(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -1422,8 +1703,14 @@ mavsdk_camera_server_zoom_range_handle_t mavsdk_camera_server_subscribe_zoom_ran
                 }
         });
 
-    auto handle_wrapper = new mavsdk::CameraServer::ZoomRangeHandle(std::move(cpp_handle));
-    return reinterpret_cast<mavsdk_camera_server_zoom_range_handle_t>(handle_wrapper);
+    auto cpp_handle_ptr = new mavsdk::CameraServer::ZoomRangeHandle(std::move(cpp_handle));
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        wrapper->zoom_range_handles.push_back(cpp_handle_ptr);
+    }
+
+    return reinterpret_cast<mavsdk_camera_server_zoom_range_handle_t>(cpp_handle_ptr);
 }
 
 void mavsdk_camera_server_unsubscribe_zoom_range(
@@ -1433,6 +1720,13 @@ void mavsdk_camera_server_unsubscribe_zoom_range(
     if (handle) {
         auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
         auto cpp_handle = reinterpret_cast<mavsdk::CameraServer::ZoomRangeHandle*>(handle);
+
+        {
+            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+            auto& vec = wrapper->zoom_range_handles;
+            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
+        }
+
         wrapper->cpp_plugin->unsubscribe_zoom_range(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -1496,8 +1790,14 @@ mavsdk_camera_server_tracking_point_command_handle_t mavsdk_camera_server_subscr
                 }
         });
 
-    auto handle_wrapper = new mavsdk::CameraServer::TrackingPointCommandHandle(std::move(cpp_handle));
-    return reinterpret_cast<mavsdk_camera_server_tracking_point_command_handle_t>(handle_wrapper);
+    auto cpp_handle_ptr = new mavsdk::CameraServer::TrackingPointCommandHandle(std::move(cpp_handle));
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        wrapper->tracking_point_command_handles.push_back(cpp_handle_ptr);
+    }
+
+    return reinterpret_cast<mavsdk_camera_server_tracking_point_command_handle_t>(cpp_handle_ptr);
 }
 
 void mavsdk_camera_server_unsubscribe_tracking_point_command(
@@ -1507,6 +1807,13 @@ void mavsdk_camera_server_unsubscribe_tracking_point_command(
     if (handle) {
         auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
         auto cpp_handle = reinterpret_cast<mavsdk::CameraServer::TrackingPointCommandHandle*>(handle);
+
+        {
+            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+            auto& vec = wrapper->tracking_point_command_handles;
+            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
+        }
+
         wrapper->cpp_plugin->unsubscribe_tracking_point_command(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -1531,8 +1838,14 @@ mavsdk_camera_server_tracking_rectangle_command_handle_t mavsdk_camera_server_su
                 }
         });
 
-    auto handle_wrapper = new mavsdk::CameraServer::TrackingRectangleCommandHandle(std::move(cpp_handle));
-    return reinterpret_cast<mavsdk_camera_server_tracking_rectangle_command_handle_t>(handle_wrapper);
+    auto cpp_handle_ptr = new mavsdk::CameraServer::TrackingRectangleCommandHandle(std::move(cpp_handle));
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        wrapper->tracking_rectangle_command_handles.push_back(cpp_handle_ptr);
+    }
+
+    return reinterpret_cast<mavsdk_camera_server_tracking_rectangle_command_handle_t>(cpp_handle_ptr);
 }
 
 void mavsdk_camera_server_unsubscribe_tracking_rectangle_command(
@@ -1542,6 +1855,13 @@ void mavsdk_camera_server_unsubscribe_tracking_rectangle_command(
     if (handle) {
         auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
         auto cpp_handle = reinterpret_cast<mavsdk::CameraServer::TrackingRectangleCommandHandle*>(handle);
+
+        {
+            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+            auto& vec = wrapper->tracking_rectangle_command_handles;
+            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
+        }
+
         wrapper->cpp_plugin->unsubscribe_tracking_rectangle_command(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -1566,8 +1886,14 @@ mavsdk_camera_server_tracking_off_command_handle_t mavsdk_camera_server_subscrib
                 }
         });
 
-    auto handle_wrapper = new mavsdk::CameraServer::TrackingOffCommandHandle(std::move(cpp_handle));
-    return reinterpret_cast<mavsdk_camera_server_tracking_off_command_handle_t>(handle_wrapper);
+    auto cpp_handle_ptr = new mavsdk::CameraServer::TrackingOffCommandHandle(std::move(cpp_handle));
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        wrapper->tracking_off_command_handles.push_back(cpp_handle_ptr);
+    }
+
+    return reinterpret_cast<mavsdk_camera_server_tracking_off_command_handle_t>(cpp_handle_ptr);
 }
 
 void mavsdk_camera_server_unsubscribe_tracking_off_command(
@@ -1577,6 +1903,13 @@ void mavsdk_camera_server_unsubscribe_tracking_off_command(
     if (handle) {
         auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
         auto cpp_handle = reinterpret_cast<mavsdk::CameraServer::TrackingOffCommandHandle*>(handle);
+
+        {
+            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+            auto& vec = wrapper->tracking_off_command_handles;
+            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
+        }
+
         wrapper->cpp_plugin->unsubscribe_tracking_off_command(std::move(*cpp_handle));
         delete cpp_handle;
     }
