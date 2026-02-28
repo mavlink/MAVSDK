@@ -12,7 +12,7 @@ if(NOT @BUILD_SHARED_LIBS@)
     find_dependency(tinyxml2 REQUIRED)
     find_dependency(mav REQUIRED)
     find_dependency(LibLZMA REQUIRED)
-    find_dependency(LibEvents REQUIRED)
+    find_dependency(libevents REQUIRED)
 
     if(@BUILD_MAVSDK_SERVER@)
         find_dependency(gRPC)

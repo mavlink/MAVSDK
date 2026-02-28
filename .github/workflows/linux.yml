@@ -620,11 +620,22 @@ jobs:
         run: ./build/release/src/system_tests/system_tests_runner
       - name: test (mavsdk_server)
         run: ./build/release/src/mavsdk_server/test/unit_tests_mavsdk_server
+      - name: build C wrapper
+        working-directory: ./c
+        run: |
+          cmake -DCMAKE_INSTALL_PREFIX=build/install -DCMAKE_PREFIX_PATH="$(pwd)/../cpp/install;$(pwd)/../cpp/build/release/third_party/install" -DBUILD_SHARED_LIBS=ON -Bbuild -S.
+          cmake --build build --target install
       - name: Upload as artifact
         uses: actions/upload-artifact@v4
         with:
           name: mavsdk_server_musl_x86_64
           path: ./cpp/install/bin/mavsdk_server
+          retention-days: 2
+      - name: Upload C wrapper as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: libcmavsdk_musl_x86_64
+          path: ./c/build/install/lib/
           retention-days: 2
       - name: Publish artifacts
         if: startsWith(github.ref, 'refs/tags/v')
