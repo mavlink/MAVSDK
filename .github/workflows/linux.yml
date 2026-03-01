@@ -691,6 +691,103 @@ jobs:
           tag: ${{ github.ref }}
           overwrite: true
 
+  dockcross-manylinux:
+    name: ${{ matrix.arch_name }}
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch_name: manylinux_2_28-x64
+            artifact_arch: x86_64
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0
+      - name: setup dockcross
+        working-directory: .
+        run: docker run --rm dockcross/${{ matrix.arch_name }}:latest > ./dockcross-${{ matrix.arch_name }}; chmod +x ./dockcross-${{ matrix.arch_name }}
+      - uses: actions/cache@v4
+        id: cache
+        with:
+          path: ./build/manylinux/cpp/third_party/install
+          key: ${{ github.job }}-${{ matrix.arch_name }}-${{ hashFiles('./third_party/**') }}-1
+      - name: disable superbuild on cache hit
+        if: steps.cache.outputs.cache-hit == 'true'
+        run: |
+          echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV
+          echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=/work/build/manylinux/cpp/third_party/install" >> $GITHUB_ENV
+      - name: configure cpp
+        working-directory: .
+        run: ./dockcross-${{ matrix.arch_name }} /bin/bash -c "yum install -y perl-core && cmake $superbuild $cmake_prefix_path -DBUILD_SHARED_LIBS=OFF -DCMAKE_INSTALL_PREFIX=build/manylinux/cpp/install -DBUILD_MAVSDK_SERVER=OFF -Bbuild/manylinux/cpp -Scpp"
+      - name: build cpp
+        working-directory: .
+        run: ./dockcross-${{ matrix.arch_name }} cmake --build build/manylinux/cpp -j$(nproc) --target install
+      - name: configure c
+        working-directory: .
+        run: ./dockcross-${{ matrix.arch_name }} cmake -DCMAKE_INSTALL_PREFIX=build/manylinux/c/install -DCMAKE_PREFIX_PATH="/work/build/manylinux/cpp/install;/work/build/manylinux/cpp/third_party/install" -DBUILD_SHARED_LIBS=ON -Bbuild/manylinux/c -Sc
+      - name: build c
+        working-directory: .
+        run: ./dockcross-${{ matrix.arch_name }} cmake --build build/manylinux/c -j$(nproc) --target install
+      - name: Upload as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: libcmavsdk_${{ matrix.arch_name }}
+          path: 'build/manylinux/c/install/lib/libcmavsdk.so'
+          retention-days: 2
+
+  dockcross-manylinux-aarch64:
+    name: manylinux2014-aarch64
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0
+      - name: setup dockcross
+        working-directory: .
+        run: docker run --rm dockcross/manylinux2014-aarch64:latest > ./dockcross-manylinux2014-aarch64; chmod +x ./dockcross-manylinux2014-aarch64
+      - uses: actions/cache@v4
+        id: cache
+        with:
+          path: ./build/manylinux2014/cpp/third_party/install
+          key: dockcross-manylinux-aarch64-${{ hashFiles('./third_party/**') }}-1
+      - name: disable superbuild on cache hit
+        if: steps.cache.outputs.cache-hit == 'true'
+        run: |
+          echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV
+          echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=/work/build/manylinux2014/cpp/third_party/install" >> $GITHUB_ENV
+      - name: configure and build cpp
+        working-directory: .
+        run: |
+          ./dockcross-manylinux2014-aarch64 /bin/bash -c "
+            ln -sf /usr/xcc/aarch64-unknown-linux-gnu/aarch64-unknown-linux-gnu/sysroot/lib64/libstdc++.so.6.0.28 /usr/xcc/aarch64-unknown-linux-gnu/aarch64-unknown-linux-gnu/sysroot/lib64/libstdc++.so.6 &&
+            ln -sf /usr/xcc/aarch64-unknown-linux-gnu/aarch64-unknown-linux-gnu/sysroot/lib64/libstdc++.so.6.0.28 /usr/xcc/aarch64-unknown-linux-gnu/aarch64-unknown-linux-gnu/sysroot/lib64/libstdc++.so &&
+            ln -sf /usr/xcc/aarch64-unknown-linux-gnu/aarch64-unknown-linux-gnu/sysroot/lib64/libstdc++.so.6.0.28 /usr/xcc/aarch64-unknown-linux-gnu/aarch64-unknown-linux-gnu/lib64/libstdc++.so.6 &&
+            ln -sf /usr/xcc/aarch64-unknown-linux-gnu/aarch64-unknown-linux-gnu/sysroot/lib64/libstdc++.so.6.0.28 /usr/xcc/aarch64-unknown-linux-gnu/aarch64-unknown-linux-gnu/lib64/libstdc++.so &&
+            yum install -y perl-core &&
+            cmake $superbuild $cmake_prefix_path -DBUILD_SHARED_LIBS=OFF -DCMAKE_INSTALL_PREFIX=build/manylinux2014/cpp/install -DBUILD_MAVSDK_SERVER=OFF -DBUILD_TESTING=OFF -Bbuild/manylinux2014/cpp -Scpp &&
+            cmake --build build/manylinux2014/cpp -j\$(nproc) --target install
+          "
+      - name: configure and build c
+        working-directory: .
+        run: |
+          ./dockcross-manylinux2014-aarch64 /bin/bash -c "
+            ln -sf /usr/xcc/aarch64-unknown-linux-gnu/aarch64-unknown-linux-gnu/sysroot/lib64/libstdc++.so.6.0.28 /usr/xcc/aarch64-unknown-linux-gnu/aarch64-unknown-linux-gnu/sysroot/lib64/libstdc++.so.6 &&
+            ln -sf /usr/xcc/aarch64-unknown-linux-gnu/aarch64-unknown-linux-gnu/sysroot/lib64/libstdc++.so.6.0.28 /usr/xcc/aarch64-unknown-linux-gnu/aarch64-unknown-linux-gnu/sysroot/lib64/libstdc++.so &&
+            ln -sf /usr/xcc/aarch64-unknown-linux-gnu/aarch64-unknown-linux-gnu/sysroot/lib64/libstdc++.so.6.0.28 /usr/xcc/aarch64-unknown-linux-gnu/aarch64-unknown-linux-gnu/lib64/libstdc++.so.6 &&
+            ln -sf /usr/xcc/aarch64-unknown-linux-gnu/aarch64-unknown-linux-gnu/sysroot/lib64/libstdc++.so.6.0.28 /usr/xcc/aarch64-unknown-linux-gnu/aarch64-unknown-linux-gnu/lib64/libstdc++.so &&
+            cmake -DCMAKE_INSTALL_PREFIX=build/manylinux2014/c/install -DCMAKE_PREFIX_PATH='/work/build/manylinux2014/cpp/install;/work/build/manylinux2014/cpp/third_party/install' -DBUILD_SHARED_LIBS=ON -DBUILD_EXAMPLES=OFF -Bbuild/manylinux2014/c -Sc &&
+            cmake --build build/manylinux2014/c -j\$(nproc) --target install
+          "
+      - name: Upload as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: libcmavsdk_manylinux2014-aarch64
+          path: 'build/manylinux2014/c/install/lib/libcmavsdk.so'
+          retention-days: 2
+
   dockcross-android:
     name: ${{ matrix.name }}
     runs-on: ubuntu-24.04
