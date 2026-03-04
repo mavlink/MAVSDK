@@ -15,6 +15,7 @@ set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_C_EXTENSIONS OFF)
 
+option(BUNDLE_STATIC_RUNTIME "Statically link libgcc, libstdc++, and libatomic into the shared library" OFF)
 option(BUILD_EXAMPLES "Build examples" ON)
 
 add_subdirectory(src)
