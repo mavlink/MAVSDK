@@ -728,7 +728,7 @@ jobs:
         run: ./dockcross-${{ matrix.arch_name }} cmake --build build/manylinux/cpp -j$(nproc) --target install
       - name: configure c
         working-directory: .
-        run: ./dockcross-${{ matrix.arch_name }} cmake -DCMAKE_INSTALL_PREFIX=build/manylinux/c/install -DCMAKE_PREFIX_PATH="/work/build/manylinux/cpp/install;/work/build/manylinux/cpp/third_party/install" -DBUILD_SHARED_LIBS=ON -DBUILD_EXAMPLES=OFF -Bbuild/manylinux/c -Sc
+        run: ./dockcross-${{ matrix.arch_name }} cmake -DCMAKE_INSTALL_PREFIX=build/manylinux/c/install -DCMAKE_PREFIX_PATH="/work/build/manylinux/cpp/install;/work/build/manylinux/cpp/third_party/install" -DBUILD_SHARED_LIBS=ON -DBUILD_EXAMPLES=OFF -DBUNDLE_STATIC_RUNTIME=ON -Bbuild/manylinux/c -Sc
       - name: build c
         working-directory: .
         run: ./dockcross-${{ matrix.arch_name }} cmake --build build/manylinux/c -j$(nproc) --target install
