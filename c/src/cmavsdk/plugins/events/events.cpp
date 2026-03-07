@@ -5,7 +5,9 @@
 #include "events.h"
 
 #include <mavsdk/plugins/events/events.h>
+#include <algorithm>
 #include <cstring>
+#include <mutex>
 #include <vector>
 
 // ===== C++ to C Type Conversions =====
@@ -448,6 +450,9 @@ void mavsdk_events_byte_buffer_destroy(uint8_t** buffer) {
 
 struct mavsdk_events_wrapper {
     std::shared_ptr<mavsdk::Events> cpp_plugin;
+    std::mutex handles_mutex;
+    std::vector<mavsdk::Events::EventsHandle*> events_handles;
+    std::vector<mavsdk::Events::HealthAndArmingChecksHandle*> health_and_arming_checks_handles;
 };
 
 mavsdk_events_t
@@ -469,6 +474,23 @@ void mavsdk_events_destroy(mavsdk_events_t events) {
     }
 
     auto wrapper = reinterpret_cast<mavsdk_events_wrapper*>(events);
+
+    // Unsubscribe all active streams before destroying to prevent
+    // callbacks firing into a destroyed object
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        for (auto* h : wrapper->events_handles) {
+            wrapper->cpp_plugin->unsubscribe_events(std::move(*h));
+            delete h;
+        }
+        wrapper->events_handles.clear();
+        for (auto* h : wrapper->health_and_arming_checks_handles) {
+            wrapper->cpp_plugin->unsubscribe_health_and_arming_checks(std::move(*h));
+            delete h;
+        }
+        wrapper->health_and_arming_checks_handles.clear();
+    }
+
     delete wrapper;
 }
 
@@ -492,8 +514,14 @@ mavsdk_events_events_handle_t mavsdk_events_subscribe_events(
                 }
         });
 
-    auto handle_wrapper = new mavsdk::Events::EventsHandle(std::move(cpp_handle));
-    return reinterpret_cast<mavsdk_events_events_handle_t>(handle_wrapper);
+    auto cpp_handle_ptr = new mavsdk::Events::EventsHandle(std::move(cpp_handle));
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        wrapper->events_handles.push_back(cpp_handle_ptr);
+    }
+
+    return reinterpret_cast<mavsdk_events_events_handle_t>(cpp_handle_ptr);
 }
 
 void mavsdk_events_unsubscribe_events(
@@ -503,6 +531,13 @@ void mavsdk_events_unsubscribe_events(
     if (handle) {
         auto wrapper = reinterpret_cast<mavsdk_events_wrapper*>(events);
         auto cpp_handle = reinterpret_cast<mavsdk::Events::EventsHandle*>(handle);
+
+        {
+            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+            auto& vec = wrapper->events_handles;
+            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
+        }
+
         wrapper->cpp_plugin->unsubscribe_events(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -527,8 +562,14 @@ mavsdk_events_health_and_arming_checks_handle_t mavsdk_events_subscribe_health_a
                 }
         });
 
-    auto handle_wrapper = new mavsdk::Events::HealthAndArmingChecksHandle(std::move(cpp_handle));
-    return reinterpret_cast<mavsdk_events_health_and_arming_checks_handle_t>(handle_wrapper);
+    auto cpp_handle_ptr = new mavsdk::Events::HealthAndArmingChecksHandle(std::move(cpp_handle));
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        wrapper->health_and_arming_checks_handles.push_back(cpp_handle_ptr);
+    }
+
+    return reinterpret_cast<mavsdk_events_health_and_arming_checks_handle_t>(cpp_handle_ptr);
 }
 
 void mavsdk_events_unsubscribe_health_and_arming_checks(
@@ -538,6 +579,13 @@ void mavsdk_events_unsubscribe_health_and_arming_checks(
     if (handle) {
         auto wrapper = reinterpret_cast<mavsdk_events_wrapper*>(events);
         auto cpp_handle = reinterpret_cast<mavsdk::Events::HealthAndArmingChecksHandle*>(handle);
+
+        {
+            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+            auto& vec = wrapper->health_and_arming_checks_handles;
+            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
+        }
+
         wrapper->cpp_plugin->unsubscribe_health_and_arming_checks(std::move(*cpp_handle));
         delete cpp_handle;
     }

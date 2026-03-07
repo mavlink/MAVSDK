@@ -5,7 +5,9 @@
 #include "failure.h"
 
 #include <mavsdk/plugins/failure/failure.h>
+#include <algorithm>
 #include <cstring>
+#include <mutex>
 #include <vector>
 
 // ===== C++ to C Type Conversions =====
@@ -215,6 +217,7 @@ void mavsdk_failure_byte_buffer_destroy(uint8_t** buffer) {
 
 struct mavsdk_failure_wrapper {
     std::shared_ptr<mavsdk::Failure> cpp_plugin;
+    std::mutex handles_mutex;
 };
 
 mavsdk_failure_t
@@ -236,6 +239,13 @@ void mavsdk_failure_destroy(mavsdk_failure_t failure) {
     }
 
     auto wrapper = reinterpret_cast<mavsdk_failure_wrapper*>(failure);
+
+    // Unsubscribe all active streams before destroying to prevent
+    // callbacks firing into a destroyed object
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+    }
+
     delete wrapper;
 }
 

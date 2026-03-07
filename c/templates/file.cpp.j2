@@ -5,7 +5,9 @@
 #include "{{ plugin_name.lower_snake_case }}.h"
 
 #include <mavsdk/plugins/{{ plugin_name.lower_snake_case }}/{{ plugin_name.lower_snake_case }}.h>
+#include <algorithm>
 #include <cstring>
+#include <mutex>
 #include <vector>
 
 // ===== C++ to C Type Conversions =====
@@ -239,6 +241,12 @@ void mavsdk_{{ plugin_name.lower_snake_case }}_byte_buffer_destroy(uint8_t** buf
 
 struct mavsdk_{{ plugin_name.lower_snake_case }}_wrapper {
     std::shared_ptr<mavsdk::{{ plugin_name.upper_camel_case }}> cpp_plugin;
+    std::mutex handles_mutex;
+    {% for method in methods %}
+    {% if method.is_async and method.is_stream and not method.is_finite %}
+    std::vector<mavsdk::{{ plugin_name.upper_camel_case }}::{{ method.name.upper_camel_case }}Handle*> {{ method.name.lower_snake_case }}_handles;
+    {% endif %}
+    {% endfor %}
 };
 
 {% if is_server %}
@@ -275,6 +283,22 @@ void mavsdk_{{ plugin_name.lower_snake_case }}_destroy(mavsdk_{{ plugin_name.low
     }
 
     auto wrapper = reinterpret_cast<mavsdk_{{ plugin_name.lower_snake_case }}_wrapper*>({{ plugin_name.lower_snake_case }});
+
+    // Unsubscribe all active streams before destroying to prevent
+    // callbacks firing into a destroyed object
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        {% for method in methods %}
+        {% if method.is_async and method.is_stream and not method.is_finite %}
+        for (auto* h : wrapper->{{ method.name.lower_snake_case }}_handles) {
+            wrapper->cpp_plugin->unsubscribe_{{ method.name.lower_snake_case }}(std::move(*h));
+            delete h;
+        }
+        wrapper->{{ method.name.lower_snake_case }}_handles.clear();
+        {% endif %}
+        {% endfor %}
+    }
+
     delete wrapper;
 }
 
@@ -387,8 +411,14 @@ void mavsdk_{{ plugin_name.lower_snake_case }}_destroy(mavsdk_{{ plugin_name.low
         });
     {% if method.is_stream and not method.is_finite %}
 
-    auto handle_wrapper = new mavsdk::{{ plugin_name.upper_camel_case }}::{{ method.name.upper_camel_case }}Handle(std::move(cpp_handle));
-    return reinterpret_cast<mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}_handle_t>(handle_wrapper);
+    auto cpp_handle_ptr = new mavsdk::{{ plugin_name.upper_camel_case }}::{{ method.name.upper_camel_case }}Handle(std::move(cpp_handle));
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        wrapper->{{ method.name.lower_snake_case }}_handles.push_back(cpp_handle_ptr);
+    }
+
+    return reinterpret_cast<mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}_handle_t>(cpp_handle_ptr);
     {% endif %}
 }
 
@@ -400,6 +430,13 @@ void mavsdk_{{ plugin_name.lower_snake_case }}_unsubscribe_{{ method.name.lower_
     if (handle) {
         auto wrapper = reinterpret_cast<mavsdk_{{ plugin_name.lower_snake_case }}_wrapper*>({{ plugin_name.lower_snake_case }});
         auto cpp_handle = reinterpret_cast<mavsdk::{{ plugin_name.upper_camel_case }}::{{ method.name.upper_camel_case }}Handle*>(handle);
+
+        {
+            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+            auto& vec = wrapper->{{ method.name.lower_snake_case }}_handles;
+            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
+        }
+
         wrapper->cpp_plugin->unsubscribe_{{ method.name.lower_snake_case }}(std::move(*cpp_handle));
         delete cpp_handle;
     }

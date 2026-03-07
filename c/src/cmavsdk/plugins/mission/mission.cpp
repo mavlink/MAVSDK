@@ -5,7 +5,9 @@
 #include "mission.h"
 
 #include <mavsdk/plugins/mission/mission.h>
+#include <algorithm>
 #include <cstring>
+#include <mutex>
 #include <vector>
 
 // ===== C++ to C Type Conversions =====
@@ -410,6 +412,8 @@ void mavsdk_mission_byte_buffer_destroy(uint8_t** buffer) {
 
 struct mavsdk_mission_wrapper {
     std::shared_ptr<mavsdk::Mission> cpp_plugin;
+    std::mutex handles_mutex;
+    std::vector<mavsdk::Mission::MissionProgressHandle*> mission_progress_handles;
 };
 
 mavsdk_mission_t
@@ -431,6 +435,18 @@ void mavsdk_mission_destroy(mavsdk_mission_t mission) {
     }
 
     auto wrapper = reinterpret_cast<mavsdk_mission_wrapper*>(mission);
+
+    // Unsubscribe all active streams before destroying to prevent
+    // callbacks firing into a destroyed object
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        for (auto* h : wrapper->mission_progress_handles) {
+            wrapper->cpp_plugin->unsubscribe_mission_progress(std::move(*h));
+            delete h;
+        }
+        wrapper->mission_progress_handles.clear();
+    }
+
     delete wrapper;
 }
 
@@ -751,8 +767,14 @@ mavsdk_mission_mission_progress_handle_t mavsdk_mission_subscribe_mission_progre
                 }
         });
 
-    auto handle_wrapper = new mavsdk::Mission::MissionProgressHandle(std::move(cpp_handle));
-    return reinterpret_cast<mavsdk_mission_mission_progress_handle_t>(handle_wrapper);
+    auto cpp_handle_ptr = new mavsdk::Mission::MissionProgressHandle(std::move(cpp_handle));
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        wrapper->mission_progress_handles.push_back(cpp_handle_ptr);
+    }
+
+    return reinterpret_cast<mavsdk_mission_mission_progress_handle_t>(cpp_handle_ptr);
 }
 
 void mavsdk_mission_unsubscribe_mission_progress(
@@ -762,6 +784,13 @@ void mavsdk_mission_unsubscribe_mission_progress(
     if (handle) {
         auto wrapper = reinterpret_cast<mavsdk_mission_wrapper*>(mission);
         auto cpp_handle = reinterpret_cast<mavsdk::Mission::MissionProgressHandle*>(handle);
+
+        {
+            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+            auto& vec = wrapper->mission_progress_handles;
+            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
+        }
+
         wrapper->cpp_plugin->unsubscribe_mission_progress(std::move(*cpp_handle));
         delete cpp_handle;
     }

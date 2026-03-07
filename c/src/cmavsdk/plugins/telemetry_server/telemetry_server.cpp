@@ -5,7 +5,9 @@
 #include "telemetry_server.h"
 
 #include <mavsdk/plugins/telemetry_server/telemetry_server.h>
+#include <algorithm>
 #include <cstring>
+#include <mutex>
 #include <vector>
 
 // ===== C++ to C Type Conversions =====
@@ -1351,6 +1353,7 @@ void mavsdk_telemetry_server_byte_buffer_destroy(uint8_t** buffer) {
 
 struct mavsdk_telemetry_server_wrapper {
     std::shared_ptr<mavsdk::TelemetryServer> cpp_plugin;
+    std::mutex handles_mutex;
 };
 
 mavsdk_telemetry_server_t
@@ -1372,6 +1375,13 @@ void mavsdk_telemetry_server_destroy(mavsdk_telemetry_server_t telemetry_server)
     }
 
     auto wrapper = reinterpret_cast<mavsdk_telemetry_server_wrapper*>(telemetry_server);
+
+    // Unsubscribe all active streams before destroying to prevent
+    // callbacks firing into a destroyed object
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+    }
+
     delete wrapper;
 }
 

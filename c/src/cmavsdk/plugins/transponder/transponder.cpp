@@ -5,7 +5,9 @@
 #include "transponder.h"
 
 #include <mavsdk/plugins/transponder/transponder.h>
+#include <algorithm>
 #include <cstring>
+#include <mutex>
 #include <vector>
 
 // ===== C++ to C Type Conversions =====
@@ -270,6 +272,8 @@ void mavsdk_transponder_byte_buffer_destroy(uint8_t** buffer) {
 
 struct mavsdk_transponder_wrapper {
     std::shared_ptr<mavsdk::Transponder> cpp_plugin;
+    std::mutex handles_mutex;
+    std::vector<mavsdk::Transponder::TransponderHandle*> transponder_handles;
 };
 
 mavsdk_transponder_t
@@ -291,6 +295,18 @@ void mavsdk_transponder_destroy(mavsdk_transponder_t transponder) {
     }
 
     auto wrapper = reinterpret_cast<mavsdk_transponder_wrapper*>(transponder);
+
+    // Unsubscribe all active streams before destroying to prevent
+    // callbacks firing into a destroyed object
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        for (auto* h : wrapper->transponder_handles) {
+            wrapper->cpp_plugin->unsubscribe_transponder(std::move(*h));
+            delete h;
+        }
+        wrapper->transponder_handles.clear();
+    }
+
     delete wrapper;
 }
 
@@ -314,8 +330,14 @@ mavsdk_transponder_transponder_handle_t mavsdk_transponder_subscribe_transponder
                 }
         });
 
-    auto handle_wrapper = new mavsdk::Transponder::TransponderHandle(std::move(cpp_handle));
-    return reinterpret_cast<mavsdk_transponder_transponder_handle_t>(handle_wrapper);
+    auto cpp_handle_ptr = new mavsdk::Transponder::TransponderHandle(std::move(cpp_handle));
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        wrapper->transponder_handles.push_back(cpp_handle_ptr);
+    }
+
+    return reinterpret_cast<mavsdk_transponder_transponder_handle_t>(cpp_handle_ptr);
 }
 
 void mavsdk_transponder_unsubscribe_transponder(
@@ -325,6 +347,13 @@ void mavsdk_transponder_unsubscribe_transponder(
     if (handle) {
         auto wrapper = reinterpret_cast<mavsdk_transponder_wrapper*>(transponder);
         auto cpp_handle = reinterpret_cast<mavsdk::Transponder::TransponderHandle*>(handle);
+
+        {
+            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+            auto& vec = wrapper->transponder_handles;
+            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
+        }
+
         wrapper->cpp_plugin->unsubscribe_transponder(std::move(*cpp_handle));
         delete cpp_handle;
     }

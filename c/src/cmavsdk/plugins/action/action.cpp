@@ -5,7 +5,9 @@
 #include "action.h"
 
 #include <mavsdk/plugins/action/action.h>
+#include <algorithm>
 #include <cstring>
+#include <mutex>
 #include <vector>
 
 // ===== C++ to C Type Conversions =====
@@ -165,6 +167,7 @@ void mavsdk_action_byte_buffer_destroy(uint8_t** buffer) {
 
 struct mavsdk_action_wrapper {
     std::shared_ptr<mavsdk::Action> cpp_plugin;
+    std::mutex handles_mutex;
 };
 
 mavsdk_action_t
@@ -186,6 +189,13 @@ void mavsdk_action_destroy(mavsdk_action_t action) {
     }
 
     auto wrapper = reinterpret_cast<mavsdk_action_wrapper*>(action);
+
+    // Unsubscribe all active streams before destroying to prevent
+    // callbacks firing into a destroyed object
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+    }
+
     delete wrapper;
 }
 

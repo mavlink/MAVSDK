@@ -5,7 +5,9 @@
 #include "mission_raw.h"
 
 #include <mavsdk/plugins/mission_raw/mission_raw.h>
+#include <algorithm>
 #include <cstring>
+#include <mutex>
 #include <vector>
 
 // ===== C++ to C Type Conversions =====
@@ -298,6 +300,9 @@ void mavsdk_mission_raw_byte_buffer_destroy(uint8_t** buffer) {
 
 struct mavsdk_mission_raw_wrapper {
     std::shared_ptr<mavsdk::MissionRaw> cpp_plugin;
+    std::mutex handles_mutex;
+    std::vector<mavsdk::MissionRaw::MissionProgressHandle*> mission_progress_handles;
+    std::vector<mavsdk::MissionRaw::MissionChangedHandle*> mission_changed_handles;
 };
 
 mavsdk_mission_raw_t
@@ -319,6 +324,23 @@ void mavsdk_mission_raw_destroy(mavsdk_mission_raw_t mission_raw) {
     }
 
     auto wrapper = reinterpret_cast<mavsdk_mission_raw_wrapper*>(mission_raw);
+
+    // Unsubscribe all active streams before destroying to prevent
+    // callbacks firing into a destroyed object
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        for (auto* h : wrapper->mission_progress_handles) {
+            wrapper->cpp_plugin->unsubscribe_mission_progress(std::move(*h));
+            delete h;
+        }
+        wrapper->mission_progress_handles.clear();
+        for (auto* h : wrapper->mission_changed_handles) {
+            wrapper->cpp_plugin->unsubscribe_mission_changed(std::move(*h));
+            delete h;
+        }
+        wrapper->mission_changed_handles.clear();
+    }
+
     delete wrapper;
 }
 
@@ -838,8 +860,14 @@ mavsdk_mission_raw_mission_progress_handle_t mavsdk_mission_raw_subscribe_missio
                 }
         });
 
-    auto handle_wrapper = new mavsdk::MissionRaw::MissionProgressHandle(std::move(cpp_handle));
-    return reinterpret_cast<mavsdk_mission_raw_mission_progress_handle_t>(handle_wrapper);
+    auto cpp_handle_ptr = new mavsdk::MissionRaw::MissionProgressHandle(std::move(cpp_handle));
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        wrapper->mission_progress_handles.push_back(cpp_handle_ptr);
+    }
+
+    return reinterpret_cast<mavsdk_mission_raw_mission_progress_handle_t>(cpp_handle_ptr);
 }
 
 void mavsdk_mission_raw_unsubscribe_mission_progress(
@@ -849,6 +877,13 @@ void mavsdk_mission_raw_unsubscribe_mission_progress(
     if (handle) {
         auto wrapper = reinterpret_cast<mavsdk_mission_raw_wrapper*>(mission_raw);
         auto cpp_handle = reinterpret_cast<mavsdk::MissionRaw::MissionProgressHandle*>(handle);
+
+        {
+            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+            auto& vec = wrapper->mission_progress_handles;
+            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
+        }
+
         wrapper->cpp_plugin->unsubscribe_mission_progress(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -887,8 +922,14 @@ mavsdk_mission_raw_mission_changed_handle_t mavsdk_mission_raw_subscribe_mission
                 }
         });
 
-    auto handle_wrapper = new mavsdk::MissionRaw::MissionChangedHandle(std::move(cpp_handle));
-    return reinterpret_cast<mavsdk_mission_raw_mission_changed_handle_t>(handle_wrapper);
+    auto cpp_handle_ptr = new mavsdk::MissionRaw::MissionChangedHandle(std::move(cpp_handle));
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        wrapper->mission_changed_handles.push_back(cpp_handle_ptr);
+    }
+
+    return reinterpret_cast<mavsdk_mission_raw_mission_changed_handle_t>(cpp_handle_ptr);
 }
 
 void mavsdk_mission_raw_unsubscribe_mission_changed(
@@ -898,6 +939,13 @@ void mavsdk_mission_raw_unsubscribe_mission_changed(
     if (handle) {
         auto wrapper = reinterpret_cast<mavsdk_mission_raw_wrapper*>(mission_raw);
         auto cpp_handle = reinterpret_cast<mavsdk::MissionRaw::MissionChangedHandle*>(handle);
+
+        {
+            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+            auto& vec = wrapper->mission_changed_handles;
+            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
+        }
+
         wrapper->cpp_plugin->unsubscribe_mission_changed(std::move(*cpp_handle));
         delete cpp_handle;
     }

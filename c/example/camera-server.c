@@ -1,3 +1,4 @@
+#define _POSIX_C_SOURCE 200809L
 #include <stdbool.h>
 #include <stdio.h>
 #include <time.h>
@@ -88,7 +89,8 @@ static void take_photo_callback(int32_t index, void* user_data) {
     printf("Taking a picture (%d)...\n", index);
 
     // Simulate capture with delay
-    usleep(500000); // 500ms
+    struct timespec ts = {0, 500000000L}; // 500ms
+    nanosleep(&ts, NULL);
 
     // Populate capture info
     mavsdk_camera_server_capture_info_t capture_info = {0};
@@ -102,7 +104,6 @@ static void take_photo_callback(int32_t index, void* user_data) {
     capture_info.attitude_quaternion.y = 0.0f;
     capture_info.attitude_quaternion.z = 0.0f;
 
-    struct timespec ts;
     clock_gettime(CLOCK_REALTIME, &ts);
     capture_info.time_utc_us = (uint64_t)ts.tv_sec * 1000000ULL + (uint64_t)ts.tv_nsec / 1000ULL;
     capture_info.is_success = true;

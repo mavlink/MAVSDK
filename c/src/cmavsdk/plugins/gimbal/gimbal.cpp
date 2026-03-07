@@ -5,7 +5,9 @@
 #include "gimbal.h"
 
 #include <mavsdk/plugins/gimbal/gimbal.h>
+#include <algorithm>
 #include <cstring>
+#include <mutex>
 #include <vector>
 
 // ===== C++ to C Type Conversions =====
@@ -474,6 +476,10 @@ void mavsdk_gimbal_byte_buffer_destroy(uint8_t** buffer) {
 
 struct mavsdk_gimbal_wrapper {
     std::shared_ptr<mavsdk::Gimbal> cpp_plugin;
+    std::mutex handles_mutex;
+    std::vector<mavsdk::Gimbal::GimbalListHandle*> gimbal_list_handles;
+    std::vector<mavsdk::Gimbal::ControlStatusHandle*> control_status_handles;
+    std::vector<mavsdk::Gimbal::AttitudeHandle*> attitude_handles;
 };
 
 mavsdk_gimbal_t
@@ -495,6 +501,28 @@ void mavsdk_gimbal_destroy(mavsdk_gimbal_t gimbal) {
     }
 
     auto wrapper = reinterpret_cast<mavsdk_gimbal_wrapper*>(gimbal);
+
+    // Unsubscribe all active streams before destroying to prevent
+    // callbacks firing into a destroyed object
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        for (auto* h : wrapper->gimbal_list_handles) {
+            wrapper->cpp_plugin->unsubscribe_gimbal_list(std::move(*h));
+            delete h;
+        }
+        wrapper->gimbal_list_handles.clear();
+        for (auto* h : wrapper->control_status_handles) {
+            wrapper->cpp_plugin->unsubscribe_control_status(std::move(*h));
+            delete h;
+        }
+        wrapper->control_status_handles.clear();
+        for (auto* h : wrapper->attitude_handles) {
+            wrapper->cpp_plugin->unsubscribe_attitude(std::move(*h));
+            delete h;
+        }
+        wrapper->attitude_handles.clear();
+    }
+
     delete wrapper;
 }
 
@@ -733,8 +761,14 @@ mavsdk_gimbal_gimbal_list_handle_t mavsdk_gimbal_subscribe_gimbal_list(
                 }
         });
 
-    auto handle_wrapper = new mavsdk::Gimbal::GimbalListHandle(std::move(cpp_handle));
-    return reinterpret_cast<mavsdk_gimbal_gimbal_list_handle_t>(handle_wrapper);
+    auto cpp_handle_ptr = new mavsdk::Gimbal::GimbalListHandle(std::move(cpp_handle));
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        wrapper->gimbal_list_handles.push_back(cpp_handle_ptr);
+    }
+
+    return reinterpret_cast<mavsdk_gimbal_gimbal_list_handle_t>(cpp_handle_ptr);
 }
 
 void mavsdk_gimbal_unsubscribe_gimbal_list(
@@ -744,6 +778,13 @@ void mavsdk_gimbal_unsubscribe_gimbal_list(
     if (handle) {
         auto wrapper = reinterpret_cast<mavsdk_gimbal_wrapper*>(gimbal);
         auto cpp_handle = reinterpret_cast<mavsdk::Gimbal::GimbalListHandle*>(handle);
+
+        {
+            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+            auto& vec = wrapper->gimbal_list_handles;
+            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
+        }
+
         wrapper->cpp_plugin->unsubscribe_gimbal_list(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -782,8 +823,14 @@ mavsdk_gimbal_control_status_handle_t mavsdk_gimbal_subscribe_control_status(
                 }
         });
 
-    auto handle_wrapper = new mavsdk::Gimbal::ControlStatusHandle(std::move(cpp_handle));
-    return reinterpret_cast<mavsdk_gimbal_control_status_handle_t>(handle_wrapper);
+    auto cpp_handle_ptr = new mavsdk::Gimbal::ControlStatusHandle(std::move(cpp_handle));
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        wrapper->control_status_handles.push_back(cpp_handle_ptr);
+    }
+
+    return reinterpret_cast<mavsdk_gimbal_control_status_handle_t>(cpp_handle_ptr);
 }
 
 void mavsdk_gimbal_unsubscribe_control_status(
@@ -793,6 +840,13 @@ void mavsdk_gimbal_unsubscribe_control_status(
     if (handle) {
         auto wrapper = reinterpret_cast<mavsdk_gimbal_wrapper*>(gimbal);
         auto cpp_handle = reinterpret_cast<mavsdk::Gimbal::ControlStatusHandle*>(handle);
+
+        {
+            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+            auto& vec = wrapper->control_status_handles;
+            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
+        }
+
         wrapper->cpp_plugin->unsubscribe_control_status(std::move(*cpp_handle));
         delete cpp_handle;
     }
@@ -837,8 +891,14 @@ mavsdk_gimbal_attitude_handle_t mavsdk_gimbal_subscribe_attitude(
                 }
         });
 
-    auto handle_wrapper = new mavsdk::Gimbal::AttitudeHandle(std::move(cpp_handle));
-    return reinterpret_cast<mavsdk_gimbal_attitude_handle_t>(handle_wrapper);
+    auto cpp_handle_ptr = new mavsdk::Gimbal::AttitudeHandle(std::move(cpp_handle));
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        wrapper->attitude_handles.push_back(cpp_handle_ptr);
+    }
+
+    return reinterpret_cast<mavsdk_gimbal_attitude_handle_t>(cpp_handle_ptr);
 }
 
 void mavsdk_gimbal_unsubscribe_attitude(
@@ -848,6 +908,13 @@ void mavsdk_gimbal_unsubscribe_attitude(
     if (handle) {
         auto wrapper = reinterpret_cast<mavsdk_gimbal_wrapper*>(gimbal);
         auto cpp_handle = reinterpret_cast<mavsdk::Gimbal::AttitudeHandle*>(handle);
+
+        {
+            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+            auto& vec = wrapper->attitude_handles;
+            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
+        }
+
         wrapper->cpp_plugin->unsubscribe_attitude(std::move(*cpp_handle));
         delete cpp_handle;
     }

@@ -5,7 +5,9 @@
 #include "geofence.h"
 
 #include <mavsdk/plugins/geofence/geofence.h>
+#include <algorithm>
 #include <cstring>
+#include <mutex>
 #include <vector>
 
 // ===== C++ to C Type Conversions =====
@@ -307,6 +309,7 @@ void mavsdk_geofence_byte_buffer_destroy(uint8_t** buffer) {
 
 struct mavsdk_geofence_wrapper {
     std::shared_ptr<mavsdk::Geofence> cpp_plugin;
+    std::mutex handles_mutex;
 };
 
 mavsdk_geofence_t
@@ -328,6 +331,13 @@ void mavsdk_geofence_destroy(mavsdk_geofence_t geofence) {
     }
 
     auto wrapper = reinterpret_cast<mavsdk_geofence_wrapper*>(geofence);
+
+    // Unsubscribe all active streams before destroying to prevent
+    // callbacks firing into a destroyed object
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+    }
+
     delete wrapper;
 }
 

@@ -52,6 +52,18 @@ target_compile_options(cmavsdk
         -fvisibility=hidden
 )
 
+if(BUNDLE_STATIC_RUNTIME)
+    if(NOT (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang" AND UNIX AND NOT APPLE))
+        message(WARNING "BUNDLE_STATIC_RUNTIME is only supported on Linux with GCC/Clang")
+    endif()
+
+    target_link_options(cmavsdk PRIVATE
+        -static-libgcc
+        -static-libstdc++
+    )
+    target_link_libraries(cmavsdk PRIVATE atomic.a)
+endif()
+
 set_target_properties(cmavsdk PROPERTIES
     VERSION ${PROJECT_VERSION}
     SOVERSION 3

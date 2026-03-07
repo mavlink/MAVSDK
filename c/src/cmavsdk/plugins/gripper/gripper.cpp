@@ -5,7 +5,9 @@
 #include "gripper.h"
 
 #include <mavsdk/plugins/gripper/gripper.h>
+#include <algorithm>
 #include <cstring>
+#include <mutex>
 #include <vector>
 
 // ===== C++ to C Type Conversions =====
@@ -115,6 +117,7 @@ void mavsdk_gripper_byte_buffer_destroy(uint8_t** buffer) {
 
 struct mavsdk_gripper_wrapper {
     std::shared_ptr<mavsdk::Gripper> cpp_plugin;
+    std::mutex handles_mutex;
 };
 
 mavsdk_gripper_t
@@ -136,6 +139,13 @@ void mavsdk_gripper_destroy(mavsdk_gripper_t gripper) {
     }
 
     auto wrapper = reinterpret_cast<mavsdk_gripper_wrapper*>(gripper);
+
+    // Unsubscribe all active streams before destroying to prevent
+    // callbacks firing into a destroyed object
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+    }
+
     delete wrapper;
 }
 

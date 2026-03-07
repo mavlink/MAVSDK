@@ -5,7 +5,9 @@
 #include "offboard.h"
 
 #include <mavsdk/plugins/offboard/offboard.h>
+#include <algorithm>
 #include <cstring>
+#include <mutex>
 #include <vector>
 
 // ===== C++ to C Type Conversions =====
@@ -489,6 +491,7 @@ void mavsdk_offboard_byte_buffer_destroy(uint8_t** buffer) {
 
 struct mavsdk_offboard_wrapper {
     std::shared_ptr<mavsdk::Offboard> cpp_plugin;
+    std::mutex handles_mutex;
 };
 
 mavsdk_offboard_t
@@ -510,6 +513,13 @@ void mavsdk_offboard_destroy(mavsdk_offboard_t offboard) {
     }
 
     auto wrapper = reinterpret_cast<mavsdk_offboard_wrapper*>(offboard);
+
+    // Unsubscribe all active streams before destroying to prevent
+    // callbacks firing into a destroyed object
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+    }
+
     delete wrapper;
 }
 
