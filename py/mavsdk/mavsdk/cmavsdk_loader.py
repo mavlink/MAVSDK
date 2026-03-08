@@ -22,8 +22,9 @@ def _find_library() -> ctypes.CDLL:
     names = lib_names.get(platform, lib_names["linux"])
 
     search_paths = [
-        Path(__file__).parent / "lib",  # mavsdk/lib/ — works both installed and editable
-        Path.cwd() / "lib",             # fallback
+        Path(__file__).parent
+        / "lib",  # mavsdk/lib/ — works both installed and editable
+        Path.cwd() / "lib",  # fallback
     ]
 
     print(f"Searching for library on {platform}...")
