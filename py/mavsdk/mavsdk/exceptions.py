@@ -1,8 +1,8 @@
-"""Custom exceptions for pymavsdk"""
+"""Custom exceptions for mavsdk"""
 
 
 class MavsdkError(Exception):
-    """Base exception for pymavsdk errors"""
+    """Base exception for mavsdk errors"""
 
     pass
 

@@ -1,4 +1,0 @@
-include README.md
-include LICENSE
-include requirements.txt
-recursive-include pymavsdk/lib *.so *.dylib *.dll
