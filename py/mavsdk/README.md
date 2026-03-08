@@ -26,4 +26,4 @@ In order to generate the plugins from the proto submodule, run:
 ## Running it
 
 This project relies on the C MAVSDK library, which it wraps. The library must be
-built separately from the [C wrapper](../../c) and copied into [mavsdk/lib/libcmavsdk.so](mavsdk/lib).
+built separately from the [C wrapper](../../c) and copied into `mavsdk/lib/libcmavsdk.so`.
