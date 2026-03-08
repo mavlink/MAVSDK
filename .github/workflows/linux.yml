@@ -700,8 +700,18 @@ jobs:
         include:
           - arch_name: manylinux_2_28-x64
             artifact_arch: x86_64
+            python_exec: /opt/python/cp39-cp39/bin/python3
+            python_exec_pip: /opt/python/cp39-cp39/bin/pip
+            python_exec_auditwheel: /opt/python/cp39-cp39/bin/python3
+            python_plat_name_arg: ""
+            auditwheel_plat: manylinux_2_28_x86_64
           - arch_name: manylinux2014-aarch64
             artifact_arch: aarch64
+            python_exec: /opt/python/cp39-cp39-xc/bin/build-python3
+            python_exec_pip: /opt/python/cp39-cp39-xc/bin/build-pip
+            python_exec_auditwheel: /opt/python/cp39-cp39-xc/bin/cross-python3
+            python_plat_name_arg: "--plat-name linux_aarch64"
+            auditwheel_plat: manylinux2014_aarch64
     steps:
       - uses: actions/checkout@v4
         with:
@@ -732,11 +742,42 @@ jobs:
       - name: build c
         working-directory: .
         run: ./dockcross-${{ matrix.arch_name }} cmake --build build/manylinux/c -j$(nproc) --target install
-      - name: Upload as artifact
+      - name: upload libcmavsdk artifact
         uses: actions/upload-artifact@v4
         with:
           name: libcmavsdk_${{ matrix.arch_name }}
           path: 'build/manylinux/c/install/lib/libcmavsdk.so'
+          retention-days: 2
+      - name: build mavsdk wheel
+        working-directory: .
+        run: ./dockcross-${{ matrix.arch_name }} bash -c "
+          ${{ matrix.python_exec_pip }} install -r /work/py/requirements-dev.txt auditwheel &&
+          ${{ matrix.python_exec_auditwheel }} -m pip install auditwheel &&
+          mkdir -p /work/py/mavsdk/mavsdk/lib &&
+          cp /work/build/manylinux/c/install/lib/libcmavsdk.so /work/py/mavsdk/mavsdk/lib/libcmavsdk.so &&
+          cd /work/py/mavsdk &&
+          ${{ matrix.python_exec }} setup.py bdist_wheel ${{ matrix.python_plat_name_arg }} &&
+          ${{ matrix.python_exec_auditwheel }} -m auditwheel repair --plat ${{ matrix.auditwheel_plat }} dist/mavsdk4-*-linux_*.whl"
+      - name: upload mavsdk wheel
+        uses: actions/upload-artifact@v4
+        with:
+          name: mavsdk_wheel_${{ matrix.arch_name }}
+          path: py/mavsdk/wheelhouse/*.whl
+          retention-days: 2
+      # aiomavsdk is pure Python (py3-none-any), only needs to be built once
+      - name: build aiomavsdk wheel
+        if: matrix.artifact_arch == 'x86_64'
+        working-directory: .
+        run: ./dockcross-${{ matrix.arch_name }} bash -c "
+          ${{ matrix.python_exec_pip }} install -r /work/py/requirements-dev.txt &&
+          cd /work/py/aiomavsdk &&
+          ${{ matrix.python_exec }} setup.py bdist_wheel"
+      - name: upload aiomavsdk wheel
+        if: matrix.artifact_arch == 'x86_64'
+        uses: actions/upload-artifact@v4
+        with:
+          name: aiomavsdk_wheel
+          path: py/aiomavsdk/dist/*.whl
           retention-days: 2
 
   dockcross-android:

@@ -18,7 +18,6 @@ setup(
         "relative_to": __file__,
         "version_scheme": "post-release",
     },
-    setup_requires=["setuptools-scm"],
     maintainer="Jonas Vautherin, Julian Oes",
     maintainer_email="dev@jonas.vautherin.ch, julian@oes.ch",
     description="Asyncio wrapper for MAVSDK",
