@@ -2,7 +2,7 @@ services:
   mavsdk:
     build:
       context: ../../
-      dockerfile: ./docker/mavsdk-server/Dockerfile
+      dockerfile: ./docker/example/Dockerfile
       args:
         MAVLINK_DIALECT: ${MAVLINK_DIALECT:-}
         BUILD_THREADS: ${BUILD_THREADS:-6}
