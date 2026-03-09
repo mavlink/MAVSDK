@@ -50,19 +50,19 @@ main() {
     ./tools/generate_from_protos.bash
     popd
 
-    #echo "------------------"
-    #echo "Generating Python (sync)"
-    #echo "------------------"
-    #pushd py/mavsdk
-    #"${project_root}/py/mavsdk/tools/generate_from_protos.bash"
-    #popd
+    echo "------------------"
+    echo "Generating Python (sync)"
+    echo "------------------"
+    pushd py/mavsdk
+    ./tools/generate_from_protos.bash
+    popd
 
-    #echo "------------------"
-    #echo "Generating Python (asyncio)"
-    #echo "------------------"
-    #pushd py/aiomavsdk
-    #"${project_root}/py/aiomavsdk/tools/generate_from_protos.bash"
-    #popd
+    echo "------------------"
+    echo "Generating Python (asyncio)"
+    echo "------------------"
+    pushd py/aiomavsdk
+    ./tools/generate_from_protos.bash
+    popd
 
     echo "All languages were generated successfully!"
 }
