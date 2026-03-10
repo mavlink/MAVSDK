@@ -326,7 +326,7 @@ Mocap::Result MocapImpl::send_odometry(const Mocap::Odometry& odometry)
             velocity_covariance.data(),
             odometry.reset_counter,
             mav_estimator_type,
-            static_cast<int8_t>(odometry.quality));
+            static_cast<int8_t>(odometry.quality_percent));
         return message;
     }) ?
                Mocap::Result::Success :
