@@ -211,7 +211,7 @@ MavlinkMissionTransferClient::UploadWorkItem::UploadWorkItem(
 
 MavlinkMissionTransferClient::UploadWorkItem::~UploadWorkItem()
 {
-    _message_handler.unregister_all(this);
+    _message_handler.unregister_all_blocking(this);
     _timeout_handler.remove(_cookie);
 }
 
@@ -599,7 +599,7 @@ MavlinkMissionTransferClient::DownloadWorkItem::DownloadWorkItem(
 
 MavlinkMissionTransferClient::DownloadWorkItem::~DownloadWorkItem()
 {
-    _message_handler.unregister_all(this);
+    _message_handler.unregister_all_blocking(this);
     _timeout_handler.remove(_cookie);
 }
 
@@ -840,7 +840,7 @@ MavlinkMissionTransferClient::ClearWorkItem::ClearWorkItem(
 
 MavlinkMissionTransferClient::ClearWorkItem::~ClearWorkItem()
 {
-    _message_handler.unregister_all(this);
+    _message_handler.unregister_all_blocking(this);
     _timeout_handler.remove(_cookie);
 }
 
@@ -989,7 +989,7 @@ MavlinkMissionTransferClient::SetCurrentWorkItem::SetCurrentWorkItem(
 
 MavlinkMissionTransferClient::SetCurrentWorkItem::~SetCurrentWorkItem()
 {
-    _message_handler.unregister_all(this);
+    _message_handler.unregister_all_blocking(this);
     _timeout_handler.remove(_cookie);
 }
 
