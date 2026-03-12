@@ -2,12 +2,6 @@
 
 set(PLUGIN_SOURCES
 {%- for plugin in plugins %}
-    cmavsdk/plugins/{{ plugin }}/{{ plugin }}.cpp
-{%- endfor %}
-)
-
-set(PLUGIN_HEADERS
-{%- for plugin in plugins %}
-    cmavsdk/plugins/{{ plugin }}/{{ plugin }}.h
+    plugins/{{ plugin }}/{{ plugin }}_jni.cpp
 {%- endfor %}
 )

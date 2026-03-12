@@ -13,10 +13,10 @@ def main():
     template = env.get_template("plugins_generated.cmake.j2")
     output = template.render(plugins=plugins)
     
-    with open("src/plugins_generated.cmake", 'w') as f:
+    with open("plugins_generated.cmake", 'w') as f:
         f.write(output)
-    
-    print(f"Successfully wrote to src/plugins_generated.cmake")
+
+    print(f"Successfully wrote to plugins_generated.cmake")
 
 if __name__ == '__main__':
     main()
