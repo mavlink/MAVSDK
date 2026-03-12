@@ -30,14 +30,22 @@ jobs:
           - platform: x64
             arch: x64
             toolchain: ''
+            python_plat_name: win_amd64
           - platform: Win32
             arch: x86
             toolchain: ''
+            python_plat_name: win32
           - platform: ARM64
             arch: arm64
             toolchain: ''
             toolchain_file: cmake\\win-arm64-toolchain.cmake
+            python_plat_name: win_arm64
     steps:
+      - name: Install Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          architecture: 'x64'
       - uses: actions/checkout@v4
         with:
           submodules: recursive
@@ -73,6 +81,34 @@ jobs:
           -S.
       - name: build
         run: cmake --build build -j4 --config RelWithDebInfo --target install
+      - name: build C wrapper
+        working-directory: ./c
+        run: |
+          $pluginTargets = "$env:GITHUB_WORKSPACE/cpp/build/third_party/install/lib/cmake/grpc/gRPCPluginTargets.cmake"
+          if (-not (Test-Path $pluginTargets)) { New-Item $pluginTargets -Force | Out-Null }
+          cmake -G"Visual Studio 17 2022" -A ${{ matrix.platform }} `
+            -DCMAKE_INSTALL_PREFIX=build/install `
+            "-DCMAKE_PREFIX_PATH=$env:GITHUB_WORKSPACE/cpp/install;$env:GITHUB_WORKSPACE/cpp/build/third_party/install" `
+            -DBUILD_SHARED_LIBS=ON `
+            -DBUILD_EXAMPLES=OFF `
+            -Bbuild -S.
+          cmake --build build --config RelWithDebInfo --target install
+      - name: build mavsdk wheel
+        working-directory: .
+        shell: bash
+        run: |
+          pip install -r py/requirements-dev.txt delvewheel
+          mkdir -p py/mavsdk/mavsdk/lib
+          cp c/build/install/bin/cmavsdk.dll py/mavsdk/mavsdk/lib/cmavsdk.dll
+          cd py/mavsdk
+          python3 setup.py bdist_wheel --plat-name ${{ matrix.python_plat_name }}
+          delvewheel repair -w wheelhouse dist/mavsdk4-*-win*.whl
+      - name: upload mavsdk wheel
+        uses: actions/upload-artifact@v4
+        with:
+          name: mavsdk_wheel_windows_${{ matrix.arch }}
+          path: py/mavsdk/wheelhouse/*.whl
+          retention-days: 2
       - name: Upload mavsdk_server binary as artifact
         uses: actions/upload-artifact@v4
         with:
