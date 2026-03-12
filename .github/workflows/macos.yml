@@ -31,10 +31,12 @@ jobs:
             build-framework: OFF
             runner: macos-15-intel
             architecture: 'x64'
+            python_plat_name: macosx_15_0_x86_64
           - name: macOS 15 arm64
             build-framework: OFF
             runner: macos-15
             architecture: 'arm64'
+            python_plat_name: macosx_15_0_arm64
           - name: macOS 15 framework x64
             build-framework: ON
             runner: macos-15-intel
@@ -102,6 +104,23 @@ jobs:
           asset_name: mavsdk_server_macos_${{ matrix.architecture }}
           tag: ${{ github.ref }}
           overwrite: true
+      - name: build mavsdk wheel
+        if: ${{ matrix.build-framework == 'OFF' }}
+        working-directory: .
+        run: |
+          pip install -r py/requirements-dev.txt delocate
+          mkdir -p py/mavsdk/mavsdk/lib
+          cp c/build/install/lib/libcmavsdk.dylib py/mavsdk/mavsdk/lib/libcmavsdk.dylib
+          cd py/mavsdk
+          python3 setup.py bdist_wheel --plat-name ${{ matrix.python_plat_name }}
+          delocate-wheel -w wheelhouse dist/mavsdk4-*-macosx_*.whl
+      - name: upload mavsdk wheel
+        if: ${{ matrix.build-framework == 'OFF' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: mavsdk_wheel_macos_${{ matrix.architecture }}
+          path: py/mavsdk/wheelhouse/*.whl
+          retention-days: 2
 
   iOS:
     name: ${{ matrix.name }}
