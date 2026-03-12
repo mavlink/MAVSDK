@@ -7,6 +7,7 @@
 #include "../../jni_utils.h"
 
 #include <utility>
+#include <vector>
 
 using namespace mavsdk::jni;
 
@@ -390,7 +391,7 @@ struct MissionProgressCallbackWrapper {
             return;
         }
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/mission_raw/MissionRaw$MissionProgress");
+        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/mission_raw/MissionRaw$MissionProgress");
         if (!retClass) { return; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(II)V");
         jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jint>(value.current)            , static_cast<jint>(value.total)        );
@@ -944,11 +945,12 @@ Java_io_mavsdk_kotlin_plugins_mission_1raw_MissionRaw_missionProgressBlocking(
         &ret_val
     );
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/mission_raw/MissionRaw$MissionProgress");
+        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/mission_raw/MissionRaw$MissionProgress");
         if (!retClass) { return nullptr; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(II)V");
         jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jint>(ret_val.current)            , static_cast<jint>(ret_val.total)        );
         env->DeleteLocalRef(retClass);
+    mavsdk_mission_raw_mission_progress_destroy(&ret_val);
     return retObj;
 }
 
@@ -1088,11 +1090,44 @@ Java_io_mavsdk_kotlin_plugins_mission_1raw_MissionRaw_importQgroundcontrolMissio
         return nullptr;
     }
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/mission_raw/MissionRaw$MissionImportData");
+        jclass arrayListClass_MissionImportData = env->FindClass("java/util/ArrayList");
+        jmethodID arrayListCtor_MissionImportData = env->GetMethodID(arrayListClass_MissionImportData, "<init>", "()V");
+        jmethodID arrayListAdd_MissionImportData = env->GetMethodID(arrayListClass_MissionImportData, "add", "(Ljava/lang/Object;)Z");        jobject list_mission_items = env->NewObject(arrayListClass_MissionImportData, arrayListCtor_MissionImportData);
+        {
+            jclass elemClass_mission_items = env->FindClass("io/mavsdk/kotlin/plugins/mission_raw/MissionRaw$MissionItem");
+            jmethodID elemCtor_mission_items = env->GetMethodID(elemClass_mission_items, "<init>", "(IIIIIFFFFIIFI)V");
+            for (size_t i = 0; i < ret_val.mission_items_size; i++) {
+                jobject elem = env->NewObject(elemClass_mission_items, elemCtor_mission_items                    , static_cast<jint>(ret_val.mission_items[i].seq)                    , static_cast<jint>(ret_val.mission_items[i].frame)                    , static_cast<jint>(ret_val.mission_items[i].command)                    , static_cast<jint>(ret_val.mission_items[i].current)                    , static_cast<jint>(ret_val.mission_items[i].autocontinue)                    , static_cast<jfloat>(ret_val.mission_items[i].param1)                    , static_cast<jfloat>(ret_val.mission_items[i].param2)                    , static_cast<jfloat>(ret_val.mission_items[i].param3)                    , static_cast<jfloat>(ret_val.mission_items[i].param4)                    , static_cast<jint>(ret_val.mission_items[i].x)                    , static_cast<jint>(ret_val.mission_items[i].y)                    , static_cast<jfloat>(ret_val.mission_items[i].z)                    , static_cast<jint>(ret_val.mission_items[i].mission_type)                );
+                env->CallBooleanMethod(list_mission_items, arrayListAdd_MissionImportData, elem);
+                env->DeleteLocalRef(elem);
+            }
+            env->DeleteLocalRef(elemClass_mission_items);
+        }        jobject list_geofence_items = env->NewObject(arrayListClass_MissionImportData, arrayListCtor_MissionImportData);
+        {
+            jclass elemClass_geofence_items = env->FindClass("io/mavsdk/kotlin/plugins/mission_raw/MissionRaw$MissionItem");
+            jmethodID elemCtor_geofence_items = env->GetMethodID(elemClass_geofence_items, "<init>", "(IIIIIFFFFIIFI)V");
+            for (size_t i = 0; i < ret_val.geofence_items_size; i++) {
+                jobject elem = env->NewObject(elemClass_geofence_items, elemCtor_geofence_items                    , static_cast<jint>(ret_val.geofence_items[i].seq)                    , static_cast<jint>(ret_val.geofence_items[i].frame)                    , static_cast<jint>(ret_val.geofence_items[i].command)                    , static_cast<jint>(ret_val.geofence_items[i].current)                    , static_cast<jint>(ret_val.geofence_items[i].autocontinue)                    , static_cast<jfloat>(ret_val.geofence_items[i].param1)                    , static_cast<jfloat>(ret_val.geofence_items[i].param2)                    , static_cast<jfloat>(ret_val.geofence_items[i].param3)                    , static_cast<jfloat>(ret_val.geofence_items[i].param4)                    , static_cast<jint>(ret_val.geofence_items[i].x)                    , static_cast<jint>(ret_val.geofence_items[i].y)                    , static_cast<jfloat>(ret_val.geofence_items[i].z)                    , static_cast<jint>(ret_val.geofence_items[i].mission_type)                );
+                env->CallBooleanMethod(list_geofence_items, arrayListAdd_MissionImportData, elem);
+                env->DeleteLocalRef(elem);
+            }
+            env->DeleteLocalRef(elemClass_geofence_items);
+        }        jobject list_rally_items = env->NewObject(arrayListClass_MissionImportData, arrayListCtor_MissionImportData);
+        {
+            jclass elemClass_rally_items = env->FindClass("io/mavsdk/kotlin/plugins/mission_raw/MissionRaw$MissionItem");
+            jmethodID elemCtor_rally_items = env->GetMethodID(elemClass_rally_items, "<init>", "(IIIIIFFFFIIFI)V");
+            for (size_t i = 0; i < ret_val.rally_items_size; i++) {
+                jobject elem = env->NewObject(elemClass_rally_items, elemCtor_rally_items                    , static_cast<jint>(ret_val.rally_items[i].seq)                    , static_cast<jint>(ret_val.rally_items[i].frame)                    , static_cast<jint>(ret_val.rally_items[i].command)                    , static_cast<jint>(ret_val.rally_items[i].current)                    , static_cast<jint>(ret_val.rally_items[i].autocontinue)                    , static_cast<jfloat>(ret_val.rally_items[i].param1)                    , static_cast<jfloat>(ret_val.rally_items[i].param2)                    , static_cast<jfloat>(ret_val.rally_items[i].param3)                    , static_cast<jfloat>(ret_val.rally_items[i].param4)                    , static_cast<jint>(ret_val.rally_items[i].x)                    , static_cast<jint>(ret_val.rally_items[i].y)                    , static_cast<jfloat>(ret_val.rally_items[i].z)                    , static_cast<jint>(ret_val.rally_items[i].mission_type)                );
+                env->CallBooleanMethod(list_rally_items, arrayListAdd_MissionImportData, elem);
+                env->DeleteLocalRef(elem);
+            }
+            env->DeleteLocalRef(elemClass_rally_items);
+        }env->DeleteLocalRef(arrayListClass_MissionImportData);        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/mission_raw/MissionRaw$MissionImportData");
         if (!retClass) { return nullptr; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "()V");
-        jobject retObj = env->NewObject(retClass, retCtor            /* TODO: repeated field mission_items */ , static_cast<jobject>(nullptr)            /* TODO: repeated field geofence_items */ , static_cast<jobject>(nullptr)            /* TODO: repeated field rally_items */ , static_cast<jobject>(nullptr)        );
-        env->DeleteLocalRef(retClass);
+        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(Ljava/util/List;Ljava/util/List;Ljava/util/List;)V");
+        jobject retObj = env->NewObject(retClass, retCtor            , list_mission_items            , list_geofence_items            , list_rally_items        );
+        env->DeleteLocalRef(retClass);        env->DeleteLocalRef(list_mission_items);        env->DeleteLocalRef(list_geofence_items);        env->DeleteLocalRef(list_rally_items);
+    mavsdk_mission_raw_mission_import_data_destroy(&ret_val);
     return retObj;
 }
 
@@ -1121,11 +1156,44 @@ Java_io_mavsdk_kotlin_plugins_mission_1raw_MissionRaw_importQgroundcontrolMissio
         return nullptr;
     }
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/mission_raw/MissionRaw$MissionImportData");
+        jclass arrayListClass_MissionImportData = env->FindClass("java/util/ArrayList");
+        jmethodID arrayListCtor_MissionImportData = env->GetMethodID(arrayListClass_MissionImportData, "<init>", "()V");
+        jmethodID arrayListAdd_MissionImportData = env->GetMethodID(arrayListClass_MissionImportData, "add", "(Ljava/lang/Object;)Z");        jobject list_mission_items = env->NewObject(arrayListClass_MissionImportData, arrayListCtor_MissionImportData);
+        {
+            jclass elemClass_mission_items = env->FindClass("io/mavsdk/kotlin/plugins/mission_raw/MissionRaw$MissionItem");
+            jmethodID elemCtor_mission_items = env->GetMethodID(elemClass_mission_items, "<init>", "(IIIIIFFFFIIFI)V");
+            for (size_t i = 0; i < ret_val.mission_items_size; i++) {
+                jobject elem = env->NewObject(elemClass_mission_items, elemCtor_mission_items                    , static_cast<jint>(ret_val.mission_items[i].seq)                    , static_cast<jint>(ret_val.mission_items[i].frame)                    , static_cast<jint>(ret_val.mission_items[i].command)                    , static_cast<jint>(ret_val.mission_items[i].current)                    , static_cast<jint>(ret_val.mission_items[i].autocontinue)                    , static_cast<jfloat>(ret_val.mission_items[i].param1)                    , static_cast<jfloat>(ret_val.mission_items[i].param2)                    , static_cast<jfloat>(ret_val.mission_items[i].param3)                    , static_cast<jfloat>(ret_val.mission_items[i].param4)                    , static_cast<jint>(ret_val.mission_items[i].x)                    , static_cast<jint>(ret_val.mission_items[i].y)                    , static_cast<jfloat>(ret_val.mission_items[i].z)                    , static_cast<jint>(ret_val.mission_items[i].mission_type)                );
+                env->CallBooleanMethod(list_mission_items, arrayListAdd_MissionImportData, elem);
+                env->DeleteLocalRef(elem);
+            }
+            env->DeleteLocalRef(elemClass_mission_items);
+        }        jobject list_geofence_items = env->NewObject(arrayListClass_MissionImportData, arrayListCtor_MissionImportData);
+        {
+            jclass elemClass_geofence_items = env->FindClass("io/mavsdk/kotlin/plugins/mission_raw/MissionRaw$MissionItem");
+            jmethodID elemCtor_geofence_items = env->GetMethodID(elemClass_geofence_items, "<init>", "(IIIIIFFFFIIFI)V");
+            for (size_t i = 0; i < ret_val.geofence_items_size; i++) {
+                jobject elem = env->NewObject(elemClass_geofence_items, elemCtor_geofence_items                    , static_cast<jint>(ret_val.geofence_items[i].seq)                    , static_cast<jint>(ret_val.geofence_items[i].frame)                    , static_cast<jint>(ret_val.geofence_items[i].command)                    , static_cast<jint>(ret_val.geofence_items[i].current)                    , static_cast<jint>(ret_val.geofence_items[i].autocontinue)                    , static_cast<jfloat>(ret_val.geofence_items[i].param1)                    , static_cast<jfloat>(ret_val.geofence_items[i].param2)                    , static_cast<jfloat>(ret_val.geofence_items[i].param3)                    , static_cast<jfloat>(ret_val.geofence_items[i].param4)                    , static_cast<jint>(ret_val.geofence_items[i].x)                    , static_cast<jint>(ret_val.geofence_items[i].y)                    , static_cast<jfloat>(ret_val.geofence_items[i].z)                    , static_cast<jint>(ret_val.geofence_items[i].mission_type)                );
+                env->CallBooleanMethod(list_geofence_items, arrayListAdd_MissionImportData, elem);
+                env->DeleteLocalRef(elem);
+            }
+            env->DeleteLocalRef(elemClass_geofence_items);
+        }        jobject list_rally_items = env->NewObject(arrayListClass_MissionImportData, arrayListCtor_MissionImportData);
+        {
+            jclass elemClass_rally_items = env->FindClass("io/mavsdk/kotlin/plugins/mission_raw/MissionRaw$MissionItem");
+            jmethodID elemCtor_rally_items = env->GetMethodID(elemClass_rally_items, "<init>", "(IIIIIFFFFIIFI)V");
+            for (size_t i = 0; i < ret_val.rally_items_size; i++) {
+                jobject elem = env->NewObject(elemClass_rally_items, elemCtor_rally_items                    , static_cast<jint>(ret_val.rally_items[i].seq)                    , static_cast<jint>(ret_val.rally_items[i].frame)                    , static_cast<jint>(ret_val.rally_items[i].command)                    , static_cast<jint>(ret_val.rally_items[i].current)                    , static_cast<jint>(ret_val.rally_items[i].autocontinue)                    , static_cast<jfloat>(ret_val.rally_items[i].param1)                    , static_cast<jfloat>(ret_val.rally_items[i].param2)                    , static_cast<jfloat>(ret_val.rally_items[i].param3)                    , static_cast<jfloat>(ret_val.rally_items[i].param4)                    , static_cast<jint>(ret_val.rally_items[i].x)                    , static_cast<jint>(ret_val.rally_items[i].y)                    , static_cast<jfloat>(ret_val.rally_items[i].z)                    , static_cast<jint>(ret_val.rally_items[i].mission_type)                );
+                env->CallBooleanMethod(list_rally_items, arrayListAdd_MissionImportData, elem);
+                env->DeleteLocalRef(elem);
+            }
+            env->DeleteLocalRef(elemClass_rally_items);
+        }env->DeleteLocalRef(arrayListClass_MissionImportData);        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/mission_raw/MissionRaw$MissionImportData");
         if (!retClass) { return nullptr; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "()V");
-        jobject retObj = env->NewObject(retClass, retCtor            /* TODO: repeated field mission_items */ , static_cast<jobject>(nullptr)            /* TODO: repeated field geofence_items */ , static_cast<jobject>(nullptr)            /* TODO: repeated field rally_items */ , static_cast<jobject>(nullptr)        );
-        env->DeleteLocalRef(retClass);
+        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(Ljava/util/List;Ljava/util/List;Ljava/util/List;)V");
+        jobject retObj = env->NewObject(retClass, retCtor            , list_mission_items            , list_geofence_items            , list_rally_items        );
+        env->DeleteLocalRef(retClass);        env->DeleteLocalRef(list_mission_items);        env->DeleteLocalRef(list_geofence_items);        env->DeleteLocalRef(list_rally_items);
+    mavsdk_mission_raw_mission_import_data_destroy(&ret_val);
     return retObj;
 }
 
@@ -1154,11 +1222,44 @@ Java_io_mavsdk_kotlin_plugins_mission_1raw_MissionRaw_importMissionPlannerMissio
         return nullptr;
     }
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/mission_raw/MissionRaw$MissionImportData");
+        jclass arrayListClass_MissionImportData = env->FindClass("java/util/ArrayList");
+        jmethodID arrayListCtor_MissionImportData = env->GetMethodID(arrayListClass_MissionImportData, "<init>", "()V");
+        jmethodID arrayListAdd_MissionImportData = env->GetMethodID(arrayListClass_MissionImportData, "add", "(Ljava/lang/Object;)Z");        jobject list_mission_items = env->NewObject(arrayListClass_MissionImportData, arrayListCtor_MissionImportData);
+        {
+            jclass elemClass_mission_items = env->FindClass("io/mavsdk/kotlin/plugins/mission_raw/MissionRaw$MissionItem");
+            jmethodID elemCtor_mission_items = env->GetMethodID(elemClass_mission_items, "<init>", "(IIIIIFFFFIIFI)V");
+            for (size_t i = 0; i < ret_val.mission_items_size; i++) {
+                jobject elem = env->NewObject(elemClass_mission_items, elemCtor_mission_items                    , static_cast<jint>(ret_val.mission_items[i].seq)                    , static_cast<jint>(ret_val.mission_items[i].frame)                    , static_cast<jint>(ret_val.mission_items[i].command)                    , static_cast<jint>(ret_val.mission_items[i].current)                    , static_cast<jint>(ret_val.mission_items[i].autocontinue)                    , static_cast<jfloat>(ret_val.mission_items[i].param1)                    , static_cast<jfloat>(ret_val.mission_items[i].param2)                    , static_cast<jfloat>(ret_val.mission_items[i].param3)                    , static_cast<jfloat>(ret_val.mission_items[i].param4)                    , static_cast<jint>(ret_val.mission_items[i].x)                    , static_cast<jint>(ret_val.mission_items[i].y)                    , static_cast<jfloat>(ret_val.mission_items[i].z)                    , static_cast<jint>(ret_val.mission_items[i].mission_type)                );
+                env->CallBooleanMethod(list_mission_items, arrayListAdd_MissionImportData, elem);
+                env->DeleteLocalRef(elem);
+            }
+            env->DeleteLocalRef(elemClass_mission_items);
+        }        jobject list_geofence_items = env->NewObject(arrayListClass_MissionImportData, arrayListCtor_MissionImportData);
+        {
+            jclass elemClass_geofence_items = env->FindClass("io/mavsdk/kotlin/plugins/mission_raw/MissionRaw$MissionItem");
+            jmethodID elemCtor_geofence_items = env->GetMethodID(elemClass_geofence_items, "<init>", "(IIIIIFFFFIIFI)V");
+            for (size_t i = 0; i < ret_val.geofence_items_size; i++) {
+                jobject elem = env->NewObject(elemClass_geofence_items, elemCtor_geofence_items                    , static_cast<jint>(ret_val.geofence_items[i].seq)                    , static_cast<jint>(ret_val.geofence_items[i].frame)                    , static_cast<jint>(ret_val.geofence_items[i].command)                    , static_cast<jint>(ret_val.geofence_items[i].current)                    , static_cast<jint>(ret_val.geofence_items[i].autocontinue)                    , static_cast<jfloat>(ret_val.geofence_items[i].param1)                    , static_cast<jfloat>(ret_val.geofence_items[i].param2)                    , static_cast<jfloat>(ret_val.geofence_items[i].param3)                    , static_cast<jfloat>(ret_val.geofence_items[i].param4)                    , static_cast<jint>(ret_val.geofence_items[i].x)                    , static_cast<jint>(ret_val.geofence_items[i].y)                    , static_cast<jfloat>(ret_val.geofence_items[i].z)                    , static_cast<jint>(ret_val.geofence_items[i].mission_type)                );
+                env->CallBooleanMethod(list_geofence_items, arrayListAdd_MissionImportData, elem);
+                env->DeleteLocalRef(elem);
+            }
+            env->DeleteLocalRef(elemClass_geofence_items);
+        }        jobject list_rally_items = env->NewObject(arrayListClass_MissionImportData, arrayListCtor_MissionImportData);
+        {
+            jclass elemClass_rally_items = env->FindClass("io/mavsdk/kotlin/plugins/mission_raw/MissionRaw$MissionItem");
+            jmethodID elemCtor_rally_items = env->GetMethodID(elemClass_rally_items, "<init>", "(IIIIIFFFFIIFI)V");
+            for (size_t i = 0; i < ret_val.rally_items_size; i++) {
+                jobject elem = env->NewObject(elemClass_rally_items, elemCtor_rally_items                    , static_cast<jint>(ret_val.rally_items[i].seq)                    , static_cast<jint>(ret_val.rally_items[i].frame)                    , static_cast<jint>(ret_val.rally_items[i].command)                    , static_cast<jint>(ret_val.rally_items[i].current)                    , static_cast<jint>(ret_val.rally_items[i].autocontinue)                    , static_cast<jfloat>(ret_val.rally_items[i].param1)                    , static_cast<jfloat>(ret_val.rally_items[i].param2)                    , static_cast<jfloat>(ret_val.rally_items[i].param3)                    , static_cast<jfloat>(ret_val.rally_items[i].param4)                    , static_cast<jint>(ret_val.rally_items[i].x)                    , static_cast<jint>(ret_val.rally_items[i].y)                    , static_cast<jfloat>(ret_val.rally_items[i].z)                    , static_cast<jint>(ret_val.rally_items[i].mission_type)                );
+                env->CallBooleanMethod(list_rally_items, arrayListAdd_MissionImportData, elem);
+                env->DeleteLocalRef(elem);
+            }
+            env->DeleteLocalRef(elemClass_rally_items);
+        }env->DeleteLocalRef(arrayListClass_MissionImportData);        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/mission_raw/MissionRaw$MissionImportData");
         if (!retClass) { return nullptr; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "()V");
-        jobject retObj = env->NewObject(retClass, retCtor            /* TODO: repeated field mission_items */ , static_cast<jobject>(nullptr)            /* TODO: repeated field geofence_items */ , static_cast<jobject>(nullptr)            /* TODO: repeated field rally_items */ , static_cast<jobject>(nullptr)        );
-        env->DeleteLocalRef(retClass);
+        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(Ljava/util/List;Ljava/util/List;Ljava/util/List;)V");
+        jobject retObj = env->NewObject(retClass, retCtor            , list_mission_items            , list_geofence_items            , list_rally_items        );
+        env->DeleteLocalRef(retClass);        env->DeleteLocalRef(list_mission_items);        env->DeleteLocalRef(list_geofence_items);        env->DeleteLocalRef(list_rally_items);
+    mavsdk_mission_raw_mission_import_data_destroy(&ret_val);
     return retObj;
 }
 
@@ -1187,11 +1288,44 @@ Java_io_mavsdk_kotlin_plugins_mission_1raw_MissionRaw_importMissionPlannerMissio
         return nullptr;
     }
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/mission_raw/MissionRaw$MissionImportData");
+        jclass arrayListClass_MissionImportData = env->FindClass("java/util/ArrayList");
+        jmethodID arrayListCtor_MissionImportData = env->GetMethodID(arrayListClass_MissionImportData, "<init>", "()V");
+        jmethodID arrayListAdd_MissionImportData = env->GetMethodID(arrayListClass_MissionImportData, "add", "(Ljava/lang/Object;)Z");        jobject list_mission_items = env->NewObject(arrayListClass_MissionImportData, arrayListCtor_MissionImportData);
+        {
+            jclass elemClass_mission_items = env->FindClass("io/mavsdk/kotlin/plugins/mission_raw/MissionRaw$MissionItem");
+            jmethodID elemCtor_mission_items = env->GetMethodID(elemClass_mission_items, "<init>", "(IIIIIFFFFIIFI)V");
+            for (size_t i = 0; i < ret_val.mission_items_size; i++) {
+                jobject elem = env->NewObject(elemClass_mission_items, elemCtor_mission_items                    , static_cast<jint>(ret_val.mission_items[i].seq)                    , static_cast<jint>(ret_val.mission_items[i].frame)                    , static_cast<jint>(ret_val.mission_items[i].command)                    , static_cast<jint>(ret_val.mission_items[i].current)                    , static_cast<jint>(ret_val.mission_items[i].autocontinue)                    , static_cast<jfloat>(ret_val.mission_items[i].param1)                    , static_cast<jfloat>(ret_val.mission_items[i].param2)                    , static_cast<jfloat>(ret_val.mission_items[i].param3)                    , static_cast<jfloat>(ret_val.mission_items[i].param4)                    , static_cast<jint>(ret_val.mission_items[i].x)                    , static_cast<jint>(ret_val.mission_items[i].y)                    , static_cast<jfloat>(ret_val.mission_items[i].z)                    , static_cast<jint>(ret_val.mission_items[i].mission_type)                );
+                env->CallBooleanMethod(list_mission_items, arrayListAdd_MissionImportData, elem);
+                env->DeleteLocalRef(elem);
+            }
+            env->DeleteLocalRef(elemClass_mission_items);
+        }        jobject list_geofence_items = env->NewObject(arrayListClass_MissionImportData, arrayListCtor_MissionImportData);
+        {
+            jclass elemClass_geofence_items = env->FindClass("io/mavsdk/kotlin/plugins/mission_raw/MissionRaw$MissionItem");
+            jmethodID elemCtor_geofence_items = env->GetMethodID(elemClass_geofence_items, "<init>", "(IIIIIFFFFIIFI)V");
+            for (size_t i = 0; i < ret_val.geofence_items_size; i++) {
+                jobject elem = env->NewObject(elemClass_geofence_items, elemCtor_geofence_items                    , static_cast<jint>(ret_val.geofence_items[i].seq)                    , static_cast<jint>(ret_val.geofence_items[i].frame)                    , static_cast<jint>(ret_val.geofence_items[i].command)                    , static_cast<jint>(ret_val.geofence_items[i].current)                    , static_cast<jint>(ret_val.geofence_items[i].autocontinue)                    , static_cast<jfloat>(ret_val.geofence_items[i].param1)                    , static_cast<jfloat>(ret_val.geofence_items[i].param2)                    , static_cast<jfloat>(ret_val.geofence_items[i].param3)                    , static_cast<jfloat>(ret_val.geofence_items[i].param4)                    , static_cast<jint>(ret_val.geofence_items[i].x)                    , static_cast<jint>(ret_val.geofence_items[i].y)                    , static_cast<jfloat>(ret_val.geofence_items[i].z)                    , static_cast<jint>(ret_val.geofence_items[i].mission_type)                );
+                env->CallBooleanMethod(list_geofence_items, arrayListAdd_MissionImportData, elem);
+                env->DeleteLocalRef(elem);
+            }
+            env->DeleteLocalRef(elemClass_geofence_items);
+        }        jobject list_rally_items = env->NewObject(arrayListClass_MissionImportData, arrayListCtor_MissionImportData);
+        {
+            jclass elemClass_rally_items = env->FindClass("io/mavsdk/kotlin/plugins/mission_raw/MissionRaw$MissionItem");
+            jmethodID elemCtor_rally_items = env->GetMethodID(elemClass_rally_items, "<init>", "(IIIIIFFFFIIFI)V");
+            for (size_t i = 0; i < ret_val.rally_items_size; i++) {
+                jobject elem = env->NewObject(elemClass_rally_items, elemCtor_rally_items                    , static_cast<jint>(ret_val.rally_items[i].seq)                    , static_cast<jint>(ret_val.rally_items[i].frame)                    , static_cast<jint>(ret_val.rally_items[i].command)                    , static_cast<jint>(ret_val.rally_items[i].current)                    , static_cast<jint>(ret_val.rally_items[i].autocontinue)                    , static_cast<jfloat>(ret_val.rally_items[i].param1)                    , static_cast<jfloat>(ret_val.rally_items[i].param2)                    , static_cast<jfloat>(ret_val.rally_items[i].param3)                    , static_cast<jfloat>(ret_val.rally_items[i].param4)                    , static_cast<jint>(ret_val.rally_items[i].x)                    , static_cast<jint>(ret_val.rally_items[i].y)                    , static_cast<jfloat>(ret_val.rally_items[i].z)                    , static_cast<jint>(ret_val.rally_items[i].mission_type)                );
+                env->CallBooleanMethod(list_rally_items, arrayListAdd_MissionImportData, elem);
+                env->DeleteLocalRef(elem);
+            }
+            env->DeleteLocalRef(elemClass_rally_items);
+        }env->DeleteLocalRef(arrayListClass_MissionImportData);        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/mission_raw/MissionRaw$MissionImportData");
         if (!retClass) { return nullptr; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "()V");
-        jobject retObj = env->NewObject(retClass, retCtor            /* TODO: repeated field mission_items */ , static_cast<jobject>(nullptr)            /* TODO: repeated field geofence_items */ , static_cast<jobject>(nullptr)            /* TODO: repeated field rally_items */ , static_cast<jobject>(nullptr)        );
-        env->DeleteLocalRef(retClass);
+        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(Ljava/util/List;Ljava/util/List;Ljava/util/List;)V");
+        jobject retObj = env->NewObject(retClass, retCtor            , list_mission_items            , list_geofence_items            , list_rally_items        );
+        env->DeleteLocalRef(retClass);        env->DeleteLocalRef(list_mission_items);        env->DeleteLocalRef(list_geofence_items);        env->DeleteLocalRef(list_rally_items);
+    mavsdk_mission_raw_mission_import_data_destroy(&ret_val);
     return retObj;
 }
 

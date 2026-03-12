@@ -7,6 +7,7 @@
 #include "../../jni_utils.h"
 
 #include <utility>
+#include <vector>
 
 using namespace mavsdk::jni;
 
@@ -133,7 +134,53 @@ Java_io_mavsdk_kotlin_plugins_geofence_Geofence_uploadGeofenceBlocking(
     jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/geofence/Geofence");
     if (!handle) return MAVSDK_GEOFENCE_RESULT_UNKNOWN;
 
-    mavsdk_geofence_geofence_data_t geofence_data_c{}; /* TODO: convert from Java object */
+    mavsdk_geofence_geofence_data_t geofence_data_c{};    std::vector<mavsdk_geofence_polygon_t> polygons_vec;
+    {
+        jclass paramClass_geofence_data = env->GetObjectClass(geofence_data);
+        jfieldID polygons_fid = env->GetFieldID(paramClass_geofence_data, "polygons", "Ljava/util/List;");
+        jobject polygons_list = env->GetObjectField(geofence_data, polygons_fid);
+        if (polygons_list) {
+            jclass listClass_polygons = env->FindClass("java/util/List");
+            jmethodID listSize_polygons = env->GetMethodID(listClass_polygons, "size", "()I");
+            jmethodID listGet_polygons = env->GetMethodID(listClass_polygons, "get", "(I)Ljava/lang/Object;");
+            jint count_polygons = env->CallIntMethod(polygons_list, listSize_polygons);
+            polygons_vec.resize(count_polygons);
+            if (count_polygons > 0) {
+                jclass elemClass_polygons = env->FindClass("io/mavsdk/kotlin/plugins/geofence/Geofence$Polygon");                jfieldID fid_polygons_fence_type = env->GetFieldID(elemClass_polygons, "fenceType", "I");                for (jint i = 0; i < count_polygons; i++) {
+                    jobject elem = env->CallObjectMethod(polygons_list, listGet_polygons, i);                    polygons_vec[i].fence_type = static_cast<mavsdk_geofence_fence_type_t>(env->GetIntField(elem, fid_polygons_fence_type));                    env->DeleteLocalRef(elem);
+                }
+                geofence_data_c.polygons = polygons_vec.data();
+                env->DeleteLocalRef(elemClass_polygons);
+            }
+            geofence_data_c.polygons_size = (size_t)count_polygons;
+            env->DeleteLocalRef(listClass_polygons);
+            env->DeleteLocalRef(polygons_list);
+        }
+        env->DeleteLocalRef(paramClass_geofence_data);
+    }    std::vector<mavsdk_geofence_circle_t> circles_vec;
+    {
+        jclass paramClass_geofence_data = env->GetObjectClass(geofence_data);
+        jfieldID circles_fid = env->GetFieldID(paramClass_geofence_data, "circles", "Ljava/util/List;");
+        jobject circles_list = env->GetObjectField(geofence_data, circles_fid);
+        if (circles_list) {
+            jclass listClass_circles = env->FindClass("java/util/List");
+            jmethodID listSize_circles = env->GetMethodID(listClass_circles, "size", "()I");
+            jmethodID listGet_circles = env->GetMethodID(listClass_circles, "get", "(I)Ljava/lang/Object;");
+            jint count_circles = env->CallIntMethod(circles_list, listSize_circles);
+            circles_vec.resize(count_circles);
+            if (count_circles > 0) {
+                jclass elemClass_circles = env->FindClass("io/mavsdk/kotlin/plugins/geofence/Geofence$Circle");                jfieldID fid_circles_radius = env->GetFieldID(elemClass_circles, "radius", "F");                jfieldID fid_circles_fence_type = env->GetFieldID(elemClass_circles, "fenceType", "I");                for (jint i = 0; i < count_circles; i++) {
+                    jobject elem = env->CallObjectMethod(circles_list, listGet_circles, i);                    /* TODO: nested struct field point in Circle */                    circles_vec[i].radius = env->GetFloatField(elem, fid_circles_radius);                    circles_vec[i].fence_type = static_cast<mavsdk_geofence_fence_type_t>(env->GetIntField(elem, fid_circles_fence_type));                    env->DeleteLocalRef(elem);
+                }
+                geofence_data_c.circles = circles_vec.data();
+                env->DeleteLocalRef(elemClass_circles);
+            }
+            geofence_data_c.circles_size = (size_t)count_circles;
+            env->DeleteLocalRef(listClass_circles);
+            env->DeleteLocalRef(circles_list);
+        }
+        env->DeleteLocalRef(paramClass_geofence_data);
+    }
     mavsdk_geofence_result_t result = mavsdk_geofence_upload_geofence(
         reinterpret_cast<mavsdk_geofence_t>(handle),
         geofence_data_c    );
@@ -152,7 +199,53 @@ Java_io_mavsdk_kotlin_plugins_geofence_Geofence_uploadGeofenceAsyncNative(
     jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/geofence/Geofence");
     if (!handle || !callback) return;
 
-    mavsdk_geofence_geofence_data_t geofence_data_c{}; /* TODO: convert from Java object */
+    mavsdk_geofence_geofence_data_t geofence_data_c{};    std::vector<mavsdk_geofence_polygon_t> polygons_vec;
+    {
+        jclass paramClass_geofence_data = env->GetObjectClass(geofence_data);
+        jfieldID polygons_fid = env->GetFieldID(paramClass_geofence_data, "polygons", "Ljava/util/List;");
+        jobject polygons_list = env->GetObjectField(geofence_data, polygons_fid);
+        if (polygons_list) {
+            jclass listClass_polygons = env->FindClass("java/util/List");
+            jmethodID listSize_polygons = env->GetMethodID(listClass_polygons, "size", "()I");
+            jmethodID listGet_polygons = env->GetMethodID(listClass_polygons, "get", "(I)Ljava/lang/Object;");
+            jint count_polygons = env->CallIntMethod(polygons_list, listSize_polygons);
+            polygons_vec.resize(count_polygons);
+            if (count_polygons > 0) {
+                jclass elemClass_polygons = env->FindClass("io/mavsdk/kotlin/plugins/geofence/Geofence$Polygon");                jfieldID fid_polygons_fence_type = env->GetFieldID(elemClass_polygons, "fenceType", "I");                for (jint i = 0; i < count_polygons; i++) {
+                    jobject elem = env->CallObjectMethod(polygons_list, listGet_polygons, i);                    polygons_vec[i].fence_type = static_cast<mavsdk_geofence_fence_type_t>(env->GetIntField(elem, fid_polygons_fence_type));                    env->DeleteLocalRef(elem);
+                }
+                geofence_data_c.polygons = polygons_vec.data();
+                env->DeleteLocalRef(elemClass_polygons);
+            }
+            geofence_data_c.polygons_size = (size_t)count_polygons;
+            env->DeleteLocalRef(listClass_polygons);
+            env->DeleteLocalRef(polygons_list);
+        }
+        env->DeleteLocalRef(paramClass_geofence_data);
+    }    std::vector<mavsdk_geofence_circle_t> circles_vec;
+    {
+        jclass paramClass_geofence_data = env->GetObjectClass(geofence_data);
+        jfieldID circles_fid = env->GetFieldID(paramClass_geofence_data, "circles", "Ljava/util/List;");
+        jobject circles_list = env->GetObjectField(geofence_data, circles_fid);
+        if (circles_list) {
+            jclass listClass_circles = env->FindClass("java/util/List");
+            jmethodID listSize_circles = env->GetMethodID(listClass_circles, "size", "()I");
+            jmethodID listGet_circles = env->GetMethodID(listClass_circles, "get", "(I)Ljava/lang/Object;");
+            jint count_circles = env->CallIntMethod(circles_list, listSize_circles);
+            circles_vec.resize(count_circles);
+            if (count_circles > 0) {
+                jclass elemClass_circles = env->FindClass("io/mavsdk/kotlin/plugins/geofence/Geofence$Circle");                jfieldID fid_circles_radius = env->GetFieldID(elemClass_circles, "radius", "F");                jfieldID fid_circles_fence_type = env->GetFieldID(elemClass_circles, "fenceType", "I");                for (jint i = 0; i < count_circles; i++) {
+                    jobject elem = env->CallObjectMethod(circles_list, listGet_circles, i);                    /* TODO: nested struct field point in Circle */                    circles_vec[i].radius = env->GetFloatField(elem, fid_circles_radius);                    circles_vec[i].fence_type = static_cast<mavsdk_geofence_fence_type_t>(env->GetIntField(elem, fid_circles_fence_type));                    env->DeleteLocalRef(elem);
+                }
+                geofence_data_c.circles = circles_vec.data();
+                env->DeleteLocalRef(elemClass_circles);
+            }
+            geofence_data_c.circles_size = (size_t)count_circles;
+            env->DeleteLocalRef(listClass_circles);
+            env->DeleteLocalRef(circles_list);
+        }
+        env->DeleteLocalRef(paramClass_geofence_data);
+    }
     auto* wrapper = new UploadGeofenceCallbackWrapper(env, callback);
 
     mavsdk_geofence_upload_geofence_async(

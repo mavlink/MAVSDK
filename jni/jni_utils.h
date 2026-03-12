@@ -76,15 +76,28 @@ inline void throwMavsdkError(JNIEnv* env, const char* errorType, const char* mes
 class GlobalRefHolder {
 public:
     GlobalRefHolder(JNIEnv* env, jobject obj)
-        : env_(env), ref_(nullptr) {
+        : jvm_(nullptr), ref_(nullptr) {
         if (obj) {
+            env->GetJavaVM(&jvm_);
             ref_ = env->NewGlobalRef(obj);
         }
     }
 
     ~GlobalRefHolder() {
-        if (ref_) {
-            env_->DeleteGlobalRef(ref_);
+        if (!ref_ || !jvm_) return;
+
+        JNIEnv* env = nullptr;
+        bool attached = false;
+        jint result = jvm_->GetEnv(reinterpret_cast<void**>(&env), JNI_VERSION_1_6);
+        if (result == JNI_EDETACHED) {
+            jvm_->AttachCurrentThread(reinterpret_cast<void**>(&env), nullptr);
+            attached = true;
+        }
+        if (env) {
+            env->DeleteGlobalRef(ref_);
+        }
+        if (attached) {
+            jvm_->DetachCurrentThread();
         }
     }
 
@@ -97,16 +110,23 @@ public:
     GlobalRefHolder& operator=(const GlobalRefHolder&) = delete;
 
     GlobalRefHolder(GlobalRefHolder&& other) noexcept
-        : env_(other.env_), ref_(other.ref_) {
+        : jvm_(other.jvm_), ref_(other.ref_) {
         other.ref_ = nullptr;
     }
 
     GlobalRefHolder& operator=(GlobalRefHolder&& other) noexcept {
         if (this != &other) {
-            if (ref_) {
-                env_->DeleteGlobalRef(ref_);
+            if (ref_ && jvm_) {
+                JNIEnv* env = nullptr;
+                bool attached = false;
+                if (jvm_->GetEnv(reinterpret_cast<void**>(&env), JNI_VERSION_1_6) == JNI_EDETACHED) {
+                    jvm_->AttachCurrentThread(reinterpret_cast<void**>(&env), nullptr);
+                    attached = true;
+                }
+                if (env) env->DeleteGlobalRef(ref_);
+                if (attached) jvm_->DetachCurrentThread();
             }
-            env_ = other.env_;
+            jvm_ = other.jvm_;
             ref_ = other.ref_;
             other.ref_ = nullptr;
         }
@@ -114,7 +134,7 @@ public:
     }
 
 private:
-    JNIEnv* env_;
+    JavaVM* jvm_;
     jobject ref_;
 };
 

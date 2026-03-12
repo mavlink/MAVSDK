@@ -7,6 +7,7 @@
 #include "../../jni_utils.h"
 
 #include <utility>
+#include <vector>
 
 using namespace mavsdk::jni;
 
@@ -110,7 +111,7 @@ struct LogStreamingRawCallbackWrapper {
             return;
         }
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/log_streaming/LogStreaming$LogStreamingRaw");
+        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/log_streaming/LogStreaming$LogStreamingRaw");
         if (!retClass) { return; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(Ljava/lang/String;)V");
         jobject retObj = env->NewObject(retClass, retCtor            , toJavaString(env, value.data_base64)        );

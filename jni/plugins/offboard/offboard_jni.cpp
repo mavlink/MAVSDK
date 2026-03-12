@@ -7,6 +7,7 @@
 #include "../../jni_utils.h"
 
 #include <utility>
+#include <vector>
 
 using namespace mavsdk::jni;
 
@@ -233,7 +234,7 @@ Java_io_mavsdk_kotlin_plugins_offboard_Offboard_setAttitudeBlocking(
     jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/offboard/Offboard");
     if (!handle) return MAVSDK_OFFBOARD_RESULT_UNKNOWN;
 
-    mavsdk_offboard_attitude_t attitude_c{}; /* TODO: convert from Java object */
+    mavsdk_offboard_attitude_t attitude_c{}; /* TODO: convert scalar-only struct from Java object */
     mavsdk_offboard_result_t result = mavsdk_offboard_set_attitude(
         reinterpret_cast<mavsdk_offboard_t>(handle),
         attitude_c    );
@@ -252,7 +253,30 @@ Java_io_mavsdk_kotlin_plugins_offboard_Offboard_setActuatorControlBlocking(
     jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/offboard/Offboard");
     if (!handle) return MAVSDK_OFFBOARD_RESULT_UNKNOWN;
 
-    mavsdk_offboard_actuator_control_t actuator_control_c{}; /* TODO: convert from Java object */
+    mavsdk_offboard_actuator_control_t actuator_control_c{};    std::vector<mavsdk_offboard_actuator_control_group_t> groups_vec;
+    {
+        jclass paramClass_actuator_control = env->GetObjectClass(actuator_control);
+        jfieldID groups_fid = env->GetFieldID(paramClass_actuator_control, "groups", "Ljava/util/List;");
+        jobject groups_list = env->GetObjectField(actuator_control, groups_fid);
+        if (groups_list) {
+            jclass listClass_groups = env->FindClass("java/util/List");
+            jmethodID listSize_groups = env->GetMethodID(listClass_groups, "size", "()I");
+            jmethodID listGet_groups = env->GetMethodID(listClass_groups, "get", "(I)Ljava/lang/Object;");
+            jint count_groups = env->CallIntMethod(groups_list, listSize_groups);
+            groups_vec.resize(count_groups);
+            if (count_groups > 0) {
+                jclass elemClass_groups = env->FindClass("io/mavsdk/kotlin/plugins/offboard/Offboard$ActuatorControlGroup");                for (jint i = 0; i < count_groups; i++) {
+                    jobject elem = env->CallObjectMethod(groups_list, listGet_groups, i);                    env->DeleteLocalRef(elem);
+                }
+                actuator_control_c.groups = groups_vec.data();
+                env->DeleteLocalRef(elemClass_groups);
+            }
+            actuator_control_c.groups_size = (size_t)count_groups;
+            env->DeleteLocalRef(listClass_groups);
+            env->DeleteLocalRef(groups_list);
+        }
+        env->DeleteLocalRef(paramClass_actuator_control);
+    }
     mavsdk_offboard_result_t result = mavsdk_offboard_set_actuator_control(
         reinterpret_cast<mavsdk_offboard_t>(handle),
         actuator_control_c    );
@@ -271,7 +295,7 @@ Java_io_mavsdk_kotlin_plugins_offboard_Offboard_setAttitudeRateBlocking(
     jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/offboard/Offboard");
     if (!handle) return MAVSDK_OFFBOARD_RESULT_UNKNOWN;
 
-    mavsdk_offboard_attitude_rate_t attitude_rate_c{}; /* TODO: convert from Java object */
+    mavsdk_offboard_attitude_rate_t attitude_rate_c{}; /* TODO: convert scalar-only struct from Java object */
     mavsdk_offboard_result_t result = mavsdk_offboard_set_attitude_rate(
         reinterpret_cast<mavsdk_offboard_t>(handle),
         attitude_rate_c    );
@@ -290,7 +314,7 @@ Java_io_mavsdk_kotlin_plugins_offboard_Offboard_setPositionNedBlocking(
     jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/offboard/Offboard");
     if (!handle) return MAVSDK_OFFBOARD_RESULT_UNKNOWN;
 
-    mavsdk_offboard_position_ned_yaw_t position_ned_yaw_c{}; /* TODO: convert from Java object */
+    mavsdk_offboard_position_ned_yaw_t position_ned_yaw_c{}; /* TODO: convert scalar-only struct from Java object */
     mavsdk_offboard_result_t result = mavsdk_offboard_set_position_ned(
         reinterpret_cast<mavsdk_offboard_t>(handle),
         position_ned_yaw_c    );
@@ -309,7 +333,7 @@ Java_io_mavsdk_kotlin_plugins_offboard_Offboard_setPositionGlobalBlocking(
     jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/offboard/Offboard");
     if (!handle) return MAVSDK_OFFBOARD_RESULT_UNKNOWN;
 
-    mavsdk_offboard_position_global_yaw_t position_global_yaw_c{}; /* TODO: convert from Java object */
+    mavsdk_offboard_position_global_yaw_t position_global_yaw_c{}; /* TODO: convert scalar-only struct from Java object */
     mavsdk_offboard_result_t result = mavsdk_offboard_set_position_global(
         reinterpret_cast<mavsdk_offboard_t>(handle),
         position_global_yaw_c    );
@@ -328,7 +352,7 @@ Java_io_mavsdk_kotlin_plugins_offboard_Offboard_setVelocityBodyBlocking(
     jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/offboard/Offboard");
     if (!handle) return MAVSDK_OFFBOARD_RESULT_UNKNOWN;
 
-    mavsdk_offboard_velocity_body_yawspeed_t velocity_body_yawspeed_c{}; /* TODO: convert from Java object */
+    mavsdk_offboard_velocity_body_yawspeed_t velocity_body_yawspeed_c{}; /* TODO: convert scalar-only struct from Java object */
     mavsdk_offboard_result_t result = mavsdk_offboard_set_velocity_body(
         reinterpret_cast<mavsdk_offboard_t>(handle),
         velocity_body_yawspeed_c    );
@@ -347,7 +371,7 @@ Java_io_mavsdk_kotlin_plugins_offboard_Offboard_setVelocityNedBlocking(
     jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/offboard/Offboard");
     if (!handle) return MAVSDK_OFFBOARD_RESULT_UNKNOWN;
 
-    mavsdk_offboard_velocity_ned_yaw_t velocity_ned_yaw_c{}; /* TODO: convert from Java object */
+    mavsdk_offboard_velocity_ned_yaw_t velocity_ned_yaw_c{}; /* TODO: convert scalar-only struct from Java object */
     mavsdk_offboard_result_t result = mavsdk_offboard_set_velocity_ned(
         reinterpret_cast<mavsdk_offboard_t>(handle),
         velocity_ned_yaw_c    );
@@ -367,7 +391,7 @@ Java_io_mavsdk_kotlin_plugins_offboard_Offboard_setPositionVelocityNedBlocking(
     jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/offboard/Offboard");
     if (!handle) return MAVSDK_OFFBOARD_RESULT_UNKNOWN;
 
-    mavsdk_offboard_position_ned_yaw_t position_ned_yaw_c{}; /* TODO: convert from Java object */    mavsdk_offboard_velocity_ned_yaw_t velocity_ned_yaw_c{}; /* TODO: convert from Java object */
+    mavsdk_offboard_position_ned_yaw_t position_ned_yaw_c{}; /* TODO: convert scalar-only struct from Java object */    mavsdk_offboard_velocity_ned_yaw_t velocity_ned_yaw_c{}; /* TODO: convert scalar-only struct from Java object */
     mavsdk_offboard_result_t result = mavsdk_offboard_set_position_velocity_ned(
         reinterpret_cast<mavsdk_offboard_t>(handle),
         position_ned_yaw_c,
@@ -389,7 +413,7 @@ Java_io_mavsdk_kotlin_plugins_offboard_Offboard_setPositionVelocityAccelerationN
     jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/offboard/Offboard");
     if (!handle) return MAVSDK_OFFBOARD_RESULT_UNKNOWN;
 
-    mavsdk_offboard_position_ned_yaw_t position_ned_yaw_c{}; /* TODO: convert from Java object */    mavsdk_offboard_velocity_ned_yaw_t velocity_ned_yaw_c{}; /* TODO: convert from Java object */    mavsdk_offboard_acceleration_ned_t acceleration_ned_c{}; /* TODO: convert from Java object */
+    mavsdk_offboard_position_ned_yaw_t position_ned_yaw_c{}; /* TODO: convert scalar-only struct from Java object */    mavsdk_offboard_velocity_ned_yaw_t velocity_ned_yaw_c{}; /* TODO: convert scalar-only struct from Java object */    mavsdk_offboard_acceleration_ned_t acceleration_ned_c{}; /* TODO: convert scalar-only struct from Java object */
     mavsdk_offboard_result_t result = mavsdk_offboard_set_position_velocity_acceleration_ned(
         reinterpret_cast<mavsdk_offboard_t>(handle),
         position_ned_yaw_c,
@@ -410,7 +434,7 @@ Java_io_mavsdk_kotlin_plugins_offboard_Offboard_setAccelerationNedBlocking(
     jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/offboard/Offboard");
     if (!handle) return MAVSDK_OFFBOARD_RESULT_UNKNOWN;
 
-    mavsdk_offboard_acceleration_ned_t acceleration_ned_c{}; /* TODO: convert from Java object */
+    mavsdk_offboard_acceleration_ned_t acceleration_ned_c{}; /* TODO: convert scalar-only struct from Java object */
     mavsdk_offboard_result_t result = mavsdk_offboard_set_acceleration_ned(
         reinterpret_cast<mavsdk_offboard_t>(handle),
         acceleration_ned_c    );

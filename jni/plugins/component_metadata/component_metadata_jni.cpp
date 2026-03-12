@@ -7,6 +7,7 @@
 #include "../../jni_utils.h"
 
 #include <utility>
+#include <vector>
 
 using namespace mavsdk::jni;
 
@@ -40,7 +41,7 @@ struct MetadataAvailableCallbackWrapper {
             return;
         }
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/component_metadata/ComponentMetadata$MetadataUpdate");
+        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/component_metadata/ComponentMetadata$MetadataUpdate");
         if (!retClass) { return; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(IILjava/lang/String;)V");
         jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jint>(value.compid)            , static_cast<jint>(value.type)            , toJavaString(env, value.json_metadata)        );
@@ -207,11 +208,12 @@ Java_io_mavsdk_kotlin_plugins_component_1metadata_ComponentMetadata_getMetadataB
         return nullptr;
     }
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/component_metadata/ComponentMetadata$MetadataData");
+        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/component_metadata/ComponentMetadata$MetadataData");
         if (!retClass) { return nullptr; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(Ljava/lang/String;)V");
         jobject retObj = env->NewObject(retClass, retCtor            , toJavaString(env, ret_val.json_metadata)        );
         env->DeleteLocalRef(retClass);
+    mavsdk_component_metadata_metadata_data_destroy(&ret_val);
     return retObj;
 }
 

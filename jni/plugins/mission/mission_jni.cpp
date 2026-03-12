@@ -7,6 +7,7 @@
 #include "../../jni_utils.h"
 
 #include <utility>
+#include <vector>
 
 using namespace mavsdk::jni;
 
@@ -75,7 +76,7 @@ struct UploadMissionWithProgressCallbackWrapper {
             return;
         }
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/mission/Mission$ProgressData");
+        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/mission/Mission$ProgressData");
         if (!retClass) { return; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(F)V");
         jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jfloat>(progress_data.progress)        );
@@ -116,11 +117,23 @@ struct DownloadMissionCallbackWrapper {
             return;
         }
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/mission/Mission$MissionPlan");
+        jclass arrayListClass_MissionPlan = env->FindClass("java/util/ArrayList");
+        jmethodID arrayListCtor_MissionPlan = env->GetMethodID(arrayListClass_MissionPlan, "<init>", "()V");
+        jmethodID arrayListAdd_MissionPlan = env->GetMethodID(arrayListClass_MissionPlan, "add", "(Ljava/lang/Object;)Z");        jobject list_mission_items = env->NewObject(arrayListClass_MissionPlan, arrayListCtor_MissionPlan);
+        {
+            jclass elemClass_mission_items = env->FindClass("io/mavsdk/kotlin/plugins/mission/Mission$MissionItem");
+            jmethodID elemCtor_mission_items = env->GetMethodID(elemClass_mission_items, "<init>", "(DDFFZFFIFDFFFI)V");
+            for (size_t i = 0; i < mission_plan.mission_items_size; i++) {
+                jobject elem = env->NewObject(elemClass_mission_items, elemCtor_mission_items                    , static_cast<jdouble>(mission_plan.mission_items[i].latitude_deg)                    , static_cast<jdouble>(mission_plan.mission_items[i].longitude_deg)                    , static_cast<jfloat>(mission_plan.mission_items[i].relative_altitude_m)                    , static_cast<jfloat>(mission_plan.mission_items[i].speed_m_s)                    , static_cast<jboolean>(mission_plan.mission_items[i].is_fly_through)                    , static_cast<jfloat>(mission_plan.mission_items[i].gimbal_pitch_deg)                    , static_cast<jfloat>(mission_plan.mission_items[i].gimbal_yaw_deg)                    , static_cast<jint>(mission_plan.mission_items[i].camera_action)                    , static_cast<jfloat>(mission_plan.mission_items[i].loiter_time_s)                    , static_cast<jdouble>(mission_plan.mission_items[i].camera_photo_interval_s)                    , static_cast<jfloat>(mission_plan.mission_items[i].acceptance_radius_m)                    , static_cast<jfloat>(mission_plan.mission_items[i].yaw_deg)                    , static_cast<jfloat>(mission_plan.mission_items[i].camera_photo_distance_m)                    , static_cast<jint>(mission_plan.mission_items[i].vehicle_action)                );
+                env->CallBooleanMethod(list_mission_items, arrayListAdd_MissionPlan, elem);
+                env->DeleteLocalRef(elem);
+            }
+            env->DeleteLocalRef(elemClass_mission_items);
+        }env->DeleteLocalRef(arrayListClass_MissionPlan);        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/mission/Mission$MissionPlan");
         if (!retClass) { return; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "()V");
-        jobject retObj = env->NewObject(retClass, retCtor            /* TODO: repeated field mission_items */ , static_cast<jobject>(nullptr)        );
-        env->DeleteLocalRef(retClass);
+        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(Ljava/util/List;)V");
+        jobject retObj = env->NewObject(retClass, retCtor            , list_mission_items        );
+        env->DeleteLocalRef(retClass);        env->DeleteLocalRef(list_mission_items);
         env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result), retObj);
         env->DeleteLocalRef(retObj);
 
@@ -157,11 +170,15 @@ struct DownloadMissionWithProgressCallbackWrapper {
             return;
         }
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/mission/Mission$ProgressDataOrMission");
+        jobject nestedObj_mission_plan = nullptr;
+        {            jclass nestedClass_mission_plan = env->FindClass("io/mavsdk/kotlin/plugins/mission/Mission$MissionPlan");
+            jmethodID nestedCtor_mission_plan = env->GetMethodID(nestedClass_mission_plan, "<init>", "(Ljava/util/List;)V");
+            nestedObj_mission_plan = env->NewObject(nestedClass_mission_plan, nestedCtor_mission_plan            );
+            env->DeleteLocalRef(nestedClass_mission_plan);        }        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/mission/Mission$ProgressDataOrMission");
         if (!retClass) { return; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(ZFZLio/mavsdk/kotlin/plugins/mission/Mission$MissionPlan;)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jboolean>(progress_data.has_progress)            , static_cast<jfloat>(progress_data.progress)            , static_cast<jboolean>(progress_data.has_mission)            , /* TODO nested struct <protoc_gen_mavsdk.name_parser.NameParser object at 0x109a77170> */ static_cast<jobject>(nullptr)        );
-        env->DeleteLocalRef(retClass);
+        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jboolean>(progress_data.has_progress)            , static_cast<jfloat>(progress_data.progress)            , static_cast<jboolean>(progress_data.has_mission)            , nestedObj_mission_plan        );
+        env->DeleteLocalRef(retClass);        env->DeleteLocalRef(nestedObj_mission_plan);
         env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result), retObj);
         env->DeleteLocalRef(retObj);
 
@@ -338,7 +355,7 @@ struct MissionProgressCallbackWrapper {
             return;
         }
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/mission/Mission$MissionProgress");
+        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/mission/Mission$MissionProgress");
         if (!retClass) { return; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(II)V");
         jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jint>(value.current)            , static_cast<jint>(value.total)        );
@@ -402,7 +419,30 @@ Java_io_mavsdk_kotlin_plugins_mission_Mission_uploadMissionBlocking(
     jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/mission/Mission");
     if (!handle) return MAVSDK_MISSION_RESULT_UNKNOWN;
 
-    mavsdk_mission_mission_plan_t mission_plan_c{}; /* TODO: convert from Java object */
+    mavsdk_mission_mission_plan_t mission_plan_c{};    std::vector<mavsdk_mission_mission_item_t> mission_items_vec;
+    {
+        jclass paramClass_mission_plan = env->GetObjectClass(mission_plan);
+        jfieldID mission_items_fid = env->GetFieldID(paramClass_mission_plan, "missionItems", "Ljava/util/List;");
+        jobject mission_items_list = env->GetObjectField(mission_plan, mission_items_fid);
+        if (mission_items_list) {
+            jclass listClass_mission_items = env->FindClass("java/util/List");
+            jmethodID listSize_mission_items = env->GetMethodID(listClass_mission_items, "size", "()I");
+            jmethodID listGet_mission_items = env->GetMethodID(listClass_mission_items, "get", "(I)Ljava/lang/Object;");
+            jint count_mission_items = env->CallIntMethod(mission_items_list, listSize_mission_items);
+            mission_items_vec.resize(count_mission_items);
+            if (count_mission_items > 0) {
+                jclass elemClass_mission_items = env->FindClass("io/mavsdk/kotlin/plugins/mission/Mission$MissionItem");                jfieldID fid_mission_items_latitude_deg = env->GetFieldID(elemClass_mission_items, "latitudeDeg", "D");                jfieldID fid_mission_items_longitude_deg = env->GetFieldID(elemClass_mission_items, "longitudeDeg", "D");                jfieldID fid_mission_items_relative_altitude_m = env->GetFieldID(elemClass_mission_items, "relativeAltitudeM", "F");                jfieldID fid_mission_items_speed_m_s = env->GetFieldID(elemClass_mission_items, "speedMS", "F");                jfieldID fid_mission_items_is_fly_through = env->GetFieldID(elemClass_mission_items, "isFlyThrough", "Z");                jfieldID fid_mission_items_gimbal_pitch_deg = env->GetFieldID(elemClass_mission_items, "gimbalPitchDeg", "F");                jfieldID fid_mission_items_gimbal_yaw_deg = env->GetFieldID(elemClass_mission_items, "gimbalYawDeg", "F");                jfieldID fid_mission_items_camera_action = env->GetFieldID(elemClass_mission_items, "cameraAction", "I");                jfieldID fid_mission_items_loiter_time_s = env->GetFieldID(elemClass_mission_items, "loiterTimeS", "F");                jfieldID fid_mission_items_camera_photo_interval_s = env->GetFieldID(elemClass_mission_items, "cameraPhotoIntervalS", "D");                jfieldID fid_mission_items_acceptance_radius_m = env->GetFieldID(elemClass_mission_items, "acceptanceRadiusM", "F");                jfieldID fid_mission_items_yaw_deg = env->GetFieldID(elemClass_mission_items, "yawDeg", "F");                jfieldID fid_mission_items_camera_photo_distance_m = env->GetFieldID(elemClass_mission_items, "cameraPhotoDistanceM", "F");                jfieldID fid_mission_items_vehicle_action = env->GetFieldID(elemClass_mission_items, "vehicleAction", "I");                for (jint i = 0; i < count_mission_items; i++) {
+                    jobject elem = env->CallObjectMethod(mission_items_list, listGet_mission_items, i);                    mission_items_vec[i].latitude_deg = env->GetDoubleField(elem, fid_mission_items_latitude_deg);                    mission_items_vec[i].longitude_deg = env->GetDoubleField(elem, fid_mission_items_longitude_deg);                    mission_items_vec[i].relative_altitude_m = env->GetFloatField(elem, fid_mission_items_relative_altitude_m);                    mission_items_vec[i].speed_m_s = env->GetFloatField(elem, fid_mission_items_speed_m_s);                    mission_items_vec[i].is_fly_through = (bool)env->GetBooleanField(elem, fid_mission_items_is_fly_through);                    mission_items_vec[i].gimbal_pitch_deg = env->GetFloatField(elem, fid_mission_items_gimbal_pitch_deg);                    mission_items_vec[i].gimbal_yaw_deg = env->GetFloatField(elem, fid_mission_items_gimbal_yaw_deg);                    mission_items_vec[i].camera_action = static_cast<mavsdk_mission_mission_item_camera_action_t>(env->GetIntField(elem, fid_mission_items_camera_action));                    mission_items_vec[i].loiter_time_s = env->GetFloatField(elem, fid_mission_items_loiter_time_s);                    mission_items_vec[i].camera_photo_interval_s = env->GetDoubleField(elem, fid_mission_items_camera_photo_interval_s);                    mission_items_vec[i].acceptance_radius_m = env->GetFloatField(elem, fid_mission_items_acceptance_radius_m);                    mission_items_vec[i].yaw_deg = env->GetFloatField(elem, fid_mission_items_yaw_deg);                    mission_items_vec[i].camera_photo_distance_m = env->GetFloatField(elem, fid_mission_items_camera_photo_distance_m);                    mission_items_vec[i].vehicle_action = static_cast<mavsdk_mission_mission_item_vehicle_action_t>(env->GetIntField(elem, fid_mission_items_vehicle_action));                    env->DeleteLocalRef(elem);
+                }
+                mission_plan_c.mission_items = mission_items_vec.data();
+                env->DeleteLocalRef(elemClass_mission_items);
+            }
+            mission_plan_c.mission_items_size = (size_t)count_mission_items;
+            env->DeleteLocalRef(listClass_mission_items);
+            env->DeleteLocalRef(mission_items_list);
+        }
+        env->DeleteLocalRef(paramClass_mission_plan);
+    }
     mavsdk_mission_result_t result = mavsdk_mission_upload_mission(
         reinterpret_cast<mavsdk_mission_t>(handle),
         mission_plan_c    );
@@ -421,7 +461,30 @@ Java_io_mavsdk_kotlin_plugins_mission_Mission_uploadMissionAsyncNative(
     jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/mission/Mission");
     if (!handle || !callback) return;
 
-    mavsdk_mission_mission_plan_t mission_plan_c{}; /* TODO: convert from Java object */
+    mavsdk_mission_mission_plan_t mission_plan_c{};    std::vector<mavsdk_mission_mission_item_t> mission_items_vec;
+    {
+        jclass paramClass_mission_plan = env->GetObjectClass(mission_plan);
+        jfieldID mission_items_fid = env->GetFieldID(paramClass_mission_plan, "missionItems", "Ljava/util/List;");
+        jobject mission_items_list = env->GetObjectField(mission_plan, mission_items_fid);
+        if (mission_items_list) {
+            jclass listClass_mission_items = env->FindClass("java/util/List");
+            jmethodID listSize_mission_items = env->GetMethodID(listClass_mission_items, "size", "()I");
+            jmethodID listGet_mission_items = env->GetMethodID(listClass_mission_items, "get", "(I)Ljava/lang/Object;");
+            jint count_mission_items = env->CallIntMethod(mission_items_list, listSize_mission_items);
+            mission_items_vec.resize(count_mission_items);
+            if (count_mission_items > 0) {
+                jclass elemClass_mission_items = env->FindClass("io/mavsdk/kotlin/plugins/mission/Mission$MissionItem");                jfieldID fid_mission_items_latitude_deg = env->GetFieldID(elemClass_mission_items, "latitudeDeg", "D");                jfieldID fid_mission_items_longitude_deg = env->GetFieldID(elemClass_mission_items, "longitudeDeg", "D");                jfieldID fid_mission_items_relative_altitude_m = env->GetFieldID(elemClass_mission_items, "relativeAltitudeM", "F");                jfieldID fid_mission_items_speed_m_s = env->GetFieldID(elemClass_mission_items, "speedMS", "F");                jfieldID fid_mission_items_is_fly_through = env->GetFieldID(elemClass_mission_items, "isFlyThrough", "Z");                jfieldID fid_mission_items_gimbal_pitch_deg = env->GetFieldID(elemClass_mission_items, "gimbalPitchDeg", "F");                jfieldID fid_mission_items_gimbal_yaw_deg = env->GetFieldID(elemClass_mission_items, "gimbalYawDeg", "F");                jfieldID fid_mission_items_camera_action = env->GetFieldID(elemClass_mission_items, "cameraAction", "I");                jfieldID fid_mission_items_loiter_time_s = env->GetFieldID(elemClass_mission_items, "loiterTimeS", "F");                jfieldID fid_mission_items_camera_photo_interval_s = env->GetFieldID(elemClass_mission_items, "cameraPhotoIntervalS", "D");                jfieldID fid_mission_items_acceptance_radius_m = env->GetFieldID(elemClass_mission_items, "acceptanceRadiusM", "F");                jfieldID fid_mission_items_yaw_deg = env->GetFieldID(elemClass_mission_items, "yawDeg", "F");                jfieldID fid_mission_items_camera_photo_distance_m = env->GetFieldID(elemClass_mission_items, "cameraPhotoDistanceM", "F");                jfieldID fid_mission_items_vehicle_action = env->GetFieldID(elemClass_mission_items, "vehicleAction", "I");                for (jint i = 0; i < count_mission_items; i++) {
+                    jobject elem = env->CallObjectMethod(mission_items_list, listGet_mission_items, i);                    mission_items_vec[i].latitude_deg = env->GetDoubleField(elem, fid_mission_items_latitude_deg);                    mission_items_vec[i].longitude_deg = env->GetDoubleField(elem, fid_mission_items_longitude_deg);                    mission_items_vec[i].relative_altitude_m = env->GetFloatField(elem, fid_mission_items_relative_altitude_m);                    mission_items_vec[i].speed_m_s = env->GetFloatField(elem, fid_mission_items_speed_m_s);                    mission_items_vec[i].is_fly_through = (bool)env->GetBooleanField(elem, fid_mission_items_is_fly_through);                    mission_items_vec[i].gimbal_pitch_deg = env->GetFloatField(elem, fid_mission_items_gimbal_pitch_deg);                    mission_items_vec[i].gimbal_yaw_deg = env->GetFloatField(elem, fid_mission_items_gimbal_yaw_deg);                    mission_items_vec[i].camera_action = static_cast<mavsdk_mission_mission_item_camera_action_t>(env->GetIntField(elem, fid_mission_items_camera_action));                    mission_items_vec[i].loiter_time_s = env->GetFloatField(elem, fid_mission_items_loiter_time_s);                    mission_items_vec[i].camera_photo_interval_s = env->GetDoubleField(elem, fid_mission_items_camera_photo_interval_s);                    mission_items_vec[i].acceptance_radius_m = env->GetFloatField(elem, fid_mission_items_acceptance_radius_m);                    mission_items_vec[i].yaw_deg = env->GetFloatField(elem, fid_mission_items_yaw_deg);                    mission_items_vec[i].camera_photo_distance_m = env->GetFloatField(elem, fid_mission_items_camera_photo_distance_m);                    mission_items_vec[i].vehicle_action = static_cast<mavsdk_mission_mission_item_vehicle_action_t>(env->GetIntField(elem, fid_mission_items_vehicle_action));                    env->DeleteLocalRef(elem);
+                }
+                mission_plan_c.mission_items = mission_items_vec.data();
+                env->DeleteLocalRef(elemClass_mission_items);
+            }
+            mission_plan_c.mission_items_size = (size_t)count_mission_items;
+            env->DeleteLocalRef(listClass_mission_items);
+            env->DeleteLocalRef(mission_items_list);
+        }
+        env->DeleteLocalRef(paramClass_mission_plan);
+    }
     auto* wrapper = new UploadMissionCallbackWrapper(env, callback);
 
     mavsdk_mission_upload_mission_async(
@@ -434,6 +497,55 @@ Java_io_mavsdk_kotlin_plugins_mission_Mission_uploadMissionAsyncNative(
     );
 }
 
+
+// ===== Mission.uploadMissionWithProgressAsyncNative (finite stream) =====
+JNIEXPORT void JNICALL
+Java_io_mavsdk_kotlin_plugins_mission_Mission_uploadMissionWithProgressAsyncNative(
+    JNIEnv* env,
+    jobject obj,
+    jobject mission_plan,
+    jobject callback) {
+
+    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/mission/Mission");
+    if (!handle || !callback) return;
+
+    mavsdk_mission_mission_plan_t mission_plan_c{};    std::vector<mavsdk_mission_mission_item_t> mission_items_vec;
+    {
+        jclass paramClass_mission_plan = env->GetObjectClass(mission_plan);
+        jfieldID mission_items_fid = env->GetFieldID(paramClass_mission_plan, "missionItems", "Ljava/util/List;");
+        jobject mission_items_list = env->GetObjectField(mission_plan, mission_items_fid);
+        if (mission_items_list) {
+            jclass listClass_mission_items = env->FindClass("java/util/List");
+            jmethodID listSize_mission_items = env->GetMethodID(listClass_mission_items, "size", "()I");
+            jmethodID listGet_mission_items = env->GetMethodID(listClass_mission_items, "get", "(I)Ljava/lang/Object;");
+            jint count_mission_items = env->CallIntMethod(mission_items_list, listSize_mission_items);
+            mission_items_vec.resize(count_mission_items);
+            if (count_mission_items > 0) {
+                jclass elemClass_mission_items = env->FindClass("io/mavsdk/kotlin/plugins/mission/Mission$MissionItem");                jfieldID fid_mission_items_latitude_deg = env->GetFieldID(elemClass_mission_items, "latitudeDeg", "D");                jfieldID fid_mission_items_longitude_deg = env->GetFieldID(elemClass_mission_items, "longitudeDeg", "D");                jfieldID fid_mission_items_relative_altitude_m = env->GetFieldID(elemClass_mission_items, "relativeAltitudeM", "F");                jfieldID fid_mission_items_speed_m_s = env->GetFieldID(elemClass_mission_items, "speedMS", "F");                jfieldID fid_mission_items_is_fly_through = env->GetFieldID(elemClass_mission_items, "isFlyThrough", "Z");                jfieldID fid_mission_items_gimbal_pitch_deg = env->GetFieldID(elemClass_mission_items, "gimbalPitchDeg", "F");                jfieldID fid_mission_items_gimbal_yaw_deg = env->GetFieldID(elemClass_mission_items, "gimbalYawDeg", "F");                jfieldID fid_mission_items_camera_action = env->GetFieldID(elemClass_mission_items, "cameraAction", "I");                jfieldID fid_mission_items_loiter_time_s = env->GetFieldID(elemClass_mission_items, "loiterTimeS", "F");                jfieldID fid_mission_items_camera_photo_interval_s = env->GetFieldID(elemClass_mission_items, "cameraPhotoIntervalS", "D");                jfieldID fid_mission_items_acceptance_radius_m = env->GetFieldID(elemClass_mission_items, "acceptanceRadiusM", "F");                jfieldID fid_mission_items_yaw_deg = env->GetFieldID(elemClass_mission_items, "yawDeg", "F");                jfieldID fid_mission_items_camera_photo_distance_m = env->GetFieldID(elemClass_mission_items, "cameraPhotoDistanceM", "F");                jfieldID fid_mission_items_vehicle_action = env->GetFieldID(elemClass_mission_items, "vehicleAction", "I");                for (jint i = 0; i < count_mission_items; i++) {
+                    jobject elem = env->CallObjectMethod(mission_items_list, listGet_mission_items, i);                    mission_items_vec[i].latitude_deg = env->GetDoubleField(elem, fid_mission_items_latitude_deg);                    mission_items_vec[i].longitude_deg = env->GetDoubleField(elem, fid_mission_items_longitude_deg);                    mission_items_vec[i].relative_altitude_m = env->GetFloatField(elem, fid_mission_items_relative_altitude_m);                    mission_items_vec[i].speed_m_s = env->GetFloatField(elem, fid_mission_items_speed_m_s);                    mission_items_vec[i].is_fly_through = (bool)env->GetBooleanField(elem, fid_mission_items_is_fly_through);                    mission_items_vec[i].gimbal_pitch_deg = env->GetFloatField(elem, fid_mission_items_gimbal_pitch_deg);                    mission_items_vec[i].gimbal_yaw_deg = env->GetFloatField(elem, fid_mission_items_gimbal_yaw_deg);                    mission_items_vec[i].camera_action = static_cast<mavsdk_mission_mission_item_camera_action_t>(env->GetIntField(elem, fid_mission_items_camera_action));                    mission_items_vec[i].loiter_time_s = env->GetFloatField(elem, fid_mission_items_loiter_time_s);                    mission_items_vec[i].camera_photo_interval_s = env->GetDoubleField(elem, fid_mission_items_camera_photo_interval_s);                    mission_items_vec[i].acceptance_radius_m = env->GetFloatField(elem, fid_mission_items_acceptance_radius_m);                    mission_items_vec[i].yaw_deg = env->GetFloatField(elem, fid_mission_items_yaw_deg);                    mission_items_vec[i].camera_photo_distance_m = env->GetFloatField(elem, fid_mission_items_camera_photo_distance_m);                    mission_items_vec[i].vehicle_action = static_cast<mavsdk_mission_mission_item_vehicle_action_t>(env->GetIntField(elem, fid_mission_items_vehicle_action));                    env->DeleteLocalRef(elem);
+                }
+                mission_plan_c.mission_items = mission_items_vec.data();
+                env->DeleteLocalRef(elemClass_mission_items);
+            }
+            mission_plan_c.mission_items_size = (size_t)count_mission_items;
+            env->DeleteLocalRef(listClass_mission_items);
+            env->DeleteLocalRef(mission_items_list);
+        }
+        env->DeleteLocalRef(paramClass_mission_plan);
+    }
+    auto* wrapper = new UploadMissionWithProgressCallbackWrapper(env, callback);
+
+    mavsdk_mission_upload_mission_with_progress_async(
+        reinterpret_cast<mavsdk_mission_t>(handle),        mission_plan_c,        [](const mavsdk_mission_result_t result, const mavsdk_mission_progress_data_t value, void* user_data) {
+            auto* w = static_cast<UploadMissionWithProgressCallbackWrapper*>(user_data);
+            (*w)(result, value);
+            if (result != MAVSDK_MISSION_RESULT_NEXT) {
+                delete w;
+            }
+        },
+        wrapper
+    );
+}
 
 
 // ===== Mission.cancel_mission_uploadBlocking =====
@@ -474,11 +586,24 @@ Java_io_mavsdk_kotlin_plugins_mission_Mission_downloadMissionBlocking(
         return nullptr;
     }
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/mission/Mission$MissionPlan");
+        jclass arrayListClass_MissionPlan = env->FindClass("java/util/ArrayList");
+        jmethodID arrayListCtor_MissionPlan = env->GetMethodID(arrayListClass_MissionPlan, "<init>", "()V");
+        jmethodID arrayListAdd_MissionPlan = env->GetMethodID(arrayListClass_MissionPlan, "add", "(Ljava/lang/Object;)Z");        jobject list_mission_items = env->NewObject(arrayListClass_MissionPlan, arrayListCtor_MissionPlan);
+        {
+            jclass elemClass_mission_items = env->FindClass("io/mavsdk/kotlin/plugins/mission/Mission$MissionItem");
+            jmethodID elemCtor_mission_items = env->GetMethodID(elemClass_mission_items, "<init>", "(DDFFZFFIFDFFFI)V");
+            for (size_t i = 0; i < ret_val.mission_items_size; i++) {
+                jobject elem = env->NewObject(elemClass_mission_items, elemCtor_mission_items                    , static_cast<jdouble>(ret_val.mission_items[i].latitude_deg)                    , static_cast<jdouble>(ret_val.mission_items[i].longitude_deg)                    , static_cast<jfloat>(ret_val.mission_items[i].relative_altitude_m)                    , static_cast<jfloat>(ret_val.mission_items[i].speed_m_s)                    , static_cast<jboolean>(ret_val.mission_items[i].is_fly_through)                    , static_cast<jfloat>(ret_val.mission_items[i].gimbal_pitch_deg)                    , static_cast<jfloat>(ret_val.mission_items[i].gimbal_yaw_deg)                    , static_cast<jint>(ret_val.mission_items[i].camera_action)                    , static_cast<jfloat>(ret_val.mission_items[i].loiter_time_s)                    , static_cast<jdouble>(ret_val.mission_items[i].camera_photo_interval_s)                    , static_cast<jfloat>(ret_val.mission_items[i].acceptance_radius_m)                    , static_cast<jfloat>(ret_val.mission_items[i].yaw_deg)                    , static_cast<jfloat>(ret_val.mission_items[i].camera_photo_distance_m)                    , static_cast<jint>(ret_val.mission_items[i].vehicle_action)                );
+                env->CallBooleanMethod(list_mission_items, arrayListAdd_MissionPlan, elem);
+                env->DeleteLocalRef(elem);
+            }
+            env->DeleteLocalRef(elemClass_mission_items);
+        }env->DeleteLocalRef(arrayListClass_MissionPlan);        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/mission/Mission$MissionPlan");
         if (!retClass) { return nullptr; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "()V");
-        jobject retObj = env->NewObject(retClass, retCtor            /* TODO: repeated field mission_items */ , static_cast<jobject>(nullptr)        );
-        env->DeleteLocalRef(retClass);
+        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(Ljava/util/List;)V");
+        jobject retObj = env->NewObject(retClass, retCtor            , list_mission_items        );
+        env->DeleteLocalRef(retClass);        env->DeleteLocalRef(list_mission_items);
+    mavsdk_mission_mission_plan_destroy(&ret_val);
     return retObj;
 }
 
@@ -505,6 +630,31 @@ Java_io_mavsdk_kotlin_plugins_mission_Mission_downloadMissionAsyncNative(
     );
 }
 
+
+// ===== Mission.downloadMissionWithProgressAsyncNative (finite stream) =====
+JNIEXPORT void JNICALL
+Java_io_mavsdk_kotlin_plugins_mission_Mission_downloadMissionWithProgressAsyncNative(
+    JNIEnv* env,
+    jobject obj,
+    jobject callback) {
+
+    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/mission/Mission");
+    if (!handle || !callback) return;
+
+
+    auto* wrapper = new DownloadMissionWithProgressCallbackWrapper(env, callback);
+
+    mavsdk_mission_download_mission_with_progress_async(
+        reinterpret_cast<mavsdk_mission_t>(handle),        [](const mavsdk_mission_result_t result, const mavsdk_mission_progress_data_or_mission_t value, void* user_data) {
+            auto* w = static_cast<DownloadMissionWithProgressCallbackWrapper*>(user_data);
+            (*w)(result, value);
+            if (result != MAVSDK_MISSION_RESULT_NEXT) {
+                delete w;
+            }
+        },
+        wrapper
+    );
+}
 
 
 // ===== Mission.cancel_mission_downloadBlocking =====
@@ -728,11 +878,12 @@ Java_io_mavsdk_kotlin_plugins_mission_Mission_missionProgressBlocking(
         &ret_val
     );
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/mission/Mission$MissionProgress");
+        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/mission/Mission$MissionProgress");
         if (!retClass) { return nullptr; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(II)V");
         jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jint>(ret_val.current)            , static_cast<jint>(ret_val.total)        );
         env->DeleteLocalRef(retClass);
+    mavsdk_mission_mission_progress_destroy(&ret_val);
     return retObj;
 }
 

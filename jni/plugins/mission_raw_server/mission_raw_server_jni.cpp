@@ -7,6 +7,7 @@
 #include "../../jni_utils.h"
 
 #include <utility>
+#include <vector>
 
 using namespace mavsdk::jni;
 
@@ -40,11 +41,23 @@ struct IncomingMissionCallbackWrapper {
             return;
         }
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/mission_raw_server/MissionRawServer$MissionPlan");
+        jclass arrayListClass_MissionPlan = env->FindClass("java/util/ArrayList");
+        jmethodID arrayListCtor_MissionPlan = env->GetMethodID(arrayListClass_MissionPlan, "<init>", "()V");
+        jmethodID arrayListAdd_MissionPlan = env->GetMethodID(arrayListClass_MissionPlan, "add", "(Ljava/lang/Object;)Z");        jobject list_mission_items = env->NewObject(arrayListClass_MissionPlan, arrayListCtor_MissionPlan);
+        {
+            jclass elemClass_mission_items = env->FindClass("io/mavsdk/kotlin/plugins/mission_raw_server/MissionRawServer$MissionItem");
+            jmethodID elemCtor_mission_items = env->GetMethodID(elemClass_mission_items, "<init>", "(IIIIIFFFFIIFI)V");
+            for (size_t i = 0; i < value.mission_items_size; i++) {
+                jobject elem = env->NewObject(elemClass_mission_items, elemCtor_mission_items                    , static_cast<jint>(value.mission_items[i].seq)                    , static_cast<jint>(value.mission_items[i].frame)                    , static_cast<jint>(value.mission_items[i].command)                    , static_cast<jint>(value.mission_items[i].current)                    , static_cast<jint>(value.mission_items[i].autocontinue)                    , static_cast<jfloat>(value.mission_items[i].param1)                    , static_cast<jfloat>(value.mission_items[i].param2)                    , static_cast<jfloat>(value.mission_items[i].param3)                    , static_cast<jfloat>(value.mission_items[i].param4)                    , static_cast<jint>(value.mission_items[i].x)                    , static_cast<jint>(value.mission_items[i].y)                    , static_cast<jfloat>(value.mission_items[i].z)                    , static_cast<jint>(value.mission_items[i].mission_type)                );
+                env->CallBooleanMethod(list_mission_items, arrayListAdd_MissionPlan, elem);
+                env->DeleteLocalRef(elem);
+            }
+            env->DeleteLocalRef(elemClass_mission_items);
+        }env->DeleteLocalRef(arrayListClass_MissionPlan);        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/mission_raw_server/MissionRawServer$MissionPlan");
         if (!retClass) { return; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "()V");
-        jobject retObj = env->NewObject(retClass, retCtor            /* TODO: repeated field mission_items */ , static_cast<jobject>(nullptr)        );
-        env->DeleteLocalRef(retClass);
+        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(Ljava/util/List;)V");
+        jobject retObj = env->NewObject(retClass, retCtor            , list_mission_items        );
+        env->DeleteLocalRef(retClass);        env->DeleteLocalRef(list_mission_items);
         env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result), retObj);
         env->DeleteLocalRef(retObj);
 
@@ -81,7 +94,7 @@ struct CurrentItemChangedCallbackWrapper {
             return;
         }
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/mission_raw_server/MissionRawServer$MissionItem");
+        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/mission_raw_server/MissionRawServer$MissionItem");
         if (!retClass) { return; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(IIIIIFFFFIIFI)V");
         jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jint>(value.seq)            , static_cast<jint>(value.frame)            , static_cast<jint>(value.command)            , static_cast<jint>(value.current)            , static_cast<jint>(value.autocontinue)            , static_cast<jfloat>(value.param1)            , static_cast<jfloat>(value.param2)            , static_cast<jfloat>(value.param3)            , static_cast<jfloat>(value.param4)            , static_cast<jint>(value.x)            , static_cast<jint>(value.y)            , static_cast<jfloat>(value.z)            , static_cast<jint>(value.mission_type)        );

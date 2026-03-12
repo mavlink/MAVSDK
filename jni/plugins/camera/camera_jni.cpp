@@ -7,6 +7,7 @@
 #include "../../jni_utils.h"
 
 #include <utility>
+#include <vector>
 
 using namespace mavsdk::jni;
 
@@ -285,11 +286,23 @@ struct CameraListCallbackWrapper {
             return;
         }
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/camera/Camera$CameraList");
+        jclass arrayListClass_CameraList = env->FindClass("java/util/ArrayList");
+        jmethodID arrayListCtor_CameraList = env->GetMethodID(arrayListClass_CameraList, "<init>", "()V");
+        jmethodID arrayListAdd_CameraList = env->GetMethodID(arrayListClass_CameraList, "add", "(Ljava/lang/Object;)Z");        jobject list_cameras = env->NewObject(arrayListClass_CameraList, arrayListCtor_CameraList);
+        {
+            jclass elemClass_cameras = env->FindClass("io/mavsdk/kotlin/plugins/camera/Camera$Information");
+            jmethodID elemCtor_cameras = env->GetMethodID(elemClass_cameras, "<init>", "(ILjava/lang/String;Ljava/lang/String;FFFII)V");
+            for (size_t i = 0; i < value.cameras_size; i++) {
+                jobject elem = env->NewObject(elemClass_cameras, elemCtor_cameras                    , static_cast<jint>(value.cameras[i].component_id)                    , toJavaString(env, value.cameras[i].vendor_name)                    , toJavaString(env, value.cameras[i].model_name)                    , static_cast<jfloat>(value.cameras[i].focal_length_mm)                    , static_cast<jfloat>(value.cameras[i].horizontal_sensor_size_mm)                    , static_cast<jfloat>(value.cameras[i].vertical_sensor_size_mm)                    , static_cast<jint>(value.cameras[i].horizontal_resolution_px)                    , static_cast<jint>(value.cameras[i].vertical_resolution_px)                );
+                env->CallBooleanMethod(list_cameras, arrayListAdd_CameraList, elem);
+                env->DeleteLocalRef(elem);
+            }
+            env->DeleteLocalRef(elemClass_cameras);
+        }env->DeleteLocalRef(arrayListClass_CameraList);        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/camera/Camera$CameraList");
         if (!retClass) { return; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "()V");
-        jobject retObj = env->NewObject(retClass, retCtor            /* TODO: repeated field cameras */ , static_cast<jobject>(nullptr)        );
-        env->DeleteLocalRef(retClass);
+        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(Ljava/util/List;)V");
+        jobject retObj = env->NewObject(retClass, retCtor            , list_cameras        );
+        env->DeleteLocalRef(retClass);        env->DeleteLocalRef(list_cameras);
         env->CallVoidMethod(callback.get(), invokeMethod, retObj);
         env->DeleteLocalRef(retObj);
 
@@ -326,7 +339,7 @@ struct ModeCallbackWrapper {
             return;
         }
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/camera/Camera$ModeUpdate");
+        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/camera/Camera$ModeUpdate");
         if (!retClass) { return; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(II)V");
         jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jint>(value.component_id)            , static_cast<jint>(value.mode)        );
@@ -367,11 +380,15 @@ struct VideoStreamInfoCallbackWrapper {
             return;
         }
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/camera/Camera$VideoStreamUpdate");
+        jobject nestedObj_video_stream_info = nullptr;
+        {            jclass nestedClass_video_stream_info = env->FindClass("io/mavsdk/kotlin/plugins/camera/Camera$VideoStreamInfo");
+            jmethodID nestedCtor_video_stream_info = env->GetMethodID(nestedClass_video_stream_info, "<init>", "(ILio/mavsdk/kotlin/plugins/camera/Camera$VideoStreamSettings;II)V");
+            nestedObj_video_stream_info = env->NewObject(nestedClass_video_stream_info, nestedCtor_video_stream_info                , static_cast<jint>(value.video_stream_info.stream_id)                , /* TODO nested struct <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a5ef350> */ static_cast<jobject>(nullptr)                , static_cast<jint>(value.video_stream_info.status)                , static_cast<jint>(value.video_stream_info.spectrum)            );
+            env->DeleteLocalRef(nestedClass_video_stream_info);        }        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/camera/Camera$VideoStreamUpdate");
         if (!retClass) { return; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(ILio/mavsdk/kotlin/plugins/camera/Camera$VideoStreamInfo;)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jint>(value.component_id)            , /* TODO nested struct <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a16f6b0> */ static_cast<jobject>(nullptr)        );
-        env->DeleteLocalRef(retClass);
+        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jint>(value.component_id)            , nestedObj_video_stream_info        );
+        env->DeleteLocalRef(retClass);        env->DeleteLocalRef(nestedObj_video_stream_info);
         env->CallVoidMethod(callback.get(), invokeMethod, retObj);
         env->DeleteLocalRef(retObj);
 
@@ -408,11 +425,23 @@ struct CaptureInfoCallbackWrapper {
             return;
         }
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/camera/Camera$CaptureInfo");
+        jobject nestedObj_position = nullptr;
+        {            jclass nestedClass_position = env->FindClass("io/mavsdk/kotlin/plugins/camera/Camera$Position");
+            jmethodID nestedCtor_position = env->GetMethodID(nestedClass_position, "<init>", "(DDFF)V");
+            nestedObj_position = env->NewObject(nestedClass_position, nestedCtor_position                , static_cast<jdouble>(value.position.latitude_deg)                , static_cast<jdouble>(value.position.longitude_deg)                , static_cast<jfloat>(value.position.absolute_altitude_m)                , static_cast<jfloat>(value.position.relative_altitude_m)            );
+            env->DeleteLocalRef(nestedClass_position);        }        jobject nestedObj_attitude_quaternion = nullptr;
+        {            jclass nestedClass_attitude_quaternion = env->FindClass("io/mavsdk/kotlin/plugins/camera/Camera$Quaternion");
+            jmethodID nestedCtor_attitude_quaternion = env->GetMethodID(nestedClass_attitude_quaternion, "<init>", "(FFFF)V");
+            nestedObj_attitude_quaternion = env->NewObject(nestedClass_attitude_quaternion, nestedCtor_attitude_quaternion                , static_cast<jfloat>(value.attitude_quaternion.w)                , static_cast<jfloat>(value.attitude_quaternion.x)                , static_cast<jfloat>(value.attitude_quaternion.y)                , static_cast<jfloat>(value.attitude_quaternion.z)            );
+            env->DeleteLocalRef(nestedClass_attitude_quaternion);        }        jobject nestedObj_attitude_euler_angle = nullptr;
+        {            jclass nestedClass_attitude_euler_angle = env->FindClass("io/mavsdk/kotlin/plugins/camera/Camera$EulerAngle");
+            jmethodID nestedCtor_attitude_euler_angle = env->GetMethodID(nestedClass_attitude_euler_angle, "<init>", "(FFF)V");
+            nestedObj_attitude_euler_angle = env->NewObject(nestedClass_attitude_euler_angle, nestedCtor_attitude_euler_angle                , static_cast<jfloat>(value.attitude_euler_angle.roll_deg)                , static_cast<jfloat>(value.attitude_euler_angle.pitch_deg)                , static_cast<jfloat>(value.attitude_euler_angle.yaw_deg)            );
+            env->DeleteLocalRef(nestedClass_attitude_euler_angle);        }        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/camera/Camera$CaptureInfo");
         if (!retClass) { return; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(ILio/mavsdk/kotlin/plugins/camera/Camera$Position;Lio/mavsdk/kotlin/plugins/camera/Camera$Quaternion;Lio/mavsdk/kotlin/plugins/camera/Camera$EulerAngle;JZILjava/lang/String;)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jint>(value.component_id)            , /* TODO nested struct <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a16f710> */ static_cast<jobject>(nullptr)            , /* TODO nested struct <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a16f710> */ static_cast<jobject>(nullptr)            , /* TODO nested struct <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a16f710> */ static_cast<jobject>(nullptr)            , static_cast<jlong>(value.time_utc_us)            , static_cast<jboolean>(value.is_success)            , static_cast<jint>(value.index)            , toJavaString(env, value.file_url)        );
-        env->DeleteLocalRef(retClass);
+        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jint>(value.component_id)            , nestedObj_position            , nestedObj_attitude_quaternion            , nestedObj_attitude_euler_angle            , static_cast<jlong>(value.time_utc_us)            , static_cast<jboolean>(value.is_success)            , static_cast<jint>(value.index)            , toJavaString(env, value.file_url)        );
+        env->DeleteLocalRef(retClass);        env->DeleteLocalRef(nestedObj_position);        env->DeleteLocalRef(nestedObj_attitude_quaternion);        env->DeleteLocalRef(nestedObj_attitude_euler_angle);
         env->CallVoidMethod(callback.get(), invokeMethod, retObj);
         env->DeleteLocalRef(retObj);
 
@@ -449,11 +478,15 @@ struct StorageCallbackWrapper {
             return;
         }
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/camera/Camera$StorageUpdate");
+        jobject nestedObj_storage = nullptr;
+        {            jclass nestedClass_storage = env->FindClass("io/mavsdk/kotlin/plugins/camera/Camera$Storage");
+            jmethodID nestedCtor_storage = env->GetMethodID(nestedClass_storage, "<init>", "(IZZFFFFLjava/lang/String;III)V");
+            nestedObj_storage = env->NewObject(nestedClass_storage, nestedCtor_storage                , static_cast<jint>(value.storage.component_id)                , static_cast<jboolean>(value.storage.video_on)                , static_cast<jboolean>(value.storage.photo_interval_on)                , static_cast<jfloat>(value.storage.used_storage_mib)                , static_cast<jfloat>(value.storage.available_storage_mib)                , static_cast<jfloat>(value.storage.total_storage_mib)                , static_cast<jfloat>(value.storage.recording_time_s)                , toJavaString(env, value.storage.media_folder_name)                , static_cast<jint>(value.storage.storage_status)                , static_cast<jint>(value.storage.storage_id)                , static_cast<jint>(value.storage.storage_type)            );
+            env->DeleteLocalRef(nestedClass_storage);        }        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/camera/Camera$StorageUpdate");
         if (!retClass) { return; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(ILio/mavsdk/kotlin/plugins/camera/Camera$Storage;)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jint>(value.component_id)            , /* TODO nested struct <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a16f3b0> */ static_cast<jobject>(nullptr)        );
-        env->DeleteLocalRef(retClass);
+        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jint>(value.component_id)            , nestedObj_storage        );
+        env->DeleteLocalRef(retClass);        env->DeleteLocalRef(nestedObj_storage);
         env->CallVoidMethod(callback.get(), invokeMethod, retObj);
         env->DeleteLocalRef(retObj);
 
@@ -490,11 +523,23 @@ struct CurrentSettingsCallbackWrapper {
             return;
         }
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/camera/Camera$CurrentSettingsUpdate");
+        jclass arrayListClass_CurrentSettingsUpdate = env->FindClass("java/util/ArrayList");
+        jmethodID arrayListCtor_CurrentSettingsUpdate = env->GetMethodID(arrayListClass_CurrentSettingsUpdate, "<init>", "()V");
+        jmethodID arrayListAdd_CurrentSettingsUpdate = env->GetMethodID(arrayListClass_CurrentSettingsUpdate, "add", "(Ljava/lang/Object;)Z");        jobject list_current_settings = env->NewObject(arrayListClass_CurrentSettingsUpdate, arrayListCtor_CurrentSettingsUpdate);
+        {
+            jclass elemClass_current_settings = env->FindClass("io/mavsdk/kotlin/plugins/camera/Camera$Setting");
+            jmethodID elemCtor_current_settings = env->GetMethodID(elemClass_current_settings, "<init>", "(Ljava/lang/String;Ljava/lang/String;Lio/mavsdk/kotlin/plugins/camera/Camera$Option;Z)V");
+            for (size_t i = 0; i < value.current_settings_size; i++) {
+                jobject elem = env->NewObject(elemClass_current_settings, elemCtor_current_settings                    , toJavaString(env, value.current_settings[i].setting_id)                    , toJavaString(env, value.current_settings[i].setting_description)                    , /* TODO nested struct <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a5efb30> */ static_cast<jobject>(nullptr)                    , static_cast<jboolean>(value.current_settings[i].is_range)                );
+                env->CallBooleanMethod(list_current_settings, arrayListAdd_CurrentSettingsUpdate, elem);
+                env->DeleteLocalRef(elem);
+            }
+            env->DeleteLocalRef(elemClass_current_settings);
+        }env->DeleteLocalRef(arrayListClass_CurrentSettingsUpdate);        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/camera/Camera$CurrentSettingsUpdate");
         if (!retClass) { return; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(I)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jint>(value.component_id)            /* TODO: repeated field current_settings */ , static_cast<jobject>(nullptr)        );
-        env->DeleteLocalRef(retClass);
+        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(ILjava/util/List;)V");
+        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jint>(value.component_id)            , list_current_settings        );
+        env->DeleteLocalRef(retClass);        env->DeleteLocalRef(list_current_settings);
         env->CallVoidMethod(callback.get(), invokeMethod, retObj);
         env->DeleteLocalRef(retObj);
 
@@ -531,11 +576,23 @@ struct PossibleSettingOptionsCallbackWrapper {
             return;
         }
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/camera/Camera$PossibleSettingOptionsUpdate");
+        jclass arrayListClass_PossibleSettingOptionsUpdate = env->FindClass("java/util/ArrayList");
+        jmethodID arrayListCtor_PossibleSettingOptionsUpdate = env->GetMethodID(arrayListClass_PossibleSettingOptionsUpdate, "<init>", "()V");
+        jmethodID arrayListAdd_PossibleSettingOptionsUpdate = env->GetMethodID(arrayListClass_PossibleSettingOptionsUpdate, "add", "(Ljava/lang/Object;)Z");        jobject list_setting_options = env->NewObject(arrayListClass_PossibleSettingOptionsUpdate, arrayListCtor_PossibleSettingOptionsUpdate);
+        {
+            jclass elemClass_setting_options = env->FindClass("io/mavsdk/kotlin/plugins/camera/Camera$SettingOptions");
+            jmethodID elemCtor_setting_options = env->GetMethodID(elemClass_setting_options, "<init>", "(ILjava/lang/String;Ljava/lang/String;Ljava/util/List;Z)V");
+            for (size_t i = 0; i < value.setting_options_size; i++) {
+                jobject elem = env->NewObject(elemClass_setting_options, elemCtor_setting_options                    , static_cast<jint>(value.setting_options[i].component_id)                    , toJavaString(env, value.setting_options[i].setting_id)                    , toJavaString(env, value.setting_options[i].setting_description)                    , static_cast<jboolean>(value.setting_options[i].is_range)                );
+                env->CallBooleanMethod(list_setting_options, arrayListAdd_PossibleSettingOptionsUpdate, elem);
+                env->DeleteLocalRef(elem);
+            }
+            env->DeleteLocalRef(elemClass_setting_options);
+        }env->DeleteLocalRef(arrayListClass_PossibleSettingOptionsUpdate);        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/camera/Camera$PossibleSettingOptionsUpdate");
         if (!retClass) { return; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(I)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jint>(value.component_id)            /* TODO: repeated field setting_options */ , static_cast<jobject>(nullptr)        );
-        env->DeleteLocalRef(retClass);
+        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(ILjava/util/List;)V");
+        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jint>(value.component_id)            , list_setting_options        );
+        env->DeleteLocalRef(retClass);        env->DeleteLocalRef(list_setting_options);
         env->CallVoidMethod(callback.get(), invokeMethod, retObj);
         env->DeleteLocalRef(retObj);
 
@@ -607,11 +664,15 @@ struct GetSettingCallbackWrapper {
             return;
         }
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/camera/Camera$Setting");
+        jobject nestedObj_option = nullptr;
+        {            jclass nestedClass_option = env->FindClass("io/mavsdk/kotlin/plugins/camera/Camera$Option");
+            jmethodID nestedCtor_option = env->GetMethodID(nestedClass_option, "<init>", "(Ljava/lang/String;Ljava/lang/String;)V");
+            nestedObj_option = env->NewObject(nestedClass_option, nestedCtor_option                , toJavaString(env, setting.option.option_id)                , toJavaString(env, setting.option.option_description)            );
+            env->DeleteLocalRef(nestedClass_option);        }        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/camera/Camera$Setting");
         if (!retClass) { return; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(Ljava/lang/String;Ljava/lang/String;Lio/mavsdk/kotlin/plugins/camera/Camera$Option;Z)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , toJavaString(env, setting.setting_id)            , toJavaString(env, setting.setting_description)            , /* TODO nested struct <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a16f830> */ static_cast<jobject>(nullptr)            , static_cast<jboolean>(setting.is_range)        );
-        env->DeleteLocalRef(retClass);
+        jobject retObj = env->NewObject(retClass, retCtor            , toJavaString(env, setting.setting_id)            , toJavaString(env, setting.setting_description)            , nestedObj_option            , static_cast<jboolean>(setting.is_range)        );
+        env->DeleteLocalRef(retClass);        env->DeleteLocalRef(nestedObj_option);
         env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result), retObj);
         env->DeleteLocalRef(retObj);
 
@@ -1485,11 +1546,24 @@ Java_io_mavsdk_kotlin_plugins_camera_Camera_cameraListBlocking(
         &ret_val
     );
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/camera/Camera$CameraList");
+        jclass arrayListClass_CameraList = env->FindClass("java/util/ArrayList");
+        jmethodID arrayListCtor_CameraList = env->GetMethodID(arrayListClass_CameraList, "<init>", "()V");
+        jmethodID arrayListAdd_CameraList = env->GetMethodID(arrayListClass_CameraList, "add", "(Ljava/lang/Object;)Z");        jobject list_cameras = env->NewObject(arrayListClass_CameraList, arrayListCtor_CameraList);
+        {
+            jclass elemClass_cameras = env->FindClass("io/mavsdk/kotlin/plugins/camera/Camera$Information");
+            jmethodID elemCtor_cameras = env->GetMethodID(elemClass_cameras, "<init>", "(ILjava/lang/String;Ljava/lang/String;FFFII)V");
+            for (size_t i = 0; i < ret_val.cameras_size; i++) {
+                jobject elem = env->NewObject(elemClass_cameras, elemCtor_cameras                    , static_cast<jint>(ret_val.cameras[i].component_id)                    , toJavaString(env, ret_val.cameras[i].vendor_name)                    , toJavaString(env, ret_val.cameras[i].model_name)                    , static_cast<jfloat>(ret_val.cameras[i].focal_length_mm)                    , static_cast<jfloat>(ret_val.cameras[i].horizontal_sensor_size_mm)                    , static_cast<jfloat>(ret_val.cameras[i].vertical_sensor_size_mm)                    , static_cast<jint>(ret_val.cameras[i].horizontal_resolution_px)                    , static_cast<jint>(ret_val.cameras[i].vertical_resolution_px)                );
+                env->CallBooleanMethod(list_cameras, arrayListAdd_CameraList, elem);
+                env->DeleteLocalRef(elem);
+            }
+            env->DeleteLocalRef(elemClass_cameras);
+        }env->DeleteLocalRef(arrayListClass_CameraList);        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/camera/Camera$CameraList");
         if (!retClass) { return nullptr; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "()V");
-        jobject retObj = env->NewObject(retClass, retCtor            /* TODO: repeated field cameras */ , static_cast<jobject>(nullptr)        );
-        env->DeleteLocalRef(retClass);
+        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(Ljava/util/List;)V");
+        jobject retObj = env->NewObject(retClass, retCtor            , list_cameras        );
+        env->DeleteLocalRef(retClass);        env->DeleteLocalRef(list_cameras);
+    mavsdk_camera_camera_list_destroy(&ret_val);
     return retObj;
 }
 
@@ -1711,11 +1785,16 @@ Java_io_mavsdk_kotlin_plugins_camera_Camera_getVideoStreamInfoBlocking(
         return nullptr;
     }
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/camera/Camera$VideoStreamInfo");
+        jobject nestedObj_settings = nullptr;
+        {            jclass nestedClass_settings = env->FindClass("io/mavsdk/kotlin/plugins/camera/Camera$VideoStreamSettings");
+            jmethodID nestedCtor_settings = env->GetMethodID(nestedClass_settings, "<init>", "(FIIIILjava/lang/String;F)V");
+            nestedObj_settings = env->NewObject(nestedClass_settings, nestedCtor_settings                , static_cast<jfloat>(ret_val.settings.frame_rate_hz)                , static_cast<jint>(ret_val.settings.horizontal_resolution_pix)                , static_cast<jint>(ret_val.settings.vertical_resolution_pix)                , static_cast<jint>(ret_val.settings.bit_rate_b_s)                , static_cast<jint>(ret_val.settings.rotation_deg)                , toJavaString(env, ret_val.settings.uri)                , static_cast<jfloat>(ret_val.settings.horizontal_fov_deg)            );
+            env->DeleteLocalRef(nestedClass_settings);        }        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/camera/Camera$VideoStreamInfo");
         if (!retClass) { return nullptr; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(ILio/mavsdk/kotlin/plugins/camera/Camera$VideoStreamSettings;II)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jint>(ret_val.stream_id)            , /* TODO nested struct <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a16f590> */ static_cast<jobject>(nullptr)            , static_cast<jint>(ret_val.status)            , static_cast<jint>(ret_val.spectrum)        );
-        env->DeleteLocalRef(retClass);
+        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jint>(ret_val.stream_id)            , nestedObj_settings            , static_cast<jint>(ret_val.status)            , static_cast<jint>(ret_val.spectrum)        );
+        env->DeleteLocalRef(retClass);        env->DeleteLocalRef(nestedObj_settings);
+    mavsdk_camera_video_stream_info_destroy(&ret_val);
     return retObj;
 }
 
@@ -1855,11 +1934,12 @@ Java_io_mavsdk_kotlin_plugins_camera_Camera_getStorageBlocking(
         return nullptr;
     }
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/camera/Camera$Storage");
+        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/camera/Camera$Storage");
         if (!retClass) { return nullptr; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(IZZFFFFLjava/lang/String;III)V");
         jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jint>(ret_val.component_id)            , static_cast<jboolean>(ret_val.video_on)            , static_cast<jboolean>(ret_val.photo_interval_on)            , static_cast<jfloat>(ret_val.used_storage_mib)            , static_cast<jfloat>(ret_val.available_storage_mib)            , static_cast<jfloat>(ret_val.total_storage_mib)            , static_cast<jfloat>(ret_val.recording_time_s)            , toJavaString(env, ret_val.media_folder_name)            , static_cast<jint>(ret_val.storage_status)            , static_cast<jint>(ret_val.storage_id)            , static_cast<jint>(ret_val.storage_type)        );
         env->DeleteLocalRef(retClass);
+    mavsdk_camera_storage_destroy(&ret_val);
     return retObj;
 }
 
@@ -2027,7 +2107,7 @@ Java_io_mavsdk_kotlin_plugins_camera_Camera_setSettingBlocking(
     jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/camera/Camera");
     if (!handle) return MAVSDK_CAMERA_RESULT_UNKNOWN;
 
-    mavsdk_camera_setting_t setting_c{}; /* TODO: convert from Java object */
+    mavsdk_camera_setting_t setting_c{}; /* TODO: convert scalar-only struct from Java object */
     mavsdk_camera_result_t result = mavsdk_camera_set_setting(
         reinterpret_cast<mavsdk_camera_t>(handle),
         component_id,
@@ -2048,7 +2128,7 @@ Java_io_mavsdk_kotlin_plugins_camera_Camera_setSettingAsyncNative(
     jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/camera/Camera");
     if (!handle || !callback) return;
 
-    mavsdk_camera_setting_t setting_c{}; /* TODO: convert from Java object */
+    mavsdk_camera_setting_t setting_c{}; /* TODO: convert scalar-only struct from Java object */
     auto* wrapper = new SetSettingCallbackWrapper(env, callback);
 
     mavsdk_camera_set_setting_async(
@@ -2073,7 +2153,7 @@ Java_io_mavsdk_kotlin_plugins_camera_Camera_getSettingBlocking(
     jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/camera/Camera");
     if (!handle) return {};
 
-    mavsdk_camera_setting_t setting_c{}; /* TODO: convert from Java object */
+    mavsdk_camera_setting_t setting_c{}; /* TODO: convert scalar-only struct from Java object */
     mavsdk_camera_setting_t ret_val{};
     mavsdk_camera_result_t result = mavsdk_camera_get_setting(
         reinterpret_cast<mavsdk_camera_t>(handle),
@@ -2087,11 +2167,16 @@ Java_io_mavsdk_kotlin_plugins_camera_Camera_getSettingBlocking(
         return nullptr;
     }
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/camera/Camera$Setting");
+        jobject nestedObj_option = nullptr;
+        {            jclass nestedClass_option = env->FindClass("io/mavsdk/kotlin/plugins/camera/Camera$Option");
+            jmethodID nestedCtor_option = env->GetMethodID(nestedClass_option, "<init>", "(Ljava/lang/String;Ljava/lang/String;)V");
+            nestedObj_option = env->NewObject(nestedClass_option, nestedCtor_option                , toJavaString(env, ret_val.option.option_id)                , toJavaString(env, ret_val.option.option_description)            );
+            env->DeleteLocalRef(nestedClass_option);        }        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/camera/Camera$Setting");
         if (!retClass) { return nullptr; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(Ljava/lang/String;Ljava/lang/String;Lio/mavsdk/kotlin/plugins/camera/Camera$Option;Z)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , toJavaString(env, ret_val.setting_id)            , toJavaString(env, ret_val.setting_description)            , /* TODO nested struct <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a16f4d0> */ static_cast<jobject>(nullptr)            , static_cast<jboolean>(ret_val.is_range)        );
-        env->DeleteLocalRef(retClass);
+        jobject retObj = env->NewObject(retClass, retCtor            , toJavaString(env, ret_val.setting_id)            , toJavaString(env, ret_val.setting_description)            , nestedObj_option            , static_cast<jboolean>(ret_val.is_range)        );
+        env->DeleteLocalRef(retClass);        env->DeleteLocalRef(nestedObj_option);
+    mavsdk_camera_setting_destroy(&ret_val);
     return retObj;
 }
 
@@ -2107,7 +2192,7 @@ Java_io_mavsdk_kotlin_plugins_camera_Camera_getSettingAsyncNative(
     jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/camera/Camera");
     if (!handle || !callback) return;
 
-    mavsdk_camera_setting_t setting_c{}; /* TODO: convert from Java object */
+    mavsdk_camera_setting_t setting_c{}; /* TODO: convert scalar-only struct from Java object */
     auto* wrapper = new GetSettingCallbackWrapper(env, callback);
 
     mavsdk_camera_get_setting_async(

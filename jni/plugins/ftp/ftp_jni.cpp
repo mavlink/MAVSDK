@@ -7,6 +7,7 @@
 #include "../../jni_utils.h"
 
 #include <utility>
+#include <vector>
 
 using namespace mavsdk::jni;
 
@@ -40,7 +41,7 @@ struct DownloadCallbackWrapper {
             return;
         }
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/ftp/Ftp$ProgressData");
+        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/ftp/Ftp$ProgressData");
         if (!retClass) { return; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(II)V");
         jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jint>(progress_data.bytes_transferred)            , static_cast<jint>(progress_data.total_bytes)        );
@@ -81,7 +82,7 @@ struct UploadCallbackWrapper {
             return;
         }
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/ftp/Ftp$ProgressData");
+        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/ftp/Ftp$ProgressData");
         if (!retClass) { return; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(II)V");
         jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jint>(progress_data.bytes_transferred)            , static_cast<jint>(progress_data.total_bytes)        );
@@ -122,10 +123,10 @@ struct ListDirectoryCallbackWrapper {
             return;
         }
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/ftp/Ftp$ListDirectoryData");
+        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/ftp/Ftp$ListDirectoryData");
         if (!retClass) { return; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "()V");
-        jobject retObj = env->NewObject(retClass, retCtor            /* TODO: repeated field dirs */ , static_cast<jobject>(nullptr)            /* TODO: repeated field files */ , static_cast<jobject>(nullptr)        );
+        jobject retObj = env->NewObject(retClass, retCtor            /* TODO: repeated primitive field dirs */ , static_cast<jobject>(nullptr)            /* TODO: repeated primitive field files */ , static_cast<jobject>(nullptr)        );
         env->DeleteLocalRef(retClass);
         env->CallVoidMethod(callback.get(), invokeMethod, static_cast<jint>(result), retObj);
         env->DeleteLocalRef(retObj);
@@ -352,6 +353,65 @@ Java_io_mavsdk_kotlin_plugins_ftp_Ftp_destroy(
 }
 
 
+// ===== Ftp.downloadAsyncNative (finite stream) =====
+JNIEXPORT void JNICALL
+Java_io_mavsdk_kotlin_plugins_ftp_Ftp_downloadAsyncNative(
+    JNIEnv* env,
+    jobject obj,
+    jstring remote_file_path,
+    jstring local_dir,
+    jboolean use_burst,
+    jobject callback) {
+
+    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/ftp/Ftp");
+    if (!handle || !callback) return;
+
+    JStringHolder remote_file_path_holder(env, remote_file_path);
+    JStringHolder local_dir_holder(env, local_dir);
+
+    auto* wrapper = new DownloadCallbackWrapper(env, callback);
+
+    mavsdk_ftp_download_async(
+        reinterpret_cast<mavsdk_ftp_t>(handle),        const_cast<char*>(remote_file_path_holder.c_str()),        const_cast<char*>(local_dir_holder.c_str()),        use_burst,        [](const mavsdk_ftp_result_t result, const mavsdk_ftp_progress_data_t value, void* user_data) {
+            auto* w = static_cast<DownloadCallbackWrapper*>(user_data);
+            (*w)(result, value);
+            if (result != MAVSDK_FTP_RESULT_NEXT) {
+                delete w;
+            }
+        },
+        wrapper
+    );
+}
+
+
+// ===== Ftp.uploadAsyncNative (finite stream) =====
+JNIEXPORT void JNICALL
+Java_io_mavsdk_kotlin_plugins_ftp_Ftp_uploadAsyncNative(
+    JNIEnv* env,
+    jobject obj,
+    jstring local_file_path,
+    jstring remote_dir,
+    jobject callback) {
+
+    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/ftp/Ftp");
+    if (!handle || !callback) return;
+
+    JStringHolder local_file_path_holder(env, local_file_path);
+    JStringHolder remote_dir_holder(env, remote_dir);
+
+    auto* wrapper = new UploadCallbackWrapper(env, callback);
+
+    mavsdk_ftp_upload_async(
+        reinterpret_cast<mavsdk_ftp_t>(handle),        const_cast<char*>(local_file_path_holder.c_str()),        const_cast<char*>(remote_dir_holder.c_str()),        [](const mavsdk_ftp_result_t result, const mavsdk_ftp_progress_data_t value, void* user_data) {
+            auto* w = static_cast<UploadCallbackWrapper*>(user_data);
+            (*w)(result, value);
+            if (result != MAVSDK_FTP_RESULT_NEXT) {
+                delete w;
+            }
+        },
+        wrapper
+    );
+}
 
 
 // ===== Ftp.list_directoryBlocking =====
@@ -378,11 +438,12 @@ Java_io_mavsdk_kotlin_plugins_ftp_Ftp_listDirectoryBlocking(
         return nullptr;
     }
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/ftp/Ftp$ListDirectoryData");
+        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/ftp/Ftp$ListDirectoryData");
         if (!retClass) { return nullptr; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "()V");
-        jobject retObj = env->NewObject(retClass, retCtor            /* TODO: repeated field dirs */ , static_cast<jobject>(nullptr)            /* TODO: repeated field files */ , static_cast<jobject>(nullptr)        );
+        jobject retObj = env->NewObject(retClass, retCtor            /* TODO: repeated primitive field dirs */ , static_cast<jobject>(nullptr)            /* TODO: repeated primitive field files */ , static_cast<jobject>(nullptr)        );
         env->DeleteLocalRef(retClass);
+    mavsdk_ftp_list_directory_data_destroy(&ret_val);
     return retObj;
 }
 

@@ -7,6 +7,7 @@
 #include "../../jni_utils.h"
 
 #include <utility>
+#include <vector>
 
 using namespace mavsdk::jni;
 
@@ -530,7 +531,7 @@ struct TrackingPointCommandCallbackWrapper {
             return;
         }
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/camera_server/CameraServer$TrackPoint");
+        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/camera_server/CameraServer$TrackPoint");
         if (!retClass) { return; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(FFF)V");
         jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jfloat>(value.point_x)            , static_cast<jfloat>(value.point_y)            , static_cast<jfloat>(value.radius)        );
@@ -571,7 +572,7 @@ struct TrackingRectangleCommandCallbackWrapper {
             return;
         }
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/camera_server/CameraServer$TrackRectangle");
+        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/camera_server/CameraServer$TrackRectangle");
         if (!retClass) { return; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(FFFF)V");
         jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jfloat>(value.top_left_corner_x)            , static_cast<jfloat>(value.top_left_corner_y)            , static_cast<jfloat>(value.bottom_right_corner_x)            , static_cast<jfloat>(value.bottom_right_corner_y)        );
@@ -670,7 +671,7 @@ Java_io_mavsdk_kotlin_plugins_camera_1server_CameraServer_setInformationBlocking
     jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/camera_server/CameraServer");
     if (!handle) return MAVSDK_CAMERA_SERVER_RESULT_UNKNOWN;
 
-    mavsdk_camera_server_information_t information_c{}; /* TODO: convert from Java object */
+    mavsdk_camera_server_information_t information_c{}; /* TODO: convert scalar-only struct from Java object */
     mavsdk_camera_server_result_t result = mavsdk_camera_server_set_information(
         reinterpret_cast<mavsdk_camera_server_t>(handle),
         information_c    );
@@ -689,7 +690,7 @@ Java_io_mavsdk_kotlin_plugins_camera_1server_CameraServer_setVideoStreamingBlock
     jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/camera_server/CameraServer");
     if (!handle) return MAVSDK_CAMERA_SERVER_RESULT_UNKNOWN;
 
-    mavsdk_camera_server_video_streaming_t video_streaming_c{}; /* TODO: convert from Java object */
+    mavsdk_camera_server_video_streaming_t video_streaming_c{}; /* TODO: convert scalar-only struct from Java object */
     mavsdk_camera_server_result_t result = mavsdk_camera_server_set_video_streaming(
         reinterpret_cast<mavsdk_camera_server_t>(handle),
         video_streaming_c    );
@@ -784,7 +785,7 @@ Java_io_mavsdk_kotlin_plugins_camera_1server_CameraServer_respondTakePhotoBlocki
     jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/camera_server/CameraServer");
     if (!handle) return MAVSDK_CAMERA_SERVER_RESULT_UNKNOWN;
 
-    mavsdk_camera_server_capture_info_t capture_info_c{}; /* TODO: convert from Java object */
+    mavsdk_camera_server_capture_info_t capture_info_c{}; /* TODO: convert scalar-only struct from Java object */
     mavsdk_camera_server_result_t result = mavsdk_camera_server_respond_take_photo(
         reinterpret_cast<mavsdk_camera_server_t>(handle),
         static_cast<mavsdk_camera_server_camera_feedback_t>(take_photo_feedback),
@@ -1236,7 +1237,7 @@ Java_io_mavsdk_kotlin_plugins_camera_1server_CameraServer_respondStorageInformat
     jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/camera_server/CameraServer");
     if (!handle) return MAVSDK_CAMERA_SERVER_RESULT_UNKNOWN;
 
-    mavsdk_camera_server_storage_information_t storage_information_c{}; /* TODO: convert from Java object */
+    mavsdk_camera_server_storage_information_t storage_information_c{}; /* TODO: convert scalar-only struct from Java object */
     mavsdk_camera_server_result_t result = mavsdk_camera_server_respond_storage_information(
         reinterpret_cast<mavsdk_camera_server_t>(handle),
         static_cast<mavsdk_camera_server_camera_feedback_t>(storage_information_feedback),
@@ -1313,7 +1314,7 @@ Java_io_mavsdk_kotlin_plugins_camera_1server_CameraServer_respondCaptureStatusBl
     jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/camera_server/CameraServer");
     if (!handle) return MAVSDK_CAMERA_SERVER_RESULT_UNKNOWN;
 
-    mavsdk_camera_server_capture_status_t capture_status_c{}; /* TODO: convert from Java object */
+    mavsdk_camera_server_capture_status_t capture_status_c{}; /* TODO: convert scalar-only struct from Java object */
     mavsdk_camera_server_result_t result = mavsdk_camera_server_respond_capture_status(
         reinterpret_cast<mavsdk_camera_server_t>(handle),
         static_cast<mavsdk_camera_server_camera_feedback_t>(capture_status_feedback),
@@ -1783,7 +1784,7 @@ Java_io_mavsdk_kotlin_plugins_camera_1server_CameraServer_setTrackingRectangleSt
     jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/camera_server/CameraServer");
     if (!handle) return;
 
-    mavsdk_camera_server_track_rectangle_t tracked_rectangle_c{}; /* TODO: convert from Java object */
+    mavsdk_camera_server_track_rectangle_t tracked_rectangle_c{}; /* TODO: convert scalar-only struct from Java object */
     mavsdk_camera_server_set_tracking_rectangle_status(
         reinterpret_cast<mavsdk_camera_server_t>(handle),
         tracked_rectangle_c    );

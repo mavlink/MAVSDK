@@ -7,6 +7,7 @@
 #include "../../jni_utils.h"
 
 #include <utility>
+#include <vector>
 
 using namespace mavsdk::jni;
 
@@ -75,7 +76,7 @@ struct DownloadLogFileCallbackWrapper {
             return;
         }
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/log_files/LogFiles$ProgressData");
+        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/log_files/LogFiles$ProgressData");
         if (!retClass) { return; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(F)V");
         jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jfloat>(progress.progress)        );
@@ -169,6 +170,34 @@ Java_io_mavsdk_kotlin_plugins_log_1files_LogFiles_getEntriesAsyncNative(
     );
 }
 
+
+// ===== LogFiles.downloadLogFileAsyncNative (finite stream) =====
+JNIEXPORT void JNICALL
+Java_io_mavsdk_kotlin_plugins_log_1files_LogFiles_downloadLogFileAsyncNative(
+    JNIEnv* env,
+    jobject obj,
+    jobject entry,
+    jstring path,
+    jobject callback) {
+
+    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/log_files/LogFiles");
+    if (!handle || !callback) return;
+
+    JStringHolder path_holder(env, path);
+    mavsdk_log_files_entry_t entry_c{}; /* TODO: convert scalar-only struct from Java object */
+    auto* wrapper = new DownloadLogFileCallbackWrapper(env, callback);
+
+    mavsdk_log_files_download_log_file_async(
+        reinterpret_cast<mavsdk_log_files_t>(handle),        entry_c,        const_cast<char*>(path_holder.c_str()),        [](const mavsdk_log_files_result_t result, const mavsdk_log_files_progress_data_t value, void* user_data) {
+            auto* w = static_cast<DownloadLogFileCallbackWrapper*>(user_data);
+            (*w)(result, value);
+            if (result != MAVSDK_LOG_FILES_RESULT_NEXT) {
+                delete w;
+            }
+        },
+        wrapper
+    );
+}
 
 
 // ===== LogFiles.erase_all_log_filesBlocking =====

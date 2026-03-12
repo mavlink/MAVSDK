@@ -5,6 +5,52 @@
 
 using namespace mavsdk::jni;
 
+// ===== NewSystem Callback Wrapper =====
+struct NewSystemCallbackWrapper {
+    GlobalRefHolder callback;
+    jmethodID invokeMethod;
+    mavsdk_t mavsdkHandle;
+
+    NewSystemCallbackWrapper(JNIEnv* env, jobject callback_obj, mavsdk_t handle)
+        : callback(env, callback_obj), invokeMethod(nullptr), mavsdkHandle(handle) {
+        if (callback.isValid()) {
+            jclass callbackClass = env->GetObjectClass(callback_obj);
+            invokeMethod = env->GetMethodID(callbackClass, "invoke", "(Lio/mavsdk/kotlin/System;)V");
+            env->DeleteLocalRef(callbackClass);
+        }
+    }
+
+    void operator()() const {
+        if (!callback.isValid() || !invokeMethod || !g_jvm) return;
+
+        JavaVMAttacher attacher(g_jvm);
+        JNIEnv* env = attacher.getEnv();
+        if (!env) return;
+
+        size_t count = 0;
+        mavsdk_system_t* systems = mavsdk_get_systems(mavsdkHandle, &count);
+        if (count == 0) {
+            if (systems) mavsdk_free_systems_array(systems);
+            return;
+        }
+
+        jclass systemClass = env->FindClass("io/mavsdk/kotlin/System");
+        jmethodID systemCtor = env->GetMethodID(systemClass, "<init>", "(J)V");
+        // Emit the most recently discovered system (last in list)
+        jobject systemObj = env->NewObject(systemClass, systemCtor,
+                                           reinterpret_cast<jlong>(systems[count - 1]));
+        env->CallVoidMethod(callback.get(), invokeMethod, systemObj);
+        env->DeleteLocalRef(systemObj);
+        env->DeleteLocalRef(systemClass);
+        mavsdk_free_systems_array(systems);
+
+        if (env->ExceptionCheck()) {
+            env->ExceptionDescribe();
+            env->ExceptionClear();
+        }
+    }
+};
+
 extern "C" {
 
 // Mavsdk.create
@@ -36,6 +82,23 @@ Java_io_mavsdk_kotlin_Mavsdk_version(
 
     const char* version = mavsdk_version(reinterpret_cast<mavsdk_t>(handle));
     return toJavaString(env, version);
+}
+
+// Mavsdk.serverComponentHandleNative
+JNIEXPORT jlong JNICALL
+Java_io_mavsdk_kotlin_Mavsdk_serverComponentHandleNative(
+    JNIEnv* env,
+    jobject obj,
+    jint instance) {
+
+    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/Mavsdk");
+    if (!handle) return 0;
+
+    mavsdk_server_component_t sc = mavsdk_server_component(
+        reinterpret_cast<mavsdk_t>(handle),
+        static_cast<unsigned int>(instance));
+
+    return reinterpret_cast<jlong>(sc);
 }
 
 // Mavsdk.addAnyConnectionNative
@@ -199,6 +262,58 @@ Java_io_mavsdk_kotlin_Mavsdk_destroy(
     if (!handle) return;
 
     mavsdk_destroy(reinterpret_cast<mavsdk_t>(handle));
+}
+
+// Mavsdk.subscribeOnNewSystemNative
+JNIEXPORT jlong JNICALL
+Java_io_mavsdk_kotlin_Mavsdk_subscribeOnNewSystemNative(
+    JNIEnv* env,
+    jobject obj,
+    jobject callback) {
+
+    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/Mavsdk");
+    if (!handle || !callback) return 0;
+
+    auto* wrapper = new NewSystemCallbackWrapper(
+        env, callback, reinterpret_cast<mavsdk_t>(handle));
+
+    mavsdk_new_system_handle_t subscription_handle =
+        mavsdk_subscribe_on_new_system(
+            reinterpret_cast<mavsdk_t>(handle),
+            [](void* user_data) {
+                auto* w = static_cast<NewSystemCallbackWrapper*>(user_data);
+                (*w)();
+            },
+            wrapper
+        );
+
+    auto* handle_pair = new std::pair<mavsdk_new_system_handle_t, NewSystemCallbackWrapper*>(
+        subscription_handle, wrapper);
+
+    return reinterpret_cast<jlong>(handle_pair);
+}
+
+// Mavsdk.unsubscribeOnNewSystem
+JNIEXPORT void JNICALL
+Java_io_mavsdk_kotlin_Mavsdk_unsubscribeOnNewSystem(
+    JNIEnv* env,
+    jobject obj,
+    jlong subscriptionHandle) {
+
+    jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/Mavsdk");
+    if (!handle || !subscriptionHandle) return;
+
+    auto* handle_pair = reinterpret_cast<
+        std::pair<mavsdk_new_system_handle_t, NewSystemCallbackWrapper*>*>(subscriptionHandle);
+
+    if (handle_pair) {
+        mavsdk_unsubscribe_on_new_system(
+            reinterpret_cast<mavsdk_t>(handle),
+            handle_pair->first
+        );
+        delete handle_pair->second;
+        delete handle_pair;
+    }
 }
 
 } // extern "C"

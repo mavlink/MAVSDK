@@ -7,6 +7,7 @@
 #include "../../jni_utils.h"
 
 #include <utility>
+#include <vector>
 
 using namespace mavsdk::jni;
 
@@ -221,11 +222,44 @@ Java_io_mavsdk_kotlin_plugins_param_Param_getAllParamsBlocking(
         &ret_val
     );
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/param/Param$AllParams");
+        jclass arrayListClass_AllParams = env->FindClass("java/util/ArrayList");
+        jmethodID arrayListCtor_AllParams = env->GetMethodID(arrayListClass_AllParams, "<init>", "()V");
+        jmethodID arrayListAdd_AllParams = env->GetMethodID(arrayListClass_AllParams, "add", "(Ljava/lang/Object;)Z");        jobject list_int_params = env->NewObject(arrayListClass_AllParams, arrayListCtor_AllParams);
+        {
+            jclass elemClass_int_params = env->FindClass("io/mavsdk/kotlin/plugins/param/Param$IntParam");
+            jmethodID elemCtor_int_params = env->GetMethodID(elemClass_int_params, "<init>", "(Ljava/lang/String;I)V");
+            for (size_t i = 0; i < ret_val.int_params_size; i++) {
+                jobject elem = env->NewObject(elemClass_int_params, elemCtor_int_params                    , toJavaString(env, ret_val.int_params[i].name)                    , static_cast<jint>(ret_val.int_params[i].value)                );
+                env->CallBooleanMethod(list_int_params, arrayListAdd_AllParams, elem);
+                env->DeleteLocalRef(elem);
+            }
+            env->DeleteLocalRef(elemClass_int_params);
+        }        jobject list_float_params = env->NewObject(arrayListClass_AllParams, arrayListCtor_AllParams);
+        {
+            jclass elemClass_float_params = env->FindClass("io/mavsdk/kotlin/plugins/param/Param$FloatParam");
+            jmethodID elemCtor_float_params = env->GetMethodID(elemClass_float_params, "<init>", "(Ljava/lang/String;F)V");
+            for (size_t i = 0; i < ret_val.float_params_size; i++) {
+                jobject elem = env->NewObject(elemClass_float_params, elemCtor_float_params                    , toJavaString(env, ret_val.float_params[i].name)                    , static_cast<jfloat>(ret_val.float_params[i].value)                );
+                env->CallBooleanMethod(list_float_params, arrayListAdd_AllParams, elem);
+                env->DeleteLocalRef(elem);
+            }
+            env->DeleteLocalRef(elemClass_float_params);
+        }        jobject list_custom_params = env->NewObject(arrayListClass_AllParams, arrayListCtor_AllParams);
+        {
+            jclass elemClass_custom_params = env->FindClass("io/mavsdk/kotlin/plugins/param/Param$CustomParam");
+            jmethodID elemCtor_custom_params = env->GetMethodID(elemClass_custom_params, "<init>", "(Ljava/lang/String;Ljava/lang/String;)V");
+            for (size_t i = 0; i < ret_val.custom_params_size; i++) {
+                jobject elem = env->NewObject(elemClass_custom_params, elemCtor_custom_params                    , toJavaString(env, ret_val.custom_params[i].name)                    , toJavaString(env, ret_val.custom_params[i].value)                );
+                env->CallBooleanMethod(list_custom_params, arrayListAdd_AllParams, elem);
+                env->DeleteLocalRef(elem);
+            }
+            env->DeleteLocalRef(elemClass_custom_params);
+        }env->DeleteLocalRef(arrayListClass_AllParams);        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/param/Param$AllParams");
         if (!retClass) { return nullptr; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "()V");
-        jobject retObj = env->NewObject(retClass, retCtor            /* TODO: repeated field int_params */ , static_cast<jobject>(nullptr)            /* TODO: repeated field float_params */ , static_cast<jobject>(nullptr)            /* TODO: repeated field custom_params */ , static_cast<jobject>(nullptr)        );
-        env->DeleteLocalRef(retClass);
+        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(Ljava/util/List;Ljava/util/List;Ljava/util/List;)V");
+        jobject retObj = env->NewObject(retClass, retCtor            , list_int_params            , list_float_params            , list_custom_params        );
+        env->DeleteLocalRef(retClass);        env->DeleteLocalRef(list_int_params);        env->DeleteLocalRef(list_float_params);        env->DeleteLocalRef(list_custom_params);
+    mavsdk_param_all_params_destroy(&ret_val);
     return retObj;
 }
 

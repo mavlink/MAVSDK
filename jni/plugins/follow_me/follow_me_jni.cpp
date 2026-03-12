@@ -7,6 +7,7 @@
 #include "../../jni_utils.h"
 
 #include <utility>
+#include <vector>
 
 using namespace mavsdk::jni;
 
@@ -69,11 +70,12 @@ Java_io_mavsdk_kotlin_plugins_follow_1me_FollowMe_getConfigBlocking(
         &ret_val
     );
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/follow_me/FollowMe$Config");
+        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/follow_me/FollowMe$Config");
         if (!retClass) { return nullptr; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(FFFIFF)V");
         jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jfloat>(ret_val.follow_height_m)            , static_cast<jfloat>(ret_val.follow_distance_m)            , static_cast<jfloat>(ret_val.responsiveness)            , static_cast<jint>(ret_val.altitude_mode)            , static_cast<jfloat>(ret_val.max_tangential_vel_m_s)            , static_cast<jfloat>(ret_val.follow_angle_deg)        );
         env->DeleteLocalRef(retClass);
+    mavsdk_follow_me_config_destroy(&ret_val);
     return retObj;
 }
 
@@ -88,7 +90,7 @@ Java_io_mavsdk_kotlin_plugins_follow_1me_FollowMe_setConfigBlocking(
     jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/follow_me/FollowMe");
     if (!handle) return MAVSDK_FOLLOW_ME_RESULT_UNKNOWN;
 
-    mavsdk_follow_me_config_t config_c{}; /* TODO: convert from Java object */
+    mavsdk_follow_me_config_t config_c{}; /* TODO: convert scalar-only struct from Java object */
     mavsdk_follow_me_result_t result = mavsdk_follow_me_set_config(
         reinterpret_cast<mavsdk_follow_me_t>(handle),
         config_c    );
@@ -127,7 +129,7 @@ Java_io_mavsdk_kotlin_plugins_follow_1me_FollowMe_setTargetLocationBlocking(
     jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/follow_me/FollowMe");
     if (!handle) return MAVSDK_FOLLOW_ME_RESULT_UNKNOWN;
 
-    mavsdk_follow_me_target_location_t location_c{}; /* TODO: convert from Java object */
+    mavsdk_follow_me_target_location_t location_c{}; /* TODO: convert scalar-only struct from Java object */
     mavsdk_follow_me_result_t result = mavsdk_follow_me_set_target_location(
         reinterpret_cast<mavsdk_follow_me_t>(handle),
         location_c    );
@@ -152,11 +154,12 @@ Java_io_mavsdk_kotlin_plugins_follow_1me_FollowMe_getLastLocationBlocking(
         &ret_val
     );
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/follow_me/FollowMe$TargetLocation");
+        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/follow_me/FollowMe$TargetLocation");
         if (!retClass) { return nullptr; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(DDFFFF)V");
         jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jdouble>(ret_val.latitude_deg)            , static_cast<jdouble>(ret_val.longitude_deg)            , static_cast<jfloat>(ret_val.absolute_altitude_m)            , static_cast<jfloat>(ret_val.velocity_x_m_s)            , static_cast<jfloat>(ret_val.velocity_y_m_s)            , static_cast<jfloat>(ret_val.velocity_z_m_s)        );
         env->DeleteLocalRef(retClass);
+    mavsdk_follow_me_target_location_destroy(&ret_val);
     return retObj;
 }
 

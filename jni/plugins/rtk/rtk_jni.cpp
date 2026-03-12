@@ -7,6 +7,7 @@
 #include "../../jni_utils.h"
 
 #include <utility>
+#include <vector>
 
 using namespace mavsdk::jni;
 
@@ -63,7 +64,7 @@ Java_io_mavsdk_kotlin_plugins_rtk_Rtk_sendRtcmDataBlocking(
     jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/rtk/Rtk");
     if (!handle) return MAVSDK_RTK_RESULT_UNKNOWN;
 
-    mavsdk_rtk_rtcm_data_t rtcm_data_c{}; /* TODO: convert from Java object */
+    mavsdk_rtk_rtcm_data_t rtcm_data_c{}; /* TODO: convert scalar-only struct from Java object */
     mavsdk_rtk_result_t result = mavsdk_rtk_send_rtcm_data(
         reinterpret_cast<mavsdk_rtk_t>(handle),
         rtcm_data_c    );

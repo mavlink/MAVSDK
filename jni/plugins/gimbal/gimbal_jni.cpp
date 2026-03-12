@@ -7,6 +7,7 @@
 #include "../../jni_utils.h"
 
 #include <utility>
+#include <vector>
 
 using namespace mavsdk::jni;
 
@@ -215,11 +216,23 @@ struct GimbalListCallbackWrapper {
             return;
         }
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/gimbal/Gimbal$GimbalList");
+        jclass arrayListClass_GimbalList = env->FindClass("java/util/ArrayList");
+        jmethodID arrayListCtor_GimbalList = env->GetMethodID(arrayListClass_GimbalList, "<init>", "()V");
+        jmethodID arrayListAdd_GimbalList = env->GetMethodID(arrayListClass_GimbalList, "add", "(Ljava/lang/Object;)Z");        jobject list_gimbals = env->NewObject(arrayListClass_GimbalList, arrayListCtor_GimbalList);
+        {
+            jclass elemClass_gimbals = env->FindClass("io/mavsdk/kotlin/plugins/gimbal/Gimbal$GimbalItem");
+            jmethodID elemCtor_gimbals = env->GetMethodID(elemClass_gimbals, "<init>", "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;II)V");
+            for (size_t i = 0; i < value.gimbals_size; i++) {
+                jobject elem = env->NewObject(elemClass_gimbals, elemCtor_gimbals                    , static_cast<jint>(value.gimbals[i].gimbal_id)                    , toJavaString(env, value.gimbals[i].vendor_name)                    , toJavaString(env, value.gimbals[i].model_name)                    , toJavaString(env, value.gimbals[i].custom_name)                    , static_cast<jint>(value.gimbals[i].gimbal_manager_component_id)                    , static_cast<jint>(value.gimbals[i].gimbal_device_id)                );
+                env->CallBooleanMethod(list_gimbals, arrayListAdd_GimbalList, elem);
+                env->DeleteLocalRef(elem);
+            }
+            env->DeleteLocalRef(elemClass_gimbals);
+        }env->DeleteLocalRef(arrayListClass_GimbalList);        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/gimbal/Gimbal$GimbalList");
         if (!retClass) { return; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "()V");
-        jobject retObj = env->NewObject(retClass, retCtor            /* TODO: repeated field gimbals */ , static_cast<jobject>(nullptr)        );
-        env->DeleteLocalRef(retClass);
+        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(Ljava/util/List;)V");
+        jobject retObj = env->NewObject(retClass, retCtor            , list_gimbals        );
+        env->DeleteLocalRef(retClass);        env->DeleteLocalRef(list_gimbals);
         env->CallVoidMethod(callback.get(), invokeMethod, retObj);
         env->DeleteLocalRef(retObj);
 
@@ -256,7 +269,7 @@ struct ControlStatusCallbackWrapper {
             return;
         }
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/gimbal/Gimbal$ControlStatus");
+        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/gimbal/Gimbal$ControlStatus");
         if (!retClass) { return; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(IIIIII)V");
         jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jint>(value.gimbal_id)            , static_cast<jint>(value.control_mode)            , static_cast<jint>(value.sysid_primary_control)            , static_cast<jint>(value.compid_primary_control)            , static_cast<jint>(value.sysid_secondary_control)            , static_cast<jint>(value.compid_secondary_control)        );
@@ -297,11 +310,31 @@ struct AttitudeCallbackWrapper {
             return;
         }
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/gimbal/Gimbal$Attitude");
+        jobject nestedObj_euler_angle_forward = nullptr;
+        {            jclass nestedClass_euler_angle_forward = env->FindClass("io/mavsdk/kotlin/plugins/gimbal/Gimbal$EulerAngle");
+            jmethodID nestedCtor_euler_angle_forward = env->GetMethodID(nestedClass_euler_angle_forward, "<init>", "(FFF)V");
+            nestedObj_euler_angle_forward = env->NewObject(nestedClass_euler_angle_forward, nestedCtor_euler_angle_forward                , static_cast<jfloat>(value.euler_angle_forward.roll_deg)                , static_cast<jfloat>(value.euler_angle_forward.pitch_deg)                , static_cast<jfloat>(value.euler_angle_forward.yaw_deg)            );
+            env->DeleteLocalRef(nestedClass_euler_angle_forward);        }        jobject nestedObj_quaternion_forward = nullptr;
+        {            jclass nestedClass_quaternion_forward = env->FindClass("io/mavsdk/kotlin/plugins/gimbal/Gimbal$Quaternion");
+            jmethodID nestedCtor_quaternion_forward = env->GetMethodID(nestedClass_quaternion_forward, "<init>", "(FFFF)V");
+            nestedObj_quaternion_forward = env->NewObject(nestedClass_quaternion_forward, nestedCtor_quaternion_forward                , static_cast<jfloat>(value.quaternion_forward.w)                , static_cast<jfloat>(value.quaternion_forward.x)                , static_cast<jfloat>(value.quaternion_forward.y)                , static_cast<jfloat>(value.quaternion_forward.z)            );
+            env->DeleteLocalRef(nestedClass_quaternion_forward);        }        jobject nestedObj_euler_angle_north = nullptr;
+        {            jclass nestedClass_euler_angle_north = env->FindClass("io/mavsdk/kotlin/plugins/gimbal/Gimbal$EulerAngle");
+            jmethodID nestedCtor_euler_angle_north = env->GetMethodID(nestedClass_euler_angle_north, "<init>", "(FFF)V");
+            nestedObj_euler_angle_north = env->NewObject(nestedClass_euler_angle_north, nestedCtor_euler_angle_north                , static_cast<jfloat>(value.euler_angle_north.roll_deg)                , static_cast<jfloat>(value.euler_angle_north.pitch_deg)                , static_cast<jfloat>(value.euler_angle_north.yaw_deg)            );
+            env->DeleteLocalRef(nestedClass_euler_angle_north);        }        jobject nestedObj_quaternion_north = nullptr;
+        {            jclass nestedClass_quaternion_north = env->FindClass("io/mavsdk/kotlin/plugins/gimbal/Gimbal$Quaternion");
+            jmethodID nestedCtor_quaternion_north = env->GetMethodID(nestedClass_quaternion_north, "<init>", "(FFFF)V");
+            nestedObj_quaternion_north = env->NewObject(nestedClass_quaternion_north, nestedCtor_quaternion_north                , static_cast<jfloat>(value.quaternion_north.w)                , static_cast<jfloat>(value.quaternion_north.x)                , static_cast<jfloat>(value.quaternion_north.y)                , static_cast<jfloat>(value.quaternion_north.z)            );
+            env->DeleteLocalRef(nestedClass_quaternion_north);        }        jobject nestedObj_angular_velocity = nullptr;
+        {            jclass nestedClass_angular_velocity = env->FindClass("io/mavsdk/kotlin/plugins/gimbal/Gimbal$AngularVelocityBody");
+            jmethodID nestedCtor_angular_velocity = env->GetMethodID(nestedClass_angular_velocity, "<init>", "(FFF)V");
+            nestedObj_angular_velocity = env->NewObject(nestedClass_angular_velocity, nestedCtor_angular_velocity                , static_cast<jfloat>(value.angular_velocity.roll_rad_s)                , static_cast<jfloat>(value.angular_velocity.pitch_rad_s)                , static_cast<jfloat>(value.angular_velocity.yaw_rad_s)            );
+            env->DeleteLocalRef(nestedClass_angular_velocity);        }        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/gimbal/Gimbal$Attitude");
         if (!retClass) { return; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(ILio/mavsdk/kotlin/plugins/gimbal/Gimbal$EulerAngle;Lio/mavsdk/kotlin/plugins/gimbal/Gimbal$Quaternion;Lio/mavsdk/kotlin/plugins/gimbal/Gimbal$EulerAngle;Lio/mavsdk/kotlin/plugins/gimbal/Gimbal$Quaternion;Lio/mavsdk/kotlin/plugins/gimbal/Gimbal$AngularVelocityBody;J)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jint>(value.gimbal_id)            , /* TODO nested struct <protoc_gen_mavsdk.name_parser.NameParser object at 0x1086c37d0> */ static_cast<jobject>(nullptr)            , /* TODO nested struct <protoc_gen_mavsdk.name_parser.NameParser object at 0x1086c37d0> */ static_cast<jobject>(nullptr)            , /* TODO nested struct <protoc_gen_mavsdk.name_parser.NameParser object at 0x1086c37d0> */ static_cast<jobject>(nullptr)            , /* TODO nested struct <protoc_gen_mavsdk.name_parser.NameParser object at 0x1086c37d0> */ static_cast<jobject>(nullptr)            , /* TODO nested struct <protoc_gen_mavsdk.name_parser.NameParser object at 0x1086c37d0> */ static_cast<jobject>(nullptr)            , static_cast<jlong>(value.timestamp_us)        );
-        env->DeleteLocalRef(retClass);
+        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jint>(value.gimbal_id)            , nestedObj_euler_angle_forward            , nestedObj_quaternion_forward            , nestedObj_euler_angle_north            , nestedObj_quaternion_north            , nestedObj_angular_velocity            , static_cast<jlong>(value.timestamp_us)        );
+        env->DeleteLocalRef(retClass);        env->DeleteLocalRef(nestedObj_euler_angle_forward);        env->DeleteLocalRef(nestedObj_quaternion_forward);        env->DeleteLocalRef(nestedObj_euler_angle_north);        env->DeleteLocalRef(nestedObj_quaternion_north);        env->DeleteLocalRef(nestedObj_angular_velocity);
         env->CallVoidMethod(callback.get(), invokeMethod, retObj);
         env->DeleteLocalRef(retObj);
 
@@ -624,11 +657,24 @@ Java_io_mavsdk_kotlin_plugins_gimbal_Gimbal_gimbalListBlocking(
         &ret_val
     );
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/gimbal/Gimbal$GimbalList");
+        jclass arrayListClass_GimbalList = env->FindClass("java/util/ArrayList");
+        jmethodID arrayListCtor_GimbalList = env->GetMethodID(arrayListClass_GimbalList, "<init>", "()V");
+        jmethodID arrayListAdd_GimbalList = env->GetMethodID(arrayListClass_GimbalList, "add", "(Ljava/lang/Object;)Z");        jobject list_gimbals = env->NewObject(arrayListClass_GimbalList, arrayListCtor_GimbalList);
+        {
+            jclass elemClass_gimbals = env->FindClass("io/mavsdk/kotlin/plugins/gimbal/Gimbal$GimbalItem");
+            jmethodID elemCtor_gimbals = env->GetMethodID(elemClass_gimbals, "<init>", "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;II)V");
+            for (size_t i = 0; i < ret_val.gimbals_size; i++) {
+                jobject elem = env->NewObject(elemClass_gimbals, elemCtor_gimbals                    , static_cast<jint>(ret_val.gimbals[i].gimbal_id)                    , toJavaString(env, ret_val.gimbals[i].vendor_name)                    , toJavaString(env, ret_val.gimbals[i].model_name)                    , toJavaString(env, ret_val.gimbals[i].custom_name)                    , static_cast<jint>(ret_val.gimbals[i].gimbal_manager_component_id)                    , static_cast<jint>(ret_val.gimbals[i].gimbal_device_id)                );
+                env->CallBooleanMethod(list_gimbals, arrayListAdd_GimbalList, elem);
+                env->DeleteLocalRef(elem);
+            }
+            env->DeleteLocalRef(elemClass_gimbals);
+        }env->DeleteLocalRef(arrayListClass_GimbalList);        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/gimbal/Gimbal$GimbalList");
         if (!retClass) { return nullptr; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "()V");
-        jobject retObj = env->NewObject(retClass, retCtor            /* TODO: repeated field gimbals */ , static_cast<jobject>(nullptr)        );
-        env->DeleteLocalRef(retClass);
+        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(Ljava/util/List;)V");
+        jobject retObj = env->NewObject(retClass, retCtor            , list_gimbals        );
+        env->DeleteLocalRef(retClass);        env->DeleteLocalRef(list_gimbals);
+    mavsdk_gimbal_gimbal_list_destroy(&ret_val);
     return retObj;
 }
 
@@ -767,11 +813,12 @@ Java_io_mavsdk_kotlin_plugins_gimbal_Gimbal_getControlStatusBlocking(
         return nullptr;
     }
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/gimbal/Gimbal$ControlStatus");
+        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/gimbal/Gimbal$ControlStatus");
         if (!retClass) { return nullptr; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(IIIIII)V");
         jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jint>(ret_val.gimbal_id)            , static_cast<jint>(ret_val.control_mode)            , static_cast<jint>(ret_val.sysid_primary_control)            , static_cast<jint>(ret_val.compid_primary_control)            , static_cast<jint>(ret_val.sysid_secondary_control)            , static_cast<jint>(ret_val.compid_secondary_control)        );
         env->DeleteLocalRef(retClass);
+    mavsdk_gimbal_control_status_destroy(&ret_val);
     return retObj;
 }
 
@@ -855,11 +902,32 @@ Java_io_mavsdk_kotlin_plugins_gimbal_Gimbal_getAttitudeBlocking(
         return nullptr;
     }
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/gimbal/Gimbal$Attitude");
+        jobject nestedObj_euler_angle_forward = nullptr;
+        {            jclass nestedClass_euler_angle_forward = env->FindClass("io/mavsdk/kotlin/plugins/gimbal/Gimbal$EulerAngle");
+            jmethodID nestedCtor_euler_angle_forward = env->GetMethodID(nestedClass_euler_angle_forward, "<init>", "(FFF)V");
+            nestedObj_euler_angle_forward = env->NewObject(nestedClass_euler_angle_forward, nestedCtor_euler_angle_forward                , static_cast<jfloat>(ret_val.euler_angle_forward.roll_deg)                , static_cast<jfloat>(ret_val.euler_angle_forward.pitch_deg)                , static_cast<jfloat>(ret_val.euler_angle_forward.yaw_deg)            );
+            env->DeleteLocalRef(nestedClass_euler_angle_forward);        }        jobject nestedObj_quaternion_forward = nullptr;
+        {            jclass nestedClass_quaternion_forward = env->FindClass("io/mavsdk/kotlin/plugins/gimbal/Gimbal$Quaternion");
+            jmethodID nestedCtor_quaternion_forward = env->GetMethodID(nestedClass_quaternion_forward, "<init>", "(FFFF)V");
+            nestedObj_quaternion_forward = env->NewObject(nestedClass_quaternion_forward, nestedCtor_quaternion_forward                , static_cast<jfloat>(ret_val.quaternion_forward.w)                , static_cast<jfloat>(ret_val.quaternion_forward.x)                , static_cast<jfloat>(ret_val.quaternion_forward.y)                , static_cast<jfloat>(ret_val.quaternion_forward.z)            );
+            env->DeleteLocalRef(nestedClass_quaternion_forward);        }        jobject nestedObj_euler_angle_north = nullptr;
+        {            jclass nestedClass_euler_angle_north = env->FindClass("io/mavsdk/kotlin/plugins/gimbal/Gimbal$EulerAngle");
+            jmethodID nestedCtor_euler_angle_north = env->GetMethodID(nestedClass_euler_angle_north, "<init>", "(FFF)V");
+            nestedObj_euler_angle_north = env->NewObject(nestedClass_euler_angle_north, nestedCtor_euler_angle_north                , static_cast<jfloat>(ret_val.euler_angle_north.roll_deg)                , static_cast<jfloat>(ret_val.euler_angle_north.pitch_deg)                , static_cast<jfloat>(ret_val.euler_angle_north.yaw_deg)            );
+            env->DeleteLocalRef(nestedClass_euler_angle_north);        }        jobject nestedObj_quaternion_north = nullptr;
+        {            jclass nestedClass_quaternion_north = env->FindClass("io/mavsdk/kotlin/plugins/gimbal/Gimbal$Quaternion");
+            jmethodID nestedCtor_quaternion_north = env->GetMethodID(nestedClass_quaternion_north, "<init>", "(FFFF)V");
+            nestedObj_quaternion_north = env->NewObject(nestedClass_quaternion_north, nestedCtor_quaternion_north                , static_cast<jfloat>(ret_val.quaternion_north.w)                , static_cast<jfloat>(ret_val.quaternion_north.x)                , static_cast<jfloat>(ret_val.quaternion_north.y)                , static_cast<jfloat>(ret_val.quaternion_north.z)            );
+            env->DeleteLocalRef(nestedClass_quaternion_north);        }        jobject nestedObj_angular_velocity = nullptr;
+        {            jclass nestedClass_angular_velocity = env->FindClass("io/mavsdk/kotlin/plugins/gimbal/Gimbal$AngularVelocityBody");
+            jmethodID nestedCtor_angular_velocity = env->GetMethodID(nestedClass_angular_velocity, "<init>", "(FFF)V");
+            nestedObj_angular_velocity = env->NewObject(nestedClass_angular_velocity, nestedCtor_angular_velocity                , static_cast<jfloat>(ret_val.angular_velocity.roll_rad_s)                , static_cast<jfloat>(ret_val.angular_velocity.pitch_rad_s)                , static_cast<jfloat>(ret_val.angular_velocity.yaw_rad_s)            );
+            env->DeleteLocalRef(nestedClass_angular_velocity);        }        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/gimbal/Gimbal$Attitude");
         if (!retClass) { return nullptr; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(ILio/mavsdk/kotlin/plugins/gimbal/Gimbal$EulerAngle;Lio/mavsdk/kotlin/plugins/gimbal/Gimbal$Quaternion;Lio/mavsdk/kotlin/plugins/gimbal/Gimbal$EulerAngle;Lio/mavsdk/kotlin/plugins/gimbal/Gimbal$Quaternion;Lio/mavsdk/kotlin/plugins/gimbal/Gimbal$AngularVelocityBody;J)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jint>(ret_val.gimbal_id)            , /* TODO nested struct <protoc_gen_mavsdk.name_parser.NameParser object at 0x1086c3ad0> */ static_cast<jobject>(nullptr)            , /* TODO nested struct <protoc_gen_mavsdk.name_parser.NameParser object at 0x1086c3ad0> */ static_cast<jobject>(nullptr)            , /* TODO nested struct <protoc_gen_mavsdk.name_parser.NameParser object at 0x1086c3ad0> */ static_cast<jobject>(nullptr)            , /* TODO nested struct <protoc_gen_mavsdk.name_parser.NameParser object at 0x1086c3ad0> */ static_cast<jobject>(nullptr)            , /* TODO nested struct <protoc_gen_mavsdk.name_parser.NameParser object at 0x1086c3ad0> */ static_cast<jobject>(nullptr)            , static_cast<jlong>(ret_val.timestamp_us)        );
-        env->DeleteLocalRef(retClass);
+        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jint>(ret_val.gimbal_id)            , nestedObj_euler_angle_forward            , nestedObj_quaternion_forward            , nestedObj_euler_angle_north            , nestedObj_quaternion_north            , nestedObj_angular_velocity            , static_cast<jlong>(ret_val.timestamp_us)        );
+        env->DeleteLocalRef(retClass);        env->DeleteLocalRef(nestedObj_euler_angle_forward);        env->DeleteLocalRef(nestedObj_quaternion_forward);        env->DeleteLocalRef(nestedObj_euler_angle_north);        env->DeleteLocalRef(nestedObj_quaternion_north);        env->DeleteLocalRef(nestedObj_angular_velocity);
+    mavsdk_gimbal_attitude_destroy(&ret_val);
     return retObj;
 }
 

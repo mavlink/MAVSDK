@@ -7,6 +7,7 @@
 #include "../../jni_utils.h"
 
 #include <utility>
+#include <vector>
 
 using namespace mavsdk::jni;
 
@@ -65,7 +66,7 @@ Java_io_mavsdk_kotlin_plugins_telemetry_1server_TelemetryServer_publishPositionB
     jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry_server/TelemetryServer");
     if (!handle) return MAVSDK_TELEMETRY_SERVER_RESULT_UNKNOWN;
 
-    mavsdk_telemetry_server_position_t position_c{}; /* TODO: convert from Java object */    mavsdk_telemetry_server_velocity_ned_t velocity_ned_c{}; /* TODO: convert from Java object */    mavsdk_telemetry_server_heading_t heading_c{}; /* TODO: convert from Java object */
+    mavsdk_telemetry_server_position_t position_c{}; /* TODO: convert scalar-only struct from Java object */    mavsdk_telemetry_server_velocity_ned_t velocity_ned_c{}; /* TODO: convert scalar-only struct from Java object */    mavsdk_telemetry_server_heading_t heading_c{}; /* TODO: convert scalar-only struct from Java object */
     mavsdk_telemetry_server_result_t result = mavsdk_telemetry_server_publish_position(
         reinterpret_cast<mavsdk_telemetry_server_t>(handle),
         position_c,
@@ -86,7 +87,7 @@ Java_io_mavsdk_kotlin_plugins_telemetry_1server_TelemetryServer_publishHomeBlock
     jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry_server/TelemetryServer");
     if (!handle) return MAVSDK_TELEMETRY_SERVER_RESULT_UNKNOWN;
 
-    mavsdk_telemetry_server_position_t home_c{}; /* TODO: convert from Java object */
+    mavsdk_telemetry_server_position_t home_c{}; /* TODO: convert scalar-only struct from Java object */
     mavsdk_telemetry_server_result_t result = mavsdk_telemetry_server_publish_home(
         reinterpret_cast<mavsdk_telemetry_server_t>(handle),
         home_c    );
@@ -110,7 +111,7 @@ Java_io_mavsdk_kotlin_plugins_telemetry_1server_TelemetryServer_publishSysStatus
     jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry_server/TelemetryServer");
     if (!handle) return MAVSDK_TELEMETRY_SERVER_RESULT_UNKNOWN;
 
-    mavsdk_telemetry_server_battery_t battery_c{}; /* TODO: convert from Java object */
+    mavsdk_telemetry_server_battery_t battery_c{}; /* TODO: convert scalar-only struct from Java object */
     mavsdk_telemetry_server_result_t result = mavsdk_telemetry_server_publish_sys_status(
         reinterpret_cast<mavsdk_telemetry_server_t>(handle),
         battery_c,
@@ -156,7 +157,7 @@ Java_io_mavsdk_kotlin_plugins_telemetry_1server_TelemetryServer_publishRawGpsBlo
     jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry_server/TelemetryServer");
     if (!handle) return MAVSDK_TELEMETRY_SERVER_RESULT_UNKNOWN;
 
-    mavsdk_telemetry_server_raw_gps_t raw_gps_c{}; /* TODO: convert from Java object */    mavsdk_telemetry_server_gps_info_t gps_info_c{}; /* TODO: convert from Java object */
+    mavsdk_telemetry_server_raw_gps_t raw_gps_c{}; /* TODO: convert scalar-only struct from Java object */    mavsdk_telemetry_server_gps_info_t gps_info_c{}; /* TODO: convert scalar-only struct from Java object */
     mavsdk_telemetry_server_result_t result = mavsdk_telemetry_server_publish_raw_gps(
         reinterpret_cast<mavsdk_telemetry_server_t>(handle),
         raw_gps_c,
@@ -176,7 +177,7 @@ Java_io_mavsdk_kotlin_plugins_telemetry_1server_TelemetryServer_publishBatteryBl
     jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry_server/TelemetryServer");
     if (!handle) return MAVSDK_TELEMETRY_SERVER_RESULT_UNKNOWN;
 
-    mavsdk_telemetry_server_battery_t battery_c{}; /* TODO: convert from Java object */
+    mavsdk_telemetry_server_battery_t battery_c{}; /* TODO: convert scalar-only struct from Java object */
     mavsdk_telemetry_server_result_t result = mavsdk_telemetry_server_publish_battery(
         reinterpret_cast<mavsdk_telemetry_server_t>(handle),
         battery_c    );
@@ -195,7 +196,7 @@ Java_io_mavsdk_kotlin_plugins_telemetry_1server_TelemetryServer_publishStatusTex
     jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry_server/TelemetryServer");
     if (!handle) return MAVSDK_TELEMETRY_SERVER_RESULT_UNKNOWN;
 
-    mavsdk_telemetry_server_status_text_t status_text_c{}; /* TODO: convert from Java object */
+    mavsdk_telemetry_server_status_text_t status_text_c{}; /* TODO: convert scalar-only struct from Java object */
     mavsdk_telemetry_server_result_t result = mavsdk_telemetry_server_publish_status_text(
         reinterpret_cast<mavsdk_telemetry_server_t>(handle),
         status_text_c    );
@@ -214,7 +215,7 @@ Java_io_mavsdk_kotlin_plugins_telemetry_1server_TelemetryServer_publishOdometryB
     jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry_server/TelemetryServer");
     if (!handle) return MAVSDK_TELEMETRY_SERVER_RESULT_UNKNOWN;
 
-    mavsdk_telemetry_server_odometry_t odometry_c{}; /* TODO: convert from Java object */
+    mavsdk_telemetry_server_odometry_t odometry_c{}; /* TODO: convert scalar-only struct from Java object */
     mavsdk_telemetry_server_result_t result = mavsdk_telemetry_server_publish_odometry(
         reinterpret_cast<mavsdk_telemetry_server_t>(handle),
         odometry_c    );
@@ -233,7 +234,7 @@ Java_io_mavsdk_kotlin_plugins_telemetry_1server_TelemetryServer_publishPositionV
     jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry_server/TelemetryServer");
     if (!handle) return MAVSDK_TELEMETRY_SERVER_RESULT_UNKNOWN;
 
-    mavsdk_telemetry_server_position_velocity_ned_t position_velocity_ned_c{}; /* TODO: convert from Java object */
+    mavsdk_telemetry_server_position_velocity_ned_t position_velocity_ned_c{}; /* TODO: convert scalar-only struct from Java object */
     mavsdk_telemetry_server_result_t result = mavsdk_telemetry_server_publish_position_velocity_ned(
         reinterpret_cast<mavsdk_telemetry_server_t>(handle),
         position_velocity_ned_c    );
@@ -252,7 +253,7 @@ Java_io_mavsdk_kotlin_plugins_telemetry_1server_TelemetryServer_publishGroundTru
     jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry_server/TelemetryServer");
     if (!handle) return MAVSDK_TELEMETRY_SERVER_RESULT_UNKNOWN;
 
-    mavsdk_telemetry_server_ground_truth_t ground_truth_c{}; /* TODO: convert from Java object */
+    mavsdk_telemetry_server_ground_truth_t ground_truth_c{}; /* TODO: convert scalar-only struct from Java object */
     mavsdk_telemetry_server_result_t result = mavsdk_telemetry_server_publish_ground_truth(
         reinterpret_cast<mavsdk_telemetry_server_t>(handle),
         ground_truth_c    );
@@ -271,7 +272,7 @@ Java_io_mavsdk_kotlin_plugins_telemetry_1server_TelemetryServer_publishImuBlocki
     jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry_server/TelemetryServer");
     if (!handle) return MAVSDK_TELEMETRY_SERVER_RESULT_UNKNOWN;
 
-    mavsdk_telemetry_server_imu_t imu_c{}; /* TODO: convert from Java object */
+    mavsdk_telemetry_server_imu_t imu_c{}; /* TODO: convert scalar-only struct from Java object */
     mavsdk_telemetry_server_result_t result = mavsdk_telemetry_server_publish_imu(
         reinterpret_cast<mavsdk_telemetry_server_t>(handle),
         imu_c    );
@@ -290,7 +291,7 @@ Java_io_mavsdk_kotlin_plugins_telemetry_1server_TelemetryServer_publishScaledImu
     jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry_server/TelemetryServer");
     if (!handle) return MAVSDK_TELEMETRY_SERVER_RESULT_UNKNOWN;
 
-    mavsdk_telemetry_server_imu_t imu_c{}; /* TODO: convert from Java object */
+    mavsdk_telemetry_server_imu_t imu_c{}; /* TODO: convert scalar-only struct from Java object */
     mavsdk_telemetry_server_result_t result = mavsdk_telemetry_server_publish_scaled_imu(
         reinterpret_cast<mavsdk_telemetry_server_t>(handle),
         imu_c    );
@@ -309,7 +310,7 @@ Java_io_mavsdk_kotlin_plugins_telemetry_1server_TelemetryServer_publishRawImuBlo
     jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry_server/TelemetryServer");
     if (!handle) return MAVSDK_TELEMETRY_SERVER_RESULT_UNKNOWN;
 
-    mavsdk_telemetry_server_imu_t imu_c{}; /* TODO: convert from Java object */
+    mavsdk_telemetry_server_imu_t imu_c{}; /* TODO: convert scalar-only struct from Java object */
     mavsdk_telemetry_server_result_t result = mavsdk_telemetry_server_publish_raw_imu(
         reinterpret_cast<mavsdk_telemetry_server_t>(handle),
         imu_c    );
@@ -347,7 +348,7 @@ Java_io_mavsdk_kotlin_plugins_telemetry_1server_TelemetryServer_publishDistanceS
     jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry_server/TelemetryServer");
     if (!handle) return MAVSDK_TELEMETRY_SERVER_RESULT_UNKNOWN;
 
-    mavsdk_telemetry_server_distance_sensor_t distance_sensor_c{}; /* TODO: convert from Java object */
+    mavsdk_telemetry_server_distance_sensor_t distance_sensor_c{}; /* TODO: convert scalar-only struct from Java object */
     mavsdk_telemetry_server_result_t result = mavsdk_telemetry_server_publish_distance_sensor(
         reinterpret_cast<mavsdk_telemetry_server_t>(handle),
         distance_sensor_c    );
@@ -367,7 +368,7 @@ Java_io_mavsdk_kotlin_plugins_telemetry_1server_TelemetryServer_publishAttitudeB
     jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry_server/TelemetryServer");
     if (!handle) return MAVSDK_TELEMETRY_SERVER_RESULT_UNKNOWN;
 
-    mavsdk_telemetry_server_euler_angle_t angle_c{}; /* TODO: convert from Java object */    mavsdk_telemetry_server_angular_velocity_body_t angular_velocity_c{}; /* TODO: convert from Java object */
+    mavsdk_telemetry_server_euler_angle_t angle_c{}; /* TODO: convert scalar-only struct from Java object */    mavsdk_telemetry_server_angular_velocity_body_t angular_velocity_c{}; /* TODO: convert scalar-only struct from Java object */
     mavsdk_telemetry_server_result_t result = mavsdk_telemetry_server_publish_attitude(
         reinterpret_cast<mavsdk_telemetry_server_t>(handle),
         angle_c,
@@ -387,7 +388,7 @@ Java_io_mavsdk_kotlin_plugins_telemetry_1server_TelemetryServer_publishVisualFli
     jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/telemetry_server/TelemetryServer");
     if (!handle) return MAVSDK_TELEMETRY_SERVER_RESULT_UNKNOWN;
 
-    mavsdk_telemetry_server_fixedwing_metrics_t fixed_wing_metrics_c{}; /* TODO: convert from Java object */
+    mavsdk_telemetry_server_fixedwing_metrics_t fixed_wing_metrics_c{}; /* TODO: convert scalar-only struct from Java object */
     mavsdk_telemetry_server_result_t result = mavsdk_telemetry_server_publish_visual_flight_rules_hud(
         reinterpret_cast<mavsdk_telemetry_server_t>(handle),
         fixed_wing_metrics_c    );

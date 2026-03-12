@@ -7,6 +7,7 @@
 #include "../../jni_utils.h"
 
 #include <utility>
+#include <vector>
 
 using namespace mavsdk::jni;
 
@@ -98,7 +99,7 @@ Java_io_mavsdk_kotlin_plugins_tune_Tune_playTuneBlocking(
     jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/tune/Tune");
     if (!handle) return MAVSDK_TUNE_RESULT_UNKNOWN;
 
-    mavsdk_tune_tune_description_t tune_description_c{}; /* TODO: convert from Java object */
+    mavsdk_tune_tune_description_t tune_description_c{}; /* TODO: convert scalar-only struct from Java object */
     mavsdk_tune_result_t result = mavsdk_tune_play_tune(
         reinterpret_cast<mavsdk_tune_t>(handle),
         tune_description_c    );
@@ -117,7 +118,7 @@ Java_io_mavsdk_kotlin_plugins_tune_Tune_playTuneAsyncNative(
     jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/tune/Tune");
     if (!handle || !callback) return;
 
-    mavsdk_tune_tune_description_t tune_description_c{}; /* TODO: convert from Java object */
+    mavsdk_tune_tune_description_t tune_description_c{}; /* TODO: convert scalar-only struct from Java object */
     auto* wrapper = new PlayTuneCallbackWrapper(env, callback);
 
     mavsdk_tune_play_tune_async(

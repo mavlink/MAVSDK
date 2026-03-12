@@ -7,6 +7,7 @@
 #include "../../jni_utils.h"
 
 #include <utility>
+#include <vector>
 
 using namespace mavsdk::jni;
 
@@ -40,7 +41,7 @@ struct EventsCallbackWrapper {
             return;
         }
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/events/Events$Event");
+        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/events/Events$Event");
         if (!retClass) { return; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(ILjava/lang/String;Ljava/lang/String;ILjava/lang/String;Ljava/lang/String;)V");
         jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jint>(value.compid)            , toJavaString(env, value.message)            , toJavaString(env, value.description)            , static_cast<jint>(value.log_level)            , toJavaString(env, value.event_namespace)            , toJavaString(env, value.event_name)        );
@@ -81,11 +82,37 @@ struct HealthAndArmingChecksCallbackWrapper {
             return;
         }
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/events/Events$HealthAndArmingCheckReport");
+        jclass arrayListClass_HealthAndArmingCheckReport = env->FindClass("java/util/ArrayList");
+        jmethodID arrayListCtor_HealthAndArmingCheckReport = env->GetMethodID(arrayListClass_HealthAndArmingCheckReport, "<init>", "()V");
+        jmethodID arrayListAdd_HealthAndArmingCheckReport = env->GetMethodID(arrayListClass_HealthAndArmingCheckReport, "add", "(Ljava/lang/Object;)Z");        jobject list_health_components = env->NewObject(arrayListClass_HealthAndArmingCheckReport, arrayListCtor_HealthAndArmingCheckReport);
+        {
+            jclass elemClass_health_components = env->FindClass("io/mavsdk/kotlin/plugins/events/Events$HealthComponentReport");
+            jmethodID elemCtor_health_components = env->GetMethodID(elemClass_health_components, "<init>", "(Ljava/lang/String;Ljava/lang/String;ZZZ)V");
+            for (size_t i = 0; i < value.health_components_size; i++) {
+                jobject elem = env->NewObject(elemClass_health_components, elemCtor_health_components                    , toJavaString(env, value.health_components[i].name)                    , toJavaString(env, value.health_components[i].label)                    , static_cast<jboolean>(value.health_components[i].is_present)                    , static_cast<jboolean>(value.health_components[i].has_error)                    , static_cast<jboolean>(value.health_components[i].has_warning)                );
+                env->CallBooleanMethod(list_health_components, arrayListAdd_HealthAndArmingCheckReport, elem);
+                env->DeleteLocalRef(elem);
+            }
+            env->DeleteLocalRef(elemClass_health_components);
+        }        jobject list_all_problems = env->NewObject(arrayListClass_HealthAndArmingCheckReport, arrayListCtor_HealthAndArmingCheckReport);
+        {
+            jclass elemClass_all_problems = env->FindClass("io/mavsdk/kotlin/plugins/events/Events$HealthAndArmingCheckProblem");
+            jmethodID elemCtor_all_problems = env->GetMethodID(elemClass_all_problems, "<init>", "(Ljava/lang/String;Ljava/lang/String;ILjava/lang/String;)V");
+            for (size_t i = 0; i < value.all_problems_size; i++) {
+                jobject elem = env->NewObject(elemClass_all_problems, elemCtor_all_problems                    , toJavaString(env, value.all_problems[i].message)                    , toJavaString(env, value.all_problems[i].description)                    , static_cast<jint>(value.all_problems[i].log_level)                    , toJavaString(env, value.all_problems[i].health_component)                );
+                env->CallBooleanMethod(list_all_problems, arrayListAdd_HealthAndArmingCheckReport, elem);
+                env->DeleteLocalRef(elem);
+            }
+            env->DeleteLocalRef(elemClass_all_problems);
+        }env->DeleteLocalRef(arrayListClass_HealthAndArmingCheckReport);        jobject nestedObj_current_mode_intention = nullptr;
+        {            jclass nestedClass_current_mode_intention = env->FindClass("io/mavsdk/kotlin/plugins/events/Events$HealthAndArmingCheckMode");
+            jmethodID nestedCtor_current_mode_intention = env->GetMethodID(nestedClass_current_mode_intention, "<init>", "(Ljava/lang/String;ZLjava/util/List;)V");
+            nestedObj_current_mode_intention = env->NewObject(nestedClass_current_mode_intention, nestedCtor_current_mode_intention                , toJavaString(env, value.current_mode_intention.mode_name)                , static_cast<jboolean>(value.current_mode_intention.can_arm_or_run)            );
+            env->DeleteLocalRef(nestedClass_current_mode_intention);        }        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/events/Events$HealthAndArmingCheckReport");
         if (!retClass) { return; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(Lio/mavsdk/kotlin/plugins/events/Events$HealthAndArmingCheckMode;)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , /* TODO nested struct <protoc_gen_mavsdk.name_parser.NameParser object at 0x1088406b0> */ static_cast<jobject>(nullptr)            /* TODO: repeated field health_components */ , static_cast<jobject>(nullptr)            /* TODO: repeated field all_problems */ , static_cast<jobject>(nullptr)        );
-        env->DeleteLocalRef(retClass);
+        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(Lio/mavsdk/kotlin/plugins/events/Events$HealthAndArmingCheckMode;Ljava/util/List;Ljava/util/List;)V");
+        jobject retObj = env->NewObject(retClass, retCtor            , nestedObj_current_mode_intention            , list_health_components            , list_all_problems        );
+        env->DeleteLocalRef(retClass);        env->DeleteLocalRef(nestedObj_current_mode_intention);        env->DeleteLocalRef(list_health_components);        env->DeleteLocalRef(list_all_problems);
         env->CallVoidMethod(callback.get(), invokeMethod, retObj);
         env->DeleteLocalRef(retObj);
 
@@ -268,11 +295,38 @@ Java_io_mavsdk_kotlin_plugins_events_Events_getHealthAndArmingChecksReportBlocki
         return nullptr;
     }
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/events/Events$HealthAndArmingCheckReport");
+        jclass arrayListClass_HealthAndArmingCheckReport = env->FindClass("java/util/ArrayList");
+        jmethodID arrayListCtor_HealthAndArmingCheckReport = env->GetMethodID(arrayListClass_HealthAndArmingCheckReport, "<init>", "()V");
+        jmethodID arrayListAdd_HealthAndArmingCheckReport = env->GetMethodID(arrayListClass_HealthAndArmingCheckReport, "add", "(Ljava/lang/Object;)Z");        jobject list_health_components = env->NewObject(arrayListClass_HealthAndArmingCheckReport, arrayListCtor_HealthAndArmingCheckReport);
+        {
+            jclass elemClass_health_components = env->FindClass("io/mavsdk/kotlin/plugins/events/Events$HealthComponentReport");
+            jmethodID elemCtor_health_components = env->GetMethodID(elemClass_health_components, "<init>", "(Ljava/lang/String;Ljava/lang/String;ZZZ)V");
+            for (size_t i = 0; i < ret_val.health_components_size; i++) {
+                jobject elem = env->NewObject(elemClass_health_components, elemCtor_health_components                    , toJavaString(env, ret_val.health_components[i].name)                    , toJavaString(env, ret_val.health_components[i].label)                    , static_cast<jboolean>(ret_val.health_components[i].is_present)                    , static_cast<jboolean>(ret_val.health_components[i].has_error)                    , static_cast<jboolean>(ret_val.health_components[i].has_warning)                );
+                env->CallBooleanMethod(list_health_components, arrayListAdd_HealthAndArmingCheckReport, elem);
+                env->DeleteLocalRef(elem);
+            }
+            env->DeleteLocalRef(elemClass_health_components);
+        }        jobject list_all_problems = env->NewObject(arrayListClass_HealthAndArmingCheckReport, arrayListCtor_HealthAndArmingCheckReport);
+        {
+            jclass elemClass_all_problems = env->FindClass("io/mavsdk/kotlin/plugins/events/Events$HealthAndArmingCheckProblem");
+            jmethodID elemCtor_all_problems = env->GetMethodID(elemClass_all_problems, "<init>", "(Ljava/lang/String;Ljava/lang/String;ILjava/lang/String;)V");
+            for (size_t i = 0; i < ret_val.all_problems_size; i++) {
+                jobject elem = env->NewObject(elemClass_all_problems, elemCtor_all_problems                    , toJavaString(env, ret_val.all_problems[i].message)                    , toJavaString(env, ret_val.all_problems[i].description)                    , static_cast<jint>(ret_val.all_problems[i].log_level)                    , toJavaString(env, ret_val.all_problems[i].health_component)                );
+                env->CallBooleanMethod(list_all_problems, arrayListAdd_HealthAndArmingCheckReport, elem);
+                env->DeleteLocalRef(elem);
+            }
+            env->DeleteLocalRef(elemClass_all_problems);
+        }env->DeleteLocalRef(arrayListClass_HealthAndArmingCheckReport);        jobject nestedObj_current_mode_intention = nullptr;
+        {            jclass nestedClass_current_mode_intention = env->FindClass("io/mavsdk/kotlin/plugins/events/Events$HealthAndArmingCheckMode");
+            jmethodID nestedCtor_current_mode_intention = env->GetMethodID(nestedClass_current_mode_intention, "<init>", "(Ljava/lang/String;ZLjava/util/List;)V");
+            nestedObj_current_mode_intention = env->NewObject(nestedClass_current_mode_intention, nestedCtor_current_mode_intention                , toJavaString(env, ret_val.current_mode_intention.mode_name)                , static_cast<jboolean>(ret_val.current_mode_intention.can_arm_or_run)            );
+            env->DeleteLocalRef(nestedClass_current_mode_intention);        }        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/events/Events$HealthAndArmingCheckReport");
         if (!retClass) { return nullptr; }
-        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(Lio/mavsdk/kotlin/plugins/events/Events$HealthAndArmingCheckMode;)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , /* TODO nested struct <protoc_gen_mavsdk.name_parser.NameParser object at 0x1088407d0> */ static_cast<jobject>(nullptr)            /* TODO: repeated field health_components */ , static_cast<jobject>(nullptr)            /* TODO: repeated field all_problems */ , static_cast<jobject>(nullptr)        );
-        env->DeleteLocalRef(retClass);
+        jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(Lio/mavsdk/kotlin/plugins/events/Events$HealthAndArmingCheckMode;Ljava/util/List;Ljava/util/List;)V");
+        jobject retObj = env->NewObject(retClass, retCtor            , nestedObj_current_mode_intention            , list_health_components            , list_all_problems        );
+        env->DeleteLocalRef(retClass);        env->DeleteLocalRef(nestedObj_current_mode_intention);        env->DeleteLocalRef(list_health_components);        env->DeleteLocalRef(list_all_problems);
+    mavsdk_events_health_and_arming_check_report_destroy(&ret_val);
     return retObj;
 }
 

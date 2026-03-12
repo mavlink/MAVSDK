@@ -7,6 +7,7 @@
 #include "../../jni_utils.h"
 
 #include <utility>
+#include <vector>
 
 using namespace mavsdk::jni;
 
@@ -40,7 +41,7 @@ struct ArmDisarmCallbackWrapper {
             return;
         }
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/action_server/ActionServer$ArmDisarm");
+        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/action_server/ActionServer$ArmDisarm");
         if (!retClass) { return; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(ZZ)V");
         jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jboolean>(value.arm)            , static_cast<jboolean>(value.force)        );
@@ -767,7 +768,7 @@ Java_io_mavsdk_kotlin_plugins_action_1server_ActionServer_setAllowableFlightMode
     jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/action_server/ActionServer");
     if (!handle) return MAVSDK_ACTION_SERVER_RESULT_UNKNOWN;
 
-    mavsdk_action_server_allowable_flight_modes_t flight_modes_c{}; /* TODO: convert from Java object */
+    mavsdk_action_server_allowable_flight_modes_t flight_modes_c{}; /* TODO: convert scalar-only struct from Java object */
     mavsdk_action_server_result_t result = mavsdk_action_server_set_allowable_flight_modes(
         reinterpret_cast<mavsdk_action_server_t>(handle),
         flight_modes_c    );
@@ -792,11 +793,12 @@ Java_io_mavsdk_kotlin_plugins_action_1server_ActionServer_getAllowableFlightMode
         &ret_val
     );
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/action_server/ActionServer$AllowableFlightModes");
+        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/action_server/ActionServer$AllowableFlightModes");
         if (!retClass) { return nullptr; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(ZZZZZZZ)V");
         jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jboolean>(ret_val.can_auto_mode)            , static_cast<jboolean>(ret_val.can_guided_mode)            , static_cast<jboolean>(ret_val.can_stabilize_mode)            , static_cast<jboolean>(ret_val.can_auto_rtl_mode)            , static_cast<jboolean>(ret_val.can_auto_takeoff_mode)            , static_cast<jboolean>(ret_val.can_auto_land_mode)            , static_cast<jboolean>(ret_val.can_auto_loiter_mode)        );
         env->DeleteLocalRef(retClass);
+    mavsdk_action_server_allowable_flight_modes_destroy(&ret_val);
     return retObj;
 }
 

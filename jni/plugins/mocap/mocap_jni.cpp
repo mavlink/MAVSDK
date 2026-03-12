@@ -7,6 +7,7 @@
 #include "../../jni_utils.h"
 
 #include <utility>
+#include <vector>
 
 using namespace mavsdk::jni;
 
@@ -63,7 +64,7 @@ Java_io_mavsdk_kotlin_plugins_mocap_Mocap_setVisionPositionEstimateBlocking(
     jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/mocap/Mocap");
     if (!handle) return MAVSDK_MOCAP_RESULT_UNKNOWN;
 
-    mavsdk_mocap_vision_position_estimate_t vision_position_estimate_c{}; /* TODO: convert from Java object */
+    mavsdk_mocap_vision_position_estimate_t vision_position_estimate_c{}; /* TODO: convert scalar-only struct from Java object */
     mavsdk_mocap_result_t result = mavsdk_mocap_set_vision_position_estimate(
         reinterpret_cast<mavsdk_mocap_t>(handle),
         vision_position_estimate_c    );
@@ -82,7 +83,7 @@ Java_io_mavsdk_kotlin_plugins_mocap_Mocap_setVisionSpeedEstimateBlocking(
     jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/mocap/Mocap");
     if (!handle) return MAVSDK_MOCAP_RESULT_UNKNOWN;
 
-    mavsdk_mocap_vision_speed_estimate_t vision_speed_estimate_c{}; /* TODO: convert from Java object */
+    mavsdk_mocap_vision_speed_estimate_t vision_speed_estimate_c{}; /* TODO: convert scalar-only struct from Java object */
     mavsdk_mocap_result_t result = mavsdk_mocap_set_vision_speed_estimate(
         reinterpret_cast<mavsdk_mocap_t>(handle),
         vision_speed_estimate_c    );
@@ -101,7 +102,7 @@ Java_io_mavsdk_kotlin_plugins_mocap_Mocap_setAttitudePositionMocapBlocking(
     jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/mocap/Mocap");
     if (!handle) return MAVSDK_MOCAP_RESULT_UNKNOWN;
 
-    mavsdk_mocap_attitude_position_mocap_t attitude_position_mocap_c{}; /* TODO: convert from Java object */
+    mavsdk_mocap_attitude_position_mocap_t attitude_position_mocap_c{}; /* TODO: convert scalar-only struct from Java object */
     mavsdk_mocap_result_t result = mavsdk_mocap_set_attitude_position_mocap(
         reinterpret_cast<mavsdk_mocap_t>(handle),
         attitude_position_mocap_c    );
@@ -120,7 +121,7 @@ Java_io_mavsdk_kotlin_plugins_mocap_Mocap_setOdometryBlocking(
     jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/mocap/Mocap");
     if (!handle) return MAVSDK_MOCAP_RESULT_UNKNOWN;
 
-    mavsdk_mocap_odometry_t odometry_c{}; /* TODO: convert from Java object */
+    mavsdk_mocap_odometry_t odometry_c{}; /* TODO: convert scalar-only struct from Java object */
     mavsdk_mocap_result_t result = mavsdk_mocap_set_odometry(
         reinterpret_cast<mavsdk_mocap_t>(handle),
         odometry_c    );

@@ -7,6 +7,7 @@
 #include "../../jni_utils.h"
 
 #include <utility>
+#include <vector>
 
 using namespace mavsdk::jni;
 
@@ -40,7 +41,7 @@ struct PositionCallbackWrapper {
             return;
         }
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$Position");
+        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$Position");
         if (!retClass) { return; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(DDFF)V");
         jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jdouble>(value.latitude_deg)            , static_cast<jdouble>(value.longitude_deg)            , static_cast<jfloat>(value.absolute_altitude_m)            , static_cast<jfloat>(value.relative_altitude_m)        );
@@ -81,7 +82,7 @@ struct HomeCallbackWrapper {
             return;
         }
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$Position");
+        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$Position");
         if (!retClass) { return; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(DDFF)V");
         jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jdouble>(value.latitude_deg)            , static_cast<jdouble>(value.longitude_deg)            , static_cast<jfloat>(value.absolute_altitude_m)            , static_cast<jfloat>(value.relative_altitude_m)        );
@@ -262,7 +263,7 @@ struct AttitudeQuaternionCallbackWrapper {
             return;
         }
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$Quaternion");
+        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$Quaternion");
         if (!retClass) { return; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(FFFFJ)V");
         jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jfloat>(value.w)            , static_cast<jfloat>(value.x)            , static_cast<jfloat>(value.y)            , static_cast<jfloat>(value.z)            , static_cast<jlong>(value.timestamp_us)        );
@@ -303,7 +304,7 @@ struct AttitudeEulerCallbackWrapper {
             return;
         }
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$EulerAngle");
+        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$EulerAngle");
         if (!retClass) { return; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(FFFJ)V");
         jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jfloat>(value.roll_deg)            , static_cast<jfloat>(value.pitch_deg)            , static_cast<jfloat>(value.yaw_deg)            , static_cast<jlong>(value.timestamp_us)        );
@@ -344,7 +345,7 @@ struct AttitudeAngularVelocityBodyCallbackWrapper {
             return;
         }
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$AngularVelocityBody");
+        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$AngularVelocityBody");
         if (!retClass) { return; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(FFF)V");
         jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jfloat>(value.roll_rad_s)            , static_cast<jfloat>(value.pitch_rad_s)            , static_cast<jfloat>(value.yaw_rad_s)        );
@@ -385,7 +386,7 @@ struct VelocityNedCallbackWrapper {
             return;
         }
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$VelocityNed");
+        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$VelocityNed");
         if (!retClass) { return; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(FFF)V");
         jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jfloat>(value.north_m_s)            , static_cast<jfloat>(value.east_m_s)            , static_cast<jfloat>(value.down_m_s)        );
@@ -426,7 +427,7 @@ struct GpsInfoCallbackWrapper {
             return;
         }
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$GpsInfo");
+        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$GpsInfo");
         if (!retClass) { return; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(II)V");
         jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jint>(value.num_satellites)            , static_cast<jint>(value.fix_type)        );
@@ -467,7 +468,7 @@ struct RawGpsCallbackWrapper {
             return;
         }
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$RawGps");
+        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$RawGps");
         if (!retClass) { return; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(JDDFFFFFFFFFFF)V");
         jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jlong>(value.timestamp_us)            , static_cast<jdouble>(value.latitude_deg)            , static_cast<jdouble>(value.longitude_deg)            , static_cast<jfloat>(value.absolute_altitude_m)            , static_cast<jfloat>(value.hdop)            , static_cast<jfloat>(value.vdop)            , static_cast<jfloat>(value.velocity_m_s)            , static_cast<jfloat>(value.cog_deg)            , static_cast<jfloat>(value.altitude_ellipsoid_m)            , static_cast<jfloat>(value.horizontal_uncertainty_m)            , static_cast<jfloat>(value.vertical_uncertainty_m)            , static_cast<jfloat>(value.velocity_uncertainty_m_s)            , static_cast<jfloat>(value.heading_uncertainty_deg)            , static_cast<jfloat>(value.yaw_deg)        );
@@ -508,7 +509,7 @@ struct BatteryCallbackWrapper {
             return;
         }
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$Battery");
+        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$Battery");
         if (!retClass) { return; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(IFFFFFFI)V");
         jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jint>(value.id)            , static_cast<jfloat>(value.temperature_degc)            , static_cast<jfloat>(value.voltage_v)            , static_cast<jfloat>(value.current_battery_a)            , static_cast<jfloat>(value.capacity_consumed_ah)            , static_cast<jfloat>(value.remaining_percent)            , static_cast<jfloat>(value.time_remaining_s)            , static_cast<jint>(value.battery_function)        );
@@ -584,7 +585,7 @@ struct HealthCallbackWrapper {
             return;
         }
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$Health");
+        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$Health");
         if (!retClass) { return; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(ZZZZZZZ)V");
         jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jboolean>(value.is_gyrometer_calibration_ok)            , static_cast<jboolean>(value.is_accelerometer_calibration_ok)            , static_cast<jboolean>(value.is_magnetometer_calibration_ok)            , static_cast<jboolean>(value.is_local_position_ok)            , static_cast<jboolean>(value.is_global_position_ok)            , static_cast<jboolean>(value.is_home_position_ok)            , static_cast<jboolean>(value.is_armable)        );
@@ -625,7 +626,7 @@ struct RcStatusCallbackWrapper {
             return;
         }
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$RcStatus");
+        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$RcStatus");
         if (!retClass) { return; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(ZZF)V");
         jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jboolean>(value.was_available_once)            , static_cast<jboolean>(value.is_available)            , static_cast<jfloat>(value.signal_strength_percent)        );
@@ -666,7 +667,7 @@ struct StatusTextCallbackWrapper {
             return;
         }
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$StatusText");
+        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$StatusText");
         if (!retClass) { return; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(ILjava/lang/String;)V");
         jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jint>(value.type)            , toJavaString(env, value.text)        );
@@ -707,10 +708,10 @@ struct ActuatorControlTargetCallbackWrapper {
             return;
         }
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$ActuatorControlTarget");
+        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$ActuatorControlTarget");
         if (!retClass) { return; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(I)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jint>(value.group)            /* TODO: repeated field controls */ , static_cast<jobject>(nullptr)        );
+        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jint>(value.group)            /* TODO: repeated primitive field controls */ , static_cast<jobject>(nullptr)        );
         env->DeleteLocalRef(retClass);
         env->CallVoidMethod(callback.get(), invokeMethod, retObj);
         env->DeleteLocalRef(retObj);
@@ -748,10 +749,10 @@ struct ActuatorOutputStatusCallbackWrapper {
             return;
         }
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$ActuatorOutputStatus");
+        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$ActuatorOutputStatus");
         if (!retClass) { return; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(I)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jint>(value.active)            /* TODO: repeated field actuator */ , static_cast<jobject>(nullptr)        );
+        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jint>(value.active)            /* TODO: repeated primitive field actuator */ , static_cast<jobject>(nullptr)        );
         env->DeleteLocalRef(retClass);
         env->CallVoidMethod(callback.get(), invokeMethod, retObj);
         env->DeleteLocalRef(retObj);
@@ -789,11 +790,35 @@ struct OdometryCallbackWrapper {
             return;
         }
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$Odometry");
+        jobject nestedObj_position_body = nullptr;
+        {            jclass nestedClass_position_body = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$PositionBody");
+            jmethodID nestedCtor_position_body = env->GetMethodID(nestedClass_position_body, "<init>", "(FFF)V");
+            nestedObj_position_body = env->NewObject(nestedClass_position_body, nestedCtor_position_body                , static_cast<jfloat>(value.position_body.x_m)                , static_cast<jfloat>(value.position_body.y_m)                , static_cast<jfloat>(value.position_body.z_m)            );
+            env->DeleteLocalRef(nestedClass_position_body);        }        jobject nestedObj_q = nullptr;
+        {            jclass nestedClass_q = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$Quaternion");
+            jmethodID nestedCtor_q = env->GetMethodID(nestedClass_q, "<init>", "(FFFFJ)V");
+            nestedObj_q = env->NewObject(nestedClass_q, nestedCtor_q                , static_cast<jfloat>(value.q.w)                , static_cast<jfloat>(value.q.x)                , static_cast<jfloat>(value.q.y)                , static_cast<jfloat>(value.q.z)                , static_cast<jlong>(value.q.timestamp_us)            );
+            env->DeleteLocalRef(nestedClass_q);        }        jobject nestedObj_velocity_body = nullptr;
+        {            jclass nestedClass_velocity_body = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$VelocityBody");
+            jmethodID nestedCtor_velocity_body = env->GetMethodID(nestedClass_velocity_body, "<init>", "(FFF)V");
+            nestedObj_velocity_body = env->NewObject(nestedClass_velocity_body, nestedCtor_velocity_body                , static_cast<jfloat>(value.velocity_body.x_m_s)                , static_cast<jfloat>(value.velocity_body.y_m_s)                , static_cast<jfloat>(value.velocity_body.z_m_s)            );
+            env->DeleteLocalRef(nestedClass_velocity_body);        }        jobject nestedObj_angular_velocity_body = nullptr;
+        {            jclass nestedClass_angular_velocity_body = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$AngularVelocityBody");
+            jmethodID nestedCtor_angular_velocity_body = env->GetMethodID(nestedClass_angular_velocity_body, "<init>", "(FFF)V");
+            nestedObj_angular_velocity_body = env->NewObject(nestedClass_angular_velocity_body, nestedCtor_angular_velocity_body                , static_cast<jfloat>(value.angular_velocity_body.roll_rad_s)                , static_cast<jfloat>(value.angular_velocity_body.pitch_rad_s)                , static_cast<jfloat>(value.angular_velocity_body.yaw_rad_s)            );
+            env->DeleteLocalRef(nestedClass_angular_velocity_body);        }        jobject nestedObj_pose_covariance = nullptr;
+        {            jclass nestedClass_pose_covariance = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$Covariance");
+            jmethodID nestedCtor_pose_covariance = env->GetMethodID(nestedClass_pose_covariance, "<init>", "()V");
+            nestedObj_pose_covariance = env->NewObject(nestedClass_pose_covariance, nestedCtor_pose_covariance            );
+            env->DeleteLocalRef(nestedClass_pose_covariance);        }        jobject nestedObj_velocity_covariance = nullptr;
+        {            jclass nestedClass_velocity_covariance = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$Covariance");
+            jmethodID nestedCtor_velocity_covariance = env->GetMethodID(nestedClass_velocity_covariance, "<init>", "()V");
+            nestedObj_velocity_covariance = env->NewObject(nestedClass_velocity_covariance, nestedCtor_velocity_covariance            );
+            env->DeleteLocalRef(nestedClass_velocity_covariance);        }        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$Odometry");
         if (!retClass) { return; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(JIILio/mavsdk/kotlin/plugins/telemetry/Telemetry$PositionBody;Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$Quaternion;Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$VelocityBody;Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$AngularVelocityBody;Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$Covariance;Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$Covariance;)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jlong>(value.time_usec)            , static_cast<jint>(value.frame_id)            , static_cast<jint>(value.child_frame_id)            , /* TODO nested struct <protoc_gen_mavsdk.name_parser.NameParser object at 0x105c91c10> */ static_cast<jobject>(nullptr)            , /* TODO nested struct <protoc_gen_mavsdk.name_parser.NameParser object at 0x105c91c10> */ static_cast<jobject>(nullptr)            , /* TODO nested struct <protoc_gen_mavsdk.name_parser.NameParser object at 0x105c91c10> */ static_cast<jobject>(nullptr)            , /* TODO nested struct <protoc_gen_mavsdk.name_parser.NameParser object at 0x105c919d0> */ static_cast<jobject>(nullptr)            , /* TODO nested struct <protoc_gen_mavsdk.name_parser.NameParser object at 0x105c919d0> */ static_cast<jobject>(nullptr)            , /* TODO nested struct <protoc_gen_mavsdk.name_parser.NameParser object at 0x105c919d0> */ static_cast<jobject>(nullptr)        );
-        env->DeleteLocalRef(retClass);
+        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jlong>(value.time_usec)            , static_cast<jint>(value.frame_id)            , static_cast<jint>(value.child_frame_id)            , nestedObj_position_body            , nestedObj_q            , nestedObj_velocity_body            , nestedObj_angular_velocity_body            , nestedObj_pose_covariance            , nestedObj_velocity_covariance        );
+        env->DeleteLocalRef(retClass);        env->DeleteLocalRef(nestedObj_position_body);        env->DeleteLocalRef(nestedObj_q);        env->DeleteLocalRef(nestedObj_velocity_body);        env->DeleteLocalRef(nestedObj_angular_velocity_body);        env->DeleteLocalRef(nestedObj_pose_covariance);        env->DeleteLocalRef(nestedObj_velocity_covariance);
         env->CallVoidMethod(callback.get(), invokeMethod, retObj);
         env->DeleteLocalRef(retObj);
 
@@ -830,11 +855,19 @@ struct PositionVelocityNedCallbackWrapper {
             return;
         }
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$PositionVelocityNed");
+        jobject nestedObj_position = nullptr;
+        {            jclass nestedClass_position = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$PositionNed");
+            jmethodID nestedCtor_position = env->GetMethodID(nestedClass_position, "<init>", "(FFF)V");
+            nestedObj_position = env->NewObject(nestedClass_position, nestedCtor_position                , static_cast<jfloat>(value.position.north_m)                , static_cast<jfloat>(value.position.east_m)                , static_cast<jfloat>(value.position.down_m)            );
+            env->DeleteLocalRef(nestedClass_position);        }        jobject nestedObj_velocity = nullptr;
+        {            jclass nestedClass_velocity = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$VelocityNed");
+            jmethodID nestedCtor_velocity = env->GetMethodID(nestedClass_velocity, "<init>", "(FFF)V");
+            nestedObj_velocity = env->NewObject(nestedClass_velocity, nestedCtor_velocity                , static_cast<jfloat>(value.velocity.north_m_s)                , static_cast<jfloat>(value.velocity.east_m_s)                , static_cast<jfloat>(value.velocity.down_m_s)            );
+            env->DeleteLocalRef(nestedClass_velocity);        }        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$PositionVelocityNed");
         if (!retClass) { return; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$PositionNed;Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$VelocityNed;)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , /* TODO nested struct <protoc_gen_mavsdk.name_parser.NameParser object at 0x105c919d0> */ static_cast<jobject>(nullptr)            , /* TODO nested struct <protoc_gen_mavsdk.name_parser.NameParser object at 0x105c91c10> */ static_cast<jobject>(nullptr)        );
-        env->DeleteLocalRef(retClass);
+        jobject retObj = env->NewObject(retClass, retCtor            , nestedObj_position            , nestedObj_velocity        );
+        env->DeleteLocalRef(retClass);        env->DeleteLocalRef(nestedObj_position);        env->DeleteLocalRef(nestedObj_velocity);
         env->CallVoidMethod(callback.get(), invokeMethod, retObj);
         env->DeleteLocalRef(retObj);
 
@@ -871,7 +904,7 @@ struct GroundTruthCallbackWrapper {
             return;
         }
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$GroundTruth");
+        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$GroundTruth");
         if (!retClass) { return; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(DDF)V");
         jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jdouble>(value.latitude_deg)            , static_cast<jdouble>(value.longitude_deg)            , static_cast<jfloat>(value.absolute_altitude_m)        );
@@ -912,7 +945,7 @@ struct FixedwingMetricsCallbackWrapper {
             return;
         }
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$FixedwingMetrics");
+        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$FixedwingMetrics");
         if (!retClass) { return; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(FFFFFF)V");
         jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jfloat>(value.airspeed_m_s)            , static_cast<jfloat>(value.throttle_percentage)            , static_cast<jfloat>(value.climb_rate_m_s)            , static_cast<jfloat>(value.groundspeed_m_s)            , static_cast<jfloat>(value.heading_deg)            , static_cast<jfloat>(value.absolute_altitude_m)        );
@@ -953,11 +986,23 @@ struct ImuCallbackWrapper {
             return;
         }
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$Imu");
+        jobject nestedObj_acceleration_frd = nullptr;
+        {            jclass nestedClass_acceleration_frd = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$AccelerationFrd");
+            jmethodID nestedCtor_acceleration_frd = env->GetMethodID(nestedClass_acceleration_frd, "<init>", "(FFF)V");
+            nestedObj_acceleration_frd = env->NewObject(nestedClass_acceleration_frd, nestedCtor_acceleration_frd                , static_cast<jfloat>(value.acceleration_frd.forward_m_s2)                , static_cast<jfloat>(value.acceleration_frd.right_m_s2)                , static_cast<jfloat>(value.acceleration_frd.down_m_s2)            );
+            env->DeleteLocalRef(nestedClass_acceleration_frd);        }        jobject nestedObj_angular_velocity_frd = nullptr;
+        {            jclass nestedClass_angular_velocity_frd = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$AngularVelocityFrd");
+            jmethodID nestedCtor_angular_velocity_frd = env->GetMethodID(nestedClass_angular_velocity_frd, "<init>", "(FFF)V");
+            nestedObj_angular_velocity_frd = env->NewObject(nestedClass_angular_velocity_frd, nestedCtor_angular_velocity_frd                , static_cast<jfloat>(value.angular_velocity_frd.forward_rad_s)                , static_cast<jfloat>(value.angular_velocity_frd.right_rad_s)                , static_cast<jfloat>(value.angular_velocity_frd.down_rad_s)            );
+            env->DeleteLocalRef(nestedClass_angular_velocity_frd);        }        jobject nestedObj_magnetic_field_frd = nullptr;
+        {            jclass nestedClass_magnetic_field_frd = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$MagneticFieldFrd");
+            jmethodID nestedCtor_magnetic_field_frd = env->GetMethodID(nestedClass_magnetic_field_frd, "<init>", "(FFF)V");
+            nestedObj_magnetic_field_frd = env->NewObject(nestedClass_magnetic_field_frd, nestedCtor_magnetic_field_frd                , static_cast<jfloat>(value.magnetic_field_frd.forward_gauss)                , static_cast<jfloat>(value.magnetic_field_frd.right_gauss)                , static_cast<jfloat>(value.magnetic_field_frd.down_gauss)            );
+            env->DeleteLocalRef(nestedClass_magnetic_field_frd);        }        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$Imu");
         if (!retClass) { return; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$AccelerationFrd;Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$AngularVelocityFrd;Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$MagneticFieldFrd;FJ)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , /* TODO nested struct <protoc_gen_mavsdk.name_parser.NameParser object at 0x105c917f0> */ static_cast<jobject>(nullptr)            , /* TODO nested struct <protoc_gen_mavsdk.name_parser.NameParser object at 0x105c917f0> */ static_cast<jobject>(nullptr)            , /* TODO nested struct <protoc_gen_mavsdk.name_parser.NameParser object at 0x105c917f0> */ static_cast<jobject>(nullptr)            , static_cast<jfloat>(value.temperature_degc)            , static_cast<jlong>(value.timestamp_us)        );
-        env->DeleteLocalRef(retClass);
+        jobject retObj = env->NewObject(retClass, retCtor            , nestedObj_acceleration_frd            , nestedObj_angular_velocity_frd            , nestedObj_magnetic_field_frd            , static_cast<jfloat>(value.temperature_degc)            , static_cast<jlong>(value.timestamp_us)        );
+        env->DeleteLocalRef(retClass);        env->DeleteLocalRef(nestedObj_acceleration_frd);        env->DeleteLocalRef(nestedObj_angular_velocity_frd);        env->DeleteLocalRef(nestedObj_magnetic_field_frd);
         env->CallVoidMethod(callback.get(), invokeMethod, retObj);
         env->DeleteLocalRef(retObj);
 
@@ -994,11 +1039,23 @@ struct ScaledImuCallbackWrapper {
             return;
         }
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$Imu");
+        jobject nestedObj_acceleration_frd = nullptr;
+        {            jclass nestedClass_acceleration_frd = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$AccelerationFrd");
+            jmethodID nestedCtor_acceleration_frd = env->GetMethodID(nestedClass_acceleration_frd, "<init>", "(FFF)V");
+            nestedObj_acceleration_frd = env->NewObject(nestedClass_acceleration_frd, nestedCtor_acceleration_frd                , static_cast<jfloat>(value.acceleration_frd.forward_m_s2)                , static_cast<jfloat>(value.acceleration_frd.right_m_s2)                , static_cast<jfloat>(value.acceleration_frd.down_m_s2)            );
+            env->DeleteLocalRef(nestedClass_acceleration_frd);        }        jobject nestedObj_angular_velocity_frd = nullptr;
+        {            jclass nestedClass_angular_velocity_frd = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$AngularVelocityFrd");
+            jmethodID nestedCtor_angular_velocity_frd = env->GetMethodID(nestedClass_angular_velocity_frd, "<init>", "(FFF)V");
+            nestedObj_angular_velocity_frd = env->NewObject(nestedClass_angular_velocity_frd, nestedCtor_angular_velocity_frd                , static_cast<jfloat>(value.angular_velocity_frd.forward_rad_s)                , static_cast<jfloat>(value.angular_velocity_frd.right_rad_s)                , static_cast<jfloat>(value.angular_velocity_frd.down_rad_s)            );
+            env->DeleteLocalRef(nestedClass_angular_velocity_frd);        }        jobject nestedObj_magnetic_field_frd = nullptr;
+        {            jclass nestedClass_magnetic_field_frd = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$MagneticFieldFrd");
+            jmethodID nestedCtor_magnetic_field_frd = env->GetMethodID(nestedClass_magnetic_field_frd, "<init>", "(FFF)V");
+            nestedObj_magnetic_field_frd = env->NewObject(nestedClass_magnetic_field_frd, nestedCtor_magnetic_field_frd                , static_cast<jfloat>(value.magnetic_field_frd.forward_gauss)                , static_cast<jfloat>(value.magnetic_field_frd.right_gauss)                , static_cast<jfloat>(value.magnetic_field_frd.down_gauss)            );
+            env->DeleteLocalRef(nestedClass_magnetic_field_frd);        }        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$Imu");
         if (!retClass) { return; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$AccelerationFrd;Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$AngularVelocityFrd;Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$MagneticFieldFrd;FJ)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , /* TODO nested struct <protoc_gen_mavsdk.name_parser.NameParser object at 0x105c91c70> */ static_cast<jobject>(nullptr)            , /* TODO nested struct <protoc_gen_mavsdk.name_parser.NameParser object at 0x105c91c70> */ static_cast<jobject>(nullptr)            , /* TODO nested struct <protoc_gen_mavsdk.name_parser.NameParser object at 0x105c91c70> */ static_cast<jobject>(nullptr)            , static_cast<jfloat>(value.temperature_degc)            , static_cast<jlong>(value.timestamp_us)        );
-        env->DeleteLocalRef(retClass);
+        jobject retObj = env->NewObject(retClass, retCtor            , nestedObj_acceleration_frd            , nestedObj_angular_velocity_frd            , nestedObj_magnetic_field_frd            , static_cast<jfloat>(value.temperature_degc)            , static_cast<jlong>(value.timestamp_us)        );
+        env->DeleteLocalRef(retClass);        env->DeleteLocalRef(nestedObj_acceleration_frd);        env->DeleteLocalRef(nestedObj_angular_velocity_frd);        env->DeleteLocalRef(nestedObj_magnetic_field_frd);
         env->CallVoidMethod(callback.get(), invokeMethod, retObj);
         env->DeleteLocalRef(retObj);
 
@@ -1035,11 +1092,23 @@ struct RawImuCallbackWrapper {
             return;
         }
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$Imu");
+        jobject nestedObj_acceleration_frd = nullptr;
+        {            jclass nestedClass_acceleration_frd = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$AccelerationFrd");
+            jmethodID nestedCtor_acceleration_frd = env->GetMethodID(nestedClass_acceleration_frd, "<init>", "(FFF)V");
+            nestedObj_acceleration_frd = env->NewObject(nestedClass_acceleration_frd, nestedCtor_acceleration_frd                , static_cast<jfloat>(value.acceleration_frd.forward_m_s2)                , static_cast<jfloat>(value.acceleration_frd.right_m_s2)                , static_cast<jfloat>(value.acceleration_frd.down_m_s2)            );
+            env->DeleteLocalRef(nestedClass_acceleration_frd);        }        jobject nestedObj_angular_velocity_frd = nullptr;
+        {            jclass nestedClass_angular_velocity_frd = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$AngularVelocityFrd");
+            jmethodID nestedCtor_angular_velocity_frd = env->GetMethodID(nestedClass_angular_velocity_frd, "<init>", "(FFF)V");
+            nestedObj_angular_velocity_frd = env->NewObject(nestedClass_angular_velocity_frd, nestedCtor_angular_velocity_frd                , static_cast<jfloat>(value.angular_velocity_frd.forward_rad_s)                , static_cast<jfloat>(value.angular_velocity_frd.right_rad_s)                , static_cast<jfloat>(value.angular_velocity_frd.down_rad_s)            );
+            env->DeleteLocalRef(nestedClass_angular_velocity_frd);        }        jobject nestedObj_magnetic_field_frd = nullptr;
+        {            jclass nestedClass_magnetic_field_frd = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$MagneticFieldFrd");
+            jmethodID nestedCtor_magnetic_field_frd = env->GetMethodID(nestedClass_magnetic_field_frd, "<init>", "(FFF)V");
+            nestedObj_magnetic_field_frd = env->NewObject(nestedClass_magnetic_field_frd, nestedCtor_magnetic_field_frd                , static_cast<jfloat>(value.magnetic_field_frd.forward_gauss)                , static_cast<jfloat>(value.magnetic_field_frd.right_gauss)                , static_cast<jfloat>(value.magnetic_field_frd.down_gauss)            );
+            env->DeleteLocalRef(nestedClass_magnetic_field_frd);        }        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$Imu");
         if (!retClass) { return; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$AccelerationFrd;Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$AngularVelocityFrd;Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$MagneticFieldFrd;FJ)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , /* TODO nested struct <protoc_gen_mavsdk.name_parser.NameParser object at 0x105c91af0> */ static_cast<jobject>(nullptr)            , /* TODO nested struct <protoc_gen_mavsdk.name_parser.NameParser object at 0x105c91af0> */ static_cast<jobject>(nullptr)            , /* TODO nested struct <protoc_gen_mavsdk.name_parser.NameParser object at 0x105c91af0> */ static_cast<jobject>(nullptr)            , static_cast<jfloat>(value.temperature_degc)            , static_cast<jlong>(value.timestamp_us)        );
-        env->DeleteLocalRef(retClass);
+        jobject retObj = env->NewObject(retClass, retCtor            , nestedObj_acceleration_frd            , nestedObj_angular_velocity_frd            , nestedObj_magnetic_field_frd            , static_cast<jfloat>(value.temperature_degc)            , static_cast<jlong>(value.timestamp_us)        );
+        env->DeleteLocalRef(retClass);        env->DeleteLocalRef(nestedObj_acceleration_frd);        env->DeleteLocalRef(nestedObj_angular_velocity_frd);        env->DeleteLocalRef(nestedObj_magnetic_field_frd);
         env->CallVoidMethod(callback.get(), invokeMethod, retObj);
         env->DeleteLocalRef(retObj);
 
@@ -1146,11 +1215,15 @@ struct DistanceSensorCallbackWrapper {
             return;
         }
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$DistanceSensor");
+        jobject nestedObj_orientation = nullptr;
+        {            jclass nestedClass_orientation = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$EulerAngle");
+            jmethodID nestedCtor_orientation = env->GetMethodID(nestedClass_orientation, "<init>", "(FFFJ)V");
+            nestedObj_orientation = env->NewObject(nestedClass_orientation, nestedCtor_orientation                , static_cast<jfloat>(value.orientation.roll_deg)                , static_cast<jfloat>(value.orientation.pitch_deg)                , static_cast<jfloat>(value.orientation.yaw_deg)                , static_cast<jlong>(value.orientation.timestamp_us)            );
+            env->DeleteLocalRef(nestedClass_orientation);        }        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$DistanceSensor");
         if (!retClass) { return; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(FFFLio/mavsdk/kotlin/plugins/telemetry/Telemetry$EulerAngle;)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jfloat>(value.minimum_distance_m)            , static_cast<jfloat>(value.maximum_distance_m)            , static_cast<jfloat>(value.current_distance_m)            , /* TODO nested struct <protoc_gen_mavsdk.name_parser.NameParser object at 0x105c93770> */ static_cast<jobject>(nullptr)        );
-        env->DeleteLocalRef(retClass);
+        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jfloat>(value.minimum_distance_m)            , static_cast<jfloat>(value.maximum_distance_m)            , static_cast<jfloat>(value.current_distance_m)            , nestedObj_orientation        );
+        env->DeleteLocalRef(retClass);        env->DeleteLocalRef(nestedObj_orientation);
         env->CallVoidMethod(callback.get(), invokeMethod, retObj);
         env->DeleteLocalRef(retObj);
 
@@ -1187,7 +1260,7 @@ struct ScaledPressureCallbackWrapper {
             return;
         }
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$ScaledPressure");
+        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$ScaledPressure");
         if (!retClass) { return; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(JFFFF)V");
         jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jlong>(value.timestamp_us)            , static_cast<jfloat>(value.absolute_pressure_hpa)            , static_cast<jfloat>(value.differential_pressure_hpa)            , static_cast<jfloat>(value.temperature_deg)            , static_cast<jfloat>(value.differential_pressure_temperature_deg)        );
@@ -1228,7 +1301,7 @@ struct HeadingCallbackWrapper {
             return;
         }
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$Heading");
+        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$Heading");
         if (!retClass) { return; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(D)V");
         jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jdouble>(value.heading_deg)        );
@@ -1269,7 +1342,7 @@ struct AltitudeCallbackWrapper {
             return;
         }
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$Altitude");
+        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$Altitude");
         if (!retClass) { return; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(FFFFFF)V");
         jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jfloat>(value.altitude_monotonic_m)            , static_cast<jfloat>(value.altitude_amsl_m)            , static_cast<jfloat>(value.altitude_local_m)            , static_cast<jfloat>(value.altitude_relative_m)            , static_cast<jfloat>(value.altitude_terrain_m)            , static_cast<jfloat>(value.bottom_clearance_m)        );
@@ -1310,7 +1383,7 @@ struct WindCallbackWrapper {
             return;
         }
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$Wind");
+        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$Wind");
         if (!retClass) { return; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(FFFFFFFF)V");
         jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jfloat>(value.wind_x_ned_m_s)            , static_cast<jfloat>(value.wind_y_ned_m_s)            , static_cast<jfloat>(value.wind_z_ned_m_s)            , static_cast<jfloat>(value.horizontal_variability_stddev_m_s)            , static_cast<jfloat>(value.vertical_variability_stddev_m_s)            , static_cast<jfloat>(value.wind_altitude_msl_m)            , static_cast<jfloat>(value.horizontal_wind_speed_accuracy_m_s)            , static_cast<jfloat>(value.vertical_wind_speed_accuracy_m_s)        );
@@ -2191,7 +2264,7 @@ struct GetGpsGlobalOriginCallbackWrapper {
             return;
         }
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$GpsGlobalOrigin");
+        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$GpsGlobalOrigin");
         if (!retClass) { return; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(DDF)V");
         jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jdouble>(gps_global_origin.latitude_deg)            , static_cast<jdouble>(gps_global_origin.longitude_deg)            , static_cast<jfloat>(gps_global_origin.altitude_m)        );
@@ -2261,11 +2334,12 @@ Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_positionBlocking(
         &ret_val
     );
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$Position");
+        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$Position");
         if (!retClass) { return nullptr; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(DDFF)V");
         jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jdouble>(ret_val.latitude_deg)            , static_cast<jdouble>(ret_val.longitude_deg)            , static_cast<jfloat>(ret_val.absolute_altitude_m)            , static_cast<jfloat>(ret_val.relative_altitude_m)        );
         env->DeleteLocalRef(retClass);
+    mavsdk_telemetry_position_destroy(&ret_val);
     return retObj;
 }
 
@@ -2341,11 +2415,12 @@ Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_homeBlocking(
         &ret_val
     );
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$Position");
+        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$Position");
         if (!retClass) { return nullptr; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(DDFF)V");
         jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jdouble>(ret_val.latitude_deg)            , static_cast<jdouble>(ret_val.longitude_deg)            , static_cast<jfloat>(ret_val.absolute_altitude_m)            , static_cast<jfloat>(ret_val.relative_altitude_m)        );
         env->DeleteLocalRef(retClass);
+    mavsdk_telemetry_position_destroy(&ret_val);
     return retObj;
 }
 
@@ -2721,11 +2796,12 @@ Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_attitudeQuaternionBlocking(
         &ret_val
     );
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$Quaternion");
+        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$Quaternion");
         if (!retClass) { return nullptr; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(FFFFJ)V");
         jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jfloat>(ret_val.w)            , static_cast<jfloat>(ret_val.x)            , static_cast<jfloat>(ret_val.y)            , static_cast<jfloat>(ret_val.z)            , static_cast<jlong>(ret_val.timestamp_us)        );
         env->DeleteLocalRef(retClass);
+    mavsdk_telemetry_quaternion_destroy(&ret_val);
     return retObj;
 }
 
@@ -2801,11 +2877,12 @@ Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_attitudeEulerBlocking(
         &ret_val
     );
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$EulerAngle");
+        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$EulerAngle");
         if (!retClass) { return nullptr; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(FFFJ)V");
         jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jfloat>(ret_val.roll_deg)            , static_cast<jfloat>(ret_val.pitch_deg)            , static_cast<jfloat>(ret_val.yaw_deg)            , static_cast<jlong>(ret_val.timestamp_us)        );
         env->DeleteLocalRef(retClass);
+    mavsdk_telemetry_euler_angle_destroy(&ret_val);
     return retObj;
 }
 
@@ -2881,11 +2958,12 @@ Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_attitudeAngularVelocityBodyBlo
         &ret_val
     );
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$AngularVelocityBody");
+        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$AngularVelocityBody");
         if (!retClass) { return nullptr; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(FFF)V");
         jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jfloat>(ret_val.roll_rad_s)            , static_cast<jfloat>(ret_val.pitch_rad_s)            , static_cast<jfloat>(ret_val.yaw_rad_s)        );
         env->DeleteLocalRef(retClass);
+    mavsdk_telemetry_angular_velocity_body_destroy(&ret_val);
     return retObj;
 }
 
@@ -2961,11 +3039,12 @@ Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_velocityNedBlocking(
         &ret_val
     );
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$VelocityNed");
+        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$VelocityNed");
         if (!retClass) { return nullptr; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(FFF)V");
         jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jfloat>(ret_val.north_m_s)            , static_cast<jfloat>(ret_val.east_m_s)            , static_cast<jfloat>(ret_val.down_m_s)        );
         env->DeleteLocalRef(retClass);
+    mavsdk_telemetry_velocity_ned_destroy(&ret_val);
     return retObj;
 }
 
@@ -3041,11 +3120,12 @@ Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_gpsInfoBlocking(
         &ret_val
     );
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$GpsInfo");
+        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$GpsInfo");
         if (!retClass) { return nullptr; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(II)V");
         jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jint>(ret_val.num_satellites)            , static_cast<jint>(ret_val.fix_type)        );
         env->DeleteLocalRef(retClass);
+    mavsdk_telemetry_gps_info_destroy(&ret_val);
     return retObj;
 }
 
@@ -3121,11 +3201,12 @@ Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_rawGpsBlocking(
         &ret_val
     );
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$RawGps");
+        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$RawGps");
         if (!retClass) { return nullptr; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(JDDFFFFFFFFFFF)V");
         jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jlong>(ret_val.timestamp_us)            , static_cast<jdouble>(ret_val.latitude_deg)            , static_cast<jdouble>(ret_val.longitude_deg)            , static_cast<jfloat>(ret_val.absolute_altitude_m)            , static_cast<jfloat>(ret_val.hdop)            , static_cast<jfloat>(ret_val.vdop)            , static_cast<jfloat>(ret_val.velocity_m_s)            , static_cast<jfloat>(ret_val.cog_deg)            , static_cast<jfloat>(ret_val.altitude_ellipsoid_m)            , static_cast<jfloat>(ret_val.horizontal_uncertainty_m)            , static_cast<jfloat>(ret_val.vertical_uncertainty_m)            , static_cast<jfloat>(ret_val.velocity_uncertainty_m_s)            , static_cast<jfloat>(ret_val.heading_uncertainty_deg)            , static_cast<jfloat>(ret_val.yaw_deg)        );
         env->DeleteLocalRef(retClass);
+    mavsdk_telemetry_raw_gps_destroy(&ret_val);
     return retObj;
 }
 
@@ -3201,11 +3282,12 @@ Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_batteryBlocking(
         &ret_val
     );
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$Battery");
+        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$Battery");
         if (!retClass) { return nullptr; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(IFFFFFFI)V");
         jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jint>(ret_val.id)            , static_cast<jfloat>(ret_val.temperature_degc)            , static_cast<jfloat>(ret_val.voltage_v)            , static_cast<jfloat>(ret_val.current_battery_a)            , static_cast<jfloat>(ret_val.capacity_consumed_ah)            , static_cast<jfloat>(ret_val.remaining_percent)            , static_cast<jfloat>(ret_val.time_remaining_s)            , static_cast<jint>(ret_val.battery_function)        );
         env->DeleteLocalRef(retClass);
+    mavsdk_telemetry_battery_destroy(&ret_val);
     return retObj;
 }
 
@@ -3356,11 +3438,12 @@ Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_healthBlocking(
         &ret_val
     );
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$Health");
+        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$Health");
         if (!retClass) { return nullptr; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(ZZZZZZZ)V");
         jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jboolean>(ret_val.is_gyrometer_calibration_ok)            , static_cast<jboolean>(ret_val.is_accelerometer_calibration_ok)            , static_cast<jboolean>(ret_val.is_magnetometer_calibration_ok)            , static_cast<jboolean>(ret_val.is_local_position_ok)            , static_cast<jboolean>(ret_val.is_global_position_ok)            , static_cast<jboolean>(ret_val.is_home_position_ok)            , static_cast<jboolean>(ret_val.is_armable)        );
         env->DeleteLocalRef(retClass);
+    mavsdk_telemetry_health_destroy(&ret_val);
     return retObj;
 }
 
@@ -3436,11 +3519,12 @@ Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_rcStatusBlocking(
         &ret_val
     );
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$RcStatus");
+        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$RcStatus");
         if (!retClass) { return nullptr; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(ZZF)V");
         jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jboolean>(ret_val.was_available_once)            , static_cast<jboolean>(ret_val.is_available)            , static_cast<jfloat>(ret_val.signal_strength_percent)        );
         env->DeleteLocalRef(retClass);
+    mavsdk_telemetry_rc_status_destroy(&ret_val);
     return retObj;
 }
 
@@ -3516,11 +3600,12 @@ Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_statusTextBlocking(
         &ret_val
     );
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$StatusText");
+        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$StatusText");
         if (!retClass) { return nullptr; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(ILjava/lang/String;)V");
         jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jint>(ret_val.type)            , toJavaString(env, ret_val.text)        );
         env->DeleteLocalRef(retClass);
+    mavsdk_telemetry_status_text_destroy(&ret_val);
     return retObj;
 }
 
@@ -3596,11 +3681,12 @@ Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_actuatorControlTargetBlocking(
         &ret_val
     );
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$ActuatorControlTarget");
+        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$ActuatorControlTarget");
         if (!retClass) { return nullptr; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(I)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jint>(ret_val.group)            /* TODO: repeated field controls */ , static_cast<jobject>(nullptr)        );
+        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jint>(ret_val.group)            /* TODO: repeated primitive field controls */ , static_cast<jobject>(nullptr)        );
         env->DeleteLocalRef(retClass);
+    mavsdk_telemetry_actuator_control_target_destroy(&ret_val);
     return retObj;
 }
 
@@ -3676,11 +3762,12 @@ Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_actuatorOutputStatusBlocking(
         &ret_val
     );
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$ActuatorOutputStatus");
+        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$ActuatorOutputStatus");
         if (!retClass) { return nullptr; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(I)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jint>(ret_val.active)            /* TODO: repeated field actuator */ , static_cast<jobject>(nullptr)        );
+        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jint>(ret_val.active)            /* TODO: repeated primitive field actuator */ , static_cast<jobject>(nullptr)        );
         env->DeleteLocalRef(retClass);
+    mavsdk_telemetry_actuator_output_status_destroy(&ret_val);
     return retObj;
 }
 
@@ -3756,11 +3843,36 @@ Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_odometryBlocking(
         &ret_val
     );
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$Odometry");
+        jobject nestedObj_position_body = nullptr;
+        {            jclass nestedClass_position_body = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$PositionBody");
+            jmethodID nestedCtor_position_body = env->GetMethodID(nestedClass_position_body, "<init>", "(FFF)V");
+            nestedObj_position_body = env->NewObject(nestedClass_position_body, nestedCtor_position_body                , static_cast<jfloat>(ret_val.position_body.x_m)                , static_cast<jfloat>(ret_val.position_body.y_m)                , static_cast<jfloat>(ret_val.position_body.z_m)            );
+            env->DeleteLocalRef(nestedClass_position_body);        }        jobject nestedObj_q = nullptr;
+        {            jclass nestedClass_q = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$Quaternion");
+            jmethodID nestedCtor_q = env->GetMethodID(nestedClass_q, "<init>", "(FFFFJ)V");
+            nestedObj_q = env->NewObject(nestedClass_q, nestedCtor_q                , static_cast<jfloat>(ret_val.q.w)                , static_cast<jfloat>(ret_val.q.x)                , static_cast<jfloat>(ret_val.q.y)                , static_cast<jfloat>(ret_val.q.z)                , static_cast<jlong>(ret_val.q.timestamp_us)            );
+            env->DeleteLocalRef(nestedClass_q);        }        jobject nestedObj_velocity_body = nullptr;
+        {            jclass nestedClass_velocity_body = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$VelocityBody");
+            jmethodID nestedCtor_velocity_body = env->GetMethodID(nestedClass_velocity_body, "<init>", "(FFF)V");
+            nestedObj_velocity_body = env->NewObject(nestedClass_velocity_body, nestedCtor_velocity_body                , static_cast<jfloat>(ret_val.velocity_body.x_m_s)                , static_cast<jfloat>(ret_val.velocity_body.y_m_s)                , static_cast<jfloat>(ret_val.velocity_body.z_m_s)            );
+            env->DeleteLocalRef(nestedClass_velocity_body);        }        jobject nestedObj_angular_velocity_body = nullptr;
+        {            jclass nestedClass_angular_velocity_body = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$AngularVelocityBody");
+            jmethodID nestedCtor_angular_velocity_body = env->GetMethodID(nestedClass_angular_velocity_body, "<init>", "(FFF)V");
+            nestedObj_angular_velocity_body = env->NewObject(nestedClass_angular_velocity_body, nestedCtor_angular_velocity_body                , static_cast<jfloat>(ret_val.angular_velocity_body.roll_rad_s)                , static_cast<jfloat>(ret_val.angular_velocity_body.pitch_rad_s)                , static_cast<jfloat>(ret_val.angular_velocity_body.yaw_rad_s)            );
+            env->DeleteLocalRef(nestedClass_angular_velocity_body);        }        jobject nestedObj_pose_covariance = nullptr;
+        {            jclass nestedClass_pose_covariance = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$Covariance");
+            jmethodID nestedCtor_pose_covariance = env->GetMethodID(nestedClass_pose_covariance, "<init>", "()V");
+            nestedObj_pose_covariance = env->NewObject(nestedClass_pose_covariance, nestedCtor_pose_covariance            );
+            env->DeleteLocalRef(nestedClass_pose_covariance);        }        jobject nestedObj_velocity_covariance = nullptr;
+        {            jclass nestedClass_velocity_covariance = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$Covariance");
+            jmethodID nestedCtor_velocity_covariance = env->GetMethodID(nestedClass_velocity_covariance, "<init>", "()V");
+            nestedObj_velocity_covariance = env->NewObject(nestedClass_velocity_covariance, nestedCtor_velocity_covariance            );
+            env->DeleteLocalRef(nestedClass_velocity_covariance);        }        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$Odometry");
         if (!retClass) { return nullptr; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(JIILio/mavsdk/kotlin/plugins/telemetry/Telemetry$PositionBody;Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$Quaternion;Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$VelocityBody;Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$AngularVelocityBody;Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$Covariance;Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$Covariance;)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jlong>(ret_val.time_usec)            , static_cast<jint>(ret_val.frame_id)            , static_cast<jint>(ret_val.child_frame_id)            , /* TODO nested struct <protoc_gen_mavsdk.name_parser.NameParser object at 0x105c93770> */ static_cast<jobject>(nullptr)            , /* TODO nested struct <protoc_gen_mavsdk.name_parser.NameParser object at 0x105c93770> */ static_cast<jobject>(nullptr)            , /* TODO nested struct <protoc_gen_mavsdk.name_parser.NameParser object at 0x105c93770> */ static_cast<jobject>(nullptr)            , /* TODO nested struct <protoc_gen_mavsdk.name_parser.NameParser object at 0x105c93290> */ static_cast<jobject>(nullptr)            , /* TODO nested struct <protoc_gen_mavsdk.name_parser.NameParser object at 0x105c93290> */ static_cast<jobject>(nullptr)            , /* TODO nested struct <protoc_gen_mavsdk.name_parser.NameParser object at 0x105c93290> */ static_cast<jobject>(nullptr)        );
-        env->DeleteLocalRef(retClass);
+        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jlong>(ret_val.time_usec)            , static_cast<jint>(ret_val.frame_id)            , static_cast<jint>(ret_val.child_frame_id)            , nestedObj_position_body            , nestedObj_q            , nestedObj_velocity_body            , nestedObj_angular_velocity_body            , nestedObj_pose_covariance            , nestedObj_velocity_covariance        );
+        env->DeleteLocalRef(retClass);        env->DeleteLocalRef(nestedObj_position_body);        env->DeleteLocalRef(nestedObj_q);        env->DeleteLocalRef(nestedObj_velocity_body);        env->DeleteLocalRef(nestedObj_angular_velocity_body);        env->DeleteLocalRef(nestedObj_pose_covariance);        env->DeleteLocalRef(nestedObj_velocity_covariance);
+    mavsdk_telemetry_odometry_destroy(&ret_val);
     return retObj;
 }
 
@@ -3836,11 +3948,20 @@ Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_positionVelocityNedBlocking(
         &ret_val
     );
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$PositionVelocityNed");
+        jobject nestedObj_position = nullptr;
+        {            jclass nestedClass_position = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$PositionNed");
+            jmethodID nestedCtor_position = env->GetMethodID(nestedClass_position, "<init>", "(FFF)V");
+            nestedObj_position = env->NewObject(nestedClass_position, nestedCtor_position                , static_cast<jfloat>(ret_val.position.north_m)                , static_cast<jfloat>(ret_val.position.east_m)                , static_cast<jfloat>(ret_val.position.down_m)            );
+            env->DeleteLocalRef(nestedClass_position);        }        jobject nestedObj_velocity = nullptr;
+        {            jclass nestedClass_velocity = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$VelocityNed");
+            jmethodID nestedCtor_velocity = env->GetMethodID(nestedClass_velocity, "<init>", "(FFF)V");
+            nestedObj_velocity = env->NewObject(nestedClass_velocity, nestedCtor_velocity                , static_cast<jfloat>(ret_val.velocity.north_m_s)                , static_cast<jfloat>(ret_val.velocity.east_m_s)                , static_cast<jfloat>(ret_val.velocity.down_m_s)            );
+            env->DeleteLocalRef(nestedClass_velocity);        }        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$PositionVelocityNed");
         if (!retClass) { return nullptr; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$PositionNed;Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$VelocityNed;)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , /* TODO nested struct <protoc_gen_mavsdk.name_parser.NameParser object at 0x105c93770> */ static_cast<jobject>(nullptr)            , /* TODO nested struct <protoc_gen_mavsdk.name_parser.NameParser object at 0x105c935f0> */ static_cast<jobject>(nullptr)        );
-        env->DeleteLocalRef(retClass);
+        jobject retObj = env->NewObject(retClass, retCtor            , nestedObj_position            , nestedObj_velocity        );
+        env->DeleteLocalRef(retClass);        env->DeleteLocalRef(nestedObj_position);        env->DeleteLocalRef(nestedObj_velocity);
+    mavsdk_telemetry_position_velocity_ned_destroy(&ret_val);
     return retObj;
 }
 
@@ -3916,11 +4037,12 @@ Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_groundTruthBlocking(
         &ret_val
     );
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$GroundTruth");
+        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$GroundTruth");
         if (!retClass) { return nullptr; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(DDF)V");
         jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jdouble>(ret_val.latitude_deg)            , static_cast<jdouble>(ret_val.longitude_deg)            , static_cast<jfloat>(ret_val.absolute_altitude_m)        );
         env->DeleteLocalRef(retClass);
+    mavsdk_telemetry_ground_truth_destroy(&ret_val);
     return retObj;
 }
 
@@ -3996,11 +4118,12 @@ Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_fixedwingMetricsBlocking(
         &ret_val
     );
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$FixedwingMetrics");
+        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$FixedwingMetrics");
         if (!retClass) { return nullptr; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(FFFFFF)V");
         jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jfloat>(ret_val.airspeed_m_s)            , static_cast<jfloat>(ret_val.throttle_percentage)            , static_cast<jfloat>(ret_val.climb_rate_m_s)            , static_cast<jfloat>(ret_val.groundspeed_m_s)            , static_cast<jfloat>(ret_val.heading_deg)            , static_cast<jfloat>(ret_val.absolute_altitude_m)        );
         env->DeleteLocalRef(retClass);
+    mavsdk_telemetry_fixedwing_metrics_destroy(&ret_val);
     return retObj;
 }
 
@@ -4076,11 +4199,24 @@ Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_imuBlocking(
         &ret_val
     );
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$Imu");
+        jobject nestedObj_acceleration_frd = nullptr;
+        {            jclass nestedClass_acceleration_frd = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$AccelerationFrd");
+            jmethodID nestedCtor_acceleration_frd = env->GetMethodID(nestedClass_acceleration_frd, "<init>", "(FFF)V");
+            nestedObj_acceleration_frd = env->NewObject(nestedClass_acceleration_frd, nestedCtor_acceleration_frd                , static_cast<jfloat>(ret_val.acceleration_frd.forward_m_s2)                , static_cast<jfloat>(ret_val.acceleration_frd.right_m_s2)                , static_cast<jfloat>(ret_val.acceleration_frd.down_m_s2)            );
+            env->DeleteLocalRef(nestedClass_acceleration_frd);        }        jobject nestedObj_angular_velocity_frd = nullptr;
+        {            jclass nestedClass_angular_velocity_frd = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$AngularVelocityFrd");
+            jmethodID nestedCtor_angular_velocity_frd = env->GetMethodID(nestedClass_angular_velocity_frd, "<init>", "(FFF)V");
+            nestedObj_angular_velocity_frd = env->NewObject(nestedClass_angular_velocity_frd, nestedCtor_angular_velocity_frd                , static_cast<jfloat>(ret_val.angular_velocity_frd.forward_rad_s)                , static_cast<jfloat>(ret_val.angular_velocity_frd.right_rad_s)                , static_cast<jfloat>(ret_val.angular_velocity_frd.down_rad_s)            );
+            env->DeleteLocalRef(nestedClass_angular_velocity_frd);        }        jobject nestedObj_magnetic_field_frd = nullptr;
+        {            jclass nestedClass_magnetic_field_frd = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$MagneticFieldFrd");
+            jmethodID nestedCtor_magnetic_field_frd = env->GetMethodID(nestedClass_magnetic_field_frd, "<init>", "(FFF)V");
+            nestedObj_magnetic_field_frd = env->NewObject(nestedClass_magnetic_field_frd, nestedCtor_magnetic_field_frd                , static_cast<jfloat>(ret_val.magnetic_field_frd.forward_gauss)                , static_cast<jfloat>(ret_val.magnetic_field_frd.right_gauss)                , static_cast<jfloat>(ret_val.magnetic_field_frd.down_gauss)            );
+            env->DeleteLocalRef(nestedClass_magnetic_field_frd);        }        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$Imu");
         if (!retClass) { return nullptr; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$AccelerationFrd;Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$AngularVelocityFrd;Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$MagneticFieldFrd;FJ)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , /* TODO nested struct <protoc_gen_mavsdk.name_parser.NameParser object at 0x105c935f0> */ static_cast<jobject>(nullptr)            , /* TODO nested struct <protoc_gen_mavsdk.name_parser.NameParser object at 0x105c935f0> */ static_cast<jobject>(nullptr)            , /* TODO nested struct <protoc_gen_mavsdk.name_parser.NameParser object at 0x105c935f0> */ static_cast<jobject>(nullptr)            , static_cast<jfloat>(ret_val.temperature_degc)            , static_cast<jlong>(ret_val.timestamp_us)        );
-        env->DeleteLocalRef(retClass);
+        jobject retObj = env->NewObject(retClass, retCtor            , nestedObj_acceleration_frd            , nestedObj_angular_velocity_frd            , nestedObj_magnetic_field_frd            , static_cast<jfloat>(ret_val.temperature_degc)            , static_cast<jlong>(ret_val.timestamp_us)        );
+        env->DeleteLocalRef(retClass);        env->DeleteLocalRef(nestedObj_acceleration_frd);        env->DeleteLocalRef(nestedObj_angular_velocity_frd);        env->DeleteLocalRef(nestedObj_magnetic_field_frd);
+    mavsdk_telemetry_imu_destroy(&ret_val);
     return retObj;
 }
 
@@ -4156,11 +4292,24 @@ Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_scaledImuBlocking(
         &ret_val
     );
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$Imu");
+        jobject nestedObj_acceleration_frd = nullptr;
+        {            jclass nestedClass_acceleration_frd = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$AccelerationFrd");
+            jmethodID nestedCtor_acceleration_frd = env->GetMethodID(nestedClass_acceleration_frd, "<init>", "(FFF)V");
+            nestedObj_acceleration_frd = env->NewObject(nestedClass_acceleration_frd, nestedCtor_acceleration_frd                , static_cast<jfloat>(ret_val.acceleration_frd.forward_m_s2)                , static_cast<jfloat>(ret_val.acceleration_frd.right_m_s2)                , static_cast<jfloat>(ret_val.acceleration_frd.down_m_s2)            );
+            env->DeleteLocalRef(nestedClass_acceleration_frd);        }        jobject nestedObj_angular_velocity_frd = nullptr;
+        {            jclass nestedClass_angular_velocity_frd = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$AngularVelocityFrd");
+            jmethodID nestedCtor_angular_velocity_frd = env->GetMethodID(nestedClass_angular_velocity_frd, "<init>", "(FFF)V");
+            nestedObj_angular_velocity_frd = env->NewObject(nestedClass_angular_velocity_frd, nestedCtor_angular_velocity_frd                , static_cast<jfloat>(ret_val.angular_velocity_frd.forward_rad_s)                , static_cast<jfloat>(ret_val.angular_velocity_frd.right_rad_s)                , static_cast<jfloat>(ret_val.angular_velocity_frd.down_rad_s)            );
+            env->DeleteLocalRef(nestedClass_angular_velocity_frd);        }        jobject nestedObj_magnetic_field_frd = nullptr;
+        {            jclass nestedClass_magnetic_field_frd = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$MagneticFieldFrd");
+            jmethodID nestedCtor_magnetic_field_frd = env->GetMethodID(nestedClass_magnetic_field_frd, "<init>", "(FFF)V");
+            nestedObj_magnetic_field_frd = env->NewObject(nestedClass_magnetic_field_frd, nestedCtor_magnetic_field_frd                , static_cast<jfloat>(ret_val.magnetic_field_frd.forward_gauss)                , static_cast<jfloat>(ret_val.magnetic_field_frd.right_gauss)                , static_cast<jfloat>(ret_val.magnetic_field_frd.down_gauss)            );
+            env->DeleteLocalRef(nestedClass_magnetic_field_frd);        }        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$Imu");
         if (!retClass) { return nullptr; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$AccelerationFrd;Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$AngularVelocityFrd;Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$MagneticFieldFrd;FJ)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , /* TODO nested struct <protoc_gen_mavsdk.name_parser.NameParser object at 0x105c93770> */ static_cast<jobject>(nullptr)            , /* TODO nested struct <protoc_gen_mavsdk.name_parser.NameParser object at 0x105c93770> */ static_cast<jobject>(nullptr)            , /* TODO nested struct <protoc_gen_mavsdk.name_parser.NameParser object at 0x105c93770> */ static_cast<jobject>(nullptr)            , static_cast<jfloat>(ret_val.temperature_degc)            , static_cast<jlong>(ret_val.timestamp_us)        );
-        env->DeleteLocalRef(retClass);
+        jobject retObj = env->NewObject(retClass, retCtor            , nestedObj_acceleration_frd            , nestedObj_angular_velocity_frd            , nestedObj_magnetic_field_frd            , static_cast<jfloat>(ret_val.temperature_degc)            , static_cast<jlong>(ret_val.timestamp_us)        );
+        env->DeleteLocalRef(retClass);        env->DeleteLocalRef(nestedObj_acceleration_frd);        env->DeleteLocalRef(nestedObj_angular_velocity_frd);        env->DeleteLocalRef(nestedObj_magnetic_field_frd);
+    mavsdk_telemetry_imu_destroy(&ret_val);
     return retObj;
 }
 
@@ -4236,11 +4385,24 @@ Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_rawImuBlocking(
         &ret_val
     );
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$Imu");
+        jobject nestedObj_acceleration_frd = nullptr;
+        {            jclass nestedClass_acceleration_frd = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$AccelerationFrd");
+            jmethodID nestedCtor_acceleration_frd = env->GetMethodID(nestedClass_acceleration_frd, "<init>", "(FFF)V");
+            nestedObj_acceleration_frd = env->NewObject(nestedClass_acceleration_frd, nestedCtor_acceleration_frd                , static_cast<jfloat>(ret_val.acceleration_frd.forward_m_s2)                , static_cast<jfloat>(ret_val.acceleration_frd.right_m_s2)                , static_cast<jfloat>(ret_val.acceleration_frd.down_m_s2)            );
+            env->DeleteLocalRef(nestedClass_acceleration_frd);        }        jobject nestedObj_angular_velocity_frd = nullptr;
+        {            jclass nestedClass_angular_velocity_frd = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$AngularVelocityFrd");
+            jmethodID nestedCtor_angular_velocity_frd = env->GetMethodID(nestedClass_angular_velocity_frd, "<init>", "(FFF)V");
+            nestedObj_angular_velocity_frd = env->NewObject(nestedClass_angular_velocity_frd, nestedCtor_angular_velocity_frd                , static_cast<jfloat>(ret_val.angular_velocity_frd.forward_rad_s)                , static_cast<jfloat>(ret_val.angular_velocity_frd.right_rad_s)                , static_cast<jfloat>(ret_val.angular_velocity_frd.down_rad_s)            );
+            env->DeleteLocalRef(nestedClass_angular_velocity_frd);        }        jobject nestedObj_magnetic_field_frd = nullptr;
+        {            jclass nestedClass_magnetic_field_frd = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$MagneticFieldFrd");
+            jmethodID nestedCtor_magnetic_field_frd = env->GetMethodID(nestedClass_magnetic_field_frd, "<init>", "(FFF)V");
+            nestedObj_magnetic_field_frd = env->NewObject(nestedClass_magnetic_field_frd, nestedCtor_magnetic_field_frd                , static_cast<jfloat>(ret_val.magnetic_field_frd.forward_gauss)                , static_cast<jfloat>(ret_val.magnetic_field_frd.right_gauss)                , static_cast<jfloat>(ret_val.magnetic_field_frd.down_gauss)            );
+            env->DeleteLocalRef(nestedClass_magnetic_field_frd);        }        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$Imu");
         if (!retClass) { return nullptr; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$AccelerationFrd;Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$AngularVelocityFrd;Lio/mavsdk/kotlin/plugins/telemetry/Telemetry$MagneticFieldFrd;FJ)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , /* TODO nested struct <protoc_gen_mavsdk.name_parser.NameParser object at 0x105c935f0> */ static_cast<jobject>(nullptr)            , /* TODO nested struct <protoc_gen_mavsdk.name_parser.NameParser object at 0x105c935f0> */ static_cast<jobject>(nullptr)            , /* TODO nested struct <protoc_gen_mavsdk.name_parser.NameParser object at 0x105c935f0> */ static_cast<jobject>(nullptr)            , static_cast<jfloat>(ret_val.temperature_degc)            , static_cast<jlong>(ret_val.timestamp_us)        );
-        env->DeleteLocalRef(retClass);
+        jobject retObj = env->NewObject(retClass, retCtor            , nestedObj_acceleration_frd            , nestedObj_angular_velocity_frd            , nestedObj_magnetic_field_frd            , static_cast<jfloat>(ret_val.temperature_degc)            , static_cast<jlong>(ret_val.timestamp_us)        );
+        env->DeleteLocalRef(retClass);        env->DeleteLocalRef(nestedObj_acceleration_frd);        env->DeleteLocalRef(nestedObj_angular_velocity_frd);        env->DeleteLocalRef(nestedObj_magnetic_field_frd);
+    mavsdk_telemetry_imu_destroy(&ret_val);
     return retObj;
 }
 
@@ -4466,11 +4628,16 @@ Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_distanceSensorBlocking(
         &ret_val
     );
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$DistanceSensor");
+        jobject nestedObj_orientation = nullptr;
+        {            jclass nestedClass_orientation = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$EulerAngle");
+            jmethodID nestedCtor_orientation = env->GetMethodID(nestedClass_orientation, "<init>", "(FFFJ)V");
+            nestedObj_orientation = env->NewObject(nestedClass_orientation, nestedCtor_orientation                , static_cast<jfloat>(ret_val.orientation.roll_deg)                , static_cast<jfloat>(ret_val.orientation.pitch_deg)                , static_cast<jfloat>(ret_val.orientation.yaw_deg)                , static_cast<jlong>(ret_val.orientation.timestamp_us)            );
+            env->DeleteLocalRef(nestedClass_orientation);        }        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$DistanceSensor");
         if (!retClass) { return nullptr; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(FFFLio/mavsdk/kotlin/plugins/telemetry/Telemetry$EulerAngle;)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jfloat>(ret_val.minimum_distance_m)            , static_cast<jfloat>(ret_val.maximum_distance_m)            , static_cast<jfloat>(ret_val.current_distance_m)            , /* TODO nested struct <protoc_gen_mavsdk.name_parser.NameParser object at 0x105c933b0> */ static_cast<jobject>(nullptr)        );
-        env->DeleteLocalRef(retClass);
+        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jfloat>(ret_val.minimum_distance_m)            , static_cast<jfloat>(ret_val.maximum_distance_m)            , static_cast<jfloat>(ret_val.current_distance_m)            , nestedObj_orientation        );
+        env->DeleteLocalRef(retClass);        env->DeleteLocalRef(nestedObj_orientation);
+    mavsdk_telemetry_distance_sensor_destroy(&ret_val);
     return retObj;
 }
 
@@ -4546,11 +4713,12 @@ Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_scaledPressureBlocking(
         &ret_val
     );
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$ScaledPressure");
+        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$ScaledPressure");
         if (!retClass) { return nullptr; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(JFFFF)V");
         jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jlong>(ret_val.timestamp_us)            , static_cast<jfloat>(ret_val.absolute_pressure_hpa)            , static_cast<jfloat>(ret_val.differential_pressure_hpa)            , static_cast<jfloat>(ret_val.temperature_deg)            , static_cast<jfloat>(ret_val.differential_pressure_temperature_deg)        );
         env->DeleteLocalRef(retClass);
+    mavsdk_telemetry_scaled_pressure_destroy(&ret_val);
     return retObj;
 }
 
@@ -4626,11 +4794,12 @@ Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_headingBlocking(
         &ret_val
     );
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$Heading");
+        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$Heading");
         if (!retClass) { return nullptr; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(D)V");
         jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jdouble>(ret_val.heading_deg)        );
         env->DeleteLocalRef(retClass);
+    mavsdk_telemetry_heading_destroy(&ret_val);
     return retObj;
 }
 
@@ -4706,11 +4875,12 @@ Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_altitudeBlocking(
         &ret_val
     );
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$Altitude");
+        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$Altitude");
         if (!retClass) { return nullptr; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(FFFFFF)V");
         jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jfloat>(ret_val.altitude_monotonic_m)            , static_cast<jfloat>(ret_val.altitude_amsl_m)            , static_cast<jfloat>(ret_val.altitude_local_m)            , static_cast<jfloat>(ret_val.altitude_relative_m)            , static_cast<jfloat>(ret_val.altitude_terrain_m)            , static_cast<jfloat>(ret_val.bottom_clearance_m)        );
         env->DeleteLocalRef(retClass);
+    mavsdk_telemetry_altitude_destroy(&ret_val);
     return retObj;
 }
 
@@ -4786,11 +4956,12 @@ Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_windBlocking(
         &ret_val
     );
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$Wind");
+        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$Wind");
         if (!retClass) { return nullptr; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(FFFFFFFF)V");
         jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jfloat>(ret_val.wind_x_ned_m_s)            , static_cast<jfloat>(ret_val.wind_y_ned_m_s)            , static_cast<jfloat>(ret_val.wind_z_ned_m_s)            , static_cast<jfloat>(ret_val.horizontal_variability_stddev_m_s)            , static_cast<jfloat>(ret_val.vertical_variability_stddev_m_s)            , static_cast<jfloat>(ret_val.wind_altitude_msl_m)            , static_cast<jfloat>(ret_val.horizontal_wind_speed_accuracy_m_s)            , static_cast<jfloat>(ret_val.vertical_wind_speed_accuracy_m_s)        );
         env->DeleteLocalRef(retClass);
+    mavsdk_telemetry_wind_destroy(&ret_val);
     return retObj;
 }
 
@@ -5903,11 +6074,12 @@ Java_io_mavsdk_kotlin_plugins_telemetry_Telemetry_getGpsGlobalOriginBlocking(
         return nullptr;
     }
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$GpsGlobalOrigin");
+        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/telemetry/Telemetry$GpsGlobalOrigin");
         if (!retClass) { return nullptr; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(DDF)V");
         jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jdouble>(ret_val.latitude_deg)            , static_cast<jdouble>(ret_val.longitude_deg)            , static_cast<jfloat>(ret_val.altitude_m)        );
         env->DeleteLocalRef(retClass);
+    mavsdk_telemetry_gps_global_origin_destroy(&ret_val);
     return retObj;
 }
 

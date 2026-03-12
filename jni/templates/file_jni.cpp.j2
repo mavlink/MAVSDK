@@ -7,6 +7,7 @@
 #include "../../jni_utils.h"
 
 #include <utility>
+#include <vector>
 
 using namespace mavsdk::jni;
 
@@ -73,11 +74,100 @@ using namespace mavsdk::jni;
 {%- endif -%}
 {%- endmacro -%}
 
-{# Declare zero-initialized C structs for any struct input parameters #}
+{# Declare zero-initialized C structs for any struct input parameters.
+   For structs containing repeated struct fields, generates full JNI→C conversion. #}
 {%- macro declare_struct_params(params) -%}
 {%- for param in params -%}
-{%- if not param.type_info.is_repeated and not param.type_info.is_primitive and not param.type_info.is_string and not param.type_info.is_enum %}
-    mavsdk_{{ plugin_name.lower_snake_case }}_{{ param.type_info.name.lower_snake_case }}_t {{ param.name.lower_snake_case }}_c{}; /* TODO: convert from Java object */
+{%- if not param.type_info.is_repeated and not param.type_info.is_primitive and not param.type_info.is_string and not param.type_info.is_enum -%}
+{%- set ptype = param.type_info.name.upper_camel_case -%}
+{%- set ns_dp = namespace(has_repeated_struct=false) -%}
+{%- for struct in structs -%}
+{%- if not struct.name.upper_camel_case.endswith('Result') and struct.name.upper_camel_case == ptype -%}
+{%- for field in struct.fields -%}
+{%- if field.type_info.is_repeated and not field.type_info.is_primitive and not field.type_info.is_enum -%}
+{%- set ns_dp.has_repeated_struct = true -%}
+{%- endif -%}
+{%- endfor -%}
+{%- endif -%}
+{%- endfor -%}
+{%- if ns_dp.has_repeated_struct %}
+    mavsdk_{{ plugin_name.lower_snake_case }}_{{ param.type_info.name.lower_snake_case }}_t {{ param.name.lower_snake_case }}_c{};
+{%- for struct in structs -%}
+{%- if not struct.name.upper_camel_case.endswith('Result') and struct.name.upper_camel_case == ptype -%}
+{%- for field in struct.fields -%}
+{%- if field.type_info.is_repeated and not field.type_info.is_primitive and not field.type_info.is_enum -%}
+{%- set inner = field.type_info.inner_name %}
+    std::vector<mavsdk_{{ plugin_name.lower_snake_case }}_{{ inner.lower_snake_case }}_t> {{ field.name.lower_snake_case }}_vec;
+    {
+        jclass paramClass_{{ param.name.lower_snake_case }} = env->GetObjectClass({{ param.name.lower_snake_case }});
+        jfieldID {{ field.name.lower_snake_case }}_fid = env->GetFieldID(paramClass_{{ param.name.lower_snake_case }}, "{{ field.name.lower_camel_case }}", "Ljava/util/List;");
+        jobject {{ field.name.lower_snake_case }}_list = env->GetObjectField({{ param.name.lower_snake_case }}, {{ field.name.lower_snake_case }}_fid);
+        if ({{ field.name.lower_snake_case }}_list) {
+            jclass listClass_{{ field.name.lower_snake_case }} = env->FindClass("java/util/List");
+            jmethodID listSize_{{ field.name.lower_snake_case }} = env->GetMethodID(listClass_{{ field.name.lower_snake_case }}, "size", "()I");
+            jmethodID listGet_{{ field.name.lower_snake_case }} = env->GetMethodID(listClass_{{ field.name.lower_snake_case }}, "get", "(I)Ljava/lang/Object;");
+            jint count_{{ field.name.lower_snake_case }} = env->CallIntMethod({{ field.name.lower_snake_case }}_list, listSize_{{ field.name.lower_snake_case }});
+            {{ field.name.lower_snake_case }}_vec.resize(count_{{ field.name.lower_snake_case }});
+            if (count_{{ field.name.lower_snake_case }} > 0) {
+                jclass elemClass_{{ field.name.lower_snake_case }} = env->FindClass("{{ pkg }}/{{ cls }}${{ inner.upper_camel_case }}");
+{%- for inner_struct in structs -%}
+{%- if not inner_struct.name.upper_camel_case.endswith('Result') and inner_struct.name.upper_camel_case == inner.upper_camel_case -%}
+{%- for ifield in inner_struct.fields -%}
+{%- if not ifield.type_info.is_repeated and not ifield.type_info.is_string and ifield.type_info.is_primitive or not ifield.type_info.is_repeated and ifield.type_info.is_enum %}
+                jfieldID fid_{{ field.name.lower_snake_case }}_{{ ifield.name.lower_snake_case }} = env->GetFieldID(elemClass_{{ field.name.lower_snake_case }}, "{{ ifield.name.lower_camel_case }}", "{{ jni_sig(ifield.type_info) }}");
+{%- endif -%}
+{%- endfor -%}
+{%- endif -%}
+{%- endfor %}
+                for (jint i = 0; i < count_{{ field.name.lower_snake_case }}; i++) {
+                    jobject elem = env->CallObjectMethod({{ field.name.lower_snake_case }}_list, listGet_{{ field.name.lower_snake_case }}, i);
+{%- for inner_struct in structs -%}
+{%- if not inner_struct.name.upper_camel_case.endswith('Result') and inner_struct.name.upper_camel_case == inner.upper_camel_case -%}
+{%- for ifield in inner_struct.fields -%}
+{%- if not ifield.type_info.is_repeated -%}
+{%- if ifield.type_info.is_enum %}
+{%- if ifield.type_info.parent_type %}
+                    {{ field.name.lower_snake_case }}_vec[i].{{ ifield.name.lower_snake_case }} = static_cast<mavsdk_{{ plugin_name.lower_snake_case }}_{{ ifield.type_info.parent_type.lower_snake_case }}_{{ ifield.type_info.name.lower_snake_case }}_t>(env->GetIntField(elem, fid_{{ field.name.lower_snake_case }}_{{ ifield.name.lower_snake_case }}));
+{%- else %}
+                    {{ field.name.lower_snake_case }}_vec[i].{{ ifield.name.lower_snake_case }} = static_cast<mavsdk_{{ plugin_name.lower_snake_case }}_{{ ifield.type_info.name.lower_snake_case }}_t>(env->GetIntField(elem, fid_{{ field.name.lower_snake_case }}_{{ ifield.name.lower_snake_case }}));
+{%- endif %}
+{%- elif ifield.type_info.is_string %}
+                    /* TODO: string field {{ ifield.name.lower_snake_case }} in {{ inner.upper_camel_case }} */
+{%- elif not ifield.type_info.is_primitive %}
+                    /* TODO: nested struct field {{ ifield.name.lower_snake_case }} in {{ inner.upper_camel_case }} */
+{%- elif ifield.type_info.name == 'double' %}
+                    {{ field.name.lower_snake_case }}_vec[i].{{ ifield.name.lower_snake_case }} = env->GetDoubleField(elem, fid_{{ field.name.lower_snake_case }}_{{ ifield.name.lower_snake_case }});
+{%- elif ifield.type_info.name == 'float' %}
+                    {{ field.name.lower_snake_case }}_vec[i].{{ ifield.name.lower_snake_case }} = env->GetFloatField(elem, fid_{{ field.name.lower_snake_case }}_{{ ifield.name.lower_snake_case }});
+{%- elif ifield.type_info.name == 'bool' %}
+                    {{ field.name.lower_snake_case }}_vec[i].{{ ifield.name.lower_snake_case }} = (bool)env->GetBooleanField(elem, fid_{{ field.name.lower_snake_case }}_{{ ifield.name.lower_snake_case }});
+{%- elif ifield.type_info.name == 'int64_t' or ifield.type_info.name == 'uint64_t' %}
+                    {{ field.name.lower_snake_case }}_vec[i].{{ ifield.name.lower_snake_case }} = env->GetLongField(elem, fid_{{ field.name.lower_snake_case }}_{{ ifield.name.lower_snake_case }});
+{%- else %}
+                    {{ field.name.lower_snake_case }}_vec[i].{{ ifield.name.lower_snake_case }} = env->GetIntField(elem, fid_{{ field.name.lower_snake_case }}_{{ ifield.name.lower_snake_case }});
+{%- endif -%}
+{%- endif -%}
+{%- endfor -%}
+{%- endif -%}
+{%- endfor %}
+                    env->DeleteLocalRef(elem);
+                }
+                {{ param.name.lower_snake_case }}_c.{{ field.name.lower_snake_case }} = {{ field.name.lower_snake_case }}_vec.data();
+                env->DeleteLocalRef(elemClass_{{ field.name.lower_snake_case }});
+            }
+            {{ param.name.lower_snake_case }}_c.{{ field.name.lower_snake_case }}_size = (size_t)count_{{ field.name.lower_snake_case }};
+            env->DeleteLocalRef(listClass_{{ field.name.lower_snake_case }});
+            env->DeleteLocalRef({{ field.name.lower_snake_case }}_list);
+        }
+        env->DeleteLocalRef(paramClass_{{ param.name.lower_snake_case }});
+    }
+{%- endif -%}
+{%- endfor -%}
+{%- endif -%}
+{%- endfor -%}
+{%- else %}
+    mavsdk_{{ plugin_name.lower_snake_case }}_{{ param.type_info.name.lower_snake_case }}_t {{ param.name.lower_snake_case }}_c{}; /* TODO: convert scalar-only struct from Java object */
+{%- endif -%}
 {%- endif -%}
 {%- endfor -%}
 {%- endmacro -%}
@@ -100,6 +190,8 @@ using namespace mavsdk::jni;
 {%- elif field.type_info.is_enum -%}{%- set ns_m.sig = ns_m.sig + "I" -%}
 {%- else -%}{%- set ns_m.sig = ns_m.sig + "L" + pkg + "/" + cls + "$" + field.type_info.name.upper_camel_case + ";" -%}
 {%- endif -%}
+{%- elif not field.type_info.is_primitive and not field.type_info.is_enum -%}
+{%- set ns_m.sig = ns_m.sig + "Ljava/util/List;" -%}
 {%- endif -%}
 {%- endfor -%}
 {{ ns_m.sig }}{%- endif -%}
@@ -111,19 +203,104 @@ using namespace mavsdk::jni;
 {%- macro create_java_struct_obj(type_name, c_var, on_error="return;") -%}
 {%- for struct in structs -%}
 {%- if not struct.name.upper_camel_case.endswith('Result') and struct.name.upper_camel_case == type_name -%}
+{%- set ns_cj = namespace(has_list=false, has_nested=false) -%}
+{%- for field in struct.fields -%}
+{%- if field.type_info.is_repeated and not field.type_info.is_primitive and not field.type_info.is_enum -%}
+{%- set ns_cj.has_list = true -%}
+{%- endif -%}
+{%- if not field.type_info.is_repeated and not field.type_info.is_primitive and not field.type_info.is_enum and not field.type_info.is_string -%}
+{%- set ns_cj.has_nested = true -%}
+{%- endif -%}
+{%- endfor -%}
+{%- if ns_cj.has_list %}
+        jclass arrayListClass_{{ type_name }} = env->FindClass("java/util/ArrayList");
+        jmethodID arrayListCtor_{{ type_name }} = env->GetMethodID(arrayListClass_{{ type_name }}, "<init>", "()V");
+        jmethodID arrayListAdd_{{ type_name }} = env->GetMethodID(arrayListClass_{{ type_name }}, "add", "(Ljava/lang/Object;)Z");
+{%- for field in struct.fields -%}
+{%- if field.type_info.is_repeated and not field.type_info.is_primitive and not field.type_info.is_enum -%}
+{%- set inner = field.type_info.inner_name %}
+        jobject list_{{ field.name.lower_snake_case }} = env->NewObject(arrayListClass_{{ type_name }}, arrayListCtor_{{ type_name }});
+        {
+            jclass elemClass_{{ field.name.lower_snake_case }} = env->FindClass("{{ pkg }}/{{ cls }}${{ inner.upper_camel_case }}");
+            jmethodID elemCtor_{{ field.name.lower_snake_case }} = env->GetMethodID(elemClass_{{ field.name.lower_snake_case }}, "<init>", "({{ struct_ctor_sig(inner.upper_camel_case) }})V");
+            for (size_t i = 0; i < {{ c_var }}.{{ field.name.lower_snake_case }}_size; i++) {
+                jobject elem = env->NewObject(elemClass_{{ field.name.lower_snake_case }}, elemCtor_{{ field.name.lower_snake_case }}
+{%- for inner_struct in structs -%}
+{%- if not inner_struct.name.upper_camel_case.endswith('Result') and inner_struct.name.upper_camel_case == inner.upper_camel_case -%}
+{%- for ifield in inner_struct.fields -%}
+{%- if not ifield.type_info.is_repeated %}
+                    , {{ c_to_jni(ifield.type_info, c_var + "." + field.name.lower_snake_case + "[i]." + ifield.name.lower_snake_case) }}
+{%- endif -%}
+{%- endfor -%}
+{%- endif -%}
+{%- endfor %}
+                );
+                env->CallBooleanMethod(list_{{ field.name.lower_snake_case }}, arrayListAdd_{{ type_name }}, elem);
+                env->DeleteLocalRef(elem);
+            }
+            env->DeleteLocalRef(elemClass_{{ field.name.lower_snake_case }});
+        }
+{%- endif -%}
+{%- endfor -%}
+        env->DeleteLocalRef(arrayListClass_{{ type_name }});
+{%- endif %}
+{%- if ns_cj.has_nested %}
+{# Pre-create Java objects for nested (non-repeated, non-primitive, non-enum) struct fields #}
+{%- for field in struct.fields -%}
+{%- if not field.type_info.is_repeated and not field.type_info.is_primitive and not field.type_info.is_enum and not field.type_info.is_string %}
+        jobject nestedObj_{{ field.name.lower_snake_case }} = nullptr;
+        {
+{%- for nested_struct in structs -%}
+{%- if not nested_struct.name.upper_camel_case.endswith('Result') and nested_struct.name.upper_camel_case == field.type_info.name.upper_camel_case %}
+            jclass nestedClass_{{ field.name.lower_snake_case }} = env->FindClass("{{ pkg }}/{{ cls }}${{ field.type_info.name.upper_camel_case }}");
+            jmethodID nestedCtor_{{ field.name.lower_snake_case }} = env->GetMethodID(nestedClass_{{ field.name.lower_snake_case }}, "<init>", "({{ struct_ctor_sig(field.type_info.name.upper_camel_case) }})V");
+            nestedObj_{{ field.name.lower_snake_case }} = env->NewObject(nestedClass_{{ field.name.lower_snake_case }}, nestedCtor_{{ field.name.lower_snake_case }}
+{%- for nfield in nested_struct.fields -%}
+{%- if not nfield.type_info.is_repeated %}
+                , {{ c_to_jni(nfield.type_info, c_var + "." + field.name.lower_snake_case + "." + nfield.name.lower_snake_case) }}
+{%- endif -%}
+{%- endfor %}
+            );
+            env->DeleteLocalRef(nestedClass_{{ field.name.lower_snake_case }});
+{%- endif -%}
+{%- endfor %}
+        }
+{%- endif -%}
+{%- endfor %}
+{%- endif %}
         jclass retClass = env->FindClass("{{ pkg }}/{{ cls }}${{ type_name }}");
         if (!retClass) { {{ on_error }} }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "({{ struct_ctor_sig(type_name) }})V");
         jobject retObj = env->NewObject(retClass, retCtor
 {%- for field in struct.fields -%}
-{%- if not field.type_info.is_repeated %}
-            , {{ c_to_jni(field.type_info, c_var + "." + field.name.lower_snake_case) }}
+{%- if not field.type_info.is_repeated -%}
+{%- if not field.type_info.is_primitive and not field.type_info.is_enum and not field.type_info.is_string %}
+            , nestedObj_{{ field.name.lower_snake_case }}
 {%- else %}
-            /* TODO: repeated field {{ field.name.lower_snake_case }} */ , static_cast<jobject>(nullptr)
+            , {{ c_to_jni(field.type_info, c_var + "." + field.name.lower_snake_case) }}
+{%- endif -%}
+{%- elif not field.type_info.is_primitive and not field.type_info.is_enum %}
+            , list_{{ field.name.lower_snake_case }}
+{%- else %}
+            /* TODO: repeated primitive field {{ field.name.lower_snake_case }} */ , static_cast<jobject>(nullptr)
 {%- endif -%}
 {%- endfor %}
         );
         env->DeleteLocalRef(retClass);
+{%- if ns_cj.has_nested -%}
+{%- for field in struct.fields -%}
+{%- if not field.type_info.is_repeated and not field.type_info.is_primitive and not field.type_info.is_enum and not field.type_info.is_string %}
+        env->DeleteLocalRef(nestedObj_{{ field.name.lower_snake_case }});
+{%- endif -%}
+{%- endfor -%}
+{%- endif -%}
+{%- if ns_cj.has_list -%}
+{%- for field in struct.fields -%}
+{%- if field.type_info.is_repeated and not field.type_info.is_primitive and not field.type_info.is_enum %}
+        env->DeleteLocalRef(list_{{ field.name.lower_snake_case }});
+{%- endif -%}
+{%- endfor -%}
+{%- endif -%}
 {%- endif -%}
 {%- endfor -%}
 {%- endmacro -%}
@@ -392,6 +569,7 @@ JNIEXPORT {% if method.has_result and method.return_name and not method.return_t
     }
 
 {{ create_java_struct_obj(method.return_type.name.upper_camel_case, "ret_val", "return nullptr;") }}
+    mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.return_type.name.lower_snake_case }}_destroy(&ret_val);
     return retObj;
 {% elif method.has_result and method.return_name and not method.return_type.is_repeated %}
 {# Getter that returns a primitive, enum, or string #}
@@ -453,6 +631,7 @@ JNIEXPORT {% if method.has_result and method.return_name and not method.return_t
     );
 
 {{ create_java_struct_obj(method.return_type.name.upper_camel_case, "ret_val", "return nullptr;") }}
+    mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.return_type.name.lower_snake_case }}_destroy(&ret_val);
     return retObj;
 {% elif method.return_name and not method.return_type.is_repeated %}
 {# Pure primitive/enum getter (no result code) #}
@@ -545,6 +724,61 @@ JNIEXPORT void JNICALL
             auto* w = static_cast<{{ method.name.upper_camel_case }}CallbackWrapper*>(user_data);
             (*w)(result, value);
             delete w;
+        },
+{% endif %}
+        wrapper
+    );
+}
+
+{% endif %}
+{% if method.is_async and method.is_stream and method.is_finite %}
+// ===== {{ cls }}.{{ method.name.upper_camel_case[0]|lower }}{{ method.name.upper_camel_case[1:] }}AsyncNative (finite stream) =====
+JNIEXPORT void JNICALL
+{{ fn_pfx }}_{{ method.name.upper_camel_case[0]|lower }}{{ method.name.upper_camel_case[1:] }}AsyncNative(
+    JNIEnv* env,
+    jobject obj{% for param in method.params %}{% if not param.type_info.is_repeated %},
+    {{ jni_param_type(param.type_info) }} {{ param.name.lower_snake_case }}{% else %},
+    jobject {{ param.name.lower_snake_case }} /* TODO: repeated param */{% endif %}{% endfor %},
+    jobject callback) {
+
+    jlong handle = getHandle(env, obj, "{{ handle_class }}");
+    if (!handle || !callback) return;
+
+{% for param in method.params %}
+{% if param.type_info.is_string %}
+    JStringHolder {{ param.name.lower_snake_case }}_holder(env, {{ param.name.lower_snake_case }});
+{% endif %}
+{% endfor %}
+{{ declare_struct_params(method.params) }}
+    auto* wrapper = new {{ method.name.upper_camel_case }}CallbackWrapper(env, callback);
+
+    mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.name.lower_snake_case }}_async(
+        reinterpret_cast<mavsdk_{{ plugin_name.lower_snake_case }}_t>(handle),{% for param in method.params %}{% if not param.type_info.is_repeated %}
+        {{ jni_to_c(param.type_info, param.name.lower_snake_case) }},{% else %}
+        nullptr, 0, /* TODO: repeated param */{% endif %}{% endfor %}
+{% if method.return_type and not method.return_type.is_primitive and not method.return_type.is_repeated %}
+        [](const mavsdk_{{ plugin_name.lower_snake_case }}_result_t result, const mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.return_type.name.lower_snake_case }}_t value, void* user_data) {
+            auto* w = static_cast<{{ method.name.upper_camel_case }}CallbackWrapper*>(user_data);
+            (*w)(result, value);
+            if (result != MAVSDK_{{ plugin_name.uppercase }}_RESULT_NEXT) {
+                delete w;
+            }
+        },
+{% elif method.return_type and method.return_type.is_primitive %}
+        [](const mavsdk_{{ plugin_name.lower_snake_case }}_result_t result, const {{ method.return_type.name }} value, void* user_data) {
+            auto* w = static_cast<{{ method.name.upper_camel_case }}CallbackWrapper*>(user_data);
+            (*w)(result, value);
+            if (result != MAVSDK_{{ plugin_name.uppercase }}_RESULT_NEXT) {
+                delete w;
+            }
+        },
+{% else %}
+        [](const mavsdk_{{ plugin_name.lower_snake_case }}_result_t result, void* user_data) {
+            auto* w = static_cast<{{ method.name.upper_camel_case }}CallbackWrapper*>(user_data);
+            (*w)(result);
+            if (result != MAVSDK_{{ plugin_name.uppercase }}_RESULT_NEXT) {
+                delete w;
+            }
         },
 {% endif %}
         wrapper

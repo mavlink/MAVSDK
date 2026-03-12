@@ -7,6 +7,7 @@
 #include "../../jni_utils.h"
 
 #include <utility>
+#include <vector>
 
 using namespace mavsdk::jni;
 
@@ -40,7 +41,7 @@ struct TransponderCallbackWrapper {
             return;
         }
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/transponder/Transponder$AdsbVehicle");
+        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/transponder/Transponder$AdsbVehicle");
         if (!retClass) { return; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(IDDIFFFFLjava/lang/String;III)V");
         jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jint>(value.icao_address)            , static_cast<jdouble>(value.latitude_deg)            , static_cast<jdouble>(value.longitude_deg)            , static_cast<jint>(value.altitude_type)            , static_cast<jfloat>(value.absolute_altitude_m)            , static_cast<jfloat>(value.heading_deg)            , static_cast<jfloat>(value.horizontal_velocity_m_s)            , static_cast<jfloat>(value.vertical_velocity_m_s)            , toJavaString(env, value.callsign)            , static_cast<jint>(value.emitter_type)            , static_cast<jint>(value.squawk)            , static_cast<jint>(value.tslc_s)        );
@@ -145,11 +146,12 @@ Java_io_mavsdk_kotlin_plugins_transponder_Transponder_transponderBlocking(
         &ret_val
     );
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/transponder/Transponder$AdsbVehicle");
+        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/transponder/Transponder$AdsbVehicle");
         if (!retClass) { return nullptr; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(IDDIFFFFLjava/lang/String;III)V");
         jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jint>(ret_val.icao_address)            , static_cast<jdouble>(ret_val.latitude_deg)            , static_cast<jdouble>(ret_val.longitude_deg)            , static_cast<jint>(ret_val.altitude_type)            , static_cast<jfloat>(ret_val.absolute_altitude_m)            , static_cast<jfloat>(ret_val.heading_deg)            , static_cast<jfloat>(ret_val.horizontal_velocity_m_s)            , static_cast<jfloat>(ret_val.vertical_velocity_m_s)            , toJavaString(env, ret_val.callsign)            , static_cast<jint>(ret_val.emitter_type)            , static_cast<jint>(ret_val.squawk)            , static_cast<jint>(ret_val.tslc_s)        );
         env->DeleteLocalRef(retClass);
+    mavsdk_transponder_adsb_vehicle_destroy(&ret_val);
     return retObj;
 }
 

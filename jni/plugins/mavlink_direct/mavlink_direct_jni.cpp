@@ -7,6 +7,7 @@
 #include "../../jni_utils.h"
 
 #include <utility>
+#include <vector>
 
 using namespace mavsdk::jni;
 
@@ -40,7 +41,7 @@ struct MessageCallbackWrapper {
             return;
         }
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/mavlink_direct/MavlinkDirect$MavlinkMessage");
+        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/mavlink_direct/MavlinkDirect$MavlinkMessage");
         if (!retClass) { return; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(Ljava/lang/String;IIIILjava/lang/String;)V");
         jobject retObj = env->NewObject(retClass, retCtor            , toJavaString(env, value.message_name)            , static_cast<jint>(value.system_id)            , static_cast<jint>(value.component_id)            , static_cast<jint>(value.target_system_id)            , static_cast<jint>(value.target_component_id)            , toJavaString(env, value.fields_json)        );
@@ -104,7 +105,7 @@ Java_io_mavsdk_kotlin_plugins_mavlink_1direct_MavlinkDirect_sendMessageBlocking(
     jlong handle = getHandle(env, obj, "io/mavsdk/kotlin/plugins/mavlink_direct/MavlinkDirect");
     if (!handle) return MAVSDK_MAVLINK_DIRECT_RESULT_UNKNOWN;
 
-    mavsdk_mavlink_direct_mavlink_message_t message_c{}; /* TODO: convert from Java object */
+    mavsdk_mavlink_direct_mavlink_message_t message_c{}; /* TODO: convert scalar-only struct from Java object */
     mavsdk_mavlink_direct_result_t result = mavsdk_mavlink_direct_send_message(
         reinterpret_cast<mavsdk_mavlink_direct_t>(handle),
         message_c    );

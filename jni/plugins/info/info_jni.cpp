@@ -7,6 +7,7 @@
 #include "../../jni_utils.h"
 
 #include <utility>
+#include <vector>
 
 using namespace mavsdk::jni;
 
@@ -40,7 +41,7 @@ struct FlightInformationCallbackWrapper {
             return;
         }
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/info/Info$FlightInfo");
+        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/info/Info$FlightInfo");
         if (!retClass) { return; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(IJII)V");
         jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jint>(value.time_boot_ms)            , static_cast<jlong>(value.flight_uid)            , static_cast<jint>(value.duration_since_arming_ms)            , static_cast<jint>(value.duration_since_takeoff_ms)        );
@@ -115,11 +116,12 @@ Java_io_mavsdk_kotlin_plugins_info_Info_getFlightInformationBlocking(
         return nullptr;
     }
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/info/Info$FlightInfo");
+        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/info/Info$FlightInfo");
         if (!retClass) { return nullptr; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(IJII)V");
         jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jint>(ret_val.time_boot_ms)            , static_cast<jlong>(ret_val.flight_uid)            , static_cast<jint>(ret_val.duration_since_arming_ms)            , static_cast<jint>(ret_val.duration_since_takeoff_ms)        );
         env->DeleteLocalRef(retClass);
+    mavsdk_info_flight_info_destroy(&ret_val);
     return retObj;
 }
 
@@ -145,11 +147,12 @@ Java_io_mavsdk_kotlin_plugins_info_Info_getIdentificationBlocking(
         return nullptr;
     }
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/info/Info$Identification");
+        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/info/Info$Identification");
         if (!retClass) { return nullptr; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(Ljava/lang/String;J)V");
         jobject retObj = env->NewObject(retClass, retCtor            , toJavaString(env, ret_val.hardware_uid)            , static_cast<jlong>(ret_val.legacy_uid)        );
         env->DeleteLocalRef(retClass);
+    mavsdk_info_identification_destroy(&ret_val);
     return retObj;
 }
 
@@ -175,11 +178,12 @@ Java_io_mavsdk_kotlin_plugins_info_Info_getProductBlocking(
         return nullptr;
     }
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/info/Info$Product");
+        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/info/Info$Product");
         if (!retClass) { return nullptr; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(ILjava/lang/String;ILjava/lang/String;)V");
         jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jint>(ret_val.vendor_id)            , toJavaString(env, ret_val.vendor_name)            , static_cast<jint>(ret_val.product_id)            , toJavaString(env, ret_val.product_name)        );
         env->DeleteLocalRef(retClass);
+    mavsdk_info_product_destroy(&ret_val);
     return retObj;
 }
 
@@ -205,11 +209,12 @@ Java_io_mavsdk_kotlin_plugins_info_Info_getVersionBlocking(
         return nullptr;
     }
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/info/Info$Version");
+        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/info/Info$Version");
         if (!retClass) { return nullptr; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(IIIIIIIIILjava/lang/String;Ljava/lang/String;I)V");
         jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jint>(ret_val.flight_sw_major)            , static_cast<jint>(ret_val.flight_sw_minor)            , static_cast<jint>(ret_val.flight_sw_patch)            , static_cast<jint>(ret_val.flight_sw_vendor_major)            , static_cast<jint>(ret_val.flight_sw_vendor_minor)            , static_cast<jint>(ret_val.flight_sw_vendor_patch)            , static_cast<jint>(ret_val.os_sw_major)            , static_cast<jint>(ret_val.os_sw_minor)            , static_cast<jint>(ret_val.os_sw_patch)            , toJavaString(env, ret_val.flight_sw_git_hash)            , toJavaString(env, ret_val.os_sw_git_hash)            , static_cast<jint>(ret_val.flight_sw_version_type)        );
         env->DeleteLocalRef(retClass);
+    mavsdk_info_version_destroy(&ret_val);
     return retObj;
 }
 

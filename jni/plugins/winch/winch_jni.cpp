@@ -7,6 +7,7 @@
 #include "../../jni_utils.h"
 
 #include <utility>
+#include <vector>
 
 using namespace mavsdk::jni;
 
@@ -40,11 +41,15 @@ struct StatusCallbackWrapper {
             return;
         }
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/winch/Winch$Status");
+        jobject nestedObj_status_flags = nullptr;
+        {            jclass nestedClass_status_flags = env->FindClass("io/mavsdk/kotlin/plugins/winch/Winch$StatusFlags");
+            jmethodID nestedCtor_status_flags = env->GetMethodID(nestedClass_status_flags, "<init>", "(ZZZZZZZZZZZZZZ)V");
+            nestedObj_status_flags = env->NewObject(nestedClass_status_flags, nestedCtor_status_flags                , static_cast<jboolean>(value.status_flags.healthy)                , static_cast<jboolean>(value.status_flags.fully_retracted)                , static_cast<jboolean>(value.status_flags.moving)                , static_cast<jboolean>(value.status_flags.clutch_engaged)                , static_cast<jboolean>(value.status_flags.locked)                , static_cast<jboolean>(value.status_flags.dropping)                , static_cast<jboolean>(value.status_flags.arresting)                , static_cast<jboolean>(value.status_flags.ground_sense)                , static_cast<jboolean>(value.status_flags.retracting)                , static_cast<jboolean>(value.status_flags.redeliver)                , static_cast<jboolean>(value.status_flags.abandon_line)                , static_cast<jboolean>(value.status_flags.locking)                , static_cast<jboolean>(value.status_flags.load_line)                , static_cast<jboolean>(value.status_flags.load_payload)            );
+            env->DeleteLocalRef(nestedClass_status_flags);        }        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/winch/Winch$Status");
         if (!retClass) { return; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(JFFFFFILio/mavsdk/kotlin/plugins/winch/Winch$StatusFlags;)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jlong>(value.time_usec)            , static_cast<jfloat>(value.line_length_m)            , static_cast<jfloat>(value.speed_m_s)            , static_cast<jfloat>(value.tension_kg)            , static_cast<jfloat>(value.voltage_v)            , static_cast<jfloat>(value.current_a)            , static_cast<jint>(value.temperature_c)            , /* TODO nested struct <protoc_gen_mavsdk.name_parser.NameParser object at 0x107a11bb0> */ static_cast<jobject>(nullptr)        );
-        env->DeleteLocalRef(retClass);
+        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jlong>(value.time_usec)            , static_cast<jfloat>(value.line_length_m)            , static_cast<jfloat>(value.speed_m_s)            , static_cast<jfloat>(value.tension_kg)            , static_cast<jfloat>(value.voltage_v)            , static_cast<jfloat>(value.current_a)            , static_cast<jint>(value.temperature_c)            , nestedObj_status_flags        );
+        env->DeleteLocalRef(retClass);        env->DeleteLocalRef(nestedObj_status_flags);
         env->CallVoidMethod(callback.get(), invokeMethod, retObj);
         env->DeleteLocalRef(retObj);
 
@@ -460,11 +465,16 @@ Java_io_mavsdk_kotlin_plugins_winch_Winch_statusBlocking(
         &ret_val
     );
 
-jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/winch/Winch$Status");
+        jobject nestedObj_status_flags = nullptr;
+        {            jclass nestedClass_status_flags = env->FindClass("io/mavsdk/kotlin/plugins/winch/Winch$StatusFlags");
+            jmethodID nestedCtor_status_flags = env->GetMethodID(nestedClass_status_flags, "<init>", "(ZZZZZZZZZZZZZZ)V");
+            nestedObj_status_flags = env->NewObject(nestedClass_status_flags, nestedCtor_status_flags                , static_cast<jboolean>(ret_val.status_flags.healthy)                , static_cast<jboolean>(ret_val.status_flags.fully_retracted)                , static_cast<jboolean>(ret_val.status_flags.moving)                , static_cast<jboolean>(ret_val.status_flags.clutch_engaged)                , static_cast<jboolean>(ret_val.status_flags.locked)                , static_cast<jboolean>(ret_val.status_flags.dropping)                , static_cast<jboolean>(ret_val.status_flags.arresting)                , static_cast<jboolean>(ret_val.status_flags.ground_sense)                , static_cast<jboolean>(ret_val.status_flags.retracting)                , static_cast<jboolean>(ret_val.status_flags.redeliver)                , static_cast<jboolean>(ret_val.status_flags.abandon_line)                , static_cast<jboolean>(ret_val.status_flags.locking)                , static_cast<jboolean>(ret_val.status_flags.load_line)                , static_cast<jboolean>(ret_val.status_flags.load_payload)            );
+            env->DeleteLocalRef(nestedClass_status_flags);        }        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/winch/Winch$Status");
         if (!retClass) { return nullptr; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(JFFFFFILio/mavsdk/kotlin/plugins/winch/Winch$StatusFlags;)V");
-        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jlong>(ret_val.time_usec)            , static_cast<jfloat>(ret_val.line_length_m)            , static_cast<jfloat>(ret_val.speed_m_s)            , static_cast<jfloat>(ret_val.tension_kg)            , static_cast<jfloat>(ret_val.voltage_v)            , static_cast<jfloat>(ret_val.current_a)            , static_cast<jint>(ret_val.temperature_c)            , /* TODO nested struct <protoc_gen_mavsdk.name_parser.NameParser object at 0x107a11c70> */ static_cast<jobject>(nullptr)        );
-        env->DeleteLocalRef(retClass);
+        jobject retObj = env->NewObject(retClass, retCtor            , static_cast<jlong>(ret_val.time_usec)            , static_cast<jfloat>(ret_val.line_length_m)            , static_cast<jfloat>(ret_val.speed_m_s)            , static_cast<jfloat>(ret_val.tension_kg)            , static_cast<jfloat>(ret_val.voltage_v)            , static_cast<jfloat>(ret_val.current_a)            , static_cast<jint>(ret_val.temperature_c)            , nestedObj_status_flags        );
+        env->DeleteLocalRef(retClass);        env->DeleteLocalRef(nestedObj_status_flags);
+    mavsdk_winch_status_destroy(&ret_val);
     return retObj;
 }
 
