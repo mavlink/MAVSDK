@@ -1,0 +1,40 @@
+# This file is auto-generated - do not edit manually
+
+set(PLUGIN_SOURCES
+    plugins/action/action_jni.cpp
+    plugins/action_server/action_server_jni.cpp
+    plugins/arm_authorizer_server/arm_authorizer_server_jni.cpp
+    plugins/calibration/calibration_jni.cpp
+    plugins/camera/camera_jni.cpp
+    plugins/camera_server/camera_server_jni.cpp
+    plugins/component_metadata/component_metadata_jni.cpp
+    plugins/component_metadata_server/component_metadata_server_jni.cpp
+    plugins/events/events_jni.cpp
+    plugins/failure/failure_jni.cpp
+    plugins/follow_me/follow_me_jni.cpp
+    plugins/ftp/ftp_jni.cpp
+    plugins/ftp_server/ftp_server_jni.cpp
+    plugins/geofence/geofence_jni.cpp
+    plugins/gimbal/gimbal_jni.cpp
+    plugins/gripper/gripper_jni.cpp
+    plugins/info/info_jni.cpp
+    plugins/log_files/log_files_jni.cpp
+    plugins/log_streaming/log_streaming_jni.cpp
+    plugins/manual_control/manual_control_jni.cpp
+    plugins/mavlink_direct/mavlink_direct_jni.cpp
+    plugins/mission/mission_jni.cpp
+    plugins/mission_raw/mission_raw_jni.cpp
+    plugins/mission_raw_server/mission_raw_server_jni.cpp
+    plugins/mocap/mocap_jni.cpp
+    plugins/offboard/offboard_jni.cpp
+    plugins/param/param_jni.cpp
+    plugins/param_server/param_server_jni.cpp
+    plugins/rtk/rtk_jni.cpp
+    plugins/server_utility/server_utility_jni.cpp
+    plugins/shell/shell_jni.cpp
+    plugins/telemetry/telemetry_jni.cpp
+    plugins/telemetry_server/telemetry_server_jni.cpp
+    plugins/transponder/transponder_jni.cpp
+    plugins/tune/tune_jni.cpp
+    plugins/winch/winch_jni.cpp
+)
