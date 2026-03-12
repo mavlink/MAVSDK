@@ -1,7 +1,6 @@
 package io.mavsdk.kotlin.examples
 
 val examples = mapOf(
-    "BasicExample" to ::basicExample,
     "TakeoffAndLand" to ::takeoffAndLand,
     "Calibrate" to ::calibrate,
     "FlyMission" to ::flyMission,
