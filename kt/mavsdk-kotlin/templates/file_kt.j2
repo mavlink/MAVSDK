@@ -33,30 +33,15 @@ import kotlinx.coroutines.flow.callbackFlow
 
 {# Kotlin type for an external fun param/return (enums → Int, structs → ClassName) #}
 {%- macro kt_ext_type(type_info) -%}
-{%- if type_info.is_string -%}String
-{%- elif type_info.is_primitive -%}
-  {%- if type_info.name == 'double' -%}Double
-  {%- elif type_info.name == 'float' -%}Float
-  {%- elif type_info.name == 'bool' -%}Boolean
-  {%- elif type_info.name == 'int64_t' or type_info.name == 'uint64_t' -%}Long
-  {%- else -%}Int
-  {%- endif -%}
-{%- elif type_info.is_enum -%}Int
+{%- if type_info.is_enum -%}Int
+{%- elif type_info.is_primitive or type_info.is_string -%}{{ type_info.name }}
 {%- else -%}{{ type_info.name.upper_camel_case }}
 {%- endif -%}
 {%- endmacro -%}
 
 {# Kotlin type for a public-facing param (enums → EnumType, structs → ClassName) #}
 {%- macro kt_pub_type(type_info) -%}
-{%- if type_info.is_string -%}String
-{%- elif type_info.is_primitive -%}
-  {%- if type_info.name == 'double' -%}Double
-  {%- elif type_info.name == 'float' -%}Float
-  {%- elif type_info.name == 'bool' -%}Boolean
-  {%- elif type_info.name == 'int64_t' or type_info.name == 'uint64_t' -%}Long
-  {%- else -%}Int
-  {%- endif -%}
-{%- elif type_info.is_enum -%}{{ type_info.name.upper_camel_case }}
+{%- if type_info.is_primitive or type_info.is_string -%}{{ type_info.name }}
 {%- else -%}{{ type_info.name.upper_camel_case }}
 {%- endif -%}
 {%- endmacro -%}
