@@ -16,7 +16,7 @@ dependencies {
 }
 
 application {
-    mainClass.set("io.mavsdk.kotlin.examples.BasicExampleKt")
+    mainClass.set("io.mavsdk.kotlin.examples.MainKt")
 }
 
 kotlin {

@@ -78,5 +78,14 @@ expect class Mavsdk(configuration: Configuration) : AutoCloseable {
      */
     fun subscribeOnNewSystem(): Flow<System>
 
+    /**
+     * Get the server component handle for creating server-side plugins
+     * (CameraServer, ActionServer, TelemetryServer, etc.)
+     *
+     * @param instance Server component instance number (default: 1)
+     * @return Raw server component handle to pass to server plugin create()
+     */
+    fun serverComponentHandle(instance: Int = 1): Long
+
     override fun close()
 }
