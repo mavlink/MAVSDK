@@ -5,6 +5,7 @@
 #include "libmav_receiver.h"
 #include <atomic>
 #include <memory>
+#include <mutex>
 #include <string>
 #include <unordered_set>
 #include <utility>
@@ -62,6 +63,7 @@ protected:
     std::unique_ptr<MavlinkReceiver> _mavlink_receiver;
     std::unique_ptr<LibmavReceiver> _libmav_receiver;
     ForwardingOption _forwarding_option;
+    std::mutex _system_ids_mutex;
     std::unordered_set<uint8_t> _system_ids;
 
     bool _debugging = false;

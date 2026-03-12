@@ -102,9 +102,8 @@ void Connection::receive_message(
 {
     // Register system ID for valid messages
     if (result == MavlinkReceiver::ParseResult::MessageParsed) {
-        if (_system_ids.find(message.sysid) == _system_ids.end()) {
-            _system_ids.insert(message.sysid);
-        }
+        std::lock_guard<std::mutex> lock(_system_ids_mutex);
+        _system_ids.insert(message.sysid);
     }
     // Let MavsdkImpl handle the ParseResult (queue for processing or forward-only)
     _receiver_callback(result, message, connection);
@@ -122,6 +121,7 @@ unsigned Connection::forwarding_connections_count()
 
 bool Connection::has_system_id(uint8_t system_id)
 {
+    std::lock_guard<std::mutex> lock(_system_ids_mutex);
     return _system_ids.find(system_id) != _system_ids.end();
 }
 
