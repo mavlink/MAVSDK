@@ -58,10 +58,7 @@ class Tune internal constructor(private val handle: Long) : AutoCloseable {
         val tempo: Int,
     )
 
-    fun playTune(tuneDescription: TuneDescription): Result =
-        Result.fromValue(playTuneBlocking(tuneDescription))
-
-    suspend fun playTuneAsync(tuneDescription: TuneDescription): Result = suspendCancellableCoroutine { continuation ->
+    suspend fun playTune(tuneDescription: TuneDescription): Result = suspendCancellableCoroutine { continuation ->
         val callback = PlayTuneCallback { result ->
             val r = Result.fromValue(result)
             if (r == Result.SUCCESS) {
@@ -77,7 +74,6 @@ class Tune internal constructor(private val handle: Long) : AutoCloseable {
 
     private fun interface PlayTuneCallback { fun invoke(result: Int) }
 
-    private external fun playTuneBlocking(tuneDescription: TuneDescription): Int
     private external fun playTuneAsyncNative(tuneDescription: TuneDescription, callback: PlayTuneCallback)
     private external fun destroy()
 

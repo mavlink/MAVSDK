@@ -90,10 +90,7 @@ class Winch internal constructor(private val handle: Long) : AutoCloseable {
         awaitClose { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
     }
 
-    fun relax(instance: Int): Result =
-        Result.fromValue(relaxBlocking(instance))
-
-    suspend fun relaxAsync(instance: Int): Result = suspendCancellableCoroutine { continuation ->
+    suspend fun relax(instance: Int): Result = suspendCancellableCoroutine { continuation ->
         val callback = RelaxCallback { result ->
             val r = Result.fromValue(result)
             if (r == Result.SUCCESS) {
@@ -107,10 +104,7 @@ class Winch internal constructor(private val handle: Long) : AutoCloseable {
         relaxAsyncNative(instance, callback)
     }
 
-    fun relativeLengthControl(instance: Int, lengthM: Float, rateMS: Float): Result =
-        Result.fromValue(relativeLengthControlBlocking(instance, lengthM, rateMS))
-
-    suspend fun relativeLengthControlAsync(instance: Int, lengthM: Float, rateMS: Float): Result = suspendCancellableCoroutine { continuation ->
+    suspend fun relativeLengthControl(instance: Int, lengthM: Float, rateMS: Float): Result = suspendCancellableCoroutine { continuation ->
         val callback = RelativeLengthControlCallback { result ->
             val r = Result.fromValue(result)
             if (r == Result.SUCCESS) {
@@ -124,10 +118,7 @@ class Winch internal constructor(private val handle: Long) : AutoCloseable {
         relativeLengthControlAsyncNative(instance, lengthM, rateMS, callback)
     }
 
-    fun rateControl(instance: Int, rateMS: Float): Result =
-        Result.fromValue(rateControlBlocking(instance, rateMS))
-
-    suspend fun rateControlAsync(instance: Int, rateMS: Float): Result = suspendCancellableCoroutine { continuation ->
+    suspend fun rateControl(instance: Int, rateMS: Float): Result = suspendCancellableCoroutine { continuation ->
         val callback = RateControlCallback { result ->
             val r = Result.fromValue(result)
             if (r == Result.SUCCESS) {
@@ -141,10 +132,7 @@ class Winch internal constructor(private val handle: Long) : AutoCloseable {
         rateControlAsyncNative(instance, rateMS, callback)
     }
 
-    fun lock(instance: Int): Result =
-        Result.fromValue(lockBlocking(instance))
-
-    suspend fun lockAsync(instance: Int): Result = suspendCancellableCoroutine { continuation ->
+    suspend fun lock(instance: Int): Result = suspendCancellableCoroutine { continuation ->
         val callback = LockCallback { result ->
             val r = Result.fromValue(result)
             if (r == Result.SUCCESS) {
@@ -158,10 +146,7 @@ class Winch internal constructor(private val handle: Long) : AutoCloseable {
         lockAsyncNative(instance, callback)
     }
 
-    fun deliver(instance: Int): Result =
-        Result.fromValue(deliverBlocking(instance))
-
-    suspend fun deliverAsync(instance: Int): Result = suspendCancellableCoroutine { continuation ->
+    suspend fun deliver(instance: Int): Result = suspendCancellableCoroutine { continuation ->
         val callback = DeliverCallback { result ->
             val r = Result.fromValue(result)
             if (r == Result.SUCCESS) {
@@ -175,10 +160,7 @@ class Winch internal constructor(private val handle: Long) : AutoCloseable {
         deliverAsyncNative(instance, callback)
     }
 
-    fun hold(instance: Int): Result =
-        Result.fromValue(holdBlocking(instance))
-
-    suspend fun holdAsync(instance: Int): Result = suspendCancellableCoroutine { continuation ->
+    suspend fun hold(instance: Int): Result = suspendCancellableCoroutine { continuation ->
         val callback = HoldCallback { result ->
             val r = Result.fromValue(result)
             if (r == Result.SUCCESS) {
@@ -192,10 +174,7 @@ class Winch internal constructor(private val handle: Long) : AutoCloseable {
         holdAsyncNative(instance, callback)
     }
 
-    fun retract(instance: Int): Result =
-        Result.fromValue(retractBlocking(instance))
-
-    suspend fun retractAsync(instance: Int): Result = suspendCancellableCoroutine { continuation ->
+    suspend fun retract(instance: Int): Result = suspendCancellableCoroutine { continuation ->
         val callback = RetractCallback { result ->
             val r = Result.fromValue(result)
             if (r == Result.SUCCESS) {
@@ -209,10 +188,7 @@ class Winch internal constructor(private val handle: Long) : AutoCloseable {
         retractAsyncNative(instance, callback)
     }
 
-    fun loadLine(instance: Int): Result =
-        Result.fromValue(loadLineBlocking(instance))
-
-    suspend fun loadLineAsync(instance: Int): Result = suspendCancellableCoroutine { continuation ->
+    suspend fun loadLine(instance: Int): Result = suspendCancellableCoroutine { continuation ->
         val callback = LoadLineCallback { result ->
             val r = Result.fromValue(result)
             if (r == Result.SUCCESS) {
@@ -226,10 +202,7 @@ class Winch internal constructor(private val handle: Long) : AutoCloseable {
         loadLineAsyncNative(instance, callback)
     }
 
-    fun abandonLine(instance: Int): Result =
-        Result.fromValue(abandonLineBlocking(instance))
-
-    suspend fun abandonLineAsync(instance: Int): Result = suspendCancellableCoroutine { continuation ->
+    suspend fun abandonLine(instance: Int): Result = suspendCancellableCoroutine { continuation ->
         val callback = AbandonLineCallback { result ->
             val r = Result.fromValue(result)
             if (r == Result.SUCCESS) {
@@ -243,10 +216,7 @@ class Winch internal constructor(private val handle: Long) : AutoCloseable {
         abandonLineAsyncNative(instance, callback)
     }
 
-    fun loadPayload(instance: Int): Result =
-        Result.fromValue(loadPayloadBlocking(instance))
-
-    suspend fun loadPayloadAsync(instance: Int): Result = suspendCancellableCoroutine { continuation ->
+    suspend fun loadPayload(instance: Int): Result = suspendCancellableCoroutine { continuation ->
         val callback = LoadPayloadCallback { result ->
             val r = Result.fromValue(result)
             if (r == Result.SUCCESS) {
@@ -275,25 +245,15 @@ class Winch internal constructor(private val handle: Long) : AutoCloseable {
     private external fun statusBlocking(): Status
     private external fun subscribeStatusNative(callback: StatusCallback): Long
     private external fun unsubscribeStatus(handle: Long)
-    private external fun relaxBlocking(instance: Int): Int
     private external fun relaxAsyncNative(instance: Int, callback: RelaxCallback)
-    private external fun relativeLengthControlBlocking(instance: Int, lengthM: Float, rateMS: Float): Int
     private external fun relativeLengthControlAsyncNative(instance: Int, lengthM: Float, rateMS: Float, callback: RelativeLengthControlCallback)
-    private external fun rateControlBlocking(instance: Int, rateMS: Float): Int
     private external fun rateControlAsyncNative(instance: Int, rateMS: Float, callback: RateControlCallback)
-    private external fun lockBlocking(instance: Int): Int
     private external fun lockAsyncNative(instance: Int, callback: LockCallback)
-    private external fun deliverBlocking(instance: Int): Int
     private external fun deliverAsyncNative(instance: Int, callback: DeliverCallback)
-    private external fun holdBlocking(instance: Int): Int
     private external fun holdAsyncNative(instance: Int, callback: HoldCallback)
-    private external fun retractBlocking(instance: Int): Int
     private external fun retractAsyncNative(instance: Int, callback: RetractCallback)
-    private external fun loadLineBlocking(instance: Int): Int
     private external fun loadLineAsyncNative(instance: Int, callback: LoadLineCallback)
-    private external fun abandonLineBlocking(instance: Int): Int
     private external fun abandonLineAsyncNative(instance: Int, callback: AbandonLineCallback)
-    private external fun loadPayloadBlocking(instance: Int): Int
     private external fun loadPayloadAsyncNative(instance: Int, callback: LoadPayloadCallback)
     private external fun destroy()
 

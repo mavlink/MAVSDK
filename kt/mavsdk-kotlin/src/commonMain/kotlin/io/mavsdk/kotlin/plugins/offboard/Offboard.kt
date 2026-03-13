@@ -83,10 +83,7 @@ class Offboard internal constructor(private val handle: Long) : AutoCloseable {
         val downMS2: Float,
     )
 
-    fun start(): Result =
-        Result.fromValue(startBlocking())
-
-    suspend fun startAsync(): Result = suspendCancellableCoroutine { continuation ->
+    suspend fun start(): Result = suspendCancellableCoroutine { continuation ->
         val callback = StartCallback { result ->
             val r = Result.fromValue(result)
             if (r == Result.SUCCESS) {
@@ -100,10 +97,7 @@ class Offboard internal constructor(private val handle: Long) : AutoCloseable {
         startAsyncNative(callback)
     }
 
-    fun stop(): Result =
-        Result.fromValue(stopBlocking())
-
-    suspend fun stopAsync(): Result = suspendCancellableCoroutine { continuation ->
+    suspend fun stop(): Result = suspendCancellableCoroutine { continuation ->
         val callback = StopCallback { result ->
             val r = Result.fromValue(result)
             if (r == Result.SUCCESS) {
@@ -153,9 +147,7 @@ class Offboard internal constructor(private val handle: Long) : AutoCloseable {
     private fun interface StartCallback { fun invoke(result: Int) }
     private fun interface StopCallback { fun invoke(result: Int) }
 
-    private external fun startBlocking(): Int
     private external fun startAsyncNative(callback: StartCallback)
-    private external fun stopBlocking(): Int
     private external fun stopAsyncNative(callback: StopCallback)
     private external fun isActiveBlocking(): Boolean
     private external fun setAttitudeBlocking(attitude: Attitude): Int

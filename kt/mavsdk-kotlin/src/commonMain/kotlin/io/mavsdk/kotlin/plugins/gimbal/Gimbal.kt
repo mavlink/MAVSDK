@@ -112,10 +112,7 @@ class Gimbal internal constructor(private val handle: Long) : AutoCloseable {
         val compidSecondaryControl: Int,
     )
 
-    fun setAngles(gimbalId: Int, rollDeg: Float, pitchDeg: Float, yawDeg: Float, gimbalMode: GimbalMode, sendMode: SendMode): Result =
-        Result.fromValue(setAnglesBlocking(gimbalId, rollDeg, pitchDeg, yawDeg, gimbalMode.value, sendMode.value))
-
-    suspend fun setAnglesAsync(gimbalId: Int, rollDeg: Float, pitchDeg: Float, yawDeg: Float, gimbalMode: GimbalMode, sendMode: SendMode): Result = suspendCancellableCoroutine { continuation ->
+    suspend fun setAngles(gimbalId: Int, rollDeg: Float, pitchDeg: Float, yawDeg: Float, gimbalMode: GimbalMode, sendMode: SendMode): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetAnglesCallback { result ->
             val r = Result.fromValue(result)
             if (r == Result.SUCCESS) {
@@ -129,10 +126,7 @@ class Gimbal internal constructor(private val handle: Long) : AutoCloseable {
         setAnglesAsyncNative(gimbalId, rollDeg, pitchDeg, yawDeg, gimbalMode.value, sendMode.value, callback)
     }
 
-    fun setAngularRates(gimbalId: Int, rollRateDegS: Float, pitchRateDegS: Float, yawRateDegS: Float, gimbalMode: GimbalMode, sendMode: SendMode): Result =
-        Result.fromValue(setAngularRatesBlocking(gimbalId, rollRateDegS, pitchRateDegS, yawRateDegS, gimbalMode.value, sendMode.value))
-
-    suspend fun setAngularRatesAsync(gimbalId: Int, rollRateDegS: Float, pitchRateDegS: Float, yawRateDegS: Float, gimbalMode: GimbalMode, sendMode: SendMode): Result = suspendCancellableCoroutine { continuation ->
+    suspend fun setAngularRates(gimbalId: Int, rollRateDegS: Float, pitchRateDegS: Float, yawRateDegS: Float, gimbalMode: GimbalMode, sendMode: SendMode): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetAngularRatesCallback { result ->
             val r = Result.fromValue(result)
             if (r == Result.SUCCESS) {
@@ -146,10 +140,7 @@ class Gimbal internal constructor(private val handle: Long) : AutoCloseable {
         setAngularRatesAsyncNative(gimbalId, rollRateDegS, pitchRateDegS, yawRateDegS, gimbalMode.value, sendMode.value, callback)
     }
 
-    fun setRoiLocation(gimbalId: Int, latitudeDeg: Double, longitudeDeg: Double, altitudeM: Float): Result =
-        Result.fromValue(setRoiLocationBlocking(gimbalId, latitudeDeg, longitudeDeg, altitudeM))
-
-    suspend fun setRoiLocationAsync(gimbalId: Int, latitudeDeg: Double, longitudeDeg: Double, altitudeM: Float): Result = suspendCancellableCoroutine { continuation ->
+    suspend fun setRoiLocation(gimbalId: Int, latitudeDeg: Double, longitudeDeg: Double, altitudeM: Float): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetRoiLocationCallback { result ->
             val r = Result.fromValue(result)
             if (r == Result.SUCCESS) {
@@ -163,10 +154,7 @@ class Gimbal internal constructor(private val handle: Long) : AutoCloseable {
         setRoiLocationAsyncNative(gimbalId, latitudeDeg, longitudeDeg, altitudeM, callback)
     }
 
-    fun takeControl(gimbalId: Int, controlMode: ControlMode): Result =
-        Result.fromValue(takeControlBlocking(gimbalId, controlMode.value))
-
-    suspend fun takeControlAsync(gimbalId: Int, controlMode: ControlMode): Result = suspendCancellableCoroutine { continuation ->
+    suspend fun takeControl(gimbalId: Int, controlMode: ControlMode): Result = suspendCancellableCoroutine { continuation ->
         val callback = TakeControlCallback { result ->
             val r = Result.fromValue(result)
             if (r == Result.SUCCESS) {
@@ -180,10 +168,7 @@ class Gimbal internal constructor(private val handle: Long) : AutoCloseable {
         takeControlAsyncNative(gimbalId, controlMode.value, callback)
     }
 
-    fun releaseControl(gimbalId: Int): Result =
-        Result.fromValue(releaseControlBlocking(gimbalId))
-
-    suspend fun releaseControlAsync(gimbalId: Int): Result = suspendCancellableCoroutine { continuation ->
+    suspend fun releaseControl(gimbalId: Int): Result = suspendCancellableCoroutine { continuation ->
         val callback = ReleaseControlCallback { result ->
             val r = Result.fromValue(result)
             if (r == Result.SUCCESS) {
@@ -242,15 +227,10 @@ class Gimbal internal constructor(private val handle: Long) : AutoCloseable {
     private fun interface ControlStatusCallback { fun invoke(value: ControlStatus) }
     private fun interface AttitudeCallback { fun invoke(value: Attitude) }
 
-    private external fun setAnglesBlocking(gimbalId: Int, rollDeg: Float, pitchDeg: Float, yawDeg: Float, gimbalMode: Int, sendMode: Int): Int
     private external fun setAnglesAsyncNative(gimbalId: Int, rollDeg: Float, pitchDeg: Float, yawDeg: Float, gimbalMode: Int, sendMode: Int, callback: SetAnglesCallback)
-    private external fun setAngularRatesBlocking(gimbalId: Int, rollRateDegS: Float, pitchRateDegS: Float, yawRateDegS: Float, gimbalMode: Int, sendMode: Int): Int
     private external fun setAngularRatesAsyncNative(gimbalId: Int, rollRateDegS: Float, pitchRateDegS: Float, yawRateDegS: Float, gimbalMode: Int, sendMode: Int, callback: SetAngularRatesCallback)
-    private external fun setRoiLocationBlocking(gimbalId: Int, latitudeDeg: Double, longitudeDeg: Double, altitudeM: Float): Int
     private external fun setRoiLocationAsyncNative(gimbalId: Int, latitudeDeg: Double, longitudeDeg: Double, altitudeM: Float, callback: SetRoiLocationCallback)
-    private external fun takeControlBlocking(gimbalId: Int, controlMode: Int): Int
     private external fun takeControlAsyncNative(gimbalId: Int, controlMode: Int, callback: TakeControlCallback)
-    private external fun releaseControlBlocking(gimbalId: Int): Int
     private external fun releaseControlAsyncNative(gimbalId: Int, callback: ReleaseControlCallback)
     private external fun gimbalListBlocking(): GimbalList
     private external fun subscribeGimbalListNative(callback: GimbalListCallback): Long

@@ -74,10 +74,7 @@ class MissionRaw internal constructor(private val handle: Long) : AutoCloseable 
         val rallyItems: List<MissionItem> = emptyList(),
     )
 
-    fun uploadMission(): Result =
-        Result.fromValue(uploadMissionBlocking())
-
-    suspend fun uploadMissionAsync(): Result = suspendCancellableCoroutine { continuation ->
+    suspend fun uploadMission(): Result = suspendCancellableCoroutine { continuation ->
         val callback = UploadMissionCallback { result ->
             val r = Result.fromValue(result)
             if (r == Result.SUCCESS) {
@@ -91,10 +88,7 @@ class MissionRaw internal constructor(private val handle: Long) : AutoCloseable 
         uploadMissionAsyncNative(callback)
     }
 
-    fun uploadGeofence(): Result =
-        Result.fromValue(uploadGeofenceBlocking())
-
-    suspend fun uploadGeofenceAsync(): Result = suspendCancellableCoroutine { continuation ->
+    suspend fun uploadGeofence(): Result = suspendCancellableCoroutine { continuation ->
         val callback = UploadGeofenceCallback { result ->
             val r = Result.fromValue(result)
             if (r == Result.SUCCESS) {
@@ -108,10 +102,7 @@ class MissionRaw internal constructor(private val handle: Long) : AutoCloseable 
         uploadGeofenceAsyncNative(callback)
     }
 
-    fun uploadRallyPoints(): Result =
-        Result.fromValue(uploadRallyPointsBlocking())
-
-    suspend fun uploadRallyPointsAsync(): Result = suspendCancellableCoroutine { continuation ->
+    suspend fun uploadRallyPoints(): Result = suspendCancellableCoroutine { continuation ->
         val callback = UploadRallyPointsCallback { result ->
             val r = Result.fromValue(result)
             if (r == Result.SUCCESS) {
@@ -128,9 +119,7 @@ class MissionRaw internal constructor(private val handle: Long) : AutoCloseable 
     fun cancelMissionUpload(): Result =
         Result.fromValue(cancelMissionUploadBlocking())
 
-    // TODO: getter with repeated return: downloadMission
-
-    suspend fun downloadMissionAsync(): Result = suspendCancellableCoroutine { continuation ->
+    suspend fun downloadMission(): Result = suspendCancellableCoroutine { continuation ->
         val callback = DownloadMissionCallback { result ->
             val r = Result.fromValue(result)
             if (r == Result.SUCCESS) {
@@ -144,9 +133,7 @@ class MissionRaw internal constructor(private val handle: Long) : AutoCloseable 
         downloadMissionAsyncNative(callback)
     }
 
-    // TODO: getter with repeated return: downloadGeofence
-
-    suspend fun downloadGeofenceAsync(): Result = suspendCancellableCoroutine { continuation ->
+    suspend fun downloadGeofence(): Result = suspendCancellableCoroutine { continuation ->
         val callback = DownloadGeofenceCallback { result ->
             val r = Result.fromValue(result)
             if (r == Result.SUCCESS) {
@@ -160,9 +147,7 @@ class MissionRaw internal constructor(private val handle: Long) : AutoCloseable 
         downloadGeofenceAsyncNative(callback)
     }
 
-    // TODO: getter with repeated return: downloadRallypoints
-
-    suspend fun downloadRallypointsAsync(): Result = suspendCancellableCoroutine { continuation ->
+    suspend fun downloadRallypoints(): Result = suspendCancellableCoroutine { continuation ->
         val callback = DownloadRallypointsCallback { result ->
             val r = Result.fromValue(result)
             if (r == Result.SUCCESS) {
@@ -179,10 +164,7 @@ class MissionRaw internal constructor(private val handle: Long) : AutoCloseable 
     fun cancelMissionDownload(): Result =
         Result.fromValue(cancelMissionDownloadBlocking())
 
-    fun startMission(): Result =
-        Result.fromValue(startMissionBlocking())
-
-    suspend fun startMissionAsync(): Result = suspendCancellableCoroutine { continuation ->
+    suspend fun startMission(): Result = suspendCancellableCoroutine { continuation ->
         val callback = StartMissionCallback { result ->
             val r = Result.fromValue(result)
             if (r == Result.SUCCESS) {
@@ -196,10 +178,7 @@ class MissionRaw internal constructor(private val handle: Long) : AutoCloseable 
         startMissionAsyncNative(callback)
     }
 
-    fun pauseMission(): Result =
-        Result.fromValue(pauseMissionBlocking())
-
-    suspend fun pauseMissionAsync(): Result = suspendCancellableCoroutine { continuation ->
+    suspend fun pauseMission(): Result = suspendCancellableCoroutine { continuation ->
         val callback = PauseMissionCallback { result ->
             val r = Result.fromValue(result)
             if (r == Result.SUCCESS) {
@@ -213,10 +192,7 @@ class MissionRaw internal constructor(private val handle: Long) : AutoCloseable 
         pauseMissionAsyncNative(callback)
     }
 
-    fun clearMission(): Result =
-        Result.fromValue(clearMissionBlocking())
-
-    suspend fun clearMissionAsync(): Result = suspendCancellableCoroutine { continuation ->
+    suspend fun clearMission(): Result = suspendCancellableCoroutine { continuation ->
         val callback = ClearMissionCallback { result ->
             val r = Result.fromValue(result)
             if (r == Result.SUCCESS) {
@@ -230,10 +206,7 @@ class MissionRaw internal constructor(private val handle: Long) : AutoCloseable 
         clearMissionAsyncNative(callback)
     }
 
-    fun setCurrentMissionItem(index: Int): Result =
-        Result.fromValue(setCurrentMissionItemBlocking(index))
-
-    suspend fun setCurrentMissionItemAsync(index: Int): Result = suspendCancellableCoroutine { continuation ->
+    suspend fun setCurrentMissionItem(index: Int): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetCurrentMissionItemCallback { result ->
             val r = Result.fromValue(result)
             if (r == Result.SUCCESS) {
@@ -296,27 +269,17 @@ class MissionRaw internal constructor(private val handle: Long) : AutoCloseable 
     private fun interface MissionProgressCallback { fun invoke(value: MissionProgress) }
     private fun interface MissionChangedCallback { fun invoke(value: Boolean) }
 
-    private external fun uploadMissionBlocking(): Int
     private external fun uploadMissionAsyncNative(callback: UploadMissionCallback)
-    private external fun uploadGeofenceBlocking(): Int
     private external fun uploadGeofenceAsyncNative(callback: UploadGeofenceCallback)
-    private external fun uploadRallyPointsBlocking(): Int
     private external fun uploadRallyPointsAsyncNative(callback: UploadRallyPointsCallback)
     private external fun cancelMissionUploadBlocking(): Int
-    private external fun downloadMissionBlocking(): Int
     private external fun downloadMissionAsyncNative(callback: DownloadMissionCallback)
-    private external fun downloadGeofenceBlocking(): Int
     private external fun downloadGeofenceAsyncNative(callback: DownloadGeofenceCallback)
-    private external fun downloadRallypointsBlocking(): Int
     private external fun downloadRallypointsAsyncNative(callback: DownloadRallypointsCallback)
     private external fun cancelMissionDownloadBlocking(): Int
-    private external fun startMissionBlocking(): Int
     private external fun startMissionAsyncNative(callback: StartMissionCallback)
-    private external fun pauseMissionBlocking(): Int
     private external fun pauseMissionAsyncNative(callback: PauseMissionCallback)
-    private external fun clearMissionBlocking(): Int
     private external fun clearMissionAsyncNative(callback: ClearMissionCallback)
-    private external fun setCurrentMissionItemBlocking(index: Int): Int
     private external fun setCurrentMissionItemAsyncNative(index: Int, callback: SetCurrentMissionItemCallback)
     private external fun missionProgressBlocking(): MissionProgress
     private external fun subscribeMissionProgressNative(callback: MissionProgressCallback): Long

@@ -57,10 +57,7 @@ class Geofence internal constructor(private val handle: Long) : AutoCloseable {
         val circles: List<Circle> = emptyList(),
     )
 
-    fun uploadGeofence(geofenceData: GeofenceData): Result =
-        Result.fromValue(uploadGeofenceBlocking(geofenceData))
-
-    suspend fun uploadGeofenceAsync(geofenceData: GeofenceData): Result = suspendCancellableCoroutine { continuation ->
+    suspend fun uploadGeofence(geofenceData: GeofenceData): Result = suspendCancellableCoroutine { continuation ->
         val callback = UploadGeofenceCallback { result ->
             val r = Result.fromValue(result)
             if (r == Result.SUCCESS) {
@@ -74,10 +71,7 @@ class Geofence internal constructor(private val handle: Long) : AutoCloseable {
         uploadGeofenceAsyncNative(geofenceData, callback)
     }
 
-    fun clearGeofence(): Result =
-        Result.fromValue(clearGeofenceBlocking())
-
-    suspend fun clearGeofenceAsync(): Result = suspendCancellableCoroutine { continuation ->
+    suspend fun clearGeofence(): Result = suspendCancellableCoroutine { continuation ->
         val callback = ClearGeofenceCallback { result ->
             val r = Result.fromValue(result)
             if (r == Result.SUCCESS) {
@@ -94,9 +88,7 @@ class Geofence internal constructor(private val handle: Long) : AutoCloseable {
     private fun interface UploadGeofenceCallback { fun invoke(result: Int) }
     private fun interface ClearGeofenceCallback { fun invoke(result: Int) }
 
-    private external fun uploadGeofenceBlocking(geofenceData: GeofenceData): Int
     private external fun uploadGeofenceAsyncNative(geofenceData: GeofenceData, callback: UploadGeofenceCallback)
-    private external fun clearGeofenceBlocking(): Int
     private external fun clearGeofenceAsyncNative(callback: ClearGeofenceCallback)
     private external fun destroy()
 

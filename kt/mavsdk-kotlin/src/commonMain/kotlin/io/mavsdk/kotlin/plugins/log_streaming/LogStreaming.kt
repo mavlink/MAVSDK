@@ -38,10 +38,7 @@ class LogStreaming internal constructor(private val handle: Long) : AutoCloseabl
         val dataBase64: String,
     )
 
-    fun startLogStreaming(): Result =
-        Result.fromValue(startLogStreamingBlocking())
-
-    suspend fun startLogStreamingAsync(): Result = suspendCancellableCoroutine { continuation ->
+    suspend fun startLogStreaming(): Result = suspendCancellableCoroutine { continuation ->
         val callback = StartLogStreamingCallback { result ->
             val r = Result.fromValue(result)
             if (r == Result.SUCCESS) {
@@ -55,10 +52,7 @@ class LogStreaming internal constructor(private val handle: Long) : AutoCloseabl
         startLogStreamingAsyncNative(callback)
     }
 
-    fun stopLogStreaming(): Result =
-        Result.fromValue(stopLogStreamingBlocking())
-
-    suspend fun stopLogStreamingAsync(): Result = suspendCancellableCoroutine { continuation ->
+    suspend fun stopLogStreaming(): Result = suspendCancellableCoroutine { continuation ->
         val callback = StopLogStreamingCallback { result ->
             val r = Result.fromValue(result)
             if (r == Result.SUCCESS) {
@@ -85,9 +79,7 @@ class LogStreaming internal constructor(private val handle: Long) : AutoCloseabl
     private fun interface StopLogStreamingCallback { fun invoke(result: Int) }
     private fun interface LogStreamingRawCallback { fun invoke(value: LogStreamingRaw) }
 
-    private external fun startLogStreamingBlocking(): Int
     private external fun startLogStreamingAsyncNative(callback: StartLogStreamingCallback)
-    private external fun stopLogStreamingBlocking(): Int
     private external fun stopLogStreamingAsyncNative(callback: StopLogStreamingCallback)
     private external fun subscribeLogStreamingRawNative(callback: LogStreamingRawCallback): Long
     private external fun unsubscribeLogStreamingRaw(handle: Long)

@@ -179,7 +179,7 @@ class {{ plugin_name.upper_camel_case }} internal constructor(private val handle
 {% set ns_m.ret_is_enum = true %}
 {% endif %}
 {% endif %}
-{% if method.is_sync %}
+{% if method.is_sync and not (method.is_async and not method.is_stream) %}
 {# ---- Sync method ---- #}
 {% if method.has_result and method.return_name %}
 {# Getter with result check: JNI throws on failure, returns value #}
@@ -220,7 +220,7 @@ class {{ plugin_name.upper_camel_case }} internal constructor(private val handle
 {% set ns_sep = namespace(sep=has_scalar_params(method.params)) %}
 {% if method.has_result and method.return_name and not method.return_type.is_repeated %}
 {# Async getter: suspends and returns the value on SUCCESS #}
-    suspend fun {{ method.name.lower_camel_case }}Async({{ pub_params(method.params) }}): {% if ns_m.ret_is_enum %}{{ method.return_type.name.upper_camel_case }}{% else %}{{ kt_pub_type(method.return_type) }}{% endif %} = suspendCancellableCoroutine { continuation ->
+    suspend fun {{ method.name.lower_camel_case }}({{ pub_params(method.params) }}): {% if ns_m.ret_is_enum %}{{ method.return_type.name.upper_camel_case }}{% else %}{{ kt_pub_type(method.return_type) }}{% endif %} = suspendCancellableCoroutine { continuation ->
         val callback = {{ method.name.upper_camel_case }}Callback { result, value ->
             val r = Result.fromValue(result)
             if (r == Result.SUCCESS) {
@@ -235,7 +235,7 @@ class {{ plugin_name.upper_camel_case }} internal constructor(private val handle
     }
 {% elif method.has_result %}
 {# Action-style async: suspends and returns Result on SUCCESS #}
-    suspend fun {{ method.name.lower_camel_case }}Async({{ pub_params(method.params) }}): Result = suspendCancellableCoroutine { continuation ->
+    suspend fun {{ method.name.lower_camel_case }}({{ pub_params(method.params) }}): Result = suspendCancellableCoroutine { continuation ->
         val callback = {{ method.name.upper_camel_case }}Callback { result ->
             val r = Result.fromValue(result)
             if (r == Result.SUCCESS) {
@@ -400,7 +400,7 @@ class {{ plugin_name.upper_camel_case }} internal constructor(private val handle
 {% endif %}
 {% endif %}
 {% set ns_sep = namespace(sep=has_scalar_params(method.params)) %}
-{% if method.is_sync %}
+{% if method.is_sync and not (method.is_async and not method.is_stream) %}
 {% if method.has_result and method.return_name and not method.return_type.is_repeated %}
 {% if ns_e.ret_is_enum %}
     private external fun {{ method.name.lower_camel_case }}Blocking({{ ext_params(method.params) }}): Int

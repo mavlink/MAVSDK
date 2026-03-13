@@ -68,10 +68,7 @@ class Ftp internal constructor(private val handle: Long) : AutoCloseable {
         awaitClose {}
     }
 
-    fun listDirectory(remoteDir: String): ListDirectoryData =
-        listDirectoryBlocking(remoteDir)
-
-    suspend fun listDirectoryAsync(remoteDir: String): ListDirectoryData = suspendCancellableCoroutine { continuation ->
+    suspend fun listDirectory(remoteDir: String): ListDirectoryData = suspendCancellableCoroutine { continuation ->
         val callback = ListDirectoryCallback { result, value ->
             val r = Result.fromValue(result)
             if (r == Result.SUCCESS) {
@@ -85,10 +82,7 @@ class Ftp internal constructor(private val handle: Long) : AutoCloseable {
         listDirectoryAsyncNative(remoteDir, callback)
     }
 
-    fun createDirectory(remoteDir: String): Result =
-        Result.fromValue(createDirectoryBlocking(remoteDir))
-
-    suspend fun createDirectoryAsync(remoteDir: String): Result = suspendCancellableCoroutine { continuation ->
+    suspend fun createDirectory(remoteDir: String): Result = suspendCancellableCoroutine { continuation ->
         val callback = CreateDirectoryCallback { result ->
             val r = Result.fromValue(result)
             if (r == Result.SUCCESS) {
@@ -102,10 +96,7 @@ class Ftp internal constructor(private val handle: Long) : AutoCloseable {
         createDirectoryAsyncNative(remoteDir, callback)
     }
 
-    fun removeDirectory(remoteDir: String): Result =
-        Result.fromValue(removeDirectoryBlocking(remoteDir))
-
-    suspend fun removeDirectoryAsync(remoteDir: String): Result = suspendCancellableCoroutine { continuation ->
+    suspend fun removeDirectory(remoteDir: String): Result = suspendCancellableCoroutine { continuation ->
         val callback = RemoveDirectoryCallback { result ->
             val r = Result.fromValue(result)
             if (r == Result.SUCCESS) {
@@ -119,10 +110,7 @@ class Ftp internal constructor(private val handle: Long) : AutoCloseable {
         removeDirectoryAsyncNative(remoteDir, callback)
     }
 
-    fun removeFile(remoteFilePath: String): Result =
-        Result.fromValue(removeFileBlocking(remoteFilePath))
-
-    suspend fun removeFileAsync(remoteFilePath: String): Result = suspendCancellableCoroutine { continuation ->
+    suspend fun removeFile(remoteFilePath: String): Result = suspendCancellableCoroutine { continuation ->
         val callback = RemoveFileCallback { result ->
             val r = Result.fromValue(result)
             if (r == Result.SUCCESS) {
@@ -136,10 +124,7 @@ class Ftp internal constructor(private val handle: Long) : AutoCloseable {
         removeFileAsyncNative(remoteFilePath, callback)
     }
 
-    fun rename(remoteFromPath: String, remoteToPath: String): Result =
-        Result.fromValue(renameBlocking(remoteFromPath, remoteToPath))
-
-    suspend fun renameAsync(remoteFromPath: String, remoteToPath: String): Result = suspendCancellableCoroutine { continuation ->
+    suspend fun rename(remoteFromPath: String, remoteToPath: String): Result = suspendCancellableCoroutine { continuation ->
         val callback = RenameCallback { result ->
             val r = Result.fromValue(result)
             if (r == Result.SUCCESS) {
@@ -153,10 +138,7 @@ class Ftp internal constructor(private val handle: Long) : AutoCloseable {
         renameAsyncNative(remoteFromPath, remoteToPath, callback)
     }
 
-    fun areFilesIdentical(localFilePath: String, remoteFilePath: String): Boolean =
-        areFilesIdenticalBlocking(localFilePath, remoteFilePath)
-
-    suspend fun areFilesIdenticalAsync(localFilePath: String, remoteFilePath: String): Boolean = suspendCancellableCoroutine { continuation ->
+    suspend fun areFilesIdentical(localFilePath: String, remoteFilePath: String): Boolean = suspendCancellableCoroutine { continuation ->
         val callback = AreFilesIdenticalCallback { result, value ->
             val r = Result.fromValue(result)
             if (r == Result.SUCCESS) {
@@ -184,17 +166,11 @@ class Ftp internal constructor(private val handle: Long) : AutoCloseable {
 
     private external fun downloadAsyncNative(remoteFilePath: String, localDir: String, useBurst: Boolean, callback: DownloadCallback)
     private external fun uploadAsyncNative(localFilePath: String, remoteDir: String, callback: UploadCallback)
-    private external fun listDirectoryBlocking(remoteDir: String): ListDirectoryData
     private external fun listDirectoryAsyncNative(remoteDir: String, callback: ListDirectoryCallback)
-    private external fun createDirectoryBlocking(remoteDir: String): Int
     private external fun createDirectoryAsyncNative(remoteDir: String, callback: CreateDirectoryCallback)
-    private external fun removeDirectoryBlocking(remoteDir: String): Int
     private external fun removeDirectoryAsyncNative(remoteDir: String, callback: RemoveDirectoryCallback)
-    private external fun removeFileBlocking(remoteFilePath: String): Int
     private external fun removeFileAsyncNative(remoteFilePath: String, callback: RemoveFileCallback)
-    private external fun renameBlocking(remoteFromPath: String, remoteToPath: String): Int
     private external fun renameAsyncNative(remoteFromPath: String, remoteToPath: String, callback: RenameCallback)
-    private external fun areFilesIdenticalBlocking(localFilePath: String, remoteFilePath: String): Boolean
     private external fun areFilesIdenticalAsyncNative(localFilePath: String, remoteFilePath: String, callback: AreFilesIdenticalCallback)
     private external fun setTargetCompidBlocking(compid: Int): Int
     private external fun destroy()

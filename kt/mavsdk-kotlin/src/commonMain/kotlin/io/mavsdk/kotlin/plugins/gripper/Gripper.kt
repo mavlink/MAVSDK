@@ -35,10 +35,7 @@ class Gripper internal constructor(private val handle: Long) : AutoCloseable {
         }
     }
 
-    fun grab(instance: Int): Result =
-        Result.fromValue(grabBlocking(instance))
-
-    suspend fun grabAsync(instance: Int): Result = suspendCancellableCoroutine { continuation ->
+    suspend fun grab(instance: Int): Result = suspendCancellableCoroutine { continuation ->
         val callback = GrabCallback { result ->
             val r = Result.fromValue(result)
             if (r == Result.SUCCESS) {
@@ -52,10 +49,7 @@ class Gripper internal constructor(private val handle: Long) : AutoCloseable {
         grabAsyncNative(instance, callback)
     }
 
-    fun release(instance: Int): Result =
-        Result.fromValue(releaseBlocking(instance))
-
-    suspend fun releaseAsync(instance: Int): Result = suspendCancellableCoroutine { continuation ->
+    suspend fun release(instance: Int): Result = suspendCancellableCoroutine { continuation ->
         val callback = ReleaseCallback { result ->
             val r = Result.fromValue(result)
             if (r == Result.SUCCESS) {
@@ -72,9 +66,7 @@ class Gripper internal constructor(private val handle: Long) : AutoCloseable {
     private fun interface GrabCallback { fun invoke(result: Int) }
     private fun interface ReleaseCallback { fun invoke(result: Int) }
 
-    private external fun grabBlocking(instance: Int): Int
     private external fun grabAsyncNative(instance: Int, callback: GrabCallback)
-    private external fun releaseBlocking(instance: Int): Int
     private external fun releaseAsyncNative(instance: Int, callback: ReleaseCallback)
     private external fun destroy()
 

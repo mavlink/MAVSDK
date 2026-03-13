@@ -28,10 +28,7 @@ class ManualControl internal constructor(private val handle: Long) : AutoCloseab
         }
     }
 
-    fun startPositionControl(): Result =
-        Result.fromValue(startPositionControlBlocking())
-
-    suspend fun startPositionControlAsync(): Result = suspendCancellableCoroutine { continuation ->
+    suspend fun startPositionControl(): Result = suspendCancellableCoroutine { continuation ->
         val callback = StartPositionControlCallback { result ->
             val r = Result.fromValue(result)
             if (r == Result.SUCCESS) {
@@ -45,10 +42,7 @@ class ManualControl internal constructor(private val handle: Long) : AutoCloseab
         startPositionControlAsyncNative(callback)
     }
 
-    fun startAltitudeControl(): Result =
-        Result.fromValue(startAltitudeControlBlocking())
-
-    suspend fun startAltitudeControlAsync(): Result = suspendCancellableCoroutine { continuation ->
+    suspend fun startAltitudeControl(): Result = suspendCancellableCoroutine { continuation ->
         val callback = StartAltitudeControlCallback { result ->
             val r = Result.fromValue(result)
             if (r == Result.SUCCESS) {
@@ -68,9 +62,7 @@ class ManualControl internal constructor(private val handle: Long) : AutoCloseab
     private fun interface StartPositionControlCallback { fun invoke(result: Int) }
     private fun interface StartAltitudeControlCallback { fun invoke(result: Int) }
 
-    private external fun startPositionControlBlocking(): Int
     private external fun startPositionControlAsyncNative(callback: StartPositionControlCallback)
-    private external fun startAltitudeControlBlocking(): Int
     private external fun startAltitudeControlAsyncNative(callback: StartAltitudeControlCallback)
     private external fun setManualControlInputBlocking(x: Float, y: Float, z: Float, r: Float): Int
     private external fun destroy()

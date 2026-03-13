@@ -58,7 +58,7 @@ fun cameraClient() = runBlocking {
     }
 }
 
-private fun doCameraOperations(camera: Camera, componentId: Int) {
+private suspend fun doCameraOperations(camera: Camera, componentId: Int) {
     // Photo mode
     camera.setMode(componentId, Camera.Mode.PHOTO).also {
         println("Set photo mode: $it")

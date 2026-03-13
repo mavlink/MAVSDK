@@ -56,7 +56,7 @@ fun flyMission() = runBlocking {
             Mission.MissionItem(47.398001890458097, 8.5455576181411743, 10f, 5f, false,   0f,   0f, 5, 0f, 1.0, 1f, 0f, 0f, 0),
         )
         println("Uploading ${items.size} mission items...")
-        val uploadResult = mission.uploadMissionAsync(Mission.MissionPlan(items))
+        val uploadResult = mission.uploadMission(Mission.MissionPlan(items))
         if (uploadResult != Mission.Result.SUCCESS) {
             println("✗ Mission upload failed: $uploadResult")
             return@use
@@ -66,7 +66,7 @@ fun flyMission() = runBlocking {
         // Arm
         println("Arming...")
         try {
-            action.armAsync()
+            action.arm()
             println("✓ Armed\n")
         } catch (e: Action.ActionException) {
             println("✗ Arm failed: ${e.result}")
@@ -84,7 +84,7 @@ fun flyMission() = runBlocking {
 
         // Start
         println("Starting mission...")
-        val startResult = mission.startMissionAsync()
+        val startResult = mission.startMission()
         if (startResult != Mission.Result.SUCCESS) {
             println("✗ Start failed: $startResult")
             progressJob.cancel()
@@ -96,13 +96,13 @@ fun flyMission() = runBlocking {
         progressJob.cancel()
 
         println("\nPausing mission...")
-        mission.pauseMissionAsync().also { println("Pause result: $it") }
+        mission.pauseMission().also { println("Pause result: $it") }
 
         delay(5_000)
 
         // Continue
         println("Continuing mission...")
-        mission.startMissionAsync().also { println("Start result: $it") }
+        mission.startMission().also { println("Start result: $it") }
 
         // Wait for mission to finish
         while (!mission.isMissionFinished()) delay(1_000)
@@ -110,7 +110,7 @@ fun flyMission() = runBlocking {
         // Return to launch
         println("\nCommanding RTL...")
         try {
-            action.returnToLaunchAsync()
+            action.returnToLaunch()
             println("✓ RTL commanded")
         } catch (e: Action.ActionException) {
             println("✗ RTL failed: ${e.result}")

@@ -96,10 +96,7 @@ class Transponder internal constructor(private val handle: Long) : AutoCloseable
         awaitClose { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
     }
 
-    fun setRateTransponder(rateHz: Double): Result =
-        Result.fromValue(setRateTransponderBlocking(rateHz))
-
-    suspend fun setRateTransponderAsync(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
+    suspend fun setRateTransponder(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetRateTransponderCallback { result ->
             val r = Result.fromValue(result)
             if (r == Result.SUCCESS) {
@@ -119,7 +116,6 @@ class Transponder internal constructor(private val handle: Long) : AutoCloseable
     private external fun transponderBlocking(): AdsbVehicle
     private external fun subscribeTransponderNative(callback: TransponderCallback): Long
     private external fun unsubscribeTransponder(handle: Long)
-    private external fun setRateTransponderBlocking(rateHz: Double): Int
     private external fun setRateTransponderAsyncNative(rateHz: Double, callback: SetRateTransponderCallback)
     private external fun destroy()
 

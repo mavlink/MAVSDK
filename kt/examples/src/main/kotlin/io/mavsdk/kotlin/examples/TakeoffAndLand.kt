@@ -46,7 +46,7 @@ fun takeoffAndLand() = runBlocking {
         // Arm
         println("\n=== Arming ===")
         try {
-            val armResult = action.armAsync()
+            val armResult = action.arm()
             println("✓ Armed! Result: $armResult")
         } catch (e: Action.ActionException) {
             println("✗ Arm failed: ${e.result} - ${e.message}")
@@ -57,7 +57,7 @@ fun takeoffAndLand() = runBlocking {
         // Takeoff
         println("\n=== Takeoff ===")
         try {
-            val takeoffResult = action.takeoffAsync()
+            val takeoffResult = action.takeoff()
             println("✓ Takeoff initiated! Result: $takeoffResult")
         } catch (e: Action.ActionException) {
             println("✗ Takeoff failed: ${e.result} - ${e.message}")
@@ -72,7 +72,7 @@ fun takeoffAndLand() = runBlocking {
         // Land
         println("\n=== Landing ===")
         try {
-            val landResult = action.landAsync()
+            val landResult = action.land()
             println("✓ Landing initiated! Result: $landResult")
         } catch (e: Action.ActionException) {
             println("✗ Land failed: ${e.result} - ${e.message}")

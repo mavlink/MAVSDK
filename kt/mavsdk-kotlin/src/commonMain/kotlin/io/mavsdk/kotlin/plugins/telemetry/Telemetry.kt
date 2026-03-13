@@ -738,10 +738,7 @@ class Telemetry internal constructor(private val handle: Long) : AutoCloseable {
         awaitClose { activeSubscriptions.remove(subscriptionHandle)?.invoke() }
     }
 
-    fun setRatePosition(rateHz: Double): Result =
-        Result.fromValue(setRatePositionBlocking(rateHz))
-
-    suspend fun setRatePositionAsync(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
+    suspend fun setRatePosition(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetRatePositionCallback { result ->
             val r = Result.fromValue(result)
             if (r == Result.SUCCESS) {
@@ -755,10 +752,7 @@ class Telemetry internal constructor(private val handle: Long) : AutoCloseable {
         setRatePositionAsyncNative(rateHz, callback)
     }
 
-    fun setRateHome(rateHz: Double): Result =
-        Result.fromValue(setRateHomeBlocking(rateHz))
-
-    suspend fun setRateHomeAsync(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
+    suspend fun setRateHome(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetRateHomeCallback { result ->
             val r = Result.fromValue(result)
             if (r == Result.SUCCESS) {
@@ -772,10 +766,7 @@ class Telemetry internal constructor(private val handle: Long) : AutoCloseable {
         setRateHomeAsyncNative(rateHz, callback)
     }
 
-    fun setRateInAir(rateHz: Double): Result =
-        Result.fromValue(setRateInAirBlocking(rateHz))
-
-    suspend fun setRateInAirAsync(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
+    suspend fun setRateInAir(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetRateInAirCallback { result ->
             val r = Result.fromValue(result)
             if (r == Result.SUCCESS) {
@@ -789,10 +780,7 @@ class Telemetry internal constructor(private val handle: Long) : AutoCloseable {
         setRateInAirAsyncNative(rateHz, callback)
     }
 
-    fun setRateLandedState(rateHz: Double): Result =
-        Result.fromValue(setRateLandedStateBlocking(rateHz))
-
-    suspend fun setRateLandedStateAsync(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
+    suspend fun setRateLandedState(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetRateLandedStateCallback { result ->
             val r = Result.fromValue(result)
             if (r == Result.SUCCESS) {
@@ -806,10 +794,7 @@ class Telemetry internal constructor(private val handle: Long) : AutoCloseable {
         setRateLandedStateAsyncNative(rateHz, callback)
     }
 
-    fun setRateVtolState(rateHz: Double): Result =
-        Result.fromValue(setRateVtolStateBlocking(rateHz))
-
-    suspend fun setRateVtolStateAsync(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
+    suspend fun setRateVtolState(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetRateVtolStateCallback { result ->
             val r = Result.fromValue(result)
             if (r == Result.SUCCESS) {
@@ -823,10 +808,7 @@ class Telemetry internal constructor(private val handle: Long) : AutoCloseable {
         setRateVtolStateAsyncNative(rateHz, callback)
     }
 
-    fun setRateAttitudeQuaternion(rateHz: Double): Result =
-        Result.fromValue(setRateAttitudeQuaternionBlocking(rateHz))
-
-    suspend fun setRateAttitudeQuaternionAsync(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
+    suspend fun setRateAttitudeQuaternion(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetRateAttitudeQuaternionCallback { result ->
             val r = Result.fromValue(result)
             if (r == Result.SUCCESS) {
@@ -840,10 +822,7 @@ class Telemetry internal constructor(private val handle: Long) : AutoCloseable {
         setRateAttitudeQuaternionAsyncNative(rateHz, callback)
     }
 
-    fun setRateAttitudeEuler(rateHz: Double): Result =
-        Result.fromValue(setRateAttitudeEulerBlocking(rateHz))
-
-    suspend fun setRateAttitudeEulerAsync(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
+    suspend fun setRateAttitudeEuler(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetRateAttitudeEulerCallback { result ->
             val r = Result.fromValue(result)
             if (r == Result.SUCCESS) {
@@ -857,10 +836,7 @@ class Telemetry internal constructor(private val handle: Long) : AutoCloseable {
         setRateAttitudeEulerAsyncNative(rateHz, callback)
     }
 
-    fun setRateVelocityNed(rateHz: Double): Result =
-        Result.fromValue(setRateVelocityNedBlocking(rateHz))
-
-    suspend fun setRateVelocityNedAsync(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
+    suspend fun setRateVelocityNed(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetRateVelocityNedCallback { result ->
             val r = Result.fromValue(result)
             if (r == Result.SUCCESS) {
@@ -874,10 +850,7 @@ class Telemetry internal constructor(private val handle: Long) : AutoCloseable {
         setRateVelocityNedAsyncNative(rateHz, callback)
     }
 
-    fun setRateGpsInfo(rateHz: Double): Result =
-        Result.fromValue(setRateGpsInfoBlocking(rateHz))
-
-    suspend fun setRateGpsInfoAsync(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
+    suspend fun setRateGpsInfo(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetRateGpsInfoCallback { result ->
             val r = Result.fromValue(result)
             if (r == Result.SUCCESS) {
@@ -891,10 +864,7 @@ class Telemetry internal constructor(private val handle: Long) : AutoCloseable {
         setRateGpsInfoAsyncNative(rateHz, callback)
     }
 
-    fun setRateBattery(rateHz: Double): Result =
-        Result.fromValue(setRateBatteryBlocking(rateHz))
-
-    suspend fun setRateBatteryAsync(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
+    suspend fun setRateBattery(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetRateBatteryCallback { result ->
             val r = Result.fromValue(result)
             if (r == Result.SUCCESS) {
@@ -908,10 +878,7 @@ class Telemetry internal constructor(private val handle: Long) : AutoCloseable {
         setRateBatteryAsyncNative(rateHz, callback)
     }
 
-    fun setRateRcStatus(rateHz: Double): Result =
-        Result.fromValue(setRateRcStatusBlocking(rateHz))
-
-    suspend fun setRateRcStatusAsync(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
+    suspend fun setRateRcStatus(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetRateRcStatusCallback { result ->
             val r = Result.fromValue(result)
             if (r == Result.SUCCESS) {
@@ -925,10 +892,7 @@ class Telemetry internal constructor(private val handle: Long) : AutoCloseable {
         setRateRcStatusAsyncNative(rateHz, callback)
     }
 
-    fun setRateActuatorControlTarget(rateHz: Double): Result =
-        Result.fromValue(setRateActuatorControlTargetBlocking(rateHz))
-
-    suspend fun setRateActuatorControlTargetAsync(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
+    suspend fun setRateActuatorControlTarget(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetRateActuatorControlTargetCallback { result ->
             val r = Result.fromValue(result)
             if (r == Result.SUCCESS) {
@@ -942,10 +906,7 @@ class Telemetry internal constructor(private val handle: Long) : AutoCloseable {
         setRateActuatorControlTargetAsyncNative(rateHz, callback)
     }
 
-    fun setRateActuatorOutputStatus(rateHz: Double): Result =
-        Result.fromValue(setRateActuatorOutputStatusBlocking(rateHz))
-
-    suspend fun setRateActuatorOutputStatusAsync(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
+    suspend fun setRateActuatorOutputStatus(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetRateActuatorOutputStatusCallback { result ->
             val r = Result.fromValue(result)
             if (r == Result.SUCCESS) {
@@ -959,10 +920,7 @@ class Telemetry internal constructor(private val handle: Long) : AutoCloseable {
         setRateActuatorOutputStatusAsyncNative(rateHz, callback)
     }
 
-    fun setRateOdometry(rateHz: Double): Result =
-        Result.fromValue(setRateOdometryBlocking(rateHz))
-
-    suspend fun setRateOdometryAsync(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
+    suspend fun setRateOdometry(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetRateOdometryCallback { result ->
             val r = Result.fromValue(result)
             if (r == Result.SUCCESS) {
@@ -976,10 +934,7 @@ class Telemetry internal constructor(private val handle: Long) : AutoCloseable {
         setRateOdometryAsyncNative(rateHz, callback)
     }
 
-    fun setRatePositionVelocityNed(rateHz: Double): Result =
-        Result.fromValue(setRatePositionVelocityNedBlocking(rateHz))
-
-    suspend fun setRatePositionVelocityNedAsync(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
+    suspend fun setRatePositionVelocityNed(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetRatePositionVelocityNedCallback { result ->
             val r = Result.fromValue(result)
             if (r == Result.SUCCESS) {
@@ -993,10 +948,7 @@ class Telemetry internal constructor(private val handle: Long) : AutoCloseable {
         setRatePositionVelocityNedAsyncNative(rateHz, callback)
     }
 
-    fun setRateGroundTruth(rateHz: Double): Result =
-        Result.fromValue(setRateGroundTruthBlocking(rateHz))
-
-    suspend fun setRateGroundTruthAsync(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
+    suspend fun setRateGroundTruth(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetRateGroundTruthCallback { result ->
             val r = Result.fromValue(result)
             if (r == Result.SUCCESS) {
@@ -1010,10 +962,7 @@ class Telemetry internal constructor(private val handle: Long) : AutoCloseable {
         setRateGroundTruthAsyncNative(rateHz, callback)
     }
 
-    fun setRateFixedwingMetrics(rateHz: Double): Result =
-        Result.fromValue(setRateFixedwingMetricsBlocking(rateHz))
-
-    suspend fun setRateFixedwingMetricsAsync(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
+    suspend fun setRateFixedwingMetrics(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetRateFixedwingMetricsCallback { result ->
             val r = Result.fromValue(result)
             if (r == Result.SUCCESS) {
@@ -1027,10 +976,7 @@ class Telemetry internal constructor(private val handle: Long) : AutoCloseable {
         setRateFixedwingMetricsAsyncNative(rateHz, callback)
     }
 
-    fun setRateImu(rateHz: Double): Result =
-        Result.fromValue(setRateImuBlocking(rateHz))
-
-    suspend fun setRateImuAsync(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
+    suspend fun setRateImu(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetRateImuCallback { result ->
             val r = Result.fromValue(result)
             if (r == Result.SUCCESS) {
@@ -1044,10 +990,7 @@ class Telemetry internal constructor(private val handle: Long) : AutoCloseable {
         setRateImuAsyncNative(rateHz, callback)
     }
 
-    fun setRateScaledImu(rateHz: Double): Result =
-        Result.fromValue(setRateScaledImuBlocking(rateHz))
-
-    suspend fun setRateScaledImuAsync(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
+    suspend fun setRateScaledImu(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetRateScaledImuCallback { result ->
             val r = Result.fromValue(result)
             if (r == Result.SUCCESS) {
@@ -1061,10 +1004,7 @@ class Telemetry internal constructor(private val handle: Long) : AutoCloseable {
         setRateScaledImuAsyncNative(rateHz, callback)
     }
 
-    fun setRateRawImu(rateHz: Double): Result =
-        Result.fromValue(setRateRawImuBlocking(rateHz))
-
-    suspend fun setRateRawImuAsync(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
+    suspend fun setRateRawImu(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetRateRawImuCallback { result ->
             val r = Result.fromValue(result)
             if (r == Result.SUCCESS) {
@@ -1078,10 +1018,7 @@ class Telemetry internal constructor(private val handle: Long) : AutoCloseable {
         setRateRawImuAsyncNative(rateHz, callback)
     }
 
-    fun setRateUnixEpochTime(rateHz: Double): Result =
-        Result.fromValue(setRateUnixEpochTimeBlocking(rateHz))
-
-    suspend fun setRateUnixEpochTimeAsync(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
+    suspend fun setRateUnixEpochTime(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetRateUnixEpochTimeCallback { result ->
             val r = Result.fromValue(result)
             if (r == Result.SUCCESS) {
@@ -1095,10 +1032,7 @@ class Telemetry internal constructor(private val handle: Long) : AutoCloseable {
         setRateUnixEpochTimeAsyncNative(rateHz, callback)
     }
 
-    fun setRateDistanceSensor(rateHz: Double): Result =
-        Result.fromValue(setRateDistanceSensorBlocking(rateHz))
-
-    suspend fun setRateDistanceSensorAsync(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
+    suspend fun setRateDistanceSensor(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetRateDistanceSensorCallback { result ->
             val r = Result.fromValue(result)
             if (r == Result.SUCCESS) {
@@ -1112,10 +1046,7 @@ class Telemetry internal constructor(private val handle: Long) : AutoCloseable {
         setRateDistanceSensorAsyncNative(rateHz, callback)
     }
 
-    fun setRateAltitude(rateHz: Double): Result =
-        Result.fromValue(setRateAltitudeBlocking(rateHz))
-
-    suspend fun setRateAltitudeAsync(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
+    suspend fun setRateAltitude(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetRateAltitudeCallback { result ->
             val r = Result.fromValue(result)
             if (r == Result.SUCCESS) {
@@ -1129,10 +1060,7 @@ class Telemetry internal constructor(private val handle: Long) : AutoCloseable {
         setRateAltitudeAsyncNative(rateHz, callback)
     }
 
-    fun setRateHealth(rateHz: Double): Result =
-        Result.fromValue(setRateHealthBlocking(rateHz))
-
-    suspend fun setRateHealthAsync(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
+    suspend fun setRateHealth(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetRateHealthCallback { result ->
             val r = Result.fromValue(result)
             if (r == Result.SUCCESS) {
@@ -1146,10 +1074,7 @@ class Telemetry internal constructor(private val handle: Long) : AutoCloseable {
         setRateHealthAsyncNative(rateHz, callback)
     }
 
-    fun getGpsGlobalOrigin(): GpsGlobalOrigin =
-        getGpsGlobalOriginBlocking()
-
-    suspend fun getGpsGlobalOriginAsync(): GpsGlobalOrigin = suspendCancellableCoroutine { continuation ->
+    suspend fun getGpsGlobalOrigin(): GpsGlobalOrigin = suspendCancellableCoroutine { continuation ->
         val callback = GetGpsGlobalOriginCallback { result, value ->
             val r = Result.fromValue(result)
             if (r == Result.SUCCESS) {
@@ -1321,55 +1246,30 @@ class Telemetry internal constructor(private val handle: Long) : AutoCloseable {
     private external fun windBlocking(): Wind
     private external fun subscribeWindNative(callback: WindCallback): Long
     private external fun unsubscribeWind(handle: Long)
-    private external fun setRatePositionBlocking(rateHz: Double): Int
     private external fun setRatePositionAsyncNative(rateHz: Double, callback: SetRatePositionCallback)
-    private external fun setRateHomeBlocking(rateHz: Double): Int
     private external fun setRateHomeAsyncNative(rateHz: Double, callback: SetRateHomeCallback)
-    private external fun setRateInAirBlocking(rateHz: Double): Int
     private external fun setRateInAirAsyncNative(rateHz: Double, callback: SetRateInAirCallback)
-    private external fun setRateLandedStateBlocking(rateHz: Double): Int
     private external fun setRateLandedStateAsyncNative(rateHz: Double, callback: SetRateLandedStateCallback)
-    private external fun setRateVtolStateBlocking(rateHz: Double): Int
     private external fun setRateVtolStateAsyncNative(rateHz: Double, callback: SetRateVtolStateCallback)
-    private external fun setRateAttitudeQuaternionBlocking(rateHz: Double): Int
     private external fun setRateAttitudeQuaternionAsyncNative(rateHz: Double, callback: SetRateAttitudeQuaternionCallback)
-    private external fun setRateAttitudeEulerBlocking(rateHz: Double): Int
     private external fun setRateAttitudeEulerAsyncNative(rateHz: Double, callback: SetRateAttitudeEulerCallback)
-    private external fun setRateVelocityNedBlocking(rateHz: Double): Int
     private external fun setRateVelocityNedAsyncNative(rateHz: Double, callback: SetRateVelocityNedCallback)
-    private external fun setRateGpsInfoBlocking(rateHz: Double): Int
     private external fun setRateGpsInfoAsyncNative(rateHz: Double, callback: SetRateGpsInfoCallback)
-    private external fun setRateBatteryBlocking(rateHz: Double): Int
     private external fun setRateBatteryAsyncNative(rateHz: Double, callback: SetRateBatteryCallback)
-    private external fun setRateRcStatusBlocking(rateHz: Double): Int
     private external fun setRateRcStatusAsyncNative(rateHz: Double, callback: SetRateRcStatusCallback)
-    private external fun setRateActuatorControlTargetBlocking(rateHz: Double): Int
     private external fun setRateActuatorControlTargetAsyncNative(rateHz: Double, callback: SetRateActuatorControlTargetCallback)
-    private external fun setRateActuatorOutputStatusBlocking(rateHz: Double): Int
     private external fun setRateActuatorOutputStatusAsyncNative(rateHz: Double, callback: SetRateActuatorOutputStatusCallback)
-    private external fun setRateOdometryBlocking(rateHz: Double): Int
     private external fun setRateOdometryAsyncNative(rateHz: Double, callback: SetRateOdometryCallback)
-    private external fun setRatePositionVelocityNedBlocking(rateHz: Double): Int
     private external fun setRatePositionVelocityNedAsyncNative(rateHz: Double, callback: SetRatePositionVelocityNedCallback)
-    private external fun setRateGroundTruthBlocking(rateHz: Double): Int
     private external fun setRateGroundTruthAsyncNative(rateHz: Double, callback: SetRateGroundTruthCallback)
-    private external fun setRateFixedwingMetricsBlocking(rateHz: Double): Int
     private external fun setRateFixedwingMetricsAsyncNative(rateHz: Double, callback: SetRateFixedwingMetricsCallback)
-    private external fun setRateImuBlocking(rateHz: Double): Int
     private external fun setRateImuAsyncNative(rateHz: Double, callback: SetRateImuCallback)
-    private external fun setRateScaledImuBlocking(rateHz: Double): Int
     private external fun setRateScaledImuAsyncNative(rateHz: Double, callback: SetRateScaledImuCallback)
-    private external fun setRateRawImuBlocking(rateHz: Double): Int
     private external fun setRateRawImuAsyncNative(rateHz: Double, callback: SetRateRawImuCallback)
-    private external fun setRateUnixEpochTimeBlocking(rateHz: Double): Int
     private external fun setRateUnixEpochTimeAsyncNative(rateHz: Double, callback: SetRateUnixEpochTimeCallback)
-    private external fun setRateDistanceSensorBlocking(rateHz: Double): Int
     private external fun setRateDistanceSensorAsyncNative(rateHz: Double, callback: SetRateDistanceSensorCallback)
-    private external fun setRateAltitudeBlocking(rateHz: Double): Int
     private external fun setRateAltitudeAsyncNative(rateHz: Double, callback: SetRateAltitudeCallback)
-    private external fun setRateHealthBlocking(rateHz: Double): Int
     private external fun setRateHealthAsyncNative(rateHz: Double, callback: SetRateHealthCallback)
-    private external fun getGpsGlobalOriginBlocking(): GpsGlobalOrigin
     private external fun getGpsGlobalOriginAsyncNative(callback: GetGpsGlobalOriginCallback)
     private external fun destroy()
 

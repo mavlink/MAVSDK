@@ -40,9 +40,7 @@ class LogFiles internal constructor(private val handle: Long) : AutoCloseable {
         val sizeBytes: Int,
     )
 
-    // TODO: getter with repeated return: getEntries
-
-    suspend fun getEntriesAsync(): Result = suspendCancellableCoroutine { continuation ->
+    suspend fun getEntries(): Result = suspendCancellableCoroutine { continuation ->
         val callback = GetEntriesCallback { result ->
             val r = Result.fromValue(result)
             if (r == Result.SUCCESS) {
@@ -75,7 +73,6 @@ class LogFiles internal constructor(private val handle: Long) : AutoCloseable {
     private fun interface GetEntriesCallback { fun invoke(result: Int) }
     private fun interface DownloadLogFileCallback { fun invoke(result: Int, value: ProgressData) }
 
-    private external fun getEntriesBlocking(): Int
     private external fun getEntriesAsyncNative(callback: GetEntriesCallback)
     private external fun downloadLogFileAsyncNative(entry: Entry, path: String, callback: DownloadLogFileCallback)
     private external fun eraseAllLogFilesBlocking(): Int

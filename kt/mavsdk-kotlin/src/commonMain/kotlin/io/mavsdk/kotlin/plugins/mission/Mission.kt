@@ -79,10 +79,7 @@ class Mission internal constructor(private val handle: Long) : AutoCloseable {
         val missionPlan: MissionPlan,
     )
 
-    fun uploadMission(missionPlan: MissionPlan): Result =
-        Result.fromValue(uploadMissionBlocking(missionPlan))
-
-    suspend fun uploadMissionAsync(missionPlan: MissionPlan): Result = suspendCancellableCoroutine { continuation ->
+    suspend fun uploadMission(missionPlan: MissionPlan): Result = suspendCancellableCoroutine { continuation ->
         val callback = UploadMissionCallback { result ->
             val r = Result.fromValue(result)
             if (r == Result.SUCCESS) {
@@ -112,10 +109,7 @@ class Mission internal constructor(private val handle: Long) : AutoCloseable {
     fun cancelMissionUpload(): Result =
         Result.fromValue(cancelMissionUploadBlocking())
 
-    fun downloadMission(): MissionPlan =
-        downloadMissionBlocking()
-
-    suspend fun downloadMissionAsync(): MissionPlan = suspendCancellableCoroutine { continuation ->
+    suspend fun downloadMission(): MissionPlan = suspendCancellableCoroutine { continuation ->
         val callback = DownloadMissionCallback { result, value ->
             val r = Result.fromValue(result)
             if (r == Result.SUCCESS) {
@@ -145,10 +139,7 @@ class Mission internal constructor(private val handle: Long) : AutoCloseable {
     fun cancelMissionDownload(): Result =
         Result.fromValue(cancelMissionDownloadBlocking())
 
-    fun startMission(): Result =
-        Result.fromValue(startMissionBlocking())
-
-    suspend fun startMissionAsync(): Result = suspendCancellableCoroutine { continuation ->
+    suspend fun startMission(): Result = suspendCancellableCoroutine { continuation ->
         val callback = StartMissionCallback { result ->
             val r = Result.fromValue(result)
             if (r == Result.SUCCESS) {
@@ -162,10 +153,7 @@ class Mission internal constructor(private val handle: Long) : AutoCloseable {
         startMissionAsyncNative(callback)
     }
 
-    fun pauseMission(): Result =
-        Result.fromValue(pauseMissionBlocking())
-
-    suspend fun pauseMissionAsync(): Result = suspendCancellableCoroutine { continuation ->
+    suspend fun pauseMission(): Result = suspendCancellableCoroutine { continuation ->
         val callback = PauseMissionCallback { result ->
             val r = Result.fromValue(result)
             if (r == Result.SUCCESS) {
@@ -179,10 +167,7 @@ class Mission internal constructor(private val handle: Long) : AutoCloseable {
         pauseMissionAsyncNative(callback)
     }
 
-    fun clearMission(): Result =
-        Result.fromValue(clearMissionBlocking())
-
-    suspend fun clearMissionAsync(): Result = suspendCancellableCoroutine { continuation ->
+    suspend fun clearMission(): Result = suspendCancellableCoroutine { continuation ->
         val callback = ClearMissionCallback { result ->
             val r = Result.fromValue(result)
             if (r == Result.SUCCESS) {
@@ -196,10 +181,7 @@ class Mission internal constructor(private val handle: Long) : AutoCloseable {
         clearMissionAsyncNative(callback)
     }
 
-    fun setCurrentMissionItem(index: Int): Result =
-        Result.fromValue(setCurrentMissionItemBlocking(index))
-
-    suspend fun setCurrentMissionItemAsync(index: Int): Result = suspendCancellableCoroutine { continuation ->
+    suspend fun setCurrentMissionItem(index: Int): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetCurrentMissionItemCallback { result ->
             val r = Result.fromValue(result)
             if (r == Result.SUCCESS) {
@@ -244,21 +226,15 @@ class Mission internal constructor(private val handle: Long) : AutoCloseable {
     private fun interface SetCurrentMissionItemCallback { fun invoke(result: Int) }
     private fun interface MissionProgressCallback { fun invoke(value: MissionProgress) }
 
-    private external fun uploadMissionBlocking(missionPlan: MissionPlan): Int
     private external fun uploadMissionAsyncNative(missionPlan: MissionPlan, callback: UploadMissionCallback)
     private external fun uploadMissionWithProgressAsyncNative(missionPlan: MissionPlan, callback: UploadMissionWithProgressCallback)
     private external fun cancelMissionUploadBlocking(): Int
-    private external fun downloadMissionBlocking(): MissionPlan
     private external fun downloadMissionAsyncNative(callback: DownloadMissionCallback)
     private external fun downloadMissionWithProgressAsyncNative(callback: DownloadMissionWithProgressCallback)
     private external fun cancelMissionDownloadBlocking(): Int
-    private external fun startMissionBlocking(): Int
     private external fun startMissionAsyncNative(callback: StartMissionCallback)
-    private external fun pauseMissionBlocking(): Int
     private external fun pauseMissionAsyncNative(callback: PauseMissionCallback)
-    private external fun clearMissionBlocking(): Int
     private external fun clearMissionAsyncNative(callback: ClearMissionCallback)
-    private external fun setCurrentMissionItemBlocking(index: Int): Int
     private external fun setCurrentMissionItemAsyncNative(index: Int, callback: SetCurrentMissionItemCallback)
     private external fun isMissionFinishedBlocking(): Boolean
     private external fun missionProgressBlocking(): MissionProgress
