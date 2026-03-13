@@ -40,6 +40,9 @@ actual class Mavsdk actual constructor(configuration: Configuration) : AutoClose
     actual external fun getSystems(): List<System>
     actual external fun firstAutopilot(timeoutSeconds: Double): System?
 
+    actual fun serverComponentHandle(instance: Int): Long =
+        serverComponentHandleNative(instance)
+
     actual fun subscribeOnNewSystem(): Flow<System> {
         // TODO: Implement with proper callback handling
         return flow {
@@ -48,12 +51,14 @@ actual class Mavsdk actual constructor(configuration: Configuration) : AutoClose
     }
 
     private external fun create(configHandle: Long): Long
+    private external fun serverComponentHandleNative(instance: Int): Long
     private external fun addAnyConnectionNative(connectionUrl: String): Int
     private external fun addAnyConnectionWithHandleNative(connectionUrl: String): Pair<Int, Long>
     private external fun destroy()
 
     actual override fun close() {
         if (!destroyed) {
+            getSystems().forEach { it.closePlugins() }
             destroy()
             destroyed = true
         }

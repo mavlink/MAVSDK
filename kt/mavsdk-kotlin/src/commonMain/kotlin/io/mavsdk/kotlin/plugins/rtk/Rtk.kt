@@ -44,7 +44,7 @@ class Rtk internal constructor(private val handle: Long) : AutoCloseable {
     companion object {
         fun create(system: System): Rtk {
             val handle = createNative(system.getHandle())
-            return Rtk(handle)
+            return Rtk(handle).also { system.registerPlugin(it) }
         }
         private external fun createNative(systemHandle: Long): Long
     }

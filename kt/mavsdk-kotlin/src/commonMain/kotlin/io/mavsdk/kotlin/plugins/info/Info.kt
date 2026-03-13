@@ -109,7 +109,7 @@ class Info internal constructor(private val handle: Long) : AutoCloseable {
     companion object {
         fun create(system: System): Info {
             val handle = createNative(system.getHandle())
-            return Info(handle)
+            return Info(handle).also { system.registerPlugin(it) }
         }
         private external fun createNative(systemHandle: Long): Long
     }

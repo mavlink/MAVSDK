@@ -80,7 +80,7 @@ class Failure internal constructor(private val handle: Long) : AutoCloseable {
     companion object {
         fun create(system: System): Failure {
             val handle = createNative(system.getHandle())
-            return Failure(handle)
+            return Failure(handle).also { system.registerPlugin(it) }
         }
         private external fun createNative(systemHandle: Long): Long
     }

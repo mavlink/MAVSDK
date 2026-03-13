@@ -55,7 +55,7 @@ class ServerUtility internal constructor(private val handle: Long) : AutoCloseab
     companion object {
         fun create(system: System): ServerUtility {
             val handle = createNative(system.getHandle())
-            return ServerUtility(handle)
+            return ServerUtility(handle).also { system.registerPlugin(it) }
         }
         private external fun createNative(systemHandle: Long): Long
     }

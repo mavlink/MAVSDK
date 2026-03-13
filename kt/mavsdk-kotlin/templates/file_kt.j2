@@ -453,7 +453,7 @@ class {{ plugin_name.upper_camel_case }} internal constructor(private val handle
 {% else %}
         fun create(system: System): {{ plugin_name.upper_camel_case }} {
             val handle = createNative(system.getHandle())
-            return {{ plugin_name.upper_camel_case }}(handle)
+            return {{ plugin_name.upper_camel_case }}(handle).also { system.registerPlugin(it) }
         }
 {% endif %}
         private external fun createNative(systemHandle: Long): Long

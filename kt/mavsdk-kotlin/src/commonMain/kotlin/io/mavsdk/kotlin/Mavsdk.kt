@@ -7,20 +7,14 @@ import kotlinx.coroutines.flow.Flow
  * 
  * Example usage:
  * ```kotlin
- * val config = Configuration.createWithComponentType(ComponentType.GROUND_STATION)
- * Mavsdk(config).use { mavsdk ->
+ * Mavsdk(ComponentType.GROUND_STATION).use { mavsdk ->
  *     mavsdk.addAnyConnection("udp://:14540")
- *         .onSuccess { 
- *             println("Connected!")
- *         }
- *         .onFailure { error ->
- *             println("Connection failed: $error")
- *         }
- *     
- *     val system = mavsdk.firstAutopilot()
- *     system?.let {
- *         println("Found autopilot: ${it.getSystemId()}")
- *     }
+ *         .onSuccess { println("Connected!") }
+ *         .onFailure { error -> println("Connection failed: $error") }
+ *
+ *     val system = mavsdk.firstAutopilot() ?: return@use
+ *     val action = Action.create(system)  // closed automatically when mavsdk closes
+ *     action.armAsync()
  * }
  * ```
  */

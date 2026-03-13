@@ -276,7 +276,7 @@ class Gimbal internal constructor(private val handle: Long) : AutoCloseable {
     companion object {
         fun create(system: System): Gimbal {
             val handle = createNative(system.getHandle())
-            return Gimbal(handle)
+            return Gimbal(handle).also { system.registerPlugin(it) }
         }
         private external fun createNative(systemHandle: Long): Long
     }

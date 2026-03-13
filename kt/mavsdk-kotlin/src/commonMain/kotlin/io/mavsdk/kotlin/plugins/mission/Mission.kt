@@ -281,7 +281,7 @@ class Mission internal constructor(private val handle: Long) : AutoCloseable {
     companion object {
         fun create(system: System): Mission {
             val handle = createNative(system.getHandle())
-            return Mission(handle)
+            return Mission(handle).also { system.registerPlugin(it) }
         }
         private external fun createNative(systemHandle: Long): Long
     }

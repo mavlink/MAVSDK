@@ -1386,7 +1386,7 @@ class Telemetry internal constructor(private val handle: Long) : AutoCloseable {
     companion object {
         fun create(system: System): Telemetry {
             val handle = createNative(system.getHandle())
-            return Telemetry(handle)
+            return Telemetry(handle).also { system.registerPlugin(it) }
         }
         private external fun createNative(systemHandle: Long): Long
     }

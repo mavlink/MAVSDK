@@ -5,6 +5,18 @@ import kotlinx.coroutines.flow.flow
 
 actual class System internal constructor(private val handle: Long) {
 
+    private val plugins = mutableListOf<AutoCloseable>()
+
+    actual internal fun registerPlugin(plugin: AutoCloseable) {
+        plugins.add(plugin)
+    }
+
+    actual internal fun closePlugins() {
+        plugins.reversed().forEach { it.close() }
+        plugins.clear()
+    }
+
+
     actual external fun hasAutopilot(): Boolean
     actual external fun isStandalone(): Boolean
     actual external fun hasCamera(cameraId: Int): Boolean

@@ -93,7 +93,7 @@ class Tune internal constructor(private val handle: Long) : AutoCloseable {
     companion object {
         fun create(system: System): Tune {
             val handle = createNative(system.getHandle())
-            return Tune(handle)
+            return Tune(handle).also { system.registerPlugin(it) }
         }
         private external fun createNative(systemHandle: Long): Long
     }

@@ -132,7 +132,7 @@ class Calibration internal constructor(private val handle: Long) : AutoCloseable
     companion object {
         fun create(system: System): Calibration {
             val handle = createNative(system.getHandle())
-            return Calibration(handle)
+            return Calibration(handle).also { system.registerPlugin(it) }
         }
         private external fun createNative(systemHandle: Long): Long
     }

@@ -95,7 +95,7 @@ class ComponentMetadata internal constructor(private val handle: Long) : AutoClo
     companion object {
         fun create(system: System): ComponentMetadata {
             val handle = createNative(system.getHandle())
-            return ComponentMetadata(handle)
+            return ComponentMetadata(handle).also { system.registerPlugin(it) }
         }
         private external fun createNative(systemHandle: Long): Long
     }

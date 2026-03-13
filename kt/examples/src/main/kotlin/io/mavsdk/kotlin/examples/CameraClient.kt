@@ -15,50 +15,46 @@ import kotlinx.coroutines.flow.*
 fun cameraClient() = runBlocking {
     println("=== MAVSDK-Kotlin CameraClient Example ===\n")
 
-    val config = Configuration.createWithComponentType(ComponentType.GROUND_STATION)
-    config.use { cfg ->
-        Mavsdk(cfg).use { mavsdk ->
-            println("Connecting to udpout://127.0.0.1:14030...")
-            mavsdk.addAnyConnection("udpout://127.0.0.1:14030")
-                .onFailure { error ->
-                    println("✗ Connection failed: $error")
-                    return@runBlocking
-                }
-            println("✓ Connected\n")
+    Mavsdk(ComponentType.GROUND_STATION).use { mavsdk ->
+        println("Connecting to udpout://127.0.0.1:14030...")
+        mavsdk.addAnyConnection("udpout://127.0.0.1:14030")
+            .onFailure { error ->
+                println("✗ Connection failed: $error")
+                return@runBlocking
+            }
+        println("✓ Connected\n")
 
-            // Wait for a system that has a camera.
-            println("Waiting for camera system...")
-            val system = mavsdk.subscribeOnNewSystem()
-                .filter { it.hasCamera() }
-                .first()
-            println("✓ Camera system discovered!\n")
+        // Wait for a system that has a camera.
+        println("Waiting for camera system...")
+        val system = mavsdk.subscribeOnNewSystem()
+            .filter { it.hasCamera() }
+            .first()
+        println("✓ Camera system discovered!\n")
 
-            Camera.create(system).use { camera ->
+        val camera = Camera.create(system)
 
-                // Subscribe to storage updates in the background.
-                val storageJob = launch {
-                    camera.subscribeStorage().collect { update ->
-                        println("[storage] total=${update.storage.totalStorageMib} MiB  " +
-                                "used=${update.storage.usedStorageMib} MiB  " +
-                                "available=${update.storage.availableStorageMib} MiB")
-                    }
-                }
-
-                // NOTE: Camera.CameraList is a stub — repeated fields (camera array) are not yet
-                // accessible from Kotlin. We use the standard camera component ID (100) directly.
-                // Once CameraList JNI conversion is implemented this can be replaced by:
-                //   camera.subscribeCameraList().filter { ... }.first().cameras[0].componentId
-                val componentId = 100 // MAV_COMP_ID_CAMERA
-
-                doCameraOperations(camera, componentId)
-
-                // Keep running to receive storage updates.
-                println("\nListening for storage updates (press Ctrl+C to stop)...")
-                delay(Long.MAX_VALUE)
-
-                storageJob.cancel()
+        // Subscribe to storage updates in the background.
+        val storageJob = launch {
+            camera.subscribeStorage().collect { update ->
+                println("[storage] total=${update.storage.totalStorageMib} MiB  " +
+                        "used=${update.storage.usedStorageMib} MiB  " +
+                        "available=${update.storage.availableStorageMib} MiB")
             }
         }
+
+        // NOTE: Camera.CameraList is a stub — repeated fields (camera array) are not yet
+        // accessible from Kotlin. We use the standard camera component ID (100) directly.
+        // Once CameraList JNI conversion is implemented this can be replaced by:
+        //   camera.subscribeCameraList().filter { ... }.first().cameras[0].componentId
+        val componentId = 100 // MAV_COMP_ID_CAMERA
+
+        doCameraOperations(camera, componentId)
+
+        // Keep running to receive storage updates.
+        println("\nListening for storage updates (press Ctrl+C to stop)...")
+        delay(Long.MAX_VALUE)
+
+        storageJob.cancel()
     }
 }
 

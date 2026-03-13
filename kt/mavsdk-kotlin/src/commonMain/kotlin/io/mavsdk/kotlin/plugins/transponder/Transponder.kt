@@ -136,7 +136,7 @@ class Transponder internal constructor(private val handle: Long) : AutoCloseable
     companion object {
         fun create(system: System): Transponder {
             val handle = createNative(system.getHandle())
-            return Transponder(handle)
+            return Transponder(handle).also { system.registerPlugin(it) }
         }
         private external fun createNative(systemHandle: Long): Long
     }

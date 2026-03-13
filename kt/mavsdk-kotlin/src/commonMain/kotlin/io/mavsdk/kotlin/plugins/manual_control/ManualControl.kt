@@ -87,7 +87,7 @@ class ManualControl internal constructor(private val handle: Long) : AutoCloseab
     companion object {
         fun create(system: System): ManualControl {
             val handle = createNative(system.getHandle())
-            return ManualControl(handle)
+            return ManualControl(handle).also { system.registerPlugin(it) }
         }
         private external fun createNative(systemHandle: Long): Long
     }

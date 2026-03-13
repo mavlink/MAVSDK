@@ -61,6 +61,7 @@ actual class Mavsdk actual constructor(configuration: Configuration) : AutoClose
 
     actual override fun close() {
         if (!destroyed) {
+            getSystems().forEach { it.closePlugins() }
             destroy()
             destroyed = true
         }

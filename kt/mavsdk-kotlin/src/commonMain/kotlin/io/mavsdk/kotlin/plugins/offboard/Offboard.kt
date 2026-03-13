@@ -182,7 +182,7 @@ class Offboard internal constructor(private val handle: Long) : AutoCloseable {
     companion object {
         fun create(system: System): Offboard {
             val handle = createNative(system.getHandle())
-            return Offboard(handle)
+            return Offboard(handle).also { system.registerPlugin(it) }
         }
         private external fun createNative(systemHandle: Long): Long
     }

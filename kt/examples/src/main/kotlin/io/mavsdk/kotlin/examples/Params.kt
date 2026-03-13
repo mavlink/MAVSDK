@@ -19,33 +19,29 @@ import kotlinx.coroutines.*
 fun params(action: String = "get_all", paramName: String = "", value: String = "") = runBlocking {
     println("=== MAVSDK-Kotlin Params Example ===\n")
 
-    val config = Configuration.createWithComponentType(ComponentType.GROUND_STATION)
-    config.use { cfg ->
-        Mavsdk(cfg).use { mavsdk ->
-            println("Connecting to udp://:14540...")
-            mavsdk.addAnyConnection("udp://:14540")
-                .onFailure { error ->
-                    println("✗ Connection failed: $error")
-                    return@runBlocking
-                }
-
-            println("Waiting for autopilot...")
-            val system = mavsdk.firstAutopilot(timeoutSeconds = 10.0)
-            if (system == null) {
-                println("✗ No autopilot found")
+    Mavsdk(ComponentType.GROUND_STATION).use { mavsdk ->
+        println("Connecting to udp://:14540...")
+        mavsdk.addAnyConnection("udp://:14540")
+            .onFailure { error ->
+                println("✗ Connection failed: $error")
                 return@runBlocking
             }
-            println("✓ Autopilot found!\n")
 
-            Param.create(system).use { param ->
-                when (action) {
-                    "get_all" -> getAllParams(param)
-                    "get" -> getParam(param, paramName)
-                    "set_int" -> setIntParam(param, paramName, value.toInt())
-                    "set_float" -> setFloatParam(param, paramName, value.toFloat())
-                    else -> println("Unknown action '$action'. Use: get_all / get / set_int / set_float")
-                }
-            }
+        println("Waiting for autopilot...")
+        val system = mavsdk.firstAutopilot(timeoutSeconds = 10.0)
+        if (system == null) {
+            println("✗ No autopilot found")
+            return@runBlocking
+        }
+        println("✓ Autopilot found!\n")
+
+        val param = Param.create(system)
+        when (action) {
+            "get_all" -> getAllParams(param)
+            "get" -> getParam(param, paramName)
+            "set_int" -> setIntParam(param, paramName, value.toInt())
+            "set_float" -> setFloatParam(param, paramName, value.toFloat())
+            else -> println("Unknown action '$action'. Use: get_all / get / set_int / set_float")
         }
     }
 }
@@ -53,31 +49,27 @@ fun params(action: String = "get_all", paramName: String = "", value: String = "
 fun paramsGetSet() = runBlocking {
     println("=== MAVSDK-Kotlin Params Get/Set Example ===\n")
 
-    val config = Configuration.createWithComponentType(ComponentType.GROUND_STATION)
-    config.use { cfg ->
-        Mavsdk(cfg).use { mavsdk ->
-            println("Connecting to udp://:14540...")
-            mavsdk.addAnyConnection("udp://:14540")
-                .onFailure { error ->
-                    println("✗ Connection failed: $error")
-                    return@runBlocking
-                }
-
-            println("Waiting for autopilot...")
-            val system = mavsdk.firstAutopilot(timeoutSeconds = 10.0)
-            if (system == null) {
-                println("✗ No autopilot found")
+    Mavsdk(ComponentType.GROUND_STATION).use { mavsdk ->
+        println("Connecting to udp://:14540...")
+        mavsdk.addAnyConnection("udp://:14540")
+            .onFailure { error ->
+                println("✗ Connection failed: $error")
                 return@runBlocking
             }
-            println("✓ Autopilot found!\n")
 
-            Param.create(system).use { param ->
-                setFloatParam(param, "MIS_TAKEOFF_ALT", 5.0f)
-                getParam(param, "MIS_TAKEOFF_ALT")
-                setFloatParam(param, "MIS_TAKEOFF_ALT", 2.5f)
-                getParam(param, "MIS_TAKEOFF_ALT")
-            }
+        println("Waiting for autopilot...")
+        val system = mavsdk.firstAutopilot(timeoutSeconds = 10.0)
+        if (system == null) {
+            println("✗ No autopilot found")
+            return@runBlocking
         }
+        println("✓ Autopilot found!\n")
+
+        val param = Param.create(system)
+        setFloatParam(param, "MIS_TAKEOFF_ALT", 5.0f)
+        getParam(param, "MIS_TAKEOFF_ALT")
+        setFloatParam(param, "MIS_TAKEOFF_ALT", 2.5f)
+        getParam(param, "MIS_TAKEOFF_ALT")
     }
 }
 

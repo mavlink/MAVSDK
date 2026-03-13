@@ -93,7 +93,7 @@ class LogFiles internal constructor(private val handle: Long) : AutoCloseable {
     companion object {
         fun create(system: System): LogFiles {
             val handle = createNative(system.getHandle())
-            return LogFiles(handle)
+            return LogFiles(handle).also { system.registerPlugin(it) }
         }
         private external fun createNative(systemHandle: Long): Long
     }

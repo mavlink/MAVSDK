@@ -14,30 +14,26 @@ import kotlinx.coroutines.flow.*
 fun calibrate() = runBlocking {
     println("=== MAVSDK-Kotlin Calibrate Example ===\n")
 
-    val config = Configuration.createWithComponentType(ComponentType.GROUND_STATION)
-    config.use { cfg ->
-        Mavsdk(cfg).use { mavsdk ->
-            println("Connecting to udp://:14540...")
-            mavsdk.addAnyConnection("udp://:14540")
-                .onFailure { error ->
-                    println("✗ Connection failed: $error")
-                    return@runBlocking
-                }
-
-            println("Waiting for autopilot...")
-            val system = mavsdk.firstAutopilot(timeoutSeconds = 10.0)
-            if (system == null) {
-                println("✗ No autopilot found within timeout")
+    Mavsdk(ComponentType.GROUND_STATION).use { mavsdk ->
+        println("Connecting to udp://:14540...")
+        mavsdk.addAnyConnection("udp://:14540")
+            .onFailure { error ->
+                println("✗ Connection failed: $error")
                 return@runBlocking
             }
-            println("✓ Autopilot found!\n")
 
-            Calibration.create(system).use { cal ->
-                runCalibration("accelerometer", cal.calibrateAccelerometer())
-                runCalibration("gyro",          cal.calibrateGyro())
-                runCalibration("magnetometer",  cal.calibrateMagnetometer())
-            }
+        println("Waiting for autopilot...")
+        val system = mavsdk.firstAutopilot(timeoutSeconds = 10.0)
+        if (system == null) {
+            println("✗ No autopilot found within timeout")
+            return@runBlocking
         }
+        println("✓ Autopilot found!\n")
+
+        val cal = Calibration.create(system)
+        runCalibration("accelerometer", cal.calibrateAccelerometer())
+        runCalibration("gyro",          cal.calibrateGyro())
+        runCalibration("magnetometer",  cal.calibrateMagnetometer())
     }
 }
 

@@ -106,7 +106,7 @@ class LogStreaming internal constructor(private val handle: Long) : AutoCloseabl
     companion object {
         fun create(system: System): LogStreaming {
             val handle = createNative(system.getHandle())
-            return LogStreaming(handle)
+            return LogStreaming(handle).also { system.registerPlugin(it) }
         }
         private external fun createNative(systemHandle: Long): Long
     }

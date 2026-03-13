@@ -76,7 +76,7 @@ class MavlinkDirect internal constructor(private val handle: Long) : AutoCloseab
     companion object {
         fun create(system: System): MavlinkDirect {
             val handle = createNative(system.getHandle())
-            return MavlinkDirect(handle)
+            return MavlinkDirect(handle).also { system.registerPlugin(it) }
         }
         private external fun createNative(systemHandle: Long): Long
     }

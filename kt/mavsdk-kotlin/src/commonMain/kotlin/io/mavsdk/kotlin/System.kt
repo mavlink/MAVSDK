@@ -69,4 +69,10 @@ expect class System {
      * Get native handle (internal use only for plugins)
      */
     internal fun getHandle(): Long
+
+    /** Register a plugin to be closed when this system's owner (Mavsdk) is closed. */
+    internal fun registerPlugin(plugin: AutoCloseable)
+
+    /** Close all registered plugins. Called by Mavsdk.close(). */
+    internal fun closePlugins()
 }

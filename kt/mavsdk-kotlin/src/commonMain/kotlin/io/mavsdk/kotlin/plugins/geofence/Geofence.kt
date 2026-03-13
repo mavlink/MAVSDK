@@ -112,7 +112,7 @@ class Geofence internal constructor(private val handle: Long) : AutoCloseable {
     companion object {
         fun create(system: System): Geofence {
             val handle = createNative(system.getHandle())
-            return Geofence(handle)
+            return Geofence(handle).also { system.registerPlugin(it) }
         }
         private external fun createNative(systemHandle: Long): Long
     }

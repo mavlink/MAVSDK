@@ -310,7 +310,7 @@ class Winch internal constructor(private val handle: Long) : AutoCloseable {
     companion object {
         fun create(system: System): Winch {
             val handle = createNative(system.getHandle())
-            return Winch(handle)
+            return Winch(handle).also { system.registerPlugin(it) }
         }
         private external fun createNative(systemHandle: Long): Long
     }

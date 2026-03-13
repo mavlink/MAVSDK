@@ -343,7 +343,7 @@ class MissionRaw internal constructor(private val handle: Long) : AutoCloseable 
     companion object {
         fun create(system: System): MissionRaw {
             val handle = createNative(system.getHandle())
-            return MissionRaw(handle)
+            return MissionRaw(handle).also { system.registerPlugin(it) }
         }
         private external fun createNative(systemHandle: Long): Long
     }
