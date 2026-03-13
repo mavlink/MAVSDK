@@ -7,7 +7,6 @@ package io.mavsdk.kotlin.plugins.offboard
 import io.mavsdk.kotlin.System
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
-import kotlin.coroutines.resumeWithException
 
 
 class Offboard internal constructor(private val handle: Long) : AutoCloseable {
@@ -85,28 +84,14 @@ class Offboard internal constructor(private val handle: Long) : AutoCloseable {
 
     suspend fun start(): Result = suspendCancellableCoroutine { continuation ->
         val callback = StartCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    OffboardException(r, "start failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         startAsyncNative(callback)
     }
 
     suspend fun stop(): Result = suspendCancellableCoroutine { continuation ->
         val callback = StopCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    OffboardException(r, "stop failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         stopAsyncNative(callback)
     }

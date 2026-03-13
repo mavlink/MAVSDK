@@ -7,7 +7,6 @@ package io.mavsdk.kotlin.plugins.mission_raw
 import io.mavsdk.kotlin.System
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
-import kotlin.coroutines.resumeWithException
 import java.util.concurrent.ConcurrentHashMap
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -76,42 +75,21 @@ class MissionRaw internal constructor(private val handle: Long) : AutoCloseable 
 
     suspend fun uploadMission(): Result = suspendCancellableCoroutine { continuation ->
         val callback = UploadMissionCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    MissionRawException(r, "uploadMission failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         uploadMissionAsyncNative(callback)
     }
 
     suspend fun uploadGeofence(): Result = suspendCancellableCoroutine { continuation ->
         val callback = UploadGeofenceCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    MissionRawException(r, "uploadGeofence failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         uploadGeofenceAsyncNative(callback)
     }
 
     suspend fun uploadRallyPoints(): Result = suspendCancellableCoroutine { continuation ->
         val callback = UploadRallyPointsCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    MissionRawException(r, "uploadRallyPoints failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         uploadRallyPointsAsyncNative(callback)
     }
@@ -121,42 +99,21 @@ class MissionRaw internal constructor(private val handle: Long) : AutoCloseable 
 
     suspend fun downloadMission(): Result = suspendCancellableCoroutine { continuation ->
         val callback = DownloadMissionCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    MissionRawException(r, "downloadMission failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         downloadMissionAsyncNative(callback)
     }
 
     suspend fun downloadGeofence(): Result = suspendCancellableCoroutine { continuation ->
         val callback = DownloadGeofenceCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    MissionRawException(r, "downloadGeofence failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         downloadGeofenceAsyncNative(callback)
     }
 
     suspend fun downloadRallypoints(): Result = suspendCancellableCoroutine { continuation ->
         val callback = DownloadRallypointsCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    MissionRawException(r, "downloadRallypoints failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         downloadRallypointsAsyncNative(callback)
     }
@@ -166,56 +123,28 @@ class MissionRaw internal constructor(private val handle: Long) : AutoCloseable 
 
     suspend fun startMission(): Result = suspendCancellableCoroutine { continuation ->
         val callback = StartMissionCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    MissionRawException(r, "startMission failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         startMissionAsyncNative(callback)
     }
 
     suspend fun pauseMission(): Result = suspendCancellableCoroutine { continuation ->
         val callback = PauseMissionCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    MissionRawException(r, "pauseMission failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         pauseMissionAsyncNative(callback)
     }
 
     suspend fun clearMission(): Result = suspendCancellableCoroutine { continuation ->
         val callback = ClearMissionCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    MissionRawException(r, "clearMission failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         clearMissionAsyncNative(callback)
     }
 
     suspend fun setCurrentMissionItem(index: Int): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetCurrentMissionItemCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    MissionRawException(r, "setCurrentMissionItem failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         setCurrentMissionItemAsyncNative(index, callback)
     }

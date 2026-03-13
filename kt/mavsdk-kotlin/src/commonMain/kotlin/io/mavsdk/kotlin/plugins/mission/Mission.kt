@@ -7,7 +7,6 @@ package io.mavsdk.kotlin.plugins.mission
 import io.mavsdk.kotlin.System
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
-import kotlin.coroutines.resumeWithException
 import java.util.concurrent.ConcurrentHashMap
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -81,25 +80,18 @@ class Mission internal constructor(private val handle: Long) : AutoCloseable {
 
     suspend fun uploadMission(missionPlan: MissionPlan): Result = suspendCancellableCoroutine { continuation ->
         val callback = UploadMissionCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    MissionException(r, "uploadMission failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         uploadMissionAsyncNative(missionPlan, callback)
     }
 
-    fun uploadMissionWithProgress(missionPlan: MissionPlan): Flow<ProgressData> = callbackFlow {
+    fun uploadMissionWithProgress(missionPlan: MissionPlan): Flow<kotlin.Result<ProgressData>> = callbackFlow {
         val callback = UploadMissionWithProgressCallback { result, value ->
             val r = Result.fromValue(result)
             when {
-                r == Result.NEXT -> trySend(value)
+                r == Result.NEXT -> trySend(kotlin.Result.success(value))
                 r == Result.SUCCESS -> close()
-                else -> close(MissionException(r, "uploadMissionWithProgress failed: ${r.name}"))
+                else -> { trySend(kotlin.Result.failure(MissionException(r, "uploadMissionWithProgress failed: ${r.name}"))); close() }
             }
         }
         uploadMissionWithProgressAsyncNative(missionPlan, callback)
@@ -109,27 +101,25 @@ class Mission internal constructor(private val handle: Long) : AutoCloseable {
     fun cancelMissionUpload(): Result =
         Result.fromValue(cancelMissionUploadBlocking())
 
-    suspend fun downloadMission(): MissionPlan = suspendCancellableCoroutine { continuation ->
+    suspend fun downloadMission(): kotlin.Result<MissionPlan> = suspendCancellableCoroutine { continuation ->
         val callback = DownloadMissionCallback { result, value ->
             val r = Result.fromValue(result)
             if (r == Result.SUCCESS) {
-                continuation.resume(value)
+                continuation.resume(kotlin.Result.success(value))
             } else {
-                continuation.resumeWithException(
-                    MissionException(r, "downloadMission failed: ${r.name}")
-                )
+                continuation.resume(kotlin.Result.failure(MissionException(r, "downloadMission failed: ${r.name}")))
             }
         }
         downloadMissionAsyncNative(callback)
     }
 
-    fun downloadMissionWithProgress(): Flow<ProgressDataOrMission> = callbackFlow {
+    fun downloadMissionWithProgress(): Flow<kotlin.Result<ProgressDataOrMission>> = callbackFlow {
         val callback = DownloadMissionWithProgressCallback { result, value ->
             val r = Result.fromValue(result)
             when {
-                r == Result.NEXT -> trySend(value)
+                r == Result.NEXT -> trySend(kotlin.Result.success(value))
                 r == Result.SUCCESS -> close()
-                else -> close(MissionException(r, "downloadMissionWithProgress failed: ${r.name}"))
+                else -> { trySend(kotlin.Result.failure(MissionException(r, "downloadMissionWithProgress failed: ${r.name}"))); close() }
             }
         }
         downloadMissionWithProgressAsyncNative(callback)
@@ -141,56 +131,28 @@ class Mission internal constructor(private val handle: Long) : AutoCloseable {
 
     suspend fun startMission(): Result = suspendCancellableCoroutine { continuation ->
         val callback = StartMissionCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    MissionException(r, "startMission failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         startMissionAsyncNative(callback)
     }
 
     suspend fun pauseMission(): Result = suspendCancellableCoroutine { continuation ->
         val callback = PauseMissionCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    MissionException(r, "pauseMission failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         pauseMissionAsyncNative(callback)
     }
 
     suspend fun clearMission(): Result = suspendCancellableCoroutine { continuation ->
         val callback = ClearMissionCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    MissionException(r, "clearMission failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         clearMissionAsyncNative(callback)
     }
 
     suspend fun setCurrentMissionItem(index: Int): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetCurrentMissionItemCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    MissionException(r, "setCurrentMissionItem failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         setCurrentMissionItemAsyncNative(index, callback)
     }

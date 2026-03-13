@@ -38,65 +38,65 @@ class Calibration internal constructor(private val handle: Long) : AutoCloseable
         val statusText: String,
     )
 
-    fun calibrateGyro(): Flow<ProgressData> = callbackFlow {
+    fun calibrateGyro(): Flow<kotlin.Result<ProgressData>> = callbackFlow {
         val callback = CalibrateGyroCallback { result, value ->
             val r = Result.fromValue(result)
             when {
-                r == Result.NEXT -> trySend(value)
+                r == Result.NEXT -> trySend(kotlin.Result.success(value))
                 r == Result.SUCCESS -> close()
-                else -> close(CalibrationException(r, "calibrateGyro failed: ${r.name}"))
+                else -> { trySend(kotlin.Result.failure(CalibrationException(r, "calibrateGyro failed: ${r.name}"))); close() }
             }
         }
         calibrateGyroAsyncNative(callback)
         awaitClose {}
     }
 
-    fun calibrateAccelerometer(): Flow<ProgressData> = callbackFlow {
+    fun calibrateAccelerometer(): Flow<kotlin.Result<ProgressData>> = callbackFlow {
         val callback = CalibrateAccelerometerCallback { result, value ->
             val r = Result.fromValue(result)
             when {
-                r == Result.NEXT -> trySend(value)
+                r == Result.NEXT -> trySend(kotlin.Result.success(value))
                 r == Result.SUCCESS -> close()
-                else -> close(CalibrationException(r, "calibrateAccelerometer failed: ${r.name}"))
+                else -> { trySend(kotlin.Result.failure(CalibrationException(r, "calibrateAccelerometer failed: ${r.name}"))); close() }
             }
         }
         calibrateAccelerometerAsyncNative(callback)
         awaitClose {}
     }
 
-    fun calibrateMagnetometer(): Flow<ProgressData> = callbackFlow {
+    fun calibrateMagnetometer(): Flow<kotlin.Result<ProgressData>> = callbackFlow {
         val callback = CalibrateMagnetometerCallback { result, value ->
             val r = Result.fromValue(result)
             when {
-                r == Result.NEXT -> trySend(value)
+                r == Result.NEXT -> trySend(kotlin.Result.success(value))
                 r == Result.SUCCESS -> close()
-                else -> close(CalibrationException(r, "calibrateMagnetometer failed: ${r.name}"))
+                else -> { trySend(kotlin.Result.failure(CalibrationException(r, "calibrateMagnetometer failed: ${r.name}"))); close() }
             }
         }
         calibrateMagnetometerAsyncNative(callback)
         awaitClose {}
     }
 
-    fun calibrateLevelHorizon(): Flow<ProgressData> = callbackFlow {
+    fun calibrateLevelHorizon(): Flow<kotlin.Result<ProgressData>> = callbackFlow {
         val callback = CalibrateLevelHorizonCallback { result, value ->
             val r = Result.fromValue(result)
             when {
-                r == Result.NEXT -> trySend(value)
+                r == Result.NEXT -> trySend(kotlin.Result.success(value))
                 r == Result.SUCCESS -> close()
-                else -> close(CalibrationException(r, "calibrateLevelHorizon failed: ${r.name}"))
+                else -> { trySend(kotlin.Result.failure(CalibrationException(r, "calibrateLevelHorizon failed: ${r.name}"))); close() }
             }
         }
         calibrateLevelHorizonAsyncNative(callback)
         awaitClose {}
     }
 
-    fun calibrateGimbalAccelerometer(): Flow<ProgressData> = callbackFlow {
+    fun calibrateGimbalAccelerometer(): Flow<kotlin.Result<ProgressData>> = callbackFlow {
         val callback = CalibrateGimbalAccelerometerCallback { result, value ->
             val r = Result.fromValue(result)
             when {
-                r == Result.NEXT -> trySend(value)
+                r == Result.NEXT -> trySend(kotlin.Result.success(value))
                 r == Result.SUCCESS -> close()
-                else -> close(CalibrationException(r, "calibrateGimbalAccelerometer failed: ${r.name}"))
+                else -> { trySend(kotlin.Result.failure(CalibrationException(r, "calibrateGimbalAccelerometer failed: ${r.name}"))); close() }
             }
         }
         calibrateGimbalAccelerometerAsyncNative(callback)

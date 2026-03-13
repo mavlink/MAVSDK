@@ -7,7 +7,6 @@ package io.mavsdk.kotlin.plugins.log_files
 import io.mavsdk.kotlin.System
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
-import kotlin.coroutines.resumeWithException
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -42,25 +41,18 @@ class LogFiles internal constructor(private val handle: Long) : AutoCloseable {
 
     suspend fun getEntries(): Result = suspendCancellableCoroutine { continuation ->
         val callback = GetEntriesCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    LogFilesException(r, "getEntries failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         getEntriesAsyncNative(callback)
     }
 
-    fun downloadLogFile(entry: Entry, path: String): Flow<ProgressData> = callbackFlow {
+    fun downloadLogFile(entry: Entry, path: String): Flow<kotlin.Result<ProgressData>> = callbackFlow {
         val callback = DownloadLogFileCallback { result, value ->
             val r = Result.fromValue(result)
             when {
-                r == Result.NEXT -> trySend(value)
+                r == Result.NEXT -> trySend(kotlin.Result.success(value))
                 r == Result.SUCCESS -> close()
-                else -> close(LogFilesException(r, "downloadLogFile failed: ${r.name}"))
+                else -> { trySend(kotlin.Result.failure(LogFilesException(r, "downloadLogFile failed: ${r.name}"))); close() }
             }
         }
         downloadLogFileAsyncNative(entry, path, callback)

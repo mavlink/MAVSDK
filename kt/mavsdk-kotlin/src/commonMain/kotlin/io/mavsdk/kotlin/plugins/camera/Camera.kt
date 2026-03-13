@@ -7,7 +7,6 @@ package io.mavsdk.kotlin.plugins.camera
 import io.mavsdk.kotlin.System
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
-import kotlin.coroutines.resumeWithException
 import java.util.concurrent.ConcurrentHashMap
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -182,70 +181,35 @@ class Camera internal constructor(private val handle: Long) : AutoCloseable {
 
     suspend fun takePhoto(componentId: Int): Result = suspendCancellableCoroutine { continuation ->
         val callback = TakePhotoCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    CameraException(r, "takePhoto failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         takePhotoAsyncNative(componentId, callback)
     }
 
     suspend fun startPhotoInterval(componentId: Int, intervalS: Float): Result = suspendCancellableCoroutine { continuation ->
         val callback = StartPhotoIntervalCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    CameraException(r, "startPhotoInterval failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         startPhotoIntervalAsyncNative(componentId, intervalS, callback)
     }
 
     suspend fun stopPhotoInterval(componentId: Int): Result = suspendCancellableCoroutine { continuation ->
         val callback = StopPhotoIntervalCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    CameraException(r, "stopPhotoInterval failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         stopPhotoIntervalAsyncNative(componentId, callback)
     }
 
     suspend fun startVideo(componentId: Int): Result = suspendCancellableCoroutine { continuation ->
         val callback = StartVideoCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    CameraException(r, "startVideo failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         startVideoAsyncNative(componentId, callback)
     }
 
     suspend fun stopVideo(componentId: Int): Result = suspendCancellableCoroutine { continuation ->
         val callback = StopVideoCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    CameraException(r, "stopVideo failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         stopVideoAsyncNative(componentId, callback)
     }
@@ -258,28 +222,14 @@ class Camera internal constructor(private val handle: Long) : AutoCloseable {
 
     suspend fun setMode(componentId: Int, mode: Mode): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetModeCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    CameraException(r, "setMode failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         setModeAsyncNative(componentId, mode.value, callback)
     }
 
     suspend fun listPhotos(componentId: Int, photosRange: PhotosRange): Result = suspendCancellableCoroutine { continuation ->
         val callback = ListPhotosCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    CameraException(r, "listPhotos failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         listPhotosAsyncNative(componentId, photosRange.value, callback)
     }
@@ -365,27 +315,18 @@ class Camera internal constructor(private val handle: Long) : AutoCloseable {
 
     suspend fun setSetting(componentId: Int, setting: Setting): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetSettingCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    CameraException(r, "setSetting failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         setSettingAsyncNative(componentId, setting, callback)
     }
 
-    suspend fun getSetting(componentId: Int, setting: Setting): Setting = suspendCancellableCoroutine { continuation ->
+    suspend fun getSetting(componentId: Int, setting: Setting): kotlin.Result<Setting> = suspendCancellableCoroutine { continuation ->
         val callback = GetSettingCallback { result, value ->
             val r = Result.fromValue(result)
             if (r == Result.SUCCESS) {
-                continuation.resume(value)
+                continuation.resume(kotlin.Result.success(value))
             } else {
-                continuation.resumeWithException(
-                    CameraException(r, "getSetting failed: ${r.name}")
-                )
+                continuation.resume(kotlin.Result.failure(CameraException(r, "getSetting failed: ${r.name}")))
             }
         }
         getSettingAsyncNative(componentId, setting, callback)
@@ -393,182 +334,91 @@ class Camera internal constructor(private val handle: Long) : AutoCloseable {
 
     suspend fun formatStorage(componentId: Int, storageId: Int): Result = suspendCancellableCoroutine { continuation ->
         val callback = FormatStorageCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    CameraException(r, "formatStorage failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         formatStorageAsyncNative(componentId, storageId, callback)
     }
 
     suspend fun resetSettings(componentId: Int): Result = suspendCancellableCoroutine { continuation ->
         val callback = ResetSettingsCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    CameraException(r, "resetSettings failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         resetSettingsAsyncNative(componentId, callback)
     }
 
     suspend fun zoomInStart(componentId: Int): Result = suspendCancellableCoroutine { continuation ->
         val callback = ZoomInStartCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    CameraException(r, "zoomInStart failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         zoomInStartAsyncNative(componentId, callback)
     }
 
     suspend fun zoomOutStart(componentId: Int): Result = suspendCancellableCoroutine { continuation ->
         val callback = ZoomOutStartCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    CameraException(r, "zoomOutStart failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         zoomOutStartAsyncNative(componentId, callback)
     }
 
     suspend fun zoomStop(componentId: Int): Result = suspendCancellableCoroutine { continuation ->
         val callback = ZoomStopCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    CameraException(r, "zoomStop failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         zoomStopAsyncNative(componentId, callback)
     }
 
     suspend fun zoomRange(componentId: Int, range: Float): Result = suspendCancellableCoroutine { continuation ->
         val callback = ZoomRangeCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    CameraException(r, "zoomRange failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         zoomRangeAsyncNative(componentId, range, callback)
     }
 
     suspend fun trackPoint(componentId: Int, pointX: Float, pointY: Float, radius: Float): Result = suspendCancellableCoroutine { continuation ->
         val callback = TrackPointCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    CameraException(r, "trackPoint failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         trackPointAsyncNative(componentId, pointX, pointY, radius, callback)
     }
 
     suspend fun trackRectangle(componentId: Int, topLeftX: Float, topLeftY: Float, bottomRightX: Float, bottomRightY: Float): Result = suspendCancellableCoroutine { continuation ->
         val callback = TrackRectangleCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    CameraException(r, "trackRectangle failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         trackRectangleAsyncNative(componentId, topLeftX, topLeftY, bottomRightX, bottomRightY, callback)
     }
 
     suspend fun trackStop(componentId: Int): Result = suspendCancellableCoroutine { continuation ->
         val callback = TrackStopCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    CameraException(r, "trackStop failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         trackStopAsyncNative(componentId, callback)
     }
 
     suspend fun focusInStart(componentId: Int): Result = suspendCancellableCoroutine { continuation ->
         val callback = FocusInStartCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    CameraException(r, "focusInStart failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         focusInStartAsyncNative(componentId, callback)
     }
 
     suspend fun focusOutStart(componentId: Int): Result = suspendCancellableCoroutine { continuation ->
         val callback = FocusOutStartCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    CameraException(r, "focusOutStart failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         focusOutStartAsyncNative(componentId, callback)
     }
 
     suspend fun focusStop(componentId: Int): Result = suspendCancellableCoroutine { continuation ->
         val callback = FocusStopCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    CameraException(r, "focusStop failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         focusStopAsyncNative(componentId, callback)
     }
 
     suspend fun focusRange(componentId: Int, range: Float): Result = suspendCancellableCoroutine { continuation ->
         val callback = FocusRangeCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    CameraException(r, "focusRange failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         focusRangeAsyncNative(componentId, range, callback)
     }

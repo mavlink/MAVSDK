@@ -7,7 +7,6 @@ package io.mavsdk.kotlin.plugins.gimbal
 import io.mavsdk.kotlin.System
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
-import kotlin.coroutines.resumeWithException
 import java.util.concurrent.ConcurrentHashMap
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -114,70 +113,35 @@ class Gimbal internal constructor(private val handle: Long) : AutoCloseable {
 
     suspend fun setAngles(gimbalId: Int, rollDeg: Float, pitchDeg: Float, yawDeg: Float, gimbalMode: GimbalMode, sendMode: SendMode): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetAnglesCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    GimbalException(r, "setAngles failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         setAnglesAsyncNative(gimbalId, rollDeg, pitchDeg, yawDeg, gimbalMode.value, sendMode.value, callback)
     }
 
     suspend fun setAngularRates(gimbalId: Int, rollRateDegS: Float, pitchRateDegS: Float, yawRateDegS: Float, gimbalMode: GimbalMode, sendMode: SendMode): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetAngularRatesCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    GimbalException(r, "setAngularRates failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         setAngularRatesAsyncNative(gimbalId, rollRateDegS, pitchRateDegS, yawRateDegS, gimbalMode.value, sendMode.value, callback)
     }
 
     suspend fun setRoiLocation(gimbalId: Int, latitudeDeg: Double, longitudeDeg: Double, altitudeM: Float): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetRoiLocationCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    GimbalException(r, "setRoiLocation failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         setRoiLocationAsyncNative(gimbalId, latitudeDeg, longitudeDeg, altitudeM, callback)
     }
 
     suspend fun takeControl(gimbalId: Int, controlMode: ControlMode): Result = suspendCancellableCoroutine { continuation ->
         val callback = TakeControlCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    GimbalException(r, "takeControl failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         takeControlAsyncNative(gimbalId, controlMode.value, callback)
     }
 
     suspend fun releaseControl(gimbalId: Int): Result = suspendCancellableCoroutine { continuation ->
         val callback = ReleaseControlCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    GimbalException(r, "releaseControl failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         releaseControlAsyncNative(gimbalId, callback)
     }

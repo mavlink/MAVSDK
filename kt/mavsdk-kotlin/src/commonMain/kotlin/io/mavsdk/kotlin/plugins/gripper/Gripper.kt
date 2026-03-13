@@ -7,7 +7,6 @@ package io.mavsdk.kotlin.plugins.gripper
 import io.mavsdk.kotlin.System
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
-import kotlin.coroutines.resumeWithException
 
 
 class Gripper internal constructor(private val handle: Long) : AutoCloseable {
@@ -37,28 +36,14 @@ class Gripper internal constructor(private val handle: Long) : AutoCloseable {
 
     suspend fun grab(instance: Int): Result = suspendCancellableCoroutine { continuation ->
         val callback = GrabCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    GripperException(r, "grab failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         grabAsyncNative(instance, callback)
     }
 
     suspend fun release(instance: Int): Result = suspendCancellableCoroutine { continuation ->
         val callback = ReleaseCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    GripperException(r, "release failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         releaseAsyncNative(instance, callback)
     }

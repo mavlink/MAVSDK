@@ -14,7 +14,6 @@ import kotlinx.coroutines.*
  *   action = "set_float"   → write a float parameter
  *
  * Prerequisites: PX4 SITL running on UDP port 14540.
- *   make px4_sitl gazebo
  */
 fun params(action: String = "get_all", paramName: String = "", value: String = "") = runBlocking {
     println("=== MAVSDK-Kotlin Params Example ===\n")

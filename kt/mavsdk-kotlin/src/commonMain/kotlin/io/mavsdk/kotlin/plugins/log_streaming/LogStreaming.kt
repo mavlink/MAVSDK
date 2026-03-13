@@ -7,7 +7,6 @@ package io.mavsdk.kotlin.plugins.log_streaming
 import io.mavsdk.kotlin.System
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
-import kotlin.coroutines.resumeWithException
 import java.util.concurrent.ConcurrentHashMap
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -40,28 +39,14 @@ class LogStreaming internal constructor(private val handle: Long) : AutoCloseabl
 
     suspend fun startLogStreaming(): Result = suspendCancellableCoroutine { continuation ->
         val callback = StartLogStreamingCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    LogStreamingException(r, "startLogStreaming failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         startLogStreamingAsyncNative(callback)
     }
 
     suspend fun stopLogStreaming(): Result = suspendCancellableCoroutine { continuation ->
         val callback = StopLogStreamingCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    LogStreamingException(r, "stopLogStreaming failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         stopLogStreamingAsyncNative(callback)
     }

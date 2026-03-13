@@ -7,7 +7,6 @@ package io.mavsdk.kotlin.plugins.manual_control
 import io.mavsdk.kotlin.System
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
-import kotlin.coroutines.resumeWithException
 
 
 class ManualControl internal constructor(private val handle: Long) : AutoCloseable {
@@ -30,28 +29,14 @@ class ManualControl internal constructor(private val handle: Long) : AutoCloseab
 
     suspend fun startPositionControl(): Result = suspendCancellableCoroutine { continuation ->
         val callback = StartPositionControlCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    ManualControlException(r, "startPositionControl failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         startPositionControlAsyncNative(callback)
     }
 
     suspend fun startAltitudeControl(): Result = suspendCancellableCoroutine { continuation ->
         val callback = StartAltitudeControlCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    ManualControlException(r, "startAltitudeControl failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         startAltitudeControlAsyncNative(callback)
     }

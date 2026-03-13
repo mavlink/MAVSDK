@@ -11,7 +11,6 @@ import kotlinx.coroutines.flow.*
  * Example demonstrating waypoint missions using Action, Mission, and Telemetry plugins.
  *
  * Prerequisites: PX4 SITL running and broadcasting on UDP port 14540.
- *   make px4_sitl gazebo
  */
 fun flyMission() = runBlocking {
     println("=== MAVSDK-Kotlin FlyMission Example ===\n")
@@ -44,9 +43,7 @@ fun flyMission() = runBlocking {
         }
         println("✓ System ready\n")
 
-        // -- Build mission items --
-        // NOTE: MissionPlan construction with items is not yet supported
-        // in the Kotlin JNI layer. The items defined here are illustrative.
+        // Build mission items
         val items = listOf(
             Mission.MissionItem(47.398170327054473, 8.5456490218639658, 10f, 5f, false,  20f,  60f, 0, 0f, 1.0, 1f, 0f, 0f, 0),
             Mission.MissionItem(47.398241338125118, 8.5455360114574432, 10f, 2f, true,    0f, -60f, 1, 0f, 1.0, 1f, 0f, 0f, 0),
@@ -65,13 +62,12 @@ fun flyMission() = runBlocking {
 
         // Arm
         println("Arming...")
-        try {
-            action.arm()
-            println("✓ Armed\n")
-        } catch (e: Action.ActionException) {
-            println("✗ Arm failed: ${e.result}")
+        val armResult = action.arm()
+        if (armResult != Action.Result.SUCCESS) {
+            println("✗ Arm failed: $armResult")
             return@use
         }
+        println("✓ Armed\n")
 
         // Subscribe to mission progress; pause at item 2.
         val pauseJob = CompletableDeferred<Unit>()
@@ -109,11 +105,11 @@ fun flyMission() = runBlocking {
 
         // Return to launch
         println("\nCommanding RTL...")
-        try {
-            action.returnToLaunch()
+        val rtlResult = action.returnToLaunch()
+        if (rtlResult != Action.Result.SUCCESS) {
+            println("✗ RTL failed: $rtlResult")
+        } else {
             println("✓ RTL commanded")
-        } catch (e: Action.ActionException) {
-            println("✗ RTL failed: ${e.result}")
         }
 
         delay(2_000)

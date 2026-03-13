@@ -7,7 +7,6 @@ package io.mavsdk.kotlin.plugins.telemetry
 import io.mavsdk.kotlin.System
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
-import kotlin.coroutines.resumeWithException
 import java.util.concurrent.ConcurrentHashMap
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -740,349 +739,179 @@ class Telemetry internal constructor(private val handle: Long) : AutoCloseable {
 
     suspend fun setRatePosition(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetRatePositionCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    TelemetryException(r, "setRatePosition failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         setRatePositionAsyncNative(rateHz, callback)
     }
 
     suspend fun setRateHome(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetRateHomeCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    TelemetryException(r, "setRateHome failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         setRateHomeAsyncNative(rateHz, callback)
     }
 
     suspend fun setRateInAir(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetRateInAirCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    TelemetryException(r, "setRateInAir failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         setRateInAirAsyncNative(rateHz, callback)
     }
 
     suspend fun setRateLandedState(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetRateLandedStateCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    TelemetryException(r, "setRateLandedState failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         setRateLandedStateAsyncNative(rateHz, callback)
     }
 
     suspend fun setRateVtolState(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetRateVtolStateCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    TelemetryException(r, "setRateVtolState failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         setRateVtolStateAsyncNative(rateHz, callback)
     }
 
     suspend fun setRateAttitudeQuaternion(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetRateAttitudeQuaternionCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    TelemetryException(r, "setRateAttitudeQuaternion failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         setRateAttitudeQuaternionAsyncNative(rateHz, callback)
     }
 
     suspend fun setRateAttitudeEuler(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetRateAttitudeEulerCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    TelemetryException(r, "setRateAttitudeEuler failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         setRateAttitudeEulerAsyncNative(rateHz, callback)
     }
 
     suspend fun setRateVelocityNed(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetRateVelocityNedCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    TelemetryException(r, "setRateVelocityNed failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         setRateVelocityNedAsyncNative(rateHz, callback)
     }
 
     suspend fun setRateGpsInfo(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetRateGpsInfoCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    TelemetryException(r, "setRateGpsInfo failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         setRateGpsInfoAsyncNative(rateHz, callback)
     }
 
     suspend fun setRateBattery(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetRateBatteryCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    TelemetryException(r, "setRateBattery failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         setRateBatteryAsyncNative(rateHz, callback)
     }
 
     suspend fun setRateRcStatus(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetRateRcStatusCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    TelemetryException(r, "setRateRcStatus failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         setRateRcStatusAsyncNative(rateHz, callback)
     }
 
     suspend fun setRateActuatorControlTarget(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetRateActuatorControlTargetCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    TelemetryException(r, "setRateActuatorControlTarget failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         setRateActuatorControlTargetAsyncNative(rateHz, callback)
     }
 
     suspend fun setRateActuatorOutputStatus(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetRateActuatorOutputStatusCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    TelemetryException(r, "setRateActuatorOutputStatus failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         setRateActuatorOutputStatusAsyncNative(rateHz, callback)
     }
 
     suspend fun setRateOdometry(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetRateOdometryCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    TelemetryException(r, "setRateOdometry failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         setRateOdometryAsyncNative(rateHz, callback)
     }
 
     suspend fun setRatePositionVelocityNed(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetRatePositionVelocityNedCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    TelemetryException(r, "setRatePositionVelocityNed failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         setRatePositionVelocityNedAsyncNative(rateHz, callback)
     }
 
     suspend fun setRateGroundTruth(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetRateGroundTruthCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    TelemetryException(r, "setRateGroundTruth failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         setRateGroundTruthAsyncNative(rateHz, callback)
     }
 
     suspend fun setRateFixedwingMetrics(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetRateFixedwingMetricsCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    TelemetryException(r, "setRateFixedwingMetrics failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         setRateFixedwingMetricsAsyncNative(rateHz, callback)
     }
 
     suspend fun setRateImu(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetRateImuCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    TelemetryException(r, "setRateImu failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         setRateImuAsyncNative(rateHz, callback)
     }
 
     suspend fun setRateScaledImu(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetRateScaledImuCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    TelemetryException(r, "setRateScaledImu failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         setRateScaledImuAsyncNative(rateHz, callback)
     }
 
     suspend fun setRateRawImu(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetRateRawImuCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    TelemetryException(r, "setRateRawImu failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         setRateRawImuAsyncNative(rateHz, callback)
     }
 
     suspend fun setRateUnixEpochTime(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetRateUnixEpochTimeCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    TelemetryException(r, "setRateUnixEpochTime failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         setRateUnixEpochTimeAsyncNative(rateHz, callback)
     }
 
     suspend fun setRateDistanceSensor(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetRateDistanceSensorCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    TelemetryException(r, "setRateDistanceSensor failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         setRateDistanceSensorAsyncNative(rateHz, callback)
     }
 
     suspend fun setRateAltitude(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetRateAltitudeCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    TelemetryException(r, "setRateAltitude failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         setRateAltitudeAsyncNative(rateHz, callback)
     }
 
     suspend fun setRateHealth(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetRateHealthCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    TelemetryException(r, "setRateHealth failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         setRateHealthAsyncNative(rateHz, callback)
     }
 
-    suspend fun getGpsGlobalOrigin(): GpsGlobalOrigin = suspendCancellableCoroutine { continuation ->
+    suspend fun getGpsGlobalOrigin(): kotlin.Result<GpsGlobalOrigin> = suspendCancellableCoroutine { continuation ->
         val callback = GetGpsGlobalOriginCallback { result, value ->
             val r = Result.fromValue(result)
             if (r == Result.SUCCESS) {
-                continuation.resume(value)
+                continuation.resume(kotlin.Result.success(value))
             } else {
-                continuation.resumeWithException(
-                    TelemetryException(r, "getGpsGlobalOrigin failed: ${r.name}")
-                )
+                continuation.resume(kotlin.Result.failure(TelemetryException(r, "getGpsGlobalOrigin failed: ${r.name}")))
             }
         }
         getGpsGlobalOriginAsyncNative(callback)

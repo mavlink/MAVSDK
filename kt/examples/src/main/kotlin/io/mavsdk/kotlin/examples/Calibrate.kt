@@ -37,15 +37,17 @@ fun calibrate() = runBlocking {
     }
 }
 
-private suspend fun runCalibration(name: String, progress: Flow<Calibration.ProgressData>) {
+private suspend fun runCalibration(name: String, progress: Flow<kotlin.Result<Calibration.ProgressData>>) {
     println("Calibrating $name...")
-    try {
-        progress.collect { data ->
+    var failed = false
+    progress.collect { result ->
+        result.onSuccess { data ->
             if (data.hasProgress) println("  Progress: ${"%.1f".format(data.progress * 100)}%")
             if (data.hasStatusText) println("  Instruction: ${data.statusText}")
+        }.onFailure { e ->
+            println("✗ $name calibration failed: ${e.message}\n")
+            failed = true
         }
-        println("✓ $name calibration succeeded!\n")
-    } catch (e: Calibration.CalibrationException) {
-        println("✗ $name calibration failed: ${e.result} - ${e.message}\n")
     }
+    if (!failed) println("✓ $name calibration succeeded!\n")
 }

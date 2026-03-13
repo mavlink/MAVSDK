@@ -7,7 +7,6 @@ package io.mavsdk.kotlin.plugins.winch
 import io.mavsdk.kotlin.System
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
-import kotlin.coroutines.resumeWithException
 import java.util.concurrent.ConcurrentHashMap
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -92,140 +91,70 @@ class Winch internal constructor(private val handle: Long) : AutoCloseable {
 
     suspend fun relax(instance: Int): Result = suspendCancellableCoroutine { continuation ->
         val callback = RelaxCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    WinchException(r, "relax failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         relaxAsyncNative(instance, callback)
     }
 
     suspend fun relativeLengthControl(instance: Int, lengthM: Float, rateMS: Float): Result = suspendCancellableCoroutine { continuation ->
         val callback = RelativeLengthControlCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    WinchException(r, "relativeLengthControl failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         relativeLengthControlAsyncNative(instance, lengthM, rateMS, callback)
     }
 
     suspend fun rateControl(instance: Int, rateMS: Float): Result = suspendCancellableCoroutine { continuation ->
         val callback = RateControlCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    WinchException(r, "rateControl failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         rateControlAsyncNative(instance, rateMS, callback)
     }
 
     suspend fun lock(instance: Int): Result = suspendCancellableCoroutine { continuation ->
         val callback = LockCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    WinchException(r, "lock failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         lockAsyncNative(instance, callback)
     }
 
     suspend fun deliver(instance: Int): Result = suspendCancellableCoroutine { continuation ->
         val callback = DeliverCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    WinchException(r, "deliver failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         deliverAsyncNative(instance, callback)
     }
 
     suspend fun hold(instance: Int): Result = suspendCancellableCoroutine { continuation ->
         val callback = HoldCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    WinchException(r, "hold failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         holdAsyncNative(instance, callback)
     }
 
     suspend fun retract(instance: Int): Result = suspendCancellableCoroutine { continuation ->
         val callback = RetractCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    WinchException(r, "retract failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         retractAsyncNative(instance, callback)
     }
 
     suspend fun loadLine(instance: Int): Result = suspendCancellableCoroutine { continuation ->
         val callback = LoadLineCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    WinchException(r, "loadLine failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         loadLineAsyncNative(instance, callback)
     }
 
     suspend fun abandonLine(instance: Int): Result = suspendCancellableCoroutine { continuation ->
         val callback = AbandonLineCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    WinchException(r, "abandonLine failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         abandonLineAsyncNative(instance, callback)
     }
 
     suspend fun loadPayload(instance: Int): Result = suspendCancellableCoroutine { continuation ->
         val callback = LoadPayloadCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    WinchException(r, "loadPayload failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         loadPayloadAsyncNative(instance, callback)
     }

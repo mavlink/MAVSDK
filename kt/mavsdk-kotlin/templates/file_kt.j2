@@ -16,7 +16,6 @@ package io.mavsdk.kotlin.plugins.{{ plugin_name.lower_snake_case }}
 {% if ns.has_async %}
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
-import kotlin.coroutines.resumeWithException
 {% endif %}
 {% if ns.has_infinite_stream %}
 import java.util.concurrent.ConcurrentHashMap
@@ -219,32 +218,23 @@ class {{ plugin_name.upper_camel_case }} internal constructor(private val handle
 {# ---- Async suspend method ---- #}
 {% set ns_sep = namespace(sep=has_scalar_params(method.params)) %}
 {% if method.has_result and method.return_name and not method.return_type.is_repeated %}
-{# Async getter: suspends and returns the value on SUCCESS #}
-    suspend fun {{ method.name.lower_camel_case }}({{ pub_params(method.params) }}): {% if ns_m.ret_is_enum %}{{ method.return_type.name.upper_camel_case }}{% else %}{{ kt_pub_type(method.return_type) }}{% endif %} = suspendCancellableCoroutine { continuation ->
+{# Async getter: suspends and returns kotlin.Result wrapping the value #}
+    suspend fun {{ method.name.lower_camel_case }}({{ pub_params(method.params) }}): kotlin.Result<{% if ns_m.ret_is_enum %}{{ method.return_type.name.upper_camel_case }}{% else %}{{ kt_pub_type(method.return_type) }}{% endif %}> = suspendCancellableCoroutine { continuation ->
         val callback = {{ method.name.upper_camel_case }}Callback { result, value ->
             val r = Result.fromValue(result)
             if (r == Result.SUCCESS) {
-                continuation.resume({% if ns_m.ret_is_enum %}{{ method.return_type.name.upper_camel_case }}.fromValue(value as Int){% else %}value{% endif %})
+                continuation.resume(kotlin.Result.success({% if ns_m.ret_is_enum %}{{ method.return_type.name.upper_camel_case }}.fromValue(value as Int){% else %}value{% endif %}))
             } else {
-                continuation.resumeWithException(
-                    {{ plugin_name.upper_camel_case }}Exception(r, "{{ method.name.lower_camel_case }} failed: ${r.name}")
-                )
+                continuation.resume(kotlin.Result.failure({{ plugin_name.upper_camel_case }}Exception(r, "{{ method.name.lower_camel_case }} failed: ${r.name}")))
             }
         }
         {{ method.name.lower_camel_case }}AsyncNative({{ ext_args(method.params) }}{% if ns_sep.sep %}, {% endif %}callback)
     }
 {% elif method.has_result %}
-{# Action-style async: suspends and returns Result on SUCCESS #}
+{# Action-style async: suspends and returns Result (caller checks for SUCCESS) #}
     suspend fun {{ method.name.lower_camel_case }}({{ pub_params(method.params) }}): Result = suspendCancellableCoroutine { continuation ->
         val callback = {{ method.name.upper_camel_case }}Callback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    {{ plugin_name.upper_camel_case }}Exception(r, "{{ method.name.lower_camel_case }} failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         {{ method.name.lower_camel_case }}AsyncNative({{ ext_args(method.params) }}{% if ns_sep.sep %}, {% endif %}callback)
     }
@@ -314,13 +304,13 @@ class {{ plugin_name.upper_camel_case }} internal constructor(private val handle
 {# Callbacks fire repeatedly with Result.NEXT + progress, then once with SUCCESS or error. #}
 {% set ns_sep = namespace(sep=has_scalar_params(method.params)) %}
 {% if method.has_result and method.return_type and not method.return_type.is_repeated %}
-    fun {{ method.name.lower_camel_case }}({{ pub_params(method.params) }}): Flow<{{ kt_pub_type(method.return_type) }}> = callbackFlow {
+    fun {{ method.name.lower_camel_case }}({{ pub_params(method.params) }}): Flow<kotlin.Result<{{ kt_pub_type(method.return_type) }}>> = callbackFlow {
         val callback = {{ method.name.upper_camel_case }}Callback { result, value ->
             val r = Result.fromValue(result)
             when {
-                r == Result.NEXT -> trySend(value)
+                r == Result.NEXT -> trySend(kotlin.Result.success(value))
                 r == Result.SUCCESS -> close()
-                else -> close({{ plugin_name.upper_camel_case }}Exception(r, "{{ method.name.lower_camel_case }} failed: ${r.name}"))
+                else -> { trySend(kotlin.Result.failure({{ plugin_name.upper_camel_case }}Exception(r, "{{ method.name.lower_camel_case }} failed: ${r.name}"))); close() }
             }
         }
         {{ method.name.lower_camel_case }}AsyncNative({{ ext_args(method.params) }}{% if ns_sep.sep %}, {% endif %}callback)

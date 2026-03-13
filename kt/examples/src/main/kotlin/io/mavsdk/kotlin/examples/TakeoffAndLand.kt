@@ -45,25 +45,23 @@ fun takeoffAndLand() = runBlocking {
 
         // Arm
         println("\n=== Arming ===")
-        try {
-            val armResult = action.arm()
-            println("✓ Armed! Result: $armResult")
-        } catch (e: Action.ActionException) {
-            println("✗ Arm failed: ${e.result} - ${e.message}")
+        val armResult = action.arm()
+        if (armResult != Action.Result.SUCCESS) {
+            println("✗ Arm failed: $armResult")
             positionJob.cancel()
             return@use
         }
+        println("✓ Armed!")
 
         // Takeoff
         println("\n=== Takeoff ===")
-        try {
-            val takeoffResult = action.takeoff()
-            println("✓ Takeoff initiated! Result: $takeoffResult")
-        } catch (e: Action.ActionException) {
-            println("✗ Takeoff failed: ${e.result} - ${e.message}")
+        val takeoffResult = action.takeoff()
+        if (takeoffResult != Action.Result.SUCCESS) {
+            println("✗ Takeoff failed: $takeoffResult")
             positionJob.cancel()
             return@use
         }
+        println("✓ Takeoff initiated!")
 
         // Hover for 10 seconds
         println("\nHovering for 10 seconds...")
@@ -71,11 +69,11 @@ fun takeoffAndLand() = runBlocking {
 
         // Land
         println("\n=== Landing ===")
-        try {
-            val landResult = action.land()
-            println("✓ Landing initiated! Result: $landResult")
-        } catch (e: Action.ActionException) {
-            println("✗ Land failed: ${e.result} - ${e.message}")
+        val landResult = action.land()
+        if (landResult != Action.Result.SUCCESS) {
+            println("✗ Land failed: $landResult")
+        } else {
+            println("✓ Landing initiated!")
         }
 
         // Wait a bit for landing to complete, then stop logging

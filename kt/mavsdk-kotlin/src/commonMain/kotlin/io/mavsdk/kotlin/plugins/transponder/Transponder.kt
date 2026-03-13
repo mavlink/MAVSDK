@@ -7,7 +7,6 @@ package io.mavsdk.kotlin.plugins.transponder
 import io.mavsdk.kotlin.System
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
-import kotlin.coroutines.resumeWithException
 import java.util.concurrent.ConcurrentHashMap
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -98,14 +97,7 @@ class Transponder internal constructor(private val handle: Long) : AutoCloseable
 
     suspend fun setRateTransponder(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetRateTransponderCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    TransponderException(r, "setRateTransponder failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         setRateTransponderAsyncNative(rateHz, callback)
     }

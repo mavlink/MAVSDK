@@ -7,7 +7,6 @@ package io.mavsdk.kotlin.plugins.geofence
 import io.mavsdk.kotlin.System
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
-import kotlin.coroutines.resumeWithException
 
 
 class Geofence internal constructor(private val handle: Long) : AutoCloseable {
@@ -59,28 +58,14 @@ class Geofence internal constructor(private val handle: Long) : AutoCloseable {
 
     suspend fun uploadGeofence(geofenceData: GeofenceData): Result = suspendCancellableCoroutine { continuation ->
         val callback = UploadGeofenceCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    GeofenceException(r, "uploadGeofence failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         uploadGeofenceAsyncNative(geofenceData, callback)
     }
 
     suspend fun clearGeofence(): Result = suspendCancellableCoroutine { continuation ->
         val callback = ClearGeofenceCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    GeofenceException(r, "clearGeofence failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         clearGeofenceAsyncNative(callback)
     }

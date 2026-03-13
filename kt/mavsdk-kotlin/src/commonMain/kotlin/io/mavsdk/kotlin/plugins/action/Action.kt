@@ -7,7 +7,6 @@ package io.mavsdk.kotlin.plugins.action
 import io.mavsdk.kotlin.System
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
-import kotlin.coroutines.resumeWithException
 
 
 class Action internal constructor(private val handle: Long) : AutoCloseable {
@@ -57,251 +56,130 @@ class Action internal constructor(private val handle: Long) : AutoCloseable {
 
     suspend fun arm(): Result = suspendCancellableCoroutine { continuation ->
         val callback = ArmCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    ActionException(r, "arm failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         armAsyncNative(callback)
     }
 
     suspend fun armForce(): Result = suspendCancellableCoroutine { continuation ->
         val callback = ArmForceCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    ActionException(r, "armForce failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         armForceAsyncNative(callback)
     }
 
     suspend fun disarm(): Result = suspendCancellableCoroutine { continuation ->
         val callback = DisarmCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    ActionException(r, "disarm failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         disarmAsyncNative(callback)
     }
 
     suspend fun takeoff(): Result = suspendCancellableCoroutine { continuation ->
         val callback = TakeoffCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    ActionException(r, "takeoff failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         takeoffAsyncNative(callback)
     }
 
     suspend fun land(): Result = suspendCancellableCoroutine { continuation ->
         val callback = LandCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    ActionException(r, "land failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         landAsyncNative(callback)
     }
 
     suspend fun reboot(): Result = suspendCancellableCoroutine { continuation ->
         val callback = RebootCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    ActionException(r, "reboot failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         rebootAsyncNative(callback)
     }
 
     suspend fun shutdown(): Result = suspendCancellableCoroutine { continuation ->
         val callback = ShutdownCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    ActionException(r, "shutdown failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         shutdownAsyncNative(callback)
     }
 
     suspend fun terminate(): Result = suspendCancellableCoroutine { continuation ->
         val callback = TerminateCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    ActionException(r, "terminate failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         terminateAsyncNative(callback)
     }
 
     suspend fun kill(): Result = suspendCancellableCoroutine { continuation ->
         val callback = KillCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    ActionException(r, "kill failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         killAsyncNative(callback)
     }
 
     suspend fun returnToLaunch(): Result = suspendCancellableCoroutine { continuation ->
         val callback = ReturnToLaunchCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    ActionException(r, "returnToLaunch failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         returnToLaunchAsyncNative(callback)
     }
 
     suspend fun gotoLocation(latitudeDeg: Double, longitudeDeg: Double, absoluteAltitudeM: Float, yawDeg: Float): Result = suspendCancellableCoroutine { continuation ->
         val callback = GotoLocationCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    ActionException(r, "gotoLocation failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         gotoLocationAsyncNative(latitudeDeg, longitudeDeg, absoluteAltitudeM, yawDeg, callback)
     }
 
     suspend fun doOrbit(radiusM: Float, velocityMs: Float, yawBehavior: OrbitYawBehavior, latitudeDeg: Double, longitudeDeg: Double, absoluteAltitudeM: Double): Result = suspendCancellableCoroutine { continuation ->
         val callback = DoOrbitCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    ActionException(r, "doOrbit failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         doOrbitAsyncNative(radiusM, velocityMs, yawBehavior.value, latitudeDeg, longitudeDeg, absoluteAltitudeM, callback)
     }
 
     suspend fun hold(): Result = suspendCancellableCoroutine { continuation ->
         val callback = HoldCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    ActionException(r, "hold failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         holdAsyncNative(callback)
     }
 
     suspend fun setActuator(index: Int, value: Float): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetActuatorCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    ActionException(r, "setActuator failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         setActuatorAsyncNative(index, value, callback)
     }
 
     suspend fun setRelay(index: Int, setting: RelayCommand): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetRelayCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    ActionException(r, "setRelay failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         setRelayAsyncNative(index, setting.value, callback)
     }
 
     suspend fun transitionToFixedwing(): Result = suspendCancellableCoroutine { continuation ->
         val callback = TransitionToFixedwingCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    ActionException(r, "transitionToFixedwing failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         transitionToFixedwingAsyncNative(callback)
     }
 
     suspend fun transitionToMulticopter(): Result = suspendCancellableCoroutine { continuation ->
         val callback = TransitionToMulticopterCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    ActionException(r, "transitionToMulticopter failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         transitionToMulticopterAsyncNative(callback)
     }
 
-    suspend fun getTakeoffAltitude(): Float = suspendCancellableCoroutine { continuation ->
+    suspend fun getTakeoffAltitude(): kotlin.Result<Float> = suspendCancellableCoroutine { continuation ->
         val callback = GetTakeoffAltitudeCallback { result, value ->
             val r = Result.fromValue(result)
             if (r == Result.SUCCESS) {
-                continuation.resume(value)
+                continuation.resume(kotlin.Result.success(value))
             } else {
-                continuation.resumeWithException(
-                    ActionException(r, "getTakeoffAltitude failed: ${r.name}")
-                )
+                continuation.resume(kotlin.Result.failure(ActionException(r, "getTakeoffAltitude failed: ${r.name}")))
             }
         }
         getTakeoffAltitudeAsyncNative(callback)
@@ -309,27 +187,18 @@ class Action internal constructor(private val handle: Long) : AutoCloseable {
 
     suspend fun setTakeoffAltitude(altitude: Float): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetTakeoffAltitudeCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    ActionException(r, "setTakeoffAltitude failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         setTakeoffAltitudeAsyncNative(altitude, callback)
     }
 
-    suspend fun getReturnToLaunchAltitude(): Float = suspendCancellableCoroutine { continuation ->
+    suspend fun getReturnToLaunchAltitude(): kotlin.Result<Float> = suspendCancellableCoroutine { continuation ->
         val callback = GetReturnToLaunchAltitudeCallback { result, value ->
             val r = Result.fromValue(result)
             if (r == Result.SUCCESS) {
-                continuation.resume(value)
+                continuation.resume(kotlin.Result.success(value))
             } else {
-                continuation.resumeWithException(
-                    ActionException(r, "getReturnToLaunchAltitude failed: ${r.name}")
-                )
+                continuation.resume(kotlin.Result.failure(ActionException(r, "getReturnToLaunchAltitude failed: ${r.name}")))
             }
         }
         getReturnToLaunchAltitudeAsyncNative(callback)
@@ -337,28 +206,14 @@ class Action internal constructor(private val handle: Long) : AutoCloseable {
 
     suspend fun setReturnToLaunchAltitude(relativeAltitudeM: Float): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetReturnToLaunchAltitudeCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    ActionException(r, "setReturnToLaunchAltitude failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         setReturnToLaunchAltitudeAsyncNative(relativeAltitudeM, callback)
     }
 
     suspend fun setCurrentSpeed(speedMS: Float): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetCurrentSpeedCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    ActionException(r, "setCurrentSpeed failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         setCurrentSpeedAsyncNative(speedMS, callback)
     }

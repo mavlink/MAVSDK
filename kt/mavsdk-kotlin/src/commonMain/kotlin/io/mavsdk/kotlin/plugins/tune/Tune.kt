@@ -7,7 +7,6 @@ package io.mavsdk.kotlin.plugins.tune
 import io.mavsdk.kotlin.System
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
-import kotlin.coroutines.resumeWithException
 
 
 class Tune internal constructor(private val handle: Long) : AutoCloseable {
@@ -60,14 +59,7 @@ class Tune internal constructor(private val handle: Long) : AutoCloseable {
 
     suspend fun playTune(tuneDescription: TuneDescription): Result = suspendCancellableCoroutine { continuation ->
         val callback = PlayTuneCallback { result ->
-            val r = Result.fromValue(result)
-            if (r == Result.SUCCESS) {
-                continuation.resume(r)
-            } else {
-                continuation.resumeWithException(
-                    TuneException(r, "playTune failed: ${r.name}")
-                )
-            }
+            continuation.resume(Result.fromValue(result))
         }
         playTuneAsyncNative(tuneDescription, callback)
     }
