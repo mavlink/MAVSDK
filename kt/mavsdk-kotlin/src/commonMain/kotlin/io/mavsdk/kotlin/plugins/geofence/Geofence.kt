@@ -58,14 +58,16 @@ class Geofence internal constructor(private val handle: Long) : AutoCloseable {
 
     suspend fun uploadGeofence(geofenceData: GeofenceData): Result = suspendCancellableCoroutine { continuation ->
         val callback = UploadGeofenceCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            continuation.resume(r)
         }
         uploadGeofenceAsyncNative(geofenceData, callback)
     }
 
     suspend fun clearGeofence(): Result = suspendCancellableCoroutine { continuation ->
         val callback = ClearGeofenceCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            continuation.resume(r)
         }
         clearGeofenceAsyncNative(callback)
     }

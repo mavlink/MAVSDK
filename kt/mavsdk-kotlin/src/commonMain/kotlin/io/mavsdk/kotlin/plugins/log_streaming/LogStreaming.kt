@@ -39,14 +39,16 @@ class LogStreaming internal constructor(private val handle: Long) : AutoCloseabl
 
     suspend fun startLogStreaming(): Result = suspendCancellableCoroutine { continuation ->
         val callback = StartLogStreamingCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            continuation.resume(r)
         }
         startLogStreamingAsyncNative(callback)
     }
 
     suspend fun stopLogStreaming(): Result = suspendCancellableCoroutine { continuation ->
         val callback = StopLogStreamingCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            continuation.resume(r)
         }
         stopLogStreamingAsyncNative(callback)
     }

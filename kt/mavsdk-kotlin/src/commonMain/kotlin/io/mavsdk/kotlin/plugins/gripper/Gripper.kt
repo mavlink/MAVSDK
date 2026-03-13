@@ -36,14 +36,16 @@ class Gripper internal constructor(private val handle: Long) : AutoCloseable {
 
     suspend fun grab(instance: Int): Result = suspendCancellableCoroutine { continuation ->
         val callback = GrabCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            continuation.resume(r)
         }
         grabAsyncNative(instance, callback)
     }
 
     suspend fun release(instance: Int): Result = suspendCancellableCoroutine { continuation ->
         val callback = ReleaseCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            continuation.resume(r)
         }
         releaseAsyncNative(instance, callback)
     }

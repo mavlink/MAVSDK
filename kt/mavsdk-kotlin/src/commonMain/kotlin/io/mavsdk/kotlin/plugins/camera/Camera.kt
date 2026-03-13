@@ -181,35 +181,50 @@ class Camera internal constructor(private val handle: Long) : AutoCloseable {
 
     suspend fun takePhoto(componentId: Int): Result = suspendCancellableCoroutine { continuation ->
         val callback = TakePhotoCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            if (r != Result.IN_PROGRESS) {
+                continuation.resume(r)
+            }
         }
         takePhotoAsyncNative(componentId, callback)
     }
 
     suspend fun startPhotoInterval(componentId: Int, intervalS: Float): Result = suspendCancellableCoroutine { continuation ->
         val callback = StartPhotoIntervalCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            if (r != Result.IN_PROGRESS) {
+                continuation.resume(r)
+            }
         }
         startPhotoIntervalAsyncNative(componentId, intervalS, callback)
     }
 
     suspend fun stopPhotoInterval(componentId: Int): Result = suspendCancellableCoroutine { continuation ->
         val callback = StopPhotoIntervalCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            if (r != Result.IN_PROGRESS) {
+                continuation.resume(r)
+            }
         }
         stopPhotoIntervalAsyncNative(componentId, callback)
     }
 
     suspend fun startVideo(componentId: Int): Result = suspendCancellableCoroutine { continuation ->
         val callback = StartVideoCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            if (r != Result.IN_PROGRESS) {
+                continuation.resume(r)
+            }
         }
         startVideoAsyncNative(componentId, callback)
     }
 
     suspend fun stopVideo(componentId: Int): Result = suspendCancellableCoroutine { continuation ->
         val callback = StopVideoCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            if (r != Result.IN_PROGRESS) {
+                continuation.resume(r)
+            }
         }
         stopVideoAsyncNative(componentId, callback)
     }
@@ -222,14 +237,20 @@ class Camera internal constructor(private val handle: Long) : AutoCloseable {
 
     suspend fun setMode(componentId: Int, mode: Mode): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetModeCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            if (r != Result.IN_PROGRESS) {
+                continuation.resume(r)
+            }
         }
         setModeAsyncNative(componentId, mode.value, callback)
     }
 
     suspend fun listPhotos(componentId: Int, photosRange: PhotosRange): Result = suspendCancellableCoroutine { continuation ->
         val callback = ListPhotosCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            if (r != Result.IN_PROGRESS) {
+                continuation.resume(r)
+            }
         }
         listPhotosAsyncNative(componentId, photosRange.value, callback)
     }
@@ -315,7 +336,10 @@ class Camera internal constructor(private val handle: Long) : AutoCloseable {
 
     suspend fun setSetting(componentId: Int, setting: Setting): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetSettingCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            if (r != Result.IN_PROGRESS) {
+                continuation.resume(r)
+            }
         }
         setSettingAsyncNative(componentId, setting, callback)
     }
@@ -334,91 +358,130 @@ class Camera internal constructor(private val handle: Long) : AutoCloseable {
 
     suspend fun formatStorage(componentId: Int, storageId: Int): Result = suspendCancellableCoroutine { continuation ->
         val callback = FormatStorageCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            if (r != Result.IN_PROGRESS) {
+                continuation.resume(r)
+            }
         }
         formatStorageAsyncNative(componentId, storageId, callback)
     }
 
     suspend fun resetSettings(componentId: Int): Result = suspendCancellableCoroutine { continuation ->
         val callback = ResetSettingsCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            if (r != Result.IN_PROGRESS) {
+                continuation.resume(r)
+            }
         }
         resetSettingsAsyncNative(componentId, callback)
     }
 
     suspend fun zoomInStart(componentId: Int): Result = suspendCancellableCoroutine { continuation ->
         val callback = ZoomInStartCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            if (r != Result.IN_PROGRESS) {
+                continuation.resume(r)
+            }
         }
         zoomInStartAsyncNative(componentId, callback)
     }
 
     suspend fun zoomOutStart(componentId: Int): Result = suspendCancellableCoroutine { continuation ->
         val callback = ZoomOutStartCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            if (r != Result.IN_PROGRESS) {
+                continuation.resume(r)
+            }
         }
         zoomOutStartAsyncNative(componentId, callback)
     }
 
     suspend fun zoomStop(componentId: Int): Result = suspendCancellableCoroutine { continuation ->
         val callback = ZoomStopCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            if (r != Result.IN_PROGRESS) {
+                continuation.resume(r)
+            }
         }
         zoomStopAsyncNative(componentId, callback)
     }
 
     suspend fun zoomRange(componentId: Int, range: Float): Result = suspendCancellableCoroutine { continuation ->
         val callback = ZoomRangeCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            if (r != Result.IN_PROGRESS) {
+                continuation.resume(r)
+            }
         }
         zoomRangeAsyncNative(componentId, range, callback)
     }
 
     suspend fun trackPoint(componentId: Int, pointX: Float, pointY: Float, radius: Float): Result = suspendCancellableCoroutine { continuation ->
         val callback = TrackPointCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            if (r != Result.IN_PROGRESS) {
+                continuation.resume(r)
+            }
         }
         trackPointAsyncNative(componentId, pointX, pointY, radius, callback)
     }
 
     suspend fun trackRectangle(componentId: Int, topLeftX: Float, topLeftY: Float, bottomRightX: Float, bottomRightY: Float): Result = suspendCancellableCoroutine { continuation ->
         val callback = TrackRectangleCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            if (r != Result.IN_PROGRESS) {
+                continuation.resume(r)
+            }
         }
         trackRectangleAsyncNative(componentId, topLeftX, topLeftY, bottomRightX, bottomRightY, callback)
     }
 
     suspend fun trackStop(componentId: Int): Result = suspendCancellableCoroutine { continuation ->
         val callback = TrackStopCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            if (r != Result.IN_PROGRESS) {
+                continuation.resume(r)
+            }
         }
         trackStopAsyncNative(componentId, callback)
     }
 
     suspend fun focusInStart(componentId: Int): Result = suspendCancellableCoroutine { continuation ->
         val callback = FocusInStartCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            if (r != Result.IN_PROGRESS) {
+                continuation.resume(r)
+            }
         }
         focusInStartAsyncNative(componentId, callback)
     }
 
     suspend fun focusOutStart(componentId: Int): Result = suspendCancellableCoroutine { continuation ->
         val callback = FocusOutStartCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            if (r != Result.IN_PROGRESS) {
+                continuation.resume(r)
+            }
         }
         focusOutStartAsyncNative(componentId, callback)
     }
 
     suspend fun focusStop(componentId: Int): Result = suspendCancellableCoroutine { continuation ->
         val callback = FocusStopCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            if (r != Result.IN_PROGRESS) {
+                continuation.resume(r)
+            }
         }
         focusStopAsyncNative(componentId, callback)
     }
 
     suspend fun focusRange(componentId: Int, range: Float): Result = suspendCancellableCoroutine { continuation ->
         val callback = FocusRangeCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            if (r != Result.IN_PROGRESS) {
+                continuation.resume(r)
+            }
         }
         focusRangeAsyncNative(componentId, range, callback)
     }

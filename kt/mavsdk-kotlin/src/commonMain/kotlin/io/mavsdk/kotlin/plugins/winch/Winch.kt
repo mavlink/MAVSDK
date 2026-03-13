@@ -91,70 +91,80 @@ class Winch internal constructor(private val handle: Long) : AutoCloseable {
 
     suspend fun relax(instance: Int): Result = suspendCancellableCoroutine { continuation ->
         val callback = RelaxCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            continuation.resume(r)
         }
         relaxAsyncNative(instance, callback)
     }
 
     suspend fun relativeLengthControl(instance: Int, lengthM: Float, rateMS: Float): Result = suspendCancellableCoroutine { continuation ->
         val callback = RelativeLengthControlCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            continuation.resume(r)
         }
         relativeLengthControlAsyncNative(instance, lengthM, rateMS, callback)
     }
 
     suspend fun rateControl(instance: Int, rateMS: Float): Result = suspendCancellableCoroutine { continuation ->
         val callback = RateControlCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            continuation.resume(r)
         }
         rateControlAsyncNative(instance, rateMS, callback)
     }
 
     suspend fun lock(instance: Int): Result = suspendCancellableCoroutine { continuation ->
         val callback = LockCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            continuation.resume(r)
         }
         lockAsyncNative(instance, callback)
     }
 
     suspend fun deliver(instance: Int): Result = suspendCancellableCoroutine { continuation ->
         val callback = DeliverCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            continuation.resume(r)
         }
         deliverAsyncNative(instance, callback)
     }
 
     suspend fun hold(instance: Int): Result = suspendCancellableCoroutine { continuation ->
         val callback = HoldCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            continuation.resume(r)
         }
         holdAsyncNative(instance, callback)
     }
 
     suspend fun retract(instance: Int): Result = suspendCancellableCoroutine { continuation ->
         val callback = RetractCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            continuation.resume(r)
         }
         retractAsyncNative(instance, callback)
     }
 
     suspend fun loadLine(instance: Int): Result = suspendCancellableCoroutine { continuation ->
         val callback = LoadLineCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            continuation.resume(r)
         }
         loadLineAsyncNative(instance, callback)
     }
 
     suspend fun abandonLine(instance: Int): Result = suspendCancellableCoroutine { continuation ->
         val callback = AbandonLineCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            continuation.resume(r)
         }
         abandonLineAsyncNative(instance, callback)
     }
 
     suspend fun loadPayload(instance: Int): Result = suspendCancellableCoroutine { continuation ->
         val callback = LoadPayloadCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            continuation.resume(r)
         }
         loadPayloadAsyncNative(instance, callback)
     }

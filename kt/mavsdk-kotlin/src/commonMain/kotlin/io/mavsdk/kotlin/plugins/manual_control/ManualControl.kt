@@ -29,14 +29,16 @@ class ManualControl internal constructor(private val handle: Long) : AutoCloseab
 
     suspend fun startPositionControl(): Result = suspendCancellableCoroutine { continuation ->
         val callback = StartPositionControlCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            continuation.resume(r)
         }
         startPositionControlAsyncNative(callback)
     }
 
     suspend fun startAltitudeControl(): Result = suspendCancellableCoroutine { continuation ->
         val callback = StartAltitudeControlCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            continuation.resume(r)
         }
         startAltitudeControlAsyncNative(callback)
     }

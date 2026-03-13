@@ -739,168 +739,192 @@ class Telemetry internal constructor(private val handle: Long) : AutoCloseable {
 
     suspend fun setRatePosition(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetRatePositionCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            continuation.resume(r)
         }
         setRatePositionAsyncNative(rateHz, callback)
     }
 
     suspend fun setRateHome(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetRateHomeCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            continuation.resume(r)
         }
         setRateHomeAsyncNative(rateHz, callback)
     }
 
     suspend fun setRateInAir(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetRateInAirCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            continuation.resume(r)
         }
         setRateInAirAsyncNative(rateHz, callback)
     }
 
     suspend fun setRateLandedState(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetRateLandedStateCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            continuation.resume(r)
         }
         setRateLandedStateAsyncNative(rateHz, callback)
     }
 
     suspend fun setRateVtolState(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetRateVtolStateCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            continuation.resume(r)
         }
         setRateVtolStateAsyncNative(rateHz, callback)
     }
 
     suspend fun setRateAttitudeQuaternion(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetRateAttitudeQuaternionCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            continuation.resume(r)
         }
         setRateAttitudeQuaternionAsyncNative(rateHz, callback)
     }
 
     suspend fun setRateAttitudeEuler(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetRateAttitudeEulerCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            continuation.resume(r)
         }
         setRateAttitudeEulerAsyncNative(rateHz, callback)
     }
 
     suspend fun setRateVelocityNed(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetRateVelocityNedCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            continuation.resume(r)
         }
         setRateVelocityNedAsyncNative(rateHz, callback)
     }
 
     suspend fun setRateGpsInfo(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetRateGpsInfoCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            continuation.resume(r)
         }
         setRateGpsInfoAsyncNative(rateHz, callback)
     }
 
     suspend fun setRateBattery(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetRateBatteryCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            continuation.resume(r)
         }
         setRateBatteryAsyncNative(rateHz, callback)
     }
 
     suspend fun setRateRcStatus(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetRateRcStatusCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            continuation.resume(r)
         }
         setRateRcStatusAsyncNative(rateHz, callback)
     }
 
     suspend fun setRateActuatorControlTarget(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetRateActuatorControlTargetCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            continuation.resume(r)
         }
         setRateActuatorControlTargetAsyncNative(rateHz, callback)
     }
 
     suspend fun setRateActuatorOutputStatus(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetRateActuatorOutputStatusCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            continuation.resume(r)
         }
         setRateActuatorOutputStatusAsyncNative(rateHz, callback)
     }
 
     suspend fun setRateOdometry(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetRateOdometryCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            continuation.resume(r)
         }
         setRateOdometryAsyncNative(rateHz, callback)
     }
 
     suspend fun setRatePositionVelocityNed(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetRatePositionVelocityNedCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            continuation.resume(r)
         }
         setRatePositionVelocityNedAsyncNative(rateHz, callback)
     }
 
     suspend fun setRateGroundTruth(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetRateGroundTruthCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            continuation.resume(r)
         }
         setRateGroundTruthAsyncNative(rateHz, callback)
     }
 
     suspend fun setRateFixedwingMetrics(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetRateFixedwingMetricsCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            continuation.resume(r)
         }
         setRateFixedwingMetricsAsyncNative(rateHz, callback)
     }
 
     suspend fun setRateImu(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetRateImuCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            continuation.resume(r)
         }
         setRateImuAsyncNative(rateHz, callback)
     }
 
     suspend fun setRateScaledImu(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetRateScaledImuCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            continuation.resume(r)
         }
         setRateScaledImuAsyncNative(rateHz, callback)
     }
 
     suspend fun setRateRawImu(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetRateRawImuCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            continuation.resume(r)
         }
         setRateRawImuAsyncNative(rateHz, callback)
     }
 
     suspend fun setRateUnixEpochTime(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetRateUnixEpochTimeCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            continuation.resume(r)
         }
         setRateUnixEpochTimeAsyncNative(rateHz, callback)
     }
 
     suspend fun setRateDistanceSensor(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetRateDistanceSensorCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            continuation.resume(r)
         }
         setRateDistanceSensorAsyncNative(rateHz, callback)
     }
 
     suspend fun setRateAltitude(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetRateAltitudeCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            continuation.resume(r)
         }
         setRateAltitudeAsyncNative(rateHz, callback)
     }
 
     suspend fun setRateHealth(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetRateHealthCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            continuation.resume(r)
         }
         setRateHealthAsyncNative(rateHz, callback)
     }

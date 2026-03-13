@@ -59,7 +59,8 @@ class Tune internal constructor(private val handle: Long) : AutoCloseable {
 
     suspend fun playTune(tuneDescription: TuneDescription): Result = suspendCancellableCoroutine { continuation ->
         val callback = PlayTuneCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            continuation.resume(r)
         }
         playTuneAsyncNative(tuneDescription, callback)
     }

@@ -84,14 +84,16 @@ class Offboard internal constructor(private val handle: Long) : AutoCloseable {
 
     suspend fun start(): Result = suspendCancellableCoroutine { continuation ->
         val callback = StartCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            continuation.resume(r)
         }
         startAsyncNative(callback)
     }
 
     suspend fun stop(): Result = suspendCancellableCoroutine { continuation ->
         val callback = StopCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            continuation.resume(r)
         }
         stopAsyncNative(callback)
     }

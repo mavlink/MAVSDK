@@ -7,7 +7,7 @@ package io.mavsdk.kotlin.plugins.{{ plugin_name.lower_snake_case }}
 {% if is_server %}import io.mavsdk.kotlin.Mavsdk
 {% else %}import io.mavsdk.kotlin.System
 {% endif %}
-{% set ns = namespace(has_async=false, has_stream=false, has_infinite_stream=false, has_result_enum=false) %}
+{% set ns = namespace(has_async=false, has_stream=false, has_infinite_stream=false, has_result_enum=false, has_in_progress=false, has_next=false) %}
 {% for method in methods %}
 {% if method.is_async and not method.is_stream %}{% set ns.has_async = true %}{% endif %}
 {% if method.is_async and method.is_stream and not method.is_finite %}{% set ns.has_infinite_stream = true %}{% set ns.has_stream = true %}{% endif %}
@@ -106,6 +106,7 @@ class {{ plugin_name.upper_camel_case }} internal constructor(private val handle
 {% for nested_enum_name, nested_enum in struct.nested_enums.items() %}
 {% if nested_enum_name == 'Result' %}
 {% set ns.has_result_enum = true %}
+{% for value in nested_enum.values %}{% if value.name.uppercase == 'IN_PROGRESS' %}{% set ns.has_in_progress = true %}{% endif %}{% if value.name.uppercase == 'NEXT' %}{% set ns.has_next = true %}{% endif %}{% endfor %}
     enum class Result(val value: Int) {
 {% for value in nested_enum.values %}
         {{ value.name.uppercase }}({{ loop.index0 }}),
@@ -234,7 +235,14 @@ class {{ plugin_name.upper_camel_case }} internal constructor(private val handle
 {# Action-style async: suspends and returns Result (caller checks for SUCCESS) #}
     suspend fun {{ method.name.lower_camel_case }}({{ pub_params(method.params) }}): Result = suspendCancellableCoroutine { continuation ->
         val callback = {{ method.name.upper_camel_case }}Callback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+{% if ns.has_in_progress or ns.has_next %}
+            if (r != Result.{{ 'IN_PROGRESS' if ns.has_in_progress else 'NEXT' }}) {
+                continuation.resume(r)
+            }
+{% else %}
+            continuation.resume(r)
+{% endif %}
         }
         {{ method.name.lower_camel_case }}AsyncNative({{ ext_args(method.params) }}{% if ns_sep.sep %}, {% endif %}callback)
     }

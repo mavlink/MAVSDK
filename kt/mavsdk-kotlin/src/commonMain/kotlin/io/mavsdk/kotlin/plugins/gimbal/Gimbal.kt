@@ -113,35 +113,40 @@ class Gimbal internal constructor(private val handle: Long) : AutoCloseable {
 
     suspend fun setAngles(gimbalId: Int, rollDeg: Float, pitchDeg: Float, yawDeg: Float, gimbalMode: GimbalMode, sendMode: SendMode): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetAnglesCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            continuation.resume(r)
         }
         setAnglesAsyncNative(gimbalId, rollDeg, pitchDeg, yawDeg, gimbalMode.value, sendMode.value, callback)
     }
 
     suspend fun setAngularRates(gimbalId: Int, rollRateDegS: Float, pitchRateDegS: Float, yawRateDegS: Float, gimbalMode: GimbalMode, sendMode: SendMode): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetAngularRatesCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            continuation.resume(r)
         }
         setAngularRatesAsyncNative(gimbalId, rollRateDegS, pitchRateDegS, yawRateDegS, gimbalMode.value, sendMode.value, callback)
     }
 
     suspend fun setRoiLocation(gimbalId: Int, latitudeDeg: Double, longitudeDeg: Double, altitudeM: Float): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetRoiLocationCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            continuation.resume(r)
         }
         setRoiLocationAsyncNative(gimbalId, latitudeDeg, longitudeDeg, altitudeM, callback)
     }
 
     suspend fun takeControl(gimbalId: Int, controlMode: ControlMode): Result = suspendCancellableCoroutine { continuation ->
         val callback = TakeControlCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            continuation.resume(r)
         }
         takeControlAsyncNative(gimbalId, controlMode.value, callback)
     }
 
     suspend fun releaseControl(gimbalId: Int): Result = suspendCancellableCoroutine { continuation ->
         val callback = ReleaseControlCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            continuation.resume(r)
         }
         releaseControlAsyncNative(gimbalId, callback)
     }

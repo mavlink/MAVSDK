@@ -56,119 +56,136 @@ class Action internal constructor(private val handle: Long) : AutoCloseable {
 
     suspend fun arm(): Result = suspendCancellableCoroutine { continuation ->
         val callback = ArmCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            continuation.resume(r)
         }
         armAsyncNative(callback)
     }
 
     suspend fun armForce(): Result = suspendCancellableCoroutine { continuation ->
         val callback = ArmForceCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            continuation.resume(r)
         }
         armForceAsyncNative(callback)
     }
 
     suspend fun disarm(): Result = suspendCancellableCoroutine { continuation ->
         val callback = DisarmCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            continuation.resume(r)
         }
         disarmAsyncNative(callback)
     }
 
     suspend fun takeoff(): Result = suspendCancellableCoroutine { continuation ->
         val callback = TakeoffCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            continuation.resume(r)
         }
         takeoffAsyncNative(callback)
     }
 
     suspend fun land(): Result = suspendCancellableCoroutine { continuation ->
         val callback = LandCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            continuation.resume(r)
         }
         landAsyncNative(callback)
     }
 
     suspend fun reboot(): Result = suspendCancellableCoroutine { continuation ->
         val callback = RebootCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            continuation.resume(r)
         }
         rebootAsyncNative(callback)
     }
 
     suspend fun shutdown(): Result = suspendCancellableCoroutine { continuation ->
         val callback = ShutdownCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            continuation.resume(r)
         }
         shutdownAsyncNative(callback)
     }
 
     suspend fun terminate(): Result = suspendCancellableCoroutine { continuation ->
         val callback = TerminateCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            continuation.resume(r)
         }
         terminateAsyncNative(callback)
     }
 
     suspend fun kill(): Result = suspendCancellableCoroutine { continuation ->
         val callback = KillCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            continuation.resume(r)
         }
         killAsyncNative(callback)
     }
 
     suspend fun returnToLaunch(): Result = suspendCancellableCoroutine { continuation ->
         val callback = ReturnToLaunchCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            continuation.resume(r)
         }
         returnToLaunchAsyncNative(callback)
     }
 
     suspend fun gotoLocation(latitudeDeg: Double, longitudeDeg: Double, absoluteAltitudeM: Float, yawDeg: Float): Result = suspendCancellableCoroutine { continuation ->
         val callback = GotoLocationCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            continuation.resume(r)
         }
         gotoLocationAsyncNative(latitudeDeg, longitudeDeg, absoluteAltitudeM, yawDeg, callback)
     }
 
     suspend fun doOrbit(radiusM: Float, velocityMs: Float, yawBehavior: OrbitYawBehavior, latitudeDeg: Double, longitudeDeg: Double, absoluteAltitudeM: Double): Result = suspendCancellableCoroutine { continuation ->
         val callback = DoOrbitCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            continuation.resume(r)
         }
         doOrbitAsyncNative(radiusM, velocityMs, yawBehavior.value, latitudeDeg, longitudeDeg, absoluteAltitudeM, callback)
     }
 
     suspend fun hold(): Result = suspendCancellableCoroutine { continuation ->
         val callback = HoldCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            continuation.resume(r)
         }
         holdAsyncNative(callback)
     }
 
     suspend fun setActuator(index: Int, value: Float): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetActuatorCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            continuation.resume(r)
         }
         setActuatorAsyncNative(index, value, callback)
     }
 
     suspend fun setRelay(index: Int, setting: RelayCommand): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetRelayCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            continuation.resume(r)
         }
         setRelayAsyncNative(index, setting.value, callback)
     }
 
     suspend fun transitionToFixedwing(): Result = suspendCancellableCoroutine { continuation ->
         val callback = TransitionToFixedwingCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            continuation.resume(r)
         }
         transitionToFixedwingAsyncNative(callback)
     }
 
     suspend fun transitionToMulticopter(): Result = suspendCancellableCoroutine { continuation ->
         val callback = TransitionToMulticopterCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            continuation.resume(r)
         }
         transitionToMulticopterAsyncNative(callback)
     }
@@ -187,7 +204,8 @@ class Action internal constructor(private val handle: Long) : AutoCloseable {
 
     suspend fun setTakeoffAltitude(altitude: Float): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetTakeoffAltitudeCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            continuation.resume(r)
         }
         setTakeoffAltitudeAsyncNative(altitude, callback)
     }
@@ -206,14 +224,16 @@ class Action internal constructor(private val handle: Long) : AutoCloseable {
 
     suspend fun setReturnToLaunchAltitude(relativeAltitudeM: Float): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetReturnToLaunchAltitudeCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            continuation.resume(r)
         }
         setReturnToLaunchAltitudeAsyncNative(relativeAltitudeM, callback)
     }
 
     suspend fun setCurrentSpeed(speedMS: Float): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetCurrentSpeedCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            continuation.resume(r)
         }
         setCurrentSpeedAsyncNative(speedMS, callback)
     }

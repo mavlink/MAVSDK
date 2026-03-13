@@ -42,11 +42,21 @@ fun cameraClient() = runBlocking {
             }
         }
 
-        // NOTE: Camera.CameraList is a stub — repeated fields (camera array) are not yet
-        // accessible from Kotlin. We use the standard camera component ID (100) directly.
-        // Once CameraList JNI conversion is implemented this can be replaced by:
-        //   camera.subscribeCameraList().filter { ... }.first().cameras[0].componentId
-        val componentId = 100 // MAV_COMP_ID_CAMERA
+        val cameraList = withTimeoutOrNull(5_000) {
+            camera.subscribeCameraList()
+                .filter { it.cameras.isNotEmpty() }
+                .first()
+        }
+        if (cameraList != null) {
+            println("Camera list received (${cameraList.cameras.size} camera(s)):")
+            cameraList.cameras.forEach { cam ->
+                println("  componentId=${cam.componentId}")
+            }
+        } else {
+            println("No camera list received within timeout.")
+        }
+        val componentId = cameraList?.cameras?.firstOrNull()?.componentId ?: 100
+        println("Using componentId=$componentId\n")
 
         doCameraOperations(camera, componentId)
 

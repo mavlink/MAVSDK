@@ -97,7 +97,8 @@ class Transponder internal constructor(private val handle: Long) : AutoCloseable
 
     suspend fun setRateTransponder(rateHz: Double): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetRateTransponderCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            continuation.resume(r)
         }
         setRateTransponderAsyncNative(rateHz, callback)
     }

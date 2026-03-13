@@ -81,28 +81,40 @@ class Ftp internal constructor(private val handle: Long) : AutoCloseable {
 
     suspend fun createDirectory(remoteDir: String): Result = suspendCancellableCoroutine { continuation ->
         val callback = CreateDirectoryCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            if (r != Result.NEXT) {
+                continuation.resume(r)
+            }
         }
         createDirectoryAsyncNative(remoteDir, callback)
     }
 
     suspend fun removeDirectory(remoteDir: String): Result = suspendCancellableCoroutine { continuation ->
         val callback = RemoveDirectoryCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            if (r != Result.NEXT) {
+                continuation.resume(r)
+            }
         }
         removeDirectoryAsyncNative(remoteDir, callback)
     }
 
     suspend fun removeFile(remoteFilePath: String): Result = suspendCancellableCoroutine { continuation ->
         val callback = RemoveFileCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            if (r != Result.NEXT) {
+                continuation.resume(r)
+            }
         }
         removeFileAsyncNative(remoteFilePath, callback)
     }
 
     suspend fun rename(remoteFromPath: String, remoteToPath: String): Result = suspendCancellableCoroutine { continuation ->
         val callback = RenameCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            if (r != Result.NEXT) {
+                continuation.resume(r)
+            }
         }
         renameAsyncNative(remoteFromPath, remoteToPath, callback)
     }

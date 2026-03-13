@@ -80,7 +80,10 @@ class Mission internal constructor(private val handle: Long) : AutoCloseable {
 
     suspend fun uploadMission(missionPlan: MissionPlan): Result = suspendCancellableCoroutine { continuation ->
         val callback = UploadMissionCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            if (r != Result.NEXT) {
+                continuation.resume(r)
+            }
         }
         uploadMissionAsyncNative(missionPlan, callback)
     }
@@ -131,28 +134,40 @@ class Mission internal constructor(private val handle: Long) : AutoCloseable {
 
     suspend fun startMission(): Result = suspendCancellableCoroutine { continuation ->
         val callback = StartMissionCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            if (r != Result.NEXT) {
+                continuation.resume(r)
+            }
         }
         startMissionAsyncNative(callback)
     }
 
     suspend fun pauseMission(): Result = suspendCancellableCoroutine { continuation ->
         val callback = PauseMissionCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            if (r != Result.NEXT) {
+                continuation.resume(r)
+            }
         }
         pauseMissionAsyncNative(callback)
     }
 
     suspend fun clearMission(): Result = suspendCancellableCoroutine { continuation ->
         val callback = ClearMissionCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            if (r != Result.NEXT) {
+                continuation.resume(r)
+            }
         }
         clearMissionAsyncNative(callback)
     }
 
     suspend fun setCurrentMissionItem(index: Int): Result = suspendCancellableCoroutine { continuation ->
         val callback = SetCurrentMissionItemCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            if (r != Result.NEXT) {
+                continuation.resume(r)
+            }
         }
         setCurrentMissionItemAsyncNative(index, callback)
     }

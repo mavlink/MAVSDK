@@ -41,7 +41,10 @@ class LogFiles internal constructor(private val handle: Long) : AutoCloseable {
 
     suspend fun getEntries(): Result = suspendCancellableCoroutine { continuation ->
         val callback = GetEntriesCallback { result ->
-            continuation.resume(Result.fromValue(result))
+            val r = Result.fromValue(result)
+            if (r != Result.NEXT) {
+                continuation.resume(r)
+            }
         }
         getEntriesAsyncNative(callback)
     }
