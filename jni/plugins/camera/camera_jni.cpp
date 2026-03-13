@@ -383,7 +383,7 @@ struct VideoStreamInfoCallbackWrapper {
         jobject nestedObj_video_stream_info = nullptr;
         {            jclass nestedClass_video_stream_info = env->FindClass("io/mavsdk/kotlin/plugins/camera/Camera$VideoStreamInfo");
             jmethodID nestedCtor_video_stream_info = env->GetMethodID(nestedClass_video_stream_info, "<init>", "(ILio/mavsdk/kotlin/plugins/camera/Camera$VideoStreamSettings;II)V");
-            nestedObj_video_stream_info = env->NewObject(nestedClass_video_stream_info, nestedCtor_video_stream_info                , static_cast<jint>(value.video_stream_info.stream_id)                , /* TODO nested struct <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a5ef350> */ static_cast<jobject>(nullptr)                , static_cast<jint>(value.video_stream_info.status)                , static_cast<jint>(value.video_stream_info.spectrum)            );
+            nestedObj_video_stream_info = env->NewObject(nestedClass_video_stream_info, nestedCtor_video_stream_info                , static_cast<jint>(value.video_stream_info.stream_id)                , /* TODO nested struct <protoc_gen_mavsdk.name_parser.NameParser object at 0x105bc7350> */ static_cast<jobject>(nullptr)                , static_cast<jint>(value.video_stream_info.status)                , static_cast<jint>(value.video_stream_info.spectrum)            );
             env->DeleteLocalRef(nestedClass_video_stream_info);        }        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/camera/Camera$VideoStreamUpdate");
         if (!retClass) { return; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(ILio/mavsdk/kotlin/plugins/camera/Camera$VideoStreamInfo;)V");
@@ -530,7 +530,7 @@ struct CurrentSettingsCallbackWrapper {
             jclass elemClass_current_settings = env->FindClass("io/mavsdk/kotlin/plugins/camera/Camera$Setting");
             jmethodID elemCtor_current_settings = env->GetMethodID(elemClass_current_settings, "<init>", "(Ljava/lang/String;Ljava/lang/String;Lio/mavsdk/kotlin/plugins/camera/Camera$Option;Z)V");
             for (size_t i = 0; i < value.current_settings_size; i++) {
-                jobject elem = env->NewObject(elemClass_current_settings, elemCtor_current_settings                    , toJavaString(env, value.current_settings[i].setting_id)                    , toJavaString(env, value.current_settings[i].setting_description)                    , /* TODO nested struct <protoc_gen_mavsdk.name_parser.NameParser object at 0x10a5efb30> */ static_cast<jobject>(nullptr)                    , static_cast<jboolean>(value.current_settings[i].is_range)                );
+                jobject elem = env->NewObject(elemClass_current_settings, elemCtor_current_settings                    , toJavaString(env, value.current_settings[i].setting_id)                    , toJavaString(env, value.current_settings[i].setting_description)                    , /* TODO nested struct <protoc_gen_mavsdk.name_parser.NameParser object at 0x105bc7b90> */ static_cast<jobject>(nullptr)                    , static_cast<jboolean>(value.current_settings[i].is_range)                );
                 env->CallBooleanMethod(list_current_settings, arrayListAdd_CurrentSettingsUpdate, elem);
                 env->DeleteLocalRef(elem);
             }
@@ -1213,7 +1213,7 @@ Java_io_mavsdk_kotlin_plugins_camera_Camera_takePhotoAsyncNative(
         reinterpret_cast<mavsdk_camera_t>(handle),        component_id,        [](const mavsdk_camera_result_t result, void* user_data) {
             auto* w = static_cast<TakePhotoCallbackWrapper*>(user_data);
             (*w)(result);
-            delete w;
+            if (result != MAVSDK_CAMERA_RESULT_IN_PROGRESS) { delete w; }
         },
         wrapper
     );
@@ -1259,7 +1259,7 @@ Java_io_mavsdk_kotlin_plugins_camera_Camera_startPhotoIntervalAsyncNative(
         reinterpret_cast<mavsdk_camera_t>(handle),        component_id,        interval_s,        [](const mavsdk_camera_result_t result, void* user_data) {
             auto* w = static_cast<StartPhotoIntervalCallbackWrapper*>(user_data);
             (*w)(result);
-            delete w;
+            if (result != MAVSDK_CAMERA_RESULT_IN_PROGRESS) { delete w; }
         },
         wrapper
     );
@@ -1302,7 +1302,7 @@ Java_io_mavsdk_kotlin_plugins_camera_Camera_stopPhotoIntervalAsyncNative(
         reinterpret_cast<mavsdk_camera_t>(handle),        component_id,        [](const mavsdk_camera_result_t result, void* user_data) {
             auto* w = static_cast<StopPhotoIntervalCallbackWrapper*>(user_data);
             (*w)(result);
-            delete w;
+            if (result != MAVSDK_CAMERA_RESULT_IN_PROGRESS) { delete w; }
         },
         wrapper
     );
@@ -1345,7 +1345,7 @@ Java_io_mavsdk_kotlin_plugins_camera_Camera_startVideoAsyncNative(
         reinterpret_cast<mavsdk_camera_t>(handle),        component_id,        [](const mavsdk_camera_result_t result, void* user_data) {
             auto* w = static_cast<StartVideoCallbackWrapper*>(user_data);
             (*w)(result);
-            delete w;
+            if (result != MAVSDK_CAMERA_RESULT_IN_PROGRESS) { delete w; }
         },
         wrapper
     );
@@ -1388,7 +1388,7 @@ Java_io_mavsdk_kotlin_plugins_camera_Camera_stopVideoAsyncNative(
         reinterpret_cast<mavsdk_camera_t>(handle),        component_id,        [](const mavsdk_camera_result_t result, void* user_data) {
             auto* w = static_cast<StopVideoCallbackWrapper*>(user_data);
             (*w)(result);
-            delete w;
+            if (result != MAVSDK_CAMERA_RESULT_IN_PROGRESS) { delete w; }
         },
         wrapper
     );
@@ -1476,7 +1476,7 @@ Java_io_mavsdk_kotlin_plugins_camera_Camera_setModeAsyncNative(
         reinterpret_cast<mavsdk_camera_t>(handle),        component_id,        static_cast<mavsdk_camera_mode_t>(mode),        [](const mavsdk_camera_result_t result, void* user_data) {
             auto* w = static_cast<SetModeCallbackWrapper*>(user_data);
             (*w)(result);
-            delete w;
+            if (result != MAVSDK_CAMERA_RESULT_IN_PROGRESS) { delete w; }
         },
         wrapper
     );
@@ -1523,7 +1523,7 @@ Java_io_mavsdk_kotlin_plugins_camera_Camera_listPhotosAsyncNative(
         reinterpret_cast<mavsdk_camera_t>(handle),        component_id,        static_cast<mavsdk_camera_photos_range_t>(photos_range),        [](const mavsdk_camera_result_t result, const mavsdk_camera_capture_info_t* items, size_t count, void* user_data) {
             auto* w = static_cast<ListPhotosCallbackWrapper*>(user_data);
             (*w)(result); /* TODO: pass items/count to Java */
-            delete w;
+            if (result != MAVSDK_CAMERA_RESULT_IN_PROGRESS) { delete w; }
         },
         wrapper
     );
@@ -2135,7 +2135,7 @@ Java_io_mavsdk_kotlin_plugins_camera_Camera_setSettingAsyncNative(
         reinterpret_cast<mavsdk_camera_t>(handle),        component_id,        setting_c,        [](const mavsdk_camera_result_t result, void* user_data) {
             auto* w = static_cast<SetSettingCallbackWrapper*>(user_data);
             (*w)(result);
-            delete w;
+            if (result != MAVSDK_CAMERA_RESULT_IN_PROGRESS) { delete w; }
         },
         wrapper
     );
@@ -2199,7 +2199,7 @@ Java_io_mavsdk_kotlin_plugins_camera_Camera_getSettingAsyncNative(
         reinterpret_cast<mavsdk_camera_t>(handle),        component_id,        setting_c,        [](const mavsdk_camera_result_t result, const mavsdk_camera_setting_t value, void* user_data) {
             auto* w = static_cast<GetSettingCallbackWrapper*>(user_data);
             (*w)(result, value);
-            delete w;
+            if (result != MAVSDK_CAMERA_RESULT_IN_PROGRESS) { delete w; }
         },
         wrapper
     );
@@ -2245,7 +2245,7 @@ Java_io_mavsdk_kotlin_plugins_camera_Camera_formatStorageAsyncNative(
         reinterpret_cast<mavsdk_camera_t>(handle),        component_id,        storage_id,        [](const mavsdk_camera_result_t result, void* user_data) {
             auto* w = static_cast<FormatStorageCallbackWrapper*>(user_data);
             (*w)(result);
-            delete w;
+            if (result != MAVSDK_CAMERA_RESULT_IN_PROGRESS) { delete w; }
         },
         wrapper
     );
@@ -2288,7 +2288,7 @@ Java_io_mavsdk_kotlin_plugins_camera_Camera_resetSettingsAsyncNative(
         reinterpret_cast<mavsdk_camera_t>(handle),        component_id,        [](const mavsdk_camera_result_t result, void* user_data) {
             auto* w = static_cast<ResetSettingsCallbackWrapper*>(user_data);
             (*w)(result);
-            delete w;
+            if (result != MAVSDK_CAMERA_RESULT_IN_PROGRESS) { delete w; }
         },
         wrapper
     );
@@ -2331,7 +2331,7 @@ Java_io_mavsdk_kotlin_plugins_camera_Camera_zoomInStartAsyncNative(
         reinterpret_cast<mavsdk_camera_t>(handle),        component_id,        [](const mavsdk_camera_result_t result, void* user_data) {
             auto* w = static_cast<ZoomInStartCallbackWrapper*>(user_data);
             (*w)(result);
-            delete w;
+            if (result != MAVSDK_CAMERA_RESULT_IN_PROGRESS) { delete w; }
         },
         wrapper
     );
@@ -2374,7 +2374,7 @@ Java_io_mavsdk_kotlin_plugins_camera_Camera_zoomOutStartAsyncNative(
         reinterpret_cast<mavsdk_camera_t>(handle),        component_id,        [](const mavsdk_camera_result_t result, void* user_data) {
             auto* w = static_cast<ZoomOutStartCallbackWrapper*>(user_data);
             (*w)(result);
-            delete w;
+            if (result != MAVSDK_CAMERA_RESULT_IN_PROGRESS) { delete w; }
         },
         wrapper
     );
@@ -2417,7 +2417,7 @@ Java_io_mavsdk_kotlin_plugins_camera_Camera_zoomStopAsyncNative(
         reinterpret_cast<mavsdk_camera_t>(handle),        component_id,        [](const mavsdk_camera_result_t result, void* user_data) {
             auto* w = static_cast<ZoomStopCallbackWrapper*>(user_data);
             (*w)(result);
-            delete w;
+            if (result != MAVSDK_CAMERA_RESULT_IN_PROGRESS) { delete w; }
         },
         wrapper
     );
@@ -2463,7 +2463,7 @@ Java_io_mavsdk_kotlin_plugins_camera_Camera_zoomRangeAsyncNative(
         reinterpret_cast<mavsdk_camera_t>(handle),        component_id,        range,        [](const mavsdk_camera_result_t result, void* user_data) {
             auto* w = static_cast<ZoomRangeCallbackWrapper*>(user_data);
             (*w)(result);
-            delete w;
+            if (result != MAVSDK_CAMERA_RESULT_IN_PROGRESS) { delete w; }
         },
         wrapper
     );
@@ -2515,7 +2515,7 @@ Java_io_mavsdk_kotlin_plugins_camera_Camera_trackPointAsyncNative(
         reinterpret_cast<mavsdk_camera_t>(handle),        component_id,        point_x,        point_y,        radius,        [](const mavsdk_camera_result_t result, void* user_data) {
             auto* w = static_cast<TrackPointCallbackWrapper*>(user_data);
             (*w)(result);
-            delete w;
+            if (result != MAVSDK_CAMERA_RESULT_IN_PROGRESS) { delete w; }
         },
         wrapper
     );
@@ -2570,7 +2570,7 @@ Java_io_mavsdk_kotlin_plugins_camera_Camera_trackRectangleAsyncNative(
         reinterpret_cast<mavsdk_camera_t>(handle),        component_id,        top_left_x,        top_left_y,        bottom_right_x,        bottom_right_y,        [](const mavsdk_camera_result_t result, void* user_data) {
             auto* w = static_cast<TrackRectangleCallbackWrapper*>(user_data);
             (*w)(result);
-            delete w;
+            if (result != MAVSDK_CAMERA_RESULT_IN_PROGRESS) { delete w; }
         },
         wrapper
     );
@@ -2613,7 +2613,7 @@ Java_io_mavsdk_kotlin_plugins_camera_Camera_trackStopAsyncNative(
         reinterpret_cast<mavsdk_camera_t>(handle),        component_id,        [](const mavsdk_camera_result_t result, void* user_data) {
             auto* w = static_cast<TrackStopCallbackWrapper*>(user_data);
             (*w)(result);
-            delete w;
+            if (result != MAVSDK_CAMERA_RESULT_IN_PROGRESS) { delete w; }
         },
         wrapper
     );
@@ -2656,7 +2656,7 @@ Java_io_mavsdk_kotlin_plugins_camera_Camera_focusInStartAsyncNative(
         reinterpret_cast<mavsdk_camera_t>(handle),        component_id,        [](const mavsdk_camera_result_t result, void* user_data) {
             auto* w = static_cast<FocusInStartCallbackWrapper*>(user_data);
             (*w)(result);
-            delete w;
+            if (result != MAVSDK_CAMERA_RESULT_IN_PROGRESS) { delete w; }
         },
         wrapper
     );
@@ -2699,7 +2699,7 @@ Java_io_mavsdk_kotlin_plugins_camera_Camera_focusOutStartAsyncNative(
         reinterpret_cast<mavsdk_camera_t>(handle),        component_id,        [](const mavsdk_camera_result_t result, void* user_data) {
             auto* w = static_cast<FocusOutStartCallbackWrapper*>(user_data);
             (*w)(result);
-            delete w;
+            if (result != MAVSDK_CAMERA_RESULT_IN_PROGRESS) { delete w; }
         },
         wrapper
     );
@@ -2742,7 +2742,7 @@ Java_io_mavsdk_kotlin_plugins_camera_Camera_focusStopAsyncNative(
         reinterpret_cast<mavsdk_camera_t>(handle),        component_id,        [](const mavsdk_camera_result_t result, void* user_data) {
             auto* w = static_cast<FocusStopCallbackWrapper*>(user_data);
             (*w)(result);
-            delete w;
+            if (result != MAVSDK_CAMERA_RESULT_IN_PROGRESS) { delete w; }
         },
         wrapper
     );
@@ -2788,7 +2788,7 @@ Java_io_mavsdk_kotlin_plugins_camera_Camera_focusRangeAsyncNative(
         reinterpret_cast<mavsdk_camera_t>(handle),        component_id,        range,        [](const mavsdk_camera_result_t result, void* user_data) {
             auto* w = static_cast<FocusRangeCallbackWrapper*>(user_data);
             (*w)(result);
-            delete w;
+            if (result != MAVSDK_CAMERA_RESULT_IN_PROGRESS) { delete w; }
         },
         wrapper
     );

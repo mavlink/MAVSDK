@@ -164,7 +164,7 @@ Java_io_mavsdk_kotlin_plugins_log_1files_LogFiles_getEntriesAsyncNative(
         reinterpret_cast<mavsdk_log_files_t>(handle),        [](const mavsdk_log_files_result_t result, const mavsdk_log_files_entry_t* items, size_t count, void* user_data) {
             auto* w = static_cast<GetEntriesCallbackWrapper*>(user_data);
             (*w)(result); /* TODO: pass items/count to Java */
-            delete w;
+            if (result != MAVSDK_LOG_FILES_RESULT_NEXT) { delete w; }
         },
         wrapper
     );

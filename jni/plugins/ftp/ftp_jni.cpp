@@ -466,7 +466,7 @@ Java_io_mavsdk_kotlin_plugins_ftp_Ftp_listDirectoryAsyncNative(
         reinterpret_cast<mavsdk_ftp_t>(handle),        const_cast<char*>(remote_dir_holder.c_str()),        [](const mavsdk_ftp_result_t result, const mavsdk_ftp_list_directory_data_t value, void* user_data) {
             auto* w = static_cast<ListDirectoryCallbackWrapper*>(user_data);
             (*w)(result, value);
-            delete w;
+            if (result != MAVSDK_FTP_RESULT_NEXT) { delete w; }
         },
         wrapper
     );
@@ -511,7 +511,7 @@ Java_io_mavsdk_kotlin_plugins_ftp_Ftp_createDirectoryAsyncNative(
         reinterpret_cast<mavsdk_ftp_t>(handle),        const_cast<char*>(remote_dir_holder.c_str()),        [](const mavsdk_ftp_result_t result, void* user_data) {
             auto* w = static_cast<CreateDirectoryCallbackWrapper*>(user_data);
             (*w)(result);
-            delete w;
+            if (result != MAVSDK_FTP_RESULT_NEXT) { delete w; }
         },
         wrapper
     );
@@ -556,7 +556,7 @@ Java_io_mavsdk_kotlin_plugins_ftp_Ftp_removeDirectoryAsyncNative(
         reinterpret_cast<mavsdk_ftp_t>(handle),        const_cast<char*>(remote_dir_holder.c_str()),        [](const mavsdk_ftp_result_t result, void* user_data) {
             auto* w = static_cast<RemoveDirectoryCallbackWrapper*>(user_data);
             (*w)(result);
-            delete w;
+            if (result != MAVSDK_FTP_RESULT_NEXT) { delete w; }
         },
         wrapper
     );
@@ -601,7 +601,7 @@ Java_io_mavsdk_kotlin_plugins_ftp_Ftp_removeFileAsyncNative(
         reinterpret_cast<mavsdk_ftp_t>(handle),        const_cast<char*>(remote_file_path_holder.c_str()),        [](const mavsdk_ftp_result_t result, void* user_data) {
             auto* w = static_cast<RemoveFileCallbackWrapper*>(user_data);
             (*w)(result);
-            delete w;
+            if (result != MAVSDK_FTP_RESULT_NEXT) { delete w; }
         },
         wrapper
     );
@@ -651,7 +651,7 @@ Java_io_mavsdk_kotlin_plugins_ftp_Ftp_renameAsyncNative(
         reinterpret_cast<mavsdk_ftp_t>(handle),        const_cast<char*>(remote_from_path_holder.c_str()),        const_cast<char*>(remote_to_path_holder.c_str()),        [](const mavsdk_ftp_result_t result, void* user_data) {
             auto* w = static_cast<RenameCallbackWrapper*>(user_data);
             (*w)(result);
-            delete w;
+            if (result != MAVSDK_FTP_RESULT_NEXT) { delete w; }
         },
         wrapper
     );
@@ -709,7 +709,7 @@ Java_io_mavsdk_kotlin_plugins_ftp_Ftp_areFilesIdenticalAsyncNative(
         reinterpret_cast<mavsdk_ftp_t>(handle),        const_cast<char*>(local_file_path_holder.c_str()),        const_cast<char*>(remote_file_path_holder.c_str()),        [](const mavsdk_ftp_result_t result, const bool value, void* user_data) {
             auto* w = static_cast<AreFilesIdenticalCallbackWrapper*>(user_data);
             (*w)(result, value);
-            delete w;
+            if (result != MAVSDK_FTP_RESULT_NEXT) { delete w; }
         },
         wrapper
     );

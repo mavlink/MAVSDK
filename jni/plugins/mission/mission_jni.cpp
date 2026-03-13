@@ -491,7 +491,7 @@ Java_io_mavsdk_kotlin_plugins_mission_Mission_uploadMissionAsyncNative(
         reinterpret_cast<mavsdk_mission_t>(handle),        mission_plan_c,        [](const mavsdk_mission_result_t result, void* user_data) {
             auto* w = static_cast<UploadMissionCallbackWrapper*>(user_data);
             (*w)(result);
-            delete w;
+            if (result != MAVSDK_MISSION_RESULT_NEXT) { delete w; }
         },
         wrapper
     );
@@ -624,7 +624,7 @@ Java_io_mavsdk_kotlin_plugins_mission_Mission_downloadMissionAsyncNative(
         reinterpret_cast<mavsdk_mission_t>(handle),        [](const mavsdk_mission_result_t result, const mavsdk_mission_mission_plan_t value, void* user_data) {
             auto* w = static_cast<DownloadMissionCallbackWrapper*>(user_data);
             (*w)(result, value);
-            delete w;
+            if (result != MAVSDK_MISSION_RESULT_NEXT) { delete w; }
         },
         wrapper
     );
@@ -707,7 +707,7 @@ Java_io_mavsdk_kotlin_plugins_mission_Mission_startMissionAsyncNative(
         reinterpret_cast<mavsdk_mission_t>(handle),        [](const mavsdk_mission_result_t result, void* user_data) {
             auto* w = static_cast<StartMissionCallbackWrapper*>(user_data);
             (*w)(result);
-            delete w;
+            if (result != MAVSDK_MISSION_RESULT_NEXT) { delete w; }
         },
         wrapper
     );
@@ -747,7 +747,7 @@ Java_io_mavsdk_kotlin_plugins_mission_Mission_pauseMissionAsyncNative(
         reinterpret_cast<mavsdk_mission_t>(handle),        [](const mavsdk_mission_result_t result, void* user_data) {
             auto* w = static_cast<PauseMissionCallbackWrapper*>(user_data);
             (*w)(result);
-            delete w;
+            if (result != MAVSDK_MISSION_RESULT_NEXT) { delete w; }
         },
         wrapper
     );
@@ -787,7 +787,7 @@ Java_io_mavsdk_kotlin_plugins_mission_Mission_clearMissionAsyncNative(
         reinterpret_cast<mavsdk_mission_t>(handle),        [](const mavsdk_mission_result_t result, void* user_data) {
             auto* w = static_cast<ClearMissionCallbackWrapper*>(user_data);
             (*w)(result);
-            delete w;
+            if (result != MAVSDK_MISSION_RESULT_NEXT) { delete w; }
         },
         wrapper
     );
@@ -830,7 +830,7 @@ Java_io_mavsdk_kotlin_plugins_mission_Mission_setCurrentMissionItemAsyncNative(
         reinterpret_cast<mavsdk_mission_t>(handle),        index,        [](const mavsdk_mission_result_t result, void* user_data) {
             auto* w = static_cast<SetCurrentMissionItemCallbackWrapper*>(user_data);
             (*w)(result);
-            delete w;
+            if (result != MAVSDK_MISSION_RESULT_NEXT) { delete w; }
         },
         wrapper
     );

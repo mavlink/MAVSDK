@@ -15,6 +15,8 @@ using namespace mavsdk::jni;
 {% set cls = plugin_name.upper_camel_case %}
 {% set fn_pfx = "Java_io_mavsdk_kotlin_plugins_" + (plugin_name.lower_snake_case | replace('_', '_1')) + "_" + plugin_name.upper_camel_case %}
 {% set handle_class = "io/mavsdk/kotlin/plugins/" + plugin_name.lower_snake_case + "/" + plugin_name.upper_camel_case %}
+{% set ns_g = namespace(intermediate_macro=none) %}
+{% for struct in structs %}{% if struct.name.upper_camel_case.endswith('Result') %}{% for nested_enum_name, nested_enum in struct.nested_enums.items() %}{% if nested_enum_name == 'Result' %}{% for value in nested_enum.values %}{% if value.name.uppercase == 'IN_PROGRESS' %}{% set ns_g.intermediate_macro = "MAVSDK_" + plugin_name.uppercase + "_RESULT_IN_PROGRESS" %}{% endif %}{% if value.name.uppercase == 'NEXT' %}{% set ns_g.intermediate_macro = "MAVSDK_" + plugin_name.uppercase + "_RESULT_NEXT" %}{% endif %}{% endfor %}{% endif %}{% endfor %}{% endif %}{% endfor %}
 
 {# ======================================================================== #}
 {# Helper macros                                                              #}
@@ -705,25 +707,41 @@ JNIEXPORT void JNICALL
         [](const mavsdk_{{ plugin_name.lower_snake_case }}_result_t result, void* user_data) {
             auto* w = static_cast<{{ method.name.upper_camel_case }}CallbackWrapper*>(user_data);
             (*w)(result);
+{% if ns_g.intermediate_macro %}
+            if (result != {{ ns_g.intermediate_macro }}) { delete w; }
+{% else %}
             delete w;
+{% endif %}
         },
 {% elif method.return_type.is_repeated %}
         [](const mavsdk_{{ plugin_name.lower_snake_case }}_result_t result, const mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.return_type.inner_name.lower_snake_case }}_t* items, size_t count, void* user_data) {
             auto* w = static_cast<{{ method.name.upper_camel_case }}CallbackWrapper*>(user_data);
             (*w)(result); /* TODO: pass items/count to Java */
+{% if ns_g.intermediate_macro %}
+            if (result != {{ ns_g.intermediate_macro }}) { delete w; }
+{% else %}
             delete w;
+{% endif %}
         },
 {% elif method.return_type.is_primitive %}
         [](const mavsdk_{{ plugin_name.lower_snake_case }}_result_t result, const {{ method.return_type.name }} value, void* user_data) {
             auto* w = static_cast<{{ method.name.upper_camel_case }}CallbackWrapper*>(user_data);
             (*w)(result, value);
+{% if ns_g.intermediate_macro %}
+            if (result != {{ ns_g.intermediate_macro }}) { delete w; }
+{% else %}
             delete w;
+{% endif %}
         },
 {% else %}
         [](const mavsdk_{{ plugin_name.lower_snake_case }}_result_t result, const mavsdk_{{ plugin_name.lower_snake_case }}_{{ method.return_type.name.lower_snake_case }}_t value, void* user_data) {
             auto* w = static_cast<{{ method.name.upper_camel_case }}CallbackWrapper*>(user_data);
             (*w)(result, value);
+{% if ns_g.intermediate_macro %}
+            if (result != {{ ns_g.intermediate_macro }}) { delete w; }
+{% else %}
             delete w;
+{% endif %}
         },
 {% endif %}
         wrapper
