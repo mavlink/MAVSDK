@@ -83,8 +83,20 @@ install(
     FILES_MATCHING PATTERN "*.h"
 )
 
+include(CMakePackageConfigHelpers)
+
+configure_package_config_file(
+    ${CMAKE_CURRENT_SOURCE_DIR}/cmavsdkConfig.cmake.in
+    ${CMAKE_CURRENT_BINARY_DIR}/cmavsdkConfig.cmake
+    INSTALL_DESTINATION lib/cmake/cmavsdk
+)
+
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/cmavsdkConfig.cmake
+    DESTINATION lib/cmake/cmavsdk
+)
+
 install(EXPORT cmavsdkTargets
-    FILE cmavsdkConfig.cmake
+    FILE cmavsdkTargets.cmake
     NAMESPACE CMAVSDK::
     DESTINATION lib/cmake/cmavsdk
 )
