@@ -383,7 +383,7 @@ struct VideoStreamInfoCallbackWrapper {
         jobject nestedObj_video_stream_info = nullptr;
         {            jclass nestedClass_video_stream_info = env->FindClass("io/mavsdk/kotlin/plugins/camera/Camera$VideoStreamInfo");
             jmethodID nestedCtor_video_stream_info = env->GetMethodID(nestedClass_video_stream_info, "<init>", "(ILio/mavsdk/kotlin/plugins/camera/Camera$VideoStreamSettings;II)V");
-            nestedObj_video_stream_info = env->NewObject(nestedClass_video_stream_info, nestedCtor_video_stream_info                , static_cast<jint>(value.video_stream_info.stream_id)                , /* TODO nested struct <protoc_gen_mavsdk.name_parser.NameParser object at 0x105bc7350> */ static_cast<jobject>(nullptr)                , static_cast<jint>(value.video_stream_info.status)                , static_cast<jint>(value.video_stream_info.spectrum)            );
+            nestedObj_video_stream_info = env->NewObject(nestedClass_video_stream_info, nestedCtor_video_stream_info                , static_cast<jint>(value.video_stream_info.stream_id)                , /* TODO nested struct VideoStreamSettings */ static_cast<jobject>(nullptr)                , static_cast<jint>(value.video_stream_info.status)                , static_cast<jint>(value.video_stream_info.spectrum)            );
             env->DeleteLocalRef(nestedClass_video_stream_info);        }        jclass retClass = env->FindClass("io/mavsdk/kotlin/plugins/camera/Camera$VideoStreamUpdate");
         if (!retClass) { return; }
         jmethodID retCtor = env->GetMethodID(retClass, "<init>", "(ILio/mavsdk/kotlin/plugins/camera/Camera$VideoStreamInfo;)V");
@@ -530,7 +530,7 @@ struct CurrentSettingsCallbackWrapper {
             jclass elemClass_current_settings = env->FindClass("io/mavsdk/kotlin/plugins/camera/Camera$Setting");
             jmethodID elemCtor_current_settings = env->GetMethodID(elemClass_current_settings, "<init>", "(Ljava/lang/String;Ljava/lang/String;Lio/mavsdk/kotlin/plugins/camera/Camera$Option;Z)V");
             for (size_t i = 0; i < value.current_settings_size; i++) {
-                jobject elem = env->NewObject(elemClass_current_settings, elemCtor_current_settings                    , toJavaString(env, value.current_settings[i].setting_id)                    , toJavaString(env, value.current_settings[i].setting_description)                    , /* TODO nested struct <protoc_gen_mavsdk.name_parser.NameParser object at 0x105bc7b90> */ static_cast<jobject>(nullptr)                    , static_cast<jboolean>(value.current_settings[i].is_range)                );
+                jobject elem = env->NewObject(elemClass_current_settings, elemCtor_current_settings                    , toJavaString(env, value.current_settings[i].setting_id)                    , toJavaString(env, value.current_settings[i].setting_description)                    , /* TODO nested struct Option */ static_cast<jobject>(nullptr)                    , static_cast<jboolean>(value.current_settings[i].is_range)                );
                 env->CallBooleanMethod(list_current_settings, arrayListAdd_CurrentSettingsUpdate, elem);
                 env->DeleteLocalRef(elem);
             }

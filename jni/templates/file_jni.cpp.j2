@@ -63,7 +63,7 @@ using namespace mavsdk::jni;
   {%- else -%}static_cast<jint>({{ var }})
   {%- endif -%}
 {%- elif type_info.is_enum -%}static_cast<jint>({{ var }})
-{%- else -%}/* TODO nested struct {{ type_info.name }} */ static_cast<jobject>(nullptr)
+{%- else -%}/* TODO nested struct {{ type_info.name.upper_camel_case }} */ static_cast<jobject>(nullptr)
 {%- endif -%}
 {%- endmacro -%}
 
