@@ -116,7 +116,7 @@ Mocap::Result MocapImpl::send_vision_position_estimate(
             vision_position_estimate.angle_body.pitch_rad,
             vision_position_estimate.angle_body.yaw_rad,
             covariance.data(),
-            0); // FIXME: reset_counter not set
+            vision_position_estimate.reset_counter);
         return message;
     }) ?
                Mocap::Result::Success :
@@ -167,7 +167,7 @@ MocapImpl::send_vision_speed_estimate(const Mocap::VisionSpeedEstimate& vision_s
             vision_speed_estimate.speed_ned.east_m_s,
             vision_speed_estimate.speed_ned.down_m_s,
             covariance.data(),
-            0); // FIXME: reset_counter not set
+            vision_speed_estimate.reset_counter);
         return message;
     }) ?
                Mocap::Result::Success :
@@ -282,6 +282,26 @@ Mocap::Result MocapImpl::send_odometry(const Mocap::Odometry& odometry)
         return Mocap::Result::InvalidRequestData;
     }
 
+    // Map proto MavFrame enum to MAVLink frame value.
+    uint8_t mav_frame;
+    switch (odometry.frame_id) {
+        case Mocap::Odometry::MavFrame::MocapNed:
+            mav_frame = MAV_FRAME_MOCAP_NED;
+            break;
+        case Mocap::Odometry::MavFrame::LocalFrd:
+            mav_frame = MAV_FRAME_LOCAL_FRD;
+            break;
+        default:
+            mav_frame = MAV_FRAME_MOCAP_NED;
+            break;
+    }
+
+    // Default to MOCAP estimator type for backward compatibility when not set.
+    const auto mav_estimator_type =
+        odometry.estimator_type == Mocap::Odometry::MavEstimatorType::Unknown ?
+            MAV_ESTIMATOR_TYPE_MOCAP :
+            static_cast<uint8_t>(odometry.estimator_type);
+
     return _system_impl->queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
         mavlink_message_t message;
         mavlink_msg_odometry_pack_chan(
@@ -290,7 +310,7 @@ Mocap::Result MocapImpl::send_odometry(const Mocap::Odometry& odometry)
             channel,
             &message,
             autopilot_time_usec,
-            static_cast<uint8_t>(odometry.frame_id),
+            mav_frame,
             static_cast<uint8_t>(MAV_FRAME_BODY_FRD),
             odometry.position_body.x_m,
             odometry.position_body.y_m,
@@ -304,9 +324,9 @@ Mocap::Result MocapImpl::send_odometry(const Mocap::Odometry& odometry)
             odometry.angular_velocity_body.yaw_rad_s,
             pose_covariance.data(),
             velocity_covariance.data(),
-            0,
-            MAV_ESTIMATOR_TYPE_MOCAP,
-            0);
+            odometry.reset_counter,
+            mav_estimator_type,
+            static_cast<int8_t>(odometry.quality_percent));
         return message;
     }) ?
                Mocap::Result::Success :
