@@ -76,7 +76,7 @@ void Telemetry::unsubscribe_home(HomeHandle handle)
     _impl->unsubscribe_home(handle);
 }
 
-Telemetry::Position Telemetry::home() const
+Telemetry::HomePosition Telemetry::home() const
 {
     return _impl->home();
 }
@@ -827,6 +827,52 @@ std::ostream& operator<<(std::ostream& str, Telemetry::Position const& position)
     str << "    longitude_deg: " << position.longitude_deg << '\n';
     str << "    absolute_altitude_m: " << position.absolute_altitude_m << '\n';
     str << "    relative_altitude_m: " << position.relative_altitude_m << '\n';
+    str << '}';
+    return str;
+}
+
+bool operator==(const Telemetry::HomePosition& lhs, const Telemetry::HomePosition& rhs)
+{
+    return ((std::isnan(rhs.latitude_deg) && std::isnan(lhs.latitude_deg)) ||
+            rhs.latitude_deg == lhs.latitude_deg) &&
+           ((std::isnan(rhs.longitude_deg) && std::isnan(lhs.longitude_deg)) ||
+            rhs.longitude_deg == lhs.longitude_deg) &&
+           ((std::isnan(rhs.absolute_altitude_m) && std::isnan(lhs.absolute_altitude_m)) ||
+            rhs.absolute_altitude_m == lhs.absolute_altitude_m) &&
+           ((std::isnan(rhs.relative_altitude_m) && std::isnan(lhs.relative_altitude_m)) ||
+            rhs.relative_altitude_m == lhs.relative_altitude_m) &&
+           ((std::isnan(rhs.local_x_m) && std::isnan(lhs.local_x_m)) ||
+            rhs.local_x_m == lhs.local_x_m) &&
+           ((std::isnan(rhs.local_y_m) && std::isnan(lhs.local_y_m)) ||
+            rhs.local_y_m == lhs.local_y_m) &&
+           ((std::isnan(rhs.local_z_m) && std::isnan(lhs.local_z_m)) ||
+            rhs.local_z_m == lhs.local_z_m) &&
+           (rhs.q == lhs.q) &&
+           ((std::isnan(rhs.approach_x_m) && std::isnan(lhs.approach_x_m)) ||
+            rhs.approach_x_m == lhs.approach_x_m) &&
+           ((std::isnan(rhs.approach_y_m) && std::isnan(lhs.approach_y_m)) ||
+            rhs.approach_y_m == lhs.approach_y_m) &&
+           ((std::isnan(rhs.approach_z_m) && std::isnan(lhs.approach_z_m)) ||
+            rhs.approach_z_m == lhs.approach_z_m) &&
+           (rhs.timestamp_us == lhs.timestamp_us);
+}
+
+std::ostream& operator<<(std::ostream& str, Telemetry::HomePosition const& home_position)
+{
+    str << std::setprecision(15);
+    str << "home_position:" << '\n' << "{\n";
+    str << "    latitude_deg: " << home_position.latitude_deg << '\n';
+    str << "    longitude_deg: " << home_position.longitude_deg << '\n';
+    str << "    absolute_altitude_m: " << home_position.absolute_altitude_m << '\n';
+    str << "    relative_altitude_m: " << home_position.relative_altitude_m << '\n';
+    str << "    local_x_m: " << home_position.local_x_m << '\n';
+    str << "    local_y_m: " << home_position.local_y_m << '\n';
+    str << "    local_z_m: " << home_position.local_z_m << '\n';
+    str << "    q: " << home_position.q << '\n';
+    str << "    approach_x_m: " << home_position.approach_x_m << '\n';
+    str << "    approach_y_m: " << home_position.approach_y_m << '\n';
+    str << "    approach_z_m: " << home_position.approach_z_m << '\n';
+    str << "    timestamp_us: " << home_position.timestamp_us << '\n';
     str << '}';
     return str;
 }
