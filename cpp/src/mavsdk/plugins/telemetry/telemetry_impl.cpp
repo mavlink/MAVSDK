@@ -819,6 +819,7 @@ void TelemetryImpl::process_altitude(const mavlink_message_t& message)
     new_altitude.altitude_relative_m = mavlink_altitude.altitude_relative;
     new_altitude.altitude_terrain_m = mavlink_altitude.altitude_terrain;
     new_altitude.bottom_clearance_m = mavlink_altitude.bottom_clearance;
+    new_altitude.timestamp_us = mavlink_altitude.time_usec;
 
     set_altitude(new_altitude);
 
@@ -999,6 +1000,7 @@ void TelemetryImpl::process_ground_truth(const mavlink_message_t& message)
     new_ground_truth.latitude_deg = hil_state_quaternion.lat * 1e-7;
     new_ground_truth.longitude_deg = hil_state_quaternion.lon * 1e-7;
     new_ground_truth.absolute_altitude_m = hil_state_quaternion.alt * 1e-3f;
+    new_ground_truth.timestamp_us = hil_state_quaternion.time_usec;
 
     set_ground_truth(new_ground_truth);
 
