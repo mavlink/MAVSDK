@@ -28,6 +28,10 @@ public:
     void upload_geofence_async(
         const Geofence::GeofenceData& geofence_data, const Geofence::ResultCallback& callback);
 
+    std::pair<Geofence::Result, Geofence::GeofenceData> download_geofence();
+
+    void download_geofence_async(const Geofence::DownloadGeofenceCallback& callback);
+
     Geofence::Result clear_geofence();
 
     void clear_geofence_async(const Geofence::ResultCallback& callback);
@@ -40,7 +44,12 @@ private:
     std::vector<MavlinkMissionTransferClient::ItemInt>
     assemble_items(const Geofence::GeofenceData& geofence_data);
 
+    static std::pair<Geofence::Result, Geofence::GeofenceData>
+    disassemble_items(const std::vector<MavlinkMissionTransferClient::ItemInt>& items);
+
     static Geofence::Result convert_result(MavlinkMissionTransferClient::Result result);
+
+    std::weak_ptr<MavlinkMissionTransferClient::WorkItem> _last_download{};
 };
 
 } // namespace mavsdk
