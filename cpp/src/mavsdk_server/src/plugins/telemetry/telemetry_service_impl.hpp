@@ -390,6 +390,125 @@ public:
 
 
 
+    static std::unique_ptr<rpc::telemetry::HomePosition> translateToRpcHomePosition(const mavsdk::Telemetry::HomePosition &home_position)
+    {
+        auto rpc_obj = std::make_unique<rpc::telemetry::HomePosition>();
+
+
+            
+        rpc_obj->set_timestamp_us(home_position.timestamp_us);
+            
+        
+            
+        rpc_obj->set_latitude_deg(home_position.latitude_deg);
+            
+        
+            
+        rpc_obj->set_longitude_deg(home_position.longitude_deg);
+            
+        
+            
+        rpc_obj->set_absolute_altitude_m(home_position.absolute_altitude_m);
+            
+        
+            
+        rpc_obj->set_relative_altitude_m(home_position.relative_altitude_m);
+            
+        
+            
+        rpc_obj->set_local_north_m(home_position.local_north_m);
+            
+        
+            
+        rpc_obj->set_local_east_m(home_position.local_east_m);
+            
+        
+            
+        rpc_obj->set_local_down_m(home_position.local_down_m);
+            
+        
+            
+                
+        rpc_obj->set_allocated_q(translateToRpcQuaternion(home_position.q).release());
+                
+            
+        
+            
+        rpc_obj->set_approach_north_m(home_position.approach_north_m);
+            
+        
+            
+        rpc_obj->set_approach_east_m(home_position.approach_east_m);
+            
+        
+            
+        rpc_obj->set_approach_down_m(home_position.approach_down_m);
+            
+        
+
+        return rpc_obj;
+    }
+
+    static mavsdk::Telemetry::HomePosition translateFromRpcHomePosition(const rpc::telemetry::HomePosition& home_position)
+    {
+        mavsdk::Telemetry::HomePosition obj;
+
+
+            
+        obj.timestamp_us = home_position.timestamp_us();
+            
+        
+            
+        obj.latitude_deg = home_position.latitude_deg();
+            
+        
+            
+        obj.longitude_deg = home_position.longitude_deg();
+            
+        
+            
+        obj.absolute_altitude_m = home_position.absolute_altitude_m();
+            
+        
+            
+        obj.relative_altitude_m = home_position.relative_altitude_m();
+            
+        
+            
+        obj.local_north_m = home_position.local_north_m();
+            
+        
+            
+        obj.local_east_m = home_position.local_east_m();
+            
+        
+            
+        obj.local_down_m = home_position.local_down_m();
+            
+        
+            
+        obj.q = translateFromRpcQuaternion(home_position.q());
+            
+        
+            
+        obj.approach_north_m = home_position.approach_north_m();
+            
+        
+            
+        obj.approach_east_m = home_position.approach_east_m();
+            
+        
+            
+        obj.approach_down_m = home_position.approach_down_m();
+            
+        
+        return obj;
+    }
+
+
+
+
+
     static std::unique_ptr<rpc::telemetry::Heading> translateToRpcHeading(const mavsdk::Telemetry::Heading &heading)
     {
         auto rpc_obj = std::make_unique<rpc::telemetry::Heading>();
@@ -2233,11 +2352,11 @@ public:
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
         const mavsdk::Telemetry::HomeHandle handle = _lazy_plugin.maybe_plugin()->subscribe_home(
-            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](const mavsdk::Telemetry::Position home) {
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](const mavsdk::Telemetry::HomePosition home) {
 
             rpc::telemetry::HomeResponse rpc_response;
         
-            rpc_response.set_allocated_home(translateToRpcPosition(home).release());
+            rpc_response.set_allocated_home(translateToRpcHomePosition(home).release());
         
 
         

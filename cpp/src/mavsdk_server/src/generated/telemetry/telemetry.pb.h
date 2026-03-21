@@ -159,6 +159,9 @@ extern HealthAllOkResponseDefaultTypeInternal _HealthAllOkResponse_default_insta
 class HealthResponse;
 struct HealthResponseDefaultTypeInternal;
 extern HealthResponseDefaultTypeInternal _HealthResponse_default_instance_;
+class HomePosition;
+struct HomePositionDefaultTypeInternal;
+extern HomePositionDefaultTypeInternal _HomePosition_default_instance_;
 class HomeResponse;
 struct HomeResponseDefaultTypeInternal;
 extern HomeResponseDefaultTypeInternal _HomeResponse_default_instance_;
@@ -889,7 +892,7 @@ class Wind final
     return reinterpret_cast<const Wind*>(
         &_Wind_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 150;
+  static constexpr int kIndexInFileMessages = 151;
   friend void swap(Wind& a, Wind& b) { a.Swap(&b); }
   inline void Swap(Wind* other) {
     if (other == this) return;
@@ -1355,7 +1358,7 @@ class VelocityNed final
     return reinterpret_cast<const VelocityNed*>(
         &_VelocityNed_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 140;
+  static constexpr int kIndexInFileMessages = 141;
   friend void swap(VelocityNed& a, VelocityNed& b) { a.Swap(&b); }
   inline void Swap(VelocityNed* other) {
     if (other == this) return;
@@ -1570,7 +1573,7 @@ class VelocityBody final
     return reinterpret_cast<const VelocityBody*>(
         &_VelocityBody_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 134;
+  static constexpr int kIndexInFileMessages = 135;
   friend void swap(VelocityBody& a, VelocityBody& b) { a.Swap(&b); }
   inline void Swap(VelocityBody* other) {
     if (other == this) return;
@@ -1976,7 +1979,7 @@ class TelemetryResult final
     return reinterpret_cast<const TelemetryResult*>(
         &_TelemetryResult_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 151;
+  static constexpr int kIndexInFileMessages = 152;
   friend void swap(TelemetryResult& a, TelemetryResult& b) { a.Swap(&b); }
   inline void Swap(TelemetryResult* other) {
     if (other == this) return;
@@ -7028,7 +7031,7 @@ class StatusText final
     return reinterpret_cast<const StatusText*>(
         &_StatusText_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 130;
+  static constexpr int kIndexInFileMessages = 131;
   friend void swap(StatusText& a, StatusText& b) { a.Swap(&b); }
   inline void Swap(StatusText* other) {
     if (other == this) return;
@@ -12203,7 +12206,7 @@ class ScaledPressure final
     return reinterpret_cast<const ScaledPressure*>(
         &_ScaledPressure_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 138;
+  static constexpr int kIndexInFileMessages = 139;
   friend void swap(ScaledPressure& a, ScaledPressure& b) { a.Swap(&b); }
   inline void Swap(ScaledPressure* other) {
     if (other == this) return;
@@ -12442,7 +12445,7 @@ class RcStatus final
     return reinterpret_cast<const RcStatus*>(
         &_RcStatus_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 129;
+  static constexpr int kIndexInFileMessages = 130;
   friend void swap(RcStatus& a, RcStatus& b) { a.Swap(&b); }
   inline void Swap(RcStatus* other) {
     if (other == this) return;
@@ -12657,7 +12660,7 @@ class RawGps final
     return reinterpret_cast<const RawGps*>(
         &_RawGps_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 126;
+  static constexpr int kIndexInFileMessages = 127;
   friend void swap(RawGps& a, RawGps& b) { a.Swap(&b); }
   inline void Swap(RawGps* other) {
     if (other == this) return;
@@ -13004,7 +13007,7 @@ class Quaternion final
     return reinterpret_cast<const Quaternion*>(
         &_Quaternion_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 122;
+  static constexpr int kIndexInFileMessages = 123;
   friend void swap(Quaternion& a, Quaternion& b) { a.Swap(&b); }
   inline void Swap(Quaternion* other) {
     if (other == this) return;
@@ -13243,7 +13246,7 @@ class PositionNed final
     return reinterpret_cast<const PositionNed*>(
         &_PositionNed_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 139;
+  static constexpr int kIndexInFileMessages = 140;
   friend void swap(PositionNed& a, PositionNed& b) { a.Swap(&b); }
   inline void Swap(PositionNed* other) {
     if (other == this) return;
@@ -13458,7 +13461,7 @@ class PositionBody final
     return reinterpret_cast<const PositionBody*>(
         &_PositionBody_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 135;
+  static constexpr int kIndexInFileMessages = 136;
   friend void swap(PositionBody& a, PositionBody& b) { a.Swap(&b); }
   inline void Swap(PositionBody* other) {
     if (other == this) return;
@@ -13900,7 +13903,7 @@ class MagneticFieldFrd final
     return reinterpret_cast<const MagneticFieldFrd*>(
         &_MagneticFieldFrd_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 146;
+  static constexpr int kIndexInFileMessages = 147;
   friend void swap(MagneticFieldFrd& a, MagneticFieldFrd& b) { a.Swap(&b); }
   inline void Swap(MagneticFieldFrd* other) {
     if (other == this) return;
@@ -14688,7 +14691,7 @@ class Health final
     return reinterpret_cast<const Health*>(
         &_Health_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 128;
+  static constexpr int kIndexInFileMessages = 129;
   friend void swap(Health& a, Health& b) { a.Swap(&b); }
   inline void Swap(Health* other) {
     if (other == this) return;
@@ -14951,7 +14954,7 @@ class Heading final
     return reinterpret_cast<const Heading*>(
         &_Heading_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 121;
+  static constexpr int kIndexInFileMessages = 122;
   friend void swap(Heading& a, Heading& b) { a.Swap(&b); }
   inline void Swap(Heading* other) {
     if (other == this) return;
@@ -15142,7 +15145,7 @@ class GroundTruth final
     return reinterpret_cast<const GroundTruth*>(
         &_GroundTruth_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 142;
+  static constexpr int kIndexInFileMessages = 143;
   friend void swap(GroundTruth& a, GroundTruth& b) { a.Swap(&b); }
   inline void Swap(GroundTruth* other) {
     if (other == this) return;
@@ -15369,7 +15372,7 @@ class GpsInfo final
     return reinterpret_cast<const GpsInfo*>(
         &_GpsInfo_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 125;
+  static constexpr int kIndexInFileMessages = 126;
   friend void swap(GpsInfo& a, GpsInfo& b) { a.Swap(&b); }
   inline void Swap(GpsInfo* other) {
     if (other == this) return;
@@ -15572,7 +15575,7 @@ class GpsGlobalOrigin final
     return reinterpret_cast<const GpsGlobalOrigin*>(
         &_GpsGlobalOrigin_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 148;
+  static constexpr int kIndexInFileMessages = 149;
   friend void swap(GpsGlobalOrigin& a, GpsGlobalOrigin& b) { a.Swap(&b); }
   inline void Swap(GpsGlobalOrigin* other) {
     if (other == this) return;
@@ -16124,7 +16127,7 @@ class FixedwingMetrics final
     return reinterpret_cast<const FixedwingMetrics*>(
         &_FixedwingMetrics_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 143;
+  static constexpr int kIndexInFileMessages = 144;
   friend void swap(FixedwingMetrics& a, FixedwingMetrics& b) { a.Swap(&b); }
   inline void Swap(FixedwingMetrics* other) {
     if (other == this) return;
@@ -16375,7 +16378,7 @@ class EulerAngle final
     return reinterpret_cast<const EulerAngle*>(
         &_EulerAngle_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 123;
+  static constexpr int kIndexInFileMessages = 124;
   friend void swap(EulerAngle& a, EulerAngle& b) { a.Swap(&b); }
   inline void Swap(EulerAngle* other) {
     if (other == this) return;
@@ -16602,7 +16605,7 @@ class Covariance final
     return reinterpret_cast<const Covariance*>(
         &_Covariance_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 133;
+  static constexpr int kIndexInFileMessages = 134;
   friend void swap(Covariance& a, Covariance& b) { a.Swap(&b); }
   inline void Swap(Covariance* other) {
     if (other == this) return;
@@ -16801,7 +16804,7 @@ class Battery final
     return reinterpret_cast<const Battery*>(
         &_Battery_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 127;
+  static constexpr int kIndexInFileMessages = 128;
   friend void swap(Battery& a, Battery& b) { a.Swap(&b); }
   inline void Swap(Battery* other) {
     if (other == this) return;
@@ -17267,7 +17270,7 @@ class AngularVelocityFrd final
     return reinterpret_cast<const AngularVelocityFrd*>(
         &_AngularVelocityFrd_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 145;
+  static constexpr int kIndexInFileMessages = 146;
   friend void swap(AngularVelocityFrd& a, AngularVelocityFrd& b) { a.Swap(&b); }
   inline void Swap(AngularVelocityFrd* other) {
     if (other == this) return;
@@ -17482,7 +17485,7 @@ class AngularVelocityBody final
     return reinterpret_cast<const AngularVelocityBody*>(
         &_AngularVelocityBody_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 124;
+  static constexpr int kIndexInFileMessages = 125;
   friend void swap(AngularVelocityBody& a, AngularVelocityBody& b) { a.Swap(&b); }
   inline void Swap(AngularVelocityBody* other) {
     if (other == this) return;
@@ -17697,7 +17700,7 @@ class Altitude final
     return reinterpret_cast<const Altitude*>(
         &_Altitude_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 149;
+  static constexpr int kIndexInFileMessages = 150;
   friend void swap(Altitude& a, Altitude& b) { a.Swap(&b); }
   inline void Swap(Altitude* other) {
     if (other == this) return;
@@ -17960,7 +17963,7 @@ class ActuatorOutputStatus final
     return reinterpret_cast<const ActuatorOutputStatus*>(
         &_ActuatorOutputStatus_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 132;
+  static constexpr int kIndexInFileMessages = 133;
   friend void swap(ActuatorOutputStatus& a, ActuatorOutputStatus& b) { a.Swap(&b); }
   inline void Swap(ActuatorOutputStatus* other) {
     if (other == this) return;
@@ -18171,7 +18174,7 @@ class ActuatorControlTarget final
     return reinterpret_cast<const ActuatorControlTarget*>(
         &_ActuatorControlTarget_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 131;
+  static constexpr int kIndexInFileMessages = 132;
   friend void swap(ActuatorControlTarget& a, ActuatorControlTarget& b) { a.Swap(&b); }
   inline void Swap(ActuatorControlTarget* other) {
     if (other == this) return;
@@ -18382,7 +18385,7 @@ class AccelerationFrd final
     return reinterpret_cast<const AccelerationFrd*>(
         &_AccelerationFrd_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 144;
+  static constexpr int kIndexInFileMessages = 145;
   friend void swap(AccelerationFrd& a, AccelerationFrd& b) { a.Swap(&b); }
   inline void Swap(AccelerationFrd* other) {
     if (other == this) return;
@@ -24901,7 +24904,7 @@ class PositionVelocityNed final
     return reinterpret_cast<const PositionVelocityNed*>(
         &_PositionVelocityNed_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 141;
+  static constexpr int kIndexInFileMessages = 142;
   friend void swap(PositionVelocityNed& a, PositionVelocityNed& b) { a.Swap(&b); }
   inline void Swap(PositionVelocityNed* other) {
     if (other == this) return;
@@ -25312,7 +25315,7 @@ class Odometry final
     return reinterpret_cast<const Odometry*>(
         &_Odometry_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 136;
+  static constexpr int kIndexInFileMessages = 137;
   friend void swap(Odometry& a, Odometry& b) { a.Swap(&b); }
   inline void Swap(Odometry* other) {
     if (other == this) return;
@@ -25651,7 +25654,7 @@ class Imu final
     return reinterpret_cast<const Imu*>(
         &_Imu_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 147;
+  static constexpr int kIndexInFileMessages = 148;
   friend void swap(Imu& a, Imu& b) { a.Swap(&b); }
   inline void Swap(Imu* other) {
     if (other == this) return;
@@ -25846,32 +25849,32 @@ class Imu final
 };
 // -------------------------------------------------------------------
 
-class HomeResponse final
+class HomePosition final
     : public ::google::protobuf::Message
-/* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry.HomeResponse) */ {
+/* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry.HomePosition) */ {
  public:
-  inline HomeResponse() : HomeResponse(nullptr) {}
-  ~HomeResponse() PROTOBUF_FINAL;
+  inline HomePosition() : HomePosition(nullptr) {}
+  ~HomePosition() PROTOBUF_FINAL;
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-  void operator delete(HomeResponse* msg, std::destroying_delete_t) {
+  void operator delete(HomePosition* msg, std::destroying_delete_t) {
     SharedDtor(*msg);
-    ::google::protobuf::internal::SizedDelete(msg, sizeof(HomeResponse));
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(HomePosition));
   }
 #endif
 
   template <typename = void>
-  explicit PROTOBUF_CONSTEXPR HomeResponse(
+  explicit PROTOBUF_CONSTEXPR HomePosition(
       ::google::protobuf::internal::ConstantInitialized);
 
-  inline HomeResponse(const HomeResponse& from) : HomeResponse(nullptr, from) {}
-  inline HomeResponse(HomeResponse&& from) noexcept
-      : HomeResponse(nullptr, std::move(from)) {}
-  inline HomeResponse& operator=(const HomeResponse& from) {
+  inline HomePosition(const HomePosition& from) : HomePosition(nullptr, from) {}
+  inline HomePosition(HomePosition&& from) noexcept
+      : HomePosition(nullptr, std::move(from)) {}
+  inline HomePosition& operator=(const HomePosition& from) {
     CopyFrom(from);
     return *this;
   }
-  inline HomeResponse& operator=(HomeResponse&& from) noexcept {
+  inline HomePosition& operator=(HomePosition&& from) noexcept {
     if (this == &from) return *this;
     if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
       InternalSwap(&from);
@@ -25899,16 +25902,16 @@ class HomeResponse final
   static const ::google::protobuf::Reflection* GetReflection() {
     return default_instance().GetMetadata().reflection;
   }
-  static const HomeResponse& default_instance() {
+  static const HomePosition& default_instance() {
     return *internal_default_instance();
   }
-  static inline const HomeResponse* internal_default_instance() {
-    return reinterpret_cast<const HomeResponse*>(
-        &_HomeResponse_default_instance_);
+  static inline const HomePosition* internal_default_instance() {
+    return reinterpret_cast<const HomePosition*>(
+        &_HomePosition_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 3;
-  friend void swap(HomeResponse& a, HomeResponse& b) { a.Swap(&b); }
-  inline void Swap(HomeResponse* other) {
+  static constexpr int kIndexInFileMessages = 121;
+  friend void swap(HomePosition& a, HomePosition& b) { a.Swap(&b); }
+  inline void Swap(HomePosition* other) {
     if (other == this) return;
     if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
       InternalSwap(other);
@@ -25916,7 +25919,7 @@ class HomeResponse final
       ::google::protobuf::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(HomeResponse* other) {
+  void UnsafeArenaSwap(HomePosition* other) {
     if (other == this) return;
     ABSL_DCHECK(GetArena() == other->GetArena());
     InternalSwap(other);
@@ -25924,13 +25927,13 @@ class HomeResponse final
 
   // implements Message ----------------------------------------------
 
-  HomeResponse* New(::google::protobuf::Arena* arena = nullptr) const {
-    return ::google::protobuf::Message::DefaultConstruct<HomeResponse>(arena);
+  HomePosition* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<HomePosition>(arena);
   }
   using ::google::protobuf::Message::CopyFrom;
-  void CopyFrom(const HomeResponse& from);
+  void CopyFrom(const HomePosition& from);
   using ::google::protobuf::Message::MergeFrom;
-  void MergeFrom(const HomeResponse& from) { HomeResponse::MergeImpl(*this, from); }
+  void MergeFrom(const HomePosition& from) { HomePosition::MergeImpl(*this, from); }
 
   private:
   static void MergeImpl(
@@ -25967,18 +25970,18 @@ class HomeResponse final
   private:
   void SharedCtor(::google::protobuf::Arena* arena);
   static void SharedDtor(MessageLite& self);
-  void InternalSwap(HomeResponse* other);
+  void InternalSwap(HomePosition* other);
  private:
   template <typename T>
   friend ::absl::string_view(
       ::google::protobuf::internal::GetAnyMessageName)();
-  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.telemetry.HomeResponse"; }
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.telemetry.HomePosition"; }
 
  protected:
-  explicit HomeResponse(::google::protobuf::Arena* arena);
-  HomeResponse(::google::protobuf::Arena* arena, const HomeResponse& from);
-  HomeResponse(::google::protobuf::Arena* arena, HomeResponse&& from) noexcept
-      : HomeResponse(arena) {
+  explicit HomePosition(::google::protobuf::Arena* arena);
+  HomePosition(::google::protobuf::Arena* arena, const HomePosition& from);
+  HomePosition(::google::protobuf::Arena* arena, HomePosition&& from) noexcept
+      : HomePosition(arena) {
     *this = ::std::move(from);
   }
   const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
@@ -25993,29 +25996,150 @@ class HomeResponse final
 
   // accessors -------------------------------------------------------
   enum : int {
-    kHomeFieldNumber = 1,
+    kQFieldNumber = 9,
+    kTimestampUsFieldNumber = 1,
+    kLatitudeDegFieldNumber = 2,
+    kLongitudeDegFieldNumber = 3,
+    kAbsoluteAltitudeMFieldNumber = 4,
+    kRelativeAltitudeMFieldNumber = 5,
+    kLocalNorthMFieldNumber = 6,
+    kLocalEastMFieldNumber = 7,
+    kLocalDownMFieldNumber = 8,
+    kApproachNorthMFieldNumber = 10,
+    kApproachEastMFieldNumber = 11,
+    kApproachDownMFieldNumber = 12,
   };
-  // .mavsdk.rpc.telemetry.Position home = 1;
-  bool has_home() const;
-  void clear_home() ;
-  const ::mavsdk::rpc::telemetry::Position& home() const;
-  PROTOBUF_NODISCARD ::mavsdk::rpc::telemetry::Position* release_home();
-  ::mavsdk::rpc::telemetry::Position* mutable_home();
-  void set_allocated_home(::mavsdk::rpc::telemetry::Position* value);
-  void unsafe_arena_set_allocated_home(::mavsdk::rpc::telemetry::Position* value);
-  ::mavsdk::rpc::telemetry::Position* unsafe_arena_release_home();
+  // .mavsdk.rpc.telemetry.Quaternion q = 9;
+  bool has_q() const;
+  void clear_q() ;
+  const ::mavsdk::rpc::telemetry::Quaternion& q() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::telemetry::Quaternion* release_q();
+  ::mavsdk::rpc::telemetry::Quaternion* mutable_q();
+  void set_allocated_q(::mavsdk::rpc::telemetry::Quaternion* value);
+  void unsafe_arena_set_allocated_q(::mavsdk::rpc::telemetry::Quaternion* value);
+  ::mavsdk::rpc::telemetry::Quaternion* unsafe_arena_release_q();
 
   private:
-  const ::mavsdk::rpc::telemetry::Position& _internal_home() const;
-  ::mavsdk::rpc::telemetry::Position* _internal_mutable_home();
+  const ::mavsdk::rpc::telemetry::Quaternion& _internal_q() const;
+  ::mavsdk::rpc::telemetry::Quaternion* _internal_mutable_q();
 
   public:
-  // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry.HomeResponse)
+  // uint64 timestamp_us = 1;
+  void clear_timestamp_us() ;
+  ::uint64_t timestamp_us() const;
+  void set_timestamp_us(::uint64_t value);
+
+  private:
+  ::uint64_t _internal_timestamp_us() const;
+  void _internal_set_timestamp_us(::uint64_t value);
+
+  public:
+  // double latitude_deg = 2 [(.mavsdk.options.default_value) = "NaN"];
+  void clear_latitude_deg() ;
+  double latitude_deg() const;
+  void set_latitude_deg(double value);
+
+  private:
+  double _internal_latitude_deg() const;
+  void _internal_set_latitude_deg(double value);
+
+  public:
+  // double longitude_deg = 3 [(.mavsdk.options.default_value) = "NaN"];
+  void clear_longitude_deg() ;
+  double longitude_deg() const;
+  void set_longitude_deg(double value);
+
+  private:
+  double _internal_longitude_deg() const;
+  void _internal_set_longitude_deg(double value);
+
+  public:
+  // float absolute_altitude_m = 4 [(.mavsdk.options.default_value) = "NaN"];
+  void clear_absolute_altitude_m() ;
+  float absolute_altitude_m() const;
+  void set_absolute_altitude_m(float value);
+
+  private:
+  float _internal_absolute_altitude_m() const;
+  void _internal_set_absolute_altitude_m(float value);
+
+  public:
+  // float relative_altitude_m = 5 [(.mavsdk.options.default_value) = "NaN"];
+  void clear_relative_altitude_m() ;
+  float relative_altitude_m() const;
+  void set_relative_altitude_m(float value);
+
+  private:
+  float _internal_relative_altitude_m() const;
+  void _internal_set_relative_altitude_m(float value);
+
+  public:
+  // float local_north_m = 6 [(.mavsdk.options.default_value) = "NaN"];
+  void clear_local_north_m() ;
+  float local_north_m() const;
+  void set_local_north_m(float value);
+
+  private:
+  float _internal_local_north_m() const;
+  void _internal_set_local_north_m(float value);
+
+  public:
+  // float local_east_m = 7 [(.mavsdk.options.default_value) = "NaN"];
+  void clear_local_east_m() ;
+  float local_east_m() const;
+  void set_local_east_m(float value);
+
+  private:
+  float _internal_local_east_m() const;
+  void _internal_set_local_east_m(float value);
+
+  public:
+  // float local_down_m = 8 [(.mavsdk.options.default_value) = "NaN"];
+  void clear_local_down_m() ;
+  float local_down_m() const;
+  void set_local_down_m(float value);
+
+  private:
+  float _internal_local_down_m() const;
+  void _internal_set_local_down_m(float value);
+
+  public:
+  // float approach_north_m = 10 [(.mavsdk.options.default_value) = "NaN"];
+  void clear_approach_north_m() ;
+  float approach_north_m() const;
+  void set_approach_north_m(float value);
+
+  private:
+  float _internal_approach_north_m() const;
+  void _internal_set_approach_north_m(float value);
+
+  public:
+  // float approach_east_m = 11 [(.mavsdk.options.default_value) = "NaN"];
+  void clear_approach_east_m() ;
+  float approach_east_m() const;
+  void set_approach_east_m(float value);
+
+  private:
+  float _internal_approach_east_m() const;
+  void _internal_set_approach_east_m(float value);
+
+  public:
+  // float approach_down_m = 12 [(.mavsdk.options.default_value) = "NaN"];
+  void clear_approach_down_m() ;
+  float approach_down_m() const;
+  void set_approach_down_m(float value);
+
+  private:
+  float _internal_approach_down_m() const;
+  void _internal_set_approach_down_m(float value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry.HomePosition)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      0, 1, 1,
+      4, 12, 1,
       0, 2>
       _table_;
 
@@ -26032,10 +26156,21 @@ class HomeResponse final
                           ::google::protobuf::Arena* arena);
     inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
                           ::google::protobuf::Arena* arena, const Impl_& from,
-                          const HomeResponse& from_msg);
+                          const HomePosition& from_msg);
     ::google::protobuf::internal::HasBits<1> _has_bits_;
     ::google::protobuf::internal::CachedSize _cached_size_;
-    ::mavsdk::rpc::telemetry::Position* home_;
+    ::mavsdk::rpc::telemetry::Quaternion* q_;
+    ::uint64_t timestamp_us_;
+    double latitude_deg_;
+    double longitude_deg_;
+    float absolute_altitude_m_;
+    float relative_altitude_m_;
+    float local_north_m_;
+    float local_east_m_;
+    float local_down_m_;
+    float approach_north_m_;
+    float approach_east_m_;
+    float approach_down_m_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -27302,7 +27437,7 @@ class DistanceSensor final
     return reinterpret_cast<const DistanceSensor*>(
         &_DistanceSensor_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 137;
+  static constexpr int kIndexInFileMessages = 138;
   friend void swap(DistanceSensor& a, DistanceSensor& b) { a.Swap(&b); }
   inline void Swap(DistanceSensor* other) {
     if (other == this) return;
@@ -29839,6 +29974,203 @@ class ImuResponse final
 };
 // -------------------------------------------------------------------
 
+class HomeResponse final
+    : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry.HomeResponse) */ {
+ public:
+  inline HomeResponse() : HomeResponse(nullptr) {}
+  ~HomeResponse() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(HomeResponse* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(HomeResponse));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR HomeResponse(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline HomeResponse(const HomeResponse& from) : HomeResponse(nullptr, from) {}
+  inline HomeResponse(HomeResponse&& from) noexcept
+      : HomeResponse(nullptr, std::move(from)) {}
+  inline HomeResponse& operator=(const HomeResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline HomeResponse& operator=(HomeResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const HomeResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const HomeResponse* internal_default_instance() {
+    return reinterpret_cast<const HomeResponse*>(
+        &_HomeResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 3;
+  friend void swap(HomeResponse& a, HomeResponse& b) { a.Swap(&b); }
+  inline void Swap(HomeResponse* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(HomeResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  HomeResponse* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<HomeResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const HomeResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const HomeResponse& from) { HomeResponse::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(HomeResponse* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.telemetry.HomeResponse"; }
+
+ protected:
+  explicit HomeResponse(::google::protobuf::Arena* arena);
+  HomeResponse(::google::protobuf::Arena* arena, const HomeResponse& from);
+  HomeResponse(::google::protobuf::Arena* arena, HomeResponse&& from) noexcept
+      : HomeResponse(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kHomeFieldNumber = 1,
+  };
+  // .mavsdk.rpc.telemetry.HomePosition home = 1;
+  bool has_home() const;
+  void clear_home() ;
+  const ::mavsdk::rpc::telemetry::HomePosition& home() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::telemetry::HomePosition* release_home();
+  ::mavsdk::rpc::telemetry::HomePosition* mutable_home();
+  void set_allocated_home(::mavsdk::rpc::telemetry::HomePosition* value);
+  void unsafe_arena_set_allocated_home(::mavsdk::rpc::telemetry::HomePosition* value);
+  ::mavsdk::rpc::telemetry::HomePosition* unsafe_arena_release_home();
+
+  private:
+  const ::mavsdk::rpc::telemetry::HomePosition& _internal_home() const;
+  ::mavsdk::rpc::telemetry::HomePosition* _internal_mutable_home();
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry.HomeResponse)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 1,
+      0, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const HomeResponse& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::mavsdk::rpc::telemetry::HomePosition* home_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_telemetry_2ftelemetry_2eproto;
+};
+// -------------------------------------------------------------------
+
 class DistanceSensorResponse final
     : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry.DistanceSensorResponse) */ {
@@ -30159,7 +30491,7 @@ inline void PositionResponse::set_allocated_position(::mavsdk::rpc::telemetry::P
 
 // HomeResponse
 
-// .mavsdk.rpc.telemetry.Position home = 1;
+// .mavsdk.rpc.telemetry.HomePosition home = 1;
 inline bool HomeResponse::has_home() const {
   bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
   PROTOBUF_ASSUME(!value || _impl_.home_ != nullptr);
@@ -30170,21 +30502,21 @@ inline void HomeResponse::clear_home() {
   if (_impl_.home_ != nullptr) _impl_.home_->Clear();
   _impl_._has_bits_[0] &= ~0x00000001u;
 }
-inline const ::mavsdk::rpc::telemetry::Position& HomeResponse::_internal_home() const {
+inline const ::mavsdk::rpc::telemetry::HomePosition& HomeResponse::_internal_home() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
-  const ::mavsdk::rpc::telemetry::Position* p = _impl_.home_;
-  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::telemetry::Position&>(::mavsdk::rpc::telemetry::_Position_default_instance_);
+  const ::mavsdk::rpc::telemetry::HomePosition* p = _impl_.home_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::telemetry::HomePosition&>(::mavsdk::rpc::telemetry::_HomePosition_default_instance_);
 }
-inline const ::mavsdk::rpc::telemetry::Position& HomeResponse::home() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+inline const ::mavsdk::rpc::telemetry::HomePosition& HomeResponse::home() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
   // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.HomeResponse.home)
   return _internal_home();
 }
-inline void HomeResponse::unsafe_arena_set_allocated_home(::mavsdk::rpc::telemetry::Position* value) {
+inline void HomeResponse::unsafe_arena_set_allocated_home(::mavsdk::rpc::telemetry::HomePosition* value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   if (GetArena() == nullptr) {
     delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.home_);
   }
-  _impl_.home_ = reinterpret_cast<::mavsdk::rpc::telemetry::Position*>(value);
+  _impl_.home_ = reinterpret_cast<::mavsdk::rpc::telemetry::HomePosition*>(value);
   if (value != nullptr) {
     _impl_._has_bits_[0] |= 0x00000001u;
   } else {
@@ -30192,11 +30524,11 @@ inline void HomeResponse::unsafe_arena_set_allocated_home(::mavsdk::rpc::telemet
   }
   // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.telemetry.HomeResponse.home)
 }
-inline ::mavsdk::rpc::telemetry::Position* HomeResponse::release_home() {
+inline ::mavsdk::rpc::telemetry::HomePosition* HomeResponse::release_home() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
 
   _impl_._has_bits_[0] &= ~0x00000001u;
-  ::mavsdk::rpc::telemetry::Position* released = _impl_.home_;
+  ::mavsdk::rpc::telemetry::HomePosition* released = _impl_.home_;
   _impl_.home_ = nullptr;
   if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
     auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
@@ -30211,30 +30543,30 @@ inline ::mavsdk::rpc::telemetry::Position* HomeResponse::release_home() {
   }
   return released;
 }
-inline ::mavsdk::rpc::telemetry::Position* HomeResponse::unsafe_arena_release_home() {
+inline ::mavsdk::rpc::telemetry::HomePosition* HomeResponse::unsafe_arena_release_home() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   // @@protoc_insertion_point(field_release:mavsdk.rpc.telemetry.HomeResponse.home)
 
   _impl_._has_bits_[0] &= ~0x00000001u;
-  ::mavsdk::rpc::telemetry::Position* temp = _impl_.home_;
+  ::mavsdk::rpc::telemetry::HomePosition* temp = _impl_.home_;
   _impl_.home_ = nullptr;
   return temp;
 }
-inline ::mavsdk::rpc::telemetry::Position* HomeResponse::_internal_mutable_home() {
+inline ::mavsdk::rpc::telemetry::HomePosition* HomeResponse::_internal_mutable_home() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   if (_impl_.home_ == nullptr) {
-    auto* p = ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::telemetry::Position>(GetArena());
-    _impl_.home_ = reinterpret_cast<::mavsdk::rpc::telemetry::Position*>(p);
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::telemetry::HomePosition>(GetArena());
+    _impl_.home_ = reinterpret_cast<::mavsdk::rpc::telemetry::HomePosition*>(p);
   }
   return _impl_.home_;
 }
-inline ::mavsdk::rpc::telemetry::Position* HomeResponse::mutable_home() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+inline ::mavsdk::rpc::telemetry::HomePosition* HomeResponse::mutable_home() ABSL_ATTRIBUTE_LIFETIME_BOUND {
   _impl_._has_bits_[0] |= 0x00000001u;
-  ::mavsdk::rpc::telemetry::Position* _msg = _internal_mutable_home();
+  ::mavsdk::rpc::telemetry::HomePosition* _msg = _internal_mutable_home();
   // @@protoc_insertion_point(field_mutable:mavsdk.rpc.telemetry.HomeResponse.home)
   return _msg;
 }
-inline void HomeResponse::set_allocated_home(::mavsdk::rpc::telemetry::Position* value) {
+inline void HomeResponse::set_allocated_home(::mavsdk::rpc::telemetry::HomePosition* value) {
   ::google::protobuf::Arena* message_arena = GetArena();
   ::google::protobuf::internal::TSanWrite(&_impl_);
   if (message_arena == nullptr) {
@@ -30251,7 +30583,7 @@ inline void HomeResponse::set_allocated_home(::mavsdk::rpc::telemetry::Position*
     _impl_._has_bits_[0] &= ~0x00000001u;
   }
 
-  _impl_.home_ = reinterpret_cast<::mavsdk::rpc::telemetry::Position*>(value);
+  _impl_.home_ = reinterpret_cast<::mavsdk::rpc::telemetry::HomePosition*>(value);
   // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.telemetry.HomeResponse.home)
 }
 
@@ -36527,6 +36859,348 @@ inline float Position::_internal_relative_altitude_m() const {
 inline void Position::_internal_set_relative_altitude_m(float value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.relative_altitude_m_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// HomePosition
+
+// uint64 timestamp_us = 1;
+inline void HomePosition::clear_timestamp_us() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.timestamp_us_ = ::uint64_t{0u};
+}
+inline ::uint64_t HomePosition::timestamp_us() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.HomePosition.timestamp_us)
+  return _internal_timestamp_us();
+}
+inline void HomePosition::set_timestamp_us(::uint64_t value) {
+  _internal_set_timestamp_us(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.HomePosition.timestamp_us)
+}
+inline ::uint64_t HomePosition::_internal_timestamp_us() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.timestamp_us_;
+}
+inline void HomePosition::_internal_set_timestamp_us(::uint64_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.timestamp_us_ = value;
+}
+
+// double latitude_deg = 2 [(.mavsdk.options.default_value) = "NaN"];
+inline void HomePosition::clear_latitude_deg() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.latitude_deg_ = 0;
+}
+inline double HomePosition::latitude_deg() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.HomePosition.latitude_deg)
+  return _internal_latitude_deg();
+}
+inline void HomePosition::set_latitude_deg(double value) {
+  _internal_set_latitude_deg(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.HomePosition.latitude_deg)
+}
+inline double HomePosition::_internal_latitude_deg() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.latitude_deg_;
+}
+inline void HomePosition::_internal_set_latitude_deg(double value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.latitude_deg_ = value;
+}
+
+// double longitude_deg = 3 [(.mavsdk.options.default_value) = "NaN"];
+inline void HomePosition::clear_longitude_deg() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.longitude_deg_ = 0;
+}
+inline double HomePosition::longitude_deg() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.HomePosition.longitude_deg)
+  return _internal_longitude_deg();
+}
+inline void HomePosition::set_longitude_deg(double value) {
+  _internal_set_longitude_deg(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.HomePosition.longitude_deg)
+}
+inline double HomePosition::_internal_longitude_deg() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.longitude_deg_;
+}
+inline void HomePosition::_internal_set_longitude_deg(double value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.longitude_deg_ = value;
+}
+
+// float absolute_altitude_m = 4 [(.mavsdk.options.default_value) = "NaN"];
+inline void HomePosition::clear_absolute_altitude_m() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.absolute_altitude_m_ = 0;
+}
+inline float HomePosition::absolute_altitude_m() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.HomePosition.absolute_altitude_m)
+  return _internal_absolute_altitude_m();
+}
+inline void HomePosition::set_absolute_altitude_m(float value) {
+  _internal_set_absolute_altitude_m(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.HomePosition.absolute_altitude_m)
+}
+inline float HomePosition::_internal_absolute_altitude_m() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.absolute_altitude_m_;
+}
+inline void HomePosition::_internal_set_absolute_altitude_m(float value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.absolute_altitude_m_ = value;
+}
+
+// float relative_altitude_m = 5 [(.mavsdk.options.default_value) = "NaN"];
+inline void HomePosition::clear_relative_altitude_m() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.relative_altitude_m_ = 0;
+}
+inline float HomePosition::relative_altitude_m() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.HomePosition.relative_altitude_m)
+  return _internal_relative_altitude_m();
+}
+inline void HomePosition::set_relative_altitude_m(float value) {
+  _internal_set_relative_altitude_m(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.HomePosition.relative_altitude_m)
+}
+inline float HomePosition::_internal_relative_altitude_m() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.relative_altitude_m_;
+}
+inline void HomePosition::_internal_set_relative_altitude_m(float value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.relative_altitude_m_ = value;
+}
+
+// float local_north_m = 6 [(.mavsdk.options.default_value) = "NaN"];
+inline void HomePosition::clear_local_north_m() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.local_north_m_ = 0;
+}
+inline float HomePosition::local_north_m() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.HomePosition.local_north_m)
+  return _internal_local_north_m();
+}
+inline void HomePosition::set_local_north_m(float value) {
+  _internal_set_local_north_m(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.HomePosition.local_north_m)
+}
+inline float HomePosition::_internal_local_north_m() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.local_north_m_;
+}
+inline void HomePosition::_internal_set_local_north_m(float value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.local_north_m_ = value;
+}
+
+// float local_east_m = 7 [(.mavsdk.options.default_value) = "NaN"];
+inline void HomePosition::clear_local_east_m() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.local_east_m_ = 0;
+}
+inline float HomePosition::local_east_m() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.HomePosition.local_east_m)
+  return _internal_local_east_m();
+}
+inline void HomePosition::set_local_east_m(float value) {
+  _internal_set_local_east_m(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.HomePosition.local_east_m)
+}
+inline float HomePosition::_internal_local_east_m() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.local_east_m_;
+}
+inline void HomePosition::_internal_set_local_east_m(float value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.local_east_m_ = value;
+}
+
+// float local_down_m = 8 [(.mavsdk.options.default_value) = "NaN"];
+inline void HomePosition::clear_local_down_m() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.local_down_m_ = 0;
+}
+inline float HomePosition::local_down_m() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.HomePosition.local_down_m)
+  return _internal_local_down_m();
+}
+inline void HomePosition::set_local_down_m(float value) {
+  _internal_set_local_down_m(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.HomePosition.local_down_m)
+}
+inline float HomePosition::_internal_local_down_m() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.local_down_m_;
+}
+inline void HomePosition::_internal_set_local_down_m(float value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.local_down_m_ = value;
+}
+
+// .mavsdk.rpc.telemetry.Quaternion q = 9;
+inline bool HomePosition::has_q() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.q_ != nullptr);
+  return value;
+}
+inline void HomePosition::clear_q() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.q_ != nullptr) _impl_.q_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
+}
+inline const ::mavsdk::rpc::telemetry::Quaternion& HomePosition::_internal_q() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::mavsdk::rpc::telemetry::Quaternion* p = _impl_.q_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::telemetry::Quaternion&>(::mavsdk::rpc::telemetry::_Quaternion_default_instance_);
+}
+inline const ::mavsdk::rpc::telemetry::Quaternion& HomePosition::q() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.HomePosition.q)
+  return _internal_q();
+}
+inline void HomePosition::unsafe_arena_set_allocated_q(::mavsdk::rpc::telemetry::Quaternion* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.q_);
+  }
+  _impl_.q_ = reinterpret_cast<::mavsdk::rpc::telemetry::Quaternion*>(value);
+  if (value != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.telemetry.HomePosition.q)
+}
+inline ::mavsdk::rpc::telemetry::Quaternion* HomePosition::release_q() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::telemetry::Quaternion* released = _impl_.q_;
+  _impl_.q_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
+    }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::mavsdk::rpc::telemetry::Quaternion* HomePosition::unsafe_arena_release_q() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.telemetry.HomePosition.q)
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::telemetry::Quaternion* temp = _impl_.q_;
+  _impl_.q_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::telemetry::Quaternion* HomePosition::_internal_mutable_q() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.q_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::telemetry::Quaternion>(GetArena());
+    _impl_.q_ = reinterpret_cast<::mavsdk::rpc::telemetry::Quaternion*>(p);
+  }
+  return _impl_.q_;
+}
+inline ::mavsdk::rpc::telemetry::Quaternion* HomePosition::mutable_q() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  ::mavsdk::rpc::telemetry::Quaternion* _msg = _internal_mutable_q();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.telemetry.HomePosition.q)
+  return _msg;
+}
+inline void HomePosition::set_allocated_q(::mavsdk::rpc::telemetry::Quaternion* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete (_impl_.q_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+
+  _impl_.q_ = reinterpret_cast<::mavsdk::rpc::telemetry::Quaternion*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.telemetry.HomePosition.q)
+}
+
+// float approach_north_m = 10 [(.mavsdk.options.default_value) = "NaN"];
+inline void HomePosition::clear_approach_north_m() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.approach_north_m_ = 0;
+}
+inline float HomePosition::approach_north_m() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.HomePosition.approach_north_m)
+  return _internal_approach_north_m();
+}
+inline void HomePosition::set_approach_north_m(float value) {
+  _internal_set_approach_north_m(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.HomePosition.approach_north_m)
+}
+inline float HomePosition::_internal_approach_north_m() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.approach_north_m_;
+}
+inline void HomePosition::_internal_set_approach_north_m(float value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.approach_north_m_ = value;
+}
+
+// float approach_east_m = 11 [(.mavsdk.options.default_value) = "NaN"];
+inline void HomePosition::clear_approach_east_m() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.approach_east_m_ = 0;
+}
+inline float HomePosition::approach_east_m() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.HomePosition.approach_east_m)
+  return _internal_approach_east_m();
+}
+inline void HomePosition::set_approach_east_m(float value) {
+  _internal_set_approach_east_m(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.HomePosition.approach_east_m)
+}
+inline float HomePosition::_internal_approach_east_m() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.approach_east_m_;
+}
+inline void HomePosition::_internal_set_approach_east_m(float value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.approach_east_m_ = value;
+}
+
+// float approach_down_m = 12 [(.mavsdk.options.default_value) = "NaN"];
+inline void HomePosition::clear_approach_down_m() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.approach_down_m_ = 0;
+}
+inline float HomePosition::approach_down_m() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.HomePosition.approach_down_m)
+  return _internal_approach_down_m();
+}
+inline void HomePosition::set_approach_down_m(float value) {
+  _internal_set_approach_down_m(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.HomePosition.approach_down_m)
+}
+inline float HomePosition::_internal_approach_down_m() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.approach_down_m_;
+}
+inline void HomePosition::_internal_set_approach_down_m(float value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.approach_down_m_ = value;
 }
 
 // -------------------------------------------------------------------

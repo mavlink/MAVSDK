@@ -85,7 +85,7 @@ public:
 
     Telemetry::PositionVelocityNed position_velocity_ned() const;
     Telemetry::Position position() const;
-    Telemetry::Position home() const;
+    Telemetry::HomePosition home() const;
     bool in_air() const;
     bool armed() const;
     Telemetry::VtolState vtol_state() const;
@@ -122,7 +122,7 @@ public:
     void unsubscribe_position_velocity_ned(Telemetry::PositionVelocityNedHandle handle);
     Telemetry::PositionHandle subscribe_position(const Telemetry::PositionCallback& callback);
     void unsubscribe_position(Telemetry::PositionHandle handle);
-    Telemetry::HomeHandle subscribe_home(const Telemetry::PositionCallback& callback);
+    Telemetry::HomeHandle subscribe_home(const Telemetry::HomeCallback& callback);
     void unsubscribe_home(Telemetry::HomeHandle handle);
     Telemetry::InAirHandle subscribe_in_air(const Telemetry::InAirCallback& callback);
     void unsubscribe_in_air(Telemetry::InAirHandle handle);
@@ -207,7 +207,7 @@ public:
 private:
     void set_position_velocity_ned(Telemetry::PositionVelocityNed position_velocity_ned);
     void set_position(Telemetry::Position position);
-    void set_home_position(Telemetry::Position home_position);
+    void set_home_position(Telemetry::HomePosition home_position);
     void set_in_air(bool in_air);
     void set_vtol_state(Telemetry::VtolState vtol_state);
     void set_landed_state(Telemetry::LandedState landed_state);
@@ -299,7 +299,7 @@ private:
     Telemetry::PositionVelocityNed _position_velocity_ned{};
 
     mutable std::mutex _home_position_mutex{};
-    Telemetry::Position _home_position{};
+    Telemetry::HomePosition _home_position{};
 
     // If possible, just use atomic instead of a mutex.
     std::atomic_bool _in_air{false};
@@ -383,7 +383,7 @@ private:
     std::mutex _subscription_mutex{};
     CallbackList<Telemetry::PositionVelocityNed> _position_velocity_ned_subscriptions{};
     CallbackList<Telemetry::Position> _position_subscriptions{};
-    CallbackList<Telemetry::Position> _home_position_subscriptions{};
+    CallbackList<Telemetry::HomePosition> _home_position_subscriptions{};
     CallbackList<bool> _in_air_subscriptions{};
     CallbackList<Telemetry::StatusText> _status_text_subscriptions{};
     CallbackList<bool> _armed_subscriptions{};

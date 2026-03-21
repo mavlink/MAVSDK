@@ -806,13 +806,25 @@ void TelemetryImpl::process_home_position(const mavlink_message_t& message)
 {
     mavlink_home_position_t home_position;
     mavlink_msg_home_position_decode(&message, &home_position);
-    Telemetry::Position new_pos;
-    new_pos.latitude_deg = home_position.latitude * 1e-7;
-    new_pos.longitude_deg = home_position.longitude * 1e-7;
-    new_pos.absolute_altitude_m = home_position.altitude * 1e-3f;
-    new_pos.relative_altitude_m = 0.0f; // 0 by definition.
 
-    set_home_position(new_pos);
+    Telemetry::HomePosition new_home;
+    new_home.latitude_deg = home_position.latitude * 1e-7;
+    new_home.longitude_deg = home_position.longitude * 1e-7;
+    new_home.absolute_altitude_m = home_position.altitude * 1e-3f;
+    new_home.relative_altitude_m = 0.0f; // 0 by definition.
+    new_home.local_x_m = home_position.x;
+    new_home.local_y_m = home_position.y;
+    new_home.local_z_m = home_position.z;
+    new_home.q.w = home_position.q[0];
+    new_home.q.x = home_position.q[1];
+    new_home.q.y = home_position.q[2];
+    new_home.q.z = home_position.q[3];
+    new_home.approach_x_m = home_position.approach_x;
+    new_home.approach_y_m = home_position.approach_y;
+    new_home.approach_z_m = home_position.approach_z;
+    new_home.timestamp_us = home_position.time_usec;
+
+    set_home_position(new_home);
 
     set_health_home_position(true);
 
@@ -1856,13 +1868,13 @@ void TelemetryImpl::set_wind(Telemetry::Wind wind)
     _wind = wind;
 }
 
-Telemetry::Position TelemetryImpl::home() const
+Telemetry::HomePosition TelemetryImpl::home() const
 {
     std::lock_guard<std::mutex> lock(_home_position_mutex);
     return _home_position;
 }
 
-void TelemetryImpl::set_home_position(Telemetry::Position home_position)
+void TelemetryImpl::set_home_position(Telemetry::HomePosition home_position)
 {
     std::lock_guard<std::mutex> lock(_home_position_mutex);
     _home_position = home_position;
@@ -2257,7 +2269,7 @@ void TelemetryImpl::unsubscribe_position(Telemetry::PositionHandle handle)
     _position_subscriptions.unsubscribe(handle);
 }
 
-Telemetry::HomeHandle TelemetryImpl::subscribe_home(const Telemetry::PositionCallback& callback)
+Telemetry::HomeHandle TelemetryImpl::subscribe_home(const Telemetry::HomeCallback& callback)
 {
     std::lock_guard<std::mutex> lock(_subscription_mutex);
     return _home_position_subscriptions.subscribe(callback);
