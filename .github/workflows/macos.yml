@@ -51,14 +51,14 @@ jobs:
             architecture: 'arm64'
     steps:
       - name: Install Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: '3.11'
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           submodules: recursive
           fetch-depth: 0
-      - uses: actions/cache@v4
+      - uses: actions/cache@v5
         id: cache
         with:
           path: ./cpp/build/macos/third_party/install
@@ -87,14 +87,14 @@ jobs:
           cmake --build build --target install
       - name: Upload framework as artefact
         if: ${{ matrix.build-framework == 'ON' }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: mavsdk_server_macos_${{ matrix.architecture }}.framework
           path: ./cpp/build/macos/src/mavsdk_server/src/mavsdk_server.framework
           retention-days: 2
       - name: Upload binary as artefact
         if: ${{ matrix.build-framework == 'OFF' }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: mavsdk_server_macos_${{ matrix.architecture }}
           path: cpp/build/macos/install/bin/mavsdk_server
@@ -147,15 +147,15 @@ jobs:
             runner: macos-15
     steps:
       - name: Install Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: '3.11'
           architecture: 'x64'
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           submodules: recursive
           fetch-depth: 0
-      - uses: actions/cache@v4
+      - uses: actions/cache@v5
         id: cache
         with:
           path: ./cpp/build/${{ matrix.name }}/third_party/install
@@ -177,7 +177,7 @@ jobs:
         run: cmake $superbuild $cmake_prefix_path -DENABLE_STRICT_TRY_COMPILE=ON -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_TOOLCHAIN_FILE=$(pwd)/cmake/ios.toolchain.cmake -DENABLE_BITCODE=Off -DPLATFORM=${{ matrix.platform }} -DDEPLOYMENT_TARGET=14.0 -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DWERROR=ON -Bbuild/${{ matrix.name }} -H.
       - name: build
         run: cmake --build build/${{ matrix.name }} -j$(sysctl -n hw.ncpu)
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: mavsdk_server_${{ matrix.name }}.framework
           path: ./cpp/build/${{ matrix.name }}/src/mavsdk_server/src/mavsdk_server.framework
@@ -188,7 +188,7 @@ jobs:
     needs: [macOS, iOS]
     runs-on: macos-15
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           submodules: recursive
       - uses: actions/download-artifact@v4
@@ -215,7 +215,7 @@ jobs:
         run: brew install tree
       - name: Package
         run: bash ./src/mavsdk_server/tools/package_mavsdk_server_framework.bash
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: mavsdk_server.xcframework
           path: ./cpp/build/mavsdk_server.xcframework
