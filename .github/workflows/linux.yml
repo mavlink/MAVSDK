@@ -502,8 +502,10 @@ jobs:
       - name: install
         run: cmake --build build/release --target install
       - name: Package
+        if: startsWith(github.ref, 'refs/tags/v')
         run: tools/create_packages.sh ./install . amd64 libmavsdk-dev
       - name: Upload as artifact
+        if: startsWith(github.ref, 'refs/tags/v')
         uses: actions/upload-artifact@v7
         with:
           name: libmavsdk-dev-${{ matrix.os_type }}-${{ matrix.os_version }}
@@ -564,9 +566,10 @@ jobs:
       - name: build
         run: ./dockcross-linux-${{ matrix.docker_name }}-custom cmake --build build/linux-${{ matrix.docker_name }} -j$(nproc) --target install
       - name: create deb packages
+        if: startsWith(github.ref, 'refs/tags/v')
         working-directory: .
         run: ./cpp/dockcross-linux-${{ matrix.docker_name }}-custom cpp/tools/create_packages.sh ./cpp/build/linux-${{ matrix.docker_name }}/install . ${{ matrix.arch_name }} libmavsdk-dev
-      - if: ${{ matrix.rename_distro }}
+      - if: startsWith(github.ref, 'refs/tags/v') && matrix.rename_distro
         name: Rename LTS versions from debian12 to debian11
         run: |
           sudo apt update && sudo apt install -y \
