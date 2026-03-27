@@ -1,4 +1,4 @@
-<img alt="MAVSDK" src="docs/assets/site/sdk_logo_full.png" width="400">
+<img alt="MAVSDK" src="cpp/docs/assets/site/sdk_logo_full.png" width="400">
 
 [![Linux](https://github.com/mavlink/MAVSDK/actions/workflows/linux.yml/badge.svg?branch=main)](https://github.com/mavlink/MAVSDK/actions/workflows/linux.yml)
 [![macOS](https://github.com/mavlink/MAVSDK/actions/workflows/macos.yml/badge.svg?branch=main)](https://github.com/mavlink/MAVSDK/actions/workflows/macos.yml)
