@@ -31,10 +31,11 @@ The MAVSDK C++ part consists of:
 - [MAVSDK-Python](https://github.com/mavlink/MAVSDK-Python) - MAVSDK client for Python (first released on Pypi 2019).
 - [MAVSDK-Swift](https://github.com/mavlink/MAVSDK-Swift) - MAVSDK client for Swift (used in production, first released 2018).
 - [MAVSDK-Java](https://github.com/mavlink/MAVSDK-Java) - MAVSDK client for Java (first released on MavenCentral in 2019).
+- [MAVSDK-Go](https://github.com/mavlink/MAVSDK-Go) - MAVSDK client for Go (work in progress).
 - [MAVSDK-JavaScript](https://github.com/mavlink/MAVSDK-JavaScript) - MAVSDK client in JavaScript (proof of concept, 2019).
 - [MAVSDK-Rust](https://github.com/mavlink/MAVSDK-Rust) - MAVSDK client for Rust (proof of concept, 2019).
 - [MAVSDK-CSharp](https://github.com/mavlink/MAVSDK-CSharp) - MAVSDK client for CSharp (proof of concept, 2019).
-- [Docs](https://github.com/mavlink/MAVSDK-docs) - MAVSDK [docs](https://mavsdk.mavlink.io/main/en/) source.
+- [Docs](https://github.com/mavlink/MAVSDK/tree/main/cpp/docs) - MAVSDK [docs](https://mavsdk.mavlink.io/main/en/) source.
 
 ## Docs
 
