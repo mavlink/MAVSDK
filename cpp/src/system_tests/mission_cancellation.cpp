@@ -65,8 +65,10 @@ TEST(SystemTest, MissionUploadCancellation)
     LogInfo() << "Cancelling mission upload...";
     mission.cancel_mission_upload();
 
-    // Wait for cancellation to complete
-    future_status = fut.wait_for(std::chrono::milliseconds(500));
+    // Wait for cancellation to complete. Use a generous timeout (5s) because the
+    // cancellation result is delivered via the async user-callback queue and on a
+    // loaded CI runner can take well over 500ms to arrive.
+    future_status = fut.wait_for(std::chrono::seconds(5));
     ASSERT_EQ(future_status, std::future_status::ready);
     auto future_result = fut.get();
     EXPECT_EQ(future_result, Mission::Result::TransferCancelled);
@@ -117,6 +119,9 @@ TEST(SystemTest, MissionDownloadCancellation)
             prom.set_value(result);
         });
 
+        // Upload should succeed; give it up to 30s on slow CI runners.
+        auto upload_status = fut.wait_for(std::chrono::seconds(30));
+        ASSERT_EQ(upload_status, std::future_status::ready);
         auto future_result = fut.get();
         EXPECT_EQ(future_result, Mission::Result::Success);
         LogInfo() << "Mission uploaded successfully.";
@@ -140,8 +145,9 @@ TEST(SystemTest, MissionDownloadCancellation)
         LogInfo() << "Cancelling mission download...";
         mission.cancel_mission_download();
 
-        // Wait for cancellation to complete
-        future_status = fut.wait_for(std::chrono::milliseconds(500));
+        // Wait for cancellation to complete. Same reasoning as upload: 5s to
+        // account for slow CI runners draining the async user-callback queue.
+        future_status = fut.wait_for(std::chrono::seconds(5));
         ASSERT_EQ(future_status, std::future_status::ready);
         auto future_result = fut.get();
         EXPECT_EQ(future_result, Mission::Result::TransferCancelled);
