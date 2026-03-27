@@ -124,6 +124,11 @@ private:
         CallbackList<Mission::MissionProgress> mission_progress_callbacks{};
         int last_current_reported_mission_item{-1};
         int last_total_reported_mission_item{-1};
+        // Separate mutex for last_upload / last_download so their read/write
+        // accesses can be synchronised without conflicting with the progress
+        // fields guarded by `mutex` above (reset_mission_progress() holds that
+        // one while we need to assign last_upload in the same call stack).
+        mutable std::mutex transfer_mutex{};
         std::weak_ptr<MavlinkMissionTransferClient::WorkItem> last_upload{};
         std::weak_ptr<MavlinkMissionTransferClient::WorkItem> last_download{};
         bool gimbal_v2_in_control{false};
