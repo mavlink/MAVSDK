@@ -2,6 +2,7 @@
 #include "mavsdk.h"
 #include "plugins/mission/mission.h"
 #include "plugins/mission_raw_server/mission_raw_server.h"
+#include <atomic>
 #include <future>
 #include <thread>
 #include <gtest/gtest.h>
@@ -18,9 +19,19 @@ static Mission::MissionItem add_waypoint(
     float gimbal_yaw_deg,
     bool take_photo);
 
+static Mission::MissionPlan create_mission_plan()
+{
+    Mission::MissionPlan mission_plan{};
+    // 1000 items so the transfer takes long enough that a mid-flight cancel is reliable.
+    for (unsigned i = 0; i < 1000; ++i) {
+        mission_plan.mission_items.push_back(
+            add_waypoint(47.3981703270545, 8.54564902186397, 20.0, 3.0, true, -90.0, 0.0, false));
+    }
+    return mission_plan;
+}
+
 TEST(SystemTest, MissionUploadCancellation)
 {
-    // Create two MAVSDK instances: groundstation and autopilot
     Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
     Mavsdk mavsdk_autopilot{Mavsdk::Configuration{ComponentType::Autopilot}};
 
@@ -30,48 +41,43 @@ TEST(SystemTest, MissionUploadCancellation)
     ASSERT_EQ(
         mavsdk_autopilot.add_any_connection("udpout://127.0.0.1:17000"), ConnectionResult::Success);
 
-    // Set up the autopilot side with MissionRawServer
     auto mission_raw_server = MissionRawServer{mavsdk_autopilot.server_component()};
 
-    // Wait for groundstation to discover autopilot
     auto maybe_system = mavsdk_groundstation.first_autopilot(10.0);
     ASSERT_TRUE(maybe_system);
     auto system = maybe_system.value();
     ASSERT_TRUE(system->has_autopilot());
 
     auto mission = Mission{system};
+    auto mission_plan = create_mission_plan();
 
-    Mission::MissionPlan mission_plan{};
+    std::promise<Mission::Result> result_prom{};
+    std::future<Mission::Result> result_fut = result_prom.get_future();
+    std::atomic<bool> cancel_triggered{false};
 
-    // Create a large mission (1000 items) to ensure we have time to cancel
-    for (unsigned i = 0; i < 1000; ++i) {
-        mission_plan.mission_items.push_back(
-            add_waypoint(47.3981703270545, 8.54564902186397, 20.0, 3.0, true, -90.0, 0.0, false));
-    }
-
-    std::promise<Mission::Result> prom{};
-    std::future<Mission::Result> fut = prom.get_future();
-
+    // Use the progress variant so we can cancel the moment the first progress
+    // update arrives.  That guarantees cancel() is called while the transfer is
+    // still in flight, regardless of how fast the loopback link is.
     LogInfo() << "Starting mission upload...";
-    mission.upload_mission_async(mission_plan, [&prom](Mission::Result result) {
-        LogInfo() << "Upload mission result: " << result;
-        prom.set_value(result);
-    });
+    mission.upload_mission_with_progress_async(
+        mission_plan,
+        [&](Mission::Result result, Mission::ProgressData /*progress_data*/) {
+            if (result == Mission::Result::Next) {
+                // Cancel exactly once, on the first progress update.
+                if (!cancel_triggered.exchange(true)) {
+                    LogInfo() << "Upload is in flight, cancelling...";
+                    mission.cancel_mission_upload();
+                }
+                return;
+            }
+            // Final callback: TransferCancelled expected.
+            result_prom.set_value(result);
+        });
 
-    // We should not be finished yet (only wait 100ms)
-    auto future_status = fut.wait_for(std::chrono::milliseconds(100));
-    EXPECT_EQ(future_status, std::future_status::timeout);
-
-    LogInfo() << "Cancelling mission upload...";
-    mission.cancel_mission_upload();
-
-    // Wait for cancellation to complete. Use a generous timeout (5s) because the
-    // cancellation result is delivered via the async user-callback queue and on a
-    // loaded CI runner can take well over 500ms to arrive.
-    future_status = fut.wait_for(std::chrono::seconds(5));
-    ASSERT_EQ(future_status, std::future_status::ready);
-    auto future_result = fut.get();
-    EXPECT_EQ(future_result, Mission::Result::TransferCancelled);
+    // Allow generous time: the cancel result is delivered via the async
+    // user-callback queue which can be slow on a loaded CI runner.
+    ASSERT_EQ(result_fut.wait_for(std::chrono::seconds(30)), std::future_status::ready);
+    EXPECT_EQ(result_fut.get(), Mission::Result::TransferCancelled);
     LogInfo() << "Mission upload cancelled successfully.";
 
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
@@ -79,7 +85,6 @@ TEST(SystemTest, MissionUploadCancellation)
 
 TEST(SystemTest, MissionDownloadCancellation)
 {
-    // Create two MAVSDK instances: groundstation and autopilot
     Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
     Mavsdk mavsdk_autopilot{Mavsdk::Configuration{ComponentType::Autopilot}};
 
@@ -89,70 +94,45 @@ TEST(SystemTest, MissionDownloadCancellation)
     ASSERT_EQ(
         mavsdk_autopilot.add_any_connection("udpout://127.0.0.1:17000"), ConnectionResult::Success);
 
-    // Set up the autopilot side with MissionRawServer
     auto mission_raw_server = MissionRawServer{mavsdk_autopilot.server_component()};
 
-    // Wait for groundstation to discover autopilot
     auto maybe_system = mavsdk_groundstation.first_autopilot(10.0);
     ASSERT_TRUE(maybe_system);
     auto system = maybe_system.value();
     ASSERT_TRUE(system->has_autopilot());
 
     auto mission = Mission{system};
+    auto mission_plan = create_mission_plan();
 
-    Mission::MissionPlan mission_plan{};
+    // Upload synchronously first (separate from the cancellation test).
+    LogInfo() << "Uploading mission first...";
+    ASSERT_EQ(mission.upload_mission(mission_plan), Mission::Result::Success);
+    LogInfo() << "Mission uploaded successfully.";
 
-    // Create a large mission (1000 items) to ensure we have time to cancel during download
-    for (unsigned i = 0; i < 1000; ++i) {
-        mission_plan.mission_items.push_back(
-            add_waypoint(47.3981703270545, 8.54564902186397, 20.0, 3.0, true, -90.0, 0.0, false));
-    }
+    // Download and cancel once we know the transfer is in flight.
+    std::promise<Mission::Result> result_prom{};
+    std::future<Mission::Result> result_fut = result_prom.get_future();
+    std::atomic<bool> cancel_triggered{false};
 
-    // First upload the mission
-    {
-        std::promise<Mission::Result> prom{};
-        std::future<Mission::Result> fut = prom.get_future();
-
-        LogInfo() << "Uploading mission first...";
-        mission.upload_mission_async(mission_plan, [&prom](Mission::Result result) {
-            LogInfo() << "Upload mission result: " << result;
-            prom.set_value(result);
+    LogInfo() << "Starting mission download...";
+    mission.download_mission_with_progress_async(
+        [&](Mission::Result result, Mission::ProgressDataOrMission progress_data) {
+            if (result == Mission::Result::Next) {
+                // has_progress == true during the item exchange;
+                // has_mission == true only at successful completion — don't cancel then.
+                if (progress_data.has_progress && !cancel_triggered.exchange(true)) {
+                    LogInfo() << "Download is in flight, cancelling...";
+                    mission.cancel_mission_download();
+                }
+                return;
+            }
+            // Final callback: TransferCancelled expected.
+            result_prom.set_value(result);
         });
 
-        // Upload should succeed; give it up to 30s on slow CI runners.
-        auto upload_status = fut.wait_for(std::chrono::seconds(30));
-        ASSERT_EQ(upload_status, std::future_status::ready);
-        auto future_result = fut.get();
-        EXPECT_EQ(future_result, Mission::Result::Success);
-        LogInfo() << "Mission uploaded successfully.";
-    }
-
-    // Now try to download and cancel
-    {
-        std::promise<Mission::Result> prom{};
-        std::future<Mission::Result> fut = prom.get_future();
-
-        LogInfo() << "Starting mission download...";
-        mission.download_mission_async([&prom](Mission::Result result, Mission::MissionPlan) {
-            LogInfo() << "Download mission result: " << result;
-            prom.set_value(result);
-        });
-
-        // We should not be finished yet (only wait 100ms)
-        auto future_status = fut.wait_for(std::chrono::milliseconds(100));
-        EXPECT_EQ(future_status, std::future_status::timeout);
-
-        LogInfo() << "Cancelling mission download...";
-        mission.cancel_mission_download();
-
-        // Wait for cancellation to complete. Same reasoning as upload: 5s to
-        // account for slow CI runners draining the async user-callback queue.
-        future_status = fut.wait_for(std::chrono::seconds(5));
-        ASSERT_EQ(future_status, std::future_status::ready);
-        auto future_result = fut.get();
-        EXPECT_EQ(future_result, Mission::Result::TransferCancelled);
-        LogInfo() << "Mission download cancelled successfully.";
-    }
+    ASSERT_EQ(result_fut.wait_for(std::chrono::seconds(30)), std::future_status::ready);
+    EXPECT_EQ(result_fut.get(), Mission::Result::TransferCancelled);
+    LogInfo() << "Mission download cancelled successfully.";
 
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
