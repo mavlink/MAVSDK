@@ -60,8 +60,7 @@ TEST(SystemTest, MissionUploadCancellation)
     // still in flight, regardless of how fast the loopback link is.
     LogInfo() << "Starting mission upload...";
     mission.upload_mission_with_progress_async(
-        mission_plan,
-        [&](Mission::Result result, Mission::ProgressData /*progress_data*/) {
+        mission_plan, [&](Mission::Result result, Mission::ProgressData /*progress_data*/) {
             if (result == Mission::Result::Next) {
                 // Cancel exactly once, on the first progress update.
                 if (!cancel_triggered.exchange(true)) {
