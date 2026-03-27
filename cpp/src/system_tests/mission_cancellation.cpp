@@ -67,7 +67,7 @@ TEST(SystemTest, MissionUploadCancellation)
 
     // Wait for cancellation to complete
     future_status = fut.wait_for(std::chrono::milliseconds(500));
-    EXPECT_EQ(future_status, std::future_status::ready);
+    ASSERT_EQ(future_status, std::future_status::ready);
     auto future_result = fut.get();
     EXPECT_EQ(future_result, Mission::Result::TransferCancelled);
     LogInfo() << "Mission upload cancelled successfully.";
@@ -142,7 +142,7 @@ TEST(SystemTest, MissionDownloadCancellation)
 
         // Wait for cancellation to complete
         future_status = fut.wait_for(std::chrono::milliseconds(500));
-        EXPECT_EQ(future_status, std::future_status::ready);
+        ASSERT_EQ(future_status, std::future_status::ready);
         auto future_result = fut.get();
         EXPECT_EQ(future_result, Mission::Result::TransferCancelled);
         LogInfo() << "Mission download cancelled successfully.";
