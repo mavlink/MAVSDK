@@ -79,7 +79,7 @@ jobs:
         id: cache
         with:
           path: ./cpp/build/debug/third_party/install
-          key: ${{ github.job }}-${{ hashFiles('./third_party/**') }}-3
+          key: ${{ github.job }}-${{ hashFiles('./third_party/**') }}-4
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: |
@@ -116,7 +116,7 @@ jobs:
         id: cache
         with:
           path: ./cpp/build/asan/third_party/install
-          key: ${{ github.job }}-${{ hashFiles('./third_party/**') }}-3
+          key: ${{ github.job }}-${{ hashFiles('./third_party/**') }}-4
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: |
@@ -156,7 +156,7 @@ jobs:
         id: cache
         with:
           path: ./cpp/build/tsan/third_party/install
-          key: ${{ github.job }}-${{ hashFiles('./third_party/**') }}-3
+          key: ${{ github.job }}-${{ hashFiles('./third_party/**') }}-4
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: |
@@ -196,7 +196,7 @@ jobs:
         id: cache
         with:
           path: ./cpp/build/ubsan/third_party/install
-          key: ${{ github.job }}-${{ hashFiles('./third_party/**') }}-3
+          key: ${{ github.job }}-${{ hashFiles('./third_party/**') }}-4
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: |
@@ -265,7 +265,7 @@ jobs:
         id: cache
         with:
           path: ./cpp/build/release/third_party/install
-          key: ${{ github.job }}-${{ matrix.ubuntu_version }}-${{ matrix.cc }}-${{ hashFiles('./third_party/**') }}-2
+          key: ${{ github.job }}-${{ matrix.ubuntu_version }}-${{ matrix.cc }}-${{ hashFiles('./third_party/**') }}-3
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: |
@@ -327,7 +327,7 @@ jobs:
         id: cache
         with:
           path: ./cpp/build/release/third_party/install
-          key: ${{ github.job }}-${{ hashFiles('./third_party/**') }}-3
+          key: ${{ github.job }}-${{ hashFiles('./third_party/**') }}-4
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: |
@@ -384,7 +384,7 @@ jobs:
         id: cache
         with:
           path: ./cpp/build/default/third_party/install
-          key: ${{ github.job }}-${{ hashFiles('./third_party/**') }}-3
+          key: ${{ github.job }}-${{ hashFiles('./third_party/**') }}-4
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: |
@@ -553,7 +553,7 @@ jobs:
         id: cache
         with:
           path: ./cpp/build/linux-${{ matrix.docker_name }}/third_party/install
-          key: ${{ github.job }}-linux-${{ matrix.docker_name }}-${{ hashFiles('./third_party/**') }}-2
+          key: ${{ github.job }}-linux-${{ matrix.docker_name }}-${{ hashFiles('./third_party/**') }}-3
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: |
@@ -604,7 +604,7 @@ jobs:
         id: cache
         with:
           path: ./cpp/build/release/third_party/install
-          key: ${{ github.job }}-${{ hashFiles('./third_party/**') }}-3
+          key: ${{ github.job }}-${{ hashFiles('./third_party/**') }}-4
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: |
@@ -665,7 +665,7 @@ jobs:
         id: cache
         with:
           path: ./cpp/build/${{ matrix.arch_name }}/third_party/install
-          key: ${{ github.job }}-${{ matrix.arch_name }}-${{ hashFiles('./third_party/**') }}-2
+          key: ${{ github.job }}-${{ matrix.arch_name }}-${{ hashFiles('./third_party/**') }}-3
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: |
@@ -724,7 +724,7 @@ jobs:
         id: cache
         with:
           path: ./build/manylinux/cpp/third_party/install
-          key: ${{ github.job }}-${{ matrix.arch_name }}-${{ hashFiles('./third_party/**') }}-1
+          key: ${{ github.job }}-${{ matrix.arch_name }}-${{ hashFiles('./third_party/**') }}-2
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: |
@@ -809,7 +809,7 @@ jobs:
         id: cache
         with:
           path: ./cpp/build/${{ matrix.name }}/third_party/install
-          key: ${{ github.job }}-${{ matrix.name }}-${{ hashFiles('./third_party/**') }}-2
+          key: ${{ github.job }}-${{ matrix.name }}-${{ hashFiles('./third_party/**') }}-3
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: |
