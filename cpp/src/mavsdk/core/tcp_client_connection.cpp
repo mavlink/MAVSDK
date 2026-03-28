@@ -5,6 +5,7 @@
 #include <asio/buffer.hpp>
 #include <asio/connect.hpp>
 #include <asio/error.hpp>
+#include <asio/dispatch.hpp>
 #include <asio/post.hpp>
 #include <asio/write.hpp>
 
@@ -106,9 +107,11 @@ std::pair<bool, std::string> TcpClientConnection::send_raw_bytes(const char* byt
     std::promise<std::pair<bool, std::string>> promise;
     auto future = promise.get_future();
 
-    // Post to the io_context so the synchronous write runs on the same thread as
+    // Dispatch to the io_context so the synchronous write runs on the same thread as
     // async_connect / async_read_some — eliminating data races on socket internals.
-    asio::post(
+    // dispatch() (rather than post()) executes immediately when called from the io_context
+    // thread itself (e.g. from do_work() protocol handlers), preventing a future.get() deadlock.
+    asio::dispatch(
         _socket.get_executor(), [this, buf = std::move(buf), p = std::move(promise)]() mutable {
             std::lock_guard<std::mutex> lock(_send_mutex);
             if (!_socket.is_open()) {

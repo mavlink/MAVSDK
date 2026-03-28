@@ -192,7 +192,6 @@ private:
 
     void send_heartbeats();
 
-    void work_thread();
     void process_user_callbacks_thread();
 
     // process_messages() and process_libmav_messages() removed:
@@ -262,7 +261,6 @@ private:
         int linenumber{};
     };
 
-    std::unique_ptr<std::thread> _work_thread{};
     std::unique_ptr<std::thread> _process_user_callbacks_thread{};
     LockedQueue<UserCallback> _user_callback_queue{};
 
@@ -313,6 +311,10 @@ private:
     // CallEveryHandler::run_once() on the io_context thread.
     asio::steady_timer _timers_poll_timer{_io_context};
     void schedule_timers_poll();
+
+    // Recurring timer that drives ServerComponent::do_work() on the io_context thread.
+    asio::steady_timer _do_work_timer{_io_context};
+    void schedule_do_work();
 
     std::unique_ptr<std::thread> _io_thread{};
 };
