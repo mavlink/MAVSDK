@@ -1,5 +1,7 @@
 #include "mavsdk_impl.h"
 
+#include <asio/post.hpp>
+
 #include <algorithm>
 #include <mutex>
 #include <tcp_server_connection.h>

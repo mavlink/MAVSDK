@@ -2,6 +2,11 @@
 #include "mavsdk_impl.h"
 #include "log.h"
 
+#include <asio/buffer.hpp>
+#include <asio/error.hpp>
+#include <asio/ip/address.hpp>
+#include <asio/socket_base.hpp>
+
 #include <algorithm>
 #include <utility>
 #include <sstream>
