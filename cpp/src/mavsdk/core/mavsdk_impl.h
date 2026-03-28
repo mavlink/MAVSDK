@@ -317,8 +317,12 @@ private:
 
     std::atomic<bool> _should_exit{false};
 
-    // Asio event loop — driven by work_thread() via run_one_for()
+    // Asio event loop — runs on its own dedicated thread.
     asio::io_context _io_context{};
+    // Keep io_context::run() from returning when there are momentarily no async ops pending.
+    asio::executor_work_guard<asio::io_context::executor_type> _io_work_guard{
+        _io_context.get_executor()};
+    std::unique_ptr<std::thread> _io_thread{};
 };
 
 } // namespace mavsdk

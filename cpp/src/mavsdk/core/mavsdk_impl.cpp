@@ -75,6 +75,10 @@ MavsdkImpl::MavsdkImpl(const Mavsdk::Configuration& configuration) :
     _process_user_callbacks_thread =
         std::make_unique<std::thread>(&MavsdkImpl::process_user_callbacks_thread, this);
 
+    // Start the Asio io_context on its own thread so async_receive_from completions
+    // are dispatched independently of work_thread().
+    _io_thread = std::make_unique<std::thread>([this]() { _io_context.run(); });
+
     _work_thread = std::make_unique<std::thread>(&MavsdkImpl::work_thread, this);
 }
 
@@ -86,6 +90,16 @@ MavsdkImpl::~MavsdkImpl()
     }
 
     _should_exit = true;
+    _received_messages_cv.notify_all();
+
+    // Stop the Asio io_context so _io_thread exits io_context::run().
+    // This also cancels any pending async_receive_from operations on UdpConnection sockets.
+    _io_work_guard.reset();
+    _io_context.stop();
+    if (_io_thread) {
+        _io_thread->join();
+        _io_thread.reset();
+    }
 
     // Stop work first because we don't want to trigger anything that would
     // potentially want to call into user code.
@@ -391,9 +405,6 @@ void MavsdkImpl::receive_message(
             _received_messages.emplace(ReceivedMessage{std::move(message), connection});
         }
         _received_messages_cv.notify_one();
-        // Wake the work_thread's run_one_for() immediately so non-UDP messages
-        // (e.g., from TCP/serial receive threads) don't wait up to 10 ms.
-        asio::post(_io_context, [] {});
 
     } else if (result == MavlinkReceiver::ParseResult::BadCrc) {
         // Unknown message: forward only, don't process locally
@@ -409,8 +420,6 @@ void MavsdkImpl::receive_libmav_message(
         _received_libmav_messages.emplace(ReceivedLibmavMessage{message, connection});
     }
     _received_libmav_messages_cv.notify_one();
-    // Also wake the work_thread.
-    asio::post(_io_context, [] {});
 }
 
 void MavsdkImpl::process_messages()
@@ -1231,17 +1240,14 @@ void MavsdkImpl::work_thread()
         // Deliver outgoing messages
         deliver_messages();
 
-        // Drive the Asio event loop: handle any ready async completions (e.g.
-        // async_receive_from from UdpConnection), then check for new messages.
-        // run_one_for() blocks for at most 10 ms waiting for the next handler,
-        // replacing the old condition-variable sleep.
-        _io_context.run_one_for(std::chrono::milliseconds(10));
-        // Drain any additional handlers that are already ready without waiting.
-        _io_context.poll();
+        std::unique_lock lock_received(_received_messages_mutex);
+        if (_received_messages.empty()) {
+            _received_messages_cv.wait_for(
+                lock_received, std::chrono::milliseconds(10), [this]() {
+                    return !_received_messages.empty() || _should_exit;
+                });
+        }
     }
-
-    // Signal Asio to stop accepting new work so outstanding async ops cancel.
-    _io_context.stop();
 }
 
 void MavsdkImpl::set_callback_executor(std::function<void(std::function<void()>)> executor)

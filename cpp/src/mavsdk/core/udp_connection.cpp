@@ -164,7 +164,8 @@ std::pair<bool, std::string> UdpConnection::send_raw_bytes(const char* bytes, si
             continue;
         }
 
-        asio::ip::udp::endpoint dest_endpoint(dest_addr, static_cast<unsigned short>(remote.port_number));
+        asio::ip::udp::endpoint dest_endpoint(
+            dest_addr, static_cast<unsigned short>(remote.port_number));
 
         const auto send_len = _socket.send_to(asio::buffer(bytes, length), dest_endpoint, 0, ec);
 
@@ -224,7 +225,7 @@ void UdpConnection::add_remote_impl(
 
 void UdpConnection::do_receive()
 {
-    // Post an async receive. The handler runs on the io_context thread (work_thread).
+    // Post an async receive. The handler runs on the dedicated io_context thread (_io_thread).
     _socket.async_receive_from(
         asio::buffer(_recv_buffer),
         _sender_endpoint,
