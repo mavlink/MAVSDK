@@ -665,12 +665,12 @@ bool MavsdkImpl::send_message(mavlink_message_t& message)
         _messages_to_send.push(std::move(message_copy));
     }
 
-    // For heartbeat messages, we want to process them immediately to speed up system discovery
-    if (message.msgid == MAVLINK_MSG_ID_HEARTBEAT) {
-        // Trigger message processing in the work thread
-        // This is a hint to process messages sooner, but doesn't block
-        std::this_thread::yield();
-    }
+    // Deliver immediately on the io_context thread rather than waiting for
+    // work_thread's 10 ms poll cycle.  Without this, every FTP request sent
+    // from a process_message() callback (io_context thread) would incur up
+    // to 10 ms of extra latency before the next UDP packet was sent, causing
+    // spurious timeouts with reduced_timeout_s = 0.1 s test configurations.
+    asio::post(_io_context, [this]() { deliver_messages(); });
 
     return true;
 }
@@ -1218,10 +1218,11 @@ void MavsdkImpl::work_thread()
             }
         }
 
-        // Deliver outgoing messages
-        deliver_messages();
+        // Outgoing message delivery is now triggered immediately via asio::post()
+        // inside send_message(), so deliver_messages() is not called here.
+        // Calling it here as well would risk concurrent socket access from two threads.
 
-        // Sleep briefly — woken up by _should_exit on shutdown at most 10 ms later.
+        // Sleep briefly between do_work() ticks.
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
 }
