@@ -1242,10 +1242,9 @@ void MavsdkImpl::work_thread()
 
         std::unique_lock lock_received(_received_messages_mutex);
         if (_received_messages.empty()) {
-            _received_messages_cv.wait_for(
-                lock_received, std::chrono::milliseconds(10), [this]() {
-                    return !_received_messages.empty() || _should_exit;
-                });
+            _received_messages_cv.wait_for(lock_received, std::chrono::milliseconds(10), [this]() {
+                return !_received_messages.empty() || _should_exit;
+            });
         }
     }
 }
