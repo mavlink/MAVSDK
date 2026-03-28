@@ -9,6 +9,7 @@
 #include <asio/write.hpp>
 
 #include <future>
+#include <memory>
 #include <sstream>
 #include <utility>
 
@@ -98,22 +99,35 @@ std::pair<bool, std::string> TcpClientConnection::send_message(const mavlink_mes
 
 std::pair<bool, std::string> TcpClientConnection::send_raw_bytes(const char* bytes, size_t length)
 {
-    std::lock_guard<std::mutex> lock(_send_mutex);
+    // Copy bytes into a heap buffer that outlives this stack frame while the
+    // posted work runs on the io_context thread.
+    auto buf = std::make_shared<std::vector<char>>(bytes, bytes + length);
 
-    if (!_socket.is_open()) {
-        return {false, "Not connected"};
-    }
+    std::promise<std::pair<bool, std::string>> promise;
+    auto future = promise.get_future();
 
-    asio::error_code ec;
-    asio::write(_socket, asio::buffer(bytes, length), ec);
+    // Post to the io_context so the synchronous write runs on the same thread as
+    // async_connect / async_read_some — eliminating data races on socket internals.
+    asio::post(
+        _socket.get_executor(),
+        [this, buf = std::move(buf), p = std::move(promise)]() mutable {
+            std::lock_guard<std::mutex> lock(_send_mutex);
+            if (!_socket.is_open()) {
+                p.set_value({false, "Not connected"});
+                return;
+            }
+            asio::error_code ec;
+            asio::write(_socket, asio::buffer(*buf), ec);
+            if (ec) {
+                std::string msg = "Send failure: " + ec.message();
+                LogErr() << msg;
+                p.set_value({false, std::move(msg)});
+            } else {
+                p.set_value({true, {}});
+            }
+        });
 
-    if (ec) {
-        std::string msg = "Send failure: " + ec.message();
-        LogErr() << msg;
-        return {false, std::move(msg)};
-    }
-
-    return {true, {}};
+    return future.get();
 }
 
 void TcpClientConnection::do_connect()
@@ -132,9 +146,13 @@ void TcpClientConnection::do_connect()
     }
 
     // Ensure the socket is in a clean state before connecting.
-    if (_socket.is_open()) {
-        asio::error_code close_ec;
-        _socket.close(close_ec);
+    // Hold _send_mutex so this close() is serialised with send_raw_bytes.
+    {
+        std::lock_guard<std::mutex> lock(_send_mutex);
+        if (_socket.is_open()) {
+            asio::error_code close_ec;
+            _socket.close(close_ec);
+        }
     }
 
     asio::async_connect(
