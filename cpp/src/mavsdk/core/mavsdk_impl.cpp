@@ -768,17 +768,21 @@ void MavsdkImpl::deliver_message(mavlink_message_t& message)
             json_message.target_component_id = 0;
         }
 
-        // Generate JSON using LibmavReceiver's public method
-        auto connections = get_connections();
-        if (!connections.empty() && connections[0]->get_libmav_receiver()) {
-            json_message.fields_json =
-                connections[0]->get_libmav_receiver()->libmav_message_to_json(
-                    libmav_msg_opt.value());
-        } else {
-            // Fallback: create minimal JSON if no receiver available
-            json_message.fields_json =
-                "{\"message_id\":" + std::to_string(libmav_msg_opt.value().id()) +
-                ",\"message_name\":\"" + libmav_msg_opt.value().name() + "\"}";
+        // Generate JSON using LibmavReceiver's public method.
+        // Access _connections under _mutex so remove_connection() cannot destroy
+        // the Connection object (and its _libmav_receiver) while we're using it.
+        {
+            std::lock_guard lock(_mutex);
+            if (!_connections.empty() && _connections[0].connection->get_libmav_receiver()) {
+                json_message.fields_json =
+                    _connections[0].connection->get_libmav_receiver()->libmav_message_to_json(
+                        libmav_msg_opt.value());
+            } else {
+                // Fallback: create minimal JSON if no receiver available
+                json_message.fields_json =
+                    "{\"message_id\":" + std::to_string(libmav_msg_opt.value().id()) +
+                    ",\"message_name\":\"" + libmav_msg_opt.value().name() + "\"}";
+            }
         }
 
         if (!call_json_interception_callbacks(json_message, _outgoing_json_message_subscriptions)) {
