@@ -7,7 +7,7 @@
 #include <cstdint>
 #include <chrono>
 
-#include <asio.hpp>
+#include <asio/ip/udp.hpp>
 
 #include "connection.h"
 

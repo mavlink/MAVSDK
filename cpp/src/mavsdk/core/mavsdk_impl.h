@@ -10,7 +10,7 @@
 #include <thread>
 #include <queue>
 
-#include <asio.hpp>
+#include <asio/io_context.hpp>
 
 #include "autopilot.h"
 #include "compatibility_mode.h"
