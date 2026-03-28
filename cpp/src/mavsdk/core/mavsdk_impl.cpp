@@ -4,6 +4,7 @@
 
 #include <algorithm>
 #include <mutex>
+#include <thread>
 #include <tcp_server_connection.h>
 
 #include "connection.h"
@@ -75,8 +76,12 @@ MavsdkImpl::MavsdkImpl(const Mavsdk::Configuration& configuration) :
     _process_user_callbacks_thread =
         std::make_unique<std::thread>(&MavsdkImpl::process_user_callbacks_thread, this);
 
-    // Start the Asio io_context on its own thread so async_receive_from completions
-    // are dispatched independently of work_thread().
+    // Start the recurring timer that drives TimeoutHandler and CallEveryHandler
+    // on the io_context thread (replaces work_thread() polling).
+    schedule_timers_poll();
+
+    // Start the Asio io_context on its own thread.  All async I/O completions,
+    // message dispatch, and timer callbacks are dispatched here.
     _io_thread = std::make_unique<std::thread>([this]() { _io_context.run(); });
 
     _work_thread = std::make_unique<std::thread>(&MavsdkImpl::work_thread, this);
@@ -90,7 +95,6 @@ MavsdkImpl::~MavsdkImpl()
     }
 
     _should_exit = true;
-    _received_messages_cv.notify_all();
 
     // Stop the Asio io_context so _io_thread exits io_context::run().
     // This also cancels any pending async_receive_from operations on UdpConnection sockets.
@@ -399,13 +403,12 @@ void MavsdkImpl::receive_message(
     MavlinkReceiver::ParseResult result, mavlink_message_t& message, Connection* connection)
 {
     if (result == MavlinkReceiver::ParseResult::MessageParsed) {
-        // Valid message: queue for full processing (which includes forwarding)
-        {
-            std::lock_guard lock(_received_messages_mutex);
-            _received_messages.emplace(ReceivedMessage{std::move(message), connection});
-        }
-        _received_messages_cv.notify_one();
-
+        // Post directly to the io_context — no intermediate queue needed.
+        // The io_context thread already owns all connection callbacks, so this
+        // keeps message processing single-threaded on that same executor.
+        asio::post(_io_context, [this, msg = message, conn = connection]() mutable {
+            process_message(msg, conn);
+        });
     } else if (result == MavlinkReceiver::ParseResult::BadCrc) {
         // Unknown message: forward only, don't process locally
         forward_message(message, connection);
@@ -415,37 +418,18 @@ void MavsdkImpl::receive_message(
 void MavsdkImpl::receive_libmav_message(
     const Mavsdk::MavlinkMessage& message, Connection* connection)
 {
-    {
-        std::lock_guard lock(_received_libmav_messages_mutex);
-        _received_libmav_messages.emplace(ReceivedLibmavMessage{message, connection});
-    }
-    _received_libmav_messages_cv.notify_one();
+    // Post directly to the io_context — no intermediate queue needed.
+    asio::post(_io_context, [this, message, conn = connection]() {
+        process_libmav_message(message, conn);
+    });
 }
 
-void MavsdkImpl::process_messages()
-{
-    std::lock_guard lock(_received_messages_mutex);
-    while (!_received_messages.empty()) {
-        auto message_copied = _received_messages.front();
-        process_message(message_copied.message, message_copied.connection_ptr);
-        _received_messages.pop();
-    }
-}
-
-void MavsdkImpl::process_libmav_messages()
-{
-    std::lock_guard lock(_received_libmav_messages_mutex);
-    while (!_received_libmav_messages.empty()) {
-        auto message_copied = _received_libmav_messages.front();
-        process_libmav_message(message_copied.message, message_copied.connection_ptr);
-        _received_libmav_messages.pop();
-    }
-}
+// process_messages() and process_libmav_messages() removed:
+// messages are now dispatched directly via asio::post() in receive_message()
+// and receive_libmav_message(), so no drain loop is needed.
 
 void MavsdkImpl::process_message(mavlink_message_t& message, Connection* connection)
 {
-    // Assumes _received_messages_mutex
-
     if (_message_logging_on) {
         LogDebug() << "Processing message " << message.msgid << " from "
                    << static_cast<int>(message.sysid) << "/" << static_cast<int>(message.compid);
@@ -577,8 +561,6 @@ void MavsdkImpl::process_message(mavlink_message_t& message, Connection* connect
 void MavsdkImpl::process_libmav_message(
     const Mavsdk::MavlinkMessage& message, Connection* /* connection */)
 {
-    // Assumes _received_libmav_messages_mutex
-
     if (_message_logging_on) {
         LogDebug() << "MavsdkImpl::process_libmav_message: " << message.message_name << " from "
                    << static_cast<int>(message.system_id) << "/"
@@ -1221,17 +1203,12 @@ bool MavsdkImpl::is_any_system_connected() const
 void MavsdkImpl::work_thread()
 {
     while (!_should_exit) {
-        // Process incoming messages
-        process_messages();
+        // Message processing and timers are now handled on the io_context thread.
+        // This loop only needs to drive the protocol-handler work queues (do_work)
+        // and flush the outgoing message queue until those too are migrated.
 
-        // Process incoming libmav messages
-        process_libmav_messages();
-
-        // Run timers
-        timeout_handler.run_once();
-        call_every_handler.run_once();
-
-        // Do component work
+        // Do component work (protocol handler state machines: command sender,
+        // parameter client, mission transfer, FTP client, …)
         {
             std::lock_guard lock(_server_components_mutex);
             for (auto& it : _server_components) {
@@ -1244,13 +1221,25 @@ void MavsdkImpl::work_thread()
         // Deliver outgoing messages
         deliver_messages();
 
-        std::unique_lock lock_received(_received_messages_mutex);
-        if (_received_messages.empty()) {
-            _received_messages_cv.wait_for(lock_received, std::chrono::milliseconds(10), [this]() {
-                return !_received_messages.empty() || _should_exit;
-            });
-        }
+        // Sleep briefly — woken up by _should_exit on shutdown at most 10 ms later.
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
+}
+
+void MavsdkImpl::schedule_timers_poll()
+{
+    // Run TimeoutHandler and CallEveryHandler on the io_context thread every 5 ms.
+    // This gives ~5 ms timer resolution without a separate polling thread.
+    _timers_poll_timer.expires_after(std::chrono::milliseconds(5));
+    _timers_poll_timer.async_wait([this](const asio::error_code& ec) {
+        if (ec) {
+            // Cancelled (e.g. during shutdown) — do not reschedule.
+            return;
+        }
+        timeout_handler.run_once();
+        call_every_handler.run_once();
+        schedule_timers_poll();
+    });
 }
 
 void MavsdkImpl::set_callback_executor(std::function<void(std::function<void()>)> executor)
