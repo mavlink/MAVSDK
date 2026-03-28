@@ -2,6 +2,7 @@
 #include <chrono>
 #include <future>
 #include <gtest/gtest.h>
+#include <asio/io_context.hpp>
 
 #include "mavlink_mission_transfer_client.h"
 #include "mocks/sender_mock.h"
@@ -12,6 +13,7 @@ using namespace mavsdk;
 using ::testing::_;
 using ::testing::NiceMock;
 using ::testing::Return;
+using ::testing::ReturnRef;
 using ::testing::Truly;
 using MockSender = NiceMock<mavsdk::testing::MockSender>;
 
@@ -48,8 +50,10 @@ protected:
         ON_CALL(mock_sender, get_own_component_id())
             .WillByDefault(Return(own_address.component_id));
         ON_CALL(mock_sender, compatibility_mode()).WillByDefault(Return(CompatibilityMode::Auto));
+        ON_CALL(mock_sender, io_context()).WillByDefault(ReturnRef(io_context));
     }
 
+    asio::io_context io_context;
     MockSender mock_sender;
     MavlinkMessageHandler message_handler;
     FakeTime time;

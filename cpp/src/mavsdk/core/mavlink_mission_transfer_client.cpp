@@ -15,7 +15,8 @@ MavlinkMissionTransferClient::MavlinkMissionTransferClient(
     _message_handler(message_handler),
     _timeout_handler(timeout_handler),
     _timeout_s_callback(std::move(timeout_s_callback)),
-    _autopilot_callback(std::move(autopilot_callback))
+    _autopilot_callback(std::move(autopilot_callback)),
+    _io_context(sender.io_context())
 {
     if (const char* env_p = std::getenv("MAVSDK_MISSION_TRANSFER_DEBUGGING")) {
         if (std::string(env_p) == "1") {
@@ -54,7 +55,11 @@ MavlinkMissionTransferClient::upload_items_async(
         target_system_id,
         _autopilot_callback());
 
+    const bool was_empty = _work_queue.empty();
     _work_queue.push_back(ptr);
+    if (was_empty) {
+        asio::post(_io_context, [this] { do_work(); });
+    }
 
     return std::weak_ptr<WorkItem>(ptr);
 }
@@ -85,7 +90,11 @@ MavlinkMissionTransferClient::download_items_async(
         _debugging,
         target_system_id);
 
+    const bool was_empty = _work_queue.empty();
     _work_queue.push_back(ptr);
+    if (was_empty) {
+        asio::post(_io_context, [this] { do_work(); });
+    }
 
     return std::weak_ptr<WorkItem>(ptr);
 }
@@ -103,7 +112,11 @@ void MavlinkMissionTransferClient::clear_items_async(
         _debugging,
         target_system_id);
 
+    const bool was_empty = _work_queue.empty();
     _work_queue.push_back(ptr);
+    if (was_empty) {
+        asio::post(_io_context, [this] { do_work(); });
+    }
 }
 
 void MavlinkMissionTransferClient::set_current_item_async(
@@ -119,40 +132,35 @@ void MavlinkMissionTransferClient::set_current_item_async(
         _debugging,
         target_system_id);
 
+    const bool was_empty = _work_queue.empty();
     _work_queue.push_back(ptr);
+    if (was_empty) {
+        asio::post(_io_context, [this] { do_work(); });
+    }
 }
 
 void MavlinkMissionTransferClient::do_work()
 {
-    // Keep a local shared_ptr so that if pop_front() drops the last queue reference,
-    // the WorkItem destructor runs after the Guard releases the queue mutex.
-    // This avoids lock-order-inversion: the WorkItem dtor acquires the message handler
-    // mutex via unregister_all_blocking(), and holding both would invert the lock order
-    // vs process_message() which holds the message handler mutex then pushes to the queue.
-    std::shared_ptr<WorkItem> deferred_work_to_destroy;
-    {
-        LockedQueue<WorkItem>::Guard work_queue_guard(_work_queue);
-        auto work = work_queue_guard.get_front();
+    if (_work_queue.empty()) {
+        return;
+    }
 
-        if (!work) {
-            return;
-        }
+    auto work = _work_queue.front();
 
-        if (!work->has_started()) {
-            work->start();
-        }
-        if (work->is_done()) {
-            deferred_work_to_destroy = work;
-            work_queue_guard.pop_front();
+    if (!work->has_started()) {
+        work->start();
+    }
+    if (work->is_done()) {
+        _work_queue.pop_front();
+        if (!_work_queue.empty()) {
+            asio::post(_io_context, [this] { do_work(); });
         }
     }
-    // deferred_work_to_destroy is destroyed here, outside the queue lock.
 }
 
 bool MavlinkMissionTransferClient::is_idle()
 {
-    LockedQueue<WorkItem>::Guard work_queue_guard(_work_queue);
-    return (work_queue_guard.get_front() == nullptr);
+    return _work_queue.empty();
 }
 
 MavlinkMissionTransferClient::WorkItem::WorkItem(

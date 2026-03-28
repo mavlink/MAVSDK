@@ -21,6 +21,7 @@
 #include "system.h"
 #include "vehicle.h"
 #include "libmav_receiver.h"
+#include <asio/io_context.hpp>
 #include <cstdint>
 #include <functional>
 #include <atomic>
@@ -165,6 +166,7 @@ public:
     uint8_t get_own_system_id() const;
     uint8_t get_own_component_id() const;
     uint8_t get_own_mav_type() const;
+    asio::io_context& io_context();
     MAV_TYPE get_vehicle_type() const;
     Vehicle vehicle() const;
 

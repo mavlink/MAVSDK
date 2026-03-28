@@ -4,16 +4,18 @@
 #include "log.h"
 #include "mavlink_include.h"
 #include "timeout_s_callback.h"
-#include "locked_queue.h"
 #include "param_value.h"
 #include "mavlink_parameter_subscription.h"
 #include "mavlink_parameter_cache.h"
 #include "mavlink_parameter_helper.h"
 #include "timeout_handler.h"
+#include <asio/io_context.hpp>
+#include <asio/post.hpp>
 
 #include <array>
 #include <cstddef>
 #include <cstdint>
+#include <deque>
 #include <string>
 #include <functional>
 #include <utility>
@@ -216,7 +218,8 @@ private:
     bool _use_extended = false;
 
     // These are specific depending on the work item type
-    LockedQueue<WorkItem> _work_queue{};
+    std::deque<std::shared_ptr<WorkItem>> _work_queue{};
+    asio::io_context& _io_context;
     TimeoutHandler::Cookie _timeout_cookie{};
 
     MavlinkParameterCache _param_cache{};

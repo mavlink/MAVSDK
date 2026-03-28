@@ -3,6 +3,7 @@
 #include <functional>
 #include "compatibility_mode.h"
 #include "mavlink_address.h"
+#include <asio/io_context.hpp>
 
 namespace mavsdk {
 namespace testing {
@@ -19,6 +20,7 @@ public:
     MOCK_METHOD(uint8_t, get_own_system_id, (), (const, override));
     MOCK_METHOD(uint8_t, get_own_component_id, (), (const, override));
     MOCK_METHOD(CompatibilityMode, compatibility_mode, (), (const, override));
+    MOCK_METHOD(asio::io_context&, io_context, (), (override));
 };
 
 } // namespace testing

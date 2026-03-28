@@ -16,7 +16,7 @@ ServerComponentImpl::ServerComponentImpl(
         mavsdk_impl.mavlink_message_handler,
         mavsdk_impl.timeout_handler,
         [this]() { return _mavsdk_impl.timeout_s(); }),
-    _mavlink_parameter_server(_our_sender, mavsdk_impl.mavlink_message_handler),
+    _mavlink_parameter_server(_our_sender, mavsdk_impl.mavlink_message_handler, mavsdk_impl.io_context()),
     _mavlink_request_message_handler(mavsdk_impl, *this, _mavlink_command_receiver),
     _mavlink_ftp_server(*this)
 {
@@ -441,6 +441,11 @@ uint8_t ServerComponentImpl::OurSender::get_own_component_id() const
 CompatibilityMode ServerComponentImpl::OurSender::compatibility_mode() const
 {
     return _server_component_impl._mavsdk_impl.get_compatibility_mode();
+}
+
+asio::io_context& ServerComponentImpl::OurSender::io_context()
+{
+    return _server_component_impl._mavsdk_impl.io_context();
 }
 
 } // namespace mavsdk
