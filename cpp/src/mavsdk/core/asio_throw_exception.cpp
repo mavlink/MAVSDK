@@ -20,8 +20,7 @@
 namespace asio {
 namespace detail {
 
-template <typename Exception>
-void throw_exception(const Exception& e)
+template<typename Exception> void throw_exception(const Exception& e)
 {
     (void)e;
     std::terminate();
@@ -34,20 +33,13 @@ void throw_exception(const Exception& e)
 //   system_error, bad_alloc                       → general async machinery
 //   bad_address_cast                              → ip/impl/address{,_v4,_v6}.ipp
 //   out_of_range                                  → ip/impl/address_v{4,6}.ipp
-template void throw_exception<asio::service_already_exists>(
-    const asio::service_already_exists&);
-template void throw_exception<asio::invalid_service_owner>(
-    const asio::invalid_service_owner&);
-template void throw_exception<asio::execution::bad_executor>(
-    const asio::execution::bad_executor&);
-template void throw_exception<std::system_error>(
-    const std::system_error&);
-template void throw_exception<std::bad_alloc>(
-    const std::bad_alloc&);
-template void throw_exception<asio::ip::bad_address_cast>(
-    const asio::ip::bad_address_cast&);
-template void throw_exception<std::out_of_range>(
-    const std::out_of_range&);
+template void throw_exception<asio::service_already_exists>(const asio::service_already_exists&);
+template void throw_exception<asio::invalid_service_owner>(const asio::invalid_service_owner&);
+template void throw_exception<asio::execution::bad_executor>(const asio::execution::bad_executor&);
+template void throw_exception<std::system_error>(const std::system_error&);
+template void throw_exception<std::bad_alloc>(const std::bad_alloc&);
+template void throw_exception<asio::ip::bad_address_cast>(const asio::ip::bad_address_cast&);
+template void throw_exception<std::out_of_range>(const std::out_of_range&);
 
 } // namespace detail
 } // namespace asio
