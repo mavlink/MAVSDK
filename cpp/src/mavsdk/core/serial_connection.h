@@ -1,13 +1,11 @@
 #pragma once
 
-#if defined(WINDOWS)
-#include <windows.h>
-#endif
-
+#include <array>
 #include <mutex>
-#include <memory>
-#include <atomic>
-#include <thread>
+#include <string>
+
+#include <asio/serial_port.hpp>
+
 #include "connection.h"
 
 namespace mavsdk {
@@ -35,8 +33,7 @@ public:
 
 private:
     ConnectionResult setup_port();
-    void start_recv_thread();
-    void receive();
+    void do_receive();
 
 #if defined(LINUX)
     static int define_from_baudrate(int baudrate);
@@ -46,15 +43,12 @@ private:
     const int _baudrate;
     const bool _flow_control;
 
-    std::mutex _mutex = {};
-#if !defined(WINDOWS)
-    int _fd = -1;
-#else
-    HANDLE _handle;
-#endif
+    // Protects synchronous writes against concurrent close on the io_thread.
+    std::mutex _send_mutex{};
 
-    std::unique_ptr<std::thread> _recv_thread{};
-    std::atomic_bool _should_exit{false};
+    // Asio serial port — driven by MavsdkImpl::_io_context.
+    asio::serial_port _serial_port;
+    std::array<char, 2048> _recv_buffer{};
 };
 
 } // namespace mavsdk
