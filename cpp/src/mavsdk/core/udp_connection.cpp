@@ -5,9 +5,11 @@
 #include <asio/buffer.hpp>
 #include <asio/error.hpp>
 #include <asio/ip/address.hpp>
+#include <asio/post.hpp>
 #include <asio/socket_base.hpp>
 
 #include <algorithm>
+#include <future>
 #include <utility>
 #include <sstream>
 
@@ -68,7 +70,8 @@ ConnectionResult UdpConnection::setup_port()
         return ConnectionResult::SocketError;
     }
 
-    asio::ip::udp::endpoint local_endpoint(local_addr, static_cast<unsigned short>(_local_port_number));
+    asio::ip::udp::endpoint local_endpoint(
+        local_addr, static_cast<unsigned short>(_local_port_number));
 
     _socket.open(asio::ip::udp::v4(), ec);
     if (ec) {
@@ -94,6 +97,24 @@ ConnectionResult UdpConnection::stop()
     if (_socket.is_open()) {
         asio::error_code ec;
         _socket.close(ec);
+
+        // Synchronise with the io_thread: a do_receive() completion that was
+        // already dispatched may still be running its handler body (accessing
+        // _recv_buffer, _sender_endpoint, _mavlink_receiver, …).  We post a
+        // no-op fence onto the same io_context; because completions are
+        // processed in FIFO order the fence can only execute after the
+        // operation_aborted handler has returned, making it safe to destroy
+        // UdpConnection members once we return from stop().
+        //
+        // Skip the fence when the io_context has already been stopped
+        // (e.g. called via _connections.clear() in ~MavsdkImpl after
+        // _io_thread has been joined — no handler is running in that path).
+        auto& io_ctx = static_cast<asio::io_context&>(_socket.get_executor().context());
+        if (!io_ctx.stopped()) {
+            std::promise<void> fence;
+            asio::post(io_ctx, [&fence]() { fence.set_value(); });
+            fence.get_future().wait();
+        }
     }
 
     // We need to stop this after stopping the socket, otherwise
