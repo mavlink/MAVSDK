@@ -87,32 +87,51 @@ ConnectionResult TcpServerConnection::start()
 
 ConnectionResult TcpServerConnection::stop()
 {
-    // Signal handlers to stop re-arming BEFORE closing sockets.  An EOF handler
-    // that already started running (with ec == eof, not operation_aborted) would
-    // otherwise call do_accept() on the now-closed acceptor, producing a
-    // bad_descriptor error that re-arms again — an infinite loop.
+    // Signal handlers to stop re-arming.  Must be set before closing sockets so
+    // that any handler seeing operation_aborted (or a stale non-error code) does
+    // not re-arm a new async_accept / async_read_some.
     _stopping = true;
 
-    // Close acceptor and client socket — cancels outstanding async operations.
-    {
-        asio::error_code ec;
-        _acceptor.close(ec);
-    }
-    {
-        std::lock_guard<std::mutex> lock(_send_mutex);
-        if (_client_socket.is_open()) {
-            asio::error_code ec;
-            _client_socket.close(ec);
-        }
-    }
-
-    // Fence: wait for any in-flight handler to finish before allowing member destruction.
-    // Because _stopping is set, no handler will post a new async op, so one fence suffices.
     auto& io_ctx = static_cast<asio::io_context&>(_acceptor.get_executor().context());
     if (!io_ctx.stopped()) {
-        std::promise<void> fence;
-        asio::post(io_ctx, [&fence]() { fence.set_value(); });
-        fence.get_future().wait();
+        // Close the acceptor and client socket ON the io_context thread.  This
+        // serialises the close with do_accept() / do_receive() — both of which
+        // also run on the io_context thread — and eliminates the data race on the
+        // epoll reactor's descriptor state (TSan warning: cleanup_descriptor_data
+        // vs start_op / do_start_accept_op).
+        //
+        // A double round-trip is used:
+        //   Round 1 — outer lambda: closes sockets (queues cancellation callbacks).
+        //   Round 2 — inner lambda: waits until those callbacks have been drained.
+        std::promise<void> done;
+        auto done_future = done.get_future();
+        asio::post(io_ctx, [this, &io_ctx, p = std::move(done)]() mutable {
+            {
+                asio::error_code ec;
+                _acceptor.close(ec);
+            }
+            {
+                std::lock_guard<std::mutex> lock(_send_mutex);
+                if (_client_socket.is_open()) {
+                    asio::error_code ec;
+                    _client_socket.close(ec);
+                }
+            }
+            // Post a second fence so that the cancellation callbacks queued
+            // by close() above are dispatched before stop() returns.
+            asio::post(io_ctx, [p = std::move(p)]() mutable { p.set_value(); });
+        });
+        done_future.wait();
+    } else {
+        // io_context is already stopped — no handlers are running, so it is safe
+        // to close from the calling thread.
+        asio::error_code ec;
+        _acceptor.close(ec);
+        std::lock_guard<std::mutex> lock(_send_mutex);
+        if (_client_socket.is_open()) {
+            asio::error_code ec2;
+            _client_socket.close(ec2);
+        }
     }
 
     // Stop after stopping the socket so we don't interfere with message parsing.
