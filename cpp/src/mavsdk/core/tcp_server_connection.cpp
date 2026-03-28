@@ -10,6 +10,7 @@
 #include <asio/write.hpp>
 
 #include <future>
+#include <memory>
 #include <sstream>
 #include <utility>
 
@@ -129,29 +130,45 @@ std::pair<bool, std::string> TcpServerConnection::send_message(const mavlink_mes
 
 std::pair<bool, std::string> TcpServerConnection::send_raw_bytes(const char* bytes, size_t length)
 {
-    std::lock_guard<std::mutex> lock(_send_mutex);
+    // Copy bytes into a heap buffer that outlives this stack frame while the
+    // posted work runs on the io_context thread.
+    auto buf = std::make_shared<std::vector<char>>(bytes, bytes + length);
 
-    if (!_client_socket.is_open()) {
-        return {false, "Not connected"};
-    }
+    std::promise<std::pair<bool, std::string>> promise;
+    auto future = promise.get_future();
 
-    asio::error_code ec;
-    asio::write(_client_socket, asio::buffer(bytes, length), ec);
+    // Post to the io_context so the synchronous write runs on the same thread as
+    // async_accept / async_read_some — eliminating data races on socket internals.
+    asio::post(
+        _acceptor.get_executor(),
+        [this, buf = std::move(buf), p = std::move(promise)]() mutable {
+            std::lock_guard<std::mutex> lock(_send_mutex);
+            if (!_client_socket.is_open()) {
+                p.set_value({false, "Not connected"});
+                return;
+            }
+            asio::error_code ec;
+            asio::write(_client_socket, asio::buffer(*buf), ec);
+            if (ec) {
+                // Broken pipe / connection reset during shutdown are expected.
+                if (ec != asio::error::broken_pipe && ec != asio::error::connection_reset) {
+                    LogErr() << "Send failure: " << ec.message();
+                }
+                p.set_value({false, "Send failure: " + ec.message()});
+            } else {
+                p.set_value({true, {}});
+            }
+        });
 
-    if (ec) {
-        // Broken pipe / connection reset during shutdown are expected — log only if relevant.
-        if (ec != asio::error::broken_pipe && ec != asio::error::connection_reset) {
-            LogErr() << "Send failure: " << ec.message();
-        }
-        return {false, "Send failure: " + ec.message()};
-    }
-
-    return {true, {}};
+    return future.get();
 }
 
 void TcpServerConnection::do_accept()
 {
-    _acceptor.async_accept(_client_socket, [this](const asio::error_code& ec) {
+    // Use the overload that delivers the new socket in the callback rather than
+    // writing directly into _client_socket from asio internals (which would race
+    // with send_raw_bytes reading the socket's state on the work thread).
+    _acceptor.async_accept([this](const asio::error_code& ec, asio::ip::tcp::socket peer) {
         if (ec == asio::error::operation_aborted || _stopping) {
             // stop() closed the acceptor — do not re-arm.
             return;
@@ -163,6 +180,13 @@ void TcpServerConnection::do_accept()
                 do_accept();
             }
             return;
+        }
+
+        // Assign under the mutex so stop()'s close() and our send_raw_bytes are
+        // properly serialised against this assignment.
+        {
+            std::lock_guard<std::mutex> lock(_send_mutex);
+            _client_socket = std::move(peer);
         }
 
         // Start receiving from the newly accepted client.
