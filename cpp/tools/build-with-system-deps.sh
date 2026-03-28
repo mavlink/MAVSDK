@@ -8,7 +8,7 @@
 # Prerequisites (install via apt on Ubuntu/Debian):
 #   sudo apt install build-essential cmake git python3 python3-pip \
 #                    liblzma-dev libtinyxml2-dev libjsoncpp-dev \
-#                    libcurl4-openssl-dev libssl-dev
+#                    libcurl4-openssl-dev libssl-dev libasio-dev
 #
 # Usage:
 #   ./tools/build-with-system-deps.sh
