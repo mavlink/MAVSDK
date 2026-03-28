@@ -61,6 +61,7 @@ target_sources(mavsdk
     inflate_lzma.cpp
     math_utils.cpp
     mavsdk.cpp
+    asio_throw_exception.cpp
     mavsdk_impl.cpp
     mavlink_channel_status.cpp
     mavlink_channels.cpp
