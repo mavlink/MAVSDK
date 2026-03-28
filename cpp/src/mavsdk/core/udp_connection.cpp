@@ -244,7 +244,7 @@ void UdpConnection::do_receive()
                 return;
             }
 
-            const char* buffer = reinterpret_cast<const char*>(_recv_buffer.data());
+            char* buffer = reinterpret_cast<char*>(_recv_buffer.data());
 
             _mavlink_receiver->set_new_datagram(buffer, static_cast<int>(recv_len));
 
