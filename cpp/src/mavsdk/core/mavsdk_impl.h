@@ -10,6 +10,8 @@
 #include <thread>
 #include <queue>
 
+#include <asio.hpp>
+
 #include "autopilot.h"
 #include "compatibility_mode.h"
 #include "call_every_handler.h"
@@ -148,6 +150,9 @@ public:
 
     // Get connections for sending messages
     std::vector<Connection*> get_connections() const;
+
+    // Asio io_context shared by all connections for async I/O
+    asio::io_context& io_context() { return _io_context; }
 
     // Get MessageSet for message creation and parsing
     mav::MessageSet& get_message_set() const;
@@ -311,6 +316,9 @@ private:
     std::function<void(std::function<void()>)> _callback_executor{};
 
     std::atomic<bool> _should_exit{false};
+
+    // Asio event loop — driven by work_thread() via run_one_for()
+    asio::io_context _io_context{};
 };
 
 } // namespace mavsdk

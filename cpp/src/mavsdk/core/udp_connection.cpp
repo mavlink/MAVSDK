@@ -1,20 +1,6 @@
 #include "udp_connection.h"
+#include "mavsdk_impl.h"
 #include "log.h"
-
-#ifdef WINDOWS
-#include <winsock2.h>
-#include <Ws2tcpip.h> // For InetPton
-#undef SOCKET_ERROR // conflicts with ConnectionResult::SocketError
-#ifndef MINGW
-#pragma comment(lib, "Ws2_32.lib") // Without this, Ws2_32.lib is not included in static library.
-#endif
-#else
-#include <netinet/in.h>
-#include <sys/socket.h>
-#include <sys/time.h>
-#include <arpa/inet.h>
-#include <errno.h>
-#endif
 
 #include <algorithm>
 #include <utility>
@@ -35,7 +21,8 @@ UdpConnection::UdpConnection(
         mavsdk_impl,
         forwarding_option),
     _local_ip(std::move(local_ip)),
-    _local_port_number(local_port_number)
+    _local_port_number(local_port_number),
+    _socket(mavsdk_impl.io_context())
 {}
 
 UdpConnection::~UdpConnection()
@@ -59,74 +46,52 @@ ConnectionResult UdpConnection::start()
         return ret;
     }
 
-    start_recv_thread();
+    // Kick off the first async receive — subsequent ones are re-posted from the handler.
+    do_receive();
 
     return ConnectionResult::Success;
 }
 
 ConnectionResult UdpConnection::setup_port()
 {
-#ifdef WINDOWS
-    WSADATA wsa;
-    if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0) {
-        LogErr() << "Error: Winsock failed, error: " << get_socket_error_string(WSAGetLastError());
-        return ConnectionResult::SocketError;
-    }
-#endif
+    asio::error_code ec;
 
-    _socket_fd.reset(socket(AF_INET, SOCK_DGRAM, 0));
-
-    if (_socket_fd.empty()) {
-        LogErr() << "socket error" << strerror(errno);
+    // Resolve the local address
+    asio::ip::address local_addr = asio::ip::make_address(_local_ip, ec);
+    if (ec) {
+        LogErr() << "Invalid local IP '" << _local_ip << "': " << ec.message();
         return ConnectionResult::SocketError;
     }
 
-    struct sockaddr_in addr{};
-    addr.sin_family = AF_INET;
-    if (inet_pton(AF_INET, _local_ip.c_str(), &(addr.sin_addr)) != 1) {
-        LogErr() << "inet_pton failure for address: " << _local_ip;
+    asio::ip::udp::endpoint local_endpoint(local_addr, static_cast<unsigned short>(_local_port_number));
+
+    _socket.open(asio::ip::udp::v4(), ec);
+    if (ec) {
+        LogErr() << "socket open error: " << ec.message();
         return ConnectionResult::SocketError;
     }
-    addr.sin_port = htons(_local_port_number);
 
-    if (bind(_socket_fd.get(), reinterpret_cast<sockaddr*>(&addr), sizeof(addr)) != 0) {
-        LogErr() << "bind error: " << strerror(errno);
+    _socket.set_option(asio::socket_base::reuse_address(true), ec);
+
+    _socket.bind(local_endpoint, ec);
+    if (ec) {
+        LogErr() << "bind error: " << ec.message();
         return ConnectionResult::BindError;
     }
-
-    // Set receive timeout cross-platform
-    const unsigned timeout_ms = 500;
-
-#if defined(WINDOWS)
-    setsockopt(
-        _socket_fd.get(), SOL_SOCKET, SO_RCVTIMEO, (const char*)&timeout_ms, sizeof(timeout_ms));
-#else
-    struct timeval tv;
-    tv.tv_sec = 0;
-    tv.tv_usec = timeout_ms * 1000;
-    setsockopt(_socket_fd.get(), SOL_SOCKET, SO_RCVTIMEO, (const void*)&tv, sizeof(tv));
-#endif
 
     return ConnectionResult::Success;
 }
 
-void UdpConnection::start_recv_thread()
-{
-    _recv_thread = std::make_unique<std::thread>(&UdpConnection::receive, this);
-}
-
 ConnectionResult UdpConnection::stop()
 {
-    _should_exit = true;
-
-    if (_recv_thread) {
-        _recv_thread->join();
-        _recv_thread.reset();
+    // Close the socket — this cancels any outstanding async_receive_from so the
+    // io_context handler fires with operation_aborted and does NOT re-post itself.
+    if (_socket.is_open()) {
+        asio::error_code ec;
+        _socket.close(ec);
     }
 
-    _socket_fd.close();
-
-    // We need to stop this after stopping the receive thread, otherwise
+    // We need to stop this after stopping the socket, otherwise
     // it can happen that we interfere with the parsing of a message.
     stop_mavlink_receiver();
 
@@ -160,7 +125,6 @@ std::pair<bool, std::string> UdpConnection::send_raw_bytes(const char* bytes, si
 
                 const bool should_remove = inactive && remote.remote_option == RemoteOption::Found;
 
-                // We can cleanup old/previous remotes if we have
                 if (should_remove) {
                     LogInfo() << "Removing inactive remote: " << remote.ip << ":"
                               << remote.port_number;
@@ -170,28 +134,22 @@ std::pair<bool, std::string> UdpConnection::send_raw_bytes(const char* bytes, si
             }),
         _remotes.end());
 
-    if (_remotes.size() == 0) {
+    if (_remotes.empty()) {
         result.first = false;
         result.second = "no remotes";
         return result;
     }
 
-    // Send the raw bytes to all the remotes. A remote is a UDP endpoint
-    // identified by its <ip, port>. This means that if we have two
-    // systems on two different endpoints, then messages directed towards
-    // only one system will be sent to both remotes. The systems are
-    // then expected to ignore messages that are not directed to them.
-
-    // For multiple remotes, we ignore errors, for just one, we bubble it up.
+    // Send the raw bytes to all the remotes synchronously.
     result.first = true;
 
     for (auto& remote : _remotes) {
-        struct sockaddr_in dest_addr{};
-        dest_addr.sin_family = AF_INET;
-
-        if (inet_pton(AF_INET, remote.ip.c_str(), &dest_addr.sin_addr.s_addr) != 1) {
+        asio::error_code ec;
+        asio::ip::address dest_addr = asio::ip::make_address(remote.ip, ec);
+        if (ec) {
             std::stringstream ss;
-            ss << "inet_pton failure for: " << remote.ip << ":" << remote.port_number;
+            ss << "make_address failure for: " << remote.ip << ":" << remote.port_number << ": "
+               << ec.message();
             LogErr() << ss.str();
             result.first = false;
             if (!result.second.empty()) {
@@ -200,26 +158,18 @@ std::pair<bool, std::string> UdpConnection::send_raw_bytes(const char* bytes, si
             result.second += ss.str();
             continue;
         }
-        dest_addr.sin_port = htons(remote.port_number);
 
-        const auto send_len = sendto(
-            _socket_fd.get(),
-            bytes,
-            length,
-            0,
-            reinterpret_cast<const sockaddr*>(&dest_addr),
-            sizeof(dest_addr));
+        asio::ip::udp::endpoint dest_endpoint(dest_addr, static_cast<unsigned short>(remote.port_number));
 
-        if (send_len != static_cast<std::remove_cv_t<decltype(send_len)>>(length)) {
+        const auto send_len = _socket.send_to(asio::buffer(bytes, length), dest_endpoint, 0, ec);
+
+        if (ec || send_len != length) {
             std::stringstream ss;
-#ifdef WINDOWS
-            int err = WSAGetLastError();
-            ss << "sendto failure: " << get_socket_error_string(err) << " for: " << remote.ip << ":"
-               << remote.port_number;
-#else
-            ss << "sendto failure: " << strerror(errno) << " for: " << remote.ip << ":"
-               << remote.port_number;
-#endif
+            ss << "send_to failure";
+            if (ec) {
+                ss << ": " << ec.message();
+            }
+            ss << " for: " << remote.ip << ":" << remote.port_number;
             LogErr() << ss.str();
             result.first = false;
             if (!result.second.empty()) {
@@ -257,80 +207,71 @@ void UdpConnection::add_remote_impl(
         });
 
     if (existing_remote == _remotes.end()) {
-        // System with sysid 0 is a bit special: it is a placeholder for a connection initiated
-        // by MAVSDK. As such, it should not be advertised as a newly discovered system.
         if (static_cast<int>(remote_sysid) != 0) {
             LogInfo() << "New system on: " << new_remote.ip << ":" << new_remote.port_number
                       << " (system ID: " << static_cast<int>(remote_sysid) << ")";
         }
         _remotes.push_back(new_remote);
     } else {
-        // Update the timestamp for the existing remote
         existing_remote->last_activity = std::chrono::steady_clock::now();
     }
 }
 
-void UdpConnection::receive()
+void UdpConnection::do_receive()
 {
-    // Enough for MTU 1500 bytes.
-    char buffer[2048];
+    // Post an async receive. The handler runs on the io_context thread (work_thread).
+    _socket.async_receive_from(
+        asio::buffer(_recv_buffer),
+        _sender_endpoint,
+        [this](const asio::error_code& ec, std::size_t recv_len) {
+            if (ec) {
+                // operation_aborted happens when the socket is closed (stop()), which is normal.
+                if (ec != asio::error::operation_aborted) {
+                    LogErr() << "async_receive_from error: " << ec.message();
+                }
+                // Do NOT re-post — the connection is being torn down.
+                return;
+            }
 
-    while (!_should_exit) {
-        struct sockaddr_in src_addr = {};
-        socklen_t src_addr_len = sizeof(src_addr);
-        const auto recv_len = recvfrom(
-            _socket_fd.get(),
-            buffer,
-            sizeof(buffer),
-            0,
-            reinterpret_cast<struct sockaddr*>(&src_addr),
-            &src_addr_len);
+            if (recv_len == 0) {
+                // Empty datagram — re-post and continue.
+                do_receive();
+                return;
+            }
 
-        if (recv_len == 0) {
-            // This can happen when shutdown is called on the socket,
-            // therefore we check _should_exit again.
-            continue;
-        }
+            const char* buffer = reinterpret_cast<const char*>(_recv_buffer.data());
 
-        if (recv_len < 0) {
-            // This happens on destruction when _socket_fd.close() is called,
-            // therefore be quiet.
-            // LogErr() << "recvfrom error: " << GET_ERROR(errno);
-            continue;
-        }
+            _mavlink_receiver->set_new_datagram(buffer, static_cast<int>(recv_len));
 
-        _mavlink_receiver->set_new_datagram(buffer, static_cast<int>(recv_len));
-
-        // Parse all mavlink messages in one datagram. Once exhausted, we'll exit loop.
-        auto parse_result = _mavlink_receiver->parse_message();
-        while (parse_result != MavlinkReceiver::ParseResult::NoneAvailable) {
-            // Track remote endpoint for valid messages
-            if (parse_result == MavlinkReceiver::ParseResult::MessageParsed) {
-                const uint8_t sysid = _mavlink_receiver->get_last_message().sysid;
-                if (sysid != 0) {
-                    char ip_str[INET_ADDRSTRLEN];
-                    if (inet_ntop(AF_INET, &src_addr.sin_addr, ip_str, INET_ADDRSTRLEN) !=
-                        nullptr) {
+            // Parse all mavlink messages in one datagram.
+            auto parse_result = _mavlink_receiver->parse_message();
+            while (parse_result != MavlinkReceiver::ParseResult::NoneAvailable) {
+                if (parse_result == MavlinkReceiver::ParseResult::MessageParsed) {
+                    const uint8_t sysid = _mavlink_receiver->get_last_message().sysid;
+                    if (sysid != 0) {
                         add_remote_impl(
-                            ip_str, ntohs(src_addr.sin_port), sysid, RemoteOption::Found);
-                    } else {
-                        LogErr() << "inet_ntop failure for: " << strerror(errno);
+                            _sender_endpoint.address().to_string(),
+                            static_cast<int>(_sender_endpoint.port()),
+                            sysid,
+                            RemoteOption::Found);
                     }
                 }
+                receive_message(parse_result, _mavlink_receiver->get_last_message(), this);
+                parse_result = _mavlink_receiver->parse_message();
             }
-            receive_message(parse_result, _mavlink_receiver->get_last_message(), this);
-            parse_result = _mavlink_receiver->parse_message();
-        }
 
-        // Also parse with libmav if available
-        if (_libmav_receiver) {
-            _libmav_receiver->set_new_datagram(buffer, static_cast<int>(recv_len));
+            // Also parse with libmav if available
+            if (_libmav_receiver) {
+                _libmav_receiver->set_new_datagram(buffer, static_cast<int>(recv_len));
 
-            while (_libmav_receiver->parse_message()) {
-                receive_libmav_message(_libmav_receiver->get_last_message(), this);
+                while (_libmav_receiver->parse_message()) {
+                    receive_libmav_message(_libmav_receiver->get_last_message(), this);
+                }
             }
-        }
-    }
+
+            // Re-post for the next datagram.
+            do_receive();
+        });
 }
 
 } // namespace mavsdk
