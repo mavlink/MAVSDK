@@ -10,9 +10,11 @@ namespace mavsdk {
 MavlinkParameterServer::MavlinkParameterServer(
     Sender& sender,
     MavlinkMessageHandler& message_handler,
+    asio::io_context& io_context,
     std::optional<std::map<std::string, ParamValue>> optional_param_values) :
     _sender(sender),
-    _message_handler(message_handler)
+    _message_handler(message_handler),
+    _io_context(io_context)
 {
     if (const char* env_p = std::getenv("MAVSDK_PARAMETER_DEBUGGING")) {
         if (std::string(env_p) == "1") {
@@ -100,7 +102,11 @@ MavlinkParameterServer::provide_server_param(const std::string& name, const Para
                                 std::numeric_limits<std::uint16_t>::max(),
                                 std::numeric_limits<std::uint16_t>::max(),
                                 _last_extended});
+                        const bool was_empty = _work_queue.empty();
                         _work_queue.push_back(new_work);
+                        if (was_empty) {
+                            asio::post(_io_context, [this] { do_work(); });
+                        }
                     }
                     return Result::OkExistsAlready;
                 case MavlinkParameterCache::UpdateExistingParamResult::MissingParam:
@@ -236,7 +242,11 @@ void MavlinkParameterServer::process_param_set_internally(
                 if (extended) {
                     auto new_work = std::make_shared<WorkItem>(
                         curr_param.id, curr_param.value, WorkItemAck{PARAM_ACK_FAILED});
+                    const bool was_empty = _work_queue.empty();
                     _work_queue.push_back(new_work);
+                    if (was_empty) {
+                        asio::post(_io_context, [this] { do_work(); });
+                    }
 
                 } else {
                     // Prepare to send PARAM_ERROR outside the lock
@@ -265,13 +275,21 @@ void MavlinkParameterServer::process_param_set_internally(
                         updated_parameter.id,
                         updated_parameter.value,
                         WorkItemAck{PARAM_ACK_ACCEPTED});
+                    const bool was_empty = _work_queue.empty();
                     _work_queue.push_back(new_work);
+                    if (was_empty) {
+                        asio::post(_io_context, [this] { do_work(); });
+                    }
                 } else {
                     auto new_work = std::make_shared<WorkItem>(
                         updated_parameter.id,
                         updated_parameter.value,
                         WorkItemValue{updated_parameter.index, param_count, extended});
+                    const bool was_empty = _work_queue.empty();
                     _work_queue.push_back(new_work);
+                    if (was_empty) {
+                        asio::post(_io_context, [this] { do_work(); });
+                    }
                 }
             } break;
         }
@@ -411,7 +429,11 @@ void MavlinkParameterServer::internal_process_param_request_read_by_id(
             assert(param.index < param_count);
             auto new_work = std::make_shared<WorkItem>(
                 param.id, param.value, WorkItemValue{param.index, param_count, extended});
+            const bool was_empty = _work_queue.empty();
             _work_queue.push_back(new_work);
+            if (was_empty) {
+                asio::post(_io_context, [this] { do_work(); });
+            }
 
             _last_extended = extended;
             return;
@@ -442,7 +464,11 @@ void MavlinkParameterServer::internal_process_param_request_read_by_index(
             assert(param.index < param_count);
             auto new_work = std::make_shared<WorkItem>(
                 param.id, param.value, WorkItemValue{param.index, param_count, extended});
+            const bool was_empty = _work_queue.empty();
             _work_queue.push_back(new_work);
+            if (was_empty) {
+                asio::post(_io_context, [this] { do_work(); });
+            }
             return;
         }
     }
@@ -491,6 +517,7 @@ void MavlinkParameterServer::broadcast_all_parameters(const bool extended)
         LogDebug() << "broadcast_all_parameters " << (extended ? "extended" : "") << ": "
                    << all_params.size();
     }
+    const bool was_empty = _work_queue.empty();
     for (const auto& parameter : all_params) {
         if (_parameter_debugging) {
             LogDebug() << "sending param:" << parameter.id;
@@ -501,15 +528,17 @@ void MavlinkParameterServer::broadcast_all_parameters(const bool extended)
             WorkItemValue{parameter.index, static_cast<uint16_t>(all_params.size()), extended});
         _work_queue.push_back(new_work);
     }
+    if (was_empty && !_work_queue.empty()) {
+        asio::post(_io_context, [this] { do_work(); });
+    }
 }
 
 void MavlinkParameterServer::do_work()
 {
-    LockedQueue<WorkItem>::Guard work_queue_guard(_work_queue);
-    auto work = work_queue_guard.get_front();
-    if (!work) {
+    if (_work_queue.empty()) {
         return;
     }
+    auto& work = _work_queue.front();
     const auto param_id_message_buffer = param_id_to_message_buffer(work->param_id);
 
     std::visit(
@@ -533,7 +562,10 @@ void MavlinkParameterServer::do_work()
                                 return message;
                             })) {
                         LogErr() << "Error: Send message failed";
-                        work_queue_guard.pop_front();
+                        _work_queue.pop_front();
+                        if (!_work_queue.empty()) {
+                            asio::post(_io_context, [this] { do_work(); });
+                        }
                         return;
                     }
                 } else {
@@ -560,11 +592,17 @@ void MavlinkParameterServer::do_work()
                                 return message;
                             })) {
                         LogErr() << "Error: Send message failed";
-                        work_queue_guard.pop_front();
+                        _work_queue.pop_front();
+                        if (!_work_queue.empty()) {
+                            asio::post(_io_context, [this] { do_work(); });
+                        }
                         return;
                     }
                 }
-                work_queue_guard.pop_front();
+                _work_queue.pop_front();
+                if (!_work_queue.empty()) {
+                    asio::post(_io_context, [this] { do_work(); });
+                }
             },
             [&](const WorkItemAck& specific) {
                 auto buf = work->param_value.get_128_bytes();
@@ -582,10 +620,16 @@ void MavlinkParameterServer::do_work()
                         return message;
                     })) {
                     LogErr() << "Error: Send message failed";
-                    work_queue_guard.pop_front();
+                    _work_queue.pop_front();
+                    if (!_work_queue.empty()) {
+                        asio::post(_io_context, [this] { do_work(); });
+                    }
                     return;
                 }
-                work_queue_guard.pop_front();
+                _work_queue.pop_front();
+                if (!_work_queue.empty()) {
+                    asio::post(_io_context, [this] { do_work(); });
+                }
             }},
         work->work_item_variant);
 }

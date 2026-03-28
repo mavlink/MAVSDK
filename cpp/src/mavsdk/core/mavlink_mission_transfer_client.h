@@ -14,8 +14,10 @@
 #include "mavlink_message_handler.h"
 #include "timeout_handler.h"
 #include "timeout_s_callback.h"
-#include "locked_queue.h"
 #include "sender.h"
+#include <asio/io_context.hpp>
+#include <asio/post.hpp>
+#include <deque>
 
 namespace mavsdk {
 
@@ -315,7 +317,8 @@ private:
     TimeoutSCallback _timeout_s_callback;
     AutopilotCallback _autopilot_callback;
 
-    LockedQueue<WorkItem> _work_queue{};
+    std::deque<std::shared_ptr<WorkItem>> _work_queue{};
+    asio::io_context& _io_context;
 
     std::atomic<bool> _int_messages_supported{true};
     bool _debugging{false};

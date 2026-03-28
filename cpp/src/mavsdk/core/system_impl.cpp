@@ -720,6 +720,11 @@ uint8_t SystemImpl::get_own_component_id() const
     return _mavsdk_impl.get_own_component_id();
 }
 
+asio::io_context& SystemImpl::io_context()
+{
+    return _mavsdk_impl.io_context();
+}
+
 MAV_TYPE SystemImpl::get_vehicle_type() const
 {
     return _vehicle_type;
