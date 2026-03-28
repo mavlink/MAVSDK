@@ -1,6 +1,7 @@
 #pragma once
 
 #include <array>
+#include <atomic>
 #include <mutex>
 #include <string>
 
@@ -32,6 +33,9 @@ private:
 
     std::string _local_ip;
     int _local_port;
+
+    // Set to true by stop() before closing sockets; prevents handlers from re-arming.
+    std::atomic<bool> _stopping{false};
 
     // Protects synchronous sends against concurrent close on the io_thread.
     std::mutex _send_mutex{};
