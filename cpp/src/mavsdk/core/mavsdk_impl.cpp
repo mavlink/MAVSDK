@@ -650,37 +650,12 @@ void MavsdkImpl::process_libmav_message(
 
 bool MavsdkImpl::send_message(mavlink_message_t& message)
 {
-    // Create a copy of the message to avoid reference issues
-    mavlink_message_t message_copy = message;
-
-    {
-        std::lock_guard lock(_messages_to_send_mutex);
-        _messages_to_send.push(std::move(message_copy));
-    }
-
-    // Deliver immediately on the io_context thread.  Without this, every FTP request sent
-    // from a process_message() callback (io_context thread) would incur up to 10 ms of extra
-    // latency before the next UDP packet was sent, causing spurious timeouts.
-    asio::post(_io_context, [this]() { deliver_messages(); });
+    // Post directly to the io_context — no intermediate queue needed.
+    // deliver_message() always runs on the io_context thread, so ordering
+    // is preserved (posts are executed FIFO) and no mutex is required.
+    asio::post(_io_context, [this, msg = message]() mutable { deliver_message(msg); });
 
     return true;
-}
-
-void MavsdkImpl::deliver_messages()
-{
-    // Process messages one at a time to avoid holding the mutex while delivering
-    while (true) {
-        mavlink_message_t message;
-        {
-            std::lock_guard lock(_messages_to_send_mutex);
-            if (_messages_to_send.empty()) {
-                break;
-            }
-            message = _messages_to_send.front();
-            _messages_to_send.pop();
-        }
-        deliver_message(message);
-    }
 }
 
 void MavsdkImpl::deliver_message(mavlink_message_t& message)

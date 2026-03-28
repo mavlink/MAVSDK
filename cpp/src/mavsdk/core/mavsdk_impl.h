@@ -8,7 +8,6 @@
 #include <vector>
 #include <atomic>
 #include <thread>
-#include <queue>
 
 #include <asio/io_context.hpp>
 #include <asio/steady_timer.hpp>
@@ -199,7 +198,6 @@ private:
     void process_message(mavlink_message_t& message, Connection* connection);
     void process_libmav_message(const Mavsdk::MavlinkMessage& message, Connection* connection);
 
-    void deliver_messages();
     void deliver_message(mavlink_message_t& message);
 
     bool is_any_system_connected() const;
@@ -287,11 +285,8 @@ private:
     std::atomic<double> _timeout_s{DEFAULT_TIMEOUT_S};
     std::atomic<double> _heartbeat_timeout_s{DEFAULT_HEARTBEAT_TIMEOUT_S};
 
-    // Note: received messages are now dispatched directly on the io_context thread
-    // via asio::post() — no intermediate queue needed.
-
-    mutable std::mutex _messages_to_send_mutex{};
-    std::queue<mavlink_message_t> _messages_to_send;
+    // Note: both incoming and outgoing messages are dispatched directly on the
+    // io_context thread via asio::post() — no intermediate queues needed.
 
     static constexpr double HEARTBEAT_SEND_INTERVAL_S = 1.0;
     std::mutex _heartbeat_mutex{};
