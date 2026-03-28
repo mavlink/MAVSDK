@@ -17,7 +17,6 @@ endif()
 # 2 — Fall back to locating the header directly
 find_path(ASIO_INCLUDE_DIR
     NAMES asio.hpp
-    PATH_SUFFIXES include
 )
 
 include(FindPackageHandleStandardArgs)
