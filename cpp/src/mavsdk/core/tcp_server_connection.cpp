@@ -140,8 +140,7 @@ std::pair<bool, std::string> TcpServerConnection::send_raw_bytes(const char* byt
     // Post to the io_context so the synchronous write runs on the same thread as
     // async_accept / async_read_some — eliminating data races on socket internals.
     asio::post(
-        _acceptor.get_executor(),
-        [this, buf = std::move(buf), p = std::move(promise)]() mutable {
+        _acceptor.get_executor(), [this, buf = std::move(buf), p = std::move(promise)]() mutable {
             std::lock_guard<std::mutex> lock(_send_mutex);
             if (!_client_socket.is_open()) {
                 p.set_value({false, "Not connected"});
