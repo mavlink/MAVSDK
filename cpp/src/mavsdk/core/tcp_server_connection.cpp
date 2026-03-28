@@ -86,6 +86,12 @@ ConnectionResult TcpServerConnection::start()
 
 ConnectionResult TcpServerConnection::stop()
 {
+    // Signal handlers to stop re-arming BEFORE closing sockets.  An EOF handler
+    // that already started running (with ec == eof, not operation_aborted) would
+    // otherwise call do_accept() on the now-closed acceptor, producing a
+    // bad_descriptor error that re-arms again — an infinite loop.
+    _stopping = true;
+
     // Close acceptor and client socket — cancels outstanding async operations.
     {
         asio::error_code ec;
@@ -100,6 +106,7 @@ ConnectionResult TcpServerConnection::stop()
     }
 
     // Fence: wait for any in-flight handler to finish before allowing member destruction.
+    // Because _stopping is set, no handler will post a new async op, so one fence suffices.
     auto& io_ctx = static_cast<asio::io_context&>(_acceptor.get_executor().context());
     if (!io_ctx.stopped()) {
         std::promise<void> fence;
@@ -145,14 +152,16 @@ std::pair<bool, std::string> TcpServerConnection::send_raw_bytes(const char* byt
 void TcpServerConnection::do_accept()
 {
     _acceptor.async_accept(_client_socket, [this](const asio::error_code& ec) {
-        if (ec == asio::error::operation_aborted) {
+        if (ec == asio::error::operation_aborted || _stopping) {
             // stop() closed the acceptor — do not re-arm.
             return;
         }
         if (ec) {
             LogErr() << "accept error: " << ec.message();
-            // Re-arm so the server keeps listening.
-            do_accept();
+            // Re-arm so the server keeps listening (unless we're shutting down).
+            if (!_stopping) {
+                do_accept();
+            }
             return;
         }
 
@@ -165,7 +174,7 @@ void TcpServerConnection::do_receive()
 {
     _client_socket.async_read_some(
         asio::buffer(_recv_buffer), [this](const asio::error_code& ec, std::size_t recv_len) {
-            if (ec == asio::error::operation_aborted) {
+            if (ec == asio::error::operation_aborted || _stopping) {
                 // stop() was called — do not reconnect.
                 return;
             }
@@ -181,8 +190,10 @@ void TcpServerConnection::do_receive()
                     asio::error_code close_ec;
                     _client_socket.close(close_ec);
                 }
-                // Go back to waiting for a new client.
-                do_accept();
+                // Go back to waiting for a new client (unless stop() is in progress).
+                if (!_stopping) {
+                    do_accept();
+                }
                 return;
             }
 

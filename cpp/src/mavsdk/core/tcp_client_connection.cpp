@@ -56,6 +56,12 @@ ConnectionResult TcpClientConnection::start()
 
 ConnectionResult TcpClientConnection::stop()
 {
+    // Signal handlers to stop re-arming BEFORE cancelling/closing.  An EOF
+    // handler that was already queued (ec == eof, not operation_aborted) would
+    // otherwise call start_reconnect() after we've cancelled the timer and
+    // closed the socket, leaving a dangling async_wait handler after destruction.
+    _stopping = true;
+
     _reconnect_timer.cancel();
 
     {
@@ -67,6 +73,7 @@ ConnectionResult TcpClientConnection::stop()
     }
 
     // Fence: wait for any in-flight handler to finish before we allow member destruction.
+    // Because _stopping is set, no handler will post a new async op, so one fence suffices.
     // Skip when the io_context is already stopped (e.g. called from ~MavsdkImpl after
     // the io_thread has been joined — no handler can be running in that case).
     auto& io_ctx = static_cast<asio::io_context&>(_socket.get_executor().context());
@@ -134,13 +141,15 @@ void TcpClientConnection::do_connect()
         _socket,
         endpoints,
         [this](const asio::error_code& connect_ec, const asio::ip::tcp::endpoint&) {
-            if (connect_ec == asio::error::operation_aborted) {
+            if (connect_ec == asio::error::operation_aborted || _stopping) {
                 // stop() was called — do not reconnect.
                 return;
             }
             if (connect_ec) {
                 LogErr() << "Connect error: " << connect_ec.message();
-                start_reconnect();
+                if (!_stopping) {
+                    start_reconnect();
+                }
                 return;
             }
             do_receive();
@@ -151,7 +160,7 @@ void TcpClientConnection::do_receive()
 {
     _socket.async_read_some(
         asio::buffer(_recv_buffer), [this](const asio::error_code& ec, std::size_t recv_len) {
-            if (ec == asio::error::operation_aborted) {
+            if (ec == asio::error::operation_aborted || _stopping) {
                 // stop() was called — do not reconnect.
                 return;
             }
@@ -167,7 +176,9 @@ void TcpClientConnection::do_receive()
                     asio::error_code close_ec;
                     _socket.close(close_ec);
                 }
-                start_reconnect();
+                if (!_stopping) {
+                    start_reconnect();
+                }
                 return;
             }
 
@@ -193,9 +204,12 @@ void TcpClientConnection::do_receive()
 
 void TcpClientConnection::start_reconnect()
 {
+    if (_stopping) {
+        return;
+    }
     _reconnect_timer.expires_after(std::chrono::seconds(1));
     _reconnect_timer.async_wait([this](const asio::error_code& ec) {
-        if (ec == asio::error::operation_aborted) {
+        if (ec == asio::error::operation_aborted || _stopping) {
             // stop() cancelled the timer — do not reconnect.
             return;
         }
