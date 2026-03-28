@@ -77,14 +77,15 @@ MavsdkImpl::MavsdkImpl(const Mavsdk::Configuration& configuration) :
         std::make_unique<std::thread>(&MavsdkImpl::process_user_callbacks_thread, this);
 
     // Start the recurring timer that drives TimeoutHandler and CallEveryHandler
-    // on the io_context thread (replaces work_thread() polling).
+    // on the io_context thread every 5 ms.
     schedule_timers_poll();
+
+    // Start the recurring timer that drives ServerComponent::do_work() on the io_context thread.
+    schedule_do_work();
 
     // Start the Asio io_context on its own thread.  All async I/O completions,
     // message dispatch, and timer callbacks are dispatched here.
     _io_thread = std::make_unique<std::thread>([this]() { _io_context.run(); });
-
-    _work_thread = std::make_unique<std::thread>(&MavsdkImpl::work_thread, this);
 }
 
 MavsdkImpl::~MavsdkImpl()
@@ -103,14 +104,6 @@ MavsdkImpl::~MavsdkImpl()
     if (_io_thread) {
         _io_thread->join();
         _io_thread.reset();
-    }
-
-    // Stop work first because we don't want to trigger anything that would
-    // potentially want to call into user code.
-
-    if (_work_thread) {
-        _work_thread->join();
-        _work_thread.reset();
     }
 
     if (_process_user_callbacks_thread) {
@@ -665,11 +658,9 @@ bool MavsdkImpl::send_message(mavlink_message_t& message)
         _messages_to_send.push(std::move(message_copy));
     }
 
-    // Deliver immediately on the io_context thread rather than waiting for
-    // work_thread's 10 ms poll cycle.  Without this, every FTP request sent
-    // from a process_message() callback (io_context thread) would incur up
-    // to 10 ms of extra latency before the next UDP packet was sent, causing
-    // spurious timeouts with reduced_timeout_s = 0.1 s test configurations.
+    // Deliver immediately on the io_context thread.  Without this, every FTP request sent
+    // from a process_message() callback (io_context thread) would incur up to 10 ms of extra
+    // latency before the next UDP packet was sent, causing spurious timeouts.
     asio::post(_io_context, [this]() { deliver_messages(); });
 
     return true;
@@ -1200,15 +1191,18 @@ bool MavsdkImpl::is_any_system_connected() const
     });
 }
 
-void MavsdkImpl::work_thread()
+void MavsdkImpl::schedule_do_work()
 {
-    while (!_should_exit) {
-        // Message processing and timers are now handled on the io_context thread.
-        // This loop only needs to drive the protocol-handler work queues (do_work)
-        // and flush the outgoing message queue until those too are migrated.
-
-        // Do component work (protocol handler state machines: command sender,
-        // parameter client, mission transfer, FTP client, …)
+    // Drive ServerComponent protocol-handler state machines (command sender, parameter client,
+    // mission transfer, FTP client, …) on the io_context thread every 10 ms.
+    // Using dispatch() would execute immediately on first call but we want a timer-driven cadence,
+    // so async_wait is correct here — same pattern as schedule_timers_poll().
+    _do_work_timer.expires_after(std::chrono::milliseconds(10));
+    _do_work_timer.async_wait([this](const asio::error_code& ec) {
+        if (ec) {
+            // Cancelled (e.g. during shutdown) — do not reschedule.
+            return;
+        }
         {
             std::lock_guard lock(_server_components_mutex);
             for (auto& it : _server_components) {
@@ -1217,14 +1211,8 @@ void MavsdkImpl::work_thread()
                 }
             }
         }
-
-        // Outgoing message delivery is now triggered immediately via asio::post()
-        // inside send_message(), so deliver_messages() is not called here.
-        // Calling it here as well would risk concurrent socket access from two threads.
-
-        // Sleep briefly between do_work() ticks.
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
-    }
+        schedule_do_work();
+    });
 }
 
 void MavsdkImpl::schedule_timers_poll()
