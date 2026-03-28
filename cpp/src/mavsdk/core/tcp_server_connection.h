@@ -1,12 +1,12 @@
 #pragma once
 
-#include "connection.h"
-#include "socket_holder.h"
-
-#include <atomic>
+#include <array>
 #include <mutex>
 #include <string>
-#include <thread>
+
+#include <asio/ip/tcp.hpp>
+
+#include "connection.h"
 
 namespace mavsdk {
 
@@ -27,17 +27,19 @@ public:
     std::pair<bool, std::string> send_raw_bytes(const char* bytes, size_t length) override;
 
 private:
-    void accept_client();
-    void receive();
+    void do_accept();
+    void do_receive();
 
-    Connection::ReceiverCallback _receiver_callback;
     std::string _local_ip;
     int _local_port;
-    std::mutex _mutex{};
-    SocketHolder _server_socket_fd;
-    SocketHolder _client_socket_fd;
-    std::unique_ptr<std::thread> _accept_receive_thread;
-    std::atomic<bool> _should_exit{false};
+
+    // Protects synchronous sends against concurrent close on the io_thread.
+    std::mutex _send_mutex{};
+
+    // Asio objects — driven by MavsdkImpl::_io_context.
+    asio::ip::tcp::acceptor _acceptor;
+    asio::ip::tcp::socket _client_socket;
+    std::array<char, 2048> _recv_buffer{};
 };
 
 } // namespace mavsdk

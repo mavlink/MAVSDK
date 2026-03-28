@@ -1,21 +1,13 @@
 #pragma once
 
-#include "socket_holder.h"
-
-#include <atomic>
+#include <array>
 #include <mutex>
-#include <memory>
-#include <thread>
+#include <string>
+
+#include <asio/ip/tcp.hpp>
+#include <asio/steady_timer.hpp>
+
 #include "connection.h"
-#include <sys/types.h>
-#ifndef WINDOWS
-#include <netdb.h>
-#include <netinet/in.h>
-#else
-#include <winsock2.h>
-#include <Ws2tcpip.h> // For InetPton
-#undef SOCKET_ERROR
-#endif
 
 namespace mavsdk {
 
@@ -40,18 +32,20 @@ public:
     const TcpClientConnection& operator=(const TcpClientConnection&) = delete;
 
 private:
-    ConnectionResult setup_port();
-    void start_recv_thread();
-    void receive();
+    void do_connect();
+    void do_receive();
+    void start_reconnect();
 
-    std::string _remote_ip = {};
+    std::string _remote_ip;
     int _remote_port_number;
 
-    std::mutex _mutex = {};
-    SocketHolder _socket_fd;
+    // Protects synchronous sends against concurrent close/reconnect on the io_thread.
+    std::mutex _send_mutex{};
 
-    std::unique_ptr<std::thread> _recv_thread{};
-    std::atomic_bool _should_exit;
+    // Asio objects — driven by MavsdkImpl::_io_context.
+    asio::ip::tcp::socket _socket;
+    asio::steady_timer _reconnect_timer;
+    std::array<char, 2048> _recv_buffer{};
 };
 
 } // namespace mavsdk
