@@ -11,6 +11,7 @@
 #include <queue>
 
 #include <asio/io_context.hpp>
+#include <asio/steady_timer.hpp>
 
 #include "autopilot.h"
 #include "compatibility_mode.h"
@@ -194,10 +195,9 @@ private:
     void work_thread();
     void process_user_callbacks_thread();
 
-    void process_messages();
+    // process_messages() and process_libmav_messages() removed:
+    // messages are dispatched directly via asio::post() in receive_message().
     void process_message(mavlink_message_t& message, Connection* connection);
-
-    void process_libmav_messages();
     void process_libmav_message(const Mavsdk::MavlinkMessage& message, Connection* connection);
 
     void deliver_messages();
@@ -289,21 +289,8 @@ private:
     std::atomic<double> _timeout_s{DEFAULT_TIMEOUT_S};
     std::atomic<double> _heartbeat_timeout_s{DEFAULT_HEARTBEAT_TIMEOUT_S};
 
-    struct ReceivedMessage {
-        mavlink_message_t message;
-        Connection* connection_ptr;
-    };
-    mutable std::mutex _received_messages_mutex{};
-    std::queue<ReceivedMessage> _received_messages;
-    std::condition_variable _received_messages_cv{};
-
-    struct ReceivedLibmavMessage {
-        Mavsdk::MavlinkMessage message;
-        Connection* connection_ptr;
-    };
-    mutable std::mutex _received_libmav_messages_mutex{};
-    std::queue<ReceivedLibmavMessage> _received_libmav_messages;
-    std::condition_variable _received_libmav_messages_cv{};
+    // Note: received messages are now dispatched directly on the io_context thread
+    // via asio::post() — no intermediate queue needed.
 
     mutable std::mutex _messages_to_send_mutex{};
     std::queue<mavlink_message_t> _messages_to_send;
@@ -322,6 +309,11 @@ private:
     // Keep io_context::run() from returning when there are momentarily no async ops pending.
     asio::executor_work_guard<asio::io_context::executor_type> _io_work_guard{
         _io_context.get_executor()};
+    // Recurring timer that drives TimeoutHandler::run_once() and
+    // CallEveryHandler::run_once() on the io_context thread.
+    asio::steady_timer _timers_poll_timer{_io_context};
+    void schedule_timers_poll();
+
     std::unique_ptr<std::thread> _io_thread{};
 };
 
