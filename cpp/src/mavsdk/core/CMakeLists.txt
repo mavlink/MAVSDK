@@ -178,6 +178,14 @@ set_target_properties(mavsdk
     PROPERTIES COMPILE_FLAGS ${warnings}
     )
 
+# Asio's io_context.hpp triggers a false-positive -Wnull-dereference with GCC
+# (executor comparison at io_context.hpp:967).  The warning comes from GCC's
+# data-flow analysis traversing inlined Asio internals; marking the Asio
+# include directory as SYSTEM is not always sufficient to suppress it.
+if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    target_compile_options(mavsdk PRIVATE -Wno-null-dereference)
+endif()
+
 target_include_directories(mavsdk
     PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/mavsdk>

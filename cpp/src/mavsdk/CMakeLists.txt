@@ -22,7 +22,7 @@ target_link_libraries(mavsdk
     tinyxml2::tinyxml2
     LibEvents::LibEvents
     mav::mav
-    asio::asio
+    $<BUILD_INTERFACE:asio::asio>
 )
 
 if (NOT APPLE AND NOT ANDROID AND NOT MSVC
