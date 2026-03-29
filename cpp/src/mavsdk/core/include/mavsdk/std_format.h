@@ -55,8 +55,7 @@ template<typename T>
         is_enum_v<T> && !is_convertible_v<T, underlying_type_t<T>> &&
         requires(ostream& os, T v) { os << v; })
 struct formatter<T> : formatter<string> {
-    template<typename FormatContext>
-    auto format(T val, FormatContext& ctx) const
+    template<typename FormatContext> auto format(T val, FormatContext& ctx) const
     {
         ostringstream ss;
         ss << val;
@@ -73,8 +72,7 @@ template<typename T>
         !is_same_v<remove_cvref_t<T>, filesystem::path> &&
         requires(ostream& os, const T& v) { os << v; })
 struct formatter<T> : formatter<string> {
-    template<typename FormatContext>
-    auto format(const T& val, FormatContext& ctx) const
+    template<typename FormatContext> auto format(const T& val, FormatContext& ctx) const
     {
         ostringstream ss;
         ss << val;
