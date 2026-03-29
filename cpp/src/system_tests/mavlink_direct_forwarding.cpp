@@ -48,8 +48,13 @@ TEST(SystemTest, MavlinkDirectForwardingKnownMessage)
     ASSERT_TRUE(system->has_autopilot());
 
     // Sender waits to discover ground station systems
-    while (mavsdk_sender.systems().size() == 0) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    {
+        auto deadline = std::chrono::steady_clock::now() + std::chrono::seconds(10);
+        while (mavsdk_sender.systems().size() == 0) {
+            ASSERT_TRUE(std::chrono::steady_clock::now() < deadline)
+                << "Timed out waiting for sender to discover systems";
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        }
     }
 
     // Get sender's view of the receiver systems (for sending)
@@ -162,8 +167,13 @@ TEST(SystemTest, MavlinkDirectForwardingUnknownMessage)
     ASSERT_TRUE(system->has_autopilot());
 
     // Sender waits to discover ground station systems
-    while (mavsdk_sender.systems().size() == 0) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    {
+        auto deadline = std::chrono::steady_clock::now() + std::chrono::seconds(10);
+        while (mavsdk_sender.systems().size() == 0) {
+            ASSERT_TRUE(std::chrono::steady_clock::now() < deadline)
+                << "Timed out waiting for sender to discover systems";
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        }
     }
 
     // Get sender's view of the receiver systems (for sending)
