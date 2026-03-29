@@ -317,6 +317,7 @@ private:
     uint8_t get_target_component_id();
 
     void process_mavlink_ftp_message(const mavlink_message_t& msg);
+    void enqueue_work(std::shared_ptr<Work> work);
 
     SystemImpl& _system_impl;
     asio::io_context& _io_context;

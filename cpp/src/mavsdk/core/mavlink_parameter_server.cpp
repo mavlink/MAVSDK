@@ -102,11 +102,13 @@ MavlinkParameterServer::provide_server_param(const std::string& name, const Para
                                 std::numeric_limits<std::uint16_t>::max(),
                                 std::numeric_limits<std::uint16_t>::max(),
                                 _last_extended});
-                        const bool was_empty = _work_queue.empty();
-                        _work_queue.push_back(new_work);
-                        if (was_empty) {
-                            asio::post(_io_context, [this] { do_work(); });
-                        }
+                        asio::post(_io_context, [this, new_work]() {
+                            const bool was_empty = _work_queue.empty();
+                            _work_queue.push_back(new_work);
+                            if (was_empty) {
+                                do_work();
+                            }
+                        });
                     }
                     return Result::OkExistsAlready;
                 case MavlinkParameterCache::UpdateExistingParamResult::MissingParam:

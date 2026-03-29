@@ -55,11 +55,13 @@ MavlinkMissionTransferClient::upload_items_async(
         target_system_id,
         _autopilot_callback());
 
-    const bool was_empty = _work_queue.empty();
-    _work_queue.push_back(ptr);
-    if (was_empty) {
-        asio::post(_io_context, [this] { do_work(); });
-    }
+    asio::post(_io_context, [this, ptr]() {
+        const bool was_empty = _work_queue.empty();
+        _work_queue.push_back(ptr);
+        if (was_empty) {
+            do_work();
+        }
+    });
 
     return std::weak_ptr<WorkItem>(ptr);
 }
@@ -90,11 +92,13 @@ MavlinkMissionTransferClient::download_items_async(
         _debugging,
         target_system_id);
 
-    const bool was_empty = _work_queue.empty();
-    _work_queue.push_back(ptr);
-    if (was_empty) {
-        asio::post(_io_context, [this] { do_work(); });
-    }
+    asio::post(_io_context, [this, ptr]() {
+        const bool was_empty = _work_queue.empty();
+        _work_queue.push_back(ptr);
+        if (was_empty) {
+            do_work();
+        }
+    });
 
     return std::weak_ptr<WorkItem>(ptr);
 }
@@ -112,11 +116,13 @@ void MavlinkMissionTransferClient::clear_items_async(
         _debugging,
         target_system_id);
 
-    const bool was_empty = _work_queue.empty();
-    _work_queue.push_back(ptr);
-    if (was_empty) {
-        asio::post(_io_context, [this] { do_work(); });
-    }
+    asio::post(_io_context, [this, ptr]() {
+        const bool was_empty = _work_queue.empty();
+        _work_queue.push_back(ptr);
+        if (was_empty) {
+            do_work();
+        }
+    });
 }
 
 void MavlinkMissionTransferClient::set_current_item_async(
@@ -132,11 +138,13 @@ void MavlinkMissionTransferClient::set_current_item_async(
         _debugging,
         target_system_id);
 
-    const bool was_empty = _work_queue.empty();
-    _work_queue.push_back(ptr);
-    if (was_empty) {
-        asio::post(_io_context, [this] { do_work(); });
-    }
+    asio::post(_io_context, [this, ptr]() {
+        const bool was_empty = _work_queue.empty();
+        _work_queue.push_back(ptr);
+        if (was_empty) {
+            do_work();
+        }
+    });
 }
 
 void MavlinkMissionTransferClient::do_work()
