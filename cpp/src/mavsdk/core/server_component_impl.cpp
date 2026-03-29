@@ -16,7 +16,8 @@ ServerComponentImpl::ServerComponentImpl(
         mavsdk_impl.mavlink_message_handler,
         mavsdk_impl.timeout_handler,
         [this]() { return _mavsdk_impl.timeout_s(); }),
-    _mavlink_parameter_server(_our_sender, mavsdk_impl.mavlink_message_handler, mavsdk_impl.io_context()),
+    _mavlink_parameter_server(
+        _our_sender, mavsdk_impl.mavlink_message_handler, mavsdk_impl.io_context()),
     _mavlink_request_message_handler(mavsdk_impl, *this, _mavlink_command_receiver),
     _mavlink_ftp_server(*this)
 {

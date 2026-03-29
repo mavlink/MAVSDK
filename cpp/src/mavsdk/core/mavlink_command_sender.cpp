@@ -101,8 +101,7 @@ void MavlinkCommandSender::queue_command_async(
     new_work->retries_to_do = retries;
     asio::post(_io_context, [this, new_work]() {
         for (const auto& work : _work_queue) {
-            if (work->identification == new_work->identification &&
-                new_work->callback == nullptr) {
+            if (work->identification == new_work->identification && new_work->callback == nullptr) {
                 if (_command_debugging) {
                     LogDebug() << "Dropping command "
                                << static_cast<int>(new_work->identification.command)
@@ -137,8 +136,7 @@ void MavlinkCommandSender::queue_command_async(
     new_work->retries_to_do = retries;
     asio::post(_io_context, [this, new_work]() {
         for (const auto& work : _work_queue) {
-            if (work->identification == new_work->identification &&
-                new_work->callback == nullptr) {
+            if (work->identification == new_work->identification && new_work->callback == nullptr) {
                 if (_command_debugging) {
                     LogDebug() << "Dropping command "
                                << static_cast<int>(new_work->identification.command)

@@ -64,8 +64,18 @@ protected:
         ON_CALL(mock_sender, io_context()).WillByDefault(ReturnRef(io_context));
     }
 
+    void TearDown() override
+    {
+        // Drain any pending io_context posts (e.g. enqueue lambdas holding shared_ptr<WorkItem>)
+        // so that WorkItem destructors run while message_handler and timeout_handler are still alive.
+        // Without this, io_context (declared first, destroyed last) would destroy those lambdas
+        // after message_handler is already gone, causing heap-use-after-free in unregister_all_blocking.
+        while (io_context.poll()) {}
+    }
+
     // Flush any io_context posts (e.g. the enqueue lambda) then drive the state machine.
-    void do_work() {
+    void do_work()
+    {
         io_context.poll();
         mmt.do_work();
     }
