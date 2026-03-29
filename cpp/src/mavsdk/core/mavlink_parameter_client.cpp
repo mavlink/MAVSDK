@@ -465,7 +465,8 @@ void MavlinkParameterClient::do_work()
     if (_work_queue.empty()) {
         return;
     }
-    auto& work = _work_queue.front();
+    // Hold an owned copy so the WorkItem stays alive even after pop_front().
+    auto work = _work_queue.front();
 
     if (work->already_requested) {
         return;
@@ -716,7 +717,8 @@ void MavlinkParameterClient::process_param_value(const mavlink_message_t& messag
         find_and_call_subscriptions_value_changed(safe_param_id, received_value);
         return;
     }
-    auto& work = _work_queue.front();
+    // Hold an owned copy so the WorkItem stays alive even after pop_front().
+    auto work = _work_queue.front();
 
     if (!work->already_requested) {
         return;
@@ -922,7 +924,8 @@ void MavlinkParameterClient::process_param_ext_value(const mavlink_message_t& me
         find_and_call_subscriptions_value_changed(safe_param_id, received_value);
         return;
     }
-    auto& work = _work_queue.front();
+    // Hold an owned copy so the WorkItem stays alive even after pop_front().
+    auto work = _work_queue.front();
 
     if (!work->already_requested) {
         return;
@@ -1020,7 +1023,8 @@ void MavlinkParameterClient::process_param_ext_ack(const mavlink_message_t& mess
     if (_work_queue.empty()) {
         return;
     }
-    auto& work = _work_queue.front();
+    // Hold an owned copy so the WorkItem stays alive even after pop_front().
+    auto work = _work_queue.front();
     if (!work->already_requested) {
         return;
     }
@@ -1092,7 +1096,8 @@ void MavlinkParameterClient::process_param_error(const mavlink_message_t& messag
     if (_work_queue.empty()) {
         return;
     }
-    auto& work = _work_queue.front();
+    // Hold an owned copy so the WorkItem stays alive even after pop_front().
+    auto work = _work_queue.front();
     if (!work->already_requested) {
         return;
     }
@@ -1167,7 +1172,8 @@ void MavlinkParameterClient::receive_timeout()
         LogErr() << "Received timeout without work";
         return;
     }
-    auto& work = _work_queue.front();
+    // Hold an owned copy so the WorkItem (and its callbacks) stays alive even after pop_front().
+    auto work = _work_queue.front();
     if (!work->already_requested) {
         LogErr() << "Received timeout without already having work requested";
         return;
