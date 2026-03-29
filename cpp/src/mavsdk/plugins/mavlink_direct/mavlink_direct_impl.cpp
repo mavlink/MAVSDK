@@ -86,7 +86,10 @@ MavlinkDirect::Result MavlinkDirectImpl::send_message(MavlinkDirect::MavlinkMess
     }
 
     if (_debugging) {
-        LogDebug("Created message {} with ID: {}", message.message_name, libmav_message_opt.value().id());
+        LogDebug(
+            "Created message {} with ID: {}",
+            message.message_name,
+            libmav_message_opt.value().id());
     }
 
     auto libmav_message = libmav_message_opt.value();
@@ -273,7 +276,10 @@ bool MavlinkDirectImpl::json_to_libmav_message(
             }
 
             if (result != ::mav::MessageResult::Success) {
-                LogWarn("Failed to set float/double field {} = {}", field_name, (field_value.isNull() ? "null" : std::to_string(field_value.asDouble())));
+                LogWarn(
+                    "Failed to set float/double field {} = {}",
+                    field_name,
+                    (field_value.isNull() ? "null" : std::to_string(field_value.asDouble())));
             }
         } else if (field_value.isString()) {
             auto result = msg.setString(field_name, field_value.asString());

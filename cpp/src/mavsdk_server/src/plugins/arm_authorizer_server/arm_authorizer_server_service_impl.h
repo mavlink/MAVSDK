@@ -53,7 +53,8 @@ public:
     {
         switch (rejection_reason) {
             default:
-                LogErr("Unknown rejection_reason enum value: {}", static_cast<int>(rejection_reason));
+                LogErr(
+                    "Unknown rejection_reason enum value: {}", static_cast<int>(rejection_reason));
             // FALLTHROUGH
             case mavsdk::ArmAuthorizerServer::RejectionReason::Generic:
                 return rpc::arm_authorizer_server::REJECTION_REASON_GENERIC;
@@ -75,7 +76,8 @@ public:
     {
         switch (rejection_reason) {
             default:
-                LogErr("Unknown rejection_reason enum value: {}", static_cast<int>(rejection_reason));
+                LogErr(
+                    "Unknown rejection_reason enum value: {}", static_cast<int>(rejection_reason));
             // FALLTHROUGH
             case rpc::arm_authorizer_server::REJECTION_REASON_GENERIC:
                 return mavsdk::ArmAuthorizerServer::RejectionReason::Generic;

@@ -47,7 +47,9 @@ public:
     {
         switch (orbit_yaw_behavior) {
             default:
-                LogErr("Unknown orbit_yaw_behavior enum value: {}", static_cast<int>(orbit_yaw_behavior));
+                LogErr(
+                    "Unknown orbit_yaw_behavior enum value: {}",
+                    static_cast<int>(orbit_yaw_behavior));
             // FALLTHROUGH
             case mavsdk::Action::OrbitYawBehavior::HoldFrontToCircleCenter:
                 return rpc::action::ORBIT_YAW_BEHAVIOR_HOLD_FRONT_TO_CIRCLE_CENTER;
@@ -67,7 +69,9 @@ public:
     {
         switch (orbit_yaw_behavior) {
             default:
-                LogErr("Unknown orbit_yaw_behavior enum value: {}", static_cast<int>(orbit_yaw_behavior));
+                LogErr(
+                    "Unknown orbit_yaw_behavior enum value: {}",
+                    static_cast<int>(orbit_yaw_behavior));
             // FALLTHROUGH
             case rpc::action::ORBIT_YAW_BEHAVIOR_HOLD_FRONT_TO_CIRCLE_CENTER:
                 return mavsdk::Action::OrbitYawBehavior::HoldFrontToCircleCenter;

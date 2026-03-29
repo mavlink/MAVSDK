@@ -48,7 +48,8 @@ public:
     {
         switch (status_text_type) {
             default:
-                LogErr("Unknown status_text_type enum value: {}", static_cast<int>(status_text_type));
+                LogErr(
+                    "Unknown status_text_type enum value: {}", static_cast<int>(status_text_type));
             // FALLTHROUGH
             case mavsdk::ServerUtility::StatusTextType::Debug:
                 return rpc::server_utility::STATUS_TEXT_TYPE_DEBUG;
@@ -74,7 +75,8 @@ public:
     {
         switch (status_text_type) {
             default:
-                LogErr("Unknown status_text_type enum value: {}", static_cast<int>(status_text_type));
+                LogErr(
+                    "Unknown status_text_type enum value: {}", static_cast<int>(status_text_type));
             // FALLTHROUGH
             case rpc::server_utility::STATUS_TEXT_TYPE_DEBUG:
                 return mavsdk::ServerUtility::StatusTextType::Debug;

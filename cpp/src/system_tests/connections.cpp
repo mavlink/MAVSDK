@@ -171,7 +171,8 @@ TEST(SystemTest, TcpConnectionReconnectionFromClientSide)
     auto handle2 = client_mavlink.subscribe_message(
         "HEARTBEAT", [&message_count2](MavlinkDirect::MavlinkMessage) {
             message_count2++;
-            LogInfo("Client received HEARTBEAT after reconnection (total: {})", message_count2.load());
+            LogInfo(
+                "Client received HEARTBEAT after reconnection (total: {})", message_count2.load());
         });
 
     // Wait for automatic heartbeats to arrive after reconnection
@@ -268,7 +269,8 @@ TEST(SystemTest, UdpConnectionReconnectionFromClientSide)
     auto handle2 = client_mavlink.subscribe_message(
         "HEARTBEAT", [&message_count2](MavlinkDirect::MavlinkMessage) {
             message_count2++;
-            LogInfo("Client received HEARTBEAT after reconnection (total: {})", message_count2.load());
+            LogInfo(
+                "Client received HEARTBEAT after reconnection (total: {})", message_count2.load());
         });
 
     // Wait for automatic heartbeats to arrive after reconnection
@@ -365,7 +367,8 @@ TEST(SystemTest, UdpConnectionReconnectionFromServerSide)
     auto handle2 = client_mavlink.subscribe_message(
         "HEARTBEAT", [&message_count2](MavlinkDirect::MavlinkMessage) {
             message_count2++;
-            LogInfo("Client received HEARTBEAT after reconnection (total: {})", message_count2.load());
+            LogInfo(
+                "Client received HEARTBEAT after reconnection (total: {})", message_count2.load());
         });
 
     // Wait for automatic heartbeats to arrive after reconnection

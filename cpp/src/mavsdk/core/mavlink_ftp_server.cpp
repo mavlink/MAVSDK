@@ -38,7 +38,10 @@ void MavlinkFtpServer::process_mavlink_ftp_message(const mavlink_message_t& msg)
     mavlink_msg_file_transfer_protocol_decode(&msg, &ftp_req);
 
     if (_debugging) {
-        LogDebug("Processing FTP message to target compid: {}, our compid: {}", ftp_req.target_component, _server_component_impl.get_own_component_id());
+        LogDebug(
+            "Processing FTP message to target compid: {}, our compid: {}",
+            ftp_req.target_component,
+            _server_component_impl.get_own_component_id());
     }
 
     if (ftp_req.target_system != 0 &&
@@ -71,7 +74,12 @@ void MavlinkFtpServer::process_mavlink_ftp_message(const mavlink_message_t& msg)
 
     } else {
         if (_debugging) {
-            LogDebug("FTP opcode: {}, size: {}, offset: {}, seq: {}", (int)payload.opcode, (int)payload.size, (int)payload.offset, payload.seq_number);
+            LogDebug(
+                "FTP opcode: {}, size: {}, offset: {}, seq: {}",
+                (int)payload.opcode,
+                (int)payload.size,
+                (int)payload.offset,
+                payload.seq_number);
         }
 
         _target_system_id = msg.sysid;
@@ -342,13 +350,19 @@ void MavlinkFtpServer::_work_list(const PayloadHeader& payload)
 
         const auto is_regular_file = entry.is_regular_file(ec);
         if (ec) {
-            LogWarn("Could not determine whether '{}' is a file: {}", entry.path().string(), ec.message());
+            LogWarn(
+                "Could not determine whether '{}' is a file: {}",
+                entry.path().string(),
+                ec.message());
             continue;
         }
 
         const auto is_directory = entry.is_directory(ec);
         if (ec) {
-            LogWarn("Could not determine whether '{}' is a directory: {}", entry.path().string(), ec.message());
+            LogWarn(
+                "Could not determine whether '{}' is a directory: {}",
+                entry.path().string(),
+                ec.message());
             continue;
         }
 

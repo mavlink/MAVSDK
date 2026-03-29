@@ -73,7 +73,8 @@ void MavlinkReceiver::debug_drop_rate()
         mavlink_msg_sys_status_decode(&_last_message, &sys_status);
 
         if (!_drop_stats.first) {
-            LogDebug("------------------------------------------------------------------------------");
+            LogDebug(
+                "------------------------------------------------------------------------------");
 
             if (_drop_stats.bytes_received <= sys_status.errors_comm &&
                 sys_status.errors_count2 <= sys_status.errors_comm) {

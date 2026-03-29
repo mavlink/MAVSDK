@@ -89,7 +89,10 @@ TEST(SystemTest, InterceptIncomingModifyLocal)
             mavlink_msg_global_position_int_encode_chan(
                 message.sysid, message.compid, MAVLINK_COMM_NUM_BUFFERS - 1, &message, &pos);
 
-            LogInfo("Modified coordinates to San Francisco: lat={}, lon={}", (pos.lat / 1e7), (pos.lon / 1e7));
+            LogInfo(
+                "Modified coordinates to San Francisco: lat={}, lon={}",
+                (pos.lat / 1e7),
+                (pos.lon / 1e7));
 
             intercept_called = true;
         }
@@ -107,14 +110,20 @@ TEST(SystemTest, InterceptIncomingModifyLocal)
     // Subscribe to position updates on interceptor
     auto interceptor_handle =
         telemetry_interceptor.subscribe_position([&interceptor_prom](Telemetry::Position position) {
-            LogInfo("Interceptor received position: lat={}, lon={}", position.latitude_deg, position.longitude_deg);
+            LogInfo(
+                "Interceptor received position: lat={}, lon={}",
+                position.latitude_deg,
+                position.longitude_deg);
             interceptor_prom.set_value(position);
         });
 
     // Subscribe to position updates on receiver
     auto receiver_handle =
         telemetry_receiver.subscribe_position([&receiver_prom](Telemetry::Position position) {
-            LogInfo("Receiver received position: lat={}, lon={}", position.latitude_deg, position.longitude_deg);
+            LogInfo(
+                "Receiver received position: lat={}, lon={}",
+                position.latitude_deg,
+                position.longitude_deg);
             receiver_prom.set_value(position);
         });
 
@@ -209,7 +218,11 @@ TEST(SystemTest, InterceptJsonIncoming)
 
     auto json_handle = mavsdk_groundstation.subscribe_incoming_messages_json(
         [&json_prom, &intercept_called](Mavsdk::MavlinkMessage json_message) {
-            LogInfo("Intercepted incoming JSON message: {} from system {} with fields: {}", json_message.message_name, json_message.system_id, json_message.fields_json);
+            LogInfo(
+                "Intercepted incoming JSON message: {} from system {} with fields: {}",
+                json_message.message_name,
+                json_message.system_id,
+                json_message.fields_json);
 
             if (json_message.message_name == "GLOBAL_POSITION_INT") {
                 intercept_called = true;
@@ -314,7 +327,11 @@ TEST(SystemTest, InterceptJsonOutgoing)
 
     auto json_handle = mavsdk_autopilot.subscribe_outgoing_messages_json(
         [&json_prom, &intercept_called](Mavsdk::MavlinkMessage json_message) {
-            LogInfo("Intercepted outgoing JSON message: {} to system {} with fields: {}", json_message.message_name, json_message.target_system_id, json_message.fields_json);
+            LogInfo(
+                "Intercepted outgoing JSON message: {} to system {} with fields: {}",
+                json_message.message_name,
+                json_message.target_system_id,
+                json_message.fields_json);
 
             if (json_message.message_name == "GPS_RAW_INT") {
                 intercept_called = true;

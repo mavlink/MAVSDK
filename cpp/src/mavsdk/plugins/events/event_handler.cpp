@@ -127,7 +127,10 @@ void EventHandler::got_event(const mavlink_event_t& event)
             _pending_events.clear();
         }
         if (_pending_events.empty()) { // Print only for the first to avoid spamming
-            LogDebug("No metadata, queuing event, ID: {}, num pending: {}", event.id, _pending_events.size());
+            LogDebug(
+                "No metadata, queuing event, ID: {}, num pending: {}",
+                event.id,
+                _pending_events.size());
         }
         _pending_events.push_back(event);
         return;

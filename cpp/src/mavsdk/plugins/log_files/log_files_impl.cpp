@@ -372,7 +372,10 @@ void LogFilesImpl::process_log_data(const mavlink_message_t& message)
     }
 
     if (msg.ofs > _download_data.entry.size_bytes) {
-        LogErr("Offset greater than file size: offset/size: {}/{}", msg.ofs, _download_data.entry.size_bytes);
+        LogErr(
+            "Offset greater than file size: offset/size: {}/{}",
+            msg.ofs,
+            _download_data.entry.size_bytes);
         return;
     }
 
@@ -395,7 +398,10 @@ void LogFilesImpl::process_log_data(const mavlink_message_t& message)
     const uint16_t bin = (msg.ofs - chunk * CHUNK_SIZE) / MAVLINK_MSG_LOG_DATA_FIELD_DATA_LEN;
 
     if (bin >= _download_data.chunk_bin_table.size()) {
-        LogErr("Out of range bin received: bin/size: {}/{}", bin, _download_data.chunk_bin_table.size());
+        LogErr(
+            "Out of range bin received: bin/size: {}/{}",
+            bin,
+            _download_data.chunk_bin_table.size());
         return;
     }
 
@@ -472,7 +478,10 @@ void LogFilesImpl::data_timeout()
     std::lock_guard<std::mutex> lock(_download_data_mutex);
 
     LogErr("Timeout!");
-    LogErr("Requesting missing chunk:\t{}/{}", _download_data.current_chunk, _download_data.total_chunks());
+    LogErr(
+        "Requesting missing chunk:\t{}/{}",
+        _download_data.current_chunk,
+        _download_data.total_chunks());
 
     // Don't reset chunk data - preserve what we've received
     // Instead, request missing ranges based on bin table
@@ -509,7 +518,10 @@ void LogFilesImpl::check_and_request_missing_bins()
                 const uint32_t missing_count =
                     (bin - range_start) * MAVLINK_MSG_LOG_DATA_FIELD_DATA_LEN;
 
-                LogDebug("Requesting missing range from offset {} count {}", missing_start, missing_count);
+                LogDebug(
+                    "Requesting missing range from offset {} count {}",
+                    missing_start,
+                    missing_count);
                 request_log_data(_download_data.entry.id, missing_start, missing_count);
                 requested_something = true;
             }

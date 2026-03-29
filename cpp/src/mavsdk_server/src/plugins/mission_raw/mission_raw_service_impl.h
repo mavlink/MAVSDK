@@ -744,8 +744,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn()
-                << "ImportQgroundcontrolMissionFromString sent with a null request! Ignoring...";
+            LogWarn("ImportQgroundcontrolMissionFromString sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -809,8 +808,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn()
-                << "ImportMissionPlannerMissionFromString sent with a null request! Ignoring...";
+            LogWarn("ImportMissionPlannerMissionFromString sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 

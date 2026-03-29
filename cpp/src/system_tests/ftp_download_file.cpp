@@ -80,7 +80,10 @@ TEST(SystemTest, FtpDownloadFile)
                 if (result != Ftp::Result::Next) {
                     prom.set_value(result);
                 } else {
-                    LogDebug("Download progress: {}/{} bytes", progress_data.bytes_transferred, progress_data.total_bytes);
+                    LogDebug(
+                        "Download progress: {}/{} bytes",
+                        progress_data.bytes_transferred,
+                        progress_data.total_bytes);
                 }
             });
 
@@ -134,7 +137,10 @@ TEST(SystemTest, FtpDownloadBigFile)
             if (result != Ftp::Result::Next) {
                 prom.set_value(result);
             } else {
-                LogDebug("Download progress: {}/{} bytes", progress_data.bytes_transferred, progress_data.total_bytes);
+                LogDebug(
+                    "Download progress: {}/{} bytes",
+                    progress_data.bytes_transferred,
+                    progress_data.total_bytes);
             }
         });
 
@@ -195,7 +201,10 @@ TEST(SystemTest, FtpDownloadBigFileLossy)
                 prom.set_value(result);
             } else {
                 if (slow_down_counter++ % 10 == 0) {
-                    LogDebug("Download progress: {}/{} bytes", progress_data.bytes_transferred, progress_data.total_bytes);
+                    LogDebug(
+                        "Download progress: {}/{} bytes",
+                        progress_data.bytes_transferred,
+                        progress_data.total_bytes);
                 }
             }
         });
@@ -264,7 +273,10 @@ TEST(SystemTest, FtpDownloadStopAndTryAgain)
                     LogDebug("Got result: {}", result);
                     prom.set_value(result);
                 } else {
-                    LogDebug("Download progress: {}/{} bytes", progress_data.bytes_transferred, progress_data.total_bytes);
+                    LogDebug(
+                        "Download progress: {}/{} bytes",
+                        progress_data.bytes_transferred,
+                        progress_data.total_bytes);
                 }
             });
 
@@ -290,7 +302,10 @@ TEST(SystemTest, FtpDownloadStopAndTryAgain)
                 if (result != Ftp::Result::Next) {
                     prom.set_value(result);
                 } else {
-                    LogDebug("Download progress: {}/{} bytes", progress_data.bytes_transferred, progress_data.total_bytes);
+                    LogDebug(
+                        "Download progress: {}/{} bytes",
+                        progress_data.bytes_transferred,
+                        progress_data.total_bytes);
                 }
             });
 

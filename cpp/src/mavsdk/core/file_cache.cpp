@@ -152,7 +152,11 @@ FileCache::insert(const std::string& file_tag, const std::filesystem::path& file
             }
         }
         if (err) {
-            LogWarn("File rename failed from {} to {}: {}", file_name.string(), data.string(), err.message());
+            LogWarn(
+                "File rename failed from {} to {}: {}",
+                file_name.string(),
+                data.string(),
+                err.message());
             return std::nullopt;
         }
     }
@@ -230,7 +234,11 @@ void FileCache::remove_old_entries(const AccessCounters& access_counters) const
     auto iter = access_counters.cached_files.begin();
     while (num_delete > 0) {
         if (_verbose_debugging) {
-            LogDebug("Removing cache entry num:counter:file{}{}{}", num_delete, iter->first, iter->second);
+            LogDebug(
+                "Removing cache entry num:counter:file{}{}{}",
+                num_delete,
+                iter->first,
+                iter->second);
         }
         std::filesystem::remove(meta_filename(iter->second));
         std::filesystem::remove(data_filename(iter->second));

@@ -46,7 +46,10 @@ void MavlinkCommandReceiver::receive_command_int(const mavlink_message_t& messag
     if (cmd.target_component_id != _server_component_impl.get_own_component_id() &&
         cmd.target_component_id != MAV_COMP_ID_ALL) {
         if (_debugging) {
-            LogDebug("Ignored command int to component {} instead of {}", cmd.target_component_id, _server_component_impl.get_own_component_id());
+            LogDebug(
+                "Ignored command int to component {} instead of {}",
+                cmd.target_component_id,
+                _server_component_impl.get_own_component_id());
         }
         return;
     }
@@ -75,7 +78,10 @@ void MavlinkCommandReceiver::receive_command_int(const mavlink_message_t& messag
                     });
 
                 if (_debugging) {
-                    LogDebug("Acked command int {} with {}", cmd.command, maybe_command_ack.value().result);
+                    LogDebug(
+                        "Acked command int {} with {}",
+                        cmd.command,
+                        maybe_command_ack.value().result);
                 }
             }
         }
@@ -93,7 +99,10 @@ void MavlinkCommandReceiver::receive_command_long(const mavlink_message_t& messa
     if (cmd.target_component_id != _server_component_impl.get_own_component_id() &&
         cmd.target_component_id != MAV_COMP_ID_ALL) {
         if (_debugging) {
-            LogDebug("Ignored command long to component {} instead of {}", cmd.target_component_id, _server_component_impl.get_own_component_id());
+            LogDebug(
+                "Ignored command long to component {} instead of {}",
+                cmd.target_component_id,
+                _server_component_impl.get_own_component_id());
         }
         return;
     }
@@ -121,7 +130,10 @@ void MavlinkCommandReceiver::receive_command_long(const mavlink_message_t& messa
                         return response_message;
                     });
                 if (_debugging) {
-                    LogDebug("Acked command long {} with {}", cmd.command, maybe_command_ack.value().result);
+                    LogDebug(
+                        "Acked command long {} with {}",
+                        cmd.command,
+                        maybe_command_ack.value().result);
                 }
             }
         }

@@ -94,7 +94,9 @@ private:
 
             if (elapsed > timeout_) {
                 // Stall detected - abort to generate core dump
-                LogErr("WATCHDOG: Stall detected! No activity for {}ms. Aborting to generate core dump.", elapsed.count());
+                LogErr(
+                    "WATCHDOG: Stall detected! No activity for {}ms. Aborting to generate core dump.",
+                    elapsed.count());
                 std::abort();
             }
         }
@@ -234,7 +236,10 @@ void MavsdkFuzzer::create_plugins_for_system(std::shared_ptr<System> system)
 
     system_plugins_.push_back(std::move(plugins));
 
-    LogDebug("Successfully created {} plugin sets, latest for system ID: {}", system_plugins_.size(), system->get_system_id());
+    LogDebug(
+        "Successfully created {} plugin sets, latest for system ID: {}",
+        system_plugins_.size(),
+        system->get_system_id());
 }
 
 bool MavsdkFuzzer::initialize()

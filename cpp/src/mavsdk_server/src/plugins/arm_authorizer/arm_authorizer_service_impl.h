@@ -33,7 +33,9 @@ public:
     {
         switch (arm_authorizer_decision) {
             default:
-                LogErr("Unknown arm_authorizer_decision enum value: {}", static_cast<int>(arm_authorizer_decision));
+                LogErr(
+                    "Unknown arm_authorizer_decision enum value: {}",
+                    static_cast<int>(arm_authorizer_decision));
             // FALLTHROUGH
             case mavsdk::ArmAuthorizer::ArmAuthorizerDecision::DecisionAccepted:
                 return rpc::arm_authorizer::ARM_AUTHORIZER_DECISION_DECISION_ACCEPTED;
@@ -49,7 +51,9 @@ public:
     {
         switch (arm_authorizer_decision) {
             default:
-                LogErr("Unknown arm_authorizer_decision enum value: {}", static_cast<int>(arm_authorizer_decision));
+                LogErr(
+                    "Unknown arm_authorizer_decision enum value: {}",
+                    static_cast<int>(arm_authorizer_decision));
             // FALLTHROUGH
             case rpc::arm_authorizer::ARM_AUTHORIZER_DECISION_DECISION_ACCEPTED:
                 return mavsdk::ArmAuthorizer::ArmAuthorizerDecision::DecisionAccepted;

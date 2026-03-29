@@ -248,7 +248,10 @@ TEST(SystemTest, MavlinkDirectToTelemetry)
 
     // Subscribe to position updates via Telemetry
     auto handle = receiver_telemetry.subscribe_position([&prom](Telemetry::Position position) {
-        LogInfo("Received position via Telemetry: lat={} lon={}", position.latitude_deg, position.longitude_deg);
+        LogInfo(
+            "Received position via Telemetry: lat={} lon={}",
+            position.latitude_deg,
+            position.longitude_deg);
         prom.set_value(position);
     });
 
@@ -997,7 +1000,9 @@ TEST(SystemTest, MavlinkDirectEmptyStringFiltering)
                 sys_status_count++;
                 LogInfo("Received SYS_STATUS via empty string subscriptio");
             } else {
-                LogInfo("Received other message via empty string subscription: {}", message.message_name);
+                LogInfo(
+                    "Received other message via empty string subscription: {}",
+                    message.message_name);
             }
         });
 

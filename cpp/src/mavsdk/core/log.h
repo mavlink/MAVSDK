@@ -8,8 +8,7 @@
 
 // std::formatter for std::filesystem::path is not available until C++26.
 // Provide a specialization here so paths can be passed directly to Log macros.
-template<>
-struct std::formatter<std::filesystem::path> : std::formatter<std::string> {
+template<> struct std::formatter<std::filesystem::path> : std::formatter<std::string> {
     template<typename FormatContext>
     auto format(const std::filesystem::path& p, FormatContext& ctx) const
     {
@@ -34,10 +33,14 @@ struct std::formatter<std::filesystem::path> : std::formatter<std::string> {
 
 #define call_user_callback(...) call_user_callback_located(FILENAME, __LINE__, __VA_ARGS__)
 
-#define LogDebug(...) ::mavsdk::log_message(::mavsdk::log::Level::Debug, FILENAME, __LINE__, __VA_ARGS__)
-#define LogInfo(...) ::mavsdk::log_message(::mavsdk::log::Level::Info, FILENAME, __LINE__, __VA_ARGS__)
-#define LogWarn(...) ::mavsdk::log_message(::mavsdk::log::Level::Warn, FILENAME, __LINE__, __VA_ARGS__)
-#define LogErr(...) ::mavsdk::log_message(::mavsdk::log::Level::Err, FILENAME, __LINE__, __VA_ARGS__)
+#define LogDebug(...) \
+    ::mavsdk::log_message(::mavsdk::log::Level::Debug, FILENAME, __LINE__, __VA_ARGS__)
+#define LogInfo(...) \
+    ::mavsdk::log_message(::mavsdk::log::Level::Info, FILENAME, __LINE__, __VA_ARGS__)
+#define LogWarn(...) \
+    ::mavsdk::log_message(::mavsdk::log::Level::Warn, FILENAME, __LINE__, __VA_ARGS__)
+#define LogErr(...) \
+    ::mavsdk::log_message(::mavsdk::log::Level::Err, FILENAME, __LINE__, __VA_ARGS__)
 
 namespace mavsdk {
 

@@ -255,15 +255,26 @@ bool FollowMeImpl::is_config_ok(const FollowMe::Config& config) const
     if (config.follow_height_m < CONFIG_MIN_HEIGHT_M) {
         LogErr("{}Err: Min height must be at least {} meters", debug_str, CONFIG_MIN_HEIGHT_M);
     } else if (config.follow_distance_m < CONFIG_MIN_FOLLOW_DIST_M) {
-        LogErr("{}Err: Min Follow distance must be at least {} meters", debug_str, CONFIG_MIN_FOLLOW_DIST_M);
+        LogErr(
+            "{}Err: Min Follow distance must be at least {} meters",
+            debug_str,
+            CONFIG_MIN_FOLLOW_DIST_M);
     } else if (
         config.responsiveness < CONFIG_MIN_RESPONSIVENESS ||
         config.responsiveness > CONFIG_MAX_RESPONSIVENESS) {
-        LogErr("{}Err: Responsiveness must be in range ({} to {})", debug_str, CONFIG_MIN_RESPONSIVENESS, CONFIG_MAX_RESPONSIVENESS);
+        LogErr(
+            "{}Err: Responsiveness must be in range ({} to {})",
+            debug_str,
+            CONFIG_MIN_RESPONSIVENESS,
+            CONFIG_MAX_RESPONSIVENESS);
     } else if (
         config.follow_angle_deg < CONFIG_MIN_FOLLOW_ANGLE ||
         config.follow_angle_deg > CONFIG_MAX_FOLLOW_ANGLE) {
-        LogErr("{}Err: Follow Angle must be in range {} to {} degrees!", debug_str, CONFIG_MIN_FOLLOW_ANGLE, CONFIG_MAX_FOLLOW_ANGLE);
+        LogErr(
+            "{}Err: Follow Angle must be in range {} to {} degrees!",
+            debug_str,
+            CONFIG_MIN_FOLLOW_ANGLE,
+            CONFIG_MAX_FOLLOW_ANGLE);
     } else { // Config is OK
         config_ok = true;
     }

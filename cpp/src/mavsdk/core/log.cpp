@@ -97,8 +97,7 @@ void set_color(Color color)
 
 void emit_log(log::Level level, const std::string& message, const char* filename, int line)
 {
-    if (log::get_callback() &&
-        log::get_callback()(level, message, filename, line)) {
+    if (log::get_callback() && log::get_callback()(level, message, filename, line)) {
         return;
     }
 

@@ -392,7 +392,10 @@ void MavlinkMissionTransferClient::UploadWorkItem::process_mission_request_int(
     _step = Step::SendItems;
 
     if (_debugging) {
-        LogDebug("Process mission_request_int, seq: {}, next expected sequence: {}", request_int.seq, _next_sequence);
+        LogDebug(
+            "Process mission_request_int, seq: {}, next expected sequence: {}",
+            request_int.seq,
+            _next_sequence);
     }
 
     if (_next_sequence < request_int.seq) {
@@ -758,20 +761,21 @@ void MavlinkMissionTransferClient::DownloadWorkItem::process_mission_item_int(
 
     // If we have already received the item previously, we have to ignore it.
     if (_next_sequence == item_int.seq) {
-        _items.push_back(ItemInt{
-            item_int.seq,
-            item_int.frame,
-            item_int.command,
-            item_int.current,
-            item_int.autocontinue,
-            item_int.param1,
-            item_int.param2,
-            item_int.param3,
-            item_int.param4,
-            item_int.x,
-            item_int.y,
-            item_int.z,
-            item_int.mission_type});
+        _items.push_back(
+            ItemInt{
+                item_int.seq,
+                item_int.frame,
+                item_int.command,
+                item_int.current,
+                item_int.autocontinue,
+                item_int.param1,
+                item_int.param2,
+                item_int.param3,
+                item_int.param4,
+                item_int.x,
+                item_int.y,
+                item_int.z,
+                item_int.mission_type});
 
         if (_next_sequence + 1 == _expected_count) {
             _timeout_handler.remove(_cookie);

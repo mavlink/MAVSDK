@@ -117,12 +117,23 @@ void LogStreamingBackendPx4::process_logging_data(const mavlink_message_t& messa
 
     if (logging_data.target_system != _system_impl->get_own_system_id() ||
         logging_data.target_component != _system_impl->get_own_component_id()) {
-        LogWarn("Logging data with wrong target {}{}{} instead of {}{}{}", logging_data.target_system, '/', logging_data.target_component, _system_impl->get_own_system_id(), '/', _system_impl->get_own_component_id());
+        LogWarn(
+            "Logging data with wrong target {}{}{} instead of {}{}{}",
+            logging_data.target_system,
+            '/',
+            logging_data.target_component,
+            _system_impl->get_own_system_id(),
+            '/',
+            _system_impl->get_own_component_id());
         return;
     }
 
     if (_debugging) {
-        LogDebug("Received logging data with len: {}, first message: {}, sequence: {}", logging_data.length, logging_data.first_message_offset, logging_data.sequence);
+        LogDebug(
+            "Received logging data with len: {}, first message: {}, sequence: {}",
+            logging_data.length,
+            logging_data.first_message_offset,
+            logging_data.sequence);
     }
 
     if (logging_data.length > sizeof(logging_data.data)) {
@@ -201,7 +212,14 @@ void LogStreamingBackendPx4::process_logging_data_acked(const mavlink_message_t&
 
     if (logging_data_acked.target_system != _system_impl->get_own_system_id() ||
         logging_data_acked.target_component != _system_impl->get_own_component_id()) {
-        LogWarn("Logging data acked with wrong target {}{}{} instead of {}{}{}", logging_data_acked.target_system, '/', logging_data_acked.target_component, _system_impl->get_own_system_id(), '/', _system_impl->get_own_component_id());
+        LogWarn(
+            "Logging data acked with wrong target {}{}{} instead of {}{}{}",
+            logging_data_acked.target_system,
+            '/',
+            logging_data_acked.target_component,
+            _system_impl->get_own_system_id(),
+            '/',
+            _system_impl->get_own_component_id());
         return;
     }
 
@@ -222,7 +240,11 @@ void LogStreamingBackendPx4::process_logging_data_acked(const mavlink_message_t&
         });
 
     if (_debugging) {
-        LogInfo("Received logging data acked with len: {}, first message: {}, sequence: {}", logging_data_acked.length, logging_data_acked.first_message_offset, logging_data_acked.sequence);
+        LogInfo(
+            "Received logging data acked with len: {}, first message: {}, sequence: {}",
+            logging_data_acked.length,
+            logging_data_acked.first_message_offset,
+            logging_data_acked.sequence);
     }
 
     if (logging_data_acked.length > sizeof(logging_data_acked.data)) {

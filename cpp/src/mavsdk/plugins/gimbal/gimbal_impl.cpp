@@ -80,7 +80,10 @@ void GimbalImpl::disable() {}
 void GimbalImpl::request_gimbal_manager_information(uint8_t target_component_id) const
 {
     if (_debugging) {
-        LogDebug("Requesting GIMBAL_MANAGER_INFORMATION from: {}/{}", _system_impl->get_system_id(), target_component_id);
+        LogDebug(
+            "Requesting GIMBAL_MANAGER_INFORMATION from: {}/{}",
+            _system_impl->get_system_id(),
+            target_component_id);
     }
 
     _system_impl->mavlink_request_message().request(
@@ -90,7 +93,10 @@ void GimbalImpl::request_gimbal_manager_information(uint8_t target_component_id)
 void GimbalImpl::request_gimbal_device_information(uint8_t target_component_id) const
 {
     if (_debugging) {
-        LogDebug("Requesting GIMBAL_DEVICE_INFORMATION from: {}/{}", _system_impl->get_system_id(), target_component_id);
+        LogDebug(
+            "Requesting GIMBAL_DEVICE_INFORMATION from: {}/{}",
+            _system_impl->get_system_id(),
+            target_component_id);
     }
 
     _system_impl->mavlink_request_message().request(
@@ -131,7 +137,11 @@ void GimbalImpl::process_gimbal_manager_information(const mavlink_message_t& mes
     mavlink_msg_gimbal_manager_information_decode(&message, &gimbal_manager_information);
 
     if (_debugging) {
-        LogDebug("Got GIMBAL_MANAGER_INFORMATION from: {}/{} with gimbal_device_id: {}", message.sysid, message.compid, gimbal_manager_information.gimbal_device_id);
+        LogDebug(
+            "Got GIMBAL_MANAGER_INFORMATION from: {}/{} with gimbal_device_id: {}",
+            message.sysid,
+            message.compid,
+            gimbal_manager_information.gimbal_device_id);
     }
 
     std::lock_guard<std::mutex> lock(_mutex);
@@ -155,7 +165,10 @@ void GimbalImpl::process_gimbal_manager_information(const mavlink_message_t& mes
 
     if (gimbal->gimbal_manager_information_received &&
         gimbal->gimbal_device_id != gimbal_manager_information.gimbal_device_id) {
-        LogWarn("gimbal_manager_information.gimbal_device_id changed from {} to {}", gimbal->gimbal_device_id, gimbal_manager_information.gimbal_device_id);
+        LogWarn(
+            "gimbal_manager_information.gimbal_device_id changed from {} to {}",
+            gimbal->gimbal_device_id,
+            gimbal_manager_information.gimbal_device_id);
     }
     gimbal->gimbal_device_id = gimbal_manager_information.gimbal_device_id;
     gimbal->gimbal_manager_information_received = true;
@@ -214,7 +227,11 @@ void GimbalImpl::process_gimbal_device_information(const mavlink_message_t& mess
     mavlink_msg_gimbal_device_information_decode(&message, &gimbal_device_information);
 
     if (_debugging) {
-        LogDebug("Got GIMBAL_DEVICE_INFORMATION from: {}/{} with gimbal_device_id: {}", message.sysid, message.compid, gimbal_device_information.gimbal_device_id);
+        LogDebug(
+            "Got GIMBAL_DEVICE_INFORMATION from: {}/{} with gimbal_device_id: {}",
+            message.sysid,
+            message.compid,
+            gimbal_device_information.gimbal_device_id);
     }
 
     auto maybe_gimbal = std::find_if(_gimbals.begin(), _gimbals.end(), [&](const GimbalItem& item) {
@@ -264,7 +281,10 @@ void GimbalImpl::process_gimbal_device_attitude_status(const mavlink_message_t& 
     }
 
     if (attitude_status.gimbal_device_id > 6) {
-        LogWarn("Ignoring gimbal device attitude status with invalid gimbal_device_id {} from ({}/)", attitude_status.gimbal_device_id, message.sysid);
+        LogWarn(
+            "Ignoring gimbal device attitude status with invalid gimbal_device_id {} from ({}/)",
+            attitude_status.gimbal_device_id,
+            message.sysid);
         return;
     }
 

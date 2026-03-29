@@ -330,8 +330,9 @@ MavsdkImpl::server_component_by_id_with_lock(uint8_t component_id, uint8_t mav_t
         }
     }
 
-    _server_components.emplace_back(std::pair<uint8_t, std::shared_ptr<ServerComponent>>(
-        component_id, std::make_shared<ServerComponent>(*this, component_id, mav_type)));
+    _server_components.emplace_back(
+        std::pair<uint8_t, std::shared_ptr<ServerComponent>>(
+            component_id, std::make_shared<ServerComponent>(*this, component_id, mav_type)));
 
     return _server_components.back().second;
 }
@@ -431,7 +432,11 @@ void MavsdkImpl::process_message(mavlink_message_t& message, Connection* connect
     // Assumes _received_messages_mutex
 
     if (_message_logging_on) {
-        LogDebug("Processing message {} from {}/{}", static_cast<unsigned int>(message.msgid), static_cast<int>(message.sysid), static_cast<int>(message.compid));
+        LogDebug(
+            "Processing message {} from {}/{}",
+            static_cast<unsigned int>(message.msgid),
+            static_cast<int>(message.sysid),
+            static_cast<int>(message.compid));
     }
 
     if (_should_exit) {
@@ -481,7 +486,11 @@ void MavsdkImpl::process_message(mavlink_message_t& message, Connection* connect
             (mavsdk::Connection::forwarding_connections_count() > 1 ||
              !connection->should_forward_messages())) {
             if (_message_logging_on) {
-                LogDebug("Forwarding message {} from {}/{}", static_cast<unsigned int>(message.msgid), static_cast<int>(message.sysid), static_cast<int>(message.compid));
+                LogDebug(
+                    "Forwarding message {} from {}/{}",
+                    static_cast<unsigned int>(message.msgid),
+                    static_cast<int>(message.sysid),
+                    static_cast<int>(message.compid));
             }
             forward_message(message, connection);
         }
@@ -522,7 +531,8 @@ void MavsdkImpl::process_message(mavlink_message_t& message, Connection* connect
 
         if (!found_system) {
             if (_system_debugging) {
-                LogWarn("Create new system/component {}/{}", (int)message.sysid, (int)message.compid);
+                LogWarn(
+                    "Create new system/component {}/{}", (int)message.sysid, (int)message.compid);
                 LogWarn("From message {} with len {}", (int)message.msgid, (int)message.len);
                 std::string bytes = "";
                 for (unsigned i = 0; i < 12 + message.len; ++i) {
@@ -559,7 +569,11 @@ void MavsdkImpl::process_libmav_message(
     // Assumes _received_libmav_messages_mutex
 
     if (_message_logging_on) {
-        LogDebug("MavsdkImpl::process_libmav_message: {} from {}/{}", message.message_name, static_cast<int>(message.system_id), static_cast<int>(message.component_id));
+        LogDebug(
+            "MavsdkImpl::process_libmav_message: {} from {}/{}",
+            message.message_name,
+            static_cast<int>(message.system_id),
+            static_cast<int>(message.component_id));
     }
 
     // JSON message interception for incoming messages
@@ -572,7 +586,11 @@ void MavsdkImpl::process_libmav_message(
     }
 
     if (_message_logging_on) {
-        LogDebug("Processing libmav message {} from {}/{}", message.message_name, static_cast<int>(message.system_id), static_cast<int>(message.component_id));
+        LogDebug(
+            "Processing libmav message {} from {}/{}",
+            message.message_name,
+            static_cast<int>(message.system_id),
+            static_cast<int>(message.component_id));
     }
 
     if (_should_exit) {
@@ -611,7 +629,10 @@ void MavsdkImpl::process_libmav_message(
 
         if (!found_system) {
             if (_system_debugging) {
-                LogWarn("Create new system/component from libmav {}/{}", (int)message.system_id, (int)message.component_id);
+                LogWarn(
+                    "Create new system/component from libmav {}/{}",
+                    (int)message.system_id,
+                    (int)message.component_id);
             }
             make_system_with_component(message.system_id, message.component_id);
 
@@ -631,7 +652,10 @@ void MavsdkImpl::process_libmav_message(
     for (auto& system : _systems) {
         if (system.first == message.system_id) {
             if (_message_logging_on) {
-                LogDebug("Distributing libmav message {} to SystemImpl for system {}", message.message_name, system.first);
+                LogDebug(
+                    "Distributing libmav message {} to SystemImpl for system {}",
+                    message.message_name,
+                    system.first);
             }
             system.second->system_impl()->process_libmav_message(message);
             found_system = true;
@@ -640,7 +664,10 @@ void MavsdkImpl::process_libmav_message(
     }
 
     if (!found_system) {
-        LogWarn("No system found for libmav message {} from system {}", message.message_name, message.system_id);
+        LogWarn(
+            "No system found for libmav message {} from system {}",
+            message.message_name,
+            message.system_id);
     }
 }
 
@@ -684,7 +711,13 @@ void MavsdkImpl::deliver_messages()
 void MavsdkImpl::deliver_message(mavlink_message_t& message)
 {
     if (_message_logging_on) {
-        LogDebug("Sending message {} from {}/{} to {}/{}", static_cast<unsigned int>(message.msgid), static_cast<int>(message.sysid), static_cast<int>(message.compid), static_cast<int>(get_target_system_id(message)), static_cast<int>(get_target_component_id(message)));
+        LogDebug(
+            "Sending message {} from {}/{} to {}/{}",
+            static_cast<unsigned int>(message.msgid),
+            static_cast<int>(message.sysid),
+            static_cast<int>(message.compid),
+            static_cast<int>(get_target_system_id(message)),
+            static_cast<int>(get_target_component_id(message)));
     }
 
     // This is a low level interface where outgoing messages can be tampered
@@ -752,7 +785,8 @@ void MavsdkImpl::deliver_message(mavlink_message_t& message)
         if (!call_json_interception_callbacks(json_message, _outgoing_json_message_subscriptions)) {
             // Message was dropped by JSON interception callback
             if (_message_logging_on) {
-                LogDebug("Outgoing JSON message {} dropped by interceptio", json_message.message_name);
+                LogDebug(
+                    "Outgoing JSON message {} dropped by interceptio", json_message.message_name);
             }
             return;
         }
@@ -1283,11 +1317,14 @@ void MavsdkImpl::call_user_callback_located(
         return;
 
     } else if (callback_size == 99) {
-        LogErr("User callback queue overflown\nSee: https://mavsdk.mavlink.io/main/en/cpp/troubleshooting.html#user_callbacks");
+        LogErr(
+            "User callback queue overflown\nSee: https://mavsdk.mavlink.io/main/en/cpp/troubleshooting.html#user_callbacks");
         return;
 
     } else if (callback_size >= 10) {
-        LogWarn("User callback queue slow (queue size: {}).\nSee: https://mavsdk.mavlink.io/main/en/cpp/troubleshooting.html#user_callbacks", callback_size);
+        LogWarn(
+            "User callback queue slow (queue size: {}).\nSee: https://mavsdk.mavlink.io/main/en/cpp/troubleshooting.html#user_callbacks",
+            callback_size);
     }
 
     // We only need to keep track of filename and linenumber if we're actually debugging this.
@@ -1321,12 +1358,18 @@ void MavsdkImpl::process_user_callbacks_thread()
         auto cookie = timeout_handler.add(
             [&]() {
                 if (_callback_debugging) {
-                    LogWarn("Callback called from {}:{} took more than {} second to run.", callback.filename, callback.linenumber, timeout_s);
+                    LogWarn(
+                        "Callback called from {}:{} took more than {} second to run.",
+                        callback.filename,
+                        callback.linenumber,
+                        timeout_s);
                     fflush(stdout);
                     fflush(stderr);
                     abort();
                 } else {
-                    LogWarn("Callback took more than {} second to run.\nSee: https://mavsdk.mavlink.io/main/en/cpp/troubleshooting.html#user_callbacks", timeout_s);
+                    LogWarn(
+                        "Callback took more than {} second to run.\nSee: https://mavsdk.mavlink.io/main/en/cpp/troubleshooting.html#user_callbacks",
+                        timeout_s);
                 }
             },
             timeout_s);

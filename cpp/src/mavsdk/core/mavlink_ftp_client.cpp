@@ -129,7 +129,15 @@ void MavlinkFtpClient::process_mavlink_ftp_message(const mavlink_message_t& msg)
         return;
     } else {
         if (_debugging) {
-            LogDebug("FTP: opcode: {}, req_opcode: {}, size: {}, offset: {}, seq: {} from: {}/{}", (int)payload->opcode, (int)payload->req_opcode, (int)payload->size, (int)payload->offset, payload->seq_number, (int)msg.sysid, (int)msg.compid);
+            LogDebug(
+                "FTP: opcode: {}, req_opcode: {}, size: {}, offset: {}, seq: {} from: {}/{}",
+                (int)payload->opcode,
+                (int)payload->req_opcode,
+                (int)payload->size,
+                (int)payload->offset,
+                payload->seq_number,
+                (int)msg.sysid,
+                (int)msg.compid);
         }
     }
 
@@ -453,7 +461,10 @@ bool MavlinkFtpClient::download_continue(Work& work, DownloadItem& item, Payload
             std::min(static_cast<size_t>(max_data_length), item.file_size - item.bytes_transferred);
 
         if (_debugging) {
-            LogWarn("Request size: {} of left {}", work.payload.size, int(item.file_size - item.bytes_transferred));
+            LogWarn(
+                "Request size: {} of left {}",
+                work.payload.size,
+                int(item.file_size - item.bytes_transferred));
         }
 
         start_timer();
@@ -525,13 +536,17 @@ bool MavlinkFtpClient::download_burst_continue(
             if (payload->offset < item.current_offset) {
                 // Not sure why this would happen but we don't know how to deal with it and ignore
                 // it.
-                LogWarn("Got payload offset: {}, next offset: {}", payload->offset, item.current_offset);
+                LogWarn(
+                    "Got payload offset: {}, next offset: {}",
+                    payload->offset,
+                    item.current_offset);
                 return false;
             }
 
             // we missed a part
-            item.missing_data.emplace_back(DownloadBurstItem::MissingData{
-                item.current_offset, payload->offset - item.current_offset});
+            item.missing_data.emplace_back(
+                DownloadBurstItem::MissingData{
+                    item.current_offset, payload->offset - item.current_offset});
             // write some 0 instead
             std::vector<char> empty(payload->offset - item.current_offset);
             item.ofstream.write(empty.data(), empty.size());
@@ -592,7 +607,10 @@ bool MavlinkFtpClient::download_burst_continue(
         }
     } else if (payload->req_opcode == CMD_READ_FILE) {
         if (_debugging) {
-            LogWarn("Burst download continue missing pieces, write at {} for {}", payload->offset, payload->size);
+            LogWarn(
+                "Burst download continue missing pieces, write at {} for {}",
+                payload->offset,
+                payload->size);
         }
 
         item.ofstream.seekp(payload->offset);
@@ -1194,7 +1212,12 @@ void MavlinkFtpClient::are_files_identical_async(
 void MavlinkFtpClient::send_mavlink_ftp_message(const PayloadHeader& payload, uint8_t target_compid)
 {
     if (_debugging) {
-        LogDebug("FTP send: opcode: {}, seq: {} to: {}/{}", (int)payload.opcode, payload.seq_number, (int)_system_impl.get_system_id(), (int)target_compid);
+        LogDebug(
+            "FTP send: opcode: {}, seq: {} to: {}/{}",
+            (int)payload.opcode,
+            payload.seq_number,
+            (int)_system_impl.get_system_id(),
+            (int)target_compid);
     }
     _system_impl.queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
         mavlink_message_t message;
@@ -1278,11 +1301,15 @@ void MavlinkFtpClient::timeout()
                             // we missed some, so request next without burst.
                             // We presumably missed the very last chunk.
                             if (item.current_offset < item.file_size) {
-                                item.missing_data.emplace_back(DownloadBurstItem::MissingData{
-                                    item.current_offset, item.file_size - item.current_offset});
+                                item.missing_data.emplace_back(
+                                    DownloadBurstItem::MissingData{
+                                        item.current_offset, item.file_size - item.current_offset});
                                 item.current_offset = item.file_size;
                                 if (_debugging) {
-                                    LogDebug("Adding {} with size {}", item.current_offset, item.file_size - item.current_offset);
+                                    LogDebug(
+                                        "Adding {} with size {}",
+                                        item.current_offset,
+                                        item.file_size - item.current_offset);
                                 }
                             }
                             request_next_rest(*work, item);

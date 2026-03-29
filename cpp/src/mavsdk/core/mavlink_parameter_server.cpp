@@ -194,7 +194,11 @@ void MavlinkParameterServer::process_param_set_internally(
     const std::string& param_id, const ParamValue& value_to_set, bool extended)
 {
     if (_parameter_debugging) {
-        LogDebug("Param set request{}: {} with {}", (extended ? " extended" : ""), param_id, value_to_set);
+        LogDebug(
+            "Param set request{}: {} with {}",
+            (extended ? " extended" : ""),
+            param_id,
+            value_to_set);
     }
 
     std::string error_param_id;
@@ -401,7 +405,10 @@ void MavlinkParameterServer::internal_process_param_request_read_by_id(
         const auto param_opt = _param_cache.param_by_id(id, extended);
 
         if (!param_opt.has_value()) {
-            LogWarn("Ignoring request_read message {}- param name not found: {}", (extended ? "extended " : ""), id);
+            LogWarn(
+                "Ignoring request_read message {}- param name not found: {}",
+                (extended ? "extended " : ""),
+                id);
             // Release lock before sending PARAM_ERROR
         } else {
             const auto& param = param_opt.value();
@@ -430,7 +437,10 @@ void MavlinkParameterServer::internal_process_param_request_read_by_index(
         const auto param_opt = _param_cache.param_by_index(index, extended);
 
         if (!param_opt.has_value()) {
-            LogWarn("Ignoring request_read message {}- param index not found: {}", (extended ? "extended " : ""), index);
+            LogWarn(
+                "Ignoring request_read message {}- param index not found: {}",
+                (extended ? "extended " : ""),
+                index);
             // Release lock before sending PARAM_ERROR
         } else {
             const auto& param = param_opt.value();
@@ -485,7 +495,8 @@ void MavlinkParameterServer::broadcast_all_parameters(const bool extended)
 
     const auto all_params = _param_cache.all_parameters(extended);
     if (_parameter_debugging) {
-        LogDebug("broadcast_all_parameters {}: {}", (extended ? "extended" : ""), all_params.size());
+        LogDebug(
+            "broadcast_all_parameters {}: {}", (extended ? "extended" : ""), all_params.size());
     }
     for (const auto& parameter : all_params) {
         if (_parameter_debugging) {
@@ -590,7 +601,11 @@ void MavlinkParameterServer::send_param_error(
     const std::string& param_id, int16_t param_index, uint8_t error_code)
 {
     if (_parameter_debugging) {
-        LogDebug("Sending PARAM_ERROR for {} (index: {}) with error code: {}", param_id, param_index, (int)error_code);
+        LogDebug(
+            "Sending PARAM_ERROR for {} (index: {}) with error code: {}",
+            param_id,
+            param_index,
+            (int)error_code);
     }
 
     const auto param_id_buffer = param_id_to_message_buffer(param_id);
@@ -654,7 +669,12 @@ void MavlinkParameterServer::log_target_mismatch(uint16_t target_sys_id, uint16_
         return;
     }
 
-    LogDebug("Ignoring message - wrong target id. Got:{}:{} Wanted:{}:{}", (int)target_sys_id, (int)target_comp_id, (int)_sender.get_own_system_id(), (int)_sender.get_own_component_id());
+    LogDebug(
+        "Ignoring message - wrong target id. Got:{}:{} Wanted:{}:{}",
+        (int)target_sys_id,
+        (int)target_comp_id,
+        (int)_sender.get_own_system_id(),
+        (int)_sender.get_own_component_id());
 }
 
 std::variant<std::monostate, std::string, std::uint16_t>

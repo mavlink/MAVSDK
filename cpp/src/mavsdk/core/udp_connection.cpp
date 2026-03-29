@@ -259,7 +259,11 @@ void UdpConnection::add_remote_impl(
         // System with sysid 0 is a bit special: it is a placeholder for a connection initiated
         // by MAVSDK. As such, it should not be advertised as a newly discovered system.
         if (static_cast<int>(remote_sysid) != 0) {
-            LogInfo("New system on: {}:{} (system ID: {})", new_remote.ip, new_remote.port_number, static_cast<int>(remote_sysid));
+            LogInfo(
+                "New system on: {}:{} (system ID: {})",
+                new_remote.ip,
+                new_remote.port_number,
+                static_cast<int>(remote_sysid));
         }
         _remotes.push_back(new_remote);
     } else {

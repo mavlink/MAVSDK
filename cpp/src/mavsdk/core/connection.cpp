@@ -83,7 +83,10 @@ void Connection::receive_libmav_message(
     }
 
     if (_debugging) {
-        LogDebug("Connection::receive_libmav_message: {} from system {}", message.message_name, message.system_id);
+        LogDebug(
+            "Connection::receive_libmav_message: {} from system {}",
+            message.message_name,
+            message.system_id);
     }
 
     if (_libmav_receiver_callback) {

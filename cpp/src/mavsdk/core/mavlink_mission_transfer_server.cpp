@@ -279,20 +279,21 @@ void MavlinkMissionTransferServer::ReceiveIncomingMission::process_mission_item_
     mavlink_mission_item_int_t item_int;
     mavlink_msg_mission_item_int_decode(&message, &item_int);
 
-    _items.push_back(ItemInt{
-        item_int.seq,
-        item_int.frame,
-        item_int.command,
-        item_int.current,
-        item_int.autocontinue,
-        item_int.param1,
-        item_int.param2,
-        item_int.param3,
-        item_int.param4,
-        item_int.x,
-        item_int.y,
-        item_int.z,
-        item_int.mission_type});
+    _items.push_back(
+        ItemInt{
+            item_int.seq,
+            item_int.frame,
+            item_int.command,
+            item_int.current,
+            item_int.autocontinue,
+            item_int.param1,
+            item_int.param2,
+            item_int.param3,
+            item_int.param4,
+            item_int.x,
+            item_int.y,
+            item_int.z,
+            item_int.mission_type});
 
     if (_next_sequence + 1 == _expected_count) {
         _timeout_handler.remove(_cookie);
@@ -481,7 +482,10 @@ void MavlinkMissionTransferServer::SendOutgoingMission::process_mission_request_
     _step = Step::SendItems;
 
     if (_debugging) {
-        LogDebug("Process mission_request_int, seq: {}, next expected sequence: {}", request_int.seq, _next_sequence);
+        LogDebug(
+            "Process mission_request_int, seq: {}, next expected sequence: {}",
+            request_int.seq,
+            _next_sequence);
     }
 
     if (_next_sequence < request_int.seq) {

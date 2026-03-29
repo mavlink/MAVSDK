@@ -1173,8 +1173,9 @@ void CameraImpl::process_camera_image_captured(const mavlink_message_t& message)
         camera.capture_info.last_advertised_image_index = capture_info.index;
     }
 
-    else if (auto it = camera.capture_info.missing_image_retries.find(capture_info.index);
-             it != camera.capture_info.missing_image_retries.end()) {
+    else if (
+        auto it = camera.capture_info.missing_image_retries.find(capture_info.index);
+        it != camera.capture_info.missing_image_retries.end()) {
         _capture_info_callbacks.queue(
             capture_info, [this](const auto& func) { _system_impl->call_user_callback(func); });
         camera.capture_info.missing_image_retries.erase(it);
@@ -1336,7 +1337,11 @@ void CameraImpl::check_camera_definition_with_lock(PotentialCamera& potential_ca
                 [download_path, file_cache_tag, component_id, this](
                     int progress, HttpStatus status, CURLcode curl_code) mutable {
                     // TODO: check if we still exist
-                    LogDebug("Download progress: {}, status: {}, curl_code: {}", progress, static_cast<int>(status), curl_code);
+                    LogDebug(
+                        "Download progress: {}, status: {}, curl_code: {}",
+                        progress,
+                        static_cast<int>(status),
+                        curl_code);
 
                     std::lock_guard lock(_mutex);
                     auto maybe_potential_camera =
@@ -1382,7 +1387,9 @@ void CameraImpl::check_camera_definition_with_lock(PotentialCamera& potential_ca
                     MavlinkFtpClient::ProgressData progress_data) mutable {
                     // TODO: check if we still exist
                     if (client_result == MavlinkFtpClient::ClientResult::Next) {
-                        LogDebug("Mavlink FTP download progress: {} %", 100 * progress_data.bytes_transferred / progress_data.total_bytes);
+                        LogDebug(
+                            "Mavlink FTP download progress: {} %",
+                            100 * progress_data.bytes_transferred / progress_data.total_bytes);
                         return;
                     }
 

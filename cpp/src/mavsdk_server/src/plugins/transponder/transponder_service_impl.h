@@ -47,7 +47,9 @@ public:
     {
         switch (adsb_emitter_type) {
             default:
-                LogErr("Unknown adsb_emitter_type enum value: {}", static_cast<int>(adsb_emitter_type));
+                LogErr(
+                    "Unknown adsb_emitter_type enum value: {}",
+                    static_cast<int>(adsb_emitter_type));
             // FALLTHROUGH
             case mavsdk::Transponder::AdsbEmitterType::NoInfo:
                 return rpc::transponder::ADSB_EMITTER_TYPE_NO_INFO;
@@ -97,7 +99,9 @@ public:
     {
         switch (adsb_emitter_type) {
             default:
-                LogErr("Unknown adsb_emitter_type enum value: {}", static_cast<int>(adsb_emitter_type));
+                LogErr(
+                    "Unknown adsb_emitter_type enum value: {}",
+                    static_cast<int>(adsb_emitter_type));
             // FALLTHROUGH
             case rpc::transponder::ADSB_EMITTER_TYPE_NO_INFO:
                 return mavsdk::Transponder::AdsbEmitterType::NoInfo;
@@ -147,7 +151,9 @@ public:
     {
         switch (adsb_altitude_type) {
             default:
-                LogErr("Unknown adsb_altitude_type enum value: {}", static_cast<int>(adsb_altitude_type));
+                LogErr(
+                    "Unknown adsb_altitude_type enum value: {}",
+                    static_cast<int>(adsb_altitude_type));
             // FALLTHROUGH
             case mavsdk::Transponder::AdsbAltitudeType::PressureQnh:
                 return rpc::transponder::ADSB_ALTITUDE_TYPE_PRESSURE_QNH;
@@ -161,7 +167,9 @@ public:
     {
         switch (adsb_altitude_type) {
             default:
-                LogErr("Unknown adsb_altitude_type enum value: {}", static_cast<int>(adsb_altitude_type));
+                LogErr(
+                    "Unknown adsb_altitude_type enum value: {}",
+                    static_cast<int>(adsb_altitude_type));
             // FALLTHROUGH
             case rpc::transponder::ADSB_ALTITUDE_TYPE_PRESSURE_QNH:
                 return mavsdk::Transponder::AdsbAltitudeType::PressureQnh;

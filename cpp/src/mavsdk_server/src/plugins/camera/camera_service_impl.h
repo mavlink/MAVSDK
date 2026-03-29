@@ -245,7 +245,9 @@ public:
     {
         switch (video_stream_status) {
             default:
-                LogErr("Unknown video_stream_status enum value: {}", static_cast<int>(video_stream_status));
+                LogErr(
+                    "Unknown video_stream_status enum value: {}",
+                    static_cast<int>(video_stream_status));
             // FALLTHROUGH
             case mavsdk::Camera::VideoStreamInfo::VideoStreamStatus::NotRunning:
                 return rpc::camera::
@@ -261,7 +263,9 @@ public:
     {
         switch (video_stream_status) {
             default:
-                LogErr("Unknown video_stream_status enum value: {}", static_cast<int>(video_stream_status));
+                LogErr(
+                    "Unknown video_stream_status enum value: {}",
+                    static_cast<int>(video_stream_status));
             // FALLTHROUGH
             case rpc::camera::VideoStreamInfo_VideoStreamStatus_VIDEO_STREAM_STATUS_NOT_RUNNING:
                 return mavsdk::Camera::VideoStreamInfo::VideoStreamStatus::NotRunning;
@@ -275,7 +279,9 @@ public:
     {
         switch (video_stream_spectrum) {
             default:
-                LogErr("Unknown video_stream_spectrum enum value: {}", static_cast<int>(video_stream_spectrum));
+                LogErr(
+                    "Unknown video_stream_spectrum enum value: {}",
+                    static_cast<int>(video_stream_spectrum));
             // FALLTHROUGH
             case mavsdk::Camera::VideoStreamInfo::VideoStreamSpectrum::Unknown:
                 return rpc::camera::
@@ -294,7 +300,9 @@ public:
     {
         switch (video_stream_spectrum) {
             default:
-                LogErr("Unknown video_stream_spectrum enum value: {}", static_cast<int>(video_stream_spectrum));
+                LogErr(
+                    "Unknown video_stream_spectrum enum value: {}",
+                    static_cast<int>(video_stream_spectrum));
             // FALLTHROUGH
             case rpc::camera::VideoStreamInfo_VideoStreamSpectrum_VIDEO_STREAM_SPECTRUM_UNKNOWN:
                 return mavsdk::Camera::VideoStreamInfo::VideoStreamSpectrum::Unknown;

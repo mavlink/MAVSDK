@@ -25,7 +25,9 @@ bool CliArg::parse(const std::string& uri)
     const std::string delimiter = "://";
 
     if (uri.find(udp + delimiter) == 0) {
-        LogWarn("{}", "Connection using udp:// is deprecated, please use udpin:// or udpout://"; return parse_udp(std::string_view(uri).substr(udp.size() + delimiter.size())));
+        LogWarn(
+            "{}", "Connection using udp:// is deprecated, please use udpin:// or udpout://";
+            return parse_udp(std::string_view(uri).substr(udp.size() + delimiter.size())));
     }
 
     if (uri.find(udpin + delimiter) == 0) {
@@ -37,7 +39,9 @@ bool CliArg::parse(const std::string& uri)
     }
 
     if (uri.find(tcp + delimiter) == 0) {
-        LogWarn("{}", "Connection using tcp:// is deprecated, please use tcpin:// or tcpout://"; return parse_tcp(std::string_view(uri).substr(tcp.size() + delimiter.size())));
+        LogWarn(
+            "{}", "Connection using tcp:// is deprecated, please use tcpin:// or tcpout://";
+            return parse_tcp(std::string_view(uri).substr(tcp.size() + delimiter.size())));
     }
 
     if (uri.find(tcpin + delimiter) == 0) {
@@ -134,7 +138,9 @@ bool CliArg::parse_udpout(const std::string_view rest)
     p.mode = Udp::Mode::Out;
 
     if (p.host == "0.0.0.0") {
-        LogErr("0.0.0.0 is invalid for UDP out address. " "Can only listen on all interfaces, but not send.");
+        LogErr(
+            "0.0.0.0 is invalid for UDP out address. "
+            "Can only listen on all interfaces, but not send.");
         return false;
     }
 
@@ -209,7 +215,9 @@ bool CliArg::parse_tcpout(const std::string_view rest)
     p.mode = Tcp::Mode::Out;
 
     if (p.host == "0.0.0.0") {
-        LogErr("0.0.0.0 is invalid for TCP out address. " "Can only listen on all interfaces, but not send.");
+        LogErr(
+            "0.0.0.0 is invalid for TCP out address. "
+            "Can only listen on all interfaces, but not send.");
         return false;
     }
 

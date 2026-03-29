@@ -105,9 +105,10 @@ void MavlinkComponentMetadata::receive_component_metadata(
     mavlink_msg_component_metadata_decode(&message, &component_metadata);
 
     component_metadata.uri[sizeof(component_metadata.uri) - 1] = '\0';
-    _mavlink_components[message.compid].components.insert(std::make_pair(
-        COMP_METADATA_TYPE_GENERAL,
-        MetadataComponent{{component_metadata.uri, component_metadata.file_crc}}));
+    _mavlink_components[message.compid].components.insert(
+        std::make_pair(
+            COMP_METADATA_TYPE_GENERAL,
+            MetadataComponent{{component_metadata.uri, component_metadata.file_crc}}));
 
     retrieve_metadata(message.compid, COMP_METADATA_TYPE_GENERAL);
 }
@@ -147,7 +148,10 @@ bool MavlinkComponentMetadata::uri_is_mavlinkftp(
 void MavlinkComponentMetadata::retrieve_metadata(uint8_t compid, COMP_METADATA_TYPE type)
 {
     if (_verbose_debugging) {
-        LogDebug("MavlinkComponentMetadata::retrieve_metadata for compid {}, type {}", static_cast<int>(compid), static_cast<int>(type));
+        LogDebug(
+            "MavlinkComponentMetadata::retrieve_metadata for compid {}, type {}",
+            static_cast<int>(compid),
+            static_cast<int>(type));
     }
 
     const std::lock_guard lg{_mavlink_components_mutex};
@@ -215,7 +219,11 @@ void MavlinkComponentMetadata::retrieve_metadata(uint8_t compid, COMP_METADATA_T
                             MavlinkFtpClient::ProgressData progress_data) {
                             if (download_result == MavlinkFtpClient::ClientResult::Next) {
                                 if (_verbose_debugging) {
-                                    LogDebug("File download progress: {}{}{}", progress_data.bytes_transferred, '/', progress_data.total_bytes);
+                                    LogDebug(
+                                        "File download progress: {}{}{}",
+                                        progress_data.bytes_transferred,
+                                        '/',
+                                        progress_data.total_bytes);
                                 }
                                 // TODO: detect slow link (e.g. telemetry), and cancel download
                                 // (fallback to http) e.g. by estimating the remaining download
@@ -254,7 +262,8 @@ void MavlinkComponentMetadata::retrieve_metadata(uint8_t compid, COMP_METADATA_T
                         int progress, HttpStatus status, CURLcode curl_code) -> int {
                         UNUSED(progress);
                         if (status == HttpStatus::Error) {
-                            LogErr("File download failed with result {}", static_cast<int>(curl_code));
+                            LogErr(
+                                "File download failed with result {}", static_cast<int>(curl_code));
                             // Move on to the next uri or type
                             retrieve_metadata(compid, type);
                         } else if (status == HttpStatus::Finished) {

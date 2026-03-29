@@ -272,12 +272,13 @@ EventsImpl::get_health_and_arming_checks_report()
             for (const auto& check : checks) {
                 const auto maybe_log_level = external_log_level(check.log_levels);
                 if (maybe_log_level) {
-                    problems.push_back(Events::HealthAndArmingCheckProblem{
-                        check.message,
-                        check.description,
-                        maybe_log_level.value(),
-                        get_health_component_from_index(
-                            event_handler_results, check.affected_health_component_index)});
+                    problems.push_back(
+                        Events::HealthAndArmingCheckProblem{
+                            check.message,
+                            check.description,
+                            maybe_log_level.value(),
+                            get_health_component_from_index(
+                                event_handler_results, check.affected_health_component_index)});
                 }
             }
             return problems;

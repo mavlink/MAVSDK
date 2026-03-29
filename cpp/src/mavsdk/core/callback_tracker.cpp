@@ -44,7 +44,8 @@ void CallbackTracker::maybe_print_stats(size_t queue_size)
     // Calculate callbacks per second
     int callbacks_per_sec = _total_callback_count.load() / elapsed;
 
-    LogInfo("Callback stats: {} callbacks/sec (avg), queue size: {}", callbacks_per_sec, queue_size);
+    LogInfo(
+        "Callback stats: {} callbacks/sec (avg), queue size: {}", callbacks_per_sec, queue_size);
 
     // Get a snapshot of the stats and clear them
     std::map<std::string, LocationStats> stats_snapshot;

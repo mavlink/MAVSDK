@@ -36,7 +36,10 @@ MavlinkParameterClient::MavlinkParameterClient(
     }
 
     if (_parameter_debugging) {
-        LogDebug("MavlinkParameterClient created for target compid: {} and {}", (int)_target_component_id, (_use_extended ? "extended" : "not extended"));
+        LogDebug(
+            "MavlinkParameterClient created for target compid: {} and {}",
+            (int)_target_component_id,
+            (_use_extended ? "extended" : "not extended"));
     }
 
     if (_use_extended) {
@@ -66,7 +69,10 @@ MavlinkParameterClient::MavlinkParameterClient(
 MavlinkParameterClient::~MavlinkParameterClient()
 {
     if (_parameter_debugging) {
-        LogDebug("MavlinkParameterClient destructed for target compid: {} and {}", (int)_target_component_id, (_use_extended ? "extended" : "not extended"));
+        LogDebug(
+            "MavlinkParameterClient destructed for target compid: {} and {}",
+            (int)_target_component_id,
+            (_use_extended ? "extended" : "not extended"));
     }
 
     _message_handler.unregister_all(this);
@@ -508,7 +514,14 @@ bool MavlinkParameterClient::send_set_param_message(WorkItemSet& work_item)
         const auto param_value_buf = work_item.param_value.get_128_bytes();
         return _sender.queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
             if (_parameter_debugging) {
-                LogDebug("Sending param_ext_set from:{}{}{} to: {}{}{}", (int)mavlink_address.system_id, '/', (int)mavlink_address.component_id, (int)_target_system_id, '/', (int)_target_component_id);
+                LogDebug(
+                    "Sending param_ext_set from:{}{}{} to: {}{}{}",
+                    (int)mavlink_address.system_id,
+                    '/',
+                    (int)mavlink_address.component_id,
+                    (int)_target_system_id,
+                    '/',
+                    (int)_target_component_id);
             }
 
             mavlink_msg_param_ext_set_pack_chan(
@@ -531,7 +544,14 @@ bool MavlinkParameterClient::send_set_param_message(WorkItemSet& work_item)
 
         return _sender.queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
             if (_parameter_debugging) {
-                LogDebug("Sending param_set from:{}{}{} to: {}{}{}", (int)mavlink_address.system_id, '/', (int)mavlink_address.component_id, (int)_target_system_id, '/', (int)_target_component_id);
+                LogDebug(
+                    "Sending param_set from:{}{}{} to: {}{}{}",
+                    (int)mavlink_address.system_id,
+                    '/',
+                    (int)mavlink_address.component_id,
+                    (int)_target_system_id,
+                    '/',
+                    (int)_target_component_id);
             }
             mavlink_msg_param_set_pack_chan(
                 mavlink_address.system_id,
@@ -570,7 +590,12 @@ bool MavlinkParameterClient::send_get_param_message(
     if (_use_extended) {
         return _sender.queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
             if (_parameter_debugging) {
-                LogDebug("Send param_ext_request_read: {}:{} to {}:{}", (int)mavlink_address.system_id, (int)mavlink_address.component_id, (int)_target_system_id, (int)_target_component_id);
+                LogDebug(
+                    "Send param_ext_request_read: {}:{} to {}:{}",
+                    (int)mavlink_address.system_id,
+                    (int)mavlink_address.component_id,
+                    (int)_target_system_id,
+                    (int)_target_component_id);
             }
             mavlink_msg_param_ext_request_read_pack_chan(
                 mavlink_address.system_id,
@@ -587,7 +612,12 @@ bool MavlinkParameterClient::send_get_param_message(
     } else {
         return _sender.queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
             if (_parameter_debugging) {
-                LogDebug("Send param_request_read: {}:{} to {}:{}", (int)mavlink_address.system_id, (int)mavlink_address.component_id, (int)_target_system_id, (int)_target_component_id);
+                LogDebug(
+                    "Send param_request_read: {}:{} to {}:{}",
+                    (int)mavlink_address.system_id,
+                    (int)mavlink_address.component_id,
+                    (int)_target_system_id,
+                    (int)_target_component_id);
             }
             mavlink_msg_param_request_read_pack_chan(
                 mavlink_address.system_id,
@@ -608,7 +638,10 @@ bool MavlinkParameterClient::send_request_list_message()
     if (_use_extended) {
         return _sender.queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
             if (_parameter_debugging) {
-                LogDebug("Sending param_ext_request_list to:{}:{}", (int)mavlink_address.system_id, (int)mavlink_address.component_id);
+                LogDebug(
+                    "Sending param_ext_request_list to:{}:{}",
+                    (int)mavlink_address.system_id,
+                    (int)mavlink_address.component_id);
             }
             mavlink_message_t message;
             mavlink_msg_param_ext_request_list_pack_chan(
@@ -623,7 +656,10 @@ bool MavlinkParameterClient::send_request_list_message()
     } else {
         return _sender.queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
             if (_parameter_debugging) {
-                LogDebug("Sending param_request_list to:{}:{}", (int)mavlink_address.system_id, (int)mavlink_address.component_id);
+                LogDebug(
+                    "Sending param_request_list to:{}:{}",
+                    (int)mavlink_address.system_id,
+                    (int)mavlink_address.component_id);
             }
             mavlink_message_t message;
             mavlink_msg_param_request_list_pack_chan(
@@ -659,7 +695,11 @@ void MavlinkParameterClient::process_param_value(const mavlink_message_t& messag
     }
 
     if (_parameter_debugging) {
-        LogDebug("process_param_value: {} {}, index: {}", safe_param_id, received_value, param_value.param_index);
+        LogDebug(
+            "process_param_value: {} {}, index: {}",
+            safe_param_id,
+            received_value,
+            param_value.param_index);
     }
 
     if (param_value.param_index == std::numeric_limits<uint16_t>::max() &&
@@ -730,7 +770,10 @@ void MavlinkParameterClient::process_param_value(const mavlink_message_t& messag
                     // In that case we have stale param_value messages in flux and
                     // receive them here.
                     if (work->retries_to_do > 0) {
-                        LogWarn("sending again, retries to do: {}  ({}).", work->retries_to_do, item.param_name);
+                        LogWarn(
+                            "sending again, retries to do: {}  ({}).",
+                            work->retries_to_do,
+                            item.param_name);
 
                         if (!send_set_param_message(item)) {
                             LogErr("connection send error in retransmit ({}).", item.param_name);
@@ -804,7 +847,9 @@ void MavlinkParameterClient::process_param_value(const mavlink_message_t& messag
                         if (_param_cache.count(_use_extended) == param_value.param_count) {
                             _timeout_handler.remove(_timeout_cookie);
                             if (_parameter_debugging) {
-                                LogDebug("Getting all parameters complete: {}", (_use_extended ? "extended" : "not extended"));
+                                LogDebug(
+                                    "Getting all parameters complete: {}",
+                                    (_use_extended ? "extended" : "not extended"));
                             }
                             work_queue_guard->pop_front();
                             if (item.callback) {
@@ -816,7 +861,10 @@ void MavlinkParameterClient::process_param_value(const mavlink_message_t& messag
                             }
                         } else {
                             if (_parameter_debugging) {
-                                LogDebug("Received {} of {}", _param_cache.count(_use_extended), param_value.param_count);
+                                LogDebug(
+                                    "Received {} of {}",
+                                    _param_cache.count(_use_extended),
+                                    param_value.param_count);
                             }
                             if (item.rerequesting) {
                                 if (maybe_current_missing_index == param_value.param_index) {
@@ -928,7 +976,9 @@ void MavlinkParameterClient::process_param_ext_value(const mavlink_message_t& me
                         if (_param_cache.count(_use_extended) == param_ext_value.param_count) {
                             _timeout_handler.remove(_timeout_cookie);
                             if (_parameter_debugging) {
-                                LogDebug("Getting all parameters complete: {}", (_use_extended ? "extended" : "not extended"));
+                                LogDebug(
+                                    "Getting all parameters complete: {}",
+                                    (_use_extended ? "extended" : "not extended"));
                             }
                             work_queue_guard->pop_front();
                             if (item.callback) {
@@ -940,7 +990,10 @@ void MavlinkParameterClient::process_param_ext_value(const mavlink_message_t& me
                             }
                         } else {
                             if (_parameter_debugging) {
-                                LogDebug("Received {} of {}", _param_cache.count(_use_extended), param_ext_value.param_count);
+                                LogDebug(
+                                    "Received {} of {}",
+                                    _param_cache.count(_use_extended),
+                                    param_ext_value.param_count);
                             }
                             // update the timeout handler, messages are still coming in.
                             _timeout_handler.refresh(_timeout_cookie);
@@ -1005,7 +1058,9 @@ void MavlinkParameterClient::process_param_ext_ack(const mavlink_message_t& mess
                     _timeout_handler.refresh(_timeout_cookie);
 
                 } else {
-                    LogWarn("Somehow we did not get an ack, we got: {}", int(param_ext_ack.param_result));
+                    LogWarn(
+                        "Somehow we did not get an ack, we got: {}",
+                        int(param_ext_ack.param_result));
                     _timeout_handler.remove(_timeout_cookie);
                     // LogDebug() << "time taken: " <<
                     // _sender.get_time().elapsed_since_s(_last_request_time);
@@ -1135,7 +1190,10 @@ void MavlinkParameterClient::receive_timeout()
             [&](WorkItemSet& item) {
                 if (work->retries_to_do > 0) {
                     // We're not sure the command arrived, let's retransmit.
-                    LogWarn("sending again, retries to do: {}  ({}).", work->retries_to_do, item.param_name);
+                    LogWarn(
+                        "sending again, retries to do: {}  ({}).",
+                        work->retries_to_do,
+                        item.param_name);
 
                     if (!send_set_param_message(item)) {
                         LogErr("connection send error in retransmit ({}).", item.param_name);
@@ -1231,7 +1289,10 @@ void MavlinkParameterClient::receive_timeout()
                 } else {
                     item.rerequesting = true;
 
-                    LogInfo("Requesting {} of {} parameters missed during initial burst.", _param_cache.missing_count(item.count), item.count);
+                    LogInfo(
+                        "Requesting {} of {} parameters missed during initial burst.",
+                        _param_cache.missing_count(item.count),
+                        item.count);
 
                     if (_parameter_debugging) {
                         _param_cache.print_missing(item.count);

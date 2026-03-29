@@ -320,14 +320,21 @@ CameraServer::Result CameraServerImpl::respond_take_photo(
             // If _image_capture_count == 0, we ignore since it means that this is
             // the first photo since the plugin was initialized.
             if (_image_capture_count != 0 && capture_info.index != _image_capture_count + 1) {
-                LogErr("unexpected image index, expecting {} but was {}", +(_image_capture_count + 1), +capture_info.index);
+                LogErr(
+                    "unexpected image index, expecting {} but was {}",
+                    +(_image_capture_count + 1),
+                    +capture_info.index);
             }
 
             _image_capture_count = capture_info.index;
         }
 
         // Log the command details to help debug
-        LogDebug("Responding to take photo command: target_system_id: {}, target_component_id: {}, command: {}", static_cast<int>(_last_take_photo_command.target_system_id), static_cast<int>(_last_take_photo_command.target_component_id), _last_take_photo_command.command);
+        LogDebug(
+            "Responding to take photo command: target_system_id: {}, target_component_id: {}, command: {}",
+            static_cast<int>(_last_take_photo_command.target_system_id),
+            static_cast<int>(_last_take_photo_command.target_component_id),
+            _last_take_photo_command.command);
 
         switch (take_photo_feedback) {
             default:
@@ -1597,7 +1604,11 @@ CameraServerImpl::process_image_start_capture(const MavlinkCommandReceiver::Comm
     auto total_images = static_cast<int32_t>(command.params.param3);
     auto seq_number = static_cast<int32_t>(command.params.param4);
 
-    LogDebug("received image start capture request - interval: {} total: {} index: {}", +interval_s, +total_images, +seq_number);
+    LogDebug(
+        "received image start capture request - interval: {} total: {} index: {}",
+        +interval_s,
+        +total_images,
+        +seq_number);
 
     // TODO: validate parameters and return MAV_RESULT_DENIED not valid
 
@@ -2016,7 +2027,10 @@ std::optional<mavlink_command_ack_t>
 CameraServerImpl::process_track_point_command(const MavlinkCommandReceiver::CommandLong& command)
 {
     if (!is_command_sender_ok(command)) {
-        LogWarn("Incoming track point command is for target sysid {} instead of {}", int(command.target_system_id), int(_server_component_impl->get_own_system_id()));
+        LogWarn(
+            "Incoming track point command is for target sysid {} instead of {}",
+            int(command.target_system_id),
+            int(_server_component_impl->get_own_system_id()));
         return std::nullopt;
     }
 
@@ -2043,7 +2057,10 @@ std::optional<mavlink_command_ack_t> CameraServerImpl::process_track_rectangle_c
     const MavlinkCommandReceiver::CommandLong& command)
 {
     if (!is_command_sender_ok(command)) {
-        LogWarn("Incoming track rectangle command is for target sysid {} instead of {}", int(command.target_system_id), int(_server_component_impl->get_own_system_id()));
+        LogWarn(
+            "Incoming track rectangle command is for target sysid {} instead of {}",
+            int(command.target_system_id),
+            int(_server_component_impl->get_own_system_id()));
         return std::nullopt;
     }
 
@@ -2070,7 +2087,10 @@ std::optional<mavlink_command_ack_t>
 CameraServerImpl::process_track_off_command(const MavlinkCommandReceiver::CommandLong& command)
 {
     if (!is_command_sender_ok(command)) {
-        LogWarn("Incoming track off command is for target sysid {} instead of {}", int(command.target_system_id), int(_server_component_impl->get_own_system_id()));
+        LogWarn(
+            "Incoming track off command is for target sysid {} instead of {}",
+            int(command.target_system_id),
+            int(_server_component_impl->get_own_system_id()));
         return std::nullopt;
     }
 
@@ -2093,7 +2113,10 @@ std::optional<mavlink_command_ack_t>
 CameraServerImpl::process_set_message_interval(const MavlinkCommandReceiver::CommandLong& command)
 {
     if (!is_command_sender_ok(command)) {
-        LogWarn("Incoming track off command is for target sysid {} instead of {}", int(command.target_system_id), int(_server_component_impl->get_own_system_id()));
+        LogWarn(
+            "Incoming track off command is for target sysid {} instead of {}",
+            int(command.target_system_id),
+            int(_server_component_impl->get_own_system_id()));
         return std::nullopt;
     }
 

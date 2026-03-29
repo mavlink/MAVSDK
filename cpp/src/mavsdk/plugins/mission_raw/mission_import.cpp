@@ -51,7 +51,10 @@ bool MissionImport::check_overall_version(const Json::Value& root)
     const auto supported_overall_version = 1;
     const auto overall_version = root["version"];
     if (overall_version.empty() || overall_version.asInt() != supported_overall_version) {
-        LogErr("Overall .plan version not supported, found version: {}, supported: {}", overall_version, supported_overall_version);
+        LogErr(
+            "Overall .plan version not supported, found version: {}, supported: {}",
+            overall_version,
+            supported_overall_version);
         return false;
     }
 
@@ -72,7 +75,10 @@ MissionImport::import_mission(const Json::Value& root, Autopilot autopilot)
     const auto supported_mission_version = 2;
     const auto mission_version = mission["version"];
     if (mission_version.empty() || mission_version.asInt() != supported_mission_version) {
-        LogErr("mission version for .plan not supported, found version: {}, supported: {}", mission_version.asInt(), supported_mission_version);
+        LogErr(
+            "mission version for .plan not supported, found version: {}, supported: {}",
+            mission_version.asInt(),
+            supported_mission_version);
         return std::nullopt;
     }
 
@@ -163,7 +169,10 @@ MissionImport::import_geofence(const Json::Value& root)
     const auto supported_geofence_version = 2;
     const auto geofence_version = geofence["version"];
     if (geofence_version.empty() || geofence_version.asInt() != supported_geofence_version) {
-        LogErr("geofence version for .plan not supported, found version: {}, supported: {}", geofence_version.asInt(), supported_geofence_version);
+        LogErr(
+            "geofence version for .plan not supported, found version: {}, supported: {}",
+            geofence_version.asInt(),
+            supported_geofence_version);
         return std::nullopt;
     }
 
@@ -209,7 +218,10 @@ MissionImport::import_rally_points(const Json::Value& root)
     const auto rally_points_version = rally_points["version"];
     if (rally_points_version.empty() ||
         rally_points_version.asInt() != supported_rally_points_version) {
-        LogErr("rally points version for .plan not supported, found version: {}, supported: {}", rally_points_version.asInt(), supported_rally_points_version);
+        LogErr(
+            "rally points version for .plan not supported, found version: {}, supported: {}",
+            rally_points_version.asInt(),
+            supported_rally_points_version);
         return std::nullopt;
     }
 
@@ -314,7 +326,10 @@ MissionImport::import_complex_mission_items(const Json::Value& json_item)
     const int supported_complex_item_version = 5;
     const int found_version = json_item["version"].asInt();
     if (found_version != 5) {
-        LogErr("version of complexItem not supported, found version: {}, supported: {}", found_version, supported_complex_item_version);
+        LogErr(
+            "version of complexItem not supported, found version: {}, supported: {}",
+            found_version,
+            supported_complex_item_version);
         return std::nullopt;
     }
 

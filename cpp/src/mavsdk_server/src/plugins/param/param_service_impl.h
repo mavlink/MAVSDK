@@ -47,7 +47,8 @@ public:
     {
         switch (protocol_version) {
             default:
-                LogErr("Unknown protocol_version enum value: {}", static_cast<int>(protocol_version));
+                LogErr(
+                    "Unknown protocol_version enum value: {}", static_cast<int>(protocol_version));
             // FALLTHROUGH
             case mavsdk::Param::ProtocolVersion::V1:
                 return rpc::param::PROTOCOL_VERSION_V1;
@@ -61,7 +62,8 @@ public:
     {
         switch (protocol_version) {
             default:
-                LogErr("Unknown protocol_version enum value: {}", static_cast<int>(protocol_version));
+                LogErr(
+                    "Unknown protocol_version enum value: {}", static_cast<int>(protocol_version));
             // FALLTHROUGH
             case rpc::param::PROTOCOL_VERSION_V1:
                 return mavsdk::Param::ProtocolVersion::V1;

@@ -94,7 +94,8 @@ public:
     {
         switch (battery_function) {
             default:
-                LogErr("Unknown battery_function enum value: {}", static_cast<int>(battery_function));
+                LogErr(
+                    "Unknown battery_function enum value: {}", static_cast<int>(battery_function));
             // FALLTHROUGH
             case mavsdk::Telemetry::BatteryFunction::Unknown:
                 return rpc::telemetry::BATTERY_FUNCTION_UNKNOWN;
@@ -114,7 +115,8 @@ public:
     {
         switch (battery_function) {
             default:
-                LogErr("Unknown battery_function enum value: {}", static_cast<int>(battery_function));
+                LogErr(
+                    "Unknown battery_function enum value: {}", static_cast<int>(battery_function));
             // FALLTHROUGH
             case rpc::telemetry::BATTERY_FUNCTION_UNKNOWN:
                 return mavsdk::Telemetry::BatteryFunction::Unknown;
@@ -214,7 +216,8 @@ public:
     {
         switch (status_text_type) {
             default:
-                LogErr("Unknown status_text_type enum value: {}", static_cast<int>(status_text_type));
+                LogErr(
+                    "Unknown status_text_type enum value: {}", static_cast<int>(status_text_type));
             // FALLTHROUGH
             case mavsdk::Telemetry::StatusTextType::Debug:
                 return rpc::telemetry::STATUS_TEXT_TYPE_DEBUG;
@@ -240,7 +243,8 @@ public:
     {
         switch (status_text_type) {
             default:
-                LogErr("Unknown status_text_type enum value: {}", static_cast<int>(status_text_type));
+                LogErr(
+                    "Unknown status_text_type enum value: {}", static_cast<int>(status_text_type));
             // FALLTHROUGH
             case rpc::telemetry::STATUS_TEXT_TYPE_DEBUG:
                 return mavsdk::Telemetry::StatusTextType::Debug;

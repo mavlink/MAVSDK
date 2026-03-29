@@ -47,7 +47,9 @@ public:
     {
         switch (follow_altitude_mode) {
             default:
-                LogErr("Unknown follow_altitude_mode enum value: {}", static_cast<int>(follow_altitude_mode));
+                LogErr(
+                    "Unknown follow_altitude_mode enum value: {}",
+                    static_cast<int>(follow_altitude_mode));
             // FALLTHROUGH
             case mavsdk::FollowMe::Config::FollowAltitudeMode::Constant:
                 return rpc::follow_me::Config_FollowAltitudeMode_FOLLOW_ALTITUDE_MODE_CONSTANT;
@@ -63,7 +65,9 @@ public:
     {
         switch (follow_altitude_mode) {
             default:
-                LogErr("Unknown follow_altitude_mode enum value: {}", static_cast<int>(follow_altitude_mode));
+                LogErr(
+                    "Unknown follow_altitude_mode enum value: {}",
+                    static_cast<int>(follow_altitude_mode));
             // FALLTHROUGH
             case rpc::follow_me::Config_FollowAltitudeMode_FOLLOW_ALTITUDE_MODE_CONSTANT:
                 return mavsdk::FollowMe::Config::FollowAltitudeMode::Constant;

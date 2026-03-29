@@ -134,7 +134,9 @@ public:
     {
         switch (flight_software_version_type) {
             default:
-                LogErr("Unknown flight_software_version_type enum value: {}", static_cast<int>(flight_software_version_type));
+                LogErr(
+                    "Unknown flight_software_version_type enum value: {}",
+                    static_cast<int>(flight_software_version_type));
             // FALLTHROUGH
             case mavsdk::Info::Version::FlightSoftwareVersionType::Unknown:
                 return rpc::info::
@@ -162,7 +164,9 @@ public:
     {
         switch (flight_software_version_type) {
             default:
-                LogErr("Unknown flight_software_version_type enum value: {}", static_cast<int>(flight_software_version_type));
+                LogErr(
+                    "Unknown flight_software_version_type enum value: {}",
+                    static_cast<int>(flight_software_version_type));
             // FALLTHROUGH
             case rpc::info::Version_FlightSoftwareVersionType_FLIGHT_SOFTWARE_VERSION_TYPE_UNKNOWN:
                 return mavsdk::Info::Version::FlightSoftwareVersionType::Unknown;

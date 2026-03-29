@@ -154,7 +154,11 @@ void MavlinkMessageHandler::process_message(const mavlink_message_t& message)
 
     for (auto& entry : _table) {
         if (_debugging) {
-            LogDebug("Msg id: {}, component id: {}", entry.msg_id, (entry.component_id.has_value() ? std::to_string(entry.component_id.value()) : "none"));
+            LogDebug(
+                "Msg id: {}, component id: {}",
+                entry.msg_id,
+                (entry.component_id.has_value() ? std::to_string(entry.component_id.value()) :
+                                                  "none"));
         }
 
         if (entry.msg_id == message.msgid &&
