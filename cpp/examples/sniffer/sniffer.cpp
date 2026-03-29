@@ -24,13 +24,22 @@ enum class DisplayMode {
 
 void usage(const std::string& bin_name)
 {
-    std::cerr
-        << "Usage:\n  " << bin_name << " <connection_url> list\n  " << bin_name
-        << " <connection_url> stat\n  " << bin_name << " <connection_url> all\n  " << bin_name
-        << " <connection_url> <message_name1> [message_name2] ...\n\nExamples:\n  " << bin_name
-        << " udpin://0.0.0.0:14540 list\n  " << bin_name << " udpin://0.0.0.0:14540 stat\n  "
-        << bin_name << " udpin://0.0.0.0:14540 all\n  " << bin_name
-        << " udpin://0.0.0.0:14540 GPS_RAW_INT HEARTBEAT\n\nConnection URL format:\n  TCP server : tcpin://<our_ip>:<port>\n  TCP client : tcpout://<remote_ip>:<port>\n  UDP server : udpin://<our_ip>:<port>\n  UDP client : udpout://<remote_ip>:<port>\n  Serial     : serial://</path/to/serial/dev>:<baudrate>\n";
+    std::cerr << "Usage:\n"
+              << "  " << bin_name << " <connection_url> list\n"
+              << "  " << bin_name << " <connection_url> stat\n"
+              << "  " << bin_name << " <connection_url> all\n"
+              << "  " << bin_name << " <connection_url> <message_name1> [message_name2] ...\n\n"
+              << "Examples:\n"
+              << "  " << bin_name << " udpin://0.0.0.0:14540 list\n"
+              << "  " << bin_name << " udpin://0.0.0.0:14540 stat\n"
+              << "  " << bin_name << " udpin://0.0.0.0:14540 all\n"
+              << "  " << bin_name << " udpin://0.0.0.0:14540 GPS_RAW_INT HEARTBEAT\n\n"
+              << "Connection URL format:\n"
+              << "  TCP server : tcpin://<our_ip>:<port>\n"
+              << "  TCP client : tcpout://<remote_ip>:<port>\n"
+              << "  UDP server : udpin://<our_ip>:<port>\n"
+              << "  UDP client : udpout://<remote_ip>:<port>\n"
+              << "  Serial     : serial://</path/to/serial/dev>:<baudrate>\n";
 }
 
 std::string get_timestamp()
@@ -81,7 +90,7 @@ int main(int argc, char** argv)
     ConnectionResult connection_result = mavsdk.add_any_connection(connection_url);
 
     if (connection_result != ConnectionResult::Success) {
-        std::cerr << "Connection failed: " << connection_result << "\n";
+        std::cerr << "Connection failed: " << connection_result << '\n';
         return 1;
     }
 
@@ -170,11 +179,10 @@ int main(int argc, char** argv)
                     [](const auto& a, const auto& b) { return a.first < b.first; });
 
                 // Print header
-                std::cout << '\n';
+                std::cout << std::endl;
                 std::cout << std::left << std::setw(35) << "Message Type" << std::setw(10)
-                          << "Count" << std::setw(10) << "Hz"
-                          << "\n";
-                std::cout << std::string(55, '-') << '\n';
+                          << "Count" << std::setw(10) << "Hz" << std::endl;
+                std::cout << std::string(55, '-') << std::endl;
                 lines_printed = 3;
 
                 // Calculate elapsed time since start for Hz calculation
@@ -189,7 +197,8 @@ int main(int argc, char** argv)
                         elapsed_since_start > 0 ? (count * 1000.0 / elapsed_since_start) : 0.0;
 
                     std::cout << std::left << std::setw(35) << msg_name << std::setw(10) << count
-                              << std::fixed << std::setprecision(1) << std::setw(10) << hz << "\n";
+                              << std::setw(10) << std::fixed << std::setprecision(1) << hz
+                              << std::endl;
                     lines_printed++;
                 }
 

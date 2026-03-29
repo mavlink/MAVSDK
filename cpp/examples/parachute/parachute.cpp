@@ -11,7 +11,6 @@
 #include <mavsdk/plugins/mavlink_passthrough/mavlink_passthrough.h>
 #include <chrono>
 #include <cstdint>
-#include <format>
 #include <iostream>
 #include <future>
 #include <memory>
@@ -21,9 +20,14 @@ using namespace mavsdk;
 
 static void usage(const std::string& bin_name)
 {
-    std::cerr << std::format(
-        "Usage : {} <connection_url>\nConnection URL format should be :\n For TCP server: tcpin://<our_ip>:<port>\n For TCP client: tcpout://<remote_ip>:<port>\n For UDP server: udpin://<our_ip>:<port>\n For UDP client: udpout://<remote_ip>:<port>\n For Serial : serial://</path/to/serial/dev>:<baudrate>]\nFor example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n",
-        bin_name);
+    std::cerr << "Usage : " << bin_name << " <connection_url>\n"
+              << "Connection URL format should be :\n"
+              << " For TCP server: tcpin://<our_ip>:<port>\n"
+              << " For TCP client: tcpout://<remote_ip>:<port>\n"
+              << " For UDP server: udpin://<our_ip>:<port>\n"
+              << " For UDP client: udpout://<remote_ip>:<port>\n"
+              << " For Serial : serial://</path/to/serial/dev>:<baudrate>]\n"
+              << "For example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n";
 }
 
 static void process_command_long(const mavlink_message_t& message, uint8_t our_sysid)
@@ -63,7 +67,7 @@ static void process_command_long(const mavlink_message_t& message, uint8_t our_s
             std::cout << "Parachute release!\n";
             break;
         default:
-            std::cerr << std::format("Unknown parachute action ({})\n", command_long.param1);
+            std::cerr << "Unknown parachute action (" << command_long.param1 << ")\n";
             break;
     }
 }
@@ -86,7 +90,7 @@ int main(int argc, char* argv[])
     const ConnectionResult connection_result = mavsdk.add_any_connection(connection_url);
 
     if (connection_result != ConnectionResult::Success) {
-        std::cerr << std::format("Connection failed: {}\n", connection_result);
+        std::cerr << "Connection failed: " << connection_result << '\n';
         return 1;
     }
 

@@ -22,9 +22,14 @@ using std::this_thread::sleep_for;
 
 void usage(const std::string& bin_name)
 {
-    std::cerr
-        << "Usage : " << bin_name
-        << " <connection_url>\nConnection URL format should be :\n For TCP server: tcpin://<our_ip>:<port>\n For TCP client: tcpout://<remote_ip>:<port>\n For UDP server: udpin://<our_ip>:<port>\n For UDP client: udpout://<remote_ip>:<port>\n For Serial : serial://</path/to/serial/dev>:<baudrate>]\nFor example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n";
+    std::cerr << "Usage : " << bin_name << " <connection_url>\n"
+              << "Connection URL format should be :\n"
+              << " For TCP server: tcpin://<our_ip>:<port>\n"
+              << " For TCP client: tcpout://<remote_ip>:<port>\n"
+              << " For UDP server: udpin://<our_ip>:<port>\n"
+              << " For UDP client: udpout://<remote_ip>:<port>\n"
+              << " For Serial : serial://</path/to/serial/dev>:<baudrate>]\n"
+              << "For example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n";
 }
 
 //
@@ -42,7 +47,7 @@ bool offb_ctrl_ned(mavsdk::Offboard& offboard)
 
     Offboard::Result offboard_result = offboard.start();
     if (offboard_result != Offboard::Result::Success) {
-        std::cerr << "Offboard start failed: " << offboard_result << "\n";
+        std::cerr << "Offboard start failed: " << offboard_result << '\n';
         return false;
     }
 
@@ -92,7 +97,7 @@ bool offb_ctrl_ned(mavsdk::Offboard& offboard)
 
     offboard_result = offboard.stop();
     if (offboard_result != Offboard::Result::Success) {
-        std::cerr << "Offboard stop failed: " << offboard_result << "\n";
+        std::cerr << "Offboard stop failed: " << offboard_result << '\n';
         return false;
     }
     std::cout << "Offboard stopped\n";
@@ -111,10 +116,10 @@ bool offb_ctrl_pos_global(mavsdk::Offboard& offboard, mavsdk::Telemetry& telemet
 
     const auto res_and_gps_origin = telemetry.get_gps_global_origin();
     if (res_and_gps_origin.first != Telemetry::Result::Success) {
-        std::cerr << "Telemetry failed: " << res_and_gps_origin.first << "\n";
+        std::cerr << "Telemetry failed: " << res_and_gps_origin.first << '\n';
     }
     Telemetry::GpsGlobalOrigin origin = res_and_gps_origin.second;
-    std::cerr << "Origin (lat, lon, alt amsl):\n " << origin << "\n";
+    std::cerr << "Origin (lat, lon, alt amsl):\n " << origin << '\n';
 
     std::cout << "Starting Offboard position control in Global coordinates\n";
 
@@ -126,7 +131,7 @@ bool offb_ctrl_pos_global(mavsdk::Offboard& offboard, mavsdk::Telemetry& telemet
 
     Offboard::Result offboard_result = offboard.start();
     if (offboard_result != Offboard::Result::Success) {
-        std::cerr << "Offboard start failed: " << offboard_result << "\n";
+        std::cerr << "Offboard start failed: " << offboard_result << '\n';
         return false;
     }
 
@@ -159,7 +164,7 @@ bool offb_ctrl_pos_global(mavsdk::Offboard& offboard, mavsdk::Telemetry& telemet
 
     offboard_result = offboard.stop();
     if (offboard_result != Offboard::Result::Success) {
-        std::cerr << "Offboard stop failed: " << offboard_result << "\n";
+        std::cerr << "Offboard stop failed: " << offboard_result << '\n';
         return false;
     }
     std::cout << "Offboard stopped\n";
@@ -185,7 +190,7 @@ bool offb_ctrl_body(mavsdk::Offboard& offboard)
 
     Offboard::Result offboard_result = offboard.start();
     if (offboard_result != Offboard::Result::Success) {
-        std::cerr << "Offboard start failed: " << offboard_result << "\n";
+        std::cerr << "Offboard start failed: " << offboard_result << '\n';
         return false;
     }
     std::cout << "Offboard started\n";
@@ -231,7 +236,7 @@ bool offb_ctrl_body(mavsdk::Offboard& offboard)
 
     offboard_result = offboard.stop();
     if (offboard_result != Offboard::Result::Success) {
-        std::cerr << "Offboard stop failed: " << offboard_result << "\n";
+        std::cerr << "Offboard stop failed: " << offboard_result << '\n';
         return false;
     }
     std::cout << "Offboard stopped\n";
@@ -256,7 +261,7 @@ bool offb_ctrl_attitude(mavsdk::Offboard& offboard)
 
     Offboard::Result offboard_result = offboard.start();
     if (offboard_result != Offboard::Result::Success) {
-        std::cerr << "Offboard start failed: " << offboard_result << "\n";
+        std::cerr << "Offboard start failed: " << offboard_result << '\n';
         return false;
     }
     std::cout << "Offboard started\n";
@@ -281,7 +286,7 @@ bool offb_ctrl_attitude(mavsdk::Offboard& offboard)
 
     offboard_result = offboard.stop();
     if (offboard_result != Offboard::Result::Success) {
-        std::cerr << "Offboard stop failed: " << offboard_result << "\n";
+        std::cerr << "Offboard stop failed: " << offboard_result << '\n';
         return false;
     }
     std::cout << "Offboard stopped\n";
@@ -300,7 +305,7 @@ int main(int argc, char** argv)
     ConnectionResult connection_result = mavsdk.add_any_connection(argv[1]);
 
     if (connection_result != ConnectionResult::Success) {
-        std::cerr << "Connection failed: " << connection_result << "\n";
+        std::cerr << "Connection failed: " << connection_result << '\n';
         return 1;
     }
 
@@ -323,14 +328,14 @@ int main(int argc, char** argv)
 
     const auto arm_result = action.arm();
     if (arm_result != Action::Result::Success) {
-        std::cerr << "Arming failed: " << arm_result << "\n";
+        std::cerr << "Arming failed: " << arm_result << '\n';
         return 1;
     }
     std::cout << "Armed\n";
 
     const auto takeoff_result = action.takeoff();
     if (takeoff_result != Action::Result::Success) {
-        std::cerr << "Takeoff failed: " << takeoff_result << "\n";
+        std::cerr << "Takeoff failed: " << takeoff_result << '\n';
         return 1;
     }
 
@@ -372,7 +377,7 @@ int main(int argc, char** argv)
 
     const auto land_result = action.land();
     if (land_result != Action::Result::Success) {
-        std::cerr << "Landing failed: " << land_result << "\n";
+        std::cerr << "Landing failed: " << land_result << '\n';
         return 1;
     }
 

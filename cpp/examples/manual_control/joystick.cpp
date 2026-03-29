@@ -30,7 +30,7 @@ std::unique_ptr<Joystick> Joystick::create()
 bool Joystick::init()
 {
     if (SDL_Init(SDL_INIT_JOYSTICK) < 0) {
-        std::cerr << "Could not initialize SDL joystick: " << SDL_GetError() << "\n";
+        std::cerr << "Could not initialize SDL joystick: " << SDL_GetError() << '\n';
         return false;
     }
 
@@ -146,11 +146,11 @@ void Joystick::set_initial_values()
 void Joystick::print_values()
 {
     for (std::size_t i = 0; i < _state.buttons.size(); ++i) {
-        std::cout << "button " << i << " -> " << static_cast<bool>(_state.buttons[i]) << "\n";
+        std::cout << "button " << i << " -> " << _state.buttons[i] << '\n';
     }
 
     for (std::size_t i = 0; i < _state.axes.size(); ++i) {
-        std::cout << "axis " << i << " -> " << _state.axes[i] << "\n";
+        std::cout << "axis " << i << " -> " << _state.axes[i] << '\n';
     }
 
     std::cout << '\n';

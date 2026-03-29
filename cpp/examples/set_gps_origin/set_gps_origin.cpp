@@ -21,9 +21,14 @@ using std::this_thread::sleep_for;
 
 void usage(const std::string& bin_name)
 {
-    std::cerr
-        << "Usage : " << bin_name
-        << " <connection_url>\nConnection URL format should be :\n For TCP server: tcpin://<our_ip>:<port>\n For TCP client: tcpout://<remote_ip>:<port>\n For UDP server: udpin://<our_ip>:<port>\n For UDP client: udpout://<remote_ip>:<port>\n For Serial : serial://</path/to/serial/dev>:<baudrate>]\nFor example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n";
+    std::cerr << "Usage : " << bin_name << " <connection_url>\n"
+              << "Connection URL format should be :\n"
+              << " For TCP server: tcpin://<our_ip>:<port>\n"
+              << " For TCP client: tcpout://<remote_ip>:<port>\n"
+              << " For UDP server: udpin://<our_ip>:<port>\n"
+              << " For UDP client: udpout://<remote_ip>:<port>\n"
+              << " For Serial : serial://</path/to/serial/dev>:<baudrate>]\n"
+              << "For example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n";
 }
 
 int main(int argc, char** argv)
@@ -37,7 +42,7 @@ int main(int argc, char** argv)
     ConnectionResult connection_result = mavsdk.add_any_connection(argv[1]);
 
     if (connection_result != ConnectionResult::Success) {
-        std::cerr << "Connection failed: " << connection_result << "\n";
+        std::cerr << "Connection failed: " << connection_result << '\n';
         return 1;
     }
 
@@ -62,7 +67,7 @@ int main(int argc, char** argv)
     // Get initial GPS origin
     auto origin_result = telemetry.get_gps_global_origin();
     if (origin_result.first == Telemetry::Result::Success) {
-        std::cout << "Initial GPS origin: " << origin_result.second << "\n";
+        std::cout << "Initial GPS origin: " << origin_result.second << '\n';
     }
 
     // Get initial position
@@ -75,7 +80,7 @@ int main(int argc, char** argv)
     std::cout << "Arming...\n";
     const auto arm_result = action.arm();
     if (arm_result != Action::Result::Success) {
-        std::cerr << "Arming failed: " << arm_result << "\n";
+        std::cerr << "Arming failed: " << arm_result << '\n';
         return 1;
     }
     std::cout << "Armed\n";
@@ -84,7 +89,7 @@ int main(int argc, char** argv)
     std::cout << "Taking off...\n";
     const auto takeoff_result = action.takeoff();
     if (takeoff_result != Action::Result::Success) {
-        std::cerr << "Takeoff failed: " << takeoff_result << "\n";
+        std::cerr << "Takeoff failed: " << takeoff_result << '\n';
         return 1;
     }
 
@@ -118,7 +123,7 @@ int main(int argc, char** argv)
 
     Offboard::Result offboard_result = offboard.start();
     if (offboard_result != Offboard::Result::Success) {
-        std::cerr << "Offboard start failed: " << offboard_result << "\n";
+        std::cerr << "Offboard start failed: " << offboard_result << '\n';
         return 1;
     }
 
@@ -138,7 +143,7 @@ int main(int argc, char** argv)
     // Stop offboard mode
     offboard_result = offboard.stop();
     if (offboard_result != Offboard::Result::Success) {
-        std::cerr << "Offboard stop failed: " << offboard_result << "\n";
+        std::cerr << "Offboard stop failed: " << offboard_result << '\n';
         return 1;
     }
 
@@ -152,7 +157,7 @@ int main(int argc, char** argv)
     std::cout << "Landing...\n";
     const auto land_result = action.land();
     if (land_result != Action::Result::Success) {
-        std::cerr << "Landing failed: " << land_result << "\n";
+        std::cerr << "Landing failed: " << land_result << '\n';
         return 1;
     }
 
@@ -180,7 +185,7 @@ int main(int argc, char** argv)
         final_position.absolute_altitude_m);
 
     if (set_origin_result != Action::Result::Success) {
-        std::cerr << "Setting GPS global origin failed: " << set_origin_result << "\n";
+        std::cerr << "Setting GPS global origin failed: " << set_origin_result << '\n';
         return 1;
     }
     std::cout << "GPS global origin set successfully!\n";
@@ -188,9 +193,9 @@ int main(int argc, char** argv)
     // Verify by getting the new origin
     auto new_origin_result = telemetry.get_gps_global_origin();
     if (new_origin_result.first == Telemetry::Result::Success) {
-        std::cout << "New GPS origin: " << new_origin_result.second << "\n";
+        std::cout << "New GPS origin: " << new_origin_result.second << '\n';
     } else {
-        std::cerr << "Failed to get new GPS origin: " << new_origin_result.first << "\n";
+        std::cerr << "Failed to get new GPS origin: " << new_origin_result.first << '\n';
     }
 
     // Wait a bit before exiting

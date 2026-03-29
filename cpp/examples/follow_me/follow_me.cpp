@@ -22,9 +22,14 @@ using std::chrono::seconds;
 
 void usage(const std::string& bin_name)
 {
-    std::cerr
-        << "Usage : " << bin_name
-        << " <connection_url>\nConnection URL format should be :\n For TCP server: tcpin://<our_ip>:<port>\n For TCP client: tcpout://<remote_ip>:<port>\n For UDP server: udpin://<our_ip>:<port>\n For UDP client: udpout://<remote_ip>:<port>\n For Serial : serial://</path/to/serial/dev>:<baudrate>]\nFor example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n";
+    std::cerr << "Usage : " << bin_name << " <connection_url>\n"
+              << "Connection URL format should be :\n"
+              << " For TCP server: tcpin://<our_ip>:<port>\n"
+              << " For TCP client: tcpout://<remote_ip>:<port>\n"
+              << " For UDP server: udpin://<our_ip>:<port>\n"
+              << " For UDP client: udpout://<remote_ip>:<port>\n"
+              << " For Serial : serial://</path/to/serial/dev>:<baudrate>]\n"
+              << "For example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n";
 }
 
 int main(int argc, char** argv)
@@ -38,7 +43,7 @@ int main(int argc, char** argv)
     ConnectionResult connection_result = mavsdk.add_any_connection(argv[1]);
 
     if (connection_result != ConnectionResult::Success) {
-        std::cerr << "Connection failed: " << connection_result << "\n";
+        std::cerr << "Connection failed: " << connection_result << '\n';
         return 1;
     }
 
@@ -62,14 +67,14 @@ int main(int argc, char** argv)
     // Arm
     Action::Result arm_result = action.arm();
     if (arm_result != Action::Result::Success) {
-        std::cerr << "Arming failed: " << arm_result << "\n";
+        std::cerr << "Arming failed: " << arm_result << '\n';
         return 1;
     }
     std::cout << "Armed\n";
 
     const Telemetry::Result set_rate_result = telemetry.set_rate_position(1.0);
     if (set_rate_result != Telemetry::Result::Success) {
-        std::cerr << "Setting rate failed:" << set_rate_result << "\n";
+        std::cerr << "Setting rate failed:" << set_rate_result << '\n';
         return 1;
     }
 
@@ -90,7 +95,7 @@ int main(int argc, char** argv)
     // Takeoff
     Action::Result takeoff_result = action.takeoff();
     if (takeoff_result != Action::Result::Success) {
-        std::cerr << "Arming failed: " << takeoff_result << "\n";
+        std::cerr << "Arming failed: " << takeoff_result << '\n';
         return 1;
     }
     std::cout << "In Air...\n";
@@ -104,14 +109,14 @@ int main(int argc, char** argv)
     FollowMe::Result follow_me_result = follow_me.set_config(config);
 
     if (follow_me_result != FollowMe::Result::Success) {
-        std::cerr << "Setting follow me config failed: " << follow_me_result << "\n";
+        std::cerr << "Setting follow me config failed: " << follow_me_result << '\n';
         return 1;
     }
 
     // Start Follow Me
     follow_me_result = follow_me.start();
     if (follow_me_result != FollowMe::Result::Success) {
-        std::cerr << "Starting follow me config failed: " << follow_me_result << "\n";
+        std::cerr << "Starting follow me config failed: " << follow_me_result << '\n';
         return 1;
     }
 
@@ -133,7 +138,7 @@ int main(int argc, char** argv)
     // Stop Follow Me
     follow_me_result = follow_me.stop();
     if (follow_me_result != FollowMe::Result::Success) {
-        std::cerr << "Stopping follow me config failed: " << follow_me_result << "\n";
+        std::cerr << "Stopping follow me config failed: " << follow_me_result << '\n';
         return 1;
     }
 
@@ -143,7 +148,7 @@ int main(int argc, char** argv)
     // Land
     const Action::Result land_result = action.land();
     if (land_result != Action::Result::Success) {
-        std::cerr << "Arming failed: " << land_result << "\n";
+        std::cerr << "Arming failed: " << land_result << '\n';
         return 1;
     }
 

@@ -1,5 +1,4 @@
 
-#include <format>
 #include "fake_location_provider.h"
 #include <chrono> // for seconds()
 #include <thread> // for sleep_for()

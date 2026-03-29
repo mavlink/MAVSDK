@@ -13,9 +13,16 @@ using namespace mavsdk;
 
 void usage(const std::string& bin_name)
 {
-    std::cerr
-        << "Usage : " << bin_name
-        << " <connection_url> [-v] [monitor]\nConnection URL format should be :\n For TCP server: tcpin://<our_ip>:<port>\n For TCP client: tcpout://<remote_ip>:<port>\n For UDP server: udpin://<our_ip>:<port>\n For UDP client: udpout://<remote_ip>:<port>\n For Serial : serial://</path/to/serial/dev>:<baudrate>]\nFor example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n\n -v: enable verbose output\n monitor: listen for events (instead of printing the arming report)\n";
+    std::cerr << "Usage : " << bin_name << " <connection_url> [-v] [monitor]\n"
+              << "Connection URL format should be :\n"
+              << " For TCP server: tcpin://<our_ip>:<port>\n"
+              << " For TCP client: tcpout://<remote_ip>:<port>\n"
+              << " For UDP server: udpin://<our_ip>:<port>\n"
+              << " For UDP client: udpout://<remote_ip>:<port>\n"
+              << " For Serial : serial://</path/to/serial/dev>:<baudrate>]\n"
+              << "For example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n\n"
+              << " -v: enable verbose output\n"
+              << " monitor: listen for events (instead of printing the arming report)\n";
 }
 
 int main(int argc, char** argv)
@@ -40,7 +47,7 @@ int main(int argc, char** argv)
     ConnectionResult connection_result = mavsdk.add_any_connection(argv[1]);
 
     if (connection_result != ConnectionResult::Success) {
-        std::cerr << "Connection failed: " << connection_result << "\n";
+        std::cerr << "Connection failed: " << connection_result << '\n';
         return 1;
     }
 
@@ -55,13 +62,13 @@ int main(int argc, char** argv)
     if (monitor) {
         // Listen for events
         events.subscribe_events([verbose](const Events::Event& event) {
-            std::cout << "[" << event.log_level << "] " << event.message << "\n";
+            std::cout << "[" << event.log_level << "] " << event.message << std::endl;
             if (verbose) {
                 if (!event.description.empty()) {
-                    std::cout << "    Description: " << event.description << "\n";
+                    std::cout << "    Description: " << event.description << std::endl;
                 }
                 std::cout << "    Event name: " << event.event_namespace << "/" << event.event_name
-                          << "\n";
+                          << std::endl;
             }
         });
         while (true) {
@@ -81,15 +88,16 @@ int main(int argc, char** argv)
                 }
                 reported = true;
                 std::cout << "Current Mode (intention): " << report.current_mode_intention.mode_name
-                          << "\n";
+                          << std::endl;
                 const std::string can_arm_or_run = telemetry.armed() ? "Can Run: " : "Can Arm: ";
                 std::cout << can_arm_or_run
-                          << (report.current_mode_intention.can_arm_or_run ? "yes" : "No") << "\n";
+                          << (report.current_mode_intention.can_arm_or_run ? "yes" : "No")
+                          << std::endl;
                 if (!report.current_mode_intention.problems.empty()) {
                     std::cout << "Reports:" << std::endl;
                     for (const auto& problem : report.current_mode_intention.problems) {
                         std::cout << "  [" << problem.log_level << "] [" << problem.health_component
-                                  << "]: " << problem.message << "\n";
+                                  << "]: " << problem.message << std::endl;
                     }
                 }
 
@@ -97,7 +105,7 @@ int main(int argc, char** argv)
                     std::cout << "All Reports:" << std::endl;
                     for (const auto& problem : report.all_problems) {
                         std::cout << "  [" << problem.log_level << "] [" << problem.health_component
-                                  << "]: " << problem.message << "\n";
+                                  << "]: " << problem.message << std::endl;
                     }
                 }
                 promise.set_value(true);

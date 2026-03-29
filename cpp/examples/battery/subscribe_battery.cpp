@@ -27,7 +27,7 @@ int main(int argc, char** argv)
 {
     // Check for connection string argument
     if (argc != 2) {
-        std::cerr << "Usage: " << argv[0] << " <connection_url>\n";
+        std::cerr << "Usage: " << argv[0] << " <connection_url>" << std::endl;
         return 1;
     }
 
@@ -37,7 +37,7 @@ int main(int argc, char** argv)
     // Add connection
     mavsdk::ConnectionResult connection_result = mavsdk.add_any_connection(argv[1]);
     if (connection_result != mavsdk::ConnectionResult::Success) {
-        std::cerr << "Connection failed: " << connection_result << "\n";
+        std::cerr << "Connection failed: " << connection_result << std::endl;
         return 1;
     }
 
@@ -59,13 +59,15 @@ int main(int argc, char** argv)
 
     // Callback for battery updates
     auto battery_callback = [](mavsdk::Telemetry::Battery battery) {
-        std::cout << "Battery ID: " << battery.id << " \nBattery Temp: " << battery.temperature_degc
-                  << " degc\nBattery Voltage: " << battery.voltage_v
-                  << " v\nBattery Current: " << battery.current_battery_a
-                  << " a\nBattery Capacity Consumed: " << battery.capacity_consumed_ah
-                  << " ah\nBattery Remaining Percent: " << battery.remaining_percent
-                  << " %\nBattery Remaining Time: " << battery.time_remaining_s
-                  << " s\nBattery Function: " << battery.battery_function << "\n\n";
+        std::cout << "Battery ID: " << battery.id << " \n"
+                  << "Battery Temp: " << battery.temperature_degc << " degc\n"
+                  << "Battery Voltage: " << battery.voltage_v << " v\n"
+                  << "Battery Current: " << battery.current_battery_a << " a\n"
+                  << "Battery Capacity Consumed: " << battery.capacity_consumed_ah << " ah\n"
+                  << "Battery Remaining Percent: " << battery.remaining_percent << " %\n"
+                  << "Battery Remaining Time: " << battery.time_remaining_s << " s\n"
+                  << "Battery Function: " << battery.battery_function << "\n"
+                  << std::endl;
     };
 
     // Subscribe to battery updates

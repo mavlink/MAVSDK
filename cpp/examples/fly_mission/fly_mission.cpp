@@ -41,9 +41,14 @@ Mission::MissionItem make_mission_item(
 
 void usage(const std::string& bin_name)
 {
-    std::cerr
-        << "Usage : " << bin_name
-        << " <connection_url>\nConnection URL format should be :\n For TCP server: tcpin://<our_ip>:<port>\n For TCP client: tcpout://<remote_ip>:<port>\n For UDP server: udpin://<our_ip>:<port>\n For UDP client: udpout://<remote_ip>:<port>\n For Serial : serial://</path/to/serial/dev>:<baudrate>]\nFor example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n";
+    std::cerr << "Usage : " << bin_name << " <connection_url>\n"
+              << "Connection URL format should be :\n"
+              << " For TCP server: tcpin://<our_ip>:<port>\n"
+              << " For TCP client: tcpout://<remote_ip>:<port>\n"
+              << " For UDP server: udpin://<our_ip>:<port>\n"
+              << " For UDP client: udpout://<remote_ip>:<port>\n"
+              << " For Serial : serial://</path/to/serial/dev>:<baudrate>]\n"
+              << "For example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n";
 }
 
 int main(int argc, char** argv)
@@ -57,7 +62,7 @@ int main(int argc, char** argv)
     ConnectionResult connection_result = mavsdk.add_any_connection(argv[1]);
 
     if (connection_result != ConnectionResult::Success) {
-        std::cerr << "Connection failed: " << connection_result << "\n";
+        std::cerr << "Connection failed: " << connection_result << '\n';
         return 1;
     }
 
@@ -154,7 +159,7 @@ int main(int argc, char** argv)
     std::cout << "Arming...\n";
     const Action::Result arm_result = action.arm();
     if (arm_result != Action::Result::Success) {
-        std::cerr << "Arming failed: " << arm_result << "\n";
+        std::cerr << "Arming failed: " << arm_result << '\n';
         return 1;
     }
     std::cout << "Armed.\n";
@@ -163,7 +168,7 @@ int main(int argc, char** argv)
     // Before starting the mission, we want to be sure to subscribe to the mission progress.
     mission.subscribe_mission_progress([&want_to_pause](Mission::MissionProgress mission_progress) {
         std::cout << "Mission status update: " << mission_progress.current << " / "
-                  << mission_progress.total << "\n";
+                  << mission_progress.total << '\n';
 
         if (mission_progress.current >= 2) {
             // We can only set a flag here. If we do more request inside the callback,
@@ -174,7 +179,7 @@ int main(int argc, char** argv)
 
     Mission::Result start_mission_result = mission.start_mission();
     if (start_mission_result != Mission::Result::Success) {
-        std::cerr << "Starting mission failed: " << start_mission_result << "\n";
+        std::cerr << "Starting mission failed: " << start_mission_result << '\n';
         return 1;
     }
 
@@ -186,7 +191,7 @@ int main(int argc, char** argv)
     const Mission::Result pause_mission_result = mission.pause_mission();
 
     if (pause_mission_result != Mission::Result::Success) {
-        std::cerr << "Failed to pause mission:" << pause_mission_result << "\n";
+        std::cerr << "Failed to pause mission:" << pause_mission_result << '\n';
     }
     std::cout << "Mission paused.\n";
 
@@ -196,7 +201,7 @@ int main(int argc, char** argv)
     // Then continue.
     Mission::Result start_mission_again_result = mission.start_mission();
     if (start_mission_again_result != Mission::Result::Success) {
-        std::cerr << "Starting mission again failed: " << start_mission_again_result << "\n";
+        std::cerr << "Starting mission again failed: " << start_mission_again_result << '\n';
         return 1;
     }
 
@@ -208,7 +213,7 @@ int main(int argc, char** argv)
     std::cout << "Commanding RTL...\n";
     const Action::Result rtl_result = action.return_to_launch();
     if (rtl_result != Action::Result::Success) {
-        std::cout << "Failed to command RTL: " << rtl_result << "\n";
+        std::cout << "Failed to command RTL: " << rtl_result << '\n';
         return 1;
     }
     std::cout << "Commanded RTL.\n";

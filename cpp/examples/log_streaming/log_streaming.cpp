@@ -21,9 +21,15 @@ using std::this_thread::sleep_for;
 
 void usage(const std::string& bin_name)
 {
-    std::cerr
-        << "Usage : " << bin_name
-        << " <connection_url> [--drop]\nConnection URL format should be :\n For TCP server: tcpin://<our_ip>:<port>\n For TCP client: tcpout://<remote_ip>:<port>\n For UDP server: udpin://<our_ip>:<port>\n For UDP client: udpout://<remote_ip>:<port>\n For Serial : serial://</path/to/serial/dev>:<baudrate>]\nFor example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n--drop   To drop some of the messages\n";
+    std::cerr << "Usage : " << bin_name << " <connection_url> [--drop]\n"
+              << "Connection URL format should be :\n"
+              << " For TCP server: tcpin://<our_ip>:<port>\n"
+              << " For TCP client: tcpout://<remote_ip>:<port>\n"
+              << " For UDP server: udpin://<our_ip>:<port>\n"
+              << " For UDP client: udpout://<remote_ip>:<port>\n"
+              << " For Serial : serial://</path/to/serial/dev>:<baudrate>]\n"
+              << "For example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n"
+              << "--drop   To drop some of the messages" << std::endl;
 }
 
 int main(int argc, char** argv)
@@ -37,7 +43,7 @@ int main(int argc, char** argv)
     ConnectionResult connection_result = mavsdk.add_any_connection(argv[1]);
 
     if (connection_result != ConnectionResult::Success) {
-        std::cerr << "Connection failed: " << connection_result << "\n";
+        std::cerr << "Connection failed: " << connection_result << std::endl;
         return 1;
     }
 
@@ -67,7 +73,7 @@ int main(int argc, char** argv)
 
     bool is_ardupilot = autopilot_type == Autopilot::ArduPilot;
 
-    std::cout << "Autopilot type: " << autopilot_type << "\n";
+    std::cout << "Autopilot type: " << autopilot_type << std::endl;
 
     // For ArduPilot, check LOG_BACKEND_TYPE parameter
     if (is_ardupilot) {
@@ -77,12 +83,14 @@ int main(int argc, char** argv)
             int log_backend_type = log_backend_result.second;
             // Check if MAVLink backend is enabled (bit 1 = value 2)
             if ((log_backend_type & 2) == 0) {
-                std::cerr
-                    << "Error: ArduPilot LOG_BACKEND_TYPE=" << log_backend_type
-                    << " does not have MAVLink logging enabled (bit 1).\nSet LOG_BACKEND_TYPE to include 2 (e.g., 3 for File+MAVLink).\n";
+                std::cerr << "Error: ArduPilot LOG_BACKEND_TYPE=" << log_backend_type
+                          << " does not have MAVLink logging enabled (bit 1).\n"
+                          << "Set LOG_BACKEND_TYPE to include 2 (e.g., 3 for File+MAVLink)."
+                          << std::endl;
                 return 1;
             }
-            std::cout << "LOG_BACKEND_TYPE=" << log_backend_type << " (MAVLink logging enabled)\n";
+            std::cout << "LOG_BACKEND_TYPE=" << log_backend_type << " (MAVLink logging enabled)"
+                      << std::endl;
         } else {
             std::cerr << "Warning: Could not read LOG_BACKEND_TYPE parameter" << std::endl;
         }
@@ -130,7 +138,7 @@ int main(int argc, char** argv)
         return 1;
     }
 
-    std::cout << "Log streaming started, writing to " << filename << "\n";
+    std::cout << "Log streaming started, writing to " << filename << std::endl;
 
     // Run for 60 seconds, printing stats every 10 seconds
     for (unsigned i = 0; i < 6; ++i) {
@@ -138,8 +146,8 @@ int main(int argc, char** argv)
 
         double rate_kib_per_second = (bytes_written_since_last / 1024.0) / 10.0;
         std::cout << "Stats: " << std::fixed << std::setprecision(2)
-                  << bytes_written / 1024.0 / 1024.0 << " MiB total, " << std::setprecision(1)
-                  << rate_kib_per_second << " KiB/s\n";
+                  << bytes_written / 1024.0 / 1024.0 << " MiB total, " << rate_kib_per_second
+                  << " KiB/s" << std::endl;
 
         bytes_written_since_last = 0;
     }

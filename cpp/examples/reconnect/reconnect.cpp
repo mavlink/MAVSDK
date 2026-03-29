@@ -18,9 +18,14 @@ using namespace mavsdk;
 
 void usage(const std::string& bin_name)
 {
-    std::cerr
-        << "Usage : " << bin_name
-        << " <connection_url>\nConnection URL format should be :\n For TCP server: tcpin://<our_ip>:<port>\n For TCP client: tcpout://<remote_ip>:<port>\n For UDP server: udpin://<our_ip>:<port>\n For UDP client: udpout://<remote_ip>:<port>\n For Serial : serial://</path/to/serial/dev>:<baudrate>]\nFor example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n";
+    std::cerr << "Usage : " << bin_name << " <connection_url>\n"
+              << "Connection URL format should be :\n"
+              << " For TCP server: tcpin://<our_ip>:<port>\n"
+              << " For TCP client: tcpout://<remote_ip>:<port>\n"
+              << " For UDP server: udpin://<our_ip>:<port>\n"
+              << " For UDP client: udpout://<remote_ip>:<port>\n"
+              << " For Serial : serial://</path/to/serial/dev>:<baudrate>]\n"
+              << "For example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n";
 }
 
 int main(int argc, char** argv)
@@ -52,7 +57,7 @@ int main(int argc, char** argv)
     // Subscribe to connection errors.
     // When an error happens, remove the connection and mark it as disconnected.
     mavsdk.subscribe_connection_errors([&](Mavsdk::ConnectionError connection_error) {
-        std::cout << "Connection error: " << connection_error.error_description << "\n";
+        std::cout << "Connection error: " << connection_error.error_description << std::endl;
 
         mavsdk.remove_connection(connection_error.connection_handle);
 
@@ -63,7 +68,7 @@ int main(int argc, char** argv)
 
         assert(it != connections.end());
 
-        std::cout << "Removed connection: '" << it->url << "'\n";
+        std::cout << "Removed connection: '" << it->url << "'" << std::endl;
         it->connected = false;
     });
 
@@ -73,12 +78,12 @@ int main(int argc, char** argv)
             std::lock_guard lock(connections_mutex);
             for (auto& entry : connections) {
                 if (!entry.connected) {
-                    std::cout << "Try adding connection '" << entry.url << "'\n";
+                    std::cout << "Try adding connection '" << entry.url << "'" << std::endl;
                     auto result = mavsdk.add_any_connection_with_handle(entry.url);
 
                     if (result.first != ConnectionResult::Success) {
                         std::cout << "Adding connection '" << entry.url
-                                  << "'failed: " << result.first << "\n";
+                                  << "'failed: " << result.first << std::endl;
                     } else {
                         entry.handle = result.second;
                         entry.connected = true;

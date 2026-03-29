@@ -16,7 +16,7 @@ static std::atomic<bool> _should_stop{false};
 
 void signal_handler(int sig)
 {
-    std::cout << "Received signal " << sig << "\n";
+    std::cout << "Received signal " << sig << std::endl;
     _should_stop.store(true);
 }
 
@@ -36,7 +36,7 @@ int main(int argc, char* argv[])
     // This returns when a system has been discovered.
     int ret = mavsdk_server_run(mavsdk_server, argv[1], 50051);
     if (ret != 0) {
-        std::cout << "mavsdk_server_run failed: " << ret << "\n";
+        std::cout << "mavsdk_server_run failed: " << ret << std::endl;
         mavsdk_server_destroy(mavsdk_server);
         return ret;
     }

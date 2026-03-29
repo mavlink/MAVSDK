@@ -6,7 +6,6 @@
 #include <mavsdk/plugins/action/action.h>
 #include <chrono>
 #include <cstdint>
-#include <format>
 #include <iostream>
 #include <future>
 
@@ -14,9 +13,14 @@ using namespace mavsdk;
 
 void usage(const std::string& bin_name)
 {
-    std::cerr << std::format(
-        "Usage : {} <connection_url> <index> <value>\nConnection URL format should be :\n For TCP server: tcpin://<our_ip>:<port>\n For TCP client: tcpout://<remote_ip>:<port>\n For UDP server: udpin://<our_ip>:<port>\n For UDP client: udpout://<remote_ip>:<port>\n For Serial : serial://</path/to/serial/dev>:<baudrate>]\nFor example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n",
-        bin_name);
+    std::cerr << "Usage : " << bin_name << " <connection_url> <index> <value>\n"
+              << "Connection URL format should be :\n"
+              << " For TCP server: tcpin://<our_ip>:<port>\n"
+              << " For TCP client: tcpout://<remote_ip>:<port>\n"
+              << " For UDP server: udpin://<our_ip>:<port>\n"
+              << " For UDP client: udpout://<remote_ip>:<port>\n"
+              << " For Serial : serial://</path/to/serial/dev>:<baudrate>]\n"
+              << "For example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n";
 }
 
 int main(int argc, char** argv)
@@ -34,7 +38,7 @@ int main(int argc, char** argv)
     const ConnectionResult connection_result = mavsdk.add_any_connection(connection_url);
 
     if (connection_result != ConnectionResult::Success) {
-        std::cerr << std::format("Connection failed: {}\n", connection_result);
+        std::cerr << "Connection failed: " << connection_result << '\n';
         return 1;
     }
 
@@ -73,7 +77,7 @@ int main(int argc, char** argv)
     const Action::Result set_actuator_result = action.set_actuator(index, value);
 
     if (set_actuator_result != Action::Result::Success) {
-        std::cerr << std::format("Setting actuator failed:{}\n", set_actuator_result);
+        std::cerr << "Setting actuator failed:" << set_actuator_result << '\n';
         return 1;
     }
 

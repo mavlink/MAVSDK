@@ -14,7 +14,7 @@ int main(int, char**)
     // Set our own custom log function.
     log::subscribe(
         [](log::Level level, const std::string& message, const std::string& file, int line) {
-            std::cout << "My custom print function: " << message << "\n";
+            std::cout << "My custom print function: " << message << std::endl;
 
             // Prevent unused warnings.
             (void)level;

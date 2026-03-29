@@ -17,9 +17,14 @@ using std::this_thread::sleep_for;
 
 void usage(const std::string& bin_name)
 {
-    std::cerr
-        << "Usage : " << bin_name
-        << " <connection_url>\nConnection URL format should be :\n For TCP server: tcpin://<our_ip>:<port>\n For TCP client: tcpout://<remote_ip>:<port>\n For UDP server: udpin://<our_ip>:<port>\n For UDP client: udpout://<remote_ip>:<port>\n For Serial : serial://</path/to/serial/dev>:<baudrate>]\nFor example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n";
+    std::cerr << "Usage : " << bin_name << " <connection_url>\n"
+              << "Connection URL format should be :\n"
+              << " For TCP server: tcpin://<our_ip>:<port>\n"
+              << " For TCP client: tcpout://<remote_ip>:<port>\n"
+              << " For UDP server: udpin://<our_ip>:<port>\n"
+              << " For UDP client: udpout://<remote_ip>:<port>\n"
+              << " For Serial : serial://</path/to/serial/dev>:<baudrate>]\n"
+              << "For example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n";
 }
 
 int main(int argc, char** argv)
@@ -33,7 +38,7 @@ int main(int argc, char** argv)
     ConnectionResult connection_result = mavsdk.add_any_connection(argv[1]);
 
     if (connection_result != ConnectionResult::Success) {
-        std::cerr << "Connection failed: " << connection_result << "\n";
+        std::cerr << "Connection failed: " << connection_result << '\n';
         return 1;
     }
 
@@ -50,23 +55,23 @@ int main(int argc, char** argv)
     std::cout << "Setting transponder update rate\n";
     const Transponder::Result set_rate_result = transponder.set_rate_transponder(1.0);
     if (set_rate_result != Transponder::Result::Success) {
-        std::cerr << "Setting rate failed:" << set_rate_result << "\n";
+        std::cerr << "Setting rate failed:" << set_rate_result << '\n';
         return 1;
     }
 
     // Set up callback to monitor transponder activity
     std::cout << "Setting transponder subscription\n";
     transponder.subscribe_transponder([](Transponder::AdsbVehicle adsbVehicle) {
-        std::cout << "ICAO Address: " << adsbVehicle.icao_address
-                  << "\nLatitude: " << adsbVehicle.latitude_deg
-                  << " deg\nLongitude: " << adsbVehicle.longitude_deg
-                  << " deg\nAbsolute Altitude: " << adsbVehicle.absolute_altitude_m
-                  << " m\nHeading: " << adsbVehicle.heading_deg
-                  << " deg\nHorizontal Velocity: " << adsbVehicle.horizontal_velocity_m_s
-                  << " m/s\nVertical Velocity: " << adsbVehicle.vertical_velocity_m_s
-                  << " m/s\nCall Sign: " << adsbVehicle.callsign
-                  << "\nEmitter Type: " << adsbVehicle.emitter_type
-                  << "\nSquawk: " << adsbVehicle.squawk << "\n";
+        std::cout << "ICAO Address: " << adsbVehicle.icao_address << '\n'
+                  << "Latitude: " << adsbVehicle.latitude_deg << " deg\n"
+                  << "Longitude: " << adsbVehicle.longitude_deg << " deg\n"
+                  << "Absolute Altitude: " << adsbVehicle.absolute_altitude_m << " m\n"
+                  << "Heading: " << adsbVehicle.heading_deg << " deg\n"
+                  << "Horizontal Velocity: " << adsbVehicle.horizontal_velocity_m_s << " m/s\n"
+                  << "Vertical Velocity: " << adsbVehicle.vertical_velocity_m_s << " m/s\n"
+                  << "Call Sign: " << adsbVehicle.callsign << '\n'
+                  << "Emitter Type: " << adsbVehicle.emitter_type << '\n'
+                  << "Squawk: " << adsbVehicle.squawk << '\n';
     });
 
     // Search for aircraft transponders
