@@ -300,6 +300,7 @@ CMAVSDK_EXPORT void mavsdk_geofence_byte_buffer_destroy(uint8_t** buffer);
 
 // ===== Callback Typedefs =====
 typedef void (*mavsdk_geofence_upload_geofence_callback_t)(const mavsdk_geofence_result_t result, void* user_data);
+typedef void (*mavsdk_geofence_download_geofence_callback_t)(const mavsdk_geofence_result_t result, const mavsdk_geofence_geofence_data_t geofence_data, void* user_data);
 typedef void (*mavsdk_geofence_clear_geofence_callback_t)(const mavsdk_geofence_result_t result, void* user_data);
 
 // ===== Geofence Creation/Destruction =====
@@ -340,6 +341,36 @@ mavsdk_geofence_result_t
 mavsdk_geofence_upload_geofence(
     mavsdk_geofence_t geofence,
     mavsdk_geofence_geofence_data_t geofence_data);
+
+
+/**
+ * @brief Download geofences from the vehicle.
+ * 
+ *  Downloads polygon and circular geofences from the vehicle.
+ *
+ * @param geofence The geofence instance.
+ * @param callback Function to call when new data is available.
+ * @param user_data User data to pass to the callback.
+ */
+CMAVSDK_EXPORT void mavsdk_geofence_download_geofence_async(
+    mavsdk_geofence_t geofence,
+    mavsdk_geofence_download_geofence_callback_t callback,
+    void* user_data);
+
+
+/**
+ * @brief Get the current download geofence (blocking).
+ *
+ * This function blocks until a value is available.
+ *
+ * @param telemetry The telemetry instance.
+ * @param download_geofence_out Pointer to store the result.
+ */
+CMAVSDK_EXPORT
+mavsdk_geofence_result_t
+mavsdk_geofence_download_geofence(
+    mavsdk_geofence_t geofence,
+    mavsdk_geofence_geofence_data_t* geofence_data_out);
 
 
 /**

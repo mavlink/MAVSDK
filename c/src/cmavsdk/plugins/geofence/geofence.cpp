@@ -378,6 +378,46 @@ mavsdk_geofence_upload_geofence(
     return translate_result(ret_value);
 }
 
+// DownloadGeofence async
+void mavsdk_geofence_download_geofence_async(
+    mavsdk_geofence_t geofence,
+    mavsdk_geofence_download_geofence_callback_t callback,
+    void* user_data)
+{
+    auto wrapper = reinterpret_cast<mavsdk_geofence_wrapper*>(geofence);
+
+    wrapper->cpp_plugin->download_geofence_async(
+        [callback, user_data](
+            mavsdk::Geofence::Result result,
+            mavsdk::Geofence::GeofenceData value) {
+                if (callback) {
+                    callback(
+                        translate_result(result),
+                        translate_geofence_data_to_c(value),
+                        user_data);
+                }
+        });
+}
+
+
+// DownloadGeofence sync
+mavsdk_geofence_result_t
+mavsdk_geofence_download_geofence(
+    mavsdk_geofence_t geofence,
+    mavsdk_geofence_geofence_data_t* geofence_data_out)
+{
+    auto wrapper = reinterpret_cast<mavsdk_geofence_wrapper*>(geofence);
+
+    auto result_pair = wrapper->cpp_plugin->download_geofence(
+);
+
+    if (geofence_data_out != nullptr) {
+        *geofence_data_out = translate_geofence_data_to_c(result_pair.second);
+    }
+
+    return translate_result(result_pair.first);
+}
+
 // ClearGeofence async
 void mavsdk_geofence_clear_geofence_async(
     mavsdk_geofence_t geofence,

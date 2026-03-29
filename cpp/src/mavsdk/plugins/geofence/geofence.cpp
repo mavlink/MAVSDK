@@ -33,6 +33,16 @@ Geofence::Result Geofence::upload_geofence(GeofenceData geofence_data) const
     return _impl->upload_geofence(geofence_data);
 }
 
+void Geofence::download_geofence_async(const DownloadGeofenceCallback callback)
+{
+    _impl->download_geofence_async(callback);
+}
+
+std::pair<Geofence::Result, Geofence::GeofenceData> Geofence::download_geofence() const
+{
+    return _impl->download_geofence();
+}
+
 void Geofence::clear_geofence_async(const ResultCallback callback)
 {
     _impl->clear_geofence_async(callback);
