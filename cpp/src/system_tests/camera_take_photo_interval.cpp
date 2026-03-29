@@ -33,7 +33,7 @@ TEST(SystemTest, CameraTakePhotoInterval)
     camera_server.set_information(information);
 
     camera_server.subscribe_take_photo([&camera_server](int32_t index) {
-        LogInfo() << "Let's take photo " << index;
+        LogInfo("Let's take photo {}", index);
 
         CameraServer::CaptureInfo info;
         info.index = index;
@@ -68,7 +68,7 @@ TEST(SystemTest, CameraTakePhotoInterval)
 
     auto capture_info_handle =
         camera.subscribe_capture_info([captured](Camera::CaptureInfo capture_info) {
-            LogInfo() << "Received captured info for image: " << capture_info.index;
+            LogInfo("Received captured info for image: {}", capture_info.index);
             ++(*captured);
         });
 

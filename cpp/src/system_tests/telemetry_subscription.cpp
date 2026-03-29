@@ -35,7 +35,7 @@ TEST(SystemTest, TelemetrySubscription)
     auto fut1 = prom1.get_future();
     std::atomic<unsigned> num_subscription1_called{0};
     auto handle1 = telemetry.subscribe_status_text([&](const Telemetry::StatusText& status_text) {
-        LogInfo() << "Received: " << status_text.text;
+        LogInfo("Received: {}", status_text.text);
         ++num_subscription1_called;
         if (num_subscription1_called == 2) {
             prom1.set_value();
@@ -48,7 +48,7 @@ TEST(SystemTest, TelemetrySubscription)
 
     std::function<void(Telemetry::StatusText)> callback =
         [&](const Telemetry::StatusText& status_text) {
-            LogInfo() << "Also received: " << status_text.text;
+            LogInfo("Also received: {}", status_text.text);
             ++num_subscription2_called;
             if (num_subscription2_called == 3) {
                 prom2.set_value();

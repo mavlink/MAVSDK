@@ -47,8 +47,7 @@ public:
     {
         switch (gripper_action) {
             default:
-                LogErr() << "Unknown gripper_action enum value: "
-                         << static_cast<int>(gripper_action);
+                LogErr("Unknown gripper_action enum value: {}", static_cast<int>(gripper_action));
             // FALLTHROUGH
             case mavsdk::Gripper::GripperAction::Release:
                 return rpc::gripper::GRIPPER_ACTION_RELEASE;
@@ -62,8 +61,7 @@ public:
     {
         switch (gripper_action) {
             default:
-                LogErr() << "Unknown gripper_action enum value: "
-                         << static_cast<int>(gripper_action);
+                LogErr("Unknown gripper_action enum value: {}", static_cast<int>(gripper_action));
             // FALLTHROUGH
             case rpc::gripper::GRIPPER_ACTION_RELEASE:
                 return mavsdk::Gripper::GripperAction::Release;
@@ -77,7 +75,7 @@ public:
     {
         switch (result) {
             default:
-                LogErr() << "Unknown result enum value: " << static_cast<int>(result);
+                LogErr("Unknown result enum value: {}", static_cast<int>(result));
             // FALLTHROUGH
             case mavsdk::Gripper::Result::Unknown:
                 return rpc::gripper::GripperResult_Result_RESULT_UNKNOWN;
@@ -101,7 +99,7 @@ public:
     {
         switch (result) {
             default:
-                LogErr() << "Unknown result enum value: " << static_cast<int>(result);
+                LogErr("Unknown result enum value: {}", static_cast<int>(result));
             // FALLTHROUGH
             case rpc::gripper::GripperResult_Result_RESULT_UNKNOWN:
                 return mavsdk::Gripper::Result::Unknown;
@@ -135,7 +133,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "Grab sent with a null request! Ignoring...";
+            LogWarn("Grab sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -163,7 +161,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "Release sent with a null request! Ignoring...";
+            LogWarn("Release sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 

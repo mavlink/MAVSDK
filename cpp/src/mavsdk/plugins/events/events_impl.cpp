@@ -105,7 +105,7 @@ void EventsImpl::set_metadata(uint8_t compid, const std::string& metadata_json)
         _system_impl->send_command_async(
             command, [this](MavlinkCommandSender::Result result, float) {
                 if (result != MavlinkCommandSender::Result::Success) {
-                    LogWarn() << "command MAV_CMD_RUN_PREARM_CHECKS failed";
+                    LogWarn("command MAV_CMD_RUN_PREARM_CHECKS failed");
                 }
             });
     }
@@ -259,7 +259,7 @@ EventsImpl::get_health_and_arming_checks_report()
     const uint32_t custom_mode = _maybe_custom_mode_user_intention.value_or(_custom_mode);
     const auto maybe_current_mode_group = event_handler.get_mode_group(custom_mode);
     if (!maybe_current_mode_group) {
-        LogDebug() << "Current mode not available (yet)";
+        LogDebug("Current mode not available (yet)");
         return std::make_pair(Events::Result::NotAvailable, Events::HealthAndArmingCheckReport{});
     }
 

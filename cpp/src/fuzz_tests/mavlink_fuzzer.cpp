@@ -94,8 +94,7 @@ private:
 
             if (elapsed > timeout_) {
                 // Stall detected - abort to generate core dump
-                LogErr() << "WATCHDOG: Stall detected! No activity for " << elapsed.count()
-                         << "ms. Aborting to generate core dump.";
+                LogErr("WATCHDOG: Stall detected! No activity for {}ms. Aborting to generate core dump.", elapsed.count());
                 std::abort();
             }
         }
@@ -196,7 +195,7 @@ void MavsdkFuzzer::send_heartbeat()
 
 void MavsdkFuzzer::create_plugins_for_system(std::shared_ptr<System> system)
 {
-    LogDebug() << "Creating plugins for system ID: " << system->get_system_id();
+    LogDebug("Creating plugins for system ID: {}", system->get_system_id());
 
     auto plugins = std::make_unique<SystemPlugins>();
     plugins->system = system;
@@ -235,8 +234,7 @@ void MavsdkFuzzer::create_plugins_for_system(std::shared_ptr<System> system)
 
     system_plugins_.push_back(std::move(plugins));
 
-    LogDebug() << "Successfully created " << system_plugins_.size()
-               << " plugin sets, latest for system ID: " << system->get_system_id();
+    LogDebug("Successfully created {} plugin sets, latest for system ID: {}", system_plugins_.size(), system->get_system_id());
 }
 
 bool MavsdkFuzzer::initialize()
@@ -263,10 +261,10 @@ bool MavsdkFuzzer::initialize()
 
     // Subscribe to new systems and create plugins for each one dynamically
     mavsdk_->subscribe_on_new_system([this]() {
-        LogDebug() << "New system callback triggered!";
+        LogDebug("New system callback triggered!");
         // A new system appeared, check for any systems we haven't seen yet
         auto all_systems = mavsdk_->systems();
-        LogDebug() << "Found " << all_systems.size() << " systems";
+        LogDebug("Found {} systems", all_systems.size());
         for (auto system : all_systems) {
             // Check if we already have plugins for this system
             bool found = false;
@@ -277,24 +275,24 @@ bool MavsdkFuzzer::initialize()
                 }
             }
             if (!found) {
-                LogDebug() << "System not found in plugin list, creating plugins...";
+                LogDebug("System not found in plugin list, creating plugins...");
                 create_plugins_for_system(system);
             } else {
-                LogDebug() << "System already has plugins created";
+                LogDebug("System already has plugins created");
             }
         }
     });
 
     // Also handle any systems that might already exist
     auto existing_systems = mavsdk_->systems();
-    LogDebug() << "Checking for existing systems, found: " << existing_systems.size();
+    LogDebug("Checking for existing systems, found: {}", existing_systems.size());
     for (auto system : existing_systems) {
-        LogDebug() << "Creating plugins for existing system ID: " << system->get_system_id();
+        LogDebug("Creating plugins for existing system ID: {}", system->get_system_id());
         create_plugins_for_system(system);
     }
 
     // Send initial heartbeat to trigger system discovery
-    LogDebug() << "Sending initial heartbeat to trigger system discovery";
+    LogDebug("Sending initial heartbeat to trigger system discovery");
     send_heartbeat();
 
     // Give MAVSDK time to process the heartbeat and discover the system
@@ -302,7 +300,7 @@ bool MavsdkFuzzer::initialize()
 
     // Check again for systems after the heartbeat
     auto post_heartbeat_systems = mavsdk_->systems();
-    LogDebug() << "After heartbeat, checking for systems, found: " << post_heartbeat_systems.size();
+    LogDebug("After heartbeat, checking for systems, found: {}", post_heartbeat_systems.size());
     for (auto system : post_heartbeat_systems) {
         // Check if we already have plugins for this system
         bool found = false;
@@ -313,11 +311,10 @@ bool MavsdkFuzzer::initialize()
             }
         }
         if (!found) {
-            LogDebug() << "Creating plugins for post-heartbeat system ID: "
-                       << system->get_system_id();
+            LogDebug("Creating plugins for post-heartbeat system ID: {}", system->get_system_id());
             create_plugins_for_system(system);
         } else {
-            LogDebug() << "Post-heartbeat system already has plugins";
+            LogDebug("Post-heartbeat system already has plugins");
         }
     }
 

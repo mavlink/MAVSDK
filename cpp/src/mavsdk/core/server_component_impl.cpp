@@ -26,7 +26,7 @@ ServerComponentImpl::ServerComponentImpl(
         // We use a default of channel 0 which will still work but not track
         // seq correctly.
         _channel = 0;
-        LogErr() << "Could not get a MAVLink channel, using default 0";
+        LogErr("Could not get a MAVLink channel, using default 0");
     }
 
     register_mavlink_command_handler(

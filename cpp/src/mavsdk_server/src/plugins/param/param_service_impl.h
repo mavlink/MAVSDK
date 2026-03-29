@@ -47,8 +47,7 @@ public:
     {
         switch (protocol_version) {
             default:
-                LogErr() << "Unknown protocol_version enum value: "
-                         << static_cast<int>(protocol_version);
+                LogErr("Unknown protocol_version enum value: {}", static_cast<int>(protocol_version));
             // FALLTHROUGH
             case mavsdk::Param::ProtocolVersion::V1:
                 return rpc::param::PROTOCOL_VERSION_V1;
@@ -62,8 +61,7 @@ public:
     {
         switch (protocol_version) {
             default:
-                LogErr() << "Unknown protocol_version enum value: "
-                         << static_cast<int>(protocol_version);
+                LogErr("Unknown protocol_version enum value: {}", static_cast<int>(protocol_version));
             // FALLTHROUGH
             case rpc::param::PROTOCOL_VERSION_V1:
                 return mavsdk::Param::ProtocolVersion::V1;
@@ -193,7 +191,7 @@ public:
     {
         switch (result) {
             default:
-                LogErr() << "Unknown result enum value: " << static_cast<int>(result);
+                LogErr("Unknown result enum value: {}", static_cast<int>(result));
             // FALLTHROUGH
             case mavsdk::Param::Result::Unknown:
                 return rpc::param::ParamResult_Result_RESULT_UNKNOWN;
@@ -237,7 +235,7 @@ public:
     {
         switch (result) {
             default:
-                LogErr() << "Unknown result enum value: " << static_cast<int>(result);
+                LogErr("Unknown result enum value: {}", static_cast<int>(result));
             // FALLTHROUGH
             case rpc::param::ParamResult_Result_RESULT_UNKNOWN:
                 return mavsdk::Param::Result::Unknown;
@@ -291,7 +289,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "GetParamInt sent with a null request! Ignoring...";
+            LogWarn("GetParamInt sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -321,7 +319,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "SetParamInt sent with a null request! Ignoring...";
+            LogWarn("SetParamInt sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -349,7 +347,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "GetParamFloat sent with a null request! Ignoring...";
+            LogWarn("GetParamFloat sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -379,7 +377,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "SetParamFloat sent with a null request! Ignoring...";
+            LogWarn("SetParamFloat sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -408,7 +406,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "GetParamCustom sent with a null request! Ignoring...";
+            LogWarn("GetParamCustom sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -438,7 +436,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "SetParamCustom sent with a null request! Ignoring...";
+            LogWarn("SetParamCustom sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -485,7 +483,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "SelectComponent sent with a null request! Ignoring...";
+            LogWarn("SelectComponent sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 

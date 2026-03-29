@@ -37,7 +37,7 @@ TEST(SystemTest, CameraMode)
     bool mode_updated = false;
 
     auto mode_handle = camera_server.subscribe_set_mode([&](CameraServer::Mode new_mode) {
-        LogInfo() << "Set mode to " << new_mode;
+        LogInfo("Set mode to {}", new_mode);
         {
             std::lock_guard<std::mutex> lock(mode_mutex);
             mode = new_mode;

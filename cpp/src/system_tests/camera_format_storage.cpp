@@ -33,7 +33,7 @@ TEST(SystemTest, CameraFormatStorage)
 
     auto format_storage_handle =
         camera_server.subscribe_format_storage([&camera_server](int32_t index) {
-            LogInfo() << "Let's format " << index;
+            LogInfo("Let's format {}", index);
 
             camera_server.respond_format_storage(CameraServer::CameraFeedback::Ok);
         });

@@ -47,8 +47,7 @@ public:
     {
         switch (adsb_emitter_type) {
             default:
-                LogErr() << "Unknown adsb_emitter_type enum value: "
-                         << static_cast<int>(adsb_emitter_type);
+                LogErr("Unknown adsb_emitter_type enum value: {}", static_cast<int>(adsb_emitter_type));
             // FALLTHROUGH
             case mavsdk::Transponder::AdsbEmitterType::NoInfo:
                 return rpc::transponder::ADSB_EMITTER_TYPE_NO_INFO;
@@ -98,8 +97,7 @@ public:
     {
         switch (adsb_emitter_type) {
             default:
-                LogErr() << "Unknown adsb_emitter_type enum value: "
-                         << static_cast<int>(adsb_emitter_type);
+                LogErr("Unknown adsb_emitter_type enum value: {}", static_cast<int>(adsb_emitter_type));
             // FALLTHROUGH
             case rpc::transponder::ADSB_EMITTER_TYPE_NO_INFO:
                 return mavsdk::Transponder::AdsbEmitterType::NoInfo;
@@ -149,8 +147,7 @@ public:
     {
         switch (adsb_altitude_type) {
             default:
-                LogErr() << "Unknown adsb_altitude_type enum value: "
-                         << static_cast<int>(adsb_altitude_type);
+                LogErr("Unknown adsb_altitude_type enum value: {}", static_cast<int>(adsb_altitude_type));
             // FALLTHROUGH
             case mavsdk::Transponder::AdsbAltitudeType::PressureQnh:
                 return rpc::transponder::ADSB_ALTITUDE_TYPE_PRESSURE_QNH;
@@ -164,8 +161,7 @@ public:
     {
         switch (adsb_altitude_type) {
             default:
-                LogErr() << "Unknown adsb_altitude_type enum value: "
-                         << static_cast<int>(adsb_altitude_type);
+                LogErr("Unknown adsb_altitude_type enum value: {}", static_cast<int>(adsb_altitude_type));
             // FALLTHROUGH
             case rpc::transponder::ADSB_ALTITUDE_TYPE_PRESSURE_QNH:
                 return mavsdk::Transponder::AdsbAltitudeType::PressureQnh;
@@ -243,7 +239,7 @@ public:
     {
         switch (result) {
             default:
-                LogErr() << "Unknown result enum value: " << static_cast<int>(result);
+                LogErr("Unknown result enum value: {}", static_cast<int>(result));
             // FALLTHROUGH
             case mavsdk::Transponder::Result::Unknown:
                 return rpc::transponder::TransponderResult_Result_RESULT_UNKNOWN;
@@ -267,7 +263,7 @@ public:
     {
         switch (result) {
             default:
-                LogErr() << "Unknown result enum value: " << static_cast<int>(result);
+                LogErr("Unknown result enum value: {}", static_cast<int>(result));
             // FALLTHROUGH
             case rpc::transponder::TransponderResult_Result_RESULT_UNKNOWN:
                 return mavsdk::Transponder::Result::Unknown;
@@ -343,7 +339,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "SetRateTransponder sent with a null request! Ignoring...";
+            LogWarn("SetRateTransponder sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 

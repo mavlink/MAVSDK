@@ -58,13 +58,13 @@ TEST(SystemTest, MissionUploadCancellation)
     // Use the progress variant so we can cancel the moment the first progress
     // update arrives.  That guarantees cancel() is called while the transfer is
     // still in flight, regardless of how fast the loopback link is.
-    LogInfo() << "Starting mission upload...";
+    LogInfo("Starting mission upload...");
     mission.upload_mission_with_progress_async(
         mission_plan, [&](Mission::Result result, Mission::ProgressData /*progress_data*/) {
             if (result == Mission::Result::Next) {
                 // Cancel exactly once, on the first progress update.
                 if (!cancel_triggered.exchange(true)) {
-                    LogInfo() << "Upload is in flight, cancelling...";
+                    LogInfo("Upload is in flight, cancelling...");
                     mission.cancel_mission_upload();
                 }
                 return;
@@ -77,7 +77,7 @@ TEST(SystemTest, MissionUploadCancellation)
     // user-callback queue which can be slow on a loaded CI runner.
     ASSERT_EQ(result_fut.wait_for(std::chrono::seconds(30)), std::future_status::ready);
     EXPECT_EQ(result_fut.get(), Mission::Result::TransferCancelled);
-    LogInfo() << "Mission upload cancelled successfully.";
+    LogInfo("Mission upload cancelled successfully.");
 
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
@@ -113,14 +113,14 @@ TEST(SystemTest, MissionDownloadCancellation)
     std::future<Mission::Result> result_fut = result_prom.get_future();
     std::atomic<bool> cancel_triggered{false};
 
-    LogInfo() << "Starting mission download...";
+    LogInfo("Starting mission download...");
     mission.download_mission_with_progress_async(
         [&](Mission::Result result, Mission::ProgressDataOrMission progress_data) {
             if (result == Mission::Result::Next) {
                 // has_progress == true during the item exchange;
                 // has_mission == true only at successful completion — don't cancel then.
                 if (progress_data.has_progress && !cancel_triggered.exchange(true)) {
-                    LogInfo() << "Download is in flight, cancelling...";
+                    LogInfo("Download is in flight, cancelling...");
                     mission.cancel_mission_download();
                 }
                 return;
@@ -131,7 +131,7 @@ TEST(SystemTest, MissionDownloadCancellation)
 
     ASSERT_EQ(result_fut.wait_for(std::chrono::seconds(30)), std::future_status::ready);
     EXPECT_EQ(result_fut.get(), Mission::Result::TransferCancelled);
-    LogInfo() << "Mission download cancelled successfully.";
+    LogInfo("Mission download cancelled successfully.");
 
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }

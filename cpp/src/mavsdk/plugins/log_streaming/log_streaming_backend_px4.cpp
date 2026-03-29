@@ -65,14 +65,15 @@ void LogStreamingBackendPx4::start_log_streaming_async(const LogStreaming::Resul
     command.command = MAV_CMD_LOGGING_START;
     command.params.maybe_param1 = 0.0f; // ulog
 
-    _system_impl->send_command_async(command, [=](MavlinkCommandSender::Result result, float) {
-        if (result != MavlinkCommandSender::Result::InProgress) {
-            if (callback) {
-                _system_impl->call_user_callback(
-                    [=]() { callback(log_streaming_result_from_command_result(result)); });
+    _system_impl->send_command_async(
+        command, [=, this](MavlinkCommandSender::Result result, float) {
+            if (result != MavlinkCommandSender::Result::InProgress) {
+                if (callback) {
+                    _system_impl->call_user_callback(
+                        [=]() { callback(log_streaming_result_from_command_result(result)); });
+                }
             }
-        }
-    });
+        });
 }
 
 void LogStreamingBackendPx4::stop_log_streaming_async(const LogStreaming::ResultCallback& callback)
@@ -80,14 +81,15 @@ void LogStreamingBackendPx4::stop_log_streaming_async(const LogStreaming::Result
     MavlinkCommandSender::CommandLong command{};
     command.command = MAV_CMD_LOGGING_STOP;
 
-    _system_impl->send_command_async(command, [=](MavlinkCommandSender::Result result, float) {
-        if (result != MavlinkCommandSender::Result::InProgress) {
-            if (callback) {
-                _system_impl->call_user_callback(
-                    [=]() { callback(log_streaming_result_from_command_result(result)); });
+    _system_impl->send_command_async(
+        command, [=, this](MavlinkCommandSender::Result result, float) {
+            if (result != MavlinkCommandSender::Result::InProgress) {
+                if (callback) {
+                    _system_impl->call_user_callback(
+                        [=]() { callback(log_streaming_result_from_command_result(result)); });
+                }
             }
-        }
-    });
+        });
 
     std::lock_guard<std::mutex> lock(_mutex);
     reset();
@@ -105,7 +107,7 @@ void LogStreamingBackendPx4::process_logging_data(const mavlink_message_t& messa
 {
     if (!_active) {
         if (_debugging) {
-            LogDebug() << "Ignoring logging data because we're not active";
+            LogDebug("Ignoring logging data because we're not active");
         }
         return;
     }
@@ -115,27 +117,22 @@ void LogStreamingBackendPx4::process_logging_data(const mavlink_message_t& messa
 
     if (logging_data.target_system != _system_impl->get_own_system_id() ||
         logging_data.target_component != _system_impl->get_own_component_id()) {
-        LogWarn() << "Logging data with wrong target " << std::to_string(logging_data.target_system)
-                  << '/' << std::to_string(logging_data.target_component) << " instead of "
-                  << std::to_string(_system_impl->get_own_system_id()) << '/'
-                  << std::to_string(_system_impl->get_own_component_id());
+        LogWarn("Logging data with wrong target {}{}{} instead of {}{}{}", logging_data.target_system, '/', logging_data.target_component, _system_impl->get_own_system_id(), '/', _system_impl->get_own_component_id());
         return;
     }
 
     if (_debugging) {
-        LogDebug() << "Received logging data with len: " << std::to_string(logging_data.length)
-                   << ", first message: " << std::to_string(logging_data.first_message_offset)
-                   << ", sequence: " << logging_data.sequence;
+        LogDebug("Received logging data with len: {}, first message: {}, sequence: {}", logging_data.length, logging_data.first_message_offset, logging_data.sequence);
     }
 
     if (logging_data.length > sizeof(logging_data.data)) {
-        LogWarn() << "Invalid length";
+        LogWarn("Invalid length");
         return;
     }
 
     if (logging_data.first_message_offset != 255 &&
         logging_data.first_message_offset > sizeof(logging_data.data)) {
-        LogWarn() << "Invalid first_message_offset";
+        LogWarn("Invalid first_message_offset");
         return;
     }
 
@@ -185,7 +182,7 @@ void LogStreamingBackendPx4::process_logging_data(const mavlink_message_t& messa
                 logging_data.data + logging_data.length);
             break;
         case DropState::Unknown:
-            LogErr() << "Logical error";
+            LogErr("Logical error");
             break;
     }
 }
@@ -194,7 +191,7 @@ void LogStreamingBackendPx4::process_logging_data_acked(const mavlink_message_t&
 {
     if (!_active) {
         if (_debugging) {
-            LogDebug() << "Ignoring logging data acked because we're not active";
+            LogDebug("Ignoring logging data acked because we're not active");
         }
         return;
     }
@@ -204,11 +201,7 @@ void LogStreamingBackendPx4::process_logging_data_acked(const mavlink_message_t&
 
     if (logging_data_acked.target_system != _system_impl->get_own_system_id() ||
         logging_data_acked.target_component != _system_impl->get_own_component_id()) {
-        LogWarn() << "Logging data acked with wrong target "
-                  << std::to_string(logging_data_acked.target_system) << '/'
-                  << std::to_string(logging_data_acked.target_component) << " instead of "
-                  << std::to_string(_system_impl->get_own_system_id()) << '/'
-                  << std::to_string(_system_impl->get_own_component_id());
+        LogWarn("Logging data acked with wrong target {}{}{} instead of {}{}{}", logging_data_acked.target_system, '/', logging_data_acked.target_component, _system_impl->get_own_system_id(), '/', _system_impl->get_own_component_id());
         return;
     }
 
@@ -229,20 +222,17 @@ void LogStreamingBackendPx4::process_logging_data_acked(const mavlink_message_t&
         });
 
     if (_debugging) {
-        LogInfo() << "Received logging data acked with len: "
-                  << std::to_string(logging_data_acked.length)
-                  << ", first message: " << std::to_string(logging_data_acked.first_message_offset)
-                  << ", sequence: " << logging_data_acked.sequence;
+        LogInfo("Received logging data acked with len: {}, first message: {}, sequence: {}", logging_data_acked.length, logging_data_acked.first_message_offset, logging_data_acked.sequence);
     }
 
     if (logging_data_acked.length > sizeof(logging_data_acked.data)) {
-        LogWarn() << "Invalid length";
+        LogWarn("Invalid length");
         return;
     }
 
     if (logging_data_acked.first_message_offset != 255 &&
         logging_data_acked.first_message_offset > sizeof(logging_data_acked.data)) {
-        LogWarn() << "Invalid first_message_offset";
+        LogWarn("Invalid first_message_offset");
         return;
     }
 
@@ -294,7 +284,7 @@ void LogStreamingBackendPx4::process_logging_data_acked(const mavlink_message_t&
                 logging_data_acked.data + logging_data_acked.length);
             break;
         case DropState::Unknown:
-            LogErr() << "Logical error";
+            LogErr("Logical error");
             break;
     }
 }
@@ -332,7 +322,7 @@ void LogStreamingBackendPx4::check_drop_state(uint16_t sequence, uint8_t first_m
                 drop = (sequence - 1 - _current_sequence);
                 _drops += drop;
                 if (drop > 0 && _debugging) {
-                    LogDebug() << "Dropped: " << drop << " (no wrap around), overall: " << _drops;
+                    LogDebug("Dropped: {} (no wrap around), overall: {}", drop, _drops);
                 }
 
             } else {
@@ -340,7 +330,7 @@ void LogStreamingBackendPx4::check_drop_state(uint16_t sequence, uint8_t first_m
                 drop = (sequence + std::numeric_limits<uint16_t>::max() - 1 - _current_sequence);
                 _drops += drop;
                 if (drop > 0 && _debugging) {
-                    LogDebug() << "Dropped: " << drop << " (with wrap around), overall: " << _drops;
+                    LogDebug("Dropped: {} (with wrap around), overall: {}", drop, _drops);
                 }
             }
 
@@ -364,7 +354,7 @@ void LogStreamingBackendPx4::process_message()
     // Assumes lock.
 
     if (_debugging) {
-        LogDebug() << "Processing ulog message with size " << _ulog_data.size();
+        LogDebug("Processing ulog message with size {}", _ulog_data.size());
     }
 
     // We don't check the magic and version. That's up to the log viewer to parse.

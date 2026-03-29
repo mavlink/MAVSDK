@@ -33,10 +33,10 @@ std::optional<std::string> resolve_hostname_to_ip(const std::string& hostname)
     int res = getaddrinfo(hostname.c_str(), nullptr, &hints, &result);
     if (res != 0) {
 #if defined(WINDOWS)
-        LogErr() << "getaddrinfo failed: " << WSAGetLastError();
+        LogErr("getaddrinfo failed: {}", WSAGetLastError());
         WSACleanup();
 #else
-        LogErr() << "getaddrinfo failed: " << gai_strerror(res);
+        LogErr("getaddrinfo failed: {}", gai_strerror(res));
 #endif
         return {};
     }

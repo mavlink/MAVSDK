@@ -38,8 +38,7 @@ void TelemetryServerImpl::init()
                 command.params.param2 == 0 ?
                     1000 :
                     static_cast<uint32_t>(static_cast<double>(command.params.param2) * 1E-3);
-            LogDebug() << "Setting interval for msg id: " << std::to_string(msgid)
-                       << " interval_ms:" << std::to_string(interval_ms);
+            LogDebug("Setting interval for msg id: {} interval_ms:{}", msgid, interval_ms);
             auto found = std::find_if(
                 _interval_requests.begin(),
                 _interval_requests.end(),
@@ -309,7 +308,7 @@ TelemetryServerImpl::publish_status_text(TelemetryServer::StatusText status_text
             type = MAV_SEVERITY_DEBUG;
             break;
         default:
-            LogWarn() << "Unknown StatusText severity";
+            LogWarn("Unknown StatusText severity");
             type = MAV_SEVERITY_INFO;
             break;
     }

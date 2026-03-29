@@ -50,7 +50,7 @@ public:
     {
         switch (flight_mode) {
             default:
-                LogErr() << "Unknown flight_mode enum value: " << static_cast<int>(flight_mode);
+                LogErr("Unknown flight_mode enum value: {}", static_cast<int>(flight_mode));
             // FALLTHROUGH
             case mavsdk::ActionServer::FlightMode::Unknown:
                 return rpc::action_server::FLIGHT_MODE_UNKNOWN;
@@ -88,7 +88,7 @@ public:
     {
         switch (flight_mode) {
             default:
-                LogErr() << "Unknown flight_mode enum value: " << static_cast<int>(flight_mode);
+                LogErr("Unknown flight_mode enum value: {}", static_cast<int>(flight_mode));
             // FALLTHROUGH
             case rpc::action_server::FLIGHT_MODE_UNKNOWN:
                 return mavsdk::ActionServer::FlightMode::Unknown;
@@ -195,7 +195,7 @@ public:
     {
         switch (result) {
             default:
-                LogErr() << "Unknown result enum value: " << static_cast<int>(result);
+                LogErr("Unknown result enum value: {}", static_cast<int>(result));
             // FALLTHROUGH
             case mavsdk::ActionServer::Result::Unknown:
                 return rpc::action_server::ActionServerResult_Result_RESULT_UNKNOWN;
@@ -235,7 +235,7 @@ public:
     {
         switch (result) {
             default:
-                LogErr() << "Unknown result enum value: " << static_cast<int>(result);
+                LogErr("Unknown result enum value: {}", static_cast<int>(result));
             // FALLTHROUGH
             case rpc::action_server::ActionServerResult_Result_RESULT_UNKNOWN:
                 return mavsdk::ActionServer::Result::Unknown;
@@ -678,7 +678,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "SetAllowTakeoff sent with a null request! Ignoring...";
+            LogWarn("SetAllowTakeoff sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -708,7 +708,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "SetArmable sent with a null request! Ignoring...";
+            LogWarn("SetArmable sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -739,7 +739,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "SetDisarmable sent with a null request! Ignoring...";
+            LogWarn("SetDisarmable sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -770,7 +770,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "SetAllowableFlightModes sent with a null request! Ignoring...";
+            LogWarn("SetAllowableFlightModes sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -820,7 +820,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "SetArmedState sent with a null request! Ignoring...";
+            LogWarn("SetArmedState sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -850,7 +850,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "SetFlightMode sent with a null request! Ignoring...";
+            LogWarn("SetFlightMode sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -881,7 +881,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "SetFlightModeInternal sent with a null request! Ignoring...";
+            LogWarn("SetFlightModeInternal sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 

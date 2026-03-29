@@ -46,11 +46,11 @@ TEST(SystemTest, MissionChanged)
 
     std::atomic<bool> called_once{false};
 
-    LogInfo() << "Subscribe for mission changed notification";
+    LogInfo("Subscribe for mission changed notificatio");
     mission_raw.subscribe_mission_changed([&prom_changed, &called_once](bool) {
         bool flag = false;
         if (called_once.compare_exchange_strong(flag, true)) {
-            LogInfo() << "Mission changed notification received!";
+            LogInfo("Mission changed notification received!");
             prom_changed.set_value();
         }
     });
@@ -100,13 +100,13 @@ TEST(SystemTest, MissionChanged)
     mission_raw_items[0].current = 1;
 
     {
-        LogInfo() << "Uploading mission...";
+        LogInfo("Uploading mission...");
         std::promise<void> prom{};
         std::future<void> fut = prom.get_future();
         mission_raw.upload_mission_async(mission_raw_items, [&prom](MissionRaw::Result result) {
             ASSERT_EQ(result, MissionRaw::Result::Success);
             prom.set_value();
-            LogInfo() << "Mission uploaded.";
+            LogInfo("Mission uploaded.");
         });
 
         auto status = fut.wait_for(std::chrono::seconds(2));
@@ -116,12 +116,12 @@ TEST(SystemTest, MissionChanged)
 
     // The mission change callback should have triggered now because we have uploaded a mission.
     EXPECT_EQ(fut_changed.wait_for(std::chrono::milliseconds(500)), std::future_status::ready);
-    LogInfo() << "Mission changed notification was triggered as expected.";
+    LogInfo("Mission changed notification was triggered as expected.");
 
     {
         std::promise<void> prom{};
         std::future<void> fut = prom.get_future();
-        LogInfo() << "Download raw mission items.";
+        LogInfo("Download raw mission items.");
         mission_raw.download_mission_async(
             [&prom](MissionRaw::Result result, const std::vector<MissionRaw::MissionItem> items) {
                 EXPECT_EQ(result, MissionRaw::Result::Success);

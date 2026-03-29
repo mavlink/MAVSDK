@@ -83,17 +83,16 @@ void Connection::receive_libmav_message(
     }
 
     if (_debugging) {
-        LogDebug() << "Connection::receive_libmav_message: " << message.message_name
-                   << " from system " << message.system_id;
+        LogDebug("Connection::receive_libmav_message: {} from system {}", message.message_name, message.system_id);
     }
 
     if (_libmav_receiver_callback) {
         if (_debugging) {
-            LogDebug() << "Calling libmav receiver callback for: " << message.message_name;
+            LogDebug("Calling libmav receiver callback for: {}", message.message_name);
         }
         _libmav_receiver_callback(message, connection);
     } else {
-        LogWarn() << "No libmav receiver callback set!";
+        LogWarn("No libmav receiver callback set!");
     }
 }
 

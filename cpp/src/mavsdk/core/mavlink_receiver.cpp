@@ -1,6 +1,5 @@
 #include "mavlink_receiver.h"
 #include "log.h"
-#include <iomanip>
 
 namespace mavsdk {
 
@@ -8,7 +7,7 @@ MavlinkReceiver::MavlinkReceiver()
 {
     if (const char* env_p = std::getenv("MAVSDK_DROP_DEBUGGING")) {
         if (std::string(env_p) == "1") {
-            LogDebug() << "Drop debugging is on.";
+            LogDebug("Drop debugging is on.");
             _drop_debugging_on = true;
         }
     }
@@ -74,8 +73,7 @@ void MavlinkReceiver::debug_drop_rate()
         mavlink_msg_sys_status_decode(&_last_message, &sys_status);
 
         if (!_drop_stats.first) {
-            LogDebug() << "-------------------------------------------------------------------"
-                       << "-----------";
+            LogDebug("------------------------------------------------------------------------------");
 
             if (_drop_stats.bytes_received <= sys_status.errors_comm &&
                 sys_status.errors_count2 <= sys_status.errors_comm) {
@@ -108,7 +106,7 @@ void MavlinkReceiver::debug_drop_rate()
                     _drop_stats.bytes_sent_overall);
 
             } else {
-                LogDebug() << "Missed SYS_STATUS";
+                LogDebug("Missed SYS_STATUS");
             }
         }
         _drop_stats.first = false;
@@ -127,13 +125,14 @@ void MavlinkReceiver::print_line(
     uint64_t overall_bytes,
     uint64_t overall_bytes_total)
 {
-    LogDebug() << "count " << index << ": " << std::setw(6) << count << ", loss: " << std::setw(6)
-               << count_total - count << ",  " << std::setw(6) << std::setprecision(2) << std::fixed
-               << 100.0f * float(count) / float(count_total) << " %, overall: " << std::setw(6)
-               << std::setprecision(2) << std::fixed
-               << (100.0f * float(overall_bytes) / float(overall_bytes_total)) << " %, "
-               << std::setw(6) << std::setprecision(2) << std::fixed
-               << (float(overall_bytes) / float(_drop_stats.time_elapsed) / 1024.0f) << " KiB/s";
+    LogDebug(
+        "count {}: {:6}, loss: {:6},  {:6.2f} %, overall: {:6.2f} %, {:6.2f} KiB/s",
+        index,
+        count,
+        count_total - count,
+        100.0f * float(count) / float(count_total),
+        100.0f * float(overall_bytes) / float(overall_bytes_total),
+        float(overall_bytes) / float(_drop_stats.time_elapsed) / 1024.0f);
 }
 
 } // namespace mavsdk

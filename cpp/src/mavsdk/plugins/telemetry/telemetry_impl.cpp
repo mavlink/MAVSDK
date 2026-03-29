@@ -329,7 +329,7 @@ Telemetry::Result TelemetryImpl::set_rate_battery(double rate_hz)
 Telemetry::Result TelemetryImpl::set_rate_rc_status(double rate_hz)
 {
     UNUSED(rate_hz);
-    LogWarn() << "System status is usually fixed at 1 Hz";
+    LogWarn("System status is usually fixed at 1 Hz");
     return Telemetry::Result::Unsupported;
 }
 
@@ -564,7 +564,7 @@ void TelemetryImpl::set_rate_battery_async(double rate_hz, Telemetry::ResultCall
 void TelemetryImpl::set_rate_rc_status_async(double rate_hz, Telemetry::ResultCallback callback)
 {
     UNUSED(rate_hz);
-    LogWarn() << "System status is usually fixed at 1 Hz";
+    LogWarn("System status is usually fixed at 1 Hz");
     _system_impl->call_user_callback([callback]() { callback(Telemetry::Result::Unsupported); });
 }
 
@@ -954,7 +954,7 @@ void TelemetryImpl::process_gps_raw_int(const mavlink_message_t& message)
             break;
 
         default:
-            LogErr() << "Received unknown GPS fix type!";
+            LogErr("Received unknown GPS fix type!");
             fix_type = Telemetry::FixType::NoGps;
             break;
     }
@@ -1264,7 +1264,7 @@ void TelemetryImpl::receive_statustext(const MavlinkStatustextHandler::Statustex
             new_status_text.type = Telemetry::StatusTextType::Debug;
             break;
         default:
-            LogWarn() << "Unknown StatusText severity";
+            LogWarn("Unknown StatusText severity");
             new_status_text.type = Telemetry::StatusTextType::Info;
             break;
     }

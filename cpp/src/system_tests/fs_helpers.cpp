@@ -17,7 +17,7 @@ bool create_temp_file(const fs::path& path, size_t len, uint8_t start)
     std::ofstream tempfile{};
     tempfile.open(path, std::ios::out | std::ios::binary | std::ios::trunc);
     if (tempfile.fail()) {
-        LogWarn() << "Failed to open temp file";
+        LogWarn("Failed to open temp file");
         return false;
     }
 
@@ -36,7 +36,7 @@ bool reset_directories(const fs::path& path)
     std::error_code ec;
     fs::remove_all(path, ec);
     if (ec) {
-        LogErr() << "Error removing " << path << ": " << ec.message();
+        LogErr("Error removing {}: {}", path, ec.message());
     }
 
     return fs::create_directories(path);
@@ -48,12 +48,12 @@ bool are_files_identical(const fs::path& path1, const fs::path& path2)
     std::ifstream file2(path2, std::ios::binary);
 
     if (!file1) {
-        LogWarn() << "Could not open " << path1;
+        LogWarn("Could not open {}", path1);
         return false;
     }
 
     if (!file2) {
-        LogWarn() << "Could not open " << path2;
+        LogWarn("Could not open {}", path2);
         return false;
     }
 

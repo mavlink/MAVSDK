@@ -167,7 +167,7 @@ public:
     {
         switch (result) {
             default:
-                LogErr() << "Unknown result enum value: " << static_cast<int>(result);
+                LogErr("Unknown result enum value: {}", static_cast<int>(result));
             // FALLTHROUGH
             case mavsdk::ParamServer::Result::Unknown:
                 return rpc::param_server::ParamServerResult_Result_RESULT_UNKNOWN;
@@ -193,7 +193,7 @@ public:
     {
         switch (result) {
             default:
-                LogErr() << "Unknown result enum value: " << static_cast<int>(result);
+                LogErr("Unknown result enum value: {}", static_cast<int>(result));
             // FALLTHROUGH
             case rpc::param_server::ParamServerResult_Result_RESULT_UNKNOWN:
                 return mavsdk::ParamServer::Result::Unknown;
@@ -231,7 +231,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "SetProtocol sent with a null request! Ignoring...";
+            LogWarn("SetProtocol sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -261,7 +261,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "RetrieveParamInt sent with a null request! Ignoring...";
+            LogWarn("RetrieveParamInt sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -293,7 +293,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "ProvideParamInt sent with a null request! Ignoring...";
+            LogWarn("ProvideParamInt sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -324,7 +324,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "RetrieveParamFloat sent with a null request! Ignoring...";
+            LogWarn("RetrieveParamFloat sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -356,7 +356,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "ProvideParamFloat sent with a null request! Ignoring...";
+            LogWarn("ProvideParamFloat sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -387,7 +387,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "RetrieveParamCustom sent with a null request! Ignoring...";
+            LogWarn("RetrieveParamCustom sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -419,7 +419,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "ProvideParamCustom sent with a null request! Ignoring...";
+            LogWarn("ProvideParamCustom sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 

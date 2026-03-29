@@ -51,14 +51,14 @@ TEST(SystemTest, MissionTransferLossy)
     Mission::MissionPlan mission_plan;
     mission_plan.mission_items = create_mission_items();
 
-    LogInfo() << "Uploading mission with simulated packet loss...";
+    LogInfo("Uploading mission with simulated packet loss...");
     ASSERT_EQ(mission.upload_mission(mission_plan), Mission::Result::Success);
-    LogInfo() << "Mission upload succeeded despite packet loss.";
+    LogInfo("Mission upload succeeded despite packet loss.");
 
-    LogInfo() << "Downloading mission with simulated packet loss...";
+    LogInfo("Downloading mission with simulated packet loss...");
     auto result = mission.download_mission();
     ASSERT_EQ(result.first, Mission::Result::Success);
-    LogInfo() << "Mission download succeeded despite packet loss.";
+    LogInfo("Mission download succeeded despite packet loss.");
 
     // Verify downloaded mission matches uploaded mission
     EXPECT_EQ(mission_plan, result.second);
@@ -82,7 +82,7 @@ bool should_keep_message(const mavlink_message_t& message)
         // Keep 95% of messages (drop 5%)
         should_keep = distribution(generator) < 0.95;
         if (!should_keep) {
-            LogInfo() << "Dropping message ID " << message.msgid << " to simulate packet loss";
+            LogInfo("Dropping message ID {} to simulate packet loss", message.msgid);
         }
     }
     return should_keep;

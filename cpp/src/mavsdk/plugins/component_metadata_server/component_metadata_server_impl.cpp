@@ -17,7 +17,7 @@ ComponentMetadataServerImpl::ComponentMetadataServerImpl(
 {
     if (const char* env_p = std::getenv("MAVSDK_COMPONENT_METADATA_DEBUGGING")) {
         if (std::string(env_p) == "1") {
-            LogDebug() << "Verbose component metadata logging is on";
+            LogDebug("Verbose component metadata logging is o");
             _verbose_debugging = true;
         }
     }
@@ -32,7 +32,7 @@ ComponentMetadataServerImpl::~ComponentMetadataServerImpl()
         std::error_code ec;
         std::filesystem::remove_all(_tmp_path, ec);
         if (ec) {
-            LogErr() << "Error removing " << _tmp_path << ": " << ec.message();
+            LogErr("Error removing {}: {}", _tmp_path, ec.message());
         }
     }
 }
@@ -58,7 +58,7 @@ void ComponentMetadataServerImpl::deinit()
 std::optional<MAV_RESULT> ComponentMetadataServerImpl::process_component_metadata_requested()
 {
     if (_verbose_debugging) {
-        LogDebug() << "MAVLINK_MSG_ID_COMPONENT_METADATA request received";
+        LogDebug("MAVLINK_MSG_ID_COMPONENT_METADATA request received");
     }
 
     const std::lock_guard lg{_mutex};
@@ -90,20 +90,20 @@ void ComponentMetadataServerImpl::set_metadata(
 {
     const std::lock_guard lg{_mutex};
     if (_metadata_set) {
-        LogErr() << "metadata already set";
+        LogErr("metadata already set");
         return;
     }
 
     // Create tmp directory as ftp root directory
     const auto tmp_option = create_tmp_directory("mavsdk-component-metadata-server");
     if (!tmp_option) {
-        LogErr() << "Failed to create tmp directory";
+        LogErr("Failed to create tmp directory");
         return;
     }
     _tmp_path = *tmp_option;
 
     if (_verbose_debugging) {
-        LogDebug() << "Storing metadata under " << _tmp_path;
+        LogDebug("Storing metadata under {}", _tmp_path);
     }
 
     // Write files
@@ -117,7 +117,7 @@ void ComponentMetadataServerImpl::set_metadata(
         const std::filesystem::path path = _tmp_path / _metadata.back().filename;
         std::ofstream file(path, std::fstream::trunc | std::fstream::binary | std::fstream::out);
         if (!file) {
-            LogErr() << "Failed to open " << path;
+            LogErr("Failed to open {}", path);
             continue;
         }
         file.write(single_metadata.json_metadata.data(), single_metadata.json_metadata.length());
@@ -148,7 +148,7 @@ bool ComponentMetadataServerImpl::generate_component_metadata_general_file()
     const std::filesystem::path path = _tmp_path / kComponentGeneralFilename;
     std::ofstream file(path, std::fstream::trunc | std::fstream::binary | std::fstream::out);
     if (!file) {
-        LogErr() << "Failed to open " << path;
+        LogErr("Failed to open {}", path);
         return false;
     }
     const std::string json_data = root.toStyledString();

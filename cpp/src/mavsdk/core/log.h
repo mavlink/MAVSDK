@@ -1,9 +1,8 @@
 #pragma once
 
-#include <bitset>
-#include <cstddef>
+#include <format>
 #include <mutex>
-#include <sstream>
+#include <string>
 #include "log_callback.h"
 
 #if defined(ANDROID)
@@ -23,156 +22,39 @@
 
 #define call_user_callback(...) call_user_callback_located(FILENAME, __LINE__, __VA_ARGS__)
 
-#define LogDebug() LogDebugDetailed(FILENAME, __LINE__)
-#define LogInfo() LogInfoDetailed(FILENAME, __LINE__)
-#define LogWarn() LogWarnDetailed(FILENAME, __LINE__)
-#define LogErr() LogErrDetailed(FILENAME, __LINE__)
+#define LogDebug(...) ::mavsdk::log_message(::mavsdk::log::Level::Debug, FILENAME, __LINE__, __VA_ARGS__)
+#define LogInfo(...) ::mavsdk::log_message(::mavsdk::log::Level::Info, FILENAME, __LINE__, __VA_ARGS__)
+#define LogWarn(...) ::mavsdk::log_message(::mavsdk::log::Level::Warn, FILENAME, __LINE__, __VA_ARGS__)
+#define LogErr(...) ::mavsdk::log_message(::mavsdk::log::Level::Err, FILENAME, __LINE__, __VA_ARGS__)
 
 namespace mavsdk {
 
-// Mutex moved to log.cpp to avoid inlining issues
 std::mutex& get_log_mutex();
-
-std::ostream& operator<<(std::ostream& os, std::byte b);
 
 enum class Color { Red, Green, Yellow, Blue, Gray, Reset };
 
 void set_color(Color color);
 
-class LogDetailed {
-public:
-    LogDetailed(const char* filename, int filenumber) :
-        _lock_guard(get_log_mutex()),
-        _s(),
-        _caller_filename(filename),
-        _caller_filenumber(filenumber)
-    {}
+void emit_log(log::Level level, const std::string& message, const char* filename, int line);
 
-    template<typename T> LogDetailed& operator<<(const T& x)
-    {
-        _s << x;
-        return *this;
-    }
+template<typename... Args>
+void log_message(
+    log::Level level,
+    const char* filename,
+    int line,
+    std::format_string<Args...> fmt,
+    Args&&... args)
+{
+    std::lock_guard<std::mutex> lock(get_log_mutex());
+    emit_log(level, std::format(fmt, std::forward<Args>(args)...), filename, line);
+}
 
-    virtual ~LogDetailed()
-    {
-        if (log::get_callback() &&
-            log::get_callback()(_log_level, _s.str(), _caller_filename, _caller_filenumber)) {
-            return;
-        }
-
-#if ANDROID
-        switch (_log_level) {
-            case log::Level::Debug:
-                __android_log_print(ANDROID_LOG_DEBUG, "Mavsdk", "%s", _s.str().c_str());
-                break;
-            case log::Level::Info:
-                __android_log_print(ANDROID_LOG_INFO, "Mavsdk", "%s", _s.str().c_str());
-                break;
-            case log::Level::Warn:
-                __android_log_print(ANDROID_LOG_WARN, "Mavsdk", "%s", _s.str().c_str());
-                break;
-            case log::Level::Err:
-                __android_log_print(ANDROID_LOG_ERROR, "Mavsdk", "%s", _s.str().c_str());
-                break;
-        }
-        // Unused:
-        (void)_caller_filename;
-        (void)_caller_filenumber;
-#else
-
-        switch (_log_level) {
-            case log::Level::Debug:
-                set_color(Color::Green);
-                break;
-            case log::Level::Info:
-                set_color(Color::Blue);
-                break;
-            case log::Level::Warn:
-                set_color(Color::Yellow);
-                break;
-            case log::Level::Err:
-                set_color(Color::Red);
-                break;
-        }
-
-        // Time output taken from:
-        // https://stackoverflow.com/questions/16357999#answer-16358264
-        time_t rawtime;
-        time(&rawtime);
-        struct tm* timeinfo = localtime(&rawtime);
-        char time_buffer[10]{}; // We need 8 characters + \0
-        strftime(time_buffer, sizeof(time_buffer), "%I:%M:%S", timeinfo);
-        std::cout << "[" << time_buffer;
-
-        switch (_log_level) {
-            case log::Level::Debug:
-                std::cout << "|Debug] ";
-                break;
-            case log::Level::Info:
-                std::cout << "|Info ] ";
-                break;
-            case log::Level::Warn:
-                std::cout << "|Warn ] ";
-                break;
-            case log::Level::Err:
-                std::cout << "|Error] ";
-                break;
-        }
-
-        set_color(Color::Reset);
-
-        std::cout << _s.str();
-        std::cout << " (" << _caller_filename << ":" << std::dec << _caller_filenumber << ")";
-
-        std::cout << std::endl;
-#endif
-    }
-
-    LogDetailed(const mavsdk::LogDetailed&) = delete;
-    void operator=(const mavsdk::LogDetailed&) = delete;
-
-protected:
-    log::Level _log_level = log::Level::Debug;
-
-private:
-    std::lock_guard<std::mutex> _lock_guard;
-
-    std::stringstream _s;
-    const char* _caller_filename;
-    int _caller_filenumber;
-};
-
-class LogDebugDetailed : public LogDetailed {
-public:
-    LogDebugDetailed(const char* filename, int filenumber) : LogDetailed(filename, filenumber)
-    {
-        _log_level = log::Level::Debug;
-    }
-};
-
-class LogInfoDetailed : public LogDetailed {
-public:
-    LogInfoDetailed(const char* filename, int filenumber) : LogDetailed(filename, filenumber)
-    {
-        _log_level = log::Level::Info;
-    }
-};
-
-class LogWarnDetailed : public LogDetailed {
-public:
-    LogWarnDetailed(const char* filename, int filenumber) : LogDetailed(filename, filenumber)
-    {
-        _log_level = log::Level::Warn;
-    }
-};
-
-class LogErrDetailed : public LogDetailed {
-public:
-    LogErrDetailed(const char* filename, int filenumber) : LogDetailed(filename, filenumber)
-    {
-        _log_level = log::Level::Err;
-    }
-};
+// Overload for a plain string with no format args (avoids treating the string as a
+// format string at compile time, which would reject strings containing braces).
+inline void log_message(log::Level level, const char* filename, int line, std::string_view msg)
+{
+    std::lock_guard<std::mutex> lock(get_log_mutex());
+    emit_log(level, std::string(msg), filename, line);
+}
 
 } // namespace mavsdk

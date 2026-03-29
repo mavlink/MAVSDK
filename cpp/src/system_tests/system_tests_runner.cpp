@@ -9,7 +9,7 @@
 #if defined(ENABLE_CPPTRACE)
 void handler(int sig)
 {
-    mavsdk::LogErr() << "Got signal: " << strsignal(sig) << " (" << sig << ")";
+    mavsdk::LogErr("Got signal: {} ({})", strsignal(sig), sig);
     cpptrace::generate_trace().print();
     exit(1);
 }

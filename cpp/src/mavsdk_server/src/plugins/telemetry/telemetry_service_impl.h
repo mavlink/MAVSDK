@@ -46,7 +46,7 @@ public:
     {
         switch (fix_type) {
             default:
-                LogErr() << "Unknown fix_type enum value: " << static_cast<int>(fix_type);
+                LogErr("Unknown fix_type enum value: {}", static_cast<int>(fix_type));
             // FALLTHROUGH
             case mavsdk::Telemetry::FixType::NoGps:
                 return rpc::telemetry::FIX_TYPE_NO_GPS;
@@ -70,7 +70,7 @@ public:
     {
         switch (fix_type) {
             default:
-                LogErr() << "Unknown fix_type enum value: " << static_cast<int>(fix_type);
+                LogErr("Unknown fix_type enum value: {}", static_cast<int>(fix_type));
             // FALLTHROUGH
             case rpc::telemetry::FIX_TYPE_NO_GPS:
                 return mavsdk::Telemetry::FixType::NoGps;
@@ -94,8 +94,7 @@ public:
     {
         switch (battery_function) {
             default:
-                LogErr() << "Unknown battery_function enum value: "
-                         << static_cast<int>(battery_function);
+                LogErr("Unknown battery_function enum value: {}", static_cast<int>(battery_function));
             // FALLTHROUGH
             case mavsdk::Telemetry::BatteryFunction::Unknown:
                 return rpc::telemetry::BATTERY_FUNCTION_UNKNOWN;
@@ -115,8 +114,7 @@ public:
     {
         switch (battery_function) {
             default:
-                LogErr() << "Unknown battery_function enum value: "
-                         << static_cast<int>(battery_function);
+                LogErr("Unknown battery_function enum value: {}", static_cast<int>(battery_function));
             // FALLTHROUGH
             case rpc::telemetry::BATTERY_FUNCTION_UNKNOWN:
                 return mavsdk::Telemetry::BatteryFunction::Unknown;
@@ -136,7 +134,7 @@ public:
     {
         switch (flight_mode) {
             default:
-                LogErr() << "Unknown flight_mode enum value: " << static_cast<int>(flight_mode);
+                LogErr("Unknown flight_mode enum value: {}", static_cast<int>(flight_mode));
             // FALLTHROUGH
             case mavsdk::Telemetry::FlightMode::Unknown:
                 return rpc::telemetry::FLIGHT_MODE_UNKNOWN;
@@ -176,7 +174,7 @@ public:
     {
         switch (flight_mode) {
             default:
-                LogErr() << "Unknown flight_mode enum value: " << static_cast<int>(flight_mode);
+                LogErr("Unknown flight_mode enum value: {}", static_cast<int>(flight_mode));
             // FALLTHROUGH
             case rpc::telemetry::FLIGHT_MODE_UNKNOWN:
                 return mavsdk::Telemetry::FlightMode::Unknown;
@@ -216,8 +214,7 @@ public:
     {
         switch (status_text_type) {
             default:
-                LogErr() << "Unknown status_text_type enum value: "
-                         << static_cast<int>(status_text_type);
+                LogErr("Unknown status_text_type enum value: {}", static_cast<int>(status_text_type));
             // FALLTHROUGH
             case mavsdk::Telemetry::StatusTextType::Debug:
                 return rpc::telemetry::STATUS_TEXT_TYPE_DEBUG;
@@ -243,8 +240,7 @@ public:
     {
         switch (status_text_type) {
             default:
-                LogErr() << "Unknown status_text_type enum value: "
-                         << static_cast<int>(status_text_type);
+                LogErr("Unknown status_text_type enum value: {}", static_cast<int>(status_text_type));
             // FALLTHROUGH
             case rpc::telemetry::STATUS_TEXT_TYPE_DEBUG:
                 return mavsdk::Telemetry::StatusTextType::Debug;
@@ -270,7 +266,7 @@ public:
     {
         switch (landed_state) {
             default:
-                LogErr() << "Unknown landed_state enum value: " << static_cast<int>(landed_state);
+                LogErr("Unknown landed_state enum value: {}", static_cast<int>(landed_state));
             // FALLTHROUGH
             case mavsdk::Telemetry::LandedState::Unknown:
                 return rpc::telemetry::LANDED_STATE_UNKNOWN;
@@ -290,7 +286,7 @@ public:
     {
         switch (landed_state) {
             default:
-                LogErr() << "Unknown landed_state enum value: " << static_cast<int>(landed_state);
+                LogErr("Unknown landed_state enum value: {}", static_cast<int>(landed_state));
             // FALLTHROUGH
             case rpc::telemetry::LANDED_STATE_UNKNOWN:
                 return mavsdk::Telemetry::LandedState::Unknown;
@@ -310,7 +306,7 @@ public:
     {
         switch (vtol_state) {
             default:
-                LogErr() << "Unknown vtol_state enum value: " << static_cast<int>(vtol_state);
+                LogErr("Unknown vtol_state enum value: {}", static_cast<int>(vtol_state));
             // FALLTHROUGH
             case mavsdk::Telemetry::VtolState::Undefined:
                 return rpc::telemetry::VTOL_STATE_UNDEFINED;
@@ -330,7 +326,7 @@ public:
     {
         switch (vtol_state) {
             default:
-                LogErr() << "Unknown vtol_state enum value: " << static_cast<int>(vtol_state);
+                LogErr("Unknown vtol_state enum value: {}", static_cast<int>(vtol_state));
             // FALLTHROUGH
             case rpc::telemetry::VTOL_STATE_UNDEFINED:
                 return mavsdk::Telemetry::VtolState::Undefined;
@@ -873,7 +869,7 @@ public:
     {
         switch (mav_frame) {
             default:
-                LogErr() << "Unknown mav_frame enum value: " << static_cast<int>(mav_frame);
+                LogErr("Unknown mav_frame enum value: {}", static_cast<int>(mav_frame));
             // FALLTHROUGH
             case mavsdk::Telemetry::Odometry::MavFrame::Undef:
                 return rpc::telemetry::Odometry_MavFrame_MAV_FRAME_UNDEF;
@@ -891,7 +887,7 @@ public:
     {
         switch (mav_frame) {
             default:
-                LogErr() << "Unknown mav_frame enum value: " << static_cast<int>(mav_frame);
+                LogErr("Unknown mav_frame enum value: {}", static_cast<int>(mav_frame));
             // FALLTHROUGH
             case rpc::telemetry::Odometry_MavFrame_MAV_FRAME_UNDEF:
                 return mavsdk::Telemetry::Odometry::MavFrame::Undef;
@@ -1424,7 +1420,7 @@ public:
     {
         switch (result) {
             default:
-                LogErr() << "Unknown result enum value: " << static_cast<int>(result);
+                LogErr("Unknown result enum value: {}", static_cast<int>(result));
             // FALLTHROUGH
             case mavsdk::Telemetry::Result::Unknown:
                 return rpc::telemetry::TelemetryResult_Result_RESULT_UNKNOWN;
@@ -1450,7 +1446,7 @@ public:
     {
         switch (result) {
             default:
-                LogErr() << "Unknown result enum value: " << static_cast<int>(result);
+                LogErr("Unknown result enum value: {}", static_cast<int>(result));
             // FALLTHROUGH
             case rpc::telemetry::TelemetryResult_Result_RESULT_UNKNOWN:
                 return mavsdk::Telemetry::Result::Unknown;
@@ -2850,7 +2846,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "SetRatePosition sent with a null request! Ignoring...";
+            LogWarn("SetRatePosition sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -2878,7 +2874,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "SetRateHome sent with a null request! Ignoring...";
+            LogWarn("SetRateHome sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -2906,7 +2902,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "SetRateInAir sent with a null request! Ignoring...";
+            LogWarn("SetRateInAir sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -2934,7 +2930,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "SetRateLandedState sent with a null request! Ignoring...";
+            LogWarn("SetRateLandedState sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -2962,7 +2958,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "SetRateVtolState sent with a null request! Ignoring...";
+            LogWarn("SetRateVtolState sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -2990,7 +2986,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "SetRateAttitudeQuaternion sent with a null request! Ignoring...";
+            LogWarn("SetRateAttitudeQuaternion sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -3018,7 +3014,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "SetRateAttitudeEuler sent with a null request! Ignoring...";
+            LogWarn("SetRateAttitudeEuler sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -3046,7 +3042,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "SetRateVelocityNed sent with a null request! Ignoring...";
+            LogWarn("SetRateVelocityNed sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -3074,7 +3070,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "SetRateGpsInfo sent with a null request! Ignoring...";
+            LogWarn("SetRateGpsInfo sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -3102,7 +3098,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "SetRateBattery sent with a null request! Ignoring...";
+            LogWarn("SetRateBattery sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -3130,7 +3126,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "SetRateRcStatus sent with a null request! Ignoring...";
+            LogWarn("SetRateRcStatus sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -3158,7 +3154,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "SetRateActuatorControlTarget sent with a null request! Ignoring...";
+            LogWarn("SetRateActuatorControlTarget sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -3187,7 +3183,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "SetRateActuatorOutputStatus sent with a null request! Ignoring...";
+            LogWarn("SetRateActuatorOutputStatus sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -3216,7 +3212,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "SetRateOdometry sent with a null request! Ignoring...";
+            LogWarn("SetRateOdometry sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -3244,7 +3240,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "SetRatePositionVelocityNed sent with a null request! Ignoring...";
+            LogWarn("SetRatePositionVelocityNed sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -3273,7 +3269,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "SetRateGroundTruth sent with a null request! Ignoring...";
+            LogWarn("SetRateGroundTruth sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -3301,7 +3297,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "SetRateFixedwingMetrics sent with a null request! Ignoring...";
+            LogWarn("SetRateFixedwingMetrics sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -3329,7 +3325,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "SetRateImu sent with a null request! Ignoring...";
+            LogWarn("SetRateImu sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -3357,7 +3353,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "SetRateScaledImu sent with a null request! Ignoring...";
+            LogWarn("SetRateScaledImu sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -3385,7 +3381,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "SetRateRawImu sent with a null request! Ignoring...";
+            LogWarn("SetRateRawImu sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -3413,7 +3409,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "SetRateUnixEpochTime sent with a null request! Ignoring...";
+            LogWarn("SetRateUnixEpochTime sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -3441,7 +3437,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "SetRateDistanceSensor sent with a null request! Ignoring...";
+            LogWarn("SetRateDistanceSensor sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -3469,7 +3465,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "SetRateAltitude sent with a null request! Ignoring...";
+            LogWarn("SetRateAltitude sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -3497,7 +3493,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "SetRateHealth sent with a null request! Ignoring...";
+            LogWarn("SetRateHealth sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 

@@ -48,8 +48,7 @@ public:
     {
         switch (status_text_type) {
             default:
-                LogErr() << "Unknown status_text_type enum value: "
-                         << static_cast<int>(status_text_type);
+                LogErr("Unknown status_text_type enum value: {}", static_cast<int>(status_text_type));
             // FALLTHROUGH
             case mavsdk::ServerUtility::StatusTextType::Debug:
                 return rpc::server_utility::STATUS_TEXT_TYPE_DEBUG;
@@ -75,8 +74,7 @@ public:
     {
         switch (status_text_type) {
             default:
-                LogErr() << "Unknown status_text_type enum value: "
-                         << static_cast<int>(status_text_type);
+                LogErr("Unknown status_text_type enum value: {}", static_cast<int>(status_text_type));
             // FALLTHROUGH
             case rpc::server_utility::STATUS_TEXT_TYPE_DEBUG:
                 return mavsdk::ServerUtility::StatusTextType::Debug;
@@ -102,7 +100,7 @@ public:
     {
         switch (result) {
             default:
-                LogErr() << "Unknown result enum value: " << static_cast<int>(result);
+                LogErr("Unknown result enum value: {}", static_cast<int>(result));
             // FALLTHROUGH
             case mavsdk::ServerUtility::Result::Unknown:
                 return rpc::server_utility::ServerUtilityResult_Result_RESULT_UNKNOWN;
@@ -122,7 +120,7 @@ public:
     {
         switch (result) {
             default:
-                LogErr() << "Unknown result enum value: " << static_cast<int>(result);
+                LogErr("Unknown result enum value: {}", static_cast<int>(result));
             // FALLTHROUGH
             case rpc::server_utility::ServerUtilityResult_Result_RESULT_UNKNOWN:
                 return mavsdk::ServerUtility::Result::Unknown;
@@ -152,7 +150,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "SendStatusText sent with a null request! Ignoring...";
+            LogWarn("SendStatusText sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 

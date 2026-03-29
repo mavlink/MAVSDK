@@ -104,7 +104,7 @@ FollowMe::Result FollowMeImpl::set_config(const FollowMe::Config& config)
 {
     // Valdidate configuration
     if (!is_config_ok(config)) {
-        LogErr() << debug_str << "set_config() failed. Last configuration is preserved.";
+        LogErr("{}set_config() failed. Last configuration is preserved.", debug_str);
         return FollowMe::Result::SetConfigFailed;
     }
 
@@ -114,7 +114,7 @@ FollowMe::Result FollowMeImpl::set_config(const FollowMe::Config& config)
     auto altitude_mode = config.altitude_mode;
     auto max_tangential_vel_m_s = config.max_tangential_vel_m_s;
 
-    LogDebug() << "Waiting for the system confirmation of the new configuration..";
+    LogDebug("Waiting for the system confirmation of the new configuration..");
 
     bool success = true;
 
@@ -253,21 +253,17 @@ bool FollowMeImpl::is_config_ok(const FollowMe::Config& config) const
     auto config_ok = false;
 
     if (config.follow_height_m < CONFIG_MIN_HEIGHT_M) {
-        LogErr() << debug_str << "Err: Min height must be at least " << CONFIG_MIN_HEIGHT_M
-                 << " meters";
+        LogErr("{}Err: Min height must be at least {} meters", debug_str, CONFIG_MIN_HEIGHT_M);
     } else if (config.follow_distance_m < CONFIG_MIN_FOLLOW_DIST_M) {
-        LogErr() << debug_str << "Err: Min Follow distance must be at least "
-                 << CONFIG_MIN_FOLLOW_DIST_M << " meters";
+        LogErr("{}Err: Min Follow distance must be at least {} meters", debug_str, CONFIG_MIN_FOLLOW_DIST_M);
     } else if (
         config.responsiveness < CONFIG_MIN_RESPONSIVENESS ||
         config.responsiveness > CONFIG_MAX_RESPONSIVENESS) {
-        LogErr() << debug_str << "Err: Responsiveness must be in range ("
-                 << CONFIG_MIN_RESPONSIVENESS << " to " << CONFIG_MAX_RESPONSIVENESS << ")";
+        LogErr("{}Err: Responsiveness must be in range ({} to {})", debug_str, CONFIG_MIN_RESPONSIVENESS, CONFIG_MAX_RESPONSIVENESS);
     } else if (
         config.follow_angle_deg < CONFIG_MIN_FOLLOW_ANGLE ||
         config.follow_angle_deg > CONFIG_MAX_FOLLOW_ANGLE) {
-        LogErr() << debug_str << "Err: Follow Angle must be in range " << CONFIG_MIN_FOLLOW_ANGLE
-                 << " to " << CONFIG_MAX_FOLLOW_ANGLE << " degrees!";
+        LogErr("{}Err: Follow Angle must be in range {} to {} degrees!", debug_str, CONFIG_MIN_FOLLOW_ANGLE, CONFIG_MAX_FOLLOW_ANGLE);
     } else { // Config is OK
         config_ok = true;
     }
@@ -354,7 +350,7 @@ void FollowMeImpl::send_target_location()
                 custom_state);
             return message;
         })) {
-        LogErr() << debug_str << "send_target_location() failed..";
+        LogErr("{}send_target_location() failed..", debug_str);
     } else {
         _last_location = _target_location;
     }

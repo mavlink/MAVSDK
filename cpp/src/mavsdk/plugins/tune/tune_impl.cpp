@@ -161,7 +161,7 @@ void TuneImpl::play_tune_async(
 void TuneImpl::report_tune_result(const Tune::ResultCallback& callback, Tune::Result result)
 {
     if (callback == nullptr) {
-        LogWarn() << "Callback is not set";
+        LogWarn("Callback is not set");
         return;
     }
 

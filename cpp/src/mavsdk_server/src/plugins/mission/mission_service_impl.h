@@ -47,7 +47,7 @@ public:
     {
         switch (camera_action) {
             default:
-                LogErr() << "Unknown camera_action enum value: " << static_cast<int>(camera_action);
+                LogErr("Unknown camera_action enum value: {}", static_cast<int>(camera_action));
             // FALLTHROUGH
             case mavsdk::Mission::MissionItem::CameraAction::None:
                 return rpc::mission::MissionItem_CameraAction_CAMERA_ACTION_NONE;
@@ -73,7 +73,7 @@ public:
     {
         switch (camera_action) {
             default:
-                LogErr() << "Unknown camera_action enum value: " << static_cast<int>(camera_action);
+                LogErr("Unknown camera_action enum value: {}", static_cast<int>(camera_action));
             // FALLTHROUGH
             case rpc::mission::MissionItem_CameraAction_CAMERA_ACTION_NONE:
                 return mavsdk::Mission::MissionItem::CameraAction::None;
@@ -99,8 +99,7 @@ public:
     {
         switch (vehicle_action) {
             default:
-                LogErr() << "Unknown vehicle_action enum value: "
-                         << static_cast<int>(vehicle_action);
+                LogErr("Unknown vehicle_action enum value: {}", static_cast<int>(vehicle_action));
             // FALLTHROUGH
             case mavsdk::Mission::MissionItem::VehicleAction::None:
                 return rpc::mission::MissionItem_VehicleAction_VEHICLE_ACTION_NONE;
@@ -120,8 +119,7 @@ public:
     {
         switch (vehicle_action) {
             default:
-                LogErr() << "Unknown vehicle_action enum value: "
-                         << static_cast<int>(vehicle_action);
+                LogErr("Unknown vehicle_action enum value: {}", static_cast<int>(vehicle_action));
             // FALLTHROUGH
             case rpc::mission::MissionItem_VehicleAction_VEHICLE_ACTION_NONE:
                 return mavsdk::Mission::MissionItem::VehicleAction::None;
@@ -263,7 +261,7 @@ public:
     {
         switch (result) {
             default:
-                LogErr() << "Unknown result enum value: " << static_cast<int>(result);
+                LogErr("Unknown result enum value: {}", static_cast<int>(result));
             // FALLTHROUGH
             case mavsdk::Mission::Result::Unknown:
                 return rpc::mission::MissionResult_Result_RESULT_UNKNOWN;
@@ -305,7 +303,7 @@ public:
     {
         switch (result) {
             default:
-                LogErr() << "Unknown result enum value: " << static_cast<int>(result);
+                LogErr("Unknown result enum value: {}", static_cast<int>(result));
             // FALLTHROUGH
             case rpc::mission::MissionResult_Result_RESULT_UNKNOWN:
                 return mavsdk::Mission::Result::Unknown;
@@ -410,7 +408,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "UploadMission sent with a null request! Ignoring...";
+            LogWarn("UploadMission sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -687,7 +685,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "SetCurrentMissionItem sent with a null request! Ignoring...";
+            LogWarn("SetCurrentMissionItem sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -807,7 +805,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "SetReturnToLaunchAfterMission sent with a null request! Ignoring...";
+            LogWarn("SetReturnToLaunchAfterMission sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
