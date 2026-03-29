@@ -973,7 +973,7 @@ SystemImpl::make_command_ardupilot_mode(FlightMode flight_mode, uint8_t componen
         }
 
         default:
-            LogErr("Cannot translate flight mode to ArduPilot mode, for MAV_TYPE: {}", _vehicle_type);
+            LogErr("Cannot translate flight mode to ArduPilot mode, for MAV_TYPE: {}", static_cast<int>(_vehicle_type));
             MavlinkCommandSender::CommandLong empty_command{};
             return std::make_pair<>(MavlinkCommandSender::Result::UnknownError, empty_command);
     }

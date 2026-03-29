@@ -30,7 +30,7 @@ FileCache::DirectoryLock::DirectoryLock(const std::filesystem::path& path) : _pa
     _fd = open(_path.c_str(), O_RDWR | O_CREAT, 0666);
     umask(m);
     if (_fd < 0) {
-        LogErr("Cannot open file {}", _path);
+        LogErr("Cannot open file {}", _path.string());
     } else {
         if (flock(_fd, LOCK_EX) == -1) {
             LogErr("Cannot lock file {}", strerror(errno));
@@ -112,13 +112,13 @@ std::optional<std::filesystem::path> FileCache::access(const std::string& file_t
             m.access_counter = access_counters.next_access_counter;
             meta_file.seekg(0);
             if (!meta_file.write(reinterpret_cast<const char*>(&m), sizeof(m))) {
-                LogErr("Meta write failed {}", meta);
+                LogErr("Meta write failed {}", meta.string());
             }
         } else {
-            LogErr("Meta read failed {}", meta);
+            LogErr("Meta read failed {}", meta.string());
         }
     } else {
-        LogErr("Failed to open {}", meta);
+        LogErr("Failed to open {}", meta.string());
     }
 
     return data;
@@ -152,7 +152,7 @@ FileCache::insert(const std::string& file_tag, const std::filesystem::path& file
             }
         }
         if (err) {
-            LogWarn("File rename failed from {} to {}: {}", file_name, data, err.message());
+            LogWarn("File rename failed from {} to {}: {}", file_name.string(), data.string(), err.message());
             return std::nullopt;
         }
     }
@@ -163,11 +163,11 @@ FileCache::insert(const std::string& file_tag, const std::filesystem::path& file
     std::fstream meta_file(meta, std::ios::binary | std::ios::out | std::ios::trunc);
     if (meta_file.good()) {
         if (!meta_file.write(reinterpret_cast<const char*>(&m), sizeof(m))) {
-            LogWarn("Meta write failed {}", meta);
+            LogWarn("Meta write failed {}", meta.string());
         }
         access_counters.cached_files[m.access_counter] = file_tag;
     } else {
-        LogWarn("Failed to open {}", meta);
+        LogWarn("Failed to open {}", meta.string());
     }
 
     remove_old_entries(access_counters);
@@ -205,7 +205,7 @@ FileCache::AccessCounters FileCache::load_access_counters() const
         }
 
         if (validation_failed) {
-            LogWarn("Validation failed, removing cache files {}", path.path());
+            LogWarn("Validation failed, removing cache files {}", path.path().string());
             std::filesystem::remove(path.path());
             std::filesystem::remove(data);
         } else {

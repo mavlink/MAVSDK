@@ -5,6 +5,7 @@
 #include <cctype>
 #include <fstream>
 #include <random>
+#include <sstream>
 #include <string>
 
 #if defined(LINUX) || defined(APPLE)
