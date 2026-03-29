@@ -1,7 +1,10 @@
 #include "mavsdk_impl.h"
 
+#include <asio/post.hpp>
+
 #include <algorithm>
 #include <mutex>
+#include <thread>
 #include <tcp_server_connection.h>
 
 #include "connection.h"
@@ -73,7 +76,16 @@ MavsdkImpl::MavsdkImpl(const Mavsdk::Configuration& configuration) :
     _process_user_callbacks_thread =
         std::make_unique<std::thread>(&MavsdkImpl::process_user_callbacks_thread, this);
 
-    _work_thread = std::make_unique<std::thread>(&MavsdkImpl::work_thread, this);
+    // Start the recurring timer that drives TimeoutHandler and CallEveryHandler
+    // on the io_context thread every 5 ms.
+    schedule_timers_poll();
+
+    // Start the recurring timer that drives ServerComponent::do_work() on the io_context thread.
+    schedule_do_work();
+
+    // Start the Asio io_context on its own thread.  All async I/O completions,
+    // message dispatch, and timer callbacks are dispatched here.
+    _io_thread = std::make_unique<std::thread>([this]() { _io_context.run(); });
 }
 
 MavsdkImpl::~MavsdkImpl()
@@ -85,12 +97,13 @@ MavsdkImpl::~MavsdkImpl()
 
     _should_exit = true;
 
-    // Stop work first because we don't want to trigger anything that would
-    // potentially want to call into user code.
-
-    if (_work_thread) {
-        _work_thread->join();
-        _work_thread.reset();
+    // Stop the Asio io_context so _io_thread exits io_context::run().
+    // This also cancels any pending async_receive_from operations on UdpConnection sockets.
+    _io_work_guard.reset();
+    _io_context.stop();
+    if (_io_thread) {
+        _io_thread->join();
+        _io_thread.reset();
     }
 
     if (_process_user_callbacks_thread) {
@@ -383,13 +396,12 @@ void MavsdkImpl::receive_message(
     MavlinkReceiver::ParseResult result, mavlink_message_t& message, Connection* connection)
 {
     if (result == MavlinkReceiver::ParseResult::MessageParsed) {
-        // Valid message: queue for full processing (which includes forwarding)
-        {
-            std::lock_guard lock(_received_messages_mutex);
-            _received_messages.emplace(ReceivedMessage{std::move(message), connection});
-        }
-        _received_messages_cv.notify_one();
-
+        // Post directly to the io_context — no intermediate queue needed.
+        // The io_context thread already owns all connection callbacks, so this
+        // keeps message processing single-threaded on that same executor.
+        asio::post(_io_context, [this, msg = message, conn = connection]() mutable {
+            process_message(msg, conn);
+        });
     } else if (result == MavlinkReceiver::ParseResult::BadCrc) {
         // Unknown message: forward only, don't process locally
         forward_message(message, connection);
@@ -399,37 +411,18 @@ void MavsdkImpl::receive_message(
 void MavsdkImpl::receive_libmav_message(
     const Mavsdk::MavlinkMessage& message, Connection* connection)
 {
-    {
-        std::lock_guard lock(_received_libmav_messages_mutex);
-        _received_libmav_messages.emplace(ReceivedLibmavMessage{message, connection});
-    }
-    _received_libmav_messages_cv.notify_one();
+    // Post directly to the io_context — no intermediate queue needed.
+    asio::post(_io_context, [this, message, conn = connection]() {
+        process_libmav_message(message, conn);
+    });
 }
 
-void MavsdkImpl::process_messages()
-{
-    std::lock_guard lock(_received_messages_mutex);
-    while (!_received_messages.empty()) {
-        auto message_copied = _received_messages.front();
-        process_message(message_copied.message, message_copied.connection_ptr);
-        _received_messages.pop();
-    }
-}
-
-void MavsdkImpl::process_libmav_messages()
-{
-    std::lock_guard lock(_received_libmav_messages_mutex);
-    while (!_received_libmav_messages.empty()) {
-        auto message_copied = _received_libmav_messages.front();
-        process_libmav_message(message_copied.message, message_copied.connection_ptr);
-        _received_libmav_messages.pop();
-    }
-}
+// process_messages() and process_libmav_messages() removed:
+// messages are now dispatched directly via asio::post() in receive_message()
+// and receive_libmav_message(), so no drain loop is needed.
 
 void MavsdkImpl::process_message(mavlink_message_t& message, Connection* connection)
 {
-    // Assumes _received_messages_mutex
-
     if (_message_logging_on) {
         LogDebug() << "Processing message " << message.msgid << " from "
                    << static_cast<int>(message.sysid) << "/" << static_cast<int>(message.compid);
@@ -561,8 +554,6 @@ void MavsdkImpl::process_message(mavlink_message_t& message, Connection* connect
 void MavsdkImpl::process_libmav_message(
     const Mavsdk::MavlinkMessage& message, Connection* /* connection */)
 {
-    // Assumes _received_libmav_messages_mutex
-
     if (_message_logging_on) {
         LogDebug() << "MavsdkImpl::process_libmav_message: " << message.message_name << " from "
                    << static_cast<int>(message.system_id) << "/"
@@ -659,39 +650,12 @@ void MavsdkImpl::process_libmav_message(
 
 bool MavsdkImpl::send_message(mavlink_message_t& message)
 {
-    // Create a copy of the message to avoid reference issues
-    mavlink_message_t message_copy = message;
-
-    {
-        std::lock_guard lock(_messages_to_send_mutex);
-        _messages_to_send.push(std::move(message_copy));
-    }
-
-    // For heartbeat messages, we want to process them immediately to speed up system discovery
-    if (message.msgid == MAVLINK_MSG_ID_HEARTBEAT) {
-        // Trigger message processing in the work thread
-        // This is a hint to process messages sooner, but doesn't block
-        std::this_thread::yield();
-    }
+    // Post directly to the io_context — no intermediate queue needed.
+    // deliver_message() always runs on the io_context thread, so ordering
+    // is preserved (posts are executed FIFO) and no mutex is required.
+    asio::post(_io_context, [this, msg = message]() mutable { deliver_message(msg); });
 
     return true;
-}
-
-void MavsdkImpl::deliver_messages()
-{
-    // Process messages one at a time to avoid holding the mutex while delivering
-    while (true) {
-        mavlink_message_t message;
-        {
-            std::lock_guard lock(_messages_to_send_mutex);
-            if (_messages_to_send.empty()) {
-                break;
-            }
-            message = _messages_to_send.front();
-            _messages_to_send.pop();
-        }
-        deliver_message(message);
-    }
 }
 
 void MavsdkImpl::deliver_message(mavlink_message_t& message)
@@ -752,17 +716,21 @@ void MavsdkImpl::deliver_message(mavlink_message_t& message)
             json_message.target_component_id = 0;
         }
 
-        // Generate JSON using LibmavReceiver's public method
-        auto connections = get_connections();
-        if (!connections.empty() && connections[0]->get_libmav_receiver()) {
-            json_message.fields_json =
-                connections[0]->get_libmav_receiver()->libmav_message_to_json(
-                    libmav_msg_opt.value());
-        } else {
-            // Fallback: create minimal JSON if no receiver available
-            json_message.fields_json =
-                "{\"message_id\":" + std::to_string(libmav_msg_opt.value().id()) +
-                ",\"message_name\":\"" + libmav_msg_opt.value().name() + "\"}";
+        // Generate JSON using LibmavReceiver's public method.
+        // Access _connections under _mutex so remove_connection() cannot destroy
+        // the Connection object (and its _libmav_receiver) while we're using it.
+        {
+            std::lock_guard lock(_mutex);
+            if (!_connections.empty() && _connections[0].connection->get_libmav_receiver()) {
+                json_message.fields_json =
+                    _connections[0].connection->get_libmav_receiver()->libmav_message_to_json(
+                        libmav_msg_opt.value());
+            } else {
+                // Fallback: create minimal JSON if no receiver available
+                json_message.fields_json =
+                    "{\"message_id\":" + std::to_string(libmav_msg_opt.value().id()) +
+                    ",\"message_name\":\"" + libmav_msg_opt.value().name() + "\"}";
+            }
         }
 
         if (!call_json_interception_callbacks(json_message, _outgoing_json_message_subscriptions)) {
@@ -1026,11 +994,25 @@ Mavsdk::ConnectionHandle MavsdkImpl::add_connection(std::unique_ptr<Connection>&
 
 void MavsdkImpl::remove_connection(Mavsdk::ConnectionHandle handle)
 {
-    std::lock_guard lock(_mutex);
-
-    _connections.erase(std::remove_if(_connections.begin(), _connections.end(), [&](auto&& entry) {
-        return (entry.handle == handle);
-    }));
+    // Extract the connection from _connections while holding _mutex, but let
+    // it be destroyed *after* releasing _mutex.  This avoids a deadlock where:
+    //   - main thread holds _mutex and waits inside Connection::stop() for the
+    //     io_context fence to execute, and
+    //   - the io_context thread is blocked trying to acquire _mutex (e.g. for
+    //     the periodic send_message() heartbeat call).
+    std::unique_ptr<Connection> conn_to_stop;
+    {
+        std::lock_guard lock(_mutex);
+        for (auto it = _connections.begin(); it != _connections.end(); ++it) {
+            if (it->handle == handle) {
+                conn_to_stop = std::move(it->connection);
+                _connections.erase(it);
+                break;
+            }
+        }
+    }
+    // conn_to_stop is destroyed here, outside _mutex, so stop() / the
+    // io_context fence can complete without hitting the lock.
 }
 
 Mavsdk::Configuration MavsdkImpl::get_configuration() const
@@ -1198,20 +1180,18 @@ bool MavsdkImpl::is_any_system_connected() const
     });
 }
 
-void MavsdkImpl::work_thread()
+void MavsdkImpl::schedule_do_work()
 {
-    while (!_should_exit) {
-        // Process incoming messages
-        process_messages();
-
-        // Process incoming libmav messages
-        process_libmav_messages();
-
-        // Run timers
-        timeout_handler.run_once();
-        call_every_handler.run_once();
-
-        // Do component work
+    // Drive ServerComponent protocol-handler state machines (command sender, parameter client,
+    // mission transfer, FTP client, …) on the io_context thread every 10 ms.
+    // Using dispatch() would execute immediately on first call but we want a timer-driven cadence,
+    // so async_wait is correct here — same pattern as schedule_timers_poll().
+    _do_work_timer.expires_after(std::chrono::milliseconds(10));
+    _do_work_timer.async_wait([this](const asio::error_code& ec) {
+        if (ec) {
+            // Cancelled (e.g. during shutdown) — do not reschedule.
+            return;
+        }
         {
             std::lock_guard lock(_server_components_mutex);
             for (auto& it : _server_components) {
@@ -1220,19 +1200,24 @@ void MavsdkImpl::work_thread()
                 }
             }
         }
+        schedule_do_work();
+    });
+}
 
-        // Deliver outgoing messages
-        deliver_messages();
-
-        // If no messages to send, check if there are messages to receive
-        std::unique_lock lock_received(_received_messages_mutex);
-        if (_received_messages.empty()) {
-            // No messages to process, wait for a signal or timeout
-            _received_messages_cv.wait_for(lock_received, std::chrono::milliseconds(10), [this]() {
-                return !_received_messages.empty() || _should_exit;
-            });
+void MavsdkImpl::schedule_timers_poll()
+{
+    // Run TimeoutHandler and CallEveryHandler on the io_context thread every 5 ms.
+    // This gives ~5 ms timer resolution without a separate polling thread.
+    _timers_poll_timer.expires_after(std::chrono::milliseconds(5));
+    _timers_poll_timer.async_wait([this](const asio::error_code& ec) {
+        if (ec) {
+            // Cancelled (e.g. during shutdown) — do not reschedule.
+            return;
         }
-    }
+        timeout_handler.run_once();
+        call_every_handler.run_once();
+        schedule_timers_poll();
+    });
 }
 
 void MavsdkImpl::set_callback_executor(std::function<void(std::function<void()>)> executor)

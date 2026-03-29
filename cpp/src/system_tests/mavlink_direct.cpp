@@ -30,8 +30,13 @@ TEST(SystemTest, MavlinkDirectRoundtrip)
 
     // Wait for autopilot instance to discover the connection to the ground station
     LogInfo() << "Waiting for autopilot system to connect...";
-    while (mavsdk_autopilot.systems().size() == 0) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    {
+        auto deadline = std::chrono::steady_clock::now() + std::chrono::seconds(10);
+        while (mavsdk_autopilot.systems().size() == 0) {
+            ASSERT_TRUE(std::chrono::steady_clock::now() < deadline)
+                << "Timed out waiting for autopilot to discover systems";
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        }
     }
 
     // Get the autopilot's view of the connected system
@@ -104,8 +109,13 @@ TEST(SystemTest, MavlinkDirectExtendedFields)
     ASSERT_TRUE(system->has_autopilot());
 
     // Wait for autopilot instance to discover the connection to the ground station
-    while (mavsdk_autopilot.systems().size() == 0) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    {
+        auto deadline = std::chrono::steady_clock::now() + std::chrono::seconds(10);
+        while (mavsdk_autopilot.systems().size() == 0) {
+            ASSERT_TRUE(std::chrono::steady_clock::now() < deadline)
+                << "Timed out waiting for autopilot to discover systems";
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        }
     }
 
     auto groundstation_system = mavsdk_autopilot.systems().at(0);
@@ -233,8 +243,13 @@ TEST(SystemTest, MavlinkDirectToTelemetry)
     ASSERT_TRUE(system->has_autopilot());
 
     // Wait for autopilot instance to discover the connection to the ground station
-    while (mavsdk_autopilot.systems().size() == 0) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    {
+        auto deadline = std::chrono::steady_clock::now() + std::chrono::seconds(10);
+        while (mavsdk_autopilot.systems().size() == 0) {
+            ASSERT_TRUE(std::chrono::steady_clock::now() < deadline)
+                << "Timed out waiting for autopilot to discover systems";
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        }
     }
 
     auto groundstation_system = mavsdk_autopilot.systems().at(0);
@@ -300,8 +315,13 @@ TEST(SystemTest, TelemetryServerToMavlinkDirect)
     ASSERT_TRUE(system->has_autopilot());
 
     // Wait for autopilot instance to discover the connection to the ground station
-    while (mavsdk_autopilot.systems().size() == 0) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    {
+        auto deadline = std::chrono::steady_clock::now() + std::chrono::seconds(10);
+        while (mavsdk_autopilot.systems().size() == 0) {
+            ASSERT_TRUE(std::chrono::steady_clock::now() < deadline)
+                << "Timed out waiting for autopilot to discover systems";
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        }
     }
 
     auto groundstation_system = mavsdk_autopilot.systems().at(0);
@@ -376,8 +396,13 @@ TEST(SystemTest, MavlinkDirectArrayFields)
     ASSERT_TRUE(system->has_autopilot());
 
     // Wait for autopilot instance to discover the connection to the ground station
-    while (mavsdk_autopilot.systems().size() == 0) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    {
+        auto deadline = std::chrono::steady_clock::now() + std::chrono::seconds(10);
+        while (mavsdk_autopilot.systems().size() == 0) {
+            ASSERT_TRUE(std::chrono::steady_clock::now() < deadline)
+                << "Timed out waiting for autopilot to discover systems";
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        }
     }
 
     auto groundstation_system = mavsdk_autopilot.systems().at(0);
@@ -534,8 +559,13 @@ TEST(SystemTest, MavlinkDirectLoadCustomXml)
     ASSERT_TRUE(system->has_autopilot());
 
     // Wait for autopilot instance to discover the connection to the ground station
-    while (mavsdk_autopilot.systems().size() == 0) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    {
+        auto deadline = std::chrono::steady_clock::now() + std::chrono::seconds(10);
+        while (mavsdk_autopilot.systems().size() == 0) {
+            ASSERT_TRUE(std::chrono::steady_clock::now() < deadline)
+                << "Timed out waiting for autopilot to discover systems";
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        }
     }
 
     auto groundstation_system = mavsdk_autopilot.systems().at(0);
@@ -630,8 +660,13 @@ TEST(SystemTest, MavlinkDirectArdupilotmegaMessage)
 
     // Wait for autopilot instance to discover the connection to the ground station
     LogInfo() << "Waiting for autopilot system to connect...";
-    while (mavsdk_autopilot.systems().size() == 0) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    {
+        auto deadline = std::chrono::steady_clock::now() + std::chrono::seconds(10);
+        while (mavsdk_autopilot.systems().size() == 0) {
+            ASSERT_TRUE(std::chrono::steady_clock::now() < deadline)
+                << "Timed out waiting for autopilot to discover systems";
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        }
     }
 
     // Get the autopilot's view of the connected system
@@ -700,8 +735,13 @@ TEST(SystemTest, MavlinkDirectNanInfinityJsonHandling)
     ASSERT_TRUE(system->has_autopilot());
 
     // Wait for autopilot instance to discover the connection to the ground station
-    while (mavsdk_autopilot.systems().size() == 0) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    {
+        auto deadline = std::chrono::steady_clock::now() + std::chrono::seconds(10);
+        while (mavsdk_autopilot.systems().size() == 0) {
+            ASSERT_TRUE(std::chrono::steady_clock::now() < deadline)
+                << "Timed out waiting for autopilot to discover systems";
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        }
     }
 
     auto groundstation_system = mavsdk_autopilot.systems().at(0);
@@ -847,8 +887,13 @@ TEST(SystemTest, MavlinkDirectMessageFiltering)
 
     // Wait for autopilot instance to discover the connection to the ground station
     LogInfo() << "Waiting for autopilot system to connect...";
-    while (mavsdk_autopilot.systems().size() == 0) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    {
+        auto deadline = std::chrono::steady_clock::now() + std::chrono::seconds(10);
+        while (mavsdk_autopilot.systems().size() == 0) {
+            ASSERT_TRUE(std::chrono::steady_clock::now() < deadline)
+                << "Timed out waiting for autopilot to discover systems";
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        }
     }
 
     auto groundstation_system = mavsdk_autopilot.systems().at(0);
@@ -969,8 +1014,13 @@ TEST(SystemTest, MavlinkDirectEmptyStringFiltering)
 
     // Wait for autopilot instance to discover the connection to the ground station
     LogInfo() << "Waiting for autopilot system to connect...";
-    while (mavsdk_autopilot.systems().size() == 0) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    {
+        auto deadline = std::chrono::steady_clock::now() + std::chrono::seconds(10);
+        while (mavsdk_autopilot.systems().size() == 0) {
+            ASSERT_TRUE(std::chrono::steady_clock::now() < deadline)
+                << "Timed out waiting for autopilot to discover systems";
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        }
     }
 
     auto groundstation_system = mavsdk_autopilot.systems().at(0);
@@ -1089,8 +1139,13 @@ TEST(SystemTest, MavlinkDirectMultipleSubscriptions)
 
     // Wait for autopilot instance to discover the connection to the ground station
     LogInfo() << "Waiting for autopilot system to connect...";
-    while (mavsdk_autopilot.systems().size() == 0) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    {
+        auto deadline = std::chrono::steady_clock::now() + std::chrono::seconds(10);
+        while (mavsdk_autopilot.systems().size() == 0) {
+            ASSERT_TRUE(std::chrono::steady_clock::now() < deadline)
+                << "Timed out waiting for autopilot to discover systems";
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        }
     }
 
     auto groundstation_system = mavsdk_autopilot.systems().at(0);
@@ -1239,8 +1294,13 @@ TEST(SystemTest, MavlinkDirectLargeUint64)
 
     // Wait for autopilot instance to discover the connection to the ground station
     LogInfo() << "Waiting for autopilot system to connect...";
-    while (mavsdk_autopilot.systems().size() == 0) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    {
+        auto deadline = std::chrono::steady_clock::now() + std::chrono::seconds(10);
+        while (mavsdk_autopilot.systems().size() == 0) {
+            ASSERT_TRUE(std::chrono::steady_clock::now() < deadline)
+                << "Timed out waiting for autopilot to discover systems";
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        }
     }
 
     auto groundstation_system = mavsdk_autopilot.systems().at(0);

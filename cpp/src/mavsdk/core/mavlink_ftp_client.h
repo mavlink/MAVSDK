@@ -13,8 +13,9 @@
 #include <vector>
 
 #include "mavlink_include.h"
-#include "locked_queue.h"
 #include "timeout_handler.h"
+#include <asio/io_context.hpp>
+#include <asio/post.hpp>
 
 // As found in
 // https://stackoverflow.com/questions/1537964#answer-3312896
@@ -316,8 +317,10 @@ private:
     uint8_t get_target_component_id();
 
     void process_mavlink_ftp_message(const mavlink_message_t& msg);
+    void enqueue_work(std::shared_ptr<Work> work);
 
     SystemImpl& _system_impl;
+    asio::io_context& _io_context;
 
     uint8_t _target_component_id = 0;
     bool _target_component_id_set{false};
@@ -326,7 +329,7 @@ private:
 
     TimeoutHandler::Cookie _timeout_cookie{};
 
-    LockedQueue<Work> _work_queue{};
+    std::deque<std::shared_ptr<Work>> _work_queue{};
 
     uint16_t _last_sent_seq_number{0};
 

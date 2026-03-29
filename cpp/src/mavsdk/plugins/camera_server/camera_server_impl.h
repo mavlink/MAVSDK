@@ -126,7 +126,7 @@ private:
     };
 
     enum class TriggerControl {
-        IGNORE = -1,
+        UNCHANGED = -1, // renamed from IGNORE: Windows SDK defines IGNORE as 0 via winbase.h
         DISABLE = 0,
         ENABLE = 1,
     };

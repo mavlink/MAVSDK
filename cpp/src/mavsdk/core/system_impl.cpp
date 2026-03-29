@@ -23,6 +23,7 @@ template class CallbackList<ComponentType, uint8_t>;
 
 SystemImpl::SystemImpl(MavsdkImpl& mavsdk_impl) :
     _mavsdk_impl(mavsdk_impl),
+    _system_work_timer(mavsdk_impl.io_context()),
     _command_sender(*this),
     _timesync(*this),
     _ping(*this),
@@ -43,24 +44,19 @@ SystemImpl::SystemImpl(MavsdkImpl& mavsdk_impl) :
         }
     }
 
-    _system_thread = new std::thread(&SystemImpl::system_thread, this);
+    schedule_system_work();
 }
 
 SystemImpl::~SystemImpl()
 {
     _should_exit = true;
+    _system_work_timer.cancel();
     // Use blocking version to ensure any in-flight callbacks complete before destruction.
     _mavlink_message_handler.unregister_all_blocking(this);
     // Clear all libmav message callbacks
     _libmav_message_callbacks.clear();
 
     unregister_timeout_handler(_heartbeat_timeout_cookie);
-
-    if (_system_thread != nullptr) {
-        _system_thread->join();
-        delete _system_thread;
-        _system_thread = nullptr;
-    }
 }
 
 void SystemImpl::init(uint8_t system_id, uint8_t comp_id)
@@ -380,11 +376,18 @@ void SystemImpl::heartbeats_timed_out()
     set_disconnected();
 }
 
-void SystemImpl::system_thread()
+void SystemImpl::schedule_system_work()
 {
-    SteadyTimePoint last_ping_time{};
+    // Run do_work() on all protocol handlers at 100 Hz when connected, 10 Hz otherwise.
+    // By running on the io_context thread we eliminate all data races on the work queues.
+    auto delay = _connected ? std::chrono::milliseconds(10) : std::chrono::milliseconds(100);
+    _system_work_timer.expires_after(delay);
+    _system_work_timer.async_wait([this](const asio::error_code& ec) {
+        if (ec) {
+            // Timer was cancelled (shutdown) — stop rescheduling.
+            return;
+        }
 
-    while (!_should_exit) {
         {
             std::lock_guard<std::mutex> lock(_mavlink_parameter_clients_mutex);
             for (auto& entry : _mavlink_parameter_clients) {
@@ -396,21 +399,15 @@ void SystemImpl::system_thread()
         _mission_transfer_client.do_work();
         _mavlink_ftp_client.do_work();
 
-        if (_mavsdk_impl.time.elapsed_since_s(last_ping_time) >= SystemImpl::_ping_interval_s) {
+        if (_mavsdk_impl.time.elapsed_since_s(_last_ping_time) >= SystemImpl::_ping_interval_s) {
             if (_connected && _autopilot != Autopilot::ArduPilot) {
                 _ping.run_once();
             }
-            last_ping_time = _mavsdk_impl.time.steady_time();
+            _last_ping_time = _mavsdk_impl.time.steady_time();
         }
 
-        if (_connected) {
-            // Work fairly fast if we're connected.
-            std::this_thread::sleep_for(std::chrono::milliseconds(10));
-        } else {
-            // Be less aggressive when unconnected.
-            std::this_thread::sleep_for(std::chrono::milliseconds(100));
-        }
-    }
+        schedule_system_work();
+    });
 }
 
 std::string SystemImpl::component_name(uint8_t component_id)
@@ -720,6 +717,11 @@ uint8_t SystemImpl::get_own_component_id() const
     return _mavsdk_impl.get_own_component_id();
 }
 
+asio::io_context& SystemImpl::io_context()
+{
+    return _mavsdk_impl.io_context();
+}
+
 MAV_TYPE SystemImpl::get_vehicle_type() const
 {
     return _vehicle_type;
@@ -875,9 +877,7 @@ void SystemImpl::get_param_custom_async(
 
 void SystemImpl::cancel_all_param(const void* cookie)
 {
-    UNUSED(cookie);
-    // FIXME: this currently crashes on destruction
-    // param_sender(1, false)->cancel_all_param(cookie);
+    param_sender(1, false)->cancel_all_param(cookie);
 }
 
 MavlinkCommandSender::Result

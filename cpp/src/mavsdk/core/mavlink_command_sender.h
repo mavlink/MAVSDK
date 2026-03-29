@@ -2,10 +2,12 @@
 
 #include "timeout_handler.h"
 #include "mavlink_include.h"
-#include "locked_queue.h"
 #include "mavsdk_time.h"
+#include <asio/io_context.hpp>
+#include <asio/post.hpp>
 #include <cmath>
 #include <cstdint>
+#include <deque>
 #include <string>
 #include <functional>
 #include <mutex>
@@ -164,7 +166,8 @@ private:
     float maybe_reserved(const std::optional<float>& maybe_param) const;
 
     SystemImpl& _system_impl;
-    LockedQueue<Work> _work_queue{};
+    std::deque<std::shared_ptr<Work>> _work_queue{};
+    asio::io_context& _io_context;
 
     bool _command_debugging{false};
 };

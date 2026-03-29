@@ -3,6 +3,7 @@
 #include "compatibility_mode.h"
 #include "mavlink_include.h"
 #include "mavlink_address.h"
+#include <asio/io_context.hpp>
 #include <cstdint>
 #include <functional>
 
@@ -18,6 +19,7 @@ public:
     [[nodiscard]] virtual uint8_t get_own_system_id() const = 0;
     [[nodiscard]] virtual uint8_t get_own_component_id() const = 0;
     [[nodiscard]] virtual CompatibilityMode compatibility_mode() const = 0;
+    [[nodiscard]] virtual asio::io_context& io_context() = 0;
 };
 
 } // namespace mavsdk

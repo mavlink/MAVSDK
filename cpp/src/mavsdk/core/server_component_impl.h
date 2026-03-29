@@ -51,6 +51,7 @@ public:
         [[nodiscard]] uint8_t get_own_system_id() const override;
         [[nodiscard]] uint8_t get_own_component_id() const override;
         [[nodiscard]] CompatibilityMode compatibility_mode() const override;
+        [[nodiscard]] asio::io_context& io_context() override;
 
     private:
         ServerComponentImpl& _server_component_impl;

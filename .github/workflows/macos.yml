@@ -62,7 +62,7 @@ jobs:
         id: cache
         with:
           path: ./cpp/build/macos/third_party/install
-          key: ${{ github.job }}-${{ matrix.name }}-${{ hashFiles('./third_party/**') }}-2
+          key: ${{ github.job }}-${{ matrix.name }}-${{ hashFiles('./third_party/**') }}-3
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: |
@@ -78,6 +78,7 @@ jobs:
         run: ./build/macos/src/unit_tests/unit_tests_runner
       - name: system tests
         run: ./build/macos/src/system_tests/system_tests_runner
+        timeout-minutes: 10
       - name: test (mavsdk_server)
         run: ./build/macos/src/mavsdk_server/test/unit_tests_mavsdk_server
       - name: build C wrapper
@@ -159,7 +160,7 @@ jobs:
         id: cache
         with:
           path: ./cpp/build/${{ matrix.name }}/third_party/install
-          key: ${{ github.job }}-${{ matrix.name }}-${{ hashFiles('./third_party/**', './cmake/ios.toolchain.cmake') }}-2
+          key: ${{ github.job }}-${{ matrix.name }}-${{ hashFiles('./third_party/**', './cmake/ios.toolchain.cmake') }}-3
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: |

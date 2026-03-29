@@ -18,9 +18,8 @@ CallEveryHandler::Cookie CallEveryHandler::add(std::function<void()> callback, d
     _time.shift_steady_time_by(before, -interval_s - 0.001);
     new_entry.last_time = before;
     new_entry.interval_s = interval_s;
-    new_entry.cookie = _next_cookie++;
-
     std::lock_guard<std::recursive_mutex> lock(_mutex);
+    new_entry.cookie = _next_cookie++;
     _entries.push_back(new_entry);
 
     return new_entry.cookie;

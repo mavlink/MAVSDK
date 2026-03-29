@@ -1,26 +1,27 @@
 #include "serial_connection.h"
+#include "mavsdk_impl.h"
 #include "log.h"
 
 #if defined(APPLE) || defined(LINUX)
-#include <unistd.h>
-#include <fcntl.h>
 #include <termios.h>
-#include <poll.h>
-
-#include <utility>
+#include <unistd.h>
 #endif
 
+#include <asio/buffer.hpp>
+#include <asio/error.hpp>
+#include <asio/post.hpp>
+#include <asio/write.hpp>
+
+#include <future>
 #include <sstream>
+#include <utility>
 
 namespace mavsdk {
 
-#ifndef WINDOWS
-#define GET_ERROR() strerror(errno)
-#else
-#define GET_ERROR() GetLastErrorStdStr()
+#if defined(WINDOWS)
 // Taken from:
 // https://coolcowstudio.wordpress.com/2012/10/19/getlasterror-as-stdstring/
-std::string GetLastErrorStdStr()
+static std::string GetLastErrorStdStr()
 {
     DWORD error = GetLastError();
     if (error == 0) {
@@ -42,12 +43,11 @@ std::string GetLastErrorStdStr()
         std::string result(lpMsgStr, lpMsgStr + bufLen);
         LocalFree(lpMsgBuf);
 
-        // Remove trailing newline if present
-        if (!result.empty() && result[result.length() - 1] == '\n') {
-            result.erase(result.length() - 1);
+        if (!result.empty() && result.back() == '\n') {
+            result.pop_back();
         }
-        if (!result.empty() && result[result.length() - 1] == '\r') {
-            result.erase(result.length() - 1);
+        if (!result.empty() && result.back() == '\r') {
+            result.pop_back();
         }
 
         return result;
@@ -55,6 +55,9 @@ std::string GetLastErrorStdStr()
 
     return std::to_string(error);
 }
+#define GET_ERROR() GetLastErrorStdStr()
+#else
+#define GET_ERROR() strerror(errno)
 #endif
 
 SerialConnection::SerialConnection(
@@ -72,7 +75,8 @@ SerialConnection::SerialConnection(
         forwarding_option),
     _serial_node(std::move(path)),
     _baudrate(baudrate),
-    _flow_control(flow_control)
+    _flow_control(flow_control),
+    _serial_port(mavsdk_impl.io_context())
 {}
 
 SerialConnection::~SerialConnection()
@@ -96,73 +100,50 @@ ConnectionResult SerialConnection::start()
         return ret;
     }
 
-    start_recv_thread();
+    // Kick off the first async read — subsequent ones are re-posted from the handler.
+    do_receive();
 
     return ConnectionResult::Success;
 }
 
 ConnectionResult SerialConnection::setup_port()
 {
-#if defined(LINUX) || defined(APPLE)
-    // open() hangs on macOS or Linux devices(e.g. pocket beagle) unless you give it O_NONBLOCK
-    _fd = open(_serial_node.c_str(), O_RDWR | O_NOCTTY | O_NONBLOCK);
-    if (_fd == -1) {
-        LogErr() << "open failed: " << GET_ERROR();
+    // Open the port through Asio — this sets up the underlying fd/HANDLE for async I/O.
+    asio::error_code ec;
+    _serial_port.open(_serial_node, ec);
+    if (ec) {
+        LogErr() << "open failed: " << ec.message();
         return ConnectionResult::ConnectionError;
     }
-    // We need to clear the O_NONBLOCK again because we can block while reading
-    // as we do it in a separate thread.
-    if (fcntl(_fd, F_SETFL, 0) == -1) {
-        LogErr() << "fcntl failed: " << GET_ERROR();
-        return ConnectionResult::ConnectionError;
-    }
-#elif defined(WINDOWS)
-    // Required for COM ports > 9.
-    const auto full_serial_path = "\\\\.\\" + _serial_node;
-
-    _handle = CreateFile(
-        full_serial_path.c_str(),
-        GENERIC_READ | GENERIC_WRITE,
-        0, // exclusive-access
-        NULL, //  default security attributes
-        OPEN_EXISTING,
-        0, //  not overlapped I/O
-        NULL); //  hTemplate must be NULL for comm devices
-
-    if (_handle == INVALID_HANDLE_VALUE) {
-        LogErr() << "CreateFile failed with: " << GET_ERROR();
-        return ConnectionResult::ConnectionError;
-    }
-#endif
 
 #if defined(LINUX) || defined(APPLE)
+    // Apply raw-mode termios settings via the native fd.  Asio opens serial ports with
+    // O_NONBLOCK (required for async I/O), so we do NOT clear that flag here.
     struct termios tc;
     bzero(&tc, sizeof(tc));
 
-    if (tcgetattr(_fd, &tc) != 0) {
+    const int fd = _serial_port.native_handle();
+
+    if (tcgetattr(fd, &tc) != 0) {
         LogErr() << "tcgetattr failed: " << GET_ERROR();
-        close(_fd);
+        _serial_port.close(ec);
         return ConnectionResult::ConnectionError;
     }
-#endif
 
-#if defined(LINUX) || defined(APPLE)
     tc.c_iflag &= ~(IGNBRK | BRKINT | ICRNL | INLCR | PARMRK | INPCK | ISTRIP | IXON);
     tc.c_oflag &= ~(OCRNL | ONLCR | ONLRET | ONOCR | OFILL | OPOST);
     tc.c_lflag &= ~(ECHO | ECHONL | ICANON | IEXTEN | ISIG | TOSTOP);
     tc.c_cflag &= ~(CSIZE | PARENB | CRTSCTS);
     tc.c_cflag |= CS8;
+    tc.c_cflag |= CLOCAL; // Without this a write() blocks indefinitely.
 
-    tc.c_cc[VMIN] = 0; // We are ok with 0 bytes.
-    tc.c_cc[VTIME] = 10; // Timeout after 1 second.
+    // VMIN=0 / VTIME=0: non-blocking raw mode — Asio drives readiness via epoll/kqueue.
+    tc.c_cc[VMIN] = 0;
+    tc.c_cc[VTIME] = 0;
 
     if (_flow_control) {
         tc.c_cflag |= CRTSCTS;
     }
-#endif
-
-#if defined(LINUX) || defined(APPLE)
-    tc.c_cflag |= CLOCAL; // Without this a write() blocks indefinitely.
 
 #if defined(LINUX)
     const int baudrate_or_define = define_from_baudrate(_baudrate);
@@ -171,34 +152,37 @@ ConnectionResult SerialConnection::setup_port()
 #endif
 
     if (baudrate_or_define == -1) {
+        _serial_port.close(ec);
         return ConnectionResult::BaudrateUnknown;
     }
 
     if (cfsetispeed(&tc, baudrate_or_define) != 0) {
         LogErr() << "cfsetispeed failed: " << GET_ERROR();
-        close(_fd);
+        _serial_port.close(ec);
         return ConnectionResult::ConnectionError;
     }
 
     if (cfsetospeed(&tc, baudrate_or_define) != 0) {
         LogErr() << "cfsetospeed failed: " << GET_ERROR();
-        close(_fd);
+        _serial_port.close(ec);
         return ConnectionResult::ConnectionError;
     }
 
-    if (tcsetattr(_fd, TCSANOW, &tc) != 0) {
+    if (tcsetattr(fd, TCSANOW, &tc) != 0) {
         LogErr() << "tcsetattr failed: " << GET_ERROR();
-        close(_fd);
+        _serial_port.close(ec);
         return ConnectionResult::ConnectionError;
     }
-#endif
 
-#if defined(WINDOWS)
+#elif defined(WINDOWS)
+    // Apply DCB settings via the native HANDLE.
+    HANDLE handle = _serial_port.native_handle();
+
     DCB dcb;
     SecureZeroMemory(&dcb, sizeof(DCB));
     dcb.DCBlength = sizeof(DCB);
 
-    if (!GetCommState(_handle, &dcb)) {
+    if (!GetCommState(handle, &dcb)) {
         LogErr() << "GetCommState failed with error: " << GET_ERROR();
         return ConnectionResult::ConnectionError;
     }
@@ -221,51 +205,43 @@ ConnectionResult SerialConnection::setup_port()
     dcb.fNull = FALSE;
     dcb.fDsrSensitivity = FALSE;
 
-    if (!SetCommState(_handle, &dcb)) {
+    if (!SetCommState(handle, &dcb)) {
         LogErr() << "SetCommState failed with error: " << GET_ERROR();
         return ConnectionResult::ConnectionError;
     }
 
-    COMMTIMEOUTS timeout = {0, 0, 0, 0, 0};
-    timeout.ReadIntervalTimeout = 1;
-    timeout.ReadTotalTimeoutConstant = 1;
-    timeout.ReadTotalTimeoutMultiplier = 1;
-    timeout.WriteTotalTimeoutConstant = 1;
-    timeout.WriteTotalTimeoutMultiplier = 1;
-    SetCommTimeouts(_handle, &timeout);
-
-    if (!SetCommTimeouts(_handle, &timeout)) {
+    // Asio manages timeouts internally for overlapped I/O; clear COMMTIMEOUTS so
+    // the OS never times out a read prematurely.
+    COMMTIMEOUTS timeout{};
+    if (!SetCommTimeouts(handle, &timeout)) {
         LogErr() << "SetCommTimeouts failed with error: " << GET_ERROR();
         return ConnectionResult::ConnectionError;
     }
-
 #endif
 
     return ConnectionResult::Success;
 }
 
-void SerialConnection::start_recv_thread()
-{
-    _recv_thread = std::make_unique<std::thread>(&SerialConnection::receive, this);
-}
-
 ConnectionResult SerialConnection::stop()
 {
-    _should_exit = true;
-
-    if (_recv_thread) {
-        _recv_thread->join();
-        _recv_thread.reset();
+    {
+        std::lock_guard<std::mutex> lock(_send_mutex);
+        if (_serial_port.is_open()) {
+            asio::error_code ec;
+            _serial_port.cancel(ec); // cancel outstanding async_read_some
+            _serial_port.close(ec);
+        }
     }
 
-#if defined(LINUX) || defined(APPLE)
-    close(_fd);
-#elif defined(WINDOWS)
-    CloseHandle(_handle);
-#endif
+    // Fence: wait for any in-flight handler to finish before allowing member destruction.
+    auto& io_ctx = static_cast<asio::io_context&>(_serial_port.get_executor().context());
+    if (!io_ctx.stopped()) {
+        std::promise<void> fence;
+        asio::post(io_ctx, [&fence]() { fence.set_value(); });
+        fence.get_future().wait();
+    }
 
-    // We need to stop this after stopping the receive thread, otherwise
-    // it can happen that we interfere with the parsing of a message.
+    // Stop after stopping the port so we don't interfere with message parsing.
     stop_mavlink_receiver();
 
     return ConnectionResult::Success;
@@ -273,64 +249,79 @@ ConnectionResult SerialConnection::stop()
 
 std::pair<bool, std::string> SerialConnection::send_message(const mavlink_message_t& message)
 {
-    // Convert message to raw bytes and use common send path
     uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
     uint16_t buffer_len = mavlink_msg_to_send_buffer(buffer, &message);
-
     return send_raw_bytes(reinterpret_cast<const char*>(buffer), buffer_len);
 }
 
-void SerialConnection::receive()
+std::pair<bool, std::string> SerialConnection::send_raw_bytes(const char* bytes, size_t length)
 {
-    // Enough for MTU 1500 bytes.
-    char buffer[2048];
-
-#if defined(LINUX) || defined(APPLE)
-    struct pollfd fds[1];
-    fds[0].fd = _fd;
-    fds[0].events = POLLIN;
-#endif
-
-    while (!_should_exit) {
-        int recv_len;
-#if defined(LINUX) || defined(APPLE)
-        int pollrc = poll(fds, 1, 1000);
-        if (pollrc == 0 || !(fds[0].revents & POLLIN)) {
-            continue;
-        } else if (pollrc == -1) {
-            LogErr() << "read poll failure: " << GET_ERROR();
-        }
-        // We enter here if (fds[0].revents & POLLIN) == true
-        recv_len = static_cast<int>(read(_fd, buffer, sizeof(buffer)));
-        if (recv_len < -1) {
-            LogErr() << "read failure: " << GET_ERROR();
-        }
-#else
-        if (!ReadFile(_handle, buffer, sizeof(buffer), LPDWORD(&recv_len), NULL)) {
-            LogErr() << "ReadFile failure: " << GET_ERROR();
-            continue;
-        }
-#endif
-        if (recv_len > static_cast<int>(sizeof(buffer)) || recv_len == 0) {
-            continue;
-        }
-        _mavlink_receiver->set_new_datagram(buffer, recv_len);
-        // Parse all mavlink messages in one data packet. Once exhausted, we'll exit loop.
-        auto parse_result = _mavlink_receiver->parse_message();
-        while (parse_result != MavlinkReceiver::ParseResult::NoneAvailable) {
-            receive_message(parse_result, _mavlink_receiver->get_last_message(), this);
-            parse_result = _mavlink_receiver->parse_message();
-        }
-
-        // Also parse with libmav if available
-        if (_libmav_receiver) {
-            _libmav_receiver->set_new_datagram(buffer, recv_len);
-
-            while (_libmav_receiver->parse_message()) {
-                receive_libmav_message(_libmav_receiver->get_last_message(), this);
-            }
-        }
+    if (_serial_node.empty()) {
+        return {false, "Dev Path unknown"};
     }
+
+    if (_baudrate == 0) {
+        return {false, "Baudrate unknown"};
+    }
+
+    std::lock_guard<std::mutex> lock(_send_mutex);
+
+    if (!_serial_port.is_open()) {
+        return {false, "Port not open"};
+    }
+
+    asio::error_code ec;
+    asio::write(_serial_port, asio::buffer(bytes, length), ec);
+
+    if (ec) {
+        std::string msg = "write failure: " + ec.message();
+        LogErr() << msg;
+        return {false, std::move(msg)};
+    }
+
+    return {true, {}};
+}
+
+void SerialConnection::do_receive()
+{
+    // Post an async read. The handler runs on the dedicated io_context thread (_io_thread).
+    _serial_port.async_read_some(
+        asio::buffer(_recv_buffer), [this](const asio::error_code& ec, std::size_t recv_len) {
+            if (ec == asio::error::operation_aborted) {
+                // stop() was called — do not re-arm.
+                return;
+            }
+
+            if (ec) {
+                LogErr() << "read failure: " << ec.message();
+                // Do not re-arm on hard errors (port removed, etc.).
+                return;
+            }
+
+            if (recv_len == 0) {
+                // No data yet — re-arm immediately.
+                do_receive();
+                return;
+            }
+
+            _mavlink_receiver->set_new_datagram(_recv_buffer.data(), static_cast<int>(recv_len));
+
+            auto parse_result = _mavlink_receiver->parse_message();
+            while (parse_result != MavlinkReceiver::ParseResult::NoneAvailable) {
+                receive_message(parse_result, _mavlink_receiver->get_last_message(), this);
+                parse_result = _mavlink_receiver->parse_message();
+            }
+
+            if (_libmav_receiver) {
+                _libmav_receiver->set_new_datagram(_recv_buffer.data(), static_cast<int>(recv_len));
+                while (_libmav_receiver->parse_message()) {
+                    receive_libmav_message(_libmav_receiver->get_last_message(), this);
+                }
+            }
+
+            // Re-arm for the next chunk.
+            do_receive();
+        });
 }
 
 #if defined(LINUX)
@@ -373,56 +364,11 @@ int SerialConnection::define_from_baudrate(int baudrate)
             return B3500000;
         case 4000000:
             return B4000000;
-        default: {
+        default:
             LogErr() << "Unknown baudrate";
             return -1;
-        }
     }
 }
 #endif
-
-std::pair<bool, std::string> SerialConnection::send_raw_bytes(const char* bytes, size_t length)
-{
-    std::pair<bool, std::string> result;
-
-    if (_serial_node.empty()) {
-        LogErr() << "Dev Path unknown";
-        result.first = false;
-        result.second = "Dev Path unknown";
-        return result;
-    }
-
-    if (_baudrate == 0) {
-        result.first = false;
-        result.second = "Baudrate unknown";
-        return result;
-    }
-
-    int send_len;
-#if defined(LINUX) || defined(APPLE)
-    send_len = static_cast<int>(write(_fd, bytes, length));
-#else
-    if (!WriteFile(_handle, bytes, static_cast<DWORD>(length), LPDWORD(&send_len), NULL)) {
-        std::stringstream ss;
-        ss << "WriteFile failure: " << GET_ERROR();
-        LogErr() << ss.str();
-        result.first = false;
-        result.second = ss.str();
-        return result;
-    }
-#endif
-
-    if (send_len != static_cast<int>(length)) {
-        std::stringstream ss;
-        ss << "write failure: " << GET_ERROR();
-        LogErr() << ss.str();
-        result.first = false;
-        result.second = ss.str();
-        return result;
-    }
-
-    result.first = true;
-    return result;
-}
 
 } // namespace mavsdk

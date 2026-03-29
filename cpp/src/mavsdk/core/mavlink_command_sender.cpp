@@ -8,7 +8,9 @@
 
 namespace mavsdk {
 
-MavlinkCommandSender::MavlinkCommandSender(SystemImpl& system_impl) : _system_impl(system_impl)
+MavlinkCommandSender::MavlinkCommandSender(SystemImpl& system_impl) :
+    _system_impl(system_impl),
+    _io_context(system_impl.io_context())
 {
     if (const char* env_p = std::getenv("MAVSDK_COMMAND_DEBUGGING")) {
         if (std::string(env_p) == "1") {
@@ -30,7 +32,6 @@ MavlinkCommandSender::~MavlinkCommandSender()
     }
     _system_impl.unregister_all_mavlink_message_handlers(this);
 
-    LockedQueue<Work>::Guard work_queue_guard(_work_queue);
     for (const auto& work : _work_queue) {
         _system_impl.unregister_timeout_handler(work->timeout_cookie);
     }
@@ -92,28 +93,29 @@ void MavlinkCommandSender::queue_command_async(
                    << static_cast<int>(command.target_component_id);
     }
 
-    CommandIdentification identification = identification_from_command(command);
-
-    {
-        LockedQueue<Work>::Guard work_queue_guard(_work_queue);
+    auto new_work = std::make_shared<Work>();
+    new_work->timeout_s = _system_impl.timeout_s();
+    new_work->command = command;
+    new_work->identification = identification_from_command(command);
+    new_work->callback = callback;
+    new_work->retries_to_do = retries;
+    asio::post(_io_context, [this, new_work]() {
         for (const auto& work : _work_queue) {
-            if (work->identification == identification && callback == nullptr) {
+            if (work->identification == new_work->identification && new_work->callback == nullptr) {
                 if (_command_debugging) {
-                    LogDebug() << "Dropping command " << static_cast<int>(identification.command)
+                    LogDebug() << "Dropping command "
+                               << static_cast<int>(new_work->identification.command)
                                << " that is already being sent";
                 }
                 return;
             }
         }
-    }
-
-    auto new_work = std::make_shared<Work>();
-    new_work->timeout_s = _system_impl.timeout_s();
-    new_work->command = command;
-    new_work->identification = identification;
-    new_work->callback = callback;
-    new_work->retries_to_do = retries;
-    _work_queue.push_back(new_work);
+        const bool was_empty = _work_queue.empty();
+        _work_queue.push_back(new_work);
+        if (was_empty) {
+            do_work();
+        }
+    });
 }
 
 void MavlinkCommandSender::queue_command_async(
@@ -125,29 +127,30 @@ void MavlinkCommandSender::queue_command_async(
                    << static_cast<int>(command.target_component_id);
     }
 
-    CommandIdentification identification = identification_from_command(command);
-
-    {
-        LockedQueue<Work>::Guard work_queue_guard(_work_queue);
+    auto new_work = std::make_shared<Work>();
+    new_work->timeout_s = _system_impl.timeout_s();
+    new_work->command = command;
+    new_work->identification = identification_from_command(command);
+    new_work->callback = callback;
+    new_work->time_started = _system_impl.get_time().steady_time();
+    new_work->retries_to_do = retries;
+    asio::post(_io_context, [this, new_work]() {
         for (const auto& work : _work_queue) {
-            if (work->identification == identification && callback == nullptr) {
+            if (work->identification == new_work->identification && new_work->callback == nullptr) {
                 if (_command_debugging) {
-                    LogDebug() << "Dropping command " << static_cast<int>(identification.command)
+                    LogDebug() << "Dropping command "
+                               << static_cast<int>(new_work->identification.command)
                                << " that is already being sent";
                 }
                 return;
             }
         }
-    }
-
-    auto new_work = std::make_shared<Work>();
-    new_work->timeout_s = _system_impl.timeout_s();
-    new_work->command = command;
-    new_work->identification = identification;
-    new_work->callback = callback;
-    new_work->time_started = _system_impl.get_time().steady_time();
-    new_work->retries_to_do = retries;
-    _work_queue.push_back(new_work);
+        const bool was_empty = _work_queue.empty();
+        _work_queue.push_back(new_work);
+        if (was_empty) {
+            do_work();
+        }
+    });
 }
 
 void MavlinkCommandSender::receive_command_ack(const mavlink_message_t& message)
@@ -168,8 +171,6 @@ void MavlinkCommandSender::receive_command_ack(const mavlink_message_t& message)
         }
         return;
     }
-
-    LockedQueue<Work>::Guard work_queue_guard(_work_queue);
 
     for (auto it = _work_queue.begin(); it != _work_queue.end(); ++it) {
         const auto& work = *it;
@@ -315,8 +316,6 @@ void MavlinkCommandSender::receive_timeout(const CommandIdentification& identifi
     CommandResultCallback temp_callback = nullptr;
     std::pair<Result, float> temp_result{Result::UnknownError, NAN};
 
-    LockedQueue<Work>::Guard work_queue_guard(_work_queue);
-
     for (auto it = _work_queue.begin(); it != _work_queue.end(); ++it) {
         const auto& work = *it;
 
@@ -406,8 +405,6 @@ void MavlinkCommandSender::receive_timeout(const CommandIdentification& identifi
 
 void MavlinkCommandSender::do_work()
 {
-    LockedQueue<Work>::Guard work_queue_guard(_work_queue);
-
     for (const auto& work : _work_queue) {
         if (work->already_sent) {
             continue;

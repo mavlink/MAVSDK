@@ -20,7 +20,10 @@ FailureImpl::~FailureImpl()
 
 void FailureImpl::init() {}
 
-void FailureImpl::deinit() {}
+void FailureImpl::deinit()
+{
+    _system_impl->cancel_all_param(this);
+}
 
 void FailureImpl::enable()
 {
