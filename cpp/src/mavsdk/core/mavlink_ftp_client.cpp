@@ -1618,6 +1618,12 @@ std::ostream& operator<<(std::ostream& str, MavlinkFtpClient::ClientResult const
 
 void MavlinkFtpClient::cancel_all_operations()
 {
+    if (_io_context.stopped()) {
+        // io_context is stopped and its thread is dead — safe to access directly.
+        stop_timer();
+        _work_queue.clear();
+        return;
+    }
     std::promise<void> done;
     asio::post(_io_context, [this, &done]() {
         stop_timer();
