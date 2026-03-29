@@ -13,15 +13,14 @@
 #include <utility>
 #include <vector>
 
-
 #include "plugin_base.h"
 
 #include "handle.h"
 
 namespace mavsdk {
 
-
-class System;class CameraImpl;
+class System;
+class CameraImpl;
 
 /**
  * @brief Can be used to manage cameras that implement the MAVLink
@@ -34,7 +33,6 @@ class System;class CameraImpl;
  */
 class Camera : public PluginBase {
 public:
-
     /**
      * @brief Constructor. Creates the plugin for a specific System.
      *
@@ -61,12 +59,10 @@ public:
      */
     explicit Camera(std::shared_ptr<System> system); // new
 
-
     /**
      * @brief Destructor (internal use only).
      */
     ~Camera() override;
-
 
     /**
      * @brief Camera mode type.
@@ -99,14 +95,10 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, Camera::PhotosRange const& photos_range);
 
-
-
-
     /**
      * @brief Type to represent a setting option.
      */
     struct Option {
-        
         std::string option_id{}; /**< @brief Name of the option (machine readable) */
         std::string option_description{}; /**< @brief Description of the option (human readable) */
     };
@@ -125,18 +117,17 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, Camera::Option const& option);
 
-
-
-
     /**
      * @brief Type to represent a setting with a selected option.
      */
     struct Setting {
-        
         std::string setting_id{}; /**< @brief Name of a setting (machine readable) */
-        std::string setting_description{}; /**< @brief Description of the setting (human readable). This field is meant to be read from the drone, ignore it when setting. */
+        std::string setting_description{}; /**< @brief Description of the setting (human readable).
+                                              This field is meant to be read from the drone, ignore
+                                              it when setting. */
         Option option{}; /**< @brief Selected option */
-        bool is_range{}; /**< @brief If option is given as a range. This field is meant to be read from the drone, ignore it when setting. */
+        bool is_range{}; /**< @brief If option is given as a range. This field is meant to be read
+                            from the drone, ignore it when setting. */
     };
 
     /**
@@ -153,18 +144,16 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, Camera::Setting const& setting);
 
-
-
-
     /**
      * @brief Type to represent a setting with a list of options to choose from.
      */
     struct SettingOptions {
-        
         int32_t component_id{}; /**< @brief Component ID */
         std::string setting_id{}; /**< @brief Name of the setting (machine readable) */
-        std::string setting_description{}; /**< @brief Description of the setting (human readable) */
-        std::vector<Option> options{}; /**< @brief List of options or if range [min, max] or [min, max, interval] */
+        std::string
+            setting_description{}; /**< @brief Description of the setting (human readable) */
+        std::vector<Option>
+            options{}; /**< @brief List of options or if range [min, max] or [min, max, interval] */
         bool is_range{}; /**< @brief If option is given as a range */
     };
 
@@ -180,16 +169,13 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, Camera::SettingOptions const& setting_options);
-
-
-
+    friend std::ostream&
+    operator<<(std::ostream& str, Camera::SettingOptions const& setting_options);
 
     /**
      * @brief Type for video stream settings.
      */
     struct VideoStreamSettings {
-        
         float frame_rate_hz{}; /**< @brief Frames per second */
         uint32_t horizontal_resolution_pix{}; /**< @brief Horizontal resolution (in pixels) */
         uint32_t vertical_resolution_pix{}; /**< @brief Vertical resolution (in pixels) */
@@ -204,56 +190,56 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(const Camera::VideoStreamSettings& lhs, const Camera::VideoStreamSettings& rhs);
+    friend bool
+    operator==(const Camera::VideoStreamSettings& lhs, const Camera::VideoStreamSettings& rhs);
 
     /**
      * @brief Stream operator to print information about a `Camera::VideoStreamSettings`.
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, Camera::VideoStreamSettings const& video_stream_settings);
-
-
-
-
-
+    friend std::ostream&
+    operator<<(std::ostream& str, Camera::VideoStreamSettings const& video_stream_settings);
 
     /**
      * @brief Information about the video stream.
      */
     struct VideoStreamInfo {
-        
         /**
-     * @brief Video stream status type.
-     */
-    enum class VideoStreamStatus {
-        NotRunning, /**< @brief Video stream is not running. */
-        InProgress, /**< @brief Video stream is running. */
-    };
+         * @brief Video stream status type.
+         */
+        enum class VideoStreamStatus {
+            NotRunning, /**< @brief Video stream is not running. */
+            InProgress, /**< @brief Video stream is running. */
+        };
 
-    /**
-     * @brief Stream operator to print information about a `Camera::VideoStreamStatus`.
-     *
-     * @return A reference to the stream.
-     */
-    friend std::ostream& operator<<(std::ostream& str, Camera::VideoStreamInfo::VideoStreamStatus const& video_stream_status);
-        
         /**
-     * @brief Video stream light spectrum type
-     */
-    enum class VideoStreamSpectrum {
-        Unknown, /**< @brief Unknown. */
-        VisibleLight, /**< @brief Visible light. */
-        Infrared, /**< @brief Infrared. */
-    };
+         * @brief Stream operator to print information about a `Camera::VideoStreamStatus`.
+         *
+         * @return A reference to the stream.
+         */
+        friend std::ostream& operator<<(
+            std::ostream& str,
+            Camera::VideoStreamInfo::VideoStreamStatus const& video_stream_status);
 
-    /**
-     * @brief Stream operator to print information about a `Camera::VideoStreamSpectrum`.
-     *
-     * @return A reference to the stream.
-     */
-    friend std::ostream& operator<<(std::ostream& str, Camera::VideoStreamInfo::VideoStreamSpectrum const& video_stream_spectrum);
-        
+        /**
+         * @brief Video stream light spectrum type
+         */
+        enum class VideoStreamSpectrum {
+            Unknown, /**< @brief Unknown. */
+            VisibleLight, /**< @brief Visible light. */
+            Infrared, /**< @brief Infrared. */
+        };
+
+        /**
+         * @brief Stream operator to print information about a `Camera::VideoStreamSpectrum`.
+         *
+         * @return A reference to the stream.
+         */
+        friend std::ostream& operator<<(
+            std::ostream& str,
+            Camera::VideoStreamInfo::VideoStreamSpectrum const& video_stream_spectrum);
+
         int32_t stream_id{}; /**< @brief Stream ID */
         VideoStreamSettings settings{}; /**< @brief Video stream settings */
         VideoStreamStatus status{}; /**< @brief Current status of video streaming */
@@ -272,16 +258,13 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, Camera::VideoStreamInfo const& video_stream_info);
-
-
-
+    friend std::ostream&
+    operator<<(std::ostream& str, Camera::VideoStreamInfo const& video_stream_info);
 
     /**
      * @brief An update about the current mode
      */
     struct ModeUpdate {
-        
         int32_t component_id{}; /**< @brief Component ID */
         Mode mode{}; /**< @brief Camera mode */
     };
@@ -300,14 +283,10 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, Camera::ModeUpdate const& mode_update);
 
-
-
-
     /**
      * @brief An update about a video stream
      */
     struct VideoStreamUpdate {
-        
         int32_t component_id{}; /**< @brief Component ID */
         VideoStreamInfo video_stream_info{}; /**< @brief Video stream info */
     };
@@ -317,68 +296,68 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(const Camera::VideoStreamUpdate& lhs, const Camera::VideoStreamUpdate& rhs);
+    friend bool
+    operator==(const Camera::VideoStreamUpdate& lhs, const Camera::VideoStreamUpdate& rhs);
 
     /**
      * @brief Stream operator to print information about a `Camera::VideoStreamUpdate`.
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, Camera::VideoStreamUpdate const& video_stream_update);
-
-
-
-
-
+    friend std::ostream&
+    operator<<(std::ostream& str, Camera::VideoStreamUpdate const& video_stream_update);
 
     /**
      * @brief Information about the camera's storage status.
      */
     struct Storage {
-        
         /**
-     * @brief Storage status type.
-     */
-    enum class StorageStatus {
-        NotAvailable, /**< @brief Status not available. */
-        Unformatted, /**< @brief Storage is not formatted (i.e. has no recognized file system). */
-        Formatted, /**< @brief Storage is formatted (i.e. has recognized a file system). */
-        NotSupported, /**< @brief Storage status is not supported. */
-    };
+         * @brief Storage status type.
+         */
+        enum class StorageStatus {
+            NotAvailable, /**< @brief Status not available. */
+            Unformatted, /**< @brief Storage is not formatted (i.e. has no recognized file system).
+                          */
+            Formatted, /**< @brief Storage is formatted (i.e. has recognized a file system). */
+            NotSupported, /**< @brief Storage status is not supported. */
+        };
 
-    /**
-     * @brief Stream operator to print information about a `Camera::StorageStatus`.
-     *
-     * @return A reference to the stream.
-     */
-    friend std::ostream& operator<<(std::ostream& str, Camera::Storage::StorageStatus const& storage_status);
-        
         /**
-     * @brief Storage type.
-     */
-    enum class StorageType {
-        Unknown, /**< @brief Storage type unknown. */
-        UsbStick, /**< @brief Storage type USB stick. */
-        Sd, /**< @brief Storage type SD card. */
-        Microsd, /**< @brief Storage type MicroSD card. */
-        Hd, /**< @brief Storage type HD mass storage. */
-        Other, /**< @brief Storage type other, not listed. */
-    };
+         * @brief Stream operator to print information about a `Camera::StorageStatus`.
+         *
+         * @return A reference to the stream.
+         */
+        friend std::ostream&
+        operator<<(std::ostream& str, Camera::Storage::StorageStatus const& storage_status);
 
-    /**
-     * @brief Stream operator to print information about a `Camera::StorageType`.
-     *
-     * @return A reference to the stream.
-     */
-    friend std::ostream& operator<<(std::ostream& str, Camera::Storage::StorageType const& storage_type);
-        
+        /**
+         * @brief Storage type.
+         */
+        enum class StorageType {
+            Unknown, /**< @brief Storage type unknown. */
+            UsbStick, /**< @brief Storage type USB stick. */
+            Sd, /**< @brief Storage type SD card. */
+            Microsd, /**< @brief Storage type MicroSD card. */
+            Hd, /**< @brief Storage type HD mass storage. */
+            Other, /**< @brief Storage type other, not listed. */
+        };
+
+        /**
+         * @brief Stream operator to print information about a `Camera::StorageType`.
+         *
+         * @return A reference to the stream.
+         */
+        friend std::ostream&
+        operator<<(std::ostream& str, Camera::Storage::StorageType const& storage_type);
+
         int32_t component_id{}; /**< @brief Component ID */
         bool video_on{}; /**< @brief Whether video recording is currently in process */
         bool photo_interval_on{}; /**< @brief Whether a photo interval is currently in process */
         float used_storage_mib{}; /**< @brief Used storage (in MiB) */
         float available_storage_mib{}; /**< @brief Available storage (in MiB) */
         float total_storage_mib{}; /**< @brief Total storage (in MiB) */
-        float recording_time_s{}; /**< @brief Elapsed time since starting the video recording (in seconds) */
+        float recording_time_s{}; /**< @brief Elapsed time since starting the video recording (in
+                                     seconds) */
         std::string media_folder_name{}; /**< @brief Current folder name where media are saved */
         StorageStatus storage_status{}; /**< @brief Storage status */
         uint32_t storage_id{}; /**< @brief Storage ID starting at 1 */
@@ -399,14 +378,10 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, Camera::Storage const& storage);
 
-
-
-
     /**
      * @brief An update about storage
      */
     struct StorageUpdate {
-        
         int32_t component_id{}; /**< @brief Component ID */
         Storage storage{}; /**< @brief Storage */
     };
@@ -425,14 +400,10 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, Camera::StorageUpdate const& storage_update);
 
-
-
-
     /**
      * @brief An update about a current setting
      */
     struct CurrentSettingsUpdate {
-        
         int32_t component_id{}; /**< @brief Component ID */
         std::vector<Setting> current_settings{}; /**< @brief List of current settings */
     };
@@ -442,25 +413,24 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(const Camera::CurrentSettingsUpdate& lhs, const Camera::CurrentSettingsUpdate& rhs);
+    friend bool
+    operator==(const Camera::CurrentSettingsUpdate& lhs, const Camera::CurrentSettingsUpdate& rhs);
 
     /**
      * @brief Stream operator to print information about a `Camera::CurrentSettingsUpdate`.
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, Camera::CurrentSettingsUpdate const& current_settings_update);
-
-
-
+    friend std::ostream&
+    operator<<(std::ostream& str, Camera::CurrentSettingsUpdate const& current_settings_update);
 
     /**
      * @brief An update about possible setting options
      */
     struct PossibleSettingOptionsUpdate {
-        
         int32_t component_id{}; /**< @brief Component ID */
-        std::vector<SettingOptions> setting_options{}; /**< @brief List of settings that can be changed */
+        std::vector<SettingOptions>
+            setting_options{}; /**< @brief List of settings that can be changed */
     };
 
     /**
@@ -468,18 +438,18 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(const Camera::PossibleSettingOptionsUpdate& lhs, const Camera::PossibleSettingOptionsUpdate& rhs);
+    friend bool operator==(
+        const Camera::PossibleSettingOptionsUpdate& lhs,
+        const Camera::PossibleSettingOptionsUpdate& rhs);
 
     /**
      * @brief Stream operator to print information about a `Camera::PossibleSettingOptionsUpdate`.
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, Camera::PossibleSettingOptionsUpdate const& possible_setting_options_update);
-
-
-
-
+    friend std::ostream& operator<<(
+        std::ostream& str,
+        Camera::PossibleSettingOptionsUpdate const& possible_setting_options_update);
 
     /**
      * @brief Possible results returned for camera commands
@@ -507,15 +477,10 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, Camera::Result const& result);
 
-
-
-
-
     /**
      * @brief Position type in global coordinates.
      */
     struct Position {
-        
         double latitude_deg{}; /**< @brief Latitude in degrees (range: -90 to +90) */
         double longitude_deg{}; /**< @brief Longitude in degrees (range: -180 to +180) */
         float absolute_altitude_m{}; /**< @brief Altitude AMSL (above mean sea level) in metres */
@@ -536,9 +501,6 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, Camera::Position const& position);
 
-
-
-
     /**
      * @brief Quaternion type.
      *
@@ -550,7 +512,6 @@ public:
      * For more info see: https://en.wikipedia.org/wiki/Quaternion
      */
     struct Quaternion {
-        
         float w{}; /**< @brief Quaternion entry 0, also denoted as a */
         float x{}; /**< @brief Quaternion entry 1, also denoted as b */
         float y{}; /**< @brief Quaternion entry 2, also denoted as c */
@@ -571,9 +532,6 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, Camera::Quaternion const& quaternion);
 
-
-
-
     /**
      * @brief Euler angle type.
      *
@@ -583,7 +541,6 @@ public:
      * For more info see https://en.wikipedia.org/wiki/Euler_angles
      */
     struct EulerAngle {
-        
         float roll_deg{}; /**< @brief Roll angle in degrees, positive is banking to the right */
         float pitch_deg{}; /**< @brief Pitch angle in degrees, positive is pitching nose up */
         float yaw_deg{}; /**< @brief Yaw angle in degrees, positive is clock-wise seen from above */
@@ -603,18 +560,16 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, Camera::EulerAngle const& euler_angle);
 
-
-
-
     /**
      * @brief Information about a picture just captured.
      */
     struct CaptureInfo {
-        
         int32_t component_id{}; /**< @brief Component ID */
         Position position{}; /**< @brief Location where the picture was taken */
-        Quaternion attitude_quaternion{}; /**< @brief Attitude of the camera when the picture was taken (quaternion) */
-        EulerAngle attitude_euler_angle{}; /**< @brief Attitude of the camera when the picture was taken (euler angle) */
+        Quaternion attitude_quaternion{}; /**< @brief Attitude of the camera when the picture was
+                                             taken (quaternion) */
+        EulerAngle attitude_euler_angle{}; /**< @brief Attitude of the camera when the picture was
+                                              taken (euler angle) */
         uint64_t time_utc_us{}; /**< @brief Timestamp in UTC (since UNIX epoch) in microseconds */
         bool is_success{}; /**< @brief True if the capture was successful */
         int32_t index{}; /**< @brief Zero-based index of this image since vehicle was armed */
@@ -635,14 +590,10 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, Camera::CaptureInfo const& capture_info);
 
-
-
-
     /**
      * @brief Type to represent a camera information.
      */
     struct Information {
-        
         int32_t component_id{}; /**< @brief Component ID */
         std::string vendor_name{}; /**< @brief Name of the camera vendor */
         std::string model_name{}; /**< @brief Name of the camera model */
@@ -667,14 +618,10 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, Camera::Information const& information);
 
-
-
-
     /**
      * @brief Camera list
      */
     struct CameraList {
-        
         std::vector<Information> cameras{}; /**< @brief Camera items. */
     };
 
@@ -692,14 +639,10 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, Camera::CameraList const& camera_list);
 
-
     /**
      * @brief Callback type for asynchronous Camera calls.
      */
     using ResultCallback = std::function<void(Result)>;
-
-
-
 
     /**
      * @brief Take one photo.
@@ -708,44 +651,35 @@ public:
      */
     void take_photo_async(int32_t component_id, const ResultCallback callback);
 
-
-
     /**
      * @brief Take one photo.
      *
      * This function is blocking. See 'take_photo_async' for the non-blocking counterpart.
      *
-     
+
      * @return Result of request.
-     
+
      */
     Result take_photo(int32_t component_id) const;
-
-
-
 
     /**
      * @brief Start photo timelapse with a given interval.
      *
      * This function is non-blocking. See 'start_photo_interval' for the blocking counterpart.
      */
-    void start_photo_interval_async(int32_t component_id, float interval_s, const ResultCallback callback);
-
-
+    void start_photo_interval_async(
+        int32_t component_id, float interval_s, const ResultCallback callback);
 
     /**
      * @brief Start photo timelapse with a given interval.
      *
      * This function is blocking. See 'start_photo_interval_async' for the non-blocking counterpart.
      *
-     
+
      * @return Result of request.
-     
+
      */
     Result start_photo_interval(int32_t component_id, float interval_s) const;
-
-
-
 
     /**
      * @brief Stop a running photo timelapse.
@@ -754,21 +688,16 @@ public:
      */
     void stop_photo_interval_async(int32_t component_id, const ResultCallback callback);
 
-
-
     /**
      * @brief Stop a running photo timelapse.
      *
      * This function is blocking. See 'stop_photo_interval_async' for the non-blocking counterpart.
      *
-     
+
      * @return Result of request.
-     
+
      */
     Result stop_photo_interval(int32_t component_id) const;
-
-
-
 
     /**
      * @brief Start a video recording.
@@ -777,21 +706,16 @@ public:
      */
     void start_video_async(int32_t component_id, const ResultCallback callback);
 
-
-
     /**
      * @brief Start a video recording.
      *
      * This function is blocking. See 'start_video_async' for the non-blocking counterpart.
      *
-     
+
      * @return Result of request.
-     
+
      */
     Result start_video(int32_t component_id) const;
-
-
-
 
     /**
      * @brief Stop a running video recording.
@@ -800,53 +724,38 @@ public:
      */
     void stop_video_async(int32_t component_id, const ResultCallback callback);
 
-
-
     /**
      * @brief Stop a running video recording.
      *
      * This function is blocking. See 'stop_video_async' for the non-blocking counterpart.
      *
-     
+
      * @return Result of request.
-     
+
      */
     Result stop_video(int32_t component_id) const;
-
-
-
-
-
 
     /**
      * @brief Start video streaming.
      *
      * This function is blocking.
      *
-     
+
      * @return Result of request.
-     
+
      */
     Result start_video_streaming(int32_t component_id, int32_t stream_id) const;
-
-
-
-
-
 
     /**
      * @brief Stop current video streaming.
      *
      * This function is blocking.
      *
-     
+
      * @return Result of request.
-     
+
      */
     Result stop_video_streaming(int32_t component_id, int32_t stream_id) const;
-
-
-
 
     /**
      * @brief Set camera mode.
@@ -855,25 +764,20 @@ public:
      */
     void set_mode_async(int32_t component_id, Mode mode, const ResultCallback callback);
 
-
-
     /**
      * @brief Set camera mode.
      *
      * This function is blocking. See 'set_mode_async' for the non-blocking counterpart.
      *
-     
+
      * @return Result of request.
-     
+
      */
     Result set_mode(int32_t component_id, Mode mode) const;
 
-
-
-
     /**
-    * @brief Callback type for list_photos_async.
-    */
+     * @brief Callback type for list_photos_async.
+     */
     using ListPhotosCallback = std::function<void(Result, std::vector<CaptureInfo>)>;
 
     /**
@@ -885,9 +789,8 @@ public:
      *
      * This function is non-blocking. See 'list_photos' for the blocking counterpart.
      */
-    void list_photos_async(int32_t component_id, PhotosRange photos_range, const ListPhotosCallback callback);
-
-
+    void list_photos_async(
+        int32_t component_id, PhotosRange photos_range, const ListPhotosCallback callback);
 
     /**
      * @brief List photos available on the camera.
@@ -900,12 +803,8 @@ public:
      *
      * @return Result of request.
      */
-    std::pair<Result, std::vector<Camera::CaptureInfo>> list_photos(int32_t component_id, PhotosRange photos_range) const;
-
-
-
-
-        
+    std::pair<Result, std::vector<Camera::CaptureInfo>>
+    list_photos(int32_t component_id, PhotosRange photos_range) const;
 
     /**
      * @brief Callback type for subscribe_camera_list.
@@ -930,21 +829,12 @@ public:
      */
     void unsubscribe_camera_list(CameraListHandle handle);
 
-        
-
-
-
     /**
      * @brief Poll for 'CameraList' (blocking).
      *
      * @return One CameraList update.
      */
     CameraList camera_list() const;
-
-
-
-
-        
 
     /**
      * @brief Callback type for subscribe_mode.
@@ -966,15 +856,6 @@ public:
      */
     void unsubscribe_mode(ModeHandle handle);
 
-        
-
-
-
-
-
-
-
-
     /**
      * @brief Get camera mode.
      *
@@ -983,11 +864,6 @@ public:
      * @return Result of request.
      */
     std::pair<Result, Camera::Mode> get_mode(int32_t component_id) const;
-
-
-
-
-        
 
     /**
      * @brief Callback type for subscribe_video_stream_info.
@@ -1009,15 +885,6 @@ public:
      */
     void unsubscribe_video_stream_info(VideoStreamInfoHandle handle);
 
-        
-
-
-
-
-
-
-
-
     /**
      * @brief Get video stream info.
      *
@@ -1026,11 +893,6 @@ public:
      * @return Result of request.
      */
     std::pair<Result, Camera::VideoStreamInfo> get_video_stream_info(int32_t component_id) const;
-
-
-
-
-        
 
     /**
      * @brief Callback type for subscribe_capture_info.
@@ -1052,15 +914,6 @@ public:
      */
     void unsubscribe_capture_info(CaptureInfoHandle handle);
 
-        
-
-
-
-
-
-
-        
-
     /**
      * @brief Callback type for subscribe_storage.
      */
@@ -1081,15 +934,6 @@ public:
      */
     void unsubscribe_storage(StorageHandle handle);
 
-        
-
-
-
-
-
-
-
-
     /**
      * @brief Get camera's storage status.
      *
@@ -1098,11 +942,6 @@ public:
      * @return Result of request.
      */
     std::pair<Result, Camera::Storage> get_storage(int32_t component_id) const;
-
-
-
-
-        
 
     /**
      * @brief Callback type for subscribe_current_settings.
@@ -1124,15 +963,6 @@ public:
      */
     void unsubscribe_current_settings(CurrentSettingsHandle handle);
 
-        
-
-
-
-
-
-
-
-
     /**
      * @brief Get current settings.
      *
@@ -1140,12 +970,8 @@ public:
      *
      * @return Result of request.
      */
-    std::pair<Result, std::vector<Camera::Setting>> get_current_settings(int32_t component_id) const;
-
-
-
-
-        
+    std::pair<Result, std::vector<Camera::Setting>>
+    get_current_settings(int32_t component_id) const;
 
     /**
      * @brief Callback type for subscribe_possible_setting_options.
@@ -1160,21 +986,13 @@ public:
     /**
      * @brief Get the list of settings that can be changed.
      */
-    PossibleSettingOptionsHandle subscribe_possible_setting_options(const PossibleSettingOptionsCallback& callback);
+    PossibleSettingOptionsHandle
+    subscribe_possible_setting_options(const PossibleSettingOptionsCallback& callback);
 
     /**
      * @brief Unsubscribe from subscribe_possible_setting_options
      */
     void unsubscribe_possible_setting_options(PossibleSettingOptionsHandle handle);
-
-        
-
-
-
-
-
-
-
 
     /**
      * @brief Get possible setting options.
@@ -1183,10 +1001,8 @@ public:
      *
      * @return Result of request.
      */
-    std::pair<Result, std::vector<Camera::SettingOptions>> get_possible_setting_options(int32_t component_id) const;
-
-
-
+    std::pair<Result, std::vector<Camera::SettingOptions>>
+    get_possible_setting_options(int32_t component_id) const;
 
     /**
      * @brief Set a setting to some value.
@@ -1197,8 +1013,6 @@ public:
      */
     void set_setting_async(int32_t component_id, Setting setting, const ResultCallback callback);
 
-
-
     /**
      * @brief Set a setting to some value.
      *
@@ -1206,18 +1020,15 @@ public:
      *
      * This function is blocking. See 'set_setting_async' for the non-blocking counterpart.
      *
-     
+
      * @return Result of request.
-     
+
      */
     Result set_setting(int32_t component_id, Setting setting) const;
 
-
-
-
     /**
-    * @brief Callback type for get_setting_async.
-    */
+     * @brief Callback type for get_setting_async.
+     */
     using GetSettingCallback = std::function<void(Result, Setting)>;
 
     /**
@@ -1227,9 +1038,8 @@ public:
      *
      * This function is non-blocking. See 'get_setting' for the blocking counterpart.
      */
-    void get_setting_async(int32_t component_id, Setting setting, const GetSettingCallback callback);
-
-
+    void
+    get_setting_async(int32_t component_id, Setting setting, const GetSettingCallback callback);
 
     /**
      * @brief Get a setting.
@@ -1242,9 +1052,6 @@ public:
      */
     std::pair<Result, Camera::Setting> get_setting(int32_t component_id, Setting setting) const;
 
-
-
-
     /**
      * @brief Format storage (e.g. SD card) in camera.
      *
@@ -1252,9 +1059,8 @@ public:
      *
      * This function is non-blocking. See 'format_storage' for the blocking counterpart.
      */
-    void format_storage_async(int32_t component_id, int32_t storage_id, const ResultCallback callback);
-
-
+    void
+    format_storage_async(int32_t component_id, int32_t storage_id, const ResultCallback callback);
 
     /**
      * @brief Format storage (e.g. SD card) in camera.
@@ -1263,14 +1069,11 @@ public:
      *
      * This function is blocking. See 'format_storage_async' for the non-blocking counterpart.
      *
-     
+
      * @return Result of request.
-     
+
      */
     Result format_storage(int32_t component_id, int32_t storage_id) const;
-
-
-
 
     /**
      * @brief Reset all settings in camera.
@@ -1281,8 +1084,6 @@ public:
      */
     void reset_settings_async(int32_t component_id, const ResultCallback callback);
 
-
-
     /**
      * @brief Reset all settings in camera.
      *
@@ -1290,14 +1091,11 @@ public:
      *
      * This function is blocking. See 'reset_settings_async' for the non-blocking counterpart.
      *
-     
+
      * @return Result of request.
-     
+
      */
     Result reset_settings(int32_t component_id) const;
-
-
-
 
     /**
      * @brief Start zooming in.
@@ -1306,21 +1104,16 @@ public:
      */
     void zoom_in_start_async(int32_t component_id, const ResultCallback callback);
 
-
-
     /**
      * @brief Start zooming in.
      *
      * This function is blocking. See 'zoom_in_start_async' for the non-blocking counterpart.
      *
-     
+
      * @return Result of request.
-     
+
      */
     Result zoom_in_start(int32_t component_id) const;
-
-
-
 
     /**
      * @brief Start zooming out.
@@ -1329,21 +1122,16 @@ public:
      */
     void zoom_out_start_async(int32_t component_id, const ResultCallback callback);
 
-
-
     /**
      * @brief Start zooming out.
      *
      * This function is blocking. See 'zoom_out_start_async' for the non-blocking counterpart.
      *
-     
+
      * @return Result of request.
-     
+
      */
     Result zoom_out_start(int32_t component_id) const;
-
-
-
 
     /**
      * @brief Stop zooming.
@@ -1352,21 +1140,16 @@ public:
      */
     void zoom_stop_async(int32_t component_id, const ResultCallback callback);
 
-
-
     /**
      * @brief Stop zooming.
      *
      * This function is blocking. See 'zoom_stop_async' for the non-blocking counterpart.
      *
-     
+
      * @return Result of request.
-     
+
      */
     Result zoom_stop(int32_t component_id) const;
-
-
-
 
     /**
      * @brief Zoom to value as proportion of full camera range (percentage between 0.0 and 100.0).
@@ -1375,67 +1158,68 @@ public:
      */
     void zoom_range_async(int32_t component_id, float range, const ResultCallback callback);
 
-
-
     /**
      * @brief Zoom to value as proportion of full camera range (percentage between 0.0 and 100.0).
      *
      * This function is blocking. See 'zoom_range_async' for the non-blocking counterpart.
      *
-     
+
      * @return Result of request.
-     
+
      */
     Result zoom_range(int32_t component_id, float range) const;
-
-
-
 
     /**
      * @brief Track point.
      *
      * This function is non-blocking. See 'track_point' for the blocking counterpart.
      */
-    void track_point_async(int32_t component_id, float point_x, float point_y, float radius, const ResultCallback callback);
-
-
+    void track_point_async(
+        int32_t component_id,
+        float point_x,
+        float point_y,
+        float radius,
+        const ResultCallback callback);
 
     /**
      * @brief Track point.
      *
      * This function is blocking. See 'track_point_async' for the non-blocking counterpart.
      *
-     
+
      * @return Result of request.
-     
+
      */
     Result track_point(int32_t component_id, float point_x, float point_y, float radius) const;
-
-
-
 
     /**
      * @brief Track rectangle.
      *
      * This function is non-blocking. See 'track_rectangle' for the blocking counterpart.
      */
-    void track_rectangle_async(int32_t component_id, float top_left_x, float top_left_y, float bottom_right_x, float bottom_right_y, const ResultCallback callback);
-
-
+    void track_rectangle_async(
+        int32_t component_id,
+        float top_left_x,
+        float top_left_y,
+        float bottom_right_x,
+        float bottom_right_y,
+        const ResultCallback callback);
 
     /**
      * @brief Track rectangle.
      *
      * This function is blocking. See 'track_rectangle_async' for the non-blocking counterpart.
      *
-     
+
      * @return Result of request.
-     
+
      */
-    Result track_rectangle(int32_t component_id, float top_left_x, float top_left_y, float bottom_right_x, float bottom_right_y) const;
-
-
-
+    Result track_rectangle(
+        int32_t component_id,
+        float top_left_x,
+        float top_left_y,
+        float bottom_right_x,
+        float bottom_right_y) const;
 
     /**
      * @brief Stop tracking.
@@ -1444,21 +1228,16 @@ public:
      */
     void track_stop_async(int32_t component_id, const ResultCallback callback);
 
-
-
     /**
      * @brief Stop tracking.
      *
      * This function is blocking. See 'track_stop_async' for the non-blocking counterpart.
      *
-     
+
      * @return Result of request.
-     
+
      */
     Result track_stop(int32_t component_id) const;
-
-
-
 
     /**
      * @brief Start focusing in.
@@ -1467,21 +1246,16 @@ public:
      */
     void focus_in_start_async(int32_t component_id, const ResultCallback callback);
 
-
-
     /**
      * @brief Start focusing in.
      *
      * This function is blocking. See 'focus_in_start_async' for the non-blocking counterpart.
      *
-     
+
      * @return Result of request.
-     
+
      */
     Result focus_in_start(int32_t component_id) const;
-
-
-
 
     /**
      * @brief Start focusing out.
@@ -1490,21 +1264,16 @@ public:
      */
     void focus_out_start_async(int32_t component_id, const ResultCallback callback);
 
-
-
     /**
      * @brief Start focusing out.
      *
      * This function is blocking. See 'focus_out_start_async' for the non-blocking counterpart.
      *
-     
+
      * @return Result of request.
-     
+
      */
     Result focus_out_start(int32_t component_id) const;
-
-
-
 
     /**
      * @brief Stop focus.
@@ -1513,21 +1282,16 @@ public:
      */
     void focus_stop_async(int32_t component_id, const ResultCallback callback);
 
-
-
     /**
      * @brief Stop focus.
      *
      * This function is blocking. See 'focus_stop_async' for the non-blocking counterpart.
      *
-     
+
      * @return Result of request.
-     
+
      */
     Result focus_stop(int32_t component_id) const;
-
-
-
 
     /**
      * @brief Focus with range value of full range (value between 0.0 and 100.0).
@@ -1536,21 +1300,16 @@ public:
      */
     void focus_range_async(int32_t component_id, float range, const ResultCallback callback);
 
-
-
     /**
      * @brief Focus with range value of full range (value between 0.0 and 100.0).
      *
      * This function is blocking. See 'focus_range_async' for the non-blocking counterpart.
      *
-     
+
      * @return Result of request.
-     
+
      */
     Result focus_range(int32_t component_id, float range) const;
-
-
-
 
     /**
      * @brief Copy constructor.
