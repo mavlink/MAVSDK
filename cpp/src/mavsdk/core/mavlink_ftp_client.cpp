@@ -43,7 +43,7 @@ void MavlinkFtpClient::do_work()
     if (_work_queue.empty()) {
         return;
     }
-    auto& work = _work_queue.front();
+    auto work = _work_queue.front();
 
     if (work->started) {
         return;
@@ -168,7 +168,7 @@ void MavlinkFtpClient::process_mavlink_ftp_message(const mavlink_message_t& msg)
     if (_work_queue.empty()) {
         return;
     }
-    auto& work = _work_queue.front();
+    auto work = _work_queue.front();
 
     if (work->last_opcode != payload->req_opcode) {
         // Ignore
@@ -1328,7 +1328,7 @@ void MavlinkFtpClient::timeout()
     if (_work_queue.empty()) {
         return;
     }
-    auto& work = _work_queue.front();
+    auto work = _work_queue.front();
 
     std::visit(
         overloaded{
