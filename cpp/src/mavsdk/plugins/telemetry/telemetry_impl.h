@@ -269,6 +269,7 @@ private:
     void receive_statustext(const MavlinkStatustextHandler::Statustext&);
 
     void request_home_position_again();
+    void send_request_data_stream(uint8_t stream_id, double rate_hz);
 
     static bool sys_status_present_enabled_health(
         const mavlink_sys_status_t& sys_status, MAV_SYS_STATUS_SENSOR flag);
