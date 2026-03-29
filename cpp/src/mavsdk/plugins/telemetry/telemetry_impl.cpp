@@ -237,6 +237,11 @@ Telemetry::Result TelemetryImpl::set_rate_position(double rate_hz)
     _position_rate_hz = rate_hz;
     double max_rate_hz = std::max(_position_rate_hz, _velocity_ned_rate_hz);
 
+    if (_system_impl->effective_autopilot() == Autopilot::ArduPilot) {
+        send_request_data_stream(MAV_DATA_STREAM_POSITION, max_rate_hz);
+        return Telemetry::Result::Success;
+    }
+
     return telemetry_result_from_command_result(
         _system_impl->set_msg_rate(MAVLINK_MSG_ID_GLOBAL_POSITION_INT, max_rate_hz));
 }
@@ -271,6 +276,11 @@ Telemetry::Result TelemetryImpl::set_rate_attitude_quaternion(double rate_hz)
 
 Telemetry::Result TelemetryImpl::set_rate_attitude_euler(double rate_hz)
 {
+    if (_system_impl->effective_autopilot() == Autopilot::ArduPilot) {
+        send_request_data_stream(MAV_DATA_STREAM_EXTRA1, rate_hz);
+        return Telemetry::Result::Success;
+    }
+
     return telemetry_result_from_command_result(
         _system_impl->set_msg_rate(MAVLINK_MSG_ID_ATTITUDE, rate_hz));
 }
@@ -279,6 +289,11 @@ Telemetry::Result TelemetryImpl::set_rate_velocity_ned(double rate_hz)
 {
     _velocity_ned_rate_hz = rate_hz;
     double max_rate_hz = std::max(_position_rate_hz, _velocity_ned_rate_hz);
+
+    if (_system_impl->effective_autopilot() == Autopilot::ArduPilot) {
+        send_request_data_stream(MAV_DATA_STREAM_POSITION, max_rate_hz);
+        return Telemetry::Result::Success;
+    }
 
     return telemetry_result_from_command_result(
         _system_impl->set_msg_rate(MAVLINK_MSG_ID_GLOBAL_POSITION_INT, max_rate_hz));
@@ -397,6 +412,15 @@ void TelemetryImpl::set_rate_position_async(double rate_hz, Telemetry::ResultCal
     _position_rate_hz = rate_hz;
     double max_rate_hz = std::max(_position_rate_hz, _velocity_ned_rate_hz);
 
+    if (_system_impl->effective_autopilot() == Autopilot::ArduPilot) {
+        send_request_data_stream(MAV_DATA_STREAM_POSITION, max_rate_hz);
+        if (callback) {
+            _system_impl->call_user_callback(
+                [callback]() { callback(Telemetry::Result::Success); });
+        }
+        return;
+    }
+
     _system_impl->set_msg_rate_async(
         MAVLINK_MSG_ID_GLOBAL_POSITION_INT,
         max_rate_hz,
@@ -469,6 +493,15 @@ void TelemetryImpl::set_rate_attitude_quaternion_async(
 void TelemetryImpl::set_rate_attitude_euler_async(
     double rate_hz, Telemetry::ResultCallback callback)
 {
+    if (_system_impl->effective_autopilot() == Autopilot::ArduPilot) {
+        send_request_data_stream(MAV_DATA_STREAM_EXTRA1, rate_hz);
+        if (callback) {
+            _system_impl->call_user_callback(
+                [callback]() { callback(Telemetry::Result::Success); });
+        }
+        return;
+    }
+
     _system_impl->set_msg_rate_async(
         MAVLINK_MSG_ID_ATTITUDE,
         rate_hz,
@@ -481,6 +514,15 @@ void TelemetryImpl::set_rate_velocity_ned_async(double rate_hz, Telemetry::Resul
 {
     _velocity_ned_rate_hz = rate_hz;
     double max_rate_hz = std::max(_position_rate_hz, _velocity_ned_rate_hz);
+
+    if (_system_impl->effective_autopilot() == Autopilot::ArduPilot) {
+        send_request_data_stream(MAV_DATA_STREAM_POSITION, max_rate_hz);
+        if (callback) {
+            _system_impl->call_user_callback(
+                [callback]() { callback(Telemetry::Result::Success); });
+        }
+        return;
+    }
 
     _system_impl->set_msg_rate_async(
         MAVLINK_MSG_ID_GLOBAL_POSITION_INT,
@@ -2620,6 +2662,30 @@ std::pair<Telemetry::Result, Telemetry::GpsGlobalOrigin> TelemetryImpl::get_gps_
             prom.set_value(std::make_pair(result, gps_global_origin));
         });
     return fut.get();
+}
+
+void TelemetryImpl::send_request_data_stream(uint8_t stream_id, double rate_hz)
+{
+    auto target_sysid = _system_impl->get_system_id();
+    auto target_compid = _system_impl->get_autopilot_id();
+    uint16_t msg_rate = static_cast<uint16_t>(rate_hz);
+    uint8_t start_stop = (rate_hz > 0) ? 1 : 0;
+
+    _system_impl->queue_message([target_sysid, target_compid, stream_id, msg_rate, start_stop](
+                                    MavlinkAddress mavlink_address, uint8_t channel) {
+        mavlink_message_t message;
+        mavlink_msg_request_data_stream_pack_chan(
+            mavlink_address.system_id,
+            mavlink_address.component_id,
+            channel,
+            &message,
+            target_sysid,
+            target_compid,
+            stream_id,
+            msg_rate,
+            start_stop);
+        return message;
+    });
 }
 
 } // namespace mavsdk
