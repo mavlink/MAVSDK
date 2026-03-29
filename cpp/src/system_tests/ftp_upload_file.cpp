@@ -157,8 +157,11 @@ TEST(SystemTest, FtpUploadBigFile)
                                     .count();
         const double throughput_kbps =
             static_cast<double>(file_size_kb) / (static_cast<double>(elapsed_ms) / 1000.0);
-        LogInfo() << "FTP upload: " << file_size_kb << " KB in " << elapsed_ms << " ms  ("
-                  << static_cast<int>(throughput_kbps) << " KB/s)";
+        LogInfo(
+            "FTP upload: {} KB in {} ms  ({} KB/s)",
+            file_size_kb,
+            elapsed_ms,
+            static_cast<int>(throughput_kbps));
 
         EXPECT_TRUE(
             are_files_identical(temp_dir_to_upload / temp_file, temp_dir_provided / temp_file));
