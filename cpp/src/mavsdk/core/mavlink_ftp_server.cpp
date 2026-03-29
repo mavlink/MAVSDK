@@ -453,10 +453,10 @@ void MavlinkFtpServer::_work_open_file_readonly(const PayloadHeader& payload)
     }
 
     if (_debugging) {
-        LogInfo("Finding {} in {}", path.string(), _root_dir);
+        LogInfo("Finding {} in {}", path, _root_dir);
     }
     if (path.rfind(_root_dir, 0) != 0) {
-        LogWarn("FTP: invalid path {}", path.string());
+        LogWarn("FTP: invalid path {}", path);
         response.opcode = Opcode::RSP_NAK;
         response.size = 1;
         response.data[0] = ServerResult::ERR_FAIL;
@@ -465,7 +465,7 @@ void MavlinkFtpServer::_work_open_file_readonly(const PayloadHeader& payload)
     }
 
     if (_debugging) {
-        LogDebug("Going to open readonly: {}", path.string());
+        LogDebug("Going to open readonly: {}", path);
     }
 
     std::error_code ec;
@@ -480,7 +480,7 @@ void MavlinkFtpServer::_work_open_file_readonly(const PayloadHeader& payload)
 
     auto file_size = static_cast<uint32_t>(fs::file_size(path, ec));
     if (ec) {
-        LogErr("Could not determine file size of '{}': {}", path.string(), ec.message());
+        LogErr("Could not determine file size of '{}': {}", path, ec.message());
         return;
     }
 
@@ -553,10 +553,10 @@ void MavlinkFtpServer::_work_open_file_writeonly(const PayloadHeader& payload)
     }
 
     if (_debugging) {
-        LogDebug("Finding {} in {}", path.string(), _root_dir);
+        LogDebug("Finding {} in {}", path, _root_dir);
     }
     if (path.rfind(_root_dir, 0) != 0) {
-        LogWarn("FTP: invalid path {}", path.string());
+        LogWarn("FTP: invalid path {}", path);
         response.opcode = Opcode::RSP_NAK;
         response.size = 1;
         response.data[0] = ServerResult::ERR_FAIL;
@@ -565,7 +565,7 @@ void MavlinkFtpServer::_work_open_file_writeonly(const PayloadHeader& payload)
     }
 
     if (_debugging) {
-        LogDebug("Going to open writeonly: {}", path.string());
+        LogDebug("Going to open writeonly: {}", path);
     }
 
     // fail only if requested open for read
@@ -581,7 +581,7 @@ void MavlinkFtpServer::_work_open_file_writeonly(const PayloadHeader& payload)
 
     auto file_size = static_cast<uint32_t>(fs::file_size(path, ec));
     if (ec) {
-        LogErr("Could not determine file size of '{}': {}", path.string(), ec.message());
+        LogErr("Could not determine file size of '{}': {}", path, ec.message());
         return;
     }
 
@@ -652,10 +652,10 @@ void MavlinkFtpServer::_work_create_file(const PayloadHeader& payload)
     }
 
     if (_debugging) {
-        LogInfo("Finding {} in {}", path.string(), _root_dir);
+        LogInfo("Finding {} in {}", path, _root_dir);
     }
     if (path.rfind(_root_dir, 0) != 0) {
-        LogWarn("FTP: invalid path {}", path.string());
+        LogWarn("FTP: invalid path {}", path);
         response.opcode = Opcode::RSP_NAK;
         response.size = 1;
         response.data[0] = ServerResult::ERR_FAIL;
@@ -664,7 +664,7 @@ void MavlinkFtpServer::_work_create_file(const PayloadHeader& payload)
     }
 
     if (_debugging) {
-        LogDebug("Creating file: {}", path.string());
+        LogDebug("Creating file: {}", path);
     }
 
     std::ofstream ofstream;

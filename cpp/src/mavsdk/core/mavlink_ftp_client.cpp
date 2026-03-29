@@ -135,7 +135,7 @@ void MavlinkFtpClient::process_mavlink_ftp_message(const mavlink_message_t& msg)
                 (int)payload->req_opcode,
                 (int)payload->size,
                 (int)payload->offset,
-                payload->seq_number,
+                (int)payload->seq_number,
                 (int)msg.sysid,
                 (int)msg.compid);
         }
