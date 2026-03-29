@@ -21,7 +21,7 @@ jobs:
     name: MAVLink Fuzzing
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           submodules: recursive
           fetch-depth: 0
@@ -32,7 +32,7 @@ jobs:
           sudo apt-get install -y clang ninja-build
 
       - name: Cache third party dependencies
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         id: cache-deps
         with:
           path: ./cpp/build/fuzz/third_party/install
@@ -58,10 +58,10 @@ jobs:
         run: cmake --build build/fuzz -j$(nproc)
 
       - name: Restore fuzzing corpus cache
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         id: cache-corpus
         with:
-          path: ./fuzz_corpus
+          path: ./cpp/fuzz_corpus
           key: fuzz-corpus-${{ github.run_id }}
           restore-keys: |
             fuzz-corpus-
@@ -97,15 +97,15 @@ jobs:
           exit ${exit_code:-0}
 
       - name: Save fuzzing corpus cache
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@v5
         if: always()
         with:
-          path: ./fuzz_corpus
+          path: ./cpp/fuzz_corpus
           key: fuzz-corpus-${{ github.run_id }}
 
       - name: Upload crash artifacts
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: fuzzer-crashes-${{ github.run_id }}
           path: |
@@ -117,7 +117,7 @@ jobs:
 
       - name: Upload core dumps
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: fuzzer-coredumps-${{ github.run_id }}
           path: /tmp/core.*
@@ -126,7 +126,7 @@ jobs:
 
       - name: Upload fuzzer binary for core dump analysis
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: fuzzer-binary-${{ github.run_id }}
           path: |
@@ -136,7 +136,7 @@ jobs:
 
       - name: Upload corpus on crash
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: fuzzer-corpus-${{ github.run_id }}
           path: fuzz_corpus

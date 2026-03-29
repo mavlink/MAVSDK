@@ -42,17 +42,17 @@ jobs:
             python_plat_name: win_arm64
     steps:
       - name: Install Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: '3.11'
           architecture: 'x64'
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           submodules: recursive
           fetch-depth: 0
       - name: git get version tags
         run: git fetch --tags
-      - uses: actions/cache@v4
+      - uses: actions/cache@v5
         id: cache
         with:
           path: ./cpp/build/third_party/install
@@ -104,13 +104,13 @@ jobs:
           python3 setup.py bdist_wheel --plat-name ${{ matrix.python_plat_name }}
           delvewheel repair -w wheelhouse dist/mavsdk4-*-win*.whl
       - name: upload mavsdk wheel
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: mavsdk_wheel_windows_${{ matrix.arch }}
           path: py/mavsdk/wheelhouse/*.whl
           retention-days: 2
       - name: Upload mavsdk_server binary as artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: mavsdk_server-windows-${{ matrix.arch }}-release
           path: 'cpp/install/bin/mavsdk_server_bin.exe'
@@ -159,13 +159,13 @@ jobs:
             toolchain: ''
             toolchain_file: cmake\\win-arm64-toolchain.cmake
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           submodules: recursive
           fetch-depth: 0
       - name: git get version tags
         run: git fetch --tags
-      - uses: actions/cache@v4
+      - uses: actions/cache@v5
         id: cache
         with:
           path: ./cpp/build/third_party/install
@@ -197,7 +197,7 @@ jobs:
       - name: Create zip file from mavsdk libraries
         run: (cd install && 7z.exe a -tzip ../mavsdk-windows-${{ matrix.arch }}-${{ matrix.config }}.zip .)
       - name: Upload mavsdk library as artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: mavsdk-windows-${{ matrix.arch }}-${{ matrix.config }}
           path: 'cpp/install/'
@@ -226,14 +226,14 @@ jobs:
           - arch: arm64
             platform: ARM64
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Download Debug artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           name: mavsdk-windows-${{ matrix.arch }}-Debug
           path: cpp/debug-files
       - name: Download RelWithDebInfo artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           name: mavsdk-windows-${{ matrix.arch }}-RelWithDebInfo
           path: cpp/release-files
@@ -283,7 +283,7 @@ jobs:
           cd combined
           7z.exe a -tzip ..\mavsdk-windows-${{ matrix.arch }}.zip .
       - name: Upload combined artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: mavsdk-windows-${{ matrix.arch }}
           path: mavsdk-windows-${{ matrix.arch }}.zip
