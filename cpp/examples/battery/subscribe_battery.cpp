@@ -5,7 +5,6 @@
 
 #include <mavsdk/mavsdk.h>
 #include <mavsdk/plugins/telemetry/telemetry.h>
-#include <format>
 #include <iostream>
 #include <chrono>
 #include <thread>
@@ -28,7 +27,7 @@ int main(int argc, char** argv)
 {
     // Check for connection string argument
     if (argc != 2) {
-        std::cerr << std::format("Usage: {} <connection_url>\n", argv[0]);
+        std::cerr << "Usage: " << argv[0] << " <connection_url>\n";
         return 1;
     }
 
@@ -38,7 +37,7 @@ int main(int argc, char** argv)
     // Add connection
     mavsdk::ConnectionResult connection_result = mavsdk.add_any_connection(argv[1]);
     if (connection_result != mavsdk::ConnectionResult::Success) {
-        std::cerr << std::format("Connection failed: {}\n", connection_result);
+        std::cerr << "Connection failed: " << connection_result << "\n";
         return 1;
     }
 
@@ -60,16 +59,13 @@ int main(int argc, char** argv)
 
     // Callback for battery updates
     auto battery_callback = [](mavsdk::Telemetry::Battery battery) {
-        std::cout << std::format(
-            "Battery ID: {} \nBattery Temp: {} degc\nBattery Voltage: {} v\nBattery Current: {} a\nBattery Capacity Consumed: {} ah\nBattery Remaining Percent: {} %\nBattery Remaining Time: {} s\nBattery Function: {}\n\n",
-            battery.id,
-            battery.temperature_degc,
-            battery.voltage_v,
-            battery.current_battery_a,
-            battery.capacity_consumed_ah,
-            battery.remaining_percent,
-            battery.time_remaining_s,
-            battery.battery_function);
+        std::cout << "Battery ID: " << battery.id << " \nBattery Temp: " << battery.temperature_degc
+                  << " degc\nBattery Voltage: " << battery.voltage_v
+                  << " v\nBattery Current: " << battery.current_battery_a
+                  << " a\nBattery Capacity Consumed: " << battery.capacity_consumed_ah
+                  << " ah\nBattery Remaining Percent: " << battery.remaining_percent
+                  << " %\nBattery Remaining Time: " << battery.time_remaining_s
+                  << " s\nBattery Function: " << battery.battery_function << "\n\n";
     };
 
     // Subscribe to battery updates

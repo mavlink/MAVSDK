@@ -5,7 +5,6 @@
 #include <mavsdk/mavsdk.h>
 #include <mavsdk/plugins/events/events.h>
 #include <mavsdk/plugins/telemetry/telemetry.h>
-#include <format>
 #include <iostream>
 #include <thread>
 #include <future>
@@ -14,9 +13,9 @@ using namespace mavsdk;
 
 void usage(const std::string& bin_name)
 {
-    std::cerr << std::format(
-        "Usage : {} <connection_url> [-v] [monitor]\nConnection URL format should be :\n For TCP server: tcpin://<our_ip>:<port>\n For TCP client: tcpout://<remote_ip>:<port>\n For UDP server: udpin://<our_ip>:<port>\n For UDP client: udpout://<remote_ip>:<port>\n For Serial : serial://</path/to/serial/dev>:<baudrate>]\nFor example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n\n -v: enable verbose output\n monitor: listen for events (instead of printing the arming report)\n",
-        bin_name);
+    std::cerr
+        << "Usage : " << bin_name
+        << " <connection_url> [-v] [monitor]\nConnection URL format should be :\n For TCP server: tcpin://<our_ip>:<port>\n For TCP client: tcpout://<remote_ip>:<port>\n For UDP server: udpin://<our_ip>:<port>\n For UDP client: udpout://<remote_ip>:<port>\n For Serial : serial://</path/to/serial/dev>:<baudrate>]\nFor example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n\n -v: enable verbose output\n monitor: listen for events (instead of printing the arming report)\n";
 }
 
 int main(int argc, char** argv)
@@ -41,7 +40,7 @@ int main(int argc, char** argv)
     ConnectionResult connection_result = mavsdk.add_any_connection(argv[1]);
 
     if (connection_result != ConnectionResult::Success) {
-        std::cerr << std::format("Connection failed: {}\n", connection_result);
+        std::cerr << "Connection failed: " << connection_result << "\n";
         return 1;
     }
 
@@ -56,13 +55,13 @@ int main(int argc, char** argv)
     if (monitor) {
         // Listen for events
         events.subscribe_events([verbose](const Events::Event& event) {
-            std::cout << std::format("[{}] {}\n", event.log_level, event.message);
+            std::cout << "[" << event.log_level << "] " << event.message << "\n";
             if (verbose) {
                 if (!event.description.empty()) {
-                    std::cout << std::format("    Description: {}\n", event.description);
+                    std::cout << "    Description: " << event.description << "\n";
                 }
-                std::cout << std::format(
-                    "    Event name: {}/{}\n", event.event_namespace, event.event_name);
+                std::cout << "    Event name: " << event.event_namespace << "/" << event.event_name
+                          << "\n";
             }
         });
         while (true) {
@@ -81,32 +80,24 @@ int main(int argc, char** argv)
                     return;
                 }
                 reported = true;
-                std::cout << std::format(
-                    "Current Mode (intention): {}\n", report.current_mode_intention.mode_name);
+                std::cout << "Current Mode (intention): " << report.current_mode_intention.mode_name
+                          << "\n";
                 const std::string can_arm_or_run = telemetry.armed() ? "Can Run: " : "Can Arm: ";
-                std::cout << std::format(
-                    "{}{}\n",
-                    can_arm_or_run,
-                    (report.current_mode_intention.can_arm_or_run ? "yes" : "No"));
+                std::cout << can_arm_or_run
+                          << (report.current_mode_intention.can_arm_or_run ? "yes" : "No") << "\n";
                 if (!report.current_mode_intention.problems.empty()) {
                     std::cout << "Reports:" << std::endl;
                     for (const auto& problem : report.current_mode_intention.problems) {
-                        std::cout << std::format(
-                            "  [{}] [{}]: {}\n",
-                            problem.log_level,
-                            problem.health_component,
-                            problem.message);
+                        std::cout << "  [" << problem.log_level << "] [" << problem.health_component
+                                  << "]: " << problem.message << "\n";
                     }
                 }
 
                 if (verbose && !report.all_problems.empty()) {
                     std::cout << "All Reports:" << std::endl;
                     for (const auto& problem : report.all_problems) {
-                        std::cout << std::format(
-                            "  [{}] [{}]: {}\n",
-                            problem.log_level,
-                            problem.health_component,
-                            problem.message);
+                        std::cout << "  [" << problem.log_level << "] [" << problem.health_component
+                                  << "]: " << problem.message << "\n";
                     }
                 }
                 promise.set_value(true);

@@ -9,7 +9,6 @@
 #include <chrono>
 #include <cstdint>
 #include <future>
-#include <format>
 #include <iostream>
 #include <mutex>
 #include <sstream>
@@ -328,7 +327,7 @@ public:
             return false;
         }
 
-        std::cout << std::format("{}Yaw 30 degrees to the left... ", test_prefix);
+        std::cout << test_prefix << "Yaw 30 degrees to the left... ";
         _attitude_data.change_vehicle_attitude([](AttitudeData::VehicleAttitude& vehicle_attitude) {
             vehicle_attitude.yaw_deg = -30.0f;
         });
@@ -398,7 +397,7 @@ public:
     bool test_pitch_yaw_angle(
         const std::string& description, float pitch_deg, float yaw_deg, AttitudeData::Mode mode)
     {
-        std::cout << std::format("{}{}... ", test_prefix, description) << std::flush;
+        std::cout << test_prefix << description << "... " << std::flush;
 
         _attitude_data.change_attitude_setpoint(
             [&](AttitudeData::AttitudeSetpoint& attitude_setpoint) {
@@ -454,13 +453,13 @@ public:
         }
 
         if (pitch_fail) {
-            std::cout << std::format(
-                "-> pitch is {} deg instead of {} deg\n", gimbal_attitude.pitch_deg, pitch_deg);
+            std::cout << "-> pitch is " << gimbal_attitude.pitch_deg << " deg instead of "
+                      << pitch_deg << " deg\n";
         }
 
         if (yaw_fail) {
-            std::cout << std::format(
-                "-> yaw is {} deg instead of {} deg\n", gimbal_attitude.yaw_deg, yaw_deg);
+            std::cout << "-> yaw is " << gimbal_attitude.yaw_deg << " deg instead of " << yaw_deg
+                      << " deg\n";
         }
 
         return !(pitch_fail || yaw_fail);
@@ -469,7 +468,7 @@ public:
     bool test_pitch_yaw_rate(
         const std::string& description, float pitch_rate_deg, float yaw_rate_deg, float duration_s)
     {
-        std::cout << std::format("{}{}... ", test_prefix, description) << std::flush;
+        std::cout << test_prefix << description << "... " << std::flush;
 
         const auto initial_attitude = _attitude_data.gimbal_attitude();
 
@@ -518,15 +517,13 @@ public:
         }
 
         if (pitch_fail) {
-            std::cout << std::format(
-                "-> pitch is {} deg instead of {} deg\n",
-                new_attitude.pitch_deg,
-                expected_pitch_deg);
+            std::cout << "-> pitch is " << new_attitude.pitch_deg << " deg instead of "
+                      << expected_pitch_deg << " deg\n";
         }
 
         if (yaw_fail) {
-            std::cout << std::format(
-                "-> yaw is {} deg instead of {} deg\n", new_attitude.yaw_deg, expected_yaw_deg);
+            std::cout << "-> yaw is " << new_attitude.yaw_deg << " deg instead of "
+                      << expected_yaw_deg << " deg\n";
         }
 
         return !(pitch_fail || yaw_fail);
@@ -559,7 +556,7 @@ public:
     {
         // FIXME: this only works when started from 0.
 
-        std::cout << std::format("{}{}... ", test_prefix, description) << std::flush;
+        std::cout << test_prefix << description << "... " << std::flush;
 
         const auto initial_attitude = _attitude_data.gimbal_attitude();
 
@@ -615,17 +612,13 @@ public:
         }
 
         if (halftime_fail) {
-            std::cout << std::format(
-                "-> pitch is {} deg instead of {} at halftime deg\n",
-                halftime_attitude.pitch_deg,
-                halftime_expected_pitch_deg);
+            std::cout << "-> pitch is " << halftime_attitude.pitch_deg << " deg instead of "
+                      << halftime_expected_pitch_deg << " at halftime deg\n";
         }
 
         if (end_fail) {
-            std::cout << std::format(
-                "-> pitch is {} deg instead of {} at end deg\n",
-                end_attitude.pitch_deg,
-                end_expected_pitch_deg);
+            std::cout << "-> pitch is " << end_attitude.pitch_deg << " deg instead of "
+                      << end_expected_pitch_deg << " at end deg\n";
         }
 
         return !(halftime_fail || end_fail);
@@ -637,8 +630,7 @@ private:
 
 bool wait_for_yaw_estimator_to_converge(const AttitudeData& attitude_data)
 {
-    std::cout << std::format("{}Waiting for yaw estimator to converge...", test_prefix)
-              << std::flush;
+    std::cout << test_prefix << "Waiting for yaw estimator to converge..." << std::flush;
     for (unsigned i = 0; i < 200; ++i) {
         const auto gimbal_attitude = attitude_data.gimbal_attitude();
         if (gimbal_attitude.yaw_deg < 1.0f && gimbal_attitude.yaw_deg > -1.0f) {
@@ -656,16 +648,14 @@ bool wait_for_yaw_estimator_to_converge(const AttitudeData& attitude_data)
 
 bool sysid_compid_correct()
 {
-    std::cout << std::format("{}Check sysid/compid/mav_type...", test_prefix) << std::flush;
+    std::cout << test_prefix << "Check sysid/compid/mav_type..." << std::flush;
 
     std::lock_guard<std::mutex> lock(receiver_data.mutex);
 
     if (receiver_data.sysid != own_sysid) {
         std::cout << "FAIL\n";
-        std::cout << std::format(
-            "-> sysid should be the same as sysid of this tester ({}, not {})\n",
-            int(own_sysid),
-            int(receiver_data.sysid));
+        std::cout << "-> sysid should be the same as sysid of this tester (" << int(own_sysid)
+                  << ", not " << int(receiver_data.sysid) << ")\n";
         return false;
     } else if (
         receiver_data.compid != MAV_COMP_ID_GIMBAL && receiver_data.compid != MAV_COMP_ID_GIMBAL2 &&
@@ -678,19 +668,18 @@ bool sysid_compid_correct()
         return false;
     } else if (receiver_data.target_sysid != 0) {
         std::cout << "FAIL\n";
-        std::cout << std::format(
-            "-> target_system should be 0 (all, not {})\n", int(receiver_data.target_sysid));
+        std::cout << "-> target_system should be 0 (all, not " << int(receiver_data.target_sysid)
+                  << ")\n";
         return false;
     } else if (receiver_data.target_compid != 0) {
         std::cout << "FAIL\n";
-        std::cout << std::format(
-            "-> target_component should be 0 (all, not{})\n", int(receiver_data.target_compid));
+        std::cout << "-> target_component should be 0 (all, not" << int(receiver_data.target_compid)
+                  << ")\n";
         return false;
     } else if (receiver_data.mav_type != MAV_TYPE_GIMBAL) {
         std::cout << "FAIL\n";
-        std::cout << std::format(
-            "-> heartbeat.type should be MAV_TYPE_GIMBAL (all, not{})\n",
-            int(receiver_data.mav_type));
+        std::cout << "-> heartbeat.type should be MAV_TYPE_GIMBAL (all, not"
+                  << int(receiver_data.mav_type) << ")\n";
         return false;
     } else {
         std::cout << "PASS\n";
@@ -711,7 +700,7 @@ bool request_gimbal_device_information(MavlinkPassthrough& mavlink_passthrough)
 
 bool test_device_information(MavlinkPassthrough& mavlink_passthrough, AttitudeData& attitude_data)
 {
-    std::cout << std::format("{}Requests gimbal device information... ", test_prefix) << std::flush;
+    std::cout << test_prefix << "Requests gimbal device information... " << std::flush;
 
     std::promise<void> prom;
     std::future<void> fut = prom.get_future();
@@ -809,9 +798,9 @@ void subscribe_to_gimbal_device_attitude_status(
 
 void usage(const std::string& bin_name)
 {
-    std::cerr << std::format(
-        "Usage : {} <connection_url>\nConnection URL format should be :\n For TCP server: tcpin://<our_ip>:<port>\n For TCP client: tcpout://<remote_ip>:<port>\n For UDP server: udpin://<our_ip>:<port>\n For UDP client: udpout://<remote_ip>:<port>\n For Serial : serial://</path/to/serial/dev>:<baudrate>]\nFor example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n",
-        bin_name);
+    std::cerr
+        << "Usage : " << bin_name
+        << " <connection_url>\nConnection URL format should be :\n For TCP server: tcpin://<our_ip>:<port>\n For TCP client: tcpout://<remote_ip>:<port>\n For UDP server: udpin://<our_ip>:<port>\n For UDP client: udpout://<remote_ip>:<port>\n For Serial : serial://</path/to/serial/dev>:<baudrate>]\nFor example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n";
 }
 
 int main(int argc, char** argv)
@@ -822,7 +811,7 @@ int main(int argc, char** argv)
     std::string connection_url;
     ConnectionResult connection_result;
 
-    std::cout << std::format("{}Connecting... ", test_prefix) << std::flush;
+    std::cout << test_prefix << "Connecting... " << std::flush;
 
     if (argc == 2) {
         connection_url = argv[1];
@@ -834,7 +823,7 @@ int main(int argc, char** argv)
 
     if (connection_result != ConnectionResult::Success) {
         std::cout << "FAIL\n";
-        std::cout << std::format("-> connection failed: {}\n", connection_result);
+        std::cout << "-> connection failed: " << connection_result << "\n";
         return 1;
     }
 

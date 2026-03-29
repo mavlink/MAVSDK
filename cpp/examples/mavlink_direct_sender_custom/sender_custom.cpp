@@ -5,7 +5,6 @@
 
 #include <mavsdk/mavsdk.h>
 #include <mavsdk/plugins/mavlink_direct/mavlink_direct.h>
-#include <format>
 #include <iostream>
 #include <chrono>
 #include <thread>
@@ -14,9 +13,9 @@ using namespace mavsdk;
 
 void usage(const std::string& bin_name)
 {
-    std::cerr << std::format(
-        "Usage : {} <connection_url>\nConnection URL format should be :\n For TCP server: tcpin://<our_ip>:<port>\n For TCP client: tcpout://<remote_ip>:<port>\n For UDP server: udpin://<our_ip>:<port>\n For UDP client: udpout://<remote_ip>:<port>\n For Serial : serial://</path/to/serial/dev>:<baudrate>]\nFor example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n",
-        bin_name);
+    std::cerr
+        << "Usage : " << bin_name
+        << " <connection_url>\nConnection URL format should be :\n For TCP server: tcpin://<our_ip>:<port>\n For TCP client: tcpout://<remote_ip>:<port>\n For UDP server: udpin://<our_ip>:<port>\n For UDP client: udpout://<remote_ip>:<port>\n For Serial : serial://</path/to/serial/dev>:<baudrate>]\nFor example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n";
 }
 
 int main(int argc, char** argv)
@@ -35,7 +34,7 @@ int main(int argc, char** argv)
     // Connect using the provided connection URL
     auto connection_result = mavsdk.add_any_connection(argv[1]);
     if (connection_result != ConnectionResult::Success) {
-        std::cerr << std::format("Connection failed: {}\n", connection_result);
+        std::cerr << "Connection failed: " << connection_result << "\n";
         return 1;
     }
 
@@ -71,7 +70,7 @@ int main(int argc, char** argv)
     // Load custom XML
     auto xml_result = mavlink_direct.load_custom_xml(custom_xml);
     if (xml_result != MavlinkDirect::Result::Success) {
-        std::cerr << std::format("Failed to load custom XML: {}\n", xml_result);
+        std::cerr << "Failed to load custom XML: " << xml_result << "\n";
         return 1;
     }
 
@@ -106,13 +105,11 @@ int main(int argc, char** argv)
         // Send the message
         auto result = mavlink_direct.send_message(airspeed_message);
         if (result == MavlinkDirect::Result::Success) {
-            std::cout << std::format(
-                "AIRSPEED message {}/20 sent successfully - airspeed: {} m/s, temp: {}°C\n",
-                (counter + 1),
-                airspeed,
-                (temperature / 100.0f));
+            std::cout << "AIRSPEED message " << (counter + 1)
+                      << "/20 sent successfully - airspeed: " << airspeed
+                      << " m/s, temp: " << (temperature / 100.0f) << "°C\n";
         } else {
-            std::cerr << std::format("AIRSPEED message could not be sent: {}\n", result);
+            std::cerr << "AIRSPEED message could not be sent: " << result << "\n";
         }
 
         counter++;

@@ -5,7 +5,6 @@
 #include <mavsdk/mavsdk.h>
 #include <mavsdk/mavsdk_server/mavsdk_server_api.h>
 #include <atomic>
-#include <format>
 #include <iostream>
 #include <chrono>
 #include <csignal>
@@ -17,7 +16,7 @@ static std::atomic<bool> _should_stop{false};
 
 void signal_handler(int sig)
 {
-    std::cout << std::format("Received signal {}\n", sig);
+    std::cout << "Received signal " << sig << "\n";
     _should_stop.store(true);
 }
 
@@ -37,7 +36,7 @@ int main(int argc, char* argv[])
     // This returns when a system has been discovered.
     int ret = mavsdk_server_run(mavsdk_server, argv[1], 50051);
     if (ret != 0) {
-        std::cout << std::format("mavsdk_server_run failed: {}\n", ret);
+        std::cout << "mavsdk_server_run failed: " << ret << "\n";
         mavsdk_server_destroy(mavsdk_server);
         return ret;
     }

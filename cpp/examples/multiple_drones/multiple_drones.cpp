@@ -8,7 +8,6 @@
 #include <mavsdk/plugins/telemetry/telemetry.h>
 #include <cstdint>
 #include <atomic>
-#include <format>
 #include <iostream>
 #include <thread>
 #include <chrono>
@@ -21,9 +20,9 @@ static void takeoff_and_land(std::shared_ptr<System> system);
 
 void usage(const std::string& bin_name)
 {
-    std::cerr << std::format(
-        "Usage : {} <connection_url>\nConnection URL format should be :\n For TCP server: tcpin://<our_ip>:<port>\n For TCP client: tcpout://<remote_ip>:<port>\n For UDP server: udpin://<our_ip>:<port>\n For UDP client: udpout://<remote_ip>:<port>\n For Serial : serial://</path/to/serial/dev>:<baudrate>]\nFor example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n",
-        bin_name);
+    std::cerr
+        << "Usage : " << bin_name
+        << " <connection_url>\nConnection URL format should be :\n For TCP server: tcpin://<our_ip>:<port>\n For TCP client: tcpout://<remote_ip>:<port>\n For UDP server: udpin://<our_ip>:<port>\n For UDP client: udpout://<remote_ip>:<port>\n For Serial : serial://</path/to/serial/dev>:<baudrate>]\nFor example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n";
 }
 
 int main(int argc, char* argv[])
@@ -42,7 +41,7 @@ int main(int argc, char* argv[])
     for (int i = 1; i < argc; ++i) {
         ConnectionResult connection_result = mavsdk.add_any_connection(argv[i]);
         if (connection_result != ConnectionResult::Success) {
-            std::cerr << std::format("Connection error: {}\n", connection_result);
+            std::cerr << "Connection error: " << connection_result << "\n";
             return 1;
         }
     }
@@ -91,13 +90,13 @@ void takeoff_and_land(std::shared_ptr<System> system)
     const Telemetry::Result set_rate_result = telemetry.set_rate_position(1.0);
 
     if (set_rate_result != Telemetry::Result::Success) {
-        std::cerr << std::format("Setting rate failed:{}\n", set_rate_result);
+        std::cerr << "Setting rate failed:" << set_rate_result << "\n";
         return;
     }
 
     // Set up callback to monitor altitude while the vehicle is in flight
     telemetry.subscribe_position([](Telemetry::Position position) {
-        std::cout << std::format("Altitude: {} m\n", position.relative_altitude_m);
+        std::cout << "Altitude: " << position.relative_altitude_m << " m\n";
     });
 
     // Check if vehicle is ready to arm
@@ -111,14 +110,14 @@ void takeoff_and_land(std::shared_ptr<System> system)
     const Action::Result arm_result = action.arm();
 
     if (arm_result != Action::Result::Success) {
-        std::cerr << std::format("Arming failed:{}\n", arm_result);
+        std::cerr << "Arming failed:" << arm_result << "\n";
     }
 
     // Take off
     std::cout << "Taking off...\n";
     const Action::Result takeoff_result = action.takeoff();
     if (takeoff_result != Action::Result::Success) {
-        std::cerr << std::format("Takeoff failed:{}\n", takeoff_result);
+        std::cerr << "Takeoff failed:" << takeoff_result << "\n";
     }
 
     // Let it hover for a bit before landing again.
@@ -127,7 +126,7 @@ void takeoff_and_land(std::shared_ptr<System> system)
     std::cout << "Landing...\n";
     const Action::Result land_result = action.land();
     if (land_result != Action::Result::Success) {
-        std::cerr << std::format("Land failed:{}\n", land_result);
+        std::cerr << "Land failed:" << land_result << "\n";
     }
 
     // Check if vehicle is still in air

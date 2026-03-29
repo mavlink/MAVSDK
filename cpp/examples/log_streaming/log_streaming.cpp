@@ -9,7 +9,6 @@
 
 #include <atomic>
 #include <chrono>
-#include <format>
 #include <iostream>
 #include <thread>
 #include <fstream>
@@ -22,9 +21,9 @@ using std::this_thread::sleep_for;
 
 void usage(const std::string& bin_name)
 {
-    std::cerr << std::format(
-        "Usage : {} <connection_url> [--drop]\nConnection URL format should be :\n For TCP server: tcpin://<our_ip>:<port>\n For TCP client: tcpout://<remote_ip>:<port>\n For UDP server: udpin://<our_ip>:<port>\n For UDP client: udpout://<remote_ip>:<port>\n For Serial : serial://</path/to/serial/dev>:<baudrate>]\nFor example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n--drop   To drop some of the messages\n",
-        bin_name);
+    std::cerr
+        << "Usage : " << bin_name
+        << " <connection_url> [--drop]\nConnection URL format should be :\n For TCP server: tcpin://<our_ip>:<port>\n For TCP client: tcpout://<remote_ip>:<port>\n For UDP server: udpin://<our_ip>:<port>\n For UDP client: udpout://<remote_ip>:<port>\n For Serial : serial://</path/to/serial/dev>:<baudrate>]\nFor example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n--drop   To drop some of the messages\n";
 }
 
 int main(int argc, char** argv)
@@ -38,7 +37,7 @@ int main(int argc, char** argv)
     ConnectionResult connection_result = mavsdk.add_any_connection(argv[1]);
 
     if (connection_result != ConnectionResult::Success) {
-        std::cerr << std::format("Connection failed: {}\n", connection_result);
+        std::cerr << "Connection failed: " << connection_result << "\n";
         return 1;
     }
 
@@ -68,7 +67,7 @@ int main(int argc, char** argv)
 
     bool is_ardupilot = autopilot_type == Autopilot::ArduPilot;
 
-    std::cout << std::format("Autopilot type: {}\n", autopilot_type);
+    std::cout << "Autopilot type: " << autopilot_type << "\n";
 
     // For ArduPilot, check LOG_BACKEND_TYPE parameter
     if (is_ardupilot) {
@@ -78,13 +77,12 @@ int main(int argc, char** argv)
             int log_backend_type = log_backend_result.second;
             // Check if MAVLink backend is enabled (bit 1 = value 2)
             if ((log_backend_type & 2) == 0) {
-                std::cerr << std::format(
-                    "Error: ArduPilot LOG_BACKEND_TYPE={} does not have MAVLink logging enabled (bit 1).\nSet LOG_BACKEND_TYPE to include 2 (e.g., 3 for File+MAVLink).\n",
-                    log_backend_type);
+                std::cerr
+                    << "Error: ArduPilot LOG_BACKEND_TYPE=" << log_backend_type
+                    << " does not have MAVLink logging enabled (bit 1).\nSet LOG_BACKEND_TYPE to include 2 (e.g., 3 for File+MAVLink).\n";
                 return 1;
             }
-            std::cout << std::format(
-                "LOG_BACKEND_TYPE={} (MAVLink logging enabled)\n", log_backend_type);
+            std::cout << "LOG_BACKEND_TYPE=" << log_backend_type << " (MAVLink logging enabled)\n";
         } else {
             std::cerr << "Warning: Could not read LOG_BACKEND_TYPE parameter" << std::endl;
         }
@@ -109,7 +107,7 @@ int main(int argc, char** argv)
     std::ofstream file(filename, std::ios::binary);
 
     if (!file.is_open()) {
-        std::cerr << std::format("Could not open file with name '{}'", ss.str());
+        std::cerr << "Could not open file with name '" << ss.str() << "'";
         return 1;
     }
 
@@ -132,17 +130,16 @@ int main(int argc, char** argv)
         return 1;
     }
 
-    std::cout << std::format("Log streaming started, writing to {}\n", filename);
+    std::cout << "Log streaming started, writing to " << filename << "\n";
 
     // Run for 60 seconds, printing stats every 10 seconds
     for (unsigned i = 0; i < 6; ++i) {
         std::this_thread::sleep_for(std::chrono::seconds(10));
 
         double rate_kib_per_second = (bytes_written_since_last / 1024.0) / 10.0;
-        std::cout << std::format(
-            "Stats: {:.2f} MiB total, {:.1f} KiB/s\n",
-            bytes_written / 1024.0 / 1024.0,
-            rate_kib_per_second);
+        std::cout << "Stats: " << std::fixed << std::setprecision(2)
+                  << bytes_written / 1024.0 / 1024.0 << " MiB total, " << std::setprecision(1)
+                  << rate_kib_per_second << " KiB/s\n";
 
         bytes_written_since_last = 0;
     }

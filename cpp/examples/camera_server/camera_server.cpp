@@ -1,4 +1,3 @@
-#include <format>
 #include <iostream>
 #include <thread>
 #include <chrono>
@@ -15,7 +14,7 @@ int main(int argc, char** argv)
     // 14030 is the default camera port for PX4 SITL
     auto result = mavsdk.add_any_connection("udpin://0.0.0.0:14030");
     if (result != mavsdk::ConnectionResult::Success) {
-        std::cerr << std::format("Could not establish connection: {}\n", result);
+        std::cerr << "Could not establish connection: " << result << "\n";
         return 1;
     }
     std::cout << "Created camera server connection" << std::endl;
@@ -75,7 +74,7 @@ static void subscribe_camera_operation(mavsdk::CameraServer& camera_server)
 
         is_capture_in_progress = true;
 
-        std::cout << std::format("taking a picture ({})...\n", +index);
+        std::cout << "taking a picture (" << +index << ")...\n";
 
         // TODO : actually capture image here
         // simulating with delay
@@ -119,17 +118,17 @@ static void subscribe_camera_operation(mavsdk::CameraServer& camera_server)
     });
 
     camera_server.subscribe_start_video_streaming([&camera_server](int32_t stream_id) {
-        std::cout << std::format("Start video streaming {}\n", stream_id);
+        std::cout << "Start video streaming " << stream_id << "\n";
         camera_server.respond_start_video_streaming(mavsdk::CameraServer::CameraFeedback::Ok);
     });
 
     camera_server.subscribe_stop_video_streaming([&camera_server](int32_t stream_id) {
-        std::cout << std::format("Stop video streaming {}\n", stream_id);
+        std::cout << "Stop video streaming " << stream_id << "\n";
         camera_server.respond_stop_video_streaming(mavsdk::CameraServer::CameraFeedback::Ok);
     });
 
     camera_server.subscribe_set_mode([&camera_server](mavsdk::CameraServer::Mode mode) {
-        std::cout << std::format("Set camera mode {}\n", mode);
+        std::cout << "Set camera mode " << mode << "\n";
         camera_server.respond_set_mode(mavsdk::CameraServer::CameraFeedback::Ok);
     });
 
@@ -171,7 +170,7 @@ static void subscribe_camera_operation(mavsdk::CameraServer& camera_server)
     });
 
     camera_server.subscribe_format_storage([&camera_server](int storage_id) {
-        std::cout << std::format("format storage with id : {}\n", storage_id);
+        std::cout << "format storage with id : " << storage_id << "\n";
         camera_server.respond_format_storage(mavsdk::CameraServer::CameraFeedback::Ok);
     });
 

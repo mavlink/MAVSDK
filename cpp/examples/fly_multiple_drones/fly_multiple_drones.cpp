@@ -51,7 +51,6 @@
 #include <mavsdk/plugins/telemetry/telemetry.h>
 
 #include <cstdint>
-#include <format>
 #include <iostream>
 #include <thread>
 #include <chrono>
@@ -116,7 +115,7 @@ int main(int argc, char* argv[])
     for (size_t i = 1; i <= total_ports_used; ++i) {
         ConnectionResult connection_result = mavsdk.add_any_connection(argv[i]);
         if (connection_result != ConnectionResult::Success) {
-            std::cerr << std::format("Connection error: {}\n", connection_result);
+            std::cerr << "Connection error: " << connection_result << "\n";
             return 1;
         }
     }
@@ -170,11 +169,11 @@ void complete_mission(std::string qgc_plan, std::shared_ptr<System> system)
     const Telemetry::Result set_rate_result = telemetry.set_rate_position(1.0);
 
     if (set_rate_result != Telemetry::Result::Success) {
-        std::cerr << std::format("Setting rate failed:{}\n", set_rate_result);
+        std::cerr << "Setting rate failed:" << set_rate_result << "\n";
         return;
     }
 
-    std::cout << std::format("Importing mission from mission plan: {}\n", qgc_plan);
+    std::cout << "Importing mission from mission plan: " << qgc_plan << "\n";
 
     // Creates a file named with vehicle's last few digits of uuid number to store lat and lng with
     // time
@@ -199,7 +198,7 @@ void complete_mission(std::string qgc_plan, std::shared_ptr<System> system)
     const auto import_res = mission_raw.import_qgroundcontrol_mission(qgc_plan);
 
     if (import_res.first != MissionRaw::Result::Success) {
-        std::cerr << std::format("Failed to import mission items: {}\n", import_res.first);
+        std::cerr << "Failed to import mission items: " << import_res.first << "\n";
         return;
     }
 
@@ -207,14 +206,14 @@ void complete_mission(std::string qgc_plan, std::shared_ptr<System> system)
         std::cerr << "No missions! Exiting...\n";
         return;
     }
-    std::cout << std::format(
-        "Found {} mission items in the given QGC plan.\n", import_res.second.mission_items.size());
+    std::cout << "Found " << import_res.second.mission_items.size()
+              << " mission items in the given QGC plan.\n";
 
     std::cout << "Uploading mission...\n";
     const auto upload_result = mission_raw.upload_mission(import_res.second.mission_items);
 
     if (upload_result != MissionRaw::Result::Success) {
-        std::cerr << std::format("MissionRaw upload failed: {}\n", upload_result);
+        std::cerr << "MissionRaw upload failed: " << upload_result << "\n";
         return;
     }
     std::cout << "Mission uploaded.\n";
@@ -222,24 +221,21 @@ void complete_mission(std::string qgc_plan, std::shared_ptr<System> system)
     std::cout << "Arming...\n";
     const auto arm_result = action.arm();
     if (arm_result != Action::Result::Success) {
-        std::cerr << std::format("Arm failed: {}\n", arm_result);
+        std::cerr << "Arm failed: " << arm_result << "\n";
         return;
     }
     std::cout << "Armed.\n";
 
     // Before starting the mission subscribe to the mission progress.
     mission_raw.subscribe_mission_progress([&](MissionRaw::MissionProgress mission_progress) {
-        std::cout << std::format(
-            "Mission progress update, VehicleID: {} --> {} / {}\n",
-            system->get_system_id(),
-            mission_progress.current,
-            mission_progress.total);
+        std::cout << "Mission progress update, VehicleID: " << system->get_system_id() << " --> "
+                  << mission_progress.current << " / " << mission_progress.total << "\n";
     });
 
     std::cout << "Starting mission.\n";
     const auto start_result = mission_raw.start_mission();
     if (start_result != MissionRaw::Result::Success) {
-        std::cerr << std::format("Mission start failed: {}\n", start_result);
+        std::cerr << "Mission start failed: " << start_result << "\n";
     }
     std::cout << "Started mission.\n";
 

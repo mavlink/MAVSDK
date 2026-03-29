@@ -9,7 +9,6 @@
 #include <chrono>
 #include <cstdio>
 #include <cstdint>
-#include <format>
 #include <iostream>
 #include <future>
 #include <utility>
@@ -46,9 +45,8 @@ public:
     static void print_usage(const std::string& bin_name)
     {
         std::cerr
-            << std::format(
-                   "Usage :{} <connection url> <action> [args]\n\nConnection URL format should be :\n For TCP server: tcpin://<our_ip>:<port>\n For TCP client: tcpout://<remote_ip>:<port>\n For UDP server: udpin://<our_ip>:<port>\n For UDP client: udpout://<remote_ip>:<port>\n For Serial : serial://</path/to/serial/dev>:<baudrate>]\nFor example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n\nActions:\n  get_all:          Print all parameters\n  get <param name>: Get one param\n  set <param name> <value>: Set one param\n  set_and_verify <param name> <value>: Set param and verify by reading back\n",
-                   bin_name)
+            << "Usage :" << bin_name
+            << " <connection url> <action> [args]\n\nConnection URL format should be :\n For TCP server: tcpin://<our_ip>:<port>\n For TCP client: tcpout://<remote_ip>:<port>\n For UDP server: udpin://<our_ip>:<port>\n For UDP client: udpout://<remote_ip>:<port>\n For Serial : serial://</path/to/serial/dev>:<baudrate>]\nFor example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n\nActions:\n  get_all:          Print all parameters\n  get <param name>: Get one param\n  set <param name> <value>: Set one param\n  set_and_verify <param name> <value>: Set param and verify by reading back\n"
             << std::flush;
     }
 
@@ -115,7 +113,7 @@ public:
             args.param_name = argv[3];
             args.value = argv[4];
         } else {
-            std::cerr << std::format("Unknown action: {}\n", action_str);
+            std::cerr << "Unknown action: " << action_str << "\n";
             return {Result::Invalid, {}};
         }
         return {Result::Ok, args};
@@ -141,7 +139,7 @@ int main(int argc, char** argv)
     const ConnectionResult connection_result = mavsdk.add_any_connection(args.connection);
 
     if (connection_result != ConnectionResult::Success) {
-        std::cerr << std::format("Connection failed: {}\n", connection_result);
+        std::cerr << "Connection failed: " << connection_result << "\n";
         return 1;
     }
 
@@ -204,48 +202,48 @@ void get_all(Param& param)
 
     std::cout << "Int params: \n";
     for (auto p : result.int_params) {
-        std::cout << std::format("{}: {}\n", p.name, p.value);
+        std::cout << p.name << ": " << p.value << "\n";
     }
 
     std::cout << "Float params: \n";
     for (auto p : result.float_params) {
-        std::cout << std::format("{}: {}\n", p.name, p.value);
+        std::cout << p.name << ": " << p.value << "\n";
     }
 }
 
 void get(Param& param, std::string name)
 {
     // This is not very pretty, but it does seem to work."
-    std::cerr << std::format("Try as float param...") << std::flush;
+    std::cerr << "Try as float param..." << std::flush;
     auto result = param.get_param_float(name);
 
     if (result.first == Param::Result::Success) {
         std::cerr << "Ok" << std::endl;
-        std::cout << std::format("{}: {}\n", name, result.second);
+        std::cout << name << ": " << result.second << "\n";
         return;
     }
 
     if (result.first != Param::Result::WrongType) {
-        std::cerr << std::format("Failed: {}\n", result.first);
+        std::cerr << "Failed: " << result.first << "\n";
         return;
     }
 
     std::cout << "Wrong type" << std::endl;
-    std::cerr << std::format("Try as int param next...") << std::flush;
+    std::cerr << "Try as int param next..." << std::flush;
     result = param.get_param_int(name);
 
     if (result.first == Param::Result::Success) {
         std::cerr << "Ok" << std::endl;
-        std::cout << std::format("{}: {}\n", name, result.second);
+        std::cout << name << ": " << result.second << "\n";
         return;
     }
 
     if (result.first != Param::Result::WrongType) {
-        std::cerr << std::format("Failed: {}\n", result.first);
+        std::cerr << "Failed: " << result.first << "\n";
         return;
     }
 
-    std::cerr << std::format("Failed: {}\n", result.first);
+    std::cerr << "Failed: " << result.first << "\n";
     std::cerr << "Neither int or float worked, should maybe try custom? (not implemented)"
               << std::endl;
 }
@@ -254,16 +252,14 @@ bool parse_value(const std::string& value, ParsedValue& parsed)
 {
     parsed.is_float = (value.find('.') != std::string::npos);
 
-    std::cout << std::format(
-        "Detected type: {} (based on {} of '.')\n",
-        (parsed.is_float ? "float" : "int"),
-        (parsed.is_float ? "presence" : "absence"));
+    std::cout << "Detected type: " << (parsed.is_float ? "float" : "int") << " (based on "
+              << (parsed.is_float ? "presence" : "absence") << " of '.')\n";
 
     if (parsed.is_float) {
         const auto result =
             our_from_chars_float(value.data(), value.data() + value.size(), parsed.float_val);
         if (result.ec != std::errc() || result.ptr != value.data() + value.size()) {
-            std::cerr << std::format("Failed to parse '{}' as float\n", value);
+            std::cerr << "Failed to parse '" << value << "' as float\n";
             return false;
         }
         parsed.int_val = static_cast<int>(parsed.float_val);
@@ -271,7 +267,7 @@ bool parse_value(const std::string& value, ParsedValue& parsed)
         const auto result =
             std::from_chars(value.data(), value.data() + value.size(), parsed.int_val);
         if (result.ec != std::errc() || result.ptr != value.data() + value.size()) {
-            std::cerr << std::format("Failed to parse '{}' as int\n", value);
+            std::cerr << "Failed to parse '" << value << "' as int\n";
             return false;
         }
         parsed.float_val = static_cast<float>(parsed.int_val);
@@ -285,7 +281,7 @@ bool set_param_with_fallback(
     used_float = value.is_float;
 
     if (value.is_float) {
-        std::cout << std::format("Setting {} to {} as float...", name, value.float_val)
+        std::cout << "Setting " << name << " to " << value.float_val << " as float..."
                   << std::flush;
         auto result = param.set_param_float(name, value.float_val);
 
@@ -295,12 +291,12 @@ bool set_param_with_fallback(
         }
 
         if (result != Param::Result::WrongType) {
-            std::cout << std::format("Failed: {}\n", result);
+            std::cout << "Failed: " << result << "\n";
             return false;
         }
 
         // Fallback to int
-        std::cout << std::format("WrongType, trying as int...") << std::flush;
+        std::cout << "WrongType, trying as int..." << std::flush;
         used_float = false;
         result = param.set_param_int(name, value.int_val);
 
@@ -309,11 +305,11 @@ bool set_param_with_fallback(
             return true;
         }
 
-        std::cout << std::format("Failed: {}\n", result);
+        std::cout << "Failed: " << result << "\n";
         return false;
 
     } else {
-        std::cout << std::format("Setting {} to {} as int...", name, value.int_val) << std::flush;
+        std::cout << "Setting " << name << " to " << value.int_val << " as int..." << std::flush;
         auto result = param.set_param_int(name, value.int_val);
 
         if (result == Param::Result::Success) {
@@ -322,12 +318,12 @@ bool set_param_with_fallback(
         }
 
         if (result != Param::Result::WrongType) {
-            std::cout << std::format("Failed: {}\n", result);
+            std::cout << "Failed: " << result << "\n";
             return false;
         }
 
         // Fallback to float
-        std::cout << std::format("WrongType, trying as float...") << std::flush;
+        std::cout << "WrongType, trying as float..." << std::flush;
         used_float = true;
         result = param.set_param_float(name, value.float_val);
 
@@ -336,20 +332,20 @@ bool set_param_with_fallback(
             return true;
         }
 
-        std::cout << std::format("Failed: {}\n", result);
+        std::cout << "Failed: " << result << "\n";
         return false;
     }
 }
 
 bool get_param_value(Param& param, const std::string& name, bool is_float, ParsedValue& result)
 {
-    std::cout << std::format("Reading back {} as {}...", name, (is_float ? "float" : "int"))
+    std::cout << "Reading back " << name << " as " << (is_float ? "float" : "int") << "..."
               << std::flush;
 
     if (is_float) {
         auto get_result = param.get_param_float(name);
         if (get_result.first != Param::Result::Success) {
-            std::cout << std::format("Failed: {}\n", get_result.first);
+            std::cout << "Failed: " << get_result.first << "\n";
             return false;
         }
         result.is_float = true;
@@ -358,7 +354,7 @@ bool get_param_value(Param& param, const std::string& name, bool is_float, Parse
     } else {
         auto get_result = param.get_param_int(name);
         if (get_result.first != Param::Result::Success) {
-            std::cout << std::format("Failed: {}\n", get_result.first);
+            std::cout << "Failed: " << get_result.first << "\n";
             return false;
         }
         result.is_float = false;
@@ -399,14 +395,14 @@ void set_and_verify(Param& param, std::string name, std::string value)
     }
 
     if (used_float) {
-        std::cout << std::format("Verifying: set={}, got={}", parsed.float_val, readback.float_val);
+        std::cout << "Verifying: set=" << parsed.float_val << ", got=" << readback.float_val;
         if (parsed.float_val == readback.float_val) {
             std::cout << " -> MATCH" << std::endl;
         } else {
             std::cout << " -> MISMATCH!" << std::endl;
         }
     } else {
-        std::cout << std::format("Verifying: set={}, got={}", parsed.int_val, readback.int_val);
+        std::cout << "Verifying: set=" << parsed.int_val << ", got=" << readback.int_val;
         if (parsed.int_val == readback.int_val) {
             std::cout << " -> MATCH" << std::endl;
         } else {

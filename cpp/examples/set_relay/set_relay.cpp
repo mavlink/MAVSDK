@@ -12,7 +12,6 @@
 #include <mavsdk/plugins/action/action.h>
 #include <chrono>
 #include <cstdint>
-#include <format>
 #include <iostream>
 #include <future>
 
@@ -20,9 +19,9 @@ using namespace mavsdk;
 
 void usage(const std::string& bin_name)
 {
-    std::cerr << std::format(
-        "Usage : {} <connection_url> <index> <on|off>\nConnection URL format should be :\n For TCP server: tcpin://<our_ip>:<port>\n For TCP client: tcpout://<remote_ip>:<port>\n For UDP server: udpin://<our_ip>:<port>\n For UDP client: udpout://<remote_ip>:<port>\n For Serial : serial://</path/to/serial/dev>:<baudrate>]\nFor example, to connect to the simulator use URL: udpin://0.0.0.0:14540\nIndex is the relay instance number, 0 or greater.\n",
-        bin_name);
+    std::cerr
+        << "Usage : " << bin_name
+        << " <connection_url> <index> <on|off>\nConnection URL format should be :\n For TCP server: tcpin://<our_ip>:<port>\n For TCP client: tcpout://<remote_ip>:<port>\n For UDP server: udpin://<our_ip>:<port>\n For UDP client: udpout://<remote_ip>:<port>\n For Serial : serial://</path/to/serial/dev>:<baudrate>]\nFor example, to connect to the simulator use URL: udpin://0.0.0.0:14540\nIndex is the relay instance number, 0 or greater.\n";
 }
 
 int main(int argc, char** argv)
@@ -42,7 +41,7 @@ int main(int argc, char** argv)
     } else if (setting_str == "off") {
         setting = Action::RelayCommand::Off;
     } else {
-        std::cerr << std::format("Invalid setting '{}'. Use 'on' or 'off'.\n", setting_str);
+        std::cerr << "Invalid setting '" << setting_str << "'. Use 'on' or 'off'.\n";
         usage(argv[0]);
         return 1;
     }
@@ -51,7 +50,7 @@ int main(int argc, char** argv)
     const ConnectionResult connection_result = mavsdk.add_any_connection(connection_url);
 
     if (connection_result != ConnectionResult::Success) {
-        std::cerr << std::format("Connection failed: {}\n", connection_result);
+        std::cerr << "Connection failed: " << connection_result << "\n";
         return 1;
     }
 
@@ -86,11 +85,11 @@ int main(int argc, char** argv)
     // Instantiate plugins.
     auto action = Action{system};
 
-    std::cout << std::format("Setting relay {} to {}...\n", index, setting_str);
+    std::cout << "Setting relay " << index << " to " << setting_str << "...\n";
     const Action::Result set_relay_result = action.set_relay(index, setting);
 
     if (set_relay_result != Action::Result::Success) {
-        std::cerr << std::format("Setting relay failed:{}\n", set_relay_result);
+        std::cerr << "Setting relay failed:" << set_relay_result << "\n";
         return 1;
     }
 

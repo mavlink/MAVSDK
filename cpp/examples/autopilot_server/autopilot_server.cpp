@@ -1,6 +1,5 @@
 #include <atomic>
 #include <future>
-#include <format>
 #include <iostream>
 #include <thread>
 
@@ -111,13 +110,13 @@ int main(int argc, char** argv)
                 [&mission_prom, &missionRawServer, &handle](
                     MissionRawServer::Result res, MissionRawServer::MissionPlan plan) {
                     std::cout << "Received Uploaded Mission!" << std::endl;
-                    std::cout << std::format("{}\n", plan);
+                    std::cout << plan << "\n";
                     // Unsubscribe so we only recieve one mission
                     missionRawServer.unsubscribe_incoming_mission(handle);
                     mission_prom.set_value(plan);
                 });
         missionRawServer.subscribe_current_item_changed([](MissionRawServer::MissionItem item) {
-            std::cout << std::format("Current item changed: {}\n", item);
+            std::cout << "Current item changed: " << item << "\n";
         });
         missionRawServer.subscribe_clear_all(
             [](uint32_t clear_all) { std::cout << "Clear All Mission!" << std::endl; });
@@ -207,7 +206,7 @@ int main(int argc, char** argv)
     // Check for our custom param we have set in the server thread
     auto res = param.get_param_int("MY_PARAM");
     if (res.first == mavsdk::Param::Result::Success) {
-        std::cout << std::format("Found Param MY_PARAM: {}\n", res.second);
+        std::cout << "Found Param MY_PARAM: " << res.second << "\n";
     }
 
     // Create a mission to send to our mission server
@@ -230,13 +229,13 @@ int main(int argc, char** argv)
         auto future_result = prom->get_future();
         Mission::MissionPlan mission_plan{};
         mission_plan.mission_items = mission_items;
-        std::cout << std::format("SystemID {}\n", system->get_system_id());
+        std::cout << "SystemID " << system->get_system_id() << "\n";
         mission.upload_mission_async(
             mission_plan, [prom](Mission::Result result) { prom->set_value(result); });
 
         const Mission::Result result = future_result.get();
         if (result != Mission::Result::Success) {
-            std::cout << std::format("Mission upload failed ({}), exiting.\n", result);
+            std::cout << "Mission upload failed (" << result << "), exiting.\n";
             cleanup_autopilot_thread();
             return 1;
         }
@@ -246,8 +245,8 @@ int main(int argc, char** argv)
         mission.clear_mission_async(
             [](Mission::Result callback) { std::cout << "Clear Mission Request" << std::endl; });
         mission.subscribe_mission_progress([](Mission::MissionProgress progress) {
-            std::cout << std::format("Current: {}\n", progress.current);
-            std::cout << std::format("Total: {}\n", progress.total);
+            std::cout << "Current: " << progress.current << "\n";
+            std::cout << "Total: " << progress.total << "\n";
         });
     }
 
@@ -256,19 +255,19 @@ int main(int argc, char** argv)
     // We want to listen to the altitude of the drone at 1 Hz.
     auto set_rate_result = telemetry.set_rate_position(1.0);
     if (set_rate_result != mavsdk::Telemetry::Result::Success) {
-        std::cout << std::format("Setting rate failed:{}\n", set_rate_result);
+        std::cout << "Setting rate failed:" << set_rate_result << "\n";
         cleanup_autopilot_thread();
         return 1;
     }
 
     // Set up callback to monitor altitude while the vehicle is in flight
     telemetry.subscribe_position([](mavsdk::Telemetry::Position position) {
-        std::cout << std::format("Altitude: {} m\n", position.relative_altitude_m);
+        std::cout << "Altitude: " << position.relative_altitude_m << " m\n";
     });
 
     // Set up callback to monitor Unix time
     telemetry.subscribe_unix_epoch_time(
-        [](uint64_t time_us) { std::cout << std::format("Unix epoch time: {} us\n", time_us); });
+        [](uint64_t time_us) { std::cout << "Unix epoch time: " << time_us << " us\n"; });
 
     // Check if vehicle is ready to arm
     while (telemetry.health_all_ok() != true) {
@@ -281,7 +280,7 @@ int main(int argc, char** argv)
     const Action::Result arm_result = action.arm();
 
     if (arm_result != Action::Result::Success) {
-        std::cout << std::format("Arming failed:{}\n", arm_result);
+        std::cout << "Arming failed:" << arm_result << "\n";
         cleanup_autopilot_thread();
         return 1;
     }
@@ -293,7 +292,7 @@ int main(int argc, char** argv)
     bool takenOff = false;
     const Action::Result takeoff_result = action.takeoff();
     if (takeoff_result != Action::Result::Success) {
-        std::cout << std::format("Takeoff failed!:{}\n", takeoff_result);
+        std::cout << "Takeoff failed!:" << takeoff_result << "\n";
         cleanup_autopilot_thread();
         return 1;
     }

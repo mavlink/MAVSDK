@@ -3,7 +3,6 @@
 //
 
 #include <mavsdk/mavsdk.h>
-#include <format>
 #include <iostream>
 #include <thread>
 #include <set>
@@ -25,16 +24,13 @@ enum class DisplayMode {
 
 void usage(const std::string& bin_name)
 {
-    std::cerr << std::format(
-        "Usage:\n  {} <connection_url> list\n  {} <connection_url> stat\n  {} <connection_url> all\n  {} <connection_url> <message_name1> [message_name2] ...\n\nExamples:\n  {} udpin://0.0.0.0:14540 list\n  {} udpin://0.0.0.0:14540 stat\n  {} udpin://0.0.0.0:14540 all\n  {} udpin://0.0.0.0:14540 GPS_RAW_INT HEARTBEAT\n\nConnection URL format:\n  TCP server : tcpin://<our_ip>:<port>\n  TCP client : tcpout://<remote_ip>:<port>\n  UDP server : udpin://<our_ip>:<port>\n  UDP client : udpout://<remote_ip>:<port>\n  Serial     : serial://</path/to/serial/dev>:<baudrate>\n",
-        bin_name,
-        bin_name,
-        bin_name,
-        bin_name,
-        bin_name,
-        bin_name,
-        bin_name,
-        bin_name);
+    std::cerr
+        << "Usage:\n  " << bin_name << " <connection_url> list\n  " << bin_name
+        << " <connection_url> stat\n  " << bin_name << " <connection_url> all\n  " << bin_name
+        << " <connection_url> <message_name1> [message_name2] ...\n\nExamples:\n  " << bin_name
+        << " udpin://0.0.0.0:14540 list\n  " << bin_name << " udpin://0.0.0.0:14540 stat\n  "
+        << bin_name << " udpin://0.0.0.0:14540 all\n  " << bin_name
+        << " udpin://0.0.0.0:14540 GPS_RAW_INT HEARTBEAT\n\nConnection URL format:\n  TCP server : tcpin://<our_ip>:<port>\n  TCP client : tcpout://<remote_ip>:<port>\n  UDP server : udpin://<our_ip>:<port>\n  UDP client : udpout://<remote_ip>:<port>\n  Serial     : serial://</path/to/serial/dev>:<baudrate>\n";
 }
 
 std::string get_timestamp()
@@ -85,7 +81,7 @@ int main(int argc, char** argv)
     ConnectionResult connection_result = mavsdk.add_any_connection(connection_url);
 
     if (connection_result != ConnectionResult::Success) {
-        std::cerr << std::format("Connection failed: {}\n", connection_result);
+        std::cerr << "Connection failed: " << connection_result << "\n";
         return 1;
     }
 
@@ -99,7 +95,7 @@ int main(int argc, char** argv)
     } else {
         std::cout << "Mode: Show messages: ";
         for (const auto& msg : requested_messages) {
-            std::cout << std::format("{} ", msg);
+            std::cout << msg << " ";
         }
         std::cout << std::endl;
     }
@@ -128,13 +124,13 @@ int main(int argc, char** argv)
         }
 
         if (should_display) {
-            std::cout << std::format("[{}] ", get_timestamp());
-            std::cout << std::format("({}:{}) ", message.system_id, message.component_id);
-            std::cout << std::format("{}", message.message_name);
+            std::cout << "[" << get_timestamp() << "] ";
+            std::cout << "(" << message.system_id << ":" << message.component_id << ") ";
+            std::cout << message.message_name;
 
             if (mode == DisplayMode::All || mode == DisplayMode::Selective) {
                 if (!message.fields_json.empty()) {
-                    std::cout << std::format(": {}", message.fields_json);
+                    std::cout << ": " << message.fields_json;
                 }
             }
             std::cout << std::endl;
@@ -156,11 +152,11 @@ int main(int argc, char** argv)
             if (elapsed.count() >= 1) {
                 // Clear previous output (move cursor up and clear lines)
                 if (lines_printed > 0) {
-                    std::cout << std::format("\033[{}A", lines_printed); // Move cursor up
+                    std::cout << "\033[" << lines_printed << "A"; // Move cursor up
                     for (int i = 0; i < lines_printed; i++) {
                         std::cout << "\033[K\n"; // Clear line and move to next
                     }
-                    std::cout << std::format("\033[{}A", lines_printed); // Move cursor back up
+                    std::cout << "\033[" << lines_printed << "A"; // Move cursor back up
                 }
 
                 // Create sorted vector of message statistics
@@ -175,7 +171,9 @@ int main(int argc, char** argv)
 
                 // Print header
                 std::cout << '\n';
-                std::cout << std::format("{:<35}{:<10}{:<10}\n", "Message Type", "Count", "Hz");
+                std::cout << std::left << std::setw(35) << "Message Type" << std::setw(10)
+                          << "Count" << std::setw(10) << "Hz"
+                          << "\n";
                 std::cout << std::string(55, '-') << '\n';
                 lines_printed = 3;
 
@@ -190,7 +188,8 @@ int main(int argc, char** argv)
                     double hz =
                         elapsed_since_start > 0 ? (count * 1000.0 / elapsed_since_start) : 0.0;
 
-                    std::cout << std::format("{:<35}{:<10}{:<10.1f}\n", msg_name, count, hz);
+                    std::cout << std::left << std::setw(35) << msg_name << std::setw(10) << count
+                              << std::fixed << std::setprecision(1) << std::setw(10) << hz << "\n";
                     lines_printed++;
                 }
 

@@ -2,7 +2,6 @@
 
 #include <cmath>
 #include <csignal>
-#include <format>
 #include <iostream>
 #include <memory>
 
@@ -31,7 +30,7 @@ std::unique_ptr<Joystick> Joystick::create()
 bool Joystick::init()
 {
     if (SDL_Init(SDL_INIT_JOYSTICK) < 0) {
-        std::cerr << std::format("Could not initialize SDL joystick: {}\n", SDL_GetError());
+        std::cerr << "Could not initialize SDL joystick: " << SDL_GetError() << "\n";
         return false;
     }
 
@@ -47,7 +46,7 @@ bool Joystick::connect()
 
     const auto num = SDL_NumJoysticks();
     if (num < 0) {
-        std::cerr << std::format("Could not get number of  joysticks: {}", SDL_GetError());
+        std::cerr << "Could not get number of  joysticks: " << SDL_GetError();
         return false;
     }
 
@@ -147,11 +146,11 @@ void Joystick::set_initial_values()
 void Joystick::print_values()
 {
     for (std::size_t i = 0; i < _state.buttons.size(); ++i) {
-        std::cout << std::format("button {} -> {}\n", i, static_cast<bool>(_state.buttons[i]));
+        std::cout << "button " << i << " -> " << static_cast<bool>(_state.buttons[i]) << "\n";
     }
 
     for (std::size_t i = 0; i < _state.axes.size(); ++i) {
-        std::cout << std::format("axis {} -> {}\n", i, _state.axes[i]);
+        std::cout << "axis " << i << " -> " << _state.axes[i] << "\n";
     }
 
     std::cout << '\n';

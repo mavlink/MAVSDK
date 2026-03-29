@@ -4,16 +4,15 @@
 
 #include <mavsdk/mavsdk.h>
 #include <mavsdk/plugins/mavlink_direct/mavlink_direct.h>
-#include <format>
 #include <iostream>
 #include <chrono>
 #include <thread>
 
 void usage(const std::string& bin_name)
 {
-    std::cerr << std::format(
-        "Usage : {} <connection_url>\nConnection URL format should be :\n For TCP server: tcpin://<our_ip>:<port>\n For TCP client: tcpout://<remote_ip>:<port>\n For UDP server: udpin://<our_ip>:<port>\n For UDP client: udpout://<remote_ip>:<port>\n For Serial : serial://</path/to/serial/dev>:<baudrate>]\nFor example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n",
-        bin_name);
+    std::cerr
+        << "Usage : " << bin_name
+        << " <connection_url>\nConnection URL format should be :\n For TCP server: tcpin://<our_ip>:<port>\n For TCP client: tcpout://<remote_ip>:<port>\n For UDP server: udpin://<our_ip>:<port>\n For UDP client: udpout://<remote_ip>:<port>\n For Serial : serial://</path/to/serial/dev>:<baudrate>]\nFor example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n";
 }
 
 int main(int argc, char** argv)
@@ -29,7 +28,7 @@ int main(int argc, char** argv)
     // Add connection
     mavsdk::ConnectionResult connection_result = mavsdk.add_any_connection(argv[1]);
     if (connection_result != mavsdk::ConnectionResult::Success) {
-        std::cerr << std::format("Connection failed: {}\n", connection_result);
+        std::cerr << "Connection failed: " << connection_result << "\n";
         return 1;
     }
 
@@ -52,8 +51,8 @@ int main(int argc, char** argv)
     // Subscribe to GPS updates
     auto gps_handle = mavlink_direct.subscribe_message(
         "GPS_RAW_INT", [](const mavsdk::MavlinkDirect::MavlinkMessage& message) {
-            std::cout << std::format("** {} **\n", message.message_name);
-            std::cout << std::format("{}\n", message.fields_json);
+            std::cout << "** " << message.message_name << " **\n";
+            std::cout << message.fields_json << "\n";
         });
 
     std::cout << "Listening for GPS messages. Press Ctrl+C to exit..." << std::endl;

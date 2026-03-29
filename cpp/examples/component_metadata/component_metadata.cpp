@@ -6,7 +6,6 @@
 #include <mavsdk/plugins/component_metadata/component_metadata.h>
 #include <fstream>
 #include <cstdint>
-#include <format>
 #include <iostream>
 #include <future>
 
@@ -14,9 +13,9 @@ using namespace mavsdk;
 
 void usage(const std::string& bin_name)
 {
-    std::cerr << std::format(
-        "Usage : {} <connection_url>\nConnection URL format should be :\n For TCP server: tcpin://<our_ip>:<port>\n For TCP client: tcpout://<remote_ip>:<port>\n For UDP server: udpin://<our_ip>:<port>\n For UDP client: udpout://<remote_ip>:<port>\n For Serial : serial://</path/to/serial/dev>:<baudrate>]\nFor example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n",
-        bin_name);
+    std::cerr
+        << "Usage : " << bin_name
+        << " <connection_url>\nConnection URL format should be :\n For TCP server: tcpin://<our_ip>:<port>\n For TCP client: tcpout://<remote_ip>:<port>\n For UDP server: udpin://<our_ip>:<port>\n For UDP client: udpout://<remote_ip>:<port>\n For Serial : serial://</path/to/serial/dev>:<baudrate>]\nFor example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n";
 }
 
 int main(int argc, char** argv)
@@ -30,7 +29,7 @@ int main(int argc, char** argv)
     ConnectionResult connection_result = mavsdk.add_any_connection(argv[1]);
 
     if (connection_result != ConnectionResult::Success) {
-        std::cerr << std::format("Connection failed: {}\n", connection_result);
+        std::cerr << "Connection failed: " << connection_result << "\n";
         return 1;
     }
 
@@ -47,8 +46,8 @@ int main(int argc, char** argv)
     component_metadata.subscribe_metadata_available(
         [&promise](ComponentMetadata::MetadataUpdate data) {
             if (data.type != ComponentMetadata::MetadataType::AllCompleted) {
-                std::cout << std::format(
-                    "Got metadata: type: {}, compid: {}\n", (int)data.type, data.compid);
+                std::cout << "Got metadata: type: " << (int)data.type << ", compid: " << data.compid
+                          << "\n";
             }
             std::string filename;
             switch (data.type) {
@@ -67,7 +66,7 @@ int main(int argc, char** argv)
             }
             if (!filename.empty()) {
                 filename = std::to_string(data.compid) + "_" + filename;
-                std::cout << std::format("  Writing JSON data to {}\n", filename);
+                std::cout << "  Writing JSON data to " << filename << "\n";
                 std::ofstream out(filename);
                 out << data.json_metadata;
                 out.close();

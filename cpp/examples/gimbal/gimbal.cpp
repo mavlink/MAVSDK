@@ -8,7 +8,6 @@
 #include <cstdint>
 #include <mavsdk/mavsdk.h>
 #include <mavsdk/plugins/gimbal/gimbal.h>
-#include <format>
 #include <iostream>
 #include <future>
 #include <memory>
@@ -22,9 +21,9 @@ using std::this_thread::sleep_for;
 
 void usage(const std::string& bin_name)
 {
-    std::cerr << std::format(
-        "Usage : {} <connection_url>\nConnection URL format should be :\n For TCP server: tcpin://<our_ip>:<port>\n For TCP client: tcpout://<remote_ip>:<port>\n For UDP server: udpin://<our_ip>:<port>\n For UDP client: udpout://<remote_ip>:<port>\n For Serial : serial://</path/to/serial/dev>:<baudrate>]\nFor example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n",
-        bin_name);
+    std::cerr
+        << "Usage : " << bin_name
+        << " <connection_url>\nConnection URL format should be :\n For TCP server: tcpin://<our_ip>:<port>\n For TCP client: tcpout://<remote_ip>:<port>\n For UDP server: udpin://<our_ip>:<port>\n For UDP client: udpout://<remote_ip>:<port>\n For Serial : serial://</path/to/serial/dev>:<baudrate>]\nFor example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n";
 }
 
 int main(int argc, char** argv)
@@ -38,7 +37,7 @@ int main(int argc, char** argv)
     ConnectionResult connection_result = mavsdk.add_any_connection(argv[1]);
 
     if (connection_result != ConnectionResult::Success) {
-        std::cerr << std::format("Connection failed: {}\n", connection_result);
+        std::cerr << "Connection failed: " << connection_result << "\n";
         return 1;
     }
 
@@ -56,10 +55,8 @@ int main(int argc, char** argv)
     std::once_flag once_flag;
     // Wait for a gimbal.
     gimbal.subscribe_gimbal_list([&prom, &once_flag](const Gimbal::GimbalList& gimbal_list) {
-        std::cout << std::format(
-            "Found a gimbal: {} by {}\n",
-            gimbal_list.gimbals.back().model_name,
-            gimbal_list.gimbals.back().vendor_name);
+        std::cout << "Found a gimbal: " << gimbal_list.gimbals.back().model_name << " by "
+                  << gimbal_list.gimbals.back().vendor_name << "\n";
         std::call_once(once_flag, [&prom, &gimbal_list]() {
             prom.set_value(gimbal_list.gimbals.back().gimbal_id);
         });
@@ -71,24 +68,22 @@ int main(int argc, char** argv)
     }
 
     const int32_t gimbal_id = fut.get();
-    std::cout << std::format("Use gimbal ID: {}\n", gimbal_id);
+    std::cout << "Use gimbal ID: " << gimbal_id << "\n";
 
     // Set up callback to monitor camera/gimbal angle
     gimbal.subscribe_attitude([](Gimbal::Attitude attitude) {
-        std::cout << std::format(
-            "Gimbal angle pitch: {} deg, yaw: {} yaw (relative to forward)\n",
-            attitude.euler_angle_forward.pitch_deg,
-            attitude.euler_angle_forward.yaw_deg);
-        std::cout << std::format(
-            "Gimbal angle pitch: {} deg, yaw: {} yaw (relative to North)\n",
-            attitude.euler_angle_north.pitch_deg,
-            attitude.euler_angle_north.yaw_deg);
+        std::cout << "Gimbal angle pitch: " << attitude.euler_angle_forward.pitch_deg
+                  << " deg, yaw: " << attitude.euler_angle_forward.yaw_deg
+                  << " yaw (relative to forward)\n";
+        std::cout << "Gimbal angle pitch: " << attitude.euler_angle_north.pitch_deg
+                  << " deg, yaw: " << attitude.euler_angle_north.yaw_deg
+                  << " yaw (relative to North)\n";
     });
 
     std::cout << "Start controlling gimbal...\n";
     Gimbal::Result gimbal_result = gimbal.take_control(gimbal_id, Gimbal::ControlMode::Primary);
     if (gimbal_result != Gimbal::Result::Success) {
-        std::cerr << std::format("Could not take gimbal control: {}\n", gimbal_result);
+        std::cerr << "Could not take gimbal control: " << gimbal_result << "\n";
         return 1;
     }
 
@@ -195,7 +190,7 @@ int main(int argc, char** argv)
     std::cout << "Stop controlling gimbal...\n";
     gimbal_result = gimbal.release_control(gimbal_id);
     if (gimbal_result != Gimbal::Result::Success) {
-        std::cerr << std::format("Could not release gimbal control: {}\n", gimbal_result);
+        std::cerr << "Could not release gimbal control: " << gimbal_result << "\n";
         return 1;
     }
 
