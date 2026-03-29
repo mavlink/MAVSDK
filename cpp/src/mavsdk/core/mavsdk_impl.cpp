@@ -1362,14 +1362,14 @@ void MavsdkImpl::process_user_callbacks_thread()
                         "Callback called from {}:{} took more than {} second to run.",
                         callback.filename,
                         callback.linenumber,
-                        timeout_s);
+                        static_cast<int>(timeout_s));
                     fflush(stdout);
                     fflush(stderr);
                     abort();
                 } else {
                     LogWarn(
                         "Callback took more than {} second to run.\nSee: https://mavsdk.mavlink.io/main/en/cpp/troubleshooting.html#user_callbacks",
-                        timeout_s);
+                        static_cast<int>(timeout_s));
                 }
             },
             timeout_s);

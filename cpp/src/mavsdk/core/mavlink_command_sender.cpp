@@ -203,7 +203,7 @@ void MavlinkCommandSender::receive_command_ack(const mavlink_message_t& message)
                     work->identification.command,
                     work->identification.target_system_id,
                     work->identification.target_component_id,
-                    _system_impl.get_time().elapsed_since_s(work->time_started));
+                    static_cast<int>(_system_impl.get_time().elapsed_since_s(work->time_started)));
             }
             continue;
         }
@@ -213,7 +213,7 @@ void MavlinkCommandSender::receive_command_ack(const mavlink_message_t& message)
                 "Received command ack for {} with result {} after {} s",
                 command_ack.command,
                 static_cast<int>(command_ack.result),
-                _system_impl.get_time().elapsed_since_s(work->time_started));
+                static_cast<int>(_system_impl.get_time().elapsed_since_s(work->time_started)));
         }
 
         CommandResultCallback temp_callback = work->callback;
@@ -353,7 +353,7 @@ void MavlinkCommandSender::receive_timeout(const CommandIdentification& identifi
             if (_command_debugging) {
                 LogWarn(
                     "sending again after {} s, retries to do: {}  ({}).",
-                    _system_impl.get_time().elapsed_since_s(work->time_started),
+                    static_cast<int>(_system_impl.get_time().elapsed_since_s(work->time_started)),
                     work->retries_to_do,
                     work->identification.command);
 

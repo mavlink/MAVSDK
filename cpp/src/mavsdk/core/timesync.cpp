@@ -103,7 +103,7 @@ void Timesync::set_timesync_offset(int64_t offset_ns, uint64_t start_transfer_lo
 
         if (_high_rtt_count > MAX_CONS_HIGH_RTT) {
             // Issue a warning to the user if the RTT is constantly high
-            LogWarn("RTT too high for timesync: {} ms.", static_cast<double>(rtt_ns) / 1000000.0);
+            LogWarn("RTT too high for timesync: {} ms.", rtt_ns / 1000000ULL);
 
             // Reset counter
             _high_rtt_count = 0;
