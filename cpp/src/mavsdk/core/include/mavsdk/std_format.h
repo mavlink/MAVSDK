@@ -24,29 +24,43 @@
 #include <string>
 #include <type_traits>
 
+// All std::formatter specializations below are defined inside namespace std
+// so that GCC's compile-time format-string checker (_Checking_scanner /
+// basic_format_string) can find the constrained partial specialisations via
+// normal lookup rather than relying on ADL from a definition in the global
+// namespace.  Defining them outside namespace std with the qualified name
+// (struct std::formatter<T>) is technically legal C++ but GCC 13/14's
+// consteval format-string validation does not consistently apply constrained
+// partial specialisations that were introduced that way, causing hard errors
+// even though the types do have operator<<.
+namespace std {
+
 // std::formatter for std::filesystem::path is not available until C++26.
 // Provide a specialization here so paths can be passed directly to std::format.
-template<> struct std::formatter<std::filesystem::path> : std::formatter<std::string> {
+template<> struct formatter<filesystem::path> : formatter<string> {
     template<typename FormatContext>
-    auto format(const std::filesystem::path& p, FormatContext& ctx) const
+    auto format(const filesystem::path& p, FormatContext& ctx) const
     {
-        return std::formatter<std::string>::format(p.string(), ctx);
+        return formatter<string>::format(p.string(), ctx);
     }
 };
 
 // Formatter for scoped enum types (enum class) that provide operator<<.
-// All MAVSDK plugin Result, Mode, Status, etc. enums are generated with operator<<
-// so they print their named value (e.g. "Success") rather than a raw integer.
+// All MAVSDK plugin Result, Mode, Status, etc. enums are generated with
+// operator<< so they print their named value (e.g. "Success") rather than a
+// raw integer.  Use an explicit FormatContext template parameter (not
+// abbreviated `auto&`) for maximum GCC compatibility.
 template<typename T>
     requires(
-        std::is_enum_v<T> && !std::is_convertible_v<T, std::underlying_type_t<T>> &&
-        requires(std::ostream& os, T v) { os << v; })
-struct std::formatter<T> : std::formatter<std::string> {
-    auto format(T val, auto& ctx) const
+        is_enum_v<T> && !is_convertible_v<T, underlying_type_t<T>> &&
+        requires(ostream& os, T v) { os << v; })
+struct formatter<T> : formatter<string> {
+    template<typename FormatContext>
+    auto format(T val, FormatContext& ctx) const
     {
-        std::ostringstream ss;
+        ostringstream ss;
         ss << val;
-        return std::formatter<std::string>::format(ss.str(), ctx);
+        return formatter<string>::format(ss.str(), ctx);
     }
 };
 
@@ -54,17 +68,20 @@ struct std::formatter<T> : std::formatter<std::string> {
 // std::formatter specialization (e.g. MissionPlan, MissionItem, ParamValue).
 template<typename T>
     requires(
-        std::is_class_v<T> && !std::is_same_v<std::remove_cvref_t<T>, std::string> &&
-        !std::is_same_v<std::remove_cvref_t<T>, std::string_view> &&
-        !std::is_same_v<std::remove_cvref_t<T>, std::filesystem::path> &&
-        requires(std::ostream& os, const T& v) { os << v; })
-struct std::formatter<T> : std::formatter<std::string> {
-    auto format(const T& val, auto& ctx) const
+        is_class_v<T> && !is_same_v<remove_cvref_t<T>, string> &&
+        !is_same_v<remove_cvref_t<T>, string_view> &&
+        !is_same_v<remove_cvref_t<T>, filesystem::path> &&
+        requires(ostream& os, const T& v) { os << v; })
+struct formatter<T> : formatter<string> {
+    template<typename FormatContext>
+    auto format(const T& val, FormatContext& ctx) const
     {
-        std::ostringstream ss;
+        ostringstream ss;
         ss << val;
-        return std::formatter<std::string>::format(ss.str(), ctx);
+        return formatter<string>::format(ss.str(), ctx);
     }
 };
+
+} // namespace std
 
 #endif // MAVSDK_HAS_STD_FORMAT
