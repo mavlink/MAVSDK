@@ -120,7 +120,7 @@ jobs:
           delocate-wheel -w wheelhouse dist/mavsdk4-*-macosx_*.whl
       - name: upload mavsdk wheel
         if: ${{ matrix.build-framework == 'OFF' }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: mavsdk_wheel_macos_${{ matrix.architecture }}
           path: py/mavsdk/wheelhouse/*.whl
@@ -191,23 +191,23 @@ jobs:
       - uses: actions/checkout@v6
         with:
           submodules: recursive
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v7
         with:
           name: mavsdk_server_ios.framework
           path: ./cpp/build/ios/src/mavsdk_server/src/mavsdk_server.framework
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v7
         with:
           name: mavsdk_server_ios_simulator_x64.framework
           path: ./cpp/build/ios_simulator_x64/src/mavsdk_server/src/mavsdk_server.framework
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v7
         with:
           name: mavsdk_server_ios_simulator_arm64.framework
           path: ./cpp/build/ios_simulator_arm64/src/mavsdk_server/src/mavsdk_server.framework
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v7
         with:
           name: mavsdk_server_macos_x64.framework
           path: ./cpp/build/macos_x64/src/mavsdk_server/src/mavsdk_server.framework
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v7
         with:
           name: mavsdk_server_macos_arm64.framework
           path: ./cpp/build/macos_arm64/src/mavsdk_server/src/mavsdk_server.framework
