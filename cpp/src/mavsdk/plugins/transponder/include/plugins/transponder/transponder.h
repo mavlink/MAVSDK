@@ -231,3 +231,9 @@ private:
 };
 
 } // namespace mavsdk
+
+#include "std_format.h"
+MAVSDK_DEFINE_FORMATTER(mavsdk::Transponder::AdsbEmitterType)
+MAVSDK_DEFINE_FORMATTER(mavsdk::Transponder::AdsbAltitudeType)
+
+MAVSDK_DEFINE_FORMATTER(mavsdk::Transponder::Result)

@@ -2467,3 +2467,14 @@ private:
 };
 
 } // namespace mavsdk
+
+#include "std_format.h"
+MAVSDK_DEFINE_FORMATTER(mavsdk::Telemetry::FixType)
+MAVSDK_DEFINE_FORMATTER(mavsdk::Telemetry::BatteryFunction)
+MAVSDK_DEFINE_FORMATTER(mavsdk::Telemetry::FlightMode)
+MAVSDK_DEFINE_FORMATTER(mavsdk::Telemetry::StatusTextType)
+MAVSDK_DEFINE_FORMATTER(mavsdk::Telemetry::LandedState)
+MAVSDK_DEFINE_FORMATTER(mavsdk::Telemetry::VtolState)
+
+MAVSDK_DEFINE_FORMATTER(mavsdk::Telemetry::Odometry::MavFrame)
+MAVSDK_DEFINE_FORMATTER(mavsdk::Telemetry::Result)

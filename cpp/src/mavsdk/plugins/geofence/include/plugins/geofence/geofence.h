@@ -247,3 +247,8 @@ private:
 };
 
 } // namespace mavsdk
+
+#include "std_format.h"
+MAVSDK_DEFINE_FORMATTER(mavsdk::Geofence::FenceType)
+
+MAVSDK_DEFINE_FORMATTER(mavsdk::Geofence::Result)

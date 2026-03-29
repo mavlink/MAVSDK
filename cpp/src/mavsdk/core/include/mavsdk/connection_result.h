@@ -38,3 +38,6 @@ enum class ConnectionResult {
 std::ostream& operator<<(std::ostream& str, const ConnectionResult& result);
 
 } // namespace mavsdk
+
+#include "std_format.h"
+MAVSDK_DEFINE_FORMATTER(mavsdk::ConnectionResult)

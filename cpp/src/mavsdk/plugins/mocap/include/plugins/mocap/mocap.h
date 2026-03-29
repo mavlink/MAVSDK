@@ -445,3 +445,8 @@ private:
 };
 
 } // namespace mavsdk
+
+#include "std_format.h"
+
+MAVSDK_DEFINE_FORMATTER(mavsdk::Mocap::Odometry::MavFrame)
+MAVSDK_DEFINE_FORMATTER(mavsdk::Mocap::Result)

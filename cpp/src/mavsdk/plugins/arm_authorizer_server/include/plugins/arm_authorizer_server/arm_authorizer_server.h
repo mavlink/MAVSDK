@@ -148,3 +148,8 @@ private:
 };
 
 } // namespace mavsdk
+
+#include "std_format.h"
+MAVSDK_DEFINE_FORMATTER(mavsdk::ArmAuthorizerServer::RejectionReason)
+
+MAVSDK_DEFINE_FORMATTER(mavsdk::ArmAuthorizerServer::Result)

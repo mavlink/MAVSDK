@@ -90,4 +90,39 @@ struct formatter<T> : formatter<string> {
 
 } // namespace std
 
+// ---------------------------------------------------------------------------
+// MAVSDK_DEFINE_FORMATTER(T)
+//
+// Defines an *explicit* std::formatter<T> specialisation for a type T that
+// has operator<< defined.  Use this macro at file scope, after the type T is
+// fully declared.
+//
+// Rationale: GCC 13/14 and Clang 19's consteval format-string checker
+// (basic_format_string / _Checking_scanner) evaluates
+// is_default_constructible_v<std::formatter<T>> inside a consteval function.
+// In that context the compiler cannot find *constrained* partial
+// specialisations of std::formatter, so it falls back to the deleted primary
+// template and emits:
+//   error: std::formatter must be specialized for each type being formatted
+//
+// An explicit full specialisation (template <> struct formatter<ConcreteType>)
+// IS found by all compilers in consteval context and therefore works reliably.
+// ---------------------------------------------------------------------------
+#define MAVSDK_DEFINE_FORMATTER(T) \
+    namespace std { \
+    template<> struct formatter<T> : formatter<string> { \
+        template<typename FormatContext> auto format(const T& val, FormatContext& ctx) const \
+        { \
+            ostringstream ss; \
+            ss << val; \
+            return formatter<string>::format(ss.str(), ctx); \
+        } \
+    }; \
+    } /* namespace std */
+
+#else // !MAVSDK_HAS_STD_FORMAT
+
+// No-op when std::format is not available.
+#define MAVSDK_DEFINE_FORMATTER(T)
+
 #endif // MAVSDK_HAS_STD_FORMAT

@@ -556,3 +556,9 @@ private:
 };
 
 } // namespace mavsdk
+
+#include "std_format.h"
+
+MAVSDK_DEFINE_FORMATTER(mavsdk::Mission::MissionItem::CameraAction)
+MAVSDK_DEFINE_FORMATTER(mavsdk::Mission::MissionItem::VehicleAction)
+MAVSDK_DEFINE_FORMATTER(mavsdk::Mission::Result)

@@ -544,3 +544,8 @@ private:
 };
 
 } // namespace mavsdk
+
+#include "std_format.h"
+
+MAVSDK_DEFINE_FORMATTER(mavsdk::Offboard::PositionGlobalYaw::AltitudeType)
+MAVSDK_DEFINE_FORMATTER(mavsdk::Offboard::Result)

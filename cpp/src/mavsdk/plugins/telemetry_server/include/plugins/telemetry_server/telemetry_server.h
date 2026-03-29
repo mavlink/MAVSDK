@@ -1124,3 +1124,12 @@ private:
 };
 
 } // namespace mavsdk
+
+#include "std_format.h"
+MAVSDK_DEFINE_FORMATTER(mavsdk::TelemetryServer::FixType)
+MAVSDK_DEFINE_FORMATTER(mavsdk::TelemetryServer::VtolState)
+MAVSDK_DEFINE_FORMATTER(mavsdk::TelemetryServer::StatusTextType)
+MAVSDK_DEFINE_FORMATTER(mavsdk::TelemetryServer::LandedState)
+
+MAVSDK_DEFINE_FORMATTER(mavsdk::TelemetryServer::Odometry::MavFrame)
+MAVSDK_DEFINE_FORMATTER(mavsdk::TelemetryServer::Result)

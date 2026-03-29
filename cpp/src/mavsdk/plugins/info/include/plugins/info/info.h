@@ -290,3 +290,8 @@ private:
 };
 
 } // namespace mavsdk
+
+#include "std_format.h"
+
+MAVSDK_DEFINE_FORMATTER(mavsdk::Info::Version::FlightSoftwareVersionType)
+MAVSDK_DEFINE_FORMATTER(mavsdk::Info::Result)
