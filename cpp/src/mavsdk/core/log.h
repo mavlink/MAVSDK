@@ -1,9 +1,21 @@
 #pragma once
 
+#include <filesystem>
 #include <format>
 #include <mutex>
 #include <string>
 #include "log_callback.h"
+
+// std::formatter for std::filesystem::path is not available until C++26.
+// Provide a specialization here so paths can be passed directly to Log macros.
+template<>
+struct std::formatter<std::filesystem::path> : std::formatter<std::string> {
+    template<typename FormatContext>
+    auto format(const std::filesystem::path& p, FormatContext& ctx) const
+    {
+        return std::formatter<std::string>::format(p.string(), ctx);
+    }
+};
 
 #if defined(ANDROID)
 #include <android/log.h>

@@ -222,8 +222,9 @@ void MavlinkComponentMetadata::retrieve_metadata(uint8_t compid, COMP_METADATA_T
                                 // time, and cancel if >40s
                             } else {
                                 if (_verbose_debugging) {
-                                    LogDebug()
-                                        << "File download ended with result " << download_result;
+                                    LogDebug(
+                                        "File download ended with result {}",
+                                        static_cast<int>(download_result));
                                 }
                                 if (download_result == MavlinkFtpClient::ClientResult::Success) {
                                     component.current_metadata_path() =
@@ -253,7 +254,7 @@ void MavlinkComponentMetadata::retrieve_metadata(uint8_t compid, COMP_METADATA_T
                         int progress, HttpStatus status, CURLcode curl_code) -> int {
                         UNUSED(progress);
                         if (status == HttpStatus::Error) {
-                            LogErr("File download failed with result {}", curl_code);
+                            LogErr("File download failed with result {}", static_cast<int>(curl_code));
                             // Move on to the next uri or type
                             retrieve_metadata(compid, type);
                         } else if (status == HttpStatus::Finished) {
@@ -437,7 +438,7 @@ void MavlinkComponentMetadata::parse_component_metadata_general(
         auto type = static_cast<COMP_METADATA_TYPE>(metadata_type["type"].asInt());
         auto& components = _mavlink_components[compid].components;
         if (components.find(type) != components.end()) {
-            LogErr("component type already added: {}", type);
+            LogErr("component type already added: {}", static_cast<int>(type));
             continue;
         }
         if (!metadata_type.isMember("uri")) {

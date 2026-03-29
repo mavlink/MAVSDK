@@ -431,7 +431,7 @@ void MavsdkImpl::process_message(mavlink_message_t& message, Connection* connect
     // Assumes _received_messages_mutex
 
     if (_message_logging_on) {
-        LogDebug("Processing message {} from {}/{}", message.msgid, static_cast<int>(message.sysid), static_cast<int>(message.compid));
+        LogDebug("Processing message {} from {}/{}", static_cast<unsigned int>(message.msgid), static_cast<int>(message.sysid), static_cast<int>(message.compid));
     }
 
     if (_should_exit) {
@@ -481,7 +481,7 @@ void MavsdkImpl::process_message(mavlink_message_t& message, Connection* connect
             (mavsdk::Connection::forwarding_connections_count() > 1 ||
              !connection->should_forward_messages())) {
             if (_message_logging_on) {
-                LogDebug("Forwarding message {} from {}/{}", message.msgid, static_cast<int>(message.sysid), static_cast<int>(message.compid));
+                LogDebug("Forwarding message {} from {}/{}", static_cast<unsigned int>(message.msgid), static_cast<int>(message.sysid), static_cast<int>(message.compid));
             }
             forward_message(message, connection);
         }
@@ -684,7 +684,7 @@ void MavsdkImpl::deliver_messages()
 void MavsdkImpl::deliver_message(mavlink_message_t& message)
 {
     if (_message_logging_on) {
-        LogDebug("Sending message {} from {}/{} to {}/{}", message.msgid, static_cast<int>(message.sysid), static_cast<int>(message.compid), static_cast<int>(get_target_system_id(message)), static_cast<int>(get_target_component_id(message)));
+        LogDebug("Sending message {} from {}/{} to {}/{}", static_cast<unsigned int>(message.msgid), static_cast<int>(message.sysid), static_cast<int>(message.compid), static_cast<int>(get_target_system_id(message)), static_cast<int>(get_target_component_id(message)));
     }
 
     // This is a low level interface where outgoing messages can be tampered
@@ -1505,7 +1505,11 @@ Mavsdk::RawBytesHandle
 MavsdkImpl::subscribe_raw_bytes_to_be_sent(const Mavsdk::RawBytesCallback& callback)
 {
     if (find_raw_connection() == nullptr) {
-        LogWarn("{}", "No raw connection available. Subscription will only receive bytes after you " "add a connection using add_any_connection(\"raw://\")"; } return _raw_bytes_subscriptions.subscribe(callback));
+        LogWarn(
+            "No raw connection available. Subscription will only receive bytes after you "
+            "add a connection using add_any_connection(\"raw://\")");
+    }
+    return _raw_bytes_subscriptions.subscribe(callback);
 }
 
 void MavsdkImpl::unsubscribe_raw_bytes_to_be_sent(Mavsdk::RawBytesHandle handle)
