@@ -270,7 +270,7 @@ TEST(SystemTest, FtpDownloadStopAndTryAgain)
                     got_some = true;
                 }
                 if (result != Ftp::Result::Next) {
-                    LogDebug("Got result: {}", result);
+                    LogDebug("Got result: {}", static_cast<int>(result));
                     prom.set_value(result);
                 } else {
                     LogDebug(

@@ -33,7 +33,7 @@ TEST(SystemTest, RawBytesSendReceive)
             for (size_t i = 0; i < length; ++i) {
                 if (mavlink_parse_char(
                         MAVLINK_COMM_0, static_cast<uint8_t>(bytes[i]), &msg, &status)) {
-                    LogInfo("Captured outgoing message ID {}", msg.msgid);
+                    LogInfo("Captured outgoing message ID {}", (int)msg.msgid);
 
                     // Look for GLOBAL_POSITION_INT message
                     if (msg.msgid == MAVLINK_MSG_ID_GLOBAL_POSITION_INT &&

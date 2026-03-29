@@ -27,7 +27,11 @@ MavlinkParameterServer::MavlinkParameterServer(
         for (const auto& [key, value] : param_values) {
             const auto result = provide_server_param(key, value);
             if (result != Result::Ok) {
-                LogDebug("Cannot add parameter:{}:{} {}", key, value, result);
+                LogDebug(
+                    "Cannot add parameter:{}:{} {}",
+                    key,
+                    value.get_string(),
+                    static_cast<int>(result));
             }
         }
     }
@@ -198,7 +202,7 @@ void MavlinkParameterServer::process_param_set_internally(
             "Param set request{}: {} with {}",
             (extended ? " extended" : ""),
             param_id,
-            value_to_set);
+            value_to_set.get_string());
     }
 
     std::string error_param_id;
@@ -257,9 +261,9 @@ void MavlinkParameterServer::process_param_set_internally(
                 // value e.g. 0 to 1 and an update that had no effect e.g. 0 to 0.
                 if (opt_before_update.has_value() &&
                     opt_before_update.value().value == updated_parameter.value) {
-                    LogDebug("Update had no effect: {}", updated_parameter.value);
+                    LogDebug("Update had no effect: {}", updated_parameter.value.get_string());
                 } else {
-                    LogDebug("Updated param to :{}", updated_parameter.value);
+                    LogDebug("Updated param to :{}", updated_parameter.value.get_string());
                     find_and_call_subscriptions_value_changed(
                         updated_parameter.id, updated_parameter.value);
                 }

@@ -1302,7 +1302,7 @@ void CameraImpl::check_camera_definition_with_lock(PotentialCamera& potential_ca
     }
 
     if (cached_file_option) {
-        LogInfo("Using cached file {}", cached_file_option.value());
+        LogInfo("Using cached file {}", cached_file_option.value().string());
         load_camera_definition_with_lock(potential_camera, cached_file_option.value());
         potential_camera.is_fetching_camera_definition = false;
         potential_camera.camera_definition_result = Camera::Result::Success;

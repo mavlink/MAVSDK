@@ -82,7 +82,7 @@ bool should_keep_message(const mavlink_message_t& message)
         // Keep 95% of messages (drop 5%)
         should_keep = distribution(generator) < 0.95;
         if (!should_keep) {
-            LogInfo("Dropping message ID {} to simulate packet loss", message.msgid);
+            LogInfo("Dropping message ID {} to simulate packet loss", (int)message.msgid);
         }
     }
     return should_keep;
