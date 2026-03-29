@@ -1382,10 +1382,7 @@ void CameraImpl::check_camera_definition_with_lock(PotentialCamera& potential_ca
                     MavlinkFtpClient::ProgressData progress_data) mutable {
                     // TODO: check if we still exist
                     if (client_result == MavlinkFtpClient::ClientResult::Next) {
-                        LogDebug()
-                            << "Mavlink FTP download progress: "
-                            << 100 * progress_data.bytes_transferred / progress_data.total_bytes
-                            << " %";
+                        LogDebug("Mavlink FTP download progress: {} %", 100 * progress_data.bytes_transferred / progress_data.total_bytes);
                         return;
                     }
 

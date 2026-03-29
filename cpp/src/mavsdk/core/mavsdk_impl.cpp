@@ -1283,16 +1283,11 @@ void MavsdkImpl::call_user_callback_located(
         return;
 
     } else if (callback_size == 99) {
-        LogErr()
-            << "User callback queue overflown\n"
-               "See: https://mavsdk.mavlink.io/main/en/cpp/troubleshooting.html#user_callbacks";
+        LogErr("User callback queue overflown\nSee: https://mavsdk.mavlink.io/main/en/cpp/troubleshooting.html#user_callbacks");
         return;
 
     } else if (callback_size >= 10) {
-        LogWarn()
-            << "User callback queue slow (queue size: " << callback_size
-            << ").\n"
-               "See: https://mavsdk.mavlink.io/main/en/cpp/troubleshooting.html#user_callbacks";
+        LogWarn("User callback queue slow (queue size: {}).\nSee: https://mavsdk.mavlink.io/main/en/cpp/troubleshooting.html#user_callbacks", callback_size);
     }
 
     // We only need to keep track of filename and linenumber if we're actually debugging this.
@@ -1331,9 +1326,7 @@ void MavsdkImpl::process_user_callbacks_thread()
                     fflush(stderr);
                     abort();
                 } else {
-                    LogWarn()
-                        << "Callback took more than " << timeout_s << " second to run.\n"
-                        << "See: https://mavsdk.mavlink.io/main/en/cpp/troubleshooting.html#user_callbacks";
+                    LogWarn("Callback took more than {} second to run.\nSee: https://mavsdk.mavlink.io/main/en/cpp/troubleshooting.html#user_callbacks", timeout_s);
                 }
             },
             timeout_s);
@@ -1493,8 +1486,7 @@ void MavsdkImpl::pass_received_raw_bytes(const char* bytes, size_t length)
 {
     auto* raw_conn = find_raw_connection();
     if (raw_conn == nullptr) {
-        LogErr()
-            << "No raw connection available. Please add one using add_any_connection(\"raw://\")";
+        LogErr("No raw connection available. Please add one using add_any_connection(\"raw://\")");
         return;
     }
 
