@@ -448,6 +448,8 @@ void MavlinkParameterClient::cancel_all_param(const void* cookie)
                 _work_queue.end(),
                 [&](auto&& item) { return (item->cookie == cookie); }),
             _work_queue.end());
+        // Also remove any param-change subscriptions registered under this cookie.
+        unsubscribe_all_params_changed(cookie);
         done.set_value();
     });
     done.get_future().wait();
