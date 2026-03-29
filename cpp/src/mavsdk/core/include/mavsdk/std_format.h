@@ -22,18 +22,18 @@
 
 // Step 1: reject known-broken iOS targets up front.
 #if defined(__IPHONE_OS_VERSION_MIN_REQUIRED) && (__IPHONE_OS_VERSION_MIN_REQUIRED < 160300)
-#  define MAVSDK_HAS_STD_FORMAT 0
+#define MAVSDK_HAS_STD_FORMAT 0
 // Step 2: if <format> is present, include it and then check the feature macro.
 #elif defined(__has_include) && __has_include(<format>)
-#  include <format>
-#  if defined(__cpp_lib_format)
-#    define MAVSDK_HAS_STD_FORMAT 1
-#  else
-#    define MAVSDK_HAS_STD_FORMAT 0
-#  endif
+#include <format>
+#if defined(__cpp_lib_format)
+#define MAVSDK_HAS_STD_FORMAT 1
+#else
+#define MAVSDK_HAS_STD_FORMAT 0
+#endif
 // Step 3: <format> is not available at all.
 #else
-#  define MAVSDK_HAS_STD_FORMAT 0
+#define MAVSDK_HAS_STD_FORMAT 0
 #endif
 
 #if MAVSDK_HAS_STD_FORMAT

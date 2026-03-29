@@ -774,8 +774,7 @@ void MavsdkImpl::deliver_message(mavlink_message_t& message)
         auto connections = get_connections();
         auto receiver = connections.empty() ? nullptr : connections[0]->get_libmav_receiver();
         if (receiver) {
-            json_message.fields_json =
-                receiver->libmav_message_to_json(libmav_msg_opt.value());
+            json_message.fields_json = receiver->libmav_message_to_json(libmav_msg_opt.value());
         } else {
             // Fallback: create minimal JSON if no receiver available
             json_message.fields_json =
