@@ -65,7 +65,7 @@ jobs:
         uses: actions/cache/restore@v5
         id: cache-corpus
         with:
-          path: ./fuzz_corpus
+          path: ./cpp/fuzz_corpus
           key: fuzz-corpus-${{ github.run_id }}
           restore-keys: |
             fuzz-corpus-
@@ -104,7 +104,7 @@ jobs:
         uses: actions/cache/save@v5
         if: always()
         with:
-          path: ./fuzz_corpus
+          path: ./cpp/fuzz_corpus
           key: fuzz-corpus-${{ github.run_id }}
 
       - name: Upload crash artifacts
