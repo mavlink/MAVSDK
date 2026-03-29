@@ -16,8 +16,7 @@ TEST(SystemTest, GeofenceUploadDownloadRoundTrip)
         mavsdk_groundstation.add_any_connection("udpin://0.0.0.0:17012"),
         ConnectionResult::Success);
     ASSERT_EQ(
-        mavsdk_autopilot.add_any_connection("udpout://127.0.0.1:17012"),
-        ConnectionResult::Success);
+        mavsdk_autopilot.add_any_connection("udpout://127.0.0.1:17012"), ConnectionResult::Success);
 
     auto mission_raw_server = MissionRawServer{mavsdk_autopilot.server_component()};
 

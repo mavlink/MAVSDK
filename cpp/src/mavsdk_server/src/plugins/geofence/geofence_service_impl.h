@@ -280,13 +280,13 @@ public:
             return grpc::Status::OK;
         }
 
-        auto result_pair = _lazy_plugin.maybe_plugin()->download_geofence();
+        auto result = _lazy_plugin.maybe_plugin()->download_geofence();
 
         if (response != nullptr) {
-            fillResponseWithResult(response, result_pair.first);
+            fillResponseWithResult(response, result.first);
 
-            auto rpc_geofence_data = translateToRpcGeofenceData(result_pair.second);
-            response->set_allocated_geofence_data(rpc_geofence_data.release());
+            response->set_allocated_geofence_data(
+                translateToRpcGeofenceData(result.second).release());
         }
 
         return grpc::Status::OK;

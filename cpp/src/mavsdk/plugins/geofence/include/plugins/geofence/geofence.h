@@ -221,6 +221,8 @@ public:
     /**
      * @brief Download geofences from the vehicle.
      *
+     * Downloads polygon and circular geofences from the vehicle.
+     *
      * This function is non-blocking. See 'download_geofence' for the blocking counterpart.
      */
     void download_geofence_async(const DownloadGeofenceCallback callback);
@@ -228,11 +230,13 @@ public:
     /**
      * @brief Download geofences from the vehicle.
      *
+     * Downloads polygon and circular geofences from the vehicle.
+     *
      * This function is blocking. See 'download_geofence_async' for the non-blocking counterpart.
      *
      * @return Result of request.
      */
-    std::pair<Result, GeofenceData> download_geofence() const;
+    std::pair<Result, Geofence::GeofenceData> download_geofence() const;
 
     /**
      * @brief Clear all geofences saved on the vehicle.
