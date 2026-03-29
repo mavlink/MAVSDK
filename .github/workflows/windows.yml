@@ -104,7 +104,7 @@ jobs:
           python3 setup.py bdist_wheel --plat-name ${{ matrix.python_plat_name }}
           delvewheel repair -w wheelhouse dist/mavsdk4-*-win*.whl
       - name: upload mavsdk wheel
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: mavsdk_wheel_windows_${{ matrix.arch }}
           path: py/mavsdk/wheelhouse/*.whl
@@ -228,12 +228,12 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - name: Download Debug artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           name: mavsdk-windows-${{ matrix.arch }}-Debug
           path: cpp/debug-files
       - name: Download RelWithDebInfo artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           name: mavsdk-windows-${{ matrix.arch }}-RelWithDebInfo
           path: cpp/release-files
