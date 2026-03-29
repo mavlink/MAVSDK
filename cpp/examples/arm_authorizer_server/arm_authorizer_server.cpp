@@ -1,3 +1,4 @@
+#include <format>
 #include <iostream>
 #include <thread>
 #include <chrono>
@@ -23,7 +24,7 @@ int main(int argc, char** argv)
     auto result = mavsdk.add_any_connection(argv[1]);
 
     if (result != mavsdk::ConnectionResult::Success) {
-        std::cerr << "Could not establish connection: " << result << std::endl;
+        std::cerr << std::format("Could not establish connection: {}\n", result);
         return 2;
     }
     std::cout << "Created arm authorizer server connection" << std::endl;
@@ -35,8 +36,7 @@ int main(int argc, char** argv)
     auto start_time = std::chrono::system_clock::now();
 
     arm_authorizer.subscribe_arm_authorization([&](uint32_t system_id) {
-        std::cout << "Arm authorization request received. Request for system ID: " << system_id
-                  << std::endl;
+        std::cout << std::format("Arm authorization request received. Request for system ID: {}\n", system_id);
         auto elapsed_s = std::chrono::duration_cast<std::chrono::seconds>(
                              std::chrono::system_clock::now() - start_time)
                              .count();

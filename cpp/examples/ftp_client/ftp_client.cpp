@@ -7,6 +7,7 @@
 
 #include <functional>
 #include <future>
+#include <format>
 #include <iostream>
 #include <iomanip>
 #include <cstring>
@@ -51,7 +52,7 @@ void usage(const std::string& bin_name)
 
 Ftp::Result create_directory(Ftp& ftp, const std::string& path)
 {
-    std::cerr << "Creating directory: " << path << '\n';
+    std::cerr << std::format("Creating directory: {}\n", path);
     auto prom = std::promise<Ftp::Result>();
     auto future_result = prom.get_future();
     ftp.create_directory_async(path, [&prom](Ftp::Result result) { prom.set_value(result); });
@@ -61,7 +62,7 @@ Ftp::Result create_directory(Ftp& ftp, const std::string& path)
 
 Ftp::Result remove_file(Ftp& ftp, const std::string& path)
 {
-    std::cerr << "Removing file: " << path << '\n';
+    std::cerr << std::format("Removing file: {}\n", path);
     auto prom = std::promise<Ftp::Result>{};
     auto future_result = prom.get_future();
     ftp.remove_file_async(path, [&prom](Ftp::Result result) { prom.set_value(result); });
@@ -85,7 +86,7 @@ Ftp::Result remove_directory(Ftp& ftp, const std::string& path, bool recursive =
             }
         }
     }
-    std::cerr << "Removing dir:  " << path << '\n';
+    std::cerr << std::format("Removing dir:  {}\n", path);
 
     auto prom = std::promise<Ftp::Result>{};
     auto future_result = prom.get_future();
@@ -96,7 +97,7 @@ Ftp::Result remove_directory(Ftp& ftp, const std::string& path, bool recursive =
 
 Ftp::Result list_directory(Ftp& ftp, const std::string& path)
 {
-    std::cerr << "List directory: " << path << '\n';
+    std::cerr << std::format("List directory: {}\n", path);
     auto prom = std::promise<std::pair<Ftp::Result, Ftp::ListDirectoryData>>{};
     auto future_result = prom.get_future();
     ftp.list_directory_async(path, [&prom](Ftp::Result result, Ftp::ListDirectoryData data) {
@@ -107,11 +108,11 @@ Ftp::Result list_directory(Ftp& ftp, const std::string& path)
     if (result.first == Ftp::Result::Success) {
         std::cerr << "Directories: " << '\n';
         for (auto entry : result.second.dirs) {
-            std::cerr << entry << '\n';
+            std::cerr << std::format("{}\n", entry);
         }
         std::cerr << "Files: " << '\n';
         for (auto entry : result.second.files) {
-            std::cerr << entry << '\n';
+            std::cerr << std::format("{}\n", entry);
         }
     }
     return result.first;
@@ -120,7 +121,7 @@ Ftp::Result list_directory(Ftp& ftp, const std::string& path)
 Ftp::Result
 download_file(Ftp& ftp, const std::string& remote_file_path, const std::string& local_path)
 {
-    std::cerr << "Download file: " << remote_file_path << " to " << local_path << '\n';
+    std::cerr << std::format("Download file: {} to {}\n", remote_file_path, local_path);
     auto prom = std::promise<Ftp::Result>{};
     auto future_result = prom.get_future();
     ftp.download_async(
@@ -132,8 +133,7 @@ download_file(Ftp& ftp, const std::string& remote_file_path, const std::string& 
                 int percentage = progress.total_bytes > 0 ?
                                      progress.bytes_transferred * 100 / progress.total_bytes :
                                      0;
-                std::cerr << "\rDownloading [" << std::setw(3) << percentage << "%] "
-                          << progress.bytes_transferred << " of " << progress.total_bytes;
+                std::cerr << std::format("\rDownloading [{:3}%] {} of {}", percentage, progress.bytes_transferred, progress.total_bytes);
                 if (progress.bytes_transferred >= progress.total_bytes) {
                     std::cerr << '\n';
                 }
@@ -148,7 +148,7 @@ download_file(Ftp& ftp, const std::string& remote_file_path, const std::string& 
 Ftp::Result
 upload_file(Ftp& ftp, const std::string& local_file_path, const std::string& remote_path)
 {
-    std::cerr << "Upload file: " << local_file_path << " to " << remote_path << '\n';
+    std::cerr << std::format("Upload file: {} to {}\n", local_file_path, remote_path);
     auto prom = std::promise<Ftp::Result>{};
     auto future_result = prom.get_future();
     ftp.upload_async(
@@ -157,8 +157,7 @@ upload_file(Ftp& ftp, const std::string& local_file_path, const std::string& rem
                 int percentage = progress.total_bytes > 0 ?
                                      progress.bytes_transferred * 100 / progress.total_bytes :
                                      0;
-                std::cerr << "\rUploading " << "[" << std::setw(3) << percentage << "%] "
-                          << progress.bytes_transferred << " of " << progress.total_bytes;
+                std::cerr << std::format("\rUploading [{:3}%] {} of {}", percentage, progress.bytes_transferred, progress.total_bytes);
                 if (progress.bytes_transferred == progress.total_bytes) {
                     std::cerr << '\n';
                 }
@@ -171,7 +170,7 @@ upload_file(Ftp& ftp, const std::string& local_file_path, const std::string& rem
 
 Ftp::Result rename_file(Ftp& ftp, const std::string& old_name, const std::string& new_name)
 {
-    std::cerr << "Rename file: " << old_name << " to " << new_name << '\n';
+    std::cerr << std::format("Rename file: {} to {}\n", old_name, new_name);
     auto prom = std::promise<Ftp::Result>{};
     auto future_result = prom.get_future();
     ftp.rename_async(old_name, new_name, [&prom](Ftp::Result result) { prom.set_value(result); });
@@ -190,7 +189,7 @@ int main(int argc, char** argv)
     ConnectionResult connection_result = mavsdk.add_any_connection(argv[1]);
 
     if (connection_result != ConnectionResult::Success) {
-        std::cerr << "Connection failed: " << connection_result << '\n';
+        std::cerr << std::format("Connection failed: {}\n", connection_result);
         return 1;
     }
 
@@ -206,7 +205,7 @@ int main(int argc, char** argv)
     try {
         ftp.set_target_compid(std::stoi(argv[2]));
     } catch (...) {
-        std::cerr << "Invalid argument: " << argv[2] << '\n';
+        std::cerr << std::format("Invalid argument: {}\n", argv[2]);
         return 1;
     }
 
@@ -221,7 +220,7 @@ int main(int argc, char** argv)
         if (res == Ftp::Result::Success) {
             std::cerr << "File uploaded.\n";
         } else {
-            std::cerr << "File upload error: " << res << '\n';
+            std::cerr << std::format("File upload error: {}\n", res);
             return (res == Ftp::Result::FileDoesNotExist) ? 2 : 1;
         }
     } else if (command == "get") {
@@ -233,7 +232,7 @@ int main(int argc, char** argv)
         if (res == Ftp::Result::Success) {
             std::cerr << "File downloaded.\n";
         } else {
-            std::cerr << "File download error: " << res << '\n';
+            std::cerr << std::format("File download error: {}\n", res);
             return (res == Ftp::Result::FileDoesNotExist) ? 2 : 1;
         }
     } else if (command == "rename") {
@@ -245,7 +244,7 @@ int main(int argc, char** argv)
         if (res == Ftp::Result::Success) {
             std::cerr << "File renamed.\n";
         } else {
-            std::cerr << "File rename error: " << res << '\n';
+            std::cerr << std::format("File rename error: {}\n", res);
             return (res == Ftp::Result::FileDoesNotExist) ? 2 : 1;
         }
     } else if (command == "mkdir") {
@@ -259,7 +258,7 @@ int main(int argc, char** argv)
         } else if (res == Ftp::Result::FileExists) {
             std::cerr << "Directory already exists.\n";
         } else {
-            std::cerr << "Create directory error: " << res << '\n';
+            std::cerr << std::format("Create directory error: {}\n", res);
             return 1;
         }
     } else if (command == "rmdir") {
@@ -284,7 +283,7 @@ int main(int argc, char** argv)
             std::cerr << "Directory does not exist.\n";
             return 2;
         } else {
-            std::cerr << "Remove directory error: " << res << '\n';
+            std::cerr << std::format("Remove directory error: {}\n", res);
             return 1;
         }
     } else if (command == "dir") {
@@ -299,7 +298,7 @@ int main(int argc, char** argv)
             std::cerr << "Directory does not exist.\n";
             return 2;
         } else {
-            std::cerr << "List directory error: " << res << '\n';
+            std::cerr << std::format("List directory error: {}\n", res);
             return 1;
         }
     } else if (command == "delete") {
@@ -314,7 +313,7 @@ int main(int argc, char** argv)
             std::cerr << "File does not exist.\n";
             return 2;
         } else {
-            std::cerr << "Delete file error: " << res << '\n';
+            std::cerr << std::format("Delete file error: {}\n", res);
             return 1;
         }
     } else if (command == "cmp") {
@@ -334,7 +333,7 @@ int main(int argc, char** argv)
         auto result = future_result.get();
 
         if (result.first != Ftp::Result::Success) {
-            std::cerr << "Error comparing files:" << result.first << '\n';
+            std::cerr << std::format("Error comparing files:{}\n", result.first);
             return 1;
         }
 
@@ -345,7 +344,7 @@ int main(int argc, char** argv)
             return 3;
         }
     } else {
-        std::cerr << "Unknown command: " << command << '\n';
+        std::cerr << std::format("Unknown command: {}\n", command);
         return 1;
     }
 

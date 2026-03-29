@@ -16,6 +16,7 @@
 #include <chrono>
 #include <deque>
 #include <functional>
+#include <format>
 #include <iostream>
 #include <mavsdk/mavsdk.h>
 #include <mavsdk/plugins/telemetry/telemetry.h>
@@ -56,12 +57,7 @@ void drain_callbacks(std::mutex& queue_mutex, std::deque<std::function<void()>>&
 
 void usage(const std::string& bin_name)
 {
-    std::cerr << "Usage : " << bin_name << " <connection_url>\n"
-              << "Connection URL format should be :\n"
-              << " For UDP server: udpin://<our_ip>:<port>\n"
-              << " For UDP client: udpout://<remote_ip>:<port>\n"
-              << " For Serial : serial://</path/to/serial/dev>:<baudrate>\n"
-              << "For example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n";
+    std::cerr << std::format("Usage : {} <connection_url>\nConnection URL format should be :\n For UDP server: udpin://<our_ip>:<port>\n For UDP client: udpout://<remote_ip>:<port>\n For Serial : serial://</path/to/serial/dev>:<baudrate>\nFor example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n", bin_name);
 }
 
 int main(int argc, char** argv)
@@ -92,7 +88,7 @@ int main(int argc, char** argv)
 
     ConnectionResult connection_result = mavsdk.add_any_connection(argv[1]);
     if (connection_result != ConnectionResult::Success) {
-        std::cerr << "Connection failed: " << connection_result << '\n';
+        std::cerr << std::format("Connection failed: {}\n", connection_result);
         return 1;
     }
 
@@ -126,19 +122,15 @@ int main(int argc, char** argv)
     // thread -- they block waiting for a command ACK callback that this
     // thread would need to process. Subscriptions are fine (non-blocking).
     telemetry.subscribe_position([](Telemetry::Position position) {
-        std::cout << "[" << get_thread_name() << "] Position: lat=" << position.latitude_deg
-                  << " lon=" << position.longitude_deg << " alt=" << position.relative_altitude_m
-                  << " m\n";
+        std::cout << std::format("[{}] Position: lat={} lon={} alt={} m\n", get_thread_name(), position.latitude_deg, position.longitude_deg, position.relative_altitude_m);
     });
 
     // Subscribe to battery updates
     telemetry.subscribe_battery([](Telemetry::Battery battery) {
-        std::cout << "[" << get_thread_name() << "] Battery: " << battery.remaining_percent * 100.0f
-                  << "% (" << battery.voltage_v << " V)\n";
+        std::cout << std::format("[{}] Battery: {}% ({} V)\n", get_thread_name(), battery.remaining_percent * 100.0f, battery.voltage_v);
     });
 
-    std::cout << "Receiving telemetry callbacks on thread '" << get_thread_name()
-              << "' for 10 seconds...\n";
+    std::cout << std::format("Receiving telemetry callbacks on thread '{}' for 10 seconds...\n", get_thread_name());
 
     // Main loop: drain the callback queue on this thread.
     // In a real application this would be your UI event loop or similar.

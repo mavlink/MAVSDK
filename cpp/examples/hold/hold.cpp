@@ -9,6 +9,7 @@
 #include <mavsdk/mavsdk.h>
 #include <mavsdk/plugins/action/action.h>
 #include <mavsdk/plugins/telemetry/telemetry.h>
+#include <format>
 #include <iostream>
 #include <future>
 #include <memory>
@@ -20,14 +21,7 @@ using std::this_thread::sleep_for;
 
 void usage(const std::string& bin_name)
 {
-    std::cerr << "Usage : " << bin_name << " <connection_url>\n"
-              << "Connection URL format should be :\n"
-              << " For TCP server: tcpin://<our_ip>:<port>\n"
-              << " For TCP client: tcpout://<remote_ip>:<port>\n"
-              << " For UDP server: udpin://<our_ip>:<port>\n"
-              << " For UDP client: udpout://<remote_ip>:<port>\n"
-              << " For Serial : serial://</path/to/serial/dev>:<baudrate>]\n"
-              << "For example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n";
+    std::cerr << std::format("Usage : {} <connection_url>\nConnection URL format should be :\n For TCP server: tcpin://<our_ip>:<port>\n For TCP client: tcpout://<remote_ip>:<port>\n For UDP server: udpin://<our_ip>:<port>\n For UDP client: udpout://<remote_ip>:<port>\n For Serial : serial://</path/to/serial/dev>:<baudrate>]\nFor example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n", bin_name);
 }
 
 int main(int argc, char** argv)
@@ -41,7 +35,7 @@ int main(int argc, char** argv)
     ConnectionResult connection_result = mavsdk.add_any_connection(argv[1]);
 
     if (connection_result != ConnectionResult::Success) {
-        std::cerr << "Connection failed: " << connection_result << '\n';
+        std::cerr << std::format("Connection failed: {}\n", connection_result);
         return 1;
     }
 
@@ -66,7 +60,7 @@ int main(int argc, char** argv)
     const Action::Result arm_result = action.arm();
 
     if (arm_result != Action::Result::Success) {
-        std::cerr << "Arming failed: " << arm_result << '\n';
+        std::cerr << std::format("Arming failed: {}\n", arm_result);
         return 1;
     }
 
@@ -74,7 +68,7 @@ int main(int argc, char** argv)
     std::cout << "Taking off...\n";
     const Action::Result takeoff_result = action.takeoff();
     if (takeoff_result != Action::Result::Success) {
-        std::cerr << "Takeoff failed: " << takeoff_result << '\n';
+        std::cerr << std::format("Takeoff failed: {}\n", takeoff_result);
         return 1;
     }
 
@@ -84,7 +78,7 @@ int main(int argc, char** argv)
     std::cout << "Commanding GoTo...\n";
     Action::Result goto_result = action.goto_location(47.398000, 8.545592, NAN, NAN);
     if (goto_result != Action::Result::Success) {
-        std::cerr << "Goto failed: " << goto_result << '\n';
+        std::cerr << std::format("Goto failed: {}\n", goto_result);
         return 1;
     }
     std::cout << "Commanded GoTo.\n";
@@ -95,7 +89,7 @@ int main(int argc, char** argv)
     std::cout << "Commanding RTL...\n";
     Action::Result rtl_result = action.return_to_launch();
     if (rtl_result != Action::Result::Success) {
-        std::cerr << "RTL failed: " << rtl_result << '\n';
+        std::cerr << std::format("RTL failed: {}\n", rtl_result);
         return 1;
     }
     std::cout << "Commanded RTL.\n";
@@ -106,7 +100,7 @@ int main(int argc, char** argv)
     std::cout << "Commanding Hold/Loiter to interrupt RTL...\n";
     Action::Result hold_result = action.hold();
     if (hold_result != Action::Result::Success) {
-        std::cerr << "Hold failed: " << hold_result << '\n';
+        std::cerr << std::format("Hold failed: {}\n", hold_result);
         return 1;
     }
     std::cout << "Commanded Hold/Loiter.\n";
@@ -118,7 +112,7 @@ int main(int argc, char** argv)
     std::cout << "Landing...\n";
     const Action::Result land_result = action.land();
     if (land_result != Action::Result::Success) {
-        std::cerr << "Land failed: " << land_result << '\n';
+        std::cerr << std::format("Land failed: {}\n", land_result);
         return 1;
     }
 

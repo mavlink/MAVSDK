@@ -6,6 +6,7 @@
 #include <mavsdk/plugins/camera/camera.h>
 #include <chrono>
 #include <cstdint>
+#include <format>
 #include <iostream>
 #include <future>
 #include <memory>
@@ -17,14 +18,7 @@ using std::this_thread::sleep_for;
 
 void usage(std::string bin_name)
 {
-    std::cerr << "Usage : " << bin_name << " <connection_url>\n"
-              << "Connection URL format should be :\n"
-              << " For TCP server: tcpin://<our_ip>:<port>\n"
-              << " For TCP client: tcpout://<remote_ip>:<port>\n"
-              << " For UDP server: udpin://<our_ip>:<port>\n"
-              << " For UDP client: udpout://<remote_ip>:<port>\n"
-              << " For Serial : serial://</path/to/serial/dev>:<baudrate>]\n"
-              << "For example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n";
+    std::cerr << std::format("Usage : {} <connection_url>\nConnection URL format should be :\n For TCP server: tcpin://<our_ip>:<port>\n For TCP client: tcpout://<remote_ip>:<port>\n For UDP server: udpin://<our_ip>:<port>\n For UDP client: udpout://<remote_ip>:<port>\n For Serial : serial://</path/to/serial/dev>:<baudrate>]\nFor example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n", bin_name);
 }
 
 int main(int argc, char** argv)
@@ -38,7 +32,7 @@ int main(int argc, char** argv)
     ConnectionResult connection_result = mavsdk.add_any_connection(argv[1]);
 
     if (connection_result != ConnectionResult::Success) {
-        std::cerr << "Connection failed: " << connection_result << '\n';
+        std::cerr << std::format("Connection failed: {}\n", connection_result);
         return 1;
     }
 
@@ -91,7 +85,7 @@ int main(int argc, char** argv)
     // Zoom in
     auto result = camera.zoom_range(component_id, 2.0f);
     if (result != Camera::Result::Success) {
-        std::cerr << "Zooming failed: " << result << '\n';
+        std::cerr << std::format("Zooming failed: {}\n", result);
         return 1;
     }
 
@@ -101,7 +95,7 @@ int main(int argc, char** argv)
     // Now try continuous zooming in.
     result = camera.zoom_in_start(component_id);
     if (result != Camera::Result::Success) {
-        std::cerr << "Zooming in failed: " << result << '\n';
+        std::cerr << std::format("Zooming in failed: {}\n", result);
         return 1;
     }
 
@@ -110,7 +104,7 @@ int main(int argc, char** argv)
     // Now try stopping.
     result = camera.zoom_stop(component_id);
     if (result != Camera::Result::Success) {
-        std::cerr << "Stop zooming failed: " << result << '\n';
+        std::cerr << std::format("Stop zooming failed: {}\n", result);
         return 1;
     }
 
@@ -119,7 +113,7 @@ int main(int argc, char** argv)
     // And back out.
     result = camera.zoom_out_start(component_id);
     if (result != Camera::Result::Success) {
-        std::cerr << "Zooming out failed: " << result << '\n';
+        std::cerr << std::format("Zooming out failed: {}\n", result);
         return 1;
     }
 
@@ -128,7 +122,7 @@ int main(int argc, char** argv)
     // Stop again.
     result = camera.zoom_stop(component_id);
     if (result != Camera::Result::Success) {
-        std::cerr << "Stop zooming failed: " << result << '\n';
+        std::cerr << std::format("Stop zooming failed: {}\n", result);
         return 1;
     }
 
@@ -137,7 +131,7 @@ int main(int argc, char** argv)
     // Zoom back out
     result = camera.zoom_range(component_id, 1.0f);
     if (result != Camera::Result::Success) {
-        std::cerr << "Zooming failed: " << result << '\n';
+        std::cerr << std::format("Zooming failed: {}\n", result);
         return 1;
     }
 

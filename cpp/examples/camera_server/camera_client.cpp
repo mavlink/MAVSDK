@@ -1,5 +1,6 @@
 #include <chrono>
 #include <future>
+#include <format>
 #include <iostream>
 #include <thread>
 
@@ -48,7 +49,7 @@ int main(int argc, const char* argv[])
     camera.subscribe_camera_list([](mavsdk::Camera::CameraList list) {
         std::cout << "Cameras found:" << std::endl;
         for (auto& camera : list.cameras) {
-            std::cout << camera << '\n';
+            std::cout << std::format("{}\n", camera);
         }
     });
 
@@ -69,7 +70,7 @@ int main(int argc, const char* argv[])
 
     camera.subscribe_storage([](mavsdk::Camera::StorageUpdate update) {
         std::cout << "Camera storage update:" << std::endl;
-        std::cout << update << std::endl;
+        std::cout << std::format("{}\n", update);
     });
 
     do_camera_operation(component_id, camera);
@@ -85,32 +86,32 @@ void do_camera_operation(int32_t component_id, mavsdk::Camera& camera)
 {
     // switch to photo mode to take photo
     auto operation_result = camera.set_mode(component_id, mavsdk::Camera::Mode::Photo);
-    std::cout << "Set camera to photo mode result : " << operation_result << std::endl;
+    std::cout << std::format("Set camera to photo mode result : {}\n", operation_result);
 
     operation_result = camera.take_photo(component_id);
-    std::cout << "Take photo result : " << operation_result << std::endl;
+    std::cout << std::format("Take photo result : {}\n", operation_result);
 
     // switch to video mode to recording video
     operation_result = camera.set_mode(component_id, mavsdk::Camera::Mode::Video);
-    std::cout << "Set camera to video mode result : " << operation_result << std::endl;
+    std::cout << std::format("Set camera to video mode result : {}\n", operation_result);
 
     operation_result = camera.start_video(component_id);
-    std::cout << "Start video result : " << operation_result << std::endl;
+    std::cout << std::format("Start video result : {}\n", operation_result);
 
     operation_result = camera.stop_video(component_id);
-    std::cout << "Stop video result : " << operation_result << std::endl;
+    std::cout << std::format("Stop video result : {}\n", operation_result);
 
     // the camera can have multi video stream so may need the stream id
     operation_result = camera.start_video_streaming(component_id, 0);
-    std::cout << "start video streaming result : " << operation_result << std::endl;
+    std::cout << std::format("start video streaming result : {}\n", operation_result);
 
     operation_result = camera.stop_video_streaming(component_id, 0);
-    std::cout << "stop video streaming result : " << operation_result << std::endl;
+    std::cout << std::format("stop video streaming result : {}\n", operation_result);
 
     // format the storage with special storage id test
     operation_result = camera.format_storage(component_id, 0);
-    std::cout << "format storage result : " << operation_result << std::endl;
+    std::cout << std::format("format storage result : {}\n", operation_result);
 
     operation_result = camera.reset_settings(component_id);
-    std::cout << "Reset camera settings result : " << operation_result << std::endl;
+    std::cout << std::format("Reset camera settings result : {}\n", operation_result);
 }

@@ -6,6 +6,7 @@
 #include <chrono>
 #include <cstdint>
 #include <mavsdk/mavsdk.h>
+#include <format>
 #include <iostream>
 #include <future>
 #include <memory>
@@ -20,14 +21,14 @@ int main(int, char**)
     ConnectionResult connection_result =
         mavsdk.add_any_connection("udpin://0.0.0.0:12550", ForwardingOption::ForwardingOn);
     if (connection_result != ConnectionResult::Success) {
-        std::cerr << "First connection failed: " << connection_result << '\n';
+        std::cerr << std::format("First connection failed: {}\n", connection_result);
         return 1;
     }
 
     connection_result =
         mavsdk.add_any_connection("udpout://127.0.0.1:14550", ForwardingOption::ForwardingOn);
     if (connection_result != ConnectionResult::Success) {
-        std::cerr << "Second connection failed: " << connection_result << '\n';
+        std::cerr << std::format("Second connection failed: {}\n", connection_result);
         return 1;
     }
 

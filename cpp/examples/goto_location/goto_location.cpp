@@ -8,6 +8,7 @@
 #include <mavsdk/mavsdk.h>
 #include <mavsdk/plugins/action/action.h>
 #include <mavsdk/plugins/telemetry/telemetry.h>
+#include <format>
 #include <iostream>
 #include <future>
 #include <memory>
@@ -19,14 +20,7 @@ using std::this_thread::sleep_for;
 
 void usage(const std::string& bin_name)
 {
-    std::cerr << "Usage : " << bin_name << " <connection_url>\n"
-              << "Connection URL format should be :\n"
-              << " For TCP server: tcpin://<our_ip>:<port>\n"
-              << " For TCP client: tcpout://<remote_ip>:<port>\n"
-              << " For UDP server: udpin://<our_ip>:<port>\n"
-              << " For UDP client: udpout://<remote_ip>:<port>\n"
-              << " For Serial : serial://</path/to/serial/dev>:<baudrate>]\n"
-              << "For example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n";
+    std::cerr << std::format("Usage : {} <connection_url>\nConnection URL format should be :\n For TCP server: tcpin://<our_ip>:<port>\n For TCP client: tcpout://<remote_ip>:<port>\n For UDP server: udpin://<our_ip>:<port>\n For UDP client: udpout://<remote_ip>:<port>\n For Serial : serial://</path/to/serial/dev>:<baudrate>]\nFor example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n", bin_name);
 }
 
 int main(int argc, char** argv)
@@ -40,7 +34,7 @@ int main(int argc, char** argv)
     ConnectionResult connection_result = mavsdk.add_any_connection(argv[1]);
 
     if (connection_result != ConnectionResult::Success) {
-        std::cerr << "Connection failed: " << connection_result << '\n';
+        std::cerr << std::format("Connection failed: {}\n", connection_result);
         return 1;
     }
 
@@ -65,7 +59,7 @@ int main(int argc, char** argv)
     const Action::Result arm_result = action.arm();
 
     if (arm_result != Action::Result::Success) {
-        std::cerr << "Arming failed: " << arm_result << '\n';
+        std::cerr << std::format("Arming failed: {}\n", arm_result);
         return 1;
     }
 
@@ -73,7 +67,7 @@ int main(int argc, char** argv)
     std::cout << "Taking off...\n";
     const Action::Result takeoff_result = action.takeoff();
     if (takeoff_result != Action::Result::Success) {
-        std::cerr << "Takeoff failed: " << takeoff_result << '\n';
+        std::cerr << std::format("Takeoff failed: {}\n", takeoff_result);
         return 1;
     }
 
@@ -83,7 +77,7 @@ int main(int argc, char** argv)
     std::cout << "Going to first location...\n";
     Action::Result goto_result = action.goto_location(47.4, 8.545592, NAN, NAN);
     if (goto_result != Action::Result::Success) {
-        std::cerr << "Goto failed: " << goto_result << '\n';
+        std::cerr << std::format("Goto failed: {}\n", goto_result);
         return 1;
     }
 
@@ -93,7 +87,7 @@ int main(int argc, char** argv)
     std::cout << "Slowing down to 1 m/s...\n";
     Action::Result speed_result = action.set_current_speed(1.0f);
     if (speed_result != Action::Result::Success) {
-        std::cerr << "Set speed failed: " << speed_result << '\n';
+        std::cerr << std::format("Set speed failed: {}\n", speed_result);
         return 1;
     }
 
@@ -103,7 +97,7 @@ int main(int argc, char** argv)
     std::cout << "Speeding up to 5 m/s...\n";
     speed_result = action.set_current_speed(5.0f);
     if (speed_result != Action::Result::Success) {
-        std::cerr << "Set speed failed: " << speed_result << '\n';
+        std::cerr << std::format("Set speed failed: {}\n", speed_result);
         return 1;
     }
 
@@ -113,7 +107,7 @@ int main(int argc, char** argv)
     std::cout << "Going back to second location...\n";
     goto_result = action.goto_location(47.3977233, 8.545592, NAN, NAN);
     if (goto_result != Action::Result::Success) {
-        std::cerr << "Goto failed: " << goto_result << '\n';
+        std::cerr << std::format("Goto failed: {}\n", goto_result);
         return 1;
     }
 
@@ -123,7 +117,7 @@ int main(int argc, char** argv)
     std::cout << "Landing...\n";
     const Action::Result land_result = action.land();
     if (land_result != Action::Result::Success) {
-        std::cerr << "Land failed: " << land_result << '\n';
+        std::cerr << std::format("Land failed: {}\n", land_result);
         return 1;
     }
 

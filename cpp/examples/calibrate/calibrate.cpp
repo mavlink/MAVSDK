@@ -8,6 +8,7 @@
 #include <mavsdk/mavsdk.h>
 #include <mavsdk/plugins/calibration/calibration.h>
 #include <future>
+#include <format>
 #include <iostream>
 
 using namespace mavsdk;
@@ -22,14 +23,7 @@ static void calibrate_magnetometer(Calibration&);
 
 void usage(const std::string& bin_name)
 {
-    std::cerr << "Usage : " << bin_name << " <connection_url>\n"
-              << "Connection URL format should be :\n"
-              << " For TCP server: tcpin://<our_ip>:<port>\n"
-              << " For TCP client: tcpout://<remote_ip>:<port>\n"
-              << " For UDP server: udpin://<our_ip>:<port>\n"
-              << " For UDP client: udpout://<remote_ip>:<port>\n"
-              << " For Serial : serial://</path/to/serial/dev>:<baudrate>]\n"
-              << "For example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n";
+    std::cerr << std::format("Usage : {} <connection_url>\nConnection URL format should be :\n For TCP server: tcpin://<our_ip>:<port>\n For TCP client: tcpout://<remote_ip>:<port>\n For UDP server: udpin://<our_ip>:<port>\n For UDP client: udpout://<remote_ip>:<port>\n For Serial : serial://</path/to/serial/dev>:<baudrate>]\nFor example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n", bin_name);
 }
 
 int main(int argc, char** argv)
@@ -43,7 +37,7 @@ int main(int argc, char** argv)
     ConnectionResult connection_result = mavsdk.add_any_connection(argv[1]);
 
     if (connection_result != ConnectionResult::Success) {
-        std::cerr << "Connection failed: " << connection_result << '\n';
+        std::cerr << std::format("Connection failed: {}\n", connection_result);
         return 1;
     }
 
@@ -88,14 +82,14 @@ create_calibration_callback(std::promise<void>& calibration_promise)
                 break;
             case Calibration::Result::Next:
                 if (progress_data.has_progress) {
-                    std::cout << "    Progress: " << progress_data.progress << '\n';
+                    std::cout << std::format("    Progress: {}\n", progress_data.progress);
                 }
                 if (progress_data.has_status_text) {
-                    std::cout << "    Instruction: " << progress_data.status_text << '\n';
+                    std::cout << std::format("    Instruction: {}\n", progress_data.status_text);
                 }
                 break;
             default:
-                std::cout << "--- Calibration failed with message: " << result << '\n';
+                std::cout << std::format("--- Calibration failed with message: {}\n", result);
                 calibration_promise.set_value();
                 break;
         }

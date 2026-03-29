@@ -5,6 +5,7 @@
 
 #include <chrono>
 #include <cstdint>
+#include <format>
 #include <iostream>
 #include <thread>
 #include <cmath>
@@ -19,14 +20,7 @@ using namespace mavsdk;
 
 void usage(const std::string& bin_name)
 {
-    std::cerr << "Usage : " << bin_name << " <connection_url>\n"
-              << "Connection URL format should be :\n"
-              << " For TCP server: tcpin://<our_ip>:<port>\n"
-              << " For TCP client: tcpout://<remote_ip>:<port>\n"
-              << " For UDP server: udpin://<our_ip>:<port>\n"
-              << " For UDP client: udpout://<remote_ip>:<port>\n"
-              << " For Serial : serial://</path/to/serial/dev>:<baudrate>]\n"
-              << "For example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n";
+    std::cerr << std::format("Usage : {} <connection_url>\nConnection URL format should be :\n For TCP server: tcpin://<our_ip>:<port>\n For TCP client: tcpout://<remote_ip>:<port>\n For UDP server: udpin://<our_ip>:<port>\n For UDP client: udpout://<remote_ip>:<port>\n For Serial : serial://</path/to/serial/dev>:<baudrate>]\nFor example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n", bin_name);
 }
 
 int main(int argc, char** argv)
@@ -40,7 +34,7 @@ int main(int argc, char** argv)
     ConnectionResult connection_result = mavsdk.add_any_connection(argv[1]);
 
     if (connection_result != ConnectionResult::Success) {
-        std::cerr << "Connection failed: " << connection_result << '\n';
+        std::cerr << std::format("Connection failed: {}\n", connection_result);
         return 1;
     }
 
@@ -57,13 +51,13 @@ int main(int argc, char** argv)
     // We want to listen to the altitude of the drone at 1 Hz.
     const Telemetry::Result set_rate_result = telemetry.set_rate_position(1.0);
     if (set_rate_result != Telemetry::Result::Success) {
-        std::cerr << "Setting rate failed: " << set_rate_result << '\n';
+        std::cerr << std::format("Setting rate failed: {}\n", set_rate_result);
         return 1;
     }
 
     // Set up callback to monitor altitude.
     telemetry.subscribe_position([](Telemetry::Position position) {
-        std::cout << "Altitude: " << position.relative_altitude_m << " m\n";
+        std::cout << std::format("Altitude: {} m\n", position.relative_altitude_m);
     });
 
     // Wait until we are ready to arm.
@@ -77,7 +71,7 @@ int main(int argc, char** argv)
     const Action::Result arm_result = action.arm();
 
     if (arm_result != Action::Result::Success) {
-        std::cerr << "Arming failed: " << arm_result << '\n';
+        std::cerr << std::format("Arming failed: {}\n", arm_result);
         return 1;
     }
 
@@ -85,7 +79,7 @@ int main(int argc, char** argv)
     std::cout << "Taking off.\n";
     const Action::Result takeoff_result = action.takeoff();
     if (takeoff_result != Action::Result::Success) {
-        std::cerr << "Takeoff failed:n" << takeoff_result << '\n';
+        std::cerr << std::format("Takeoff failed:n{}\n", takeoff_result);
         return 1;
     }
 
@@ -96,7 +90,7 @@ int main(int argc, char** argv)
     const Action::Result fw_result = action.transition_to_fixedwing();
 
     if (fw_result != Action::Result::Success) {
-        std::cerr << "Transition to fixed wing failed: " << fw_result << '\n';
+        std::cerr << std::format("Transition to fixed wing failed: {}\n", fw_result);
         return 1;
     }
 
@@ -108,7 +102,7 @@ int main(int argc, char** argv)
     // We pass latitude and longitude but leave altitude and yaw unset by passing NAN.
     const Action::Result goto_result = action.goto_location(47.3633001, 8.5428515, NAN, NAN);
     if (goto_result != Action::Result::Success) {
-        std::cerr << "Goto command failed: " << goto_result << '\n';
+        std::cerr << std::format("Goto command failed: {}\n", goto_result);
         return 1;
     }
 
@@ -119,7 +113,7 @@ int main(int argc, char** argv)
     std::cout << "Transition back to multicopter...\n";
     const Action::Result mc_result = action.transition_to_multicopter();
     if (mc_result != Action::Result::Success) {
-        std::cerr << "Transition to multi copter failed: " << mc_result << '\n';
+        std::cerr << std::format("Transition to multi copter failed: {}\n", mc_result);
         return 1;
     }
 
@@ -130,7 +124,7 @@ int main(int argc, char** argv)
     std::cout << "Landing...\n";
     const Action::Result land_result = action.land();
     if (land_result != Action::Result::Success) {
-        std::cerr << "Land failed: " << land_result << '\n';
+        std::cerr << std::format("Land failed: {}\n", land_result);
         return 1;
     }
 

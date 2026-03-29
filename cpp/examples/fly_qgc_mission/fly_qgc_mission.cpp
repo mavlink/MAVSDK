@@ -23,6 +23,7 @@
 #include <chrono>
 #include <functional>
 #include <future>
+#include <format>
 #include <iostream>
 #include <memory>
 #include <thread>
@@ -33,14 +34,7 @@ using std::this_thread::sleep_for;
 
 void usage(const std::string& bin_name)
 {
-    std::cerr << "Usage : " << bin_name << " <connection_url> <mission_plan_file>\n"
-              << "Connection URL format should be :\n"
-              << " For TCP server: tcpin://<our_ip>:<port>\n"
-              << " For TCP client: tcpout://<remote_ip>:<port>\n"
-              << " For UDP server: udpin://<our_ip>:<port>\n"
-              << " For UDP client: udpout://<remote_ip>:<port>\n"
-              << " For Serial : serial://</path/to/serial/dev>:<baudrate>]\n"
-              << "For example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n";
+    std::cerr << std::format("Usage : {} <connection_url> <mission_plan_file>\nConnection URL format should be :\n For TCP server: tcpin://<our_ip>:<port>\n For TCP client: tcpout://<remote_ip>:<port>\n For UDP server: udpin://<our_ip>:<port>\n For UDP client: udpout://<remote_ip>:<port>\n For Serial : serial://</path/to/serial/dev>:<baudrate>]\nFor example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n", bin_name);
 }
 
 int main(int argc, char** argv)
@@ -54,7 +48,7 @@ int main(int argc, char** argv)
 
     const ConnectionResult connection_result = mavsdk.add_any_connection(argv[1]);
     if (connection_result != ConnectionResult::Success) {
-        std::cerr << "Connection failed: " << connection_result << '\n';
+        std::cerr << std::format("Connection failed: {}\n", connection_result);
         return 1;
     }
 
@@ -75,11 +69,11 @@ int main(int argc, char** argv)
 
     std::cout << "System ready\n";
 
-    std::cout << "Importing mission from mission plan: " << argv[2] << '\n';
+    std::cout << std::format("Importing mission from mission plan: {}\n", argv[2]);
     std::pair<MissionRaw::Result, MissionRaw::MissionImportData> import_res =
         mission_raw.import_qgroundcontrol_mission(argv[2]);
     if (import_res.first != MissionRaw::Result::Success) {
-        std::cerr << "Failed to import mission items: " << import_res.first;
+        std::cerr << std::format("Failed to import mission items: {}", import_res.first);
         return 1;
     }
 
@@ -87,14 +81,13 @@ int main(int argc, char** argv)
         std::cerr << "No missions! Exiting...\n";
         return 1;
     }
-    std::cout << "Found " << import_res.second.mission_items.size()
-              << " mission items in the given QGC plan.\n";
+    std::cout << std::format("Found {} mission items in the given QGC plan.\n", import_res.second.mission_items.size());
 
     std::cout << "Uploading mission...";
     const MissionRaw::Result upload_result =
         mission_raw.upload_mission(import_res.second.mission_items);
     if (upload_result != MissionRaw::Result::Success) {
-        std::cerr << "Failed uploading mission: " << upload_result << '\n';
+        std::cerr << std::format("Failed uploading mission: {}\n", upload_result);
         return 1;
     }
     std::cout << "Mission uploaded.\n";
@@ -102,7 +95,7 @@ int main(int argc, char** argv)
     std::cout << "Arming...\n";
     const Action::Result arm_result = action.arm();
     if (arm_result != Action::Result::Success) {
-        std::cerr << "Arming failed: " << arm_result << '\n';
+        std::cerr << std::format("Arming failed: {}\n", arm_result);
         return 1;
     }
     std::cout << "Armed.\n";
@@ -112,8 +105,7 @@ int main(int argc, char** argv)
 
     // Before starting the mission subscribe to the mission progress.
     mission_raw.subscribe_mission_progress([&prom](MissionRaw::MissionProgress mission_progress) {
-        std::cout << "Mission progress update: " << mission_progress.current << " / "
-                  << mission_progress.total << '\n';
+        std::cout << std::format("Mission progress update: {} / {}\n", mission_progress.current, mission_progress.total);
         if (mission_progress.current == mission_progress.total) {
             prom.set_value();
         }
@@ -121,7 +113,7 @@ int main(int argc, char** argv)
 
     const MissionRaw::Result start_mission_result = mission_raw.start_mission();
     if (start_mission_result != MissionRaw::Result::Success) {
-        std::cerr << "Starting mission failed: " << start_mission_result << '\n';
+        std::cerr << std::format("Starting mission failed: {}\n", start_mission_result);
         return 1;
     }
 
@@ -134,7 +126,7 @@ int main(int argc, char** argv)
     std::cout << "Commanding RTL...\n";
     const Action::Result result = action.return_to_launch();
     if (result != Action::Result::Success) {
-        std::cerr << "Failed to command RTL: " << result << '\n';
+        std::cerr << std::format("Failed to command RTL: {}\n", result);
         return 1;
     }
     std::cout << "Commanded RTL.\n";

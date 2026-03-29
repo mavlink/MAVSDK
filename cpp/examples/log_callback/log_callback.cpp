@@ -5,6 +5,7 @@
 #include <mavsdk/mavsdk.h>
 #include <mavsdk/log_callback.h>
 
+#include <format>
 #include <iostream>
 
 using namespace mavsdk;
@@ -14,7 +15,7 @@ int main(int, char**)
     // Set our own custom log function.
     log::subscribe(
         [](log::Level level, const std::string& message, const std::string& file, int line) {
-            std::cout << "My custom print function: " << message << std::endl;
+            std::cout << std::format("My custom print function: {}\n", message);
 
             // Prevent unused warnings.
             (void)level;

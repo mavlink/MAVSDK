@@ -5,6 +5,7 @@
 
 #include <mavsdk/mavsdk.h>
 #include <mavsdk/plugins/telemetry/telemetry.h>
+#include <format>
 #include <iostream>
 #include <chrono>
 #include <thread>
@@ -27,7 +28,7 @@ int main(int argc, char** argv)
 {
     // Check for connection string argument
     if (argc != 2) {
-        std::cerr << "Usage: " << argv[0] << " <connection_url>" << std::endl;
+        std::cerr << std::format("Usage: {} <connection_url>\n", argv[0]);
         return 1;
     }
 
@@ -37,7 +38,7 @@ int main(int argc, char** argv)
     // Add connection
     mavsdk::ConnectionResult connection_result = mavsdk.add_any_connection(argv[1]);
     if (connection_result != mavsdk::ConnectionResult::Success) {
-        std::cerr << "Connection failed: " << connection_result << std::endl;
+        std::cerr << std::format("Connection failed: {}\n", connection_result);
         return 1;
     }
 
@@ -59,18 +60,7 @@ int main(int argc, char** argv)
 
     // Callback for wind updates
     auto wind_callback = [](mavsdk::Telemetry::Wind wind) {
-        std::cout << "Wind_X_NED: " << wind.wind_x_ned_m_s << " m/s\n"
-                  << "Wind_Y_NED: " << wind.wind_y_ned_m_s << " m/s\n"
-                  << "Wind_Z_NED: " << wind.wind_z_ned_m_s << " m/s\n"
-                  << "Horizontal_Variability: " << wind.horizontal_variability_stddev_m_s
-                  << " m/s\n"
-                  << "Vertical_Variability: " << wind.vertical_variability_stddev_m_s << " m/s\n"
-                  << "Wind_Altitude: " << wind.wind_altitude_msl_m << " m\n"
-                  << "Horizontal_Wind_Speed_Accuracy: " << wind.horizontal_wind_speed_accuracy_m_s
-                  << " m/s\n"
-                  << "Vertical_Wind_Speed_Accuracy: " << wind.vertical_wind_speed_accuracy_m_s
-                  << " m/s\n"
-                  << std::endl;
+        std::cout << std::format("Wind_X_NED: {} m/s\nWind_Y_NED: {} m/s\nWind_Z_NED: {} m/s\nHorizontal_Variability: {} m/s\nVertical_Variability: {} m/s\nWind_Altitude: {} m\nHorizontal_Wind_Speed_Accuracy: {} m/s\nVertical_Wind_Speed_Accuracy: {} m/s\n\n", wind.wind_x_ned_m_s, wind.wind_y_ned_m_s, wind.wind_z_ned_m_s, wind.horizontal_variability_stddev_m_s, wind.vertical_variability_stddev_m_s, wind.wind_altitude_msl_m, wind.horizontal_wind_speed_accuracy_m_s, wind.vertical_wind_speed_accuracy_m_s);
     };
 
     // Subscribe to wind updates

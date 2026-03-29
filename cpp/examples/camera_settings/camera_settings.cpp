@@ -7,6 +7,7 @@
 #include <mavsdk/plugins/telemetry/telemetry.h>
 #include <chrono>
 #include <cstdint>
+#include <format>
 #include <iostream>
 #include <future>
 #include <memory>
@@ -20,14 +21,7 @@ using std::this_thread::sleep_for;
 
 void usage(std::string bin_name)
 {
-    std::cerr << "Usage : " << bin_name << " <connection_url>\n"
-              << "Connection URL format should be :\n"
-              << " For TCP server: tcpin://<our_ip>:<port>\n"
-              << " For TCP client: tcpout://<remote_ip>:<port>\n"
-              << " For UDP server: udpin://<our_ip>:<port>\n"
-              << " For UDP client: udpout://<remote_ip>:<port>\n"
-              << " For Serial : serial://</path/to/serial/dev>:<baudrate>]\n"
-              << "For example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n";
+    std::cerr << std::format("Usage : {} <connection_url>\nConnection URL format should be :\n For TCP server: tcpin://<our_ip>:<port>\n For TCP client: tcpout://<remote_ip>:<port>\n For UDP server: udpin://<our_ip>:<port>\n For UDP client: udpout://<remote_ip>:<port>\n For Serial : serial://</path/to/serial/dev>:<baudrate>]\nFor example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n", bin_name);
 }
 
 struct CurrentSettings {
@@ -43,8 +37,7 @@ void show_settings(const CurrentSettings& current_settings)
     {
         std::lock_guard<std::mutex> lock(current_settings.mutex);
         for (const auto& setting : current_settings.settings) {
-            std::cout << "  - " << setting.setting_description << ": "
-                      << setting.option.option_description << '\n';
+            std::cout << std::format("  - {}: {}\n", setting.setting_description, setting.option.option_description);
         }
     }
 }
@@ -85,12 +78,10 @@ bool choose_setting(
 
     for (const auto& setting_option : setting_options.second) {
         if (setting_option.setting_id == setting_id) {
-            std::cout << "Options for " << setting_option.setting_description << ":\n";
+            std::cout << std::format("Options for {}:\n", setting_option.setting_description);
             unsigned index = 1;
             for (const auto& option : setting_option.options) {
-                std::cout << "  " << index++ << ": " << option.option_description
-                          << (option.option_id == current_option_id ? " (currently set)" : "")
-                          << '\n';
+                std::cout << std::format("  {}: {}{}\n", index++, option.option_description, (option.option_id == current_option_id ? " (currently set)" : ""));
             }
 
             std::cout << "\n"
@@ -140,7 +131,7 @@ void change_camera_setting(
 
         unsigned index = 1;
         for (const auto& setting : temp_settings) {
-            std::cout << "  " << index++ << ' ' << setting.setting_description << '\n';
+            std::cout << std::format("  {} {}\n", index++, setting.setting_description);
         }
         std::cout << "\n"
                   << "  -> ";
@@ -212,7 +203,7 @@ int main(int argc, char** argv)
     ConnectionResult connection_result = mavsdk.add_any_connection(argv[1]);
 
     if (connection_result != ConnectionResult::Success) {
-        std::cerr << "Connection failed: " << connection_result << '\n';
+        std::cerr << std::format("Connection failed: {}\n", connection_result);
         return 1;
     }
 

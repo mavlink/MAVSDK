@@ -7,6 +7,7 @@
 #include <mavsdk/plugins/telemetry/telemetry.h>
 #include <chrono>
 #include <cstdint>
+#include <format>
 #include <iostream>
 #include <future>
 #include <memory>
@@ -18,14 +19,7 @@ using std::this_thread::sleep_for;
 
 void usage(std::string bin_name)
 {
-    std::cerr << "Usage : " << bin_name << " <connection_url>\n"
-              << "Connection URL format should be :\n"
-              << " For TCP server: tcpin://<our_ip>:<port>\n"
-              << " For TCP client: tcpout://<remote_ip>:<port>\n"
-              << " For UDP server: udpin://<our_ip>:<port>\n"
-              << " For UDP client: udpout://<remote_ip>:<port>\n"
-              << " For Serial : serial://</path/to/serial/dev>:<baudrate>]\n"
-              << "For example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n";
+    std::cerr << std::format("Usage : {} <connection_url>\nConnection URL format should be :\n For TCP server: tcpin://<our_ip>:<port>\n For TCP client: tcpout://<remote_ip>:<port>\n For UDP server: udpin://<our_ip>:<port>\n For UDP client: udpout://<remote_ip>:<port>\n For Serial : serial://</path/to/serial/dev>:<baudrate>]\nFor example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n", bin_name);
 }
 
 int main(int argc, char** argv)
@@ -39,7 +33,7 @@ int main(int argc, char** argv)
     ConnectionResult connection_result = mavsdk.add_any_connection(argv[1]);
 
     if (connection_result != ConnectionResult::Success) {
-        std::cerr << "Connection failed: " << connection_result << '\n';
+        std::cerr << std::format("Connection failed: {}\n", connection_result);
         return 1;
     }
 
@@ -92,18 +86,18 @@ int main(int argc, char** argv)
     // First, make sure camera is in photo mode.
     const auto mode_result = camera.set_mode(component_id, Camera::Mode::Photo);
     if (mode_result != Camera::Result::Success) {
-        std::cerr << "Could not switch to Photo mode: " << mode_result;
+        std::cerr << std::format("Could not switch to Photo mode: {}", mode_result);
         return 1;
     }
 
     // We want to subscribe to information about pictures that are taken.
     camera.subscribe_capture_info([](Camera::CaptureInfo capture_info) {
-        std::cout << "Image captured, stored at: " << capture_info.file_url << '\n';
+        std::cout << std::format("Image captured, stored at: {}\n", capture_info.file_url);
     });
 
     const auto photo_result = camera.take_photo(component_id);
     if (photo_result != Camera::Result::Success) {
-        std::cerr << "Taking Photo failed: " << mode_result;
+        std::cerr << std::format("Taking Photo failed: {}", mode_result);
         return 1;
     }
 
