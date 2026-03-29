@@ -105,10 +105,9 @@ void MavlinkComponentMetadata::receive_component_metadata(
     mavlink_msg_component_metadata_decode(&message, &component_metadata);
 
     component_metadata.uri[sizeof(component_metadata.uri) - 1] = '\0';
-    _mavlink_components[message.compid].components.insert(
-        std::make_pair(
-            COMP_METADATA_TYPE_GENERAL,
-            MetadataComponent{{component_metadata.uri, component_metadata.file_crc}}));
+    _mavlink_components[message.compid].components.insert(std::make_pair(
+        COMP_METADATA_TYPE_GENERAL,
+        MetadataComponent{{component_metadata.uri, component_metadata.file_crc}}));
 
     retrieve_metadata(message.compid, COMP_METADATA_TYPE_GENERAL);
 }

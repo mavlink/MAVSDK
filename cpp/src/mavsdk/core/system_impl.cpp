@@ -306,11 +306,10 @@ void SystemImpl::register_statustext_handler(
 
 void SystemImpl::unregister_statustext_handler(void* cookie)
 {
-    _statustext_handler_callbacks.erase(
-        std::remove_if(
-            _statustext_handler_callbacks.begin(),
-            _statustext_handler_callbacks.end(),
-            [&](const auto& entry) { return entry.cookie == cookie; }));
+    _statustext_handler_callbacks.erase(std::remove_if(
+        _statustext_handler_callbacks.begin(),
+        _statustext_handler_callbacks.end(),
+        [&](const auto& entry) { return entry.cookie == cookie; }));
 }
 
 void SystemImpl::process_heartbeat(const mavlink_message_t& message)

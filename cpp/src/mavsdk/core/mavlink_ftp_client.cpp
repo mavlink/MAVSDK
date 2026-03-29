@@ -529,7 +529,10 @@ bool MavlinkFtpClient::download_burst_continue(
 
     } else if (payload->req_opcode == CMD_BURST_READ_FILE) {
         if (_debugging) {
-            LogDebug("Burst download continue, at: {} write: {}", (uint32_t)payload->offset, (int)payload->size);
+            LogDebug(
+                "Burst download continue, at: {} write: {}",
+                (uint32_t)payload->offset,
+                (int)payload->size);
         }
 
         if (payload->offset != item.current_offset) {
@@ -544,9 +547,8 @@ bool MavlinkFtpClient::download_burst_continue(
             }
 
             // we missed a part
-            item.missing_data.emplace_back(
-                DownloadBurstItem::MissingData{
-                    item.current_offset, payload->offset - item.current_offset});
+            item.missing_data.emplace_back(DownloadBurstItem::MissingData{
+                item.current_offset, payload->offset - item.current_offset});
             // write some 0 instead
             std::vector<char> empty(payload->offset - item.current_offset);
             item.ofstream.write(empty.data(), empty.size());
@@ -571,7 +573,8 @@ bool MavlinkFtpClient::download_burst_continue(
         item.current_offset = payload->offset + payload->size;
 
         if (_debugging) {
-            LogDebug("Received {} to {}", (uint32_t)payload->offset, payload->size + payload->offset);
+            LogDebug(
+                "Received {} to {}", (uint32_t)payload->offset, payload->size + payload->offset);
         }
 
         if (payload->size + payload->offset >= item.file_size) {
@@ -1301,9 +1304,8 @@ void MavlinkFtpClient::timeout()
                             // we missed some, so request next without burst.
                             // We presumably missed the very last chunk.
                             if (item.current_offset < item.file_size) {
-                                item.missing_data.emplace_back(
-                                    DownloadBurstItem::MissingData{
-                                        item.current_offset, item.file_size - item.current_offset});
+                                item.missing_data.emplace_back(DownloadBurstItem::MissingData{
+                                    item.current_offset, item.file_size - item.current_offset});
                                 item.current_offset = item.file_size;
                                 if (_debugging) {
                                     LogDebug(

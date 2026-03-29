@@ -16,12 +16,10 @@ MavlinkParameterCache::add_new_param(const std::string& param_id, ParamValue val
         return AddNewParamResult::TooManyParams;
     }
 
-    _all_params.push_back(
-        Param{
-            param_id,
-            std::move(value),
-            (index != -1 ? static_cast<uint16_t>(index) :
-                           static_cast<uint16_t>(_all_params.size()))});
+    _all_params.push_back(Param{
+        param_id,
+        std::move(value),
+        (index != -1 ? static_cast<uint16_t>(index) : static_cast<uint16_t>(_all_params.size()))});
     return MavlinkParameterCache::AddNewParamResult::Ok;
 }
 
