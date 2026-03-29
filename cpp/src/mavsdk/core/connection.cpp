@@ -63,15 +63,17 @@ void Connection::stop_mavlink_receiver()
 
 bool Connection::start_libmav_receiver()
 {
-    _libmav_receiver = std::make_unique<LibmavReceiver>(_mavsdk_impl);
+    std::lock_guard<std::mutex> lock(_libmav_receiver_mutex);
+    _libmav_receiver = std::make_shared<LibmavReceiver>(_mavsdk_impl);
     return true;
 }
 
 void Connection::stop_libmav_receiver()
 {
-    if (_libmav_receiver) {
-        _libmav_receiver.reset();
-    }
+    std::lock_guard<std::mutex> lock(_libmav_receiver_mutex);
+    // Reset under the mutex so that concurrent get_libmav_receiver() calls
+    // either see a valid shared_ptr before the reset or nullptr after.
+    _libmav_receiver.reset();
 }
 
 void Connection::receive_libmav_message(

@@ -768,12 +768,14 @@ void MavsdkImpl::deliver_message(mavlink_message_t& message)
             json_message.target_component_id = 0;
         }
 
-        // Generate JSON using LibmavReceiver's public method
+        // Generate JSON using LibmavReceiver's public method.
+        // Capture the shared_ptr once so that even if stop_libmav_receiver() is
+        // called concurrently the object stays alive for the duration of this block.
         auto connections = get_connections();
-        if (!connections.empty() && connections[0]->get_libmav_receiver()) {
+        auto receiver = connections.empty() ? nullptr : connections[0]->get_libmav_receiver();
+        if (receiver) {
             json_message.fields_json =
-                connections[0]->get_libmav_receiver()->libmav_message_to_json(
-                    libmav_msg_opt.value());
+                receiver->libmav_message_to_json(libmav_msg_opt.value());
         } else {
             // Fallback: create minimal JSON if no receiver available
             json_message.fields_json =
