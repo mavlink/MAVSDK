@@ -2152,6 +2152,24 @@ public:
     Result set_rate_gps_info(double rate_hz) const;
 
     /**
+     * @brief Set rate to 'Raw GPS' updates.
+     *
+     * This function is non-blocking. See 'set_rate_raw_gps' for the blocking counterpart.
+     */
+    void set_rate_raw_gps_async(double rate_hz, const ResultCallback callback);
+
+    /**
+     * @brief Set rate to 'Raw GPS' updates.
+     *
+     * This function is blocking. See 'set_rate_raw_gps_async' for the non-blocking counterpart.
+     *
+
+     * @return Result of request.
+
+     */
+    Result set_rate_raw_gps(double rate_hz) const;
+
+    /**
      * @brief Set rate to 'battery' updates.
      *
      * This function is non-blocking. See 'set_rate_battery' for the blocking counterpart.
