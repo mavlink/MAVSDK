@@ -1190,6 +1190,8 @@ typedef struct CMAVSDK_EXPORT {
     double longitude_deg;
     /**  Altitude AMSL (above mean sea level) in metres */
     float absolute_altitude_m;
+    /**  Timestamp in microseconds (since system boot) */
+    uint64_t timestamp_us;
 } mavsdk_telemetry_ground_truth_t;
 
 /**
@@ -1493,6 +1495,8 @@ typedef struct CMAVSDK_EXPORT {
     float altitude_terrain_m;
     /**  This is not the altitude, but the clear space below the system according to the fused clearance estimate in meters. */
     float bottom_clearance_m;
+    /**  Timestamp in microseconds (since system boot) */
+    uint64_t timestamp_us;
 } mavsdk_telemetry_altitude_t;
 
 /**

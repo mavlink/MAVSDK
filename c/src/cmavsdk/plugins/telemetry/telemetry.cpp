@@ -1233,6 +1233,7 @@ translate_ground_truth_from_c(const mavsdk_telemetry_ground_truth_t& c_struct) {
     cpp_struct.latitude_deg = c_struct.latitude_deg;
     cpp_struct.longitude_deg = c_struct.longitude_deg;
     cpp_struct.absolute_altitude_m = c_struct.absolute_altitude_m;
+    cpp_struct.timestamp_us = c_struct.timestamp_us;
     return cpp_struct;
 }
 
@@ -1242,6 +1243,7 @@ translate_ground_truth_to_c(const mavsdk::Telemetry::GroundTruth& cpp_struct) {
     c_struct.latitude_deg = cpp_struct.latitude_deg;
     c_struct.longitude_deg = cpp_struct.longitude_deg;
     c_struct.absolute_altitude_m = cpp_struct.absolute_altitude_m;
+    c_struct.timestamp_us = cpp_struct.timestamp_us;
     return c_struct;
 }
 
@@ -1505,6 +1507,7 @@ translate_altitude_from_c(const mavsdk_telemetry_altitude_t& c_struct) {
     cpp_struct.altitude_relative_m = c_struct.altitude_relative_m;
     cpp_struct.altitude_terrain_m = c_struct.altitude_terrain_m;
     cpp_struct.bottom_clearance_m = c_struct.bottom_clearance_m;
+    cpp_struct.timestamp_us = c_struct.timestamp_us;
     return cpp_struct;
 }
 
@@ -1517,6 +1520,7 @@ translate_altitude_to_c(const mavsdk::Telemetry::Altitude& cpp_struct) {
     c_struct.altitude_relative_m = cpp_struct.altitude_relative_m;
     c_struct.altitude_terrain_m = cpp_struct.altitude_terrain_m;
     c_struct.bottom_clearance_m = cpp_struct.bottom_clearance_m;
+    c_struct.timestamp_us = cpp_struct.timestamp_us;
     return c_struct;
 }
 

@@ -812,6 +812,7 @@ public:
         double longitude_deg{double(NAN)}; /**< @brief Longitude in degrees (range: -180 to 180) */
         float absolute_altitude_m{
             float(NAN)}; /**< @brief Altitude AMSL (above mean sea level) in metres */
+        uint64_t timestamp_us{}; /**< @brief Timestamp in microseconds (since system boot) */
     };
 
     /**
@@ -1006,6 +1007,7 @@ public:
         float bottom_clearance_m{
             float(NAN)}; /**< @brief This is not the altitude, but the clear space below the system
                             according to the fused clearance estimate in meters. */
+        uint64_t timestamp_us{}; /**< @brief Timestamp in microseconds (since system boot) */
     };
 
     /**
