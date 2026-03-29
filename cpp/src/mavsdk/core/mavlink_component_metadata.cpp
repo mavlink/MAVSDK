@@ -177,7 +177,7 @@ void MavlinkComponentMetadata::retrieve_metadata(uint8_t compid, COMP_METADATA_T
 
         if (cached_file_option) {
             if (_verbose_debugging) {
-                LogDebug("Using cached file {}", cached_file_option.value());
+                LogDebug("Using cached file {}", cached_file_option.value().string());
             }
             component.current_metadata_path() = cached_file_option.value();
             retrieve_metadata(compid, type);
@@ -268,7 +268,7 @@ void MavlinkComponentMetadata::retrieve_metadata(uint8_t compid, COMP_METADATA_T
                             retrieve_metadata(compid, type);
                         } else if (status == HttpStatus::Finished) {
                             if (_verbose_debugging) {
-                                LogDebug("File download finished {}", tmp_download_path);
+                                LogDebug("File download finished {}", tmp_download_path.string());
                             }
                             component.current_metadata_path() =
                                 extract_and_cache_file(tmp_download_path, file_cache_tag);
@@ -339,7 +339,7 @@ std::optional<std::filesystem::path> MavlinkComponentMetadata::extract_and_cache
         if (InflateLZMA::inflateLZMAFile(path, returned_path)) {
             std::filesystem::remove(path);
         } else {
-            LogErr("Inflate of compressed json failed {}", path);
+            LogErr("Inflate of compressed json failed {}", path.string());
             return std::nullopt;
         }
     }

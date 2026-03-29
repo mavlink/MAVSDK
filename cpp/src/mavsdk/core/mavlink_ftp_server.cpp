@@ -326,7 +326,7 @@ void MavlinkFtpServer::_work_list(const PayloadHeader& payload)
 
     std::error_code ec;
     if (!fs::exists(path, ec)) {
-        LogWarn("FTP: can't open path {}", path);
+        LogWarn("FTP: can't open path {}", path.string());
         // this is not an FTP error, abort directory by simulating eof
         response.opcode = Opcode::RSP_NAK;
         response.size = 1;
@@ -974,7 +974,7 @@ void MavlinkFtpServer::_work_remove_directory(const PayloadHeader& payload)
         return;
     }
     if (ec) {
-        LogErr("fs::exists for {} returned error: {}", path, ec.message());
+        LogErr("fs::exists for {} returned error: {}", path.string(), ec.message());
         response.opcode = Opcode::RSP_NAK;
         response.size = 1;
         response.data[0] = ServerResult::ERR_FAIL;
