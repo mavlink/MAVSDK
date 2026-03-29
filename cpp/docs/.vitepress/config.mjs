@@ -1,9 +1,6 @@
 import { defineConfig } from "vitepress";
 const getSidebar = require("./get_sidebar.js");
 
-// Tabs: https://github.com/Red-Asuka/vitepress-plugin-tabs
-import tabsPlugin from "@red-asuka/vitepress-plugin-tabs";
-
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
   title: "MAVSDK Guide",
@@ -23,10 +20,6 @@ export default defineConfig({
   ignoreDeadLinks: true,
   markdown: {
     math: true,
-    config: (md) => {
-      // use more markdown-it plugins!
-      tabsPlugin(md); //https://github.com/Red-Asuka/vitepress-plugin-tabs
-    },
   },
   locales: {
     en: {
