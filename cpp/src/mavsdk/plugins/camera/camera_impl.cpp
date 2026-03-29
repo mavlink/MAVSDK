@@ -1173,9 +1173,8 @@ void CameraImpl::process_camera_image_captured(const mavlink_message_t& message)
         camera.capture_info.last_advertised_image_index = capture_info.index;
     }
 
-    else if (
-        auto it = camera.capture_info.missing_image_retries.find(capture_info.index);
-        it != camera.capture_info.missing_image_retries.end()) {
+    else if (auto it = camera.capture_info.missing_image_retries.find(capture_info.index);
+             it != camera.capture_info.missing_image_retries.end()) {
         _capture_info_callbacks.queue(
             capture_info, [this](const auto& func) { _system_impl->call_user_callback(func); });
         camera.capture_info.missing_image_retries.erase(it);
@@ -1357,12 +1356,12 @@ void CameraImpl::check_camera_definition_with_lock(PotentialCamera& potential_ca
                         notify_camera_list_with_lock();
 
                     } else if (status == HttpStatus::Finished) {
-                        LogDebug("File download finished {}", download_path);
+                        LogDebug("File download finished {}", download_path.string());
                         if (_file_cache) {
                             // Cache the file (this will move/remove the temp file as well)
                             download_path = _file_cache->insert(file_cache_tag, download_path)
                                                 .value_or(download_path);
-                            LogDebug("Cached path: {}", download_path);
+                            LogDebug("Cached path: {}", download_path.string());
                         }
                         load_camera_definition_with_lock(*maybe_potential_camera, download_path);
                         maybe_potential_camera->is_fetching_camera_definition = false;
@@ -1417,13 +1416,13 @@ void CameraImpl::check_camera_definition_with_lock(PotentialCamera& potential_ca
 
                             auto downloaded_filepath = _tmp_download_path / downloaded_filename;
 
-                            LogDebug("File download finished to {}", downloaded_filepath);
+                            LogDebug("File download finished to {}", downloaded_filepath.string());
                             if (_file_cache) {
                                 // Cache the file (this will move/remove the temp file as well)
                                 downloaded_filepath =
                                     _file_cache->insert(file_cache_tag, downloaded_filepath)
                                         .value_or(downloaded_filepath);
-                                LogDebug("Cached path: {}", downloaded_filepath);
+                                LogDebug("Cached path: {}", downloaded_filepath.string());
                             }
                             load_camera_definition_with_lock(
                                 *maybe_potential_camera, downloaded_filepath);
@@ -1449,7 +1448,7 @@ void CameraImpl::load_camera_definition_with_lock(
     }
 
     if (!potential_camera.camera_definition->load_file(path.string())) {
-        LogErr("Failed to load camera definition: {}", path);
+        LogErr("Failed to load camera definition: {}", path.string());
         // We can't keep something around that's not loaded correctly.
         potential_camera.camera_definition = nullptr;
         return;

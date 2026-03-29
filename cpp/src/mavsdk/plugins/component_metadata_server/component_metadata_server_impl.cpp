@@ -32,7 +32,7 @@ ComponentMetadataServerImpl::~ComponentMetadataServerImpl()
         std::error_code ec;
         std::filesystem::remove_all(_tmp_path, ec);
         if (ec) {
-            LogErr("Error removing {}: {}", _tmp_path, ec.message());
+            LogErr("Error removing {}: {}", _tmp_path.string(), ec.message());
         }
     }
 }
@@ -103,7 +103,7 @@ void ComponentMetadataServerImpl::set_metadata(
     _tmp_path = *tmp_option;
 
     if (_verbose_debugging) {
-        LogDebug("Storing metadata under {}", _tmp_path);
+        LogDebug("Storing metadata under {}", _tmp_path.string());
     }
 
     // Write files
@@ -117,7 +117,7 @@ void ComponentMetadataServerImpl::set_metadata(
         const std::filesystem::path path = _tmp_path / _metadata.back().filename;
         std::ofstream file(path, std::fstream::trunc | std::fstream::binary | std::fstream::out);
         if (!file) {
-            LogErr("Failed to open {}", path);
+            LogErr("Failed to open {}", path.string());
             continue;
         }
         file.write(single_metadata.json_metadata.data(), single_metadata.json_metadata.length());
