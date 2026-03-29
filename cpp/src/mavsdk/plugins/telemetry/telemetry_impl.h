@@ -41,6 +41,7 @@ public:
     Telemetry::Result set_rate_fixedwing_metrics(double rate_hz);
     Telemetry::Result set_rate_ground_truth(double rate_hz);
     Telemetry::Result set_rate_gps_info(double rate_hz);
+    Telemetry::Result set_rate_raw_gps(double rate_hz);
     Telemetry::Result set_rate_battery(double rate_hz);
     Telemetry::Result set_rate_rc_status(double rate_hz);
     Telemetry::Result set_rate_actuator_control_target(double rate_hz);
@@ -67,6 +68,7 @@ public:
     void set_rate_fixedwing_metrics_async(double rate_hz, Telemetry::ResultCallback callback);
     void set_rate_ground_truth_async(double rate_hz, Telemetry::ResultCallback callback);
     void set_rate_gps_info_async(double rate_hz, Telemetry::ResultCallback callback);
+    void set_rate_raw_gps_async(double rate_hz, Telemetry::ResultCallback callback);
     void set_rate_battery_async(double rate_hz, Telemetry::ResultCallback callback);
     void set_rate_rc_status_async(double rate_hz, Telemetry::ResultCallback callback);
     void set_rate_actuator_control_target_async(double rate_hz, Telemetry::ResultCallback callback);

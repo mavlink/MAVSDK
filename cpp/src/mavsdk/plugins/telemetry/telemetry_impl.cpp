@@ -320,6 +320,12 @@ Telemetry::Result TelemetryImpl::set_rate_gps_info(double rate_hz)
         _system_impl->set_msg_rate(MAVLINK_MSG_ID_GPS_RAW_INT, rate_hz));
 }
 
+Telemetry::Result TelemetryImpl::set_rate_raw_gps(double rate_hz)
+{
+    return telemetry_result_from_command_result(
+        _system_impl->set_msg_rate(MAVLINK_MSG_ID_GPS_RAW_INT, rate_hz));
+}
+
 Telemetry::Result TelemetryImpl::set_rate_battery(double rate_hz)
 {
     return telemetry_result_from_command_result(
@@ -542,6 +548,16 @@ void TelemetryImpl::set_rate_ground_truth_async(double rate_hz, Telemetry::Resul
 }
 
 void TelemetryImpl::set_rate_gps_info_async(double rate_hz, Telemetry::ResultCallback callback)
+{
+    _system_impl->set_msg_rate_async(
+        MAVLINK_MSG_ID_GPS_RAW_INT,
+        rate_hz,
+        [callback](MavlinkCommandSender::Result command_result, float) {
+            command_result_callback(command_result, callback);
+        });
+}
+
+void TelemetryImpl::set_rate_raw_gps_async(double rate_hz, Telemetry::ResultCallback callback)
 {
     _system_impl->set_msg_rate_async(
         MAVLINK_MSG_ID_GPS_RAW_INT,
