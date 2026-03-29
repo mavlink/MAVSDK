@@ -125,10 +125,14 @@ MissionImport::import_mission(const Json::Value& root, Autopilot autopilot)
                 return std::nullopt;
             }
 
-            // Reserve first to avoid reallocation; GCC 13 emits a false-positive
-            // -Wnull-dereference on placement-new inside vector::_M_realloc_insert
-            // when built with C++20 and -Werror.
+            // GCC 12/13 emits a false-positive -Wnull-dereference on placement-new
+            // inside vector::_M_realloc_insert when built with C++20 and -Werror.
+            // Reserve first to prevent reallocation, then suppress the warning.
             mission_items.reserve(mission_items.size() + 1);
+#if defined(__GNUC__) && !defined(__clang__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wnull-dereference"
+#endif
             mission_items.insert(
                 mission_items.begin(),
                 MissionRaw::MissionItem{
@@ -145,6 +149,9 @@ MissionImport::import_mission(const Json::Value& root, Autopilot autopilot)
                     set_int32(home[1], MAV_FRAME_GLOBAL_INT),
                     home[2].asFloat(),
                     MAV_MISSION_TYPE_MISSION});
+#if defined(__GNUC__) && !defined(__clang__)
+#pragma GCC diagnostic pop
+#endif
         }
     }
 

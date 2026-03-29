@@ -156,13 +156,20 @@ void format_into(std::ostream& os, std::string_view fmt, T&& arg, Rest&&... rest
 }
 } // namespace detail
 
-template<typename... Args>
-    requires(sizeof...(Args) > 0)
-void log_message(log::Level level, const char* filename, int line, const char* fmt, Args&&... args)
+// Requires at least one format argument (FirstArg) to avoid ambiguity with the
+// string_view overload below. This spelling is compatible with C++11 through C++20.
+template<typename FirstArg, typename... RestArgs>
+void log_message(
+    log::Level level,
+    const char* filename,
+    int line,
+    const char* fmt,
+    FirstArg&& first,
+    RestArgs&&... rest)
 {
     std::lock_guard<std::mutex> lock(get_log_mutex());
     std::ostringstream os;
-    detail::format_into(os, fmt, std::forward<Args>(args)...);
+    detail::format_into(os, fmt, std::forward<FirstArg>(first), std::forward<RestArgs>(rest)...);
     emit_log(level, os.str(), filename, line);
 }
 
