@@ -48,8 +48,13 @@ TEST(SystemTest, InterceptIncomingModifyLocal)
 
     // Wait for sender to discover interceptor connection
     LogInfo() << "Waiting for sender to connect to interceptor...";
-    while (mavsdk_sender.systems().size() == 0) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    {
+        auto deadline = std::chrono::steady_clock::now() + std::chrono::seconds(10);
+        while (mavsdk_sender.systems().size() == 0) {
+            ASSERT_TRUE(std::chrono::steady_clock::now() < deadline)
+                << "Timed out waiting for sender to discover systems";
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        }
     }
     auto interceptor_system = mavsdk_sender.systems().at(0);
 
@@ -199,8 +204,13 @@ TEST(SystemTest, InterceptJsonIncoming)
 
     // Wait for autopilot instance to discover the connection to the ground station
     LogInfo() << "Waiting for autopilot system to connect...";
-    while (mavsdk_autopilot.systems().size() == 0) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    {
+        auto deadline = std::chrono::steady_clock::now() + std::chrono::seconds(10);
+        while (mavsdk_autopilot.systems().size() == 0) {
+            ASSERT_TRUE(std::chrono::steady_clock::now() < deadline)
+                << "Timed out waiting for autopilot to discover systems";
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        }
     }
 
     // Create telemetry instances
@@ -306,8 +316,13 @@ TEST(SystemTest, InterceptJsonOutgoing)
 
     // Wait for autopilot instance to discover the connection to the ground station
     LogInfo() << "Waiting for autopilot system to connect...";
-    while (mavsdk_autopilot.systems().size() == 0) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    {
+        auto deadline = std::chrono::steady_clock::now() + std::chrono::seconds(10);
+        while (mavsdk_autopilot.systems().size() == 0) {
+            ASSERT_TRUE(std::chrono::steady_clock::now() < deadline)
+                << "Timed out waiting for autopilot to discover systems";
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        }
     }
 
     // Create telemetry instances
