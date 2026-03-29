@@ -104,9 +104,9 @@ TEST(SystemTest, MissionDownloadCancellation)
     auto mission_plan = create_mission_plan();
 
     // Upload synchronously first (separate from the cancellation test).
-    LogInfo() << "Uploading mission first...";
+    LogInfo("Uploading mission first...");
     ASSERT_EQ(mission.upload_mission(mission_plan), Mission::Result::Success);
-    LogInfo() << "Mission uploaded successfully.";
+    LogInfo("Mission uploaded successfully.");
 
     // Download and cancel once we know the transfer is in flight.
     std::promise<Mission::Result> result_prom{};

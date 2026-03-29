@@ -125,6 +125,10 @@ MissionImport::import_mission(const Json::Value& root, Autopilot autopilot)
                 return std::nullopt;
             }
 
+            // Reserve first to avoid reallocation; GCC 13 emits a false-positive
+            // -Wnull-dereference on placement-new inside vector::_M_realloc_insert
+            // when built with C++20 and -Werror.
+            mission_items.reserve(mission_items.size() + 1);
             mission_items.insert(
                 mission_items.begin(),
                 MissionRaw::MissionItem{
