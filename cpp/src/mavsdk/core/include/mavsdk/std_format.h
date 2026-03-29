@@ -1,24 +1,43 @@
 #pragma once
 
 // Detect whether std::format is usable on this platform.
+//
+// Strategy: if <format> is present and we are not on a known-broken platform,
+// include it eagerly so that __cpp_lib_format is defined before we test it.
+// GCC 13 and GCC 14 only define __cpp_lib_format when <format> is actually
+// included; they do NOT expose it via <bits/c++config.h> or implicitly through
+// other standard headers.  Testing the macro *before* including <format> (as
+// earlier revisions of this header did) therefore always returns "undefined"
+// on those compilers, setting MAVSDK_HAS_STD_FORMAT=0 and silently turning
+// MAVSDK_DEFINE_FORMATTER into a no-op — which is the root cause of the
+// "std::formatter must be specialized" errors on GCC 13/14 CI jobs.
+//
 // Conditions for disabling std::format:
 //   1. The <format> header is not present (e.g. GCC < 13 cross-toolchains).
-//   2. The feature-test macro __cpp_lib_format is not defined.
-//   3. iOS / iOS-simulator deployment target < 16.3: Apple's libc++ std::format
+//   2. iOS / iOS-simulator deployment target < 16.3: Apple's libc++ std::format
 //      floating-point support calls std::to_chars which is only available
 //      from iOS 16.3 / iPadOS 16.3 onward.
-#if !defined(__has_include) || !__has_include(<format>)
-#define MAVSDK_HAS_STD_FORMAT 0
-#elif defined(__IPHONE_OS_VERSION_MIN_REQUIRED) && (__IPHONE_OS_VERSION_MIN_REQUIRED < 160300)
-#define MAVSDK_HAS_STD_FORMAT 0
-#elif defined(__cpp_lib_format)
-#define MAVSDK_HAS_STD_FORMAT 1
+//   3. Even after including <format>, __cpp_lib_format is still not defined
+//      (guards against broken/stub implementations).
+
+// Step 1: reject known-broken iOS targets up front.
+#if defined(__IPHONE_OS_VERSION_MIN_REQUIRED) && (__IPHONE_OS_VERSION_MIN_REQUIRED < 160300)
+#  define MAVSDK_HAS_STD_FORMAT 0
+// Step 2: if <format> is present, include it and then check the feature macro.
+#elif defined(__has_include) && __has_include(<format>)
+#  include <format>
+#  if defined(__cpp_lib_format)
+#    define MAVSDK_HAS_STD_FORMAT 1
+#  else
+#    define MAVSDK_HAS_STD_FORMAT 0
+#  endif
+// Step 3: <format> is not available at all.
 #else
-#define MAVSDK_HAS_STD_FORMAT 0
+#  define MAVSDK_HAS_STD_FORMAT 0
 #endif
 
 #if MAVSDK_HAS_STD_FORMAT
-#include <format>
+// <format> was already included above.
 #include <filesystem>
 #include <sstream>
 #include <string>
