@@ -3110,7 +3110,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn("SetRateRawGps sent with a null request! Ignoring...");
+            LogWarn() << "SetRateRawGps sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
 
