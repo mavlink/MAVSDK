@@ -219,6 +219,7 @@ install(FILES
     include/mavsdk/mavlink_address.h
     include/mavsdk/vehicle.h
     include/mavsdk/overloaded.h
+    include/mavsdk/std_format.h
     ${CMAKE_CURRENT_BINARY_DIR}/include/mavsdk/mavlink_include.h
     DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/mavsdk"
 )
