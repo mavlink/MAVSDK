@@ -328,9 +328,27 @@ Telemetry::Result TelemetryImpl::set_rate_battery(double rate_hz)
 
 Telemetry::Result TelemetryImpl::set_rate_rc_status(double rate_hz)
 {
-    UNUSED(rate_hz);
-    LogWarn() << "System status is usually fixed at 1 Hz";
-    return Telemetry::Result::Unsupported;
+    _rc_status_rate_hz = rate_hz;
+
+    // On PX4, RC data comes via RC_CHANNELS. On ArduPilot, it comes via SYS_STATUS.
+    if (_system_impl->effective_autopilot() == Autopilot::ArduPilot) {
+        return set_rate_sys_status();
+    }
+
+    // For PX4 (or unknown), request RC_CHANNELS and also update SYS_STATUS if needed.
+    auto result = telemetry_result_from_command_result(
+        _system_impl->set_msg_rate(MAVLINK_MSG_ID_RC_CHANNELS, rate_hz));
+    if (result != Telemetry::Result::Success) {
+        return result;
+    }
+    return set_rate_sys_status();
+}
+
+Telemetry::Result TelemetryImpl::set_rate_sys_status()
+{
+    double max_rate_hz = std::max(_health_rate_hz, _rc_status_rate_hz);
+    return telemetry_result_from_command_result(
+        _system_impl->set_msg_rate(MAVLINK_MSG_ID_SYS_STATUS, max_rate_hz));
 }
 
 Telemetry::Result TelemetryImpl::set_rate_actuator_control_target(double rate_hz)
@@ -377,8 +395,8 @@ Telemetry::Result TelemetryImpl::set_rate_altitude(double rate_hz)
 
 Telemetry::Result TelemetryImpl::set_rate_health(double rate_hz)
 {
-    return telemetry_result_from_command_result(
-        _system_impl->set_msg_rate(MAVLINK_MSG_ID_SYS_STATUS, rate_hz));
+    _health_rate_hz = rate_hz;
+    return set_rate_sys_status();
 }
 
 void TelemetryImpl::set_rate_position_velocity_ned_async(
@@ -447,9 +465,11 @@ void TelemetryImpl::set_rate_altitude_async(double rate_hz, Telemetry::ResultCal
 
 void TelemetryImpl::set_rate_health_async(double rate_hz, Telemetry::ResultCallback callback)
 {
+    _health_rate_hz = rate_hz;
+    double max_rate_hz = std::max(_health_rate_hz, _rc_status_rate_hz);
     _system_impl->set_msg_rate_async(
         MAVLINK_MSG_ID_SYS_STATUS,
-        rate_hz,
+        max_rate_hz,
         [callback](MavlinkCommandSender::Result command_result, float) {
             command_result_callback(command_result, callback);
         });
@@ -563,9 +583,36 @@ void TelemetryImpl::set_rate_battery_async(double rate_hz, Telemetry::ResultCall
 
 void TelemetryImpl::set_rate_rc_status_async(double rate_hz, Telemetry::ResultCallback callback)
 {
-    UNUSED(rate_hz);
-    LogWarn() << "System status is usually fixed at 1 Hz";
-    _system_impl->call_user_callback([callback]() { callback(Telemetry::Result::Unsupported); });
+    _rc_status_rate_hz = rate_hz;
+    double max_rate_hz = std::max(_health_rate_hz, _rc_status_rate_hz);
+
+    if (_system_impl->effective_autopilot() == Autopilot::ArduPilot) {
+        // ArduPilot reports RC status via SYS_STATUS
+        _system_impl->set_msg_rate_async(
+            MAVLINK_MSG_ID_SYS_STATUS,
+            max_rate_hz,
+            [callback](MavlinkCommandSender::Result command_result, float) {
+                command_result_callback(command_result, callback);
+            });
+    } else {
+        // PX4 reports RC data via RC_CHANNELS
+        _system_impl->set_msg_rate_async(
+            MAVLINK_MSG_ID_RC_CHANNELS,
+            rate_hz,
+            [this, callback, max_rate_hz](MavlinkCommandSender::Result command_result, float) {
+                if (command_result != MavlinkCommandSender::Result::Success) {
+                    command_result_callback(command_result, callback);
+                    return;
+                }
+                // Also update SYS_STATUS rate
+                _system_impl->set_msg_rate_async(
+                    MAVLINK_MSG_ID_SYS_STATUS,
+                    max_rate_hz,
+                    [callback](MavlinkCommandSender::Result command_result2, float) {
+                        command_result_callback(command_result2, callback);
+                    });
+            });
+    }
 }
 
 void TelemetryImpl::set_rate_unix_epoch_time_async(

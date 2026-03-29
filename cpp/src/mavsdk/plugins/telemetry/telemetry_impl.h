@@ -417,6 +417,11 @@ private:
     double _velocity_ned_rate_hz{0.0};
     double _position_rate_hz{-1.0};
 
+    // Health and RC status both use SYS_STATUS, so we take the max of requested rates.
+    double _health_rate_hz{0.0};
+    double _rc_status_rate_hz{0.0};
+    Telemetry::Result set_rate_sys_status();
+
     // Battery info can be extracted from SYS_STATUS or from BATTERY_STATUS.
     // If no BATTERY_STATUS messages are received, use info from SYS_STATUS.
     bool _has_bat_status{false};
