@@ -148,7 +148,7 @@ bool ComponentMetadataServerImpl::generate_component_metadata_general_file()
     const std::filesystem::path path = _tmp_path / kComponentGeneralFilename;
     std::ofstream file(path, std::fstream::trunc | std::fstream::binary | std::fstream::out);
     if (!file) {
-        LogErr("Failed to open {}", path);
+        LogErr("Failed to open {}", path.string());
         return false;
     }
     const std::string json_data = root.toStyledString();
