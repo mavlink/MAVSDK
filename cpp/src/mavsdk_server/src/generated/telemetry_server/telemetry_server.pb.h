@@ -4386,6 +4386,7 @@ class GroundTruth final
   enum : int {
     kLatitudeDegFieldNumber = 1,
     kLongitudeDegFieldNumber = 2,
+    kTimestampUsFieldNumber = 4,
     kAbsoluteAltitudeMFieldNumber = 3,
   };
   // double latitude_deg = 1 [(.mavsdk.options.default_value) = "NaN"];
@@ -4408,6 +4409,16 @@ class GroundTruth final
   void _internal_set_longitude_deg(double value);
 
   public:
+  // uint64 timestamp_us = 4;
+  void clear_timestamp_us() ;
+  ::uint64_t timestamp_us() const;
+  void set_timestamp_us(::uint64_t value);
+
+  private:
+  ::uint64_t _internal_timestamp_us() const;
+  void _internal_set_timestamp_us(::uint64_t value);
+
+  public:
   // float absolute_altitude_m = 3 [(.mavsdk.options.default_value) = "NaN"];
   void clear_absolute_altitude_m() ;
   float absolute_altitude_m() const;
@@ -4423,7 +4434,7 @@ class GroundTruth final
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      2, 3, 0,
+      2, 4, 0,
       0, 2>
       _table_;
 
@@ -4443,6 +4454,7 @@ class GroundTruth final
                           const GroundTruth& from_msg);
     double latitude_deg_;
     double longitude_deg_;
+    ::uint64_t timestamp_us_;
     float absolute_altitude_m_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
@@ -20696,6 +20708,28 @@ inline float GroundTruth::_internal_absolute_altitude_m() const {
 inline void GroundTruth::_internal_set_absolute_altitude_m(float value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.absolute_altitude_m_ = value;
+}
+
+// uint64 timestamp_us = 4;
+inline void GroundTruth::clear_timestamp_us() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.timestamp_us_ = ::uint64_t{0u};
+}
+inline ::uint64_t GroundTruth::timestamp_us() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry_server.GroundTruth.timestamp_us)
+  return _internal_timestamp_us();
+}
+inline void GroundTruth::set_timestamp_us(::uint64_t value) {
+  _internal_set_timestamp_us(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry_server.GroundTruth.timestamp_us)
+}
+inline ::uint64_t GroundTruth::_internal_timestamp_us() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.timestamp_us_;
+}
+inline void GroundTruth::_internal_set_timestamp_us(::uint64_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.timestamp_us_ = value;
 }
 
 // -------------------------------------------------------------------

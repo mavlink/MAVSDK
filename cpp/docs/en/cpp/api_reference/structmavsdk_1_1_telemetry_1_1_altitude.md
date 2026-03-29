@@ -22,6 +22,8 @@ float [altitude_terrain_m](#structmavsdk_1_1_telemetry_1_1_altitude_1a3ff7fd4d1c
 
 float [bottom_clearance_m](#structmavsdk_1_1_telemetry_1_1_altitude_1adb1f002956624c20524f33412bd8debc) { float(NAN)} - This is not the altitude, but the clear space below the system according to the fused clearance estimate in meters.
 
+uint64_t [timestamp_us](#structmavsdk_1_1_telemetry_1_1_altitude_1abe1f59274eff80a239260bfa7e0cd7e4) {} - Timestamp in microseconds (since system boot)
+
 
 ## Field Documentation
 
@@ -84,4 +86,14 @@ float mavsdk::Telemetry::Altitude::bottom_clearance_m { float(NAN)}
 
 
 This is not the altitude, but the clear space below the system according to the fused clearance estimate in meters.
+
+
+### timestamp_us {#structmavsdk_1_1_telemetry_1_1_altitude_1abe1f59274eff80a239260bfa7e0cd7e4}
+
+```cpp
+uint64_t mavsdk::Telemetry::Altitude::timestamp_us {}
+```
+
+
+Timestamp in microseconds (since system boot)
 

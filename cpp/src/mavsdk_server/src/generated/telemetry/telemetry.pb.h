@@ -15228,6 +15228,7 @@ class GroundTruth final
   enum : int {
     kLatitudeDegFieldNumber = 1,
     kLongitudeDegFieldNumber = 2,
+    kTimestampUsFieldNumber = 4,
     kAbsoluteAltitudeMFieldNumber = 3,
   };
   // double latitude_deg = 1 [(.mavsdk.options.default_value) = "NaN"];
@@ -15250,6 +15251,16 @@ class GroundTruth final
   void _internal_set_longitude_deg(double value);
 
   public:
+  // uint64 timestamp_us = 4;
+  void clear_timestamp_us() ;
+  ::uint64_t timestamp_us() const;
+  void set_timestamp_us(::uint64_t value);
+
+  private:
+  ::uint64_t _internal_timestamp_us() const;
+  void _internal_set_timestamp_us(::uint64_t value);
+
+  public:
   // float absolute_altitude_m = 3 [(.mavsdk.options.default_value) = "NaN"];
   void clear_absolute_altitude_m() ;
   float absolute_altitude_m() const;
@@ -15265,7 +15276,7 @@ class GroundTruth final
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      2, 3, 0,
+      2, 4, 0,
       0, 2>
       _table_;
 
@@ -15285,6 +15296,7 @@ class GroundTruth final
                           const GroundTruth& from_msg);
     double latitude_deg_;
     double longitude_deg_;
+    ::uint64_t timestamp_us_;
     float absolute_altitude_m_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
@@ -17775,6 +17787,7 @@ class Altitude final
     kAltitudeRelativeMFieldNumber = 4,
     kAltitudeTerrainMFieldNumber = 5,
     kBottomClearanceMFieldNumber = 6,
+    kTimestampUsFieldNumber = 7,
   };
   // float altitude_monotonic_m = 1 [(.mavsdk.options.default_value) = "NaN"];
   void clear_altitude_monotonic_m() ;
@@ -17836,12 +17849,22 @@ class Altitude final
   void _internal_set_bottom_clearance_m(float value);
 
   public:
+  // uint64 timestamp_us = 7;
+  void clear_timestamp_us() ;
+  ::uint64_t timestamp_us() const;
+  void set_timestamp_us(::uint64_t value);
+
+  private:
+  ::uint64_t _internal_timestamp_us() const;
+  void _internal_set_timestamp_us(::uint64_t value);
+
+  public:
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry.Altitude)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      3, 6, 0,
+      3, 7, 0,
       0, 2>
       _table_;
 
@@ -17865,6 +17888,7 @@ class Altitude final
     float altitude_relative_m_;
     float altitude_terrain_m_;
     float bottom_clearance_m_;
+    ::uint64_t timestamp_us_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -39012,6 +39036,28 @@ inline void GroundTruth::_internal_set_absolute_altitude_m(float value) {
   _impl_.absolute_altitude_m_ = value;
 }
 
+// uint64 timestamp_us = 4;
+inline void GroundTruth::clear_timestamp_us() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.timestamp_us_ = ::uint64_t{0u};
+}
+inline ::uint64_t GroundTruth::timestamp_us() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.GroundTruth.timestamp_us)
+  return _internal_timestamp_us();
+}
+inline void GroundTruth::set_timestamp_us(::uint64_t value) {
+  _internal_set_timestamp_us(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.GroundTruth.timestamp_us)
+}
+inline ::uint64_t GroundTruth::_internal_timestamp_us() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.timestamp_us_;
+}
+inline void GroundTruth::_internal_set_timestamp_us(::uint64_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.timestamp_us_ = value;
+}
+
 // -------------------------------------------------------------------
 
 // FixedwingMetrics
@@ -39898,6 +39944,28 @@ inline float Altitude::_internal_bottom_clearance_m() const {
 inline void Altitude::_internal_set_bottom_clearance_m(float value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.bottom_clearance_m_ = value;
+}
+
+// uint64 timestamp_us = 7;
+inline void Altitude::clear_timestamp_us() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.timestamp_us_ = ::uint64_t{0u};
+}
+inline ::uint64_t Altitude::timestamp_us() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.Altitude.timestamp_us)
+  return _internal_timestamp_us();
+}
+inline void Altitude::set_timestamp_us(::uint64_t value) {
+  _internal_set_timestamp_us(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.Altitude.timestamp_us)
+}
+inline ::uint64_t Altitude::_internal_timestamp_us() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.timestamp_us_;
+}
+inline void Altitude::_internal_set_timestamp_us(::uint64_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.timestamp_us_ = value;
 }
 
 // -------------------------------------------------------------------

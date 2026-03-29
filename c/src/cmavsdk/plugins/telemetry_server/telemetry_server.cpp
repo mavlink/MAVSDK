@@ -1066,6 +1066,7 @@ translate_ground_truth_from_c(const mavsdk_telemetry_server_ground_truth_t& c_st
     cpp_struct.latitude_deg = c_struct.latitude_deg;
     cpp_struct.longitude_deg = c_struct.longitude_deg;
     cpp_struct.absolute_altitude_m = c_struct.absolute_altitude_m;
+    cpp_struct.timestamp_us = c_struct.timestamp_us;
     return cpp_struct;
 }
 
@@ -1075,6 +1076,7 @@ translate_ground_truth_to_c(const mavsdk::TelemetryServer::GroundTruth& cpp_stru
     c_struct.latitude_deg = cpp_struct.latitude_deg;
     c_struct.longitude_deg = cpp_struct.longitude_deg;
     c_struct.absolute_altitude_m = cpp_struct.absolute_altitude_m;
+    c_struct.timestamp_us = cpp_struct.timestamp_us;
     return c_struct;
 }
 

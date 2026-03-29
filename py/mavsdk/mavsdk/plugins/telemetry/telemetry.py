@@ -436,6 +436,7 @@ class GroundTruthCStruct(ctypes.Structure):
         ("latitude_deg", ctypes.c_double),
         ("longitude_deg", ctypes.c_double),
         ("absolute_altitude_m", ctypes.c_float),
+        ("timestamp_us", ctypes.c_uint64),
     ]
 
 
@@ -535,6 +536,7 @@ class AltitudeCStruct(ctypes.Structure):
         ("altitude_relative_m", ctypes.c_float),
         ("altitude_terrain_m", ctypes.c_float),
         ("bottom_clearance_m", ctypes.c_float),
+        ("timestamp_us", ctypes.c_uint64),
     ]
 
 
@@ -1564,10 +1566,17 @@ class GroundTruth:
     GroundTruth message type.
     """
 
-    def __init__(self, latitude_deg=None, longitude_deg=None, absolute_altitude_m=None):
+    def __init__(
+        self,
+        latitude_deg=None,
+        longitude_deg=None,
+        absolute_altitude_m=None,
+        timestamp_us=None,
+    ):
         self.latitude_deg = latitude_deg
         self.longitude_deg = longitude_deg
         self.absolute_altitude_m = absolute_altitude_m
+        self.timestamp_us = timestamp_us
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -1576,6 +1585,7 @@ class GroundTruth:
         instance.latitude_deg = c_struct.latitude_deg
         instance.longitude_deg = c_struct.longitude_deg
         instance.absolute_altitude_m = c_struct.absolute_altitude_m
+        instance.timestamp_us = c_struct.timestamp_us
         return instance
 
     def to_c_struct(self):
@@ -1584,6 +1594,7 @@ class GroundTruth:
         c_struct.latitude_deg = self.latitude_deg
         c_struct.longitude_deg = self.longitude_deg
         c_struct.absolute_altitude_m = self.absolute_altitude_m
+        c_struct.timestamp_us = self.timestamp_us
         return c_struct
 
     def __str__(self):
@@ -1591,6 +1602,7 @@ class GroundTruth:
         fields.append(f"latitude_deg={self.latitude_deg}")
         fields.append(f"longitude_deg={self.longitude_deg}")
         fields.append(f"absolute_altitude_m={self.absolute_altitude_m}")
+        fields.append(f"timestamp_us={self.timestamp_us}")
         return f"GroundTruth({', '.join(fields)})"
 
 
@@ -1858,6 +1870,7 @@ class Altitude:
         altitude_relative_m=None,
         altitude_terrain_m=None,
         bottom_clearance_m=None,
+        timestamp_us=None,
     ):
         self.altitude_monotonic_m = altitude_monotonic_m
         self.altitude_amsl_m = altitude_amsl_m
@@ -1865,6 +1878,7 @@ class Altitude:
         self.altitude_relative_m = altitude_relative_m
         self.altitude_terrain_m = altitude_terrain_m
         self.bottom_clearance_m = bottom_clearance_m
+        self.timestamp_us = timestamp_us
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -1876,6 +1890,7 @@ class Altitude:
         instance.altitude_relative_m = c_struct.altitude_relative_m
         instance.altitude_terrain_m = c_struct.altitude_terrain_m
         instance.bottom_clearance_m = c_struct.bottom_clearance_m
+        instance.timestamp_us = c_struct.timestamp_us
         return instance
 
     def to_c_struct(self):
@@ -1887,6 +1902,7 @@ class Altitude:
         c_struct.altitude_relative_m = self.altitude_relative_m
         c_struct.altitude_terrain_m = self.altitude_terrain_m
         c_struct.bottom_clearance_m = self.bottom_clearance_m
+        c_struct.timestamp_us = self.timestamp_us
         return c_struct
 
     def __str__(self):
@@ -1897,6 +1913,7 @@ class Altitude:
         fields.append(f"altitude_relative_m={self.altitude_relative_m}")
         fields.append(f"altitude_terrain_m={self.altitude_terrain_m}")
         fields.append(f"bottom_clearance_m={self.bottom_clearance_m}")
+        fields.append(f"timestamp_us={self.timestamp_us}")
         return f"Altitude({', '.join(fields)})"
 
 

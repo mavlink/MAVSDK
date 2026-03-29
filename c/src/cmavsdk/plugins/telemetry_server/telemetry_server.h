@@ -1038,6 +1038,8 @@ typedef struct CMAVSDK_EXPORT {
     double longitude_deg;
     /**  Altitude AMSL (above mean sea level) in metres */
     float absolute_altitude_m;
+    /**  Timestamp in microseconds (since system boot) */
+    uint64_t timestamp_us;
 } mavsdk_telemetry_server_ground_truth_t;
 
 /**

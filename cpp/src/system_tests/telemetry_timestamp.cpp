@@ -63,8 +63,7 @@ TEST(SystemTest, AltitudeTimestamp)
         mavsdk_groundstation.add_any_connection("udpin://0.0.0.0:15200"),
         ConnectionResult::Success);
     ASSERT_EQ(
-        mavsdk_autopilot.add_any_connection("udpout://127.0.0.1:15200"),
-        ConnectionResult::Success);
+        mavsdk_autopilot.add_any_connection("udpout://127.0.0.1:15200"), ConnectionResult::Success);
 
     auto maybe_system = mavsdk_groundstation.first_autopilot(10.0);
     ASSERT_TRUE(maybe_system);
@@ -130,8 +129,7 @@ TEST(SystemTest, GroundTruthTimestamp)
         mavsdk_groundstation.add_any_connection("udpin://0.0.0.0:15201"),
         ConnectionResult::Success);
     ASSERT_EQ(
-        mavsdk_autopilot.add_any_connection("udpout://127.0.0.1:15201"),
-        ConnectionResult::Success);
+        mavsdk_autopilot.add_any_connection("udpout://127.0.0.1:15201"), ConnectionResult::Success);
 
     auto maybe_system = mavsdk_groundstation.first_autopilot(10.0);
     ASSERT_TRUE(maybe_system);
@@ -150,12 +148,11 @@ TEST(SystemTest, GroundTruthTimestamp)
     auto fut = prom.get_future();
     std::atomic<bool> received{false};
 
-    auto handle =
-        telemetry.subscribe_ground_truth([&](const Telemetry::GroundTruth& ground_truth) {
-            if (!received.exchange(true)) {
-                prom.set_value(ground_truth);
-            }
-        });
+    auto handle = telemetry.subscribe_ground_truth([&](const Telemetry::GroundTruth& ground_truth) {
+        if (!received.exchange(true)) {
+            prom.set_value(ground_truth);
+        }
+    });
 
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
@@ -166,12 +163,11 @@ TEST(SystemTest, GroundTruthTimestamp)
     msg.component_id = 1;
     msg.target_system_id = 0;
     msg.target_component_id = 0;
-    msg.fields_json =
-        R"({"time_usec":987654321,"attitude_quaternion":[1.0,0.0,0.0,0.0],)"
-        R"("rollspeed":0.0,"pitchspeed":0.0,"yawspeed":0.0,)"
-        R"("lat":473977000,"lon":85456000,"alt":488000,)"
-        R"("vx":0,"vy":0,"vz":0,)"
-        R"("ind_airspeed":0,"true_airspeed":0,"xacc":0,"yacc":0,"zacc":0})";
+    msg.fields_json = R"({"time_usec":987654321,"attitude_quaternion":[1.0,0.0,0.0,0.0],)"
+                      R"("rollspeed":0.0,"pitchspeed":0.0,"yawspeed":0.0,)"
+                      R"("lat":473977000,"lon":85456000,"alt":488000,)"
+                      R"("vx":0,"vy":0,"vz":0,)"
+                      R"("ind_airspeed":0,"true_airspeed":0,"xacc":0,"yacc":0,"zacc":0})";
 
     auto result = sender.send_message(msg);
     EXPECT_EQ(result, MavlinkDirect::Result::Success);
@@ -196,8 +192,7 @@ TEST(SystemTest, AltitudeTimestampUpdates)
         mavsdk_groundstation.add_any_connection("udpin://0.0.0.0:15202"),
         ConnectionResult::Success);
     ASSERT_EQ(
-        mavsdk_autopilot.add_any_connection("udpout://127.0.0.1:15202"),
-        ConnectionResult::Success);
+        mavsdk_autopilot.add_any_connection("udpout://127.0.0.1:15202"), ConnectionResult::Success);
 
     auto maybe_system = mavsdk_groundstation.first_autopilot(10.0);
     ASSERT_TRUE(maybe_system);
@@ -230,11 +225,10 @@ TEST(SystemTest, AltitudeTimestampUpdates)
         msg.component_id = 1;
         msg.target_system_id = 0;
         msg.target_component_id = 0;
-        msg.fields_json =
-            "{\"time_usec\":" + std::to_string(ts) +
-            ",\"altitude_monotonic\":1.0,\"altitude_amsl\":2.0,"
-            "\"altitude_local\":3.0,\"altitude_relative\":4.0,"
-            "\"altitude_terrain\":5.0,\"bottom_clearance\":6.0}";
+        msg.fields_json = "{\"time_usec\":" + std::to_string(ts) +
+                          ",\"altitude_monotonic\":1.0,\"altitude_amsl\":2.0,"
+                          "\"altitude_local\":3.0,\"altitude_relative\":4.0,"
+                          "\"altitude_terrain\":5.0,\"bottom_clearance\":6.0}";
 
         auto result = sender.send_message(msg);
         EXPECT_EQ(result, MavlinkDirect::Result::Success);
@@ -252,9 +246,12 @@ TEST(SystemTest, AltitudeTimestampUpdates)
     // Check that all 3 timestamps appeared in order
     bool found_1 = false, found_2 = false, found_3 = false;
     for (auto ts : received_timestamps) {
-        if (ts == 1000000ULL) found_1 = true;
-        if (ts == 2000000ULL) found_2 = true;
-        if (ts == 3000000ULL) found_3 = true;
+        if (ts == 1000000ULL)
+            found_1 = true;
+        if (ts == 2000000ULL)
+            found_2 = true;
+        if (ts == 3000000ULL)
+            found_3 = true;
     }
     EXPECT_TRUE(found_1) << "Missing timestamp 1000000";
     EXPECT_TRUE(found_2) << "Missing timestamp 2000000";
