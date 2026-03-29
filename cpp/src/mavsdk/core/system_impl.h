@@ -22,6 +22,7 @@
 #include "vehicle.h"
 #include "libmav_receiver.h"
 #include <asio/io_context.hpp>
+#include <asio/steady_timer.hpp>
 #include <cstdint>
 #include <functional>
 #include <atomic>
@@ -333,7 +334,11 @@ public:
 
     double timeout_s() const;
 
-    void signal_exit() { _should_exit = true; }
+    void signal_exit()
+    {
+        _should_exit = true;
+        _system_work_timer.cancel();
+    }
 
 private:
     static bool is_autopilot(uint8_t comp_id);
@@ -349,7 +354,7 @@ private:
     static std::string component_name(uint8_t component_id);
     static ComponentType component_type(uint8_t component_id);
 
-    void system_thread();
+    void schedule_system_work();
 
     std::pair<MavlinkCommandSender::Result, MavlinkCommandSender::CommandLong>
     make_command_flight_mode(FlightMode mode, uint8_t component_id);
@@ -406,7 +411,8 @@ private:
 
     MavsdkImpl& _mavsdk_impl;
 
-    std::thread* _system_thread{nullptr};
+    asio::steady_timer _system_work_timer;
+    SteadyTimePoint _last_ping_time{};
     std::atomic<bool> _should_exit{false};
 
     std::atomic<bool> _connected{false};
