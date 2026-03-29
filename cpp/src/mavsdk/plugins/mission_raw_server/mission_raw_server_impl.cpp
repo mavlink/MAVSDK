@@ -203,7 +203,9 @@ void MissionRawServerImpl::process_mission_count(const mavlink_message_t& messag
             // Reset mission state after receiving because the previous mission is now inactive.
             if (type == MAV_MISSION_TYPE_MISSION) {
                 _mission_completed = false;
-                set_current_seq(0);
+                if (!items.empty()) {
+                    set_current_seq(0);
+                }
             }
         });
 }
@@ -410,15 +412,15 @@ void MissionRawServerImpl::set_current_item_complete()
 
 void MissionRawServerImpl::set_current_seq(std::size_t seq)
 {
-    if (_current_mission.size() < static_cast<size_t>(seq) || _current_mission.empty()) {
+    if (_current_mission.empty() || seq > _current_mission.size()) {
         return;
     }
 
     _current_seq = seq;
 
     // If mission is over, just set item to last one again
-    auto item = seq == _current_mission.size() ? _current_mission.back() :
-                                                 _current_mission.at(_current_seq);
+    auto index = (seq >= _current_mission.size()) ? _current_mission.size() - 1 : seq;
+    auto item = _current_mission.at(index);
     auto converted_item = convert_item(item);
     _current_item_changed_callbacks.queue(converted_item, [this](const auto& func) {
         _server_component_impl->call_user_callback(func);
