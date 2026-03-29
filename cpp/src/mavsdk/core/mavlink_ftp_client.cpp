@@ -529,7 +529,7 @@ bool MavlinkFtpClient::download_burst_continue(
 
     } else if (payload->req_opcode == CMD_BURST_READ_FILE) {
         if (_debugging) {
-            LogDebug("Burst download continue, at: {} write: {}", payload->offset, payload->size);
+            LogDebug("Burst download continue, at: {} write: {}", (uint32_t)payload->offset, (int)payload->size);
         }
 
         if (payload->offset != item.current_offset) {
@@ -538,7 +538,7 @@ bool MavlinkFtpClient::download_burst_continue(
                 // it.
                 LogWarn(
                     "Got payload offset: {}, next offset: {}",
-                    payload->offset,
+                    (uint32_t)payload->offset,
                     item.current_offset);
                 return false;
             }
@@ -571,7 +571,7 @@ bool MavlinkFtpClient::download_burst_continue(
         item.current_offset = payload->offset + payload->size;
 
         if (_debugging) {
-            LogDebug("Received {} to {}", payload->offset, payload->size + payload->offset);
+            LogDebug("Received {} to {}", (uint32_t)payload->offset, payload->size + payload->offset);
         }
 
         if (payload->size + payload->offset >= item.file_size) {
@@ -609,8 +609,8 @@ bool MavlinkFtpClient::download_burst_continue(
         if (_debugging) {
             LogWarn(
                 "Burst download continue missing pieces, write at {} for {}",
-                payload->offset,
-                payload->size);
+                (uint32_t)payload->offset,
+                (int)payload->size);
         }
 
         item.ofstream.seekp(payload->offset);
