@@ -4,6 +4,7 @@
 #include <iostream>
 #include <cstdio>
 #include <fstream>
+#include <sstream>
 #include <string>
 
 namespace mavsdk {

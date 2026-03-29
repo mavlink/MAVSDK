@@ -2136,7 +2136,7 @@ void CameraImpl::refresh_params_with_lock(PotentialCamera& potential_camera, boo
 
                     if (camera_later.camera_definition->set_setting(param_name, value)) {
                         if (_debugging) {
-                            LogDebug("Got setting for {}: {}", param_name, value);
+                            LogDebug("Got setting for {}: {}", param_name, value.get_string());
                         }
                         return;
                     }
