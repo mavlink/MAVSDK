@@ -15,10 +15,12 @@ void LogStreamingBackendArdupilot::init(SystemImpl* system_impl)
 {
     _system_impl = system_impl;
 
+#ifdef MAVLINK_MSG_ID_REMOTE_LOG_DATA_BLOCK
     _system_impl->register_mavlink_message_handler(
         MAVLINK_MSG_ID_REMOTE_LOG_DATA_BLOCK,
         [this](const mavlink_message_t& message) { process_remote_log_data_block(message); },
         this);
+#endif
 }
 
 void LogStreamingBackendArdupilot::deinit()
@@ -52,6 +54,7 @@ void LogStreamingBackendArdupilot::set_debugging(bool debugging)
 void LogStreamingBackendArdupilot::start_log_streaming_async(
     const LogStreaming::ResultCallback& callback)
 {
+#ifdef MAVLINK_MSG_ID_REMOTE_LOG_DATA_BLOCK
     {
         std::lock_guard<std::mutex> lock(_mutex);
         _active = true;
@@ -73,11 +76,19 @@ void LogStreamingBackendArdupilot::start_log_streaming_async(
     if (callback) {
         _system_impl->call_user_callback([callback]() { callback(LogStreaming::Result::Success); });
     }
+#else
+    LogWarn() << "ArduPilot log streaming requires ardupilotmega MAVLink dialect";
+    if (callback) {
+        _system_impl->call_user_callback(
+            [callback]() { callback(LogStreaming::Result::Unsupported); });
+    }
+#endif
 }
 
 void LogStreamingBackendArdupilot::stop_log_streaming_async(
     const LogStreaming::ResultCallback& callback)
 {
+#ifdef MAVLINK_MSG_ID_REMOTE_LOG_DATA_BLOCK
     // Send STOP command via REMOTE_LOG_BLOCK_STATUS
     send_remote_log_block_status(MAV_REMOTE_LOG_DATA_BLOCK_STOP, MAV_REMOTE_LOG_DATA_BLOCK_ACK);
 
@@ -95,8 +106,16 @@ void LogStreamingBackendArdupilot::stop_log_streaming_async(
     if (callback) {
         _system_impl->call_user_callback([callback]() { callback(LogStreaming::Result::Success); });
     }
+#else
+    LogWarn() << "ArduPilot log streaming requires ardupilotmega MAVLink dialect";
+    if (callback) {
+        _system_impl->call_user_callback(
+            [callback]() { callback(LogStreaming::Result::Unsupported); });
+    }
+#endif
 }
 
+#ifdef MAVLINK_MSG_ID_REMOTE_LOG_DATA_BLOCK
 void LogStreamingBackendArdupilot::send_remote_log_block_status(uint32_t seqno, uint8_t status)
 {
     auto target_sysid = _system_impl->get_system_id();
@@ -189,5 +208,6 @@ void LogStreamingBackendArdupilot::process_remote_log_data_block(const mavlink_m
         _system_impl->call_user_callback([this, data]() { _data_callback(data); });
     }
 }
+#endif
 
 } // namespace mavsdk

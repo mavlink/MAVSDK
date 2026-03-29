@@ -22,8 +22,10 @@ public:
     void set_debugging(bool debugging) override;
 
 private:
+#ifdef MAVLINK_MSG_ID_REMOTE_LOG_DATA_BLOCK
     void process_remote_log_data_block(const mavlink_message_t& message);
     void send_remote_log_block_status(uint32_t seqno, uint8_t status);
+#endif
 
     SystemImpl* _system_impl{nullptr};
     DataCallback _data_callback{};
