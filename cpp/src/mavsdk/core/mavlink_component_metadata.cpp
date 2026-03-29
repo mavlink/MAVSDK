@@ -96,7 +96,7 @@ void MavlinkComponentMetadata::receive_component_metadata(
                 _mavlink_components[message.compid].result = Result::Failed;
                 break;
         }
-        LogWarn("Requesting component metadata failed with {}", static_cast<int>(result));
+        LogWarn("Requesting component metadata failed with {}", result);
         on_all_types_completed(message.compid);
         return;
     }

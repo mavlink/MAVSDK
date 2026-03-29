@@ -42,7 +42,7 @@ TEST(SystemTest, CameraTakePhoto)
     });
 
     camera_server.subscribe_set_mode([&](CameraServer::Mode mode) {
-        LogInfo("Set mode to {}", static_cast<int>(mode));
+        LogInfo("Set mode to {}", mode);
         camera_server.respond_set_mode(CameraServer::CameraFeedback::Ok);
     });
 

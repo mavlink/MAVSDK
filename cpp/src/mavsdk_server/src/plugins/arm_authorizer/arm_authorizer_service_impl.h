@@ -69,7 +69,7 @@ public:
     {
         switch (command_answer) {
             default:
-                LogErr("Unknown command_answer enum value: {}", static_cast<int>(command_answer));
+                LogErr("Unknown command_answer enum value: {}", command_answer);
             // FALLTHROUGH
             case mavsdk::ArmAuthorizer::CommandAnswer::Accepted:
                 return rpc::arm_authorizer::COMMAND_ANSWER_ACCEPTED;
@@ -83,7 +83,7 @@ public:
     {
         switch (command_answer) {
             default:
-                LogErr("Unknown command_answer enum value: {}", static_cast<int>(command_answer));
+                LogErr("Unknown command_answer enum value: {}", command_answer);
             // FALLTHROUGH
             case rpc::arm_authorizer::COMMAND_ANSWER_ACCEPTED:
                 return mavsdk::ArmAuthorizer::CommandAnswer::Accepted;

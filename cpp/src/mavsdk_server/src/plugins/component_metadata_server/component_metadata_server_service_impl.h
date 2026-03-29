@@ -37,7 +37,7 @@ public:
     {
         switch (metadata_type) {
             default:
-                LogErr("Unknown metadata_type enum value: {}", static_cast<int>(metadata_type));
+                LogErr("Unknown metadata_type enum value: {}", metadata_type);
             // FALLTHROUGH
             case mavsdk::ComponentMetadataServer::MetadataType::Parameter:
                 return rpc::component_metadata_server::METADATA_TYPE_PARAMETER;
@@ -53,7 +53,7 @@ public:
     {
         switch (metadata_type) {
             default:
-                LogErr("Unknown metadata_type enum value: {}", static_cast<int>(metadata_type));
+                LogErr("Unknown metadata_type enum value: {}", metadata_type);
             // FALLTHROUGH
             case rpc::component_metadata_server::METADATA_TYPE_PARAMETER:
                 return mavsdk::ComponentMetadataServer::MetadataType::Parameter;

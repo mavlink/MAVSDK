@@ -47,7 +47,7 @@ public:
     {
         switch (winch_action) {
             default:
-                LogErr("Unknown winch_action enum value: {}", static_cast<int>(winch_action));
+                LogErr("Unknown winch_action enum value: {}", winch_action);
             // FALLTHROUGH
             case mavsdk::Winch::WinchAction::Relaxed:
                 return rpc::winch::WINCH_ACTION_RELAXED;
@@ -77,7 +77,7 @@ public:
     {
         switch (winch_action) {
             default:
-                LogErr("Unknown winch_action enum value: {}", static_cast<int>(winch_action));
+                LogErr("Unknown winch_action enum value: {}", winch_action);
             // FALLTHROUGH
             case rpc::winch::WINCH_ACTION_RELAXED:
                 return mavsdk::Winch::WinchAction::Relaxed;
@@ -226,7 +226,7 @@ public:
     {
         switch (result) {
             default:
-                LogErr("Unknown result enum value: {}", static_cast<int>(result));
+                LogErr("Unknown result enum value: {}", result);
             // FALLTHROUGH
             case mavsdk::Winch::Result::Unknown:
                 return rpc::winch::WinchResult_Result_RESULT_UNKNOWN;
@@ -250,7 +250,7 @@ public:
     {
         switch (result) {
             default:
-                LogErr("Unknown result enum value: {}", static_cast<int>(result));
+                LogErr("Unknown result enum value: {}", result);
             // FALLTHROUGH
             case rpc::winch::WinchResult_Result_RESULT_UNKNOWN:
                 return mavsdk::Winch::Result::Unknown;

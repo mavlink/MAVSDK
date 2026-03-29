@@ -342,7 +342,7 @@ public:
     {
         switch (mav_frame) {
             default:
-                LogErr("Unknown mav_frame enum value: {}", static_cast<int>(mav_frame));
+                LogErr("Unknown mav_frame enum value: {}", mav_frame);
             // FALLTHROUGH
             case mavsdk::Mocap::Odometry::MavFrame::MocapNed:
                 return rpc::mocap::Odometry_MavFrame_MAV_FRAME_MOCAP_NED;
@@ -356,7 +356,7 @@ public:
     {
         switch (mav_frame) {
             default:
-                LogErr("Unknown mav_frame enum value: {}", static_cast<int>(mav_frame));
+                LogErr("Unknown mav_frame enum value: {}", mav_frame);
             // FALLTHROUGH
             case rpc::mocap::Odometry_MavFrame_MAV_FRAME_MOCAP_NED:
                 return mavsdk::Mocap::Odometry::MavFrame::MocapNed;
@@ -421,7 +421,7 @@ public:
     {
         switch (result) {
             default:
-                LogErr("Unknown result enum value: {}", static_cast<int>(result));
+                LogErr("Unknown result enum value: {}", result);
             // FALLTHROUGH
             case mavsdk::Mocap::Result::Unknown:
                 return rpc::mocap::MocapResult_Result_RESULT_UNKNOWN;
@@ -443,7 +443,7 @@ public:
     {
         switch (result) {
             default:
-                LogErr("Unknown result enum value: {}", static_cast<int>(result));
+                LogErr("Unknown result enum value: {}", result);
             // FALLTHROUGH
             case rpc::mocap::MocapResult_Result_RESULT_UNKNOWN:
                 return mavsdk::Mocap::Result::Unknown;

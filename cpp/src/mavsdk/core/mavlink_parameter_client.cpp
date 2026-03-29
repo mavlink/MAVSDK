@@ -698,7 +698,7 @@ void MavlinkParameterClient::process_param_value(const mavlink_message_t& messag
         LogDebug(
             "process_param_value: {} {}, index: {}",
             safe_param_id,
-            received_value.get_string(),
+            received_value,
             param_value.param_index);
     }
 
@@ -739,8 +739,8 @@ void MavlinkParameterClient::process_param_value(const mavlink_message_t& messag
                 if (_parameter_debugging) {
                     LogDebug(
                         "Item value is: {}, received: {}",
-                        item.param_value.get_string(),
-                        received_value.get_string());
+                        item.param_value,
+                        received_value);
                 }
 
                 if (!item.param_value.is_same_type(received_value)) {
@@ -920,7 +920,7 @@ void MavlinkParameterClient::process_param_ext_value(const mavlink_message_t& me
     }
 
     if (_parameter_debugging) {
-        LogDebug("process param_ext_value: {} {}", safe_param_id, received_value.get_string());
+        LogDebug("process param_ext_value: {} {}", safe_param_id, received_value);
     }
 
     // See comments on process_param_value for use of unique_ptr

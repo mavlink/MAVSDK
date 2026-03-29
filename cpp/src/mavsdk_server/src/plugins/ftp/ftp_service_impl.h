@@ -102,7 +102,7 @@ public:
     {
         switch (result) {
             default:
-                LogErr("Unknown result enum value: {}", static_cast<int>(result));
+                LogErr("Unknown result enum value: {}", result);
             // FALLTHROUGH
             case mavsdk::Ftp::Result::Unknown:
                 return rpc::ftp::FtpResult_Result_RESULT_UNKNOWN;
@@ -137,7 +137,7 @@ public:
     {
         switch (result) {
             default:
-                LogErr("Unknown result enum value: {}", static_cast<int>(result));
+                LogErr("Unknown result enum value: {}", result);
             // FALLTHROUGH
             case rpc::ftp::FtpResult_Result_RESULT_UNKNOWN:
                 return mavsdk::Ftp::Result::Unknown;

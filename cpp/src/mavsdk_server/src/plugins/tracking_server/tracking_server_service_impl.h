@@ -51,7 +51,7 @@ public:
     {
         switch (command_answer) {
             default:
-                LogErr("Unknown command_answer enum value: {}", static_cast<int>(command_answer));
+                LogErr("Unknown command_answer enum value: {}", command_answer);
             // FALLTHROUGH
             case mavsdk::TrackingServer::CommandAnswer::Accepted:
                 return rpc::tracking_server::COMMAND_ANSWER_ACCEPTED;
@@ -71,7 +71,7 @@ public:
     {
         switch (command_answer) {
             default:
-                LogErr("Unknown command_answer enum value: {}", static_cast<int>(command_answer));
+                LogErr("Unknown command_answer enum value: {}", command_answer);
             // FALLTHROUGH
             case rpc::tracking_server::COMMAND_ANSWER_ACCEPTED:
                 return mavsdk::TrackingServer::CommandAnswer::Accepted;
@@ -151,7 +151,7 @@ public:
     {
         switch (result) {
             default:
-                LogErr("Unknown result enum value: {}", static_cast<int>(result));
+                LogErr("Unknown result enum value: {}", result);
             // FALLTHROUGH
             case mavsdk::TrackingServer::Result::Unknown:
                 return rpc::tracking_server::TrackingServerResult_Result_RESULT_UNKNOWN;
@@ -169,7 +169,7 @@ public:
     {
         switch (result) {
             default:
-                LogErr("Unknown result enum value: {}", static_cast<int>(result));
+                LogErr("Unknown result enum value: {}", result);
             // FALLTHROUGH
             case rpc::tracking_server::TrackingServerResult_Result_RESULT_UNKNOWN:
                 return mavsdk::TrackingServer::Result::Unknown;

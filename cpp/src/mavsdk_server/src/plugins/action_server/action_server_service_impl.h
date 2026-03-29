@@ -50,7 +50,7 @@ public:
     {
         switch (flight_mode) {
             default:
-                LogErr("Unknown flight_mode enum value: {}", static_cast<int>(flight_mode));
+                LogErr("Unknown flight_mode enum value: {}", flight_mode);
             // FALLTHROUGH
             case mavsdk::ActionServer::FlightMode::Unknown:
                 return rpc::action_server::FLIGHT_MODE_UNKNOWN;
@@ -88,7 +88,7 @@ public:
     {
         switch (flight_mode) {
             default:
-                LogErr("Unknown flight_mode enum value: {}", static_cast<int>(flight_mode));
+                LogErr("Unknown flight_mode enum value: {}", flight_mode);
             // FALLTHROUGH
             case rpc::action_server::FLIGHT_MODE_UNKNOWN:
                 return mavsdk::ActionServer::FlightMode::Unknown;
@@ -195,7 +195,7 @@ public:
     {
         switch (result) {
             default:
-                LogErr("Unknown result enum value: {}", static_cast<int>(result));
+                LogErr("Unknown result enum value: {}", result);
             // FALLTHROUGH
             case mavsdk::ActionServer::Result::Unknown:
                 return rpc::action_server::ActionServerResult_Result_RESULT_UNKNOWN;
@@ -235,7 +235,7 @@ public:
     {
         switch (result) {
             default:
-                LogErr("Unknown result enum value: {}", static_cast<int>(result));
+                LogErr("Unknown result enum value: {}", result);
             // FALLTHROUGH
             case rpc::action_server::ActionServerResult_Result_RESULT_UNKNOWN:
                 return mavsdk::ActionServer::Result::Unknown;

@@ -261,9 +261,9 @@ void MavlinkParameterServer::process_param_set_internally(
                 // value e.g. 0 to 1 and an update that had no effect e.g. 0 to 0.
                 if (opt_before_update.has_value() &&
                     opt_before_update.value().value == updated_parameter.value) {
-                    LogDebug("Update had no effect: {}", updated_parameter.value.get_string());
+                    LogDebug("Update had no effect: {}", updated_parameter.value);
                 } else {
-                    LogDebug("Updated param to :{}", updated_parameter.value.get_string());
+                    LogDebug("Updated param to :{}", updated_parameter.value);
                     find_and_call_subscriptions_value_changed(
                         updated_parameter.id, updated_parameter.value);
                 }

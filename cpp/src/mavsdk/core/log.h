@@ -25,6 +25,7 @@
 
 #if MAVSDK_HAS_STD_FORMAT
 #include <format>
+#include <sstream>
 
 // std::formatter for std::filesystem::path is not available until C++26.
 // Provide a specialization here so paths can be passed directly to Log macros.
@@ -33,6 +34,38 @@ template<> struct std::formatter<std::filesystem::path> : std::formatter<std::st
     auto format(const std::filesystem::path& p, FormatContext& ctx) const
     {
         return std::formatter<std::string>::format(p.string(), ctx);
+    }
+};
+
+// Formatter for scoped enum types (enum class) that provide operator<<.
+// All MAVSDK plugin Result, Mode, Status, etc. enums are generated with operator<<
+// so they print their named value (e.g. "Success") rather than a raw integer.
+template<typename T>
+    requires(std::is_enum_v<T> && !std::is_convertible_v<T, std::underlying_type_t<T>> &&
+             requires(std::ostream& os, T v) { os << v; })
+struct std::formatter<T> : std::formatter<std::string> {
+    auto format(T val, auto& ctx) const
+    {
+        std::ostringstream ss;
+        ss << val;
+        return std::formatter<std::string>::format(ss.str(), ctx);
+    }
+};
+
+// Formatter for class/struct types that provide operator<< but have no native
+// std::formatter specialization (e.g. ParamValue).
+template<typename T>
+    requires(std::is_class_v<T> &&
+             !std::is_same_v<std::remove_cvref_t<T>, std::string> &&
+             !std::is_same_v<std::remove_cvref_t<T>, std::string_view> &&
+             !std::is_same_v<std::remove_cvref_t<T>, std::filesystem::path> &&
+             requires(std::ostream& os, const T& v) { os << v; })
+struct std::formatter<T> : std::formatter<std::string> {
+    auto format(const T& val, auto& ctx) const
+    {
+        std::ostringstream ss;
+        ss << val;
+        return std::formatter<std::string>::format(ss.str(), ctx);
     }
 };
 

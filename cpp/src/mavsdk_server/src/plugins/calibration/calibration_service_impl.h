@@ -47,7 +47,7 @@ public:
     {
         switch (result) {
             default:
-                LogErr("Unknown result enum value: {}", static_cast<int>(result));
+                LogErr("Unknown result enum value: {}", result);
             // FALLTHROUGH
             case mavsdk::Calibration::Result::Unknown:
                 return rpc::calibration::CalibrationResult_Result_RESULT_UNKNOWN;
@@ -81,7 +81,7 @@ public:
     {
         switch (result) {
             default:
-                LogErr("Unknown result enum value: {}", static_cast<int>(result));
+                LogErr("Unknown result enum value: {}", result);
             // FALLTHROUGH
             case rpc::calibration::CalibrationResult_Result_RESULT_UNKNOWN:
                 return mavsdk::Calibration::Result::Unknown;
