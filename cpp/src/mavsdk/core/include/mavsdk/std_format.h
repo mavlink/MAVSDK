@@ -50,10 +50,18 @@ template<> struct formatter<filesystem::path> : formatter<string> {
 // operator<< so they print their named value (e.g. "Success") rather than a
 // raw integer.  Use an explicit FormatContext template parameter (not
 // abbreviated `auto&`) for maximum GCC compatibility.
+//
+// Note: the constraint intentionally omits the `requires(ostream& os, T v) { os << v; }`
+// check.  GCC 13/14's consteval format-string checker (_Checking_scanner) evaluates
+// is_default_constructible_v<std::formatter<T>> at consteval time and cannot perform
+// ADL lookup for external-namespace operators inside that consteval context, so a
+// constrained partial specialisation that depends on finding `mavsdk::operator<<` via
+// ADL always appears unsatisfied and the deleted primary template is selected instead.
+// Dropping the ostream constraint allows GCC 13/14 to verify the specialisation exists;
+// the os << val expression inside format() still produces a clear compile error if a
+// scoped enum without operator<< is used.
 template<typename T>
-    requires(
-        is_enum_v<T> && !is_convertible_v<T, underlying_type_t<T>> &&
-        requires(ostream& os, T v) { os << v; })
+    requires(is_enum_v<T> && !is_convertible_v<T, underlying_type_t<T>>)
 struct formatter<T> : formatter<string> {
     template<typename FormatContext> auto format(T val, FormatContext& ctx) const
     {
