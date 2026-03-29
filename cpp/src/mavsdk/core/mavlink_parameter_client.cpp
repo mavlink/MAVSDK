@@ -440,6 +440,17 @@ void MavlinkParameterClient::cancel_all_param(const void* cookie)
 {
     // We don't call any callbacks before erasing them as this is just used on destruction
     // where we don't care anymore.
+    if (_io_context.stopped()) {
+        // io_context is stopped and its thread is dead — safe to access directly.
+        _work_queue.erase(
+            std::remove_if(
+                _work_queue.begin(),
+                _work_queue.end(),
+                [&](auto&& item) { return (item->cookie == cookie); }),
+            _work_queue.end());
+        unsubscribe_all_params_changed(cookie);
+        return;
+    }
     std::promise<void> done;
     asio::post(_io_context, [this, cookie, &done]() {
         _work_queue.erase(
