@@ -62,16 +62,18 @@ protected:
     void TearDown() override
     {
         // Drain any pending io_context posts (e.g. enqueue lambdas holding shared_ptr<WorkItem>)
-        // so that WorkItem destructors run while message_handler and timeout_handler are still alive.
-        // Without this, io_context (declared first, destroyed last) would destroy those lambdas
-        // after message_handler is already gone, causing heap-use-after-free in unregister_all_blocking.
+        // so that WorkItem destructors run while message_handler and timeout_handler are still
+        // alive. Without this, io_context (declared first, destroyed last) would destroy those
+        // lambdas after message_handler is already gone, causing heap-use-after-free in
+        // unregister_all_blocking.
         //
-        // io_context::poll() calls stop() internally when outstanding_work_ == 0, setting stopped_=true.
-        // A do_work() call on an idle queue will trigger this. restart() clears stopped_ so the
-        // subsequent poll() loop can actually execute any handlers still queued (e.g. the enqueue
-        // lambda that holds the last shared_ptr<WorkItem> reference).
+        // io_context::poll() calls stop() internally when outstanding_work_ == 0, setting
+        // stopped_=true. A do_work() call on an idle queue will trigger this. restart() clears
+        // stopped_ so the subsequent poll() loop can actually execute any handlers still queued
+        // (e.g. the enqueue lambda that holds the last shared_ptr<WorkItem> reference).
         io_context.restart();
-        while (io_context.poll()) {}
+        while (io_context.poll()) {
+        }
     }
 
     // Flush any io_context posts (e.g. the enqueue lambda) then drive the state machine.
