@@ -15,6 +15,7 @@ add_executable(system_tests_runner
     param_get_all.cpp
     mission_raw_upload.cpp
     telemetry_subscription.cpp
+    telemetry_home_position.cpp
     fs_helpers.cpp
     ftp_download_file.cpp
     ftp_download_file_burst.cpp

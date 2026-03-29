@@ -269,6 +269,44 @@ public:
     friend std::ostream& operator<<(std::ostream& str, Telemetry::Quaternion const& quaternion);
 
     /**
+     * @brief Home position type.
+     *
+     * Includes the global GPS position, local NED position, surface quaternion,
+     * and approach vector from the MAVLink HOME_POSITION message.
+     */
+    struct HomePosition {
+        double latitude_deg{double(NAN)}; /**< @brief Latitude in degrees (range: -90 to +90) */
+        double longitude_deg{double(NAN)}; /**< @brief Longitude in degrees (range: -180 to +180) */
+        float absolute_altitude_m{
+            float(NAN)}; /**< @brief Altitude AMSL (above mean sea level) in metres */
+        float relative_altitude_m{
+            float(NAN)}; /**< @brief Altitude relative to takeoff altitude in metres */
+        float local_x_m{float(NAN)}; /**< @brief Local X position in NED frame (m) */
+        float local_y_m{float(NAN)}; /**< @brief Local Y position in NED frame (m) */
+        float local_z_m{float(NAN)}; /**< @brief Local Z position in NED frame (m, positive down) */
+        Quaternion q{}; /**< @brief Surface quaternion (world-to-surface-normal and heading) */
+        float approach_x_m{float(NAN)}; /**< @brief Local X of approach vector end (m) */
+        float approach_y_m{float(NAN)}; /**< @brief Local Y of approach vector end (m) */
+        float approach_z_m{float(NAN)}; /**< @brief Local Z of approach vector end (m) */
+        uint64_t timestamp_us{}; /**< @brief Timestamp (UNIX Epoch or since boot) in microseconds */
+    };
+
+    /**
+     * @brief Equal operator to compare two `Telemetry::HomePosition` objects.
+     *
+     * @return `true` if items are equal.
+     */
+    friend bool operator==(const Telemetry::HomePosition& lhs, const Telemetry::HomePosition& rhs);
+
+    /**
+     * @brief Stream operator to print information about a `Telemetry::HomePosition`.
+     *
+     * @return A reference to the stream.
+     */
+    friend std::ostream&
+    operator<<(std::ostream& str, Telemetry::HomePosition const& home_position);
+
+    /**
      * @brief Euler angle type.
      *
      * All rotations and axis systems follow the right-hand rule.
@@ -1113,12 +1151,12 @@ public:
     /**
      * @brief Callback type for subscribe_home.
      */
-    using HomeCallback = std::function<void(Position)>;
+    using HomeCallback = std::function<void(HomePosition)>;
 
     /**
      * @brief Handle type for subscribe_home.
      */
-    using HomeHandle = Handle<Position>;
+    using HomeHandle = Handle<HomePosition>;
 
     /**
      * @brief Subscribe to 'home position' updates.
@@ -1131,11 +1169,11 @@ public:
     void unsubscribe_home(HomeHandle handle);
 
     /**
-     * @brief Poll for 'Position' (blocking).
+     * @brief Poll for 'HomePosition' (blocking).
      *
-     * @return One Position update.
+     * @return One HomePosition update.
      */
-    Position home() const;
+    HomePosition home() const;
 
     /**
      * @brief Callback type for subscribe_in_air.
