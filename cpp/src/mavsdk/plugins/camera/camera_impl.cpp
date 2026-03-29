@@ -1341,7 +1341,7 @@ void CameraImpl::check_camera_definition_with_lock(PotentialCamera& potential_ca
                         "Download progress: {}, status: {}, curl_code: {}",
                         progress,
                         static_cast<int>(status),
-                        curl_code);
+                        static_cast<int>(curl_code));
 
                     std::lock_guard lock(_mutex);
                     auto maybe_potential_camera =
@@ -1351,7 +1351,7 @@ void CameraImpl::check_camera_definition_with_lock(PotentialCamera& potential_ca
                     }
 
                     if (status == HttpStatus::Error) {
-                        LogErr("File download failed with result {}", curl_code);
+                        LogErr("File download failed with result {}", static_cast<int>(curl_code));
                         maybe_potential_camera->is_fetching_camera_definition = false;
                         maybe_potential_camera->camera_definition_result = Camera::Result::Error;
                         notify_camera_list_with_lock();
@@ -1405,7 +1405,9 @@ void CameraImpl::check_camera_definition_with_lock(PotentialCamera& potential_ca
                             }
 
                             if (client_result != MavlinkFtpClient::ClientResult::Success) {
-                                LogErr("File download failed with result {}", client_result);
+                                LogErr(
+                                    "File download failed with result {}",
+                                    static_cast<int>(client_result));
                                 maybe_potential_camera->is_fetching_camera_definition = false;
                                 maybe_potential_camera->camera_definition_result =
                                     Camera::Result::Error;

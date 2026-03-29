@@ -26,8 +26,8 @@ bool CliArg::parse(const std::string& uri)
 
     if (uri.find(udp + delimiter) == 0) {
         LogWarn(
-            "{}", "Connection using udp:// is deprecated, please use udpin:// or udpout://";
-            return parse_udp(std::string_view(uri).substr(udp.size() + delimiter.size())));
+            "Connection using udp:// is deprecated, please use udpin:// or udpout://");
+        return parse_udp(std::string_view(uri).substr(udp.size() + delimiter.size()));
     }
 
     if (uri.find(udpin + delimiter) == 0) {
@@ -40,8 +40,8 @@ bool CliArg::parse(const std::string& uri)
 
     if (uri.find(tcp + delimiter) == 0) {
         LogWarn(
-            "{}", "Connection using tcp:// is deprecated, please use tcpin:// or tcpout://";
-            return parse_tcp(std::string_view(uri).substr(tcp.size() + delimiter.size())));
+            "Connection using tcp:// is deprecated, please use tcpin:// or tcpout://");
+        return parse_tcp(std::string_view(uri).substr(tcp.size() + delimiter.size()));
     }
 
     if (uri.find(tcpin + delimiter) == 0) {
@@ -306,7 +306,8 @@ bool CliArg::parse_raw(const std::string_view rest)
 {
     // raw:// connection has no parameters
     if (!rest.empty()) {
-        LogErr("{}", "raw:// connection should not have parameters"; return false);
+        LogErr("raw:// connection should not have parameters");
+        return false;
     }
 
     protocol = Raw{};

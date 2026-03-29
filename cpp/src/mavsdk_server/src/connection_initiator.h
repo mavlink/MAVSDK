@@ -44,7 +44,7 @@ private:
         mavsdk::ConnectionResult connection_result = mavsdk.add_any_connection(connection_url);
 
         if (connection_result != ConnectionResult::Success) {
-            LogErr("Connection failed: {}", connection_result);
+            LogErr("Connection failed: {}", static_cast<int>(connection_result));
             return false;
         }
 
