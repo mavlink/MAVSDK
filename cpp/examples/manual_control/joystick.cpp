@@ -147,7 +147,7 @@ void Joystick::set_initial_values()
 void Joystick::print_values()
 {
     for (std::size_t i = 0; i < _state.buttons.size(); ++i) {
-        std::cout << std::format("button {} -> {}\n", i, _state.buttons[i]);
+        std::cout << std::format("button {} -> {}\n", i, static_cast<bool>(_state.buttons[i]));
     }
 
     for (std::size_t i = 0; i < _state.axes.size(); ++i) {
