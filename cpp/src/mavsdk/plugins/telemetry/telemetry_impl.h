@@ -419,6 +419,10 @@ private:
     double _velocity_ned_rate_hz{0.0};
     double _position_rate_hz{-1.0};
 
+    // GpsInfo and RawGps share GPS_RAW_INT, so we track both rates and use the max.
+    double _gps_info_rate_hz{0.0};
+    double _raw_gps_rate_hz{0.0};
+
     // Battery info can be extracted from SYS_STATUS or from BATTERY_STATUS.
     // If no BATTERY_STATUS messages are received, use info from SYS_STATUS.
     bool _has_bat_status{false};
