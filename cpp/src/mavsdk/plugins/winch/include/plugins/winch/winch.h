@@ -413,3 +413,8 @@ private:
 };
 
 } // namespace mavsdk
+
+#include "std_format.h"
+MAVSDK_DEFINE_FORMATTER(mavsdk::Winch::WinchAction)
+
+MAVSDK_DEFINE_FORMATTER(mavsdk::Winch::Result)

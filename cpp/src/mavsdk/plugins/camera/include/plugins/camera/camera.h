@@ -1327,3 +1327,13 @@ private:
 };
 
 } // namespace mavsdk
+
+#include "std_format.h"
+MAVSDK_DEFINE_FORMATTER(mavsdk::Camera::Mode)
+MAVSDK_DEFINE_FORMATTER(mavsdk::Camera::PhotosRange)
+
+MAVSDK_DEFINE_FORMATTER(mavsdk::Camera::VideoStreamInfo::VideoStreamStatus)
+MAVSDK_DEFINE_FORMATTER(mavsdk::Camera::VideoStreamInfo::VideoStreamSpectrum)
+MAVSDK_DEFINE_FORMATTER(mavsdk::Camera::Storage::StorageStatus)
+MAVSDK_DEFINE_FORMATTER(mavsdk::Camera::Storage::StorageType)
+MAVSDK_DEFINE_FORMATTER(mavsdk::Camera::Result)

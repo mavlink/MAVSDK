@@ -67,7 +67,7 @@ public:
     bool operator==(const ParamValue& rhs) const
     {
         if (!is_same_type(rhs)) {
-            LogWarn() << "Trying to compare different types.";
+            LogWarn("Trying to compare different types.");
             return false;
         }
 
@@ -76,7 +76,7 @@ public:
     bool operator!=(const ParamValue& rhs) const
     {
         if (!is_same_type(rhs)) {
-            LogWarn() << "Trying to compare different types.";
+            LogWarn("Trying to compare different types.");
             return true;
         }
         return !(*this == rhs);
@@ -85,7 +85,7 @@ public:
     bool operator<(const ParamValue& rhs) const
     {
         if (!is_same_type(rhs)) {
-            LogWarn() << "Trying to compare different types.";
+            LogWarn("Trying to compare different types.");
             return false;
         }
 
@@ -95,7 +95,7 @@ public:
     bool operator>(const ParamValue& rhs) const
     {
         if (!is_same_type(rhs)) {
-            LogWarn() << "Trying to compare different types.";
+            LogWarn("Trying to compare different types.");
             return false;
         }
 

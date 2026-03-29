@@ -713,3 +713,9 @@ private:
 };
 
 } // namespace mavsdk
+
+#include "std_format.h"
+MAVSDK_DEFINE_FORMATTER(mavsdk::Action::OrbitYawBehavior)
+MAVSDK_DEFINE_FORMATTER(mavsdk::Action::RelayCommand)
+
+MAVSDK_DEFINE_FORMATTER(mavsdk::Action::Result)

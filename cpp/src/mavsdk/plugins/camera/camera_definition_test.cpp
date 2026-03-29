@@ -324,7 +324,7 @@ TEST(CameraDefinition, E90SettingsCauseUpdates)
         cd.get_unknown_params(params);
         EXPECT_EQ(params.size(), 0);
         for (const auto& param : params) {
-            LogInfo() << param.first;
+            LogInfo("{}", param.first);
         }
     }
 

@@ -15,6 +15,7 @@
 #include "server_component.h"
 #include "connection_result.h"
 #include "mavlink_include.h"
+#include "std_format.h"
 
 namespace mavsdk {
 

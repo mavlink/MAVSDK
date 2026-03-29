@@ -160,3 +160,9 @@ private:
 };
 
 } // namespace mavsdk
+
+#include "std_format.h"
+MAVSDK_DEFINE_FORMATTER(mavsdk::Failure::FailureUnit)
+MAVSDK_DEFINE_FORMATTER(mavsdk::Failure::FailureType)
+
+MAVSDK_DEFINE_FORMATTER(mavsdk::Failure::Result)

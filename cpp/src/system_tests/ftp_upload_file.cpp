@@ -80,8 +80,10 @@ TEST(SystemTest, FtpUploadFile)
                 if (result != Ftp::Result::Next) {
                     prom.set_value(result);
                 } else {
-                    LogDebug() << "Upload progress: " << progress_data.bytes_transferred << "/"
-                               << progress_data.total_bytes << " bytes";
+                    LogDebug(
+                        "Upload progress: {}/{} bytes",
+                        progress_data.bytes_transferred,
+                        progress_data.total_bytes);
                 }
             });
 
@@ -139,8 +141,10 @@ TEST(SystemTest, FtpUploadBigFile)
                 if (result != Ftp::Result::Next) {
                     prom.set_value(result);
                 } else {
-                    LogDebug() << "Upload progress: " << progress_data.bytes_transferred << "/"
-                               << progress_data.total_bytes << " bytes";
+                    LogDebug(
+                        "Upload progress: {}/{} bytes",
+                        progress_data.bytes_transferred,
+                        progress_data.total_bytes);
                 }
             });
 
@@ -153,8 +157,11 @@ TEST(SystemTest, FtpUploadBigFile)
                                     .count();
         const double throughput_kbps =
             static_cast<double>(file_size_kb) / (static_cast<double>(elapsed_ms) / 1000.0);
-        LogInfo() << "FTP upload: " << file_size_kb << " KB in " << elapsed_ms << " ms  ("
-                  << static_cast<int>(throughput_kbps) << " KB/s)";
+        LogInfo(
+            "FTP upload: {} KB in {} ms  ({} KB/s)",
+            file_size_kb,
+            elapsed_ms,
+            static_cast<int>(throughput_kbps));
 
         EXPECT_TRUE(
             are_files_identical(temp_dir_to_upload / temp_file, temp_dir_provided / temp_file));
@@ -208,8 +215,10 @@ TEST(SystemTest, FtpUploadBigFileLossy)
                 if (result != Ftp::Result::Next) {
                     prom.set_value(result);
                 } else {
-                    LogDebug() << "Upload progress: " << progress_data.bytes_transferred << "/"
-                               << progress_data.total_bytes << " bytes";
+                    LogDebug(
+                        "Upload progress: {}/{} bytes",
+                        progress_data.bytes_transferred,
+                        progress_data.total_bytes);
                 }
             });
 
@@ -276,8 +285,10 @@ TEST(SystemTest, FtpUploadStopAndTryAgain)
                 if (result != Ftp::Result::Next) {
                     prom.set_value(result);
                 } else {
-                    LogDebug() << "Download progress: " << progress_data.bytes_transferred << "/"
-                               << progress_data.total_bytes << " bytes";
+                    LogDebug(
+                        "Download progress: {}/{} bytes",
+                        progress_data.bytes_transferred,
+                        progress_data.total_bytes);
                 }
             });
 
@@ -302,8 +313,10 @@ TEST(SystemTest, FtpUploadStopAndTryAgain)
                 if (result != Ftp::Result::Next) {
                     prom.set_value(result);
                 } else {
-                    LogDebug() << "Download progress: " << progress_data.bytes_transferred << "/"
-                               << progress_data.total_bytes << " bytes";
+                    LogDebug(
+                        "Download progress: {}/{} bytes",
+                        progress_data.bytes_transferred,
+                        progress_data.total_bytes);
                 }
             });
 

@@ -1,7 +1,6 @@
 #include "callback_tracker.h"
 #include "log.h"
 #include <algorithm>
-#include <iomanip>
 #include <vector>
 
 namespace mavsdk {
@@ -45,8 +44,8 @@ void CallbackTracker::maybe_print_stats(size_t queue_size)
     // Calculate callbacks per second
     int callbacks_per_sec = _total_callback_count.load() / elapsed;
 
-    LogInfo() << "Callback stats: " << callbacks_per_sec
-              << " callbacks/sec (avg), queue size: " << queue_size;
+    LogInfo(
+        "Callback stats: {} callbacks/sec (avg), queue size: {}", callbacks_per_sec, queue_size);
 
     // Get a snapshot of the stats and clear them
     std::map<std::string, LocationStats> stats_snapshot;
@@ -63,7 +62,7 @@ void CallbackTracker::maybe_print_stats(size_t queue_size)
     }
 
     if (!stats_snapshot.empty()) {
-        LogInfo() << "Top callback sources (by time):";
+        LogInfo("Top callback sources (by time):");
 
         // Convert map to vector and sort by total duration
         std::vector<std::pair<std::string, LocationStats>> sorted_stats(
@@ -86,18 +85,22 @@ void CallbackTracker::maybe_print_stats(size_t queue_size)
                     (static_cast<double>(stats.total_duration_us) * 100.0) / total_duration_us;
             }
 
-            LogInfo() << "  " << location << ": " << stats.count << " calls, "
-                      << stats.total_duration_us << " us total, "
-                      << static_cast<int>(avg_duration_us) << " us avg, " << std::fixed
-                      << std::setprecision(1) << percentage << "% of time";
+            LogInfo(
+                "  {}: {} calls, {} us total, {} us avg, {:.1f}% of time",
+                location,
+                stats.count,
+                stats.total_duration_us,
+                static_cast<int>(avg_duration_us),
+                percentage);
         }
 
         // Print total time spent in callbacks
-        LogInfo() << "Total time in callbacks: " << total_duration_us << " us ("
-                  << (total_duration_us / 1000) << " ms) over " << elapsed << " seconds ("
-                  << std::fixed << std::setprecision(1)
-                  << ((static_cast<double>(total_duration_us) / 1000000.0 / elapsed) * 100.0)
-                  << "% CPU)";
+        LogInfo(
+            "Total time in callbacks: {} us ({} ms) over {} seconds ({:.1f}% CPU)",
+            total_duration_us,
+            total_duration_us / 1000,
+            elapsed,
+            (static_cast<double>(total_duration_us) / 1000000.0 / elapsed) * 100.0);
     }
 
     // Reset counters

@@ -34,7 +34,7 @@ void MavlinkParameterSubscription::find_and_call_subscriptions_value_changed(
         if (subscription.param_name != param_name) {
             continue;
         }
-        LogDebug() << "Param " << param_name << " changed to " << value;
+        LogDebug("Param {} changed to {}", param_name, value);
         // We have a subscription on this param name, now check if the subscription is for the right
         // type and call the callback when matching
         if (std::get_if<ParamFloatChangedCallback>(&subscription.callback) && value.get_float()) {
@@ -47,7 +47,7 @@ void MavlinkParameterSubscription::find_and_call_subscriptions_value_changed(
             std::get<ParamCustomChangedCallback>(subscription.callback)(value.get_custom().value());
         } else {
             // The callback we have set is not for this type.
-            LogErr() << "Type and callback mismatch";
+            LogErr("Type and callback mismatch");
         }
     }
 }

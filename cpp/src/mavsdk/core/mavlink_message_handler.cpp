@@ -9,7 +9,7 @@ MavlinkMessageHandler::MavlinkMessageHandler()
 {
     if (const char* env_p = std::getenv("MAVSDK_MESSAGE_HANDLER_DEBUGGING")) {
         if (std::string(env_p) == "1") {
-            LogDebug() << "Mavlink message handler debugging is on.";
+            LogDebug("Mavlink message handler debugging is on.");
             _debugging = true;
         }
     }
@@ -149,21 +149,22 @@ void MavlinkMessageHandler::process_message(const mavlink_message_t& message)
     bool forwarded = false;
 
     if (_debugging) {
-        LogDebug() << "Table entries: ";
+        LogDebug("Table entries: ");
     }
 
     for (auto& entry : _table) {
         if (_debugging) {
-            LogDebug() << "Msg id: " << entry.msg_id << ", component id: "
-                       << (entry.component_id.has_value() ?
-                               std::to_string(entry.component_id.value()) :
-                               "none");
+            LogDebug(
+                "Msg id: {}, component id: {}",
+                entry.msg_id,
+                (entry.component_id.has_value() ? std::to_string(entry.component_id.value()) :
+                                                  "none"));
         }
 
         if (entry.msg_id == message.msgid &&
             (!entry.component_id.has_value() || entry.component_id.value() == message.compid)) {
             if (_debugging) {
-                LogDebug() << "Using msg " << int(message.msgid) << " to " << size_t(entry.cookie);
+                LogDebug("Using msg {} to {}", int(message.msgid), size_t(entry.cookie));
             }
 
             forwarded = true;
@@ -172,7 +173,7 @@ void MavlinkMessageHandler::process_message(const mavlink_message_t& message)
     }
 
     if (_debugging && !forwarded) {
-        LogDebug() << "Ignoring msg " << int(message.msgid);
+        LogDebug("Ignoring msg {}", int(message.msgid));
     }
 }
 

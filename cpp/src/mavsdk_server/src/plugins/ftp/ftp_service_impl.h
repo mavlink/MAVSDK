@@ -102,7 +102,7 @@ public:
     {
         switch (result) {
             default:
-                LogErr() << "Unknown result enum value: " << static_cast<int>(result);
+                LogErr("Unknown result enum value: {}", static_cast<int>(result));
             // FALLTHROUGH
             case mavsdk::Ftp::Result::Unknown:
                 return rpc::ftp::FtpResult_Result_RESULT_UNKNOWN;
@@ -137,7 +137,7 @@ public:
     {
         switch (result) {
             default:
-                LogErr() << "Unknown result enum value: " << static_cast<int>(result);
+                LogErr("Unknown result enum value: {}", static_cast<int>(result));
             // FALLTHROUGH
             case rpc::ftp::FtpResult_Result_RESULT_UNKNOWN:
                 return mavsdk::Ftp::Result::Unknown;
@@ -292,7 +292,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "ListDirectory sent with a null request! Ignoring...";
+            LogWarn("ListDirectory sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -322,7 +322,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "CreateDirectory sent with a null request! Ignoring...";
+            LogWarn("CreateDirectory sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -350,7 +350,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "RemoveDirectory sent with a null request! Ignoring...";
+            LogWarn("RemoveDirectory sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -378,7 +378,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "RemoveFile sent with a null request! Ignoring...";
+            LogWarn("RemoveFile sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -406,7 +406,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "Rename sent with a null request! Ignoring...";
+            LogWarn("Rename sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -435,7 +435,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "AreFilesIdentical sent with a null request! Ignoring...";
+            LogWarn("AreFilesIdentical sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -466,7 +466,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "SetTargetCompid sent with a null request! Ignoring...";
+            LogWarn("SetTargetCompid sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 

@@ -32,7 +32,7 @@ TEST(SystemTest, InterceptIncomingModifyLocal)
         mavsdk_receiver.add_any_connection("udpin://0.0.0.0:17001"), ConnectionResult::Success);
 
     // Wait for connections to establish
-    LogInfo() << "Waiting for connections to establish...";
+    LogInfo("Waiting for connections to establish...");
 
     // Interceptor discovers sender
     auto sender_system_opt = mavsdk_interceptor.first_autopilot(10.0);
@@ -47,7 +47,7 @@ TEST(SystemTest, InterceptIncomingModifyLocal)
     ASSERT_TRUE(sender_system_receiver->has_autopilot());
 
     // Wait for sender to discover interceptor connection
-    LogInfo() << "Waiting for sender to connect to interceptor...";
+    LogInfo("Waiting for sender to connect to interceptor...");
     while (mavsdk_sender.systems().size() == 0) {
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
@@ -72,15 +72,13 @@ TEST(SystemTest, InterceptIncomingModifyLocal)
 
     mavsdk_interceptor.intercept_incoming_messages_async([&](mavlink_message_t& message) -> bool {
         if (message.msgid == MAVLINK_MSG_ID_GLOBAL_POSITION_INT) {
-            LogInfo() << "Intercepting GLOBAL_POSITION_INT message from system "
-                      << (int)message.sysid;
+            LogInfo("Intercepting GLOBAL_POSITION_INT message from system {}", (int)message.sysid);
 
             // Decode the message
             mavlink_global_position_int_t pos;
             mavlink_msg_global_position_int_decode(&message, &pos);
 
-            LogInfo() << "Original coordinates: lat=" << (pos.lat / 1e7)
-                      << ", lon=" << (pos.lon / 1e7);
+            LogInfo("Original coordinates: lat={}, lon={}", (pos.lat / 1e7), (pos.lon / 1e7));
 
             // Modify the coordinates to San Francisco
             pos.lat = static_cast<int32_t>(modified_lat * 1e7);
@@ -91,8 +89,10 @@ TEST(SystemTest, InterceptIncomingModifyLocal)
             mavlink_msg_global_position_int_encode_chan(
                 message.sysid, message.compid, MAVLINK_COMM_NUM_BUFFERS - 1, &message, &pos);
 
-            LogInfo() << "Modified coordinates to San Francisco: lat=" << (pos.lat / 1e7)
-                      << ", lon=" << (pos.lon / 1e7);
+            LogInfo(
+                "Modified coordinates to San Francisco: lat={}, lon={}",
+                (pos.lat / 1e7),
+                (pos.lon / 1e7));
 
             intercept_called = true;
         }
@@ -110,21 +110,25 @@ TEST(SystemTest, InterceptIncomingModifyLocal)
     // Subscribe to position updates on interceptor
     auto interceptor_handle =
         telemetry_interceptor.subscribe_position([&interceptor_prom](Telemetry::Position position) {
-            LogInfo() << "Interceptor received position: lat=" << position.latitude_deg
-                      << ", lon=" << position.longitude_deg;
+            LogInfo(
+                "Interceptor received position: lat={}, lon={}",
+                position.latitude_deg,
+                position.longitude_deg);
             interceptor_prom.set_value(position);
         });
 
     // Subscribe to position updates on receiver
     auto receiver_handle =
         telemetry_receiver.subscribe_position([&receiver_prom](Telemetry::Position position) {
-            LogInfo() << "Receiver received position: lat=" << position.latitude_deg
-                      << ", lon=" << position.longitude_deg;
+            LogInfo(
+                "Receiver received position: lat={}, lon={}",
+                position.latitude_deg,
+                position.longitude_deg);
             receiver_prom.set_value(position);
         });
 
     // Send position from sender
-    LogInfo() << "Publishing original position from sender...";
+    LogInfo("Publishing original position from sender...");
     TelemetryServer::Position position{};
     position.latitude_deg = original_lat;
     position.longitude_deg = original_lon;
@@ -169,10 +173,10 @@ TEST(SystemTest, InterceptIncomingModifyLocal)
         1e-6); // Should be modified San Francisco coordinates
     EXPECT_NEAR(receiver_position.absolute_altitude_m, original_alt, 1.0f);
 
-    LogInfo() << "Test completed successfully:";
-    LogInfo() << "  - Interceptor saw modified coordinates (San Francisco)";
-    LogInfo() << "  - Receiver also saw modified coordinates (San Francisco)";
-    LogInfo() << "  - This proves intercept affects BOTH local processing AND forwarding";
+    LogInfo("Test completed successfully:");
+    LogInfo("  - Interceptor saw modified coordinates (San Francisco)");
+    LogInfo("  - Receiver also saw modified coordinates (San Francisco)");
+    LogInfo("  - This proves intercept affects BOTH local processing AND forwarding");
 
     // Cleanup
     telemetry_interceptor.unsubscribe_position(interceptor_handle);
@@ -198,7 +202,7 @@ TEST(SystemTest, InterceptJsonIncoming)
     ASSERT_TRUE(system->has_autopilot());
 
     // Wait for autopilot instance to discover the connection to the ground station
-    LogInfo() << "Waiting for autopilot system to connect...";
+    LogInfo("Waiting for autopilot system to connect...");
     while (mavsdk_autopilot.systems().size() == 0) {
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
@@ -214,9 +218,11 @@ TEST(SystemTest, InterceptJsonIncoming)
 
     auto json_handle = mavsdk_groundstation.subscribe_incoming_messages_json(
         [&json_prom, &intercept_called](Mavsdk::MavlinkMessage json_message) {
-            LogInfo() << "Intercepted incoming JSON message: " << json_message.message_name
-                      << " from system " << json_message.system_id
-                      << " with fields: " << json_message.fields_json;
+            LogInfo(
+                "Intercepted incoming JSON message: {} from system {} with fields: {}",
+                json_message.message_name,
+                json_message.system_id,
+                json_message.fields_json);
 
             if (json_message.message_name == "GLOBAL_POSITION_INT") {
                 intercept_called = true;
@@ -227,7 +233,7 @@ TEST(SystemTest, InterceptJsonIncoming)
         });
 
     // Publish position from autopilot
-    LogInfo() << "Publishing position from autopilot...";
+    LogInfo("Publishing position from autopilot...");
     TelemetryServer::Position position{};
     position.latitude_deg = 47.3977421; // Zurich coordinates
     position.longitude_deg = 8.5455938;
@@ -278,10 +284,10 @@ TEST(SystemTest, InterceptJsonIncoming)
     // Verify heading field
     EXPECT_NEAR(json["hdg"].asInt() / 1e2, heading.heading_deg, 1.0);
 
-    LogInfo() << "Successfully tested incoming JSON message interception";
-    LogInfo() << "  - Message name: " << intercepted_message.message_name;
-    LogInfo() << "  - System ID: " << intercepted_message.system_id;
-    LogInfo() << "  - Fields JSON length: " << intercepted_message.fields_json.length();
+    LogInfo("Successfully tested incoming JSON message interceptio");
+    LogInfo("  - Message name: {}", intercepted_message.message_name);
+    LogInfo("  - System ID: {}", intercepted_message.system_id);
+    LogInfo("  - Fields JSON length: {}", intercepted_message.fields_json.length());
 
     // Cleanup
     mavsdk_groundstation.unsubscribe_incoming_messages_json(json_handle);
@@ -305,7 +311,7 @@ TEST(SystemTest, InterceptJsonOutgoing)
     ASSERT_TRUE(system->has_autopilot());
 
     // Wait for autopilot instance to discover the connection to the ground station
-    LogInfo() << "Waiting for autopilot system to connect...";
+    LogInfo("Waiting for autopilot system to connect...");
     while (mavsdk_autopilot.systems().size() == 0) {
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
@@ -321,9 +327,11 @@ TEST(SystemTest, InterceptJsonOutgoing)
 
     auto json_handle = mavsdk_autopilot.subscribe_outgoing_messages_json(
         [&json_prom, &intercept_called](Mavsdk::MavlinkMessage json_message) {
-            LogInfo() << "Intercepted outgoing JSON message: " << json_message.message_name
-                      << " to system " << json_message.target_system_id
-                      << " with fields: " << json_message.fields_json;
+            LogInfo(
+                "Intercepted outgoing JSON message: {} to system {} with fields: {}",
+                json_message.message_name,
+                json_message.target_system_id,
+                json_message.fields_json);
 
             if (json_message.message_name == "GPS_RAW_INT") {
                 intercept_called = true;
@@ -334,7 +342,7 @@ TEST(SystemTest, InterceptJsonOutgoing)
         });
 
     // Publish GPS data from autopilot
-    LogInfo() << "Publishing GPS data from autopilot...";
+    LogInfo("Publishing GPS data from autopilot...");
     TelemetryServer::RawGps raw_gps{};
     raw_gps.timestamp_us = 1234567890123456789;
     raw_gps.latitude_deg = 47.3977421; // Zurich coordinates
@@ -387,10 +395,10 @@ TEST(SystemTest, InterceptJsonOutgoing)
     EXPECT_NEAR(json["cog"].asInt() / 1e2, raw_gps.cog_deg, 1.0);
     EXPECT_EQ(json["satellites_visible"].asUInt(), gps_info.num_satellites);
 
-    LogInfo() << "Successfully tested outgoing JSON message interception";
-    LogInfo() << "  - Message name: " << intercepted_message.message_name;
-    LogInfo() << "  - Target system: " << intercepted_message.target_system_id;
-    LogInfo() << "  - Fields JSON length: " << intercepted_message.fields_json.length();
+    LogInfo("Successfully tested outgoing JSON message interceptio");
+    LogInfo("  - Message name: {}", intercepted_message.message_name);
+    LogInfo("  - Target system: {}", intercepted_message.target_system_id);
+    LogInfo("  - Fields JSON length: {}", intercepted_message.fields_json.length());
 
     // Cleanup
     mavsdk_autopilot.unsubscribe_outgoing_messages_json(json_handle);

@@ -52,7 +52,7 @@ public:
     {
         switch (fix_type) {
             default:
-                LogErr() << "Unknown fix_type enum value: " << static_cast<int>(fix_type);
+                LogErr("Unknown fix_type enum value: {}", static_cast<int>(fix_type));
             // FALLTHROUGH
             case mavsdk::TelemetryServer::FixType::NoGps:
                 return rpc::telemetry_server::FIX_TYPE_NO_GPS;
@@ -76,7 +76,7 @@ public:
     {
         switch (fix_type) {
             default:
-                LogErr() << "Unknown fix_type enum value: " << static_cast<int>(fix_type);
+                LogErr("Unknown fix_type enum value: {}", static_cast<int>(fix_type));
             // FALLTHROUGH
             case rpc::telemetry_server::FIX_TYPE_NO_GPS:
                 return mavsdk::TelemetryServer::FixType::NoGps;
@@ -100,7 +100,7 @@ public:
     {
         switch (vtol_state) {
             default:
-                LogErr() << "Unknown vtol_state enum value: " << static_cast<int>(vtol_state);
+                LogErr("Unknown vtol_state enum value: {}", static_cast<int>(vtol_state));
             // FALLTHROUGH
             case mavsdk::TelemetryServer::VtolState::Undefined:
                 return rpc::telemetry_server::VTOL_STATE_UNDEFINED;
@@ -120,7 +120,7 @@ public:
     {
         switch (vtol_state) {
             default:
-                LogErr() << "Unknown vtol_state enum value: " << static_cast<int>(vtol_state);
+                LogErr("Unknown vtol_state enum value: {}", static_cast<int>(vtol_state));
             // FALLTHROUGH
             case rpc::telemetry_server::VTOL_STATE_UNDEFINED:
                 return mavsdk::TelemetryServer::VtolState::Undefined;
@@ -140,8 +140,8 @@ public:
     {
         switch (status_text_type) {
             default:
-                LogErr() << "Unknown status_text_type enum value: "
-                         << static_cast<int>(status_text_type);
+                LogErr(
+                    "Unknown status_text_type enum value: {}", static_cast<int>(status_text_type));
             // FALLTHROUGH
             case mavsdk::TelemetryServer::StatusTextType::Debug:
                 return rpc::telemetry_server::STATUS_TEXT_TYPE_DEBUG;
@@ -167,8 +167,8 @@ public:
     {
         switch (status_text_type) {
             default:
-                LogErr() << "Unknown status_text_type enum value: "
-                         << static_cast<int>(status_text_type);
+                LogErr(
+                    "Unknown status_text_type enum value: {}", static_cast<int>(status_text_type));
             // FALLTHROUGH
             case rpc::telemetry_server::STATUS_TEXT_TYPE_DEBUG:
                 return mavsdk::TelemetryServer::StatusTextType::Debug;
@@ -194,7 +194,7 @@ public:
     {
         switch (landed_state) {
             default:
-                LogErr() << "Unknown landed_state enum value: " << static_cast<int>(landed_state);
+                LogErr("Unknown landed_state enum value: {}", static_cast<int>(landed_state));
             // FALLTHROUGH
             case mavsdk::TelemetryServer::LandedState::Unknown:
                 return rpc::telemetry_server::LANDED_STATE_UNKNOWN;
@@ -214,7 +214,7 @@ public:
     {
         switch (landed_state) {
             default:
-                LogErr() << "Unknown landed_state enum value: " << static_cast<int>(landed_state);
+                LogErr("Unknown landed_state enum value: {}", static_cast<int>(landed_state));
             // FALLTHROUGH
             case rpc::telemetry_server::LANDED_STATE_UNKNOWN:
                 return mavsdk::TelemetryServer::LandedState::Unknown;
@@ -693,7 +693,7 @@ public:
     {
         switch (mav_frame) {
             default:
-                LogErr() << "Unknown mav_frame enum value: " << static_cast<int>(mav_frame);
+                LogErr("Unknown mav_frame enum value: {}", static_cast<int>(mav_frame));
             // FALLTHROUGH
             case mavsdk::TelemetryServer::Odometry::MavFrame::Undef:
                 return rpc::telemetry_server::Odometry_MavFrame_MAV_FRAME_UNDEF;
@@ -711,7 +711,7 @@ public:
     {
         switch (mav_frame) {
             default:
-                LogErr() << "Unknown mav_frame enum value: " << static_cast<int>(mav_frame);
+                LogErr("Unknown mav_frame enum value: {}", static_cast<int>(mav_frame));
             // FALLTHROUGH
             case rpc::telemetry_server::Odometry_MavFrame_MAV_FRAME_UNDEF:
                 return mavsdk::TelemetryServer::Odometry::MavFrame::Undef;
@@ -1127,7 +1127,7 @@ public:
     {
         switch (result) {
             default:
-                LogErr() << "Unknown result enum value: " << static_cast<int>(result);
+                LogErr("Unknown result enum value: {}", static_cast<int>(result));
             // FALLTHROUGH
             case mavsdk::TelemetryServer::Result::Unknown:
                 return rpc::telemetry_server::TelemetryServerResult_Result_RESULT_UNKNOWN;
@@ -1153,7 +1153,7 @@ public:
     {
         switch (result) {
             default:
-                LogErr() << "Unknown result enum value: " << static_cast<int>(result);
+                LogErr("Unknown result enum value: {}", static_cast<int>(result));
             // FALLTHROUGH
             case rpc::telemetry_server::TelemetryServerResult_Result_RESULT_UNKNOWN:
                 return mavsdk::TelemetryServer::Result::Unknown;
@@ -1191,7 +1191,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "PublishPosition sent with a null request! Ignoring...";
+            LogWarn("PublishPosition sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -1224,7 +1224,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "PublishHome sent with a null request! Ignoring...";
+            LogWarn("PublishHome sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -1255,7 +1255,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "PublishSysStatus sent with a null request! Ignoring...";
+            LogWarn("PublishSysStatus sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -1291,7 +1291,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "PublishExtendedSysState sent with a null request! Ignoring...";
+            LogWarn("PublishExtendedSysState sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -1323,7 +1323,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "PublishRawGps sent with a null request! Ignoring...";
+            LogWarn("PublishRawGps sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -1355,7 +1355,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "PublishBattery sent with a null request! Ignoring...";
+            LogWarn("PublishBattery sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -1386,7 +1386,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "PublishStatusText sent with a null request! Ignoring...";
+            LogWarn("PublishStatusText sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -1417,7 +1417,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "PublishOdometry sent with a null request! Ignoring...";
+            LogWarn("PublishOdometry sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -1448,7 +1448,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "PublishPositionVelocityNed sent with a null request! Ignoring...";
+            LogWarn("PublishPositionVelocityNed sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -1479,7 +1479,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "PublishGroundTruth sent with a null request! Ignoring...";
+            LogWarn("PublishGroundTruth sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -1510,7 +1510,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "PublishImu sent with a null request! Ignoring...";
+            LogWarn("PublishImu sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -1540,7 +1540,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "PublishScaledImu sent with a null request! Ignoring...";
+            LogWarn("PublishScaledImu sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -1571,7 +1571,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "PublishRawImu sent with a null request! Ignoring...";
+            LogWarn("PublishRawImu sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -1602,7 +1602,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "PublishUnixEpochTime sent with a null request! Ignoring...";
+            LogWarn("PublishUnixEpochTime sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -1632,7 +1632,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "PublishDistanceSensor sent with a null request! Ignoring...";
+            LogWarn("PublishDistanceSensor sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -1663,7 +1663,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "PublishAttitude sent with a null request! Ignoring...";
+            LogWarn("PublishAttitude sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -1695,7 +1695,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "PublishVisualFlightRulesHud sent with a null request! Ignoring...";
+            LogWarn("PublishVisualFlightRulesHud sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 

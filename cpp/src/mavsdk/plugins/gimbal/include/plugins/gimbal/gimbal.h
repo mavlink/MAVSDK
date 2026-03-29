@@ -615,3 +615,10 @@ private:
 };
 
 } // namespace mavsdk
+
+#include "std_format.h"
+MAVSDK_DEFINE_FORMATTER(mavsdk::Gimbal::GimbalMode)
+MAVSDK_DEFINE_FORMATTER(mavsdk::Gimbal::ControlMode)
+MAVSDK_DEFINE_FORMATTER(mavsdk::Gimbal::SendMode)
+
+MAVSDK_DEFINE_FORMATTER(mavsdk::Gimbal::Result)

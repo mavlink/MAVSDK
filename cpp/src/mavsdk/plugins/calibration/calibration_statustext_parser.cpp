@@ -60,7 +60,7 @@ bool CalibrationStatustextParser::check_started(const std::string& statustext)
             std::stringstream error_stream{};
             error_stream << "Unknown calibration version stamp: " << version_stamp;
             _failed_message = error_stream.str();
-            LogErr() << _failed_message;
+            LogErr("{}", _failed_message);
         }
         return true;
     }

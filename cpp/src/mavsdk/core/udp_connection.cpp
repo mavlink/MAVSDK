@@ -69,7 +69,7 @@ ConnectionResult UdpConnection::setup_port()
 #ifdef WINDOWS
     WSADATA wsa;
     if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0) {
-        LogErr() << "Error: Winsock failed, error: " << get_socket_error_string(WSAGetLastError());
+        LogErr("Error: Winsock failed, error: {}", get_socket_error_string(WSAGetLastError()));
         return ConnectionResult::SocketError;
     }
 #endif
@@ -77,20 +77,20 @@ ConnectionResult UdpConnection::setup_port()
     _socket_fd.reset(socket(AF_INET, SOCK_DGRAM, 0));
 
     if (_socket_fd.empty()) {
-        LogErr() << "socket error" << strerror(errno);
+        LogErr("socket error{}", strerror(errno));
         return ConnectionResult::SocketError;
     }
 
     struct sockaddr_in addr{};
     addr.sin_family = AF_INET;
     if (inet_pton(AF_INET, _local_ip.c_str(), &(addr.sin_addr)) != 1) {
-        LogErr() << "inet_pton failure for address: " << _local_ip;
+        LogErr("inet_pton failure for address: {}", _local_ip);
         return ConnectionResult::SocketError;
     }
     addr.sin_port = htons(_local_port_number);
 
     if (bind(_socket_fd.get(), reinterpret_cast<sockaddr*>(&addr), sizeof(addr)) != 0) {
-        LogErr() << "bind error: " << strerror(errno);
+        LogErr("bind error: {}", strerror(errno));
         return ConnectionResult::BindError;
     }
 
@@ -162,8 +162,7 @@ std::pair<bool, std::string> UdpConnection::send_raw_bytes(const char* bytes, si
 
                 // We can cleanup old/previous remotes if we have
                 if (should_remove) {
-                    LogInfo() << "Removing inactive remote: " << remote.ip << ":"
-                              << remote.port_number;
+                    LogInfo("Removing inactive remote: {}:{}", remote.ip, remote.port_number);
                 }
 
                 return should_remove;
@@ -192,7 +191,7 @@ std::pair<bool, std::string> UdpConnection::send_raw_bytes(const char* bytes, si
         if (inet_pton(AF_INET, remote.ip.c_str(), &dest_addr.sin_addr.s_addr) != 1) {
             std::stringstream ss;
             ss << "inet_pton failure for: " << remote.ip << ":" << remote.port_number;
-            LogErr() << ss.str();
+            LogErr("{}", ss.str());
             result.first = false;
             if (!result.second.empty()) {
                 result.second += ", ";
@@ -220,7 +219,7 @@ std::pair<bool, std::string> UdpConnection::send_raw_bytes(const char* bytes, si
             ss << "sendto failure: " << strerror(errno) << " for: " << remote.ip << ":"
                << remote.port_number;
 #endif
-            LogErr() << ss.str();
+            LogErr("{}", ss.str());
             result.first = false;
             if (!result.second.empty()) {
                 result.second += ", ";
@@ -260,8 +259,11 @@ void UdpConnection::add_remote_impl(
         // System with sysid 0 is a bit special: it is a placeholder for a connection initiated
         // by MAVSDK. As such, it should not be advertised as a newly discovered system.
         if (static_cast<int>(remote_sysid) != 0) {
-            LogInfo() << "New system on: " << new_remote.ip << ":" << new_remote.port_number
-                      << " (system ID: " << static_cast<int>(remote_sysid) << ")";
+            LogInfo(
+                "New system on: {}:{} (system ID: {})",
+                new_remote.ip,
+                new_remote.port_number,
+                static_cast<int>(remote_sysid));
         }
         _remotes.push_back(new_remote);
     } else {
@@ -314,7 +316,7 @@ void UdpConnection::receive()
                         add_remote_impl(
                             ip_str, ntohs(src_addr.sin_port), sysid, RemoteOption::Found);
                     } else {
-                        LogErr() << "inet_ntop failure for: " << strerror(errno);
+                        LogErr("inet_ntop failure for: {}", strerror(errno));
                     }
                 }
             }

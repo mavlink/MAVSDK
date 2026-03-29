@@ -46,7 +46,7 @@ public:
     {
         switch (mode) {
             default:
-                LogErr() << "Unknown mode enum value: " << static_cast<int>(mode);
+                LogErr("Unknown mode enum value: {}", static_cast<int>(mode));
             // FALLTHROUGH
             case mavsdk::Camera::Mode::Unknown:
                 return rpc::camera::MODE_UNKNOWN;
@@ -61,7 +61,7 @@ public:
     {
         switch (mode) {
             default:
-                LogErr() << "Unknown mode enum value: " << static_cast<int>(mode);
+                LogErr("Unknown mode enum value: {}", static_cast<int>(mode));
             // FALLTHROUGH
             case rpc::camera::MODE_UNKNOWN:
                 return mavsdk::Camera::Mode::Unknown;
@@ -77,7 +77,7 @@ public:
     {
         switch (photos_range) {
             default:
-                LogErr() << "Unknown photos_range enum value: " << static_cast<int>(photos_range);
+                LogErr("Unknown photos_range enum value: {}", static_cast<int>(photos_range));
             // FALLTHROUGH
             case mavsdk::Camera::PhotosRange::All:
                 return rpc::camera::PHOTOS_RANGE_ALL;
@@ -91,7 +91,7 @@ public:
     {
         switch (photos_range) {
             default:
-                LogErr() << "Unknown photos_range enum value: " << static_cast<int>(photos_range);
+                LogErr("Unknown photos_range enum value: {}", static_cast<int>(photos_range));
             // FALLTHROUGH
             case rpc::camera::PHOTOS_RANGE_ALL:
                 return mavsdk::Camera::PhotosRange::All;
@@ -245,8 +245,9 @@ public:
     {
         switch (video_stream_status) {
             default:
-                LogErr() << "Unknown video_stream_status enum value: "
-                         << static_cast<int>(video_stream_status);
+                LogErr(
+                    "Unknown video_stream_status enum value: {}",
+                    static_cast<int>(video_stream_status));
             // FALLTHROUGH
             case mavsdk::Camera::VideoStreamInfo::VideoStreamStatus::NotRunning:
                 return rpc::camera::
@@ -262,8 +263,9 @@ public:
     {
         switch (video_stream_status) {
             default:
-                LogErr() << "Unknown video_stream_status enum value: "
-                         << static_cast<int>(video_stream_status);
+                LogErr(
+                    "Unknown video_stream_status enum value: {}",
+                    static_cast<int>(video_stream_status));
             // FALLTHROUGH
             case rpc::camera::VideoStreamInfo_VideoStreamStatus_VIDEO_STREAM_STATUS_NOT_RUNNING:
                 return mavsdk::Camera::VideoStreamInfo::VideoStreamStatus::NotRunning;
@@ -277,8 +279,9 @@ public:
     {
         switch (video_stream_spectrum) {
             default:
-                LogErr() << "Unknown video_stream_spectrum enum value: "
-                         << static_cast<int>(video_stream_spectrum);
+                LogErr(
+                    "Unknown video_stream_spectrum enum value: {}",
+                    static_cast<int>(video_stream_spectrum));
             // FALLTHROUGH
             case mavsdk::Camera::VideoStreamInfo::VideoStreamSpectrum::Unknown:
                 return rpc::camera::
@@ -297,8 +300,9 @@ public:
     {
         switch (video_stream_spectrum) {
             default:
-                LogErr() << "Unknown video_stream_spectrum enum value: "
-                         << static_cast<int>(video_stream_spectrum);
+                LogErr(
+                    "Unknown video_stream_spectrum enum value: {}",
+                    static_cast<int>(video_stream_spectrum));
             // FALLTHROUGH
             case rpc::camera::VideoStreamInfo_VideoStreamSpectrum_VIDEO_STREAM_SPECTRUM_UNKNOWN:
                 return mavsdk::Camera::VideoStreamInfo::VideoStreamSpectrum::Unknown;
@@ -398,8 +402,7 @@ public:
     {
         switch (storage_status) {
             default:
-                LogErr() << "Unknown storage_status enum value: "
-                         << static_cast<int>(storage_status);
+                LogErr("Unknown storage_status enum value: {}", static_cast<int>(storage_status));
             // FALLTHROUGH
             case mavsdk::Camera::Storage::StorageStatus::NotAvailable:
                 return rpc::camera::Storage_StorageStatus_STORAGE_STATUS_NOT_AVAILABLE;
@@ -417,8 +420,7 @@ public:
     {
         switch (storage_status) {
             default:
-                LogErr() << "Unknown storage_status enum value: "
-                         << static_cast<int>(storage_status);
+                LogErr("Unknown storage_status enum value: {}", static_cast<int>(storage_status));
             // FALLTHROUGH
             case rpc::camera::Storage_StorageStatus_STORAGE_STATUS_NOT_AVAILABLE:
                 return mavsdk::Camera::Storage::StorageStatus::NotAvailable;
@@ -436,7 +438,7 @@ public:
     {
         switch (storage_type) {
             default:
-                LogErr() << "Unknown storage_type enum value: " << static_cast<int>(storage_type);
+                LogErr("Unknown storage_type enum value: {}", static_cast<int>(storage_type));
             // FALLTHROUGH
             case mavsdk::Camera::Storage::StorageType::Unknown:
                 return rpc::camera::Storage_StorageType_STORAGE_TYPE_UNKNOWN;
@@ -458,7 +460,7 @@ public:
     {
         switch (storage_type) {
             default:
-                LogErr() << "Unknown storage_type enum value: " << static_cast<int>(storage_type);
+                LogErr("Unknown storage_type enum value: {}", static_cast<int>(storage_type));
             // FALLTHROUGH
             case rpc::camera::Storage_StorageType_STORAGE_TYPE_UNKNOWN:
                 return mavsdk::Camera::Storage::StorageType::Unknown;
@@ -625,7 +627,7 @@ public:
     {
         switch (result) {
             default:
-                LogErr() << "Unknown result enum value: " << static_cast<int>(result);
+                LogErr("Unknown result enum value: {}", static_cast<int>(result));
             // FALLTHROUGH
             case mavsdk::Camera::Result::Unknown:
                 return rpc::camera::CameraResult_Result_RESULT_UNKNOWN;
@@ -661,7 +663,7 @@ public:
     {
         switch (result) {
             default:
-                LogErr() << "Unknown result enum value: " << static_cast<int>(result);
+                LogErr("Unknown result enum value: {}", static_cast<int>(result));
             // FALLTHROUGH
             case rpc::camera::CameraResult_Result_RESULT_UNKNOWN:
                 return mavsdk::Camera::Result::Unknown;
@@ -922,7 +924,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "TakePhoto sent with a null request! Ignoring...";
+            LogWarn("TakePhoto sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -950,7 +952,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "StartPhotoInterval sent with a null request! Ignoring...";
+            LogWarn("StartPhotoInterval sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -979,7 +981,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "StopPhotoInterval sent with a null request! Ignoring...";
+            LogWarn("StopPhotoInterval sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -1007,7 +1009,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "StartVideo sent with a null request! Ignoring...";
+            LogWarn("StartVideo sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -1035,7 +1037,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "StopVideo sent with a null request! Ignoring...";
+            LogWarn("StopVideo sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -1063,7 +1065,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "StartVideoStreaming sent with a null request! Ignoring...";
+            LogWarn("StartVideoStreaming sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -1092,7 +1094,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "StopVideoStreaming sent with a null request! Ignoring...";
+            LogWarn("StopVideoStreaming sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -1121,7 +1123,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "SetMode sent with a null request! Ignoring...";
+            LogWarn("SetMode sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -1150,7 +1152,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "ListPhotos sent with a null request! Ignoring...";
+            LogWarn("ListPhotos sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -1266,7 +1268,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "GetMode sent with a null request! Ignoring...";
+            LogWarn("GetMode sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -1338,7 +1340,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "GetVideoStreamInfo sent with a null request! Ignoring...";
+            LogWarn("GetVideoStreamInfo sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -1451,7 +1453,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "GetStorage sent with a null request! Ignoring...";
+            LogWarn("GetStorage sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -1523,7 +1525,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "GetCurrentSettings sent with a null request! Ignoring...";
+            LogWarn("GetCurrentSettings sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -1599,7 +1601,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "GetPossibleSettingOptions sent with a null request! Ignoring...";
+            LogWarn("GetPossibleSettingOptions sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -1633,7 +1635,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "SetSetting sent with a null request! Ignoring...";
+            LogWarn("SetSetting sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -1662,7 +1664,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "GetSetting sent with a null request! Ignoring...";
+            LogWarn("GetSetting sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -1693,7 +1695,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "FormatStorage sent with a null request! Ignoring...";
+            LogWarn("FormatStorage sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -1722,7 +1724,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "ResetSettings sent with a null request! Ignoring...";
+            LogWarn("ResetSettings sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -1750,7 +1752,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "ZoomInStart sent with a null request! Ignoring...";
+            LogWarn("ZoomInStart sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -1778,7 +1780,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "ZoomOutStart sent with a null request! Ignoring...";
+            LogWarn("ZoomOutStart sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -1806,7 +1808,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "ZoomStop sent with a null request! Ignoring...";
+            LogWarn("ZoomStop sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -1834,7 +1836,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "ZoomRange sent with a null request! Ignoring...";
+            LogWarn("ZoomRange sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -1863,7 +1865,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "TrackPoint sent with a null request! Ignoring...";
+            LogWarn("TrackPoint sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -1892,7 +1894,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "TrackRectangle sent with a null request! Ignoring...";
+            LogWarn("TrackRectangle sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -1925,7 +1927,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "TrackStop sent with a null request! Ignoring...";
+            LogWarn("TrackStop sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -1953,7 +1955,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "FocusInStart sent with a null request! Ignoring...";
+            LogWarn("FocusInStart sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -1981,7 +1983,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "FocusOutStart sent with a null request! Ignoring...";
+            LogWarn("FocusOutStart sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -2009,7 +2011,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "FocusStop sent with a null request! Ignoring...";
+            LogWarn("FocusStop sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -2037,7 +2039,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "FocusRange sent with a null request! Ignoring...";
+            LogWarn("FocusRange sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 

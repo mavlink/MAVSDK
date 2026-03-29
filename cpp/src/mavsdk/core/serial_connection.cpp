@@ -107,13 +107,13 @@ ConnectionResult SerialConnection::setup_port()
     // open() hangs on macOS or Linux devices(e.g. pocket beagle) unless you give it O_NONBLOCK
     _fd = open(_serial_node.c_str(), O_RDWR | O_NOCTTY | O_NONBLOCK);
     if (_fd == -1) {
-        LogErr() << "open failed: " << GET_ERROR();
+        LogErr("open failed: {}", GET_ERROR());
         return ConnectionResult::ConnectionError;
     }
     // We need to clear the O_NONBLOCK again because we can block while reading
     // as we do it in a separate thread.
     if (fcntl(_fd, F_SETFL, 0) == -1) {
-        LogErr() << "fcntl failed: " << GET_ERROR();
+        LogErr("fcntl failed: {}", GET_ERROR());
         return ConnectionResult::ConnectionError;
     }
 #elif defined(WINDOWS)
@@ -130,7 +130,7 @@ ConnectionResult SerialConnection::setup_port()
         NULL); //  hTemplate must be NULL for comm devices
 
     if (_handle == INVALID_HANDLE_VALUE) {
-        LogErr() << "CreateFile failed with: " << GET_ERROR();
+        LogErr("CreateFile failed with: {}", GET_ERROR());
         return ConnectionResult::ConnectionError;
     }
 #endif
@@ -140,7 +140,7 @@ ConnectionResult SerialConnection::setup_port()
     bzero(&tc, sizeof(tc));
 
     if (tcgetattr(_fd, &tc) != 0) {
-        LogErr() << "tcgetattr failed: " << GET_ERROR();
+        LogErr("tcgetattr failed: {}", GET_ERROR());
         close(_fd);
         return ConnectionResult::ConnectionError;
     }
@@ -175,19 +175,19 @@ ConnectionResult SerialConnection::setup_port()
     }
 
     if (cfsetispeed(&tc, baudrate_or_define) != 0) {
-        LogErr() << "cfsetispeed failed: " << GET_ERROR();
+        LogErr("cfsetispeed failed: {}", GET_ERROR());
         close(_fd);
         return ConnectionResult::ConnectionError;
     }
 
     if (cfsetospeed(&tc, baudrate_or_define) != 0) {
-        LogErr() << "cfsetospeed failed: " << GET_ERROR();
+        LogErr("cfsetospeed failed: {}", GET_ERROR());
         close(_fd);
         return ConnectionResult::ConnectionError;
     }
 
     if (tcsetattr(_fd, TCSANOW, &tc) != 0) {
-        LogErr() << "tcsetattr failed: " << GET_ERROR();
+        LogErr("tcsetattr failed: {}", GET_ERROR());
         close(_fd);
         return ConnectionResult::ConnectionError;
     }
@@ -199,7 +199,7 @@ ConnectionResult SerialConnection::setup_port()
     dcb.DCBlength = sizeof(DCB);
 
     if (!GetCommState(_handle, &dcb)) {
-        LogErr() << "GetCommState failed with error: " << GET_ERROR();
+        LogErr("GetCommState failed with error: {}", GET_ERROR());
         return ConnectionResult::ConnectionError;
     }
 
@@ -222,7 +222,7 @@ ConnectionResult SerialConnection::setup_port()
     dcb.fDsrSensitivity = FALSE;
 
     if (!SetCommState(_handle, &dcb)) {
-        LogErr() << "SetCommState failed with error: " << GET_ERROR();
+        LogErr("SetCommState failed with error: {}", GET_ERROR());
         return ConnectionResult::ConnectionError;
     }
 
@@ -235,7 +235,7 @@ ConnectionResult SerialConnection::setup_port()
     SetCommTimeouts(_handle, &timeout);
 
     if (!SetCommTimeouts(_handle, &timeout)) {
-        LogErr() << "SetCommTimeouts failed with error: " << GET_ERROR();
+        LogErr("SetCommTimeouts failed with error: {}", GET_ERROR());
         return ConnectionResult::ConnectionError;
     }
 
@@ -298,16 +298,16 @@ void SerialConnection::receive()
         if (pollrc == 0 || !(fds[0].revents & POLLIN)) {
             continue;
         } else if (pollrc == -1) {
-            LogErr() << "read poll failure: " << GET_ERROR();
+            LogErr("read poll failure: {}", GET_ERROR());
         }
         // We enter here if (fds[0].revents & POLLIN) == true
         recv_len = static_cast<int>(read(_fd, buffer, sizeof(buffer)));
         if (recv_len < -1) {
-            LogErr() << "read failure: " << GET_ERROR();
+            LogErr("read failure: {}", GET_ERROR());
         }
 #else
         if (!ReadFile(_handle, buffer, sizeof(buffer), LPDWORD(&recv_len), NULL)) {
-            LogErr() << "ReadFile failure: " << GET_ERROR();
+            LogErr("ReadFile failure: {}", GET_ERROR());
             continue;
         }
 #endif
@@ -374,7 +374,7 @@ int SerialConnection::define_from_baudrate(int baudrate)
         case 4000000:
             return B4000000;
         default: {
-            LogErr() << "Unknown baudrate";
+            LogErr("Unknown baudrate");
             return -1;
         }
     }
@@ -386,7 +386,7 @@ std::pair<bool, std::string> SerialConnection::send_raw_bytes(const char* bytes,
     std::pair<bool, std::string> result;
 
     if (_serial_node.empty()) {
-        LogErr() << "Dev Path unknown";
+        LogErr("Dev Path unknow");
         result.first = false;
         result.second = "Dev Path unknown";
         return result;
@@ -405,7 +405,7 @@ std::pair<bool, std::string> SerialConnection::send_raw_bytes(const char* bytes,
     if (!WriteFile(_handle, bytes, static_cast<DWORD>(length), LPDWORD(&send_len), NULL)) {
         std::stringstream ss;
         ss << "WriteFile failure: " << GET_ERROR();
-        LogErr() << ss.str();
+        LogErr("{}", ss.str());
         result.first = false;
         result.second = ss.str();
         return result;
@@ -415,7 +415,7 @@ std::pair<bool, std::string> SerialConnection::send_raw_bytes(const char* bytes,
     if (send_len != static_cast<int>(length)) {
         std::stringstream ss;
         ss << "write failure: " << GET_ERROR();
-        LogErr() << ss.str();
+        LogErr("{}", ss.str());
         result.first = false;
         result.second = ss.str();
         return result;

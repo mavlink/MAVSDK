@@ -222,3 +222,8 @@ private:
 };
 
 } // namespace mavsdk
+
+#include "std_format.h"
+MAVSDK_DEFINE_FORMATTER(mavsdk::ComponentMetadata::MetadataType)
+
+MAVSDK_DEFINE_FORMATTER(mavsdk::ComponentMetadata::Result)

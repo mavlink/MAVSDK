@@ -47,7 +47,7 @@ public:
     {
         switch (failure_unit) {
             default:
-                LogErr() << "Unknown failure_unit enum value: " << static_cast<int>(failure_unit);
+                LogErr("Unknown failure_unit enum value: {}", static_cast<int>(failure_unit));
             // FALLTHROUGH
             case mavsdk::Failure::FailureUnit::SensorGyro:
                 return rpc::failure::FAILURE_UNIT_SENSOR_GYRO;
@@ -87,7 +87,7 @@ public:
     {
         switch (failure_unit) {
             default:
-                LogErr() << "Unknown failure_unit enum value: " << static_cast<int>(failure_unit);
+                LogErr("Unknown failure_unit enum value: {}", static_cast<int>(failure_unit));
             // FALLTHROUGH
             case rpc::failure::FAILURE_UNIT_SENSOR_GYRO:
                 return mavsdk::Failure::FailureUnit::SensorGyro;
@@ -127,7 +127,7 @@ public:
     {
         switch (failure_type) {
             default:
-                LogErr() << "Unknown failure_type enum value: " << static_cast<int>(failure_type);
+                LogErr("Unknown failure_type enum value: {}", static_cast<int>(failure_type));
             // FALLTHROUGH
             case mavsdk::Failure::FailureType::Ok:
                 return rpc::failure::FAILURE_TYPE_OK;
@@ -153,7 +153,7 @@ public:
     {
         switch (failure_type) {
             default:
-                LogErr() << "Unknown failure_type enum value: " << static_cast<int>(failure_type);
+                LogErr("Unknown failure_type enum value: {}", static_cast<int>(failure_type));
             // FALLTHROUGH
             case rpc::failure::FAILURE_TYPE_OK:
                 return mavsdk::Failure::FailureType::Ok;
@@ -179,7 +179,7 @@ public:
     {
         switch (result) {
             default:
-                LogErr() << "Unknown result enum value: " << static_cast<int>(result);
+                LogErr("Unknown result enum value: {}", static_cast<int>(result));
             // FALLTHROUGH
             case mavsdk::Failure::Result::Unknown:
                 return rpc::failure::FailureResult_Result_RESULT_UNKNOWN;
@@ -205,7 +205,7 @@ public:
     {
         switch (result) {
             default:
-                LogErr() << "Unknown result enum value: " << static_cast<int>(result);
+                LogErr("Unknown result enum value: {}", static_cast<int>(result));
             // FALLTHROUGH
             case rpc::failure::FailureResult_Result_RESULT_UNKNOWN:
                 return mavsdk::Failure::Result::Unknown;
@@ -241,7 +241,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "Inject sent with a null request! Ignoring...";
+            LogWarn("Inject sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 

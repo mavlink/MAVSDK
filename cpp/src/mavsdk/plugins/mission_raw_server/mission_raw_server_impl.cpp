@@ -246,7 +246,7 @@ void MissionRawServerImpl::process_mission_request_list(const mavlink_message_t&
 
 void MissionRawServerImpl::process_mission_set_current(const mavlink_message_t& message)
 {
-    LogDebug() << "Receive Mission Set Current";
+    LogDebug("Receive Mission Set Current");
 
     mavlink_mission_set_current_t set_current;
     mavlink_msg_mission_set_current_decode(&message, &set_current);

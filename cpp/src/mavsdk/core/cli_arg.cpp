@@ -25,7 +25,7 @@ bool CliArg::parse(const std::string& uri)
     const std::string delimiter = "://";
 
     if (uri.find(udp + delimiter) == 0) {
-        LogWarn() << "Connection using udp:// is deprecated, please use udpin:// or udpout://";
+        LogWarn("Connection using udp:// is deprecated, please use udpin:// or udpout://");
         return parse_udp(std::string_view(uri).substr(udp.size() + delimiter.size()));
     }
 
@@ -38,7 +38,7 @@ bool CliArg::parse(const std::string& uri)
     }
 
     if (uri.find(tcp + delimiter) == 0) {
-        LogWarn() << "Connection using tcp:// is deprecated, please use tcpin:// or tcpout://";
+        LogWarn("Connection using tcp:// is deprecated, please use tcpin:// or tcpout://");
         return parse_tcp(std::string_view(uri).substr(tcp.size() + delimiter.size()));
     }
 
@@ -64,7 +64,7 @@ bool CliArg::parse(const std::string& uri)
         return parse_raw(std::string_view(uri).substr(raw.size() + delimiter.size()));
     }
 
-    LogErr() << "Unknown protocol";
+    LogErr("Unknown protocol");
     return false;
 }
 
@@ -110,7 +110,7 @@ bool CliArg::parse_udpin(const std::string_view rest)
     p.mode = Udp::Mode::In;
 
     if (p.host.empty()) {
-        LogErr() << "No network interface supplied (use 0.0.0.0 for all network interfaces)";
+        LogErr("No network interface supplied (use 0.0.0.0 for all network interfaces)");
         return false;
     }
 
@@ -136,8 +136,8 @@ bool CliArg::parse_udpout(const std::string_view rest)
     p.mode = Udp::Mode::Out;
 
     if (p.host == "0.0.0.0") {
-        LogErr() << "0.0.0.0 is invalid for UDP out address. "
-                    "Can only listen on all interfaces, but not send.";
+        LogErr("0.0.0.0 is invalid for UDP out address. "
+               "Can only listen on all interfaces, but not send.");
         return false;
     }
 
@@ -212,8 +212,8 @@ bool CliArg::parse_tcpout(const std::string_view rest)
     p.mode = Tcp::Mode::Out;
 
     if (p.host == "0.0.0.0") {
-        LogErr() << "0.0.0.0 is invalid for TCP out address. "
-                    "Can only listen on all interfaces, but not send.";
+        LogErr("0.0.0.0 is invalid for TCP out address. "
+               "Can only listen on all interfaces, but not send.");
         return false;
     }
 
@@ -254,7 +254,7 @@ bool CliArg::parse_serial(const std::string_view rest, bool flow_control_enabled
         std::all_of(p.path.begin(), p.path.end(), [](unsigned char c) { return std::isdigit(c); });
 
     if (path_is_only_numbers) {
-        LogErr() << "Path can't be numbers only.";
+        LogErr("Path can't be numbers only.");
         return false;
     }
 
@@ -264,17 +264,17 @@ bool CliArg::parse_serial(const std::string_view rest, bool flow_control_enabled
         // On Windows a path starting with 'COM' is ok but needs to be followed by digits.
         for (const auto& digit : p.path.substr(3, p.path.length() - 3)) {
             if (!std::isdigit(digit)) {
-                LogErr() << "COM port number invalid.";
+                LogErr("COM port number invalid.");
                 return false;
             }
         }
 
         if (p.path.length() == 3) {
-            LogErr() << "COM port number missing";
+            LogErr("COM port number missing");
             return false;
         }
     } else {
-        LogErr() << "serial port needs to start with / or COM on Windows";
+        LogErr("serial port needs to start with / or COM on Windows");
         return false;
     }
 
@@ -289,7 +289,7 @@ bool CliArg::parse_serial(const std::string_view rest, bool flow_control_enabled
     }
 
     if (value < 0) {
-        LogErr() << "Baudrate can't be negative.";
+        LogErr("Baudrate can't be negative.");
         return false;
     }
 
@@ -302,7 +302,7 @@ bool CliArg::parse_raw(const std::string_view rest)
 {
     // raw:// connection has no parameters
     if (!rest.empty()) {
-        LogErr() << "raw:// connection should not have parameters";
+        LogErr("raw:// connection should not have parameters");
         return false;
     }
 

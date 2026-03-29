@@ -30,11 +30,11 @@ MavsdkImpl::MavsdkImpl(const Mavsdk::Configuration& configuration) :
     timeout_handler(time),
     call_every_handler(time)
 {
-    LogInfo() << "MAVSDK version: " << mavsdk_version;
+    LogInfo("MAVSDK version: {}", mavsdk_version);
 
     if (const char* env_p = std::getenv("MAVSDK_CALLBACK_DEBUGGING")) {
         if (std::string(env_p) == "1") {
-            LogDebug() << "Callback debugging is on.";
+            LogDebug("Callback debugging is on.");
             _callback_debugging = true;
             _callback_tracker = std::make_unique<CallbackTracker>();
         }
@@ -42,14 +42,14 @@ MavsdkImpl::MavsdkImpl(const Mavsdk::Configuration& configuration) :
 
     if (const char* env_p = std::getenv("MAVSDK_MESSAGE_DEBUGGING")) {
         if (std::string(env_p) == "1") {
-            LogDebug() << "Message debugging is on.";
+            LogDebug("Message debugging is on.");
             _message_logging_on = true;
         }
     }
 
     if (const char* env_p = std::getenv("MAVSDK_SYSTEM_DEBUGGING")) {
         if (std::string(env_p) == "1") {
-            LogDebug() << "System debugging is on.";
+            LogDebug("System debugging is on.");
             _system_debugging = true;
         }
     }
@@ -219,7 +219,7 @@ std::shared_ptr<ServerComponent> MavsdkImpl::server_component(unsigned instance)
         case ComponentType::Custom:
             return server_component_by_type(component_type, instance);
         default:
-            LogErr() << "Unknown component type";
+            LogErr("Unknown component type");
             return {};
     }
 }
@@ -234,7 +234,7 @@ MavsdkImpl::server_component_by_type(ComponentType server_component_type, unsign
             if (instance == 0) {
                 return server_component_by_id(MAV_COMP_ID_AUTOPILOT1, mav_type);
             } else {
-                LogErr() << "Only autopilot instance 0 is valid";
+                LogErr("Only autopilot instance 0 is valid");
                 return {};
             }
 
@@ -242,7 +242,7 @@ MavsdkImpl::server_component_by_type(ComponentType server_component_type, unsign
             if (instance == 0) {
                 return server_component_by_id(MAV_COMP_ID_MISSIONPLANNER, mav_type);
             } else {
-                LogErr() << "Only one ground station supported at this time";
+                LogErr("Only one ground station supported at this time");
                 return {};
             }
 
@@ -256,7 +256,7 @@ MavsdkImpl::server_component_by_type(ComponentType server_component_type, unsign
             } else if (instance == 3) {
                 return server_component_by_id(MAV_COMP_ID_ONBOARD_COMPUTER4, mav_type);
             } else {
-                LogErr() << "Only companion computer 0..3 are supported";
+                LogErr("Only companion computer 0..3 are supported");
                 return {};
             }
 
@@ -274,7 +274,7 @@ MavsdkImpl::server_component_by_type(ComponentType server_component_type, unsign
             } else if (instance == 5) {
                 return server_component_by_id(MAV_COMP_ID_CAMERA6, mav_type);
             } else {
-                LogErr() << "Only camera 0..5 are supported";
+                LogErr("Only camera 0..5 are supported");
                 return {};
             }
 
@@ -282,7 +282,7 @@ MavsdkImpl::server_component_by_type(ComponentType server_component_type, unsign
             if (instance == 0) {
                 return server_component_by_id(MAV_COMP_ID_GIMBAL, mav_type);
             } else {
-                LogErr() << "Only gimbal instance 0 is valid";
+                LogErr("Only gimbal instance 0 is valid");
                 return {};
             }
 
@@ -290,16 +290,16 @@ MavsdkImpl::server_component_by_type(ComponentType server_component_type, unsign
             if (instance == 0) {
                 return server_component_by_id(MAV_COMP_ID_ODID_TXRX_1, mav_type);
             } else {
-                LogErr() << "Only remote ID instance 0 is valid";
+                LogErr("Only remote ID instance 0 is valid");
                 return {};
             }
 
         case ComponentType::Custom:
-            LogErr() << "Custom component type requires explicit component ID";
+            LogErr("Custom component type requires explicit component ID");
             return {};
 
         default:
-            LogErr() << "Unknown server component type";
+            LogErr("Unknown server component type");
             return {};
     }
 }
@@ -308,7 +308,7 @@ std::shared_ptr<ServerComponent>
 MavsdkImpl::server_component_by_id(uint8_t component_id, uint8_t mav_type)
 {
     if (component_id == 0) {
-        LogErr() << "Server component with component ID 0 not allowed";
+        LogErr("Server component with component ID 0 not allowed");
         return nullptr;
     }
 
@@ -373,7 +373,7 @@ void MavsdkImpl::forward_message(mavlink_message_t& message, Connection* connect
         }
         if (successful_emissions == 0) {
             if (_system_debugging) {
-                LogErr() << "Message forwarding failed";
+                LogErr("Message forwarding failed");
             }
         }
     }
@@ -431,8 +431,11 @@ void MavsdkImpl::process_message(mavlink_message_t& message, Connection* connect
     // Assumes _received_messages_mutex
 
     if (_message_logging_on) {
-        LogDebug() << "Processing message " << message.msgid << " from "
-                   << static_cast<int>(message.sysid) << "/" << static_cast<int>(message.compid);
+        LogDebug(
+            "Processing message {} from {}/{}",
+            static_cast<unsigned int>(message.msgid),
+            static_cast<int>(message.sysid),
+            static_cast<int>(message.compid));
     }
 
     if (_should_exit) {
@@ -456,7 +459,7 @@ void MavsdkImpl::process_message(mavlink_message_t& message, Connection* connect
             }
 
             if (!keep) {
-                LogDebug() << "Dropped incoming message: " << int(message.msgid);
+                LogDebug("Dropped incoming message: {}", int(message.msgid));
                 return;
             }
         }
@@ -482,9 +485,11 @@ void MavsdkImpl::process_message(mavlink_message_t& message, Connection* connect
             (mavsdk::Connection::forwarding_connections_count() > 1 ||
              !connection->should_forward_messages())) {
             if (_message_logging_on) {
-                LogDebug() << "Forwarding message " << message.msgid << " from "
-                           << static_cast<int>(message.sysid) << "/"
-                           << static_cast<int>(message.compid);
+                LogDebug(
+                    "Forwarding message {} from {}/{}",
+                    static_cast<unsigned int>(message.msgid),
+                    static_cast<int>(message.sysid),
+                    static_cast<int>(message.compid));
             }
             forward_message(message, connection);
         }
@@ -492,7 +497,7 @@ void MavsdkImpl::process_message(mavlink_message_t& message, Connection* connect
         // Don't ever create a system with sysid 0.
         if (message.sysid == 0) {
             if (_message_logging_on) {
-                LogDebug() << "Ignoring message with sysid == 0";
+                LogDebug("Ignoring message with sysid == 0");
             }
             return;
         }
@@ -509,7 +514,7 @@ void MavsdkImpl::process_message(mavlink_message_t& message, Connection* connect
         if (_configuration.get_component_type() == ComponentType::GroundStation &&
             message.sysid == 255 && message.compid == MAV_COMP_ID_MISSIONPLANNER) {
             if (_message_logging_on) {
-                LogDebug() << "Ignoring messages from QGC as we are also a ground station";
+                LogDebug("Ignoring messages from QGC as we are also a ground statio");
             }
             return;
         }
@@ -525,15 +530,14 @@ void MavsdkImpl::process_message(mavlink_message_t& message, Connection* connect
 
         if (!found_system) {
             if (_system_debugging) {
-                LogWarn() << "Create new system/component " << (int)message.sysid << "/"
-                          << (int)message.compid;
-                LogWarn() << "From message " << (int)message.msgid << " with len "
-                          << (int)message.len;
+                LogWarn(
+                    "Create new system/component {}/{}", (int)message.sysid, (int)message.compid);
+                LogWarn("From message {} with len {}", (int)message.msgid, (int)message.len);
                 std::string bytes = "";
                 for (unsigned i = 0; i < 12 + message.len; ++i) {
                     bytes += std::to_string(reinterpret_cast<uint8_t*>(&message)[i]) + ' ';
                 }
-                LogWarn() << "Bytes: " << bytes;
+                LogWarn("Bytes: {}", bytes);
             }
             make_system_with_component(message.sysid, message.compid);
 
@@ -564,25 +568,28 @@ void MavsdkImpl::process_libmav_message(
     // Assumes _received_libmav_messages_mutex
 
     if (_message_logging_on) {
-        LogDebug() << "MavsdkImpl::process_libmav_message: " << message.message_name << " from "
-                   << static_cast<int>(message.system_id) << "/"
-                   << static_cast<int>(message.component_id);
+        LogDebug(
+            "MavsdkImpl::process_libmav_message: {} from {}/{}",
+            message.message_name,
+            static_cast<int>(message.system_id),
+            static_cast<int>(message.component_id));
     }
 
     // JSON message interception for incoming messages
     if (!call_json_interception_callbacks(message, _incoming_json_message_subscriptions)) {
         // Message was dropped by interception callback
         if (_message_logging_on) {
-            LogDebug() << "Incoming JSON message " << message.message_name
-                       << " dropped by interception";
+            LogDebug("Incoming JSON message {} dropped by interceptio", message.message_name);
         }
         return;
     }
 
     if (_message_logging_on) {
-        LogDebug() << "Processing libmav message " << message.message_name << " from "
-                   << static_cast<int>(message.system_id) << "/"
-                   << static_cast<int>(message.component_id);
+        LogDebug(
+            "Processing libmav message {} from {}/{}",
+            message.message_name,
+            static_cast<int>(message.system_id),
+            static_cast<int>(message.component_id));
     }
 
     if (_should_exit) {
@@ -596,7 +603,7 @@ void MavsdkImpl::process_libmav_message(
         // Don't ever create a system with sysid 0.
         if (message.system_id == 0) {
             if (_message_logging_on) {
-                LogDebug() << "Ignoring libmav message with sysid == 0";
+                LogDebug("Ignoring libmav message with sysid == 0");
             }
             return;
         }
@@ -605,7 +612,7 @@ void MavsdkImpl::process_libmav_message(
         if (_configuration.get_component_type() == ComponentType::GroundStation &&
             message.system_id == 255 && message.component_id == MAV_COMP_ID_MISSIONPLANNER) {
             if (_message_logging_on) {
-                LogDebug() << "Ignoring libmav messages from QGC as we are also a ground station";
+                LogDebug("Ignoring libmav messages from QGC as we are also a ground statio");
             }
             return;
         }
@@ -621,8 +628,10 @@ void MavsdkImpl::process_libmav_message(
 
         if (!found_system) {
             if (_system_debugging) {
-                LogWarn() << "Create new system/component from libmav " << (int)message.system_id
-                          << "/" << (int)message.component_id;
+                LogWarn(
+                    "Create new system/component from libmav {}/{}",
+                    (int)message.system_id,
+                    (int)message.component_id);
             }
             make_system_with_component(message.system_id, message.component_id);
 
@@ -642,8 +651,10 @@ void MavsdkImpl::process_libmav_message(
     for (auto& system : _systems) {
         if (system.first == message.system_id) {
             if (_message_logging_on) {
-                LogDebug() << "Distributing libmav message " << message.message_name
-                           << " to SystemImpl for system " << system.first;
+                LogDebug(
+                    "Distributing libmav message {} to SystemImpl for system {}",
+                    message.message_name,
+                    system.first);
             }
             system.second->system_impl()->process_libmav_message(message);
             found_system = true;
@@ -652,8 +663,10 @@ void MavsdkImpl::process_libmav_message(
     }
 
     if (!found_system) {
-        LogWarn() << "No system found for libmav message " << message.message_name
-                  << " from system " << message.system_id;
+        LogWarn(
+            "No system found for libmav message {} from system {}",
+            message.message_name,
+            message.system_id);
     }
 }
 
@@ -697,10 +710,13 @@ void MavsdkImpl::deliver_messages()
 void MavsdkImpl::deliver_message(mavlink_message_t& message)
 {
     if (_message_logging_on) {
-        LogDebug() << "Sending message " << message.msgid << " from "
-                   << static_cast<int>(message.sysid) << "/" << static_cast<int>(message.compid)
-                   << " to " << static_cast<int>(get_target_system_id(message)) << "/"
-                   << static_cast<int>(get_target_component_id(message));
+        LogDebug(
+            "Sending message {} from {}/{} to {}/{}",
+            static_cast<unsigned int>(message.msgid),
+            static_cast<int>(message.sysid),
+            static_cast<int>(message.compid),
+            static_cast<int>(get_target_system_id(message)),
+            static_cast<int>(get_target_component_id(message)));
     }
 
     // This is a low level interface where outgoing messages can be tampered
@@ -717,7 +733,7 @@ void MavsdkImpl::deliver_message(mavlink_message_t& message)
         // We fake that everything was sent as instructed because
         // a potential loss would happen later, and we would not be informed
         // about it.
-        LogDebug() << "Dropped outgoing message: " << int(message.msgid);
+        LogDebug("Dropped outgoing message: {}", int(message.msgid));
         return;
     }
 
@@ -752,12 +768,13 @@ void MavsdkImpl::deliver_message(mavlink_message_t& message)
             json_message.target_component_id = 0;
         }
 
-        // Generate JSON using LibmavReceiver's public method
+        // Generate JSON using LibmavReceiver's public method.
+        // Capture the shared_ptr once so that even if stop_libmav_receiver() is
+        // called concurrently the object stays alive for the duration of this block.
         auto connections = get_connections();
-        if (!connections.empty() && connections[0]->get_libmav_receiver()) {
-            json_message.fields_json =
-                connections[0]->get_libmav_receiver()->libmav_message_to_json(
-                    libmav_msg_opt.value());
+        auto receiver = connections.empty() ? nullptr : connections[0]->get_libmav_receiver();
+        if (receiver) {
+            json_message.fields_json = receiver->libmav_message_to_json(libmav_msg_opt.value());
         } else {
             // Fallback: create minimal JSON if no receiver available
             json_message.fields_json =
@@ -768,8 +785,8 @@ void MavsdkImpl::deliver_message(mavlink_message_t& message)
         if (!call_json_interception_callbacks(json_message, _outgoing_json_message_subscriptions)) {
             // Message was dropped by JSON interception callback
             if (_message_logging_on) {
-                LogDebug() << "Outgoing JSON message " << json_message.message_name
-                           << " dropped by interception";
+                LogDebug(
+                    "Outgoing JSON message {} dropped by interceptio", json_message.message_name);
             }
             return;
         }
@@ -801,7 +818,7 @@ void MavsdkImpl::deliver_message(mavlink_message_t& message)
     }
 
     if (successful_emissions == 0) {
-        LogErr() << "Sending message failed";
+        LogErr("Sending message failed");
     }
 }
 
@@ -981,7 +998,7 @@ MavsdkImpl::add_raw_connection(ForwardingOption forwarding_option)
 {
     // Check if a raw connection already exists
     if (find_raw_connection() != nullptr) {
-        LogErr() << "Raw connection already exists. Only one raw connection is allowed.";
+        LogErr("Raw connection already exists. Only one raw connection is allowed.");
         return {ConnectionResult::ConnectionError, Mavsdk::ConnectionHandle{}};
     }
 
@@ -1149,7 +1166,7 @@ void MavsdkImpl::make_system_with_component(uint8_t system_id, uint8_t comp_id)
     }
 
     if (static_cast<int>(system_id) == 0 && static_cast<int>(comp_id) == 0) {
-        LogDebug() << "Initializing connection to remote system...";
+        LogDebug("Initializing connection to remote system...");
     }
 
     // Make a system with its first component
@@ -1300,16 +1317,14 @@ void MavsdkImpl::call_user_callback_located(
         return;
 
     } else if (callback_size == 99) {
-        LogErr()
-            << "User callback queue overflown\n"
-               "See: https://mavsdk.mavlink.io/main/en/cpp/troubleshooting.html#user_callbacks";
+        LogErr(
+            "User callback queue overflown\nSee: https://mavsdk.mavlink.io/main/en/cpp/troubleshooting.html#user_callbacks");
         return;
 
     } else if (callback_size >= 10) {
-        LogWarn()
-            << "User callback queue slow (queue size: " << callback_size
-            << ").\n"
-               "See: https://mavsdk.mavlink.io/main/en/cpp/troubleshooting.html#user_callbacks";
+        LogWarn(
+            "User callback queue slow (queue size: {}).\nSee: https://mavsdk.mavlink.io/main/en/cpp/troubleshooting.html#user_callbacks",
+            callback_size);
     }
 
     // We only need to keep track of filename and linenumber if we're actually debugging this.
@@ -1343,16 +1358,18 @@ void MavsdkImpl::process_user_callbacks_thread()
         auto cookie = timeout_handler.add(
             [&]() {
                 if (_callback_debugging) {
-                    LogWarn() << "Callback called from " << callback.filename << ":"
-                              << callback.linenumber << " took more than " << timeout_s
-                              << " second to run.";
+                    LogWarn(
+                        "Callback called from {}:{} took more than {} second to run.",
+                        callback.filename,
+                        callback.linenumber,
+                        static_cast<int>(timeout_s));
                     fflush(stdout);
                     fflush(stderr);
                     abort();
                 } else {
-                    LogWarn()
-                        << "Callback took more than " << timeout_s << " second to run.\n"
-                        << "See: https://mavsdk.mavlink.io/main/en/cpp/troubleshooting.html#user_callbacks";
+                    LogWarn(
+                        "Callback took more than {} second to run.\nSee: https://mavsdk.mavlink.io/main/en/cpp/troubleshooting.html#user_callbacks",
+                        static_cast<int>(timeout_s));
                 }
             },
             timeout_s);
@@ -1512,8 +1529,7 @@ void MavsdkImpl::pass_received_raw_bytes(const char* bytes, size_t length)
 {
     auto* raw_conn = find_raw_connection();
     if (raw_conn == nullptr) {
-        LogErr()
-            << "No raw connection available. Please add one using add_any_connection(\"raw://\")";
+        LogErr("No raw connection available. Please add one using add_any_connection(\"raw://\")");
         return;
     }
 
@@ -1524,8 +1540,8 @@ Mavsdk::RawBytesHandle
 MavsdkImpl::subscribe_raw_bytes_to_be_sent(const Mavsdk::RawBytesCallback& callback)
 {
     if (find_raw_connection() == nullptr) {
-        LogWarn() << "No raw connection available. Subscription will only receive bytes after you "
-                     "add a connection using add_any_connection(\"raw://\")";
+        LogWarn("No raw connection available. Subscription will only receive bytes after you "
+                "add a connection using add_any_connection(\"raw://\")");
     }
     return _raw_bytes_subscriptions.subscribe(callback);
 }

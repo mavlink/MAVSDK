@@ -9,8 +9,8 @@ namespace mavsdk {
  * object, that can handle different types of parameters. For example:
  *
  * overloaded {
- *     [](auto value) { LogErr() << "Got an unexpected type"; },
- *     [](uint32_t value) { LogDebug() << "Got an expected type"; }
+ *     [](auto value) { LogErr("Got an unexpected type"); },
+ *     [](uint32_t value) { LogDebug("Got an expected type"); }
  * }((uint32_t) 100);
  *
  * This is especially useful for creating callback functions to handle different parameter types

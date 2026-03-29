@@ -100,7 +100,7 @@ MavlinkParameterCache::param_by_index(uint16_t param_index, bool including_exten
 {
     const auto& params = all_parameters(including_extended);
     if (param_index >= params.size()) {
-        LogErr() << "param at " << (int)param_index << " out of bounds (" << params.size() << ")";
+        LogErr("param at {} out of bounds ({})", (int)param_index, params.size());
         return {};
     }
 
@@ -187,23 +187,23 @@ void MavlinkParameterCache::print_missing(uint16_t count)
         return lhs.index < rhs.index;
     });
 
-    LogDebug() << "Available: ";
+    LogDebug("Available: ");
     for (auto param : _all_params) {
-        LogDebug() << param.index << ": " << param.id;
+        LogDebug("{}: {}", param.index, param.id);
     }
-    LogDebug() << "Available count: " << _all_params.size();
+    LogDebug("Available count: {}", _all_params.size());
 
     unsigned missing = 0;
-    LogDebug() << "Missing: ";
+    LogDebug("Missing: ");
     for (unsigned i = 0; i < count; ++i) {
         if (!exists(i)) {
             // We have reached the end but it's not complete yet.
-            LogDebug() << i;
+            LogDebug("{}", i);
             ++missing;
         }
     }
 
-    LogDebug() << "Missing count: " << missing;
+    LogDebug("Missing count: {}", missing);
 }
 
 } // namespace mavsdk

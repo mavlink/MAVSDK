@@ -40,8 +40,14 @@ public:
     bool should_forward_messages() const;
     static unsigned forwarding_connections_count();
 
-    // Access to libmav receiver for message creation
-    LibmavReceiver* get_libmav_receiver() { return _libmav_receiver.get(); }
+    // Access to libmav receiver for message creation.
+    // Returns a shared_ptr so the caller can safely use the object even if
+    // stop_libmav_receiver() is called concurrently on another thread.
+    std::shared_ptr<LibmavReceiver> get_libmav_receiver()
+    {
+        std::lock_guard<std::mutex> lock(_libmav_receiver_mutex);
+        return _libmav_receiver;
+    }
 
     // Non-copyable
     Connection(const Connection&) = delete;
@@ -61,7 +67,8 @@ protected:
     LibmavReceiverCallback _libmav_receiver_callback{};
     MavsdkImpl& _mavsdk_impl; // For thread-safe MessageSet access
     std::unique_ptr<MavlinkReceiver> _mavlink_receiver;
-    std::unique_ptr<LibmavReceiver> _libmav_receiver;
+    std::shared_ptr<LibmavReceiver> _libmav_receiver; // guarded by _libmav_receiver_mutex
+    mutable std::mutex _libmav_receiver_mutex;
     ForwardingOption _forwarding_option;
     std::mutex _system_ids_mutex;
     std::unordered_set<uint8_t> _system_ids;

@@ -154,3 +154,8 @@ private:
 };
 
 } // namespace mavsdk
+
+#include "std_format.h"
+MAVSDK_DEFINE_FORMATTER(mavsdk::Gripper::GripperAction)
+
+MAVSDK_DEFINE_FORMATTER(mavsdk::Gripper::Result)

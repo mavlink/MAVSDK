@@ -56,7 +56,7 @@ ConnectionResult TcpServerConnection::start()
 #ifdef WINDOWS
     WSADATA wsa;
     if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0) {
-        LogErr() << "Error: Winsock failed, error: " << get_socket_error_string(WSAGetLastError());
+        LogErr("Error: Winsock failed, error: {}", get_socket_error_string(WSAGetLastError()));
         return ConnectionResult::SocketError;
     }
 #endif
@@ -65,7 +65,7 @@ ConnectionResult TcpServerConnection::start()
 
     _server_socket_fd.reset(socket(AF_INET, SOCK_STREAM, 0));
     if (_server_socket_fd.empty()) {
-        LogErr() << "socket error: " << strerror(errno);
+        LogErr("socket error: {}", strerror(errno));
         return ConnectionResult::SocketError;
     }
 
@@ -86,12 +86,12 @@ ConnectionResult TcpServerConnection::start()
             _server_socket_fd.get(),
             reinterpret_cast<sockaddr*>(&server_addr),
             sizeof(server_addr)) < 0) {
-        LogErr() << "bind error: " << strerror(errno);
+        LogErr("bind error: {}", strerror(errno));
         return ConnectionResult::SocketError;
     }
 
     if (listen(_server_socket_fd.get(), 3) < 0) {
-        LogErr() << "listen error: " << strerror(errno);
+        LogErr("listen error: {}", strerror(errno));
         return ConnectionResult::SocketError;
     }
 
@@ -148,7 +148,7 @@ void TcpServerConnection::accept_client()
     u_long iMode = 1;
     int iResult = ioctlsocket(server_socket_fd, FIONBIO, &iMode);
     if (iResult != 0) {
-        LogErr() << "ioctlsocket failed with error: " << get_socket_error_string(WSAGetLastError());
+        LogErr("ioctlsocket failed with error: {}", get_socket_error_string(WSAGetLastError()));
     }
 #else
     // Set server socket to non-blocking
@@ -169,7 +169,7 @@ void TcpServerConnection::accept_client()
         const int activity = select(server_socket_fd + 1, &readfds, nullptr, nullptr, &timeout);
 
         if (activity < 0 && errno != EINTR) {
-            LogErr() << "select error: " << strerror(errno);
+            LogErr("select error: {}", strerror(errno));
             continue;
         }
 
@@ -189,7 +189,7 @@ void TcpServerConnection::accept_client()
                 if (_should_exit) {
                     return;
                 }
-                LogErr() << "accept error: " << strerror(errno);
+                LogErr("accept error: {}", strerror(errno));
                 continue;
             }
 
@@ -258,19 +258,19 @@ void TcpServerConnection::receive()
             // Connection reset - if shutting down, exit quietly; otherwise log and exit
             if (errno == ECONNRESET) {
                 if (!_should_exit) {
-                    LogErr() << "recv failed: " << strerror(errno);
+                    LogErr("recv failed: {}", strerror(errno));
                 }
                 return;
             }
 
-            LogErr() << "recv failed: " << strerror(errno);
+            LogErr("recv failed: {}", strerror(errno));
             return;
         }
 #endif
 
         if (recv_len == 0) {
             // Client disconnected, close the socket and go back to accept new connections
-            LogInfo() << "TCP client disconnected, waiting for new connection...";
+            LogInfo("TCP client disconnected, waiting for new connection...");
             {
                 std::lock_guard<std::mutex> lock(_mutex);
                 _client_socket_fd.close();
@@ -330,12 +330,12 @@ std::pair<bool, std::string> TcpServerConnection::send_raw_bytes(const char* byt
         int err = WSAGetLastError();
         ss << "Send failure: " << get_socket_error_string(err);
         if (err != WSAECONNRESET || !_should_exit) {
-            LogErr() << ss.str();
+            LogErr("{}", ss.str());
         }
 #else
         ss << "Send failure: " << strerror(errno);
         if (errno != EPIPE || !_should_exit) {
-            LogErr() << ss.str();
+            LogErr("{}", ss.str());
         }
 #endif
         result.first = false;

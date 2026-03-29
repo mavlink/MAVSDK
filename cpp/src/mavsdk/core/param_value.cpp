@@ -61,8 +61,7 @@ bool ParamValue::set_from_mavlink_param_value_bytewise(const mavlink_param_value
 
         default:
             // This would be worrying
-            LogErr() << "Error: unknown mavlink param type: "
-                     << std::to_string(mavlink_value.param_type);
+            LogErr("Error: unknown mavlink param type: {}", mavlink_value.param_type);
             return false;
     }
     return true;
@@ -102,8 +101,7 @@ bool ParamValue::set_from_mavlink_param_value_cast(const mavlink_param_value_t& 
 
         default:
             // This would be worrying
-            LogErr() << "Error: unknown mavlink param type: "
-                     << std::to_string(mavlink_value.param_type);
+            LogErr("Error: unknown mavlink param type: {}", mavlink_value.param_type);
             return false;
     }
     return true;
@@ -187,7 +185,7 @@ bool ParamValue::set_from_mavlink_param_ext_set(const mavlink_param_ext_set_t& m
         } break;
         default:
             // This would be worrying
-            LogErr() << "Error: unknown mavlink ext param type";
+            LogErr("Error: unknown mavlink ext param type");
             assert(false);
             return false;
     }
@@ -256,7 +254,7 @@ bool ParamValue::set_from_mavlink_param_ext_value(
         } break;
         default:
             // This would be worrying
-            LogErr() << "Error: unknown mavlink ext param type";
+            LogErr("Error: unknown mavlink ext param type");
             assert(false);
             return false;
     }
@@ -289,7 +287,7 @@ bool ParamValue::set_from_xml(const std::string& type_str, const std::string& va
     } else if (type_str == "double") {
         _value = static_cast<double>(std::stod(value_str));
     } else {
-        LogErr() << "Unknown type: " << type_str;
+        LogErr("Unknown type: {}", type_str);
         return false;
     }
     return true;
@@ -320,7 +318,7 @@ bool ParamValue::set_empty_type_from_xml(const std::string& type_str)
     } else if (type_str == "double") {
         _value = 0.0;
     } else {
-        LogErr() << "Unknown type: " << type_str;
+        LogErr("Unknown type: {}", type_str);
         return false;
     }
     return true;
@@ -349,7 +347,7 @@ bool ParamValue::set_empty_type_from_xml(const std::string& type_str)
     } else if (std::get_if<double>(&_value)) {
         return MAV_PARAM_TYPE_REAL64;
     } else {
-        LogErr() << "Unknown data type for param.";
+        LogErr("Unknown data type for param.");
         assert(false);
         return MAV_PARAM_TYPE_INT32;
     }
@@ -380,7 +378,7 @@ bool ParamValue::set_empty_type_from_xml(const std::string& type_str)
     } else if (std::get_if<std::string>(&_value)) {
         return MAV_PARAM_EXT_TYPE_CUSTOM;
     } else {
-        LogErr() << "Unknown data type for param.";
+        LogErr("Unknown data type for param.");
         assert(false);
         return MAV_PARAM_EXT_TYPE_INT32;
     }
@@ -409,7 +407,7 @@ bool ParamValue::set_as_same_type(const std::string& value_str)
     } else if (std::get_if<double>(&_value)) {
         _value = double(std::stod(value_str));
     } else {
-        LogErr() << "Unknown type";
+        LogErr("Unknown type");
         return false;
     }
     return true;
@@ -422,7 +420,7 @@ bool ParamValue::set_as_same_type(const std::string& value_str)
     } else if (std::get_if<int32_t>(&_value)) {
         return *(reinterpret_cast<const float*>(&std::get<int32_t>(_value)));
     } else {
-        LogErr() << "Unknown type";
+        LogErr("Unknown type");
         assert(false);
         return NAN;
     }
@@ -445,7 +443,7 @@ bool ParamValue::set_as_same_type(const std::string& value_str)
     } else if (std::get_if<int8_t>(&_value)) {
         return static_cast<float>(std::get<int8_t>(_value));
     } else {
-        LogErr() << "Unknown type";
+        LogErr("Unknown type");
         assert(false);
         return NAN;
     }
@@ -466,7 +464,7 @@ bool ParamValue::set_as_same_type(const std::string& value_str)
     } else if (std::get_if<int8_t>(&_value)) {
         return static_cast<int>(std::get<int8_t>(_value));
     } else {
-        LogErr() << "Not int type";
+        LogErr("Not int type");
         return {};
     }
 }
@@ -511,7 +509,7 @@ void ParamValue::set_custom(const std::string& new_value)
     if (std::get_if<float>(&_value)) {
         return std::get<float>(_value);
     } else {
-        LogErr() << "Not float type";
+        LogErr("Not float type");
         return {};
     }
 }
@@ -521,7 +519,7 @@ void ParamValue::set_custom(const std::string& new_value)
     if (std::get_if<std::string>(&_value)) {
         return std::get<std::string>(_value);
     } else {
-        LogErr() << "Not custom type";
+        LogErr("Not custom type");
         return {};
     }
 }
@@ -555,7 +553,7 @@ std::array<char, 128> ParamValue::get_128_bytes() const
         // Copy all data in string, max 128 bytes
         memcpy(bytes.data(), str_ptr->data(), std::min(bytes.size(), str_ptr->size()));
     } else {
-        LogErr() << "Unknown type";
+        LogErr("Unknown type");
         assert(false);
     }
 
@@ -591,18 +589,17 @@ std::array<char, 128> ParamValue::get_128_bytes() const
          std::get_if<uint16_t>(&rhs._value) || std::get_if<int16_t>(&rhs._value) ||
          std::get_if<uint32_t>(&rhs._value) || std::get_if<int32_t>(&rhs._value) ||
          std::get_if<uint64_t>(&rhs._value) || std::get_if<int64_t>(&rhs._value))) {
-        LogDebug() << "Ignoring int mismatch between " << typestr() << " and " << rhs.typestr();
+        LogDebug("Ignoring int mismatch between {} and {}", typestr(), rhs.typestr());
         return true;
     }
 
     if ((std::get_if<float>(&_value) || std::get_if<double>(&_value)) &&
         (std::get_if<float>(&rhs._value) || std::get_if<double>(&rhs._value))) {
-        LogDebug() << "Ignoring float/double mismatch between " << typestr() << " and "
-                   << rhs.typestr();
+        LogDebug("Ignoring float/double mismatch between {} and {}", typestr(), rhs.typestr());
         return true;
     }
 
-    LogWarn() << "Comparison type mismatch between " << typestr() << " and " << rhs.typestr();
+    LogWarn("Comparison type mismatch between {} and {}", typestr(), rhs.typestr());
     return false;
 }
 

@@ -174,3 +174,8 @@ private:
 };
 
 } // namespace mavsdk
+
+#include "std_format.h"
+MAVSDK_DEFINE_FORMATTER(mavsdk::Tune::SongElement)
+
+MAVSDK_DEFINE_FORMATTER(mavsdk::Tune::Result)

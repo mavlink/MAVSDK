@@ -46,7 +46,7 @@ public:
     {
         switch (result) {
             default:
-                LogErr() << "Unknown result enum value: " << static_cast<int>(result);
+                LogErr("Unknown result enum value: {}", static_cast<int>(result));
             // FALLTHROUGH
             case mavsdk::Shell::Result::Unknown:
                 return rpc::shell::ShellResult_Result_RESULT_UNKNOWN;
@@ -68,7 +68,7 @@ public:
     {
         switch (result) {
             default:
-                LogErr() << "Unknown result enum value: " << static_cast<int>(result);
+                LogErr("Unknown result enum value: {}", static_cast<int>(result));
             // FALLTHROUGH
             case rpc::shell::ShellResult_Result_RESULT_UNKNOWN:
                 return mavsdk::Shell::Result::Unknown;
@@ -100,7 +100,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "Send sent with a null request! Ignoring...";
+            LogWarn("Send sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 

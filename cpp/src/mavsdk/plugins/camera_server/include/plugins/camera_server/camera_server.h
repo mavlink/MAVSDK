@@ -1060,3 +1060,14 @@ private:
 };
 
 } // namespace mavsdk
+
+#include "std_format.h"
+MAVSDK_DEFINE_FORMATTER(mavsdk::CameraServer::CameraFeedback)
+MAVSDK_DEFINE_FORMATTER(mavsdk::CameraServer::Mode)
+
+MAVSDK_DEFINE_FORMATTER(mavsdk::CameraServer::Result)
+
+MAVSDK_DEFINE_FORMATTER(mavsdk::CameraServer::StorageInformation::StorageStatus)
+MAVSDK_DEFINE_FORMATTER(mavsdk::CameraServer::StorageInformation::StorageType)
+MAVSDK_DEFINE_FORMATTER(mavsdk::CameraServer::CaptureStatus::ImageStatus)
+MAVSDK_DEFINE_FORMATTER(mavsdk::CameraServer::CaptureStatus::VideoStatus)

@@ -70,7 +70,7 @@ ConnectionResult TcpClientConnection::setup_port()
 #ifdef WINDOWS
     WSADATA wsa;
     if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0) {
-        LogErr() << "Error: Winsock failed, error: " << get_socket_error_string(WSAGetLastError());
+        LogErr("Error: Winsock failed, error: {}", get_socket_error_string(WSAGetLastError()));
         return ConnectionResult::SocketError;
     }
 #endif
@@ -80,7 +80,7 @@ ConnectionResult TcpClientConnection::setup_port()
     int new_fd = socket(AF_INET, SOCK_STREAM, 0);
 
     if (new_fd < 0) {
-        LogErr() << "socket error" << strerror(errno);
+        LogErr("socket error{}", strerror(errno));
         return ConnectionResult::SocketError;
     }
 
@@ -91,7 +91,7 @@ ConnectionResult TcpClientConnection::setup_port()
     struct hostent* hp;
     hp = gethostbyname(_remote_ip.c_str());
     if (hp == nullptr) {
-        LogErr() << "Could not get host by name";
+        LogErr("Could not get host by name");
         return ConnectionResult::SocketConnectionError;
     }
 
@@ -99,7 +99,7 @@ ConnectionResult TcpClientConnection::setup_port()
 
     if (connect(new_fd, reinterpret_cast<sockaddr*>(&remote_addr), sizeof(struct sockaddr_in)) <
         0) {
-        LogErr() << "Connect error: " << strerror(errno);
+        LogErr("Connect error: {}", strerror(errno));
         return ConnectionResult::SocketConnectionError;
     }
 
@@ -162,14 +162,14 @@ std::pair<bool, std::string> TcpClientConnection::send_raw_bytes(const char* byt
     if (_remote_ip.empty()) {
         result.first = false;
         result.second = "Remote IP unknown";
-        LogErr() << result.second;
+        LogErr("{}", result.second);
         return result;
     }
 
     if (_remote_port_number == 0) {
         result.first = false;
         result.second = "Remote port unknown";
-        LogErr() << result.second;
+        LogErr("{}", result.second);
         return result;
     }
 
@@ -193,7 +193,7 @@ std::pair<bool, std::string> TcpClientConnection::send_raw_bytes(const char* byt
     if (send_len != static_cast<std::remove_cv_t<decltype(send_len)>>(length)) {
         std::stringstream ss;
         ss << "Send failure: " << strerror(errno);
-        LogErr() << ss.str();
+        LogErr("{}", ss.str());
         result.first = false;
         result.second = ss.str();
         return result;
@@ -231,7 +231,7 @@ void TcpClientConnection::receive()
 
         if (recv_len == 0) {
             // Connection closed, just try again.
-            LogInfo() << "TCP connection closed, trying to reconnect...";
+            LogInfo("TCP connection closed, trying to reconnect...");
             std::this_thread::sleep_for(std::chrono::seconds(1));
             setup_port();
             continue;
@@ -244,14 +244,13 @@ void TcpClientConnection::receive()
                 // Timeout, just try again.
                 continue;
             }
-            LogErr() << "TCP receive error: " << get_socket_error_string(err)
-                     << ", trying to reconnect...";
+            LogErr("TCP receive error: {}, trying to reconnect...", get_socket_error_string(err));
 #else
             if (errno == EAGAIN || errno == ETIMEDOUT) {
                 // Timeout, just try again.
                 continue;
             }
-            LogErr() << "TCP receive error: " << strerror(errno) << ", trying to reconnect...";
+            LogErr("TCP receive error: {}, trying to reconnect...", strerror(errno));
 #endif
             std::this_thread::sleep_for(std::chrono::seconds(1));
             setup_port();

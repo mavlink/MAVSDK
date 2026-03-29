@@ -4,6 +4,7 @@
 #include <iostream>
 #include <cstdio>
 #include <fstream>
+#include <sstream>
 #include <string>
 
 namespace mavsdk {
@@ -37,12 +38,11 @@ bool CurlWrapper::download_text(const std::string& url, std::string& content)
         if (res == CURLcode::CURLE_OK) {
             return true;
         } else {
-            LogErr() << "Error while downloading text, curl error code: "
-                     << curl_easy_strerror(res);
+            LogErr("Error while downloading text, curl error code: {}", curl_easy_strerror(res));
             return false;
         }
     } else {
-        LogErr() << "Error: cannot start uploading because of curl initialization error. ";
+        LogErr("Error: cannot start uploading because of curl initialization error. ");
         return false;
     }
 }
@@ -125,12 +125,11 @@ bool CurlWrapper::download_file_to_path(
                 progress_callback(0, HttpStatus::Error, res);
             }
             remove(path.c_str());
-            LogErr() << "Error while downloading file, curl error code: "
-                     << curl_easy_strerror(res);
+            LogErr("Error while downloading file, curl error code: {}", curl_easy_strerror(res));
             return false;
         }
     } else {
-        LogErr() << "Error: cannot start downloading file because of curl initialization error. ";
+        LogErr("Error: cannot start downloading file because of curl initialization error. ");
         return false;
     }
 }
