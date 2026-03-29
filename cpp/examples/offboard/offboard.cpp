@@ -23,7 +23,9 @@ using std::this_thread::sleep_for;
 
 void usage(const std::string& bin_name)
 {
-    std::cerr << std::format("Usage : {} <connection_url>\nConnection URL format should be :\n For TCP server: tcpin://<our_ip>:<port>\n For TCP client: tcpout://<remote_ip>:<port>\n For UDP server: udpin://<our_ip>:<port>\n For UDP client: udpout://<remote_ip>:<port>\n For Serial : serial://</path/to/serial/dev>:<baudrate>]\nFor example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n", bin_name);
+    std::cerr << std::format(
+        "Usage : {} <connection_url>\nConnection URL format should be :\n For TCP server: tcpin://<our_ip>:<port>\n For TCP client: tcpout://<remote_ip>:<port>\n For UDP server: udpin://<our_ip>:<port>\n For UDP client: udpout://<remote_ip>:<port>\n For Serial : serial://</path/to/serial/dev>:<baudrate>]\nFor example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n",
+        bin_name);
 }
 
 //
@@ -152,7 +154,8 @@ bool offb_ctrl_pos_global(mavsdk::Offboard& offboard, mavsdk::Telemetry& telemet
         180.0f,
         Offboard::PositionGlobalYaw::AltitudeType::Amsl};
     offboard.set_position_global(home);
-    std::cout << std::format("Going Home facing south at {}m AMSL altitude\n", (origin.altitude_m + 10.0f));
+    std::cout << std::format(
+        "Going Home facing south at {}m AMSL altitude\n", (origin.altitude_m + 10.0f));
     sleep_for(seconds(10));
 
     offboard_result = offboard.stop();

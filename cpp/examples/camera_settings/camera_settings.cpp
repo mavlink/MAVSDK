@@ -21,7 +21,9 @@ using std::this_thread::sleep_for;
 
 void usage(std::string bin_name)
 {
-    std::cerr << std::format("Usage : {} <connection_url>\nConnection URL format should be :\n For TCP server: tcpin://<our_ip>:<port>\n For TCP client: tcpout://<remote_ip>:<port>\n For UDP server: udpin://<our_ip>:<port>\n For UDP client: udpout://<remote_ip>:<port>\n For Serial : serial://</path/to/serial/dev>:<baudrate>]\nFor example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n", bin_name);
+    std::cerr << std::format(
+        "Usage : {} <connection_url>\nConnection URL format should be :\n For TCP server: tcpin://<our_ip>:<port>\n For TCP client: tcpout://<remote_ip>:<port>\n For UDP server: udpin://<our_ip>:<port>\n For UDP client: udpout://<remote_ip>:<port>\n For Serial : serial://</path/to/serial/dev>:<baudrate>]\nFor example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n",
+        bin_name);
 }
 
 struct CurrentSettings {
@@ -37,7 +39,8 @@ void show_settings(const CurrentSettings& current_settings)
     {
         std::lock_guard<std::mutex> lock(current_settings.mutex);
         for (const auto& setting : current_settings.settings) {
-            std::cout << std::format("  - {}: {}\n", setting.setting_description, setting.option.option_description);
+            std::cout << std::format(
+                "  - {}: {}\n", setting.setting_description, setting.option.option_description);
         }
     }
 }
@@ -81,7 +84,11 @@ bool choose_setting(
             std::cout << std::format("Options for {}:\n", setting_option.setting_description);
             unsigned index = 1;
             for (const auto& option : setting_option.options) {
-                std::cout << std::format("  {}: {}{}\n", index++, option.option_description, (option.option_id == current_option_id ? " (currently set)" : ""));
+                std::cout << std::format(
+                    "  {}: {}{}\n",
+                    index++,
+                    option.option_description,
+                    (option.option_id == current_option_id ? " (currently set)" : ""));
             }
 
             std::cout << "\n"

@@ -25,7 +25,16 @@ enum class DisplayMode {
 
 void usage(const std::string& bin_name)
 {
-    std::cerr << std::format("Usage:\n  {} <connection_url> list\n  {} <connection_url> stat\n  {} <connection_url> all\n  {} <connection_url> <message_name1> [message_name2] ...\n\nExamples:\n  {} udpin://0.0.0.0:14540 list\n  {} udpin://0.0.0.0:14540 stat\n  {} udpin://0.0.0.0:14540 all\n  {} udpin://0.0.0.0:14540 GPS_RAW_INT HEARTBEAT\n\nConnection URL format:\n  TCP server : tcpin://<our_ip>:<port>\n  TCP client : tcpout://<remote_ip>:<port>\n  UDP server : udpin://<our_ip>:<port>\n  UDP client : udpout://<remote_ip>:<port>\n  Serial     : serial://</path/to/serial/dev>:<baudrate>\n", bin_name, bin_name, bin_name, bin_name, bin_name, bin_name, bin_name, bin_name);
+    std::cerr << std::format(
+        "Usage:\n  {} <connection_url> list\n  {} <connection_url> stat\n  {} <connection_url> all\n  {} <connection_url> <message_name1> [message_name2] ...\n\nExamples:\n  {} udpin://0.0.0.0:14540 list\n  {} udpin://0.0.0.0:14540 stat\n  {} udpin://0.0.0.0:14540 all\n  {} udpin://0.0.0.0:14540 GPS_RAW_INT HEARTBEAT\n\nConnection URL format:\n  TCP server : tcpin://<our_ip>:<port>\n  TCP client : tcpout://<remote_ip>:<port>\n  UDP server : udpin://<our_ip>:<port>\n  UDP client : udpout://<remote_ip>:<port>\n  Serial     : serial://</path/to/serial/dev>:<baudrate>\n",
+        bin_name,
+        bin_name,
+        bin_name,
+        bin_name,
+        bin_name,
+        bin_name,
+        bin_name,
+        bin_name);
 }
 
 std::string get_timestamp()

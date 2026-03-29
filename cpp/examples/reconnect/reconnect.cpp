@@ -19,7 +19,9 @@ using namespace mavsdk;
 
 void usage(const std::string& bin_name)
 {
-    std::cerr << std::format("Usage : {} <connection_url>\nConnection URL format should be :\n For TCP server: tcpin://<our_ip>:<port>\n For TCP client: tcpout://<remote_ip>:<port>\n For UDP server: udpin://<our_ip>:<port>\n For UDP client: udpout://<remote_ip>:<port>\n For Serial : serial://</path/to/serial/dev>:<baudrate>]\nFor example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n", bin_name);
+    std::cerr << std::format(
+        "Usage : {} <connection_url>\nConnection URL format should be :\n For TCP server: tcpin://<our_ip>:<port>\n For TCP client: tcpout://<remote_ip>:<port>\n For UDP server: udpin://<our_ip>:<port>\n For UDP client: udpout://<remote_ip>:<port>\n For Serial : serial://</path/to/serial/dev>:<baudrate>]\nFor example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n",
+        bin_name);
 }
 
 int main(int argc, char** argv)
@@ -76,7 +78,8 @@ int main(int argc, char** argv)
                     auto result = mavsdk.add_any_connection_with_handle(entry.url);
 
                     if (result.first != ConnectionResult::Success) {
-                        std::cout << std::format("Adding connection '{}'failed: {}\n", entry.url, result.first);
+                        std::cout << std::format(
+                            "Adding connection '{}'failed: {}\n", entry.url, result.first);
                     } else {
                         entry.handle = result.second;
                         entry.connected = true;

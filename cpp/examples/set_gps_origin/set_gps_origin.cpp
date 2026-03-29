@@ -22,7 +22,9 @@ using std::this_thread::sleep_for;
 
 void usage(const std::string& bin_name)
 {
-    std::cerr << std::format("Usage : {} <connection_url>\nConnection URL format should be :\n For TCP server: tcpin://<our_ip>:<port>\n For TCP client: tcpout://<remote_ip>:<port>\n For UDP server: udpin://<our_ip>:<port>\n For UDP client: udpout://<remote_ip>:<port>\n For Serial : serial://</path/to/serial/dev>:<baudrate>]\nFor example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n", bin_name);
+    std::cerr << std::format(
+        "Usage : {} <connection_url>\nConnection URL format should be :\n For TCP server: tcpin://<our_ip>:<port>\n For TCP client: tcpout://<remote_ip>:<port>\n For UDP server: udpin://<our_ip>:<port>\n For UDP client: udpout://<remote_ip>:<port>\n For Serial : serial://</path/to/serial/dev>:<baudrate>]\nFor example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n",
+        bin_name);
 }
 
 int main(int argc, char** argv)
@@ -66,7 +68,11 @@ int main(int argc, char** argv)
 
     // Get initial position
     auto initial_position = telemetry.position();
-    std::cout << std::format("Initial position: lat={}, lon={}, alt={}m AMSL\n", initial_position.latitude_deg, initial_position.longitude_deg, initial_position.absolute_altitude_m);
+    std::cout << std::format(
+        "Initial position: lat={}, lon={}, alt={}m AMSL\n",
+        initial_position.latitude_deg,
+        initial_position.longitude_deg,
+        initial_position.absolute_altitude_m);
 
     // Arm
     std::cout << "Arming...\n";
@@ -141,7 +147,11 @@ int main(int argc, char** argv)
 
     // Get position before landing
     auto position_before_landing = telemetry.position();
-    std::cout << std::format("Position before landing: lat={}, lon={}, alt={}m AMSL\n", position_before_landing.latitude_deg, position_before_landing.longitude_deg, position_before_landing.absolute_altitude_m);
+    std::cout << std::format(
+        "Position before landing: lat={}, lon={}, alt={}m AMSL\n",
+        position_before_landing.latitude_deg,
+        position_before_landing.longitude_deg,
+        position_before_landing.absolute_altitude_m);
 
     // Land
     std::cout << "Landing...\n";
@@ -163,7 +173,11 @@ int main(int argc, char** argv)
 
     // Get final position
     auto final_position = telemetry.position();
-    std::cout << std::format("Final position: lat={}, lon={}, alt={}m AMSL\n", final_position.latitude_deg, final_position.longitude_deg, final_position.absolute_altitude_m);
+    std::cout << std::format(
+        "Final position: lat={}, lon={}, alt={}m AMSL\n",
+        final_position.latitude_deg,
+        final_position.longitude_deg,
+        final_position.absolute_altitude_m);
 
     // Set the GPS global origin at the current position
     std::cout << "Setting GPS global origin at current position...\n";

@@ -36,7 +36,8 @@ int main(int argc, char** argv)
     auto start_time = std::chrono::system_clock::now();
 
     arm_authorizer.subscribe_arm_authorization([&](uint32_t system_id) {
-        std::cout << std::format("Arm authorization request received. Request for system ID: {}\n", system_id);
+        std::cout << std::format(
+            "Arm authorization request received. Request for system ID: {}\n", system_id);
         auto elapsed_s = std::chrono::duration_cast<std::chrono::seconds>(
                              std::chrono::system_clock::now() - start_time)
                              .count();

@@ -57,7 +57,9 @@ void drain_callbacks(std::mutex& queue_mutex, std::deque<std::function<void()>>&
 
 void usage(const std::string& bin_name)
 {
-    std::cerr << std::format("Usage : {} <connection_url>\nConnection URL format should be :\n For UDP server: udpin://<our_ip>:<port>\n For UDP client: udpout://<remote_ip>:<port>\n For Serial : serial://</path/to/serial/dev>:<baudrate>\nFor example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n", bin_name);
+    std::cerr << std::format(
+        "Usage : {} <connection_url>\nConnection URL format should be :\n For UDP server: udpin://<our_ip>:<port>\n For UDP client: udpout://<remote_ip>:<port>\n For Serial : serial://</path/to/serial/dev>:<baudrate>\nFor example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n",
+        bin_name);
 }
 
 int main(int argc, char** argv)
@@ -122,15 +124,25 @@ int main(int argc, char** argv)
     // thread -- they block waiting for a command ACK callback that this
     // thread would need to process. Subscriptions are fine (non-blocking).
     telemetry.subscribe_position([](Telemetry::Position position) {
-        std::cout << std::format("[{}] Position: lat={} lon={} alt={} m\n", get_thread_name(), position.latitude_deg, position.longitude_deg, position.relative_altitude_m);
+        std::cout << std::format(
+            "[{}] Position: lat={} lon={} alt={} m\n",
+            get_thread_name(),
+            position.latitude_deg,
+            position.longitude_deg,
+            position.relative_altitude_m);
     });
 
     // Subscribe to battery updates
     telemetry.subscribe_battery([](Telemetry::Battery battery) {
-        std::cout << std::format("[{}] Battery: {}% ({} V)\n", get_thread_name(), battery.remaining_percent * 100.0f, battery.voltage_v);
+        std::cout << std::format(
+            "[{}] Battery: {}% ({} V)\n",
+            get_thread_name(),
+            battery.remaining_percent * 100.0f,
+            battery.voltage_v);
     });
 
-    std::cout << std::format("Receiving telemetry callbacks on thread '{}' for 10 seconds...\n", get_thread_name());
+    std::cout << std::format(
+        "Receiving telemetry callbacks on thread '{}' for 10 seconds...\n", get_thread_name());
 
     // Main loop: drain the callback queue on this thread.
     // In a real application this would be your UI event loop or similar.

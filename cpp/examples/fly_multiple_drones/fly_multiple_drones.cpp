@@ -207,7 +207,8 @@ void complete_mission(std::string qgc_plan, std::shared_ptr<System> system)
         std::cerr << "No missions! Exiting...\n";
         return;
     }
-    std::cout << std::format("Found {} mission items in the given QGC plan.\n", import_res.second.mission_items.size());
+    std::cout << std::format(
+        "Found {} mission items in the given QGC plan.\n", import_res.second.mission_items.size());
 
     std::cout << "Uploading mission...\n";
     const auto upload_result = mission_raw.upload_mission(import_res.second.mission_items);
@@ -228,7 +229,11 @@ void complete_mission(std::string qgc_plan, std::shared_ptr<System> system)
 
     // Before starting the mission subscribe to the mission progress.
     mission_raw.subscribe_mission_progress([&](MissionRaw::MissionProgress mission_progress) {
-        std::cout << std::format("Mission progress update, VehicleID: {} --> {} / {}\n", system->get_system_id(), mission_progress.current, mission_progress.total);
+        std::cout << std::format(
+            "Mission progress update, VehicleID: {} --> {} / {}\n",
+            system->get_system_id(),
+            mission_progress.current,
+            mission_progress.total);
     });
 
     std::cout << "Starting mission.\n";

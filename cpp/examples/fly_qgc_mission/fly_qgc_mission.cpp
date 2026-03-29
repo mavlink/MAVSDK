@@ -34,7 +34,9 @@ using std::this_thread::sleep_for;
 
 void usage(const std::string& bin_name)
 {
-    std::cerr << std::format("Usage : {} <connection_url> <mission_plan_file>\nConnection URL format should be :\n For TCP server: tcpin://<our_ip>:<port>\n For TCP client: tcpout://<remote_ip>:<port>\n For UDP server: udpin://<our_ip>:<port>\n For UDP client: udpout://<remote_ip>:<port>\n For Serial : serial://</path/to/serial/dev>:<baudrate>]\nFor example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n", bin_name);
+    std::cerr << std::format(
+        "Usage : {} <connection_url> <mission_plan_file>\nConnection URL format should be :\n For TCP server: tcpin://<our_ip>:<port>\n For TCP client: tcpout://<remote_ip>:<port>\n For UDP server: udpin://<our_ip>:<port>\n For UDP client: udpout://<remote_ip>:<port>\n For Serial : serial://</path/to/serial/dev>:<baudrate>]\nFor example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n",
+        bin_name);
 }
 
 int main(int argc, char** argv)
@@ -81,7 +83,8 @@ int main(int argc, char** argv)
         std::cerr << "No missions! Exiting...\n";
         return 1;
     }
-    std::cout << std::format("Found {} mission items in the given QGC plan.\n", import_res.second.mission_items.size());
+    std::cout << std::format(
+        "Found {} mission items in the given QGC plan.\n", import_res.second.mission_items.size());
 
     std::cout << "Uploading mission...";
     const MissionRaw::Result upload_result =
@@ -105,7 +108,8 @@ int main(int argc, char** argv)
 
     // Before starting the mission subscribe to the mission progress.
     mission_raw.subscribe_mission_progress([&prom](MissionRaw::MissionProgress mission_progress) {
-        std::cout << std::format("Mission progress update: {} / {}\n", mission_progress.current, mission_progress.total);
+        std::cout << std::format(
+            "Mission progress update: {} / {}\n", mission_progress.current, mission_progress.total);
         if (mission_progress.current == mission_progress.total) {
             prom.set_value();
         }

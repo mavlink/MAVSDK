@@ -22,7 +22,9 @@ using std::this_thread::sleep_for;
 
 void usage(const std::string& bin_name)
 {
-    std::cerr << std::format("Usage : {} <connection_url> [--drop]\nConnection URL format should be :\n For TCP server: tcpin://<our_ip>:<port>\n For TCP client: tcpout://<remote_ip>:<port>\n For UDP server: udpin://<our_ip>:<port>\n For UDP client: udpout://<remote_ip>:<port>\n For Serial : serial://</path/to/serial/dev>:<baudrate>]\nFor example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n--drop   To drop some of the messages\n", bin_name);
+    std::cerr << std::format(
+        "Usage : {} <connection_url> [--drop]\nConnection URL format should be :\n For TCP server: tcpin://<our_ip>:<port>\n For TCP client: tcpout://<remote_ip>:<port>\n For UDP server: udpin://<our_ip>:<port>\n For UDP client: udpout://<remote_ip>:<port>\n For Serial : serial://</path/to/serial/dev>:<baudrate>]\nFor example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n--drop   To drop some of the messages\n",
+        bin_name);
 }
 
 int main(int argc, char** argv)
@@ -76,10 +78,13 @@ int main(int argc, char** argv)
             int log_backend_type = log_backend_result.second;
             // Check if MAVLink backend is enabled (bit 1 = value 2)
             if ((log_backend_type & 2) == 0) {
-                std::cerr << std::format("Error: ArduPilot LOG_BACKEND_TYPE={} does not have MAVLink logging enabled (bit 1).\nSet LOG_BACKEND_TYPE to include 2 (e.g., 3 for File+MAVLink).\n", log_backend_type);
+                std::cerr << std::format(
+                    "Error: ArduPilot LOG_BACKEND_TYPE={} does not have MAVLink logging enabled (bit 1).\nSet LOG_BACKEND_TYPE to include 2 (e.g., 3 for File+MAVLink).\n",
+                    log_backend_type);
                 return 1;
             }
-            std::cout << std::format("LOG_BACKEND_TYPE={} (MAVLink logging enabled)\n", log_backend_type);
+            std::cout << std::format(
+                "LOG_BACKEND_TYPE={} (MAVLink logging enabled)\n", log_backend_type);
         } else {
             std::cerr << "Warning: Could not read LOG_BACKEND_TYPE parameter" << std::endl;
         }

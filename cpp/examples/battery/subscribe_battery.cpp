@@ -60,7 +60,16 @@ int main(int argc, char** argv)
 
     // Callback for battery updates
     auto battery_callback = [](mavsdk::Telemetry::Battery battery) {
-        std::cout << std::format("Battery ID: {} \nBattery Temp: {} degc\nBattery Voltage: {} v\nBattery Current: {} a\nBattery Capacity Consumed: {} ah\nBattery Remaining Percent: {} %\nBattery Remaining Time: {} s\nBattery Function: {}\n\n", battery.id, battery.temperature_degc, battery.voltage_v, battery.current_battery_a, battery.capacity_consumed_ah, battery.remaining_percent, battery.time_remaining_s, battery.battery_function);
+        std::cout << std::format(
+            "Battery ID: {} \nBattery Temp: {} degc\nBattery Voltage: {} v\nBattery Current: {} a\nBattery Capacity Consumed: {} ah\nBattery Remaining Percent: {} %\nBattery Remaining Time: {} s\nBattery Function: {}\n\n",
+            battery.id,
+            battery.temperature_degc,
+            battery.voltage_v,
+            battery.current_battery_a,
+            battery.capacity_consumed_ah,
+            battery.remaining_percent,
+            battery.time_remaining_s,
+            battery.battery_function);
     };
 
     // Subscribe to battery updates

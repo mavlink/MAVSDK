@@ -23,7 +23,9 @@ using std::chrono::seconds;
 
 void usage(const std::string& bin_name)
 {
-    std::cerr << std::format("Usage : {} <connection_url>\nConnection URL format should be :\n For TCP server: tcpin://<our_ip>:<port>\n For TCP client: tcpout://<remote_ip>:<port>\n For UDP server: udpin://<our_ip>:<port>\n For UDP client: udpout://<remote_ip>:<port>\n For Serial : serial://</path/to/serial/dev>:<baudrate>]\nFor example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n", bin_name);
+    std::cerr << std::format(
+        "Usage : {} <connection_url>\nConnection URL format should be :\n For TCP server: tcpin://<our_ip>:<port>\n For TCP client: tcpout://<remote_ip>:<port>\n For UDP server: udpin://<our_ip>:<port>\n For UDP client: udpout://<remote_ip>:<port>\n For Serial : serial://</path/to/serial/dev>:<baudrate>]\nFor example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n",
+        bin_name);
 }
 
 int main(int argc, char** argv)
@@ -73,14 +75,19 @@ int main(int argc, char** argv)
     }
 
     telemetry.subscribe_position([](Telemetry::Position position) {
-        std::cout << std::format("Vehicle is at: {}, {} degrees\n", position.latitude_deg, position.longitude_deg);
+        std::cout << std::format(
+            "Vehicle is at: {}, {} degrees\n", position.latitude_deg, position.longitude_deg);
     });
 
     // Subscribe to receive updates on flight mode. You can find out whether FollowMe is active.
     Telemetry::FlightModeHandle handle =
         telemetry.subscribe_flight_mode([&](Telemetry::FlightMode flight_mode) {
             const FollowMe::TargetLocation last_location = follow_me.get_last_location();
-            std::cout << std::format("[FlightMode: {}] Target is at: {}, {} degrees.\n", flight_mode, last_location.latitude_deg, last_location.longitude_deg);
+            std::cout << std::format(
+                "[FlightMode: {}] Target is at: {}, {} degrees.\n",
+                flight_mode,
+                last_location.latitude_deg,
+                last_location.longitude_deg);
         });
 
     // Takeoff

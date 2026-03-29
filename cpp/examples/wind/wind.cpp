@@ -60,7 +60,16 @@ int main(int argc, char** argv)
 
     // Callback for wind updates
     auto wind_callback = [](mavsdk::Telemetry::Wind wind) {
-        std::cout << std::format("Wind_X_NED: {} m/s\nWind_Y_NED: {} m/s\nWind_Z_NED: {} m/s\nHorizontal_Variability: {} m/s\nVertical_Variability: {} m/s\nWind_Altitude: {} m\nHorizontal_Wind_Speed_Accuracy: {} m/s\nVertical_Wind_Speed_Accuracy: {} m/s\n\n", wind.wind_x_ned_m_s, wind.wind_y_ned_m_s, wind.wind_z_ned_m_s, wind.horizontal_variability_stddev_m_s, wind.vertical_variability_stddev_m_s, wind.wind_altitude_msl_m, wind.horizontal_wind_speed_accuracy_m_s, wind.vertical_wind_speed_accuracy_m_s);
+        std::cout << std::format(
+            "Wind_X_NED: {} m/s\nWind_Y_NED: {} m/s\nWind_Z_NED: {} m/s\nHorizontal_Variability: {} m/s\nVertical_Variability: {} m/s\nWind_Altitude: {} m\nHorizontal_Wind_Speed_Accuracy: {} m/s\nVertical_Wind_Speed_Accuracy: {} m/s\n\n",
+            wind.wind_x_ned_m_s,
+            wind.wind_y_ned_m_s,
+            wind.wind_z_ned_m_s,
+            wind.horizontal_variability_stddev_m_s,
+            wind.vertical_variability_stddev_m_s,
+            wind.wind_altitude_msl_m,
+            wind.horizontal_wind_speed_accuracy_m_s,
+            wind.vertical_wind_speed_accuracy_m_s);
     };
 
     // Subscribe to wind updates

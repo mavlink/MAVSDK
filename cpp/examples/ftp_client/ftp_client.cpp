@@ -133,7 +133,11 @@ download_file(Ftp& ftp, const std::string& remote_file_path, const std::string& 
                 int percentage = progress.total_bytes > 0 ?
                                      progress.bytes_transferred * 100 / progress.total_bytes :
                                      0;
-                std::cerr << std::format("\rDownloading [{:3}%] {} of {}", percentage, progress.bytes_transferred, progress.total_bytes);
+                std::cerr << std::format(
+                    "\rDownloading [{:3}%] {} of {}",
+                    percentage,
+                    progress.bytes_transferred,
+                    progress.total_bytes);
                 if (progress.bytes_transferred >= progress.total_bytes) {
                     std::cerr << '\n';
                 }
@@ -157,7 +161,11 @@ upload_file(Ftp& ftp, const std::string& local_file_path, const std::string& rem
                 int percentage = progress.total_bytes > 0 ?
                                      progress.bytes_transferred * 100 / progress.total_bytes :
                                      0;
-                std::cerr << std::format("\rUploading [{:3}%] {} of {}", percentage, progress.bytes_transferred, progress.total_bytes);
+                std::cerr << std::format(
+                    "\rUploading [{:3}%] {} of {}",
+                    percentage,
+                    progress.bytes_transferred,
+                    progress.total_bytes);
                 if (progress.bytes_transferred == progress.total_bytes) {
                     std::cerr << '\n';
                 }

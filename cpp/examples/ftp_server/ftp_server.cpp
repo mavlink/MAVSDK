@@ -36,7 +36,11 @@ int main(int argc, char** argv)
     auto ftp_server = FtpServer{component};
     ftp_server.set_root_dir(argv[2]);
 
-    std::cout << std::format("MAVLink FTP server running\n  connection: {}\n  directory: {}\n  component ID: {}\n", argv[1], argv[2], std::to_string(component->component_id()));
+    std::cout << std::format(
+        "MAVLink FTP server running\n  connection: {}\n  directory: {}\n  component ID: {}\n",
+        argv[1],
+        argv[2],
+        std::to_string(component->component_id()));
 
     while (true) {
         std::this_thread::sleep_for(std::chrono::seconds(1));

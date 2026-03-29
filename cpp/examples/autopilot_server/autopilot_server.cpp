@@ -267,9 +267,8 @@ int main(int argc, char** argv)
     });
 
     // Set up callback to monitor Unix time
-    telemetry.subscribe_unix_epoch_time([](uint64_t time_us) {
-        std::cout << std::format("Unix epoch time: {} us\n", time_us);
-    });
+    telemetry.subscribe_unix_epoch_time(
+        [](uint64_t time_us) { std::cout << std::format("Unix epoch time: {} us\n", time_us); });
 
     // Check if vehicle is ready to arm
     while (telemetry.health_all_ok() != true) {

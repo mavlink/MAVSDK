@@ -14,7 +14,9 @@ using namespace mavsdk;
 
 void usage(const std::string& bin_name)
 {
-    std::cerr << std::format("Usage : {} <connection_url> [-v] [monitor]\nConnection URL format should be :\n For TCP server: tcpin://<our_ip>:<port>\n For TCP client: tcpout://<remote_ip>:<port>\n For UDP server: udpin://<our_ip>:<port>\n For UDP client: udpout://<remote_ip>:<port>\n For Serial : serial://</path/to/serial/dev>:<baudrate>]\nFor example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n\n -v: enable verbose output\n monitor: listen for events (instead of printing the arming report)\n", bin_name);
+    std::cerr << std::format(
+        "Usage : {} <connection_url> [-v] [monitor]\nConnection URL format should be :\n For TCP server: tcpin://<our_ip>:<port>\n For TCP client: tcpout://<remote_ip>:<port>\n For UDP server: udpin://<our_ip>:<port>\n For UDP client: udpout://<remote_ip>:<port>\n For Serial : serial://</path/to/serial/dev>:<baudrate>]\nFor example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n\n -v: enable verbose output\n monitor: listen for events (instead of printing the arming report)\n",
+        bin_name);
 }
 
 int main(int argc, char** argv)
@@ -59,7 +61,8 @@ int main(int argc, char** argv)
                 if (!event.description.empty()) {
                     std::cout << std::format("    Description: {}\n", event.description);
                 }
-                std::cout << std::format("    Event name: {}/{}\n", event.event_namespace, event.event_name);
+                std::cout << std::format(
+                    "    Event name: {}/{}\n", event.event_namespace, event.event_name);
             }
         });
         while (true) {
@@ -78,20 +81,32 @@ int main(int argc, char** argv)
                     return;
                 }
                 reported = true;
-                std::cout << std::format("Current Mode (intention): {}\n", report.current_mode_intention.mode_name);
+                std::cout << std::format(
+                    "Current Mode (intention): {}\n", report.current_mode_intention.mode_name);
                 const std::string can_arm_or_run = telemetry.armed() ? "Can Run: " : "Can Arm: ";
-                std::cout << std::format("{}{}\n", can_arm_or_run, (report.current_mode_intention.can_arm_or_run ? "yes" : "No"));
+                std::cout << std::format(
+                    "{}{}\n",
+                    can_arm_or_run,
+                    (report.current_mode_intention.can_arm_or_run ? "yes" : "No"));
                 if (!report.current_mode_intention.problems.empty()) {
                     std::cout << "Reports:" << std::endl;
                     for (const auto& problem : report.current_mode_intention.problems) {
-                        std::cout << std::format("  [{}] [{}]: {}\n", problem.log_level, problem.health_component, problem.message);
+                        std::cout << std::format(
+                            "  [{}] [{}]: {}\n",
+                            problem.log_level,
+                            problem.health_component,
+                            problem.message);
                     }
                 }
 
                 if (verbose && !report.all_problems.empty()) {
                     std::cout << "All Reports:" << std::endl;
                     for (const auto& problem : report.all_problems) {
-                        std::cout << std::format("  [{}] [{}]: {}\n", problem.log_level, problem.health_component, problem.message);
+                        std::cout << std::format(
+                            "  [{}] [{}]: {}\n",
+                            problem.log_level,
+                            problem.health_component,
+                            problem.message);
                     }
                 }
                 promise.set_value(true);

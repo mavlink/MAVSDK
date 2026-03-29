@@ -45,7 +45,11 @@ class CommandLineParser {
 public:
     static void print_usage(const std::string& bin_name)
     {
-        std::cerr << std::format("Usage :{} <connection url> <action> [args]\n\nConnection URL format should be :\n For TCP server: tcpin://<our_ip>:<port>\n For TCP client: tcpout://<remote_ip>:<port>\n For UDP server: udpin://<our_ip>:<port>\n For UDP client: udpout://<remote_ip>:<port>\n For Serial : serial://</path/to/serial/dev>:<baudrate>]\nFor example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n\nActions:\n  get_all:          Print all parameters\n  get <param name>: Get one param\n  set <param name> <value>: Set one param\n  set_and_verify <param name> <value>: Set param and verify by reading back\n", bin_name) << std::flush;
+        std::cerr
+            << std::format(
+                   "Usage :{} <connection url> <action> [args]\n\nConnection URL format should be :\n For TCP server: tcpin://<our_ip>:<port>\n For TCP client: tcpout://<remote_ip>:<port>\n For UDP server: udpin://<our_ip>:<port>\n For UDP client: udpout://<remote_ip>:<port>\n For Serial : serial://</path/to/serial/dev>:<baudrate>]\nFor example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n\nActions:\n  get_all:          Print all parameters\n  get <param name>: Get one param\n  set <param name> <value>: Set one param\n  set_and_verify <param name> <value>: Set param and verify by reading back\n",
+                   bin_name)
+            << std::flush;
     }
 
     enum class Result {
@@ -250,7 +254,10 @@ bool parse_value(const std::string& value, ParsedValue& parsed)
 {
     parsed.is_float = (value.find('.') != std::string::npos);
 
-    std::cout << std::format("Detected type: {} (based on {} of '.')\n", (parsed.is_float ? "float" : "int"), (parsed.is_float ? "presence" : "absence"));
+    std::cout << std::format(
+        "Detected type: {} (based on {} of '.')\n",
+        (parsed.is_float ? "float" : "int"),
+        (parsed.is_float ? "presence" : "absence"));
 
     if (parsed.is_float) {
         const auto result =
@@ -278,7 +285,8 @@ bool set_param_with_fallback(
     used_float = value.is_float;
 
     if (value.is_float) {
-        std::cout << std::format("Setting {} to {} as float...", name, value.float_val) << std::flush;
+        std::cout << std::format("Setting {} to {} as float...", name, value.float_val)
+                  << std::flush;
         auto result = param.set_param_float(name, value.float_val);
 
         if (result == Param::Result::Success) {
@@ -335,7 +343,8 @@ bool set_param_with_fallback(
 
 bool get_param_value(Param& param, const std::string& name, bool is_float, ParsedValue& result)
 {
-    std::cout << std::format("Reading back {} as {}...", name, (is_float ? "float" : "int")) << std::flush;
+    std::cout << std::format("Reading back {} as {}...", name, (is_float ? "float" : "int"))
+              << std::flush;
 
     if (is_float) {
         auto get_result = param.get_param_float(name);

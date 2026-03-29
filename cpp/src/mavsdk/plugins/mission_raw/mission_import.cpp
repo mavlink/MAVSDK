@@ -527,7 +527,18 @@ MissionImport::parse_mission_planner_items(const std::string& content, Autopilot
                 first_item.z, // use same z as first waypoint
                 MAV_MISSION_TYPE_MISSION};
 
+            // GCC 12/13 emits a false-positive -Wnull-dereference on placement-new
+            // inside vector::_M_realloc_insert when built with C++20 and -Werror.
+            // Reserve first to prevent reallocation, then suppress the warning.
+            mission_items.reserve(mission_items.size() + 1);
+#if defined(__GNUC__) && !defined(__clang__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wnull-dereference"
+#endif
             mission_items.insert(mission_items.begin(), home_item);
+#if defined(__GNUC__) && !defined(__clang__)
+#pragma GCC diagnostic pop
+#endif
         }
     }
 

@@ -42,7 +42,9 @@ Mission::MissionItem make_mission_item(
 
 void usage(const std::string& bin_name)
 {
-    std::cerr << std::format("Usage : {} <connection_url>\nConnection URL format should be :\n For TCP server: tcpin://<our_ip>:<port>\n For TCP client: tcpout://<remote_ip>:<port>\n For UDP server: udpin://<our_ip>:<port>\n For UDP client: udpout://<remote_ip>:<port>\n For Serial : serial://</path/to/serial/dev>:<baudrate>]\nFor example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n", bin_name);
+    std::cerr << std::format(
+        "Usage : {} <connection_url>\nConnection URL format should be :\n For TCP server: tcpin://<our_ip>:<port>\n For TCP client: tcpout://<remote_ip>:<port>\n For UDP server: udpin://<our_ip>:<port>\n For UDP client: udpout://<remote_ip>:<port>\n For Serial : serial://</path/to/serial/dev>:<baudrate>]\nFor example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n",
+        bin_name);
 }
 
 int main(int argc, char** argv)
@@ -161,7 +163,8 @@ int main(int argc, char** argv)
     std::atomic<bool> want_to_pause{false};
     // Before starting the mission, we want to be sure to subscribe to the mission progress.
     mission.subscribe_mission_progress([&want_to_pause](Mission::MissionProgress mission_progress) {
-        std::cout << std::format("Mission status update: {} / {}\n", mission_progress.current, mission_progress.total);
+        std::cout << std::format(
+            "Mission status update: {} / {}\n", mission_progress.current, mission_progress.total);
 
         if (mission_progress.current >= 2) {
             // We can only set a flag here. If we do more request inside the callback,
