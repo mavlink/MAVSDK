@@ -97,6 +97,7 @@ jobs:
         run: ./build/debug/src/unit_tests/unit_tests_runner
       - name: system tests
         run: ./build/debug/src/system_tests/system_tests_runner
+        timeout-minutes: 15
 
   ubuntu-asan:
     name: Ubuntu 24.04 (AddressSanitizer)
@@ -137,6 +138,7 @@ jobs:
         run: ./build/asan/src/unit_tests/unit_tests_runner
       - name: system tests
         run: ./build/asan/src/system_tests/system_tests_runner
+        timeout-minutes: 15
 
   ubuntu-tsan:
     name: Ubuntu 24.04 (ThreadSanitizer)
@@ -177,6 +179,7 @@ jobs:
         run: ./build/tsan/src/unit_tests/unit_tests_runner
       - name: system tests
         run: ./build/tsan/src/system_tests/system_tests_runner
+        timeout-minutes: 15
 
   ubuntu-ubsan:
     name: Ubuntu 24.04 (UndefinedBehaviour)
@@ -219,6 +222,7 @@ jobs:
         run: ./build/ubsan/src/unit_tests/unit_tests_runner
       - name: system tests
         run: ./build/ubsan/src/system_tests/system_tests_runner
+        timeout-minutes: 15
 
   ubuntu-superbuild:
     name: ${{ matrix.description }}
@@ -292,6 +296,7 @@ jobs:
         run: ./build/release/src/unit_tests/unit_tests_runner
       - name: system tests
         run: ./build/release/src/system_tests/system_tests_runner
+        timeout-minutes: 15
       - name: test (mavsdk_server)
         run: ./build/release/src/mavsdk_server/test/unit_tests_mavsdk_server
       - name: upload core dumps
@@ -361,6 +366,7 @@ jobs:
         run: ./build-release/src/unit_tests/unit_tests_runner
       - name: system tests
         run: ./build-release/src/system_tests/system_tests_runner
+        timeout-minutes: 15
 
   ubuntu24-style-and-proto-check:
     name: ubuntu-24.04 (style and proto check)
@@ -482,6 +488,7 @@ jobs:
         run: ./build/release/src/unit_tests/unit_tests_runner
       - name: system tests
         run: ./build/release/src/system_tests/system_tests_runner
+        timeout-minutes: 15
       - name: upload core dumps
         if: failure()
         uses: actions/upload-artifact@v4
@@ -622,6 +629,7 @@ jobs:
         run: ./build/release/src/unit_tests/unit_tests_runner
       - name: system tests
         run: ./build/release/src/system_tests/system_tests_runner
+        timeout-minutes: 15
       - name: test (mavsdk_server)
         run: ./build/release/src/mavsdk_server/test/unit_tests_mavsdk_server
       - name: build C wrapper

@@ -78,6 +78,7 @@ jobs:
         run: ./build/macos/src/unit_tests/unit_tests_runner
       - name: system tests
         run: ./build/macos/src/system_tests/system_tests_runner
+        timeout-minutes: 10
       - name: test (mavsdk_server)
         run: ./build/macos/src/mavsdk_server/test/unit_tests_mavsdk_server
       - name: build C wrapper
