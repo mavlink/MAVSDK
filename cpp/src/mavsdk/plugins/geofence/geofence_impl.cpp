@@ -61,10 +61,9 @@ std::pair<Geofence::Result, Geofence::GeofenceData> GeofenceImpl::download_geofe
     auto prom = std::promise<std::pair<Geofence::Result, Geofence::GeofenceData>>();
     auto fut = prom.get_future();
 
-    download_geofence_async(
-        [&prom](Geofence::Result result, Geofence::GeofenceData geofence_data) {
-            prom.set_value(std::make_pair(result, geofence_data));
-        });
+    download_geofence_async([&prom](Geofence::Result result, Geofence::GeofenceData geofence_data) {
+        prom.set_value(std::make_pair(result, geofence_data));
+    });
     return fut.get();
 }
 
@@ -85,9 +84,9 @@ void GeofenceImpl::download_geofence_async(const Geofence::DownloadGeofenceCallb
         [this, callback](
             MavlinkMissionTransferClient::Result result,
             std::vector<MavlinkMissionTransferClient::ItemInt> items) {
-            auto result_pair = (result == MavlinkMissionTransferClient::Result::Success)
-                                   ? disassemble_items(items)
-                                   : std::make_pair(convert_result(result), Geofence::GeofenceData{});
+            auto result_pair = (result == MavlinkMissionTransferClient::Result::Success) ?
+                                   disassemble_items(items) :
+                                   std::make_pair(convert_result(result), Geofence::GeofenceData{});
             _system_impl->call_user_callback([callback, result_pair]() {
                 if (callback) {
                     callback(result_pair.first, result_pair.second);
@@ -96,8 +95,8 @@ void GeofenceImpl::download_geofence_async(const Geofence::DownloadGeofenceCallb
         });
 }
 
-std::pair<Geofence::Result, Geofence::GeofenceData> GeofenceImpl::disassemble_items(
-    const std::vector<MavlinkMissionTransferClient::ItemInt>& items)
+std::pair<Geofence::Result, Geofence::GeofenceData>
+GeofenceImpl::disassemble_items(const std::vector<MavlinkMissionTransferClient::ItemInt>& items)
 {
     Geofence::GeofenceData geofence_data;
 
@@ -108,9 +107,9 @@ std::pair<Geofence::Result, Geofence::GeofenceData> GeofenceImpl::disassemble_it
         if (item.command == MAV_CMD_NAV_FENCE_POLYGON_VERTEX_INCLUSION ||
             item.command == MAV_CMD_NAV_FENCE_POLYGON_VERTEX_EXCLUSION) {
             Geofence::Polygon polygon;
-            polygon.fence_type = (item.command == MAV_CMD_NAV_FENCE_POLYGON_VERTEX_INCLUSION)
-                                     ? Geofence::FenceType::Inclusion
-                                     : Geofence::FenceType::Exclusion;
+            polygon.fence_type = (item.command == MAV_CMD_NAV_FENCE_POLYGON_VERTEX_INCLUSION) ?
+                                     Geofence::FenceType::Inclusion :
+                                     Geofence::FenceType::Exclusion;
 
             const auto vertex_count = static_cast<size_t>(item.param1);
             if (vertex_count == 0 || i + vertex_count > items.size()) {
@@ -133,9 +132,9 @@ std::pair<Geofence::Result, Geofence::GeofenceData> GeofenceImpl::disassemble_it
             item.command == MAV_CMD_NAV_FENCE_CIRCLE_INCLUSION ||
             item.command == MAV_CMD_NAV_FENCE_CIRCLE_EXCLUSION) {
             Geofence::Circle circle;
-            circle.fence_type = (item.command == MAV_CMD_NAV_FENCE_CIRCLE_INCLUSION)
-                                    ? Geofence::FenceType::Inclusion
-                                    : Geofence::FenceType::Exclusion;
+            circle.fence_type = (item.command == MAV_CMD_NAV_FENCE_CIRCLE_INCLUSION) ?
+                                    Geofence::FenceType::Inclusion :
+                                    Geofence::FenceType::Exclusion;
             circle.point.latitude_deg = item.x * 1e-7;
             circle.point.longitude_deg = item.y * 1e-7;
             circle.radius = item.param1;

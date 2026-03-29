@@ -63,6 +63,25 @@ class GeofenceAsync:
             None, lambda: self._plugin.upload_geofence(geofence_data)
         )
 
+    async def download_geofence(self):
+        """
+               Download geofences from the vehicle.
+
+        Downloads polygon and circular geofences from the vehicle.
+
+               Returns
+               -------
+               geofence_data : GeofenceData
+               Raises
+               ------
+               GeofenceError
+                   If the request fails. The error contains the reason for the failure.
+        """
+        loop = asyncio.get_running_loop()
+        return await loop.run_in_executor(
+            None, lambda: self._plugin.download_geofence()
+        )
+
     async def clear_geofence(self):
         """
         Clear all geofences saved on the vehicle.
