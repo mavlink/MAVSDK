@@ -6,6 +6,7 @@
 #include <fstream>
 #include <filesystem>
 #include <algorithm>
+#include <future>
 #include <numeric>
 
 #include "crc32.h"
@@ -1617,12 +1618,13 @@ std::ostream& operator<<(std::ostream& str, MavlinkFtpClient::ClientResult const
 
 void MavlinkFtpClient::cancel_all_operations()
 {
-    // Stop any pending timeout timers
-    stop_timer();
-
-    // Clear the work queue to cancel all pending operations
-    // This prevents callbacks from being executed
-    _work_queue.clear();
+    std::promise<void> done;
+    asio::post(_io_context, [this, &done]() {
+        stop_timer();
+        _work_queue.clear();
+        done.set_value();
+    });
+    done.get_future().wait();
 }
 
 } // namespace mavsdk

@@ -880,9 +880,7 @@ void SystemImpl::get_param_custom_async(
 
 void SystemImpl::cancel_all_param(const void* cookie)
 {
-    UNUSED(cookie);
-    // FIXME: this currently crashes on destruction
-    // param_sender(1, false)->cancel_all_param(cookie);
+    param_sender(1, false)->cancel_all_param(cookie);
 }
 
 MavlinkCommandSender::Result
