@@ -4236,6 +4236,41 @@ mavsdk_telemetry_set_rate_gps_info(
     return translate_result(ret_value);
 }
 
+// SetRateRawGps async
+void mavsdk_telemetry_set_rate_raw_gps_async(
+    mavsdk_telemetry_t telemetry,
+    double rate_hz,
+    mavsdk_telemetry_set_rate_raw_gps_callback_t callback,
+    void* user_data)
+{
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
+
+    wrapper->cpp_plugin->set_rate_raw_gps_async(
+        rate_hz,
+        [callback, user_data](
+            mavsdk::Telemetry::Result result) {
+                if (callback) {
+                    callback(
+                        translate_result(result),
+                        user_data);
+                }
+        });
+}
+
+
+// SetRateRawGps sync
+mavsdk_telemetry_result_t
+mavsdk_telemetry_set_rate_raw_gps(
+    mavsdk_telemetry_t telemetry,
+    double rate_hz)
+{
+    auto wrapper = reinterpret_cast<mavsdk_telemetry_wrapper*>(telemetry);
+
+    auto ret_value = wrapper->cpp_plugin->set_rate_raw_gps(        rate_hz);
+
+    return translate_result(ret_value);
+}
+
 // SetRateBattery async
 void mavsdk_telemetry_set_rate_battery_async(
     mavsdk_telemetry_t telemetry,

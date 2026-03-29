@@ -3503,6 +3503,40 @@ class Telemetry:
 
         return result
 
+    def set_rate_raw_gps_async(
+        self, rate_hz, callback: Callable, user_data: Any = None
+    ):
+        """Set rate to 'Raw GPS' updates."""
+
+        def c_callback(result, ud):
+            try:
+                py_result = TelemetryResult(result)
+
+                callback(py_result, user_data)
+
+            except Exception as e:
+                print(f"Error in set_rate_raw_gps callback: {e}")
+
+        cb = SetRateRawGpsCallback(c_callback)
+        self._callbacks.append(cb)
+
+        self._lib.mavsdk_telemetry_set_rate_raw_gps_async(
+            self._handle, rate_hz, cb, None
+        )
+
+    def set_rate_raw_gps(self, rate_hz):
+        """Get set_rate_raw_gps (blocking)"""
+
+        result_code = self._lib.mavsdk_telemetry_set_rate_raw_gps(
+            self._handle,
+            rate_hz,
+        )
+        result = TelemetryResult(result_code)
+        if result != TelemetryResult.SUCCESS:
+            raise Exception(f"set_rate_raw_gps failed: {result}")
+
+        return result
+
     def set_rate_battery_async(
         self, rate_hz, callback: Callable, user_data: Any = None
     ):
@@ -4111,6 +4145,7 @@ SetRateAttitudeQuaternionCallback = ctypes.CFUNCTYPE(
 SetRateAttitudeEulerCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
 SetRateVelocityNedCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
 SetRateGpsInfoCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
+SetRateRawGpsCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
 SetRateBatteryCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
 SetRateRcStatusCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
 SetRateActuatorControlTargetCallback = ctypes.CFUNCTYPE(
@@ -5123,6 +5158,21 @@ _cmavsdk_lib.mavsdk_telemetry_set_rate_gps_info.argtypes = [
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_set_rate_gps_info.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_telemetry_set_rate_raw_gps_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_double,
+    SetRateRawGpsCallback,
+    ctypes.c_void_p,
+]
+
+_cmavsdk_lib.mavsdk_telemetry_set_rate_raw_gps_async.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_set_rate_raw_gps.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_double,
+]
+
+_cmavsdk_lib.mavsdk_telemetry_set_rate_raw_gps.restype = ctypes.c_int
 _cmavsdk_lib.mavsdk_telemetry_set_rate_battery_async.argtypes = [
     ctypes.c_void_p,
     ctypes.c_double,
