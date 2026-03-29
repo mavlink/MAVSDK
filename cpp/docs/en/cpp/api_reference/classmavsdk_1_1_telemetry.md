@@ -279,6 +279,8 @@ void | [set_rate_velocity_ned_async](#classmavsdk_1_1_telemetry_1a9429ffa784fa56
 [Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) | [set_rate_velocity_ned](#classmavsdk_1_1_telemetry_1ab5cb79fd53f27f245808a6bb9ed3225d) (double rate_hz)const | Set rate of camera attitude updates. Set rate to 'ground speed' updates (NED).
 void | [set_rate_gps_info_async](#classmavsdk_1_1_telemetry_1ae6ada3cd6d4e9835dd4d1d712f1195e4) (double rate_hz, const [ResultCallback](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a166e81c6573532978e5940eafdfcec0b) callback) | Set rate to 'GPS info' updates.
 [Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) | [set_rate_gps_info](#classmavsdk_1_1_telemetry_1a14510bcb6fe3c31d91653d32d354613f) (double rate_hz)const | Set rate to 'GPS info' updates.
+void | [set_rate_raw_gps_async](#classmavsdk_1_1_telemetry_1a38a7c22c59e87d95f154f6d8cdcf2229) (double rate_hz, const [ResultCallback](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a166e81c6573532978e5940eafdfcec0b) callback) | Set rate to 'Raw GPS' updates.
+[Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) | [set_rate_raw_gps](#classmavsdk_1_1_telemetry_1a7c2f1080a55e594e3c5f3cfe9f16deff) (double rate_hz)const | Set rate to 'Raw GPS' updates.
 void | [set_rate_battery_async](#classmavsdk_1_1_telemetry_1a5615e21f616997dfca1318c96a7e550e) (double rate_hz, const [ResultCallback](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a166e81c6573532978e5940eafdfcec0b) callback) | Set rate to 'battery' updates.
 [Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) | [set_rate_battery](#classmavsdk_1_1_telemetry_1ae781d2e950a535a465f2bc1575e9f893) (double rate_hz)const | Set rate to 'battery' updates.
 void | [set_rate_rc_status_async](#classmavsdk_1_1_telemetry_1a8cf84eaca875626bc53ed03e98d6eb7e) (double rate_hz, const [ResultCallback](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a166e81c6573532978e5940eafdfcec0b) callback) | Set rate to 'RC status' updates.
@@ -2888,6 +2890,39 @@ Result mavsdk::Telemetry::set_rate_gps_info(double rate_hz) const
 Set rate to 'GPS info' updates.
 
 This function is blocking. See 'set_rate_gps_info_async' for the non-blocking counterpart.
+
+**Parameters**
+
+* double **rate_hz** - 
+
+**Returns**
+
+&emsp;[Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) - Result of request.
+
+### set_rate_raw_gps_async() {#classmavsdk_1_1_telemetry_1a38a7c22c59e87d95f154f6d8cdcf2229}
+```cpp
+void mavsdk::Telemetry::set_rate_raw_gps_async(double rate_hz, const ResultCallback callback)
+```
+
+
+Set rate to 'Raw GPS' updates.
+
+This function is non-blocking. See 'set_rate_raw_gps' for the blocking counterpart.
+
+**Parameters**
+
+* double **rate_hz** - 
+* const [ResultCallback](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a166e81c6573532978e5940eafdfcec0b) **callback** - 
+
+### set_rate_raw_gps() {#classmavsdk_1_1_telemetry_1a7c2f1080a55e594e3c5f3cfe9f16deff}
+```cpp
+Result mavsdk::Telemetry::set_rate_raw_gps(double rate_hz) const
+```
+
+
+Set rate to 'Raw GPS' updates.
+
+This function is blocking. See 'set_rate_raw_gps_async' for the non-blocking counterpart.
 
 **Parameters**
 
