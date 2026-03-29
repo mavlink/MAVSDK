@@ -44,11 +44,13 @@ MavlinkMissionTransferServer::receive_incoming_items_async(
         target_component,
         _debugging);
 
-    const bool was_empty = _work_queue.empty();
-    _work_queue.push_back(ptr);
-    if (was_empty) {
-        asio::post(_io_context, [this] { do_work(); });
-    }
+    asio::post(_io_context, [this, ptr]() {
+        const bool was_empty = _work_queue.empty();
+        _work_queue.push_back(ptr);
+        if (was_empty) {
+            do_work();
+        }
+    });
 
     return std::weak_ptr<WorkItem>(ptr);
 }
@@ -73,11 +75,13 @@ MavlinkMissionTransferServer::send_outgoing_items_async(
         target_component,
         _debugging);
 
-    const bool was_empty = _work_queue.empty();
-    _work_queue.push_back(ptr);
-    if (was_empty) {
-        asio::post(_io_context, [this] { do_work(); });
-    }
+    asio::post(_io_context, [this, ptr]() {
+        const bool was_empty = _work_queue.empty();
+        _work_queue.push_back(ptr);
+        if (was_empty) {
+            do_work();
+        }
+    });
 
     return std::weak_ptr<WorkItem>(ptr);
 }

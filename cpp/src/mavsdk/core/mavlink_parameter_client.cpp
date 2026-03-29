@@ -107,11 +107,13 @@ void MavlinkParameterClient::set_param_async(
         return;
     }
     auto new_work = std::make_shared<WorkItem>(WorkItemSet{name, value, callback}, cookie);
-    const bool was_empty = _work_queue.empty();
-    _work_queue.push_back(new_work);
-    if (was_empty) {
-        asio::post(_io_context, [this] { do_work(); });
-    }
+    asio::post(_io_context, [this, new_work]() {
+        const bool was_empty = _work_queue.empty();
+        _work_queue.push_back(new_work);
+        if (was_empty) {
+            do_work();
+        }
+    });
 }
 
 void MavlinkParameterClient::set_param_int_async(
@@ -257,11 +259,13 @@ void MavlinkParameterClient::get_param_async(
     }
 
     auto new_work = std::make_shared<WorkItem>(WorkItemGet{name, callback}, cookie);
-    const bool was_empty = _work_queue.empty();
-    _work_queue.push_back(new_work);
-    if (was_empty) {
-        asio::post(_io_context, [this] { do_work(); });
-    }
+    asio::post(_io_context, [this, new_work]() {
+        const bool was_empty = _work_queue.empty();
+        _work_queue.push_back(new_work);
+        if (was_empty) {
+            do_work();
+        }
+    });
 }
 
 void MavlinkParameterClient::get_param_async(
@@ -406,11 +410,13 @@ void MavlinkParameterClient::get_all_params_async(GetAllParamsCallback callback,
 
     auto new_work =
         std::make_shared<WorkItem>(WorkItemGetAll{std::move(callback), 0, false}, cookie);
-    const bool was_empty = _work_queue.empty();
-    _work_queue.push_back(new_work);
-    if (was_empty) {
-        asio::post(_io_context, [this] { do_work(); });
-    }
+    asio::post(_io_context, [this, new_work]() {
+        const bool was_empty = _work_queue.empty();
+        _work_queue.push_back(new_work);
+        if (was_empty) {
+            do_work();
+        }
+    });
 }
 
 std::pair<MavlinkParameterClient::Result, std::map<std::string, ParamValue>>

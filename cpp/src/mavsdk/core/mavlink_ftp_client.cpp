@@ -1186,6 +1186,17 @@ MavlinkFtpClient::ClientResult MavlinkFtpClient::translate(ServerResult result)
     }
 }
 
+void MavlinkFtpClient::enqueue_work(std::shared_ptr<Work> new_work)
+{
+    asio::post(_io_context, [this, new_work = std::move(new_work)]() {
+        const bool was_empty = _work_queue.empty();
+        _work_queue.push_back(new_work);
+        if (was_empty) {
+            do_work();
+        }
+    });
+}
+
 void MavlinkFtpClient::download_async(
     const std::string& remote_path,
     const std::string& local_folder,
@@ -1198,18 +1209,15 @@ void MavlinkFtpClient::download_async(
         item.remote_path = remote_path;
         item.local_folder = local_folder;
         item.callback = callback;
-        auto new_work =
-            Work{std::move(item), maybe_target_compid.value_or(get_target_component_id())};
-        _work_queue.push_back(std::make_shared<Work>(std::move(new_work)));
-
+        enqueue_work(std::make_shared<Work>(
+            Work{std::move(item), maybe_target_compid.value_or(get_target_component_id())}));
     } else {
         auto item = DownloadItem{};
         item.remote_path = remote_path;
         item.local_folder = local_folder;
         item.callback = callback;
-        auto new_work =
-            Work{std::move(item), maybe_target_compid.value_or(get_target_component_id())};
-        _work_queue.push_back(std::make_shared<Work>(std::move(new_work)));
+        enqueue_work(std::make_shared<Work>(
+            Work{std::move(item), maybe_target_compid.value_or(get_target_component_id())}));
     }
 }
 
@@ -1220,9 +1228,7 @@ void MavlinkFtpClient::upload_async(
     item.local_file_path = local_file_path;
     item.remote_folder = remote_folder;
     item.callback = callback;
-    auto new_work = Work{std::move(item), get_target_component_id()};
-
-    _work_queue.push_back(std::make_shared<Work>(std::move(new_work)));
+    enqueue_work(std::make_shared<Work>(Work{std::move(item), get_target_component_id()}));
 }
 
 void MavlinkFtpClient::list_directory_async(const std::string& path, ListDirectoryCallback callback)
@@ -1230,9 +1236,7 @@ void MavlinkFtpClient::list_directory_async(const std::string& path, ListDirecto
     auto item = ListDirItem{};
     item.path = path;
     item.callback = callback;
-    auto new_work = Work{std::move(item), get_target_component_id()};
-
-    _work_queue.push_back(std::make_shared<Work>(std::move(new_work)));
+    enqueue_work(std::make_shared<Work>(Work{std::move(item), get_target_component_id()}));
 }
 
 void MavlinkFtpClient::create_directory_async(const std::string& path, ResultCallback callback)
@@ -1240,9 +1244,7 @@ void MavlinkFtpClient::create_directory_async(const std::string& path, ResultCal
     auto item = CreateDirItem{};
     item.path = path;
     item.callback = callback;
-    auto new_work = Work{std::move(item), get_target_component_id()};
-
-    _work_queue.push_back(std::make_shared<Work>(std::move(new_work)));
+    enqueue_work(std::make_shared<Work>(Work{std::move(item), get_target_component_id()}));
 }
 
 void MavlinkFtpClient::remove_directory_async(const std::string& path, ResultCallback callback)
@@ -1250,9 +1252,7 @@ void MavlinkFtpClient::remove_directory_async(const std::string& path, ResultCal
     auto item = RemoveDirItem{};
     item.path = path;
     item.callback = callback;
-    auto new_work = Work{std::move(item), get_target_component_id()};
-
-    _work_queue.push_back(std::make_shared<Work>(std::move(new_work)));
+    enqueue_work(std::make_shared<Work>(Work{std::move(item), get_target_component_id()}));
 }
 
 void MavlinkFtpClient::remove_file_async(const std::string& path, ResultCallback callback)
@@ -1260,9 +1260,7 @@ void MavlinkFtpClient::remove_file_async(const std::string& path, ResultCallback
     auto item = RemoveItem{};
     item.path = path;
     item.callback = callback;
-    auto new_work = Work{std::move(item), get_target_component_id()};
-
-    _work_queue.push_back(std::make_shared<Work>(std::move(new_work)));
+    enqueue_work(std::make_shared<Work>(Work{std::move(item), get_target_component_id()}));
 }
 
 void MavlinkFtpClient::rename_async(
@@ -1272,9 +1270,7 @@ void MavlinkFtpClient::rename_async(
     item.from_path = from_path;
     item.to_path = to_path;
     item.callback = callback;
-    auto new_work = Work{std::move(item), get_target_component_id()};
-
-    _work_queue.push_back(std::make_shared<Work>(std::move(new_work)));
+    enqueue_work(std::make_shared<Work>(Work{std::move(item), get_target_component_id()}));
 }
 
 void MavlinkFtpClient::are_files_identical_async(
@@ -1286,9 +1282,7 @@ void MavlinkFtpClient::are_files_identical_async(
     item.local_path = local_path;
     item.remote_path = remote_path;
     item.callback = callback;
-    auto new_work = Work{std::move(item), get_target_component_id()};
-
-    _work_queue.push_back(std::make_shared<Work>(std::move(new_work)));
+    enqueue_work(std::make_shared<Work>(Work{std::move(item), get_target_component_id()}));
 }
 
 void MavlinkFtpClient::send_mavlink_ftp_message(const PayloadHeader& payload, uint8_t target_compid)

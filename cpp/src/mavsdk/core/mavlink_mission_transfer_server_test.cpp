@@ -42,7 +42,17 @@ protected:
     MavlinkMissionTransferServerTest() :
         ::testing::Test(),
         timeout_handler(time),
-        mmt(mock_sender, message_handler, timeout_handler, []() { return timeout_s; })
+        mmt(
+            // io_context and mock_sender are initialized before mmt (declaration order).
+            // Set up the io_context() default action here so it is ready before
+            // MavlinkMissionTransferServer's constructor calls sender.io_context().
+            [this]() -> MockSender& {
+                ON_CALL(mock_sender, io_context()).WillByDefault(ReturnRef(io_context));
+                return mock_sender;
+            }(),
+            message_handler,
+            timeout_handler,
+            []() { return timeout_s; })
     {}
 
     void SetUp() override
@@ -52,6 +62,12 @@ protected:
             .WillByDefault(Return(own_address.component_id));
         ON_CALL(mock_sender, compatibility_mode()).WillByDefault(Return(CompatibilityMode::Auto));
         ON_CALL(mock_sender, io_context()).WillByDefault(ReturnRef(io_context));
+    }
+
+    // Flush any io_context posts (e.g. the enqueue lambda) then drive the state machine.
+    void do_work() {
+        io_context.poll();
+        mmt.do_work();
     }
 
     asio::io_context io_context;
@@ -316,7 +332,7 @@ TEST_P(MissionTypeParameterTest, ReceiveIncomingMissionSendsMissionRequests)
                 mission_type, 0, target_address.component_id, fun(own_address, channel));
         })));
 
-    mmt.do_work();
+    do_work();
 
     message_handler.process_message(make_mission_count(items.size(), mission_type));
 }
@@ -352,7 +368,7 @@ TEST_P(MissionTypeParameterTest, ReceiveIncomingMissionResendsMissionRequestsAnd
         })))
         .Times(MavlinkMissionTransferServer::retries);
 
-    mmt.do_work();
+    do_work();
 
     EXPECT_EQ(fut.wait_for(std::chrono::seconds(0)), std::future_status::timeout);
 
@@ -364,7 +380,7 @@ TEST_P(MissionTypeParameterTest, ReceiveIncomingMissionResendsMissionRequestsAnd
 
     EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
 
-    mmt.do_work();
+    do_work();
     EXPECT_TRUE(mmt.is_idle());
 }
 
@@ -401,7 +417,7 @@ TEST_P(MissionTypeParameterTest, ReceiveIncomingMissionResendsRequestItemAgainFo
         })))
         .Times(MavlinkMissionTransferServer::retries - 1);
 
-    mmt.do_work();
+    do_work();
 
     for (unsigned i = 0; i < MavlinkMissionTransferServer::retries - 2; ++i) {
         time.sleep_for(std::chrono::milliseconds(static_cast<int>(timeout_s * 1.1 * 1000.)));
@@ -427,7 +443,7 @@ TEST_P(MissionTypeParameterTest, ReceiveIncomingMissionResendsRequestItemAgainFo
 
     EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
 
-    mmt.do_work();
+    do_work();
     EXPECT_TRUE(mmt.is_idle());
 }
 
@@ -460,7 +476,7 @@ TEST_P(MissionTypeParameterTest, ReceiveIncomingMissionEmptyList)
                 fun(own_address, channel));
         })));
 
-    mmt.do_work();
+    do_work();
 
     EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
 
@@ -468,7 +484,7 @@ TEST_P(MissionTypeParameterTest, ReceiveIncomingMissionEmptyList)
     time.sleep_for(std::chrono::milliseconds(static_cast<int>(timeout_s * 1.1 * 1000.)));
     timeout_handler.run_once();
 
-    mmt.do_work();
+    do_work();
     EXPECT_TRUE(mmt.is_idle());
 }
 
@@ -494,7 +510,7 @@ TEST_P(MissionTypeParameterTest, ReceiveIncomingMissionCanBeCancelled)
             EXPECT_EQ(result, Result::Cancelled);
             prom.set_value();
         });
-    mmt.do_work();
+    do_work();
 
     message_handler.process_message(make_mission_item(items, 0));
 
@@ -517,7 +533,7 @@ TEST_P(MissionTypeParameterTest, ReceiveIncomingMissionCanBeCancelled)
 
     EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
 
-    mmt.do_work();
+    do_work();
     EXPECT_TRUE(mmt.is_idle());
 }
 
@@ -540,14 +556,14 @@ TEST_P(MissionTypeParameterTest, SendOutgoingMissionEmptyMission)
             ONCE_ONLY;
             prom.set_value();
         });
-    mmt.do_work();
+    do_work();
 
     // empty mission should just send a zero count and be done
     message_handler.process_message(make_mission_ack(mission_type, MAV_MISSION_ACCEPTED));
 
     EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
 
-    mmt.do_work();
+    do_work();
     EXPECT_TRUE(mmt.is_idle());
 }
 
@@ -559,22 +575,22 @@ TEST_P(MissionTypeParameterTest, SendOutgoingMissionDoesNotCrashIfCallbackIsNull
     std::vector<ItemInt> items;
     mmt.send_outgoing_items_async(
         mission_type, items, target_address.system_id, target_address.component_id, nullptr);
-    mmt.do_work();
+    do_work();
 
     items.push_back(make_item(mission_type, 0));
     items.push_back(make_item(mission_type, 1));
 
     mmt.send_outgoing_items_async(
         mission_type, items, target_address.system_id, target_address.component_id, nullptr);
-    mmt.do_work();
+    do_work();
 
     // Catch the WrongSequence case as well.
     items.push_back(make_item(mission_type, 3));
     mmt.send_outgoing_items_async(
         mission_type, items, target_address.system_id, target_address.component_id, nullptr);
-    mmt.do_work();
+    do_work();
 
-    mmt.do_work();
+    do_work();
     EXPECT_TRUE(mmt.is_idle());
 }
 
@@ -599,7 +615,7 @@ TEST_P(MissionTypeParameterTest, SendOutgoingMissionReturnsConnectionErrorWhenSe
             ONCE_ONLY;
             prom.set_value();
         });
-    mmt.do_work();
+    do_work();
 
     EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
 
@@ -607,7 +623,7 @@ TEST_P(MissionTypeParameterTest, SendOutgoingMissionReturnsConnectionErrorWhenSe
     time.sleep_for(std::chrono::milliseconds(static_cast<int>(timeout_s * 1.1 * 1000.)));
     timeout_handler.run_once();
 
-    mmt.do_work();
+    do_work();
     EXPECT_TRUE(mmt.is_idle());
 }
 
@@ -636,7 +652,7 @@ TEST_P(MissionTypeParameterTest, SendOutgoingMissionSendsCount)
             UNUSED(result);
             EXPECT_TRUE(false);
         });
-    mmt.do_work();
+    do_work();
 }
 
 TEST_P(MissionTypeParameterTest, SendOutgoingMissionResendsCount)
@@ -665,7 +681,7 @@ TEST_P(MissionTypeParameterTest, SendOutgoingMissionResendsCount)
             UNUSED(result);
             EXPECT_TRUE(false);
         });
-    mmt.do_work();
+    do_work();
 
     time.sleep_for(std::chrono::milliseconds(static_cast<int>(timeout_s * 1.1 * 1000.)));
     timeout_handler.run_once();
@@ -701,7 +717,7 @@ TEST_P(MissionTypeParameterTest, SendOutgoingMissionTimeoutAfterSendCount)
             ONCE_ONLY;
             prom.set_value();
         });
-    mmt.do_work();
+    do_work();
 
     EXPECT_EQ(fut.wait_for(std::chrono::seconds(0)), std::future_status::timeout);
 
@@ -735,7 +751,7 @@ TEST_P(MissionTypeParameterTest, SendOutgoingMissionSendsMissionItems)
             ONCE_ONLY;
             prom.set_value();
         });
-    mmt.do_work();
+    do_work();
 
     EXPECT_CALL(
         mock_sender,
@@ -764,7 +780,7 @@ TEST_P(MissionTypeParameterTest, SendOutgoingMissionSendsMissionItems)
     time.sleep_for(std::chrono::milliseconds(static_cast<int>(timeout_s * 1.1 * 1000.)));
     timeout_handler.run_once();
 
-    mmt.do_work();
+    do_work();
     EXPECT_TRUE(mmt.is_idle());
 }
 
@@ -789,7 +805,7 @@ TEST_P(MissionTypeParameterTest, SendOutgoingMissionResendsMissionItems)
             ONCE_ONLY;
             prom.set_value();
         });
-    mmt.do_work();
+    do_work();
 
     EXPECT_CALL(
         mock_sender,
@@ -825,7 +841,7 @@ TEST_P(MissionTypeParameterTest, SendOutgoingMissionResendsMissionItems)
     // We are finished and should have received the successful result.
     EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
 
-    mmt.do_work();
+    do_work();
     EXPECT_TRUE(mmt.is_idle());
 }
 
@@ -850,7 +866,7 @@ TEST_P(MissionTypeParameterTest, SendOutgoingMissionResendsMissionItemsButGivesU
             ONCE_ONLY;
             prom.set_value();
         });
-    mmt.do_work();
+    do_work();
 
     EXPECT_CALL(
         mock_sender,
@@ -871,7 +887,7 @@ TEST_P(MissionTypeParameterTest, SendOutgoingMissionResendsMissionItemsButGivesU
     // We are finished and should have received the successful result.
     EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
 
-    mmt.do_work();
+    do_work();
     EXPECT_TRUE(mmt.is_idle());
 }
 
@@ -896,7 +912,7 @@ TEST_P(MissionTypeParameterTest, SendOutgoingMissionAckArrivesTooEarly)
             ONCE_ONLY;
             prom.set_value();
         });
-    mmt.do_work();
+    do_work();
 
     EXPECT_CALL(
         mock_sender,
@@ -912,7 +928,7 @@ TEST_P(MissionTypeParameterTest, SendOutgoingMissionAckArrivesTooEarly)
 
     EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
 
-    mmt.do_work();
+    do_work();
     EXPECT_TRUE(mmt.is_idle());
 }
 
@@ -944,7 +960,7 @@ TEST_P(MavlinkMissionTransferServerNackTests, SendOutgoingMissionNackAreHandled)
             EXPECT_EQ(result, mavsdk_nack);
             prom.set_value();
         });
-    mmt.do_work();
+    do_work();
 
     EXPECT_CALL(
         mock_sender,
@@ -960,7 +976,7 @@ TEST_P(MavlinkMissionTransferServerNackTests, SendOutgoingMissionNackAreHandled)
 
     EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
 
-    mmt.do_work();
+    do_work();
     EXPECT_TRUE(mmt.is_idle());
 }
 
@@ -1010,7 +1026,7 @@ TEST_P(MissionTypeParameterTest, SendOutgoingMissionTimeoutNotTriggeredDuringTra
             ONCE_ONLY;
             prom.set_value();
         });
-    mmt.do_work();
+    do_work();
 
     EXPECT_CALL(
         mock_sender,
@@ -1054,7 +1070,7 @@ TEST_P(MissionTypeParameterTest, SendOutgoingMissionTimeoutNotTriggeredDuringTra
     // We are finished and should have received the successful result.
     EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
 
-    mmt.do_work();
+    do_work();
     EXPECT_TRUE(mmt.is_idle());
 }
 
@@ -1079,7 +1095,7 @@ TEST_P(MissionTypeParameterTest, SendOutgoingMissionTimeoutAfterSendMissionItem)
             ONCE_ONLY;
             prom.set_value();
         });
-    mmt.do_work();
+    do_work();
 
     EXPECT_CALL(
         mock_sender,
@@ -1107,7 +1123,7 @@ TEST_P(MissionTypeParameterTest, SendOutgoingMissionTimeoutAfterSendMissionItem)
     // Ignore later (wrong) ack.
     message_handler.process_message(make_mission_ack(mission_type, MAV_MISSION_ACCEPTED));
 
-    mmt.do_work();
+    do_work();
     EXPECT_TRUE(mmt.is_idle());
 }
 
@@ -1120,7 +1136,7 @@ TEST_P(MissionTypeParameterTest, SendOutgoingMissionDoesNotCrashOnRandomMessages
     time.sleep_for(std::chrono::milliseconds(static_cast<int>(timeout_s * 1.1 * 1000.)));
     timeout_handler.run_once();
 
-    mmt.do_work();
+    do_work();
     EXPECT_TRUE(mmt.is_idle());
 }
 
@@ -1145,7 +1161,7 @@ TEST_P(MissionTypeParameterTest, SendOutgoingMissionCanBeCancelled)
             ONCE_ONLY;
             prom.set_value();
         });
-    mmt.do_work();
+    do_work();
 
     message_handler.process_message(make_mission_request_int(mission_type, 0));
 
@@ -1170,7 +1186,7 @@ TEST_P(MissionTypeParameterTest, SendOutgoingMissionCanBeCancelled)
     time.sleep_for(std::chrono::milliseconds(static_cast<int>(timeout_s * 1.1 * 1000.)));
     timeout_handler.run_once();
 
-    mmt.do_work();
+    do_work();
     EXPECT_TRUE(mmt.is_idle());
 }
 
@@ -1194,7 +1210,7 @@ TEST_P(MissionTypeParameterTest, SendOutgoingMissionNacksNonIntCase)
             ONCE_ONLY;
             prom.set_value();
         });
-    mmt.do_work();
+    do_work();
 
     EXPECT_CALL(
         mock_sender,
@@ -1225,7 +1241,7 @@ TEST_P(MissionTypeParameterTest, SendOutgoingMissionNacksNonIntCase)
     time.sleep_for(std::chrono::milliseconds(static_cast<int>(timeout_s * 1.1 * 1000.)));
     timeout_handler.run_once();
 
-    mmt.do_work();
+    do_work();
     EXPECT_TRUE(mmt.is_idle());
 }
 
