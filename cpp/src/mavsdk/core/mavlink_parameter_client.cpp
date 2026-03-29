@@ -737,10 +737,7 @@ void MavlinkParameterClient::process_param_value(const mavlink_message_t& messag
                 }
 
                 if (_parameter_debugging) {
-                    LogDebug(
-                        "Item value is: {}, received: {}",
-                        item.param_value,
-                        received_value);
+                    LogDebug("Item value is: {}, received: {}", item.param_value, received_value);
                 }
 
                 if (!item.param_value.is_same_type(received_value)) {

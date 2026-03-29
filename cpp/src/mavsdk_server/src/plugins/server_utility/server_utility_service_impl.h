@@ -102,7 +102,7 @@ public:
     {
         switch (result) {
             default:
-                LogErr("Unknown result enum value: {}", result);
+                LogErr("Unknown result enum value: {}", static_cast<int>(result));
             // FALLTHROUGH
             case mavsdk::ServerUtility::Result::Unknown:
                 return rpc::server_utility::ServerUtilityResult_Result_RESULT_UNKNOWN;
@@ -122,7 +122,7 @@ public:
     {
         switch (result) {
             default:
-                LogErr("Unknown result enum value: {}", result);
+                LogErr("Unknown result enum value: {}", static_cast<int>(result));
             // FALLTHROUGH
             case rpc::server_utility::ServerUtilityResult_Result_RESULT_UNKNOWN:
                 return mavsdk::ServerUtility::Result::Unknown;

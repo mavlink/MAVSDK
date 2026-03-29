@@ -193,7 +193,7 @@ public:
     {
         switch (altitude_type) {
             default:
-                LogErr("Unknown altitude_type enum value: {}", altitude_type);
+                LogErr("Unknown altitude_type enum value: {}", static_cast<int>(altitude_type));
             // FALLTHROUGH
             case mavsdk::Offboard::PositionGlobalYaw::AltitudeType::RelHome:
                 return rpc::offboard::PositionGlobalYaw_AltitudeType_ALTITUDE_TYPE_REL_HOME;
@@ -209,7 +209,7 @@ public:
     {
         switch (altitude_type) {
             default:
-                LogErr("Unknown altitude_type enum value: {}", altitude_type);
+                LogErr("Unknown altitude_type enum value: {}", static_cast<int>(altitude_type));
             // FALLTHROUGH
             case rpc::offboard::PositionGlobalYaw_AltitudeType_ALTITUDE_TYPE_REL_HOME:
                 return mavsdk::Offboard::PositionGlobalYaw::AltitudeType::RelHome;
@@ -353,7 +353,7 @@ public:
     {
         switch (result) {
             default:
-                LogErr("Unknown result enum value: {}", result);
+                LogErr("Unknown result enum value: {}", static_cast<int>(result));
             // FALLTHROUGH
             case mavsdk::Offboard::Result::Unknown:
                 return rpc::offboard::OffboardResult_Result_RESULT_UNKNOWN;
@@ -381,7 +381,7 @@ public:
     {
         switch (result) {
             default:
-                LogErr("Unknown result enum value: {}", result);
+                LogErr("Unknown result enum value: {}", static_cast<int>(result));
             // FALLTHROUGH
             case rpc::offboard::OffboardResult_Result_RESULT_UNKNOWN:
                 return mavsdk::Offboard::Result::Unknown;

@@ -50,7 +50,7 @@ public:
     {
         switch (camera_feedback) {
             default:
-                LogErr("Unknown camera_feedback enum value: {}", camera_feedback);
+                LogErr("Unknown camera_feedback enum value: {}", static_cast<int>(camera_feedback));
             // FALLTHROUGH
             case mavsdk::CameraServer::CameraFeedback::Unknown:
                 return rpc::camera_server::CAMERA_FEEDBACK_UNKNOWN;
@@ -68,7 +68,7 @@ public:
     {
         switch (camera_feedback) {
             default:
-                LogErr("Unknown camera_feedback enum value: {}", camera_feedback);
+                LogErr("Unknown camera_feedback enum value: {}", static_cast<int>(camera_feedback));
             // FALLTHROUGH
             case rpc::camera_server::CAMERA_FEEDBACK_UNKNOWN:
                 return mavsdk::CameraServer::CameraFeedback::Unknown;
@@ -85,7 +85,7 @@ public:
     {
         switch (mode) {
             default:
-                LogErr("Unknown mode enum value: {}", mode);
+                LogErr("Unknown mode enum value: {}", static_cast<int>(mode));
             // FALLTHROUGH
             case mavsdk::CameraServer::Mode::Unknown:
                 return rpc::camera_server::MODE_UNKNOWN;
@@ -100,7 +100,7 @@ public:
     {
         switch (mode) {
             default:
-                LogErr("Unknown mode enum value: {}", mode);
+                LogErr("Unknown mode enum value: {}", static_cast<int>(mode));
             // FALLTHROUGH
             case rpc::camera_server::MODE_UNKNOWN:
                 return mavsdk::CameraServer::Mode::Unknown;
@@ -313,7 +313,7 @@ public:
     {
         switch (result) {
             default:
-                LogErr("Unknown result enum value: {}", result);
+                LogErr("Unknown result enum value: {}", static_cast<int>(result));
             // FALLTHROUGH
             case mavsdk::CameraServer::Result::Unknown:
                 return rpc::camera_server::CameraServerResult_Result_RESULT_UNKNOWN;
@@ -341,7 +341,7 @@ public:
     {
         switch (result) {
             default:
-                LogErr("Unknown result enum value: {}", result);
+                LogErr("Unknown result enum value: {}", static_cast<int>(result));
             // FALLTHROUGH
             case rpc::camera_server::CameraServerResult_Result_RESULT_UNKNOWN:
                 return mavsdk::CameraServer::Result::Unknown;
@@ -369,7 +369,7 @@ public:
     {
         switch (storage_status) {
             default:
-                LogErr("Unknown storage_status enum value: {}", storage_status);
+                LogErr("Unknown storage_status enum value: {}", static_cast<int>(storage_status));
             // FALLTHROUGH
             case mavsdk::CameraServer::StorageInformation::StorageStatus::NotAvailable:
                 return rpc::camera_server::
@@ -391,7 +391,7 @@ public:
     {
         switch (storage_status) {
             default:
-                LogErr("Unknown storage_status enum value: {}", storage_status);
+                LogErr("Unknown storage_status enum value: {}", static_cast<int>(storage_status));
             // FALLTHROUGH
             case rpc::camera_server::StorageInformation_StorageStatus_STORAGE_STATUS_NOT_AVAILABLE:
                 return mavsdk::CameraServer::StorageInformation::StorageStatus::NotAvailable;
@@ -409,7 +409,7 @@ public:
     {
         switch (storage_type) {
             default:
-                LogErr("Unknown storage_type enum value: {}", storage_type);
+                LogErr("Unknown storage_type enum value: {}", static_cast<int>(storage_type));
             // FALLTHROUGH
             case mavsdk::CameraServer::StorageInformation::StorageType::Unknown:
                 return rpc::camera_server::StorageInformation_StorageType_STORAGE_TYPE_UNKNOWN;
@@ -431,7 +431,7 @@ public:
     {
         switch (storage_type) {
             default:
-                LogErr("Unknown storage_type enum value: {}", storage_type);
+                LogErr("Unknown storage_type enum value: {}", static_cast<int>(storage_type));
             // FALLTHROUGH
             case rpc::camera_server::StorageInformation_StorageType_STORAGE_TYPE_UNKNOWN:
                 return mavsdk::CameraServer::StorageInformation::StorageType::Unknown;
@@ -502,7 +502,7 @@ public:
     {
         switch (image_status) {
             default:
-                LogErr("Unknown image_status enum value: {}", image_status);
+                LogErr("Unknown image_status enum value: {}", static_cast<int>(image_status));
             // FALLTHROUGH
             case mavsdk::CameraServer::CaptureStatus::ImageStatus::Idle:
                 return rpc::camera_server::CaptureStatus_ImageStatus_IMAGE_STATUS_IDLE;
@@ -522,7 +522,7 @@ public:
     {
         switch (image_status) {
             default:
-                LogErr("Unknown image_status enum value: {}", image_status);
+                LogErr("Unknown image_status enum value: {}", static_cast<int>(image_status));
             // FALLTHROUGH
             case rpc::camera_server::CaptureStatus_ImageStatus_IMAGE_STATUS_IDLE:
                 return mavsdk::CameraServer::CaptureStatus::ImageStatus::Idle;
@@ -540,7 +540,7 @@ public:
     {
         switch (video_status) {
             default:
-                LogErr("Unknown video_status enum value: {}", video_status);
+                LogErr("Unknown video_status enum value: {}", static_cast<int>(video_status));
             // FALLTHROUGH
             case mavsdk::CameraServer::CaptureStatus::VideoStatus::Idle:
                 return rpc::camera_server::CaptureStatus_VideoStatus_VIDEO_STATUS_IDLE;
@@ -555,7 +555,7 @@ public:
     {
         switch (video_status) {
             default:
-                LogErr("Unknown video_status enum value: {}", video_status);
+                LogErr("Unknown video_status enum value: {}", static_cast<int>(video_status));
             // FALLTHROUGH
             case rpc::camera_server::CaptureStatus_VideoStatus_VIDEO_STATUS_IDLE:
                 return mavsdk::CameraServer::CaptureStatus::VideoStatus::Idle;

@@ -99,7 +99,7 @@ public:
     {
         switch (result) {
             default:
-                LogErr("Unknown result enum value: {}", result);
+                LogErr("Unknown result enum value: {}", static_cast<int>(result));
             // FALLTHROUGH
             case mavsdk::ArmAuthorizerServer::Result::Unknown:
                 return rpc::arm_authorizer_server::ArmAuthorizerServerResult_Result_RESULT_UNKNOWN;
@@ -115,7 +115,7 @@ public:
     {
         switch (result) {
             default:
-                LogErr("Unknown result enum value: {}", result);
+                LogErr("Unknown result enum value: {}", static_cast<int>(result));
             // FALLTHROUGH
             case rpc::arm_authorizer_server::ArmAuthorizerServerResult_Result_RESULT_UNKNOWN:
                 return mavsdk::ArmAuthorizerServer::Result::Unknown;

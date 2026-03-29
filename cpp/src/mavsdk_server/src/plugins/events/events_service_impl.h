@@ -46,7 +46,7 @@ public:
     {
         switch (log_level) {
             default:
-                LogErr("Unknown log_level enum value: {}", log_level);
+                LogErr("Unknown log_level enum value: {}", static_cast<int>(log_level));
             // FALLTHROUGH
             case mavsdk::Events::LogLevel::Emergency:
                 return rpc::events::LOG_LEVEL_EMERGENCY;
@@ -71,7 +71,7 @@ public:
     {
         switch (log_level) {
             default:
-                LogErr("Unknown log_level enum value: {}", log_level);
+                LogErr("Unknown log_level enum value: {}", static_cast<int>(log_level));
             // FALLTHROUGH
             case rpc::events::LOG_LEVEL_EMERGENCY:
                 return mavsdk::Events::LogLevel::Emergency;
@@ -285,7 +285,7 @@ public:
     {
         switch (result) {
             default:
-                LogErr("Unknown result enum value: {}", result);
+                LogErr("Unknown result enum value: {}", static_cast<int>(result));
             // FALLTHROUGH
             case mavsdk::Events::Result::Success:
                 return rpc::events::EventsResult_Result_RESULT_SUCCESS;
@@ -313,7 +313,7 @@ public:
     {
         switch (result) {
             default:
-                LogErr("Unknown result enum value: {}", result);
+                LogErr("Unknown result enum value: {}", static_cast<int>(result));
             // FALLTHROUGH
             case rpc::events::EventsResult_Result_RESULT_SUCCESS:
                 return mavsdk::Events::Result::Success;

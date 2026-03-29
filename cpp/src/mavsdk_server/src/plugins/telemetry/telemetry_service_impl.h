@@ -46,7 +46,7 @@ public:
     {
         switch (fix_type) {
             default:
-                LogErr("Unknown fix_type enum value: {}", fix_type);
+                LogErr("Unknown fix_type enum value: {}", static_cast<int>(fix_type));
             // FALLTHROUGH
             case mavsdk::Telemetry::FixType::NoGps:
                 return rpc::telemetry::FIX_TYPE_NO_GPS;
@@ -70,7 +70,7 @@ public:
     {
         switch (fix_type) {
             default:
-                LogErr("Unknown fix_type enum value: {}", fix_type);
+                LogErr("Unknown fix_type enum value: {}", static_cast<int>(fix_type));
             // FALLTHROUGH
             case rpc::telemetry::FIX_TYPE_NO_GPS:
                 return mavsdk::Telemetry::FixType::NoGps;
@@ -136,7 +136,7 @@ public:
     {
         switch (flight_mode) {
             default:
-                LogErr("Unknown flight_mode enum value: {}", flight_mode);
+                LogErr("Unknown flight_mode enum value: {}", static_cast<int>(flight_mode));
             // FALLTHROUGH
             case mavsdk::Telemetry::FlightMode::Unknown:
                 return rpc::telemetry::FLIGHT_MODE_UNKNOWN;
@@ -176,7 +176,7 @@ public:
     {
         switch (flight_mode) {
             default:
-                LogErr("Unknown flight_mode enum value: {}", flight_mode);
+                LogErr("Unknown flight_mode enum value: {}", static_cast<int>(flight_mode));
             // FALLTHROUGH
             case rpc::telemetry::FLIGHT_MODE_UNKNOWN:
                 return mavsdk::Telemetry::FlightMode::Unknown;
@@ -270,7 +270,7 @@ public:
     {
         switch (landed_state) {
             default:
-                LogErr("Unknown landed_state enum value: {}", landed_state);
+                LogErr("Unknown landed_state enum value: {}", static_cast<int>(landed_state));
             // FALLTHROUGH
             case mavsdk::Telemetry::LandedState::Unknown:
                 return rpc::telemetry::LANDED_STATE_UNKNOWN;
@@ -290,7 +290,7 @@ public:
     {
         switch (landed_state) {
             default:
-                LogErr("Unknown landed_state enum value: {}", landed_state);
+                LogErr("Unknown landed_state enum value: {}", static_cast<int>(landed_state));
             // FALLTHROUGH
             case rpc::telemetry::LANDED_STATE_UNKNOWN:
                 return mavsdk::Telemetry::LandedState::Unknown;
@@ -310,7 +310,7 @@ public:
     {
         switch (vtol_state) {
             default:
-                LogErr("Unknown vtol_state enum value: {}", vtol_state);
+                LogErr("Unknown vtol_state enum value: {}", static_cast<int>(vtol_state));
             // FALLTHROUGH
             case mavsdk::Telemetry::VtolState::Undefined:
                 return rpc::telemetry::VTOL_STATE_UNDEFINED;
@@ -330,7 +330,7 @@ public:
     {
         switch (vtol_state) {
             default:
-                LogErr("Unknown vtol_state enum value: {}", vtol_state);
+                LogErr("Unknown vtol_state enum value: {}", static_cast<int>(vtol_state));
             // FALLTHROUGH
             case rpc::telemetry::VTOL_STATE_UNDEFINED:
                 return mavsdk::Telemetry::VtolState::Undefined;
@@ -873,7 +873,7 @@ public:
     {
         switch (mav_frame) {
             default:
-                LogErr("Unknown mav_frame enum value: {}", mav_frame);
+                LogErr("Unknown mav_frame enum value: {}", static_cast<int>(mav_frame));
             // FALLTHROUGH
             case mavsdk::Telemetry::Odometry::MavFrame::Undef:
                 return rpc::telemetry::Odometry_MavFrame_MAV_FRAME_UNDEF;
@@ -891,7 +891,7 @@ public:
     {
         switch (mav_frame) {
             default:
-                LogErr("Unknown mav_frame enum value: {}", mav_frame);
+                LogErr("Unknown mav_frame enum value: {}", static_cast<int>(mav_frame));
             // FALLTHROUGH
             case rpc::telemetry::Odometry_MavFrame_MAV_FRAME_UNDEF:
                 return mavsdk::Telemetry::Odometry::MavFrame::Undef;
@@ -1424,7 +1424,7 @@ public:
     {
         switch (result) {
             default:
-                LogErr("Unknown result enum value: {}", result);
+                LogErr("Unknown result enum value: {}", static_cast<int>(result));
             // FALLTHROUGH
             case mavsdk::Telemetry::Result::Unknown:
                 return rpc::telemetry::TelemetryResult_Result_RESULT_UNKNOWN;
@@ -1450,7 +1450,7 @@ public:
     {
         switch (result) {
             default:
-                LogErr("Unknown result enum value: {}", result);
+                LogErr("Unknown result enum value: {}", static_cast<int>(result));
             // FALLTHROUGH
             case rpc::telemetry::TelemetryResult_Result_RESULT_UNKNOWN:
                 return mavsdk::Telemetry::Result::Unknown;

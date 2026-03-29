@@ -170,7 +170,7 @@ public:
     {
         switch (result) {
             default:
-                LogErr("Unknown result enum value: {}", result);
+                LogErr("Unknown result enum value: {}", static_cast<int>(result));
             // FALLTHROUGH
             case mavsdk::MissionRawServer::Result::Unknown:
                 return rpc::mission_raw_server::MissionRawServerResult_Result_RESULT_UNKNOWN;
@@ -211,7 +211,7 @@ public:
     {
         switch (result) {
             default:
-                LogErr("Unknown result enum value: {}", result);
+                LogErr("Unknown result enum value: {}", static_cast<int>(result));
             // FALLTHROUGH
             case rpc::mission_raw_server::MissionRawServerResult_Result_RESULT_UNKNOWN:
                 return mavsdk::MissionRawServer::Result::Unknown;

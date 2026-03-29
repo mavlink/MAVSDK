@@ -14,13 +14,13 @@
 //      floating-point support calls std::to_chars which is only available
 //      from iOS 16.3 / iPadOS 16.3 onward.
 #if !defined(__has_include) || !__has_include(<format>)
-#  define MAVSDK_HAS_STD_FORMAT 0
+#define MAVSDK_HAS_STD_FORMAT 0
 #elif defined(__IPHONE_OS_VERSION_MIN_REQUIRED) && (__IPHONE_OS_VERSION_MIN_REQUIRED < 160300)
-#  define MAVSDK_HAS_STD_FORMAT 0
+#define MAVSDK_HAS_STD_FORMAT 0
 #elif defined(__cpp_lib_format)
-#  define MAVSDK_HAS_STD_FORMAT 1
+#define MAVSDK_HAS_STD_FORMAT 1
 #else
-#  define MAVSDK_HAS_STD_FORMAT 0
+#define MAVSDK_HAS_STD_FORMAT 0
 #endif
 
 #if MAVSDK_HAS_STD_FORMAT
@@ -41,8 +41,9 @@ template<> struct std::formatter<std::filesystem::path> : std::formatter<std::st
 // All MAVSDK plugin Result, Mode, Status, etc. enums are generated with operator<<
 // so they print their named value (e.g. "Success") rather than a raw integer.
 template<typename T>
-    requires(std::is_enum_v<T> && !std::is_convertible_v<T, std::underlying_type_t<T>> &&
-             requires(std::ostream& os, T v) { os << v; })
+    requires(
+        std::is_enum_v<T> && !std::is_convertible_v<T, std::underlying_type_t<T>> &&
+        requires(std::ostream& os, T v) { os << v; })
 struct std::formatter<T> : std::formatter<std::string> {
     auto format(T val, auto& ctx) const
     {
@@ -55,11 +56,11 @@ struct std::formatter<T> : std::formatter<std::string> {
 // Formatter for class/struct types that provide operator<< but have no native
 // std::formatter specialization (e.g. ParamValue).
 template<typename T>
-    requires(std::is_class_v<T> &&
-             !std::is_same_v<std::remove_cvref_t<T>, std::string> &&
-             !std::is_same_v<std::remove_cvref_t<T>, std::string_view> &&
-             !std::is_same_v<std::remove_cvref_t<T>, std::filesystem::path> &&
-             requires(std::ostream& os, const T& v) { os << v; })
+    requires(
+        std::is_class_v<T> && !std::is_same_v<std::remove_cvref_t<T>, std::string> &&
+        !std::is_same_v<std::remove_cvref_t<T>, std::string_view> &&
+        !std::is_same_v<std::remove_cvref_t<T>, std::filesystem::path> &&
+        requires(std::ostream& os, const T& v) { os << v; })
 struct std::formatter<T> : std::formatter<std::string> {
     auto format(const T& val, auto& ctx) const
     {
@@ -157,12 +158,7 @@ void format_into(std::ostream& os, std::string_view fmt, T&& arg, Rest&&... rest
 
 template<typename... Args>
     requires(sizeof...(Args) > 0)
-void log_message(
-    log::Level level,
-    const char* filename,
-    int line,
-    const char* fmt,
-    Args&&... args)
+void log_message(log::Level level, const char* filename, int line, const char* fmt, Args&&... args)
 {
     std::lock_guard<std::mutex> lock(get_log_mutex());
     std::ostringstream os;

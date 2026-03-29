@@ -53,7 +53,7 @@ public:
     {
         switch (metadata_type) {
             default:
-                LogErr("Unknown metadata_type enum value: {}", metadata_type);
+                LogErr("Unknown metadata_type enum value: {}", static_cast<int>(metadata_type));
             // FALLTHROUGH
             case mavsdk::ComponentMetadata::MetadataType::AllCompleted:
                 return rpc::component_metadata::METADATA_TYPE_ALL_COMPLETED;
@@ -71,7 +71,7 @@ public:
     {
         switch (metadata_type) {
             default:
-                LogErr("Unknown metadata_type enum value: {}", metadata_type);
+                LogErr("Unknown metadata_type enum value: {}", static_cast<int>(metadata_type));
             // FALLTHROUGH
             case rpc::component_metadata::METADATA_TYPE_ALL_COMPLETED:
                 return mavsdk::ComponentMetadata::MetadataType::AllCompleted;
@@ -109,7 +109,7 @@ public:
     {
         switch (result) {
             default:
-                LogErr("Unknown result enum value: {}", result);
+                LogErr("Unknown result enum value: {}", static_cast<int>(result));
             // FALLTHROUGH
             case mavsdk::ComponentMetadata::Result::Success:
                 return rpc::component_metadata::ComponentMetadataResult_Result_RESULT_SUCCESS;
@@ -138,7 +138,7 @@ public:
     {
         switch (result) {
             default:
-                LogErr("Unknown result enum value: {}", result);
+                LogErr("Unknown result enum value: {}", static_cast<int>(result));
             // FALLTHROUGH
             case rpc::component_metadata::ComponentMetadataResult_Result_RESULT_SUCCESS:
                 return mavsdk::ComponentMetadata::Result::Success;

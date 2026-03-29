@@ -91,7 +91,7 @@ public:
     {
         switch (relay_command) {
             default:
-                LogErr("Unknown relay_command enum value: {}", relay_command);
+                LogErr("Unknown relay_command enum value: {}", static_cast<int>(relay_command));
             // FALLTHROUGH
             case mavsdk::Action::RelayCommand::On:
                 return rpc::action::RELAY_COMMAND_ON;
@@ -105,7 +105,7 @@ public:
     {
         switch (relay_command) {
             default:
-                LogErr("Unknown relay_command enum value: {}", relay_command);
+                LogErr("Unknown relay_command enum value: {}", static_cast<int>(relay_command));
             // FALLTHROUGH
             case rpc::action::RELAY_COMMAND_ON:
                 return mavsdk::Action::RelayCommand::On;
@@ -119,7 +119,7 @@ public:
     {
         switch (result) {
             default:
-                LogErr("Unknown result enum value: {}", result);
+                LogErr("Unknown result enum value: {}", static_cast<int>(result));
             // FALLTHROUGH
             case mavsdk::Action::Result::Unknown:
                 return rpc::action::ActionResult_Result_RESULT_UNKNOWN;
@@ -159,7 +159,7 @@ public:
     {
         switch (result) {
             default:
-                LogErr("Unknown result enum value: {}", result);
+                LogErr("Unknown result enum value: {}", static_cast<int>(result));
             // FALLTHROUGH
             case rpc::action::ActionResult_Result_RESULT_UNKNOWN:
                 return mavsdk::Action::Result::Unknown;
