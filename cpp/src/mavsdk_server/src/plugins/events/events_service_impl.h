@@ -22,11 +22,15 @@
 namespace mavsdk {
 namespace mavsdk_server {
 
+
 template<typename Events = Events, typename LazyPlugin = LazyPlugin<Events>>
 
 class EventsServiceImpl final : public rpc::events::EventsService::Service {
 public:
+
     EventsServiceImpl(LazyPlugin& lazy_plugin) : _lazy_plugin(lazy_plugin) {}
+
+
 
     template<typename ResponseType>
     void fillResponseWithResult(ResponseType* response, mavsdk::Events::Result& result) const
@@ -41,6 +45,7 @@ public:
 
         response->set_allocated_events_result(rpc_events_result);
     }
+
 
     static rpc::events::LogLevel translateToRpcLogLevel(const mavsdk::Events::LogLevel& log_level)
     {
@@ -92,22 +97,39 @@ public:
         }
     }
 
-    static std::unique_ptr<rpc::events::Event>
-    translateToRpcEvent(const mavsdk::Events::Event& event)
+
+
+    static std::unique_ptr<rpc::events::Event> translateToRpcEvent(const mavsdk::Events::Event &event)
     {
         auto rpc_obj = std::make_unique<rpc::events::Event>();
 
+
+            
         rpc_obj->set_compid(event.compid);
-
+            
+        
+            
         rpc_obj->set_message(event.message);
-
+            
+        
+            
         rpc_obj->set_description(event.description);
-
+            
+        
+            
+                
         rpc_obj->set_log_level(translateToRpcLogLevel(event.log_level));
-
+                
+            
+        
+            
         rpc_obj->set_event_namespace(event.event_namespace);
-
+            
+        
+            
         rpc_obj->set_event_name(event.event_name);
+            
+        
 
         return rpc_obj;
     }
@@ -116,172 +138,267 @@ public:
     {
         mavsdk::Events::Event obj;
 
+
+            
         obj.compid = event.compid();
-
+            
+        
+            
         obj.message = event.message();
-
+            
+        
+            
         obj.description = event.description();
-
+            
+        
+            
         obj.log_level = translateFromRpcLogLevel(event.log_level());
-
+            
+        
+            
         obj.event_namespace = event.event_namespace();
-
+            
+        
+            
         obj.event_name = event.event_name();
-
+            
+        
         return obj;
     }
 
-    static std::unique_ptr<rpc::events::HealthAndArmingCheckProblem>
-    translateToRpcHealthAndArmingCheckProblem(
-        const mavsdk::Events::HealthAndArmingCheckProblem& health_and_arming_check_problem)
+
+
+
+
+    static std::unique_ptr<rpc::events::HealthAndArmingCheckProblem> translateToRpcHealthAndArmingCheckProblem(const mavsdk::Events::HealthAndArmingCheckProblem &health_and_arming_check_problem)
     {
         auto rpc_obj = std::make_unique<rpc::events::HealthAndArmingCheckProblem>();
 
+
+            
         rpc_obj->set_message(health_and_arming_check_problem.message);
-
+            
+        
+            
         rpc_obj->set_description(health_and_arming_check_problem.description);
-
+            
+        
+            
+                
         rpc_obj->set_log_level(translateToRpcLogLevel(health_and_arming_check_problem.log_level));
-
+                
+            
+        
+            
         rpc_obj->set_health_component(health_and_arming_check_problem.health_component);
+            
+        
 
         return rpc_obj;
     }
 
-    static mavsdk::Events::HealthAndArmingCheckProblem translateFromRpcHealthAndArmingCheckProblem(
-        const rpc::events::HealthAndArmingCheckProblem& health_and_arming_check_problem)
+    static mavsdk::Events::HealthAndArmingCheckProblem translateFromRpcHealthAndArmingCheckProblem(const rpc::events::HealthAndArmingCheckProblem& health_and_arming_check_problem)
     {
         mavsdk::Events::HealthAndArmingCheckProblem obj;
 
+
+            
         obj.message = health_and_arming_check_problem.message();
-
+            
+        
+            
         obj.description = health_and_arming_check_problem.description();
-
+            
+        
+            
         obj.log_level = translateFromRpcLogLevel(health_and_arming_check_problem.log_level());
-
+            
+        
+            
         obj.health_component = health_and_arming_check_problem.health_component();
-
+            
+        
         return obj;
     }
 
-    static std::unique_ptr<rpc::events::HealthAndArmingCheckMode>
-    translateToRpcHealthAndArmingCheckMode(
-        const mavsdk::Events::HealthAndArmingCheckMode& health_and_arming_check_mode)
+
+
+
+
+    static std::unique_ptr<rpc::events::HealthAndArmingCheckMode> translateToRpcHealthAndArmingCheckMode(const mavsdk::Events::HealthAndArmingCheckMode &health_and_arming_check_mode)
     {
         auto rpc_obj = std::make_unique<rpc::events::HealthAndArmingCheckMode>();
 
+
+            
         rpc_obj->set_mode_name(health_and_arming_check_mode.mode_name);
-
+            
+        
+            
         rpc_obj->set_can_arm_or_run(health_and_arming_check_mode.can_arm_or_run);
-
+            
+        
+            
+                
         for (const auto& elem : health_and_arming_check_mode.problems) {
             auto* ptr = rpc_obj->add_problems();
             ptr->CopyFrom(*translateToRpcHealthAndArmingCheckProblem(elem).release());
         }
+                
+            
+        
 
         return rpc_obj;
     }
 
-    static mavsdk::Events::HealthAndArmingCheckMode translateFromRpcHealthAndArmingCheckMode(
-        const rpc::events::HealthAndArmingCheckMode& health_and_arming_check_mode)
+    static mavsdk::Events::HealthAndArmingCheckMode translateFromRpcHealthAndArmingCheckMode(const rpc::events::HealthAndArmingCheckMode& health_and_arming_check_mode)
     {
         mavsdk::Events::HealthAndArmingCheckMode obj;
 
+
+            
         obj.mode_name = health_and_arming_check_mode.mode_name();
-
+            
+        
+            
         obj.can_arm_or_run = health_and_arming_check_mode.can_arm_or_run();
-
-        for (const auto& elem : health_and_arming_check_mode.problems()) {
-            obj.problems.push_back(translateFromRpcHealthAndArmingCheckProblem(
-                static_cast<mavsdk::rpc::events::HealthAndArmingCheckProblem>(elem)));
-        }
-
+            
+        
+            
+                for (const auto& elem : health_and_arming_check_mode.problems()) {
+                    obj.problems.push_back(translateFromRpcHealthAndArmingCheckProblem(static_cast<mavsdk::rpc::events::HealthAndArmingCheckProblem>(elem)));
+                }
+            
+        
         return obj;
     }
 
-    static std::unique_ptr<rpc::events::HealthComponentReport> translateToRpcHealthComponentReport(
-        const mavsdk::Events::HealthComponentReport& health_component_report)
+
+
+
+
+    static std::unique_ptr<rpc::events::HealthComponentReport> translateToRpcHealthComponentReport(const mavsdk::Events::HealthComponentReport &health_component_report)
     {
         auto rpc_obj = std::make_unique<rpc::events::HealthComponentReport>();
 
+
+            
         rpc_obj->set_name(health_component_report.name);
-
+            
+        
+            
         rpc_obj->set_label(health_component_report.label);
-
+            
+        
+            
         rpc_obj->set_is_present(health_component_report.is_present);
-
+            
+        
+            
         rpc_obj->set_has_error(health_component_report.has_error);
-
+            
+        
+            
         rpc_obj->set_has_warning(health_component_report.has_warning);
+            
+        
 
         return rpc_obj;
     }
 
-    static mavsdk::Events::HealthComponentReport translateFromRpcHealthComponentReport(
-        const rpc::events::HealthComponentReport& health_component_report)
+    static mavsdk::Events::HealthComponentReport translateFromRpcHealthComponentReport(const rpc::events::HealthComponentReport& health_component_report)
     {
         mavsdk::Events::HealthComponentReport obj;
 
+
+            
         obj.name = health_component_report.name();
-
+            
+        
+            
         obj.label = health_component_report.label();
-
+            
+        
+            
         obj.is_present = health_component_report.is_present();
-
+            
+        
+            
         obj.has_error = health_component_report.has_error();
-
+            
+        
+            
         obj.has_warning = health_component_report.has_warning();
-
+            
+        
         return obj;
     }
 
-    static std::unique_ptr<rpc::events::HealthAndArmingCheckReport>
-    translateToRpcHealthAndArmingCheckReport(
-        const mavsdk::Events::HealthAndArmingCheckReport& health_and_arming_check_report)
+
+
+
+
+    static std::unique_ptr<rpc::events::HealthAndArmingCheckReport> translateToRpcHealthAndArmingCheckReport(const mavsdk::Events::HealthAndArmingCheckReport &health_and_arming_check_report)
     {
         auto rpc_obj = std::make_unique<rpc::events::HealthAndArmingCheckReport>();
 
-        rpc_obj->set_allocated_current_mode_intention(
-            translateToRpcHealthAndArmingCheckMode(
-                health_and_arming_check_report.current_mode_intention)
-                .release());
 
+            
+                
+        rpc_obj->set_allocated_current_mode_intention(translateToRpcHealthAndArmingCheckMode(health_and_arming_check_report.current_mode_intention).release());
+                
+            
+        
+            
+                
         for (const auto& elem : health_and_arming_check_report.health_components) {
             auto* ptr = rpc_obj->add_health_components();
             ptr->CopyFrom(*translateToRpcHealthComponentReport(elem).release());
         }
-
+                
+            
+        
+            
+                
         for (const auto& elem : health_and_arming_check_report.all_problems) {
             auto* ptr = rpc_obj->add_all_problems();
             ptr->CopyFrom(*translateToRpcHealthAndArmingCheckProblem(elem).release());
         }
+                
+            
+        
 
         return rpc_obj;
     }
 
-    static mavsdk::Events::HealthAndArmingCheckReport translateFromRpcHealthAndArmingCheckReport(
-        const rpc::events::HealthAndArmingCheckReport& health_and_arming_check_report)
+    static mavsdk::Events::HealthAndArmingCheckReport translateFromRpcHealthAndArmingCheckReport(const rpc::events::HealthAndArmingCheckReport& health_and_arming_check_report)
     {
         mavsdk::Events::HealthAndArmingCheckReport obj;
 
-        obj.current_mode_intention = translateFromRpcHealthAndArmingCheckMode(
-            health_and_arming_check_report.current_mode_intention());
 
-        for (const auto& elem : health_and_arming_check_report.health_components()) {
-            obj.health_components.push_back(translateFromRpcHealthComponentReport(
-                static_cast<mavsdk::rpc::events::HealthComponentReport>(elem)));
-        }
-
-        for (const auto& elem : health_and_arming_check_report.all_problems()) {
-            obj.all_problems.push_back(translateFromRpcHealthAndArmingCheckProblem(
-                static_cast<mavsdk::rpc::events::HealthAndArmingCheckProblem>(elem)));
-        }
-
+            
+        obj.current_mode_intention = translateFromRpcHealthAndArmingCheckMode(health_and_arming_check_report.current_mode_intention());
+            
+        
+            
+                for (const auto& elem : health_and_arming_check_report.health_components()) {
+                    obj.health_components.push_back(translateFromRpcHealthComponentReport(static_cast<mavsdk::rpc::events::HealthComponentReport>(elem)));
+                }
+            
+        
+            
+                for (const auto& elem : health_and_arming_check_report.all_problems()) {
+                    obj.all_problems.push_back(translateFromRpcHealthAndArmingCheckProblem(static_cast<mavsdk::rpc::events::HealthAndArmingCheckProblem>(elem)));
+                }
+            
+        
         return obj;
     }
 
-    static rpc::events::EventsResult::Result
-    translateToRpcResult(const mavsdk::Events::Result& result)
+
+
+
+    static rpc::events::EventsResult::Result translateToRpcResult(const mavsdk::Events::Result& result)
     {
         switch (result) {
             default:
@@ -308,8 +425,7 @@ public:
         }
     }
 
-    static mavsdk::Events::Result
-    translateFromRpcResult(const rpc::events::EventsResult::Result result)
+    static mavsdk::Events::Result translateFromRpcResult(const rpc::events::EventsResult::Result result)
     {
         switch (result) {
             default:
@@ -336,12 +452,13 @@ public:
         }
     }
 
-    grpc::Status SubscribeEvents(
-        grpc::ServerContext* /* context */,
-        const mavsdk::rpc::events::SubscribeEventsRequest* /* request */,
-        grpc::ServerWriter<rpc::events::EventsResponse>* writer) override
+
+
+
+    grpc::Status SubscribeEvents(grpc::ServerContext* /* context */, const mavsdk::rpc::events::SubscribeEventsRequest* /* request */, grpc::ServerWriter<rpc::events::EventsResponse>* writer) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             return grpc::Status::OK;
         }
 
@@ -353,21 +470,25 @@ public:
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
         const mavsdk::Events::EventsHandle handle = _lazy_plugin.maybe_plugin()->subscribe_events(
-            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
-                const mavsdk::Events::Event events) {
-                rpc::events::EventsResponse rpc_response;
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](const mavsdk::Events::Event events) {
 
-                rpc_response.set_allocated_event(translateToRpcEvent(events).release());
+            rpc::events::EventsResponse rpc_response;
+        
+            rpc_response.set_allocated_event(translateToRpcEvent(events).release());
+        
 
-                std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                if (!*is_finished && !writer->Write(rpc_response)) {
-                    _lazy_plugin.maybe_plugin()->unsubscribe_events(handle);
+        
 
-                    *is_finished = true;
-                    unregister_stream_stop_promise(stream_closed_promise);
-                    stream_closed_promise->set_value();
-                }
-            });
+            std::unique_lock<std::mutex> lock(*subscribe_mutex);
+            if (!*is_finished && !writer->Write(rpc_response)) {
+                
+                _lazy_plugin.maybe_plugin()->unsubscribe_events(handle);
+                
+                *is_finished = true;
+                unregister_stream_stop_promise(stream_closed_promise);
+                stream_closed_promise->set_value();
+            }
+        });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
@@ -376,12 +497,10 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status SubscribeHealthAndArmingChecks(
-        grpc::ServerContext* /* context */,
-        const mavsdk::rpc::events::SubscribeHealthAndArmingChecksRequest* /* request */,
-        grpc::ServerWriter<rpc::events::HealthAndArmingChecksResponse>* writer) override
+    grpc::Status SubscribeHealthAndArmingChecks(grpc::ServerContext* /* context */, const mavsdk::rpc::events::SubscribeHealthAndArmingChecksRequest* /* request */, grpc::ServerWriter<rpc::events::HealthAndArmingChecksResponse>* writer) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             return grpc::Status::OK;
         }
 
@@ -392,25 +511,26 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        const mavsdk::Events::HealthAndArmingChecksHandle handle =
-            _lazy_plugin.maybe_plugin()->subscribe_health_and_arming_checks(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
-                    const mavsdk::Events::HealthAndArmingCheckReport health_and_arming_checks) {
-                    rpc::events::HealthAndArmingChecksResponse rpc_response;
+        const mavsdk::Events::HealthAndArmingChecksHandle handle = _lazy_plugin.maybe_plugin()->subscribe_health_and_arming_checks(
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](const mavsdk::Events::HealthAndArmingCheckReport health_and_arming_checks) {
 
-                    rpc_response.set_allocated_report(
-                        translateToRpcHealthAndArmingCheckReport(health_and_arming_checks)
-                            .release());
+            rpc::events::HealthAndArmingChecksResponse rpc_response;
+        
+            rpc_response.set_allocated_report(translateToRpcHealthAndArmingCheckReport(health_and_arming_checks).release());
+        
 
-                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                    if (!*is_finished && !writer->Write(rpc_response)) {
-                        _lazy_plugin.maybe_plugin()->unsubscribe_health_and_arming_checks(handle);
+        
 
-                        *is_finished = true;
-                        unregister_stream_stop_promise(stream_closed_promise);
-                        stream_closed_promise->set_value();
-                    }
-                });
+            std::unique_lock<std::mutex> lock(*subscribe_mutex);
+            if (!*is_finished && !writer->Write(rpc_response)) {
+                
+                _lazy_plugin.maybe_plugin()->unsubscribe_health_and_arming_checks(handle);
+                
+                *is_finished = true;
+                unregister_stream_stop_promise(stream_closed_promise);
+                stream_closed_promise->set_value();
+            }
+        });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
@@ -425,28 +545,31 @@ public:
         rpc::events::GetHealthAndArmingChecksReportResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
                 auto result = mavsdk::Events::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
+
+        
 
         auto result = _lazy_plugin.maybe_plugin()->get_health_and_arming_checks_report();
 
         if (response != nullptr) {
             fillResponseWithResult(response, result.first);
+            
+            response->set_allocated_report(translateToRpcHealthAndArmingCheckReport(result.second ).release());
+             }
 
-            response->set_allocated_report(
-                translateToRpcHealthAndArmingCheckReport(result.second).release());
-        }
 
         return grpc::Status::OK;
     }
 
-    void stop()
-    {
+
+    void stop() {
         _stopped.store(true);
         std::lock_guard<std::mutex> lock(_stream_stop_mutex);
         for (auto& prom : _stream_stop_promises) {
@@ -457,8 +580,7 @@ public:
     }
 
 private:
-    void register_stream_stop_promise(std::weak_ptr<std::promise<void>> prom)
-    {
+    void register_stream_stop_promise(std::weak_ptr<std::promise<void>> prom) {
         // If we have already stopped, set promise immediately and don't add it to list.
         if (_stopped.load()) {
             if (auto handle = prom.lock()) {
@@ -470,11 +592,9 @@ private:
         }
     }
 
-    void unregister_stream_stop_promise(std::shared_ptr<std::promise<void>> prom)
-    {
+    void unregister_stream_stop_promise(std::shared_ptr<std::promise<void>> prom) {
         std::lock_guard<std::mutex> lock(_stream_stop_mutex);
-        for (auto it = _stream_stop_promises.begin(); it != _stream_stop_promises.end();
-             /* ++it */) {
+        for (auto it = _stream_stop_promises.begin(); it != _stream_stop_promises.end(); /* ++it */) {
             if (it->lock() == prom) {
                 it = _stream_stop_promises.erase(it);
             } else {
@@ -483,11 +603,12 @@ private:
         }
     }
 
+
     LazyPlugin& _lazy_plugin;
 
     std::atomic<bool> _stopped{false};
     std::mutex _stream_stop_mutex{};
-    std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises{};
+    std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises {};
 };
 
 } // namespace mavsdk_server

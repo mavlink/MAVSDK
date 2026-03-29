@@ -22,11 +22,15 @@
 namespace mavsdk {
 namespace mavsdk_server {
 
+
 template<typename FollowMe = FollowMe, typename LazyPlugin = LazyPlugin<FollowMe>>
 
 class FollowMeServiceImpl final : public rpc::follow_me::FollowMeService::Service {
 public:
+
     FollowMeServiceImpl(LazyPlugin& lazy_plugin) : _lazy_plugin(lazy_plugin) {}
+
+
 
     template<typename ResponseType>
     void fillResponseWithResult(ResponseType* response, mavsdk::FollowMe::Result& result) const
@@ -42,13 +46,13 @@ public:
         response->set_allocated_follow_me_result(rpc_follow_me_result);
     }
 
-    static rpc::follow_me::Config::FollowAltitudeMode translateToRpcFollowAltitudeMode(
-        const mavsdk::FollowMe::Config::FollowAltitudeMode& follow_altitude_mode)
+
+
+    static rpc::follow_me::Config::FollowAltitudeMode translateToRpcFollowAltitudeMode(const mavsdk::FollowMe::Config::FollowAltitudeMode& follow_altitude_mode)
     {
         switch (follow_altitude_mode) {
             default:
-                LogErr() << "Unknown follow_altitude_mode enum value: "
-                         << static_cast<int>(follow_altitude_mode);
+                LogErr() << "Unknown follow_altitude_mode enum value: " << static_cast<int>(follow_altitude_mode);
             // FALLTHROUGH
             case mavsdk::FollowMe::Config::FollowAltitudeMode::Constant:
                 return rpc::follow_me::Config_FollowAltitudeMode_FOLLOW_ALTITUDE_MODE_CONSTANT;
@@ -59,13 +63,11 @@ public:
         }
     }
 
-    static mavsdk::FollowMe::Config::FollowAltitudeMode translateFromRpcFollowAltitudeMode(
-        const rpc::follow_me::Config::FollowAltitudeMode follow_altitude_mode)
+    static mavsdk::FollowMe::Config::FollowAltitudeMode translateFromRpcFollowAltitudeMode(const rpc::follow_me::Config::FollowAltitudeMode follow_altitude_mode)
     {
         switch (follow_altitude_mode) {
             default:
-                LogErr() << "Unknown follow_altitude_mode enum value: "
-                         << static_cast<int>(follow_altitude_mode);
+                LogErr() << "Unknown follow_altitude_mode enum value: " << static_cast<int>(follow_altitude_mode);
             // FALLTHROUGH
             case rpc::follow_me::Config_FollowAltitudeMode_FOLLOW_ALTITUDE_MODE_CONSTANT:
                 return mavsdk::FollowMe::Config::FollowAltitudeMode::Constant;
@@ -76,22 +78,38 @@ public:
         }
     }
 
-    static std::unique_ptr<rpc::follow_me::Config>
-    translateToRpcConfig(const mavsdk::FollowMe::Config& config)
+
+    static std::unique_ptr<rpc::follow_me::Config> translateToRpcConfig(const mavsdk::FollowMe::Config &config)
     {
         auto rpc_obj = std::make_unique<rpc::follow_me::Config>();
 
+
+            
         rpc_obj->set_follow_height_m(config.follow_height_m);
-
+            
+        
+            
         rpc_obj->set_follow_distance_m(config.follow_distance_m);
-
+            
+        
+            
         rpc_obj->set_responsiveness(config.responsiveness);
-
+            
+        
+            
+                
         rpc_obj->set_altitude_mode(translateToRpcFollowAltitudeMode(config.altitude_mode));
-
+                
+            
+        
+            
         rpc_obj->set_max_tangential_vel_m_s(config.max_tangential_vel_m_s);
-
+            
+        
+            
         rpc_obj->set_follow_angle_deg(config.follow_angle_deg);
+            
+        
 
         return rpc_obj;
     }
@@ -100,63 +118,107 @@ public:
     {
         mavsdk::FollowMe::Config obj;
 
+
+            
         obj.follow_height_m = config.follow_height_m();
-
+            
+        
+            
         obj.follow_distance_m = config.follow_distance_m();
-
+            
+        
+            
         obj.responsiveness = config.responsiveness();
-
+            
+        
+            
         obj.altitude_mode = translateFromRpcFollowAltitudeMode(config.altitude_mode());
-
+            
+        
+            
         obj.max_tangential_vel_m_s = config.max_tangential_vel_m_s();
-
+            
+        
+            
         obj.follow_angle_deg = config.follow_angle_deg();
-
+            
+        
         return obj;
     }
 
-    static std::unique_ptr<rpc::follow_me::TargetLocation>
-    translateToRpcTargetLocation(const mavsdk::FollowMe::TargetLocation& target_location)
+
+
+
+
+    static std::unique_ptr<rpc::follow_me::TargetLocation> translateToRpcTargetLocation(const mavsdk::FollowMe::TargetLocation &target_location)
     {
         auto rpc_obj = std::make_unique<rpc::follow_me::TargetLocation>();
 
+
+            
         rpc_obj->set_latitude_deg(target_location.latitude_deg);
-
+            
+        
+            
         rpc_obj->set_longitude_deg(target_location.longitude_deg);
-
+            
+        
+            
         rpc_obj->set_absolute_altitude_m(target_location.absolute_altitude_m);
-
+            
+        
+            
         rpc_obj->set_velocity_x_m_s(target_location.velocity_x_m_s);
-
+            
+        
+            
         rpc_obj->set_velocity_y_m_s(target_location.velocity_y_m_s);
-
+            
+        
+            
         rpc_obj->set_velocity_z_m_s(target_location.velocity_z_m_s);
+            
+        
 
         return rpc_obj;
     }
 
-    static mavsdk::FollowMe::TargetLocation
-    translateFromRpcTargetLocation(const rpc::follow_me::TargetLocation& target_location)
+    static mavsdk::FollowMe::TargetLocation translateFromRpcTargetLocation(const rpc::follow_me::TargetLocation& target_location)
     {
         mavsdk::FollowMe::TargetLocation obj;
 
+
+            
         obj.latitude_deg = target_location.latitude_deg();
-
+            
+        
+            
         obj.longitude_deg = target_location.longitude_deg();
-
+            
+        
+            
         obj.absolute_altitude_m = target_location.absolute_altitude_m();
-
+            
+        
+            
         obj.velocity_x_m_s = target_location.velocity_x_m_s();
-
+            
+        
+            
         obj.velocity_y_m_s = target_location.velocity_y_m_s();
-
+            
+        
+            
         obj.velocity_z_m_s = target_location.velocity_z_m_s();
-
+            
+        
         return obj;
     }
 
-    static rpc::follow_me::FollowMeResult::Result
-    translateToRpcResult(const mavsdk::FollowMe::Result& result)
+
+
+
+    static rpc::follow_me::FollowMeResult::Result translateToRpcResult(const mavsdk::FollowMe::Result& result)
     {
         switch (result) {
             default:
@@ -183,8 +245,7 @@ public:
         }
     }
 
-    static mavsdk::FollowMe::Result
-    translateFromRpcResult(const rpc::follow_me::FollowMeResult::Result result)
+    static mavsdk::FollowMe::Result translateFromRpcResult(const rpc::follow_me::FollowMeResult::Result result)
     {
         switch (result) {
             default:
@@ -211,20 +272,29 @@ public:
         }
     }
 
+
+
+
     grpc::Status GetConfig(
         grpc::ServerContext* /* context */,
         const rpc::follow_me::GetConfigRequest* /* request */,
         rpc::follow_me::GetConfigResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             return grpc::Status::OK;
         }
+
+        
 
         auto result = _lazy_plugin.maybe_plugin()->get_config();
 
         if (response != nullptr) {
-            response->set_allocated_config(translateToRpcConfig(result).release());
-        }
+            
+            
+            response->set_allocated_config(translateToRpcConfig(result ).release());
+             }
+
 
         return grpc::Status::OK;
     }
@@ -235,11 +305,12 @@ public:
         rpc::follow_me::SetConfigResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
                 auto result = mavsdk::FollowMe::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
@@ -247,13 +318,16 @@ public:
             LogWarn() << "SetConfig sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
+            
+        
+        auto result = _lazy_plugin.maybe_plugin()->set_config(translateFromRpcConfig(request->config()));
+        
 
-        auto result =
-            _lazy_plugin.maybe_plugin()->set_config(translateFromRpcConfig(request->config()));
-
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -264,14 +338,20 @@ public:
         rpc::follow_me::IsActiveResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             return grpc::Status::OK;
         }
+
+        
 
         auto result = _lazy_plugin.maybe_plugin()->is_active();
 
         if (response != nullptr) {
+            
+            
             response->set_is_active(result);
-        }
+             }
+
 
         return grpc::Status::OK;
     }
@@ -282,11 +362,12 @@ public:
         rpc::follow_me::SetTargetLocationResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
                 auto result = mavsdk::FollowMe::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
@@ -294,13 +375,16 @@ public:
             LogWarn() << "SetTargetLocation sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
+            
+        
+        auto result = _lazy_plugin.maybe_plugin()->set_target_location(translateFromRpcTargetLocation(request->location()));
+        
 
-        auto result = _lazy_plugin.maybe_plugin()->set_target_location(
-            translateFromRpcTargetLocation(request->location()));
-
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -311,14 +395,20 @@ public:
         rpc::follow_me::GetLastLocationResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             return grpc::Status::OK;
         }
+
+        
 
         auto result = _lazy_plugin.maybe_plugin()->get_last_location();
 
         if (response != nullptr) {
-            response->set_allocated_location(translateToRpcTargetLocation(result).release());
-        }
+            
+            
+            response->set_allocated_location(translateToRpcTargetLocation(result ).release());
+             }
+
 
         return grpc::Status::OK;
     }
@@ -329,19 +419,24 @@ public:
         rpc::follow_me::StartResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
                 auto result = mavsdk::FollowMe::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
+        
         auto result = _lazy_plugin.maybe_plugin()->start();
+        
 
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -352,25 +447,30 @@ public:
         rpc::follow_me::StopResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
                 auto result = mavsdk::FollowMe::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
+        
         auto result = _lazy_plugin.maybe_plugin()->stop();
+        
 
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
 
-    void stop()
-    {
+
+    void stop() {
         _stopped.store(true);
         std::lock_guard<std::mutex> lock(_stream_stop_mutex);
         for (auto& prom : _stream_stop_promises) {
@@ -381,8 +481,7 @@ public:
     }
 
 private:
-    void register_stream_stop_promise(std::weak_ptr<std::promise<void>> prom)
-    {
+    void register_stream_stop_promise(std::weak_ptr<std::promise<void>> prom) {
         // If we have already stopped, set promise immediately and don't add it to list.
         if (_stopped.load()) {
             if (auto handle = prom.lock()) {
@@ -394,11 +493,9 @@ private:
         }
     }
 
-    void unregister_stream_stop_promise(std::shared_ptr<std::promise<void>> prom)
-    {
+    void unregister_stream_stop_promise(std::shared_ptr<std::promise<void>> prom) {
         std::lock_guard<std::mutex> lock(_stream_stop_mutex);
-        for (auto it = _stream_stop_promises.begin(); it != _stream_stop_promises.end();
-             /* ++it */) {
+        for (auto it = _stream_stop_promises.begin(); it != _stream_stop_promises.end(); /* ++it */) {
             if (it->lock() == prom) {
                 it = _stream_stop_promises.erase(it);
             } else {
@@ -407,11 +504,12 @@ private:
         }
     }
 
+
     LazyPlugin& _lazy_plugin;
 
     std::atomic<bool> _stopped{false};
     std::mutex _stream_stop_mutex{};
-    std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises{};
+    std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises {};
 };
 
 } // namespace mavsdk_server

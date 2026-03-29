@@ -17,107 +17,89 @@ using GimbalItem = Gimbal::GimbalItem;
 using GimbalList = Gimbal::GimbalList;
 using ControlStatus = Gimbal::ControlStatus;
 
+
+
+
 Gimbal::Gimbal(System& system) : PluginBase(), _impl{std::make_unique<GimbalImpl>(system)} {}
 
-Gimbal::Gimbal(std::shared_ptr<System> system) :
-    PluginBase(),
-    _impl{std::make_unique<GimbalImpl>(system)}
-{}
+Gimbal::Gimbal(std::shared_ptr<System> system) : PluginBase(), _impl{std::make_unique<GimbalImpl>(system)} {}
+
 
 Gimbal::~Gimbal() {}
 
-void Gimbal::set_angles_async(
-    int32_t gimbal_id,
-    float roll_deg,
-    float pitch_deg,
-    float yaw_deg,
-    GimbalMode gimbal_mode,
-    SendMode send_mode,
-    const ResultCallback callback)
+
+
+void Gimbal::set_angles_async(int32_t gimbal_id, float roll_deg, float pitch_deg, float yaw_deg, GimbalMode gimbal_mode, SendMode send_mode, const ResultCallback callback)
 {
-    _impl->set_angles_async(
-        gimbal_id, roll_deg, pitch_deg, yaw_deg, gimbal_mode, send_mode, callback);
+    _impl->set_angles_async(gimbal_id, roll_deg, pitch_deg, yaw_deg, gimbal_mode, send_mode, callback);
 }
 
-Gimbal::Result Gimbal::set_angles(
-    int32_t gimbal_id,
-    float roll_deg,
-    float pitch_deg,
-    float yaw_deg,
-    GimbalMode gimbal_mode,
-    SendMode send_mode) const
+
+
+Gimbal::Result Gimbal::set_angles(int32_t gimbal_id, float roll_deg, float pitch_deg, float yaw_deg, GimbalMode gimbal_mode, SendMode send_mode) const
 {
     return _impl->set_angles(gimbal_id, roll_deg, pitch_deg, yaw_deg, gimbal_mode, send_mode);
 }
 
-void Gimbal::set_angular_rates_async(
-    int32_t gimbal_id,
-    float roll_rate_deg_s,
-    float pitch_rate_deg_s,
-    float yaw_rate_deg_s,
-    GimbalMode gimbal_mode,
-    SendMode send_mode,
-    const ResultCallback callback)
+
+
+void Gimbal::set_angular_rates_async(int32_t gimbal_id, float roll_rate_deg_s, float pitch_rate_deg_s, float yaw_rate_deg_s, GimbalMode gimbal_mode, SendMode send_mode, const ResultCallback callback)
 {
-    _impl->set_angular_rates_async(
-        gimbal_id,
-        roll_rate_deg_s,
-        pitch_rate_deg_s,
-        yaw_rate_deg_s,
-        gimbal_mode,
-        send_mode,
-        callback);
+    _impl->set_angular_rates_async(gimbal_id, roll_rate_deg_s, pitch_rate_deg_s, yaw_rate_deg_s, gimbal_mode, send_mode, callback);
 }
 
-Gimbal::Result Gimbal::set_angular_rates(
-    int32_t gimbal_id,
-    float roll_rate_deg_s,
-    float pitch_rate_deg_s,
-    float yaw_rate_deg_s,
-    GimbalMode gimbal_mode,
-    SendMode send_mode) const
+
+
+Gimbal::Result Gimbal::set_angular_rates(int32_t gimbal_id, float roll_rate_deg_s, float pitch_rate_deg_s, float yaw_rate_deg_s, GimbalMode gimbal_mode, SendMode send_mode) const
 {
-    return _impl->set_angular_rates(
-        gimbal_id, roll_rate_deg_s, pitch_rate_deg_s, yaw_rate_deg_s, gimbal_mode, send_mode);
+    return _impl->set_angular_rates(gimbal_id, roll_rate_deg_s, pitch_rate_deg_s, yaw_rate_deg_s, gimbal_mode, send_mode);
 }
 
-void Gimbal::set_roi_location_async(
-    int32_t gimbal_id,
-    double latitude_deg,
-    double longitude_deg,
-    float altitude_m,
-    const ResultCallback callback)
+
+
+void Gimbal::set_roi_location_async(int32_t gimbal_id, double latitude_deg, double longitude_deg, float altitude_m, const ResultCallback callback)
 {
     _impl->set_roi_location_async(gimbal_id, latitude_deg, longitude_deg, altitude_m, callback);
 }
 
-Gimbal::Result Gimbal::set_roi_location(
-    int32_t gimbal_id, double latitude_deg, double longitude_deg, float altitude_m) const
+
+
+Gimbal::Result Gimbal::set_roi_location(int32_t gimbal_id, double latitude_deg, double longitude_deg, float altitude_m) const
 {
     return _impl->set_roi_location(gimbal_id, latitude_deg, longitude_deg, altitude_m);
 }
 
-void Gimbal::take_control_async(
-    int32_t gimbal_id, ControlMode control_mode, const ResultCallback callback)
+
+
+void Gimbal::take_control_async(int32_t gimbal_id, ControlMode control_mode, const ResultCallback callback)
 {
     _impl->take_control_async(gimbal_id, control_mode, callback);
 }
+
+
 
 Gimbal::Result Gimbal::take_control(int32_t gimbal_id, ControlMode control_mode) const
 {
     return _impl->take_control(gimbal_id, control_mode);
 }
 
+
+
 void Gimbal::release_control_async(int32_t gimbal_id, const ResultCallback callback)
 {
     _impl->release_control_async(gimbal_id, callback);
 }
+
+
 
 Gimbal::Result Gimbal::release_control(int32_t gimbal_id) const
 {
     return _impl->release_control(gimbal_id);
 }
 
+
+
+    
 Gimbal::GimbalListHandle Gimbal::subscribe_gimbal_list(const GimbalListCallback& callback)
 {
     return _impl->subscribe_gimbal_list(callback);
@@ -127,12 +109,20 @@ void Gimbal::unsubscribe_gimbal_list(GimbalListHandle handle)
 {
     _impl->unsubscribe_gimbal_list(handle);
 }
+    
 
-Gimbal::GimbalList Gimbal::gimbal_list() const
+
+
+
+Gimbal::GimbalList
+Gimbal::gimbal_list() const
 {
     return _impl->gimbal_list();
 }
 
+
+
+    
 Gimbal::ControlStatusHandle Gimbal::subscribe_control_status(const ControlStatusCallback& callback)
 {
     return _impl->subscribe_control_status(callback);
@@ -142,12 +132,22 @@ void Gimbal::unsubscribe_control_status(ControlStatusHandle handle)
 {
     _impl->unsubscribe_control_status(handle);
 }
+    
+
+
+
+
+
+
 
 std::pair<Gimbal::Result, Gimbal::ControlStatus> Gimbal::get_control_status(int32_t gimbal_id) const
 {
     return _impl->get_control_status(gimbal_id);
 }
 
+
+
+    
 Gimbal::AttitudeHandle Gimbal::subscribe_attitude(const AttitudeCallback& callback)
 {
     return _impl->subscribe_attitude(callback);
@@ -157,24 +157,35 @@ void Gimbal::unsubscribe_attitude(AttitudeHandle handle)
 {
     _impl->unsubscribe_attitude(handle);
 }
+    
+
+
+
+
+
+
 
 std::pair<Gimbal::Result, Gimbal::Attitude> Gimbal::get_attitude(int32_t gimbal_id) const
 {
     return _impl->get_attitude(gimbal_id);
 }
 
+
+
 bool operator==(const Gimbal::Quaternion& lhs, const Gimbal::Quaternion& rhs)
 {
-    return ((std::isnan(rhs.w) && std::isnan(lhs.w)) || rhs.w == lhs.w) &&
-           ((std::isnan(rhs.x) && std::isnan(lhs.x)) || rhs.x == lhs.x) &&
-           ((std::isnan(rhs.y) && std::isnan(lhs.y)) || rhs.y == lhs.y) &&
-           ((std::isnan(rhs.z) && std::isnan(lhs.z)) || rhs.z == lhs.z);
+    return
+        ((std::isnan(rhs.w) && std::isnan(lhs.w)) || rhs.w == lhs.w) &&
+        ((std::isnan(rhs.x) && std::isnan(lhs.x)) || rhs.x == lhs.x) &&
+        ((std::isnan(rhs.y) && std::isnan(lhs.y)) || rhs.y == lhs.y) &&
+        ((std::isnan(rhs.z) && std::isnan(lhs.z)) || rhs.z == lhs.z);
 }
 
 std::ostream& operator<<(std::ostream& str, Gimbal::Quaternion const& quaternion)
 {
     str << std::setprecision(15);
-    str << "quaternion:" << '\n' << "{\n";
+    str << "quaternion:" << '\n'
+        << "{\n";
     str << "    w: " << quaternion.w << '\n';
     str << "    x: " << quaternion.x << '\n';
     str << "    y: " << quaternion.y << '\n';
@@ -183,19 +194,20 @@ std::ostream& operator<<(std::ostream& str, Gimbal::Quaternion const& quaternion
     return str;
 }
 
+
 bool operator==(const Gimbal::EulerAngle& lhs, const Gimbal::EulerAngle& rhs)
 {
-    return ((std::isnan(rhs.roll_deg) && std::isnan(lhs.roll_deg)) ||
-            rhs.roll_deg == lhs.roll_deg) &&
-           ((std::isnan(rhs.pitch_deg) && std::isnan(lhs.pitch_deg)) ||
-            rhs.pitch_deg == lhs.pitch_deg) &&
-           ((std::isnan(rhs.yaw_deg) && std::isnan(lhs.yaw_deg)) || rhs.yaw_deg == lhs.yaw_deg);
+    return
+        ((std::isnan(rhs.roll_deg) && std::isnan(lhs.roll_deg)) || rhs.roll_deg == lhs.roll_deg) &&
+        ((std::isnan(rhs.pitch_deg) && std::isnan(lhs.pitch_deg)) || rhs.pitch_deg == lhs.pitch_deg) &&
+        ((std::isnan(rhs.yaw_deg) && std::isnan(lhs.yaw_deg)) || rhs.yaw_deg == lhs.yaw_deg);
 }
 
 std::ostream& operator<<(std::ostream& str, Gimbal::EulerAngle const& euler_angle)
 {
     str << std::setprecision(15);
-    str << "euler_angle:" << '\n' << "{\n";
+    str << "euler_angle:" << '\n'
+        << "{\n";
     str << "    roll_deg: " << euler_angle.roll_deg << '\n';
     str << "    pitch_deg: " << euler_angle.pitch_deg << '\n';
     str << "    yaw_deg: " << euler_angle.yaw_deg << '\n';
@@ -203,21 +215,20 @@ std::ostream& operator<<(std::ostream& str, Gimbal::EulerAngle const& euler_angl
     return str;
 }
 
+
 bool operator==(const Gimbal::AngularVelocityBody& lhs, const Gimbal::AngularVelocityBody& rhs)
 {
-    return ((std::isnan(rhs.roll_rad_s) && std::isnan(lhs.roll_rad_s)) ||
-            rhs.roll_rad_s == lhs.roll_rad_s) &&
-           ((std::isnan(rhs.pitch_rad_s) && std::isnan(lhs.pitch_rad_s)) ||
-            rhs.pitch_rad_s == lhs.pitch_rad_s) &&
-           ((std::isnan(rhs.yaw_rad_s) && std::isnan(lhs.yaw_rad_s)) ||
-            rhs.yaw_rad_s == lhs.yaw_rad_s);
+    return
+        ((std::isnan(rhs.roll_rad_s) && std::isnan(lhs.roll_rad_s)) || rhs.roll_rad_s == lhs.roll_rad_s) &&
+        ((std::isnan(rhs.pitch_rad_s) && std::isnan(lhs.pitch_rad_s)) || rhs.pitch_rad_s == lhs.pitch_rad_s) &&
+        ((std::isnan(rhs.yaw_rad_s) && std::isnan(lhs.yaw_rad_s)) || rhs.yaw_rad_s == lhs.yaw_rad_s);
 }
 
-std::ostream&
-operator<<(std::ostream& str, Gimbal::AngularVelocityBody const& angular_velocity_body)
+std::ostream& operator<<(std::ostream& str, Gimbal::AngularVelocityBody const& angular_velocity_body)
 {
     str << std::setprecision(15);
-    str << "angular_velocity_body:" << '\n' << "{\n";
+    str << "angular_velocity_body:" << '\n'
+        << "{\n";
     str << "    roll_rad_s: " << angular_velocity_body.roll_rad_s << '\n';
     str << "    pitch_rad_s: " << angular_velocity_body.pitch_rad_s << '\n';
     str << "    yaw_rad_s: " << angular_velocity_body.yaw_rad_s << '\n';
@@ -225,20 +236,24 @@ operator<<(std::ostream& str, Gimbal::AngularVelocityBody const& angular_velocit
     return str;
 }
 
+
 bool operator==(const Gimbal::Attitude& lhs, const Gimbal::Attitude& rhs)
 {
-    return (rhs.gimbal_id == lhs.gimbal_id) &&
-           (rhs.euler_angle_forward == lhs.euler_angle_forward) &&
-           (rhs.quaternion_forward == lhs.quaternion_forward) &&
-           (rhs.euler_angle_north == lhs.euler_angle_north) &&
-           (rhs.quaternion_north == lhs.quaternion_north) &&
-           (rhs.angular_velocity == lhs.angular_velocity) && (rhs.timestamp_us == lhs.timestamp_us);
+    return
+        (rhs.gimbal_id == lhs.gimbal_id) &&
+        (rhs.euler_angle_forward == lhs.euler_angle_forward) &&
+        (rhs.quaternion_forward == lhs.quaternion_forward) &&
+        (rhs.euler_angle_north == lhs.euler_angle_north) &&
+        (rhs.quaternion_north == lhs.quaternion_north) &&
+        (rhs.angular_velocity == lhs.angular_velocity) &&
+        (rhs.timestamp_us == lhs.timestamp_us);
 }
 
 std::ostream& operator<<(std::ostream& str, Gimbal::Attitude const& attitude)
 {
     str << std::setprecision(15);
-    str << "attitude:" << '\n' << "{\n";
+    str << "attitude:" << '\n'
+        << "{\n";
     str << "    gimbal_id: " << attitude.gimbal_id << '\n';
     str << "    euler_angle_forward: " << attitude.euler_angle_forward << '\n';
     str << "    quaternion_forward: " << attitude.quaternion_forward << '\n';
@@ -250,18 +265,23 @@ std::ostream& operator<<(std::ostream& str, Gimbal::Attitude const& attitude)
     return str;
 }
 
+
 bool operator==(const Gimbal::GimbalItem& lhs, const Gimbal::GimbalItem& rhs)
 {
-    return (rhs.gimbal_id == lhs.gimbal_id) && (rhs.vendor_name == lhs.vendor_name) &&
-           (rhs.model_name == lhs.model_name) && (rhs.custom_name == lhs.custom_name) &&
-           (rhs.gimbal_manager_component_id == lhs.gimbal_manager_component_id) &&
-           (rhs.gimbal_device_id == lhs.gimbal_device_id);
+    return
+        (rhs.gimbal_id == lhs.gimbal_id) &&
+        (rhs.vendor_name == lhs.vendor_name) &&
+        (rhs.model_name == lhs.model_name) &&
+        (rhs.custom_name == lhs.custom_name) &&
+        (rhs.gimbal_manager_component_id == lhs.gimbal_manager_component_id) &&
+        (rhs.gimbal_device_id == lhs.gimbal_device_id);
 }
 
 std::ostream& operator<<(std::ostream& str, Gimbal::GimbalItem const& gimbal_item)
 {
     str << std::setprecision(15);
-    str << "gimbal_item:" << '\n' << "{\n";
+    str << "gimbal_item:" << '\n'
+        << "{\n";
     str << "    gimbal_id: " << gimbal_item.gimbal_id << '\n';
     str << "    vendor_name: " << gimbal_item.vendor_name << '\n';
     str << "    model_name: " << gimbal_item.model_name << '\n';
@@ -272,15 +292,18 @@ std::ostream& operator<<(std::ostream& str, Gimbal::GimbalItem const& gimbal_ite
     return str;
 }
 
+
 bool operator==(const Gimbal::GimbalList& lhs, const Gimbal::GimbalList& rhs)
 {
-    return (rhs.gimbals == lhs.gimbals);
+    return
+        (rhs.gimbals == lhs.gimbals);
 }
 
 std::ostream& operator<<(std::ostream& str, Gimbal::GimbalList const& gimbal_list)
 {
     str << std::setprecision(15);
-    str << "gimbal_list:" << '\n' << "{\n";
+    str << "gimbal_list:" << '\n'
+        << "{\n";
     str << "    gimbals: [";
     for (auto it = gimbal_list.gimbals.begin(); it != gimbal_list.gimbals.end(); ++it) {
         str << *it;
@@ -290,19 +313,23 @@ std::ostream& operator<<(std::ostream& str, Gimbal::GimbalList const& gimbal_lis
     return str;
 }
 
+
 bool operator==(const Gimbal::ControlStatus& lhs, const Gimbal::ControlStatus& rhs)
 {
-    return (rhs.gimbal_id == lhs.gimbal_id) && (rhs.control_mode == lhs.control_mode) &&
-           (rhs.sysid_primary_control == lhs.sysid_primary_control) &&
-           (rhs.compid_primary_control == lhs.compid_primary_control) &&
-           (rhs.sysid_secondary_control == lhs.sysid_secondary_control) &&
-           (rhs.compid_secondary_control == lhs.compid_secondary_control);
+    return
+        (rhs.gimbal_id == lhs.gimbal_id) &&
+        (rhs.control_mode == lhs.control_mode) &&
+        (rhs.sysid_primary_control == lhs.sysid_primary_control) &&
+        (rhs.compid_primary_control == lhs.compid_primary_control) &&
+        (rhs.sysid_secondary_control == lhs.sysid_secondary_control) &&
+        (rhs.compid_secondary_control == lhs.compid_secondary_control);
 }
 
 std::ostream& operator<<(std::ostream& str, Gimbal::ControlStatus const& control_status)
 {
     str << std::setprecision(15);
-    str << "control_status:" << '\n' << "{\n";
+    str << "control_status:" << '\n'
+        << "{\n";
     str << "    gimbal_id: " << control_status.gimbal_id << '\n';
     str << "    control_mode: " << control_status.control_mode << '\n';
     str << "    sysid_primary_control: " << control_status.sysid_primary_control << '\n';
@@ -312,6 +339,8 @@ std::ostream& operator<<(std::ostream& str, Gimbal::ControlStatus const& control
     str << '}';
     return str;
 }
+
+
 
 std::ostream& operator<<(std::ostream& str, Gimbal::Result const& result)
 {
@@ -334,6 +363,8 @@ std::ostream& operator<<(std::ostream& str, Gimbal::Result const& result)
             return str << "Unknown";
     }
 }
+
+
 
 std::ostream& operator<<(std::ostream& str, Gimbal::GimbalMode const& gimbal_mode)
 {
@@ -372,5 +403,6 @@ std::ostream& operator<<(std::ostream& str, Gimbal::SendMode const& send_mode)
             return str << "Unknown";
     }
 }
+
 
 } // namespace mavsdk

@@ -13,20 +13,22 @@
 #include <utility>
 #include <vector>
 
+
 #include "plugin_base.h"
 
 #include "handle.h"
 
 namespace mavsdk {
 
-class System;
-class EventsImpl;
+
+class System;class EventsImpl;
 
 /**
  * @brief Get event notifications, such as takeoff, or arming checks
  */
 class Events : public PluginBase {
 public:
+
     /**
      * @brief Constructor. Creates the plugin for a specific System.
      *
@@ -53,10 +55,12 @@ public:
      */
     explicit Events(std::shared_ptr<System> system); // new
 
+
     /**
      * @brief Destructor (internal use only).
      */
     ~Events() override;
+
 
     /**
      * @brief Log level type
@@ -79,14 +83,17 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, Events::LogLevel const& log_level);
 
+
+
+
     /**
      * @brief Event type
      */
     struct Event {
+        
         uint32_t compid{}; /**< @brief The source component ID of the event */
         std::string message{}; /**< @brief Short, single-line message */
-        std::string
-            description{}; /**< @brief Detailed description (optional, might be multiple lines) */
+        std::string description{}; /**< @brief Detailed description (optional, might be multiple lines) */
         LogLevel log_level{}; /**< @brief Log level of message */
         std::string event_namespace{}; /**< @brief Namespace, e.g. "px4" */
         std::string event_name{}; /**< @brief Event name (unique within the namespace) */
@@ -106,13 +113,16 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, Events::Event const& event);
 
+
+
+
     /**
      * @brief Health and arming check problem type
      */
     struct HealthAndArmingCheckProblem {
+        
         std::string message{}; /**< @brief Short, single-line message */
-        std::string
-            description{}; /**< @brief Detailed description (optional, might be multiple lines) */
+        std::string description{}; /**< @brief Detailed description (optional, might be multiple lines) */
         LogLevel log_level{}; /**< @brief Log level of message */
         std::string health_component{}; /**< @brief Associated health component, e.g. "gps" */
     };
@@ -122,28 +132,26 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(
-        const Events::HealthAndArmingCheckProblem& lhs,
-        const Events::HealthAndArmingCheckProblem& rhs);
+    friend bool operator==(const Events::HealthAndArmingCheckProblem& lhs, const Events::HealthAndArmingCheckProblem& rhs);
 
     /**
      * @brief Stream operator to print information about a `Events::HealthAndArmingCheckProblem`.
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(
-        std::ostream& str,
-        Events::HealthAndArmingCheckProblem const& health_and_arming_check_problem);
+    friend std::ostream& operator<<(std::ostream& str, Events::HealthAndArmingCheckProblem const& health_and_arming_check_problem);
+
+
+
 
     /**
      * @brief Arming checks for a specific mode
      */
     struct HealthAndArmingCheckMode {
+        
         std::string mode_name{}; /**< @brief Mode name, e.g. "Position" */
-        bool can_arm_or_run{}; /**< @brief If disarmed: indicates if arming is possible. If armed:
-                                  indicates if the mode can be selected */
-        std::vector<HealthAndArmingCheckProblem>
-            problems{}; /**< @brief List of reported problems for the mode */
+        bool can_arm_or_run{}; /**< @brief If disarmed: indicates if arming is possible. If armed: indicates if the mode can be selected */
+        std::vector<HealthAndArmingCheckProblem> problems{}; /**< @brief List of reported problems for the mode */
     };
 
     /**
@@ -151,24 +159,25 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(
-        const Events::HealthAndArmingCheckMode& lhs, const Events::HealthAndArmingCheckMode& rhs);
+    friend bool operator==(const Events::HealthAndArmingCheckMode& lhs, const Events::HealthAndArmingCheckMode& rhs);
 
     /**
      * @brief Stream operator to print information about a `Events::HealthAndArmingCheckMode`.
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(
-        std::ostream& str, Events::HealthAndArmingCheckMode const& health_and_arming_check_mode);
+    friend std::ostream& operator<<(std::ostream& str, Events::HealthAndArmingCheckMode const& health_and_arming_check_mode);
+
+
+
 
     /**
      * @brief Health component report type
      */
     struct HealthComponentReport {
+        
         std::string name{}; /**< @brief Unique component name, e.g. "gps" */
-        std::string label{}; /**< @brief Human readable label of the component, e.g. "GPS" or
-                                "Accelerometer" */
+        std::string label{}; /**< @brief Human readable label of the component, e.g. "GPS" or "Accelerometer" */
         bool is_present{}; /**< @brief If the component is present */
         bool has_error{}; /**< @brief If the component has errors */
         bool has_warning{}; /**< @brief If the component has warnings */
@@ -179,27 +188,26 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool
-    operator==(const Events::HealthComponentReport& lhs, const Events::HealthComponentReport& rhs);
+    friend bool operator==(const Events::HealthComponentReport& lhs, const Events::HealthComponentReport& rhs);
 
     /**
      * @brief Stream operator to print information about a `Events::HealthComponentReport`.
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
-    operator<<(std::ostream& str, Events::HealthComponentReport const& health_component_report);
+    friend std::ostream& operator<<(std::ostream& str, Events::HealthComponentReport const& health_component_report);
+
+
+
 
     /**
      * @brief Health and arming check report type
      */
     struct HealthAndArmingCheckReport {
-        HealthAndArmingCheckMode
-            current_mode_intention{}; /**< @brief Report for currently intended mode */
-        std::vector<HealthComponentReport>
-            health_components{}; /**< @brief Health components list (e.g. for "gps") */
-        std::vector<HealthAndArmingCheckProblem>
-            all_problems{}; /**< @brief Complete list of problems */
+        
+        HealthAndArmingCheckMode current_mode_intention{}; /**< @brief Report for currently intended mode */
+        std::vector<HealthComponentReport> health_components{}; /**< @brief Health components list (e.g. for "gps") */
+        std::vector<HealthAndArmingCheckProblem> all_problems{}; /**< @brief Complete list of problems */
     };
 
     /**
@@ -207,18 +215,18 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(
-        const Events::HealthAndArmingCheckReport& lhs,
-        const Events::HealthAndArmingCheckReport& rhs);
+    friend bool operator==(const Events::HealthAndArmingCheckReport& lhs, const Events::HealthAndArmingCheckReport& rhs);
 
     /**
      * @brief Stream operator to print information about a `Events::HealthAndArmingCheckReport`.
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(
-        std::ostream& str,
-        Events::HealthAndArmingCheckReport const& health_and_arming_check_report);
+    friend std::ostream& operator<<(std::ostream& str, Events::HealthAndArmingCheckReport const& health_and_arming_check_report);
+
+
+
+
 
     /**
      * @brief Possible results returned
@@ -242,10 +250,17 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, Events::Result const& result);
 
+
+
     /**
      * @brief Callback type for asynchronous Events calls.
      */
     using ResultCallback = std::function<void(Result)>;
+
+
+
+
+        
 
     /**
      * @brief Callback type for subscribe_events.
@@ -267,6 +282,15 @@ public:
      */
     void unsubscribe_events(EventsHandle handle);
 
+        
+
+
+
+
+
+
+        
+
     /**
      * @brief Callback type for subscribe_health_and_arming_checks.
      */
@@ -280,13 +304,21 @@ public:
     /**
      * @brief Subscribe to arming check updates.
      */
-    HealthAndArmingChecksHandle
-    subscribe_health_and_arming_checks(const HealthAndArmingChecksCallback& callback);
+    HealthAndArmingChecksHandle subscribe_health_and_arming_checks(const HealthAndArmingChecksCallback& callback);
 
     /**
      * @brief Unsubscribe from subscribe_health_and_arming_checks
      */
     void unsubscribe_health_and_arming_checks(HealthAndArmingChecksHandle handle);
+
+        
+
+
+
+
+
+
+
 
     /**
      * @brief Get the latest report.
@@ -295,8 +327,10 @@ public:
      *
      * @return Result of request.
      */
-    std::pair<Result, Events::HealthAndArmingCheckReport>
-    get_health_and_arming_checks_report() const;
+    std::pair<Result, Events::HealthAndArmingCheckReport> get_health_and_arming_checks_report() const;
+
+
+
 
     /**
      * @brief Copy constructor.

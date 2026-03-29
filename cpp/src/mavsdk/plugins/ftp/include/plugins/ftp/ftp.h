@@ -13,20 +13,22 @@
 #include <utility>
 #include <vector>
 
+
 #include "plugin_base.h"
 
 #include "handle.h"
 
 namespace mavsdk {
 
-class System;
-class FtpImpl;
+
+class System;class FtpImpl;
 
 /**
  * @brief Implements file transfer functionality using MAVLink FTP.
  */
 class Ftp : public PluginBase {
 public:
+
     /**
      * @brief Constructor. Creates the plugin for a specific System.
      *
@@ -53,15 +55,21 @@ public:
      */
     explicit Ftp(std::shared_ptr<System> system); // new
 
+
     /**
      * @brief Destructor (internal use only).
      */
     ~Ftp() override;
 
+
+
+
+
     /**
      * @brief The output of a directory list
      */
     struct ListDirectoryData {
+        
         std::vector<std::string> dirs{}; /**< @brief The found directories. */
         std::vector<std::string> files{}; /**< @brief The found files. */
     };
@@ -78,13 +86,16 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
-    operator<<(std::ostream& str, Ftp::ListDirectoryData const& list_directory_data);
+    friend std::ostream& operator<<(std::ostream& str, Ftp::ListDirectoryData const& list_directory_data);
+
+
+
 
     /**
      * @brief Progress data type for file transfer.
      */
     struct ProgressData {
+        
         uint32_t bytes_transferred{}; /**< @brief The number of bytes already transferred. */
         uint32_t total_bytes{}; /**< @brief The total bytes to transfer. */
     };
@@ -102,6 +113,10 @@ public:
      * @return A reference to the stream.
      */
     friend std::ostream& operator<<(std::ostream& str, Ftp::ProgressData const& progress_data);
+
+
+
+
 
     /**
      * @brief Possible results returned for FTP commands
@@ -129,11 +144,17 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, Ftp::Result const& result);
 
+
+
     /**
      * @brief Callback type for asynchronous Ftp calls.
      */
     using ResultCallback = std::function<void(Result)>;
 
+
+
+
+        
     /**
      * @brief Callback type for download_async.
      */
@@ -142,12 +163,16 @@ public:
     /**
      * @brief Downloads a file to local directory.
      */
-    void download_async(
-        std::string remote_file_path,
-        std::string local_dir,
-        bool use_burst,
-        const DownloadCallback& callback);
+    void download_async(std::string remote_file_path, std::string local_dir, bool use_burst, const DownloadCallback& callback);
 
+        
+
+
+
+
+
+
+        
     /**
      * @brief Callback type for upload_async.
      */
@@ -156,12 +181,18 @@ public:
     /**
      * @brief Uploads local file to remote directory.
      */
-    void upload_async(
-        std::string local_file_path, std::string remote_dir, const UploadCallback& callback);
+    void upload_async(std::string local_file_path, std::string remote_dir, const UploadCallback& callback);
+
+        
+
+
+
+
+
 
     /**
-     * @brief Callback type for list_directory_async.
-     */
+    * @brief Callback type for list_directory_async.
+    */
     using ListDirectoryCallback = std::function<void(Result, ListDirectoryData)>;
 
     /**
@@ -170,6 +201,8 @@ public:
      * This function is non-blocking. See 'list_directory' for the blocking counterpart.
      */
     void list_directory_async(std::string remote_dir, const ListDirectoryCallback callback);
+
+
 
     /**
      * @brief Lists items from a remote directory.
@@ -180,6 +213,9 @@ public:
      */
     std::pair<Result, Ftp::ListDirectoryData> list_directory(std::string remote_dir) const;
 
+
+
+
     /**
      * @brief Creates a remote directory.
      *
@@ -187,16 +223,21 @@ public:
      */
     void create_directory_async(std::string remote_dir, const ResultCallback callback);
 
+
+
     /**
      * @brief Creates a remote directory.
      *
      * This function is blocking. See 'create_directory_async' for the non-blocking counterpart.
      *
-
+     
      * @return Result of request.
-
+     
      */
     Result create_directory(std::string remote_dir) const;
+
+
+
 
     /**
      * @brief Removes a remote directory.
@@ -205,16 +246,21 @@ public:
      */
     void remove_directory_async(std::string remote_dir, const ResultCallback callback);
 
+
+
     /**
      * @brief Removes a remote directory.
      *
      * This function is blocking. See 'remove_directory_async' for the non-blocking counterpart.
      *
-
+     
      * @return Result of request.
-
+     
      */
     Result remove_directory(std::string remote_dir) const;
+
+
+
 
     /**
      * @brief Removes a remote file.
@@ -223,39 +269,48 @@ public:
      */
     void remove_file_async(std::string remote_file_path, const ResultCallback callback);
 
+
+
     /**
      * @brief Removes a remote file.
      *
      * This function is blocking. See 'remove_file_async' for the non-blocking counterpart.
      *
-
+     
      * @return Result of request.
-
+     
      */
     Result remove_file(std::string remote_file_path) const;
+
+
+
 
     /**
      * @brief Renames a remote file or remote directory.
      *
      * This function is non-blocking. See 'rename' for the blocking counterpart.
      */
-    void rename_async(
-        std::string remote_from_path, std::string remote_to_path, const ResultCallback callback);
+    void rename_async(std::string remote_from_path, std::string remote_to_path, const ResultCallback callback);
+
+
 
     /**
      * @brief Renames a remote file or remote directory.
      *
      * This function is blocking. See 'rename_async' for the non-blocking counterpart.
      *
-
+     
      * @return Result of request.
-
+     
      */
     Result rename(std::string remote_from_path, std::string remote_to_path) const;
 
+
+
+
     /**
-     * @brief Callback type for are_files_identical_async.
-     */
+    * @brief Callback type for are_files_identical_async.
+    */
     using AreFilesIdenticalCallback = std::function<void(Result, bool)>;
 
     /**
@@ -263,10 +318,9 @@ public:
      *
      * This function is non-blocking. See 'are_files_identical' for the blocking counterpart.
      */
-    void are_files_identical_async(
-        std::string local_file_path,
-        std::string remote_file_path,
-        const AreFilesIdenticalCallback callback);
+    void are_files_identical_async(std::string local_file_path, std::string remote_file_path, const AreFilesIdenticalCallback callback);
+
+
 
     /**
      * @brief Compares a local file to a remote file using a CRC32 checksum.
@@ -275,19 +329,26 @@ public:
      *
      * @return Result of request.
      */
-    std::pair<Result, bool>
-    are_files_identical(std::string local_file_path, std::string remote_file_path) const;
+    std::pair<Result, bool> are_files_identical(std::string local_file_path, std::string remote_file_path) const;
+
+
+
+
+
 
     /**
      * @brief Set target component ID. By default it is the autopilot.
      *
      * This function is blocking.
      *
-
+     
      * @return Result of request.
-
+     
      */
     Result set_target_compid(uint32_t compid) const;
+
+
+
 
     /**
      * @brief Copy constructor.

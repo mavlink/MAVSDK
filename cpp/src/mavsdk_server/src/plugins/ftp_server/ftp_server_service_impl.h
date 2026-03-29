@@ -22,11 +22,15 @@
 namespace mavsdk {
 namespace mavsdk_server {
 
+
 template<typename FtpServer = FtpServer, typename LazyServerPlugin = LazyServerPlugin<FtpServer>>
 
 class FtpServerServiceImpl final : public rpc::ftp_server::FtpServerService::Service {
 public:
+
     FtpServerServiceImpl(LazyServerPlugin& lazy_plugin) : _lazy_plugin(lazy_plugin) {}
+
+
 
     template<typename ResponseType>
     void fillResponseWithResult(ResponseType* response, mavsdk::FtpServer::Result& result) const
@@ -42,8 +46,9 @@ public:
         response->set_allocated_ftp_server_result(rpc_ftp_server_result);
     }
 
-    static rpc::ftp_server::FtpServerResult::Result
-    translateToRpcResult(const mavsdk::FtpServer::Result& result)
+
+
+    static rpc::ftp_server::FtpServerResult::Result translateToRpcResult(const mavsdk::FtpServer::Result& result)
     {
         switch (result) {
             default:
@@ -60,8 +65,7 @@ public:
         }
     }
 
-    static mavsdk::FtpServer::Result
-    translateFromRpcResult(const rpc::ftp_server::FtpServerResult::Result result)
+    static mavsdk::FtpServer::Result translateFromRpcResult(const rpc::ftp_server::FtpServerResult::Result result)
     {
         switch (result) {
             default:
@@ -78,19 +82,23 @@ public:
         }
     }
 
+
+
+
     grpc::Status SetRootDir(
         grpc::ServerContext* /* context */,
         const rpc::ftp_server::SetRootDirRequest* request,
         rpc::ftp_server::SetRootDirResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
-                // For server plugins, this should never happen, they should always be
-                // constructible.
+                
+                // For server plugins, this should never happen, they should always be constructible.
                 auto result = mavsdk::FtpServer::Result::Unknown;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
@@ -98,18 +106,22 @@ public:
             LogWarn() << "SetRootDir sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
-
+            
+        
         auto result = _lazy_plugin.maybe_plugin()->set_root_dir(request->path());
+        
 
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
 
-    void stop()
-    {
+
+    void stop() {
         _stopped.store(true);
         std::lock_guard<std::mutex> lock(_stream_stop_mutex);
         for (auto& prom : _stream_stop_promises) {
@@ -120,8 +132,7 @@ public:
     }
 
 private:
-    void register_stream_stop_promise(std::weak_ptr<std::promise<void>> prom)
-    {
+    void register_stream_stop_promise(std::weak_ptr<std::promise<void>> prom) {
         // If we have already stopped, set promise immediately and don't add it to list.
         if (_stopped.load()) {
             if (auto handle = prom.lock()) {
@@ -133,11 +144,9 @@ private:
         }
     }
 
-    void unregister_stream_stop_promise(std::shared_ptr<std::promise<void>> prom)
-    {
+    void unregister_stream_stop_promise(std::shared_ptr<std::promise<void>> prom) {
         std::lock_guard<std::mutex> lock(_stream_stop_mutex);
-        for (auto it = _stream_stop_promises.begin(); it != _stream_stop_promises.end();
-             /* ++it */) {
+        for (auto it = _stream_stop_promises.begin(); it != _stream_stop_promises.end(); /* ++it */) {
             if (it->lock() == prom) {
                 it = _stream_stop_promises.erase(it);
             } else {
@@ -146,11 +155,12 @@ private:
         }
     }
 
+
     LazyServerPlugin& _lazy_plugin;
 
     std::atomic<bool> _stopped{false};
     std::mutex _stream_stop_mutex{};
-    std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises{};
+    std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises {};
 };
 
 } // namespace mavsdk_server

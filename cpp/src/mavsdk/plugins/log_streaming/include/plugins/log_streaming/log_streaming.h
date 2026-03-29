@@ -13,20 +13,22 @@
 #include <utility>
 #include <vector>
 
+
 #include "plugin_base.h"
 
 #include "handle.h"
 
 namespace mavsdk {
 
-class System;
-class LogStreamingImpl;
+
+class System;class LogStreamingImpl;
 
 /**
  * @brief Provide log streaming data.
  */
 class LogStreaming : public PluginBase {
 public:
+
     /**
      * @brief Constructor. Creates the plugin for a specific System.
      *
@@ -53,15 +55,21 @@ public:
      */
     explicit LogStreaming(std::shared_ptr<System> system); // new
 
+
     /**
      * @brief Destructor (internal use only).
      */
     ~LogStreaming() override;
 
+
+
+
+
     /**
      * @brief Raw logging data type
      */
     struct LogStreamingRaw {
+        
         std::string data_base64{}; /**< @brief Ulog file stream data encoded as base64 */
     };
 
@@ -70,16 +78,18 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool
-    operator==(const LogStreaming::LogStreamingRaw& lhs, const LogStreaming::LogStreamingRaw& rhs);
+    friend bool operator==(const LogStreaming::LogStreamingRaw& lhs, const LogStreaming::LogStreamingRaw& rhs);
 
     /**
      * @brief Stream operator to print information about a `LogStreaming::LogStreamingRaw`.
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
-    operator<<(std::ostream& str, LogStreaming::LogStreamingRaw const& log_streaming_raw);
+    friend std::ostream& operator<<(std::ostream& str, LogStreaming::LogStreamingRaw const& log_streaming_raw);
+
+
+
+
 
     /**
      * @brief Possible results returned for logging requests
@@ -102,10 +112,15 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, LogStreaming::Result const& result);
 
+
+
     /**
      * @brief Callback type for asynchronous LogStreaming calls.
      */
     using ResultCallback = std::function<void(Result)>;
+
+
+
 
     /**
      * @brief Start streaming logging data.
@@ -114,16 +129,21 @@ public:
      */
     void start_log_streaming_async(const ResultCallback callback);
 
+
+
     /**
      * @brief Start streaming logging data.
      *
      * This function is blocking. See 'start_log_streaming_async' for the non-blocking counterpart.
      *
-
+     
      * @return Result of request.
-
+     
      */
     Result start_log_streaming() const;
+
+
+
 
     /**
      * @brief Stop streaming logging data.
@@ -132,16 +152,23 @@ public:
      */
     void stop_log_streaming_async(const ResultCallback callback);
 
+
+
     /**
      * @brief Stop streaming logging data.
      *
      * This function is blocking. See 'stop_log_streaming_async' for the non-blocking counterpart.
      *
-
+     
      * @return Result of request.
-
+     
      */
     Result stop_log_streaming() const;
+
+
+
+
+        
 
     /**
      * @brief Callback type for subscribe_log_streaming_raw.
@@ -162,6 +189,13 @@ public:
      * @brief Unsubscribe from subscribe_log_streaming_raw
      */
     void unsubscribe_log_streaming_raw(LogStreamingRawHandle handle);
+
+        
+
+
+
+
+
 
     /**
      * @brief Copy constructor.

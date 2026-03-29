@@ -22,11 +22,15 @@
 namespace mavsdk {
 namespace mavsdk_server {
 
+
 template<typename Camera = Camera, typename LazyPlugin = LazyPlugin<Camera>>
 
 class CameraServiceImpl final : public rpc::camera::CameraService::Service {
 public:
+
     CameraServiceImpl(LazyPlugin& lazy_plugin) : _lazy_plugin(lazy_plugin) {}
+
+
 
     template<typename ResponseType>
     void fillResponseWithResult(ResponseType* response, mavsdk::Camera::Result& result) const
@@ -41,6 +45,7 @@ public:
 
         response->set_allocated_camera_result(rpc_camera_result);
     }
+
 
     static rpc::camera::Mode translateToRpcMode(const mavsdk::Camera::Mode& mode)
     {
@@ -72,8 +77,7 @@ public:
         }
     }
 
-    static rpc::camera::PhotosRange
-    translateToRpcPhotosRange(const mavsdk::Camera::PhotosRange& photos_range)
+    static rpc::camera::PhotosRange translateToRpcPhotosRange(const mavsdk::Camera::PhotosRange& photos_range)
     {
         switch (photos_range) {
             default:
@@ -86,8 +90,7 @@ public:
         }
     }
 
-    static mavsdk::Camera::PhotosRange
-    translateFromRpcPhotosRange(const rpc::camera::PhotosRange photos_range)
+    static mavsdk::Camera::PhotosRange translateFromRpcPhotosRange(const rpc::camera::PhotosRange photos_range)
     {
         switch (photos_range) {
             default:
@@ -100,14 +103,21 @@ public:
         }
     }
 
-    static std::unique_ptr<rpc::camera::Option>
-    translateToRpcOption(const mavsdk::Camera::Option& option)
+
+
+    static std::unique_ptr<rpc::camera::Option> translateToRpcOption(const mavsdk::Camera::Option &option)
     {
         auto rpc_obj = std::make_unique<rpc::camera::Option>();
 
-        rpc_obj->set_option_id(option.option_id);
 
+            
+        rpc_obj->set_option_id(option.option_id);
+            
+        
+            
         rpc_obj->set_option_description(option.option_description);
+            
+        
 
         return rpc_obj;
     }
@@ -116,25 +126,45 @@ public:
     {
         mavsdk::Camera::Option obj;
 
+
+            
         obj.option_id = option.option_id();
-
+            
+        
+            
         obj.option_description = option.option_description();
-
+            
+        
         return obj;
     }
 
-    static std::unique_ptr<rpc::camera::Setting>
-    translateToRpcSetting(const mavsdk::Camera::Setting& setting)
+
+
+
+
+    static std::unique_ptr<rpc::camera::Setting> translateToRpcSetting(const mavsdk::Camera::Setting &setting)
     {
         auto rpc_obj = std::make_unique<rpc::camera::Setting>();
 
+
+            
         rpc_obj->set_setting_id(setting.setting_id);
-
+            
+        
+            
         rpc_obj->set_setting_description(setting.setting_description);
-
+            
+        
+            
+                
         rpc_obj->set_allocated_option(translateToRpcOption(setting.option).release());
-
+                
+            
+        
+            
         rpc_obj->set_is_range(setting.is_range);
+            
+        
 
         return rpc_obj;
     }
@@ -143,127 +173,192 @@ public:
     {
         mavsdk::Camera::Setting obj;
 
+
+            
         obj.setting_id = setting.setting_id();
-
+            
+        
+            
         obj.setting_description = setting.setting_description();
-
+            
+        
+            
         obj.option = translateFromRpcOption(setting.option());
-
+            
+        
+            
         obj.is_range = setting.is_range();
-
+            
+        
         return obj;
     }
 
-    static std::unique_ptr<rpc::camera::SettingOptions>
-    translateToRpcSettingOptions(const mavsdk::Camera::SettingOptions& setting_options)
+
+
+
+
+    static std::unique_ptr<rpc::camera::SettingOptions> translateToRpcSettingOptions(const mavsdk::Camera::SettingOptions &setting_options)
     {
         auto rpc_obj = std::make_unique<rpc::camera::SettingOptions>();
 
+
+            
         rpc_obj->set_component_id(setting_options.component_id);
-
+            
+        
+            
         rpc_obj->set_setting_id(setting_options.setting_id);
-
+            
+        
+            
         rpc_obj->set_setting_description(setting_options.setting_description);
-
+            
+        
+            
+                
         for (const auto& elem : setting_options.options) {
             auto* ptr = rpc_obj->add_options();
             ptr->CopyFrom(*translateToRpcOption(elem).release());
         }
-
+                
+            
+        
+            
         rpc_obj->set_is_range(setting_options.is_range);
+            
+        
 
         return rpc_obj;
     }
 
-    static mavsdk::Camera::SettingOptions
-    translateFromRpcSettingOptions(const rpc::camera::SettingOptions& setting_options)
+    static mavsdk::Camera::SettingOptions translateFromRpcSettingOptions(const rpc::camera::SettingOptions& setting_options)
     {
         mavsdk::Camera::SettingOptions obj;
 
+
+            
         obj.component_id = setting_options.component_id();
-
+            
+        
+            
         obj.setting_id = setting_options.setting_id();
-
+            
+        
+            
         obj.setting_description = setting_options.setting_description();
-
-        for (const auto& elem : setting_options.options()) {
-            obj.options.push_back(
-                translateFromRpcOption(static_cast<mavsdk::rpc::camera::Option>(elem)));
-        }
-
+            
+        
+            
+                for (const auto& elem : setting_options.options()) {
+                    obj.options.push_back(translateFromRpcOption(static_cast<mavsdk::rpc::camera::Option>(elem)));
+                }
+            
+        
+            
         obj.is_range = setting_options.is_range();
-
+            
+        
         return obj;
     }
 
-    static std::unique_ptr<rpc::camera::VideoStreamSettings> translateToRpcVideoStreamSettings(
-        const mavsdk::Camera::VideoStreamSettings& video_stream_settings)
+
+
+
+
+    static std::unique_ptr<rpc::camera::VideoStreamSettings> translateToRpcVideoStreamSettings(const mavsdk::Camera::VideoStreamSettings &video_stream_settings)
     {
         auto rpc_obj = std::make_unique<rpc::camera::VideoStreamSettings>();
 
+
+            
         rpc_obj->set_frame_rate_hz(video_stream_settings.frame_rate_hz);
-
+            
+        
+            
         rpc_obj->set_horizontal_resolution_pix(video_stream_settings.horizontal_resolution_pix);
-
+            
+        
+            
         rpc_obj->set_vertical_resolution_pix(video_stream_settings.vertical_resolution_pix);
-
+            
+        
+            
         rpc_obj->set_bit_rate_b_s(video_stream_settings.bit_rate_b_s);
-
+            
+        
+            
         rpc_obj->set_rotation_deg(video_stream_settings.rotation_deg);
-
+            
+        
+            
         rpc_obj->set_uri(video_stream_settings.uri);
-
+            
+        
+            
         rpc_obj->set_horizontal_fov_deg(video_stream_settings.horizontal_fov_deg);
+            
+        
 
         return rpc_obj;
     }
 
-    static mavsdk::Camera::VideoStreamSettings translateFromRpcVideoStreamSettings(
-        const rpc::camera::VideoStreamSettings& video_stream_settings)
+    static mavsdk::Camera::VideoStreamSettings translateFromRpcVideoStreamSettings(const rpc::camera::VideoStreamSettings& video_stream_settings)
     {
         mavsdk::Camera::VideoStreamSettings obj;
 
+
+            
         obj.frame_rate_hz = video_stream_settings.frame_rate_hz();
-
+            
+        
+            
         obj.horizontal_resolution_pix = video_stream_settings.horizontal_resolution_pix();
-
+            
+        
+            
         obj.vertical_resolution_pix = video_stream_settings.vertical_resolution_pix();
-
+            
+        
+            
         obj.bit_rate_b_s = video_stream_settings.bit_rate_b_s();
-
+            
+        
+            
         obj.rotation_deg = video_stream_settings.rotation_deg();
-
+            
+        
+            
         obj.uri = video_stream_settings.uri();
-
+            
+        
+            
         obj.horizontal_fov_deg = video_stream_settings.horizontal_fov_deg();
-
+            
+        
         return obj;
     }
 
-    static rpc::camera::VideoStreamInfo::VideoStreamStatus translateToRpcVideoStreamStatus(
-        const mavsdk::Camera::VideoStreamInfo::VideoStreamStatus& video_stream_status)
+
+
+
+    static rpc::camera::VideoStreamInfo::VideoStreamStatus translateToRpcVideoStreamStatus(const mavsdk::Camera::VideoStreamInfo::VideoStreamStatus& video_stream_status)
     {
         switch (video_stream_status) {
             default:
-                LogErr() << "Unknown video_stream_status enum value: "
-                         << static_cast<int>(video_stream_status);
+                LogErr() << "Unknown video_stream_status enum value: " << static_cast<int>(video_stream_status);
             // FALLTHROUGH
             case mavsdk::Camera::VideoStreamInfo::VideoStreamStatus::NotRunning:
-                return rpc::camera::
-                    VideoStreamInfo_VideoStreamStatus_VIDEO_STREAM_STATUS_NOT_RUNNING;
+                return rpc::camera::VideoStreamInfo_VideoStreamStatus_VIDEO_STREAM_STATUS_NOT_RUNNING;
             case mavsdk::Camera::VideoStreamInfo::VideoStreamStatus::InProgress:
-                return rpc::camera::
-                    VideoStreamInfo_VideoStreamStatus_VIDEO_STREAM_STATUS_IN_PROGRESS;
+                return rpc::camera::VideoStreamInfo_VideoStreamStatus_VIDEO_STREAM_STATUS_IN_PROGRESS;
         }
     }
 
-    static mavsdk::Camera::VideoStreamInfo::VideoStreamStatus translateFromRpcVideoStreamStatus(
-        const rpc::camera::VideoStreamInfo::VideoStreamStatus video_stream_status)
+    static mavsdk::Camera::VideoStreamInfo::VideoStreamStatus translateFromRpcVideoStreamStatus(const rpc::camera::VideoStreamInfo::VideoStreamStatus video_stream_status)
     {
         switch (video_stream_status) {
             default:
-                LogErr() << "Unknown video_stream_status enum value: "
-                         << static_cast<int>(video_stream_status);
+                LogErr() << "Unknown video_stream_status enum value: " << static_cast<int>(video_stream_status);
             // FALLTHROUGH
             case rpc::camera::VideoStreamInfo_VideoStreamStatus_VIDEO_STREAM_STATUS_NOT_RUNNING:
                 return mavsdk::Camera::VideoStreamInfo::VideoStreamStatus::NotRunning;
@@ -272,134 +367,178 @@ public:
         }
     }
 
-    static rpc::camera::VideoStreamInfo::VideoStreamSpectrum translateToRpcVideoStreamSpectrum(
-        const mavsdk::Camera::VideoStreamInfo::VideoStreamSpectrum& video_stream_spectrum)
+    static rpc::camera::VideoStreamInfo::VideoStreamSpectrum translateToRpcVideoStreamSpectrum(const mavsdk::Camera::VideoStreamInfo::VideoStreamSpectrum& video_stream_spectrum)
     {
         switch (video_stream_spectrum) {
             default:
-                LogErr() << "Unknown video_stream_spectrum enum value: "
-                         << static_cast<int>(video_stream_spectrum);
+                LogErr() << "Unknown video_stream_spectrum enum value: " << static_cast<int>(video_stream_spectrum);
             // FALLTHROUGH
             case mavsdk::Camera::VideoStreamInfo::VideoStreamSpectrum::Unknown:
-                return rpc::camera::
-                    VideoStreamInfo_VideoStreamSpectrum_VIDEO_STREAM_SPECTRUM_UNKNOWN;
+                return rpc::camera::VideoStreamInfo_VideoStreamSpectrum_VIDEO_STREAM_SPECTRUM_UNKNOWN;
             case mavsdk::Camera::VideoStreamInfo::VideoStreamSpectrum::VisibleLight:
-                return rpc::camera::
-                    VideoStreamInfo_VideoStreamSpectrum_VIDEO_STREAM_SPECTRUM_VISIBLE_LIGHT;
+                return rpc::camera::VideoStreamInfo_VideoStreamSpectrum_VIDEO_STREAM_SPECTRUM_VISIBLE_LIGHT;
             case mavsdk::Camera::VideoStreamInfo::VideoStreamSpectrum::Infrared:
-                return rpc::camera::
-                    VideoStreamInfo_VideoStreamSpectrum_VIDEO_STREAM_SPECTRUM_INFRARED;
+                return rpc::camera::VideoStreamInfo_VideoStreamSpectrum_VIDEO_STREAM_SPECTRUM_INFRARED;
         }
     }
 
-    static mavsdk::Camera::VideoStreamInfo::VideoStreamSpectrum translateFromRpcVideoStreamSpectrum(
-        const rpc::camera::VideoStreamInfo::VideoStreamSpectrum video_stream_spectrum)
+    static mavsdk::Camera::VideoStreamInfo::VideoStreamSpectrum translateFromRpcVideoStreamSpectrum(const rpc::camera::VideoStreamInfo::VideoStreamSpectrum video_stream_spectrum)
     {
         switch (video_stream_spectrum) {
             default:
-                LogErr() << "Unknown video_stream_spectrum enum value: "
-                         << static_cast<int>(video_stream_spectrum);
+                LogErr() << "Unknown video_stream_spectrum enum value: " << static_cast<int>(video_stream_spectrum);
             // FALLTHROUGH
             case rpc::camera::VideoStreamInfo_VideoStreamSpectrum_VIDEO_STREAM_SPECTRUM_UNKNOWN:
                 return mavsdk::Camera::VideoStreamInfo::VideoStreamSpectrum::Unknown;
-            case rpc::camera::
-                VideoStreamInfo_VideoStreamSpectrum_VIDEO_STREAM_SPECTRUM_VISIBLE_LIGHT:
+            case rpc::camera::VideoStreamInfo_VideoStreamSpectrum_VIDEO_STREAM_SPECTRUM_VISIBLE_LIGHT:
                 return mavsdk::Camera::VideoStreamInfo::VideoStreamSpectrum::VisibleLight;
             case rpc::camera::VideoStreamInfo_VideoStreamSpectrum_VIDEO_STREAM_SPECTRUM_INFRARED:
                 return mavsdk::Camera::VideoStreamInfo::VideoStreamSpectrum::Infrared;
         }
     }
 
-    static std::unique_ptr<rpc::camera::VideoStreamInfo>
-    translateToRpcVideoStreamInfo(const mavsdk::Camera::VideoStreamInfo& video_stream_info)
+
+    static std::unique_ptr<rpc::camera::VideoStreamInfo> translateToRpcVideoStreamInfo(const mavsdk::Camera::VideoStreamInfo &video_stream_info)
     {
         auto rpc_obj = std::make_unique<rpc::camera::VideoStreamInfo>();
 
+
+            
         rpc_obj->set_stream_id(video_stream_info.stream_id);
-
-        rpc_obj->set_allocated_settings(
-            translateToRpcVideoStreamSettings(video_stream_info.settings).release());
-
+            
+        
+            
+                
+        rpc_obj->set_allocated_settings(translateToRpcVideoStreamSettings(video_stream_info.settings).release());
+                
+            
+        
+            
+                
         rpc_obj->set_status(translateToRpcVideoStreamStatus(video_stream_info.status));
-
+                
+            
+        
+            
+                
         rpc_obj->set_spectrum(translateToRpcVideoStreamSpectrum(video_stream_info.spectrum));
+                
+            
+        
 
         return rpc_obj;
     }
 
-    static mavsdk::Camera::VideoStreamInfo
-    translateFromRpcVideoStreamInfo(const rpc::camera::VideoStreamInfo& video_stream_info)
+    static mavsdk::Camera::VideoStreamInfo translateFromRpcVideoStreamInfo(const rpc::camera::VideoStreamInfo& video_stream_info)
     {
         mavsdk::Camera::VideoStreamInfo obj;
 
+
+            
         obj.stream_id = video_stream_info.stream_id();
-
+            
+        
+            
         obj.settings = translateFromRpcVideoStreamSettings(video_stream_info.settings());
-
+            
+        
+            
         obj.status = translateFromRpcVideoStreamStatus(video_stream_info.status());
-
+            
+        
+            
         obj.spectrum = translateFromRpcVideoStreamSpectrum(video_stream_info.spectrum());
-
+            
+        
         return obj;
     }
 
-    static std::unique_ptr<rpc::camera::ModeUpdate>
-    translateToRpcModeUpdate(const mavsdk::Camera::ModeUpdate& mode_update)
+
+
+
+
+    static std::unique_ptr<rpc::camera::ModeUpdate> translateToRpcModeUpdate(const mavsdk::Camera::ModeUpdate &mode_update)
     {
         auto rpc_obj = std::make_unique<rpc::camera::ModeUpdate>();
 
-        rpc_obj->set_component_id(mode_update.component_id);
 
+            
+        rpc_obj->set_component_id(mode_update.component_id);
+            
+        
+            
+                
         rpc_obj->set_mode(translateToRpcMode(mode_update.mode));
+                
+            
+        
 
         return rpc_obj;
     }
 
-    static mavsdk::Camera::ModeUpdate
-    translateFromRpcModeUpdate(const rpc::camera::ModeUpdate& mode_update)
+    static mavsdk::Camera::ModeUpdate translateFromRpcModeUpdate(const rpc::camera::ModeUpdate& mode_update)
     {
         mavsdk::Camera::ModeUpdate obj;
 
+
+            
         obj.component_id = mode_update.component_id();
-
+            
+        
+            
         obj.mode = translateFromRpcMode(mode_update.mode());
-
+            
+        
         return obj;
     }
 
-    static std::unique_ptr<rpc::camera::VideoStreamUpdate>
-    translateToRpcVideoStreamUpdate(const mavsdk::Camera::VideoStreamUpdate& video_stream_update)
+
+
+
+
+    static std::unique_ptr<rpc::camera::VideoStreamUpdate> translateToRpcVideoStreamUpdate(const mavsdk::Camera::VideoStreamUpdate &video_stream_update)
     {
         auto rpc_obj = std::make_unique<rpc::camera::VideoStreamUpdate>();
 
-        rpc_obj->set_component_id(video_stream_update.component_id);
 
-        rpc_obj->set_allocated_video_stream_info(
-            translateToRpcVideoStreamInfo(video_stream_update.video_stream_info).release());
+            
+        rpc_obj->set_component_id(video_stream_update.component_id);
+            
+        
+            
+                
+        rpc_obj->set_allocated_video_stream_info(translateToRpcVideoStreamInfo(video_stream_update.video_stream_info).release());
+                
+            
+        
 
         return rpc_obj;
     }
 
-    static mavsdk::Camera::VideoStreamUpdate
-    translateFromRpcVideoStreamUpdate(const rpc::camera::VideoStreamUpdate& video_stream_update)
+    static mavsdk::Camera::VideoStreamUpdate translateFromRpcVideoStreamUpdate(const rpc::camera::VideoStreamUpdate& video_stream_update)
     {
         mavsdk::Camera::VideoStreamUpdate obj;
 
+
+            
         obj.component_id = video_stream_update.component_id();
-
-        obj.video_stream_info =
-            translateFromRpcVideoStreamInfo(video_stream_update.video_stream_info());
-
+            
+        
+            
+        obj.video_stream_info = translateFromRpcVideoStreamInfo(video_stream_update.video_stream_info());
+            
+        
         return obj;
     }
 
-    static rpc::camera::Storage::StorageStatus
-    translateToRpcStorageStatus(const mavsdk::Camera::Storage::StorageStatus& storage_status)
+
+
+
+    static rpc::camera::Storage::StorageStatus translateToRpcStorageStatus(const mavsdk::Camera::Storage::StorageStatus& storage_status)
     {
         switch (storage_status) {
             default:
-                LogErr() << "Unknown storage_status enum value: "
-                         << static_cast<int>(storage_status);
+                LogErr() << "Unknown storage_status enum value: " << static_cast<int>(storage_status);
             // FALLTHROUGH
             case mavsdk::Camera::Storage::StorageStatus::NotAvailable:
                 return rpc::camera::Storage_StorageStatus_STORAGE_STATUS_NOT_AVAILABLE;
@@ -412,13 +551,11 @@ public:
         }
     }
 
-    static mavsdk::Camera::Storage::StorageStatus
-    translateFromRpcStorageStatus(const rpc::camera::Storage::StorageStatus storage_status)
+    static mavsdk::Camera::Storage::StorageStatus translateFromRpcStorageStatus(const rpc::camera::Storage::StorageStatus storage_status)
     {
         switch (storage_status) {
             default:
-                LogErr() << "Unknown storage_status enum value: "
-                         << static_cast<int>(storage_status);
+                LogErr() << "Unknown storage_status enum value: " << static_cast<int>(storage_status);
             // FALLTHROUGH
             case rpc::camera::Storage_StorageStatus_STORAGE_STATUS_NOT_AVAILABLE:
                 return mavsdk::Camera::Storage::StorageStatus::NotAvailable;
@@ -431,8 +568,7 @@ public:
         }
     }
 
-    static rpc::camera::Storage::StorageType
-    translateToRpcStorageType(const mavsdk::Camera::Storage::StorageType& storage_type)
+    static rpc::camera::Storage::StorageType translateToRpcStorageType(const mavsdk::Camera::Storage::StorageType& storage_type)
     {
         switch (storage_type) {
             default:
@@ -453,8 +589,7 @@ public:
         }
     }
 
-    static mavsdk::Camera::Storage::StorageType
-    translateFromRpcStorageType(const rpc::camera::Storage::StorageType storage_type)
+    static mavsdk::Camera::Storage::StorageType translateFromRpcStorageType(const rpc::camera::Storage::StorageType storage_type)
     {
         switch (storage_type) {
             default:
@@ -475,32 +610,60 @@ public:
         }
     }
 
-    static std::unique_ptr<rpc::camera::Storage>
-    translateToRpcStorage(const mavsdk::Camera::Storage& storage)
+
+    static std::unique_ptr<rpc::camera::Storage> translateToRpcStorage(const mavsdk::Camera::Storage &storage)
     {
         auto rpc_obj = std::make_unique<rpc::camera::Storage>();
 
+
+            
         rpc_obj->set_component_id(storage.component_id);
-
+            
+        
+            
         rpc_obj->set_video_on(storage.video_on);
-
+            
+        
+            
         rpc_obj->set_photo_interval_on(storage.photo_interval_on);
-
+            
+        
+            
         rpc_obj->set_used_storage_mib(storage.used_storage_mib);
-
+            
+        
+            
         rpc_obj->set_available_storage_mib(storage.available_storage_mib);
-
+            
+        
+            
         rpc_obj->set_total_storage_mib(storage.total_storage_mib);
-
+            
+        
+            
         rpc_obj->set_recording_time_s(storage.recording_time_s);
-
+            
+        
+            
         rpc_obj->set_media_folder_name(storage.media_folder_name);
-
+            
+        
+            
+                
         rpc_obj->set_storage_status(translateToRpcStorageStatus(storage.storage_status));
-
+                
+            
+        
+            
         rpc_obj->set_storage_id(storage.storage_id);
-
+            
+        
+            
+                
         rpc_obj->set_storage_type(translateToRpcStorageType(storage.storage_type));
+                
+            
+        
 
         return rpc_obj;
     }
@@ -509,119 +672,185 @@ public:
     {
         mavsdk::Camera::Storage obj;
 
+
+            
         obj.component_id = storage.component_id();
-
+            
+        
+            
         obj.video_on = storage.video_on();
-
+            
+        
+            
         obj.photo_interval_on = storage.photo_interval_on();
-
+            
+        
+            
         obj.used_storage_mib = storage.used_storage_mib();
-
+            
+        
+            
         obj.available_storage_mib = storage.available_storage_mib();
-
+            
+        
+            
         obj.total_storage_mib = storage.total_storage_mib();
-
+            
+        
+            
         obj.recording_time_s = storage.recording_time_s();
-
+            
+        
+            
         obj.media_folder_name = storage.media_folder_name();
-
+            
+        
+            
         obj.storage_status = translateFromRpcStorageStatus(storage.storage_status());
-
+            
+        
+            
         obj.storage_id = storage.storage_id();
-
+            
+        
+            
         obj.storage_type = translateFromRpcStorageType(storage.storage_type());
-
+            
+        
         return obj;
     }
 
-    static std::unique_ptr<rpc::camera::StorageUpdate>
-    translateToRpcStorageUpdate(const mavsdk::Camera::StorageUpdate& storage_update)
+
+
+
+
+    static std::unique_ptr<rpc::camera::StorageUpdate> translateToRpcStorageUpdate(const mavsdk::Camera::StorageUpdate &storage_update)
     {
         auto rpc_obj = std::make_unique<rpc::camera::StorageUpdate>();
 
-        rpc_obj->set_component_id(storage_update.component_id);
 
+            
+        rpc_obj->set_component_id(storage_update.component_id);
+            
+        
+            
+                
         rpc_obj->set_allocated_storage(translateToRpcStorage(storage_update.storage).release());
+                
+            
+        
 
         return rpc_obj;
     }
 
-    static mavsdk::Camera::StorageUpdate
-    translateFromRpcStorageUpdate(const rpc::camera::StorageUpdate& storage_update)
+    static mavsdk::Camera::StorageUpdate translateFromRpcStorageUpdate(const rpc::camera::StorageUpdate& storage_update)
     {
         mavsdk::Camera::StorageUpdate obj;
 
+
+            
         obj.component_id = storage_update.component_id();
-
+            
+        
+            
         obj.storage = translateFromRpcStorage(storage_update.storage());
-
+            
+        
         return obj;
     }
 
-    static std::unique_ptr<rpc::camera::CurrentSettingsUpdate> translateToRpcCurrentSettingsUpdate(
-        const mavsdk::Camera::CurrentSettingsUpdate& current_settings_update)
+
+
+
+
+    static std::unique_ptr<rpc::camera::CurrentSettingsUpdate> translateToRpcCurrentSettingsUpdate(const mavsdk::Camera::CurrentSettingsUpdate &current_settings_update)
     {
         auto rpc_obj = std::make_unique<rpc::camera::CurrentSettingsUpdate>();
 
-        rpc_obj->set_component_id(current_settings_update.component_id);
 
+            
+        rpc_obj->set_component_id(current_settings_update.component_id);
+            
+        
+            
+                
         for (const auto& elem : current_settings_update.current_settings) {
             auto* ptr = rpc_obj->add_current_settings();
             ptr->CopyFrom(*translateToRpcSetting(elem).release());
         }
+                
+            
+        
 
         return rpc_obj;
     }
 
-    static mavsdk::Camera::CurrentSettingsUpdate translateFromRpcCurrentSettingsUpdate(
-        const rpc::camera::CurrentSettingsUpdate& current_settings_update)
+    static mavsdk::Camera::CurrentSettingsUpdate translateFromRpcCurrentSettingsUpdate(const rpc::camera::CurrentSettingsUpdate& current_settings_update)
     {
         mavsdk::Camera::CurrentSettingsUpdate obj;
 
+
+            
         obj.component_id = current_settings_update.component_id();
-
-        for (const auto& elem : current_settings_update.current_settings()) {
-            obj.current_settings.push_back(
-                translateFromRpcSetting(static_cast<mavsdk::rpc::camera::Setting>(elem)));
-        }
-
+            
+        
+            
+                for (const auto& elem : current_settings_update.current_settings()) {
+                    obj.current_settings.push_back(translateFromRpcSetting(static_cast<mavsdk::rpc::camera::Setting>(elem)));
+                }
+            
+        
         return obj;
     }
 
-    static std::unique_ptr<rpc::camera::PossibleSettingOptionsUpdate>
-    translateToRpcPossibleSettingOptionsUpdate(
-        const mavsdk::Camera::PossibleSettingOptionsUpdate& possible_setting_options_update)
+
+
+
+
+    static std::unique_ptr<rpc::camera::PossibleSettingOptionsUpdate> translateToRpcPossibleSettingOptionsUpdate(const mavsdk::Camera::PossibleSettingOptionsUpdate &possible_setting_options_update)
     {
         auto rpc_obj = std::make_unique<rpc::camera::PossibleSettingOptionsUpdate>();
 
-        rpc_obj->set_component_id(possible_setting_options_update.component_id);
 
+            
+        rpc_obj->set_component_id(possible_setting_options_update.component_id);
+            
+        
+            
+                
         for (const auto& elem : possible_setting_options_update.setting_options) {
             auto* ptr = rpc_obj->add_setting_options();
             ptr->CopyFrom(*translateToRpcSettingOptions(elem).release());
         }
+                
+            
+        
 
         return rpc_obj;
     }
 
-    static mavsdk::Camera::PossibleSettingOptionsUpdate
-    translateFromRpcPossibleSettingOptionsUpdate(
-        const rpc::camera::PossibleSettingOptionsUpdate& possible_setting_options_update)
+    static mavsdk::Camera::PossibleSettingOptionsUpdate translateFromRpcPossibleSettingOptionsUpdate(const rpc::camera::PossibleSettingOptionsUpdate& possible_setting_options_update)
     {
         mavsdk::Camera::PossibleSettingOptionsUpdate obj;
 
+
+            
         obj.component_id = possible_setting_options_update.component_id();
-
-        for (const auto& elem : possible_setting_options_update.setting_options()) {
-            obj.setting_options.push_back(translateFromRpcSettingOptions(
-                static_cast<mavsdk::rpc::camera::SettingOptions>(elem)));
-        }
-
+            
+        
+            
+                for (const auto& elem : possible_setting_options_update.setting_options()) {
+                    obj.setting_options.push_back(translateFromRpcSettingOptions(static_cast<mavsdk::rpc::camera::SettingOptions>(elem)));
+                }
+            
+        
         return obj;
     }
 
-    static rpc::camera::CameraResult::Result
-    translateToRpcResult(const mavsdk::Camera::Result& result)
+
+
+
+    static rpc::camera::CameraResult::Result translateToRpcResult(const mavsdk::Camera::Result& result)
     {
         switch (result) {
             default:
@@ -656,8 +885,7 @@ public:
         }
     }
 
-    static mavsdk::Camera::Result
-    translateFromRpcResult(const rpc::camera::CameraResult::Result result)
+    static mavsdk::Camera::Result translateFromRpcResult(const rpc::camera::CameraResult::Result result)
     {
         switch (result) {
             default:
@@ -692,18 +920,32 @@ public:
         }
     }
 
-    static std::unique_ptr<rpc::camera::Position>
-    translateToRpcPosition(const mavsdk::Camera::Position& position)
+
+
+
+
+
+    static std::unique_ptr<rpc::camera::Position> translateToRpcPosition(const mavsdk::Camera::Position &position)
     {
         auto rpc_obj = std::make_unique<rpc::camera::Position>();
 
+
+            
         rpc_obj->set_latitude_deg(position.latitude_deg);
-
+            
+        
+            
         rpc_obj->set_longitude_deg(position.longitude_deg);
-
+            
+        
+            
         rpc_obj->set_absolute_altitude_m(position.absolute_altitude_m);
-
+            
+        
+            
         rpc_obj->set_relative_altitude_m(position.relative_altitude_m);
+            
+        
 
         return rpc_obj;
     }
@@ -712,200 +954,337 @@ public:
     {
         mavsdk::Camera::Position obj;
 
+
+            
         obj.latitude_deg = position.latitude_deg();
-
+            
+        
+            
         obj.longitude_deg = position.longitude_deg();
-
+            
+        
+            
         obj.absolute_altitude_m = position.absolute_altitude_m();
-
+            
+        
+            
         obj.relative_altitude_m = position.relative_altitude_m();
-
+            
+        
         return obj;
     }
 
-    static std::unique_ptr<rpc::camera::Quaternion>
-    translateToRpcQuaternion(const mavsdk::Camera::Quaternion& quaternion)
+
+
+
+
+    static std::unique_ptr<rpc::camera::Quaternion> translateToRpcQuaternion(const mavsdk::Camera::Quaternion &quaternion)
     {
         auto rpc_obj = std::make_unique<rpc::camera::Quaternion>();
 
+
+            
         rpc_obj->set_w(quaternion.w);
-
+            
+        
+            
         rpc_obj->set_x(quaternion.x);
-
+            
+        
+            
         rpc_obj->set_y(quaternion.y);
-
+            
+        
+            
         rpc_obj->set_z(quaternion.z);
+            
+        
 
         return rpc_obj;
     }
 
-    static mavsdk::Camera::Quaternion
-    translateFromRpcQuaternion(const rpc::camera::Quaternion& quaternion)
+    static mavsdk::Camera::Quaternion translateFromRpcQuaternion(const rpc::camera::Quaternion& quaternion)
     {
         mavsdk::Camera::Quaternion obj;
 
+
+            
         obj.w = quaternion.w();
-
+            
+        
+            
         obj.x = quaternion.x();
-
+            
+        
+            
         obj.y = quaternion.y();
-
+            
+        
+            
         obj.z = quaternion.z();
-
+            
+        
         return obj;
     }
 
-    static std::unique_ptr<rpc::camera::EulerAngle>
-    translateToRpcEulerAngle(const mavsdk::Camera::EulerAngle& euler_angle)
+
+
+
+
+    static std::unique_ptr<rpc::camera::EulerAngle> translateToRpcEulerAngle(const mavsdk::Camera::EulerAngle &euler_angle)
     {
         auto rpc_obj = std::make_unique<rpc::camera::EulerAngle>();
 
+
+            
         rpc_obj->set_roll_deg(euler_angle.roll_deg);
-
+            
+        
+            
         rpc_obj->set_pitch_deg(euler_angle.pitch_deg);
-
+            
+        
+            
         rpc_obj->set_yaw_deg(euler_angle.yaw_deg);
+            
+        
 
         return rpc_obj;
     }
 
-    static mavsdk::Camera::EulerAngle
-    translateFromRpcEulerAngle(const rpc::camera::EulerAngle& euler_angle)
+    static mavsdk::Camera::EulerAngle translateFromRpcEulerAngle(const rpc::camera::EulerAngle& euler_angle)
     {
         mavsdk::Camera::EulerAngle obj;
 
+
+            
         obj.roll_deg = euler_angle.roll_deg();
-
+            
+        
+            
         obj.pitch_deg = euler_angle.pitch_deg();
-
+            
+        
+            
         obj.yaw_deg = euler_angle.yaw_deg();
-
+            
+        
         return obj;
     }
 
-    static std::unique_ptr<rpc::camera::CaptureInfo>
-    translateToRpcCaptureInfo(const mavsdk::Camera::CaptureInfo& capture_info)
+
+
+
+
+    static std::unique_ptr<rpc::camera::CaptureInfo> translateToRpcCaptureInfo(const mavsdk::Camera::CaptureInfo &capture_info)
     {
         auto rpc_obj = std::make_unique<rpc::camera::CaptureInfo>();
 
+
+            
         rpc_obj->set_component_id(capture_info.component_id);
-
+            
+        
+            
+                
         rpc_obj->set_allocated_position(translateToRpcPosition(capture_info.position).release());
-
-        rpc_obj->set_allocated_attitude_quaternion(
-            translateToRpcQuaternion(capture_info.attitude_quaternion).release());
-
-        rpc_obj->set_allocated_attitude_euler_angle(
-            translateToRpcEulerAngle(capture_info.attitude_euler_angle).release());
-
+                
+            
+        
+            
+                
+        rpc_obj->set_allocated_attitude_quaternion(translateToRpcQuaternion(capture_info.attitude_quaternion).release());
+                
+            
+        
+            
+                
+        rpc_obj->set_allocated_attitude_euler_angle(translateToRpcEulerAngle(capture_info.attitude_euler_angle).release());
+                
+            
+        
+            
         rpc_obj->set_time_utc_us(capture_info.time_utc_us);
-
+            
+        
+            
         rpc_obj->set_is_success(capture_info.is_success);
-
+            
+        
+            
         rpc_obj->set_index(capture_info.index);
-
+            
+        
+            
         rpc_obj->set_file_url(capture_info.file_url);
+            
+        
 
         return rpc_obj;
     }
 
-    static mavsdk::Camera::CaptureInfo
-    translateFromRpcCaptureInfo(const rpc::camera::CaptureInfo& capture_info)
+    static mavsdk::Camera::CaptureInfo translateFromRpcCaptureInfo(const rpc::camera::CaptureInfo& capture_info)
     {
         mavsdk::Camera::CaptureInfo obj;
 
+
+            
         obj.component_id = capture_info.component_id();
-
+            
+        
+            
         obj.position = translateFromRpcPosition(capture_info.position());
-
+            
+        
+            
         obj.attitude_quaternion = translateFromRpcQuaternion(capture_info.attitude_quaternion());
-
+            
+        
+            
         obj.attitude_euler_angle = translateFromRpcEulerAngle(capture_info.attitude_euler_angle());
-
+            
+        
+            
         obj.time_utc_us = capture_info.time_utc_us();
-
+            
+        
+            
         obj.is_success = capture_info.is_success();
-
+            
+        
+            
         obj.index = capture_info.index();
-
+            
+        
+            
         obj.file_url = capture_info.file_url();
-
+            
+        
         return obj;
     }
 
-    static std::unique_ptr<rpc::camera::Information>
-    translateToRpcInformation(const mavsdk::Camera::Information& information)
+
+
+
+
+    static std::unique_ptr<rpc::camera::Information> translateToRpcInformation(const mavsdk::Camera::Information &information)
     {
         auto rpc_obj = std::make_unique<rpc::camera::Information>();
 
+
+            
         rpc_obj->set_component_id(information.component_id);
-
+            
+        
+            
         rpc_obj->set_vendor_name(information.vendor_name);
-
+            
+        
+            
         rpc_obj->set_model_name(information.model_name);
-
+            
+        
+            
         rpc_obj->set_focal_length_mm(information.focal_length_mm);
-
+            
+        
+            
         rpc_obj->set_horizontal_sensor_size_mm(information.horizontal_sensor_size_mm);
-
+            
+        
+            
         rpc_obj->set_vertical_sensor_size_mm(information.vertical_sensor_size_mm);
-
+            
+        
+            
         rpc_obj->set_horizontal_resolution_px(information.horizontal_resolution_px);
-
+            
+        
+            
         rpc_obj->set_vertical_resolution_px(information.vertical_resolution_px);
+            
+        
 
         return rpc_obj;
     }
 
-    static mavsdk::Camera::Information
-    translateFromRpcInformation(const rpc::camera::Information& information)
+    static mavsdk::Camera::Information translateFromRpcInformation(const rpc::camera::Information& information)
     {
         mavsdk::Camera::Information obj;
 
+
+            
         obj.component_id = information.component_id();
-
+            
+        
+            
         obj.vendor_name = information.vendor_name();
-
+            
+        
+            
         obj.model_name = information.model_name();
-
+            
+        
+            
         obj.focal_length_mm = information.focal_length_mm();
-
+            
+        
+            
         obj.horizontal_sensor_size_mm = information.horizontal_sensor_size_mm();
-
+            
+        
+            
         obj.vertical_sensor_size_mm = information.vertical_sensor_size_mm();
-
+            
+        
+            
         obj.horizontal_resolution_px = information.horizontal_resolution_px();
-
+            
+        
+            
         obj.vertical_resolution_px = information.vertical_resolution_px();
-
+            
+        
         return obj;
     }
 
-    static std::unique_ptr<rpc::camera::CameraList>
-    translateToRpcCameraList(const mavsdk::Camera::CameraList& camera_list)
+
+
+
+
+    static std::unique_ptr<rpc::camera::CameraList> translateToRpcCameraList(const mavsdk::Camera::CameraList &camera_list)
     {
         auto rpc_obj = std::make_unique<rpc::camera::CameraList>();
 
+
+            
+                
         for (const auto& elem : camera_list.cameras) {
             auto* ptr = rpc_obj->add_cameras();
             ptr->CopyFrom(*translateToRpcInformation(elem).release());
         }
+                
+            
+        
 
         return rpc_obj;
     }
 
-    static mavsdk::Camera::CameraList
-    translateFromRpcCameraList(const rpc::camera::CameraList& camera_list)
+    static mavsdk::Camera::CameraList translateFromRpcCameraList(const rpc::camera::CameraList& camera_list)
     {
         mavsdk::Camera::CameraList obj;
 
-        for (const auto& elem : camera_list.cameras()) {
-            obj.cameras.push_back(
-                translateFromRpcInformation(static_cast<mavsdk::rpc::camera::Information>(elem)));
-        }
 
+            
+                for (const auto& elem : camera_list.cameras()) {
+                    obj.cameras.push_back(translateFromRpcInformation(static_cast<mavsdk::rpc::camera::Information>(elem)));
+                }
+            
+        
         return obj;
     }
+
+
 
     grpc::Status TakePhoto(
         grpc::ServerContext* /* context */,
@@ -913,11 +1292,12 @@ public:
         rpc::camera::TakePhotoResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
                 auto result = mavsdk::Camera::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
@@ -925,12 +1305,16 @@ public:
             LogWarn() << "TakePhoto sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
-
+            
+        
         auto result = _lazy_plugin.maybe_plugin()->take_photo(request->component_id());
+        
 
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -941,11 +1325,12 @@ public:
         rpc::camera::StartPhotoIntervalResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
                 auto result = mavsdk::Camera::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
@@ -953,13 +1338,18 @@ public:
             LogWarn() << "StartPhotoInterval sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
+            
+        
+            
+        
+        auto result = _lazy_plugin.maybe_plugin()->start_photo_interval(request->component_id(), request->interval_s());
+        
 
-        auto result = _lazy_plugin.maybe_plugin()->start_photo_interval(
-            request->component_id(), request->interval_s());
-
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -970,11 +1360,12 @@ public:
         rpc::camera::StopPhotoIntervalResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
                 auto result = mavsdk::Camera::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
@@ -982,12 +1373,16 @@ public:
             LogWarn() << "StopPhotoInterval sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
-
+            
+        
         auto result = _lazy_plugin.maybe_plugin()->stop_photo_interval(request->component_id());
+        
 
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -998,11 +1393,12 @@ public:
         rpc::camera::StartVideoResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
                 auto result = mavsdk::Camera::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
@@ -1010,12 +1406,16 @@ public:
             LogWarn() << "StartVideo sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
-
+            
+        
         auto result = _lazy_plugin.maybe_plugin()->start_video(request->component_id());
+        
 
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -1026,11 +1426,12 @@ public:
         rpc::camera::StopVideoResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
                 auto result = mavsdk::Camera::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
@@ -1038,12 +1439,16 @@ public:
             LogWarn() << "StopVideo sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
-
+            
+        
         auto result = _lazy_plugin.maybe_plugin()->stop_video(request->component_id());
+        
 
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -1054,11 +1459,12 @@ public:
         rpc::camera::StartVideoStreamingResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
                 auto result = mavsdk::Camera::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
@@ -1066,13 +1472,18 @@ public:
             LogWarn() << "StartVideoStreaming sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
+            
+        
+            
+        
+        auto result = _lazy_plugin.maybe_plugin()->start_video_streaming(request->component_id(), request->stream_id());
+        
 
-        auto result = _lazy_plugin.maybe_plugin()->start_video_streaming(
-            request->component_id(), request->stream_id());
-
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -1083,11 +1494,12 @@ public:
         rpc::camera::StopVideoStreamingResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
                 auto result = mavsdk::Camera::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
@@ -1095,13 +1507,18 @@ public:
             LogWarn() << "StopVideoStreaming sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
+            
+        
+            
+        
+        auto result = _lazy_plugin.maybe_plugin()->stop_video_streaming(request->component_id(), request->stream_id());
+        
 
-        auto result = _lazy_plugin.maybe_plugin()->stop_video_streaming(
-            request->component_id(), request->stream_id());
-
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -1112,11 +1529,12 @@ public:
         rpc::camera::SetModeResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
                 auto result = mavsdk::Camera::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
@@ -1124,13 +1542,18 @@ public:
             LogWarn() << "SetMode sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
+            
+        
+            
+        
+        auto result = _lazy_plugin.maybe_plugin()->set_mode(request->component_id(), translateFromRpcMode(request->mode()));
+        
 
-        auto result = _lazy_plugin.maybe_plugin()->set_mode(
-            request->component_id(), translateFromRpcMode(request->mode()));
-
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -1141,11 +1564,12 @@ public:
         rpc::camera::ListPhotosResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
                 auto result = mavsdk::Camera::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
@@ -1154,27 +1578,27 @@ public:
             return grpc::Status::OK;
         }
 
-        auto result = _lazy_plugin.maybe_plugin()->list_photos(
-            request->component_id(), translateFromRpcPhotosRange(request->photos_range()));
+        auto result = _lazy_plugin.maybe_plugin()->list_photos(request->component_id(), translateFromRpcPhotosRange(request->photos_range()));
 
         if (response != nullptr) {
             fillResponseWithResult(response, result.first);
-
+            
             for (auto elem : result.second) {
+                
                 auto* ptr = response->add_capture_infos();
                 ptr->CopyFrom(*translateToRpcCaptureInfo(elem).release());
+                
             }
-        }
+             }
+
 
         return grpc::Status::OK;
     }
 
-    grpc::Status SubscribeCameraList(
-        grpc::ServerContext* /* context */,
-        const mavsdk::rpc::camera::SubscribeCameraListRequest* /* request */,
-        grpc::ServerWriter<rpc::camera::CameraListResponse>* writer) override
+    grpc::Status SubscribeCameraList(grpc::ServerContext* /* context */, const mavsdk::rpc::camera::SubscribeCameraListRequest* /* request */, grpc::ServerWriter<rpc::camera::CameraListResponse>* writer) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             return grpc::Status::OK;
         }
 
@@ -1185,24 +1609,26 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        const mavsdk::Camera::CameraListHandle handle =
-            _lazy_plugin.maybe_plugin()->subscribe_camera_list(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
-                    const mavsdk::Camera::CameraList camera_list) {
-                    rpc::camera::CameraListResponse rpc_response;
+        const mavsdk::Camera::CameraListHandle handle = _lazy_plugin.maybe_plugin()->subscribe_camera_list(
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](const mavsdk::Camera::CameraList camera_list) {
 
-                    rpc_response.set_allocated_camera_list(
-                        translateToRpcCameraList(camera_list).release());
+            rpc::camera::CameraListResponse rpc_response;
+        
+            rpc_response.set_allocated_camera_list(translateToRpcCameraList(camera_list).release());
+        
 
-                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                    if (!*is_finished && !writer->Write(rpc_response)) {
-                        _lazy_plugin.maybe_plugin()->unsubscribe_camera_list(handle);
+        
 
-                        *is_finished = true;
-                        unregister_stream_stop_promise(stream_closed_promise);
-                        stream_closed_promise->set_value();
-                    }
-                });
+            std::unique_lock<std::mutex> lock(*subscribe_mutex);
+            if (!*is_finished && !writer->Write(rpc_response)) {
+                
+                _lazy_plugin.maybe_plugin()->unsubscribe_camera_list(handle);
+                
+                *is_finished = true;
+                unregister_stream_stop_promise(stream_closed_promise);
+                stream_closed_promise->set_value();
+            }
+        });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
@@ -1211,12 +1637,10 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status SubscribeMode(
-        grpc::ServerContext* /* context */,
-        const mavsdk::rpc::camera::SubscribeModeRequest* /* request */,
-        grpc::ServerWriter<rpc::camera::ModeResponse>* writer) override
+    grpc::Status SubscribeMode(grpc::ServerContext* /* context */, const mavsdk::rpc::camera::SubscribeModeRequest* /* request */, grpc::ServerWriter<rpc::camera::ModeResponse>* writer) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             return grpc::Status::OK;
         }
 
@@ -1228,21 +1652,25 @@ public:
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
         const mavsdk::Camera::ModeHandle handle = _lazy_plugin.maybe_plugin()->subscribe_mode(
-            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
-                const mavsdk::Camera::ModeUpdate mode) {
-                rpc::camera::ModeResponse rpc_response;
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](const mavsdk::Camera::ModeUpdate mode) {
 
-                rpc_response.set_allocated_update(translateToRpcModeUpdate(mode).release());
+            rpc::camera::ModeResponse rpc_response;
+        
+            rpc_response.set_allocated_update(translateToRpcModeUpdate(mode).release());
+        
 
-                std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                if (!*is_finished && !writer->Write(rpc_response)) {
-                    _lazy_plugin.maybe_plugin()->unsubscribe_mode(handle);
+        
 
-                    *is_finished = true;
-                    unregister_stream_stop_promise(stream_closed_promise);
-                    stream_closed_promise->set_value();
-                }
-            });
+            std::unique_lock<std::mutex> lock(*subscribe_mutex);
+            if (!*is_finished && !writer->Write(rpc_response)) {
+                
+                _lazy_plugin.maybe_plugin()->unsubscribe_mode(handle);
+                
+                *is_finished = true;
+                unregister_stream_stop_promise(stream_closed_promise);
+                stream_closed_promise->set_value();
+            }
+        });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
@@ -1257,11 +1685,12 @@ public:
         rpc::camera::GetModeResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
                 auto result = mavsdk::Camera::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
@@ -1274,19 +1703,18 @@ public:
 
         if (response != nullptr) {
             fillResponseWithResult(response, result.first);
-
+            
             response->set_mode(translateToRpcMode(result.second));
-        }
+             }
+
 
         return grpc::Status::OK;
     }
 
-    grpc::Status SubscribeVideoStreamInfo(
-        grpc::ServerContext* /* context */,
-        const mavsdk::rpc::camera::SubscribeVideoStreamInfoRequest* /* request */,
-        grpc::ServerWriter<rpc::camera::VideoStreamInfoResponse>* writer) override
+    grpc::Status SubscribeVideoStreamInfo(grpc::ServerContext* /* context */, const mavsdk::rpc::camera::SubscribeVideoStreamInfoRequest* /* request */, grpc::ServerWriter<rpc::camera::VideoStreamInfoResponse>* writer) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             return grpc::Status::OK;
         }
 
@@ -1297,24 +1725,26 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        const mavsdk::Camera::VideoStreamInfoHandle handle =
-            _lazy_plugin.maybe_plugin()->subscribe_video_stream_info(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
-                    const mavsdk::Camera::VideoStreamUpdate video_stream_info) {
-                    rpc::camera::VideoStreamInfoResponse rpc_response;
+        const mavsdk::Camera::VideoStreamInfoHandle handle = _lazy_plugin.maybe_plugin()->subscribe_video_stream_info(
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](const mavsdk::Camera::VideoStreamUpdate video_stream_info) {
 
-                    rpc_response.set_allocated_update(
-                        translateToRpcVideoStreamUpdate(video_stream_info).release());
+            rpc::camera::VideoStreamInfoResponse rpc_response;
+        
+            rpc_response.set_allocated_update(translateToRpcVideoStreamUpdate(video_stream_info).release());
+        
 
-                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                    if (!*is_finished && !writer->Write(rpc_response)) {
-                        _lazy_plugin.maybe_plugin()->unsubscribe_video_stream_info(handle);
+        
 
-                        *is_finished = true;
-                        unregister_stream_stop_promise(stream_closed_promise);
-                        stream_closed_promise->set_value();
-                    }
-                });
+            std::unique_lock<std::mutex> lock(*subscribe_mutex);
+            if (!*is_finished && !writer->Write(rpc_response)) {
+                
+                _lazy_plugin.maybe_plugin()->unsubscribe_video_stream_info(handle);
+                
+                *is_finished = true;
+                unregister_stream_stop_promise(stream_closed_promise);
+                stream_closed_promise->set_value();
+            }
+        });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
@@ -1329,11 +1759,12 @@ public:
         rpc::camera::GetVideoStreamInfoResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
                 auto result = mavsdk::Camera::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
@@ -1346,20 +1777,18 @@ public:
 
         if (response != nullptr) {
             fillResponseWithResult(response, result.first);
+            
+            response->set_allocated_video_stream_info(translateToRpcVideoStreamInfo(result.second ).release());
+             }
 
-            response->set_allocated_video_stream_info(
-                translateToRpcVideoStreamInfo(result.second).release());
-        }
 
         return grpc::Status::OK;
     }
 
-    grpc::Status SubscribeCaptureInfo(
-        grpc::ServerContext* /* context */,
-        const mavsdk::rpc::camera::SubscribeCaptureInfoRequest* /* request */,
-        grpc::ServerWriter<rpc::camera::CaptureInfoResponse>* writer) override
+    grpc::Status SubscribeCaptureInfo(grpc::ServerContext* /* context */, const mavsdk::rpc::camera::SubscribeCaptureInfoRequest* /* request */, grpc::ServerWriter<rpc::camera::CaptureInfoResponse>* writer) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             return grpc::Status::OK;
         }
 
@@ -1370,24 +1799,26 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        const mavsdk::Camera::CaptureInfoHandle handle =
-            _lazy_plugin.maybe_plugin()->subscribe_capture_info(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
-                    const mavsdk::Camera::CaptureInfo capture_info) {
-                    rpc::camera::CaptureInfoResponse rpc_response;
+        const mavsdk::Camera::CaptureInfoHandle handle = _lazy_plugin.maybe_plugin()->subscribe_capture_info(
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](const mavsdk::Camera::CaptureInfo capture_info) {
 
-                    rpc_response.set_allocated_capture_info(
-                        translateToRpcCaptureInfo(capture_info).release());
+            rpc::camera::CaptureInfoResponse rpc_response;
+        
+            rpc_response.set_allocated_capture_info(translateToRpcCaptureInfo(capture_info).release());
+        
 
-                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                    if (!*is_finished && !writer->Write(rpc_response)) {
-                        _lazy_plugin.maybe_plugin()->unsubscribe_capture_info(handle);
+        
 
-                        *is_finished = true;
-                        unregister_stream_stop_promise(stream_closed_promise);
-                        stream_closed_promise->set_value();
-                    }
-                });
+            std::unique_lock<std::mutex> lock(*subscribe_mutex);
+            if (!*is_finished && !writer->Write(rpc_response)) {
+                
+                _lazy_plugin.maybe_plugin()->unsubscribe_capture_info(handle);
+                
+                *is_finished = true;
+                unregister_stream_stop_promise(stream_closed_promise);
+                stream_closed_promise->set_value();
+            }
+        });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
@@ -1396,12 +1827,10 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status SubscribeStorage(
-        grpc::ServerContext* /* context */,
-        const mavsdk::rpc::camera::SubscribeStorageRequest* /* request */,
-        grpc::ServerWriter<rpc::camera::StorageResponse>* writer) override
+    grpc::Status SubscribeStorage(grpc::ServerContext* /* context */, const mavsdk::rpc::camera::SubscribeStorageRequest* /* request */, grpc::ServerWriter<rpc::camera::StorageResponse>* writer) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             return grpc::Status::OK;
         }
 
@@ -1413,21 +1842,25 @@ public:
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
         const mavsdk::Camera::StorageHandle handle = _lazy_plugin.maybe_plugin()->subscribe_storage(
-            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
-                const mavsdk::Camera::StorageUpdate storage) {
-                rpc::camera::StorageResponse rpc_response;
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](const mavsdk::Camera::StorageUpdate storage) {
 
-                rpc_response.set_allocated_update(translateToRpcStorageUpdate(storage).release());
+            rpc::camera::StorageResponse rpc_response;
+        
+            rpc_response.set_allocated_update(translateToRpcStorageUpdate(storage).release());
+        
 
-                std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                if (!*is_finished && !writer->Write(rpc_response)) {
-                    _lazy_plugin.maybe_plugin()->unsubscribe_storage(handle);
+        
 
-                    *is_finished = true;
-                    unregister_stream_stop_promise(stream_closed_promise);
-                    stream_closed_promise->set_value();
-                }
-            });
+            std::unique_lock<std::mutex> lock(*subscribe_mutex);
+            if (!*is_finished && !writer->Write(rpc_response)) {
+                
+                _lazy_plugin.maybe_plugin()->unsubscribe_storage(handle);
+                
+                *is_finished = true;
+                unregister_stream_stop_promise(stream_closed_promise);
+                stream_closed_promise->set_value();
+            }
+        });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
@@ -1442,11 +1875,12 @@ public:
         rpc::camera::GetStorageResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
                 auto result = mavsdk::Camera::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
@@ -1459,19 +1893,18 @@ public:
 
         if (response != nullptr) {
             fillResponseWithResult(response, result.first);
+            
+            response->set_allocated_storage(translateToRpcStorage(result.second ).release());
+             }
 
-            response->set_allocated_storage(translateToRpcStorage(result.second).release());
-        }
 
         return grpc::Status::OK;
     }
 
-    grpc::Status SubscribeCurrentSettings(
-        grpc::ServerContext* /* context */,
-        const mavsdk::rpc::camera::SubscribeCurrentSettingsRequest* /* request */,
-        grpc::ServerWriter<rpc::camera::CurrentSettingsResponse>* writer) override
+    grpc::Status SubscribeCurrentSettings(grpc::ServerContext* /* context */, const mavsdk::rpc::camera::SubscribeCurrentSettingsRequest* /* request */, grpc::ServerWriter<rpc::camera::CurrentSettingsResponse>* writer) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             return grpc::Status::OK;
         }
 
@@ -1482,24 +1915,26 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        const mavsdk::Camera::CurrentSettingsHandle handle =
-            _lazy_plugin.maybe_plugin()->subscribe_current_settings(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
-                    const mavsdk::Camera::CurrentSettingsUpdate current_settings) {
-                    rpc::camera::CurrentSettingsResponse rpc_response;
+        const mavsdk::Camera::CurrentSettingsHandle handle = _lazy_plugin.maybe_plugin()->subscribe_current_settings(
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](const mavsdk::Camera::CurrentSettingsUpdate current_settings) {
 
-                    rpc_response.set_allocated_update(
-                        translateToRpcCurrentSettingsUpdate(current_settings).release());
+            rpc::camera::CurrentSettingsResponse rpc_response;
+        
+            rpc_response.set_allocated_update(translateToRpcCurrentSettingsUpdate(current_settings).release());
+        
 
-                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                    if (!*is_finished && !writer->Write(rpc_response)) {
-                        _lazy_plugin.maybe_plugin()->unsubscribe_current_settings(handle);
+        
 
-                        *is_finished = true;
-                        unregister_stream_stop_promise(stream_closed_promise);
-                        stream_closed_promise->set_value();
-                    }
-                });
+            std::unique_lock<std::mutex> lock(*subscribe_mutex);
+            if (!*is_finished && !writer->Write(rpc_response)) {
+                
+                _lazy_plugin.maybe_plugin()->unsubscribe_current_settings(handle);
+                
+                *is_finished = true;
+                unregister_stream_stop_promise(stream_closed_promise);
+                stream_closed_promise->set_value();
+            }
+        });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
@@ -1514,11 +1949,12 @@ public:
         rpc::camera::GetCurrentSettingsResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
                 auto result = mavsdk::Camera::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
@@ -1531,22 +1967,23 @@ public:
 
         if (response != nullptr) {
             fillResponseWithResult(response, result.first);
-
+            
             for (auto elem : result.second) {
+                
                 auto* ptr = response->add_current_settings();
                 ptr->CopyFrom(*translateToRpcSetting(elem).release());
+                
             }
-        }
+             }
+
 
         return grpc::Status::OK;
     }
 
-    grpc::Status SubscribePossibleSettingOptions(
-        grpc::ServerContext* /* context */,
-        const mavsdk::rpc::camera::SubscribePossibleSettingOptionsRequest* /* request */,
-        grpc::ServerWriter<rpc::camera::PossibleSettingOptionsResponse>* writer) override
+    grpc::Status SubscribePossibleSettingOptions(grpc::ServerContext* /* context */, const mavsdk::rpc::camera::SubscribePossibleSettingOptionsRequest* /* request */, grpc::ServerWriter<rpc::camera::PossibleSettingOptionsResponse>* writer) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             return grpc::Status::OK;
         }
 
@@ -1557,25 +1994,26 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        const mavsdk::Camera::PossibleSettingOptionsHandle handle =
-            _lazy_plugin.maybe_plugin()->subscribe_possible_setting_options(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
-                    const mavsdk::Camera::PossibleSettingOptionsUpdate possible_setting_options) {
-                    rpc::camera::PossibleSettingOptionsResponse rpc_response;
+        const mavsdk::Camera::PossibleSettingOptionsHandle handle = _lazy_plugin.maybe_plugin()->subscribe_possible_setting_options(
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](const mavsdk::Camera::PossibleSettingOptionsUpdate possible_setting_options) {
 
-                    rpc_response.set_allocated_update(
-                        translateToRpcPossibleSettingOptionsUpdate(possible_setting_options)
-                            .release());
+            rpc::camera::PossibleSettingOptionsResponse rpc_response;
+        
+            rpc_response.set_allocated_update(translateToRpcPossibleSettingOptionsUpdate(possible_setting_options).release());
+        
 
-                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                    if (!*is_finished && !writer->Write(rpc_response)) {
-                        _lazy_plugin.maybe_plugin()->unsubscribe_possible_setting_options(handle);
+        
 
-                        *is_finished = true;
-                        unregister_stream_stop_promise(stream_closed_promise);
-                        stream_closed_promise->set_value();
-                    }
-                });
+            std::unique_lock<std::mutex> lock(*subscribe_mutex);
+            if (!*is_finished && !writer->Write(rpc_response)) {
+                
+                _lazy_plugin.maybe_plugin()->unsubscribe_possible_setting_options(handle);
+                
+                *is_finished = true;
+                unregister_stream_stop_promise(stream_closed_promise);
+                stream_closed_promise->set_value();
+            }
+        });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
@@ -1590,11 +2028,12 @@ public:
         rpc::camera::GetPossibleSettingOptionsResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
                 auto result = mavsdk::Camera::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
@@ -1603,17 +2042,19 @@ public:
             return grpc::Status::OK;
         }
 
-        auto result =
-            _lazy_plugin.maybe_plugin()->get_possible_setting_options(request->component_id());
+        auto result = _lazy_plugin.maybe_plugin()->get_possible_setting_options(request->component_id());
 
         if (response != nullptr) {
             fillResponseWithResult(response, result.first);
-
+            
             for (auto elem : result.second) {
+                
                 auto* ptr = response->add_setting_options();
                 ptr->CopyFrom(*translateToRpcSettingOptions(elem).release());
+                
             }
-        }
+             }
+
 
         return grpc::Status::OK;
     }
@@ -1624,11 +2065,12 @@ public:
         rpc::camera::SetSettingResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
                 auto result = mavsdk::Camera::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
@@ -1636,13 +2078,18 @@ public:
             LogWarn() << "SetSetting sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
+            
+        
+            
+        
+        auto result = _lazy_plugin.maybe_plugin()->set_setting(request->component_id(), translateFromRpcSetting(request->setting()));
+        
 
-        auto result = _lazy_plugin.maybe_plugin()->set_setting(
-            request->component_id(), translateFromRpcSetting(request->setting()));
-
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -1653,11 +2100,12 @@ public:
         rpc::camera::GetSettingResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
                 auto result = mavsdk::Camera::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
@@ -1666,14 +2114,14 @@ public:
             return grpc::Status::OK;
         }
 
-        auto result = _lazy_plugin.maybe_plugin()->get_setting(
-            request->component_id(), translateFromRpcSetting(request->setting()));
+        auto result = _lazy_plugin.maybe_plugin()->get_setting(request->component_id(), translateFromRpcSetting(request->setting()));
 
         if (response != nullptr) {
             fillResponseWithResult(response, result.first);
+            
+            response->set_allocated_setting(translateToRpcSetting(result.second ).release());
+             }
 
-            response->set_allocated_setting(translateToRpcSetting(result.second).release());
-        }
 
         return grpc::Status::OK;
     }
@@ -1684,11 +2132,12 @@ public:
         rpc::camera::FormatStorageResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
                 auto result = mavsdk::Camera::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
@@ -1696,13 +2145,18 @@ public:
             LogWarn() << "FormatStorage sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
+            
+        
+            
+        
+        auto result = _lazy_plugin.maybe_plugin()->format_storage(request->component_id(), request->storage_id());
+        
 
-        auto result = _lazy_plugin.maybe_plugin()->format_storage(
-            request->component_id(), request->storage_id());
-
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -1713,11 +2167,12 @@ public:
         rpc::camera::ResetSettingsResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
                 auto result = mavsdk::Camera::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
@@ -1725,12 +2180,16 @@ public:
             LogWarn() << "ResetSettings sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
-
+            
+        
         auto result = _lazy_plugin.maybe_plugin()->reset_settings(request->component_id());
+        
 
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -1741,11 +2200,12 @@ public:
         rpc::camera::ZoomInStartResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
                 auto result = mavsdk::Camera::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
@@ -1753,12 +2213,16 @@ public:
             LogWarn() << "ZoomInStart sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
-
+            
+        
         auto result = _lazy_plugin.maybe_plugin()->zoom_in_start(request->component_id());
+        
 
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -1769,11 +2233,12 @@ public:
         rpc::camera::ZoomOutStartResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
                 auto result = mavsdk::Camera::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
@@ -1781,12 +2246,16 @@ public:
             LogWarn() << "ZoomOutStart sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
-
+            
+        
         auto result = _lazy_plugin.maybe_plugin()->zoom_out_start(request->component_id());
+        
 
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -1797,11 +2266,12 @@ public:
         rpc::camera::ZoomStopResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
                 auto result = mavsdk::Camera::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
@@ -1809,12 +2279,16 @@ public:
             LogWarn() << "ZoomStop sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
-
+            
+        
         auto result = _lazy_plugin.maybe_plugin()->zoom_stop(request->component_id());
+        
 
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -1825,11 +2299,12 @@ public:
         rpc::camera::ZoomRangeResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
                 auto result = mavsdk::Camera::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
@@ -1837,13 +2312,18 @@ public:
             LogWarn() << "ZoomRange sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
+            
+        
+            
+        
+        auto result = _lazy_plugin.maybe_plugin()->zoom_range(request->component_id(), request->range());
+        
 
-        auto result =
-            _lazy_plugin.maybe_plugin()->zoom_range(request->component_id(), request->range());
-
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -1854,11 +2334,12 @@ public:
         rpc::camera::TrackPointResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
                 auto result = mavsdk::Camera::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
@@ -1866,13 +2347,22 @@ public:
             LogWarn() << "TrackPoint sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
+            
+        
+            
+        
+            
+        
+            
+        
+        auto result = _lazy_plugin.maybe_plugin()->track_point(request->component_id(), request->point_x(), request->point_y(), request->radius());
+        
 
-        auto result = _lazy_plugin.maybe_plugin()->track_point(
-            request->component_id(), request->point_x(), request->point_y(), request->radius());
-
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -1883,11 +2373,12 @@ public:
         rpc::camera::TrackRectangleResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
                 auto result = mavsdk::Camera::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
@@ -1895,17 +2386,24 @@ public:
             LogWarn() << "TrackRectangle sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+        auto result = _lazy_plugin.maybe_plugin()->track_rectangle(request->component_id(), request->top_left_x(), request->top_left_y(), request->bottom_right_x(), request->bottom_right_y());
+        
 
-        auto result = _lazy_plugin.maybe_plugin()->track_rectangle(
-            request->component_id(),
-            request->top_left_x(),
-            request->top_left_y(),
-            request->bottom_right_x(),
-            request->bottom_right_y());
-
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -1916,11 +2414,12 @@ public:
         rpc::camera::TrackStopResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
                 auto result = mavsdk::Camera::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
@@ -1928,12 +2427,16 @@ public:
             LogWarn() << "TrackStop sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
-
+            
+        
         auto result = _lazy_plugin.maybe_plugin()->track_stop(request->component_id());
+        
 
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -1944,11 +2447,12 @@ public:
         rpc::camera::FocusInStartResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
                 auto result = mavsdk::Camera::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
@@ -1956,12 +2460,16 @@ public:
             LogWarn() << "FocusInStart sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
-
+            
+        
         auto result = _lazy_plugin.maybe_plugin()->focus_in_start(request->component_id());
+        
 
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -1972,11 +2480,12 @@ public:
         rpc::camera::FocusOutStartResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
                 auto result = mavsdk::Camera::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
@@ -1984,12 +2493,16 @@ public:
             LogWarn() << "FocusOutStart sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
-
+            
+        
         auto result = _lazy_plugin.maybe_plugin()->focus_out_start(request->component_id());
+        
 
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -2000,11 +2513,12 @@ public:
         rpc::camera::FocusStopResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
                 auto result = mavsdk::Camera::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
@@ -2012,12 +2526,16 @@ public:
             LogWarn() << "FocusStop sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
-
+            
+        
         auto result = _lazy_plugin.maybe_plugin()->focus_stop(request->component_id());
+        
 
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -2028,11 +2546,12 @@ public:
         rpc::camera::FocusRangeResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
                 auto result = mavsdk::Camera::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
@@ -2040,19 +2559,24 @@ public:
             LogWarn() << "FocusRange sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
+            
+        
+            
+        
+        auto result = _lazy_plugin.maybe_plugin()->focus_range(request->component_id(), request->range());
+        
 
-        auto result =
-            _lazy_plugin.maybe_plugin()->focus_range(request->component_id(), request->range());
-
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
 
-    void stop()
-    {
+
+    void stop() {
         _stopped.store(true);
         std::lock_guard<std::mutex> lock(_stream_stop_mutex);
         for (auto& prom : _stream_stop_promises) {
@@ -2063,8 +2587,7 @@ public:
     }
 
 private:
-    void register_stream_stop_promise(std::weak_ptr<std::promise<void>> prom)
-    {
+    void register_stream_stop_promise(std::weak_ptr<std::promise<void>> prom) {
         // If we have already stopped, set promise immediately and don't add it to list.
         if (_stopped.load()) {
             if (auto handle = prom.lock()) {
@@ -2076,11 +2599,9 @@ private:
         }
     }
 
-    void unregister_stream_stop_promise(std::shared_ptr<std::promise<void>> prom)
-    {
+    void unregister_stream_stop_promise(std::shared_ptr<std::promise<void>> prom) {
         std::lock_guard<std::mutex> lock(_stream_stop_mutex);
-        for (auto it = _stream_stop_promises.begin(); it != _stream_stop_promises.end();
-             /* ++it */) {
+        for (auto it = _stream_stop_promises.begin(); it != _stream_stop_promises.end(); /* ++it */) {
             if (it->lock() == prom) {
                 it = _stream_stop_promises.erase(it);
             } else {
@@ -2089,11 +2610,12 @@ private:
         }
     }
 
+
     LazyPlugin& _lazy_plugin;
 
     std::atomic<bool> _stopped{false};
     std::mutex _stream_stop_mutex{};
-    std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises{};
+    std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises {};
 };
 
 } // namespace mavsdk_server

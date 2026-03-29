@@ -22,13 +22,15 @@
 namespace mavsdk {
 namespace mavsdk_server {
 
-template<
-    typename ParamServer = ParamServer,
-    typename LazyServerPlugin = LazyServerPlugin<ParamServer>>
+
+template<typename ParamServer = ParamServer, typename LazyServerPlugin = LazyServerPlugin<ParamServer>>
 
 class ParamServerServiceImpl final : public rpc::param_server::ParamServerService::Service {
 public:
+
     ParamServerServiceImpl(LazyServerPlugin& lazy_plugin) : _lazy_plugin(lazy_plugin) {}
+
+
 
     template<typename ResponseType>
     void fillResponseWithResult(ResponseType* response, mavsdk::ParamServer::Result& result) const
@@ -44,126 +46,186 @@ public:
         response->set_allocated_param_server_result(rpc_param_server_result);
     }
 
-    static std::unique_ptr<rpc::param_server::IntParam>
-    translateToRpcIntParam(const mavsdk::ParamServer::IntParam& int_param)
+
+
+
+    static std::unique_ptr<rpc::param_server::IntParam> translateToRpcIntParam(const mavsdk::ParamServer::IntParam &int_param)
     {
         auto rpc_obj = std::make_unique<rpc::param_server::IntParam>();
 
-        rpc_obj->set_name(int_param.name);
 
+            
+        rpc_obj->set_name(int_param.name);
+            
+        
+            
         rpc_obj->set_value(int_param.value);
+            
+        
 
         return rpc_obj;
     }
 
-    static mavsdk::ParamServer::IntParam
-    translateFromRpcIntParam(const rpc::param_server::IntParam& int_param)
+    static mavsdk::ParamServer::IntParam translateFromRpcIntParam(const rpc::param_server::IntParam& int_param)
     {
         mavsdk::ParamServer::IntParam obj;
 
+
+            
         obj.name = int_param.name();
-
+            
+        
+            
         obj.value = int_param.value();
-
+            
+        
         return obj;
     }
 
-    static std::unique_ptr<rpc::param_server::FloatParam>
-    translateToRpcFloatParam(const mavsdk::ParamServer::FloatParam& float_param)
+
+
+
+
+    static std::unique_ptr<rpc::param_server::FloatParam> translateToRpcFloatParam(const mavsdk::ParamServer::FloatParam &float_param)
     {
         auto rpc_obj = std::make_unique<rpc::param_server::FloatParam>();
 
-        rpc_obj->set_name(float_param.name);
 
+            
+        rpc_obj->set_name(float_param.name);
+            
+        
+            
         rpc_obj->set_value(float_param.value);
+            
+        
 
         return rpc_obj;
     }
 
-    static mavsdk::ParamServer::FloatParam
-    translateFromRpcFloatParam(const rpc::param_server::FloatParam& float_param)
+    static mavsdk::ParamServer::FloatParam translateFromRpcFloatParam(const rpc::param_server::FloatParam& float_param)
     {
         mavsdk::ParamServer::FloatParam obj;
 
+
+            
         obj.name = float_param.name();
-
+            
+        
+            
         obj.value = float_param.value();
-
+            
+        
         return obj;
     }
 
-    static std::unique_ptr<rpc::param_server::CustomParam>
-    translateToRpcCustomParam(const mavsdk::ParamServer::CustomParam& custom_param)
+
+
+
+
+    static std::unique_ptr<rpc::param_server::CustomParam> translateToRpcCustomParam(const mavsdk::ParamServer::CustomParam &custom_param)
     {
         auto rpc_obj = std::make_unique<rpc::param_server::CustomParam>();
 
-        rpc_obj->set_name(custom_param.name);
 
+            
+        rpc_obj->set_name(custom_param.name);
+            
+        
+            
         rpc_obj->set_value(custom_param.value);
+            
+        
 
         return rpc_obj;
     }
 
-    static mavsdk::ParamServer::CustomParam
-    translateFromRpcCustomParam(const rpc::param_server::CustomParam& custom_param)
+    static mavsdk::ParamServer::CustomParam translateFromRpcCustomParam(const rpc::param_server::CustomParam& custom_param)
     {
         mavsdk::ParamServer::CustomParam obj;
 
+
+            
         obj.name = custom_param.name();
-
+            
+        
+            
         obj.value = custom_param.value();
-
+            
+        
         return obj;
     }
 
-    static std::unique_ptr<rpc::param_server::AllParams>
-    translateToRpcAllParams(const mavsdk::ParamServer::AllParams& all_params)
+
+
+
+
+    static std::unique_ptr<rpc::param_server::AllParams> translateToRpcAllParams(const mavsdk::ParamServer::AllParams &all_params)
     {
         auto rpc_obj = std::make_unique<rpc::param_server::AllParams>();
 
+
+            
+                
         for (const auto& elem : all_params.int_params) {
             auto* ptr = rpc_obj->add_int_params();
             ptr->CopyFrom(*translateToRpcIntParam(elem).release());
         }
-
+                
+            
+        
+            
+                
         for (const auto& elem : all_params.float_params) {
             auto* ptr = rpc_obj->add_float_params();
             ptr->CopyFrom(*translateToRpcFloatParam(elem).release());
         }
-
+                
+            
+        
+            
+                
         for (const auto& elem : all_params.custom_params) {
             auto* ptr = rpc_obj->add_custom_params();
             ptr->CopyFrom(*translateToRpcCustomParam(elem).release());
         }
+                
+            
+        
 
         return rpc_obj;
     }
 
-    static mavsdk::ParamServer::AllParams
-    translateFromRpcAllParams(const rpc::param_server::AllParams& all_params)
+    static mavsdk::ParamServer::AllParams translateFromRpcAllParams(const rpc::param_server::AllParams& all_params)
     {
         mavsdk::ParamServer::AllParams obj;
 
-        for (const auto& elem : all_params.int_params()) {
-            obj.int_params.push_back(
-                translateFromRpcIntParam(static_cast<mavsdk::rpc::param_server::IntParam>(elem)));
-        }
 
-        for (const auto& elem : all_params.float_params()) {
-            obj.float_params.push_back(translateFromRpcFloatParam(
-                static_cast<mavsdk::rpc::param_server::FloatParam>(elem)));
-        }
-
-        for (const auto& elem : all_params.custom_params()) {
-            obj.custom_params.push_back(translateFromRpcCustomParam(
-                static_cast<mavsdk::rpc::param_server::CustomParam>(elem)));
-        }
-
+            
+                for (const auto& elem : all_params.int_params()) {
+                    obj.int_params.push_back(translateFromRpcIntParam(static_cast<mavsdk::rpc::param_server::IntParam>(elem)));
+                }
+            
+        
+            
+                for (const auto& elem : all_params.float_params()) {
+                    obj.float_params.push_back(translateFromRpcFloatParam(static_cast<mavsdk::rpc::param_server::FloatParam>(elem)));
+                }
+            
+        
+            
+                for (const auto& elem : all_params.custom_params()) {
+                    obj.custom_params.push_back(translateFromRpcCustomParam(static_cast<mavsdk::rpc::param_server::CustomParam>(elem)));
+                }
+            
+        
         return obj;
     }
 
-    static rpc::param_server::ParamServerResult::Result
-    translateToRpcResult(const mavsdk::ParamServer::Result& result)
+
+
+
+    static rpc::param_server::ParamServerResult::Result translateToRpcResult(const mavsdk::ParamServer::Result& result)
     {
         switch (result) {
             default:
@@ -188,8 +250,7 @@ public:
         }
     }
 
-    static mavsdk::ParamServer::Result
-    translateFromRpcResult(const rpc::param_server::ParamServerResult::Result result)
+    static mavsdk::ParamServer::Result translateFromRpcResult(const rpc::param_server::ParamServerResult::Result result)
     {
         switch (result) {
             default:
@@ -214,19 +275,23 @@ public:
         }
     }
 
+
+
+
     grpc::Status SetProtocol(
         grpc::ServerContext* /* context */,
         const rpc::param_server::SetProtocolRequest* request,
         rpc::param_server::SetProtocolResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
-                // For server plugins, this should never happen, they should always be
-                // constructible.
+                
+                // For server plugins, this should never happen, they should always be constructible.
                 auto result = mavsdk::ParamServer::Result::Unknown;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
@@ -234,12 +299,16 @@ public:
             LogWarn() << "SetProtocol sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
-
+            
+        
         auto result = _lazy_plugin.maybe_plugin()->set_protocol(request->extended_protocol());
+        
 
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -250,13 +319,14 @@ public:
         rpc::param_server::RetrieveParamIntResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
-                // For server plugins, this should never happen, they should always be
-                // constructible.
+                
+                // For server plugins, this should never happen, they should always be constructible.
                 auto result = mavsdk::ParamServer::Result::Unknown;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
@@ -269,9 +339,10 @@ public:
 
         if (response != nullptr) {
             fillResponseWithResult(response, result.first);
-
+            
             response->set_value(result.second);
-        }
+             }
+
 
         return grpc::Status::OK;
     }
@@ -282,13 +353,14 @@ public:
         rpc::param_server::ProvideParamIntResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
-                // For server plugins, this should never happen, they should always be
-                // constructible.
+                
+                // For server plugins, this should never happen, they should always be constructible.
                 auto result = mavsdk::ParamServer::Result::Unknown;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
@@ -296,13 +368,18 @@ public:
             LogWarn() << "ProvideParamInt sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
+            
+        
+            
+        
+        auto result = _lazy_plugin.maybe_plugin()->provide_param_int(request->name(), request->value());
+        
 
-        auto result =
-            _lazy_plugin.maybe_plugin()->provide_param_int(request->name(), request->value());
-
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -313,13 +390,14 @@ public:
         rpc::param_server::RetrieveParamFloatResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
-                // For server plugins, this should never happen, they should always be
-                // constructible.
+                
+                // For server plugins, this should never happen, they should always be constructible.
                 auto result = mavsdk::ParamServer::Result::Unknown;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
@@ -332,9 +410,10 @@ public:
 
         if (response != nullptr) {
             fillResponseWithResult(response, result.first);
-
+            
             response->set_value(result.second);
-        }
+             }
+
 
         return grpc::Status::OK;
     }
@@ -345,13 +424,14 @@ public:
         rpc::param_server::ProvideParamFloatResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
-                // For server plugins, this should never happen, they should always be
-                // constructible.
+                
+                // For server plugins, this should never happen, they should always be constructible.
                 auto result = mavsdk::ParamServer::Result::Unknown;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
@@ -359,13 +439,18 @@ public:
             LogWarn() << "ProvideParamFloat sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
+            
+        
+            
+        
+        auto result = _lazy_plugin.maybe_plugin()->provide_param_float(request->name(), request->value());
+        
 
-        auto result =
-            _lazy_plugin.maybe_plugin()->provide_param_float(request->name(), request->value());
-
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -376,13 +461,14 @@ public:
         rpc::param_server::RetrieveParamCustomResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
-                // For server plugins, this should never happen, they should always be
-                // constructible.
+                
+                // For server plugins, this should never happen, they should always be constructible.
                 auto result = mavsdk::ParamServer::Result::Unknown;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
@@ -395,9 +481,10 @@ public:
 
         if (response != nullptr) {
             fillResponseWithResult(response, result.first);
-
+            
             response->set_value(result.second);
-        }
+             }
+
 
         return grpc::Status::OK;
     }
@@ -408,13 +495,14 @@ public:
         rpc::param_server::ProvideParamCustomResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
-                // For server plugins, this should never happen, they should always be
-                // constructible.
+                
+                // For server plugins, this should never happen, they should always be constructible.
                 auto result = mavsdk::ParamServer::Result::Unknown;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
@@ -422,13 +510,18 @@ public:
             LogWarn() << "ProvideParamCustom sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
+            
+        
+            
+        
+        auto result = _lazy_plugin.maybe_plugin()->provide_param_custom(request->name(), request->value());
+        
 
-        auto result =
-            _lazy_plugin.maybe_plugin()->provide_param_custom(request->name(), request->value());
-
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -439,24 +532,28 @@ public:
         rpc::param_server::RetrieveAllParamsResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             return grpc::Status::OK;
         }
+
+        
 
         auto result = _lazy_plugin.maybe_plugin()->retrieve_all_params();
 
         if (response != nullptr) {
-            response->set_allocated_params(translateToRpcAllParams(result).release());
-        }
+            
+            
+            response->set_allocated_params(translateToRpcAllParams(result ).release());
+             }
+
 
         return grpc::Status::OK;
     }
 
-    grpc::Status SubscribeChangedParamInt(
-        grpc::ServerContext* /* context */,
-        const mavsdk::rpc::param_server::SubscribeChangedParamIntRequest* /* request */,
-        grpc::ServerWriter<rpc::param_server::ChangedParamIntResponse>* writer) override
+    grpc::Status SubscribeChangedParamInt(grpc::ServerContext* /* context */, const mavsdk::rpc::param_server::SubscribeChangedParamIntRequest* /* request */, grpc::ServerWriter<rpc::param_server::ChangedParamIntResponse>* writer) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             return grpc::Status::OK;
         }
 
@@ -467,24 +564,26 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        const mavsdk::ParamServer::ChangedParamIntHandle handle =
-            _lazy_plugin.maybe_plugin()->subscribe_changed_param_int(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
-                    const mavsdk::ParamServer::IntParam changed_param_int) {
-                    rpc::param_server::ChangedParamIntResponse rpc_response;
+        const mavsdk::ParamServer::ChangedParamIntHandle handle = _lazy_plugin.maybe_plugin()->subscribe_changed_param_int(
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](const mavsdk::ParamServer::IntParam changed_param_int) {
 
-                    rpc_response.set_allocated_param(
-                        translateToRpcIntParam(changed_param_int).release());
+            rpc::param_server::ChangedParamIntResponse rpc_response;
+        
+            rpc_response.set_allocated_param(translateToRpcIntParam(changed_param_int).release());
+        
 
-                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                    if (!*is_finished && !writer->Write(rpc_response)) {
-                        _lazy_plugin.maybe_plugin()->unsubscribe_changed_param_int(handle);
+        
 
-                        *is_finished = true;
-                        unregister_stream_stop_promise(stream_closed_promise);
-                        stream_closed_promise->set_value();
-                    }
-                });
+            std::unique_lock<std::mutex> lock(*subscribe_mutex);
+            if (!*is_finished && !writer->Write(rpc_response)) {
+                
+                _lazy_plugin.maybe_plugin()->unsubscribe_changed_param_int(handle);
+                
+                *is_finished = true;
+                unregister_stream_stop_promise(stream_closed_promise);
+                stream_closed_promise->set_value();
+            }
+        });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
@@ -493,12 +592,10 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status SubscribeChangedParamFloat(
-        grpc::ServerContext* /* context */,
-        const mavsdk::rpc::param_server::SubscribeChangedParamFloatRequest* /* request */,
-        grpc::ServerWriter<rpc::param_server::ChangedParamFloatResponse>* writer) override
+    grpc::Status SubscribeChangedParamFloat(grpc::ServerContext* /* context */, const mavsdk::rpc::param_server::SubscribeChangedParamFloatRequest* /* request */, grpc::ServerWriter<rpc::param_server::ChangedParamFloatResponse>* writer) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             return grpc::Status::OK;
         }
 
@@ -509,24 +606,26 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        const mavsdk::ParamServer::ChangedParamFloatHandle handle =
-            _lazy_plugin.maybe_plugin()->subscribe_changed_param_float(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
-                    const mavsdk::ParamServer::FloatParam changed_param_float) {
-                    rpc::param_server::ChangedParamFloatResponse rpc_response;
+        const mavsdk::ParamServer::ChangedParamFloatHandle handle = _lazy_plugin.maybe_plugin()->subscribe_changed_param_float(
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](const mavsdk::ParamServer::FloatParam changed_param_float) {
 
-                    rpc_response.set_allocated_param(
-                        translateToRpcFloatParam(changed_param_float).release());
+            rpc::param_server::ChangedParamFloatResponse rpc_response;
+        
+            rpc_response.set_allocated_param(translateToRpcFloatParam(changed_param_float).release());
+        
 
-                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                    if (!*is_finished && !writer->Write(rpc_response)) {
-                        _lazy_plugin.maybe_plugin()->unsubscribe_changed_param_float(handle);
+        
 
-                        *is_finished = true;
-                        unregister_stream_stop_promise(stream_closed_promise);
-                        stream_closed_promise->set_value();
-                    }
-                });
+            std::unique_lock<std::mutex> lock(*subscribe_mutex);
+            if (!*is_finished && !writer->Write(rpc_response)) {
+                
+                _lazy_plugin.maybe_plugin()->unsubscribe_changed_param_float(handle);
+                
+                *is_finished = true;
+                unregister_stream_stop_promise(stream_closed_promise);
+                stream_closed_promise->set_value();
+            }
+        });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
@@ -535,12 +634,10 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status SubscribeChangedParamCustom(
-        grpc::ServerContext* /* context */,
-        const mavsdk::rpc::param_server::SubscribeChangedParamCustomRequest* /* request */,
-        grpc::ServerWriter<rpc::param_server::ChangedParamCustomResponse>* writer) override
+    grpc::Status SubscribeChangedParamCustom(grpc::ServerContext* /* context */, const mavsdk::rpc::param_server::SubscribeChangedParamCustomRequest* /* request */, grpc::ServerWriter<rpc::param_server::ChangedParamCustomResponse>* writer) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             return grpc::Status::OK;
         }
 
@@ -551,24 +648,26 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        const mavsdk::ParamServer::ChangedParamCustomHandle handle =
-            _lazy_plugin.maybe_plugin()->subscribe_changed_param_custom(
-                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
-                    const mavsdk::ParamServer::CustomParam changed_param_custom) {
-                    rpc::param_server::ChangedParamCustomResponse rpc_response;
+        const mavsdk::ParamServer::ChangedParamCustomHandle handle = _lazy_plugin.maybe_plugin()->subscribe_changed_param_custom(
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](const mavsdk::ParamServer::CustomParam changed_param_custom) {
 
-                    rpc_response.set_allocated_param(
-                        translateToRpcCustomParam(changed_param_custom).release());
+            rpc::param_server::ChangedParamCustomResponse rpc_response;
+        
+            rpc_response.set_allocated_param(translateToRpcCustomParam(changed_param_custom).release());
+        
 
-                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                    if (!*is_finished && !writer->Write(rpc_response)) {
-                        _lazy_plugin.maybe_plugin()->unsubscribe_changed_param_custom(handle);
+        
 
-                        *is_finished = true;
-                        unregister_stream_stop_promise(stream_closed_promise);
-                        stream_closed_promise->set_value();
-                    }
-                });
+            std::unique_lock<std::mutex> lock(*subscribe_mutex);
+            if (!*is_finished && !writer->Write(rpc_response)) {
+                
+                _lazy_plugin.maybe_plugin()->unsubscribe_changed_param_custom(handle);
+                
+                *is_finished = true;
+                unregister_stream_stop_promise(stream_closed_promise);
+                stream_closed_promise->set_value();
+            }
+        });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
@@ -577,8 +676,8 @@ public:
         return grpc::Status::OK;
     }
 
-    void stop()
-    {
+
+    void stop() {
         _stopped.store(true);
         std::lock_guard<std::mutex> lock(_stream_stop_mutex);
         for (auto& prom : _stream_stop_promises) {
@@ -589,8 +688,7 @@ public:
     }
 
 private:
-    void register_stream_stop_promise(std::weak_ptr<std::promise<void>> prom)
-    {
+    void register_stream_stop_promise(std::weak_ptr<std::promise<void>> prom) {
         // If we have already stopped, set promise immediately and don't add it to list.
         if (_stopped.load()) {
             if (auto handle = prom.lock()) {
@@ -602,11 +700,9 @@ private:
         }
     }
 
-    void unregister_stream_stop_promise(std::shared_ptr<std::promise<void>> prom)
-    {
+    void unregister_stream_stop_promise(std::shared_ptr<std::promise<void>> prom) {
         std::lock_guard<std::mutex> lock(_stream_stop_mutex);
-        for (auto it = _stream_stop_promises.begin(); it != _stream_stop_promises.end();
-             /* ++it */) {
+        for (auto it = _stream_stop_promises.begin(); it != _stream_stop_promises.end(); /* ++it */) {
             if (it->lock() == prom) {
                 it = _stream_stop_promises.erase(it);
             } else {
@@ -615,11 +711,12 @@ private:
         }
     }
 
+
     LazyServerPlugin& _lazy_plugin;
 
     std::atomic<bool> _stopped{false};
     std::mutex _stream_stop_mutex{};
-    std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises{};
+    std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises {};
 };
 
 } // namespace mavsdk_server

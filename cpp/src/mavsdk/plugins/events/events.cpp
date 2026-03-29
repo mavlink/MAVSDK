@@ -15,15 +15,19 @@ using HealthAndArmingCheckMode = Events::HealthAndArmingCheckMode;
 using HealthComponentReport = Events::HealthComponentReport;
 using HealthAndArmingCheckReport = Events::HealthAndArmingCheckReport;
 
+
+
+
 Events::Events(System& system) : PluginBase(), _impl{std::make_unique<EventsImpl>(system)} {}
 
-Events::Events(std::shared_ptr<System> system) :
-    PluginBase(),
-    _impl{std::make_unique<EventsImpl>(system)}
-{}
+Events::Events(std::shared_ptr<System> system) : PluginBase(), _impl{std::make_unique<EventsImpl>(system)} {}
+
 
 Events::~Events() {}
 
+
+
+    
 Events::EventsHandle Events::subscribe_events(const EventsCallback& callback)
 {
     return _impl->subscribe_events(callback);
@@ -33,9 +37,14 @@ void Events::unsubscribe_events(EventsHandle handle)
 {
     _impl->unsubscribe_events(handle);
 }
+    
 
-Events::HealthAndArmingChecksHandle
-Events::subscribe_health_and_arming_checks(const HealthAndArmingChecksCallback& callback)
+
+
+
+
+    
+Events::HealthAndArmingChecksHandle Events::subscribe_health_and_arming_checks(const HealthAndArmingChecksCallback& callback)
 {
     return _impl->subscribe_health_and_arming_checks(callback);
 }
@@ -44,24 +53,37 @@ void Events::unsubscribe_health_and_arming_checks(HealthAndArmingChecksHandle ha
 {
     _impl->unsubscribe_health_and_arming_checks(handle);
 }
+    
 
-std::pair<Events::Result, Events::HealthAndArmingCheckReport>
-Events::get_health_and_arming_checks_report() const
+
+
+
+
+
+
+std::pair<Events::Result, Events::HealthAndArmingCheckReport> Events::get_health_and_arming_checks_report() const
 {
     return _impl->get_health_and_arming_checks_report();
 }
 
+
+
 bool operator==(const Events::Event& lhs, const Events::Event& rhs)
 {
-    return (rhs.compid == lhs.compid) && (rhs.message == lhs.message) &&
-           (rhs.description == lhs.description) && (rhs.log_level == lhs.log_level) &&
-           (rhs.event_namespace == lhs.event_namespace) && (rhs.event_name == lhs.event_name);
+    return
+        (rhs.compid == lhs.compid) &&
+        (rhs.message == lhs.message) &&
+        (rhs.description == lhs.description) &&
+        (rhs.log_level == lhs.log_level) &&
+        (rhs.event_namespace == lhs.event_namespace) &&
+        (rhs.event_name == lhs.event_name);
 }
 
 std::ostream& operator<<(std::ostream& str, Events::Event const& event)
 {
     str << std::setprecision(15);
-    str << "event:" << '\n' << "{\n";
+    str << "event:" << '\n'
+        << "{\n";
     str << "    compid: " << event.compid << '\n';
     str << "    message: " << event.message << '\n';
     str << "    description: " << event.description << '\n';
@@ -72,18 +94,21 @@ std::ostream& operator<<(std::ostream& str, Events::Event const& event)
     return str;
 }
 
-bool operator==(
-    const Events::HealthAndArmingCheckProblem& lhs, const Events::HealthAndArmingCheckProblem& rhs)
+
+bool operator==(const Events::HealthAndArmingCheckProblem& lhs, const Events::HealthAndArmingCheckProblem& rhs)
 {
-    return (rhs.message == lhs.message) && (rhs.description == lhs.description) &&
-           (rhs.log_level == lhs.log_level) && (rhs.health_component == lhs.health_component);
+    return
+        (rhs.message == lhs.message) &&
+        (rhs.description == lhs.description) &&
+        (rhs.log_level == lhs.log_level) &&
+        (rhs.health_component == lhs.health_component);
 }
 
-std::ostream& operator<<(
-    std::ostream& str, Events::HealthAndArmingCheckProblem const& health_and_arming_check_problem)
+std::ostream& operator<<(std::ostream& str, Events::HealthAndArmingCheckProblem const& health_and_arming_check_problem)
 {
     str << std::setprecision(15);
-    str << "health_and_arming_check_problem:" << '\n' << "{\n";
+    str << "health_and_arming_check_problem:" << '\n'
+        << "{\n";
     str << "    message: " << health_and_arming_check_problem.message << '\n';
     str << "    description: " << health_and_arming_check_problem.description << '\n';
     str << "    log_level: " << health_and_arming_check_problem.log_level << '\n';
@@ -92,24 +117,24 @@ std::ostream& operator<<(
     return str;
 }
 
-bool operator==(
-    const Events::HealthAndArmingCheckMode& lhs, const Events::HealthAndArmingCheckMode& rhs)
+
+bool operator==(const Events::HealthAndArmingCheckMode& lhs, const Events::HealthAndArmingCheckMode& rhs)
 {
-    return (rhs.mode_name == lhs.mode_name) && (rhs.can_arm_or_run == lhs.can_arm_or_run) &&
-           (rhs.problems == lhs.problems);
+    return
+        (rhs.mode_name == lhs.mode_name) &&
+        (rhs.can_arm_or_run == lhs.can_arm_or_run) &&
+        (rhs.problems == lhs.problems);
 }
 
-std::ostream&
-operator<<(std::ostream& str, Events::HealthAndArmingCheckMode const& health_and_arming_check_mode)
+std::ostream& operator<<(std::ostream& str, Events::HealthAndArmingCheckMode const& health_and_arming_check_mode)
 {
     str << std::setprecision(15);
-    str << "health_and_arming_check_mode:" << '\n' << "{\n";
+    str << "health_and_arming_check_mode:" << '\n'
+        << "{\n";
     str << "    mode_name: " << health_and_arming_check_mode.mode_name << '\n';
     str << "    can_arm_or_run: " << health_and_arming_check_mode.can_arm_or_run << '\n';
     str << "    problems: [";
-    for (auto it = health_and_arming_check_mode.problems.begin();
-         it != health_and_arming_check_mode.problems.end();
-         ++it) {
+    for (auto it = health_and_arming_check_mode.problems.begin(); it != health_and_arming_check_mode.problems.end(); ++it) {
         str << *it;
         str << (it + 1 != health_and_arming_check_mode.problems.end() ? ", " : "]\n");
     }
@@ -117,18 +142,22 @@ operator<<(std::ostream& str, Events::HealthAndArmingCheckMode const& health_and
     return str;
 }
 
+
 bool operator==(const Events::HealthComponentReport& lhs, const Events::HealthComponentReport& rhs)
 {
-    return (rhs.name == lhs.name) && (rhs.label == lhs.label) &&
-           (rhs.is_present == lhs.is_present) && (rhs.has_error == lhs.has_error) &&
-           (rhs.has_warning == lhs.has_warning);
+    return
+        (rhs.name == lhs.name) &&
+        (rhs.label == lhs.label) &&
+        (rhs.is_present == lhs.is_present) &&
+        (rhs.has_error == lhs.has_error) &&
+        (rhs.has_warning == lhs.has_warning);
 }
 
-std::ostream&
-operator<<(std::ostream& str, Events::HealthComponentReport const& health_component_report)
+std::ostream& operator<<(std::ostream& str, Events::HealthComponentReport const& health_component_report)
 {
     str << std::setprecision(15);
-    str << "health_component_report:" << '\n' << "{\n";
+    str << "health_component_report:" << '\n'
+        << "{\n";
     str << "    name: " << health_component_report.name << '\n';
     str << "    label: " << health_component_report.label << '\n';
     str << "    is_present: " << health_component_report.is_present << '\n';
@@ -138,38 +167,36 @@ operator<<(std::ostream& str, Events::HealthComponentReport const& health_compon
     return str;
 }
 
-bool operator==(
-    const Events::HealthAndArmingCheckReport& lhs, const Events::HealthAndArmingCheckReport& rhs)
+
+bool operator==(const Events::HealthAndArmingCheckReport& lhs, const Events::HealthAndArmingCheckReport& rhs)
 {
-    return (rhs.current_mode_intention == lhs.current_mode_intention) &&
-           (rhs.health_components == lhs.health_components) &&
-           (rhs.all_problems == lhs.all_problems);
+    return
+        (rhs.current_mode_intention == lhs.current_mode_intention) &&
+        (rhs.health_components == lhs.health_components) &&
+        (rhs.all_problems == lhs.all_problems);
 }
 
-std::ostream& operator<<(
-    std::ostream& str, Events::HealthAndArmingCheckReport const& health_and_arming_check_report)
+std::ostream& operator<<(std::ostream& str, Events::HealthAndArmingCheckReport const& health_and_arming_check_report)
 {
     str << std::setprecision(15);
-    str << "health_and_arming_check_report:" << '\n' << "{\n";
-    str << "    current_mode_intention: " << health_and_arming_check_report.current_mode_intention
-        << '\n';
+    str << "health_and_arming_check_report:" << '\n'
+        << "{\n";
+    str << "    current_mode_intention: " << health_and_arming_check_report.current_mode_intention << '\n';
     str << "    health_components: [";
-    for (auto it = health_and_arming_check_report.health_components.begin();
-         it != health_and_arming_check_report.health_components.end();
-         ++it) {
+    for (auto it = health_and_arming_check_report.health_components.begin(); it != health_and_arming_check_report.health_components.end(); ++it) {
         str << *it;
         str << (it + 1 != health_and_arming_check_report.health_components.end() ? ", " : "]\n");
     }
     str << "    all_problems: [";
-    for (auto it = health_and_arming_check_report.all_problems.begin();
-         it != health_and_arming_check_report.all_problems.end();
-         ++it) {
+    for (auto it = health_and_arming_check_report.all_problems.begin(); it != health_and_arming_check_report.all_problems.end(); ++it) {
         str << *it;
         str << (it + 1 != health_and_arming_check_report.all_problems.end() ? ", " : "]\n");
     }
     str << '}';
     return str;
 }
+
+
 
 std::ostream& operator<<(std::ostream& str, Events::Result const& result)
 {
@@ -197,6 +224,8 @@ std::ostream& operator<<(std::ostream& str, Events::Result const& result)
     }
 }
 
+
+
 std::ostream& operator<<(std::ostream& str, Events::LogLevel const& log_level)
 {
     switch (log_level) {
@@ -220,5 +249,6 @@ std::ostream& operator<<(std::ostream& str, Events::LogLevel const& log_level)
             return str << "Unknown";
     }
 }
+
 
 } // namespace mavsdk

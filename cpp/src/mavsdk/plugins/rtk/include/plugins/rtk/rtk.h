@@ -13,20 +13,22 @@
 #include <utility>
 #include <vector>
 
+
 #include "plugin_base.h"
 
 #include "handle.h"
 
 namespace mavsdk {
 
-class System;
-class RtkImpl;
+
+class System;class RtkImpl;
 
 /**
  * @brief Service to send RTK corrections to the vehicle.
  */
 class Rtk : public PluginBase {
 public:
+
     /**
      * @brief Constructor. Creates the plugin for a specific System.
      *
@@ -53,15 +55,21 @@ public:
      */
     explicit Rtk(std::shared_ptr<System> system); // new
 
+
     /**
      * @brief Destructor (internal use only).
      */
     ~Rtk() override;
 
+
+
+
+
     /**
      * @brief RTCM data type
      */
     struct RtcmData {
+        
         std::string data_base64{}; /**< @brief The data encoded as a base64 string */
     };
 
@@ -78,6 +86,10 @@ public:
      * @return A reference to the stream.
      */
     friend std::ostream& operator<<(std::ostream& str, Rtk::RtcmData const& rtcm_data);
+
+
+
+
 
     /**
      * @brief Possible results returned for rtk requests.
@@ -97,21 +109,31 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, Rtk::Result const& result);
 
+
+
     /**
      * @brief Callback type for asynchronous Rtk calls.
      */
     using ResultCallback = std::function<void(Result)>;
+
+
+
+
+
 
     /**
      * @brief Send RTCM data.
      *
      * This function is blocking.
      *
-
+     
      * @return Result of request.
-
+     
      */
     Result send_rtcm_data(RtcmData rtcm_data) const;
+
+
+
 
     /**
      * @brief Copy constructor.
