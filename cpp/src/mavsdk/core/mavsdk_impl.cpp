@@ -994,11 +994,25 @@ Mavsdk::ConnectionHandle MavsdkImpl::add_connection(std::unique_ptr<Connection>&
 
 void MavsdkImpl::remove_connection(Mavsdk::ConnectionHandle handle)
 {
-    std::lock_guard lock(_mutex);
-
-    _connections.erase(std::remove_if(_connections.begin(), _connections.end(), [&](auto&& entry) {
-        return (entry.handle == handle);
-    }));
+    // Extract the connection from _connections while holding _mutex, but let
+    // it be destroyed *after* releasing _mutex.  This avoids a deadlock where:
+    //   - main thread holds _mutex and waits inside Connection::stop() for the
+    //     io_context fence to execute, and
+    //   - the io_context thread is blocked trying to acquire _mutex (e.g. for
+    //     the periodic send_message() heartbeat call).
+    std::unique_ptr<Connection> conn_to_stop;
+    {
+        std::lock_guard lock(_mutex);
+        for (auto it = _connections.begin(); it != _connections.end(); ++it) {
+            if (it->handle == handle) {
+                conn_to_stop = std::move(it->connection);
+                _connections.erase(it);
+                break;
+            }
+        }
+    }
+    // conn_to_stop is destroyed here, outside _mutex, so stop() / the
+    // io_context fence can complete without hitting the lock.
 }
 
 Mavsdk::Configuration MavsdkImpl::get_configuration() const
