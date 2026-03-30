@@ -2,7 +2,16 @@
 
 #include "mavlink/mavlink_types.h"
 
+// We provide our own mavlink_get_channel_status with controlled storage,
+// and export it so that tests can link against it.
 #define MAVLINK_GET_CHANNEL_STATUS
+#if defined(_WIN32) && defined(MAVSDK_SHARED) && defined(MAVSDK_BUILD)
+__declspec(dllexport)
+#elif defined(_WIN32) && defined(MAVSDK_SHARED)
+__declspec(dllimport)
+#elif !defined(_WIN32)
+__attribute__((visibility("default")))
+#endif
 mavlink_status_t* mavlink_get_channel_status(uint8_t chan);
 
 #include "mavlink/@MAVLINK_DIALECT@/mavlink.h"

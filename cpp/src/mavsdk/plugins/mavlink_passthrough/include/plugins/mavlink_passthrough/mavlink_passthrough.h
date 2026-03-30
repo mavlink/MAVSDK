@@ -32,7 +32,7 @@ class MavlinkPassthroughImpl;
  *          - Custom message support via XML loading
  *          - Better language wrapper integration
  */
-class MavlinkPassthrough : public PluginBase {
+class MAVSDK_PUBLIC MavlinkPassthrough : public PluginBase {
 public:
     /**
      * @brief Constructor. Creates the plugin for a specific System.

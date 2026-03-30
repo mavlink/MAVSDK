@@ -16,6 +16,7 @@
 #include "plugin_base.h"
 
 #include "handle.h"
+#include "mavsdk_export.h"
 
 namespace mavsdk {
 
@@ -25,7 +26,7 @@ class CalibrationImpl;
 /**
  * @brief Enable to calibrate sensors of a drone such as gyro, accelerometer, and magnetometer.
  */
-class Calibration : public PluginBase {
+class MAVSDK_PUBLIC Calibration : public PluginBase {
 public:
     /**
      * @brief Constructor. Creates the plugin for a specific System.
@@ -82,7 +83,8 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, Calibration::Result const& result);
+    friend MAVSDK_PUBLIC std::ostream&
+    operator<<(std::ostream& str, Calibration::Result const& result);
 
     /**
      * @brief Progress data coming from calibration.
@@ -103,7 +105,7 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool
+    friend MAVSDK_PUBLIC bool
     operator==(const Calibration::ProgressData& lhs, const Calibration::ProgressData& rhs);
 
     /**
@@ -111,7 +113,7 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
+    friend MAVSDK_PUBLIC std::ostream&
     operator<<(std::ostream& str, Calibration::ProgressData const& progress_data);
 
     /**

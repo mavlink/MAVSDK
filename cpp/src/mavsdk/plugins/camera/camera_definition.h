@@ -1,6 +1,7 @@
 #pragma once
 
 #include "mavlink_parameter_client.h"
+#include "mavsdk_export.h"
 #include <tinyxml2.h>
 #include <vector>
 #include <memory>
@@ -10,7 +11,7 @@
 #include <utility>
 namespace mavsdk {
 
-class CameraDefinition {
+class MAVSDK_TEST_EXPORT CameraDefinition {
 public:
     CameraDefinition() = default;
     ~CameraDefinition() = default;

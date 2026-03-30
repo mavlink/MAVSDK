@@ -1,6 +1,7 @@
 #pragma once
 
 #include <sstream>
+#include "mavsdk_export.h"
 
 namespace mavsdk {
 
@@ -22,6 +23,6 @@ enum class CompatibilityMode {
  *
  * @return A reference to the stream.
  */
-std::ostream& operator<<(std::ostream& os, const CompatibilityMode& mode);
+MAVSDK_TEST_EXPORT std::ostream& operator<<(std::ostream& os, const CompatibilityMode& mode);
 
 } // namespace mavsdk

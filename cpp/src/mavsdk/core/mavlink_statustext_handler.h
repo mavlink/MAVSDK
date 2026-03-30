@@ -1,12 +1,13 @@
 #pragma once
 
 #include "mavlink_include.h"
+#include "mavsdk_export.h"
 #include <string>
 #include <optional>
 
 namespace mavsdk {
 
-class MavlinkStatustextHandler {
+class MAVSDK_TEST_EXPORT MavlinkStatustextHandler {
 public:
     MavlinkStatustextHandler() = default;
     ~MavlinkStatustextHandler() = default;

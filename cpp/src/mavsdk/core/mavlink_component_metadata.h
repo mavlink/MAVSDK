@@ -1,6 +1,7 @@
 #pragma once
 
 #include "callback_list.h"
+#include "mavsdk_export.h"
 #include "file_cache.h"
 #include "mavlink_command_sender.h"
 #include <json/json.h>
@@ -87,7 +88,7 @@ private:
     std::optional<std::string> _json_translation; ///< the final json translation summary
 };
 
-class MavlinkComponentMetadata {
+class MAVSDK_TEST_EXPORT MavlinkComponentMetadata {
 public:
     explicit MavlinkComponentMetadata(SystemImpl& system_impl);
     ~MavlinkComponentMetadata();

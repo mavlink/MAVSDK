@@ -1,13 +1,14 @@
 #include "param_server_impl.h"
 #include "callback_list.tpp"
+#include "mavsdk_export.h"
 #include <thread>
 #include <chrono>
 
 namespace mavsdk {
 
-template class CallbackList<ParamServer::IntParam>;
-template class CallbackList<ParamServer::FloatParam>;
-template class CallbackList<ParamServer::CustomParam>;
+template class MAVSDK_TEMPL_INST CallbackList<ParamServer::IntParam>;
+template class MAVSDK_TEMPL_INST CallbackList<ParamServer::FloatParam>;
+template class MAVSDK_TEMPL_INST CallbackList<ParamServer::CustomParam>;
 
 ParamServerImpl::ParamServerImpl(std::shared_ptr<ServerComponent> server_component) :
     ServerPluginImplBase(server_component)

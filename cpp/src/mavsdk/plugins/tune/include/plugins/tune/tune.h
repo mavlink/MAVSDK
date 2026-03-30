@@ -16,6 +16,7 @@
 #include "plugin_base.h"
 
 #include "handle.h"
+#include "mavsdk_export.h"
 
 namespace mavsdk {
 
@@ -25,7 +26,7 @@ class TuneImpl;
 /**
  * @brief Enable creating and sending a tune to be played on the system.
  */
-class Tune : public PluginBase {
+class MAVSDK_PUBLIC Tune : public PluginBase {
 public:
     /**
      * @brief Constructor. Creates the plugin for a specific System.
@@ -90,7 +91,8 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, Tune::SongElement const& song_element);
+    friend MAVSDK_PUBLIC std::ostream&
+    operator<<(std::ostream& str, Tune::SongElement const& song_element);
 
     /**
      * @brief Tune description, containing song elements and tempo.
@@ -106,14 +108,15 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(const Tune::TuneDescription& lhs, const Tune::TuneDescription& rhs);
+    friend MAVSDK_PUBLIC bool
+    operator==(const Tune::TuneDescription& lhs, const Tune::TuneDescription& rhs);
 
     /**
      * @brief Stream operator to print information about a `Tune::TuneDescription`.
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
+    friend MAVSDK_PUBLIC std::ostream&
     operator<<(std::ostream& str, Tune::TuneDescription const& tune_description);
 
     /**
@@ -133,7 +136,7 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, Tune::Result const& result);
+    friend MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Tune::Result const& result);
 
     /**
      * @brief Callback type for asynchronous Tune calls.
