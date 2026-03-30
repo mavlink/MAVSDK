@@ -5,6 +5,7 @@
 #include <mutex>
 #include <sstream>
 #include "log_callback.h"
+#include "mavsdk_export.h"
 
 #if defined(ANDROID)
 #include <android/log.h>
@@ -31,13 +32,13 @@
 namespace mavsdk {
 
 // Mutex moved to log.cpp to avoid inlining issues
-std::mutex& get_log_mutex();
+MAVSDK_TEST_EXPORT std::mutex& get_log_mutex();
 
 std::ostream& operator<<(std::ostream& os, std::byte b);
 
 enum class Color { Red, Green, Yellow, Blue, Gray, Reset };
 
-void set_color(Color color);
+MAVSDK_TEST_EXPORT void set_color(Color color);
 
 class LogDetailed {
 public:

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "mavsdk_export.h"
+
 namespace mavsdk::geometry {
 
 /**
@@ -11,7 +13,7 @@ namespace mavsdk::geometry {
  * and inspired by the implementations in:
  * https://github.com/PX4/ecl/blob/master/geo/geo.cpp
  */
-class CoordinateTransformation {
+class MAVSDK_PUBLIC CoordinateTransformation {
 public:
     /**
      * @brief Type for global coordinate in latitude/longitude in degrees.

@@ -16,6 +16,7 @@
 #include "plugin_base.h"
 
 #include "handle.h"
+#include "mavsdk_export.h"
 
 namespace mavsdk {
 
@@ -32,7 +33,7 @@ class OffboardImpl;
  * Mavsdk automatically sends setpoints at 20Hz (PX4 Offboard mode requires that setpoints
  * are minimally sent at 2Hz).
  */
-class Offboard : public PluginBase {
+class MAVSDK_PUBLIC Offboard : public PluginBase {
 public:
     /**
      * @brief Constructor. Creates the plugin for a specific System.
@@ -80,14 +81,16 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(const Offboard::Attitude& lhs, const Offboard::Attitude& rhs);
+    friend MAVSDK_PUBLIC bool
+    operator==(const Offboard::Attitude& lhs, const Offboard::Attitude& rhs);
 
     /**
      * @brief Stream operator to print information about a `Offboard::Attitude`.
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, Offboard::Attitude const& attitude);
+    friend MAVSDK_PUBLIC std::ostream&
+    operator<<(std::ostream& str, Offboard::Attitude const& attitude);
 
     /**
      * @brief Eight controls that will be given to the group. Each control is a normalized
@@ -102,7 +105,7 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(
+    friend MAVSDK_PUBLIC bool operator==(
         const Offboard::ActuatorControlGroup& lhs, const Offboard::ActuatorControlGroup& rhs);
 
     /**
@@ -110,7 +113,7 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
+    friend MAVSDK_PUBLIC std::ostream&
     operator<<(std::ostream& str, Offboard::ActuatorControlGroup const& actuator_control_group);
 
     /**
@@ -139,7 +142,7 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool
+    friend MAVSDK_PUBLIC bool
     operator==(const Offboard::ActuatorControl& lhs, const Offboard::ActuatorControl& rhs);
 
     /**
@@ -147,7 +150,7 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
+    friend MAVSDK_PUBLIC std::ostream&
     operator<<(std::ostream& str, Offboard::ActuatorControl const& actuator_control);
 
     /**
@@ -169,14 +172,16 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(const Offboard::AttitudeRate& lhs, const Offboard::AttitudeRate& rhs);
+    friend MAVSDK_PUBLIC bool
+    operator==(const Offboard::AttitudeRate& lhs, const Offboard::AttitudeRate& rhs);
 
     /**
      * @brief Stream operator to print information about a `Offboard::AttitudeRate`.
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, Offboard::AttitudeRate const& attitude_rate);
+    friend MAVSDK_PUBLIC std::ostream&
+    operator<<(std::ostream& str, Offboard::AttitudeRate const& attitude_rate);
 
     /**
      * @brief Type for position commands in NED (North East Down) coordinates and yaw.
@@ -194,7 +199,7 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool
+    friend MAVSDK_PUBLIC bool
     operator==(const Offboard::PositionNedYaw& lhs, const Offboard::PositionNedYaw& rhs);
 
     /**
@@ -202,7 +207,7 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
+    friend MAVSDK_PUBLIC std::ostream&
     operator<<(std::ostream& str, Offboard::PositionNedYaw const& position_ned_yaw);
 
     /**
@@ -224,7 +229,7 @@ public:
          *
          * @return A reference to the stream.
          */
-        friend std::ostream& operator<<(
+        friend MAVSDK_PUBLIC std::ostream& operator<<(
             std::ostream& str, Offboard::PositionGlobalYaw::AltitudeType const& altitude_type);
 
         double lat_deg{}; /**< @brief Latitude (in degrees) */
@@ -240,7 +245,7 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool
+    friend MAVSDK_PUBLIC bool
     operator==(const Offboard::PositionGlobalYaw& lhs, const Offboard::PositionGlobalYaw& rhs);
 
     /**
@@ -248,7 +253,7 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
+    friend MAVSDK_PUBLIC std::ostream&
     operator<<(std::ostream& str, Offboard::PositionGlobalYaw const& position_global_yaw);
 
     /**
@@ -267,7 +272,7 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(
+    friend MAVSDK_PUBLIC bool operator==(
         const Offboard::VelocityBodyYawspeed& lhs, const Offboard::VelocityBodyYawspeed& rhs);
 
     /**
@@ -275,7 +280,7 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
+    friend MAVSDK_PUBLIC std::ostream&
     operator<<(std::ostream& str, Offboard::VelocityBodyYawspeed const& velocity_body_yawspeed);
 
     /**
@@ -294,7 +299,7 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool
+    friend MAVSDK_PUBLIC bool
     operator==(const Offboard::VelocityNedYaw& lhs, const Offboard::VelocityNedYaw& rhs);
 
     /**
@@ -302,7 +307,7 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
+    friend MAVSDK_PUBLIC std::ostream&
     operator<<(std::ostream& str, Offboard::VelocityNedYaw const& velocity_ned_yaw);
 
     /**
@@ -319,7 +324,7 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool
+    friend MAVSDK_PUBLIC bool
     operator==(const Offboard::AccelerationNed& lhs, const Offboard::AccelerationNed& rhs);
 
     /**
@@ -327,7 +332,7 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
+    friend MAVSDK_PUBLIC std::ostream&
     operator<<(std::ostream& str, Offboard::AccelerationNed const& acceleration_ned);
 
     /**
@@ -350,7 +355,8 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, Offboard::Result const& result);
+    friend MAVSDK_PUBLIC std::ostream&
+    operator<<(std::ostream& str, Offboard::Result const& result);
 
     /**
      * @brief Callback type for asynchronous Offboard calls.

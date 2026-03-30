@@ -31,12 +31,12 @@ struct {{ name.upper_camel_case }} {
  *
  * @return `true` if items are equal.
  */
-friend bool operator==(const {{ plugin_name.upper_camel_case }}::{{ name.upper_camel_case }}& lhs, const {{ plugin_name.upper_camel_case }}::{{ name.upper_camel_case }}& rhs);
+friend MAVSDK_PUBLIC bool operator==(const {{ plugin_name.upper_camel_case }}::{{ name.upper_camel_case }}& lhs, const {{ plugin_name.upper_camel_case }}::{{ name.upper_camel_case }}& rhs);
 
 /**
  * @brief Stream operator to print information about a `{{ plugin_name.upper_camel_case }}::{{ name.upper_camel_case }}`.
  *
  * @return A reference to the stream.
  */
-friend std::ostream& operator<<(std::ostream& str, {{ plugin_name.upper_camel_case }}::{{ name.upper_camel_case }} const& {{ name.lower_snake_case }});
+friend MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, {{ plugin_name.upper_camel_case }}::{{ name.upper_camel_case }} const& {{ name.lower_snake_case }});
 {% endif -%}

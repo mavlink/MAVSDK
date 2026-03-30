@@ -16,6 +16,7 @@
 #include "plugin_base.h"
 
 #include "handle.h"
+#include "mavsdk_export.h"
 
 namespace mavsdk {
 
@@ -25,7 +26,7 @@ class InfoImpl;
 /**
  * @brief Provide information about the hardware and/or software of a system.
  */
-class Info : public PluginBase {
+class MAVSDK_PUBLIC Info : public PluginBase {
 public:
     /**
      * @brief Constructor. Creates the plugin for a specific System.
@@ -74,14 +75,15 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(const Info::FlightInfo& lhs, const Info::FlightInfo& rhs);
+    friend MAVSDK_PUBLIC bool operator==(const Info::FlightInfo& lhs, const Info::FlightInfo& rhs);
 
     /**
      * @brief Stream operator to print information about a `Info::FlightInfo`.
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, Info::FlightInfo const& flight_info);
+    friend MAVSDK_PUBLIC std::ostream&
+    operator<<(std::ostream& str, Info::FlightInfo const& flight_info);
 
     /**
      * @brief System identification.
@@ -99,14 +101,16 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(const Info::Identification& lhs, const Info::Identification& rhs);
+    friend MAVSDK_PUBLIC bool
+    operator==(const Info::Identification& lhs, const Info::Identification& rhs);
 
     /**
      * @brief Stream operator to print information about a `Info::Identification`.
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, Info::Identification const& identification);
+    friend MAVSDK_PUBLIC std::ostream&
+    operator<<(std::ostream& str, Info::Identification const& identification);
 
     /**
      * @brief System product information.
@@ -123,14 +127,14 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(const Info::Product& lhs, const Info::Product& rhs);
+    friend MAVSDK_PUBLIC bool operator==(const Info::Product& lhs, const Info::Product& rhs);
 
     /**
      * @brief Stream operator to print information about a `Info::Product`.
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, Info::Product const& product);
+    friend MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Info::Product const& product);
 
     /**
      * @brief System version information.
@@ -153,7 +157,7 @@ public:
          *
          * @return A reference to the stream.
          */
-        friend std::ostream& operator<<(
+        friend MAVSDK_PUBLIC std::ostream& operator<<(
             std::ostream& str,
             Info::Version::FlightSoftwareVersionType const& flight_software_version_type);
 
@@ -177,14 +181,14 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(const Info::Version& lhs, const Info::Version& rhs);
+    friend MAVSDK_PUBLIC bool operator==(const Info::Version& lhs, const Info::Version& rhs);
 
     /**
      * @brief Stream operator to print information about a `Info::Version`.
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, Info::Version const& version);
+    friend MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Info::Version const& version);
 
     /**
      * @brief Possible results returned for info requests.
@@ -201,7 +205,7 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, Info::Result const& result);
+    friend MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Info::Result const& result);
 
     /**
      * @brief Callback type for asynchronous Info calls.

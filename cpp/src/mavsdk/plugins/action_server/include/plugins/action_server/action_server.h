@@ -16,6 +16,7 @@
 #include "server_plugin_base.h"
 
 #include "handle.h"
+#include "mavsdk_export.h"
 
 namespace mavsdk {
 
@@ -25,7 +26,7 @@ class ActionServerImpl;
 /**
  * @brief Provide vehicle actions (as a server) such as arming, taking off, and landing.
  */
-class ActionServer : public ServerPluginBase {
+class MAVSDK_PUBLIC ActionServer : public ServerPluginBase {
 public:
     /**
      * @brief Constructor. Creates the plugin for a ServerComponent instance.
@@ -73,7 +74,8 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, ActionServer::FlightMode const& flight_mode);
+    friend MAVSDK_PUBLIC std::ostream&
+    operator<<(std::ostream& str, ActionServer::FlightMode const& flight_mode);
 
     /**
      * @brief State to check if the vehicle can transition to
@@ -94,7 +96,7 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(
+    friend MAVSDK_PUBLIC bool operator==(
         const ActionServer::AllowableFlightModes& lhs,
         const ActionServer::AllowableFlightModes& rhs);
 
@@ -103,7 +105,7 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
+    friend MAVSDK_PUBLIC std::ostream&
     operator<<(std::ostream& str, ActionServer::AllowableFlightModes const& allowable_flight_modes);
 
     /**
@@ -119,14 +121,16 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(const ActionServer::ArmDisarm& lhs, const ActionServer::ArmDisarm& rhs);
+    friend MAVSDK_PUBLIC bool
+    operator==(const ActionServer::ArmDisarm& lhs, const ActionServer::ArmDisarm& rhs);
 
     /**
      * @brief Stream operator to print information about a `ActionServer::ArmDisarm`.
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, ActionServer::ArmDisarm const& arm_disarm);
+    friend MAVSDK_PUBLIC std::ostream&
+    operator<<(std::ostream& str, ActionServer::ArmDisarm const& arm_disarm);
 
     /**
      * @brief Possible results returned for action requests.
@@ -154,7 +158,8 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, ActionServer::Result const& result);
+    friend MAVSDK_PUBLIC std::ostream&
+    operator<<(std::ostream& str, ActionServer::Result const& result);
 
     /**
      * @brief Callback type for asynchronous ActionServer calls.

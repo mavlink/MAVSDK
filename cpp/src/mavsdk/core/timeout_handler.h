@@ -1,6 +1,7 @@
 #pragma once
 
 #include "mavsdk_time.h"
+#include "mavsdk_export.h"
 
 #include <cstdint>
 #include <mutex>
@@ -10,7 +11,7 @@
 
 namespace mavsdk {
 
-class TimeoutHandler {
+class MAVSDK_TEST_EXPORT TimeoutHandler {
 public:
     explicit TimeoutHandler(Time& time);
     ~TimeoutHandler() = default;

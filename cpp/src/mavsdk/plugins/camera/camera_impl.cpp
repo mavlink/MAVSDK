@@ -21,14 +21,16 @@
 #include <string>
 #include <thread>
 
+#include "mavsdk_export.h"
+
 namespace mavsdk {
 
-template class CallbackList<Camera::Mode>;
-template class CallbackList<std::vector<Camera::Setting>>;
-template class CallbackList<std::vector<Camera::SettingOptions>>;
-template class CallbackList<Camera::CaptureInfo>;
-template class CallbackList<Camera::VideoStreamInfo>;
-template class CallbackList<Camera::Storage>;
+template class MAVSDK_TEMPL_INST CallbackList<Camera::Mode>;
+template class MAVSDK_TEMPL_INST CallbackList<std::vector<Camera::Setting>>;
+template class MAVSDK_TEMPL_INST CallbackList<std::vector<Camera::SettingOptions>>;
+template class MAVSDK_TEMPL_INST CallbackList<Camera::CaptureInfo>;
+template class MAVSDK_TEMPL_INST CallbackList<Camera::VideoStreamInfo>;
+template class MAVSDK_TEMPL_INST CallbackList<Camera::Storage>;
 
 CameraImpl::CameraImpl(System& system) : PluginImplBase(system)
 {

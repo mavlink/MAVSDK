@@ -8,10 +8,11 @@
 #include "log.h"
 #include "connection.h"
 #include "callback_list.tpp"
+#include "mavsdk_export.h"
 
 namespace mavsdk {
 
-template class CallbackList<MavlinkDirect::MavlinkMessage>;
+template class MAVSDK_TEMPL_INST CallbackList<MavlinkDirect::MavlinkMessage>;
 
 MavlinkDirectImpl::MavlinkDirectImpl(System& system) : PluginImplBase(system)
 {

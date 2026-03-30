@@ -4,6 +4,7 @@
 #include <memory>
 #include "curl_include.h"
 #include "curl_wrapper_types.h"
+#include "mavsdk_export.h"
 
 #ifdef TESTING
 #include <gmock/gmock.h>
@@ -12,7 +13,7 @@ using namespace testing;
 
 namespace mavsdk {
 
-class ICurlWrapper {
+class MAVSDK_TEST_EXPORT ICurlWrapper {
 public:
     ICurlWrapper() = default;
     virtual ~ICurlWrapper() = default;
@@ -23,7 +24,7 @@ public:
         const ProgressCallback& progress_callback) = 0;
 };
 
-class CurlWrapper : public ICurlWrapper {
+class MAVSDK_TEST_EXPORT CurlWrapper : public ICurlWrapper {
 public:
     // ICurlWrapper
     CurlWrapper() = default;

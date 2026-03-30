@@ -17,6 +17,7 @@
 #include "server_plugin_base.h"
 
 #include "handle.h"
+#include "mavsdk_export.h"
 
 namespace mavsdk {
 
@@ -27,7 +28,7 @@ class MissionRawServerImpl;
  * @brief Acts as a vehicle and receives incoming missions from GCS (in raw MAVLINK format).
  * Provides current mission item state, so the server can progress through missions.
  */
-class MissionRawServer : public ServerPluginBase {
+class MAVSDK_PUBLIC MissionRawServer : public ServerPluginBase {
 public:
     /**
      * @brief Constructor. Creates the plugin for a ServerComponent instance.
@@ -74,7 +75,7 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool
+    friend MAVSDK_PUBLIC bool
     operator==(const MissionRawServer::MissionItem& lhs, const MissionRawServer::MissionItem& rhs);
 
     /**
@@ -82,7 +83,7 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
+    friend MAVSDK_PUBLIC std::ostream&
     operator<<(std::ostream& str, MissionRawServer::MissionItem const& mission_item);
 
     /**
@@ -97,7 +98,7 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool
+    friend MAVSDK_PUBLIC bool
     operator==(const MissionRawServer::MissionPlan& lhs, const MissionRawServer::MissionPlan& rhs);
 
     /**
@@ -105,7 +106,7 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
+    friend MAVSDK_PUBLIC std::ostream&
     operator<<(std::ostream& str, MissionRawServer::MissionPlan const& mission_plan);
 
     /**
@@ -122,7 +123,7 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(
+    friend MAVSDK_PUBLIC bool operator==(
         const MissionRawServer::MissionProgress& lhs, const MissionRawServer::MissionProgress& rhs);
 
     /**
@@ -130,7 +131,7 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
+    friend MAVSDK_PUBLIC std::ostream&
     operator<<(std::ostream& str, MissionRawServer::MissionProgress const& mission_progress);
 
     /**
@@ -158,7 +159,8 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, MissionRawServer::Result const& result);
+    friend MAVSDK_PUBLIC std::ostream&
+    operator<<(std::ostream& str, MissionRawServer::Result const& result);
 
     /**
      * @brief Callback type for asynchronous MissionRawServer calls.

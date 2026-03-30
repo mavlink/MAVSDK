@@ -1,5 +1,7 @@
 #pragma once
 
+#include "mavsdk_export.h"
+
 namespace mavsdk {
 
 struct Quaternion {
@@ -15,13 +17,13 @@ struct EulerAngle {
     float yaw_deg;
 };
 
-bool operator==(const Quaternion& lhs, const Quaternion& rhs);
+MAVSDK_TEST_EXPORT bool operator==(const Quaternion& lhs, const Quaternion& rhs);
 bool operator==(const EulerAngle& lhs, const EulerAngle& rhs);
 
-EulerAngle to_euler_angle_from_quaternion(Quaternion quaternion);
-Quaternion to_quaternion_from_euler_angle(EulerAngle euler_angle);
+MAVSDK_TEST_EXPORT EulerAngle to_euler_angle_from_quaternion(Quaternion quaternion);
+MAVSDK_TEST_EXPORT Quaternion to_quaternion_from_euler_angle(EulerAngle euler_angle);
 
-Quaternion operator*(const Quaternion& lhs, const Quaternion& rhs);
+MAVSDK_TEST_EXPORT Quaternion operator*(const Quaternion& lhs, const Quaternion& rhs);
 
 // Instead of using the constant from math.h or cmath we define it ourselves. This way
 // we don't import all the other C math functions and make sure to use the C++ functions

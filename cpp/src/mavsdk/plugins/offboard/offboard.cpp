@@ -108,7 +108,7 @@ Offboard::Result Offboard::set_acceleration_ned(AccelerationNed acceleration_ned
     return _impl->set_acceleration_ned(acceleration_ned);
 }
 
-bool operator==(const Offboard::Attitude& lhs, const Offboard::Attitude& rhs)
+MAVSDK_PUBLIC bool operator==(const Offboard::Attitude& lhs, const Offboard::Attitude& rhs)
 {
     return ((std::isnan(rhs.roll_deg) && std::isnan(lhs.roll_deg)) ||
             rhs.roll_deg == lhs.roll_deg) &&
@@ -119,7 +119,7 @@ bool operator==(const Offboard::Attitude& lhs, const Offboard::Attitude& rhs)
             rhs.thrust_value == lhs.thrust_value);
 }
 
-std::ostream& operator<<(std::ostream& str, Offboard::Attitude const& attitude)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Offboard::Attitude const& attitude)
 {
     str << std::setprecision(15);
     str << "attitude:" << '\n' << "{\n";
@@ -131,13 +131,13 @@ std::ostream& operator<<(std::ostream& str, Offboard::Attitude const& attitude)
     return str;
 }
 
-bool operator==(
-    const Offboard::ActuatorControlGroup& lhs, const Offboard::ActuatorControlGroup& rhs)
+MAVSDK_PUBLIC bool
+operator==(const Offboard::ActuatorControlGroup& lhs, const Offboard::ActuatorControlGroup& rhs)
 {
     return (rhs.controls == lhs.controls);
 }
 
-std::ostream&
+MAVSDK_PUBLIC std::ostream&
 operator<<(std::ostream& str, Offboard::ActuatorControlGroup const& actuator_control_group)
 {
     str << std::setprecision(15);
@@ -153,12 +153,14 @@ operator<<(std::ostream& str, Offboard::ActuatorControlGroup const& actuator_con
     return str;
 }
 
-bool operator==(const Offboard::ActuatorControl& lhs, const Offboard::ActuatorControl& rhs)
+MAVSDK_PUBLIC bool
+operator==(const Offboard::ActuatorControl& lhs, const Offboard::ActuatorControl& rhs)
 {
     return (rhs.groups == lhs.groups);
 }
 
-std::ostream& operator<<(std::ostream& str, Offboard::ActuatorControl const& actuator_control)
+MAVSDK_PUBLIC std::ostream&
+operator<<(std::ostream& str, Offboard::ActuatorControl const& actuator_control)
 {
     str << std::setprecision(15);
     str << "actuator_control:" << '\n' << "{\n";
@@ -171,7 +173,7 @@ std::ostream& operator<<(std::ostream& str, Offboard::ActuatorControl const& act
     return str;
 }
 
-bool operator==(const Offboard::AttitudeRate& lhs, const Offboard::AttitudeRate& rhs)
+MAVSDK_PUBLIC bool operator==(const Offboard::AttitudeRate& lhs, const Offboard::AttitudeRate& rhs)
 {
     return ((std::isnan(rhs.roll_deg_s) && std::isnan(lhs.roll_deg_s)) ||
             rhs.roll_deg_s == lhs.roll_deg_s) &&
@@ -183,7 +185,8 @@ bool operator==(const Offboard::AttitudeRate& lhs, const Offboard::AttitudeRate&
             rhs.thrust_value == lhs.thrust_value);
 }
 
-std::ostream& operator<<(std::ostream& str, Offboard::AttitudeRate const& attitude_rate)
+MAVSDK_PUBLIC std::ostream&
+operator<<(std::ostream& str, Offboard::AttitudeRate const& attitude_rate)
 {
     str << std::setprecision(15);
     str << "attitude_rate:" << '\n' << "{\n";
@@ -195,7 +198,8 @@ std::ostream& operator<<(std::ostream& str, Offboard::AttitudeRate const& attitu
     return str;
 }
 
-bool operator==(const Offboard::PositionNedYaw& lhs, const Offboard::PositionNedYaw& rhs)
+MAVSDK_PUBLIC bool
+operator==(const Offboard::PositionNedYaw& lhs, const Offboard::PositionNedYaw& rhs)
 {
     return ((std::isnan(rhs.north_m) && std::isnan(lhs.north_m)) || rhs.north_m == lhs.north_m) &&
            ((std::isnan(rhs.east_m) && std::isnan(lhs.east_m)) || rhs.east_m == lhs.east_m) &&
@@ -203,7 +207,8 @@ bool operator==(const Offboard::PositionNedYaw& lhs, const Offboard::PositionNed
            ((std::isnan(rhs.yaw_deg) && std::isnan(lhs.yaw_deg)) || rhs.yaw_deg == lhs.yaw_deg);
 }
 
-std::ostream& operator<<(std::ostream& str, Offboard::PositionNedYaw const& position_ned_yaw)
+MAVSDK_PUBLIC std::ostream&
+operator<<(std::ostream& str, Offboard::PositionNedYaw const& position_ned_yaw)
 {
     str << std::setprecision(15);
     str << "position_ned_yaw:" << '\n' << "{\n";
@@ -215,7 +220,7 @@ std::ostream& operator<<(std::ostream& str, Offboard::PositionNedYaw const& posi
     return str;
 }
 
-std::ostream&
+MAVSDK_PUBLIC std::ostream&
 operator<<(std::ostream& str, Offboard::PositionGlobalYaw::AltitudeType const& altitude_type)
 {
     switch (altitude_type) {
@@ -229,7 +234,8 @@ operator<<(std::ostream& str, Offboard::PositionGlobalYaw::AltitudeType const& a
             return str << "Unknown";
     }
 }
-bool operator==(const Offboard::PositionGlobalYaw& lhs, const Offboard::PositionGlobalYaw& rhs)
+MAVSDK_PUBLIC bool
+operator==(const Offboard::PositionGlobalYaw& lhs, const Offboard::PositionGlobalYaw& rhs)
 {
     return ((std::isnan(rhs.lat_deg) && std::isnan(lhs.lat_deg)) || rhs.lat_deg == lhs.lat_deg) &&
            ((std::isnan(rhs.lon_deg) && std::isnan(lhs.lon_deg)) || rhs.lon_deg == lhs.lon_deg) &&
@@ -238,7 +244,8 @@ bool operator==(const Offboard::PositionGlobalYaw& lhs, const Offboard::Position
            (rhs.altitude_type == lhs.altitude_type);
 }
 
-std::ostream& operator<<(std::ostream& str, Offboard::PositionGlobalYaw const& position_global_yaw)
+MAVSDK_PUBLIC std::ostream&
+operator<<(std::ostream& str, Offboard::PositionGlobalYaw const& position_global_yaw)
 {
     str << std::setprecision(15);
     str << "position_global_yaw:" << '\n' << "{\n";
@@ -251,8 +258,8 @@ std::ostream& operator<<(std::ostream& str, Offboard::PositionGlobalYaw const& p
     return str;
 }
 
-bool operator==(
-    const Offboard::VelocityBodyYawspeed& lhs, const Offboard::VelocityBodyYawspeed& rhs)
+MAVSDK_PUBLIC bool
+operator==(const Offboard::VelocityBodyYawspeed& lhs, const Offboard::VelocityBodyYawspeed& rhs)
 {
     return ((std::isnan(rhs.forward_m_s) && std::isnan(lhs.forward_m_s)) ||
             rhs.forward_m_s == lhs.forward_m_s) &&
@@ -264,7 +271,7 @@ bool operator==(
             rhs.yawspeed_deg_s == lhs.yawspeed_deg_s);
 }
 
-std::ostream&
+MAVSDK_PUBLIC std::ostream&
 operator<<(std::ostream& str, Offboard::VelocityBodyYawspeed const& velocity_body_yawspeed)
 {
     str << std::setprecision(15);
@@ -277,7 +284,8 @@ operator<<(std::ostream& str, Offboard::VelocityBodyYawspeed const& velocity_bod
     return str;
 }
 
-bool operator==(const Offboard::VelocityNedYaw& lhs, const Offboard::VelocityNedYaw& rhs)
+MAVSDK_PUBLIC bool
+operator==(const Offboard::VelocityNedYaw& lhs, const Offboard::VelocityNedYaw& rhs)
 {
     return ((std::isnan(rhs.north_m_s) && std::isnan(lhs.north_m_s)) ||
             rhs.north_m_s == lhs.north_m_s) &&
@@ -288,7 +296,8 @@ bool operator==(const Offboard::VelocityNedYaw& lhs, const Offboard::VelocityNed
            ((std::isnan(rhs.yaw_deg) && std::isnan(lhs.yaw_deg)) || rhs.yaw_deg == lhs.yaw_deg);
 }
 
-std::ostream& operator<<(std::ostream& str, Offboard::VelocityNedYaw const& velocity_ned_yaw)
+MAVSDK_PUBLIC std::ostream&
+operator<<(std::ostream& str, Offboard::VelocityNedYaw const& velocity_ned_yaw)
 {
     str << std::setprecision(15);
     str << "velocity_ned_yaw:" << '\n' << "{\n";
@@ -300,7 +309,8 @@ std::ostream& operator<<(std::ostream& str, Offboard::VelocityNedYaw const& velo
     return str;
 }
 
-bool operator==(const Offboard::AccelerationNed& lhs, const Offboard::AccelerationNed& rhs)
+MAVSDK_PUBLIC bool
+operator==(const Offboard::AccelerationNed& lhs, const Offboard::AccelerationNed& rhs)
 {
     return ((std::isnan(rhs.north_m_s2) && std::isnan(lhs.north_m_s2)) ||
             rhs.north_m_s2 == lhs.north_m_s2) &&
@@ -310,7 +320,8 @@ bool operator==(const Offboard::AccelerationNed& lhs, const Offboard::Accelerati
             rhs.down_m_s2 == lhs.down_m_s2);
 }
 
-std::ostream& operator<<(std::ostream& str, Offboard::AccelerationNed const& acceleration_ned)
+MAVSDK_PUBLIC std::ostream&
+operator<<(std::ostream& str, Offboard::AccelerationNed const& acceleration_ned)
 {
     str << std::setprecision(15);
     str << "acceleration_ned:" << '\n' << "{\n";
@@ -321,7 +332,7 @@ std::ostream& operator<<(std::ostream& str, Offboard::AccelerationNed const& acc
     return str;
 }
 
-std::ostream& operator<<(std::ostream& str, Offboard::Result const& result)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Offboard::Result const& result)
 {
     switch (result) {
         case Offboard::Result::Unknown:

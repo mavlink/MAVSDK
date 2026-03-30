@@ -2,10 +2,11 @@
 #include "mavlink_address.h"
 #include "system.h"
 #include "callback_list.tpp"
+#include "mavsdk_export.h"
 
 namespace mavsdk {
 
-template class CallbackList<std::string>;
+template class MAVSDK_TEMPL_INST CallbackList<std::string>;
 
 void ShellImpl::init()
 {

@@ -16,6 +16,7 @@
 #include "plugin_base.h"
 
 #include "handle.h"
+#include "mavsdk_export.h"
 
 namespace mavsdk {
 
@@ -25,7 +26,7 @@ class GeofenceImpl;
 /**
  * @brief Enable setting a geofence.
  */
-class Geofence : public PluginBase {
+class MAVSDK_PUBLIC Geofence : public PluginBase {
 public:
     /**
      * @brief Constructor. Creates the plugin for a specific System.
@@ -71,7 +72,8 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, Geofence::FenceType const& fence_type);
+    friend MAVSDK_PUBLIC std::ostream&
+    operator<<(std::ostream& str, Geofence::FenceType const& fence_type);
 
     /**
      * @brief Point type.
@@ -86,14 +88,14 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(const Geofence::Point& lhs, const Geofence::Point& rhs);
+    friend MAVSDK_PUBLIC bool operator==(const Geofence::Point& lhs, const Geofence::Point& rhs);
 
     /**
      * @brief Stream operator to print information about a `Geofence::Point`.
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, Geofence::Point const& point);
+    friend MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Geofence::Point const& point);
 
     /**
      * @brief Polygon type.
@@ -108,14 +110,16 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(const Geofence::Polygon& lhs, const Geofence::Polygon& rhs);
+    friend MAVSDK_PUBLIC bool
+    operator==(const Geofence::Polygon& lhs, const Geofence::Polygon& rhs);
 
     /**
      * @brief Stream operator to print information about a `Geofence::Polygon`.
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, Geofence::Polygon const& polygon);
+    friend MAVSDK_PUBLIC std::ostream&
+    operator<<(std::ostream& str, Geofence::Polygon const& polygon);
 
     /**
      * @brief Circular type.
@@ -131,14 +135,15 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(const Geofence::Circle& lhs, const Geofence::Circle& rhs);
+    friend MAVSDK_PUBLIC bool operator==(const Geofence::Circle& lhs, const Geofence::Circle& rhs);
 
     /**
      * @brief Stream operator to print information about a `Geofence::Circle`.
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, Geofence::Circle const& circle);
+    friend MAVSDK_PUBLIC std::ostream&
+    operator<<(std::ostream& str, Geofence::Circle const& circle);
 
     /**
      * @brief Geofence data type.
@@ -153,14 +158,16 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(const Geofence::GeofenceData& lhs, const Geofence::GeofenceData& rhs);
+    friend MAVSDK_PUBLIC bool
+    operator==(const Geofence::GeofenceData& lhs, const Geofence::GeofenceData& rhs);
 
     /**
      * @brief Stream operator to print information about a `Geofence::GeofenceData`.
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, Geofence::GeofenceData const& geofence_data);
+    friend MAVSDK_PUBLIC std::ostream&
+    operator<<(std::ostream& str, Geofence::GeofenceData const& geofence_data);
 
     /**
      * @brief Possible results returned for geofence requests.
@@ -181,7 +188,8 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, Geofence::Result const& result);
+    friend MAVSDK_PUBLIC std::ostream&
+    operator<<(std::ostream& str, Geofence::Result const& result);
 
     /**
      * @brief Callback type for asynchronous Geofence calls.

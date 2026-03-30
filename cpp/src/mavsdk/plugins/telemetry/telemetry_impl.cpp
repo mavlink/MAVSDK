@@ -2,6 +2,7 @@
 #include "system.h"
 #include "math_utils.h"
 #include "callback_list.tpp"
+#include "mavsdk_export.h"
 
 #include <cmath>
 #include <functional>
@@ -12,34 +13,34 @@
 
 namespace mavsdk {
 
-template class CallbackList<Telemetry::PositionVelocityNed>;
-template class CallbackList<Telemetry::Position>;
-template class CallbackList<bool>;
-template class CallbackList<Telemetry::StatusText>;
-template class CallbackList<Telemetry::Quaternion>;
-template class CallbackList<Telemetry::AngularVelocityBody>;
-template class CallbackList<Telemetry::GroundTruth>;
-template class CallbackList<Telemetry::FixedwingMetrics>;
-template class CallbackList<Telemetry::EulerAngle>;
-template class CallbackList<Telemetry::VelocityNed>;
-template class CallbackList<Telemetry::Imu>;
-template class CallbackList<Telemetry::GpsInfo>;
-template class CallbackList<Telemetry::RawGps>;
-template class CallbackList<Telemetry::Battery>;
-template class CallbackList<Telemetry::FlightMode>;
-template class CallbackList<Telemetry::Health>;
-template class CallbackList<Telemetry::VtolState>;
-template class CallbackList<Telemetry::LandedState>;
-template class CallbackList<Telemetry::RcStatus>;
-template class CallbackList<uint64_t>;
-template class CallbackList<Telemetry::ActuatorControlTarget>;
-template class CallbackList<Telemetry::ActuatorOutputStatus>;
-template class CallbackList<Telemetry::Odometry>;
-template class CallbackList<Telemetry::DistanceSensor>;
-template class CallbackList<Telemetry::ScaledPressure>;
-template class CallbackList<Telemetry::Heading>;
-template class CallbackList<Telemetry::Altitude>;
-template class CallbackList<Telemetry::Wind>;
+template class MAVSDK_TEMPL_INST CallbackList<Telemetry::PositionVelocityNed>;
+template class MAVSDK_TEMPL_INST CallbackList<Telemetry::Position>;
+template class MAVSDK_TEMPL_INST CallbackList<bool>;
+template class MAVSDK_TEMPL_INST CallbackList<Telemetry::StatusText>;
+template class MAVSDK_TEMPL_INST CallbackList<Telemetry::Quaternion>;
+template class MAVSDK_TEMPL_INST CallbackList<Telemetry::AngularVelocityBody>;
+template class MAVSDK_TEMPL_INST CallbackList<Telemetry::GroundTruth>;
+template class MAVSDK_TEMPL_INST CallbackList<Telemetry::FixedwingMetrics>;
+template class MAVSDK_TEMPL_INST CallbackList<Telemetry::EulerAngle>;
+template class MAVSDK_TEMPL_INST CallbackList<Telemetry::VelocityNed>;
+template class MAVSDK_TEMPL_INST CallbackList<Telemetry::Imu>;
+template class MAVSDK_TEMPL_INST CallbackList<Telemetry::GpsInfo>;
+template class MAVSDK_TEMPL_INST CallbackList<Telemetry::RawGps>;
+template class MAVSDK_TEMPL_INST CallbackList<Telemetry::Battery>;
+template class MAVSDK_TEMPL_INST CallbackList<Telemetry::FlightMode>;
+template class MAVSDK_TEMPL_INST CallbackList<Telemetry::Health>;
+template class MAVSDK_TEMPL_INST CallbackList<Telemetry::VtolState>;
+template class MAVSDK_TEMPL_INST CallbackList<Telemetry::LandedState>;
+template class MAVSDK_TEMPL_INST CallbackList<Telemetry::RcStatus>;
+template class MAVSDK_TEMPL_INST CallbackList<uint64_t>;
+template class MAVSDK_TEMPL_INST CallbackList<Telemetry::ActuatorControlTarget>;
+template class MAVSDK_TEMPL_INST CallbackList<Telemetry::ActuatorOutputStatus>;
+template class MAVSDK_TEMPL_INST CallbackList<Telemetry::Odometry>;
+template class MAVSDK_TEMPL_INST CallbackList<Telemetry::DistanceSensor>;
+template class MAVSDK_TEMPL_INST CallbackList<Telemetry::ScaledPressure>;
+template class MAVSDK_TEMPL_INST CallbackList<Telemetry::Heading>;
+template class MAVSDK_TEMPL_INST CallbackList<Telemetry::Altitude>;
+template class MAVSDK_TEMPL_INST CallbackList<Telemetry::Wind>;
 
 TelemetryImpl::TelemetryImpl(System& system) : PluginImplBase(system)
 {

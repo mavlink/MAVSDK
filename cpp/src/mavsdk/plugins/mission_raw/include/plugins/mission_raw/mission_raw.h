@@ -16,6 +16,7 @@
 #include "plugin_base.h"
 
 #include "handle.h"
+#include "mavsdk_export.h"
 
 namespace mavsdk {
 
@@ -25,7 +26,7 @@ class MissionRawImpl;
 /**
  * @brief Enable raw missions as exposed by MAVLink.
  */
-class MissionRaw : public PluginBase {
+class MAVSDK_PUBLIC MissionRaw : public PluginBase {
 public:
     /**
      * @brief Constructor. Creates the plugin for a specific System.
@@ -72,7 +73,7 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool
+    friend MAVSDK_PUBLIC bool
     operator==(const MissionRaw::MissionProgress& lhs, const MissionRaw::MissionProgress& rhs);
 
     /**
@@ -80,7 +81,7 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
+    friend MAVSDK_PUBLIC std::ostream&
     operator<<(std::ostream& str, MissionRaw::MissionProgress const& mission_progress);
 
     /**
@@ -110,14 +111,16 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(const MissionRaw::MissionItem& lhs, const MissionRaw::MissionItem& rhs);
+    friend MAVSDK_PUBLIC bool
+    operator==(const MissionRaw::MissionItem& lhs, const MissionRaw::MissionItem& rhs);
 
     /**
      * @brief Stream operator to print information about a `MissionRaw::MissionItem`.
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, MissionRaw::MissionItem const& mission_item);
+    friend MAVSDK_PUBLIC std::ostream&
+    operator<<(std::ostream& str, MissionRaw::MissionItem const& mission_item);
 
     /**
      * @brief Mission import data
@@ -133,7 +136,7 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool
+    friend MAVSDK_PUBLIC bool
     operator==(const MissionRaw::MissionImportData& lhs, const MissionRaw::MissionImportData& rhs);
 
     /**
@@ -141,7 +144,7 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
+    friend MAVSDK_PUBLIC std::ostream&
     operator<<(std::ostream& str, MissionRaw::MissionImportData const& mission_import_data);
 
     /**
@@ -177,7 +180,8 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, MissionRaw::Result const& result);
+    friend MAVSDK_PUBLIC std::ostream&
+    operator<<(std::ostream& str, MissionRaw::Result const& result);
 
     /**
      * @brief Callback type for asynchronous MissionRaw calls.

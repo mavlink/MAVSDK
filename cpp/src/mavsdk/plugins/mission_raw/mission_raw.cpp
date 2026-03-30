@@ -197,12 +197,14 @@ std::pair<MissionRaw::Result, bool> MissionRaw::is_mission_finished() const
     return _impl->is_mission_finished();
 }
 
-bool operator==(const MissionRaw::MissionProgress& lhs, const MissionRaw::MissionProgress& rhs)
+MAVSDK_PUBLIC bool
+operator==(const MissionRaw::MissionProgress& lhs, const MissionRaw::MissionProgress& rhs)
 {
     return (rhs.current == lhs.current) && (rhs.total == lhs.total);
 }
 
-std::ostream& operator<<(std::ostream& str, MissionRaw::MissionProgress const& mission_progress)
+MAVSDK_PUBLIC std::ostream&
+operator<<(std::ostream& str, MissionRaw::MissionProgress const& mission_progress)
 {
     str << std::setprecision(15);
     str << "mission_progress:" << '\n' << "{\n";
@@ -212,7 +214,8 @@ std::ostream& operator<<(std::ostream& str, MissionRaw::MissionProgress const& m
     return str;
 }
 
-bool operator==(const MissionRaw::MissionItem& lhs, const MissionRaw::MissionItem& rhs)
+MAVSDK_PUBLIC bool
+operator==(const MissionRaw::MissionItem& lhs, const MissionRaw::MissionItem& rhs)
 {
     return (rhs.seq == lhs.seq) && (rhs.frame == lhs.frame) && (rhs.command == lhs.command) &&
            (rhs.current == lhs.current) && (rhs.autocontinue == lhs.autocontinue) &&
@@ -225,7 +228,8 @@ bool operator==(const MissionRaw::MissionItem& lhs, const MissionRaw::MissionIte
            (rhs.mission_type == lhs.mission_type);
 }
 
-std::ostream& operator<<(std::ostream& str, MissionRaw::MissionItem const& mission_item)
+MAVSDK_PUBLIC std::ostream&
+operator<<(std::ostream& str, MissionRaw::MissionItem const& mission_item)
 {
     str << std::setprecision(15);
     str << "mission_item:" << '\n' << "{\n";
@@ -246,13 +250,14 @@ std::ostream& operator<<(std::ostream& str, MissionRaw::MissionItem const& missi
     return str;
 }
 
-bool operator==(const MissionRaw::MissionImportData& lhs, const MissionRaw::MissionImportData& rhs)
+MAVSDK_PUBLIC bool
+operator==(const MissionRaw::MissionImportData& lhs, const MissionRaw::MissionImportData& rhs)
 {
     return (rhs.mission_items == lhs.mission_items) && (rhs.geofence_items == lhs.geofence_items) &&
            (rhs.rally_items == lhs.rally_items);
 }
 
-std::ostream&
+MAVSDK_PUBLIC std::ostream&
 operator<<(std::ostream& str, MissionRaw::MissionImportData const& mission_import_data)
 {
     str << std::setprecision(15);
@@ -282,7 +287,7 @@ operator<<(std::ostream& str, MissionRaw::MissionImportData const& mission_impor
     return str;
 }
 
-std::ostream& operator<<(std::ostream& str, MissionRaw::Result const& result)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, MissionRaw::Result const& result)
 {
     switch (result) {
         case MissionRaw::Result::Unknown:

@@ -1,11 +1,12 @@
 #include "camera_server_impl.h"
 #include "callback_list.tpp"
+#include "mavsdk_export.h"
 
 namespace mavsdk {
 
-template class CallbackList<int32_t>;
-template class CallbackList<CameraServer::TrackPoint>;
-template class CallbackList<CameraServer::TrackRectangle>;
+template class MAVSDK_TEMPL_INST CallbackList<int32_t>;
+template class MAVSDK_TEMPL_INST CallbackList<CameraServer::TrackPoint>;
+template class MAVSDK_TEMPL_INST CallbackList<CameraServer::TrackRectangle>;
 
 CameraServerImpl::CameraServerImpl(std::shared_ptr<ServerComponent> server_component) :
     ServerPluginImplBase(server_component)

@@ -272,7 +272,7 @@ Action::Result Action::set_gps_global_origin(
     return _impl->set_gps_global_origin(latitude_deg, longitude_deg, absolute_altitude_m);
 }
 
-std::ostream& operator<<(std::ostream& str, Action::Result const& result)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Action::Result const& result)
 {
     switch (result) {
         case Action::Result::Unknown:
@@ -310,7 +310,8 @@ std::ostream& operator<<(std::ostream& str, Action::Result const& result)
     }
 }
 
-std::ostream& operator<<(std::ostream& str, Action::OrbitYawBehavior const& orbit_yaw_behavior)
+MAVSDK_PUBLIC std::ostream&
+operator<<(std::ostream& str, Action::OrbitYawBehavior const& orbit_yaw_behavior)
 {
     switch (orbit_yaw_behavior) {
         case Action::OrbitYawBehavior::HoldFrontToCircleCenter:
@@ -328,7 +329,7 @@ std::ostream& operator<<(std::ostream& str, Action::OrbitYawBehavior const& orbi
     }
 }
 
-std::ostream& operator<<(std::ostream& str, Action::RelayCommand const& relay_command)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Action::RelayCommand const& relay_command)
 {
     switch (relay_command) {
         case Action::RelayCommand::On:
