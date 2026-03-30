@@ -132,7 +132,7 @@ ActionServer::Result ActionServer::set_flight_mode_internal(FlightMode flight_mo
     return _impl->set_flight_mode_internal(flight_mode);
 }
 
-bool operator==(
+MAVSDK_PUBLIC bool operator==(
     const ActionServer::AllowableFlightModes& lhs, const ActionServer::AllowableFlightModes& rhs)
 {
     return (rhs.can_auto_mode == lhs.can_auto_mode) &&
@@ -144,7 +144,7 @@ bool operator==(
            (rhs.can_auto_loiter_mode == lhs.can_auto_loiter_mode);
 }
 
-std::ostream&
+MAVSDK_PUBLIC std::ostream&
 operator<<(std::ostream& str, ActionServer::AllowableFlightModes const& allowable_flight_modes)
 {
     str << std::setprecision(15);
@@ -160,12 +160,13 @@ operator<<(std::ostream& str, ActionServer::AllowableFlightModes const& allowabl
     return str;
 }
 
-bool operator==(const ActionServer::ArmDisarm& lhs, const ActionServer::ArmDisarm& rhs)
+MAVSDK_PUBLIC bool
+operator==(const ActionServer::ArmDisarm& lhs, const ActionServer::ArmDisarm& rhs)
 {
     return (rhs.arm == lhs.arm) && (rhs.force == lhs.force);
 }
 
-std::ostream& operator<<(std::ostream& str, ActionServer::ArmDisarm const& arm_disarm)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, ActionServer::ArmDisarm const& arm_disarm)
 {
     str << std::setprecision(15);
     str << "arm_disarm:" << '\n' << "{\n";
@@ -175,7 +176,7 @@ std::ostream& operator<<(std::ostream& str, ActionServer::ArmDisarm const& arm_d
     return str;
 }
 
-std::ostream& operator<<(std::ostream& str, ActionServer::Result const& result)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, ActionServer::Result const& result)
 {
     switch (result) {
         case ActionServer::Result::Unknown:
@@ -209,7 +210,8 @@ std::ostream& operator<<(std::ostream& str, ActionServer::Result const& result)
     }
 }
 
-std::ostream& operator<<(std::ostream& str, ActionServer::FlightMode const& flight_mode)
+MAVSDK_PUBLIC std::ostream&
+operator<<(std::ostream& str, ActionServer::FlightMode const& flight_mode)
 {
     switch (flight_mode) {
         case ActionServer::FlightMode::Unknown:

@@ -45,7 +45,8 @@ MavlinkDirect::Result MavlinkDirect::load_custom_xml(std::string xml_content) co
     return _impl->load_custom_xml(xml_content);
 }
 
-bool operator==(const MavlinkDirect::MavlinkMessage& lhs, const MavlinkDirect::MavlinkMessage& rhs)
+MAVSDK_PUBLIC bool
+operator==(const MavlinkDirect::MavlinkMessage& lhs, const MavlinkDirect::MavlinkMessage& rhs)
 {
     return (rhs.message_name == lhs.message_name) && (rhs.system_id == lhs.system_id) &&
            (rhs.component_id == lhs.component_id) &&
@@ -54,7 +55,8 @@ bool operator==(const MavlinkDirect::MavlinkMessage& lhs, const MavlinkDirect::M
            (rhs.fields_json == lhs.fields_json);
 }
 
-std::ostream& operator<<(std::ostream& str, MavlinkDirect::MavlinkMessage const& mavlink_message)
+MAVSDK_PUBLIC std::ostream&
+operator<<(std::ostream& str, MavlinkDirect::MavlinkMessage const& mavlink_message)
 {
     str << std::setprecision(15);
     str << "mavlink_message:" << '\n' << "{\n";
@@ -68,7 +70,7 @@ std::ostream& operator<<(std::ostream& str, MavlinkDirect::MavlinkMessage const&
     return str;
 }
 
-std::ostream& operator<<(std::ostream& str, MavlinkDirect::Result const& result)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, MavlinkDirect::Result const& result)
 {
     switch (result) {
         case MavlinkDirect::Result::Unknown:

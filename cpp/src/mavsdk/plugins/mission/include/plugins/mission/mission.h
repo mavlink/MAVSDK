@@ -16,6 +16,7 @@
 #include "plugin_base.h"
 
 #include "handle.h"
+#include "mavsdk_export.h"
 
 namespace mavsdk {
 
@@ -25,7 +26,7 @@ class MissionImpl;
 /**
  * @brief Enable waypoint missions.
  */
-class Mission : public PluginBase {
+class MAVSDK_PUBLIC Mission : public PluginBase {
 public:
     /**
      * @brief Constructor. Creates the plugin for a specific System.
@@ -86,7 +87,7 @@ public:
          *
          * @return A reference to the stream.
          */
-        friend std::ostream&
+        friend MAVSDK_PUBLIC std::ostream&
         operator<<(std::ostream& str, Mission::MissionItem::CameraAction const& camera_action);
 
         /**
@@ -107,7 +108,7 @@ public:
          *
          * @return A reference to the stream.
          */
-        friend std::ostream&
+        friend MAVSDK_PUBLIC std::ostream&
         operator<<(std::ostream& str, Mission::MissionItem::VehicleAction const& vehicle_action);
 
         double latitude_deg{double(NAN)}; /**< @brief Latitude in degrees (range: -90 to +90) */
@@ -139,14 +140,16 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(const Mission::MissionItem& lhs, const Mission::MissionItem& rhs);
+    friend MAVSDK_PUBLIC bool
+    operator==(const Mission::MissionItem& lhs, const Mission::MissionItem& rhs);
 
     /**
      * @brief Stream operator to print information about a `Mission::MissionItem`.
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, Mission::MissionItem const& mission_item);
+    friend MAVSDK_PUBLIC std::ostream&
+    operator<<(std::ostream& str, Mission::MissionItem const& mission_item);
 
     /**
      * @brief Mission plan type
@@ -160,14 +163,16 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(const Mission::MissionPlan& lhs, const Mission::MissionPlan& rhs);
+    friend MAVSDK_PUBLIC bool
+    operator==(const Mission::MissionPlan& lhs, const Mission::MissionPlan& rhs);
 
     /**
      * @brief Stream operator to print information about a `Mission::MissionPlan`.
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, Mission::MissionPlan const& mission_plan);
+    friend MAVSDK_PUBLIC std::ostream&
+    operator<<(std::ostream& str, Mission::MissionPlan const& mission_plan);
 
     /**
      * @brief Mission progress type.
@@ -183,7 +188,7 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool
+    friend MAVSDK_PUBLIC bool
     operator==(const Mission::MissionProgress& lhs, const Mission::MissionProgress& rhs);
 
     /**
@@ -191,7 +196,7 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
+    friend MAVSDK_PUBLIC std::ostream&
     operator<<(std::ostream& str, Mission::MissionProgress const& mission_progress);
 
     /**
@@ -222,7 +227,7 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, Mission::Result const& result);
+    friend MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Mission::Result const& result);
 
     /**
      * @brief Progress data coming from mission upload.
@@ -236,14 +241,16 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(const Mission::ProgressData& lhs, const Mission::ProgressData& rhs);
+    friend MAVSDK_PUBLIC bool
+    operator==(const Mission::ProgressData& lhs, const Mission::ProgressData& rhs);
 
     /**
      * @brief Stream operator to print information about a `Mission::ProgressData`.
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, Mission::ProgressData const& progress_data);
+    friend MAVSDK_PUBLIC std::ostream&
+    operator<<(std::ostream& str, Mission::ProgressData const& progress_data);
 
     /**
      * @brief Progress data coming from mission download, or the mission itself (if the transfer
@@ -263,7 +270,7 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(
+    friend MAVSDK_PUBLIC bool operator==(
         const Mission::ProgressDataOrMission& lhs, const Mission::ProgressDataOrMission& rhs);
 
     /**
@@ -271,7 +278,7 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
+    friend MAVSDK_PUBLIC std::ostream&
     operator<<(std::ostream& str, Mission::ProgressDataOrMission const& progress_data_or_mission);
 
     /**

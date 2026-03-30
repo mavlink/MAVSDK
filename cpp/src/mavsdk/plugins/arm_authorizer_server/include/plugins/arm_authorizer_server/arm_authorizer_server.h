@@ -17,6 +17,7 @@
 #include "server_plugin_base.h"
 
 #include "handle.h"
+#include "mavsdk_export.h"
 
 namespace mavsdk {
 
@@ -26,7 +27,7 @@ class ArmAuthorizerServerImpl;
 /**
  * @brief Use arm authorization.
  */
-class ArmAuthorizerServer : public ServerPluginBase {
+class MAVSDK_PUBLIC ArmAuthorizerServer : public ServerPluginBase {
 public:
     /**
      * @brief Constructor. Creates the plugin for a ServerComponent instance.
@@ -64,7 +65,7 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
+    friend MAVSDK_PUBLIC std::ostream&
     operator<<(std::ostream& str, ArmAuthorizerServer::RejectionReason const& rejection_reason);
 
     /**
@@ -81,7 +82,8 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, ArmAuthorizerServer::Result const& result);
+    friend MAVSDK_PUBLIC std::ostream&
+    operator<<(std::ostream& str, ArmAuthorizerServer::Result const& result);
 
     /**
      * @brief Callback type for asynchronous ArmAuthorizerServer calls.

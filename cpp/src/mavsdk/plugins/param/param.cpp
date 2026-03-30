@@ -63,12 +63,12 @@ Param::Result Param::select_component(int32_t component_id, ProtocolVersion prot
     return _impl->select_component(component_id, protocol_version);
 }
 
-bool operator==(const Param::IntParam& lhs, const Param::IntParam& rhs)
+MAVSDK_PUBLIC bool operator==(const Param::IntParam& lhs, const Param::IntParam& rhs)
 {
     return (rhs.name == lhs.name) && (rhs.value == lhs.value);
 }
 
-std::ostream& operator<<(std::ostream& str, Param::IntParam const& int_param)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Param::IntParam const& int_param)
 {
     str << std::setprecision(15);
     str << "int_param:" << '\n' << "{\n";
@@ -78,13 +78,13 @@ std::ostream& operator<<(std::ostream& str, Param::IntParam const& int_param)
     return str;
 }
 
-bool operator==(const Param::FloatParam& lhs, const Param::FloatParam& rhs)
+MAVSDK_PUBLIC bool operator==(const Param::FloatParam& lhs, const Param::FloatParam& rhs)
 {
     return (rhs.name == lhs.name) &&
            ((std::isnan(rhs.value) && std::isnan(lhs.value)) || rhs.value == lhs.value);
 }
 
-std::ostream& operator<<(std::ostream& str, Param::FloatParam const& float_param)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Param::FloatParam const& float_param)
 {
     str << std::setprecision(15);
     str << "float_param:" << '\n' << "{\n";
@@ -94,12 +94,12 @@ std::ostream& operator<<(std::ostream& str, Param::FloatParam const& float_param
     return str;
 }
 
-bool operator==(const Param::CustomParam& lhs, const Param::CustomParam& rhs)
+MAVSDK_PUBLIC bool operator==(const Param::CustomParam& lhs, const Param::CustomParam& rhs)
 {
     return (rhs.name == lhs.name) && (rhs.value == lhs.value);
 }
 
-std::ostream& operator<<(std::ostream& str, Param::CustomParam const& custom_param)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Param::CustomParam const& custom_param)
 {
     str << std::setprecision(15);
     str << "custom_param:" << '\n' << "{\n";
@@ -109,13 +109,13 @@ std::ostream& operator<<(std::ostream& str, Param::CustomParam const& custom_par
     return str;
 }
 
-bool operator==(const Param::AllParams& lhs, const Param::AllParams& rhs)
+MAVSDK_PUBLIC bool operator==(const Param::AllParams& lhs, const Param::AllParams& rhs)
 {
     return (rhs.int_params == lhs.int_params) && (rhs.float_params == lhs.float_params) &&
            (rhs.custom_params == lhs.custom_params);
 }
 
-std::ostream& operator<<(std::ostream& str, Param::AllParams const& all_params)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Param::AllParams const& all_params)
 {
     str << std::setprecision(15);
     str << "all_params:" << '\n' << "{\n";
@@ -138,7 +138,7 @@ std::ostream& operator<<(std::ostream& str, Param::AllParams const& all_params)
     return str;
 }
 
-std::ostream& operator<<(std::ostream& str, Param::Result const& result)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Param::Result const& result)
 {
     switch (result) {
         case Param::Result::Unknown:
@@ -180,7 +180,8 @@ std::ostream& operator<<(std::ostream& str, Param::Result const& result)
     }
 }
 
-std::ostream& operator<<(std::ostream& str, Param::ProtocolVersion const& protocol_version)
+MAVSDK_PUBLIC std::ostream&
+operator<<(std::ostream& str, Param::ProtocolVersion const& protocol_version)
 {
     switch (protocol_version) {
         case Param::ProtocolVersion::V1:

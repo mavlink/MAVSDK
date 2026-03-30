@@ -19,6 +19,7 @@
 #include "plugin_base.h"
 {% endif %}
 #include "handle.h"
+#include "mavsdk_export.h"
 
 namespace mavsdk {
 
@@ -32,7 +33,7 @@ class {{ plugin_name.upper_camel_case }}Impl;
 /**
  * @brief {{ class_description | replace('\n', '\n *')}}
  */
-class {{ plugin_name.upper_camel_case }} : public {% if is_server %}ServerPluginBase{% else %}PluginBase{% endif %} {
+class MAVSDK_PUBLIC {{ plugin_name.upper_camel_case }} : public {% if is_server %}ServerPluginBase{% else %}PluginBase{% endif %} {
 public:
 {% if is_server %}
     /**

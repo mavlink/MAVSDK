@@ -16,6 +16,7 @@
 #include "plugin_base.h"
 
 #include "handle.h"
+#include "mavsdk_export.h"
 
 namespace mavsdk {
 
@@ -26,7 +27,7 @@ class GimbalImpl;
  * @brief Provide control over a gimbal within the MAVLink
  * Gimbal Protocol: https://mavlink.io/en/services/gimbal_v2.html
  */
-class Gimbal : public PluginBase {
+class MAVSDK_PUBLIC Gimbal : public PluginBase {
 public:
     /**
      * @brief Constructor. Creates the plugin for a specific System.
@@ -72,7 +73,8 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, Gimbal::GimbalMode const& gimbal_mode);
+    friend MAVSDK_PUBLIC std::ostream&
+    operator<<(std::ostream& str, Gimbal::GimbalMode const& gimbal_mode);
 
     /**
      * @brief Control mode
@@ -88,7 +90,8 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, Gimbal::ControlMode const& control_mode);
+    friend MAVSDK_PUBLIC std::ostream&
+    operator<<(std::ostream& str, Gimbal::ControlMode const& control_mode);
 
     /**
      * @brief The send mode type
@@ -105,7 +108,8 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, Gimbal::SendMode const& send_mode);
+    friend MAVSDK_PUBLIC std::ostream&
+    operator<<(std::ostream& str, Gimbal::SendMode const& send_mode);
 
     /**
      * @brief Quaternion type.
@@ -129,14 +133,16 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(const Gimbal::Quaternion& lhs, const Gimbal::Quaternion& rhs);
+    friend MAVSDK_PUBLIC bool
+    operator==(const Gimbal::Quaternion& lhs, const Gimbal::Quaternion& rhs);
 
     /**
      * @brief Stream operator to print information about a `Gimbal::Quaternion`.
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, Gimbal::Quaternion const& quaternion);
+    friend MAVSDK_PUBLIC std::ostream&
+    operator<<(std::ostream& str, Gimbal::Quaternion const& quaternion);
 
     /**
      * @brief Euler angle type.
@@ -161,14 +167,16 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(const Gimbal::EulerAngle& lhs, const Gimbal::EulerAngle& rhs);
+    friend MAVSDK_PUBLIC bool
+    operator==(const Gimbal::EulerAngle& lhs, const Gimbal::EulerAngle& rhs);
 
     /**
      * @brief Stream operator to print information about a `Gimbal::EulerAngle`.
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, Gimbal::EulerAngle const& euler_angle);
+    friend MAVSDK_PUBLIC std::ostream&
+    operator<<(std::ostream& str, Gimbal::EulerAngle const& euler_angle);
 
     /**
      * @brief Gimbal angular rate type
@@ -184,7 +192,7 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool
+    friend MAVSDK_PUBLIC bool
     operator==(const Gimbal::AngularVelocityBody& lhs, const Gimbal::AngularVelocityBody& rhs);
 
     /**
@@ -192,7 +200,7 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
+    friend MAVSDK_PUBLIC std::ostream&
     operator<<(std::ostream& str, Gimbal::AngularVelocityBody const& angular_velocity_body);
 
     /**
@@ -213,14 +221,15 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(const Gimbal::Attitude& lhs, const Gimbal::Attitude& rhs);
+    friend MAVSDK_PUBLIC bool operator==(const Gimbal::Attitude& lhs, const Gimbal::Attitude& rhs);
 
     /**
      * @brief Stream operator to print information about a `Gimbal::Attitude`.
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, Gimbal::Attitude const& attitude);
+    friend MAVSDK_PUBLIC std::ostream&
+    operator<<(std::ostream& str, Gimbal::Attitude const& attitude);
 
     /**
      * @brief Gimbal list item
@@ -240,14 +249,16 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(const Gimbal::GimbalItem& lhs, const Gimbal::GimbalItem& rhs);
+    friend MAVSDK_PUBLIC bool
+    operator==(const Gimbal::GimbalItem& lhs, const Gimbal::GimbalItem& rhs);
 
     /**
      * @brief Stream operator to print information about a `Gimbal::GimbalItem`.
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, Gimbal::GimbalItem const& gimbal_item);
+    friend MAVSDK_PUBLIC std::ostream&
+    operator<<(std::ostream& str, Gimbal::GimbalItem const& gimbal_item);
 
     /**
      * @brief Gimbal list
@@ -261,14 +272,16 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(const Gimbal::GimbalList& lhs, const Gimbal::GimbalList& rhs);
+    friend MAVSDK_PUBLIC bool
+    operator==(const Gimbal::GimbalList& lhs, const Gimbal::GimbalList& rhs);
 
     /**
      * @brief Stream operator to print information about a `Gimbal::GimbalList`.
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, Gimbal::GimbalList const& gimbal_list);
+    friend MAVSDK_PUBLIC std::ostream&
+    operator<<(std::ostream& str, Gimbal::GimbalList const& gimbal_list);
 
     /**
      * @brief Control status
@@ -292,14 +305,16 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(const Gimbal::ControlStatus& lhs, const Gimbal::ControlStatus& rhs);
+    friend MAVSDK_PUBLIC bool
+    operator==(const Gimbal::ControlStatus& lhs, const Gimbal::ControlStatus& rhs);
 
     /**
      * @brief Stream operator to print information about a `Gimbal::ControlStatus`.
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, Gimbal::ControlStatus const& control_status);
+    friend MAVSDK_PUBLIC std::ostream&
+    operator<<(std::ostream& str, Gimbal::ControlStatus const& control_status);
 
     /**
      * @brief Possible results returned for gimbal commands.
@@ -319,7 +334,7 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, Gimbal::Result const& result);
+    friend MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Gimbal::Result const& result);
 
     /**
      * @brief Callback type for asynchronous Gimbal calls.

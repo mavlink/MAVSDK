@@ -16,6 +16,7 @@
 #include "plugin_base.h"
 
 #include "handle.h"
+#include "mavsdk_export.h"
 
 namespace mavsdk {
 
@@ -25,7 +26,7 @@ class EventsImpl;
 /**
  * @brief Get event notifications, such as takeoff, or arming checks
  */
-class Events : public PluginBase {
+class MAVSDK_PUBLIC Events : public PluginBase {
 public:
     /**
      * @brief Constructor. Creates the plugin for a specific System.
@@ -77,7 +78,8 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, Events::LogLevel const& log_level);
+    friend MAVSDK_PUBLIC std::ostream&
+    operator<<(std::ostream& str, Events::LogLevel const& log_level);
 
     /**
      * @brief Event type
@@ -97,14 +99,14 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(const Events::Event& lhs, const Events::Event& rhs);
+    friend MAVSDK_PUBLIC bool operator==(const Events::Event& lhs, const Events::Event& rhs);
 
     /**
      * @brief Stream operator to print information about a `Events::Event`.
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, Events::Event const& event);
+    friend MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Events::Event const& event);
 
     /**
      * @brief Health and arming check problem type
@@ -122,7 +124,7 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(
+    friend MAVSDK_PUBLIC bool operator==(
         const Events::HealthAndArmingCheckProblem& lhs,
         const Events::HealthAndArmingCheckProblem& rhs);
 
@@ -131,7 +133,7 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(
+    friend MAVSDK_PUBLIC std::ostream& operator<<(
         std::ostream& str,
         Events::HealthAndArmingCheckProblem const& health_and_arming_check_problem);
 
@@ -151,7 +153,7 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(
+    friend MAVSDK_PUBLIC bool operator==(
         const Events::HealthAndArmingCheckMode& lhs, const Events::HealthAndArmingCheckMode& rhs);
 
     /**
@@ -159,7 +161,7 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(
+    friend MAVSDK_PUBLIC std::ostream& operator<<(
         std::ostream& str, Events::HealthAndArmingCheckMode const& health_and_arming_check_mode);
 
     /**
@@ -179,7 +181,7 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool
+    friend MAVSDK_PUBLIC bool
     operator==(const Events::HealthComponentReport& lhs, const Events::HealthComponentReport& rhs);
 
     /**
@@ -187,7 +189,7 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
+    friend MAVSDK_PUBLIC std::ostream&
     operator<<(std::ostream& str, Events::HealthComponentReport const& health_component_report);
 
     /**
@@ -207,7 +209,7 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(
+    friend MAVSDK_PUBLIC bool operator==(
         const Events::HealthAndArmingCheckReport& lhs,
         const Events::HealthAndArmingCheckReport& rhs);
 
@@ -216,7 +218,7 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(
+    friend MAVSDK_PUBLIC std::ostream& operator<<(
         std::ostream& str,
         Events::HealthAndArmingCheckReport const& health_and_arming_check_report);
 
@@ -240,7 +242,7 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, Events::Result const& result);
+    friend MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Events::Result const& result);
 
     /**
      * @brief Callback type for asynchronous Events calls.

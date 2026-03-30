@@ -28,12 +28,13 @@ Tune::Result Tune::play_tune(TuneDescription tune_description) const
     return _impl->play_tune(tune_description);
 }
 
-bool operator==(const Tune::TuneDescription& lhs, const Tune::TuneDescription& rhs)
+MAVSDK_PUBLIC bool operator==(const Tune::TuneDescription& lhs, const Tune::TuneDescription& rhs)
 {
     return (rhs.song_elements == lhs.song_elements) && (rhs.tempo == lhs.tempo);
 }
 
-std::ostream& operator<<(std::ostream& str, Tune::TuneDescription const& tune_description)
+MAVSDK_PUBLIC std::ostream&
+operator<<(std::ostream& str, Tune::TuneDescription const& tune_description)
 {
     str << std::setprecision(15);
     str << "tune_description:" << '\n' << "{\n";
@@ -49,7 +50,7 @@ std::ostream& operator<<(std::ostream& str, Tune::TuneDescription const& tune_de
     return str;
 }
 
-std::ostream& operator<<(std::ostream& str, Tune::Result const& result)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Tune::Result const& result)
 {
     switch (result) {
         case Tune::Result::Unknown:
@@ -69,7 +70,7 @@ std::ostream& operator<<(std::ostream& str, Tune::Result const& result)
     }
 }
 
-std::ostream& operator<<(std::ostream& str, Tune::SongElement const& song_element)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Tune::SongElement const& song_element)
 {
     switch (song_element) {
         case Tune::SongElement::StyleLegato:

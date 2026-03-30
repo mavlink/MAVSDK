@@ -16,6 +16,7 @@
 #include "plugin_base.h"
 
 #include "handle.h"
+#include "mavsdk_export.h"
 
 namespace mavsdk {
 
@@ -25,7 +26,7 @@ class FtpImpl;
 /**
  * @brief Implements file transfer functionality using MAVLink FTP.
  */
-class Ftp : public PluginBase {
+class MAVSDK_PUBLIC Ftp : public PluginBase {
 public:
     /**
      * @brief Constructor. Creates the plugin for a specific System.
@@ -71,14 +72,15 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(const Ftp::ListDirectoryData& lhs, const Ftp::ListDirectoryData& rhs);
+    friend MAVSDK_PUBLIC bool
+    operator==(const Ftp::ListDirectoryData& lhs, const Ftp::ListDirectoryData& rhs);
 
     /**
      * @brief Stream operator to print information about a `Ftp::ListDirectoryData`.
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
+    friend MAVSDK_PUBLIC std::ostream&
     operator<<(std::ostream& str, Ftp::ListDirectoryData const& list_directory_data);
 
     /**
@@ -94,14 +96,16 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(const Ftp::ProgressData& lhs, const Ftp::ProgressData& rhs);
+    friend MAVSDK_PUBLIC bool
+    operator==(const Ftp::ProgressData& lhs, const Ftp::ProgressData& rhs);
 
     /**
      * @brief Stream operator to print information about a `Ftp::ProgressData`.
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, Ftp::ProgressData const& progress_data);
+    friend MAVSDK_PUBLIC std::ostream&
+    operator<<(std::ostream& str, Ftp::ProgressData const& progress_data);
 
     /**
      * @brief Possible results returned for FTP commands
@@ -127,7 +131,7 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, Ftp::Result const& result);
+    friend MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Ftp::Result const& result);
 
     /**
      * @brief Callback type for asynchronous Ftp calls.

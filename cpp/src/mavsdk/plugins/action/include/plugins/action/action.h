@@ -16,6 +16,7 @@
 #include "plugin_base.h"
 
 #include "handle.h"
+#include "mavsdk_export.h"
 
 namespace mavsdk {
 
@@ -25,7 +26,7 @@ class ActionImpl;
 /**
  * @brief Enable simple actions such as arming, taking off, and landing.
  */
-class Action : public PluginBase {
+class MAVSDK_PUBLIC Action : public PluginBase {
 public:
     /**
      * @brief Constructor. Creates the plugin for a specific System.
@@ -75,7 +76,7 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
+    friend MAVSDK_PUBLIC std::ostream&
     operator<<(std::ostream& str, Action::OrbitYawBehavior const& orbit_yaw_behavior);
 
     /**
@@ -91,7 +92,8 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, Action::RelayCommand const& relay_command);
+    friend MAVSDK_PUBLIC std::ostream&
+    operator<<(std::ostream& str, Action::RelayCommand const& relay_command);
 
     /**
      * @brief Possible results returned for action requests.
@@ -120,7 +122,7 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, Action::Result const& result);
+    friend MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Action::Result const& result);
 
     /**
      * @brief Callback type for asynchronous Action calls.

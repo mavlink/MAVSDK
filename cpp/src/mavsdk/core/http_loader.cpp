@@ -4,6 +4,12 @@
 
 namespace mavsdk {
 
+HttpLoader::HttpLoader(std::unique_ptr<ICurlWrapper> curl_wrapper) :
+    _curl_wrapper(std::move(curl_wrapper))
+{
+    start();
+}
+
 HttpLoader::HttpLoader() : _curl_wrapper(std::make_unique<CurlWrapper>(CurlWrapper()))
 {
     start();

@@ -9,6 +9,7 @@
 #include <optional>
 #include <string>
 #include <map>
+#include "mavsdk_export.h"
 
 namespace mavsdk {
 
@@ -21,7 +22,7 @@ namespace mavsdk {
  *   (however there is no lock held when returning a file from a cache, so the assumption is that
  *   the cache is large enough so no other process evicts the file until it is used).
  */
-class FileCache {
+class MAVSDK_TEST_EXPORT FileCache {
 public:
     FileCache(std::filesystem::path path, int max_num_files, bool verbose_debugging = false);
 
