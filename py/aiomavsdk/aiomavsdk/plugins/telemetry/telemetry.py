@@ -1575,6 +1575,23 @@ class TelemetryAsync:
             None, lambda: self._plugin.set_rate_gps_info(rate_hz)
         )
 
+    async def set_rate_raw_gps(self, rate_hz):
+        """
+        Set rate to 'Raw GPS' updates.
+
+        Parameters
+        ----------
+        rate_hz : float
+        Raises
+        ------
+        TelemetryError
+            If the request fails. The error contains the reason for the failure.
+        """
+        loop = asyncio.get_running_loop()
+        return await loop.run_in_executor(
+            None, lambda: self._plugin.set_rate_raw_gps(rate_hz)
+        )
+
     async def set_rate_battery(self, rate_hz):
         """
         Set rate to 'battery' updates.

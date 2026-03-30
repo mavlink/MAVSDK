@@ -1719,6 +1719,7 @@ typedef void (*mavsdk_telemetry_set_rate_attitude_quaternion_callback_t)(const m
 typedef void (*mavsdk_telemetry_set_rate_attitude_euler_callback_t)(const mavsdk_telemetry_result_t result, void* user_data);
 typedef void (*mavsdk_telemetry_set_rate_velocity_ned_callback_t)(const mavsdk_telemetry_result_t result, void* user_data);
 typedef void (*mavsdk_telemetry_set_rate_gps_info_callback_t)(const mavsdk_telemetry_result_t result, void* user_data);
+typedef void (*mavsdk_telemetry_set_rate_raw_gps_callback_t)(const mavsdk_telemetry_result_t result, void* user_data);
 typedef void (*mavsdk_telemetry_set_rate_battery_callback_t)(const mavsdk_telemetry_result_t result, void* user_data);
 typedef void (*mavsdk_telemetry_set_rate_rc_status_callback_t)(const mavsdk_telemetry_result_t result, void* user_data);
 typedef void (*mavsdk_telemetry_set_rate_actuator_control_target_callback_t)(const mavsdk_telemetry_result_t result, void* user_data);
@@ -3338,6 +3339,37 @@ CMAVSDK_EXPORT void mavsdk_telemetry_set_rate_gps_info_async(
 CMAVSDK_EXPORT
 mavsdk_telemetry_result_t
 mavsdk_telemetry_set_rate_gps_info(
+    mavsdk_telemetry_t telemetry,
+    double rate_hz);
+
+
+/**
+ * @brief Set rate to 'Raw GPS' updates.
+ *
+ * @param telemetry The telemetry instance.
+* @param rate_hz  The requested rate (in Hertz)
+ *
+ * @param callback Function to call when new data is available.
+ * @param user_data User data to pass to the callback.
+ */
+CMAVSDK_EXPORT void mavsdk_telemetry_set_rate_raw_gps_async(
+    mavsdk_telemetry_t telemetry,
+    double rate_hz,
+    mavsdk_telemetry_set_rate_raw_gps_callback_t callback,
+    void* user_data);
+
+
+/**
+ * @brief Get the current set rate raw gps (blocking).
+ *
+ * This function blocks until a value is available.
+ *
+ * @param telemetry The telemetry instance.
+ * @param set_rate_raw_gps_out Pointer to store the result.
+ */
+CMAVSDK_EXPORT
+mavsdk_telemetry_result_t
+mavsdk_telemetry_set_rate_raw_gps(
     mavsdk_telemetry_t telemetry,
     double rate_hz);
 

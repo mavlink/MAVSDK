@@ -3095,6 +3095,34 @@ public:
         return grpc::Status::OK;
     }
 
+    grpc::Status SetRateRawGps(
+        grpc::ServerContext* /* context */,
+        const rpc::telemetry::SetRateRawGpsRequest* request,
+        rpc::telemetry::SetRateRawGpsResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                auto result = mavsdk::Telemetry::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        if (request == nullptr) {
+            LogWarn() << "SetRateRawGps sent with a null request! Ignoring...";
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->set_rate_raw_gps(request->rate_hz());
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+
+        return grpc::Status::OK;
+    }
+
     grpc::Status SetRateBattery(
         grpc::ServerContext* /* context */,
         const rpc::telemetry::SetRateBatteryRequest* request,

@@ -646,6 +646,16 @@ Telemetry::Result Telemetry::set_rate_gps_info(double rate_hz) const
     return _impl->set_rate_gps_info(rate_hz);
 }
 
+void Telemetry::set_rate_raw_gps_async(double rate_hz, const ResultCallback callback)
+{
+    _impl->set_rate_raw_gps_async(rate_hz, callback);
+}
+
+Telemetry::Result Telemetry::set_rate_raw_gps(double rate_hz) const
+{
+    return _impl->set_rate_raw_gps(rate_hz);
+}
+
 void Telemetry::set_rate_battery_async(double rate_hz, const ResultCallback callback)
 {
     _impl->set_rate_battery_async(rate_hz, callback);
