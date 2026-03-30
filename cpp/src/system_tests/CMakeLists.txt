@@ -1,4 +1,5 @@
 add_executable(system_tests_runner
+    camera_definition.cpp
     camera_mode.cpp
     camera_take_photo.cpp
     camera_take_photo_interval.cpp
