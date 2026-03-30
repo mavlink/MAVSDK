@@ -1435,7 +1435,8 @@ void CameraImpl::check_camera_definition_with_lock(PotentialCamera& potential_ca
                             if (downloaded_filepath.extension() == ".xz") {
                                 auto decompressed = downloaded_filepath;
                                 decompressed.replace_extension(".extracted");
-                                if (InflateLZMA::inflateLZMAFile(downloaded_filepath, decompressed)) {
+                                if (InflateLZMA::inflateLZMAFile(
+                                        downloaded_filepath, decompressed)) {
                                     std::filesystem::remove(downloaded_filepath);
                                     downloaded_filepath = decompressed;
                                 } else {
