@@ -350,6 +350,7 @@ mavsdk_geofence_upload_geofence(
  *  Downloads polygon and circular geofences from the vehicle.
  *
  * @param geofence The geofence instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
