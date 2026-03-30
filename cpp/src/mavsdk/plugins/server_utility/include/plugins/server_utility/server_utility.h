@@ -17,6 +17,7 @@
 #include "plugin_base.h"
 
 #include "handle.h"
+#include "mavsdk_export.h"
 
 namespace mavsdk {
 
@@ -26,7 +27,7 @@ class ServerUtilityImpl;
 /**
  * @brief Utility for onboard MAVSDK instances for common "server" tasks.
  */
-class ServerUtility : public PluginBase {
+class MAVSDK_PUBLIC ServerUtility : public PluginBase {
 public:
     /**
      * @brief Constructor. Creates the plugin for a specific System.
@@ -78,7 +79,7 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
+    friend MAVSDK_PUBLIC std::ostream&
     operator<<(std::ostream& str, ServerUtility::StatusTextType const& status_text_type);
 
     /**
@@ -97,7 +98,8 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, ServerUtility::Result const& result);
+    friend MAVSDK_PUBLIC std::ostream&
+    operator<<(std::ostream& str, ServerUtility::Result const& result);
 
     /**
      * @brief Callback type for asynchronous ServerUtility calls.

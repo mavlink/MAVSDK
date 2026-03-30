@@ -17,6 +17,7 @@
 #include "plugin_base.h"
 
 #include "handle.h"
+#include "mavsdk_export.h"
 
 namespace mavsdk {
 
@@ -26,7 +27,7 @@ class ComponentMetadataImpl;
 /**
  * @brief Access component metadata json definitions, such as parameters.
  */
-class ComponentMetadata : public PluginBase {
+class MAVSDK_PUBLIC ComponentMetadata : public PluginBase {
 public:
     /**
      * @brief Constructor. Creates the plugin for a specific System.
@@ -75,7 +76,7 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
+    friend MAVSDK_PUBLIC std::ostream&
     operator<<(std::ostream& str, ComponentMetadata::MetadataType const& metadata_type);
 
     /**
@@ -90,7 +91,7 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(
+    friend MAVSDK_PUBLIC bool operator==(
         const ComponentMetadata::MetadataData& lhs, const ComponentMetadata::MetadataData& rhs);
 
     /**
@@ -98,7 +99,7 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
+    friend MAVSDK_PUBLIC std::ostream&
     operator<<(std::ostream& str, ComponentMetadata::MetadataData const& metadata_data);
 
     /**
@@ -121,7 +122,8 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, ComponentMetadata::Result const& result);
+    friend MAVSDK_PUBLIC std::ostream&
+    operator<<(std::ostream& str, ComponentMetadata::Result const& result);
 
     /**
      * @brief Metadata for a given component and type
@@ -137,7 +139,7 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(
+    friend MAVSDK_PUBLIC bool operator==(
         const ComponentMetadata::MetadataUpdate& lhs, const ComponentMetadata::MetadataUpdate& rhs);
 
     /**
@@ -145,7 +147,7 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
+    friend MAVSDK_PUBLIC std::ostream&
     operator<<(std::ostream& str, ComponentMetadata::MetadataUpdate const& metadata_update);
 
     /**

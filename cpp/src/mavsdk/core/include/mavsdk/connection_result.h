@@ -2,6 +2,8 @@
 
 #include <sstream>
 
+#include "mavsdk_export.h"
+
 /**
  * @brief Namespace for all mavsdk types.
  */
@@ -35,6 +37,6 @@ enum class ConnectionResult {
  *
  * @return A reference to the stream.
  */
-std::ostream& operator<<(std::ostream& str, const ConnectionResult& result);
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, const ConnectionResult& result);
 
 } // namespace mavsdk

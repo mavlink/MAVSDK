@@ -6,10 +6,12 @@
 #include <fstream> // for `std::ifstream`
 #include <sstream> // for `std::stringstream`
 
+#include "mavsdk_export.h"
+
 namespace mavsdk {
 
-template class CallbackList<MissionRaw::MissionProgress>;
-template class CallbackList<bool>;
+template class MAVSDK_TEMPL_INST CallbackList<MissionRaw::MissionProgress>;
+template class MAVSDK_TEMPL_INST CallbackList<bool>;
 
 // This is an empty item that can be sent to ArduPilot to mimic clearing of mission.
 constexpr MissionRaw::MissionItem empty_item{0, 3, 16, 1};

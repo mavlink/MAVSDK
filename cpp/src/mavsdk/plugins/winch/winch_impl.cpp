@@ -1,10 +1,11 @@
 #include "winch_impl.h"
 #include "system.h"
 #include "callback_list.tpp"
+#include "mavsdk_export.h"
 
 namespace mavsdk {
 
-template class CallbackList<Winch::Status>;
+template class MAVSDK_TEMPL_INST CallbackList<Winch::Status>;
 
 WinchImpl::WinchImpl(System& system) : PluginImplBase(system)
 {

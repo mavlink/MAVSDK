@@ -56,7 +56,7 @@ FollowMe::Result FollowMe::stop() const
     return _impl->stop();
 }
 
-std::ostream&
+MAVSDK_PUBLIC std::ostream&
 operator<<(std::ostream& str, FollowMe::Config::FollowAltitudeMode const& follow_altitude_mode)
 {
     switch (follow_altitude_mode) {
@@ -70,7 +70,7 @@ operator<<(std::ostream& str, FollowMe::Config::FollowAltitudeMode const& follow
             return str << "Unknown";
     }
 }
-bool operator==(const FollowMe::Config& lhs, const FollowMe::Config& rhs)
+MAVSDK_PUBLIC bool operator==(const FollowMe::Config& lhs, const FollowMe::Config& rhs)
 {
     return ((std::isnan(rhs.follow_height_m) && std::isnan(lhs.follow_height_m)) ||
             rhs.follow_height_m == lhs.follow_height_m) &&
@@ -85,7 +85,7 @@ bool operator==(const FollowMe::Config& lhs, const FollowMe::Config& rhs)
             rhs.follow_angle_deg == lhs.follow_angle_deg);
 }
 
-std::ostream& operator<<(std::ostream& str, FollowMe::Config const& config)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, FollowMe::Config const& config)
 {
     str << std::setprecision(15);
     str << "config:" << '\n' << "{\n";
@@ -99,7 +99,8 @@ std::ostream& operator<<(std::ostream& str, FollowMe::Config const& config)
     return str;
 }
 
-bool operator==(const FollowMe::TargetLocation& lhs, const FollowMe::TargetLocation& rhs)
+MAVSDK_PUBLIC bool
+operator==(const FollowMe::TargetLocation& lhs, const FollowMe::TargetLocation& rhs)
 {
     return ((std::isnan(rhs.latitude_deg) && std::isnan(lhs.latitude_deg)) ||
             rhs.latitude_deg == lhs.latitude_deg) &&
@@ -115,7 +116,8 @@ bool operator==(const FollowMe::TargetLocation& lhs, const FollowMe::TargetLocat
             rhs.velocity_z_m_s == lhs.velocity_z_m_s);
 }
 
-std::ostream& operator<<(std::ostream& str, FollowMe::TargetLocation const& target_location)
+MAVSDK_PUBLIC std::ostream&
+operator<<(std::ostream& str, FollowMe::TargetLocation const& target_location)
 {
     str << std::setprecision(15);
     str << "target_location:" << '\n' << "{\n";
@@ -129,7 +131,7 @@ std::ostream& operator<<(std::ostream& str, FollowMe::TargetLocation const& targ
     return str;
 }
 
-std::ostream& operator<<(std::ostream& str, FollowMe::Result const& result)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, FollowMe::Result const& result)
 {
     switch (result) {
         case FollowMe::Result::Unknown:

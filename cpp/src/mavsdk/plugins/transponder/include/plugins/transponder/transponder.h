@@ -16,6 +16,7 @@
 #include "plugin_base.h"
 
 #include "handle.h"
+#include "mavsdk_export.h"
 
 namespace mavsdk {
 
@@ -26,7 +27,7 @@ class TransponderImpl;
  * @brief Allow users to get ADS-B information
  * and set ADS-B update rates.
  */
-class Transponder : public PluginBase {
+class MAVSDK_PUBLIC Transponder : public PluginBase {
 public:
     /**
      * @brief Constructor. Creates the plugin for a specific System.
@@ -90,7 +91,7 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
+    friend MAVSDK_PUBLIC std::ostream&
     operator<<(std::ostream& str, Transponder::AdsbEmitterType const& adsb_emitter_type);
 
     /**
@@ -106,7 +107,7 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
+    friend MAVSDK_PUBLIC std::ostream&
     operator<<(std::ostream& str, Transponder::AdsbAltitudeType const& adsb_altitude_type);
 
     /**
@@ -134,7 +135,7 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool
+    friend MAVSDK_PUBLIC bool
     operator==(const Transponder::AdsbVehicle& lhs, const Transponder::AdsbVehicle& rhs);
 
     /**
@@ -142,7 +143,7 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
+    friend MAVSDK_PUBLIC std::ostream&
     operator<<(std::ostream& str, Transponder::AdsbVehicle const& adsb_vehicle);
 
     /**
@@ -163,7 +164,8 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, Transponder::Result const& result);
+    friend MAVSDK_PUBLIC std::ostream&
+    operator<<(std::ostream& str, Transponder::Result const& result);
 
     /**
      * @brief Callback type for asynchronous Transponder calls.

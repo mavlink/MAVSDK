@@ -16,6 +16,7 @@
 #include "server_plugin_base.h"
 
 #include "handle.h"
+#include "mavsdk_export.h"
 
 namespace mavsdk {
 
@@ -25,7 +26,7 @@ class ParamServerImpl;
 /**
  * @brief Provide raw access to retrieve and provide server parameters.
  */
-class ParamServer : public ServerPluginBase {
+class MAVSDK_PUBLIC ParamServer : public ServerPluginBase {
 public:
     /**
      * @brief Constructor. Creates the plugin for a ServerComponent instance.
@@ -58,14 +59,16 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(const ParamServer::IntParam& lhs, const ParamServer::IntParam& rhs);
+    friend MAVSDK_PUBLIC bool
+    operator==(const ParamServer::IntParam& lhs, const ParamServer::IntParam& rhs);
 
     /**
      * @brief Stream operator to print information about a `ParamServer::IntParam`.
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, ParamServer::IntParam const& int_param);
+    friend MAVSDK_PUBLIC std::ostream&
+    operator<<(std::ostream& str, ParamServer::IntParam const& int_param);
 
     /**
      * @brief Type for float parameters.
@@ -80,14 +83,16 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(const ParamServer::FloatParam& lhs, const ParamServer::FloatParam& rhs);
+    friend MAVSDK_PUBLIC bool
+    operator==(const ParamServer::FloatParam& lhs, const ParamServer::FloatParam& rhs);
 
     /**
      * @brief Stream operator to print information about a `ParamServer::FloatParam`.
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, ParamServer::FloatParam const& float_param);
+    friend MAVSDK_PUBLIC std::ostream&
+    operator<<(std::ostream& str, ParamServer::FloatParam const& float_param);
 
     /**
      * @brief Type for float parameters.
@@ -102,7 +107,7 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool
+    friend MAVSDK_PUBLIC bool
     operator==(const ParamServer::CustomParam& lhs, const ParamServer::CustomParam& rhs);
 
     /**
@@ -110,7 +115,7 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
+    friend MAVSDK_PUBLIC std::ostream&
     operator<<(std::ostream& str, ParamServer::CustomParam const& custom_param);
 
     /**
@@ -130,14 +135,16 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(const ParamServer::AllParams& lhs, const ParamServer::AllParams& rhs);
+    friend MAVSDK_PUBLIC bool
+    operator==(const ParamServer::AllParams& lhs, const ParamServer::AllParams& rhs);
 
     /**
      * @brief Stream operator to print information about a `ParamServer::AllParams`.
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, ParamServer::AllParams const& all_params);
+    friend MAVSDK_PUBLIC std::ostream&
+    operator<<(std::ostream& str, ParamServer::AllParams const& all_params);
 
     /**
      * @brief Possible results returned for param requests.
@@ -158,7 +165,8 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, ParamServer::Result const& result);
+    friend MAVSDK_PUBLIC std::ostream&
+    operator<<(std::ostream& str, ParamServer::Result const& result);
 
     /**
      * @brief Callback type for asynchronous ParamServer calls.

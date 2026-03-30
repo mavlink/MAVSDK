@@ -1,9 +1,10 @@
 #include "transponder_impl.h"
 #include "callback_list.tpp"
+#include "mavsdk_export.h"
 
 namespace mavsdk {
 
-template class CallbackList<Transponder::AdsbVehicle>;
+template class MAVSDK_TEMPL_INST CallbackList<Transponder::AdsbVehicle>;
 
 TransponderImpl::TransponderImpl(System& system) : PluginImplBase(system)
 {

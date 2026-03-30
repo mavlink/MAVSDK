@@ -138,7 +138,7 @@ Winch::Result Winch::load_payload(uint32_t instance) const
     return _impl->load_payload(instance);
 }
 
-bool operator==(const Winch::StatusFlags& lhs, const Winch::StatusFlags& rhs)
+MAVSDK_PUBLIC bool operator==(const Winch::StatusFlags& lhs, const Winch::StatusFlags& rhs)
 {
     return (rhs.healthy == lhs.healthy) && (rhs.fully_retracted == lhs.fully_retracted) &&
            (rhs.moving == lhs.moving) && (rhs.clutch_engaged == lhs.clutch_engaged) &&
@@ -149,7 +149,7 @@ bool operator==(const Winch::StatusFlags& lhs, const Winch::StatusFlags& rhs)
            (rhs.load_line == lhs.load_line) && (rhs.load_payload == lhs.load_payload);
 }
 
-std::ostream& operator<<(std::ostream& str, Winch::StatusFlags const& status_flags)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Winch::StatusFlags const& status_flags)
 {
     str << std::setprecision(15);
     str << "status_flags:" << '\n' << "{\n";
@@ -171,7 +171,7 @@ std::ostream& operator<<(std::ostream& str, Winch::StatusFlags const& status_fla
     return str;
 }
 
-bool operator==(const Winch::Status& lhs, const Winch::Status& rhs)
+MAVSDK_PUBLIC bool operator==(const Winch::Status& lhs, const Winch::Status& rhs)
 {
     return (rhs.time_usec == lhs.time_usec) &&
            ((std::isnan(rhs.line_length_m) && std::isnan(lhs.line_length_m)) ||
@@ -187,7 +187,7 @@ bool operator==(const Winch::Status& lhs, const Winch::Status& rhs)
            (rhs.temperature_c == lhs.temperature_c) && (rhs.status_flags == lhs.status_flags);
 }
 
-std::ostream& operator<<(std::ostream& str, Winch::Status const& status)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Winch::Status const& status)
 {
     str << std::setprecision(15);
     str << "status:" << '\n' << "{\n";
@@ -203,7 +203,7 @@ std::ostream& operator<<(std::ostream& str, Winch::Status const& status)
     return str;
 }
 
-std::ostream& operator<<(std::ostream& str, Winch::Result const& result)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Winch::Result const& result)
 {
     switch (result) {
         case Winch::Result::Unknown:
@@ -225,7 +225,7 @@ std::ostream& operator<<(std::ostream& str, Winch::Result const& result)
     }
 }
 
-std::ostream& operator<<(std::ostream& str, Winch::WinchAction const& winch_action)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Winch::WinchAction const& winch_action)
 {
     switch (winch_action) {
         case Winch::WinchAction::Relaxed:

@@ -25,9 +25,11 @@
 #include "embedded_mavlink_xml.h"
 #include <mav/MessageSet.h>
 
+#include "mavsdk_export.h"
+
 namespace mavsdk {
 
-template class CallbackList<>;
+template class MAVSDK_TEMPL_INST CallbackList<>;
 
 MavsdkImpl::MavsdkImpl(const Mavsdk::Configuration& configuration) :
     timeout_handler(time),

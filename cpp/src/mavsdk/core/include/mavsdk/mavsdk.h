@@ -15,6 +15,7 @@
 #include "server_component.h"
 #include "connection_result.h"
 #include "mavlink_include.h"
+#include "mavsdk_export.h"
 
 namespace mavsdk {
 
@@ -38,7 +39,7 @@ class MavsdkImpl;
  * An instance of this class must be created and kept alive in order to use the library.
  * The instance can be destroyed after use in order to break connections and release all resources.
  */
-class Mavsdk {
+class MAVSDK_PUBLIC Mavsdk {
 public:
     /**
      * @brief Returns the version of MAVSDK.
@@ -189,7 +190,7 @@ public:
     /**
      * @brief Possible configurations.
      */
-    class Configuration {
+    class MAVSDK_PUBLIC Configuration {
     public:
         /**
          * @brief Create new Configuration via manually configured

@@ -16,6 +16,7 @@
 #include "plugin_base.h"
 
 #include "handle.h"
+#include "mavsdk_export.h"
 
 namespace mavsdk {
 
@@ -25,7 +26,7 @@ class ShellImpl;
 /**
  * @brief Allow to communicate with the vehicle's system shell.
  */
-class Shell : public PluginBase {
+class MAVSDK_PUBLIC Shell : public PluginBase {
 public:
     /**
      * @brief Constructor. Creates the plugin for a specific System.
@@ -75,7 +76,7 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, Shell::Result const& result);
+    friend MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Shell::Result const& result);
 
     /**
      * @brief Callback type for asynchronous Shell calls.
