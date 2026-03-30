@@ -507,9 +507,9 @@ void mavsdk_unsubscribe_outgoing_messages_json(
 }
 
 // --- Raw Bytes ---
-void mavsdk_pass_received_raw_bytes(mavsdk_t mavsdk, const char* bytes, size_t length) {
+void mavsdk_pass_received_raw_bytes(mavsdk_t mavsdk, const uint8_t* bytes, size_t length) {
     auto* cpp_mavsdk = reinterpret_cast<Mavsdk*>(mavsdk);
-    cpp_mavsdk->pass_received_raw_bytes(bytes, length);
+    cpp_mavsdk->pass_received_raw_bytes(reinterpret_cast<const char*>(bytes), length);
 }
 
 mavsdk_raw_bytes_handle_t mavsdk_subscribe_raw_bytes_to_be_sent(
@@ -528,7 +528,7 @@ mavsdk_raw_bytes_handle_t mavsdk_subscribe_raw_bytes_to_be_sent(
 
     auto handle = cpp_mavsdk->subscribe_raw_bytes_to_be_sent(
         [ctx](const char* bytes, size_t length) {
-            ctx->callback(bytes, length, ctx->user_data);
+            ctx->callback(reinterpret_cast<const uint8_t*>(bytes), length, ctx->user_data);
         }
     );
 

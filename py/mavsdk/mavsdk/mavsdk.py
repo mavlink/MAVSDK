@@ -187,7 +187,8 @@ class Mavsdk:
     def pass_received_raw_bytes(self, data: bytes):
         """Pass received raw MAVLink bytes into MAVSDK for processing.
         Requires a 'raw://' connection."""
-        self._lib.mavsdk_pass_received_raw_bytes(self._handle, data, len(data))
+        buf = (ctypes.c_uint8 * len(data)).from_buffer_copy(data)
+        self._lib.mavsdk_pass_received_raw_bytes(self._handle, buf, len(data))
 
     def subscribe_raw_bytes_to_be_sent(self, callback: Callable[[bytes], None]):
         """Subscribe to raw bytes to be sent out.
@@ -195,7 +196,7 @@ class Mavsdk:
         Returns a handle for unsubscribing."""
 
         def _wrapper(bytes_ptr, length, user_data):
-            data = ctypes.string_at(bytes_ptr, length)
+            data = bytes(bytes_ptr[:length])
             callback(data)
 
         c_callback = RawBytesCallback(_wrapper)
@@ -330,7 +331,7 @@ _cmavsdk_lib.mavsdk_unsubscribe_on_new_system.restype = None
 # Raw bytes functions
 _cmavsdk_lib.mavsdk_pass_received_raw_bytes.argtypes = [
     ctypes.c_void_p,
-    ctypes.c_char_p,
+    ctypes.POINTER(ctypes.c_uint8),
     ctypes.c_size_t,
 ]
 _cmavsdk_lib.mavsdk_pass_received_raw_bytes.restype = None

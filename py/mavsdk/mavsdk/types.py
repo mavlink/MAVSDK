@@ -44,7 +44,7 @@ NewSystemCallback = ctypes.CFUNCTYPE(None, ctypes.c_void_p)
 InterceptJsonCallback = ctypes.CFUNCTYPE(ctypes.c_int, MavsdkMessage, ctypes.c_void_p)
 
 RawBytesCallback = ctypes.CFUNCTYPE(
-    None, ctypes.c_char_p, ctypes.c_size_t, ctypes.c_void_p
+    None, ctypes.POINTER(ctypes.c_uint8), ctypes.c_size_t, ctypes.c_void_p
 )
 
 ComponentDiscoveredCallback = ctypes.CFUNCTYPE(
