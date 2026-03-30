@@ -22,8 +22,7 @@ TEST(SystemTest, RcStatusViaSysStatus)
         mavsdk_groundstation.add_any_connection("udpin://0.0.0.0:15220"),
         ConnectionResult::Success);
     ASSERT_EQ(
-        mavsdk_autopilot.add_any_connection("udpout://127.0.0.1:15220"),
-        ConnectionResult::Success);
+        mavsdk_autopilot.add_any_connection("udpout://127.0.0.1:15220"), ConnectionResult::Success);
 
     auto maybe_system = mavsdk_groundstation.first_autopilot(10.0);
     ASSERT_TRUE(maybe_system);
@@ -90,8 +89,7 @@ TEST(SystemTest, RcStatusViaRcChannels)
         mavsdk_groundstation.add_any_connection("udpin://0.0.0.0:15221"),
         ConnectionResult::Success);
     ASSERT_EQ(
-        mavsdk_autopilot.add_any_connection("udpout://127.0.0.1:15221"),
-        ConnectionResult::Success);
+        mavsdk_autopilot.add_any_connection("udpout://127.0.0.1:15221"), ConnectionResult::Success);
 
     auto maybe_system = mavsdk_groundstation.first_autopilot(10.0);
     ASSERT_TRUE(maybe_system);
@@ -125,12 +123,11 @@ TEST(SystemTest, RcStatusViaRcChannels)
     msg.component_id = 1;
     msg.target_system_id = 0;
     msg.target_component_id = 0;
-    msg.fields_json =
-        R"({"time_boot_ms":1000,"chancount":8,"chan1_raw":1500,"chan2_raw":1500,)"
-        R"("chan3_raw":1500,"chan4_raw":1500,"chan5_raw":0,"chan6_raw":0,)"
-        R"("chan7_raw":0,"chan8_raw":0,"chan9_raw":0,"chan10_raw":0,)"
-        R"("chan11_raw":0,"chan12_raw":0,"chan13_raw":0,"chan14_raw":0,)"
-        R"("chan15_raw":0,"chan16_raw":0,"chan17_raw":0,"chan18_raw":0,"rssi":200})";
+    msg.fields_json = R"({"time_boot_ms":1000,"chancount":8,"chan1_raw":1500,"chan2_raw":1500,)"
+                      R"("chan3_raw":1500,"chan4_raw":1500,"chan5_raw":0,"chan6_raw":0,)"
+                      R"("chan7_raw":0,"chan8_raw":0,"chan9_raw":0,"chan10_raw":0,)"
+                      R"("chan11_raw":0,"chan12_raw":0,"chan13_raw":0,"chan14_raw":0,)"
+                      R"("chan15_raw":0,"chan16_raw":0,"chan17_raw":0,"chan18_raw":0,"rssi":200})";
 
     auto result = sender.send_message(msg);
     EXPECT_EQ(result, MavlinkDirect::Result::Success);
@@ -155,8 +152,7 @@ TEST(SystemTest, RcStatusUnavailableViaSysStatus)
         mavsdk_groundstation.add_any_connection("udpin://0.0.0.0:15222"),
         ConnectionResult::Success);
     ASSERT_EQ(
-        mavsdk_autopilot.add_any_connection("udpout://127.0.0.1:15222"),
-        ConnectionResult::Success);
+        mavsdk_autopilot.add_any_connection("udpout://127.0.0.1:15222"), ConnectionResult::Success);
 
     auto maybe_system = mavsdk_groundstation.first_autopilot(10.0);
     ASSERT_TRUE(maybe_system);
