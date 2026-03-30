@@ -2,6 +2,7 @@
 #include "plugins/camera/camera.h"
 #include "plugins/camera_server/camera_server.h"
 #include "plugins/ftp_server/ftp_server.h"
+#include "plugins/param_server/param_server.h"
 #include <future>
 #include <mutex>
 #include <thread>
@@ -9,10 +10,27 @@
 
 using namespace mavsdk;
 
+static void setup_uvc_param_server(ParamServer& param_server)
+{
+    EXPECT_EQ(param_server.provide_param_int("CAM_MODE", 0), ParamServer::Result::Success);
+    EXPECT_EQ(param_server.provide_param_int("BRIGHTNESS", 128), ParamServer::Result::Success);
+    EXPECT_EQ(param_server.provide_param_int("CONTRAST", 32), ParamServer::Result::Success);
+    EXPECT_EQ(param_server.provide_param_int("SATURATION", 32), ParamServer::Result::Success);
+    EXPECT_EQ(param_server.provide_param_int("GAIN", 64), ParamServer::Result::Success);
+    EXPECT_EQ(param_server.provide_param_int("SHARPNESS", 24), ParamServer::Result::Success);
+    EXPECT_EQ(param_server.provide_param_int("BACKLIGHT", 0), ParamServer::Result::Success);
+    EXPECT_EQ(param_server.provide_param_int("POWER_MODE", 0), ParamServer::Result::Success);
+    EXPECT_EQ(param_server.provide_param_int("WB_MODE", 0), ParamServer::Result::Success);
+    EXPECT_EQ(param_server.provide_param_int("EXP_MODE", 3), ParamServer::Result::Success);
+    EXPECT_EQ(param_server.provide_param_int("EXP_ABSOLUTE", 166), ParamServer::Result::Success);
+    EXPECT_EQ(param_server.provide_param_int("WB_TEMP", 4000), ParamServer::Result::Success);
+    EXPECT_EQ(param_server.provide_param_int("EXP_PRIORITY", 1), ParamServer::Result::Success);
+}
+
 // Wait for camera list to be populated and the definition to be fetched and parsed.
 // Returns true if a non-empty list of setting options is available within the timeout.
-static bool
-wait_for_camera_definition(Camera& camera, std::chrono::milliseconds timeout_ms, size_t expected_settings)
+static bool wait_for_camera_definition(
+    Camera& camera, std::chrono::milliseconds timeout_ms, size_t expected_settings)
 {
     const auto deadline = std::chrono::steady_clock::now() + timeout_ms;
 
@@ -78,6 +96,9 @@ TEST(SystemTest, CameraDefinitionUncompressed)
     auto ftp_server = FtpServer{mavsdk_camera.server_component()};
     EXPECT_EQ(ftp_server.set_root_dir("src/mavsdk/plugins/camera/"), FtpServer::Result::Success);
 
+    auto param_server = ParamServer{mavsdk_camera.server_component()};
+    setup_uvc_param_server(param_server);
+
     auto camera_server = CameraServer{mavsdk_camera.server_component()};
     CameraServer::Information information{};
     information.vendor_name = "UVC";
@@ -108,6 +129,9 @@ TEST(SystemTest, CameraDefinitionCompressedXz)
 
     auto ftp_server = FtpServer{mavsdk_camera.server_component()};
     EXPECT_EQ(ftp_server.set_root_dir("src/mavsdk/plugins/camera/"), FtpServer::Result::Success);
+
+    auto param_server = ParamServer{mavsdk_camera.server_component()};
+    setup_uvc_param_server(param_server);
 
     auto camera_server = CameraServer{mavsdk_camera.server_component()};
     CameraServer::Information information{};
