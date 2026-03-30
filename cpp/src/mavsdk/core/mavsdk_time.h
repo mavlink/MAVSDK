@@ -2,6 +2,7 @@
 
 #include <chrono>
 #include <mutex>
+#include "mavsdk_export.h"
 
 namespace mavsdk {
 
@@ -9,7 +10,7 @@ using SteadyTimePoint = std::chrono::time_point<std::chrono::steady_clock>;
 using SystemTimePoint = std::chrono::time_point<std::chrono::system_clock>;
 using AutopilotTimePoint = std::chrono::time_point<std::chrono::system_clock>;
 
-class Time {
+class MAVSDK_TEST_EXPORT Time {
 public:
     Time() = default;
     virtual ~Time() = default;
@@ -31,7 +32,7 @@ public:
     virtual void sleep_for(std::chrono::nanoseconds ns);
 };
 
-class FakeTime : public Time {
+class MAVSDK_TEST_EXPORT FakeTime : public Time {
 public:
     FakeTime();
     ~FakeTime() override = default;

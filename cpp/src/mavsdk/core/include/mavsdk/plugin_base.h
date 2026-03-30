@@ -1,11 +1,13 @@
 #pragma once
 
+#include "mavsdk_export.h"
+
 namespace mavsdk {
 
 /**
  * @brief Base class for every plugin.
  */
-class PluginBase {
+class MAVSDK_PUBLIC PluginBase {
 public:
     /**
      * @brief Default Constructor.

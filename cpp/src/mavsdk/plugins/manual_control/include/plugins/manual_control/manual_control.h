@@ -17,6 +17,7 @@
 #include "plugin_base.h"
 
 #include "handle.h"
+#include "mavsdk_export.h"
 
 namespace mavsdk {
 
@@ -26,7 +27,7 @@ class ManualControlImpl;
 /**
  * @brief Enable manual control using e.g. a joystick or gamepad.
  */
-class ManualControl : public PluginBase {
+class MAVSDK_PUBLIC ManualControl : public PluginBase {
 public:
     /**
      * @brief Constructor. Creates the plugin for a specific System.
@@ -79,7 +80,8 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, ManualControl::Result const& result);
+    friend MAVSDK_PUBLIC std::ostream&
+    operator<<(std::ostream& str, ManualControl::Result const& result);
 
     /**
      * @brief Callback type for asynchronous ManualControl calls.

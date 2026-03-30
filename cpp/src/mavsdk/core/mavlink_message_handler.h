@@ -6,10 +6,11 @@
 #include <vector>
 #include <optional>
 #include "mavlink_include.h"
+#include "mavsdk_export.h"
 
 namespace mavsdk {
 
-class MavlinkMessageHandler {
+class MAVSDK_TEST_EXPORT MavlinkMessageHandler {
 public:
     MavlinkMessageHandler();
 

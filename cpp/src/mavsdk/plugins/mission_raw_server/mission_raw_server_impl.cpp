@@ -1,12 +1,14 @@
 #include "mission_raw_server_impl.h"
 #include "callback_list.tpp"
+#include "mavsdk_export.h"
 #include "mavlink_address.h"
 
 namespace mavsdk {
 
-template class CallbackList<MissionRawServer::Result, MissionRawServer::MissionPlan>;
-template class CallbackList<MissionRawServer::MissionItem>;
-template class CallbackList<uint32_t>;
+template class MAVSDK_TEMPL_INST
+    CallbackList<MissionRawServer::Result, MissionRawServer::MissionPlan>;
+template class MAVSDK_TEMPL_INST CallbackList<MissionRawServer::MissionItem>;
+template class MAVSDK_TEMPL_INST CallbackList<uint32_t>;
 
 MissionRawServerImpl::MissionRawServerImpl(std::shared_ptr<ServerComponent> server_component) :
     ServerPluginImplBase(server_component)

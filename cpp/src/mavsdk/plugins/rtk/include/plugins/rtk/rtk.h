@@ -16,6 +16,7 @@
 #include "plugin_base.h"
 
 #include "handle.h"
+#include "mavsdk_export.h"
 
 namespace mavsdk {
 
@@ -25,7 +26,7 @@ class RtkImpl;
 /**
  * @brief Service to send RTK corrections to the vehicle.
  */
-class Rtk : public PluginBase {
+class MAVSDK_PUBLIC Rtk : public PluginBase {
 public:
     /**
      * @brief Constructor. Creates the plugin for a specific System.
@@ -70,14 +71,15 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(const Rtk::RtcmData& lhs, const Rtk::RtcmData& rhs);
+    friend MAVSDK_PUBLIC bool operator==(const Rtk::RtcmData& lhs, const Rtk::RtcmData& rhs);
 
     /**
      * @brief Stream operator to print information about a `Rtk::RtcmData`.
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, Rtk::RtcmData const& rtcm_data);
+    friend MAVSDK_PUBLIC std::ostream&
+    operator<<(std::ostream& str, Rtk::RtcmData const& rtcm_data);
 
     /**
      * @brief Possible results returned for rtk requests.
@@ -95,7 +97,7 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, Rtk::Result const& result);
+    friend MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Rtk::Result const& result);
 
     /**
      * @brief Callback type for asynchronous Rtk calls.

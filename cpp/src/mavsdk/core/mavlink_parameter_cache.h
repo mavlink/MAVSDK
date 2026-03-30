@@ -1,6 +1,7 @@
 #pragma once
 
 #include "param_value.h"
+#include "mavsdk_export.h"
 
 #include <cstdint>
 #include <limits>
@@ -11,7 +12,7 @@
 
 namespace mavsdk {
 
-class MavlinkParameterCache {
+class MAVSDK_TEST_EXPORT MavlinkParameterCache {
 public:
     struct Param {
         std::string id;

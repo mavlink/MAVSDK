@@ -24,7 +24,7 @@ Failure::inject(FailureUnit failure_unit, FailureType failure_type, int32_t inst
     return _impl->inject(failure_unit, failure_type, instance);
 }
 
-std::ostream& operator<<(std::ostream& str, Failure::Result const& result)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Failure::Result const& result)
 {
     switch (result) {
         case Failure::Result::Unknown:
@@ -48,7 +48,7 @@ std::ostream& operator<<(std::ostream& str, Failure::Result const& result)
     }
 }
 
-std::ostream& operator<<(std::ostream& str, Failure::FailureUnit const& failure_unit)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Failure::FailureUnit const& failure_unit)
 {
     switch (failure_unit) {
         case Failure::FailureUnit::SensorGyro:
@@ -86,7 +86,7 @@ std::ostream& operator<<(std::ostream& str, Failure::FailureUnit const& failure_
     }
 }
 
-std::ostream& operator<<(std::ostream& str, Failure::FailureType const& failure_type)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Failure::FailureType const& failure_type)
 {
     switch (failure_type) {
         case Failure::FailureType::Ok:

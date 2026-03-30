@@ -5,11 +5,12 @@
 #include "log_streaming_backend_ardupilot.h"
 #include "plugins/log_streaming/log_streaming.h"
 #include "callback_list.tpp"
+#include "mavsdk_export.h"
 #include "base64.h"
 
 namespace mavsdk {
 
-template class CallbackList<LogStreaming::LogStreamingRaw>;
+template class MAVSDK_TEMPL_INST CallbackList<LogStreaming::LogStreamingRaw>;
 
 LogStreamingImpl::LogStreamingImpl(System& system) : PluginImplBase(system)
 {

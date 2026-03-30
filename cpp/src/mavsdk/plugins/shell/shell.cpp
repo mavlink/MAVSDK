@@ -33,7 +33,7 @@ void Shell::unsubscribe_receive(ReceiveHandle handle)
     _impl->unsubscribe_receive(handle);
 }
 
-std::ostream& operator<<(std::ostream& str, Shell::Result const& result)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Shell::Result const& result)
 {
     switch (result) {
         case Shell::Result::Unknown:

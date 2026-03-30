@@ -51,14 +51,14 @@ Events::get_health_and_arming_checks_report() const
     return _impl->get_health_and_arming_checks_report();
 }
 
-bool operator==(const Events::Event& lhs, const Events::Event& rhs)
+MAVSDK_PUBLIC bool operator==(const Events::Event& lhs, const Events::Event& rhs)
 {
     return (rhs.compid == lhs.compid) && (rhs.message == lhs.message) &&
            (rhs.description == lhs.description) && (rhs.log_level == lhs.log_level) &&
            (rhs.event_namespace == lhs.event_namespace) && (rhs.event_name == lhs.event_name);
 }
 
-std::ostream& operator<<(std::ostream& str, Events::Event const& event)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Events::Event const& event)
 {
     str << std::setprecision(15);
     str << "event:" << '\n' << "{\n";
@@ -72,14 +72,14 @@ std::ostream& operator<<(std::ostream& str, Events::Event const& event)
     return str;
 }
 
-bool operator==(
+MAVSDK_PUBLIC bool operator==(
     const Events::HealthAndArmingCheckProblem& lhs, const Events::HealthAndArmingCheckProblem& rhs)
 {
     return (rhs.message == lhs.message) && (rhs.description == lhs.description) &&
            (rhs.log_level == lhs.log_level) && (rhs.health_component == lhs.health_component);
 }
 
-std::ostream& operator<<(
+MAVSDK_PUBLIC std::ostream& operator<<(
     std::ostream& str, Events::HealthAndArmingCheckProblem const& health_and_arming_check_problem)
 {
     str << std::setprecision(15);
@@ -92,14 +92,14 @@ std::ostream& operator<<(
     return str;
 }
 
-bool operator==(
-    const Events::HealthAndArmingCheckMode& lhs, const Events::HealthAndArmingCheckMode& rhs)
+MAVSDK_PUBLIC bool
+operator==(const Events::HealthAndArmingCheckMode& lhs, const Events::HealthAndArmingCheckMode& rhs)
 {
     return (rhs.mode_name == lhs.mode_name) && (rhs.can_arm_or_run == lhs.can_arm_or_run) &&
            (rhs.problems == lhs.problems);
 }
 
-std::ostream&
+MAVSDK_PUBLIC std::ostream&
 operator<<(std::ostream& str, Events::HealthAndArmingCheckMode const& health_and_arming_check_mode)
 {
     str << std::setprecision(15);
@@ -117,14 +117,15 @@ operator<<(std::ostream& str, Events::HealthAndArmingCheckMode const& health_and
     return str;
 }
 
-bool operator==(const Events::HealthComponentReport& lhs, const Events::HealthComponentReport& rhs)
+MAVSDK_PUBLIC bool
+operator==(const Events::HealthComponentReport& lhs, const Events::HealthComponentReport& rhs)
 {
     return (rhs.name == lhs.name) && (rhs.label == lhs.label) &&
            (rhs.is_present == lhs.is_present) && (rhs.has_error == lhs.has_error) &&
            (rhs.has_warning == lhs.has_warning);
 }
 
-std::ostream&
+MAVSDK_PUBLIC std::ostream&
 operator<<(std::ostream& str, Events::HealthComponentReport const& health_component_report)
 {
     str << std::setprecision(15);
@@ -138,7 +139,7 @@ operator<<(std::ostream& str, Events::HealthComponentReport const& health_compon
     return str;
 }
 
-bool operator==(
+MAVSDK_PUBLIC bool operator==(
     const Events::HealthAndArmingCheckReport& lhs, const Events::HealthAndArmingCheckReport& rhs)
 {
     return (rhs.current_mode_intention == lhs.current_mode_intention) &&
@@ -146,7 +147,7 @@ bool operator==(
            (rhs.all_problems == lhs.all_problems);
 }
 
-std::ostream& operator<<(
+MAVSDK_PUBLIC std::ostream& operator<<(
     std::ostream& str, Events::HealthAndArmingCheckReport const& health_and_arming_check_report)
 {
     str << std::setprecision(15);
@@ -171,7 +172,7 @@ std::ostream& operator<<(
     return str;
 }
 
-std::ostream& operator<<(std::ostream& str, Events::Result const& result)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Events::Result const& result)
 {
     switch (result) {
         case Events::Result::Success:
@@ -197,7 +198,7 @@ std::ostream& operator<<(std::ostream& str, Events::Result const& result)
     }
 }
 
-std::ostream& operator<<(std::ostream& str, Events::LogLevel const& log_level)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Events::LogLevel const& log_level)
 {
     switch (log_level) {
         case Events::LogLevel::Emergency:

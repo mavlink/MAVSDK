@@ -17,6 +17,7 @@
 #include "server_plugin_base.h"
 
 #include "handle.h"
+#include "mavsdk_export.h"
 
 namespace mavsdk {
 
@@ -26,7 +27,7 @@ class ComponentMetadataServerImpl;
 /**
  * @brief Provide component metadata json definitions, such as parameters.
  */
-class ComponentMetadataServer : public ServerPluginBase {
+class MAVSDK_PUBLIC ComponentMetadataServer : public ServerPluginBase {
 public:
     /**
      * @brief Constructor. Creates the plugin for a ServerComponent instance.
@@ -60,7 +61,7 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
+    friend MAVSDK_PUBLIC std::ostream&
     operator<<(std::ostream& str, ComponentMetadataServer::MetadataType const& metadata_type);
 
     /**
@@ -76,7 +77,7 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(
+    friend MAVSDK_PUBLIC bool operator==(
         const ComponentMetadataServer::Metadata& lhs, const ComponentMetadataServer::Metadata& rhs);
 
     /**
@@ -84,7 +85,7 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
+    friend MAVSDK_PUBLIC std::ostream&
     operator<<(std::ostream& str, ComponentMetadataServer::Metadata const& metadata);
 
     /**

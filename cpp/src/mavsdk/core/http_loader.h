@@ -9,6 +9,7 @@
 #include <functional>
 #include "locked_queue.h"
 #include "curl_wrapper.h"
+#include "mavsdk_export.h"
 
 namespace mavsdk {
 
@@ -16,15 +17,9 @@ class ICurlWrapper;
 
 using TextDownloadCallback = std::function<void(bool success, const std::string& content)>;
 
-class HttpLoader {
+class MAVSDK_TEST_EXPORT HttpLoader {
 public:
-#ifdef TESTING
-    HttpLoader(std::unique_ptr<ICurlWrapper> curl_wrapper) : _curl_wrapper(std::move(curl_wrapper))
-    {
-        start();
-    }
-#endif
-
+    HttpLoader(std::unique_ptr<ICurlWrapper> curl_wrapper);
     HttpLoader();
     ~HttpLoader();
 

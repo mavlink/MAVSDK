@@ -38,7 +38,7 @@ Gripper::Result Gripper::release(uint32_t instance) const
     return _impl->release(instance);
 }
 
-std::ostream& operator<<(std::ostream& str, Gripper::Result const& result)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Gripper::Result const& result)
 {
     switch (result) {
         case Gripper::Result::Unknown:
@@ -60,7 +60,8 @@ std::ostream& operator<<(std::ostream& str, Gripper::Result const& result)
     }
 }
 
-std::ostream& operator<<(std::ostream& str, Gripper::GripperAction const& gripper_action)
+MAVSDK_PUBLIC std::ostream&
+operator<<(std::ostream& str, Gripper::GripperAction const& gripper_action)
 {
     switch (gripper_action) {
         case Gripper::GripperAction::Release:
