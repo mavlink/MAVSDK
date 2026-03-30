@@ -726,10 +726,14 @@ void CameraImpl::unsubscribe_camera_list(Camera::CameraListHandle handle)
 
 void CameraImpl::notify_camera_list_with_lock()
 {
-    _system_impl->call_user_callback([&]() {
-        _camera_list_subscription_callbacks.queue(
-            camera_list_with_lock(), [this](const auto& func) { func(); });
-    });
+    // Build the snapshot synchronously while the caller already holds _mutex,
+    // then dispatch via call_user_callback like the other notify_*_with_lock
+    // helpers do.  The previous [&] async lambda was a use-after-free: the
+    // lambda could outlive this CameraImpl and then try to lock the already-
+    // destroyed _camera_list_subscription_callbacks._mutex.
+    auto snapshot = camera_list_with_lock();
+    _camera_list_subscription_callbacks.queue(
+        snapshot, [this](const auto& func) { _system_impl->call_user_callback(func); });
 }
 
 Camera::Result CameraImpl::start_video_streaming(int32_t component_id, int32_t stream_id)
