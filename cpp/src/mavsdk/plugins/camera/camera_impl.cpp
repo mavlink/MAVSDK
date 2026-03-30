@@ -125,6 +125,22 @@ void CameraImpl::deinit()
 {
     _system_impl->unregister_all_mavlink_message_handlers_blocking(this);
 
+    // Cancel pending param requests and unsubscribe from param change notifications
+    // for all cameras. This prevents stale callbacks from firing after this object
+    // is destroyed and trying to lock the already-destroyed _mutex.
+    // Collect component IDs under lock, then release before calling into param_sender.
+    std::vector<uint8_t> component_ids;
+    {
+        std::lock_guard lock(_mutex);
+        for (auto& potential_camera : _potential_cameras) {
+            component_ids.push_back(potential_camera.component_id);
+        }
+    }
+    for (auto component_id : component_ids) {
+        _system_impl->param_sender(component_id, true)->cancel_all_param(this);
+        _system_impl->param_sender(component_id, true)->unsubscribe_all_params_changed(this);
+    }
+
     _system_impl->cancel_all_param(this);
 
     _system_impl->remove_call_every(_request_missing_capture_info_cookie);
