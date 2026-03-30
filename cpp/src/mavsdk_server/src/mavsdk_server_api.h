@@ -10,11 +10,7 @@ extern "C" {
 #include <stdint.h>
 #endif
 
-#ifdef WINDOWS
-#define DLLExport __declspec(dllexport)
-#else
-#define DLLExport __attribute__((visibility("default")))
-#endif
+#include "mavsdk_export.h"
 
 struct MavsdkServer;
 
@@ -23,7 +19,7 @@ struct MavsdkServer;
  *
  * @param mavsdk_server Pointer to pointer to MavsdkServer.
  */
-DLLExport void mavsdk_server_init(struct MavsdkServer** mavsdk_server);
+MAVSDK_PUBLIC void mavsdk_server_init(struct MavsdkServer** mavsdk_server);
 
 /*
  * Run MavsdkServer.
@@ -33,7 +29,7 @@ DLLExport void mavsdk_server_init(struct MavsdkServer** mavsdk_server);
  * @param mavsdk_server_port gRPC server port
  * @return 0 if successful
  */
-DLLExport int mavsdk_server_run(
+MAVSDK_PUBLIC int mavsdk_server_run(
     struct MavsdkServer* mavsdk_server, const char* system_address, const int mavsdk_server_port);
 
 /*
@@ -49,7 +45,7 @@ DLLExport int mavsdk_server_run(
  * @param component_id MAVLink component ID for MAVSDK
  * @return 0 if successful
  */
-DLLExport int mavsdk_server_run_with_mavlink_ids(
+MAVSDK_PUBLIC int mavsdk_server_run_with_mavlink_ids(
     struct MavsdkServer* mavsdk_server,
     const char* system_address,
     const int mavsdk_server_port,
@@ -62,28 +58,28 @@ DLLExport int mavsdk_server_run_with_mavlink_ids(
  * @param mavsdk_server Pointer to initialized MavsdkServer
  * @return gRPC port used
  */
-DLLExport int mavsdk_server_get_port(struct MavsdkServer* mavsdk_server);
+MAVSDK_PUBLIC int mavsdk_server_get_port(struct MavsdkServer* mavsdk_server);
 
 /*
  * Attach to MavsdkServer. This only returns once the server is stopped.
  *
  * @param mavsdk_server Pointer to initialized MavsdkServer
  */
-DLLExport void mavsdk_server_attach(struct MavsdkServer* mavsdk_server);
+MAVSDK_PUBLIC void mavsdk_server_attach(struct MavsdkServer* mavsdk_server);
 
 /*
  * Stop MavsdkServer.
  *
  * @param mavsdk_server Pointer to initialized MavsdkServer
  */
-DLLExport void mavsdk_server_stop(struct MavsdkServer* mavsdk_server);
+MAVSDK_PUBLIC void mavsdk_server_stop(struct MavsdkServer* mavsdk_server);
 
 /*
  * Clean up MavsdkServer object. Counter part to mavsdk_server_init.
  *
  * @param mavsdk_server Pointer to initialized MavsdkServer
  */
-DLLExport void mavsdk_server_destroy(struct MavsdkServer* mavsdk_server);
+MAVSDK_PUBLIC void mavsdk_server_destroy(struct MavsdkServer* mavsdk_server);
 
 #ifdef __cplusplus
 }
