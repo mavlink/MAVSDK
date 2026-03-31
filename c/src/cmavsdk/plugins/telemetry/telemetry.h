@@ -3390,6 +3390,7 @@ mavsdk_telemetry_set_rate_gps_info(
  *
  * @param telemetry The telemetry instance.
  * @param rate_hz  The requested rate (in Hertz)
+ * 
  *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
