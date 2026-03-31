@@ -91,7 +91,9 @@ TEST(SystemTest, CameraDefinitionUncompressed)
     ASSERT_NE(system, nullptr);
 
     auto camera = Camera{system};
-    ASSERT_TRUE(wait_for_camera_definition(camera, std::chrono::seconds(10), 11))
+    // With UVC XML defaults (WB_MODE=1 auto, EXP_MODE=3 aperture-priority) two settings
+    // are excluded: WB_TEMP and EXP_ABSOLUTE — so 10 of the 12 control params are visible.
+    ASSERT_TRUE(wait_for_camera_definition(camera, std::chrono::seconds(10), 10))
         << "Camera definition (uncompressed) was not loaded within timeout";
 }
 
@@ -122,6 +124,7 @@ TEST(SystemTest, CameraDefinitionCompressedXz)
     ASSERT_NE(system, nullptr);
 
     auto camera = Camera{system};
-    ASSERT_TRUE(wait_for_camera_definition(camera, std::chrono::seconds(10), 11))
+    // Same UVC XML defaults as the uncompressed test: 10 visible control settings.
+    ASSERT_TRUE(wait_for_camera_definition(camera, std::chrono::seconds(10), 10))
         << "Camera definition (xz compressed) was not loaded within timeout";
 }
