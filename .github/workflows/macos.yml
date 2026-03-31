@@ -164,7 +164,7 @@ jobs:
         if: steps.cache.outputs.cache-hit == 'true'
         run: |
           echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV
-          echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/${{ matrix.name }}/third_party/install" << $GITHUB_ENV
+          echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/${{ matrix.name }}/third_party/install" >> $GITHUB_ENV
       - name: set SDK-related environment variables (for non-cmake deps)
         run: |
           echo "SDKROOT=$(xcrun --sdk ${{ matrix.sdk }} --show-sdk-path)" >> $GITHUB_ENV

@@ -387,18 +387,22 @@ jobs:
       - uses: actions/cache@v5
         id: cache
         with:
-          path: ./cpp/build/default/third_party/install
-          key: ${{ github.job }}-${{ hashFiles('./third_party/**') }}-3
-      - name: disable superbuild on cache hit
-        if: steps.cache.outputs.cache-hit == 'true'
+          path: ./cpp/build/release/third_party/install
+          key: ${{ github.job }}-${{ hashFiles('./third_party/**') }}-4
+          restore-keys: |
+            ubuntu-superbuild-24.04-gcc-13-${{ hashFiles('./third_party/**') }}-
+            ubuntu-superbuild-
+      - name: disable superbuild on cache restore
         run: |
-          echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV
-          echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/default/third_party/install" >> $GITHUB_ENV
+          if [ -f "build/release/third_party/install/bin/protoc" ]; then
+            echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV
+            echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/release/third_party/install" >> $GITHUB_ENV
+          fi
       - name: build necessary protoc tooling
-        run: cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Debug -DBUILD_MAVSDK_SERVER=ON -Bbuild/default -H.
+        run: cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Debug -DBUILD_MAVSDK_SERVER=ON -Bbuild/release -H.
       - name: generate code from protos
         working-directory: .
-        run: PATH="$PATH:$HOME/.local/bin:$(pwd)/cpp/build/default/third_party/install/bin" tools/generate_from_protos.bash
+        run: PATH="$PATH:$HOME/.local/bin:$(pwd)/cpp/build/release/third_party/install/bin" tools/generate_from_protos.bash
       - name: fix style
         run: tools/fix_style.py . || true
       - name: check for diff
@@ -474,8 +478,18 @@ jobs:
           echo '/tmp/core.%h.%e.%t' | sudo tee /proc/sys/kernel/core_pattern
           echo 'Core dump pattern set to:'
           cat /proc/sys/kernel/core_pattern
+      - uses: actions/cache@v5
+        id: cache
+        with:
+          path: ./cpp/build/release/third_party/install
+          key: ${{ github.job }}-${{ matrix.os_type }}-${{ matrix.os_version }}-${{ hashFiles('./third_party/**') }}-1
+      - name: disable superbuild on cache hit
+        if: steps.cache.outputs.cache-hit == 'true'
+        run: |
+          echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV
+          echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/release/third_party/install" >> $GITHUB_ENV
       - name: configure
-        run: cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_MAVSDK_SERVER=OFF -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=install -DWERROR=ON -Bbuild/release -H.
+        run: cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_MAVSDK_SERVER=OFF -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=install -DWERROR=ON -Bbuild/release -H.
       - name: build
         run: cmake --build build/release -- -j$(nproc)
       - name: unit tests
