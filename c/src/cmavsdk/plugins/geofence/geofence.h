@@ -315,8 +315,9 @@ CMAVSDK_EXPORT void mavsdk_geofence_destroy(mavsdk_geofence_t geofence);
  *  on the drone even if a connection is lost.
  *
  * @param geofence The geofence instance.
-* @param geofence_data  Circle(s) and/or Polygon(s) representing the geofence(s)
+ * @param geofence_data  Circle(s) and/or Polygon(s) representing the geofence(s)
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -346,6 +347,7 @@ mavsdk_geofence_upload_geofence(
  * @brief Clear all geofences saved on the vehicle.
  *
  * @param geofence The geofence instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */

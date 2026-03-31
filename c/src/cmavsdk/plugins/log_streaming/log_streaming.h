@@ -180,6 +180,7 @@ CMAVSDK_EXPORT void mavsdk_log_streaming_destroy(mavsdk_log_streaming_t log_stre
  * @brief Start streaming logging data.
  *
  * @param log_streaming The log_streaming instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -207,6 +208,7 @@ mavsdk_log_streaming_start_log_streaming(
  * @brief Stop streaming logging data.
  *
  * @param log_streaming The log_streaming instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -234,6 +236,7 @@ mavsdk_log_streaming_stop_log_streaming(
  * @brief Subscribe to logging messages
  *
  * @param log_streaming The log_streaming instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_log_streaming_unsubscribe_log_streaming_raw() to unsubscribe.

@@ -264,6 +264,7 @@ mavsdk_component_metadata_request_autopilot_component(
  * @brief Register a callback that gets called when metadata is available
  *
  * @param component_metadata The component_metadata instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_component_metadata_unsubscribe_metadata_available() to unsubscribe.

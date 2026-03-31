@@ -387,6 +387,7 @@ CMAVSDK_EXPORT void mavsdk_events_destroy(mavsdk_events_t events);
  * @brief Subscribe to event updates.
  *
  * @param events The events instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_events_unsubscribe_events() to unsubscribe.
@@ -413,6 +414,7 @@ CMAVSDK_EXPORT void mavsdk_events_unsubscribe_events(
  * @brief Subscribe to arming check updates.
  *
  * @param events The events instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_events_unsubscribe_health_and_arming_checks() to unsubscribe.

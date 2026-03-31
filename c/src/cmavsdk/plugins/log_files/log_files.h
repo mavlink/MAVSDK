@@ -221,6 +221,7 @@ CMAVSDK_EXPORT void mavsdk_log_files_destroy(mavsdk_log_files_t log_files);
  * @brief Get List of log files.
  *
  * @param log_files The log_files instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -250,10 +251,11 @@ mavsdk_log_files_get_entries(
  * @brief Download log file.
  *
  * @param log_files The log_files instance.
-* @param entry  Entry of the log file to download.
+ * @param entry  Entry of the log file to download.
  * 
-* @param path  Path of where to download log file to.
+ * @param path  Path of where to download log file to.
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */

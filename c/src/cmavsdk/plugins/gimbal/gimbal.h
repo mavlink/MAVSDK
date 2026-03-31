@@ -506,18 +506,19 @@ CMAVSDK_EXPORT void mavsdk_gimbal_destroy(mavsdk_gimbal_t gimbal);
  *  Note that the roll angle needs to be set to 0 when send_mode is Once.
  *
  * @param gimbal The gimbal instance.
-* @param gimbal_id  Gimbal id to address (0 for all gimbals)
+ * @param gimbal_id  Gimbal id to address (0 for all gimbals)
  * 
-* @param roll_deg  Roll angle in degrees (negative down on the right)
+ * @param roll_deg  Roll angle in degrees (negative down on the right)
  * 
-* @param pitch_deg  Pitch angle in degrees (negative points down)
+ * @param pitch_deg  Pitch angle in degrees (negative points down)
  * 
-* @param yaw_deg  Yaw angle in degrees (positive is clock-wise, range: -180 to 180 or 0 to 360)
+ * @param yaw_deg  Yaw angle in degrees (positive is clock-wise, range: -180 to 180 or 0 to 360)
  * 
-* @param gimbal_mode  Gimbal mode to use
+ * @param gimbal_mode  Gimbal mode to use
  * 
-* @param send_mode  Send mode of command/setpoint
+ * @param send_mode  Send mode of command/setpoint
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -563,18 +564,19 @@ mavsdk_gimbal_set_angles(
  *  Note that the roll angle needs to be set to 0 when send_mode is Once.
  *
  * @param gimbal The gimbal instance.
-* @param gimbal_id  Gimbal id to address (0 for all gimbals)
+ * @param gimbal_id  Gimbal id to address (0 for all gimbals)
  * 
-* @param roll_rate_deg_s  Angular rate around roll axis in degrees/second (negative down on the right)
+ * @param roll_rate_deg_s  Angular rate around roll axis in degrees/second (negative down on the right)
  * 
-* @param pitch_rate_deg_s  Angular rate around pitch axis in degrees/second (negative downward)
+ * @param pitch_rate_deg_s  Angular rate around pitch axis in degrees/second (negative downward)
  * 
-* @param yaw_rate_deg_s  Angular rate around yaw axis in degrees/second (positive is clock-wise)
+ * @param yaw_rate_deg_s  Angular rate around yaw axis in degrees/second (positive is clock-wise)
  * 
-* @param gimbal_mode  Gimbal mode to use
+ * @param gimbal_mode  Gimbal mode to use
  * 
-* @param send_mode  Send mode of command/setpoint
+ * @param send_mode  Send mode of command/setpoint
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -620,14 +622,15 @@ mavsdk_gimbal_set_angular_rates(
  *  take the gimbal longer to actually rotate to the ROI.
  *
  * @param gimbal The gimbal instance.
-* @param gimbal_id  Gimbal id to address (0 for all gimbals)
+ * @param gimbal_id  Gimbal id to address (0 for all gimbals)
  * 
-* @param latitude_deg  Latitude in degrees
+ * @param latitude_deg  Latitude in degrees
  * 
-* @param longitude_deg  Longitude in degrees
+ * @param longitude_deg  Longitude in degrees
  * 
-* @param altitude_m  Altitude in metres (AMSL)
+ * @param altitude_m  Altitude in metres (AMSL)
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -671,10 +674,11 @@ mavsdk_gimbal_set_roi_location(
  *  override each other and should therefore do it carefully.
  *
  * @param gimbal The gimbal instance.
-* @param gimbal_id  Gimbal id to address (0 for all gimbals)
+ * @param gimbal_id  Gimbal id to address (0 for all gimbals)
  * 
-* @param control_mode  Control mode (primary or secondary)
+ * @param control_mode  Control mode (primary or secondary)
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -708,8 +712,9 @@ mavsdk_gimbal_take_control(
  *  Release control, such that other components can control the gimbal.
  *
  * @param gimbal The gimbal instance.
-* @param gimbal_id  Gimbal id to address (0 for all gimbals)
+ * @param gimbal_id  Gimbal id to address (0 for all gimbals)
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -742,6 +747,7 @@ mavsdk_gimbal_release_control(
  *  Based on the gimbal ID, we can then address a specific gimbal.
  *
  * @param gimbal The gimbal instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_gimbal_unsubscribe_gimbal_list() to unsubscribe.
@@ -786,6 +792,7 @@ mavsdk_gimbal_gimbal_list(
  *  of the other components in control (if any).
  *
  * @param gimbal The gimbal instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_gimbal_unsubscribe_control_status() to unsubscribe.
@@ -830,6 +837,7 @@ mavsdk_gimbal_get_control_status(
  *  This gets you the gimbal's attitude and angular rate.
  *
  * @param gimbal The gimbal instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_gimbal_unsubscribe_attitude() to unsubscribe.
