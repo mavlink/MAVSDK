@@ -57,18 +57,23 @@ void MavlinkParameterSubscription::unsubscribe_all_params_changed(const void* co
     // Process any deferred operations first
     process_deferred_operations();
 
-    // Use a blocking lock (not try_lock) so that if a subscription callback is currently
-    // executing we wait for it to finish before removing the subscriptions.  This is safe
-    // to call from plugin deinit because deinit never holds _param_changed_subscriptions_mutex,
-    // so there is no deadlock risk.  Once this returns, all subscriptions for 'cookie' are
-    // removed and no future callback for this cookie can fire.
-    std::lock_guard<std::mutex> lock(_param_changed_subscriptions_mutex);
-    _param_changed_subscriptions.erase(
-        std::remove_if(
-            _param_changed_subscriptions.begin(),
-            _param_changed_subscriptions.end(),
-            [&](const auto& subscription) { return subscription.cookie == cookie; }),
-        _param_changed_subscriptions.end());
+    // Try to lock the mutex, if it fails we're likely in a callback
+    if (_param_changed_subscriptions_mutex.try_lock()) {
+        // We've acquired the lock without blocking, so we can modify the list
+        _param_changed_subscriptions.erase(
+            std::remove_if(
+                _param_changed_subscriptions.begin(),
+                _param_changed_subscriptions.end(),
+                [&](const auto& subscription) { return subscription.cookie == cookie; }),
+            _param_changed_subscriptions.end());
+        _param_changed_subscriptions_mutex.unlock();
+    } else {
+        // We couldn't acquire the lock because we're likely in a callback
+        // Defer the unsubscription of all params for this cookie
+        std::lock_guard<std::mutex> lock(_deferred_unsubscriptions_mutex);
+        // Add a special marker for unsubscribe_all (empty param_name)
+        _deferred_unsubscriptions.push_back({"", cookie});
+    }
 }
 
 } // namespace mavsdk

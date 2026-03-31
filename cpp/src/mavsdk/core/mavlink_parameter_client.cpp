@@ -423,16 +423,9 @@ void MavlinkParameterClient::cancel_all_param(const void* cookie)
 
     // We don't call any callbacks before erasing them as this is just used on destruction
     // where we don't care anymore.
-    // Use an explicit loop rather than erase(remove_if(...)) because LockedQueue::erase
-    // only takes a single iterator, so the erase-remove idiom would only remove the first
-    // matched element and leave the rest in an unspecified (potentially corrupted) state.
-    for (auto it = _work_queue.begin(); it != _work_queue.end();) {
-        if ((*it)->cookie == cookie) {
-            it = _work_queue.erase(it);
-        } else {
-            ++it;
-        }
-    }
+    _work_queue.erase(std::remove_if(_work_queue.begin(), _work_queue.end(), [&](auto&& item) {
+        return (item->cookie == cookie);
+    }));
 }
 
 void MavlinkParameterClient::clear_cache()

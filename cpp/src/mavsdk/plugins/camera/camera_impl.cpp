@@ -125,26 +125,6 @@ void CameraImpl::deinit()
 {
     _system_impl->unregister_all_mavlink_message_handlers_blocking(this);
 
-    // Cancel pending param requests and unsubscribe from param change notifications
-    // for cameras that actually loaded a definition (and therefore had params fetched).
-    // Only cancel for cameras whose definition was loaded — that is the only case where
-    // param_sender was ever called, so we avoid creating a new MavlinkParameterClient
-    // during deinit for cameras that never needed one.
-    // Collect component IDs under lock, then release before calling into param_sender.
-    std::vector<uint8_t> component_ids;
-    {
-        std::lock_guard lock(_mutex);
-        for (auto& potential_camera : _potential_cameras) {
-            if (potential_camera.camera_definition != nullptr) {
-                component_ids.push_back(potential_camera.component_id);
-            }
-        }
-    }
-    for (auto component_id : component_ids) {
-        _system_impl->param_sender(component_id, true)->cancel_all_param(this);
-        _system_impl->param_sender(component_id, true)->unsubscribe_all_params_changed(this);
-    }
-
     _system_impl->cancel_all_param(this);
 
     _system_impl->remove_call_every(_request_missing_capture_info_cookie);
@@ -730,14 +710,10 @@ void CameraImpl::unsubscribe_camera_list(Camera::CameraListHandle handle)
 
 void CameraImpl::notify_camera_list_with_lock()
 {
-    // Build the snapshot synchronously while the caller already holds _mutex,
-    // then dispatch via call_user_callback like the other notify_*_with_lock
-    // helpers do.  The previous [&] async lambda was a use-after-free: the
-    // lambda could outlive this CameraImpl and then try to lock the already-
-    // destroyed _camera_list_subscription_callbacks._mutex.
-    auto snapshot = camera_list_with_lock();
-    _camera_list_subscription_callbacks.queue(
-        snapshot, [this](const auto& func) { _system_impl->call_user_callback(func); });
+    _system_impl->call_user_callback([&]() {
+        _camera_list_subscription_callbacks.queue(
+            camera_list_with_lock(), [this](const auto& func) { func(); });
+    });
 }
 
 Camera::Result CameraImpl::start_video_streaming(int32_t component_id, int32_t stream_id)
@@ -1309,12 +1285,6 @@ void CameraImpl::process_camera_information(const mavlink_message_t& message)
 
 void CameraImpl::check_camera_definition_with_lock(PotentialCamera& potential_camera)
 {
-    // Don't re-fetch if already fetching or already loaded.
-    if (potential_camera.is_fetching_camera_definition ||
-        potential_camera.camera_definition != nullptr) {
-        return;
-    }
-
     const std::string url = potential_camera.camera_definition_url;
 
     if (potential_camera.camera_definition_url.empty()) {
@@ -2190,12 +2160,9 @@ void CameraImpl::refresh_params_with_lock(PotentialCamera& potential_camera, boo
                     std::lock_guard lock_later(_mutex);
                     auto maybe_potential_camera_later =
                         maybe_potential_camera_for_component_id_with_lock(component_id, 0);
-                    // Camera may have been removed or its definition cleared (e.g. during
-                    // plugin destruction or a concurrent re-fetch). Skip stale callbacks.
-                    if (maybe_potential_camera_later == nullptr ||
-                        maybe_potential_camera_later->camera_definition == nullptr) {
-                        return;
-                    }
+                    // We already checked these fields earlier, so we don't check again.
+                    assert(maybe_potential_camera_later != nullptr);
+                    assert(maybe_potential_camera_later->camera_definition != nullptr);
 
                     auto& camera_later = *maybe_potential_camera_later;
 
@@ -2233,12 +2200,9 @@ void CameraImpl::subscribe_to_param_changes_with_lock(
 
         auto maybe_potential_camera_later =
             maybe_potential_camera_for_component_id_with_lock(component_id, 0);
-        // Camera may have been removed or its definition cleared (e.g. during
-        // plugin destruction or a concurrent re-fetch). Skip stale callbacks.
-        if (maybe_potential_camera_later == nullptr ||
-            maybe_potential_camera_later->camera_definition == nullptr) {
-            return;
-        }
+        // We already checked these fields earlier, so we don't check again.
+        assert(maybe_potential_camera_later != nullptr);
+        assert(maybe_potential_camera_later->camera_definition != nullptr);
         auto& camera_later = *maybe_potential_camera_later;
 
         ParamValue param_value;
