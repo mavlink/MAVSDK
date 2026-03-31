@@ -18,6 +18,7 @@ typedef struct mavsdk_connection_handle_s *mavsdk_connection_handle_t;
 typedef struct mavsdk_connection_error_handle_s *mavsdk_connection_error_handle_t;
 typedef struct mavsdk_new_system_handle_s *mavsdk_new_system_handle_t;
 typedef struct mavsdk_intercept_json_handle_s *mavsdk_intercept_json_handle_t;
+typedef struct mavsdk_raw_bytes_handle_s *mavsdk_raw_bytes_handle_t;
 
 typedef enum {
     MAVSDK_COMPONENT_TYPE_AUTOPILOT = 0,
@@ -73,6 +74,7 @@ typedef struct {
 typedef void (*mavsdk_connection_error_callback_t)(const mavsdk_connection_error_t error, void *user_data);
 typedef void (*mavsdk_new_system_callback_t)(void *user_data);
 typedef int  (*mavsdk_intercept_json_callback_t)(const mavsdk_message_t message, void *user_data);
+typedef void (*mavsdk_raw_bytes_callback_t)(const uint8_t *bytes, size_t length, void *user_data);
 
 // ===== Configuration =====
 CMAVSDK_EXPORT mavsdk_configuration_t mavsdk_configuration_create_with_component_type(mavsdk_component_type_t type);
@@ -195,6 +197,22 @@ CMAVSDK_EXPORT mavsdk_intercept_json_handle_t mavsdk_subscribe_outgoing_messages
 CMAVSDK_EXPORT void mavsdk_unsubscribe_outgoing_messages_json(
     mavsdk_t mavsdk,
     mavsdk_intercept_json_handle_t handle
+);
+
+// ===== Raw Bytes =====
+CMAVSDK_EXPORT void mavsdk_pass_received_raw_bytes(
+    mavsdk_t mavsdk,
+    const uint8_t *bytes,
+    size_t length
+);
+CMAVSDK_EXPORT mavsdk_raw_bytes_handle_t mavsdk_subscribe_raw_bytes_to_be_sent(
+    mavsdk_t mavsdk,
+    mavsdk_raw_bytes_callback_t callback,
+    void *user_data
+);
+CMAVSDK_EXPORT void mavsdk_unsubscribe_raw_bytes_to_be_sent(
+    mavsdk_t mavsdk,
+    mavsdk_raw_bytes_handle_t handle
 );
 
 // ===== Memory Management Helpers =====
