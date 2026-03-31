@@ -317,6 +317,45 @@ class Geofence:
 
         return result
 
+    def download_geofence_async(self, callback: Callable, user_data: Any = None):
+        """Download geofences from the vehicle.
+
+        Downloads polygon and circular geofences from the vehicle."""
+
+        def c_callback(result, c_data, ud):
+            try:
+                py_result = GeofenceResult(result)
+
+                py_data = GeofenceData.from_c_struct(c_data)
+
+                self._lib.mavsdk_geofence_geofence_data_destroy(ctypes.byref(c_data))
+
+                callback(py_result, py_data, user_data)
+
+            except Exception as e:
+                print(f"Error in download_geofence callback: {e}")
+
+        cb = DownloadGeofenceCallback(c_callback)
+        self._callbacks.append(cb)
+
+        self._lib.mavsdk_geofence_download_geofence_async(self._handle, cb, None)
+
+    def download_geofence(self):
+        """Get download_geofence (blocking)"""
+
+        result_out = GeofenceDataCStruct()
+
+        result_code = self._lib.mavsdk_geofence_download_geofence(
+            self._handle, ctypes.byref(result_out)
+        )
+        result = GeofenceResult(result_code)
+        if result != GeofenceResult.SUCCESS:
+            raise Exception(f"download_geofence failed: {result}")
+
+        py_result = GeofenceData.from_c_struct(result_out)
+        self._lib.mavsdk_geofence_geofence_data_destroy(ctypes.byref(result_out))
+        return py_result
+
     def clear_geofence_async(self, callback: Callable, user_data: Any = None):
         """Clear all geofences saved on the vehicle."""
 
@@ -358,6 +397,9 @@ class Geofence:
 
 # ===== Callback Types =====
 UploadGeofenceCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
+DownloadGeofenceCallback = ctypes.CFUNCTYPE(
+    None, ctypes.c_int, GeofenceDataCStruct, ctypes.c_void_p
+)
 ClearGeofenceCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
 
 # ===== Setup Functions =====
@@ -397,6 +439,20 @@ _cmavsdk_lib.mavsdk_geofence_upload_geofence.argtypes = [
 ]
 
 _cmavsdk_lib.mavsdk_geofence_upload_geofence.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_geofence_download_geofence_async.argtypes = [
+    ctypes.c_void_p,
+    DownloadGeofenceCallback,
+    ctypes.c_void_p,
+]
+
+_cmavsdk_lib.mavsdk_geofence_download_geofence_async.restype = None
+
+_cmavsdk_lib.mavsdk_geofence_download_geofence.argtypes = [
+    ctypes.c_void_p,
+    ctypes.POINTER(GeofenceDataCStruct),
+]
+
+_cmavsdk_lib.mavsdk_geofence_download_geofence.restype = ctypes.c_int
 _cmavsdk_lib.mavsdk_geofence_clear_geofence_async.argtypes = [
     ctypes.c_void_p,
     ClearGeofenceCallback,

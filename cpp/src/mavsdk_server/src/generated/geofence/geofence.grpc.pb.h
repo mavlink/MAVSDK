@@ -51,6 +51,17 @@ class GeofenceService final {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::geofence::UploadGeofenceResponse>>(PrepareAsyncUploadGeofenceRaw(context, request, cq));
     }
     //
+    // Download geofences from the vehicle.
+    //
+    // Downloads polygon and circular geofences from the vehicle.
+    virtual ::grpc::Status DownloadGeofence(::grpc::ClientContext* context, const ::mavsdk::rpc::geofence::DownloadGeofenceRequest& request, ::mavsdk::rpc::geofence::DownloadGeofenceResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::geofence::DownloadGeofenceResponse>> AsyncDownloadGeofence(::grpc::ClientContext* context, const ::mavsdk::rpc::geofence::DownloadGeofenceRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::geofence::DownloadGeofenceResponse>>(AsyncDownloadGeofenceRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::geofence::DownloadGeofenceResponse>> PrepareAsyncDownloadGeofence(::grpc::ClientContext* context, const ::mavsdk::rpc::geofence::DownloadGeofenceRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::geofence::DownloadGeofenceResponse>>(PrepareAsyncDownloadGeofenceRaw(context, request, cq));
+    }
+    //
     // Clear all geofences saved on the vehicle.
     virtual ::grpc::Status ClearGeofence(::grpc::ClientContext* context, const ::mavsdk::rpc::geofence::ClearGeofenceRequest& request, ::mavsdk::rpc::geofence::ClearGeofenceResponse* response) = 0;
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::geofence::ClearGeofenceResponse>> AsyncClearGeofence(::grpc::ClientContext* context, const ::mavsdk::rpc::geofence::ClearGeofenceRequest& request, ::grpc::CompletionQueue* cq) {
@@ -70,6 +81,12 @@ class GeofenceService final {
       virtual void UploadGeofence(::grpc::ClientContext* context, const ::mavsdk::rpc::geofence::UploadGeofenceRequest* request, ::mavsdk::rpc::geofence::UploadGeofenceResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void UploadGeofence(::grpc::ClientContext* context, const ::mavsdk::rpc::geofence::UploadGeofenceRequest* request, ::mavsdk::rpc::geofence::UploadGeofenceResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       //
+      // Download geofences from the vehicle.
+      //
+      // Downloads polygon and circular geofences from the vehicle.
+      virtual void DownloadGeofence(::grpc::ClientContext* context, const ::mavsdk::rpc::geofence::DownloadGeofenceRequest* request, ::mavsdk::rpc::geofence::DownloadGeofenceResponse* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void DownloadGeofence(::grpc::ClientContext* context, const ::mavsdk::rpc::geofence::DownloadGeofenceRequest* request, ::mavsdk::rpc::geofence::DownloadGeofenceResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      //
       // Clear all geofences saved on the vehicle.
       virtual void ClearGeofence(::grpc::ClientContext* context, const ::mavsdk::rpc::geofence::ClearGeofenceRequest* request, ::mavsdk::rpc::geofence::ClearGeofenceResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void ClearGeofence(::grpc::ClientContext* context, const ::mavsdk::rpc::geofence::ClearGeofenceRequest* request, ::mavsdk::rpc::geofence::ClearGeofenceResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
@@ -80,6 +97,8 @@ class GeofenceService final {
    private:
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::geofence::UploadGeofenceResponse>* AsyncUploadGeofenceRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::geofence::UploadGeofenceRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::geofence::UploadGeofenceResponse>* PrepareAsyncUploadGeofenceRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::geofence::UploadGeofenceRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::geofence::DownloadGeofenceResponse>* AsyncDownloadGeofenceRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::geofence::DownloadGeofenceRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::geofence::DownloadGeofenceResponse>* PrepareAsyncDownloadGeofenceRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::geofence::DownloadGeofenceRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::geofence::ClearGeofenceResponse>* AsyncClearGeofenceRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::geofence::ClearGeofenceRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::geofence::ClearGeofenceResponse>* PrepareAsyncClearGeofenceRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::geofence::ClearGeofenceRequest& request, ::grpc::CompletionQueue* cq) = 0;
   };
@@ -93,6 +112,13 @@ class GeofenceService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::geofence::UploadGeofenceResponse>> PrepareAsyncUploadGeofence(::grpc::ClientContext* context, const ::mavsdk::rpc::geofence::UploadGeofenceRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::geofence::UploadGeofenceResponse>>(PrepareAsyncUploadGeofenceRaw(context, request, cq));
     }
+    ::grpc::Status DownloadGeofence(::grpc::ClientContext* context, const ::mavsdk::rpc::geofence::DownloadGeofenceRequest& request, ::mavsdk::rpc::geofence::DownloadGeofenceResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::geofence::DownloadGeofenceResponse>> AsyncDownloadGeofence(::grpc::ClientContext* context, const ::mavsdk::rpc::geofence::DownloadGeofenceRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::geofence::DownloadGeofenceResponse>>(AsyncDownloadGeofenceRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::geofence::DownloadGeofenceResponse>> PrepareAsyncDownloadGeofence(::grpc::ClientContext* context, const ::mavsdk::rpc::geofence::DownloadGeofenceRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::geofence::DownloadGeofenceResponse>>(PrepareAsyncDownloadGeofenceRaw(context, request, cq));
+    }
     ::grpc::Status ClearGeofence(::grpc::ClientContext* context, const ::mavsdk::rpc::geofence::ClearGeofenceRequest& request, ::mavsdk::rpc::geofence::ClearGeofenceResponse* response) override;
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::geofence::ClearGeofenceResponse>> AsyncClearGeofence(::grpc::ClientContext* context, const ::mavsdk::rpc::geofence::ClearGeofenceRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::geofence::ClearGeofenceResponse>>(AsyncClearGeofenceRaw(context, request, cq));
@@ -105,6 +131,8 @@ class GeofenceService final {
      public:
       void UploadGeofence(::grpc::ClientContext* context, const ::mavsdk::rpc::geofence::UploadGeofenceRequest* request, ::mavsdk::rpc::geofence::UploadGeofenceResponse* response, std::function<void(::grpc::Status)>) override;
       void UploadGeofence(::grpc::ClientContext* context, const ::mavsdk::rpc::geofence::UploadGeofenceRequest* request, ::mavsdk::rpc::geofence::UploadGeofenceResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void DownloadGeofence(::grpc::ClientContext* context, const ::mavsdk::rpc::geofence::DownloadGeofenceRequest* request, ::mavsdk::rpc::geofence::DownloadGeofenceResponse* response, std::function<void(::grpc::Status)>) override;
+      void DownloadGeofence(::grpc::ClientContext* context, const ::mavsdk::rpc::geofence::DownloadGeofenceRequest* request, ::mavsdk::rpc::geofence::DownloadGeofenceResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
       void ClearGeofence(::grpc::ClientContext* context, const ::mavsdk::rpc::geofence::ClearGeofenceRequest* request, ::mavsdk::rpc::geofence::ClearGeofenceResponse* response, std::function<void(::grpc::Status)>) override;
       void ClearGeofence(::grpc::ClientContext* context, const ::mavsdk::rpc::geofence::ClearGeofenceRequest* request, ::mavsdk::rpc::geofence::ClearGeofenceResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
      private:
@@ -120,9 +148,12 @@ class GeofenceService final {
     class async async_stub_{this};
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::geofence::UploadGeofenceResponse>* AsyncUploadGeofenceRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::geofence::UploadGeofenceRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::geofence::UploadGeofenceResponse>* PrepareAsyncUploadGeofenceRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::geofence::UploadGeofenceRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::geofence::DownloadGeofenceResponse>* AsyncDownloadGeofenceRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::geofence::DownloadGeofenceRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::geofence::DownloadGeofenceResponse>* PrepareAsyncDownloadGeofenceRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::geofence::DownloadGeofenceRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::geofence::ClearGeofenceResponse>* AsyncClearGeofenceRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::geofence::ClearGeofenceRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::geofence::ClearGeofenceResponse>* PrepareAsyncClearGeofenceRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::geofence::ClearGeofenceRequest& request, ::grpc::CompletionQueue* cq) override;
     const ::grpc::internal::RpcMethod rpcmethod_UploadGeofence_;
+    const ::grpc::internal::RpcMethod rpcmethod_DownloadGeofence_;
     const ::grpc::internal::RpcMethod rpcmethod_ClearGeofence_;
   };
   static std::unique_ptr<Stub> NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
@@ -137,6 +168,11 @@ class GeofenceService final {
     // Polygon and Circular geofences are uploaded to a drone. Once uploaded, the geofence will remain
     // on the drone even if a connection is lost.
     virtual ::grpc::Status UploadGeofence(::grpc::ServerContext* context, const ::mavsdk::rpc::geofence::UploadGeofenceRequest* request, ::mavsdk::rpc::geofence::UploadGeofenceResponse* response);
+    //
+    // Download geofences from the vehicle.
+    //
+    // Downloads polygon and circular geofences from the vehicle.
+    virtual ::grpc::Status DownloadGeofence(::grpc::ServerContext* context, const ::mavsdk::rpc::geofence::DownloadGeofenceRequest* request, ::mavsdk::rpc::geofence::DownloadGeofenceResponse* response);
     //
     // Clear all geofences saved on the vehicle.
     virtual ::grpc::Status ClearGeofence(::grpc::ServerContext* context, const ::mavsdk::rpc::geofence::ClearGeofenceRequest* request, ::mavsdk::rpc::geofence::ClearGeofenceResponse* response);
@@ -162,12 +198,32 @@ class GeofenceService final {
     }
   };
   template <class BaseClass>
+  class WithAsyncMethod_DownloadGeofence : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithAsyncMethod_DownloadGeofence() {
+      ::grpc::Service::MarkMethodAsync(1);
+    }
+    ~WithAsyncMethod_DownloadGeofence() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status DownloadGeofence(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::geofence::DownloadGeofenceRequest* /*request*/, ::mavsdk::rpc::geofence::DownloadGeofenceResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestDownloadGeofence(::grpc::ServerContext* context, ::mavsdk::rpc::geofence::DownloadGeofenceRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::geofence::DownloadGeofenceResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(1, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
   class WithAsyncMethod_ClearGeofence : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_ClearGeofence() {
-      ::grpc::Service::MarkMethodAsync(1);
+      ::grpc::Service::MarkMethodAsync(2);
     }
     ~WithAsyncMethod_ClearGeofence() override {
       BaseClassMustBeDerivedFromService(this);
@@ -178,10 +234,10 @@ class GeofenceService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestClearGeofence(::grpc::ServerContext* context, ::mavsdk::rpc::geofence::ClearGeofenceRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::geofence::ClearGeofenceResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(1, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(2, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
-  typedef WithAsyncMethod_UploadGeofence<WithAsyncMethod_ClearGeofence<Service > > AsyncService;
+  typedef WithAsyncMethod_UploadGeofence<WithAsyncMethod_DownloadGeofence<WithAsyncMethod_ClearGeofence<Service > > > AsyncService;
   template <class BaseClass>
   class WithCallbackMethod_UploadGeofence : public BaseClass {
    private:
@@ -210,18 +266,45 @@ class GeofenceService final {
       ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::geofence::UploadGeofenceRequest* /*request*/, ::mavsdk::rpc::geofence::UploadGeofenceResponse* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
+  class WithCallbackMethod_DownloadGeofence : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithCallbackMethod_DownloadGeofence() {
+      ::grpc::Service::MarkMethodCallback(1,
+          new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::geofence::DownloadGeofenceRequest, ::mavsdk::rpc::geofence::DownloadGeofenceResponse>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::geofence::DownloadGeofenceRequest* request, ::mavsdk::rpc::geofence::DownloadGeofenceResponse* response) { return this->DownloadGeofence(context, request, response); }));}
+    void SetMessageAllocatorFor_DownloadGeofence(
+        ::grpc::MessageAllocator< ::mavsdk::rpc::geofence::DownloadGeofenceRequest, ::mavsdk::rpc::geofence::DownloadGeofenceResponse>* allocator) {
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(1);
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::geofence::DownloadGeofenceRequest, ::mavsdk::rpc::geofence::DownloadGeofenceResponse>*>(handler)
+              ->SetMessageAllocator(allocator);
+    }
+    ~WithCallbackMethod_DownloadGeofence() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status DownloadGeofence(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::geofence::DownloadGeofenceRequest* /*request*/, ::mavsdk::rpc::geofence::DownloadGeofenceResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* DownloadGeofence(
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::geofence::DownloadGeofenceRequest* /*request*/, ::mavsdk::rpc::geofence::DownloadGeofenceResponse* /*response*/)  { return nullptr; }
+  };
+  template <class BaseClass>
   class WithCallbackMethod_ClearGeofence : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithCallbackMethod_ClearGeofence() {
-      ::grpc::Service::MarkMethodCallback(1,
+      ::grpc::Service::MarkMethodCallback(2,
           new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::geofence::ClearGeofenceRequest, ::mavsdk::rpc::geofence::ClearGeofenceResponse>(
             [this](
                    ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::geofence::ClearGeofenceRequest* request, ::mavsdk::rpc::geofence::ClearGeofenceResponse* response) { return this->ClearGeofence(context, request, response); }));}
     void SetMessageAllocatorFor_ClearGeofence(
         ::grpc::MessageAllocator< ::mavsdk::rpc::geofence::ClearGeofenceRequest, ::mavsdk::rpc::geofence::ClearGeofenceResponse>* allocator) {
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(1);
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(2);
       static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::geofence::ClearGeofenceRequest, ::mavsdk::rpc::geofence::ClearGeofenceResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
@@ -236,7 +319,7 @@ class GeofenceService final {
     virtual ::grpc::ServerUnaryReactor* ClearGeofence(
       ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::geofence::ClearGeofenceRequest* /*request*/, ::mavsdk::rpc::geofence::ClearGeofenceResponse* /*response*/)  { return nullptr; }
   };
-  typedef WithCallbackMethod_UploadGeofence<WithCallbackMethod_ClearGeofence<Service > > CallbackService;
+  typedef WithCallbackMethod_UploadGeofence<WithCallbackMethod_DownloadGeofence<WithCallbackMethod_ClearGeofence<Service > > > CallbackService;
   typedef CallbackService ExperimentalCallbackService;
   template <class BaseClass>
   class WithGenericMethod_UploadGeofence : public BaseClass {
@@ -256,12 +339,29 @@ class GeofenceService final {
     }
   };
   template <class BaseClass>
+  class WithGenericMethod_DownloadGeofence : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithGenericMethod_DownloadGeofence() {
+      ::grpc::Service::MarkMethodGeneric(1);
+    }
+    ~WithGenericMethod_DownloadGeofence() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status DownloadGeofence(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::geofence::DownloadGeofenceRequest* /*request*/, ::mavsdk::rpc::geofence::DownloadGeofenceResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
+  template <class BaseClass>
   class WithGenericMethod_ClearGeofence : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_ClearGeofence() {
-      ::grpc::Service::MarkMethodGeneric(1);
+      ::grpc::Service::MarkMethodGeneric(2);
     }
     ~WithGenericMethod_ClearGeofence() override {
       BaseClassMustBeDerivedFromService(this);
@@ -293,12 +393,32 @@ class GeofenceService final {
     }
   };
   template <class BaseClass>
+  class WithRawMethod_DownloadGeofence : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawMethod_DownloadGeofence() {
+      ::grpc::Service::MarkMethodRaw(1);
+    }
+    ~WithRawMethod_DownloadGeofence() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status DownloadGeofence(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::geofence::DownloadGeofenceRequest* /*request*/, ::mavsdk::rpc::geofence::DownloadGeofenceResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestDownloadGeofence(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(1, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
   class WithRawMethod_ClearGeofence : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_ClearGeofence() {
-      ::grpc::Service::MarkMethodRaw(1);
+      ::grpc::Service::MarkMethodRaw(2);
     }
     ~WithRawMethod_ClearGeofence() override {
       BaseClassMustBeDerivedFromService(this);
@@ -309,7 +429,7 @@ class GeofenceService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestClearGeofence(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(1, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(2, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -335,12 +455,34 @@ class GeofenceService final {
       ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
+  class WithRawCallbackMethod_DownloadGeofence : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawCallbackMethod_DownloadGeofence() {
+      ::grpc::Service::MarkMethodRawCallback(1,
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->DownloadGeofence(context, request, response); }));
+    }
+    ~WithRawCallbackMethod_DownloadGeofence() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status DownloadGeofence(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::geofence::DownloadGeofenceRequest* /*request*/, ::mavsdk::rpc::geofence::DownloadGeofenceResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* DownloadGeofence(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
+  };
+  template <class BaseClass>
   class WithRawCallbackMethod_ClearGeofence : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawCallbackMethod_ClearGeofence() {
-      ::grpc::Service::MarkMethodRawCallback(1,
+      ::grpc::Service::MarkMethodRawCallback(2,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
                    ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->ClearGeofence(context, request, response); }));
@@ -384,12 +526,39 @@ class GeofenceService final {
     virtual ::grpc::Status StreamedUploadGeofence(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::geofence::UploadGeofenceRequest,::mavsdk::rpc::geofence::UploadGeofenceResponse>* server_unary_streamer) = 0;
   };
   template <class BaseClass>
+  class WithStreamedUnaryMethod_DownloadGeofence : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithStreamedUnaryMethod_DownloadGeofence() {
+      ::grpc::Service::MarkMethodStreamed(1,
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::mavsdk::rpc::geofence::DownloadGeofenceRequest, ::mavsdk::rpc::geofence::DownloadGeofenceResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::mavsdk::rpc::geofence::DownloadGeofenceRequest, ::mavsdk::rpc::geofence::DownloadGeofenceResponse>* streamer) {
+                       return this->StreamedDownloadGeofence(context,
+                         streamer);
+                  }));
+    }
+    ~WithStreamedUnaryMethod_DownloadGeofence() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status DownloadGeofence(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::geofence::DownloadGeofenceRequest* /*request*/, ::mavsdk::rpc::geofence::DownloadGeofenceResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with streamed unary
+    virtual ::grpc::Status StreamedDownloadGeofence(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::geofence::DownloadGeofenceRequest,::mavsdk::rpc::geofence::DownloadGeofenceResponse>* server_unary_streamer) = 0;
+  };
+  template <class BaseClass>
   class WithStreamedUnaryMethod_ClearGeofence : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithStreamedUnaryMethod_ClearGeofence() {
-      ::grpc::Service::MarkMethodStreamed(1,
+      ::grpc::Service::MarkMethodStreamed(2,
         new ::grpc::internal::StreamedUnaryHandler<
           ::mavsdk::rpc::geofence::ClearGeofenceRequest, ::mavsdk::rpc::geofence::ClearGeofenceResponse>(
             [this](::grpc::ServerContext* context,
@@ -410,9 +579,9 @@ class GeofenceService final {
     // replace default version of method with streamed unary
     virtual ::grpc::Status StreamedClearGeofence(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::geofence::ClearGeofenceRequest,::mavsdk::rpc::geofence::ClearGeofenceResponse>* server_unary_streamer) = 0;
   };
-  typedef WithStreamedUnaryMethod_UploadGeofence<WithStreamedUnaryMethod_ClearGeofence<Service > > StreamedUnaryService;
+  typedef WithStreamedUnaryMethod_UploadGeofence<WithStreamedUnaryMethod_DownloadGeofence<WithStreamedUnaryMethod_ClearGeofence<Service > > > StreamedUnaryService;
   typedef Service SplitStreamedService;
-  typedef WithStreamedUnaryMethod_UploadGeofence<WithStreamedUnaryMethod_ClearGeofence<Service > > StreamedService;
+  typedef WithStreamedUnaryMethod_UploadGeofence<WithStreamedUnaryMethod_DownloadGeofence<WithStreamedUnaryMethod_ClearGeofence<Service > > > StreamedService;
 };
 
 }  // namespace geofence
