@@ -116,7 +116,7 @@ TEST(SystemTest, CameraDefinitionCompressedXz)
     information.vendor_name = "UVC";
     information.model_name = "Logitech C270HD Webcam";
     information.firmware_version = "4.0.0";
-    information.definition_file_version = 2;
+    information.definition_file_version = 3; // different version to avoid cache collision with uncompressed test
     information.definition_file_uri = "mavlinkftp://uvc_camera.xml.xz";
     EXPECT_EQ(camera_server.set_information(information), CameraServer::Result::Success);
 
