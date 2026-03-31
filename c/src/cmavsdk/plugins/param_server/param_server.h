@@ -432,6 +432,7 @@ mavsdk_param_server_retrieve_all_params(
  * @brief Subscribe to changed int param.
  *
  * @param param_server The param_server instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_param_server_unsubscribe_changed_param_int() to unsubscribe.
@@ -458,6 +459,7 @@ CMAVSDK_EXPORT void mavsdk_param_server_unsubscribe_changed_param_int(
  * @brief Subscribe to changed float param.
  *
  * @param param_server The param_server instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_param_server_unsubscribe_changed_param_float() to unsubscribe.
@@ -484,6 +486,7 @@ CMAVSDK_EXPORT void mavsdk_param_server_unsubscribe_changed_param_float(
  * @brief Subscribe to changed custom param.
  *
  * @param param_server The param_server instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_param_server_unsubscribe_changed_param_custom() to unsubscribe.

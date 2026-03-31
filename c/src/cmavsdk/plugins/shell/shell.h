@@ -154,6 +154,7 @@ mavsdk_shell_send(
  *  This subscription needs to be made before a command line is sent, otherwise, no response will be sent.
  *
  * @param shell The shell instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_shell_unsubscribe_receive() to unsubscribe.

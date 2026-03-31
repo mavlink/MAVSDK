@@ -149,6 +149,7 @@ CMAVSDK_EXPORT void mavsdk_arm_authorizer_server_destroy(mavsdk_arm_authorizer_s
  * @brief Subscribe to arm authorization request messages. Each request received should respond to using RespondArmAuthorization
  *
  * @param arm_authorizer_server The arm_authorizer_server instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_arm_authorizer_server_unsubscribe_arm_authorization() to unsubscribe.

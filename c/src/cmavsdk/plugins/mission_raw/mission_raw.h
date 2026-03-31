@@ -326,8 +326,9 @@ CMAVSDK_EXPORT void mavsdk_mission_raw_destroy(mavsdk_mission_raw_t mission_raw)
  *  can be started and executed even if the connection is lost.
  *
  * @param mission_raw The mission_raw instance.
-* @param mission_items  The mission items
+ * @param mission_items  The mission items
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -359,8 +360,9 @@ mavsdk_mission_raw_upload_mission(
  * @brief Upload a list of geofence items to the system.
  *
  * @param mission_raw The mission_raw instance.
-* @param mission_items  The mission items
+ * @param mission_items  The mission items
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -392,8 +394,9 @@ mavsdk_mission_raw_upload_geofence(
  * @brief Upload a list of rally point items to the system.
  *
  * @param mission_raw The mission_raw instance.
-* @param mission_items  The mission items
+ * @param mission_items  The mission items
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -439,6 +442,7 @@ mavsdk_mission_raw_cancel_mission_upload(
  * @brief Download a list of raw mission items from the system (asynchronous).
  *
  * @param mission_raw The mission_raw instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -468,6 +472,7 @@ mavsdk_mission_raw_download_mission(
  * @brief Download a list of raw geofence items from the system (asynchronous).
  *
  * @param mission_raw The mission_raw instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -497,6 +502,7 @@ mavsdk_mission_raw_download_geofence(
  * @brief Download a list of raw rallypoint items from the system (asynchronous).
  *
  * @param mission_raw The mission_raw instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -542,6 +548,7 @@ mavsdk_mission_raw_cancel_mission_download(
  *  A mission must be uploaded to the vehicle before this can be called.
  *
  * @param mission_raw The mission_raw instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -574,6 +581,7 @@ mavsdk_mission_raw_start_mission(
  *  around the location where it paused.
  *
  * @param mission_raw The mission_raw instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -601,6 +609,7 @@ mavsdk_mission_raw_pause_mission(
  * @brief Clear the mission saved on the vehicle.
  *
  * @param mission_raw The mission_raw instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -631,8 +640,9 @@ mavsdk_mission_raw_clear_mission(
  *  to a specific index of a raw mission item, the mission will be set to this item.
  *
  * @param mission_raw The mission_raw instance.
-* @param index  Index of the mission item to be set as the next one (0-based)
+ * @param index  Index of the mission item to be set as the next one (0-based)
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -662,6 +672,7 @@ mavsdk_mission_raw_set_current_mission_item(
  * @brief Subscribe to mission progress updates.
  *
  * @param mission_raw The mission_raw instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_mission_raw_unsubscribe_mission_progress() to unsubscribe.
@@ -707,6 +718,7 @@ mavsdk_mission_raw_mission_progress(
  *  @param callback Callback to notify about change.
  *
  * @param mission_raw The mission_raw instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_mission_raw_unsubscribe_mission_changed() to unsubscribe.

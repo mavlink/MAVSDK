@@ -224,8 +224,9 @@ CMAVSDK_EXPORT void mavsdk_tune_destroy(mavsdk_tune_t tune);
  * @brief Send a tune to be played by the system.
  *
  * @param tune The tune instance.
-* @param tune_description  The tune to be played
+ * @param tune_description  The tune to be played
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */

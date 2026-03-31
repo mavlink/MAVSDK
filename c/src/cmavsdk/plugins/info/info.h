@@ -410,6 +410,7 @@ mavsdk_info_get_speed_factor(
  * @brief Subscribe to 'flight information' updates.
  *
  * @param info The info instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_info_unsubscribe_flight_information() to unsubscribe.

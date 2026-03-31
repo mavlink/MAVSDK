@@ -433,8 +433,9 @@ CMAVSDK_EXPORT void mavsdk_mission_destroy(mavsdk_mission_t mission);
  *  executed even if the connection is lost.
  *
  * @param mission The mission instance.
-* @param mission_plan  The mission plan
+ * @param mission_plan  The mission plan
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -467,8 +468,9 @@ mavsdk_mission_upload_mission(
  *  executed even if the connection is lost.
  *
  * @param mission The mission instance.
-* @param mission_plan  The mission plan
+ * @param mission_plan  The mission plan
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -501,6 +503,7 @@ mavsdk_mission_cancel_mission_upload(
  *  by the MAVSDK API.
  *
  * @param mission The mission instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -532,6 +535,7 @@ mavsdk_mission_download_mission(
  *  by the MAVSDK API.
  *
  * @param mission The mission instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -562,6 +566,7 @@ mavsdk_mission_cancel_mission_download(
  *  A mission must be uploaded to the vehicle before this can be called.
  *
  * @param mission The mission instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -594,6 +599,7 @@ mavsdk_mission_start_mission(
  *  around the location where it paused.
  *
  * @param mission The mission instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -621,6 +627,7 @@ mavsdk_mission_pause_mission(
  * @brief Clear the mission saved on the vehicle.
  *
  * @param mission The mission instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -654,8 +661,9 @@ mavsdk_mission_clear_mission(
  *  are used.
  *
  * @param mission The mission instance.
-* @param index  Index of the mission item to be set as the next one (0-based)
+ * @param index  Index of the mission item to be set as the next one (0-based)
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -700,6 +708,7 @@ mavsdk_mission_is_mission_finished(
  * @brief Subscribe to mission progress updates.
  *
  * @param mission The mission instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_mission_unsubscribe_mission_progress() to unsubscribe.

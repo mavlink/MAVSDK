@@ -724,6 +724,7 @@ mavsdk_camera_server_set_in_progress(
  * @brief Subscribe to image capture requests. Each request received should respond to using RespondTakePhoto.
  *
  * @param camera_server The camera_server instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_camera_server_unsubscribe_take_photo() to unsubscribe.
@@ -766,6 +767,7 @@ mavsdk_camera_server_respond_take_photo(
  * @brief Subscribe to start video requests. Each request received should respond to using RespondStartVideo
  *
  * @param camera_server The camera_server instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_camera_server_unsubscribe_start_video() to unsubscribe.
@@ -807,6 +809,7 @@ mavsdk_camera_server_respond_start_video(
  * @brief Subscribe to stop video requests. Each request received should response to using RespondStopVideo
  *
  * @param camera_server The camera_server instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_camera_server_unsubscribe_stop_video() to unsubscribe.
@@ -848,6 +851,7 @@ mavsdk_camera_server_respond_stop_video(
  * @brief Subscribe to start video streaming requests. Each request received should response to using RespondStartVideoStreaming
  *
  * @param camera_server The camera_server instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_camera_server_unsubscribe_start_video_streaming() to unsubscribe.
@@ -889,6 +893,7 @@ mavsdk_camera_server_respond_start_video_streaming(
  * @brief Subscribe to stop video streaming requests. Each request received should response to using RespondStopVideoStreaming
  *
  * @param camera_server The camera_server instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_camera_server_unsubscribe_stop_video_streaming() to unsubscribe.
@@ -930,6 +935,7 @@ mavsdk_camera_server_respond_stop_video_streaming(
  * @brief Subscribe to set camera mode requests. Each request received should response to using RespondSetMode
  *
  * @param camera_server The camera_server instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_camera_server_unsubscribe_set_mode() to unsubscribe.
@@ -971,6 +977,7 @@ mavsdk_camera_server_respond_set_mode(
  * @brief Subscribe to camera storage information requests. Each request received should response to using RespondStorageInformation
  *
  * @param camera_server The camera_server instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_camera_server_unsubscribe_storage_information() to unsubscribe.
@@ -1013,6 +1020,7 @@ mavsdk_camera_server_respond_storage_information(
  * @brief Subscribe to camera capture status requests. Each request received should response to using RespondCaptureStatus
  *
  * @param camera_server The camera_server instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_camera_server_unsubscribe_capture_status() to unsubscribe.
@@ -1055,6 +1063,7 @@ mavsdk_camera_server_respond_capture_status(
  * @brief Subscribe to format storage requests. Each request received should response to using RespondFormatStorage
  *
  * @param camera_server The camera_server instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_camera_server_unsubscribe_format_storage() to unsubscribe.
@@ -1096,6 +1105,7 @@ mavsdk_camera_server_respond_format_storage(
  * @brief Subscribe to reset settings requests. Each request received should response to using RespondResetSettings
  *
  * @param camera_server The camera_server instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_camera_server_unsubscribe_reset_settings() to unsubscribe.
@@ -1137,6 +1147,7 @@ mavsdk_camera_server_respond_reset_settings(
  * @brief Subscribe to zoom in start command
  *
  * @param camera_server The camera_server instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_camera_server_unsubscribe_zoom_in_start() to unsubscribe.
@@ -1178,6 +1189,7 @@ mavsdk_camera_server_respond_zoom_in_start(
  * @brief Subscribe to zoom out start command
  *
  * @param camera_server The camera_server instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_camera_server_unsubscribe_zoom_out_start() to unsubscribe.
@@ -1219,6 +1231,7 @@ mavsdk_camera_server_respond_zoom_out_start(
  * @brief Subscribe to zoom stop command
  *
  * @param camera_server The camera_server instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_camera_server_unsubscribe_zoom_stop() to unsubscribe.
@@ -1260,6 +1273,7 @@ mavsdk_camera_server_respond_zoom_stop(
  * @brief Subscribe to zoom range command
  *
  * @param camera_server The camera_server instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_camera_server_unsubscribe_zoom_range() to unsubscribe.
@@ -1330,6 +1344,7 @@ mavsdk_camera_server_set_tracking_off_status(
  * @brief Subscribe to incoming tracking point command.
  *
  * @param camera_server The camera_server instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_camera_server_unsubscribe_tracking_point_command() to unsubscribe.
@@ -1356,6 +1371,7 @@ CMAVSDK_EXPORT void mavsdk_camera_server_unsubscribe_tracking_point_command(
  * @brief Subscribe to incoming tracking rectangle command.
  *
  * @param camera_server The camera_server instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_camera_server_unsubscribe_tracking_rectangle_command() to unsubscribe.
@@ -1382,6 +1398,7 @@ CMAVSDK_EXPORT void mavsdk_camera_server_unsubscribe_tracking_rectangle_command(
  * @brief Subscribe to incoming tracking off command.
  *
  * @param camera_server The camera_server instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_camera_server_unsubscribe_tracking_off_command() to unsubscribe.

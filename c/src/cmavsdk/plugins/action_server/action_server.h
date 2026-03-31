@@ -289,6 +289,7 @@ CMAVSDK_EXPORT void mavsdk_action_server_destroy(mavsdk_action_server_t action_s
  * @brief Subscribe to ARM/DISARM commands
  *
  * @param action_server The action_server instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_action_server_unsubscribe_arm_disarm() to unsubscribe.
@@ -315,6 +316,7 @@ CMAVSDK_EXPORT void mavsdk_action_server_unsubscribe_arm_disarm(
  * @brief Subscribe to DO_SET_MODE
  *
  * @param action_server The action_server instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_action_server_unsubscribe_flight_mode_change() to unsubscribe.
@@ -341,6 +343,7 @@ CMAVSDK_EXPORT void mavsdk_action_server_unsubscribe_flight_mode_change(
  * @brief Subscribe to takeoff command
  *
  * @param action_server The action_server instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_action_server_unsubscribe_takeoff() to unsubscribe.
@@ -367,6 +370,7 @@ CMAVSDK_EXPORT void mavsdk_action_server_unsubscribe_takeoff(
  * @brief Subscribe to land command
  *
  * @param action_server The action_server instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_action_server_unsubscribe_land() to unsubscribe.
@@ -393,6 +397,7 @@ CMAVSDK_EXPORT void mavsdk_action_server_unsubscribe_land(
  * @brief Subscribe to reboot command
  *
  * @param action_server The action_server instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_action_server_unsubscribe_reboot() to unsubscribe.
@@ -419,6 +424,7 @@ CMAVSDK_EXPORT void mavsdk_action_server_unsubscribe_reboot(
  * @brief Subscribe to shutdown command
  *
  * @param action_server The action_server instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_action_server_unsubscribe_shutdown() to unsubscribe.
@@ -445,6 +451,7 @@ CMAVSDK_EXPORT void mavsdk_action_server_unsubscribe_shutdown(
  * @brief Subscribe to terminate command
  *
  * @param action_server The action_server instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_action_server_unsubscribe_terminate() to unsubscribe.

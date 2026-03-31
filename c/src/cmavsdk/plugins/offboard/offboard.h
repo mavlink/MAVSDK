@@ -554,6 +554,7 @@ CMAVSDK_EXPORT void mavsdk_offboard_destroy(mavsdk_offboard_t offboard);
  * @brief Start offboard control.
  *
  * @param offboard The offboard instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -583,6 +584,7 @@ mavsdk_offboard_start(
  *  The vehicle will be put into Hold mode: https://docs.px4.io/en/flight_modes/hold.html
  *
  * @param offboard The offboard instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */

@@ -204,6 +204,7 @@ CMAVSDK_EXPORT void mavsdk_action_destroy(mavsdk_action_t action);
  *  Before arming take all safety precautions and stand clear of the drone!
  *
  * @param action The action instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -236,6 +237,7 @@ mavsdk_action_arm(
  *  Before arming take all safety precautions and stand clear of the drone!
  *
  * @param action The action instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -266,6 +268,7 @@ mavsdk_action_arm_force(
  *  reject the disarm command. Disarming means that all motors will stop.
  *
  * @param action The action instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -298,6 +301,7 @@ mavsdk_action_disarm(
  *  Note that the vehicle must be armed before it can take off.
  *
  * @param action The action instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -327,6 +331,7 @@ mavsdk_action_takeoff(
  *  This switches the drone to 'Land' flight mode.
  *
  * @param action The action instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -356,6 +361,7 @@ mavsdk_action_land(
  *  This will reboot the autopilot, companion computer, camera and gimbal.
  *
  * @param action The action instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -387,6 +393,7 @@ mavsdk_action_reboot(
  *  reject it if they are not already ready to shut down.
  *
  * @param action The action instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -416,6 +423,7 @@ mavsdk_action_shutdown(
  *  This will run the terminate routine as configured on the drone (e.g. disarm and open the parachute).
  *
  * @param action The action instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -446,6 +454,7 @@ mavsdk_action_terminate(
  *  Note that the drone will fall out of the sky if this command is used while flying.
  *
  * @param action The action instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -477,6 +486,7 @@ mavsdk_action_kill(
  *  back to the launch (takeoff) position and land there.
  *
  * @param action The action instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -509,14 +519,15 @@ mavsdk_action_return_to_launch(
  *  The yaw angle is in degrees (frame is NED, 0 is North, positive is clockwise).
  *
  * @param action The action instance.
-* @param latitude_deg  Latitude (in degrees)
+ * @param latitude_deg  Latitude (in degrees)
  * 
-* @param longitude_deg  Longitude (in degrees)
+ * @param longitude_deg  Longitude (in degrees)
  * 
-* @param absolute_altitude_m  Altitude AMSL (in meters)
+ * @param absolute_altitude_m  Altitude AMSL (in meters)
  * 
-* @param yaw_deg  Yaw angle (in degrees, frame is NED, 0 is North, positive is clockwise)
+ * @param yaw_deg  Yaw angle (in degrees, frame is NED, 0 is North, positive is clockwise)
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -554,18 +565,19 @@ mavsdk_action_goto_location(
  *  This will run the orbit routine with the given parameters.
  *
  * @param action The action instance.
-* @param radius_m  Radius of circle (in meters)
+ * @param radius_m  Radius of circle (in meters)
  * 
-* @param velocity_ms  Tangential velocity (in m/s)
+ * @param velocity_ms  Tangential velocity (in m/s)
  * 
-* @param yaw_behavior  Yaw behavior of vehicle (ORBIT_YAW_BEHAVIOUR)
+ * @param yaw_behavior  Yaw behavior of vehicle (ORBIT_YAW_BEHAVIOUR)
  * 
-* @param latitude_deg  Center point latitude in degrees. NAN: use current latitude for center
+ * @param latitude_deg  Center point latitude in degrees. NAN: use current latitude for center
  * 
-* @param longitude_deg  Center point longitude in degrees. NAN: use current longitude for center
+ * @param longitude_deg  Center point longitude in degrees. NAN: use current longitude for center
  * 
-* @param absolute_altitude_m  Center point altitude in meters. NAN: use current altitude for center
+ * @param absolute_altitude_m  Center point altitude in meters. NAN: use current altitude for center
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -611,6 +623,7 @@ mavsdk_action_do_orbit(
  *  it implies a change to a PX4-specific mode.
  *
  * @param action The action instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -640,10 +653,11 @@ mavsdk_action_hold(
  *  Note that the index of the actuator starts at 1 and that the value goes from -1 to 1.
  *
  * @param action The action instance.
-* @param index  Index of actuator (starting with 1)
+ * @param index  Index of actuator (starting with 1)
  * 
-* @param value  Value to set the actuator to (normalized from [-1..1])
+ * @param value  Value to set the actuator to (normalized from [-1..1])
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -678,10 +692,11 @@ mavsdk_action_set_actuator(
  *  For the relay value, 1=on, 0=off, others possible depending on system hardware
  *
  * @param action The action instance.
-* @param index  Index of relay (starting with 0)
+ * @param index  Index of relay (starting with 0)
  * 
-* @param setting  Value to set the relay to
+ * @param setting  Value to set the relay to
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -717,6 +732,7 @@ mavsdk_action_set_relay(
  *  is already in fixedwing mode.
  *
  * @param action The action instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -748,6 +764,7 @@ mavsdk_action_transition_to_fixedwing(
  *  is already in multicopter mode.
  *
  * @param action The action instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -775,6 +792,7 @@ mavsdk_action_transition_to_multicopter(
  * @brief Get the takeoff altitude (in meters above ground).
  *
  * @param action The action instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -803,8 +821,9 @@ mavsdk_action_get_takeoff_altitude(
  * @brief Set takeoff altitude (in meters above ground).
  *
  * @param action The action instance.
-* @param altitude  Takeoff altitude relative to ground/takeoff location (in meters)
+ * @param altitude  Takeoff altitude relative to ground/takeoff location (in meters)
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -834,6 +853,7 @@ mavsdk_action_set_takeoff_altitude(
  * @brief Get the return to launch minimum return altitude (in meters).
  *
  * @param action The action instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -862,8 +882,9 @@ mavsdk_action_get_return_to_launch_altitude(
  * @brief Set the return to launch minimum return altitude (in meters).
  *
  * @param action The action instance.
-* @param relative_altitude_m  Return altitude relative to takeoff location (in meters)
+ * @param relative_altitude_m  Return altitude relative to takeoff location (in meters)
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -896,8 +917,9 @@ mavsdk_action_set_return_to_launch_altitude(
  *  It is ephemeral, so not stored on the drone and does not survive a reboot.
  *
  * @param action The action instance.
-* @param speed_m_s  Speed in meters/second
+ * @param speed_m_s  Speed in meters/second
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */

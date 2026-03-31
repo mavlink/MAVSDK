@@ -294,6 +294,7 @@ CMAVSDK_EXPORT void mavsdk_mission_raw_server_destroy(mavsdk_mission_raw_server_
  * @brief Subscribe to when a new mission is uploaded (asynchronous).
  *
  * @param mission_raw_server The mission_raw_server instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_mission_raw_server_unsubscribe_incoming_mission() to unsubscribe.
@@ -320,6 +321,7 @@ CMAVSDK_EXPORT void mavsdk_mission_raw_server_unsubscribe_incoming_mission(
  * @brief Subscribe to when a new current item is set
  *
  * @param mission_raw_server The mission_raw_server instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_mission_raw_server_unsubscribe_current_item_changed() to unsubscribe.
@@ -360,6 +362,7 @@ mavsdk_mission_raw_server_set_current_item_complete(
  * @brief Subscribe when a MISSION_CLEAR_ALL is received
  *
  * @param mission_raw_server The mission_raw_server instance.
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  * @return Handle for this subscription. Use mavsdk_mission_raw_server_unsubscribe_clear_all() to unsubscribe.

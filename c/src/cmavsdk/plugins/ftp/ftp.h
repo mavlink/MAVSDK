@@ -239,12 +239,13 @@ CMAVSDK_EXPORT void mavsdk_ftp_destroy(mavsdk_ftp_t ftp);
  * @brief Downloads a file to local directory.
  *
  * @param ftp The ftp instance.
-* @param remote_file_path  The path of the remote file to download.
+ * @param remote_file_path  The path of the remote file to download.
  * 
-* @param local_dir  The local directory to download to.
+ * @param local_dir  The local directory to download to.
  * 
-* @param use_burst  Use burst for faster downloading.
+ * @param use_burst  Use burst for faster downloading.
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -262,10 +263,11 @@ CMAVSDK_EXPORT void mavsdk_ftp_download_async(
  * @brief Uploads local file to remote directory.
  *
  * @param ftp The ftp instance.
-* @param local_file_path  The local file path to upload.
+ * @param local_file_path  The local file path to upload.
  * 
-* @param remote_dir  The remote directory to upload to.
+ * @param remote_dir  The remote directory to upload to.
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -282,8 +284,9 @@ CMAVSDK_EXPORT void mavsdk_ftp_upload_async(
  * @brief Lists items from a remote directory.
  *
  * @param ftp The ftp instance.
-* @param remote_dir  The remote directory to list the contents for.
+ * @param remote_dir  The remote directory to list the contents for.
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -314,8 +317,9 @@ mavsdk_ftp_list_directory(
  * @brief Creates a remote directory.
  *
  * @param ftp The ftp instance.
-* @param remote_dir  The remote directory to create.
+ * @param remote_dir  The remote directory to create.
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -345,8 +349,9 @@ mavsdk_ftp_create_directory(
  * @brief Removes a remote directory.
  *
  * @param ftp The ftp instance.
-* @param remote_dir  The remote directory to remove.
+ * @param remote_dir  The remote directory to remove.
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -376,8 +381,9 @@ mavsdk_ftp_remove_directory(
  * @brief Removes a remote file.
  *
  * @param ftp The ftp instance.
-* @param remote_file_path  The path of the remote file to remove.
+ * @param remote_file_path  The path of the remote file to remove.
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -407,10 +413,11 @@ mavsdk_ftp_remove_file(
  * @brief Renames a remote file or remote directory.
  *
  * @param ftp The ftp instance.
-* @param remote_from_path  The remote source path.
+ * @param remote_from_path  The remote source path.
  * 
-* @param remote_to_path  The remote destination path.
+ * @param remote_to_path  The remote destination path.
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
@@ -442,10 +449,11 @@ mavsdk_ftp_rename(
  * @brief Compares a local file to a remote file using a CRC32 checksum.
  *
  * @param ftp The ftp instance.
-* @param local_file_path  The path of the local file.
+ * @param local_file_path  The path of the local file.
  * 
-* @param remote_file_path  The path of the remote file.
+ * @param remote_file_path  The path of the remote file.
  * 
+ *
  * @param callback Function to call when new data is available.
  * @param user_data User data to pass to the callback.
  */
