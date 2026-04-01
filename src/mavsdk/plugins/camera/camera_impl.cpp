@@ -806,6 +806,8 @@ CameraImpl::camera_result_from_command_result(const MavlinkCommandSender::Result
             return Camera::Result::Timeout;
         case MavlinkCommandSender::Result::Unsupported:
             return Camera::Result::ActionUnsupported;
+        case MavlinkCommandSender::Result::InProgress:
+            return Camera::Result::InProgress;
         case MavlinkCommandSender::Result::Cancelled:
         default:
             return Camera::Result::Unknown;
