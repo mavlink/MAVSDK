@@ -290,7 +290,8 @@ Mocap::Result MocapImpl::send_odometry(const Mocap::Odometry& odometry)
             channel,
             &message,
             autopilot_time_usec,
-            static_cast<uint8_t>(odometry.frame_id),
+            odometry.frame_id == Mocap::Odometry::MavFrame::LocalFrd ? MAV_FRAME_LOCAL_FRD :
+                                                                       MAV_FRAME_RESERVED_14,
             static_cast<uint8_t>(MAV_FRAME_BODY_FRD),
             odometry.position_body.x_m,
             odometry.position_body.y_m,
