@@ -644,7 +644,10 @@ std::pair<Mission::Result, Mission::MissionPlan> MissionImpl::convert_to_result_
 
     _mission_data.mavlink_mission_item_to_mission_item_indices.clear();
 
-    Mission::DownloadMissionCallback callback;
+    if (int_items.empty()) {
+        return result_pair;
+    }
+
     {
         _enable_return_to_launch_after_mission = false;
 
