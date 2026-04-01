@@ -17,6 +17,7 @@ add_executable(system_tests_runner
     mission_raw_upload_empty.cpp
     telemetry_subscription.cpp
     telemetry_timestamp.cpp
+    telemetry_rc_status.cpp
     geofence_download.cpp
     fs_helpers.cpp
     ftp_download_file.cpp
