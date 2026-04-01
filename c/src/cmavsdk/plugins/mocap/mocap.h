@@ -340,6 +340,8 @@ typedef struct CMAVSDK_EXPORT {
     mavsdk_mocap_angle_body_t angle_body;
     /**  Pose cross-covariance matrix. */
     mavsdk_mocap_covariance_t pose_covariance;
+    /**  Estimate reset counter. Increment when the estimate resets or jumps. */
+    uint32_t reset_counter;
 } mavsdk_mocap_vision_position_estimate_t;
 
 /**
@@ -381,6 +383,8 @@ typedef struct CMAVSDK_EXPORT {
     mavsdk_mocap_speed_ned_t speed_ned;
     /**  Linear velocity cross-covariance matrix. */
     mavsdk_mocap_covariance_t speed_covariance;
+    /**  Estimate reset counter. Increment when the estimate resets or jumps. */
+    uint32_t reset_counter;
 } mavsdk_mocap_vision_speed_estimate_t;
 
 /**
@@ -456,11 +460,35 @@ CMAVSDK_EXPORT void mavsdk_mocap_attitude_position_mocap_array_destroy(
  * @brief Mavlink frame id
  */
 typedef enum {
-    /**  MAVLink number: 14. Odometry local coordinate frame of data given by a motion capture system, Z-down (x: north, y: east, z: down).. */
+    /**  Legacy mocap NED frame. Deprecated in MAVLink and replaced by MAV_FRAME_LOCAL_FRD.. */
     MAVSDK_MOCAP_ODOMETRY_MAV_FRAME_MOCAP_NED = 0,
-    /**  MAVLink number: 20. Forward, Right, Down coordinate frame. This is a local frame with Z-down and arbitrary F/R alignment (i.e. not aligned with NED/earth frame). Replacement for MAV_FRAME_MOCAP_NED, MAV_FRAME_VISION_NED, MAV_FRAME_ESTIM_NED.. */
+    /**  Local FRD frame (x: forward, y: right, z: down).. */
     MAVSDK_MOCAP_ODOMETRY_MAV_FRAME_LOCAL_FRD = 1,
 } mavsdk_mocap_odometry_mav_frame_t;
+
+/**
+ * @brief Estimator type, matching MAVLink MAV_ESTIMATOR_TYPE.
+ */
+typedef enum {
+    /**  Unknown estimator type.. */
+    MAVSDK_MOCAP_ODOMETRY_MAV_ESTIMATOR_TYPE_UNKNOWN = 0,
+    /**  Naive estimator.. */
+    MAVSDK_MOCAP_ODOMETRY_MAV_ESTIMATOR_TYPE_NAIVE = 1,
+    /**  Computer vision-based estimate.. */
+    MAVSDK_MOCAP_ODOMETRY_MAV_ESTIMATOR_TYPE_VISION = 2,
+    /**  Visual-inertial estimate.. */
+    MAVSDK_MOCAP_ODOMETRY_MAV_ESTIMATOR_TYPE_VIO = 3,
+    /**  Plain GPS estimate.. */
+    MAVSDK_MOCAP_ODOMETRY_MAV_ESTIMATOR_TYPE_GPS = 4,
+    /**  GPS and inertial navigation estimate.. */
+    MAVSDK_MOCAP_ODOMETRY_MAV_ESTIMATOR_TYPE_GPS_INS = 5,
+    /**  Motion capture estimate.. */
+    MAVSDK_MOCAP_ODOMETRY_MAV_ESTIMATOR_TYPE_MOCAP = 6,
+    /**  Lidar estimate.. */
+    MAVSDK_MOCAP_ODOMETRY_MAV_ESTIMATOR_TYPE_LIDAR = 7,
+    /**  Autopilot estimate.. */
+    MAVSDK_MOCAP_ODOMETRY_MAV_ESTIMATOR_TYPE_AUTOPILOT = 8,
+} mavsdk_mocap_odometry_mav_estimator_type_t;
 
 /**
  * @brief Odometry message to communicate odometry information with an external interface.
@@ -485,6 +513,12 @@ typedef struct CMAVSDK_EXPORT {
     mavsdk_mocap_covariance_t pose_covariance;
     /**  Velocity cross-covariance matrix. */
     mavsdk_mocap_covariance_t velocity_covariance;
+    /**  Estimate reset counter. Increment when the estimate resets or jumps. */
+    uint32_t reset_counter;
+    /**  Type of estimator that is providing the odometry. */
+    mavsdk_mocap_odometry_mav_estimator_type_t estimator_type;
+    /**  Optional odometry quality in percent. -1 = failed, 0 = unknown/unset, 1 = worst, 100 = best. */
+    int32_t quality_percent;
 } mavsdk_mocap_odometry_t;
 
 /**

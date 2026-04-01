@@ -13,6 +13,7 @@
 Type | Description
 --- | ---
 enum [MavFrame](#structmavsdk_1_1_mocap_1_1_odometry_1a9c98852de68b23f07a78a0fc021c8a33) | Mavlink frame id.
+enum [MavEstimatorType](#structmavsdk_1_1_mocap_1_1_odometry_1a9ccdb445668a2c14880d7a0b83fd25ed) | Estimator type, matching MAVLink MAV_ESTIMATOR_TYPE.
 
 ## Data Fields
 
@@ -33,6 +34,12 @@ uint64_t [time_usec](#structmavsdk_1_1_mocap_1_1_odometry_1a015fd5755c9953ab7d7b
 
 [Covariance](structmavsdk_1_1_mocap_1_1_covariance.md) [velocity_covariance](#structmavsdk_1_1_mocap_1_1_odometry_1a76cc8691a7aa85e2351b99f1c6b0c126) {} - Velocity cross-covariance matrix.
 
+uint32_t [reset_counter](#structmavsdk_1_1_mocap_1_1_odometry_1ac362a03489fe0a3e4cb9af02c98d5b94) {} - Estimate reset counter. Increment when the estimate resets or jumps.
+
+[MavEstimatorType](structmavsdk_1_1_mocap_1_1_odometry.md#structmavsdk_1_1_mocap_1_1_odometry_1a9ccdb445668a2c14880d7a0b83fd25ed) [estimator_type](#structmavsdk_1_1_mocap_1_1_odometry_1a41a983ddbdfba6201959b3a21444b3f9) {} - Type of estimator that is providing the odometry.
+
+int32_t [quality_percent](#structmavsdk_1_1_mocap_1_1_odometry_1a0bb4db847a0434471fcf496dd7d38775) {} - Optional odometry quality in percent. -1 = failed, 0 = unknown/unset, 1 = worst, 100 = best.
+
 
 ## Member Enumeration Documentation
 
@@ -45,8 +52,26 @@ Mavlink frame id.
 
 Value | Description
 --- | ---
-<span id="structmavsdk_1_1_mocap_1_1_odometry_1a9c98852de68b23f07a78a0fc021c8a33aa596c29912446dcd690daf29d1ca68af"></span> `MocapNed` | MAVLink number: 14. [Odometry](structmavsdk_1_1_mocap_1_1_odometry.md) local coordinate frame of data given by a motion capture system, Z-down (x: north, y: east, z: down).. 
-<span id="structmavsdk_1_1_mocap_1_1_odometry_1a9c98852de68b23f07a78a0fc021c8a33a4feb9efb49990fff5a73858673d7ffde"></span> `LocalFrd` | MAVLink number: 20. Forward, Right, Down coordinate frame. This is a local frame with Z-down and arbitrary F/R alignment (i.e. not aligned with NED/earth frame). Replacement for MAV_FRAME_MOCAP_NED, MAV_FRAME_VISION_NED, MAV_FRAME_ESTIM_NED.. 
+<span id="structmavsdk_1_1_mocap_1_1_odometry_1a9c98852de68b23f07a78a0fc021c8a33aa596c29912446dcd690daf29d1ca68af"></span> `MocapNed` | Legacy mocap NED frame. Deprecated in MAVLink and replaced by MAV_FRAME_LOCAL_FRD.. 
+<span id="structmavsdk_1_1_mocap_1_1_odometry_1a9c98852de68b23f07a78a0fc021c8a33a4feb9efb49990fff5a73858673d7ffde"></span> `LocalFrd` | Local FRD frame (x: forward, y: right, z: down).. 
+
+### enum MavEstimatorType {#structmavsdk_1_1_mocap_1_1_odometry_1a9ccdb445668a2c14880d7a0b83fd25ed}
+
+
+Estimator type, matching MAVLink MAV_ESTIMATOR_TYPE.
+
+
+Value | Description
+--- | ---
+<span id="structmavsdk_1_1_mocap_1_1_odometry_1a9ccdb445668a2c14880d7a0b83fd25eda88183b946cc5f0e8c96b2e66e1c74a7e"></span> `Unknown` | Unknown estimator type.. 
+<span id="structmavsdk_1_1_mocap_1_1_odometry_1a9ccdb445668a2c14880d7a0b83fd25eda512d6102506da4ae0c35312fafcf7376"></span> `Naive` | Naive estimator.. 
+<span id="structmavsdk_1_1_mocap_1_1_odometry_1a9ccdb445668a2c14880d7a0b83fd25eda99a0628d9f7179c032e0cf59efbc0fad"></span> `Vision` | Computer vision-based estimate.. 
+<span id="structmavsdk_1_1_mocap_1_1_odometry_1a9ccdb445668a2c14880d7a0b83fd25eda9f543a596d30faf8e4d9459b1c39d9b8"></span> `Vio` | Visual-inertial estimate.. 
+<span id="structmavsdk_1_1_mocap_1_1_odometry_1a9ccdb445668a2c14880d7a0b83fd25eda06960407a35b206422d40932f13c8d91"></span> `Gps` | Plain GPS estimate.. 
+<span id="structmavsdk_1_1_mocap_1_1_odometry_1a9ccdb445668a2c14880d7a0b83fd25edaa4d8dd7f4939adb946c14813aee11591"></span> `GpsIns` | GPS and inertial navigation estimate.. 
+<span id="structmavsdk_1_1_mocap_1_1_odometry_1a9ccdb445668a2c14880d7a0b83fd25eda0cdd90d19209c9107fb20b00e5612e09"></span> `Mocap` | Motion capture estimate.. 
+<span id="structmavsdk_1_1_mocap_1_1_odometry_1a9ccdb445668a2c14880d7a0b83fd25edacb7655fbcdd104b339e7053868337db7"></span> `Lidar` | Lidar estimate.. 
+<span id="structmavsdk_1_1_mocap_1_1_odometry_1a9ccdb445668a2c14880d7a0b83fd25eda6ca1d2b081cc474f42cb95e3d04e6e68"></span> `Autopilot` | Autopilot estimate.. 
 
 ## Field Documentation
 
@@ -129,4 +154,34 @@ Covariance mavsdk::Mocap::Odometry::velocity_covariance {}
 
 
 Velocity cross-covariance matrix.
+
+
+### reset_counter {#structmavsdk_1_1_mocap_1_1_odometry_1ac362a03489fe0a3e4cb9af02c98d5b94}
+
+```cpp
+uint32_t mavsdk::Mocap::Odometry::reset_counter {}
+```
+
+
+Estimate reset counter. Increment when the estimate resets or jumps.
+
+
+### estimator_type {#structmavsdk_1_1_mocap_1_1_odometry_1a41a983ddbdfba6201959b3a21444b3f9}
+
+```cpp
+MavEstimatorType mavsdk::Mocap::Odometry::estimator_type {}
+```
+
+
+Type of estimator that is providing the odometry.
+
+
+### quality_percent {#structmavsdk_1_1_mocap_1_1_odometry_1a0bb4db847a0434471fcf496dd7d38775}
+
+```cpp
+int32_t mavsdk::Mocap::Odometry::quality_percent {}
+```
+
+
+Optional odometry quality in percent. -1 = failed, 0 = unknown/unset, 1 = worst, 100 = best.
 

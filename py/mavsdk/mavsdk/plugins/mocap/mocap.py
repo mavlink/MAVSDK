@@ -137,6 +137,7 @@ class VisionPositionEstimateCStruct(ctypes.Structure):
         ("position_body", PositionBodyCStruct),
         ("angle_body", AngleBodyCStruct),
         ("pose_covariance", CovarianceCStruct),
+        ("reset_counter", ctypes.c_uint32),
     ]
 
 
@@ -150,6 +151,7 @@ class VisionSpeedEstimateCStruct(ctypes.Structure):
         ("time_usec", ctypes.c_uint64),
         ("speed_ned", SpeedNedCStruct),
         ("speed_covariance", CovarianceCStruct),
+        ("reset_counter", ctypes.c_uint32),
     ]
 
 
@@ -182,6 +184,9 @@ class OdometryCStruct(ctypes.Structure):
         ("angular_velocity_body", AngularVelocityBodyCStruct),
         ("pose_covariance", CovarianceCStruct),
         ("velocity_covariance", CovarianceCStruct),
+        ("reset_counter", ctypes.c_uint32),
+        ("estimator_type", ctypes.c_int),
+        ("quality_percent", ctypes.c_int32),
     ]
 
 
@@ -451,12 +456,18 @@ class VisionPositionEstimate:
     """
 
     def __init__(
-        self, time_usec=None, position_body=None, angle_body=None, pose_covariance=None
+        self,
+        time_usec=None,
+        position_body=None,
+        angle_body=None,
+        pose_covariance=None,
+        reset_counter=None,
     ):
         self.time_usec = time_usec
         self.position_body = position_body
         self.angle_body = angle_body
         self.pose_covariance = pose_covariance
+        self.reset_counter = reset_counter
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -466,6 +477,7 @@ class VisionPositionEstimate:
         instance.position_body = PositionBody.from_c_struct(c_struct.position_body)
         instance.angle_body = AngleBody.from_c_struct(c_struct.angle_body)
         instance.pose_covariance = Covariance.from_c_struct(c_struct.pose_covariance)
+        instance.reset_counter = c_struct.reset_counter
         return instance
 
     def to_c_struct(self):
@@ -475,6 +487,7 @@ class VisionPositionEstimate:
         c_struct.position_body = self.position_body.to_c_struct()
         c_struct.angle_body = self.angle_body.to_c_struct()
         c_struct.pose_covariance = self.pose_covariance.to_c_struct()
+        c_struct.reset_counter = self.reset_counter
         return c_struct
 
     def __str__(self):
@@ -483,6 +496,7 @@ class VisionPositionEstimate:
         fields.append(f"position_body={self.position_body}")
         fields.append(f"angle_body={self.angle_body}")
         fields.append(f"pose_covariance={self.pose_covariance}")
+        fields.append(f"reset_counter={self.reset_counter}")
         return f"VisionPositionEstimate({', '.join(fields)})"
 
 
@@ -491,10 +505,13 @@ class VisionSpeedEstimate:
     Global speed estimate from a vision source.
     """
 
-    def __init__(self, time_usec=None, speed_ned=None, speed_covariance=None):
+    def __init__(
+        self, time_usec=None, speed_ned=None, speed_covariance=None, reset_counter=None
+    ):
         self.time_usec = time_usec
         self.speed_ned = speed_ned
         self.speed_covariance = speed_covariance
+        self.reset_counter = reset_counter
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -503,6 +520,7 @@ class VisionSpeedEstimate:
         instance.time_usec = c_struct.time_usec
         instance.speed_ned = SpeedNed.from_c_struct(c_struct.speed_ned)
         instance.speed_covariance = Covariance.from_c_struct(c_struct.speed_covariance)
+        instance.reset_counter = c_struct.reset_counter
         return instance
 
     def to_c_struct(self):
@@ -511,6 +529,7 @@ class VisionSpeedEstimate:
         c_struct.time_usec = self.time_usec
         c_struct.speed_ned = self.speed_ned.to_c_struct()
         c_struct.speed_covariance = self.speed_covariance.to_c_struct()
+        c_struct.reset_counter = self.reset_counter
         return c_struct
 
     def __str__(self):
@@ -518,6 +537,7 @@ class VisionSpeedEstimate:
         fields.append(f"time_usec={self.time_usec}")
         fields.append(f"speed_ned={self.speed_ned}")
         fields.append(f"speed_covariance={self.speed_covariance}")
+        fields.append(f"reset_counter={self.reset_counter}")
         return f"VisionSpeedEstimate({', '.join(fields)})"
 
 
@@ -573,6 +593,19 @@ class Odometry:
         MOCAP_NED = 0
         LOCAL_FRD = 1
 
+    class MavEstimatorType(IntEnum):
+        """Estimator type, matching MAVLink MAV_ESTIMATOR_TYPE."""
+
+        UNKNOWN = 0
+        NAIVE = 1
+        VISION = 2
+        VIO = 3
+        GPS = 4
+        GPS_INS = 5
+        MOCAP = 6
+        LIDAR = 7
+        AUTOPILOT = 8
+
     def __init__(
         self,
         time_usec=None,
@@ -583,6 +616,9 @@ class Odometry:
         angular_velocity_body=None,
         pose_covariance=None,
         velocity_covariance=None,
+        reset_counter=None,
+        estimator_type=None,
+        quality_percent=None,
     ):
         self.time_usec = time_usec
         self.frame_id = frame_id
@@ -592,6 +628,9 @@ class Odometry:
         self.angular_velocity_body = angular_velocity_body
         self.pose_covariance = pose_covariance
         self.velocity_covariance = velocity_covariance
+        self.reset_counter = reset_counter
+        self.estimator_type = estimator_type
+        self.quality_percent = quality_percent
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -609,6 +648,9 @@ class Odometry:
         instance.velocity_covariance = Covariance.from_c_struct(
             c_struct.velocity_covariance
         )
+        instance.reset_counter = c_struct.reset_counter
+        instance.estimator_type = Odometry.MavEstimatorType(c_struct.estimator_type)
+        instance.quality_percent = c_struct.quality_percent
         return instance
 
     def to_c_struct(self):
@@ -622,6 +664,9 @@ class Odometry:
         c_struct.angular_velocity_body = self.angular_velocity_body.to_c_struct()
         c_struct.pose_covariance = self.pose_covariance.to_c_struct()
         c_struct.velocity_covariance = self.velocity_covariance.to_c_struct()
+        c_struct.reset_counter = self.reset_counter
+        c_struct.estimator_type = int(self.estimator_type)
+        c_struct.quality_percent = self.quality_percent
         return c_struct
 
     def __str__(self):
@@ -634,6 +679,9 @@ class Odometry:
         fields.append(f"angular_velocity_body={self.angular_velocity_body}")
         fields.append(f"pose_covariance={self.pose_covariance}")
         fields.append(f"velocity_covariance={self.velocity_covariance}")
+        fields.append(f"reset_counter={self.reset_counter}")
+        fields.append(f"estimator_type={self.estimator_type}")
+        fields.append(f"quality_percent={self.quality_percent}")
         return f"Odometry({', '.join(fields)})"
 
 
