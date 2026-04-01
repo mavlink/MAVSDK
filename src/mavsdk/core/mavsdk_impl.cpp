@@ -101,6 +101,11 @@ MavsdkImpl::~MavsdkImpl()
 
     std::lock_guard lock(_mutex);
 
+    // Tell all systems to stop their threads BEFORE clearing
+    for (auto& pair : _systems) {
+        pair.second->_system_impl->signal_exit();
+    }
+
     _systems.clear();
     _connections.clear();
 }
