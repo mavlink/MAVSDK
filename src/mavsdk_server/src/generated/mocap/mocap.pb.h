@@ -160,6 +160,46 @@ inline bool Odometry_MavFrame_Parse(absl::string_view name, Odometry_MavFrame* v
   return ::google::protobuf::internal::ParseNamedEnum<Odometry_MavFrame>(
       Odometry_MavFrame_descriptor(), name, value);
 }
+enum Odometry_MavEstimatorType : int {
+  Odometry_MavEstimatorType_MAV_ESTIMATOR_TYPE_UNKNOWN = 0,
+  Odometry_MavEstimatorType_MAV_ESTIMATOR_TYPE_NAIVE = 1,
+  Odometry_MavEstimatorType_MAV_ESTIMATOR_TYPE_VISION = 2,
+  Odometry_MavEstimatorType_MAV_ESTIMATOR_TYPE_VIO = 3,
+  Odometry_MavEstimatorType_MAV_ESTIMATOR_TYPE_GPS = 4,
+  Odometry_MavEstimatorType_MAV_ESTIMATOR_TYPE_GPS_INS = 5,
+  Odometry_MavEstimatorType_MAV_ESTIMATOR_TYPE_MOCAP = 6,
+  Odometry_MavEstimatorType_MAV_ESTIMATOR_TYPE_LIDAR = 7,
+  Odometry_MavEstimatorType_MAV_ESTIMATOR_TYPE_AUTOPILOT = 8,
+  Odometry_MavEstimatorType_Odometry_MavEstimatorType_INT_MIN_SENTINEL_DO_NOT_USE_ =
+      std::numeric_limits<::int32_t>::min(),
+  Odometry_MavEstimatorType_Odometry_MavEstimatorType_INT_MAX_SENTINEL_DO_NOT_USE_ =
+      std::numeric_limits<::int32_t>::max(),
+};
+
+bool Odometry_MavEstimatorType_IsValid(int value);
+extern const uint32_t Odometry_MavEstimatorType_internal_data_[];
+constexpr Odometry_MavEstimatorType Odometry_MavEstimatorType_MavEstimatorType_MIN = static_cast<Odometry_MavEstimatorType>(0);
+constexpr Odometry_MavEstimatorType Odometry_MavEstimatorType_MavEstimatorType_MAX = static_cast<Odometry_MavEstimatorType>(8);
+constexpr int Odometry_MavEstimatorType_MavEstimatorType_ARRAYSIZE = 8 + 1;
+const ::google::protobuf::EnumDescriptor*
+Odometry_MavEstimatorType_descriptor();
+template <typename T>
+const std::string& Odometry_MavEstimatorType_Name(T value) {
+  static_assert(std::is_same<T, Odometry_MavEstimatorType>::value ||
+                    std::is_integral<T>::value,
+                "Incorrect type passed to MavEstimatorType_Name().");
+  return Odometry_MavEstimatorType_Name(static_cast<Odometry_MavEstimatorType>(value));
+}
+template <>
+inline const std::string& Odometry_MavEstimatorType_Name(Odometry_MavEstimatorType value) {
+  return ::google::protobuf::internal::NameOfDenseEnum<Odometry_MavEstimatorType_descriptor,
+                                                 0, 8>(
+      static_cast<int>(value));
+}
+inline bool Odometry_MavEstimatorType_Parse(absl::string_view name, Odometry_MavEstimatorType* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<Odometry_MavEstimatorType>(
+      Odometry_MavEstimatorType_descriptor(), name, value);
+}
 enum MocapResult_Result : int {
   MocapResult_Result_RESULT_UNKNOWN = 0,
   MocapResult_Result_RESULT_SUCCESS = 1,
@@ -2086,6 +2126,7 @@ class VisionSpeedEstimate final
     kSpeedNedFieldNumber = 2,
     kSpeedCovarianceFieldNumber = 3,
     kTimeUsecFieldNumber = 1,
+    kResetCounterFieldNumber = 4,
   };
   // .mavsdk.rpc.mocap.SpeedNed speed_ned = 2;
   bool has_speed_ned() const;
@@ -2127,12 +2168,22 @@ class VisionSpeedEstimate final
   void _internal_set_time_usec(::uint64_t value);
 
   public:
+  // uint32 reset_counter = 4;
+  void clear_reset_counter() ;
+  ::uint32_t reset_counter() const;
+  void set_reset_counter(::uint32_t value);
+
+  private:
+  ::uint32_t _internal_reset_counter() const;
+  void _internal_set_reset_counter(::uint32_t value);
+
+  public:
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.mocap.VisionSpeedEstimate)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      2, 3, 2,
+      2, 4, 2,
       0, 2>
       _table_;
 
@@ -2155,6 +2206,7 @@ class VisionSpeedEstimate final
     ::mavsdk::rpc::mocap::SpeedNed* speed_ned_;
     ::mavsdk::rpc::mocap::Covariance* speed_covariance_;
     ::uint64_t time_usec_;
+    ::uint32_t reset_counter_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -2313,6 +2365,7 @@ class VisionPositionEstimate final
     kAngleBodyFieldNumber = 3,
     kPoseCovarianceFieldNumber = 4,
     kTimeUsecFieldNumber = 1,
+    kResetCounterFieldNumber = 5,
   };
   // .mavsdk.rpc.mocap.PositionBody position_body = 2;
   bool has_position_body() const;
@@ -2369,12 +2422,22 @@ class VisionPositionEstimate final
   void _internal_set_time_usec(::uint64_t value);
 
   public:
+  // uint32 reset_counter = 5;
+  void clear_reset_counter() ;
+  ::uint32_t reset_counter() const;
+  void set_reset_counter(::uint32_t value);
+
+  private:
+  ::uint32_t _internal_reset_counter() const;
+  void _internal_set_reset_counter(::uint32_t value);
+
+  public:
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.mocap.VisionPositionEstimate)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      2, 4, 3,
+      3, 5, 3,
       0, 2>
       _table_;
 
@@ -2398,6 +2461,7 @@ class VisionPositionEstimate final
     ::mavsdk::rpc::mocap::AngleBody* angle_body_;
     ::mavsdk::rpc::mocap::Covariance* pose_covariance_;
     ::uint64_t time_usec_;
+    ::uint32_t reset_counter_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -3356,6 +3420,32 @@ class Odometry final
   static inline bool MavFrame_Parse(absl::string_view name, MavFrame* value) {
     return Odometry_MavFrame_Parse(name, value);
   }
+  using MavEstimatorType = Odometry_MavEstimatorType;
+  static constexpr MavEstimatorType MAV_ESTIMATOR_TYPE_UNKNOWN = Odometry_MavEstimatorType_MAV_ESTIMATOR_TYPE_UNKNOWN;
+  static constexpr MavEstimatorType MAV_ESTIMATOR_TYPE_NAIVE = Odometry_MavEstimatorType_MAV_ESTIMATOR_TYPE_NAIVE;
+  static constexpr MavEstimatorType MAV_ESTIMATOR_TYPE_VISION = Odometry_MavEstimatorType_MAV_ESTIMATOR_TYPE_VISION;
+  static constexpr MavEstimatorType MAV_ESTIMATOR_TYPE_VIO = Odometry_MavEstimatorType_MAV_ESTIMATOR_TYPE_VIO;
+  static constexpr MavEstimatorType MAV_ESTIMATOR_TYPE_GPS = Odometry_MavEstimatorType_MAV_ESTIMATOR_TYPE_GPS;
+  static constexpr MavEstimatorType MAV_ESTIMATOR_TYPE_GPS_INS = Odometry_MavEstimatorType_MAV_ESTIMATOR_TYPE_GPS_INS;
+  static constexpr MavEstimatorType MAV_ESTIMATOR_TYPE_MOCAP = Odometry_MavEstimatorType_MAV_ESTIMATOR_TYPE_MOCAP;
+  static constexpr MavEstimatorType MAV_ESTIMATOR_TYPE_LIDAR = Odometry_MavEstimatorType_MAV_ESTIMATOR_TYPE_LIDAR;
+  static constexpr MavEstimatorType MAV_ESTIMATOR_TYPE_AUTOPILOT = Odometry_MavEstimatorType_MAV_ESTIMATOR_TYPE_AUTOPILOT;
+  static inline bool MavEstimatorType_IsValid(int value) {
+    return Odometry_MavEstimatorType_IsValid(value);
+  }
+  static constexpr MavEstimatorType MavEstimatorType_MIN = Odometry_MavEstimatorType_MavEstimatorType_MIN;
+  static constexpr MavEstimatorType MavEstimatorType_MAX = Odometry_MavEstimatorType_MavEstimatorType_MAX;
+  static constexpr int MavEstimatorType_ARRAYSIZE = Odometry_MavEstimatorType_MavEstimatorType_ARRAYSIZE;
+  static inline const ::google::protobuf::EnumDescriptor* MavEstimatorType_descriptor() {
+    return Odometry_MavEstimatorType_descriptor();
+  }
+  template <typename T>
+  static inline const std::string& MavEstimatorType_Name(T value) {
+    return Odometry_MavEstimatorType_Name(value);
+  }
+  static inline bool MavEstimatorType_Parse(absl::string_view name, MavEstimatorType* value) {
+    return Odometry_MavEstimatorType_Parse(name, value);
+  }
 
   // accessors -------------------------------------------------------
   enum : int {
@@ -3367,6 +3457,9 @@ class Odometry final
     kVelocityCovarianceFieldNumber = 8,
     kTimeUsecFieldNumber = 1,
     kFrameIdFieldNumber = 2,
+    kResetCounterFieldNumber = 9,
+    kEstimatorTypeFieldNumber = 10,
+    kQualityPercentFieldNumber = 11,
   };
   // .mavsdk.rpc.mocap.PositionBody position_body = 3;
   bool has_position_body() const;
@@ -3478,12 +3571,42 @@ class Odometry final
   void _internal_set_frame_id(::mavsdk::rpc::mocap::Odometry_MavFrame value);
 
   public:
+  // uint32 reset_counter = 9;
+  void clear_reset_counter() ;
+  ::uint32_t reset_counter() const;
+  void set_reset_counter(::uint32_t value);
+
+  private:
+  ::uint32_t _internal_reset_counter() const;
+  void _internal_set_reset_counter(::uint32_t value);
+
+  public:
+  // .mavsdk.rpc.mocap.Odometry.MavEstimatorType estimator_type = 10;
+  void clear_estimator_type() ;
+  ::mavsdk::rpc::mocap::Odometry_MavEstimatorType estimator_type() const;
+  void set_estimator_type(::mavsdk::rpc::mocap::Odometry_MavEstimatorType value);
+
+  private:
+  ::mavsdk::rpc::mocap::Odometry_MavEstimatorType _internal_estimator_type() const;
+  void _internal_set_estimator_type(::mavsdk::rpc::mocap::Odometry_MavEstimatorType value);
+
+  public:
+  // int32 quality_percent = 11;
+  void clear_quality_percent() ;
+  ::int32_t quality_percent() const;
+  void set_quality_percent(::int32_t value);
+
+  private:
+  ::int32_t _internal_quality_percent() const;
+  void _internal_set_quality_percent(::int32_t value);
+
+  public:
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.mocap.Odometry)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      3, 8, 6,
+      4, 11, 6,
       0, 2>
       _table_;
 
@@ -3511,6 +3634,9 @@ class Odometry final
     ::mavsdk::rpc::mocap::Covariance* velocity_covariance_;
     ::uint64_t time_usec_;
     int frame_id_;
+    ::uint32_t reset_counter_;
+    int estimator_type_;
+    ::int32_t quality_percent_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -6165,6 +6291,28 @@ inline void VisionPositionEstimate::set_allocated_pose_covariance(::mavsdk::rpc:
   // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.mocap.VisionPositionEstimate.pose_covariance)
 }
 
+// uint32 reset_counter = 5;
+inline void VisionPositionEstimate::clear_reset_counter() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.reset_counter_ = 0u;
+}
+inline ::uint32_t VisionPositionEstimate::reset_counter() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mocap.VisionPositionEstimate.reset_counter)
+  return _internal_reset_counter();
+}
+inline void VisionPositionEstimate::set_reset_counter(::uint32_t value) {
+  _internal_set_reset_counter(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.mocap.VisionPositionEstimate.reset_counter)
+}
+inline ::uint32_t VisionPositionEstimate::_internal_reset_counter() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.reset_counter_;
+}
+inline void VisionPositionEstimate::_internal_set_reset_counter(::uint32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.reset_counter_ = value;
+}
+
 // -------------------------------------------------------------------
 
 // VisionSpeedEstimate
@@ -6381,6 +6529,28 @@ inline void VisionSpeedEstimate::set_allocated_speed_covariance(::mavsdk::rpc::m
 
   _impl_.speed_covariance_ = reinterpret_cast<::mavsdk::rpc::mocap::Covariance*>(value);
   // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.mocap.VisionSpeedEstimate.speed_covariance)
+}
+
+// uint32 reset_counter = 4;
+inline void VisionSpeedEstimate::clear_reset_counter() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.reset_counter_ = 0u;
+}
+inline ::uint32_t VisionSpeedEstimate::reset_counter() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mocap.VisionSpeedEstimate.reset_counter)
+  return _internal_reset_counter();
+}
+inline void VisionSpeedEstimate::set_reset_counter(::uint32_t value) {
+  _internal_set_reset_counter(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.mocap.VisionSpeedEstimate.reset_counter)
+}
+inline ::uint32_t VisionSpeedEstimate::_internal_reset_counter() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.reset_counter_;
+}
+inline void VisionSpeedEstimate::_internal_set_reset_counter(::uint32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.reset_counter_ = value;
 }
 
 // -------------------------------------------------------------------
@@ -7321,6 +7491,72 @@ inline void Odometry::set_allocated_velocity_covariance(::mavsdk::rpc::mocap::Co
   // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.mocap.Odometry.velocity_covariance)
 }
 
+// uint32 reset_counter = 9;
+inline void Odometry::clear_reset_counter() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.reset_counter_ = 0u;
+}
+inline ::uint32_t Odometry::reset_counter() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mocap.Odometry.reset_counter)
+  return _internal_reset_counter();
+}
+inline void Odometry::set_reset_counter(::uint32_t value) {
+  _internal_set_reset_counter(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.mocap.Odometry.reset_counter)
+}
+inline ::uint32_t Odometry::_internal_reset_counter() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.reset_counter_;
+}
+inline void Odometry::_internal_set_reset_counter(::uint32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.reset_counter_ = value;
+}
+
+// .mavsdk.rpc.mocap.Odometry.MavEstimatorType estimator_type = 10;
+inline void Odometry::clear_estimator_type() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.estimator_type_ = 0;
+}
+inline ::mavsdk::rpc::mocap::Odometry_MavEstimatorType Odometry::estimator_type() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mocap.Odometry.estimator_type)
+  return _internal_estimator_type();
+}
+inline void Odometry::set_estimator_type(::mavsdk::rpc::mocap::Odometry_MavEstimatorType value) {
+  _internal_set_estimator_type(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.mocap.Odometry.estimator_type)
+}
+inline ::mavsdk::rpc::mocap::Odometry_MavEstimatorType Odometry::_internal_estimator_type() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return static_cast<::mavsdk::rpc::mocap::Odometry_MavEstimatorType>(_impl_.estimator_type_);
+}
+inline void Odometry::_internal_set_estimator_type(::mavsdk::rpc::mocap::Odometry_MavEstimatorType value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.estimator_type_ = value;
+}
+
+// int32 quality_percent = 11;
+inline void Odometry::clear_quality_percent() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.quality_percent_ = 0;
+}
+inline ::int32_t Odometry::quality_percent() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mocap.Odometry.quality_percent)
+  return _internal_quality_percent();
+}
+inline void Odometry::set_quality_percent(::int32_t value) {
+  _internal_set_quality_percent(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.mocap.Odometry.quality_percent)
+}
+inline ::int32_t Odometry::_internal_quality_percent() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.quality_percent_;
+}
+inline void Odometry::_internal_set_quality_percent(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.quality_percent_ = value;
+}
+
 // -------------------------------------------------------------------
 
 // MocapResult
@@ -7413,6 +7649,12 @@ struct is_proto_enum<::mavsdk::rpc::mocap::Odometry_MavFrame> : std::true_type {
 template <>
 inline const EnumDescriptor* GetEnumDescriptor<::mavsdk::rpc::mocap::Odometry_MavFrame>() {
   return ::mavsdk::rpc::mocap::Odometry_MavFrame_descriptor();
+}
+template <>
+struct is_proto_enum<::mavsdk::rpc::mocap::Odometry_MavEstimatorType> : std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor<::mavsdk::rpc::mocap::Odometry_MavEstimatorType>() {
+  return ::mavsdk::rpc::mocap::Odometry_MavEstimatorType_descriptor();
 }
 template <>
 struct is_proto_enum<::mavsdk::rpc::mocap::MocapResult_Result> : std::true_type {};

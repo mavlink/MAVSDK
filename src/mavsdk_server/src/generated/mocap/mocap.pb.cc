@@ -249,7 +249,8 @@ inline constexpr VisionSpeedEstimate::Impl_::Impl_(
       : _cached_size_{0},
         speed_ned_{nullptr},
         speed_covariance_{nullptr},
-        time_usec_{::uint64_t{0u}} {}
+        time_usec_{::uint64_t{0u}},
+        reset_counter_{0u} {}
 
 template <typename>
 PROTOBUF_CONSTEXPR VisionSpeedEstimate::VisionSpeedEstimate(::_pbi::ConstantInitialized)
@@ -277,7 +278,8 @@ inline constexpr VisionPositionEstimate::Impl_::Impl_(
         position_body_{nullptr},
         angle_body_{nullptr},
         pose_covariance_{nullptr},
-        time_usec_{::uint64_t{0u}} {}
+        time_usec_{::uint64_t{0u}},
+        reset_counter_{0u} {}
 
 template <typename>
 PROTOBUF_CONSTEXPR VisionPositionEstimate::VisionPositionEstimate(::_pbi::ConstantInitialized)
@@ -409,7 +411,10 @@ inline constexpr Odometry::Impl_::Impl_(
         pose_covariance_{nullptr},
         velocity_covariance_{nullptr},
         time_usec_{::uint64_t{0u}},
-        frame_id_{static_cast< ::mavsdk::rpc::mocap::Odometry_MavFrame >(0)} {}
+        frame_id_{static_cast< ::mavsdk::rpc::mocap::Odometry_MavFrame >(0)},
+        reset_counter_{0u},
+        estimator_type_{static_cast< ::mavsdk::rpc::mocap::Odometry_MavEstimatorType >(0)},
+        quality_percent_{0} {}
 
 template <typename>
 PROTOBUF_CONSTEXPR Odometry::Odometry(::_pbi::ConstantInitialized)
@@ -561,7 +566,7 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
 }  // namespace mocap
 }  // namespace rpc
 }  // namespace mavsdk
-static const ::_pb::EnumDescriptor* file_level_enum_descriptors_mocap_2fmocap_2eproto[2];
+static const ::_pb::EnumDescriptor* file_level_enum_descriptors_mocap_2fmocap_2eproto[3];
 static constexpr const ::_pb::ServiceDescriptor**
     file_level_service_descriptors_mocap_2fmocap_2eproto = nullptr;
 const ::uint32_t
@@ -735,10 +740,12 @@ const ::uint32_t
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mocap::VisionPositionEstimate, _impl_.position_body_),
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mocap::VisionPositionEstimate, _impl_.angle_body_),
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mocap::VisionPositionEstimate, _impl_.pose_covariance_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mocap::VisionPositionEstimate, _impl_.reset_counter_),
         ~0u,
         0,
         1,
         2,
+        ~0u,
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mocap::VisionSpeedEstimate, _impl_._has_bits_),
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mocap::VisionSpeedEstimate, _internal_metadata_),
         ~0u,  // no _extensions_
@@ -750,9 +757,11 @@ const ::uint32_t
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mocap::VisionSpeedEstimate, _impl_.time_usec_),
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mocap::VisionSpeedEstimate, _impl_.speed_ned_),
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mocap::VisionSpeedEstimate, _impl_.speed_covariance_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mocap::VisionSpeedEstimate, _impl_.reset_counter_),
         ~0u,
         0,
         1,
+        ~0u,
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mocap::AttitudePositionMocap, _impl_._has_bits_),
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mocap::AttitudePositionMocap, _internal_metadata_),
         ~0u,  // no _extensions_
@@ -785,6 +794,9 @@ const ::uint32_t
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mocap::Odometry, _impl_.angular_velocity_body_),
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mocap::Odometry, _impl_.pose_covariance_),
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mocap::Odometry, _impl_.velocity_covariance_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mocap::Odometry, _impl_.reset_counter_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mocap::Odometry, _impl_.estimator_type_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mocap::Odometry, _impl_.quality_percent_),
         ~0u,
         ~0u,
         0,
@@ -793,6 +805,9 @@ const ::uint32_t
         3,
         4,
         5,
+        ~0u,
+        ~0u,
+        ~0u,
         ~0u,  // no _has_bits_
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mocap::MocapResult, _internal_metadata_),
         ~0u,  // no _extensions_
@@ -822,11 +837,11 @@ static const ::_pbi::MigrationSchema
         {124, -1, -1, sizeof(::mavsdk::rpc::mocap::AngularVelocityBody)},
         {135, -1, -1, sizeof(::mavsdk::rpc::mocap::Covariance)},
         {144, -1, -1, sizeof(::mavsdk::rpc::mocap::Quaternion)},
-        {156, 168, -1, sizeof(::mavsdk::rpc::mocap::VisionPositionEstimate)},
-        {172, 183, -1, sizeof(::mavsdk::rpc::mocap::VisionSpeedEstimate)},
-        {186, 198, -1, sizeof(::mavsdk::rpc::mocap::AttitudePositionMocap)},
-        {202, 218, -1, sizeof(::mavsdk::rpc::mocap::Odometry)},
-        {226, -1, -1, sizeof(::mavsdk::rpc::mocap::MocapResult)},
+        {156, 169, -1, sizeof(::mavsdk::rpc::mocap::VisionPositionEstimate)},
+        {174, 186, -1, sizeof(::mavsdk::rpc::mocap::VisionSpeedEstimate)},
+        {190, 202, -1, sizeof(::mavsdk::rpc::mocap::AttitudePositionMocap)},
+        {206, 225, -1, sizeof(::mavsdk::rpc::mocap::Odometry)},
+        {236, -1, -1, sizeof(::mavsdk::rpc::mocap::MocapResult)},
 };
 static const ::_pb::Message* const file_default_instances[] = {
     &::mavsdk::rpc::mocap::_SetVisionPositionEstimateRequest_default_instance_._instance,
@@ -882,53 +897,64 @@ const char descriptor_table_protodef_mocap_2fmocap_2eproto[] ABSL_ATTRIBUTE_SECT
     "\001(\002\022\023\n\013pitch_rad_s\030\002 \001(\002\022\021\n\tyaw_rad_s\030\003 "
     "\001(\002\"\'\n\nCovariance\022\031\n\021covariance_matrix\030\001"
     " \003(\002\"8\n\nQuaternion\022\t\n\001w\030\001 \001(\002\022\t\n\001x\030\002 \001(\002"
-    "\022\t\n\001y\030\003 \001(\002\022\t\n\001z\030\004 \001(\002\"\312\001\n\026VisionPositio"
+    "\022\t\n\001y\030\003 \001(\002\022\t\n\001z\030\004 \001(\002\"\341\001\n\026VisionPositio"
     "nEstimate\022\021\n\ttime_usec\030\001 \001(\004\0225\n\rposition"
     "_body\030\002 \001(\0132\036.mavsdk.rpc.mocap.PositionB"
     "ody\022/\n\nangle_body\030\003 \001(\0132\033.mavsdk.rpc.moc"
     "ap.AngleBody\0225\n\017pose_covariance\030\004 \001(\0132\034."
-    "mavsdk.rpc.mocap.Covariance\"\217\001\n\023VisionSp"
-    "eedEstimate\022\021\n\ttime_usec\030\001 \001(\004\022-\n\tspeed_"
-    "ned\030\002 \001(\0132\032.mavsdk.rpc.mocap.SpeedNed\0226\n"
-    "\020speed_covariance\030\003 \001(\0132\034.mavsdk.rpc.moc"
-    "ap.Covariance\"\301\001\n\025AttitudePositionMocap\022"
-    "\021\n\ttime_usec\030\001 \001(\004\022\'\n\001q\030\002 \001(\0132\034.mavsdk.r"
-    "pc.mocap.Quaternion\0225\n\rposition_body\030\003 \001"
-    "(\0132\036.mavsdk.rpc.mocap.PositionBody\0225\n\017po"
-    "se_covariance\030\004 \001(\0132\034.mavsdk.rpc.mocap.C"
-    "ovariance\"\333\003\n\010Odometry\022\021\n\ttime_usec\030\001 \001("
-    "\004\0225\n\010frame_id\030\002 \001(\0162#.mavsdk.rpc.mocap.O"
-    "dometry.MavFrame\0225\n\rposition_body\030\003 \001(\0132"
-    "\036.mavsdk.rpc.mocap.PositionBody\022\'\n\001q\030\004 \001"
-    "(\0132\034.mavsdk.rpc.mocap.Quaternion\022/\n\nspee"
-    "d_body\030\005 \001(\0132\033.mavsdk.rpc.mocap.SpeedBod"
-    "y\022D\n\025angular_velocity_body\030\006 \001(\0132%.mavsd"
-    "k.rpc.mocap.AngularVelocityBody\0225\n\017pose_"
-    "covariance\030\007 \001(\0132\034.mavsdk.rpc.mocap.Cova"
-    "riance\0229\n\023velocity_covariance\030\010 \001(\0132\034.ma"
-    "vsdk.rpc.mocap.Covariance\"<\n\010MavFrame\022\027\n"
-    "\023MAV_FRAME_MOCAP_NED\020\000\022\027\n\023MAV_FRAME_LOCA"
-    "L_FRD\020\001\"\366\001\n\013MocapResult\0224\n\006result\030\001 \001(\0162"
-    "$.mavsdk.rpc.mocap.MocapResult.Result\022\022\n"
-    "\nresult_str\030\002 \001(\t\"\234\001\n\006Result\022\022\n\016RESULT_U"
-    "NKNOWN\020\000\022\022\n\016RESULT_SUCCESS\020\001\022\024\n\020RESULT_N"
-    "O_SYSTEM\020\002\022\033\n\027RESULT_CONNECTION_ERROR\020\003\022"
-    "\037\n\033RESULT_INVALID_REQUEST_DATA\020\004\022\026\n\022RESU"
-    "LT_UNSUPPORTED\020\0052\213\004\n\014MocapService\022\212\001\n\031Se"
-    "tVisionPositionEstimate\0222.mavsdk.rpc.moc"
-    "ap.SetVisionPositionEstimateRequest\0323.ma"
-    "vsdk.rpc.mocap.SetVisionPositionEstimate"
-    "Response\"\004\200\265\030\001\022\201\001\n\026SetVisionSpeedEstimat"
-    "e\022/.mavsdk.rpc.mocap.SetVisionSpeedEstim"
-    "ateRequest\0320.mavsdk.rpc.mocap.SetVisionS"
-    "peedEstimateResponse\"\004\200\265\030\001\022\207\001\n\030SetAttitu"
-    "dePositionMocap\0221.mavsdk.rpc.mocap.SetAt"
-    "titudePositionMocapRequest\0322.mavsdk.rpc."
-    "mocap.SetAttitudePositionMocapResponse\"\004"
-    "\200\265\030\001\022`\n\013SetOdometry\022$.mavsdk.rpc.mocap.S"
-    "etOdometryRequest\032%.mavsdk.rpc.mocap.Set"
-    "OdometryResponse\"\004\200\265\030\001B\035\n\017io.mavsdk.moca"
-    "pB\nMocapProtob\006proto3"
+    "mavsdk.rpc.mocap.Covariance\022\025\n\rreset_cou"
+    "nter\030\005 \001(\r\"\246\001\n\023VisionSpeedEstimate\022\021\n\tti"
+    "me_usec\030\001 \001(\004\022-\n\tspeed_ned\030\002 \001(\0132\032.mavsd"
+    "k.rpc.mocap.SpeedNed\0226\n\020speed_covariance"
+    "\030\003 \001(\0132\034.mavsdk.rpc.mocap.Covariance\022\025\n\r"
+    "reset_counter\030\004 \001(\r\"\301\001\n\025AttitudePosition"
+    "Mocap\022\021\n\ttime_usec\030\001 \001(\004\022\'\n\001q\030\002 \001(\0132\034.ma"
+    "vsdk.rpc.mocap.Quaternion\0225\n\rposition_bo"
+    "dy\030\003 \001(\0132\036.mavsdk.rpc.mocap.PositionBody"
+    "\0225\n\017pose_covariance\030\004 \001(\0132\034.mavsdk.rpc.m"
+    "ocap.Covariance\"\370\006\n\010Odometry\022\021\n\ttime_use"
+    "c\030\001 \001(\004\0225\n\010frame_id\030\002 \001(\0162#.mavsdk.rpc.m"
+    "ocap.Odometry.MavFrame\0225\n\rposition_body\030"
+    "\003 \001(\0132\036.mavsdk.rpc.mocap.PositionBody\022\'\n"
+    "\001q\030\004 \001(\0132\034.mavsdk.rpc.mocap.Quaternion\022/"
+    "\n\nspeed_body\030\005 \001(\0132\033.mavsdk.rpc.mocap.Sp"
+    "eedBody\022D\n\025angular_velocity_body\030\006 \001(\0132%"
+    ".mavsdk.rpc.mocap.AngularVelocityBody\0225\n"
+    "\017pose_covariance\030\007 \001(\0132\034.mavsdk.rpc.moca"
+    "p.Covariance\0229\n\023velocity_covariance\030\010 \001("
+    "\0132\034.mavsdk.rpc.mocap.Covariance\022\025\n\rreset"
+    "_counter\030\t \001(\r\022C\n\016estimator_type\030\n \001(\0162+"
+    ".mavsdk.rpc.mocap.Odometry.MavEstimatorT"
+    "ype\022\027\n\017quality_percent\030\013 \001(\005\"<\n\010MavFrame"
+    "\022\027\n\023MAV_FRAME_MOCAP_NED\020\000\022\027\n\023MAV_FRAME_L"
+    "OCAL_FRD\020\001\"\245\002\n\020MavEstimatorType\022\036\n\032MAV_E"
+    "STIMATOR_TYPE_UNKNOWN\020\000\022\034\n\030MAV_ESTIMATOR"
+    "_TYPE_NAIVE\020\001\022\035\n\031MAV_ESTIMATOR_TYPE_VISI"
+    "ON\020\002\022\032\n\026MAV_ESTIMATOR_TYPE_VIO\020\003\022\032\n\026MAV_"
+    "ESTIMATOR_TYPE_GPS\020\004\022\036\n\032MAV_ESTIMATOR_TY"
+    "PE_GPS_INS\020\005\022\034\n\030MAV_ESTIMATOR_TYPE_MOCAP"
+    "\020\006\022\034\n\030MAV_ESTIMATOR_TYPE_LIDAR\020\007\022 \n\034MAV_"
+    "ESTIMATOR_TYPE_AUTOPILOT\020\010\"\366\001\n\013MocapResu"
+    "lt\0224\n\006result\030\001 \001(\0162$.mavsdk.rpc.mocap.Mo"
+    "capResult.Result\022\022\n\nresult_str\030\002 \001(\t\"\234\001\n"
+    "\006Result\022\022\n\016RESULT_UNKNOWN\020\000\022\022\n\016RESULT_SU"
+    "CCESS\020\001\022\024\n\020RESULT_NO_SYSTEM\020\002\022\033\n\027RESULT_"
+    "CONNECTION_ERROR\020\003\022\037\n\033RESULT_INVALID_REQ"
+    "UEST_DATA\020\004\022\026\n\022RESULT_UNSUPPORTED\020\0052\213\004\n\014"
+    "MocapService\022\212\001\n\031SetVisionPositionEstima"
+    "te\0222.mavsdk.rpc.mocap.SetVisionPositionE"
+    "stimateRequest\0323.mavsdk.rpc.mocap.SetVis"
+    "ionPositionEstimateResponse\"\004\200\265\030\001\022\201\001\n\026Se"
+    "tVisionSpeedEstimate\022/.mavsdk.rpc.mocap."
+    "SetVisionSpeedEstimateRequest\0320.mavsdk.r"
+    "pc.mocap.SetVisionSpeedEstimateResponse\""
+    "\004\200\265\030\001\022\207\001\n\030SetAttitudePositionMocap\0221.mav"
+    "sdk.rpc.mocap.SetAttitudePositionMocapRe"
+    "quest\0322.mavsdk.rpc.mocap.SetAttitudePosi"
+    "tionMocapResponse\"\004\200\265\030\001\022`\n\013SetOdometry\022$"
+    ".mavsdk.rpc.mocap.SetOdometryRequest\032%.m"
+    "avsdk.rpc.mocap.SetOdometryResponse\"\004\200\265\030"
+    "\001B\035\n\017io.mavsdk.mocapB\nMocapProtob\006proto3"
 };
 static const ::_pbi::DescriptorTable* const descriptor_table_mocap_2fmocap_2eproto_deps[1] =
     {
@@ -938,7 +964,7 @@ static ::absl::once_flag descriptor_table_mocap_2fmocap_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_mocap_2fmocap_2eproto = {
     false,
     false,
-    3061,
+    3520,
     descriptor_table_protodef_mocap_2fmocap_2eproto,
     "mocap/mocap.proto",
     &descriptor_table_mocap_2fmocap_2eproto_once,
@@ -974,9 +1000,36 @@ constexpr int Odometry::MavFrame_ARRAYSIZE;
 
 #endif  // (__cplusplus < 201703) &&
         // (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
-const ::google::protobuf::EnumDescriptor* MocapResult_Result_descriptor() {
+const ::google::protobuf::EnumDescriptor* Odometry_MavEstimatorType_descriptor() {
   ::google::protobuf::internal::AssignDescriptors(&descriptor_table_mocap_2fmocap_2eproto);
   return file_level_enum_descriptors_mocap_2fmocap_2eproto[1];
+}
+PROTOBUF_CONSTINIT const uint32_t Odometry_MavEstimatorType_internal_data_[] = {
+    589824u, 0u, };
+bool Odometry_MavEstimatorType_IsValid(int value) {
+  return 0 <= value && value <= 8;
+}
+#if (__cplusplus < 201703) && \
+  (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
+
+constexpr Odometry_MavEstimatorType Odometry::MAV_ESTIMATOR_TYPE_UNKNOWN;
+constexpr Odometry_MavEstimatorType Odometry::MAV_ESTIMATOR_TYPE_NAIVE;
+constexpr Odometry_MavEstimatorType Odometry::MAV_ESTIMATOR_TYPE_VISION;
+constexpr Odometry_MavEstimatorType Odometry::MAV_ESTIMATOR_TYPE_VIO;
+constexpr Odometry_MavEstimatorType Odometry::MAV_ESTIMATOR_TYPE_GPS;
+constexpr Odometry_MavEstimatorType Odometry::MAV_ESTIMATOR_TYPE_GPS_INS;
+constexpr Odometry_MavEstimatorType Odometry::MAV_ESTIMATOR_TYPE_MOCAP;
+constexpr Odometry_MavEstimatorType Odometry::MAV_ESTIMATOR_TYPE_LIDAR;
+constexpr Odometry_MavEstimatorType Odometry::MAV_ESTIMATOR_TYPE_AUTOPILOT;
+constexpr Odometry_MavEstimatorType Odometry::MavEstimatorType_MIN;
+constexpr Odometry_MavEstimatorType Odometry::MavEstimatorType_MAX;
+constexpr int Odometry::MavEstimatorType_ARRAYSIZE;
+
+#endif  // (__cplusplus < 201703) &&
+        // (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
+const ::google::protobuf::EnumDescriptor* MocapResult_Result_descriptor() {
+  ::google::protobuf::internal::AssignDescriptors(&descriptor_table_mocap_2fmocap_2eproto);
+  return file_level_enum_descriptors_mocap_2fmocap_2eproto[2];
 }
 PROTOBUF_CONSTINIT const uint32_t MocapResult_Result_internal_data_[] = {
     393216u, 0u, };
@@ -4863,7 +4916,13 @@ VisionPositionEstimate::VisionPositionEstimate(
   _impl_.pose_covariance_ = (cached_has_bits & 0x00000004u) ? ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::mocap::Covariance>(
                               arena, *from._impl_.pose_covariance_)
                         : nullptr;
-  _impl_.time_usec_ = from._impl_.time_usec_;
+  ::memcpy(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, time_usec_),
+           reinterpret_cast<const char *>(&from._impl_) +
+               offsetof(Impl_, time_usec_),
+           offsetof(Impl_, reset_counter_) -
+               offsetof(Impl_, time_usec_) +
+               sizeof(Impl_::reset_counter_));
 
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.mocap.VisionPositionEstimate)
 }
@@ -4877,9 +4936,9 @@ inline void VisionPositionEstimate::SharedCtor(::_pb::Arena* arena) {
   ::memset(reinterpret_cast<char *>(&_impl_) +
                offsetof(Impl_, position_body_),
            0,
-           offsetof(Impl_, time_usec_) -
+           offsetof(Impl_, reset_counter_) -
                offsetof(Impl_, position_body_) +
-               sizeof(Impl_::time_usec_));
+               sizeof(Impl_::reset_counter_));
 }
 VisionPositionEstimate::~VisionPositionEstimate() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.mocap.VisionPositionEstimate)
@@ -4931,15 +4990,15 @@ const ::google::protobuf::internal::ClassData* VisionPositionEstimate::GetClassD
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<2, 4, 3, 0, 2> VisionPositionEstimate::_table_ = {
+const ::_pbi::TcParseTable<3, 5, 3, 0, 2> VisionPositionEstimate::_table_ = {
   {
     PROTOBUF_FIELD_OFFSET(VisionPositionEstimate, _impl_._has_bits_),
     0, // no _extensions_
-    4, 24,  // max_field_number, fast_idx_mask
+    5, 56,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967280,  // skipmap
+    4294967264,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    4,  // num_field_entries
+    5,  // num_field_entries
     3,  // num_aux_entries
     offsetof(decltype(_table_), aux_entries),
     _class_data_.base(),
@@ -4949,9 +5008,7 @@ const ::_pbi::TcParseTable<2, 4, 3, 0, 2> VisionPositionEstimate::_table_ = {
     ::_pbi::TcParser::GetTable<::mavsdk::rpc::mocap::VisionPositionEstimate>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // .mavsdk.rpc.mocap.Covariance pose_covariance = 4;
-    {::_pbi::TcParser::FastMtS1,
-     {34, 2, 2, PROTOBUF_FIELD_OFFSET(VisionPositionEstimate, _impl_.pose_covariance_)}},
+    {::_pbi::TcParser::MiniParse, {}},
     // uint64 time_usec = 1;
     {::_pbi::TcParser::SingularVarintNoZag1<::uint64_t, offsetof(VisionPositionEstimate, _impl_.time_usec_), 63>(),
      {8, 63, 0, PROTOBUF_FIELD_OFFSET(VisionPositionEstimate, _impl_.time_usec_)}},
@@ -4961,6 +5018,14 @@ const ::_pbi::TcParseTable<2, 4, 3, 0, 2> VisionPositionEstimate::_table_ = {
     // .mavsdk.rpc.mocap.AngleBody angle_body = 3;
     {::_pbi::TcParser::FastMtS1,
      {26, 1, 1, PROTOBUF_FIELD_OFFSET(VisionPositionEstimate, _impl_.angle_body_)}},
+    // .mavsdk.rpc.mocap.Covariance pose_covariance = 4;
+    {::_pbi::TcParser::FastMtS1,
+     {34, 2, 2, PROTOBUF_FIELD_OFFSET(VisionPositionEstimate, _impl_.pose_covariance_)}},
+    // uint32 reset_counter = 5;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(VisionPositionEstimate, _impl_.reset_counter_), 63>(),
+     {40, 63, 0, PROTOBUF_FIELD_OFFSET(VisionPositionEstimate, _impl_.reset_counter_)}},
+    {::_pbi::TcParser::MiniParse, {}},
+    {::_pbi::TcParser::MiniParse, {}},
   }}, {{
     65535, 65535
   }}, {{
@@ -4976,6 +5041,9 @@ const ::_pbi::TcParseTable<2, 4, 3, 0, 2> VisionPositionEstimate::_table_ = {
     // .mavsdk.rpc.mocap.Covariance pose_covariance = 4;
     {PROTOBUF_FIELD_OFFSET(VisionPositionEstimate, _impl_.pose_covariance_), _Internal::kHasBitsOffset + 2, 2,
     (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+    // uint32 reset_counter = 5;
+    {PROTOBUF_FIELD_OFFSET(VisionPositionEstimate, _impl_.reset_counter_), -1, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUInt32)},
   }}, {{
     {::_pbi::TcParser::GetTable<::mavsdk::rpc::mocap::PositionBody>()},
     {::_pbi::TcParser::GetTable<::mavsdk::rpc::mocap::AngleBody>()},
@@ -5006,7 +5074,9 @@ PROTOBUF_NOINLINE void VisionPositionEstimate::Clear() {
       _impl_.pose_covariance_->Clear();
     }
   }
-  _impl_.time_usec_ = ::uint64_t{0u};
+  ::memset(&_impl_.time_usec_, 0, static_cast<::size_t>(
+      reinterpret_cast<char*>(&_impl_.reset_counter_) -
+      reinterpret_cast<char*>(&_impl_.time_usec_)) + sizeof(_impl_.reset_counter_));
   _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
@@ -5053,6 +5123,13 @@ PROTOBUF_NOINLINE void VisionPositionEstimate::Clear() {
             target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
                 4, *this_._impl_.pose_covariance_, this_._impl_.pose_covariance_->GetCachedSize(), target,
                 stream);
+          }
+
+          // uint32 reset_counter = 5;
+          if (this_._internal_reset_counter() != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteUInt32ToArray(
+                5, this_._internal_reset_counter(), target);
           }
 
           if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
@@ -5103,6 +5180,11 @@ PROTOBUF_NOINLINE void VisionPositionEstimate::Clear() {
               total_size += ::_pbi::WireFormatLite::UInt64SizePlusOne(
                   this_._internal_time_usec());
             }
+            // uint32 reset_counter = 5;
+            if (this_._internal_reset_counter() != 0) {
+              total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(
+                  this_._internal_reset_counter());
+            }
           }
           return this_.MaybeComputeUnknownFieldsSize(total_size,
                                                      &this_._impl_._cached_size_);
@@ -5150,6 +5232,9 @@ void VisionPositionEstimate::MergeImpl(::google::protobuf::MessageLite& to_msg, 
   if (from._internal_time_usec() != 0) {
     _this->_impl_.time_usec_ = from._impl_.time_usec_;
   }
+  if (from._internal_reset_counter() != 0) {
+    _this->_impl_.reset_counter_ = from._impl_.reset_counter_;
+  }
   _this->_impl_._has_bits_[0] |= cached_has_bits;
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
@@ -5167,8 +5252,8 @@ void VisionPositionEstimate::InternalSwap(VisionPositionEstimate* PROTOBUF_RESTR
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
   ::google::protobuf::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(VisionPositionEstimate, _impl_.time_usec_)
-      + sizeof(VisionPositionEstimate::_impl_.time_usec_)
+      PROTOBUF_FIELD_OFFSET(VisionPositionEstimate, _impl_.reset_counter_)
+      + sizeof(VisionPositionEstimate::_impl_.reset_counter_)
       - PROTOBUF_FIELD_OFFSET(VisionPositionEstimate, _impl_.position_body_)>(
           reinterpret_cast<char*>(&_impl_.position_body_),
           reinterpret_cast<char*>(&other->_impl_.position_body_));
@@ -5222,7 +5307,13 @@ VisionSpeedEstimate::VisionSpeedEstimate(
   _impl_.speed_covariance_ = (cached_has_bits & 0x00000002u) ? ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::mocap::Covariance>(
                               arena, *from._impl_.speed_covariance_)
                         : nullptr;
-  _impl_.time_usec_ = from._impl_.time_usec_;
+  ::memcpy(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, time_usec_),
+           reinterpret_cast<const char *>(&from._impl_) +
+               offsetof(Impl_, time_usec_),
+           offsetof(Impl_, reset_counter_) -
+               offsetof(Impl_, time_usec_) +
+               sizeof(Impl_::reset_counter_));
 
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.mocap.VisionSpeedEstimate)
 }
@@ -5236,9 +5327,9 @@ inline void VisionSpeedEstimate::SharedCtor(::_pb::Arena* arena) {
   ::memset(reinterpret_cast<char *>(&_impl_) +
                offsetof(Impl_, speed_ned_),
            0,
-           offsetof(Impl_, time_usec_) -
+           offsetof(Impl_, reset_counter_) -
                offsetof(Impl_, speed_ned_) +
-               sizeof(Impl_::time_usec_));
+               sizeof(Impl_::reset_counter_));
 }
 VisionSpeedEstimate::~VisionSpeedEstimate() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.mocap.VisionSpeedEstimate)
@@ -5289,15 +5380,15 @@ const ::google::protobuf::internal::ClassData* VisionSpeedEstimate::GetClassData
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<2, 3, 2, 0, 2> VisionSpeedEstimate::_table_ = {
+const ::_pbi::TcParseTable<2, 4, 2, 0, 2> VisionSpeedEstimate::_table_ = {
   {
     PROTOBUF_FIELD_OFFSET(VisionSpeedEstimate, _impl_._has_bits_),
     0, // no _extensions_
-    3, 24,  // max_field_number, fast_idx_mask
+    4, 24,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967288,  // skipmap
+    4294967280,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    3,  // num_field_entries
+    4,  // num_field_entries
     2,  // num_aux_entries
     offsetof(decltype(_table_), aux_entries),
     _class_data_.base(),
@@ -5307,7 +5398,9 @@ const ::_pbi::TcParseTable<2, 3, 2, 0, 2> VisionSpeedEstimate::_table_ = {
     ::_pbi::TcParser::GetTable<::mavsdk::rpc::mocap::VisionSpeedEstimate>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    {::_pbi::TcParser::MiniParse, {}},
+    // uint32 reset_counter = 4;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(VisionSpeedEstimate, _impl_.reset_counter_), 63>(),
+     {32, 63, 0, PROTOBUF_FIELD_OFFSET(VisionSpeedEstimate, _impl_.reset_counter_)}},
     // uint64 time_usec = 1;
     {::_pbi::TcParser::SingularVarintNoZag1<::uint64_t, offsetof(VisionSpeedEstimate, _impl_.time_usec_), 63>(),
      {8, 63, 0, PROTOBUF_FIELD_OFFSET(VisionSpeedEstimate, _impl_.time_usec_)}},
@@ -5329,6 +5422,9 @@ const ::_pbi::TcParseTable<2, 3, 2, 0, 2> VisionSpeedEstimate::_table_ = {
     // .mavsdk.rpc.mocap.Covariance speed_covariance = 3;
     {PROTOBUF_FIELD_OFFSET(VisionSpeedEstimate, _impl_.speed_covariance_), _Internal::kHasBitsOffset + 1, 1,
     (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+    // uint32 reset_counter = 4;
+    {PROTOBUF_FIELD_OFFSET(VisionSpeedEstimate, _impl_.reset_counter_), -1, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUInt32)},
   }}, {{
     {::_pbi::TcParser::GetTable<::mavsdk::rpc::mocap::SpeedNed>()},
     {::_pbi::TcParser::GetTable<::mavsdk::rpc::mocap::Covariance>()},
@@ -5354,7 +5450,9 @@ PROTOBUF_NOINLINE void VisionSpeedEstimate::Clear() {
       _impl_.speed_covariance_->Clear();
     }
   }
-  _impl_.time_usec_ = ::uint64_t{0u};
+  ::memset(&_impl_.time_usec_, 0, static_cast<::size_t>(
+      reinterpret_cast<char*>(&_impl_.reset_counter_) -
+      reinterpret_cast<char*>(&_impl_.time_usec_)) + sizeof(_impl_.reset_counter_));
   _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
@@ -5394,6 +5492,13 @@ PROTOBUF_NOINLINE void VisionSpeedEstimate::Clear() {
             target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
                 3, *this_._impl_.speed_covariance_, this_._impl_.speed_covariance_->GetCachedSize(), target,
                 stream);
+          }
+
+          // uint32 reset_counter = 4;
+          if (this_._internal_reset_counter() != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteUInt32ToArray(
+                4, this_._internal_reset_counter(), target);
           }
 
           if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
@@ -5439,6 +5544,11 @@ PROTOBUF_NOINLINE void VisionSpeedEstimate::Clear() {
               total_size += ::_pbi::WireFormatLite::UInt64SizePlusOne(
                   this_._internal_time_usec());
             }
+            // uint32 reset_counter = 4;
+            if (this_._internal_reset_counter() != 0) {
+              total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(
+                  this_._internal_reset_counter());
+            }
           }
           return this_.MaybeComputeUnknownFieldsSize(total_size,
                                                      &this_._impl_._cached_size_);
@@ -5477,6 +5587,9 @@ void VisionSpeedEstimate::MergeImpl(::google::protobuf::MessageLite& to_msg, con
   if (from._internal_time_usec() != 0) {
     _this->_impl_.time_usec_ = from._impl_.time_usec_;
   }
+  if (from._internal_reset_counter() != 0) {
+    _this->_impl_.reset_counter_ = from._impl_.reset_counter_;
+  }
   _this->_impl_._has_bits_[0] |= cached_has_bits;
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
@@ -5494,8 +5607,8 @@ void VisionSpeedEstimate::InternalSwap(VisionSpeedEstimate* PROTOBUF_RESTRICT ot
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
   ::google::protobuf::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(VisionSpeedEstimate, _impl_.time_usec_)
-      + sizeof(VisionSpeedEstimate::_impl_.time_usec_)
+      PROTOBUF_FIELD_OFFSET(VisionSpeedEstimate, _impl_.reset_counter_)
+      + sizeof(VisionSpeedEstimate::_impl_.reset_counter_)
       - PROTOBUF_FIELD_OFFSET(VisionSpeedEstimate, _impl_.speed_ned_)>(
           reinterpret_cast<char*>(&_impl_.speed_ned_),
           reinterpret_cast<char*>(&other->_impl_.speed_ned_));
@@ -5927,9 +6040,9 @@ Odometry::Odometry(
                offsetof(Impl_, time_usec_),
            reinterpret_cast<const char *>(&from._impl_) +
                offsetof(Impl_, time_usec_),
-           offsetof(Impl_, frame_id_) -
+           offsetof(Impl_, quality_percent_) -
                offsetof(Impl_, time_usec_) +
-               sizeof(Impl_::frame_id_));
+               sizeof(Impl_::quality_percent_));
 
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.mocap.Odometry)
 }
@@ -5943,9 +6056,9 @@ inline void Odometry::SharedCtor(::_pb::Arena* arena) {
   ::memset(reinterpret_cast<char *>(&_impl_) +
                offsetof(Impl_, position_body_),
            0,
-           offsetof(Impl_, frame_id_) -
+           offsetof(Impl_, quality_percent_) -
                offsetof(Impl_, position_body_) +
-               sizeof(Impl_::frame_id_));
+               sizeof(Impl_::quality_percent_));
 }
 Odometry::~Odometry() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.mocap.Odometry)
@@ -6000,15 +6113,15 @@ const ::google::protobuf::internal::ClassData* Odometry::GetClassData() const {
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<3, 8, 6, 0, 2> Odometry::_table_ = {
+const ::_pbi::TcParseTable<4, 11, 6, 0, 2> Odometry::_table_ = {
   {
     PROTOBUF_FIELD_OFFSET(Odometry, _impl_._has_bits_),
     0, // no _extensions_
-    8, 56,  // max_field_number, fast_idx_mask
+    11, 120,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967040,  // skipmap
+    4294965248,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    8,  // num_field_entries
+    11,  // num_field_entries
     6,  // num_aux_entries
     offsetof(decltype(_table_), aux_entries),
     _class_data_.base(),
@@ -6018,9 +6131,7 @@ const ::_pbi::TcParseTable<3, 8, 6, 0, 2> Odometry::_table_ = {
     ::_pbi::TcParser::GetTable<::mavsdk::rpc::mocap::Odometry>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    // .mavsdk.rpc.mocap.Covariance velocity_covariance = 8;
-    {::_pbi::TcParser::FastMtS1,
-     {66, 5, 5, PROTOBUF_FIELD_OFFSET(Odometry, _impl_.velocity_covariance_)}},
+    {::_pbi::TcParser::MiniParse, {}},
     // uint64 time_usec = 1;
     {::_pbi::TcParser::SingularVarintNoZag1<::uint64_t, offsetof(Odometry, _impl_.time_usec_), 63>(),
      {8, 63, 0, PROTOBUF_FIELD_OFFSET(Odometry, _impl_.time_usec_)}},
@@ -6042,6 +6153,22 @@ const ::_pbi::TcParseTable<3, 8, 6, 0, 2> Odometry::_table_ = {
     // .mavsdk.rpc.mocap.Covariance pose_covariance = 7;
     {::_pbi::TcParser::FastMtS1,
      {58, 4, 4, PROTOBUF_FIELD_OFFSET(Odometry, _impl_.pose_covariance_)}},
+    // .mavsdk.rpc.mocap.Covariance velocity_covariance = 8;
+    {::_pbi::TcParser::FastMtS1,
+     {66, 5, 5, PROTOBUF_FIELD_OFFSET(Odometry, _impl_.velocity_covariance_)}},
+    // uint32 reset_counter = 9;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(Odometry, _impl_.reset_counter_), 63>(),
+     {72, 63, 0, PROTOBUF_FIELD_OFFSET(Odometry, _impl_.reset_counter_)}},
+    // .mavsdk.rpc.mocap.Odometry.MavEstimatorType estimator_type = 10;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(Odometry, _impl_.estimator_type_), 63>(),
+     {80, 63, 0, PROTOBUF_FIELD_OFFSET(Odometry, _impl_.estimator_type_)}},
+    // int32 quality_percent = 11;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(Odometry, _impl_.quality_percent_), 63>(),
+     {88, 63, 0, PROTOBUF_FIELD_OFFSET(Odometry, _impl_.quality_percent_)}},
+    {::_pbi::TcParser::MiniParse, {}},
+    {::_pbi::TcParser::MiniParse, {}},
+    {::_pbi::TcParser::MiniParse, {}},
+    {::_pbi::TcParser::MiniParse, {}},
   }}, {{
     65535, 65535
   }}, {{
@@ -6069,6 +6196,15 @@ const ::_pbi::TcParseTable<3, 8, 6, 0, 2> Odometry::_table_ = {
     // .mavsdk.rpc.mocap.Covariance velocity_covariance = 8;
     {PROTOBUF_FIELD_OFFSET(Odometry, _impl_.velocity_covariance_), _Internal::kHasBitsOffset + 5, 5,
     (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+    // uint32 reset_counter = 9;
+    {PROTOBUF_FIELD_OFFSET(Odometry, _impl_.reset_counter_), -1, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUInt32)},
+    // .mavsdk.rpc.mocap.Odometry.MavEstimatorType estimator_type = 10;
+    {PROTOBUF_FIELD_OFFSET(Odometry, _impl_.estimator_type_), -1, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
+    // int32 quality_percent = 11;
+    {PROTOBUF_FIELD_OFFSET(Odometry, _impl_.quality_percent_), -1, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kInt32)},
   }}, {{
     {::_pbi::TcParser::GetTable<::mavsdk::rpc::mocap::PositionBody>()},
     {::_pbi::TcParser::GetTable<::mavsdk::rpc::mocap::Quaternion>()},
@@ -6115,8 +6251,8 @@ PROTOBUF_NOINLINE void Odometry::Clear() {
     }
   }
   ::memset(&_impl_.time_usec_, 0, static_cast<::size_t>(
-      reinterpret_cast<char*>(&_impl_.frame_id_) -
-      reinterpret_cast<char*>(&_impl_.time_usec_)) + sizeof(_impl_.frame_id_));
+      reinterpret_cast<char*>(&_impl_.quality_percent_) -
+      reinterpret_cast<char*>(&_impl_.time_usec_)) + sizeof(_impl_.quality_percent_));
   _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
@@ -6193,6 +6329,27 @@ PROTOBUF_NOINLINE void Odometry::Clear() {
                 stream);
           }
 
+          // uint32 reset_counter = 9;
+          if (this_._internal_reset_counter() != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteUInt32ToArray(
+                9, this_._internal_reset_counter(), target);
+          }
+
+          // .mavsdk.rpc.mocap.Odometry.MavEstimatorType estimator_type = 10;
+          if (this_._internal_estimator_type() != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteEnumToArray(
+                10, this_._internal_estimator_type(), target);
+          }
+
+          // int32 quality_percent = 11;
+          if (this_._internal_quality_percent() != 0) {
+            target = ::google::protobuf::internal::WireFormatLite::
+                WriteInt32ToArrayWithField<11>(
+                    stream, this_._internal_quality_percent(), target);
+          }
+
           if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
             target =
                 ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
@@ -6260,6 +6417,21 @@ PROTOBUF_NOINLINE void Odometry::Clear() {
             if (this_._internal_frame_id() != 0) {
               total_size += 1 +
                             ::_pbi::WireFormatLite::EnumSize(this_._internal_frame_id());
+            }
+            // uint32 reset_counter = 9;
+            if (this_._internal_reset_counter() != 0) {
+              total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(
+                  this_._internal_reset_counter());
+            }
+            // .mavsdk.rpc.mocap.Odometry.MavEstimatorType estimator_type = 10;
+            if (this_._internal_estimator_type() != 0) {
+              total_size += 1 +
+                            ::_pbi::WireFormatLite::EnumSize(this_._internal_estimator_type());
+            }
+            // int32 quality_percent = 11;
+            if (this_._internal_quality_percent() != 0) {
+              total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+                  this_._internal_quality_percent());
             }
           }
           return this_.MaybeComputeUnknownFieldsSize(total_size,
@@ -6338,6 +6510,15 @@ void Odometry::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google
   if (from._internal_frame_id() != 0) {
     _this->_impl_.frame_id_ = from._impl_.frame_id_;
   }
+  if (from._internal_reset_counter() != 0) {
+    _this->_impl_.reset_counter_ = from._impl_.reset_counter_;
+  }
+  if (from._internal_estimator_type() != 0) {
+    _this->_impl_.estimator_type_ = from._impl_.estimator_type_;
+  }
+  if (from._internal_quality_percent() != 0) {
+    _this->_impl_.quality_percent_ = from._impl_.quality_percent_;
+  }
   _this->_impl_._has_bits_[0] |= cached_has_bits;
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
@@ -6355,8 +6536,8 @@ void Odometry::InternalSwap(Odometry* PROTOBUF_RESTRICT other) {
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
   ::google::protobuf::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(Odometry, _impl_.frame_id_)
-      + sizeof(Odometry::_impl_.frame_id_)
+      PROTOBUF_FIELD_OFFSET(Odometry, _impl_.quality_percent_)
+      + sizeof(Odometry::_impl_.quality_percent_)
       - PROTOBUF_FIELD_OFFSET(Odometry, _impl_.position_body_)>(
           reinterpret_cast<char*>(&_impl_.position_body_),
           reinterpret_cast<char*>(&other->_impl_.position_body_));
