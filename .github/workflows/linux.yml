@@ -383,7 +383,8 @@ jobs:
       - name: Install tools
         run: |
           sudo apt-get update && sudo apt-get install -y \
-            python3-venv
+            python3-venv \
+            libasio-dev
       - name: git permission workaround
         run: |
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
@@ -494,6 +495,9 @@ jobs:
         run: |
           echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV
           echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/release/third_party/install" >> $GITHUB_ENV
+      - name: install asio (non-superbuild fallback)
+        if: steps.cache.outputs.cache-hit == 'true'
+        run: sudo apt-get update && sudo apt-get install -y libasio-dev
       - name: configure
         run: cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_MAVSDK_SERVER=OFF -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=install -DWERROR=ON -Bbuild/release -H.
       - name: build
