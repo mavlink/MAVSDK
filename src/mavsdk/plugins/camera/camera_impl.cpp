@@ -4,6 +4,7 @@
 #include "unused.h"
 #include "callback_list.tpp"
 #include "fs_utils.h"
+#include "inflate_lzma.h"
 #include "string_utils.h"
 #include "math_utils.h"
 
@@ -1356,6 +1357,22 @@ void CameraImpl::check_camera_definition_with_lock(PotentialCamera& potential_ca
 
                     } else if (status == HttpStatus::Finished) {
                         LogDebug() << "File download finished " << download_path;
+                        if (download_path.extension() == ".xz") {
+                            auto decompressed = download_path;
+                            decompressed.replace_extension(".extracted");
+                            if (InflateLZMA::inflateLZMAFile(download_path, decompressed)) {
+                                std::filesystem::remove(download_path);
+                                download_path = decompressed;
+                            } else {
+                                LogErr()
+                                    << "Failed to decompress camera definition: " << download_path;
+                                maybe_potential_camera->is_fetching_camera_definition = false;
+                                maybe_potential_camera->camera_definition_result =
+                                    Camera::Result::Error;
+                                notify_camera_list_with_lock();
+                                return;
+                            }
+                        }
                         if (_file_cache) {
                             // Cache the file (this will move/remove the temp file as well)
                             download_path = _file_cache->insert(file_cache_tag, download_path)
@@ -1415,6 +1432,23 @@ void CameraImpl::check_camera_definition_with_lock(PotentialCamera& potential_ca
                             auto downloaded_filepath = _tmp_download_path / downloaded_filename;
 
                             LogDebug() << "File download finished to " << downloaded_filepath;
+                            if (downloaded_filepath.extension() == ".xz") {
+                                auto decompressed = downloaded_filepath;
+                                decompressed.replace_extension(".extracted");
+                                if (InflateLZMA::inflateLZMAFile(
+                                        downloaded_filepath, decompressed)) {
+                                    std::filesystem::remove(downloaded_filepath);
+                                    downloaded_filepath = decompressed;
+                                } else {
+                                    LogErr() << "Failed to decompress camera definition: "
+                                             << downloaded_filepath;
+                                    maybe_potential_camera->is_fetching_camera_definition = false;
+                                    maybe_potential_camera->camera_definition_result =
+                                        Camera::Result::Error;
+                                    notify_camera_list_with_lock();
+                                    return;
+                                }
+                            }
                             if (_file_cache) {
                                 // Cache the file (this will move/remove the temp file as well)
                                 downloaded_filepath =
