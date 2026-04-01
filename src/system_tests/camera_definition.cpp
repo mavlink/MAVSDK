@@ -44,16 +44,17 @@ static bool wait_for_camera_definition(
 static std::shared_ptr<System>
 wait_for_camera_system(Mavsdk& mavsdk_groundstation, std::chrono::seconds timeout)
 {
-    auto prom = std::promise<std::shared_ptr<System>>();
-    auto fut = prom.get_future();
-    std::once_flag flag;
+    auto prom = std::make_shared<std::promise<std::shared_ptr<System>>>();
+    auto fut = prom->get_future();
+    auto flag = std::make_shared<std::once_flag>();
 
-    auto handle = mavsdk_groundstation.subscribe_on_new_system([&]() {
-        const auto system = mavsdk_groundstation.systems().back();
-        if (system->is_connected() && system->has_camera()) {
-            std::call_once(flag, [&]() { prom.set_value(system); });
-        }
-    });
+    auto handle =
+        mavsdk_groundstation.subscribe_on_new_system([&mavsdk_groundstation, prom, flag]() {
+            const auto system = mavsdk_groundstation.systems().back();
+            if (system->is_connected() && system->has_camera()) {
+                std::call_once(*flag, [&]() { prom->set_value(system); });
+            }
+        });
 
     if (fut.wait_for(timeout) != std::future_status::ready) {
         mavsdk_groundstation.unsubscribe_on_new_system(handle);
