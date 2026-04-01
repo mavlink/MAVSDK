@@ -18,6 +18,8 @@ uint64_t [time_usec](#structmavsdk_1_1_mocap_1_1_vision_position_estimate_1ada84
 
 [Covariance](structmavsdk_1_1_mocap_1_1_covariance.md) [pose_covariance](#structmavsdk_1_1_mocap_1_1_vision_position_estimate_1abba582506ff4046b4293c06380269c75) {} - Pose cross-covariance matrix.
 
+uint32_t [reset_counter](#structmavsdk_1_1_mocap_1_1_vision_position_estimate_1a0cb15936051cdbecb383327c043c8b6e) {} - Estimate reset counter. Increment when the estimate resets or jumps.
+
 
 ## Field Documentation
 
@@ -60,4 +62,14 @@ Covariance mavsdk::Mocap::VisionPositionEstimate::pose_covariance {}
 
 
 Pose cross-covariance matrix.
+
+
+### reset_counter {#structmavsdk_1_1_mocap_1_1_vision_position_estimate_1a0cb15936051cdbecb383327c043c8b6e}
+
+```cpp
+uint32_t mavsdk::Mocap::VisionPositionEstimate::reset_counter {}
+```
+
+
+Estimate reset counter. Increment when the estimate resets or jumps.
 

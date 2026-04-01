@@ -305,6 +305,7 @@ translate_vision_position_estimate_from_c(const mavsdk_mocap_vision_position_est
     cpp_struct.position_body = translate_position_body_from_c(c_struct.position_body);
     cpp_struct.angle_body = translate_angle_body_from_c(c_struct.angle_body);
     cpp_struct.pose_covariance = translate_covariance_from_c(c_struct.pose_covariance);
+    cpp_struct.reset_counter = c_struct.reset_counter;
     return cpp_struct;
 }
 
@@ -315,6 +316,7 @@ translate_vision_position_estimate_to_c(const mavsdk::Mocap::VisionPositionEstim
     c_struct.position_body = translate_position_body_to_c(cpp_struct.position_body);
     c_struct.angle_body = translate_angle_body_to_c(cpp_struct.angle_body);
     c_struct.pose_covariance = translate_covariance_to_c(cpp_struct.pose_covariance);
+    c_struct.reset_counter = cpp_struct.reset_counter;
     return c_struct;
 }
 
@@ -343,6 +345,7 @@ translate_vision_speed_estimate_from_c(const mavsdk_mocap_vision_speed_estimate_
     cpp_struct.time_usec = c_struct.time_usec;
     cpp_struct.speed_ned = translate_speed_ned_from_c(c_struct.speed_ned);
     cpp_struct.speed_covariance = translate_covariance_from_c(c_struct.speed_covariance);
+    cpp_struct.reset_counter = c_struct.reset_counter;
     return cpp_struct;
 }
 
@@ -352,6 +355,7 @@ translate_vision_speed_estimate_to_c(const mavsdk::Mocap::VisionSpeedEstimate& c
     c_struct.time_usec = cpp_struct.time_usec;
     c_struct.speed_ned = translate_speed_ned_to_c(cpp_struct.speed_ned);
     c_struct.speed_covariance = translate_covariance_to_c(cpp_struct.speed_covariance);
+    c_struct.reset_counter = cpp_struct.reset_counter;
     return c_struct;
 }
 
@@ -425,6 +429,32 @@ translate_odometry_mav_frame_from_c(mavsdk_mocap_odometry_mav_frame_t c_enum) {
 }
 
 
+static mavsdk::Mocap::Odometry::MavEstimatorType
+translate_odometry_mav_estimator_type_from_c(mavsdk_mocap_odometry_mav_estimator_type_t c_enum) {
+    switch(c_enum) {
+        case MAVSDK_MOCAP_ODOMETRY_MAV_ESTIMATOR_TYPE_UNKNOWN:
+            return mavsdk::Mocap::Odometry::MavEstimatorType::Unknown;
+        case MAVSDK_MOCAP_ODOMETRY_MAV_ESTIMATOR_TYPE_NAIVE:
+            return mavsdk::Mocap::Odometry::MavEstimatorType::Naive;
+        case MAVSDK_MOCAP_ODOMETRY_MAV_ESTIMATOR_TYPE_VISION:
+            return mavsdk::Mocap::Odometry::MavEstimatorType::Vision;
+        case MAVSDK_MOCAP_ODOMETRY_MAV_ESTIMATOR_TYPE_VIO:
+            return mavsdk::Mocap::Odometry::MavEstimatorType::Vio;
+        case MAVSDK_MOCAP_ODOMETRY_MAV_ESTIMATOR_TYPE_GPS:
+            return mavsdk::Mocap::Odometry::MavEstimatorType::Gps;
+        case MAVSDK_MOCAP_ODOMETRY_MAV_ESTIMATOR_TYPE_GPS_INS:
+            return mavsdk::Mocap::Odometry::MavEstimatorType::GpsIns;
+        case MAVSDK_MOCAP_ODOMETRY_MAV_ESTIMATOR_TYPE_MOCAP:
+            return mavsdk::Mocap::Odometry::MavEstimatorType::Mocap;
+        case MAVSDK_MOCAP_ODOMETRY_MAV_ESTIMATOR_TYPE_LIDAR:
+            return mavsdk::Mocap::Odometry::MavEstimatorType::Lidar;
+        case MAVSDK_MOCAP_ODOMETRY_MAV_ESTIMATOR_TYPE_AUTOPILOT:
+            return mavsdk::Mocap::Odometry::MavEstimatorType::Autopilot;
+    }
+    return mavsdk::Mocap::Odometry::MavEstimatorType::Unknown;
+}
+
+
 static mavsdk::Mocap::Odometry
 translate_odometry_from_c(const mavsdk_mocap_odometry_t& c_struct) {
     mavsdk::Mocap::Odometry cpp_struct{};
@@ -436,6 +466,9 @@ translate_odometry_from_c(const mavsdk_mocap_odometry_t& c_struct) {
     cpp_struct.angular_velocity_body = translate_angular_velocity_body_from_c(c_struct.angular_velocity_body);
     cpp_struct.pose_covariance = translate_covariance_from_c(c_struct.pose_covariance);
     cpp_struct.velocity_covariance = translate_covariance_from_c(c_struct.velocity_covariance);
+    cpp_struct.reset_counter = c_struct.reset_counter;
+    cpp_struct.estimator_type = translate_odometry_mav_estimator_type_from_c(c_struct.estimator_type);
+    cpp_struct.quality_percent = c_struct.quality_percent;
     return cpp_struct;
 }
 
@@ -451,6 +484,32 @@ translate_odometry_mav_frame_to_c(mavsdk::Mocap::Odometry::MavFrame cpp_enum) {
     return MAVSDK_MOCAP_ODOMETRY_MAV_FRAME_MOCAP_NED;
 }
 
+
+static mavsdk_mocap_odometry_mav_estimator_type_t
+translate_odometry_mav_estimator_type_to_c(mavsdk::Mocap::Odometry::MavEstimatorType cpp_enum) {
+    switch(cpp_enum) {
+        case mavsdk::Mocap::Odometry::MavEstimatorType::Unknown:
+            return MAVSDK_MOCAP_ODOMETRY_MAV_ESTIMATOR_TYPE_UNKNOWN;
+        case mavsdk::Mocap::Odometry::MavEstimatorType::Naive:
+            return MAVSDK_MOCAP_ODOMETRY_MAV_ESTIMATOR_TYPE_NAIVE;
+        case mavsdk::Mocap::Odometry::MavEstimatorType::Vision:
+            return MAVSDK_MOCAP_ODOMETRY_MAV_ESTIMATOR_TYPE_VISION;
+        case mavsdk::Mocap::Odometry::MavEstimatorType::Vio:
+            return MAVSDK_MOCAP_ODOMETRY_MAV_ESTIMATOR_TYPE_VIO;
+        case mavsdk::Mocap::Odometry::MavEstimatorType::Gps:
+            return MAVSDK_MOCAP_ODOMETRY_MAV_ESTIMATOR_TYPE_GPS;
+        case mavsdk::Mocap::Odometry::MavEstimatorType::GpsIns:
+            return MAVSDK_MOCAP_ODOMETRY_MAV_ESTIMATOR_TYPE_GPS_INS;
+        case mavsdk::Mocap::Odometry::MavEstimatorType::Mocap:
+            return MAVSDK_MOCAP_ODOMETRY_MAV_ESTIMATOR_TYPE_MOCAP;
+        case mavsdk::Mocap::Odometry::MavEstimatorType::Lidar:
+            return MAVSDK_MOCAP_ODOMETRY_MAV_ESTIMATOR_TYPE_LIDAR;
+        case mavsdk::Mocap::Odometry::MavEstimatorType::Autopilot:
+            return MAVSDK_MOCAP_ODOMETRY_MAV_ESTIMATOR_TYPE_AUTOPILOT;
+    }
+    return MAVSDK_MOCAP_ODOMETRY_MAV_ESTIMATOR_TYPE_UNKNOWN;
+}
+
 static mavsdk_mocap_odometry_t
 translate_odometry_to_c(const mavsdk::Mocap::Odometry& cpp_struct) {
     mavsdk_mocap_odometry_t c_struct{};
@@ -462,6 +521,9 @@ translate_odometry_to_c(const mavsdk::Mocap::Odometry& cpp_struct) {
     c_struct.angular_velocity_body = translate_angular_velocity_body_to_c(cpp_struct.angular_velocity_body);
     c_struct.pose_covariance = translate_covariance_to_c(cpp_struct.pose_covariance);
     c_struct.velocity_covariance = translate_covariance_to_c(cpp_struct.velocity_covariance);
+    c_struct.reset_counter = cpp_struct.reset_counter;
+    c_struct.estimator_type = translate_odometry_mav_estimator_type_to_c(cpp_struct.estimator_type);
+    c_struct.quality_percent = cpp_struct.quality_percent;
     return c_struct;
 }
 
