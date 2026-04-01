@@ -124,19 +124,29 @@ void MavlinkMissionTransferClient::set_current_item_async(
 
 void MavlinkMissionTransferClient::do_work()
 {
-    LockedQueue<WorkItem>::Guard work_queue_guard(_work_queue);
-    auto work = work_queue_guard.get_front();
+    // Keep a local shared_ptr so that if pop_front() drops the last queue reference,
+    // the WorkItem destructor runs after the Guard releases the queue mutex.
+    // This avoids lock-order-inversion: the WorkItem dtor acquires the message handler
+    // mutex via unregister_all_blocking(), and holding both would invert the lock order
+    // vs process_message() which holds the message handler mutex then pushes to the queue.
+    std::shared_ptr<WorkItem> deferred_work_to_destroy;
+    {
+        LockedQueue<WorkItem>::Guard work_queue_guard(_work_queue);
+        auto work = work_queue_guard.get_front();
 
-    if (!work) {
-        return;
-    }
+        if (!work) {
+            return;
+        }
 
-    if (!work->has_started()) {
-        work->start();
+        if (!work->has_started()) {
+            work->start();
+        }
+        if (work->is_done()) {
+            deferred_work_to_destroy = work;
+            work_queue_guard.pop_front();
+        }
     }
-    if (work->is_done()) {
-        work_queue_guard.pop_front();
-    }
+    // deferred_work_to_destroy is destroyed here, outside the queue lock.
 }
 
 bool MavlinkMissionTransferClient::is_idle()
@@ -211,7 +221,7 @@ MavlinkMissionTransferClient::UploadWorkItem::UploadWorkItem(
 
 MavlinkMissionTransferClient::UploadWorkItem::~UploadWorkItem()
 {
-    _message_handler.unregister_all(this);
+    _message_handler.unregister_all_blocking(this);
     _timeout_handler.remove(_cookie);
 }
 
@@ -599,7 +609,7 @@ MavlinkMissionTransferClient::DownloadWorkItem::DownloadWorkItem(
 
 MavlinkMissionTransferClient::DownloadWorkItem::~DownloadWorkItem()
 {
-    _message_handler.unregister_all(this);
+    _message_handler.unregister_all_blocking(this);
     _timeout_handler.remove(_cookie);
 }
 
@@ -840,7 +850,7 @@ MavlinkMissionTransferClient::ClearWorkItem::ClearWorkItem(
 
 MavlinkMissionTransferClient::ClearWorkItem::~ClearWorkItem()
 {
-    _message_handler.unregister_all(this);
+    _message_handler.unregister_all_blocking(this);
     _timeout_handler.remove(_cookie);
 }
 
@@ -989,7 +999,7 @@ MavlinkMissionTransferClient::SetCurrentWorkItem::SetCurrentWorkItem(
 
 MavlinkMissionTransferClient::SetCurrentWorkItem::~SetCurrentWorkItem()
 {
-    _message_handler.unregister_all(this);
+    _message_handler.unregister_all_blocking(this);
     _timeout_handler.remove(_cookie);
 }
 
