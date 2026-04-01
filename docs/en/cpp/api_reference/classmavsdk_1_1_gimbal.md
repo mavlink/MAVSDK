@@ -4,7 +4,7 @@
 ----
 
 
-Provide control over a gimbal within the MAVLink Gimbal Protocol: [https://mavlink.io/en/services/gimbal_v2.html](https://mavlink.io/en/services/gimbal_v2.html).
+Provide control over a gimbal within the MAVLink [Gimbal](classmavsdk_1_1_gimbal.md) Protocol: [https://mavlink.io/en/services/gimbal_v2.html](https://mavlink.io/en/services/gimbal_v2.html). 
 
 
 ## Data Structures
