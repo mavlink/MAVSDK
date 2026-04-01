@@ -2911,8 +2911,8 @@ This function is non-blocking. See 'set_rate_raw_gps' for the blocking counterpa
 
 **Parameters**
 
-* double **rate_hz** -
-* const [ResultCallback](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a166e81c6573532978e5940eafdfcec0b) **callback** -
+* double **rate_hz** - 
+* const [ResultCallback](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a166e81c6573532978e5940eafdfcec0b) **callback** - 
 
 ### set_rate_raw_gps() {#classmavsdk_1_1_telemetry_1a7c2f1080a55e594e3c5f3cfe9f16deff}
 ```cpp
@@ -2926,7 +2926,7 @@ This function is blocking. See 'set_rate_raw_gps_async' for the non-blocking cou
 
 **Parameters**
 
-* double **rate_hz** -
+* double **rate_hz** - 
 
 **Returns**
 

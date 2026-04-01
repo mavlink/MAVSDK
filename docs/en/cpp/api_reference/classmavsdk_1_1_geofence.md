@@ -218,7 +218,7 @@ This function is non-blocking. See 'download_geofence' for the blocking counterp
 
 **Parameters**
 
-* const [DownloadGeofenceCallback](classmavsdk_1_1_geofence.md#classmavsdk_1_1_geofence_1a1fcce00cf17acb7e6f9cc3120f5b1e93) **callback** -
+* const [DownloadGeofenceCallback](classmavsdk_1_1_geofence.md#classmavsdk_1_1_geofence_1a1fcce00cf17acb7e6f9cc3120f5b1e93) **callback** - 
 
 ### download_geofence() {#classmavsdk_1_1_geofence_1a6470bac1295b64eed9fc03c380bfbe24}
 ```cpp
