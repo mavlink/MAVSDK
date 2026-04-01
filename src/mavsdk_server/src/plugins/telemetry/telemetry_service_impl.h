@@ -1126,6 +1126,8 @@ public:
 
         rpc_obj->set_absolute_altitude_m(ground_truth.absolute_altitude_m);
 
+        rpc_obj->set_timestamp_us(ground_truth.timestamp_us);
+
         return rpc_obj;
     }
 
@@ -1139,6 +1141,8 @@ public:
         obj.longitude_deg = ground_truth.longitude_deg();
 
         obj.absolute_altitude_m = ground_truth.absolute_altitude_m();
+
+        obj.timestamp_us = ground_truth.timestamp_us();
 
         return obj;
     }
@@ -1349,6 +1353,8 @@ public:
 
         rpc_obj->set_bottom_clearance_m(altitude.bottom_clearance_m);
 
+        rpc_obj->set_timestamp_us(altitude.timestamp_us);
+
         return rpc_obj;
     }
 
@@ -1368,6 +1374,8 @@ public:
         obj.altitude_terrain_m = altitude.altitude_terrain_m();
 
         obj.bottom_clearance_m = altitude.bottom_clearance_m();
+
+        obj.timestamp_us = altitude.timestamp_us();
 
         return obj;
     }
