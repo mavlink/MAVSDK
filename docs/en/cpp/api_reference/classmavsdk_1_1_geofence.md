@@ -26,6 +26,7 @@ Type | Description
 enum [FenceType](#classmavsdk_1_1_geofence_1a51196ded958aa9d4b3f25cde95da48e5) | [Geofence](classmavsdk_1_1_geofence.md) types.
 enum [Result](#classmavsdk_1_1_geofence_1ab64d6e3b9aeb9b6d5e45ae8a843a2642) | Possible results returned for geofence requests.
 std::function< void([Result](classmavsdk_1_1_geofence.md#classmavsdk_1_1_geofence_1ab64d6e3b9aeb9b6d5e45ae8a843a2642))> [ResultCallback](#classmavsdk_1_1_geofence_1af9662e645781e4e64ed8b7c65d3d9309) | Callback type for asynchronous [Geofence](classmavsdk_1_1_geofence.md) calls.
+std::function< void([Result](classmavsdk_1_1_geofence.md#classmavsdk_1_1_geofence_1ab64d6e3b9aeb9b6d5e45ae8a843a2642), [GeofenceData](structmavsdk_1_1_geofence_1_1_geofence_data.md))> [DownloadGeofenceCallback](#classmavsdk_1_1_geofence_1a1fcce00cf17acb7e6f9cc3120f5b1e93) | Callback type for download_geofence_async.
 
 ## Public Member Functions
 
@@ -38,6 +39,8 @@ Type | Name | Description
 &nbsp; | [Geofence](#classmavsdk_1_1_geofence_1a60e1f1a3123050c73980cba61b4b4009) (const [Geofence](classmavsdk_1_1_geofence.md) & other) | Copy constructor.
 void | [upload_geofence_async](#classmavsdk_1_1_geofence_1a1f0c6431b86b77c29f19eafb4e55dcdb) ([GeofenceData](structmavsdk_1_1_geofence_1_1_geofence_data.md) geofence_data, const [ResultCallback](classmavsdk_1_1_geofence.md#classmavsdk_1_1_geofence_1af9662e645781e4e64ed8b7c65d3d9309) callback) | Upload geofences.
 [Result](classmavsdk_1_1_geofence.md#classmavsdk_1_1_geofence_1ab64d6e3b9aeb9b6d5e45ae8a843a2642) | [upload_geofence](#classmavsdk_1_1_geofence_1ab2e825f0955e7a320117a21d649bab09) ([GeofenceData](structmavsdk_1_1_geofence_1_1_geofence_data.md) geofence_data)const | Upload geofences.
+void | [download_geofence_async](#classmavsdk_1_1_geofence_1aedb57c09762303d17bf911cb46bc3403) (const [DownloadGeofenceCallback](classmavsdk_1_1_geofence.md#classmavsdk_1_1_geofence_1a1fcce00cf17acb7e6f9cc3120f5b1e93) callback) | Download geofences from the vehicle.
+std::pair< [Result](classmavsdk_1_1_geofence.md#classmavsdk_1_1_geofence_1ab64d6e3b9aeb9b6d5e45ae8a843a2642), [Geofence::GeofenceData](structmavsdk_1_1_geofence_1_1_geofence_data.md) > | [download_geofence](#classmavsdk_1_1_geofence_1a6470bac1295b64eed9fc03c380bfbe24) () const | Download geofences from the vehicle.
 void | [clear_geofence_async](#classmavsdk_1_1_geofence_1a6947151765b621a93d35885599812752) (const [ResultCallback](classmavsdk_1_1_geofence.md#classmavsdk_1_1_geofence_1af9662e645781e4e64ed8b7c65d3d9309) callback) | Clear all geofences saved on the vehicle.
 [Result](classmavsdk_1_1_geofence.md#classmavsdk_1_1_geofence_1ab64d6e3b9aeb9b6d5e45ae8a843a2642) | [clear_geofence](#classmavsdk_1_1_geofence_1a54b2a696e8aebae6916116adb92c03c3) () const | Clear all geofences saved on the vehicle.
 const [Geofence](classmavsdk_1_1_geofence.md) & | [operator=](#classmavsdk_1_1_geofence_1a174d03979e425bf8440dfe9bbabaf7d2) (const [Geofence](classmavsdk_1_1_geofence.md) &)=delete | Equality operator (object is not copyable).
@@ -117,6 +120,16 @@ using mavsdk::Geofence::ResultCallback =  std::function<void(Result)>
 Callback type for asynchronous [Geofence](classmavsdk_1_1_geofence.md) calls.
 
 
+### typedef DownloadGeofenceCallback {#classmavsdk_1_1_geofence_1a1fcce00cf17acb7e6f9cc3120f5b1e93}
+
+```cpp
+using mavsdk::Geofence::DownloadGeofenceCallback =  std::function<void(Result, GeofenceData)>
+```
+
+
+Callback type for download_geofence_async.
+
+
 ## Member Enumeration Documentation
 
 
@@ -189,6 +202,40 @@ This function is blocking. See 'upload_geofence_async' for the non-blocking coun
 **Returns**
 
 &emsp;[Result](classmavsdk_1_1_geofence.md#classmavsdk_1_1_geofence_1ab64d6e3b9aeb9b6d5e45ae8a843a2642) - Result of request.
+
+### download_geofence_async() {#classmavsdk_1_1_geofence_1aedb57c09762303d17bf911cb46bc3403}
+```cpp
+void mavsdk::Geofence::download_geofence_async(const DownloadGeofenceCallback callback)
+```
+
+
+Download geofences from the vehicle.
+
+Downloads polygon and circular geofences from the vehicle.
+
+
+This function is non-blocking. See 'download_geofence' for the blocking counterpart.
+
+**Parameters**
+
+* const [DownloadGeofenceCallback](classmavsdk_1_1_geofence.md#classmavsdk_1_1_geofence_1a1fcce00cf17acb7e6f9cc3120f5b1e93) **callback** -
+
+### download_geofence() {#classmavsdk_1_1_geofence_1a6470bac1295b64eed9fc03c380bfbe24}
+```cpp
+std::pair< Result, Geofence::GeofenceData > mavsdk::Geofence::download_geofence() const
+```
+
+
+Download geofences from the vehicle.
+
+Downloads polygon and circular geofences from the vehicle.
+
+
+This function is blocking. See 'download_geofence_async' for the non-blocking counterpart.
+
+**Returns**
+
+&emsp;std::pair< [Result](classmavsdk_1_1_geofence.md#classmavsdk_1_1_geofence_1ab64d6e3b9aeb9b6d5e45ae8a843a2642), [Geofence::GeofenceData](structmavsdk_1_1_geofence_1_1_geofence_data.md) > - Result of request.
 
 ### clear_geofence_async() {#classmavsdk_1_1_geofence_1a6947151765b621a93d35885599812752}
 ```cpp
