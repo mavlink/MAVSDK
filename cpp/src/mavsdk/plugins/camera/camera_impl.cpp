@@ -710,10 +710,25 @@ void CameraImpl::unsubscribe_camera_list(Camera::CameraListHandle handle)
 
 void CameraImpl::notify_camera_list_with_lock()
 {
-    _system_impl->call_user_callback([&]() {
-        _camera_list_subscription_callbacks.queue(
-            camera_list_with_lock(), [this](const auto& func) { func(); });
-    });
+    // Build the camera-list snapshot synchronously while the caller holds _mutex,
+    // then post each subscriber's callback individually to the user callback thread.
+    //
+    // The previous implementation used call_user_callback([&](){...}), which posted
+    // the entire work item to the user callback thread.  That lambda ran *after* the
+    // inner FTP/HTTP download callback returned.  The main thread could observe the
+    // loaded definition, destroy the Camera plugin, and free CameraImpl before the
+    // [&] lambda had a chance to run.  The lambda then accessed freed CameraImpl
+    // members (_camera_list_subscription_callbacks, _potential_cameras), causing a
+    // heap use-after-free that manifested as a __stack_chk_fail canary failure.
+    //
+    // With this fix the snapshot is built and each subscriber's call_user_callback
+    // is posted while the caller still holds _mutex (i.e. CameraImpl is alive).
+    // The per-subscriber func lambdas capture only the snapshot value and the
+    // system_impl pointer, neither of which is a CameraImpl member, so they are
+    // safe to run even after CameraImpl is destroyed.
+    auto snapshot = camera_list_with_lock();
+    _camera_list_subscription_callbacks.queue(
+        snapshot, [this](const auto& func) { _system_impl->call_user_callback(func); });
 }
 
 Camera::Result CameraImpl::start_video_streaming(int32_t component_id, int32_t stream_id)
@@ -1290,6 +1305,7 @@ void CameraImpl::check_camera_definition_with_lock(PotentialCamera& potential_ca
     if (potential_camera.camera_definition_url.empty()) {
         potential_camera.camera_definition_result = Camera::Result::Unavailable;
         notify_camera_list_with_lock();
+        return; // No URL means no definition to fetch.
     }
 
     const auto& info = potential_camera.maybe_information.value();
