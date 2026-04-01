@@ -60,7 +60,7 @@ jobs:
         id: cache
         with:
           path: ./cpp/build/third_party/install
-          key: ${{ github.job }}-${{ matrix.arch }}-${{ hashFiles('./third_party/**') }}-3
+          key: ${{ github.job }}-${{ matrix.arch }}-${{ hashFiles('./cpp/third_party/**') }}-3
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: |
@@ -173,7 +173,7 @@ jobs:
         id: cache
         with:
           path: ./cpp/build/third_party/install
-          key: ${{ github.job }}-${{ matrix.arch }}-${{ matrix.config }}-${{ hashFiles('./third_party/**') }}-3
+          key: ${{ github.job }}-${{ matrix.arch }}-${{ matrix.config }}-${{ hashFiles('./cpp/third_party/**') }}-3
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: |
