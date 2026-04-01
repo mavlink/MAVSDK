@@ -20,9 +20,11 @@
     "open-editor": "^5.0.0"
   },
   "resolutions": {
-    "esbuild": "^0.25.0"
+    "esbuild": "^0.25.0",
+    "markdown-it": "^14.1.1"
   },
   "overrides": {
-    "esbuild": "^0.25.0"
+    "esbuild": "^0.25.0",
+    "markdown-it": "^14.1.1"
   }
 }
