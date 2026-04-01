@@ -2,3 +2,5 @@ src/mavsdk_server/src/generated
 src/mavsdk/plugins/camera/camera_definition_files/generated
 src/mavsdk/core/stackoverflow_unistd.h
 src/mavsdk/core/tronkko_dirent.h
+../c/
+../py/
