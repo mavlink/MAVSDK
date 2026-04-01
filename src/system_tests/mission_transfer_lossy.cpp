@@ -22,14 +22,15 @@ TEST(SystemTest, MissionTransferLossy)
     Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
     Mavsdk mavsdk_autopilot{Mavsdk::Configuration{ComponentType::Autopilot}};
 
+    // Set up the autopilot side with MissionRawServer before connections
+    // so capabilities (MISSION_INT) are available before AUTOPILOT_VERSION exchange.
+    auto mission_raw_server = MissionRawServer{mavsdk_autopilot.server_component()};
+
     ASSERT_EQ(
         mavsdk_groundstation.add_any_connection("udpin://0.0.0.0:17000"),
         ConnectionResult::Success);
     ASSERT_EQ(
         mavsdk_autopilot.add_any_connection("udpout://127.0.0.1:17000"), ConnectionResult::Success);
-
-    // Set up the autopilot side with MissionRawServer
-    auto mission_raw_server = MissionRawServer{mavsdk_autopilot.server_component()};
 
     // Wait for groundstation to discover autopilot
     auto maybe_system = mavsdk_groundstation.first_autopilot(10.0);
