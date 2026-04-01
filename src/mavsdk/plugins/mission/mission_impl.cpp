@@ -927,9 +927,9 @@ void MissionImpl::set_current_mission_item_async(
             if (callback) {
                 // FIXME: come up with better error code.
                 callback(Mission::Result::InvalidArgument);
-                return;
             }
         });
+        return;
     }
 
     _system_impl->mission_transfer_client().set_current_item_async(
