@@ -96,20 +96,23 @@ Mission::Result MissionImpl::upload_mission(const Mission::MissionPlan& mission_
 void MissionImpl::upload_mission_async(
     const Mission::MissionPlan& mission_plan, const Mission::ResultCallback& callback)
 {
-    if (_mission_data.last_upload.lock()) {
-        _system_impl->call_user_callback([callback]() {
-            if (callback) {
-                callback(Mission::Result::Busy);
-            }
-        });
-        return;
+    {
+        std::lock_guard<std::mutex> lock(_mission_data.transfer_mutex);
+        if (_mission_data.last_upload.lock()) {
+            _system_impl->call_user_callback([callback]() {
+                if (callback) {
+                    callback(Mission::Result::Busy);
+                }
+            });
+            return;
+        }
     }
 
     reset_mission_progress();
 
     const auto int_items = convert_to_int_items(mission_plan.mission_items);
 
-    _mission_data.last_upload = _system_impl->mission_transfer_client().upload_items_async(
+    auto upload = _system_impl->mission_transfer_client().upload_items_async(
         MAV_MISSION_TYPE_MISSION,
         _system_impl->get_system_id(),
         int_items,
@@ -121,26 +124,32 @@ void MissionImpl::upload_mission_async(
                 }
             });
         });
+
+    std::lock_guard<std::mutex> lock(_mission_data.transfer_mutex);
+    _mission_data.last_upload = std::move(upload);
 }
 
 void MissionImpl::upload_mission_with_progress_async(
     const Mission::MissionPlan& mission_plan,
     const Mission::UploadMissionWithProgressCallback callback)
 {
-    if (_mission_data.last_upload.lock()) {
-        _system_impl->call_user_callback([callback]() {
-            if (callback) {
-                callback(Mission::Result::Busy, Mission::ProgressData{});
-            }
-        });
-        return;
+    {
+        std::lock_guard<std::mutex> lock(_mission_data.transfer_mutex);
+        if (_mission_data.last_upload.lock()) {
+            _system_impl->call_user_callback([callback]() {
+                if (callback) {
+                    callback(Mission::Result::Busy, Mission::ProgressData{});
+                }
+            });
+            return;
+        }
     }
 
     reset_mission_progress();
 
     const auto int_items = convert_to_int_items(mission_plan.mission_items);
 
-    _mission_data.last_upload = _system_impl->mission_transfer_client().upload_items_async(
+    auto upload = _system_impl->mission_transfer_client().upload_items_async(
         MAV_MISSION_TYPE_MISSION,
         _system_impl->get_system_id(),
         int_items,
@@ -159,11 +168,19 @@ void MissionImpl::upload_mission_with_progress_async(
                 }
             });
         });
+
+    std::lock_guard<std::mutex> lock(_mission_data.transfer_mutex);
+    _mission_data.last_upload = std::move(upload);
 }
 
 Mission::Result MissionImpl::cancel_mission_upload() const
 {
-    auto ptr = _mission_data.last_upload.lock();
+    std::shared_ptr<MavlinkMissionTransferClient::WorkItem> ptr;
+    {
+        std::lock_guard<std::mutex> lock(_mission_data.transfer_mutex);
+        ptr = _mission_data.last_upload.lock();
+    }
+
     if (ptr) {
         ptr->cancel();
     } else {
@@ -187,17 +204,20 @@ std::pair<Mission::Result, Mission::MissionPlan> MissionImpl::download_mission()
 
 void MissionImpl::download_mission_async(const Mission::DownloadMissionCallback& callback)
 {
-    if (_mission_data.last_download.lock()) {
-        _system_impl->call_user_callback([callback]() {
-            if (callback) {
-                Mission::MissionPlan mission_plan{};
-                callback(Mission::Result::Busy, mission_plan);
-            }
-        });
-        return;
+    {
+        std::lock_guard<std::mutex> lock(_mission_data.transfer_mutex);
+        if (_mission_data.last_download.lock()) {
+            _system_impl->call_user_callback([callback]() {
+                if (callback) {
+                    Mission::MissionPlan mission_plan{};
+                    callback(Mission::Result::Busy, mission_plan);
+                }
+            });
+            return;
+        }
     }
 
-    _mission_data.last_download = _system_impl->mission_transfer_client().download_items_async(
+    auto download = _system_impl->mission_transfer_client().download_items_async(
         MAV_MISSION_TYPE_MISSION,
         _system_impl->get_system_id(),
         [this, callback](
@@ -208,24 +228,30 @@ void MissionImpl::download_mission_async(const Mission::DownloadMissionCallback&
                 callback(result_and_items.first, result_and_items.second);
             });
         });
+
+    std::lock_guard<std::mutex> lock(_mission_data.transfer_mutex);
+    _mission_data.last_download = std::move(download);
 }
 
 void MissionImpl::download_mission_with_progress_async(
     const Mission::DownloadMissionWithProgressCallback callback)
 {
-    if (_mission_data.last_download.lock()) {
-        _system_impl->call_user_callback([callback]() {
-            if (callback) {
-                Mission::ProgressDataOrMission progress_data_or_mission{};
-                progress_data_or_mission.has_mission = false;
-                progress_data_or_mission.has_progress = false;
-                callback(Mission::Result::Busy, progress_data_or_mission);
-            }
-        });
-        return;
+    {
+        std::lock_guard<std::mutex> lock(_mission_data.transfer_mutex);
+        if (_mission_data.last_download.lock()) {
+            _system_impl->call_user_callback([callback]() {
+                if (callback) {
+                    Mission::ProgressDataOrMission progress_data_or_mission{};
+                    progress_data_or_mission.has_mission = false;
+                    progress_data_or_mission.has_progress = false;
+                    callback(Mission::Result::Busy, progress_data_or_mission);
+                }
+            });
+            return;
+        }
     }
 
-    _mission_data.last_download = _system_impl->mission_transfer_client().download_items_async(
+    auto download = _system_impl->mission_transfer_client().download_items_async(
         MAV_MISSION_TYPE_MISSION,
         _system_impl->get_system_id(),
         [this, callback](
@@ -251,11 +277,19 @@ void MissionImpl::download_mission_with_progress_async(
                 callback(Mission::Result::Next, progress_data_or_mission);
             });
         });
+
+    std::lock_guard<std::mutex> lock(_mission_data.transfer_mutex);
+    _mission_data.last_download = std::move(download);
 }
 
 Mission::Result MissionImpl::cancel_mission_download() const
 {
-    auto ptr = _mission_data.last_download.lock();
+    std::shared_ptr<MavlinkMissionTransferClient::WorkItem> ptr;
+    {
+        std::lock_guard<std::mutex> lock(_mission_data.transfer_mutex);
+        ptr = _mission_data.last_download.lock();
+    }
+
     if (ptr) {
         ptr->cancel();
     } else {
