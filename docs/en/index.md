@@ -1,6 +1,6 @@
 <div style="float:right; padding:10px; margin-right:20px;"><img src="../assets/site/sdk_logo_full.png" title="MAVSDK Logo" width="400px"/></div>
 
-# MAVSDK (main / v3)
+# MAVSDK (v3)
 
 *MAVSDK* is a collection of libraries for various programming languages to interface with [MAVLink](https://mavlink.io/en/) systems such as drones, cameras or ground systems.
 
@@ -58,7 +58,7 @@ This project is maintained by volunteers:
 - [Julian Oes](https://github.com/julianoes) ([sponsoring](https://github.com/sponsors/julianoes), [consulting](https://julianoes.com)).
 - [Jonas Vautherin](https://github.com/JonasVautherin)
 
-Maintenance is not sponsored by any company, however, hosting of the [docs](https://mavsdk.mavlink.io/main/en/) and the [forum](https://discuss.px4.io/c/mavsdk/) is provided by the [Dronecode Foundation](https://dronecode.org).
+Maintenance is not sponsored by any company, however, hosting of the [docs](https://mavsdk.mavlink.io/v3/en/) and the [forum](https://discuss.px4.io/c/mavsdk/) is provided by the [Dronecode Foundation](https://dronecode.org).
 
 ## Support and issues
 

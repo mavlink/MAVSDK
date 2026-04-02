@@ -121,5 +121,5 @@ Not every mission command behaviour supported by the protocol and PX4 will be su
 
 In order to access the full mission API, the [MissionRaw](../api_reference/classmavsdk_1_1_mission_raw.html) plugin can be used instead.
 
-The MissionRaw also allows to [import QGC mission files](https://mavsdk.mavlink.io/main/en/cpp/api_reference/classmavsdk_1_1_mission_raw.html#classmavsdk_1_1_mission_raw_1a2a4ca261c37737e691c6954693d6d0a5).
+The MissionRaw also allows to [import QGC mission files](https://mavsdk.mavlink.io/v3/en/cpp/api_reference/classmavsdk_1_1_mission_raw.html#classmavsdk_1_1_mission_raw_1a2a4ca261c37737e691c6954693d6d0a5).
 
