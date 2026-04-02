@@ -61,6 +61,7 @@ target_sources(mavsdk
     inflate_lzma.cpp
     math_utils.cpp
     mavsdk.cpp
+    asio_throw_exception.cpp
     mavsdk_impl.cpp
     mavlink_channel_status.cpp
     mavlink_channels.cpp
@@ -90,7 +91,6 @@ target_sources(mavsdk
     server_component.cpp
     server_component_impl.cpp
     server_plugin_impl_base.cpp
-    socket_holder.cpp
     tcp_client_connection.cpp
     tcp_server_connection.cpp
     timeout_handler.cpp
@@ -176,6 +176,14 @@ endif()
 set_target_properties(mavsdk
     PROPERTIES COMPILE_FLAGS ${warnings}
     )
+
+# Asio's io_context.hpp triggers a false-positive -Wnull-dereference with GCC
+# (executor comparison at io_context.hpp:967).  The warning comes from GCC's
+# data-flow analysis traversing inlined Asio internals; marking the Asio
+# include directory as SYSTEM is not always sufficient to suppress it.
+if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    target_compile_options(mavsdk PRIVATE -Wno-null-dereference)
+endif()
 
 target_include_directories(mavsdk
     PUBLIC

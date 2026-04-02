@@ -8,7 +8,9 @@
 #include <vector>
 #include <atomic>
 #include <thread>
-#include <queue>
+
+#include <asio/io_context.hpp>
+#include <asio/steady_timer.hpp>
 
 #include "autopilot.h"
 #include "compatibility_mode.h"
@@ -149,6 +151,9 @@ public:
     // Get connections for sending messages
     std::vector<Connection*> get_connections() const;
 
+    // Asio io_context shared by all connections for async I/O
+    asio::io_context& io_context() { return _io_context; }
+
     // Get MessageSet for message creation and parsing
     mav::MessageSet& get_message_set() const;
 
@@ -186,16 +191,13 @@ private:
 
     void send_heartbeats();
 
-    void work_thread();
     void process_user_callbacks_thread();
 
-    void process_messages();
+    // process_messages() and process_libmav_messages() removed:
+    // messages are dispatched directly via asio::post() in receive_message().
     void process_message(mavlink_message_t& message, Connection* connection);
-
-    void process_libmav_messages();
     void process_libmav_message(const Mavsdk::MavlinkMessage& message, Connection* connection);
 
-    void deliver_messages();
     void deliver_message(mavlink_message_t& message);
 
     bool is_any_system_connected() const;
@@ -257,7 +259,6 @@ private:
         int linenumber{};
     };
 
-    std::unique_ptr<std::thread> _work_thread{};
     std::unique_ptr<std::thread> _process_user_callbacks_thread{};
     LockedQueue<UserCallback> _user_callback_queue{};
 
@@ -284,24 +285,8 @@ private:
     std::atomic<double> _timeout_s{DEFAULT_TIMEOUT_S};
     std::atomic<double> _heartbeat_timeout_s{DEFAULT_HEARTBEAT_TIMEOUT_S};
 
-    struct ReceivedMessage {
-        mavlink_message_t message;
-        Connection* connection_ptr;
-    };
-    mutable std::mutex _received_messages_mutex{};
-    std::queue<ReceivedMessage> _received_messages;
-    std::condition_variable _received_messages_cv{};
-
-    struct ReceivedLibmavMessage {
-        Mavsdk::MavlinkMessage message;
-        Connection* connection_ptr;
-    };
-    mutable std::mutex _received_libmav_messages_mutex{};
-    std::queue<ReceivedLibmavMessage> _received_libmav_messages;
-    std::condition_variable _received_libmav_messages_cv{};
-
-    mutable std::mutex _messages_to_send_mutex{};
-    std::queue<mavlink_message_t> _messages_to_send;
+    // Note: both incoming and outgoing messages are dispatched directly on the
+    // io_context thread via asio::post() — no intermediate queues needed.
 
     static constexpr double HEARTBEAT_SEND_INTERVAL_S = 1.0;
     std::mutex _heartbeat_mutex{};
@@ -311,6 +296,22 @@ private:
     std::function<void(std::function<void()>)> _callback_executor{};
 
     std::atomic<bool> _should_exit{false};
+
+    // Asio event loop — runs on its own dedicated thread.
+    asio::io_context _io_context{};
+    // Keep io_context::run() from returning when there are momentarily no async ops pending.
+    asio::executor_work_guard<asio::io_context::executor_type> _io_work_guard{
+        _io_context.get_executor()};
+    // Recurring timer that drives TimeoutHandler::run_once() and
+    // CallEveryHandler::run_once() on the io_context thread.
+    asio::steady_timer _timers_poll_timer{_io_context};
+    void schedule_timers_poll();
+
+    // Recurring timer that drives ServerComponent::do_work() on the io_context thread.
+    asio::steady_timer _do_work_timer{_io_context};
+    void schedule_do_work();
+
+    std::unique_ptr<std::thread> _io_thread{};
 };
 
 } // namespace mavsdk

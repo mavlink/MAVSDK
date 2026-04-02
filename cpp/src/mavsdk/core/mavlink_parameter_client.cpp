@@ -26,7 +26,8 @@ MavlinkParameterClient::MavlinkParameterClient(
     _autopilot_callback(std::move(autopilot_callback)),
     _target_system_id(target_system_id),
     _target_component_id(target_component_id),
-    _use_extended(use_extended)
+    _use_extended(use_extended),
+    _io_context(sender.io_context())
 {
     if (const char* env_p = std::getenv("MAVSDK_PARAMETER_DEBUGGING")) {
         if (std::string(env_p) == "1") {
@@ -106,7 +107,13 @@ void MavlinkParameterClient::set_param_async(
         return;
     }
     auto new_work = std::make_shared<WorkItem>(WorkItemSet{name, value, callback}, cookie);
-    _work_queue.push_back(new_work);
+    asio::post(_io_context, [this, new_work]() {
+        const bool was_empty = _work_queue.empty();
+        _work_queue.push_back(new_work);
+        if (was_empty) {
+            do_work();
+        }
+    });
 }
 
 void MavlinkParameterClient::set_param_int_async(
@@ -252,7 +259,13 @@ void MavlinkParameterClient::get_param_async(
     }
 
     auto new_work = std::make_shared<WorkItem>(WorkItemGet{name, callback}, cookie);
-    _work_queue.push_back(new_work);
+    asio::post(_io_context, [this, new_work]() {
+        const bool was_empty = _work_queue.empty();
+        _work_queue.push_back(new_work);
+        if (was_empty) {
+            do_work();
+        }
+    });
 }
 
 void MavlinkParameterClient::get_param_async(
@@ -397,7 +410,13 @@ void MavlinkParameterClient::get_all_params_async(GetAllParamsCallback callback,
 
     auto new_work =
         std::make_shared<WorkItem>(WorkItemGetAll{std::move(callback), 0, false}, cookie);
-    _work_queue.push_back(new_work);
+    asio::post(_io_context, [this, new_work]() {
+        const bool was_empty = _work_queue.empty();
+        _work_queue.push_back(new_work);
+        if (was_empty) {
+            do_work();
+        }
+    });
 }
 
 std::pair<MavlinkParameterClient::Result, std::map<std::string, ParamValue>>
@@ -419,13 +438,32 @@ MavlinkParameterClient::get_all_params()
 
 void MavlinkParameterClient::cancel_all_param(const void* cookie)
 {
-    LockedQueue<WorkItem>::Guard work_queue_guard(_work_queue);
-
     // We don't call any callbacks before erasing them as this is just used on destruction
     // where we don't care anymore.
-    _work_queue.erase(std::remove_if(_work_queue.begin(), _work_queue.end(), [&](auto&& item) {
-        return (item->cookie == cookie);
-    }));
+    if (_io_context.stopped()) {
+        // io_context is stopped and its thread is dead — safe to access directly.
+        _work_queue.erase(
+            std::remove_if(
+                _work_queue.begin(),
+                _work_queue.end(),
+                [&](auto&& item) { return (item->cookie == cookie); }),
+            _work_queue.end());
+        unsubscribe_all_params_changed(cookie);
+        return;
+    }
+    std::promise<void> done;
+    asio::post(_io_context, [this, cookie, &done]() {
+        _work_queue.erase(
+            std::remove_if(
+                _work_queue.begin(),
+                _work_queue.end(),
+                [&](auto&& item) { return (item->cookie == cookie); }),
+            _work_queue.end());
+        // Also remove any param-change subscriptions registered under this cookie.
+        unsubscribe_all_params_changed(cookie);
+        done.set_value();
+    });
+    done.get_future().wait();
 }
 
 void MavlinkParameterClient::clear_cache()
@@ -435,12 +473,11 @@ void MavlinkParameterClient::clear_cache()
 
 void MavlinkParameterClient::do_work()
 {
-    auto work_queue_guard = std::make_unique<LockedQueue<WorkItem>::Guard>(_work_queue);
-    auto work = work_queue_guard->get_front();
-
-    if (!work) {
+    if (_work_queue.empty()) {
         return;
     }
+    // Hold an owned copy so the WorkItem stays alive even after pop_front().
+    auto work = _work_queue.front();
 
     if (work->already_requested) {
         return;
@@ -451,11 +488,12 @@ void MavlinkParameterClient::do_work()
             [&](WorkItemSet& item) {
                 if (!send_set_param_message(item)) {
                     LogErr() << "Send message failed";
-                    work_queue_guard->pop_front();
+                    _work_queue.pop_front();
+                    if (!_work_queue.empty()) {
+                        asio::post(_io_context, [this] { do_work(); });
+                    }
                     if (item.callback) {
-                        auto callback = item.callback;
-                        work_queue_guard.reset();
-                        callback(Result::ConnectionError);
+                        item.callback(Result::ConnectionError);
                     }
                     return;
                 }
@@ -469,11 +507,12 @@ void MavlinkParameterClient::do_work()
                 clear_cache();
                 if (!send_get_param_message(item)) {
                     LogErr() << "Send message failed";
-                    work_queue_guard->pop_front();
+                    _work_queue.pop_front();
+                    if (!_work_queue.empty()) {
+                        asio::post(_io_context, [this] { do_work(); });
+                    }
                     if (item.callback) {
-                        auto callback = item.callback;
-                        work_queue_guard.reset();
-                        callback(Result::ConnectionError, ParamValue{});
+                        item.callback(Result::ConnectionError, ParamValue{});
                     }
                     return;
                 }
@@ -487,11 +526,12 @@ void MavlinkParameterClient::do_work()
                 clear_cache();
                 if (!send_request_list_message()) {
                     LogErr() << "Send message failed";
-                    work_queue_guard->pop_front();
+                    _work_queue.pop_front();
+                    if (!_work_queue.empty()) {
+                        asio::post(_io_context, [this] { do_work(); });
+                    }
                     if (item.callback) {
-                        auto callback = item.callback;
-                        work_queue_guard.reset();
-                        callback(Result::ConnectionError, {});
+                        item.callback(Result::ConnectionError, {});
                     }
                     return;
                 }
@@ -683,21 +723,13 @@ void MavlinkParameterClient::process_param_value(const mavlink_message_t& messag
         return;
     }
 
-    // We need to use a unique pointer here to remove the lock from the work queue manually "early"
-    // before calling the (perhaps user-provided) callback. Otherwise, we might end up in a deadlock
-    // if the callback wants to push another work item onto the queue. By using a unique ptr there
-    // is no risk of forgetting to remove the lock - it is destroyed (if still valid) after going
-    // out of scope.
-    auto work_queue_guard = std::make_unique<LockedQueue<WorkItem>::Guard>(_work_queue);
-    const auto work = work_queue_guard->get_front();
-
-    if (!work) {
-        // Prevent deadlock by releasing the lock before doing more work.
-        work_queue_guard.reset();
+    if (_work_queue.empty()) {
         // update existing param
         find_and_call_subscriptions_value_changed(safe_param_id, received_value);
         return;
     }
+    // Hold an owned copy so the WorkItem stays alive even after pop_front().
+    auto work = _work_queue.front();
 
     if (!work->already_requested) {
         return;
@@ -719,11 +751,12 @@ void MavlinkParameterClient::process_param_value(const mavlink_message_t& messag
                 if (!item.param_value.is_same_type(received_value)) {
                     LogErr() << "Wrong type in param set";
                     _timeout_handler.remove(_timeout_cookie);
-                    work_queue_guard->pop_front();
+                    _work_queue.pop_front();
+                    if (!_work_queue.empty()) {
+                        asio::post(_io_context, [this] { do_work(); });
+                    }
                     if (item.callback) {
-                        auto callback = item.callback;
-                        work_queue_guard.reset();
-                        callback(MavlinkParameterClient::Result::WrongType);
+                        item.callback(MavlinkParameterClient::Result::WrongType);
                     }
                     return;
                 }
@@ -733,11 +766,12 @@ void MavlinkParameterClient::process_param_value(const mavlink_message_t& messag
                     _timeout_handler.remove(_timeout_cookie);
                     // LogDebug() << "time taken: " <<
                     // _sender.get_time().elapsed_since_s(_last_request_time);
-                    work_queue_guard->pop_front();
+                    _work_queue.pop_front();
+                    if (!_work_queue.empty()) {
+                        asio::post(_io_context, [this] { do_work(); });
+                    }
                     if (item.callback) {
-                        auto callback = item.callback;
-                        work_queue_guard.reset();
-                        callback(MavlinkParameterClient::Result::Success);
+                        item.callback(MavlinkParameterClient::Result::Success);
                     }
                 } else {
                     // We might be receiving stale param_value messages, let's just
@@ -752,12 +786,12 @@ void MavlinkParameterClient::process_param_value(const mavlink_message_t& messag
                         if (!send_set_param_message(item)) {
                             LogErr() << "connection send error in retransmit (" << item.param_name
                                      << ").";
-                            work_queue_guard->pop_front();
-
+                            _work_queue.pop_front();
+                            if (!_work_queue.empty()) {
+                                asio::post(_io_context, [this] { do_work(); });
+                            }
                             if (item.callback) {
-                                auto callback = item.callback;
-                                work_queue_guard.reset();
-                                callback(Result::ConnectionError);
+                                item.callback(Result::ConnectionError);
                             }
                             _timeout_handler.refresh(_timeout_cookie);
                         } else {
@@ -767,11 +801,12 @@ void MavlinkParameterClient::process_param_value(const mavlink_message_t& messag
                     } else {
                         // We have tried retransmitting, giving up now.
                         LogErr() << "Error: Retrying failed set param failed: " << item.param_name;
-                        work_queue_guard->pop_front();
+                        _work_queue.pop_front();
+                        if (!_work_queue.empty()) {
+                            asio::post(_io_context, [this] { do_work(); });
+                        }
                         if (item.callback) {
-                            auto callback = item.callback;
-                            work_queue_guard.reset();
-                            callback(Result::Timeout);
+                            item.callback(Result::Timeout);
                         }
                     }
                 }
@@ -788,11 +823,12 @@ void MavlinkParameterClient::process_param_value(const mavlink_message_t& messag
                 _timeout_handler.remove(_timeout_cookie);
                 // LogDebug() << "time taken: " <<
                 // _sender.get_time().elapsed_since_s(_last_request_time);
-                work_queue_guard->pop_front();
+                _work_queue.pop_front();
+                if (!_work_queue.empty()) {
+                    asio::post(_io_context, [this] { do_work(); });
+                }
                 if (item.callback) {
-                    auto callback = item.callback;
-                    work_queue_guard.reset();
-                    callback(Result::Success, received_value);
+                    item.callback(Result::Success, received_value);
                 }
             },
             [&](WorkItemGetAll& item) {
@@ -825,11 +861,12 @@ void MavlinkParameterClient::process_param_value(const mavlink_message_t& messag
                                 LogDebug() << "Getting all parameters complete: "
                                            << (_use_extended ? "extended" : "not extended");
                             }
-                            work_queue_guard->pop_front();
+                            _work_queue.pop_front();
+                            if (!_work_queue.empty()) {
+                                asio::post(_io_context, [this] { do_work(); });
+                            }
                             if (item.callback) {
-                                auto callback = item.callback;
-                                work_queue_guard.reset();
-                                callback(
+                                item.callback(
                                     Result::Success,
                                     _param_cache.all_parameters_map(_use_extended));
                             }
@@ -843,11 +880,12 @@ void MavlinkParameterClient::process_param_value(const mavlink_message_t& messag
                                     // Looks like the last one of the previous retransmission chunk
                                     // was done, start another one.
                                     if (!request_next_missing(item.count)) {
-                                        work_queue_guard->pop_front();
+                                        _work_queue.pop_front();
+                                        if (!_work_queue.empty()) {
+                                            asio::post(_io_context, [this] { do_work(); });
+                                        }
                                         if (item.callback) {
-                                            auto callback = item.callback;
-                                            work_queue_guard.reset();
-                                            callback(Result::ConnectionError, {});
+                                            item.callback(Result::ConnectionError, {});
                                         }
                                         return;
                                     }
@@ -892,17 +930,13 @@ void MavlinkParameterClient::process_param_ext_value(const mavlink_message_t& me
         LogDebug() << "process param_ext_value: " << safe_param_id << " " << received_value;
     }
 
-    // See comments on process_param_value for use of unique_ptr
-    auto work_queue_guard = std::make_unique<LockedQueue<WorkItem>::Guard>(_work_queue);
-    auto work = work_queue_guard->get_front();
-
-    if (!work) {
-        // Prevent deadlock by releasing the lock before doing more work.
-        work_queue_guard.reset();
+    if (_work_queue.empty()) {
         // update existing param
         find_and_call_subscriptions_value_changed(safe_param_id, received_value);
         return;
     }
+    // Hold an owned copy so the WorkItem stays alive even after pop_front().
+    auto work = _work_queue.front();
 
     if (!work->already_requested) {
         return;
@@ -927,11 +961,12 @@ void MavlinkParameterClient::process_param_ext_value(const mavlink_message_t& me
                 _timeout_handler.remove(_timeout_cookie);
                 // LogDebug() << "time taken: " <<
                 // _sender.get_time().elapsed_since_s(_last_request_time);
-                work_queue_guard->pop_front();
+                _work_queue.pop_front();
+                if (!_work_queue.empty()) {
+                    asio::post(_io_context, [this] { do_work(); });
+                }
                 if (item.callback) {
-                    auto callback = item.callback;
-                    work_queue_guard.reset();
-                    callback(Result::Success, received_value);
+                    item.callback(Result::Success, received_value);
                 }
             },
             [&](WorkItemGetAll& item) {
@@ -951,11 +986,12 @@ void MavlinkParameterClient::process_param_ext_value(const mavlink_message_t& me
                                 LogDebug() << "Getting all parameters complete: "
                                            << (_use_extended ? "extended" : "not extended");
                             }
-                            work_queue_guard->pop_front();
+                            _work_queue.pop_front();
+                            if (!_work_queue.empty()) {
+                                asio::post(_io_context, [this] { do_work(); });
+                            }
                             if (item.callback) {
-                                auto callback = item.callback;
-                                work_queue_guard.reset();
-                                callback(
+                                item.callback(
                                     Result::Success,
                                     _param_cache.all_parameters_map(_use_extended));
                             }
@@ -995,12 +1031,11 @@ void MavlinkParameterClient::process_param_ext_ack(const mavlink_message_t& mess
                    << (int)param_ext_ack.param_result;
     }
 
-    // See comments on process_param_value for use of unique_ptr
-    auto work_queue_guard = std::make_unique<LockedQueue<WorkItem>::Guard>(_work_queue);
-    auto work = work_queue_guard->get_front();
-    if (!work) {
+    if (_work_queue.empty()) {
         return;
     }
+    // Hold an owned copy so the WorkItem stays alive even after pop_front().
+    auto work = _work_queue.front();
     if (!work->already_requested) {
         return;
     }
@@ -1016,12 +1051,13 @@ void MavlinkParameterClient::process_param_ext_ack(const mavlink_message_t& mess
                     _timeout_handler.remove(_timeout_cookie);
                     // LogDebug() << "time taken: " <<
                     // _sender.get_time().elapsed_since_s(_last_request_time);
-                    work_queue_guard->pop_front();
+                    _work_queue.pop_front();
+                    if (!_work_queue.empty()) {
+                        asio::post(_io_context, [this] { do_work(); });
+                    }
                     if (item.callback) {
-                        auto callback = item.callback;
                         // We are done, inform caller and go back to idle
-                        work_queue_guard.reset();
-                        callback(Result::Success);
+                        item.callback(Result::Success);
                     }
                 } else if (param_ext_ack.param_result == PARAM_ACK_IN_PROGRESS) {
                     // Reset timeout and wait again.
@@ -1033,10 +1069,11 @@ void MavlinkParameterClient::process_param_ext_ack(const mavlink_message_t& mess
                     _timeout_handler.remove(_timeout_cookie);
                     // LogDebug() << "time taken: " <<
                     // _sender.get_time().elapsed_since_s(_last_request_time);
-                    work_queue_guard->pop_front();
-                    work_queue_guard.reset();
+                    _work_queue.pop_front();
+                    if (!_work_queue.empty()) {
+                        asio::post(_io_context, [this] { do_work(); });
+                    }
                     if (item.callback) {
-                        auto callback = item.callback;
                         auto result = [&]() {
                             switch (param_ext_ack.param_result) {
                                 case PARAM_ACK_FAILED:
@@ -1047,8 +1084,7 @@ void MavlinkParameterClient::process_param_ext_ack(const mavlink_message_t& mess
                                     return Result::UnknownError;
                             }
                         }();
-                        work_queue_guard.reset();
-                        callback(result);
+                        item.callback(result);
                     }
                 }
             },
@@ -1068,12 +1104,11 @@ void MavlinkParameterClient::process_param_error(const mavlink_message_t& messag
                    << " error code: " << (int)param_error.error;
     }
 
-    // See comments on process_param_value for use of unique_ptr
-    auto work_queue_guard = std::make_unique<LockedQueue<WorkItem>::Guard>(_work_queue);
-    auto work = work_queue_guard->get_front();
-    if (!work) {
+    if (_work_queue.empty()) {
         return;
     }
+    // Hold an owned copy so the WorkItem stays alive even after pop_front().
+    auto work = _work_queue.front();
     if (!work->already_requested) {
         return;
     }
@@ -1110,12 +1145,13 @@ void MavlinkParameterClient::process_param_error(const mavlink_message_t& messag
                     return;
                 }
                 _timeout_handler.remove(_timeout_cookie);
-                work_queue_guard->pop_front();
+                _work_queue.pop_front();
+                if (!_work_queue.empty()) {
+                    asio::post(_io_context, [this] { do_work(); });
+                }
                 if (item.callback) {
-                    auto callback = item.callback;
                     auto result = map_param_error_to_result(param_error.error);
-                    work_queue_guard.reset();
-                    callback(result);
+                    item.callback(result);
                 }
             },
             [&](WorkItemGet& item) {
@@ -1128,12 +1164,13 @@ void MavlinkParameterClient::process_param_error(const mavlink_message_t& messag
                     return;
                 }
                 _timeout_handler.remove(_timeout_cookie);
-                work_queue_guard->pop_front();
+                _work_queue.pop_front();
+                if (!_work_queue.empty()) {
+                    asio::post(_io_context, [this] { do_work(); });
+                }
                 if (item.callback) {
-                    auto callback = item.callback;
                     auto result = map_param_error_to_result(param_error.error);
-                    work_queue_guard.reset();
-                    callback(result, ParamValue{});
+                    item.callback(result, ParamValue{});
                 }
             },
             [&](WorkItemGetAll&) { LogWarn() << "Unexpected PARAM_ERROR response for GetAll."; }},
@@ -1142,14 +1179,12 @@ void MavlinkParameterClient::process_param_error(const mavlink_message_t& messag
 
 void MavlinkParameterClient::receive_timeout()
 {
-    // See comments on process_param_value for use of unique_ptr
-    auto work_queue_guard = std::make_unique<LockedQueue<WorkItem>::Guard>(_work_queue);
-
-    auto work = work_queue_guard->get_front();
-    if (!work) {
+    if (_work_queue.empty()) {
         LogErr() << "Received timeout without work";
         return;
     }
+    // Hold an owned copy so the WorkItem (and its callbacks) stays alive even after pop_front().
+    auto work = _work_queue.front();
     if (!work->already_requested) {
         LogErr() << "Received timeout without already having work requested";
         return;
@@ -1166,12 +1201,12 @@ void MavlinkParameterClient::receive_timeout()
                     if (!send_set_param_message(item)) {
                         LogErr() << "connection send error in retransmit (" << item.param_name
                                  << ").";
-                        work_queue_guard->pop_front();
-
+                        _work_queue.pop_front();
+                        if (!_work_queue.empty()) {
+                            asio::post(_io_context, [this] { do_work(); });
+                        }
                         if (item.callback) {
-                            auto callback = item.callback;
-                            work_queue_guard.reset();
-                            callback(Result::ConnectionError);
+                            item.callback(Result::ConnectionError);
                         }
                     } else {
                         --work->retries_to_do;
@@ -1181,11 +1216,12 @@ void MavlinkParameterClient::receive_timeout()
                 } else {
                     // We have tried retransmitting, giving up now.
                     LogErr() << "Error: Retrying failed set param timeout: " << item.param_name;
-                    work_queue_guard->pop_front();
+                    _work_queue.pop_front();
+                    if (!_work_queue.empty()) {
+                        asio::post(_io_context, [this] { do_work(); });
+                    }
                     if (item.callback) {
-                        auto callback = item.callback;
-                        work_queue_guard.reset();
-                        callback(Result::Timeout);
+                        item.callback(Result::Timeout);
                     }
                 }
             },
@@ -1195,11 +1231,12 @@ void MavlinkParameterClient::receive_timeout()
                     LogWarn() << "sending again, retries to do: " << work->retries_to_do;
                     if (!send_get_param_message(item)) {
                         LogErr() << "connection send error in retransmit ";
-                        work_queue_guard->pop_front();
+                        _work_queue.pop_front();
+                        if (!_work_queue.empty()) {
+                            asio::post(_io_context, [this] { do_work(); });
+                        }
                         if (item.callback) {
-                            auto callback = item.callback;
-                            work_queue_guard.reset();
-                            callback(Result::ConnectionError, {});
+                            item.callback(Result::ConnectionError, {});
                         }
                     } else {
                         --work->retries_to_do;
@@ -1209,11 +1246,12 @@ void MavlinkParameterClient::receive_timeout()
                 } else {
                     // We have tried retransmitting, giving up now.
                     LogErr() << "retrying failed";
-                    work_queue_guard->pop_front();
+                    _work_queue.pop_front();
+                    if (!_work_queue.empty()) {
+                        asio::post(_io_context, [this] { do_work(); });
+                    }
                     if (item.callback) {
-                        auto callback = item.callback;
-                        work_queue_guard.reset();
-                        callback(Result::Timeout, {});
+                        item.callback(Result::Timeout, {});
                     }
                 }
             },
@@ -1233,11 +1271,12 @@ void MavlinkParameterClient::receive_timeout()
 
                         if (!send_request_list_message()) {
                             LogErr() << "Send message failed";
-                            work_queue_guard->pop_front();
+                            _work_queue.pop_front();
+                            if (!_work_queue.empty()) {
+                                asio::post(_io_context, [this] { do_work(); });
+                            }
                             if (item.callback) {
-                                auto callback = item.callback;
-                                work_queue_guard.reset();
-                                callback(Result::ConnectionError, {});
+                                item.callback(Result::ConnectionError, {});
                             }
                             return;
                         }
@@ -1248,9 +1287,7 @@ void MavlinkParameterClient::receive_timeout()
                             _timeout_s_callback() * _get_all_timeout_factor);
                     } else {
                         if (item.callback) {
-                            auto callback = item.callback;
-                            work_queue_guard.reset();
-                            callback(Result::Timeout, {});
+                            item.callback(Result::Timeout, {});
                         }
                         return;
                     }
@@ -1268,11 +1305,12 @@ void MavlinkParameterClient::receive_timeout()
                     // To speed retransmissions up, we request params in chunks, otherwise the
                     // latency back and forth makes this quite slow.
                     if (!request_next_missing(item.count)) {
-                        work_queue_guard->pop_front();
+                        _work_queue.pop_front();
+                        if (!_work_queue.empty()) {
+                            asio::post(_io_context, [this] { do_work(); });
+                        }
                         if (item.callback) {
-                            auto callback = item.callback;
-                            work_queue_guard.reset();
-                            callback(Result::ConnectionError, {});
+                            item.callback(Result::ConnectionError, {});
                         }
                         return;
                     }

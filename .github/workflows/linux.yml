@@ -83,7 +83,7 @@ jobs:
         id: cache
         with:
           path: ./cpp/build/debug/third_party/install
-          key: ${{ github.job }}-${{ hashFiles('./third_party/**') }}-3
+          key: ${{ github.job }}-${{ hashFiles('./cpp/third_party/**') }}-4
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: |
@@ -97,6 +97,7 @@ jobs:
         run: ./build/debug/src/unit_tests/unit_tests_runner
       - name: system tests
         run: ./build/debug/src/system_tests/system_tests_runner
+        timeout-minutes: 15
 
   ubuntu-asan:
     name: Ubuntu 24.04 (AddressSanitizer)
@@ -120,7 +121,7 @@ jobs:
         id: cache
         with:
           path: ./cpp/build/asan/third_party/install
-          key: ${{ github.job }}-${{ hashFiles('./third_party/**') }}-3
+          key: ${{ github.job }}-${{ hashFiles('./cpp/third_party/**') }}-4
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: |
@@ -137,6 +138,7 @@ jobs:
         run: ./build/asan/src/unit_tests/unit_tests_runner
       - name: system tests
         run: ./build/asan/src/system_tests/system_tests_runner
+        timeout-minutes: 15
 
   ubuntu-tsan:
     name: Ubuntu 24.04 (ThreadSanitizer)
@@ -160,7 +162,7 @@ jobs:
         id: cache
         with:
           path: ./cpp/build/tsan/third_party/install
-          key: ${{ github.job }}-${{ hashFiles('./third_party/**') }}-3
+          key: ${{ github.job }}-${{ hashFiles('./cpp/third_party/**') }}-4
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: |
@@ -177,6 +179,7 @@ jobs:
         run: ./build/tsan/src/unit_tests/unit_tests_runner
       - name: system tests
         run: ./build/tsan/src/system_tests/system_tests_runner
+        timeout-minutes: 15
 
   ubuntu-ubsan:
     name: Ubuntu 24.04 (UndefinedBehaviour)
@@ -200,7 +203,7 @@ jobs:
         id: cache
         with:
           path: ./cpp/build/ubsan/third_party/install
-          key: ${{ github.job }}-${{ hashFiles('./third_party/**') }}-3
+          key: ${{ github.job }}-${{ hashFiles('./cpp/third_party/**') }}-4
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: |
@@ -219,6 +222,7 @@ jobs:
         run: ./build/ubsan/src/unit_tests/unit_tests_runner
       - name: system tests
         run: ./build/ubsan/src/system_tests/system_tests_runner
+        timeout-minutes: 15
 
   ubuntu-superbuild:
     name: ${{ matrix.description }}
@@ -269,7 +273,7 @@ jobs:
         id: cache
         with:
           path: ./cpp/build/release/third_party/install
-          key: ${{ github.job }}-${{ matrix.ubuntu_version }}-${{ matrix.cc }}-${{ hashFiles('./third_party/**') }}-2
+          key: ${{ github.job }}-${{ matrix.ubuntu_version }}-${{ matrix.cc }}-${{ hashFiles('./cpp/third_party/**') }}-3
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: |
@@ -292,6 +296,7 @@ jobs:
         run: ./build/release/src/unit_tests/unit_tests_runner
       - name: system tests
         run: ./build/release/src/system_tests/system_tests_runner
+        timeout-minutes: 15
       - name: test (mavsdk_server)
         run: ./build/release/src/mavsdk_server/test/unit_tests_mavsdk_server
       - name: upload core dumps
@@ -331,7 +336,7 @@ jobs:
         id: cache
         with:
           path: ./cpp/build/release/third_party/install
-          key: ${{ github.job }}-${{ hashFiles('./third_party/**') }}-3
+          key: ${{ github.job }}-${{ hashFiles('./cpp/third_party/**') }}-4
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: |
@@ -354,13 +359,14 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y liblzma-dev libtinyxml2-dev libjsoncpp-dev libcurl4-openssl-dev libssl-dev
+          sudo apt-get install -y liblzma-dev libtinyxml2-dev libjsoncpp-dev libcurl4-openssl-dev libssl-dev libasio-dev
       - name: Build with system dependencies
         run: ./tools/build-with-system-deps.sh
       - name: unit tests
         run: ./build-release/src/unit_tests/unit_tests_runner
       - name: system tests
         run: ./build-release/src/system_tests/system_tests_runner
+        timeout-minutes: 15
 
   ubuntu24-style-and-proto-check:
     name: ubuntu-24.04 (style and proto check)
@@ -377,7 +383,8 @@ jobs:
       - name: Install tools
         run: |
           sudo apt-get update && sudo apt-get install -y \
-            python3-venv
+            python3-venv \
+            libasio-dev
       - name: git permission workaround
         run: |
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
@@ -388,9 +395,9 @@ jobs:
         id: cache
         with:
           path: ./cpp/build/release/third_party/install
-          key: ${{ github.job }}-${{ hashFiles('./third_party/**') }}-4
+          key: ${{ github.job }}-${{ hashFiles('./cpp/third_party/**') }}-4
           restore-keys: |
-            ubuntu-superbuild-24.04-gcc-13-${{ hashFiles('./third_party/**') }}-
+            ubuntu-superbuild-24.04-gcc-13-${{ hashFiles('./cpp/third_party/**') }}-
             ubuntu-superbuild-
       - name: disable superbuild on cache restore
         run: |
@@ -482,12 +489,15 @@ jobs:
         id: cache
         with:
           path: ./cpp/build/release/third_party/install
-          key: ${{ github.job }}-${{ matrix.os_type }}-${{ matrix.os_version }}-${{ hashFiles('./third_party/**') }}-1
+          key: ${{ github.job }}-${{ matrix.os_type }}-${{ matrix.os_version }}-${{ hashFiles('./cpp/third_party/**') }}-1
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: |
           echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV
           echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/release/third_party/install" >> $GITHUB_ENV
+      - name: install asio (non-superbuild fallback)
+        if: steps.cache.outputs.cache-hit == 'true'
+        run: sudo apt-get update && sudo apt-get install -y libasio-dev
       - name: configure
         run: cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_MAVSDK_SERVER=OFF -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=install -DWERROR=ON -Bbuild/release -H.
       - name: build
@@ -496,6 +506,7 @@ jobs:
         run: ./build/release/src/unit_tests/unit_tests_runner
       - name: system tests
         run: ./build/release/src/system_tests/system_tests_runner
+        timeout-minutes: 15
       - name: upload core dumps
         if: failure()
         uses: actions/upload-artifact@v7
@@ -573,7 +584,7 @@ jobs:
         id: cache
         with:
           path: ./cpp/build/linux-${{ matrix.docker_name }}/third_party/install
-          key: ${{ github.job }}-linux-${{ matrix.docker_name }}-${{ hashFiles('./third_party/**') }}-2
+          key: ${{ github.job }}-linux-${{ matrix.docker_name }}-${{ hashFiles('./cpp/third_party/**') }}-3
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: |
@@ -625,7 +636,7 @@ jobs:
         id: cache
         with:
           path: ./cpp/build/release/third_party/install
-          key: ${{ github.job }}-${{ hashFiles('./third_party/**') }}-3
+          key: ${{ github.job }}-${{ hashFiles('./cpp/third_party/**') }}-4
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: |
@@ -639,6 +650,7 @@ jobs:
         run: ./build/release/src/unit_tests/unit_tests_runner
       - name: system tests
         run: ./build/release/src/system_tests/system_tests_runner
+        timeout-minutes: 15
       - name: test (mavsdk_server)
         run: ./build/release/src/mavsdk_server/test/unit_tests_mavsdk_server
       - name: build C wrapper
@@ -686,7 +698,7 @@ jobs:
         id: cache
         with:
           path: ./cpp/build/${{ matrix.arch_name }}/third_party/install
-          key: ${{ github.job }}-${{ matrix.arch_name }}-${{ hashFiles('./third_party/**') }}-2
+          key: ${{ github.job }}-${{ matrix.arch_name }}-${{ hashFiles('./cpp/third_party/**') }}-3
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: |
@@ -745,7 +757,7 @@ jobs:
         id: cache
         with:
           path: ./build/manylinux/cpp/third_party/install
-          key: ${{ github.job }}-${{ matrix.arch_name }}-${{ hashFiles('./third_party/**') }}-1
+          key: ${{ github.job }}-${{ matrix.arch_name }}-${{ hashFiles('./cpp/third_party/**') }}-2
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: |
@@ -830,7 +842,7 @@ jobs:
         id: cache
         with:
           path: ./cpp/build/${{ matrix.name }}/third_party/install
-          key: ${{ github.job }}-${{ matrix.name }}-${{ hashFiles('./third_party/**') }}-2
+          key: ${{ github.job }}-${{ matrix.name }}-${{ hashFiles('./cpp/third_party/**') }}-3
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: |

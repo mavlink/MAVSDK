@@ -1,16 +1,15 @@
 #pragma once
 
 #include <string>
-#include <memory>
 #include <mutex>
-#include <thread>
-#include <atomic>
+#include <array>
 #include <vector>
 #include <cstdint>
 #include <chrono>
 
+#include <asio/ip/udp.hpp>
+
 #include "connection.h"
-#include "socket_holder.h"
 
 namespace mavsdk {
 
@@ -38,9 +37,7 @@ public:
 
 private:
     ConnectionResult setup_port();
-    void start_recv_thread();
-
-    void receive();
+    void do_receive();
 
     enum class RemoteOption {
         Fixed,
@@ -70,9 +67,10 @@ private:
     };
     std::vector<Remote> _remotes{};
 
-    SocketHolder _socket_fd;
-    std::unique_ptr<std::thread> _recv_thread{};
-    std::atomic_bool _should_exit{false};
+    // Asio socket — owned by this connection, driven by MavsdkImpl::_io_context
+    asio::ip::udp::socket _socket;
+    asio::ip::udp::endpoint _sender_endpoint{};
+    std::array<uint8_t, 2048> _recv_buffer{};
 
     // Timeout for inactive connections in seconds
     static constexpr std::chrono::seconds REMOTE_TIMEOUT{10};

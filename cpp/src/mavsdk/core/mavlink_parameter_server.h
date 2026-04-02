@@ -5,10 +5,12 @@
 #include "timeout_handler.h"
 #include "timeout_s_callback.h"
 #include "param_value.h"
-#include "locked_queue.h"
 #include "mavlink_parameter_subscription.h"
 #include "mavlink_parameter_cache.h"
+#include <asio/io_context.hpp>
+#include <asio/post.hpp>
 
+#include <deque>
 #include <map>
 #include <string>
 #include <list>
@@ -24,6 +26,7 @@ public:
     explicit MavlinkParameterServer(
         Sender& sender,
         MavlinkMessageHandler& message_handler,
+        asio::io_context& io_context,
         // By providing all the parameters on construction you can populate the
         // parameter set before the server starts reacting to clients.
         //
@@ -122,11 +125,12 @@ private:
 
     Sender& _sender;
     MavlinkMessageHandler& _message_handler;
+    asio::io_context& _io_context;
 
     mutable std::mutex _all_params_mutex{};
     MavlinkParameterCache _param_cache{};
 
-    LockedQueue<WorkItem> _work_queue{};
+    std::deque<std::shared_ptr<WorkItem>> _work_queue{};
 
     bool _extended_protocol = true;
     bool _parameter_debugging = false;
