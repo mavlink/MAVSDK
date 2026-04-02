@@ -1,6 +1,7 @@
 #pragma once
 
 #include <sstream>
+#include "mavsdk_export.h"
 
 namespace mavsdk {
 
@@ -18,6 +19,6 @@ enum class Autopilot {
  *
  * @return A reference to the stream.
  */
-std::ostream& operator<<(std::ostream& os, const Autopilot& autopilot);
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& os, const Autopilot& autopilot);
 
 } // namespace mavsdk

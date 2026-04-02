@@ -6,10 +6,11 @@
 #include <functional>
 #include <list>
 #include "mavsdk_time.h"
+#include "mavsdk_export.h"
 
 namespace mavsdk {
 
-class CallEveryHandler {
+class MAVSDK_TEST_EXPORT CallEveryHandler {
 public:
     explicit CallEveryHandler(Time& time);
     ~CallEveryHandler() = default;

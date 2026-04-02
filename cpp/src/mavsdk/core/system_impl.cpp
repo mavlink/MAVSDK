@@ -9,6 +9,7 @@
 #include "ardupilot_custom_mode.h"
 #include "callback_list.tpp"
 #include "unused.h"
+#include "mavsdk_export.h"
 #include <cassert>
 #include <cstdlib>
 #include <functional>
@@ -17,9 +18,9 @@
 
 namespace mavsdk {
 
-template class CallbackList<bool>;
-template class CallbackList<ComponentType>;
-template class CallbackList<ComponentType, uint8_t>;
+template class MAVSDK_TEMPL_INST CallbackList<bool>;
+template class MAVSDK_TEMPL_INST CallbackList<ComponentType>;
+template class MAVSDK_TEMPL_INST CallbackList<ComponentType, uint8_t>;
 
 SystemImpl::SystemImpl(MavsdkImpl& mavsdk_impl) :
     _mavsdk_impl(mavsdk_impl),

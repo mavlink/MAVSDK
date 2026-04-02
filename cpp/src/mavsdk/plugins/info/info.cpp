@@ -57,14 +57,14 @@ void Info::unsubscribe_flight_information(FlightInformationHandle handle)
     _impl->unsubscribe_flight_information(handle);
 }
 
-bool operator==(const Info::FlightInfo& lhs, const Info::FlightInfo& rhs)
+MAVSDK_PUBLIC bool operator==(const Info::FlightInfo& lhs, const Info::FlightInfo& rhs)
 {
     return (rhs.time_boot_ms == lhs.time_boot_ms) && (rhs.flight_uid == lhs.flight_uid) &&
            (rhs.duration_since_arming_ms == lhs.duration_since_arming_ms) &&
            (rhs.duration_since_takeoff_ms == lhs.duration_since_takeoff_ms);
 }
 
-std::ostream& operator<<(std::ostream& str, Info::FlightInfo const& flight_info)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Info::FlightInfo const& flight_info)
 {
     str << std::setprecision(15);
     str << "flight_info:" << '\n' << "{\n";
@@ -76,12 +76,13 @@ std::ostream& operator<<(std::ostream& str, Info::FlightInfo const& flight_info)
     return str;
 }
 
-bool operator==(const Info::Identification& lhs, const Info::Identification& rhs)
+MAVSDK_PUBLIC bool operator==(const Info::Identification& lhs, const Info::Identification& rhs)
 {
     return (rhs.hardware_uid == lhs.hardware_uid) && (rhs.legacy_uid == lhs.legacy_uid);
 }
 
-std::ostream& operator<<(std::ostream& str, Info::Identification const& identification)
+MAVSDK_PUBLIC std::ostream&
+operator<<(std::ostream& str, Info::Identification const& identification)
 {
     str << std::setprecision(15);
     str << "identification:" << '\n' << "{\n";
@@ -91,13 +92,13 @@ std::ostream& operator<<(std::ostream& str, Info::Identification const& identifi
     return str;
 }
 
-bool operator==(const Info::Product& lhs, const Info::Product& rhs)
+MAVSDK_PUBLIC bool operator==(const Info::Product& lhs, const Info::Product& rhs)
 {
     return (rhs.vendor_id == lhs.vendor_id) && (rhs.vendor_name == lhs.vendor_name) &&
            (rhs.product_id == lhs.product_id) && (rhs.product_name == lhs.product_name);
 }
 
-std::ostream& operator<<(std::ostream& str, Info::Product const& product)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Info::Product const& product)
 {
     str << std::setprecision(15);
     str << "product:" << '\n' << "{\n";
@@ -109,7 +110,7 @@ std::ostream& operator<<(std::ostream& str, Info::Product const& product)
     return str;
 }
 
-std::ostream& operator<<(
+MAVSDK_PUBLIC std::ostream& operator<<(
     std::ostream& str, Info::Version::FlightSoftwareVersionType const& flight_software_version_type)
 {
     switch (flight_software_version_type) {
@@ -129,7 +130,7 @@ std::ostream& operator<<(
             return str << "Unknown";
     }
 }
-bool operator==(const Info::Version& lhs, const Info::Version& rhs)
+MAVSDK_PUBLIC bool operator==(const Info::Version& lhs, const Info::Version& rhs)
 {
     return (rhs.flight_sw_major == lhs.flight_sw_major) &&
            (rhs.flight_sw_minor == lhs.flight_sw_minor) &&
@@ -144,7 +145,7 @@ bool operator==(const Info::Version& lhs, const Info::Version& rhs)
            (rhs.flight_sw_version_type == lhs.flight_sw_version_type);
 }
 
-std::ostream& operator<<(std::ostream& str, Info::Version const& version)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Info::Version const& version)
 {
     str << std::setprecision(15);
     str << "version:" << '\n' << "{\n";
@@ -164,7 +165,7 @@ std::ostream& operator<<(std::ostream& str, Info::Version const& version)
     return str;
 }
 
-std::ostream& operator<<(std::ostream& str, Info::Result const& result)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Info::Result const& result)
 {
     switch (result) {
         case Info::Result::Unknown:

@@ -7,6 +7,9 @@
 #include <memory>
 #include <mutex>
 #include <vector>
+#include <asio/io_context.hpp>
+#include <asio/post.hpp>
+#include <deque>
 #include "autopilot.h"
 #include "autopilot_callback.h"
 #include "mavlink_address.h"
@@ -15,13 +18,11 @@
 #include "timeout_handler.h"
 #include "timeout_s_callback.h"
 #include "sender.h"
-#include <asio/io_context.hpp>
-#include <asio/post.hpp>
-#include <deque>
+#include "mavsdk_export.h"
 
 namespace mavsdk {
 
-class MavlinkMissionTransferClient {
+class MAVSDK_TEST_EXPORT MavlinkMissionTransferClient {
 public:
     enum class Result {
         Success,

@@ -55,12 +55,14 @@ void LogStreaming::unsubscribe_log_streaming_raw(LogStreamingRawHandle handle)
     _impl->unsubscribe_log_streaming_raw(handle);
 }
 
-bool operator==(const LogStreaming::LogStreamingRaw& lhs, const LogStreaming::LogStreamingRaw& rhs)
+MAVSDK_PUBLIC bool
+operator==(const LogStreaming::LogStreamingRaw& lhs, const LogStreaming::LogStreamingRaw& rhs)
 {
     return (rhs.data_base64 == lhs.data_base64);
 }
 
-std::ostream& operator<<(std::ostream& str, LogStreaming::LogStreamingRaw const& log_streaming_raw)
+MAVSDK_PUBLIC std::ostream&
+operator<<(std::ostream& str, LogStreaming::LogStreamingRaw const& log_streaming_raw)
 {
     str << std::setprecision(15);
     str << "log_streaming_raw:" << '\n' << "{\n";
@@ -69,7 +71,7 @@ std::ostream& operator<<(std::ostream& str, LogStreaming::LogStreamingRaw const&
     return str;
 }
 
-std::ostream& operator<<(std::ostream& str, LogStreaming::Result const& result)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, LogStreaming::Result const& result)
 {
     switch (result) {
         case LogStreaming::Result::Success:

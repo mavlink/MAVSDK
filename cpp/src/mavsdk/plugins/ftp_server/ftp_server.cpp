@@ -21,7 +21,7 @@ FtpServer::Result FtpServer::set_root_dir(std::string path) const
     return _impl->set_root_dir(path);
 }
 
-std::ostream& operator<<(std::ostream& str, FtpServer::Result const& result)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, FtpServer::Result const& result)
 {
     switch (result) {
         case FtpServer::Result::Unknown:

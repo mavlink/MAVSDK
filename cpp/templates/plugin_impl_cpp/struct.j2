@@ -3,7 +3,7 @@
 {% endfor -%}
 
 {% if not name.upper_camel_case.endswith('Result') -%}
-bool operator==(const {{ plugin_name.upper_camel_case }}::{{ name.upper_camel_case }}& lhs, const {{ plugin_name.upper_camel_case }}::{{ name.upper_camel_case }}& rhs)
+MAVSDK_PUBLIC bool operator==(const {{ plugin_name.upper_camel_case }}::{{ name.upper_camel_case }}& lhs, const {{ plugin_name.upper_camel_case }}::{{ name.upper_camel_case }}& rhs)
 {
     return
     {%- for field in fields %}
@@ -22,7 +22,7 @@ bool operator==(const {{ plugin_name.upper_camel_case }}::{{ name.upper_camel_ca
     {%- endfor %}
 }
 
-std::ostream& operator<<(std::ostream& str, {{ plugin_name.upper_camel_case }}::{{ name.upper_camel_case }} const& {{ name.lower_snake_case }})
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, {{ plugin_name.upper_camel_case }}::{{ name.upper_camel_case }} const& {{ name.lower_snake_case }})
 {
     str << std::setprecision(15);
     str << "{{ name.lower_snake_case }}:" << '\n'

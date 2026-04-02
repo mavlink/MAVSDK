@@ -28,7 +28,7 @@ static log::Callback callback_{nullptr};
 // Dedicated mutex for logging operations - moved from header to avoid inlining issues
 static std::mutex log_mutex_{};
 
-std::mutex& get_log_mutex()
+MAVSDK_TEST_EXPORT std::mutex& get_log_mutex()
 {
     return log_mutex_;
 }
@@ -38,7 +38,7 @@ std::ostream& operator<<(std::ostream& os, std::byte b)
     return os << std::bitset<8>(std::to_integer<int>(b));
 }
 
-log::Callback& log::get_callback()
+MAVSDK_PUBLIC log::Callback& log::get_callback()
 {
     std::lock_guard<std::mutex> lock(callback_mutex_);
     return callback_;
@@ -50,7 +50,7 @@ void log::subscribe(const log::Callback& callback)
     callback_ = callback;
 }
 
-void set_color(Color color)
+MAVSDK_TEST_EXPORT void set_color(Color color)
 {
 #if defined(WINDOWS)
     HANDLE handle = GetStdHandle(STD_OUTPUT_HANDLE);

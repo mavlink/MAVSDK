@@ -1,6 +1,7 @@
 #pragma once
 
 #include "mavlink_include.h"
+#include "mavsdk_export.h"
 #include "log.h"
 #include <array>
 #include <cstdint>
@@ -15,7 +16,7 @@ namespace mavsdk {
 /**
  * This is a c++ helper for a mavlink extended or non-extended param value.
  */
-class ParamValue {
+class MAVSDK_TEST_EXPORT ParamValue {
 public:
     bool set_from_mavlink_param_value_bytewise(const mavlink_param_value_t& mavlink_value);
     bool set_from_mavlink_param_value_cast(const mavlink_param_value_t& mavlink_value);
@@ -129,6 +130,6 @@ private:
         _value{};
 };
 
-std::ostream& operator<<(std::ostream& str, const ParamValue& obj);
+MAVSDK_TEST_EXPORT std::ostream& operator<<(std::ostream& str, const ParamValue& obj);
 
 } // namespace mavsdk

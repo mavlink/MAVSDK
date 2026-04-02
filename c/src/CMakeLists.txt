@@ -59,6 +59,7 @@ if(BUNDLE_STATIC_RUNTIME)
     target_link_options(cmavsdk PRIVATE
         -static-libgcc
         -static-libstdc++
+        -Wl,--exclude-libs,ALL
     )
     target_link_libraries(cmavsdk PRIVATE atomic.a)
 endif()

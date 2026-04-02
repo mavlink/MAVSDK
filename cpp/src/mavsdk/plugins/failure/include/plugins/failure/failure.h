@@ -16,6 +16,7 @@
 #include "plugin_base.h"
 
 #include "handle.h"
+#include "mavsdk_export.h"
 
 namespace mavsdk {
 
@@ -25,7 +26,7 @@ class FailureImpl;
 /**
  * @brief Inject failures into system to test failsafes.
  */
-class Failure : public PluginBase {
+class MAVSDK_PUBLIC Failure : public PluginBase {
 public:
     /**
      * @brief Constructor. Creates the plugin for a specific System.
@@ -84,7 +85,8 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, Failure::FailureUnit const& failure_unit);
+    friend MAVSDK_PUBLIC std::ostream&
+    operator<<(std::ostream& str, Failure::FailureUnit const& failure_unit);
 
     /**
      * @brief A failure type
@@ -105,7 +107,8 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, Failure::FailureType const& failure_type);
+    friend MAVSDK_PUBLIC std::ostream&
+    operator<<(std::ostream& str, Failure::FailureType const& failure_type);
 
     /**
      * @brief Possible results returned for failure requests.
@@ -126,7 +129,7 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, Failure::Result const& result);
+    friend MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Failure::Result const& result);
 
     /**
      * @brief Callback type for asynchronous Failure calls.

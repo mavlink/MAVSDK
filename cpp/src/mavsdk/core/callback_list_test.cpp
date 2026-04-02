@@ -1,3 +1,10 @@
+// This test provides its own explicit template instantiations of CallbackList
+// and includes the .tpp implementation file, so on MSVC we need MAVSDK_BUILD
+// to get dllexport (not dllimport) on the class template.
+#ifndef MAVSDK_BUILD
+#define MAVSDK_BUILD
+#endif
+
 #include <atomic>
 #include <mutex>
 #include <thread>

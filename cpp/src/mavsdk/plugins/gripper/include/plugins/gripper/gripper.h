@@ -16,6 +16,7 @@
 #include "plugin_base.h"
 
 #include "handle.h"
+#include "mavsdk_export.h"
 
 namespace mavsdk {
 
@@ -25,7 +26,7 @@ class GripperImpl;
 /**
  * @brief Allows users to send gripper actions.
  */
-class Gripper : public PluginBase {
+class MAVSDK_PUBLIC Gripper : public PluginBase {
 public:
     /**
      * @brief Constructor. Creates the plugin for a specific System.
@@ -74,7 +75,7 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
+    friend MAVSDK_PUBLIC std::ostream&
     operator<<(std::ostream& str, Gripper::GripperAction const& gripper_action);
 
     /**
@@ -95,7 +96,7 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, Gripper::Result const& result);
+    friend MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Gripper::Result const& result);
 
     /**
      * @brief Callback type for asynchronous Gripper calls.

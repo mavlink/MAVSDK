@@ -48,7 +48,7 @@ ManualControl::set_manual_control_input(float x, float y, float z, float r) cons
     return _impl->set_manual_control_input(x, y, z, r);
 }
 
-std::ostream& operator<<(std::ostream& str, ManualControl::Result const& result)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, ManualControl::Result const& result)
 {
     switch (result) {
         case ManualControl::Result::Unknown:

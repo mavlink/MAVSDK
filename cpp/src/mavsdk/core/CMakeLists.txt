@@ -135,6 +135,12 @@ else()
     )
 endif()
 
+target_compile_definitions(mavsdk PRIVATE MAVSDK_BUILD)
+
+if (BUILD_SHARED_LIBS)
+    target_compile_definitions(mavsdk PUBLIC MAVSDK_SHARED)
+endif()
+
 set_target_properties(mavsdk PROPERTIES
     VERSION ${MAVSDK_VERSION_STRING}
     SOVERSION ${MAVSDK_SOVERSION_STRING}
@@ -174,7 +180,10 @@ if((BUILD_STATIC_MAVSDK_SERVER AND ("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU")) OR
 endif()
 
 set_target_properties(mavsdk
-    PROPERTIES COMPILE_FLAGS ${warnings}
+    PROPERTIES
+        COMPILE_FLAGS ${warnings}
+        CXX_VISIBILITY_PRESET hidden
+        VISIBILITY_INLINES_HIDDEN ON
     )
 
 # Asio's io_context.hpp triggers a false-positive -Wnull-dereference with GCC
@@ -219,6 +228,7 @@ install(FILES
     include/mavsdk/handle.h
     include/mavsdk/system.h
     include/mavsdk/mavsdk.h
+    include/mavsdk/mavsdk_export.h
     include/mavsdk/log_callback.h
     include/mavsdk/plugin_base.h
     include/mavsdk/server_plugin_base.h

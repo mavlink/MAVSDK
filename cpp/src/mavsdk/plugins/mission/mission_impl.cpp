@@ -2,12 +2,13 @@
 #include "system.h"
 #include "unused.h"
 #include "callback_list.tpp"
+#include "mavsdk_export.h"
 #include <algorithm>
 #include <cmath>
 
 namespace mavsdk {
 
-template class CallbackList<Mission::MissionProgress>;
+template class MAVSDK_TEMPL_INST CallbackList<Mission::MissionProgress>;
 
 using MissionItem = Mission::MissionItem;
 using CameraAction = Mission::MissionItem::CameraAction;
