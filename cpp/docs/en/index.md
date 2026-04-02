@@ -1,6 +1,6 @@
 <div style="float:right; padding:10px; margin-right:20px;"><img src="../assets/site/sdk_logo_full.png" title="MAVSDK Logo" width="400px"/></div>
 
-# MAVSDK (main / v3)
+# MAVSDK (main / v4)
 
 *MAVSDK* is a collection of libraries for various programming languages to interface with [MAVLink](https://mavlink.io/en/) systems such as drones, cameras or ground systems.
 
