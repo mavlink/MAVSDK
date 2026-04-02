@@ -253,6 +253,8 @@ public:
         rpc_obj->set_allocated_pose_covariance(
             translateToRpcCovariance(vision_position_estimate.pose_covariance).release());
 
+        rpc_obj->set_reset_counter(vision_position_estimate.reset_counter);
+
         return rpc_obj;
     }
 
@@ -270,6 +272,8 @@ public:
         obj.pose_covariance =
             translateFromRpcCovariance(vision_position_estimate.pose_covariance());
 
+        obj.reset_counter = vision_position_estimate.reset_counter();
+
         return obj;
     }
 
@@ -286,6 +290,8 @@ public:
         rpc_obj->set_allocated_speed_covariance(
             translateToRpcCovariance(vision_speed_estimate.speed_covariance).release());
 
+        rpc_obj->set_reset_counter(vision_speed_estimate.reset_counter);
+
         return rpc_obj;
     }
 
@@ -299,6 +305,8 @@ public:
         obj.speed_ned = translateFromRpcSpeedNed(vision_speed_estimate.speed_ned());
 
         obj.speed_covariance = translateFromRpcCovariance(vision_speed_estimate.speed_covariance());
+
+        obj.reset_counter = vision_speed_estimate.reset_counter();
 
         return obj;
     }
@@ -365,6 +373,64 @@ public:
         }
     }
 
+    static rpc::mocap::Odometry::MavEstimatorType translateToRpcMavEstimatorType(
+        const mavsdk::Mocap::Odometry::MavEstimatorType& mav_estimator_type)
+    {
+        switch (mav_estimator_type) {
+            default:
+                LogErr() << "Unknown mav_estimator_type enum value: "
+                         << static_cast<int>(mav_estimator_type);
+            // FALLTHROUGH
+            case mavsdk::Mocap::Odometry::MavEstimatorType::Unknown:
+                return rpc::mocap::Odometry_MavEstimatorType_MAV_ESTIMATOR_TYPE_UNKNOWN;
+            case mavsdk::Mocap::Odometry::MavEstimatorType::Naive:
+                return rpc::mocap::Odometry_MavEstimatorType_MAV_ESTIMATOR_TYPE_NAIVE;
+            case mavsdk::Mocap::Odometry::MavEstimatorType::Vision:
+                return rpc::mocap::Odometry_MavEstimatorType_MAV_ESTIMATOR_TYPE_VISION;
+            case mavsdk::Mocap::Odometry::MavEstimatorType::Vio:
+                return rpc::mocap::Odometry_MavEstimatorType_MAV_ESTIMATOR_TYPE_VIO;
+            case mavsdk::Mocap::Odometry::MavEstimatorType::Gps:
+                return rpc::mocap::Odometry_MavEstimatorType_MAV_ESTIMATOR_TYPE_GPS;
+            case mavsdk::Mocap::Odometry::MavEstimatorType::GpsIns:
+                return rpc::mocap::Odometry_MavEstimatorType_MAV_ESTIMATOR_TYPE_GPS_INS;
+            case mavsdk::Mocap::Odometry::MavEstimatorType::Mocap:
+                return rpc::mocap::Odometry_MavEstimatorType_MAV_ESTIMATOR_TYPE_MOCAP;
+            case mavsdk::Mocap::Odometry::MavEstimatorType::Lidar:
+                return rpc::mocap::Odometry_MavEstimatorType_MAV_ESTIMATOR_TYPE_LIDAR;
+            case mavsdk::Mocap::Odometry::MavEstimatorType::Autopilot:
+                return rpc::mocap::Odometry_MavEstimatorType_MAV_ESTIMATOR_TYPE_AUTOPILOT;
+        }
+    }
+
+    static mavsdk::Mocap::Odometry::MavEstimatorType translateFromRpcMavEstimatorType(
+        const rpc::mocap::Odometry::MavEstimatorType mav_estimator_type)
+    {
+        switch (mav_estimator_type) {
+            default:
+                LogErr() << "Unknown mav_estimator_type enum value: "
+                         << static_cast<int>(mav_estimator_type);
+            // FALLTHROUGH
+            case rpc::mocap::Odometry_MavEstimatorType_MAV_ESTIMATOR_TYPE_UNKNOWN:
+                return mavsdk::Mocap::Odometry::MavEstimatorType::Unknown;
+            case rpc::mocap::Odometry_MavEstimatorType_MAV_ESTIMATOR_TYPE_NAIVE:
+                return mavsdk::Mocap::Odometry::MavEstimatorType::Naive;
+            case rpc::mocap::Odometry_MavEstimatorType_MAV_ESTIMATOR_TYPE_VISION:
+                return mavsdk::Mocap::Odometry::MavEstimatorType::Vision;
+            case rpc::mocap::Odometry_MavEstimatorType_MAV_ESTIMATOR_TYPE_VIO:
+                return mavsdk::Mocap::Odometry::MavEstimatorType::Vio;
+            case rpc::mocap::Odometry_MavEstimatorType_MAV_ESTIMATOR_TYPE_GPS:
+                return mavsdk::Mocap::Odometry::MavEstimatorType::Gps;
+            case rpc::mocap::Odometry_MavEstimatorType_MAV_ESTIMATOR_TYPE_GPS_INS:
+                return mavsdk::Mocap::Odometry::MavEstimatorType::GpsIns;
+            case rpc::mocap::Odometry_MavEstimatorType_MAV_ESTIMATOR_TYPE_MOCAP:
+                return mavsdk::Mocap::Odometry::MavEstimatorType::Mocap;
+            case rpc::mocap::Odometry_MavEstimatorType_MAV_ESTIMATOR_TYPE_LIDAR:
+                return mavsdk::Mocap::Odometry::MavEstimatorType::Lidar;
+            case rpc::mocap::Odometry_MavEstimatorType_MAV_ESTIMATOR_TYPE_AUTOPILOT:
+                return mavsdk::Mocap::Odometry::MavEstimatorType::Autopilot;
+        }
+    }
+
     static std::unique_ptr<rpc::mocap::Odometry>
     translateToRpcOdometry(const mavsdk::Mocap::Odometry& odometry)
     {
@@ -390,6 +456,12 @@ public:
         rpc_obj->set_allocated_velocity_covariance(
             translateToRpcCovariance(odometry.velocity_covariance).release());
 
+        rpc_obj->set_reset_counter(odometry.reset_counter);
+
+        rpc_obj->set_estimator_type(translateToRpcMavEstimatorType(odometry.estimator_type));
+
+        rpc_obj->set_quality_percent(odometry.quality_percent);
+
         return rpc_obj;
     }
 
@@ -413,6 +485,12 @@ public:
         obj.pose_covariance = translateFromRpcCovariance(odometry.pose_covariance());
 
         obj.velocity_covariance = translateFromRpcCovariance(odometry.velocity_covariance());
+
+        obj.reset_counter = odometry.reset_counter();
+
+        obj.estimator_type = translateFromRpcMavEstimatorType(odometry.estimator_type());
+
+        obj.quality_percent = odometry.quality_percent();
 
         return obj;
     }

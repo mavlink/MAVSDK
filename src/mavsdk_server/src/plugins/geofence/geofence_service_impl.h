@@ -266,6 +266,32 @@ public:
         return grpc::Status::OK;
     }
 
+    grpc::Status DownloadGeofence(
+        grpc::ServerContext* /* context */,
+        const rpc::geofence::DownloadGeofenceRequest* /* request */,
+        rpc::geofence::DownloadGeofenceResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                auto result = mavsdk::Geofence::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->download_geofence();
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result.first);
+
+            response->set_allocated_geofence_data(
+                translateToRpcGeofenceData(result.second).release());
+        }
+
+        return grpc::Status::OK;
+    }
+
     grpc::Status ClearGeofence(
         grpc::ServerContext* /* context */,
         const rpc::geofence::ClearGeofenceRequest* /* request */,

@@ -15,6 +15,10 @@ on:
     - 'docs/**'
     - '.github/workflows/docs_deploy.yml'
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
 jobs:
   macOS:
     name: ${{ matrix.name }}
@@ -44,11 +48,11 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           submodules: recursive
           fetch-depth: 0
-      - uses: actions/cache@v4
+      - uses: actions/cache@v5
         id: cache
         with:
           path: ./build/macos/third_party/install
@@ -119,11 +123,11 @@ jobs:
         with:
           python-version: '3.11'
           architecture: 'x64'
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           submodules: recursive
           fetch-depth: 0
-      - uses: actions/cache@v4
+      - uses: actions/cache@v5
         id: cache
         with:
           path: ./build/${{ matrix.name }}/third_party/install
@@ -156,7 +160,7 @@ jobs:
     needs: [macOS, iOS]
     runs-on: macos-15
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           submodules: recursive
       - uses: actions/download-artifact@v4

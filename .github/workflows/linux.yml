@@ -16,6 +16,10 @@ on:
     - '.github/workflows/docs_deploy.yml'
   workflow_dispatch:
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
 jobs:
   check-docker-changes:
     name: Check Docker Changes
@@ -24,12 +28,12 @@ jobs:
       docker_changed: ${{ steps.set-any-changed.outputs.docker_changed }}
       docker_tag: ${{ steps.set-docker-tag.outputs.docker_tag}}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - name: Get changed files
         id: check-changes
-        uses: tj-actions/changed-files@ed68ef82c095e0d48ec87eccea555d944a631a4c # v46
+        uses: tj-actions/changed-files@24d32ffd492484c1d75e0c0b894501ddb9d30d62 # v47
         with:
           files: docker/**
           since_last_remote_commit: true
@@ -65,7 +69,7 @@ jobs:
     env:
       NODE_OPTIONS: --max_old_space_size=4096
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           submodules: recursive
           fetch-depth: 0
@@ -81,7 +85,7 @@ jobs:
           echo '/tmp/core.%h.%e.%t' | sudo tee /proc/sys/kernel/core_pattern
           echo 'Core dump pattern set to:'
           cat /proc/sys/kernel/core_pattern
-      - uses: actions/cache@v4
+      - uses: actions/cache@v5
         id: cache
         with:
           path: ./build/third_party/install
@@ -142,7 +146,7 @@ jobs:
     container:
       image: docker.io/mavsdk/mavsdk-ubuntu-24.04:${{ needs.check-docker-changes.outputs.docker_tag }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           submodules: recursive
           fetch-depth: 0
@@ -152,7 +156,7 @@ jobs:
           git config --global --add safe.directory /github/workspace
       - name: git get version tags
         run: git fetch --tags
-      - uses: actions/cache@v4
+      - uses: actions/cache@v5
         id: cache
         with:
           path: ./build/debug/third_party/install
@@ -179,7 +183,7 @@ jobs:
     container:
       image: docker.io/mavsdk/mavsdk-ubuntu-24.04:${{ needs.check-docker-changes.outputs.docker_tag }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           submodules: recursive
           fetch-depth: 0
@@ -189,7 +193,7 @@ jobs:
           git config --global --add safe.directory /github/workspace
       - name: git get version tags
         run: git fetch --tags
-      - uses: actions/cache@v4
+      - uses: actions/cache@v5
         id: cache
         with:
           path: ./build/asan/third_party/install
@@ -219,7 +223,7 @@ jobs:
     container:
       image: docker.io/mavsdk/mavsdk-ubuntu-24.04:${{ needs.check-docker-changes.outputs.docker_tag }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           submodules: recursive
           fetch-depth: 0
@@ -229,7 +233,7 @@ jobs:
           git config --global --add safe.directory /github/workspace
       - name: git get version tags
         run: git fetch --tags
-      - uses: actions/cache@v4
+      - uses: actions/cache@v5
         id: cache
         with:
           path: ./build/tsan/third_party/install
@@ -259,7 +263,7 @@ jobs:
     container:
       image: docker.io/mavsdk/mavsdk-ubuntu-24.04:${{ needs.check-docker-changes.outputs.docker_tag }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           submodules: recursive
           fetch-depth: 0
@@ -269,7 +273,7 @@ jobs:
           git config --global --add safe.directory /github/workspace
       - name: git get version tags
         run: git fetch --tags
-      - uses: actions/cache@v4
+      - uses: actions/cache@v5
         id: cache
         with:
           path: ./build/ubsan/third_party/install
@@ -318,7 +322,7 @@ jobs:
             cxx: clang++-19
             description: Ubuntu 24.04 (clang 19)
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           submodules: recursive
           fetch-depth: 0
@@ -338,7 +342,7 @@ jobs:
         run: |
           sudo apt-get update && sudo apt-get install -y \
             libsdl2-dev
-      - uses: actions/cache@v4
+      - uses: actions/cache@v5
         id: cache
         with:
           path: ./build/release/third_party/install
@@ -396,11 +400,11 @@ jobs:
     container:
       image: docker.io/mavsdk/mavsdk-ubuntu-24.04:${{ needs.check-docker-changes.outputs.docker_tag }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           submodules: recursive
           fetch-depth: 0
-      - uses: actions/cache@v4
+      - uses: actions/cache@v5
         id: cache
         with:
           path: ./build/release/third_party/install
@@ -420,7 +424,7 @@ jobs:
     name: Ubuntu 24.04 (SUPERBUILD=OFF)
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           submodules: recursive
           fetch-depth: 0
@@ -443,7 +447,7 @@ jobs:
     container:
       image: docker.io/mavsdk/mavsdk-ubuntu-24.04:${{ needs.check-docker-changes.outputs.docker_tag }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           submodules: recursive
           fetch-depth: 0
@@ -453,7 +457,7 @@ jobs:
           git config --global --add safe.directory /github/workspace
       - name: git get version tags
         run: git fetch --tags
-      - uses: actions/cache@v4
+      - uses: actions/cache@v5
         id: cache
         with:
           path: ./build/default/third_party/install
@@ -480,7 +484,7 @@ jobs:
     container:
       image: docker.io/mavsdk/mavsdk-ubuntu-24.04:${{ needs.check-docker-changes.outputs.docker_tag }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           submodules: recursive
           fetch-depth: 0
@@ -526,7 +530,7 @@ jobs:
             os_name: Debian
             os_version: "13"
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           submodules: recursive
           fetch-depth: 0
@@ -612,7 +616,7 @@ jobs:
             arch_name: arm64
             rename_distro: true
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           submodules: recursive
           fetch-depth: 0
@@ -621,7 +625,7 @@ jobs:
         continue-on-error: true
       - name: setup dockcross
         run: docker run --rm ${{ env.ARG_IMAGE }} > ./dockcross-linux-${{ matrix.docker_name }}-custom; chmod +x ./dockcross-linux-${{ matrix.docker_name }}-custom
-      - uses: actions/cache@v4
+      - uses: actions/cache@v5
         id: cache
         with:
           path: ./build/linux-${{ matrix.docker_name }}/third_party/install
@@ -660,7 +664,7 @@ jobs:
     steps:
       - name: install tools
         run: apk update && apk add build-base cmake git linux-headers perl tar python3 py3-pip rust cargo
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           submodules: recursive
           fetch-depth: 0
@@ -670,7 +674,7 @@ jobs:
           git config --global --add safe.directory /github/workspace
       - name: git get version tags
         run: git fetch --tags
-      - uses: actions/cache@v4
+      - uses: actions/cache@v5
         id: cache
         with:
           path: ./build/release/third_party/install
@@ -714,13 +718,13 @@ jobs:
       matrix:
         arch_name: [linux-armv6-musl, linux-armv7l-musl, linux-arm64-musl]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           submodules: recursive
           fetch-depth: 0
       - name: setup dockcross
         run: docker run --rm dockcross/${{ matrix.arch_name }}:20250818-0a27819 > ./dockcross-${{ matrix.arch_name }}; chmod +x ./dockcross-${{ matrix.arch_name }}
-      - uses: actions/cache@v4
+      - uses: actions/cache@v5
         id: cache
         with:
           path: ./build/${{ matrix.arch_name }}/third_party/install
@@ -766,7 +770,7 @@ jobs:
           - name: android-x86_64
             arch: x86_64
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           submodules: recursive
           fetch-depth: 0
@@ -775,7 +779,7 @@ jobs:
         continue-on-error: true
       - name: setup dockcross
         run: docker run --rm dockcross/${{ matrix.name }}:20250818-0a27819 > ./dockcross-${{ matrix.name }}; chmod +x ./dockcross-${{ matrix.name }}
-      - uses: actions/cache@v4
+      - uses: actions/cache@v5
         id: cache
         with:
           path: ./build/${{ matrix.name }}/third_party/install

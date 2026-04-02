@@ -4,7 +4,7 @@
 ----
 
 
-Can be used to manage cameras that implement the MAVLink [Camera](classmavsdk_1_1_camera.md) Protocol: [https://mavlink.io/en/protocol/camera.html](https://mavlink.io/en/protocol/camera.html). 
+Can be used to manage cameras that implement the MAVLink [Camera](classmavsdk_1_1_camera.md) Protocol: [https://mavlink.io/en/services/camera.html](https://mavlink.io/en/services/camera.html). 
 
 
 Currently only a single camera is supported. When multiple cameras are supported the plugin will need to be instantiated separately for every camera and the camera selected using `select_camera`. 

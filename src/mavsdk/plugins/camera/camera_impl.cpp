@@ -4,6 +4,7 @@
 #include "unused.h"
 #include "callback_list.tpp"
 #include "fs_utils.h"
+#include "inflate_lzma.h"
 #include "string_utils.h"
 #include "math_utils.h"
 
@@ -130,12 +131,19 @@ void CameraImpl::deinit()
     _system_impl->remove_call_every(_request_slower_call_every_cookie);
     _system_impl->remove_call_every(_request_faster_call_every_cookie);
 
-    // FIXME: There is a race condition here.
-    // We need to wait until all call every calls are done before we go
-    // out of scope.
+    // Cancel any pending MAVLink FTP operations so their callbacks don't fire
+    // after we are gone.  This is synchronous: once it returns no further FTP
+    // callbacks will be dispatched from the io_context thread.
+    _system_impl->mavlink_ftp_client().cancel_all_operations();
+
+    // Wait briefly for call_every lambdas that may already be mid-flight
+    // (remove_call_every only prevents future invocations).
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
     std::lock_guard lock(_mutex);
+    // Signal any user-callback-queued lambdas that slipped through before
+    // cancel_all_operations() returned that they must not touch our members.
+    *_alive = false;
     _storage_subscription_callbacks.clear();
     _mode_subscription_callbacks.clear();
     _capture_info_callbacks.clear();
@@ -709,10 +717,25 @@ void CameraImpl::unsubscribe_camera_list(Camera::CameraListHandle handle)
 
 void CameraImpl::notify_camera_list_with_lock()
 {
-    _system_impl->call_user_callback([&]() {
-        _camera_list_subscription_callbacks.queue(
-            camera_list_with_lock(), [this](const auto& func) { func(); });
-    });
+    // Build the camera-list snapshot synchronously while the caller holds _mutex,
+    // then post each subscriber's callback individually to the user callback thread.
+    //
+    // The previous implementation used call_user_callback([&](){...}), which posted
+    // the entire work item to the user callback thread.  That lambda ran *after* the
+    // inner FTP/HTTP download callback returned.  The main thread could observe the
+    // loaded definition, destroy the Camera plugin, and free CameraImpl before the
+    // [&] lambda had a chance to run.  The lambda then accessed freed CameraImpl
+    // members (_camera_list_subscription_callbacks, _potential_cameras), causing a
+    // heap use-after-free that manifested as a __stack_chk_fail canary failure.
+    //
+    // With this fix the snapshot is built and each subscriber's call_user_callback
+    // is posted while the caller still holds _mutex (i.e. CameraImpl is alive).
+    // The per-subscriber func lambdas capture only the snapshot value and the
+    // system_impl pointer, neither of which is a CameraImpl member, so they are
+    // safe to run even after CameraImpl is destroyed.
+    auto snapshot = camera_list_with_lock();
+    _camera_list_subscription_callbacks.queue(
+        snapshot, [this](const auto& func) { _system_impl->call_user_callback(func); });
 }
 
 Camera::Result CameraImpl::start_video_streaming(int32_t component_id, int32_t stream_id)
@@ -806,6 +829,8 @@ CameraImpl::camera_result_from_command_result(const MavlinkCommandSender::Result
             return Camera::Result::Timeout;
         case MavlinkCommandSender::Result::Unsupported:
             return Camera::Result::ActionUnsupported;
+        case MavlinkCommandSender::Result::InProgress:
+            return Camera::Result::InProgress;
         case MavlinkCommandSender::Result::Cancelled:
         default:
             return Camera::Result::Unknown;
@@ -1287,6 +1312,7 @@ void CameraImpl::check_camera_definition_with_lock(PotentialCamera& potential_ca
     if (potential_camera.camera_definition_url.empty()) {
         potential_camera.camera_definition_result = Camera::Result::Unavailable;
         notify_camera_list_with_lock();
+        return; // No URL means no definition to fetch.
     }
 
     const auto& info = potential_camera.maybe_information.value();
@@ -1331,18 +1357,26 @@ void CameraImpl::check_camera_definition_with_lock(PotentialCamera& potential_ca
             _http_loader->download_async(
                 url,
                 download_path.string(),
-                [download_path, file_cache_tag, component_id, this](
-                    int progress, HttpStatus status, CURLcode curl_code) mutable {
-                    // TODO: check if we still exist
+                [download_path,
+                 file_cache_tag,
+                 component_id,
+                 mutex_ptr = _mutex_keep_alive,
+                 alive = _alive,
+                 this](int progress, HttpStatus status, CURLcode curl_code) mutable {
                     LogDebug() << "Download progress: " << progress
                                << ", status: " << static_cast<int>(status)
                                << ", curl_code: " << std::to_string(curl_code);
 
-                    std::lock_guard lock(_mutex);
+                    std::lock_guard lock(*mutex_ptr);
+                    // Bail out if CameraImpl was already destroyed
+                    if (!alive->load()) {
+                        return;
+                    }
                     auto maybe_potential_camera =
                         maybe_potential_camera_for_component_id_with_lock(component_id, 0);
                     if (maybe_potential_camera == nullptr) {
                         LogErr() << "Failed to find camera.";
+                        return;
                     }
 
                     if (status == HttpStatus::Error) {
@@ -1354,6 +1388,22 @@ void CameraImpl::check_camera_definition_with_lock(PotentialCamera& potential_ca
 
                     } else if (status == HttpStatus::Finished) {
                         LogDebug() << "File download finished " << download_path;
+                        if (download_path.extension() == ".xz") {
+                            auto decompressed = download_path;
+                            decompressed.replace_extension(".extracted");
+                            if (InflateLZMA::inflateLZMAFile(download_path, decompressed)) {
+                                std::filesystem::remove(download_path);
+                                download_path = decompressed;
+                            } else {
+                                LogErr()
+                                    << "Failed to decompress camera definition: " << download_path;
+                                maybe_potential_camera->is_fetching_camera_definition = false;
+                                maybe_potential_camera->camera_definition_result =
+                                    Camera::Result::Error;
+                                notify_camera_list_with_lock();
+                                return;
+                            }
+                        }
                         if (_file_cache) {
                             // Cache the file (this will move/remove the temp file as well)
                             download_path = _file_cache->insert(file_cache_tag, download_path)
@@ -1391,42 +1441,66 @@ void CameraImpl::check_camera_definition_with_lock(PotentialCamera& potential_ca
                     }
 
                     // Use call_user_callback to defer callback execution and avoid deadlock
-                    _system_impl->call_user_callback(
-                        [file_cache_tag, downloaded_filename, component_id, client_result, this]() {
-                            std::lock_guard lock(_mutex);
-                            auto maybe_potential_camera =
-                                maybe_potential_camera_for_component_id_with_lock(component_id, 0);
-                            if (maybe_potential_camera == nullptr) {
-                                LogErr() << "Failed to find camera with ID " << component_id;
-                                return;
-                            }
+                    _system_impl->call_user_callback([file_cache_tag,
+                                                      downloaded_filename,
+                                                      component_id,
+                                                      client_result,
+                                                      mutex_ptr = _mutex_keep_alive,
+                                                      alive = _alive,
+                                                      this]() {
+                        std::lock_guard lock(*mutex_ptr);
+                        // Bail out if CameraImpl was already destroyed
+                        if (!alive->load()) {
+                            return;
+                        }
+                        auto maybe_potential_camera =
+                            maybe_potential_camera_for_component_id_with_lock(component_id, 0);
+                        if (maybe_potential_camera == nullptr) {
+                            LogErr() << "Failed to find camera with ID " << component_id;
+                            return;
+                        }
 
-                            if (client_result != MavlinkFtpClient::ClientResult::Success) {
-                                LogErr() << "File download failed with result " << client_result;
+                        if (client_result != MavlinkFtpClient::ClientResult::Success) {
+                            LogErr() << "File download failed with result " << client_result;
+                            maybe_potential_camera->is_fetching_camera_definition = false;
+                            maybe_potential_camera->camera_definition_result =
+                                Camera::Result::Error;
+                            notify_camera_list_with_lock();
+                            return;
+                        }
+
+                        auto downloaded_filepath = _tmp_download_path / downloaded_filename;
+
+                        LogDebug() << "File download finished to " << downloaded_filepath;
+                        if (downloaded_filepath.extension() == ".xz") {
+                            auto decompressed = downloaded_filepath;
+                            decompressed.replace_extension(".extracted");
+                            if (InflateLZMA::inflateLZMAFile(downloaded_filepath, decompressed)) {
+                                std::filesystem::remove(downloaded_filepath);
+                                downloaded_filepath = decompressed;
+                            } else {
+                                LogErr() << "Failed to decompress camera definition: "
+                                         << downloaded_filepath;
                                 maybe_potential_camera->is_fetching_camera_definition = false;
                                 maybe_potential_camera->camera_definition_result =
                                     Camera::Result::Error;
                                 notify_camera_list_with_lock();
                                 return;
                             }
-
-                            auto downloaded_filepath = _tmp_download_path / downloaded_filename;
-
-                            LogDebug() << "File download finished to " << downloaded_filepath;
-                            if (_file_cache) {
-                                // Cache the file (this will move/remove the temp file as well)
-                                downloaded_filepath =
-                                    _file_cache->insert(file_cache_tag, downloaded_filepath)
-                                        .value_or(downloaded_filepath);
-                                LogDebug() << "Cached path: " << downloaded_filepath;
-                            }
-                            load_camera_definition_with_lock(
-                                *maybe_potential_camera, downloaded_filepath);
-                            maybe_potential_camera->is_fetching_camera_definition = false;
-                            maybe_potential_camera->camera_definition_result =
-                                Camera::Result::Success;
-                            notify_camera_list_with_lock();
-                        });
+                        }
+                        if (_file_cache) {
+                            // Cache the file (this will move/remove the temp file as well)
+                            downloaded_filepath =
+                                _file_cache->insert(file_cache_tag, downloaded_filepath)
+                                    .value_or(downloaded_filepath);
+                            LogDebug() << "Cached path: " << downloaded_filepath;
+                        }
+                        load_camera_definition_with_lock(
+                            *maybe_potential_camera, downloaded_filepath);
+                        maybe_potential_camera->is_fetching_camera_definition = false;
+                        maybe_potential_camera->camera_definition_result = Camera::Result::Success;
+                        notify_camera_list_with_lock();
+                    });
                 });
         } else {
             LogErr() << "Unknown protocol for URL: " << url;

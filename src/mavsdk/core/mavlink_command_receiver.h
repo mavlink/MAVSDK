@@ -1,7 +1,6 @@
 #pragma once
 
 #include "mavlink_include.h"
-#include "locked_queue.h"
 #include <cmath>
 #include <cstdint>
 #include <string>

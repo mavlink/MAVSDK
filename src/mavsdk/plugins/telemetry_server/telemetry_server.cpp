@@ -629,7 +629,8 @@ bool operator==(const TelemetryServer::GroundTruth& lhs, const TelemetryServer::
            ((std::isnan(rhs.longitude_deg) && std::isnan(lhs.longitude_deg)) ||
             rhs.longitude_deg == lhs.longitude_deg) &&
            ((std::isnan(rhs.absolute_altitude_m) && std::isnan(lhs.absolute_altitude_m)) ||
-            rhs.absolute_altitude_m == lhs.absolute_altitude_m);
+            rhs.absolute_altitude_m == lhs.absolute_altitude_m) &&
+           (rhs.timestamp_us == lhs.timestamp_us);
 }
 
 std::ostream& operator<<(std::ostream& str, TelemetryServer::GroundTruth const& ground_truth)
@@ -639,6 +640,7 @@ std::ostream& operator<<(std::ostream& str, TelemetryServer::GroundTruth const& 
     str << "    latitude_deg: " << ground_truth.latitude_deg << '\n';
     str << "    longitude_deg: " << ground_truth.longitude_deg << '\n';
     str << "    absolute_altitude_m: " << ground_truth.absolute_altitude_m << '\n';
+    str << "    timestamp_us: " << ground_truth.timestamp_us << '\n';
     str << '}';
     return str;
 }

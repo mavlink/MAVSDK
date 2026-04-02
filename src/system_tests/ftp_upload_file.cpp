@@ -98,7 +98,8 @@ TEST(SystemTest, FtpUploadFile)
 
 TEST(SystemTest, FtpUploadBigFile)
 {
-    ASSERT_TRUE(create_temp_file(temp_dir_to_upload / temp_file, 10000));
+    static constexpr std::size_t file_size_kb = 10000;
+    ASSERT_TRUE(create_temp_file(temp_dir_to_upload / temp_file, file_size_kb));
     ASSERT_TRUE(reset_directories(temp_dir_provided));
 
     Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
@@ -128,6 +129,9 @@ TEST(SystemTest, FtpUploadBigFile)
     {
         auto prom = std::promise<Ftp::Result>();
         auto fut = prom.get_future();
+
+        const auto t_start = std::chrono::steady_clock::now();
+
         ftp.upload_async(
             (temp_dir_to_upload / temp_file).string(),
             "",
@@ -143,6 +147,14 @@ TEST(SystemTest, FtpUploadBigFile)
         auto future_status = fut.wait_for(std::chrono::seconds(10));
         ASSERT_EQ(future_status, std::future_status::ready);
         EXPECT_EQ(fut.get(), Ftp::Result::Success);
+
+        const auto elapsed_ms = std::chrono::duration_cast<std::chrono::milliseconds>(
+                                    std::chrono::steady_clock::now() - t_start)
+                                    .count();
+        const double throughput_kbps =
+            static_cast<double>(file_size_kb) / (static_cast<double>(elapsed_ms) / 1000.0);
+        LogInfo() << "FTP upload: " << file_size_kb << " KB in " << elapsed_ms << " ms  ("
+                  << static_cast<int>(throughput_kbps) << " KB/s)";
 
         EXPECT_TRUE(
             are_files_identical(temp_dir_to_upload / temp_file, temp_dir_provided / temp_file));

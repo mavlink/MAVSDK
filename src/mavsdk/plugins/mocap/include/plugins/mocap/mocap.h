@@ -241,6 +241,8 @@ public:
         PositionBody position_body{}; /**< @brief Global position (m) */
         AngleBody angle_body{}; /**< @brief Body angle (rad). */
         Covariance pose_covariance{}; /**< @brief Pose cross-covariance matrix. */
+        uint32_t reset_counter{}; /**< @brief Estimate reset counter. Increment when the estimate
+                                     resets or jumps. */
     };
 
     /**
@@ -266,6 +268,8 @@ public:
         uint64_t time_usec{}; /**< @brief Timestamp UNIX Epoch time (0 to use Backend timestamp) */
         SpeedNed speed_ned{}; /**< @brief Global speed (m/s) */
         Covariance speed_covariance{}; /**< @brief Linear velocity cross-covariance matrix. */
+        uint32_t reset_counter{}; /**< @brief Estimate reset counter. Increment when the estimate
+                                     resets or jumps. */
     };
 
     /**
@@ -320,12 +324,9 @@ public:
          * @brief Mavlink frame id
          */
         enum class MavFrame {
-            MocapNed, /**< @brief MAVLink number: 14. Odometry local coordinate frame of data given
-                         by a motion capture system, Z-down (x: north, y: east, z: down).. */
-            LocalFrd, /**< @brief MAVLink number: 20. Forward, Right, Down coordinate frame. This is
-                         a local frame with Z-down and arbitrary F/R alignment (i.e. not aligned
-                         with NED/earth frame). Replacement for MAV_FRAME_MOCAP_NED,
-                         MAV_FRAME_VISION_NED, MAV_FRAME_ESTIM_NED.. */
+            MocapNed, /**< @brief Legacy mocap NED frame. Deprecated in MAVLink and replaced by
+                         MAV_FRAME_LOCAL_FRD.. */
+            LocalFrd, /**< @brief Local FRD frame (x: forward, y: right, z: down).. */
         };
 
         /**
@@ -336,6 +337,29 @@ public:
         friend std::ostream&
         operator<<(std::ostream& str, Mocap::Odometry::MavFrame const& mav_frame);
 
+        /**
+         * @brief Estimator type, matching MAVLink MAV_ESTIMATOR_TYPE.
+         */
+        enum class MavEstimatorType {
+            Unknown, /**< @brief Unknown estimator type.. */
+            Naive, /**< @brief Naive estimator.. */
+            Vision, /**< @brief Computer vision-based estimate.. */
+            Vio, /**< @brief Visual-inertial estimate.. */
+            Gps, /**< @brief Plain GPS estimate.. */
+            GpsIns, /**< @brief GPS and inertial navigation estimate.. */
+            Mocap, /**< @brief Motion capture estimate.. */
+            Lidar, /**< @brief Lidar estimate.. */
+            Autopilot, /**< @brief Autopilot estimate.. */
+        };
+
+        /**
+         * @brief Stream operator to print information about a `Mocap::MavEstimatorType`.
+         *
+         * @return A reference to the stream.
+         */
+        friend std::ostream&
+        operator<<(std::ostream& str, Mocap::Odometry::MavEstimatorType const& mav_estimator_type);
+
         uint64_t time_usec{}; /**< @brief Timestamp (0 to use Backend timestamp). */
         MavFrame frame_id{}; /**< @brief Coordinate frame of reference for the pose data. */
         PositionBody position_body{}; /**< @brief Body Position. */
@@ -345,6 +369,12 @@ public:
         AngularVelocityBody angular_velocity_body{}; /**< @brief Angular speed (rad/s). */
         Covariance pose_covariance{}; /**< @brief Pose cross-covariance matrix. */
         Covariance velocity_covariance{}; /**< @brief Velocity cross-covariance matrix. */
+        uint32_t reset_counter{}; /**< @brief Estimate reset counter. Increment when the estimate
+                                     resets or jumps. */
+        MavEstimatorType
+            estimator_type{}; /**< @brief Type of estimator that is providing the odometry. */
+        int32_t quality_percent{}; /**< @brief Optional odometry quality in percent. -1 = failed, 0
+                                      = unknown/unset, 1 = worst, 100 = best. */
     };
 
     /**

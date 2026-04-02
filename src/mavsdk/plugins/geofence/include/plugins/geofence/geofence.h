@@ -214,6 +214,31 @@ public:
     Result upload_geofence(GeofenceData geofence_data) const;
 
     /**
+     * @brief Callback type for download_geofence_async.
+     */
+    using DownloadGeofenceCallback = std::function<void(Result, GeofenceData)>;
+
+    /**
+     * @brief Download geofences from the vehicle.
+     *
+     * Downloads polygon and circular geofences from the vehicle.
+     *
+     * This function is non-blocking. See 'download_geofence' for the blocking counterpart.
+     */
+    void download_geofence_async(const DownloadGeofenceCallback callback);
+
+    /**
+     * @brief Download geofences from the vehicle.
+     *
+     * Downloads polygon and circular geofences from the vehicle.
+     *
+     * This function is blocking. See 'download_geofence_async' for the non-blocking counterpart.
+     *
+     * @return Result of request.
+     */
+    std::pair<Result, Geofence::GeofenceData> download_geofence() const;
+
+    /**
      * @brief Clear all geofences saved on the vehicle.
      *
      * This function is non-blocking. See 'clear_geofence' for the blocking counterpart.

@@ -91,6 +91,8 @@ public:
     // Otherwise returns the forced mode (Pure/Px4/ArduPilot)
     Autopilot effective_autopilot(Autopilot detected) const;
 
+    void set_callback_executor(std::function<void(std::function<void()>)> executor);
+
     Mavsdk::NewSystemHandle subscribe_on_new_system(const Mavsdk::NewSystemCallback& callback);
     void unsubscribe_on_new_system(Mavsdk::NewSystemHandle handle);
 
@@ -255,8 +257,8 @@ private:
         int linenumber{};
     };
 
-    std::thread* _work_thread{nullptr};
-    std::thread* _process_user_callbacks_thread{nullptr};
+    std::unique_ptr<std::thread> _work_thread{};
+    std::unique_ptr<std::thread> _process_user_callbacks_thread{};
     LockedQueue<UserCallback> _user_callback_queue{};
 
     bool _message_logging_on{false};
@@ -304,6 +306,9 @@ private:
     static constexpr double HEARTBEAT_SEND_INTERVAL_S = 1.0;
     std::mutex _heartbeat_mutex{};
     CallEveryHandler::Cookie _heartbeat_send_cookie{};
+
+    std::mutex _callback_executor_mutex{};
+    std::function<void(std::function<void()>)> _callback_executor{};
 
     std::atomic<bool> _should_exit{false};
 };

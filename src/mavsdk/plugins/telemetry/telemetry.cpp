@@ -646,6 +646,16 @@ Telemetry::Result Telemetry::set_rate_gps_info(double rate_hz) const
     return _impl->set_rate_gps_info(rate_hz);
 }
 
+void Telemetry::set_rate_raw_gps_async(double rate_hz, const ResultCallback callback)
+{
+    _impl->set_rate_raw_gps_async(rate_hz, callback);
+}
+
+Telemetry::Result Telemetry::set_rate_raw_gps(double rate_hz) const
+{
+    return _impl->set_rate_raw_gps(rate_hz);
+}
+
 void Telemetry::set_rate_battery_async(double rate_hz, const ResultCallback callback)
 {
     _impl->set_rate_battery_async(rate_hz, callback);
@@ -1332,7 +1342,8 @@ bool operator==(const Telemetry::GroundTruth& lhs, const Telemetry::GroundTruth&
            ((std::isnan(rhs.longitude_deg) && std::isnan(lhs.longitude_deg)) ||
             rhs.longitude_deg == lhs.longitude_deg) &&
            ((std::isnan(rhs.absolute_altitude_m) && std::isnan(lhs.absolute_altitude_m)) ||
-            rhs.absolute_altitude_m == lhs.absolute_altitude_m);
+            rhs.absolute_altitude_m == lhs.absolute_altitude_m) &&
+           (rhs.timestamp_us == lhs.timestamp_us);
 }
 
 std::ostream& operator<<(std::ostream& str, Telemetry::GroundTruth const& ground_truth)
@@ -1342,6 +1353,7 @@ std::ostream& operator<<(std::ostream& str, Telemetry::GroundTruth const& ground
     str << "    latitude_deg: " << ground_truth.latitude_deg << '\n';
     str << "    longitude_deg: " << ground_truth.longitude_deg << '\n';
     str << "    absolute_altitude_m: " << ground_truth.absolute_altitude_m << '\n';
+    str << "    timestamp_us: " << ground_truth.timestamp_us << '\n';
     str << '}';
     return str;
 }
@@ -1497,7 +1509,8 @@ bool operator==(const Telemetry::Altitude& lhs, const Telemetry::Altitude& rhs)
            ((std::isnan(rhs.altitude_terrain_m) && std::isnan(lhs.altitude_terrain_m)) ||
             rhs.altitude_terrain_m == lhs.altitude_terrain_m) &&
            ((std::isnan(rhs.bottom_clearance_m) && std::isnan(lhs.bottom_clearance_m)) ||
-            rhs.bottom_clearance_m == lhs.bottom_clearance_m);
+            rhs.bottom_clearance_m == lhs.bottom_clearance_m) &&
+           (rhs.timestamp_us == lhs.timestamp_us);
 }
 
 std::ostream& operator<<(std::ostream& str, Telemetry::Altitude const& altitude)
@@ -1510,6 +1523,7 @@ std::ostream& operator<<(std::ostream& str, Telemetry::Altitude const& altitude)
     str << "    altitude_relative_m: " << altitude.altitude_relative_m << '\n';
     str << "    altitude_terrain_m: " << altitude.altitude_terrain_m << '\n';
     str << "    bottom_clearance_m: " << altitude.bottom_clearance_m << '\n';
+    str << "    timestamp_us: " << altitude.timestamp_us << '\n';
     str << '}';
     return str;
 }

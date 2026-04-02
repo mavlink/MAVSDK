@@ -82,11 +82,39 @@ int main(int argc, char** argv)
 
             auto prom = std::promise<LogFiles::Result>{};
             auto future_result = prom.get_future();
+            const auto start_time = std::chrono::steady_clock::now();
             log_files.download_log_file_async(
                 entry,
                 std::string("log-") + entry.date + file_extension,
-                [&prom](LogFiles::Result result, LogFiles::ProgressData progress) {
-                    if (result != LogFiles::Result::Next) {
+                [&prom, &entry, start_time](
+                    LogFiles::Result result, LogFiles::ProgressData progress) {
+                    if (result == LogFiles::Result::Next) {
+                        const auto now = std::chrono::steady_clock::now();
+                        const double elapsed_s =
+                            std::chrono::duration<double>(now - start_time).count();
+                        const double downloaded = progress.progress * entry.size_bytes;
+                        const double speed = elapsed_s > 0.0 ? downloaded / elapsed_s : 0.0;
+
+                        std::cerr << "\r  " << std::fixed << std::setprecision(1)
+                                  << (progress.progress * 100.0) << "% ("
+                                  << static_cast<unsigned>(downloaded / 1024) << "/"
+                                  << (entry.size_bytes / 1024) << " KiB)"
+                                  << "  " << std::setprecision(1) << (speed / 1024.0)
+                                  << " KiB/s    " << std::flush;
+                    } else {
+                        if (result == LogFiles::Result::Success) {
+                            const auto now = std::chrono::steady_clock::now();
+                            const double elapsed_s =
+                                std::chrono::duration<double>(now - start_time).count();
+                            const double speed =
+                                elapsed_s > 0.0 ? entry.size_bytes / elapsed_s : 0.0;
+                            std::cerr << "\r  100.0% (" << (entry.size_bytes / 1024) << "/"
+                                      << (entry.size_bytes / 1024) << " KiB)"
+                                      << "  " << std::fixed << std::setprecision(1)
+                                      << (speed / 1024.0) << " KiB/s"
+                                      << "  done in " << std::setprecision(1) << elapsed_s
+                                      << "s    " << std::endl;
+                        }
                         prom.set_value(result);
                     }
                 });

@@ -16,6 +16,8 @@ uint64_t [time_usec](#structmavsdk_1_1_mocap_1_1_vision_speed_estimate_1a17dc189
 
 [Covariance](structmavsdk_1_1_mocap_1_1_covariance.md) [speed_covariance](#structmavsdk_1_1_mocap_1_1_vision_speed_estimate_1a5e947837041cb9f477a3588172bb739f) {} - Linear velocity cross-covariance matrix.
 
+uint32_t [reset_counter](#structmavsdk_1_1_mocap_1_1_vision_speed_estimate_1a503a1743b1e2a019a2f279e04dab6b3a) {} - Estimate reset counter. Increment when the estimate resets or jumps.
+
 
 ## Field Documentation
 
@@ -48,4 +50,14 @@ Covariance mavsdk::Mocap::VisionSpeedEstimate::speed_covariance {}
 
 
 Linear velocity cross-covariance matrix.
+
+
+### reset_counter {#structmavsdk_1_1_mocap_1_1_vision_speed_estimate_1a503a1743b1e2a019a2f279e04dab6b3a}
+
+```cpp
+uint32_t mavsdk::Mocap::VisionSpeedEstimate::reset_counter {}
+```
+
+
+Estimate reset counter. Increment when the estimate resets or jumps.
 

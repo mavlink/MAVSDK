@@ -15,6 +15,10 @@ on:
     - 'docs/**'
     - '.github/workflows/docs_deploy.yml'
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
 jobs:
   Windows-mavsdk_server:
     name: Windows mavsdk_server build
@@ -34,13 +38,13 @@ jobs:
             toolchain: ''
             toolchain_file: cmake\\win-arm64-toolchain.cmake
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           submodules: recursive
           fetch-depth: 0
       - name: git get version tags
         run: git fetch --tags
-      - uses: actions/cache@v4
+      - uses: actions/cache@v5
         id: cache
         with:
           path: ./build/third_party/install
@@ -119,13 +123,13 @@ jobs:
             toolchain: ''
             toolchain_file: cmake\\win-arm64-toolchain.cmake
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           submodules: recursive
           fetch-depth: 0
       - name: git get version tags
         run: git fetch --tags
-      - uses: actions/cache@v4
+      - uses: actions/cache@v5
         id: cache
         with:
           path: ./build/third_party/install
@@ -186,7 +190,7 @@ jobs:
           - arch: arm64
             platform: ARM64
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Download Debug artifact
         uses: actions/download-artifact@v4
         with:

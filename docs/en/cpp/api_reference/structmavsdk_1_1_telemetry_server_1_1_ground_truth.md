@@ -16,6 +16,8 @@ double [longitude_deg](#structmavsdk_1_1_telemetry_server_1_1_ground_truth_1ac56
 
 float [absolute_altitude_m](#structmavsdk_1_1_telemetry_server_1_1_ground_truth_1a50114cbbdf521bdd162a524e9978ca77) { float(NAN)} - Altitude AMSL (above mean sea level) in metres.
 
+uint64_t [timestamp_us](#structmavsdk_1_1_telemetry_server_1_1_ground_truth_1afd45c27cbebbc8ed59658a10ddb81a56) {} - Timestamp in microseconds (since system boot)
+
 
 ## Field Documentation
 
@@ -48,4 +50,14 @@ float mavsdk::TelemetryServer::GroundTruth::absolute_altitude_m { float(NAN)}
 
 
 Altitude AMSL (above mean sea level) in metres.
+
+
+### timestamp_us {#structmavsdk_1_1_telemetry_server_1_1_ground_truth_1afd45c27cbebbc8ed59658a10ddb81a56}
+
+```cpp
+uint64_t mavsdk::TelemetryServer::GroundTruth::timestamp_us {}
+```
+
+
+Timestamp in microseconds (since system boot)
 

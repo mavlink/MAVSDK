@@ -366,7 +366,12 @@ private:
 
     static uint8_t fixup_component_target(uint8_t component_id);
 
-    std::mutex _mutex;
+    // _mutex_keep_alive is a shared_ptr so that download callbacks can safely lock it
+    // even after CameraImpl has been destroyed (they check _alive under the lock and
+    // bail out immediately if it is false).
+    std::shared_ptr<std::mutex> _mutex_keep_alive{std::make_shared<std::mutex>()};
+    std::mutex& _mutex{*_mutex_keep_alive};
+    std::shared_ptr<std::atomic<bool>> _alive{std::make_shared<std::atomic<bool>>(true)};
     std::vector<PotentialCamera> _potential_cameras;
     CallbackList<Camera::CameraList> _camera_list_subscription_callbacks{};
     CallbackList<Camera::PossibleSettingOptionsUpdate>

@@ -942,6 +942,8 @@ public:
 
         rpc_obj->set_absolute_altitude_m(ground_truth.absolute_altitude_m);
 
+        rpc_obj->set_timestamp_us(ground_truth.timestamp_us);
+
         return rpc_obj;
     }
 
@@ -955,6 +957,8 @@ public:
         obj.longitude_deg = ground_truth.longitude_deg();
 
         obj.absolute_altitude_m = ground_truth.absolute_altitude_m();
+
+        obj.timestamp_us = ground_truth.timestamp_us();
 
         return obj;
     }
