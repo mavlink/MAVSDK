@@ -22,8 +22,9 @@ static Mission::MissionItem add_waypoint(
 static Mission::MissionPlan create_mission_plan()
 {
     Mission::MissionPlan mission_plan{};
-    // 1000 items so the transfer takes long enough that a mid-flight cancel is reliable.
-    for (unsigned i = 0; i < 1000; ++i) {
+    // 10000 items so the transfer takes long enough that a mid-flight cancel is reliable
+    // even on a fast loopback link where the user callback queue lags behind.
+    for (unsigned i = 0; i < 10000; ++i) {
         mission_plan.mission_items.push_back(
             add_waypoint(47.3981703270545, 8.54564902186397, 20.0, 3.0, true, -90.0, 0.0, false));
     }
