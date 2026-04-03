@@ -4,7 +4,6 @@
 [![macOS](https://github.com/mavlink/MAVSDK/actions/workflows/macos.yml/badge.svg?branch=main)](https://github.com/mavlink/MAVSDK/actions/workflows/macos.yml)
 [![Windows](https://github.com/mavlink/MAVSDK/actions/workflows/windows.yml/badge.svg?branch=main)](https://github.com/mavlink/MAVSDK/actions/workflows/windows.yml)
 [![Docs](https://github.com/mavlink/MAVSDK/actions/workflows/docs_deploy.yml/badge.svg?branch=main)](https://github.com/mavlink/MAVSDK/actions/workflows/docs_deploy.yml)
-[![Coverage Status](https://coveralls.io/repos/github/mavlink/MAVSDK/badge.svg?branch=main)](https://coveralls.io/github/mavlink/MAVSDK?branch=main)
 
 ## Description
 
