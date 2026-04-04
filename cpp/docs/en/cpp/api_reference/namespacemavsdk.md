@@ -73,6 +73,7 @@ MAVSDK_PUBLIC std::ostream & | [operator<<](#namespacemavsdk_1afe9c20bc5ec76ce95
 MAVSDK_PUBLIC std::string | [base64_encode](#namespacemavsdk_1a941ae59331101898e2cbe2720d4d16b3) (std::vector< uint8_t > & raw) | Encode raw bytes to a base64 string.
 MAVSDK_PUBLIC std::vector< uint8_t > | [base64_decode](#namespacemavsdk_1a7f2b751289c1257fccf1d23aa087656a) (const std::string & str) | Decode a base64 string into raw bytes.
 MAVSDK_TEST_EXPORT std::ostream & | [operator<<](#namespacemavsdk_1a4582b6eac9ac0bd0cdda49aecaf4395b) (std::ostream & os, const [CompatibilityMode](namespacemavsdk.md#namespacemavsdk_1af0f9146b2086797ae56671d20bd29d00) & mode) | Stream operator to print information about a `CompatibilityMode`.
+MAVSDK_PUBLIC std::string_view | [to_string](#namespacemavsdk_1a3aac85f81f4b57b1e94ee6444126da67) (const [ConnectionResult](namespacemavsdk.md#namespacemavsdk_1a0bad93f6d037051ac3906a0bcc09f992) & result) | Convert `ConnectionResult` to string.
 MAVSDK_PUBLIC std::ostream & | [operator<<](#namespacemavsdk_1ad44fcd033d04558206f7b68517308071) (std::ostream & str, const [ConnectionResult](namespacemavsdk.md#namespacemavsdk_1a0bad93f6d037051ac3906a0bcc09f992) & result) | Stream operator to print information about a `ConnectionResult`.
 &nbsp; | [overloaded](#namespacemavsdk_1a724e321aaff91eb2ba28279e0292e552) (Ts...)-> overloaded< Ts... > | Template deduction helper for `overloaded`
 std::ostream & | [operator<<](#namespacemavsdk_1a3e7a55e89629afd2a079d79c047e8dbd) (std::ostream & os, const [Vehicle](namespacemavsdk.md#namespacemavsdk_1a9e3a3a502dc8313cb931a8a44cc6f95b) & vehicle) | Stream operator to print information about a `Vehicle`.
@@ -310,6 +311,27 @@ Stream operator to print information about a `CompatibilityMode`.
 **Returns**
 
 &emsp;MAVSDK_TEST_EXPORT std::ostream & - A reference to the stream.
+
+### to_string() {#namespacemavsdk_1a3aac85f81f4b57b1e94ee6444126da67}
+
+```
+#include: connection_result.h
+```
+```cpp
+MAVSDK_PUBLIC std::string_view mavsdk::to_string(const ConnectionResult &result)
+```
+
+
+Convert `ConnectionResult` to string.
+
+
+**Parameters**
+
+* const [ConnectionResult](namespacemavsdk.md#namespacemavsdk_1a0bad93f6d037051ac3906a0bcc09f992)& **result** -
+
+**Returns**
+
+&emsp;MAVSDK_PUBLIC std::string_view - A string representation of the enum.
 
 ### operator<<() {#namespacemavsdk_1ad44fcd033d04558206f7b68517308071}
 

@@ -33,10 +33,13 @@ else()
     add_library(mavsdk_server ${MAVSDK_SERVER_SOURCES})
 endif()
 
+find_package(fmt REQUIRED)
+
 target_link_libraries(mavsdk_server
     PRIVATE
     mavsdk
     gRPC::grpc++
+    fmt::fmt
 )
 
 target_compile_definitions(mavsdk_server PRIVATE MAVSDK_BUILD)
