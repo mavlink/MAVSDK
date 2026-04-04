@@ -133,38 +133,43 @@ operator<<(std::ostream& str, MissionRawServer::MissionProgress const& mission_p
     return str;
 }
 
-MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, MissionRawServer::Result const& result)
+MAVSDK_PUBLIC std::string_view to_string(MissionRawServer::Result const& result)
 {
     switch (result) {
         case MissionRawServer::Result::Unknown:
-            return str << "Unknown";
+            return "Unknown";
         case MissionRawServer::Result::Success:
-            return str << "Success";
+            return "Success";
         case MissionRawServer::Result::Error:
-            return str << "Error";
+            return "Error";
         case MissionRawServer::Result::TooManyMissionItems:
-            return str << "Too Many Mission Items";
+            return "Too Many Mission Items";
         case MissionRawServer::Result::Busy:
-            return str << "Busy";
+            return "Busy";
         case MissionRawServer::Result::Timeout:
-            return str << "Timeout";
+            return "Timeout";
         case MissionRawServer::Result::InvalidArgument:
-            return str << "Invalid Argument";
+            return "Invalid Argument";
         case MissionRawServer::Result::Unsupported:
-            return str << "Unsupported";
+            return "Unsupported";
         case MissionRawServer::Result::NoMissionAvailable:
-            return str << "No Mission Available";
+            return "No Mission Available";
         case MissionRawServer::Result::UnsupportedMissionCmd:
-            return str << "Unsupported Mission Cmd";
+            return "Unsupported Mission Cmd";
         case MissionRawServer::Result::TransferCancelled:
-            return str << "Transfer Cancelled";
+            return "Transfer Cancelled";
         case MissionRawServer::Result::NoSystem:
-            return str << "No System";
+            return "No System";
         case MissionRawServer::Result::Next:
-            return str << "Next";
+            return "Next";
         default:
-            return str << "Unknown";
+            return "Unknown";
     }
+}
+
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, MissionRawServer::Result const& result)
+{
+    return str << to_string(result);
 }
 
 } // namespace mavsdk

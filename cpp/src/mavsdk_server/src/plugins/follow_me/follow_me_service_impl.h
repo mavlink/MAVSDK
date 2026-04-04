@@ -47,8 +47,9 @@ public:
     {
         switch (follow_altitude_mode) {
             default:
-                LogErr() << "Unknown follow_altitude_mode enum value: "
-                         << static_cast<int>(follow_altitude_mode);
+                LogErr(
+                    "Unknown follow_altitude_mode enum value: {}",
+                    static_cast<int>(follow_altitude_mode));
             // FALLTHROUGH
             case mavsdk::FollowMe::Config::FollowAltitudeMode::Constant:
                 return rpc::follow_me::Config_FollowAltitudeMode_FOLLOW_ALTITUDE_MODE_CONSTANT;
@@ -64,8 +65,9 @@ public:
     {
         switch (follow_altitude_mode) {
             default:
-                LogErr() << "Unknown follow_altitude_mode enum value: "
-                         << static_cast<int>(follow_altitude_mode);
+                LogErr(
+                    "Unknown follow_altitude_mode enum value: {}",
+                    static_cast<int>(follow_altitude_mode));
             // FALLTHROUGH
             case rpc::follow_me::Config_FollowAltitudeMode_FOLLOW_ALTITUDE_MODE_CONSTANT:
                 return mavsdk::FollowMe::Config::FollowAltitudeMode::Constant;
@@ -160,7 +162,7 @@ public:
     {
         switch (result) {
             default:
-                LogErr() << "Unknown result enum value: " << static_cast<int>(result);
+                LogErr("Unknown result enum value: {}", static_cast<int>(result));
             // FALLTHROUGH
             case mavsdk::FollowMe::Result::Unknown:
                 return rpc::follow_me::FollowMeResult_Result_RESULT_UNKNOWN;
@@ -188,7 +190,7 @@ public:
     {
         switch (result) {
             default:
-                LogErr() << "Unknown result enum value: " << static_cast<int>(result);
+                LogErr("Unknown result enum value: {}", static_cast<int>(result));
             // FALLTHROUGH
             case rpc::follow_me::FollowMeResult_Result_RESULT_UNKNOWN:
                 return mavsdk::FollowMe::Result::Unknown;
@@ -244,7 +246,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "SetConfig sent with a null request! Ignoring...";
+            LogWarn("SetConfig sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -291,7 +293,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "SetTargetLocation sent with a null request! Ignoring...";
+            LogWarn("SetTargetLocation sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 

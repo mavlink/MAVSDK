@@ -278,7 +278,7 @@ Calibration::Result CalibrationImpl::cancel()
 
     switch (_state) {
         case State::None:
-            LogWarn() << "No calibration to cancel";
+            LogWarn("No calibration to cancel");
             return Calibration::Result::Success;
         case State::GyroCalibration:
             break;
@@ -503,14 +503,14 @@ void CalibrationImpl::report_done()
 
 void CalibrationImpl::report_failed(const std::string& failed)
 {
-    LogErr() << "Calibration failed: " << failed;
+    LogErr("Calibration failed: {}", failed);
     const Calibration::ProgressData progress_data;
     call_callback(_calibration_callback, Calibration::Result::Failed, progress_data);
 }
 
 void CalibrationImpl::report_cancelled()
 {
-    LogWarn() << "Calibration was cancelled";
+    LogWarn("Calibration was cancelled");
     const Calibration::ProgressData progress_data;
     call_callback(_calibration_callback, Calibration::Result::Cancelled, progress_data);
 }

@@ -68,6 +68,13 @@ public:
     };
 
     /**
+     * @brief Convert `Param::ProtocolVersion` to string.
+     *
+     * @return A string representation of the enum.
+     */
+    friend MAVSDK_PUBLIC std::string_view to_string(Param::ProtocolVersion const& protocol_version);
+
+    /**
      * @brief Stream operator to print information about a `Param::ProtocolVersion`.
      *
      * @return A reference to the stream.
@@ -195,6 +202,13 @@ public:
         TypeMismatch, /**< @brief Parameter type does not match expected type. */
         ReadFail, /**< @brief Parameter exists but reading failed. */
     };
+
+    /**
+     * @brief Convert `Param::Result` to string.
+     *
+     * @return A string representation of the enum.
+     */
+    friend MAVSDK_PUBLIC std::string_view to_string(Param::Result const& result);
 
     /**
      * @brief Stream operator to print information about a `Param::Result`.

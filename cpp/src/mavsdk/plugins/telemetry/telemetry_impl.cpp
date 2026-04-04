@@ -1027,7 +1027,7 @@ void TelemetryImpl::process_gps_raw_int(const mavlink_message_t& message)
             break;
 
         default:
-            LogErr() << "Received unknown GPS fix type!";
+            LogErr("Received unknown GPS fix type!");
             fix_type = Telemetry::FixType::NoGps;
             break;
     }
@@ -1338,7 +1338,7 @@ void TelemetryImpl::receive_statustext(const MavlinkStatustextHandler::Statustex
             new_status_text.type = Telemetry::StatusTextType::Debug;
             break;
         default:
-            LogWarn() << "Unknown StatusText severity";
+            LogWarn("Unknown StatusText severity");
             new_status_text.type = Telemetry::StatusTextType::Info;
             break;
     }

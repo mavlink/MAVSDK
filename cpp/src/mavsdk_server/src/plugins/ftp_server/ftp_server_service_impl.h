@@ -47,7 +47,7 @@ public:
     {
         switch (result) {
             default:
-                LogErr() << "Unknown result enum value: " << static_cast<int>(result);
+                LogErr("Unknown result enum value: {}", static_cast<int>(result));
             // FALLTHROUGH
             case mavsdk::FtpServer::Result::Unknown:
                 return rpc::ftp_server::FtpServerResult_Result_RESULT_UNKNOWN;
@@ -65,7 +65,7 @@ public:
     {
         switch (result) {
             default:
-                LogErr() << "Unknown result enum value: " << static_cast<int>(result);
+                LogErr("Unknown result enum value: {}", static_cast<int>(result));
             // FALLTHROUGH
             case rpc::ftp_server::FtpServerResult_Result_RESULT_UNKNOWN:
                 return mavsdk::FtpServer::Result::Unknown;
@@ -95,7 +95,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "SetRootDir sent with a null request! Ignoring...";
+            LogWarn("SetRootDir sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 

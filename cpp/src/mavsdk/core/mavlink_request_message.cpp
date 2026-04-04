@@ -19,7 +19,7 @@ MavlinkRequestMessage::MavlinkRequestMessage(
 {
     if (const char* env_p = std::getenv("MAVSDK_COMMAND_DEBUGGING")) {
         if (std::string(env_p) == "1") {
-            LogDebug() << "Command debugging is on.";
+            LogDebug("Command debugging is on.");
             _debugging = true;
         }
     }
@@ -48,7 +48,7 @@ void MavlinkRequestMessage::request(
                 callback(MavlinkCommandSender::Result::Busy, {});
             }
             if (_debugging) {
-                LogDebug() << "Message " << item.message_id << " already requested";
+                LogDebug("Message {} already requested", item.message_id);
             }
             return;
         }
@@ -84,10 +84,12 @@ void MavlinkRequestMessage::send_request_using_new_command(WorkItem& item)
 {
     if (_debugging) {
         if (item.retries > 0) {
-            LogDebug() << "Request message " << item.message_id
-                       << " again using REQUEST_MESSAGE (retries: " << item.retries << ")";
+            LogDebug(
+                "Request message {} again using REQUEST_MESSAGE (retries: {})",
+                item.message_id,
+                item.retries);
         } else {
-            LogDebug() << "Request message " << item.message_id << " using REQUEST_MESSAGE";
+            LogDebug("Request message {} using REQUEST_MESSAGE", item.message_id);
         }
     }
 
@@ -181,8 +183,11 @@ bool MavlinkRequestMessage::try_sending_request_using_old_command(WorkItem& item
     }
 
     if (_debugging) {
-        LogDebug() << "Request message " << item.message_id << " again using " << command_name
-                   << " (retries: " << item.retries << ")";
+        LogDebug(
+            "Request message {} again using {} (retries: {})",
+            item.message_id,
+            command_name,
+            item.retries);
     }
 
     _command_sender.queue_command_async(

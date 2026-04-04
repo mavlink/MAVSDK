@@ -68,6 +68,13 @@ public:
     };
 
     /**
+     * @brief Convert `Geofence::FenceType` to string.
+     *
+     * @return A string representation of the enum.
+     */
+    friend MAVSDK_PUBLIC std::string_view to_string(Geofence::FenceType const& fence_type);
+
+    /**
      * @brief Stream operator to print information about a `Geofence::FenceType`.
      *
      * @return A reference to the stream.
@@ -182,6 +189,13 @@ public:
         InvalidArgument, /**< @brief Invalid argument. */
         NoSystem, /**< @brief No system connected. */
     };
+
+    /**
+     * @brief Convert `Geofence::Result` to string.
+     *
+     * @return A string representation of the enum.
+     */
+    friend MAVSDK_PUBLIC std::string_view to_string(Geofence::Result const& result);
 
     /**
      * @brief Stream operator to print information about a `Geofence::Result`.

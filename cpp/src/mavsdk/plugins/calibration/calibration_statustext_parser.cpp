@@ -57,10 +57,8 @@ bool CalibrationStatustextParser::check_started(const std::string& statustext)
         } else {
             _status = Status::Failed;
 
-            std::stringstream error_stream{};
-            error_stream << "Unknown calibration version stamp: " << version_stamp;
-            _failed_message = error_stream.str();
-            LogErr() << _failed_message;
+            _failed_message = fmt::format("Unknown calibration version stamp: {}", version_stamp);
+            LogErr("{}", _failed_message);
         }
         return true;
     }

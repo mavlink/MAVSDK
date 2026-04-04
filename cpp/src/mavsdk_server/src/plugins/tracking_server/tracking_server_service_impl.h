@@ -51,8 +51,7 @@ public:
     {
         switch (command_answer) {
             default:
-                LogErr() << "Unknown command_answer enum value: "
-                         << static_cast<int>(command_answer);
+                LogErr("Unknown command_answer enum value: {}", static_cast<int>(command_answer));
             // FALLTHROUGH
             case mavsdk::TrackingServer::CommandAnswer::Accepted:
                 return rpc::tracking_server::COMMAND_ANSWER_ACCEPTED;
@@ -72,8 +71,7 @@ public:
     {
         switch (command_answer) {
             default:
-                LogErr() << "Unknown command_answer enum value: "
-                         << static_cast<int>(command_answer);
+                LogErr("Unknown command_answer enum value: {}", static_cast<int>(command_answer));
             // FALLTHROUGH
             case rpc::tracking_server::COMMAND_ANSWER_ACCEPTED:
                 return mavsdk::TrackingServer::CommandAnswer::Accepted;
@@ -153,7 +151,7 @@ public:
     {
         switch (result) {
             default:
-                LogErr() << "Unknown result enum value: " << static_cast<int>(result);
+                LogErr("Unknown result enum value: {}", static_cast<int>(result));
             // FALLTHROUGH
             case mavsdk::TrackingServer::Result::Unknown:
                 return rpc::tracking_server::TrackingServerResult_Result_RESULT_UNKNOWN;
@@ -171,7 +169,7 @@ public:
     {
         switch (result) {
             default:
-                LogErr() << "Unknown result enum value: " << static_cast<int>(result);
+                LogErr("Unknown result enum value: {}", static_cast<int>(result));
             // FALLTHROUGH
             case rpc::tracking_server::TrackingServerResult_Result_RESULT_UNKNOWN:
                 return mavsdk::TrackingServer::Result::Unknown;
@@ -194,7 +192,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "SetTrackingPointStatus sent with a null request! Ignoring...";
+            LogWarn("SetTrackingPointStatus sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -214,7 +212,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "SetTrackingRectangleStatus sent with a null request! Ignoring...";
+            LogWarn("SetTrackingRectangleStatus sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -380,7 +378,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "RespondTrackingPointCommand sent with a null request! Ignoring...";
+            LogWarn("RespondTrackingPointCommand sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -411,7 +409,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "RespondTrackingRectangleCommand sent with a null request! Ignoring...";
+            LogWarn("RespondTrackingRectangleCommand sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -442,7 +440,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "RespondTrackingOffCommand sent with a null request! Ignoring...";
+            LogWarn("RespondTrackingOffCommand sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 

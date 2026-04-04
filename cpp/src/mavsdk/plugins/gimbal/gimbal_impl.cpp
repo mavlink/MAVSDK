@@ -31,7 +31,7 @@ void GimbalImpl::init()
 {
     if (const char* env_p = std::getenv("MAVSDK_GIMBAL_DEBUGGING")) {
         if (std::string(env_p) == "1") {
-            LogDebug() << "Gimbal debugging is on.";
+            LogDebug("Gimbal debugging is on.");
             _debugging = true;
         }
     }
@@ -81,9 +81,10 @@ void GimbalImpl::disable() {}
 void GimbalImpl::request_gimbal_manager_information(uint8_t target_component_id) const
 {
     if (_debugging) {
-        LogDebug() << "Requesting GIMBAL_MANAGER_INFORMATION from: "
-                   << std::to_string(_system_impl->get_system_id()) << "/"
-                   << std::to_string(target_component_id);
+        LogDebug(
+            "Requesting GIMBAL_MANAGER_INFORMATION from: {}/{}",
+            _system_impl->get_system_id(),
+            target_component_id);
     }
 
     _system_impl->mavlink_request_message().request(
@@ -93,9 +94,10 @@ void GimbalImpl::request_gimbal_manager_information(uint8_t target_component_id)
 void GimbalImpl::request_gimbal_device_information(uint8_t target_component_id) const
 {
     if (_debugging) {
-        LogDebug() << "Requesting GIMBAL_DEVICE_INFORMATION from: "
-                   << std::to_string(_system_impl->get_system_id()) << "/"
-                   << std::to_string(target_component_id);
+        LogDebug(
+            "Requesting GIMBAL_DEVICE_INFORMATION from: {}/{}",
+            _system_impl->get_system_id(),
+            target_component_id);
     }
 
     _system_impl->mavlink_request_message().request(
@@ -136,9 +138,11 @@ void GimbalImpl::process_gimbal_manager_information(const mavlink_message_t& mes
     mavlink_msg_gimbal_manager_information_decode(&message, &gimbal_manager_information);
 
     if (_debugging) {
-        LogDebug() << "Got GIMBAL_MANAGER_INFORMATION from: " << std::to_string(message.sysid)
-                   << "/" << std::to_string(message.compid) << " with gimbal_device_id: "
-                   << std::to_string(gimbal_manager_information.gimbal_device_id);
+        LogDebug(
+            "Got GIMBAL_MANAGER_INFORMATION from: {}/{} with gimbal_device_id: {}",
+            message.sysid,
+            message.compid,
+            gimbal_manager_information.gimbal_device_id);
     }
 
     std::lock_guard<std::mutex> lock(_mutex);
@@ -162,9 +166,10 @@ void GimbalImpl::process_gimbal_manager_information(const mavlink_message_t& mes
 
     if (gimbal->gimbal_manager_information_received &&
         gimbal->gimbal_device_id != gimbal_manager_information.gimbal_device_id) {
-        LogWarn() << "gimbal_manager_information.gimbal_device_id changed from "
-                  << gimbal->gimbal_device_id << " to "
-                  << gimbal_manager_information.gimbal_device_id;
+        LogWarn(
+            "gimbal_manager_information.gimbal_device_id changed from {} to {}",
+            gimbal->gimbal_device_id,
+            gimbal_manager_information.gimbal_device_id);
     }
     gimbal->gimbal_device_id = gimbal_manager_information.gimbal_device_id;
     gimbal->gimbal_manager_information_received = true;
@@ -223,9 +228,11 @@ void GimbalImpl::process_gimbal_device_information(const mavlink_message_t& mess
     mavlink_msg_gimbal_device_information_decode(&message, &gimbal_device_information);
 
     if (_debugging) {
-        LogDebug() << "Got GIMBAL_DEVICE_INFORMATION from: " << std::to_string(message.sysid) << "/"
-                   << std::to_string(message.compid) << " with gimbal_device_id: "
-                   << std::to_string(gimbal_device_information.gimbal_device_id);
+        LogDebug(
+            "Got GIMBAL_DEVICE_INFORMATION from: {}/{} with gimbal_device_id: {}",
+            message.sysid,
+            message.compid,
+            gimbal_device_information.gimbal_device_id);
     }
 
     auto maybe_gimbal = std::find_if(_gimbals.begin(), _gimbals.end(), [&](const GimbalItem& item) {
@@ -238,7 +245,7 @@ void GimbalImpl::process_gimbal_device_information(const mavlink_message_t& mess
 
     if (maybe_gimbal == _gimbals.end()) {
         if (_debugging) {
-            LogDebug() << "Didn't find gimbal for gimbal device";
+            LogDebug("Didn't find gimbal for gimbal device");
         }
         return;
     }
@@ -275,8 +282,10 @@ void GimbalImpl::process_gimbal_device_attitude_status(const mavlink_message_t& 
     }
 
     if (attitude_status.gimbal_device_id > 6) {
-        LogWarn() << "Ignoring gimbal device attitude status with invalid gimbal_device_id "
-                  << attitude_status.gimbal_device_id << " from (" << message.sysid << "/" << ")";
+        LogWarn(
+            "Ignoring gimbal device attitude status with invalid gimbal_device_id {} from ({}/)",
+            attitude_status.gimbal_device_id,
+            message.sysid);
         return;
     }
 
@@ -296,7 +305,7 @@ void GimbalImpl::process_gimbal_device_attitude_status(const mavlink_message_t& 
         if (std::any_of(_gimbals.begin(), _gimbals.end(), [](const GimbalItem& item) {
                 return item.is_valid;
             })) {
-            LogWarn() << "Received gimbal manager status for unknown gimbal.";
+            LogWarn("Received gimbal manager status for unknown gimbal.");
         }
         // Otherwise, ignore it silently
         return;
@@ -437,7 +446,7 @@ void GimbalImpl::check_is_gimbal_valid(GimbalItem* gimbal)
     // If we have gimbal_manager_information but no GIMBAL_DEVICE_INFORMATION after
     // our attempt, we continue without it since it's just nice to have.
     if (!gimbal->gimbal_device_information_received) {
-        LogWarn() << "Continuing despite GIMBAL_DEVICE_INFORMATION missing";
+        LogWarn("Continuing despite GIMBAL_DEVICE_INFORMATION missing");
     }
 
     gimbal->is_valid = true;
@@ -528,7 +537,7 @@ void GimbalImpl::set_angles_async_internal(
     switch (send_mode) {
         case Gimbal::SendMode::Stream: {
             if (_debugging) {
-                LogDebug() << "Sending GIMBAL_MANAGER_SET_ATTITUDE message with angles";
+                LogDebug("Sending GIMBAL_MANAGER_SET_ATTITUDE message with angles");
             }
             auto result =
                 _system_impl->queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
@@ -556,14 +565,14 @@ void GimbalImpl::set_angles_async_internal(
         } break;
         case Gimbal::SendMode::Once:
             if (roll_deg != 0.0f) {
-                LogWarn() << "Roll needs to be 0 for SendMode::Once.";
+                LogWarn("Roll needs to be 0 for SendMode::Once.");
                 if (callback) {
                     callback(Gimbal::Result::InvalidArgument);
                 }
 
             } else {
                 if (_debugging) {
-                    LogDebug() << "Sending DO_GIMBAL_MANAGER_PITCHYAW command with angles";
+                    LogDebug("Sending DO_GIMBAL_MANAGER_PITCHYAW command with angles");
                 }
 
                 MavlinkCommandSender::CommandLong command{};
@@ -584,7 +593,7 @@ void GimbalImpl::set_angles_async_internal(
             }
             break;
         default:
-            LogErr() << "Invalid send mode";
+            LogErr("Invalid send mode");
             if (callback) {
                 callback(Gimbal::Result::InvalidArgument);
             }
@@ -669,7 +678,7 @@ void GimbalImpl::set_angular_rates_async_internal(
             constexpr float quaternion[4] = {NAN, NAN, NAN, NAN};
 
             if (_debugging) {
-                LogDebug() << "Sending GIMBAL_MANAGER_SET_ATTITUDE message with angular rates";
+                LogDebug("Sending GIMBAL_MANAGER_SET_ATTITUDE message with angular rates");
             }
             auto result =
                 _system_impl->queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
@@ -698,14 +707,14 @@ void GimbalImpl::set_angular_rates_async_internal(
         }
         case Gimbal::SendMode::Once:
             if (roll_rate_deg_s != 0.0f) {
-                LogWarn() << "Roll rate needs to be 0 for SendMode::Once.";
+                LogWarn("Roll rate needs to be 0 for SendMode::Once.");
                 if (callback) {
                     callback(Gimbal::Result::InvalidArgument);
                 }
 
             } else {
                 if (_debugging) {
-                    LogDebug() << "Sending DO_GIMBAL_MANAGER_PITCHYAW command with angular rates";
+                    LogDebug("Sending DO_GIMBAL_MANAGER_PITCHYAW command with angular rates");
                 }
 
                 MavlinkCommandSender::CommandInt command{};
@@ -726,7 +735,7 @@ void GimbalImpl::set_angular_rates_async_internal(
             }
             break;
         default:
-            LogErr() << "Invalid send mode";
+            LogErr("Invalid send mode");
             callback(Gimbal::Result::InvalidArgument);
             break;
     }
@@ -818,7 +827,7 @@ void GimbalImpl::take_control_async(
             _system_impl->call_user_callback(
                 [callback]() { callback(Gimbal::Result::Unsupported); });
         }
-        LogErr() << "Gimbal secondary control is not implemented yet!";
+        LogErr("Gimbal secondary control is not implemented yet!");
         return;
     }
 
@@ -1033,12 +1042,12 @@ GimbalImpl::maybe_address_for_gimbal_id(int32_t gimbal_id) const
     // Assumes lock
 
     if (gimbal_id < 0) {
-        LogWarn() << "Invalid negative gimbal ID: " << gimbal_id;
+        LogWarn("Invalid negative gimbal ID: {}", gimbal_id);
         return {};
     }
 
     if (gimbal_id > _gimbals.size()) {
-        LogWarn() << "Invalid positive gimbal ID: " << gimbal_id;
+        LogWarn("Invalid positive gimbal ID: {}", gimbal_id);
         return {};
     }
 
@@ -1055,17 +1064,17 @@ GimbalImpl::GimbalItem* GimbalImpl::maybe_gimbal_item_for_gimbal_id(int32_t gimb
     // Assumes lock
 
     if (gimbal_id == 0) {
-        LogWarn() << "Invalid gimbal ID: " << gimbal_id;
+        LogWarn("Invalid gimbal ID: {}", gimbal_id);
         return nullptr;
     }
 
     if (gimbal_id < 0) {
-        LogWarn() << "Invalid negative gimbal ID: " << gimbal_id;
+        LogWarn("Invalid negative gimbal ID: {}", gimbal_id);
         return nullptr;
     }
 
     if (gimbal_id > _gimbals.size()) {
-        LogWarn() << "Invalid positive gimbal ID: " << gimbal_id;
+        LogWarn("Invalid positive gimbal ID: {}", gimbal_id);
         return nullptr;
     }
 

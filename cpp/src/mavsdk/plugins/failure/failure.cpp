@@ -24,90 +24,105 @@ Failure::inject(FailureUnit failure_unit, FailureType failure_type, int32_t inst
     return _impl->inject(failure_unit, failure_type, instance);
 }
 
-MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Failure::Result const& result)
+MAVSDK_PUBLIC std::string_view to_string(Failure::Result const& result)
 {
     switch (result) {
         case Failure::Result::Unknown:
-            return str << "Unknown";
+            return "Unknown";
         case Failure::Result::Success:
-            return str << "Success";
+            return "Success";
         case Failure::Result::NoSystem:
-            return str << "No System";
+            return "No System";
         case Failure::Result::ConnectionError:
-            return str << "Connection Error";
+            return "Connection Error";
         case Failure::Result::Unsupported:
-            return str << "Unsupported";
+            return "Unsupported";
         case Failure::Result::Denied:
-            return str << "Denied";
+            return "Denied";
         case Failure::Result::Disabled:
-            return str << "Disabled";
+            return "Disabled";
         case Failure::Result::Timeout:
-            return str << "Timeout";
+            return "Timeout";
         default:
-            return str << "Unknown";
+            return "Unknown";
+    }
+}
+
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Failure::Result const& result)
+{
+    return str << to_string(result);
+}
+
+MAVSDK_PUBLIC std::string_view to_string(Failure::FailureUnit const& failure_unit)
+{
+    switch (failure_unit) {
+        case Failure::FailureUnit::SensorGyro:
+            return "Sensor Gyro";
+        case Failure::FailureUnit::SensorAccel:
+            return "Sensor Accel";
+        case Failure::FailureUnit::SensorMag:
+            return "Sensor Mag";
+        case Failure::FailureUnit::SensorBaro:
+            return "Sensor Baro";
+        case Failure::FailureUnit::SensorGps:
+            return "Sensor Gps";
+        case Failure::FailureUnit::SensorOpticalFlow:
+            return "Sensor Optical Flow";
+        case Failure::FailureUnit::SensorVio:
+            return "Sensor Vio";
+        case Failure::FailureUnit::SensorDistanceSensor:
+            return "Sensor Distance Sensor";
+        case Failure::FailureUnit::SensorAirspeed:
+            return "Sensor Airspeed";
+        case Failure::FailureUnit::SystemBattery:
+            return "System Battery";
+        case Failure::FailureUnit::SystemMotor:
+            return "System Motor";
+        case Failure::FailureUnit::SystemServo:
+            return "System Servo";
+        case Failure::FailureUnit::SystemAvoidance:
+            return "System Avoidance";
+        case Failure::FailureUnit::SystemRcSignal:
+            return "System Rc Signal";
+        case Failure::FailureUnit::SystemMavlinkSignal:
+            return "System Mavlink Signal";
+        default:
+            return "Unknown";
     }
 }
 
 MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Failure::FailureUnit const& failure_unit)
 {
-    switch (failure_unit) {
-        case Failure::FailureUnit::SensorGyro:
-            return str << "Sensor Gyro";
-        case Failure::FailureUnit::SensorAccel:
-            return str << "Sensor Accel";
-        case Failure::FailureUnit::SensorMag:
-            return str << "Sensor Mag";
-        case Failure::FailureUnit::SensorBaro:
-            return str << "Sensor Baro";
-        case Failure::FailureUnit::SensorGps:
-            return str << "Sensor Gps";
-        case Failure::FailureUnit::SensorOpticalFlow:
-            return str << "Sensor Optical Flow";
-        case Failure::FailureUnit::SensorVio:
-            return str << "Sensor Vio";
-        case Failure::FailureUnit::SensorDistanceSensor:
-            return str << "Sensor Distance Sensor";
-        case Failure::FailureUnit::SensorAirspeed:
-            return str << "Sensor Airspeed";
-        case Failure::FailureUnit::SystemBattery:
-            return str << "System Battery";
-        case Failure::FailureUnit::SystemMotor:
-            return str << "System Motor";
-        case Failure::FailureUnit::SystemServo:
-            return str << "System Servo";
-        case Failure::FailureUnit::SystemAvoidance:
-            return str << "System Avoidance";
-        case Failure::FailureUnit::SystemRcSignal:
-            return str << "System Rc Signal";
-        case Failure::FailureUnit::SystemMavlinkSignal:
-            return str << "System Mavlink Signal";
+    return str << to_string(failure_unit);
+}
+
+MAVSDK_PUBLIC std::string_view to_string(Failure::FailureType const& failure_type)
+{
+    switch (failure_type) {
+        case Failure::FailureType::Ok:
+            return "Ok";
+        case Failure::FailureType::Off:
+            return "Off";
+        case Failure::FailureType::Stuck:
+            return "Stuck";
+        case Failure::FailureType::Garbage:
+            return "Garbage";
+        case Failure::FailureType::Wrong:
+            return "Wrong";
+        case Failure::FailureType::Slow:
+            return "Slow";
+        case Failure::FailureType::Delayed:
+            return "Delayed";
+        case Failure::FailureType::Intermittent:
+            return "Intermittent";
         default:
-            return str << "Unknown";
+            return "Unknown";
     }
 }
 
 MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Failure::FailureType const& failure_type)
 {
-    switch (failure_type) {
-        case Failure::FailureType::Ok:
-            return str << "Ok";
-        case Failure::FailureType::Off:
-            return str << "Off";
-        case Failure::FailureType::Stuck:
-            return str << "Stuck";
-        case Failure::FailureType::Garbage:
-            return str << "Garbage";
-        case Failure::FailureType::Wrong:
-            return str << "Wrong";
-        case Failure::FailureType::Slow:
-            return str << "Slow";
-        case Failure::FailureType::Delayed:
-            return str << "Delayed";
-        case Failure::FailureType::Intermittent:
-            return str << "Intermittent";
-        default:
-            return str << "Unknown";
-    }
+    return str << to_string(failure_type);
 }
 
 } // namespace mavsdk

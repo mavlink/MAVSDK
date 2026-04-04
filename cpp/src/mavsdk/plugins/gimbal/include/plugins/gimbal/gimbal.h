@@ -69,6 +69,13 @@ public:
     };
 
     /**
+     * @brief Convert `Gimbal::GimbalMode` to string.
+     *
+     * @return A string representation of the enum.
+     */
+    friend MAVSDK_PUBLIC std::string_view to_string(Gimbal::GimbalMode const& gimbal_mode);
+
+    /**
      * @brief Stream operator to print information about a `Gimbal::GimbalMode`.
      *
      * @return A reference to the stream.
@@ -84,6 +91,13 @@ public:
         Primary, /**< @brief To take primary control over the gimbal. */
         Secondary, /**< @brief To take secondary control over the gimbal. */
     };
+
+    /**
+     * @brief Convert `Gimbal::ControlMode` to string.
+     *
+     * @return A string representation of the enum.
+     */
+    friend MAVSDK_PUBLIC std::string_view to_string(Gimbal::ControlMode const& control_mode);
 
     /**
      * @brief Stream operator to print information about a `Gimbal::ControlMode`.
@@ -102,6 +116,13 @@ public:
         Stream, /**< @brief Stream setpoint without quality of service (use for setpoints faster
                    than 1 Hz).. */
     };
+
+    /**
+     * @brief Convert `Gimbal::SendMode` to string.
+     *
+     * @return A string representation of the enum.
+     */
+    friend MAVSDK_PUBLIC std::string_view to_string(Gimbal::SendMode const& send_mode);
 
     /**
      * @brief Stream operator to print information about a `Gimbal::SendMode`.
@@ -328,6 +349,13 @@ public:
         NoSystem, /**< @brief No system connected. */
         InvalidArgument, /**< @brief Invalid argument. */
     };
+
+    /**
+     * @brief Convert `Gimbal::Result` to string.
+     *
+     * @return A string representation of the enum.
+     */
+    friend MAVSDK_PUBLIC std::string_view to_string(Gimbal::Result const& result);
 
     /**
      * @brief Stream operator to print information about a `Gimbal::Result`.

@@ -33,12 +33,12 @@ TEST(SystemTest, RawBytesSendReceive)
             for (size_t i = 0; i < length; ++i) {
                 if (mavlink_parse_char(
                         MAVLINK_COMM_0, static_cast<uint8_t>(bytes[i]), &msg, &status)) {
-                    LogInfo() << "Captured outgoing message ID " << msg.msgid;
+                    LogInfo("Captured outgoing message ID {}", (int)msg.msgid);
 
                     // Look for GLOBAL_POSITION_INT message
                     if (msg.msgid == MAVLINK_MSG_ID_GLOBAL_POSITION_INT &&
                         !message_captured.exchange(true)) {
-                        LogInfo() << "Captured GLOBAL_POSITION_INT being sent";
+                        LogInfo("Captured GLOBAL_POSITION_INT being sent");
                         prom.set_value();
                     }
                 }
@@ -63,7 +63,7 @@ TEST(SystemTest, RawBytesSendReceive)
     TelemetryServer::Heading heading{};
     heading.heading_deg = 90.0f;
 
-    LogInfo() << "Publishing position via TelemetryServer...";
+    LogInfo("Publishing position via TelemetryServer...");
     telemetry_server->publish_position(position, velocity, heading);
 
     // Wait for the message to be captured
@@ -92,7 +92,7 @@ TEST(SystemTest, RawBytesSendReceive)
     uint16_t len = mavlink_msg_to_send_buffer(ping_bytes.data(), &ping_msg);
     ping_bytes.resize(len);
 
-    LogInfo() << "Passing " << len << " raw bytes (PING) into MAVSDK...";
+    LogInfo("Passing {} raw bytes (PING) into MAVSDK...", len);
 
     // This should be processed and create a system
     mavsdk_gcs.pass_received_raw_bytes(reinterpret_cast<const char*>(ping_bytes.data()), len);
@@ -104,6 +104,5 @@ TEST(SystemTest, RawBytesSendReceive)
     auto systems = mavsdk_gcs.systems();
     ASSERT_FALSE(systems.empty()) << "No system was created from received raw bytes";
     ASSERT_EQ(systems[0]->get_system_id(), 1) << "System ID mismatch";
-    LogInfo() << "Successfully created system from raw bytes with ID "
-              << systems[0]->get_system_id();
+    LogInfo("Successfully created system from raw bytes with ID {}", systems[0]->get_system_id());
 }

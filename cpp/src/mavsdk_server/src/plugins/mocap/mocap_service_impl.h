@@ -350,7 +350,7 @@ public:
     {
         switch (mav_frame) {
             default:
-                LogErr() << "Unknown mav_frame enum value: " << static_cast<int>(mav_frame);
+                LogErr("Unknown mav_frame enum value: {}", static_cast<int>(mav_frame));
             // FALLTHROUGH
             case mavsdk::Mocap::Odometry::MavFrame::MocapNed:
                 return rpc::mocap::Odometry_MavFrame_MAV_FRAME_MOCAP_NED;
@@ -364,7 +364,7 @@ public:
     {
         switch (mav_frame) {
             default:
-                LogErr() << "Unknown mav_frame enum value: " << static_cast<int>(mav_frame);
+                LogErr("Unknown mav_frame enum value: {}", static_cast<int>(mav_frame));
             // FALLTHROUGH
             case rpc::mocap::Odometry_MavFrame_MAV_FRAME_MOCAP_NED:
                 return mavsdk::Mocap::Odometry::MavFrame::MocapNed;
@@ -378,8 +378,9 @@ public:
     {
         switch (mav_estimator_type) {
             default:
-                LogErr() << "Unknown mav_estimator_type enum value: "
-                         << static_cast<int>(mav_estimator_type);
+                LogErr(
+                    "Unknown mav_estimator_type enum value: {}",
+                    static_cast<int>(mav_estimator_type));
             // FALLTHROUGH
             case mavsdk::Mocap::Odometry::MavEstimatorType::Unknown:
                 return rpc::mocap::Odometry_MavEstimatorType_MAV_ESTIMATOR_TYPE_UNKNOWN;
@@ -407,8 +408,9 @@ public:
     {
         switch (mav_estimator_type) {
             default:
-                LogErr() << "Unknown mav_estimator_type enum value: "
-                         << static_cast<int>(mav_estimator_type);
+                LogErr(
+                    "Unknown mav_estimator_type enum value: {}",
+                    static_cast<int>(mav_estimator_type));
             // FALLTHROUGH
             case rpc::mocap::Odometry_MavEstimatorType_MAV_ESTIMATOR_TYPE_UNKNOWN:
                 return mavsdk::Mocap::Odometry::MavEstimatorType::Unknown;
@@ -499,7 +501,7 @@ public:
     {
         switch (result) {
             default:
-                LogErr() << "Unknown result enum value: " << static_cast<int>(result);
+                LogErr("Unknown result enum value: {}", static_cast<int>(result));
             // FALLTHROUGH
             case mavsdk::Mocap::Result::Unknown:
                 return rpc::mocap::MocapResult_Result_RESULT_UNKNOWN;
@@ -521,7 +523,7 @@ public:
     {
         switch (result) {
             default:
-                LogErr() << "Unknown result enum value: " << static_cast<int>(result);
+                LogErr("Unknown result enum value: {}", static_cast<int>(result));
             // FALLTHROUGH
             case rpc::mocap::MocapResult_Result_RESULT_UNKNOWN:
                 return mavsdk::Mocap::Result::Unknown;
@@ -553,7 +555,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "SetVisionPositionEstimate sent with a null request! Ignoring...";
+            LogWarn("SetVisionPositionEstimate sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -582,7 +584,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "SetVisionSpeedEstimate sent with a null request! Ignoring...";
+            LogWarn("SetVisionSpeedEstimate sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -611,7 +613,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "SetAttitudePositionMocap sent with a null request! Ignoring...";
+            LogWarn("SetAttitudePositionMocap sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -640,7 +642,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "SetOdometry sent with a null request! Ignoring...";
+            LogWarn("SetOdometry sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 

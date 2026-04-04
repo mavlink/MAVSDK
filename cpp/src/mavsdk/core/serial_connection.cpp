@@ -112,7 +112,7 @@ ConnectionResult SerialConnection::setup_port()
     asio::error_code ec;
     _serial_port.open(_serial_node, ec);
     if (ec) {
-        LogErr() << "open failed: " << ec.message();
+        LogErr("open failed: {}", ec.message());
         return ConnectionResult::ConnectionError;
     }
 
@@ -125,7 +125,7 @@ ConnectionResult SerialConnection::setup_port()
     const int fd = _serial_port.native_handle();
 
     if (tcgetattr(fd, &tc) != 0) {
-        LogErr() << "tcgetattr failed: " << GET_ERROR();
+        LogErr("tcgetattr failed: {}", GET_ERROR());
         _serial_port.close(ec);
         return ConnectionResult::ConnectionError;
     }
@@ -157,19 +157,19 @@ ConnectionResult SerialConnection::setup_port()
     }
 
     if (cfsetispeed(&tc, baudrate_or_define) != 0) {
-        LogErr() << "cfsetispeed failed: " << GET_ERROR();
+        LogErr("cfsetispeed failed: {}", GET_ERROR());
         _serial_port.close(ec);
         return ConnectionResult::ConnectionError;
     }
 
     if (cfsetospeed(&tc, baudrate_or_define) != 0) {
-        LogErr() << "cfsetospeed failed: " << GET_ERROR();
+        LogErr("cfsetospeed failed: {}", GET_ERROR());
         _serial_port.close(ec);
         return ConnectionResult::ConnectionError;
     }
 
     if (tcsetattr(fd, TCSANOW, &tc) != 0) {
-        LogErr() << "tcsetattr failed: " << GET_ERROR();
+        LogErr("tcsetattr failed: {}", GET_ERROR());
         _serial_port.close(ec);
         return ConnectionResult::ConnectionError;
     }
@@ -183,7 +183,7 @@ ConnectionResult SerialConnection::setup_port()
     dcb.DCBlength = sizeof(DCB);
 
     if (!GetCommState(handle, &dcb)) {
-        LogErr() << "GetCommState failed with error: " << GET_ERROR();
+        LogErr("GetCommState failed with error: {}", GET_ERROR());
         return ConnectionResult::ConnectionError;
     }
 
@@ -206,7 +206,7 @@ ConnectionResult SerialConnection::setup_port()
     dcb.fDsrSensitivity = FALSE;
 
     if (!SetCommState(handle, &dcb)) {
-        LogErr() << "SetCommState failed with error: " << GET_ERROR();
+        LogErr("SetCommState failed with error: {}", GET_ERROR());
         return ConnectionResult::ConnectionError;
     }
 
@@ -214,7 +214,7 @@ ConnectionResult SerialConnection::setup_port()
     // the OS never times out a read prematurely.
     COMMTIMEOUTS timeout{};
     if (!SetCommTimeouts(handle, &timeout)) {
-        LogErr() << "SetCommTimeouts failed with error: " << GET_ERROR();
+        LogErr("SetCommTimeouts failed with error: {}", GET_ERROR());
         return ConnectionResult::ConnectionError;
     }
 #endif
@@ -275,7 +275,7 @@ std::pair<bool, std::string> SerialConnection::send_raw_bytes(const char* bytes,
 
     if (ec) {
         std::string msg = "write failure: " + ec.message();
-        LogErr() << msg;
+        LogErr("{}", msg);
         return {false, std::move(msg)};
     }
 
@@ -293,7 +293,7 @@ void SerialConnection::do_receive()
             }
 
             if (ec) {
-                LogErr() << "read failure: " << ec.message();
+                LogErr("read failure: {}", ec.message());
                 // Do not re-arm on hard errors (port removed, etc.).
                 return;
             }
@@ -365,7 +365,7 @@ int SerialConnection::define_from_baudrate(int baudrate)
         case 4000000:
             return B4000000;
         default:
-            LogErr() << "Unknown baudrate";
+            LogErr("Unknown baudrate");
             return -1;
     }
 }

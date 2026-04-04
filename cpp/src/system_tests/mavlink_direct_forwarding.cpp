@@ -38,7 +38,7 @@ TEST(SystemTest, MavlinkDirectForwardingKnownMessage)
     ASSERT_EQ(
         mavsdk_receiver.add_any_connection("udpin://0.0.0.0:17011"), ConnectionResult::Success);
 
-    LogInfo() << "Waiting for connections to establish...";
+    LogInfo("Waiting for connections to establish...");
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
     // Receiver discovers the sender system (autopilot) through the forwarder
@@ -70,12 +70,12 @@ TEST(SystemTest, MavlinkDirectForwardingKnownMessage)
 
     auto handle = receiver_mavlink_direct.subscribe_message(
         "GLOBAL_POSITION_INT", [&prom](const MavlinkDirect::MavlinkMessage& message) {
-            LogInfo() << "Receiver got forwarded known message: " << message.fields_json;
+            LogInfo("Receiver got forwarded known message: {}", message.fields_json);
             prom.set_value(message);
         });
 
     // Send known message from sender
-    LogInfo() << "Sending known GLOBAL_POSITION_INT message through forwarder...";
+    LogInfo("Sending known GLOBAL_POSITION_INT message through forwarder...");
     MavlinkDirect::MavlinkMessage test_message;
     test_message.message_name = "GLOBAL_POSITION_INT";
     test_message.system_id = 1;
@@ -157,7 +157,7 @@ TEST(SystemTest, MavlinkDirectForwardingUnknownMessage)
     </messages>
 </mavlink>)";
 
-    LogInfo() << "Waiting for connections to establish...";
+    LogInfo("Waiting for connections to establish...");
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
     // Receiver discovers the sender system (autopilot) through the forwarder
@@ -196,7 +196,7 @@ TEST(SystemTest, MavlinkDirectForwardingUnknownMessage)
     auto handle = receiver_mavlink_direct.subscribe_message(
         "CUSTOM_FORWARD_TEST",
         [&prom, &message_received](const MavlinkDirect::MavlinkMessage& message) {
-            LogInfo() << "Receiver got forwarded custom message: " << message.fields_json;
+            LogInfo("Receiver got forwarded custom message: {}", message.fields_json);
             if (!message_received.exchange(true)) {
                 // Only set the promise once, even if we receive the message multiple times
                 prom.set_value(message);
@@ -204,7 +204,7 @@ TEST(SystemTest, MavlinkDirectForwardingUnknownMessage)
         });
 
     // Send custom message from sender
-    LogInfo() << "Sending custom message through forwarder...";
+    LogInfo("Sending custom message through forwarder...");
     MavlinkDirect::MavlinkMessage test_message;
     test_message.message_name = "CUSTOM_FORWARD_TEST";
     test_message.system_id = 1;
@@ -217,7 +217,7 @@ TEST(SystemTest, MavlinkDirectForwardingUnknownMessage)
     EXPECT_EQ(MavlinkDirect::Result::Success, sender_mavlink_direct.send_message(test_message));
 
     // Wait for message to be received through the forwarder
-    LogInfo() << "Waiting for forwarded message...";
+    LogInfo("Waiting for forwarded message...");
     auto wait_result = fut.wait_for(std::chrono::seconds(3));
 
     ASSERT_EQ(wait_result, std::future_status::ready);

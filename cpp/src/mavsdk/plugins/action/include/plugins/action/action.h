@@ -72,6 +72,14 @@ public:
     };
 
     /**
+     * @brief Convert `Action::OrbitYawBehavior` to string.
+     *
+     * @return A string representation of the enum.
+     */
+    friend MAVSDK_PUBLIC std::string_view
+    to_string(Action::OrbitYawBehavior const& orbit_yaw_behavior);
+
+    /**
      * @brief Stream operator to print information about a `Action::OrbitYawBehavior`.
      *
      * @return A reference to the stream.
@@ -86,6 +94,13 @@ public:
         On, /**< @brief Turn the relay off. */
         Off, /**< @brief Turn the relay on.. */
     };
+
+    /**
+     * @brief Convert `Action::RelayCommand` to string.
+     *
+     * @return A string representation of the enum.
+     */
+    friend MAVSDK_PUBLIC std::string_view to_string(Action::RelayCommand const& relay_command);
 
     /**
      * @brief Stream operator to print information about a `Action::RelayCommand`.
@@ -116,6 +131,13 @@ public:
         Failed, /**< @brief Action failed. */
         InvalidArgument, /**< @brief Invalid argument. */
     };
+
+    /**
+     * @brief Convert `Action::Result` to string.
+     *
+     * @return A string representation of the enum.
+     */
+    friend MAVSDK_PUBLIC std::string_view to_string(Action::Result const& result);
 
     /**
      * @brief Stream operator to print information about a `Action::Result`.

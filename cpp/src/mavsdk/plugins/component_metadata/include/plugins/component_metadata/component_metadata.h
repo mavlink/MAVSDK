@@ -72,6 +72,14 @@ public:
     };
 
     /**
+     * @brief Convert `ComponentMetadata::MetadataType` to string.
+     *
+     * @return A string representation of the enum.
+     */
+    friend MAVSDK_PUBLIC std::string_view
+    to_string(ComponentMetadata::MetadataType const& metadata_type);
+
+    /**
      * @brief Stream operator to print information about a `ComponentMetadata::MetadataType`.
      *
      * @return A reference to the stream.
@@ -116,6 +124,13 @@ public:
         NoSystem, /**< @brief No system. */
         NotRequested, /**< @brief Not requested. */
     };
+
+    /**
+     * @brief Convert `ComponentMetadata::Result` to string.
+     *
+     * @return A string representation of the enum.
+     */
+    friend MAVSDK_PUBLIC std::string_view to_string(ComponentMetadata::Result const& result);
 
     /**
      * @brief Stream operator to print information about a `ComponentMetadata::Result`.

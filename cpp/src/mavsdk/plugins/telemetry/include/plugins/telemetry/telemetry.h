@@ -76,6 +76,13 @@ public:
     };
 
     /**
+     * @brief Convert `Telemetry::FixType` to string.
+     *
+     * @return A string representation of the enum.
+     */
+    friend MAVSDK_PUBLIC std::string_view to_string(Telemetry::FixType const& fix_type);
+
+    /**
      * @brief Stream operator to print information about a `Telemetry::FixType`.
      *
      * @return A reference to the stream.
@@ -93,6 +100,14 @@ public:
         Avionics, /**< @brief Avionics battery. */
         Payload, /**< @brief Payload battery. */
     };
+
+    /**
+     * @brief Convert `Telemetry::BatteryFunction` to string.
+     *
+     * @return A string representation of the enum.
+     */
+    friend MAVSDK_PUBLIC std::string_view
+    to_string(Telemetry::BatteryFunction const& battery_function);
 
     /**
      * @brief Stream operator to print information about a `Telemetry::BatteryFunction`.
@@ -127,6 +142,13 @@ public:
     };
 
     /**
+     * @brief Convert `Telemetry::FlightMode` to string.
+     *
+     * @return A string representation of the enum.
+     */
+    friend MAVSDK_PUBLIC std::string_view to_string(Telemetry::FlightMode const& flight_mode);
+
+    /**
      * @brief Stream operator to print information about a `Telemetry::FlightMode`.
      *
      * @return A reference to the stream.
@@ -149,6 +171,14 @@ public:
     };
 
     /**
+     * @brief Convert `Telemetry::StatusTextType` to string.
+     *
+     * @return A string representation of the enum.
+     */
+    friend MAVSDK_PUBLIC std::string_view
+    to_string(Telemetry::StatusTextType const& status_text_type);
+
+    /**
      * @brief Stream operator to print information about a `Telemetry::StatusTextType`.
      *
      * @return A reference to the stream.
@@ -168,6 +198,13 @@ public:
     };
 
     /**
+     * @brief Convert `Telemetry::LandedState` to string.
+     *
+     * @return A string representation of the enum.
+     */
+    friend MAVSDK_PUBLIC std::string_view to_string(Telemetry::LandedState const& landed_state);
+
+    /**
      * @brief Stream operator to print information about a `Telemetry::LandedState`.
      *
      * @return A reference to the stream.
@@ -185,6 +222,13 @@ public:
         Mc, /**< @brief VTOL is in multicopter state. */
         Fw, /**< @brief VTOL is in fixed-wing state. */
     };
+
+    /**
+     * @brief Convert `Telemetry::VtolState` to string.
+     *
+     * @return A string representation of the enum.
+     */
+    friend MAVSDK_PUBLIC std::string_view to_string(Telemetry::VtolState const& vtol_state);
 
     /**
      * @brief Stream operator to print information about a `Telemetry::VtolState`.
@@ -672,6 +716,14 @@ public:
         };
 
         /**
+         * @brief Convert `Telemetry::MavFrame` to string.
+         *
+         * @return A string representation of the enum.
+         */
+        friend MAVSDK_PUBLIC std::string_view
+        to_string(Telemetry::Odometry::MavFrame const& mav_frame);
+
+        /**
          * @brief Stream operator to print information about a `Telemetry::MavFrame`.
          *
          * @return A reference to the stream.
@@ -1111,6 +1163,13 @@ public:
         Timeout, /**< @brief Request timed out. */
         Unsupported, /**< @brief Request not supported. */
     };
+
+    /**
+     * @brief Convert `Telemetry::Result` to string.
+     *
+     * @return A string representation of the enum.
+     */
+    friend MAVSDK_PUBLIC std::string_view to_string(Telemetry::Result const& result);
 
     /**
      * @brief Stream operator to print information about a `Telemetry::Result`.

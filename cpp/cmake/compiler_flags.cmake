@@ -13,6 +13,9 @@ if(MSVC)
     # Needed by big auto-generated grpc/protobuf header files
     add_definitions(-bigobj)
 
+    # Enable UTF-8 support (required by fmtlib Unicode features)
+    add_compile_options(/utf-8)
+
     if(NOT BUILD_SHARED_LIBS)
         add_definitions(-DCURL_STATICLIB)
     endif()

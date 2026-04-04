@@ -53,8 +53,8 @@ public:
     {
         switch (rejection_reason) {
             default:
-                LogErr() << "Unknown rejection_reason enum value: "
-                         << static_cast<int>(rejection_reason);
+                LogErr(
+                    "Unknown rejection_reason enum value: {}", static_cast<int>(rejection_reason));
             // FALLTHROUGH
             case mavsdk::ArmAuthorizerServer::RejectionReason::Generic:
                 return rpc::arm_authorizer_server::REJECTION_REASON_GENERIC;
@@ -76,8 +76,8 @@ public:
     {
         switch (rejection_reason) {
             default:
-                LogErr() << "Unknown rejection_reason enum value: "
-                         << static_cast<int>(rejection_reason);
+                LogErr(
+                    "Unknown rejection_reason enum value: {}", static_cast<int>(rejection_reason));
             // FALLTHROUGH
             case rpc::arm_authorizer_server::REJECTION_REASON_GENERIC:
                 return mavsdk::ArmAuthorizerServer::RejectionReason::Generic;
@@ -99,7 +99,7 @@ public:
     {
         switch (result) {
             default:
-                LogErr() << "Unknown result enum value: " << static_cast<int>(result);
+                LogErr("Unknown result enum value: {}", static_cast<int>(result));
             // FALLTHROUGH
             case mavsdk::ArmAuthorizerServer::Result::Unknown:
                 return rpc::arm_authorizer_server::ArmAuthorizerServerResult_Result_RESULT_UNKNOWN;
@@ -115,7 +115,7 @@ public:
     {
         switch (result) {
             default:
-                LogErr() << "Unknown result enum value: " << static_cast<int>(result);
+                LogErr("Unknown result enum value: {}", static_cast<int>(result));
             // FALLTHROUGH
             case rpc::arm_authorizer_server::ArmAuthorizerServerResult_Result_RESULT_UNKNOWN:
                 return mavsdk::ArmAuthorizerServer::Result::Unknown;
@@ -184,7 +184,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "AcceptArmAuthorization sent with a null request! Ignoring...";
+            LogWarn("AcceptArmAuthorization sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -215,7 +215,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "RejectArmAuthorization sent with a null request! Ignoring...";
+            LogWarn("RejectArmAuthorization sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 

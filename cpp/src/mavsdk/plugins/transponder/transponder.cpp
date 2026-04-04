@@ -91,88 +91,103 @@ operator<<(std::ostream& str, Transponder::AdsbVehicle const& adsb_vehicle)
     return str;
 }
 
-MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Transponder::Result const& result)
+MAVSDK_PUBLIC std::string_view to_string(Transponder::Result const& result)
 {
     switch (result) {
         case Transponder::Result::Unknown:
-            return str << "Unknown";
+            return "Unknown";
         case Transponder::Result::Success:
-            return str << "Success";
+            return "Success";
         case Transponder::Result::NoSystem:
-            return str << "No System";
+            return "No System";
         case Transponder::Result::ConnectionError:
-            return str << "Connection Error";
+            return "Connection Error";
         case Transponder::Result::Busy:
-            return str << "Busy";
+            return "Busy";
         case Transponder::Result::CommandDenied:
-            return str << "Command Denied";
+            return "Command Denied";
         case Transponder::Result::Timeout:
-            return str << "Timeout";
+            return "Timeout";
         default:
-            return str << "Unknown";
+            return "Unknown";
+    }
+}
+
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Transponder::Result const& result)
+{
+    return str << to_string(result);
+}
+
+MAVSDK_PUBLIC std::string_view to_string(Transponder::AdsbEmitterType const& adsb_emitter_type)
+{
+    switch (adsb_emitter_type) {
+        case Transponder::AdsbEmitterType::NoInfo:
+            return "No Info";
+        case Transponder::AdsbEmitterType::Light:
+            return "Light";
+        case Transponder::AdsbEmitterType::Small:
+            return "Small";
+        case Transponder::AdsbEmitterType::Large:
+            return "Large";
+        case Transponder::AdsbEmitterType::HighVortexLarge:
+            return "High Vortex Large";
+        case Transponder::AdsbEmitterType::Heavy:
+            return "Heavy";
+        case Transponder::AdsbEmitterType::HighlyManuv:
+            return "Highly Manuv";
+        case Transponder::AdsbEmitterType::Rotocraft:
+            return "Rotocraft";
+        case Transponder::AdsbEmitterType::Unassigned:
+            return "Unassigned";
+        case Transponder::AdsbEmitterType::Glider:
+            return "Glider";
+        case Transponder::AdsbEmitterType::LighterAir:
+            return "Lighter Air";
+        case Transponder::AdsbEmitterType::Parachute:
+            return "Parachute";
+        case Transponder::AdsbEmitterType::UltraLight:
+            return "Ultra Light";
+        case Transponder::AdsbEmitterType::Unassigned2:
+            return "Unassigned2";
+        case Transponder::AdsbEmitterType::Uav:
+            return "Uav";
+        case Transponder::AdsbEmitterType::Space:
+            return "Space";
+        case Transponder::AdsbEmitterType::Unassgined3:
+            return "Unassgined3";
+        case Transponder::AdsbEmitterType::EmergencySurface:
+            return "Emergency Surface";
+        case Transponder::AdsbEmitterType::ServiceSurface:
+            return "Service Surface";
+        case Transponder::AdsbEmitterType::PointObstacle:
+            return "Point Obstacle";
+        default:
+            return "Unknown";
     }
 }
 
 MAVSDK_PUBLIC std::ostream&
 operator<<(std::ostream& str, Transponder::AdsbEmitterType const& adsb_emitter_type)
 {
-    switch (adsb_emitter_type) {
-        case Transponder::AdsbEmitterType::NoInfo:
-            return str << "No Info";
-        case Transponder::AdsbEmitterType::Light:
-            return str << "Light";
-        case Transponder::AdsbEmitterType::Small:
-            return str << "Small";
-        case Transponder::AdsbEmitterType::Large:
-            return str << "Large";
-        case Transponder::AdsbEmitterType::HighVortexLarge:
-            return str << "High Vortex Large";
-        case Transponder::AdsbEmitterType::Heavy:
-            return str << "Heavy";
-        case Transponder::AdsbEmitterType::HighlyManuv:
-            return str << "Highly Manuv";
-        case Transponder::AdsbEmitterType::Rotocraft:
-            return str << "Rotocraft";
-        case Transponder::AdsbEmitterType::Unassigned:
-            return str << "Unassigned";
-        case Transponder::AdsbEmitterType::Glider:
-            return str << "Glider";
-        case Transponder::AdsbEmitterType::LighterAir:
-            return str << "Lighter Air";
-        case Transponder::AdsbEmitterType::Parachute:
-            return str << "Parachute";
-        case Transponder::AdsbEmitterType::UltraLight:
-            return str << "Ultra Light";
-        case Transponder::AdsbEmitterType::Unassigned2:
-            return str << "Unassigned2";
-        case Transponder::AdsbEmitterType::Uav:
-            return str << "Uav";
-        case Transponder::AdsbEmitterType::Space:
-            return str << "Space";
-        case Transponder::AdsbEmitterType::Unassgined3:
-            return str << "Unassgined3";
-        case Transponder::AdsbEmitterType::EmergencySurface:
-            return str << "Emergency Surface";
-        case Transponder::AdsbEmitterType::ServiceSurface:
-            return str << "Service Surface";
-        case Transponder::AdsbEmitterType::PointObstacle:
-            return str << "Point Obstacle";
+    return str << to_string(adsb_emitter_type);
+}
+
+MAVSDK_PUBLIC std::string_view to_string(Transponder::AdsbAltitudeType const& adsb_altitude_type)
+{
+    switch (adsb_altitude_type) {
+        case Transponder::AdsbAltitudeType::PressureQnh:
+            return "Pressure Qnh";
+        case Transponder::AdsbAltitudeType::Geometric:
+            return "Geometric";
         default:
-            return str << "Unknown";
+            return "Unknown";
     }
 }
 
 MAVSDK_PUBLIC std::ostream&
 operator<<(std::ostream& str, Transponder::AdsbAltitudeType const& adsb_altitude_type)
 {
-    switch (adsb_altitude_type) {
-        case Transponder::AdsbAltitudeType::PressureQnh:
-            return str << "Pressure Qnh";
-        case Transponder::AdsbAltitudeType::Geometric:
-            return str << "Geometric";
-        default:
-            return str << "Unknown";
-    }
+    return str << to_string(adsb_altitude_type);
 }
 
 } // namespace mavsdk

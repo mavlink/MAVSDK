@@ -88,7 +88,7 @@ public:
     {
         switch (result) {
             default:
-                LogErr() << "Unknown result enum value: " << static_cast<int>(result);
+                LogErr("Unknown result enum value: {}", static_cast<int>(result));
             // FALLTHROUGH
             case mavsdk::MavlinkDirect::Result::Unknown:
                 return rpc::mavlink_direct::MavlinkDirectResult_Result_RESULT_UNKNOWN;
@@ -114,7 +114,7 @@ public:
     {
         switch (result) {
             default:
-                LogErr() << "Unknown result enum value: " << static_cast<int>(result);
+                LogErr("Unknown result enum value: {}", static_cast<int>(result));
             // FALLTHROUGH
             case rpc::mavlink_direct::MavlinkDirectResult_Result_RESULT_UNKNOWN:
                 return mavsdk::MavlinkDirect::Result::Unknown;
@@ -150,7 +150,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "SendMessage sent with a null request! Ignoring...";
+            LogWarn("SendMessage sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -222,7 +222,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "LoadCustomXml sent with a null request! Ignoring...";
+            LogWarn("LoadCustomXml sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 

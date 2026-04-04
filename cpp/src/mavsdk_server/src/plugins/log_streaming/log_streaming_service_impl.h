@@ -68,7 +68,7 @@ public:
     {
         switch (result) {
             default:
-                LogErr() << "Unknown result enum value: " << static_cast<int>(result);
+                LogErr("Unknown result enum value: {}", static_cast<int>(result));
             // FALLTHROUGH
             case mavsdk::LogStreaming::Result::Success:
                 return rpc::log_streaming::LogStreamingResult_Result_RESULT_SUCCESS;
@@ -94,7 +94,7 @@ public:
     {
         switch (result) {
             default:
-                LogErr() << "Unknown result enum value: " << static_cast<int>(result);
+                LogErr("Unknown result enum value: {}", static_cast<int>(result));
             // FALLTHROUGH
             case rpc::log_streaming::LogStreamingResult_Result_RESULT_SUCCESS:
                 return mavsdk::LogStreaming::Result::Success;

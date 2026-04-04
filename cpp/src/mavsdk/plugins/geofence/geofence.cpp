@@ -132,40 +132,50 @@ operator<<(std::ostream& str, Geofence::GeofenceData const& geofence_data)
     return str;
 }
 
-MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Geofence::Result const& result)
+MAVSDK_PUBLIC std::string_view to_string(Geofence::Result const& result)
 {
     switch (result) {
         case Geofence::Result::Unknown:
-            return str << "Unknown";
+            return "Unknown";
         case Geofence::Result::Success:
-            return str << "Success";
+            return "Success";
         case Geofence::Result::Error:
-            return str << "Error";
+            return "Error";
         case Geofence::Result::TooManyGeofenceItems:
-            return str << "Too Many Geofence Items";
+            return "Too Many Geofence Items";
         case Geofence::Result::Busy:
-            return str << "Busy";
+            return "Busy";
         case Geofence::Result::Timeout:
-            return str << "Timeout";
+            return "Timeout";
         case Geofence::Result::InvalidArgument:
-            return str << "Invalid Argument";
+            return "Invalid Argument";
         case Geofence::Result::NoSystem:
-            return str << "No System";
+            return "No System";
         default:
-            return str << "Unknown";
+            return "Unknown";
+    }
+}
+
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Geofence::Result const& result)
+{
+    return str << to_string(result);
+}
+
+MAVSDK_PUBLIC std::string_view to_string(Geofence::FenceType const& fence_type)
+{
+    switch (fence_type) {
+        case Geofence::FenceType::Inclusion:
+            return "Inclusion";
+        case Geofence::FenceType::Exclusion:
+            return "Exclusion";
+        default:
+            return "Unknown";
     }
 }
 
 MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Geofence::FenceType const& fence_type)
 {
-    switch (fence_type) {
-        case Geofence::FenceType::Inclusion:
-            return str << "Inclusion";
-        case Geofence::FenceType::Exclusion:
-            return str << "Exclusion";
-        default:
-            return str << "Unknown";
-    }
+    return str << to_string(fence_type);
 }
 
 } // namespace mavsdk

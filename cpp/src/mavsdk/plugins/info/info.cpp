@@ -110,25 +110,31 @@ MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Info::Product const& p
     return str;
 }
 
-MAVSDK_PUBLIC std::ostream& operator<<(
-    std::ostream& str, Info::Version::FlightSoftwareVersionType const& flight_software_version_type)
+MAVSDK_PUBLIC std::string_view
+to_string(Info::Version::FlightSoftwareVersionType const& flight_software_version_type)
 {
     switch (flight_software_version_type) {
         case Info::Version::FlightSoftwareVersionType::Unknown:
-            return str << "Unknown";
+            return "Unknown";
         case Info::Version::FlightSoftwareVersionType::Dev:
-            return str << "Dev";
+            return "Dev";
         case Info::Version::FlightSoftwareVersionType::Alpha:
-            return str << "Alpha";
+            return "Alpha";
         case Info::Version::FlightSoftwareVersionType::Beta:
-            return str << "Beta";
+            return "Beta";
         case Info::Version::FlightSoftwareVersionType::Rc:
-            return str << "Rc";
+            return "Rc";
         case Info::Version::FlightSoftwareVersionType::Release:
-            return str << "Release";
+            return "Release";
         default:
-            return str << "Unknown";
+            return "Unknown";
     }
+}
+
+MAVSDK_PUBLIC std::ostream& operator<<(
+    std::ostream& str, Info::Version::FlightSoftwareVersionType const& flight_software_version_type)
+{
+    return str << to_string(flight_software_version_type);
 }
 MAVSDK_PUBLIC bool operator==(const Info::Version& lhs, const Info::Version& rhs)
 {
@@ -165,20 +171,25 @@ MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Info::Version const& v
     return str;
 }
 
-MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Info::Result const& result)
+MAVSDK_PUBLIC std::string_view to_string(Info::Result const& result)
 {
     switch (result) {
         case Info::Result::Unknown:
-            return str << "Unknown";
+            return "Unknown";
         case Info::Result::Success:
-            return str << "Success";
+            return "Success";
         case Info::Result::InformationNotReceivedYet:
-            return str << "Information Not Received Yet";
+            return "Information Not Received Yet";
         case Info::Result::NoSystem:
-            return str << "No System";
+            return "No System";
         default:
-            return str << "Unknown";
+            return "Unknown";
     }
+}
+
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Info::Result const& result)
+{
+    return str << to_string(result);
 }
 
 } // namespace mavsdk

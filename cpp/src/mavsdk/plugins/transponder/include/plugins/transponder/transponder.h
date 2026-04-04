@@ -87,6 +87,14 @@ public:
     };
 
     /**
+     * @brief Convert `Transponder::AdsbEmitterType` to string.
+     *
+     * @return A string representation of the enum.
+     */
+    friend MAVSDK_PUBLIC std::string_view
+    to_string(Transponder::AdsbEmitterType const& adsb_emitter_type);
+
+    /**
      * @brief Stream operator to print information about a `Transponder::AdsbEmitterType`.
      *
      * @return A reference to the stream.
@@ -101,6 +109,14 @@ public:
         PressureQnh, /**< @brief Altitude reported from a Baro source using QNH reference. */
         Geometric, /**< @brief Altitude reported from a GNSS source. */
     };
+
+    /**
+     * @brief Convert `Transponder::AdsbAltitudeType` to string.
+     *
+     * @return A string representation of the enum.
+     */
+    friend MAVSDK_PUBLIC std::string_view
+    to_string(Transponder::AdsbAltitudeType const& adsb_altitude_type);
 
     /**
      * @brief Stream operator to print information about a `Transponder::AdsbAltitudeType`.
@@ -158,6 +174,13 @@ public:
         CommandDenied, /**< @brief Command refused by vehicle. */
         Timeout, /**< @brief Request timed out. */
     };
+
+    /**
+     * @brief Convert `Transponder::Result` to string.
+     *
+     * @return A string representation of the enum.
+     */
+    friend MAVSDK_PUBLIC std::string_view to_string(Transponder::Result const& result);
 
     /**
      * @brief Stream operator to print information about a `Transponder::Result`.

@@ -47,7 +47,7 @@ public:
     {
         switch (song_element) {
             default:
-                LogErr() << "Unknown song_element enum value: " << static_cast<int>(song_element);
+                LogErr("Unknown song_element enum value: {}", static_cast<int>(song_element));
             // FALLTHROUGH
             case mavsdk::Tune::SongElement::StyleLegato:
                 return rpc::tune::SONG_ELEMENT_STYLE_LEGATO;
@@ -99,7 +99,7 @@ public:
     {
         switch (song_element) {
             default:
-                LogErr() << "Unknown song_element enum value: " << static_cast<int>(song_element);
+                LogErr("Unknown song_element enum value: {}", static_cast<int>(song_element));
             // FALLTHROUGH
             case rpc::tune::SONG_ELEMENT_STYLE_LEGATO:
                 return mavsdk::Tune::SongElement::StyleLegato;
@@ -179,7 +179,7 @@ public:
     {
         switch (result) {
             default:
-                LogErr() << "Unknown result enum value: " << static_cast<int>(result);
+                LogErr("Unknown result enum value: {}", static_cast<int>(result));
             // FALLTHROUGH
             case mavsdk::Tune::Result::Unknown:
                 return rpc::tune::TuneResult_Result_RESULT_UNKNOWN;
@@ -200,7 +200,7 @@ public:
     {
         switch (result) {
             default:
-                LogErr() << "Unknown result enum value: " << static_cast<int>(result);
+                LogErr("Unknown result enum value: {}", static_cast<int>(result));
             // FALLTHROUGH
             case rpc::tune::TuneResult_Result_RESULT_UNKNOWN:
                 return mavsdk::Tune::Result::Unknown;
@@ -232,7 +232,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "PlayTune sent with a null request! Ignoring...";
+            LogWarn("PlayTune sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 

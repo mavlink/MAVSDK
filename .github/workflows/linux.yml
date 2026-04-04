@@ -359,7 +359,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y liblzma-dev libtinyxml2-dev libjsoncpp-dev libcurl4-openssl-dev libssl-dev libasio-dev
+          sudo apt-get install -y liblzma-dev libtinyxml2-dev libjsoncpp-dev libcurl4-openssl-dev libssl-dev libasio-dev libfmt-dev
       - name: Build with system dependencies
         run: ./tools/build-with-system-deps.sh
       - name: unit tests
@@ -384,7 +384,8 @@ jobs:
         run: |
           sudo apt-get update && sudo apt-get install -y \
             python3-venv \
-            libasio-dev
+            libasio-dev \
+            libfmt-dev
       - name: git permission workaround
         run: |
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
@@ -450,9 +451,6 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - os_type: ubuntu
-            os_name: Ubuntu
-            os_version: "20.04"
           - os_type: ubuntu
             os_name: Ubuntu
             os_version: "22.04"
@@ -567,9 +565,6 @@ jobs:
             arch_name: armv7
           - docker_name: arm64
             arch_name: arm64
-          - docker_name: arm64-lts
-            arch_name: arm64
-            rename_distro: true
     steps:
       - uses: actions/checkout@v6
         with:

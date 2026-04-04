@@ -83,6 +83,14 @@ public:
         };
 
         /**
+         * @brief Convert `Mission::CameraAction` to string.
+         *
+         * @return A string representation of the enum.
+         */
+        friend MAVSDK_PUBLIC std::string_view
+        to_string(Mission::MissionItem::CameraAction const& camera_action);
+
+        /**
          * @brief Stream operator to print information about a `Mission::CameraAction`.
          *
          * @return A reference to the stream.
@@ -102,6 +110,14 @@ public:
             TransitionToMc, /**< @brief When a waypoint is reached vehicle will transition to
                                multi-copter mode. */
         };
+
+        /**
+         * @brief Convert `Mission::VehicleAction` to string.
+         *
+         * @return A string representation of the enum.
+         */
+        friend MAVSDK_PUBLIC std::string_view
+        to_string(Mission::MissionItem::VehicleAction const& vehicle_action);
 
         /**
          * @brief Stream operator to print information about a `Mission::VehicleAction`.
@@ -221,6 +237,13 @@ public:
         IntMessagesNotSupported, /**< @brief The system does not support the MISSION_INT protocol.
                                   */
     };
+
+    /**
+     * @brief Convert `Mission::Result` to string.
+     *
+     * @return A string representation of the enum.
+     */
+    friend MAVSDK_PUBLIC std::string_view to_string(Mission::Result const& result);
 
     /**
      * @brief Stream operator to print information about a `Mission::Result`.

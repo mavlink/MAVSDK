@@ -57,6 +57,14 @@ public:
     };
 
     /**
+     * @brief Convert `ComponentMetadataServer::MetadataType` to string.
+     *
+     * @return A string representation of the enum.
+     */
+    friend MAVSDK_PUBLIC std::string_view
+    to_string(ComponentMetadataServer::MetadataType const& metadata_type);
+
+    /**
      * @brief Stream operator to print information about a `ComponentMetadataServer::MetadataType`.
      *
      * @return A reference to the stream.

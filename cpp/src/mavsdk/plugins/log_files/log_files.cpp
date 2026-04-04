@@ -73,28 +73,33 @@ MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, LogFiles::Entry const&
     return str;
 }
 
-MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, LogFiles::Result const& result)
+MAVSDK_PUBLIC std::string_view to_string(LogFiles::Result const& result)
 {
     switch (result) {
         case LogFiles::Result::Unknown:
-            return str << "Unknown";
+            return "Unknown";
         case LogFiles::Result::Success:
-            return str << "Success";
+            return "Success";
         case LogFiles::Result::Next:
-            return str << "Next";
+            return "Next";
         case LogFiles::Result::NoLogfiles:
-            return str << "No Logfiles";
+            return "No Logfiles";
         case LogFiles::Result::Timeout:
-            return str << "Timeout";
+            return "Timeout";
         case LogFiles::Result::InvalidArgument:
-            return str << "Invalid Argument";
+            return "Invalid Argument";
         case LogFiles::Result::FileOpenFailed:
-            return str << "File Open Failed";
+            return "File Open Failed";
         case LogFiles::Result::NoSystem:
-            return str << "No System";
+            return "No System";
         default:
-            return str << "Unknown";
+            return "Unknown";
     }
+}
+
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, LogFiles::Result const& result)
+{
+    return str << to_string(result);
 }
 
 } // namespace mavsdk

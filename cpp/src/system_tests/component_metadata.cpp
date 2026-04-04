@@ -204,7 +204,7 @@ TEST(SystemTest, ComponentInformationConnect)
     std::atomic_bool all_completed{false};
     client.subscribe_metadata_available([&received_events, &received_parameters, &all_completed](
                                             ComponentMetadata::MetadataUpdate data) {
-        LogInfo() << "Got metadata, type: " << static_cast<int>(data.type);
+        LogInfo("Got metadata, type: {}", to_string(data.type));
         EXPECT_EQ(data.compid, MAV_COMP_ID_ONBOARD_COMPUTER);
         switch (data.type) {
             case ComponentMetadata::MetadataType::Parameter:
@@ -219,7 +219,7 @@ TEST(SystemTest, ComponentInformationConnect)
                 all_completed = true;
                 break;
             default:
-                ASSERT_TRUE(false) << "Unexpected metadata type " << static_cast<int>(data.type);
+                ASSERT_TRUE(false) << "Unexpected metadata type " << data.type;
         }
     });
 

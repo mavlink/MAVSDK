@@ -74,7 +74,7 @@ bool LibmavReceiver::parse_libmav_message_from_buffer()
     auto message = message_opt.value();
 
     if (_debugging) {
-        LogDebug() << "Parsed message: " << message.name() << " (ID: " << message.id() << ")";
+        LogDebug("Parsed message: {} (ID: {})", message.name(), message.id());
     }
 
     // Extract system and component IDs from header

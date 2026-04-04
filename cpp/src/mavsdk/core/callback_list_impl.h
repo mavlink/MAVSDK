@@ -38,8 +38,8 @@ public:
                 _subscribe_later.emplace_back(handle, callback);
             }
         } else {
-            LogErr() << "Use new unsubscribe methods instead of subscribe(nullptr)\n"
-                     << "See: https://mavsdk.mavlink.io/main/en/cpp/api_changes.html#unsubscribe";
+            LogErr("Use new unsubscribe methods instead of subscribe(nullptr). "
+                   "See: https://mavsdk.mavlink.io/main/en/cpp/api_changes.html#unsubscribe");
             try_clear();
         }
 
@@ -50,7 +50,7 @@ public:
     {
         // Ignore null handle.
         if (!handle.valid()) {
-            LogErr() << "Invalid null handle";
+            LogErr("Invalid null handle");
             return;
         }
 

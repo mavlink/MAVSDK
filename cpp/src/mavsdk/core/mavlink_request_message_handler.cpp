@@ -36,7 +36,7 @@ bool MavlinkRequestMessageHandler::register_handler(
     if (std::find_if(_table.begin(), _table.end(), [message_id](const Entry& entry) {
             return entry.message_id == message_id;
         }) != _table.end()) {
-        LogErr() << "message id " << message_id << " already registered, registration ignored";
+        LogErr("message id {} already registered, registration ignored", message_id);
         return false;
     }
 

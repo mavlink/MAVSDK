@@ -176,75 +176,85 @@ MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, ActionServer::ArmDisar
     return str;
 }
 
-MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, ActionServer::Result const& result)
+MAVSDK_PUBLIC std::string_view to_string(ActionServer::Result const& result)
 {
     switch (result) {
         case ActionServer::Result::Unknown:
-            return str << "Unknown";
+            return "Unknown";
         case ActionServer::Result::Success:
-            return str << "Success";
+            return "Success";
         case ActionServer::Result::NoSystem:
-            return str << "No System";
+            return "No System";
         case ActionServer::Result::ConnectionError:
-            return str << "Connection Error";
+            return "Connection Error";
         case ActionServer::Result::Busy:
-            return str << "Busy";
+            return "Busy";
         case ActionServer::Result::CommandDenied:
-            return str << "Command Denied";
+            return "Command Denied";
         case ActionServer::Result::CommandDeniedLandedStateUnknown:
-            return str << "Command Denied Landed State Unknown";
+            return "Command Denied Landed State Unknown";
         case ActionServer::Result::CommandDeniedNotLanded:
-            return str << "Command Denied Not Landed";
+            return "Command Denied Not Landed";
         case ActionServer::Result::Timeout:
-            return str << "Timeout";
+            return "Timeout";
         case ActionServer::Result::VtolTransitionSupportUnknown:
-            return str << "Vtol Transition Support Unknown";
+            return "Vtol Transition Support Unknown";
         case ActionServer::Result::NoVtolTransitionSupport:
-            return str << "No Vtol Transition Support";
+            return "No Vtol Transition Support";
         case ActionServer::Result::ParameterError:
-            return str << "Parameter Error";
+            return "Parameter Error";
         case ActionServer::Result::Next:
-            return str << "Next";
+            return "Next";
         default:
-            return str << "Unknown";
+            return "Unknown";
+    }
+}
+
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, ActionServer::Result const& result)
+{
+    return str << to_string(result);
+}
+
+MAVSDK_PUBLIC std::string_view to_string(ActionServer::FlightMode const& flight_mode)
+{
+    switch (flight_mode) {
+        case ActionServer::FlightMode::Unknown:
+            return "Unknown";
+        case ActionServer::FlightMode::Ready:
+            return "Ready";
+        case ActionServer::FlightMode::Takeoff:
+            return "Takeoff";
+        case ActionServer::FlightMode::Hold:
+            return "Hold";
+        case ActionServer::FlightMode::Mission:
+            return "Mission";
+        case ActionServer::FlightMode::ReturnToLaunch:
+            return "Return To Launch";
+        case ActionServer::FlightMode::Land:
+            return "Land";
+        case ActionServer::FlightMode::Offboard:
+            return "Offboard";
+        case ActionServer::FlightMode::FollowMe:
+            return "Follow Me";
+        case ActionServer::FlightMode::Manual:
+            return "Manual";
+        case ActionServer::FlightMode::Altctl:
+            return "Altctl";
+        case ActionServer::FlightMode::Posctl:
+            return "Posctl";
+        case ActionServer::FlightMode::Acro:
+            return "Acro";
+        case ActionServer::FlightMode::Stabilized:
+            return "Stabilized";
+        default:
+            return "Unknown";
     }
 }
 
 MAVSDK_PUBLIC std::ostream&
 operator<<(std::ostream& str, ActionServer::FlightMode const& flight_mode)
 {
-    switch (flight_mode) {
-        case ActionServer::FlightMode::Unknown:
-            return str << "Unknown";
-        case ActionServer::FlightMode::Ready:
-            return str << "Ready";
-        case ActionServer::FlightMode::Takeoff:
-            return str << "Takeoff";
-        case ActionServer::FlightMode::Hold:
-            return str << "Hold";
-        case ActionServer::FlightMode::Mission:
-            return str << "Mission";
-        case ActionServer::FlightMode::ReturnToLaunch:
-            return str << "Return To Launch";
-        case ActionServer::FlightMode::Land:
-            return str << "Land";
-        case ActionServer::FlightMode::Offboard:
-            return str << "Offboard";
-        case ActionServer::FlightMode::FollowMe:
-            return str << "Follow Me";
-        case ActionServer::FlightMode::Manual:
-            return str << "Manual";
-        case ActionServer::FlightMode::Altctl:
-            return str << "Altctl";
-        case ActionServer::FlightMode::Posctl:
-            return str << "Posctl";
-        case ActionServer::FlightMode::Acro:
-            return str << "Acro";
-        case ActionServer::FlightMode::Stabilized:
-            return str << "Stabilized";
-        default:
-            return str << "Unknown";
-    }
+    return str << to_string(flight_mode);
 }
 
 } // namespace mavsdk

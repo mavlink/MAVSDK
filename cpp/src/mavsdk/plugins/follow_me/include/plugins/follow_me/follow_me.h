@@ -77,6 +77,14 @@ public:
         };
 
         /**
+         * @brief Convert `FollowMe::FollowAltitudeMode` to string.
+         *
+         * @return A string representation of the enum.
+         */
+        friend MAVSDK_PUBLIC std::string_view
+        to_string(FollowMe::Config::FollowAltitudeMode const& follow_altitude_mode);
+
+        /**
          * @brief Stream operator to print information about a `FollowMe::FollowAltitudeMode`.
          *
          * @return A reference to the stream.
@@ -161,6 +169,13 @@ public:
         NotActive, /**< @brief FollowMe is not active. */
         SetConfigFailed, /**< @brief Failed to set FollowMe configuration. */
     };
+
+    /**
+     * @brief Convert `FollowMe::Result` to string.
+     *
+     * @return A string representation of the enum.
+     */
+    friend MAVSDK_PUBLIC std::string_view to_string(FollowMe::Result const& result);
 
     /**
      * @brief Stream operator to print information about a `FollowMe::Result`.

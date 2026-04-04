@@ -7,7 +7,7 @@ bool CameraDefinition::load_file(const std::string& filepath)
 {
     tinyxml2::XMLError xml_error = _doc.LoadFile(filepath.c_str());
     if (xml_error != tinyxml2::XML_SUCCESS) {
-        LogErr() << "tinyxml2::LoadFile failed: " << _doc.ErrorStr();
+        LogErr("tinyxml2::LoadFile failed: {}", _doc.ErrorStr());
         return false;
     }
 
@@ -18,7 +18,7 @@ bool CameraDefinition::load_string(const std::string& content)
 {
     tinyxml2::XMLError xml_error = _doc.Parse(content.c_str());
     if (xml_error != tinyxml2::XML_SUCCESS) {
-        LogErr() << "tinyxml2::Parse failed: " << _doc.ErrorStr();
+        LogErr("tinyxml2::Parse failed: {}", _doc.ErrorStr());
         return false;
     }
 
@@ -39,19 +39,19 @@ bool CameraDefinition::parse_xml()
 {
     auto e_mavlinkcamera = _doc.FirstChildElement("mavlinkcamera");
     if (!e_mavlinkcamera) {
-        LogErr() << "Tag mavlinkcamera not found";
+        LogErr("Tag mavlinkcamera not found");
         return false;
     }
 
     auto e_definition = e_mavlinkcamera->FirstChildElement("definition");
     if (!e_definition) {
-        LogErr() << "definition not found";
+        LogErr("definition not found");
         return false;
     }
 
     auto e_model = e_definition->FirstChildElement("model");
     if (!e_model) {
-        LogErr() << "model not found";
+        LogErr("model not found");
         return false;
     }
 
@@ -59,7 +59,7 @@ bool CameraDefinition::parse_xml()
 
     auto e_vendor = e_definition->FirstChildElement("vendor");
     if (!e_vendor) {
-        LogErr() << "vendor not found";
+        LogErr("vendor not found");
         return false;
     }
 
@@ -67,7 +67,7 @@ bool CameraDefinition::parse_xml()
 
     auto e_parameters = e_mavlinkcamera->FirstChildElement("parameters");
     if (!e_parameters) {
-        LogErr() << "Tag parameters not found";
+        LogErr("Tag parameters not found");
         return false;
     }
 
@@ -77,13 +77,13 @@ bool CameraDefinition::parse_xml()
          e_parameter = e_parameter->NextSiblingElement("parameter")) {
         const char* param_name = e_parameter->Attribute("name");
         if (!param_name) {
-            LogErr() << "name attribute missing";
+            LogErr("name attribute missing");
             return false;
         }
 
         const char* type_str = e_parameter->Attribute("type");
         if (!type_str) {
-            LogErr() << "type attribute missing";
+            LogErr("type attribute missing");
             return false;
         }
 
@@ -96,29 +96,29 @@ bool CameraDefinition::parse_xml()
 
         const char* param_name = e_parameter->Attribute("name");
         if (!param_name) {
-            LogErr() << "name attribute missing";
+            LogErr("name attribute missing");
             return false;
         }
 
         const char* type_str_res = e_parameter->Attribute("type");
         if (!type_str_res) {
-            LogErr() << "type attribute missing for " << param_name;
+            LogErr("type attribute missing for {}", param_name);
             return false;
         }
 
         auto type_str = std::string(type_str_res);
         if (type_str == "string") {
-            LogDebug() << "Ignoring string params: " << param_name;
+            LogDebug("Ignoring string params: {}", param_name);
             continue;
         }
 
         if (type_str == "custom") {
-            LogDebug() << "Ignoring custom params: " << param_name;
+            LogDebug("Ignoring custom params: {}", param_name);
             continue;
         }
 
         if (!new_parameter->type.set_empty_type_from_xml(type_str)) {
-            LogErr() << "Unknown type attribute: " << type_str;
+            LogErr("Unknown type attribute: {}", type_str);
             return false;
         }
 
@@ -148,7 +148,7 @@ bool CameraDefinition::parse_xml()
         }
 
         if (new_parameter->is_readonly && new_parameter->is_writeonly) {
-            LogErr() << "parameter can't be readonly and writeonly";
+            LogErr("parameter can't be readonly and writeonly");
             return false;
         }
 
@@ -159,7 +159,7 @@ bool CameraDefinition::parse_xml()
 
         auto e_description = e_parameter->FirstChildElement("description");
         if (!e_description) {
-            LogErr() << "Description missing";
+            LogErr("Description missing");
             return false;
         }
 
@@ -183,7 +183,7 @@ bool CameraDefinition::parse_xml()
 
         const char* default_str = e_parameter->Attribute("default");
         if (!default_str) {
-            LogWarn() << "Default missing for " << param_name;
+            LogWarn("Default missing for {}", param_name);
             continue;
         }
 
@@ -191,7 +191,7 @@ bool CameraDefinition::parse_xml()
             auto maybe_default = find_default(new_parameter->options, default_str);
 
             if (!maybe_default.first) {
-                LogWarn() << "Default not found for " << param_name;
+                LogWarn("Default not found for {}", param_name);
                 return std::optional<Option>{};
             }
 
@@ -232,7 +232,7 @@ bool CameraDefinition::parse_xml()
         } else {
             auto maybe_range_options = parse_range_options(e_parameter, param_name, type_map);
             if (!std::get<0>(maybe_range_options)) {
-                LogWarn() << "Range not found for: " << param_name;
+                LogWarn("Range not found for: {}", param_name);
                 continue;
             }
 
@@ -263,13 +263,13 @@ CameraDefinition::parse_options(
          e_option = e_option->NextSiblingElement("option")) {
         const char* option_name = e_option->Attribute("name");
         if (!option_name) {
-            LogErr() << "no option name given";
+            LogErr("no option name give");
             return std::make_pair<>(false, options);
         }
 
         const char* option_value = e_option->Attribute("value");
         if (!option_value) {
-            LogErr() << "no option value given";
+            LogErr("no option value give");
             return std::make_pair<>(false, options);
         }
 
@@ -297,7 +297,7 @@ CameraDefinition::parse_options(
                  e_parameterrange = e_parameterrange->NextSiblingElement("parameterrange")) {
                 const char* roption_parameter_str = e_parameterrange->Attribute("parameter");
                 if (!roption_parameter_str) {
-                    LogErr() << "missing roption parameter name";
+                    LogErr("missing roption parameter name");
                     return std::make_pair<>(false, options);
                 }
 
@@ -308,18 +308,18 @@ CameraDefinition::parse_options(
                      e_roption = e_roption->NextSiblingElement("roption")) {
                     const char* roption_name_str = e_roption->Attribute("name");
                     if (!roption_name_str) {
-                        LogErr() << "missing roption name attribute";
+                        LogErr("missing roption name attribute");
                         return std::make_pair<>(false, options);
                     }
 
                     const char* roption_value_str = e_roption->Attribute("value");
                     if (!roption_value_str) {
-                        LogErr() << "missing roption value attribute";
+                        LogErr("missing roption value attribute");
                         return std::make_pair<>(false, options);
                     }
 
                     if (type_map.find(roption_parameter_str) == type_map.end()) {
-                        LogErr() << "unknown roption type";
+                        LogErr("unknown roption type");
                         return std::make_pair<>(false, options);
                     }
 
@@ -357,7 +357,7 @@ CameraDefinition::parse_range_options(
 
     const char* min_str = param_handle->Attribute("min");
     if (!min_str) {
-        LogDebug() << "min range missing for " << param_name;
+        LogDebug("min range missing for {}", param_name);
         return std::make_tuple<>(false, options, default_option);
     }
 
@@ -366,7 +366,7 @@ CameraDefinition::parse_range_options(
 
     const char* max_str = param_handle->Attribute("max");
     if (!max_str) {
-        LogDebug() << "max range missing for " << param_name;
+        LogDebug("max range missing for {}", param_name);
         return std::make_tuple<>(false, options, default_option);
     }
 
@@ -383,7 +383,7 @@ CameraDefinition::parse_range_options(
 
     const char* step_str = param_handle->Attribute("step");
     if (!step_str) {
-        LogDebug() << "step range missing for " << param_name;
+        LogDebug("step range missing for {}", param_name);
     }
 
     if (step_str) {
@@ -404,7 +404,7 @@ CameraDefinition::parse_range_options(
 
     const char* default_str = param_handle->Attribute("default");
     if (!default_str) {
-        LogDebug() << "default range missing for " << param_name;
+        LogDebug("default range missing for {}", param_name);
         return std::make_tuple<>(false, options, default_option);
     }
 
@@ -429,13 +429,13 @@ std::pair<bool, CameraDefinition::Option> CameraDefinition::find_default(
                 default_option = *option;
                 found_default = true;
             } else {
-                LogErr() << "Found more than one default";
+                LogErr("Found more than one default");
                 return std::make_pair<>(false, default_option);
             }
         }
     }
     if (!found_default) {
-        LogErr() << "No default found";
+        LogErr("No default found");
         return std::make_pair<>(false, default_option);
     }
     return std::make_pair<>(true, default_option);
@@ -511,7 +511,7 @@ bool CameraDefinition::get_possible_settings(std::unordered_map<std::string, Par
 bool CameraDefinition::set_setting(const std::string& name, const ParamValue& value)
 {
     if (_parameter_map.find(name) == _parameter_map.end()) {
-        LogErr() << "Unknown setting to set: " << name;
+        LogErr("Unknown setting to set: {}", name);
         return false;
     }
 
@@ -519,12 +519,12 @@ bool CameraDefinition::set_setting(const std::string& name, const ParamValue& va
     if (_parameter_map[name]->is_range) {
         // Check against the minimum
         if (value < _parameter_map[name]->options[0]->value) {
-            LogErr() << "Chosen value smaller than minimum";
+            LogErr("Chosen value smaller than minimum");
             return false;
         }
 
         if (value > _parameter_map[name]->options[1]->value) {
-            LogErr() << "Chosen value bigger than maximum";
+            LogErr("Chosen value bigger than maximum");
             return false;
         }
 
@@ -539,7 +539,7 @@ bool CameraDefinition::set_setting(const std::string& name, const ParamValue& va
     // needs to happen outside of this class.
     for (const auto& update : _parameter_map[name]->updates) {
         if (_current_settings.find(update) == _current_settings.end()) {
-            LogDebug() << "Update to '" << update << "' not understood.";
+            LogDebug("Update to '{}' not understood.", update);
             continue;
         }
         _current_settings[update].needs_updating = true;
@@ -551,7 +551,7 @@ bool CameraDefinition::set_setting(const std::string& name, const ParamValue& va
 bool CameraDefinition::get_setting(const std::string& name, ParamValue& value)
 {
     if (_current_settings.find(name) == _current_settings.end()) {
-        LogErr() << "Unknown setting to get: " << name;
+        LogErr("Unknown setting to get: {}", name);
         return false;
     }
 
@@ -567,7 +567,7 @@ bool CameraDefinition::get_option_value(
     const std::string& param_name, const std::string& option_value, ParamValue& value)
 {
     if (_parameter_map.find(param_name) == _parameter_map.end()) {
-        LogErr() << "Unknown parameter to get option: " << param_name;
+        LogErr("Unknown parameter to get option: {}", param_name);
         return false;
     }
 
@@ -586,7 +586,7 @@ bool CameraDefinition::get_all_options(const std::string& name, std::vector<Para
     values.clear();
 
     if (_parameter_map.find(name) == _parameter_map.end()) {
-        LogErr() << "Unknown parameter to get all options";
+        LogErr("Unknown parameter to get all options");
         return false;
     }
 
@@ -603,7 +603,7 @@ bool CameraDefinition::get_possible_options(
     values.clear();
 
     if (_parameter_map.find(name) == _parameter_map.end()) {
-        LogErr() << "Unknown parameter to get possible options";
+        LogErr("Unknown parameter to get possible options");
         return false;
     }
 
@@ -612,7 +612,7 @@ bool CameraDefinition::get_possible_options(
         return false;
     }
     if (settings.find(name) == settings.end()) {
-        LogErr() << "Setting " << name << " currently not applicable";
+        LogErr("Setting {} currently not applicable", name);
         return false;
     }
 
@@ -711,7 +711,7 @@ void CameraDefinition::set_all_params_unknown()
 bool CameraDefinition::is_setting_range(const std::string& name)
 {
     if (_parameter_map.find(name) == _parameter_map.end()) {
-        LogWarn() << "Setting " << name << " not found.";
+        LogWarn("Setting {} not found.", name);
         return false;
     }
 
@@ -723,7 +723,7 @@ bool CameraDefinition::get_setting_str(const std::string& name, std::string& des
     description.clear();
 
     if (_parameter_map.find(name) == _parameter_map.end()) {
-        LogWarn() << "Setting " << name << " not found.";
+        LogWarn("Setting {} not found.", name);
         return false;
     }
 
@@ -737,7 +737,7 @@ bool CameraDefinition::get_option_str(
     description.clear();
 
     if (_parameter_map.find(setting_name) == _parameter_map.end()) {
-        LogWarn() << "Setting " << setting_name << " not found.";
+        LogWarn("Setting {} not found.", setting_name);
         return false;
     }
 
@@ -747,7 +747,7 @@ bool CameraDefinition::get_option_str(
             return true;
         }
     }
-    LogWarn() << "Option " << option_name << " not found";
+    LogWarn("Option {} not found", option_name);
     return false;
 }
 

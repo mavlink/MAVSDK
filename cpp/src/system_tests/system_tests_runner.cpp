@@ -3,13 +3,20 @@
 #include <cpptrace/cpptrace.hpp>
 #include "log.h"
 #include <cstring>
+#include <string_view>
 #endif
 #include <gtest/gtest.h>
 
 #if defined(ENABLE_CPPTRACE)
 void handler(int sig)
 {
-    mavsdk::LogErr() << "Got signal: " << strsignal(sig) << " (" << sig << ")";
+    const char* signal_name = strsignal(sig);
+    if (signal_name != nullptr) {
+        // Use string_view to avoid format string interpretation issues
+        LogErr("Got signal: {} ({})", std::string_view(signal_name), sig);
+    } else {
+        LogErr("Got signal: <unknown> ({})", sig);
+    }
     cpptrace::generate_trace().print();
     exit(1);
 }

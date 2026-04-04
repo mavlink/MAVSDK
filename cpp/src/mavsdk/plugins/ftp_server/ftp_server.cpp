@@ -21,20 +21,25 @@ FtpServer::Result FtpServer::set_root_dir(std::string path) const
     return _impl->set_root_dir(path);
 }
 
-MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, FtpServer::Result const& result)
+MAVSDK_PUBLIC std::string_view to_string(FtpServer::Result const& result)
 {
     switch (result) {
         case FtpServer::Result::Unknown:
-            return str << "Unknown";
+            return "Unknown";
         case FtpServer::Result::Success:
-            return str << "Success";
+            return "Success";
         case FtpServer::Result::DoesNotExist:
-            return str << "Does Not Exist";
+            return "Does Not Exist";
         case FtpServer::Result::Busy:
-            return str << "Busy";
+            return "Busy";
         default:
-            return str << "Unknown";
+            return "Unknown";
     }
+}
+
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, FtpServer::Result const& result)
+{
+    return str << to_string(result);
 }
 
 } // namespace mavsdk

@@ -315,64 +315,84 @@ operator<<(std::ostream& str, Gimbal::ControlStatus const& control_status)
     return str;
 }
 
-MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Gimbal::Result const& result)
+MAVSDK_PUBLIC std::string_view to_string(Gimbal::Result const& result)
 {
     switch (result) {
         case Gimbal::Result::Unknown:
-            return str << "Unknown";
+            return "Unknown";
         case Gimbal::Result::Success:
-            return str << "Success";
+            return "Success";
         case Gimbal::Result::Error:
-            return str << "Error";
+            return "Error";
         case Gimbal::Result::Timeout:
-            return str << "Timeout";
+            return "Timeout";
         case Gimbal::Result::Unsupported:
-            return str << "Unsupported";
+            return "Unsupported";
         case Gimbal::Result::NoSystem:
-            return str << "No System";
+            return "No System";
         case Gimbal::Result::InvalidArgument:
-            return str << "Invalid Argument";
+            return "Invalid Argument";
         default:
-            return str << "Unknown";
+            return "Unknown";
+    }
+}
+
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Gimbal::Result const& result)
+{
+    return str << to_string(result);
+}
+
+MAVSDK_PUBLIC std::string_view to_string(Gimbal::GimbalMode const& gimbal_mode)
+{
+    switch (gimbal_mode) {
+        case Gimbal::GimbalMode::YawFollow:
+            return "Yaw Follow";
+        case Gimbal::GimbalMode::YawLock:
+            return "Yaw Lock";
+        default:
+            return "Unknown";
     }
 }
 
 MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Gimbal::GimbalMode const& gimbal_mode)
 {
-    switch (gimbal_mode) {
-        case Gimbal::GimbalMode::YawFollow:
-            return str << "Yaw Follow";
-        case Gimbal::GimbalMode::YawLock:
-            return str << "Yaw Lock";
+    return str << to_string(gimbal_mode);
+}
+
+MAVSDK_PUBLIC std::string_view to_string(Gimbal::ControlMode const& control_mode)
+{
+    switch (control_mode) {
+        case Gimbal::ControlMode::None:
+            return "None";
+        case Gimbal::ControlMode::Primary:
+            return "Primary";
+        case Gimbal::ControlMode::Secondary:
+            return "Secondary";
         default:
-            return str << "Unknown";
+            return "Unknown";
     }
 }
 
 MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Gimbal::ControlMode const& control_mode)
 {
-    switch (control_mode) {
-        case Gimbal::ControlMode::None:
-            return str << "None";
-        case Gimbal::ControlMode::Primary:
-            return str << "Primary";
-        case Gimbal::ControlMode::Secondary:
-            return str << "Secondary";
+    return str << to_string(control_mode);
+}
+
+MAVSDK_PUBLIC std::string_view to_string(Gimbal::SendMode const& send_mode)
+{
+    switch (send_mode) {
+        case Gimbal::SendMode::Once:
+            return "Once";
+        case Gimbal::SendMode::Stream:
+            return "Stream";
         default:
-            return str << "Unknown";
+            return "Unknown";
     }
 }
 
 MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Gimbal::SendMode const& send_mode)
 {
-    switch (send_mode) {
-        case Gimbal::SendMode::Once:
-            return str << "Once";
-        case Gimbal::SendMode::Stream:
-            return str << "Stream";
-        default:
-            return str << "Unknown";
-    }
+    return str << to_string(send_mode);
 }
 
 } // namespace mavsdk

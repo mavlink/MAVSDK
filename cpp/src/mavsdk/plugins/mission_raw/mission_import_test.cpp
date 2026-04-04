@@ -427,7 +427,16 @@ TEST(MissionRaw, ImportSamplePlanWithArduPilot)
         488.93101752001763f,
         MAV_MISSION_TYPE_MISSION};
 
+    // GCC 12/13 emits a false-positive -Wnull-dereference on placement-new
+    // inside std::vector::insert when optimising. Suppress it here.
+#ifdef __GNUC__
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wnull-dereference"
+#endif
     reference_items.insert(reference_items.begin(), home_item);
+#ifdef __GNUC__
+#pragma GCC diagnostic pop
+#endif
 
     std::ifstream file{path_prefix("qgroundcontrol_sample.plan")};
     ASSERT_TRUE(file);

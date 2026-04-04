@@ -5,6 +5,7 @@
 #include <cctype>
 #include <fstream>
 #include <random>
+#include <sstream>
 #include <string>
 
 #if defined(LINUX) || defined(APPLE)
@@ -123,7 +124,7 @@ std::optional<std::filesystem::path> create_tmp_directory(const std::string& pre
         }
     }
 
-    LogErr() << "Could not create a temporary directory, aborting.";
+    LogErr("Could not create a temporary directory, aborting.");
     return std::nullopt;
 }
 

@@ -82,25 +82,27 @@ MavlinkDirect::Result MavlinkDirectImpl::send_message(MavlinkDirect::MavlinkMess
     // Create libmav message from the message name
     auto libmav_message_opt = message_set.create(message.message_name);
     if (!libmav_message_opt) {
-        LogErr() << "Failed to create message: " << message.message_name;
+        LogErr("Failed to create message: {}", message.message_name);
         return MavlinkDirect::Result::InvalidMessage; // Message type not found
     }
 
     if (_debugging) {
-        LogDebug() << "Created message " << message.message_name
-                   << " with ID: " << libmav_message_opt.value().id();
+        LogDebug(
+            "Created message {} with ID: {}",
+            message.message_name,
+            libmav_message_opt.value().id());
     }
 
     auto libmav_message = libmav_message_opt.value();
 
     // Convert JSON fields to libmav message fields
     if (!json_to_libmav_message(message.fields_json, libmav_message)) {
-        LogErr() << "Failed to convert JSON fields to libmav message for " << message.message_name;
+        LogErr("Failed to convert JSON fields to libmav message for {}", message.message_name);
         return MavlinkDirect::Result::InvalidField; // JSON conversion failed
     }
 
     if (_debugging) {
-        LogDebug() << "Successfully populated fields for " << message.message_name;
+        LogDebug("Successfully populated fields for {}", message.message_name);
     }
 
     // Set target system/component if specified
@@ -115,7 +117,7 @@ MavlinkDirect::Result MavlinkDirectImpl::send_message(MavlinkDirect::MavlinkMess
     }
 
     if (_debugging) {
-        LogDebug() << "Sending " << message.message_name << " via unified libmav API";
+        LogDebug("Sending {} via unified libmav API", message.message_name);
     }
 
     _system_impl->queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
@@ -143,7 +145,7 @@ MavlinkDirect::Result MavlinkDirectImpl::send_message(MavlinkDirect::MavlinkMess
     });
 
     if (_debugging) {
-        LogDebug() << "Successfully sent " << message.message_name << " as raw data";
+        LogDebug("Successfully sent {} as raw data", message.message_name);
     }
 
     return MavlinkDirect::Result::Success;
@@ -223,7 +225,7 @@ bool MavlinkDirectImpl::json_to_libmav_message(
     Json::Reader reader;
 
     if (!reader.parse(json_string, json)) {
-        LogErr() << "Failed to parse JSON: " << json_string;
+        LogErr("Failed to parse JSON: {}", json_string);
         return false;
     }
 
@@ -238,20 +240,19 @@ bool MavlinkDirectImpl::json_to_libmav_message(
             int64_t value = field_value.asInt64();
             auto result = msg.set(field_name, value);
             if (result != ::mav::MessageResult::Success) {
-                LogWarn() << "Failed to set integer field " << field_name << " = " << value;
+                LogWarn("Failed to set integer field {} = {}", field_name, value);
             }
         } else if (field_value.isUInt() || field_value.isUInt64()) {
             uint64_t value = field_value.asUInt64();
             auto result = msg.set(field_name, value);
             if (result != ::mav::MessageResult::Success) {
-                LogWarn() << "Failed to set unsigned integer field " << field_name << " = "
-                          << value;
+                LogWarn("Failed to set unsigned integer field {} = {}", field_name, value);
             }
         } else if (field_value.isNull() || field_value.isDouble()) {
             // Handle float/double values (including null -> NaN)
             auto field_opt = msg.type().getField(field_name);
             if (!field_opt) {
-                LogWarn() << "Field " << field_name << " not found in message definition";
+                LogWarn("Field {} not found in message definitio", field_name);
                 continue;
             }
 
@@ -271,20 +272,20 @@ bool MavlinkDirectImpl::json_to_libmav_message(
                     result = msg.set(field_name, field_value.asDouble());
                 }
             } else {
-                LogWarn() << "Field " << field_name << " is not a float or double field";
+                LogWarn("Field {} is not a float or double field", field_name);
                 continue;
             }
 
             if (result != ::mav::MessageResult::Success) {
-                LogWarn() << "Failed to set float/double field " << field_name << " = "
-                          << (field_value.isNull() ? "null" :
-                                                     std::to_string(field_value.asDouble()));
+                LogWarn(
+                    "Failed to set float/double field {} = {}",
+                    field_name,
+                    (field_value.isNull() ? "null" : std::to_string(field_value.asDouble())));
             }
         } else if (field_value.isString()) {
             auto result = msg.setString(field_name, field_value.asString());
             if (result != ::mav::MessageResult::Success) {
-                LogWarn() << "Failed to set string field " << field_name << " = "
-                          << field_value.asString();
+                LogWarn("Failed to set string field {} = {}", field_name, field_value.asString());
             }
         } else if (field_value.isArray()) {
             // Handle array fields with proper type detection
@@ -293,13 +294,13 @@ bool MavlinkDirectImpl::json_to_libmav_message(
             // Get field definition to determine correct type
             auto field_opt = msg.type().getField(field_name);
             if (!field_opt) {
-                LogWarn() << "Field " << field_name << " not found in message definition";
+                LogWarn("Field {} not found in message definitio", field_name);
                 continue;
             }
 
             auto field = field_opt.value();
             if (field.type.size <= 1) {
-                LogWarn() << "Field " << field_name << " is not an array field";
+                LogWarn("Field {} is not an array field", field_name);
                 continue;
             }
 
@@ -428,15 +429,15 @@ bool MavlinkDirectImpl::json_to_libmav_message(
                     break;
                 }
                 default:
-                    LogWarn() << "Unsupported array field type for " << field_name;
+                    LogWarn("Unsupported array field type for {}", field_name);
                     break;
             }
 
             if (result != ::mav::MessageResult::Success) {
-                LogWarn() << "Failed to set array field " << field_name;
+                LogWarn("Failed to set array field {}", field_name);
             }
         } else {
-            LogWarn() << "Unsupported JSON field type for " << field_name;
+            LogWarn("Unsupported JSON field type for {}", field_name);
         }
     }
 
@@ -446,7 +447,7 @@ bool MavlinkDirectImpl::json_to_libmav_message(
 MavlinkDirect::Result MavlinkDirectImpl::load_custom_xml(const std::string& xml_content)
 {
     if (_debugging) {
-        LogDebug() << "Loading custom XML definitions...";
+        LogDebug("Loading custom XML definitions...");
     }
 
     // Load the custom XML into the MessageSet with thread safety
@@ -455,11 +456,11 @@ MavlinkDirect::Result MavlinkDirectImpl::load_custom_xml(const std::string& xml_
 
     if (success) {
         if (_debugging) {
-            LogDebug() << "Successfully loaded custom XML definitions";
+            LogDebug("Successfully loaded custom XML definitions");
         }
         return MavlinkDirect::Result::Success;
     } else {
-        LogErr() << "Failed to load custom XML definitions";
+        LogErr("Failed to load custom XML definitions");
         return MavlinkDirect::Result::Error;
     }
 }

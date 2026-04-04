@@ -160,7 +160,7 @@ jobs:
         id: cache
         with:
           path: ./cpp/build/${{ matrix.name }}/third_party/install
-          key: ${{ github.job }}-${{ matrix.name }}-${{ hashFiles('./third_party/**', './cmake/ios.toolchain.cmake') }}-3
+          key: ${{ github.job }}-${{ matrix.name }}-${{ hashFiles('./cpp/third_party/**', './cpp/cmake/ios.toolchain.cmake') }}-3
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: |

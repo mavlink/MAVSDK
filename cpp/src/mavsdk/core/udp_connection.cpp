@@ -66,7 +66,7 @@ ConnectionResult UdpConnection::setup_port()
     // Resolve the local address
     asio::ip::address local_addr = asio::ip::make_address(_local_ip, ec);
     if (ec) {
-        LogErr() << "Invalid local IP '" << _local_ip << "': " << ec.message();
+        LogErr("Invalid local IP '{}': {}", _local_ip, ec.message());
         return ConnectionResult::SocketError;
     }
 
@@ -75,7 +75,7 @@ ConnectionResult UdpConnection::setup_port()
 
     _socket.open(asio::ip::udp::v4(), ec);
     if (ec) {
-        LogErr() << "socket open error: " << ec.message();
+        LogErr("socket open error: {}", ec.message());
         return ConnectionResult::SocketError;
     }
 
@@ -83,7 +83,7 @@ ConnectionResult UdpConnection::setup_port()
 
     _socket.bind(local_endpoint, ec);
     if (ec) {
-        LogErr() << "bind error: " << ec.message();
+        LogErr("bind error: {}", ec.message());
         return ConnectionResult::BindError;
     }
 
@@ -152,8 +152,7 @@ std::pair<bool, std::string> UdpConnection::send_raw_bytes(const char* bytes, si
                 const bool should_remove = inactive && remote.remote_option == RemoteOption::Found;
 
                 if (should_remove) {
-                    LogInfo() << "Removing inactive remote: " << remote.ip << ":"
-                              << remote.port_number;
+                    LogInfo("Removing inactive remote: {}:{}", remote.ip, remote.port_number);
                 }
 
                 return should_remove;
@@ -176,7 +175,7 @@ std::pair<bool, std::string> UdpConnection::send_raw_bytes(const char* bytes, si
             std::stringstream ss;
             ss << "make_address failure for: " << remote.ip << ":" << remote.port_number << ": "
                << ec.message();
-            LogErr() << ss.str();
+            LogErr("{}", ss.str());
             result.first = false;
             if (!result.second.empty()) {
                 result.second += ", ";
@@ -197,7 +196,7 @@ std::pair<bool, std::string> UdpConnection::send_raw_bytes(const char* bytes, si
                 ss << ": " << ec.message();
             }
             ss << " for: " << remote.ip << ":" << remote.port_number;
-            LogErr() << ss.str();
+            LogErr("{}", ss.str());
             result.first = false;
             if (!result.second.empty()) {
                 result.second += ", ";
@@ -235,8 +234,11 @@ void UdpConnection::add_remote_impl(
 
     if (existing_remote == _remotes.end()) {
         if (static_cast<int>(remote_sysid) != 0) {
-            LogInfo() << "New system on: " << new_remote.ip << ":" << new_remote.port_number
-                      << " (system ID: " << static_cast<int>(remote_sysid) << ")";
+            LogInfo(
+                "New system on: {}:{} (system ID: {})",
+                new_remote.ip,
+                new_remote.port_number,
+                static_cast<int>(remote_sysid));
         }
         _remotes.push_back(new_remote);
     } else {
@@ -254,7 +256,7 @@ void UdpConnection::do_receive()
             if (ec) {
                 // operation_aborted happens when the socket is closed (stop()), which is normal.
                 if (ec != asio::error::operation_aborted) {
-                    LogErr() << "async_receive_from error: " << ec.message();
+                    LogErr("async_receive_from error: {}", ec.message());
                 }
                 // Do NOT re-post — the connection is being torn down.
                 return;

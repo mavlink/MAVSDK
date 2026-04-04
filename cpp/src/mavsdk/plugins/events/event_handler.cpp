@@ -19,7 +19,7 @@ EventHandler::EventHandler(
 {
     auto error_cb = [component_id, this](int num_events_lost) {
         _health_and_arming_checks.reset();
-        LogWarn() << "Events got lost:" << num_events_lost << "comp_id:" << component_id;
+        LogWarn("Events got lost:{}comp_id:{}", num_events_lost, component_id);
     };
 
     const auto timeout_cb = [this](int timeout_ms) {
@@ -101,7 +101,7 @@ void EventHandler::set_metadata(const std::string& metadata_json)
             _pending_events.clear();
         }
     } else {
-        LogErr() << "Failed to load events JSON metadata file";
+        LogErr("Failed to load events JSON metadata file");
     }
 }
 
@@ -127,8 +127,10 @@ void EventHandler::got_event(const mavlink_event_t& event)
             _pending_events.clear();
         }
         if (_pending_events.empty()) { // Print only for the first to avoid spamming
-            LogDebug() << "No metadata, queuing event, ID: " << event.id
-                       << ", num pending: " << _pending_events.size();
+            LogDebug(
+                "No metadata, queuing event, ID: {}, num pending: {}",
+                event.id,
+                _pending_events.size());
         }
         _pending_events.push_back(event);
         return;
@@ -137,7 +139,7 @@ void EventHandler::got_event(const mavlink_event_t& event)
     std::unique_ptr<events::parser::ParsedEvent> parsed_event =
         _parser.parse(events::EventType(event));
     if (parsed_event == nullptr) {
-        LogWarn() << "Got Event without known metadata: ID:" << event.id << "comp id:" << _compid;
+        LogWarn("Got Event without known metadata: ID:{}comp id:{}", event.id, _compid);
         return;
     }
 

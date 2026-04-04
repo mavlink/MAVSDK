@@ -57,6 +57,13 @@ public:
     };
 
     /**
+     * @brief Convert `FtpServer::Result` to string.
+     *
+     * @return A string representation of the enum.
+     */
+    friend MAVSDK_PUBLIC std::string_view to_string(FtpServer::Result const& result);
+
+    /**
      * @brief Stream operator to print information about a `FtpServer::Result`.
      *
      * @return A reference to the stream.

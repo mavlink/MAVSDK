@@ -172,54 +172,64 @@ MAVSDK_PUBLIC std::ostream& operator<<(
     return str;
 }
 
-MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Events::Result const& result)
+MAVSDK_PUBLIC std::string_view to_string(Events::Result const& result)
 {
     switch (result) {
         case Events::Result::Success:
-            return str << "Success";
+            return "Success";
         case Events::Result::NotAvailable:
-            return str << "Not Available";
+            return "Not Available";
         case Events::Result::ConnectionError:
-            return str << "Connection Error";
+            return "Connection Error";
         case Events::Result::Unsupported:
-            return str << "Unsupported";
+            return "Unsupported";
         case Events::Result::Denied:
-            return str << "Denied";
+            return "Denied";
         case Events::Result::Failed:
-            return str << "Failed";
+            return "Failed";
         case Events::Result::Timeout:
-            return str << "Timeout";
+            return "Timeout";
         case Events::Result::NoSystem:
-            return str << "No System";
+            return "No System";
         case Events::Result::Unknown:
-            return str << "Unknown";
+            return "Unknown";
         default:
-            return str << "Unknown";
+            return "Unknown";
+    }
+}
+
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Events::Result const& result)
+{
+    return str << to_string(result);
+}
+
+MAVSDK_PUBLIC std::string_view to_string(Events::LogLevel const& log_level)
+{
+    switch (log_level) {
+        case Events::LogLevel::Emergency:
+            return "Emergency";
+        case Events::LogLevel::Alert:
+            return "Alert";
+        case Events::LogLevel::Critical:
+            return "Critical";
+        case Events::LogLevel::Error:
+            return "Error";
+        case Events::LogLevel::Warning:
+            return "Warning";
+        case Events::LogLevel::Notice:
+            return "Notice";
+        case Events::LogLevel::Info:
+            return "Info";
+        case Events::LogLevel::Debug:
+            return "Debug";
+        default:
+            return "Unknown";
     }
 }
 
 MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Events::LogLevel const& log_level)
 {
-    switch (log_level) {
-        case Events::LogLevel::Emergency:
-            return str << "Emergency";
-        case Events::LogLevel::Alert:
-            return str << "Alert";
-        case Events::LogLevel::Critical:
-            return str << "Critical";
-        case Events::LogLevel::Error:
-            return str << "Error";
-        case Events::LogLevel::Warning:
-            return str << "Warning";
-        case Events::LogLevel::Notice:
-            return str << "Notice";
-        case Events::LogLevel::Info:
-            return str << "Info";
-        case Events::LogLevel::Debug:
-            return str << "Debug";
-        default:
-            return str << "Unknown";
-    }
+    return str << to_string(log_level);
 }
 
 } // namespace mavsdk

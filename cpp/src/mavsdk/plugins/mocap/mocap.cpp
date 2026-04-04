@@ -253,44 +253,55 @@ operator<<(std::ostream& str, Mocap::AttitudePositionMocap const& attitude_posit
     return str;
 }
 
-MAVSDK_PUBLIC std::ostream&
-operator<<(std::ostream& str, Mocap::Odometry::MavFrame const& mav_frame)
+MAVSDK_PUBLIC std::string_view to_string(Mocap::Odometry::MavFrame const& mav_frame)
 {
     switch (mav_frame) {
         case Mocap::Odometry::MavFrame::MocapNed:
-            return str << "Mocap Ned";
+            return "Mocap Ned";
         case Mocap::Odometry::MavFrame::LocalFrd:
-            return str << "Local Frd";
+            return "Local Frd";
         default:
-            return str << "Unknown";
+            return "Unknown";
+    }
+}
+
+MAVSDK_PUBLIC std::ostream&
+operator<<(std::ostream& str, Mocap::Odometry::MavFrame const& mav_frame)
+{
+    return str << to_string(mav_frame);
+}
+
+MAVSDK_PUBLIC std::string_view
+to_string(Mocap::Odometry::MavEstimatorType const& mav_estimator_type)
+{
+    switch (mav_estimator_type) {
+        case Mocap::Odometry::MavEstimatorType::Unknown:
+            return "Unknown";
+        case Mocap::Odometry::MavEstimatorType::Naive:
+            return "Naive";
+        case Mocap::Odometry::MavEstimatorType::Vision:
+            return "Vision";
+        case Mocap::Odometry::MavEstimatorType::Vio:
+            return "Vio";
+        case Mocap::Odometry::MavEstimatorType::Gps:
+            return "Gps";
+        case Mocap::Odometry::MavEstimatorType::GpsIns:
+            return "Gps Ins";
+        case Mocap::Odometry::MavEstimatorType::Mocap:
+            return "Mocap";
+        case Mocap::Odometry::MavEstimatorType::Lidar:
+            return "Lidar";
+        case Mocap::Odometry::MavEstimatorType::Autopilot:
+            return "Autopilot";
+        default:
+            return "Unknown";
     }
 }
 
 MAVSDK_PUBLIC std::ostream&
 operator<<(std::ostream& str, Mocap::Odometry::MavEstimatorType const& mav_estimator_type)
 {
-    switch (mav_estimator_type) {
-        case Mocap::Odometry::MavEstimatorType::Unknown:
-            return str << "Unknown";
-        case Mocap::Odometry::MavEstimatorType::Naive:
-            return str << "Naive";
-        case Mocap::Odometry::MavEstimatorType::Vision:
-            return str << "Vision";
-        case Mocap::Odometry::MavEstimatorType::Vio:
-            return str << "Vio";
-        case Mocap::Odometry::MavEstimatorType::Gps:
-            return str << "Gps";
-        case Mocap::Odometry::MavEstimatorType::GpsIns:
-            return str << "Gps Ins";
-        case Mocap::Odometry::MavEstimatorType::Mocap:
-            return str << "Mocap";
-        case Mocap::Odometry::MavEstimatorType::Lidar:
-            return str << "Lidar";
-        case Mocap::Odometry::MavEstimatorType::Autopilot:
-            return str << "Autopilot";
-        default:
-            return str << "Unknown";
-    }
+    return str << to_string(mav_estimator_type);
 }
 MAVSDK_PUBLIC bool operator==(const Mocap::Odometry& lhs, const Mocap::Odometry& rhs)
 {
@@ -323,24 +334,29 @@ MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Mocap::Odometry const&
     return str;
 }
 
-MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Mocap::Result const& result)
+MAVSDK_PUBLIC std::string_view to_string(Mocap::Result const& result)
 {
     switch (result) {
         case Mocap::Result::Unknown:
-            return str << "Unknown";
+            return "Unknown";
         case Mocap::Result::Success:
-            return str << "Success";
+            return "Success";
         case Mocap::Result::NoSystem:
-            return str << "No System";
+            return "No System";
         case Mocap::Result::ConnectionError:
-            return str << "Connection Error";
+            return "Connection Error";
         case Mocap::Result::InvalidRequestData:
-            return str << "Invalid Request Data";
+            return "Invalid Request Data";
         case Mocap::Result::Unsupported:
-            return str << "Unsupported";
+            return "Unsupported";
         default:
-            return str << "Unknown";
+            return "Unknown";
     }
+}
+
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Mocap::Result const& result)
+{
+    return str << to_string(result);
 }
 
 } // namespace mavsdk

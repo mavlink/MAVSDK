@@ -81,6 +81,13 @@ public:
     };
 
     /**
+     * @brief Convert `Winch::WinchAction` to string.
+     *
+     * @return A string representation of the enum.
+     */
+    friend MAVSDK_PUBLIC std::string_view to_string(Winch::WinchAction const& winch_action);
+
+    /**
      * @brief Stream operator to print information about a `Winch::WinchAction`.
      *
      * @return A reference to the stream.
@@ -173,6 +180,13 @@ public:
         Unsupported, /**< @brief Action not supported. */
         Failed, /**< @brief Action failed. */
     };
+
+    /**
+     * @brief Convert `Winch::Result` to string.
+     *
+     * @return A string representation of the enum.
+     */
+    friend MAVSDK_PUBLIC std::string_view to_string(Winch::Result const& result);
 
     /**
      * @brief Stream operator to print information about a `Winch::Result`.

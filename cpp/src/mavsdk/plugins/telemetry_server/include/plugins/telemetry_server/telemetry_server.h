@@ -62,6 +62,13 @@ public:
     };
 
     /**
+     * @brief Convert `TelemetryServer::FixType` to string.
+     *
+     * @return A string representation of the enum.
+     */
+    friend MAVSDK_PUBLIC std::string_view to_string(TelemetryServer::FixType const& fix_type);
+
+    /**
      * @brief Stream operator to print information about a `TelemetryServer::FixType`.
      *
      * @return A reference to the stream.
@@ -79,6 +86,13 @@ public:
         Mc, /**< @brief Multi-copter. */
         Fw, /**< @brief Fixed-wing. */
     };
+
+    /**
+     * @brief Convert `TelemetryServer::VtolState` to string.
+     *
+     * @return A string representation of the enum.
+     */
+    friend MAVSDK_PUBLIC std::string_view to_string(TelemetryServer::VtolState const& vtol_state);
 
     /**
      * @brief Stream operator to print information about a `TelemetryServer::VtolState`.
@@ -103,6 +117,14 @@ public:
     };
 
     /**
+     * @brief Convert `TelemetryServer::StatusTextType` to string.
+     *
+     * @return A string representation of the enum.
+     */
+    friend MAVSDK_PUBLIC std::string_view
+    to_string(TelemetryServer::StatusTextType const& status_text_type);
+
+    /**
      * @brief Stream operator to print information about a `TelemetryServer::StatusTextType`.
      *
      * @return A reference to the stream.
@@ -120,6 +142,14 @@ public:
         TakingOff, /**< @brief The vehicle is taking off. */
         Landing, /**< @brief The vehicle is landing. */
     };
+
+    /**
+     * @brief Convert `TelemetryServer::LandedState` to string.
+     *
+     * @return A string representation of the enum.
+     */
+    friend MAVSDK_PUBLIC std::string_view
+    to_string(TelemetryServer::LandedState const& landed_state);
 
     /**
      * @brief Stream operator to print information about a `TelemetryServer::LandedState`.
@@ -566,6 +596,14 @@ public:
         };
 
         /**
+         * @brief Convert `TelemetryServer::MavFrame` to string.
+         *
+         * @return A string representation of the enum.
+         */
+        friend MAVSDK_PUBLIC std::string_view
+        to_string(TelemetryServer::Odometry::MavFrame const& mav_frame);
+
+        /**
          * @brief Stream operator to print information about a `TelemetryServer::MavFrame`.
          *
          * @return A reference to the stream.
@@ -915,6 +953,13 @@ public:
         Timeout, /**< @brief Request timed out. */
         Unsupported, /**< @brief Request not supported. */
     };
+
+    /**
+     * @brief Convert `TelemetryServer::Result` to string.
+     *
+     * @return A string representation of the enum.
+     */
+    friend MAVSDK_PUBLIC std::string_view to_string(TelemetryServer::Result const& result);
 
     /**
      * @brief Stream operator to print information about a `TelemetryServer::Result`.

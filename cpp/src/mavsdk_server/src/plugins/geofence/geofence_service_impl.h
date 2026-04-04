@@ -47,7 +47,7 @@ public:
     {
         switch (fence_type) {
             default:
-                LogErr() << "Unknown fence_type enum value: " << static_cast<int>(fence_type);
+                LogErr("Unknown fence_type enum value: {}", static_cast<int>(fence_type));
             // FALLTHROUGH
             case mavsdk::Geofence::FenceType::Inclusion:
                 return rpc::geofence::FENCE_TYPE_INCLUSION;
@@ -61,7 +61,7 @@ public:
     {
         switch (fence_type) {
             default:
-                LogErr() << "Unknown fence_type enum value: " << static_cast<int>(fence_type);
+                LogErr("Unknown fence_type enum value: {}", static_cast<int>(fence_type));
             // FALLTHROUGH
             case rpc::geofence::FENCE_TYPE_INCLUSION:
                 return mavsdk::Geofence::FenceType::Inclusion;
@@ -190,7 +190,7 @@ public:
     {
         switch (result) {
             default:
-                LogErr() << "Unknown result enum value: " << static_cast<int>(result);
+                LogErr("Unknown result enum value: {}", static_cast<int>(result));
             // FALLTHROUGH
             case mavsdk::Geofence::Result::Unknown:
                 return rpc::geofence::GeofenceResult_Result_RESULT_UNKNOWN;
@@ -216,7 +216,7 @@ public:
     {
         switch (result) {
             default:
-                LogErr() << "Unknown result enum value: " << static_cast<int>(result);
+                LogErr("Unknown result enum value: {}", static_cast<int>(result));
             // FALLTHROUGH
             case rpc::geofence::GeofenceResult_Result_RESULT_UNKNOWN:
                 return mavsdk::Geofence::Result::Unknown;
@@ -252,7 +252,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "UploadGeofence sent with a null request! Ignoring...";
+            LogWarn("UploadGeofence sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 

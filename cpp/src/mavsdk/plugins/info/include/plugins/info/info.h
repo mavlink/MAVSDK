@@ -153,6 +153,14 @@ public:
         };
 
         /**
+         * @brief Convert `Info::FlightSoftwareVersionType` to string.
+         *
+         * @return A string representation of the enum.
+         */
+        friend MAVSDK_PUBLIC std::string_view
+        to_string(Info::Version::FlightSoftwareVersionType const& flight_software_version_type);
+
+        /**
          * @brief Stream operator to print information about a `Info::FlightSoftwareVersionType`.
          *
          * @return A reference to the stream.
@@ -199,6 +207,13 @@ public:
         InformationNotReceivedYet, /**< @brief Information has not been received yet. */
         NoSystem, /**< @brief No system is connected. */
     };
+
+    /**
+     * @brief Convert `Info::Result` to string.
+     *
+     * @return A string representation of the enum.
+     */
+    friend MAVSDK_PUBLIC std::string_view to_string(Info::Result const& result);
 
     /**
      * @brief Stream operator to print information about a `Info::Result`.

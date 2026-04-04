@@ -203,54 +203,64 @@ MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Winch::Status const& s
     return str;
 }
 
-MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Winch::Result const& result)
+MAVSDK_PUBLIC std::string_view to_string(Winch::Result const& result)
 {
     switch (result) {
         case Winch::Result::Unknown:
-            return str << "Unknown";
+            return "Unknown";
         case Winch::Result::Success:
-            return str << "Success";
+            return "Success";
         case Winch::Result::NoSystem:
-            return str << "No System";
+            return "No System";
         case Winch::Result::Busy:
-            return str << "Busy";
+            return "Busy";
         case Winch::Result::Timeout:
-            return str << "Timeout";
+            return "Timeout";
         case Winch::Result::Unsupported:
-            return str << "Unsupported";
+            return "Unsupported";
         case Winch::Result::Failed:
-            return str << "Failed";
+            return "Failed";
         default:
-            return str << "Unknown";
+            return "Unknown";
+    }
+}
+
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Winch::Result const& result)
+{
+    return str << to_string(result);
+}
+
+MAVSDK_PUBLIC std::string_view to_string(Winch::WinchAction const& winch_action)
+{
+    switch (winch_action) {
+        case Winch::WinchAction::Relaxed:
+            return "Relaxed";
+        case Winch::WinchAction::RelativeLengthControl:
+            return "Relative Length Control";
+        case Winch::WinchAction::RateControl:
+            return "Rate Control";
+        case Winch::WinchAction::Lock:
+            return "Lock";
+        case Winch::WinchAction::Deliver:
+            return "Deliver";
+        case Winch::WinchAction::Hold:
+            return "Hold";
+        case Winch::WinchAction::Retract:
+            return "Retract";
+        case Winch::WinchAction::LoadLine:
+            return "Load Line";
+        case Winch::WinchAction::AbandonLine:
+            return "Abandon Line";
+        case Winch::WinchAction::LoadPayload:
+            return "Load Payload";
+        default:
+            return "Unknown";
     }
 }
 
 MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Winch::WinchAction const& winch_action)
 {
-    switch (winch_action) {
-        case Winch::WinchAction::Relaxed:
-            return str << "Relaxed";
-        case Winch::WinchAction::RelativeLengthControl:
-            return str << "Relative Length Control";
-        case Winch::WinchAction::RateControl:
-            return str << "Rate Control";
-        case Winch::WinchAction::Lock:
-            return str << "Lock";
-        case Winch::WinchAction::Deliver:
-            return str << "Deliver";
-        case Winch::WinchAction::Hold:
-            return str << "Hold";
-        case Winch::WinchAction::Retract:
-            return str << "Retract";
-        case Winch::WinchAction::LoadLine:
-            return str << "Load Line";
-        case Winch::WinchAction::AbandonLine:
-            return str << "Abandon Line";
-        case Winch::WinchAction::LoadPayload:
-            return str << "Load Payload";
-        default:
-            return str << "Unknown";
-    }
+    return str << to_string(winch_action);
 }
 
 } // namespace mavsdk

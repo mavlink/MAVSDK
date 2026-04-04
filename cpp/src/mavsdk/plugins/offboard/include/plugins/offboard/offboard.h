@@ -225,6 +225,14 @@ public:
         };
 
         /**
+         * @brief Convert `Offboard::AltitudeType` to string.
+         *
+         * @return A string representation of the enum.
+         */
+        friend MAVSDK_PUBLIC std::string_view
+        to_string(Offboard::PositionGlobalYaw::AltitudeType const& altitude_type);
+
+        /**
          * @brief Stream operator to print information about a `Offboard::AltitudeType`.
          *
          * @return A reference to the stream.
@@ -349,6 +357,13 @@ public:
         NoSetpointSet, /**< @brief Cannot start without setpoint set. */
         Failed, /**< @brief Request failed. */
     };
+
+    /**
+     * @brief Convert `Offboard::Result` to string.
+     *
+     * @return A string representation of the enum.
+     */
+    friend MAVSDK_PUBLIC std::string_view to_string(Offboard::Result const& result);
 
     /**
      * @brief Stream operator to print information about a `Offboard::Result`.

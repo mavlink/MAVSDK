@@ -8,6 +8,13 @@ enum class {{ name.upper_camel_case }} {
 };
 
 /**
+ * @brief Convert `{{ plugin_name.upper_camel_case }}::{{ name.upper_camel_case }}` to string.
+ *
+ * @return A string representation of the enum.
+ */
+friend MAVSDK_PUBLIC std::string_view to_string({{ plugin_name.upper_camel_case }}::{% if parent_struct and not name.upper_camel_case.endswith("Result") %}{{ parent_struct.upper_camel_case }}::{% endif %}{{ name.upper_camel_case }} const& {{ name.lower_snake_case }});
+
+/**
  * @brief Stream operator to print information about a `{{ plugin_name.upper_camel_case }}::{{ name.upper_camel_case }}`.
  *
  * @return A reference to the stream.

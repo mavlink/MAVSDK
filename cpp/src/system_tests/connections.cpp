@@ -16,7 +16,7 @@ TEST(SystemTest, TcpConnectionReconnectionFromServerSide)
     const std::string server_url = "tcpin://0.0.0.0:" + tcp_port;
     const std::string client_url = "tcpout://127.0.0.1:" + tcp_port;
 
-    LogInfo() << "=== Phase 1: Start server and client ===";
+    LogInfo("=== Phase 1: Start server and client ===");
 
     // Start server
     Mavsdk server_mavsdk{Mavsdk::Configuration{ComponentType::Autopilot}};
@@ -31,12 +31,12 @@ TEST(SystemTest, TcpConnectionReconnectionFromServerSide)
     ASSERT_EQ(client_result, ConnectionResult::Success);
 
     // Wait for discovery
-    LogInfo() << "Waiting for client to discover server...";
+    LogInfo("Waiting for client to discover server...");
     auto maybe_system = client_mavsdk.first_autopilot(10.0);
     ASSERT_TRUE(maybe_system) << "Client failed to discover server";
     auto system = maybe_system.value();
 
-    LogInfo() << "=== Phase 2: Verify initial connectivity ===";
+    LogInfo("=== Phase 2: Verify initial connectivity ===");
 
     // Track automatic heartbeats (MAVSDK sends these every second automatically)
     std::atomic<int> message_count{0};
@@ -45,50 +45,50 @@ TEST(SystemTest, TcpConnectionReconnectionFromServerSide)
     auto handle = client_mavlink.subscribe_message(
         "HEARTBEAT", [&message_count](MavlinkDirect::MavlinkMessage) {
             message_count++;
-            LogInfo() << "Client received HEARTBEAT (total: " << message_count.load() << ")";
+            LogInfo("Client received HEARTBEAT (total: {})", message_count.load());
         });
 
     // Wait for automatic heartbeats to arrive (sent every 1 second by MAVSDK)
-    LogInfo() << "Waiting for automatic heartbeats...";
+    LogInfo("Waiting for automatic heartbeats...");
     std::this_thread::sleep_for(std::chrono::seconds(2));
     int messages_before = message_count.load();
     EXPECT_GE(messages_before, 1) << "Client didn't receive automatic heartbeats";
-    LogInfo() << "Received " << messages_before << " automatic heartbeat(s) from server";
+    LogInfo("Received {} automatic heartbeat(s) from server", messages_before);
 
-    LogInfo() << "=== Phase 3: Remove server connection (simulates server closing connection) ===";
+    LogInfo("=== Phase 3: Remove server connection (simulates server closing connection) ===");
 
     // Remove the server connection - this closes the socket
     server_mavsdk.remove_connection(server_handle);
 
     // Give client time to detect disconnection
-    LogInfo() << "Waiting for client to detect disconnection...";
-    LogInfo() << "Expected log: 'TCP connection closed, trying to reconnect...'";
+    LogInfo("Waiting for client to detect disconnection...");
+    LogInfo("Expected log: 'TCP connection closed, trying to reconnect...'");
     std::this_thread::sleep_for(std::chrono::seconds(3));
 
-    LogInfo() << "=== Phase 4: Re-add server connection (client should reconnect) ===";
+    LogInfo("=== Phase 4: Re-add server connection (client should reconnect) ===");
 
     // Re-add the server connection on same port
     auto [server_result2, server_handle2] =
         server_mavsdk.add_any_connection_with_handle(server_url);
     ASSERT_EQ(server_result2, ConnectionResult::Success);
 
-    LogInfo() << "=== Phase 5: Verify message flow after reconnection ===";
+    LogInfo("=== Phase 5: Verify message flow after reconnection ===");
 
     int messages_before_reconnect = message_count.load();
-    LogInfo() << "Messages before waiting: " << messages_before_reconnect;
+    LogInfo("Messages before waiting: {}", messages_before_reconnect);
 
     // Wait for automatic heartbeats to resume after reconnection
-    LogInfo() << "Waiting for automatic heartbeats to resume...";
+    LogInfo("Waiting for automatic heartbeats to resume...");
     std::this_thread::sleep_for(std::chrono::seconds(2));
     int messages_after_reconnect = message_count.load();
 
-    LogInfo() << "Messages after waiting: " << messages_after_reconnect;
+    LogInfo("Messages after waiting: {}", messages_after_reconnect);
 
     EXPECT_GT(messages_after_reconnect, messages_before_reconnect)
         << "Client did NOT receive automatic heartbeats after reconnection!";
 
-    LogInfo() << "=== SUCCESS: TCP client reconnection verified! ===";
-    LogInfo() << "Total messages received: " << message_count.load();
+    LogInfo("=== SUCCESS: TCP client reconnection verified! ===");
+    LogInfo("Total messages received: {}", message_count.load());
 
     // Cleanup
     client_mavlink.unsubscribe_message(handle);
@@ -105,7 +105,7 @@ TEST(SystemTest, TcpConnectionReconnectionFromClientSide)
     const std::string server_url = "tcpin://0.0.0.0:" + tcp_port;
     const std::string client_url = "tcpout://127.0.0.1:" + tcp_port;
 
-    LogInfo() << "=== Phase 1: Start server ===";
+    LogInfo("=== Phase 1: Start server ===");
 
     // Start server
     Mavsdk server_mavsdk{Mavsdk::Configuration{ComponentType::Autopilot}};
@@ -114,7 +114,7 @@ TEST(SystemTest, TcpConnectionReconnectionFromClientSide)
 
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
-    LogInfo() << "=== Phase 2: Start client and verify initial connectivity ===";
+    LogInfo("=== Phase 2: Start client and verify initial connectivity ===");
 
     // Start client
     Mavsdk client_mavsdk{Mavsdk::Configuration{ComponentType::GroundStation}};
@@ -122,7 +122,7 @@ TEST(SystemTest, TcpConnectionReconnectionFromClientSide)
     ASSERT_EQ(client_result, ConnectionResult::Success);
 
     // Wait for discovery
-    LogInfo() << "Waiting for client to discover server...";
+    LogInfo("Waiting for client to discover server...");
     auto maybe_system = client_mavsdk.first_autopilot(10.0);
     ASSERT_TRUE(maybe_system) << "Client failed to discover server";
     auto system = maybe_system.value();
@@ -134,17 +134,17 @@ TEST(SystemTest, TcpConnectionReconnectionFromClientSide)
     auto handle = client_mavlink.subscribe_message(
         "HEARTBEAT", [&message_count](MavlinkDirect::MavlinkMessage) {
             message_count++;
-            LogInfo() << "Client received HEARTBEAT (total: " << message_count.load() << ")";
+            LogInfo("Client received HEARTBEAT (total: {})", message_count.load());
         });
 
     // Wait for automatic heartbeats to arrive (sent every 1 second by MAVSDK)
-    LogInfo() << "Waiting for automatic heartbeats...";
+    LogInfo("Waiting for automatic heartbeats...");
     std::this_thread::sleep_for(std::chrono::seconds(2));
     int messages_before = message_count.load();
     EXPECT_GE(messages_before, 1) << "Client didn't receive automatic heartbeats";
-    LogInfo() << "Received " << messages_before << " automatic heartbeat(s) from server";
+    LogInfo("Received {} automatic heartbeat(s) from server", messages_before);
 
-    LogInfo() << "=== Phase 3: Remove client connection (client closes its connection) ===";
+    LogInfo("=== Phase 3: Remove client connection (client closes its connection) ===");
 
     // Unsubscribe before removing connection to avoid callback issues
     client_mavlink.unsubscribe_message(handle);
@@ -153,17 +153,17 @@ TEST(SystemTest, TcpConnectionReconnectionFromClientSide)
     client_mavsdk.remove_connection(client_handle);
 
     // Give time for disconnection to be processed
-    LogInfo() << "Waiting after client disconnection...";
+    LogInfo("Waiting after client disconnection...");
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
-    LogInfo() << "=== Phase 4: Re-add client connection (client reconnects) ===";
+    LogInfo("=== Phase 4: Re-add client connection (client reconnects) ===");
 
     // Re-add the client connection
     auto [client_result2, client_handle2] =
         client_mavsdk.add_any_connection_with_handle(client_url);
     ASSERT_EQ(client_result2, ConnectionResult::Success);
 
-    LogInfo() << "=== Phase 5: Verify message flow after reconnection ===";
+    LogInfo("=== Phase 5: Verify message flow after reconnection ===");
 
     // Re-subscribe using the original system (system objects persist)
     std::atomic<int> message_count2{0};
@@ -171,23 +171,23 @@ TEST(SystemTest, TcpConnectionReconnectionFromClientSide)
     auto handle2 = client_mavlink.subscribe_message(
         "HEARTBEAT", [&message_count2](MavlinkDirect::MavlinkMessage) {
             message_count2++;
-            LogInfo() << "Client received HEARTBEAT after reconnection (total: "
-                      << message_count2.load() << ")";
+            LogInfo(
+                "Client received HEARTBEAT after reconnection (total: {})", message_count2.load());
         });
 
     // Wait for automatic heartbeats to arrive after reconnection
-    LogInfo() << "Waiting for automatic heartbeats after reconnection...";
+    LogInfo("Waiting for automatic heartbeats after reconnection...");
     std::this_thread::sleep_for(std::chrono::seconds(3));
     int messages_after = message_count2.load();
 
-    LogInfo() << "Messages after reconnection: " << messages_after;
+    LogInfo("Messages after reconnection: {}", messages_after);
 
     EXPECT_GE(messages_after, 1)
         << "Client did NOT receive automatic heartbeats after reconnection!";
 
-    LogInfo() << "=== SUCCESS: TCP client-side reconnection verified! ===";
-    LogInfo() << "Messages before disconnect: " << messages_before;
-    LogInfo() << "Messages after reconnect: " << messages_after;
+    LogInfo("=== SUCCESS: TCP client-side reconnection verified! ===");
+    LogInfo("Messages before disconnect: {}", messages_before);
+    LogInfo("Messages after reconnect: {}", messages_after);
 
     // Cleanup
     client_mavlink.unsubscribe_message(handle2);
@@ -205,7 +205,7 @@ TEST(SystemTest, UdpConnectionReconnectionFromClientSide)
     const std::string server_url = "udpin://0.0.0.0:" + udp_port;
     const std::string client_url = "udpout://127.0.0.1:" + udp_port;
 
-    LogInfo() << "=== Phase 1: Start server and client ===";
+    LogInfo("=== Phase 1: Start server and client ===");
 
     // Start server
     Mavsdk server_mavsdk{Mavsdk::Configuration{ComponentType::Autopilot}};
@@ -220,12 +220,12 @@ TEST(SystemTest, UdpConnectionReconnectionFromClientSide)
     ASSERT_EQ(client_result, ConnectionResult::Success);
 
     // Wait for discovery
-    LogInfo() << "Waiting for client to discover server...";
+    LogInfo("Waiting for client to discover server...");
     auto maybe_system = client_mavsdk.first_autopilot(10.0);
     ASSERT_TRUE(maybe_system) << "Client failed to discover server";
     auto system = maybe_system.value();
 
-    LogInfo() << "=== Phase 2: Verify initial connectivity ===";
+    LogInfo("=== Phase 2: Verify initial connectivity ===");
 
     // Track automatic heartbeats
     std::atomic<int> message_count{0};
@@ -234,17 +234,17 @@ TEST(SystemTest, UdpConnectionReconnectionFromClientSide)
     auto handle = client_mavlink.subscribe_message(
         "HEARTBEAT", [&message_count](MavlinkDirect::MavlinkMessage) {
             message_count++;
-            LogInfo() << "Client received HEARTBEAT (total: " << message_count.load() << ")";
+            LogInfo("Client received HEARTBEAT (total: {})", message_count.load());
         });
 
     // Wait for automatic heartbeats to arrive
-    LogInfo() << "Waiting for automatic heartbeats...";
+    LogInfo("Waiting for automatic heartbeats...");
     std::this_thread::sleep_for(std::chrono::seconds(2));
     int messages_before = message_count.load();
     EXPECT_GE(messages_before, 1) << "Client didn't receive automatic heartbeats";
-    LogInfo() << "Received " << messages_before << " automatic heartbeat(s) from server";
+    LogInfo("Received {} automatic heartbeat(s) from server", messages_before);
 
-    LogInfo() << "=== Phase 3: Remove and re-add client connection ===";
+    LogInfo("=== Phase 3: Remove and re-add client connection ===");
 
     // Unsubscribe before removing connection
     client_mavlink.unsubscribe_message(handle);
@@ -253,7 +253,7 @@ TEST(SystemTest, UdpConnectionReconnectionFromClientSide)
     client_mavsdk.remove_connection(client_handle);
 
     // Give time for disconnection
-    LogInfo() << "Waiting after client disconnection...";
+    LogInfo("Waiting after client disconnection...");
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
     // Re-add the client connection
@@ -261,7 +261,7 @@ TEST(SystemTest, UdpConnectionReconnectionFromClientSide)
         client_mavsdk.add_any_connection_with_handle(client_url);
     ASSERT_EQ(client_result2, ConnectionResult::Success);
 
-    LogInfo() << "=== Phase 4: Verify message flow after reconnection ===";
+    LogInfo("=== Phase 4: Verify message flow after reconnection ===");
 
     // Re-subscribe using the original system (system objects persist)
     std::atomic<int> message_count2{0};
@@ -269,23 +269,23 @@ TEST(SystemTest, UdpConnectionReconnectionFromClientSide)
     auto handle2 = client_mavlink.subscribe_message(
         "HEARTBEAT", [&message_count2](MavlinkDirect::MavlinkMessage) {
             message_count2++;
-            LogInfo() << "Client received HEARTBEAT after reconnection (total: "
-                      << message_count2.load() << ")";
+            LogInfo(
+                "Client received HEARTBEAT after reconnection (total: {})", message_count2.load());
         });
 
     // Wait for automatic heartbeats to arrive after reconnection
-    LogInfo() << "Waiting for automatic heartbeats after reconnection...";
+    LogInfo("Waiting for automatic heartbeats after reconnection...");
     std::this_thread::sleep_for(std::chrono::seconds(3));
     int messages_after = message_count2.load();
 
-    LogInfo() << "Messages after reconnection: " << messages_after;
+    LogInfo("Messages after reconnection: {}", messages_after);
 
     EXPECT_GE(messages_after, 1)
         << "Client did NOT receive automatic heartbeats after reconnection!";
 
-    LogInfo() << "=== SUCCESS: UDP client-side reconnection verified! ===";
-    LogInfo() << "Messages before disconnect: " << messages_before;
-    LogInfo() << "Messages after reconnect: " << messages_after;
+    LogInfo("=== SUCCESS: UDP client-side reconnection verified! ===");
+    LogInfo("Messages before disconnect: {}", messages_before);
+    LogInfo("Messages after reconnect: {}", messages_after);
 
     // Cleanup
     client_mavlink.unsubscribe_message(handle2);
@@ -303,7 +303,7 @@ TEST(SystemTest, UdpConnectionReconnectionFromServerSide)
     const std::string server_url = "udpin://0.0.0.0:" + udp_port;
     const std::string client_url = "udpout://127.0.0.1:" + udp_port;
 
-    LogInfo() << "=== Phase 1: Start server and client ===";
+    LogInfo("=== Phase 1: Start server and client ===");
 
     // Start server
     Mavsdk server_mavsdk{Mavsdk::Configuration{ComponentType::Autopilot}};
@@ -318,12 +318,12 @@ TEST(SystemTest, UdpConnectionReconnectionFromServerSide)
     ASSERT_EQ(client_result, ConnectionResult::Success);
 
     // Wait for discovery
-    LogInfo() << "Waiting for client to discover server...";
+    LogInfo("Waiting for client to discover server...");
     auto maybe_system = client_mavsdk.first_autopilot(10.0);
     ASSERT_TRUE(maybe_system) << "Client failed to discover server";
     auto system = maybe_system.value();
 
-    LogInfo() << "=== Phase 2: Verify initial connectivity ===";
+    LogInfo("=== Phase 2: Verify initial connectivity ===");
 
     // Track automatic heartbeats
     std::atomic<int> message_count{0};
@@ -332,17 +332,17 @@ TEST(SystemTest, UdpConnectionReconnectionFromServerSide)
     auto handle = client_mavlink.subscribe_message(
         "HEARTBEAT", [&message_count](MavlinkDirect::MavlinkMessage) {
             message_count++;
-            LogInfo() << "Client received HEARTBEAT (total: " << message_count.load() << ")";
+            LogInfo("Client received HEARTBEAT (total: {})", message_count.load());
         });
 
     // Wait for automatic heartbeats to arrive
-    LogInfo() << "Waiting for automatic heartbeats...";
+    LogInfo("Waiting for automatic heartbeats...");
     std::this_thread::sleep_for(std::chrono::seconds(2));
     int messages_before = message_count.load();
     EXPECT_GE(messages_before, 1) << "Client didn't receive automatic heartbeats";
-    LogInfo() << "Received " << messages_before << " automatic heartbeat(s) from server";
+    LogInfo("Received {} automatic heartbeat(s) from server", messages_before);
 
-    LogInfo() << "=== Phase 3: Remove and re-add server connection ===";
+    LogInfo("=== Phase 3: Remove and re-add server connection ===");
 
     // Unsubscribe before removing connection
     client_mavlink.unsubscribe_message(handle);
@@ -351,7 +351,7 @@ TEST(SystemTest, UdpConnectionReconnectionFromServerSide)
     server_mavsdk.remove_connection(server_handle);
 
     // Give time for disconnection
-    LogInfo() << "Waiting after server disconnection...";
+    LogInfo("Waiting after server disconnection...");
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
     // Re-add the server connection
@@ -359,7 +359,7 @@ TEST(SystemTest, UdpConnectionReconnectionFromServerSide)
         server_mavsdk.add_any_connection_with_handle(server_url);
     ASSERT_EQ(server_result2, ConnectionResult::Success);
 
-    LogInfo() << "=== Phase 4: Verify message flow after reconnection ===";
+    LogInfo("=== Phase 4: Verify message flow after reconnection ===");
 
     // Re-subscribe using the original system (system objects persist)
     std::atomic<int> message_count2{0};
@@ -367,23 +367,23 @@ TEST(SystemTest, UdpConnectionReconnectionFromServerSide)
     auto handle2 = client_mavlink.subscribe_message(
         "HEARTBEAT", [&message_count2](MavlinkDirect::MavlinkMessage) {
             message_count2++;
-            LogInfo() << "Client received HEARTBEAT after reconnection (total: "
-                      << message_count2.load() << ")";
+            LogInfo(
+                "Client received HEARTBEAT after reconnection (total: {})", message_count2.load());
         });
 
     // Wait for automatic heartbeats to arrive after reconnection
-    LogInfo() << "Waiting for automatic heartbeats after reconnection...";
+    LogInfo("Waiting for automatic heartbeats after reconnection...");
     std::this_thread::sleep_for(std::chrono::seconds(3));
     int messages_after = message_count2.load();
 
-    LogInfo() << "Messages after reconnection: " << messages_after;
+    LogInfo("Messages after reconnection: {}", messages_after);
 
     EXPECT_GE(messages_after, 1)
         << "Client did NOT receive automatic heartbeats after reconnection!";
 
-    LogInfo() << "=== SUCCESS: UDP server-side reconnection verified! ===";
-    LogInfo() << "Messages before disconnect: " << messages_before;
-    LogInfo() << "Messages after reconnect: " << messages_after;
+    LogInfo("=== SUCCESS: UDP server-side reconnection verified! ===");
+    LogInfo("Messages before disconnect: {}", messages_before);
+    LogInfo("Messages after reconnect: {}", messages_after);
 
     // Cleanup
     client_mavlink.unsubscribe_message(handle2);

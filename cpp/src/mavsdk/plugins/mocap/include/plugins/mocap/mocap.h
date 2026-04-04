@@ -340,6 +340,13 @@ public:
         };
 
         /**
+         * @brief Convert `Mocap::MavFrame` to string.
+         *
+         * @return A string representation of the enum.
+         */
+        friend MAVSDK_PUBLIC std::string_view to_string(Mocap::Odometry::MavFrame const& mav_frame);
+
+        /**
          * @brief Stream operator to print information about a `Mocap::MavFrame`.
          *
          * @return A reference to the stream.
@@ -361,6 +368,14 @@ public:
             Lidar, /**< @brief Lidar estimate.. */
             Autopilot, /**< @brief Autopilot estimate.. */
         };
+
+        /**
+         * @brief Convert `Mocap::MavEstimatorType` to string.
+         *
+         * @return A string representation of the enum.
+         */
+        friend MAVSDK_PUBLIC std::string_view
+        to_string(Mocap::Odometry::MavEstimatorType const& mav_estimator_type);
 
         /**
          * @brief Stream operator to print information about a `Mocap::MavEstimatorType`.
@@ -413,6 +428,13 @@ public:
         InvalidRequestData, /**< @brief Invalid request data. */
         Unsupported, /**< @brief Function unsupported. */
     };
+
+    /**
+     * @brief Convert `Mocap::Result` to string.
+     *
+     * @return A string representation of the enum.
+     */
+    friend MAVSDK_PUBLIC std::string_view to_string(Mocap::Result const& result);
 
     /**
      * @brief Stream operator to print information about a `Mocap::Result`.

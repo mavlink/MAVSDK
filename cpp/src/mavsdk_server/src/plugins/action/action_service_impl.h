@@ -47,8 +47,9 @@ public:
     {
         switch (orbit_yaw_behavior) {
             default:
-                LogErr() << "Unknown orbit_yaw_behavior enum value: "
-                         << static_cast<int>(orbit_yaw_behavior);
+                LogErr(
+                    "Unknown orbit_yaw_behavior enum value: {}",
+                    static_cast<int>(orbit_yaw_behavior));
             // FALLTHROUGH
             case mavsdk::Action::OrbitYawBehavior::HoldFrontToCircleCenter:
                 return rpc::action::ORBIT_YAW_BEHAVIOR_HOLD_FRONT_TO_CIRCLE_CENTER;
@@ -68,8 +69,9 @@ public:
     {
         switch (orbit_yaw_behavior) {
             default:
-                LogErr() << "Unknown orbit_yaw_behavior enum value: "
-                         << static_cast<int>(orbit_yaw_behavior);
+                LogErr(
+                    "Unknown orbit_yaw_behavior enum value: {}",
+                    static_cast<int>(orbit_yaw_behavior));
             // FALLTHROUGH
             case rpc::action::ORBIT_YAW_BEHAVIOR_HOLD_FRONT_TO_CIRCLE_CENTER:
                 return mavsdk::Action::OrbitYawBehavior::HoldFrontToCircleCenter;
@@ -89,7 +91,7 @@ public:
     {
         switch (relay_command) {
             default:
-                LogErr() << "Unknown relay_command enum value: " << static_cast<int>(relay_command);
+                LogErr("Unknown relay_command enum value: {}", static_cast<int>(relay_command));
             // FALLTHROUGH
             case mavsdk::Action::RelayCommand::On:
                 return rpc::action::RELAY_COMMAND_ON;
@@ -103,7 +105,7 @@ public:
     {
         switch (relay_command) {
             default:
-                LogErr() << "Unknown relay_command enum value: " << static_cast<int>(relay_command);
+                LogErr("Unknown relay_command enum value: {}", static_cast<int>(relay_command));
             // FALLTHROUGH
             case rpc::action::RELAY_COMMAND_ON:
                 return mavsdk::Action::RelayCommand::On;
@@ -117,7 +119,7 @@ public:
     {
         switch (result) {
             default:
-                LogErr() << "Unknown result enum value: " << static_cast<int>(result);
+                LogErr("Unknown result enum value: {}", static_cast<int>(result));
             // FALLTHROUGH
             case mavsdk::Action::Result::Unknown:
                 return rpc::action::ActionResult_Result_RESULT_UNKNOWN;
@@ -157,7 +159,7 @@ public:
     {
         switch (result) {
             default:
-                LogErr() << "Unknown result enum value: " << static_cast<int>(result);
+                LogErr("Unknown result enum value: {}", static_cast<int>(result));
             // FALLTHROUGH
             case rpc::action::ActionResult_Result_RESULT_UNKNOWN:
                 return mavsdk::Action::Result::Unknown;
@@ -437,7 +439,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "GotoLocation sent with a null request! Ignoring...";
+            LogWarn("GotoLocation sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -469,7 +471,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "DoOrbit sent with a null request! Ignoring...";
+            LogWarn("DoOrbit sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -526,7 +528,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "SetActuator sent with a null request! Ignoring...";
+            LogWarn("SetActuator sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -554,7 +556,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "SetRelay sent with a null request! Ignoring...";
+            LogWarn("SetRelay sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -654,7 +656,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "SetTakeoffAltitude sent with a null request! Ignoring...";
+            LogWarn("SetTakeoffAltitude sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -707,7 +709,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "SetReturnToLaunchAltitude sent with a null request! Ignoring...";
+            LogWarn("SetReturnToLaunchAltitude sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -736,7 +738,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "SetCurrentSpeed sent with a null request! Ignoring...";
+            LogWarn("SetCurrentSpeed sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -764,7 +766,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "SetGpsGlobalOrigin sent with a null request! Ignoring...";
+            LogWarn("SetGpsGlobalOrigin sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 

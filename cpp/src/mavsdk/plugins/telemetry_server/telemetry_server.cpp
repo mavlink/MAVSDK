@@ -491,21 +491,26 @@ operator<<(std::ostream& str, TelemetryServer::PositionBody const& position_body
     return str;
 }
 
-MAVSDK_PUBLIC std::ostream&
-operator<<(std::ostream& str, TelemetryServer::Odometry::MavFrame const& mav_frame)
+MAVSDK_PUBLIC std::string_view to_string(TelemetryServer::Odometry::MavFrame const& mav_frame)
 {
     switch (mav_frame) {
         case TelemetryServer::Odometry::MavFrame::Undef:
-            return str << "Undef";
+            return "Undef";
         case TelemetryServer::Odometry::MavFrame::BodyNed:
-            return str << "Body Ned";
+            return "Body Ned";
         case TelemetryServer::Odometry::MavFrame::VisionNed:
-            return str << "Vision Ned";
+            return "Vision Ned";
         case TelemetryServer::Odometry::MavFrame::EstimNed:
-            return str << "Estim Ned";
+            return "Estim Ned";
         default:
-            return str << "Unknown";
+            return "Unknown";
     }
+}
+
+MAVSDK_PUBLIC std::ostream&
+operator<<(std::ostream& str, TelemetryServer::Odometry::MavFrame const& mav_frame)
+{
+    return str << to_string(mav_frame);
 }
 MAVSDK_PUBLIC bool
 operator==(const TelemetryServer::Odometry& lhs, const TelemetryServer::Odometry& rhs)
@@ -798,113 +803,138 @@ MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, TelemetryServer::Imu c
     return str;
 }
 
-MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, TelemetryServer::Result const& result)
+MAVSDK_PUBLIC std::string_view to_string(TelemetryServer::Result const& result)
 {
     switch (result) {
         case TelemetryServer::Result::Unknown:
-            return str << "Unknown";
+            return "Unknown";
         case TelemetryServer::Result::Success:
-            return str << "Success";
+            return "Success";
         case TelemetryServer::Result::NoSystem:
-            return str << "No System";
+            return "No System";
         case TelemetryServer::Result::ConnectionError:
-            return str << "Connection Error";
+            return "Connection Error";
         case TelemetryServer::Result::Busy:
-            return str << "Busy";
+            return "Busy";
         case TelemetryServer::Result::CommandDenied:
-            return str << "Command Denied";
+            return "Command Denied";
         case TelemetryServer::Result::Timeout:
-            return str << "Timeout";
+            return "Timeout";
         case TelemetryServer::Result::Unsupported:
-            return str << "Unsupported";
+            return "Unsupported";
         default:
-            return str << "Unknown";
+            return "Unknown";
+    }
+}
+
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, TelemetryServer::Result const& result)
+{
+    return str << to_string(result);
+}
+
+MAVSDK_PUBLIC std::string_view to_string(TelemetryServer::FixType const& fix_type)
+{
+    switch (fix_type) {
+        case TelemetryServer::FixType::NoGps:
+            return "No Gps";
+        case TelemetryServer::FixType::NoFix:
+            return "No Fix";
+        case TelemetryServer::FixType::Fix2D:
+            return "Fix 2D";
+        case TelemetryServer::FixType::Fix3D:
+            return "Fix 3D";
+        case TelemetryServer::FixType::FixDgps:
+            return "Fix Dgps";
+        case TelemetryServer::FixType::RtkFloat:
+            return "Rtk Float";
+        case TelemetryServer::FixType::RtkFixed:
+            return "Rtk Fixed";
+        default:
+            return "Unknown";
     }
 }
 
 MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, TelemetryServer::FixType const& fix_type)
 {
-    switch (fix_type) {
-        case TelemetryServer::FixType::NoGps:
-            return str << "No Gps";
-        case TelemetryServer::FixType::NoFix:
-            return str << "No Fix";
-        case TelemetryServer::FixType::Fix2D:
-            return str << "Fix 2D";
-        case TelemetryServer::FixType::Fix3D:
-            return str << "Fix 3D";
-        case TelemetryServer::FixType::FixDgps:
-            return str << "Fix Dgps";
-        case TelemetryServer::FixType::RtkFloat:
-            return str << "Rtk Float";
-        case TelemetryServer::FixType::RtkFixed:
-            return str << "Rtk Fixed";
+    return str << to_string(fix_type);
+}
+
+MAVSDK_PUBLIC std::string_view to_string(TelemetryServer::VtolState const& vtol_state)
+{
+    switch (vtol_state) {
+        case TelemetryServer::VtolState::Undefined:
+            return "Undefined";
+        case TelemetryServer::VtolState::TransitionToFw:
+            return "Transition To Fw";
+        case TelemetryServer::VtolState::TransitionToMc:
+            return "Transition To Mc";
+        case TelemetryServer::VtolState::Mc:
+            return "Mc";
+        case TelemetryServer::VtolState::Fw:
+            return "Fw";
         default:
-            return str << "Unknown";
+            return "Unknown";
     }
 }
 
 MAVSDK_PUBLIC std::ostream&
 operator<<(std::ostream& str, TelemetryServer::VtolState const& vtol_state)
 {
-    switch (vtol_state) {
-        case TelemetryServer::VtolState::Undefined:
-            return str << "Undefined";
-        case TelemetryServer::VtolState::TransitionToFw:
-            return str << "Transition To Fw";
-        case TelemetryServer::VtolState::TransitionToMc:
-            return str << "Transition To Mc";
-        case TelemetryServer::VtolState::Mc:
-            return str << "Mc";
-        case TelemetryServer::VtolState::Fw:
-            return str << "Fw";
+    return str << to_string(vtol_state);
+}
+
+MAVSDK_PUBLIC std::string_view to_string(TelemetryServer::StatusTextType const& status_text_type)
+{
+    switch (status_text_type) {
+        case TelemetryServer::StatusTextType::Debug:
+            return "Debug";
+        case TelemetryServer::StatusTextType::Info:
+            return "Info";
+        case TelemetryServer::StatusTextType::Notice:
+            return "Notice";
+        case TelemetryServer::StatusTextType::Warning:
+            return "Warning";
+        case TelemetryServer::StatusTextType::Error:
+            return "Error";
+        case TelemetryServer::StatusTextType::Critical:
+            return "Critical";
+        case TelemetryServer::StatusTextType::Alert:
+            return "Alert";
+        case TelemetryServer::StatusTextType::Emergency:
+            return "Emergency";
         default:
-            return str << "Unknown";
+            return "Unknown";
     }
 }
 
 MAVSDK_PUBLIC std::ostream&
 operator<<(std::ostream& str, TelemetryServer::StatusTextType const& status_text_type)
 {
-    switch (status_text_type) {
-        case TelemetryServer::StatusTextType::Debug:
-            return str << "Debug";
-        case TelemetryServer::StatusTextType::Info:
-            return str << "Info";
-        case TelemetryServer::StatusTextType::Notice:
-            return str << "Notice";
-        case TelemetryServer::StatusTextType::Warning:
-            return str << "Warning";
-        case TelemetryServer::StatusTextType::Error:
-            return str << "Error";
-        case TelemetryServer::StatusTextType::Critical:
-            return str << "Critical";
-        case TelemetryServer::StatusTextType::Alert:
-            return str << "Alert";
-        case TelemetryServer::StatusTextType::Emergency:
-            return str << "Emergency";
+    return str << to_string(status_text_type);
+}
+
+MAVSDK_PUBLIC std::string_view to_string(TelemetryServer::LandedState const& landed_state)
+{
+    switch (landed_state) {
+        case TelemetryServer::LandedState::Unknown:
+            return "Unknown";
+        case TelemetryServer::LandedState::OnGround:
+            return "On Ground";
+        case TelemetryServer::LandedState::InAir:
+            return "In Air";
+        case TelemetryServer::LandedState::TakingOff:
+            return "Taking Off";
+        case TelemetryServer::LandedState::Landing:
+            return "Landing";
         default:
-            return str << "Unknown";
+            return "Unknown";
     }
 }
 
 MAVSDK_PUBLIC std::ostream&
 operator<<(std::ostream& str, TelemetryServer::LandedState const& landed_state)
 {
-    switch (landed_state) {
-        case TelemetryServer::LandedState::Unknown:
-            return str << "Unknown";
-        case TelemetryServer::LandedState::OnGround:
-            return str << "On Ground";
-        case TelemetryServer::LandedState::InAir:
-            return str << "In Air";
-        case TelemetryServer::LandedState::TakingOff:
-            return str << "Taking Off";
-        case TelemetryServer::LandedState::Landing:
-            return str << "Landing";
-        default:
-            return str << "Unknown";
-    }
+    return str << to_string(landed_state);
 }
 
 } // namespace mavsdk
