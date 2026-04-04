@@ -327,7 +327,7 @@ Convert `ConnectionResult` to string.
 
 **Parameters**
 
-* const [ConnectionResult](namespacemavsdk.md#namespacemavsdk_1a0bad93f6d037051ac3906a0bcc09f992)& **result** -
+* const [ConnectionResult](namespacemavsdk.md#namespacemavsdk_1a0bad93f6d037051ac3906a0bcc09f992)& **result** - 
 
 **Returns**
 
