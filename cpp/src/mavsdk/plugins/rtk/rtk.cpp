@@ -36,22 +36,27 @@ MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Rtk::RtcmData const& r
     return str;
 }
 
-MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Rtk::Result const& result)
+MAVSDK_PUBLIC std::string_view to_string(Rtk::Result const& result)
 {
     switch (result) {
         case Rtk::Result::Unknown:
-            return str << "Unknown";
+            return "Unknown";
         case Rtk::Result::Success:
-            return str << "Success";
+            return "Success";
         case Rtk::Result::TooLong:
-            return str << "Too Long";
+            return "Too Long";
         case Rtk::Result::NoSystem:
-            return str << "No System";
+            return "No System";
         case Rtk::Result::ConnectionError:
-            return str << "Connection Error";
+            return "Connection Error";
         default:
-            return str << "Unknown";
+            return "Unknown";
     }
+}
+
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Rtk::Result const& result)
+{
+    return str << to_string(result);
 }
 
 } // namespace mavsdk

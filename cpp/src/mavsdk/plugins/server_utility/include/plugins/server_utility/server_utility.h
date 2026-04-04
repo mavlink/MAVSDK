@@ -75,6 +75,14 @@ public:
     };
 
     /**
+     * @brief Convert `ServerUtility::StatusTextType` to string.
+     *
+     * @return A string representation of the enum.
+     */
+    friend MAVSDK_PUBLIC std::string_view
+    to_string(ServerUtility::StatusTextType const& status_text_type);
+
+    /**
      * @brief Stream operator to print information about a `ServerUtility::StatusTextType`.
      *
      * @return A reference to the stream.
@@ -92,6 +100,13 @@ public:
         ConnectionError, /**< @brief Connection error. */
         InvalidArgument, /**< @brief Invalid argument. */
     };
+
+    /**
+     * @brief Convert `ServerUtility::Result` to string.
+     *
+     * @return A string representation of the enum.
+     */
+    friend MAVSDK_PUBLIC std::string_view to_string(ServerUtility::Result const& result);
 
     /**
      * @brief Stream operator to print information about a `ServerUtility::Result`.

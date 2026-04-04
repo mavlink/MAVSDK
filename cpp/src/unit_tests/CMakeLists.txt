@@ -12,6 +12,7 @@ set_target_properties(unit_tests_runner
 
 find_package(GTest REQUIRED)
 find_package(tinyxml2 REQUIRED)
+find_package(fmt REQUIRED)
 
 target_link_libraries(unit_tests_runner
     mavsdk
@@ -20,6 +21,7 @@ target_link_libraries(unit_tests_runner
     GTest::gtest
     GTest::gtest_main
     GTest::gmock
+    fmt::fmt
 )
 
 target_include_directories(unit_tests_runner

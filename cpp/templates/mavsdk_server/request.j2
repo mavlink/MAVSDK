@@ -20,7 +20,7 @@ grpc::Status {{ name.upper_camel_case }}(
 
     {% if params -%}
     if (request == nullptr) {
-        LogWarn() << "{{ name.upper_camel_case }} sent with a null request! Ignoring...";
+        LogWarn("{{ name.upper_camel_case }} sent with a null request! Ignoring...");
         return grpc::Status::OK;
     }
     {%- endif %}

@@ -185,7 +185,7 @@ public:
     {
         switch (result) {
             default:
-                LogErr() << "Unknown result enum value: " << static_cast<int>(result);
+                LogErr("Unknown result enum value: {}", static_cast<int>(result));
             // FALLTHROUGH
             case mavsdk::MissionRaw::Result::Unknown:
                 return rpc::mission_raw::MissionRawResult_Result_RESULT_UNKNOWN;
@@ -239,7 +239,7 @@ public:
     {
         switch (result) {
             default:
-                LogErr() << "Unknown result enum value: " << static_cast<int>(result);
+                LogErr("Unknown result enum value: {}", static_cast<int>(result));
             // FALLTHROUGH
             case rpc::mission_raw::MissionRawResult_Result_RESULT_UNKNOWN:
                 return mavsdk::MissionRaw::Result::Unknown;
@@ -303,7 +303,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "UploadMission sent with a null request! Ignoring...";
+            LogWarn("UploadMission sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -336,7 +336,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "UploadGeofence sent with a null request! Ignoring...";
+            LogWarn("UploadGeofence sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -369,7 +369,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "UploadRallyPoints sent with a null request! Ignoring...";
+            LogWarn("UploadRallyPoints sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -601,7 +601,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "SetCurrentMissionItem sent with a null request! Ignoring...";
+            LogWarn("SetCurrentMissionItem sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -712,7 +712,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "ImportQgroundcontrolMission sent with a null request! Ignoring...";
+            LogWarn("ImportQgroundcontrolMission sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -744,8 +744,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn()
-                << "ImportQgroundcontrolMissionFromString sent with a null request! Ignoring...";
+            LogWarn("ImportQgroundcontrolMissionFromString sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -777,7 +776,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "ImportMissionPlannerMission sent with a null request! Ignoring...";
+            LogWarn("ImportMissionPlannerMission sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -809,8 +808,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn()
-                << "ImportMissionPlannerMissionFromString sent with a null request! Ignoring...";
+            LogWarn("ImportMissionPlannerMissionFromString sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 

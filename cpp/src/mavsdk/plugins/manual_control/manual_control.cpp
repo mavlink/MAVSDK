@@ -48,30 +48,35 @@ ManualControl::set_manual_control_input(float x, float y, float z, float r) cons
     return _impl->set_manual_control_input(x, y, z, r);
 }
 
-MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, ManualControl::Result const& result)
+MAVSDK_PUBLIC std::string_view to_string(ManualControl::Result const& result)
 {
     switch (result) {
         case ManualControl::Result::Unknown:
-            return str << "Unknown";
+            return "Unknown";
         case ManualControl::Result::Success:
-            return str << "Success";
+            return "Success";
         case ManualControl::Result::NoSystem:
-            return str << "No System";
+            return "No System";
         case ManualControl::Result::ConnectionError:
-            return str << "Connection Error";
+            return "Connection Error";
         case ManualControl::Result::Busy:
-            return str << "Busy";
+            return "Busy";
         case ManualControl::Result::CommandDenied:
-            return str << "Command Denied";
+            return "Command Denied";
         case ManualControl::Result::Timeout:
-            return str << "Timeout";
+            return "Timeout";
         case ManualControl::Result::InputOutOfRange:
-            return str << "Input Out Of Range";
+            return "Input Out Of Range";
         case ManualControl::Result::InputNotSet:
-            return str << "Input Not Set";
+            return "Input Not Set";
         default:
-            return str << "Unknown";
+            return "Unknown";
     }
+}
+
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, ManualControl::Result const& result)
+{
+    return str << to_string(result);
 }
 
 } // namespace mavsdk

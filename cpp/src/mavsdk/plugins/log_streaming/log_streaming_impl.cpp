@@ -32,7 +32,7 @@ void LogStreamingImpl::init()
 {
     if (const char* env_p = std::getenv("MAVSDK_LOG_STREAMING_DEBUGGING")) {
         if (std::string(env_p) == "1") {
-            LogDebug() << "Log streaming debugging is on.";
+            LogDebug("Log streaming debugging is on.");
             _debugging = true;
         }
     }
@@ -78,19 +78,19 @@ bool LogStreamingImpl::maybe_create_backend()
     // Don't create backend yet if autopilot type is unknown
     if (autopilot == Autopilot::Unknown) {
         if (_debugging) {
-            LogDebug() << "Autopilot type unknown, cannot create backend yet";
+            LogDebug("Autopilot type unknown, cannot create backend yet");
         }
         return false;
     }
 
     if (autopilot == Autopilot::ArduPilot) {
         if (_debugging) {
-            LogDebug() << "Creating ArduPilot log streaming backend";
+            LogDebug("Creating ArduPilot log streaming backend");
         }
         _backend = std::make_unique<LogStreamingBackendArdupilot>();
     } else {
         if (_debugging) {
-            LogDebug() << "Creating PX4 log streaming backend";
+            LogDebug("Creating PX4 log streaming backend");
         }
         _backend = std::make_unique<LogStreamingBackendPx4>();
     }
@@ -106,7 +106,7 @@ void LogStreamingImpl::process_data(const std::vector<uint8_t>& data)
     std::lock_guard<std::mutex> lock(_mutex);
 
     if (_debugging) {
-        LogDebug() << "Processing log data with size " << data.size();
+        LogDebug("Processing log data with size {}", data.size());
     }
 
     // Convert to base64

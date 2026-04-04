@@ -217,7 +217,7 @@ ParamServerImpl::result_from_mavlink_parameter_server_result(MavlinkParameterSer
         case MavlinkParameterServer::Result::ParamValueTooLong:
             return ParamServer::Result::ParamValueTooLong;
         default:
-            LogErr() << "Unknown param error";
+            LogErr("Unknown param error");
             return ParamServer::Result::Unknown;
     }
 }

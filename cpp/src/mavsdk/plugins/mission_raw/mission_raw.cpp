@@ -287,54 +287,59 @@ operator<<(std::ostream& str, MissionRaw::MissionImportData const& mission_impor
     return str;
 }
 
-MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, MissionRaw::Result const& result)
+MAVSDK_PUBLIC std::string_view to_string(MissionRaw::Result const& result)
 {
     switch (result) {
         case MissionRaw::Result::Unknown:
-            return str << "Unknown";
+            return "Unknown";
         case MissionRaw::Result::Success:
-            return str << "Success";
+            return "Success";
         case MissionRaw::Result::Error:
-            return str << "Error";
+            return "Error";
         case MissionRaw::Result::TooManyMissionItems:
-            return str << "Too Many Mission Items";
+            return "Too Many Mission Items";
         case MissionRaw::Result::Busy:
-            return str << "Busy";
+            return "Busy";
         case MissionRaw::Result::Timeout:
-            return str << "Timeout";
+            return "Timeout";
         case MissionRaw::Result::InvalidArgument:
-            return str << "Invalid Argument";
+            return "Invalid Argument";
         case MissionRaw::Result::Unsupported:
-            return str << "Unsupported";
+            return "Unsupported";
         case MissionRaw::Result::NoMissionAvailable:
-            return str << "No Mission Available";
+            return "No Mission Available";
         case MissionRaw::Result::TransferCancelled:
-            return str << "Transfer Cancelled";
+            return "Transfer Cancelled";
         case MissionRaw::Result::FailedToOpenQgcPlan:
-            return str << "Failed To Open Qgc Plan";
+            return "Failed To Open Qgc Plan";
         case MissionRaw::Result::FailedToParseQgcPlan:
-            return str << "Failed To Parse Qgc Plan";
+            return "Failed To Parse Qgc Plan";
         case MissionRaw::Result::NoSystem:
-            return str << "No System";
+            return "No System";
         case MissionRaw::Result::Denied:
-            return str << "Denied";
+            return "Denied";
         case MissionRaw::Result::MissionTypeNotConsistent:
-            return str << "Mission Type Not Consistent";
+            return "Mission Type Not Consistent";
         case MissionRaw::Result::InvalidSequence:
-            return str << "Invalid Sequence";
+            return "Invalid Sequence";
         case MissionRaw::Result::CurrentInvalid:
-            return str << "Current Invalid";
+            return "Current Invalid";
         case MissionRaw::Result::ProtocolError:
-            return str << "Protocol Error";
+            return "Protocol Error";
         case MissionRaw::Result::IntMessagesNotSupported:
-            return str << "Int Messages Not Supported";
+            return "Int Messages Not Supported";
         case MissionRaw::Result::FailedToOpenMissionPlannerPlan:
-            return str << "Failed To Open Mission Planner Plan";
+            return "Failed To Open Mission Planner Plan";
         case MissionRaw::Result::FailedToParseMissionPlannerPlan:
-            return str << "Failed To Parse Mission Planner Plan";
+            return "Failed To Parse Mission Planner Plan";
         default:
-            return str << "Unknown";
+            return "Unknown";
     }
+}
+
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, MissionRaw::Result const& result)
+{
+    return str << to_string(result);
 }
 
 } // namespace mavsdk

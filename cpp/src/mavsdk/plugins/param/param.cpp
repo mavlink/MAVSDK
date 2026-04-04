@@ -138,59 +138,69 @@ MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Param::AllParams const
     return str;
 }
 
-MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Param::Result const& result)
+MAVSDK_PUBLIC std::string_view to_string(Param::Result const& result)
 {
     switch (result) {
         case Param::Result::Unknown:
-            return str << "Unknown";
+            return "Unknown";
         case Param::Result::Success:
-            return str << "Success";
+            return "Success";
         case Param::Result::Timeout:
-            return str << "Timeout";
+            return "Timeout";
         case Param::Result::ConnectionError:
-            return str << "Connection Error";
+            return "Connection Error";
         case Param::Result::WrongType:
-            return str << "Wrong Type";
+            return "Wrong Type";
         case Param::Result::ParamNameTooLong:
-            return str << "Param Name Too Long";
+            return "Param Name Too Long";
         case Param::Result::NoSystem:
-            return str << "No System";
+            return "No System";
         case Param::Result::ParamValueTooLong:
-            return str << "Param Value Too Long";
+            return "Param Value Too Long";
         case Param::Result::Failed:
-            return str << "Failed";
+            return "Failed";
         case Param::Result::DoesNotExist:
-            return str << "Does Not Exist";
+            return "Does Not Exist";
         case Param::Result::ValueOutOfRange:
-            return str << "Value Out Of Range";
+            return "Value Out Of Range";
         case Param::Result::PermissionDenied:
-            return str << "Permission Denied";
+            return "Permission Denied";
         case Param::Result::ComponentNotFound:
-            return str << "Component Not Found";
+            return "Component Not Found";
         case Param::Result::ReadOnly:
-            return str << "Read Only";
+            return "Read Only";
         case Param::Result::TypeUnsupported:
-            return str << "Type Unsupported";
+            return "Type Unsupported";
         case Param::Result::TypeMismatch:
-            return str << "Type Mismatch";
+            return "Type Mismatch";
         case Param::Result::ReadFail:
-            return str << "Read Fail";
+            return "Read Fail";
         default:
-            return str << "Unknown";
+            return "Unknown";
+    }
+}
+
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Param::Result const& result)
+{
+    return str << to_string(result);
+}
+
+MAVSDK_PUBLIC std::string_view to_string(Param::ProtocolVersion const& protocol_version)
+{
+    switch (protocol_version) {
+        case Param::ProtocolVersion::V1:
+            return "V1";
+        case Param::ProtocolVersion::Ext:
+            return "Ext";
+        default:
+            return "Unknown";
     }
 }
 
 MAVSDK_PUBLIC std::ostream&
 operator<<(std::ostream& str, Param::ProtocolVersion const& protocol_version)
 {
-    switch (protocol_version) {
-        case Param::ProtocolVersion::V1:
-            return str << "V1";
-        case Param::ProtocolVersion::Ext:
-            return str << "Ext";
-        default:
-            return str << "Unknown";
-    }
+    return str << to_string(protocol_version);
 }
 
 } // namespace mavsdk

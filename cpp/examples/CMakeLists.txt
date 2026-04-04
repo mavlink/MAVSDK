@@ -3,6 +3,10 @@ project(mavsdk_examples)
 
 # This allows to build all examples at once.
 
+# Ensure C++20 is used for all examples
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 if (WERROR)
     add_compile_options(-Werror)
 endif()
@@ -60,6 +64,11 @@ add_subdirectory(wind)
 #add_subdirectory(start_stop_server)
 
 if(NOT MSVC)
-    # Requires sdl2, so we're skipping it on Windows.
-    add_subdirectory(manual_control)
+    # Requires SDL2, so we're skipping it on Windows and if SDL2 is not found
+    find_package(SDL2 QUIET)
+    if(SDL2_FOUND)
+        add_subdirectory(manual_control)
+    else()
+        message(STATUS "SDL2 not found, skipping manual_control example")
+    endif()
 endif()

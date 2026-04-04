@@ -483,32 +483,44 @@ operator<<(std::ostream& str, Camera::VideoStreamSettings const& video_stream_se
     return str;
 }
 
-MAVSDK_PUBLIC std::ostream&
-operator<<(std::ostream& str, Camera::VideoStreamInfo::VideoStreamStatus const& video_stream_status)
+MAVSDK_PUBLIC std::string_view
+to_string(Camera::VideoStreamInfo::VideoStreamStatus const& video_stream_status)
 {
     switch (video_stream_status) {
         case Camera::VideoStreamInfo::VideoStreamStatus::NotRunning:
-            return str << "Not Running";
+            return "Not Running";
         case Camera::VideoStreamInfo::VideoStreamStatus::InProgress:
-            return str << "In Progress";
+            return "In Progress";
         default:
-            return str << "Unknown";
+            return "Unknown";
+    }
+}
+
+MAVSDK_PUBLIC std::ostream&
+operator<<(std::ostream& str, Camera::VideoStreamInfo::VideoStreamStatus const& video_stream_status)
+{
+    return str << to_string(video_stream_status);
+}
+
+MAVSDK_PUBLIC std::string_view
+to_string(Camera::VideoStreamInfo::VideoStreamSpectrum const& video_stream_spectrum)
+{
+    switch (video_stream_spectrum) {
+        case Camera::VideoStreamInfo::VideoStreamSpectrum::Unknown:
+            return "Unknown";
+        case Camera::VideoStreamInfo::VideoStreamSpectrum::VisibleLight:
+            return "Visible Light";
+        case Camera::VideoStreamInfo::VideoStreamSpectrum::Infrared:
+            return "Infrared";
+        default:
+            return "Unknown";
     }
 }
 
 MAVSDK_PUBLIC std::ostream& operator<<(
     std::ostream& str, Camera::VideoStreamInfo::VideoStreamSpectrum const& video_stream_spectrum)
 {
-    switch (video_stream_spectrum) {
-        case Camera::VideoStreamInfo::VideoStreamSpectrum::Unknown:
-            return str << "Unknown";
-        case Camera::VideoStreamInfo::VideoStreamSpectrum::VisibleLight:
-            return str << "Visible Light";
-        case Camera::VideoStreamInfo::VideoStreamSpectrum::Infrared:
-            return str << "Infrared";
-        default:
-            return str << "Unknown";
-    }
+    return str << to_string(video_stream_spectrum);
 }
 MAVSDK_PUBLIC bool
 operator==(const Camera::VideoStreamInfo& lhs, const Camera::VideoStreamInfo& rhs)
@@ -563,42 +575,52 @@ operator<<(std::ostream& str, Camera::VideoStreamUpdate const& video_stream_upda
     return str;
 }
 
-MAVSDK_PUBLIC std::ostream&
-operator<<(std::ostream& str, Camera::Storage::StorageStatus const& storage_status)
+MAVSDK_PUBLIC std::string_view to_string(Camera::Storage::StorageStatus const& storage_status)
 {
     switch (storage_status) {
         case Camera::Storage::StorageStatus::NotAvailable:
-            return str << "Not Available";
+            return "Not Available";
         case Camera::Storage::StorageStatus::Unformatted:
-            return str << "Unformatted";
+            return "Unformatted";
         case Camera::Storage::StorageStatus::Formatted:
-            return str << "Formatted";
+            return "Formatted";
         case Camera::Storage::StorageStatus::NotSupported:
-            return str << "Not Supported";
+            return "Not Supported";
         default:
-            return str << "Unknown";
+            return "Unknown";
+    }
+}
+
+MAVSDK_PUBLIC std::ostream&
+operator<<(std::ostream& str, Camera::Storage::StorageStatus const& storage_status)
+{
+    return str << to_string(storage_status);
+}
+
+MAVSDK_PUBLIC std::string_view to_string(Camera::Storage::StorageType const& storage_type)
+{
+    switch (storage_type) {
+        case Camera::Storage::StorageType::Unknown:
+            return "Unknown";
+        case Camera::Storage::StorageType::UsbStick:
+            return "Usb Stick";
+        case Camera::Storage::StorageType::Sd:
+            return "Sd";
+        case Camera::Storage::StorageType::Microsd:
+            return "Microsd";
+        case Camera::Storage::StorageType::Hd:
+            return "Hd";
+        case Camera::Storage::StorageType::Other:
+            return "Other";
+        default:
+            return "Unknown";
     }
 }
 
 MAVSDK_PUBLIC std::ostream&
 operator<<(std::ostream& str, Camera::Storage::StorageType const& storage_type)
 {
-    switch (storage_type) {
-        case Camera::Storage::StorageType::Unknown:
-            return str << "Unknown";
-        case Camera::Storage::StorageType::UsbStick:
-            return str << "Usb Stick";
-        case Camera::Storage::StorageType::Sd:
-            return str << "Sd";
-        case Camera::Storage::StorageType::Microsd:
-            return str << "Microsd";
-        case Camera::Storage::StorageType::Hd:
-            return str << "Hd";
-        case Camera::Storage::StorageType::Other:
-            return str << "Other";
-        default:
-            return str << "Unknown";
-    }
+    return str << to_string(storage_type);
 }
 MAVSDK_PUBLIC bool operator==(const Camera::Storage& lhs, const Camera::Storage& rhs)
 {
@@ -699,38 +721,43 @@ MAVSDK_PUBLIC std::ostream& operator<<(
     return str;
 }
 
-MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Camera::Result const& result)
+MAVSDK_PUBLIC std::string_view to_string(Camera::Result const& result)
 {
     switch (result) {
         case Camera::Result::Unknown:
-            return str << "Unknown";
+            return "Unknown";
         case Camera::Result::Success:
-            return str << "Success";
+            return "Success";
         case Camera::Result::InProgress:
-            return str << "In Progress";
+            return "In Progress";
         case Camera::Result::Busy:
-            return str << "Busy";
+            return "Busy";
         case Camera::Result::Denied:
-            return str << "Denied";
+            return "Denied";
         case Camera::Result::Error:
-            return str << "Error";
+            return "Error";
         case Camera::Result::Timeout:
-            return str << "Timeout";
+            return "Timeout";
         case Camera::Result::WrongArgument:
-            return str << "Wrong Argument";
+            return "Wrong Argument";
         case Camera::Result::NoSystem:
-            return str << "No System";
+            return "No System";
         case Camera::Result::ProtocolUnsupported:
-            return str << "Protocol Unsupported";
+            return "Protocol Unsupported";
         case Camera::Result::Unavailable:
-            return str << "Unavailable";
+            return "Unavailable";
         case Camera::Result::CameraIdInvalid:
-            return str << "Camera Id Invalid";
+            return "Camera Id Invalid";
         case Camera::Result::ActionUnsupported:
-            return str << "Action Unsupported";
+            return "Action Unsupported";
         default:
-            return str << "Unknown";
+            return "Unknown";
     }
+}
+
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Camera::Result const& result)
+{
+    return str << to_string(result);
 }
 
 MAVSDK_PUBLIC bool operator==(const Camera::Position& lhs, const Camera::Position& rhs)
@@ -871,30 +898,40 @@ MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Camera::CameraList con
     return str;
 }
 
-MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Camera::Mode const& mode)
+MAVSDK_PUBLIC std::string_view to_string(Camera::Mode const& mode)
 {
     switch (mode) {
         case Camera::Mode::Unknown:
-            return str << "Unknown";
+            return "Unknown";
         case Camera::Mode::Photo:
-            return str << "Photo";
+            return "Photo";
         case Camera::Mode::Video:
-            return str << "Video";
+            return "Video";
         default:
-            return str << "Unknown";
+            return "Unknown";
+    }
+}
+
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Camera::Mode const& mode)
+{
+    return str << to_string(mode);
+}
+
+MAVSDK_PUBLIC std::string_view to_string(Camera::PhotosRange const& photos_range)
+{
+    switch (photos_range) {
+        case Camera::PhotosRange::All:
+            return "All";
+        case Camera::PhotosRange::SinceConnection:
+            return "Since Connection";
+        default:
+            return "Unknown";
     }
 }
 
 MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Camera::PhotosRange const& photos_range)
 {
-    switch (photos_range) {
-        case Camera::PhotosRange::All:
-            return str << "All";
-        case Camera::PhotosRange::SinceConnection:
-            return str << "Since Connection";
-        default:
-            return str << "Unknown";
-    }
+    return str << to_string(photos_range);
 }
 
 } // namespace mavsdk

@@ -136,20 +136,20 @@ ParamImpl::result_from_mavlink_parameter_client_result(MavlinkParameterClient::R
         case MavlinkParameterClient::Result::ParamNameTooLong:
             return Param::Result::ParamNameTooLong;
         case MavlinkParameterClient::Result::NotFound:
-            LogWarn() << "NotFound";
+            LogWarn("NotFound");
             return Param::Result::Unknown; // TODO fix - no corresponding proto Result yet
         case MavlinkParameterClient::Result::ValueUnsupported:
-            LogWarn() << "ValueUnsupported";
+            LogWarn("ValueUnsupported");
             return Param::Result::Unknown; // TODO fix - no corresponding proto Result yet
         case MavlinkParameterClient::Result::Failed:
             return Param::Result::Failed;
         case MavlinkParameterClient::Result::ParamValueTooLong:
             return Param::Result::ParamValueTooLong;
         case MavlinkParameterClient::Result::StringTypeUnsupported:
-            LogWarn() << "StringTypeUnsupported";
+            LogWarn("StringTypeUnsupported");
             return Param::Result::Unknown; // TODO fix - no corresponding proto Result yet
         case MavlinkParameterClient::Result::InconsistentData:
-            LogWarn() << "InconsistentData";
+            LogWarn("InconsistentData");
             return Param::Result::Unknown; // TODO fix - no corresponding proto Result yet
         case MavlinkParameterClient::Result::UnknownError:
             return Param::Result::Unknown;
@@ -171,7 +171,7 @@ ParamImpl::result_from_mavlink_parameter_client_result(MavlinkParameterClient::R
         case MavlinkParameterClient::Result::ReadFail:
             return Param::Result::ReadFail;
         default:
-            LogErr() << "Unknown param error" << (int)result;
+            LogErr("Unknown param error{}", (int)result);
             return Param::Result::Unknown;
     }
 }

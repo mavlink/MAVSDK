@@ -23,17 +23,17 @@ FileCache::DirectoryLock::DirectoryLock(const std::filesystem::path& path) : _pa
     _lock =
         CreateFileA(_path.string().c_str(), GENERIC_READ, FILE_SHARE_READ, 0, OPEN_EXISTING, 0, 0);
     if (!LockFileEx(_lock, LOCKFILE_EXCLUSIVE_LOCK, 0, _lock_size, 0, &_overlapped)) {
-        LogErr() << "Cannot take lock file " << GetLastError();
+        LogErr("Cannot take lock file {}", GetLastError());
     }
 #else
     mode_t m = umask(0);
     _fd = open(_path.c_str(), O_RDWR | O_CREAT, 0666);
     umask(m);
     if (_fd < 0) {
-        LogErr() << "Cannot open file " << _path;
+        LogErr("Cannot open file {}", _path.string());
     } else {
         if (flock(_fd, LOCK_EX) == -1) {
-            LogErr() << "Cannot lock file " << strerror(errno);
+            LogErr("Cannot lock file {}", strerror(errno));
         }
     }
 #endif
@@ -61,7 +61,7 @@ FileCache::FileCache(std::filesystem::path path, int max_num_files, bool verbose
     if (!std::filesystem::exists(_path)) {
         std::error_code err;
         if (!std::filesystem::create_directories(_path, err)) {
-            LogErr() << "Failed to create cache directory: " << err.message();
+            LogErr("Failed to create cache directory: {}", err.message());
         }
     }
 }
@@ -84,7 +84,7 @@ std::optional<std::filesystem::path> FileCache::access(const std::string& file_t
     std::filesystem::path data(data_filename(file_tag));
     if (!std::filesystem::exists(meta) || !std::filesystem::exists(data)) {
         if (_verbose_debugging) {
-            LogDebug() << "Cache miss for " << file_tag;
+            LogDebug("Cache miss for {}", file_tag);
         }
         return std::nullopt;
     }
@@ -94,13 +94,13 @@ std::optional<std::filesystem::path> FileCache::access(const std::string& file_t
     // Check if entry is still valid (it could have been removed if the metadata is invalid)
     if (!std::filesystem::exists(data)) {
         if (_verbose_debugging) {
-            LogDebug() << "Cache miss for " << file_tag;
+            LogDebug("Cache miss for {}", file_tag);
         }
         return std::nullopt;
     }
 
     if (_verbose_debugging) {
-        LogDebug() << "Cache hit for " << file_tag;
+        LogDebug("Cache hit for {}", file_tag);
     }
 
     // Mark access
@@ -112,13 +112,13 @@ std::optional<std::filesystem::path> FileCache::access(const std::string& file_t
             m.access_counter = access_counters.next_access_counter;
             meta_file.seekg(0);
             if (!meta_file.write(reinterpret_cast<const char*>(&m), sizeof(m))) {
-                LogErr() << "Meta write failed " << meta;
+                LogErr("Meta write failed {}", meta.string());
             }
         } else {
-            LogErr() << "Meta read failed " << meta;
+            LogErr("Meta read failed {}", meta.string());
         }
     } else {
-        LogErr() << "Failed to open " << meta;
+        LogErr("Failed to open {}", meta.string());
     }
 
     return data;
@@ -135,7 +135,7 @@ FileCache::insert(const std::string& file_tag, const std::filesystem::path& file
 
     if (std::filesystem::exists(meta) && std::filesystem::exists(data)) {
         if (_verbose_debugging) {
-            LogDebug() << "Not inserting, entry already exists: " << file_tag;
+            LogDebug("Not inserting, entry already exists: {}", file_tag);
         }
         std::filesystem::remove(file_name);
         return data;
@@ -152,8 +152,11 @@ FileCache::insert(const std::string& file_tag, const std::filesystem::path& file
             }
         }
         if (err) {
-            LogWarn() << "File rename failed from " << file_name << " to " << data << ": "
-                      << err.message();
+            LogWarn(
+                "File rename failed from {} to {}: {}",
+                file_name.string(),
+                data.string(),
+                err.message());
             return std::nullopt;
         }
     }
@@ -164,11 +167,11 @@ FileCache::insert(const std::string& file_tag, const std::filesystem::path& file
     std::fstream meta_file(meta, std::ios::binary | std::ios::out | std::ios::trunc);
     if (meta_file.good()) {
         if (!meta_file.write(reinterpret_cast<const char*>(&m), sizeof(m))) {
-            LogWarn() << "Meta write failed " << meta;
+            LogWarn("Meta write failed {}", meta.string());
         }
         access_counters.cached_files[m.access_counter] = file_tag;
     } else {
-        LogWarn() << "Failed to open " << meta;
+        LogWarn("Failed to open {}", meta.string());
     }
 
     remove_old_entries(access_counters);
@@ -206,7 +209,7 @@ FileCache::AccessCounters FileCache::load_access_counters() const
         }
 
         if (validation_failed) {
-            LogWarn() << "Validation failed, removing cache files " << path.path();
+            LogWarn("Validation failed, removing cache files {}", path.path().string());
             std::filesystem::remove(path.path());
             std::filesystem::remove(data);
         } else {
@@ -231,8 +234,11 @@ void FileCache::remove_old_entries(const AccessCounters& access_counters) const
     auto iter = access_counters.cached_files.begin();
     while (num_delete > 0) {
         if (_verbose_debugging) {
-            LogDebug() << "Removing cache entry num:counter:file" << num_delete << iter->first
-                       << iter->second;
+            LogDebug(
+                "Removing cache entry num:counter:file{}{}{}",
+                num_delete,
+                iter->first,
+                iter->second);
         }
         std::filesystem::remove(meta_filename(iter->second));
         std::filesystem::remove(data_filename(iter->second));

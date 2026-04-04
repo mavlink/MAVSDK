@@ -17,7 +17,7 @@ public:
 
     bool start(Mavsdk& mavsdk, const std::string& connection_url)
     {
-        LogInfo() << "Waiting to discover system on " << connection_url << "...";
+        LogInfo("Waiting to discover system on {}...", connection_url);
         _discovery_future = wrapped_subscribe_on_new_system(mavsdk);
 
         if (!add_any_connection(mavsdk, connection_url)) {
@@ -44,7 +44,7 @@ private:
         mavsdk::ConnectionResult connection_result = mavsdk.add_any_connection(connection_url);
 
         if (connection_result != ConnectionResult::Success) {
-            LogErr() << "Connection failed: " << connection_result;
+            LogErr("Connection failed: {}", to_string(connection_result));
             return false;
         }
 
@@ -59,7 +59,7 @@ private:
             std::lock_guard<std::mutex> guard(_mutex);
             for (auto system : mavsdk.systems()) {
                 if (!_is_discovery_finished && system->has_autopilot() && system->is_connected()) {
-                    LogInfo() << "System discovered";
+                    LogInfo("System discovered");
 
                     _is_discovery_finished = true;
                     _discovery_promise->set_value(true);

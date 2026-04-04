@@ -18,7 +18,7 @@ MavlinkMissionTransferServer::MavlinkMissionTransferServer(
 {
     if (const char* env_p = std::getenv("MAVSDK_MISSION_TRANSFER_DEBUGGING")) {
         if (std::string(env_p) == "1") {
-            LogDebug() << "Mission transfer debugging is on.";
+            LogDebug("Mission transfer debugging is on.");
             _debugging = true;
         }
     }
@@ -414,8 +414,7 @@ void MavlinkMissionTransferServer::SendOutgoingMission::send_count()
     }
 
     if (_debugging) {
-        LogDebug() << "Sending send_count, count: " << _items.size()
-                   << ", retries: " << _retries_done;
+        LogDebug("Sending send_count, count: {}, retries: {}", _items.size(), _retries_done);
     }
 
     ++_retries_done;
@@ -486,20 +485,22 @@ void MavlinkMissionTransferServer::SendOutgoingMission::process_mission_request_
     _step = Step::SendItems;
 
     if (_debugging) {
-        LogDebug() << "Process mission_request_int, seq: " << request_int.seq
-                   << ", next expected sequence: " << _next_sequence;
+        LogDebug(
+            "Process mission_request_int, seq: {}, next expected sequence: {}",
+            request_int.seq,
+            _next_sequence);
     }
 
     if (_next_sequence < request_int.seq) {
         // We should not go back to a previous one.
         // TODO: figure out if we should error here.
-        LogWarn() << "mission_request_int: sequence incorrect";
+        LogWarn("mission_request_int: sequence incorrect");
         return;
 
     } else if (_next_sequence > request_int.seq) {
         // We have already sent that one before.
         if (_retries_done >= retries) {
-            LogWarn() << "mission_request_int: retries exceeded";
+            LogWarn("mission_request_int: retries exceeded");
             _timeout_handler.remove(_cookie);
             callback_and_reset(Result::Timeout);
             return;
@@ -520,13 +521,12 @@ void MavlinkMissionTransferServer::SendOutgoingMission::process_mission_request_
 void MavlinkMissionTransferServer::SendOutgoingMission::send_mission_item()
 {
     if (_next_sequence >= _items.size()) {
-        LogErr() << "send_mission_item: sequence out of bounds";
+        LogErr("send_mission_item: sequence out of bounds");
         return;
     }
 
     if (_debugging) {
-        LogDebug() << "Sending mission_item_int seq: " << _next_sequence
-                   << ", retry: " << _retries_done;
+        LogDebug("Sending mission_item_int seq: {}, retry: {}", _next_sequence, _retries_done);
     }
 
     if (!_sender.queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
@@ -572,7 +572,7 @@ void MavlinkMissionTransferServer::SendOutgoingMission::process_mission_ack(
     mavlink_msg_mission_ack_decode(&message, &mission_ack);
 
     if (_debugging) {
-        LogDebug() << "Received mission_ack type: " << static_cast<int>(mission_ack.type);
+        LogDebug("Received mission_ack type: {}", static_cast<int>(mission_ack.type));
     }
 
     _timeout_handler.remove(_cookie);
@@ -630,11 +630,11 @@ void MavlinkMissionTransferServer::SendOutgoingMission::process_timeout()
     std::lock_guard<std::mutex> lock(_mutex);
 
     if (_debugging) {
-        LogDebug() << "Timeout triggered, retries: " << _retries_done;
+        LogDebug("Timeout triggered, retries: {}", _retries_done);
     }
 
     if (_retries_done >= retries) {
-        LogWarn() << "timeout: retries exceeded";
+        LogWarn("timeout: retries exceeded");
         callback_and_reset(Result::Timeout);
         return;
     }

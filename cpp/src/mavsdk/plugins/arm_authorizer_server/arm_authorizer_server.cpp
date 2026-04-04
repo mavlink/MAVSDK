@@ -40,39 +40,50 @@ ArmAuthorizerServer::Result ArmAuthorizerServer::reject_arm_authorization(
     return _impl->reject_arm_authorization(temporarily, reason, extra_info);
 }
 
-MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, ArmAuthorizerServer::Result const& result)
+MAVSDK_PUBLIC std::string_view to_string(ArmAuthorizerServer::Result const& result)
 {
     switch (result) {
         case ArmAuthorizerServer::Result::Unknown:
-            return str << "Unknown";
+            return "Unknown";
         case ArmAuthorizerServer::Result::Success:
-            return str << "Success";
+            return "Success";
         case ArmAuthorizerServer::Result::Failed:
-            return str << "Failed";
+            return "Failed";
         default:
-            return str << "Unknown";
+            return "Unknown";
+    }
+}
+
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, ArmAuthorizerServer::Result const& result)
+{
+    return str << to_string(result);
+}
+
+MAVSDK_PUBLIC std::string_view
+to_string(ArmAuthorizerServer::RejectionReason const& rejection_reason)
+{
+    switch (rejection_reason) {
+        case ArmAuthorizerServer::RejectionReason::Generic:
+            return "Generic";
+        case ArmAuthorizerServer::RejectionReason::None:
+            return "None";
+        case ArmAuthorizerServer::RejectionReason::InvalidWaypoint:
+            return "Invalid Waypoint";
+        case ArmAuthorizerServer::RejectionReason::Timeout:
+            return "Timeout";
+        case ArmAuthorizerServer::RejectionReason::AirspaceInUse:
+            return "Airspace In Use";
+        case ArmAuthorizerServer::RejectionReason::BadWeather:
+            return "Bad Weather";
+        default:
+            return "Unknown";
     }
 }
 
 MAVSDK_PUBLIC std::ostream&
 operator<<(std::ostream& str, ArmAuthorizerServer::RejectionReason const& rejection_reason)
 {
-    switch (rejection_reason) {
-        case ArmAuthorizerServer::RejectionReason::Generic:
-            return str << "Generic";
-        case ArmAuthorizerServer::RejectionReason::None:
-            return str << "None";
-        case ArmAuthorizerServer::RejectionReason::InvalidWaypoint:
-            return str << "Invalid Waypoint";
-        case ArmAuthorizerServer::RejectionReason::Timeout:
-            return str << "Timeout";
-        case ArmAuthorizerServer::RejectionReason::AirspaceInUse:
-            return str << "Airspace In Use";
-        case ArmAuthorizerServer::RejectionReason::BadWeather:
-            return str << "Bad Weather";
-        default:
-            return str << "Unknown";
-    }
+    return str << to_string(rejection_reason);
 }
 
 } // namespace mavsdk

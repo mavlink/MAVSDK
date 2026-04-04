@@ -87,6 +87,13 @@ public:
     };
 
     /**
+     * @brief Convert `Tune::SongElement` to string.
+     *
+     * @return A string representation of the enum.
+     */
+    friend MAVSDK_PUBLIC std::string_view to_string(Tune::SongElement const& song_element);
+
+    /**
      * @brief Stream operator to print information about a `Tune::SongElement`.
      *
      * @return A reference to the stream.
@@ -130,6 +137,13 @@ public:
         Error, /**< @brief Failed to send the request. */
         NoSystem, /**< @brief No system connected. */
     };
+
+    /**
+     * @brief Convert `Tune::Result` to string.
+     *
+     * @return A string representation of the enum.
+     */
+    friend MAVSDK_PUBLIC std::string_view to_string(Tune::Result const& result);
 
     /**
      * @brief Stream operator to print information about a `Tune::Result`.

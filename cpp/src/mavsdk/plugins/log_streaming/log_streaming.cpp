@@ -71,28 +71,33 @@ operator<<(std::ostream& str, LogStreaming::LogStreamingRaw const& log_streaming
     return str;
 }
 
-MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, LogStreaming::Result const& result)
+MAVSDK_PUBLIC std::string_view to_string(LogStreaming::Result const& result)
 {
     switch (result) {
         case LogStreaming::Result::Success:
-            return str << "Success";
+            return "Success";
         case LogStreaming::Result::NoSystem:
-            return str << "No System";
+            return "No System";
         case LogStreaming::Result::ConnectionError:
-            return str << "Connection Error";
+            return "Connection Error";
         case LogStreaming::Result::Busy:
-            return str << "Busy";
+            return "Busy";
         case LogStreaming::Result::CommandDenied:
-            return str << "Command Denied";
+            return "Command Denied";
         case LogStreaming::Result::Timeout:
-            return str << "Timeout";
+            return "Timeout";
         case LogStreaming::Result::Unsupported:
-            return str << "Unsupported";
+            return "Unsupported";
         case LogStreaming::Result::Unknown:
-            return str << "Unknown";
+            return "Unknown";
         default:
-            return str << "Unknown";
+            return "Unknown";
     }
+}
+
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, LogStreaming::Result const& result)
+{
+    return str << to_string(result);
 }
 
 } // namespace mavsdk

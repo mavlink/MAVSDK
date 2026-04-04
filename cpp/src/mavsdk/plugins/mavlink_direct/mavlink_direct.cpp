@@ -70,28 +70,33 @@ operator<<(std::ostream& str, MavlinkDirect::MavlinkMessage const& mavlink_messa
     return str;
 }
 
-MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, MavlinkDirect::Result const& result)
+MAVSDK_PUBLIC std::string_view to_string(MavlinkDirect::Result const& result)
 {
     switch (result) {
         case MavlinkDirect::Result::Unknown:
-            return str << "Unknown";
+            return "Unknown";
         case MavlinkDirect::Result::Success:
-            return str << "Success";
+            return "Success";
         case MavlinkDirect::Result::Error:
-            return str << "Error";
+            return "Error";
         case MavlinkDirect::Result::InvalidMessage:
-            return str << "Invalid Message";
+            return "Invalid Message";
         case MavlinkDirect::Result::InvalidField:
-            return str << "Invalid Field";
+            return "Invalid Field";
         case MavlinkDirect::Result::ConnectionError:
-            return str << "Connection Error";
+            return "Connection Error";
         case MavlinkDirect::Result::NoSystem:
-            return str << "No System";
+            return "No System";
         case MavlinkDirect::Result::Timeout:
-            return str << "Timeout";
+            return "Timeout";
         default:
-            return str << "Unknown";
+            return "Unknown";
     }
+}
+
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, MavlinkDirect::Result const& result)
+{
+    return str << to_string(result);
 }
 
 } // namespace mavsdk

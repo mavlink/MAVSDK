@@ -47,7 +47,7 @@ public:
     {
         switch (winch_action) {
             default:
-                LogErr() << "Unknown winch_action enum value: " << static_cast<int>(winch_action);
+                LogErr("Unknown winch_action enum value: {}", static_cast<int>(winch_action));
             // FALLTHROUGH
             case mavsdk::Winch::WinchAction::Relaxed:
                 return rpc::winch::WINCH_ACTION_RELAXED;
@@ -77,7 +77,7 @@ public:
     {
         switch (winch_action) {
             default:
-                LogErr() << "Unknown winch_action enum value: " << static_cast<int>(winch_action);
+                LogErr("Unknown winch_action enum value: {}", static_cast<int>(winch_action));
             // FALLTHROUGH
             case rpc::winch::WINCH_ACTION_RELAXED:
                 return mavsdk::Winch::WinchAction::Relaxed;
@@ -226,7 +226,7 @@ public:
     {
         switch (result) {
             default:
-                LogErr() << "Unknown result enum value: " << static_cast<int>(result);
+                LogErr("Unknown result enum value: {}", static_cast<int>(result));
             // FALLTHROUGH
             case mavsdk::Winch::Result::Unknown:
                 return rpc::winch::WinchResult_Result_RESULT_UNKNOWN;
@@ -250,7 +250,7 @@ public:
     {
         switch (result) {
             default:
-                LogErr() << "Unknown result enum value: " << static_cast<int>(result);
+                LogErr("Unknown result enum value: {}", static_cast<int>(result));
             // FALLTHROUGH
             case rpc::winch::WinchResult_Result_RESULT_UNKNOWN:
                 return mavsdk::Winch::Result::Unknown;
@@ -324,7 +324,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "Relax sent with a null request! Ignoring...";
+            LogWarn("Relax sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -352,7 +352,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "RelativeLengthControl sent with a null request! Ignoring...";
+            LogWarn("RelativeLengthControl sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -381,7 +381,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "RateControl sent with a null request! Ignoring...";
+            LogWarn("RateControl sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -410,7 +410,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "Lock sent with a null request! Ignoring...";
+            LogWarn("Lock sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -438,7 +438,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "Deliver sent with a null request! Ignoring...";
+            LogWarn("Deliver sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -466,7 +466,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "Hold sent with a null request! Ignoring...";
+            LogWarn("Hold sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -494,7 +494,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "Retract sent with a null request! Ignoring...";
+            LogWarn("Retract sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -522,7 +522,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "LoadLine sent with a null request! Ignoring...";
+            LogWarn("LoadLine sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -550,7 +550,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "AbandonLine sent with a null request! Ignoring...";
+            LogWarn("AbandonLine sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -578,7 +578,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "LoadPayload sent with a null request! Ignoring...";
+            LogWarn("LoadPayload sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 

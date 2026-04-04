@@ -49,7 +49,7 @@ void TuneImpl::play_tune_async(
         return;
     }
 
-    std::string tune_str("MFT" + std::to_string(tempo) + "O2");
+    std::string tune_str = std::string("MFT") + std::to_string(tempo) + "O2";
 
     // We need to reserve enough because inside the mavlink pack
     // function it does a memcpy of the full length.
@@ -114,7 +114,8 @@ void TuneImpl::play_tune_async(
                 tune_str.append("G");
                 break;
             case Tune::SongElement::NotePause:
-                tune_str.append("P" + std::to_string(last_duration));
+                tune_str += 'P';
+                tune_str += std::to_string(last_duration);
                 break;
             case Tune::SongElement::Sharp:
                 tune_str.append("+");
@@ -161,7 +162,7 @@ void TuneImpl::play_tune_async(
 void TuneImpl::report_tune_result(const Tune::ResultCallback& callback, Tune::Result result)
 {
     if (callback == nullptr) {
-        LogWarn() << "Callback is not set";
+        LogWarn("Callback is not set");
         return;
     }
 

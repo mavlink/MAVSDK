@@ -74,6 +74,13 @@ public:
     };
 
     /**
+     * @brief Convert `Events::LogLevel` to string.
+     *
+     * @return A string representation of the enum.
+     */
+    friend MAVSDK_PUBLIC std::string_view to_string(Events::LogLevel const& log_level);
+
+    /**
      * @brief Stream operator to print information about a `Events::LogLevel`.
      *
      * @return A reference to the stream.
@@ -236,6 +243,13 @@ public:
         NoSystem, /**< @brief No system available. */
         Unknown, /**< @brief Unknown result. */
     };
+
+    /**
+     * @brief Convert `Events::Result` to string.
+     *
+     * @return A string representation of the enum.
+     */
+    friend MAVSDK_PUBLIC std::string_view to_string(Events::Result const& result);
 
     /**
      * @brief Stream operator to print information about a `Events::Result`.

@@ -56,19 +56,25 @@ FollowMe::Result FollowMe::stop() const
     return _impl->stop();
 }
 
-MAVSDK_PUBLIC std::ostream&
-operator<<(std::ostream& str, FollowMe::Config::FollowAltitudeMode const& follow_altitude_mode)
+MAVSDK_PUBLIC std::string_view
+to_string(FollowMe::Config::FollowAltitudeMode const& follow_altitude_mode)
 {
     switch (follow_altitude_mode) {
         case FollowMe::Config::FollowAltitudeMode::Constant:
-            return str << "Constant";
+            return "Constant";
         case FollowMe::Config::FollowAltitudeMode::Terrain:
-            return str << "Terrain";
+            return "Terrain";
         case FollowMe::Config::FollowAltitudeMode::TargetGps:
-            return str << "Target Gps";
+            return "Target Gps";
         default:
-            return str << "Unknown";
+            return "Unknown";
     }
+}
+
+MAVSDK_PUBLIC std::ostream&
+operator<<(std::ostream& str, FollowMe::Config::FollowAltitudeMode const& follow_altitude_mode)
+{
+    return str << to_string(follow_altitude_mode);
 }
 MAVSDK_PUBLIC bool operator==(const FollowMe::Config& lhs, const FollowMe::Config& rhs)
 {
@@ -131,30 +137,35 @@ operator<<(std::ostream& str, FollowMe::TargetLocation const& target_location)
     return str;
 }
 
-MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, FollowMe::Result const& result)
+MAVSDK_PUBLIC std::string_view to_string(FollowMe::Result const& result)
 {
     switch (result) {
         case FollowMe::Result::Unknown:
-            return str << "Unknown";
+            return "Unknown";
         case FollowMe::Result::Success:
-            return str << "Success";
+            return "Success";
         case FollowMe::Result::NoSystem:
-            return str << "No System";
+            return "No System";
         case FollowMe::Result::ConnectionError:
-            return str << "Connection Error";
+            return "Connection Error";
         case FollowMe::Result::Busy:
-            return str << "Busy";
+            return "Busy";
         case FollowMe::Result::CommandDenied:
-            return str << "Command Denied";
+            return "Command Denied";
         case FollowMe::Result::Timeout:
-            return str << "Timeout";
+            return "Timeout";
         case FollowMe::Result::NotActive:
-            return str << "Not Active";
+            return "Not Active";
         case FollowMe::Result::SetConfigFailed:
-            return str << "Set Config Failed";
+            return "Set Config Failed";
         default:
-            return str << "Unknown";
+            return "Unknown";
     }
+}
+
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, FollowMe::Result const& result)
+{
+    return str << to_string(result);
 }
 
 } // namespace mavsdk

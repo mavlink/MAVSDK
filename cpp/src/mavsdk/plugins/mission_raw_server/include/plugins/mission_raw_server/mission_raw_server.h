@@ -155,6 +155,13 @@ public:
     };
 
     /**
+     * @brief Convert `MissionRawServer::Result` to string.
+     *
+     * @return A string representation of the enum.
+     */
+    friend MAVSDK_PUBLIC std::string_view to_string(MissionRawServer::Result const& result);
+
+    /**
      * @brief Stream operator to print information about a `MissionRawServer::Result`.
      *
      * @return A reference to the stream.

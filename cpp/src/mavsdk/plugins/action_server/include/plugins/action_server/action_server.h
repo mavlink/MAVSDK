@@ -70,6 +70,13 @@ public:
     };
 
     /**
+     * @brief Convert `ActionServer::FlightMode` to string.
+     *
+     * @return A string representation of the enum.
+     */
+    friend MAVSDK_PUBLIC std::string_view to_string(ActionServer::FlightMode const& flight_mode);
+
+    /**
      * @brief Stream operator to print information about a `ActionServer::FlightMode`.
      *
      * @return A reference to the stream.
@@ -152,6 +159,13 @@ public:
         Next, /**< @brief Intermediate message showing progress or instructions on the next steps.
                */
     };
+
+    /**
+     * @brief Convert `ActionServer::Result` to string.
+     *
+     * @return A string representation of the enum.
+     */
+    friend MAVSDK_PUBLIC std::string_view to_string(ActionServer::Result const& result);
 
     /**
      * @brief Stream operator to print information about a `ActionServer::Result`.

@@ -33,24 +33,29 @@ void Shell::unsubscribe_receive(ReceiveHandle handle)
     _impl->unsubscribe_receive(handle);
 }
 
-MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Shell::Result const& result)
+MAVSDK_PUBLIC std::string_view to_string(Shell::Result const& result)
 {
     switch (result) {
         case Shell::Result::Unknown:
-            return str << "Unknown";
+            return "Unknown";
         case Shell::Result::Success:
-            return str << "Success";
+            return "Success";
         case Shell::Result::NoSystem:
-            return str << "No System";
+            return "No System";
         case Shell::Result::ConnectionError:
-            return str << "Connection Error";
+            return "Connection Error";
         case Shell::Result::NoResponse:
-            return str << "No Response";
+            return "No Response";
         case Shell::Result::Busy:
-            return str << "Busy";
+            return "Busy";
         default:
-            return str << "Unknown";
+            return "Unknown";
     }
+}
+
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Shell::Result const& result)
+{
+    return str << to_string(result);
 }
 
 } // namespace mavsdk

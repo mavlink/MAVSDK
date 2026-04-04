@@ -54,7 +54,7 @@ ConnectionResult TcpServerConnection::start()
 
     asio::ip::address local_addr = asio::ip::make_address(_local_ip, ec);
     if (ec) {
-        LogErr() << "Invalid local IP '" << _local_ip << "': " << ec.message();
+        LogErr("Invalid local IP '{}': {}", _local_ip, ec.message());
         return ConnectionResult::SocketError;
     }
 
@@ -62,7 +62,7 @@ ConnectionResult TcpServerConnection::start()
 
     _acceptor.open(asio::ip::tcp::v4(), ec);
     if (ec) {
-        LogErr() << "socket open error: " << ec.message();
+        LogErr("socket open error: {}", ec.message());
         return ConnectionResult::SocketError;
     }
 
@@ -70,13 +70,13 @@ ConnectionResult TcpServerConnection::start()
 
     _acceptor.bind(local_endpoint, ec);
     if (ec) {
-        LogErr() << "bind error: " << ec.message();
+        LogErr("bind error: {}", ec.message());
         return ConnectionResult::SocketError;
     }
 
     _acceptor.listen(asio::socket_base::max_listen_connections, ec);
     if (ec) {
-        LogErr() << "listen error: " << ec.message();
+        LogErr("listen error: {}", ec.message());
         return ConnectionResult::SocketError;
     }
 
@@ -173,7 +173,7 @@ std::pair<bool, std::string> TcpServerConnection::send_raw_bytes(const char* byt
             if (ec) {
                 // Broken pipe / connection reset during shutdown are expected.
                 if (ec != asio::error::broken_pipe && ec != asio::error::connection_reset) {
-                    LogErr() << "Send failure: " << ec.message();
+                    LogErr("Send failure: {}", ec.message());
                 }
                 p.set_value({false, "Send failure: " + ec.message()});
             } else {
@@ -195,7 +195,7 @@ void TcpServerConnection::do_accept()
             return;
         }
         if (ec) {
-            LogErr() << "accept error: " << ec.message();
+            LogErr("accept error: {}", ec.message());
             // Re-arm so the server keeps listening (unless we're shutting down).
             if (!_stopping) {
                 do_accept();
@@ -226,9 +226,9 @@ void TcpServerConnection::do_receive()
 
             if (ec) {
                 if (ec == asio::error::eof || ec == asio::error::connection_reset) {
-                    LogInfo() << "TCP client disconnected, waiting for new connection...";
+                    LogInfo("TCP client disconnected, waiting for new connection...");
                 } else {
-                    LogErr() << "TCP receive error: " << ec.message();
+                    LogErr("TCP receive error: {}", ec.message());
                 }
                 {
                     std::lock_guard<std::mutex> lock(_send_mutex);

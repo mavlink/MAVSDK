@@ -1,6 +1,6 @@
 #pragma once
 
-#include <sstream>
+#include <string_view>
 
 #include "mavsdk_export.h"
 
@@ -31,6 +31,13 @@ enum class ConnectionResult {
     ConnectionUrlInvalid, /**< @brief URL invalid. */
     BaudrateUnknown /**< @brief Baudrate unknown. */
 };
+
+/**
+ * @brief Convert `ConnectionResult` to string.
+ *
+ * @return A string representation of the enum.
+ */
+MAVSDK_PUBLIC std::string_view to_string(const ConnectionResult& result);
 
 /**
  * @brief Stream operator to print information about a `ConnectionResult`.

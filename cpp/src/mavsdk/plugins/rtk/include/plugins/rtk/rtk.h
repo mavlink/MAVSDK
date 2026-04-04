@@ -93,6 +93,13 @@ public:
     };
 
     /**
+     * @brief Convert `Rtk::Result` to string.
+     *
+     * @return A string representation of the enum.
+     */
+    friend MAVSDK_PUBLIC std::string_view to_string(Rtk::Result const& result);
+
+    /**
      * @brief Stream operator to print information about a `Rtk::Result`.
      *
      * @return A reference to the stream.

@@ -81,6 +81,13 @@ public:
     };
 
     /**
+     * @brief Convert `Failure::FailureUnit` to string.
+     *
+     * @return A string representation of the enum.
+     */
+    friend MAVSDK_PUBLIC std::string_view to_string(Failure::FailureUnit const& failure_unit);
+
+    /**
      * @brief Stream operator to print information about a `Failure::FailureUnit`.
      *
      * @return A reference to the stream.
@@ -103,6 +110,13 @@ public:
     };
 
     /**
+     * @brief Convert `Failure::FailureType` to string.
+     *
+     * @return A string representation of the enum.
+     */
+    friend MAVSDK_PUBLIC std::string_view to_string(Failure::FailureType const& failure_type);
+
+    /**
      * @brief Stream operator to print information about a `Failure::FailureType`.
      *
      * @return A reference to the stream.
@@ -123,6 +137,13 @@ public:
         Disabled, /**< @brief Failure injection is disabled. */
         Timeout, /**< @brief Request timed out. */
     };
+
+    /**
+     * @brief Convert `Failure::Result` to string.
+     *
+     * @return A string representation of the enum.
+     */
+    friend MAVSDK_PUBLIC std::string_view to_string(Failure::Result const& result);
 
     /**
      * @brief Stream operator to print information about a `Failure::Result`.

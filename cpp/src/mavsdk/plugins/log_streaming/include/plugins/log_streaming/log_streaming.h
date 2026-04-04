@@ -97,6 +97,13 @@ public:
     };
 
     /**
+     * @brief Convert `LogStreaming::Result` to string.
+     *
+     * @return A string representation of the enum.
+     */
+    friend MAVSDK_PUBLIC std::string_view to_string(LogStreaming::Result const& result);
+
+    /**
      * @brief Stream operator to print information about a `LogStreaming::Result`.
      *
      * @return A reference to the stream.

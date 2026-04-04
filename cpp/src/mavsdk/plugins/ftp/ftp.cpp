@@ -142,38 +142,43 @@ MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Ftp::ProgressData cons
     return str;
 }
 
-MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Ftp::Result const& result)
+MAVSDK_PUBLIC std::string_view to_string(Ftp::Result const& result)
 {
     switch (result) {
         case Ftp::Result::Unknown:
-            return str << "Unknown";
+            return "Unknown";
         case Ftp::Result::Success:
-            return str << "Success";
+            return "Success";
         case Ftp::Result::Next:
-            return str << "Next";
+            return "Next";
         case Ftp::Result::Timeout:
-            return str << "Timeout";
+            return "Timeout";
         case Ftp::Result::Busy:
-            return str << "Busy";
+            return "Busy";
         case Ftp::Result::FileIoError:
-            return str << "File Io Error";
+            return "File Io Error";
         case Ftp::Result::FileExists:
-            return str << "File Exists";
+            return "File Exists";
         case Ftp::Result::FileDoesNotExist:
-            return str << "File Does Not Exist";
+            return "File Does Not Exist";
         case Ftp::Result::FileProtected:
-            return str << "File Protected";
+            return "File Protected";
         case Ftp::Result::InvalidParameter:
-            return str << "Invalid Parameter";
+            return "Invalid Parameter";
         case Ftp::Result::Unsupported:
-            return str << "Unsupported";
+            return "Unsupported";
         case Ftp::Result::ProtocolError:
-            return str << "Protocol Error";
+            return "Protocol Error";
         case Ftp::Result::NoSystem:
-            return str << "No System";
+            return "No System";
         default:
-            return str << "Unknown";
+            return "Unknown";
     }
+}
+
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Ftp::Result const& result)
+{
+    return str << to_string(result);
 }
 
 } // namespace mavsdk

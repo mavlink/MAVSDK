@@ -75,6 +75,13 @@ public:
     };
 
     /**
+     * @brief Convert `Camera::Mode` to string.
+     *
+     * @return A string representation of the enum.
+     */
+    friend MAVSDK_PUBLIC std::string_view to_string(Camera::Mode const& mode);
+
+    /**
      * @brief Stream operator to print information about a `Camera::Mode`.
      *
      * @return A reference to the stream.
@@ -88,6 +95,13 @@ public:
         All, /**< @brief All the photos present on the camera. */
         SinceConnection, /**< @brief Photos taken since MAVSDK got connected. */
     };
+
+    /**
+     * @brief Convert `Camera::PhotosRange` to string.
+     *
+     * @return A string representation of the enum.
+     */
+    friend MAVSDK_PUBLIC std::string_view to_string(Camera::PhotosRange const& photos_range);
 
     /**
      * @brief Stream operator to print information about a `Camera::PhotosRange`.
@@ -218,6 +232,14 @@ public:
         };
 
         /**
+         * @brief Convert `Camera::VideoStreamStatus` to string.
+         *
+         * @return A string representation of the enum.
+         */
+        friend MAVSDK_PUBLIC std::string_view
+        to_string(Camera::VideoStreamInfo::VideoStreamStatus const& video_stream_status);
+
+        /**
          * @brief Stream operator to print information about a `Camera::VideoStreamStatus`.
          *
          * @return A reference to the stream.
@@ -234,6 +256,14 @@ public:
             VisibleLight, /**< @brief Visible light. */
             Infrared, /**< @brief Infrared. */
         };
+
+        /**
+         * @brief Convert `Camera::VideoStreamSpectrum` to string.
+         *
+         * @return A string representation of the enum.
+         */
+        friend MAVSDK_PUBLIC std::string_view
+        to_string(Camera::VideoStreamInfo::VideoStreamSpectrum const& video_stream_spectrum);
 
         /**
          * @brief Stream operator to print information about a `Camera::VideoStreamSpectrum`.
@@ -330,6 +360,14 @@ public:
         };
 
         /**
+         * @brief Convert `Camera::StorageStatus` to string.
+         *
+         * @return A string representation of the enum.
+         */
+        friend MAVSDK_PUBLIC std::string_view
+        to_string(Camera::Storage::StorageStatus const& storage_status);
+
+        /**
          * @brief Stream operator to print information about a `Camera::StorageStatus`.
          *
          * @return A reference to the stream.
@@ -348,6 +386,14 @@ public:
             Hd, /**< @brief Storage type HD mass storage. */
             Other, /**< @brief Storage type other, not listed. */
         };
+
+        /**
+         * @brief Convert `Camera::StorageType` to string.
+         *
+         * @return A string representation of the enum.
+         */
+        friend MAVSDK_PUBLIC std::string_view
+        to_string(Camera::Storage::StorageType const& storage_type);
 
         /**
          * @brief Stream operator to print information about a `Camera::StorageType`.
@@ -479,6 +525,13 @@ public:
         CameraIdInvalid, /**< @brief Camera with camera ID not found. */
         ActionUnsupported, /**< @brief Camera action not supported. */
     };
+
+    /**
+     * @brief Convert `Camera::Result` to string.
+     *
+     * @return A string representation of the enum.
+     */
+    friend MAVSDK_PUBLIC std::string_view to_string(Camera::Result const& result);
 
     /**
      * @brief Stream operator to print information about a `Camera::Result`.

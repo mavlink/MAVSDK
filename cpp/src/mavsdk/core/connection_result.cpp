@@ -1,41 +1,47 @@
 #include "connection_result.h"
+#include <ostream>
 
 namespace mavsdk {
 
-MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, const ConnectionResult& result)
+MAVSDK_PUBLIC std::string_view to_string(const ConnectionResult& result)
 {
     switch (result) {
         case ConnectionResult::Success:
-            return str << "Success";
+            return "Success";
         case ConnectionResult::Timeout:
-            return str << "Timeout";
+            return "Timeout";
         case ConnectionResult::SocketError:
-            return str << "Socket error";
+            return "Socket error";
         case ConnectionResult::BindError:
-            return str << "Bind error";
+            return "Bind error";
         case ConnectionResult::SocketConnectionError:
-            return str << "Socket connection error";
+            return "Socket connection error";
         case ConnectionResult::ConnectionError:
-            return str << "Connection error";
+            return "Connection error";
         case ConnectionResult::NotImplemented:
-            return str << "Not implemented";
+            return "Not implemented";
         case ConnectionResult::SystemNotConnected:
-            return str << "System not connected";
+            return "System not connected";
         case ConnectionResult::SystemBusy:
-            return str << "System busy";
+            return "System busy";
         case ConnectionResult::CommandDenied:
-            return str << "Command denied";
+            return "Command denied";
         case ConnectionResult::DestinationIpUnknown:
-            return str << "Destination IP unknown";
+            return "Destination IP unknown";
         case ConnectionResult::ConnectionsExhausted:
-            return str << "Connections exhausted";
+            return "Connections exhausted";
         case ConnectionResult::ConnectionUrlInvalid:
-            return str << "Invalid connection URL";
+            return "Invalid connection URL";
         case ConnectionResult::BaudrateUnknown:
-            return str << "Baudrate unknown";
+            return "Baudrate unknown";
         default:
-            return str << "Unknown";
+            return "Unknown";
     }
+}
+
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, const ConnectionResult& result)
+{
+    return str << to_string(result);
 }
 
 } // namespace mavsdk

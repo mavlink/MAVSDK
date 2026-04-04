@@ -220,19 +220,25 @@ operator<<(std::ostream& str, Offboard::PositionNedYaw const& position_ned_yaw)
     return str;
 }
 
-MAVSDK_PUBLIC std::ostream&
-operator<<(std::ostream& str, Offboard::PositionGlobalYaw::AltitudeType const& altitude_type)
+MAVSDK_PUBLIC std::string_view
+to_string(Offboard::PositionGlobalYaw::AltitudeType const& altitude_type)
 {
     switch (altitude_type) {
         case Offboard::PositionGlobalYaw::AltitudeType::RelHome:
-            return str << "Rel Home";
+            return "Rel Home";
         case Offboard::PositionGlobalYaw::AltitudeType::Amsl:
-            return str << "Amsl";
+            return "Amsl";
         case Offboard::PositionGlobalYaw::AltitudeType::Agl:
-            return str << "Agl";
+            return "Agl";
         default:
-            return str << "Unknown";
+            return "Unknown";
     }
+}
+
+MAVSDK_PUBLIC std::ostream&
+operator<<(std::ostream& str, Offboard::PositionGlobalYaw::AltitudeType const& altitude_type)
+{
+    return str << to_string(altitude_type);
 }
 MAVSDK_PUBLIC bool
 operator==(const Offboard::PositionGlobalYaw& lhs, const Offboard::PositionGlobalYaw& rhs)
@@ -332,30 +338,35 @@ operator<<(std::ostream& str, Offboard::AccelerationNed const& acceleration_ned)
     return str;
 }
 
-MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Offboard::Result const& result)
+MAVSDK_PUBLIC std::string_view to_string(Offboard::Result const& result)
 {
     switch (result) {
         case Offboard::Result::Unknown:
-            return str << "Unknown";
+            return "Unknown";
         case Offboard::Result::Success:
-            return str << "Success";
+            return "Success";
         case Offboard::Result::NoSystem:
-            return str << "No System";
+            return "No System";
         case Offboard::Result::ConnectionError:
-            return str << "Connection Error";
+            return "Connection Error";
         case Offboard::Result::Busy:
-            return str << "Busy";
+            return "Busy";
         case Offboard::Result::CommandDenied:
-            return str << "Command Denied";
+            return "Command Denied";
         case Offboard::Result::Timeout:
-            return str << "Timeout";
+            return "Timeout";
         case Offboard::Result::NoSetpointSet:
-            return str << "No Setpoint Set";
+            return "No Setpoint Set";
         case Offboard::Result::Failed:
-            return str << "Failed";
+            return "Failed";
         default:
-            return str << "Unknown";
+            return "Unknown";
     }
+}
+
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Offboard::Result const& result)
+{
+    return str << to_string(result);
 }
 
 } // namespace mavsdk

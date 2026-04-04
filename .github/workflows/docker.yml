@@ -33,9 +33,6 @@ jobs:
       matrix:
         include:
           # Always build Ubuntu images
-          - name: Ubuntu 20.04
-            dockerfile: Dockerfile-ubuntu-20.04
-            image: mavsdk-ubuntu-20.04
           - name: Ubuntu 22.04
             dockerfile: Dockerfile-ubuntu-22.04
             image: mavsdk-ubuntu-22.04
@@ -62,9 +59,6 @@ jobs:
           - name: Dockcross ARM64
             dockerfile: Dockerfile.dockcross-linux-arm64-custom
             image: mavsdk-dockcross-linux-arm64-custom
-          - name: Dockcross ARM64 LTS
-            dockerfile: Dockerfile.dockcross-linux-arm64-lts-custom
-            image: mavsdk-dockcross-linux-arm64-lts-custom
     steps:
       - uses: actions/checkout@v6
       

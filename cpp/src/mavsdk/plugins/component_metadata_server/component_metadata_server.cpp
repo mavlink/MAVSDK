@@ -42,19 +42,24 @@ operator<<(std::ostream& str, ComponentMetadataServer::Metadata const& metadata)
     return str;
 }
 
-MAVSDK_PUBLIC std::ostream&
-operator<<(std::ostream& str, ComponentMetadataServer::MetadataType const& metadata_type)
+MAVSDK_PUBLIC std::string_view to_string(ComponentMetadataServer::MetadataType const& metadata_type)
 {
     switch (metadata_type) {
         case ComponentMetadataServer::MetadataType::Parameter:
-            return str << "Parameter";
+            return "Parameter";
         case ComponentMetadataServer::MetadataType::Events:
-            return str << "Events";
+            return "Events";
         case ComponentMetadataServer::MetadataType::Actuators:
-            return str << "Actuators";
+            return "Actuators";
         default:
-            return str << "Unknown";
+            return "Unknown";
     }
+}
+
+MAVSDK_PUBLIC std::ostream&
+operator<<(std::ostream& str, ComponentMetadataServer::MetadataType const& metadata_type)
+{
+    return str << to_string(metadata_type);
 }
 
 } // namespace mavsdk

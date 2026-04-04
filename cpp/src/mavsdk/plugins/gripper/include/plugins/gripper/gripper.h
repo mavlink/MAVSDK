@@ -71,6 +71,13 @@ public:
     };
 
     /**
+     * @brief Convert `Gripper::GripperAction` to string.
+     *
+     * @return A string representation of the enum.
+     */
+    friend MAVSDK_PUBLIC std::string_view to_string(Gripper::GripperAction const& gripper_action);
+
+    /**
      * @brief Stream operator to print information about a `Gripper::GripperAction`.
      *
      * @return A reference to the stream.
@@ -90,6 +97,13 @@ public:
         Unsupported, /**< @brief Action not supported. */
         Failed, /**< @brief Action failed. */
     };
+
+    /**
+     * @brief Convert `Gripper::Result` to string.
+     *
+     * @return A string representation of the enum.
+     */
+    friend MAVSDK_PUBLIC std::string_view to_string(Gripper::Result const& result);
 
     /**
      * @brief Stream operator to print information about a `Gripper::Result`.

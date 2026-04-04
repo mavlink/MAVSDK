@@ -61,6 +61,14 @@ public:
     };
 
     /**
+     * @brief Convert `ArmAuthorizerServer::RejectionReason` to string.
+     *
+     * @return A string representation of the enum.
+     */
+    friend MAVSDK_PUBLIC std::string_view
+    to_string(ArmAuthorizerServer::RejectionReason const& rejection_reason);
+
+    /**
      * @brief Stream operator to print information about a `ArmAuthorizerServer::RejectionReason`.
      *
      * @return A reference to the stream.
@@ -76,6 +84,13 @@ public:
         Success, /**< @brief Command accepted. */
         Failed, /**< @brief Command failed. */
     };
+
+    /**
+     * @brief Convert `ArmAuthorizerServer::Result` to string.
+     *
+     * @return A string representation of the enum.
+     */
+    friend MAVSDK_PUBLIC std::string_view to_string(ArmAuthorizerServer::Result const& result);
 
     /**
      * @brief Stream operator to print information about a `ArmAuthorizerServer::Result`.

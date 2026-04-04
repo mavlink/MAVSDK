@@ -47,7 +47,7 @@ public:
     {
         switch (gimbal_mode) {
             default:
-                LogErr() << "Unknown gimbal_mode enum value: " << static_cast<int>(gimbal_mode);
+                LogErr("Unknown gimbal_mode enum value: {}", static_cast<int>(gimbal_mode));
             // FALLTHROUGH
             case mavsdk::Gimbal::GimbalMode::YawFollow:
                 return rpc::gimbal::GIMBAL_MODE_YAW_FOLLOW;
@@ -61,7 +61,7 @@ public:
     {
         switch (gimbal_mode) {
             default:
-                LogErr() << "Unknown gimbal_mode enum value: " << static_cast<int>(gimbal_mode);
+                LogErr("Unknown gimbal_mode enum value: {}", static_cast<int>(gimbal_mode));
             // FALLTHROUGH
             case rpc::gimbal::GIMBAL_MODE_YAW_FOLLOW:
                 return mavsdk::Gimbal::GimbalMode::YawFollow;
@@ -75,7 +75,7 @@ public:
     {
         switch (control_mode) {
             default:
-                LogErr() << "Unknown control_mode enum value: " << static_cast<int>(control_mode);
+                LogErr("Unknown control_mode enum value: {}", static_cast<int>(control_mode));
             // FALLTHROUGH
             case mavsdk::Gimbal::ControlMode::None:
                 return rpc::gimbal::CONTROL_MODE_NONE;
@@ -91,7 +91,7 @@ public:
     {
         switch (control_mode) {
             default:
-                LogErr() << "Unknown control_mode enum value: " << static_cast<int>(control_mode);
+                LogErr("Unknown control_mode enum value: {}", static_cast<int>(control_mode));
             // FALLTHROUGH
             case rpc::gimbal::CONTROL_MODE_NONE:
                 return mavsdk::Gimbal::ControlMode::None;
@@ -106,7 +106,7 @@ public:
     {
         switch (send_mode) {
             default:
-                LogErr() << "Unknown send_mode enum value: " << static_cast<int>(send_mode);
+                LogErr("Unknown send_mode enum value: {}", static_cast<int>(send_mode));
             // FALLTHROUGH
             case mavsdk::Gimbal::SendMode::Once:
                 return rpc::gimbal::SEND_MODE_ONCE;
@@ -119,7 +119,7 @@ public:
     {
         switch (send_mode) {
             default:
-                LogErr() << "Unknown send_mode enum value: " << static_cast<int>(send_mode);
+                LogErr("Unknown send_mode enum value: {}", static_cast<int>(send_mode));
             // FALLTHROUGH
             case rpc::gimbal::SEND_MODE_ONCE:
                 return mavsdk::Gimbal::SendMode::Once;
@@ -375,7 +375,7 @@ public:
     {
         switch (result) {
             default:
-                LogErr() << "Unknown result enum value: " << static_cast<int>(result);
+                LogErr("Unknown result enum value: {}", static_cast<int>(result));
             // FALLTHROUGH
             case mavsdk::Gimbal::Result::Unknown:
                 return rpc::gimbal::GimbalResult_Result_RESULT_UNKNOWN;
@@ -399,7 +399,7 @@ public:
     {
         switch (result) {
             default:
-                LogErr() << "Unknown result enum value: " << static_cast<int>(result);
+                LogErr("Unknown result enum value: {}", static_cast<int>(result));
             // FALLTHROUGH
             case rpc::gimbal::GimbalResult_Result_RESULT_UNKNOWN:
                 return mavsdk::Gimbal::Result::Unknown;
@@ -433,7 +433,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "SetAngles sent with a null request! Ignoring...";
+            LogWarn("SetAngles sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -467,7 +467,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "SetAngularRates sent with a null request! Ignoring...";
+            LogWarn("SetAngularRates sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -501,7 +501,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "SetRoiLocation sent with a null request! Ignoring...";
+            LogWarn("SetRoiLocation sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -533,7 +533,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "TakeControl sent with a null request! Ignoring...";
+            LogWarn("TakeControl sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -562,7 +562,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "ReleaseControl sent with a null request! Ignoring...";
+            LogWarn("ReleaseControl sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -674,7 +674,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "GetControlStatus sent with a null request! Ignoring...";
+            LogWarn("GetControlStatus sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 
@@ -746,7 +746,7 @@ public:
         }
 
         if (request == nullptr) {
-            LogWarn() << "GetAttitude sent with a null request! Ignoring...";
+            LogWarn("GetAttitude sent with a null request! Ignoring...");
             return grpc::Status::OK;
         }
 

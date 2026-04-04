@@ -29,6 +29,7 @@ target_include_directories(unit_tests_mavsdk_server
 )
 
 find_package(GTest REQUIRED)
+find_package(fmt REQUIRED)
 
 target_link_libraries(unit_tests_mavsdk_server
     PRIVATE
@@ -38,6 +39,7 @@ target_link_libraries(unit_tests_mavsdk_server
     GTest::gtest
     GTest::gmock
     GTest::gmock_main
+    fmt::fmt
 )
 
 if (BUILD_STATIC_MAVSDK_SERVER)

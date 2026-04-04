@@ -15,7 +15,7 @@ MissionImport::parse_json(const std::string& raw_json, Autopilot autopilot)
     JSONCPP_STRING err;
 
     if (!reader->parse(raw_json.c_str(), raw_json.c_str() + raw_json.length(), &root, &err)) {
-        LogErr() << "Parse error: " << err;
+        LogErr("Parse error: {}", err);
         return {MissionRaw::Result::FailedToParseQgcPlan, {}};
     }
 
@@ -51,8 +51,10 @@ bool MissionImport::check_overall_version(const Json::Value& root)
     const auto supported_overall_version = 1;
     const auto overall_version = root["version"];
     if (overall_version.empty() || overall_version.asInt() != supported_overall_version) {
-        LogErr() << "Overall .plan version not supported, found version: " << overall_version
-                 << ", supported: " << supported_overall_version;
+        LogErr(
+            "Overall .plan version not supported, found version: {}, supported: {}",
+            overall_version.asInt(),
+            supported_overall_version);
         return false;
     }
 
@@ -65,7 +67,7 @@ MissionImport::import_mission(const Json::Value& root, Autopilot autopilot)
     // We need a mission part.
     const auto mission = root["mission"];
     if (mission.empty()) {
-        LogErr() << "No mission found in .plan.";
+        LogErr("No mission found in .plan.");
         return std::nullopt;
     }
 
@@ -73,8 +75,10 @@ MissionImport::import_mission(const Json::Value& root, Autopilot autopilot)
     const auto supported_mission_version = 2;
     const auto mission_version = mission["version"];
     if (mission_version.empty() || mission_version.asInt() != supported_mission_version) {
-        LogErr() << "mission version for .plan not supported, found version: "
-                 << mission_version.asInt() << ", supported: " << supported_mission_version;
+        LogErr(
+            "mission version for .plan not supported, found version: {}, supported: {}",
+            mission_version.asInt(),
+            supported_mission_version);
         return std::nullopt;
     }
 
@@ -102,7 +106,7 @@ MissionImport::import_mission(const Json::Value& root, Autopilot autopilot)
             }
 
         } else {
-            LogErr() << "Type " << type.asString() << " not understood.";
+            LogErr("Type {} not understood.", type.asString());
             return std::nullopt;
         }
     }
@@ -117,10 +121,18 @@ MissionImport::import_mission(const Json::Value& root, Autopilot autopilot)
         const auto home = mission["plannedHomePosition"];
         if (!home.empty()) {
             if (home.isArray() && home.size() != 3) {
-                LogErr() << "Unknown plannedHomePosition format";
+                LogErr("Unknown plannedHomePosition format");
                 return std::nullopt;
             }
 
+            // GCC 12/13 emits a false-positive -Wnull-dereference on placement-new
+            // inside vector::_M_realloc_insert when built with C++20 and -Werror.
+            // Reserve first to prevent reallocation, then suppress the warning.
+            mission_items.reserve(mission_items.size() + 1);
+#if defined(__GNUC__) && !defined(__clang__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wnull-dereference"
+#endif
             mission_items.insert(
                 mission_items.begin(),
                 MissionRaw::MissionItem{
@@ -137,6 +149,9 @@ MissionImport::import_mission(const Json::Value& root, Autopilot autopilot)
                     set_int32(home[1], MAV_FRAME_GLOBAL_INT),
                     home[2].asFloat(),
                     MAV_MISSION_TYPE_MISSION});
+#if defined(__GNUC__) && !defined(__clang__)
+#pragma GCC diagnostic pop
+#endif
         }
     }
 
@@ -165,8 +180,10 @@ MissionImport::import_geofence(const Json::Value& root)
     const auto supported_geofence_version = 2;
     const auto geofence_version = geofence["version"];
     if (geofence_version.empty() || geofence_version.asInt() != supported_geofence_version) {
-        LogErr() << "geofence version for .plan not supported, found version: "
-                 << geofence_version.asInt() << ", supported: " << supported_geofence_version;
+        LogErr(
+            "geofence version for .plan not supported, found version: {}, supported: {}",
+            geofence_version.asInt(),
+            supported_geofence_version);
         return std::nullopt;
     }
 
@@ -212,9 +229,10 @@ MissionImport::import_rally_points(const Json::Value& root)
     const auto rally_points_version = rally_points["version"];
     if (rally_points_version.empty() ||
         rally_points_version.asInt() != supported_rally_points_version) {
-        LogErr() << "rally points version for .plan not supported, found version: "
-                 << rally_points_version.asInt()
-                 << ", supported: " << supported_rally_points_version;
+        LogErr(
+            "rally points version for .plan not supported, found version: {}, supported: {}",
+            rally_points_version.asInt(),
+            supported_rally_points_version);
         return std::nullopt;
     }
 
@@ -251,12 +269,12 @@ MissionImport::import_simple_mission_item(const Json::Value& json_item)
 {
     if (json_item["command"].empty() || json_item["autoContinue"].empty() ||
         json_item["frame"].empty() || json_item["params"].empty()) {
-        LogErr() << "Missing mission item field.";
+        LogErr("Missing mission item field.");
         return std::nullopt;
     }
 
     if (!json_item["params"].isArray()) {
-        LogErr() << "No param array found.";
+        LogErr("No param array found.");
         return std::nullopt;
     }
 
@@ -302,37 +320,39 @@ std::optional<std::vector<MissionRaw::MissionItem>>
 MissionImport::import_complex_mission_items(const Json::Value& json_item)
 {
     if (json_item["complexItemType"].empty()) {
-        LogErr() << "Could not determine complexItemType";
+        LogErr("Could not determine complexItemType");
         return std::nullopt;
     }
 
     if (json_item["complexItemType"] != "survey") {
-        LogErr() << "complexItemType: " << json_item["complexItemType"] << " not supported";
+        LogErr("complexItemType: {} not supported", json_item["complexItemType"].asString());
         return std::nullopt;
     }
 
     if (json_item["version"].empty()) {
-        LogErr() << "version of complexItem not found";
+        LogErr("version of complexItem not found");
         return std::nullopt;
     }
 
     const int supported_complex_item_version = 5;
     const int found_version = json_item["version"].asInt();
     if (found_version != 5) {
-        LogErr() << "version of complexItem not supported, found version: " << found_version
-                 << ", supported: " << supported_complex_item_version;
+        LogErr(
+            "version of complexItem not supported, found version: {}, supported: {}",
+            found_version,
+            supported_complex_item_version);
         return std::nullopt;
     }
 
     if (json_item["TransectStyleComplexItem"].empty()) {
-        LogErr() << "TransectStyleComplexItem not found";
+        LogErr("TransectStyleComplexItem not found");
         return std::nullopt;
     }
 
     // These are Items (capitalized!) inside the  TransectStyleComplexItem.
     if (json_item["TransectStyleComplexItem"]["Items"].empty() ||
         !json_item["TransectStyleComplexItem"]["Items"].isArray()) {
-        LogErr() << "No survey items found";
+        LogErr("No survey items found");
         return std::nullopt;
     }
 
@@ -419,7 +439,7 @@ std::pair<MissionRaw::Result, MissionRaw::MissionImportData>
 MissionImport::parse_mission_planner(const std::string& raw_mission_planner, Autopilot autopilot)
 {
     if (!is_mission_planner_format(raw_mission_planner)) {
-        LogErr() << "Invalid Mission Planner format";
+        LogErr("Invalid Mission Planner format");
         return {MissionRaw::Result::FailedToParseMissionPlannerPlan, {}};
     }
 
@@ -458,7 +478,7 @@ MissionImport::parse_mission_planner_items(const std::string& content, Autopilot
 
     // Skip first line (header)
     if (!std::getline(stream, line)) {
-        LogErr() << "Empty Mission Planner file";
+        LogErr("Empty Mission Planner file");
         return std::nullopt;
     }
 
@@ -471,7 +491,7 @@ MissionImport::parse_mission_planner_items(const std::string& content, Autopilot
 
         auto maybe_item = parse_mission_planner_line(line);
         if (!maybe_item.has_value()) {
-            LogErr() << "Failed to parse Mission Planner line: " << line;
+            LogErr("Failed to parse Mission Planner line: {}", line);
             return std::nullopt;
         }
 
@@ -507,7 +527,18 @@ MissionImport::parse_mission_planner_items(const std::string& content, Autopilot
                 first_item.z, // use same z as first waypoint
                 MAV_MISSION_TYPE_MISSION};
 
+            // GCC 12/13 emits a false-positive -Wnull-dereference on placement-new
+            // inside vector::_M_realloc_insert when built with C++20 and -Werror.
+            // Reserve first to prevent reallocation, then suppress the warning.
+            mission_items.reserve(mission_items.size() + 1);
+#if defined(__GNUC__) && !defined(__clang__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wnull-dereference"
+#endif
             mission_items.insert(mission_items.begin(), home_item);
+#if defined(__GNUC__) && !defined(__clang__)
+#pragma GCC diagnostic pop
+#endif
         }
     }
 
@@ -535,8 +566,7 @@ MissionImport::parse_mission_planner_line(const std::string& line)
     }
 
     if (fields.size() != 12) {
-        LogErr() << "Invalid Mission Planner line format, expected 12 fields, got "
-                 << fields.size();
+        LogErr("Invalid Mission Planner line format, expected 12 fields, got {}", fields.size());
         return std::nullopt;
     }
 
@@ -548,7 +578,7 @@ MissionImport::parse_mission_planner_line(const std::string& line)
     // Parse seq
     unsigned long seq_val = std::strtoul(fields[0].c_str(), &endptr, 10);
     if (endptr == fields[0].c_str() || *endptr != '\0') {
-        LogErr() << "Invalid seq field: " << fields[0];
+        LogErr("Invalid seq field: {}", fields[0]);
         return std::nullopt;
     }
     item.seq = static_cast<uint32_t>(seq_val);
@@ -556,7 +586,7 @@ MissionImport::parse_mission_planner_line(const std::string& line)
     // Parse current
     unsigned long current_val = std::strtoul(fields[1].c_str(), &endptr, 10);
     if (endptr == fields[1].c_str() || *endptr != '\0') {
-        LogErr() << "Invalid current field: " << fields[1];
+        LogErr("Invalid current field: {}", fields[1]);
         return std::nullopt;
     }
     item.current = static_cast<uint32_t>(current_val);
@@ -564,7 +594,7 @@ MissionImport::parse_mission_planner_line(const std::string& line)
     // Parse frame
     unsigned long frame_val = std::strtoul(fields[2].c_str(), &endptr, 10);
     if (endptr == fields[2].c_str() || *endptr != '\0') {
-        LogErr() << "Invalid frame field: " << fields[2];
+        LogErr("Invalid frame field: {}", fields[2]);
         return std::nullopt;
     }
     item.frame = static_cast<uint32_t>(frame_val);
@@ -572,7 +602,7 @@ MissionImport::parse_mission_planner_line(const std::string& line)
     // Parse command
     unsigned long command_val = std::strtoul(fields[3].c_str(), &endptr, 10);
     if (endptr == fields[3].c_str() || *endptr != '\0') {
-        LogErr() << "Invalid command field: " << fields[3];
+        LogErr("Invalid command field: {}", fields[3]);
         return std::nullopt;
     }
     item.command = static_cast<uint32_t>(command_val);
@@ -580,39 +610,39 @@ MissionImport::parse_mission_planner_line(const std::string& line)
     // Parse float parameters (param1-4)
     item.param1 = static_cast<float>(std::strtod(fields[4].c_str(), &endptr));
     if (endptr == fields[4].c_str()) {
-        LogErr() << "Invalid param1 field: " << fields[4];
+        LogErr("Invalid param1 field: {}", fields[4]);
         return std::nullopt;
     }
 
     item.param2 = static_cast<float>(std::strtod(fields[5].c_str(), &endptr));
     if (endptr == fields[5].c_str()) {
-        LogErr() << "Invalid param2 field: " << fields[5];
+        LogErr("Invalid param2 field: {}", fields[5]);
         return std::nullopt;
     }
 
     item.param3 = static_cast<float>(std::strtod(fields[6].c_str(), &endptr));
     if (endptr == fields[6].c_str()) {
-        LogErr() << "Invalid param3 field: " << fields[6];
+        LogErr("Invalid param3 field: {}", fields[6]);
         return std::nullopt;
     }
 
     item.param4 = static_cast<float>(std::strtod(fields[7].c_str(), &endptr));
     if (endptr == fields[7].c_str()) {
-        LogErr() << "Invalid param4 field: " << fields[7];
+        LogErr("Invalid param4 field: {}", fields[7]);
         return std::nullopt;
     }
 
     // Parse x (latitude)
     double x_val = std::strtod(fields[8].c_str(), &endptr);
     if (endptr == fields[8].c_str()) {
-        LogErr() << "Invalid x field: " << fields[8];
+        LogErr("Invalid x field: {}", fields[8]);
         return std::nullopt;
     }
 
     // Parse y (longitude)
     double y_val = std::strtod(fields[9].c_str(), &endptr);
     if (endptr == fields[9].c_str()) {
-        LogErr() << "Invalid y field: " << fields[9];
+        LogErr("Invalid y field: {}", fields[9]);
         return std::nullopt;
     }
 
@@ -630,14 +660,14 @@ MissionImport::parse_mission_planner_line(const std::string& line)
     // Parse z (altitude)
     item.z = static_cast<float>(std::strtod(fields[10].c_str(), &endptr));
     if (endptr == fields[10].c_str()) {
-        LogErr() << "Invalid z field: " << fields[10];
+        LogErr("Invalid z field: {}", fields[10]);
         return std::nullopt;
     }
 
     // Parse autocontinue
     unsigned long autocontinue_val = std::strtoul(fields[11].c_str(), &endptr, 10);
     if (endptr == fields[11].c_str() || *endptr != '\0') {
-        LogErr() << "Invalid autocontinue field: " << fields[11];
+        LogErr("Invalid autocontinue field: {}", fields[11]);
         return std::nullopt;
     }
     item.autocontinue = static_cast<uint32_t>(autocontinue_val);

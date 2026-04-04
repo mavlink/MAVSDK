@@ -27,47 +27,57 @@ ServerUtility::Result ServerUtility::send_status_text(StatusTextType type, std::
     return _impl->send_status_text(type, text);
 }
 
-MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, ServerUtility::Result const& result)
+MAVSDK_PUBLIC std::string_view to_string(ServerUtility::Result const& result)
 {
     switch (result) {
         case ServerUtility::Result::Unknown:
-            return str << "Unknown";
+            return "Unknown";
         case ServerUtility::Result::Success:
-            return str << "Success";
+            return "Success";
         case ServerUtility::Result::NoSystem:
-            return str << "No System";
+            return "No System";
         case ServerUtility::Result::ConnectionError:
-            return str << "Connection Error";
+            return "Connection Error";
         case ServerUtility::Result::InvalidArgument:
-            return str << "Invalid Argument";
+            return "Invalid Argument";
         default:
-            return str << "Unknown";
+            return "Unknown";
+    }
+}
+
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, ServerUtility::Result const& result)
+{
+    return str << to_string(result);
+}
+
+MAVSDK_PUBLIC std::string_view to_string(ServerUtility::StatusTextType const& status_text_type)
+{
+    switch (status_text_type) {
+        case ServerUtility::StatusTextType::Debug:
+            return "Debug";
+        case ServerUtility::StatusTextType::Info:
+            return "Info";
+        case ServerUtility::StatusTextType::Notice:
+            return "Notice";
+        case ServerUtility::StatusTextType::Warning:
+            return "Warning";
+        case ServerUtility::StatusTextType::Error:
+            return "Error";
+        case ServerUtility::StatusTextType::Critical:
+            return "Critical";
+        case ServerUtility::StatusTextType::Alert:
+            return "Alert";
+        case ServerUtility::StatusTextType::Emergency:
+            return "Emergency";
+        default:
+            return "Unknown";
     }
 }
 
 MAVSDK_PUBLIC std::ostream&
 operator<<(std::ostream& str, ServerUtility::StatusTextType const& status_text_type)
 {
-    switch (status_text_type) {
-        case ServerUtility::StatusTextType::Debug:
-            return str << "Debug";
-        case ServerUtility::StatusTextType::Info:
-            return str << "Info";
-        case ServerUtility::StatusTextType::Notice:
-            return str << "Notice";
-        case ServerUtility::StatusTextType::Warning:
-            return str << "Warning";
-        case ServerUtility::StatusTextType::Error:
-            return str << "Error";
-        case ServerUtility::StatusTextType::Critical:
-            return str << "Critical";
-        case ServerUtility::StatusTextType::Alert:
-            return str << "Alert";
-        case ServerUtility::StatusTextType::Emergency:
-            return str << "Emergency";
-        default:
-            return str << "Unknown";
-    }
+    return str << to_string(status_text_type);
 }
 
 } // namespace mavsdk

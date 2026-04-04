@@ -159,7 +159,7 @@ void LogFilesImpl::process_log_entry(const mavlink_message_t& message)
     // ArduPilot uses 1-based indexing: valid IDs are 1 to num_logs
     // We detect the scheme by tracking the minimum ID seen
     if (msg.num_logs == 0 || msg.id > msg.num_logs) {
-        LogWarn() << "No logs available";
+        LogWarn("No logs available");
 
         _system_impl->unregister_timeout_handler(_entries_timeout_cookie);
 
@@ -199,7 +199,7 @@ void LogFilesImpl::process_log_entry(const mavlink_message_t& message)
     // Store entry using 0-based index (subtract min_entry_id to handle both schemes)
     const uint16_t storage_index = msg.id - _min_entry_id;
     if (storage_index >= _log_entries.size()) {
-        LogWarn() << "Log entry ID out of range: " << msg.id;
+        LogWarn("Log entry ID out of range: {}", msg.id);
         return;
     }
     _log_entries[storage_index] = new_entry;
@@ -251,7 +251,7 @@ void LogFilesImpl::entries_timeout()
 {
     std::lock_guard<std::mutex> lock(_entries_mutex);
 
-    LogDebug() << "Request entries timeout! Retry count: " << _entries_retry_count;
+    LogDebug("Request entries timeout! Retry count: {}", _entries_retry_count);
 
     constexpr uint32_t MAX_RETRIES = 5;
 
@@ -310,7 +310,7 @@ void LogFilesImpl::download_log_file_async(
                  fs::is_directory(fs::path(file_path)) || fs::exists(file_path);
 
     if (error) {
-        LogErr() << "error: download_log_file_async failed";
+        LogErr("error: download_log_file_async failed");
 
         if (callback) {
             _system_impl->call_user_callback([callback]() {
@@ -324,7 +324,7 @@ void LogFilesImpl::download_log_file_async(
 
     // Check for zero-sized file and abort early
     if (found_entry.size_bytes == 0) {
-        LogErr() << "Cannot download zero-sized log file";
+        LogErr("Cannot download zero-sized log file");
 
         if (callback) {
             _system_impl->call_user_callback([callback]() {
@@ -362,24 +362,25 @@ void LogFilesImpl::process_log_data(const mavlink_message_t& message)
     _system_impl->refresh_timeout_handler(_download_data.timeout_cookie);
 
     if (msg.count > MAVLINK_MSG_LOG_DATA_FIELD_DATA_LEN) {
-        LogErr() << "Ignoring wrong count" << msg.count;
+        LogErr("Ignoring wrong count{}", msg.count);
         return;
     }
 
     if (msg.id != _download_data.entry.id) {
-        LogErr() << "Ignoring wrong ID: actual/expected: " << msg.id << "/"
-                 << _download_data.entry.id;
+        LogErr("Ignoring wrong ID: actual/expected: {}/{}", msg.id, _download_data.entry.id);
         return;
     }
 
     if (msg.ofs > _download_data.entry.size_bytes) {
-        LogErr() << "Offset greater than file size: offset/size: " << msg.ofs << "/"
-                 << _download_data.entry.size_bytes;
+        LogErr(
+            "Offset greater than file size: offset/size: {}/{}",
+            msg.ofs,
+            _download_data.entry.size_bytes);
         return;
     }
 
     if (msg.ofs % MAVLINK_MSG_LOG_DATA_FIELD_DATA_LEN) {
-        LogErr() << "Ignoring misaligned offset: " << msg.ofs;
+        LogErr("Ignoring misaligned offset: {}", msg.ofs);
         return;
     }
 
@@ -397,14 +398,16 @@ void LogFilesImpl::process_log_data(const mavlink_message_t& message)
     const uint16_t bin = (msg.ofs - chunk * CHUNK_SIZE) / MAVLINK_MSG_LOG_DATA_FIELD_DATA_LEN;
 
     if (bin >= _download_data.chunk_bin_table.size()) {
-        LogErr() << "Out of range bin received: bin/size: " << bin << "/"
-                 << _download_data.chunk_bin_table.size();
+        LogErr(
+            "Out of range bin received: bin/size: {}/{}",
+            bin,
+            _download_data.chunk_bin_table.size());
         return;
     }
 
     if (_download_data.file.tellp() != msg.ofs) {
         if (!_download_data.file.seekp(msg.ofs)) {
-            LogErr() << "Error while seeking to log file offset";
+            LogErr("Error while seeking to log file offset");
             return;
         }
     }
@@ -474,9 +477,11 @@ void LogFilesImpl::data_timeout()
 {
     std::lock_guard<std::mutex> lock(_download_data_mutex);
 
-    LogErr() << "Timeout!";
-    LogErr() << "Requesting missing chunk:\t" << _download_data.current_chunk << "/"
-             << _download_data.total_chunks();
+    LogErr("Timeout!");
+    LogErr(
+        "Requesting missing chunk:\t{}/{}",
+        _download_data.current_chunk,
+        _download_data.total_chunks());
 
     // Don't reset chunk data - preserve what we've received
     // Instead, request missing ranges based on bin table
@@ -513,8 +518,10 @@ void LogFilesImpl::check_and_request_missing_bins()
                 const uint32_t missing_count =
                     (bin - range_start) * MAVLINK_MSG_LOG_DATA_FIELD_DATA_LEN;
 
-                LogDebug() << "Requesting missing range from offset " << missing_start << " count "
-                           << missing_count;
+                LogDebug(
+                    "Requesting missing range from offset {} count {}",
+                    missing_start,
+                    missing_count);
                 request_log_data(_download_data.entry.id, missing_start, missing_count);
                 requested_something = true;
             }
@@ -555,7 +562,7 @@ void LogFilesImpl::check_and_request_missing_entries()
         }
     }
 
-    LogDebug() << "Requesting missing log entries from " << range_start << " to " << range_end;
+    LogDebug("Requesting missing log entries from {} to {}", range_start, range_end);
     request_log_list(range_start, range_end);
 }
 

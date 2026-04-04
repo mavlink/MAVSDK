@@ -113,7 +113,7 @@ GeofenceImpl::disassemble_items(const std::vector<MavlinkMissionTransferClient::
 
             const auto vertex_count = static_cast<size_t>(item.param1);
             if (vertex_count == 0 || i + vertex_count > items.size()) {
-                LogErr() << "Invalid polygon vertex count: " << vertex_count;
+                LogErr("Invalid polygon vertex count: {}", vertex_count);
                 return {Geofence::Result::InvalidArgument, {}};
             }
 
@@ -143,7 +143,7 @@ GeofenceImpl::disassemble_items(const std::vector<MavlinkMissionTransferClient::
             ++i;
 
         } else {
-            LogWarn() << "Unknown geofence item command: " << item.command;
+            LogWarn("Unknown geofence item command: {}", item.command);
             ++i;
         }
     }

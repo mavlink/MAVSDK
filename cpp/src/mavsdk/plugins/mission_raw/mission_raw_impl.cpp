@@ -114,7 +114,7 @@ void MissionRawImpl::process_mission_current(const mavlink_message_t& message)
 
             _mission_changed.callbacks.queue(
                 true, [this](const auto& func) { _system_impl->call_user_callback(func); });
-            LogDebug() << "Mission changed";
+            LogDebug("Mission changed");
         }
     }
 

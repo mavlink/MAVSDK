@@ -51,6 +51,8 @@ find_package(GTest REQUIRED)
 
 find_package(jsoncpp REQUIRED)
 
+find_package(fmt REQUIRED)
+
 target_link_libraries(system_tests_runner
     PRIVATE
     mavsdk
@@ -58,6 +60,7 @@ target_link_libraries(system_tests_runner
     GTest::gtest_main
     GTest::gmock
     JsonCpp::JsonCpp
+    fmt::fmt
 )
 
 set_target_properties(system_tests_runner

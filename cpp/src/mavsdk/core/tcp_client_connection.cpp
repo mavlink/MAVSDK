@@ -122,7 +122,7 @@ std::pair<bool, std::string> TcpClientConnection::send_raw_bytes(const char* byt
             asio::write(_socket, asio::buffer(*buf), ec);
             if (ec) {
                 std::string msg = "Send failure: " + ec.message();
-                LogErr() << msg;
+                LogErr("{}", msg);
                 p.set_value({false, std::move(msg)});
             } else {
                 p.set_value({true, {}});
@@ -141,8 +141,11 @@ void TcpClientConnection::do_connect()
     auto endpoints = resolver.resolve(_remote_ip, std::to_string(_remote_port_number), ec);
 
     if (ec) {
-        LogErr() << "Resolve error for " << _remote_ip << ":" << _remote_port_number << ": "
-                 << ec.message() << ", trying to reconnect...";
+        LogErr(
+            "Resolve error for {}:{}: {}, trying to reconnect...",
+            _remote_ip,
+            _remote_port_number,
+            ec.message());
         start_reconnect();
         return;
     }
@@ -166,7 +169,7 @@ void TcpClientConnection::do_connect()
                 return;
             }
             if (connect_ec) {
-                LogErr() << "Connect error: " << connect_ec.message();
+                LogErr("Connect error: {}", connect_ec.message());
                 if (!_stopping) {
                     start_reconnect();
                 }
@@ -187,9 +190,9 @@ void TcpClientConnection::do_receive()
 
             if (ec) {
                 if (ec == asio::error::eof || ec == asio::error::connection_reset) {
-                    LogInfo() << "TCP connection closed, trying to reconnect...";
+                    LogInfo("TCP connection closed, trying to reconnect...");
                 } else {
-                    LogErr() << "TCP receive error: " << ec.message() << ", trying to reconnect...";
+                    LogErr("TCP receive error: {}, trying to reconnect...", ec.message());
                 }
                 {
                     std::lock_guard<std::mutex> lock(_send_mutex);

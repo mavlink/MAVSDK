@@ -33,7 +33,7 @@ TEST(SystemTest, MissionRawUploadEmpty)
     // Upload empty mission — this used to crash with a core dump.
     std::vector<MissionRaw::MissionItem> empty_items;
     auto result = mission_raw.upload_mission(empty_items);
-    LogInfo() << "Empty mission upload result: " << result;
+    LogInfo("Empty mission upload result: {}", to_string(result));
 
     // The result may vary depending on how the server handles empty missions,
     // but the key assertion is that we don't crash (the original bug).

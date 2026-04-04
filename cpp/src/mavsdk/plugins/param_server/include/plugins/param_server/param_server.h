@@ -161,6 +161,13 @@ public:
     };
 
     /**
+     * @brief Convert `ParamServer::Result` to string.
+     *
+     * @return A string representation of the enum.
+     */
+    friend MAVSDK_PUBLIC std::string_view to_string(ParamServer::Result const& result);
+
+    /**
      * @brief Stream operator to print information about a `ParamServer::Result`.
      *
      * @return A reference to the stream.

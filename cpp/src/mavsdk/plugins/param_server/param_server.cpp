@@ -174,28 +174,33 @@ MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, ParamServer::AllParams
     return str;
 }
 
-MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, ParamServer::Result const& result)
+MAVSDK_PUBLIC std::string_view to_string(ParamServer::Result const& result)
 {
     switch (result) {
         case ParamServer::Result::Unknown:
-            return str << "Unknown";
+            return "Unknown";
         case ParamServer::Result::Success:
-            return str << "Success";
+            return "Success";
         case ParamServer::Result::NotFound:
-            return str << "Not Found";
+            return "Not Found";
         case ParamServer::Result::WrongType:
-            return str << "Wrong Type";
+            return "Wrong Type";
         case ParamServer::Result::ParamNameTooLong:
-            return str << "Param Name Too Long";
+            return "Param Name Too Long";
         case ParamServer::Result::NoSystem:
-            return str << "No System";
+            return "No System";
         case ParamServer::Result::ParamValueTooLong:
-            return str << "Param Value Too Long";
+            return "Param Value Too Long";
         case ParamServer::Result::ParamProvidedTooLate:
-            return str << "Param Provided Too Late";
+            return "Param Provided Too Late";
         default:
-            return str << "Unknown";
+            return "Unknown";
     }
+}
+
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, ParamServer::Result const& result)
+{
+    return str << to_string(result);
 }
 
 } // namespace mavsdk
