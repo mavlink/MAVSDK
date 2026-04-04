@@ -17,7 +17,7 @@ static constexpr float param_value_float = 42.0f;
 
 static constexpr double reduced_timeout_s = 0.1;
 
-TEST(SystemTest, ParamSetAndGet)
+TEST(Param, SetAndGet)
 {
     Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
     mavsdk_groundstation.set_timeout_s(reduced_timeout_s);
@@ -97,7 +97,7 @@ TEST(SystemTest, ParamSetAndGet)
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
-TEST(SystemTest, ParamSetAndGetLossy)
+TEST(Param, SetAndGetLossy)
 {
     Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
     mavsdk_groundstation.set_timeout_s(reduced_timeout_s);
@@ -181,7 +181,7 @@ TEST(SystemTest, ParamSetAndGetLossy)
     mavsdk_groundstation.intercept_incoming_messages_async(nullptr);
 }
 
-TEST(SystemTest, ParamGetAndChange)
+TEST(Param, GetAndChange)
 {
     Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
     mavsdk_groundstation.set_timeout_s(reduced_timeout_s);
@@ -248,7 +248,7 @@ TEST(SystemTest, ParamGetAndChange)
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
-TEST(SystemTest, ParamGetAndChangeTooLate)
+TEST(Param, GetAndChangeTooLate)
 {
     Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
     mavsdk_groundstation.set_timeout_s(reduced_timeout_s);

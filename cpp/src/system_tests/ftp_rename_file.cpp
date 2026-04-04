@@ -21,7 +21,7 @@ static const fs::path temp_dir_provided = "/tmp/mavsdk_systemtest_temp_data/prov
 static const fs::path temp_file = "data.bin";
 static const fs::path temp_file_renamed = "rhubarb.bin";
 
-TEST(SystemTest, FtpRenameFile)
+TEST(Ftp, RenameFile)
 {
     ASSERT_TRUE(reset_directories(temp_dir_provided));
     ASSERT_TRUE(create_temp_file(temp_dir_provided / temp_file, 50));

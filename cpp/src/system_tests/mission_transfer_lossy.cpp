@@ -16,7 +16,7 @@ static bool should_keep_message(const mavlink_message_t& message);
 static std::default_random_engine generator;
 static std::uniform_real_distribution<double> distribution(0.0, 1.0);
 
-TEST(SystemTest, MissionTransferLossy)
+TEST(Mission, TransferLossy)
 {
     // Create two MAVSDK instances: groundstation and autopilot
     Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};

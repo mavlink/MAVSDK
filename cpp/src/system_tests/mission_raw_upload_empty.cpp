@@ -8,7 +8,7 @@
 
 using namespace mavsdk;
 
-TEST(SystemTest, MissionRawUploadEmpty)
+TEST(Mission, RawUploadEmpty)
 {
     // Regression test for #1962: uploading an empty mission must not crash.
 

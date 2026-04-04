@@ -9,7 +9,7 @@
 
 using namespace mavsdk;
 
-TEST(SystemTest, TelemetrySubscription)
+TEST(Telemetry, Subscription)
 {
     Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
 

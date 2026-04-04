@@ -13,7 +13,7 @@ using namespace mavsdk;
 // Test that RC status updates arrive via SYS_STATUS messages.
 // This is the path used by ArduPilot where RC receiver health
 // is reported through the SYS_STATUS sensor flags.
-TEST(SystemTest, RcStatusViaSysStatus)
+TEST(Telemetry, RcStatusViaSysStatus)
 {
     Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
     Mavsdk mavsdk_autopilot{Mavsdk::Configuration{ComponentType::Autopilot}};
@@ -80,7 +80,7 @@ TEST(SystemTest, RcStatusViaSysStatus)
 // Test that RC status updates arrive via RC_CHANNELS messages.
 // This is the path used by PX4 where RC signal strength is
 // reported through the RC_CHANNELS message rssi field.
-TEST(SystemTest, RcStatusViaRcChannels)
+TEST(Telemetry, RcStatusViaRcChannels)
 {
     Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
     Mavsdk mavsdk_autopilot{Mavsdk::Configuration{ComponentType::Autopilot}};
@@ -143,7 +143,7 @@ TEST(SystemTest, RcStatusViaRcChannels)
 
 // Test that RC status correctly reports unavailable when
 // SYS_STATUS reports RC receiver not healthy.
-TEST(SystemTest, RcStatusUnavailableViaSysStatus)
+TEST(Telemetry, RcStatusUnavailableViaSysStatus)
 {
     Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
     Mavsdk mavsdk_autopilot{Mavsdk::Configuration{ComponentType::Autopilot}};

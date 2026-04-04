@@ -23,7 +23,7 @@ static const fs::path temp_dir_downloaded = "/tmp/mavsdk_systemtest_temp_data/do
 
 static const fs::path temp_file = "data.bin";
 
-TEST(SystemTest, FtpDownloadBurstFile)
+TEST(Ftp, DownloadBurstFile)
 {
     ASSERT_TRUE(create_temp_file(temp_dir_provided / temp_file, 50));
     ASSERT_TRUE(reset_directories(temp_dir_downloaded));
@@ -98,7 +98,7 @@ TEST(SystemTest, FtpDownloadBurstFile)
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
-TEST(SystemTest, FtpDownloadBurstBigFile)
+TEST(Ftp, DownloadBurstBigFile)
 {
     ASSERT_TRUE(create_temp_file(temp_dir_provided / temp_file, 50000));
     ASSERT_TRUE(reset_directories(temp_dir_downloaded));
@@ -157,7 +157,7 @@ TEST(SystemTest, FtpDownloadBurstBigFile)
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
-TEST(SystemTest, FtpDownloadBurstBigFileLossy)
+TEST(Ftp, DownloadBurstBigFileLossy)
 {
     ASSERT_TRUE(create_temp_file(temp_dir_provided / temp_file, 10000));
     ASSERT_TRUE(reset_directories(temp_dir_downloaded));
@@ -227,7 +227,7 @@ TEST(SystemTest, FtpDownloadBurstBigFileLossy)
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
-TEST(SystemTest, FtpDownloadBurstStopAndTryAgain)
+TEST(Ftp, DownloadBurstStopAndTryAgain)
 {
     constexpr int file_size = 1000;
     constexpr int msg_count = file_size / 255 + 6; // 6 messages for transfer initialization
@@ -337,7 +337,7 @@ TEST(SystemTest, FtpDownloadBurstStopAndTryAgain)
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
-TEST(SystemTest, FtpDownloadBurstFileOutsideOfRoot)
+TEST(Ftp, DownloadBurstFileOutsideOfRoot)
 {
     ASSERT_TRUE(create_temp_file(temp_dir_provided / temp_file, 50));
     ASSERT_TRUE(reset_directories(temp_dir_downloaded));

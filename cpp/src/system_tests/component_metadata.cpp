@@ -158,7 +158,7 @@ static constexpr const char* events_json_metadata = R"JSON({
 }
 )JSON";
 
-TEST(SystemTest, ComponentInformationConnect)
+TEST(ComponentMetadata, InformationConnect)
 {
     // Enable more debug output
 #ifndef WINDOWS // setenv is not available on Windows

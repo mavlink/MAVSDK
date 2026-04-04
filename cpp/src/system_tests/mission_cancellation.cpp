@@ -31,7 +31,7 @@ static Mission::MissionPlan create_mission_plan()
     return mission_plan;
 }
 
-TEST(SystemTest, MissionUploadCancellation)
+TEST(Mission, UploadCancellation)
 {
     Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
     Mavsdk mavsdk_autopilot{Mavsdk::Configuration{ComponentType::Autopilot}};
@@ -83,7 +83,7 @@ TEST(SystemTest, MissionUploadCancellation)
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
-TEST(SystemTest, MissionDownloadCancellation)
+TEST(Mission, DownloadCancellation)
 {
     Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
     Mavsdk mavsdk_autopilot{Mavsdk::Configuration{ComponentType::Autopilot}};

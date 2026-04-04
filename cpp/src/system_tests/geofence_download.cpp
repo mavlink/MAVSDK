@@ -7,7 +7,7 @@
 
 using namespace mavsdk;
 
-TEST(SystemTest, GeofenceUploadDownloadRoundTrip)
+TEST(Geofence, UploadDownloadRoundTrip)
 {
     Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
     Mavsdk mavsdk_autopilot{Mavsdk::Configuration{ComponentType::Autopilot}};

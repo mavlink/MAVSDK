@@ -10,7 +10,7 @@
 
 using namespace mavsdk;
 
-TEST(SystemTest, RawBytesSendReceive)
+TEST(RawBytes, SendReceive)
 {
     // Test 1: Verify subscribe_raw_bytes_to_be_sent captures outgoing messages
     Mavsdk mavsdk_autopilot{Mavsdk::Configuration{ComponentType::Autopilot}};

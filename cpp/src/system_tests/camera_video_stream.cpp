@@ -9,7 +9,7 @@
 
 using namespace mavsdk;
 
-TEST(SystemTest, CameraVideoStreamSettings)
+TEST(Camera, VideoStreamSettings)
 {
     constexpr auto example_rtsp_url = "rtsp://127.0.0.1:8554/live";
 

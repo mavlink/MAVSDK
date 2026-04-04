@@ -21,7 +21,7 @@ static const fs::path temp_dir_provided = "/tmp/mavsdk_systemtest_temp_data/prov
 static const std::string temp_dir = "folder";
 static const std::string temp_file = "file";
 
-TEST(SystemTest, FtpListDir)
+TEST(Ftp, ListDir)
 {
     ASSERT_TRUE(reset_directories(temp_dir_provided));
 

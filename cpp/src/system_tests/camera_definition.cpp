@@ -64,7 +64,7 @@ wait_for_camera_system(Mavsdk& mavsdk_groundstation, std::chrono::seconds timeou
     return fut.get();
 }
 
-TEST(SystemTest, CameraDefinitionUncompressed)
+TEST(Camera, DefinitionUncompressed)
 {
     Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
     Mavsdk mavsdk_camera{Mavsdk::Configuration{ComponentType::Camera}};
@@ -97,7 +97,7 @@ TEST(SystemTest, CameraDefinitionUncompressed)
         << "Camera definition (uncompressed) was not loaded within timeout";
 }
 
-TEST(SystemTest, CameraDefinitionCompressedXz)
+TEST(Camera, DefinitionCompressedXz)
 {
     Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
     Mavsdk mavsdk_camera{Mavsdk::Configuration{ComponentType::Camera}};

@@ -10,7 +10,7 @@
 
 using namespace mavsdk;
 
-TEST(SystemTest, InterceptIncomingModifyLocal)
+TEST(Intercept, IncomingModifyLocal)
 {
     // Create 3 MAVSDK instances: Sender -> Interceptor/Forwarder -> Receiver
     Mavsdk mavsdk_sender{Mavsdk::Configuration{ComponentType::Autopilot}};
@@ -187,7 +187,7 @@ TEST(SystemTest, InterceptIncomingModifyLocal)
     mavsdk_interceptor.intercept_incoming_messages_async(nullptr);
 }
 
-TEST(SystemTest, InterceptJsonIncoming)
+TEST(Intercept, JsonIncoming)
 {
     Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
     Mavsdk mavsdk_autopilot{Mavsdk::Configuration{ComponentType::Autopilot}};
@@ -296,7 +296,7 @@ TEST(SystemTest, InterceptJsonIncoming)
     mavsdk_groundstation.unsubscribe_incoming_messages_json(json_handle);
 }
 
-TEST(SystemTest, InterceptJsonOutgoing)
+TEST(Intercept, JsonOutgoing)
 {
     Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
     Mavsdk mavsdk_autopilot{Mavsdk::Configuration{ComponentType::Autopilot}};
