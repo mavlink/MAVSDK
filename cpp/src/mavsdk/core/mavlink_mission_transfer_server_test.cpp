@@ -309,8 +309,8 @@ protected:
     MavlinkMissionTransferServer mmt;
 };
 
-class MavlinkMissionTransferServer : public MavlinkMissionTransferServerTest,
-                                     public ::testing::WithParamInterface<uint8_t> {
+class MavlinkMissionTransferServerFixture : public MavlinkMissionTransferServerTest,
+                                            public ::testing::WithParamInterface<uint8_t> {
 public:
     uint8_t mission_type{};
 
@@ -322,7 +322,7 @@ protected:
     }
 };
 
-TEST_P(MavlinkMissionTransferServer, ReceiveIncomingMissionSendsMissionRequests)
+TEST_P(MavlinkMissionTransferServerFixture, ReceiveIncomingMissionSendsMissionRequests)
 {
     ON_CALL(mock_sender, queue_message(_)).WillByDefault(Return(true));
 
@@ -356,7 +356,8 @@ TEST_P(MavlinkMissionTransferServer, ReceiveIncomingMissionSendsMissionRequests)
 }
 
 TEST_P(
-    MavlinkMissionTransferServer, ReceiveIncomingMissionResendsMissionRequestsAndTimesOutEventually)
+    MavlinkMissionTransferServerFixture,
+    ReceiveIncomingMissionResendsMissionRequestsAndTimesOutEventually)
 {
     ON_CALL(mock_sender, queue_message(_)).WillByDefault(Return(true));
 
@@ -403,7 +404,8 @@ TEST_P(
     EXPECT_TRUE(mmt.is_idle());
 }
 
-TEST_P(MavlinkMissionTransferServer, ReceiveIncomingMissionResendsRequestItemAgainForSecondItem)
+TEST_P(
+    MavlinkMissionTransferServerFixture, ReceiveIncomingMissionResendsRequestItemAgainForSecondItem)
 {
     ON_CALL(mock_sender, queue_message(_)).WillByDefault(Return(true));
 
@@ -466,7 +468,7 @@ TEST_P(MavlinkMissionTransferServer, ReceiveIncomingMissionResendsRequestItemAga
     EXPECT_TRUE(mmt.is_idle());
 }
 
-TEST_P(MavlinkMissionTransferServer, ReceiveIncomingMissionEmptyList)
+TEST_P(MavlinkMissionTransferServerFixture, ReceiveIncomingMissionEmptyList)
 {
     ON_CALL(mock_sender, queue_message(_)).WillByDefault(Return(true));
 
@@ -507,7 +509,7 @@ TEST_P(MavlinkMissionTransferServer, ReceiveIncomingMissionEmptyList)
     EXPECT_TRUE(mmt.is_idle());
 }
 
-TEST_P(MavlinkMissionTransferServer, ReceiveIncomingMissionCanBeCancelled)
+TEST_P(MavlinkMissionTransferServerFixture, ReceiveIncomingMissionCanBeCancelled)
 {
     ON_CALL(mock_sender, queue_message(_)).WillByDefault(Return(true));
 
@@ -556,7 +558,7 @@ TEST_P(MavlinkMissionTransferServer, ReceiveIncomingMissionCanBeCancelled)
     EXPECT_TRUE(mmt.is_idle());
 }
 
-TEST_P(MavlinkMissionTransferServer, SendOutgoingMissionEmptyMission)
+TEST_P(MavlinkMissionTransferServerFixture, SendOutgoingMissionEmptyMission)
 {
     std::vector<ItemInt> items;
 
@@ -586,7 +588,7 @@ TEST_P(MavlinkMissionTransferServer, SendOutgoingMissionEmptyMission)
     EXPECT_TRUE(mmt.is_idle());
 }
 
-TEST_P(MavlinkMissionTransferServer, SendOutgoingMissionDoesNotCrashIfCallbackIsNull)
+TEST_P(MavlinkMissionTransferServerFixture, SendOutgoingMissionDoesNotCrashIfCallbackIsNull)
 {
     ON_CALL(mock_sender, queue_message(_)).WillByDefault(Return(false));
 
@@ -613,7 +615,9 @@ TEST_P(MavlinkMissionTransferServer, SendOutgoingMissionDoesNotCrashIfCallbackIs
     EXPECT_TRUE(mmt.is_idle());
 }
 
-TEST_P(MavlinkMissionTransferServer, SendOutgoingMissionReturnsConnectionErrorWhenSendMessageFails)
+TEST_P(
+    MavlinkMissionTransferServerFixture,
+    SendOutgoingMissionReturnsConnectionErrorWhenSendMessageFails)
 {
     ON_CALL(mock_sender, queue_message(_)).WillByDefault(Return(false));
 
@@ -646,7 +650,7 @@ TEST_P(MavlinkMissionTransferServer, SendOutgoingMissionReturnsConnectionErrorWh
     EXPECT_TRUE(mmt.is_idle());
 }
 
-TEST_P(MavlinkMissionTransferServer, SendOutgoingMissionSendsCount)
+TEST_P(MavlinkMissionTransferServerFixture, SendOutgoingMissionSendsCount)
 {
     std::vector<ItemInt> items;
     items.push_back(make_item(mission_type, 0));
@@ -674,7 +678,7 @@ TEST_P(MavlinkMissionTransferServer, SendOutgoingMissionSendsCount)
     do_work();
 }
 
-TEST_P(MavlinkMissionTransferServer, SendOutgoingMissionResendsCount)
+TEST_P(MavlinkMissionTransferServerFixture, SendOutgoingMissionResendsCount)
 {
     std::vector<ItemInt> items;
     items.push_back(make_item(mission_type, 0));
@@ -706,7 +710,7 @@ TEST_P(MavlinkMissionTransferServer, SendOutgoingMissionResendsCount)
     timeout_handler.run_once();
 }
 
-TEST_P(MavlinkMissionTransferServer, SendOutgoingMissionTimeoutAfterSendCount)
+TEST_P(MavlinkMissionTransferServerFixture, SendOutgoingMissionTimeoutAfterSendCount)
 {
     std::vector<ItemInt> items;
     items.push_back(make_item(mission_type, 0));
@@ -749,7 +753,7 @@ TEST_P(MavlinkMissionTransferServer, SendOutgoingMissionTimeoutAfterSendCount)
     EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
 }
 
-TEST_P(MavlinkMissionTransferServer, SendOutgoingMissionSendsMissionItems)
+TEST_P(MavlinkMissionTransferServerFixture, SendOutgoingMissionSendsMissionItems)
 {
     std::vector<ItemInt> items;
     items.push_back(make_item(mission_type, 0));
@@ -803,7 +807,7 @@ TEST_P(MavlinkMissionTransferServer, SendOutgoingMissionSendsMissionItems)
     EXPECT_TRUE(mmt.is_idle());
 }
 
-TEST_P(MavlinkMissionTransferServer, SendOutgoingMissionResendsMissionItems)
+TEST_P(MavlinkMissionTransferServerFixture, SendOutgoingMissionResendsMissionItems)
 {
     std::vector<ItemInt> items;
     items.push_back(make_item(mission_type, 0));
@@ -865,7 +869,8 @@ TEST_P(MavlinkMissionTransferServer, SendOutgoingMissionResendsMissionItems)
 }
 
 TEST_P(
-    MavlinkMissionTransferServer, SendOutgoingMissionResendsMissionItemsButGivesUpAfterSomeRetries)
+    MavlinkMissionTransferServerFixture,
+    SendOutgoingMissionResendsMissionItemsButGivesUpAfterSomeRetries)
 {
     std::vector<ItemInt> items;
     items.push_back(make_item(mission_type, 0));
@@ -911,7 +916,7 @@ TEST_P(
     EXPECT_TRUE(mmt.is_idle());
 }
 
-TEST_P(MavlinkMissionTransferServer, SendOutgoingMissionAckArrivesTooEarly)
+TEST_P(MavlinkMissionTransferServerFixture, SendOutgoingMissionAckArrivesTooEarly)
 {
     std::vector<ItemInt> items;
     items.push_back(make_item(mission_type, 0));
@@ -1024,7 +1029,7 @@ INSTANTIATE_TEST_SUITE_P(
         std::make_tuple(
             MAV_MISSION_TYPE_RALLY, MAV_MISSION_OPERATION_CANCELLED, Result::Cancelled)));
 
-TEST_P(MavlinkMissionTransferServer, SendOutgoingMissionTimeoutNotTriggeredDuringTransfer)
+TEST_P(MavlinkMissionTransferServerFixture, SendOutgoingMissionTimeoutNotTriggeredDuringTransfer)
 {
     std::vector<ItemInt> items;
     items.push_back(make_item(mission_type, 0));
@@ -1094,7 +1099,7 @@ TEST_P(MavlinkMissionTransferServer, SendOutgoingMissionTimeoutNotTriggeredDurin
     EXPECT_TRUE(mmt.is_idle());
 }
 
-TEST_P(MavlinkMissionTransferServer, SendOutgoingMissionTimeoutAfterSendMissionItem)
+TEST_P(MavlinkMissionTransferServerFixture, SendOutgoingMissionTimeoutAfterSendMissionItem)
 {
     std::vector<ItemInt> items;
     items.push_back(make_item(mission_type, 0));
@@ -1147,7 +1152,7 @@ TEST_P(MavlinkMissionTransferServer, SendOutgoingMissionTimeoutAfterSendMissionI
     EXPECT_TRUE(mmt.is_idle());
 }
 
-TEST_P(MavlinkMissionTransferServer, SendOutgoingMissionDoesNotCrashOnRandomMessages)
+TEST_P(MavlinkMissionTransferServerFixture, SendOutgoingMissionDoesNotCrashOnRandomMessages)
 {
     message_handler.process_message(make_mission_request_int(mission_type, 0));
 
@@ -1160,7 +1165,7 @@ TEST_P(MavlinkMissionTransferServer, SendOutgoingMissionDoesNotCrashOnRandomMess
     EXPECT_TRUE(mmt.is_idle());
 }
 
-TEST_P(MavlinkMissionTransferServer, SendOutgoingMissionCanBeCancelled)
+TEST_P(MavlinkMissionTransferServerFixture, SendOutgoingMissionCanBeCancelled)
 {
     std::vector<ItemInt> items;
     items.push_back(make_item(mission_type, 0));
@@ -1210,7 +1215,7 @@ TEST_P(MavlinkMissionTransferServer, SendOutgoingMissionCanBeCancelled)
     EXPECT_TRUE(mmt.is_idle());
 }
 
-TEST_P(MavlinkMissionTransferServer, SendOutgoingMissionNacksNonIntCase)
+TEST_P(MavlinkMissionTransferServerFixture, SendOutgoingMissionNacksNonIntCase)
 {
     std::vector<ItemInt> items;
     items.push_back(make_item(mission_type, 0));
@@ -1266,4 +1271,4 @@ TEST_P(MavlinkMissionTransferServer, SendOutgoingMissionNacksNonIntCase)
 }
 
 INSTANTIATE_TEST_SUITE_P(
-    MavlinkMissionTransferServer, MavlinkMissionTransferServer, MISSION_TYPE_PARAMETERS);
+    MavlinkMissionTransferServer, MavlinkMissionTransferServerFixture, MISSION_TYPE_PARAMETERS);

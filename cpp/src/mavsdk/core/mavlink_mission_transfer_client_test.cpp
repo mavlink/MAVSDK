@@ -31,9 +31,9 @@ static constexpr double timeout_s = 0.5;
     EXPECT_FALSE(called); \
     called = true
 
-class MavlinkMissionTransferClient : public ::testing::Test {
+class MavlinkMissionTransferClientTest : public ::testing::Test {
 protected:
-    MavlinkMissionTransferClient() :
+    MavlinkMissionTransferClientTest() :
         ::testing::Test(),
         timeout_handler(time),
         mmt(
@@ -129,7 +129,7 @@ mavlink_message_t make_mission_count(unsigned count)
     return message;
 }
 
-TEST_F(MavlinkMissionTransferClient, UploadMissionDoesComplainAboutNoItems)
+TEST_F(MavlinkMissionTransferClientTest, UploadMissionDoesComplainAboutNoItems)
 {
     std::vector<ItemInt> items;
 
@@ -150,7 +150,7 @@ TEST_F(MavlinkMissionTransferClient, UploadMissionDoesComplainAboutNoItems)
     EXPECT_TRUE(mmt.is_idle());
 }
 
-TEST_F(MavlinkMissionTransferClient, UploadMissionDoesComplainAboutWrongSequence)
+TEST_F(MavlinkMissionTransferClientTest, UploadMissionDoesComplainAboutWrongSequence)
 {
     std::vector<ItemInt> items;
     items.push_back(make_item(MAV_MISSION_TYPE_MISSION, 0));
@@ -173,7 +173,8 @@ TEST_F(MavlinkMissionTransferClient, UploadMissionDoesComplainAboutWrongSequence
     EXPECT_TRUE(mmt.is_idle());
 }
 
-TEST_F(MavlinkMissionTransferClient, UploadMissionDoesComplainAboutInconsistentMissionTypesInAPI)
+TEST_F(
+    MavlinkMissionTransferClientTest, UploadMissionDoesComplainAboutInconsistentMissionTypesInAPI)
 {
     std::vector<ItemInt> items;
     items.push_back(make_item(MAV_MISSION_TYPE_FENCE, 0));
@@ -197,7 +198,8 @@ TEST_F(MavlinkMissionTransferClient, UploadMissionDoesComplainAboutInconsistentM
     EXPECT_TRUE(mmt.is_idle());
 }
 
-TEST_F(MavlinkMissionTransferClient, UploadMissionDoesComplainAboutInconsistentMissionTypesInItems)
+TEST_F(
+    MavlinkMissionTransferClientTest, UploadMissionDoesComplainAboutInconsistentMissionTypesInItems)
 {
     std::vector<ItemInt> items;
     items.push_back(make_item(MAV_MISSION_TYPE_MISSION, 0));
@@ -221,7 +223,7 @@ TEST_F(MavlinkMissionTransferClient, UploadMissionDoesComplainAboutInconsistentM
     EXPECT_TRUE(mmt.is_idle());
 }
 
-TEST_F(MavlinkMissionTransferClient, UploadMissionDoesComplainAboutNoCurrent)
+TEST_F(MavlinkMissionTransferClientTest, UploadMissionDoesComplainAboutNoCurrent)
 {
     std::vector<ItemInt> items;
     items.push_back(make_item(MAV_MISSION_TYPE_MISSION, 0));
@@ -247,7 +249,7 @@ TEST_F(MavlinkMissionTransferClient, UploadMissionDoesComplainAboutNoCurrent)
     EXPECT_TRUE(mmt.is_idle());
 }
 
-TEST_F(MavlinkMissionTransferClient, UploadMissionDoesComplainAboutTwoCurrents)
+TEST_F(MavlinkMissionTransferClientTest, UploadMissionDoesComplainAboutTwoCurrents)
 {
     std::vector<ItemInt> items;
     items.push_back(make_item(MAV_MISSION_TYPE_MISSION, 0));
@@ -273,7 +275,7 @@ TEST_F(MavlinkMissionTransferClient, UploadMissionDoesComplainAboutTwoCurrents)
     EXPECT_TRUE(mmt.is_idle());
 }
 
-TEST_F(MavlinkMissionTransferClient, UploadMissionDoesNotCrashIfCallbackIsNull)
+TEST_F(MavlinkMissionTransferClientTest, UploadMissionDoesNotCrashIfCallbackIsNull)
 {
     ON_CALL(mock_sender, queue_message(_)).WillByDefault(Return(false));
 
@@ -297,7 +299,7 @@ TEST_F(MavlinkMissionTransferClient, UploadMissionDoesNotCrashIfCallbackIsNull)
     EXPECT_TRUE(mmt.is_idle());
 }
 
-TEST_F(MavlinkMissionTransferClient, UploadMissionReturnsConnectionErrorWhenSendMessageFails)
+TEST_F(MavlinkMissionTransferClientTest, UploadMissionReturnsConnectionErrorWhenSendMessageFails)
 {
     ON_CALL(mock_sender, queue_message(_)).WillByDefault(Return(false));
 
@@ -344,7 +346,7 @@ is_correct_mission_send_count(uint8_t type, unsigned count, const mavlink_messag
         mission_count.count == count && mission_count.mission_type == type);
 }
 
-TEST_F(MavlinkMissionTransferClient, UploadMissionSendsCount)
+TEST_F(MavlinkMissionTransferClientTest, UploadMissionSendsCount)
 {
     std::vector<ItemInt> items;
     items.push_back(make_item(MAV_MISSION_TYPE_FENCE, 0));
@@ -368,7 +370,7 @@ TEST_F(MavlinkMissionTransferClient, UploadMissionSendsCount)
     do_work();
 }
 
-TEST_F(MavlinkMissionTransferClient, UploadMissionResendsCount)
+TEST_F(MavlinkMissionTransferClientTest, UploadMissionResendsCount)
 {
     std::vector<ItemInt> items;
     items.push_back(make_item(MAV_MISSION_TYPE_FENCE, 0));
@@ -396,7 +398,7 @@ TEST_F(MavlinkMissionTransferClient, UploadMissionResendsCount)
     timeout_handler.run_once();
 }
 
-TEST_F(MavlinkMissionTransferClient, UploadMissionTimeoutAfterSendCount)
+TEST_F(MavlinkMissionTransferClientTest, UploadMissionTimeoutAfterSendCount)
 {
     std::vector<ItemInt> items;
     items.push_back(make_item(MAV_MISSION_TYPE_MISSION, 0));
@@ -492,7 +494,7 @@ bool is_the_same_mission_item_int(const ItemInt& item, const mavlink_message_t& 
         mission_item_int.mission_type == item.mission_type);
 }
 
-TEST_F(MavlinkMissionTransferClient, UploadMissionSendsMissionItems)
+TEST_F(MavlinkMissionTransferClientTest, UploadMissionSendsMissionItems)
 {
     std::vector<ItemInt> items;
     items.push_back(make_item(MAV_MISSION_TYPE_MISSION, 0));
@@ -543,7 +545,7 @@ TEST_F(MavlinkMissionTransferClient, UploadMissionSendsMissionItems)
     EXPECT_TRUE(mmt.is_idle());
 }
 
-TEST_F(MavlinkMissionTransferClient, UploadMissionResendsMissionItems)
+TEST_F(MavlinkMissionTransferClientTest, UploadMissionResendsMissionItems)
 {
     std::vector<ItemInt> items;
     items.push_back(make_item(MAV_MISSION_TYPE_MISSION, 0));
@@ -601,7 +603,7 @@ TEST_F(MavlinkMissionTransferClient, UploadMissionResendsMissionItems)
     EXPECT_TRUE(mmt.is_idle());
 }
 
-TEST_F(MavlinkMissionTransferClient, UploadMissionResendsMissionItemsButGivesUpAfterSomeRetries)
+TEST_F(MavlinkMissionTransferClientTest, UploadMissionResendsMissionItemsButGivesUpAfterSomeRetries)
 {
     std::vector<ItemInt> items;
     items.push_back(make_item(MAV_MISSION_TYPE_FENCE, 0));
@@ -643,7 +645,7 @@ TEST_F(MavlinkMissionTransferClient, UploadMissionResendsMissionItemsButGivesUpA
     EXPECT_TRUE(mmt.is_idle());
 }
 
-TEST_F(MavlinkMissionTransferClient, UploadMissionAckArrivesTooEarly)
+TEST_F(MavlinkMissionTransferClientTest, UploadMissionAckArrivesTooEarly)
 {
     std::vector<ItemInt> items;
     items.push_back(make_item(MAV_MISSION_TYPE_MISSION, 0));
@@ -682,7 +684,7 @@ TEST_F(MavlinkMissionTransferClient, UploadMissionAckArrivesTooEarly)
 }
 
 class MavlinkMissionTransferClientNack
-    : public MavlinkMissionTransferClient,
+    : public MavlinkMissionTransferClientTest,
       public ::testing::WithParamInterface<std::pair<uint8_t, Result>> {};
 
 TEST_P(MavlinkMissionTransferClientNack, UploadMissionNackAreHandled)
@@ -747,7 +749,7 @@ INSTANTIATE_TEST_SUITE_P(
         std::make_pair(MAV_MISSION_DENIED, Result::Denied),
         std::make_pair(MAV_MISSION_OPERATION_CANCELLED, Result::Cancelled)));
 
-TEST_F(MavlinkMissionTransferClient, UploadMissionTimeoutNotTriggeredDuringTransfer)
+TEST_F(MavlinkMissionTransferClientTest, UploadMissionTimeoutNotTriggeredDuringTransfer)
 {
     std::vector<ItemInt> items;
     items.push_back(make_item(MAV_MISSION_TYPE_MISSION, 0));
@@ -814,7 +816,7 @@ TEST_F(MavlinkMissionTransferClient, UploadMissionTimeoutNotTriggeredDuringTrans
     EXPECT_TRUE(mmt.is_idle());
 }
 
-TEST_F(MavlinkMissionTransferClient, UploadMissionTimeoutAfterSendMissionItem)
+TEST_F(MavlinkMissionTransferClientTest, UploadMissionTimeoutAfterSendMissionItem)
 {
     std::vector<ItemInt> items;
     items.push_back(make_item(MAV_MISSION_TYPE_MISSION, 0));
@@ -864,7 +866,7 @@ TEST_F(MavlinkMissionTransferClient, UploadMissionTimeoutAfterSendMissionItem)
     EXPECT_TRUE(mmt.is_idle());
 }
 
-TEST_F(MavlinkMissionTransferClient, UploadMissionDoesNotCrashOnRandomMessages)
+TEST_F(MavlinkMissionTransferClientTest, UploadMissionDoesNotCrashOnRandomMessages)
 {
     message_handler.process_message(make_mission_request_int(MAV_MISSION_TYPE_MISSION, 0));
 
@@ -893,7 +895,7 @@ bool is_correct_mission_ack(uint8_t type, uint8_t result, const mavlink_message_
         ack.mission_type == type);
 }
 
-TEST_F(MavlinkMissionTransferClient, UploadMissionCanBeCancelled)
+TEST_F(MavlinkMissionTransferClientTest, UploadMissionCanBeCancelled)
 {
     std::vector<ItemInt> items;
     items.push_back(make_item(MAV_MISSION_TYPE_MISSION, 0));
@@ -955,7 +957,7 @@ mavlink_message_t make_mission_request(uint8_t type, int sequence)
     return message;
 }
 
-TEST_F(MavlinkMissionTransferClient, UploadMissionNacksNonIntCase)
+TEST_F(MavlinkMissionTransferClientTest, UploadMissionNacksNonIntCase)
 {
     std::vector<ItemInt> items;
     items.push_back(make_item(MAV_MISSION_TYPE_FENCE, 0));
@@ -1006,7 +1008,7 @@ TEST_F(MavlinkMissionTransferClient, UploadMissionNacksNonIntCase)
     EXPECT_TRUE(mmt.is_idle());
 }
 
-TEST_F(MavlinkMissionTransferClient, UploadMissionWithProgress)
+TEST_F(MavlinkMissionTransferClientTest, UploadMissionWithProgress)
 {
     std::vector<ItemInt> items;
     items.push_back(make_item(MAV_MISSION_TYPE_MISSION, 0));
@@ -1060,7 +1062,7 @@ TEST_F(MavlinkMissionTransferClient, UploadMissionWithProgress)
     EXPECT_TRUE(mmt.is_idle());
 }
 
-TEST_F(MavlinkMissionTransferClient, DownloadMissionSendsRequestList)
+TEST_F(MavlinkMissionTransferClientTest, DownloadMissionSendsRequestList)
 {
     ON_CALL(mock_sender, queue_message(_)).WillByDefault(Return(true));
 
@@ -1108,7 +1110,7 @@ bool is_correct_mission_request_list(uint8_t type, const mavlink_message_t& mess
         mission_request_list.mission_type == type);
 }
 
-TEST_F(MavlinkMissionTransferClient, DownloadMissionResendsRequestList)
+TEST_F(MavlinkMissionTransferClientTest, DownloadMissionResendsRequestList)
 {
     ON_CALL(mock_sender, queue_message(_)).WillByDefault(Return(true));
 
@@ -1135,7 +1137,8 @@ TEST_F(MavlinkMissionTransferClient, DownloadMissionResendsRequestList)
     timeout_handler.run_once();
 }
 
-TEST_F(MavlinkMissionTransferClient, DownloadMissionResendsRequestListButGivesUpAfterSomeRetries)
+TEST_F(
+    MavlinkMissionTransferClientTest, DownloadMissionResendsRequestListButGivesUpAfterSomeRetries)
 {
     ON_CALL(mock_sender, queue_message(_)).WillByDefault(Return(true));
 
@@ -1190,7 +1193,7 @@ bool is_correct_mission_request_int(
         mission_request_int.seq == sequence && mission_request_int.mission_type == type);
 }
 
-TEST_F(MavlinkMissionTransferClient, DownloadMissionSendsMissionRequests)
+TEST_F(MavlinkMissionTransferClientTest, DownloadMissionSendsMissionRequests)
 {
     ON_CALL(mock_sender, queue_message(_)).WillByDefault(Return(true));
 
@@ -1219,7 +1222,7 @@ TEST_F(MavlinkMissionTransferClient, DownloadMissionSendsMissionRequests)
     message_handler.process_message(make_mission_count(items.size()));
 }
 
-TEST_F(MavlinkMissionTransferClient, DownloadMissionResendsMissionRequestsAndTimesOutEventually)
+TEST_F(MavlinkMissionTransferClientTest, DownloadMissionResendsMissionRequestsAndTimesOutEventually)
 {
     ON_CALL(mock_sender, queue_message(_)).WillByDefault(Return(true));
 
@@ -1289,7 +1292,7 @@ mavlink_message_t make_mission_item(const std::vector<ItemInt>& item_ints, std::
     return message;
 }
 
-TEST_F(MavlinkMissionTransferClient, DownloadMissionSendsAllMissionRequestsAndAck)
+TEST_F(MavlinkMissionTransferClientTest, DownloadMissionSendsAllMissionRequestsAndAck)
 {
     ON_CALL(mock_sender, queue_message(_)).WillByDefault(Return(true));
 
@@ -1356,7 +1359,7 @@ TEST_F(MavlinkMissionTransferClient, DownloadMissionSendsAllMissionRequestsAndAc
     EXPECT_TRUE(mmt.is_idle());
 }
 
-TEST_F(MavlinkMissionTransferClient, DownloadMissionResendsRequestItemAgainForSecondItem)
+TEST_F(MavlinkMissionTransferClientTest, DownloadMissionResendsRequestItemAgainForSecondItem)
 {
     ON_CALL(mock_sender, queue_message(_)).WillByDefault(Return(true));
 
@@ -1417,7 +1420,7 @@ TEST_F(MavlinkMissionTransferClient, DownloadMissionResendsRequestItemAgainForSe
     EXPECT_TRUE(mmt.is_idle());
 }
 
-TEST_F(MavlinkMissionTransferClient, DownloadMissionDoesntHaveDuplicates)
+TEST_F(MavlinkMissionTransferClientTest, DownloadMissionDoesntHaveDuplicates)
 {
     ON_CALL(mock_sender, queue_message(_)).WillByDefault(Return(true));
 
@@ -1488,7 +1491,7 @@ TEST_F(MavlinkMissionTransferClient, DownloadMissionDoesntHaveDuplicates)
     EXPECT_TRUE(mmt.is_idle());
 }
 
-TEST_F(MavlinkMissionTransferClient, DownloadMissionEmptyList)
+TEST_F(MavlinkMissionTransferClientTest, DownloadMissionEmptyList)
 {
     ON_CALL(mock_sender, queue_message(_)).WillByDefault(Return(true));
 
@@ -1524,7 +1527,7 @@ TEST_F(MavlinkMissionTransferClient, DownloadMissionEmptyList)
     EXPECT_TRUE(mmt.is_idle());
 }
 
-TEST_F(MavlinkMissionTransferClient, DownloadMissionTimeoutNotTriggeredDuringTransfer)
+TEST_F(MavlinkMissionTransferClientTest, DownloadMissionTimeoutNotTriggeredDuringTransfer)
 {
     ON_CALL(mock_sender, queue_message(_)).WillByDefault(Return(true));
 
@@ -1576,7 +1579,7 @@ TEST_F(MavlinkMissionTransferClient, DownloadMissionTimeoutNotTriggeredDuringTra
     EXPECT_TRUE(mmt.is_idle());
 }
 
-TEST_F(MavlinkMissionTransferClient, DownloadMissionCanBeCancelled)
+TEST_F(MavlinkMissionTransferClientTest, DownloadMissionCanBeCancelled)
 {
     ON_CALL(mock_sender, queue_message(_)).WillByDefault(Return(true));
 
@@ -1622,7 +1625,7 @@ TEST_F(MavlinkMissionTransferClient, DownloadMissionCanBeCancelled)
     EXPECT_TRUE(mmt.is_idle());
 }
 
-TEST_F(MavlinkMissionTransferClient, DownloadMissionWithProgress)
+TEST_F(MavlinkMissionTransferClientTest, DownloadMissionWithProgress)
 {
     ON_CALL(mock_sender, queue_message(_)).WillByDefault(Return(true));
 
@@ -1686,7 +1689,7 @@ bool is_correct_mission_clear_all(uint8_t type, const mavlink_message_t& message
         clear_all.mission_type == type);
 }
 
-TEST_F(MavlinkMissionTransferClient, ClearMissionSendsClear)
+TEST_F(MavlinkMissionTransferClientTest, ClearMissionSendsClear)
 {
     ON_CALL(mock_sender, queue_message(_)).WillByDefault(Return(true));
 
@@ -1739,7 +1742,7 @@ mavlink_message_t make_mission_current(uint16_t seq)
     return message;
 }
 
-TEST_F(MavlinkMissionTransferClient, SetCurrentSendsSetCurrent)
+TEST_F(MavlinkMissionTransferClientTest, SetCurrentSendsSetCurrent)
 {
     ON_CALL(mock_sender, queue_message(_)).WillByDefault(Return(true));
 
@@ -1766,7 +1769,7 @@ TEST_F(MavlinkMissionTransferClient, SetCurrentSendsSetCurrent)
     EXPECT_TRUE(mmt.is_idle());
 }
 
-TEST_F(MavlinkMissionTransferClient, SetCurrentWithRetransmissionAndTimeout)
+TEST_F(MavlinkMissionTransferClientTest, SetCurrentWithRetransmissionAndTimeout)
 {
     ON_CALL(mock_sender, queue_message(_)).WillByDefault(Return(true));
 
@@ -1797,7 +1800,7 @@ TEST_F(MavlinkMissionTransferClient, SetCurrentWithRetransmissionAndTimeout)
     EXPECT_TRUE(mmt.is_idle());
 }
 
-TEST_F(MavlinkMissionTransferClient, SetCurrentWithRetransmissionAndSuccess)
+TEST_F(MavlinkMissionTransferClientTest, SetCurrentWithRetransmissionAndSuccess)
 {
     ON_CALL(mock_sender, queue_message(_)).WillByDefault(Return(true));
 
@@ -1831,7 +1834,7 @@ TEST_F(MavlinkMissionTransferClient, SetCurrentWithRetransmissionAndSuccess)
     EXPECT_TRUE(mmt.is_idle());
 }
 
-TEST_F(MavlinkMissionTransferClient, SetCurrentWithInvalidInput)
+TEST_F(MavlinkMissionTransferClientTest, SetCurrentWithInvalidInput)
 {
     ON_CALL(mock_sender, queue_message(_)).WillByDefault(Return(true));
 
@@ -1850,7 +1853,7 @@ TEST_F(MavlinkMissionTransferClient, SetCurrentWithInvalidInput)
     EXPECT_TRUE(mmt.is_idle());
 }
 
-TEST_F(MavlinkMissionTransferClient, SetCurrentWithRetransmissionWhenWrong)
+TEST_F(MavlinkMissionTransferClientTest, SetCurrentWithRetransmissionWhenWrong)
 {
     ON_CALL(mock_sender, queue_message(_)).WillByDefault(Return(true));
 
@@ -1885,7 +1888,7 @@ TEST_F(MavlinkMissionTransferClient, SetCurrentWithRetransmissionWhenWrong)
     EXPECT_TRUE(mmt.is_idle());
 }
 
-TEST_F(MavlinkMissionTransferClient, IntMessagesNotSupported)
+TEST_F(MavlinkMissionTransferClientTest, IntMessagesNotSupported)
 {
     mmt.set_int_messages_supported(false);
 
