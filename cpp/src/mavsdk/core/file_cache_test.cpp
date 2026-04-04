@@ -6,7 +6,7 @@
 
 using namespace mavsdk;
 
-class FileCache : public testing::Test {
+class FileCacheFixture : public testing::Test {
 protected:
     void SetUp() override
     {
@@ -53,7 +53,7 @@ protected:
     std::filesystem::path _tmp_files_dir;
 };
 
-TEST_F(FileCache, Basic)
+TEST_F(FileCacheFixture, Basic)
 {
     FileCache cache(_cache_dir, 10, true);
 
@@ -72,7 +72,7 @@ TEST_F(FileCache, Basic)
     EXPECT_EQ(buffer.str(), _tmp_files[0].content);
 }
 
-TEST_F(FileCache, Lru)
+TEST_F(FileCacheFixture, Lru)
 {
     FileCache cache(_cache_dir, 3, true);
 
@@ -119,7 +119,7 @@ TEST_F(FileCache, Lru)
     EXPECT_EQ(cache.access(_tmp_files[7].cache_tag).value(), _tmp_files[7].cached_path);
 }
 
-TEST_F(FileCache, Multi)
+TEST_F(FileCacheFixture, Multi)
 {
     auto insert = [&](FileCache& cache, int idx) {
         auto cached_path_option = cache.insert(_tmp_files[idx].cache_tag, _tmp_files[idx].path);
