@@ -38,7 +38,7 @@ TEST(Geometry, GlobalToLocalAndBack)
     EXPECT_NEAR(spot.longitude_deg, spot_again.longitude_deg, 1e-9);
 }
 
-TEST(Geoemtry, LocalToGlobalAndBack)
+TEST(Geometry, LocalToGlobalAndBack)
 {
     CoordinateTransformation::GlobalCoordinate spot{-38.227562, 176.506076};
     CoordinateTransformation ct(spot);
