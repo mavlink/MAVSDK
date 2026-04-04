@@ -20,7 +20,7 @@ static const fs::path temp_dir_provided = "/tmp/mavsdk_systemtest_temp_data/prov
 
 static const fs::path temp_file = "data.bin";
 
-TEST(SystemTest, FtpRemoveFile)
+TEST(Ftp, RemoveFile)
 {
     ASSERT_TRUE(create_temp_file(temp_dir_provided / temp_file, 50));
 
@@ -60,7 +60,7 @@ TEST(SystemTest, FtpRemoveFile)
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
-TEST(SystemTest, FtpRemoveFileThatDoesNotExist)
+TEST(Ftp, RemoveFileThatDoesNotExist)
 {
     Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
     mavsdk_groundstation.set_timeout_s(reduced_timeout_s);
@@ -96,7 +96,7 @@ TEST(SystemTest, FtpRemoveFileThatDoesNotExist)
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
-TEST(SystemTest, FtpRemoveFileOutsideOfRoot)
+TEST(Ftp, RemoveFileOutsideOfRoot)
 {
     Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
     mavsdk_groundstation.set_timeout_s(reduced_timeout_s);

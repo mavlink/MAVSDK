@@ -25,7 +25,7 @@ static const fs::path temp_dir_to_upload = "/tmp/mavsdk_systemtest_temp_data/to_
 
 static const fs::path temp_file = "data.bin";
 
-TEST(SystemTest, FtpUploadFile)
+TEST(Ftp, UploadFile)
 {
     ASSERT_TRUE(create_temp_file(temp_dir_to_upload / temp_file, 50));
     ASSERT_TRUE(reset_directories(temp_dir_provided));
@@ -98,7 +98,7 @@ TEST(SystemTest, FtpUploadFile)
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
-TEST(SystemTest, FtpUploadBigFile)
+TEST(Ftp, UploadBigFile)
 {
     static constexpr std::size_t file_size_kb = 10000;
     ASSERT_TRUE(create_temp_file(temp_dir_to_upload / temp_file, file_size_kb));
@@ -170,7 +170,7 @@ TEST(SystemTest, FtpUploadBigFile)
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
-TEST(SystemTest, FtpUploadBigFileLossy)
+TEST(Ftp, UploadBigFileLossy)
 {
     ASSERT_TRUE(create_temp_file(temp_dir_to_upload / temp_file, 10000));
     ASSERT_TRUE(reset_directories(temp_dir_provided));
@@ -236,7 +236,7 @@ TEST(SystemTest, FtpUploadBigFileLossy)
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
-TEST(SystemTest, FtpUploadStopAndTryAgain)
+TEST(Ftp, UploadStopAndTryAgain)
 {
     ASSERT_TRUE(create_temp_file(temp_dir_to_upload / temp_file, 2000));
     ASSERT_TRUE(reset_directories(temp_dir_provided));
@@ -328,7 +328,7 @@ TEST(SystemTest, FtpUploadStopAndTryAgain)
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
-TEST(SystemTest, FtpUploadFileOutsideOfRoot)
+TEST(Ftp, UploadFileOutsideOfRoot)
 {
     ASSERT_TRUE(create_temp_file(temp_dir_to_upload / temp_file, 50));
     ASSERT_TRUE(reset_directories(temp_dir_provided));

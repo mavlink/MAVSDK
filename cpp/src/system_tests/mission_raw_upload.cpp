@@ -9,7 +9,7 @@
 #include <gtest/gtest.h>
 
 using namespace mavsdk;
-TEST(SystemTest, MissionRawUpload)
+TEST(Mission, RawUpload)
 {
     Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
 

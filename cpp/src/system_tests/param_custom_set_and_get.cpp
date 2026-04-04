@@ -28,7 +28,7 @@ static std::string generate_uppercase_ascii(size_t length)
     return data;
 }
 
-TEST(SystemTest, ParamCustomSetAndGet)
+TEST(Param, CustomSetAndGet)
 {
     Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
     mavsdk_groundstation.set_timeout_s(reduced_timeout_s);
@@ -82,7 +82,7 @@ TEST(SystemTest, ParamCustomSetAndGet)
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
-TEST(SystemTest, ParamCustomSetAndGetLossy)
+TEST(Param, CustomSetAndGetLossy)
 {
     Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
     mavsdk_groundstation.set_timeout_s(reduced_timeout_s);

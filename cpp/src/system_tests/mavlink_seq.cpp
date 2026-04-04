@@ -8,7 +8,7 @@
 
 using namespace mavsdk;
 
-TEST(SystemTest, MavlinkSeqSequential)
+TEST(MavlinkSeq, Sequential)
 {
     Mavsdk mavsdk_autopilot{Mavsdk::Configuration{ComponentType::Autopilot}};
     Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};

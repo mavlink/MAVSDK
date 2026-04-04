@@ -22,7 +22,7 @@ static const fs::path temp_file = "data.bin";
 static const fs::path temp_file_same = "data_copy.bin";
 static const fs::path temp_file_different = "rhubarb.bin";
 
-TEST(SystemTest, FtpCompareFiles)
+TEST(Ftp, CompareFiles)
 {
     ASSERT_TRUE(reset_directories(temp_dir_provided));
     ASSERT_TRUE(create_temp_file(temp_dir_provided / temp_file, 1000));

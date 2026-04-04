@@ -7,7 +7,7 @@
 
 using namespace mavsdk;
 
-TEST(SystemTest, ActionArmDisarm)
+TEST(Action, ArmDisarm)
 {
     Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
 

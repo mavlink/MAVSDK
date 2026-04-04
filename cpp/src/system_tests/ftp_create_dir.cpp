@@ -19,7 +19,7 @@ static const fs::path temp_dir_provided = "/tmp/mavsdk_systemtest_temp_data/prov
 
 static const fs::path temp_dir = "folder";
 
-TEST(SystemTest, FtpCreateDir)
+TEST(Ftp, CreateDir)
 {
     Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
     mavsdk_groundstation.set_timeout_s(reduced_timeout_s);

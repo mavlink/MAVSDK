@@ -23,7 +23,7 @@ static const fs::path temp_dir_downloaded = "/tmp/mavsdk_systemtest_temp_data/do
 
 static const fs::path temp_file = "data.bin";
 
-TEST(SystemTest, FtpDownloadFile)
+TEST(Ftp, DownloadFile)
 {
     ASSERT_TRUE(create_temp_file(temp_dir_provided / temp_file, 50));
     ASSERT_TRUE(reset_directories(temp_dir_downloaded));
@@ -98,7 +98,7 @@ TEST(SystemTest, FtpDownloadFile)
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
-TEST(SystemTest, FtpDownloadBigFile)
+TEST(Ftp, DownloadBigFile)
 {
     ASSERT_TRUE(create_temp_file(temp_dir_provided / temp_file, 50000));
     ASSERT_TRUE(reset_directories(temp_dir_downloaded));
@@ -154,7 +154,7 @@ TEST(SystemTest, FtpDownloadBigFile)
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
-TEST(SystemTest, FtpDownloadBigFileLossy)
+TEST(Ftp, DownloadBigFileLossy)
 {
     ASSERT_TRUE(create_temp_file(temp_dir_provided / temp_file, 10000));
     ASSERT_TRUE(reset_directories(temp_dir_downloaded));
@@ -222,7 +222,7 @@ TEST(SystemTest, FtpDownloadBigFileLossy)
     mavsdk_groundstation.intercept_outgoing_messages_async(nullptr);
 }
 
-TEST(SystemTest, FtpDownloadStopAndTryAgain)
+TEST(Ftp, DownloadStopAndTryAgain)
 {
     ASSERT_TRUE(create_temp_file(temp_dir_provided / temp_file, 5000));
     ASSERT_TRUE(reset_directories(temp_dir_downloaded));
@@ -317,7 +317,7 @@ TEST(SystemTest, FtpDownloadStopAndTryAgain)
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
-TEST(SystemTest, FtpDownloadFileOutsideOfRoot)
+TEST(Ftp, DownloadFileOutsideOfRoot)
 {
     ASSERT_TRUE(create_temp_file(temp_dir_provided / temp_file, 50));
     ASSERT_TRUE(reset_directories(temp_dir_downloaded));

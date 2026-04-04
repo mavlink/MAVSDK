@@ -10,7 +10,7 @@
 
 using namespace mavsdk;
 
-TEST(SystemTest, CameraStorage)
+TEST(Camera, Storage)
 {
     Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
     Mavsdk mavsdk_camera{Mavsdk::Configuration{ComponentType::Camera}};

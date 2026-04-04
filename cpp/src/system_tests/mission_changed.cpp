@@ -18,7 +18,7 @@ static constexpr unsigned NUM_SOME_ITEMS = sizeof(SOME_LATITUDES) / sizeof(SOME_
 
 static void validate_items(const std::vector<MissionRaw::MissionItem>& items);
 
-TEST(SystemTest, MissionChanged)
+TEST(Mission, Changed)
 {
     // Create two MAVSDK instances: groundstation and autopilot
     Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};

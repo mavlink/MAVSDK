@@ -8,7 +8,7 @@
 
 using namespace mavsdk;
 
-TEST(SystemTest, TcpConnectionReconnectionFromServerSide)
+TEST(Connections, TcpConnectionReconnectionFromServerSide)
 {
     // Test that TCP client properly reconnects when server closes the connection
 
@@ -97,7 +97,7 @@ TEST(SystemTest, TcpConnectionReconnectionFromServerSide)
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
-TEST(SystemTest, TcpConnectionReconnectionFromClientSide)
+TEST(Connections, TcpConnectionReconnectionFromClientSide)
 {
     // Test that TCP client properly reconnects when it closes and reopens its own connection
 
@@ -196,7 +196,7 @@ TEST(SystemTest, TcpConnectionReconnectionFromClientSide)
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
-TEST(SystemTest, UdpConnectionReconnectionFromClientSide)
+TEST(Connections, UdpConnectionReconnectionFromClientSide)
 {
     // Test that UDP client (udpout) can be removed and re-added properly
     // UDP is connectionless, so this tests the connection management APIs
@@ -294,7 +294,7 @@ TEST(SystemTest, UdpConnectionReconnectionFromClientSide)
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
-TEST(SystemTest, UdpConnectionReconnectionFromServerSide)
+TEST(Connections, UdpConnectionReconnectionFromServerSide)
 {
     // Test that UDP server (udpin) can be removed and re-added properly
     // UDP is connectionless, so this tests the connection management APIs

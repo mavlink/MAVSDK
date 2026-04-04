@@ -683,11 +683,11 @@ TEST_F(MavlinkMissionTransferClientTest, UploadMissionAckArrivesTooEarly)
     EXPECT_TRUE(mmt.is_idle());
 }
 
-class MavlinkMissionTransferClientNackTests
+class MavlinkMissionTransferClientNack
     : public MavlinkMissionTransferClientTest,
       public ::testing::WithParamInterface<std::pair<uint8_t, Result>> {};
 
-TEST_P(MavlinkMissionTransferClientNackTests, UploadMissionNackAreHandled)
+TEST_P(MavlinkMissionTransferClientNack, UploadMissionNackAreHandled)
 {
     uint8_t mavlink_nack = std::get<0>(GetParam());
     Result mavsdk_nack = std::get<1>(GetParam());
@@ -730,8 +730,8 @@ TEST_P(MavlinkMissionTransferClientNackTests, UploadMissionNackAreHandled)
 }
 
 INSTANTIATE_TEST_SUITE_P(
-    MavlinkMissionTransferClientTests,
-    MavlinkMissionTransferClientNackTests,
+    MavlinkMissionTransferClientNack,
+    MavlinkMissionTransferClientNack,
     ::testing::Values(
         std::make_pair(MAV_MISSION_ERROR, Result::ProtocolError),
         std::make_pair(MAV_MISSION_UNSUPPORTED_FRAME, Result::UnsupportedFrame),

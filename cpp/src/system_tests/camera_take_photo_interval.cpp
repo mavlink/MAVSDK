@@ -10,7 +10,7 @@
 
 using namespace mavsdk;
 
-TEST(SystemTest, CameraTakePhotoInterval)
+TEST(Camera, TakePhotoInterval)
 {
     Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
 

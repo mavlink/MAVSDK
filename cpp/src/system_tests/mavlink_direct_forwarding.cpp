@@ -10,7 +10,7 @@
 
 using namespace mavsdk;
 
-TEST(SystemTest, MavlinkDirectForwardingKnownMessage)
+TEST(MavlinkDirect, ForwardingKnownMessage)
 {
     // Test 3-instance message forwarding with a known standard message
     // Instance 1 (Sender) -> Instance 2 (Forwarder) -> Instance 3 (Receiver)
@@ -112,7 +112,7 @@ TEST(SystemTest, MavlinkDirectForwardingKnownMessage)
     receiver_mavlink_direct.unsubscribe_message(handle);
 }
 
-TEST(SystemTest, MavlinkDirectForwardingUnknownMessage)
+TEST(MavlinkDirect, ForwardingUnknownMessage)
 {
     // Test 3-instance message forwarding where intermediate instance doesn't know the custom
     // message Instance 1 (Sender) -> Instance 2 (Forwarder) -> Instance 3 (Receiver) Only Instance

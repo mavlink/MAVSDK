@@ -10,7 +10,7 @@
 
 using namespace mavsdk;
 
-TEST(SystemTest, CameraSettings)
+TEST(Camera, Settings)
 {
     Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
     Mavsdk mavsdk_camera{Mavsdk::Configuration{ComponentType::Camera}};
@@ -175,7 +175,7 @@ TEST(SystemTest, CameraSettings)
     EXPECT_EQ(wb_temp.second.option.option_id, "4000");
 }
 
-TEST(SystemTest, CameraSettingsAsync)
+TEST(Camera, SettingsAsync)
 {
     Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
     Mavsdk mavsdk_camera{Mavsdk::Configuration{ComponentType::Camera}};

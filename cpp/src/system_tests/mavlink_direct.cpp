@@ -11,7 +11,7 @@
 
 using namespace mavsdk;
 
-TEST(SystemTest, MavlinkDirectRoundtrip)
+TEST(MavlinkDirect, Roundtrip)
 {
     Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
     Mavsdk mavsdk_autopilot{Mavsdk::Configuration{ComponentType::Autopilot}};
@@ -85,7 +85,7 @@ TEST(SystemTest, MavlinkDirectRoundtrip)
     receiver_mavlink_direct.unsubscribe_message(handle);
 }
 
-TEST(SystemTest, MavlinkDirectExtendedFields)
+TEST(MavlinkDirect, ExtendedFields)
 {
     Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
     Mavsdk mavsdk_autopilot{Mavsdk::Configuration{ComponentType::Autopilot}};
@@ -214,7 +214,7 @@ TEST(SystemTest, MavlinkDirectExtendedFields)
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
-TEST(SystemTest, MavlinkDirectToTelemetry)
+TEST(MavlinkDirect, ToTelemetry)
 {
     Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
     Mavsdk mavsdk_autopilot{Mavsdk::Configuration{ComponentType::Autopilot}};
@@ -283,7 +283,7 @@ TEST(SystemTest, MavlinkDirectToTelemetry)
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
-TEST(SystemTest, TelemetryServerToMavlinkDirect)
+TEST(MavlinkDirect, TelemetryServerTo)
 {
     Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
     Mavsdk mavsdk_autopilot{Mavsdk::Configuration{ComponentType::Autopilot}};
@@ -359,7 +359,7 @@ TEST(SystemTest, TelemetryServerToMavlinkDirect)
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
-TEST(SystemTest, MavlinkDirectArrayFields)
+TEST(MavlinkDirect, ArrayFields)
 {
     Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
     Mavsdk mavsdk_autopilot{Mavsdk::Configuration{ComponentType::Autopilot}};
@@ -517,7 +517,7 @@ TEST(SystemTest, MavlinkDirectArrayFields)
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
-TEST(SystemTest, MavlinkDirectLoadCustomXml)
+TEST(MavlinkDirect, LoadCustomXml)
 {
     Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
     Mavsdk mavsdk_autopilot{Mavsdk::Configuration{ComponentType::Autopilot}};
@@ -612,7 +612,7 @@ TEST(SystemTest, MavlinkDirectLoadCustomXml)
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
-TEST(SystemTest, MavlinkDirectArdupilotmegaMessage)
+TEST(MavlinkDirect, ArdupilotmegaMessage)
 {
     Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
     Mavsdk mavsdk_autopilot{Mavsdk::Configuration{ComponentType::Autopilot}};
@@ -683,7 +683,7 @@ TEST(SystemTest, MavlinkDirectArdupilotmegaMessage)
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
-TEST(SystemTest, MavlinkDirectNanInfinityJsonHandling)
+TEST(MavlinkDirect, NanInfinityJsonHandling)
 {
     Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
     Mavsdk mavsdk_autopilot{Mavsdk::Configuration{ComponentType::Autopilot}};
@@ -826,7 +826,7 @@ TEST(SystemTest, MavlinkDirectNanInfinityJsonHandling)
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
-TEST(SystemTest, MavlinkDirectMessageFiltering)
+TEST(MavlinkDirect, MessageFiltering)
 {
     // Test that message filtering works correctly: when subscribed to one message type,
     // only that message type is received, not others
@@ -948,7 +948,7 @@ TEST(SystemTest, MavlinkDirectMessageFiltering)
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
-TEST(SystemTest, MavlinkDirectEmptyStringFiltering)
+TEST(MavlinkDirect, EmptyStringFiltering)
 {
     // Test that subscribing with empty string ("") receives all message types
 
@@ -1065,7 +1065,7 @@ TEST(SystemTest, MavlinkDirectEmptyStringFiltering)
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
-TEST(SystemTest, MavlinkDirectMultipleSubscriptions)
+TEST(MavlinkDirect, MultipleSubscriptions)
 {
     // Test that having multiple subscriptions works correctly:
     // - One subscription for all messages ("")
@@ -1215,7 +1215,7 @@ TEST(SystemTest, MavlinkDirectMultipleSubscriptions)
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
-TEST(SystemTest, MavlinkDirectLargeUint64)
+TEST(MavlinkDirect, LargeUint64)
 {
     // Test GPS_RAW_INT with time_usec field > 2^32 to verify proper uint64 handling
 

@@ -12,7 +12,7 @@
 using namespace mavsdk;
 
 // Unit-level: verify struct default initialization and equality operators
-TEST(SystemTest, TimestampStructDefaults)
+TEST(Telemetry, TimestampStructDefaults)
 {
     // Default-constructed structs should have timestamp_us == 0
     Telemetry::Altitude alt{};
@@ -54,7 +54,7 @@ TEST(SystemTest, TimestampStructDefaults)
     EXPECT_FALSE(g1 == g2);
 }
 
-TEST(SystemTest, AltitudeTimestamp)
+TEST(Telemetry, AltitudeTimestamp)
 {
     Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
     Mavsdk mavsdk_autopilot{Mavsdk::Configuration{ComponentType::Autopilot}};
@@ -120,7 +120,7 @@ TEST(SystemTest, AltitudeTimestamp)
     telemetry.unsubscribe_altitude(handle);
 }
 
-TEST(SystemTest, GroundTruthTimestamp)
+TEST(Telemetry, GroundTruthTimestamp)
 {
     Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
     Mavsdk mavsdk_autopilot{Mavsdk::Configuration{ComponentType::Autopilot}};
@@ -183,7 +183,7 @@ TEST(SystemTest, GroundTruthTimestamp)
     telemetry.unsubscribe_ground_truth(handle);
 }
 
-TEST(SystemTest, AltitudeTimestampUpdates)
+TEST(Telemetry, AltitudeTimestampUpdates)
 {
     Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
     Mavsdk mavsdk_autopilot{Mavsdk::Configuration{ComponentType::Autopilot}};

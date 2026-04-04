@@ -59,7 +59,7 @@ static void assert_equal(const std::map<std::string, T1>& values, const std::vec
     }
 }
 
-TEST(SystemTest, ParamGetAll)
+TEST(Param, GetAll)
 {
     Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
     mavsdk_groundstation.set_timeout_s(reduced_timeout_s);
@@ -118,7 +118,7 @@ TEST(SystemTest, ParamGetAll)
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
-TEST(SystemTest, ParamGetAllLossy)
+TEST(Param, GetAllLossy)
 {
     Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
     mavsdk_groundstation.set_timeout_s(reduced_timeout_s);
