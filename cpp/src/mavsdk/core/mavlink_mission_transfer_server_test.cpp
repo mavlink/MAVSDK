@@ -310,7 +310,7 @@ protected:
 };
 
 class MavlinkMissionTransferServer : public MavlinkMissionTransferServerTest,
-                                 public ::testing::WithParamInterface<uint8_t> {
+                                     public ::testing::WithParamInterface<uint8_t> {
 public:
     uint8_t mission_type{};
 
@@ -355,7 +355,8 @@ TEST_P(MavlinkMissionTransferServer, ReceiveIncomingMissionSendsMissionRequests)
     message_handler.process_message(make_mission_count(items.size(), mission_type));
 }
 
-TEST_P(MavlinkMissionTransferServer, ReceiveIncomingMissionResendsMissionRequestsAndTimesOutEventually)
+TEST_P(
+    MavlinkMissionTransferServer, ReceiveIncomingMissionResendsMissionRequestsAndTimesOutEventually)
 {
     ON_CALL(mock_sender, queue_message(_)).WillByDefault(Return(true));
 
@@ -863,7 +864,8 @@ TEST_P(MavlinkMissionTransferServer, SendOutgoingMissionResendsMissionItems)
     EXPECT_TRUE(mmt.is_idle());
 }
 
-TEST_P(MavlinkMissionTransferServer, SendOutgoingMissionResendsMissionItemsButGivesUpAfterSomeRetries)
+TEST_P(
+    MavlinkMissionTransferServer, SendOutgoingMissionResendsMissionItemsButGivesUpAfterSomeRetries)
 {
     std::vector<ItemInt> items;
     items.push_back(make_item(mission_type, 0));
