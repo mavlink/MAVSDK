@@ -1,4 +1,4 @@
-#include "mavsdk_server_api.h"
+#include "mavsdk_server_api.hpp"
 
 #include <cctype>
 #include <iostream>
