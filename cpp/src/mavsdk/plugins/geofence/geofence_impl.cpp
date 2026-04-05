@@ -1,5 +1,5 @@
-#include "geofence_impl.h"
-#include "log.h"
+#include "geofence_impl.hpp"
+#include "log.hpp"
 #include <cmath>
 
 namespace mavsdk {

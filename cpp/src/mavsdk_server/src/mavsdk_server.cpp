@@ -1,10 +1,10 @@
-#include "mavsdk_server.h"
+#include "mavsdk_server.hpp"
 
 #include <memory>
 
-#include "connection_initiator.h"
-#include "mavsdk.h"
-#include "grpc_server.h"
+#include "connection_initiator.hpp"
+#include "mavsdk.hpp"
+#include "grpc_server.hpp"
 
 using namespace mavsdk;
 using namespace mavsdk::mavsdk_server;

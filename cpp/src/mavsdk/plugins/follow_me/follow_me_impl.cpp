@@ -1,6 +1,6 @@
-#include "follow_me_impl.h"
-#include "system.h"
-#include "px4_custom_mode.h"
+#include "follow_me_impl.hpp"
+#include "system.hpp"
+#include "px4_custom_mode.hpp"
 #include <cmath>
 
 namespace mavsdk {

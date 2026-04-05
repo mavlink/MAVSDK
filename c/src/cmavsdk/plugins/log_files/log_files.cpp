@@ -4,7 +4,7 @@
 
 #include "log_files.h"
 
-#include <mavsdk/plugins/log_files/log_files.h>
+#include <mavsdk/plugins/log_files/log_files.hpp>
 #include <algorithm>
 #include <cstring>
 #include <mutex>

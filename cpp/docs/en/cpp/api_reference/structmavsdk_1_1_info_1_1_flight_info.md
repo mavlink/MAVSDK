@@ -1,5 +1,5 @@
 # mavsdk::Info::FlightInfo Struct Reference
-`#include: info.h`
+`#include: info.hpp`
 
 ----
 

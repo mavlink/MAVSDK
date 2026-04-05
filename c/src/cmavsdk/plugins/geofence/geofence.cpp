@@ -4,7 +4,7 @@
 
 #include "geofence.h"
 
-#include <mavsdk/plugins/geofence/geofence.h>
+#include <mavsdk/plugins/geofence/geofence.hpp>
 #include <algorithm>
 #include <cstring>
 #include <mutex>

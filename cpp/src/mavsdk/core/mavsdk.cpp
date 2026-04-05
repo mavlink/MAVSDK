@@ -1,6 +1,6 @@
-#include "mavsdk.h"
+#include "mavsdk.hpp"
 
-#include "mavsdk_impl.h"
+#include "mavsdk_impl.hpp"
 
 namespace mavsdk {
 

@@ -1,5 +1,5 @@
 # mavsdk::ActionServer::ArmDisarm Struct Reference
-`#include: action_server.h`
+`#include: action_server.hpp`
 
 ----
 

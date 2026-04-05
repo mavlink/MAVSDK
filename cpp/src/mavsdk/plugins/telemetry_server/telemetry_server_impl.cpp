@@ -1,5 +1,5 @@
-#include "telemetry_server_impl.h"
-#include "unused.h"
+#include "telemetry_server_impl.hpp"
+#include "unused.hpp"
 #include <array>
 #include <algorithm>
 

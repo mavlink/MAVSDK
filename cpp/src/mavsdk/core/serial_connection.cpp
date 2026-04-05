@@ -1,6 +1,6 @@
-#include "serial_connection.h"
-#include "mavsdk_impl.h"
-#include "log.h"
+#include "serial_connection.hpp"
+#include "mavsdk_impl.hpp"
+#include "log.hpp"
 
 #if defined(APPLE) || defined(LINUX)
 #include <termios.h>

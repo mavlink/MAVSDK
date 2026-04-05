@@ -1,5 +1,5 @@
 # mavsdk::PluginBase Class Reference
-`#include: plugin_base.h`
+`#include: plugin_base.hpp`
 
 ----
 

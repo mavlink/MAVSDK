@@ -1,8 +1,8 @@
-#include "mavlink_parameter_helper.h"
-#include "mavlink_parameter_client.h"
-#include "mavlink_message_handler.h"
-#include "system_impl.h"
-#include "overloaded.h"
+#include "mavlink_parameter_helper.hpp"
+#include "mavlink_parameter_client.hpp"
+#include "mavlink_message_handler.hpp"
+#include "system_impl.hpp"
+#include "overloaded.hpp"
 #include <algorithm>
 #include <future>
 #include <limits>

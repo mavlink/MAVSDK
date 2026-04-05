@@ -4,7 +4,7 @@
 
 #include "param.h"
 
-#include <mavsdk/plugins/param/param.h>
+#include <mavsdk/plugins/param/param.hpp>
 #include <algorithm>
 #include <cstring>
 #include <mutex>

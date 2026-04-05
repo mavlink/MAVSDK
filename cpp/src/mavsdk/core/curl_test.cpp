@@ -1,4 +1,4 @@
-#include "curl_wrapper.h"
+#include "curl_wrapper.hpp"
 #include <fstream>
 #include <iostream>
 #include <chrono>

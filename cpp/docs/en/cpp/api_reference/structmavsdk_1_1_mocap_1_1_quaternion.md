@@ -1,5 +1,5 @@
 # mavsdk::Mocap::Quaternion Struct Reference
-`#include: mocap.h`
+`#include: mocap.hpp`
 
 ----
 

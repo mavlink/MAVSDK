@@ -1,4 +1,4 @@
-#include "log_streaming_backend_ardupilot.h"
+#include "log_streaming_backend_ardupilot.hpp"
 
 // ArduPilot uses REMOTE_LOG_DATA_BLOCK (ID 184) for real-time log streaming.
 // This is different from PX4's LOGGING_DATA protocol.

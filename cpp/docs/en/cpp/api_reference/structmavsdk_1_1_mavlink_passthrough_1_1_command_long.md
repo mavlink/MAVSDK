@@ -1,5 +1,5 @@
 # mavsdk::MavlinkPassthrough::CommandLong Struct Reference
-`#include: mavlink_passthrough.h`
+`#include: mavlink_passthrough.hpp`
 
 ----
 

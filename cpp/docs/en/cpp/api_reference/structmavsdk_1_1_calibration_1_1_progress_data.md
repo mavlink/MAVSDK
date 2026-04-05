@@ -1,5 +1,5 @@
 # mavsdk::Calibration::ProgressData Struct Reference
-`#include: calibration.h`
+`#include: calibration.hpp`
 
 ----
 
@@ -13,11 +13,11 @@ Can be a progress percentage, or an instruction text.
 ## Data Fields
 
 
-bool [has_progress](#structmavsdk_1_1_calibration_1_1_progress_data_1a1b34241aba778eb9e1e67ae9f3404249) { false} - Whether this [ProgressData](structmavsdk_1_1_calibration_1_1_progress_data.md) contains a 'progress' status or not.
+bool [has_progress](#structmavsdk_1_1_calibration_1_1_progress_data_1a1b34241aba778eb9e1e67ae9f3404249) {false} - Whether this [ProgressData](structmavsdk_1_1_calibration_1_1_progress_data.md) contains a 'progress' status or not.
 
 float [progress](#structmavsdk_1_1_calibration_1_1_progress_data_1a573b314b1440961d593881f931aeca32) {float(NAN)} - Progress (percentage)
 
-bool [has_status_text](#structmavsdk_1_1_calibration_1_1_progress_data_1ac6780fbc4f8e8eaea3a2ccf6290a2c78) { false} - Whether this [ProgressData](structmavsdk_1_1_calibration_1_1_progress_data.md) contains a 'status_text' or not.
+bool [has_status_text](#structmavsdk_1_1_calibration_1_1_progress_data_1ac6780fbc4f8e8eaea3a2ccf6290a2c78) {false} - Whether this [ProgressData](structmavsdk_1_1_calibration_1_1_progress_data.md) contains a 'status_text' or not.
 
 std::string [status_text](#structmavsdk_1_1_calibration_1_1_progress_data_1a8fae64b0166ed65158d045b07ed9b48d) {} - Instruction text.
 
@@ -28,7 +28,7 @@ std::string [status_text](#structmavsdk_1_1_calibration_1_1_progress_data_1a8fae
 ### has_progress {#structmavsdk_1_1_calibration_1_1_progress_data_1a1b34241aba778eb9e1e67ae9f3404249}
 
 ```cpp
-bool mavsdk::Calibration::ProgressData::has_progress { false}
+bool mavsdk::Calibration::ProgressData::has_progress {false}
 ```
 
 
@@ -48,7 +48,7 @@ Progress (percentage)
 ### has_status_text {#structmavsdk_1_1_calibration_1_1_progress_data_1ac6780fbc4f8e8eaea3a2ccf6290a2c78}
 
 ```cpp
-bool mavsdk::Calibration::ProgressData::has_status_text { false}
+bool mavsdk::Calibration::ProgressData::has_status_text {false}
 ```
 
 

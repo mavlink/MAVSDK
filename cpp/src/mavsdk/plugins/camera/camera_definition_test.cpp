@@ -1,5 +1,5 @@
-#include "camera_definition.h"
-#include "log.h"
+#include "camera_definition.hpp"
+#include "log.hpp"
 #include <gtest/gtest.h>
 #include <vector>
 #include <unordered_map>

@@ -1,5 +1,5 @@
 # mavsdk::TelemetryServer::FixedwingMetrics Struct Reference
-`#include: telemetry_server.h`
+`#include: telemetry_server.hpp`
 
 ----
 
@@ -10,7 +10,7 @@
 ## Data Fields
 
 
-float [airspeed_m_s](#structmavsdk_1_1_telemetry_server_1_1_fixedwing_metrics_1ac93b4a14fbb25992c7bd30ef109c28ff) { float(NAN)} - Current indicated airspeed (IAS) in metres per second.
+float [airspeed_m_s](#structmavsdk_1_1_telemetry_server_1_1_fixedwing_metrics_1ac93b4a14fbb25992c7bd30ef109c28ff) {float(NAN)} - Current indicated airspeed (IAS) in metres per second.
 
 float [throttle_percentage](#structmavsdk_1_1_telemetry_server_1_1_fixedwing_metrics_1a98714b66349e101105e6746903bbfd30) {float(NAN)} - Current throttle setting (0 to 100)
 
@@ -18,7 +18,7 @@ float [climb_rate_m_s](#structmavsdk_1_1_telemetry_server_1_1_fixedwing_metrics_
 
 float [groundspeed_m_s](#structmavsdk_1_1_telemetry_server_1_1_fixedwing_metrics_1ac3d6a9651edb283a1217ef2dcee91fce) {float(NAN)} - Current groundspeed metres per second.
 
-float [heading_deg](#structmavsdk_1_1_telemetry_server_1_1_fixedwing_metrics_1ab5cad9e76b47fec7f40282b0de8b75f3) { float(NAN)} - Current heading in compass units (0-360, 0=north)
+float [heading_deg](#structmavsdk_1_1_telemetry_server_1_1_fixedwing_metrics_1ab5cad9e76b47fec7f40282b0de8b75f3) {float(NAN)} - Current heading in compass units (0-360, 0=north)
 
 float [absolute_altitude_m](#structmavsdk_1_1_telemetry_server_1_1_fixedwing_metrics_1adb56c63202cdcd9abcab1464ee138dbd) {float(NAN)} - Current altitude in metres (MSL)
 
@@ -29,7 +29,7 @@ float [absolute_altitude_m](#structmavsdk_1_1_telemetry_server_1_1_fixedwing_met
 ### airspeed_m_s {#structmavsdk_1_1_telemetry_server_1_1_fixedwing_metrics_1ac93b4a14fbb25992c7bd30ef109c28ff}
 
 ```cpp
-float mavsdk::TelemetryServer::FixedwingMetrics::airspeed_m_s { float(NAN)}
+float mavsdk::TelemetryServer::FixedwingMetrics::airspeed_m_s {float(NAN)}
 ```
 
 
@@ -69,7 +69,7 @@ Current groundspeed metres per second.
 ### heading_deg {#structmavsdk_1_1_telemetry_server_1_1_fixedwing_metrics_1ab5cad9e76b47fec7f40282b0de8b75f3}
 
 ```cpp
-float mavsdk::TelemetryServer::FixedwingMetrics::heading_deg { float(NAN)}
+float mavsdk::TelemetryServer::FixedwingMetrics::heading_deg {float(NAN)}
 ```
 
 

@@ -1,4 +1,4 @@
-#include "geometry.h"
+#include "geometry.hpp"
 #include <gtest/gtest.h>
 
 using namespace mavsdk::geometry;

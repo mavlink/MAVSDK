@@ -1,5 +1,5 @@
 
-#include "locked_queue.h"
+#include "locked_queue.hpp"
 
 #include <string>
 #include <future>

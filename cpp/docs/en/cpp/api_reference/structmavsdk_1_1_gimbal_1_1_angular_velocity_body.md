@@ -1,5 +1,5 @@
 # mavsdk::Gimbal::AngularVelocityBody Struct Reference
-`#include: gimbal.h`
+`#include: gimbal.hpp`
 
 ----
 

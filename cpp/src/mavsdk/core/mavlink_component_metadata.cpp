@@ -1,9 +1,9 @@
-#include "mavlink_component_metadata.h"
+#include "mavlink_component_metadata.hpp"
 #include "callback_list.tpp"
-#include "fs_utils.h"
-#include "inflate_lzma.h"
-#include "unused.h"
-#include "system_impl.h"
+#include "fs_utils.hpp"
+#include "inflate_lzma.hpp"
+#include "unused.hpp"
+#include "system_impl.hpp"
 
 #include <utility>
 #include <filesystem>

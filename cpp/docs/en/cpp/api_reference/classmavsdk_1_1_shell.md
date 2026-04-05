@@ -1,5 +1,5 @@
 # mavsdk::Shell Class Reference
-`#include: shell.h`
+`#include: shell.hpp`
 
 ----
 

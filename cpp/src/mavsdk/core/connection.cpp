@@ -1,9 +1,9 @@
-#include "connection.h"
+#include "connection.hpp"
 
 #include <memory>
 #include <utility>
-#include "mavsdk_impl.h"
-#include "log.h"
+#include "mavsdk_impl.hpp"
+#include "log.hpp"
 
 #ifdef WINDOWS
 #include <winsock2.h>

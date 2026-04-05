@@ -4,7 +4,7 @@
 
 #include "calibration.h"
 
-#include <mavsdk/plugins/calibration/calibration.h>
+#include <mavsdk/plugins/calibration/calibration.hpp>
 #include <algorithm>
 #include <cstring>
 #include <mutex>

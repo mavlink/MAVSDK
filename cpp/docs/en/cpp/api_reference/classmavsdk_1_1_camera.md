@@ -1,5 +1,5 @@
 # mavsdk::Camera Class Reference
-`#include: camera.h`
+`#include: camera.hpp`
 
 ----
 

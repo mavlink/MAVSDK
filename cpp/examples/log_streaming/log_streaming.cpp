@@ -2,10 +2,10 @@
 // Example how to stream logs from PX4 or ArduPilot with MAVSDK.
 //
 
-#include <mavsdk/mavsdk.h>
-#include <mavsdk/base64.h>
-#include <mavsdk/plugins/log_streaming/log_streaming.h>
-#include <mavsdk/plugins/param/param.h>
+#include <mavsdk/mavsdk.hpp>
+#include <mavsdk/base64.hpp>
+#include <mavsdk/plugins/log_streaming/log_streaming.hpp>
+#include <mavsdk/plugins/param/param.hpp>
 
 #include <atomic>
 #include <chrono>

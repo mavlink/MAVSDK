@@ -5,10 +5,10 @@
 #include <future>
 #include <thread>
 
-#include "mavsdk.h"
-#include "log.h"
-#include "plugins/component_metadata/component_metadata.h"
-#include "plugins/component_metadata_server/component_metadata_server.h"
+#include "mavsdk.hpp"
+#include "log.hpp"
+#include "plugins/component_metadata/component_metadata.hpp"
+#include "plugins/component_metadata_server/component_metadata_server.hpp"
 #include <gtest/gtest.h>
 
 using namespace mavsdk;

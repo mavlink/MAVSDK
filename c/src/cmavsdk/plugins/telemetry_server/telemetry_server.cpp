@@ -4,7 +4,7 @@
 
 #include "telemetry_server.h"
 
-#include <mavsdk/plugins/telemetry_server/telemetry_server.h>
+#include <mavsdk/plugins/telemetry_server/telemetry_server.hpp>
 #include <algorithm>
 #include <cstring>
 #include <mutex>

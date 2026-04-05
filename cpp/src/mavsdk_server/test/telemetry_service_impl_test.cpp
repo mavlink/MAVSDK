@@ -7,10 +7,10 @@
 #include <random>
 #include <vector>
 
-#include "telemetry/mocks/telemetry_mock.h"
-#include "telemetry/telemetry_service_impl.h"
-#include "mocks/lazy_plugin_mock.h"
-#include "callback_list.h"
+#include "telemetry/mocks/telemetry_mock.hpp"
+#include "telemetry/telemetry_service_impl.hpp"
+#include "mocks/lazy_plugin_mock.hpp"
+#include "callback_list.hpp"
 
 namespace mavsdk {
 template<typename... Args> class FakeHandle {

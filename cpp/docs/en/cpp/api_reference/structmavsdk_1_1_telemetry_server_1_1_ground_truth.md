@@ -1,5 +1,5 @@
 # mavsdk::TelemetryServer::GroundTruth Struct Reference
-`#include: telemetry_server.h`
+`#include: telemetry_server.hpp`
 
 ----
 
@@ -14,7 +14,7 @@ double [latitude_deg](#structmavsdk_1_1_telemetry_server_1_1_ground_truth_1a30e8
 
 double [longitude_deg](#structmavsdk_1_1_telemetry_server_1_1_ground_truth_1ac56635344c06e62105aaaadbd302bd87) {double(NAN)} - Longitude in degrees (range: -180 to 180)
 
-float [absolute_altitude_m](#structmavsdk_1_1_telemetry_server_1_1_ground_truth_1a50114cbbdf521bdd162a524e9978ca77) { float(NAN)} - Altitude AMSL (above mean sea level) in metres.
+float [absolute_altitude_m](#structmavsdk_1_1_telemetry_server_1_1_ground_truth_1a50114cbbdf521bdd162a524e9978ca77) {float(NAN)} - Altitude AMSL (above mean sea level) in metres.
 
 uint64_t [timestamp_us](#structmavsdk_1_1_telemetry_server_1_1_ground_truth_1afd45c27cbebbc8ed59658a10ddb81a56) {} - Timestamp in microseconds (since system boot)
 
@@ -45,7 +45,7 @@ Longitude in degrees (range: -180 to 180)
 ### absolute_altitude_m {#structmavsdk_1_1_telemetry_server_1_1_ground_truth_1a50114cbbdf521bdd162a524e9978ca77}
 
 ```cpp
-float mavsdk::TelemetryServer::GroundTruth::absolute_altitude_m { float(NAN)}
+float mavsdk::TelemetryServer::GroundTruth::absolute_altitude_m {float(NAN)}
 ```
 
 

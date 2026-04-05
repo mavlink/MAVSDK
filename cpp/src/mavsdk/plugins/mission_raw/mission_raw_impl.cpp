@@ -1,12 +1,12 @@
-#include "mission_raw_impl.h"
-#include "mission_import.h"
-#include "system.h"
+#include "mission_raw_impl.hpp"
+#include "mission_import.hpp"
+#include "system.hpp"
 #include "callback_list.tpp"
 
 #include <fstream> // for `std::ifstream`
 #include <sstream> // for `std::stringstream`
 
-#include "mavsdk_export.h"
+#include "mavsdk_export.hpp"
 
 namespace mavsdk {
 

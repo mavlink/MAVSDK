@@ -1,7 +1,7 @@
-#include "mavsdk.h"
-#include "plugins/camera/camera.h"
-#include "plugins/camera_server/camera_server.h"
-#include "log.h"
+#include "mavsdk.hpp"
+#include "plugins/camera/camera.hpp"
+#include "plugins/camera_server/camera_server.hpp"
+#include "log.hpp"
 #include <atomic>
 #include <future>
 #include <mutex>

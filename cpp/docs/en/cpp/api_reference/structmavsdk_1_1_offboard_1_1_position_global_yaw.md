@@ -1,5 +1,5 @@
 # mavsdk::Offboard::PositionGlobalYaw Struct Reference
-`#include: offboard.h`
+`#include: offboard.hpp`
 
 ----
 

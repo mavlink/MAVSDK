@@ -1,10 +1,10 @@
 #include <cmath>
 #include <utility>
-#include "mavlink_address.h"
-#include "math_utils.h"
-#include "offboard_impl.h"
-#include "mavsdk_impl.h"
-#include "px4_custom_mode.h"
+#include "mavlink_address.hpp"
+#include "math_utils.hpp"
+#include "offboard_impl.hpp"
+#include "mavsdk_impl.hpp"
+#include "px4_custom_mode.hpp"
 
 namespace mavsdk {
 

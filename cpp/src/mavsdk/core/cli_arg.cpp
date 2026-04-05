@@ -1,5 +1,5 @@
-#include "cli_arg.h"
-#include "log.h"
+#include "cli_arg.hpp"
+#include "log.hpp"
 #include <cctype>
 #include <algorithm>
 #include <limits>

@@ -1,5 +1,5 @@
 # mavsdk::TelemetryServer::StatusText Struct Reference
-`#include: telemetry_server.h`
+`#include: telemetry_server.hpp`
 
 ----
 

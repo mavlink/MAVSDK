@@ -1,5 +1,5 @@
 # mavsdk::Telemetry::Battery Struct Reference
-`#include: telemetry.h`
+`#include: telemetry.hpp`
 
 ----
 
@@ -18,9 +18,9 @@ float [voltage_v](#structmavsdk_1_1_telemetry_1_1_battery_1aefd1d5569ff2a69bf507
 
 float [current_battery_a](#structmavsdk_1_1_telemetry_1_1_battery_1a8c459191787a49013c73a402aa6441b6) {float(NAN)} - [Battery](structmavsdk_1_1_telemetry_1_1_battery.md) current in Amps, NAN if autopilot does not measure the current.
 
-float [capacity_consumed_ah](#structmavsdk_1_1_telemetry_1_1_battery_1a3593f72c606514287f2bc467408326cc) { float(NAN)} - Consumed charge in Amp hours, NAN if autopilot does not provide consumption estimate.
+float [capacity_consumed_ah](#structmavsdk_1_1_telemetry_1_1_battery_1a3593f72c606514287f2bc467408326cc) {float(NAN)} - Consumed charge in Amp hours, NAN if autopilot does not provide consumption estimate.
 
-float [remaining_percent](#structmavsdk_1_1_telemetry_1_1_battery_1aec821550739844e0fa3fe18f91e6fda7) { float(NAN)} - Estimated battery remaining (range: 0 to 100)
+float [remaining_percent](#structmavsdk_1_1_telemetry_1_1_battery_1aec821550739844e0fa3fe18f91e6fda7) {float(NAN)} - Estimated battery remaining (range: 0 to 100)
 
 float [time_remaining_s](#structmavsdk_1_1_telemetry_1_1_battery_1a9dd00470568d20ccda1b502f8ddf4ff1) {float(NAN)} - Estimated battery usage time remaining.
 
@@ -73,7 +73,7 @@ float mavsdk::Telemetry::Battery::current_battery_a {float(NAN)}
 ### capacity_consumed_ah {#structmavsdk_1_1_telemetry_1_1_battery_1a3593f72c606514287f2bc467408326cc}
 
 ```cpp
-float mavsdk::Telemetry::Battery::capacity_consumed_ah { float(NAN)}
+float mavsdk::Telemetry::Battery::capacity_consumed_ah {float(NAN)}
 ```
 
 
@@ -83,7 +83,7 @@ Consumed charge in Amp hours, NAN if autopilot does not provide consumption esti
 ### remaining_percent {#structmavsdk_1_1_telemetry_1_1_battery_1aec821550739844e0fa3fe18f91e6fda7}
 
 ```cpp
-float mavsdk::Telemetry::Battery::remaining_percent { float(NAN)}
+float mavsdk::Telemetry::Battery::remaining_percent {float(NAN)}
 ```
 
 

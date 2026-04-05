@@ -1,7 +1,7 @@
-#include "log.h"
-#include "mavsdk.h"
-#include "plugins/mission/mission.h"
-#include "plugins/mission_raw_server/mission_raw_server.h"
+#include "log.hpp"
+#include "mavsdk.hpp"
+#include "plugins/mission/mission.hpp"
+#include "plugins/mission_raw_server/mission_raw_server.hpp"
 #include <atomic>
 #include <future>
 #include <thread>

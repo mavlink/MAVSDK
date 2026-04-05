@@ -4,8 +4,8 @@
 
 #include <iomanip>
 
-#include "camera_impl.h"
-#include "plugins/camera/camera.h"
+#include "camera_impl.hpp"
+#include "plugins/camera/camera.hpp"
 
 namespace mavsdk {
 

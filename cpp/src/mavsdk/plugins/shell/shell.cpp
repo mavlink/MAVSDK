@@ -4,8 +4,8 @@
 
 #include <iomanip>
 
-#include "shell_impl.h"
-#include "plugins/shell/shell.h"
+#include "shell_impl.hpp"
+#include "plugins/shell/shell.hpp"
 
 namespace mavsdk {
 

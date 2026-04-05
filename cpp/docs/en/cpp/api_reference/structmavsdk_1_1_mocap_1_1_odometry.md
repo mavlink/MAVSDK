@@ -1,5 +1,5 @@
 # mavsdk::Mocap::Odometry Struct Reference
-`#include: mocap.h`
+`#include: mocap.hpp`
 
 ----
 

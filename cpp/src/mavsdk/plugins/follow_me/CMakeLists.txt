@@ -10,6 +10,6 @@ target_include_directories(mavsdk PUBLIC
     )
 
 install(FILES
-    include/plugins/follow_me/follow_me.h
+    include/plugins/follow_me/follow_me.hpp
     DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/mavsdk/plugins/follow_me
 )

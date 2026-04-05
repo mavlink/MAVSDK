@@ -1,5 +1,5 @@
 # mavsdk::Param::FloatParam Struct Reference
-`#include: param.h`
+`#include: param.hpp`
 
 ----
 

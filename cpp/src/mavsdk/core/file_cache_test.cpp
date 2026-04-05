@@ -1,8 +1,8 @@
 
 #include <gtest/gtest.h>
 #include <fstream>
-#include "file_cache.h"
-#include "fs_utils.h"
+#include "file_cache.hpp"
+#include "fs_utils.hpp"
 
 using namespace mavsdk;
 

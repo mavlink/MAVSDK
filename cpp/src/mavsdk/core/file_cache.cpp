@@ -1,6 +1,6 @@
 
-#include "file_cache.h"
-#include "log.h"
+#include "file_cache.hpp"
+#include "log.hpp"
 
 #include <cstring>
 #include <fstream>

@@ -1,5 +1,5 @@
 # mavsdk::Mission::ProgressData Struct Reference
-`#include: mission.h`
+`#include: mission.hpp`
 
 ----
 

@@ -5,8 +5,8 @@
 
 #include <iomanip>
 
-#include "log_streaming_impl.h"
-#include "plugins/log_streaming/log_streaming.h"
+#include "log_streaming_impl.hpp"
+#include "plugins/log_streaming/log_streaming.hpp"
 
 namespace mavsdk {
 

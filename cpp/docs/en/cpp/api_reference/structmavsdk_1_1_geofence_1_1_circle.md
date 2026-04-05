@@ -1,5 +1,5 @@
 # mavsdk::Geofence::Circle Struct Reference
-`#include: geofence.h`
+`#include: geofence.hpp`
 
 ----
 

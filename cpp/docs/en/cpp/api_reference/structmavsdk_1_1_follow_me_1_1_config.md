@@ -1,5 +1,5 @@
 # mavsdk::FollowMe::Config Struct Reference
-`#include: follow_me.h`
+`#include: follow_me.hpp`
 
 ----
 
@@ -17,7 +17,7 @@ enum [FollowAltitudeMode](#structmavsdk_1_1_follow_me_1_1_config_1a25f3b39bc6d0e
 ## Data Fields
 
 
-float [follow_height_m](#structmavsdk_1_1_follow_me_1_1_config_1a221d2136ba04ffc0e46cd17f992f0d86) { 8.0f} - [m] Follow height in meters (recommended minimum 8 meters)
+float [follow_height_m](#structmavsdk_1_1_follow_me_1_1_config_1a221d2136ba04ffc0e46cd17f992f0d86) {8.0f} - [m] Follow height in meters (recommended minimum 8 meters)
 
 float [follow_distance_m](#structmavsdk_1_1_follow_me_1_1_config_1a2f1407099516da129f650875e676a7eb) {8.0f} - [m] Follow distance to target in meters (recommended minimum 4 meter)
 
@@ -25,9 +25,9 @@ float [responsiveness](#structmavsdk_1_1_follow_me_1_1_config_1a3b0bced94506c424
 
 [FollowAltitudeMode](structmavsdk_1_1_follow_me_1_1_config.md#structmavsdk_1_1_follow_me_1_1_config_1a25f3b39bc6d0eda07891537478bed85b) [altitude_mode](#structmavsdk_1_1_follow_me_1_1_config_1a70d86547c8f23e1fbd2b66632b484dcd) {} - Follow Altitude control mode.
 
-float [max_tangential_vel_m_s](#structmavsdk_1_1_follow_me_1_1_config_1aa466aeef1806c3053a9558c9e1ebf8b9) { 8.0f} - [m/s] Maximum orbit tangential velocity relative to the target, in meters per second. Higher value = More aggressive follow angle tracking.
+float [max_tangential_vel_m_s](#structmavsdk_1_1_follow_me_1_1_config_1aa466aeef1806c3053a9558c9e1ebf8b9) {8.0f} - [m/s] Maximum orbit tangential velocity relative to the target, in meters per second. Higher value = More aggressive follow angle tracking.
 
-float [follow_angle_deg](#structmavsdk_1_1_follow_me_1_1_config_1a15d09482cd57a3d4a51ce9896ac37143) { 180.0f} - [deg] Follow Angle relative to the target. 0 equals following in front of the target's direction. Angle increases in Clockwise direction, so following from right would be 90 degrees, from the left is -90 degrees, and so on.
+float [follow_angle_deg](#structmavsdk_1_1_follow_me_1_1_config_1a15d09482cd57a3d4a51ce9896ac37143) {180.0f} - [deg] Follow Angle relative to the target. 0 equals following in front of the target's direction. Angle increases in Clockwise direction, so following from right would be 90 degrees, from the left is -90 degrees, and so on.
 
 
 ## Member Enumeration Documentation
@@ -51,7 +51,7 @@ Value | Description
 ### follow_height_m {#structmavsdk_1_1_follow_me_1_1_config_1a221d2136ba04ffc0e46cd17f992f0d86}
 
 ```cpp
-float mavsdk::FollowMe::Config::follow_height_m { 8.0f}
+float mavsdk::FollowMe::Config::follow_height_m {8.0f}
 ```
 
 
@@ -91,7 +91,7 @@ Follow Altitude control mode.
 ### max_tangential_vel_m_s {#structmavsdk_1_1_follow_me_1_1_config_1aa466aeef1806c3053a9558c9e1ebf8b9}
 
 ```cpp
-float mavsdk::FollowMe::Config::max_tangential_vel_m_s { 8.0f}
+float mavsdk::FollowMe::Config::max_tangential_vel_m_s {8.0f}
 ```
 
 
@@ -101,7 +101,7 @@ float mavsdk::FollowMe::Config::max_tangential_vel_m_s { 8.0f}
 ### follow_angle_deg {#structmavsdk_1_1_follow_me_1_1_config_1a15d09482cd57a3d4a51ce9896ac37143}
 
 ```cpp
-float mavsdk::FollowMe::Config::follow_angle_deg { 180.0f}
+float mavsdk::FollowMe::Config::follow_angle_deg {180.0f}
 ```
 
 

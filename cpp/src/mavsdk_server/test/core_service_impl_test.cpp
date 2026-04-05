@@ -6,8 +6,8 @@
 #include <memory>
 #include <vector>
 
-#include "core_service_impl.h"
-#include "mocks/mavsdk_mock.h"
+#include "core_service_impl.hpp"
+#include "mocks/mavsdk_mock.hpp"
 
 namespace {
 

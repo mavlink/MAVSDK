@@ -1,5 +1,5 @@
 # mavsdk::ServerUtility Class Reference
-`#include: server_utility.h`
+`#include: server_utility.hpp`
 
 ----
 

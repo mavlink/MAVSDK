@@ -1,12 +1,12 @@
-#include "mavsdk.h"
-#include "plugins/camera/camera.h"
-#include "plugins/camera_server/camera_server.h"
-#include "plugins/ftp_server/ftp_server.h"
+#include "mavsdk.hpp"
+#include "plugins/camera/camera.hpp"
+#include "plugins/camera_server/camera_server.hpp"
+#include "plugins/ftp_server/ftp_server.hpp"
 #include <future>
 #include <mutex>
 #include <thread>
 #include <gtest/gtest.h>
-#include <plugins/param_server/param_server.h>
+#include <plugins/param_server/param_server.hpp>
 
 using namespace mavsdk;
 

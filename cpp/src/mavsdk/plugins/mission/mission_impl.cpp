@@ -1,8 +1,8 @@
-#include "mission_impl.h"
-#include "system.h"
-#include "unused.h"
+#include "mission_impl.hpp"
+#include "system.hpp"
+#include "unused.hpp"
 #include "callback_list.tpp"
-#include "mavsdk_export.h"
+#include "mavsdk_export.hpp"
 #include <algorithm>
 #include <cmath>
 

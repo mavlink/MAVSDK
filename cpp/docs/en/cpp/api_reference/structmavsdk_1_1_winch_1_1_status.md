@@ -1,5 +1,5 @@
 # mavsdk::Winch::Status Struct Reference
-`#include: winch.h`
+`#include: winch.hpp`
 
 ----
 

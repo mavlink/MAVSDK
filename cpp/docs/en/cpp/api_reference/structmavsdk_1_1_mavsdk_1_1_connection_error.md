@@ -1,5 +1,5 @@
 # mavsdk::Mavsdk::ConnectionError Struct Reference
-`#include: mavsdk.h`
+`#include: mavsdk.hpp`
 
 ----
 

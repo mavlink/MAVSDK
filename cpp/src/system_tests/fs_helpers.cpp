@@ -1,5 +1,5 @@
-#include "fs_helpers.h"
-#include "log.h"
+#include "fs_helpers.hpp"
+#include "log.hpp"
 #include <algorithm>
 #include <iostream>
 #include <iterator>

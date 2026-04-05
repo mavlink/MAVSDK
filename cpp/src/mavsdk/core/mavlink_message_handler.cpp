@@ -1,7 +1,7 @@
 #include <algorithm>
 #include <mutex>
-#include "mavlink_message_handler.h"
-#include "log.h"
+#include "mavlink_message_handler.hpp"
+#include "log.hpp"
 
 namespace mavsdk {
 

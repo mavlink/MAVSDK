@@ -1,5 +1,5 @@
 # mavsdk::Info Class Reference
-`#include: info.h`
+`#include: info.hpp`
 
 ----
 

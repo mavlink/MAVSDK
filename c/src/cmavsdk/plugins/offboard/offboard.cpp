@@ -4,7 +4,7 @@
 
 #include "offboard.h"
 
-#include <mavsdk/plugins/offboard/offboard.h>
+#include <mavsdk/plugins/offboard/offboard.hpp>
 #include <algorithm>
 #include <cstring>
 #include <mutex>

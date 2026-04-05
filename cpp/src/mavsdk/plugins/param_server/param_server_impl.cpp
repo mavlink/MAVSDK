@@ -1,6 +1,6 @@
-#include "param_server_impl.h"
+#include "param_server_impl.hpp"
 #include "callback_list.tpp"
-#include "mavsdk_export.h"
+#include "mavsdk_export.hpp"
 #include <thread>
 #include <chrono>
 

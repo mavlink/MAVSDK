@@ -1,5 +1,5 @@
 # mavsdk::Mocap::AttitudePositionMocap Struct Reference
-`#include: mocap.h`
+`#include: mocap.hpp`
 
 ----
 

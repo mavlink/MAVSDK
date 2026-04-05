@@ -1,5 +1,5 @@
 # mavsdk::Offboard::PositionNedYaw Struct Reference
-`#include: offboard.h`
+`#include: offboard.hpp`
 
 ----
 

@@ -4,8 +4,8 @@
 
 #include <iomanip>
 
-#include "follow_me_impl.h"
-#include "plugins/follow_me/follow_me.h"
+#include "follow_me_impl.hpp"
+#include "plugins/follow_me/follow_me.hpp"
 
 namespace mavsdk {
 

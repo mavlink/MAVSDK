@@ -4,8 +4,8 @@
 
 #include <iomanip>
 
-#include "gripper_impl.h"
-#include "plugins/gripper/gripper.h"
+#include "gripper_impl.hpp"
+#include "plugins/gripper/gripper.hpp"
 
 namespace mavsdk {
 

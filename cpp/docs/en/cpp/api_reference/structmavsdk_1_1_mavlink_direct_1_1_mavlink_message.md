@@ -1,5 +1,5 @@
 # mavsdk::MavlinkDirect::MavlinkMessage Struct Reference
-`#include: mavlink_direct.h`
+`#include: mavlink_direct.hpp`
 
 ----
 

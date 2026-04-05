@@ -1,7 +1,7 @@
-#include "log.h"
-#include "mavsdk.h"
-#include "plugins/param/param.h"
-#include "plugins/param_server/param_server.h"
+#include "log.hpp"
+#include "mavsdk.hpp"
+#include "plugins/param/param.hpp"
+#include "plugins/param_server/param_server.hpp"
 #include <atomic>
 #include <thread>
 #include <gtest/gtest.h>

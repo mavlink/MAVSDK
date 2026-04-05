@@ -1,5 +1,5 @@
-#include "mavlink_statustext_handler.h"
-#include "log.h"
+#include "mavlink_statustext_handler.hpp"
+#include "log.hpp"
 
 namespace mavsdk {
 

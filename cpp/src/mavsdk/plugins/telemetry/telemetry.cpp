@@ -4,8 +4,8 @@
 
 #include <iomanip>
 
-#include "telemetry_impl.h"
-#include "plugins/telemetry/telemetry.h"
+#include "telemetry_impl.hpp"
+#include "plugins/telemetry/telemetry.hpp"
 
 namespace mavsdk {
 

@@ -1,5 +1,5 @@
 # mavsdk::Offboard::ActuatorControl Struct Reference
-`#include: offboard.h`
+`#include: offboard.hpp`
 
 ----
 

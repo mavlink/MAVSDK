@@ -1,5 +1,5 @@
-#include "libmav_receiver.h"
-#include "mavsdk_impl.h"
+#include "libmav_receiver.hpp"
+#include "mavsdk_impl.hpp"
 #include <mav/MessageSet.h>
 #include <mav/BufferParser.h>
 #include <json/json.h>
@@ -7,7 +7,7 @@
 #include <cstring>
 #include <sstream>
 #include <cmath>
-#include "log.h"
+#include "log.hpp"
 
 namespace mavsdk {
 

@@ -1,5 +1,5 @@
 # mavsdk::Calibration Class Reference
-`#include: calibration.h`
+`#include: calibration.hpp`
 
 ----
 

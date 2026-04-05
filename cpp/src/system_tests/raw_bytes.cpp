@@ -1,7 +1,7 @@
-#include "log.h"
-#include "mavsdk.h"
-#include "plugins/telemetry_server/telemetry_server.h"
-#include "mavlink_include.h"
+#include "log.hpp"
+#include "mavsdk.hpp"
+#include "plugins/telemetry_server/telemetry_server.hpp"
+#include "mavlink_include.hpp"
 #include <atomic>
 #include <chrono>
 #include <thread>

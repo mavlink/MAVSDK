@@ -4,8 +4,8 @@
 
 #include <iomanip>
 
-#include "log_files_impl.h"
-#include "plugins/log_files/log_files.h"
+#include "log_files_impl.hpp"
+#include "plugins/log_files/log_files.hpp"
 
 namespace mavsdk {
 

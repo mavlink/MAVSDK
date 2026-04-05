@@ -4,7 +4,7 @@
 
 #include "follow_me.h"
 
-#include <mavsdk/plugins/follow_me/follow_me.h>
+#include <mavsdk/plugins/follow_me/follow_me.hpp>
 #include <algorithm>
 #include <cstring>
 #include <mutex>

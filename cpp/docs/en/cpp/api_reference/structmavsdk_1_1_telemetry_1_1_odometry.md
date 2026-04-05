@@ -1,5 +1,5 @@
 # mavsdk::Telemetry::Odometry Struct Reference
-`#include: telemetry.h`
+`#include: telemetry.hpp`
 
 ----
 

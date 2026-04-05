@@ -4,7 +4,7 @@
 
 #include "shell.h"
 
-#include <mavsdk/plugins/shell/shell.h>
+#include <mavsdk/plugins/shell/shell.hpp>
 #include <algorithm>
 #include <cstring>
 #include <mutex>

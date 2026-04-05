@@ -1,5 +1,5 @@
 # mavsdk::Telemetry::ActuatorControlTarget Struct Reference
-`#include: telemetry.h`
+`#include: telemetry.hpp`
 
 ----
 

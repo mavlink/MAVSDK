@@ -1,5 +1,5 @@
-#include "timeout_handler.h"
-#include "unused.h"
+#include "timeout_handler.hpp"
+#include "unused.hpp"
 #include <gtest/gtest.h>
 
 #ifdef FAKE_TIME

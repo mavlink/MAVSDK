@@ -1,5 +1,5 @@
 # mavsdk::Camera::EulerAngle Struct Reference
-`#include: camera.h`
+`#include: camera.hpp`
 
 ----
 

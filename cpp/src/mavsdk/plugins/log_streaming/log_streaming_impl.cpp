@@ -1,12 +1,12 @@
 #include <future>
 
-#include "log_streaming_impl.h"
-#include "log_streaming_backend_px4.h"
-#include "log_streaming_backend_ardupilot.h"
-#include "plugins/log_streaming/log_streaming.h"
+#include "log_streaming_impl.hpp"
+#include "log_streaming_backend_px4.hpp"
+#include "log_streaming_backend_ardupilot.hpp"
+#include "plugins/log_streaming/log_streaming.hpp"
 #include "callback_list.tpp"
-#include "mavsdk_export.h"
-#include "base64.h"
+#include "mavsdk_export.hpp"
+#include "base64.hpp"
 
 namespace mavsdk {
 

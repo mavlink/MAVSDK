@@ -3,16 +3,16 @@
 #include <iostream>
 #include <thread>
 
-#include <mavsdk/mavsdk.h>
-#include <mavsdk/plugins/mavlink_passthrough/mavlink_passthrough.h>
-#include <mavsdk/plugins/telemetry/telemetry.h>
-#include <mavsdk/plugins/action/action.h>
-#include <mavsdk/plugins/param_server/param_server.h>
-#include <mavsdk/plugins/param/param.h>
-#include <mavsdk/plugins/telemetry_server/telemetry_server.h>
-#include <mavsdk/plugins/action_server/action_server.h>
-#include <mavsdk/plugins/mission_raw_server/mission_raw_server.h>
-#include <mavsdk/plugins/mission/mission.h>
+#include <mavsdk/mavsdk.hpp>
+#include <mavsdk/plugins/mavlink_passthrough/mavlink_passthrough.hpp>
+#include <mavsdk/plugins/telemetry/telemetry.hpp>
+#include <mavsdk/plugins/action/action.hpp>
+#include <mavsdk/plugins/param_server/param_server.hpp>
+#include <mavsdk/plugins/param/param.hpp>
+#include <mavsdk/plugins/telemetry_server/telemetry_server.hpp>
+#include <mavsdk/plugins/action_server/action_server.hpp>
+#include <mavsdk/plugins/mission_raw_server/mission_raw_server.hpp>
+#include <mavsdk/plugins/mission/mission.hpp>
 
 /*
  This example runs a MAVLink "autopilot" utilising the MAVSDK server plugins

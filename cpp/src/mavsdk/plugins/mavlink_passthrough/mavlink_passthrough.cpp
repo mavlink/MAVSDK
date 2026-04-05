@@ -1,5 +1,5 @@
-#include "plugins/mavlink_passthrough/mavlink_passthrough.h"
-#include "mavlink_passthrough_impl.h"
+#include "plugins/mavlink_passthrough/mavlink_passthrough.hpp"
+#include "mavlink_passthrough_impl.hpp"
 
 namespace mavsdk {
 

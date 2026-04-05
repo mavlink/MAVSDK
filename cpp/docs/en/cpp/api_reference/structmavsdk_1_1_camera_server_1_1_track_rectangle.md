@@ -1,5 +1,5 @@
 # mavsdk::CameraServer::TrackRectangle Struct Reference
-`#include: camera_server.h`
+`#include: camera_server.hpp`
 
 ----
 

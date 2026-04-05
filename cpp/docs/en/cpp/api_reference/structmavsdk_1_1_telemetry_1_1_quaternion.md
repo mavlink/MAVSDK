@@ -1,5 +1,5 @@
 # mavsdk::Telemetry::Quaternion Struct Reference
-`#include: telemetry.h`
+`#include: telemetry.hpp`
 
 ----
 

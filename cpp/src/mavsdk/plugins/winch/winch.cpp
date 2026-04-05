@@ -4,8 +4,8 @@
 
 #include <iomanip>
 
-#include "winch_impl.h"
-#include "plugins/winch/winch.h"
+#include "winch_impl.hpp"
+#include "plugins/winch/winch.hpp"
 
 namespace mavsdk {
 

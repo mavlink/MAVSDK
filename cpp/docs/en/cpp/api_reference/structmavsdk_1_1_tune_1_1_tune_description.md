@@ -1,5 +1,5 @@
 # mavsdk::Tune::TuneDescription Struct Reference
-`#include: tune.h`
+`#include: tune.hpp`
 
 ----
 

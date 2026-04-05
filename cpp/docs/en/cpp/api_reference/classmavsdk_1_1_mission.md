@@ -1,5 +1,5 @@
 # mavsdk::Mission Class Reference
-`#include: mission.h`
+`#include: mission.hpp`
 
 ----
 

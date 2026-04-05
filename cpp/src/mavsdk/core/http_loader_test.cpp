@@ -1,9 +1,9 @@
-#include "mavsdk.h"
-#include "http_loader.h"
-#include "curl_include.h"
-#include "curl_wrapper.h"
-#include "curl_wrapper_types.h"
-#include "unused.h"
+#include "mavsdk.hpp"
+#include "http_loader.hpp"
+#include "curl_include.hpp"
+#include "curl_wrapper.hpp"
+#include "curl_wrapper_types.hpp"
+#include "unused.hpp"
 #include <fstream>
 #include <iostream>
 #include <chrono>

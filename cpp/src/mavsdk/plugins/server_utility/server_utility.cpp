@@ -5,8 +5,8 @@
 
 #include <iomanip>
 
-#include "server_utility_impl.h"
-#include "plugins/server_utility/server_utility.h"
+#include "server_utility_impl.hpp"
+#include "plugins/server_utility/server_utility.hpp"
 
 namespace mavsdk {
 

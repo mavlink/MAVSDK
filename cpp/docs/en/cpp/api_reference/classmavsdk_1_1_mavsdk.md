@@ -1,5 +1,5 @@
 # mavsdk::Mavsdk Class Reference
-`#include: mavsdk.h`
+`#include: mavsdk.hpp`
 
 ----
 

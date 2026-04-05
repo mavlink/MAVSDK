@@ -1,4 +1,4 @@
-#include "mavlink_parameter_helper.h"
+#include "mavlink_parameter_helper.hpp"
 #include <cstring>
 
 namespace mavsdk {

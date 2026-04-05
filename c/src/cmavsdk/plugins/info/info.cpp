@@ -4,7 +4,7 @@
 
 #include "info.h"
 
-#include <mavsdk/plugins/info/info.h>
+#include <mavsdk/plugins/info/info.hpp>
 #include <algorithm>
 #include <cstring>
 #include <mutex>

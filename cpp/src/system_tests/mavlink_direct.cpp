@@ -1,8 +1,8 @@
-#include "log.h"
-#include "mavsdk.h"
-#include "plugins/mavlink_direct/mavlink_direct.h"
-#include "plugins/telemetry/telemetry.h"
-#include "plugins/telemetry_server/telemetry_server.h"
+#include "log.hpp"
+#include "mavsdk.hpp"
+#include "plugins/mavlink_direct/mavlink_direct.hpp"
+#include "plugins/telemetry/telemetry.hpp"
+#include "plugins/telemetry_server/telemetry_server.hpp"
 #include <chrono>
 #include <thread>
 #include <future>

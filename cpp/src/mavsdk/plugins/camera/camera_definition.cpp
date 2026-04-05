@@ -1,5 +1,5 @@
-#include "log.h"
-#include "camera_definition.h"
+#include "log.hpp"
+#include "camera_definition.hpp"
 
 namespace mavsdk {
 

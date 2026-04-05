@@ -1,5 +1,5 @@
 # mavsdk::MissionRaw::MissionImportData Struct Reference
-`#include: mission_raw.h`
+`#include: mission_raw.hpp`
 
 ----
 

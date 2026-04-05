@@ -1,5 +1,5 @@
 # mavsdk::MavlinkPassthrough Class Reference
-`#include: mavlink_passthrough.h`
+`#include: mavlink_passthrough.hpp`
 
 ----
 

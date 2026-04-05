@@ -5,8 +5,8 @@
 
 #include <iomanip>
 
-#include "component_metadata_server_impl.h"
-#include "plugins/component_metadata_server/component_metadata_server.h"
+#include "component_metadata_server_impl.hpp"
+#include "plugins/component_metadata_server/component_metadata_server.hpp"
 
 namespace mavsdk {
 

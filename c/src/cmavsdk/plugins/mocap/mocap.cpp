@@ -4,7 +4,7 @@
 
 #include "mocap.h"
 
-#include <mavsdk/plugins/mocap/mocap.h>
+#include <mavsdk/plugins/mocap/mocap.hpp>
 #include <algorithm>
 #include <cstring>
 #include <mutex>

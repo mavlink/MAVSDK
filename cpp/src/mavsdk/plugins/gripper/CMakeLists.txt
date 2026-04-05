@@ -10,6 +10,6 @@ target_include_directories(mavsdk PUBLIC
     )
 
 install(FILES
-    include/plugins/gripper/gripper.h
+    include/plugins/gripper/gripper.hpp
     DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/mavsdk/plugins/gripper
 )

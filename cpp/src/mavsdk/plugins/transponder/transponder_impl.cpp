@@ -1,6 +1,6 @@
-#include "transponder_impl.h"
+#include "transponder_impl.hpp"
 #include "callback_list.tpp"
-#include "mavsdk_export.h"
+#include "mavsdk_export.hpp"
 
 namespace mavsdk {
 

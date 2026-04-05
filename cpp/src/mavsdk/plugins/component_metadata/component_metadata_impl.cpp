@@ -1,4 +1,4 @@
-#include "component_metadata_impl.h"
+#include "component_metadata_impl.hpp"
 
 namespace mavsdk {
 

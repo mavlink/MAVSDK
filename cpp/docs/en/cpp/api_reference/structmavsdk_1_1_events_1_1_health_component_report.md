@@ -1,5 +1,5 @@
 # mavsdk::Events::HealthComponentReport Struct Reference
-`#include: events.h`
+`#include: events.hpp`
 
 ----
 

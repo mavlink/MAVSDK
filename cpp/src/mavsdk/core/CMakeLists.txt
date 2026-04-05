@@ -9,8 +9,8 @@ get_target_property(
     INTERFACE_INCLUDE_DIRECTORIES
 )
 
-configure_file(version.h.in version.h)
-configure_file(include/mavsdk/mavlink_include.h.in include/mavsdk/mavlink_include.h)
+configure_file(version.hpp.in version.hpp)
+configure_file(include/mavsdk/mavlink_include.hpp.in include/mavsdk/mavlink_include.hpp)
 
 # Generate embedded XML header for libmav
 if(NOT MAVLINK_XML_PATH)
@@ -24,7 +24,7 @@ set(MAVLINK_STANDARD_XML "${MAVLINK_XML_PATH}/standard.xml")
 set(MAVLINK_COMMON_XML "${MAVLINK_XML_PATH}/common.xml")
 set(MAVLINK_ARDUPILOTMEGA_XML "${MAVLINK_XML_PATH}/ardupilotmega.xml")
 
-set(EMBEDDED_XML_HEADER "${CMAKE_CURRENT_BINARY_DIR}/embedded_mavlink_xml.h")
+set(EMBEDDED_XML_HEADER "${CMAKE_CURRENT_BINARY_DIR}/embedded_mavlink_xml.hpp")
 
 add_custom_command(
     OUTPUT ${EMBEDDED_XML_HEADER}
@@ -219,25 +219,25 @@ install(TARGETS mavsdk
     )
 
 install(FILES
-    include/mavsdk/autopilot.h
-    include/mavsdk/base64.h
-    include/mavsdk/compatibility_mode.h
-    include/mavsdk/component_type.h
-    include/mavsdk/connection_result.h
-    include/mavsdk/deprecated.h
-    include/mavsdk/handle.h
-    include/mavsdk/system.h
-    include/mavsdk/mavsdk.h
-    include/mavsdk/mavsdk_export.h
-    include/mavsdk/log_callback.h
-    include/mavsdk/plugin_base.h
-    include/mavsdk/server_plugin_base.h
-    include/mavsdk/geometry.h
-    include/mavsdk/server_component.h
-    include/mavsdk/mavlink_address.h
-    include/mavsdk/vehicle.h
-    include/mavsdk/overloaded.h
-    ${CMAKE_CURRENT_BINARY_DIR}/include/mavsdk/mavlink_include.h
+    include/mavsdk/autopilot.hpp
+    include/mavsdk/base64.hpp
+    include/mavsdk/compatibility_mode.hpp
+    include/mavsdk/component_type.hpp
+    include/mavsdk/connection_result.hpp
+    include/mavsdk/deprecated.hpp
+    include/mavsdk/handle.hpp
+    include/mavsdk/system.hpp
+    include/mavsdk/mavsdk.hpp
+    include/mavsdk/mavsdk_export.hpp
+    include/mavsdk/log_callback.hpp
+    include/mavsdk/plugin_base.hpp
+    include/mavsdk/server_plugin_base.hpp
+    include/mavsdk/geometry.hpp
+    include/mavsdk/server_component.hpp
+    include/mavsdk/mavlink_address.hpp
+    include/mavsdk/vehicle.hpp
+    include/mavsdk/overloaded.hpp
+    ${CMAKE_CURRENT_BINARY_DIR}/include/mavsdk/mavlink_include.hpp
     DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/mavsdk"
 )
 

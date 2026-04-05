@@ -5,8 +5,8 @@
 
 #include <iomanip>
 
-#include "manual_control_impl.h"
-#include "plugins/manual_control/manual_control.h"
+#include "manual_control_impl.hpp"
+#include "plugins/manual_control/manual_control.hpp"
 
 namespace mavsdk {
 

@@ -8,7 +8,7 @@
 #include <memory>
 #include <string>
 
-#include <mavsdk/mavsdk.h>
+#include <mavsdk/mavsdk.hpp>
 
 using namespace mavsdk;
 

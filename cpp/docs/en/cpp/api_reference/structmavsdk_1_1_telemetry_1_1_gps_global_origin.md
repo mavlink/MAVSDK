@@ -1,5 +1,5 @@
 # mavsdk::Telemetry::GpsGlobalOrigin Struct Reference
-`#include: telemetry.h`
+`#include: telemetry.hpp`
 
 ----
 

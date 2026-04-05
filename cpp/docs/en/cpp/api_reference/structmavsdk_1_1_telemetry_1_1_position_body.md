@@ -1,5 +1,5 @@
 # mavsdk::Telemetry::PositionBody Struct Reference
-`#include: telemetry.h`
+`#include: telemetry.hpp`
 
 ----
 

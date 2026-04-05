@@ -4,7 +4,7 @@
 
 #include "mission_raw.h"
 
-#include <mavsdk/plugins/mission_raw/mission_raw.h>
+#include <mavsdk/plugins/mission_raw/mission_raw.hpp>
 #include <algorithm>
 #include <cstring>
 #include <mutex>

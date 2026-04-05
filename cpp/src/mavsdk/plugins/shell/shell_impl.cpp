@@ -1,8 +1,8 @@
-#include "shell_impl.h"
-#include "mavlink_address.h"
-#include "system.h"
+#include "shell_impl.hpp"
+#include "mavlink_address.hpp"
+#include "system.hpp"
 #include "callback_list.tpp"
-#include "mavsdk_export.h"
+#include "mavsdk_export.hpp"
 
 namespace mavsdk {
 

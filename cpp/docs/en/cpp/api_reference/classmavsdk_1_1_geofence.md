@@ -1,5 +1,5 @@
 # mavsdk::Geofence Class Reference
-`#include: geofence.h`
+`#include: geofence.hpp`
 
 ----
 

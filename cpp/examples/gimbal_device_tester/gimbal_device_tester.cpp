@@ -4,8 +4,8 @@
 //
 // Author: Julian Oes <julian@oes.ch>
 
-#include <mavsdk/mavsdk.h>
-#include <mavsdk/plugins/mavlink_passthrough/mavlink_passthrough.h>
+#include <mavsdk/mavsdk.hpp>
+#include <mavsdk/plugins/mavlink_passthrough/mavlink_passthrough.hpp>
 #include <chrono>
 #include <cstdint>
 #include <future>

@@ -2,7 +2,7 @@
 // Example how to use C API of mavsdk_server.
 //
 
-#include <mavsdk/mavsdk.h>
+#include <mavsdk/mavsdk.hpp>
 #include <mavsdk/mavsdk_server/mavsdk_server_api.h>
 #include <atomic>
 #include <iostream>

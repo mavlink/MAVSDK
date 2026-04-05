@@ -1,5 +1,5 @@
 # mavsdk::Mission::MissionItem Struct Reference
-`#include: mission.h`
+`#include: mission.hpp`
 
 ----
 
@@ -25,11 +25,11 @@ double [latitude_deg](#structmavsdk_1_1_mission_1_1_mission_item_1af39e708639112
 
 double [longitude_deg](#structmavsdk_1_1_mission_1_1_mission_item_1afecfad42d0976a85842cc9489694c062) {double(NAN)} - Longitude in degrees (range: -180 to +180)
 
-float [relative_altitude_m](#structmavsdk_1_1_mission_1_1_mission_item_1aeb6371f7a6fe5f81f96d4826db550602) { float(NAN)} - Altitude relative to takeoff altitude in metres.
+float [relative_altitude_m](#structmavsdk_1_1_mission_1_1_mission_item_1aeb6371f7a6fe5f81f96d4826db550602) {float(NAN)} - Altitude relative to takeoff altitude in metres.
 
-float [speed_m_s](#structmavsdk_1_1_mission_1_1_mission_item_1ab48b7ba0f5a85056ac516585f8df9729) { float(NAN)} - Speed to use after this mission item (in metres/second)
+float [speed_m_s](#structmavsdk_1_1_mission_1_1_mission_item_1ab48b7ba0f5a85056ac516585f8df9729) {float(NAN)} - Speed to use after this mission item (in metres/second)
 
-bool [is_fly_through](#structmavsdk_1_1_mission_1_1_mission_item_1ac01a5fd31bee531537ec87658a4a3561) { false} - True will make the drone fly through without stopping, while false will make the drone stop on the waypoint.
+bool [is_fly_through](#structmavsdk_1_1_mission_1_1_mission_item_1ac01a5fd31bee531537ec87658a4a3561) {false} - True will make the drone fly through without stopping, while false will make the drone stop on the waypoint.
 
 float [gimbal_pitch_deg](#structmavsdk_1_1_mission_1_1_mission_item_1af76dd7536ffd1fcad98c4e08fe33c791) {float(NAN)} - [Gimbal](classmavsdk_1_1_gimbal.md) pitch (in degrees)
 
@@ -39,13 +39,13 @@ float [gimbal_yaw_deg](#structmavsdk_1_1_mission_1_1_mission_item_1a6c0cf351a535
 
 float [loiter_time_s](#structmavsdk_1_1_mission_1_1_mission_item_1aa54196266e57f2a05ab46aa41fce1dd0) {float(NAN)} - Loiter time (in seconds)
 
-double [camera_photo_interval_s](#structmavsdk_1_1_mission_1_1_mission_item_1a7b48c46ecb52f115e5461a944f619612) { 1.0} - [Camera](classmavsdk_1_1_camera.md) photo interval to use after this mission item (in seconds)
+double [camera_photo_interval_s](#structmavsdk_1_1_mission_1_1_mission_item_1a7b48c46ecb52f115e5461a944f619612) {1.0} - [Camera](classmavsdk_1_1_camera.md) photo interval to use after this mission item (in seconds)
 
-float [acceptance_radius_m](#structmavsdk_1_1_mission_1_1_mission_item_1a9114a16c5405dacb35f45ae37f343665) { float(NAN)} - Radius for completing a mission item (in metres)
+float [acceptance_radius_m](#structmavsdk_1_1_mission_1_1_mission_item_1a9114a16c5405dacb35f45ae37f343665) {float(NAN)} - Radius for completing a mission item (in metres)
 
 float [yaw_deg](#structmavsdk_1_1_mission_1_1_mission_item_1a40af7ff4f2a346492d276255febd92c7) {float(NAN)} - Absolute yaw angle (in degrees)
 
-float [camera_photo_distance_m](#structmavsdk_1_1_mission_1_1_mission_item_1a0a2802a1cab28552e8f49389f472e1a9) { NAN} - [Camera](classmavsdk_1_1_camera.md) photo distance to use after this mission item (in meters)
+float [camera_photo_distance_m](#structmavsdk_1_1_mission_1_1_mission_item_1a0a2802a1cab28552e8f49389f472e1a9) {NAN} - [Camera](classmavsdk_1_1_camera.md) photo distance to use after this mission item (in meters)
 
 [VehicleAction](structmavsdk_1_1_mission_1_1_mission_item.md#structmavsdk_1_1_mission_1_1_mission_item_1abf579024f942deef18ef902839513743) [vehicle_action](#structmavsdk_1_1_mission_1_1_mission_item_1a0892ef1c7dd89ea18535689f69d5493a) {} - Vehicle action to trigger at this mission item.
 
@@ -110,7 +110,7 @@ Longitude in degrees (range: -180 to +180)
 ### relative_altitude_m {#structmavsdk_1_1_mission_1_1_mission_item_1aeb6371f7a6fe5f81f96d4826db550602}
 
 ```cpp
-float mavsdk::Mission::MissionItem::relative_altitude_m { float(NAN)}
+float mavsdk::Mission::MissionItem::relative_altitude_m {float(NAN)}
 ```
 
 
@@ -120,7 +120,7 @@ Altitude relative to takeoff altitude in metres.
 ### speed_m_s {#structmavsdk_1_1_mission_1_1_mission_item_1ab48b7ba0f5a85056ac516585f8df9729}
 
 ```cpp
-float mavsdk::Mission::MissionItem::speed_m_s { float(NAN)}
+float mavsdk::Mission::MissionItem::speed_m_s {float(NAN)}
 ```
 
 
@@ -130,7 +130,7 @@ Speed to use after this mission item (in metres/second)
 ### is_fly_through {#structmavsdk_1_1_mission_1_1_mission_item_1ac01a5fd31bee531537ec87658a4a3561}
 
 ```cpp
-bool mavsdk::Mission::MissionItem::is_fly_through { false}
+bool mavsdk::Mission::MissionItem::is_fly_through {false}
 ```
 
 
@@ -180,7 +180,7 @@ Loiter time (in seconds)
 ### camera_photo_interval_s {#structmavsdk_1_1_mission_1_1_mission_item_1a7b48c46ecb52f115e5461a944f619612}
 
 ```cpp
-double mavsdk::Mission::MissionItem::camera_photo_interval_s { 1.0}
+double mavsdk::Mission::MissionItem::camera_photo_interval_s {1.0}
 ```
 
 
@@ -190,7 +190,7 @@ double mavsdk::Mission::MissionItem::camera_photo_interval_s { 1.0}
 ### acceptance_radius_m {#structmavsdk_1_1_mission_1_1_mission_item_1a9114a16c5405dacb35f45ae37f343665}
 
 ```cpp
-float mavsdk::Mission::MissionItem::acceptance_radius_m { float(NAN)}
+float mavsdk::Mission::MissionItem::acceptance_radius_m {float(NAN)}
 ```
 
 
@@ -210,7 +210,7 @@ Absolute yaw angle (in degrees)
 ### camera_photo_distance_m {#structmavsdk_1_1_mission_1_1_mission_item_1a0a2802a1cab28552e8f49389f472e1a9}
 
 ```cpp
-float mavsdk::Mission::MissionItem::camera_photo_distance_m { NAN}
+float mavsdk::Mission::MissionItem::camera_photo_distance_m {NAN}
 ```
 
 

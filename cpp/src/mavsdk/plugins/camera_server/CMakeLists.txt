@@ -10,6 +10,6 @@ target_include_directories(mavsdk PUBLIC
     )
 
 install(FILES
-    include/plugins/camera_server/camera_server.h
+    include/plugins/camera_server/camera_server.hpp
     DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/mavsdk/plugins/camera_server
 )

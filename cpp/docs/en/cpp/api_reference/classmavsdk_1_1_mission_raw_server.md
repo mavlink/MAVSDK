@@ -1,5 +1,5 @@
 # mavsdk::MissionRawServer Class Reference
-`#include: mission_raw_server.h`
+`#include: mission_raw_server.hpp`
 
 ----
 

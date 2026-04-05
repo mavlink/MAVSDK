@@ -5,8 +5,8 @@
 
 #include <iomanip>
 
-#include "action_server_impl.h"
-#include "plugins/action_server/action_server.h"
+#include "action_server_impl.hpp"
+#include "plugins/action_server/action_server.hpp"
 
 namespace mavsdk {
 

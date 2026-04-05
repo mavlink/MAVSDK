@@ -4,8 +4,8 @@
 
 #include <iomanip>
 
-#include "action_impl.h"
-#include "plugins/action/action.h"
+#include "action_impl.hpp"
+#include "plugins/action/action.hpp"
 
 namespace mavsdk {
 

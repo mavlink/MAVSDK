@@ -1,6 +1,6 @@
 
-#include "fs_utils.h"
-#include "log.h"
+#include "fs_utils.hpp"
+#include "log.hpp"
 #include <algorithm>
 #include <cctype>
 #include <fstream>

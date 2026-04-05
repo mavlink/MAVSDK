@@ -4,8 +4,8 @@
 
 #include <iomanip>
 
-#include "geofence_impl.h"
-#include "plugins/geofence/geofence.h"
+#include "geofence_impl.hpp"
+#include "plugins/geofence/geofence.hpp"
 
 namespace mavsdk {
 

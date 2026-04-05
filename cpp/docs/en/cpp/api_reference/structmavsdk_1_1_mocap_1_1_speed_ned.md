@@ -1,5 +1,5 @@
 # mavsdk::Mocap::SpeedNed Struct Reference
-`#include: mocap.h`
+`#include: mocap.hpp`
 
 ----
 

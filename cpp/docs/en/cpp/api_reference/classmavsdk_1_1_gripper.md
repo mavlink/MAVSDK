@@ -1,5 +1,5 @@
 # mavsdk::Gripper Class Reference
-`#include: gripper.h`
+`#include: gripper.hpp`
 
 ----
 

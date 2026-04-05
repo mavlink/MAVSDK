@@ -4,8 +4,8 @@
 
 #include <chrono>
 #include <cstdint>
-#include <mavsdk/mavsdk.h>
-#include <mavsdk/plugins/info/info.h>
+#include <mavsdk/mavsdk.hpp>
+#include <mavsdk/plugins/info/info.hpp>
 #include <iostream>
 #include <future>
 #include <memory>

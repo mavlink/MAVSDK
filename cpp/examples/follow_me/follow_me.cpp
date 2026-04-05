@@ -4,10 +4,10 @@
 // sends them to the Follow Me plugin which are sent to drone.
 //
 
-#include <mavsdk/mavsdk.h>
-#include <mavsdk/plugins/action/action.h>
-#include <mavsdk/plugins/follow_me/follow_me.h>
-#include <mavsdk/plugins/telemetry/telemetry.h>
+#include <mavsdk/mavsdk.hpp>
+#include <mavsdk/plugins/action/action.hpp>
+#include <mavsdk/plugins/follow_me/follow_me.hpp>
+#include <mavsdk/plugins/telemetry/telemetry.hpp>
 #include <chrono>
 #include <future>
 #include <iostream>

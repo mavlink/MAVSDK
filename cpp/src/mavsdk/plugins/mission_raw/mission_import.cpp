@@ -1,6 +1,6 @@
-#include "log.h"
-#include "mission_import.h"
-#include "mavlink_include.h"
+#include "log.hpp"
+#include "mission_import.hpp"
+#include "mavlink_include.hpp"
 #include <cmath> // for `std::round`
 #include <sstream> // for `std::stringstream`
 

@@ -1,7 +1,7 @@
-#include "arm_authorizer_server_impl.h"
+#include "arm_authorizer_server_impl.hpp"
 
 #include <utility>
-#include "log.h"
+#include "log.hpp"
 
 namespace mavsdk {
 

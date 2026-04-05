@@ -6,10 +6,10 @@
 #include <string>
 #include <gtest/gtest.h>
 
-#include "log.h"
-#include "mavlink_include.h"
-#include "plugins/mission_raw/mission_raw.h"
-#include "mission_import.h"
+#include "log.hpp"
+#include "mavlink_include.hpp"
+#include "plugins/mission_raw/mission_raw.hpp"
+#include "mission_import.hpp"
 
 using namespace mavsdk;
 

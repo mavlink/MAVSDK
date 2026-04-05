@@ -1,5 +1,5 @@
-#include "mavlink_receiver.h"
-#include "log.h"
+#include "mavlink_receiver.hpp"
+#include "log.hpp"
 
 namespace mavsdk {
 

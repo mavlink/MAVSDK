@@ -2,8 +2,8 @@
 // Example how to use an FTP client with MAVSDK.
 //
 
-#include <mavsdk/mavsdk.h>
-#include <mavsdk/plugins/ftp/ftp.h>
+#include <mavsdk/mavsdk.hpp>
+#include <mavsdk/plugins/ftp/ftp.hpp>
 
 #include <functional>
 #include <future>

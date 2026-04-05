@@ -4,8 +4,8 @@
 
 #include <iomanip>
 
-#include "tune_impl.h"
-#include "plugins/tune/tune.h"
+#include "tune_impl.hpp"
+#include "plugins/tune/tune.hpp"
 
 namespace mavsdk {
 

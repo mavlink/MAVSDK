@@ -10,7 +10,7 @@ extern "C" {
 #include <stdint.h>
 #endif
 
-#include "mavsdk_export.h"
+#include "mavsdk_export.hpp"
 
 struct MavsdkServer;
 

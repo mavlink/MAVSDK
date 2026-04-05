@@ -1,7 +1,7 @@
 #include <functional>
-#include "param_impl.h"
-#include "system.h"
-#include "unused.h"
+#include "param_impl.hpp"
+#include "system.hpp"
+#include "unused.hpp"
 
 namespace mavsdk {
 

@@ -1,5 +1,5 @@
 # mavsdk::Telemetry::Imu Struct Reference
-`#include: telemetry.h`
+`#include: telemetry.hpp`
 
 ----
 

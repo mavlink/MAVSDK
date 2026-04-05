@@ -1,4 +1,4 @@
-#include "connection_result.h"
+#include "connection_result.hpp"
 #include <ostream>
 
 namespace mavsdk {

@@ -7,9 +7,9 @@
 #include <utility>
 #include <vector>
 
-#include "mission/mission_service_impl.h"
-#include "mission/mocks/mission_mock.h"
-#include "mocks/lazy_plugin_mock.h"
+#include "mission/mission_service_impl.hpp"
+#include "mission/mocks/mission_mock.hpp"
+#include "mocks/lazy_plugin_mock.hpp"
 
 namespace {
 

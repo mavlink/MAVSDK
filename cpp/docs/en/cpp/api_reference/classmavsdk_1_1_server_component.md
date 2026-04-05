@@ -1,5 +1,5 @@
 # mavsdk::ServerComponent Class Reference
-`#include: server_component.h`
+`#include: server_component.hpp`
 
 ----
 

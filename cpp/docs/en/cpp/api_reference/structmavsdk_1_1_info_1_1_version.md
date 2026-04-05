@@ -1,5 +1,5 @@
 # mavsdk::Info::Version Struct Reference
-`#include: info.h`
+`#include: info.hpp`
 
 ----
 

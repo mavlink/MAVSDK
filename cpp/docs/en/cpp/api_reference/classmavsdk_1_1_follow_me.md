@@ -1,5 +1,5 @@
 # mavsdk::FollowMe Class Reference
-`#include: follow_me.h`
+`#include: follow_me.hpp`
 
 ----
 

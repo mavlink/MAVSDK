@@ -4,7 +4,7 @@
 
 #include "camera_server.h"
 
-#include <mavsdk/plugins/camera_server/camera_server.h>
+#include <mavsdk/plugins/camera_server/camera_server.hpp>
 #include <algorithm>
 #include <cstring>
 #include <mutex>

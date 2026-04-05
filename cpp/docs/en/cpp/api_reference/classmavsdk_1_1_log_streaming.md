@@ -1,5 +1,5 @@
 # mavsdk::LogStreaming Class Reference
-`#include: log_streaming.h`
+`#include: log_streaming.hpp`
 
 ----
 

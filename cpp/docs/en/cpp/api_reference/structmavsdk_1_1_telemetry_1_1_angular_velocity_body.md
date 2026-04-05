@@ -1,5 +1,5 @@
 # mavsdk::Telemetry::AngularVelocityBody Struct Reference
-`#include: telemetry.h`
+`#include: telemetry.hpp`
 
 ----
 

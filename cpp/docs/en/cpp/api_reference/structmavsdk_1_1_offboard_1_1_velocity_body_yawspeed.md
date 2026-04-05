@@ -1,5 +1,5 @@
 # mavsdk::Offboard::VelocityBodyYawspeed Struct Reference
-`#include: offboard.h`
+`#include: offboard.hpp`
 
 ----
 

@@ -1,5 +1,5 @@
 # mavsdk::ComponentMetadata Class Reference
-`#include: component_metadata.h`
+`#include: component_metadata.hpp`
 
 ----
 

@@ -1,8 +1,8 @@
-#include "mavlink_request_message_handler.h"
-#include "mavsdk_impl.h"
-#include "server_component_impl.h"
-#include "mavlink_command_receiver.h"
-#include "log.h"
+#include "mavlink_request_message_handler.hpp"
+#include "mavsdk_impl.hpp"
+#include "server_component_impl.hpp"
+#include "mavlink_command_receiver.hpp"
+#include "log.hpp"
 #include <algorithm>
 
 namespace mavsdk {

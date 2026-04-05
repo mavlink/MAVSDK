@@ -1,4 +1,4 @@
-#include "mavlink_include.h"
+#include "mavlink_include.hpp"
 
 // Exported via the declaration in mavlink_include.h.in.
 mavlink_status_t* mavlink_get_channel_status(uint8_t chan)

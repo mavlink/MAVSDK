@@ -1,7 +1,7 @@
-#include "log.h"
-#include "mavsdk.h"
-#include "plugins/geofence/geofence.h"
-#include "plugins/mission_raw_server/mission_raw_server.h"
+#include "log.hpp"
+#include "mavsdk.hpp"
+#include "plugins/geofence/geofence.hpp"
+#include "plugins/mission_raw_server/mission_raw_server.hpp"
 #include <future>
 #include <gtest/gtest.h>
 

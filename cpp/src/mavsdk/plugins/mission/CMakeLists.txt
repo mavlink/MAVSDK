@@ -10,6 +10,6 @@ target_include_directories(mavsdk PUBLIC
     )
 
 install(FILES
-    include/plugins/mission/mission.h
+    include/plugins/mission/mission.hpp
     DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/mavsdk/plugins/mission
 )

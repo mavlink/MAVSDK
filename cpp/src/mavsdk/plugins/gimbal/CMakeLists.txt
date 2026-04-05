@@ -10,6 +10,6 @@ target_include_directories(mavsdk PUBLIC
     )
 
 install(FILES
-    include/plugins/gimbal/gimbal.h
+    include/plugins/gimbal/gimbal.hpp
     DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/mavsdk/plugins/gimbal
 )

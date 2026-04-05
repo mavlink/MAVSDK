@@ -1,7 +1,7 @@
-#include "log.h"
-#include "mavlink_address.h"
-#include "ping.h"
-#include "system_impl.h"
+#include "log.hpp"
+#include "mavlink_address.hpp"
+#include "ping.hpp"
+#include "system_impl.hpp"
 
 namespace mavsdk {
 
