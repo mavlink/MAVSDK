@@ -848,7 +848,7 @@ jobs:
       - name: build
         run: ./dockcross-${{ matrix.name }} cmake --build build/${{ matrix.name }} -j$(nproc) --target install
       - name: create tar with header and library
-        run: mkdir -p build/${{ matrix.name }}/export/include; cp build/${{ matrix.name }}/install/include/mavsdk/mavsdk_server/mavsdk_server_api.hpp build/${{ matrix.name }}/export/include; mkdir -p build/${{ matrix.name }}/export/${{ matrix.arch }}; cp build/${{ matrix.name }}/install/lib/libmavsdk_server.so build/${{ matrix.name }}/export/${{ matrix.arch }}; tar -C build/${{ matrix.name }}/export -cf build/${{ matrix.name }}/export/mavsdk_server_${{ matrix.name }}.tar ${{ matrix.arch }} include;
+        run: mkdir -p build/${{ matrix.name }}/export/include; cp build/${{ matrix.name }}/install/include/mavsdk/mavsdk_server/mavsdk_server_api.h build/${{ matrix.name }}/export/include; mkdir -p build/${{ matrix.name }}/export/${{ matrix.arch }}; cp build/${{ matrix.name }}/install/lib/libmavsdk_server.so build/${{ matrix.name }}/export/${{ matrix.arch }}; tar -C build/${{ matrix.name }}/export -cf build/${{ matrix.name }}/export/mavsdk_server_${{ matrix.name }}.tar ${{ matrix.arch }} include;
       - name: Upload as artifact
         uses: actions/upload-artifact@v7
         with:
