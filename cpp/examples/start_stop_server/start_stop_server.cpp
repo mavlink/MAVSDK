@@ -3,7 +3,7 @@
 //
 
 #include <mavsdk/mavsdk.hpp>
-#include <mavsdk/mavsdk_server/mavsdk_server_api.hpp>
+#include <mavsdk/mavsdk_server/mavsdk_server_api.h>
 #include <atomic>
 #include <iostream>
 #include <chrono>

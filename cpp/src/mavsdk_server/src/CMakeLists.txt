@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.10.2)
 
 list(APPEND MAVSDK_SERVER_SOURCES
-    mavsdk_server_api.hpp
+    mavsdk_server_api.h
     mavsdk_server_api.cpp
     mavsdk_server.cpp
     grpc_server.cpp
@@ -148,7 +148,7 @@ if(IOS OR (APPLE AND MACOS_FRAMEWORK))
         FRAMEWORK TRUE
         BUILD_WITH_INSTALL_RPATH TRUE
         INSTALL_NAME_DIR @rpath
-        PUBLIC_HEADER mavsdk_server_api.hpp
+        PUBLIC_HEADER mavsdk_server_api.h
         #XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY "iPhone Developer"
         MACOSX_FRAMEWORK_INFO_PLIST ${PROJECT_SOURCE_DIR}/mavsdk_server/cmake/MacOSXFrameworkInfo.plist.in
     )
@@ -164,7 +164,7 @@ if(NOT IOS)
         )
 
         install(FILES
-            mavsdk_server_api.hpp
+            mavsdk_server_api.h
             DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/mavsdk/mavsdk_server"
         )
     endif()
