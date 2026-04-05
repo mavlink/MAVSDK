@@ -1,5 +1,5 @@
 # mavsdk::Offboard::AttitudeRate Struct Reference
-`#include: offboard.h`
+`#include: offboard.hpp`
 
 ----
 

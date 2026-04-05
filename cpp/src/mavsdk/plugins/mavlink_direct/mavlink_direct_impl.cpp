@@ -1,14 +1,14 @@
-#include "mavlink_direct_impl.h"
+#include "mavlink_direct_impl.hpp"
 #include <mav/Message.h>
 #include <mav/MessageSet.h>
 #include <variant>
 #include <json/json.h>
 #include <cmath>
 #include <limits>
-#include "log.h"
-#include "connection.h"
+#include "log.hpp"
+#include "connection.hpp"
 #include "callback_list.tpp"
-#include "mavsdk_export.h"
+#include "mavsdk_export.hpp"
 
 namespace mavsdk {
 

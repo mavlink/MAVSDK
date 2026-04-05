@@ -1,5 +1,5 @@
 # mavsdk::Failure Class Reference
-`#include: failure.h`
+`#include: failure.hpp`
 
 ----
 

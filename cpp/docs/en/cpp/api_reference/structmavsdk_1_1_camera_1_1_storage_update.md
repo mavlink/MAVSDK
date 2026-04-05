@@ -1,5 +1,5 @@
 # mavsdk::Camera::StorageUpdate Struct Reference
-`#include: camera.h`
+`#include: camera.hpp`
 
 ----
 

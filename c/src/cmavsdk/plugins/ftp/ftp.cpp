@@ -4,7 +4,7 @@
 
 #include "ftp.h"
 
-#include <mavsdk/plugins/ftp/ftp.h>
+#include <mavsdk/plugins/ftp/ftp.hpp>
 #include <algorithm>
 #include <cstring>
 #include <mutex>

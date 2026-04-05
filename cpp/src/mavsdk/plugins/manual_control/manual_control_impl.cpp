@@ -1,5 +1,5 @@
-#include "manual_control_impl.h"
-#include "mavlink_address.h"
+#include "manual_control_impl.hpp"
+#include "mavlink_address.hpp"
 #include <future>
 
 namespace mavsdk {

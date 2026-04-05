@@ -4,7 +4,7 @@
 
 #include "tune.h"
 
-#include <mavsdk/plugins/tune/tune.h>
+#include <mavsdk/plugins/tune/tune.hpp>
 #include <algorithm>
 #include <cstring>
 #include <mutex>

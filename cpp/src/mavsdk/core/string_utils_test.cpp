@@ -1,4 +1,4 @@
-#include "string_utils.h"
+#include "string_utils.hpp"
 #include <gtest/gtest.h>
 
 using namespace mavsdk;

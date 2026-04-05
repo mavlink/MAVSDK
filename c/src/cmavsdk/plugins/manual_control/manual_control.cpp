@@ -4,7 +4,7 @@
 
 #include "manual_control.h"
 
-#include <mavsdk/plugins/manual_control/manual_control.h>
+#include <mavsdk/plugins/manual_control/manual_control.hpp>
 #include <algorithm>
 #include <cstring>
 #include <mutex>

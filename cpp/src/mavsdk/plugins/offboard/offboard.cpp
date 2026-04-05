@@ -4,8 +4,8 @@
 
 #include <iomanip>
 
-#include "offboard_impl.h"
-#include "plugins/offboard/offboard.h"
+#include "offboard_impl.hpp"
+#include "plugins/offboard/offboard.hpp"
 
 namespace mavsdk {
 

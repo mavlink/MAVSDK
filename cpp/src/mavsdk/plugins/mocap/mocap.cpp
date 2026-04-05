@@ -4,8 +4,8 @@
 
 #include <iomanip>
 
-#include "mocap_impl.h"
-#include "plugins/mocap/mocap.h"
+#include "mocap_impl.hpp"
+#include "plugins/mocap/mocap.hpp"
 
 namespace mavsdk {
 

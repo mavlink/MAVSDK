@@ -1,5 +1,5 @@
 # mavsdk::Events Class Reference
-`#include: events.h`
+`#include: events.hpp`
 
 ----
 

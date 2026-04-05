@@ -1,7 +1,7 @@
-#include "mavlink_parameter_server.h"
-#include "mavlink_address.h"
-#include "mavlink_parameter_helper.h"
-#include "overloaded.h"
+#include "mavlink_parameter_server.hpp"
+#include "mavlink_address.hpp"
+#include "mavlink_parameter_helper.hpp"
+#include "overloaded.hpp"
 #include <cassert>
 #include <limits>
 

@@ -1,5 +1,5 @@
 # mavsdk::Param Class Reference
-`#include: param.h`
+`#include: param.hpp`
 
 ----
 

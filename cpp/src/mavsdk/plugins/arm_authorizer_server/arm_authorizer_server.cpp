@@ -5,8 +5,8 @@
 
 #include <iomanip>
 
-#include "arm_authorizer_server_impl.h"
-#include "plugins/arm_authorizer_server/arm_authorizer_server.h"
+#include "arm_authorizer_server_impl.hpp"
+#include "plugins/arm_authorizer_server/arm_authorizer_server.hpp"
 
 namespace mavsdk {
 

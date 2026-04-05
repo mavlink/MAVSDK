@@ -14,10 +14,10 @@
 #include <vector>
 #include <gtest/gtest.h>
 
-#include "callback_list.h"
+#include "callback_list.hpp"
 #include "callback_list.tpp"
-#include "log.h"
-#include "unused.h"
+#include "log.hpp"
+#include "unused.hpp"
 
 namespace mavsdk {
 

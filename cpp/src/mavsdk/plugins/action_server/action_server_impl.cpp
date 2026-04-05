@@ -1,9 +1,9 @@
-#include "action_server_impl.h"
-#include "unused.h"
-#include "flight_mode.h"
+#include "action_server_impl.hpp"
+#include "unused.hpp"
+#include "flight_mode.hpp"
 #include "callback_list.tpp"
-#include "px4_custom_mode.h"
-#include "mavsdk_export.h"
+#include "px4_custom_mode.hpp"
+#include "mavsdk_export.hpp"
 
 namespace mavsdk {
 

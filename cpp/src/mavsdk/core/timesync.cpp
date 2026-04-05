@@ -1,7 +1,7 @@
-#include "timesync.h"
-#include "log.h"
-#include "mavlink_address.h"
-#include "system_impl.h"
+#include "timesync.hpp"
+#include "log.hpp"
+#include "mavlink_address.hpp"
+#include "system_impl.hpp"
 
 // Partially based on: https://github.com/mavlink/mavros/blob/master/mavros/src/plugins/sys_time.cpp
 

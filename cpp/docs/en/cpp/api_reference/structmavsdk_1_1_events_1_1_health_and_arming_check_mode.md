@@ -1,5 +1,5 @@
 # mavsdk::Events::HealthAndArmingCheckMode Struct Reference
-`#include: events.h`
+`#include: events.hpp`
 
 ----
 

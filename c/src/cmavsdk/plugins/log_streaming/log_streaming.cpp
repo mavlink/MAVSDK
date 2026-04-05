@@ -4,7 +4,7 @@
 
 #include "log_streaming.h"
 
-#include <mavsdk/plugins/log_streaming/log_streaming.h>
+#include <mavsdk/plugins/log_streaming/log_streaming.hpp>
 #include <algorithm>
 #include <cstring>
 #include <mutex>

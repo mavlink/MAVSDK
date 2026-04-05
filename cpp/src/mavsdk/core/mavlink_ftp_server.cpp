@@ -3,10 +3,10 @@
 #include <filesystem>
 #include <future>
 
-#include "mavlink_ftp_server.h"
-#include "server_component_impl.h"
-#include "unused.h"
-#include "crc32.h"
+#include "mavlink_ftp_server.hpp"
+#include "server_component_impl.hpp"
+#include "unused.hpp"
+#include "crc32.hpp"
 
 namespace mavsdk {
 

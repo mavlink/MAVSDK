@@ -1,6 +1,6 @@
-#include "server_component_impl.h"
-#include "server_plugin_impl_base.h"
-#include "mavsdk_impl.h"
+#include "server_component_impl.hpp"
+#include "server_plugin_impl_base.hpp"
+#include "mavsdk_impl.hpp"
 
 namespace mavsdk {
 

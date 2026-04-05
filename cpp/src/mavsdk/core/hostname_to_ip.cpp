@@ -1,5 +1,5 @@
-#include "hostname_to_ip.h"
-#include "log.h"
+#include "hostname_to_ip.hpp"
+#include "log.hpp"
 
 #if defined(WINDOWS)
 #include <winsock2.h>

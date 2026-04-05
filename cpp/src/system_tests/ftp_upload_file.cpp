@@ -1,5 +1,5 @@
-#include "log.h"
-#include "mavsdk.h"
+#include "log.hpp"
+#include "mavsdk.hpp"
 #include <atomic>
 #include <filesystem>
 #include <gtest/gtest.h>
@@ -7,10 +7,10 @@
 #include <future>
 #include <fstream>
 #include <thread>
-#include "plugins/ftp/ftp.h"
-#include "plugins/ftp_server/ftp_server.h"
-#include "fs_helpers.h"
-#include "unused.h"
+#include "plugins/ftp/ftp.hpp"
+#include "plugins/ftp_server/ftp_server.hpp"
+#include "fs_helpers.hpp"
+#include "unused.hpp"
 
 using namespace mavsdk;
 

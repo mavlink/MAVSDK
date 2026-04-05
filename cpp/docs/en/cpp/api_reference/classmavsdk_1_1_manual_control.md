@@ -1,5 +1,5 @@
 # mavsdk::ManualControl Class Reference
-`#include: manual_control.h`
+`#include: manual_control.hpp`
 
 ----
 

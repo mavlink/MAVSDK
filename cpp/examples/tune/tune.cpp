@@ -4,8 +4,8 @@
 
 #include <cstdint>
 #include <future>
-#include <mavsdk/mavsdk.h>
-#include <mavsdk/plugins/tune/tune.h>
+#include <mavsdk/mavsdk.hpp>
+#include <mavsdk/plugins/tune/tune.hpp>
 #include <iostream>
 #include <thread>
 

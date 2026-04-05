@@ -3,9 +3,9 @@
 #include <utility>
 #include <vector>
 
-#include "action/action_service_impl.h"
-#include "action/mocks/action_mock.h"
-#include "mocks/lazy_plugin_mock.h"
+#include "action/action_service_impl.hpp"
+#include "action/mocks/action_mock.hpp"
+#include "mocks/lazy_plugin_mock.hpp"
 
 namespace {
 

@@ -1,7 +1,7 @@
-#include "winch_impl.h"
-#include "system.h"
+#include "winch_impl.hpp"
+#include "system.hpp"
 #include "callback_list.tpp"
-#include "mavsdk_export.h"
+#include "mavsdk_export.hpp"
 
 namespace mavsdk {
 

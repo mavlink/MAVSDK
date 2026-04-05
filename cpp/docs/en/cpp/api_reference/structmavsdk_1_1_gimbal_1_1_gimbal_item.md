@@ -1,5 +1,5 @@
 # mavsdk::Gimbal::GimbalItem Struct Reference
-`#include: gimbal.h`
+`#include: gimbal.hpp`
 
 ----
 

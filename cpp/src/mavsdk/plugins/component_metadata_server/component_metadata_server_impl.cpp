@@ -1,10 +1,10 @@
-#include "component_metadata_server_impl.h"
-#include "mavlink_address.h"
-#include "mavlink_request_message_handler.h"
+#include "component_metadata_server_impl.hpp"
+#include "mavlink_address.hpp"
+#include "mavlink_request_message_handler.hpp"
 #include "callback_list.tpp"
-#include "unused.h"
-#include "fs_utils.h"
-#include "crc32.h"
+#include "unused.hpp"
+#include "fs_utils.hpp"
+#include "crc32.hpp"
 
 #include <string>
 #include <json/json.h>

@@ -1,5 +1,5 @@
 # mavsdk::CameraServer::Information Struct Reference
-`#include: camera_server.h`
+`#include: camera_server.hpp`
 
 ----
 

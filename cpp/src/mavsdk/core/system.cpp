@@ -1,10 +1,10 @@
-#include "system.h"
-#include "mavsdk_impl.h"
-#include "system_impl.h"
-#include "plugin_impl_base.h"
+#include "system.hpp"
+#include "mavsdk_impl.hpp"
+#include "system_impl.hpp"
+#include "plugin_impl_base.hpp"
 #include <functional>
 #include <utility>
-#include "px4_custom_mode.h"
+#include "px4_custom_mode.hpp"
 
 // Set to 1 to log incoming/outgoing mavlink messages.
 #define MESSAGE_DEBUGGING 0

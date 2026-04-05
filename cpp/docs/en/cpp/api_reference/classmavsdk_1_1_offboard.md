@@ -1,5 +1,5 @@
 # mavsdk::Offboard Class Reference
-`#include: offboard.h`
+`#include: offboard.hpp`
 
 ----
 

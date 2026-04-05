@@ -1,5 +1,5 @@
 # mavsdk::Telemetry::GpsInfo Struct Reference
-`#include: telemetry.h`
+`#include: telemetry.hpp`
 
 ----
 

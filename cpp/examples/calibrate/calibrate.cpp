@@ -5,8 +5,8 @@
 // and not against simulation.
 //
 
-#include <mavsdk/mavsdk.h>
-#include <mavsdk/plugins/calibration/calibration.h>
+#include <mavsdk/mavsdk.hpp>
+#include <mavsdk/plugins/calibration/calibration.hpp>
 #include <future>
 #include <iostream>
 

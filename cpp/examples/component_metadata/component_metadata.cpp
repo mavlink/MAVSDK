@@ -2,8 +2,8 @@
 // Simple example to demonstrate how to use the component metadata interface.
 //
 
-#include <mavsdk/mavsdk.h>
-#include <mavsdk/plugins/component_metadata/component_metadata.h>
+#include <mavsdk/mavsdk.hpp>
+#include <mavsdk/plugins/component_metadata/component_metadata.hpp>
 #include <fstream>
 #include <cstdint>
 #include <iostream>

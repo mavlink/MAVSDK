@@ -4,7 +4,7 @@
 
 #include "mission.h"
 
-#include <mavsdk/plugins/mission/mission.h>
+#include <mavsdk/plugins/mission/mission.hpp>
 #include <algorithm>
 #include <cstring>
 #include <mutex>

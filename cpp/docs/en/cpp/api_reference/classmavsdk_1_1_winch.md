@@ -1,5 +1,5 @@
 # mavsdk::Winch Class Reference
-`#include: winch.h`
+`#include: winch.hpp`
 
 ----
 

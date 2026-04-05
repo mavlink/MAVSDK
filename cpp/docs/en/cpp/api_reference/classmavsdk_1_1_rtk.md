@@ -1,5 +1,5 @@
 # mavsdk::Rtk Class Reference
-`#include: rtk.h`
+`#include: rtk.hpp`
 
 ----
 

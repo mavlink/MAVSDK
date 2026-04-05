@@ -1,7 +1,7 @@
 
-#include "events_impl.h"
+#include "events_impl.hpp"
 #include "callback_list.tpp"
-#include "unused.h"
+#include "unused.hpp"
 
 namespace mavsdk {
 

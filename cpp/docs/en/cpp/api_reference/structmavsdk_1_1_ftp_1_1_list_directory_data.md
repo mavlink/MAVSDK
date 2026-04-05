@@ -1,5 +1,5 @@
 # mavsdk::Ftp::ListDirectoryData Struct Reference
-`#include: ftp.h`
+`#include: ftp.hpp`
 
 ----
 

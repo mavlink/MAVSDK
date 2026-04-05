@@ -3,8 +3,8 @@
 //
 // Author: PannapatC <Github: Aminballoon>
 
-#include <mavsdk/mavsdk.h>
-#include <mavsdk/plugins/telemetry/telemetry.h>
+#include <mavsdk/mavsdk.hpp>
+#include <mavsdk/plugins/telemetry/telemetry.hpp>
 #include <iostream>
 #include <chrono>
 #include <thread>

@@ -5,8 +5,8 @@
 
 #include <iomanip>
 
-#include "telemetry_server_impl.h"
-#include "plugins/telemetry_server/telemetry_server.h"
+#include "telemetry_server_impl.hpp"
+#include "plugins/telemetry_server/telemetry_server.hpp"
 
 namespace mavsdk {
 

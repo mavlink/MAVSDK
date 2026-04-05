@@ -1,5 +1,5 @@
-#include "math_utils.h"
-#include "mavlink_include.h"
+#include "math_utils.hpp"
+#include "mavlink_include.hpp"
 #include <gtest/gtest.h>
 #include <cmath>
 

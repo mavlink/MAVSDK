@@ -1,7 +1,7 @@
-#include "mission_raw_server_impl.h"
+#include "mission_raw_server_impl.hpp"
 #include "callback_list.tpp"
-#include "mavsdk_export.h"
-#include "mavlink_address.h"
+#include "mavsdk_export.hpp"
+#include "mavlink_address.hpp"
 
 namespace mavsdk {
 

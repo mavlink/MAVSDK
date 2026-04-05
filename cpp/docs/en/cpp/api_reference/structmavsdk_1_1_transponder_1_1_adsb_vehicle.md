@@ -1,5 +1,5 @@
 # mavsdk::Transponder::AdsbVehicle Struct Reference
-`#include: transponder.h`
+`#include: transponder.hpp`
 
 ----
 

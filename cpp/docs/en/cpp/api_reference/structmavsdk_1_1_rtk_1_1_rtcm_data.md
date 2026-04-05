@@ -1,5 +1,5 @@
 # mavsdk::Rtk::RtcmData Struct Reference
-`#include: rtk.h`
+`#include: rtk.hpp`
 
 ----
 

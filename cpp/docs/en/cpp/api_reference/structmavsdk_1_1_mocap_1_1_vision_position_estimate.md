@@ -1,5 +1,5 @@
 # mavsdk::Mocap::VisionPositionEstimate Struct Reference
-`#include: mocap.h`
+`#include: mocap.hpp`
 
 ----
 

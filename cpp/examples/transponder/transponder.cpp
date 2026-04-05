@@ -4,8 +4,8 @@
 
 #include <chrono>
 #include <cstdint>
-#include <mavsdk/mavsdk.h>
-#include <mavsdk/plugins/transponder/transponder.h>
+#include <mavsdk/mavsdk.hpp>
+#include <mavsdk/plugins/transponder/transponder.hpp>
 #include <iostream>
 #include <future>
 #include <memory>

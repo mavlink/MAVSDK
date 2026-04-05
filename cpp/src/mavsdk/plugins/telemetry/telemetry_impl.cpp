@@ -1,15 +1,15 @@
-#include "telemetry_impl.h"
-#include "system.h"
-#include "math_utils.h"
+#include "telemetry_impl.hpp"
+#include "system.hpp"
+#include "math_utils.hpp"
 #include "callback_list.tpp"
-#include "mavsdk_export.h"
+#include "mavsdk_export.hpp"
 
 #include <cmath>
 #include <functional>
 #include <string>
 #include <array>
 #include <cassert>
-#include <unused.h>
+#include "unused.hpp"
 
 namespace mavsdk {
 

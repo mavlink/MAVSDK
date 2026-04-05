@@ -5,8 +5,8 @@
 
 #include <iomanip>
 
-#include "component_metadata_impl.h"
-#include "plugins/component_metadata/component_metadata.h"
+#include "component_metadata_impl.hpp"
+#include "plugins/component_metadata/component_metadata.hpp"
 
 namespace mavsdk {
 

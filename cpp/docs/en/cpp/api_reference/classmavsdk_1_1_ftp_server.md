@@ -1,5 +1,5 @@
 # mavsdk::FtpServer Class Reference
-`#include: ftp_server.h`
+`#include: ftp_server.hpp`
 
 ----
 

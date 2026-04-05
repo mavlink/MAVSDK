@@ -1,5 +1,5 @@
 
-#include "inflate_lzma.h"
+#include "inflate_lzma.hpp"
 
 #include <cstdio>
 #include <cstring>

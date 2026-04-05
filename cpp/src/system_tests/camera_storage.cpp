@@ -1,8 +1,8 @@
-#include "mavsdk.h"
-#include "plugins/camera/camera.h"
-#include "plugins/camera_server/camera_server.h"
-#include "plugins/ftp_server/ftp_server.h"
-#include "log.h"
+#include "mavsdk.hpp"
+#include "plugins/camera/camera.hpp"
+#include "plugins/camera_server/camera_server.hpp"
+#include "plugins/ftp_server/ftp_server.hpp"
+#include "log.hpp"
 #include <future>
 #include <mutex>
 #include <thread>

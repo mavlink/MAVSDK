@@ -1,5 +1,5 @@
 # mavsdk::Offboard::VelocityNedYaw Struct Reference
-`#include: offboard.h`
+`#include: offboard.hpp`
 
 ----
 

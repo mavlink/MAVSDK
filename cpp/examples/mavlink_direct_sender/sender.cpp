@@ -2,8 +2,8 @@
 // Example to use MavlinkDirect to send OBSTACLE_DISTANCE message
 //
 
-#include <mavsdk/mavsdk.h>
-#include <mavsdk/plugins/mavlink_direct/mavlink_direct.h>
+#include <mavsdk/mavsdk.hpp>
+#include <mavsdk/plugins/mavlink_direct/mavlink_direct.hpp>
 #include <iostream>
 #include <chrono>
 #include <thread>

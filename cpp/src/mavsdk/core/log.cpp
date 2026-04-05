@@ -1,5 +1,5 @@
-#include "log.h"
-#include "unused.h"
+#include "log.hpp"
+#include "unused.hpp"
 
 #include <mutex>
 

@@ -4,8 +4,8 @@
 
 #include <iomanip>
 
-#include "param_server_impl.h"
-#include "plugins/param_server/param_server.h"
+#include "param_server_impl.hpp"
+#include "plugins/param_server/param_server.hpp"
 
 namespace mavsdk {
 

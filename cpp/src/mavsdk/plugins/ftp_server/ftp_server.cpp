@@ -4,8 +4,8 @@
 
 #include <iomanip>
 
-#include "ftp_server_impl.h"
-#include "plugins/ftp_server/ftp_server.h"
+#include "ftp_server_impl.hpp"
+#include "plugins/ftp_server/ftp_server.hpp"
 
 namespace mavsdk {
 

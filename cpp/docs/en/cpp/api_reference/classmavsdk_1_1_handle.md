@@ -1,5 +1,5 @@
 # mavsdk::Handle Class Reference
-`#include: handle.h`
+`#include: handle.hpp`
 
 ----
 

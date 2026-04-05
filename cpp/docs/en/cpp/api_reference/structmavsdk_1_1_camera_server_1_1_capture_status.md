@@ -1,5 +1,5 @@
 # mavsdk::CameraServer::CaptureStatus Struct Reference
-`#include: camera_server.h`
+`#include: camera_server.hpp`
 
 ----
 

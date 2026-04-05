@@ -4,8 +4,8 @@
 
 #include <iomanip>
 
-#include "info_impl.h"
-#include "plugins/info/info.h"
+#include "info_impl.hpp"
+#include "plugins/info/info.hpp"
 
 namespace mavsdk {
 

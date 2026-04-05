@@ -1,4 +1,4 @@
-#include "mavlink_channels.h"
+#include "mavlink_channels.hpp"
 #include <gtest/gtest.h>
 
 using namespace mavsdk;

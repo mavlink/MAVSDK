@@ -1,6 +1,6 @@
-#include "udp_connection.h"
-#include "mavsdk_impl.h"
-#include "log.h"
+#include "udp_connection.hpp"
+#include "mavsdk_impl.hpp"
+#include "log.hpp"
 
 #include <asio/buffer.hpp>
 #include <asio/error.hpp>

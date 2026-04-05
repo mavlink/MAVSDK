@@ -1,5 +1,5 @@
 # mavsdk::Events::HealthAndArmingCheckReport Struct Reference
-`#include: events.h`
+`#include: events.hpp`
 
 ----
 

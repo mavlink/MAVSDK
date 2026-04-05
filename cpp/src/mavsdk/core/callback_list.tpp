@@ -1,8 +1,8 @@
 // Include guard here, just in case
 #pragma once
 
-#include "callback_list.h"
-#include "callback_list_impl.h"
+#include "callback_list.hpp"
+#include "callback_list_impl.hpp"
 
 namespace mavsdk {
 

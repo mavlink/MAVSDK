@@ -1,8 +1,8 @@
-#include "log.h"
-#include "mavsdk.h"
-#include "example_plan.h"
-#include "plugins/mission_raw/mission_raw.h"
-#include "plugins/mission_raw_server/mission_raw_server.h"
+#include "log.hpp"
+#include "mavsdk.hpp"
+#include "example_plan.hpp"
+#include "plugins/mission_raw/mission_raw.hpp"
+#include "plugins/mission_raw_server/mission_raw_server.hpp"
 #include <string>
 #include <fstream>
 #include <thread>

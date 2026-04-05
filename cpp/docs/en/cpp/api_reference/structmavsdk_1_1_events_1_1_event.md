@@ -1,5 +1,5 @@
 # mavsdk::Events::Event Struct Reference
-`#include: events.h`
+`#include: events.hpp`
 
 ----
 

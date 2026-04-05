@@ -1,5 +1,5 @@
-#include "failure_impl.h"
-#include "autopilot.h"
+#include "failure_impl.hpp"
+#include "autopilot.hpp"
 
 namespace mavsdk {
 

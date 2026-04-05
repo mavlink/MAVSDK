@@ -2,9 +2,9 @@
 // Example to demonstrate how to switch to photo mode and take a picture.
 //
 
-#include <mavsdk/mavsdk.h>
-#include <mavsdk/plugins/camera/camera.h>
-#include <mavsdk/plugins/telemetry/telemetry.h>
+#include <mavsdk/mavsdk.hpp>
+#include <mavsdk/plugins/camera/camera.hpp>
+#include <mavsdk/plugins/telemetry/telemetry.hpp>
 #include <chrono>
 #include <cstdint>
 #include <iostream>

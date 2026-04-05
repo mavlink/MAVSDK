@@ -4,8 +4,8 @@
 
 #include <iomanip>
 
-#include "transponder_impl.h"
-#include "plugins/transponder/transponder.h"
+#include "transponder_impl.hpp"
+#include "plugins/transponder/transponder.hpp"
 
 namespace mavsdk {
 

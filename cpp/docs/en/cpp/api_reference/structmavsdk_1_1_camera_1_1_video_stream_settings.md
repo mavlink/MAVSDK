@@ -1,5 +1,5 @@
 # mavsdk::Camera::VideoStreamSettings Struct Reference
-`#include: camera.h`
+`#include: camera.hpp`
 
 ----
 

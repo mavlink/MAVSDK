@@ -1,5 +1,5 @@
 # mavsdk::Telemetry::RawGps Struct Reference
-`#include: telemetry.h`
+`#include: telemetry.hpp`
 
 ----
 

@@ -2,8 +2,8 @@
 // Simple example to demonstrate how to control actuators (i.e. servos) using MAVSDK.
 //
 
-#include <mavsdk/mavsdk.h>
-#include <mavsdk/plugins/action/action.h>
+#include <mavsdk/mavsdk.hpp>
+#include <mavsdk/plugins/action/action.hpp>
 #include <chrono>
 #include <cstdint>
 #include <iostream>

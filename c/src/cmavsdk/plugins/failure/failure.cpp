@@ -4,7 +4,7 @@
 
 #include "failure.h"
 
-#include <mavsdk/plugins/failure/failure.h>
+#include <mavsdk/plugins/failure/failure.hpp>
 #include <algorithm>
 #include <cstring>
 #include <mutex>

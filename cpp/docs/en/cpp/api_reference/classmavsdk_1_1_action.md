@@ -1,5 +1,5 @@
 # mavsdk::Action Class Reference
-`#include: action.h`
+`#include: action.hpp`
 
 ----
 

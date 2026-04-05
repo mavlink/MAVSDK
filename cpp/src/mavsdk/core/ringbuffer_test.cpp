@@ -1,4 +1,4 @@
-#include "ringbuffer.h"
+#include "ringbuffer.hpp"
 #include <gtest/gtest.h>
 
 using namespace mavsdk;

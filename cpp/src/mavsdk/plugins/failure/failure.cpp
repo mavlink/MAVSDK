@@ -4,8 +4,8 @@
 
 #include <iomanip>
 
-#include "failure_impl.h"
-#include "plugins/failure/failure.h"
+#include "failure_impl.hpp"
+#include "plugins/failure/failure.hpp"
 
 namespace mavsdk {
 

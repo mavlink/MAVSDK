@@ -1,5 +1,5 @@
 # mavsdk::Mission::MissionPlan Struct Reference
-`#include: mission.h`
+`#include: mission.hpp`
 
 ----
 

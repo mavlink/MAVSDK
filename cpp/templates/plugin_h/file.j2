@@ -14,12 +14,12 @@
 #include <vector>
 
 {% if is_server %}
-#include "server_plugin_base.h"
+#include "server_plugin_base.hpp"
 {% else %}
-#include "plugin_base.h"
+#include "plugin_base.hpp"
 {% endif %}
-#include "handle.h"
-#include "mavsdk_export.h"
+#include "handle.hpp"
+#include "mavsdk_export.hpp"
 
 namespace mavsdk {
 

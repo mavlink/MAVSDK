@@ -1,7 +1,7 @@
 
-#include "log.h"
-#include "mavlink_request_message.h"
-#include "system_impl.h"
+#include "log.hpp"
+#include "mavlink_request_message.hpp"
+#include "system_impl.hpp"
 #include <cstdint>
 #include <string>
 

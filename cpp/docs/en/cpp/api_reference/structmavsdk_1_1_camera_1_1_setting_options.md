@@ -1,5 +1,5 @@
 # mavsdk::Camera::SettingOptions Struct Reference
-`#include: camera.h`
+`#include: camera.hpp`
 
 ----
 

@@ -1,5 +1,5 @@
 # MavlinkAddress Struct Reference
-`#include: mavlink_address.h`
+`#include: mavlink_address.hpp`
 
 ----
 

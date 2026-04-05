@@ -1,8 +1,8 @@
-#include "action_impl.h"
-#include "mavsdk_impl.h"
-#include "math_utils.h"
-#include "flight_mode.h"
-#include "px4_custom_mode.h"
+#include "action_impl.hpp"
+#include "mavsdk_impl.hpp"
+#include "math_utils.hpp"
+#include "flight_mode.hpp"
+#include "px4_custom_mode.hpp"
 #include <cmath>
 #include <future>
 

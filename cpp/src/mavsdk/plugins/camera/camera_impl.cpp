@@ -1,15 +1,15 @@
-#include "camera_impl.h"
-#include "camera_definition.h"
-#include "system.h"
-#include "unused.h"
+#include "camera_impl.hpp"
+#include "camera_definition.hpp"
+#include "system.hpp"
+#include "unused.hpp"
 #include "callback_list.tpp"
-#include "fs_utils.h"
-#include "inflate_lzma.h"
-#include "string_utils.h"
-#include "math_utils.h"
+#include "fs_utils.hpp"
+#include "inflate_lzma.hpp"
+#include "string_utils.hpp"
+#include "math_utils.hpp"
 
 #if BUILD_WITHOUT_CURL != 1
-#include "http_loader.h"
+#include "http_loader.hpp"
 #endif
 
 #include <algorithm>
@@ -22,7 +22,7 @@
 #include <string>
 #include <thread>
 
-#include "mavsdk_export.h"
+#include "mavsdk_export.hpp"
 
 namespace mavsdk {
 

@@ -1,5 +1,5 @@
 # mavsdk::Telemetry::PositionNed Struct Reference
-`#include: telemetry.h`
+`#include: telemetry.hpp`
 
 ----
 

@@ -4,7 +4,7 @@
 
 #include "rtk.h"
 
-#include <mavsdk/plugins/rtk/rtk.h>
+#include <mavsdk/plugins/rtk/rtk.hpp>
 #include <algorithm>
 #include <cstring>
 #include <mutex>

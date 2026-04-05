@@ -16,9 +16,9 @@ def main():
     env = jinja2.Environment(loader=jinja2.FileSystemLoader('templates'))
     env.filters["snake_case_to_pascal_case"] = snake_case_to_pascal_case
 
-    template = env.get_template("grpc_server.h.j2")
+    template = env.get_template("grpc_server.hpp.j2")
     output = template.render(plugins = plugins)
-    with open("src/mavsdk_server/src/grpc_server.h", 'w') as f:
+    with open("src/mavsdk_server/src/grpc_server.hpp", 'w') as f:
         f.write(output)
 
     template = env.get_template("grpc_server.cpp.j2")

@@ -1,6 +1,6 @@
-#include "calibration_statustext_parser.h"
-#include "calibration_messages.h"
-#include "log.h"
+#include "calibration_statustext_parser.hpp"
+#include "calibration_messages.hpp"
+#include "log.hpp"
 
 namespace mavsdk {
 

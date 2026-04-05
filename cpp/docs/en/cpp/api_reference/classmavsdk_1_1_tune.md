@@ -1,5 +1,5 @@
 # mavsdk::Tune Class Reference
-`#include: tune.h`
+`#include: tune.hpp`
 
 ----
 

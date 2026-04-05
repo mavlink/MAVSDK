@@ -1,5 +1,5 @@
 # mavsdk::LogFiles Class Reference
-`#include: log_files.h`
+`#include: log_files.hpp`
 
 ----
 

@@ -1,5 +1,5 @@
 # mavsdk::Geofence::Point Struct Reference
-`#include: geofence.h`
+`#include: geofence.hpp`
 
 ----
 

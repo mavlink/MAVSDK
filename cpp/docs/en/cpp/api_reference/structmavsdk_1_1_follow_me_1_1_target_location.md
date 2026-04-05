@@ -1,5 +1,5 @@
 # mavsdk::FollowMe::TargetLocation Struct Reference
-`#include: follow_me.h`
+`#include: follow_me.hpp`
 
 ----
 
@@ -16,11 +16,11 @@ double [longitude_deg](#structmavsdk_1_1_follow_me_1_1_target_location_1aaba4d25
 
 float [absolute_altitude_m](#structmavsdk_1_1_follow_me_1_1_target_location_1a1c79b40cd21244db4edeb7b23f8c04a6) {float(NAN)} - Target altitude in meters above MSL.
 
-float [velocity_x_m_s](#structmavsdk_1_1_follow_me_1_1_target_location_1a7b1620783f345c2699f6275f8418a524) { float(NAN)} - Target velocity in X axis, in meters per second.
+float [velocity_x_m_s](#structmavsdk_1_1_follow_me_1_1_target_location_1a7b1620783f345c2699f6275f8418a524) {float(NAN)} - Target velocity in X axis, in meters per second.
 
-float [velocity_y_m_s](#structmavsdk_1_1_follow_me_1_1_target_location_1a4e9a7aa72f0ac53a43b6f57376f57616) { float(NAN)} - Target velocity in Y axis, in meters per second.
+float [velocity_y_m_s](#structmavsdk_1_1_follow_me_1_1_target_location_1a4e9a7aa72f0ac53a43b6f57376f57616) {float(NAN)} - Target velocity in Y axis, in meters per second.
 
-float [velocity_z_m_s](#structmavsdk_1_1_follow_me_1_1_target_location_1aabdcad8cc0de1d8008cab731d89de646) { float(NAN)} - Target velocity in Z axis, in meters per second.
+float [velocity_z_m_s](#structmavsdk_1_1_follow_me_1_1_target_location_1aabdcad8cc0de1d8008cab731d89de646) {float(NAN)} - Target velocity in Z axis, in meters per second.
 
 
 ## Field Documentation
@@ -59,7 +59,7 @@ Target altitude in meters above MSL.
 ### velocity_x_m_s {#structmavsdk_1_1_follow_me_1_1_target_location_1a7b1620783f345c2699f6275f8418a524}
 
 ```cpp
-float mavsdk::FollowMe::TargetLocation::velocity_x_m_s { float(NAN)}
+float mavsdk::FollowMe::TargetLocation::velocity_x_m_s {float(NAN)}
 ```
 
 
@@ -69,7 +69,7 @@ Target velocity in X axis, in meters per second.
 ### velocity_y_m_s {#structmavsdk_1_1_follow_me_1_1_target_location_1a4e9a7aa72f0ac53a43b6f57376f57616}
 
 ```cpp
-float mavsdk::FollowMe::TargetLocation::velocity_y_m_s { float(NAN)}
+float mavsdk::FollowMe::TargetLocation::velocity_y_m_s {float(NAN)}
 ```
 
 
@@ -79,7 +79,7 @@ Target velocity in Y axis, in meters per second.
 ### velocity_z_m_s {#structmavsdk_1_1_follow_me_1_1_target_location_1aabdcad8cc0de1d8008cab731d89de646}
 
 ```cpp
-float mavsdk::FollowMe::TargetLocation::velocity_z_m_s { float(NAN)}
+float mavsdk::FollowMe::TargetLocation::velocity_z_m_s {float(NAN)}
 ```
 
 

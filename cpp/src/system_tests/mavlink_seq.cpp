@@ -1,5 +1,5 @@
-#include "log.h"
-#include "mavsdk.h"
+#include "log.hpp"
+#include "mavsdk.hpp"
 #include <chrono>
 #include <thread>
 #include <mutex>

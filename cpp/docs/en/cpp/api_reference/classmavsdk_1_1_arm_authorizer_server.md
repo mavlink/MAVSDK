@@ -1,5 +1,5 @@
 # mavsdk::ArmAuthorizerServer Class Reference
-`#include: arm_authorizer_server.h`
+`#include: arm_authorizer_server.hpp`
 
 ----
 

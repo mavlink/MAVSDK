@@ -1,5 +1,5 @@
 # mavsdk::Camera::CurrentSettingsUpdate Struct Reference
-`#include: camera.h`
+`#include: camera.hpp`
 
 ----
 

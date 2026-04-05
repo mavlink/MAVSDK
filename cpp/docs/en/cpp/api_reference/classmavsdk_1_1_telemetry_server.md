@@ -1,5 +1,5 @@
 # mavsdk::TelemetryServer Class Reference
-`#include: telemetry_server.h`
+`#include: telemetry_server.hpp`
 
 ----
 

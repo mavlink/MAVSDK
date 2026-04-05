@@ -4,7 +4,7 @@
 
 #include "gripper.h"
 
-#include <mavsdk/plugins/gripper/gripper.h>
+#include <mavsdk/plugins/gripper/gripper.hpp>
 #include <algorithm>
 #include <cstring>
 #include <mutex>

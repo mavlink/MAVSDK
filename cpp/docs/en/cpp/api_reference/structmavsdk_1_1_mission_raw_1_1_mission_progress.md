@@ -1,5 +1,5 @@
 # mavsdk::MissionRaw::MissionProgress Struct Reference
-`#include: mission_raw.h`
+`#include: mission_raw.hpp`
 
 ----
 

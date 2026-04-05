@@ -1,5 +1,5 @@
 # mavsdk::ComponentMetadata::MetadataData Struct Reference
-`#include: component_metadata.h`
+`#include: component_metadata.hpp`
 
 ----
 

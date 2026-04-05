@@ -4,8 +4,8 @@
 
 #include <iomanip>
 
-#include "calibration_impl.h"
-#include "plugins/calibration/calibration.h"
+#include "calibration_impl.hpp"
+#include "plugins/calibration/calibration.hpp"
 
 namespace mavsdk {
 

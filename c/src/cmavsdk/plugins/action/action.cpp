@@ -4,7 +4,7 @@
 
 #include "action.h"
 
-#include <mavsdk/plugins/action/action.h>
+#include <mavsdk/plugins/action/action.hpp>
 #include <algorithm>
 #include <cstring>
 #include <mutex>

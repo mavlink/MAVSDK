@@ -1,5 +1,5 @@
 # mavsdk::Mocap::Covariance Struct Reference
-`#include: mocap.h`
+`#include: mocap.hpp`
 
 ----
 

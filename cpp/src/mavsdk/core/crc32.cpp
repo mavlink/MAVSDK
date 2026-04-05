@@ -43,7 +43,7 @@
  *   assembler by using byte-swap instructions polynomial $edb88320
  ************************************************************************************************/
 
-#include "crc32.h"
+#include "crc32.hpp"
 
 namespace mavsdk {
 

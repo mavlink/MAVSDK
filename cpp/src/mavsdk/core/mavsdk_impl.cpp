@@ -1,31 +1,29 @@
-#include "mavsdk_impl.h"
+#include "mavsdk_impl.hpp"
 
 #include <asio/post.hpp>
 
 #include <algorithm>
 #include <mutex>
 #include <thread>
-#include <tcp_server_connection.h>
-
-#include "connection.h"
-#include "log.h"
-#include "tcp_client_connection.h"
-#include "tcp_server_connection.h"
-#include "udp_connection.h"
-#include "raw_connection.h"
-#include "system.h"
-#include "system_impl.h"
-#include "serial_connection.h"
-#include "version.h"
-#include "server_component_impl.h"
-#include "overloaded.h"
-#include "mavlink_channels.h"
+#include "connection.hpp"
+#include "log.hpp"
+#include "tcp_client_connection.hpp"
+#include "tcp_server_connection.hpp"
+#include "udp_connection.hpp"
+#include "raw_connection.hpp"
+#include "system.hpp"
+#include "system_impl.hpp"
+#include "serial_connection.hpp"
+#include "version.hpp"
+#include "server_component_impl.hpp"
+#include "overloaded.hpp"
+#include "mavlink_channels.hpp"
 #include "callback_list.tpp"
-#include "hostname_to_ip.h"
-#include "embedded_mavlink_xml.h"
+#include "hostname_to_ip.hpp"
+#include "embedded_mavlink_xml.hpp"
 #include <mav/MessageSet.h>
 
-#include "mavsdk_export.h"
+#include "mavsdk_export.hpp"
 
 namespace mavsdk {
 

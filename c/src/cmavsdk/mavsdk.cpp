@@ -1,6 +1,6 @@
 #include "mavsdk.h"
 
-#include <mavsdk/mavsdk.h>
+#include <mavsdk/mavsdk.hpp>
 #include <memory>
 #include <string>
 #include <vector>

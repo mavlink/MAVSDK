@@ -1,7 +1,7 @@
-#include "mocap_impl.h"
-#include "mavlink_address.h"
-#include "system.h"
-#include "px4_custom_mode.h"
+#include "mocap_impl.hpp"
+#include "mavlink_address.hpp"
+#include "system.hpp"
+#include "px4_custom_mode.hpp"
 #include <array>
 #include <ctime>
 

@@ -1,7 +1,7 @@
-#include "mavlink_command_receiver.h"
-#include "mavsdk_impl.h"
-#include "log.h"
-#include "server_component_impl.h"
+#include "mavlink_command_receiver.hpp"
+#include "mavsdk_impl.hpp"
+#include "log.hpp"
+#include "server_component_impl.hpp"
 #include <cmath>
 #include <future>
 #include <memory>

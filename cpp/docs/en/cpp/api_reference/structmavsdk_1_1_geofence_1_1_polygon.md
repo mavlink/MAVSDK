@@ -1,5 +1,5 @@
 # mavsdk::Geofence::Polygon Struct Reference
-`#include: geofence.h`
+`#include: geofence.hpp`
 
 ----
 

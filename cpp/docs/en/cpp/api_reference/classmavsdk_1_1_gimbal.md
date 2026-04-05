@@ -1,5 +1,5 @@
 # mavsdk::Gimbal Class Reference
-`#include: gimbal.h`
+`#include: gimbal.hpp`
 
 ----
 

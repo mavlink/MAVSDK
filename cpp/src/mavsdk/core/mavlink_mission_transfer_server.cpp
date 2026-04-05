@@ -1,7 +1,7 @@
 #include <algorithm>
-#include "mavlink_mission_transfer_server.h"
-#include "log.h"
-#include "unused.h"
+#include "mavlink_mission_transfer_server.hpp"
+#include "log.hpp"
+#include "unused.hpp"
 
 namespace mavsdk {
 

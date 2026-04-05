@@ -1,7 +1,7 @@
-#include "gimbal_impl.h"
+#include "gimbal_impl.hpp"
 #include "callback_list.tpp"
-#include "mavsdk_export.h"
-#include "math_utils.h"
+#include "mavsdk_export.hpp"
+#include "math_utils.hpp"
 #include <algorithm>
 #include <cassert>
 #include <chrono>

@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
-#include "mavsdk.h"
+#include "mavsdk.hpp"
 
 using namespace mavsdk;
 

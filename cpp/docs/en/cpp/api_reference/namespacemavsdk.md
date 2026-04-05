@@ -85,7 +85,7 @@ std::ostream & | [operator<<](#namespacemavsdk_1a3e7a55e89629afd2a079d79c047e8db
 ### enum Autopilot {#namespacemavsdk_1aba05635d1785223a4d7b457ae0407297}
 
 ```
-#include: autopilot.h
+#include: autopilot.hpp
 ```
 
 
@@ -101,7 +101,7 @@ Value | Description
 ### enum CompatibilityMode {#namespacemavsdk_1af0f9146b2086797ae56671d20bd29d00}
 
 ```
-#include: compatibility_mode.h
+#include: compatibility_mode.hpp
 ```
 
 
@@ -119,7 +119,7 @@ Value | Description
 ### enum ComponentType {#namespacemavsdk_1a20fe7f7c8312779a187017111bf33d12}
 
 ```
-#include: component_type.h
+#include: component_type.hpp
 ```
 
 
@@ -142,7 +142,7 @@ the SDK is used in a custom configuration, no automatic ID will be provided
 ### enum ConnectionResult {#namespacemavsdk_1a0bad93f6d037051ac3906a0bcc09f992}
 
 ```
-#include: connection_result.h
+#include: connection_result.hpp
 ```
 
 
@@ -170,7 +170,7 @@ Value | Description
 ### enum ForwardingOption {#namespacemavsdk_1a7066729108eae8a605d4dd169e4581b9}
 
 ```
-#include: mavsdk.h
+#include: mavsdk.hpp
 ```
 
 
@@ -185,7 +185,7 @@ Value | Description
 ### enum Vehicle {#namespacemavsdk_1a9e3a3a502dc8313cb931a8a44cc6f95b}
 
 ```
-#include: vehicle.h
+#include: vehicle.hpp
 ```
 
 
@@ -229,7 +229,7 @@ Value | Description
 ### operator<<() {#namespacemavsdk_1afe9c20bc5ec76ce959d7d6361e7287e9}
 
 ```
-#include: autopilot.h
+#include: autopilot.hpp
 ```
 ```cpp
 MAVSDK_PUBLIC std::ostream & mavsdk::operator<<(std::ostream &os, const Autopilot &autopilot)
@@ -251,7 +251,7 @@ Stream operator to print information about an `Autopilot`.
 ### base64_encode() {#namespacemavsdk_1a941ae59331101898e2cbe2720d4d16b3}
 
 ```
-#include: base64.h
+#include: base64.hpp
 ```
 ```cpp
 MAVSDK_PUBLIC std::string mavsdk::base64_encode(std::vector< uint8_t > &raw)
@@ -272,7 +272,7 @@ Encode raw bytes to a base64 string.
 ### base64_decode() {#namespacemavsdk_1a7f2b751289c1257fccf1d23aa087656a}
 
 ```
-#include: base64.h
+#include: base64.hpp
 ```
 ```cpp
 MAVSDK_PUBLIC std::vector< uint8_t > mavsdk::base64_decode(const std::string &str)
@@ -293,7 +293,7 @@ Decode a base64 string into raw bytes.
 ### operator<<() {#namespacemavsdk_1a4582b6eac9ac0bd0cdda49aecaf4395b}
 
 ```
-#include: compatibility_mode.h
+#include: compatibility_mode.hpp
 ```
 ```cpp
 MAVSDK_TEST_EXPORT std::ostream & mavsdk::operator<<(std::ostream &os, const CompatibilityMode &mode)
@@ -315,7 +315,7 @@ Stream operator to print information about a `CompatibilityMode`.
 ### to_string() {#namespacemavsdk_1a3aac85f81f4b57b1e94ee6444126da67}
 
 ```
-#include: connection_result.h
+#include: connection_result.hpp
 ```
 ```cpp
 MAVSDK_PUBLIC std::string_view mavsdk::to_string(const ConnectionResult &result)
@@ -336,7 +336,7 @@ Convert `ConnectionResult` to string.
 ### operator<<() {#namespacemavsdk_1ad44fcd033d04558206f7b68517308071}
 
 ```
-#include: connection_result.h
+#include: connection_result.hpp
 ```
 ```cpp
 MAVSDK_PUBLIC std::ostream & mavsdk::operator<<(std::ostream &str, const ConnectionResult &result)
@@ -358,7 +358,7 @@ Stream operator to print information about a `ConnectionResult`.
 ### overloaded() {#namespacemavsdk_1a724e321aaff91eb2ba28279e0292e552}
 
 ```
-#include: overloaded.h
+#include: overloaded.hpp
 ```
 ```cpp
 mavsdk::overloaded(Ts...) -> overloaded< Ts... >
@@ -375,7 +375,7 @@ Template deduction helper for `overloaded`
 ### operator<<() {#namespacemavsdk_1a3e7a55e89629afd2a079d79c047e8dbd}
 
 ```
-#include: vehicle.h
+#include: vehicle.hpp
 ```
 ```cpp
 std::ostream & mavsdk::operator<<(std::ostream &os, const Vehicle &vehicle)
@@ -397,7 +397,7 @@ Stream operator to print information about a `Vehicle`.
 ### to_vehicle_from_mav_type() {#namespacemavsdk_1a4dede924df915e32b4807aa87a98b5bb}
 
 ```
-#include: vehicle.h
+#include: vehicle.hpp
 ```
 ```cpp
 Vehicle mavsdk::to_vehicle_from_mav_type(MAV_TYPE type)

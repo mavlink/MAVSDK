@@ -1,6 +1,6 @@
-#include "tune_impl.h"
-#include "log.h"
-#include "mavlink_address.h"
+#include "tune_impl.hpp"
+#include "log.hpp"
+#include "mavlink_address.hpp"
 
 namespace mavsdk {
 

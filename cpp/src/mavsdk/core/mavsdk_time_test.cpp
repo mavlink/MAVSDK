@@ -1,4 +1,4 @@
-#include "mavsdk_time.h"
+#include "mavsdk_time.hpp"
 #include <gtest/gtest.h>
 #include <chrono>
 

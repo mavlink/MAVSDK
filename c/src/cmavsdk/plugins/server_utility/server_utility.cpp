@@ -4,7 +4,7 @@
 
 #include "server_utility.h"
 
-#include <mavsdk/plugins/server_utility/server_utility.h>
+#include <mavsdk/plugins/server_utility/server_utility.hpp>
 #include <algorithm>
 #include <cstring>
 #include <mutex>

@@ -1,6 +1,6 @@
-#include "tcp_client_connection.h"
-#include "mavsdk_impl.h"
-#include "log.h"
+#include "tcp_client_connection.hpp"
+#include "mavsdk_impl.hpp"
+#include "log.hpp"
 
 #include <asio/buffer.hpp>
 #include <asio/connect.hpp>

@@ -1,9 +1,9 @@
 #include <functional>
-#include "mavlink_passthrough_impl.h"
-#include "plugins/mavlink_passthrough/mavlink_passthrough.h"
-#include "system.h"
+#include "mavlink_passthrough_impl.hpp"
+#include "plugins/mavlink_passthrough/mavlink_passthrough.hpp"
+#include "system.hpp"
 #include "callback_list.tpp"
-#include "mavsdk_export.h"
+#include "mavsdk_export.hpp"
 
 namespace mavsdk {
 

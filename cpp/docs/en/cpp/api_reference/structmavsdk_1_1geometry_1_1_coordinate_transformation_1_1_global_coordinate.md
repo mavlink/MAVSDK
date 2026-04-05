@@ -1,5 +1,5 @@
 # mavsdk::geometry::CoordinateTransformation::GlobalCoordinate Struct Reference
-`#include: geometry.h`
+`#include: geometry.hpp`
 
 ----
 

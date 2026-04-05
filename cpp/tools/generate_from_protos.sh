@@ -128,20 +128,20 @@ for plugin in "${plugin_list_and_core[@]}"; do
     fi
 
     mkdir -p "${script_dir}/../src/mavsdk/plugins/${plugin}/include/plugins/${plugin}"
-    ${protoc_binary} -I "${proto_dir}" --custom_out="${tmp_output_dir}" --plugin=protoc-gen-custom="${protoc_gen_mavsdk}" --custom_opt="file_ext=h,template_path=${template_path_plugin_h}" "${proto_dir}/${plugin}/${plugin}.proto"
-    mv "${tmp_output_dir}/${plugin}/$(snake_case_to_camel_case "${plugin}").h" "${script_dir}/../src/mavsdk/plugins/${plugin}/include/plugins/${plugin}/${plugin}.h"
+    ${protoc_binary} -I "${proto_dir}" --custom_out="${tmp_output_dir}" --plugin=protoc-gen-custom="${protoc_gen_mavsdk}" --custom_opt="file_ext=hpp,template_path=${template_path_plugin_h}" "${proto_dir}/${plugin}/${plugin}.proto"
+    mv "${tmp_output_dir}/${plugin}/$(snake_case_to_camel_case "${plugin}").hpp" "${script_dir}/../src/mavsdk/plugins/${plugin}/include/plugins/${plugin}/${plugin}.hpp"
 
     ${protoc_binary} -I "${proto_dir}" --custom_out="${tmp_output_dir}" --plugin=protoc-gen-custom="${protoc_gen_mavsdk}" --custom_opt="file_ext=cpp,template_path=${template_path_plugin_cpp}" "${proto_dir}/${plugin}/${plugin}.proto"
     mv "${tmp_output_dir}/${plugin}/$(snake_case_to_camel_case "${plugin}").cpp" "${script_dir}/../src/mavsdk/plugins/${plugin}/${plugin}.cpp"
 
-    ${protoc_binary} -I "${proto_dir}" --custom_out="${tmp_output_dir}" --plugin=protoc-gen-custom="${protoc_gen_mavsdk}" --custom_opt="file_ext=h,template_path=${template_path_mavsdk_server}" "${proto_dir}/${plugin}/${plugin}.proto"
+    ${protoc_binary} -I "${proto_dir}" --custom_out="${tmp_output_dir}" --plugin=protoc-gen-custom="${protoc_gen_mavsdk}" --custom_opt="file_ext=hpp,template_path=${template_path_mavsdk_server}" "${proto_dir}/${plugin}/${plugin}.proto"
     mkdir -p "${script_dir}/../src/mavsdk_server/src/plugins/${plugin}"
-    mv "${tmp_output_dir}/${plugin}/$(snake_case_to_camel_case "${plugin}").h" "${script_dir}/../src/mavsdk_server/src/plugins/${plugin}/${plugin}_service_impl.h"
+    mv "${tmp_output_dir}/${plugin}/$(snake_case_to_camel_case "${plugin}").hpp" "${script_dir}/../src/mavsdk_server/src/plugins/${plugin}/${plugin}_service_impl.hpp"
 
-    file_impl_h="${script_dir}/../src/mavsdk/plugins/${plugin}/${plugin}_impl.h"
+    file_impl_h="${script_dir}/../src/mavsdk/plugins/${plugin}/${plugin}_impl.hpp"
     if [[ ! -f "${file_impl_h}" ]]; then
-        ${protoc_binary} -I "${proto_dir}" --custom_out="${tmp_output_dir}" --plugin=protoc-gen-custom="${protoc_gen_mavsdk}" --custom_opt="file_ext=h,template_path=${template_path_plugin_impl_h}" "${proto_dir}/${plugin}/${plugin}.proto"
-        mv "${tmp_output_dir}/${plugin}/$(snake_case_to_camel_case "${plugin}").h" "${file_impl_h}"
+        ${protoc_binary} -I "${proto_dir}" --custom_out="${tmp_output_dir}" --plugin=protoc-gen-custom="${protoc_gen_mavsdk}" --custom_opt="file_ext=hpp,template_path=${template_path_plugin_impl_h}" "${proto_dir}/${plugin}/${plugin}.proto"
+        mv "${tmp_output_dir}/${plugin}/$(snake_case_to_camel_case "${plugin}").hpp" "${file_impl_h}"
         echo "-> Creating ${file_impl_h}"
     else
         # Warn if file is not checked in yet.
@@ -177,5 +177,5 @@ for plugin in "${plugin_list_and_core[@]}"; do
     echo "${plugin}" >> "${plugins_file}"
 done
 
-# Generate grpc_server.h and grpc_server.cpp files according to plugin list
+# Generate grpc_server.hpp and grpc_server.cpp files according to plugin list
 python3 "${script_dir}/grpc_server_jinja.py" "${plugin_list[@]}"

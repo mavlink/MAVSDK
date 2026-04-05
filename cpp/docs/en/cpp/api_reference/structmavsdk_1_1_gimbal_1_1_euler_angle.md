@@ -1,5 +1,5 @@
 # mavsdk::Gimbal::EulerAngle Struct Reference
-`#include: gimbal.h`
+`#include: gimbal.hpp`
 
 ----
 
@@ -16,11 +16,11 @@ For more info see [https://en.wikipedia.org/wiki/Euler_angles](https://en.wikipe
 ## Data Fields
 
 
-float [roll_deg](#structmavsdk_1_1_gimbal_1_1_euler_angle_1a8597dbca1cc6c0f9595b8299827164c4) { float(NAN)} - Roll angle in degrees, positive is banking to the right.
+float [roll_deg](#structmavsdk_1_1_gimbal_1_1_euler_angle_1a8597dbca1cc6c0f9595b8299827164c4) {float(NAN)} - Roll angle in degrees, positive is banking to the right.
 
-float [pitch_deg](#structmavsdk_1_1_gimbal_1_1_euler_angle_1aafe2a84a6a9001962190b115ea6b94e4) { float(NAN)} - Pitch angle in degrees, positive is pitching nose up.
+float [pitch_deg](#structmavsdk_1_1_gimbal_1_1_euler_angle_1aafe2a84a6a9001962190b115ea6b94e4) {float(NAN)} - Pitch angle in degrees, positive is pitching nose up.
 
-float [yaw_deg](#structmavsdk_1_1_gimbal_1_1_euler_angle_1ac09ef8ac782fbaa72812f53985ff312e) { float(NAN)} - Yaw angle in degrees, positive is clock-wise seen from above.
+float [yaw_deg](#structmavsdk_1_1_gimbal_1_1_euler_angle_1ac09ef8ac782fbaa72812f53985ff312e) {float(NAN)} - Yaw angle in degrees, positive is clock-wise seen from above.
 
 
 ## Field Documentation
@@ -29,7 +29,7 @@ float [yaw_deg](#structmavsdk_1_1_gimbal_1_1_euler_angle_1ac09ef8ac782fbaa72812f
 ### roll_deg {#structmavsdk_1_1_gimbal_1_1_euler_angle_1a8597dbca1cc6c0f9595b8299827164c4}
 
 ```cpp
-float mavsdk::Gimbal::EulerAngle::roll_deg { float(NAN)}
+float mavsdk::Gimbal::EulerAngle::roll_deg {float(NAN)}
 ```
 
 
@@ -39,7 +39,7 @@ Roll angle in degrees, positive is banking to the right.
 ### pitch_deg {#structmavsdk_1_1_gimbal_1_1_euler_angle_1aafe2a84a6a9001962190b115ea6b94e4}
 
 ```cpp
-float mavsdk::Gimbal::EulerAngle::pitch_deg { float(NAN)}
+float mavsdk::Gimbal::EulerAngle::pitch_deg {float(NAN)}
 ```
 
 
@@ -49,7 +49,7 @@ Pitch angle in degrees, positive is pitching nose up.
 ### yaw_deg {#structmavsdk_1_1_gimbal_1_1_euler_angle_1ac09ef8ac782fbaa72812f53985ff312e}
 
 ```cpp
-float mavsdk::Gimbal::EulerAngle::yaw_deg { float(NAN)}
+float mavsdk::Gimbal::EulerAngle::yaw_deg {float(NAN)}
 ```
 
 

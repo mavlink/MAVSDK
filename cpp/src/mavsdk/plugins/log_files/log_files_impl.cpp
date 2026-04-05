@@ -1,6 +1,6 @@
-#include "log_files_impl.h"
-#include "mavlink_address.h"
-#include "mavsdk_impl.h"
+#include "log_files_impl.hpp"
+#include "mavlink_address.hpp"
+#include "mavsdk_impl.hpp"
 
 #include <algorithm>
 #include <cmath>

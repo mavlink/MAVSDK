@@ -1,6 +1,6 @@
-#include "log.h"
-#include "mavsdk.h"
-#include "plugins/mavlink_direct/mavlink_direct.h"
+#include "log.hpp"
+#include "mavsdk.hpp"
+#include "plugins/mavlink_direct/mavlink_direct.hpp"
 #include <chrono>
 #include <thread>
 #include <future>

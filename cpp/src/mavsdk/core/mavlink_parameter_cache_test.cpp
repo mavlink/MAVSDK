@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
-#include "param_value.h"
-#include "mavlink_parameter_cache.h"
+#include "param_value.hpp"
+#include "mavlink_parameter_cache.hpp"
 
 using namespace mavsdk;
 

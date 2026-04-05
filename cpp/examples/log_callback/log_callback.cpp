@@ -2,8 +2,8 @@
 // Example how to customize MAVSDK log messages.
 //
 
-#include <mavsdk/mavsdk.h>
-#include <mavsdk/log_callback.h>
+#include <mavsdk/mavsdk.hpp>
+#include <mavsdk/log_callback.hpp>
 
 #include <iostream>
 

@@ -1,5 +1,5 @@
 # mavsdk::TelemetryServer::Position Struct Reference
-`#include: telemetry_server.h`
+`#include: telemetry_server.hpp`
 
 ----
 
@@ -14,9 +14,9 @@ double [latitude_deg](#structmavsdk_1_1_telemetry_server_1_1_position_1adfadb6ce
 
 double [longitude_deg](#structmavsdk_1_1_telemetry_server_1_1_position_1a721444c1ec9ce7493c16d67f8be250f4) {double(NAN)} - Longitude in degrees (range: -180 to +180)
 
-float [absolute_altitude_m](#structmavsdk_1_1_telemetry_server_1_1_position_1ab965b564087c41013f59f52e4125fb24) { float(NAN)} - Altitude AMSL (above mean sea level) in metres.
+float [absolute_altitude_m](#structmavsdk_1_1_telemetry_server_1_1_position_1ab965b564087c41013f59f52e4125fb24) {float(NAN)} - Altitude AMSL (above mean sea level) in metres.
 
-float [relative_altitude_m](#structmavsdk_1_1_telemetry_server_1_1_position_1a2def78079e3bae2391606109eca6c0f1) { float(NAN)} - Altitude relative to takeoff altitude in metres.
+float [relative_altitude_m](#structmavsdk_1_1_telemetry_server_1_1_position_1a2def78079e3bae2391606109eca6c0f1) {float(NAN)} - Altitude relative to takeoff altitude in metres.
 
 
 ## Field Documentation
@@ -45,7 +45,7 @@ Longitude in degrees (range: -180 to +180)
 ### absolute_altitude_m {#structmavsdk_1_1_telemetry_server_1_1_position_1ab965b564087c41013f59f52e4125fb24}
 
 ```cpp
-float mavsdk::TelemetryServer::Position::absolute_altitude_m { float(NAN)}
+float mavsdk::TelemetryServer::Position::absolute_altitude_m {float(NAN)}
 ```
 
 
@@ -55,7 +55,7 @@ Altitude AMSL (above mean sea level) in metres.
 ### relative_altitude_m {#structmavsdk_1_1_telemetry_server_1_1_position_1a2def78079e3bae2391606109eca6c0f1}
 
 ```cpp
-float mavsdk::TelemetryServer::Position::relative_altitude_m { float(NAN)}
+float mavsdk::TelemetryServer::Position::relative_altitude_m {float(NAN)}
 ```
 
 

@@ -1,5 +1,5 @@
 # mavsdk::Telemetry::Altitude Struct Reference
-`#include: telemetry.h`
+`#include: telemetry.hpp`
 
 ----
 
@@ -10,9 +10,9 @@
 ## Data Fields
 
 
-float [altitude_monotonic_m](#structmavsdk_1_1_telemetry_1_1_altitude_1a2dcb5cf0eaf256643b6c3382384164bf) {float( NAN)} - [Altitude](structmavsdk_1_1_telemetry_1_1_altitude.md) in meters is initialized on system boot and monotonic.
+float [altitude_monotonic_m](#structmavsdk_1_1_telemetry_1_1_altitude_1a2dcb5cf0eaf256643b6c3382384164bf) {float(NAN)} - [Altitude](structmavsdk_1_1_telemetry_1_1_altitude.md) in meters is initialized on system boot and monotonic.
 
-float [altitude_amsl_m](#structmavsdk_1_1_telemetry_1_1_altitude_1a898ba184deccdaf9d09e35b32d00fe5b) { float(NAN)} - [Altitude](structmavsdk_1_1_telemetry_1_1_altitude.md) AMSL (above mean sea level) in meters.
+float [altitude_amsl_m](#structmavsdk_1_1_telemetry_1_1_altitude_1a898ba184deccdaf9d09e35b32d00fe5b) {float(NAN)} - [Altitude](structmavsdk_1_1_telemetry_1_1_altitude.md) AMSL (above mean sea level) in meters.
 
 float [altitude_local_m](#structmavsdk_1_1_telemetry_1_1_altitude_1ad99a82de545efff2db64fd122d983ddd) {float(NAN)} - Local altitude in meters.
 
@@ -20,7 +20,7 @@ float [altitude_relative_m](#structmavsdk_1_1_telemetry_1_1_altitude_1ab19d607e3
 
 float [altitude_terrain_m](#structmavsdk_1_1_telemetry_1_1_altitude_1a3ff7fd4d1cb4add1315faed09665f6dd) {float(NAN)} - [Altitude](structmavsdk_1_1_telemetry_1_1_altitude.md) above terrain in meters.
 
-float [bottom_clearance_m](#structmavsdk_1_1_telemetry_1_1_altitude_1adb1f002956624c20524f33412bd8debc) { float(NAN)} - This is not the altitude, but the clear space below the system according to the fused clearance estimate in meters.
+float [bottom_clearance_m](#structmavsdk_1_1_telemetry_1_1_altitude_1adb1f002956624c20524f33412bd8debc) {float(NAN)} - This is not the altitude, but the clear space below the system according to the fused clearance estimate in meters.
 
 uint64_t [timestamp_us](#structmavsdk_1_1_telemetry_1_1_altitude_1abe1f59274eff80a239260bfa7e0cd7e4) {} - Timestamp in microseconds (since system boot)
 
@@ -31,7 +31,7 @@ uint64_t [timestamp_us](#structmavsdk_1_1_telemetry_1_1_altitude_1abe1f59274eff8
 ### altitude_monotonic_m {#structmavsdk_1_1_telemetry_1_1_altitude_1a2dcb5cf0eaf256643b6c3382384164bf}
 
 ```cpp
-float mavsdk::Telemetry::Altitude::altitude_monotonic_m {float( NAN)}
+float mavsdk::Telemetry::Altitude::altitude_monotonic_m {float(NAN)}
 ```
 
 
@@ -41,7 +41,7 @@ float mavsdk::Telemetry::Altitude::altitude_monotonic_m {float( NAN)}
 ### altitude_amsl_m {#structmavsdk_1_1_telemetry_1_1_altitude_1a898ba184deccdaf9d09e35b32d00fe5b}
 
 ```cpp
-float mavsdk::Telemetry::Altitude::altitude_amsl_m { float(NAN)}
+float mavsdk::Telemetry::Altitude::altitude_amsl_m {float(NAN)}
 ```
 
 
@@ -81,7 +81,7 @@ float mavsdk::Telemetry::Altitude::altitude_terrain_m {float(NAN)}
 ### bottom_clearance_m {#structmavsdk_1_1_telemetry_1_1_altitude_1adb1f002956624c20524f33412bd8debc}
 
 ```cpp
-float mavsdk::Telemetry::Altitude::bottom_clearance_m { float(NAN)}
+float mavsdk::Telemetry::Altitude::bottom_clearance_m {float(NAN)}
 ```
 
 

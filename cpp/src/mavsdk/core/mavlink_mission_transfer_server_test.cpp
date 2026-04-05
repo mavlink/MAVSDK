@@ -5,9 +5,9 @@
 #include <gtest/gtest.h>
 #include <asio/io_context.hpp>
 
-#include "mavlink_mission_transfer_server.h"
-#include "mocks/sender_mock.h"
-#include "unused.h"
+#include "mavlink_mission_transfer_server.hpp"
+#include "mocks/sender_mock.hpp"
+#include "unused.hpp"
 
 using namespace mavsdk;
 

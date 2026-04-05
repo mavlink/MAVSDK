@@ -1,5 +1,5 @@
 # mavsdk::Param::IntParam Struct Reference
-`#include: param.h`
+`#include: param.hpp`
 
 ----
 

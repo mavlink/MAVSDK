@@ -2,8 +2,8 @@
 #include <functional>
 #include <iostream>
 
-#include "ftp_impl.h"
-#include "system.h"
+#include "ftp_impl.hpp"
+#include "system.hpp"
 
 namespace mavsdk {
 

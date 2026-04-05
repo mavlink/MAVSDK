@@ -1,6 +1,6 @@
-#include "http_loader.h"
-#include "curl_wrapper.h"
-#include "overloaded.h"
+#include "http_loader.hpp"
+#include "curl_wrapper.hpp"
+#include "overloaded.hpp"
 
 namespace mavsdk {
 

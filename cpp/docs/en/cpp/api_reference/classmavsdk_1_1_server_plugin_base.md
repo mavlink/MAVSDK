@@ -1,5 +1,5 @@
 # mavsdk::ServerPluginBase Class Reference
-`#include: server_plugin_base.h`
+`#include: server_plugin_base.hpp`
 
 ----
 

@@ -5,8 +5,8 @@
 
 #include <iomanip>
 
-#include "mavlink_direct_impl.h"
-#include "plugins/mavlink_direct/mavlink_direct.h"
+#include "mavlink_direct_impl.hpp"
+#include "plugins/mavlink_direct/mavlink_direct.hpp"
 
 namespace mavsdk {
 

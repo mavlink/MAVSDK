@@ -1,5 +1,5 @@
 # mavsdk::Offboard::AccelerationNed Struct Reference
-`#include: offboard.h`
+`#include: offboard.hpp`
 
 ----
 

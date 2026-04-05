@@ -1,5 +1,5 @@
 # mavsdk::ParamServer Class Reference
-`#include: param_server.h`
+`#include: param_server.hpp`
 
 ----
 

@@ -1,4 +1,4 @@
-#include "mavsdk.h"
+#include "mavsdk.hpp"
 #include <gtest/gtest.h>
 
 using namespace mavsdk;

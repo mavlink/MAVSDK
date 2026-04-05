@@ -1,5 +1,5 @@
 # mavsdk::Mocap Class Reference
-`#include: mocap.h`
+`#include: mocap.hpp`
 
 ----
 

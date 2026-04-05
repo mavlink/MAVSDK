@@ -4,8 +4,8 @@
 
 #include <iomanip>
 
-#include "events_impl.h"
-#include "plugins/events/events.h"
+#include "events_impl.hpp"
+#include "plugins/events/events.hpp"
 
 namespace mavsdk {
 

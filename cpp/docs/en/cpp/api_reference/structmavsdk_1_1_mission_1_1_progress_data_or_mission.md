@@ -1,5 +1,5 @@
 # mavsdk::Mission::ProgressDataOrMission Struct Reference
-`#include: mission.h`
+`#include: mission.hpp`
 
 ----
 
@@ -10,7 +10,7 @@ Progress data coming from mission download, or the mission itself (if the transf
 ## Data Fields
 
 
-bool [has_progress](#structmavsdk_1_1_mission_1_1_progress_data_or_mission_1aa62b873987a36a1f0933d553eee8fc96) { false} - Whether this [ProgressData](structmavsdk_1_1_mission_1_1_progress_data.md) contains a 'progress' status or not.
+bool [has_progress](#structmavsdk_1_1_mission_1_1_progress_data_or_mission_1aa62b873987a36a1f0933d553eee8fc96) {false} - Whether this [ProgressData](structmavsdk_1_1_mission_1_1_progress_data.md) contains a 'progress' status or not.
 
 float [progress](#structmavsdk_1_1_mission_1_1_progress_data_or_mission_1a75ab9d493dfd9cda21df2018b5713eb9) {float(NAN)} - Progress (0..1.0)
 
@@ -25,7 +25,7 @@ bool [has_mission](#structmavsdk_1_1_mission_1_1_progress_data_or_mission_1a3d40
 ### has_progress {#structmavsdk_1_1_mission_1_1_progress_data_or_mission_1aa62b873987a36a1f0933d553eee8fc96}
 
 ```cpp
-bool mavsdk::Mission::ProgressDataOrMission::has_progress { false}
+bool mavsdk::Mission::ProgressDataOrMission::has_progress {false}
 ```
 
 

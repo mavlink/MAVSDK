@@ -1,4 +1,4 @@
-#include "mavlink_parameter_subscription.h"
+#include "mavlink_parameter_subscription.hpp"
 
 #include <algorithm>
 

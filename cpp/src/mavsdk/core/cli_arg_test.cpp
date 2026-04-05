@@ -1,5 +1,5 @@
 #include <string>
-#include "cli_arg.h"
+#include "cli_arg.hpp"
 #include <gtest/gtest.h>
 
 using namespace mavsdk;

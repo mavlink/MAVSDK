@@ -5,8 +5,8 @@
 
 #include <iomanip>
 
-#include "mission_raw_server_impl.h"
-#include "plugins/mission_raw_server/mission_raw_server.h"
+#include "mission_raw_server_impl.hpp"
+#include "plugins/mission_raw_server/mission_raw_server.hpp"
 
 namespace mavsdk {
 

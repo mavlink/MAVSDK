@@ -10,6 +10,6 @@ target_include_directories(mavsdk PUBLIC
     )
 
 install(FILES
-        include/plugins/component_metadata_server/component_metadata_server.h
+        include/plugins/component_metadata_server/component_metadata_server.hpp
     DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/mavsdk/plugins/component_metadata_server
 )

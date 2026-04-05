@@ -1,7 +1,7 @@
 #if defined(ENABLE_CPPTRACE)
 #include <signal.h>
 #include <cpptrace/cpptrace.hpp>
-#include "log.h"
+#include "log.hpp"
 #include <cstring>
 #include <string_view>
 #endif

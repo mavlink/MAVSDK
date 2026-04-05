@@ -1,7 +1,7 @@
-#include "mavlink_ftp_client.h"
-#include "system_impl.h"
-#include "overloaded.h"
-#include "unused.h"
+#include "mavlink_ftp_client.hpp"
+#include "system_impl.hpp"
+#include "overloaded.hpp"
+#include "unused.hpp"
 #include <algorithm>
 #include <fstream>
 #include <filesystem>
@@ -9,7 +9,7 @@
 #include <future>
 #include <numeric>
 
-#include "crc32.h"
+#include "crc32.hpp"
 
 namespace mavsdk {
 

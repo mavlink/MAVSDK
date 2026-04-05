@@ -4,8 +4,8 @@
 
 #include <iomanip>
 
-#include "rtk_impl.h"
-#include "plugins/rtk/rtk.h"
+#include "rtk_impl.hpp"
+#include "plugins/rtk/rtk.hpp"
 
 namespace mavsdk {
 

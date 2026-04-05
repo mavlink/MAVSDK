@@ -1,5 +1,5 @@
 # mavsdk::Transponder Class Reference
-`#include: transponder.h`
+`#include: transponder.hpp`
 
 ----
 

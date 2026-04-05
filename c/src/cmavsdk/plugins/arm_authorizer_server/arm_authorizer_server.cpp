@@ -4,7 +4,7 @@
 
 #include "arm_authorizer_server.h"
 
-#include <mavsdk/plugins/arm_authorizer_server/arm_authorizer_server.h>
+#include <mavsdk/plugins/arm_authorizer_server/arm_authorizer_server.hpp>
 #include <algorithm>
 #include <cstring>
 #include <mutex>

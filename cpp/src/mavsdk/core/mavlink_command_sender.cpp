@@ -1,7 +1,7 @@
-#include "mavlink_command_sender.h"
-#include "mavlink_address.h"
-#include "system_impl.h"
-#include "unused.h"
+#include "mavlink_command_sender.hpp"
+#include "mavlink_address.hpp"
+#include "system_impl.hpp"
+#include "unused.hpp"
 #include <cmath>
 #include <future>
 #include <memory>

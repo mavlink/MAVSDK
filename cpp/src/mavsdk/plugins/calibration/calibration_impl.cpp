@@ -1,11 +1,11 @@
-#include "calibration_impl.h"
+#include "calibration_impl.hpp"
 
 #include <functional>
 #include <string>
 
-#include "autopilot.h"
-#include "px4_custom_mode.h"
-#include "system.h"
+#include "autopilot.hpp"
+#include "px4_custom_mode.hpp"
+#include "system.hpp"
 
 namespace mavsdk {
 

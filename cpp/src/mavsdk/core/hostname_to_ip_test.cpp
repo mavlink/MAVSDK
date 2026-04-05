@@ -1,4 +1,4 @@
-#include "hostname_to_ip.h"
+#include "hostname_to_ip.hpp"
 #include <gtest/gtest.h>
 
 using namespace mavsdk;

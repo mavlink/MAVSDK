@@ -1,6 +1,6 @@
-#include "camera_server_impl.h"
+#include "camera_server_impl.hpp"
 #include "callback_list.tpp"
-#include "mavsdk_export.h"
+#include "mavsdk_export.hpp"
 
 namespace mavsdk {
 
