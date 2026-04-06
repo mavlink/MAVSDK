@@ -30,4 +30,7 @@ target_include_directories(unit_tests_runner
 )
 
 
-add_test(unit_tests unit_tests_runner)
+add_test(NAME unit_tests
+    COMMAND unit_tests_runner
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+)
