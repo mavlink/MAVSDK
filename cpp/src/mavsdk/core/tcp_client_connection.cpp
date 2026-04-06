@@ -66,23 +66,34 @@ ConnectionResult TcpClientConnection::stop()
 
     _reconnect_timer.cancel();
 
-    {
+    auto& io_ctx = static_cast<asio::io_context&>(_socket.get_executor().context());
+    if (!io_ctx.stopped()) {
+        // Close the socket from the io_context thread to avoid a data race with
+        // a concurrent async_read_some() / async_connect() reading socket state.
+        // Because io_ctx is driven by a single thread, posting here serialises
+        // the close with all in-flight socket access.
+        std::promise<void> close_done;
+        asio::post(io_ctx, [this, &close_done]() {
+            std::lock_guard<std::mutex> lock(_send_mutex);
+            if (_socket.is_open()) {
+                asio::error_code ec;
+                _socket.close(ec);
+            }
+            close_done.set_value();
+        });
+        close_done.get_future().wait();
+
+        // Drain any operation_aborted handlers queued by the close.
+        std::promise<void> fence;
+        asio::post(io_ctx, [&fence]() { fence.set_value(); });
+        fence.get_future().wait();
+    } else {
+        // io_context already stopped — no concurrent async operations are running.
         std::lock_guard<std::mutex> lock(_send_mutex);
         if (_socket.is_open()) {
             asio::error_code ec;
             _socket.close(ec);
         }
-    }
-
-    // Fence: wait for any in-flight handler to finish before we allow member destruction.
-    // Because _stopping is set, no handler will post a new async op, so one fence suffices.
-    // Skip when the io_context is already stopped (e.g. called from ~MavsdkImpl after
-    // the io_thread has been joined — no handler can be running in that case).
-    auto& io_ctx = static_cast<asio::io_context&>(_socket.get_executor().context());
-    if (!io_ctx.stopped()) {
-        std::promise<void> fence;
-        asio::post(io_ctx, [&fence]() { fence.set_value(); });
-        fence.get_future().wait();
     }
 
     // Stop this after stopping the socket so we don't interfere with message parsing.
