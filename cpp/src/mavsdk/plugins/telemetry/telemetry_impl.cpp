@@ -15,6 +15,7 @@ namespace mavsdk {
 
 template class MAVSDK_TEMPL_INST CallbackList<Telemetry::PositionVelocityNed>;
 template class MAVSDK_TEMPL_INST CallbackList<Telemetry::Position>;
+template class MAVSDK_TEMPL_INST CallbackList<Telemetry::HomePosition>;
 template class MAVSDK_TEMPL_INST CallbackList<bool>;
 template class MAVSDK_TEMPL_INST CallbackList<Telemetry::StatusText>;
 template class MAVSDK_TEMPL_INST CallbackList<Telemetry::Quaternion>;
