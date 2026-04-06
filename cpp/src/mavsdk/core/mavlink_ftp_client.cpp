@@ -179,10 +179,16 @@ void MavlinkFtpClient::process_mavlink_ftp_message(const mavlink_message_t& msg)
         LogWarn("Ignore: last: {}, req: {}", (int)work->last_opcode, (int)payload->req_opcode);
         return;
     }
-    if (work->last_received_seq_number != 0 &&
-        work->last_received_seq_number == payload->seq_number) {
-        // We have already seen this ack/nak.
-        LogWarn("Already see");
+    // Check that the response seq_number is exactly what we expect.
+    // work->payload.seq_number is always the seq_number of the most-recently
+    // sent request; the server echoes back seq_number + 1.  Accepting any
+    // other value would allow stale/duplicate UDP datagrams from a previous
+    // request to be processed as if they were the current response, which can
+    // corrupt the downloaded file (e.g. writing a full 239-byte chunk when
+    // only the final 49 bytes remain).
+    const auto expected_seq = static_cast<uint16_t>(work->payload.seq_number + 1);
+    if (payload->seq_number != expected_seq) {
+        LogWarn("Unexpected seq: got {}, expected {}", (int)payload->seq_number, (int)expected_seq);
         return;
     }
 
@@ -469,8 +475,6 @@ void MavlinkFtpClient::process_mavlink_ftp_message(const mavlink_message_t& msg)
                 }
             }},
         work->item);
-
-    work->last_received_seq_number = payload->seq_number;
 }
 
 bool MavlinkFtpClient::download_start(Work& work, DownloadItem& item)
