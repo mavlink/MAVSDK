@@ -235,6 +235,58 @@ CMAVSDK_EXPORT void mavsdk_telemetry_position_array_destroy(
     size_t size);
 
 /**
+ * @brief Quaternion type.
+ *
+ *  All rotations and axis systems follow the right-hand rule.
+ *  The Hamilton quaternion product definition is used.
+ *  A zero-rotation quaternion is represented by (1,0,0,0).
+ *  The quaternion could also be written as w + xi + yj + zk.
+ *
+ *  For more info see: https://en.wikipedia.org/wiki/Quaternion
+ *
+ * @note This struct may contain dynamically allocated memory. Always call
+ *       mavsdk_telemetry_quaternion_destroy() when done to avoid memory leaks.
+ */
+typedef struct CMAVSDK_EXPORT {
+    /**  Quaternion entry 0, also denoted as a */
+    float w;
+    /**  Quaternion entry 1, also denoted as b */
+    float x;
+    /**  Quaternion entry 2, also denoted as c */
+    float y;
+    /**  Quaternion entry 3, also denoted as d */
+    float z;
+    /**  Timestamp in microseconds */
+    uint64_t timestamp_us;
+} mavsdk_telemetry_quaternion_t;
+
+/**
+ * @brief Destroy a quaternion struct.
+ *
+ * Frees all memory allocated by MAVSDK for this struct, including any
+ * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
+ * Always call this function when done with the struct, even if it currently
+ * contains no dynamic allocations.
+ *
+ * @param target Pointer to the struct to destroy. Can be NULL (no-op).
+ */
+CMAVSDK_EXPORT void mavsdk_telemetry_quaternion_destroy(
+    mavsdk_telemetry_quaternion_t* target);
+
+/**
+ * @brief Destroy an array of quaternion structs.
+ *
+ * Frees all memory allocated for the array and its elements, including any
+ * nested dynamic allocations. Must be called to avoid memory leaks.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ * @param size Number of elements in the array.
+ */
+CMAVSDK_EXPORT void mavsdk_telemetry_quaternion_array_destroy(
+    mavsdk_telemetry_quaternion_t** array,
+    size_t size);
+
+/**
  * @brief Home position type.
  * 
  *  Includes the global GPS position, local NED position, surface quaternion,
@@ -331,58 +383,6 @@ CMAVSDK_EXPORT void mavsdk_telemetry_heading_destroy(
  */
 CMAVSDK_EXPORT void mavsdk_telemetry_heading_array_destroy(
     mavsdk_telemetry_heading_t** array,
-    size_t size);
-
-/**
- * @brief Quaternion type.
- * 
- *  All rotations and axis systems follow the right-hand rule.
- *  The Hamilton quaternion product definition is used.
- *  A zero-rotation quaternion is represented by (1,0,0,0).
- *  The quaternion could also be written as w + xi + yj + zk.
- * 
- *  For more info see: https://en.wikipedia.org/wiki/Quaternion
- *
- * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_telemetry_quaternion_destroy() when done to avoid memory leaks.
- */
-typedef struct CMAVSDK_EXPORT {
-    /**  Quaternion entry 0, also denoted as a */
-    float w;
-    /**  Quaternion entry 1, also denoted as b */
-    float x;
-    /**  Quaternion entry 2, also denoted as c */
-    float y;
-    /**  Quaternion entry 3, also denoted as d */
-    float z;
-    /**  Timestamp in microseconds */
-    uint64_t timestamp_us;
-} mavsdk_telemetry_quaternion_t;
-
-/**
- * @brief Destroy a quaternion struct.
- *
- * Frees all memory allocated by MAVSDK for this struct, including any
- * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
- * Always call this function when done with the struct, even if it currently
- * contains no dynamic allocations.
- *
- * @param target Pointer to the struct to destroy. Can be NULL (no-op).
- */
-CMAVSDK_EXPORT void mavsdk_telemetry_quaternion_destroy(
-    mavsdk_telemetry_quaternion_t* target);
-
-/**
- * @brief Destroy an array of quaternion structs.
- *
- * Frees all memory allocated for the array and its elements, including any
- * nested dynamic allocations. Must be called to avoid memory leaks.
- *
- * @param array Pointer to the array pointer. Will be set to NULL after freeing.
- * @param size Number of elements in the array.
- */
-CMAVSDK_EXPORT void mavsdk_telemetry_quaternion_array_destroy(
-    mavsdk_telemetry_quaternion_t** array,
     size_t size);
 
 /**
