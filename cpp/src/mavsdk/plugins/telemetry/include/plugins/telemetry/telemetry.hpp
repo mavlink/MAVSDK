@@ -265,6 +265,42 @@ public:
 
 
     /**
+     * @brief Quaternion type.
+     *
+     * All rotations and axis systems follow the right-hand rule.
+     * The Hamilton quaternion product definition is used.
+     * A zero-rotation quaternion is represented by (1,0,0,0).
+     * The quaternion could also be written as w + xi + yj + zk.
+     *
+     * For more info see: https://en.wikipedia.org/wiki/Quaternion
+     */
+    struct Quaternion {
+
+        float w{float(NAN)}; /**< @brief Quaternion entry 0, also denoted as a */
+        float x{float(NAN)}; /**< @brief Quaternion entry 1, also denoted as b */
+        float y{float(NAN)}; /**< @brief Quaternion entry 2, also denoted as c */
+        float z{float(NAN)}; /**< @brief Quaternion entry 3, also denoted as d */
+        uint64_t timestamp_us{}; /**< @brief Timestamp in microseconds */
+    };
+
+    /**
+     * @brief Equal operator to compare two `Telemetry::Quaternion` objects.
+     *
+     * @return `true` if items are equal.
+     */
+    friend MAVSDK_PUBLIC bool operator==(const Telemetry::Quaternion& lhs, const Telemetry::Quaternion& rhs);
+
+    /**
+     * @brief Stream operator to print information about a `Telemetry::Quaternion`.
+     *
+     * @return A reference to the stream.
+     */
+    friend MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Telemetry::Quaternion const& quaternion);
+
+
+
+
+    /**
      * @brief Home position type.
      *
      * Includes the global GPS position, local NED position, surface quaternion,
@@ -324,42 +360,6 @@ public:
      * @return A reference to the stream.
      */
     friend MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Telemetry::Heading const& heading);
-
-
-
-
-    /**
-     * @brief Quaternion type.
-     *
-     * All rotations and axis systems follow the right-hand rule.
-     * The Hamilton quaternion product definition is used.
-     * A zero-rotation quaternion is represented by (1,0,0,0).
-     * The quaternion could also be written as w + xi + yj + zk.
-     *
-     * For more info see: https://en.wikipedia.org/wiki/Quaternion
-     */
-    struct Quaternion {
-        
-        float w{float(NAN)}; /**< @brief Quaternion entry 0, also denoted as a */
-        float x{float(NAN)}; /**< @brief Quaternion entry 1, also denoted as b */
-        float y{float(NAN)}; /**< @brief Quaternion entry 2, also denoted as c */
-        float z{float(NAN)}; /**< @brief Quaternion entry 3, also denoted as d */
-        uint64_t timestamp_us{}; /**< @brief Timestamp in microseconds */
-    };
-
-    /**
-     * @brief Equal operator to compare two `Telemetry::Quaternion` objects.
-     *
-     * @return `true` if items are equal.
-     */
-    friend MAVSDK_PUBLIC bool operator==(const Telemetry::Quaternion& lhs, const Telemetry::Quaternion& rhs);
-
-    /**
-     * @brief Stream operator to print information about a `Telemetry::Quaternion`.
-     *
-     * @return A reference to the stream.
-     */
-    friend MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Telemetry::Quaternion const& quaternion);
 
 
 

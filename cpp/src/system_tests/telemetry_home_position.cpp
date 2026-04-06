@@ -1,7 +1,7 @@
-#include "log.h"
-#include "mavsdk.h"
-#include "plugins/telemetry/telemetry.h"
-#include "plugins/mavlink_direct/mavlink_direct.h"
+#include "log.hpp"
+#include "mavsdk.hpp"
+#include "plugins/telemetry/telemetry.hpp"
+#include "plugins/mavlink_direct/mavlink_direct.hpp"
 #include <atomic>
 #include <chrono>
 #include <future>
@@ -72,9 +72,9 @@ TEST(SystemTest, HomePositionFullFields)
     EXPECT_FLOAT_EQ(home.relative_altitude_m, 0.0f);
 
     // Verify local NED position
-    EXPECT_FLOAT_EQ(home.local_x_m, 1.5f);
-    EXPECT_FLOAT_EQ(home.local_y_m, 2.5f);
-    EXPECT_FLOAT_EQ(home.local_z_m, -3.5f);
+    EXPECT_FLOAT_EQ(home.local_north_m, 1.5f);
+    EXPECT_FLOAT_EQ(home.local_east_m, 2.5f);
+    EXPECT_FLOAT_EQ(home.local_down_m, -3.5f);
 
     // Verify quaternion
     EXPECT_NEAR(home.q.w, 0.707f, 0.01f);
@@ -83,9 +83,9 @@ TEST(SystemTest, HomePositionFullFields)
     EXPECT_NEAR(home.q.z, 0.0f, 0.01f);
 
     // Verify approach vector
-    EXPECT_FLOAT_EQ(home.approach_x_m, 10.0f);
-    EXPECT_FLOAT_EQ(home.approach_y_m, 20.0f);
-    EXPECT_FLOAT_EQ(home.approach_z_m, -5.0f);
+    EXPECT_FLOAT_EQ(home.approach_north_m, 10.0f);
+    EXPECT_FLOAT_EQ(home.approach_east_m, 20.0f);
+    EXPECT_FLOAT_EQ(home.approach_down_m, -5.0f);
 
     // Verify timestamp
     EXPECT_EQ(home.timestamp_us, 555444333ULL);

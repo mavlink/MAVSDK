@@ -812,16 +812,16 @@ void TelemetryImpl::process_home_position(const mavlink_message_t& message)
     new_home.longitude_deg = home_position.longitude * 1e-7;
     new_home.absolute_altitude_m = home_position.altitude * 1e-3f;
     new_home.relative_altitude_m = 0.0f; // 0 by definition.
-    new_home.local_x_m = home_position.x;
-    new_home.local_y_m = home_position.y;
-    new_home.local_z_m = home_position.z;
+    new_home.local_north_m = home_position.x;
+    new_home.local_east_m = home_position.y;
+    new_home.local_down_m = home_position.z;
     new_home.q.w = home_position.q[0];
     new_home.q.x = home_position.q[1];
     new_home.q.y = home_position.q[2];
     new_home.q.z = home_position.q[3];
-    new_home.approach_x_m = home_position.approach_x;
-    new_home.approach_y_m = home_position.approach_y;
-    new_home.approach_z_m = home_position.approach_z;
+    new_home.approach_north_m = home_position.approach_x;
+    new_home.approach_east_m = home_position.approach_y;
+    new_home.approach_down_m = home_position.approach_z;
     new_home.timestamp_us = home_position.time_usec;
 
     set_home_position(new_home);
