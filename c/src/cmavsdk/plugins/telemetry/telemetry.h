@@ -235,6 +235,68 @@ CMAVSDK_EXPORT void mavsdk_telemetry_position_array_destroy(
     size_t size);
 
 /**
+ * @brief Home position type.
+ * 
+ *  Includes the global GPS position, local NED position, surface quaternion,
+ *  and approach vector from the MAVLink HOME_POSITION message.
+ *
+ * @note This struct may contain dynamically allocated memory. Always call
+ *       mavsdk_telemetry_home_position_destroy() when done to avoid memory leaks.
+ */
+typedef struct CMAVSDK_EXPORT {
+    /**  Timestamp (UNIX Epoch or since system boot) in microseconds */
+    uint64_t timestamp_us;
+    /**  Latitude in degrees (range: -90 to +90) */
+    double latitude_deg;
+    /**  Longitude in degrees (range: -180 to +180) */
+    double longitude_deg;
+    /**  Altitude AMSL (above mean sea level) in metres */
+    float absolute_altitude_m;
+    /**  Altitude relative to takeoff altitude in metres */
+    float relative_altitude_m;
+    /**  Local North position in NED frame (m) */
+    float local_north_m;
+    /**  Local East position in NED frame (m) */
+    float local_east_m;
+    /**  Local Down position in NED frame (m, positive down) */
+    float local_down_m;
+    /**  Surface quaternion (world-to-surface-normal and heading) */
+    mavsdk_telemetry_quaternion_t q;
+    /**  Local North position of the approach vector end in NED frame (m) */
+    float approach_north_m;
+    /**  Local East position of the approach vector end in NED frame (m) */
+    float approach_east_m;
+    /**  Local Down position of the approach vector end in NED frame (m) */
+    float approach_down_m;
+} mavsdk_telemetry_home_position_t;
+
+/**
+ * @brief Destroy a home_position struct.
+ *
+ * Frees all memory allocated by MAVSDK for this struct, including any
+ * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
+ * Always call this function when done with the struct, even if it currently
+ * contains no dynamic allocations.
+ *
+ * @param target Pointer to the struct to destroy. Can be NULL (no-op).
+ */
+CMAVSDK_EXPORT void mavsdk_telemetry_home_position_destroy(
+    mavsdk_telemetry_home_position_t* target);
+
+/**
+ * @brief Destroy an array of home_position structs.
+ *
+ * Frees all memory allocated for the array and its elements, including any
+ * nested dynamic allocations. Must be called to avoid memory leaks.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ * @param size Number of elements in the array.
+ */
+CMAVSDK_EXPORT void mavsdk_telemetry_home_position_array_destroy(
+    mavsdk_telemetry_home_position_t** array,
+    size_t size);
+
+/**
  * @brief Heading type used for global position
  *
  * @note This struct may contain dynamically allocated memory. Always call
@@ -1678,7 +1740,7 @@ CMAVSDK_EXPORT void mavsdk_telemetry_byte_buffer_destroy(uint8_t** buffer);
 
 // ===== Callback Typedefs =====
 typedef void (*mavsdk_telemetry_position_callback_t)(const mavsdk_telemetry_position_t position, void* user_data);
-typedef void (*mavsdk_telemetry_home_callback_t)(const mavsdk_telemetry_position_t home, void* user_data);
+typedef void (*mavsdk_telemetry_home_callback_t)(const mavsdk_telemetry_home_position_t home, void* user_data);
 typedef void (*mavsdk_telemetry_in_air_callback_t)(const bool is_in_air, void* user_data);
 typedef void (*mavsdk_telemetry_landed_state_callback_t)(const mavsdk_telemetry_landed_state_t landed_state, void* user_data);
 typedef void (*mavsdk_telemetry_armed_callback_t)(const bool is_armed, void* user_data);
@@ -1822,7 +1884,7 @@ CMAVSDK_EXPORT
 void
 mavsdk_telemetry_home(
     mavsdk_telemetry_t telemetry,
-    mavsdk_telemetry_position_t* home_out);
+    mavsdk_telemetry_home_position_t* home_out);
 
 
 /**

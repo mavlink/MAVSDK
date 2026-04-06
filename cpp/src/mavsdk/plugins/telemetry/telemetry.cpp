@@ -10,6 +10,7 @@
 namespace mavsdk {
 
 using Position = Telemetry::Position;
+using HomePosition = Telemetry::HomePosition;
 using Heading = Telemetry::Heading;
 using Quaternion = Telemetry::Quaternion;
 using EulerAngle = Telemetry::EulerAngle;
@@ -76,7 +77,7 @@ void Telemetry::unsubscribe_home(HomeHandle handle)
     _impl->unsubscribe_home(handle);
 }
 
-Telemetry::Position Telemetry::home() const
+Telemetry::HomePosition Telemetry::home() const
 {
     return _impl->home();
 }
@@ -837,6 +838,54 @@ MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Telemetry::Position co
     str << "    longitude_deg: " << position.longitude_deg << '\n';
     str << "    absolute_altitude_m: " << position.absolute_altitude_m << '\n';
     str << "    relative_altitude_m: " << position.relative_altitude_m << '\n';
+    str << '}';
+    return str;
+}
+
+MAVSDK_PUBLIC bool
+operator==(const Telemetry::HomePosition& lhs, const Telemetry::HomePosition& rhs)
+{
+    return (rhs.timestamp_us == lhs.timestamp_us) &&
+           ((std::isnan(rhs.latitude_deg) && std::isnan(lhs.latitude_deg)) ||
+            rhs.latitude_deg == lhs.latitude_deg) &&
+           ((std::isnan(rhs.longitude_deg) && std::isnan(lhs.longitude_deg)) ||
+            rhs.longitude_deg == lhs.longitude_deg) &&
+           ((std::isnan(rhs.absolute_altitude_m) && std::isnan(lhs.absolute_altitude_m)) ||
+            rhs.absolute_altitude_m == lhs.absolute_altitude_m) &&
+           ((std::isnan(rhs.relative_altitude_m) && std::isnan(lhs.relative_altitude_m)) ||
+            rhs.relative_altitude_m == lhs.relative_altitude_m) &&
+           ((std::isnan(rhs.local_north_m) && std::isnan(lhs.local_north_m)) ||
+            rhs.local_north_m == lhs.local_north_m) &&
+           ((std::isnan(rhs.local_east_m) && std::isnan(lhs.local_east_m)) ||
+            rhs.local_east_m == lhs.local_east_m) &&
+           ((std::isnan(rhs.local_down_m) && std::isnan(lhs.local_down_m)) ||
+            rhs.local_down_m == lhs.local_down_m) &&
+           (rhs.q == lhs.q) &&
+           ((std::isnan(rhs.approach_north_m) && std::isnan(lhs.approach_north_m)) ||
+            rhs.approach_north_m == lhs.approach_north_m) &&
+           ((std::isnan(rhs.approach_east_m) && std::isnan(lhs.approach_east_m)) ||
+            rhs.approach_east_m == lhs.approach_east_m) &&
+           ((std::isnan(rhs.approach_down_m) && std::isnan(lhs.approach_down_m)) ||
+            rhs.approach_down_m == lhs.approach_down_m);
+}
+
+MAVSDK_PUBLIC std::ostream&
+operator<<(std::ostream& str, Telemetry::HomePosition const& home_position)
+{
+    str << std::setprecision(15);
+    str << "home_position:" << '\n' << "{\n";
+    str << "    timestamp_us: " << home_position.timestamp_us << '\n';
+    str << "    latitude_deg: " << home_position.latitude_deg << '\n';
+    str << "    longitude_deg: " << home_position.longitude_deg << '\n';
+    str << "    absolute_altitude_m: " << home_position.absolute_altitude_m << '\n';
+    str << "    relative_altitude_m: " << home_position.relative_altitude_m << '\n';
+    str << "    local_north_m: " << home_position.local_north_m << '\n';
+    str << "    local_east_m: " << home_position.local_east_m << '\n';
+    str << "    local_down_m: " << home_position.local_down_m << '\n';
+    str << "    q: " << home_position.q << '\n';
+    str << "    approach_north_m: " << home_position.approach_north_m << '\n';
+    str << "    approach_east_m: " << home_position.approach_east_m << '\n';
+    str << "    approach_down_m: " << home_position.approach_down_m << '\n';
     str << '}';
     return str;
 }

@@ -127,6 +127,28 @@ class PositionCStruct(ctypes.Structure):
     ]
 
 
+class HomePositionCStruct(ctypes.Structure):
+    """
+    Internal C structure for HomePosition.
+    Used only for C library communication.
+    """
+
+    _fields_ = [
+        ("timestamp_us", ctypes.c_uint64),
+        ("latitude_deg", ctypes.c_double),
+        ("longitude_deg", ctypes.c_double),
+        ("absolute_altitude_m", ctypes.c_float),
+        ("relative_altitude_m", ctypes.c_float),
+        ("local_north_m", ctypes.c_float),
+        ("local_east_m", ctypes.c_float),
+        ("local_down_m", ctypes.c_float),
+        ("q", QuaternionCStruct),
+        ("approach_north_m", ctypes.c_float),
+        ("approach_east_m", ctypes.c_float),
+        ("approach_down_m", ctypes.c_float),
+    ]
+
+
 class HeadingCStruct(ctypes.Structure):
     """
     Internal C structure for Heading.
@@ -602,6 +624,94 @@ class Position:
         fields.append(f"absolute_altitude_m={self.absolute_altitude_m}")
         fields.append(f"relative_altitude_m={self.relative_altitude_m}")
         return f"Position({', '.join(fields)})"
+
+
+class HomePosition:
+    """
+       Home position type.
+
+    Includes the global GPS position, local NED position, surface quaternion,
+    and approach vector from the MAVLink HOME_POSITION message.
+    """
+
+    def __init__(
+        self,
+        timestamp_us=None,
+        latitude_deg=None,
+        longitude_deg=None,
+        absolute_altitude_m=None,
+        relative_altitude_m=None,
+        local_north_m=None,
+        local_east_m=None,
+        local_down_m=None,
+        q=None,
+        approach_north_m=None,
+        approach_east_m=None,
+        approach_down_m=None,
+    ):
+        self.timestamp_us = timestamp_us
+        self.latitude_deg = latitude_deg
+        self.longitude_deg = longitude_deg
+        self.absolute_altitude_m = absolute_altitude_m
+        self.relative_altitude_m = relative_altitude_m
+        self.local_north_m = local_north_m
+        self.local_east_m = local_east_m
+        self.local_down_m = local_down_m
+        self.q = q
+        self.approach_north_m = approach_north_m
+        self.approach_east_m = approach_east_m
+        self.approach_down_m = approach_down_m
+
+    @classmethod
+    def from_c_struct(cls, c_struct):
+        """Convert from C structure to Python object"""
+        instance = cls()
+        instance.timestamp_us = c_struct.timestamp_us
+        instance.latitude_deg = c_struct.latitude_deg
+        instance.longitude_deg = c_struct.longitude_deg
+        instance.absolute_altitude_m = c_struct.absolute_altitude_m
+        instance.relative_altitude_m = c_struct.relative_altitude_m
+        instance.local_north_m = c_struct.local_north_m
+        instance.local_east_m = c_struct.local_east_m
+        instance.local_down_m = c_struct.local_down_m
+        instance.q = Quaternion.from_c_struct(c_struct.q)
+        instance.approach_north_m = c_struct.approach_north_m
+        instance.approach_east_m = c_struct.approach_east_m
+        instance.approach_down_m = c_struct.approach_down_m
+        return instance
+
+    def to_c_struct(self):
+        """Convert to C structure for C library calls"""
+        c_struct = HomePositionCStruct()
+        c_struct.timestamp_us = self.timestamp_us
+        c_struct.latitude_deg = self.latitude_deg
+        c_struct.longitude_deg = self.longitude_deg
+        c_struct.absolute_altitude_m = self.absolute_altitude_m
+        c_struct.relative_altitude_m = self.relative_altitude_m
+        c_struct.local_north_m = self.local_north_m
+        c_struct.local_east_m = self.local_east_m
+        c_struct.local_down_m = self.local_down_m
+        c_struct.q = self.q.to_c_struct()
+        c_struct.approach_north_m = self.approach_north_m
+        c_struct.approach_east_m = self.approach_east_m
+        c_struct.approach_down_m = self.approach_down_m
+        return c_struct
+
+    def __str__(self):
+        fields = []
+        fields.append(f"timestamp_us={self.timestamp_us}")
+        fields.append(f"latitude_deg={self.latitude_deg}")
+        fields.append(f"longitude_deg={self.longitude_deg}")
+        fields.append(f"absolute_altitude_m={self.absolute_altitude_m}")
+        fields.append(f"relative_altitude_m={self.relative_altitude_m}")
+        fields.append(f"local_north_m={self.local_north_m}")
+        fields.append(f"local_east_m={self.local_east_m}")
+        fields.append(f"local_down_m={self.local_down_m}")
+        fields.append(f"q={self.q}")
+        fields.append(f"approach_north_m={self.approach_north_m}")
+        fields.append(f"approach_east_m={self.approach_east_m}")
+        fields.append(f"approach_down_m={self.approach_down_m}")
+        return f"HomePosition({', '.join(fields)})"
 
 
 class Heading:
@@ -2071,9 +2181,9 @@ class Telemetry:
 
         def c_callback(c_data, ud):
             try:
-                py_data = Position.from_c_struct(c_data)
+                py_data = HomePosition.from_c_struct(c_data)
 
-                self._lib.mavsdk_telemetry_position_destroy(ctypes.byref(c_data))
+                self._lib.mavsdk_telemetry_home_position_destroy(ctypes.byref(c_data))
 
                 callback(py_data, user_data)
 
@@ -2092,12 +2202,12 @@ class Telemetry:
     def home(self):
         """Get home (blocking)"""
 
-        result_out = PositionCStruct()
+        result_out = HomePositionCStruct()
 
         self._lib.mavsdk_telemetry_home(self._handle, ctypes.byref(result_out))
 
-        py_result = Position.from_c_struct(result_out)
-        self._lib.mavsdk_telemetry_position_destroy(ctypes.byref(result_out))
+        py_result = HomePosition.from_c_struct(result_out)
+        self._lib.mavsdk_telemetry_home_position_destroy(ctypes.byref(result_out))
         return py_result
 
     def subscribe_in_air(self, callback: Callable, user_data: Any = None):
@@ -4092,7 +4202,7 @@ class Telemetry:
 
 # ===== Callback Types =====
 PositionCallback = ctypes.CFUNCTYPE(None, PositionCStruct, ctypes.c_void_p)
-HomeCallback = ctypes.CFUNCTYPE(None, PositionCStruct, ctypes.c_void_p)
+HomeCallback = ctypes.CFUNCTYPE(None, HomePositionCStruct, ctypes.c_void_p)
 InAirCallback = ctypes.CFUNCTYPE(None, ctypes.c_bool, ctypes.c_void_p)
 LandedStateCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
 ArmedCallback = ctypes.CFUNCTYPE(None, ctypes.c_bool, ctypes.c_void_p)
@@ -4182,6 +4292,11 @@ _cmavsdk_lib.mavsdk_telemetry_position_destroy.argtypes = [
     ctypes.POINTER(PositionCStruct)
 ]
 _cmavsdk_lib.mavsdk_telemetry_position_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_home_position_destroy.argtypes = [
+    ctypes.POINTER(HomePositionCStruct)
+]
+_cmavsdk_lib.mavsdk_telemetry_home_position_destroy.restype = None
 
 _cmavsdk_lib.mavsdk_telemetry_heading_destroy.argtypes = [
     ctypes.POINTER(HeadingCStruct)
@@ -4364,7 +4479,7 @@ _cmavsdk_lib.mavsdk_telemetry_unsubscribe_home.restype = None
 
 _cmavsdk_lib.mavsdk_telemetry_home.argtypes = [
     ctypes.c_void_p,
-    ctypes.POINTER(PositionCStruct),
+    ctypes.POINTER(HomePositionCStruct),
 ]
 
 _cmavsdk_lib.mavsdk_telemetry_home.restype = None
