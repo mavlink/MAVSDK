@@ -8,7 +8,7 @@ Enable direct MAVLink communication using libmav.
 
 Enable direct MAVLink communication using libmav.
 
-Async wrapper around :class:`MavlinkDirect` that mirrors the gRPC-based
+Async wrapper around `MavlinkDirect` that mirrors the gRPC-based
 asyncio API while using the ctypes-based C library directly.
 
 **Fields:**

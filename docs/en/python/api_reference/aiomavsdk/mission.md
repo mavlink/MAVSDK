@@ -6,7 +6,7 @@ Enable waypoint missions.
 
 Enable waypoint missions.
 
-Async wrapper around :class:`Mission` that mirrors the gRPC-based
+Async wrapper around `Mission` that mirrors the gRPC-based
 asyncio API while using the ctypes-based C library directly.
 
 ### `upload_mission`
@@ -22,9 +22,11 @@ executed even if the connection is lost.
 
 Parameters
 ----------
+
 mission_plan : MissionPlan
 Raises
 ------
+
 MissionError
     If the request fails. The error contains the reason for the failure.
 
@@ -49,6 +51,7 @@ Cancel an ongoing mission upload.
 
 Raises
 ------
+
 MissionError
 If the request fails. The error contains the reason for the failure.
 
@@ -65,9 +68,11 @@ by the MAVSDK API.
 
 Returns
 -------
+
 mission_plan : MissionPlan
 Raises
 ------
+
 MissionError
     If the request fails. The error contains the reason for the failure.
 
@@ -92,6 +97,7 @@ Cancel an ongoing mission download.
 
 Raises
 ------
+
 MissionError
 If the request fails. The error contains the reason for the failure.
 
@@ -107,6 +113,7 @@ A mission must be uploaded to the vehicle before this can be called.
 
 Raises
 ------
+
 MissionError
     If the request fails. The error contains the reason for the failure.
 
@@ -125,6 +132,7 @@ around the location where it paused.
 
 Raises
 ------
+
 MissionError
     If the request fails. The error contains the reason for the failure.
 
@@ -138,6 +146,7 @@ Clear the mission saved on the vehicle.
 
 Raises
 ------
+
 MissionError
 If the request fails. The error contains the reason for the failure.
 
@@ -157,9 +166,11 @@ are used.
 
 Parameters
 ----------
+
 index : int
 Raises
 ------
+
 MissionError
     If the request fails. The error contains the reason for the failure.
 
@@ -173,9 +184,11 @@ Check if the mission has been finished.
 
 Returns
 -------
+
 is_finished : bool
 Raises
 ------
+
 MissionError
 If the request fails. The error contains the reason for the failure.
 
@@ -189,6 +202,7 @@ Subscribe to mission progress updates.
 
 Yields
 ------
+
 mission_progress : MissionProgress
 The next update
 
@@ -202,9 +216,11 @@ Subscribe to mission progress updates.
 
 Returns
 -------
+
 mission_progress : MissionProgress
 Raises
 ------
+
 MissionError
 If the request fails. The error contains the reason for the failure.
 
@@ -221,9 +237,11 @@ needs to be downloaded.
 
 Returns
 -------
+
 enable : bool
 Raises
 ------
+
 MissionError
     If the request fails. The error contains the reason for the failure.
 
@@ -240,9 +258,11 @@ the mission may have to be uploaded again.
 
 Parameters
 ----------
+
 enable : bool
 Raises
 ------
+
 MissionError
     If the request fails. The error contains the reason for the failure.
 

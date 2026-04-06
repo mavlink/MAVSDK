@@ -20,7 +20,7 @@ Client code must specify a setpoint before starting offboard mode.
 Mavsdk automatically sends setpoints at 20Hz (PX4 Offboard mode requires that setpoints
 are minimally sent at 2Hz).
 
-Async wrapper around :class:`Offboard` that mirrors the gRPC-based
+Async wrapper around `Offboard` that mirrors the gRPC-based
 asyncio API while using the ctypes-based C library directly.
 
 ### `start`
@@ -33,6 +33,7 @@ Start offboard control.
 
 Raises
 ------
+
 OffboardError
 If the request fails. The error contains the reason for the failure.
 
@@ -48,6 +49,7 @@ The vehicle will be put into Hold mode: https://docs.px4.io/en/flight_modes/hold
 
 Raises
 ------
+
 OffboardError
     If the request fails. The error contains the reason for the failure.
 
@@ -64,9 +66,11 @@ setpoints.
 
 Returns
 -------
+
 is_active : bool
 Raises
 ------
+
 OffboardError
     If the request fails. The error contains the reason for the failure.
 
@@ -80,9 +84,11 @@ Set the attitude in terms of roll, pitch and yaw in degrees with thrust.
 
 Parameters
 ----------
+
 attitude : Attitude
 Raises
 ------
+
 OffboardError
 If the request fails. The error contains the reason for the failure.
 
@@ -99,9 +105,11 @@ actuator_control.num_controls more than 8).
 
 Parameters
 ----------
+
 actuator_control : ActuatorControl
 Raises
 ------
+
 OffboardError
     If the request fails. The error contains the reason for the failure.
 
@@ -115,9 +123,11 @@ Set the attitude rate in terms of pitch, roll and yaw angular rate along with th
 
 Parameters
 ----------
+
 attitude_rate : AttitudeRate
 Raises
 ------
+
 OffboardError
 If the request fails. The error contains the reason for the failure.
 
@@ -131,9 +141,11 @@ Set the position in NED coordinates and yaw.
 
 Parameters
 ----------
+
 position_ned_yaw : PositionNedYaw
 Raises
 ------
+
 OffboardError
 If the request fails. The error contains the reason for the failure.
 
@@ -147,9 +159,11 @@ Set the position in Global coordinates (latitude, longitude, altitude) and yaw
 
 Parameters
 ----------
+
 position_global_yaw : PositionGlobalYaw
 Raises
 ------
+
 OffboardError
 If the request fails. The error contains the reason for the failure.
 
@@ -163,9 +177,11 @@ Set the velocity in body coordinates and yaw angular rate. Not available for fix
 
 Parameters
 ----------
+
 velocity_body_yawspeed : VelocityBodyYawspeed
 Raises
 ------
+
 OffboardError
 If the request fails. The error contains the reason for the failure.
 
@@ -179,9 +195,11 @@ Set the velocity in NED coordinates and yaw. Not available for fixed-wing aircra
 
 Parameters
 ----------
+
 velocity_ned_yaw : VelocityNedYaw
 Raises
 ------
+
 OffboardError
 If the request fails. The error contains the reason for the failure.
 
@@ -195,10 +213,12 @@ Set the position in NED coordinates, with the velocity to be used as feed-forwar
 
 Parameters
 ----------
+
 position_ned_yaw : PositionNedYaw
 velocity_ned_yaw : VelocityNedYaw
 Raises
 ------
+
 OffboardError
 If the request fails. The error contains the reason for the failure.
 
@@ -212,11 +232,13 @@ Set the position, velocity and acceleration in NED coordinates, with velocity an
 
 Parameters
 ----------
+
 position_ned_yaw : PositionNedYaw
 velocity_ned_yaw : VelocityNedYaw
 acceleration_ned : AccelerationNed
 Raises
 ------
+
 OffboardError
 If the request fails. The error contains the reason for the failure.
 
@@ -230,9 +252,11 @@ Set the acceleration in NED coordinates.
 
 Parameters
 ----------
+
 acceleration_ned : AccelerationNed
 Raises
 ------
+
 OffboardError
 If the request fails. The error contains the reason for the failure.
 

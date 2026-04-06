@@ -6,7 +6,7 @@ Implements file transfer functionality using MAVLink FTP.
 
 Implements file transfer functionality using MAVLink FTP.
 
-Async wrapper around :class:`Ftp` that mirrors the gRPC-based
+Async wrapper around `Ftp` that mirrors the gRPC-based
 asyncio API while using the ctypes-based C library directly.
 
 ### `download`
@@ -35,12 +35,15 @@ Lists items from a remote directory.
 
 Parameters
 ----------
+
 remote_dir : str
 Returns
 -------
+
 data : ListDirectoryData
 Raises
 ------
+
 FtpError
 If the request fails. The error contains the reason for the failure.
 
@@ -54,9 +57,11 @@ Creates a remote directory.
 
 Parameters
 ----------
+
 remote_dir : str
 Raises
 ------
+
 FtpError
 If the request fails. The error contains the reason for the failure.
 
@@ -70,9 +75,11 @@ Removes a remote directory.
 
 Parameters
 ----------
+
 remote_dir : str
 Raises
 ------
+
 FtpError
 If the request fails. The error contains the reason for the failure.
 
@@ -86,9 +93,11 @@ Removes a remote file.
 
 Parameters
 ----------
+
 remote_file_path : str
 Raises
 ------
+
 FtpError
 If the request fails. The error contains the reason for the failure.
 
@@ -102,10 +111,12 @@ Renames a remote file or remote directory.
 
 Parameters
 ----------
+
 remote_from_path : str
 remote_to_path : str
 Raises
 ------
+
 FtpError
 If the request fails. The error contains the reason for the failure.
 
@@ -119,13 +130,16 @@ Compares a local file to a remote file using a CRC32 checksum.
 
 Parameters
 ----------
+
 local_file_path : str
 remote_file_path : str
 Returns
 -------
+
 are_identical : bool
 Raises
 ------
+
 FtpError
 If the request fails. The error contains the reason for the failure.
 
@@ -139,9 +153,11 @@ Set target component ID. By default it is the autopilot.
 
 Parameters
 ----------
+
 compid : int
 Raises
 ------
+
 FtpError
 If the request fails. The error contains the reason for the failure.
 

@@ -6,7 +6,7 @@ Allow to communicate with the vehicle's system shell.
 
 Allow to communicate with the vehicle's system shell.
 
-Async wrapper around :class:`Shell` that mirrors the gRPC-based
+Async wrapper around `Shell` that mirrors the gRPC-based
 asyncio API while using the ctypes-based C library directly.
 
 ### `send`
@@ -19,9 +19,11 @@ Send a command line.
 
 Parameters
 ----------
+
 command : str
 Raises
 ------
+
 ShellError
 If the request fails. The error contains the reason for the failure.
 
@@ -37,6 +39,7 @@ This subscription needs to be made before a command line is sent, otherwise, no 
 
 Yields
 ------
+
  : str
      The next update
 

@@ -6,7 +6,7 @@ Provide raw access to get and set parameters.
 
 Provide raw access to get and set parameters.
 
-Async wrapper around :class:`Param` that mirrors the gRPC-based
+Async wrapper around `Param` that mirrors the gRPC-based
 asyncio API while using the ctypes-based C library directly.
 
 ### `get_param_int`
@@ -21,12 +21,15 @@ If the type is wrong, the result will be `WRONG_TYPE`.
 
 Parameters
 ----------
+
 name : str
 Returns
 -------
+
 value : int
 Raises
 ------
+
 ParamError
     If the request fails. The error contains the reason for the failure.
 
@@ -42,10 +45,12 @@ If the type is wrong, the result will be `WRONG_TYPE`.
 
 Parameters
 ----------
+
 name : str
 value : int
 Raises
 ------
+
 ParamError
     If the request fails. The error contains the reason for the failure.
 
@@ -61,12 +66,15 @@ If the type is wrong, the result will be `WRONG_TYPE`.
 
 Parameters
 ----------
+
 name : str
 Returns
 -------
+
 value : float
 Raises
 ------
+
 ParamError
     If the request fails. The error contains the reason for the failure.
 
@@ -82,10 +90,12 @@ If the type is wrong, the result will be `WRONG_TYPE`.
 
 Parameters
 ----------
+
 name : str
 value : float
 Raises
 ------
+
 ParamError
     If the request fails. The error contains the reason for the failure.
 
@@ -101,12 +111,15 @@ If the type is wrong, the result will be `WRONG_TYPE`.
 
 Parameters
 ----------
+
 name : str
 Returns
 -------
+
 value : str
 Raises
 ------
+
 ParamError
     If the request fails. The error contains the reason for the failure.
 
@@ -122,10 +135,12 @@ If the type is wrong, the result will be `WRONG_TYPE`.
 
 Parameters
 ----------
+
 name : str
 value : str
 Raises
 ------
+
 ParamError
     If the request fails. The error contains the reason for the failure.
 
@@ -139,9 +154,11 @@ Get all parameters.
 
 Returns
 -------
+
 params : AllParams
 Raises
 ------
+
 ParamError
 If the request fails. The error contains the reason for the failure.
 
@@ -157,10 +174,12 @@ Default is the autopilot component (1), and Version (0).
 
 Parameters
 ----------
+
 component_id : int
 protocol_version : ProtocolVersion
 Raises
 ------
+
 ParamError
     If the request fails. The error contains the reason for the failure.
 

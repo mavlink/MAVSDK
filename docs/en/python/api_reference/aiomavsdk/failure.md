@@ -6,7 +6,7 @@ Inject failures into system to test failsafes.
 
 Inject failures into system to test failsafes.
 
-Async wrapper around :class:`Failure` that mirrors the gRPC-based
+Async wrapper around `Failure` that mirrors the gRPC-based
 asyncio API while using the ctypes-based C library directly.
 
 ### `inject`
@@ -19,11 +19,13 @@ Injects a failure.
 
 Parameters
 ----------
+
 failure_unit : FailureUnit
 failure_type : FailureType
 instance : int
 Raises
 ------
+
 FailureError
 If the request fails. The error contains the reason for the failure.
 

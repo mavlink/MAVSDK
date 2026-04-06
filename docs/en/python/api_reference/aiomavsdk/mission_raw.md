@@ -8,7 +8,7 @@ Enable raw missions as exposed by MAVLink.
 
 Enable raw missions as exposed by MAVLink.
 
-Async wrapper around :class:`MissionRaw` that mirrors the gRPC-based
+Async wrapper around `MissionRaw` that mirrors the gRPC-based
 asyncio API while using the ctypes-based C library directly.
 
 **Fields:**

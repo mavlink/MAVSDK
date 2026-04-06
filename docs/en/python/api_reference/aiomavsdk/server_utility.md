@@ -8,7 +8,7 @@ Utility for onboard MAVSDK instances for common "server" tasks.
 
 Utility for onboard MAVSDK instances for common "server" tasks.
 
-Async wrapper around :class:`ServerUtility` that mirrors the gRPC-based
+Async wrapper around `ServerUtility` that mirrors the gRPC-based
 asyncio API while using the ctypes-based C library directly.
 
 **Fields:**

@@ -10,7 +10,7 @@ Provides current mission item state, so the server can progress through missions
 Acts as a vehicle and receives incoming missions from GCS (in raw MAVLINK format).
 Provides current mission item state, so the server can progress through missions.
 
-Async wrapper around :class:`MissionRawServer` that mirrors the gRPC-based
+Async wrapper around `MissionRawServer` that mirrors the gRPC-based
 asyncio API while using the ctypes-based C library directly.
 
 **Fields:**

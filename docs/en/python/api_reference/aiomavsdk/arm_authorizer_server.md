@@ -8,7 +8,7 @@ Use arm authorization.
 
 Use arm authorization.
 
-Async wrapper around :class:`ArmAuthorizerServer` that mirrors the gRPC-based
+Async wrapper around `ArmAuthorizerServer` that mirrors the gRPC-based
 asyncio API while using the ctypes-based C library directly.
 
 **Fields:**

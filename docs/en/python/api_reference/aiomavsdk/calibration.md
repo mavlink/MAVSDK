@@ -6,7 +6,7 @@ Enable to calibrate sensors of a drone such as gyro, accelerometer, and magnetom
 
 Enable to calibrate sensors of a drone such as gyro, accelerometer, and magnetometer.
 
-Async wrapper around :class:`Calibration` that mirrors the gRPC-based
+Async wrapper around `Calibration` that mirrors the gRPC-based
 asyncio API while using the ctypes-based C library directly.
 
 ### `calibrate_gyro`
@@ -59,6 +59,7 @@ Cancel ongoing calibration process.
 
 Raises
 ------
+
 CalibrationError
 If the request fails. The error contains the reason for the failure.
 
