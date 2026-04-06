@@ -8,7 +8,7 @@ Provides handling of camera interface
 
 Provides handling of camera interface
 
-Async wrapper around :class:`CameraServer` that mirrors the gRPC-based
+Async wrapper around `CameraServer` that mirrors the gRPC-based
 asyncio API while using the ctypes-based C library directly.
 
 **Fields:**

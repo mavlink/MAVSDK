@@ -10,7 +10,7 @@ Allow users to get vehicle telemetry and state information
 (e.g. battery, GPS, RC connection, flight mode etc.) and set telemetry update rates.
 Certain Telemetry Topics such as, Position or Velocity_Ned require GPS Fix before data gets published.
 
-Async wrapper around :class:`Telemetry` that mirrors the gRPC-based
+Async wrapper around `Telemetry` that mirrors the gRPC-based
 asyncio API while using the ctypes-based C library directly.
 
 ### `subscribe_position`
@@ -23,6 +23,7 @@ Subscribe to 'position' updates.
 
 Yields
 ------
+
 position : Position
 The next update
 
@@ -36,9 +37,11 @@ Subscribe to 'position' updates.
 
 Returns
 -------
+
 position : Position
 Raises
 ------
+
 TelemetryError
 If the request fails. The error contains the reason for the failure.
 
@@ -52,6 +55,7 @@ Subscribe to 'home position' updates.
 
 Yields
 ------
+
 position : Position
 The next update
 
@@ -65,9 +69,11 @@ Subscribe to 'home position' updates.
 
 Returns
 -------
+
 home : Position
 Raises
 ------
+
 TelemetryError
 If the request fails. The error contains the reason for the failure.
 
@@ -81,6 +87,7 @@ Subscribe to in-air updates.
 
 Yields
 ------
+
 : bool
     The next update
 
@@ -94,9 +101,11 @@ Subscribe to in-air updates.
 
 Returns
 -------
+
 is_in_air : bool
 Raises
 ------
+
 TelemetryError
 If the request fails. The error contains the reason for the failure.
 
@@ -110,6 +119,7 @@ Subscribe to landed state updates
 
 Yields
 ------
+
 landed_state : LandedState
 The next update
 
@@ -123,9 +133,11 @@ Subscribe to landed state updates
 
 Returns
 -------
+
 landed_state : LandedState
 Raises
 ------
+
 TelemetryError
 If the request fails. The error contains the reason for the failure.
 
@@ -139,6 +151,7 @@ Subscribe to armed updates.
 
 Yields
 ------
+
 : bool
     The next update
 
@@ -152,9 +165,11 @@ Subscribe to armed updates.
 
 Returns
 -------
+
 is_armed : bool
 Raises
 ------
+
 TelemetryError
 If the request fails. The error contains the reason for the failure.
 
@@ -168,6 +183,7 @@ subscribe to vtol state Updates
 
 Yields
 ------
+
 vtol_state : VtolState
 The next update
 
@@ -181,9 +197,11 @@ subscribe to vtol state Updates
 
 Returns
 -------
+
 vtol_state : VtolState
 Raises
 ------
+
 TelemetryError
 If the request fails. The error contains the reason for the failure.
 
@@ -197,6 +215,7 @@ Subscribe to 'attitude' updates (quaternion).
 
 Yields
 ------
+
 quaternion : Quaternion
 The next update
 
@@ -210,9 +229,11 @@ Subscribe to 'attitude' updates (quaternion).
 
 Returns
 -------
+
 attitude_quaternion : Quaternion
 Raises
 ------
+
 TelemetryError
 If the request fails. The error contains the reason for the failure.
 
@@ -226,6 +247,7 @@ Subscribe to 'attitude' updates (Euler).
 
 Yields
 ------
+
 euler_angle : EulerAngle
 The next update
 
@@ -239,9 +261,11 @@ Subscribe to 'attitude' updates (Euler).
 
 Returns
 -------
+
 attitude_euler : EulerAngle
 Raises
 ------
+
 TelemetryError
 If the request fails. The error contains the reason for the failure.
 
@@ -255,6 +279,7 @@ Subscribe to 'attitude' updates (angular velocity)
 
 Yields
 ------
+
 angular_velocity_body : AngularVelocityBody
 The next update
 
@@ -268,9 +293,11 @@ Subscribe to 'attitude' updates (angular velocity)
 
 Returns
 -------
+
 attitude_angular_velocity_body : AngularVelocityBody
 Raises
 ------
+
 TelemetryError
 If the request fails. The error contains the reason for the failure.
 
@@ -284,6 +311,7 @@ Subscribe to 'ground speed' updates (NED).
 
 Yields
 ------
+
 velocity_ned : VelocityNed
 The next update
 
@@ -297,9 +325,11 @@ Subscribe to 'ground speed' updates (NED).
 
 Returns
 -------
+
 velocity_ned : VelocityNed
 Raises
 ------
+
 TelemetryError
 If the request fails. The error contains the reason for the failure.
 
@@ -313,6 +343,7 @@ Subscribe to 'GPS info' updates.
 
 Yields
 ------
+
 gps_info : GpsInfo
 The next update
 
@@ -326,9 +357,11 @@ Subscribe to 'GPS info' updates.
 
 Returns
 -------
+
 gps_info : GpsInfo
 Raises
 ------
+
 TelemetryError
 If the request fails. The error contains the reason for the failure.
 
@@ -342,6 +375,7 @@ Subscribe to 'Raw GPS' updates.
 
 Yields
 ------
+
 raw_gps : RawGps
 The next update
 
@@ -355,9 +389,11 @@ Subscribe to 'Raw GPS' updates.
 
 Returns
 -------
+
 raw_gps : RawGps
 Raises
 ------
+
 TelemetryError
 If the request fails. The error contains the reason for the failure.
 
@@ -371,6 +407,7 @@ Subscribe to 'battery' updates.
 
 Yields
 ------
+
 battery : Battery
 The next update
 
@@ -384,9 +421,11 @@ Subscribe to 'battery' updates.
 
 Returns
 -------
+
 battery : Battery
 Raises
 ------
+
 TelemetryError
 If the request fails. The error contains the reason for the failure.
 
@@ -400,6 +439,7 @@ Subscribe to 'flight mode' updates.
 
 Yields
 ------
+
 flight_mode : FlightMode
 The next update
 
@@ -413,9 +453,11 @@ Subscribe to 'flight mode' updates.
 
 Returns
 -------
+
 flight_mode : FlightMode
 Raises
 ------
+
 TelemetryError
 If the request fails. The error contains the reason for the failure.
 
@@ -429,6 +471,7 @@ Subscribe to 'health' updates.
 
 Yields
 ------
+
 health : Health
 The next update
 
@@ -442,9 +485,11 @@ Subscribe to 'health' updates.
 
 Returns
 -------
+
 health : Health
 Raises
 ------
+
 TelemetryError
 If the request fails. The error contains the reason for the failure.
 
@@ -458,6 +503,7 @@ Subscribe to 'RC status' updates.
 
 Yields
 ------
+
 rc_status : RcStatus
 The next update
 
@@ -471,9 +517,11 @@ Subscribe to 'RC status' updates.
 
 Returns
 -------
+
 rc_status : RcStatus
 Raises
 ------
+
 TelemetryError
 If the request fails. The error contains the reason for the failure.
 
@@ -487,6 +535,7 @@ Subscribe to 'status text' updates.
 
 Yields
 ------
+
 status_text : StatusText
 The next update
 
@@ -500,9 +549,11 @@ Subscribe to 'status text' updates.
 
 Returns
 -------
+
 status_text : StatusText
 Raises
 ------
+
 TelemetryError
 If the request fails. The error contains the reason for the failure.
 
@@ -516,6 +567,7 @@ Subscribe to 'actuator control target' updates.
 
 Yields
 ------
+
 actuator_control_target : ActuatorControlTarget
 The next update
 
@@ -529,9 +581,11 @@ Subscribe to 'actuator control target' updates.
 
 Returns
 -------
+
 actuator_control_target : ActuatorControlTarget
 Raises
 ------
+
 TelemetryError
 If the request fails. The error contains the reason for the failure.
 
@@ -545,6 +599,7 @@ Subscribe to 'actuator output status' updates.
 
 Yields
 ------
+
 actuator_output_status : ActuatorOutputStatus
 The next update
 
@@ -558,9 +613,11 @@ Subscribe to 'actuator output status' updates.
 
 Returns
 -------
+
 actuator_output_status : ActuatorOutputStatus
 Raises
 ------
+
 TelemetryError
 If the request fails. The error contains the reason for the failure.
 
@@ -574,6 +631,7 @@ Subscribe to 'odometry' updates.
 
 Yields
 ------
+
 odometry : Odometry
 The next update
 
@@ -587,9 +645,11 @@ Subscribe to 'odometry' updates.
 
 Returns
 -------
+
 odometry : Odometry
 Raises
 ------
+
 TelemetryError
 If the request fails. The error contains the reason for the failure.
 
@@ -603,6 +663,7 @@ Subscribe to 'position velocity' updates.
 
 Yields
 ------
+
 position_velocity_ned : PositionVelocityNed
 The next update
 
@@ -616,9 +677,11 @@ Subscribe to 'position velocity' updates.
 
 Returns
 -------
+
 position_velocity_ned : PositionVelocityNed
 Raises
 ------
+
 TelemetryError
 If the request fails. The error contains the reason for the failure.
 
@@ -632,6 +695,7 @@ Subscribe to 'ground truth' updates.
 
 Yields
 ------
+
 ground_truth : GroundTruth
 The next update
 
@@ -645,9 +709,11 @@ Subscribe to 'ground truth' updates.
 
 Returns
 -------
+
 ground_truth : GroundTruth
 Raises
 ------
+
 TelemetryError
 If the request fails. The error contains the reason for the failure.
 
@@ -661,6 +727,7 @@ Subscribe to 'fixedwing metrics' updates.
 
 Yields
 ------
+
 fixedwing_metrics : FixedwingMetrics
 The next update
 
@@ -674,9 +741,11 @@ Subscribe to 'fixedwing metrics' updates.
 
 Returns
 -------
+
 fixedwing_metrics : FixedwingMetrics
 Raises
 ------
+
 TelemetryError
 If the request fails. The error contains the reason for the failure.
 
@@ -690,6 +759,7 @@ Subscribe to 'IMU' updates (in SI units in NED body frame).
 
 Yields
 ------
+
 imu : Imu
 The next update
 
@@ -703,9 +773,11 @@ Subscribe to 'IMU' updates (in SI units in NED body frame).
 
 Returns
 -------
+
 imu : Imu
 Raises
 ------
+
 TelemetryError
 If the request fails. The error contains the reason for the failure.
 
@@ -719,6 +791,7 @@ Subscribe to 'Scaled IMU' updates.
 
 Yields
 ------
+
 imu : Imu
 The next update
 
@@ -732,9 +805,11 @@ Subscribe to 'Scaled IMU' updates.
 
 Returns
 -------
+
 imu : Imu
 Raises
 ------
+
 TelemetryError
 If the request fails. The error contains the reason for the failure.
 
@@ -748,6 +823,7 @@ Subscribe to 'Raw IMU' updates (note that units are are incorrect and "raw" as p
 
 Yields
 ------
+
 imu : Imu
 The next update
 
@@ -761,9 +837,11 @@ Subscribe to 'Raw IMU' updates (note that units are are incorrect and "raw" as p
 
 Returns
 -------
+
 imu : Imu
 Raises
 ------
+
 TelemetryError
 If the request fails. The error contains the reason for the failure.
 
@@ -777,6 +855,7 @@ Subscribe to 'HealthAllOk' updates.
 
 Yields
 ------
+
 : bool
     The next update
 
@@ -790,9 +869,11 @@ Subscribe to 'HealthAllOk' updates.
 
 Returns
 -------
+
 is_health_all_ok : bool
 Raises
 ------
+
 TelemetryError
 If the request fails. The error contains the reason for the failure.
 
@@ -806,6 +887,7 @@ Subscribe to 'unix epoch time' updates.
 
 Yields
 ------
+
 : int
     The next update
 
@@ -819,9 +901,11 @@ Subscribe to 'unix epoch time' updates.
 
 Returns
 -------
+
 time_us : int
 Raises
 ------
+
 TelemetryError
 If the request fails. The error contains the reason for the failure.
 
@@ -835,6 +919,7 @@ Subscribe to 'Distance Sensor' updates.
 
 Yields
 ------
+
 distance_sensor : DistanceSensor
 The next update
 
@@ -848,9 +933,11 @@ Subscribe to 'Distance Sensor' updates.
 
 Returns
 -------
+
 distance_sensor : DistanceSensor
 Raises
 ------
+
 TelemetryError
 If the request fails. The error contains the reason for the failure.
 
@@ -864,6 +951,7 @@ Subscribe to 'Scaled Pressure' updates.
 
 Yields
 ------
+
 scaled_pressure : ScaledPressure
 The next update
 
@@ -877,9 +965,11 @@ Subscribe to 'Scaled Pressure' updates.
 
 Returns
 -------
+
 scaled_pressure : ScaledPressure
 Raises
 ------
+
 TelemetryError
 If the request fails. The error contains the reason for the failure.
 
@@ -893,6 +983,7 @@ Subscribe to 'Heading' updates.
 
 Yields
 ------
+
 heading : Heading
 The next update
 
@@ -906,9 +997,11 @@ Subscribe to 'Heading' updates.
 
 Returns
 -------
+
 heading_deg : Heading
 Raises
 ------
+
 TelemetryError
 If the request fails. The error contains the reason for the failure.
 
@@ -922,6 +1015,7 @@ Subscribe to 'Altitude' updates.
 
 Yields
 ------
+
 altitude : Altitude
 The next update
 
@@ -935,9 +1029,11 @@ Subscribe to 'Altitude' updates.
 
 Returns
 -------
+
 altitude : Altitude
 Raises
 ------
+
 TelemetryError
 If the request fails. The error contains the reason for the failure.
 
@@ -951,6 +1047,7 @@ Subscribe to 'Wind Estimated' updates.
 
 Yields
 ------
+
 wind : Wind
 The next update
 
@@ -964,9 +1061,11 @@ Subscribe to 'Wind Estimated' updates.
 
 Returns
 -------
+
 wind : Wind
 Raises
 ------
+
 TelemetryError
 If the request fails. The error contains the reason for the failure.
 
@@ -980,9 +1079,11 @@ Set rate to 'position' updates.
 
 Parameters
 ----------
+
 rate_hz : float
 Raises
 ------
+
 TelemetryError
 If the request fails. The error contains the reason for the failure.
 
@@ -996,9 +1097,11 @@ Set rate to 'home position' updates.
 
 Parameters
 ----------
+
 rate_hz : float
 Raises
 ------
+
 TelemetryError
 If the request fails. The error contains the reason for the failure.
 
@@ -1012,9 +1115,11 @@ Set rate to in-air updates.
 
 Parameters
 ----------
+
 rate_hz : float
 Raises
 ------
+
 TelemetryError
 If the request fails. The error contains the reason for the failure.
 
@@ -1028,9 +1133,11 @@ Set rate to landed state updates
 
 Parameters
 ----------
+
 rate_hz : float
 Raises
 ------
+
 TelemetryError
 If the request fails. The error contains the reason for the failure.
 
@@ -1044,9 +1151,11 @@ Set rate to VTOL state updates
 
 Parameters
 ----------
+
 rate_hz : float
 Raises
 ------
+
 TelemetryError
 If the request fails. The error contains the reason for the failure.
 
@@ -1060,9 +1169,11 @@ Set rate to 'attitude euler angle' updates.
 
 Parameters
 ----------
+
 rate_hz : float
 Raises
 ------
+
 TelemetryError
 If the request fails. The error contains the reason for the failure.
 
@@ -1076,9 +1187,11 @@ Set rate to 'attitude quaternion' updates.
 
 Parameters
 ----------
+
 rate_hz : float
 Raises
 ------
+
 TelemetryError
 If the request fails. The error contains the reason for the failure.
 
@@ -1093,9 +1206,11 @@ Set rate to 'ground speed' updates (NED).
 
 Parameters
 ----------
+
 rate_hz : float
 Raises
 ------
+
 TelemetryError
     If the request fails. The error contains the reason for the failure.
 
@@ -1109,9 +1224,11 @@ Set rate to 'GPS info' updates.
 
 Parameters
 ----------
+
 rate_hz : float
 Raises
 ------
+
 TelemetryError
 If the request fails. The error contains the reason for the failure.
 
@@ -1125,9 +1242,11 @@ Set rate to 'Raw GPS' updates.
 
 Parameters
 ----------
+
 rate_hz : float
 Raises
 ------
+
 TelemetryError
 If the request fails. The error contains the reason for the failure.
 
@@ -1141,9 +1260,11 @@ Set rate to 'battery' updates.
 
 Parameters
 ----------
+
 rate_hz : float
 Raises
 ------
+
 TelemetryError
 If the request fails. The error contains the reason for the failure.
 
@@ -1157,9 +1278,11 @@ Set rate to 'RC status' updates.
 
 Parameters
 ----------
+
 rate_hz : float
 Raises
 ------
+
 TelemetryError
 If the request fails. The error contains the reason for the failure.
 
@@ -1173,9 +1296,11 @@ Set rate to 'actuator control target' updates.
 
 Parameters
 ----------
+
 rate_hz : float
 Raises
 ------
+
 TelemetryError
 If the request fails. The error contains the reason for the failure.
 
@@ -1189,9 +1314,11 @@ Set rate to 'actuator output status' updates.
 
 Parameters
 ----------
+
 rate_hz : float
 Raises
 ------
+
 TelemetryError
 If the request fails. The error contains the reason for the failure.
 
@@ -1205,9 +1332,11 @@ Set rate to 'odometry' updates.
 
 Parameters
 ----------
+
 rate_hz : float
 Raises
 ------
+
 TelemetryError
 If the request fails. The error contains the reason for the failure.
 
@@ -1221,9 +1350,11 @@ Set rate to 'position velocity' updates.
 
 Parameters
 ----------
+
 rate_hz : float
 Raises
 ------
+
 TelemetryError
 If the request fails. The error contains the reason for the failure.
 
@@ -1237,9 +1368,11 @@ Set rate to 'ground truth' updates.
 
 Parameters
 ----------
+
 rate_hz : float
 Raises
 ------
+
 TelemetryError
 If the request fails. The error contains the reason for the failure.
 
@@ -1253,9 +1386,11 @@ Set rate to 'fixedwing metrics' updates.
 
 Parameters
 ----------
+
 rate_hz : float
 Raises
 ------
+
 TelemetryError
 If the request fails. The error contains the reason for the failure.
 
@@ -1269,9 +1404,11 @@ Set rate to 'IMU' updates.
 
 Parameters
 ----------
+
 rate_hz : float
 Raises
 ------
+
 TelemetryError
 If the request fails. The error contains the reason for the failure.
 
@@ -1285,9 +1422,11 @@ Set rate to 'Scaled IMU' updates.
 
 Parameters
 ----------
+
 rate_hz : float
 Raises
 ------
+
 TelemetryError
 If the request fails. The error contains the reason for the failure.
 
@@ -1301,9 +1440,11 @@ Set rate to 'Raw IMU' updates.
 
 Parameters
 ----------
+
 rate_hz : float
 Raises
 ------
+
 TelemetryError
 If the request fails. The error contains the reason for the failure.
 
@@ -1317,9 +1458,11 @@ Set rate to 'unix epoch time' updates.
 
 Parameters
 ----------
+
 rate_hz : float
 Raises
 ------
+
 TelemetryError
 If the request fails. The error contains the reason for the failure.
 
@@ -1333,9 +1476,11 @@ Set rate to 'Distance Sensor' updates.
 
 Parameters
 ----------
+
 rate_hz : float
 Raises
 ------
+
 TelemetryError
 If the request fails. The error contains the reason for the failure.
 
@@ -1349,9 +1494,11 @@ Set rate to 'Altitude' updates.
 
 Parameters
 ----------
+
 rate_hz : float
 Raises
 ------
+
 TelemetryError
 If the request fails. The error contains the reason for the failure.
 
@@ -1365,9 +1512,11 @@ Set rate to 'Health' updates.
 
 Parameters
 ----------
+
 rate_hz : float
 Raises
 ------
+
 TelemetryError
 If the request fails. The error contains the reason for the failure.
 
@@ -1381,9 +1530,11 @@ Get the GPS location of where the estimator has been initialized.
 
 Returns
 -------
+
 gps_global_origin : GpsGlobalOrigin
 Raises
 ------
+
 TelemetryError
 If the request fails. The error contains the reason for the failure.
 

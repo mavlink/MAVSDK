@@ -8,7 +8,7 @@ and set ADS-B update rates.
 Allow users to get ADS-B information
 and set ADS-B update rates.
 
-Async wrapper around :class:`Transponder` that mirrors the gRPC-based
+Async wrapper around `Transponder` that mirrors the gRPC-based
 asyncio API while using the ctypes-based C library directly.
 
 ### `subscribe_transponder`
@@ -21,6 +21,7 @@ Subscribe to 'transponder' updates.
 
 Yields
 ------
+
 adsb_vehicle : AdsbVehicle
 The next update
 
@@ -34,9 +35,11 @@ Subscribe to 'transponder' updates.
 
 Returns
 -------
+
 transponder : AdsbVehicle
 Raises
 ------
+
 TransponderError
 If the request fails. The error contains the reason for the failure.
 
@@ -50,9 +53,11 @@ Set rate to 'transponder' updates.
 
 Parameters
 ----------
+
 rate_hz : float
 Raises
 ------
+
 TransponderError
 If the request fails. The error contains the reason for the failure.
 

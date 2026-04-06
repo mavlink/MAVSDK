@@ -8,7 +8,7 @@ Provide log streaming data.
 
 Provide log streaming data.
 
-Async wrapper around :class:`LogStreaming` that mirrors the gRPC-based
+Async wrapper around `LogStreaming` that mirrors the gRPC-based
 asyncio API while using the ctypes-based C library directly.
 
 **Fields:**

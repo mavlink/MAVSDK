@@ -6,7 +6,7 @@ Provide information about the hardware and/or software of a system.
 
 Provide information about the hardware and/or software of a system.
 
-Async wrapper around :class:`Info` that mirrors the gRPC-based
+Async wrapper around `Info` that mirrors the gRPC-based
 asyncio API while using the ctypes-based C library directly.
 
 ### `get_flight_information`
@@ -19,9 +19,11 @@ Get flight information of the system.
 
 Returns
 -------
+
 flight_info : FlightInfo
 Raises
 ------
+
 InfoError
 If the request fails. The error contains the reason for the failure.
 
@@ -35,9 +37,11 @@ Get the identification of the system.
 
 Returns
 -------
+
 identification : Identification
 Raises
 ------
+
 InfoError
 If the request fails. The error contains the reason for the failure.
 
@@ -51,9 +55,11 @@ Get product information of the system.
 
 Returns
 -------
+
 product : Product
 Raises
 ------
+
 InfoError
 If the request fails. The error contains the reason for the failure.
 
@@ -67,9 +73,11 @@ Get the version information of the system.
 
 Returns
 -------
+
 version : Version
 Raises
 ------
+
 InfoError
 If the request fails. The error contains the reason for the failure.
 
@@ -83,9 +91,11 @@ Get the speed factor of a simulation (with lockstep a simulation can run faster 
 
 Returns
 -------
+
 speed_factor : float
 Raises
 ------
+
 InfoError
 If the request fails. The error contains the reason for the failure.
 
@@ -99,6 +109,7 @@ Subscribe to 'flight information' updates.
 
 Yields
 ------
+
 flight_info : FlightInfo
 The next update
 

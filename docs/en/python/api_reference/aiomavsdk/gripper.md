@@ -6,7 +6,7 @@ Allows users to send gripper actions.
 
 Allows users to send gripper actions.
 
-Async wrapper around :class:`Gripper` that mirrors the gRPC-based
+Async wrapper around `Gripper` that mirrors the gRPC-based
 asyncio API while using the ctypes-based C library directly.
 
 ### `grab`
@@ -19,9 +19,11 @@ Gripper grab cargo.
 
 Parameters
 ----------
+
 instance : int
 Raises
 ------
+
 GripperError
 If the request fails. The error contains the reason for the failure.
 
@@ -35,9 +37,11 @@ Gripper release cargo.
 
 Parameters
 ----------
+
 instance : int
 Raises
 ------
+
 GripperError
 If the request fails. The error contains the reason for the failure.
 

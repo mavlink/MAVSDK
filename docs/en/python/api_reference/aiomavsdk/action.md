@@ -6,7 +6,7 @@ Enable simple actions such as arming, taking off, and landing.
 
 Enable simple actions such as arming, taking off, and landing.
 
-Async wrapper around :class:`Action` that mirrors the gRPC-based
+Async wrapper around `Action` that mirrors the gRPC-based
 asyncio API while using the ctypes-based C library directly.
 
 ### `arm`
@@ -22,6 +22,7 @@ Before arming take all safety precautions and stand clear of the drone!
 
 Raises
 ------
+
 ActionError
     If the request fails. The error contains the reason for the failure.
 
@@ -40,6 +41,7 @@ Before arming take all safety precautions and stand clear of the drone!
 
 Raises
 ------
+
 ActionError
     If the request fails. The error contains the reason for the failure.
 
@@ -56,6 +58,7 @@ reject the disarm command. Disarming means that all motors will stop.
 
 Raises
 ------
+
 ActionError
     If the request fails. The error contains the reason for the failure.
 
@@ -74,6 +77,7 @@ Note that the vehicle must be armed before it can take off.
 
 Raises
 ------
+
 ActionError
     If the request fails. The error contains the reason for the failure.
 
@@ -89,6 +93,7 @@ This switches the drone to 'Land' flight mode.
 
 Raises
 ------
+
 ActionError
     If the request fails. The error contains the reason for the failure.
 
@@ -104,6 +109,7 @@ This will reboot the autopilot, companion computer, camera and gimbal.
 
 Raises
 ------
+
 ActionError
     If the request fails. The error contains the reason for the failure.
 
@@ -121,6 +127,7 @@ reject it if they are not already ready to shut down.
 
 Raises
 ------
+
 ActionError
     If the request fails. The error contains the reason for the failure.
 
@@ -136,6 +143,7 @@ This will run the terminate routine as configured on the drone (e.g. disarm and 
 
 Raises
 ------
+
 ActionError
     If the request fails. The error contains the reason for the failure.
 
@@ -152,6 +160,7 @@ Note that the drone will fall out of the sky if this command is used while flyin
 
 Raises
 ------
+
 ActionError
     If the request fails. The error contains the reason for the failure.
 
@@ -169,6 +178,7 @@ back to the launch (takeoff) position and land there.
 
 Raises
 ------
+
 ActionError
     If the request fails. The error contains the reason for the failure.
 
@@ -187,12 +197,14 @@ The yaw angle is in degrees (frame is NED, 0 is North, positive is clockwise).
 
 Parameters
 ----------
+
 latitude_deg : float
 longitude_deg : float
 absolute_altitude_m : float
 yaw_deg : float
 Raises
 ------
+
 ActionError
     If the request fails. The error contains the reason for the failure.
 
@@ -208,6 +220,7 @@ This will run the orbit routine with the given parameters.
 
 Parameters
 ----------
+
 radius_m : float
 velocity_ms : float
 yaw_behavior : OrbitYawBehavior
@@ -216,6 +229,7 @@ longitude_deg : float
 absolute_altitude_m : float
 Raises
 ------
+
 ActionError
     If the request fails. The error contains the reason for the failure.
 
@@ -235,6 +249,7 @@ it implies a change to a PX4-specific mode.
 
 Raises
 ------
+
 ActionError
     If the request fails. The error contains the reason for the failure.
 
@@ -250,10 +265,12 @@ Note that the index of the actuator starts at 1 and that the value goes from -1 
 
 Parameters
 ----------
+
 index : int
 value : float
 Raises
 ------
+
 ActionError
     If the request fails. The error contains the reason for the failure.
 
@@ -270,10 +287,12 @@ For the relay value, 1=on, 0=off, others possible depending on system hardware
 
 Parameters
 ----------
+
 index : int
 setting : RelayCommand
 Raises
 ------
+
 ActionError
     If the request fails. The error contains the reason for the failure.
 
@@ -291,6 +310,7 @@ is already in fixedwing mode.
 
 Raises
 ------
+
 ActionError
     If the request fails. The error contains the reason for the failure.
 
@@ -308,6 +328,7 @@ is already in multicopter mode.
 
 Raises
 ------
+
 ActionError
     If the request fails. The error contains the reason for the failure.
 
@@ -321,9 +342,11 @@ Get the takeoff altitude (in meters above ground).
 
 Returns
 -------
+
 altitude : float
 Raises
 ------
+
 ActionError
 If the request fails. The error contains the reason for the failure.
 
@@ -337,9 +360,11 @@ Set takeoff altitude (in meters above ground).
 
 Parameters
 ----------
+
 altitude : float
 Raises
 ------
+
 ActionError
 If the request fails. The error contains the reason for the failure.
 
@@ -353,9 +378,11 @@ Get the return to launch minimum return altitude (in meters).
 
 Returns
 -------
+
 relative_altitude_m : float
 Raises
 ------
+
 ActionError
 If the request fails. The error contains the reason for the failure.
 
@@ -369,9 +396,11 @@ Set the return to launch minimum return altitude (in meters).
 
 Parameters
 ----------
+
 relative_altitude_m : float
 Raises
 ------
+
 ActionError
 If the request fails. The error contains the reason for the failure.
 
@@ -388,9 +417,11 @@ It is ephemeral, so not stored on the drone and does not survive a reboot.
 
 Parameters
 ----------
+
 speed_m_s : float
 Raises
 ------
+
 ActionError
     If the request fails. The error contains the reason for the failure.
 
@@ -406,11 +437,13 @@ Sets the GPS coordinates of the vehicle local origin (0,0,0) position.
 
 Parameters
 ----------
+
 latitude_deg : float
 longitude_deg : float
 absolute_altitude_m : float
 Raises
 ------
+
 ActionError
     If the request fails. The error contains the reason for the failure.
 

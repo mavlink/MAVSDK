@@ -10,7 +10,7 @@ Allows interfacing a vehicle with a motion capture system in
 order to allow navigation without global positioning sources available
 (e.g. indoors, or when flying under a bridge. etc.).
 
-Async wrapper around :class:`Mocap` that mirrors the gRPC-based
+Async wrapper around `Mocap` that mirrors the gRPC-based
 asyncio API while using the ctypes-based C library directly.
 
 ### `set_vision_position_estimate`
@@ -23,9 +23,11 @@ Send Global position/attitude estimate from a vision source.
 
 Parameters
 ----------
+
 vision_position_estimate : VisionPositionEstimate
 Raises
 ------
+
 MocapError
 If the request fails. The error contains the reason for the failure.
 
@@ -39,9 +41,11 @@ Send Global speed estimate from a vision source.
 
 Parameters
 ----------
+
 vision_speed_estimate : VisionSpeedEstimate
 Raises
 ------
+
 MocapError
 If the request fails. The error contains the reason for the failure.
 
@@ -55,9 +59,11 @@ Send motion capture attitude and position.
 
 Parameters
 ----------
+
 attitude_position_mocap : AttitudePositionMocap
 Raises
 ------
+
 MocapError
 If the request fails. The error contains the reason for the failure.
 
@@ -71,9 +77,11 @@ Send odometry information with an external interface.
 
 Parameters
 ----------
+
 odometry : Odometry
 Raises
 ------
+
 MocapError
 If the request fails. The error contains the reason for the failure.
 

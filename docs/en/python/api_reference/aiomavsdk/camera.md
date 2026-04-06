@@ -18,7 +18,7 @@ When multiple cameras are supported the plugin will need to be
 instantiated separately for every camera and the camera selected using
 `select_camera`.
 
-Async wrapper around :class:`Camera` that mirrors the gRPC-based
+Async wrapper around `Camera` that mirrors the gRPC-based
 asyncio API while using the ctypes-based C library directly.
 
 ### `take_photo`
@@ -31,9 +31,11 @@ Take one photo.
 
 Parameters
 ----------
+
 component_id : int
 Raises
 ------
+
 CameraError
 If the request fails. The error contains the reason for the failure.
 
@@ -47,10 +49,12 @@ Start photo timelapse with a given interval.
 
 Parameters
 ----------
+
 component_id : int
 interval_s : float
 Raises
 ------
+
 CameraError
 If the request fails. The error contains the reason for the failure.
 
@@ -64,9 +68,11 @@ Stop a running photo timelapse.
 
 Parameters
 ----------
+
 component_id : int
 Raises
 ------
+
 CameraError
 If the request fails. The error contains the reason for the failure.
 
@@ -80,9 +86,11 @@ Start a video recording.
 
 Parameters
 ----------
+
 component_id : int
 Raises
 ------
+
 CameraError
 If the request fails. The error contains the reason for the failure.
 
@@ -96,9 +104,11 @@ Stop a running video recording.
 
 Parameters
 ----------
+
 component_id : int
 Raises
 ------
+
 CameraError
 If the request fails. The error contains the reason for the failure.
 
@@ -112,10 +122,12 @@ Start video streaming.
 
 Parameters
 ----------
+
 component_id : int
 stream_id : int
 Raises
 ------
+
 CameraError
 If the request fails. The error contains the reason for the failure.
 
@@ -129,10 +141,12 @@ Stop current video streaming.
 
 Parameters
 ----------
+
 component_id : int
 stream_id : int
 Raises
 ------
+
 CameraError
 If the request fails. The error contains the reason for the failure.
 
@@ -146,10 +160,12 @@ Set camera mode.
 
 Parameters
 ----------
+
 component_id : int
 mode : Mode
 Raises
 ------
+
 CameraError
 If the request fails. The error contains the reason for the failure.
 
@@ -167,13 +183,16 @@ images over time.
 
 Parameters
 ----------
+
 component_id : int
 photos_range : PhotosRange
 Returns
 -------
+
 capture_infos : CaptureInfo
 Raises
 ------
+
 CameraError
     If the request fails. The error contains the reason for the failure.
 
@@ -190,6 +209,7 @@ Based on the camera ID, we can then address a specific camera.
 
 Yields
 ------
+
 camera_list : CameraList
      The next update
 
@@ -206,9 +226,11 @@ Based on the camera ID, we can then address a specific camera.
 
 Returns
 -------
+
 camera_list : CameraList
 Raises
 ------
+
 CameraError
     If the request fails. The error contains the reason for the failure.
 
@@ -222,6 +244,7 @@ Subscribe to camera mode updates.
 
 Yields
 ------
+
 mode_update : ModeUpdate
 The next update
 
@@ -235,12 +258,15 @@ Get camera mode.
 
 Parameters
 ----------
+
 component_id : int
 Returns
 -------
+
 mode : Mode
 Raises
 ------
+
 CameraError
 If the request fails. The error contains the reason for the failure.
 
@@ -254,6 +280,7 @@ Subscribe to video stream info updates.
 
 Yields
 ------
+
 video_stream_update : VideoStreamUpdate
 The next update
 
@@ -267,12 +294,15 @@ Get video stream info.
 
 Parameters
 ----------
+
 component_id : int
 Returns
 -------
+
 video_stream_info : VideoStreamInfo
 Raises
 ------
+
 CameraError
 If the request fails. The error contains the reason for the failure.
 
@@ -286,6 +316,7 @@ Subscribe to capture info updates.
 
 Yields
 ------
+
 capture_info : CaptureInfo
 The next update
 
@@ -299,6 +330,7 @@ Subscribe to camera's storage status updates.
 
 Yields
 ------
+
 storage_update : StorageUpdate
 The next update
 
@@ -312,12 +344,15 @@ Get camera's storage status.
 
 Parameters
 ----------
+
 component_id : int
 Returns
 -------
+
 storage : Storage
 Raises
 ------
+
 CameraError
 If the request fails. The error contains the reason for the failure.
 
@@ -331,6 +366,7 @@ Get the list of current camera settings.
 
 Yields
 ------
+
 current_settings_update : CurrentSettingsUpdate
 The next update
 
@@ -344,12 +380,15 @@ Get current settings.
 
 Parameters
 ----------
+
 component_id : int
 Returns
 -------
+
 current_settings : Setting
 Raises
 ------
+
 CameraError
 If the request fails. The error contains the reason for the failure.
 
@@ -363,6 +402,7 @@ Get the list of settings that can be changed.
 
 Yields
 ------
+
 possible_setting_options_update : PossibleSettingOptionsUpdate
 The next update
 
@@ -376,12 +416,15 @@ Get possible setting options.
 
 Parameters
 ----------
+
 component_id : int
 Returns
 -------
+
 setting_options : SettingOptions
 Raises
 ------
+
 CameraError
 If the request fails. The error contains the reason for the failure.
 
@@ -397,10 +440,12 @@ Only setting_id of setting and option_id of option needs to be set.
 
 Parameters
 ----------
+
 component_id : int
 setting : Setting
 Raises
 ------
+
 CameraError
     If the request fails. The error contains the reason for the failure.
 
@@ -416,13 +461,16 @@ Only setting_id of setting needs to be set.
 
 Parameters
 ----------
+
 component_id : int
 setting : Setting
 Returns
 -------
+
 setting : Setting
 Raises
 ------
+
 CameraError
     If the request fails. The error contains the reason for the failure.
 
@@ -438,10 +486,12 @@ This will delete all content of the camera storage!
 
 Parameters
 ----------
+
 component_id : int
 storage_id : int
 Raises
 ------
+
 CameraError
     If the request fails. The error contains the reason for the failure.
 
@@ -457,9 +507,11 @@ This will reset all camera settings to default value
 
 Parameters
 ----------
+
 component_id : int
 Raises
 ------
+
 CameraError
     If the request fails. The error contains the reason for the failure.
 
@@ -473,9 +525,11 @@ Start zooming in.
 
 Parameters
 ----------
+
 component_id : int
 Raises
 ------
+
 CameraError
 If the request fails. The error contains the reason for the failure.
 
@@ -489,9 +543,11 @@ Start zooming out.
 
 Parameters
 ----------
+
 component_id : int
 Raises
 ------
+
 CameraError
 If the request fails. The error contains the reason for the failure.
 
@@ -505,9 +561,11 @@ Stop zooming.
 
 Parameters
 ----------
+
 component_id : int
 Raises
 ------
+
 CameraError
 If the request fails. The error contains the reason for the failure.
 
@@ -521,10 +579,12 @@ Zoom to value as proportion of full camera range (percentage between 0.0 and 100
 
 Parameters
 ----------
+
 component_id : int
 range : float
 Raises
 ------
+
 CameraError
 If the request fails. The error contains the reason for the failure.
 
@@ -538,12 +598,14 @@ Track point.
 
 Parameters
 ----------
+
 component_id : int
 point_x : float
 point_y : float
 radius : float
 Raises
 ------
+
 CameraError
 If the request fails. The error contains the reason for the failure.
 
@@ -557,6 +619,7 @@ Track rectangle.
 
 Parameters
 ----------
+
 component_id : int
 top_left_x : float
 top_left_y : float
@@ -564,6 +627,7 @@ bottom_right_x : float
 bottom_right_y : float
 Raises
 ------
+
 CameraError
 If the request fails. The error contains the reason for the failure.
 
@@ -577,9 +641,11 @@ Stop tracking.
 
 Parameters
 ----------
+
 component_id : int
 Raises
 ------
+
 CameraError
 If the request fails. The error contains the reason for the failure.
 
@@ -593,9 +659,11 @@ Start focusing in.
 
 Parameters
 ----------
+
 component_id : int
 Raises
 ------
+
 CameraError
 If the request fails. The error contains the reason for the failure.
 
@@ -609,9 +677,11 @@ Start focusing out.
 
 Parameters
 ----------
+
 component_id : int
 Raises
 ------
+
 CameraError
 If the request fails. The error contains the reason for the failure.
 
@@ -625,9 +695,11 @@ Stop focus.
 
 Parameters
 ----------
+
 component_id : int
 Raises
 ------
+
 CameraError
 If the request fails. The error contains the reason for the failure.
 
@@ -641,10 +713,12 @@ Focus with range value of full range (value between 0.0 and 100.0).
 
 Parameters
 ----------
+
 component_id : int
 range : float
 Raises
 ------
+
 CameraError
 If the request fails. The error contains the reason for the failure.
 

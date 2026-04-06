@@ -8,7 +8,7 @@ Gimbal Protocol: https://mavlink.io/en/services/gimbal_v2.html
 Provide control over a gimbal within the MAVLink
 Gimbal Protocol: https://mavlink.io/en/services/gimbal_v2.html
 
-Async wrapper around :class:`Gimbal` that mirrors the gRPC-based
+Async wrapper around `Gimbal` that mirrors the gRPC-based
 asyncio API while using the ctypes-based C library directly.
 
 ### `set_angles`
@@ -27,6 +27,7 @@ Note that the roll angle needs to be set to 0 when send_mode is Once.
 
 Parameters
 ----------
+
 gimbal_id : int
 roll_deg : float
 pitch_deg : float
@@ -35,6 +36,7 @@ gimbal_mode : GimbalMode
 send_mode : SendMode
 Raises
 ------
+
 GimbalError
     If the request fails. The error contains the reason for the failure.
 
@@ -54,6 +56,7 @@ Note that the roll angle needs to be set to 0 when send_mode is Once.
 
 Parameters
 ----------
+
 gimbal_id : int
 roll_rate_deg_s : float
 pitch_rate_deg_s : float
@@ -62,6 +65,7 @@ gimbal_mode : GimbalMode
 send_mode : SendMode
 Raises
 ------
+
 GimbalError
     If the request fails. The error contains the reason for the failure.
 
@@ -81,12 +85,14 @@ take the gimbal longer to actually rotate to the ROI.
 
 Parameters
 ----------
+
 gimbal_id : int
 latitude_deg : float
 longitude_deg : float
 altitude_m : float
 Raises
 ------
+
 GimbalError
     If the request fails. The error contains the reason for the failure.
 
@@ -108,10 +114,12 @@ override each other and should therefore do it carefully.
 
 Parameters
 ----------
+
 gimbal_id : int
 control_mode : ControlMode
 Raises
 ------
+
 GimbalError
     If the request fails. The error contains the reason for the failure.
 
@@ -127,9 +135,11 @@ Release control, such that other components can control the gimbal.
 
 Parameters
 ----------
+
 gimbal_id : int
 Raises
 ------
+
 GimbalError
     If the request fails. The error contains the reason for the failure.
 
@@ -146,6 +156,7 @@ Based on the gimbal ID, we can then address a specific gimbal.
 
 Yields
 ------
+
 gimbal_list : GimbalList
      The next update
 
@@ -162,9 +173,11 @@ Based on the gimbal ID, we can then address a specific gimbal.
 
 Returns
 -------
+
 gimbal_list : GimbalList
 Raises
 ------
+
 GimbalError
     If the request fails. The error contains the reason for the failure.
 
@@ -182,6 +195,7 @@ of the other components in control (if any).
 
 Yields
 ------
+
 control_status : ControlStatus
      The next update
 
@@ -195,12 +209,15 @@ Get control status for specific gimbal.
 
 Parameters
 ----------
+
 gimbal_id : int
 Returns
 -------
+
 control_status : ControlStatus
 Raises
 ------
+
 GimbalError
 If the request fails. The error contains the reason for the failure.
 
@@ -216,6 +233,7 @@ This gets you the gimbal's attitude and angular rate.
 
 Yields
 ------
+
 attitude : Attitude
      The next update
 
@@ -229,12 +247,15 @@ Get attitude for specific gimbal.
 
 Parameters
 ----------
+
 gimbal_id : int
 Returns
 -------
+
 attitude : Attitude
 Raises
 ------
+
 GimbalError
 If the request fails. The error contains the reason for the failure.
 

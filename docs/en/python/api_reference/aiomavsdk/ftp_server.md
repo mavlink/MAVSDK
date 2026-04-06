@@ -8,7 +8,7 @@ Provide files or directories to transfer.
 
 Provide files or directories to transfer.
 
-Async wrapper around :class:`FtpServer` that mirrors the gRPC-based
+Async wrapper around `FtpServer` that mirrors the gRPC-based
 asyncio API while using the ctypes-based C library directly.
 
 **Fields:**

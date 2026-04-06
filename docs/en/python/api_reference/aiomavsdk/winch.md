@@ -6,7 +6,7 @@ Allows users to send winch actions, as well as receive status information from w
 
 Allows users to send winch actions, as well as receive status information from winch systems.
 
-Async wrapper around :class:`Winch` that mirrors the gRPC-based
+Async wrapper around `Winch` that mirrors the gRPC-based
 asyncio API while using the ctypes-based C library directly.
 
 ### `subscribe_status`
@@ -19,6 +19,7 @@ Subscribe to 'winch status' updates.
 
 Yields
 ------
+
 status : Status
 The next update
 
@@ -32,9 +33,11 @@ Subscribe to 'winch status' updates.
 
 Returns
 -------
+
 status : Status
 Raises
 ------
+
 WinchError
 If the request fails. The error contains the reason for the failure.
 
@@ -48,9 +51,11 @@ Allow motor to freewheel.
 
 Parameters
 ----------
+
 instance : int
 Raises
 ------
+
 WinchError
 If the request fails. The error contains the reason for the failure.
 
@@ -64,11 +69,13 @@ Wind or unwind specified length of line, optionally using specified rate.
 
 Parameters
 ----------
+
 instance : int
 length_m : float
 rate_m_s : float
 Raises
 ------
+
 WinchError
 If the request fails. The error contains the reason for the failure.
 
@@ -82,10 +89,12 @@ Wind or unwind line at specified rate.
 
 Parameters
 ----------
+
 instance : int
 rate_m_s : float
 Raises
 ------
+
 WinchError
 If the request fails. The error contains the reason for the failure.
 
@@ -99,9 +108,11 @@ Perform the locking sequence to relieve motor while in the fully retracted posit
 
 Parameters
 ----------
+
 instance : int
 Raises
 ------
+
 WinchError
 If the request fails. The error contains the reason for the failure.
 
@@ -115,9 +126,11 @@ Sequence of drop, slow down, touch down, reel up, lock.
 
 Parameters
 ----------
+
 instance : int
 Raises
 ------
+
 WinchError
 If the request fails. The error contains the reason for the failure.
 
@@ -131,9 +144,11 @@ Engage motor and hold current position.
 
 Parameters
 ----------
+
 instance : int
 Raises
 ------
+
 WinchError
 If the request fails. The error contains the reason for the failure.
 
@@ -147,9 +162,11 @@ Return the reel to the fully retracted position.
 
 Parameters
 ----------
+
 instance : int
 Raises
 ------
+
 WinchError
 If the request fails. The error contains the reason for the failure.
 
@@ -165,9 +182,11 @@ The winch will calculate the total loaded length and stop when the tension excee
 
 Parameters
 ----------
+
 instance : int
 Raises
 ------
+
 WinchError
     If the request fails. The error contains the reason for the failure.
 
@@ -181,9 +200,11 @@ Spool out the entire length of the line.
 
 Parameters
 ----------
+
 instance : int
 Raises
 ------
+
 WinchError
 If the request fails. The error contains the reason for the failure.
 
@@ -197,9 +218,11 @@ Spools out just enough to present the hook to the user to load the payload.
 
 Parameters
 ----------
+
 instance : int
 Raises
 ------
+
 WinchError
 If the request fails. The error contains the reason for the failure.
 

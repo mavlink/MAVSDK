@@ -10,7 +10,7 @@ For log streaming during flight check the logging plugin.
 Allow to download log files from the vehicle after a flight is complete.
 For log streaming during flight check the logging plugin.
 
-Async wrapper around :class:`LogFiles` that mirrors the gRPC-based
+Async wrapper around `LogFiles` that mirrors the gRPC-based
 asyncio API while using the ctypes-based C library directly.
 
 **Fields:**

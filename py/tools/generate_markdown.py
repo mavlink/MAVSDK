@@ -46,11 +46,26 @@ def _clean_docstring(raw: str) -> str:
     return "\n".join(stripped)
 
 
+def _rst_to_md(text: str) -> str:
+    """Convert common RST inline markup to plain Markdown."""
+    import re
+    # :class:`Foo` → `Foo`
+    text = re.sub(r":class:`([^`]+)`", r"`\1`", text)
+    # :meth:`foo` → `foo`
+    text = re.sub(r":meth:`([^`]+)`", r"`\1`", text)
+    # :attr:`foo` → `foo`
+    text = re.sub(r":attr:`([^`]+)`", r"`\1`", text)
+    # NumPy-style section headers: add a blank line after the dashes so
+    # Markdown doesn't treat the header as an accidental setext heading.
+    text = re.sub(r"(\n\w[^\n]*\n)([-]+\n)", r"\1\2\n", text)
+    return text
+
+
 def get_docstring(node):
     """Return the docstring of a function/class/module node, or ''."""
     raw = ast.get_docstring(node, clean=False)
     if raw:
-        return _clean_docstring(raw)
+        return _rst_to_md(_clean_docstring(raw))
     return ""
 
 
