@@ -224,21 +224,36 @@ ConnectionResult SerialConnection::setup_port()
 
 ConnectionResult SerialConnection::stop()
 {
-    {
-        std::lock_guard<std::mutex> lock(_send_mutex);
-        if (_serial_port.is_open()) {
-            asio::error_code ec;
-            _serial_port.cancel(ec); // cancel outstanding async_read_some
-            _serial_port.close(ec);
-        }
-    }
-
-    // Fence: wait for any in-flight handler to finish before allowing member destruction.
     auto& io_ctx = static_cast<asio::io_context&>(_serial_port.get_executor().context());
     if (!io_ctx.stopped()) {
+        // Close the serial port from the io_context thread to avoid a data race
+        // with a concurrent async_read_some() reading the port's state.
+        // Because io_ctx is driven by a single thread, posting here serialises
+        // the close with all in-flight port access.
+        std::promise<void> close_done;
+        asio::post(io_ctx, [this, &close_done]() {
+            std::lock_guard<std::mutex> lock(_send_mutex);
+            if (_serial_port.is_open()) {
+                asio::error_code ec;
+                _serial_port.cancel(ec); // cancel outstanding async_read_some
+                _serial_port.close(ec);
+            }
+            close_done.set_value();
+        });
+        close_done.get_future().wait();
+
+        // Drain any operation_aborted handlers queued by the close.
         std::promise<void> fence;
         asio::post(io_ctx, [&fence]() { fence.set_value(); });
         fence.get_future().wait();
+    } else {
+        // io_context already stopped — no concurrent async operations are running.
+        std::lock_guard<std::mutex> lock(_send_mutex);
+        if (_serial_port.is_open()) {
+            asio::error_code ec;
+            _serial_port.cancel(ec);
+            _serial_port.close(ec);
+        }
     }
 
     // Stop after stopping the port so we don't interfere with message parsing.

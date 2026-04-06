@@ -5,12 +5,12 @@ on:
     branches:
     - 'main'
     paths-ignore:
-    - 'cpp/docs/**'
+    - 'docs/**'
   pull_request:
     branches:
     - '*'
     paths-ignore:
-    - 'cpp/docs/**'
+    - 'docs/**'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}

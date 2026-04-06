@@ -76,8 +76,8 @@ popd
 
 if [ "$overwrite" = true ]; then
     # Clear folder first except index.md
-    find "${SCRIPT_DIR}/../docs/en/cpp/api_reference/" -type f -not -name 'index.md' -delete
-    cp "${INSTALL_DIR}/docs/markdown/"* "${SCRIPT_DIR}/../docs/en/cpp/api_reference/"
+    find "${SCRIPT_DIR}/../../docs/en/cpp/api_reference/" -type f -not -name 'index.md' -delete
+    cp "${INSTALL_DIR}/docs/markdown/"* "${SCRIPT_DIR}/../../docs/en/cpp/api_reference/"
 fi
 
 exit $return_result

@@ -92,28 +92,37 @@ ConnectionResult UdpConnection::setup_port()
 
 ConnectionResult UdpConnection::stop()
 {
-    // Close the socket — this cancels any outstanding async_receive_from so the
-    // io_context handler fires with operation_aborted and does NOT re-post itself.
     if (_socket.is_open()) {
-        asio::error_code ec;
-        _socket.close(ec);
-
-        // Synchronise with the io_thread: a do_receive() completion that was
-        // already dispatched may still be running its handler body (accessing
-        // _recv_buffer, _sender_endpoint, _mavlink_receiver, …).  We post a
-        // no-op fence onto the same io_context; because completions are
-        // processed in FIFO order the fence can only execute after the
-        // operation_aborted handler has returned, making it safe to destroy
-        // UdpConnection members once we return from stop().
-        //
-        // Skip the fence when the io_context has already been stopped
-        // (e.g. called via _connections.clear() in ~MavsdkImpl after
-        // _io_thread has been joined — no handler is running in that path).
         auto& io_ctx = static_cast<asio::io_context&>(_socket.get_executor().context());
+
         if (!io_ctx.stopped()) {
+            // Close the socket from the io_context thread to avoid a data race
+            // with a concurrent async_receive_from() call. Because io_ctx is
+            // driven by a single thread, posting the close here serialises it
+            // with any in-flight socket access — the close can only run between
+            // handler invocations, never while async_receive_from() is reading
+            // the socket's internal state.
+            std::promise<void> close_done;
+            asio::post(io_ctx, [this, &close_done]() {
+                asio::error_code ec;
+                _socket.close(ec);
+                close_done.set_value();
+            });
+            close_done.get_future().wait();
+
+            // close() cancelled any pending async_receive_from, so the
+            // operation_aborted completion handler is now queued. Wait for it
+            // to run (it will not re-post do_receive) before returning, so that
+            // callers can safely destroy UdpConnection's members.
             std::promise<void> fence;
             asio::post(io_ctx, [&fence]() { fence.set_value(); });
             fence.get_future().wait();
+        } else {
+            // io_context has already been stopped (io_thread joined) — no
+            // concurrent async operation can be running, so closing directly
+            // is safe.
+            asio::error_code ec;
+            _socket.close(ec);
         }
     }
 
