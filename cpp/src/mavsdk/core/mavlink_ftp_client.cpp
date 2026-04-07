@@ -179,11 +179,32 @@ void MavlinkFtpClient::process_mavlink_ftp_message(const mavlink_message_t& msg)
         LogWarn("Ignore: last: {}, req: {}", (int)work->last_opcode, (int)payload->req_opcode);
         return;
     }
-    if (work->last_received_seq_number != 0 &&
-        work->last_received_seq_number == payload->seq_number) {
-        // We have already seen this ack/nak.
-        LogWarn("Already see");
-        return;
+    // For non-burst transfers, strictly check the expected seq_number.
+    // work->payload.seq_number is the seq_number of the most-recently sent
+    // request; the server echoes back seq_number + 1.  Accepting any other
+    // value would allow stale/duplicate UDP datagrams from a previous request
+    // to corrupt the transfer (e.g. writing a full 239-byte chunk when only
+    // the final 49 bytes remain).
+    //
+    // For burst transfers we cannot use a strict check: the server sends
+    // multiple packets per CMD_BURST_READ_FILE request, each with an
+    // incrementing seq_number, and packets may arrive out of order or with
+    // gaps that are filled by a subsequent re-request.  For burst we fall back
+    // to the original duplicate-rejection approach.
+    const bool is_burst = std::holds_alternative<DownloadBurstItem>(work->item);
+    if (!is_burst) {
+        const auto expected_seq = static_cast<uint16_t>(work->payload.seq_number + 1);
+        if (payload->seq_number != expected_seq) {
+            LogWarn(
+                "Unexpected seq: got {}, expected {}", (int)payload->seq_number, (int)expected_seq);
+            return;
+        }
+    } else {
+        if (work->last_received_seq_number != 0 &&
+            work->last_received_seq_number == payload->seq_number) {
+            LogWarn("Already seen seq: {}", (int)payload->seq_number);
+            return;
+        }
     }
 
     std::visit(
@@ -470,7 +491,10 @@ void MavlinkFtpClient::process_mavlink_ftp_message(const mavlink_message_t& msg)
             }},
         work->item);
 
-    work->last_received_seq_number = payload->seq_number;
+    // Track the last received seq for burst duplicate detection.
+    if (is_burst) {
+        work->last_received_seq_number = payload->seq_number;
+    }
 }
 
 bool MavlinkFtpClient::download_start(Work& work, DownloadItem& item)
