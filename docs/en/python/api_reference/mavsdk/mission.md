@@ -29,16 +29,6 @@ Possible results returned for action requests.
 
 ## Structs
 
-### `ProgressDataCStruct`
-
-Internal C structure for ProgressData.
-Used only for C library communication.
-
-### `ProgressDataOrMissionCStruct`
-
-Internal C structure for ProgressDataOrMission.
-Used only for C library communication.
-
 ### `ProgressData`
 
 Progress data coming from mission upload.
@@ -58,21 +48,6 @@ Progress data coming from mission download, or the mission itself (if the transf
 - `has_mission`
 - `mission_plan`
 
-## `MissionItemCStruct`
-
-Internal C structure for MissionItem.
-Used only for C library communication.
-
-## `MissionPlanCStruct`
-
-Internal C structure for MissionPlan.
-Used only for C library communication.
-
-## `MissionProgressCStruct`
-
-Internal C structure for MissionProgress.
-Used only for C library communication.
-
 ## `MissionItem`
 
 Type representing a mission item.
@@ -82,61 +57,13 @@ Mission items are building blocks to assemble a mission,
 which can be sent to (or received from) a system.
 They cannot be used independently.
 
-### `from_c_struct`
-
-```python
-def from_c_struct(cls, c_struct)
-```
-
-Convert from C structure to Python object
-
-### `to_c_struct`
-
-```python
-def to_c_struct()
-```
-
-Convert to C structure for C library calls
-
 ## `MissionPlan`
 
 Mission plan type
 
-### `from_c_struct`
-
-```python
-def from_c_struct(cls, c_struct)
-```
-
-Convert from C structure to Python object
-
-### `to_c_struct`
-
-```python
-def to_c_struct()
-```
-
-Convert to C structure for C library calls
-
 ## `MissionProgress`
 
 Mission progress type.
-
-### `from_c_struct`
-
-```python
-def from_c_struct(cls, c_struct)
-```
-
-Convert from C structure to Python object
-
-### `to_c_struct`
-
-```python
-def to_c_struct()
-```
-
-Convert to C structure for C library calls
 
 ## `Mission`
 
@@ -314,7 +241,7 @@ Subscribe to mission progress updates.
 ### `unsubscribe_mission_progress`
 
 ```python
-def unsubscribe_mission_progress(handle: ctypes.c_void_p)
+def unsubscribe_mission_progress(handle: Handle)
 ```
 
 Unsubscribe from mission_progress
@@ -342,11 +269,3 @@ def set_return_to_launch_after_mission(enable)
 ```
 
 Get set_return_to_launch_after_mission (blocking)
-
-### `destroy`
-
-```python
-def destroy()
-```
-
-Destroy the plugin instance

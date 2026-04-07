@@ -112,9 +112,3 @@ Yields
 
 flight_info : FlightInfo
 The next update
-
-### `destroy`
-
-```python
-def destroy()
-```

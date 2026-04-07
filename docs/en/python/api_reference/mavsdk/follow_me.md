@@ -23,16 +23,6 @@ Possible results returned for followme operations
 
 ## Structs
 
-### `ConfigCStruct`
-
-Internal C structure for Config.
-Used only for C library communication.
-
-### `TargetLocationCStruct`
-
-Internal C structure for TargetLocation.
-Used only for C library communication.
-
 ### `Config`
 
 Configuration type.

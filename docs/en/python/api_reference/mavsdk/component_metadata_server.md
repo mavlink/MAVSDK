@@ -16,11 +16,6 @@ The metadata type
 
 ## Structs
 
-### `MetadataCStruct`
-
-Internal C structure for Metadata.
-Used only for C library communication.
-
 ### `Metadata`
 
 The metadata type and content

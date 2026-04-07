@@ -18,11 +18,6 @@ Possible results returned for rtk requests.
 
 ## Structs
 
-### `RtcmDataCStruct`
-
-Internal C structure for RtcmData.
-Used only for C library communication.
-
 ### `RtcmData`
 
 RTCM data type
@@ -42,11 +37,3 @@ def send_rtcm_data(rtcm_data)
 ```
 
 Get send_rtcm_data (blocking)
-
-### `destroy`
-
-```python
-def destroy()
-```
-
-Destroy the plugin instance

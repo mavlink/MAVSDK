@@ -57,11 +57,6 @@ Possible results returned for transponder requests.
 
 ## Structs
 
-### `AdsbVehicleCStruct`
-
-Internal C structure for AdsbVehicle.
-Used only for C library communication.
-
 ### `AdsbVehicle`
 
 ADSB Vehicle type.
@@ -97,7 +92,7 @@ Subscribe to 'transponder' updates.
 ### `unsubscribe_transponder`
 
 ```python
-def unsubscribe_transponder(handle: ctypes.c_void_p)
+def unsubscribe_transponder(handle: Handle)
 ```
 
 Unsubscribe from transponder
@@ -125,11 +120,3 @@ def set_rate_transponder(rate_hz)
 ```
 
 Get set_rate_transponder (blocking)
-
-### `destroy`
-
-```python
-def destroy()
-```
-
-Destroy the plugin instance

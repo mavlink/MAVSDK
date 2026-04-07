@@ -37,16 +37,6 @@ Possible results returned for winch action requests.
 
 ## Structs
 
-### `StatusFlagsCStruct`
-
-Internal C structure for StatusFlags.
-Used only for C library communication.
-
-### `StatusCStruct`
-
-Internal C structure for Status.
-Used only for C library communication.
-
 ### `StatusFlags`
 
 Winch Status Flags.
@@ -104,7 +94,7 @@ Subscribe to 'winch status' updates.
 ### `unsubscribe_status`
 
 ```python
-def unsubscribe_status(handle: ctypes.c_void_p)
+def unsubscribe_status(handle: Handle)
 ```
 
 Unsubscribe from status
@@ -278,11 +268,3 @@ def load_payload(instance)
 ```
 
 Get load_payload (blocking)
-
-### `destroy`
-
-```python
-def destroy()
-```
-
-Destroy the plugin instance

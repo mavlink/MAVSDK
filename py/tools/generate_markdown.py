@@ -122,6 +122,10 @@ def is_private(name):
     return name.startswith("_")
 
 
+# Methods that are internal C-bridge implementation details.
+_HIDDEN_METHODS = {"from_c_struct", "to_c_struct", "destroy"}
+
+
 # ── Markdown rendering ────────────────────────────────────────────────────────
 
 def render_docstring_body(doc):
@@ -136,6 +140,9 @@ def render_function(func_node, is_async=False, is_method=False, heading_level=4)
     params, ret = get_signature(func_node)
     prefix = "async " if is_async else ""
     kind = "method" if is_method else "function"
+
+    # Replace internal C types with user-friendly names.
+    params = params.replace("ctypes.c_void_p", "Handle")
 
     sig = f"{prefix}def {name}({params})"
     if ret:
@@ -227,7 +234,7 @@ def render_plugin_class(class_node, is_async=False, heading_level=3):
     # Methods
     for node in class_node.body:
         if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
-            if is_private(node.name):
+            if is_private(node.name) or node.name in _HIDDEN_METHODS:
                 continue
             lines.append(render_function(
                 node,
@@ -283,6 +290,8 @@ def parse_plugin_file(path: Path, plugin_name: str, pkg_name: str) -> str:
     for node in tree.body:
         if not isinstance(node, ast.ClassDef):
             continue
+        if node.name.endswith("CStruct"):
+            continue
         if is_error_class(node):
             error_classes.append(node)
         elif is_enum_class(node):
@@ -310,7 +319,7 @@ def parse_plugin_file(path: Path, plugin_name: str, pkg_name: str) -> str:
             lines.append(doc + "\n")
         for node in cls.body:
             if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
-                if is_private(node.name):
+                if is_private(node.name) or node.name in _HIDDEN_METHODS:
                     continue
                 lines.append(render_function(
                     node,

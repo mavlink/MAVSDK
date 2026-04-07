@@ -33,16 +33,6 @@ Possible results returned
 
 ## Structs
 
-### `MetadataDataCStruct`
-
-Internal C structure for MetadataData.
-Used only for C library communication.
-
-### `MetadataUpdateCStruct`
-
-Internal C structure for MetadataUpdate.
-Used only for C library communication.
-
 ### `MetadataData`
 
 Metadata response

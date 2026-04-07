@@ -45,30 +45,9 @@ Possible results returned for tune requests.
 | `ERROR` (4) | |
 | `NO_SYSTEM` (5) | |
 
-## `TuneDescriptionCStruct`
-
-Internal C structure for TuneDescription.
-Used only for C library communication.
-
 ## `TuneDescription`
 
 Tune description, containing song elements and tempo.
-
-### `from_c_struct`
-
-```python
-def from_c_struct(cls, c_struct)
-```
-
-Convert from C structure to Python object
-
-### `to_c_struct`
-
-```python
-def to_c_struct()
-```
-
-Convert to C structure for C library calls
 
 ## `Tune`
 
@@ -89,11 +68,3 @@ def play_tune(tune_description)
 ```
 
 Get play_tune (blocking)
-
-### `destroy`
-
-```python
-def destroy()
-```
-
-Destroy the plugin instance

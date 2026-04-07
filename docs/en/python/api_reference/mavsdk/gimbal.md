@@ -49,31 +49,6 @@ Possible results returned for gimbal commands.
 
 ## Structs
 
-### `QuaternionCStruct`
-
-Internal C structure for Quaternion.
-Used only for C library communication.
-
-### `EulerAngleCStruct`
-
-Internal C structure for EulerAngle.
-Used only for C library communication.
-
-### `AngularVelocityBodyCStruct`
-
-Internal C structure for AngularVelocityBody.
-Used only for C library communication.
-
-### `AttitudeCStruct`
-
-Internal C structure for Attitude.
-Used only for C library communication.
-
-### `ControlStatusCStruct`
-
-Internal C structure for ControlStatus.
-Used only for C library communication.
-
 ### `Quaternion`
 
 Quaternion type.
@@ -145,55 +120,13 @@ Control status
 - `sysid_secondary_control`
 - `compid_secondary_control`
 
-## `GimbalItemCStruct`
-
-Internal C structure for GimbalItem.
-Used only for C library communication.
-
-## `GimbalListCStruct`
-
-Internal C structure for GimbalList.
-Used only for C library communication.
-
 ## `GimbalItem`
 
 Gimbal list item
 
-### `from_c_struct`
-
-```python
-def from_c_struct(cls, c_struct)
-```
-
-Convert from C structure to Python object
-
-### `to_c_struct`
-
-```python
-def to_c_struct()
-```
-
-Convert to C structure for C library calls
-
 ## `GimbalList`
 
 Gimbal list
-
-### `from_c_struct`
-
-```python
-def from_c_struct(cls, c_struct)
-```
-
-Convert from C structure to Python object
-
-### `to_c_struct`
-
-```python
-def to_c_struct()
-```
-
-Convert to C structure for C library calls
 
 ## `Gimbal`
 
@@ -322,7 +255,7 @@ Based on the gimbal ID, we can then address a specific gimbal.
 ### `unsubscribe_gimbal_list`
 
 ```python
-def unsubscribe_gimbal_list(handle: ctypes.c_void_p)
+def unsubscribe_gimbal_list(handle: Handle)
 ```
 
 Unsubscribe from gimbal_list
@@ -350,7 +283,7 @@ of the other components in control (if any).
 ### `unsubscribe_control_status`
 
 ```python
-def unsubscribe_control_status(handle: ctypes.c_void_p)
+def unsubscribe_control_status(handle: Handle)
 ```
 
 Unsubscribe from control_status
@@ -376,7 +309,7 @@ This gets you the gimbal's attitude and angular rate.
 ### `unsubscribe_attitude`
 
 ```python
-def unsubscribe_attitude(handle: ctypes.c_void_p)
+def unsubscribe_attitude(handle: Handle)
 ```
 
 Unsubscribe from attitude
@@ -388,11 +321,3 @@ def get_attitude(gimbal_id)
 ```
 
 Get get_attitude (blocking)
-
-### `destroy`
-
-```python
-def destroy()
-```
-
-Destroy the plugin instance

@@ -43,51 +43,6 @@ Possible results returned for action requests.
 
 ## Structs
 
-### `InformationCStruct`
-
-Internal C structure for Information.
-Used only for C library communication.
-
-### `VideoStreamingCStruct`
-
-Internal C structure for VideoStreaming.
-Used only for C library communication.
-
-### `PositionCStruct`
-
-Internal C structure for Position.
-Used only for C library communication.
-
-### `QuaternionCStruct`
-
-Internal C structure for Quaternion.
-Used only for C library communication.
-
-### `CaptureInfoCStruct`
-
-Internal C structure for CaptureInfo.
-Used only for C library communication.
-
-### `StorageInformationCStruct`
-
-Internal C structure for StorageInformation.
-Used only for C library communication.
-
-### `CaptureStatusCStruct`
-
-Internal C structure for CaptureStatus.
-Used only for C library communication.
-
-### `TrackPointCStruct`
-
-Internal C structure for TrackPoint.
-Used only for C library communication.
-
-### `TrackRectangleCStruct`
-
-Internal C structure for TrackRectangle.
-Used only for C library communication.
-
 ### `Information`
 
 Type to represent a camera information.

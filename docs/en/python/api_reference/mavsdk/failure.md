@@ -67,11 +67,3 @@ def inject(failure_unit, failure_type, instance)
 ```
 
 Get inject (blocking)
-
-### `destroy`
-
-```python
-def destroy()
-```
-
-Destroy the plugin instance

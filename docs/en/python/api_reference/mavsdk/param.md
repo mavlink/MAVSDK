@@ -39,26 +39,6 @@ Possible results returned for param requests.
 
 ## Structs
 
-### `IntParamCStruct`
-
-Internal C structure for IntParam.
-Used only for C library communication.
-
-### `FloatParamCStruct`
-
-Internal C structure for FloatParam.
-Used only for C library communication.
-
-### `CustomParamCStruct`
-
-Internal C structure for CustomParam.
-Used only for C library communication.
-
-### `AllParamsCStruct`
-
-Internal C structure for AllParams.
-Used only for C library communication.
-
 ### `IntParam`
 
 Type for integer parameters.
@@ -163,11 +143,3 @@ def select_component(component_id, protocol_version)
 ```
 
 Get select_component (blocking)
-
-### `destroy`
-
-```python
-def destroy()
-```
-
-Destroy the plugin instance

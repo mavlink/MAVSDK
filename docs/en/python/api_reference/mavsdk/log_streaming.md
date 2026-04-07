@@ -21,11 +21,6 @@ Possible results returned for logging requests
 
 ## Structs
 
-### `LogStreamingRawCStruct`
-
-Internal C structure for LogStreamingRaw.
-Used only for C library communication.
-
 ### `LogStreamingRaw`
 
 Raw logging data type

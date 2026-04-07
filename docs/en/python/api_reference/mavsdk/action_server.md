@@ -50,16 +50,6 @@ Possible results returned for action requests.
 
 ## Structs
 
-### `AllowableFlightModesCStruct`
-
-Internal C structure for AllowableFlightModes.
-Used only for C library communication.
-
-### `ArmDisarmCStruct`
-
-Internal C structure for ArmDisarm.
-Used only for C library communication.
-
 ### `AllowableFlightModes`
 
 State to check if the vehicle can transition to

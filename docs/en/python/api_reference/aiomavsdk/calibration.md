@@ -62,9 +62,3 @@ Raises
 
 CalibrationError
 If the request fails. The error contains the reason for the failure.
-
-### `destroy`
-
-```python
-def destroy()
-```

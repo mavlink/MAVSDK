@@ -25,11 +25,6 @@ Possible results returned for calibration commands
 
 ## Structs
 
-### `ProgressDataCStruct`
-
-Internal C structure for ProgressData.
-Used only for C library communication.
-
 ### `ProgressData`
 
 Progress data coming from calibration.
@@ -94,11 +89,3 @@ def cancel()
 ```
 
 Get cancel (blocking)
-
-### `destroy`
-
-```python
-def destroy()
-```
-
-Destroy the plugin instance

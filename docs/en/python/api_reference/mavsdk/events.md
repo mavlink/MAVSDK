@@ -37,31 +37,6 @@ Possible results returned
 
 ## Structs
 
-### `EventCStruct`
-
-Internal C structure for Event.
-Used only for C library communication.
-
-### `HealthAndArmingCheckProblemCStruct`
-
-Internal C structure for HealthAndArmingCheckProblem.
-Used only for C library communication.
-
-### `HealthAndArmingCheckModeCStruct`
-
-Internal C structure for HealthAndArmingCheckMode.
-Used only for C library communication.
-
-### `HealthComponentReportCStruct`
-
-Internal C structure for HealthComponentReport.
-Used only for C library communication.
-
-### `HealthAndArmingCheckReportCStruct`
-
-Internal C structure for HealthAndArmingCheckReport.
-Used only for C library communication.
-
 ### `Event`
 
 Event type
@@ -133,7 +108,7 @@ Subscribe to event updates.
 ### `unsubscribe_events`
 
 ```python
-def unsubscribe_events(handle: ctypes.c_void_p)
+def unsubscribe_events(handle: Handle)
 ```
 
 Unsubscribe from events
@@ -149,7 +124,7 @@ Subscribe to arming check updates.
 ### `unsubscribe_health_and_arming_checks`
 
 ```python
-def unsubscribe_health_and_arming_checks(handle: ctypes.c_void_p)
+def unsubscribe_health_and_arming_checks(handle: Handle)
 ```
 
 Unsubscribe from health_and_arming_checks
@@ -161,11 +136,3 @@ def get_health_and_arming_checks_report()
 ```
 
 Get get_health_and_arming_checks_report (blocking)
-
-### `destroy`
-
-```python
-def destroy()
-```
-
-Destroy the plugin instance

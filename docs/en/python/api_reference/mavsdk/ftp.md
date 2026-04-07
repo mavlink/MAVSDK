@@ -26,16 +26,6 @@ Possible results returned for FTP commands
 
 ## Structs
 
-### `ListDirectoryDataCStruct`
-
-Internal C structure for ListDirectoryData.
-Used only for C library communication.
-
-### `ProgressDataCStruct`
-
-Internal C structure for ProgressData.
-Used only for C library communication.
-
 ### `ListDirectoryData`
 
 The output of a directory list
@@ -177,11 +167,3 @@ def set_target_compid(compid)
 ```
 
 Get set_target_compid (blocking)
-
-### `destroy`
-
-```python
-def destroy()
-```
-
-Destroy the plugin instance

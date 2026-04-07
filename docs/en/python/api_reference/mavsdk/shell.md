@@ -42,15 +42,7 @@ This subscription needs to be made before a command line is sent, otherwise, no 
 ### `unsubscribe_receive`
 
 ```python
-def unsubscribe_receive(handle: ctypes.c_void_p)
+def unsubscribe_receive(handle: Handle)
 ```
 
 Unsubscribe from receive
-
-### `destroy`
-
-```python
-def destroy()
-```
-
-Destroy the plugin instance

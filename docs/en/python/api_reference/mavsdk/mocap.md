@@ -21,61 +21,6 @@ Possible results returned for mocap requests
 
 ## Structs
 
-### `PositionBodyCStruct`
-
-Internal C structure for PositionBody.
-Used only for C library communication.
-
-### `AngleBodyCStruct`
-
-Internal C structure for AngleBody.
-Used only for C library communication.
-
-### `SpeedBodyCStruct`
-
-Internal C structure for SpeedBody.
-Used only for C library communication.
-
-### `SpeedNedCStruct`
-
-Internal C structure for SpeedNed.
-Used only for C library communication.
-
-### `AngularVelocityBodyCStruct`
-
-Internal C structure for AngularVelocityBody.
-Used only for C library communication.
-
-### `CovarianceCStruct`
-
-Internal C structure for Covariance.
-Used only for C library communication.
-
-### `QuaternionCStruct`
-
-Internal C structure for Quaternion.
-Used only for C library communication.
-
-### `VisionPositionEstimateCStruct`
-
-Internal C structure for VisionPositionEstimate.
-Used only for C library communication.
-
-### `VisionSpeedEstimateCStruct`
-
-Internal C structure for VisionSpeedEstimate.
-Used only for C library communication.
-
-### `AttitudePositionMocapCStruct`
-
-Internal C structure for AttitudePositionMocap.
-Used only for C library communication.
-
-### `OdometryCStruct`
-
-Internal C structure for Odometry.
-Used only for C library communication.
-
 ### `PositionBody`
 
 Body position type
@@ -244,11 +189,3 @@ def set_odometry(odometry)
 ```
 
 Get set_odometry (blocking)
-
-### `destroy`
-
-```python
-def destroy()
-```
-
-Destroy the plugin instance

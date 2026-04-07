@@ -21,11 +21,6 @@ Possible results returned for action requests.
 
 ## Structs
 
-### `MavlinkMessageCStruct`
-
-Internal C structure for MavlinkMessage.
-Used only for C library communication.
-
 ### `MavlinkMessage`
 
 A complete MAVLink message with all header information and fields

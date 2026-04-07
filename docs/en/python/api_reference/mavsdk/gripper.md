@@ -65,11 +65,3 @@ def release(instance)
 ```
 
 Get release (blocking)
-
-### `destroy`
-
-```python
-def destroy()
-```
-
-Destroy the plugin instance

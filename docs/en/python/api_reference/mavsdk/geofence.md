@@ -30,21 +30,6 @@ Possible results returned for geofence requests.
 
 ## Structs
 
-### `PointCStruct`
-
-Internal C structure for Point.
-Used only for C library communication.
-
-### `PolygonCStruct`
-
-Internal C structure for Polygon.
-Used only for C library communication.
-
-### `CircleCStruct`
-
-Internal C structure for Circle.
-Used only for C library communication.
-
 ### `Point`
 
 Point type.
@@ -73,30 +58,9 @@ Circular type.
 - `radius`
 - `fence_type`
 
-## `GeofenceDataCStruct`
-
-Internal C structure for GeofenceData.
-Used only for C library communication.
-
 ## `GeofenceData`
 
 Geofence data type.
-
-### `from_c_struct`
-
-```python
-def from_c_struct(cls, c_struct)
-```
-
-Convert from C structure to Python object
-
-### `to_c_struct`
-
-```python
-def to_c_struct()
-```
-
-Convert to C structure for C library calls
 
 ## `Geofence`
 
@@ -154,11 +118,3 @@ def clear_geofence()
 ```
 
 Get clear_geofence (blocking)
-
-### `destroy`
-
-```python
-def destroy()
-```
-
-Destroy the plugin instance

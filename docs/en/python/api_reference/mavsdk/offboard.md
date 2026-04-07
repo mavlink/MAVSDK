@@ -29,51 +29,6 @@ Possible results returned for offboard requests
 
 ## Structs
 
-### `AttitudeCStruct`
-
-Internal C structure for Attitude.
-Used only for C library communication.
-
-### `ActuatorControlGroupCStruct`
-
-Internal C structure for ActuatorControlGroup.
-Used only for C library communication.
-
-### `ActuatorControlCStruct`
-
-Internal C structure for ActuatorControl.
-Used only for C library communication.
-
-### `AttitudeRateCStruct`
-
-Internal C structure for AttitudeRate.
-Used only for C library communication.
-
-### `PositionNedYawCStruct`
-
-Internal C structure for PositionNedYaw.
-Used only for C library communication.
-
-### `PositionGlobalYawCStruct`
-
-Internal C structure for PositionGlobalYaw.
-Used only for C library communication.
-
-### `VelocityBodyYawspeedCStruct`
-
-Internal C structure for VelocityBodyYawspeed.
-Used only for C library communication.
-
-### `VelocityNedYawCStruct`
-
-Internal C structure for VelocityNedYaw.
-Used only for C library communication.
-
-### `AccelerationNedCStruct`
-
-Internal C structure for AccelerationNed.
-Used only for C library communication.
-
 ### `Attitude`
 
 Type for attitude body angles in NED reference frame (roll, pitch, yaw and thrust)
@@ -314,11 +269,3 @@ def set_acceleration_ned(acceleration_ned)
 ```
 
 Get set_acceleration_ned (blocking)
-
-### `destroy`
-
-```python
-def destroy()
-```
-
-Destroy the plugin instance

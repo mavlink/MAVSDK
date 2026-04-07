@@ -22,16 +22,6 @@ Possible results returned for calibration commands
 
 ## Structs
 
-### `ProgressDataCStruct`
-
-Internal C structure for ProgressData.
-Used only for C library communication.
-
-### `EntryCStruct`
-
-Internal C structure for Entry.
-Used only for C library communication.
-
 ### `ProgressData`
 
 Progress data coming when downloading a log file.

@@ -27,21 +27,6 @@ Possible results returned for action requests.
 
 ## Structs
 
-### `MissionItemCStruct`
-
-Internal C structure for MissionItem.
-Used only for C library communication.
-
-### `MissionPlanCStruct`
-
-Internal C structure for MissionPlan.
-Used only for C library communication.
-
-### `MissionProgressCStruct`
-
-Internal C structure for MissionProgress.
-Used only for C library communication.
-
 ### `MissionItem`
 
 Mission item exactly identical to MAVLink MISSION_ITEM_INT.

@@ -34,21 +34,6 @@ Possible results returned for action requests.
 
 ## Structs
 
-### `MissionProgressCStruct`
-
-Internal C structure for MissionProgress.
-Used only for C library communication.
-
-### `MissionItemCStruct`
-
-Internal C structure for MissionItem.
-Used only for C library communication.
-
-### `MissionImportDataCStruct`
-
-Internal C structure for MissionImportData.
-Used only for C library communication.
-
 ### `MissionProgress`
 
 Mission progress type.

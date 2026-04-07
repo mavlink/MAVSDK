@@ -472,11 +472,3 @@ def set_gps_global_origin(latitude_deg, longitude_deg, absolute_altitude_m)
 ```
 
 Get set_gps_global_origin (blocking)
-
-### `destroy`
-
-```python
-def destroy()
-```
-
-Destroy the plugin instance

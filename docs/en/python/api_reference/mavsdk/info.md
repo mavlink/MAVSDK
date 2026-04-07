@@ -17,26 +17,6 @@ Possible results returned for info requests.
 
 ## Structs
 
-### `FlightInfoCStruct`
-
-Internal C structure for FlightInfo.
-Used only for C library communication.
-
-### `IdentificationCStruct`
-
-Internal C structure for Identification.
-Used only for C library communication.
-
-### `ProductCStruct`
-
-Internal C structure for Product.
-Used only for C library communication.
-
-### `VersionCStruct`
-
-Internal C structure for Version.
-Used only for C library communication.
-
 ### `FlightInfo`
 
 System flight information.
@@ -142,15 +122,7 @@ Subscribe to 'flight information' updates.
 ### `unsubscribe_flight_information`
 
 ```python
-def unsubscribe_flight_information(handle: ctypes.c_void_p)
+def unsubscribe_flight_information(handle: Handle)
 ```
 
 Unsubscribe from flight_information
-
-### `destroy`
-
-```python
-def destroy()
-```
-
-Destroy the plugin instance

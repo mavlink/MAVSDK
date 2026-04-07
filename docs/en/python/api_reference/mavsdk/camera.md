@@ -51,86 +51,6 @@ Possible results returned for camera commands
 
 ## Structs
 
-### `OptionCStruct`
-
-Internal C structure for Option.
-Used only for C library communication.
-
-### `SettingCStruct`
-
-Internal C structure for Setting.
-Used only for C library communication.
-
-### `SettingOptionsCStruct`
-
-Internal C structure for SettingOptions.
-Used only for C library communication.
-
-### `VideoStreamSettingsCStruct`
-
-Internal C structure for VideoStreamSettings.
-Used only for C library communication.
-
-### `VideoStreamInfoCStruct`
-
-Internal C structure for VideoStreamInfo.
-Used only for C library communication.
-
-### `ModeUpdateCStruct`
-
-Internal C structure for ModeUpdate.
-Used only for C library communication.
-
-### `VideoStreamUpdateCStruct`
-
-Internal C structure for VideoStreamUpdate.
-Used only for C library communication.
-
-### `StorageCStruct`
-
-Internal C structure for Storage.
-Used only for C library communication.
-
-### `StorageUpdateCStruct`
-
-Internal C structure for StorageUpdate.
-Used only for C library communication.
-
-### `CurrentSettingsUpdateCStruct`
-
-Internal C structure for CurrentSettingsUpdate.
-Used only for C library communication.
-
-### `PossibleSettingOptionsUpdateCStruct`
-
-Internal C structure for PossibleSettingOptionsUpdate.
-Used only for C library communication.
-
-### `PositionCStruct`
-
-Internal C structure for Position.
-Used only for C library communication.
-
-### `QuaternionCStruct`
-
-Internal C structure for Quaternion.
-Used only for C library communication.
-
-### `EulerAngleCStruct`
-
-Internal C structure for EulerAngle.
-Used only for C library communication.
-
-### `CaptureInfoCStruct`
-
-Internal C structure for CaptureInfo.
-Used only for C library communication.
-
-### `InformationCStruct`
-
-Internal C structure for Information.
-Used only for C library communication.
-
 ### `Option`
 
 Type to represent a setting option.
@@ -325,30 +245,9 @@ Type to represent a camera information.
 - `horizontal_resolution_px`
 - `vertical_resolution_px`
 
-## `CameraListCStruct`
-
-Internal C structure for CameraList.
-Used only for C library communication.
-
 ## `CameraList`
 
 Camera list
-
-### `from_c_struct`
-
-```python
-def from_c_struct(cls, c_struct)
-```
-
-Convert from C structure to Python object
-
-### `to_c_struct`
-
-```python
-def to_c_struct()
-```
-
-Convert to C structure for C library calls
 
 ## `Camera`
 
@@ -506,7 +405,7 @@ Based on the camera ID, we can then address a specific camera.
 ### `unsubscribe_camera_list`
 
 ```python
-def unsubscribe_camera_list(handle: ctypes.c_void_p)
+def unsubscribe_camera_list(handle: Handle)
 ```
 
 Unsubscribe from camera_list
@@ -530,7 +429,7 @@ Subscribe to camera mode updates.
 ### `unsubscribe_mode`
 
 ```python
-def unsubscribe_mode(handle: ctypes.c_void_p)
+def unsubscribe_mode(handle: Handle)
 ```
 
 Unsubscribe from mode
@@ -554,7 +453,7 @@ Subscribe to video stream info updates.
 ### `unsubscribe_video_stream_info`
 
 ```python
-def unsubscribe_video_stream_info(handle: ctypes.c_void_p)
+def unsubscribe_video_stream_info(handle: Handle)
 ```
 
 Unsubscribe from video_stream_info
@@ -578,7 +477,7 @@ Subscribe to capture info updates.
 ### `unsubscribe_capture_info`
 
 ```python
-def unsubscribe_capture_info(handle: ctypes.c_void_p)
+def unsubscribe_capture_info(handle: Handle)
 ```
 
 Unsubscribe from capture_info
@@ -594,7 +493,7 @@ Subscribe to camera's storage status updates.
 ### `unsubscribe_storage`
 
 ```python
-def unsubscribe_storage(handle: ctypes.c_void_p)
+def unsubscribe_storage(handle: Handle)
 ```
 
 Unsubscribe from storage
@@ -618,7 +517,7 @@ Get the list of current camera settings.
 ### `unsubscribe_current_settings`
 
 ```python
-def unsubscribe_current_settings(handle: ctypes.c_void_p)
+def unsubscribe_current_settings(handle: Handle)
 ```
 
 Unsubscribe from current_settings
@@ -642,7 +541,7 @@ Get the list of settings that can be changed.
 ### `unsubscribe_possible_setting_options`
 
 ```python
-def unsubscribe_possible_setting_options(handle: ctypes.c_void_p)
+def unsubscribe_possible_setting_options(handle: Handle)
 ```
 
 Unsubscribe from possible_setting_options
@@ -902,11 +801,3 @@ def focus_range(component_id, range)
 ```
 
 Get focus_range (blocking)
-
-### `destroy`
-
-```python
-def destroy()
-```
-
-Destroy the plugin instance

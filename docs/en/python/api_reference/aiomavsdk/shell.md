@@ -42,9 +42,3 @@ Yields
 
  : str
      The next update
-
-### `destroy`
-
-```python
-def destroy()
-```

@@ -63,9 +63,3 @@ Raises
 
 GeofenceError
 If the request fails. The error contains the reason for the failure.
-
-### `destroy`
-
-```python
-def destroy()
-```

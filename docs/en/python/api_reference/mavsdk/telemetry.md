@@ -113,161 +113,6 @@ Possible results returned for telemetry requests.
 
 ## Structs
 
-### `PositionCStruct`
-
-Internal C structure for Position.
-Used only for C library communication.
-
-### `HeadingCStruct`
-
-Internal C structure for Heading.
-Used only for C library communication.
-
-### `QuaternionCStruct`
-
-Internal C structure for Quaternion.
-Used only for C library communication.
-
-### `EulerAngleCStruct`
-
-Internal C structure for EulerAngle.
-Used only for C library communication.
-
-### `AngularVelocityBodyCStruct`
-
-Internal C structure for AngularVelocityBody.
-Used only for C library communication.
-
-### `GpsInfoCStruct`
-
-Internal C structure for GpsInfo.
-Used only for C library communication.
-
-### `RawGpsCStruct`
-
-Internal C structure for RawGps.
-Used only for C library communication.
-
-### `BatteryCStruct`
-
-Internal C structure for Battery.
-Used only for C library communication.
-
-### `HealthCStruct`
-
-Internal C structure for Health.
-Used only for C library communication.
-
-### `RcStatusCStruct`
-
-Internal C structure for RcStatus.
-Used only for C library communication.
-
-### `StatusTextCStruct`
-
-Internal C structure for StatusText.
-Used only for C library communication.
-
-### `ActuatorControlTargetCStruct`
-
-Internal C structure for ActuatorControlTarget.
-Used only for C library communication.
-
-### `ActuatorOutputStatusCStruct`
-
-Internal C structure for ActuatorOutputStatus.
-Used only for C library communication.
-
-### `CovarianceCStruct`
-
-Internal C structure for Covariance.
-Used only for C library communication.
-
-### `VelocityBodyCStruct`
-
-Internal C structure for VelocityBody.
-Used only for C library communication.
-
-### `PositionBodyCStruct`
-
-Internal C structure for PositionBody.
-Used only for C library communication.
-
-### `OdometryCStruct`
-
-Internal C structure for Odometry.
-Used only for C library communication.
-
-### `DistanceSensorCStruct`
-
-Internal C structure for DistanceSensor.
-Used only for C library communication.
-
-### `ScaledPressureCStruct`
-
-Internal C structure for ScaledPressure.
-Used only for C library communication.
-
-### `PositionNedCStruct`
-
-Internal C structure for PositionNed.
-Used only for C library communication.
-
-### `VelocityNedCStruct`
-
-Internal C structure for VelocityNed.
-Used only for C library communication.
-
-### `PositionVelocityNedCStruct`
-
-Internal C structure for PositionVelocityNed.
-Used only for C library communication.
-
-### `GroundTruthCStruct`
-
-Internal C structure for GroundTruth.
-Used only for C library communication.
-
-### `FixedwingMetricsCStruct`
-
-Internal C structure for FixedwingMetrics.
-Used only for C library communication.
-
-### `AccelerationFrdCStruct`
-
-Internal C structure for AccelerationFrd.
-Used only for C library communication.
-
-### `AngularVelocityFrdCStruct`
-
-Internal C structure for AngularVelocityFrd.
-Used only for C library communication.
-
-### `MagneticFieldFrdCStruct`
-
-Internal C structure for MagneticFieldFrd.
-Used only for C library communication.
-
-### `ImuCStruct`
-
-Internal C structure for Imu.
-Used only for C library communication.
-
-### `GpsGlobalOriginCStruct`
-
-Internal C structure for GpsGlobalOrigin.
-Used only for C library communication.
-
-### `AltitudeCStruct`
-
-Internal C structure for Altitude.
-Used only for C library communication.
-
-### `WindCStruct`
-
-Internal C structure for Wind.
-Used only for C library communication.
-
 ### `Position`
 
 Position type in global coordinates.
@@ -653,7 +498,7 @@ Subscribe to 'position' updates.
 ### `unsubscribe_position`
 
 ```python
-def unsubscribe_position(handle: ctypes.c_void_p)
+def unsubscribe_position(handle: Handle)
 ```
 
 Unsubscribe from position
@@ -677,7 +522,7 @@ Subscribe to 'home position' updates.
 ### `unsubscribe_home`
 
 ```python
-def unsubscribe_home(handle: ctypes.c_void_p)
+def unsubscribe_home(handle: Handle)
 ```
 
 Unsubscribe from home
@@ -701,7 +546,7 @@ Subscribe to in-air updates.
 ### `unsubscribe_in_air`
 
 ```python
-def unsubscribe_in_air(handle: ctypes.c_void_p)
+def unsubscribe_in_air(handle: Handle)
 ```
 
 Unsubscribe from in_air
@@ -725,7 +570,7 @@ Subscribe to landed state updates
 ### `unsubscribe_landed_state`
 
 ```python
-def unsubscribe_landed_state(handle: ctypes.c_void_p)
+def unsubscribe_landed_state(handle: Handle)
 ```
 
 Unsubscribe from landed_state
@@ -749,7 +594,7 @@ Subscribe to armed updates.
 ### `unsubscribe_armed`
 
 ```python
-def unsubscribe_armed(handle: ctypes.c_void_p)
+def unsubscribe_armed(handle: Handle)
 ```
 
 Unsubscribe from armed
@@ -773,7 +618,7 @@ subscribe to vtol state Updates
 ### `unsubscribe_vtol_state`
 
 ```python
-def unsubscribe_vtol_state(handle: ctypes.c_void_p)
+def unsubscribe_vtol_state(handle: Handle)
 ```
 
 Unsubscribe from vtol_state
@@ -797,7 +642,7 @@ Subscribe to 'attitude' updates (quaternion).
 ### `unsubscribe_attitude_quaternion`
 
 ```python
-def unsubscribe_attitude_quaternion(handle: ctypes.c_void_p)
+def unsubscribe_attitude_quaternion(handle: Handle)
 ```
 
 Unsubscribe from attitude_quaternion
@@ -821,7 +666,7 @@ Subscribe to 'attitude' updates (Euler).
 ### `unsubscribe_attitude_euler`
 
 ```python
-def unsubscribe_attitude_euler(handle: ctypes.c_void_p)
+def unsubscribe_attitude_euler(handle: Handle)
 ```
 
 Unsubscribe from attitude_euler
@@ -845,7 +690,7 @@ Subscribe to 'attitude' updates (angular velocity)
 ### `unsubscribe_attitude_angular_velocity_body`
 
 ```python
-def unsubscribe_attitude_angular_velocity_body(handle: ctypes.c_void_p)
+def unsubscribe_attitude_angular_velocity_body(handle: Handle)
 ```
 
 Unsubscribe from attitude_angular_velocity_body
@@ -869,7 +714,7 @@ Subscribe to 'ground speed' updates (NED).
 ### `unsubscribe_velocity_ned`
 
 ```python
-def unsubscribe_velocity_ned(handle: ctypes.c_void_p)
+def unsubscribe_velocity_ned(handle: Handle)
 ```
 
 Unsubscribe from velocity_ned
@@ -893,7 +738,7 @@ Subscribe to 'GPS info' updates.
 ### `unsubscribe_gps_info`
 
 ```python
-def unsubscribe_gps_info(handle: ctypes.c_void_p)
+def unsubscribe_gps_info(handle: Handle)
 ```
 
 Unsubscribe from gps_info
@@ -917,7 +762,7 @@ Subscribe to 'Raw GPS' updates.
 ### `unsubscribe_raw_gps`
 
 ```python
-def unsubscribe_raw_gps(handle: ctypes.c_void_p)
+def unsubscribe_raw_gps(handle: Handle)
 ```
 
 Unsubscribe from raw_gps
@@ -941,7 +786,7 @@ Subscribe to 'battery' updates.
 ### `unsubscribe_battery`
 
 ```python
-def unsubscribe_battery(handle: ctypes.c_void_p)
+def unsubscribe_battery(handle: Handle)
 ```
 
 Unsubscribe from battery
@@ -965,7 +810,7 @@ Subscribe to 'flight mode' updates.
 ### `unsubscribe_flight_mode`
 
 ```python
-def unsubscribe_flight_mode(handle: ctypes.c_void_p)
+def unsubscribe_flight_mode(handle: Handle)
 ```
 
 Unsubscribe from flight_mode
@@ -989,7 +834,7 @@ Subscribe to 'health' updates.
 ### `unsubscribe_health`
 
 ```python
-def unsubscribe_health(handle: ctypes.c_void_p)
+def unsubscribe_health(handle: Handle)
 ```
 
 Unsubscribe from health
@@ -1013,7 +858,7 @@ Subscribe to 'RC status' updates.
 ### `unsubscribe_rc_status`
 
 ```python
-def unsubscribe_rc_status(handle: ctypes.c_void_p)
+def unsubscribe_rc_status(handle: Handle)
 ```
 
 Unsubscribe from rc_status
@@ -1037,7 +882,7 @@ Subscribe to 'status text' updates.
 ### `unsubscribe_status_text`
 
 ```python
-def unsubscribe_status_text(handle: ctypes.c_void_p)
+def unsubscribe_status_text(handle: Handle)
 ```
 
 Unsubscribe from status_text
@@ -1061,7 +906,7 @@ Subscribe to 'actuator control target' updates.
 ### `unsubscribe_actuator_control_target`
 
 ```python
-def unsubscribe_actuator_control_target(handle: ctypes.c_void_p)
+def unsubscribe_actuator_control_target(handle: Handle)
 ```
 
 Unsubscribe from actuator_control_target
@@ -1085,7 +930,7 @@ Subscribe to 'actuator output status' updates.
 ### `unsubscribe_actuator_output_status`
 
 ```python
-def unsubscribe_actuator_output_status(handle: ctypes.c_void_p)
+def unsubscribe_actuator_output_status(handle: Handle)
 ```
 
 Unsubscribe from actuator_output_status
@@ -1109,7 +954,7 @@ Subscribe to 'odometry' updates.
 ### `unsubscribe_odometry`
 
 ```python
-def unsubscribe_odometry(handle: ctypes.c_void_p)
+def unsubscribe_odometry(handle: Handle)
 ```
 
 Unsubscribe from odometry
@@ -1133,7 +978,7 @@ Subscribe to 'position velocity' updates.
 ### `unsubscribe_position_velocity_ned`
 
 ```python
-def unsubscribe_position_velocity_ned(handle: ctypes.c_void_p)
+def unsubscribe_position_velocity_ned(handle: Handle)
 ```
 
 Unsubscribe from position_velocity_ned
@@ -1157,7 +1002,7 @@ Subscribe to 'ground truth' updates.
 ### `unsubscribe_ground_truth`
 
 ```python
-def unsubscribe_ground_truth(handle: ctypes.c_void_p)
+def unsubscribe_ground_truth(handle: Handle)
 ```
 
 Unsubscribe from ground_truth
@@ -1181,7 +1026,7 @@ Subscribe to 'fixedwing metrics' updates.
 ### `unsubscribe_fixedwing_metrics`
 
 ```python
-def unsubscribe_fixedwing_metrics(handle: ctypes.c_void_p)
+def unsubscribe_fixedwing_metrics(handle: Handle)
 ```
 
 Unsubscribe from fixedwing_metrics
@@ -1205,7 +1050,7 @@ Subscribe to 'IMU' updates (in SI units in NED body frame).
 ### `unsubscribe_imu`
 
 ```python
-def unsubscribe_imu(handle: ctypes.c_void_p)
+def unsubscribe_imu(handle: Handle)
 ```
 
 Unsubscribe from imu
@@ -1229,7 +1074,7 @@ Subscribe to 'Scaled IMU' updates.
 ### `unsubscribe_scaled_imu`
 
 ```python
-def unsubscribe_scaled_imu(handle: ctypes.c_void_p)
+def unsubscribe_scaled_imu(handle: Handle)
 ```
 
 Unsubscribe from scaled_imu
@@ -1253,7 +1098,7 @@ Subscribe to 'Raw IMU' updates (note that units are are incorrect and "raw" as p
 ### `unsubscribe_raw_imu`
 
 ```python
-def unsubscribe_raw_imu(handle: ctypes.c_void_p)
+def unsubscribe_raw_imu(handle: Handle)
 ```
 
 Unsubscribe from raw_imu
@@ -1277,7 +1122,7 @@ Subscribe to 'HealthAllOk' updates.
 ### `unsubscribe_health_all_ok`
 
 ```python
-def unsubscribe_health_all_ok(handle: ctypes.c_void_p)
+def unsubscribe_health_all_ok(handle: Handle)
 ```
 
 Unsubscribe from health_all_ok
@@ -1301,7 +1146,7 @@ Subscribe to 'unix epoch time' updates.
 ### `unsubscribe_unix_epoch_time`
 
 ```python
-def unsubscribe_unix_epoch_time(handle: ctypes.c_void_p)
+def unsubscribe_unix_epoch_time(handle: Handle)
 ```
 
 Unsubscribe from unix_epoch_time
@@ -1325,7 +1170,7 @@ Subscribe to 'Distance Sensor' updates.
 ### `unsubscribe_distance_sensor`
 
 ```python
-def unsubscribe_distance_sensor(handle: ctypes.c_void_p)
+def unsubscribe_distance_sensor(handle: Handle)
 ```
 
 Unsubscribe from distance_sensor
@@ -1349,7 +1194,7 @@ Subscribe to 'Scaled Pressure' updates.
 ### `unsubscribe_scaled_pressure`
 
 ```python
-def unsubscribe_scaled_pressure(handle: ctypes.c_void_p)
+def unsubscribe_scaled_pressure(handle: Handle)
 ```
 
 Unsubscribe from scaled_pressure
@@ -1373,7 +1218,7 @@ Subscribe to 'Heading' updates.
 ### `unsubscribe_heading`
 
 ```python
-def unsubscribe_heading(handle: ctypes.c_void_p)
+def unsubscribe_heading(handle: Handle)
 ```
 
 Unsubscribe from heading
@@ -1397,7 +1242,7 @@ Subscribe to 'Altitude' updates.
 ### `unsubscribe_altitude`
 
 ```python
-def unsubscribe_altitude(handle: ctypes.c_void_p)
+def unsubscribe_altitude(handle: Handle)
 ```
 
 Unsubscribe from altitude
@@ -1421,7 +1266,7 @@ Subscribe to 'Wind Estimated' updates.
 ### `unsubscribe_wind`
 
 ```python
-def unsubscribe_wind(handle: ctypes.c_void_p)
+def unsubscribe_wind(handle: Handle)
 ```
 
 Unsubscribe from wind
@@ -1850,11 +1695,3 @@ def get_gps_global_origin()
 ```
 
 Get get_gps_global_origin (blocking)
-
-### `destroy`
-
-```python
-def destroy()
-```
-
-Destroy the plugin instance
