@@ -16,6 +16,7 @@
 #include "plugin_base.h"
 
 #include "handle.h"
+#include "mavsdk_export.h"
 
 namespace mavsdk {
 
@@ -27,7 +28,7 @@ class MocapImpl;
  * order to allow navigation without global positioning sources available
  * (e.g. indoors, or when flying under a bridge. etc.).
  */
-class Mocap : public PluginBase {
+class MAVSDK_PUBLIC Mocap : public PluginBase {
 public:
     /**
      * @brief Constructor. Creates the plugin for a specific System.
@@ -74,14 +75,16 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(const Mocap::PositionBody& lhs, const Mocap::PositionBody& rhs);
+    friend MAVSDK_PUBLIC bool
+    operator==(const Mocap::PositionBody& lhs, const Mocap::PositionBody& rhs);
 
     /**
      * @brief Stream operator to print information about a `Mocap::PositionBody`.
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, Mocap::PositionBody const& position_body);
+    friend MAVSDK_PUBLIC std::ostream&
+    operator<<(std::ostream& str, Mocap::PositionBody const& position_body);
 
     /**
      * @brief Body angle type
@@ -97,14 +100,15 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(const Mocap::AngleBody& lhs, const Mocap::AngleBody& rhs);
+    friend MAVSDK_PUBLIC bool operator==(const Mocap::AngleBody& lhs, const Mocap::AngleBody& rhs);
 
     /**
      * @brief Stream operator to print information about a `Mocap::AngleBody`.
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, Mocap::AngleBody const& angle_body);
+    friend MAVSDK_PUBLIC std::ostream&
+    operator<<(std::ostream& str, Mocap::AngleBody const& angle_body);
 
     /**
      * @brief Speed type, represented in the Body (X Y Z) frame and in metres/second.
@@ -120,14 +124,15 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(const Mocap::SpeedBody& lhs, const Mocap::SpeedBody& rhs);
+    friend MAVSDK_PUBLIC bool operator==(const Mocap::SpeedBody& lhs, const Mocap::SpeedBody& rhs);
 
     /**
      * @brief Stream operator to print information about a `Mocap::SpeedBody`.
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, Mocap::SpeedBody const& speed_body);
+    friend MAVSDK_PUBLIC std::ostream&
+    operator<<(std::ostream& str, Mocap::SpeedBody const& speed_body);
 
     /**
      * @brief Speed type, represented in NED (North East Down) coordinates.
@@ -143,14 +148,15 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(const Mocap::SpeedNed& lhs, const Mocap::SpeedNed& rhs);
+    friend MAVSDK_PUBLIC bool operator==(const Mocap::SpeedNed& lhs, const Mocap::SpeedNed& rhs);
 
     /**
      * @brief Stream operator to print information about a `Mocap::SpeedNed`.
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, Mocap::SpeedNed const& speed_ned);
+    friend MAVSDK_PUBLIC std::ostream&
+    operator<<(std::ostream& str, Mocap::SpeedNed const& speed_ned);
 
     /**
      * @brief Angular velocity type
@@ -166,7 +172,7 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool
+    friend MAVSDK_PUBLIC bool
     operator==(const Mocap::AngularVelocityBody& lhs, const Mocap::AngularVelocityBody& rhs);
 
     /**
@@ -174,7 +180,7 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
+    friend MAVSDK_PUBLIC std::ostream&
     operator<<(std::ostream& str, Mocap::AngularVelocityBody const& angular_velocity_body);
 
     /**
@@ -192,14 +198,16 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(const Mocap::Covariance& lhs, const Mocap::Covariance& rhs);
+    friend MAVSDK_PUBLIC bool
+    operator==(const Mocap::Covariance& lhs, const Mocap::Covariance& rhs);
 
     /**
      * @brief Stream operator to print information about a `Mocap::Covariance`.
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, Mocap::Covariance const& covariance);
+    friend MAVSDK_PUBLIC std::ostream&
+    operator<<(std::ostream& str, Mocap::Covariance const& covariance);
 
     /**
      * @brief Quaternion type.
@@ -223,14 +231,16 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(const Mocap::Quaternion& lhs, const Mocap::Quaternion& rhs);
+    friend MAVSDK_PUBLIC bool
+    operator==(const Mocap::Quaternion& lhs, const Mocap::Quaternion& rhs);
 
     /**
      * @brief Stream operator to print information about a `Mocap::Quaternion`.
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, Mocap::Quaternion const& quaternion);
+    friend MAVSDK_PUBLIC std::ostream&
+    operator<<(std::ostream& str, Mocap::Quaternion const& quaternion);
 
     /**
      * @brief Global position/attitude estimate from a vision source.
@@ -250,7 +260,7 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool
+    friend MAVSDK_PUBLIC bool
     operator==(const Mocap::VisionPositionEstimate& lhs, const Mocap::VisionPositionEstimate& rhs);
 
     /**
@@ -258,7 +268,7 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
+    friend MAVSDK_PUBLIC std::ostream&
     operator<<(std::ostream& str, Mocap::VisionPositionEstimate const& vision_position_estimate);
 
     /**
@@ -277,7 +287,7 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool
+    friend MAVSDK_PUBLIC bool
     operator==(const Mocap::VisionSpeedEstimate& lhs, const Mocap::VisionSpeedEstimate& rhs);
 
     /**
@@ -285,7 +295,7 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
+    friend MAVSDK_PUBLIC std::ostream&
     operator<<(std::ostream& str, Mocap::VisionSpeedEstimate const& vision_speed_estimate);
 
     /**
@@ -305,7 +315,7 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool
+    friend MAVSDK_PUBLIC bool
     operator==(const Mocap::AttitudePositionMocap& lhs, const Mocap::AttitudePositionMocap& rhs);
 
     /**
@@ -313,7 +323,7 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
+    friend MAVSDK_PUBLIC std::ostream&
     operator<<(std::ostream& str, Mocap::AttitudePositionMocap const& attitude_position_mocap);
 
     /**
@@ -334,7 +344,7 @@ public:
          *
          * @return A reference to the stream.
          */
-        friend std::ostream&
+        friend MAVSDK_PUBLIC std::ostream&
         operator<<(std::ostream& str, Mocap::Odometry::MavFrame const& mav_frame);
 
         /**
@@ -357,7 +367,7 @@ public:
          *
          * @return A reference to the stream.
          */
-        friend std::ostream&
+        friend MAVSDK_PUBLIC std::ostream&
         operator<<(std::ostream& str, Mocap::Odometry::MavEstimatorType const& mav_estimator_type);
 
         uint64_t time_usec{}; /**< @brief Timestamp (0 to use Backend timestamp). */
@@ -382,14 +392,15 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(const Mocap::Odometry& lhs, const Mocap::Odometry& rhs);
+    friend MAVSDK_PUBLIC bool operator==(const Mocap::Odometry& lhs, const Mocap::Odometry& rhs);
 
     /**
      * @brief Stream operator to print information about a `Mocap::Odometry`.
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, Mocap::Odometry const& odometry);
+    friend MAVSDK_PUBLIC std::ostream&
+    operator<<(std::ostream& str, Mocap::Odometry const& odometry);
 
     /**
      * @brief Possible results returned for mocap requests
@@ -408,7 +419,7 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, Mocap::Result const& result);
+    friend MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Mocap::Result const& result);
 
     /**
      * @brief Callback type for asynchronous Mocap calls.

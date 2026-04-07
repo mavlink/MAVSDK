@@ -7,12 +7,13 @@
 #include <utility>
 #include <vector>
 #include "handle.h"
+#include "mavsdk_export.h"
 
 namespace mavsdk {
 
 template<typename... Args> class CallbackListImpl;
 
-template<typename... Args> class CallbackList {
+template<typename... Args> class MAVSDK_PUBLIC CallbackList {
 public:
     CallbackList();
     ~CallbackList();

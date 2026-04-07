@@ -103,12 +103,13 @@ Ftp::Result Ftp::set_target_compid(uint32_t compid) const
     return _impl->set_target_compid(compid);
 }
 
-bool operator==(const Ftp::ListDirectoryData& lhs, const Ftp::ListDirectoryData& rhs)
+MAVSDK_PUBLIC bool operator==(const Ftp::ListDirectoryData& lhs, const Ftp::ListDirectoryData& rhs)
 {
     return (rhs.dirs == lhs.dirs) && (rhs.files == lhs.files);
 }
 
-std::ostream& operator<<(std::ostream& str, Ftp::ListDirectoryData const& list_directory_data)
+MAVSDK_PUBLIC std::ostream&
+operator<<(std::ostream& str, Ftp::ListDirectoryData const& list_directory_data)
 {
     str << std::setprecision(15);
     str << "list_directory_data:" << '\n' << "{\n";
@@ -126,12 +127,12 @@ std::ostream& operator<<(std::ostream& str, Ftp::ListDirectoryData const& list_d
     return str;
 }
 
-bool operator==(const Ftp::ProgressData& lhs, const Ftp::ProgressData& rhs)
+MAVSDK_PUBLIC bool operator==(const Ftp::ProgressData& lhs, const Ftp::ProgressData& rhs)
 {
     return (rhs.bytes_transferred == lhs.bytes_transferred) && (rhs.total_bytes == lhs.total_bytes);
 }
 
-std::ostream& operator<<(std::ostream& str, Ftp::ProgressData const& progress_data)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Ftp::ProgressData const& progress_data)
 {
     str << std::setprecision(15);
     str << "progress_data:" << '\n' << "{\n";
@@ -141,7 +142,7 @@ std::ostream& operator<<(std::ostream& str, Ftp::ProgressData const& progress_da
     return str;
 }
 
-std::ostream& operator<<(std::ostream& str, Ftp::Result const& result)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Ftp::Result const& result)
 {
     switch (result) {
         case Ftp::Result::Unknown:

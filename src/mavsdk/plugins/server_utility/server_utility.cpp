@@ -27,7 +27,7 @@ ServerUtility::Result ServerUtility::send_status_text(StatusTextType type, std::
     return _impl->send_status_text(type, text);
 }
 
-std::ostream& operator<<(std::ostream& str, ServerUtility::Result const& result)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, ServerUtility::Result const& result)
 {
     switch (result) {
         case ServerUtility::Result::Unknown:
@@ -45,7 +45,8 @@ std::ostream& operator<<(std::ostream& str, ServerUtility::Result const& result)
     }
 }
 
-std::ostream& operator<<(std::ostream& str, ServerUtility::StatusTextType const& status_text_type)
+MAVSDK_PUBLIC std::ostream&
+operator<<(std::ostream& str, ServerUtility::StatusTextType const& status_text_type)
 {
     switch (status_text_type) {
         case ServerUtility::StatusTextType::Debug:

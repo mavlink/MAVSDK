@@ -16,6 +16,7 @@
 #include "plugin_base.h"
 
 #include "handle.h"
+#include "mavsdk_export.h"
 
 namespace mavsdk {
 
@@ -25,7 +26,7 @@ class LogStreamingImpl;
 /**
  * @brief Provide log streaming data.
  */
-class LogStreaming : public PluginBase {
+class MAVSDK_PUBLIC LogStreaming : public PluginBase {
 public:
     /**
      * @brief Constructor. Creates the plugin for a specific System.
@@ -70,7 +71,7 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool
+    friend MAVSDK_PUBLIC bool
     operator==(const LogStreaming::LogStreamingRaw& lhs, const LogStreaming::LogStreamingRaw& rhs);
 
     /**
@@ -78,7 +79,7 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
+    friend MAVSDK_PUBLIC std::ostream&
     operator<<(std::ostream& str, LogStreaming::LogStreamingRaw const& log_streaming_raw);
 
     /**
@@ -100,7 +101,8 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, LogStreaming::Result const& result);
+    friend MAVSDK_PUBLIC std::ostream&
+    operator<<(std::ostream& str, LogStreaming::Result const& result);
 
     /**
      * @brief Callback type for asynchronous LogStreaming calls.

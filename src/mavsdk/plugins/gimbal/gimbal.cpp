@@ -163,7 +163,7 @@ std::pair<Gimbal::Result, Gimbal::Attitude> Gimbal::get_attitude(int32_t gimbal_
     return _impl->get_attitude(gimbal_id);
 }
 
-bool operator==(const Gimbal::Quaternion& lhs, const Gimbal::Quaternion& rhs)
+MAVSDK_PUBLIC bool operator==(const Gimbal::Quaternion& lhs, const Gimbal::Quaternion& rhs)
 {
     return ((std::isnan(rhs.w) && std::isnan(lhs.w)) || rhs.w == lhs.w) &&
            ((std::isnan(rhs.x) && std::isnan(lhs.x)) || rhs.x == lhs.x) &&
@@ -171,7 +171,7 @@ bool operator==(const Gimbal::Quaternion& lhs, const Gimbal::Quaternion& rhs)
            ((std::isnan(rhs.z) && std::isnan(lhs.z)) || rhs.z == lhs.z);
 }
 
-std::ostream& operator<<(std::ostream& str, Gimbal::Quaternion const& quaternion)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Gimbal::Quaternion const& quaternion)
 {
     str << std::setprecision(15);
     str << "quaternion:" << '\n' << "{\n";
@@ -183,7 +183,7 @@ std::ostream& operator<<(std::ostream& str, Gimbal::Quaternion const& quaternion
     return str;
 }
 
-bool operator==(const Gimbal::EulerAngle& lhs, const Gimbal::EulerAngle& rhs)
+MAVSDK_PUBLIC bool operator==(const Gimbal::EulerAngle& lhs, const Gimbal::EulerAngle& rhs)
 {
     return ((std::isnan(rhs.roll_deg) && std::isnan(lhs.roll_deg)) ||
             rhs.roll_deg == lhs.roll_deg) &&
@@ -192,7 +192,7 @@ bool operator==(const Gimbal::EulerAngle& lhs, const Gimbal::EulerAngle& rhs)
            ((std::isnan(rhs.yaw_deg) && std::isnan(lhs.yaw_deg)) || rhs.yaw_deg == lhs.yaw_deg);
 }
 
-std::ostream& operator<<(std::ostream& str, Gimbal::EulerAngle const& euler_angle)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Gimbal::EulerAngle const& euler_angle)
 {
     str << std::setprecision(15);
     str << "euler_angle:" << '\n' << "{\n";
@@ -203,7 +203,8 @@ std::ostream& operator<<(std::ostream& str, Gimbal::EulerAngle const& euler_angl
     return str;
 }
 
-bool operator==(const Gimbal::AngularVelocityBody& lhs, const Gimbal::AngularVelocityBody& rhs)
+MAVSDK_PUBLIC bool
+operator==(const Gimbal::AngularVelocityBody& lhs, const Gimbal::AngularVelocityBody& rhs)
 {
     return ((std::isnan(rhs.roll_rad_s) && std::isnan(lhs.roll_rad_s)) ||
             rhs.roll_rad_s == lhs.roll_rad_s) &&
@@ -213,7 +214,7 @@ bool operator==(const Gimbal::AngularVelocityBody& lhs, const Gimbal::AngularVel
             rhs.yaw_rad_s == lhs.yaw_rad_s);
 }
 
-std::ostream&
+MAVSDK_PUBLIC std::ostream&
 operator<<(std::ostream& str, Gimbal::AngularVelocityBody const& angular_velocity_body)
 {
     str << std::setprecision(15);
@@ -225,7 +226,7 @@ operator<<(std::ostream& str, Gimbal::AngularVelocityBody const& angular_velocit
     return str;
 }
 
-bool operator==(const Gimbal::Attitude& lhs, const Gimbal::Attitude& rhs)
+MAVSDK_PUBLIC bool operator==(const Gimbal::Attitude& lhs, const Gimbal::Attitude& rhs)
 {
     return (rhs.gimbal_id == lhs.gimbal_id) &&
            (rhs.euler_angle_forward == lhs.euler_angle_forward) &&
@@ -235,7 +236,7 @@ bool operator==(const Gimbal::Attitude& lhs, const Gimbal::Attitude& rhs)
            (rhs.angular_velocity == lhs.angular_velocity) && (rhs.timestamp_us == lhs.timestamp_us);
 }
 
-std::ostream& operator<<(std::ostream& str, Gimbal::Attitude const& attitude)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Gimbal::Attitude const& attitude)
 {
     str << std::setprecision(15);
     str << "attitude:" << '\n' << "{\n";
@@ -250,7 +251,7 @@ std::ostream& operator<<(std::ostream& str, Gimbal::Attitude const& attitude)
     return str;
 }
 
-bool operator==(const Gimbal::GimbalItem& lhs, const Gimbal::GimbalItem& rhs)
+MAVSDK_PUBLIC bool operator==(const Gimbal::GimbalItem& lhs, const Gimbal::GimbalItem& rhs)
 {
     return (rhs.gimbal_id == lhs.gimbal_id) && (rhs.vendor_name == lhs.vendor_name) &&
            (rhs.model_name == lhs.model_name) && (rhs.custom_name == lhs.custom_name) &&
@@ -258,7 +259,7 @@ bool operator==(const Gimbal::GimbalItem& lhs, const Gimbal::GimbalItem& rhs)
            (rhs.gimbal_device_id == lhs.gimbal_device_id);
 }
 
-std::ostream& operator<<(std::ostream& str, Gimbal::GimbalItem const& gimbal_item)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Gimbal::GimbalItem const& gimbal_item)
 {
     str << std::setprecision(15);
     str << "gimbal_item:" << '\n' << "{\n";
@@ -272,12 +273,12 @@ std::ostream& operator<<(std::ostream& str, Gimbal::GimbalItem const& gimbal_ite
     return str;
 }
 
-bool operator==(const Gimbal::GimbalList& lhs, const Gimbal::GimbalList& rhs)
+MAVSDK_PUBLIC bool operator==(const Gimbal::GimbalList& lhs, const Gimbal::GimbalList& rhs)
 {
     return (rhs.gimbals == lhs.gimbals);
 }
 
-std::ostream& operator<<(std::ostream& str, Gimbal::GimbalList const& gimbal_list)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Gimbal::GimbalList const& gimbal_list)
 {
     str << std::setprecision(15);
     str << "gimbal_list:" << '\n' << "{\n";
@@ -290,7 +291,7 @@ std::ostream& operator<<(std::ostream& str, Gimbal::GimbalList const& gimbal_lis
     return str;
 }
 
-bool operator==(const Gimbal::ControlStatus& lhs, const Gimbal::ControlStatus& rhs)
+MAVSDK_PUBLIC bool operator==(const Gimbal::ControlStatus& lhs, const Gimbal::ControlStatus& rhs)
 {
     return (rhs.gimbal_id == lhs.gimbal_id) && (rhs.control_mode == lhs.control_mode) &&
            (rhs.sysid_primary_control == lhs.sysid_primary_control) &&
@@ -299,7 +300,8 @@ bool operator==(const Gimbal::ControlStatus& lhs, const Gimbal::ControlStatus& r
            (rhs.compid_secondary_control == lhs.compid_secondary_control);
 }
 
-std::ostream& operator<<(std::ostream& str, Gimbal::ControlStatus const& control_status)
+MAVSDK_PUBLIC std::ostream&
+operator<<(std::ostream& str, Gimbal::ControlStatus const& control_status)
 {
     str << std::setprecision(15);
     str << "control_status:" << '\n' << "{\n";
@@ -313,7 +315,7 @@ std::ostream& operator<<(std::ostream& str, Gimbal::ControlStatus const& control
     return str;
 }
 
-std::ostream& operator<<(std::ostream& str, Gimbal::Result const& result)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Gimbal::Result const& result)
 {
     switch (result) {
         case Gimbal::Result::Unknown:
@@ -335,7 +337,7 @@ std::ostream& operator<<(std::ostream& str, Gimbal::Result const& result)
     }
 }
 
-std::ostream& operator<<(std::ostream& str, Gimbal::GimbalMode const& gimbal_mode)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Gimbal::GimbalMode const& gimbal_mode)
 {
     switch (gimbal_mode) {
         case Gimbal::GimbalMode::YawFollow:
@@ -347,7 +349,7 @@ std::ostream& operator<<(std::ostream& str, Gimbal::GimbalMode const& gimbal_mod
     }
 }
 
-std::ostream& operator<<(std::ostream& str, Gimbal::ControlMode const& control_mode)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Gimbal::ControlMode const& control_mode)
 {
     switch (control_mode) {
         case Gimbal::ControlMode::None:
@@ -361,7 +363,7 @@ std::ostream& operator<<(std::ostream& str, Gimbal::ControlMode const& control_m
     }
 }
 
-std::ostream& operator<<(std::ostream& str, Gimbal::SendMode const& send_mode)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Gimbal::SendMode const& send_mode)
 {
     switch (send_mode) {
         case Gimbal::SendMode::Once:

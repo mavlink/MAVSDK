@@ -16,6 +16,7 @@
 #include "server_plugin_base.h"
 
 #include "handle.h"
+#include "mavsdk_export.h"
 
 namespace mavsdk {
 
@@ -25,7 +26,7 @@ class CameraServerImpl;
 /**
  * @brief Provides handling of camera interface
  */
-class CameraServer : public ServerPluginBase {
+class MAVSDK_PUBLIC CameraServer : public ServerPluginBase {
 public:
     /**
      * @brief Constructor. Creates the plugin for a ServerComponent instance.
@@ -60,7 +61,7 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
+    friend MAVSDK_PUBLIC std::ostream&
     operator<<(std::ostream& str, CameraServer::CameraFeedback const& camera_feedback);
 
     /**
@@ -77,7 +78,8 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, CameraServer::Mode const& mode);
+    friend MAVSDK_PUBLIC std::ostream&
+    operator<<(std::ostream& str, CameraServer::Mode const& mode);
 
     /**
      * @brief Type to represent a camera information.
@@ -108,7 +110,7 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool
+    friend MAVSDK_PUBLIC bool
     operator==(const CameraServer::Information& lhs, const CameraServer::Information& rhs);
 
     /**
@@ -116,7 +118,7 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
+    friend MAVSDK_PUBLIC std::ostream&
     operator<<(std::ostream& str, CameraServer::Information const& information);
 
     /**
@@ -132,7 +134,7 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool
+    friend MAVSDK_PUBLIC bool
     operator==(const CameraServer::VideoStreaming& lhs, const CameraServer::VideoStreaming& rhs);
 
     /**
@@ -140,7 +142,7 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
+    friend MAVSDK_PUBLIC std::ostream&
     operator<<(std::ostream& str, CameraServer::VideoStreaming const& video_streaming);
 
     /**
@@ -158,14 +160,16 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(const CameraServer::Position& lhs, const CameraServer::Position& rhs);
+    friend MAVSDK_PUBLIC bool
+    operator==(const CameraServer::Position& lhs, const CameraServer::Position& rhs);
 
     /**
      * @brief Stream operator to print information about a `CameraServer::Position`.
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, CameraServer::Position const& position);
+    friend MAVSDK_PUBLIC std::ostream&
+    operator<<(std::ostream& str, CameraServer::Position const& position);
 
     /**
      * @brief Quaternion type.
@@ -189,7 +193,7 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool
+    friend MAVSDK_PUBLIC bool
     operator==(const CameraServer::Quaternion& lhs, const CameraServer::Quaternion& rhs);
 
     /**
@@ -197,7 +201,8 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, CameraServer::Quaternion const& quaternion);
+    friend MAVSDK_PUBLIC std::ostream&
+    operator<<(std::ostream& str, CameraServer::Quaternion const& quaternion);
 
     /**
      * @brief Information about a picture just captured.
@@ -217,7 +222,7 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool
+    friend MAVSDK_PUBLIC bool
     operator==(const CameraServer::CaptureInfo& lhs, const CameraServer::CaptureInfo& rhs);
 
     /**
@@ -225,7 +230,7 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
+    friend MAVSDK_PUBLIC std::ostream&
     operator<<(std::ostream& str, CameraServer::CaptureInfo const& capture_info);
 
     /**
@@ -248,7 +253,8 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, CameraServer::Result const& result);
+    friend MAVSDK_PUBLIC std::ostream&
+    operator<<(std::ostream& str, CameraServer::Result const& result);
 
     /**
      * @brief Information about the camera storage.
@@ -270,7 +276,7 @@ public:
          *
          * @return A reference to the stream.
          */
-        friend std::ostream& operator<<(
+        friend MAVSDK_PUBLIC std::ostream& operator<<(
             std::ostream& str,
             CameraServer::StorageInformation::StorageStatus const& storage_status);
 
@@ -291,7 +297,7 @@ public:
          *
          * @return A reference to the stream.
          */
-        friend std::ostream& operator<<(
+        friend MAVSDK_PUBLIC std::ostream& operator<<(
             std::ostream& str, CameraServer::StorageInformation::StorageType const& storage_type);
 
         float used_storage_mib{}; /**< @brief Used storage (in MiB) */
@@ -309,7 +315,7 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(
+    friend MAVSDK_PUBLIC bool operator==(
         const CameraServer::StorageInformation& lhs, const CameraServer::StorageInformation& rhs);
 
     /**
@@ -317,7 +323,7 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
+    friend MAVSDK_PUBLIC std::ostream&
     operator<<(std::ostream& str, CameraServer::StorageInformation const& storage_information);
 
     /**
@@ -339,7 +345,7 @@ public:
          *
          * @return A reference to the stream.
          */
-        friend std::ostream&
+        friend MAVSDK_PUBLIC std::ostream&
         operator<<(std::ostream& str, CameraServer::CaptureStatus::ImageStatus const& image_status);
 
         /**
@@ -355,7 +361,7 @@ public:
          *
          * @return A reference to the stream.
          */
-        friend std::ostream&
+        friend MAVSDK_PUBLIC std::ostream&
         operator<<(std::ostream& str, CameraServer::CaptureStatus::VideoStatus const& video_status);
 
         float image_interval_s{}; /**< @brief Image capture interval (in s) */
@@ -372,7 +378,7 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool
+    friend MAVSDK_PUBLIC bool
     operator==(const CameraServer::CaptureStatus& lhs, const CameraServer::CaptureStatus& rhs);
 
     /**
@@ -380,7 +386,7 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
+    friend MAVSDK_PUBLIC std::ostream&
     operator<<(std::ostream& str, CameraServer::CaptureStatus const& capture_status);
 
     /**
@@ -400,7 +406,7 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool
+    friend MAVSDK_PUBLIC bool
     operator==(const CameraServer::TrackPoint& lhs, const CameraServer::TrackPoint& rhs);
 
     /**
@@ -408,7 +414,8 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, CameraServer::TrackPoint const& track_point);
+    friend MAVSDK_PUBLIC std::ostream&
+    operator<<(std::ostream& str, CameraServer::TrackPoint const& track_point);
 
     /**
      * @brief Rectangle description type
@@ -429,7 +436,7 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool
+    friend MAVSDK_PUBLIC bool
     operator==(const CameraServer::TrackRectangle& lhs, const CameraServer::TrackRectangle& rhs);
 
     /**
@@ -437,7 +444,7 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
+    friend MAVSDK_PUBLIC std::ostream&
     operator<<(std::ostream& str, CameraServer::TrackRectangle const& track_rectangle);
 
     /**

@@ -16,6 +16,7 @@
 #include "plugin_base.h"
 
 #include "handle.h"
+#include "mavsdk_export.h"
 
 namespace mavsdk {
 
@@ -26,7 +27,7 @@ class FollowMeImpl;
  * @brief Allow users to command the vehicle to follow a specific target.
  * The target is provided as a GPS coordinate and altitude.
  */
-class FollowMe : public PluginBase {
+class MAVSDK_PUBLIC FollowMe : public PluginBase {
 public:
     /**
      * @brief Constructor. Creates the plugin for a specific System.
@@ -80,7 +81,7 @@ public:
          *
          * @return A reference to the stream.
          */
-        friend std::ostream& operator<<(
+        friend MAVSDK_PUBLIC std::ostream& operator<<(
             std::ostream& str, FollowMe::Config::FollowAltitudeMode const& follow_altitude_mode);
 
         float follow_height_m{
@@ -105,14 +106,15 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(const FollowMe::Config& lhs, const FollowMe::Config& rhs);
+    friend MAVSDK_PUBLIC bool operator==(const FollowMe::Config& lhs, const FollowMe::Config& rhs);
 
     /**
      * @brief Stream operator to print information about a `FollowMe::Config`.
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, FollowMe::Config const& config);
+    friend MAVSDK_PUBLIC std::ostream&
+    operator<<(std::ostream& str, FollowMe::Config const& config);
 
     /**
      * @brief Target location for the vehicle to follow
@@ -134,7 +136,7 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool
+    friend MAVSDK_PUBLIC bool
     operator==(const FollowMe::TargetLocation& lhs, const FollowMe::TargetLocation& rhs);
 
     /**
@@ -142,7 +144,7 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
+    friend MAVSDK_PUBLIC std::ostream&
     operator<<(std::ostream& str, FollowMe::TargetLocation const& target_location);
 
     /**
@@ -165,7 +167,8 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, FollowMe::Result const& result);
+    friend MAVSDK_PUBLIC std::ostream&
+    operator<<(std::ostream& str, FollowMe::Result const& result);
 
     /**
      * @brief Callback type for asynchronous FollowMe calls.

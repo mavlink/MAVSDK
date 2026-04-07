@@ -332,7 +332,8 @@ CameraServer::respond_tracking_off_command(CameraFeedback stop_video_feedback) c
     return _impl->respond_tracking_off_command(stop_video_feedback);
 }
 
-bool operator==(const CameraServer::Information& lhs, const CameraServer::Information& rhs)
+MAVSDK_PUBLIC bool
+operator==(const CameraServer::Information& lhs, const CameraServer::Information& rhs)
 {
     return (rhs.vendor_name == lhs.vendor_name) && (rhs.model_name == lhs.model_name) &&
            (rhs.firmware_version == lhs.firmware_version) &&
@@ -352,7 +353,8 @@ bool operator==(const CameraServer::Information& lhs, const CameraServer::Inform
            (rhs.video_in_image_mode_supported == lhs.video_in_image_mode_supported);
 }
 
-std::ostream& operator<<(std::ostream& str, CameraServer::Information const& information)
+MAVSDK_PUBLIC std::ostream&
+operator<<(std::ostream& str, CameraServer::Information const& information)
 {
     str << std::setprecision(15);
     str << "information:" << '\n' << "{\n";
@@ -375,12 +377,14 @@ std::ostream& operator<<(std::ostream& str, CameraServer::Information const& inf
     return str;
 }
 
-bool operator==(const CameraServer::VideoStreaming& lhs, const CameraServer::VideoStreaming& rhs)
+MAVSDK_PUBLIC bool
+operator==(const CameraServer::VideoStreaming& lhs, const CameraServer::VideoStreaming& rhs)
 {
     return (rhs.has_rtsp_server == lhs.has_rtsp_server) && (rhs.rtsp_uri == lhs.rtsp_uri);
 }
 
-std::ostream& operator<<(std::ostream& str, CameraServer::VideoStreaming const& video_streaming)
+MAVSDK_PUBLIC std::ostream&
+operator<<(std::ostream& str, CameraServer::VideoStreaming const& video_streaming)
 {
     str << std::setprecision(15);
     str << "video_streaming:" << '\n' << "{\n";
@@ -390,7 +394,7 @@ std::ostream& operator<<(std::ostream& str, CameraServer::VideoStreaming const& 
     return str;
 }
 
-bool operator==(const CameraServer::Position& lhs, const CameraServer::Position& rhs)
+MAVSDK_PUBLIC bool operator==(const CameraServer::Position& lhs, const CameraServer::Position& rhs)
 {
     return ((std::isnan(rhs.latitude_deg) && std::isnan(lhs.latitude_deg)) ||
             rhs.latitude_deg == lhs.latitude_deg) &&
@@ -402,7 +406,7 @@ bool operator==(const CameraServer::Position& lhs, const CameraServer::Position&
             rhs.relative_altitude_m == lhs.relative_altitude_m);
 }
 
-std::ostream& operator<<(std::ostream& str, CameraServer::Position const& position)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, CameraServer::Position const& position)
 {
     str << std::setprecision(15);
     str << "position:" << '\n' << "{\n";
@@ -414,7 +418,8 @@ std::ostream& operator<<(std::ostream& str, CameraServer::Position const& positi
     return str;
 }
 
-bool operator==(const CameraServer::Quaternion& lhs, const CameraServer::Quaternion& rhs)
+MAVSDK_PUBLIC bool
+operator==(const CameraServer::Quaternion& lhs, const CameraServer::Quaternion& rhs)
 {
     return ((std::isnan(rhs.w) && std::isnan(lhs.w)) || rhs.w == lhs.w) &&
            ((std::isnan(rhs.x) && std::isnan(lhs.x)) || rhs.x == lhs.x) &&
@@ -422,7 +427,8 @@ bool operator==(const CameraServer::Quaternion& lhs, const CameraServer::Quatern
            ((std::isnan(rhs.z) && std::isnan(lhs.z)) || rhs.z == lhs.z);
 }
 
-std::ostream& operator<<(std::ostream& str, CameraServer::Quaternion const& quaternion)
+MAVSDK_PUBLIC std::ostream&
+operator<<(std::ostream& str, CameraServer::Quaternion const& quaternion)
 {
     str << std::setprecision(15);
     str << "quaternion:" << '\n' << "{\n";
@@ -434,14 +440,16 @@ std::ostream& operator<<(std::ostream& str, CameraServer::Quaternion const& quat
     return str;
 }
 
-bool operator==(const CameraServer::CaptureInfo& lhs, const CameraServer::CaptureInfo& rhs)
+MAVSDK_PUBLIC bool
+operator==(const CameraServer::CaptureInfo& lhs, const CameraServer::CaptureInfo& rhs)
 {
     return (rhs.position == lhs.position) && (rhs.attitude_quaternion == lhs.attitude_quaternion) &&
            (rhs.time_utc_us == lhs.time_utc_us) && (rhs.is_success == lhs.is_success) &&
            (rhs.index == lhs.index) && (rhs.file_url == lhs.file_url);
 }
 
-std::ostream& operator<<(std::ostream& str, CameraServer::CaptureInfo const& capture_info)
+MAVSDK_PUBLIC std::ostream&
+operator<<(std::ostream& str, CameraServer::CaptureInfo const& capture_info)
 {
     str << std::setprecision(15);
     str << "capture_info:" << '\n' << "{\n";
@@ -455,7 +463,7 @@ std::ostream& operator<<(std::ostream& str, CameraServer::CaptureInfo const& cap
     return str;
 }
 
-std::ostream& operator<<(std::ostream& str, CameraServer::Result const& result)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, CameraServer::Result const& result)
 {
     switch (result) {
         case CameraServer::Result::Unknown:
@@ -481,7 +489,7 @@ std::ostream& operator<<(std::ostream& str, CameraServer::Result const& result)
     }
 }
 
-std::ostream&
+MAVSDK_PUBLIC std::ostream&
 operator<<(std::ostream& str, CameraServer::StorageInformation::StorageStatus const& storage_status)
 {
     switch (storage_status) {
@@ -498,7 +506,7 @@ operator<<(std::ostream& str, CameraServer::StorageInformation::StorageStatus co
     }
 }
 
-std::ostream&
+MAVSDK_PUBLIC std::ostream&
 operator<<(std::ostream& str, CameraServer::StorageInformation::StorageType const& storage_type)
 {
     switch (storage_type) {
@@ -518,8 +526,8 @@ operator<<(std::ostream& str, CameraServer::StorageInformation::StorageType cons
             return str << "Unknown";
     }
 }
-bool operator==(
-    const CameraServer::StorageInformation& lhs, const CameraServer::StorageInformation& rhs)
+MAVSDK_PUBLIC bool
+operator==(const CameraServer::StorageInformation& lhs, const CameraServer::StorageInformation& rhs)
 {
     return ((std::isnan(rhs.used_storage_mib) && std::isnan(lhs.used_storage_mib)) ||
             rhs.used_storage_mib == lhs.used_storage_mib) &&
@@ -535,7 +543,7 @@ bool operator==(
             rhs.write_speed_mib_s == lhs.write_speed_mib_s);
 }
 
-std::ostream&
+MAVSDK_PUBLIC std::ostream&
 operator<<(std::ostream& str, CameraServer::StorageInformation const& storage_information)
 {
     str << std::setprecision(15);
@@ -552,7 +560,7 @@ operator<<(std::ostream& str, CameraServer::StorageInformation const& storage_in
     return str;
 }
 
-std::ostream&
+MAVSDK_PUBLIC std::ostream&
 operator<<(std::ostream& str, CameraServer::CaptureStatus::ImageStatus const& image_status)
 {
     switch (image_status) {
@@ -569,7 +577,7 @@ operator<<(std::ostream& str, CameraServer::CaptureStatus::ImageStatus const& im
     }
 }
 
-std::ostream&
+MAVSDK_PUBLIC std::ostream&
 operator<<(std::ostream& str, CameraServer::CaptureStatus::VideoStatus const& video_status)
 {
     switch (video_status) {
@@ -581,7 +589,8 @@ operator<<(std::ostream& str, CameraServer::CaptureStatus::VideoStatus const& vi
             return str << "Unknown";
     }
 }
-bool operator==(const CameraServer::CaptureStatus& lhs, const CameraServer::CaptureStatus& rhs)
+MAVSDK_PUBLIC bool
+operator==(const CameraServer::CaptureStatus& lhs, const CameraServer::CaptureStatus& rhs)
 {
     return ((std::isnan(rhs.image_interval_s) && std::isnan(lhs.image_interval_s)) ||
             rhs.image_interval_s == lhs.image_interval_s) &&
@@ -593,7 +602,8 @@ bool operator==(const CameraServer::CaptureStatus& lhs, const CameraServer::Capt
            (rhs.image_count == lhs.image_count);
 }
 
-std::ostream& operator<<(std::ostream& str, CameraServer::CaptureStatus const& capture_status)
+MAVSDK_PUBLIC std::ostream&
+operator<<(std::ostream& str, CameraServer::CaptureStatus const& capture_status)
 {
     str << std::setprecision(15);
     str << "capture_status:" << '\n' << "{\n";
@@ -607,14 +617,16 @@ std::ostream& operator<<(std::ostream& str, CameraServer::CaptureStatus const& c
     return str;
 }
 
-bool operator==(const CameraServer::TrackPoint& lhs, const CameraServer::TrackPoint& rhs)
+MAVSDK_PUBLIC bool
+operator==(const CameraServer::TrackPoint& lhs, const CameraServer::TrackPoint& rhs)
 {
     return ((std::isnan(rhs.point_x) && std::isnan(lhs.point_x)) || rhs.point_x == lhs.point_x) &&
            ((std::isnan(rhs.point_y) && std::isnan(lhs.point_y)) || rhs.point_y == lhs.point_y) &&
            ((std::isnan(rhs.radius) && std::isnan(lhs.radius)) || rhs.radius == lhs.radius);
 }
 
-std::ostream& operator<<(std::ostream& str, CameraServer::TrackPoint const& track_point)
+MAVSDK_PUBLIC std::ostream&
+operator<<(std::ostream& str, CameraServer::TrackPoint const& track_point)
 {
     str << std::setprecision(15);
     str << "track_point:" << '\n' << "{\n";
@@ -625,7 +637,8 @@ std::ostream& operator<<(std::ostream& str, CameraServer::TrackPoint const& trac
     return str;
 }
 
-bool operator==(const CameraServer::TrackRectangle& lhs, const CameraServer::TrackRectangle& rhs)
+MAVSDK_PUBLIC bool
+operator==(const CameraServer::TrackRectangle& lhs, const CameraServer::TrackRectangle& rhs)
 {
     return ((std::isnan(rhs.top_left_corner_x) && std::isnan(lhs.top_left_corner_x)) ||
             rhs.top_left_corner_x == lhs.top_left_corner_x) &&
@@ -637,7 +650,8 @@ bool operator==(const CameraServer::TrackRectangle& lhs, const CameraServer::Tra
             rhs.bottom_right_corner_y == lhs.bottom_right_corner_y);
 }
 
-std::ostream& operator<<(std::ostream& str, CameraServer::TrackRectangle const& track_rectangle)
+MAVSDK_PUBLIC std::ostream&
+operator<<(std::ostream& str, CameraServer::TrackRectangle const& track_rectangle)
 {
     str << std::setprecision(15);
     str << "track_rectangle:" << '\n' << "{\n";
@@ -649,7 +663,8 @@ std::ostream& operator<<(std::ostream& str, CameraServer::TrackRectangle const& 
     return str;
 }
 
-std::ostream& operator<<(std::ostream& str, CameraServer::CameraFeedback const& camera_feedback)
+MAVSDK_PUBLIC std::ostream&
+operator<<(std::ostream& str, CameraServer::CameraFeedback const& camera_feedback)
 {
     switch (camera_feedback) {
         case CameraServer::CameraFeedback::Unknown:
@@ -665,7 +680,7 @@ std::ostream& operator<<(std::ostream& str, CameraServer::CameraFeedback const& 
     }
 }
 
-std::ostream& operator<<(std::ostream& str, CameraServer::Mode const& mode)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, CameraServer::Mode const& mode)
 {
     switch (mode) {
         case CameraServer::Mode::Unknown:

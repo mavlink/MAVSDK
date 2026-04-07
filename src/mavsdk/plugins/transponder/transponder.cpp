@@ -49,7 +49,8 @@ Transponder::Result Transponder::set_rate_transponder(double rate_hz) const
     return _impl->set_rate_transponder(rate_hz);
 }
 
-bool operator==(const Transponder::AdsbVehicle& lhs, const Transponder::AdsbVehicle& rhs)
+MAVSDK_PUBLIC bool
+operator==(const Transponder::AdsbVehicle& lhs, const Transponder::AdsbVehicle& rhs)
 {
     return (rhs.icao_address == lhs.icao_address) &&
            ((std::isnan(rhs.latitude_deg) && std::isnan(lhs.latitude_deg)) ||
@@ -69,7 +70,8 @@ bool operator==(const Transponder::AdsbVehicle& lhs, const Transponder::AdsbVehi
            (rhs.squawk == lhs.squawk) && (rhs.tslc_s == lhs.tslc_s);
 }
 
-std::ostream& operator<<(std::ostream& str, Transponder::AdsbVehicle const& adsb_vehicle)
+MAVSDK_PUBLIC std::ostream&
+operator<<(std::ostream& str, Transponder::AdsbVehicle const& adsb_vehicle)
 {
     str << std::setprecision(15);
     str << "adsb_vehicle:" << '\n' << "{\n";
@@ -89,7 +91,7 @@ std::ostream& operator<<(std::ostream& str, Transponder::AdsbVehicle const& adsb
     return str;
 }
 
-std::ostream& operator<<(std::ostream& str, Transponder::Result const& result)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Transponder::Result const& result)
 {
     switch (result) {
         case Transponder::Result::Unknown:
@@ -111,7 +113,8 @@ std::ostream& operator<<(std::ostream& str, Transponder::Result const& result)
     }
 }
 
-std::ostream& operator<<(std::ostream& str, Transponder::AdsbEmitterType const& adsb_emitter_type)
+MAVSDK_PUBLIC std::ostream&
+operator<<(std::ostream& str, Transponder::AdsbEmitterType const& adsb_emitter_type)
 {
     switch (adsb_emitter_type) {
         case Transponder::AdsbEmitterType::NoInfo:
@@ -159,7 +162,8 @@ std::ostream& operator<<(std::ostream& str, Transponder::AdsbEmitterType const& 
     }
 }
 
-std::ostream& operator<<(std::ostream& str, Transponder::AdsbAltitudeType const& adsb_altitude_type)
+MAVSDK_PUBLIC std::ostream&
+operator<<(std::ostream& str, Transponder::AdsbAltitudeType const& adsb_altitude_type)
 {
     switch (adsb_altitude_type) {
         case Transponder::AdsbAltitudeType::PressureQnh:

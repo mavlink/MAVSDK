@@ -1,6 +1,7 @@
 #pragma once
 
 #include "plugins/mission_raw/mission_raw.h"
+#include "mavsdk_export.h"
 #include "sender.h"
 #include "autopilot.h"
 #include <optional>
@@ -10,7 +11,7 @@
 
 namespace mavsdk {
 
-class MissionImport {
+class MAVSDK_TEST_EXPORT MissionImport {
 public:
     static std::pair<MissionRaw::Result, MissionRaw::MissionImportData>
     parse_json(const std::string& raw_json, Autopilot autopilot);

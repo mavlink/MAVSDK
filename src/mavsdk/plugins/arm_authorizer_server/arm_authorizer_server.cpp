@@ -40,7 +40,7 @@ ArmAuthorizerServer::Result ArmAuthorizerServer::reject_arm_authorization(
     return _impl->reject_arm_authorization(temporarily, reason, extra_info);
 }
 
-std::ostream& operator<<(std::ostream& str, ArmAuthorizerServer::Result const& result)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, ArmAuthorizerServer::Result const& result)
 {
     switch (result) {
         case ArmAuthorizerServer::Result::Unknown:
@@ -54,7 +54,7 @@ std::ostream& operator<<(std::ostream& str, ArmAuthorizerServer::Result const& r
     }
 }
 
-std::ostream&
+MAVSDK_PUBLIC std::ostream&
 operator<<(std::ostream& str, ArmAuthorizerServer::RejectionReason const& rejection_reason)
 {
     switch (rejection_reason) {

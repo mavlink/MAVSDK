@@ -17,6 +17,7 @@
 #include "plugin_base.h"
 
 #include "handle.h"
+#include "mavsdk_export.h"
 
 namespace mavsdk {
 
@@ -26,7 +27,7 @@ class MavlinkDirectImpl;
 /**
  * @brief Enable direct MAVLink communication using libmav.
  */
-class MavlinkDirect : public PluginBase {
+class MAVSDK_PUBLIC MavlinkDirect : public PluginBase {
 public:
     /**
      * @brief Constructor. Creates the plugin for a specific System.
@@ -78,7 +79,7 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool
+    friend MAVSDK_PUBLIC bool
     operator==(const MavlinkDirect::MavlinkMessage& lhs, const MavlinkDirect::MavlinkMessage& rhs);
 
     /**
@@ -86,7 +87,7 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
+    friend MAVSDK_PUBLIC std::ostream&
     operator<<(std::ostream& str, MavlinkDirect::MavlinkMessage const& mavlink_message);
 
     /**
@@ -108,7 +109,8 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, MavlinkDirect::Result const& result);
+    friend MAVSDK_PUBLIC std::ostream&
+    operator<<(std::ostream& str, MavlinkDirect::Result const& result);
 
     /**
      * @brief Callback type for asynchronous MavlinkDirect calls.

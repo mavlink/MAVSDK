@@ -22,12 +22,12 @@ Rtk::Result Rtk::send_rtcm_data(RtcmData rtcm_data) const
     return _impl->send_rtcm_data(rtcm_data);
 }
 
-bool operator==(const Rtk::RtcmData& lhs, const Rtk::RtcmData& rhs)
+MAVSDK_PUBLIC bool operator==(const Rtk::RtcmData& lhs, const Rtk::RtcmData& rhs)
 {
     return (rhs.data_base64 == lhs.data_base64);
 }
 
-std::ostream& operator<<(std::ostream& str, Rtk::RtcmData const& rtcm_data)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Rtk::RtcmData const& rtcm_data)
 {
     str << std::setprecision(15);
     str << "rtcm_data:" << '\n' << "{\n";
@@ -36,7 +36,7 @@ std::ostream& operator<<(std::ostream& str, Rtk::RtcmData const& rtcm_data)
     return str;
 }
 
-std::ostream& operator<<(std::ostream& str, Rtk::Result const& result)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Rtk::Result const& result)
 {
     switch (result) {
         case Rtk::Result::Unknown:

@@ -2,10 +2,11 @@
 
 #include <string>
 #include <cmath>
+#include "mavsdk_export.h"
 
 namespace mavsdk {
 
-class CalibrationStatustextParser {
+class MAVSDK_TEST_EXPORT CalibrationStatustextParser {
 public:
     CalibrationStatustextParser();
     ~CalibrationStatustextParser();

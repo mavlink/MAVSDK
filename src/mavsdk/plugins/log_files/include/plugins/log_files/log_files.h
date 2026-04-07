@@ -16,6 +16,7 @@
 #include "plugin_base.h"
 
 #include "handle.h"
+#include "mavsdk_export.h"
 
 namespace mavsdk {
 
@@ -26,7 +27,7 @@ class LogFilesImpl;
  * @brief Allow to download log files from the vehicle after a flight is complete.
  * For log streaming during flight check the logging plugin.
  */
-class LogFiles : public PluginBase {
+class MAVSDK_PUBLIC LogFiles : public PluginBase {
 public:
     /**
      * @brief Constructor. Creates the plugin for a specific System.
@@ -71,14 +72,16 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(const LogFiles::ProgressData& lhs, const LogFiles::ProgressData& rhs);
+    friend MAVSDK_PUBLIC bool
+    operator==(const LogFiles::ProgressData& lhs, const LogFiles::ProgressData& rhs);
 
     /**
      * @brief Stream operator to print information about a `LogFiles::ProgressData`.
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, LogFiles::ProgressData const& progress_data);
+    friend MAVSDK_PUBLIC std::ostream&
+    operator<<(std::ostream& str, LogFiles::ProgressData const& progress_data);
 
     /**
      * @brief Log file entry type.
@@ -95,14 +98,14 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(const LogFiles::Entry& lhs, const LogFiles::Entry& rhs);
+    friend MAVSDK_PUBLIC bool operator==(const LogFiles::Entry& lhs, const LogFiles::Entry& rhs);
 
     /**
      * @brief Stream operator to print information about a `LogFiles::Entry`.
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, LogFiles::Entry const& entry);
+    friend MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, LogFiles::Entry const& entry);
 
     /**
      * @brief Possible results returned for calibration commands
@@ -123,7 +126,8 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, LogFiles::Result const& result);
+    friend MAVSDK_PUBLIC std::ostream&
+    operator<<(std::ostream& str, LogFiles::Result const& result);
 
     /**
      * @brief Callback type for asynchronous LogFiles calls.

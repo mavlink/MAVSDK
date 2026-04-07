@@ -17,6 +17,7 @@
 #include "server_plugin_base.h"
 
 #include "handle.h"
+#include "mavsdk_export.h"
 
 namespace mavsdk {
 
@@ -27,7 +28,7 @@ class TelemetryServerImpl;
  * @brief Allow users to provide vehicle telemetry and state information
  * (e.g. battery, GPS, RC connection, flight mode etc.) and set telemetry update rates.
  */
-class TelemetryServer : public ServerPluginBase {
+class MAVSDK_PUBLIC TelemetryServer : public ServerPluginBase {
 public:
     /**
      * @brief Constructor. Creates the plugin for a ServerComponent instance.
@@ -65,7 +66,8 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, TelemetryServer::FixType const& fix_type);
+    friend MAVSDK_PUBLIC std::ostream&
+    operator<<(std::ostream& str, TelemetryServer::FixType const& fix_type);
 
     /**
      * @brief Maps to MAV_VTOL_STATE
@@ -83,7 +85,7 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
+    friend MAVSDK_PUBLIC std::ostream&
     operator<<(std::ostream& str, TelemetryServer::VtolState const& vtol_state);
 
     /**
@@ -105,7 +107,7 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
+    friend MAVSDK_PUBLIC std::ostream&
     operator<<(std::ostream& str, TelemetryServer::StatusTextType const& status_text_type);
 
     /**
@@ -124,7 +126,7 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
+    friend MAVSDK_PUBLIC std::ostream&
     operator<<(std::ostream& str, TelemetryServer::LandedState const& landed_state);
 
     /**
@@ -144,7 +146,7 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool
+    friend MAVSDK_PUBLIC bool
     operator==(const TelemetryServer::Position& lhs, const TelemetryServer::Position& rhs);
 
     /**
@@ -152,7 +154,8 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, TelemetryServer::Position const& position);
+    friend MAVSDK_PUBLIC std::ostream&
+    operator<<(std::ostream& str, TelemetryServer::Position const& position);
 
     /**
      * @brief Heading type used for global position
@@ -166,7 +169,7 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool
+    friend MAVSDK_PUBLIC bool
     operator==(const TelemetryServer::Heading& lhs, const TelemetryServer::Heading& rhs);
 
     /**
@@ -174,7 +177,8 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, TelemetryServer::Heading const& heading);
+    friend MAVSDK_PUBLIC std::ostream&
+    operator<<(std::ostream& str, TelemetryServer::Heading const& heading);
 
     /**
      * @brief Quaternion type.
@@ -199,7 +203,7 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool
+    friend MAVSDK_PUBLIC bool
     operator==(const TelemetryServer::Quaternion& lhs, const TelemetryServer::Quaternion& rhs);
 
     /**
@@ -207,7 +211,7 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
+    friend MAVSDK_PUBLIC std::ostream&
     operator<<(std::ostream& str, TelemetryServer::Quaternion const& quaternion);
 
     /**
@@ -233,7 +237,7 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool
+    friend MAVSDK_PUBLIC bool
     operator==(const TelemetryServer::EulerAngle& lhs, const TelemetryServer::EulerAngle& rhs);
 
     /**
@@ -241,7 +245,7 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
+    friend MAVSDK_PUBLIC std::ostream&
     operator<<(std::ostream& str, TelemetryServer::EulerAngle const& euler_angle);
 
     /**
@@ -258,7 +262,7 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(
+    friend MAVSDK_PUBLIC bool operator==(
         const TelemetryServer::AngularVelocityBody& lhs,
         const TelemetryServer::AngularVelocityBody& rhs);
 
@@ -267,7 +271,7 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(
+    friend MAVSDK_PUBLIC std::ostream& operator<<(
         std::ostream& str, TelemetryServer::AngularVelocityBody const& angular_velocity_body);
 
     /**
@@ -283,7 +287,7 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool
+    friend MAVSDK_PUBLIC bool
     operator==(const TelemetryServer::GpsInfo& lhs, const TelemetryServer::GpsInfo& rhs);
 
     /**
@@ -291,7 +295,8 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, TelemetryServer::GpsInfo const& gps_info);
+    friend MAVSDK_PUBLIC std::ostream&
+    operator<<(std::ostream& str, TelemetryServer::GpsInfo const& gps_info);
 
     /**
      * @brief Raw GPS information type.
@@ -326,14 +331,16 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(const TelemetryServer::RawGps& lhs, const TelemetryServer::RawGps& rhs);
+    friend MAVSDK_PUBLIC bool
+    operator==(const TelemetryServer::RawGps& lhs, const TelemetryServer::RawGps& rhs);
 
     /**
      * @brief Stream operator to print information about a `TelemetryServer::RawGps`.
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, TelemetryServer::RawGps const& raw_gps);
+    friend MAVSDK_PUBLIC std::ostream&
+    operator<<(std::ostream& str, TelemetryServer::RawGps const& raw_gps);
 
     /**
      * @brief Battery type.
@@ -349,7 +356,7 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool
+    friend MAVSDK_PUBLIC bool
     operator==(const TelemetryServer::Battery& lhs, const TelemetryServer::Battery& rhs);
 
     /**
@@ -357,7 +364,8 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, TelemetryServer::Battery const& battery);
+    friend MAVSDK_PUBLIC std::ostream&
+    operator<<(std::ostream& str, TelemetryServer::Battery const& battery);
 
     /**
      * @brief Remote control status type.
@@ -374,7 +382,7 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool
+    friend MAVSDK_PUBLIC bool
     operator==(const TelemetryServer::RcStatus& lhs, const TelemetryServer::RcStatus& rhs);
 
     /**
@@ -382,7 +390,8 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, TelemetryServer::RcStatus const& rc_status);
+    friend MAVSDK_PUBLIC std::ostream&
+    operator<<(std::ostream& str, TelemetryServer::RcStatus const& rc_status);
 
     /**
      * @brief StatusText information type.
@@ -397,7 +406,7 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool
+    friend MAVSDK_PUBLIC bool
     operator==(const TelemetryServer::StatusText& lhs, const TelemetryServer::StatusText& rhs);
 
     /**
@@ -405,7 +414,7 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
+    friend MAVSDK_PUBLIC std::ostream&
     operator<<(std::ostream& str, TelemetryServer::StatusText const& status_text);
 
     /**
@@ -423,7 +432,7 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(
+    friend MAVSDK_PUBLIC bool operator==(
         const TelemetryServer::ActuatorControlTarget& lhs,
         const TelemetryServer::ActuatorControlTarget& rhs);
 
@@ -432,7 +441,7 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(
+    friend MAVSDK_PUBLIC std::ostream& operator<<(
         std::ostream& str, TelemetryServer::ActuatorControlTarget const& actuator_control_target);
 
     /**
@@ -448,7 +457,7 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(
+    friend MAVSDK_PUBLIC bool operator==(
         const TelemetryServer::ActuatorOutputStatus& lhs,
         const TelemetryServer::ActuatorOutputStatus& rhs);
 
@@ -457,7 +466,7 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(
+    friend MAVSDK_PUBLIC std::ostream& operator<<(
         std::ostream& str, TelemetryServer::ActuatorOutputStatus const& actuator_output_status);
 
     /**
@@ -477,7 +486,7 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool
+    friend MAVSDK_PUBLIC bool
     operator==(const TelemetryServer::Covariance& lhs, const TelemetryServer::Covariance& rhs);
 
     /**
@@ -485,7 +494,7 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
+    friend MAVSDK_PUBLIC std::ostream&
     operator<<(std::ostream& str, TelemetryServer::Covariance const& covariance);
 
     /**
@@ -502,7 +511,7 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool
+    friend MAVSDK_PUBLIC bool
     operator==(const TelemetryServer::VelocityBody& lhs, const TelemetryServer::VelocityBody& rhs);
 
     /**
@@ -510,7 +519,7 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
+    friend MAVSDK_PUBLIC std::ostream&
     operator<<(std::ostream& str, TelemetryServer::VelocityBody const& velocity_body);
 
     /**
@@ -527,7 +536,7 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool
+    friend MAVSDK_PUBLIC bool
     operator==(const TelemetryServer::PositionBody& lhs, const TelemetryServer::PositionBody& rhs);
 
     /**
@@ -535,7 +544,7 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
+    friend MAVSDK_PUBLIC std::ostream&
     operator<<(std::ostream& str, TelemetryServer::PositionBody const& position_body);
 
     /**
@@ -561,7 +570,7 @@ public:
          *
          * @return A reference to the stream.
          */
-        friend std::ostream&
+        friend MAVSDK_PUBLIC std::ostream&
         operator<<(std::ostream& str, TelemetryServer::Odometry::MavFrame const& mav_frame);
 
         uint64_t time_usec{}; /**< @brief Timestamp (0 to use Backend timestamp). */
@@ -582,7 +591,7 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool
+    friend MAVSDK_PUBLIC bool
     operator==(const TelemetryServer::Odometry& lhs, const TelemetryServer::Odometry& rhs);
 
     /**
@@ -590,7 +599,8 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, TelemetryServer::Odometry const& odometry);
+    friend MAVSDK_PUBLIC std::ostream&
+    operator<<(std::ostream& str, TelemetryServer::Odometry const& odometry);
 
     /**
      * @brief DistanceSensor message type.
@@ -609,7 +619,7 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(
+    friend MAVSDK_PUBLIC bool operator==(
         const TelemetryServer::DistanceSensor& lhs, const TelemetryServer::DistanceSensor& rhs);
 
     /**
@@ -617,7 +627,7 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
+    friend MAVSDK_PUBLIC std::ostream&
     operator<<(std::ostream& str, TelemetryServer::DistanceSensor const& distance_sensor);
 
     /**
@@ -637,7 +647,7 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(
+    friend MAVSDK_PUBLIC bool operator==(
         const TelemetryServer::ScaledPressure& lhs, const TelemetryServer::ScaledPressure& rhs);
 
     /**
@@ -645,7 +655,7 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
+    friend MAVSDK_PUBLIC std::ostream&
     operator<<(std::ostream& str, TelemetryServer::ScaledPressure const& scaled_pressure);
 
     /**
@@ -662,7 +672,7 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool
+    friend MAVSDK_PUBLIC bool
     operator==(const TelemetryServer::PositionNed& lhs, const TelemetryServer::PositionNed& rhs);
 
     /**
@@ -670,7 +680,7 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
+    friend MAVSDK_PUBLIC std::ostream&
     operator<<(std::ostream& str, TelemetryServer::PositionNed const& position_ned);
 
     /**
@@ -687,7 +697,7 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool
+    friend MAVSDK_PUBLIC bool
     operator==(const TelemetryServer::VelocityNed& lhs, const TelemetryServer::VelocityNed& rhs);
 
     /**
@@ -695,7 +705,7 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
+    friend MAVSDK_PUBLIC std::ostream&
     operator<<(std::ostream& str, TelemetryServer::VelocityNed const& velocity_ned);
 
     /**
@@ -711,7 +721,7 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(
+    friend MAVSDK_PUBLIC bool operator==(
         const TelemetryServer::PositionVelocityNed& lhs,
         const TelemetryServer::PositionVelocityNed& rhs);
 
@@ -720,7 +730,7 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(
+    friend MAVSDK_PUBLIC std::ostream& operator<<(
         std::ostream& str, TelemetryServer::PositionVelocityNed const& position_velocity_ned);
 
     /**
@@ -739,7 +749,7 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool
+    friend MAVSDK_PUBLIC bool
     operator==(const TelemetryServer::GroundTruth& lhs, const TelemetryServer::GroundTruth& rhs);
 
     /**
@@ -747,7 +757,7 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
+    friend MAVSDK_PUBLIC std::ostream&
     operator<<(std::ostream& str, TelemetryServer::GroundTruth const& ground_truth);
 
     /**
@@ -769,7 +779,7 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(
+    friend MAVSDK_PUBLIC bool operator==(
         const TelemetryServer::FixedwingMetrics& lhs, const TelemetryServer::FixedwingMetrics& rhs);
 
     /**
@@ -777,7 +787,7 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
+    friend MAVSDK_PUBLIC std::ostream&
     operator<<(std::ostream& str, TelemetryServer::FixedwingMetrics const& fixedwing_metrics);
 
     /**
@@ -797,7 +807,7 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(
+    friend MAVSDK_PUBLIC bool operator==(
         const TelemetryServer::AccelerationFrd& lhs, const TelemetryServer::AccelerationFrd& rhs);
 
     /**
@@ -805,7 +815,7 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
+    friend MAVSDK_PUBLIC std::ostream&
     operator<<(std::ostream& str, TelemetryServer::AccelerationFrd const& acceleration_frd);
 
     /**
@@ -825,7 +835,7 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(
+    friend MAVSDK_PUBLIC bool operator==(
         const TelemetryServer::AngularVelocityFrd& lhs,
         const TelemetryServer::AngularVelocityFrd& rhs);
 
@@ -834,7 +844,7 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
+    friend MAVSDK_PUBLIC std::ostream&
     operator<<(std::ostream& str, TelemetryServer::AngularVelocityFrd const& angular_velocity_frd);
 
     /**
@@ -854,7 +864,7 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(
+    friend MAVSDK_PUBLIC bool operator==(
         const TelemetryServer::MagneticFieldFrd& lhs, const TelemetryServer::MagneticFieldFrd& rhs);
 
     /**
@@ -862,7 +872,7 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
+    friend MAVSDK_PUBLIC std::ostream&
     operator<<(std::ostream& str, TelemetryServer::MagneticFieldFrd const& magnetic_field_frd);
 
     /**
@@ -881,14 +891,16 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(const TelemetryServer::Imu& lhs, const TelemetryServer::Imu& rhs);
+    friend MAVSDK_PUBLIC bool
+    operator==(const TelemetryServer::Imu& lhs, const TelemetryServer::Imu& rhs);
 
     /**
      * @brief Stream operator to print information about a `TelemetryServer::Imu`.
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, TelemetryServer::Imu const& imu);
+    friend MAVSDK_PUBLIC std::ostream&
+    operator<<(std::ostream& str, TelemetryServer::Imu const& imu);
 
     /**
      * @brief Possible results returned for telemetry requests.
@@ -909,7 +921,8 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, TelemetryServer::Result const& result);
+    friend MAVSDK_PUBLIC std::ostream&
+    operator<<(std::ostream& str, TelemetryServer::Result const& result);
 
     /**
      * @brief Callback type for asynchronous TelemetryServer calls.
