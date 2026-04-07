@@ -1507,7 +1507,8 @@ void CameraImpl::check_camera_definition_with_lock(PotentialCamera& potential_ca
                         maybe_potential_camera->camera_definition_result = Camera::Result::Success;
                         notify_camera_list_with_lock();
                     });
-                });
+                },
+                component_id);
         } else {
             LogErr("Unknown protocol for URL: {}", url);
             potential_camera.camera_definition_result = Camera::Result::ProtocolUnsupported;
