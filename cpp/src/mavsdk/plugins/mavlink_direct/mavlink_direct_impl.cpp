@@ -55,9 +55,9 @@ void MavlinkDirectImpl::init()
             mavlink_direct_message.target_component_id = message.target_component_id;
             mavlink_direct_message.fields_json = message.fields_json;
 
-            _callbacks.queue(
-                mavlink_direct_message,
-                [this](const auto& func) { _system_impl->call_user_callback(func); });
+            _callbacks.queue(mavlink_direct_message, [this](const auto& func) {
+                _system_impl->call_user_callback(func);
+            });
         });
 }
 
