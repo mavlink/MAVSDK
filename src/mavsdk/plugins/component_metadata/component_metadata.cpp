@@ -53,13 +53,14 @@ ComponentMetadata::get_metadata(uint32_t compid, MetadataType metadata_type) con
     return _impl->get_metadata(compid, metadata_type);
 }
 
-bool operator==(
-    const ComponentMetadata::MetadataData& lhs, const ComponentMetadata::MetadataData& rhs)
+MAVSDK_PUBLIC bool
+operator==(const ComponentMetadata::MetadataData& lhs, const ComponentMetadata::MetadataData& rhs)
 {
     return (rhs.json_metadata == lhs.json_metadata);
 }
 
-std::ostream& operator<<(std::ostream& str, ComponentMetadata::MetadataData const& metadata_data)
+MAVSDK_PUBLIC std::ostream&
+operator<<(std::ostream& str, ComponentMetadata::MetadataData const& metadata_data)
 {
     str << std::setprecision(15);
     str << "metadata_data:" << '\n' << "{\n";
@@ -68,7 +69,7 @@ std::ostream& operator<<(std::ostream& str, ComponentMetadata::MetadataData cons
     return str;
 }
 
-std::ostream& operator<<(std::ostream& str, ComponentMetadata::Result const& result)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, ComponentMetadata::Result const& result)
 {
     switch (result) {
         case ComponentMetadata::Result::Success:
@@ -94,14 +95,14 @@ std::ostream& operator<<(std::ostream& str, ComponentMetadata::Result const& res
     }
 }
 
-bool operator==(
+MAVSDK_PUBLIC bool operator==(
     const ComponentMetadata::MetadataUpdate& lhs, const ComponentMetadata::MetadataUpdate& rhs)
 {
     return (rhs.compid == lhs.compid) && (rhs.type == lhs.type) &&
            (rhs.json_metadata == lhs.json_metadata);
 }
 
-std::ostream&
+MAVSDK_PUBLIC std::ostream&
 operator<<(std::ostream& str, ComponentMetadata::MetadataUpdate const& metadata_update)
 {
     str << std::setprecision(15);
@@ -113,7 +114,8 @@ operator<<(std::ostream& str, ComponentMetadata::MetadataUpdate const& metadata_
     return str;
 }
 
-std::ostream& operator<<(std::ostream& str, ComponentMetadata::MetadataType const& metadata_type)
+MAVSDK_PUBLIC std::ostream&
+operator<<(std::ostream& str, ComponentMetadata::MetadataType const& metadata_type)
 {
     switch (metadata_type) {
         case ComponentMetadata::MetadataType::AllCompleted:

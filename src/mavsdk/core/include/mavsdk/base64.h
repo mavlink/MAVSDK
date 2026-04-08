@@ -2,6 +2,8 @@
 #include <vector>
 #include <string>
 
+#include "mavsdk_export.h"
+
 // Taken from https://stackoverflow.com/a/13935718/8548472
 
 namespace mavsdk {
@@ -13,7 +15,7 @@ namespace mavsdk {
  *
  * @return Base64 string
  */
-std::string base64_encode(std::vector<uint8_t>& raw);
+MAVSDK_PUBLIC std::string base64_encode(std::vector<uint8_t>& raw);
 
 /**
  * @brief Decode a base64 string into raw bytes
@@ -22,6 +24,6 @@ std::string base64_encode(std::vector<uint8_t>& raw);
  *
  * @return Raw bytes
  */
-std::vector<uint8_t> base64_decode(const std::string& str);
+MAVSDK_PUBLIC std::vector<uint8_t> base64_decode(const std::string& str);
 
 } // namespace mavsdk

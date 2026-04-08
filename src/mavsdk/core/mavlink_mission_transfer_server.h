@@ -13,10 +13,11 @@
 #include "timeout_s_callback.h"
 #include "locked_queue.h"
 #include "sender.h"
+#include "mavsdk_export.h"
 
 namespace mavsdk {
 
-class MavlinkMissionTransferServer {
+class MAVSDK_TEST_EXPORT MavlinkMissionTransferServer {
 public:
     enum class Result {
         Success,

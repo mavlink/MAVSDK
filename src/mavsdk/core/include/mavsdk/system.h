@@ -10,6 +10,7 @@
 #include "deprecated.h"
 #include "handle.h"
 #include "vehicle.h"
+#include "mavsdk_export.h"
 
 namespace mavsdk {
 
@@ -25,7 +26,7 @@ class PluginImplBase;
  * cameras. They are not created directly by application code, but are returned by the Mavsdk
  * class.
  */
-class System {
+class MAVSDK_PUBLIC System {
 public:
     /** @private Constructor, used internally
      *

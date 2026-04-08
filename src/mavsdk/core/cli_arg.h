@@ -4,10 +4,11 @@
 #include <string>
 #include <string_view>
 #include <variant>
+#include "mavsdk_export.h"
 
 namespace mavsdk {
 
-class CliArg {
+class MAVSDK_TEST_EXPORT CliArg {
 public:
     struct Udp {
         enum class Mode {

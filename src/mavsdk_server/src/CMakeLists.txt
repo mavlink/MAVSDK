@@ -39,6 +39,11 @@ target_link_libraries(mavsdk_server
     gRPC::grpc++
 )
 
+target_compile_definitions(mavsdk_server PRIVATE MAVSDK_BUILD)
+if(BUILD_SHARED_LIBS)
+    target_compile_definitions(mavsdk_server PUBLIC MAVSDK_SHARED)
+endif()
+
 if(BUILD_WITH_PROTO_REFLECTION)
     add_definitions(-DENABLE_PROTO_REFLECTION)
     target_link_libraries(mavsdk_server PRIVATE gRPC::grpc++_reflection)

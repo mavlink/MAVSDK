@@ -3,6 +3,8 @@
 #include <cstdint>
 #include <memory>
 
+#include "mavsdk_export.h"
+
 namespace mavsdk {
 
 class MavsdkImpl;
@@ -12,7 +14,7 @@ class ServerPluginImplBase;
 /**
  * @brief This class represents a component, used to initialize a server plugin.
  */
-class ServerComponent {
+class MAVSDK_PUBLIC ServerComponent {
 public:
     /**
      * @private Constructor, used internally

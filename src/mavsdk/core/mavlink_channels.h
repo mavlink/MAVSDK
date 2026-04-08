@@ -2,10 +2,11 @@
 
 #include <cstdint>
 #include <mutex>
+#include "mavsdk_export.h"
 
 namespace mavsdk {
 
-class MavlinkChannels {
+class MAVSDK_TEST_EXPORT MavlinkChannels {
 public:
     static MavlinkChannels& Instance()
     {

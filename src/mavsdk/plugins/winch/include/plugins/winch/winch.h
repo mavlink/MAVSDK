@@ -16,6 +16,7 @@
 #include "plugin_base.h"
 
 #include "handle.h"
+#include "mavsdk_export.h"
 
 namespace mavsdk {
 
@@ -26,7 +27,7 @@ class WinchImpl;
  * @brief Allows users to send winch actions, as well as receive status information from winch
  * systems.
  */
-class Winch : public PluginBase {
+class MAVSDK_PUBLIC Winch : public PluginBase {
 public:
     /**
      * @brief Constructor. Creates the plugin for a specific System.
@@ -84,7 +85,8 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, Winch::WinchAction const& winch_action);
+    friend MAVSDK_PUBLIC std::ostream&
+    operator<<(std::ostream& str, Winch::WinchAction const& winch_action);
 
     /**
      * @brief Winch Status Flags.
@@ -120,14 +122,16 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(const Winch::StatusFlags& lhs, const Winch::StatusFlags& rhs);
+    friend MAVSDK_PUBLIC bool
+    operator==(const Winch::StatusFlags& lhs, const Winch::StatusFlags& rhs);
 
     /**
      * @brief Stream operator to print information about a `Winch::StatusFlags`.
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, Winch::StatusFlags const& status_flags);
+    friend MAVSDK_PUBLIC std::ostream&
+    operator<<(std::ostream& str, Winch::StatusFlags const& status_flags);
 
     /**
      * @brief Status type.
@@ -148,14 +152,14 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(const Winch::Status& lhs, const Winch::Status& rhs);
+    friend MAVSDK_PUBLIC bool operator==(const Winch::Status& lhs, const Winch::Status& rhs);
 
     /**
      * @brief Stream operator to print information about a `Winch::Status`.
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, Winch::Status const& status);
+    friend MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Winch::Status const& status);
 
     /**
      * @brief Possible results returned for winch action requests.
@@ -175,7 +179,7 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, Winch::Result const& result);
+    friend MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Winch::Result const& result);
 
     /**
      * @brief Callback type for asynchronous Winch calls.

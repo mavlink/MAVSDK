@@ -59,7 +59,8 @@ void MissionRawServer::unsubscribe_clear_all(ClearAllHandle handle)
     _impl->unsubscribe_clear_all(handle);
 }
 
-bool operator==(const MissionRawServer::MissionItem& lhs, const MissionRawServer::MissionItem& rhs)
+MAVSDK_PUBLIC bool
+operator==(const MissionRawServer::MissionItem& lhs, const MissionRawServer::MissionItem& rhs)
 {
     return (rhs.seq == lhs.seq) && (rhs.frame == lhs.frame) && (rhs.command == lhs.command) &&
            (rhs.current == lhs.current) && (rhs.autocontinue == lhs.autocontinue) &&
@@ -72,7 +73,8 @@ bool operator==(const MissionRawServer::MissionItem& lhs, const MissionRawServer
            (rhs.mission_type == lhs.mission_type);
 }
 
-std::ostream& operator<<(std::ostream& str, MissionRawServer::MissionItem const& mission_item)
+MAVSDK_PUBLIC std::ostream&
+operator<<(std::ostream& str, MissionRawServer::MissionItem const& mission_item)
 {
     str << std::setprecision(15);
     str << "mission_item:" << '\n' << "{\n";
@@ -93,12 +95,14 @@ std::ostream& operator<<(std::ostream& str, MissionRawServer::MissionItem const&
     return str;
 }
 
-bool operator==(const MissionRawServer::MissionPlan& lhs, const MissionRawServer::MissionPlan& rhs)
+MAVSDK_PUBLIC bool
+operator==(const MissionRawServer::MissionPlan& lhs, const MissionRawServer::MissionPlan& rhs)
 {
     return (rhs.mission_items == lhs.mission_items);
 }
 
-std::ostream& operator<<(std::ostream& str, MissionRawServer::MissionPlan const& mission_plan)
+MAVSDK_PUBLIC std::ostream&
+operator<<(std::ostream& str, MissionRawServer::MissionPlan const& mission_plan)
 {
     str << std::setprecision(15);
     str << "mission_plan:" << '\n' << "{\n";
@@ -112,13 +116,13 @@ std::ostream& operator<<(std::ostream& str, MissionRawServer::MissionPlan const&
     return str;
 }
 
-bool operator==(
+MAVSDK_PUBLIC bool operator==(
     const MissionRawServer::MissionProgress& lhs, const MissionRawServer::MissionProgress& rhs)
 {
     return (rhs.current == lhs.current) && (rhs.total == lhs.total);
 }
 
-std::ostream&
+MAVSDK_PUBLIC std::ostream&
 operator<<(std::ostream& str, MissionRawServer::MissionProgress const& mission_progress)
 {
     str << std::setprecision(15);
@@ -129,7 +133,7 @@ operator<<(std::ostream& str, MissionRawServer::MissionProgress const& mission_p
     return str;
 }
 
-std::ostream& operator<<(std::ostream& str, MissionRawServer::Result const& result)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, MissionRawServer::Result const& result)
 {
     switch (result) {
         case MissionRawServer::Result::Unknown:

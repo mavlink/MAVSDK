@@ -2,7 +2,7 @@
 
 namespace mavsdk {
 
-std::ostream& operator<<(std::ostream& str, const ConnectionResult& result)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, const ConnectionResult& result)
 {
     switch (result) {
         case ConnectionResult::Success:
