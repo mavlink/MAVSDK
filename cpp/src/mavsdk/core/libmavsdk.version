@@ -1,0 +1,22 @@
+{
+  global:
+    /* MAVSDK public + test API (mavsdk:: namespace) */
+    _ZN6mavsdk*;
+    _ZNK6mavsdk*;
+    _ZTI*6mavsdk*;
+    _ZTS*6mavsdk*;
+    _ZTV*6mavsdk*;
+    _ZTT*6mavsdk*;
+    _ZThn*6mavsdk*;
+    _ZTv*6mavsdk*;
+    _ZGRN6mavsdk*;
+
+    /* Asio throw_exception stubs (MAVSDK builds with -fno-exceptions) */
+    _ZN4asio6detail15throw_exception*;
+
+    /* MAVLink channel status (used by tests that include mavlink headers) */
+    _Z26mavlink_get_channel_status*;
+
+  local:
+    *;
+};
