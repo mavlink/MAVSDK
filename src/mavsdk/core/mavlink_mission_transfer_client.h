@@ -7,9 +7,6 @@
 #include <memory>
 #include <mutex>
 #include <vector>
-#include <asio/io_context.hpp>
-#include <asio/post.hpp>
-#include <deque>
 #include "autopilot.h"
 #include "autopilot_callback.h"
 #include "mavlink_address.h"
