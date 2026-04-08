@@ -64,6 +64,10 @@ set_target_properties(system_tests_runner
     PROPERTIES COMPILE_FLAGS ${warnings}
 )
 
+if(NOT APPLE AND NOT ANDROID AND NOT MSVC)
+    target_link_libraries(system_tests_runner PRIVATE stdc++fs)
+endif()
+
 if(ENABLE_CPPTRACE)
     find_package(cpptrace REQUIRED)
     target_link_libraries(system_tests_runner
