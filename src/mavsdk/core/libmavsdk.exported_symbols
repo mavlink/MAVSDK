@@ -1,0 +1,19 @@
+# Exported symbols for macOS (ld64 -exported_symbols_list).
+# Only MAVSDK public API and test-support symbols are exported;
+# everything else (OpenSSL, tinyxml2, curl, etc.) is hidden.
+#
+# Patterns use ld64 glob syntax: * matches any sequence of characters.
+
+# mavsdk:: namespace (all mangled forms)
+__ZN6mavsdk*
+__ZNK6mavsdk*
+__ZTI*6mavsdk*
+__ZTS*6mavsdk*
+__ZTV*6mavsdk*
+__ZTT*6mavsdk*
+__ZThn*6mavsdk*
+__ZTv*6mavsdk*
+__ZGRN6mavsdk*
+
+# MAVLink channel status (used by tests that include mavlink headers)
+__Z26mavlink_get_channel_status*

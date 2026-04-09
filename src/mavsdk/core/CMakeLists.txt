@@ -186,6 +186,22 @@ set_target_properties(mavsdk
         VISIBILITY_INLINES_HIDDEN ON
     )
 
+# Use a linker symbol export list to hide symbols from statically-linked
+# third-party libraries (OpenSSL, tinyxml2, curl, etc.).
+# -fvisibility=hidden only affects code compiled with that flag;
+# pre-built static archives still export their symbols without this.
+if(BUILD_SHARED_LIBS)
+    if(APPLE)
+        target_link_options(mavsdk PRIVATE
+            "LINKER:-exported_symbols_list,${CMAKE_CURRENT_SOURCE_DIR}/libmavsdk.exported_symbols"
+        )
+    elseif(UNIX)
+        target_link_options(mavsdk PRIVATE
+            "LINKER:--version-script=${CMAKE_CURRENT_SOURCE_DIR}/libmavsdk.version"
+        )
+    endif()
+endif()
+
 target_include_directories(mavsdk
     PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/mavsdk>

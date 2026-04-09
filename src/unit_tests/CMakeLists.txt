@@ -28,4 +28,8 @@ target_include_directories(unit_tests_runner
 )
 
 
+if(NOT APPLE AND NOT ANDROID AND NOT MSVC)
+    target_link_libraries(unit_tests_runner stdc++fs)
+endif()
+
 add_test(unit_tests unit_tests_runner)
