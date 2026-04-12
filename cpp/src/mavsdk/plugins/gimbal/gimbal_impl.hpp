@@ -1,6 +1,7 @@
 #pragma once
 
 #include <optional>
+#include <unordered_map>
 #include "plugins/gimbal/gimbal.hpp"
 #include "plugin_impl_base.hpp"
 #include "system.hpp"
@@ -95,24 +96,27 @@ public:
 
 private:
     struct GimbalItem {
-        Gimbal::ControlStatus control_status{0, Gimbal::ControlMode::None, 0, 0, 0, 0};
-        Gimbal::Attitude attitude{};
+        uint8_t gimbal_manager_compid{0};
+        uint8_t gimbal_device_id{0};
         std::string vendor_name;
         std::string model_name;
         std::string custom_name;
-        unsigned gimbal_manager_information_requests_left{5};
-        unsigned gimbal_device_information_requests_left{5};
-        bool gimbal_manager_information_received{false};
-        bool gimbal_device_information_received{false};
-        uint8_t gimbal_manager_compid{0};
-        uint8_t gimbal_device_id{0};
-        bool is_valid{false};
+        Gimbal::ControlStatus control_status{0, Gimbal::ControlMode::None, 0, 0, 0, 0};
+        Gimbal::Attitude attitude{};
     };
 
+    struct GimbalDiscovery {
+        unsigned manager_info_requests_left{5};
+        unsigned device_info_requests_left{0};
+        bool device_info_received{false};
+        bool notified{false};
+    };
     struct GimbalAddress {
         uint8_t gimbal_manager_compid{0};
         uint8_t gimbal_device_id{0};
     };
+
+    std::optional<GimbalItem> get_gimbal_info_by_id(int32_t gimbal_id) const;
 
     void request_gimbal_manager_information(uint8_t target_component_id) const;
     void request_gimbal_device_information(uint8_t target_component_id) const;
@@ -123,8 +127,6 @@ private:
     void process_gimbal_device_information(const mavlink_message_t& message);
     void process_gimbal_device_attitude_status(const mavlink_message_t& message);
     void process_attitude(const mavlink_message_t& message);
-
-    void check_is_gimbal_valid(GimbalItem* gimbal_item);
 
     void set_angles_async_internal(
         int32_t gimbal_id,
@@ -146,14 +148,14 @@ private:
 
     Gimbal::GimbalList gimbal_list_with_lock();
     std::optional<GimbalAddress> maybe_address_for_gimbal_id(int32_t gimbal_id) const;
-    GimbalItem* maybe_gimbal_item_for_gimbal_id(int32_t gimbal_id);
 
-    std::mutex _mutex{};
+    mutable std::mutex _mutex{};
     CallbackList<Gimbal::GimbalList> _gimbal_list_subscriptions{};
     CallbackList<Gimbal::ControlStatus> _control_status_subscriptions{};
     CallbackList<Gimbal::Attitude> _attitude_subscriptions{};
 
     std::vector<GimbalItem> _gimbals;
+    std::unordered_map<uint8_t, GimbalDiscovery> _discovery;
     float _vehicle_yaw_rad{NAN};
 
     bool _debugging{false};
