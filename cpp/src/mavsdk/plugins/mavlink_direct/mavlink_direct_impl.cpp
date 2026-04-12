@@ -55,19 +55,18 @@ void MavlinkDirectImpl::init()
             mavlink_direct_message.target_component_id = message.target_component_id;
             mavlink_direct_message.fields_json = message.fields_json;
 
-            // Call callbacks directly, queueing needs to happen in the user APIs
-            _callbacks(mavlink_direct_message);
+            _callbacks.queue(mavlink_direct_message, [this](const auto& func) {
+                _system_impl->call_user_callback(func);
+            });
         });
 }
 
 void MavlinkDirectImpl::deinit()
 {
-    // Unsubscribe from SystemImpl - this automatically prevents dangling callbacks
     if (_system_subscription.valid()) {
         _system_impl->unregister_libmav_message_handler(_system_subscription);
-        _system_subscription = {}; // Reset handle
+        _system_subscription = {};
     }
-    // Internal CallbackList will be automatically cleaned up when destroyed
 }
 
 void MavlinkDirectImpl::enable() {}
