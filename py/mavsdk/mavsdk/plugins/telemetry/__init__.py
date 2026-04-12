@@ -24,9 +24,9 @@ from .telemetry import TelemetryResult
 
 # Import data structures
 from .telemetry import Position
-from .telemetry import HomePosition
 from .telemetry import Heading
 from .telemetry import Quaternion
+from .telemetry import HomePosition
 from .telemetry import EulerAngle
 from .telemetry import AngularVelocityBody
 from .telemetry import GpsInfo
@@ -67,9 +67,9 @@ __all__ = [
     "VtolState",
     "TelemetryResult",
     "Position",
-    "HomePosition",
     "Heading",
     "Quaternion",
+    "HomePosition",
     "EulerAngle",
     "AngularVelocityBody",
     "GpsInfo",

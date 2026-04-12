@@ -390,6 +390,96 @@ public:
 
 
 
+    static std::unique_ptr<rpc::telemetry::Heading> translateToRpcHeading(const mavsdk::Telemetry::Heading &heading)
+    {
+        auto rpc_obj = std::make_unique<rpc::telemetry::Heading>();
+
+
+            
+        rpc_obj->set_heading_deg(heading.heading_deg);
+            
+        
+
+        return rpc_obj;
+    }
+
+    static mavsdk::Telemetry::Heading translateFromRpcHeading(const rpc::telemetry::Heading& heading)
+    {
+        mavsdk::Telemetry::Heading obj;
+
+
+            
+        obj.heading_deg = heading.heading_deg();
+            
+        
+        return obj;
+    }
+
+
+
+
+
+    static std::unique_ptr<rpc::telemetry::Quaternion> translateToRpcQuaternion(const mavsdk::Telemetry::Quaternion &quaternion)
+    {
+        auto rpc_obj = std::make_unique<rpc::telemetry::Quaternion>();
+
+
+            
+        rpc_obj->set_w(quaternion.w);
+            
+        
+            
+        rpc_obj->set_x(quaternion.x);
+            
+        
+            
+        rpc_obj->set_y(quaternion.y);
+            
+        
+            
+        rpc_obj->set_z(quaternion.z);
+            
+        
+            
+        rpc_obj->set_timestamp_us(quaternion.timestamp_us);
+            
+        
+
+        return rpc_obj;
+    }
+
+    static mavsdk::Telemetry::Quaternion translateFromRpcQuaternion(const rpc::telemetry::Quaternion& quaternion)
+    {
+        mavsdk::Telemetry::Quaternion obj;
+
+
+            
+        obj.w = quaternion.w();
+            
+        
+            
+        obj.x = quaternion.x();
+            
+        
+            
+        obj.y = quaternion.y();
+            
+        
+            
+        obj.z = quaternion.z();
+            
+        
+            
+        obj.timestamp_us = quaternion.timestamp_us();
+            
+        
+        return obj;
+    }
+
+
+
+
+
     static std::unique_ptr<rpc::telemetry::HomePosition> translateToRpcHomePosition(const mavsdk::Telemetry::HomePosition &home_position)
     {
         auto rpc_obj = std::make_unique<rpc::telemetry::HomePosition>();
@@ -500,96 +590,6 @@ public:
         
             
         obj.approach_down_m = home_position.approach_down_m();
-            
-        
-        return obj;
-    }
-
-
-
-
-
-    static std::unique_ptr<rpc::telemetry::Heading> translateToRpcHeading(const mavsdk::Telemetry::Heading &heading)
-    {
-        auto rpc_obj = std::make_unique<rpc::telemetry::Heading>();
-
-
-            
-        rpc_obj->set_heading_deg(heading.heading_deg);
-            
-        
-
-        return rpc_obj;
-    }
-
-    static mavsdk::Telemetry::Heading translateFromRpcHeading(const rpc::telemetry::Heading& heading)
-    {
-        mavsdk::Telemetry::Heading obj;
-
-
-            
-        obj.heading_deg = heading.heading_deg();
-            
-        
-        return obj;
-    }
-
-
-
-
-
-    static std::unique_ptr<rpc::telemetry::Quaternion> translateToRpcQuaternion(const mavsdk::Telemetry::Quaternion &quaternion)
-    {
-        auto rpc_obj = std::make_unique<rpc::telemetry::Quaternion>();
-
-
-            
-        rpc_obj->set_w(quaternion.w);
-            
-        
-            
-        rpc_obj->set_x(quaternion.x);
-            
-        
-            
-        rpc_obj->set_y(quaternion.y);
-            
-        
-            
-        rpc_obj->set_z(quaternion.z);
-            
-        
-            
-        rpc_obj->set_timestamp_us(quaternion.timestamp_us);
-            
-        
-
-        return rpc_obj;
-    }
-
-    static mavsdk::Telemetry::Quaternion translateFromRpcQuaternion(const rpc::telemetry::Quaternion& quaternion)
-    {
-        mavsdk::Telemetry::Quaternion obj;
-
-
-            
-        obj.w = quaternion.w();
-            
-        
-            
-        obj.x = quaternion.x();
-            
-        
-            
-        obj.y = quaternion.y();
-            
-        
-            
-        obj.z = quaternion.z();
-            
-        
-            
-        obj.timestamp_us = quaternion.timestamp_us();
             
         
         return obj;

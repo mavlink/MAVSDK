@@ -339,6 +339,39 @@ void mavsdk_telemetry_position_array_destroy(
 }
 
 
+static mavsdk::Telemetry::Heading
+translate_heading_from_c(const mavsdk_telemetry_heading_t& c_struct) {
+    mavsdk::Telemetry::Heading cpp_struct{};
+    cpp_struct.heading_deg = c_struct.heading_deg;
+    return cpp_struct;
+}
+
+static mavsdk_telemetry_heading_t
+translate_heading_to_c(const mavsdk::Telemetry::Heading& cpp_struct) {
+    mavsdk_telemetry_heading_t c_struct{};
+    c_struct.heading_deg = cpp_struct.heading_deg;
+    return c_struct;
+}
+
+void mavsdk_telemetry_heading_destroy(
+    mavsdk_telemetry_heading_t* target) {
+    if (!target) return;
+}
+
+void mavsdk_telemetry_heading_array_destroy(
+    mavsdk_telemetry_heading_t** array,
+    size_t size) {
+    if (!array || !*array) return;
+
+    for (size_t i = 0; i < size; i++) {
+        mavsdk_telemetry_heading_destroy(&(*array)[i]);
+    }
+
+    delete[] *array;
+    *array = nullptr;
+}
+
+
 static mavsdk::Telemetry::Quaternion
 translate_quaternion_from_c(const mavsdk_telemetry_quaternion_t& c_struct) {
     mavsdk::Telemetry::Quaternion cpp_struct{};
@@ -428,39 +461,6 @@ void mavsdk_telemetry_home_position_array_destroy(
 
     for (size_t i = 0; i < size; i++) {
         mavsdk_telemetry_home_position_destroy(&(*array)[i]);
-    }
-
-    delete[] *array;
-    *array = nullptr;
-}
-
-
-static mavsdk::Telemetry::Heading
-translate_heading_from_c(const mavsdk_telemetry_heading_t& c_struct) {
-    mavsdk::Telemetry::Heading cpp_struct{};
-    cpp_struct.heading_deg = c_struct.heading_deg;
-    return cpp_struct;
-}
-
-static mavsdk_telemetry_heading_t
-translate_heading_to_c(const mavsdk::Telemetry::Heading& cpp_struct) {
-    mavsdk_telemetry_heading_t c_struct{};
-    c_struct.heading_deg = cpp_struct.heading_deg;
-    return c_struct;
-}
-
-void mavsdk_telemetry_heading_destroy(
-    mavsdk_telemetry_heading_t* target) {
-    if (!target) return;
-}
-
-void mavsdk_telemetry_heading_array_destroy(
-    mavsdk_telemetry_heading_t** array,
-    size_t size) {
-    if (!array || !*array) return;
-
-    for (size_t i = 0; i < size; i++) {
-        mavsdk_telemetry_heading_destroy(&(*array)[i]);
     }
 
     delete[] *array;

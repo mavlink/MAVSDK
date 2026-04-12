@@ -235,13 +235,50 @@ CMAVSDK_EXPORT void mavsdk_telemetry_position_array_destroy(
     size_t size);
 
 /**
- * @brief Quaternion type.
+ * @brief Heading type used for global position
  *
+ * @note This struct may contain dynamically allocated memory. Always call
+ *       mavsdk_telemetry_heading_destroy() when done to avoid memory leaks.
+ */
+typedef struct CMAVSDK_EXPORT {
+    /**  Heading in degrees (range: 0 to +360) */
+    double heading_deg;
+} mavsdk_telemetry_heading_t;
+
+/**
+ * @brief Destroy a heading struct.
+ *
+ * Frees all memory allocated by MAVSDK for this struct, including any
+ * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
+ * Always call this function when done with the struct, even if it currently
+ * contains no dynamic allocations.
+ *
+ * @param target Pointer to the struct to destroy. Can be NULL (no-op).
+ */
+CMAVSDK_EXPORT void mavsdk_telemetry_heading_destroy(
+    mavsdk_telemetry_heading_t* target);
+
+/**
+ * @brief Destroy an array of heading structs.
+ *
+ * Frees all memory allocated for the array and its elements, including any
+ * nested dynamic allocations. Must be called to avoid memory leaks.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ * @param size Number of elements in the array.
+ */
+CMAVSDK_EXPORT void mavsdk_telemetry_heading_array_destroy(
+    mavsdk_telemetry_heading_t** array,
+    size_t size);
+
+/**
+ * @brief Quaternion type.
+ * 
  *  All rotations and axis systems follow the right-hand rule.
  *  The Hamilton quaternion product definition is used.
  *  A zero-rotation quaternion is represented by (1,0,0,0).
  *  The quaternion could also be written as w + xi + yj + zk.
- *
+ * 
  *  For more info see: https://en.wikipedia.org/wiki/Quaternion
  *
  * @note This struct may contain dynamically allocated memory. Always call
@@ -346,43 +383,6 @@ CMAVSDK_EXPORT void mavsdk_telemetry_home_position_destroy(
  */
 CMAVSDK_EXPORT void mavsdk_telemetry_home_position_array_destroy(
     mavsdk_telemetry_home_position_t** array,
-    size_t size);
-
-/**
- * @brief Heading type used for global position
- *
- * @note This struct may contain dynamically allocated memory. Always call
- *       mavsdk_telemetry_heading_destroy() when done to avoid memory leaks.
- */
-typedef struct CMAVSDK_EXPORT {
-    /**  Heading in degrees (range: 0 to +360) */
-    double heading_deg;
-} mavsdk_telemetry_heading_t;
-
-/**
- * @brief Destroy a heading struct.
- *
- * Frees all memory allocated by MAVSDK for this struct, including any
- * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
- * Always call this function when done with the struct, even if it currently
- * contains no dynamic allocations.
- *
- * @param target Pointer to the struct to destroy. Can be NULL (no-op).
- */
-CMAVSDK_EXPORT void mavsdk_telemetry_heading_destroy(
-    mavsdk_telemetry_heading_t* target);
-
-/**
- * @brief Destroy an array of heading structs.
- *
- * Frees all memory allocated for the array and its elements, including any
- * nested dynamic allocations. Must be called to avoid memory leaks.
- *
- * @param array Pointer to the array pointer. Will be set to NULL after freeing.
- * @param size Number of elements in the array.
- */
-CMAVSDK_EXPORT void mavsdk_telemetry_heading_array_destroy(
-    mavsdk_telemetry_heading_t** array,
     size_t size);
 
 /**

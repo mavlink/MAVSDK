@@ -13007,7 +13007,7 @@ class Quaternion final
     return reinterpret_cast<const Quaternion*>(
         &_Quaternion_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 123;
+  static constexpr int kIndexInFileMessages = 122;
   friend void swap(Quaternion& a, Quaternion& b) { a.Swap(&b); }
   inline void Swap(Quaternion* other) {
     if (other == this) return;
@@ -14954,7 +14954,7 @@ class Heading final
     return reinterpret_cast<const Heading*>(
         &_Heading_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 122;
+  static constexpr int kIndexInFileMessages = 121;
   friend void swap(Heading& a, Heading& b) { a.Swap(&b); }
   inline void Swap(Heading* other) {
     if (other == this) return;
@@ -25909,7 +25909,7 @@ class HomePosition final
     return reinterpret_cast<const HomePosition*>(
         &_HomePosition_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 121;
+  static constexpr int kIndexInFileMessages = 123;
   friend void swap(HomePosition& a, HomePosition& b) { a.Swap(&b); }
   inline void Swap(HomePosition* other) {
     if (other == this) return;
@@ -36863,6 +36863,146 @@ inline void Position::_internal_set_relative_altitude_m(float value) {
 
 // -------------------------------------------------------------------
 
+// Heading
+
+// double heading_deg = 1 [(.mavsdk.options.default_value) = "NaN"];
+inline void Heading::clear_heading_deg() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.heading_deg_ = 0;
+}
+inline double Heading::heading_deg() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.Heading.heading_deg)
+  return _internal_heading_deg();
+}
+inline void Heading::set_heading_deg(double value) {
+  _internal_set_heading_deg(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.Heading.heading_deg)
+}
+inline double Heading::_internal_heading_deg() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.heading_deg_;
+}
+inline void Heading::_internal_set_heading_deg(double value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.heading_deg_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// Quaternion
+
+// float w = 1 [(.mavsdk.options.default_value) = "NaN"];
+inline void Quaternion::clear_w() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.w_ = 0;
+}
+inline float Quaternion::w() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.Quaternion.w)
+  return _internal_w();
+}
+inline void Quaternion::set_w(float value) {
+  _internal_set_w(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.Quaternion.w)
+}
+inline float Quaternion::_internal_w() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.w_;
+}
+inline void Quaternion::_internal_set_w(float value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.w_ = value;
+}
+
+// float x = 2 [(.mavsdk.options.default_value) = "NaN"];
+inline void Quaternion::clear_x() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.x_ = 0;
+}
+inline float Quaternion::x() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.Quaternion.x)
+  return _internal_x();
+}
+inline void Quaternion::set_x(float value) {
+  _internal_set_x(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.Quaternion.x)
+}
+inline float Quaternion::_internal_x() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.x_;
+}
+inline void Quaternion::_internal_set_x(float value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.x_ = value;
+}
+
+// float y = 3 [(.mavsdk.options.default_value) = "NaN"];
+inline void Quaternion::clear_y() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.y_ = 0;
+}
+inline float Quaternion::y() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.Quaternion.y)
+  return _internal_y();
+}
+inline void Quaternion::set_y(float value) {
+  _internal_set_y(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.Quaternion.y)
+}
+inline float Quaternion::_internal_y() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.y_;
+}
+inline void Quaternion::_internal_set_y(float value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.y_ = value;
+}
+
+// float z = 4 [(.mavsdk.options.default_value) = "NaN"];
+inline void Quaternion::clear_z() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.z_ = 0;
+}
+inline float Quaternion::z() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.Quaternion.z)
+  return _internal_z();
+}
+inline void Quaternion::set_z(float value) {
+  _internal_set_z(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.Quaternion.z)
+}
+inline float Quaternion::_internal_z() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.z_;
+}
+inline void Quaternion::_internal_set_z(float value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.z_ = value;
+}
+
+// uint64 timestamp_us = 5;
+inline void Quaternion::clear_timestamp_us() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.timestamp_us_ = ::uint64_t{0u};
+}
+inline ::uint64_t Quaternion::timestamp_us() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.Quaternion.timestamp_us)
+  return _internal_timestamp_us();
+}
+inline void Quaternion::set_timestamp_us(::uint64_t value) {
+  _internal_set_timestamp_us(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.Quaternion.timestamp_us)
+}
+inline ::uint64_t Quaternion::_internal_timestamp_us() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.timestamp_us_;
+}
+inline void Quaternion::_internal_set_timestamp_us(::uint64_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.timestamp_us_ = value;
+}
+
+// -------------------------------------------------------------------
+
 // HomePosition
 
 // uint64 timestamp_us = 1;
@@ -37201,146 +37341,6 @@ inline float HomePosition::_internal_approach_down_m() const {
 inline void HomePosition::_internal_set_approach_down_m(float value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.approach_down_m_ = value;
-}
-
-// -------------------------------------------------------------------
-
-// Heading
-
-// double heading_deg = 1 [(.mavsdk.options.default_value) = "NaN"];
-inline void Heading::clear_heading_deg() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.heading_deg_ = 0;
-}
-inline double Heading::heading_deg() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.Heading.heading_deg)
-  return _internal_heading_deg();
-}
-inline void Heading::set_heading_deg(double value) {
-  _internal_set_heading_deg(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.Heading.heading_deg)
-}
-inline double Heading::_internal_heading_deg() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.heading_deg_;
-}
-inline void Heading::_internal_set_heading_deg(double value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.heading_deg_ = value;
-}
-
-// -------------------------------------------------------------------
-
-// Quaternion
-
-// float w = 1 [(.mavsdk.options.default_value) = "NaN"];
-inline void Quaternion::clear_w() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.w_ = 0;
-}
-inline float Quaternion::w() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.Quaternion.w)
-  return _internal_w();
-}
-inline void Quaternion::set_w(float value) {
-  _internal_set_w(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.Quaternion.w)
-}
-inline float Quaternion::_internal_w() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.w_;
-}
-inline void Quaternion::_internal_set_w(float value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.w_ = value;
-}
-
-// float x = 2 [(.mavsdk.options.default_value) = "NaN"];
-inline void Quaternion::clear_x() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.x_ = 0;
-}
-inline float Quaternion::x() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.Quaternion.x)
-  return _internal_x();
-}
-inline void Quaternion::set_x(float value) {
-  _internal_set_x(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.Quaternion.x)
-}
-inline float Quaternion::_internal_x() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.x_;
-}
-inline void Quaternion::_internal_set_x(float value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.x_ = value;
-}
-
-// float y = 3 [(.mavsdk.options.default_value) = "NaN"];
-inline void Quaternion::clear_y() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.y_ = 0;
-}
-inline float Quaternion::y() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.Quaternion.y)
-  return _internal_y();
-}
-inline void Quaternion::set_y(float value) {
-  _internal_set_y(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.Quaternion.y)
-}
-inline float Quaternion::_internal_y() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.y_;
-}
-inline void Quaternion::_internal_set_y(float value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.y_ = value;
-}
-
-// float z = 4 [(.mavsdk.options.default_value) = "NaN"];
-inline void Quaternion::clear_z() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.z_ = 0;
-}
-inline float Quaternion::z() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.Quaternion.z)
-  return _internal_z();
-}
-inline void Quaternion::set_z(float value) {
-  _internal_set_z(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.Quaternion.z)
-}
-inline float Quaternion::_internal_z() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.z_;
-}
-inline void Quaternion::_internal_set_z(float value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.z_ = value;
-}
-
-// uint64 timestamp_us = 5;
-inline void Quaternion::clear_timestamp_us() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.timestamp_us_ = ::uint64_t{0u};
-}
-inline ::uint64_t Quaternion::timestamp_us() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.Quaternion.timestamp_us)
-  return _internal_timestamp_us();
-}
-inline void Quaternion::set_timestamp_us(::uint64_t value) {
-  _internal_set_timestamp_us(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.Quaternion.timestamp_us)
-}
-inline ::uint64_t Quaternion::_internal_timestamp_us() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.timestamp_us_;
-}
-inline void Quaternion::_internal_set_timestamp_us(::uint64_t value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.timestamp_us_ = value;
 }
 
 // -------------------------------------------------------------------

@@ -265,6 +265,31 @@ public:
 
 
     /**
+     * @brief Heading type used for global position
+     */
+    struct Heading {
+        
+        double heading_deg{double(NAN)}; /**< @brief Heading in degrees (range: 0 to +360) */
+    };
+
+    /**
+     * @brief Equal operator to compare two `Telemetry::Heading` objects.
+     *
+     * @return `true` if items are equal.
+     */
+    friend MAVSDK_PUBLIC bool operator==(const Telemetry::Heading& lhs, const Telemetry::Heading& rhs);
+
+    /**
+     * @brief Stream operator to print information about a `Telemetry::Heading`.
+     *
+     * @return A reference to the stream.
+     */
+    friend MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Telemetry::Heading const& heading);
+
+
+
+
+    /**
      * @brief Quaternion type.
      *
      * All rotations and axis systems follow the right-hand rule.
@@ -275,7 +300,7 @@ public:
      * For more info see: https://en.wikipedia.org/wiki/Quaternion
      */
     struct Quaternion {
-
+        
         float w{float(NAN)}; /**< @brief Quaternion entry 0, also denoted as a */
         float x{float(NAN)}; /**< @brief Quaternion entry 1, also denoted as b */
         float y{float(NAN)}; /**< @brief Quaternion entry 2, also denoted as c */
@@ -335,31 +360,6 @@ public:
      * @return A reference to the stream.
      */
     friend MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Telemetry::HomePosition const& home_position);
-
-
-
-
-    /**
-     * @brief Heading type used for global position
-     */
-    struct Heading {
-        
-        double heading_deg{double(NAN)}; /**< @brief Heading in degrees (range: 0 to +360) */
-    };
-
-    /**
-     * @brief Equal operator to compare two `Telemetry::Heading` objects.
-     *
-     * @return `true` if items are equal.
-     */
-    friend MAVSDK_PUBLIC bool operator==(const Telemetry::Heading& lhs, const Telemetry::Heading& rhs);
-
-    /**
-     * @brief Stream operator to print information about a `Telemetry::Heading`.
-     *
-     * @return A reference to the stream.
-     */
-    friend MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Telemetry::Heading const& heading);
 
 
 

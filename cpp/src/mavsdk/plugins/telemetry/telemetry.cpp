@@ -10,9 +10,9 @@
 namespace mavsdk {
 
 using Position = Telemetry::Position;
-using HomePosition = Telemetry::HomePosition;
 using Heading = Telemetry::Heading;
 using Quaternion = Telemetry::Quaternion;
+using HomePosition = Telemetry::HomePosition;
 using EulerAngle = Telemetry::EulerAngle;
 using AngularVelocityBody = Telemetry::AngularVelocityBody;
 using GpsInfo = Telemetry::GpsInfo;
@@ -842,6 +842,44 @@ MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Telemetry::Position co
     return str;
 }
 
+MAVSDK_PUBLIC bool operator==(const Telemetry::Heading& lhs, const Telemetry::Heading& rhs)
+{
+    return (
+        (std::isnan(rhs.heading_deg) && std::isnan(lhs.heading_deg)) ||
+        rhs.heading_deg == lhs.heading_deg);
+}
+
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Telemetry::Heading const& heading)
+{
+    str << std::setprecision(15);
+    str << "heading:" << '\n' << "{\n";
+    str << "    heading_deg: " << heading.heading_deg << '\n';
+    str << '}';
+    return str;
+}
+
+MAVSDK_PUBLIC bool operator==(const Telemetry::Quaternion& lhs, const Telemetry::Quaternion& rhs)
+{
+    return ((std::isnan(rhs.w) && std::isnan(lhs.w)) || rhs.w == lhs.w) &&
+           ((std::isnan(rhs.x) && std::isnan(lhs.x)) || rhs.x == lhs.x) &&
+           ((std::isnan(rhs.y) && std::isnan(lhs.y)) || rhs.y == lhs.y) &&
+           ((std::isnan(rhs.z) && std::isnan(lhs.z)) || rhs.z == lhs.z) &&
+           (rhs.timestamp_us == lhs.timestamp_us);
+}
+
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Telemetry::Quaternion const& quaternion)
+{
+    str << std::setprecision(15);
+    str << "quaternion:" << '\n' << "{\n";
+    str << "    w: " << quaternion.w << '\n';
+    str << "    x: " << quaternion.x << '\n';
+    str << "    y: " << quaternion.y << '\n';
+    str << "    z: " << quaternion.z << '\n';
+    str << "    timestamp_us: " << quaternion.timestamp_us << '\n';
+    str << '}';
+    return str;
+}
+
 MAVSDK_PUBLIC bool
 operator==(const Telemetry::HomePosition& lhs, const Telemetry::HomePosition& rhs)
 {
@@ -886,44 +924,6 @@ operator<<(std::ostream& str, Telemetry::HomePosition const& home_position)
     str << "    approach_north_m: " << home_position.approach_north_m << '\n';
     str << "    approach_east_m: " << home_position.approach_east_m << '\n';
     str << "    approach_down_m: " << home_position.approach_down_m << '\n';
-    str << '}';
-    return str;
-}
-
-MAVSDK_PUBLIC bool operator==(const Telemetry::Heading& lhs, const Telemetry::Heading& rhs)
-{
-    return (
-        (std::isnan(rhs.heading_deg) && std::isnan(lhs.heading_deg)) ||
-        rhs.heading_deg == lhs.heading_deg);
-}
-
-MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Telemetry::Heading const& heading)
-{
-    str << std::setprecision(15);
-    str << "heading:" << '\n' << "{\n";
-    str << "    heading_deg: " << heading.heading_deg << '\n';
-    str << '}';
-    return str;
-}
-
-MAVSDK_PUBLIC bool operator==(const Telemetry::Quaternion& lhs, const Telemetry::Quaternion& rhs)
-{
-    return ((std::isnan(rhs.w) && std::isnan(lhs.w)) || rhs.w == lhs.w) &&
-           ((std::isnan(rhs.x) && std::isnan(lhs.x)) || rhs.x == lhs.x) &&
-           ((std::isnan(rhs.y) && std::isnan(lhs.y)) || rhs.y == lhs.y) &&
-           ((std::isnan(rhs.z) && std::isnan(lhs.z)) || rhs.z == lhs.z) &&
-           (rhs.timestamp_us == lhs.timestamp_us);
-}
-
-MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Telemetry::Quaternion const& quaternion)
-{
-    str << std::setprecision(15);
-    str << "quaternion:" << '\n' << "{\n";
-    str << "    w: " << quaternion.w << '\n';
-    str << "    x: " << quaternion.x << '\n';
-    str << "    y: " << quaternion.y << '\n';
-    str << "    z: " << quaternion.z << '\n';
-    str << "    timestamp_us: " << quaternion.timestamp_us << '\n';
     str << '}';
     return str;
 }

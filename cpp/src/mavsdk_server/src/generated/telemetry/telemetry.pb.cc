@@ -4854,6 +4854,28 @@ const ::uint32_t
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::Position, _impl_.longitude_deg_),
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::Position, _impl_.absolute_altitude_m_),
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::Position, _impl_.relative_altitude_m_),
+        ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::Heading, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::Heading, _impl_.heading_deg_),
+        ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::Quaternion, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::Quaternion, _impl_.w_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::Quaternion, _impl_.x_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::Quaternion, _impl_.y_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::Quaternion, _impl_.z_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::Quaternion, _impl_.timestamp_us_),
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::HomePosition, _impl_._has_bits_),
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::HomePosition, _internal_metadata_),
         ~0u,  // no _extensions_
@@ -4886,28 +4908,6 @@ const ::uint32_t
         ~0u,
         ~0u,
         ~0u,
-        ~0u,  // no _has_bits_
-        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::Heading, _internal_metadata_),
-        ~0u,  // no _extensions_
-        ~0u,  // no _oneof_case_
-        ~0u,  // no _weak_field_map_
-        ~0u,  // no _inlined_string_donated_
-        ~0u,  // no _split_
-        ~0u,  // no sizeof(Split)
-        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::Heading, _impl_.heading_deg_),
-        ~0u,  // no _has_bits_
-        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::Quaternion, _internal_metadata_),
-        ~0u,  // no _extensions_
-        ~0u,  // no _oneof_case_
-        ~0u,  // no _weak_field_map_
-        ~0u,  // no _inlined_string_donated_
-        ~0u,  // no _split_
-        ~0u,  // no sizeof(Split)
-        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::Quaternion, _impl_.w_),
-        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::Quaternion, _impl_.x_),
-        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::Quaternion, _impl_.y_),
-        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::Quaternion, _impl_.z_),
-        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::Quaternion, _impl_.timestamp_us_),
         ~0u,  // no _has_bits_
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::EulerAngle, _internal_metadata_),
         ~0u,  // no _extensions_
@@ -5409,9 +5409,9 @@ static const ::_pbi::MigrationSchema
         {1082, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateHealthRequest)},
         {1091, 1100, -1, sizeof(::mavsdk::rpc::telemetry::SetRateHealthResponse)},
         {1101, -1, -1, sizeof(::mavsdk::rpc::telemetry::Position)},
-        {1113, 1133, -1, sizeof(::mavsdk::rpc::telemetry::HomePosition)},
-        {1145, -1, -1, sizeof(::mavsdk::rpc::telemetry::Heading)},
-        {1154, -1, -1, sizeof(::mavsdk::rpc::telemetry::Quaternion)},
+        {1113, -1, -1, sizeof(::mavsdk::rpc::telemetry::Heading)},
+        {1122, -1, -1, sizeof(::mavsdk::rpc::telemetry::Quaternion)},
+        {1135, 1155, -1, sizeof(::mavsdk::rpc::telemetry::HomePosition)},
         {1167, -1, -1, sizeof(::mavsdk::rpc::telemetry::EulerAngle)},
         {1179, -1, -1, sizeof(::mavsdk::rpc::telemetry::AngularVelocityBody)},
         {1190, -1, -1, sizeof(::mavsdk::rpc::telemetry::GpsInfo)},
@@ -5564,9 +5564,9 @@ static const ::_pb::Message* const file_default_instances[] = {
     &::mavsdk::rpc::telemetry::_SetRateHealthRequest_default_instance_._instance,
     &::mavsdk::rpc::telemetry::_SetRateHealthResponse_default_instance_._instance,
     &::mavsdk::rpc::telemetry::_Position_default_instance_._instance,
-    &::mavsdk::rpc::telemetry::_HomePosition_default_instance_._instance,
     &::mavsdk::rpc::telemetry::_Heading_default_instance_._instance,
     &::mavsdk::rpc::telemetry::_Quaternion_default_instance_._instance,
+    &::mavsdk::rpc::telemetry::_HomePosition_default_instance_._instance,
     &::mavsdk::rpc::telemetry::_EulerAngle_default_instance_._instance,
     &::mavsdk::rpc::telemetry::_AngularVelocityBody_default_instance_._instance,
     &::mavsdk::rpc::telemetry::_GpsInfo_default_instance_._instance,
@@ -5787,21 +5787,21 @@ const char descriptor_table_protodef_telemetry_2ftelemetry_2eproto[] ABSL_ATTRIB
     "itude_deg\030\001 \001(\001B\007\202\265\030\003NaN\022\036\n\rlongitude_de"
     "g\030\002 \001(\001B\007\202\265\030\003NaN\022$\n\023absolute_altitude_m\030"
     "\003 \001(\002B\007\202\265\030\003NaN\022$\n\023relative_altitude_m\030\004 "
-    "\001(\002B\007\202\265\030\003NaN\"\241\003\n\014HomePosition\022\024\n\014timesta"
-    "mp_us\030\001 \001(\004\022\035\n\014latitude_deg\030\002 \001(\001B\007\202\265\030\003N"
-    "aN\022\036\n\rlongitude_deg\030\003 \001(\001B\007\202\265\030\003NaN\022$\n\023ab"
-    "solute_altitude_m\030\004 \001(\002B\007\202\265\030\003NaN\022$\n\023rela"
-    "tive_altitude_m\030\005 \001(\002B\007\202\265\030\003NaN\022\036\n\rlocal_"
-    "north_m\030\006 \001(\002B\007\202\265\030\003NaN\022\035\n\014local_east_m\030\007"
-    " \001(\002B\007\202\265\030\003NaN\022\035\n\014local_down_m\030\010 \001(\002B\007\202\265\030"
-    "\003NaN\022+\n\001q\030\t \001(\0132 .mavsdk.rpc.telemetry.Q"
-    "uaternion\022!\n\020approach_north_m\030\n \001(\002B\007\202\265\030"
-    "\003NaN\022 \n\017approach_east_m\030\013 \001(\002B\007\202\265\030\003NaN\022 "
-    "\n\017approach_down_m\030\014 \001(\002B\007\202\265\030\003NaN\"\'\n\007Head"
-    "ing\022\034\n\013heading_deg\030\001 \001(\001B\007\202\265\030\003NaN\"r\n\nQua"
-    "ternion\022\022\n\001w\030\001 \001(\002B\007\202\265\030\003NaN\022\022\n\001x\030\002 \001(\002B\007"
-    "\202\265\030\003NaN\022\022\n\001y\030\003 \001(\002B\007\202\265\030\003NaN\022\022\n\001z\030\004 \001(\002B\007"
-    "\202\265\030\003NaN\022\024\n\014timestamp_us\030\005 \001(\004\"s\n\nEulerAn"
+    "\001(\002B\007\202\265\030\003NaN\"\'\n\007Heading\022\034\n\013heading_deg\030\001"
+    " \001(\001B\007\202\265\030\003NaN\"r\n\nQuaternion\022\022\n\001w\030\001 \001(\002B\007"
+    "\202\265\030\003NaN\022\022\n\001x\030\002 \001(\002B\007\202\265\030\003NaN\022\022\n\001y\030\003 \001(\002B\007"
+    "\202\265\030\003NaN\022\022\n\001z\030\004 \001(\002B\007\202\265\030\003NaN\022\024\n\014timestamp"
+    "_us\030\005 \001(\004\"\241\003\n\014HomePosition\022\024\n\014timestamp_"
+    "us\030\001 \001(\004\022\035\n\014latitude_deg\030\002 \001(\001B\007\202\265\030\003NaN\022"
+    "\036\n\rlongitude_deg\030\003 \001(\001B\007\202\265\030\003NaN\022$\n\023absol"
+    "ute_altitude_m\030\004 \001(\002B\007\202\265\030\003NaN\022$\n\023relativ"
+    "e_altitude_m\030\005 \001(\002B\007\202\265\030\003NaN\022\036\n\rlocal_nor"
+    "th_m\030\006 \001(\002B\007\202\265\030\003NaN\022\035\n\014local_east_m\030\007 \001("
+    "\002B\007\202\265\030\003NaN\022\035\n\014local_down_m\030\010 \001(\002B\007\202\265\030\003Na"
+    "N\022+\n\001q\030\t \001(\0132 .mavsdk.rpc.telemetry.Quat"
+    "ernion\022!\n\020approach_north_m\030\n \001(\002B\007\202\265\030\003Na"
+    "N\022 \n\017approach_east_m\030\013 \001(\002B\007\202\265\030\003NaN\022 \n\017a"
+    "pproach_down_m\030\014 \001(\002B\007\202\265\030\003NaN\"s\n\nEulerAn"
     "gle\022\031\n\010roll_deg\030\001 \001(\002B\007\202\265\030\003NaN\022\032\n\tpitch_"
     "deg\030\002 \001(\002B\007\202\265\030\003NaN\022\030\n\007yaw_deg\030\003 \001(\002B\007\202\265\030"
     "\003NaN\022\024\n\014timestamp_us\030\004 \001(\004\"l\n\023AngularVel"
@@ -30154,504 +30154,6 @@ void Position::InternalSwap(Position* PROTOBUF_RESTRICT other) {
 }
 // ===================================================================
 
-class HomePosition::_Internal {
- public:
-  using HasBits =
-      decltype(std::declval<HomePosition>()._impl_._has_bits_);
-  static constexpr ::int32_t kHasBitsOffset =
-      8 * PROTOBUF_FIELD_OFFSET(HomePosition, _impl_._has_bits_);
-};
-
-HomePosition::HomePosition(::google::protobuf::Arena* arena)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(arena, _class_data_.base()) {
-#else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(arena) {
-#endif  // PROTOBUF_CUSTOM_VTABLE
-  SharedCtor(arena);
-  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.telemetry.HomePosition)
-}
-inline PROTOBUF_NDEBUG_INLINE HomePosition::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
-    const Impl_& from, const ::mavsdk::rpc::telemetry::HomePosition& from_msg)
-      : _has_bits_{from._has_bits_},
-        _cached_size_{0} {}
-
-HomePosition::HomePosition(
-    ::google::protobuf::Arena* arena,
-    const HomePosition& from)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(arena, _class_data_.base()) {
-#else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(arena) {
-#endif  // PROTOBUF_CUSTOM_VTABLE
-  HomePosition* const _this = this;
-  (void)_this;
-  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
-      from._internal_metadata_);
-  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
-  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
-  _impl_.q_ = (cached_has_bits & 0x00000001u) ? ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::telemetry::Quaternion>(
-                              arena, *from._impl_.q_)
-                        : nullptr;
-  ::memcpy(reinterpret_cast<char *>(&_impl_) +
-               offsetof(Impl_, timestamp_us_),
-           reinterpret_cast<const char *>(&from._impl_) +
-               offsetof(Impl_, timestamp_us_),
-           offsetof(Impl_, approach_down_m_) -
-               offsetof(Impl_, timestamp_us_) +
-               sizeof(Impl_::approach_down_m_));
-
-  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry.HomePosition)
-}
-inline PROTOBUF_NDEBUG_INLINE HomePosition::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility,
-    ::google::protobuf::Arena* arena)
-      : _cached_size_{0} {}
-
-inline void HomePosition::SharedCtor(::_pb::Arena* arena) {
-  new (&_impl_) Impl_(internal_visibility(), arena);
-  ::memset(reinterpret_cast<char *>(&_impl_) +
-               offsetof(Impl_, q_),
-           0,
-           offsetof(Impl_, approach_down_m_) -
-               offsetof(Impl_, q_) +
-               sizeof(Impl_::approach_down_m_));
-}
-HomePosition::~HomePosition() {
-  // @@protoc_insertion_point(destructor:mavsdk.rpc.telemetry.HomePosition)
-  SharedDtor(*this);
-}
-inline void HomePosition::SharedDtor(MessageLite& self) {
-  HomePosition& this_ = static_cast<HomePosition&>(self);
-  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
-  ABSL_DCHECK(this_.GetArena() == nullptr);
-  delete this_._impl_.q_;
-  this_._impl_.~Impl_();
-}
-
-inline void* HomePosition::PlacementNew_(const void*, void* mem,
-                                        ::google::protobuf::Arena* arena) {
-  return ::new (mem) HomePosition(arena);
-}
-constexpr auto HomePosition::InternalNewImpl_() {
-  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(HomePosition),
-                                            alignof(HomePosition));
-}
-PROTOBUF_CONSTINIT
-PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::google::protobuf::internal::ClassDataFull HomePosition::_class_data_ = {
-    ::google::protobuf::internal::ClassData{
-        &_HomePosition_default_instance_._instance,
-        &_table_.header,
-        nullptr,  // OnDemandRegisterArenaDtor
-        nullptr,  // IsInitialized
-        &HomePosition::MergeImpl,
-        ::google::protobuf::Message::GetNewImpl<HomePosition>(),
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-        &HomePosition::SharedDtor,
-        ::google::protobuf::Message::GetClearImpl<HomePosition>(), &HomePosition::ByteSizeLong,
-            &HomePosition::_InternalSerialize,
-#endif  // PROTOBUF_CUSTOM_VTABLE
-        PROTOBUF_FIELD_OFFSET(HomePosition, _impl_._cached_size_),
-        false,
-    },
-    &HomePosition::kDescriptorMethods,
-    &descriptor_table_telemetry_2ftelemetry_2eproto,
-    nullptr,  // tracker
-};
-const ::google::protobuf::internal::ClassData* HomePosition::GetClassData() const {
-  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
-  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
-  return _class_data_.base();
-}
-PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<4, 12, 1, 0, 2> HomePosition::_table_ = {
-  {
-    PROTOBUF_FIELD_OFFSET(HomePosition, _impl_._has_bits_),
-    0, // no _extensions_
-    12, 120,  // max_field_number, fast_idx_mask
-    offsetof(decltype(_table_), field_lookup_table),
-    4294963200,  // skipmap
-    offsetof(decltype(_table_), field_entries),
-    12,  // num_field_entries
-    1,  // num_aux_entries
-    offsetof(decltype(_table_), aux_entries),
-    _class_data_.base(),
-    nullptr,  // post_loop_handler
-    ::_pbi::TcParser::GenericFallback,  // fallback
-    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-    ::_pbi::TcParser::GetTable<::mavsdk::rpc::telemetry::HomePosition>(),  // to_prefetch
-    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
-  }, {{
-    {::_pbi::TcParser::MiniParse, {}},
-    // uint64 timestamp_us = 1;
-    {::_pbi::TcParser::SingularVarintNoZag1<::uint64_t, offsetof(HomePosition, _impl_.timestamp_us_), 63>(),
-     {8, 63, 0, PROTOBUF_FIELD_OFFSET(HomePosition, _impl_.timestamp_us_)}},
-    // double latitude_deg = 2 [(.mavsdk.options.default_value) = "NaN"];
-    {::_pbi::TcParser::FastF64S1,
-     {17, 63, 0, PROTOBUF_FIELD_OFFSET(HomePosition, _impl_.latitude_deg_)}},
-    // double longitude_deg = 3 [(.mavsdk.options.default_value) = "NaN"];
-    {::_pbi::TcParser::FastF64S1,
-     {25, 63, 0, PROTOBUF_FIELD_OFFSET(HomePosition, _impl_.longitude_deg_)}},
-    // float absolute_altitude_m = 4 [(.mavsdk.options.default_value) = "NaN"];
-    {::_pbi::TcParser::FastF32S1,
-     {37, 63, 0, PROTOBUF_FIELD_OFFSET(HomePosition, _impl_.absolute_altitude_m_)}},
-    // float relative_altitude_m = 5 [(.mavsdk.options.default_value) = "NaN"];
-    {::_pbi::TcParser::FastF32S1,
-     {45, 63, 0, PROTOBUF_FIELD_OFFSET(HomePosition, _impl_.relative_altitude_m_)}},
-    // float local_north_m = 6 [(.mavsdk.options.default_value) = "NaN"];
-    {::_pbi::TcParser::FastF32S1,
-     {53, 63, 0, PROTOBUF_FIELD_OFFSET(HomePosition, _impl_.local_north_m_)}},
-    // float local_east_m = 7 [(.mavsdk.options.default_value) = "NaN"];
-    {::_pbi::TcParser::FastF32S1,
-     {61, 63, 0, PROTOBUF_FIELD_OFFSET(HomePosition, _impl_.local_east_m_)}},
-    // float local_down_m = 8 [(.mavsdk.options.default_value) = "NaN"];
-    {::_pbi::TcParser::FastF32S1,
-     {69, 63, 0, PROTOBUF_FIELD_OFFSET(HomePosition, _impl_.local_down_m_)}},
-    // .mavsdk.rpc.telemetry.Quaternion q = 9;
-    {::_pbi::TcParser::FastMtS1,
-     {74, 0, 0, PROTOBUF_FIELD_OFFSET(HomePosition, _impl_.q_)}},
-    // float approach_north_m = 10 [(.mavsdk.options.default_value) = "NaN"];
-    {::_pbi::TcParser::FastF32S1,
-     {85, 63, 0, PROTOBUF_FIELD_OFFSET(HomePosition, _impl_.approach_north_m_)}},
-    // float approach_east_m = 11 [(.mavsdk.options.default_value) = "NaN"];
-    {::_pbi::TcParser::FastF32S1,
-     {93, 63, 0, PROTOBUF_FIELD_OFFSET(HomePosition, _impl_.approach_east_m_)}},
-    // float approach_down_m = 12 [(.mavsdk.options.default_value) = "NaN"];
-    {::_pbi::TcParser::FastF32S1,
-     {101, 63, 0, PROTOBUF_FIELD_OFFSET(HomePosition, _impl_.approach_down_m_)}},
-    {::_pbi::TcParser::MiniParse, {}},
-    {::_pbi::TcParser::MiniParse, {}},
-    {::_pbi::TcParser::MiniParse, {}},
-  }}, {{
-    65535, 65535
-  }}, {{
-    // uint64 timestamp_us = 1;
-    {PROTOBUF_FIELD_OFFSET(HomePosition, _impl_.timestamp_us_), -1, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kUInt64)},
-    // double latitude_deg = 2 [(.mavsdk.options.default_value) = "NaN"];
-    {PROTOBUF_FIELD_OFFSET(HomePosition, _impl_.latitude_deg_), -1, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kDouble)},
-    // double longitude_deg = 3 [(.mavsdk.options.default_value) = "NaN"];
-    {PROTOBUF_FIELD_OFFSET(HomePosition, _impl_.longitude_deg_), -1, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kDouble)},
-    // float absolute_altitude_m = 4 [(.mavsdk.options.default_value) = "NaN"];
-    {PROTOBUF_FIELD_OFFSET(HomePosition, _impl_.absolute_altitude_m_), -1, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
-    // float relative_altitude_m = 5 [(.mavsdk.options.default_value) = "NaN"];
-    {PROTOBUF_FIELD_OFFSET(HomePosition, _impl_.relative_altitude_m_), -1, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
-    // float local_north_m = 6 [(.mavsdk.options.default_value) = "NaN"];
-    {PROTOBUF_FIELD_OFFSET(HomePosition, _impl_.local_north_m_), -1, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
-    // float local_east_m = 7 [(.mavsdk.options.default_value) = "NaN"];
-    {PROTOBUF_FIELD_OFFSET(HomePosition, _impl_.local_east_m_), -1, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
-    // float local_down_m = 8 [(.mavsdk.options.default_value) = "NaN"];
-    {PROTOBUF_FIELD_OFFSET(HomePosition, _impl_.local_down_m_), -1, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
-    // .mavsdk.rpc.telemetry.Quaternion q = 9;
-    {PROTOBUF_FIELD_OFFSET(HomePosition, _impl_.q_), _Internal::kHasBitsOffset + 0, 0,
-    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
-    // float approach_north_m = 10 [(.mavsdk.options.default_value) = "NaN"];
-    {PROTOBUF_FIELD_OFFSET(HomePosition, _impl_.approach_north_m_), -1, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
-    // float approach_east_m = 11 [(.mavsdk.options.default_value) = "NaN"];
-    {PROTOBUF_FIELD_OFFSET(HomePosition, _impl_.approach_east_m_), -1, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
-    // float approach_down_m = 12 [(.mavsdk.options.default_value) = "NaN"];
-    {PROTOBUF_FIELD_OFFSET(HomePosition, _impl_.approach_down_m_), -1, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
-  }}, {{
-    {::_pbi::TcParser::GetTable<::mavsdk::rpc::telemetry::Quaternion>()},
-  }}, {{
-  }},
-};
-
-PROTOBUF_NOINLINE void HomePosition::Clear() {
-// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry.HomePosition)
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  ::uint32_t cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  cached_has_bits = _impl_._has_bits_[0];
-  if (cached_has_bits & 0x00000001u) {
-    ABSL_DCHECK(_impl_.q_ != nullptr);
-    _impl_.q_->Clear();
-  }
-  ::memset(&_impl_.timestamp_us_, 0, static_cast<::size_t>(
-      reinterpret_cast<char*>(&_impl_.approach_down_m_) -
-      reinterpret_cast<char*>(&_impl_.timestamp_us_)) + sizeof(_impl_.approach_down_m_));
-  _impl_._has_bits_.Clear();
-  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
-}
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-        ::uint8_t* HomePosition::_InternalSerialize(
-            const MessageLite& base, ::uint8_t* target,
-            ::google::protobuf::io::EpsCopyOutputStream* stream) {
-          const HomePosition& this_ = static_cast<const HomePosition&>(base);
-#else   // PROTOBUF_CUSTOM_VTABLE
-        ::uint8_t* HomePosition::_InternalSerialize(
-            ::uint8_t* target,
-            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
-          const HomePosition& this_ = *this;
-#endif  // PROTOBUF_CUSTOM_VTABLE
-          // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry.HomePosition)
-          ::uint32_t cached_has_bits = 0;
-          (void)cached_has_bits;
-
-          // uint64 timestamp_us = 1;
-          if (this_._internal_timestamp_us() != 0) {
-            target = stream->EnsureSpace(target);
-            target = ::_pbi::WireFormatLite::WriteUInt64ToArray(
-                1, this_._internal_timestamp_us(), target);
-          }
-
-          // double latitude_deg = 2 [(.mavsdk.options.default_value) = "NaN"];
-          if (::absl::bit_cast<::uint64_t>(this_._internal_latitude_deg()) != 0) {
-            target = stream->EnsureSpace(target);
-            target = ::_pbi::WireFormatLite::WriteDoubleToArray(
-                2, this_._internal_latitude_deg(), target);
-          }
-
-          // double longitude_deg = 3 [(.mavsdk.options.default_value) = "NaN"];
-          if (::absl::bit_cast<::uint64_t>(this_._internal_longitude_deg()) != 0) {
-            target = stream->EnsureSpace(target);
-            target = ::_pbi::WireFormatLite::WriteDoubleToArray(
-                3, this_._internal_longitude_deg(), target);
-          }
-
-          // float absolute_altitude_m = 4 [(.mavsdk.options.default_value) = "NaN"];
-          if (::absl::bit_cast<::uint32_t>(this_._internal_absolute_altitude_m()) != 0) {
-            target = stream->EnsureSpace(target);
-            target = ::_pbi::WireFormatLite::WriteFloatToArray(
-                4, this_._internal_absolute_altitude_m(), target);
-          }
-
-          // float relative_altitude_m = 5 [(.mavsdk.options.default_value) = "NaN"];
-          if (::absl::bit_cast<::uint32_t>(this_._internal_relative_altitude_m()) != 0) {
-            target = stream->EnsureSpace(target);
-            target = ::_pbi::WireFormatLite::WriteFloatToArray(
-                5, this_._internal_relative_altitude_m(), target);
-          }
-
-          // float local_north_m = 6 [(.mavsdk.options.default_value) = "NaN"];
-          if (::absl::bit_cast<::uint32_t>(this_._internal_local_north_m()) != 0) {
-            target = stream->EnsureSpace(target);
-            target = ::_pbi::WireFormatLite::WriteFloatToArray(
-                6, this_._internal_local_north_m(), target);
-          }
-
-          // float local_east_m = 7 [(.mavsdk.options.default_value) = "NaN"];
-          if (::absl::bit_cast<::uint32_t>(this_._internal_local_east_m()) != 0) {
-            target = stream->EnsureSpace(target);
-            target = ::_pbi::WireFormatLite::WriteFloatToArray(
-                7, this_._internal_local_east_m(), target);
-          }
-
-          // float local_down_m = 8 [(.mavsdk.options.default_value) = "NaN"];
-          if (::absl::bit_cast<::uint32_t>(this_._internal_local_down_m()) != 0) {
-            target = stream->EnsureSpace(target);
-            target = ::_pbi::WireFormatLite::WriteFloatToArray(
-                8, this_._internal_local_down_m(), target);
-          }
-
-          cached_has_bits = this_._impl_._has_bits_[0];
-          // .mavsdk.rpc.telemetry.Quaternion q = 9;
-          if (cached_has_bits & 0x00000001u) {
-            target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-                9, *this_._impl_.q_, this_._impl_.q_->GetCachedSize(), target,
-                stream);
-          }
-
-          // float approach_north_m = 10 [(.mavsdk.options.default_value) = "NaN"];
-          if (::absl::bit_cast<::uint32_t>(this_._internal_approach_north_m()) != 0) {
-            target = stream->EnsureSpace(target);
-            target = ::_pbi::WireFormatLite::WriteFloatToArray(
-                10, this_._internal_approach_north_m(), target);
-          }
-
-          // float approach_east_m = 11 [(.mavsdk.options.default_value) = "NaN"];
-          if (::absl::bit_cast<::uint32_t>(this_._internal_approach_east_m()) != 0) {
-            target = stream->EnsureSpace(target);
-            target = ::_pbi::WireFormatLite::WriteFloatToArray(
-                11, this_._internal_approach_east_m(), target);
-          }
-
-          // float approach_down_m = 12 [(.mavsdk.options.default_value) = "NaN"];
-          if (::absl::bit_cast<::uint32_t>(this_._internal_approach_down_m()) != 0) {
-            target = stream->EnsureSpace(target);
-            target = ::_pbi::WireFormatLite::WriteFloatToArray(
-                12, this_._internal_approach_down_m(), target);
-          }
-
-          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
-            target =
-                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
-          }
-          // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry.HomePosition)
-          return target;
-        }
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-        ::size_t HomePosition::ByteSizeLong(const MessageLite& base) {
-          const HomePosition& this_ = static_cast<const HomePosition&>(base);
-#else   // PROTOBUF_CUSTOM_VTABLE
-        ::size_t HomePosition::ByteSizeLong() const {
-          const HomePosition& this_ = *this;
-#endif  // PROTOBUF_CUSTOM_VTABLE
-          // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.telemetry.HomePosition)
-          ::size_t total_size = 0;
-
-          ::uint32_t cached_has_bits = 0;
-          // Prevent compiler warnings about cached_has_bits being unused
-          (void)cached_has_bits;
-
-          ::_pbi::Prefetch5LinesFrom7Lines(&this_);
-           {
-            // .mavsdk.rpc.telemetry.Quaternion q = 9;
-            cached_has_bits = this_._impl_._has_bits_[0];
-            if (cached_has_bits & 0x00000001u) {
-              total_size += 1 +
-                            ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.q_);
-            }
-          }
-           {
-            // uint64 timestamp_us = 1;
-            if (this_._internal_timestamp_us() != 0) {
-              total_size += ::_pbi::WireFormatLite::UInt64SizePlusOne(
-                  this_._internal_timestamp_us());
-            }
-            // double latitude_deg = 2 [(.mavsdk.options.default_value) = "NaN"];
-            if (::absl::bit_cast<::uint64_t>(this_._internal_latitude_deg()) != 0) {
-              total_size += 9;
-            }
-            // double longitude_deg = 3 [(.mavsdk.options.default_value) = "NaN"];
-            if (::absl::bit_cast<::uint64_t>(this_._internal_longitude_deg()) != 0) {
-              total_size += 9;
-            }
-            // float absolute_altitude_m = 4 [(.mavsdk.options.default_value) = "NaN"];
-            if (::absl::bit_cast<::uint32_t>(this_._internal_absolute_altitude_m()) != 0) {
-              total_size += 5;
-            }
-            // float relative_altitude_m = 5 [(.mavsdk.options.default_value) = "NaN"];
-            if (::absl::bit_cast<::uint32_t>(this_._internal_relative_altitude_m()) != 0) {
-              total_size += 5;
-            }
-            // float local_north_m = 6 [(.mavsdk.options.default_value) = "NaN"];
-            if (::absl::bit_cast<::uint32_t>(this_._internal_local_north_m()) != 0) {
-              total_size += 5;
-            }
-            // float local_east_m = 7 [(.mavsdk.options.default_value) = "NaN"];
-            if (::absl::bit_cast<::uint32_t>(this_._internal_local_east_m()) != 0) {
-              total_size += 5;
-            }
-            // float local_down_m = 8 [(.mavsdk.options.default_value) = "NaN"];
-            if (::absl::bit_cast<::uint32_t>(this_._internal_local_down_m()) != 0) {
-              total_size += 5;
-            }
-            // float approach_north_m = 10 [(.mavsdk.options.default_value) = "NaN"];
-            if (::absl::bit_cast<::uint32_t>(this_._internal_approach_north_m()) != 0) {
-              total_size += 5;
-            }
-            // float approach_east_m = 11 [(.mavsdk.options.default_value) = "NaN"];
-            if (::absl::bit_cast<::uint32_t>(this_._internal_approach_east_m()) != 0) {
-              total_size += 5;
-            }
-            // float approach_down_m = 12 [(.mavsdk.options.default_value) = "NaN"];
-            if (::absl::bit_cast<::uint32_t>(this_._internal_approach_down_m()) != 0) {
-              total_size += 5;
-            }
-          }
-          return this_.MaybeComputeUnknownFieldsSize(total_size,
-                                                     &this_._impl_._cached_size_);
-        }
-
-void HomePosition::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
-  auto* const _this = static_cast<HomePosition*>(&to_msg);
-  auto& from = static_cast<const HomePosition&>(from_msg);
-  ::google::protobuf::Arena* arena = _this->GetArena();
-  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry.HomePosition)
-  ABSL_DCHECK_NE(&from, _this);
-  ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  cached_has_bits = from._impl_._has_bits_[0];
-  if (cached_has_bits & 0x00000001u) {
-    ABSL_DCHECK(from._impl_.q_ != nullptr);
-    if (_this->_impl_.q_ == nullptr) {
-      _this->_impl_.q_ =
-          ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::telemetry::Quaternion>(arena, *from._impl_.q_);
-    } else {
-      _this->_impl_.q_->MergeFrom(*from._impl_.q_);
-    }
-  }
-  if (from._internal_timestamp_us() != 0) {
-    _this->_impl_.timestamp_us_ = from._impl_.timestamp_us_;
-  }
-  if (::absl::bit_cast<::uint64_t>(from._internal_latitude_deg()) != 0) {
-    _this->_impl_.latitude_deg_ = from._impl_.latitude_deg_;
-  }
-  if (::absl::bit_cast<::uint64_t>(from._internal_longitude_deg()) != 0) {
-    _this->_impl_.longitude_deg_ = from._impl_.longitude_deg_;
-  }
-  if (::absl::bit_cast<::uint32_t>(from._internal_absolute_altitude_m()) != 0) {
-    _this->_impl_.absolute_altitude_m_ = from._impl_.absolute_altitude_m_;
-  }
-  if (::absl::bit_cast<::uint32_t>(from._internal_relative_altitude_m()) != 0) {
-    _this->_impl_.relative_altitude_m_ = from._impl_.relative_altitude_m_;
-  }
-  if (::absl::bit_cast<::uint32_t>(from._internal_local_north_m()) != 0) {
-    _this->_impl_.local_north_m_ = from._impl_.local_north_m_;
-  }
-  if (::absl::bit_cast<::uint32_t>(from._internal_local_east_m()) != 0) {
-    _this->_impl_.local_east_m_ = from._impl_.local_east_m_;
-  }
-  if (::absl::bit_cast<::uint32_t>(from._internal_local_down_m()) != 0) {
-    _this->_impl_.local_down_m_ = from._impl_.local_down_m_;
-  }
-  if (::absl::bit_cast<::uint32_t>(from._internal_approach_north_m()) != 0) {
-    _this->_impl_.approach_north_m_ = from._impl_.approach_north_m_;
-  }
-  if (::absl::bit_cast<::uint32_t>(from._internal_approach_east_m()) != 0) {
-    _this->_impl_.approach_east_m_ = from._impl_.approach_east_m_;
-  }
-  if (::absl::bit_cast<::uint32_t>(from._internal_approach_down_m()) != 0) {
-    _this->_impl_.approach_down_m_ = from._impl_.approach_down_m_;
-  }
-  _this->_impl_._has_bits_[0] |= cached_has_bits;
-  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
-}
-
-void HomePosition::CopyFrom(const HomePosition& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.telemetry.HomePosition)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-
-void HomePosition::InternalSwap(HomePosition* PROTOBUF_RESTRICT other) {
-  using std::swap;
-  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
-  ::google::protobuf::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(HomePosition, _impl_.approach_down_m_)
-      + sizeof(HomePosition::_impl_.approach_down_m_)
-      - PROTOBUF_FIELD_OFFSET(HomePosition, _impl_.q_)>(
-          reinterpret_cast<char*>(&_impl_.q_),
-          reinterpret_cast<char*>(&other->_impl_.q_));
-}
-
-::google::protobuf::Metadata HomePosition::GetMetadata() const {
-  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
-}
-// ===================================================================
-
 class Heading::_Internal {
  public:
 };
@@ -31157,6 +30659,504 @@ void Quaternion::InternalSwap(Quaternion* PROTOBUF_RESTRICT other) {
 }
 
 ::google::protobuf::Metadata Quaternion::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class HomePosition::_Internal {
+ public:
+  using HasBits =
+      decltype(std::declval<HomePosition>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+      8 * PROTOBUF_FIELD_OFFSET(HomePosition, _impl_._has_bits_);
+};
+
+HomePosition::HomePosition(::google::protobuf::Arena* arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.telemetry.HomePosition)
+}
+inline PROTOBUF_NDEBUG_INLINE HomePosition::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from, const ::mavsdk::rpc::telemetry::HomePosition& from_msg)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0} {}
+
+HomePosition::HomePosition(
+    ::google::protobuf::Arena* arena,
+    const HomePosition& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  HomePosition* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.q_ = (cached_has_bits & 0x00000001u) ? ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::telemetry::Quaternion>(
+                              arena, *from._impl_.q_)
+                        : nullptr;
+  ::memcpy(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, timestamp_us_),
+           reinterpret_cast<const char *>(&from._impl_) +
+               offsetof(Impl_, timestamp_us_),
+           offsetof(Impl_, approach_down_m_) -
+               offsetof(Impl_, timestamp_us_) +
+               sizeof(Impl_::approach_down_m_));
+
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry.HomePosition)
+}
+inline PROTOBUF_NDEBUG_INLINE HomePosition::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
+
+inline void HomePosition::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, q_),
+           0,
+           offsetof(Impl_, approach_down_m_) -
+               offsetof(Impl_, q_) +
+               sizeof(Impl_::approach_down_m_));
+}
+HomePosition::~HomePosition() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.telemetry.HomePosition)
+  SharedDtor(*this);
+}
+inline void HomePosition::SharedDtor(MessageLite& self) {
+  HomePosition& this_ = static_cast<HomePosition&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  delete this_._impl_.q_;
+  this_._impl_.~Impl_();
+}
+
+inline void* HomePosition::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) HomePosition(arena);
+}
+constexpr auto HomePosition::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(HomePosition),
+                                            alignof(HomePosition));
+}
+PROTOBUF_CONSTINIT
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::google::protobuf::internal::ClassDataFull HomePosition::_class_data_ = {
+    ::google::protobuf::internal::ClassData{
+        &_HomePosition_default_instance_._instance,
+        &_table_.header,
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
+        &HomePosition::MergeImpl,
+        ::google::protobuf::Message::GetNewImpl<HomePosition>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        &HomePosition::SharedDtor,
+        ::google::protobuf::Message::GetClearImpl<HomePosition>(), &HomePosition::ByteSizeLong,
+            &HomePosition::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+        PROTOBUF_FIELD_OFFSET(HomePosition, _impl_._cached_size_),
+        false,
+    },
+    &HomePosition::kDescriptorMethods,
+    &descriptor_table_telemetry_2ftelemetry_2eproto,
+    nullptr,  // tracker
+};
+const ::google::protobuf::internal::ClassData* HomePosition::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<4, 12, 1, 0, 2> HomePosition::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(HomePosition, _impl_._has_bits_),
+    0, // no _extensions_
+    12, 120,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294963200,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    12,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::mavsdk::rpc::telemetry::HomePosition>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
+    // uint64 timestamp_us = 1;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint64_t, offsetof(HomePosition, _impl_.timestamp_us_), 63>(),
+     {8, 63, 0, PROTOBUF_FIELD_OFFSET(HomePosition, _impl_.timestamp_us_)}},
+    // double latitude_deg = 2 [(.mavsdk.options.default_value) = "NaN"];
+    {::_pbi::TcParser::FastF64S1,
+     {17, 63, 0, PROTOBUF_FIELD_OFFSET(HomePosition, _impl_.latitude_deg_)}},
+    // double longitude_deg = 3 [(.mavsdk.options.default_value) = "NaN"];
+    {::_pbi::TcParser::FastF64S1,
+     {25, 63, 0, PROTOBUF_FIELD_OFFSET(HomePosition, _impl_.longitude_deg_)}},
+    // float absolute_altitude_m = 4 [(.mavsdk.options.default_value) = "NaN"];
+    {::_pbi::TcParser::FastF32S1,
+     {37, 63, 0, PROTOBUF_FIELD_OFFSET(HomePosition, _impl_.absolute_altitude_m_)}},
+    // float relative_altitude_m = 5 [(.mavsdk.options.default_value) = "NaN"];
+    {::_pbi::TcParser::FastF32S1,
+     {45, 63, 0, PROTOBUF_FIELD_OFFSET(HomePosition, _impl_.relative_altitude_m_)}},
+    // float local_north_m = 6 [(.mavsdk.options.default_value) = "NaN"];
+    {::_pbi::TcParser::FastF32S1,
+     {53, 63, 0, PROTOBUF_FIELD_OFFSET(HomePosition, _impl_.local_north_m_)}},
+    // float local_east_m = 7 [(.mavsdk.options.default_value) = "NaN"];
+    {::_pbi::TcParser::FastF32S1,
+     {61, 63, 0, PROTOBUF_FIELD_OFFSET(HomePosition, _impl_.local_east_m_)}},
+    // float local_down_m = 8 [(.mavsdk.options.default_value) = "NaN"];
+    {::_pbi::TcParser::FastF32S1,
+     {69, 63, 0, PROTOBUF_FIELD_OFFSET(HomePosition, _impl_.local_down_m_)}},
+    // .mavsdk.rpc.telemetry.Quaternion q = 9;
+    {::_pbi::TcParser::FastMtS1,
+     {74, 0, 0, PROTOBUF_FIELD_OFFSET(HomePosition, _impl_.q_)}},
+    // float approach_north_m = 10 [(.mavsdk.options.default_value) = "NaN"];
+    {::_pbi::TcParser::FastF32S1,
+     {85, 63, 0, PROTOBUF_FIELD_OFFSET(HomePosition, _impl_.approach_north_m_)}},
+    // float approach_east_m = 11 [(.mavsdk.options.default_value) = "NaN"];
+    {::_pbi::TcParser::FastF32S1,
+     {93, 63, 0, PROTOBUF_FIELD_OFFSET(HomePosition, _impl_.approach_east_m_)}},
+    // float approach_down_m = 12 [(.mavsdk.options.default_value) = "NaN"];
+    {::_pbi::TcParser::FastF32S1,
+     {101, 63, 0, PROTOBUF_FIELD_OFFSET(HomePosition, _impl_.approach_down_m_)}},
+    {::_pbi::TcParser::MiniParse, {}},
+    {::_pbi::TcParser::MiniParse, {}},
+    {::_pbi::TcParser::MiniParse, {}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // uint64 timestamp_us = 1;
+    {PROTOBUF_FIELD_OFFSET(HomePosition, _impl_.timestamp_us_), -1, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUInt64)},
+    // double latitude_deg = 2 [(.mavsdk.options.default_value) = "NaN"];
+    {PROTOBUF_FIELD_OFFSET(HomePosition, _impl_.latitude_deg_), -1, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kDouble)},
+    // double longitude_deg = 3 [(.mavsdk.options.default_value) = "NaN"];
+    {PROTOBUF_FIELD_OFFSET(HomePosition, _impl_.longitude_deg_), -1, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kDouble)},
+    // float absolute_altitude_m = 4 [(.mavsdk.options.default_value) = "NaN"];
+    {PROTOBUF_FIELD_OFFSET(HomePosition, _impl_.absolute_altitude_m_), -1, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+    // float relative_altitude_m = 5 [(.mavsdk.options.default_value) = "NaN"];
+    {PROTOBUF_FIELD_OFFSET(HomePosition, _impl_.relative_altitude_m_), -1, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+    // float local_north_m = 6 [(.mavsdk.options.default_value) = "NaN"];
+    {PROTOBUF_FIELD_OFFSET(HomePosition, _impl_.local_north_m_), -1, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+    // float local_east_m = 7 [(.mavsdk.options.default_value) = "NaN"];
+    {PROTOBUF_FIELD_OFFSET(HomePosition, _impl_.local_east_m_), -1, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+    // float local_down_m = 8 [(.mavsdk.options.default_value) = "NaN"];
+    {PROTOBUF_FIELD_OFFSET(HomePosition, _impl_.local_down_m_), -1, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+    // .mavsdk.rpc.telemetry.Quaternion q = 9;
+    {PROTOBUF_FIELD_OFFSET(HomePosition, _impl_.q_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+    // float approach_north_m = 10 [(.mavsdk.options.default_value) = "NaN"];
+    {PROTOBUF_FIELD_OFFSET(HomePosition, _impl_.approach_north_m_), -1, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+    // float approach_east_m = 11 [(.mavsdk.options.default_value) = "NaN"];
+    {PROTOBUF_FIELD_OFFSET(HomePosition, _impl_.approach_east_m_), -1, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+    // float approach_down_m = 12 [(.mavsdk.options.default_value) = "NaN"];
+    {PROTOBUF_FIELD_OFFSET(HomePosition, _impl_.approach_down_m_), -1, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::telemetry::Quaternion>()},
+  }}, {{
+  }},
+};
+
+PROTOBUF_NOINLINE void HomePosition::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry.HomePosition)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(_impl_.q_ != nullptr);
+    _impl_.q_->Clear();
+  }
+  ::memset(&_impl_.timestamp_us_, 0, static_cast<::size_t>(
+      reinterpret_cast<char*>(&_impl_.approach_down_m_) -
+      reinterpret_cast<char*>(&_impl_.timestamp_us_)) + sizeof(_impl_.approach_down_m_));
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::uint8_t* HomePosition::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const HomePosition& this_ = static_cast<const HomePosition&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* HomePosition::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const HomePosition& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry.HomePosition)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
+
+          // uint64 timestamp_us = 1;
+          if (this_._internal_timestamp_us() != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteUInt64ToArray(
+                1, this_._internal_timestamp_us(), target);
+          }
+
+          // double latitude_deg = 2 [(.mavsdk.options.default_value) = "NaN"];
+          if (::absl::bit_cast<::uint64_t>(this_._internal_latitude_deg()) != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteDoubleToArray(
+                2, this_._internal_latitude_deg(), target);
+          }
+
+          // double longitude_deg = 3 [(.mavsdk.options.default_value) = "NaN"];
+          if (::absl::bit_cast<::uint64_t>(this_._internal_longitude_deg()) != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteDoubleToArray(
+                3, this_._internal_longitude_deg(), target);
+          }
+
+          // float absolute_altitude_m = 4 [(.mavsdk.options.default_value) = "NaN"];
+          if (::absl::bit_cast<::uint32_t>(this_._internal_absolute_altitude_m()) != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteFloatToArray(
+                4, this_._internal_absolute_altitude_m(), target);
+          }
+
+          // float relative_altitude_m = 5 [(.mavsdk.options.default_value) = "NaN"];
+          if (::absl::bit_cast<::uint32_t>(this_._internal_relative_altitude_m()) != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteFloatToArray(
+                5, this_._internal_relative_altitude_m(), target);
+          }
+
+          // float local_north_m = 6 [(.mavsdk.options.default_value) = "NaN"];
+          if (::absl::bit_cast<::uint32_t>(this_._internal_local_north_m()) != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteFloatToArray(
+                6, this_._internal_local_north_m(), target);
+          }
+
+          // float local_east_m = 7 [(.mavsdk.options.default_value) = "NaN"];
+          if (::absl::bit_cast<::uint32_t>(this_._internal_local_east_m()) != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteFloatToArray(
+                7, this_._internal_local_east_m(), target);
+          }
+
+          // float local_down_m = 8 [(.mavsdk.options.default_value) = "NaN"];
+          if (::absl::bit_cast<::uint32_t>(this_._internal_local_down_m()) != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteFloatToArray(
+                8, this_._internal_local_down_m(), target);
+          }
+
+          cached_has_bits = this_._impl_._has_bits_[0];
+          // .mavsdk.rpc.telemetry.Quaternion q = 9;
+          if (cached_has_bits & 0x00000001u) {
+            target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+                9, *this_._impl_.q_, this_._impl_.q_->GetCachedSize(), target,
+                stream);
+          }
+
+          // float approach_north_m = 10 [(.mavsdk.options.default_value) = "NaN"];
+          if (::absl::bit_cast<::uint32_t>(this_._internal_approach_north_m()) != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteFloatToArray(
+                10, this_._internal_approach_north_m(), target);
+          }
+
+          // float approach_east_m = 11 [(.mavsdk.options.default_value) = "NaN"];
+          if (::absl::bit_cast<::uint32_t>(this_._internal_approach_east_m()) != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteFloatToArray(
+                11, this_._internal_approach_east_m(), target);
+          }
+
+          // float approach_down_m = 12 [(.mavsdk.options.default_value) = "NaN"];
+          if (::absl::bit_cast<::uint32_t>(this_._internal_approach_down_m()) != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteFloatToArray(
+                12, this_._internal_approach_down_m(), target);
+          }
+
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry.HomePosition)
+          return target;
+        }
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t HomePosition::ByteSizeLong(const MessageLite& base) {
+          const HomePosition& this_ = static_cast<const HomePosition&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t HomePosition::ByteSizeLong() const {
+          const HomePosition& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.telemetry.HomePosition)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+          ::_pbi::Prefetch5LinesFrom7Lines(&this_);
+           {
+            // .mavsdk.rpc.telemetry.Quaternion q = 9;
+            cached_has_bits = this_._impl_._has_bits_[0];
+            if (cached_has_bits & 0x00000001u) {
+              total_size += 1 +
+                            ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.q_);
+            }
+          }
+           {
+            // uint64 timestamp_us = 1;
+            if (this_._internal_timestamp_us() != 0) {
+              total_size += ::_pbi::WireFormatLite::UInt64SizePlusOne(
+                  this_._internal_timestamp_us());
+            }
+            // double latitude_deg = 2 [(.mavsdk.options.default_value) = "NaN"];
+            if (::absl::bit_cast<::uint64_t>(this_._internal_latitude_deg()) != 0) {
+              total_size += 9;
+            }
+            // double longitude_deg = 3 [(.mavsdk.options.default_value) = "NaN"];
+            if (::absl::bit_cast<::uint64_t>(this_._internal_longitude_deg()) != 0) {
+              total_size += 9;
+            }
+            // float absolute_altitude_m = 4 [(.mavsdk.options.default_value) = "NaN"];
+            if (::absl::bit_cast<::uint32_t>(this_._internal_absolute_altitude_m()) != 0) {
+              total_size += 5;
+            }
+            // float relative_altitude_m = 5 [(.mavsdk.options.default_value) = "NaN"];
+            if (::absl::bit_cast<::uint32_t>(this_._internal_relative_altitude_m()) != 0) {
+              total_size += 5;
+            }
+            // float local_north_m = 6 [(.mavsdk.options.default_value) = "NaN"];
+            if (::absl::bit_cast<::uint32_t>(this_._internal_local_north_m()) != 0) {
+              total_size += 5;
+            }
+            // float local_east_m = 7 [(.mavsdk.options.default_value) = "NaN"];
+            if (::absl::bit_cast<::uint32_t>(this_._internal_local_east_m()) != 0) {
+              total_size += 5;
+            }
+            // float local_down_m = 8 [(.mavsdk.options.default_value) = "NaN"];
+            if (::absl::bit_cast<::uint32_t>(this_._internal_local_down_m()) != 0) {
+              total_size += 5;
+            }
+            // float approach_north_m = 10 [(.mavsdk.options.default_value) = "NaN"];
+            if (::absl::bit_cast<::uint32_t>(this_._internal_approach_north_m()) != 0) {
+              total_size += 5;
+            }
+            // float approach_east_m = 11 [(.mavsdk.options.default_value) = "NaN"];
+            if (::absl::bit_cast<::uint32_t>(this_._internal_approach_east_m()) != 0) {
+              total_size += 5;
+            }
+            // float approach_down_m = 12 [(.mavsdk.options.default_value) = "NaN"];
+            if (::absl::bit_cast<::uint32_t>(this_._internal_approach_down_m()) != 0) {
+              total_size += 5;
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
+        }
+
+void HomePosition::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<HomePosition*>(&to_msg);
+  auto& from = static_cast<const HomePosition&>(from_msg);
+  ::google::protobuf::Arena* arena = _this->GetArena();
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry.HomePosition)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  cached_has_bits = from._impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(from._impl_.q_ != nullptr);
+    if (_this->_impl_.q_ == nullptr) {
+      _this->_impl_.q_ =
+          ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::telemetry::Quaternion>(arena, *from._impl_.q_);
+    } else {
+      _this->_impl_.q_->MergeFrom(*from._impl_.q_);
+    }
+  }
+  if (from._internal_timestamp_us() != 0) {
+    _this->_impl_.timestamp_us_ = from._impl_.timestamp_us_;
+  }
+  if (::absl::bit_cast<::uint64_t>(from._internal_latitude_deg()) != 0) {
+    _this->_impl_.latitude_deg_ = from._impl_.latitude_deg_;
+  }
+  if (::absl::bit_cast<::uint64_t>(from._internal_longitude_deg()) != 0) {
+    _this->_impl_.longitude_deg_ = from._impl_.longitude_deg_;
+  }
+  if (::absl::bit_cast<::uint32_t>(from._internal_absolute_altitude_m()) != 0) {
+    _this->_impl_.absolute_altitude_m_ = from._impl_.absolute_altitude_m_;
+  }
+  if (::absl::bit_cast<::uint32_t>(from._internal_relative_altitude_m()) != 0) {
+    _this->_impl_.relative_altitude_m_ = from._impl_.relative_altitude_m_;
+  }
+  if (::absl::bit_cast<::uint32_t>(from._internal_local_north_m()) != 0) {
+    _this->_impl_.local_north_m_ = from._impl_.local_north_m_;
+  }
+  if (::absl::bit_cast<::uint32_t>(from._internal_local_east_m()) != 0) {
+    _this->_impl_.local_east_m_ = from._impl_.local_east_m_;
+  }
+  if (::absl::bit_cast<::uint32_t>(from._internal_local_down_m()) != 0) {
+    _this->_impl_.local_down_m_ = from._impl_.local_down_m_;
+  }
+  if (::absl::bit_cast<::uint32_t>(from._internal_approach_north_m()) != 0) {
+    _this->_impl_.approach_north_m_ = from._impl_.approach_north_m_;
+  }
+  if (::absl::bit_cast<::uint32_t>(from._internal_approach_east_m()) != 0) {
+    _this->_impl_.approach_east_m_ = from._impl_.approach_east_m_;
+  }
+  if (::absl::bit_cast<::uint32_t>(from._internal_approach_down_m()) != 0) {
+    _this->_impl_.approach_down_m_ = from._impl_.approach_down_m_;
+  }
+  _this->_impl_._has_bits_[0] |= cached_has_bits;
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void HomePosition::CopyFrom(const HomePosition& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.telemetry.HomePosition)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void HomePosition::InternalSwap(HomePosition* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  ::google::protobuf::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(HomePosition, _impl_.approach_down_m_)
+      + sizeof(HomePosition::_impl_.approach_down_m_)
+      - PROTOBUF_FIELD_OFFSET(HomePosition, _impl_.q_)>(
+          reinterpret_cast<char*>(&_impl_.q_),
+          reinterpret_cast<char*>(&other->_impl_.q_));
+}
+
+::google::protobuf::Metadata HomePosition::GetMetadata() const {
   return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // ===================================================================

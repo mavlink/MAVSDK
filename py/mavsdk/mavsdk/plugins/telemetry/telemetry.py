@@ -127,28 +127,6 @@ class PositionCStruct(ctypes.Structure):
     ]
 
 
-class HomePositionCStruct(ctypes.Structure):
-    """
-    Internal C structure for HomePosition.
-    Used only for C library communication.
-    """
-
-    _fields_ = [
-        ("timestamp_us", ctypes.c_uint64),
-        ("latitude_deg", ctypes.c_double),
-        ("longitude_deg", ctypes.c_double),
-        ("absolute_altitude_m", ctypes.c_float),
-        ("relative_altitude_m", ctypes.c_float),
-        ("local_north_m", ctypes.c_float),
-        ("local_east_m", ctypes.c_float),
-        ("local_down_m", ctypes.c_float),
-        ("q", QuaternionCStruct),
-        ("approach_north_m", ctypes.c_float),
-        ("approach_east_m", ctypes.c_float),
-        ("approach_down_m", ctypes.c_float),
-    ]
-
-
 class HeadingCStruct(ctypes.Structure):
     """
     Internal C structure for Heading.
@@ -172,6 +150,28 @@ class QuaternionCStruct(ctypes.Structure):
         ("y", ctypes.c_float),
         ("z", ctypes.c_float),
         ("timestamp_us", ctypes.c_uint64),
+    ]
+
+
+class HomePositionCStruct(ctypes.Structure):
+    """
+    Internal C structure for HomePosition.
+    Used only for C library communication.
+    """
+
+    _fields_ = [
+        ("timestamp_us", ctypes.c_uint64),
+        ("latitude_deg", ctypes.c_double),
+        ("longitude_deg", ctypes.c_double),
+        ("absolute_altitude_m", ctypes.c_float),
+        ("relative_altitude_m", ctypes.c_float),
+        ("local_north_m", ctypes.c_float),
+        ("local_east_m", ctypes.c_float),
+        ("local_down_m", ctypes.c_float),
+        ("q", QuaternionCStruct),
+        ("approach_north_m", ctypes.c_float),
+        ("approach_east_m", ctypes.c_float),
+        ("approach_down_m", ctypes.c_float),
     ]
 
 
@@ -626,6 +626,83 @@ class Position:
         return f"Position({', '.join(fields)})"
 
 
+class Heading:
+    """
+    Heading type used for global position
+    """
+
+    def __init__(self, heading_deg=None):
+        self.heading_deg = heading_deg
+
+    @classmethod
+    def from_c_struct(cls, c_struct):
+        """Convert from C structure to Python object"""
+        instance = cls()
+        instance.heading_deg = c_struct.heading_deg
+        return instance
+
+    def to_c_struct(self):
+        """Convert to C structure for C library calls"""
+        c_struct = HeadingCStruct()
+        c_struct.heading_deg = self.heading_deg
+        return c_struct
+
+    def __str__(self):
+        fields = []
+        fields.append(f"heading_deg={self.heading_deg}")
+        return f"Heading({', '.join(fields)})"
+
+
+class Quaternion:
+    """
+       Quaternion type.
+
+    All rotations and axis systems follow the right-hand rule.
+    The Hamilton quaternion product definition is used.
+    A zero-rotation quaternion is represented by (1,0,0,0).
+    The quaternion could also be written as w + xi + yj + zk.
+
+    For more info see: https://en.wikipedia.org/wiki/Quaternion
+    """
+
+    def __init__(self, w=None, x=None, y=None, z=None, timestamp_us=None):
+        self.w = w
+        self.x = x
+        self.y = y
+        self.z = z
+        self.timestamp_us = timestamp_us
+
+    @classmethod
+    def from_c_struct(cls, c_struct):
+        """Convert from C structure to Python object"""
+        instance = cls()
+        instance.w = c_struct.w
+        instance.x = c_struct.x
+        instance.y = c_struct.y
+        instance.z = c_struct.z
+        instance.timestamp_us = c_struct.timestamp_us
+        return instance
+
+    def to_c_struct(self):
+        """Convert to C structure for C library calls"""
+        c_struct = QuaternionCStruct()
+        c_struct.w = self.w
+        c_struct.x = self.x
+        c_struct.y = self.y
+        c_struct.z = self.z
+        c_struct.timestamp_us = self.timestamp_us
+        return c_struct
+
+    def __str__(self):
+        fields = []
+        fields.append(f"w={self.w}")
+        fields.append(f"x={self.x}")
+        fields.append(f"y={self.y}")
+        fields.append(f"z={self.z}")
+        fields.append(f"timestamp_us={self.timestamp_us}")
+        return f"Quaternion({', '.join(fields)})"
+
+
 class HomePosition:
     """
        Home position type.
@@ -712,83 +789,6 @@ class HomePosition:
         fields.append(f"approach_east_m={self.approach_east_m}")
         fields.append(f"approach_down_m={self.approach_down_m}")
         return f"HomePosition({', '.join(fields)})"
-
-
-class Heading:
-    """
-    Heading type used for global position
-    """
-
-    def __init__(self, heading_deg=None):
-        self.heading_deg = heading_deg
-
-    @classmethod
-    def from_c_struct(cls, c_struct):
-        """Convert from C structure to Python object"""
-        instance = cls()
-        instance.heading_deg = c_struct.heading_deg
-        return instance
-
-    def to_c_struct(self):
-        """Convert to C structure for C library calls"""
-        c_struct = HeadingCStruct()
-        c_struct.heading_deg = self.heading_deg
-        return c_struct
-
-    def __str__(self):
-        fields = []
-        fields.append(f"heading_deg={self.heading_deg}")
-        return f"Heading({', '.join(fields)})"
-
-
-class Quaternion:
-    """
-       Quaternion type.
-
-    All rotations and axis systems follow the right-hand rule.
-    The Hamilton quaternion product definition is used.
-    A zero-rotation quaternion is represented by (1,0,0,0).
-    The quaternion could also be written as w + xi + yj + zk.
-
-    For more info see: https://en.wikipedia.org/wiki/Quaternion
-    """
-
-    def __init__(self, w=None, x=None, y=None, z=None, timestamp_us=None):
-        self.w = w
-        self.x = x
-        self.y = y
-        self.z = z
-        self.timestamp_us = timestamp_us
-
-    @classmethod
-    def from_c_struct(cls, c_struct):
-        """Convert from C structure to Python object"""
-        instance = cls()
-        instance.w = c_struct.w
-        instance.x = c_struct.x
-        instance.y = c_struct.y
-        instance.z = c_struct.z
-        instance.timestamp_us = c_struct.timestamp_us
-        return instance
-
-    def to_c_struct(self):
-        """Convert to C structure for C library calls"""
-        c_struct = QuaternionCStruct()
-        c_struct.w = self.w
-        c_struct.x = self.x
-        c_struct.y = self.y
-        c_struct.z = self.z
-        c_struct.timestamp_us = self.timestamp_us
-        return c_struct
-
-    def __str__(self):
-        fields = []
-        fields.append(f"w={self.w}")
-        fields.append(f"x={self.x}")
-        fields.append(f"y={self.y}")
-        fields.append(f"z={self.z}")
-        fields.append(f"timestamp_us={self.timestamp_us}")
-        return f"Quaternion({', '.join(fields)})"
 
 
 class EulerAngle:
@@ -4293,11 +4293,6 @@ _cmavsdk_lib.mavsdk_telemetry_position_destroy.argtypes = [
 ]
 _cmavsdk_lib.mavsdk_telemetry_position_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_telemetry_home_position_destroy.argtypes = [
-    ctypes.POINTER(HomePositionCStruct)
-]
-_cmavsdk_lib.mavsdk_telemetry_home_position_destroy.restype = None
-
 _cmavsdk_lib.mavsdk_telemetry_heading_destroy.argtypes = [
     ctypes.POINTER(HeadingCStruct)
 ]
@@ -4307,6 +4302,11 @@ _cmavsdk_lib.mavsdk_telemetry_quaternion_destroy.argtypes = [
     ctypes.POINTER(QuaternionCStruct)
 ]
 _cmavsdk_lib.mavsdk_telemetry_quaternion_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_telemetry_home_position_destroy.argtypes = [
+    ctypes.POINTER(HomePositionCStruct)
+]
+_cmavsdk_lib.mavsdk_telemetry_home_position_destroy.restype = None
 
 _cmavsdk_lib.mavsdk_telemetry_euler_angle_destroy.argtypes = [
     ctypes.POINTER(EulerAngleCStruct)
