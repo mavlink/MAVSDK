@@ -9,7 +9,7 @@
 #include <functional>
 #include "locked_queue.hpp"
 #include "curl_wrapper.hpp"
-#include "mavsdk_export.hpp"
+#include "mavsdk_export.h"
 
 namespace mavsdk {
 

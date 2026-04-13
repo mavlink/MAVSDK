@@ -2,7 +2,7 @@
 
 #include <string>
 #include <optional>
-#include "mavsdk_export.hpp"
+#include "mavsdk_export.h"
 
 namespace mavsdk {
 

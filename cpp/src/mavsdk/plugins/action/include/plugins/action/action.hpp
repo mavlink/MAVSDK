@@ -17,7 +17,7 @@
 #include "plugin_base.hpp"
 
 #include "handle.hpp"
-#include "mavsdk_export.hpp"
+#include "mavsdk_export.h"
 
 namespace mavsdk {
 

@@ -4,7 +4,7 @@
 #include <memory>
 #include "curl_include.hpp"
 #include "curl_wrapper_types.hpp"
-#include "mavsdk_export.hpp"
+#include "mavsdk_export.h"
 
 #ifdef TESTING
 #include <gmock/gmock.h>

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "mavsdk_export.hpp"
+#include "mavsdk_export.h"
 
 namespace mavsdk::geometry {
 

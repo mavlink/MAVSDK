@@ -6,7 +6,7 @@
 #include <functional>
 #include <list>
 #include "mavsdk_time.hpp"
-#include "mavsdk_export.hpp"
+#include "mavsdk_export.h"
 
 namespace mavsdk {
 

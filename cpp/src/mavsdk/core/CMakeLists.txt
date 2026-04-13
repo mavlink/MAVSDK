@@ -228,7 +228,7 @@ install(FILES
     include/mavsdk/handle.hpp
     include/mavsdk/system.hpp
     include/mavsdk/mavsdk.hpp
-    include/mavsdk/mavsdk_export.hpp
+    include/mavsdk/mavsdk_export.h
     include/mavsdk/log_callback.hpp
     include/mavsdk/plugin_base.hpp
     include/mavsdk/server_plugin_base.hpp

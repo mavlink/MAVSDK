@@ -6,7 +6,7 @@
 #include <fstream> // for `std::ifstream`
 #include <sstream> // for `std::stringstream`
 
-#include "mavsdk_export.hpp"
+#include "mavsdk_export.h"
 
 namespace mavsdk {
 

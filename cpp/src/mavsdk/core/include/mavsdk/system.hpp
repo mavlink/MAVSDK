@@ -10,7 +10,7 @@
 #include "deprecated.hpp"
 #include "handle.hpp"
 #include "vehicle.hpp"
-#include "mavsdk_export.hpp"
+#include "mavsdk_export.h"
 
 namespace mavsdk {
 

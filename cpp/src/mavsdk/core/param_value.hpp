@@ -1,7 +1,7 @@
 #pragma once
 
 #include "mavlink_include.hpp"
-#include "mavsdk_export.hpp"
+#include "mavsdk_export.h"
 #include "log.hpp"
 #include <array>
 #include <cstdint>

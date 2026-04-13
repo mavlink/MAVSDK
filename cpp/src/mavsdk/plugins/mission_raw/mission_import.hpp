@@ -1,7 +1,7 @@
 #pragma once
 
 #include "plugins/mission_raw/mission_raw.hpp"
-#include "mavsdk_export.hpp"
+#include "mavsdk_export.h"
 #include "sender.hpp"
 #include "autopilot.hpp"
 #include <optional>
