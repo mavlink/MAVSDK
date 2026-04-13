@@ -1,5 +1,6 @@
 #include "system.hpp"
 #include "mavsdk_impl.hpp"
+#include <asio/post.hpp>
 #include "mavlink_include.hpp"
 #include "system_impl.hpp"
 #include <mav/MessageSet.h>
@@ -632,9 +633,9 @@ void SystemImpl::set_connected()
 
             // Only send heartbeats if we're not shutting down
             if (!_should_exit) {
-                // We call this later to avoid deadlocks on creating the server components.
-                _mavsdk_impl.call_user_callback([this]() {
-                    // Send a heartbeat back immediately.
+                // Post to the io_context thread to avoid deadlocks when creating server
+                // components. This is purely internal work, not a user callback.
+                asio::post(_mavsdk_impl.io_context(), [this]() {
                     _mavsdk_impl.start_sending_heartbeats();
                 });
             }
