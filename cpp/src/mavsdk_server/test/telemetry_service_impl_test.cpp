@@ -33,6 +33,7 @@ using TelemetryService = mavsdk::rpc::telemetry::TelemetryService;
 
 using PositionResponse = mavsdk::rpc::telemetry::PositionResponse;
 using Position = mavsdk::Telemetry::Position;
+using HomePosition = mavsdk::Telemetry::HomePosition;
 
 using HealthResponse = mavsdk::rpc::telemetry::HealthResponse;
 using Health = mavsdk::Telemetry::Health;
@@ -127,8 +128,8 @@ protected:
     std::vector<Health> generateRandomHealthsVector(const int size);
     bool generateRandomBool();
 
-    void checkSendsHomePositions(const std::vector<Position>& home_positions) const;
-    std::future<void> subscribeHomeAsync(std::vector<Position>& home_positions) const;
+    void checkSendsHomePositions(const std::vector<HomePosition>& home_positions) const;
+    std::future<void> subscribeHomeAsync(std::vector<HomePosition>& home_positions) const;
 
     void checkSendsInAirEvents(const std::vector<bool>& in_air_events) const;
     std::future<void> subscribeInAirAsync(std::vector<bool>& in_air_events) const;
@@ -437,7 +438,7 @@ TEST_F(TelemetryServiceImplTest, registersToTelemetryHomeAsync)
 {
     EXPECT_CALL(*_telemetry, subscribe_home(_)).Times(1);
 
-    std::vector<Position> home_positions;
+    std::vector<HomePosition> home_positions;
     auto home_stream_future = subscribeHomeAsync(home_positions);
 
     _telemetry_service->stop();
@@ -445,7 +446,7 @@ TEST_F(TelemetryServiceImplTest, registersToTelemetryHomeAsync)
 }
 
 std::future<void>
-TelemetryServiceImplTest::subscribeHomeAsync(std::vector<Position>& home_positions) const
+TelemetryServiceImplTest::subscribeHomeAsync(std::vector<HomePosition>& home_positions) const
 {
     return std::async(std::launch::async, [this, &home_positions]() {
         grpc::ClientContext context;
@@ -456,7 +457,7 @@ TelemetryServiceImplTest::subscribeHomeAsync(std::vector<Position>& home_positio
         while (response_reader->Read(&response)) {
             auto home_rpc = response.home();
 
-            Position home;
+            HomePosition home;
             home.latitude_deg = home_rpc.latitude_deg();
             home.longitude_deg = home_rpc.longitude_deg();
             home.absolute_altitude_m = home_rpc.absolute_altitude_m();
@@ -471,7 +472,7 @@ TelemetryServiceImplTest::subscribeHomeAsync(std::vector<Position>& home_positio
 
 TEST_F(TelemetryServiceImplTest, doesNotSendHomeIfCallbackNotCalled)
 {
-    std::vector<Position> home_positions;
+    std::vector<HomePosition> home_positions;
     auto home_stream_future = subscribeHomeAsync(home_positions);
 
     _telemetry_service->stop();
@@ -482,22 +483,27 @@ TEST_F(TelemetryServiceImplTest, doesNotSendHomeIfCallbackNotCalled)
 
 TEST_F(TelemetryServiceImplTest, sendsOneHome)
 {
-    std::vector<Position> home_positions;
-    home_positions.push_back(createPosition(41.848695, 75.132751, 3002.1f, 50.3f));
+    std::vector<HomePosition> home_positions;
+    HomePosition hp;
+    hp.latitude_deg = 41.848695;
+    hp.longitude_deg = 75.132751;
+    hp.absolute_altitude_m = 3002.1f;
+    hp.relative_altitude_m = 50.3f;
+    home_positions.push_back(hp);
 
     checkSendsHomePositions(home_positions);
 }
 
 void TelemetryServiceImplTest::checkSendsHomePositions(
-    const std::vector<Position>& home_positions) const
+    const std::vector<HomePosition>& home_positions) const
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
-    mavsdk::CallbackList<mavsdk::Telemetry::Position> home_callbacks;
+    mavsdk::CallbackList<mavsdk::Telemetry::HomePosition> home_callbacks;
     EXPECT_CALL(*_telemetry, subscribe_home(_))
         .WillOnce(SaveCallback(&home_callbacks, &subscription_promise));
 
-    std::vector<Position> received_home_positions;
+    std::vector<HomePosition> received_home_positions;
     auto home_stream_future = subscribeHomeAsync(received_home_positions);
     subscription_future.wait();
     for (const auto& home_position : home_positions) {
@@ -514,11 +520,25 @@ void TelemetryServiceImplTest::checkSendsHomePositions(
 
 TEST_F(TelemetryServiceImplTest, sendsMultipleHomePositions)
 {
-    std::vector<Position> home_positions;
-    home_positions.push_back(createPosition(41.848695, 75.132751, 3002.1f, 50.3f));
-    home_positions.push_back(createPosition(46.522626, 6.635356, 542.2f, 79.8f));
-    home_positions.push_back(
-        createPosition(-50.995944711358824, -72.99892046835936, 1217.12f, 2.52f));
+    std::vector<HomePosition> home_positions;
+    HomePosition hp1;
+    hp1.latitude_deg = 41.848695;
+    hp1.longitude_deg = 75.132751;
+    hp1.absolute_altitude_m = 3002.1f;
+    hp1.relative_altitude_m = 50.3f;
+    home_positions.push_back(hp1);
+    HomePosition hp2;
+    hp2.latitude_deg = 46.522626;
+    hp2.longitude_deg = 6.635356;
+    hp2.absolute_altitude_m = 542.2f;
+    hp2.relative_altitude_m = 79.8f;
+    home_positions.push_back(hp2);
+    HomePosition hp3;
+    hp3.latitude_deg = -50.995944711358824;
+    hp3.longitude_deg = -72.99892046835936;
+    hp3.absolute_altitude_m = 1217.12f;
+    hp3.relative_altitude_m = 2.52f;
+    home_positions.push_back(hp3);
 
     checkSendsHomePositions(home_positions);
 }

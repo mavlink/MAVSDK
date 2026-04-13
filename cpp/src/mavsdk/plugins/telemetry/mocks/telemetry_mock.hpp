@@ -14,8 +14,8 @@ public:
     MOCK_CONST_METHOD1(unsubscribe_health, void(Telemetry::HealthHandle)) {};
     MOCK_CONST_METHOD1(subscribe_heading, Telemetry::HeadingHandle(Telemetry::HeadingCallback)) {};
     MOCK_CONST_METHOD1(unsubscribe_heading, void(Telemetry::HeadingHandle)) {};
-    MOCK_CONST_METHOD1(subscribe_home, Telemetry::PositionHandle(Telemetry::PositionCallback)) {};
-    MOCK_CONST_METHOD1(unsubscribe_home, void(Telemetry::PositionHandle)) {};
+    MOCK_CONST_METHOD1(subscribe_home, Telemetry::HomeHandle(Telemetry::HomeCallback)) {};
+    MOCK_CONST_METHOD1(unsubscribe_home, void(Telemetry::HomeHandle)) {};
     MOCK_CONST_METHOD1(subscribe_in_air, Telemetry::InAirHandle(Telemetry::InAirCallback)) {};
     MOCK_CONST_METHOD1(unsubscribe_in_air, void(Telemetry::InAirHandle)) {};
     MOCK_CONST_METHOD1(

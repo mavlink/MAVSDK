@@ -42,6 +42,8 @@ struct [Heading](structmavsdk_1_1_telemetry_1_1_heading.md)
 
 struct [Health](structmavsdk_1_1_telemetry_1_1_health.md)
 
+struct [HomePosition](structmavsdk_1_1_telemetry_1_1_home_position.md)
+
 struct [Imu](structmavsdk_1_1_telemetry_1_1_imu.md)
 
 struct [MagneticFieldFrd](structmavsdk_1_1_telemetry_1_1_magnetic_field_frd.md)
@@ -87,8 +89,8 @@ enum [Result](#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) | P
 std::function< void([Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75))> [ResultCallback](#classmavsdk_1_1_telemetry_1a166e81c6573532978e5940eafdfcec0b) | Callback type for asynchronous [Telemetry](classmavsdk_1_1_telemetry.md) calls.
 std::function< void([Position](structmavsdk_1_1_telemetry_1_1_position.md))> [PositionCallback](#classmavsdk_1_1_telemetry_1a978b371d636226e198995462afa63552) | Callback type for subscribe_position.
 [Handle](classmavsdk_1_1_handle.md)< [Position](structmavsdk_1_1_telemetry_1_1_position.md) > [PositionHandle](#classmavsdk_1_1_telemetry_1a7d82a98ea53c2aa254624bc943ec22f1) | [Handle](classmavsdk_1_1_handle.md) type for subscribe_position.
-std::function< void([Position](structmavsdk_1_1_telemetry_1_1_position.md))> [HomeCallback](#classmavsdk_1_1_telemetry_1aaac029969c37a001d43e2788a6abf634) | Callback type for subscribe_home.
-[Handle](classmavsdk_1_1_handle.md)< [Position](structmavsdk_1_1_telemetry_1_1_position.md) > [HomeHandle](#classmavsdk_1_1_telemetry_1a7a2b3a8b50d66e911870700ea3fe007d) | [Handle](classmavsdk_1_1_handle.md) type for subscribe_home.
+std::function< void([HomePosition](structmavsdk_1_1_telemetry_1_1_home_position.md))> [HomeCallback](#classmavsdk_1_1_telemetry_1a0aaab841b0659d1a8e2995af7d291cc4) | Callback type for subscribe_home.
+[Handle](classmavsdk_1_1_handle.md)< [HomePosition](structmavsdk_1_1_telemetry_1_1_home_position.md) > [HomeHandle](#classmavsdk_1_1_telemetry_1a46ea24358899b78eee3051a3714cc085) | [Handle](classmavsdk_1_1_handle.md) type for subscribe_home.
 std::function< void(bool)> [InAirCallback](#classmavsdk_1_1_telemetry_1af96cca452305dd8f51b42d4663f15a26) | Callback type for subscribe_in_air.
 [Handle](classmavsdk_1_1_handle.md)< bool > [InAirHandle](#classmavsdk_1_1_telemetry_1a17582f68fabac027ab354073e0eca8e5) | [Handle](classmavsdk_1_1_handle.md) type for subscribe_in_air.
 std::function< void([LandedState](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1ac6639935bc3b35b1da553cde41e8f046))> [LandedStateCallback](#classmavsdk_1_1_telemetry_1a0cd8ef17abdd7c3d6a9ee761ccc6ae5e) | Callback type for subscribe_landed_state.
@@ -165,9 +167,9 @@ Type | Name | Description
 [PositionHandle](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a7d82a98ea53c2aa254624bc943ec22f1) | [subscribe_position](#classmavsdk_1_1_telemetry_1a647f3d61b4f3301fd8c2aca1afcafb31) (const [PositionCallback](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a978b371d636226e198995462afa63552) & callback) | Subscribe to 'position' updates.
 void | [unsubscribe_position](#classmavsdk_1_1_telemetry_1abf10cb55e2c477bbb875c0944938b76c) ([PositionHandle](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a7d82a98ea53c2aa254624bc943ec22f1) handle) | Unsubscribe from subscribe_position.
 [Position](structmavsdk_1_1_telemetry_1_1_position.md) | [position](#classmavsdk_1_1_telemetry_1a2299da1bc63313c429f07ab0fdbe5335) () const | Poll for '[Position](structmavsdk_1_1_telemetry_1_1_position.md)' (blocking).
-[HomeHandle](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a7a2b3a8b50d66e911870700ea3fe007d) | [subscribe_home](#classmavsdk_1_1_telemetry_1ae57e4c8741ba7ae05961cadfabc82875) (const [HomeCallback](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1aaac029969c37a001d43e2788a6abf634) & callback) | Subscribe to 'home position' updates.
-void | [unsubscribe_home](#classmavsdk_1_1_telemetry_1a83feb66aa64946b954ca305b6cc2f7ea) ([HomeHandle](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a7a2b3a8b50d66e911870700ea3fe007d) handle) | Unsubscribe from subscribe_home.
-[Position](structmavsdk_1_1_telemetry_1_1_position.md) | [home](#classmavsdk_1_1_telemetry_1ad5c239b93aa1923edd1b97494a3fbfe7) () const | Poll for '[Position](structmavsdk_1_1_telemetry_1_1_position.md)' (blocking).
+[HomeHandle](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a46ea24358899b78eee3051a3714cc085) | [subscribe_home](#classmavsdk_1_1_telemetry_1ae57e4c8741ba7ae05961cadfabc82875) (const [HomeCallback](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a0aaab841b0659d1a8e2995af7d291cc4) & callback) | Subscribe to 'home position' updates.
+void | [unsubscribe_home](#classmavsdk_1_1_telemetry_1a83feb66aa64946b954ca305b6cc2f7ea) ([HomeHandle](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a46ea24358899b78eee3051a3714cc085) handle) | Unsubscribe from subscribe_home.
+[HomePosition](structmavsdk_1_1_telemetry_1_1_home_position.md) | [home](#classmavsdk_1_1_telemetry_1a1627c4604500af7d21d367a0c61cc168) () const | Poll for '[HomePosition](structmavsdk_1_1_telemetry_1_1_home_position.md)' (blocking).
 [InAirHandle](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a17582f68fabac027ab354073e0eca8e5) | [subscribe_in_air](#classmavsdk_1_1_telemetry_1a0fc586a0c90141e125a305fd8211e8d8) (const [InAirCallback](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1af96cca452305dd8f51b42d4663f15a26) & callback) | Subscribe to in-air updates.
 void | [unsubscribe_in_air](#classmavsdk_1_1_telemetry_1a2e23bf258ef69c267ab5b8dee203bd95) ([InAirHandle](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a17582f68fabac027ab354073e0eca8e5) handle) | Unsubscribe from subscribe_in_air.
 bool | [in_air](#classmavsdk_1_1_telemetry_1a909738ff2fbe104c6eb4524cc9bf2dd5) () const | Poll for 'bool' (blocking).
@@ -410,20 +412,20 @@ using mavsdk::Telemetry::PositionHandle =  Handle<Position>
 [Handle](classmavsdk_1_1_handle.md) type for subscribe_position.
 
 
-### typedef HomeCallback {#classmavsdk_1_1_telemetry_1aaac029969c37a001d43e2788a6abf634}
+### typedef HomeCallback {#classmavsdk_1_1_telemetry_1a0aaab841b0659d1a8e2995af7d291cc4}
 
 ```cpp
-using mavsdk::Telemetry::HomeCallback =  std::function<void(Position)>
+using mavsdk::Telemetry::HomeCallback =  std::function<void(HomePosition)>
 ```
 
 
 Callback type for subscribe_home.
 
 
-### typedef HomeHandle {#classmavsdk_1_1_telemetry_1a7a2b3a8b50d66e911870700ea3fe007d}
+### typedef HomeHandle {#classmavsdk_1_1_telemetry_1a46ea24358899b78eee3051a3714cc085}
 
 ```cpp
-using mavsdk::Telemetry::HomeHandle =  Handle<Position>
+using mavsdk::Telemetry::HomeHandle =  Handle<HomePosition>
 ```
 
 
@@ -1237,11 +1239,11 @@ Subscribe to 'home position' updates.
 
 **Parameters**
 
-* const [HomeCallback](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1aaac029969c37a001d43e2788a6abf634)& **callback** - 
+* const [HomeCallback](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a0aaab841b0659d1a8e2995af7d291cc4)& **callback** - 
 
 **Returns**
 
-&emsp;[HomeHandle](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a7a2b3a8b50d66e911870700ea3fe007d) - 
+&emsp;[HomeHandle](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a46ea24358899b78eee3051a3714cc085) - 
 
 ### unsubscribe_home() {#classmavsdk_1_1_telemetry_1a83feb66aa64946b954ca305b6cc2f7ea}
 ```cpp
@@ -1254,20 +1256,20 @@ Unsubscribe from subscribe_home.
 
 **Parameters**
 
-* [HomeHandle](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a7a2b3a8b50d66e911870700ea3fe007d) **handle** - 
+* [HomeHandle](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a46ea24358899b78eee3051a3714cc085) **handle** - 
 
-### home() {#classmavsdk_1_1_telemetry_1ad5c239b93aa1923edd1b97494a3fbfe7}
+### home() {#classmavsdk_1_1_telemetry_1a1627c4604500af7d21d367a0c61cc168}
 ```cpp
-Position mavsdk::Telemetry::home() const
+HomePosition mavsdk::Telemetry::home() const
 ```
 
 
-Poll for '[Position](structmavsdk_1_1_telemetry_1_1_position.md)' (blocking).
+Poll for '[HomePosition](structmavsdk_1_1_telemetry_1_1_home_position.md)' (blocking).
 
 
 **Returns**
 
-&emsp;[Position](structmavsdk_1_1_telemetry_1_1_position.md) - One [Position](structmavsdk_1_1_telemetry_1_1_position.md) update.
+&emsp;[HomePosition](structmavsdk_1_1_telemetry_1_1_home_position.md) - One [HomePosition](structmavsdk_1_1_telemetry_1_1_home_position.md) update.
 
 ### subscribe_in_air() {#classmavsdk_1_1_telemetry_1a0fc586a0c90141e125a305fd8211e8d8}
 ```cpp

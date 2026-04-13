@@ -326,6 +326,45 @@ public:
 
 
     /**
+     * @brief Home position type.
+     *
+     * Includes the global GPS position, local NED position, surface quaternion,
+     * and approach vector from the MAVLink HOME_POSITION message.
+     */
+    struct HomePosition {
+        
+        uint64_t timestamp_us{}; /**< @brief Timestamp (UNIX Epoch or since system boot) in microseconds */
+        double latitude_deg{double(NAN)}; /**< @brief Latitude in degrees (range: -90 to +90) */
+        double longitude_deg{double(NAN)}; /**< @brief Longitude in degrees (range: -180 to +180) */
+        float absolute_altitude_m{float(NAN)}; /**< @brief Altitude AMSL (above mean sea level) in metres */
+        float relative_altitude_m{float(NAN)}; /**< @brief Altitude relative to takeoff altitude in metres */
+        float local_north_m{float(NAN)}; /**< @brief Local North position in NED frame (m) */
+        float local_east_m{float(NAN)}; /**< @brief Local East position in NED frame (m) */
+        float local_down_m{float(NAN)}; /**< @brief Local Down position in NED frame (m, positive down) */
+        Quaternion q{}; /**< @brief Surface quaternion (world-to-surface-normal and heading) */
+        float approach_north_m{float(NAN)}; /**< @brief Local North position of the approach vector end in NED frame (m) */
+        float approach_east_m{float(NAN)}; /**< @brief Local East position of the approach vector end in NED frame (m) */
+        float approach_down_m{float(NAN)}; /**< @brief Local Down position of the approach vector end in NED frame (m) */
+    };
+
+    /**
+     * @brief Equal operator to compare two `Telemetry::HomePosition` objects.
+     *
+     * @return `true` if items are equal.
+     */
+    friend MAVSDK_PUBLIC bool operator==(const Telemetry::HomePosition& lhs, const Telemetry::HomePosition& rhs);
+
+    /**
+     * @brief Stream operator to print information about a `Telemetry::HomePosition`.
+     *
+     * @return A reference to the stream.
+     */
+    friend MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Telemetry::HomePosition const& home_position);
+
+
+
+
+    /**
      * @brief Euler angle type.
      *
      * All rotations and axis systems follow the right-hand rule.
@@ -1236,12 +1275,12 @@ public:
     /**
      * @brief Callback type for subscribe_home.
      */
-    using HomeCallback = std::function<void(Position)>;
+    using HomeCallback = std::function<void(HomePosition)>;
 
     /**
      * @brief Handle type for subscribe_home.
      */
-    using HomeHandle = Handle<Position>;
+    using HomeHandle = Handle<HomePosition>;
 
     /**
      * @brief Subscribe to 'home position' updates.
@@ -1258,11 +1297,11 @@ public:
 
 
     /**
-     * @brief Poll for 'Position' (blocking).
+     * @brief Poll for 'HomePosition' (blocking).
      *
-     * @return One Position update.
+     * @return One HomePosition update.
      */
-    Position home() const;
+    HomePosition home() const;
 
 
 
