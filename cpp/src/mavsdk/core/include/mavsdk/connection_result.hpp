@@ -2,7 +2,7 @@
 
 #include <string_view>
 
-#include "mavsdk_export.hpp"
+#include "mavsdk_export.h"
 
 /**
  * @brief Namespace for all mavsdk types.

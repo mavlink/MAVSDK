@@ -3,7 +3,7 @@
 #include "flight_mode.hpp"
 #include "callback_list.tpp"
 #include "px4_custom_mode.hpp"
-#include "mavsdk_export.hpp"
+#include "mavsdk_export.h"
 
 namespace mavsdk {
 

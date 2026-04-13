@@ -2,7 +2,7 @@
 #include "system.hpp"
 #include "math_utils.hpp"
 #include "callback_list.tpp"
-#include "mavsdk_export.hpp"
+#include "mavsdk_export.h"
 
 #include <cmath>
 #include <functional>

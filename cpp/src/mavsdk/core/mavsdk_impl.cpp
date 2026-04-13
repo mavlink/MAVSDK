@@ -23,7 +23,7 @@
 #include "embedded_mavlink_xml.hpp"
 #include <mav/MessageSet.h>
 
-#include "mavsdk_export.hpp"
+#include "mavsdk_export.h"
 
 namespace mavsdk {
 

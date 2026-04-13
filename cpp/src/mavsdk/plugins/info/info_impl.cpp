@@ -5,7 +5,7 @@
 #include "info_impl.hpp"
 #include "system.hpp"
 #include "callback_list.tpp"
-#include "mavsdk_export.hpp"
+#include "mavsdk_export.h"
 
 namespace mavsdk {
 

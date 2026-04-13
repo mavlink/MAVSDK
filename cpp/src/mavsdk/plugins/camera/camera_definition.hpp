@@ -1,7 +1,7 @@
 #pragma once
 
 #include "mavlink_parameter_client.hpp"
-#include "mavsdk_export.hpp"
+#include "mavsdk_export.h"
 #include <tinyxml2.h>
 #include <vector>
 #include <memory>

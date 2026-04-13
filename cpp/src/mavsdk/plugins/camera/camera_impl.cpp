@@ -22,7 +22,7 @@
 #include <string>
 #include <thread>
 
-#include "mavsdk_export.hpp"
+#include "mavsdk_export.h"
 
 namespace mavsdk {
 

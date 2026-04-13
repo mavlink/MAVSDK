@@ -15,7 +15,7 @@
 #include "server_component.hpp"
 #include "connection_result.hpp"
 #include "mavlink_include.hpp"
-#include "mavsdk_export.hpp"
+#include "mavsdk_export.h"
 
 namespace mavsdk {
 

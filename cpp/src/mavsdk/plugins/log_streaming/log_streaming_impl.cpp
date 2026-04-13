@@ -5,7 +5,7 @@
 #include "log_streaming_backend_ardupilot.hpp"
 #include "plugins/log_streaming/log_streaming.hpp"
 #include "callback_list.tpp"
-#include "mavsdk_export.hpp"
+#include "mavsdk_export.h"
 #include "base64.hpp"
 
 namespace mavsdk {

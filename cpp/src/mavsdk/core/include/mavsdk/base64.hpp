@@ -2,7 +2,7 @@
 #include <vector>
 #include <string>
 
-#include "mavsdk_export.hpp"
+#include "mavsdk_export.h"
 
 // Taken from https://stackoverflow.com/a/13935718/8548472
 

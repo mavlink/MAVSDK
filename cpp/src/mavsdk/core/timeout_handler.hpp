@@ -1,7 +1,7 @@
 #pragma once
 
 #include "mavsdk_time.hpp"
-#include "mavsdk_export.hpp"
+#include "mavsdk_export.h"
 
 #include <cstdint>
 #include <mutex>

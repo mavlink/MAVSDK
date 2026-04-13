@@ -1,7 +1,7 @@
 #pragma once
 
 #include "callback_list.hpp"
-#include "mavsdk_export.hpp"
+#include "mavsdk_export.h"
 #include "file_cache.hpp"
 #include "mavlink_command_sender.hpp"
 #include <json/json.h>

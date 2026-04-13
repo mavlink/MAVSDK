@@ -1,7 +1,7 @@
 #pragma once
 
 #include "param_value.hpp"
-#include "mavsdk_export.hpp"
+#include "mavsdk_export.h"
 
 #include <cstdint>
 #include <limits>

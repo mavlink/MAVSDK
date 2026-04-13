@@ -7,7 +7,7 @@
 // std::terminate(), and explicitly instantiate it for every exception type
 // that Asio emits.
 
-#include "mavsdk_export.hpp"
+#include "mavsdk_export.h"
 #include "asio/detail/throw_exception.hpp"
 #include "asio/error.hpp"
 #include "asio/execution_context.hpp"

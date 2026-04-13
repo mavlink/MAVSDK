@@ -15,7 +15,7 @@
 #include "timeout_handler.hpp"
 #include "timeout_s_callback.hpp"
 #include "sender.hpp"
-#include "mavsdk_export.hpp"
+#include "mavsdk_export.h"
 
 namespace mavsdk {
 

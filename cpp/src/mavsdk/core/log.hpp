@@ -14,7 +14,7 @@
 #include <string>
 #include <string_view>
 #include "log_callback.hpp"
-#include "mavsdk_export.hpp"
+#include "mavsdk_export.h"
 
 // fmt is used everywhere for logging across all platforms.
 #include <fmt/format.h>

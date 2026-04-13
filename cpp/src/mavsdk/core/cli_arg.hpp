@@ -4,7 +4,7 @@
 #include <string>
 #include <string_view>
 #include <variant>
-#include "mavsdk_export.hpp"
+#include "mavsdk_export.h"
 
 namespace mavsdk {
 

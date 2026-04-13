@@ -9,7 +9,7 @@
 #include <optional>
 #include <string>
 #include <map>
-#include "mavsdk_export.hpp"
+#include "mavsdk_export.h"
 
 namespace mavsdk {
 
