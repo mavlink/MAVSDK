@@ -324,10 +324,25 @@ void SerialConnection::do_receive()
             auto parse_result = _mavlink_receiver->parse_message();
             while (parse_result != MavlinkReceiver::ParseResult::NoneAvailable) {
                 receive_message(parse_result, _mavlink_receiver->get_last_message(), this);
+
+                // MAVLink v1 messages (0xFE magic) are silently skipped by libmav's
+                // BufferParser, which only handles v2 (0xFD).  Bridge them explicitly so
+                // that MavlinkDirect subscribers receive all messages over serial.
+                if (_libmav_receiver &&
+                    parse_result == MavlinkReceiver::ParseResult::MessageParsed &&
+                    _mavlink_receiver->get_last_message().magic == MAVLINK_STX_MAVLINK1) {
+                    if (_libmav_receiver->bridge_from_mavlink_message(
+                            _mavlink_receiver->get_last_message())) {
+                        receive_libmav_message(_libmav_receiver->get_last_message(), this);
+                    }
+                }
+
                 parse_result = _mavlink_receiver->parse_message();
             }
 
             if (_libmav_receiver) {
+                // Handle v2 messages (and custom-XML messages the C library doesn't know)
+                // via the normal raw-stream parser.
                 _libmav_receiver->set_new_datagram(_recv_buffer.data(), static_cast<int>(recv_len));
                 while (_libmav_receiver->parse_message()) {
                     receive_libmav_message(_libmav_receiver->get_last_message(), this);

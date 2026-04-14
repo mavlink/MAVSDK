@@ -237,6 +237,59 @@ std::optional<mav::Message> LibmavReceiver::create_message(const std::string& me
     return _mavsdk_impl.create_message_safe(message_name);
 }
 
+bool LibmavReceiver::bridge_from_mavlink_message(const mavlink_message_t& msg)
+{
+    // Re-encode the mavlink_message_t as a MAVLink v2 frame so that libmav's BufferParser
+    // (which only recognises the 0xFD magic byte) can parse it.  This is the fix for
+    // MAVLink v1 messages being silently skipped on serial connections.
+    mavlink_message_t v2_msg = msg;
+    v2_msg.magic = MAVLINK_STX; // force v2 encoding (0xFD)
+    v2_msg.incompat_flags = 0;
+    v2_msg.compat_flags = 0;
+
+    uint8_t v2_buffer[MAVLINK_MAX_PACKET_LEN];
+    uint16_t v2_len = mavlink_msg_to_send_buffer(v2_buffer, &v2_msg);
+    if (v2_len == 0) {
+        return false;
+    }
+
+    size_t bytes_consumed = 0;
+    auto message_opt = _mavsdk_impl.parse_message_safe(v2_buffer, v2_len, bytes_consumed);
+    if (!message_opt) {
+        return false;
+    }
+
+    auto message = message_opt.value();
+
+    if (_debugging) {
+        LogDebug("Bridged MAVLink v1 message: {} (ID: {})", message.name(), message.id());
+    }
+
+    auto header = message.header();
+    std::string json = libmav_message_to_json(message);
+
+    _last_libmav_message = message;
+    _last_message.message_name = message.name();
+    _last_message.system_id = header.systemId();
+    _last_message.component_id = header.componentId();
+
+    uint8_t target_system_id = 0;
+    uint8_t target_component_id = 0;
+    if (message.get("target_system", target_system_id) == mav::MessageResult::Success) {
+        _last_message.target_system_id = target_system_id;
+    } else {
+        _last_message.target_system_id = 0;
+    }
+    if (message.get("target_component", target_component_id) == mav::MessageResult::Success) {
+        _last_message.target_component_id = target_component_id;
+    } else {
+        _last_message.target_component_id = 0;
+    }
+
+    _last_message.fields_json = json;
+    return true;
+}
+
 bool LibmavReceiver::load_custom_xml(const std::string& xml_content)
 {
     // Note: This method should not be called directly on LibmavReceiver instances.

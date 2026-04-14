@@ -53,6 +53,11 @@ public:
     // JSON conversion (made public for use in message interception)
     std::string libmav_message_to_json(const mav::Message& msg) const;
 
+    // Bridge a mavlink_message_t (which may be MAVLink v1) into the libmav receiver.
+    // Re-encodes the message as v2 so that libmav's v2-only parser can process it.
+    // Returns true and fills _last_message/_last_libmav_message if successful.
+    bool bridge_from_mavlink_message(const mavlink_message_t& msg);
+
 private:
     MavsdkImpl& _mavsdk_impl; // For thread-safe MessageSet access
     std::unique_ptr<mav::BufferParser> _buffer_parser;
