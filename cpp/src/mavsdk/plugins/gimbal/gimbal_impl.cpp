@@ -108,14 +108,14 @@ void GimbalImpl::process_heartbeat(const mavlink_message_t& message)
 {
     std::lock_guard<std::mutex> lock(_mutex);
 
-    auto maybe_gimbal = std::find_if(_gimbals.begin(), _gimbals.end(), [&](const GimbalItem& item) {
+    auto gimbal = std::find_if(_gimbals.begin(), _gimbals.end(), [&](const GimbalItem& item) {
         return item.gimbal_manager_compid == message.compid;
     });
 
     auto& discovery = _discovery[message.compid];
 
-    if (maybe_gimbal == _gimbals.end()) {
-        // Maybe new gimbal, request information.
+    if (gimbal == _gimbals.end()) {
+        // Maybe new gimbal, request information first.
         if (discovery.manager_info_requests_left > 0) {
             --discovery.manager_info_requests_left;
             request_gimbal_manager_information(message.compid);
@@ -123,31 +123,30 @@ void GimbalImpl::process_heartbeat(const mavlink_message_t& message)
         return;
     }
 
-    // Try to get device info, and notify the user with it. If exhausted, notify anyways.
-    const bool was_already_exhausted = (discovery.device_info_requests_left == 0);
-
-    if (discovery.device_info_requests_left > 0 && !discovery.device_info_received) {
-        --discovery.device_info_requests_left;
-
-        const uint8_t target_component_id =
-            (maybe_gimbal->gimbal_device_id > 0 && maybe_gimbal->gimbal_device_id <= 6) ?
-                message.compid :
-                maybe_gimbal->gimbal_device_id;
-
-        if (target_component_id != 0) {
-            request_gimbal_device_information(target_component_id);
+    if (discovery.device_info_received || discovery.device_info_requests_left == 0) {
+        // We already have the information or have given up, so we notify the user with what we
+        // have.
+        if (!discovery.notified) {
+            if (!discovery.device_info_received) {
+                LogWarn(
+                    "Continuing without GIMBAL_DEVICE_INFORMATION for compid {}", message.compid);
+            }
+            discovery.notified = true;
+            _gimbal_list_subscriptions.queue(gimbal_list_with_lock(), [this](const auto& func) {
+                _system_impl->call_user_callback(func);
+            });
         }
-
-        if (discovery.device_info_requests_left == 0 && !discovery.device_info_received) {
-            LogWarn("Continuing without GIMBAL_DEVICE_INFORMATION for compid {}", message.compid);
-        }
+        return;
     }
 
-    if (!discovery.notified && (discovery.device_info_received || was_already_exhausted)) {
-        discovery.notified = true;
-        _gimbal_list_subscriptions.queue(gimbal_list_with_lock(), [this](const auto& func) {
-            _system_impl->call_user_callback(func);
-        });
+    // Request gimbal device info
+    --discovery.device_info_requests_left;
+    const uint8_t target_component_id =
+        (gimbal->gimbal_device_id > 0 && gimbal->gimbal_device_id <= 6) ? message.compid :
+                                                                          gimbal->gimbal_device_id;
+
+    if (target_component_id != 0) {
+        request_gimbal_device_information(target_component_id);
     }
 }
 
@@ -166,7 +165,7 @@ void GimbalImpl::process_gimbal_manager_information(const mavlink_message_t& mes
 
     std::lock_guard<std::mutex> lock(_mutex);
 
-    auto maybe_gimbal = std::find_if(_gimbals.begin(), _gimbals.end(), [&](const GimbalItem& item) {
+    auto gimbal = std::find_if(_gimbals.begin(), _gimbals.end(), [&](const GimbalItem& item) {
         return item.gimbal_manager_compid == message.compid;
     });
 
@@ -179,7 +178,7 @@ void GimbalImpl::process_gimbal_manager_information(const mavlink_message_t& mes
         discovery.notified = false;
     };
 
-    if (maybe_gimbal == _gimbals.end()) {
+    if (gimbal == _gimbals.end()) {
         // Register new gimbal manager.
         GimbalItem new_item{};
         new_item.gimbal_manager_compid = message.compid;
@@ -190,13 +189,13 @@ void GimbalImpl::process_gimbal_manager_information(const mavlink_message_t& mes
         return;
     }
 
-    if (maybe_gimbal->gimbal_device_id != gimbal_manager_information.gimbal_device_id) {
+    if (gimbal->gimbal_device_id != gimbal_manager_information.gimbal_device_id) {
         LogWarn(
             "gimbal_manager_information.gimbal_device_id changed from {} to {}",
-            maybe_gimbal->gimbal_device_id,
+            gimbal->gimbal_device_id,
             gimbal_manager_information.gimbal_device_id);
 
-        maybe_gimbal->gimbal_device_id = gimbal_manager_information.gimbal_device_id;
+        gimbal->gimbal_device_id = gimbal_manager_information.gimbal_device_id;
         reset_device_discovery();
     }
 }
@@ -261,26 +260,25 @@ void GimbalImpl::process_gimbal_device_information(const mavlink_message_t& mess
 
     std::lock_guard<std::mutex> lock(_mutex);
 
-    auto maybe_gimbal = std::find_if(_gimbals.begin(), _gimbals.end(), [&](const GimbalItem& item) {
+    auto gimbal = std::find_if(_gimbals.begin(), _gimbals.end(), [&](const GimbalItem& item) {
         if (gimbal_device_information.gimbal_device_id == 0) {
             return item.gimbal_device_id == message.compid;
-        } else {
-            return item.gimbal_manager_compid == message.compid;
         }
+        return item.gimbal_manager_compid == message.compid;
     });
 
-    if (maybe_gimbal == _gimbals.end()) {
+    if (gimbal == _gimbals.end()) {
         if (_debugging) {
             LogDebug("Didn't find gimbal for gimbal device");
         }
         return;
     }
 
-    maybe_gimbal->vendor_name = gimbal_device_information.vendor_name;
-    maybe_gimbal->model_name = gimbal_device_information.model_name;
-    maybe_gimbal->custom_name = gimbal_device_information.custom_name;
+    gimbal->vendor_name = gimbal_device_information.vendor_name;
+    gimbal->model_name = gimbal_device_information.model_name;
+    gimbal->custom_name = gimbal_device_information.custom_name;
 
-    auto& discovery = _discovery[maybe_gimbal->gimbal_manager_compid];
+    auto& discovery = _discovery[gimbal->gimbal_manager_compid];
     discovery.device_info_requests_left = 0;
     discovery.device_info_received = true;
     discovery.notified = false;
@@ -321,10 +319,9 @@ void GimbalImpl::process_gimbal_device_attitude_status(const mavlink_message_t& 
     auto maybe_gimbal = std::find_if(_gimbals.begin(), _gimbals.end(), [&](const GimbalItem& item) {
         if (attitude_status.gimbal_device_id == 0) {
             return item.gimbal_device_id == message.compid;
-        } else {
-            return item.gimbal_manager_compid == message.compid &&
-                   item.gimbal_device_id == attitude_status.gimbal_device_id;
         }
+        return item.gimbal_manager_compid == message.compid &&
+               item.gimbal_device_id == attitude_status.gimbal_device_id;
     });
 
     if (maybe_gimbal == _gimbals.end()) {
