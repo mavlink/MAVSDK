@@ -123,19 +123,22 @@ void GimbalImpl::process_heartbeat(const mavlink_message_t& message)
         return;
     }
 
-    if (discovery.device_info_received || discovery.device_info_requests_left == 0) {
-        // We already have the information or have given up, so we notify the user with what we
-        // have.
+    if (discovery.device_info_received) {
+        // We have full device info — announce the gimbal if not yet done.
         if (!discovery.notified) {
-            if (!discovery.device_info_received) {
-                LogWarn(
-                    "Continuing without GIMBAL_DEVICE_INFORMATION for compid {}", message.compid);
-            }
             discovery.notified = true;
             _gimbal_list_subscriptions.queue(gimbal_list_with_lock(), [this](const auto& func) {
                 _system_impl->call_user_callback(func);
             });
         }
+        return;
+    }
+
+    if (discovery.device_info_requests_left == 0) {
+        // Device info requests exhausted without a response. Do not announce yet — wait until we
+        // receive a GIMBAL_DEVICE_ATTITUDE_STATUS, which confirms the gimbal is actually present.
+        // process_gimbal_device_attitude_status() will call check_is_gimbal_valid() when the
+        // first status arrives to trigger the deferred notification.
         return;
     }
 
@@ -333,6 +336,13 @@ void GimbalImpl::process_gimbal_device_attitude_status(const mavlink_message_t& 
 
     auto& gimbal = *maybe_gimbal;
 
+    // On the first device attitude status, kick the discovery state machine: if device info
+    // requests are already exhausted we can now safely announce the gimbal to subscribers.
+    if (!gimbal.gimbal_device_attitude_status_received) {
+        gimbal.gimbal_device_attitude_status_received = true;
+        check_is_gimbal_valid(&gimbal);
+    }
+
     // Reset to defaults (e.g. NaN) first.
     gimbal.attitude = {};
     // We need to populate the MAVSDK gimbal ID, so the user knows which is which.
@@ -427,6 +437,41 @@ void GimbalImpl::process_attitude(const mavlink_message_t& message)
     std::lock_guard<std::mutex> lock(_mutex);
 
     _vehicle_yaw_rad = attitude.yaw;
+}
+
+void GimbalImpl::check_is_gimbal_valid(GimbalItem* gimbal)
+{
+    assert(gimbal != nullptr);
+
+    // Assumes lock
+
+    auto& discovery = _discovery[gimbal->gimbal_manager_compid];
+
+    if (discovery.notified) {
+        // We've already announced this gimbal.
+        return;
+    }
+
+    if (discovery.device_info_received) {
+        // We have full device info — announce the gimbal immediately.
+        discovery.notified = true;
+        _gimbal_list_subscriptions.queue(gimbal_list_with_lock(), [this](const auto& func) {
+            _system_impl->call_user_callback(func);
+        });
+    } else if (discovery.device_info_requests_left == 0) {
+        // Requests exhausted without device info. Only announce once we receive at least one
+        // GIMBAL_DEVICE_ATTITUDE_STATUS — that confirms the gimbal device is actually present.
+        // process_gimbal_device_attitude_status() will call check_is_gimbal_valid() again when
+        // the first status arrives.
+        if (gimbal->gimbal_device_attitude_status_received) {
+            LogWarn("Continuing without GIMBAL_DEVICE_INFORMATION");
+            discovery.notified = true;
+            _gimbal_list_subscriptions.queue(gimbal_list_with_lock(), [this](const auto& func) {
+                _system_impl->call_user_callback(func);
+            });
+        }
+        // else: wait silently for the first GIMBAL_DEVICE_ATTITUDE_STATUS.
+    }
 }
 
 Gimbal::Result GimbalImpl::set_angles(
