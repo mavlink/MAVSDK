@@ -3,7 +3,6 @@
 #include "mavsdk_export.h"
 #include "math_utils.hpp"
 #include <algorithm>
-#include <cassert>
 #include <chrono>
 #include <cmath>
 #include <functional>
@@ -340,7 +339,7 @@ void GimbalImpl::process_gimbal_device_attitude_status(const mavlink_message_t& 
     // requests are already exhausted we can now safely announce the gimbal to subscribers.
     if (!gimbal.gimbal_device_attitude_status_received) {
         gimbal.gimbal_device_attitude_status_received = true;
-        check_is_gimbal_valid(&gimbal);
+        check_is_gimbal_valid(gimbal);
     }
 
     // Reset to defaults (e.g. NaN) first.
@@ -439,13 +438,11 @@ void GimbalImpl::process_attitude(const mavlink_message_t& message)
     _vehicle_yaw_rad = attitude.yaw;
 }
 
-void GimbalImpl::check_is_gimbal_valid(GimbalItem* gimbal)
+void GimbalImpl::check_is_gimbal_valid(GimbalItem& gimbal)
 {
-    assert(gimbal != nullptr);
-
     // Assumes lock
 
-    auto& discovery = _discovery[gimbal->gimbal_manager_compid];
+    auto& discovery = _discovery[gimbal.gimbal_manager_compid];
 
     if (discovery.notified) {
         // We've already announced this gimbal.
@@ -463,7 +460,7 @@ void GimbalImpl::check_is_gimbal_valid(GimbalItem* gimbal)
         // GIMBAL_DEVICE_ATTITUDE_STATUS — that confirms the gimbal device is actually present.
         // process_gimbal_device_attitude_status() will call check_is_gimbal_valid() again when
         // the first status arrives.
-        if (gimbal->gimbal_device_attitude_status_received) {
+        if (gimbal.gimbal_device_attitude_status_received) {
             LogWarn("Continuing without GIMBAL_DEVICE_INFORMATION");
             discovery.notified = true;
             _gimbal_list_subscriptions.queue(gimbal_list_with_lock(), [this](const auto& func) {

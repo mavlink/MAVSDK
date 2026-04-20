@@ -128,7 +128,7 @@ private:
     void process_gimbal_device_information(const mavlink_message_t& message);
     void process_gimbal_device_attitude_status(const mavlink_message_t& message);
     void process_attitude(const mavlink_message_t& message);
-    void check_is_gimbal_valid(GimbalItem* gimbal);
+    void check_is_gimbal_valid(GimbalItem& gimbal);
 
     void set_angles_async_internal(
         int32_t gimbal_id,
