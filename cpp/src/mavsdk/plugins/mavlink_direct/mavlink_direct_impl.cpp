@@ -55,14 +55,19 @@ void MavlinkDirectImpl::init()
             mavlink_direct_message.target_component_id = message.target_component_id;
             mavlink_direct_message.fields_json = message.fields_json;
 
-            _callbacks.queue(mavlink_direct_message, [this](const auto& func) {
-                _system_impl->call_user_callback(func);
-            });
+            _callbacks(mavlink_direct_message);
         });
 }
 
 void MavlinkDirectImpl::deinit()
 {
+    // Synchronise with any in-flight I/O-thread dispatch: _callbacks()/exec() holds
+    // the CallbackList's internal mutex, and clear() acquires the same mutex, so
+    // clear() blocks until the current exec() finishes.  After clear() the list is
+    // empty; subsequent exec() calls are no-ops, making it safe to destroy the
+    // CallbackList.  This also prevents any further user callbacks from being enqueued.
+    _callbacks.clear();
+
     if (_system_subscription.valid()) {
         _system_impl->unregister_libmav_message_handler(_system_subscription);
         _system_subscription = {};
@@ -153,15 +158,16 @@ MavlinkDirect::Result MavlinkDirectImpl::send_message(MavlinkDirect::MavlinkMess
 MavlinkDirect::MessageHandle MavlinkDirectImpl::subscribe_message(
     std::string message_name, const MavlinkDirect::MessageCallback& callback)
 {
-    // Add filtering callback to internal CallbackList
+    // filtering_callback is called synchronously on the I/O thread (via _callbacks()/exec()
+    // in init()).  It captures 'this' only to reach call_user_callback, and is never
+    // enqueued anywhere — so there is no lifetime issue.  deinit() calls _callbacks.clear()
+    // before unregistering the system handler, which blocks until any in-flight exec()
+    // completes; after that, filtering_callback will never be called again.
     auto filtering_callback =
         [this, message_name, callback](const MavlinkDirect::MavlinkMessage& message) {
-            // Apply message filtering (empty string means all messages)
             if (!message_name.empty() && message_name != message.message_name) {
                 return;
             }
-
-            // Queue user callback to user callback thread
             _system_impl->call_user_callback([callback, message]() { callback(message); });
         };
 
