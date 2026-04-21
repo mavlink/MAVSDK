@@ -111,10 +111,10 @@ int main(int argc, char** argv)
         const uint16_t wire_len = mavlink_msg_to_send_buffer(wire.data(), &msg);
 
         // Timestamp: microseconds since Unix epoch, big-endian.
-        const auto now_us = static_cast<uint64_t>(
-            std::chrono::duration_cast<std::chrono::microseconds>(
-                std::chrono::system_clock::now().time_since_epoch())
-                .count());
+        const auto now_us =
+            static_cast<uint64_t>(std::chrono::duration_cast<std::chrono::microseconds>(
+                                      std::chrono::system_clock::now().time_since_epoch())
+                                      .count());
 
         {
             std::lock_guard<std::mutex> lock(file_mutex);
@@ -144,17 +144,14 @@ int main(int argc, char** argv)
     while (!g_should_exit) {
         std::this_thread::sleep_for(std::chrono::seconds(1));
 
-        const auto elapsed_s =
-            std::chrono::duration_cast<std::chrono::seconds>(
-                std::chrono::steady_clock::now() - start)
-                .count();
+        const auto elapsed_s = std::chrono::duration_cast<std::chrono::seconds>(
+                                   std::chrono::steady_clock::now() - start)
+                                   .count();
         const uint64_t msgs = msg_count.load(std::memory_order_relaxed);
         const uint64_t bytes = byte_count.load(std::memory_order_relaxed);
 
-        std::cout << "\r[" << std::setw(6) << elapsed_s << "s]  "
-                  << std::setw(8) << msgs << " messages  "
-                  << std::setw(8) << bytes << " bytes written   "
-                  << std::flush;
+        std::cout << "\r[" << std::setw(6) << elapsed_s << "s]  " << std::setw(8) << msgs
+                  << " messages  " << std::setw(8) << bytes << " bytes written   " << std::flush;
     }
 
     // Flush and close the file cleanly before printing the summary.
