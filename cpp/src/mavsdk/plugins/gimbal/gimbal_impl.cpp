@@ -107,13 +107,13 @@ void GimbalImpl::process_heartbeat(const mavlink_message_t& message)
 {
     std::lock_guard<std::mutex> lock(_mutex);
 
-    auto gimbal = std::find_if(_gimbals.begin(), _gimbals.end(), [&](const GimbalItem& item) {
+    auto it = std::find_if(_gimbals.begin(), _gimbals.end(), [&](const GimbalItem& item) {
         return item.gimbal_manager_compid == message.compid;
     });
 
     auto& discovery = _discovery[message.compid];
 
-    if (gimbal == _gimbals.end()) {
+    if (it == _gimbals.end()) {
         // Maybe new gimbal, request information first.
         if (discovery.manager_info_requests_left > 0) {
             --discovery.manager_info_requests_left;
@@ -121,6 +121,8 @@ void GimbalImpl::process_heartbeat(const mavlink_message_t& message)
         }
         return;
     }
+
+    auto& gimbal = *it;
 
     if (discovery.device_info_received) {
         // We have full device info — announce the gimbal if not yet done.
@@ -144,8 +146,8 @@ void GimbalImpl::process_heartbeat(const mavlink_message_t& message)
     // Request gimbal device info
     --discovery.device_info_requests_left;
     const uint8_t target_component_id =
-        (gimbal->gimbal_device_id > 0 && gimbal->gimbal_device_id <= 6) ? message.compid :
-                                                                          gimbal->gimbal_device_id;
+        (gimbal.gimbal_device_id > 0 && gimbal.gimbal_device_id <= 6) ? message.compid :
+                                                                        gimbal.gimbal_device_id;
 
     if (target_component_id != 0) {
         request_gimbal_device_information(target_component_id);
@@ -167,7 +169,7 @@ void GimbalImpl::process_gimbal_manager_information(const mavlink_message_t& mes
 
     std::lock_guard<std::mutex> lock(_mutex);
 
-    auto gimbal = std::find_if(_gimbals.begin(), _gimbals.end(), [&](const GimbalItem& item) {
+    auto it = std::find_if(_gimbals.begin(), _gimbals.end(), [&](const GimbalItem& item) {
         return item.gimbal_manager_compid == message.compid;
     });
 
@@ -180,7 +182,7 @@ void GimbalImpl::process_gimbal_manager_information(const mavlink_message_t& mes
         discovery.notified = false;
     };
 
-    if (gimbal == _gimbals.end()) {
+    if (it == _gimbals.end()) {
         // Register new gimbal manager.
         GimbalItem new_item{};
         new_item.gimbal_manager_compid = message.compid;
@@ -191,13 +193,15 @@ void GimbalImpl::process_gimbal_manager_information(const mavlink_message_t& mes
         return;
     }
 
-    if (gimbal->gimbal_device_id != gimbal_manager_information.gimbal_device_id) {
+    auto& gimbal = *it;
+
+    if (gimbal.gimbal_device_id != gimbal_manager_information.gimbal_device_id) {
         LogWarn(
             "gimbal_manager_information.gimbal_device_id changed from {} to {}",
-            gimbal->gimbal_device_id,
+            gimbal.gimbal_device_id,
             gimbal_manager_information.gimbal_device_id);
 
-        gimbal->gimbal_device_id = gimbal_manager_information.gimbal_device_id;
+        gimbal.gimbal_device_id = gimbal_manager_information.gimbal_device_id;
         reset_device_discovery();
     }
 }
@@ -262,25 +266,27 @@ void GimbalImpl::process_gimbal_device_information(const mavlink_message_t& mess
 
     std::lock_guard<std::mutex> lock(_mutex);
 
-    auto gimbal = std::find_if(_gimbals.begin(), _gimbals.end(), [&](const GimbalItem& item) {
+    auto it = std::find_if(_gimbals.begin(), _gimbals.end(), [&](const GimbalItem& item) {
         if (gimbal_device_information.gimbal_device_id == 0) {
             return item.gimbal_device_id == message.compid;
         }
         return item.gimbal_manager_compid == message.compid;
     });
 
-    if (gimbal == _gimbals.end()) {
+    if (it == _gimbals.end()) {
         if (_debugging) {
             LogDebug("Didn't find gimbal for gimbal device");
         }
         return;
     }
 
-    gimbal->vendor_name = gimbal_device_information.vendor_name;
-    gimbal->model_name = gimbal_device_information.model_name;
-    gimbal->custom_name = gimbal_device_information.custom_name;
+    auto& gimbal = *it;
 
-    auto& discovery = _discovery[gimbal->gimbal_manager_compid];
+    gimbal.vendor_name = gimbal_device_information.vendor_name;
+    gimbal.model_name = gimbal_device_information.model_name;
+    gimbal.custom_name = gimbal_device_information.custom_name;
+
+    auto& discovery = _discovery[gimbal.gimbal_manager_compid];
     discovery.device_info_requests_left = 0;
     discovery.device_info_received = true;
     discovery.notified = false;
