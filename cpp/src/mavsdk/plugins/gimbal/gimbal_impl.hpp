@@ -111,6 +111,10 @@ private:
         unsigned device_info_requests_left{0};
         bool device_info_received{false};
         bool notified{false};
+        // Counts heartbeats received after device-info requests are exhausted but before
+        // GIMBAL_DEVICE_ATTITUDE_STATUS arrives. Used as a fallback so a gimbal that never
+        // sends attitude status is still eventually announced.
+        unsigned heartbeats_pending_attitude{0};
     };
     struct GimbalAddress {
         uint8_t gimbal_manager_compid{0};

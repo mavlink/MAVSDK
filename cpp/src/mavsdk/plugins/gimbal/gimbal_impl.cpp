@@ -136,10 +136,11 @@ void GimbalImpl::process_heartbeat(const mavlink_message_t& message)
     }
 
     if (discovery.device_info_requests_left == 0) {
-        // Device info requests exhausted without a response. Do not announce yet — wait until we
-        // receive a GIMBAL_DEVICE_ATTITUDE_STATUS, which confirms the gimbal is actually present.
-        // process_gimbal_device_attitude_status() will call check_is_gimbal_valid() when the
-        // first status arrives to trigger the deferred notification.
+        // Device info requests exhausted without a response. Normally we wait for a
+        // GIMBAL_DEVICE_ATTITUDE_STATUS to confirm the gimbal is present. Count heartbeats as a
+        // fallback so we don't wait indefinitely if attitude status never arrives.
+        ++discovery.heartbeats_pending_attitude;
+        check_is_gimbal_valid(gimbal);
         return;
     }
 
@@ -462,18 +463,32 @@ void GimbalImpl::check_is_gimbal_valid(GimbalItem& gimbal)
             _system_impl->call_user_callback(func);
         });
     } else if (discovery.device_info_requests_left == 0) {
-        // Requests exhausted without device info. Only announce once we receive at least one
-        // GIMBAL_DEVICE_ATTITUDE_STATUS — that confirms the gimbal device is actually present.
-        // process_gimbal_device_attitude_status() will call check_is_gimbal_valid() again when
-        // the first status arrives.
-        if (gimbal.gimbal_device_attitude_status_received) {
-            LogWarn("Continuing without GIMBAL_DEVICE_INFORMATION");
+        // Requests exhausted without device info. Prefer waiting for a
+        // GIMBAL_DEVICE_ATTITUDE_STATUS to confirm the gimbal is present, but also fall back
+        // after HEARTBEAT_FALLBACK_COUNT heartbeats so a gimbal that never sends attitude status
+        // is still eventually announced.
+        static constexpr unsigned HEARTBEAT_FALLBACK_COUNT = 10;
+        const bool attitude_status_confirmed = gimbal.gimbal_device_attitude_status_received;
+        const bool heartbeat_timeout =
+            discovery.heartbeats_pending_attitude >= HEARTBEAT_FALLBACK_COUNT;
+
+        if (attitude_status_confirmed || heartbeat_timeout) {
+            if (!attitude_status_confirmed) {
+                LogWarn(
+                    "Continuing without GIMBAL_DEVICE_INFORMATION or "
+                    "GIMBAL_DEVICE_ATTITUDE_STATUS for compid {}",
+                    gimbal.gimbal_manager_compid);
+            } else {
+                LogWarn(
+                    "Continuing without GIMBAL_DEVICE_INFORMATION for compid {}",
+                    gimbal.gimbal_manager_compid);
+            }
             discovery.notified = true;
             _gimbal_list_subscriptions.queue(gimbal_list_with_lock(), [this](const auto& func) {
                 _system_impl->call_user_callback(func);
             });
         }
-        // else: wait silently for the first GIMBAL_DEVICE_ATTITUDE_STATUS.
+        // else: wait silently.
     }
 }
 
