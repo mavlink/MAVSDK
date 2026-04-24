@@ -108,6 +108,9 @@ MavsdkImpl::~MavsdkImpl()
         _io_thread.reset();
     }
 
+    // Flush and close any open tlog file now that no more messages can arrive.
+    stop_tlog_recording();
+
     if (_process_user_callbacks_thread) {
         _user_callback_queue.stop();
         _process_user_callbacks_thread->join();
@@ -456,6 +459,9 @@ void MavsdkImpl::process_message(mavlink_message_t& message, Connection* connect
             _tlog_file.write(reinterpret_cast<const char*>(ts.data()), 8);
 
             // Raw MAVLink wire packet.
+            // mavlink_msg_to_send_buffer() only serialises an already-finalised
+            // mavlink_message_t; it does not read or write any channel status, so
+            // no channel checkout is required here.
             std::array<uint8_t, MAVLINK_MAX_PACKET_LEN> wire{};
             const uint16_t wire_len = mavlink_msg_to_send_buffer(wire.data(), &message);
             _tlog_file.write(reinterpret_cast<const char*>(wire.data()), wire_len);
