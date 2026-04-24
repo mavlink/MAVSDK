@@ -3,6 +3,8 @@
 #include <asio/post.hpp>
 
 #include <algorithm>
+#include <array>
+#include <chrono>
 #include <mutex>
 #include <thread>
 #include "connection.hpp"
@@ -434,6 +436,30 @@ void MavsdkImpl::process_message(mavlink_message_t& message, Connection* connect
     if (_should_exit) {
         // If we're meant to clean up, let's not try to acquire any more locks but bail.
         return;
+    }
+
+    // Record to tlog before any intercept/drop logic so all received traffic is captured.
+    {
+        std::lock_guard<std::mutex> tlog_lock(_tlog_mutex);
+        if (_tlog_file.is_open()) {
+            // 8-byte big-endian microsecond Unix timestamp.
+            const auto now_us =
+                static_cast<uint64_t>(std::chrono::duration_cast<std::chrono::microseconds>(
+                                          std::chrono::system_clock::now().time_since_epoch())
+                                          .count());
+            std::array<uint8_t, 8> ts{};
+            uint64_t v = now_us;
+            for (int i = 7; i >= 0; --i) {
+                ts[static_cast<size_t>(i)] = static_cast<uint8_t>(v & 0xFFu);
+                v >>= 8u;
+            }
+            _tlog_file.write(reinterpret_cast<const char*>(ts.data()), 8);
+
+            // Raw MAVLink wire packet.
+            std::array<uint8_t, MAVLINK_MAX_PACKET_LEN> wire{};
+            const uint16_t wire_len = mavlink_msg_to_send_buffer(wire.data(), &message);
+            _tlog_file.write(reinterpret_cast<const char*>(wire.data()), wire_len);
+        }
     }
 
     {
@@ -1435,6 +1461,26 @@ void MavsdkImpl::intercept_outgoing_messages_async(std::function<bool(mavlink_me
 {
     std::lock_guard<std::mutex> lock(_intercept_callbacks_mutex);
     _intercept_outgoing_messages_callback = callback;
+}
+
+bool MavsdkImpl::start_tlog_recording(const std::string& path)
+{
+    std::lock_guard<std::mutex> lock(_tlog_mutex);
+    if (_tlog_file.is_open()) {
+        _tlog_file.flush();
+        _tlog_file.close();
+    }
+    _tlog_file.open(path, std::ios::binary | std::ios::trunc);
+    return _tlog_file.is_open();
+}
+
+void MavsdkImpl::stop_tlog_recording()
+{
+    std::lock_guard<std::mutex> lock(_tlog_mutex);
+    if (_tlog_file.is_open()) {
+        _tlog_file.flush();
+        _tlog_file.close();
+    }
 }
 
 bool MavsdkImpl::call_json_interception_callbacks(
