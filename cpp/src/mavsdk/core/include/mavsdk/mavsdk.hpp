@@ -531,6 +531,30 @@ public:
     void intercept_incoming_messages_async(std::function<bool(mavlink_message_t&)> callback);
 
     /**
+     * @brief Start recording all incoming MAVLink traffic to a .tlog file.
+     *
+     * A .tlog (telemetry log) is a binary file where each record consists of
+     * an 8-byte big-endian microsecond Unix timestamp followed by the raw
+     * MAVLink wire packet.  The format is compatible with QGroundControl,
+     * Mission Planner, and pymavlink.
+     *
+     * Recording captures traffic across the entire Mavsdk instance (all
+     * connected systems and connections), not per-system.  If recording is
+     * already active it is stopped and restarted with the new file.
+     *
+     * @param path Output file path (e.g. "flight.tlog").
+     * @return true if the file was opened successfully, false otherwise.
+     */
+    bool start_tlog_recording(const std::string& path);
+
+    /**
+     * @brief Stop recording and close the .tlog file.
+     *
+     * Does nothing if recording is not active.
+     */
+    void stop_tlog_recording();
+
+    /**
      * @brief Intercept outgoing messages.
      *
      * This is a hook which allows to change or drop MAVLink messages before

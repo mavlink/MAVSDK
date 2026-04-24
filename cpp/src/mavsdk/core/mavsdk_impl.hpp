@@ -1,12 +1,15 @@
 #pragma once
 
+#include <array>
 #include <atomic>
+#include <chrono>
 #include <cstdint>
+#include <fstream>
 #include <mutex>
+#include <string>
 #include <sys/types.h>
 #include <utility>
 #include <vector>
-#include <atomic>
 #include <thread>
 
 #include <asio/io_context.hpp>
@@ -106,6 +109,9 @@ public:
 
     void intercept_incoming_messages_async(std::function<bool(mavlink_message_t&)> callback);
     void intercept_outgoing_messages_async(std::function<bool(mavlink_message_t&)> callback);
+
+    bool start_tlog_recording(const std::string& path);
+    void stop_tlog_recording();
 
     // JSON message interception
     Mavsdk::InterceptJsonHandle
@@ -270,6 +276,9 @@ private:
     mutable std::mutex _intercept_callbacks_mutex{};
     std::function<bool(mavlink_message_t&)> _intercept_incoming_messages_callback{nullptr};
     std::function<bool(mavlink_message_t&)> _intercept_outgoing_messages_callback{nullptr};
+
+    std::mutex _tlog_mutex{};
+    std::ofstream _tlog_file{};
 
     // JSON message interception
     std::vector<std::pair<Mavsdk::InterceptJsonHandle, Mavsdk::InterceptJsonCallback>>
