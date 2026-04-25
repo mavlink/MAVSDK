@@ -535,7 +535,7 @@ public:
      *
      * A .tlog (telemetry log) is a binary file where each record consists of
      * an 8-byte big-endian microsecond Unix timestamp followed by the raw
-     * MAVLink wire packet.  The format is compatible with QGroundControl,
+     * MAVLink wire packet.  The format is compatible with
      * Mission Planner, MAVProxy, and pymavlink.
      *
      * Recording captures traffic across the entire Mavsdk instance (all
