@@ -2,7 +2,8 @@
 
 #include <atomic>
 #include <cstdint>
-#include <fstream>
+#include <iosfwd>
+#include <memory>
 #include <mutex>
 #include <string>
 #include <sys/types.h>
@@ -276,7 +277,7 @@ private:
     std::function<bool(mavlink_message_t&)> _intercept_outgoing_messages_callback{nullptr};
 
     std::mutex _tlog_mutex{};
-    std::ofstream _tlog_file{};
+    std::unique_ptr<std::ofstream> _tlog_file{};
 
     // JSON message interception
     std::vector<std::pair<Mavsdk::InterceptJsonHandle, Mavsdk::InterceptJsonCallback>>
