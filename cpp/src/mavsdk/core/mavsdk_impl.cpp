@@ -20,10 +20,14 @@
 #include "version.hpp"
 #include "server_component_impl.hpp"
 #include "overloaded.hpp"
+#include "mavlink_address.hpp"
 #include "mavlink_channels.hpp"
+#include "mavlink_command_receiver.hpp"
 #include "callback_list.tpp"
 #include "hostname_to_ip.hpp"
+#include "libmav_receiver.hpp"
 #include "embedded_mavlink_xml.hpp"
+#include <mav/BufferParser.h>
 #include <mav/MessageSet.h>
 
 #include "mavsdk_export.h"
