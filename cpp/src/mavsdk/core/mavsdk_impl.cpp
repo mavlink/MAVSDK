@@ -34,6 +34,12 @@
 
 namespace mavsdk {
 
+// Definition of the opaque tlog-file wrapper forward-declared in mavsdk_impl.hpp.
+// Keeps <fstream> out of the public/impl header.
+struct TlogFile {
+    std::ofstream stream;
+};
+
 template class MAVSDK_TEMPL_INST CallbackList<>;
 
 MavsdkImpl::MavsdkImpl(const Mavsdk::Configuration& configuration) :
@@ -449,7 +455,7 @@ void MavsdkImpl::process_message(mavlink_message_t& message, Connection* connect
     // Record to tlog before any intercept/drop logic so all received traffic is captured.
     {
         std::lock_guard<std::mutex> tlog_lock(_tlog_mutex);
-        if (_tlog_file && _tlog_file->is_open()) {
+        if (_tlog_file && _tlog_file->stream.is_open()) {
             // 8-byte big-endian microsecond Unix timestamp.
             const auto now_us =
                 static_cast<uint64_t>(std::chrono::duration_cast<std::chrono::microseconds>(
@@ -461,7 +467,7 @@ void MavsdkImpl::process_message(mavlink_message_t& message, Connection* connect
                 ts[static_cast<size_t>(i)] = static_cast<uint8_t>(v & 0xFFu);
                 v >>= 8u;
             }
-            _tlog_file->write(reinterpret_cast<const char*>(ts.data()), 8);
+            _tlog_file->stream.write(reinterpret_cast<const char*>(ts.data()), 8);
 
             // Raw MAVLink wire packet.
             // mavlink_msg_to_send_buffer() only serialises an already-finalised
@@ -469,7 +475,7 @@ void MavsdkImpl::process_message(mavlink_message_t& message, Connection* connect
             // no channel checkout is required here.
             std::array<uint8_t, MAVLINK_MAX_PACKET_LEN> wire{};
             const uint16_t wire_len = mavlink_msg_to_send_buffer(wire.data(), &message);
-            _tlog_file->write(reinterpret_cast<const char*>(wire.data()), wire_len);
+            _tlog_file->stream.write(reinterpret_cast<const char*>(wire.data()), wire_len);
         }
     }
 
@@ -1477,20 +1483,21 @@ void MavsdkImpl::intercept_outgoing_messages_async(std::function<bool(mavlink_me
 bool MavsdkImpl::start_tlog_recording(const std::string& path)
 {
     std::lock_guard<std::mutex> lock(_tlog_mutex);
-    if (_tlog_file && _tlog_file->is_open()) {
-        _tlog_file->flush();
-        _tlog_file->close();
+    if (_tlog_file && _tlog_file->stream.is_open()) {
+        _tlog_file->stream.flush();
+        _tlog_file->stream.close();
     }
-    _tlog_file = std::make_unique<std::ofstream>(path, std::ios::binary | std::ios::trunc);
-    return _tlog_file->is_open();
+    _tlog_file = std::make_unique<TlogFile>();
+    _tlog_file->stream.open(path, std::ios::binary | std::ios::trunc);
+    return _tlog_file->stream.is_open();
 }
 
 void MavsdkImpl::stop_tlog_recording()
 {
     std::lock_guard<std::mutex> lock(_tlog_mutex);
-    if (_tlog_file && _tlog_file->is_open()) {
-        _tlog_file->flush();
-        _tlog_file->close();
+    if (_tlog_file && _tlog_file->stream.is_open()) {
+        _tlog_file->stream.flush();
+        _tlog_file->stream.close();
     }
     _tlog_file.reset();
 }

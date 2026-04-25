@@ -2,7 +2,6 @@
 
 #include <atomic>
 #include <cstdint>
-#include <iosfwd>
 #include <memory>
 #include <mutex>
 #include <string>
@@ -44,6 +43,7 @@ class BufferParser;
 namespace mavsdk {
 
 class RawConnection; // Forward declaration
+struct TlogFile; // Forward declaration – defined in mavsdk_impl.cpp
 
 class MavsdkImpl {
 public:
@@ -273,7 +273,7 @@ private:
     std::function<bool(mavlink_message_t&)> _intercept_outgoing_messages_callback{nullptr};
 
     std::mutex _tlog_mutex{};
-    std::unique_ptr<std::ofstream> _tlog_file{};
+    std::unique_ptr<TlogFile> _tlog_file{};
 
     // JSON message interception
     std::vector<std::pair<Mavsdk::InterceptJsonHandle, Mavsdk::InterceptJsonCallback>>
