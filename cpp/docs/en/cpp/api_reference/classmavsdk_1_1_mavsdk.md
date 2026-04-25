@@ -657,7 +657,7 @@ bool mavsdk::Mavsdk::start_tlog_recording(const std::string &path)
 
 Start recording all incoming MAVLink traffic to a .tlog file.
 
-A .tlog (telemetry log) is a binary file where each record consists of an 8-byte big-endian microsecond Unix timestamp followed by the raw MAVLink wire packet. The format is compatible with QGroundControl, [Mission](classmavsdk_1_1_mission.md) Planner, MAVProxy, and pymavlink.
+A .tlog (telemetry log) is a binary file where each record consists of an 8-byte big-endian microsecond Unix timestamp followed by the raw MAVLink wire packet. The format is compatible with [Mission](classmavsdk_1_1_mission.md) Planner, MAVProxy, and pymavlink.
 
 
 Recording captures traffic across the entire [Mavsdk](classmavsdk_1_1_mavsdk.md) instance (all connected systems and connections), not per-system. If recording is already active it is stopped and restarted with the new file.
