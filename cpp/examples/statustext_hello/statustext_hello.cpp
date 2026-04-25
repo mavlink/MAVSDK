@@ -45,13 +45,13 @@ int main(int argc, char** argv)
 
     // Send one message per severity level so every MAV_SEVERITY value is exercised.
     const std::pair<ServerUtility::StatusTextType, std::string_view> levels[] = {
-        {ServerUtility::StatusTextType::Debug,     "DEBUG: low-level diagnostic info"},
-        {ServerUtility::StatusTextType::Info,      "INFO: normal operational message"},
-        {ServerUtility::StatusTextType::Notice,    "NOTICE: unusual but not an error"},
-        {ServerUtility::StatusTextType::Warning,   "WARNING: action may be required"},
-        {ServerUtility::StatusTextType::Error,     "ERROR: recoverable error condition"},
-        {ServerUtility::StatusTextType::Critical,  "CRITICAL: immediate action required"},
-        {ServerUtility::StatusTextType::Alert,     "ALERT: system is unusable"},
+        {ServerUtility::StatusTextType::Debug, "DEBUG: low-level diagnostic info"},
+        {ServerUtility::StatusTextType::Info, "INFO: normal operational message"},
+        {ServerUtility::StatusTextType::Notice, "NOTICE: unusual but not an error"},
+        {ServerUtility::StatusTextType::Warning, "WARNING: action may be required"},
+        {ServerUtility::StatusTextType::Error, "ERROR: recoverable error condition"},
+        {ServerUtility::StatusTextType::Critical, "CRITICAL: immediate action required"},
+        {ServerUtility::StatusTextType::Alert, "ALERT: system is unusable"},
         {ServerUtility::StatusTextType::Emergency, "EMERGENCY: total system failure"},
     };
 
