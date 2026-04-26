@@ -470,9 +470,10 @@ void MavsdkImpl::process_message(mavlink_message_t& message, Connection* connect
             _tlog_file->stream.write(reinterpret_cast<const char*>(ts.data()), 8);
 
             // Raw MAVLink wire packet.
-            // mavlink_msg_to_send_buffer() only serialises an already-finalised
-            // mavlink_message_t; it does not read or write any channel status, so
-            // no channel checkout is required here.
+            // mavlink_msg_to_send_buffer() only serialises an already-parsed
+            // mavlink_message_t back to wire bytes; it does not touch any
+            // mavlink_channel_t status or global channel state, so no channel
+            // checkout via mavlink_get_channel_status() is required here.
             std::array<uint8_t, MAVLINK_MAX_PACKET_LEN> wire{};
             const uint16_t wire_len = mavlink_msg_to_send_buffer(wire.data(), &message);
             _tlog_file->stream.write(reinterpret_cast<const char*>(wire.data()), wire_len);
