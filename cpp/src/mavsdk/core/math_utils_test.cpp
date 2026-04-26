@@ -111,6 +111,34 @@ TEST(MathUtils, QuaternionToEulerAndBackSomeCase)
     EXPECT_NEAR(q2.z, q2_mavlink[3], 0.01f);
 }
 
+// Regression test for the constrain added to to_euler_angle_from_quaternion:
+// when 2*(q.w*q.y - q.z*q.x) is driven slightly outside [-1, 1] by
+// floating-point rounding, asinf would otherwise return NaN. The constrain
+// clamps the argument so pitch stays finite at gimbal lock.
+TEST(MathUtils, QuaternionToEulerNoNaNAtGimbalLock)
+{
+    // Quaternion deliberately constructed so 2*(q.w*q.y - q.z*q.x) = 1.2 > 1.
+    // Without the constrain, asinf(1.2f) returns NaN.
+    Quaternion q_pos;
+    q_pos.w = 1.0f;
+    q_pos.x = 0.0f;
+    q_pos.y = 0.6f;
+    q_pos.z = 0.0f;
+    EulerAngle e_pos = to_euler_angle_from_quaternion(q_pos);
+    EXPECT_FALSE(std::isnan(e_pos.pitch_deg));
+    EXPECT_FLOAT_EQ(e_pos.pitch_deg, 90.0f);
+
+    // Symmetric negative side: 2*(q.w*q.y - q.z*q.x) = -1.2.
+    Quaternion q_neg;
+    q_neg.w = 1.0f;
+    q_neg.x = 0.0f;
+    q_neg.y = -0.6f;
+    q_neg.z = 0.0f;
+    EulerAngle e_neg = to_euler_angle_from_quaternion(q_neg);
+    EXPECT_FALSE(std::isnan(e_neg.pitch_deg));
+    EXPECT_FLOAT_EQ(e_neg.pitch_deg, -90.0f);
+}
+
 TEST(MathUtils, QuaternionRotation)
 {
     // Define a sample quaternion
