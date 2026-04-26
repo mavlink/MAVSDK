@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <array>
 #include <chrono>
+#include <fstream>
 #include <mutex>
 #include <thread>
 #include "connection.hpp"
@@ -32,6 +33,18 @@
 #include "mavsdk_export.h"
 
 namespace mavsdk {
+
+// Definition kept in .cpp to avoid pulling <fstream> into the header.
+struct TlogFile {
+    std::ofstream stream;
+    ~TlogFile()
+    {
+        if (stream.is_open()) {
+            stream.flush();
+            stream.close();
+        }
+    }
+};
 
 template class MAVSDK_TEMPL_INST CallbackList<>;
 
