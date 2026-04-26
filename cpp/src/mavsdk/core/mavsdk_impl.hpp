@@ -2,9 +2,7 @@
 
 #include <atomic>
 #include <cstdint>
-#include <memory>
 #include <mutex>
-#include <string>
 #include <sys/types.h>
 #include <utility>
 #include <vector>
