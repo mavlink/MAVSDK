@@ -5,7 +5,6 @@
 #include <algorithm>
 #include <array>
 #include <chrono>
-#include <fstream>
 #include <mutex>
 #include <thread>
 #include "connection.hpp"
@@ -33,19 +32,6 @@
 #include "mavsdk_export.h"
 
 namespace mavsdk {
-
-// Definition of the opaque tlog-file wrapper forward-declared in mavsdk_impl.hpp.
-// Keeps <fstream> out of the public/impl header.
-struct TlogFile {
-    std::ofstream stream;
-    ~TlogFile()
-    {
-        if (stream.is_open()) {
-            stream.flush();
-            stream.close();
-        }
-    }
-};
 
 template class MAVSDK_TEMPL_INST CallbackList<>;
 

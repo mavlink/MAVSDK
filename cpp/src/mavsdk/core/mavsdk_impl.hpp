@@ -2,6 +2,7 @@
 
 #include <atomic>
 #include <cstdint>
+#include <fstream>
 #include <mutex>
 #include <sys/types.h>
 #include <utility>
@@ -41,7 +42,17 @@ class BufferParser;
 namespace mavsdk {
 
 class RawConnection; // Forward declaration
-struct TlogFile; // Forward declaration – defined in mavsdk_impl.cpp
+
+struct TlogFile {
+    std::ofstream stream;
+    ~TlogFile()
+    {
+        if (stream.is_open()) {
+            stream.flush();
+            stream.close();
+        }
+    }
+};
 
 class MavsdkImpl {
 public:
