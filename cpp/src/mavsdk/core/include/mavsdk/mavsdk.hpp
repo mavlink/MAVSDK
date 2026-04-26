@@ -332,6 +332,7 @@ public:
      * @brief Destructor.
      *
      * Disconnects all connected vehicles and releases all resources.
+     * Any active .tlog recording is automatically stopped and flushed.
      */
     ~Mavsdk();
 
@@ -535,12 +536,15 @@ public:
      *
      * A .tlog (telemetry log) is a binary file where each record consists of
      * an 8-byte big-endian microsecond Unix timestamp followed by the raw
-     * MAVLink wire packet.  The format is compatible with
+     * MAVLink wire packet. The format is compatible with
      * Mission Planner, MAVProxy, and pymavlink.
      *
      * Recording captures traffic across the entire Mavsdk instance (all
-     * connected systems and connections), not per-system.  If recording is
+     * connected systems and connections), not per-system. If recording is
      * already active it is stopped and restarted with the new file.
+     *
+     * The recording is automatically stopped and flushed when the Mavsdk
+     * instance is destroyed, so explicit stop_tlog_recording() is optional.
      *
      * @param path Output file path (e.g. "flight.tlog").
      * @return true if the file was opened successfully, false otherwise.
@@ -550,7 +554,8 @@ public:
     /**
      * @brief Stop recording and close the .tlog file.
      *
-     * Does nothing if recording is not active.
+     * Does nothing if recording is not active. Automatically called on
+     * Mavsdk destruction.
      */
     void stop_tlog_recording();
 
