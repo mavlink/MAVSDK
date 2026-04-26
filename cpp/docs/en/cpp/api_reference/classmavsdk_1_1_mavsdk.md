@@ -112,7 +112,7 @@ mavsdk::Mavsdk::~Mavsdk()
 
 Destructor.
 
-Disconnects all connected vehicles and releases all resources.
+Disconnects all connected vehicles and releases all resources. Any active .tlog recording is automatically stopped and flushed.
 
 ## Member Typdef Documentation
 
@@ -662,6 +662,9 @@ A .tlog (telemetry log) is a binary file where each record consists of an 8-byte
 
 Recording captures traffic across the entire [Mavsdk](classmavsdk_1_1_mavsdk.md) instance (all connected systems and connections), not per-system. If recording is already active it is stopped and restarted with the new file.
 
+
+The recording is automatically stopped and flushed when the [Mavsdk](classmavsdk_1_1_mavsdk.md) instance is destroyed, so explicit [stop_tlog_recording()](classmavsdk_1_1_mavsdk.md#classmavsdk_1_1_mavsdk_1a507d9f58439233b5ddd3d5d1ba30bc0c) is optional.
+
 **Parameters**
 
 * const std::string& **path** - Output file path (e.g. "flight.tlog").
@@ -678,7 +681,7 @@ void mavsdk::Mavsdk::stop_tlog_recording()
 
 Stop recording and close the .tlog file.
 
-Does nothing if recording is not active.
+Does nothing if recording is not active. Automatically called on [Mavsdk](classmavsdk_1_1_mavsdk.md) destruction.
 
 ### intercept_outgoing_messages_async() {#classmavsdk_1_1_mavsdk_1a040ee5c1d41e71c0d63cf8f76d2db275}
 ```cpp
