@@ -15,6 +15,7 @@ Namespace for all mavsdk types.
 * [mavsdk::CameraServer](classmavsdk_1_1_camera_server.md)
 * [mavsdk::ComponentMetadata](classmavsdk_1_1_component_metadata.md)
 * [mavsdk::ComponentMetadataServer](classmavsdk_1_1_component_metadata_server.md)
+* [mavsdk::EulerAngle](structmavsdk_1_1_euler_angle.md)
 * [mavsdk::Events](classmavsdk_1_1_events.md)
 * [mavsdk::Failure](classmavsdk_1_1_failure.md)
 * [mavsdk::FakeHandle](classmavsdk_1_1_fake_handle.md)
@@ -42,6 +43,7 @@ Namespace for all mavsdk types.
 * [mavsdk::Param](classmavsdk_1_1_param.md)
 * [mavsdk::ParamServer](classmavsdk_1_1_param_server.md)
 * [mavsdk::PluginBase](classmavsdk_1_1_plugin_base.md)
+* [mavsdk::Quaternion](structmavsdk_1_1_quaternion.md)
 * [mavsdk::Rtk](classmavsdk_1_1_rtk.md)
 * [mavsdk::ServerComponent](classmavsdk_1_1_server_component.md)
 * [mavsdk::ServerPluginBase](classmavsdk_1_1_server_plugin_base.md)
@@ -75,6 +77,14 @@ MAVSDK_PUBLIC std::vector< uint8_t > | [base64_decode](#namespacemavsdk_1a7f2b75
 MAVSDK_TEST_EXPORT std::ostream & | [operator<<](#namespacemavsdk_1a4582b6eac9ac0bd0cdda49aecaf4395b) (std::ostream & os, const [CompatibilityMode](namespacemavsdk.md#namespacemavsdk_1af0f9146b2086797ae56671d20bd29d00) & mode) | Stream operator to print information about a `CompatibilityMode`.
 MAVSDK_PUBLIC std::string_view | [to_string](#namespacemavsdk_1a3aac85f81f4b57b1e94ee6444126da67) (const [ConnectionResult](namespacemavsdk.md#namespacemavsdk_1a0bad93f6d037051ac3906a0bcc09f992) & result) | Convert `ConnectionResult` to string.
 MAVSDK_PUBLIC std::ostream & | [operator<<](#namespacemavsdk_1ad44fcd033d04558206f7b68517308071) (std::ostream & str, const [ConnectionResult](namespacemavsdk.md#namespacemavsdk_1a0bad93f6d037051ac3906a0bcc09f992) & result) | Stream operator to print information about a `ConnectionResult`.
+MAVSDK_TEST_EXPORT bool | [operator==](#namespacemavsdk_1ad54694a672c29409013a7b86bff2a21a) (const [Quaternion](structmavsdk_1_1_quaternion.md) & lhs, const [Quaternion](structmavsdk_1_1_quaternion.md) & rhs) | Equality comparison for [Quaternion](structmavsdk_1_1_quaternion.md). NaN-aware: two NaN components compare equal.
+bool | [operator==](#namespacemavsdk_1a28c1cd94aec270db38d0d961569f508a) (const [EulerAngle](structmavsdk_1_1_euler_angle.md) & lhs, const [EulerAngle](structmavsdk_1_1_euler_angle.md) & rhs) | Equality comparison for [EulerAngle](structmavsdk_1_1_euler_angle.md). NaN-aware: two NaN components compare equal.
+MAVSDK_TEST_EXPORT [EulerAngle](structmavsdk_1_1_euler_angle.md) | [to_euler_angle_from_quaternion](#namespacemavsdk_1a331716955b6c67f55e4a5043b662c89a) ([Quaternion](structmavsdk_1_1_quaternion.md) quaternion) | Convert a [Quaternion](structmavsdk_1_1_quaternion.md) to [EulerAngle](structmavsdk_1_1_euler_angle.md) in degrees (ZYX Tait-Bryan).
+MAVSDK_TEST_EXPORT [Quaternion](structmavsdk_1_1_quaternion.md) | [to_quaternion_from_euler_angle](#namespacemavsdk_1a36db41d55946b7870bd057b0d21b995a) ([EulerAngle](structmavsdk_1_1_euler_angle.md) euler_angle) | Convert an [EulerAngle](structmavsdk_1_1_euler_angle.md) (degrees) to a [Quaternion](structmavsdk_1_1_quaternion.md) (ZYX Tait-Bryan).
+MAVSDK_TEST_EXPORT [Quaternion](structmavsdk_1_1_quaternion.md) | [operator*](#namespacemavsdk_1a8629960b30aafcb6e4cb267d950618aa) (const [Quaternion](structmavsdk_1_1_quaternion.md) & lhs, const [Quaternion](structmavsdk_1_1_quaternion.md) & rhs) | Hamilton product of two Quaternions; composes rotations.
+constexpr T | [to_rad_from_deg](#namespacemavsdk_1adca90fd4bd3af244bfde5561bc8d72d8) (T deg) | Convert degrees to radians.
+constexpr T | [to_deg_from_rad](#namespacemavsdk_1a43239ca183cfc12177d974821150f857) (T rad) | Convert radians to degrees.
+constexpr T | [constrain](#namespacemavsdk_1a37295e1b92021003968aa7f9b4f86d6e) (T input, T min, T max) | Clamp a value to a closed interval [min, max].
 &nbsp; | [overloaded](#namespacemavsdk_1a724e321aaff91eb2ba28279e0292e552) (Ts...)-> overloaded< Ts... > | Template deduction helper for `overloaded`
 std::ostream & | [operator<<](#namespacemavsdk_1a3e7a55e89629afd2a079d79c047e8dbd) (std::ostream & os, const [Vehicle](namespacemavsdk.md#namespacemavsdk_1a9e3a3a502dc8313cb931a8a44cc6f95b) & vehicle) | Stream operator to print information about a `Vehicle`.
 [Vehicle](namespacemavsdk.md#namespacemavsdk_1a9e3a3a502dc8313cb931a8a44cc6f95b) | [to_vehicle_from_mav_type](#namespacemavsdk_1a4dede924df915e32b4807aa87a98b5bb) (MAV_TYPE type) | Convert a 'MAV_TYPE' to a `Vehicle`.
@@ -354,6 +364,208 @@ Stream operator to print information about a `ConnectionResult`.
 **Returns**
 
 &emsp;MAVSDK_PUBLIC std::ostream & - A reference to the stream.
+
+### operator==() {#namespacemavsdk_1ad54694a672c29409013a7b86bff2a21a}
+
+```
+#include: math_utils.hpp
+```
+```cpp
+MAVSDK_TEST_EXPORT bool mavsdk::operator==(const Quaternion &lhs, const Quaternion &rhs)
+```
+
+
+Equality comparison for [Quaternion](structmavsdk_1_1_quaternion.md). NaN-aware: two NaN components compare equal.
+
+
+**Parameters**
+
+* const [Quaternion](structmavsdk_1_1_quaternion.md)& **lhs** - 
+* const [Quaternion](structmavsdk_1_1_quaternion.md)& **rhs** - 
+
+**Returns**
+
+&emsp;MAVSDK_TEST_EXPORT bool - 
+
+### operator==() {#namespacemavsdk_1a28c1cd94aec270db38d0d961569f508a}
+
+```
+#include: math_utils.hpp
+```
+```cpp
+bool mavsdk::operator==(const EulerAngle &lhs, const EulerAngle &rhs)
+```
+
+
+Equality comparison for [EulerAngle](structmavsdk_1_1_euler_angle.md). NaN-aware: two NaN components compare equal.
+
+
+**Parameters**
+
+* const [EulerAngle](structmavsdk_1_1_euler_angle.md)& **lhs** - 
+* const [EulerAngle](structmavsdk_1_1_euler_angle.md)& **rhs** - 
+
+**Returns**
+
+&emsp;bool - 
+
+### to_euler_angle_from_quaternion() {#namespacemavsdk_1a331716955b6c67f55e4a5043b662c89a}
+
+```
+#include: math_utils.hpp
+```
+```cpp
+MAVSDK_TEST_EXPORT EulerAngle mavsdk::to_euler_angle_from_quaternion(Quaternion quaternion)
+```
+
+
+Convert a [Quaternion](structmavsdk_1_1_quaternion.md) to [EulerAngle](structmavsdk_1_1_euler_angle.md) in degrees (ZYX Tait-Bryan).
+
+The argument to asinf is clamped to [-1, 1] so floating-point rounding cannot drive the pitch to NaN at gimbal lock.
+
+**Parameters**
+
+* [Quaternion](structmavsdk_1_1_quaternion.md) **quaternion** - Input [Quaternion](structmavsdk_1_1_quaternion.md) (does not need to be exactly normalised).
+
+**Returns**
+
+&emsp;MAVSDK_TEST_EXPORT [EulerAngle](structmavsdk_1_1_euler_angle.md) - [EulerAngle](structmavsdk_1_1_euler_angle.md) with roll, pitch, yaw in degrees.
+
+### to_quaternion_from_euler_angle() {#namespacemavsdk_1a36db41d55946b7870bd057b0d21b995a}
+
+```
+#include: math_utils.hpp
+```
+```cpp
+MAVSDK_TEST_EXPORT Quaternion mavsdk::to_quaternion_from_euler_angle(EulerAngle euler_angle)
+```
+
+
+Convert an [EulerAngle](structmavsdk_1_1_euler_angle.md) (degrees) to a [Quaternion](structmavsdk_1_1_quaternion.md) (ZYX Tait-Bryan).
+
+
+**Parameters**
+
+* [EulerAngle](structmavsdk_1_1_euler_angle.md) **euler_angle** - Input [EulerAngle](structmavsdk_1_1_euler_angle.md) in degrees.
+
+**Returns**
+
+&emsp;MAVSDK_TEST_EXPORT [Quaternion](structmavsdk_1_1_quaternion.md) - Normalised [Quaternion](structmavsdk_1_1_quaternion.md).
+
+### operator*() {#namespacemavsdk_1a8629960b30aafcb6e4cb267d950618aa}
+
+```
+#include: math_utils.hpp
+```
+```cpp
+MAVSDK_TEST_EXPORT Quaternion mavsdk::operator*(const Quaternion &lhs, const Quaternion &rhs)
+```
+
+
+Hamilton product of two Quaternions; composes rotations.
+
+(lhs * rhs) applies rhs first, then lhs.
+
+**Parameters**
+
+* const [Quaternion](structmavsdk_1_1_quaternion.md)& **lhs** - Left-hand side [Quaternion](structmavsdk_1_1_quaternion.md).
+* const [Quaternion](structmavsdk_1_1_quaternion.md)& **rhs** - Right-hand side [Quaternion](structmavsdk_1_1_quaternion.md).
+
+**Returns**
+
+&emsp;MAVSDK_TEST_EXPORT [Quaternion](structmavsdk_1_1_quaternion.md) - Composed [Quaternion](structmavsdk_1_1_quaternion.md).
+
+### to_rad_from_deg() {#namespacemavsdk_1adca90fd4bd3af244bfde5561bc8d72d8}
+
+```
+#include: math_utils.hpp
+```
+```cpp
+constexpr T mavsdk::to_rad_from_deg(T deg)
+```
+
+
+Convert degrees to radians.
+
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Numeric type. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+
+**Parameters**
+
+* T **deg** - Angle in degrees.
+
+**Returns**
+
+&emsp;constexpr T - Angle in radians.
+
+### to_deg_from_rad() {#namespacemavsdk_1a43239ca183cfc12177d974821150f857}
+
+```
+#include: math_utils.hpp
+```
+```cpp
+constexpr T mavsdk::to_deg_from_rad(T rad)
+```
+
+
+Convert radians to degrees.
+
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Numeric type. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+
+**Parameters**
+
+* T **rad** - Angle in radians.
+
+**Returns**
+
+&emsp;constexpr T - Angle in degrees.
+
+### constrain() {#namespacemavsdk_1a37295e1b92021003968aa7f9b4f86d6e}
+
+```
+#include: math_utils.hpp
+```
+```cpp
+constexpr T mavsdk::constrain(T input, T min, T max)
+```
+
+
+Clamp a value to a closed interval [min, max].
+
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Numeric type comparable with operator&lt;. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+
+**Parameters**
+
+* T **input** - Value to clamp.
+* T **min** - Lower bound (inclusive).
+* T **max** - Upper bound (inclusive).
+
+**Returns**
+
+&emsp;constexpr T - input clamped to [min, max].
 
 ### overloaded() {#namespacemavsdk_1a724e321aaff91eb2ba28279e0292e552}
 

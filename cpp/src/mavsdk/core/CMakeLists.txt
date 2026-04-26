@@ -249,6 +249,7 @@ install(FILES
     include/mavsdk/plugin_base.hpp
     include/mavsdk/server_plugin_base.hpp
     include/mavsdk/geometry.hpp
+    include/mavsdk/math_utils.hpp
     include/mavsdk/server_component.hpp
     include/mavsdk/mavlink_address.hpp
     include/mavsdk/vehicle.hpp
