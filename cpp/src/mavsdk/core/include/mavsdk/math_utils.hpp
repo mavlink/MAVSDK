@@ -30,7 +30,7 @@ struct EulerAngle {
 /**
  * @brief Equality comparison for Quaternion. NaN-aware: two NaN components compare equal.
  */
-MAVSDK_TEST_EXPORT bool operator==(const Quaternion& lhs, const Quaternion& rhs);
+MAVSDK_PUBLIC bool operator==(const Quaternion& lhs, const Quaternion& rhs);
 
 /**
  * @brief Equality comparison for EulerAngle. NaN-aware: two NaN components compare equal.
@@ -46,7 +46,7 @@ bool operator==(const EulerAngle& lhs, const EulerAngle& rhs);
  * @param quaternion Input Quaternion (does not need to be exactly normalised).
  * @return EulerAngle with roll, pitch, yaw in degrees.
  */
-MAVSDK_TEST_EXPORT EulerAngle to_euler_angle_from_quaternion(Quaternion quaternion);
+MAVSDK_PUBLIC EulerAngle to_euler_angle_from_quaternion(Quaternion quaternion);
 
 /**
  * @brief Convert an EulerAngle (degrees) to a Quaternion (ZYX Tait-Bryan).
@@ -54,7 +54,7 @@ MAVSDK_TEST_EXPORT EulerAngle to_euler_angle_from_quaternion(Quaternion quaterni
  * @param euler_angle Input EulerAngle in degrees.
  * @return Normalised Quaternion.
  */
-MAVSDK_TEST_EXPORT Quaternion to_quaternion_from_euler_angle(EulerAngle euler_angle);
+MAVSDK_PUBLIC Quaternion to_quaternion_from_euler_angle(EulerAngle euler_angle);
 
 /**
  * @brief Hamilton product of two Quaternions; composes rotations.
@@ -65,7 +65,7 @@ MAVSDK_TEST_EXPORT Quaternion to_quaternion_from_euler_angle(EulerAngle euler_an
  * @param rhs Right-hand side Quaternion.
  * @return Composed Quaternion.
  */
-MAVSDK_TEST_EXPORT Quaternion operator*(const Quaternion& lhs, const Quaternion& rhs);
+MAVSDK_PUBLIC Quaternion operator*(const Quaternion& lhs, const Quaternion& rhs);
 
 // Instead of using the constant from math.h or cmath we define it ourselves. This way
 // we don't import all the other C math functions and make sure to use the C++ functions
