@@ -14,26 +14,36 @@ The `Telemetry` API provides methods to return the following types of informatio
 * [ActuatorControlTarget](../api_reference/structmavsdk_1_1_telemetry_1_1_actuator_control_target.md)
 * [ActuatorOutputStatus](../api_reference/structmavsdk_1_1_telemetry_1_1_actuator_output_status.md)
 * [AngularVelocityBody](../api_reference/structmavsdk_1_1_telemetry_1_1_angular_velocity_body.md)
-* [AngularVelocityNed](../api_reference/structmavsdk_1_1_telemetry_1_1_angular_velocity_frd.md)
+* [Altitude](../api_reference/structmavsdk_1_1_telemetry_1_1_altitude.md)
+* [AngularVelocityBody](../api_reference/structmavsdk_1_1_telemetry_1_1_angular_velocity_body.md)
+* [AngularVelocityFrd](../api_reference/structmavsdk_1_1_telemetry_1_1_angular_velocity_frd.md)
 * [Battery](../api_reference/structmavsdk_1_1_telemetry_1_1_battery.md) - voltage and percentage power remaining.
 * [Covariance](../api_reference/structmavsdk_1_1_telemetry_1_1_covariance.md)
+* [DistanceSensor](../api_reference/structmavsdk_1_1_telemetry_1_1_distance_sensor.md)
 * [EulerAngle](../api_reference/structmavsdk_1_1_telemetry_1_1_euler_angle.md) - vehicle attitude/orientation as Euler Angle
 * [FixedwingMetrics](../api_reference/structmavsdk_1_1_telemetry_1_1_fixedwing_metrics.md)
+* [GpsGlobalOrigin](../api_reference/structmavsdk_1_1_telemetry_1_1_gps_global_origin.md)
 * [GpsInfo](../api_reference/structmavsdk_1_1_telemetry_1_1_gps_info.md) - type of fix, if any, and number of satellites.
 * [GroundTruth](../api_reference/structmavsdk_1_1_telemetry_1_1_ground_truth.md)
+* [Heading](../api_reference/structmavsdk_1_1_telemetry_1_1_heading.md)
 * [Health](../api_reference/structmavsdk_1_1_telemetry_1_1_health.md) - calibration status of various sensors and confirmation that position estimates are good enough for position control.
+* [HomePosition](../api_reference/structmavsdk_1_1_telemetry_1_1_home_position.md)
 * [Imu](../api_reference/structmavsdk_1_1_telemetry_1_1_imu.md)
 * [MagneticFieldFrd](../api_reference/structmavsdk_1_1_telemetry_1_1_magnetic_field_frd.md)
 * [Odometry](../api_reference/structmavsdk_1_1_telemetry_1_1_odometry.md)
 * [Position](../api_reference/structmavsdk_1_1_telemetry_1_1_position.md) - latitude and longitude in degrees, and altitude relative to sea level and to the takeoff altitude.
 * [PositionBody](../api_reference/structmavsdk_1_1_telemetry_1_1_position_body.md)
 * [PositionNed](../api_reference/structmavsdk_1_1_telemetry_1_1_position_ned.md)
-* [VelocityNed](../api_reference/structmavsdk_1_1_telemetry_1_1_velocity_ned.md)
-* [VelocityBody](../api_reference/structmavsdk_1_1_telemetry_1_1_velocity_body.md)
+
 * [PositionVelocityNed](../api_reference/structmavsdk_1_1_telemetry_1_1_position_velocity_ned.md)
 * [Quaternion](../api_reference/structmavsdk_1_1_telemetry_1_1_quaternion.md) - vehicle attitude/orientation as a quaternion
+* [RawGps](../api_reference/structmavsdk_1_1_telemetry_1_1_raw_gps.md)
 * [RcStatus](../api_reference/structmavsdk_1_1_telemetry_1_1_rc_status.md) - connection status, signal strength, and whether RC has ever been connected.
+* [ScaledPressure](../api_reference/structmavsdk_1_1_telemetry_1_1_scaled_pressure.md)
 * [StatusText](../api_reference/structmavsdk_1_1_telemetry_1_1_status_text.md)
+* [VelocityBody](../api_reference/structmavsdk_1_1_telemetry_1_1_velocity_body.md)
+* [VelocityNed](../api_reference/structmavsdk_1_1_telemetry_1_1_velocity_ned.md)
+* [Wind](../api_reference/structmavsdk_1_1_telemetry_1_1_wind.md)
 
 
 In addition there are a number of methods that return vehicle "state":
