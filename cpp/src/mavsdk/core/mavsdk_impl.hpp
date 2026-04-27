@@ -2,7 +2,6 @@
 
 #include <atomic>
 #include <cstdint>
-#include <fstream>
 #include <mutex>
 #include <sys/types.h>
 #include <utility>
@@ -43,16 +42,8 @@ namespace mavsdk {
 
 class RawConnection; // Forward declaration
 
-struct TlogFile {
-    std::ofstream stream;
-    ~TlogFile()
-    {
-        if (stream.is_open()) {
-            stream.flush();
-            stream.close();
-        }
-    }
-};
+// Defined in mavsdk_impl.cpp to avoid pulling <fstream> into this header.
+struct TlogFile;
 
 class MavsdkImpl {
 public:
