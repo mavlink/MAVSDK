@@ -307,6 +307,16 @@ void SerialConnection::do_receive()
                 return;
             }
 
+            if (ec == asio::error::eof) {
+                // Asio maps a 0-byte read() to EOF. On serial ports with
+                // VMIN=0/VTIME=0 this can happen transiently (epoll signals
+                // readable but the driver has no bytes, BREAK, USB hiccup,
+                // etc.) — re-arm and keep going. A truly detached device will
+                // surface as a different error on the next read.
+                do_receive();
+                return;
+            }
+
             if (ec) {
                 LogErr("read failure: {}", ec.message());
                 // Do not re-arm on hard errors (port removed, etc.).
