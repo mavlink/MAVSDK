@@ -35,7 +35,7 @@ MAVSDK_PUBLIC bool operator==(const Quaternion& lhs, const Quaternion& rhs);
 /**
  * @brief Equality comparison for EulerAngle. NaN-aware: two NaN components compare equal.
  */
-bool operator==(const EulerAngle& lhs, const EulerAngle& rhs);
+MAVSDK_PUBLIC bool operator==(const EulerAngle& lhs, const EulerAngle& rhs);
 
 /**
  * @brief Convert a Quaternion to EulerAngle in degrees (ZYX Tait-Bryan).
