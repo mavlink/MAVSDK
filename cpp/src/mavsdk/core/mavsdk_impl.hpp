@@ -30,7 +30,6 @@
 #include "callback_list.hpp"
 #include "callback_tracker.hpp"
 
-// Forward declarations to avoid including MessageSet.h in header
 namespace mav {
 class MessageSet;
 class Message;
