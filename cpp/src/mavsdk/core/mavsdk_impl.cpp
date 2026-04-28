@@ -480,6 +480,7 @@ void MavsdkImpl::process_message(mavlink_message_t& message, Connection* connect
             std::array<uint8_t, MAVLINK_MAX_PACKET_LEN> wire{};
             const uint16_t wire_len = mavlink_msg_to_send_buffer(wire.data(), &message);
             _tlog_file->stream.write(reinterpret_cast<const char*>(wire.data()), wire_len);
+            _tlog_file->stream.flush();
 
             if (!_tlog_file->stream.good()) {
                 LogErr("tlog: write failed, stopping recording");
@@ -662,6 +663,7 @@ void MavsdkImpl::process_libmav_message(
             _tlog_file->stream.write(
                 reinterpret_cast<const char*>(message.raw_bytes.data()),
                 static_cast<std::streamsize>(message.raw_bytes.size()));
+            _tlog_file->stream.flush();
 
             if (!_tlog_file->stream.good()) {
                 LogErr("tlog: write failed, stopping recording");
