@@ -551,7 +551,7 @@ public:
      * @param path Output file path (e.g. "flight.tlog").
      * @return true if the file was opened successfully, false otherwise.
      */
-    bool start_tlog_recording(const std::string& path);
+    [[nodiscard]] bool start_tlog_recording(const std::string& path);
 
     /**
      * @brief Stop recording and close the .tlog file.
