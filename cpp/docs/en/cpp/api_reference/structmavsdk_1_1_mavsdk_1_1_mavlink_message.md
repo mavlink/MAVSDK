@@ -22,6 +22,8 @@ uint32_t [target_component_id](#structmavsdk_1_1_mavsdk_1_1_mavlink_message_1ad1
 
 std::string [fields_json](#structmavsdk_1_1_mavsdk_1_1_mavlink_message_1a73165621a97083c143ba7c36461c9754) {} - All message fields as single JSON object.
 
+std::vector< uint8_t > [raw_bytes](#structmavsdk_1_1_mavsdk_1_1_mavlink_message_1aa4fc863b9e0103a894fdd99d5219847b) {} - Raw MAVLink wire bytes (populated for incoming messages; empty when sending)
+
 
 ## Field Documentation
 
@@ -84,4 +86,14 @@ std::string mavsdk::Mavsdk::MavlinkMessage::fields_json {}
 
 
 All message fields as single JSON object.
+
+
+### raw_bytes {#structmavsdk_1_1_mavsdk_1_1_mavlink_message_1aa4fc863b9e0103a894fdd99d5219847b}
+
+```cpp
+std::vector<uint8_t> mavsdk::Mavsdk::MavlinkMessage::raw_bytes {}
+```
+
+
+Raw MAVLink wire bytes (populated for incoming messages; empty when sending)
 
