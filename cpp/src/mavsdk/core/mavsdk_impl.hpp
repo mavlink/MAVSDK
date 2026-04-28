@@ -40,9 +40,8 @@ class BufferParser;
 
 namespace mavsdk {
 
-class RawConnection; // Forward declaration
+class RawConnection;
 
-// Defined in mavsdk_impl.cpp to avoid pulling <fstream> into this header.
 struct TlogFile;
 
 class MavsdkImpl {

@@ -34,8 +34,6 @@
 
 namespace mavsdk {
 
-// TlogFile is forward-declared in mavsdk_impl.hpp; defined here so that
-// <fstream> is not pulled into the header.
 struct TlogFile {
     std::ofstream stream;
     ~TlogFile()
@@ -463,18 +461,21 @@ void MavsdkImpl::process_message(mavlink_message_t& message, Connection* connect
     {
         std::lock_guard<std::mutex> tlog_lock(_tlog_mutex);
         if (_tlog_file && _tlog_file->stream.is_open()) {
-            // 8-byte big-endian microsecond Unix timestamp.
+            constexpr size_t timestamp_bytes = 8;
+            // Big-endian microsecond Unix timestamp.
             const auto now_us =
                 static_cast<uint64_t>(std::chrono::duration_cast<std::chrono::microseconds>(
                                           std::chrono::system_clock::now().time_since_epoch())
                                           .count());
-            std::array<uint8_t, 8> ts{};
+            std::array<uint8_t, timestamp_bytes> ts{};
             uint64_t v = now_us;
-            for (int i = 7; i >= 0; --i) {
-                ts[static_cast<size_t>(i)] = static_cast<uint8_t>(v & 0xFFu);
+            for (int i = static_cast<int>(timestamp_bytes) - 1; i >= 0; --i) {
+                ts.at(static_cast<size_t>(i)) = static_cast<uint8_t>(v & 0xFFu);
                 v >>= 8u;
             }
-            _tlog_file->stream.write(reinterpret_cast<const char*>(ts.data()), 8);
+            _tlog_file->stream.write(
+                reinterpret_cast<const char*>(ts.data()),
+                static_cast<std::streamsize>(timestamp_bytes));
 
             // Raw MAVLink wire packet.
             // mavlink_msg_to_send_buffer() only serialises an already-parsed
@@ -484,6 +485,11 @@ void MavsdkImpl::process_message(mavlink_message_t& message, Connection* connect
             std::array<uint8_t, MAVLINK_MAX_PACKET_LEN> wire{};
             const uint16_t wire_len = mavlink_msg_to_send_buffer(wire.data(), &message);
             _tlog_file->stream.write(reinterpret_cast<const char*>(wire.data()), wire_len);
+
+            if (!_tlog_file->stream.good()) {
+                LogErr("tlog: write failed, stopping recording");
+                _tlog_file.reset();
+            }
         }
     }
 
@@ -643,21 +649,29 @@ void MavsdkImpl::process_libmav_message(
     if (!message.raw_bytes.empty()) {
         std::lock_guard<std::mutex> tlog_lock(_tlog_mutex);
         if (_tlog_file && _tlog_file->stream.is_open()) {
-            // 8-byte big-endian microsecond Unix timestamp.
+            constexpr size_t timestamp_bytes = 8;
+            // Big-endian microsecond Unix timestamp.
             const auto now_us =
                 static_cast<uint64_t>(std::chrono::duration_cast<std::chrono::microseconds>(
                                           std::chrono::system_clock::now().time_since_epoch())
                                           .count());
-            std::array<uint8_t, 8> ts{};
+            std::array<uint8_t, timestamp_bytes> ts{};
             uint64_t v = now_us;
-            for (int i = 7; i >= 0; --i) {
-                ts[static_cast<size_t>(i)] = static_cast<uint8_t>(v & 0xFFu);
+            for (int i = static_cast<int>(timestamp_bytes) - 1; i >= 0; --i) {
+                ts.at(static_cast<size_t>(i)) = static_cast<uint8_t>(v & 0xFFu);
                 v >>= 8u;
             }
-            _tlog_file->stream.write(reinterpret_cast<const char*>(ts.data()), 8);
+            _tlog_file->stream.write(
+                reinterpret_cast<const char*>(ts.data()),
+                static_cast<std::streamsize>(timestamp_bytes));
             _tlog_file->stream.write(
                 reinterpret_cast<const char*>(message.raw_bytes.data()),
                 static_cast<std::streamsize>(message.raw_bytes.size()));
+
+            if (!_tlog_file->stream.good()) {
+                LogErr("tlog: write failed, stopping recording");
+                _tlog_file.reset();
+            }
         }
     }
 
