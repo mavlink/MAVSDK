@@ -61,7 +61,13 @@ int main(int argc, char** argv)
         return 1;
     }
 
-    std::cout << "Waiting to discover system...\n";
+    // Start recording immediately so the initial handshake messages are captured too.
+    if (!mavsdk.start_tlog_recording(tlog_path)) {
+        std::cerr << "Failed to open '" << tlog_path << "' for writing.\n";
+        return 1;
+    }
+
+    std::cout << "Recording to '" << tlog_path << "'. Waiting to discover system...\n";
 
     auto prom = std::promise<std::shared_ptr<System>>{};
     auto fut = prom.get_future();
@@ -77,21 +83,14 @@ int main(int argc, char** argv)
 
     if (fut.wait_for(std::chrono::seconds(5)) == std::future_status::timeout) {
         std::cerr << "No system found within 5 s. Is the vehicle connected?\n";
+        mavsdk.stop_tlog_recording();
         return 1;
     }
 
     mavsdk.unsubscribe_on_new_system(handle);
     auto system = fut.get();
-    std::cout << "Discovered system (sysid " << static_cast<int>(system->get_system_id()) << ")\n";
-
-    // Start recording. All received MAVLink messages are appended to the file
-    // as long as it is open, even while the program runs other code.
-    if (!mavsdk.start_tlog_recording(tlog_path)) {
-        std::cerr << "Failed to open '" << tlog_path << "' for writing.\n";
-        return 1;
-    }
-
-    std::cout << "Recording to '" << tlog_path << "'. Press Ctrl+C to stop...\n";
+    std::cout << "Discovered system (sysid " << static_cast<int>(system->get_system_id())
+              << "). Press Ctrl+C to stop...\n";
 
     while (!should_exit.load(std::memory_order_relaxed)) {
         std::this_thread::sleep_for(std::chrono::milliseconds(200));
