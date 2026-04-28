@@ -89,6 +89,21 @@ bool LibmavReceiver::parse_libmav_message_from_buffer()
     _last_message.system_id = header.systemId();
     _last_message.component_id = header.componentId();
 
+    // Capture raw wire bytes from the finalized mav::Message so callers (e.g. tlog
+    // recording) can write the original on-wire packet without re-serialising.
+    // finalizedSize() returns 0 when the message is not yet finalized.
+    if (_last_libmav_message) {
+        const uint32_t wire_len = _last_libmav_message->finalizedSize();
+        if (wire_len > 0) {
+            const uint8_t* wire_ptr = _last_libmav_message->data();
+            _last_message.raw_bytes.assign(wire_ptr, wire_ptr + wire_len);
+        } else {
+            _last_message.raw_bytes.clear();
+        }
+    } else {
+        _last_message.raw_bytes.clear();
+    }
+
     // Extract target_system and target_component if present in message fields
     uint8_t target_system_id = 0;
     uint8_t target_component_id = 0;

@@ -61,6 +61,7 @@ add_subdirectory(tune)
 add_subdirectory(vtol_transition)
 add_subdirectory(winch)
 add_subdirectory(wind)
+add_subdirectory(write_tlog)
 # Disabled, requires mavsdk_server library.
 #add_subdirectory(start_stop_server)
 
