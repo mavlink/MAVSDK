@@ -36,6 +36,7 @@ protected:
 
 TEST_F(Curl, DownloadText_HTTP_Success)
 {
+    GTEST_SKIP() << "S3 bucket no longer exists, skipping flaky external test";
     std::string content;
 
     CurlWrapper curl_wrapper;
