@@ -473,6 +473,8 @@ public:
         uint32_t
             target_component_id{}; /**< @brief Target component ID (for sending, 0 for broadcast) */
         std::string fields_json{}; /**< @brief All message fields as single JSON object */
+        std::vector<uint8_t> raw_bytes{}; /**< @brief Raw MAVLink wire bytes (populated for
+                                             incoming messages; empty when sending) */
     };
 
     /**

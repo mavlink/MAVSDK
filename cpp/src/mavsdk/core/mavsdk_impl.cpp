@@ -639,6 +639,28 @@ void MavsdkImpl::process_libmav_message(
         return;
     }
 
+    // Record to tlog before any processing so all received traffic is captured.
+    if (!message.raw_bytes.empty()) {
+        std::lock_guard<std::mutex> tlog_lock(_tlog_mutex);
+        if (_tlog_file && _tlog_file->stream.is_open()) {
+            // 8-byte big-endian microsecond Unix timestamp.
+            const auto now_us =
+                static_cast<uint64_t>(std::chrono::duration_cast<std::chrono::microseconds>(
+                                          std::chrono::system_clock::now().time_since_epoch())
+                                          .count());
+            std::array<uint8_t, 8> ts{};
+            uint64_t v = now_us;
+            for (int i = 7; i >= 0; --i) {
+                ts[static_cast<size_t>(i)] = static_cast<uint8_t>(v & 0xFFu);
+                v >>= 8u;
+            }
+            _tlog_file->stream.write(reinterpret_cast<const char*>(ts.data()), 8);
+            _tlog_file->stream.write(
+                reinterpret_cast<const char*>(message.raw_bytes.data()),
+                static_cast<std::streamsize>(message.raw_bytes.size()));
+        }
+    }
+
     {
         std::lock_guard lock(_mutex);
 
