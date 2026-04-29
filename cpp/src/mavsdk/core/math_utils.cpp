@@ -27,7 +27,10 @@ EulerAngle to_euler_angle_from_quaternion(Quaternion quaternion)
     EulerAngle euler_angle;
     euler_angle.roll_deg = to_deg_from_rad(
         atan2f(2.0f * (q.w * q.x + q.y * q.z), 1.0f - 2.0f * (q.x * q.x + q.y * q.y)));
-    euler_angle.pitch_deg = to_deg_from_rad(asinf(2.0f * (q.w * q.y - q.z * q.x)));
+    // Clamp to [-1, 1] so floating-point rounding cannot drive asinf() into NaN
+    // (the same pattern fixed upstream in pymavlink mavlink_dcm_to_euler).
+    euler_angle.pitch_deg =
+        to_deg_from_rad(asinf(constrain(2.0f * (q.w * q.y - q.z * q.x), -1.0f, 1.0f)));
     euler_angle.yaw_deg = to_deg_from_rad(
         atan2f(2.0f * (q.w * q.z + q.x * q.y), 1.0f - 2.0f * (q.y * q.y + q.z * q.z)));
 
