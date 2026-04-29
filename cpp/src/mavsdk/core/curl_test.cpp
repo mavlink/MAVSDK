@@ -1,4 +1,4 @@
-#include "curl_wrapper.hpp"
+#include "curl_wrapper.h"
 #include <fstream>
 #include <iostream>
 #include <chrono>
@@ -7,7 +7,7 @@
 
 using namespace mavsdk;
 
-class Curl : public testing::Test {
+class CurlTest : public testing::Test {
 protected:
     std::string _file_url_existing_http{};
     std::string _file_url_not_existing{};
@@ -34,7 +34,7 @@ protected:
     }
 };
 
-TEST_F(Curl, DownloadText_HTTP_Success)
+TEST_F(CurlTest, Curl_DownloadText_HTTP_Success)
 {
     std::string content;
 
@@ -45,7 +45,7 @@ TEST_F(Curl, DownloadText_HTTP_Success)
     EXPECT_EQ(content, "content of this file\n");
 }
 
-TEST_F(Curl, DownloadText_FileNotFound)
+TEST_F(CurlTest, Curl_DownloadText_FileNotFound)
 {
     std::string content = "content gets cleared if download fails";
 
@@ -56,7 +56,7 @@ TEST_F(Curl, DownloadText_FileNotFound)
     EXPECT_EQ(content, "");
 }
 
-TEST_F(Curl, DownloadFile_WithoutProgressFeedback_Success)
+TEST_F(CurlTest, Curl_DownloadFile_WithoutProgressFeedback_Success)
 {
     CurlWrapper curl_wrapper;
 
@@ -68,7 +68,7 @@ TEST_F(Curl, DownloadFile_WithoutProgressFeedback_Success)
     EXPECT_EQ(file_exists, true);
 }
 
-TEST_F(Curl, DownloadFile_WithoutProgressFeedback_FileNotFound)
+TEST_F(CurlTest, Curl_DownloadFile_WithoutProgressFeedback_FileNotFound)
 {
     CurlWrapper curl_wrapper;
 
@@ -79,7 +79,7 @@ TEST_F(Curl, DownloadFile_WithoutProgressFeedback_FileNotFound)
     EXPECT_EQ(file_exists, false);
 }
 
-TEST_F(Curl, DownloadFile_ProgressFeedback_Success)
+TEST_F(CurlTest, Curl_DownloadFile_ProgressFeedback_Success)
 {
     int last_progress;
     HttpStatus last_status;
@@ -106,7 +106,7 @@ TEST_F(Curl, DownloadFile_ProgressFeedback_Success)
     EXPECT_EQ(file_exists, true);
 }
 
-TEST_F(Curl, DownloadFile_ProgressFeedback_COULDNT_RESOLVE_HOST)
+TEST_F(CurlTest, Curl_DownloadFile_ProgressFeedback_COULDNT_RESOLVE_HOST)
 {
     int last_progress;
     HttpStatus last_status;
