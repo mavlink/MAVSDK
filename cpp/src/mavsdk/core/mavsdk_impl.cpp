@@ -3,6 +3,9 @@
 #include <asio/post.hpp>
 
 #include <algorithm>
+#include <array>
+#include <chrono>
+#include <fstream>
 #include <mutex>
 #include <thread>
 #include "connection.hpp"
@@ -17,15 +20,30 @@
 #include "version.hpp"
 #include "server_component_impl.hpp"
 #include "overloaded.hpp"
+#include "mavlink_address.hpp"
 #include "mavlink_channels.hpp"
+#include "mavlink_command_receiver.hpp"
 #include "callback_list.tpp"
 #include "hostname_to_ip.hpp"
+#include "libmav_receiver.hpp"
 #include "embedded_mavlink_xml.hpp"
+#include <mav/BufferParser.h>
 #include <mav/MessageSet.h>
 
 #include "mavsdk_export.h"
 
 namespace mavsdk {
+
+struct TlogFile {
+    std::ofstream stream;
+    ~TlogFile()
+    {
+        if (stream.is_open()) {
+            stream.flush();
+            stream.close();
+        }
+    }
+};
 
 template class MAVSDK_TEMPL_INST CallbackList<>;
 
@@ -105,6 +123,9 @@ MavsdkImpl::~MavsdkImpl()
         _io_thread->join();
         _io_thread.reset();
     }
+
+    // Flush and close any open tlog file now that no more messages can arrive.
+    stop_tlog_recording();
 
     if (_process_user_callbacks_thread) {
         _user_callback_queue.stop();
@@ -436,6 +457,38 @@ void MavsdkImpl::process_message(mavlink_message_t& message, Connection* connect
         return;
     }
 
+    // Record to tlog before any intercept/drop logic so all received traffic is captured.
+    {
+        std::lock_guard<std::mutex> tlog_lock(_tlog_mutex);
+        if (_tlog_file && _tlog_file->stream.is_open()) {
+            constexpr size_t timestamp_bytes = 8;
+            // Big-endian microsecond Unix timestamp.
+            const auto now_us =
+                static_cast<uint64_t>(std::chrono::duration_cast<std::chrono::microseconds>(
+                                          std::chrono::system_clock::now().time_since_epoch())
+                                          .count());
+            std::array<uint8_t, timestamp_bytes> ts{};
+            uint64_t v = now_us;
+            for (int i = static_cast<int>(timestamp_bytes) - 1; i >= 0; --i) {
+                ts.at(static_cast<size_t>(i)) = static_cast<uint8_t>(v & 0xFFu);
+                v >>= 8u;
+            }
+            _tlog_file->stream.write(
+                reinterpret_cast<const char*>(ts.data()),
+                static_cast<std::streamsize>(timestamp_bytes));
+
+            std::array<uint8_t, MAVLINK_MAX_PACKET_LEN> wire{};
+            const uint16_t wire_len = mavlink_msg_to_send_buffer(wire.data(), &message);
+            _tlog_file->stream.write(reinterpret_cast<const char*>(wire.data()), wire_len);
+            _tlog_file->stream.flush();
+
+            if (!_tlog_file->stream.good()) {
+                LogErr("tlog: write failed, stopping recording");
+                _tlog_file.reset();
+            }
+        }
+    }
+
     {
         std::lock_guard lock(_mutex);
 
@@ -586,6 +639,37 @@ void MavsdkImpl::process_libmav_message(
     if (_should_exit) {
         // If we're meant to clean up, let's not try to acquire any more locks but bail.
         return;
+    }
+
+    // Record to tlog before any processing so all received traffic is captured.
+    if (!message.raw_bytes.empty()) {
+        std::lock_guard<std::mutex> tlog_lock(_tlog_mutex);
+        if (_tlog_file && _tlog_file->stream.is_open()) {
+            constexpr size_t timestamp_bytes = 8;
+            // Big-endian microsecond Unix timestamp.
+            const auto now_us =
+                static_cast<uint64_t>(std::chrono::duration_cast<std::chrono::microseconds>(
+                                          std::chrono::system_clock::now().time_since_epoch())
+                                          .count());
+            std::array<uint8_t, timestamp_bytes> ts{};
+            uint64_t v = now_us;
+            for (int i = static_cast<int>(timestamp_bytes) - 1; i >= 0; --i) {
+                ts.at(static_cast<size_t>(i)) = static_cast<uint8_t>(v & 0xFFu);
+                v >>= 8u;
+            }
+            _tlog_file->stream.write(
+                reinterpret_cast<const char*>(ts.data()),
+                static_cast<std::streamsize>(timestamp_bytes));
+            _tlog_file->stream.write(
+                reinterpret_cast<const char*>(message.raw_bytes.data()),
+                static_cast<std::streamsize>(message.raw_bytes.size()));
+            _tlog_file->stream.flush();
+
+            if (!_tlog_file->stream.good()) {
+                LogErr("tlog: write failed, stopping recording");
+                _tlog_file.reset();
+            }
+        }
     }
 
     {
@@ -1435,6 +1519,28 @@ void MavsdkImpl::intercept_outgoing_messages_async(std::function<bool(mavlink_me
 {
     std::lock_guard<std::mutex> lock(_intercept_callbacks_mutex);
     _intercept_outgoing_messages_callback = callback;
+}
+
+bool MavsdkImpl::start_tlog_recording(const std::string& path)
+{
+    std::lock_guard<std::mutex> lock(_tlog_mutex);
+    if (_tlog_file && _tlog_file->stream.is_open()) {
+        _tlog_file->stream.flush();
+        _tlog_file->stream.close();
+    }
+    _tlog_file = std::make_unique<TlogFile>();
+    _tlog_file->stream.open(path, std::ios::binary | std::ios::trunc);
+    return _tlog_file->stream.is_open();
+}
+
+void MavsdkImpl::stop_tlog_recording()
+{
+    std::lock_guard<std::mutex> lock(_tlog_mutex);
+    if (_tlog_file && _tlog_file->stream.is_open()) {
+        _tlog_file->stream.flush();
+        _tlog_file->stream.close();
+    }
+    _tlog_file.reset();
 }
 
 bool MavsdkImpl::call_json_interception_callbacks(

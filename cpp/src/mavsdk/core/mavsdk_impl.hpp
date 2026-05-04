@@ -6,7 +6,6 @@
 #include <sys/types.h>
 #include <utility>
 #include <vector>
-#include <atomic>
 #include <thread>
 
 #include <asio/io_context.hpp>
@@ -17,16 +16,12 @@
 #include "call_every_handler.hpp"
 #include "component_type.hpp"
 #include "connection.hpp"
-#include "libmav_receiver.hpp"
-#include <mav/BufferParser.h>
 #include "cli_arg.hpp"
 #include "handle_factory.hpp"
 #include "handle.hpp"
 #include "mavsdk.hpp"
 #include "mavlink_include.hpp"
-#include "mavlink_address.hpp"
 #include "mavlink_message_handler.hpp"
-#include "mavlink_command_receiver.hpp"
 #include "locked_queue.hpp"
 #include "server_component.hpp"
 #include "system.hpp"
@@ -35,7 +30,6 @@
 #include "callback_list.hpp"
 #include "callback_tracker.hpp"
 
-// Forward declarations to avoid including MessageSet.h in header
 namespace mav {
 class MessageSet;
 class Message;
@@ -45,7 +39,9 @@ class BufferParser;
 
 namespace mavsdk {
 
-class RawConnection; // Forward declaration
+class RawConnection;
+
+struct TlogFile;
 
 class MavsdkImpl {
 public:
@@ -106,6 +102,9 @@ public:
 
     void intercept_incoming_messages_async(std::function<bool(mavlink_message_t&)> callback);
     void intercept_outgoing_messages_async(std::function<bool(mavlink_message_t&)> callback);
+
+    bool start_tlog_recording(const std::string& path);
+    void stop_tlog_recording();
 
     // JSON message interception
     Mavsdk::InterceptJsonHandle
@@ -270,6 +269,9 @@ private:
     mutable std::mutex _intercept_callbacks_mutex{};
     std::function<bool(mavlink_message_t&)> _intercept_incoming_messages_callback{nullptr};
     std::function<bool(mavlink_message_t&)> _intercept_outgoing_messages_callback{nullptr};
+
+    std::mutex _tlog_mutex{};
+    std::unique_ptr<TlogFile> _tlog_file{};
 
     // JSON message interception
     std::vector<std::pair<Mavsdk::InterceptJsonHandle, Mavsdk::InterceptJsonCallback>>
