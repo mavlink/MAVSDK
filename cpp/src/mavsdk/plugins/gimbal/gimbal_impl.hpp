@@ -105,12 +105,19 @@ private:
         Gimbal::Attitude attitude{};
     };
 
+    // Per-compid discovery state. A compid is first seen via heartbeat; we request manager info,
+    // then device info. The gimbal is only promoted to _gimbals (and announced) once we receive
+    // GIMBAL_DEVICE_INFORMATION or GIMBAL_DEVICE_ATTITUDE_STATUS.
     struct GimbalDiscovery {
         unsigned manager_info_requests_left{5};
+        // Set to true once GIMBAL_MANAGER_INFORMATION is received.
+        bool has_manager_info{false};
+        // Copied from GIMBAL_MANAGER_INFORMATION.gimbal_device_id once known.
+        uint8_t gimbal_device_id{0};
+        // Remaining device info requests for the pending gimbal.
         unsigned device_info_requests_left{0};
-        bool device_info_received{false};
-        bool notified{false};
     };
+
     struct GimbalAddress {
         uint8_t gimbal_manager_compid{0};
         uint8_t gimbal_device_id{0};
@@ -127,6 +134,8 @@ private:
     void process_gimbal_device_information(const mavlink_message_t& message);
     void process_gimbal_device_attitude_status(const mavlink_message_t& message);
     void process_attitude(const mavlink_message_t& message);
+
+    void announce_gimbal(GimbalItem item);
 
     void set_angles_async_internal(
         int32_t gimbal_id,
