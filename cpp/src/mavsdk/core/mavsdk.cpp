@@ -248,6 +248,16 @@ void Mavsdk::intercept_outgoing_messages_async(std::function<bool(mavlink_messag
     _impl->intercept_outgoing_messages_async(callback);
 }
 
+bool Mavsdk::start_tlog_recording(const std::string& path)
+{
+    return _impl->start_tlog_recording(path);
+}
+
+void Mavsdk::stop_tlog_recording()
+{
+    _impl->stop_tlog_recording();
+}
+
 void Mavsdk::pass_received_raw_bytes(const char* bytes, size_t length)
 {
     _impl->pass_received_raw_bytes(bytes, length);

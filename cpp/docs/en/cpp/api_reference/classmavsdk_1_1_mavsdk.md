@@ -68,6 +68,8 @@ void | [unsubscribe_incoming_messages_json](#classmavsdk_1_1_mavsdk_1a4be244c389
 [InterceptJsonHandle](classmavsdk_1_1_mavsdk.md#classmavsdk_1_1_mavsdk_1a3b40ae4fd8af4c4419b61f0ad955812f) | [subscribe_outgoing_messages_json](#classmavsdk_1_1_mavsdk_1a58f85b2f74a32404a8e975feefed8f47) (const [InterceptJsonCallback](classmavsdk_1_1_mavsdk.md#classmavsdk_1_1_mavsdk_1a17923db3b1504e911487729114b68f48) & callback) | Intercept outgoing messages as JSON.
 void | [unsubscribe_outgoing_messages_json](#classmavsdk_1_1_mavsdk_1aa3a490358db87cfed617cdad902bb753) ([InterceptJsonHandle](classmavsdk_1_1_mavsdk.md#classmavsdk_1_1_mavsdk_1a3b40ae4fd8af4c4419b61f0ad955812f) handle) | Unsubscribe from outgoing messages as JSON.
 void | [intercept_incoming_messages_async](#classmavsdk_1_1_mavsdk_1ac80c8909958533131cbdbc61d061794f) (std::function< bool(mavlink_message_t &)> callback) | Intercept incoming messages.
+bool | [start_tlog_recording](#classmavsdk_1_1_mavsdk_1af8ed201951f4b264a864217c5e5db5c1) (const std::string & path) | Start recording all incoming MAVLink traffic to a .tlog file.
+void | [stop_tlog_recording](#classmavsdk_1_1_mavsdk_1a507d9f58439233b5ddd3d5d1ba30bc0c) () | Stop recording and close the .tlog file.
 void | [intercept_outgoing_messages_async](#classmavsdk_1_1_mavsdk_1a040ee5c1d41e71c0d63cf8f76d2db275) (std::function< bool(mavlink_message_t &)> callback) | Intercept outgoing messages.
 void | [pass_received_raw_bytes](#classmavsdk_1_1_mavsdk_1a65329315ac07bae110839d9e054fbc05) (const char * bytes, size_t length) | Pass received raw MAVLink bytes.
 [RawBytesHandle](classmavsdk_1_1_mavsdk.md#classmavsdk_1_1_mavsdk_1ac766258f137aa3e8b0dabb5a66435ea1) | [subscribe_raw_bytes_to_be_sent](#classmavsdk_1_1_mavsdk_1a116e9bab0efdf7ec90866107ef517b20) ([RawBytesCallback](classmavsdk_1_1_mavsdk.md#classmavsdk_1_1_mavsdk_1acb5be9a1be97d251387ffe87ae8b9eb0) callback) | Subscribe to raw bytes to be sent.
@@ -110,7 +112,7 @@ mavsdk::Mavsdk::~Mavsdk()
 
 Destructor.
 
-Disconnects all connected vehicles and releases all resources.
+Disconnects all connected vehicles and releases all resources. Any active .tlog recording is automatically stopped and flushed.
 
 ## Member Typdef Documentation
 
@@ -646,6 +648,40 @@ This functionality is provided primarily for testing in order to simulate packet
 **Parameters**
 
 * std::function< bool(mavlink_message_t &)> **callback** - Callback to be called for each incoming message. To drop a message, return 'false' from the callback.
+
+### start_tlog_recording() {#classmavsdk_1_1_mavsdk_1af8ed201951f4b264a864217c5e5db5c1}
+```cpp
+bool mavsdk::Mavsdk::start_tlog_recording(const std::string &path)
+```
+
+
+Start recording all incoming MAVLink traffic to a .tlog file.
+
+A .tlog (telemetry log) is a binary file where each record consists of an 8-byte big-endian microsecond Unix timestamp followed by the raw MAVLink wire packet. The format is compatible with [Mission](classmavsdk_1_1_mission.md) Planner, MAVProxy, and pymavlink.
+
+
+Recording captures traffic across the entire [Mavsdk](classmavsdk_1_1_mavsdk.md) instance (all connected systems and connections), not per-system. If recording is already active it is stopped and restarted with the new file.
+
+
+The recording is automatically stopped and flushed when the [Mavsdk](classmavsdk_1_1_mavsdk.md) instance is destroyed, so explicit [stop_tlog_recording()](classmavsdk_1_1_mavsdk.md#classmavsdk_1_1_mavsdk_1a507d9f58439233b5ddd3d5d1ba30bc0c) is optional.
+
+**Parameters**
+
+* const std::string& **path** - Output file path (e.g. "flight.tlog").
+
+**Returns**
+
+&emsp;bool - true if the file was opened successfully, false otherwise.
+
+### stop_tlog_recording() {#classmavsdk_1_1_mavsdk_1a507d9f58439233b5ddd3d5d1ba30bc0c}
+```cpp
+void mavsdk::Mavsdk::stop_tlog_recording()
+```
+
+
+Stop recording and close the .tlog file.
+
+Does nothing if recording is not active. Automatically called on [Mavsdk](classmavsdk_1_1_mavsdk.md) destruction.
 
 ### intercept_outgoing_messages_async() {#classmavsdk_1_1_mavsdk_1a040ee5c1d41e71c0d63cf8f76d2db275}
 ```cpp

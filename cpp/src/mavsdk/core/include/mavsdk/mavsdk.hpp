@@ -332,6 +332,7 @@ public:
      * @brief Destructor.
      *
      * Disconnects all connected vehicles and releases all resources.
+     * Any active .tlog recording is automatically stopped and flushed.
      */
     ~Mavsdk();
 
@@ -472,6 +473,8 @@ public:
         uint32_t
             target_component_id{}; /**< @brief Target component ID (for sending, 0 for broadcast) */
         std::string fields_json{}; /**< @brief All message fields as single JSON object */
+        std::vector<uint8_t> raw_bytes{}; /**< @brief Raw MAVLink wire bytes (populated for
+                                             incoming messages; empty when sending) */
     };
 
     /**
@@ -529,6 +532,34 @@ public:
      *        To drop a message, return 'false' from the callback.
      */
     void intercept_incoming_messages_async(std::function<bool(mavlink_message_t&)> callback);
+
+    /**
+     * @brief Start recording all incoming MAVLink traffic to a .tlog file.
+     *
+     * A .tlog (telemetry log) is a binary file where each record consists of
+     * an 8-byte big-endian microsecond Unix timestamp followed by the raw
+     * MAVLink wire packet. The format is compatible with
+     * Mission Planner, MAVProxy, and pymavlink.
+     *
+     * Recording captures traffic across the entire Mavsdk instance (all
+     * connected systems and connections), not per-system. If recording is
+     * already active it is stopped and restarted with the new file.
+     *
+     * The recording is automatically stopped and flushed when the Mavsdk
+     * instance is destroyed, so explicit stop_tlog_recording() is optional.
+     *
+     * @param path Output file path (e.g. "flight.tlog").
+     * @return true if the file was opened successfully, false otherwise.
+     */
+    [[nodiscard]] bool start_tlog_recording(const std::string& path);
+
+    /**
+     * @brief Stop recording and close the .tlog file.
+     *
+     * Does nothing if recording is not active. Automatically called on
+     * Mavsdk destruction.
+     */
+    void stop_tlog_recording();
 
     /**
      * @brief Intercept outgoing messages.
