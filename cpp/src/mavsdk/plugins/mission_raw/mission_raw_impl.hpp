@@ -34,6 +34,10 @@ public:
     void upload_mission_async(
         const std::vector<MissionRaw::MissionItem>& mission_raw,
         const MissionRaw::ResultCallback& callback);
+    void upload_mission_with_progress_async(
+        const MissionRaw::MissionPlan& mission_plan,
+        const MissionRaw::UploadMissionWithProgressCallback& callback);
+
     MissionRaw::Result upload_geofence(std::vector<MissionRaw::MissionItem> mission_items);
     void upload_geofence_async(
         const std::vector<MissionRaw::MissionItem>& mission_raw,
@@ -121,7 +125,8 @@ private:
     void upload_mission_items_async(
         const std::vector<MissionRaw::MissionItem>& mission_raw,
         uint8_t type,
-        const MissionRaw::ResultCallback& callback);
+        const MissionRaw::ResultCallback& callback,
+        const MavlinkMissionTransferClient::ProgressCallback& progress_callback = nullptr);
 
     std::weak_ptr<MavlinkMissionTransferClient::WorkItem> _last_upload{};
     std::weak_ptr<MavlinkMissionTransferClient::WorkItem> _last_download{};
