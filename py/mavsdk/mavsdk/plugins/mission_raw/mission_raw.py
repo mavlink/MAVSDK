@@ -49,30 +49,6 @@ class MissionRawResult(IntEnum):
 
 
 # ===== Internal C Structures =====
-class MissionProgressCStruct(ctypes.Structure):
-    """
-    Internal C structure for MissionProgress.
-    Used only for C library communication.
-    """
-
-    _fields_ = [
-        ("current", ctypes.c_int32),
-        ("total", ctypes.c_int32),
-    ]
-
-
-class MissionPlanCStruct(ctypes.Structure):
-    """
-    Internal C structure for MissionPlan.
-    Used only for C library communication.
-    """
-
-    _fields_ = [
-        ("mission_items", ctypes.POINTER(MissionItemCStruct)),
-        ("mission_items_size", ctypes.c_size_t),
-    ]
-
-
 class MissionItemCStruct(ctypes.Structure):
     """
     Internal C structure for MissionItem.
@@ -93,6 +69,30 @@ class MissionItemCStruct(ctypes.Structure):
         ("y", ctypes.c_int32),
         ("z", ctypes.c_float),
         ("mission_type", ctypes.c_uint32),
+    ]
+
+
+class MissionPlanCStruct(ctypes.Structure):
+    """
+    Internal C structure for MissionPlan.
+    Used only for C library communication.
+    """
+
+    _fields_ = [
+        ("mission_items", ctypes.POINTER(MissionItemCStruct)),
+        ("mission_items_size", ctypes.c_size_t),
+    ]
+
+
+class MissionProgressCStruct(ctypes.Structure):
+    """
+    Internal C structure for MissionProgress.
+    Used only for C library communication.
+    """
+
+    _fields_ = [
+        ("current", ctypes.c_int32),
+        ("total", ctypes.c_int32),
     ]
 
 
@@ -124,77 +124,6 @@ class ProgressDataCStruct(ctypes.Structure):
 
 
 # ===== Structures =====
-class MissionProgress:
-    """
-    Mission progress type.
-    """
-
-    def __init__(self, current=None, total=None):
-        self.current = current
-        self.total = total
-
-    @classmethod
-    def from_c_struct(cls, c_struct):
-        """Convert from C structure to Python object"""
-        instance = cls()
-        instance.current = c_struct.current
-        instance.total = c_struct.total
-        return instance
-
-    def to_c_struct(self):
-        """Convert to C structure for C library calls"""
-        c_struct = MissionProgressCStruct()
-        c_struct.current = self.current
-        c_struct.total = self.total
-        return c_struct
-
-    def __str__(self):
-        fields = []
-        fields.append(f"current={self.current}")
-        fields.append(f"total={self.total}")
-        return f"MissionProgress({', '.join(fields)})"
-
-
-class MissionPlan:
-    """
-    Mission plan type
-    """
-
-    def __init__(self, mission_items=None):
-        self.mission_items = mission_items or []
-
-    @classmethod
-    def from_c_struct(cls, c_struct):
-        """Convert from C structure to Python object"""
-        instance = cls()
-        if c_struct.mission_items_size > 0:
-            instance.mission_items = [
-                MissionItem.from_c_struct(c_struct.mission_items[i])
-                for i in range(c_struct.mission_items_size)
-            ]
-        else:
-            instance.mission_items = []
-        return instance
-
-    def to_c_struct(self):
-        """Convert to C structure for C library calls"""
-        c_struct = MissionPlanCStruct()
-        array_type = MissionItemCStruct * len(self.mission_items)
-        c_array = array_type()
-        for i, item in enumerate(self.mission_items):
-            c_array[i] = item.to_c_struct()
-        c_struct.mission_items = ctypes.cast(
-            c_array, ctypes.POINTER(MissionItemCStruct)
-        )
-        c_struct.mission_items_size = len(self.mission_items)
-        return c_struct
-
-    def __str__(self):
-        fields = []
-        fields.append(f"mission_items={self.mission_items}")
-        return f"MissionPlan({', '.join(fields)})"
-
-
 class MissionItem:
     """
     Mission item exactly identical to MAVLink MISSION_ITEM_INT.
@@ -283,6 +212,77 @@ class MissionItem:
         fields.append(f"z={self.z}")
         fields.append(f"mission_type={self.mission_type}")
         return f"MissionItem({', '.join(fields)})"
+
+
+class MissionPlan:
+    """
+    Mission plan type
+    """
+
+    def __init__(self, mission_items=None):
+        self.mission_items = mission_items or []
+
+    @classmethod
+    def from_c_struct(cls, c_struct):
+        """Convert from C structure to Python object"""
+        instance = cls()
+        if c_struct.mission_items_size > 0:
+            instance.mission_items = [
+                MissionItem.from_c_struct(c_struct.mission_items[i])
+                for i in range(c_struct.mission_items_size)
+            ]
+        else:
+            instance.mission_items = []
+        return instance
+
+    def to_c_struct(self):
+        """Convert to C structure for C library calls"""
+        c_struct = MissionPlanCStruct()
+        array_type = MissionItemCStruct * len(self.mission_items)
+        c_array = array_type()
+        for i, item in enumerate(self.mission_items):
+            c_array[i] = item.to_c_struct()
+        c_struct.mission_items = ctypes.cast(
+            c_array, ctypes.POINTER(MissionItemCStruct)
+        )
+        c_struct.mission_items_size = len(self.mission_items)
+        return c_struct
+
+    def __str__(self):
+        fields = []
+        fields.append(f"mission_items={self.mission_items}")
+        return f"MissionPlan({', '.join(fields)})"
+
+
+class MissionProgress:
+    """
+    Mission progress type.
+    """
+
+    def __init__(self, current=None, total=None):
+        self.current = current
+        self.total = total
+
+    @classmethod
+    def from_c_struct(cls, c_struct):
+        """Convert from C structure to Python object"""
+        instance = cls()
+        instance.current = c_struct.current
+        instance.total = c_struct.total
+        return instance
+
+    def to_c_struct(self):
+        """Convert to C structure for C library calls"""
+        c_struct = MissionProgressCStruct()
+        c_struct.current = self.current
+        c_struct.total = self.total
+        return c_struct
+
+    def __str__(self):
+        fields = []
+        fields.append(f"current={self.current}")
+        fields.append(f"total={self.total}")
+        return f"MissionProgress({', '.join(fields)})"
 
 
 class MissionImportData:
@@ -1054,20 +1054,20 @@ _cmavsdk_lib.mavsdk_mission_raw_create.restype = ctypes.c_void_p
 _cmavsdk_lib.mavsdk_mission_raw_destroy.argtypes = [ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_mission_raw_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_mission_raw_mission_progress_destroy.argtypes = [
-    ctypes.POINTER(MissionProgressCStruct)
+_cmavsdk_lib.mavsdk_mission_raw_mission_item_destroy.argtypes = [
+    ctypes.POINTER(MissionItemCStruct)
 ]
-_cmavsdk_lib.mavsdk_mission_raw_mission_progress_destroy.restype = None
+_cmavsdk_lib.mavsdk_mission_raw_mission_item_destroy.restype = None
 
 _cmavsdk_lib.mavsdk_mission_raw_mission_plan_destroy.argtypes = [
     ctypes.POINTER(MissionPlanCStruct)
 ]
 _cmavsdk_lib.mavsdk_mission_raw_mission_plan_destroy.restype = None
 
-_cmavsdk_lib.mavsdk_mission_raw_mission_item_destroy.argtypes = [
-    ctypes.POINTER(MissionItemCStruct)
+_cmavsdk_lib.mavsdk_mission_raw_mission_progress_destroy.argtypes = [
+    ctypes.POINTER(MissionProgressCStruct)
 ]
-_cmavsdk_lib.mavsdk_mission_raw_mission_item_destroy.restype = None
+_cmavsdk_lib.mavsdk_mission_raw_mission_progress_destroy.restype = None
 
 _cmavsdk_lib.mavsdk_mission_raw_mission_import_data_destroy.argtypes = [
     ctypes.POINTER(MissionImportDataCStruct)

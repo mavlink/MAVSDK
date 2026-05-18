@@ -64,34 +64,56 @@ translate_result(mavsdk::MissionRaw::Result cpp_result) {
 
 
 
-static mavsdk::MissionRaw::MissionProgress
-translate_mission_progress_from_c(const mavsdk_mission_raw_mission_progress_t& c_struct) {
-    mavsdk::MissionRaw::MissionProgress cpp_struct{};
+static mavsdk::MissionRaw::MissionItem
+translate_mission_item_from_c(const mavsdk_mission_raw_mission_item_t& c_struct) {
+    mavsdk::MissionRaw::MissionItem cpp_struct{};
+    cpp_struct.seq = c_struct.seq;
+    cpp_struct.frame = c_struct.frame;
+    cpp_struct.command = c_struct.command;
     cpp_struct.current = c_struct.current;
-    cpp_struct.total = c_struct.total;
+    cpp_struct.autocontinue = c_struct.autocontinue;
+    cpp_struct.param1 = c_struct.param1;
+    cpp_struct.param2 = c_struct.param2;
+    cpp_struct.param3 = c_struct.param3;
+    cpp_struct.param4 = c_struct.param4;
+    cpp_struct.x = c_struct.x;
+    cpp_struct.y = c_struct.y;
+    cpp_struct.z = c_struct.z;
+    cpp_struct.mission_type = c_struct.mission_type;
     return cpp_struct;
 }
 
-static mavsdk_mission_raw_mission_progress_t
-translate_mission_progress_to_c(const mavsdk::MissionRaw::MissionProgress& cpp_struct) {
-    mavsdk_mission_raw_mission_progress_t c_struct{};
+static mavsdk_mission_raw_mission_item_t
+translate_mission_item_to_c(const mavsdk::MissionRaw::MissionItem& cpp_struct) {
+    mavsdk_mission_raw_mission_item_t c_struct{};
+    c_struct.seq = cpp_struct.seq;
+    c_struct.frame = cpp_struct.frame;
+    c_struct.command = cpp_struct.command;
     c_struct.current = cpp_struct.current;
-    c_struct.total = cpp_struct.total;
+    c_struct.autocontinue = cpp_struct.autocontinue;
+    c_struct.param1 = cpp_struct.param1;
+    c_struct.param2 = cpp_struct.param2;
+    c_struct.param3 = cpp_struct.param3;
+    c_struct.param4 = cpp_struct.param4;
+    c_struct.x = cpp_struct.x;
+    c_struct.y = cpp_struct.y;
+    c_struct.z = cpp_struct.z;
+    c_struct.mission_type = cpp_struct.mission_type;
     return c_struct;
 }
 
-void mavsdk_mission_raw_mission_progress_destroy(
-    mavsdk_mission_raw_mission_progress_t* target) {
+void mavsdk_mission_raw_mission_item_destroy(
+    mavsdk_mission_raw_mission_item_t* target) {
     if (!target) return;
 }
 
-void mavsdk_mission_raw_mission_progress_array_destroy(
-    mavsdk_mission_raw_mission_progress_t** array,
+void mavsdk_mission_raw_mission_item_array_destroy(
+    mavsdk_mission_raw_mission_item_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_mission_raw_mission_progress_destroy(&(*array)[i]);
+        mavsdk_mission_raw_mission_item_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -148,56 +170,34 @@ void mavsdk_mission_raw_mission_plan_array_destroy(
 }
 
 
-static mavsdk::MissionRaw::MissionItem
-translate_mission_item_from_c(const mavsdk_mission_raw_mission_item_t& c_struct) {
-    mavsdk::MissionRaw::MissionItem cpp_struct{};
-    cpp_struct.seq = c_struct.seq;
-    cpp_struct.frame = c_struct.frame;
-    cpp_struct.command = c_struct.command;
+static mavsdk::MissionRaw::MissionProgress
+translate_mission_progress_from_c(const mavsdk_mission_raw_mission_progress_t& c_struct) {
+    mavsdk::MissionRaw::MissionProgress cpp_struct{};
     cpp_struct.current = c_struct.current;
-    cpp_struct.autocontinue = c_struct.autocontinue;
-    cpp_struct.param1 = c_struct.param1;
-    cpp_struct.param2 = c_struct.param2;
-    cpp_struct.param3 = c_struct.param3;
-    cpp_struct.param4 = c_struct.param4;
-    cpp_struct.x = c_struct.x;
-    cpp_struct.y = c_struct.y;
-    cpp_struct.z = c_struct.z;
-    cpp_struct.mission_type = c_struct.mission_type;
+    cpp_struct.total = c_struct.total;
     return cpp_struct;
 }
 
-static mavsdk_mission_raw_mission_item_t
-translate_mission_item_to_c(const mavsdk::MissionRaw::MissionItem& cpp_struct) {
-    mavsdk_mission_raw_mission_item_t c_struct{};
-    c_struct.seq = cpp_struct.seq;
-    c_struct.frame = cpp_struct.frame;
-    c_struct.command = cpp_struct.command;
+static mavsdk_mission_raw_mission_progress_t
+translate_mission_progress_to_c(const mavsdk::MissionRaw::MissionProgress& cpp_struct) {
+    mavsdk_mission_raw_mission_progress_t c_struct{};
     c_struct.current = cpp_struct.current;
-    c_struct.autocontinue = cpp_struct.autocontinue;
-    c_struct.param1 = cpp_struct.param1;
-    c_struct.param2 = cpp_struct.param2;
-    c_struct.param3 = cpp_struct.param3;
-    c_struct.param4 = cpp_struct.param4;
-    c_struct.x = cpp_struct.x;
-    c_struct.y = cpp_struct.y;
-    c_struct.z = cpp_struct.z;
-    c_struct.mission_type = cpp_struct.mission_type;
+    c_struct.total = cpp_struct.total;
     return c_struct;
 }
 
-void mavsdk_mission_raw_mission_item_destroy(
-    mavsdk_mission_raw_mission_item_t* target) {
+void mavsdk_mission_raw_mission_progress_destroy(
+    mavsdk_mission_raw_mission_progress_t* target) {
     if (!target) return;
 }
 
-void mavsdk_mission_raw_mission_item_array_destroy(
-    mavsdk_mission_raw_mission_item_t** array,
+void mavsdk_mission_raw_mission_progress_array_destroy(
+    mavsdk_mission_raw_mission_progress_t** array,
     size_t size) {
     if (!array || !*array) return;
 
     for (size_t i = 0; i < size; i++) {
-        mavsdk_mission_raw_mission_item_destroy(&(*array)[i]);
+        mavsdk_mission_raw_mission_progress_destroy(&(*array)[i]);
     }
 
     delete[] *array;

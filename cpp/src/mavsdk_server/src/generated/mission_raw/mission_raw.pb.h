@@ -1539,7 +1539,7 @@ class MissionProgress final
     return reinterpret_cast<const MissionProgress*>(
         &_MissionProgress_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 40;
+  static constexpr int kIndexInFileMessages = 42;
   friend void swap(MissionProgress& a, MissionProgress& b) { a.Swap(&b); }
   inline void Swap(MissionProgress* other) {
     if (other == this) return;
@@ -1742,7 +1742,7 @@ class MissionItem final
     return reinterpret_cast<const MissionItem*>(
         &_MissionItem_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 42;
+  static constexpr int kIndexInFileMessages = 40;
   friend void swap(MissionItem& a, MissionItem& b) { a.Swap(&b); }
   inline void Swap(MissionItem* other) {
     if (other == this) return;
@@ -12265,107 +12265,6 @@ inline void IsMissionFinishedResponse::_internal_set_is_finished(bool value) {
 
 // -------------------------------------------------------------------
 
-// MissionProgress
-
-// int32 current = 1;
-inline void MissionProgress::clear_current() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.current_ = 0;
-}
-inline ::int32_t MissionProgress::current() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission_raw.MissionProgress.current)
-  return _internal_current();
-}
-inline void MissionProgress::set_current(::int32_t value) {
-  _internal_set_current(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.mission_raw.MissionProgress.current)
-}
-inline ::int32_t MissionProgress::_internal_current() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.current_;
-}
-inline void MissionProgress::_internal_set_current(::int32_t value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.current_ = value;
-}
-
-// int32 total = 2;
-inline void MissionProgress::clear_total() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.total_ = 0;
-}
-inline ::int32_t MissionProgress::total() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission_raw.MissionProgress.total)
-  return _internal_total();
-}
-inline void MissionProgress::set_total(::int32_t value) {
-  _internal_set_total(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.mission_raw.MissionProgress.total)
-}
-inline ::int32_t MissionProgress::_internal_total() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.total_;
-}
-inline void MissionProgress::_internal_set_total(::int32_t value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.total_ = value;
-}
-
-// -------------------------------------------------------------------
-
-// MissionPlan
-
-// repeated .mavsdk.rpc.mission_raw.MissionItem mission_items = 1;
-inline int MissionPlan::_internal_mission_items_size() const {
-  return _internal_mission_items().size();
-}
-inline int MissionPlan::mission_items_size() const {
-  return _internal_mission_items_size();
-}
-inline void MissionPlan::clear_mission_items() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.mission_items_.Clear();
-}
-inline ::mavsdk::rpc::mission_raw::MissionItem* MissionPlan::mutable_mission_items(int index)
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.mission_raw.MissionPlan.mission_items)
-  return _internal_mutable_mission_items()->Mutable(index);
-}
-inline ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::mission_raw::MissionItem>* MissionPlan::mutable_mission_items()
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_mutable_list:mavsdk.rpc.mission_raw.MissionPlan.mission_items)
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  return _internal_mutable_mission_items();
-}
-inline const ::mavsdk::rpc::mission_raw::MissionItem& MissionPlan::mission_items(int index) const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission_raw.MissionPlan.mission_items)
-  return _internal_mission_items().Get(index);
-}
-inline ::mavsdk::rpc::mission_raw::MissionItem* MissionPlan::add_mission_items() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  ::mavsdk::rpc::mission_raw::MissionItem* _add = _internal_mutable_mission_items()->Add();
-  // @@protoc_insertion_point(field_add:mavsdk.rpc.mission_raw.MissionPlan.mission_items)
-  return _add;
-}
-inline const ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::mission_raw::MissionItem>& MissionPlan::mission_items() const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_list:mavsdk.rpc.mission_raw.MissionPlan.mission_items)
-  return _internal_mission_items();
-}
-inline const ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::mission_raw::MissionItem>&
-MissionPlan::_internal_mission_items() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.mission_items_;
-}
-inline ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::mission_raw::MissionItem>*
-MissionPlan::_internal_mutable_mission_items() {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return &_impl_.mission_items_;
-}
-
-// -------------------------------------------------------------------
-
 // MissionItem
 
 // uint32 seq = 1;
@@ -12652,6 +12551,107 @@ inline ::uint32_t MissionItem::_internal_mission_type() const {
 inline void MissionItem::_internal_set_mission_type(::uint32_t value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.mission_type_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// MissionPlan
+
+// repeated .mavsdk.rpc.mission_raw.MissionItem mission_items = 1;
+inline int MissionPlan::_internal_mission_items_size() const {
+  return _internal_mission_items().size();
+}
+inline int MissionPlan::mission_items_size() const {
+  return _internal_mission_items_size();
+}
+inline void MissionPlan::clear_mission_items() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.mission_items_.Clear();
+}
+inline ::mavsdk::rpc::mission_raw::MissionItem* MissionPlan::mutable_mission_items(int index)
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.mission_raw.MissionPlan.mission_items)
+  return _internal_mutable_mission_items()->Mutable(index);
+}
+inline ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::mission_raw::MissionItem>* MissionPlan::mutable_mission_items()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable_list:mavsdk.rpc.mission_raw.MissionPlan.mission_items)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _internal_mutable_mission_items();
+}
+inline const ::mavsdk::rpc::mission_raw::MissionItem& MissionPlan::mission_items(int index) const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission_raw.MissionPlan.mission_items)
+  return _internal_mission_items().Get(index);
+}
+inline ::mavsdk::rpc::mission_raw::MissionItem* MissionPlan::add_mission_items() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::mavsdk::rpc::mission_raw::MissionItem* _add = _internal_mutable_mission_items()->Add();
+  // @@protoc_insertion_point(field_add:mavsdk.rpc.mission_raw.MissionPlan.mission_items)
+  return _add;
+}
+inline const ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::mission_raw::MissionItem>& MissionPlan::mission_items() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_list:mavsdk.rpc.mission_raw.MissionPlan.mission_items)
+  return _internal_mission_items();
+}
+inline const ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::mission_raw::MissionItem>&
+MissionPlan::_internal_mission_items() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.mission_items_;
+}
+inline ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::mission_raw::MissionItem>*
+MissionPlan::_internal_mutable_mission_items() {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return &_impl_.mission_items_;
+}
+
+// -------------------------------------------------------------------
+
+// MissionProgress
+
+// int32 current = 1;
+inline void MissionProgress::clear_current() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.current_ = 0;
+}
+inline ::int32_t MissionProgress::current() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission_raw.MissionProgress.current)
+  return _internal_current();
+}
+inline void MissionProgress::set_current(::int32_t value) {
+  _internal_set_current(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.mission_raw.MissionProgress.current)
+}
+inline ::int32_t MissionProgress::_internal_current() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.current_;
+}
+inline void MissionProgress::_internal_set_current(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.current_ = value;
+}
+
+// int32 total = 2;
+inline void MissionProgress::clear_total() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.total_ = 0;
+}
+inline ::int32_t MissionProgress::total() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission_raw.MissionProgress.total)
+  return _internal_total();
+}
+inline void MissionProgress::set_total(::int32_t value) {
+  _internal_set_total(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.mission_raw.MissionProgress.total)
+}
+inline ::int32_t MissionProgress::_internal_total() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.total_;
+}
+inline void MissionProgress::_internal_set_total(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.total_ = value;
 }
 
 // -------------------------------------------------------------------

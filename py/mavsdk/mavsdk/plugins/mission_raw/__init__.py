@@ -15,9 +15,9 @@ from .mission_raw import MissionRaw
 from .mission_raw import MissionRawResult
 
 # Import data structures
-from .mission_raw import MissionProgress
-from .mission_raw import MissionPlan
 from .mission_raw import MissionItem
+from .mission_raw import MissionPlan
+from .mission_raw import MissionProgress
 from .mission_raw import MissionImportData
 from .mission_raw import ProgressData
 
@@ -25,9 +25,9 @@ from .mission_raw import ProgressData
 __all__ = [
     "MissionRaw",
     "MissionRawResult",
-    "MissionProgress",
-    "MissionPlan",
     "MissionItem",
+    "MissionPlan",
+    "MissionProgress",
     "MissionImportData",
     "ProgressData",
 ]

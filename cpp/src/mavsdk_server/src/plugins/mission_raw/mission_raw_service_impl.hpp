@@ -49,79 +49,6 @@ public:
 
 
 
-    static std::unique_ptr<rpc::mission_raw::MissionProgress> translateToRpcMissionProgress(const mavsdk::MissionRaw::MissionProgress &mission_progress)
-    {
-        auto rpc_obj = std::make_unique<rpc::mission_raw::MissionProgress>();
-
-
-            
-        rpc_obj->set_current(mission_progress.current);
-            
-        
-            
-        rpc_obj->set_total(mission_progress.total);
-            
-        
-
-        return rpc_obj;
-    }
-
-    static mavsdk::MissionRaw::MissionProgress translateFromRpcMissionProgress(const rpc::mission_raw::MissionProgress& mission_progress)
-    {
-        mavsdk::MissionRaw::MissionProgress obj;
-
-
-            
-        obj.current = mission_progress.current();
-            
-        
-            
-        obj.total = mission_progress.total();
-            
-        
-        return obj;
-    }
-
-
-
-
-
-    static std::unique_ptr<rpc::mission_raw::MissionPlan> translateToRpcMissionPlan(const mavsdk::MissionRaw::MissionPlan &mission_plan)
-    {
-        auto rpc_obj = std::make_unique<rpc::mission_raw::MissionPlan>();
-
-
-            
-                
-        for (const auto& elem : mission_plan.mission_items) {
-            auto* ptr = rpc_obj->add_mission_items();
-            ptr->CopyFrom(*translateToRpcMissionItem(elem).release());
-        }
-                
-            
-        
-
-        return rpc_obj;
-    }
-
-    static mavsdk::MissionRaw::MissionPlan translateFromRpcMissionPlan(const rpc::mission_raw::MissionPlan& mission_plan)
-    {
-        mavsdk::MissionRaw::MissionPlan obj;
-
-
-            
-                for (const auto& elem : mission_plan.mission_items()) {
-                    obj.mission_items.push_back(translateFromRpcMissionItem(static_cast<mavsdk::rpc::mission_raw::MissionItem>(elem)));
-                }
-            
-        
-        return obj;
-    }
-
-
-
-
-
     static std::unique_ptr<rpc::mission_raw::MissionItem> translateToRpcMissionItem(const mavsdk::MissionRaw::MissionItem &mission_item)
     {
         auto rpc_obj = std::make_unique<rpc::mission_raw::MissionItem>();
@@ -238,6 +165,79 @@ public:
         
             
         obj.mission_type = mission_item.mission_type();
+            
+        
+        return obj;
+    }
+
+
+
+
+
+    static std::unique_ptr<rpc::mission_raw::MissionPlan> translateToRpcMissionPlan(const mavsdk::MissionRaw::MissionPlan &mission_plan)
+    {
+        auto rpc_obj = std::make_unique<rpc::mission_raw::MissionPlan>();
+
+
+            
+                
+        for (const auto& elem : mission_plan.mission_items) {
+            auto* ptr = rpc_obj->add_mission_items();
+            ptr->CopyFrom(*translateToRpcMissionItem(elem).release());
+        }
+                
+            
+        
+
+        return rpc_obj;
+    }
+
+    static mavsdk::MissionRaw::MissionPlan translateFromRpcMissionPlan(const rpc::mission_raw::MissionPlan& mission_plan)
+    {
+        mavsdk::MissionRaw::MissionPlan obj;
+
+
+            
+                for (const auto& elem : mission_plan.mission_items()) {
+                    obj.mission_items.push_back(translateFromRpcMissionItem(static_cast<mavsdk::rpc::mission_raw::MissionItem>(elem)));
+                }
+            
+        
+        return obj;
+    }
+
+
+
+
+
+    static std::unique_ptr<rpc::mission_raw::MissionProgress> translateToRpcMissionProgress(const mavsdk::MissionRaw::MissionProgress &mission_progress)
+    {
+        auto rpc_obj = std::make_unique<rpc::mission_raw::MissionProgress>();
+
+
+            
+        rpc_obj->set_current(mission_progress.current);
+            
+        
+            
+        rpc_obj->set_total(mission_progress.total);
+            
+        
+
+        return rpc_obj;
+    }
+
+    static mavsdk::MissionRaw::MissionProgress translateFromRpcMissionProgress(const rpc::mission_raw::MissionProgress& mission_progress)
+    {
+        mavsdk::MissionRaw::MissionProgress obj;
+
+
+            
+        obj.current = mission_progress.current();
+            
+        
+            
+        obj.total = mission_progress.total();
             
         
         return obj;

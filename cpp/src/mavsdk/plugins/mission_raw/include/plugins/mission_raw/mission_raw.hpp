@@ -67,57 +67,6 @@ public:
 
 
     /**
-     * @brief Mission progress type.
-     */
-    struct MissionProgress {
-        
-        int32_t current{}; /**< @brief Current mission item index (0-based), if equal to total, the mission is finished */
-        int32_t total{}; /**< @brief Total number of mission items */
-    };
-
-    /**
-     * @brief Equal operator to compare two `MissionRaw::MissionProgress` objects.
-     *
-     * @return `true` if items are equal.
-     */
-    friend MAVSDK_PUBLIC bool operator==(const MissionRaw::MissionProgress& lhs, const MissionRaw::MissionProgress& rhs);
-
-    /**
-     * @brief Stream operator to print information about a `MissionRaw::MissionProgress`.
-     *
-     * @return A reference to the stream.
-     */
-    friend MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, MissionRaw::MissionProgress const& mission_progress);
-
-
-
-
-    /**
-     * @brief Mission plan type
-     */
-    struct MissionPlan {
-        
-        std::vector<MissionItem> mission_items{}; /**< @brief The mission items */
-    };
-
-    /**
-     * @brief Equal operator to compare two `MissionRaw::MissionPlan` objects.
-     *
-     * @return `true` if items are equal.
-     */
-    friend MAVSDK_PUBLIC bool operator==(const MissionRaw::MissionPlan& lhs, const MissionRaw::MissionPlan& rhs);
-
-    /**
-     * @brief Stream operator to print information about a `MissionRaw::MissionPlan`.
-     *
-     * @return A reference to the stream.
-     */
-    friend MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, MissionRaw::MissionPlan const& mission_plan);
-
-
-
-
-    /**
      * @brief Mission item exactly identical to MAVLink MISSION_ITEM_INT.
      */
     struct MissionItem {
@@ -150,6 +99,57 @@ public:
      * @return A reference to the stream.
      */
     friend MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, MissionRaw::MissionItem const& mission_item);
+
+
+
+
+    /**
+     * @brief Mission plan type
+     */
+    struct MissionPlan {
+        
+        std::vector<MissionItem> mission_items{}; /**< @brief The mission items */
+    };
+
+    /**
+     * @brief Equal operator to compare two `MissionRaw::MissionPlan` objects.
+     *
+     * @return `true` if items are equal.
+     */
+    friend MAVSDK_PUBLIC bool operator==(const MissionRaw::MissionPlan& lhs, const MissionRaw::MissionPlan& rhs);
+
+    /**
+     * @brief Stream operator to print information about a `MissionRaw::MissionPlan`.
+     *
+     * @return A reference to the stream.
+     */
+    friend MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, MissionRaw::MissionPlan const& mission_plan);
+
+
+
+
+    /**
+     * @brief Mission progress type.
+     */
+    struct MissionProgress {
+        
+        int32_t current{}; /**< @brief Current mission item index (0-based), if equal to total, the mission is finished */
+        int32_t total{}; /**< @brief Total number of mission items */
+    };
+
+    /**
+     * @brief Equal operator to compare two `MissionRaw::MissionProgress` objects.
+     *
+     * @return `true` if items are equal.
+     */
+    friend MAVSDK_PUBLIC bool operator==(const MissionRaw::MissionProgress& lhs, const MissionRaw::MissionProgress& rhs);
+
+    /**
+     * @brief Stream operator to print information about a `MissionRaw::MissionProgress`.
+     *
+     * @return A reference to the stream.
+     */
+    friend MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, MissionRaw::MissionProgress const& mission_progress);
 
 
 

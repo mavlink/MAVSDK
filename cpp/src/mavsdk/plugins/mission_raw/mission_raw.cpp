@@ -9,9 +9,9 @@
 
 namespace mavsdk {
 
-using MissionProgress = MissionRaw::MissionProgress;
-using MissionPlan = MissionRaw::MissionPlan;
 using MissionItem = MissionRaw::MissionItem;
+using MissionPlan = MissionRaw::MissionPlan;
+using MissionProgress = MissionRaw::MissionProgress;
 using MissionImportData = MissionRaw::MissionImportData;
 
 using ProgressData = MissionRaw::ProgressData;
@@ -280,46 +280,6 @@ std::pair<MissionRaw::Result, bool> MissionRaw::is_mission_finished() const
 
 
 
-MAVSDK_PUBLIC bool operator==(const MissionRaw::MissionProgress& lhs, const MissionRaw::MissionProgress& rhs)
-{
-    return
-        (rhs.current == lhs.current) &&
-        (rhs.total == lhs.total);
-}
-
-MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, MissionRaw::MissionProgress const& mission_progress)
-{
-    str << std::setprecision(15);
-    str << "mission_progress:" << '\n'
-        << "{\n";
-    str << "    current: " << mission_progress.current << '\n';
-    str << "    total: " << mission_progress.total << '\n';
-    str << '}';
-    return str;
-}
-
-
-MAVSDK_PUBLIC bool operator==(const MissionRaw::MissionPlan& lhs, const MissionRaw::MissionPlan& rhs)
-{
-    return
-        (rhs.mission_items == lhs.mission_items);
-}
-
-MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, MissionRaw::MissionPlan const& mission_plan)
-{
-    str << std::setprecision(15);
-    str << "mission_plan:" << '\n'
-        << "{\n";
-    str << "    mission_items: [";
-    for (auto it = mission_plan.mission_items.begin(); it != mission_plan.mission_items.end(); ++it) {
-        str << *it;
-        str << (it + 1 != mission_plan.mission_items.end() ? ", " : "]\n");
-    }
-    str << '}';
-    return str;
-}
-
-
 MAVSDK_PUBLIC bool operator==(const MissionRaw::MissionItem& lhs, const MissionRaw::MissionItem& rhs)
 {
     return
@@ -356,6 +316,46 @@ MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, MissionRaw::MissionIte
     str << "    y: " << mission_item.y << '\n';
     str << "    z: " << mission_item.z << '\n';
     str << "    mission_type: " << mission_item.mission_type << '\n';
+    str << '}';
+    return str;
+}
+
+
+MAVSDK_PUBLIC bool operator==(const MissionRaw::MissionPlan& lhs, const MissionRaw::MissionPlan& rhs)
+{
+    return
+        (rhs.mission_items == lhs.mission_items);
+}
+
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, MissionRaw::MissionPlan const& mission_plan)
+{
+    str << std::setprecision(15);
+    str << "mission_plan:" << '\n'
+        << "{\n";
+    str << "    mission_items: [";
+    for (auto it = mission_plan.mission_items.begin(); it != mission_plan.mission_items.end(); ++it) {
+        str << *it;
+        str << (it + 1 != mission_plan.mission_items.end() ? ", " : "]\n");
+    }
+    str << '}';
+    return str;
+}
+
+
+MAVSDK_PUBLIC bool operator==(const MissionRaw::MissionProgress& lhs, const MissionRaw::MissionProgress& rhs)
+{
+    return
+        (rhs.current == lhs.current) &&
+        (rhs.total == lhs.total);
+}
+
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, MissionRaw::MissionProgress const& mission_progress)
+{
+    str << std::setprecision(15);
+    str << "mission_progress:" << '\n'
+        << "{\n";
+    str << "    current: " << mission_progress.current << '\n';
+    str << "    total: " << mission_progress.total << '\n';
     str << '}';
     return str;
 }
