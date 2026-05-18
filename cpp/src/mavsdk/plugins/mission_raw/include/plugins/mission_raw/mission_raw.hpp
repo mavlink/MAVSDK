@@ -93,6 +93,31 @@ public:
 
 
     /**
+     * @brief Mission plan type
+     */
+    struct MissionPlan {
+        
+        std::vector<MissionItem> mission_items{}; /**< @brief The mission items */
+    };
+
+    /**
+     * @brief Equal operator to compare two `MissionRaw::MissionPlan` objects.
+     *
+     * @return `true` if items are equal.
+     */
+    friend MAVSDK_PUBLIC bool operator==(const MissionRaw::MissionPlan& lhs, const MissionRaw::MissionPlan& rhs);
+
+    /**
+     * @brief Stream operator to print information about a `MissionRaw::MissionPlan`.
+     *
+     * @return A reference to the stream.
+     */
+    friend MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, MissionRaw::MissionPlan const& mission_plan);
+
+
+
+
+    /**
      * @brief Mission item exactly identical to MAVLink MISSION_ITEM_INT.
      */
     struct MissionItem {
@@ -182,6 +207,7 @@ public:
         IntMessagesNotSupported, /**< @brief The system does not support the MISSION_INT protocol. */
         FailedToOpenMissionPlannerPlan, /**< @brief Failed to open the Mission Planner plan. */
         FailedToParseMissionPlannerPlan, /**< @brief Failed to parse the Mission Planner plan. */
+        Next, /**< @brief Intermediate message showing progress. */
     };
 
     /**
@@ -198,6 +224,31 @@ public:
      */
     friend MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, MissionRaw::Result const& result);
 
+
+
+
+
+    /**
+     * @brief Progress data coming from mission upload.
+     */
+    struct ProgressData {
+        
+        float progress{float(NAN)}; /**< @brief Progress (0..1.0) */
+    };
+
+    /**
+     * @brief Equal operator to compare two `MissionRaw::ProgressData` objects.
+     *
+     * @return `true` if items are equal.
+     */
+    friend MAVSDK_PUBLIC bool operator==(const MissionRaw::ProgressData& lhs, const MissionRaw::ProgressData& rhs);
+
+    /**
+     * @brief Stream operator to print information about a `MissionRaw::ProgressData`.
+     *
+     * @return A reference to the stream.
+     */
+    friend MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, MissionRaw::ProgressData const& progress_data);
 
 
     /**
@@ -233,6 +284,24 @@ public:
      
      */
     Result upload_mission(std::vector<MissionItem> mission_items) const;
+
+
+
+
+        
+    /**
+     * @brief Callback type for upload_mission_with_progress_async.
+     */
+    using UploadMissionWithProgressCallback = std::function<void(Result, ProgressData)>;
+
+    /**
+     * @brief Upload a list of raw mission items and report upload progress.
+     */
+    void upload_mission_with_progress_async(MissionPlan mission_plan, const UploadMissionWithProgressCallback& callback);
+
+        
+
+
 
 
 

@@ -86,6 +86,42 @@ public:
 
 
 
+    static std::unique_ptr<rpc::mission_raw::MissionPlan> translateToRpcMissionPlan(const mavsdk::MissionRaw::MissionPlan &mission_plan)
+    {
+        auto rpc_obj = std::make_unique<rpc::mission_raw::MissionPlan>();
+
+
+            
+                
+        for (const auto& elem : mission_plan.mission_items) {
+            auto* ptr = rpc_obj->add_mission_items();
+            ptr->CopyFrom(*translateToRpcMissionItem(elem).release());
+        }
+                
+            
+        
+
+        return rpc_obj;
+    }
+
+    static mavsdk::MissionRaw::MissionPlan translateFromRpcMissionPlan(const rpc::mission_raw::MissionPlan& mission_plan)
+    {
+        mavsdk::MissionRaw::MissionPlan obj;
+
+
+            
+                for (const auto& elem : mission_plan.mission_items()) {
+                    obj.mission_items.push_back(translateFromRpcMissionItem(static_cast<mavsdk::rpc::mission_raw::MissionItem>(elem)));
+                }
+            
+        
+        return obj;
+    }
+
+
+
+
+
     static std::unique_ptr<rpc::mission_raw::MissionItem> translateToRpcMissionItem(const mavsdk::MissionRaw::MissionItem &mission_item)
     {
         auto rpc_obj = std::make_unique<rpc::mission_raw::MissionItem>();
@@ -324,6 +360,8 @@ public:
                 return rpc::mission_raw::MissionRawResult_Result_RESULT_FAILED_TO_OPEN_MISSION_PLANNER_PLAN;
             case mavsdk::MissionRaw::Result::FailedToParseMissionPlannerPlan:
                 return rpc::mission_raw::MissionRawResult_Result_RESULT_FAILED_TO_PARSE_MISSION_PLANNER_PLAN;
+            case mavsdk::MissionRaw::Result::Next:
+                return rpc::mission_raw::MissionRawResult_Result_RESULT_NEXT;
         }
     }
 
@@ -375,9 +413,40 @@ public:
                 return mavsdk::MissionRaw::Result::FailedToOpenMissionPlannerPlan;
             case rpc::mission_raw::MissionRawResult_Result_RESULT_FAILED_TO_PARSE_MISSION_PLANNER_PLAN:
                 return mavsdk::MissionRaw::Result::FailedToParseMissionPlannerPlan;
+            case rpc::mission_raw::MissionRawResult_Result_RESULT_NEXT:
+                return mavsdk::MissionRaw::Result::Next;
         }
     }
 
+
+
+
+
+
+    static std::unique_ptr<rpc::mission_raw::ProgressData> translateToRpcProgressData(const mavsdk::MissionRaw::ProgressData &progress_data)
+    {
+        auto rpc_obj = std::make_unique<rpc::mission_raw::ProgressData>();
+
+
+            
+        rpc_obj->set_progress(progress_data.progress);
+            
+        
+
+        return rpc_obj;
+    }
+
+    static mavsdk::MissionRaw::ProgressData translateFromRpcProgressData(const rpc::mission_raw::ProgressData& progress_data)
+    {
+        mavsdk::MissionRaw::ProgressData obj;
+
+
+            
+        obj.progress = progress_data.progress();
+            
+        
+        return obj;
+    }
 
 
 
@@ -415,6 +484,59 @@ public:
             fillResponseWithResult(response, result);
         }
         
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status SubscribeUploadMissionWithProgress(grpc::ServerContext* /* context */, const mavsdk::rpc::mission_raw::SubscribeUploadMissionWithProgressRequest* request, grpc::ServerWriter<rpc::mission_raw::UploadMissionWithProgressResponse>* writer) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
+                rpc::mission_raw::UploadMissionWithProgressResponse rpc_response;
+                auto result = mavsdk::MissionRaw::Result::NoSystem;
+                fillResponseWithResult(&rpc_response, result);
+                writer->Write(rpc_response);
+            
+            return grpc::Status::OK;
+        }
+
+        auto stream_closed_promise = std::make_shared<std::promise<void>>();
+        auto stream_closed_future = stream_closed_promise->get_future();
+        register_stream_stop_promise(stream_closed_promise);
+
+        auto is_finished = std::make_shared<bool>(false);
+        auto subscribe_mutex = std::make_shared<std::mutex>();
+
+        _lazy_plugin.maybe_plugin()->upload_mission_with_progress_async(translateFromRpcMissionPlan(request->mission_plan()), 
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](mavsdk::MissionRaw::Result result,const mavsdk::MissionRaw::ProgressData upload_mission_with_progress) {
+
+            rpc::mission_raw::UploadMissionWithProgressResponse rpc_response;
+        
+            rpc_response.set_allocated_progress_data(translateToRpcProgressData(upload_mission_with_progress).release());
+        
+
+        
+            auto rpc_result = translateToRpcResult(result);
+            auto* rpc_mission_raw_result = new rpc::mission_raw::MissionRawResult();
+            rpc_mission_raw_result->set_result(rpc_result);
+            std::stringstream ss;
+            ss << result;
+            rpc_mission_raw_result->set_result_str(ss.str());
+            rpc_response.set_allocated_mission_raw_result(rpc_mission_raw_result);
+        
+
+            std::unique_lock<std::mutex> lock(*subscribe_mutex);
+            if (!*is_finished && !writer->Write(rpc_response)) {
+                
+                *is_finished = true;
+                unregister_stream_stop_promise(stream_closed_promise);
+                stream_closed_promise->set_value();
+            }
+        });
+
+        stream_closed_future.wait();
+        std::unique_lock<std::mutex> lock(*subscribe_mutex);
+        *is_finished = true;
 
         return grpc::Status::OK;
     }
