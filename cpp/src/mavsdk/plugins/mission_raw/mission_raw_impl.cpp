@@ -184,7 +184,8 @@ void MissionRawImpl::upload_mission_items_async(
                     callback(converted_result);
                 }
             });
-        }, progress_callback);
+        },
+        progress_callback);
 }
 
 MissionRaw::Result
