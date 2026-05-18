@@ -11,8 +11,10 @@ from mavsdk.plugins.mission_raw import (
     MissionRaw,
     MissionRawResult,
     MissionProgress,
+    MissionPlan,
     MissionItem,
     MissionImportData,
+    ProgressData,
 )
 
 __all__ = [
@@ -20,6 +22,8 @@ __all__ = [
     "MissionRaw",
     "MissionRawResult",
     "MissionProgress",
+    "MissionPlan",
     "MissionItem",
     "MissionImportData",
+    "ProgressData",
 ]

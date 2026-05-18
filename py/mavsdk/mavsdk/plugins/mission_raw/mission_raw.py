@@ -45,6 +45,7 @@ class MissionRawResult(IntEnum):
     INT_MESSAGES_NOT_SUPPORTED = 18
     FAILED_TO_OPEN_MISSION_PLANNER_PLAN = 19
     FAILED_TO_PARSE_MISSION_PLANNER_PLAN = 20
+    NEXT = 21
 
 
 # ===== Internal C Structures =====
@@ -57,6 +58,18 @@ class MissionProgressCStruct(ctypes.Structure):
     _fields_ = [
         ("current", ctypes.c_int32),
         ("total", ctypes.c_int32),
+    ]
+
+
+class MissionPlanCStruct(ctypes.Structure):
+    """
+    Internal C structure for MissionPlan.
+    Used only for C library communication.
+    """
+
+    _fields_ = [
+        ("mission_items", ctypes.POINTER(MissionItemCStruct)),
+        ("mission_items_size", ctypes.c_size_t),
     ]
 
 
@@ -99,6 +112,17 @@ class MissionImportDataCStruct(ctypes.Structure):
     ]
 
 
+class ProgressDataCStruct(ctypes.Structure):
+    """
+    Internal C structure for ProgressData.
+    Used only for C library communication.
+    """
+
+    _fields_ = [
+        ("progress", ctypes.c_float),
+    ]
+
+
 # ===== Structures =====
 class MissionProgress:
     """
@@ -129,6 +153,46 @@ class MissionProgress:
         fields.append(f"current={self.current}")
         fields.append(f"total={self.total}")
         return f"MissionProgress({', '.join(fields)})"
+
+
+class MissionPlan:
+    """
+    Mission plan type
+    """
+
+    def __init__(self, mission_items=None):
+        self.mission_items = mission_items or []
+
+    @classmethod
+    def from_c_struct(cls, c_struct):
+        """Convert from C structure to Python object"""
+        instance = cls()
+        if c_struct.mission_items_size > 0:
+            instance.mission_items = [
+                MissionItem.from_c_struct(c_struct.mission_items[i])
+                for i in range(c_struct.mission_items_size)
+            ]
+        else:
+            instance.mission_items = []
+        return instance
+
+    def to_c_struct(self):
+        """Convert to C structure for C library calls"""
+        c_struct = MissionPlanCStruct()
+        array_type = MissionItemCStruct * len(self.mission_items)
+        c_array = array_type()
+        for i, item in enumerate(self.mission_items):
+            c_array[i] = item.to_c_struct()
+        c_struct.mission_items = ctypes.cast(
+            c_array, ctypes.POINTER(MissionItemCStruct)
+        )
+        c_struct.mission_items_size = len(self.mission_items)
+        return c_struct
+
+    def __str__(self):
+        fields = []
+        fields.append(f"mission_items={self.mission_items}")
+        return f"MissionPlan({', '.join(fields)})"
 
 
 class MissionItem:
@@ -293,6 +357,33 @@ class MissionImportData:
         return f"MissionImportData({', '.join(fields)})"
 
 
+class ProgressData:
+    """
+    Progress data coming from mission upload.
+    """
+
+    def __init__(self, progress=None):
+        self.progress = progress
+
+    @classmethod
+    def from_c_struct(cls, c_struct):
+        """Convert from C structure to Python object"""
+        instance = cls()
+        instance.progress = c_struct.progress
+        return instance
+
+    def to_c_struct(self):
+        """Convert to C structure for C library calls"""
+        c_struct = ProgressDataCStruct()
+        c_struct.progress = self.progress
+        return c_struct
+
+    def __str__(self):
+        fields = []
+        fields.append(f"progress={self.progress}")
+        return f"ProgressData({', '.join(fields)})"
+
+
 # ===== Plugin =====
 class MissionRaw:
     """Enable raw missions as exposed by MAVLink."""
@@ -355,6 +446,31 @@ class MissionRaw:
             raise Exception(f"upload_mission failed: {result}")
 
         return result
+
+    def upload_mission_with_progress_async(
+        self, mission_plan, callback: Callable, user_data: Any = None
+    ):
+        """Upload a list of raw mission items and report upload progress."""
+
+        def c_callback(result, c_data, ud):
+            try:
+                py_result = MissionRawResult(result)
+
+                py_data = ProgressData.from_c_struct(c_data)
+
+                self._lib.mavsdk_mission_raw_progress_data_destroy(ctypes.byref(c_data))
+
+                callback(py_result, py_data, user_data)
+
+            except Exception as e:
+                print(f"Error in upload_mission_with_progress callback: {e}")
+
+        cb = UploadMissionWithProgressCallback(c_callback)
+        self._callbacks.append(cb)
+
+        self._lib.mavsdk_mission_raw_upload_mission_with_progress_async(
+            self._handle, mission_plan, cb, None
+        )
 
     def upload_geofence_async(
         self, mission_items, callback: Callable, user_data: Any = None
@@ -896,6 +1012,9 @@ class MissionRaw:
 
 # ===== Callback Types =====
 UploadMissionCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
+UploadMissionWithProgressCallback = ctypes.CFUNCTYPE(
+    None, ctypes.c_int, ProgressDataCStruct, ctypes.c_void_p
+)
 UploadGeofenceCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
 UploadRallyPointsCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
 DownloadMissionCallback = ctypes.CFUNCTYPE(
@@ -940,6 +1059,11 @@ _cmavsdk_lib.mavsdk_mission_raw_mission_progress_destroy.argtypes = [
 ]
 _cmavsdk_lib.mavsdk_mission_raw_mission_progress_destroy.restype = None
 
+_cmavsdk_lib.mavsdk_mission_raw_mission_plan_destroy.argtypes = [
+    ctypes.POINTER(MissionPlanCStruct)
+]
+_cmavsdk_lib.mavsdk_mission_raw_mission_plan_destroy.restype = None
+
 _cmavsdk_lib.mavsdk_mission_raw_mission_item_destroy.argtypes = [
     ctypes.POINTER(MissionItemCStruct)
 ]
@@ -949,6 +1073,11 @@ _cmavsdk_lib.mavsdk_mission_raw_mission_import_data_destroy.argtypes = [
     ctypes.POINTER(MissionImportDataCStruct)
 ]
 _cmavsdk_lib.mavsdk_mission_raw_mission_import_data_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_mission_raw_progress_data_destroy.argtypes = [
+    ctypes.POINTER(ProgressDataCStruct)
+]
+_cmavsdk_lib.mavsdk_mission_raw_progress_data_destroy.restype = None
 
 
 _cmavsdk_lib.mavsdk_mission_raw_upload_mission_async.argtypes = [
@@ -968,6 +1097,15 @@ _cmavsdk_lib.mavsdk_mission_raw_upload_mission.argtypes = [
 ]
 
 _cmavsdk_lib.mavsdk_mission_raw_upload_mission.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_mission_raw_upload_mission_with_progress_async.argtypes = [
+    ctypes.c_void_p,
+    MissionPlanCStruct,
+    UploadMissionWithProgressCallback,
+    ctypes.c_void_p,
+]
+
+_cmavsdk_lib.mavsdk_mission_raw_upload_mission_with_progress_async.restype = None
+
 _cmavsdk_lib.mavsdk_mission_raw_upload_geofence_async.argtypes = [
     ctypes.c_void_p,
     ctypes.POINTER(MissionItemCStruct),

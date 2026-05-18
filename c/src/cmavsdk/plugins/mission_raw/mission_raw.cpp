@@ -57,6 +57,8 @@ translate_result(mavsdk::MissionRaw::Result cpp_result) {
             return MAVSDK_MISSION_RAW_RESULT_FAILED_TO_OPEN_MISSION_PLANNER_PLAN;
         case mavsdk::MissionRaw::Result::FailedToParseMissionPlannerPlan:
             return MAVSDK_MISSION_RAW_RESULT_FAILED_TO_PARSE_MISSION_PLANNER_PLAN;
+        case mavsdk::MissionRaw::Result::Next:
+            return MAVSDK_MISSION_RAW_RESULT_NEXT;
     }
 }
 
@@ -90,6 +92,55 @@ void mavsdk_mission_raw_mission_progress_array_destroy(
 
     for (size_t i = 0; i < size; i++) {
         mavsdk_mission_raw_mission_progress_destroy(&(*array)[i]);
+    }
+
+    delete[] *array;
+    *array = nullptr;
+}
+
+
+static mavsdk::MissionRaw::MissionPlan
+translate_mission_plan_from_c(const mavsdk_mission_raw_mission_plan_t& c_struct) {
+    mavsdk::MissionRaw::MissionPlan cpp_struct{};
+    cpp_struct.mission_items.reserve(c_struct.mission_items_size);
+    for (size_t i = 0; i < c_struct.mission_items_size; i++) {
+        cpp_struct.mission_items.push_back(
+            translate_mission_item_from_c(c_struct.mission_items[i]));
+    }
+    return cpp_struct;
+}
+
+static mavsdk_mission_raw_mission_plan_t
+translate_mission_plan_to_c(const mavsdk::MissionRaw::MissionPlan& cpp_struct) {
+    mavsdk_mission_raw_mission_plan_t c_struct{};
+    c_struct.mission_items_size = cpp_struct.mission_items.size();
+    c_struct.mission_items = new mavsdk_mission_raw_mission_item_t[c_struct.mission_items_size];
+    for (size_t i = 0; i < c_struct.mission_items_size; i++) {
+        c_struct.mission_items[i] = translate_mission_item_to_c(cpp_struct.mission_items[i]);
+    }
+    return c_struct;
+}
+
+void mavsdk_mission_raw_mission_plan_destroy(
+    mavsdk_mission_raw_mission_plan_t* target) {
+    if (!target) return;
+    if (target->mission_items) {
+        for (size_t i = 0; i < target->mission_items_size; i++) {
+            mavsdk_mission_raw_mission_item_destroy(&target->mission_items[i]);
+        }
+        delete[] target->mission_items;
+        target->mission_items = nullptr;
+        target->mission_items_size = 0;
+    }
+}
+
+void mavsdk_mission_raw_mission_plan_array_destroy(
+    mavsdk_mission_raw_mission_plan_t** array,
+    size_t size) {
+    if (!array || !*array) return;
+
+    for (size_t i = 0; i < size; i++) {
+        mavsdk_mission_raw_mission_plan_destroy(&(*array)[i]);
     }
 
     delete[] *array;
@@ -238,6 +289,39 @@ void mavsdk_mission_raw_mission_import_data_array_destroy(
     *array = nullptr;
 }
 
+
+
+static mavsdk::MissionRaw::ProgressData
+translate_progress_data_from_c(const mavsdk_mission_raw_progress_data_t& c_struct) {
+    mavsdk::MissionRaw::ProgressData cpp_struct{};
+    cpp_struct.progress = c_struct.progress;
+    return cpp_struct;
+}
+
+static mavsdk_mission_raw_progress_data_t
+translate_progress_data_to_c(const mavsdk::MissionRaw::ProgressData& cpp_struct) {
+    mavsdk_mission_raw_progress_data_t c_struct{};
+    c_struct.progress = cpp_struct.progress;
+    return c_struct;
+}
+
+void mavsdk_mission_raw_progress_data_destroy(
+    mavsdk_mission_raw_progress_data_t* target) {
+    if (!target) return;
+}
+
+void mavsdk_mission_raw_progress_data_array_destroy(
+    mavsdk_mission_raw_progress_data_t** array,
+    size_t size) {
+    if (!array || !*array) return;
+
+    for (size_t i = 0; i < size; i++) {
+        mavsdk_mission_raw_progress_data_destroy(&(*array)[i]);
+    }
+
+    delete[] *array;
+    *array = nullptr;
+}
 
 
 // ===== Primitive Array Destroy Functions =====
@@ -396,6 +480,31 @@ mavsdk_mission_raw_upload_mission(
 
     return translate_result(ret_value);
 }
+
+// UploadMissionWithProgress async
+void mavsdk_mission_raw_upload_mission_with_progress_async(
+    mavsdk_mission_raw_t mission_raw,
+    mavsdk_mission_raw_mission_plan_t mission_plan,
+    mavsdk_mission_raw_upload_mission_with_progress_callback_t callback,
+    void* user_data)
+{
+    auto wrapper = reinterpret_cast<mavsdk_mission_raw_wrapper*>(mission_raw);
+
+    wrapper->cpp_plugin->upload_mission_with_progress_async(
+        translate_mission_plan_from_c(mission_plan),
+        [callback, user_data](
+            mavsdk::MissionRaw::Result result,
+            mavsdk::MissionRaw::ProgressData value) {
+                if (callback) {
+                    callback(
+                        translate_result(result),
+                        translate_progress_data_to_c(value),
+                        user_data);
+                }
+        });
+}
+
+
 
 // UploadGeofence async
 void mavsdk_mission_raw_upload_geofence_async(
