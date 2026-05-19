@@ -14,7 +14,11 @@ struct [MissionImportData](structmavsdk_1_1_mission_raw_1_1_mission_import_data.
 
 struct [MissionItem](structmavsdk_1_1_mission_raw_1_1_mission_item.md)
 
+struct [MissionPlan](structmavsdk_1_1_mission_raw_1_1_mission_plan.md)
+
 struct [MissionProgress](structmavsdk_1_1_mission_raw_1_1_mission_progress.md)
+
+struct [ProgressData](structmavsdk_1_1_mission_raw_1_1_progress_data.md)
 
 ## Public Types
 
@@ -23,6 +27,7 @@ Type | Description
 --- | ---
 enum [Result](#classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eaf) | Possible results returned for action requests.
 std::function< void([Result](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eaf))> [ResultCallback](#classmavsdk_1_1_mission_raw_1a1a36a84f17dca07e1da49c13abbc9564) | Callback type for asynchronous [MissionRaw](classmavsdk_1_1_mission_raw.md) calls.
+std::function< void([Result](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eaf), [ProgressData](structmavsdk_1_1_mission_raw_1_1_progress_data.md))> [UploadMissionWithProgressCallback](#classmavsdk_1_1_mission_raw_1a184a812c658d3c62cf6cf3362a995c8e) | Callback type for upload_mission_with_progress_async.
 std::function< void([Result](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eaf), std::vector< [MissionItem](structmavsdk_1_1_mission_raw_1_1_mission_item.md) >)> [DownloadMissionCallback](#classmavsdk_1_1_mission_raw_1a016633e6338744da02ac7cb6da28880a) | Callback type for download_mission_async.
 std::function< void([Result](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eaf), std::vector< [MissionItem](structmavsdk_1_1_mission_raw_1_1_mission_item.md) >)> [DownloadGeofenceCallback](#classmavsdk_1_1_mission_raw_1a3e75d493ec08fec9d9faa597238c11be) | Callback type for download_geofence_async.
 std::function< void([Result](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eaf), std::vector< [MissionItem](structmavsdk_1_1_mission_raw_1_1_mission_item.md) >)> [DownloadRallypointsCallback](#classmavsdk_1_1_mission_raw_1a473abce54f89efe05d5ac051c9d8a5dc) | Callback type for download_rallypoints_async.
@@ -42,6 +47,7 @@ Type | Name | Description
 &nbsp; | [MissionRaw](#classmavsdk_1_1_mission_raw_1a91216322f0b6139d5ba83127f2ef1f12) (const [MissionRaw](classmavsdk_1_1_mission_raw.md) & other) | Copy constructor.
 void | [upload_mission_async](#classmavsdk_1_1_mission_raw_1a77cc5df3362b7ab4cbc94e5bc9707609) (std::vector< [MissionItem](structmavsdk_1_1_mission_raw_1_1_mission_item.md) > mission_items, const [ResultCallback](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a1a36a84f17dca07e1da49c13abbc9564) callback) | Upload a list of raw mission items to the system.
 [Result](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eaf) | [upload_mission](#classmavsdk_1_1_mission_raw_1ad4f5c2ccfb2249f6e11c9533c263926a) (std::vector< [MissionItem](structmavsdk_1_1_mission_raw_1_1_mission_item.md) > mission_items)const | Upload a list of raw mission items to the system.
+void | [upload_mission_with_progress_async](#classmavsdk_1_1_mission_raw_1ac7275cc2946166ac8203216a1181eae5) ([MissionPlan](structmavsdk_1_1_mission_raw_1_1_mission_plan.md) mission_plan, const [UploadMissionWithProgressCallback](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a184a812c658d3c62cf6cf3362a995c8e) & callback) | Upload a list of raw mission items and report upload progress.
 void | [upload_geofence_async](#classmavsdk_1_1_mission_raw_1abae3246480b334c319cfb8a9c0d2d8c6) (std::vector< [MissionItem](structmavsdk_1_1_mission_raw_1_1_mission_item.md) > mission_items, const [ResultCallback](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a1a36a84f17dca07e1da49c13abbc9564) callback) | Upload a list of geofence items to the system.
 [Result](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eaf) | [upload_geofence](#classmavsdk_1_1_mission_raw_1ac65fe0675332c318c5c07be5a8d22ac7) (std::vector< [MissionItem](structmavsdk_1_1_mission_raw_1_1_mission_item.md) > mission_items)const | Upload a list of geofence items to the system.
 void | [upload_rally_points_async](#classmavsdk_1_1_mission_raw_1a2c5d52246a8ad13151fcfedeab2859e5) (std::vector< [MissionItem](structmavsdk_1_1_mission_raw_1_1_mission_item.md) > mission_items, const [ResultCallback](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a1a36a84f17dca07e1da49c13abbc9564) callback) | Upload a list of rally point items to the system.
@@ -149,6 +155,16 @@ using mavsdk::MissionRaw::ResultCallback =  std::function<void(Result)>
 Callback type for asynchronous [MissionRaw](classmavsdk_1_1_mission_raw.md) calls.
 
 
+### typedef UploadMissionWithProgressCallback {#classmavsdk_1_1_mission_raw_1a184a812c658d3c62cf6cf3362a995c8e}
+
+```cpp
+using mavsdk::MissionRaw::UploadMissionWithProgressCallback =  std::function<void(Result, ProgressData)>
+```
+
+
+Callback type for upload_mission_with_progress_async.
+
+
 ### typedef DownloadMissionCallback {#classmavsdk_1_1_mission_raw_1a016633e6338744da02ac7cb6da28880a}
 
 ```cpp
@@ -251,6 +267,7 @@ Value | Description
 <span id="classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eafa3f5f527103f3b11c1c271363c542432b"></span> `IntMessagesNotSupported` | The system does not support the MISSION_INT protocol. 
 <span id="classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eafa6d80e75c1ced1d8667d7ba55a2b67429"></span> `FailedToOpenMissionPlannerPlan` | Failed to open the [Mission](classmavsdk_1_1_mission.md) Planner plan. 
 <span id="classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eafad56bf0f57cf6420ed771f852543a07eb"></span> `FailedToParseMissionPlannerPlan` | Failed to parse the [Mission](classmavsdk_1_1_mission.md) Planner plan. 
+<span id="classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eafa10ac3d04253ef7e1ddc73e6091c0cd55"></span> `Next` | Intermediate message showing progress. 
 
 ## Member Function Documentation
 
@@ -293,6 +310,20 @@ This function is blocking. See 'upload_mission_async' for the non-blocking count
 **Returns**
 
 &emsp;[Result](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eaf) - Result of request.
+
+### upload_mission_with_progress_async() {#classmavsdk_1_1_mission_raw_1ac7275cc2946166ac8203216a1181eae5}
+```cpp
+void mavsdk::MissionRaw::upload_mission_with_progress_async(MissionPlan mission_plan, const UploadMissionWithProgressCallback &callback)
+```
+
+
+Upload a list of raw mission items and report upload progress.
+
+
+**Parameters**
+
+* [MissionPlan](structmavsdk_1_1_mission_raw_1_1_mission_plan.md) **mission_plan** - 
+* const [UploadMissionWithProgressCallback](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a184a812c658d3c62cf6cf3362a995c8e)& **callback** - 
 
 ### upload_geofence_async() {#classmavsdk_1_1_mission_raw_1abae3246480b334c319cfb8a9c0d2d8c6}
 ```cpp

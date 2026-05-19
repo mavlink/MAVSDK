@@ -149,7 +149,8 @@ MissionRaw::Result MissionRawImpl::upload_mission_items(
 void MissionRawImpl::upload_mission_items_async(
     const std::vector<MissionRaw::MissionItem>& mission_raw,
     uint8_t type,
-    const MissionRaw::ResultCallback& callback)
+    const MissionRaw::ResultCallback& callback,
+    const MavlinkMissionTransferClient::ProgressCallback& progress_callback)
 {
     auto work_item = _last_upload.lock();
     if (work_item && !work_item->is_done()) {
@@ -183,7 +184,8 @@ void MissionRawImpl::upload_mission_items_async(
                     callback(converted_result);
                 }
             });
-        });
+        },
+        progress_callback);
 }
 
 MissionRaw::Result
@@ -197,6 +199,27 @@ void MissionRawImpl::upload_mission_async(
     const MissionRaw::ResultCallback& callback)
 {
     upload_mission_items_async(mission_raw, MAV_MISSION_TYPE_MISSION, callback);
+}
+
+void MissionRawImpl::upload_mission_with_progress_async(
+    const MissionRaw::MissionPlan& mission_plan,
+    const MissionRaw::UploadMissionWithProgressCallback& callback)
+{
+    upload_mission_items_async(
+        mission_plan.mission_items,
+        MAV_MISSION_TYPE_MISSION,
+        [callback](MissionRaw::Result result) {
+            if (callback) {
+                callback(result, MissionRaw::ProgressData{});
+            }
+        },
+        [this, callback](float progress) {
+            _system_impl->call_user_callback([callback, progress]() {
+                if (callback) {
+                    callback(MissionRaw::Result::Next, MissionRaw::ProgressData{progress});
+                }
+            });
+        });
 }
 
 MissionRaw::Result
