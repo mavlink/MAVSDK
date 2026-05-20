@@ -1054,7 +1054,9 @@ MAVSDK_PUBLIC bool operator==(const Telemetry::Battery& lhs, const Telemetry::Ba
             rhs.remaining_percent == lhs.remaining_percent) &&
            ((std::isnan(rhs.time_remaining_s) && std::isnan(lhs.time_remaining_s)) ||
             rhs.time_remaining_s == lhs.time_remaining_s) &&
-           (rhs.battery_function == lhs.battery_function);
+           (rhs.battery_function == lhs.battery_function) &&
+           ((std::isnan(rhs.energy_consumed_wh) && std::isnan(lhs.energy_consumed_wh)) ||
+            rhs.energy_consumed_wh == lhs.energy_consumed_wh);
 }
 
 MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Telemetry::Battery const& battery)
@@ -1069,6 +1071,7 @@ MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Telemetry::Battery con
     str << "    remaining_percent: " << battery.remaining_percent << '\n';
     str << "    time_remaining_s: " << battery.time_remaining_s << '\n';
     str << "    battery_function: " << battery.battery_function << '\n';
+    str << "    energy_consumed_wh: " << battery.energy_consumed_wh << '\n';
     str << '}';
     return str;
 }

@@ -1264,6 +1264,10 @@ void TelemetryImpl::process_battery_status(const mavlink_message_t& message)
                                            bat_status.current_consumed * 1e-3f; // mAh to Ah
     new_battery.time_remaining_s =
         (bat_status.time_remaining == 0 ? static_cast<float>(NAN) : bat_status.time_remaining);
+    new_battery.energy_consumed_wh =
+        (bat_status.energy_consumed == -1) ?
+            static_cast<float>(NAN) :
+            static_cast<float>(bat_status.energy_consumed) / 36.0f; // hJ (100 J) to Wh (3600 J)
 
     Telemetry::BatteryFunction battery_function;
     switch (bat_status.battery_function) {

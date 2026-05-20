@@ -253,6 +253,7 @@ class BatteryCStruct(ctypes.Structure):
         ("remaining_percent", ctypes.c_float),
         ("time_remaining_s", ctypes.c_float),
         ("battery_function", ctypes.c_int),
+        ("energy_consumed_wh", ctypes.c_float),
     ]
 
 
@@ -1014,6 +1015,7 @@ class Battery:
         remaining_percent=None,
         time_remaining_s=None,
         battery_function=None,
+        energy_consumed_wh=None,
     ):
         self.id = id
         self.temperature_degc = temperature_degc
@@ -1023,6 +1025,7 @@ class Battery:
         self.remaining_percent = remaining_percent
         self.time_remaining_s = time_remaining_s
         self.battery_function = battery_function
+        self.energy_consumed_wh = energy_consumed_wh
 
     @classmethod
     def from_c_struct(cls, c_struct):
@@ -1036,6 +1039,7 @@ class Battery:
         instance.remaining_percent = c_struct.remaining_percent
         instance.time_remaining_s = c_struct.time_remaining_s
         instance.battery_function = BatteryFunction(c_struct.battery_function)
+        instance.energy_consumed_wh = c_struct.energy_consumed_wh
         return instance
 
     def to_c_struct(self):
@@ -1049,6 +1053,7 @@ class Battery:
         c_struct.remaining_percent = self.remaining_percent
         c_struct.time_remaining_s = self.time_remaining_s
         c_struct.battery_function = int(self.battery_function)
+        c_struct.energy_consumed_wh = self.energy_consumed_wh
         return c_struct
 
     def __str__(self):
@@ -1061,6 +1066,7 @@ class Battery:
         fields.append(f"remaining_percent={self.remaining_percent}")
         fields.append(f"time_remaining_s={self.time_remaining_s}")
         fields.append(f"battery_function={self.battery_function}")
+        fields.append(f"energy_consumed_wh={self.energy_consumed_wh}")
         return f"Battery({', '.join(fields)})"
 
 

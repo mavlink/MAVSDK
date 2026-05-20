@@ -26,6 +26,8 @@ float [time_remaining_s](#structmavsdk_1_1_telemetry_1_1_battery_1a9dd00470568d2
 
 [BatteryFunction](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1adf751b819a1a38fc2b02442b5d5dae60) [battery_function](#structmavsdk_1_1_telemetry_1_1_battery_1a45654c797ef33bb134ac30313b73098c) {} - Function of the battery.
 
+float [energy_consumed_wh](#structmavsdk_1_1_telemetry_1_1_battery_1a38787c6e922563306484548630646f56) {float(NAN)} - Consumed energy in Watt-hours, NAN if autopilot does not provide energy consumption estimate.
+
 
 ## Field Documentation
 
@@ -108,4 +110,14 @@ BatteryFunction mavsdk::Telemetry::Battery::battery_function {}
 
 
 Function of the battery.
+
+
+### energy_consumed_wh {#structmavsdk_1_1_telemetry_1_1_battery_1a38787c6e922563306484548630646f56}
+
+```cpp
+float mavsdk::Telemetry::Battery::energy_consumed_wh {float(NAN)}
+```
+
+
+Consumed energy in Watt-hours, NAN if autopilot does not provide energy consumption estimate.
 
