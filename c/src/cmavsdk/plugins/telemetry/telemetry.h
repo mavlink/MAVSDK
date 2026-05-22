@@ -602,8 +602,6 @@ typedef struct CMAVSDK_EXPORT {
     float time_remaining_s;
     /**  Function of the battery */
     mavsdk_telemetry_battery_function_t battery_function;
-    /**  Consumed energy in Watt-hours, NAN if autopilot does not provide energy consumption estimate */
-    float energy_consumed_wh;
 } mavsdk_telemetry_battery_t;
 
 /**
