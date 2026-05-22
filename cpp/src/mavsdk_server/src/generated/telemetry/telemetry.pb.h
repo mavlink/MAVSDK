@@ -16899,6 +16899,7 @@ class Battery final
     kRemainingPercentFieldNumber = 6,
     kTimeRemainingSFieldNumber = 7,
     kBatteryFunctionFieldNumber = 8,
+    kEnergyConsumedWhFieldNumber = 9,
   };
   // uint32 id = 1 [(.mavsdk.options.default_value) = "0"];
   void clear_id() ;
@@ -16980,12 +16981,22 @@ class Battery final
   void _internal_set_battery_function(::mavsdk::rpc::telemetry::BatteryFunction value);
 
   public:
+  // float energy_consumed_wh = 9 [(.mavsdk.options.default_value) = "NaN"];
+  void clear_energy_consumed_wh() ;
+  float energy_consumed_wh() const;
+  void set_energy_consumed_wh(float value);
+
+  private:
+  float _internal_energy_consumed_wh() const;
+  void _internal_set_energy_consumed_wh(float value);
+
+  public:
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry.Battery)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      3, 8, 0,
+      4, 9, 0,
       0, 2>
       _table_;
 
@@ -17011,6 +17022,7 @@ class Battery final
     float remaining_percent_;
     float time_remaining_s_;
     int battery_function_;
+    float energy_consumed_wh_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -38043,6 +38055,28 @@ inline ::mavsdk::rpc::telemetry::BatteryFunction Battery::_internal_battery_func
 inline void Battery::_internal_set_battery_function(::mavsdk::rpc::telemetry::BatteryFunction value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.battery_function_ = value;
+}
+
+// float energy_consumed_wh = 9 [(.mavsdk.options.default_value) = "NaN"];
+inline void Battery::clear_energy_consumed_wh() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.energy_consumed_wh_ = 0;
+}
+inline float Battery::energy_consumed_wh() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.Battery.energy_consumed_wh)
+  return _internal_energy_consumed_wh();
+}
+inline void Battery::set_energy_consumed_wh(float value) {
+  _internal_set_energy_consumed_wh(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.Battery.energy_consumed_wh)
+}
+inline float Battery::_internal_energy_consumed_wh() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.energy_consumed_wh_;
+}
+inline void Battery::_internal_set_energy_consumed_wh(float value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.energy_consumed_wh_ = value;
 }
 
 // -------------------------------------------------------------------

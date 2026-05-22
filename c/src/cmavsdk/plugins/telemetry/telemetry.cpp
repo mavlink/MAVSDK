@@ -649,6 +649,7 @@ translate_battery_from_c(const mavsdk_telemetry_battery_t& c_struct) {
     cpp_struct.remaining_percent = c_struct.remaining_percent;
     cpp_struct.time_remaining_s = c_struct.time_remaining_s;
     cpp_struct.battery_function = translate_battery_function_from_c(c_struct.battery_function);
+    cpp_struct.energy_consumed_wh = c_struct.energy_consumed_wh;
     return cpp_struct;
 }
 
@@ -663,6 +664,7 @@ translate_battery_to_c(const mavsdk::Telemetry::Battery& cpp_struct) {
     c_struct.remaining_percent = cpp_struct.remaining_percent;
     c_struct.time_remaining_s = cpp_struct.time_remaining_s;
     c_struct.battery_function = translate_battery_function_to_c(cpp_struct.battery_function);
+    c_struct.energy_consumed_wh = cpp_struct.energy_consumed_wh;
     return c_struct;
 }
 

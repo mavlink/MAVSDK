@@ -504,6 +504,7 @@ public:
         float remaining_percent{float(NAN)}; /**< @brief Estimated battery remaining (range: 0 to 100) */
         float time_remaining_s{float(NAN)}; /**< @brief Estimated battery usage time remaining */
         BatteryFunction battery_function{}; /**< @brief Function of the battery */
+        float energy_consumed_wh{float(NAN)}; /**< @brief Consumed energy in Watt-hours, NAN if autopilot does not provide energy consumption estimate */
     };
 
     /**
