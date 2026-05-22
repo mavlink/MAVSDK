@@ -893,6 +893,24 @@ class Action:
 
         return result
 
+    def set_home(
+        self, use_current_location, latitude_deg, longitude_deg, absolute_altitude_m
+    ):
+        """Get set_home (blocking)"""
+
+        result_code = self._lib.mavsdk_action_set_home(
+            self._handle,
+            use_current_location,
+            latitude_deg,
+            longitude_deg,
+            absolute_altitude_m,
+        )
+        result = ActionResult(result_code)
+        if result != ActionResult.SUCCESS:
+            raise Exception(f"set_home failed: {result}")
+
+        return result
+
     def destroy(self):
         """Destroy the plugin instance"""
         if self._handle:
@@ -1272,3 +1290,13 @@ _cmavsdk_lib.mavsdk_action_set_gps_global_origin.argtypes = [
 ]
 
 _cmavsdk_lib.mavsdk_action_set_gps_global_origin.restype = ctypes.c_int
+
+_cmavsdk_lib.mavsdk_action_set_home.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_bool,
+    ctypes.c_double,
+    ctypes.c_double,
+    ctypes.c_float,
+]
+
+_cmavsdk_lib.mavsdk_action_set_home.restype = ctypes.c_int

@@ -962,6 +962,24 @@ mavsdk_action_set_gps_global_origin(
     float absolute_altitude_m);
 
 
+/**
+ * @brief Get the current set home (blocking).
+ *
+ * This function blocks until a value is available.
+ *
+ * @param telemetry The telemetry instance.
+ * @param set_home_out Pointer to store the result.
+ */
+CMAVSDK_EXPORT
+mavsdk_action_result_t
+mavsdk_action_set_home(
+    mavsdk_action_t action,
+    bool use_current_location,
+    double latitude_deg,
+    double longitude_deg,
+    float absolute_altitude_m);
+
+
 #ifdef __cplusplus
 }
 #endif

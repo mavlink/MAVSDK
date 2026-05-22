@@ -309,6 +309,17 @@ class ActionService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action::SetGpsGlobalOriginResponse>> PrepareAsyncSetGpsGlobalOrigin(::grpc::ClientContext* context, const ::mavsdk::rpc::action::SetGpsGlobalOriginRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action::SetGpsGlobalOriginResponse>>(PrepareAsyncSetGpsGlobalOriginRaw(context, request, cq));
     }
+    //
+    // Set home.
+    //
+    // Sets the home position.
+    virtual ::grpc::Status SetHome(::grpc::ClientContext* context, const ::mavsdk::rpc::action::SetHomeRequest& request, ::mavsdk::rpc::action::SetHomeResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action::SetHomeResponse>> AsyncSetHome(::grpc::ClientContext* context, const ::mavsdk::rpc::action::SetHomeRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action::SetHomeResponse>>(AsyncSetHomeRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action::SetHomeResponse>> PrepareAsyncSetHome(::grpc::ClientContext* context, const ::mavsdk::rpc::action::SetHomeRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action::SetHomeResponse>>(PrepareAsyncSetHomeRaw(context, request, cq));
+    }
     class async_interface {
      public:
       virtual ~async_interface() {}
@@ -468,6 +479,12 @@ class ActionService final {
       // Sets the GPS coordinates of the vehicle local origin (0,0,0) position.
       virtual void SetGpsGlobalOrigin(::grpc::ClientContext* context, const ::mavsdk::rpc::action::SetGpsGlobalOriginRequest* request, ::mavsdk::rpc::action::SetGpsGlobalOriginResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void SetGpsGlobalOrigin(::grpc::ClientContext* context, const ::mavsdk::rpc::action::SetGpsGlobalOriginRequest* request, ::mavsdk::rpc::action::SetGpsGlobalOriginResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      //
+      // Set home.
+      //
+      // Sets the home position.
+      virtual void SetHome(::grpc::ClientContext* context, const ::mavsdk::rpc::action::SetHomeRequest* request, ::mavsdk::rpc::action::SetHomeResponse* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void SetHome(::grpc::ClientContext* context, const ::mavsdk::rpc::action::SetHomeRequest* request, ::mavsdk::rpc::action::SetHomeResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
     };
     typedef class async_interface experimental_async_interface;
     virtual class async_interface* async() { return nullptr; }
@@ -519,6 +536,8 @@ class ActionService final {
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action::SetCurrentSpeedResponse>* PrepareAsyncSetCurrentSpeedRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action::SetCurrentSpeedRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action::SetGpsGlobalOriginResponse>* AsyncSetGpsGlobalOriginRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action::SetGpsGlobalOriginRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action::SetGpsGlobalOriginResponse>* PrepareAsyncSetGpsGlobalOriginRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action::SetGpsGlobalOriginRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action::SetHomeResponse>* AsyncSetHomeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action::SetHomeRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action::SetHomeResponse>* PrepareAsyncSetHomeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action::SetHomeRequest& request, ::grpc::CompletionQueue* cq) = 0;
   };
   class Stub final : public StubInterface {
    public:
@@ -684,6 +703,13 @@ class ActionService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action::SetGpsGlobalOriginResponse>> PrepareAsyncSetGpsGlobalOrigin(::grpc::ClientContext* context, const ::mavsdk::rpc::action::SetGpsGlobalOriginRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action::SetGpsGlobalOriginResponse>>(PrepareAsyncSetGpsGlobalOriginRaw(context, request, cq));
     }
+    ::grpc::Status SetHome(::grpc::ClientContext* context, const ::mavsdk::rpc::action::SetHomeRequest& request, ::mavsdk::rpc::action::SetHomeResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action::SetHomeResponse>> AsyncSetHome(::grpc::ClientContext* context, const ::mavsdk::rpc::action::SetHomeRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action::SetHomeResponse>>(AsyncSetHomeRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action::SetHomeResponse>> PrepareAsyncSetHome(::grpc::ClientContext* context, const ::mavsdk::rpc::action::SetHomeRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action::SetHomeResponse>>(PrepareAsyncSetHomeRaw(context, request, cq));
+    }
     class async final :
       public StubInterface::async_interface {
      public:
@@ -733,6 +759,8 @@ class ActionService final {
       void SetCurrentSpeed(::grpc::ClientContext* context, const ::mavsdk::rpc::action::SetCurrentSpeedRequest* request, ::mavsdk::rpc::action::SetCurrentSpeedResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
       void SetGpsGlobalOrigin(::grpc::ClientContext* context, const ::mavsdk::rpc::action::SetGpsGlobalOriginRequest* request, ::mavsdk::rpc::action::SetGpsGlobalOriginResponse* response, std::function<void(::grpc::Status)>) override;
       void SetGpsGlobalOrigin(::grpc::ClientContext* context, const ::mavsdk::rpc::action::SetGpsGlobalOriginRequest* request, ::mavsdk::rpc::action::SetGpsGlobalOriginResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void SetHome(::grpc::ClientContext* context, const ::mavsdk::rpc::action::SetHomeRequest* request, ::mavsdk::rpc::action::SetHomeResponse* response, std::function<void(::grpc::Status)>) override;
+      void SetHome(::grpc::ClientContext* context, const ::mavsdk::rpc::action::SetHomeRequest* request, ::mavsdk::rpc::action::SetHomeResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
      private:
       friend class Stub;
       explicit async(Stub* stub): stub_(stub) { }
@@ -790,6 +818,8 @@ class ActionService final {
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action::SetCurrentSpeedResponse>* PrepareAsyncSetCurrentSpeedRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action::SetCurrentSpeedRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action::SetGpsGlobalOriginResponse>* AsyncSetGpsGlobalOriginRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action::SetGpsGlobalOriginRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action::SetGpsGlobalOriginResponse>* PrepareAsyncSetGpsGlobalOriginRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action::SetGpsGlobalOriginRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action::SetHomeResponse>* AsyncSetHomeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action::SetHomeRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action::SetHomeResponse>* PrepareAsyncSetHomeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action::SetHomeRequest& request, ::grpc::CompletionQueue* cq) override;
     const ::grpc::internal::RpcMethod rpcmethod_Arm_;
     const ::grpc::internal::RpcMethod rpcmethod_ArmForce_;
     const ::grpc::internal::RpcMethod rpcmethod_Disarm_;
@@ -813,6 +843,7 @@ class ActionService final {
     const ::grpc::internal::RpcMethod rpcmethod_SetReturnToLaunchAltitude_;
     const ::grpc::internal::RpcMethod rpcmethod_SetCurrentSpeed_;
     const ::grpc::internal::RpcMethod rpcmethod_SetGpsGlobalOrigin_;
+    const ::grpc::internal::RpcMethod rpcmethod_SetHome_;
   };
   static std::unique_ptr<Stub> NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
 
@@ -953,6 +984,11 @@ class ActionService final {
     //
     // Sets the GPS coordinates of the vehicle local origin (0,0,0) position.
     virtual ::grpc::Status SetGpsGlobalOrigin(::grpc::ServerContext* context, const ::mavsdk::rpc::action::SetGpsGlobalOriginRequest* request, ::mavsdk::rpc::action::SetGpsGlobalOriginResponse* response);
+    //
+    // Set home.
+    //
+    // Sets the home position.
+    virtual ::grpc::Status SetHome(::grpc::ServerContext* context, const ::mavsdk::rpc::action::SetHomeRequest* request, ::mavsdk::rpc::action::SetHomeResponse* response);
   };
   template <class BaseClass>
   class WithAsyncMethod_Arm : public BaseClass {
@@ -1414,7 +1450,27 @@ class ActionService final {
       ::grpc::Service::RequestAsyncUnary(22, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
-  typedef WithAsyncMethod_Arm<WithAsyncMethod_ArmForce<WithAsyncMethod_Disarm<WithAsyncMethod_Takeoff<WithAsyncMethod_Land<WithAsyncMethod_Reboot<WithAsyncMethod_Shutdown<WithAsyncMethod_Terminate<WithAsyncMethod_Kill<WithAsyncMethod_ReturnToLaunch<WithAsyncMethod_GotoLocation<WithAsyncMethod_DoOrbit<WithAsyncMethod_Hold<WithAsyncMethod_SetActuator<WithAsyncMethod_SetRelay<WithAsyncMethod_TransitionToFixedwing<WithAsyncMethod_TransitionToMulticopter<WithAsyncMethod_GetTakeoffAltitude<WithAsyncMethod_SetTakeoffAltitude<WithAsyncMethod_GetReturnToLaunchAltitude<WithAsyncMethod_SetReturnToLaunchAltitude<WithAsyncMethod_SetCurrentSpeed<WithAsyncMethod_SetGpsGlobalOrigin<Service > > > > > > > > > > > > > > > > > > > > > > > AsyncService;
+  template <class BaseClass>
+  class WithAsyncMethod_SetHome : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithAsyncMethod_SetHome() {
+      ::grpc::Service::MarkMethodAsync(23);
+    }
+    ~WithAsyncMethod_SetHome() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SetHome(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::action::SetHomeRequest* /*request*/, ::mavsdk::rpc::action::SetHomeResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestSetHome(::grpc::ServerContext* context, ::mavsdk::rpc::action::SetHomeRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::action::SetHomeResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(23, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  typedef WithAsyncMethod_Arm<WithAsyncMethod_ArmForce<WithAsyncMethod_Disarm<WithAsyncMethod_Takeoff<WithAsyncMethod_Land<WithAsyncMethod_Reboot<WithAsyncMethod_Shutdown<WithAsyncMethod_Terminate<WithAsyncMethod_Kill<WithAsyncMethod_ReturnToLaunch<WithAsyncMethod_GotoLocation<WithAsyncMethod_DoOrbit<WithAsyncMethod_Hold<WithAsyncMethod_SetActuator<WithAsyncMethod_SetRelay<WithAsyncMethod_TransitionToFixedwing<WithAsyncMethod_TransitionToMulticopter<WithAsyncMethod_GetTakeoffAltitude<WithAsyncMethod_SetTakeoffAltitude<WithAsyncMethod_GetReturnToLaunchAltitude<WithAsyncMethod_SetReturnToLaunchAltitude<WithAsyncMethod_SetCurrentSpeed<WithAsyncMethod_SetGpsGlobalOrigin<WithAsyncMethod_SetHome<Service > > > > > > > > > > > > > > > > > > > > > > > > AsyncService;
   template <class BaseClass>
   class WithCallbackMethod_Arm : public BaseClass {
    private:
@@ -2036,7 +2092,34 @@ class ActionService final {
     virtual ::grpc::ServerUnaryReactor* SetGpsGlobalOrigin(
       ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::action::SetGpsGlobalOriginRequest* /*request*/, ::mavsdk::rpc::action::SetGpsGlobalOriginResponse* /*response*/)  { return nullptr; }
   };
-  typedef WithCallbackMethod_Arm<WithCallbackMethod_ArmForce<WithCallbackMethod_Disarm<WithCallbackMethod_Takeoff<WithCallbackMethod_Land<WithCallbackMethod_Reboot<WithCallbackMethod_Shutdown<WithCallbackMethod_Terminate<WithCallbackMethod_Kill<WithCallbackMethod_ReturnToLaunch<WithCallbackMethod_GotoLocation<WithCallbackMethod_DoOrbit<WithCallbackMethod_Hold<WithCallbackMethod_SetActuator<WithCallbackMethod_SetRelay<WithCallbackMethod_TransitionToFixedwing<WithCallbackMethod_TransitionToMulticopter<WithCallbackMethod_GetTakeoffAltitude<WithCallbackMethod_SetTakeoffAltitude<WithCallbackMethod_GetReturnToLaunchAltitude<WithCallbackMethod_SetReturnToLaunchAltitude<WithCallbackMethod_SetCurrentSpeed<WithCallbackMethod_SetGpsGlobalOrigin<Service > > > > > > > > > > > > > > > > > > > > > > > CallbackService;
+  template <class BaseClass>
+  class WithCallbackMethod_SetHome : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithCallbackMethod_SetHome() {
+      ::grpc::Service::MarkMethodCallback(23,
+          new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::action::SetHomeRequest, ::mavsdk::rpc::action::SetHomeResponse>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::action::SetHomeRequest* request, ::mavsdk::rpc::action::SetHomeResponse* response) { return this->SetHome(context, request, response); }));}
+    void SetMessageAllocatorFor_SetHome(
+        ::grpc::MessageAllocator< ::mavsdk::rpc::action::SetHomeRequest, ::mavsdk::rpc::action::SetHomeResponse>* allocator) {
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(23);
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::action::SetHomeRequest, ::mavsdk::rpc::action::SetHomeResponse>*>(handler)
+              ->SetMessageAllocator(allocator);
+    }
+    ~WithCallbackMethod_SetHome() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SetHome(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::action::SetHomeRequest* /*request*/, ::mavsdk::rpc::action::SetHomeResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* SetHome(
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::action::SetHomeRequest* /*request*/, ::mavsdk::rpc::action::SetHomeResponse* /*response*/)  { return nullptr; }
+  };
+  typedef WithCallbackMethod_Arm<WithCallbackMethod_ArmForce<WithCallbackMethod_Disarm<WithCallbackMethod_Takeoff<WithCallbackMethod_Land<WithCallbackMethod_Reboot<WithCallbackMethod_Shutdown<WithCallbackMethod_Terminate<WithCallbackMethod_Kill<WithCallbackMethod_ReturnToLaunch<WithCallbackMethod_GotoLocation<WithCallbackMethod_DoOrbit<WithCallbackMethod_Hold<WithCallbackMethod_SetActuator<WithCallbackMethod_SetRelay<WithCallbackMethod_TransitionToFixedwing<WithCallbackMethod_TransitionToMulticopter<WithCallbackMethod_GetTakeoffAltitude<WithCallbackMethod_SetTakeoffAltitude<WithCallbackMethod_GetReturnToLaunchAltitude<WithCallbackMethod_SetReturnToLaunchAltitude<WithCallbackMethod_SetCurrentSpeed<WithCallbackMethod_SetGpsGlobalOrigin<WithCallbackMethod_SetHome<Service > > > > > > > > > > > > > > > > > > > > > > > > CallbackService;
   typedef CallbackService ExperimentalCallbackService;
   template <class BaseClass>
   class WithGenericMethod_Arm : public BaseClass {
@@ -2425,6 +2508,23 @@ class ActionService final {
     }
     // disable synchronous version of this method
     ::grpc::Status SetGpsGlobalOrigin(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::action::SetGpsGlobalOriginRequest* /*request*/, ::mavsdk::rpc::action::SetGpsGlobalOriginResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
+  template <class BaseClass>
+  class WithGenericMethod_SetHome : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithGenericMethod_SetHome() {
+      ::grpc::Service::MarkMethodGeneric(23);
+    }
+    ~WithGenericMethod_SetHome() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SetHome(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::action::SetHomeRequest* /*request*/, ::mavsdk::rpc::action::SetHomeResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -2887,6 +2987,26 @@ class ActionService final {
     }
     void RequestSetGpsGlobalOrigin(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(22, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithRawMethod_SetHome : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawMethod_SetHome() {
+      ::grpc::Service::MarkMethodRaw(23);
+    }
+    ~WithRawMethod_SetHome() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SetHome(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::action::SetHomeRequest* /*request*/, ::mavsdk::rpc::action::SetHomeResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestSetHome(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(23, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -3393,6 +3513,28 @@ class ActionService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     virtual ::grpc::ServerUnaryReactor* SetGpsGlobalOrigin(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
+  };
+  template <class BaseClass>
+  class WithRawCallbackMethod_SetHome : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawCallbackMethod_SetHome() {
+      ::grpc::Service::MarkMethodRawCallback(23,
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetHome(context, request, response); }));
+    }
+    ~WithRawCallbackMethod_SetHome() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SetHome(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::action::SetHomeRequest* /*request*/, ::mavsdk::rpc::action::SetHomeResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* SetHome(
       ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
@@ -4016,9 +4158,36 @@ class ActionService final {
     // replace default version of method with streamed unary
     virtual ::grpc::Status StreamedSetGpsGlobalOrigin(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::action::SetGpsGlobalOriginRequest,::mavsdk::rpc::action::SetGpsGlobalOriginResponse>* server_unary_streamer) = 0;
   };
-  typedef WithStreamedUnaryMethod_Arm<WithStreamedUnaryMethod_ArmForce<WithStreamedUnaryMethod_Disarm<WithStreamedUnaryMethod_Takeoff<WithStreamedUnaryMethod_Land<WithStreamedUnaryMethod_Reboot<WithStreamedUnaryMethod_Shutdown<WithStreamedUnaryMethod_Terminate<WithStreamedUnaryMethod_Kill<WithStreamedUnaryMethod_ReturnToLaunch<WithStreamedUnaryMethod_GotoLocation<WithStreamedUnaryMethod_DoOrbit<WithStreamedUnaryMethod_Hold<WithStreamedUnaryMethod_SetActuator<WithStreamedUnaryMethod_SetRelay<WithStreamedUnaryMethod_TransitionToFixedwing<WithStreamedUnaryMethod_TransitionToMulticopter<WithStreamedUnaryMethod_GetTakeoffAltitude<WithStreamedUnaryMethod_SetTakeoffAltitude<WithStreamedUnaryMethod_GetReturnToLaunchAltitude<WithStreamedUnaryMethod_SetReturnToLaunchAltitude<WithStreamedUnaryMethod_SetCurrentSpeed<WithStreamedUnaryMethod_SetGpsGlobalOrigin<Service > > > > > > > > > > > > > > > > > > > > > > > StreamedUnaryService;
+  template <class BaseClass>
+  class WithStreamedUnaryMethod_SetHome : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithStreamedUnaryMethod_SetHome() {
+      ::grpc::Service::MarkMethodStreamed(23,
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::mavsdk::rpc::action::SetHomeRequest, ::mavsdk::rpc::action::SetHomeResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::mavsdk::rpc::action::SetHomeRequest, ::mavsdk::rpc::action::SetHomeResponse>* streamer) {
+                       return this->StreamedSetHome(context,
+                         streamer);
+                  }));
+    }
+    ~WithStreamedUnaryMethod_SetHome() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status SetHome(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::action::SetHomeRequest* /*request*/, ::mavsdk::rpc::action::SetHomeResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with streamed unary
+    virtual ::grpc::Status StreamedSetHome(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::action::SetHomeRequest,::mavsdk::rpc::action::SetHomeResponse>* server_unary_streamer) = 0;
+  };
+  typedef WithStreamedUnaryMethod_Arm<WithStreamedUnaryMethod_ArmForce<WithStreamedUnaryMethod_Disarm<WithStreamedUnaryMethod_Takeoff<WithStreamedUnaryMethod_Land<WithStreamedUnaryMethod_Reboot<WithStreamedUnaryMethod_Shutdown<WithStreamedUnaryMethod_Terminate<WithStreamedUnaryMethod_Kill<WithStreamedUnaryMethod_ReturnToLaunch<WithStreamedUnaryMethod_GotoLocation<WithStreamedUnaryMethod_DoOrbit<WithStreamedUnaryMethod_Hold<WithStreamedUnaryMethod_SetActuator<WithStreamedUnaryMethod_SetRelay<WithStreamedUnaryMethod_TransitionToFixedwing<WithStreamedUnaryMethod_TransitionToMulticopter<WithStreamedUnaryMethod_GetTakeoffAltitude<WithStreamedUnaryMethod_SetTakeoffAltitude<WithStreamedUnaryMethod_GetReturnToLaunchAltitude<WithStreamedUnaryMethod_SetReturnToLaunchAltitude<WithStreamedUnaryMethod_SetCurrentSpeed<WithStreamedUnaryMethod_SetGpsGlobalOrigin<WithStreamedUnaryMethod_SetHome<Service > > > > > > > > > > > > > > > > > > > > > > > > StreamedUnaryService;
   typedef Service SplitStreamedService;
-  typedef WithStreamedUnaryMethod_Arm<WithStreamedUnaryMethod_ArmForce<WithStreamedUnaryMethod_Disarm<WithStreamedUnaryMethod_Takeoff<WithStreamedUnaryMethod_Land<WithStreamedUnaryMethod_Reboot<WithStreamedUnaryMethod_Shutdown<WithStreamedUnaryMethod_Terminate<WithStreamedUnaryMethod_Kill<WithStreamedUnaryMethod_ReturnToLaunch<WithStreamedUnaryMethod_GotoLocation<WithStreamedUnaryMethod_DoOrbit<WithStreamedUnaryMethod_Hold<WithStreamedUnaryMethod_SetActuator<WithStreamedUnaryMethod_SetRelay<WithStreamedUnaryMethod_TransitionToFixedwing<WithStreamedUnaryMethod_TransitionToMulticopter<WithStreamedUnaryMethod_GetTakeoffAltitude<WithStreamedUnaryMethod_SetTakeoffAltitude<WithStreamedUnaryMethod_GetReturnToLaunchAltitude<WithStreamedUnaryMethod_SetReturnToLaunchAltitude<WithStreamedUnaryMethod_SetCurrentSpeed<WithStreamedUnaryMethod_SetGpsGlobalOrigin<Service > > > > > > > > > > > > > > > > > > > > > > > StreamedService;
+  typedef WithStreamedUnaryMethod_Arm<WithStreamedUnaryMethod_ArmForce<WithStreamedUnaryMethod_Disarm<WithStreamedUnaryMethod_Takeoff<WithStreamedUnaryMethod_Land<WithStreamedUnaryMethod_Reboot<WithStreamedUnaryMethod_Shutdown<WithStreamedUnaryMethod_Terminate<WithStreamedUnaryMethod_Kill<WithStreamedUnaryMethod_ReturnToLaunch<WithStreamedUnaryMethod_GotoLocation<WithStreamedUnaryMethod_DoOrbit<WithStreamedUnaryMethod_Hold<WithStreamedUnaryMethod_SetActuator<WithStreamedUnaryMethod_SetRelay<WithStreamedUnaryMethod_TransitionToFixedwing<WithStreamedUnaryMethod_TransitionToMulticopter<WithStreamedUnaryMethod_GetTakeoffAltitude<WithStreamedUnaryMethod_SetTakeoffAltitude<WithStreamedUnaryMethod_GetReturnToLaunchAltitude<WithStreamedUnaryMethod_SetReturnToLaunchAltitude<WithStreamedUnaryMethod_SetCurrentSpeed<WithStreamedUnaryMethod_SetGpsGlobalOrigin<WithStreamedUnaryMethod_SetHome<Service > > > > > > > > > > > > > > > > > > > > > > > > StreamedService;
 };
 
 }  // namespace action

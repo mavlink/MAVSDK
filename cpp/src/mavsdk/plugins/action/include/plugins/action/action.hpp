@@ -813,6 +813,24 @@ public:
 
 
 
+
+
+    /**
+     * @brief Set home.
+     *
+     * Sets the home position.
+     *
+     * This function is blocking.
+     *
+     
+     * @return Result of request.
+     
+     */
+    Result set_home(bool use_current_location, double latitude_deg, double longitude_deg, float absolute_altitude_m) const;
+
+
+
+
     /**
      * @brief Copy constructor.
      */
