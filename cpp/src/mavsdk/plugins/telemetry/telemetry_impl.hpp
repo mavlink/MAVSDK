@@ -256,6 +256,7 @@ private:
     void process_extended_sys_state(const mavlink_message_t& message);
     void process_fixedwing_metrics(const mavlink_message_t& message);
     void process_sys_status(const mavlink_message_t& message);
+    void process_estimator_status(const mavlink_message_t& message);
     void process_battery_status(const mavlink_message_t& message);
     void process_heartbeat(const mavlink_message_t& message);
     void process_rc_channels(const mavlink_message_t& message);
@@ -431,6 +432,10 @@ private:
     // Battery info can be extracted from SYS_STATUS or from BATTERY_STATUS.
     // If no BATTERY_STATUS messages are received, use info from SYS_STATUS.
     bool _has_bat_status{false};
+
+    // Global position validity from ESTIMATOR_STATUS takes precedence over GPS sensor health.
+    // If no ESTIMATOR_STATUS messages are received, fall back to GPS sensor health from SYS_STATUS.
+    bool _has_estimator_status{false};
 
     CallEveryHandler::Cookie _homepos_cookie{};
 

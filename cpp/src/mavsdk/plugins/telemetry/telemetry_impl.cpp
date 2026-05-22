@@ -106,6 +106,11 @@ void TelemetryImpl::init()
         this);
 
     _system_impl->register_mavlink_message_handler(
+        MAVLINK_MSG_ID_ESTIMATOR_STATUS,
+        [this](const mavlink_message_t& message) { process_estimator_status(message); },
+        this);
+
+    _system_impl->register_mavlink_message_handler(
         MAVLINK_MSG_ID_HEARTBEAT,
         [this](const mavlink_message_t& message) { process_heartbeat(message); },
         this);
@@ -1188,19 +1193,21 @@ void TelemetryImpl::process_sys_status(const mavlink_message_t& message)
             sys_status.onboard_control_sensors_health & MAV_SYS_STATUS_SENSOR_3D_MAG);
     }
 
-    const bool global_position_ok =
+    const bool gps_health_ok =
         sys_status_present_enabled_health(sys_status, MAV_SYS_STATUS_SENSOR_GPS);
 
     // FIXME: There is nothing really set in PX4 for local position from what I can tell,
     //        so the best we can do for now is to set it based on GPS as a fallback.
 
     const bool local_position_ok =
-        global_position_ok ||
+        gps_health_ok ||
         sys_status_present_enabled_health(sys_status, MAV_SYS_STATUS_SENSOR_OPTICAL_FLOW) ||
         sys_status_present_enabled_health(sys_status, MAV_SYS_STATUS_SENSOR_VISION_POSITION);
 
     set_health_local_position(local_position_ok);
-    set_health_global_position(global_position_ok);
+    if (!_has_estimator_status) {
+        set_health_global_position(gps_health_ok);
+    }
 
     set_rc_status({rc_ok}, std::nullopt);
 
@@ -1221,6 +1228,21 @@ bool TelemetryImpl::sys_status_present_enabled_health(
     return (sys_status.onboard_control_sensors_present & flag) != 0 &&
            // (sys_status.onboard_control_sensors_enabled & flag) != 0 &&
            (sys_status.onboard_control_sensors_health & flag) != 0;
+}
+
+void TelemetryImpl::process_estimator_status(const mavlink_message_t& message)
+{
+    mavlink_estimator_status_t estimator_status;
+    mavlink_msg_estimator_status_decode(&message, &estimator_status);
+
+    _has_estimator_status = true;
+
+    const bool global_position_ok = (estimator_status.flags & ESTIMATOR_PRED_POS_HORIZ_ABS) != 0;
+    set_health_global_position(global_position_ok);
+
+    std::lock_guard<std::mutex> lock(_subscription_mutex);
+    _health_all_ok_subscriptions.queue(
+        health_all_ok(), [this](const auto& func) { _system_impl->call_user_callback(func); });
 }
 
 void TelemetryImpl::process_battery_status(const mavlink_message_t& message)
