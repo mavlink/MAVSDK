@@ -585,7 +585,7 @@ CMAVSDK_EXPORT void mavsdk_action_do_orbit_async(
     mavsdk_action_t action,
     float radius_m,
     float velocity_ms,
-    mavsdk_action_orbit_yaw_behavior_t yaw_behavior,
+    mavsdk_action__t yaw_behavior,
     double latitude_deg,
     double longitude_deg,
     double absolute_altitude_m,
@@ -607,7 +607,7 @@ mavsdk_action_do_orbit(
     mavsdk_action_t action,
     float radius_m,
     float velocity_ms,
-    mavsdk_action_orbit_yaw_behavior_t yaw_behavior,
+    mavsdk_action__t yaw_behavior,
     double latitude_deg,
     double longitude_deg,
     double absolute_altitude_m);
@@ -703,7 +703,7 @@ mavsdk_action_set_actuator(
 CMAVSDK_EXPORT void mavsdk_action_set_relay_async(
     mavsdk_action_t action,
     int32_t index,
-    mavsdk_action_relay_command_t setting,
+    mavsdk_action__t setting,
     mavsdk_action_set_relay_callback_t callback,
     void* user_data);
 
@@ -721,7 +721,7 @@ mavsdk_action_result_t
 mavsdk_action_set_relay(
     mavsdk_action_t action,
     int32_t index,
-    mavsdk_action_relay_command_t setting);
+    mavsdk_action__t setting);
 
 
 /**
@@ -957,6 +957,24 @@ CMAVSDK_EXPORT
 mavsdk_action_result_t
 mavsdk_action_set_gps_global_origin(
     mavsdk_action_t action,
+    double latitude_deg,
+    double longitude_deg,
+    float absolute_altitude_m);
+
+
+/**
+ * @brief Get the current set home (blocking).
+ *
+ * This function blocks until a value is available.
+ *
+ * @param telemetry The telemetry instance.
+ * @param set_home_out Pointer to store the result.
+ */
+CMAVSDK_EXPORT
+mavsdk_action_result_t
+mavsdk_action_set_home(
+    mavsdk_action_t action,
+    bool use_current_location,
     double latitude_deg,
     double longitude_deg,
     float absolute_altitude_m);

@@ -100,6 +100,12 @@ public:
     Action::Result set_gps_global_origin(
         double latitude_deg, double longitude_deg, float absolute_altitude_m) const;
 
+    Action::Result set_home(
+        bool use_current_location,
+        double latitude_deg,
+        double longitude_deg,
+        float absolute_altitude_m) const;
+
     Action::Result set_return_to_launch_altitude(const float relative_altitude_m) const;
     std::pair<Action::Result, float> get_return_to_launch_altitude() const;
 

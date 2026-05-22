@@ -570,7 +570,7 @@ void mavsdk_action_do_orbit_async(
     mavsdk_action_t action,
     float radius_m,
     float velocity_ms,
-    mavsdk_action_orbit_yaw_behavior_t yaw_behavior,
+    mavsdk_action__t yaw_behavior,
     double latitude_deg,
     double longitude_deg,
     double absolute_altitude_m,
@@ -582,7 +582,7 @@ void mavsdk_action_do_orbit_async(
     wrapper->cpp_plugin->do_orbit_async(
         radius_m,
         velocity_ms,
-        translate_orbit_yaw_behavior_from_c(yaw_behavior),        latitude_deg,
+        translate__from_c(yaw_behavior),        latitude_deg,
         longitude_deg,
         absolute_altitude_m,
         [callback, user_data](
@@ -602,14 +602,14 @@ mavsdk_action_do_orbit(
     mavsdk_action_t action,
     float radius_m,
     float velocity_ms,
-    mavsdk_action_orbit_yaw_behavior_t yaw_behavior,
+    mavsdk_action__t yaw_behavior,
     double latitude_deg,
     double longitude_deg,
     double absolute_altitude_m)
 {
     auto wrapper = reinterpret_cast<mavsdk_action_wrapper*>(action);
 
-    auto ret_value = wrapper->cpp_plugin->do_orbit(        radius_m,        velocity_ms,        translate_orbit_yaw_behavior_from_c(yaw_behavior),        latitude_deg,        longitude_deg,        absolute_altitude_m);
+    auto ret_value = wrapper->cpp_plugin->do_orbit(        radius_m,        velocity_ms,        translate__from_c(yaw_behavior),        latitude_deg,        longitude_deg,        absolute_altitude_m);
 
     return translate_result(ret_value);
 }
@@ -688,7 +688,7 @@ mavsdk_action_set_actuator(
 void mavsdk_action_set_relay_async(
     mavsdk_action_t action,
     int32_t index,
-    mavsdk_action_relay_command_t setting,
+    mavsdk_action__t setting,
     mavsdk_action_set_relay_callback_t callback,
     void* user_data)
 {
@@ -696,7 +696,7 @@ void mavsdk_action_set_relay_async(
 
     wrapper->cpp_plugin->set_relay_async(
         index,
-        translate_relay_command_from_c(setting),
+        translate__from_c(setting),
         [callback, user_data](
             mavsdk::Action::Result result) {
                 if (callback) {
@@ -713,11 +713,11 @@ mavsdk_action_result_t
 mavsdk_action_set_relay(
     mavsdk_action_t action,
     int32_t index,
-    mavsdk_action_relay_command_t setting)
+    mavsdk_action__t setting)
 {
     auto wrapper = reinterpret_cast<mavsdk_action_wrapper*>(action);
 
-    auto ret_value = wrapper->cpp_plugin->set_relay(        index,        translate_relay_command_from_c(setting));
+    auto ret_value = wrapper->cpp_plugin->set_relay(        index,        translate__from_c(setting));
 
     return translate_result(ret_value);
 }
@@ -979,6 +979,23 @@ mavsdk_action_set_gps_global_origin(
     auto wrapper = reinterpret_cast<mavsdk_action_wrapper*>(action);
 
     auto ret_value = wrapper->cpp_plugin->set_gps_global_origin(        latitude_deg,        longitude_deg,        absolute_altitude_m);
+
+    return translate_result(ret_value);
+}
+
+
+// SetHome sync
+mavsdk_action_result_t
+mavsdk_action_set_home(
+    mavsdk_action_t action,
+    bool use_current_location,
+    double latitude_deg,
+    double longitude_deg,
+    float absolute_altitude_m)
+{
+    auto wrapper = reinterpret_cast<mavsdk_action_wrapper*>(action);
+
+    auto ret_value = wrapper->cpp_plugin->set_home(        use_current_location,        latitude_deg,        longitude_deg,        absolute_altitude_m);
 
     return translate_result(ret_value);
 }
