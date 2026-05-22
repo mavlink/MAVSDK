@@ -908,6 +908,10 @@ public:
                 
             
         
+            
+        rpc_obj->set_energy_consumed_wh(battery.energy_consumed_wh);
+            
+        
 
         return rpc_obj;
     }
@@ -947,6 +951,10 @@ public:
         
             
         obj.battery_function = translateFromRpcBatteryFunction(battery.battery_function());
+            
+        
+            
+        obj.energy_consumed_wh = battery.energy_consumed_wh();
             
         
         return obj;
