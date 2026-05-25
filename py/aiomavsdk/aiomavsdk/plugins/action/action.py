@@ -473,6 +473,33 @@ class ActionAsync:
             ),
         )
 
+    async def set_home(
+        self, use_current_location, latitude_deg, longitude_deg, absolute_altitude_m
+    ):
+        """
+               Set home.
+
+        Sets the home position.
+
+               Parameters
+               ----------
+               use_current_location : bool
+               latitude_deg : float
+               longitude_deg : float
+               absolute_altitude_m : float
+               Raises
+               ------
+               ActionError
+                   If the request fails. The error contains the reason for the failure.
+        """
+        loop = asyncio.get_running_loop()
+        return await loop.run_in_executor(
+            None,
+            lambda: self._plugin.set_home(
+                use_current_location, latitude_deg, longitude_deg, absolute_altitude_m
+            ),
+        )
+
     def destroy(self):
         self._subscription_handles.clear()
         self._plugin.destroy()

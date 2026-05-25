@@ -35,6 +35,7 @@ public:
     MOCK_CONST_METHOD1(set_return_to_launch_altitude, Action::Result(float)) {};
     MOCK_CONST_METHOD1(set_current_speed, Action::Result(float)) {};
     MOCK_CONST_METHOD3(set_gps_global_origin, Action::Result(double, double, float)) {};
+    MOCK_CONST_METHOD4(set_home, Action::Result(bool, double, double, float)) {};
 };
 
 } // namespace testing

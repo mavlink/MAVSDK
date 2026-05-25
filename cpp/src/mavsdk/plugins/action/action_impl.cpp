@@ -927,6 +927,32 @@ Action::Result ActionImpl::set_gps_global_origin(
     return fut.get();
 }
 
+Action::Result ActionImpl::set_home(
+    bool use_current_location,
+    double latitude_deg,
+    double longitude_deg,
+    float absolute_altitude_m) const
+{
+    auto prom = std::promise<Action::Result>{};
+    auto fut = prom.get_future();
+
+    MavlinkCommandSender::CommandInt command{};
+    command.command = MAV_CMD_DO_SET_HOME;
+    command.target_component_id = _system_impl->get_autopilot_id();
+    command.params.maybe_param1 = use_current_location ? 1.0f : 0.0f;
+    if (!use_current_location) {
+        command.params.x = int32_t(std::round(latitude_deg * 1e7));
+        command.params.y = int32_t(std::round(longitude_deg * 1e7));
+        command.params.maybe_z = absolute_altitude_m;
+    }
+
+    _system_impl->send_command_async(command, [&prom](MavlinkCommandSender::Result result, float) {
+        prom.set_value(action_result_from_command_result(result));
+    });
+
+    return fut.get();
+}
+
 Action::Result ActionImpl::action_result_from_command_result(MavlinkCommandSender::Result result)
 {
     switch (result) {

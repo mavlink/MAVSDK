@@ -982,3 +982,20 @@ mavsdk_action_set_gps_global_origin(
 
     return translate_result(ret_value);
 }
+
+
+// SetHome sync
+mavsdk_action_result_t
+mavsdk_action_set_home(
+    mavsdk_action_t action,
+    bool use_current_location,
+    double latitude_deg,
+    double longitude_deg,
+    float absolute_altitude_m)
+{
+    auto wrapper = reinterpret_cast<mavsdk_action_wrapper*>(action);
+
+    auto ret_value = wrapper->cpp_plugin->set_home(        use_current_location,        latitude_deg,        longitude_deg,        absolute_altitude_m);
+
+    return translate_result(ret_value);
+}

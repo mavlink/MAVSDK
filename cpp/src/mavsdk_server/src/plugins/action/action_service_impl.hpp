@@ -903,6 +903,45 @@ public:
         return grpc::Status::OK;
     }
 
+    grpc::Status SetHome(
+        grpc::ServerContext* /* context */,
+        const rpc::action::SetHomeRequest* request,
+        rpc::action::SetHomeResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
+            if (response != nullptr) {
+                auto result = mavsdk::Action::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+            
+            return grpc::Status::OK;
+        }
+
+        if (request == nullptr) {
+            LogWarn("SetHome sent with a null request! Ignoring...");
+            return grpc::Status::OK;
+        }
+            
+        
+            
+        
+            
+        
+            
+        
+        auto result = _lazy_plugin.maybe_plugin()->set_home(request->use_current_location(), request->latitude_deg(), request->longitude_deg(), request->absolute_altitude_m());
+        
+
+        
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+        
+
+        return grpc::Status::OK;
+    }
+
 
     void stop() {
         _stopped.store(true);
