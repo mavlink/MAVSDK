@@ -368,25 +368,6 @@ void mavsdk_info_destroy(mavsdk_info_t info) {
 // ===== Method Implementations =====
 
 
-// GetFlightInformation sync
-mavsdk_info_result_t
-mavsdk_info_get_flight_information(
-    mavsdk_info_t info,
-    mavsdk_info_flight_info_t* flight_info_out)
-{
-    auto wrapper = reinterpret_cast<mavsdk_info_wrapper*>(info);
-
-    auto result_pair = wrapper->cpp_plugin->get_flight_information(
-);
-
-    if (flight_info_out != nullptr) {
-        *flight_info_out = translate_flight_info_to_c(result_pair.second);
-    }
-
-    return translate_result(result_pair.first);
-}
-
-
 // GetIdentification sync
 mavsdk_info_result_t
 mavsdk_info_get_identification(

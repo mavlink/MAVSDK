@@ -37,7 +37,6 @@ Type | Name | Description
 &nbsp; | [Info](#classmavsdk_1_1_info_1ae67e006f16f1e1aa12efe94120ef83ec) (std::shared_ptr< [System](classmavsdk_1_1_system.md) > system) | Constructor. Creates the plugin for a specific [System](classmavsdk_1_1_system.md).
 &nbsp; | [~Info](#classmavsdk_1_1_info_1abbf48bc4b9aa5b9fdbdb54ec3e398f65) () override | Destructor (internal use only).
 &nbsp; | [Info](#classmavsdk_1_1_info_1a0f6e0851757046c540fe7ce920eb3fa2) (const [Info](classmavsdk_1_1_info.md) & other) | Copy constructor.
-std::pair< [Result](classmavsdk_1_1_info.md#classmavsdk_1_1_info_1ab1798ed39271915800b25aaa05d1d45a), [Info::FlightInfo](structmavsdk_1_1_info_1_1_flight_info.md) > | [get_flight_information](#classmavsdk_1_1_info_1a5ae8681909c3298b2df5c0722a30aa3c) () const | Get flight information of the system.
 std::pair< [Result](classmavsdk_1_1_info.md#classmavsdk_1_1_info_1ab1798ed39271915800b25aaa05d1d45a), [Info::Identification](structmavsdk_1_1_info_1_1_identification.md) > | [get_identification](#classmavsdk_1_1_info_1a76739913366e334a4638aa187d7c40d4) () const | Get the identification of the system.
 std::pair< [Result](classmavsdk_1_1_info.md#classmavsdk_1_1_info_1ab1798ed39271915800b25aaa05d1d45a), [Info::Product](structmavsdk_1_1_info_1_1_product.md) > | [get_product](#classmavsdk_1_1_info_1a508cf835acaed0fad69badda62206fed) () const | Get product information of the system.
 std::pair< [Result](classmavsdk_1_1_info.md#classmavsdk_1_1_info_1ab1798ed39271915800b25aaa05d1d45a), [Info::Version](structmavsdk_1_1_info_1_1_version.md) > | [get_version](#classmavsdk_1_1_info_1a2ad33d89a7dd64192641bba03816a9f9) () const | Get the version information of the system.
@@ -159,20 +158,6 @@ Value | Description
 
 ## Member Function Documentation
 
-
-### get_flight_information() {#classmavsdk_1_1_info_1a5ae8681909c3298b2df5c0722a30aa3c}
-```cpp
-std::pair< Result, Info::FlightInfo > mavsdk::Info::get_flight_information() const
-```
-
-
-Get flight information of the system.
-
-This function is blocking.
-
-**Returns**
-
-&emsp;std::pair< [Result](classmavsdk_1_1_info.md#classmavsdk_1_1_info_1ab1798ed39271915800b25aaa05d1d45a), [Info::FlightInfo](structmavsdk_1_1_info_1_1_flight_info.md) > - Result of request.
 
 ### get_identification() {#classmavsdk_1_1_info_1a76739913366e334a4638aa187d7c40d4}
 ```cpp
