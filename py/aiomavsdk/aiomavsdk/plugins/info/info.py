@@ -42,23 +42,6 @@ class InfoAsync:
         self._subscription_handles: dict = {}
         self._plugin = Info(system._system)
 
-    async def get_flight_information(self):
-        """
-        Get flight information of the system.
-
-        Returns
-        -------
-        flight_info : FlightInfo
-        Raises
-        ------
-        InfoError
-            If the request fails. The error contains the reason for the failure.
-        """
-        loop = asyncio.get_running_loop()
-        return await loop.run_in_executor(
-            None, lambda: self._plugin.get_flight_information()
-        )
-
     async def get_identification(self):
         """
         Get the identification of the system.

@@ -389,35 +389,6 @@ public:
 
 
 
-    grpc::Status GetFlightInformation(
-        grpc::ServerContext* /* context */,
-        const rpc::info::GetFlightInformationRequest* /* request */,
-        rpc::info::GetFlightInformationResponse* response) override
-    {
-        if (_lazy_plugin.maybe_plugin() == nullptr) {
-            
-            if (response != nullptr) {
-                auto result = mavsdk::Info::Result::NoSystem;
-                fillResponseWithResult(response, result);
-            }
-            
-            return grpc::Status::OK;
-        }
-
-        
-
-        auto result = _lazy_plugin.maybe_plugin()->get_flight_information();
-
-        if (response != nullptr) {
-            fillResponseWithResult(response, result.first);
-            
-            response->set_allocated_flight_info(translateToRpcFlightInfo(result.second ).release());
-             }
-
-
-        return grpc::Status::OK;
-    }
-
     grpc::Status GetIdentification(
         grpc::ServerContext* /* context */,
         const rpc::info::GetIdentificationRequest* /* request */,

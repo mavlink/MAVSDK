@@ -249,20 +249,6 @@ public:
 
 
     /**
-     * @brief Get flight information of the system.
-     *
-     * This function is blocking.
-     *
-     * @return Result of request.
-     */
-    std::pair<Result, Info::FlightInfo> get_flight_information() const;
-
-
-
-
-
-
-    /**
      * @brief Get the identification of the system.
      *
      * This function is blocking.

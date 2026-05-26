@@ -332,21 +332,6 @@ CMAVSDK_EXPORT void mavsdk_info_destroy(mavsdk_info_t info);
 // ===== Methods =====
 
 /**
- * @brief Get the current get flight information (blocking).
- *
- * This function blocks until a value is available.
- *
- * @param telemetry The telemetry instance.
- * @param get_flight_information_out Pointer to store the result.
- */
-CMAVSDK_EXPORT
-mavsdk_info_result_t
-mavsdk_info_get_flight_information(
-    mavsdk_info_t info,
-    mavsdk_info_flight_info_t* flight_info_out);
-
-
-/**
  * @brief Get the current get identification (blocking).
  *
  * This function blocks until a value is available.

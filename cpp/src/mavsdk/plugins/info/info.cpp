@@ -21,11 +21,6 @@ Info::Info(std::shared_ptr<System> system) : PluginBase(), _impl{std::make_uniqu
 
 Info::~Info() {}
 
-std::pair<Info::Result, Info::FlightInfo> Info::get_flight_information() const
-{
-    return _impl->get_flight_information();
-}
-
 std::pair<Info::Result, Info::Identification> Info::get_identification() const
 {
     return _impl->get_identification();

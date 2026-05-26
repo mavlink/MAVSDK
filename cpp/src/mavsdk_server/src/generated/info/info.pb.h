@@ -63,12 +63,6 @@ extern FlightInfoDefaultTypeInternal _FlightInfo_default_instance_;
 class FlightInformationResponse;
 struct FlightInformationResponseDefaultTypeInternal;
 extern FlightInformationResponseDefaultTypeInternal _FlightInformationResponse_default_instance_;
-class GetFlightInformationRequest;
-struct GetFlightInformationRequestDefaultTypeInternal;
-extern GetFlightInformationRequestDefaultTypeInternal _GetFlightInformationRequest_default_instance_;
-class GetFlightInformationResponse;
-struct GetFlightInformationResponseDefaultTypeInternal;
-extern GetFlightInformationResponseDefaultTypeInternal _GetFlightInformationResponse_default_instance_;
 class GetIdentificationRequest;
 struct GetIdentificationRequestDefaultTypeInternal;
 extern GetIdentificationRequestDefaultTypeInternal _GetIdentificationRequest_default_instance_;
@@ -257,7 +251,7 @@ class Version final
     return reinterpret_cast<const Version*>(
         &_Version_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 15;
+  static constexpr int kIndexInFileMessages = 13;
   friend void swap(Version& a, Version& b) { a.Swap(&b); }
   inline void Swap(Version* other) {
     if (other == this) return;
@@ -614,7 +608,7 @@ class SubscribeFlightInformationRequest final
     return reinterpret_cast<const SubscribeFlightInformationRequest*>(
         &_SubscribeFlightInformationRequest_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 10;
+  static constexpr int kIndexInFileMessages = 8;
   friend void swap(SubscribeFlightInformationRequest& a, SubscribeFlightInformationRequest& b) { a.Swap(&b); }
   inline void Swap(SubscribeFlightInformationRequest* other) {
     if (other == this) return;
@@ -761,7 +755,7 @@ class Product final
     return reinterpret_cast<const Product*>(
         &_Product_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 14;
+  static constexpr int kIndexInFileMessages = 12;
   friend void swap(Product& a, Product& b) { a.Swap(&b); }
   inline void Swap(Product* other) {
     if (other == this) return;
@@ -1000,7 +994,7 @@ class InfoResult final
     return reinterpret_cast<const InfoResult*>(
         &_InfoResult_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 16;
+  static constexpr int kIndexInFileMessages = 14;
   friend void swap(InfoResult& a, InfoResult& b) { a.Swap(&b); }
   inline void Swap(InfoResult* other) {
     if (other == this) return;
@@ -1230,7 +1224,7 @@ class Identification final
     return reinterpret_cast<const Identification*>(
         &_Identification_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 13;
+  static constexpr int kIndexInFileMessages = 11;
   friend void swap(Identification& a, Identification& b) { a.Swap(&b); }
   inline void Swap(Identification* other) {
     if (other == this) return;
@@ -1438,7 +1432,7 @@ class GetVersionRequest final
     return reinterpret_cast<const GetVersionRequest*>(
         &_GetVersionRequest_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 6;
+  static constexpr int kIndexInFileMessages = 4;
   friend void swap(GetVersionRequest& a, GetVersionRequest& b) { a.Swap(&b); }
   inline void Swap(GetVersionRequest* other) {
     if (other == this) return;
@@ -1584,7 +1578,7 @@ class GetSpeedFactorRequest final
     return reinterpret_cast<const GetSpeedFactorRequest*>(
         &_GetSpeedFactorRequest_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 8;
+  static constexpr int kIndexInFileMessages = 6;
   friend void swap(GetSpeedFactorRequest& a, GetSpeedFactorRequest& b) { a.Swap(&b); }
   inline void Swap(GetSpeedFactorRequest* other) {
     if (other == this) return;
@@ -1730,7 +1724,7 @@ class GetProductRequest final
     return reinterpret_cast<const GetProductRequest*>(
         &_GetProductRequest_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 4;
+  static constexpr int kIndexInFileMessages = 2;
   friend void swap(GetProductRequest& a, GetProductRequest& b) { a.Swap(&b); }
   inline void Swap(GetProductRequest* other) {
     if (other == this) return;
@@ -1876,7 +1870,7 @@ class GetIdentificationRequest final
     return reinterpret_cast<const GetIdentificationRequest*>(
         &_GetIdentificationRequest_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 2;
+  static constexpr int kIndexInFileMessages = 0;
   friend void swap(GetIdentificationRequest& a, GetIdentificationRequest& b) { a.Swap(&b); }
   inline void Swap(GetIdentificationRequest* other) {
     if (other == this) return;
@@ -1963,152 +1957,6 @@ class GetIdentificationRequest final
 };
 // -------------------------------------------------------------------
 
-class GetFlightInformationRequest final
-    : public ::google::protobuf::internal::ZeroFieldsBase
-/* @@protoc_insertion_point(class_definition:mavsdk.rpc.info.GetFlightInformationRequest) */ {
- public:
-  inline GetFlightInformationRequest() : GetFlightInformationRequest(nullptr) {}
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-  void operator delete(GetFlightInformationRequest* msg, std::destroying_delete_t) {
-    SharedDtor(*msg);
-    ::google::protobuf::internal::SizedDelete(msg, sizeof(GetFlightInformationRequest));
-  }
-#endif
-
-  template <typename = void>
-  explicit PROTOBUF_CONSTEXPR GetFlightInformationRequest(
-      ::google::protobuf::internal::ConstantInitialized);
-
-  inline GetFlightInformationRequest(const GetFlightInformationRequest& from) : GetFlightInformationRequest(nullptr, from) {}
-  inline GetFlightInformationRequest(GetFlightInformationRequest&& from) noexcept
-      : GetFlightInformationRequest(nullptr, std::move(from)) {}
-  inline GetFlightInformationRequest& operator=(const GetFlightInformationRequest& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline GetFlightInformationRequest& operator=(GetFlightInformationRequest&& from) noexcept {
-    if (this == &from) return *this;
-    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-      InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
-  }
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-  }
-
-  static const ::google::protobuf::Descriptor* descriptor() {
-    return GetDescriptor();
-  }
-  static const ::google::protobuf::Descriptor* GetDescriptor() {
-    return default_instance().GetMetadata().descriptor;
-  }
-  static const ::google::protobuf::Reflection* GetReflection() {
-    return default_instance().GetMetadata().reflection;
-  }
-  static const GetFlightInformationRequest& default_instance() {
-    return *internal_default_instance();
-  }
-  static inline const GetFlightInformationRequest* internal_default_instance() {
-    return reinterpret_cast<const GetFlightInformationRequest*>(
-        &_GetFlightInformationRequest_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages = 0;
-  friend void swap(GetFlightInformationRequest& a, GetFlightInformationRequest& b) { a.Swap(&b); }
-  inline void Swap(GetFlightInformationRequest* other) {
-    if (other == this) return;
-    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-      InternalSwap(other);
-    } else {
-      ::google::protobuf::internal::GenericSwap(this, other);
-    }
-  }
-  void UnsafeArenaSwap(GetFlightInformationRequest* other) {
-    if (other == this) return;
-    ABSL_DCHECK(GetArena() == other->GetArena());
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  GetFlightInformationRequest* New(::google::protobuf::Arena* arena = nullptr) const {
-    return ::google::protobuf::internal::ZeroFieldsBase::DefaultConstruct<GetFlightInformationRequest>(arena);
-  }
-  using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
-  inline void CopyFrom(const GetFlightInformationRequest& from) {
-    ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
-  }
-  using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
-  void MergeFrom(const GetFlightInformationRequest& from) {
-    ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
-  }
-
-  public:
-  bool IsInitialized() const {
-    return true;
-  }
- private:
-  template <typename T>
-  friend ::absl::string_view(
-      ::google::protobuf::internal::GetAnyMessageName)();
-  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.info.GetFlightInformationRequest"; }
-
- protected:
-  explicit GetFlightInformationRequest(::google::protobuf::Arena* arena);
-  GetFlightInformationRequest(::google::protobuf::Arena* arena, const GetFlightInformationRequest& from);
-  GetFlightInformationRequest(::google::protobuf::Arena* arena, GetFlightInformationRequest&& from) noexcept
-      : GetFlightInformationRequest(arena) {
-    *this = ::std::move(from);
-  }
-  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-  static void* PlacementNew_(const void*, void* mem,
-                             ::google::protobuf::Arena* arena);
-  static constexpr auto InternalNewImpl_();
-  static const ::google::protobuf::internal::ClassDataFull _class_data_;
-
- public:
-  ::google::protobuf::Metadata GetMetadata() const;
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-  // @@protoc_insertion_point(class_scope:mavsdk.rpc.info.GetFlightInformationRequest)
- private:
-  class _Internal;
-  friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<
-      0, 0, 0,
-      0, 2>
-      _table_;
-
-  friend class ::google::protobuf::MessageLite;
-  friend class ::google::protobuf::Arena;
-  template <typename T>
-  friend class ::google::protobuf::Arena::InternalHelper;
-  using InternalArenaConstructable_ = void;
-  using DestructorSkippable_ = void;
-  struct Impl_ {
-    inline explicit constexpr Impl_(
-        ::google::protobuf::internal::ConstantInitialized) noexcept;
-    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
-                          ::google::protobuf::Arena* arena);
-    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
-                          ::google::protobuf::Arena* arena, const Impl_& from,
-                          const GetFlightInformationRequest& from_msg);
-    PROTOBUF_TSAN_DECLARE_MEMBER
-  };
-  friend struct ::TableStruct_info_2finfo_2eproto;
-};
-// -------------------------------------------------------------------
-
 class FlightInfo final
     : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:mavsdk.rpc.info.FlightInfo) */ {
@@ -2169,7 +2017,7 @@ class FlightInfo final
     return reinterpret_cast<const FlightInfo*>(
         &_FlightInfo_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 12;
+  static constexpr int kIndexInFileMessages = 10;
   friend void swap(FlightInfo& a, FlightInfo& b) { a.Swap(&b); }
   inline void Swap(FlightInfo* other) {
     if (other == this) return;
@@ -2396,7 +2244,7 @@ class GetVersionResponse final
     return reinterpret_cast<const GetVersionResponse*>(
         &_GetVersionResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 7;
+  static constexpr int kIndexInFileMessages = 5;
   friend void swap(GetVersionResponse& a, GetVersionResponse& b) { a.Swap(&b); }
   inline void Swap(GetVersionResponse* other) {
     if (other == this) return;
@@ -2610,7 +2458,7 @@ class GetSpeedFactorResponse final
     return reinterpret_cast<const GetSpeedFactorResponse*>(
         &_GetSpeedFactorResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 9;
+  static constexpr int kIndexInFileMessages = 7;
   friend void swap(GetSpeedFactorResponse& a, GetSpeedFactorResponse& b) { a.Swap(&b); }
   inline void Swap(GetSpeedFactorResponse* other) {
     if (other == this) return;
@@ -2819,7 +2667,7 @@ class GetProductResponse final
     return reinterpret_cast<const GetProductResponse*>(
         &_GetProductResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 5;
+  static constexpr int kIndexInFileMessages = 3;
   friend void swap(GetProductResponse& a, GetProductResponse& b) { a.Swap(&b); }
   inline void Swap(GetProductResponse* other) {
     if (other == this) return;
@@ -3033,7 +2881,7 @@ class GetIdentificationResponse final
     return reinterpret_cast<const GetIdentificationResponse*>(
         &_GetIdentificationResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 3;
+  static constexpr int kIndexInFileMessages = 1;
   friend void swap(GetIdentificationResponse& a, GetIdentificationResponse& b) { a.Swap(&b); }
   inline void Swap(GetIdentificationResponse* other) {
     if (other == this) return;
@@ -3187,220 +3035,6 @@ class GetIdentificationResponse final
 };
 // -------------------------------------------------------------------
 
-class GetFlightInformationResponse final
-    : public ::google::protobuf::Message
-/* @@protoc_insertion_point(class_definition:mavsdk.rpc.info.GetFlightInformationResponse) */ {
- public:
-  inline GetFlightInformationResponse() : GetFlightInformationResponse(nullptr) {}
-  ~GetFlightInformationResponse() PROTOBUF_FINAL;
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-  void operator delete(GetFlightInformationResponse* msg, std::destroying_delete_t) {
-    SharedDtor(*msg);
-    ::google::protobuf::internal::SizedDelete(msg, sizeof(GetFlightInformationResponse));
-  }
-#endif
-
-  template <typename = void>
-  explicit PROTOBUF_CONSTEXPR GetFlightInformationResponse(
-      ::google::protobuf::internal::ConstantInitialized);
-
-  inline GetFlightInformationResponse(const GetFlightInformationResponse& from) : GetFlightInformationResponse(nullptr, from) {}
-  inline GetFlightInformationResponse(GetFlightInformationResponse&& from) noexcept
-      : GetFlightInformationResponse(nullptr, std::move(from)) {}
-  inline GetFlightInformationResponse& operator=(const GetFlightInformationResponse& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline GetFlightInformationResponse& operator=(GetFlightInformationResponse&& from) noexcept {
-    if (this == &from) return *this;
-    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-      InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
-  }
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-  }
-
-  static const ::google::protobuf::Descriptor* descriptor() {
-    return GetDescriptor();
-  }
-  static const ::google::protobuf::Descriptor* GetDescriptor() {
-    return default_instance().GetMetadata().descriptor;
-  }
-  static const ::google::protobuf::Reflection* GetReflection() {
-    return default_instance().GetMetadata().reflection;
-  }
-  static const GetFlightInformationResponse& default_instance() {
-    return *internal_default_instance();
-  }
-  static inline const GetFlightInformationResponse* internal_default_instance() {
-    return reinterpret_cast<const GetFlightInformationResponse*>(
-        &_GetFlightInformationResponse_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages = 1;
-  friend void swap(GetFlightInformationResponse& a, GetFlightInformationResponse& b) { a.Swap(&b); }
-  inline void Swap(GetFlightInformationResponse* other) {
-    if (other == this) return;
-    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-      InternalSwap(other);
-    } else {
-      ::google::protobuf::internal::GenericSwap(this, other);
-    }
-  }
-  void UnsafeArenaSwap(GetFlightInformationResponse* other) {
-    if (other == this) return;
-    ABSL_DCHECK(GetArena() == other->GetArena());
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  GetFlightInformationResponse* New(::google::protobuf::Arena* arena = nullptr) const {
-    return ::google::protobuf::Message::DefaultConstruct<GetFlightInformationResponse>(arena);
-  }
-  using ::google::protobuf::Message::CopyFrom;
-  void CopyFrom(const GetFlightInformationResponse& from);
-  using ::google::protobuf::Message::MergeFrom;
-  void MergeFrom(const GetFlightInformationResponse& from) { GetFlightInformationResponse::MergeImpl(*this, from); }
-
-  private:
-  static void MergeImpl(
-      ::google::protobuf::MessageLite& to_msg,
-      const ::google::protobuf::MessageLite& from_msg);
-
-  public:
-  bool IsInitialized() const {
-    return true;
-  }
-  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
-  #if defined(PROTOBUF_CUSTOM_VTABLE)
-  private:
-  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
-  static ::uint8_t* _InternalSerialize(
-      const MessageLite& msg, ::uint8_t* target,
-      ::google::protobuf::io::EpsCopyOutputStream* stream);
-
-  public:
-  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
-  ::uint8_t* _InternalSerialize(
-      ::uint8_t* target,
-      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
-    return _InternalSerialize(*this, target, stream);
-  }
-  #else   // PROTOBUF_CUSTOM_VTABLE
-  ::size_t ByteSizeLong() const final;
-  ::uint8_t* _InternalSerialize(
-      ::uint8_t* target,
-      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
-  #endif  // PROTOBUF_CUSTOM_VTABLE
-  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
-
-  private:
-  void SharedCtor(::google::protobuf::Arena* arena);
-  static void SharedDtor(MessageLite& self);
-  void InternalSwap(GetFlightInformationResponse* other);
- private:
-  template <typename T>
-  friend ::absl::string_view(
-      ::google::protobuf::internal::GetAnyMessageName)();
-  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.info.GetFlightInformationResponse"; }
-
- protected:
-  explicit GetFlightInformationResponse(::google::protobuf::Arena* arena);
-  GetFlightInformationResponse(::google::protobuf::Arena* arena, const GetFlightInformationResponse& from);
-  GetFlightInformationResponse(::google::protobuf::Arena* arena, GetFlightInformationResponse&& from) noexcept
-      : GetFlightInformationResponse(arena) {
-    *this = ::std::move(from);
-  }
-  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-  static void* PlacementNew_(const void*, void* mem,
-                             ::google::protobuf::Arena* arena);
-  static constexpr auto InternalNewImpl_();
-  static const ::google::protobuf::internal::ClassDataFull _class_data_;
-
- public:
-  ::google::protobuf::Metadata GetMetadata() const;
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-  enum : int {
-    kInfoResultFieldNumber = 1,
-    kFlightInfoFieldNumber = 2,
-  };
-  // .mavsdk.rpc.info.InfoResult info_result = 1;
-  bool has_info_result() const;
-  void clear_info_result() ;
-  const ::mavsdk::rpc::info::InfoResult& info_result() const;
-  PROTOBUF_NODISCARD ::mavsdk::rpc::info::InfoResult* release_info_result();
-  ::mavsdk::rpc::info::InfoResult* mutable_info_result();
-  void set_allocated_info_result(::mavsdk::rpc::info::InfoResult* value);
-  void unsafe_arena_set_allocated_info_result(::mavsdk::rpc::info::InfoResult* value);
-  ::mavsdk::rpc::info::InfoResult* unsafe_arena_release_info_result();
-
-  private:
-  const ::mavsdk::rpc::info::InfoResult& _internal_info_result() const;
-  ::mavsdk::rpc::info::InfoResult* _internal_mutable_info_result();
-
-  public:
-  // .mavsdk.rpc.info.FlightInfo flight_info = 2;
-  bool has_flight_info() const;
-  void clear_flight_info() ;
-  const ::mavsdk::rpc::info::FlightInfo& flight_info() const;
-  PROTOBUF_NODISCARD ::mavsdk::rpc::info::FlightInfo* release_flight_info();
-  ::mavsdk::rpc::info::FlightInfo* mutable_flight_info();
-  void set_allocated_flight_info(::mavsdk::rpc::info::FlightInfo* value);
-  void unsafe_arena_set_allocated_flight_info(::mavsdk::rpc::info::FlightInfo* value);
-  ::mavsdk::rpc::info::FlightInfo* unsafe_arena_release_flight_info();
-
-  private:
-  const ::mavsdk::rpc::info::FlightInfo& _internal_flight_info() const;
-  ::mavsdk::rpc::info::FlightInfo* _internal_mutable_flight_info();
-
-  public:
-  // @@protoc_insertion_point(class_scope:mavsdk.rpc.info.GetFlightInformationResponse)
- private:
-  class _Internal;
-  friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<
-      1, 2, 2,
-      0, 2>
-      _table_;
-
-  friend class ::google::protobuf::MessageLite;
-  friend class ::google::protobuf::Arena;
-  template <typename T>
-  friend class ::google::protobuf::Arena::InternalHelper;
-  using InternalArenaConstructable_ = void;
-  using DestructorSkippable_ = void;
-  struct Impl_ {
-    inline explicit constexpr Impl_(
-        ::google::protobuf::internal::ConstantInitialized) noexcept;
-    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
-                          ::google::protobuf::Arena* arena);
-    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
-                          ::google::protobuf::Arena* arena, const Impl_& from,
-                          const GetFlightInformationResponse& from_msg);
-    ::google::protobuf::internal::HasBits<1> _has_bits_;
-    ::google::protobuf::internal::CachedSize _cached_size_;
-    ::mavsdk::rpc::info::InfoResult* info_result_;
-    ::mavsdk::rpc::info::FlightInfo* flight_info_;
-    PROTOBUF_TSAN_DECLARE_MEMBER
-  };
-  union { Impl_ _impl_; };
-  friend struct ::TableStruct_info_2finfo_2eproto;
-};
-// -------------------------------------------------------------------
-
 class FlightInformationResponse final
     : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:mavsdk.rpc.info.FlightInformationResponse) */ {
@@ -3461,7 +3095,7 @@ class FlightInformationResponse final
     return reinterpret_cast<const FlightInformationResponse*>(
         &_FlightInformationResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 11;
+  static constexpr int kIndexInFileMessages = 9;
   friend void swap(FlightInformationResponse& a, FlightInformationResponse& b) { a.Swap(&b); }
   inline void Swap(FlightInformationResponse* other) {
     if (other == this) return;
@@ -3609,206 +3243,6 @@ class FlightInformationResponse final
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wstrict-aliasing"
 #endif  // __GNUC__
-// -------------------------------------------------------------------
-
-// GetFlightInformationRequest
-
-// -------------------------------------------------------------------
-
-// GetFlightInformationResponse
-
-// .mavsdk.rpc.info.InfoResult info_result = 1;
-inline bool GetFlightInformationResponse::has_info_result() const {
-  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
-  PROTOBUF_ASSUME(!value || _impl_.info_result_ != nullptr);
-  return value;
-}
-inline void GetFlightInformationResponse::clear_info_result() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (_impl_.info_result_ != nullptr) _impl_.info_result_->Clear();
-  _impl_._has_bits_[0] &= ~0x00000001u;
-}
-inline const ::mavsdk::rpc::info::InfoResult& GetFlightInformationResponse::_internal_info_result() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  const ::mavsdk::rpc::info::InfoResult* p = _impl_.info_result_;
-  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::info::InfoResult&>(::mavsdk::rpc::info::_InfoResult_default_instance_);
-}
-inline const ::mavsdk::rpc::info::InfoResult& GetFlightInformationResponse::info_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.info.GetFlightInformationResponse.info_result)
-  return _internal_info_result();
-}
-inline void GetFlightInformationResponse::unsafe_arena_set_allocated_info_result(::mavsdk::rpc::info::InfoResult* value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (GetArena() == nullptr) {
-    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.info_result_);
-  }
-  _impl_.info_result_ = reinterpret_cast<::mavsdk::rpc::info::InfoResult*>(value);
-  if (value != nullptr) {
-    _impl_._has_bits_[0] |= 0x00000001u;
-  } else {
-    _impl_._has_bits_[0] &= ~0x00000001u;
-  }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.info.GetFlightInformationResponse.info_result)
-}
-inline ::mavsdk::rpc::info::InfoResult* GetFlightInformationResponse::release_info_result() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-
-  _impl_._has_bits_[0] &= ~0x00000001u;
-  ::mavsdk::rpc::info::InfoResult* released = _impl_.info_result_;
-  _impl_.info_result_ = nullptr;
-  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
-    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
-    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-    if (GetArena() == nullptr) {
-      delete old;
-    }
-  } else {
-    if (GetArena() != nullptr) {
-      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-    }
-  }
-  return released;
-}
-inline ::mavsdk::rpc::info::InfoResult* GetFlightInformationResponse::unsafe_arena_release_info_result() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:mavsdk.rpc.info.GetFlightInformationResponse.info_result)
-
-  _impl_._has_bits_[0] &= ~0x00000001u;
-  ::mavsdk::rpc::info::InfoResult* temp = _impl_.info_result_;
-  _impl_.info_result_ = nullptr;
-  return temp;
-}
-inline ::mavsdk::rpc::info::InfoResult* GetFlightInformationResponse::_internal_mutable_info_result() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (_impl_.info_result_ == nullptr) {
-    auto* p = ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::info::InfoResult>(GetArena());
-    _impl_.info_result_ = reinterpret_cast<::mavsdk::rpc::info::InfoResult*>(p);
-  }
-  return _impl_.info_result_;
-}
-inline ::mavsdk::rpc::info::InfoResult* GetFlightInformationResponse::mutable_info_result() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  _impl_._has_bits_[0] |= 0x00000001u;
-  ::mavsdk::rpc::info::InfoResult* _msg = _internal_mutable_info_result();
-  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.info.GetFlightInformationResponse.info_result)
-  return _msg;
-}
-inline void GetFlightInformationResponse::set_allocated_info_result(::mavsdk::rpc::info::InfoResult* value) {
-  ::google::protobuf::Arena* message_arena = GetArena();
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (message_arena == nullptr) {
-    delete (_impl_.info_result_);
-  }
-
-  if (value != nullptr) {
-    ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
-    if (message_arena != submessage_arena) {
-      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
-    }
-    _impl_._has_bits_[0] |= 0x00000001u;
-  } else {
-    _impl_._has_bits_[0] &= ~0x00000001u;
-  }
-
-  _impl_.info_result_ = reinterpret_cast<::mavsdk::rpc::info::InfoResult*>(value);
-  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.info.GetFlightInformationResponse.info_result)
-}
-
-// .mavsdk.rpc.info.FlightInfo flight_info = 2;
-inline bool GetFlightInformationResponse::has_flight_info() const {
-  bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
-  PROTOBUF_ASSUME(!value || _impl_.flight_info_ != nullptr);
-  return value;
-}
-inline void GetFlightInformationResponse::clear_flight_info() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (_impl_.flight_info_ != nullptr) _impl_.flight_info_->Clear();
-  _impl_._has_bits_[0] &= ~0x00000002u;
-}
-inline const ::mavsdk::rpc::info::FlightInfo& GetFlightInformationResponse::_internal_flight_info() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  const ::mavsdk::rpc::info::FlightInfo* p = _impl_.flight_info_;
-  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::info::FlightInfo&>(::mavsdk::rpc::info::_FlightInfo_default_instance_);
-}
-inline const ::mavsdk::rpc::info::FlightInfo& GetFlightInformationResponse::flight_info() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.info.GetFlightInformationResponse.flight_info)
-  return _internal_flight_info();
-}
-inline void GetFlightInformationResponse::unsafe_arena_set_allocated_flight_info(::mavsdk::rpc::info::FlightInfo* value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (GetArena() == nullptr) {
-    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.flight_info_);
-  }
-  _impl_.flight_info_ = reinterpret_cast<::mavsdk::rpc::info::FlightInfo*>(value);
-  if (value != nullptr) {
-    _impl_._has_bits_[0] |= 0x00000002u;
-  } else {
-    _impl_._has_bits_[0] &= ~0x00000002u;
-  }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.info.GetFlightInformationResponse.flight_info)
-}
-inline ::mavsdk::rpc::info::FlightInfo* GetFlightInformationResponse::release_flight_info() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-
-  _impl_._has_bits_[0] &= ~0x00000002u;
-  ::mavsdk::rpc::info::FlightInfo* released = _impl_.flight_info_;
-  _impl_.flight_info_ = nullptr;
-  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
-    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
-    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-    if (GetArena() == nullptr) {
-      delete old;
-    }
-  } else {
-    if (GetArena() != nullptr) {
-      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-    }
-  }
-  return released;
-}
-inline ::mavsdk::rpc::info::FlightInfo* GetFlightInformationResponse::unsafe_arena_release_flight_info() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  // @@protoc_insertion_point(field_release:mavsdk.rpc.info.GetFlightInformationResponse.flight_info)
-
-  _impl_._has_bits_[0] &= ~0x00000002u;
-  ::mavsdk::rpc::info::FlightInfo* temp = _impl_.flight_info_;
-  _impl_.flight_info_ = nullptr;
-  return temp;
-}
-inline ::mavsdk::rpc::info::FlightInfo* GetFlightInformationResponse::_internal_mutable_flight_info() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (_impl_.flight_info_ == nullptr) {
-    auto* p = ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::info::FlightInfo>(GetArena());
-    _impl_.flight_info_ = reinterpret_cast<::mavsdk::rpc::info::FlightInfo*>(p);
-  }
-  return _impl_.flight_info_;
-}
-inline ::mavsdk::rpc::info::FlightInfo* GetFlightInformationResponse::mutable_flight_info() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  _impl_._has_bits_[0] |= 0x00000002u;
-  ::mavsdk::rpc::info::FlightInfo* _msg = _internal_mutable_flight_info();
-  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.info.GetFlightInformationResponse.flight_info)
-  return _msg;
-}
-inline void GetFlightInformationResponse::set_allocated_flight_info(::mavsdk::rpc::info::FlightInfo* value) {
-  ::google::protobuf::Arena* message_arena = GetArena();
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  if (message_arena == nullptr) {
-    delete (_impl_.flight_info_);
-  }
-
-  if (value != nullptr) {
-    ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
-    if (message_arena != submessage_arena) {
-      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
-    }
-    _impl_._has_bits_[0] |= 0x00000002u;
-  } else {
-    _impl_._has_bits_[0] &= ~0x00000002u;
-  }
-
-  _impl_.flight_info_ = reinterpret_cast<::mavsdk::rpc::info::FlightInfo*>(value);
-  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.info.GetFlightInformationResponse.flight_info)
-}
-
 // -------------------------------------------------------------------
 
 // GetIdentificationRequest
