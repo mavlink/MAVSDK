@@ -1,4 +1,4 @@
-<img alt="MAVSDK" src="cpp/docs/assets/site/sdk_logo_full.png" width="400">
+<img alt="MAVSDK" src="docs/assets/site/sdk_logo_full.png" width="400">
 
 [![Linux](https://github.com/mavlink/MAVSDK/actions/workflows/linux.yml/badge.svg?branch=main)](https://github.com/mavlink/MAVSDK/actions/workflows/linux.yml)
 [![macOS](https://github.com/mavlink/MAVSDK/actions/workflows/macos.yml/badge.svg?branch=main)](https://github.com/mavlink/MAVSDK/actions/workflows/macos.yml)
@@ -34,7 +34,7 @@ The MAVSDK C++ part consists of:
 - [MAVSDK-JavaScript](https://github.com/mavlink/MAVSDK-JavaScript) - MAVSDK client in JavaScript (proof of concept, 2019).
 - [MAVSDK-Rust](https://github.com/mavlink/MAVSDK-Rust) - MAVSDK client for Rust (proof of concept, 2019).
 - [MAVSDK-CSharp](https://github.com/mavlink/MAVSDK-CSharp) - MAVSDK client for CSharp (proof of concept, 2019).
-- [Docs](https://github.com/mavlink/MAVSDK/tree/main/cpp/docs) - MAVSDK [docs](https://mavsdk.mavlink.io/main/en/) source.
+- [Docs](https://github.com/mavlink/MAVSDK/tree/main/docs) - MAVSDK [docs](https://mavsdk.mavlink.io/main/en/) source.
 
 ## Docs
 
