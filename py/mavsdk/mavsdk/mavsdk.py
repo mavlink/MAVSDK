@@ -9,6 +9,7 @@ from .cmavsdk_loader import _cmavsdk_lib
 from .connection_result import ConnectionResult
 from .component_type import ComponentType
 from .exceptions import ConnectionError
+from .enums import ForwardingOption
 from .server_component import ServerComponent
 from .system import System
 from .types import (
@@ -101,10 +102,36 @@ class Mavsdk:
         )
         return ConnectionResult(result)
 
+    def add_any_connection_with_forwarding(
+        self, connection_url: str, forwarding_option: ForwardingOption
+    ) -> ConnectionResult:
+        """Add a connection with forwarding option"""
+        result = self._lib.mavsdk_add_any_connection_with_forwarding(
+            self._handle,
+            connection_url.encode("utf-8"),
+            ctypes.c_int(forwarding_option.value),
+        )
+        return ConnectionResult(result)
+
     def add_any_connection_with_handle(self, connection_url: str):
         """Add a connection and get handle"""
         result = self._lib.mavsdk_add_any_connection_with_handle(
             self._handle, connection_url.encode("utf-8")
+        )
+        if result.result != ConnectionResult.SUCCESS:
+            raise ConnectionError(
+                f"Connection failed: {ConnectionResult(result.result).name}"
+            )
+        return result.handle
+
+    def add_any_connection_with_handle_and_forwarding(
+        self, connection_url: str, forwarding_option: ForwardingOption
+    ):
+        """Add a connection with forwarding option and get handle"""
+        result = self._lib.mavsdk_add_any_connection_with_handle_and_forwarding(
+            self._handle,
+            connection_url.encode("utf-8"),
+            ctypes.c_int(forwarding_option.value),
         )
         if result.result != ConnectionResult.SUCCESS:
             raise ConnectionError(
@@ -289,11 +316,27 @@ _cmavsdk_lib.mavsdk_version.restype = ctypes.c_char_p
 _cmavsdk_lib.mavsdk_add_any_connection.argtypes = [ctypes.c_void_p, ctypes.c_char_p]
 _cmavsdk_lib.mavsdk_add_any_connection.restype = ctypes.c_int
 
+_cmavsdk_lib.mavsdk_add_any_connection_with_forwarding.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_char_p,
+    ctypes.c_int,
+]
+_cmavsdk_lib.mavsdk_add_any_connection_with_forwarding.restype = ctypes.c_int
+
 _cmavsdk_lib.mavsdk_add_any_connection_with_handle.argtypes = [
     ctypes.c_void_p,
     ctypes.c_char_p,
 ]
 _cmavsdk_lib.mavsdk_add_any_connection_with_handle.restype = ConnectionResultWithHandle
+
+_cmavsdk_lib.mavsdk_add_any_connection_with_handle_and_forwarding.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_char_p,
+    ctypes.c_int,
+]
+_cmavsdk_lib.mavsdk_add_any_connection_with_handle_and_forwarding.restype = (
+    ConnectionResultWithHandle
+)
 
 _cmavsdk_lib.mavsdk_remove_connection.argtypes = [ctypes.c_void_p, ctypes.c_void_p]
 _cmavsdk_lib.mavsdk_remove_connection.restype = None
