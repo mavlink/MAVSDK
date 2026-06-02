@@ -3,6 +3,7 @@
 #include "overloaded.hpp"
 #include "unused.hpp"
 #include <algorithm>
+#include <charconv>
 #include <fstream>
 #include <filesystem>
 #include <algorithm>
@@ -458,7 +459,8 @@ void MavlinkFtpClient::process_mavlink_ftp_message(const mavlink_message_t& msg)
             },
             [&](ListDirItem& item) {
                 if (payload->opcode == RSP_ACK) {
-                    if (payload->req_opcode == CMD_LIST_DIRECTORY) {
+                    if (payload->req_opcode == CMD_LIST_DIRECTORY ||
+                        payload->req_opcode == CMD_LIST_DIRECTORY_WITH_TIME) {
                         // Whenever we do get an ack, reset the retry counter.
                         work->retries = RETRIES;
 
@@ -474,18 +476,42 @@ void MavlinkFtpClient::process_mavlink_ftp_message(const mavlink_message_t& msg)
                     }
 
                 } else if (payload->opcode == RSP_NAK) {
-                    stop_timer();
-                    if (payload->data[0] == ERR_EOF) {
-                        std::sort(item.dirs.begin(), item.dirs.end());
-                        std::sort(item.files.begin(), item.files.end());
-                        item.callback(ClientResult::Success, item.dirs, item.files);
+                    const ServerResult sr = static_cast<ServerResult>(payload->data[0]);
+
+                    if (sr == ERR_EOF) {
+                        // Completion is indicated by a NAK with EOF.
+                        stop_timer();
+                        list_dir_finish(item);
+                        terminate_session(*work);
+                        _work_queue.pop_front();
+                        if (!_work_queue.empty()) {
+                            asio::post(_io_context, [this] { do_work(); });
+                        }
+                    } else if (sr == ERR_UNKOWN_COMMAND && item.with_time) {
+                        // The server does not support CMD_LIST_DIRECTORY_WITH_TIME, fall back
+                        // to CMD_LIST_DIRECTORY and start over.
+                        stop_timer();
+                        if (_debugging) {
+                            LogDebug("ListDirectoryWithTime unsupported, falling back to "
+                                     "ListDirectory");
+                        }
+                        item.with_time = false;
+                        item.offset = 0;
+                        item.entries.clear();
+                        if (!list_dir_start(*work, item)) {
+                            _work_queue.pop_front();
+                            if (!_work_queue.empty()) {
+                                asio::post(_io_context, [this] { do_work(); });
+                            }
+                        }
                     } else {
-                        item.callback(result_from_nak(payload), {}, {});
-                    }
-                    terminate_session(*work);
-                    _work_queue.pop_front();
-                    if (!_work_queue.empty()) {
-                        asio::post(_io_context, [this] { do_work(); });
+                        stop_timer();
+                        item.callback(result_from_nak(payload), {});
+                        terminate_session(*work);
+                        _work_queue.pop_front();
+                        if (!_work_queue.empty()) {
+                            asio::post(_io_context, [this] { do_work(); });
+                        }
                     }
                 }
             }},
@@ -1087,16 +1113,16 @@ bool MavlinkFtpClient::compare_files_start(Work& work, CompareFilesItem& item)
 bool MavlinkFtpClient::list_dir_start(Work& work, ListDirItem& item)
 {
     if (item.path.length() + 1 >= max_data_length) {
-        item.callback(ClientResult::InvalidParameter, {}, {});
+        item.callback(ClientResult::InvalidParameter, {});
         return false;
     }
 
-    work.last_opcode = CMD_LIST_DIRECTORY;
+    work.last_opcode = item.with_time ? CMD_LIST_DIRECTORY_WITH_TIME : CMD_LIST_DIRECTORY;
     work.payload = {};
     work.payload.seq_number = _last_sent_seq_number++;
     work.payload.session = _session;
     work.payload.opcode = work.last_opcode;
-    work.payload.offset = 0;
+    work.payload.offset = item.offset;
     strncpy(reinterpret_cast<char*>(work.payload.data), item.path.c_str(), max_data_length - 1);
     work.payload.size = item.path.length() + 1;
     start_timer();
@@ -1118,14 +1144,23 @@ bool MavlinkFtpClient::list_dir_continue(Work& work, ListDirItem& item, PayloadH
     }
 
     if (payload->size == 0) {
-        std::sort(item.dirs.begin(), item.dirs.end());
-        std::sort(item.files.begin(), item.files.end());
-        item.callback(ClientResult::Success, item.dirs, item.files);
+        list_dir_finish(item);
         return false;
     }
 
     // Make sure there is a zero termination.
     payload->data[payload->size - 1] = '\0';
+
+    const auto parse_u64 = [](const std::string& field) -> uint64_t {
+        uint64_t value = 0;
+        const auto* begin = field.data();
+        const auto* end = field.data() + field.size();
+        const auto [ptr, ec] = std::from_chars(begin, end, value);
+        if (ec != std::errc()) {
+            return 0;
+        }
+        return value;
+    };
 
     size_t i = 0;
     while (i + 1 < payload->size) {
@@ -1139,26 +1174,68 @@ bool MavlinkFtpClient::list_dir_continue(Work& work, ListDirItem& item, PayloadH
 
         ++item.offset;
 
-        if (entry[0] == 'S') {
-            // Skip skip for now
+        if (_debugging) {
+            LogDebug("list_dir raw entry: '{}'", entry);
+        }
+
+        if (entry.empty()) {
             continue;
         }
 
-        auto tab = entry.find('\t');
-        if (tab != std::string::npos) {
-            entry = entry.substr(0, tab);
+        const char type_char = entry[0];
+
+        if (type_char == 'S') {
+            // Skip entry.
+            continue;
         }
 
-        if (entry[0] == 'D') {
-            item.dirs.push_back(entry.substr(1, entry.size() - 1));
-        } else if (entry[0] == 'F') {
-            item.files.push_back(entry.substr(1, entry.size() - 1));
-        } else {
+        if (type_char != 'F' && type_char != 'D') {
             LogErr("Unknown list_dir entry: {}", entry);
+            continue;
         }
+
+        // The entry body after the type character is tab-separated:
+        // <name>[\t<size_bytes>[\t<modification_time_s>]]
+        // Only CMD_LIST_DIRECTORY_WITH_TIME includes the modification time, and only files
+        // include the size, so trailing fields may be absent.
+        const std::string body = entry.substr(1);
+
+        ListDirEntry list_entry{};
+        list_entry.type = (type_char == 'D') ? ListDirEntry::Type::Dir : ListDirEntry::Type::File;
+
+        size_t field_start = 0;
+        int field_index = 0;
+        while (field_start <= body.size()) {
+            const auto tab = body.find('\t', field_start);
+            const std::string field = (tab == std::string::npos) ?
+                                          body.substr(field_start) :
+                                          body.substr(field_start, tab - field_start);
+
+            switch (field_index) {
+                case 0:
+                    list_entry.name = field;
+                    break;
+                case 1:
+                    list_entry.size_bytes = parse_u64(field);
+                    break;
+                case 2:
+                    list_entry.modification_time_s = parse_u64(field);
+                    break;
+                default:
+                    break;
+            }
+
+            ++field_index;
+            if (tab == std::string::npos) {
+                break;
+            }
+            field_start = tab + 1;
+        }
+
+        item.entries.push_back(std::move(list_entry));
     }
 
-    work.last_opcode = CMD_LIST_DIRECTORY;
+    work.last_opcode = item.with_time ? CMD_LIST_DIRECTORY_WITH_TIME : CMD_LIST_DIRECTORY;
     work.payload = {};
     work.payload.seq_number = _last_sent_seq_number++;
     work.payload.session = _session;
@@ -1171,6 +1248,15 @@ bool MavlinkFtpClient::list_dir_continue(Work& work, ListDirItem& item, PayloadH
     send_mavlink_ftp_message(work.payload, work.target_compid);
 
     return true;
+}
+
+void MavlinkFtpClient::list_dir_finish(ListDirItem& item)
+{
+    std::sort(
+        item.entries.begin(), item.entries.end(), [](const ListDirEntry& a, const ListDirEntry& b) {
+            return a.name < b.name;
+        });
+    item.callback(ClientResult::Success, item.entries);
 }
 
 MavlinkFtpClient::ClientResult MavlinkFtpClient::result_from_nak(PayloadHeader* payload)
@@ -1542,7 +1628,7 @@ void MavlinkFtpClient::timeout()
             },
             [&](ListDirItem& item) {
                 if (--work->retries == 0) {
-                    item.callback(ClientResult::Timeout, {}, {});
+                    item.callback(ClientResult::Timeout, {});
                     _work_queue.pop_front();
                     if (!_work_queue.empty()) {
                         asio::post(_io_context, [this] { do_work(); });

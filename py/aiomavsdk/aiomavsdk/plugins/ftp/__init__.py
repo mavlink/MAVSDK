@@ -10,6 +10,7 @@ from .ftp import FtpAsync
 from mavsdk.plugins.ftp import (
     Ftp,
     FtpResult,
+    FilesystemEntry,
     ListDirectoryData,
     ProgressData,
 )
@@ -18,6 +19,7 @@ __all__ = [
     "FtpAsync",
     "Ftp",
     "FtpResult",
+    "FilesystemEntry",
     "ListDirectoryData",
     "ProgressData",
 ]

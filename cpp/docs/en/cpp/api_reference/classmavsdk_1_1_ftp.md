@@ -10,6 +10,8 @@ Implements file transfer functionality using MAVLink FTP.
 ## Data Structures
 
 
+struct [FilesystemEntry](structmavsdk_1_1_ftp_1_1_filesystem_entry.md)
+
 struct [ListDirectoryData](structmavsdk_1_1_ftp_1_1_list_directory_data.md)
 
 struct [ProgressData](structmavsdk_1_1_ftp_1_1_progress_data.md)

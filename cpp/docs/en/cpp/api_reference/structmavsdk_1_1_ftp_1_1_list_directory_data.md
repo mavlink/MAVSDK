@@ -10,30 +10,18 @@ The output of a directory list.
 ## Data Fields
 
 
-std::vector< std::string > [dirs](#structmavsdk_1_1_ftp_1_1_list_directory_data_1af4a66423b4ffcda32987579f6fd91013) {} - The found directories.
-
-std::vector< std::string > [files](#structmavsdk_1_1_ftp_1_1_list_directory_data_1a85078176a4e0e8f8df617bdec794df76) {} - The found files.
+std::vector< [FilesystemEntry](structmavsdk_1_1_ftp_1_1_filesystem_entry.md) > [entries](#structmavsdk_1_1_ftp_1_1_list_directory_data_1abdb7c0259e984aa10ef19806a5edbd14) {} - The directory entries (files and directories) with their metadata.
 
 
 ## Field Documentation
 
 
-### dirs {#structmavsdk_1_1_ftp_1_1_list_directory_data_1af4a66423b4ffcda32987579f6fd91013}
+### entries {#structmavsdk_1_1_ftp_1_1_list_directory_data_1abdb7c0259e984aa10ef19806a5edbd14}
 
 ```cpp
-std::vector<std::string> mavsdk::Ftp::ListDirectoryData::dirs {}
+std::vector<FilesystemEntry> mavsdk::Ftp::ListDirectoryData::entries {}
 ```
 
 
-The found directories.
-
-
-### files {#structmavsdk_1_1_ftp_1_1_list_directory_data_1a85078176a4e0e8f8df617bdec794df76}
-
-```cpp
-std::vector<std::string> mavsdk::Ftp::ListDirectoryData::files {}
-```
-
-
-The found files.
+The directory entries (files and directories) with their metadata.
 

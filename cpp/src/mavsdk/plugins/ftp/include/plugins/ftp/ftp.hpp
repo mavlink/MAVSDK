@@ -66,13 +66,64 @@ public:
 
 
 
+
+    /**
+     * @brief A file system entry (file or directory) with metadata.
+     */
+    struct FilesystemEntry {
+        
+        /**
+     * @brief The type of a file system entry.
+     */
+    enum class EntryType {
+        Unknown, /**< @brief Unknown entry type. */
+        File, /**< @brief A regular file. */
+        Directory, /**< @brief A directory. */
+    };
+
+    /**
+     * @brief Convert `Ftp::EntryType` to string.
+     *
+     * @return A string representation of the enum.
+     */
+    friend MAVSDK_PUBLIC std::string_view to_string(Ftp::FilesystemEntry::EntryType const& entry_type);
+
+    /**
+     * @brief Stream operator to print information about a `Ftp::EntryType`.
+     *
+     * @return A reference to the stream.
+     */
+    friend MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Ftp::FilesystemEntry::EntryType const& entry_type);
+        
+        std::string name{}; /**< @brief The name of the file or directory. */
+        EntryType entry_type{}; /**< @brief Whether the entry is a file or a directory. */
+        uint64_t size_bytes{}; /**< @brief The size of the file in bytes (0 for directories). */
+        uint64_t modification_time_s{}; /**< @brief Last modification time in seconds since UNIX epoch (UTC), 0 if unknown. */
+    };
+
+    /**
+     * @brief Equal operator to compare two `Ftp::FilesystemEntry` objects.
+     *
+     * @return `true` if items are equal.
+     */
+    friend MAVSDK_PUBLIC bool operator==(const Ftp::FilesystemEntry& lhs, const Ftp::FilesystemEntry& rhs);
+
+    /**
+     * @brief Stream operator to print information about a `Ftp::FilesystemEntry`.
+     *
+     * @return A reference to the stream.
+     */
+    friend MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Ftp::FilesystemEntry const& filesystem_entry);
+
+
+
+
     /**
      * @brief The output of a directory list
      */
     struct ListDirectoryData {
         
-        std::vector<std::string> dirs{}; /**< @brief The found directories. */
-        std::vector<std::string> files{}; /**< @brief The found files. */
+        std::vector<FilesystemEntry> entries{}; /**< @brief The directory entries (files and directories) with their metadata. */
     };
 
     /**
