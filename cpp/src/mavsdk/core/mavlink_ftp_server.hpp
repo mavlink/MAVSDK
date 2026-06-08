@@ -77,6 +77,8 @@ private:
         CMD_RENAME, ///< Rename <path1> to <path2>
         CMD_CALC_FILE_CRC32, ///< Calculate CRC32 for file at <path>
         CMD_BURST_READ_FILE, ///< Burst download session file
+        CMD_LIST_DIRECTORY_WITH_TIME =
+            16, ///< List files in <path> from <offset>, with modification time
 
         RSP_ACK = 128, ///< Ack response
         RSP_NAK ///< Nak response
@@ -119,7 +121,7 @@ private:
     _path_from_payload(const PayloadHeader& payload, size_t entry = 0);
     std::variant<std::string, ServerResult> _path_from_string(const std::string& payload_path);
 
-    void _work_list(const PayloadHeader& payload);
+    void _work_list(const PayloadHeader& payload, bool with_time);
     void _work_open_file_readonly(const PayloadHeader& payload);
     void _work_open_file_writeonly(const PayloadHeader& payload);
     void _work_create_file(const PayloadHeader& payload);

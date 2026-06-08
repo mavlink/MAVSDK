@@ -9,10 +9,30 @@
 #include <future>
 #include <iostream>
 #include <iomanip>
+#include <sstream>
 #include <cstring>
+#include <ctime>
 
 using namespace mavsdk;
 using std::chrono::seconds;
+
+std::string format_modification_time(uint64_t modification_time_s)
+{
+    if (modification_time_s == 0) {
+        return "unknown";
+    }
+
+    const std::time_t time = static_cast<std::time_t>(modification_time_s);
+    std::tm tm{};
+#ifdef _WIN32
+    gmtime_s(&tm, &time);
+#else
+    gmtime_r(&time, &tm);
+#endif
+    std::ostringstream os;
+    os << std::put_time(&tm, "%Y-%m-%d %H:%M:%S UTC");
+    return os.str();
+}
 
 void usage(const std::string& bin_name)
 {
@@ -80,8 +100,10 @@ Ftp::Result remove_directory(Ftp& ftp, const std::string& path, bool recursive =
 
         auto result = future_result.get();
         if (result.first == Ftp::Result::Success) {
-            for (auto entry : result.second.dirs) {
-                remove_directory(ftp, path + "/" + entry.substr(1, entry.size() - 1));
+            for (const auto& entry : result.second.entries) {
+                if (entry.entry_type == Ftp::FilesystemEntry::EntryType::Directory) {
+                    remove_directory(ftp, path + "/" + entry.name);
+                }
             }
         }
     }
@@ -106,12 +128,17 @@ Ftp::Result list_directory(Ftp& ftp, const std::string& path)
     auto result = future_result.get();
     if (result.first == Ftp::Result::Success) {
         std::cerr << "Directories: " << '\n';
-        for (auto entry : result.second.dirs) {
-            std::cerr << entry << '\n';
+        for (const auto& entry : result.second.entries) {
+            if (entry.entry_type == Ftp::FilesystemEntry::EntryType::Directory) {
+                std::cerr << entry.name << '\n';
+            }
         }
         std::cerr << "Files: " << '\n';
-        for (auto entry : result.second.files) {
-            std::cerr << entry << '\n';
+        for (const auto& entry : result.second.entries) {
+            if (entry.entry_type == Ftp::FilesystemEntry::EntryType::File) {
+                std::cerr << entry.name << " (" << entry.size_bytes << " bytes, modified "
+                          << format_modification_time(entry.modification_time_s) << ")" << '\n';
+            }
         }
     }
     return result.first;

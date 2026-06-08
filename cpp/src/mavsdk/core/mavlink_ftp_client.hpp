@@ -60,11 +60,24 @@ public:
         uint32_t total_bytes{}; /**< @brief The total bytes to transfer. */
     };
 
+    /// @brief A single entry of a directory listing.
+    struct ListDirEntry {
+        enum class Type {
+            Unknown, ///< Unknown entry type.
+            File, ///< Regular file.
+            Dir, ///< Directory.
+        };
+        std::string name{}; ///< Name of the file or directory.
+        Type type{Type::Unknown}; ///< Whether the entry is a file or a directory.
+        uint64_t size_bytes{0}; ///< Size of the file in bytes (0 for directories).
+        uint64_t modification_time_s{
+            0}; ///< Modification time in seconds since UNIX epoch (UTC), 0 if unknown.
+    };
+
     using ResultCallback = std::function<void(ClientResult)>;
     using UploadCallback = std::function<void(ClientResult, ProgressData)>;
     using DownloadCallback = std::function<void(ClientResult, ProgressData)>;
-    using ListDirectoryCallback =
-        std::function<void(ClientResult, std::vector<std::string>, std::vector<std::string>)>;
+    using ListDirectoryCallback = std::function<void(ClientResult, std::vector<ListDirEntry>)>;
     using AreFilesIdenticalCallback = std::function<void(ClientResult, bool)>;
 
     void do_work();
@@ -138,6 +151,8 @@ private:
         CMD_RENAME, ///< Rename <path1> to <path2>
         CMD_CALC_FILE_CRC32, ///< Calculate CRC32 for file at <path>
         CMD_BURST_READ_FILE, ///< Burst download session file
+        CMD_LIST_DIRECTORY_WITH_TIME =
+            16, ///< List files in <path> from <offset>, with modification time
 
         RSP_ACK = 128, ///< Ack response
         RSP_NAK ///< Nak response
@@ -209,8 +224,10 @@ private:
         std::string path{};
         ListDirectoryCallback callback{};
         uint32_t offset{0};
-        std::vector<std::string> dirs{};
-        std::vector<std::string> files{};
+        std::vector<ListDirEntry> entries{};
+        // Try CMD_LIST_DIRECTORY_WITH_TIME first and fall back to CMD_LIST_DIRECTORY if the
+        // server does not support it.
+        bool with_time{true};
     };
 
     using Item = std::variant<
@@ -300,6 +317,7 @@ private:
 
     bool list_dir_start(Work& work, ListDirItem& item);
     bool list_dir_continue(Work& work, ListDirItem& item, PayloadHeader* payload);
+    void list_dir_finish(ListDirItem& item);
 
     void terminate_session(Work& work);
 

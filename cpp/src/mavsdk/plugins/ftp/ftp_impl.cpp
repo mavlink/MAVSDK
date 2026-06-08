@@ -95,13 +95,32 @@ void FtpImpl::list_directory_async(const std::string& path, Ftp::ListDirectoryCa
         path,
         [callback, this](
             MavlinkFtpClient::ClientResult result,
-            std::vector<std::string> dirs,
-            std::vector<std::string> files) {
+            std::vector<MavlinkFtpClient::ListDirEntry> entries) {
             if (callback) {
-                _system_impl->call_user_callback([=]() {
-                    callback(
-                        result_from_mavlink_ftp_result(result),
-                        Ftp::ListDirectoryData{dirs, files});
+                Ftp::ListDirectoryData data{};
+                data.entries.reserve(entries.size());
+                for (const auto& entry : entries) {
+                    Ftp::FilesystemEntry filesystem_entry{};
+                    filesystem_entry.name = entry.name;
+                    switch (entry.type) {
+                        case MavlinkFtpClient::ListDirEntry::Type::File:
+                            filesystem_entry.entry_type = Ftp::FilesystemEntry::EntryType::File;
+                            break;
+                        case MavlinkFtpClient::ListDirEntry::Type::Dir:
+                            filesystem_entry.entry_type =
+                                Ftp::FilesystemEntry::EntryType::Directory;
+                            break;
+                        case MavlinkFtpClient::ListDirEntry::Type::Unknown:
+                        default:
+                            filesystem_entry.entry_type = Ftp::FilesystemEntry::EntryType::Unknown;
+                            break;
+                    }
+                    filesystem_entry.size_bytes = entry.size_bytes;
+                    filesystem_entry.modification_time_s = entry.modification_time_s;
+                    data.entries.push_back(std::move(filesystem_entry));
+                }
+                _system_impl->call_user_callback([callback, result, data]() {
+                    callback(result_from_mavlink_ftp_result(result), data);
                 });
             }
         });

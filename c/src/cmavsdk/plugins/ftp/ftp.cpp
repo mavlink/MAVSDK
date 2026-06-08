@@ -46,20 +46,86 @@ translate_result(mavsdk::Ftp::Result cpp_result) {
 
 
 
+static mavsdk::Ftp::FilesystemEntry::EntryType
+translate_filesystem_entry_entry_type_from_c(mavsdk_ftp_filesystem_entry_entry_type_t c_enum) {
+    switch(c_enum) {
+        case MAVSDK_FTP_FILESYSTEM_ENTRY_ENTRY_TYPE_UNKNOWN:
+            return mavsdk::Ftp::FilesystemEntry::EntryType::Unknown;
+        case MAVSDK_FTP_FILESYSTEM_ENTRY_ENTRY_TYPE_FILE:
+            return mavsdk::Ftp::FilesystemEntry::EntryType::File;
+        case MAVSDK_FTP_FILESYSTEM_ENTRY_ENTRY_TYPE_DIRECTORY:
+            return mavsdk::Ftp::FilesystemEntry::EntryType::Directory;
+    }
+    return mavsdk::Ftp::FilesystemEntry::EntryType::Unknown;
+}
+
+
+static mavsdk::Ftp::FilesystemEntry
+translate_filesystem_entry_from_c(const mavsdk_ftp_filesystem_entry_t& c_struct) {
+    mavsdk::Ftp::FilesystemEntry cpp_struct{};
+    if (c_struct.name) {
+        cpp_struct.name = c_struct.name;
+    }
+    cpp_struct.entry_type = translate_filesystem_entry_entry_type_from_c(c_struct.entry_type);
+    cpp_struct.size_bytes = c_struct.size_bytes;
+    cpp_struct.modification_time_s = c_struct.modification_time_s;
+    return cpp_struct;
+}
+
+
+static mavsdk_ftp_filesystem_entry_entry_type_t
+translate_filesystem_entry_entry_type_to_c(mavsdk::Ftp::FilesystemEntry::EntryType cpp_enum) {
+    switch(cpp_enum) {
+        case mavsdk::Ftp::FilesystemEntry::EntryType::Unknown:
+            return MAVSDK_FTP_FILESYSTEM_ENTRY_ENTRY_TYPE_UNKNOWN;
+        case mavsdk::Ftp::FilesystemEntry::EntryType::File:
+            return MAVSDK_FTP_FILESYSTEM_ENTRY_ENTRY_TYPE_FILE;
+        case mavsdk::Ftp::FilesystemEntry::EntryType::Directory:
+            return MAVSDK_FTP_FILESYSTEM_ENTRY_ENTRY_TYPE_DIRECTORY;
+    }
+    return MAVSDK_FTP_FILESYSTEM_ENTRY_ENTRY_TYPE_UNKNOWN;
+}
+
+static mavsdk_ftp_filesystem_entry_t
+translate_filesystem_entry_to_c(const mavsdk::Ftp::FilesystemEntry& cpp_struct) {
+    mavsdk_ftp_filesystem_entry_t c_struct{};
+    c_struct.name = strdup(cpp_struct.name.c_str());
+    c_struct.entry_type = translate_filesystem_entry_entry_type_to_c(cpp_struct.entry_type);
+    c_struct.size_bytes = cpp_struct.size_bytes;
+    c_struct.modification_time_s = cpp_struct.modification_time_s;
+    return c_struct;
+}
+
+void mavsdk_ftp_filesystem_entry_destroy(
+    mavsdk_ftp_filesystem_entry_t* target) {
+    if (!target) return;
+    if (target->name) {
+        free((void*)target->name);
+        target->name = nullptr;
+    }
+}
+
+void mavsdk_ftp_filesystem_entry_array_destroy(
+    mavsdk_ftp_filesystem_entry_t** array,
+    size_t size) {
+    if (!array || !*array) return;
+
+    for (size_t i = 0; i < size; i++) {
+        mavsdk_ftp_filesystem_entry_destroy(&(*array)[i]);
+    }
+
+    delete[] *array;
+    *array = nullptr;
+}
+
+
 static mavsdk::Ftp::ListDirectoryData
 translate_list_directory_data_from_c(const mavsdk_ftp_list_directory_data_t& c_struct) {
     mavsdk::Ftp::ListDirectoryData cpp_struct{};
-    cpp_struct.dirs.reserve(c_struct.dirs_size);
-    for (size_t i = 0; i < c_struct.dirs_size; i++) {
-        if (c_struct.dirs[i]) {
-            cpp_struct.dirs.push_back(c_struct.dirs[i]);
-        }
-    }
-    cpp_struct.files.reserve(c_struct.files_size);
-    for (size_t i = 0; i < c_struct.files_size; i++) {
-        if (c_struct.files[i]) {
-            cpp_struct.files.push_back(c_struct.files[i]);
-        }
+    cpp_struct.entries.reserve(c_struct.entries_size);
+    for (size_t i = 0; i < c_struct.entries_size; i++) {
+        cpp_struct.entries.push_back(
+            translate_filesystem_entry_from_c(c_struct.entries[i]));
     }
     return cpp_struct;
 }
@@ -67,15 +133,10 @@ translate_list_directory_data_from_c(const mavsdk_ftp_list_directory_data_t& c_s
 static mavsdk_ftp_list_directory_data_t
 translate_list_directory_data_to_c(const mavsdk::Ftp::ListDirectoryData& cpp_struct) {
     mavsdk_ftp_list_directory_data_t c_struct{};
-    c_struct.dirs_size = cpp_struct.dirs.size();
-    c_struct.dirs = new char*[c_struct.dirs_size];
-    for (size_t i = 0; i < c_struct.dirs_size; i++) {
-        c_struct.dirs[i] = strdup(cpp_struct.dirs[i].c_str());
-    }
-    c_struct.files_size = cpp_struct.files.size();
-    c_struct.files = new char*[c_struct.files_size];
-    for (size_t i = 0; i < c_struct.files_size; i++) {
-        c_struct.files[i] = strdup(cpp_struct.files[i].c_str());
+    c_struct.entries_size = cpp_struct.entries.size();
+    c_struct.entries = new mavsdk_ftp_filesystem_entry_t[c_struct.entries_size];
+    for (size_t i = 0; i < c_struct.entries_size; i++) {
+        c_struct.entries[i] = translate_filesystem_entry_to_c(cpp_struct.entries[i]);
     }
     return c_struct;
 }
@@ -83,25 +144,13 @@ translate_list_directory_data_to_c(const mavsdk::Ftp::ListDirectoryData& cpp_str
 void mavsdk_ftp_list_directory_data_destroy(
     mavsdk_ftp_list_directory_data_t* target) {
     if (!target) return;
-    if (target->dirs) {
-        for (size_t i = 0; i < target->dirs_size; i++) {
-            if (target->dirs[i]) {
-                free(target->dirs[i]);
-            }
+    if (target->entries) {
+        for (size_t i = 0; i < target->entries_size; i++) {
+            mavsdk_ftp_filesystem_entry_destroy(&target->entries[i]);
         }
-        delete[] target->dirs;
-        target->dirs = nullptr;
-        target->dirs_size = 0;
-    }
-    if (target->files) {
-        for (size_t i = 0; i < target->files_size; i++) {
-            if (target->files[i]) {
-                free(target->files[i]);
-            }
-        }
-        delete[] target->files;
-        target->files = nullptr;
-        target->files_size = 0;
+        delete[] target->entries;
+        target->entries = nullptr;
+        target->entries_size = 0;
     }
 }
 

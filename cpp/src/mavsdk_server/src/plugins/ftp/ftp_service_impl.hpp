@@ -48,6 +48,91 @@ public:
 
 
 
+    static rpc::ftp::FilesystemEntry::EntryType translateToRpcEntryType(const mavsdk::Ftp::FilesystemEntry::EntryType& entry_type)
+    {
+        switch (entry_type) {
+            default:
+                LogErr("Unknown entry_type enum value: {}", static_cast<int>(entry_type));
+            // FALLTHROUGH
+            case mavsdk::Ftp::FilesystemEntry::EntryType::Unknown:
+                return rpc::ftp::FilesystemEntry_EntryType_ENTRY_TYPE_UNKNOWN;
+            case mavsdk::Ftp::FilesystemEntry::EntryType::File:
+                return rpc::ftp::FilesystemEntry_EntryType_ENTRY_TYPE_FILE;
+            case mavsdk::Ftp::FilesystemEntry::EntryType::Directory:
+                return rpc::ftp::FilesystemEntry_EntryType_ENTRY_TYPE_DIRECTORY;
+        }
+    }
+
+    static mavsdk::Ftp::FilesystemEntry::EntryType translateFromRpcEntryType(const rpc::ftp::FilesystemEntry::EntryType entry_type)
+    {
+        switch (entry_type) {
+            default:
+                LogErr("Unknown entry_type enum value: {}", static_cast<int>(entry_type));
+            // FALLTHROUGH
+            case rpc::ftp::FilesystemEntry_EntryType_ENTRY_TYPE_UNKNOWN:
+                return mavsdk::Ftp::FilesystemEntry::EntryType::Unknown;
+            case rpc::ftp::FilesystemEntry_EntryType_ENTRY_TYPE_FILE:
+                return mavsdk::Ftp::FilesystemEntry::EntryType::File;
+            case rpc::ftp::FilesystemEntry_EntryType_ENTRY_TYPE_DIRECTORY:
+                return mavsdk::Ftp::FilesystemEntry::EntryType::Directory;
+        }
+    }
+
+
+    static std::unique_ptr<rpc::ftp::FilesystemEntry> translateToRpcFilesystemEntry(const mavsdk::Ftp::FilesystemEntry &filesystem_entry)
+    {
+        auto rpc_obj = std::make_unique<rpc::ftp::FilesystemEntry>();
+
+
+            
+        rpc_obj->set_name(filesystem_entry.name);
+            
+        
+            
+                
+        rpc_obj->set_entry_type(translateToRpcEntryType(filesystem_entry.entry_type));
+                
+            
+        
+            
+        rpc_obj->set_size_bytes(filesystem_entry.size_bytes);
+            
+        
+            
+        rpc_obj->set_modification_time_s(filesystem_entry.modification_time_s);
+            
+        
+
+        return rpc_obj;
+    }
+
+    static mavsdk::Ftp::FilesystemEntry translateFromRpcFilesystemEntry(const rpc::ftp::FilesystemEntry& filesystem_entry)
+    {
+        mavsdk::Ftp::FilesystemEntry obj;
+
+
+            
+        obj.name = filesystem_entry.name();
+            
+        
+            
+        obj.entry_type = translateFromRpcEntryType(filesystem_entry.entry_type());
+            
+        
+            
+        obj.size_bytes = filesystem_entry.size_bytes();
+            
+        
+            
+        obj.modification_time_s = filesystem_entry.modification_time_s();
+            
+        
+        return obj;
+    }
+
+
+
+
 
     static std::unique_ptr<rpc::ftp::ListDirectoryData> translateToRpcListDirectoryData(const mavsdk::Ftp::ListDirectoryData &list_directory_data)
     {
@@ -55,15 +140,12 @@ public:
 
 
             
-        for (const auto& elem : list_directory_data.dirs) {
-            rpc_obj->add_dirs(elem);
+                
+        for (const auto& elem : list_directory_data.entries) {
+            auto* ptr = rpc_obj->add_entries();
+            ptr->CopyFrom(*translateToRpcFilesystemEntry(elem).release());
         }
-            
-        
-            
-        for (const auto& elem : list_directory_data.files) {
-            rpc_obj->add_files(elem);
-        }
+                
             
         
 
@@ -76,14 +158,8 @@ public:
 
 
             
-                for (const auto& elem : list_directory_data.dirs()) {
-                    obj.dirs.push_back(elem);
-                }
-            
-        
-            
-                for (const auto& elem : list_directory_data.files()) {
-                    obj.files.push_back(elem);
+                for (const auto& elem : list_directory_data.entries()) {
+                    obj.entries.push_back(translateFromRpcFilesystemEntry(static_cast<mavsdk::rpc::ftp::FilesystemEntry>(elem)));
                 }
             
         

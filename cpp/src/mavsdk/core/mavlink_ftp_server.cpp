@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <chrono>
 #include <fstream>
 #include <filesystem>
 #include <future>
@@ -110,7 +111,14 @@ void MavlinkFtpServer::process_mavlink_ftp_message(const mavlink_message_t& msg)
                 if (_debugging) {
                     LogDebug("OPC:CMD_LIST_DIRECTORY");
                 }
-                _work_list(payload);
+                _work_list(payload, false);
+                break;
+
+            case Opcode::CMD_LIST_DIRECTORY_WITH_TIME:
+                if (_debugging) {
+                    LogDebug("OPC:CMD_LIST_DIRECTORY_WITH_TIME");
+                }
+                _work_list(payload, true);
                 break;
 
             case Opcode::CMD_OPEN_FILE_RO:
@@ -300,7 +308,7 @@ void MavlinkFtpServer::set_root_directory(const std::string& root_dir)
     }
 }
 
-void MavlinkFtpServer::_work_list(const PayloadHeader& payload)
+void MavlinkFtpServer::_work_list(const PayloadHeader& payload, bool with_time)
 {
     auto response = PayloadHeader{};
     response.seq_number = payload.seq_number + 1;
@@ -366,6 +374,31 @@ void MavlinkFtpServer::_work_list(const PayloadHeader& payload)
             continue;
         }
 
+        // For CMD_LIST_DIRECTORY_WITH_TIME, each entry additionally carries its
+        // last-modification time in seconds since the UNIX epoch (UTC), or 0 if unknown.
+        uint64_t modification_time_s = 0;
+        if (with_time) {
+            const auto ftime = fs::last_write_time(entry.path(), ec);
+            if (ec) {
+                // Modification time is not known, leave it at 0.
+                ec.clear();
+            } else {
+                // Convert the file_clock time_point to a system_clock (UTC, UNIX epoch) one.
+                // file_clock::to_sys and std::chrono::clock_cast are not portable across all
+                // standard libraries (e.g. MSVC's file_clock has no to_sys), so use the
+                // now()-offset approach which works everywhere.
+                const auto sys_time =
+                    std::chrono::time_point_cast<std::chrono::system_clock::duration>(
+                        ftime - decltype(ftime)::clock::now() + std::chrono::system_clock::now());
+                const auto secs =
+                    std::chrono::duration_cast<std::chrono::seconds>(sys_time.time_since_epoch())
+                        .count();
+                if (secs > 0) {
+                    modification_time_s = static_cast<uint64_t>(secs);
+                }
+            }
+        }
+
         if (is_regular_file) {
             const auto filesize = fs::file_size(entry.path(), ec);
             if (ec) {
@@ -381,6 +414,10 @@ void MavlinkFtpServer::_work_list(const PayloadHeader& payload)
             payload_str += name.string();
             payload_str += '\t';
             payload_str += std::to_string(filesize);
+            if (with_time) {
+                payload_str += '\t';
+                payload_str += std::to_string(modification_time_s);
+            }
 
         } else if (is_directory) {
             if (_debugging) {
@@ -389,6 +426,13 @@ void MavlinkFtpServer::_work_list(const PayloadHeader& payload)
 
             payload_str += 'D';
             payload_str += name.string();
+            if (with_time) {
+                // Directories have no meaningful size; report 0.
+                payload_str += '\t';
+                payload_str += '0';
+                payload_str += '\t';
+                payload_str += std::to_string(modification_time_s);
+            }
 
         } else {
             // Ignore all other types.

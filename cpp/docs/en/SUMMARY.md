@@ -87,6 +87,7 @@
             * [struct Config](cpp/api_reference/structmavsdk_1_1_follow_me_1_1_config.md)
             * [struct TargetLocation](cpp/api_reference/structmavsdk_1_1_follow_me_1_1_target_location.md)
         * [class Ftp](cpp/api_reference/classmavsdk_1_1_ftp.md)
+            * [struct FilesystemEntry](cpp/api_reference/structmavsdk_1_1_ftp_1_1_filesystem_entry.md)
             * [struct ListDirectoryData](cpp/api_reference/structmavsdk_1_1_ftp_1_1_list_directory_data.md)
             * [struct ProgressData](cpp/api_reference/structmavsdk_1_1_ftp_1_1_progress_data.md)
         * [class FtpServer](cpp/api_reference/classmavsdk_1_1_ftp_server.md)

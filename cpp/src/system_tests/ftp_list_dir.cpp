@@ -72,8 +72,23 @@ TEST(Ftp, ListDir)
     auto ret = ftp.list_directory("./");
     EXPECT_EQ(ret.first, Ftp::Result::Success);
 
-    EXPECT_EQ(ret.second.files, truth_files);
-    EXPECT_EQ(ret.second.dirs, truth_dirs);
+    std::vector<std::string> found_files;
+    std::vector<std::string> found_dirs;
+    for (const auto& entry : ret.second.entries) {
+        if (entry.entry_type == Ftp::FilesystemEntry::EntryType::File) {
+            found_files.push_back(entry.name);
+            // The files were just created, so the modification time should be populated.
+            EXPECT_GT(entry.modification_time_s, 0u);
+        } else if (entry.entry_type == Ftp::FilesystemEntry::EntryType::Directory) {
+            found_dirs.push_back(entry.name);
+            EXPECT_GT(entry.modification_time_s, 0u);
+        }
+    }
+    std::sort(found_files.begin(), found_files.end());
+    std::sort(found_dirs.begin(), found_dirs.end());
+
+    EXPECT_EQ(found_files, truth_files);
+    EXPECT_EQ(found_dirs, truth_dirs);
 
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }

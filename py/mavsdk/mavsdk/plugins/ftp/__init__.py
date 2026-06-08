@@ -15,6 +15,7 @@ from .ftp import Ftp
 from .ftp import FtpResult
 
 # Import data structures
+from .ftp import FilesystemEntry
 from .ftp import ListDirectoryData
 from .ftp import ProgressData
 
@@ -22,6 +23,7 @@ from .ftp import ProgressData
 __all__ = [
     "Ftp",
     "FtpResult",
+    "FilesystemEntry",
     "ListDirectoryData",
     "ProgressData",
 ]
