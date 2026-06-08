@@ -34,10 +34,16 @@ void MavlinkRequestMessage::request(
     std::unique_lock<std::mutex> lock(_mutex);
 
     // Cleanup previous requests.
-    for (const auto id : _deferred_message_cleanup) {
-        _message_handler.unregister_one(id, this);
+    bool handler_still_registered = false;
+    for (auto it = _deferred_message_cleanup.begin(); it != _deferred_message_cleanup.end();) {
+        if (*it == message_id) {
+            handler_still_registered = true;
+            it = _deferred_message_cleanup.erase(it);
+        } else {
+            _message_handler.unregister_one(*it, this);
+            it = _deferred_message_cleanup.erase(it);
+        }
     }
-    _deferred_message_cleanup.clear();
 
     // Respond with 'Busy' if already in progress.
     for (auto& item : _work_items) {
@@ -57,11 +63,13 @@ void MavlinkRequestMessage::request(
     // Otherwise, schedule it.
     _work_items.emplace_back(WorkItem{message_id, target_component, callback, param2});
 
-    // Register for message
-    _message_handler.register_one(
-        message_id,
-        [this](const mavlink_message_t& message) { handle_any_message(message); },
-        this);
+    // Register for message ONLY if an active lower-level hook doesn't exist
+    if (!handler_still_registered) {
+        _message_handler.register_one(
+            message_id,
+            [this](const mavlink_message_t& message) { handle_any_message(message); },
+            this);
+    }
 
     // And send off command
     send_request(_work_items.back());
