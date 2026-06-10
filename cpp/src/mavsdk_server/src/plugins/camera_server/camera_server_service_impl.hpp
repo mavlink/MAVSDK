@@ -2369,6 +2369,76 @@ public:
         return grpc::Status::OK;
     }
 
+    grpc::Status SetPosition(
+        grpc::ServerContext* /* context */,
+        const rpc::camera_server::SetPositionRequest* request,
+        rpc::camera_server::SetPositionResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
+            if (response != nullptr) {
+                
+                // For server plugins, this should never happen, they should always be constructible.
+                auto result = mavsdk::CameraServer::Result::Unknown;
+                fillResponseWithResult(response, result);
+            }
+            
+            return grpc::Status::OK;
+        }
+
+        if (request == nullptr) {
+            LogWarn("SetPosition sent with a null request! Ignoring...");
+            return grpc::Status::OK;
+        }
+            
+        
+        auto result = _lazy_plugin.maybe_plugin()->set_position(translateFromRpcPosition(request->position()));
+        
+
+        
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+        
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status SetAttitudeQuaternion(
+        grpc::ServerContext* /* context */,
+        const rpc::camera_server::SetAttitudeQuaternionRequest* request,
+        rpc::camera_server::SetAttitudeQuaternionResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
+            if (response != nullptr) {
+                
+                // For server plugins, this should never happen, they should always be constructible.
+                auto result = mavsdk::CameraServer::Result::Unknown;
+                fillResponseWithResult(response, result);
+            }
+            
+            return grpc::Status::OK;
+        }
+
+        if (request == nullptr) {
+            LogWarn("SetAttitudeQuaternion sent with a null request! Ignoring...");
+            return grpc::Status::OK;
+        }
+            
+        
+        auto result = _lazy_plugin.maybe_plugin()->set_attitude_quaternion(translateFromRpcQuaternion(request->attitude_quaternion()));
+        
+
+        
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+        
+
+        return grpc::Status::OK;
+    }
+
 
     void stop() {
         _stopped.store(true);

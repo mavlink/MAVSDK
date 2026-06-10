@@ -63,6 +63,8 @@ static const char* CameraServerService_method_names[] = {
   "/mavsdk.rpc.camera_server.CameraServerService/RespondTrackingPointCommand",
   "/mavsdk.rpc.camera_server.CameraServerService/RespondTrackingRectangleCommand",
   "/mavsdk.rpc.camera_server.CameraServerService/RespondTrackingOffCommand",
+  "/mavsdk.rpc.camera_server.CameraServerService/SetPosition",
+  "/mavsdk.rpc.camera_server.CameraServerService/SetAttitudeQuaternion",
 };
 
 std::unique_ptr< CameraServerService::Stub> CameraServerService::NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options) {
@@ -111,6 +113,8 @@ CameraServerService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>
   , rpcmethod_RespondTrackingPointCommand_(CameraServerService_method_names[36], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_RespondTrackingRectangleCommand_(CameraServerService_method_names[37], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_RespondTrackingOffCommand_(CameraServerService_method_names[38], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SetPosition_(CameraServerService_method_names[39], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SetAttitudeQuaternion_(CameraServerService_method_names[40], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   {}
 
 ::grpc::Status CameraServerService::Stub::SetInformation(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetInformationRequest& request, ::mavsdk::rpc::camera_server::SetInformationResponse* response) {
@@ -891,6 +895,52 @@ void CameraServerService::Stub::async::RespondTrackingOffCommand(::grpc::ClientC
   return result;
 }
 
+::grpc::Status CameraServerService::Stub::SetPosition(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetPositionRequest& request, ::mavsdk::rpc::camera_server::SetPositionResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::camera_server::SetPositionRequest, ::mavsdk::rpc::camera_server::SetPositionResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_SetPosition_, context, request, response);
+}
+
+void CameraServerService::Stub::async::SetPosition(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetPositionRequest* request, ::mavsdk::rpc::camera_server::SetPositionResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::camera_server::SetPositionRequest, ::mavsdk::rpc::camera_server::SetPositionResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SetPosition_, context, request, response, std::move(f));
+}
+
+void CameraServerService::Stub::async::SetPosition(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetPositionRequest* request, ::mavsdk::rpc::camera_server::SetPositionResponse* response, ::grpc::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SetPosition_, context, request, response, reactor);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::SetPositionResponse>* CameraServerService::Stub::PrepareAsyncSetPositionRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetPositionRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::camera_server::SetPositionResponse, ::mavsdk::rpc::camera_server::SetPositionRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_SetPosition_, context, request);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::SetPositionResponse>* CameraServerService::Stub::AsyncSetPositionRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetPositionRequest& request, ::grpc::CompletionQueue* cq) {
+  auto* result =
+    this->PrepareAsyncSetPositionRaw(context, request, cq);
+  result->StartCall();
+  return result;
+}
+
+::grpc::Status CameraServerService::Stub::SetAttitudeQuaternion(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetAttitudeQuaternionRequest& request, ::mavsdk::rpc::camera_server::SetAttitudeQuaternionResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::camera_server::SetAttitudeQuaternionRequest, ::mavsdk::rpc::camera_server::SetAttitudeQuaternionResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_SetAttitudeQuaternion_, context, request, response);
+}
+
+void CameraServerService::Stub::async::SetAttitudeQuaternion(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetAttitudeQuaternionRequest* request, ::mavsdk::rpc::camera_server::SetAttitudeQuaternionResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::camera_server::SetAttitudeQuaternionRequest, ::mavsdk::rpc::camera_server::SetAttitudeQuaternionResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SetAttitudeQuaternion_, context, request, response, std::move(f));
+}
+
+void CameraServerService::Stub::async::SetAttitudeQuaternion(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetAttitudeQuaternionRequest* request, ::mavsdk::rpc::camera_server::SetAttitudeQuaternionResponse* response, ::grpc::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SetAttitudeQuaternion_, context, request, response, reactor);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::SetAttitudeQuaternionResponse>* CameraServerService::Stub::PrepareAsyncSetAttitudeQuaternionRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetAttitudeQuaternionRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::camera_server::SetAttitudeQuaternionResponse, ::mavsdk::rpc::camera_server::SetAttitudeQuaternionRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_SetAttitudeQuaternion_, context, request);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::SetAttitudeQuaternionResponse>* CameraServerService::Stub::AsyncSetAttitudeQuaternionRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetAttitudeQuaternionRequest& request, ::grpc::CompletionQueue* cq) {
+  auto* result =
+    this->PrepareAsyncSetAttitudeQuaternionRaw(context, request, cq);
+  result->StartCall();
+  return result;
+}
+
 CameraServerService::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       CameraServerService_method_names[0],
@@ -1282,6 +1332,26 @@ CameraServerService::Service::Service() {
              ::mavsdk::rpc::camera_server::RespondTrackingOffCommandResponse* resp) {
                return service->RespondTrackingOffCommand(ctx, req, resp);
              }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      CameraServerService_method_names[39],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< CameraServerService::Service, ::mavsdk::rpc::camera_server::SetPositionRequest, ::mavsdk::rpc::camera_server::SetPositionResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+          [](CameraServerService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::mavsdk::rpc::camera_server::SetPositionRequest* req,
+             ::mavsdk::rpc::camera_server::SetPositionResponse* resp) {
+               return service->SetPosition(ctx, req, resp);
+             }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      CameraServerService_method_names[40],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< CameraServerService::Service, ::mavsdk::rpc::camera_server::SetAttitudeQuaternionRequest, ::mavsdk::rpc::camera_server::SetAttitudeQuaternionResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+          [](CameraServerService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::mavsdk::rpc::camera_server::SetAttitudeQuaternionRequest* req,
+             ::mavsdk::rpc::camera_server::SetAttitudeQuaternionResponse* resp) {
+               return service->SetAttitudeQuaternion(ctx, req, resp);
+             }, this)));
 }
 
 CameraServerService::Service::~Service() {
@@ -1554,6 +1624,20 @@ CameraServerService::Service::~Service() {
 }
 
 ::grpc::Status CameraServerService::Service::RespondTrackingOffCommand(::grpc::ServerContext* context, const ::mavsdk::rpc::camera_server::RespondTrackingOffCommandRequest* request, ::mavsdk::rpc::camera_server::RespondTrackingOffCommandResponse* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status CameraServerService::Service::SetPosition(::grpc::ServerContext* context, const ::mavsdk::rpc::camera_server::SetPositionRequest* request, ::mavsdk::rpc::camera_server::SetPositionResponse* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status CameraServerService::Service::SetAttitudeQuaternion(::grpc::ServerContext* context, const ::mavsdk::rpc::camera_server::SetAttitudeQuaternionRequest* request, ::mavsdk::rpc::camera_server::SetAttitudeQuaternionResponse* response) {
   (void) context;
   (void) request;
   (void) response;

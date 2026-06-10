@@ -24,6 +24,8 @@ public:
     CameraServer::Result set_information(CameraServer::Information information);
     CameraServer::Result set_video_streaming(CameraServer::VideoStreaming video_streaming);
     CameraServer::Result set_in_progress(bool in_progress);
+    CameraServer::Result set_position(CameraServer::Position position);
+    CameraServer::Result set_attitude_quaternion(CameraServer::Quaternion attitude_quaternion);
 
     CameraServer::TakePhotoHandle
     subscribe_take_photo(const CameraServer::TakePhotoCallback& callback);
@@ -203,7 +205,12 @@ private:
 
     void send_capture_status();
 
+    std::optional<mavlink_command_ack_t>
+    send_fov_status(const MavlinkCommandReceiver::CommandLong& command);
+
     bool _is_information_set{};
+    bool _is_position_set{};
+    bool _is_attitude_quaternion_set{};
 
     std::mutex _mutex{};
 
@@ -219,6 +226,8 @@ private:
     CallEveryHandler::Cookie _capture_status_timer_cookie{};
 
     CameraServer::Information _information{};
+    CameraServer::Position _position{};
+    CameraServer::Quaternion _attitude_quaternion{};
     bool _is_video_streaming_set{};
     CameraServer::VideoStreaming _video_streaming{};
 
