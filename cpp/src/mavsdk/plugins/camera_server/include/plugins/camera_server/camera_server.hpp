@@ -1355,6 +1355,38 @@ public:
 
 
 
+
+
+    /**
+     * @brief Set the camera's GPS position.
+     *
+     * This function is blocking.
+     *
+     
+     * @return Result of request.
+     
+     */
+    Result set_position(Position position) const;
+
+
+
+
+
+
+    /**
+     * @brief Set the camera's attitude quaternion.
+     *
+     * This function is blocking.
+     *
+     
+     * @return Result of request.
+     
+     */
+    Result set_attitude_quaternion(Quaternion attitude_quaternion) const;
+
+
+
+
     /**
      * @brief Copy constructor.
      */

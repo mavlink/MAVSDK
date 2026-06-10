@@ -1143,6 +1143,9 @@ CameraServerImpl::process_request_message(const MavlinkCommandReceiver::CommandL
             return _server_component_impl->make_command_ack_message(
                 command, MAV_RESULT::MAV_RESULT_ACCEPTED);
 
+        case MAVLINK_MSG_ID_CAMERA_FOV_STATUS:
+            return send_fov_status(command);
+
         default:
             LogWarn("Got unknown request message!");
             return _server_component_impl->make_command_ack_message(
@@ -1427,6 +1430,84 @@ void CameraServerImpl::send_capture_status()
             0);
         return message;
     });
+}
+
+CameraServer::Result CameraServerImpl::set_position(CameraServer::Position position)
+{
+    std::lock_guard<std::mutex> lg{_mutex};
+    _position = position;
+    _is_position_set = true;
+    return CameraServer::Result::Success;
+}
+
+CameraServer::Result
+CameraServerImpl::set_attitude_quaternion(CameraServer::Quaternion attitude_quaternion)
+{
+    std::lock_guard<std::mutex> lg{_mutex};
+    _attitude_quaternion = attitude_quaternion;
+    _is_attitude_quaternion_set = true;
+    return CameraServer::Result::Success;
+}
+
+std::optional<mavlink_command_ack_t>
+CameraServerImpl::send_fov_status(const MavlinkCommandReceiver::CommandLong& command)
+{
+    std::lock_guard<std::mutex> lg{_mutex};
+
+    if (!_is_information_set) {
+        return _server_component_impl->make_command_ack_message(
+            command, MAV_RESULT::MAV_RESULT_TEMPORARILY_REJECTED);
+    }
+
+    const float hfov_deg =
+        2.0f *
+        std::atan2(_information.horizontal_sensor_size_mm, 2.0f * _information.focal_length_mm) *
+        static_cast<float>(180.0 / M_PI);
+    const float vfov_deg =
+        2.0f *
+        std::atan2(_information.vertical_sensor_size_mm, 2.0f * _information.focal_length_mm) *
+        static_cast<float>(180.0 / M_PI);
+
+    const int32_t lat_camera =
+        _is_position_set ? static_cast<int32_t>(_position.latitude_deg * 1e7) : INT32_MAX;
+    const int32_t lon_camera =
+        _is_position_set ? static_cast<int32_t>(_position.longitude_deg * 1e7) : INT32_MAX;
+    const int32_t alt_camera =
+        _is_position_set ? static_cast<int32_t>(_position.absolute_altitude_m * 1e3) : INT32_MAX;
+
+    const float q[4] = {
+        _is_attitude_quaternion_set ? _attitude_quaternion.w : 1.0f,
+        _is_attitude_quaternion_set ? _attitude_quaternion.x : 0.0f,
+        _is_attitude_quaternion_set ? _attitude_quaternion.y : 0.0f,
+        _is_attitude_quaternion_set ? _attitude_quaternion.z : 0.0f,
+    };
+
+    auto ack =
+        _server_component_impl->make_command_ack_message(command, MAV_RESULT::MAV_RESULT_ACCEPTED);
+    _server_component_impl->send_command_ack(ack);
+
+    _server_component_impl->queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
+        mavlink_message_t message{};
+        mavlink_msg_camera_fov_status_pack_chan(
+            mavlink_address.system_id,
+            mavlink_address.component_id,
+            channel,
+            &message,
+            static_cast<uint32_t>(_server_component_impl->get_time().elapsed_s() * 1e3),
+            lat_camera,
+            lon_camera,
+            alt_camera,
+            INT32_MAX, // lat_image: unknown, requires terrain intersection
+            INT32_MAX, // lon_image: unknown, requires terrain intersection
+            INT32_MAX, // alt_image: unknown, requires terrain intersection
+            q,
+            hfov_deg,
+            vfov_deg,
+            0 /* camera_device_id: 0 = MAVLink camera */);
+        return message;
+    });
+
+    return std::nullopt; // ACK already sent
 }
 
 std::optional<mavlink_command_ack_t>
