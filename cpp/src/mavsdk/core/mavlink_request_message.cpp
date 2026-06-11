@@ -2,6 +2,7 @@
 #include "log.hpp"
 #include "mavlink_request_message.hpp"
 #include "system_impl.hpp"
+#include <algorithm>
 #include <cstdint>
 #include <string>
 
@@ -25,6 +26,13 @@ MavlinkRequestMessage::MavlinkRequestMessage(
     }
 }
 
+MavlinkRequestMessage::~MavlinkRequestMessage()
+{
+    // The message handler holds callbacks capturing 'this', so make sure none of
+    // them can fire after we are gone.
+    _message_handler.unregister_all_blocking(this);
+}
+
 void MavlinkRequestMessage::request(
     uint32_t message_id,
     uint8_t target_component,
@@ -32,18 +40,6 @@ void MavlinkRequestMessage::request(
     uint32_t param2)
 {
     std::unique_lock<std::mutex> lock(_mutex);
-
-    // Cleanup previous requests.
-    bool handler_still_registered = false;
-    for (auto it = _deferred_message_cleanup.begin(); it != _deferred_message_cleanup.end();) {
-        if (*it == message_id) {
-            handler_still_registered = true;
-            it = _deferred_message_cleanup.erase(it);
-        } else {
-            _message_handler.unregister_one(*it, this);
-            it = _deferred_message_cleanup.erase(it);
-        }
-    }
 
     // Respond with 'Busy' if already in progress.
     for (auto& item : _work_items) {
@@ -63,8 +59,13 @@ void MavlinkRequestMessage::request(
     // Otherwise, schedule it.
     _work_items.emplace_back(WorkItem{message_id, target_component, callback, param2});
 
-    // Register for message ONLY if an active lower-level hook doesn't exist
-    if (!handler_still_registered) {
+    // Register a handler for this message id if we don't have one yet. We keep
+    // it registered for our lifetime; handle_any_message is a no-op when no work
+    // item is waiting, and this avoids the races of registering and
+    // unregistering per request.
+    if (std::find(_registered_message_ids.begin(), _registered_message_ids.end(), message_id) ==
+        _registered_message_ids.end()) {
+        _registered_message_ids.push_back(message_id);
         _message_handler.register_one(
             message_id,
             [this](const mavlink_message_t& message) { handle_any_message(message); },
@@ -227,10 +228,9 @@ void MavlinkRequestMessage::handle_any_message(const mavlink_message_t& message)
         // of the command later, we ignore it, and we fake the result to be successful
         // anyway.
         auto temp_callback = it->callback;
-        // We can now get rid of the entry now.
+        // We can now get rid of the entry now. We keep the message handler
+        // registered for next time.
         _work_items.erase(it);
-        // We have to clean up later outside this callback, otherwise we lock ourselves out.
-        _deferred_message_cleanup.push_back(message.msgid);
         lock.unlock();
 
         if (temp_callback) {
@@ -275,7 +275,6 @@ void MavlinkRequestMessage::handle_command_result(
                 if (++it->retries > RETRIES) {
                     // We have already retried, let's give up.
                     auto temp_callback = it->callback;
-                    _message_handler.unregister_one(it->message_id, this);
                     _work_items.erase(it);
                     lock.unlock();
                     if (temp_callback) {
@@ -298,7 +297,6 @@ void MavlinkRequestMessage::handle_command_result(
                 // It looks like this did not work, and we can report the error
                 // No need to try again.
                 auto temp_callback = it->callback;
-                _message_handler.unregister_one(it->message_id, this);
                 _work_items.erase(it);
                 lock.unlock();
                 if (temp_callback) {
@@ -327,7 +325,6 @@ void MavlinkRequestMessage::handle_timeout(uint32_t message_id, uint8_t target_c
         if (++it->retries > RETRIES) {
             // We have already retried, let's give up.
             auto temp_callback = it->callback;
-            _message_handler.unregister_one(it->message_id, this);
             _work_items.erase(it);
             lock.unlock();
             if (temp_callback) {
