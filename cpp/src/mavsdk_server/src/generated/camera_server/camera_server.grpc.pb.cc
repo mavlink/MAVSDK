@@ -65,6 +65,8 @@ static const char* CameraServerService_method_names[] = {
   "/mavsdk.rpc.camera_server.CameraServerService/RespondTrackingOffCommand",
   "/mavsdk.rpc.camera_server.CameraServerService/SetPosition",
   "/mavsdk.rpc.camera_server.CameraServerService/SetAttitudeQuaternion",
+  "/mavsdk.rpc.camera_server.CameraServerService/SetZoomFactor",
+  "/mavsdk.rpc.camera_server.CameraServerService/SetFieldOfView",
 };
 
 std::unique_ptr< CameraServerService::Stub> CameraServerService::NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options) {
@@ -115,6 +117,8 @@ CameraServerService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>
   , rpcmethod_RespondTrackingOffCommand_(CameraServerService_method_names[38], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_SetPosition_(CameraServerService_method_names[39], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_SetAttitudeQuaternion_(CameraServerService_method_names[40], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SetZoomFactor_(CameraServerService_method_names[41], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SetFieldOfView_(CameraServerService_method_names[42], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   {}
 
 ::grpc::Status CameraServerService::Stub::SetInformation(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetInformationRequest& request, ::mavsdk::rpc::camera_server::SetInformationResponse* response) {
@@ -941,6 +945,52 @@ void CameraServerService::Stub::async::SetAttitudeQuaternion(::grpc::ClientConte
   return result;
 }
 
+::grpc::Status CameraServerService::Stub::SetZoomFactor(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetZoomFactorRequest& request, ::mavsdk::rpc::camera_server::SetZoomFactorResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::camera_server::SetZoomFactorRequest, ::mavsdk::rpc::camera_server::SetZoomFactorResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_SetZoomFactor_, context, request, response);
+}
+
+void CameraServerService::Stub::async::SetZoomFactor(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetZoomFactorRequest* request, ::mavsdk::rpc::camera_server::SetZoomFactorResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::camera_server::SetZoomFactorRequest, ::mavsdk::rpc::camera_server::SetZoomFactorResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SetZoomFactor_, context, request, response, std::move(f));
+}
+
+void CameraServerService::Stub::async::SetZoomFactor(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetZoomFactorRequest* request, ::mavsdk::rpc::camera_server::SetZoomFactorResponse* response, ::grpc::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SetZoomFactor_, context, request, response, reactor);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::SetZoomFactorResponse>* CameraServerService::Stub::PrepareAsyncSetZoomFactorRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetZoomFactorRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::camera_server::SetZoomFactorResponse, ::mavsdk::rpc::camera_server::SetZoomFactorRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_SetZoomFactor_, context, request);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::SetZoomFactorResponse>* CameraServerService::Stub::AsyncSetZoomFactorRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetZoomFactorRequest& request, ::grpc::CompletionQueue* cq) {
+  auto* result =
+    this->PrepareAsyncSetZoomFactorRaw(context, request, cq);
+  result->StartCall();
+  return result;
+}
+
+::grpc::Status CameraServerService::Stub::SetFieldOfView(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetFieldOfViewRequest& request, ::mavsdk::rpc::camera_server::SetFieldOfViewResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::camera_server::SetFieldOfViewRequest, ::mavsdk::rpc::camera_server::SetFieldOfViewResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_SetFieldOfView_, context, request, response);
+}
+
+void CameraServerService::Stub::async::SetFieldOfView(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetFieldOfViewRequest* request, ::mavsdk::rpc::camera_server::SetFieldOfViewResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::camera_server::SetFieldOfViewRequest, ::mavsdk::rpc::camera_server::SetFieldOfViewResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SetFieldOfView_, context, request, response, std::move(f));
+}
+
+void CameraServerService::Stub::async::SetFieldOfView(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetFieldOfViewRequest* request, ::mavsdk::rpc::camera_server::SetFieldOfViewResponse* response, ::grpc::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SetFieldOfView_, context, request, response, reactor);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::SetFieldOfViewResponse>* CameraServerService::Stub::PrepareAsyncSetFieldOfViewRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetFieldOfViewRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::camera_server::SetFieldOfViewResponse, ::mavsdk::rpc::camera_server::SetFieldOfViewRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_SetFieldOfView_, context, request);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::SetFieldOfViewResponse>* CameraServerService::Stub::AsyncSetFieldOfViewRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetFieldOfViewRequest& request, ::grpc::CompletionQueue* cq) {
+  auto* result =
+    this->PrepareAsyncSetFieldOfViewRaw(context, request, cq);
+  result->StartCall();
+  return result;
+}
+
 CameraServerService::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       CameraServerService_method_names[0],
@@ -1352,6 +1402,26 @@ CameraServerService::Service::Service() {
              ::mavsdk::rpc::camera_server::SetAttitudeQuaternionResponse* resp) {
                return service->SetAttitudeQuaternion(ctx, req, resp);
              }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      CameraServerService_method_names[41],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< CameraServerService::Service, ::mavsdk::rpc::camera_server::SetZoomFactorRequest, ::mavsdk::rpc::camera_server::SetZoomFactorResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+          [](CameraServerService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::mavsdk::rpc::camera_server::SetZoomFactorRequest* req,
+             ::mavsdk::rpc::camera_server::SetZoomFactorResponse* resp) {
+               return service->SetZoomFactor(ctx, req, resp);
+             }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      CameraServerService_method_names[42],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< CameraServerService::Service, ::mavsdk::rpc::camera_server::SetFieldOfViewRequest, ::mavsdk::rpc::camera_server::SetFieldOfViewResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+          [](CameraServerService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::mavsdk::rpc::camera_server::SetFieldOfViewRequest* req,
+             ::mavsdk::rpc::camera_server::SetFieldOfViewResponse* resp) {
+               return service->SetFieldOfView(ctx, req, resp);
+             }, this)));
 }
 
 CameraServerService::Service::~Service() {
@@ -1638,6 +1708,20 @@ CameraServerService::Service::~Service() {
 }
 
 ::grpc::Status CameraServerService::Service::SetAttitudeQuaternion(::grpc::ServerContext* context, const ::mavsdk::rpc::camera_server::SetAttitudeQuaternionRequest* request, ::mavsdk::rpc::camera_server::SetAttitudeQuaternionResponse* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status CameraServerService::Service::SetZoomFactor(::grpc::ServerContext* context, const ::mavsdk::rpc::camera_server::SetZoomFactorRequest* request, ::mavsdk::rpc::camera_server::SetZoomFactorResponse* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status CameraServerService::Service::SetFieldOfView(::grpc::ServerContext* context, const ::mavsdk::rpc::camera_server::SetFieldOfViewRequest* request, ::mavsdk::rpc::camera_server::SetFieldOfViewResponse* response) {
   (void) context;
   (void) request;
   (void) response;

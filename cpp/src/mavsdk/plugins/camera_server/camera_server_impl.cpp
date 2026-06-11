@@ -1448,6 +1448,24 @@ CameraServerImpl::set_attitude_quaternion(CameraServer::Quaternion attitude_quat
     return CameraServer::Result::Success;
 }
 
+CameraServer::Result CameraServerImpl::set_zoom_factor(float zoom_factor)
+{
+    std::lock_guard<std::mutex> lg{_mutex};
+    _zoom_factor = zoom_factor;
+    _is_zoom_factor_set = true;
+    return CameraServer::Result::Success;
+}
+
+CameraServer::Result
+CameraServerImpl::set_field_of_view(float horizontal_fov_deg, float vertical_fov_deg)
+{
+    std::lock_guard<std::mutex> lg{_mutex};
+    _horizontal_fov_deg = horizontal_fov_deg;
+    _vertical_fov_deg = vertical_fov_deg;
+    _is_fov_set = true;
+    return CameraServer::Result::Success;
+}
+
 std::optional<mavlink_command_ack_t>
 CameraServerImpl::send_fov_status(const MavlinkCommandReceiver::CommandLong& command)
 {
@@ -1458,14 +1476,32 @@ CameraServerImpl::send_fov_status(const MavlinkCommandReceiver::CommandLong& com
             command, MAV_RESULT::MAV_RESULT_TEMPORARILY_REJECTED);
     }
 
-    const float hfov_deg =
-        2.0f *
-        std::atan2(_information.horizontal_sensor_size_mm, 2.0f * _information.focal_length_mm) *
-        static_cast<float>(180.0 / M_PI);
-    const float vfov_deg =
-        2.0f *
-        std::atan2(_information.vertical_sensor_size_mm, 2.0f * _information.focal_length_mm) *
-        static_cast<float>(180.0 / M_PI);
+    float hfov_deg;
+    float vfov_deg;
+    if (_is_zoom_factor_set) {
+        const float focal_length_mm = _information.focal_length_mm * _zoom_factor;
+        hfov_deg = 2.0f *
+                   std::atan((_information.horizontal_sensor_size_mm / 2.0f) / focal_length_mm) *
+                   (180.0f / static_cast<float>(M_PI));
+        vfov_deg = 2.0f *
+                   std::atan((_information.vertical_sensor_size_mm / 2.0f) / focal_length_mm) *
+                   (180.0f / static_cast<float>(M_PI));
+    } else if (_is_fov_set) {
+        hfov_deg = _horizontal_fov_deg;
+        vfov_deg = _vertical_fov_deg;
+    } else {
+        // Fall back to base FOV derived from camera information (no zoom applied)
+        hfov_deg =
+            2.0f *
+            std::atan(
+                (_information.horizontal_sensor_size_mm / 2.0f) / _information.focal_length_mm) *
+            (180.0f / static_cast<float>(M_PI));
+        vfov_deg =
+            2.0f *
+            std::atan(
+                (_information.vertical_sensor_size_mm / 2.0f) / _information.focal_length_mm) *
+            (180.0f / static_cast<float>(M_PI));
+    }
 
     const int32_t lat_camera =
         _is_position_set ? static_cast<int32_t>(_position.latitude_deg * 1e7) : INT32_MAX;

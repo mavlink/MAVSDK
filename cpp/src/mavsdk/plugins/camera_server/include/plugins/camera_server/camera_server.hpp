@@ -1387,6 +1387,38 @@ public:
 
 
 
+
+
+    /**
+     * @brief Set the camera's zoom factor for CAMERA_FOV_STATUS reporting.
+     *
+     * This function is blocking.
+     *
+     
+     * @return Result of request.
+     
+     */
+    Result set_zoom_factor(float zoom_factor) const;
+
+
+
+
+
+
+    /**
+     * @brief Set the field of view explicitly, for cameras that do not report a zoom factor.
+     *
+     * This function is blocking.
+     *
+     
+     * @return Result of request.
+     
+     */
+    Result set_field_of_view(float horizontal_fov_deg, float vertical_fov_deg) const;
+
+
+
+
     /**
      * @brief Copy constructor.
      */
