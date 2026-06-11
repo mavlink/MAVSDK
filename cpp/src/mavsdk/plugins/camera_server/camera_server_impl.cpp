@@ -1450,6 +1450,10 @@ CameraServerImpl::set_attitude_quaternion(CameraServer::Quaternion attitude_quat
 
 CameraServer::Result CameraServerImpl::set_zoom_factor(float zoom_factor)
 {
+    if (!std::isfinite(zoom_factor) || zoom_factor < 1.0f) {
+        LogWarn("Invalid zoom factor: {}", zoom_factor);
+        return CameraServer::Result::WrongArgument;
+    }
     std::lock_guard<std::mutex> lg{_mutex};
     _zoom_factor = zoom_factor;
     _is_zoom_factor_set = true;
@@ -1459,6 +1463,18 @@ CameraServer::Result CameraServerImpl::set_zoom_factor(float zoom_factor)
 CameraServer::Result
 CameraServerImpl::set_field_of_view(float horizontal_fov_deg, float vertical_fov_deg)
 {
+    if (!std::isfinite(horizontal_fov_deg) || horizontal_fov_deg <= 0.0f ||
+        horizontal_fov_deg >= 180.0f) {
+        LogWarn("Invalid horizontal FOV: {}", horizontal_fov_deg);
+        return CameraServer::Result::WrongArgument;
+    }
+
+    if (!std::isfinite(vertical_fov_deg) || vertical_fov_deg <= 0.0f ||
+        vertical_fov_deg >= 180.0f) {
+        LogWarn("Invalid vertical FOV: {}", vertical_fov_deg);
+        return CameraServer::Result::WrongArgument;
+    }
+
     std::lock_guard<std::mutex> lg{_mutex};
     _horizontal_fov_deg = horizontal_fov_deg;
     _vertical_fov_deg = vertical_fov_deg;
