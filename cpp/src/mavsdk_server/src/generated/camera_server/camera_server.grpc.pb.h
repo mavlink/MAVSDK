@@ -400,6 +400,22 @@ class CameraServerService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::SetAttitudeQuaternionResponse>> PrepareAsyncSetAttitudeQuaternion(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetAttitudeQuaternionRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::SetAttitudeQuaternionResponse>>(PrepareAsyncSetAttitudeQuaternionRaw(context, request, cq));
     }
+    // Set the camera's zoom factor for CAMERA_FOV_STATUS reporting.
+    virtual ::grpc::Status SetZoomFactor(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetZoomFactorRequest& request, ::mavsdk::rpc::camera_server::SetZoomFactorResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::SetZoomFactorResponse>> AsyncSetZoomFactor(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetZoomFactorRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::SetZoomFactorResponse>>(AsyncSetZoomFactorRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::SetZoomFactorResponse>> PrepareAsyncSetZoomFactor(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetZoomFactorRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::SetZoomFactorResponse>>(PrepareAsyncSetZoomFactorRaw(context, request, cq));
+    }
+    // Set the field of view explicitly, for cameras that do not report a zoom factor.
+    virtual ::grpc::Status SetFieldOfView(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetFieldOfViewRequest& request, ::mavsdk::rpc::camera_server::SetFieldOfViewResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::SetFieldOfViewResponse>> AsyncSetFieldOfView(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetFieldOfViewRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::SetFieldOfViewResponse>>(AsyncSetFieldOfViewRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::SetFieldOfViewResponse>> PrepareAsyncSetFieldOfView(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetFieldOfViewRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::SetFieldOfViewResponse>>(PrepareAsyncSetFieldOfViewRaw(context, request, cq));
+    }
     class async_interface {
      public:
       virtual ~async_interface() {}
@@ -509,6 +525,12 @@ class CameraServerService final {
       // Set the camera's attitude quaternion.
       virtual void SetAttitudeQuaternion(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetAttitudeQuaternionRequest* request, ::mavsdk::rpc::camera_server::SetAttitudeQuaternionResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void SetAttitudeQuaternion(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetAttitudeQuaternionRequest* request, ::mavsdk::rpc::camera_server::SetAttitudeQuaternionResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      // Set the camera's zoom factor for CAMERA_FOV_STATUS reporting.
+      virtual void SetZoomFactor(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetZoomFactorRequest* request, ::mavsdk::rpc::camera_server::SetZoomFactorResponse* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void SetZoomFactor(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetZoomFactorRequest* request, ::mavsdk::rpc::camera_server::SetZoomFactorResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      // Set the field of view explicitly, for cameras that do not report a zoom factor.
+      virtual void SetFieldOfView(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetFieldOfViewRequest* request, ::mavsdk::rpc::camera_server::SetFieldOfViewResponse* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void SetFieldOfView(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetFieldOfViewRequest* request, ::mavsdk::rpc::camera_server::SetFieldOfViewResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
     };
     typedef class async_interface experimental_async_interface;
     virtual class async_interface* async() { return nullptr; }
@@ -613,6 +635,10 @@ class CameraServerService final {
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::SetPositionResponse>* PrepareAsyncSetPositionRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetPositionRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::SetAttitudeQuaternionResponse>* AsyncSetAttitudeQuaternionRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetAttitudeQuaternionRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::SetAttitudeQuaternionResponse>* PrepareAsyncSetAttitudeQuaternionRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetAttitudeQuaternionRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::SetZoomFactorResponse>* AsyncSetZoomFactorRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetZoomFactorRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::SetZoomFactorResponse>* PrepareAsyncSetZoomFactorRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetZoomFactorRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::SetFieldOfViewResponse>* AsyncSetFieldOfViewRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetFieldOfViewRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::SetFieldOfViewResponse>* PrepareAsyncSetFieldOfViewRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetFieldOfViewRequest& request, ::grpc::CompletionQueue* cq) = 0;
   };
   class Stub final : public StubInterface {
    public:
@@ -938,6 +964,20 @@ class CameraServerService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::SetAttitudeQuaternionResponse>> PrepareAsyncSetAttitudeQuaternion(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetAttitudeQuaternionRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::SetAttitudeQuaternionResponse>>(PrepareAsyncSetAttitudeQuaternionRaw(context, request, cq));
     }
+    ::grpc::Status SetZoomFactor(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetZoomFactorRequest& request, ::mavsdk::rpc::camera_server::SetZoomFactorResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::SetZoomFactorResponse>> AsyncSetZoomFactor(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetZoomFactorRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::SetZoomFactorResponse>>(AsyncSetZoomFactorRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::SetZoomFactorResponse>> PrepareAsyncSetZoomFactor(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetZoomFactorRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::SetZoomFactorResponse>>(PrepareAsyncSetZoomFactorRaw(context, request, cq));
+    }
+    ::grpc::Status SetFieldOfView(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetFieldOfViewRequest& request, ::mavsdk::rpc::camera_server::SetFieldOfViewResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::SetFieldOfViewResponse>> AsyncSetFieldOfView(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetFieldOfViewRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::SetFieldOfViewResponse>>(AsyncSetFieldOfViewRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::SetFieldOfViewResponse>> PrepareAsyncSetFieldOfView(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetFieldOfViewRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::SetFieldOfViewResponse>>(PrepareAsyncSetFieldOfViewRaw(context, request, cq));
+    }
     class async final :
       public StubInterface::async_interface {
      public:
@@ -1006,6 +1046,10 @@ class CameraServerService final {
       void SetPosition(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetPositionRequest* request, ::mavsdk::rpc::camera_server::SetPositionResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
       void SetAttitudeQuaternion(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetAttitudeQuaternionRequest* request, ::mavsdk::rpc::camera_server::SetAttitudeQuaternionResponse* response, std::function<void(::grpc::Status)>) override;
       void SetAttitudeQuaternion(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetAttitudeQuaternionRequest* request, ::mavsdk::rpc::camera_server::SetAttitudeQuaternionResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void SetZoomFactor(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetZoomFactorRequest* request, ::mavsdk::rpc::camera_server::SetZoomFactorResponse* response, std::function<void(::grpc::Status)>) override;
+      void SetZoomFactor(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetZoomFactorRequest* request, ::mavsdk::rpc::camera_server::SetZoomFactorResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void SetFieldOfView(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetFieldOfViewRequest* request, ::mavsdk::rpc::camera_server::SetFieldOfViewResponse* response, std::function<void(::grpc::Status)>) override;
+      void SetFieldOfView(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetFieldOfViewRequest* request, ::mavsdk::rpc::camera_server::SetFieldOfViewResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
      private:
       friend class Stub;
       explicit async(Stub* stub): stub_(stub) { }
@@ -1116,6 +1160,10 @@ class CameraServerService final {
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::SetPositionResponse>* PrepareAsyncSetPositionRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetPositionRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::SetAttitudeQuaternionResponse>* AsyncSetAttitudeQuaternionRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetAttitudeQuaternionRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::SetAttitudeQuaternionResponse>* PrepareAsyncSetAttitudeQuaternionRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetAttitudeQuaternionRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::SetZoomFactorResponse>* AsyncSetZoomFactorRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetZoomFactorRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::SetZoomFactorResponse>* PrepareAsyncSetZoomFactorRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetZoomFactorRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::SetFieldOfViewResponse>* AsyncSetFieldOfViewRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetFieldOfViewRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::SetFieldOfViewResponse>* PrepareAsyncSetFieldOfViewRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetFieldOfViewRequest& request, ::grpc::CompletionQueue* cq) override;
     const ::grpc::internal::RpcMethod rpcmethod_SetInformation_;
     const ::grpc::internal::RpcMethod rpcmethod_SetVideoStreaming_;
     const ::grpc::internal::RpcMethod rpcmethod_SetInProgress_;
@@ -1157,6 +1205,8 @@ class CameraServerService final {
     const ::grpc::internal::RpcMethod rpcmethod_RespondTrackingOffCommand_;
     const ::grpc::internal::RpcMethod rpcmethod_SetPosition_;
     const ::grpc::internal::RpcMethod rpcmethod_SetAttitudeQuaternion_;
+    const ::grpc::internal::RpcMethod rpcmethod_SetZoomFactor_;
+    const ::grpc::internal::RpcMethod rpcmethod_SetFieldOfView_;
   };
   static std::unique_ptr<Stub> NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
 
@@ -1246,6 +1296,10 @@ class CameraServerService final {
     virtual ::grpc::Status SetPosition(::grpc::ServerContext* context, const ::mavsdk::rpc::camera_server::SetPositionRequest* request, ::mavsdk::rpc::camera_server::SetPositionResponse* response);
     // Set the camera's attitude quaternion.
     virtual ::grpc::Status SetAttitudeQuaternion(::grpc::ServerContext* context, const ::mavsdk::rpc::camera_server::SetAttitudeQuaternionRequest* request, ::mavsdk::rpc::camera_server::SetAttitudeQuaternionResponse* response);
+    // Set the camera's zoom factor for CAMERA_FOV_STATUS reporting.
+    virtual ::grpc::Status SetZoomFactor(::grpc::ServerContext* context, const ::mavsdk::rpc::camera_server::SetZoomFactorRequest* request, ::mavsdk::rpc::camera_server::SetZoomFactorResponse* response);
+    // Set the field of view explicitly, for cameras that do not report a zoom factor.
+    virtual ::grpc::Status SetFieldOfView(::grpc::ServerContext* context, const ::mavsdk::rpc::camera_server::SetFieldOfViewRequest* request, ::mavsdk::rpc::camera_server::SetFieldOfViewResponse* response);
   };
   template <class BaseClass>
   class WithAsyncMethod_SetInformation : public BaseClass {
@@ -2067,7 +2121,47 @@ class CameraServerService final {
       ::grpc::Service::RequestAsyncUnary(40, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
-  typedef WithAsyncMethod_SetInformation<WithAsyncMethod_SetVideoStreaming<WithAsyncMethod_SetInProgress<WithAsyncMethod_SubscribeTakePhoto<WithAsyncMethod_RespondTakePhoto<WithAsyncMethod_SubscribeStartVideo<WithAsyncMethod_RespondStartVideo<WithAsyncMethod_SubscribeStopVideo<WithAsyncMethod_RespondStopVideo<WithAsyncMethod_SubscribeStartVideoStreaming<WithAsyncMethod_RespondStartVideoStreaming<WithAsyncMethod_SubscribeStopVideoStreaming<WithAsyncMethod_RespondStopVideoStreaming<WithAsyncMethod_SubscribeSetMode<WithAsyncMethod_RespondSetMode<WithAsyncMethod_SubscribeStorageInformation<WithAsyncMethod_RespondStorageInformation<WithAsyncMethod_SubscribeCaptureStatus<WithAsyncMethod_RespondCaptureStatus<WithAsyncMethod_SubscribeFormatStorage<WithAsyncMethod_RespondFormatStorage<WithAsyncMethod_SubscribeResetSettings<WithAsyncMethod_RespondResetSettings<WithAsyncMethod_SubscribeZoomInStart<WithAsyncMethod_RespondZoomInStart<WithAsyncMethod_SubscribeZoomOutStart<WithAsyncMethod_RespondZoomOutStart<WithAsyncMethod_SubscribeZoomStop<WithAsyncMethod_RespondZoomStop<WithAsyncMethod_SubscribeZoomRange<WithAsyncMethod_RespondZoomRange<WithAsyncMethod_SetTrackingRectangleStatus<WithAsyncMethod_SetTrackingOffStatus<WithAsyncMethod_SubscribeTrackingPointCommand<WithAsyncMethod_SubscribeTrackingRectangleCommand<WithAsyncMethod_SubscribeTrackingOffCommand<WithAsyncMethod_RespondTrackingPointCommand<WithAsyncMethod_RespondTrackingRectangleCommand<WithAsyncMethod_RespondTrackingOffCommand<WithAsyncMethod_SetPosition<WithAsyncMethod_SetAttitudeQuaternion<Service > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > AsyncService;
+  template <class BaseClass>
+  class WithAsyncMethod_SetZoomFactor : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithAsyncMethod_SetZoomFactor() {
+      ::grpc::Service::MarkMethodAsync(41);
+    }
+    ~WithAsyncMethod_SetZoomFactor() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SetZoomFactor(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SetZoomFactorRequest* /*request*/, ::mavsdk::rpc::camera_server::SetZoomFactorResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestSetZoomFactor(::grpc::ServerContext* context, ::mavsdk::rpc::camera_server::SetZoomFactorRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::camera_server::SetZoomFactorResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(41, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithAsyncMethod_SetFieldOfView : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithAsyncMethod_SetFieldOfView() {
+      ::grpc::Service::MarkMethodAsync(42);
+    }
+    ~WithAsyncMethod_SetFieldOfView() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SetFieldOfView(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SetFieldOfViewRequest* /*request*/, ::mavsdk::rpc::camera_server::SetFieldOfViewResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestSetFieldOfView(::grpc::ServerContext* context, ::mavsdk::rpc::camera_server::SetFieldOfViewRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::camera_server::SetFieldOfViewResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(42, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  typedef WithAsyncMethod_SetInformation<WithAsyncMethod_SetVideoStreaming<WithAsyncMethod_SetInProgress<WithAsyncMethod_SubscribeTakePhoto<WithAsyncMethod_RespondTakePhoto<WithAsyncMethod_SubscribeStartVideo<WithAsyncMethod_RespondStartVideo<WithAsyncMethod_SubscribeStopVideo<WithAsyncMethod_RespondStopVideo<WithAsyncMethod_SubscribeStartVideoStreaming<WithAsyncMethod_RespondStartVideoStreaming<WithAsyncMethod_SubscribeStopVideoStreaming<WithAsyncMethod_RespondStopVideoStreaming<WithAsyncMethod_SubscribeSetMode<WithAsyncMethod_RespondSetMode<WithAsyncMethod_SubscribeStorageInformation<WithAsyncMethod_RespondStorageInformation<WithAsyncMethod_SubscribeCaptureStatus<WithAsyncMethod_RespondCaptureStatus<WithAsyncMethod_SubscribeFormatStorage<WithAsyncMethod_RespondFormatStorage<WithAsyncMethod_SubscribeResetSettings<WithAsyncMethod_RespondResetSettings<WithAsyncMethod_SubscribeZoomInStart<WithAsyncMethod_RespondZoomInStart<WithAsyncMethod_SubscribeZoomOutStart<WithAsyncMethod_RespondZoomOutStart<WithAsyncMethod_SubscribeZoomStop<WithAsyncMethod_RespondZoomStop<WithAsyncMethod_SubscribeZoomRange<WithAsyncMethod_RespondZoomRange<WithAsyncMethod_SetTrackingRectangleStatus<WithAsyncMethod_SetTrackingOffStatus<WithAsyncMethod_SubscribeTrackingPointCommand<WithAsyncMethod_SubscribeTrackingRectangleCommand<WithAsyncMethod_SubscribeTrackingOffCommand<WithAsyncMethod_RespondTrackingPointCommand<WithAsyncMethod_RespondTrackingRectangleCommand<WithAsyncMethod_RespondTrackingOffCommand<WithAsyncMethod_SetPosition<WithAsyncMethod_SetAttitudeQuaternion<WithAsyncMethod_SetZoomFactor<WithAsyncMethod_SetFieldOfView<Service > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > AsyncService;
   template <class BaseClass>
   class WithCallbackMethod_SetInformation : public BaseClass {
    private:
@@ -3090,7 +3184,61 @@ class CameraServerService final {
     virtual ::grpc::ServerUnaryReactor* SetAttitudeQuaternion(
       ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SetAttitudeQuaternionRequest* /*request*/, ::mavsdk::rpc::camera_server::SetAttitudeQuaternionResponse* /*response*/)  { return nullptr; }
   };
-  typedef WithCallbackMethod_SetInformation<WithCallbackMethod_SetVideoStreaming<WithCallbackMethod_SetInProgress<WithCallbackMethod_SubscribeTakePhoto<WithCallbackMethod_RespondTakePhoto<WithCallbackMethod_SubscribeStartVideo<WithCallbackMethod_RespondStartVideo<WithCallbackMethod_SubscribeStopVideo<WithCallbackMethod_RespondStopVideo<WithCallbackMethod_SubscribeStartVideoStreaming<WithCallbackMethod_RespondStartVideoStreaming<WithCallbackMethod_SubscribeStopVideoStreaming<WithCallbackMethod_RespondStopVideoStreaming<WithCallbackMethod_SubscribeSetMode<WithCallbackMethod_RespondSetMode<WithCallbackMethod_SubscribeStorageInformation<WithCallbackMethod_RespondStorageInformation<WithCallbackMethod_SubscribeCaptureStatus<WithCallbackMethod_RespondCaptureStatus<WithCallbackMethod_SubscribeFormatStorage<WithCallbackMethod_RespondFormatStorage<WithCallbackMethod_SubscribeResetSettings<WithCallbackMethod_RespondResetSettings<WithCallbackMethod_SubscribeZoomInStart<WithCallbackMethod_RespondZoomInStart<WithCallbackMethod_SubscribeZoomOutStart<WithCallbackMethod_RespondZoomOutStart<WithCallbackMethod_SubscribeZoomStop<WithCallbackMethod_RespondZoomStop<WithCallbackMethod_SubscribeZoomRange<WithCallbackMethod_RespondZoomRange<WithCallbackMethod_SetTrackingRectangleStatus<WithCallbackMethod_SetTrackingOffStatus<WithCallbackMethod_SubscribeTrackingPointCommand<WithCallbackMethod_SubscribeTrackingRectangleCommand<WithCallbackMethod_SubscribeTrackingOffCommand<WithCallbackMethod_RespondTrackingPointCommand<WithCallbackMethod_RespondTrackingRectangleCommand<WithCallbackMethod_RespondTrackingOffCommand<WithCallbackMethod_SetPosition<WithCallbackMethod_SetAttitudeQuaternion<Service > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > CallbackService;
+  template <class BaseClass>
+  class WithCallbackMethod_SetZoomFactor : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithCallbackMethod_SetZoomFactor() {
+      ::grpc::Service::MarkMethodCallback(41,
+          new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::camera_server::SetZoomFactorRequest, ::mavsdk::rpc::camera_server::SetZoomFactorResponse>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::camera_server::SetZoomFactorRequest* request, ::mavsdk::rpc::camera_server::SetZoomFactorResponse* response) { return this->SetZoomFactor(context, request, response); }));}
+    void SetMessageAllocatorFor_SetZoomFactor(
+        ::grpc::MessageAllocator< ::mavsdk::rpc::camera_server::SetZoomFactorRequest, ::mavsdk::rpc::camera_server::SetZoomFactorResponse>* allocator) {
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(41);
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::camera_server::SetZoomFactorRequest, ::mavsdk::rpc::camera_server::SetZoomFactorResponse>*>(handler)
+              ->SetMessageAllocator(allocator);
+    }
+    ~WithCallbackMethod_SetZoomFactor() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SetZoomFactor(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SetZoomFactorRequest* /*request*/, ::mavsdk::rpc::camera_server::SetZoomFactorResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* SetZoomFactor(
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SetZoomFactorRequest* /*request*/, ::mavsdk::rpc::camera_server::SetZoomFactorResponse* /*response*/)  { return nullptr; }
+  };
+  template <class BaseClass>
+  class WithCallbackMethod_SetFieldOfView : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithCallbackMethod_SetFieldOfView() {
+      ::grpc::Service::MarkMethodCallback(42,
+          new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::camera_server::SetFieldOfViewRequest, ::mavsdk::rpc::camera_server::SetFieldOfViewResponse>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::camera_server::SetFieldOfViewRequest* request, ::mavsdk::rpc::camera_server::SetFieldOfViewResponse* response) { return this->SetFieldOfView(context, request, response); }));}
+    void SetMessageAllocatorFor_SetFieldOfView(
+        ::grpc::MessageAllocator< ::mavsdk::rpc::camera_server::SetFieldOfViewRequest, ::mavsdk::rpc::camera_server::SetFieldOfViewResponse>* allocator) {
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(42);
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::camera_server::SetFieldOfViewRequest, ::mavsdk::rpc::camera_server::SetFieldOfViewResponse>*>(handler)
+              ->SetMessageAllocator(allocator);
+    }
+    ~WithCallbackMethod_SetFieldOfView() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SetFieldOfView(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SetFieldOfViewRequest* /*request*/, ::mavsdk::rpc::camera_server::SetFieldOfViewResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* SetFieldOfView(
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SetFieldOfViewRequest* /*request*/, ::mavsdk::rpc::camera_server::SetFieldOfViewResponse* /*response*/)  { return nullptr; }
+  };
+  typedef WithCallbackMethod_SetInformation<WithCallbackMethod_SetVideoStreaming<WithCallbackMethod_SetInProgress<WithCallbackMethod_SubscribeTakePhoto<WithCallbackMethod_RespondTakePhoto<WithCallbackMethod_SubscribeStartVideo<WithCallbackMethod_RespondStartVideo<WithCallbackMethod_SubscribeStopVideo<WithCallbackMethod_RespondStopVideo<WithCallbackMethod_SubscribeStartVideoStreaming<WithCallbackMethod_RespondStartVideoStreaming<WithCallbackMethod_SubscribeStopVideoStreaming<WithCallbackMethod_RespondStopVideoStreaming<WithCallbackMethod_SubscribeSetMode<WithCallbackMethod_RespondSetMode<WithCallbackMethod_SubscribeStorageInformation<WithCallbackMethod_RespondStorageInformation<WithCallbackMethod_SubscribeCaptureStatus<WithCallbackMethod_RespondCaptureStatus<WithCallbackMethod_SubscribeFormatStorage<WithCallbackMethod_RespondFormatStorage<WithCallbackMethod_SubscribeResetSettings<WithCallbackMethod_RespondResetSettings<WithCallbackMethod_SubscribeZoomInStart<WithCallbackMethod_RespondZoomInStart<WithCallbackMethod_SubscribeZoomOutStart<WithCallbackMethod_RespondZoomOutStart<WithCallbackMethod_SubscribeZoomStop<WithCallbackMethod_RespondZoomStop<WithCallbackMethod_SubscribeZoomRange<WithCallbackMethod_RespondZoomRange<WithCallbackMethod_SetTrackingRectangleStatus<WithCallbackMethod_SetTrackingOffStatus<WithCallbackMethod_SubscribeTrackingPointCommand<WithCallbackMethod_SubscribeTrackingRectangleCommand<WithCallbackMethod_SubscribeTrackingOffCommand<WithCallbackMethod_RespondTrackingPointCommand<WithCallbackMethod_RespondTrackingRectangleCommand<WithCallbackMethod_RespondTrackingOffCommand<WithCallbackMethod_SetPosition<WithCallbackMethod_SetAttitudeQuaternion<WithCallbackMethod_SetZoomFactor<WithCallbackMethod_SetFieldOfView<Service > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > CallbackService;
   typedef CallbackService ExperimentalCallbackService;
   template <class BaseClass>
   class WithGenericMethod_SetInformation : public BaseClass {
@@ -3785,6 +3933,40 @@ class CameraServerService final {
     }
     // disable synchronous version of this method
     ::grpc::Status SetAttitudeQuaternion(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SetAttitudeQuaternionRequest* /*request*/, ::mavsdk::rpc::camera_server::SetAttitudeQuaternionResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
+  template <class BaseClass>
+  class WithGenericMethod_SetZoomFactor : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithGenericMethod_SetZoomFactor() {
+      ::grpc::Service::MarkMethodGeneric(41);
+    }
+    ~WithGenericMethod_SetZoomFactor() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SetZoomFactor(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SetZoomFactorRequest* /*request*/, ::mavsdk::rpc::camera_server::SetZoomFactorResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
+  template <class BaseClass>
+  class WithGenericMethod_SetFieldOfView : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithGenericMethod_SetFieldOfView() {
+      ::grpc::Service::MarkMethodGeneric(42);
+    }
+    ~WithGenericMethod_SetFieldOfView() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SetFieldOfView(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SetFieldOfViewRequest* /*request*/, ::mavsdk::rpc::camera_server::SetFieldOfViewResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -4607,6 +4789,46 @@ class CameraServerService final {
     }
     void RequestSetAttitudeQuaternion(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(40, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithRawMethod_SetZoomFactor : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawMethod_SetZoomFactor() {
+      ::grpc::Service::MarkMethodRaw(41);
+    }
+    ~WithRawMethod_SetZoomFactor() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SetZoomFactor(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SetZoomFactorRequest* /*request*/, ::mavsdk::rpc::camera_server::SetZoomFactorResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestSetZoomFactor(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(41, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithRawMethod_SetFieldOfView : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawMethod_SetFieldOfView() {
+      ::grpc::Service::MarkMethodRaw(42);
+    }
+    ~WithRawMethod_SetFieldOfView() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SetFieldOfView(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SetFieldOfViewRequest* /*request*/, ::mavsdk::rpc::camera_server::SetFieldOfViewResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestSetFieldOfView(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(42, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -5512,6 +5734,50 @@ class CameraServerService final {
       ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
+  class WithRawCallbackMethod_SetZoomFactor : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawCallbackMethod_SetZoomFactor() {
+      ::grpc::Service::MarkMethodRawCallback(41,
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetZoomFactor(context, request, response); }));
+    }
+    ~WithRawCallbackMethod_SetZoomFactor() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SetZoomFactor(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SetZoomFactorRequest* /*request*/, ::mavsdk::rpc::camera_server::SetZoomFactorResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* SetZoomFactor(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
+  };
+  template <class BaseClass>
+  class WithRawCallbackMethod_SetFieldOfView : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawCallbackMethod_SetFieldOfView() {
+      ::grpc::Service::MarkMethodRawCallback(42,
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetFieldOfView(context, request, response); }));
+    }
+    ~WithRawCallbackMethod_SetFieldOfView() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SetFieldOfView(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SetFieldOfViewRequest* /*request*/, ::mavsdk::rpc::camera_server::SetFieldOfViewResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* SetFieldOfView(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
+  };
+  template <class BaseClass>
   class WithStreamedUnaryMethod_SetInformation : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
@@ -6159,7 +6425,61 @@ class CameraServerService final {
     // replace default version of method with streamed unary
     virtual ::grpc::Status StreamedSetAttitudeQuaternion(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::camera_server::SetAttitudeQuaternionRequest,::mavsdk::rpc::camera_server::SetAttitudeQuaternionResponse>* server_unary_streamer) = 0;
   };
-  typedef WithStreamedUnaryMethod_SetInformation<WithStreamedUnaryMethod_SetVideoStreaming<WithStreamedUnaryMethod_SetInProgress<WithStreamedUnaryMethod_RespondTakePhoto<WithStreamedUnaryMethod_RespondStartVideo<WithStreamedUnaryMethod_RespondStopVideo<WithStreamedUnaryMethod_RespondStartVideoStreaming<WithStreamedUnaryMethod_RespondStopVideoStreaming<WithStreamedUnaryMethod_RespondSetMode<WithStreamedUnaryMethod_RespondStorageInformation<WithStreamedUnaryMethod_RespondCaptureStatus<WithStreamedUnaryMethod_RespondFormatStorage<WithStreamedUnaryMethod_RespondResetSettings<WithStreamedUnaryMethod_RespondZoomInStart<WithStreamedUnaryMethod_RespondZoomOutStart<WithStreamedUnaryMethod_RespondZoomStop<WithStreamedUnaryMethod_RespondZoomRange<WithStreamedUnaryMethod_SetTrackingRectangleStatus<WithStreamedUnaryMethod_SetTrackingOffStatus<WithStreamedUnaryMethod_RespondTrackingPointCommand<WithStreamedUnaryMethod_RespondTrackingRectangleCommand<WithStreamedUnaryMethod_RespondTrackingOffCommand<WithStreamedUnaryMethod_SetPosition<WithStreamedUnaryMethod_SetAttitudeQuaternion<Service > > > > > > > > > > > > > > > > > > > > > > > > StreamedUnaryService;
+  template <class BaseClass>
+  class WithStreamedUnaryMethod_SetZoomFactor : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithStreamedUnaryMethod_SetZoomFactor() {
+      ::grpc::Service::MarkMethodStreamed(41,
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::mavsdk::rpc::camera_server::SetZoomFactorRequest, ::mavsdk::rpc::camera_server::SetZoomFactorResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::mavsdk::rpc::camera_server::SetZoomFactorRequest, ::mavsdk::rpc::camera_server::SetZoomFactorResponse>* streamer) {
+                       return this->StreamedSetZoomFactor(context,
+                         streamer);
+                  }));
+    }
+    ~WithStreamedUnaryMethod_SetZoomFactor() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status SetZoomFactor(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SetZoomFactorRequest* /*request*/, ::mavsdk::rpc::camera_server::SetZoomFactorResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with streamed unary
+    virtual ::grpc::Status StreamedSetZoomFactor(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::camera_server::SetZoomFactorRequest,::mavsdk::rpc::camera_server::SetZoomFactorResponse>* server_unary_streamer) = 0;
+  };
+  template <class BaseClass>
+  class WithStreamedUnaryMethod_SetFieldOfView : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithStreamedUnaryMethod_SetFieldOfView() {
+      ::grpc::Service::MarkMethodStreamed(42,
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::mavsdk::rpc::camera_server::SetFieldOfViewRequest, ::mavsdk::rpc::camera_server::SetFieldOfViewResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::mavsdk::rpc::camera_server::SetFieldOfViewRequest, ::mavsdk::rpc::camera_server::SetFieldOfViewResponse>* streamer) {
+                       return this->StreamedSetFieldOfView(context,
+                         streamer);
+                  }));
+    }
+    ~WithStreamedUnaryMethod_SetFieldOfView() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status SetFieldOfView(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SetFieldOfViewRequest* /*request*/, ::mavsdk::rpc::camera_server::SetFieldOfViewResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with streamed unary
+    virtual ::grpc::Status StreamedSetFieldOfView(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::camera_server::SetFieldOfViewRequest,::mavsdk::rpc::camera_server::SetFieldOfViewResponse>* server_unary_streamer) = 0;
+  };
+  typedef WithStreamedUnaryMethod_SetInformation<WithStreamedUnaryMethod_SetVideoStreaming<WithStreamedUnaryMethod_SetInProgress<WithStreamedUnaryMethod_RespondTakePhoto<WithStreamedUnaryMethod_RespondStartVideo<WithStreamedUnaryMethod_RespondStopVideo<WithStreamedUnaryMethod_RespondStartVideoStreaming<WithStreamedUnaryMethod_RespondStopVideoStreaming<WithStreamedUnaryMethod_RespondSetMode<WithStreamedUnaryMethod_RespondStorageInformation<WithStreamedUnaryMethod_RespondCaptureStatus<WithStreamedUnaryMethod_RespondFormatStorage<WithStreamedUnaryMethod_RespondResetSettings<WithStreamedUnaryMethod_RespondZoomInStart<WithStreamedUnaryMethod_RespondZoomOutStart<WithStreamedUnaryMethod_RespondZoomStop<WithStreamedUnaryMethod_RespondZoomRange<WithStreamedUnaryMethod_SetTrackingRectangleStatus<WithStreamedUnaryMethod_SetTrackingOffStatus<WithStreamedUnaryMethod_RespondTrackingPointCommand<WithStreamedUnaryMethod_RespondTrackingRectangleCommand<WithStreamedUnaryMethod_RespondTrackingOffCommand<WithStreamedUnaryMethod_SetPosition<WithStreamedUnaryMethod_SetAttitudeQuaternion<WithStreamedUnaryMethod_SetZoomFactor<WithStreamedUnaryMethod_SetFieldOfView<Service > > > > > > > > > > > > > > > > > > > > > > > > > > StreamedUnaryService;
   template <class BaseClass>
   class WithSplitStreamingMethod_SubscribeTakePhoto : public BaseClass {
    private:
@@ -6620,7 +6940,7 @@ class CameraServerService final {
     virtual ::grpc::Status StreamedSubscribeTrackingOffCommand(::grpc::ServerContext* context, ::grpc::ServerSplitStreamer< ::mavsdk::rpc::camera_server::SubscribeTrackingOffCommandRequest,::mavsdk::rpc::camera_server::TrackingOffCommandResponse>* server_split_streamer) = 0;
   };
   typedef WithSplitStreamingMethod_SubscribeTakePhoto<WithSplitStreamingMethod_SubscribeStartVideo<WithSplitStreamingMethod_SubscribeStopVideo<WithSplitStreamingMethod_SubscribeStartVideoStreaming<WithSplitStreamingMethod_SubscribeStopVideoStreaming<WithSplitStreamingMethod_SubscribeSetMode<WithSplitStreamingMethod_SubscribeStorageInformation<WithSplitStreamingMethod_SubscribeCaptureStatus<WithSplitStreamingMethod_SubscribeFormatStorage<WithSplitStreamingMethod_SubscribeResetSettings<WithSplitStreamingMethod_SubscribeZoomInStart<WithSplitStreamingMethod_SubscribeZoomOutStart<WithSplitStreamingMethod_SubscribeZoomStop<WithSplitStreamingMethod_SubscribeZoomRange<WithSplitStreamingMethod_SubscribeTrackingPointCommand<WithSplitStreamingMethod_SubscribeTrackingRectangleCommand<WithSplitStreamingMethod_SubscribeTrackingOffCommand<Service > > > > > > > > > > > > > > > > > SplitStreamedService;
-  typedef WithStreamedUnaryMethod_SetInformation<WithStreamedUnaryMethod_SetVideoStreaming<WithStreamedUnaryMethod_SetInProgress<WithSplitStreamingMethod_SubscribeTakePhoto<WithStreamedUnaryMethod_RespondTakePhoto<WithSplitStreamingMethod_SubscribeStartVideo<WithStreamedUnaryMethod_RespondStartVideo<WithSplitStreamingMethod_SubscribeStopVideo<WithStreamedUnaryMethod_RespondStopVideo<WithSplitStreamingMethod_SubscribeStartVideoStreaming<WithStreamedUnaryMethod_RespondStartVideoStreaming<WithSplitStreamingMethod_SubscribeStopVideoStreaming<WithStreamedUnaryMethod_RespondStopVideoStreaming<WithSplitStreamingMethod_SubscribeSetMode<WithStreamedUnaryMethod_RespondSetMode<WithSplitStreamingMethod_SubscribeStorageInformation<WithStreamedUnaryMethod_RespondStorageInformation<WithSplitStreamingMethod_SubscribeCaptureStatus<WithStreamedUnaryMethod_RespondCaptureStatus<WithSplitStreamingMethod_SubscribeFormatStorage<WithStreamedUnaryMethod_RespondFormatStorage<WithSplitStreamingMethod_SubscribeResetSettings<WithStreamedUnaryMethod_RespondResetSettings<WithSplitStreamingMethod_SubscribeZoomInStart<WithStreamedUnaryMethod_RespondZoomInStart<WithSplitStreamingMethod_SubscribeZoomOutStart<WithStreamedUnaryMethod_RespondZoomOutStart<WithSplitStreamingMethod_SubscribeZoomStop<WithStreamedUnaryMethod_RespondZoomStop<WithSplitStreamingMethod_SubscribeZoomRange<WithStreamedUnaryMethod_RespondZoomRange<WithStreamedUnaryMethod_SetTrackingRectangleStatus<WithStreamedUnaryMethod_SetTrackingOffStatus<WithSplitStreamingMethod_SubscribeTrackingPointCommand<WithSplitStreamingMethod_SubscribeTrackingRectangleCommand<WithSplitStreamingMethod_SubscribeTrackingOffCommand<WithStreamedUnaryMethod_RespondTrackingPointCommand<WithStreamedUnaryMethod_RespondTrackingRectangleCommand<WithStreamedUnaryMethod_RespondTrackingOffCommand<WithStreamedUnaryMethod_SetPosition<WithStreamedUnaryMethod_SetAttitudeQuaternion<Service > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > StreamedService;
+  typedef WithStreamedUnaryMethod_SetInformation<WithStreamedUnaryMethod_SetVideoStreaming<WithStreamedUnaryMethod_SetInProgress<WithSplitStreamingMethod_SubscribeTakePhoto<WithStreamedUnaryMethod_RespondTakePhoto<WithSplitStreamingMethod_SubscribeStartVideo<WithStreamedUnaryMethod_RespondStartVideo<WithSplitStreamingMethod_SubscribeStopVideo<WithStreamedUnaryMethod_RespondStopVideo<WithSplitStreamingMethod_SubscribeStartVideoStreaming<WithStreamedUnaryMethod_RespondStartVideoStreaming<WithSplitStreamingMethod_SubscribeStopVideoStreaming<WithStreamedUnaryMethod_RespondStopVideoStreaming<WithSplitStreamingMethod_SubscribeSetMode<WithStreamedUnaryMethod_RespondSetMode<WithSplitStreamingMethod_SubscribeStorageInformation<WithStreamedUnaryMethod_RespondStorageInformation<WithSplitStreamingMethod_SubscribeCaptureStatus<WithStreamedUnaryMethod_RespondCaptureStatus<WithSplitStreamingMethod_SubscribeFormatStorage<WithStreamedUnaryMethod_RespondFormatStorage<WithSplitStreamingMethod_SubscribeResetSettings<WithStreamedUnaryMethod_RespondResetSettings<WithSplitStreamingMethod_SubscribeZoomInStart<WithStreamedUnaryMethod_RespondZoomInStart<WithSplitStreamingMethod_SubscribeZoomOutStart<WithStreamedUnaryMethod_RespondZoomOutStart<WithSplitStreamingMethod_SubscribeZoomStop<WithStreamedUnaryMethod_RespondZoomStop<WithSplitStreamingMethod_SubscribeZoomRange<WithStreamedUnaryMethod_RespondZoomRange<WithStreamedUnaryMethod_SetTrackingRectangleStatus<WithStreamedUnaryMethod_SetTrackingOffStatus<WithSplitStreamingMethod_SubscribeTrackingPointCommand<WithSplitStreamingMethod_SubscribeTrackingRectangleCommand<WithSplitStreamingMethod_SubscribeTrackingOffCommand<WithStreamedUnaryMethod_RespondTrackingPointCommand<WithStreamedUnaryMethod_RespondTrackingRectangleCommand<WithStreamedUnaryMethod_RespondTrackingOffCommand<WithStreamedUnaryMethod_SetPosition<WithStreamedUnaryMethod_SetAttitudeQuaternion<WithStreamedUnaryMethod_SetZoomFactor<WithStreamedUnaryMethod_SetFieldOfView<Service > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > StreamedService;
 };
 
 }  // namespace camera_server

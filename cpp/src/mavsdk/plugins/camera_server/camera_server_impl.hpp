@@ -26,6 +26,8 @@ public:
     CameraServer::Result set_in_progress(bool in_progress);
     CameraServer::Result set_position(CameraServer::Position position);
     CameraServer::Result set_attitude_quaternion(CameraServer::Quaternion attitude_quaternion);
+    CameraServer::Result set_zoom_factor(float zoom_factor);
+    CameraServer::Result set_field_of_view(float horizontal_fov_deg, float vertical_fov_deg);
 
     CameraServer::TakePhotoHandle
     subscribe_take_photo(const CameraServer::TakePhotoCallback& callback);
@@ -211,6 +213,8 @@ private:
     bool _is_information_set{};
     bool _is_position_set{};
     bool _is_attitude_quaternion_set{};
+    bool _is_zoom_factor_set{};
+    bool _is_fov_set{};
 
     std::mutex _mutex{};
 
@@ -228,6 +232,9 @@ private:
     CameraServer::Information _information{};
     CameraServer::Position _position{};
     CameraServer::Quaternion _attitude_quaternion{};
+    float _zoom_factor{};
+    float _horizontal_fov_deg{};
+    float _vertical_fov_deg{};
     bool _is_video_streaming_set{};
     CameraServer::VideoStreaming _video_streaming{};
 
