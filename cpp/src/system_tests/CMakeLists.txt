@@ -21,6 +21,7 @@ add_executable(system_tests_runner
     telemetry_rc_status.cpp
     geofence_download.cpp
     telemetry_home_position.cpp
+    request_message_rapid.cpp
     fs_helpers.cpp
     ftp_download_file.cpp
     ftp_download_file_burst.cpp
