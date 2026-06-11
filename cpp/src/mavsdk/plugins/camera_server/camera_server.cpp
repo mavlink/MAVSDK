@@ -332,6 +332,27 @@ CameraServer::respond_tracking_off_command(CameraFeedback stop_video_feedback) c
     return _impl->respond_tracking_off_command(stop_video_feedback);
 }
 
+CameraServer::Result CameraServer::set_position(Position position) const
+{
+    return _impl->set_position(position);
+}
+
+CameraServer::Result CameraServer::set_attitude_quaternion(Quaternion attitude_quaternion) const
+{
+    return _impl->set_attitude_quaternion(attitude_quaternion);
+}
+
+CameraServer::Result CameraServer::set_zoom_factor(float zoom_factor) const
+{
+    return _impl->set_zoom_factor(zoom_factor);
+}
+
+CameraServer::Result
+CameraServer::set_field_of_view(float horizontal_fov_deg, float vertical_fov_deg) const
+{
+    return _impl->set_field_of_view(horizontal_fov_deg, vertical_fov_deg);
+}
+
 MAVSDK_PUBLIC bool
 operator==(const CameraServer::Information& lhs, const CameraServer::Information& rhs)
 {
