@@ -41,22 +41,28 @@ private:
 
     void unregister_impl(std::optional<uint16_t> maybe_msg_id, const void* cookie);
 
-    void check_register_later();
-    void check_unregister_later();
+    // Erase entries matching cookie (and optionally msg_id) from _table.
+    // Must be called with _mutex held.
+    void erase_from_table(std::optional<uint16_t> maybe_msg_id, const void* cookie);
+
+    // Apply operations that were deferred because _mutex was held when they came in.
+    // Must be called with _mutex held.
+    void apply_deferred_with_mutex_held();
 
     std::mutex _mutex{};
     std::vector<Entry> _table{};
 
-    std::mutex _register_later_mutex{};
-    std::vector<Entry> _register_later_table{};
-
-    struct UnregisterEntry {
-        std::optional<uint16_t> maybe_msg_id;
-        const void* cookie;
+    // When register/unregister is called from within a callback on the same thread,
+    // the operation is deferred here and applied at the end of process_message.
+    struct DeferredOp {
+        enum class Action { Register, Unregister } action;
+        Entry entry{}; // used for Register
+        std::optional<uint16_t> maybe_msg_id{}; // used for Unregister
+        const void* cookie{nullptr}; // used for Unregister
     };
 
-    std::mutex _unregister_later_mutex{};
-    std::vector<UnregisterEntry> _unregister_later_table{};
+    std::mutex _deferred_mutex{};
+    std::vector<DeferredOp> _deferred_ops{};
 
     bool _debugging{false};
 };
