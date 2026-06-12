@@ -5,6 +5,8 @@
 
 namespace mavsdk {
 
+static thread_local bool tls_in_callback = false;
+
 MavlinkMessageHandler::MavlinkMessageHandler()
 {
     if (const char* env_p = std::getenv("MAVSDK_MESSAGE_HANDLER_DEBUGGING")) {
@@ -35,12 +37,20 @@ void MavlinkMessageHandler::register_one_impl(
 {
     Entry entry = {msg_id, maybe_component_id, callback, cookie};
 
-    std::unique_lock<std::mutex> lock(_mutex, std::try_to_lock);
-    if (lock.owns_lock()) {
-        _table.push_back(entry);
+    if (tls_in_callback) {
+        std::lock_guard<std::mutex> deferred_lock(_deferred_mutex);
+        _deferred_ops.push_back(
+            DeferredOp{DeferredOp::Action::Register, entry, std::nullopt, nullptr});
     } else {
-        std::lock_guard<std::mutex> register_later_lock(_register_later_mutex);
-        _register_later_table.push_back(entry);
+        std::unique_lock<std::mutex> lock(_mutex, std::try_to_lock);
+        if (lock.owns_lock()) {
+            apply_deferred_with_mutex_held();
+            _table.push_back(entry);
+        } else {
+            std::lock_guard<std::mutex> deferred_lock(_deferred_mutex);
+            _deferred_ops.push_back(
+                DeferredOp{DeferredOp::Action::Register, entry, std::nullopt, nullptr});
+        }
     }
 }
 
@@ -59,108 +69,84 @@ void MavlinkMessageHandler::unregister_all_blocking(const void* cookie)
     // Blocking version for use in destructors - waits for any in-flight callbacks to complete.
     // WARNING: Do NOT call this from within a message handler callback - it will deadlock.
 
-    // Also purge any deferred registrations for this cookie from _register_later_table.
-    // If register_one() was called while process_message() held _mutex, the entries land in
-    // _register_later_table instead of _table.  Without this step, check_register_later()
-    // would later promote those stale entries into _table and fire callbacks on a
+    // Also purge any deferred operations for this cookie. If register_one() was
+    // called while process_message() held _mutex, the entry landed in
+    // _deferred_ops instead of _table.  Without this step, apply_deferred() would
+    // later promote that stale entry into _table and fire a callback on a
     // destroyed object (heap-use-after-free).
     {
-        std::lock_guard<std::mutex> register_later_lock(_register_later_mutex);
-        _register_later_table.erase(
+        std::lock_guard<std::mutex> deferred_lock(_deferred_mutex);
+        _deferred_ops.erase(
             std::remove_if(
-                _register_later_table.begin(),
-                _register_later_table.end(),
-                [&](const auto& entry) { return entry.cookie == cookie; }),
-            _register_later_table.end());
+                _deferred_ops.begin(),
+                _deferred_ops.end(),
+                [&](const auto& op) {
+                    const void* op_cookie =
+                        (op.action == DeferredOp::Action::Register) ? op.entry.cookie : op.cookie;
+                    return op_cookie == cookie;
+                }),
+            _deferred_ops.end());
     }
 
     std::lock_guard<std::mutex> lock(_mutex);
-    _table.erase(
-        std::remove_if(
-            _table.begin(), _table.end(), [&](auto& entry) { return entry.cookie == cookie; }),
-        _table.end());
+    erase_from_table({}, cookie);
 }
 
 void MavlinkMessageHandler::unregister_impl(
     std::optional<uint16_t> maybe_msg_id, const void* cookie)
 {
-    std::unique_lock<std::mutex> lock(_mutex, std::try_to_lock);
-    if (lock.owns_lock()) {
-        _table.erase(
-            std::remove_if(
-                _table.begin(),
-                _table.end(),
-                [&](auto& entry) {
-                    if (maybe_msg_id) {
-                        return (entry.msg_id == maybe_msg_id.value() && entry.cookie == cookie);
-                    } else {
-                        return (entry.cookie == cookie);
-                    }
-                }),
-            _table.end());
+    if (tls_in_callback) {
+        std::lock_guard<std::mutex> deferred_lock(_deferred_mutex);
+        _deferred_ops.push_back(
+            DeferredOp{DeferredOp::Action::Unregister, Entry{}, maybe_msg_id, cookie});
     } else {
-        std::lock_guard<std::mutex> unregister_later_lock(_unregister_later_mutex);
-        _unregister_later_table.push_back(UnregisterEntry{maybe_msg_id, cookie});
+        std::unique_lock<std::mutex> lock(_mutex, std::try_to_lock);
+        if (lock.owns_lock()) {
+            apply_deferred_with_mutex_held();
+            erase_from_table(maybe_msg_id, cookie);
+        } else {
+            std::lock_guard<std::mutex> deferred_lock(_deferred_mutex);
+            _deferred_ops.push_back(
+                DeferredOp{DeferredOp::Action::Unregister, Entry{}, maybe_msg_id, cookie});
+        }
     }
 }
 
-void MavlinkMessageHandler::check_register_later()
+void MavlinkMessageHandler::erase_from_table(
+    std::optional<uint16_t> maybe_msg_id, const void* cookie)
 {
-    std::lock_guard<std::mutex> _register_later_lock(_register_later_mutex);
-
-    // We could probably just grab the lock here, but it's safer not to
-    // acquire both locks to avoid deadlocks.
-    std::unique_lock<std::mutex> lock(_mutex, std::try_to_lock);
-    if (!lock.owns_lock()) {
-        // Try again later.
-        return;
-    }
-
-    for (const auto& entry : _register_later_table) {
-        _table.push_back(entry);
-    }
-
-    _register_later_table.clear();
+    _table.erase(
+        std::remove_if(
+            _table.begin(),
+            _table.end(),
+            [&](auto& entry) {
+                if (maybe_msg_id) {
+                    return (entry.msg_id == maybe_msg_id.value() && entry.cookie == cookie);
+                } else {
+                    return (entry.cookie == cookie);
+                }
+            }),
+        _table.end());
 }
 
-void MavlinkMessageHandler::check_unregister_later()
+void MavlinkMessageHandler::apply_deferred_with_mutex_held()
 {
-    std::lock_guard<std::mutex> _unregister_later_lock(_unregister_later_mutex);
-
-    // We could probably just grab the lock here, but it's safer not to
-    // acquire both locks to avoid deadlocks.
-    std::unique_lock<std::mutex> lock(_mutex, std::try_to_lock);
-    if (!lock.owns_lock()) {
-        // Try again later.
-        return;
+    std::lock_guard<std::mutex> deferred_lock(_deferred_mutex);
+    for (const auto& op : _deferred_ops) {
+        if (op.action == DeferredOp::Action::Register) {
+            _table.push_back(op.entry);
+        } else {
+            erase_from_table(op.maybe_msg_id, op.cookie);
+        }
     }
-
-    for (const auto& unregister_entry : _unregister_later_table) {
-        _table.erase(
-            std::remove_if(
-                _table.begin(),
-                _table.end(),
-                [&](auto& entry) {
-                    if (unregister_entry.maybe_msg_id) {
-                        return (
-                            entry.msg_id == unregister_entry.maybe_msg_id.value() &&
-                            entry.cookie == unregister_entry.cookie);
-                    } else {
-                        return (entry.cookie == unregister_entry.cookie);
-                    }
-                }),
-            _table.end());
-    }
-
-    _unregister_later_table.clear();
+    _deferred_ops.clear();
 }
 
 void MavlinkMessageHandler::process_message(const mavlink_message_t& message)
 {
-    check_register_later();
-    check_unregister_later();
-
     std::lock_guard<std::mutex> lock(_mutex);
+
+    apply_deferred_with_mutex_held();
 
     bool forwarded = false;
 
@@ -168,6 +154,7 @@ void MavlinkMessageHandler::process_message(const mavlink_message_t& message)
         LogDebug("Table entries: ");
     }
 
+    tls_in_callback = true;
     for (auto& entry : _table) {
         if (_debugging) {
             LogDebug(
@@ -187,6 +174,9 @@ void MavlinkMessageHandler::process_message(const mavlink_message_t& message)
             entry.callback(message);
         }
     }
+    tls_in_callback = false;
+
+    apply_deferred_with_mutex_held();
 
     if (_debugging && !forwarded) {
         LogDebug("Ignoring msg {}", int(message.msgid));
@@ -196,10 +186,9 @@ void MavlinkMessageHandler::process_message(const mavlink_message_t& message)
 void MavlinkMessageHandler::update_component_id(
     uint16_t msg_id, uint8_t component_id, const void* cookie)
 {
-    check_register_later();
-    check_unregister_later();
-
     std::lock_guard<std::mutex> lock(_mutex);
+
+    apply_deferred_with_mutex_held();
 
     for (auto& entry : _table) {
         if (entry.msg_id == msg_id && entry.cookie == cookie) {
