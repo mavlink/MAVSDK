@@ -4,6 +4,7 @@
 #include "plugins/mavlink_direct/mavlink_direct.hpp"
 #include <atomic>
 #include <chrono>
+#include <memory>
 #include <string>
 #include <thread>
 #include <vector>
@@ -56,12 +57,21 @@ TEST(SystemTest, RequestMessageRapid)
     auto gs_system = mavsdk_autopilot.systems().at(0);
 
     auto telemetry = Telemetry{system};
-    auto autopilot_direct = MavlinkDirect{gs_system};
+    // Held by shared_ptr so the COMMAND_LONG callback (which runs on the
+    // autopilot's user-callback thread, outliving this scope) can hold a
+    // weak_ptr and safely no-op if we have already been torn down.
+    auto autopilot_direct = std::make_shared<MavlinkDirect>(gs_system);
+    std::weak_ptr<MavlinkDirect> autopilot_direct_weak = autopilot_direct;
 
     // The autopilot acks any REQUEST_MESSAGE command so the command queue does
     // not fill up with unacked, retrying commands over many iterations.
-    autopilot_direct.subscribe_message(
-        "COMMAND_LONG", [&autopilot_direct](MavlinkDirect::MavlinkMessage command) {
+    autopilot_direct->subscribe_message(
+        "COMMAND_LONG", [autopilot_direct_weak](MavlinkDirect::MavlinkMessage command) {
+            auto direct = autopilot_direct_weak.lock();
+            if (!direct) {
+                return;
+            }
+
             Json::Value root;
             Json::Reader reader;
             if (!reader.parse(command.fields_json, root)) {
@@ -78,7 +88,7 @@ TEST(SystemTest, RequestMessageRapid)
             ack.fields_json = R"({"command":)" + std::to_string(command_id) +
                               R"(,"result":0,"progress":0,"result_param2":0,)" +
                               R"("target_system":0,"target_component":0})";
-            autopilot_direct.send_message(ack);
+            direct->send_message(ack);
         });
 
     // Stream GPS_GLOBAL_ORIGIN at a high rate. This keeps the ground station's
@@ -96,7 +106,7 @@ TEST(SystemTest, RequestMessageRapid)
     std::atomic<bool> keep_streaming{true};
     std::thread streamer([&]() {
         while (keep_streaming) {
-            autopilot_direct.send_message(gps);
+            autopilot_direct->send_message(gps);
             std::this_thread::sleep_for(std::chrono::microseconds(200));
         }
     });
