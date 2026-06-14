@@ -4,6 +4,7 @@
 #include "overloaded.hpp"
 #include <cassert>
 #include <limits>
+#include <asio/post.hpp>
 
 namespace mavsdk {
 
@@ -12,6 +13,7 @@ MavlinkParameterServer::MavlinkParameterServer(
     MavlinkMessageHandler& message_handler,
     asio::io_context& io_context,
     std::optional<std::map<std::string, ParamValue>> optional_param_values) :
+    MavlinkParameterSubscription(io_context),
     _sender(sender),
     _message_handler(message_handler),
     _io_context(io_context)
@@ -106,7 +108,12 @@ MavlinkParameterServer::provide_server_param(const std::string& name, const Para
             // then, to not change the public api behaviour, try updating its value.
             switch (_param_cache.update_existing_param(name, param_value)) {
                 case MavlinkParameterCache::UpdateExistingParamResult::Ok:
-                    find_and_call_subscriptions_value_changed(name, param_value);
+                    // provide_server_param() is part of the user-facing API and runs on the
+                    // user thread, so post the notification onto the io_context thread where
+                    // the subscription list is owned.
+                    asio::post(_io_context, [this, name, param_value]() {
+                        find_and_call_subscriptions_value_changed(name, param_value);
+                    });
                     // Notify clients of the changed value on the protocol(s) that can carry it and
                     // that a client is actually using. The extended protocol can represent any
                     // parameter; the non-extended protocol only those that don't need_extended.

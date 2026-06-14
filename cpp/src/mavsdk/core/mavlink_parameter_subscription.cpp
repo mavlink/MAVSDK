@@ -1,6 +1,8 @@
 #include "mavlink_parameter_subscription.hpp"
 
 #include <algorithm>
+#include <future>
+#include <asio/dispatch.hpp>
 
 namespace mavsdk {
 
@@ -25,11 +27,8 @@ void MavlinkParameterSubscription::subscribe_param_custom_changed(
 void MavlinkParameterSubscription::find_and_call_subscriptions_value_changed(
     const std::string& param_name, const ParamValue& value)
 {
-    // Process any deferred operations before calling subscriptions
-    process_deferred_operations();
-
-    // Now lock the mutex and call the subscriptions
-    std::lock_guard<std::mutex> lock(_param_changed_subscriptions_mutex);
+    // Runs on the io_context thread; _param_changed_subscriptions is only touched there,
+    // so no locking is needed.
     for (const auto& subscription : _param_changed_subscriptions) {
         if (subscription.param_name != param_name) {
             continue;
@@ -54,26 +53,32 @@ void MavlinkParameterSubscription::find_and_call_subscriptions_value_changed(
 
 void MavlinkParameterSubscription::unsubscribe_all_params_changed(const void* cookie)
 {
-    // Process any deferred operations first
-    process_deferred_operations();
+    // Must be called on the io_context thread (or while it is stopped); the list is only
+    // touched there.
+    _param_changed_subscriptions.erase(
+        std::remove_if(
+            _param_changed_subscriptions.begin(),
+            _param_changed_subscriptions.end(),
+            [&](const auto& subscription) { return subscription.cookie == cookie; }),
+        _param_changed_subscriptions.end());
+}
 
-    // Try to lock the mutex, if it fails we're likely in a callback
-    if (_param_changed_subscriptions_mutex.try_lock()) {
-        // We've acquired the lock without blocking, so we can modify the list
-        _param_changed_subscriptions.erase(
-            std::remove_if(
-                _param_changed_subscriptions.begin(),
-                _param_changed_subscriptions.end(),
-                [&](const auto& subscription) { return subscription.cookie == cookie; }),
-            _param_changed_subscriptions.end());
-        _param_changed_subscriptions_mutex.unlock();
-    } else {
-        // We couldn't acquire the lock because we're likely in a callback
-        // Defer the unsubscription of all params for this cookie
-        std::lock_guard<std::mutex> lock(_deferred_unsubscriptions_mutex);
-        // Add a special marker for unsubscribe_all (empty param_name)
-        _deferred_unsubscriptions.push_back({"", cookie});
+void MavlinkParameterSubscription::unsubscribe_all_params_changed_blocking(const void* cookie)
+{
+    if (_io_context.stopped()) {
+        // The io_context thread is dead — safe to access directly.
+        unsubscribe_all_params_changed(cookie);
+        return;
     }
+
+    // dispatch() runs the handler inline if we are already on the io_context thread
+    // (so we never wait on ourselves and deadlock), and posts it otherwise.
+    std::promise<void> done;
+    asio::dispatch(_io_context, [this, cookie, &done]() {
+        unsubscribe_all_params_changed(cookie);
+        done.set_value();
+    });
+    done.get_future().wait();
 }
 
 } // namespace mavsdk

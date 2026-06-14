@@ -7,6 +7,7 @@
 #include <future>
 #include <limits>
 #include <utility>
+#include <asio/dispatch.hpp>
 
 namespace mavsdk {
 
@@ -19,6 +20,7 @@ MavlinkParameterClient::MavlinkParameterClient(
     uint8_t target_system_id,
     uint8_t target_component_id,
     bool use_extended) :
+    MavlinkParameterSubscription(sender.io_context()),
     _sender(sender),
     _message_handler(message_handler),
     _timeout_handler(timeout_handler),
@@ -453,8 +455,10 @@ void MavlinkParameterClient::cancel_all_param(const void* cookie)
         unsubscribe_all_params_changed(cookie);
         return;
     }
+    // dispatch() runs inline if we're already on the io_context thread (avoiding a
+    // self-deadlock on the wait below) and posts otherwise.
     std::promise<void> done;
-    asio::post(_io_context, [this, cookie, &done]() {
+    asio::dispatch(_io_context, [this, cookie, &done]() {
         _work_queue.erase(
             std::remove_if(
                 _work_queue.begin(),

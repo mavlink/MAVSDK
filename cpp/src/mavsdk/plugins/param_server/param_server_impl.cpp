@@ -26,13 +26,10 @@ void ParamServerImpl::init() {}
 
 void ParamServerImpl::deinit()
 {
-    // Ensure synchronous cleanup - keep trying until all callbacks are unregistered
+    // Remove our subscriptions synchronously on the io_context thread, so no callback
+    // can fire after we return (and before we clear our callback lists below).
     auto& param_server = _server_component_impl->mavlink_parameter_server();
-    param_server.unsubscribe_all_params_changed(this);
-
-    // Give a brief moment for any deferred unsubscriptions to be processed
-    // This prevents use-after-free if callbacks are still executing
-    std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    param_server.unsubscribe_all_params_changed_blocking(this);
 
     // Clear our callback lists to ensure no pending callbacks exist
     _changed_param_int_callbacks.clear();
