@@ -24,6 +24,9 @@ template class MAVSDK_TEMPL_INST CallbackList<ComponentType>;
 template class MAVSDK_TEMPL_INST CallbackList<ComponentType, uint8_t>;
 
 SystemImpl::SystemImpl(MavsdkImpl& mavsdk_impl) :
+    // Declared before _mavsdk_impl, so init it first (in declaration order) using the
+    // ctor parameter rather than the not-yet-bound _mavsdk_impl reference.
+    _mavlink_message_handler(mavsdk_impl.io_context()),
     _mavsdk_impl(mavsdk_impl),
     _system_work_timer(mavsdk_impl.io_context()),
     _command_sender(*this),

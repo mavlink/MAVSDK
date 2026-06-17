@@ -1,11 +1,13 @@
 #include <algorithm>
-#include <mutex>
+#include <future>
+#include <utility>
+#include <asio/post.hpp>
 #include "mavlink_message_handler.hpp"
 #include "log.hpp"
 
 namespace mavsdk {
 
-MavlinkMessageHandler::MavlinkMessageHandler()
+MavlinkMessageHandler::MavlinkMessageHandler(asio::io_context& io_context) : _io_context(io_context)
 {
     if (const char* env_p = std::getenv("MAVSDK_MESSAGE_HANDLER_DEBUGGING")) {
         if (std::string(env_p) == "1") {
@@ -34,14 +36,9 @@ void MavlinkMessageHandler::register_one_impl(
     const void* cookie)
 {
     Entry entry = {msg_id, maybe_component_id, callback, cookie};
-
-    std::unique_lock<std::mutex> lock(_mutex, std::try_to_lock);
-    if (lock.owns_lock()) {
-        _table.push_back(entry);
-    } else {
-        std::lock_guard<std::mutex> register_later_lock(_register_later_mutex);
-        _register_later_table.push_back(entry);
-    }
+    asio::post(_io_context, [this, entry = std::move(entry)]() mutable {
+        _table.push_back(std::move(entry));
+    });
 }
 
 void MavlinkMessageHandler::unregister_one(uint16_t msg_id, const void* cookie)
@@ -54,114 +51,62 @@ void MavlinkMessageHandler::unregister_all(const void* cookie)
     unregister_impl({}, cookie);
 }
 
-void MavlinkMessageHandler::unregister_all_blocking(const void* cookie)
-{
-    // Blocking version for use in destructors - waits for any in-flight callbacks to complete.
-    // WARNING: Do NOT call this from within a message handler callback - it will deadlock.
-
-    // Also purge any deferred registrations for this cookie from _register_later_table.
-    // If register_one() was called while process_message() held _mutex, the entries land in
-    // _register_later_table instead of _table.  Without this step, check_register_later()
-    // would later promote those stale entries into _table and fire callbacks on a
-    // destroyed object (heap-use-after-free).
-    {
-        std::lock_guard<std::mutex> register_later_lock(_register_later_mutex);
-        _register_later_table.erase(
-            std::remove_if(
-                _register_later_table.begin(),
-                _register_later_table.end(),
-                [&](const auto& entry) { return entry.cookie == cookie; }),
-            _register_later_table.end());
-    }
-
-    std::lock_guard<std::mutex> lock(_mutex);
-    _table.erase(
-        std::remove_if(
-            _table.begin(), _table.end(), [&](auto& entry) { return entry.cookie == cookie; }),
-        _table.end());
-}
-
 void MavlinkMessageHandler::unregister_impl(
     std::optional<uint16_t> maybe_msg_id, const void* cookie)
 {
-    std::unique_lock<std::mutex> lock(_mutex, std::try_to_lock);
-    if (lock.owns_lock()) {
-        _table.erase(
-            std::remove_if(
-                _table.begin(),
-                _table.end(),
-                [&](auto& entry) {
-                    if (maybe_msg_id) {
-                        return (entry.msg_id == maybe_msg_id.value() && entry.cookie == cookie);
-                    } else {
-                        return (entry.cookie == cookie);
-                    }
-                }),
-            _table.end());
-    } else {
-        std::lock_guard<std::mutex> unregister_later_lock(_unregister_later_mutex);
-        _unregister_later_table.push_back(UnregisterEntry{maybe_msg_id, cookie});
-    }
+    asio::post(
+        _io_context, [this, maybe_msg_id, cookie]() { erase_from_table(maybe_msg_id, cookie); });
 }
 
-void MavlinkMessageHandler::check_register_later()
+void MavlinkMessageHandler::unregister_all_on_io_thread(const void* cookie)
 {
-    std::lock_guard<std::mutex> _register_later_lock(_register_later_mutex);
+    // Direct, synchronous removal. MUST be called on the io_context thread (e.g. from an
+    // owner that is itself created and destroyed on the io thread, like a work-queue item).
+    // The table is only touched on the io thread, so this is race-free, and removing the
+    // entry before the owner is freed avoids any fire-after-free without a posted round-trip.
+    erase_from_table({}, cookie);
+}
 
-    // We could probably just grab the lock here, but it's safer not to
-    // acquire both locks to avoid deadlocks.
-    std::unique_lock<std::mutex> lock(_mutex, std::try_to_lock);
-    if (!lock.owns_lock()) {
-        // Try again later.
+void MavlinkMessageHandler::unregister_all_blocking(const void* cookie)
+{
+    // Synchronous removal for callers that are NOT on the io_context thread (e.g. plugin
+    // destructors on the user thread). MUST NOT be called from the io thread -- it would
+    // post a task and then wait on the very thread that needs to run it. io-thread owners
+    // use unregister_all_on_io_thread() instead.
+    if (_io_context.stopped()) {
+        // The io_context thread is dead -- safe to access the table directly.
+        erase_from_table({}, cookie);
         return;
     }
 
-    for (const auto& entry : _register_later_table) {
-        _table.push_back(entry);
-    }
-
-    _register_later_table.clear();
+    std::promise<void> done;
+    asio::post(_io_context, [this, cookie, &done]() {
+        erase_from_table({}, cookie);
+        done.set_value();
+    });
+    done.get_future().wait();
 }
 
-void MavlinkMessageHandler::check_unregister_later()
+void MavlinkMessageHandler::erase_from_table(
+    std::optional<uint16_t> maybe_msg_id, const void* cookie)
 {
-    std::lock_guard<std::mutex> _unregister_later_lock(_unregister_later_mutex);
-
-    // We could probably just grab the lock here, but it's safer not to
-    // acquire both locks to avoid deadlocks.
-    std::unique_lock<std::mutex> lock(_mutex, std::try_to_lock);
-    if (!lock.owns_lock()) {
-        // Try again later.
-        return;
-    }
-
-    for (const auto& unregister_entry : _unregister_later_table) {
-        _table.erase(
-            std::remove_if(
-                _table.begin(),
-                _table.end(),
-                [&](auto& entry) {
-                    if (unregister_entry.maybe_msg_id) {
-                        return (
-                            entry.msg_id == unregister_entry.maybe_msg_id.value() &&
-                            entry.cookie == unregister_entry.cookie);
-                    } else {
-                        return (entry.cookie == unregister_entry.cookie);
-                    }
-                }),
-            _table.end());
-    }
-
-    _unregister_later_table.clear();
+    _table.erase(
+        std::remove_if(
+            _table.begin(),
+            _table.end(),
+            [&](auto& entry) {
+                if (maybe_msg_id) {
+                    return (entry.msg_id == maybe_msg_id.value() && entry.cookie == cookie);
+                } else {
+                    return (entry.cookie == cookie);
+                }
+            }),
+        _table.end());
 }
 
 void MavlinkMessageHandler::process_message(const mavlink_message_t& message)
 {
-    check_register_later();
-    check_unregister_later();
-
-    std::lock_guard<std::mutex> lock(_mutex);
-
+    // Runs on the io_context thread; _table is only touched there, so no lock is needed.
     bool forwarded = false;
 
     if (_debugging) {
@@ -196,16 +141,13 @@ void MavlinkMessageHandler::process_message(const mavlink_message_t& message)
 void MavlinkMessageHandler::update_component_id(
     uint16_t msg_id, uint8_t component_id, const void* cookie)
 {
-    check_register_later();
-    check_unregister_later();
-
-    std::lock_guard<std::mutex> lock(_mutex);
-
-    for (auto& entry : _table) {
-        if (entry.msg_id == msg_id && entry.cookie == cookie) {
-            entry.component_id = component_id;
+    asio::post(_io_context, [this, msg_id, component_id, cookie]() {
+        for (auto& entry : _table) {
+            if (entry.msg_id == msg_id && entry.cookie == cookie) {
+                entry.component_id = component_id;
+            }
         }
-    }
+    });
 }
 
 } // namespace mavsdk
