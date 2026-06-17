@@ -25,8 +25,9 @@ mavsdk-kotlin/          # The library
     │   └── cpp/        # JNI C++ code (shared by both platforms)
     └── ...
 
-examples/               # Example applications
-└── src/main/kotlin/    # Example code that uses the library
+examples/
+└── cli-jvm/            # Desktop JVM example application
+    └── src/main/kotlin/
 ```
 
 ## Quick Start
@@ -72,7 +73,7 @@ make
 3. **Run the example:**
 
 ```bash
-cd examples
+cd examples/cli-jvm
 ./gradlew run
 ```
 
@@ -184,7 +185,7 @@ Or use the composite build (as in the examples):
 
 ```kotlin
 // settings.gradle.kts
-includeBuild("../mavsdk-kotlin")
+includeBuild("../../mavsdk-kotlin")
 ```
 
 ## Testing with PX4 SITL
@@ -195,7 +196,7 @@ cd PX4-Autopilot
 make px4_sitl gazebo
 
 # In another terminal, run the example
-cd mavsdk-kotlin/examples
+cd mavsdk-kotlin/examples/cli-jvm
 ./gradlew run
 ```
 

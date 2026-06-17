@@ -1,4 +1,4 @@
 rootProject.name = "mavsdk-kotlin-root"
 
 includeBuild("mavsdk-kotlin")
-includeBuild("examples")
+includeBuild("examples/cli-jvm")

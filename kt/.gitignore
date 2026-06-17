@@ -27,8 +27,7 @@ out/
 # Native libraries (these come from cmavsdk project)
 mavsdk-kotlin/libs/*
 !mavsdk-kotlin/libs/.gitkeep
-mavsdk-kotlin/src/androidMain/jniLibs/*
-!mavsdk-kotlin/src/androidMain/jniLibs/.gitkeep
+mavsdk-kotlin/src/androidMain/jniLibs/**/*.so
 mavsdk-kotlin/src/jvmMain/resources/native/*
 !mavsdk-kotlin/src/jvmMain/resources/native/.gitkeep
 

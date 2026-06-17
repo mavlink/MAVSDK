@@ -75,7 +75,7 @@ cd mavsdk-kotlin
 ### 4. Run the Example
 
 ```bash
-cd examples
+cd examples/cli-jvm
 ./gradlew run
 ```
 
@@ -104,9 +104,10 @@ mavsdk-kotlin-root/
 │   └── libs/                   # Desktop native libs
 │
 └── examples/                   # Example applications
-    └── src/main/kotlin/
-        └── io/mavsdk/kotlin/examples/
-            └── BasicExample.kt
+    └── cli-jvm/                # Desktop JVM example
+        └── src/main/kotlin/
+            └── io/mavsdk/kotlin/examples/
+                └── Main.kt
 ```
 
 ## Using the Library
@@ -200,7 +201,7 @@ This starts a simulated drone broadcasting on UDP port 14540.
 
 In another terminal:
 ```bash
-cd mavsdk-kotlin/examples
+cd mavsdk-kotlin/examples/cli-jvm
 ./gradlew run
 ```
 
@@ -288,7 +289,7 @@ Clean and rebuild:
 ## Next Steps
 
 1. **Explore the API**: Check the source files in `commonMain`
-2. **Try the examples**: See `examples/src/main/kotlin/`
+2. **Try the examples**: See `examples/cli-jvm/src/main/kotlin/`
 3. **Add plugins**: Action, Telemetry, Mission (coming soon)
 4. **Contribute**: Help add Flow-based async operations!
 
