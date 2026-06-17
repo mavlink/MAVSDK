@@ -389,7 +389,7 @@ private:
 
     AutopilotTime _autopilot_time{};
 
-    MavlinkMessageHandler _mavlink_message_handler{};
+    MavlinkMessageHandler _mavlink_message_handler;
 
     // Libmav message handling using CallbackList for thread safety
     CallbackList<Mavsdk::MavlinkMessage> _libmav_message_callbacks{};

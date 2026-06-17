@@ -143,7 +143,7 @@ public:
     void set_heartbeat_timeout_s(double timeout_s) { _heartbeat_timeout_s = timeout_s; }
     double heartbeat_timeout_s() const { return _heartbeat_timeout_s; }
 
-    MavlinkMessageHandler mavlink_message_handler{};
+    MavlinkMessageHandler mavlink_message_handler{_io_context};
 
     ServerComponentImpl& default_server_component_impl();
 
