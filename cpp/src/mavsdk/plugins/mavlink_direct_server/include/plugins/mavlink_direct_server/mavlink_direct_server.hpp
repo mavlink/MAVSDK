@@ -146,6 +146,41 @@ public:
 
 
 
+        
+
+    /**
+     * @brief Callback type for subscribe_message.
+     */
+    using MessageCallback = std::function<void(MavlinkMessage)>;
+
+    /**
+     * @brief Handle type for subscribe_message.
+     */
+    using MessageHandle = Handle<MavlinkMessage>;
+
+    /**
+     * @brief Subscribe to incoming MAVLink messages.
+     *
+     * This provides direct access to incoming MAVLink messages. Use an empty string
+     * in message_name to subscribe to all messages, or specify a message name
+     * (e.g., "HEARTBEAT") to filter for specific message types. Unlike the
+     * MavlinkDirect (client) plugin, this is not scoped to a single system: it
+     * receives matching messages from all systems.
+     */
+    MessageHandle subscribe_message(std::string message_name, const MessageCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_message
+     */
+    void unsubscribe_message(MessageHandle handle);
+
+        
+
+
+
+
+
+
 
 
     /**

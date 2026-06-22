@@ -2,6 +2,8 @@
 
 #include "libmav_conversions.hpp"
 #include "log.hpp"
+#include "callback_list.tpp"
+#include "mavsdk_export.h"
 
 #include <mav/Message.h>
 #include <mav/MessageSet.h>
@@ -9,6 +11,8 @@
 #include <cstring>
 
 namespace mavsdk {
+
+template class MAVSDK_TEMPL_INST CallbackList<MavlinkDirectServer::MavlinkMessage>;
 
 MavlinkDirectServerImpl::MavlinkDirectServerImpl(
     std::shared_ptr<ServerComponent> server_component) :
@@ -27,9 +31,35 @@ MavlinkDirectServerImpl::~MavlinkDirectServerImpl()
     _server_component_impl->unregister_plugin(this);
 }
 
-void MavlinkDirectServerImpl::init() {}
+void MavlinkDirectServerImpl::init()
+{
+    // Subscribe to all incoming messages and distribute to our internal CallbackList.
+    _server_subscription = _server_component_impl->register_libmav_message_handler(
+        "", // Empty string means all messages
+        [this](const Mavsdk::MavlinkMessage& message) {
+            MavlinkDirectServer::MavlinkMessage mavlink_direct_message;
+            mavlink_direct_message.message_name = message.message_name;
+            mavlink_direct_message.system_id = message.system_id;
+            mavlink_direct_message.component_id = message.component_id;
+            mavlink_direct_message.target_system_id = message.target_system_id;
+            mavlink_direct_message.target_component_id = message.target_component_id;
+            mavlink_direct_message.fields_json = message.fields_json;
 
-void MavlinkDirectServerImpl::deinit() {}
+            _callbacks(mavlink_direct_message);
+        });
+}
+
+void MavlinkDirectServerImpl::deinit()
+{
+    // Synchronise with any in-flight dispatch (see MavlinkDirectImpl::deinit for details):
+    // clear() blocks until the current exec() finishes and prevents further callbacks.
+    _callbacks.clear();
+
+    if (_server_subscription.valid()) {
+        _server_component_impl->unregister_libmav_message_handler(_server_subscription);
+        _server_subscription = {};
+    }
+}
 
 MavlinkDirectServer::Result
 MavlinkDirectServerImpl::send_message(MavlinkDirectServer::MavlinkMessage message)
@@ -99,6 +129,25 @@ MavlinkDirectServerImpl::send_message(MavlinkDirectServer::MavlinkMessage messag
     }
 
     return MavlinkDirectServer::Result::Success;
+}
+
+MavlinkDirectServer::MessageHandle MavlinkDirectServerImpl::subscribe_message(
+    std::string message_name, const MavlinkDirectServer::MessageCallback& callback)
+{
+    auto filtering_callback = [this, message_name, callback](
+                                  const MavlinkDirectServer::MavlinkMessage& message) {
+        if (!message_name.empty() && message_name != message.message_name) {
+            return;
+        }
+        _server_component_impl->call_user_callback([callback, message]() { callback(message); });
+    };
+
+    return _callbacks.subscribe(filtering_callback);
+}
+
+void MavlinkDirectServerImpl::unsubscribe_message(MavlinkDirectServer::MessageHandle handle)
+{
+    _callbacks.unsubscribe(handle);
 }
 
 MavlinkDirectServer::Result MavlinkDirectServerImpl::load_custom_xml(std::string xml_content)

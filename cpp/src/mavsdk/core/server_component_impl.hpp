@@ -12,8 +12,10 @@
 #include "mavsdk_time.hpp"
 #include "flight_mode.hpp"
 #include "call_every_handler.hpp"
+#include "callback_list.hpp"
 #include "log.hpp"
 #include "sender.hpp"
+#include "mavsdk.hpp"
 
 #include <atomic>
 #include <mutex>
@@ -100,6 +102,18 @@ public:
     void unregister_all_mavlink_message_handlers(const void* cookie);
     void unregister_all_mavlink_message_handlers_blocking(const void* cookie);
 
+    using LibmavMessageCallback = std::function<void(const Mavsdk::MavlinkMessage&)>;
+
+    // Register a handler for incoming libmav (JSON) messages. Pass an empty
+    // message_name to receive all messages. Not scoped to a single system: it is
+    // called for matching messages from any system.
+    Handle<Mavsdk::MavlinkMessage> register_libmav_message_handler(
+        const std::string& message_name, const LibmavMessageCallback& callback);
+    void unregister_libmav_message_handler(Handle<Mavsdk::MavlinkMessage> handle);
+
+    // Called by MavsdkImpl to distribute an incoming libmav message.
+    void process_libmav_message(const Mavsdk::MavlinkMessage& message);
+
     TimeoutHandler::Cookie
     register_timeout_handler(const std::function<void()>& callback, double duration_s);
     void refresh_timeout_handler(TimeoutHandler::Cookie cookie);
@@ -178,6 +192,9 @@ private:
 
     std::mutex _mavlink_pack_mutex{};
     uint8_t _channel{0};
+
+    // Incoming libmav (JSON) message handling, used by the MavlinkDirectServer plugin.
+    CallbackList<Mavsdk::MavlinkMessage> _libmav_message_callbacks{};
 
     std::atomic<MAV_STATE> _system_status{MAV_STATE_UNINIT};
     std::atomic<uint8_t> _base_mode{0};

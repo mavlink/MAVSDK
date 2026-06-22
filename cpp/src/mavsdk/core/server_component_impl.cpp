@@ -1,6 +1,7 @@
 #include "server_component_impl.hpp"
 #include "server_plugin_impl_base.hpp"
 #include "mavsdk_impl.hpp"
+#include "callback_list.tpp"
 
 namespace mavsdk {
 
@@ -128,6 +129,33 @@ void ServerComponentImpl::unregister_all_mavlink_message_handlers(const void* co
 void ServerComponentImpl::unregister_all_mavlink_message_handlers_blocking(const void* cookie)
 {
     _mavsdk_impl.mavlink_message_handler.unregister_all_blocking(cookie);
+}
+
+Handle<Mavsdk::MavlinkMessage> ServerComponentImpl::register_libmav_message_handler(
+    const std::string& message_name, const LibmavMessageCallback& callback)
+{
+    // Filter by message name (empty string means all messages). This is not scoped
+    // to a single system, so messages from any system are delivered.
+    auto filtering_callback = [message_name, callback](const Mavsdk::MavlinkMessage& message) {
+        if (!message_name.empty() && message_name != message.message_name) {
+            return;
+        }
+        callback(message);
+    };
+
+    return _libmav_message_callbacks.subscribe(filtering_callback);
+}
+
+void ServerComponentImpl::unregister_libmav_message_handler(Handle<Mavsdk::MavlinkMessage> handle)
+{
+    _libmav_message_callbacks.unsubscribe(handle);
+}
+
+void ServerComponentImpl::process_libmav_message(const Mavsdk::MavlinkMessage& message)
+{
+    // CallbackList handles thread safety; registered handlers filter by name themselves.
+    _libmav_message_callbacks.queue(
+        message, [this](const std::function<void()>& callback) { callback(); });
 }
 
 void ServerComponentImpl::do_work()

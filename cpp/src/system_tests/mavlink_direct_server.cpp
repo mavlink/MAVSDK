@@ -74,6 +74,63 @@ TEST(MavlinkDirectServer, BroadcastToClient)
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
+// Subscribe on the server component and receive a message sent by a client.
+// The server receive path is not scoped to a single system.
+TEST(MavlinkDirectServer, SubscribeFromClient)
+{
+    Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
+    Mavsdk mavsdk_autopilot{Mavsdk::Configuration{ComponentType::Autopilot}};
+
+    ASSERT_EQ(
+        mavsdk_groundstation.add_any_connection("udpin://0.0.0.0:17022"),
+        ConnectionResult::Success);
+    ASSERT_EQ(
+        mavsdk_autopilot.add_any_connection("udpout://127.0.0.1:17022"), ConnectionResult::Success);
+
+    // The ground station discovers the autopilot so it can send via the client plugin.
+    auto maybe_system = mavsdk_groundstation.first_autopilot(10.0);
+    ASSERT_TRUE(maybe_system);
+    auto system = maybe_system.value();
+    ASSERT_TRUE(system->has_autopilot());
+
+    // The autopilot subscribes on its server component - no discovery needed.
+    auto receiver = MavlinkDirectServer{mavsdk_autopilot.server_component()};
+    auto sender = MavlinkDirect{system};
+
+    auto prom = std::promise<MavlinkDirectServer::MavlinkMessage>();
+    auto fut = prom.get_future();
+
+    auto handle = receiver.subscribe_message(
+        "GLOBAL_POSITION_INT", [&prom](MavlinkDirectServer::MavlinkMessage message) {
+            LogInfo("Server received GLOBAL_POSITION_INT: {}", message.fields_json);
+            prom.set_value(message);
+        });
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+
+    MavlinkDirect::MavlinkMessage test_message;
+    test_message.message_name = "GLOBAL_POSITION_INT";
+    test_message.fields_json =
+        R"({"time_boot_ms":12345,"lat":473977418,"lon":-1223974560,"alt":100500,"relative_alt":50250,"vx":100,"vy":-50,"vz":25,"hdg":18000})";
+
+    EXPECT_EQ(sender.send_message(test_message), MavlinkDirect::Result::Success);
+
+    ASSERT_EQ(fut.wait_for(std::chrono::seconds(5)), std::future_status::ready);
+
+    auto received_message = fut.get();
+    EXPECT_EQ(received_message.message_name, "GLOBAL_POSITION_INT");
+    // The ground station sends as system 245, component 190 (MAV_COMP_ID_MISSIONPLANNER).
+    EXPECT_EQ(received_message.component_id, 190);
+
+    Json::Value json;
+    Json::Reader reader;
+    ASSERT_TRUE(reader.parse(received_message.fields_json, json));
+    EXPECT_EQ(json["lat"].asInt(), 473977418);
+
+    receiver.unsubscribe_message(handle);
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+}
+
 // Load a custom message definition through the server plugin and send it.
 TEST(MavlinkDirectServer, LoadCustomXml)
 {
