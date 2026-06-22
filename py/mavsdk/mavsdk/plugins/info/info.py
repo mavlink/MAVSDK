@@ -10,6 +10,7 @@ Provide information about the hardware and/or software of a system.
 
 import atexit
 import ctypes
+import sys
 
 from typing import Callable, Any
 from enum import IntEnum
@@ -424,7 +425,7 @@ class Info:
                 callback(py_data, user_data)
 
             except Exception as e:
-                print(f"Error in flight_information callback: {e}")
+                print(f"Error in flight_information callback: {e}", file=sys.stderr)
 
         cb = FlightInformationCallback(c_callback)
         self._callbacks.append(cb)

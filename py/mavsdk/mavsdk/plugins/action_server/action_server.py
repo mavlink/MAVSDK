@@ -10,6 +10,7 @@ Provide vehicle actions (as a server) such as arming, taking off, and landing.
 
 import atexit
 import ctypes
+import sys
 
 from typing import Callable, Any
 from enum import IntEnum
@@ -222,7 +223,7 @@ class ActionServer:
                 callback(py_result, py_data, user_data)
 
             except Exception as e:
-                print(f"Error in arm_disarm callback: {e}")
+                print(f"Error in arm_disarm callback: {e}", file=sys.stderr)
 
         cb = ArmDisarmCallback(c_callback)
         self._callbacks.append(cb)
@@ -247,7 +248,7 @@ class ActionServer:
                 callback(py_result, py_data, user_data)
 
             except Exception as e:
-                print(f"Error in flight_mode_change callback: {e}")
+                print(f"Error in flight_mode_change callback: {e}", file=sys.stderr)
 
         cb = FlightModeChangeCallback(c_callback)
         self._callbacks.append(cb)
@@ -274,7 +275,7 @@ class ActionServer:
                 callback(py_result, py_data, user_data)
 
             except Exception as e:
-                print(f"Error in takeoff callback: {e}")
+                print(f"Error in takeoff callback: {e}", file=sys.stderr)
 
         cb = TakeoffCallback(c_callback)
         self._callbacks.append(cb)
@@ -297,7 +298,7 @@ class ActionServer:
                 callback(py_result, py_data, user_data)
 
             except Exception as e:
-                print(f"Error in land callback: {e}")
+                print(f"Error in land callback: {e}", file=sys.stderr)
 
         cb = LandCallback(c_callback)
         self._callbacks.append(cb)
@@ -320,7 +321,7 @@ class ActionServer:
                 callback(py_result, py_data, user_data)
 
             except Exception as e:
-                print(f"Error in reboot callback: {e}")
+                print(f"Error in reboot callback: {e}", file=sys.stderr)
 
         cb = RebootCallback(c_callback)
         self._callbacks.append(cb)
@@ -343,7 +344,7 @@ class ActionServer:
                 callback(py_result, py_data, user_data)
 
             except Exception as e:
-                print(f"Error in shutdown callback: {e}")
+                print(f"Error in shutdown callback: {e}", file=sys.stderr)
 
         cb = ShutdownCallback(c_callback)
         self._callbacks.append(cb)
@@ -366,7 +367,7 @@ class ActionServer:
                 callback(py_result, py_data, user_data)
 
             except Exception as e:
-                print(f"Error in terminate callback: {e}")
+                print(f"Error in terminate callback: {e}", file=sys.stderr)
 
         cb = TerminateCallback(c_callback)
         self._callbacks.append(cb)

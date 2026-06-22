@@ -1,6 +1,7 @@
 """Logging support for cmavsdk"""
 
 import ctypes
+import sys
 
 from enum import IntEnum
 from typing import Optional, Callable
@@ -40,9 +41,9 @@ def log_subscribe(callback: Callable[[LogLevel, str, Optional[str], int], bool])
 
     Example:
         def my_log_handler(level, message, file, line):
-            print(f"[{level.name}] {message}")
+            print(f"[{level.name}] {message}", file=sys.stderr)
             if file:
-                print(f"  at {file}:{line}")
+                print(f"  at {file}:{line}", file=sys.stderr)
             return True  # Suppress default logging
 
         log_subscribe(my_log_handler)
@@ -59,7 +60,7 @@ def log_subscribe(callback: Callable[[LogLevel, str, Optional[str], int], bool])
 
             return callback(level_enum, msg_str, file_str, line)
         except Exception as e:
-            print(f"Error in log callback: {e}")
+            print(f"Error in log callback: {e}", file=sys.stderr)
             return False
 
     # Keep reference to prevent garbage collection

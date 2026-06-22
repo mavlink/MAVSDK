@@ -10,6 +10,7 @@ Implements file transfer functionality using MAVLink FTP.
 
 import atexit
 import ctypes
+import sys
 
 from typing import Callable, Any
 from enum import IntEnum
@@ -176,7 +177,7 @@ class Ftp:
                 callback(py_result, py_data, user_data)
 
             except Exception as e:
-                print(f"Error in download callback: {e}")
+                print(f"Error in download callback: {e}", file=sys.stderr)
 
         cb = DownloadCallback(c_callback)
         self._callbacks.append(cb)
@@ -208,7 +209,7 @@ class Ftp:
                 callback(py_result, py_data, user_data)
 
             except Exception as e:
-                print(f"Error in upload callback: {e}")
+                print(f"Error in upload callback: {e}", file=sys.stderr)
 
         cb = UploadCallback(c_callback)
         self._callbacks.append(cb)
@@ -239,7 +240,7 @@ class Ftp:
                 callback(py_result, py_data, user_data)
 
             except Exception as e:
-                print(f"Error in list_directory callback: {e}")
+                print(f"Error in list_directory callback: {e}", file=sys.stderr)
 
         cb = ListDirectoryCallback(c_callback)
         self._callbacks.append(cb)
@@ -281,7 +282,7 @@ class Ftp:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in create_directory callback: {e}")
+                print(f"Error in create_directory callback: {e}", file=sys.stderr)
 
         cb = CreateDirectoryCallback(c_callback)
         self._callbacks.append(cb)
@@ -318,7 +319,7 @@ class Ftp:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in remove_directory callback: {e}")
+                print(f"Error in remove_directory callback: {e}", file=sys.stderr)
 
         cb = RemoveDirectoryCallback(c_callback)
         self._callbacks.append(cb)
@@ -355,7 +356,7 @@ class Ftp:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in remove_file callback: {e}")
+                print(f"Error in remove_file callback: {e}", file=sys.stderr)
 
         cb = RemoveFileCallback(c_callback)
         self._callbacks.append(cb)
@@ -400,7 +401,7 @@ class Ftp:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in rename callback: {e}")
+                print(f"Error in rename callback: {e}", file=sys.stderr)
 
         cb = RenameCallback(c_callback)
         self._callbacks.append(cb)
@@ -453,7 +454,7 @@ class Ftp:
                 callback(py_result, py_data, user_data)
 
             except Exception as e:
-                print(f"Error in are_files_identical callback: {e}")
+                print(f"Error in are_files_identical callback: {e}", file=sys.stderr)
 
         cb = AreFilesIdenticalCallback(c_callback)
         self._callbacks.append(cb)

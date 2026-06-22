@@ -11,6 +11,7 @@ Acts as a vehicle and receives incoming missions from GCS (in raw MAVLINK format
 
 import atexit
 import ctypes
+import sys
 
 from typing import Callable, Any
 from enum import IntEnum
@@ -293,7 +294,7 @@ class MissionRawServer:
                 callback(py_result, py_data, user_data)
 
             except Exception as e:
-                print(f"Error in incoming_mission callback: {e}")
+                print(f"Error in incoming_mission callback: {e}", file=sys.stderr)
 
         cb = IncomingMissionCallback(c_callback)
         self._callbacks.append(cb)
@@ -322,7 +323,7 @@ class MissionRawServer:
                 callback(py_data, user_data)
 
             except Exception as e:
-                print(f"Error in current_item_changed callback: {e}")
+                print(f"Error in current_item_changed callback: {e}", file=sys.stderr)
 
         cb = CurrentItemChangedCallback(c_callback)
         self._callbacks.append(cb)
@@ -354,7 +355,7 @@ class MissionRawServer:
                 callback(py_data, user_data)
 
             except Exception as e:
-                print(f"Error in clear_all callback: {e}")
+                print(f"Error in clear_all callback: {e}", file=sys.stderr)
 
         cb = ClearAllCallback(c_callback)
         self._callbacks.append(cb)

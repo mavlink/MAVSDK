@@ -10,6 +10,7 @@ Allows users to send winch actions, as well as receive status information from w
 
 import atexit
 import ctypes
+import sys
 
 from typing import Callable, Any
 from enum import IntEnum
@@ -294,7 +295,7 @@ class Winch:
                 callback(py_data, user_data)
 
             except Exception as e:
-                print(f"Error in status callback: {e}")
+                print(f"Error in status callback: {e}", file=sys.stderr)
 
         cb = StatusCallback(c_callback)
         self._callbacks.append(cb)
@@ -326,7 +327,7 @@ class Winch:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in relax callback: {e}")
+                print(f"Error in relax callback: {e}", file=sys.stderr)
 
         cb = RelaxCallback(c_callback)
         self._callbacks.append(cb)
@@ -358,7 +359,7 @@ class Winch:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in relative_length_control callback: {e}")
+                print(f"Error in relative_length_control callback: {e}", file=sys.stderr)
 
         cb = RelativeLengthControlCallback(c_callback)
         self._callbacks.append(cb)
@@ -394,7 +395,7 @@ class Winch:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in rate_control callback: {e}")
+                print(f"Error in rate_control callback: {e}", file=sys.stderr)
 
         cb = RateControlCallback(c_callback)
         self._callbacks.append(cb)
@@ -427,7 +428,7 @@ class Winch:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in lock callback: {e}")
+                print(f"Error in lock callback: {e}", file=sys.stderr)
 
         cb = LockCallback(c_callback)
         self._callbacks.append(cb)
@@ -457,7 +458,7 @@ class Winch:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in deliver callback: {e}")
+                print(f"Error in deliver callback: {e}", file=sys.stderr)
 
         cb = DeliverCallback(c_callback)
         self._callbacks.append(cb)
@@ -487,7 +488,7 @@ class Winch:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in hold callback: {e}")
+                print(f"Error in hold callback: {e}", file=sys.stderr)
 
         cb = HoldCallback(c_callback)
         self._callbacks.append(cb)
@@ -517,7 +518,7 @@ class Winch:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in retract callback: {e}")
+                print(f"Error in retract callback: {e}", file=sys.stderr)
 
         cb = RetractCallback(c_callback)
         self._callbacks.append(cb)
@@ -549,7 +550,7 @@ class Winch:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in load_line callback: {e}")
+                print(f"Error in load_line callback: {e}", file=sys.stderr)
 
         cb = LoadLineCallback(c_callback)
         self._callbacks.append(cb)
@@ -579,7 +580,7 @@ class Winch:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in abandon_line callback: {e}")
+                print(f"Error in abandon_line callback: {e}", file=sys.stderr)
 
         cb = AbandonLineCallback(c_callback)
         self._callbacks.append(cb)
@@ -609,7 +610,7 @@ class Winch:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in load_payload callback: {e}")
+                print(f"Error in load_payload callback: {e}", file=sys.stderr)
 
         cb = LoadPayloadCallback(c_callback)
         self._callbacks.append(cb)

@@ -10,6 +10,7 @@ Provide raw access to retrieve and provide server parameters.
 
 import atexit
 import ctypes
+import sys
 
 from typing import Callable, Any
 from enum import IntEnum
@@ -405,7 +406,7 @@ class ParamServer:
                 callback(py_data, user_data)
 
             except Exception as e:
-                print(f"Error in changed_param_int callback: {e}")
+                print(f"Error in changed_param_int callback: {e}", file=sys.stderr)
 
         cb = ChangedParamIntCallback(c_callback)
         self._callbacks.append(cb)
@@ -432,7 +433,7 @@ class ParamServer:
                 callback(py_data, user_data)
 
             except Exception as e:
-                print(f"Error in changed_param_float callback: {e}")
+                print(f"Error in changed_param_float callback: {e}", file=sys.stderr)
 
         cb = ChangedParamFloatCallback(c_callback)
         self._callbacks.append(cb)
@@ -459,7 +460,7 @@ class ParamServer:
                 callback(py_data, user_data)
 
             except Exception as e:
-                print(f"Error in changed_param_custom callback: {e}")
+                print(f"Error in changed_param_custom callback: {e}", file=sys.stderr)
 
         cb = ChangedParamCustomCallback(c_callback)
         self._callbacks.append(cb)

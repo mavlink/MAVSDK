@@ -17,6 +17,7 @@ Control a drone with position, velocity, attitude or motor commands.
 
 import atexit
 import ctypes
+import sys
 
 from typing import Callable, Any
 from enum import IntEnum
@@ -584,7 +585,7 @@ class Offboard:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in start callback: {e}")
+                print(f"Error in start callback: {e}", file=sys.stderr)
 
         cb = StartCallback(c_callback)
         self._callbacks.append(cb)
@@ -615,7 +616,7 @@ class Offboard:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in stop callback: {e}")
+                print(f"Error in stop callback: {e}", file=sys.stderr)
 
         cb = StopCallback(c_callback)
         self._callbacks.append(cb)

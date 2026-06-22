@@ -12,6 +12,7 @@ Allow users to get vehicle telemetry and state information
 
 import atexit
 import ctypes
+import sys
 
 from typing import Callable, Any
 from enum import IntEnum
@@ -2027,7 +2028,7 @@ class Telemetry:
                 callback(py_data, user_data)
 
             except Exception as e:
-                print(f"Error in position callback: {e}")
+                print(f"Error in position callback: {e}", file=sys.stderr)
 
         cb = PositionCallback(c_callback)
         self._callbacks.append(cb)
@@ -2061,7 +2062,7 @@ class Telemetry:
                 callback(py_data, user_data)
 
             except Exception as e:
-                print(f"Error in home callback: {e}")
+                print(f"Error in home callback: {e}", file=sys.stderr)
 
         cb = HomeCallback(c_callback)
         self._callbacks.append(cb)
@@ -2093,7 +2094,7 @@ class Telemetry:
                 callback(py_data, user_data)
 
             except Exception as e:
-                print(f"Error in in_air callback: {e}")
+                print(f"Error in in_air callback: {e}", file=sys.stderr)
 
         cb = InAirCallback(c_callback)
         self._callbacks.append(cb)
@@ -2123,7 +2124,7 @@ class Telemetry:
                 callback(py_data, user_data)
 
             except Exception as e:
-                print(f"Error in landed_state callback: {e}")
+                print(f"Error in landed_state callback: {e}", file=sys.stderr)
 
         cb = LandedStateCallback(c_callback)
         self._callbacks.append(cb)
@@ -2153,7 +2154,7 @@ class Telemetry:
                 callback(py_data, user_data)
 
             except Exception as e:
-                print(f"Error in armed callback: {e}")
+                print(f"Error in armed callback: {e}", file=sys.stderr)
 
         cb = ArmedCallback(c_callback)
         self._callbacks.append(cb)
@@ -2183,7 +2184,7 @@ class Telemetry:
                 callback(py_data, user_data)
 
             except Exception as e:
-                print(f"Error in vtol_state callback: {e}")
+                print(f"Error in vtol_state callback: {e}", file=sys.stderr)
 
         cb = VtolStateCallback(c_callback)
         self._callbacks.append(cb)
@@ -2215,7 +2216,7 @@ class Telemetry:
                 callback(py_data, user_data)
 
             except Exception as e:
-                print(f"Error in attitude_quaternion callback: {e}")
+                print(f"Error in attitude_quaternion callback: {e}", file=sys.stderr)
 
         cb = AttitudeQuaternionCallback(c_callback)
         self._callbacks.append(cb)
@@ -2253,7 +2254,7 @@ class Telemetry:
                 callback(py_data, user_data)
 
             except Exception as e:
-                print(f"Error in attitude_euler callback: {e}")
+                print(f"Error in attitude_euler callback: {e}", file=sys.stderr)
 
         cb = AttitudeEulerCallback(c_callback)
         self._callbacks.append(cb)
@@ -2295,7 +2296,7 @@ class Telemetry:
                 callback(py_data, user_data)
 
             except Exception as e:
-                print(f"Error in attitude_angular_velocity_body callback: {e}")
+                print(f"Error in attitude_angular_velocity_body callback: {e}", file=sys.stderr)
 
         cb = AttitudeAngularVelocityBodyCallback(c_callback)
         self._callbacks.append(cb)
@@ -2337,7 +2338,7 @@ class Telemetry:
                 callback(py_data, user_data)
 
             except Exception as e:
-                print(f"Error in velocity_ned callback: {e}")
+                print(f"Error in velocity_ned callback: {e}", file=sys.stderr)
 
         cb = VelocityNedCallback(c_callback)
         self._callbacks.append(cb)
@@ -2371,7 +2372,7 @@ class Telemetry:
                 callback(py_data, user_data)
 
             except Exception as e:
-                print(f"Error in gps_info callback: {e}")
+                print(f"Error in gps_info callback: {e}", file=sys.stderr)
 
         cb = GpsInfoCallback(c_callback)
         self._callbacks.append(cb)
@@ -2405,7 +2406,7 @@ class Telemetry:
                 callback(py_data, user_data)
 
             except Exception as e:
-                print(f"Error in raw_gps callback: {e}")
+                print(f"Error in raw_gps callback: {e}", file=sys.stderr)
 
         cb = RawGpsCallback(c_callback)
         self._callbacks.append(cb)
@@ -2439,7 +2440,7 @@ class Telemetry:
                 callback(py_data, user_data)
 
             except Exception as e:
-                print(f"Error in battery callback: {e}")
+                print(f"Error in battery callback: {e}", file=sys.stderr)
 
         cb = BatteryCallback(c_callback)
         self._callbacks.append(cb)
@@ -2471,7 +2472,7 @@ class Telemetry:
                 callback(py_data, user_data)
 
             except Exception as e:
-                print(f"Error in flight_mode callback: {e}")
+                print(f"Error in flight_mode callback: {e}", file=sys.stderr)
 
         cb = FlightModeCallback(c_callback)
         self._callbacks.append(cb)
@@ -2503,7 +2504,7 @@ class Telemetry:
                 callback(py_data, user_data)
 
             except Exception as e:
-                print(f"Error in health callback: {e}")
+                print(f"Error in health callback: {e}", file=sys.stderr)
 
         cb = HealthCallback(c_callback)
         self._callbacks.append(cb)
@@ -2537,7 +2538,7 @@ class Telemetry:
                 callback(py_data, user_data)
 
             except Exception as e:
-                print(f"Error in rc_status callback: {e}")
+                print(f"Error in rc_status callback: {e}", file=sys.stderr)
 
         cb = RcStatusCallback(c_callback)
         self._callbacks.append(cb)
@@ -2571,7 +2572,7 @@ class Telemetry:
                 callback(py_data, user_data)
 
             except Exception as e:
-                print(f"Error in status_text callback: {e}")
+                print(f"Error in status_text callback: {e}", file=sys.stderr)
 
         cb = StatusTextCallback(c_callback)
         self._callbacks.append(cb)
@@ -2609,7 +2610,7 @@ class Telemetry:
                 callback(py_data, user_data)
 
             except Exception as e:
-                print(f"Error in actuator_control_target callback: {e}")
+                print(f"Error in actuator_control_target callback: {e}", file=sys.stderr)
 
         cb = ActuatorControlTargetCallback(c_callback)
         self._callbacks.append(cb)
@@ -2655,7 +2656,7 @@ class Telemetry:
                 callback(py_data, user_data)
 
             except Exception as e:
-                print(f"Error in actuator_output_status callback: {e}")
+                print(f"Error in actuator_output_status callback: {e}", file=sys.stderr)
 
         cb = ActuatorOutputStatusCallback(c_callback)
         self._callbacks.append(cb)
@@ -2697,7 +2698,7 @@ class Telemetry:
                 callback(py_data, user_data)
 
             except Exception as e:
-                print(f"Error in odometry callback: {e}")
+                print(f"Error in odometry callback: {e}", file=sys.stderr)
 
         cb = OdometryCallback(c_callback)
         self._callbacks.append(cb)
@@ -2735,7 +2736,7 @@ class Telemetry:
                 callback(py_data, user_data)
 
             except Exception as e:
-                print(f"Error in position_velocity_ned callback: {e}")
+                print(f"Error in position_velocity_ned callback: {e}", file=sys.stderr)
 
         cb = PositionVelocityNedCallback(c_callback)
         self._callbacks.append(cb)
@@ -2777,7 +2778,7 @@ class Telemetry:
                 callback(py_data, user_data)
 
             except Exception as e:
-                print(f"Error in ground_truth callback: {e}")
+                print(f"Error in ground_truth callback: {e}", file=sys.stderr)
 
         cb = GroundTruthCallback(c_callback)
         self._callbacks.append(cb)
@@ -2813,7 +2814,7 @@ class Telemetry:
                 callback(py_data, user_data)
 
             except Exception as e:
-                print(f"Error in fixedwing_metrics callback: {e}")
+                print(f"Error in fixedwing_metrics callback: {e}", file=sys.stderr)
 
         cb = FixedwingMetricsCallback(c_callback)
         self._callbacks.append(cb)
@@ -2851,7 +2852,7 @@ class Telemetry:
                 callback(py_data, user_data)
 
             except Exception as e:
-                print(f"Error in imu callback: {e}")
+                print(f"Error in imu callback: {e}", file=sys.stderr)
 
         cb = ImuCallback(c_callback)
         self._callbacks.append(cb)
@@ -2885,7 +2886,7 @@ class Telemetry:
                 callback(py_data, user_data)
 
             except Exception as e:
-                print(f"Error in scaled_imu callback: {e}")
+                print(f"Error in scaled_imu callback: {e}", file=sys.stderr)
 
         cb = ScaledImuCallback(c_callback)
         self._callbacks.append(cb)
@@ -2919,7 +2920,7 @@ class Telemetry:
                 callback(py_data, user_data)
 
             except Exception as e:
-                print(f"Error in raw_imu callback: {e}")
+                print(f"Error in raw_imu callback: {e}", file=sys.stderr)
 
         cb = RawImuCallback(c_callback)
         self._callbacks.append(cb)
@@ -2951,7 +2952,7 @@ class Telemetry:
                 callback(py_data, user_data)
 
             except Exception as e:
-                print(f"Error in health_all_ok callback: {e}")
+                print(f"Error in health_all_ok callback: {e}", file=sys.stderr)
 
         cb = HealthAllOkCallback(c_callback)
         self._callbacks.append(cb)
@@ -2983,7 +2984,7 @@ class Telemetry:
                 callback(py_data, user_data)
 
             except Exception as e:
-                print(f"Error in unix_epoch_time callback: {e}")
+                print(f"Error in unix_epoch_time callback: {e}", file=sys.stderr)
 
         cb = UnixEpochTimeCallback(c_callback)
         self._callbacks.append(cb)
@@ -3019,7 +3020,7 @@ class Telemetry:
                 callback(py_data, user_data)
 
             except Exception as e:
-                print(f"Error in distance_sensor callback: {e}")
+                print(f"Error in distance_sensor callback: {e}", file=sys.stderr)
 
         cb = DistanceSensorCallback(c_callback)
         self._callbacks.append(cb)
@@ -3057,7 +3058,7 @@ class Telemetry:
                 callback(py_data, user_data)
 
             except Exception as e:
-                print(f"Error in scaled_pressure callback: {e}")
+                print(f"Error in scaled_pressure callback: {e}", file=sys.stderr)
 
         cb = ScaledPressureCallback(c_callback)
         self._callbacks.append(cb)
@@ -3095,7 +3096,7 @@ class Telemetry:
                 callback(py_data, user_data)
 
             except Exception as e:
-                print(f"Error in heading callback: {e}")
+                print(f"Error in heading callback: {e}", file=sys.stderr)
 
         cb = HeadingCallback(c_callback)
         self._callbacks.append(cb)
@@ -3129,7 +3130,7 @@ class Telemetry:
                 callback(py_data, user_data)
 
             except Exception as e:
-                print(f"Error in altitude callback: {e}")
+                print(f"Error in altitude callback: {e}", file=sys.stderr)
 
         cb = AltitudeCallback(c_callback)
         self._callbacks.append(cb)
@@ -3163,7 +3164,7 @@ class Telemetry:
                 callback(py_data, user_data)
 
             except Exception as e:
-                print(f"Error in wind callback: {e}")
+                print(f"Error in wind callback: {e}", file=sys.stderr)
 
         cb = WindCallback(c_callback)
         self._callbacks.append(cb)
@@ -3197,7 +3198,7 @@ class Telemetry:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in set_rate_position callback: {e}")
+                print(f"Error in set_rate_position callback: {e}", file=sys.stderr)
 
         cb = SetRatePositionCallback(c_callback)
         self._callbacks.append(cb)
@@ -3229,7 +3230,7 @@ class Telemetry:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in set_rate_home callback: {e}")
+                print(f"Error in set_rate_home callback: {e}", file=sys.stderr)
 
         cb = SetRateHomeCallback(c_callback)
         self._callbacks.append(cb)
@@ -3259,7 +3260,7 @@ class Telemetry:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in set_rate_in_air callback: {e}")
+                print(f"Error in set_rate_in_air callback: {e}", file=sys.stderr)
 
         cb = SetRateInAirCallback(c_callback)
         self._callbacks.append(cb)
@@ -3293,7 +3294,7 @@ class Telemetry:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in set_rate_landed_state callback: {e}")
+                print(f"Error in set_rate_landed_state callback: {e}", file=sys.stderr)
 
         cb = SetRateLandedStateCallback(c_callback)
         self._callbacks.append(cb)
@@ -3327,7 +3328,7 @@ class Telemetry:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in set_rate_vtol_state callback: {e}")
+                print(f"Error in set_rate_vtol_state callback: {e}", file=sys.stderr)
 
         cb = SetRateVtolStateCallback(c_callback)
         self._callbacks.append(cb)
@@ -3361,7 +3362,7 @@ class Telemetry:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in set_rate_attitude_quaternion callback: {e}")
+                print(f"Error in set_rate_attitude_quaternion callback: {e}", file=sys.stderr)
 
         cb = SetRateAttitudeQuaternionCallback(c_callback)
         self._callbacks.append(cb)
@@ -3395,7 +3396,7 @@ class Telemetry:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in set_rate_attitude_euler callback: {e}")
+                print(f"Error in set_rate_attitude_euler callback: {e}", file=sys.stderr)
 
         cb = SetRateAttitudeEulerCallback(c_callback)
         self._callbacks.append(cb)
@@ -3430,7 +3431,7 @@ class Telemetry:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in set_rate_velocity_ned callback: {e}")
+                print(f"Error in set_rate_velocity_ned callback: {e}", file=sys.stderr)
 
         cb = SetRateVelocityNedCallback(c_callback)
         self._callbacks.append(cb)
@@ -3464,7 +3465,7 @@ class Telemetry:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in set_rate_gps_info callback: {e}")
+                print(f"Error in set_rate_gps_info callback: {e}", file=sys.stderr)
 
         cb = SetRateGpsInfoCallback(c_callback)
         self._callbacks.append(cb)
@@ -3498,7 +3499,7 @@ class Telemetry:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in set_rate_battery callback: {e}")
+                print(f"Error in set_rate_battery callback: {e}", file=sys.stderr)
 
         cb = SetRateBatteryCallback(c_callback)
         self._callbacks.append(cb)
@@ -3532,7 +3533,7 @@ class Telemetry:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in set_rate_rc_status callback: {e}")
+                print(f"Error in set_rate_rc_status callback: {e}", file=sys.stderr)
 
         cb = SetRateRcStatusCallback(c_callback)
         self._callbacks.append(cb)
@@ -3566,7 +3567,7 @@ class Telemetry:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in set_rate_actuator_control_target callback: {e}")
+                print(f"Error in set_rate_actuator_control_target callback: {e}", file=sys.stderr)
 
         cb = SetRateActuatorControlTargetCallback(c_callback)
         self._callbacks.append(cb)
@@ -3600,7 +3601,7 @@ class Telemetry:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in set_rate_actuator_output_status callback: {e}")
+                print(f"Error in set_rate_actuator_output_status callback: {e}", file=sys.stderr)
 
         cb = SetRateActuatorOutputStatusCallback(c_callback)
         self._callbacks.append(cb)
@@ -3634,7 +3635,7 @@ class Telemetry:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in set_rate_odometry callback: {e}")
+                print(f"Error in set_rate_odometry callback: {e}", file=sys.stderr)
 
         cb = SetRateOdometryCallback(c_callback)
         self._callbacks.append(cb)
@@ -3668,7 +3669,7 @@ class Telemetry:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in set_rate_position_velocity_ned callback: {e}")
+                print(f"Error in set_rate_position_velocity_ned callback: {e}", file=sys.stderr)
 
         cb = SetRatePositionVelocityNedCallback(c_callback)
         self._callbacks.append(cb)
@@ -3702,7 +3703,7 @@ class Telemetry:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in set_rate_ground_truth callback: {e}")
+                print(f"Error in set_rate_ground_truth callback: {e}", file=sys.stderr)
 
         cb = SetRateGroundTruthCallback(c_callback)
         self._callbacks.append(cb)
@@ -3736,7 +3737,7 @@ class Telemetry:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in set_rate_fixedwing_metrics callback: {e}")
+                print(f"Error in set_rate_fixedwing_metrics callback: {e}", file=sys.stderr)
 
         cb = SetRateFixedwingMetricsCallback(c_callback)
         self._callbacks.append(cb)
@@ -3768,7 +3769,7 @@ class Telemetry:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in set_rate_imu callback: {e}")
+                print(f"Error in set_rate_imu callback: {e}", file=sys.stderr)
 
         cb = SetRateImuCallback(c_callback)
         self._callbacks.append(cb)
@@ -3800,7 +3801,7 @@ class Telemetry:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in set_rate_scaled_imu callback: {e}")
+                print(f"Error in set_rate_scaled_imu callback: {e}", file=sys.stderr)
 
         cb = SetRateScaledImuCallback(c_callback)
         self._callbacks.append(cb)
@@ -3834,7 +3835,7 @@ class Telemetry:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in set_rate_raw_imu callback: {e}")
+                print(f"Error in set_rate_raw_imu callback: {e}", file=sys.stderr)
 
         cb = SetRateRawImuCallback(c_callback)
         self._callbacks.append(cb)
@@ -3868,7 +3869,7 @@ class Telemetry:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in set_rate_unix_epoch_time callback: {e}")
+                print(f"Error in set_rate_unix_epoch_time callback: {e}", file=sys.stderr)
 
         cb = SetRateUnixEpochTimeCallback(c_callback)
         self._callbacks.append(cb)
@@ -3902,7 +3903,7 @@ class Telemetry:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in set_rate_distance_sensor callback: {e}")
+                print(f"Error in set_rate_distance_sensor callback: {e}", file=sys.stderr)
 
         cb = SetRateDistanceSensorCallback(c_callback)
         self._callbacks.append(cb)
@@ -3936,7 +3937,7 @@ class Telemetry:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in set_rate_altitude callback: {e}")
+                print(f"Error in set_rate_altitude callback: {e}", file=sys.stderr)
 
         cb = SetRateAltitudeCallback(c_callback)
         self._callbacks.append(cb)
@@ -3968,7 +3969,7 @@ class Telemetry:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in set_rate_health callback: {e}")
+                print(f"Error in set_rate_health callback: {e}", file=sys.stderr)
 
         cb = SetRateHealthCallback(c_callback)
         self._callbacks.append(cb)
@@ -4006,7 +4007,7 @@ class Telemetry:
                 callback(py_result, py_data, user_data)
 
             except Exception as e:
-                print(f"Error in get_gps_global_origin callback: {e}")
+                print(f"Error in get_gps_global_origin callback: {e}", file=sys.stderr)
 
         cb = GetGpsGlobalOriginCallback(c_callback)
         self._callbacks.append(cb)

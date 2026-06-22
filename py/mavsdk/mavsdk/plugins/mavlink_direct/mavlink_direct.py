@@ -10,6 +10,7 @@ Enable direct MAVLink communication using libmav.
 
 import atexit
 import ctypes
+import sys
 
 from typing import Callable, Any
 from enum import IntEnum
@@ -166,7 +167,7 @@ class MavlinkDirect:
                 callback(py_data, user_data)
 
             except Exception as e:
-                print(f"Error in message callback: {e}")
+                print(f"Error in message callback: {e}", file=sys.stderr)
 
         cb = MessageCallback(c_callback)
         self._callbacks.append(cb)

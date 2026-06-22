@@ -10,6 +10,7 @@ Enable setting a geofence.
 
 import atexit
 import ctypes
+import sys
 
 from typing import Callable, Any
 from enum import IntEnum
@@ -295,7 +296,7 @@ class Geofence:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in upload_geofence callback: {e}")
+                print(f"Error in upload_geofence callback: {e}", file=sys.stderr)
 
         cb = UploadGeofenceCallback(c_callback)
         self._callbacks.append(cb)
@@ -327,7 +328,7 @@ class Geofence:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in clear_geofence callback: {e}")
+                print(f"Error in clear_geofence callback: {e}", file=sys.stderr)
 
         cb = ClearGeofenceCallback(c_callback)
         self._callbacks.append(cb)

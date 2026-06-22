@@ -10,6 +10,7 @@ Enable manual control using e.g. a joystick or gamepad.
 
 import atexit
 import ctypes
+import sys
 
 from typing import Callable, Any
 from enum import IntEnum
@@ -79,7 +80,7 @@ class ManualControl:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in start_position_control callback: {e}")
+                print(f"Error in start_position_control callback: {e}", file=sys.stderr)
 
         cb = StartPositionControlCallback(c_callback)
         self._callbacks.append(cb)
@@ -113,7 +114,7 @@ class ManualControl:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in start_altitude_control callback: {e}")
+                print(f"Error in start_altitude_control callback: {e}", file=sys.stderr)
 
         cb = StartAltitudeControlCallback(c_callback)
         self._callbacks.append(cb)

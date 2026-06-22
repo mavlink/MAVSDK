@@ -11,6 +11,7 @@ Allow to download log files from the vehicle after a flight is complete.
 
 import atexit
 import ctypes
+import sys
 
 from typing import Callable, Any
 from enum import IntEnum
@@ -167,7 +168,7 @@ class LogFiles:
                 callback(py_result, py_data, user_data)
 
             except Exception as e:
-                print(f"Error in get_entries callback: {e}")
+                print(f"Error in get_entries callback: {e}", file=sys.stderr)
 
         cb = GetEntriesCallback(c_callback)
         self._callbacks.append(cb)
@@ -207,7 +208,7 @@ class LogFiles:
                 callback(py_result, py_data, user_data)
 
             except Exception as e:
-                print(f"Error in download_log_file callback: {e}")
+                print(f"Error in download_log_file callback: {e}", file=sys.stderr)
 
         cb = DownloadLogFileCallback(c_callback)
         self._callbacks.append(cb)

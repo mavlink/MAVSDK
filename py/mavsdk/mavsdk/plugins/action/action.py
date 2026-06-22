@@ -10,6 +10,7 @@ Enable simple actions such as arming, taking off, and landing.
 
 import atexit
 import ctypes
+import sys
 
 from typing import Callable, Any
 from enum import IntEnum
@@ -100,7 +101,7 @@ class Action:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in arm callback: {e}")
+                print(f"Error in arm callback: {e}", file=sys.stderr)
 
         cb = ArmCallback(c_callback)
         self._callbacks.append(cb)
@@ -134,7 +135,7 @@ class Action:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in arm_force callback: {e}")
+                print(f"Error in arm_force callback: {e}", file=sys.stderr)
 
         cb = ArmForceCallback(c_callback)
         self._callbacks.append(cb)
@@ -166,7 +167,7 @@ class Action:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in disarm callback: {e}")
+                print(f"Error in disarm callback: {e}", file=sys.stderr)
 
         cb = DisarmCallback(c_callback)
         self._callbacks.append(cb)
@@ -200,7 +201,7 @@ class Action:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in takeoff callback: {e}")
+                print(f"Error in takeoff callback: {e}", file=sys.stderr)
 
         cb = TakeoffCallback(c_callback)
         self._callbacks.append(cb)
@@ -231,7 +232,7 @@ class Action:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in land callback: {e}")
+                print(f"Error in land callback: {e}", file=sys.stderr)
 
         cb = LandCallback(c_callback)
         self._callbacks.append(cb)
@@ -262,7 +263,7 @@ class Action:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in reboot callback: {e}")
+                print(f"Error in reboot callback: {e}", file=sys.stderr)
 
         cb = RebootCallback(c_callback)
         self._callbacks.append(cb)
@@ -295,7 +296,7 @@ class Action:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in shutdown callback: {e}")
+                print(f"Error in shutdown callback: {e}", file=sys.stderr)
 
         cb = ShutdownCallback(c_callback)
         self._callbacks.append(cb)
@@ -326,7 +327,7 @@ class Action:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in terminate callback: {e}")
+                print(f"Error in terminate callback: {e}", file=sys.stderr)
 
         cb = TerminateCallback(c_callback)
         self._callbacks.append(cb)
@@ -358,7 +359,7 @@ class Action:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in kill callback: {e}")
+                print(f"Error in kill callback: {e}", file=sys.stderr)
 
         cb = KillCallback(c_callback)
         self._callbacks.append(cb)
@@ -391,7 +392,7 @@ class Action:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in return_to_launch callback: {e}")
+                print(f"Error in return_to_launch callback: {e}", file=sys.stderr)
 
         cb = ReturnToLaunchCallback(c_callback)
         self._callbacks.append(cb)
@@ -433,7 +434,7 @@ class Action:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in goto_location callback: {e}")
+                print(f"Error in goto_location callback: {e}", file=sys.stderr)
 
         cb = GotoLocationCallback(c_callback)
         self._callbacks.append(cb)
@@ -486,7 +487,7 @@ class Action:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in do_orbit callback: {e}")
+                print(f"Error in do_orbit callback: {e}", file=sys.stderr)
 
         cb = DoOrbitCallback(c_callback)
         self._callbacks.append(cb)
@@ -545,7 +546,7 @@ class Action:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in hold callback: {e}")
+                print(f"Error in hold callback: {e}", file=sys.stderr)
 
         cb = HoldCallback(c_callback)
         self._callbacks.append(cb)
@@ -578,7 +579,7 @@ class Action:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in set_actuator callback: {e}")
+                print(f"Error in set_actuator callback: {e}", file=sys.stderr)
 
         cb = SetActuatorCallback(c_callback)
         self._callbacks.append(cb)
@@ -614,7 +615,7 @@ class Action:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in set_relay callback: {e}")
+                print(f"Error in set_relay callback: {e}", file=sys.stderr)
 
         cb = SetRelayCallback(c_callback)
         self._callbacks.append(cb)
@@ -649,7 +650,7 @@ class Action:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in transition_to_fixedwing callback: {e}")
+                print(f"Error in transition_to_fixedwing callback: {e}", file=sys.stderr)
 
         cb = TransitionToFixedwingCallback(c_callback)
         self._callbacks.append(cb)
@@ -684,7 +685,7 @@ class Action:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in transition_to_multicopter callback: {e}")
+                print(f"Error in transition_to_multicopter callback: {e}", file=sys.stderr)
 
         cb = TransitionToMulticopterCallback(c_callback)
         self._callbacks.append(cb)
@@ -715,7 +716,7 @@ class Action:
                 callback(py_result, py_data, user_data)
 
             except Exception as e:
-                print(f"Error in get_takeoff_altitude callback: {e}")
+                print(f"Error in get_takeoff_altitude callback: {e}", file=sys.stderr)
 
         cb = GetTakeoffAltitudeCallback(c_callback)
         self._callbacks.append(cb)
@@ -748,7 +749,7 @@ class Action:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in set_takeoff_altitude callback: {e}")
+                print(f"Error in set_takeoff_altitude callback: {e}", file=sys.stderr)
 
         cb = SetTakeoffAltitudeCallback(c_callback)
         self._callbacks.append(cb)
@@ -784,7 +785,7 @@ class Action:
                 callback(py_result, py_data, user_data)
 
             except Exception as e:
-                print(f"Error in get_return_to_launch_altitude callback: {e}")
+                print(f"Error in get_return_to_launch_altitude callback: {e}", file=sys.stderr)
 
         cb = GetReturnToLaunchAltitudeCallback(c_callback)
         self._callbacks.append(cb)
@@ -819,7 +820,7 @@ class Action:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in set_return_to_launch_altitude callback: {e}")
+                print(f"Error in set_return_to_launch_altitude callback: {e}", file=sys.stderr)
 
         cb = SetReturnToLaunchAltitudeCallback(c_callback)
         self._callbacks.append(cb)
@@ -856,7 +857,7 @@ class Action:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in set_current_speed callback: {e}")
+                print(f"Error in set_current_speed callback: {e}", file=sys.stderr)
 
         cb = SetCurrentSpeedCallback(c_callback)
         self._callbacks.append(cb)

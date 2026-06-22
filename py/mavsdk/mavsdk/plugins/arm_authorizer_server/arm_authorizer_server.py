@@ -10,6 +10,7 @@ Use arm authorization.
 
 import atexit
 import ctypes
+import sys
 
 from typing import Callable, Any
 from enum import IntEnum
@@ -79,7 +80,7 @@ class ArmAuthorizerServer:
                 callback(py_data, user_data)
 
             except Exception as e:
-                print(f"Error in arm_authorization callback: {e}")
+                print(f"Error in arm_authorization callback: {e}", file=sys.stderr)
 
         cb = ArmAuthorizationCallback(c_callback)
         self._callbacks.append(cb)

@@ -10,6 +10,7 @@ Enable creating and sending a tune to be played on the system.
 
 import atexit
 import ctypes
+import sys
 
 from typing import Callable, Any
 from enum import IntEnum
@@ -139,7 +140,7 @@ class Tune:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in play_tune callback: {e}")
+                print(f"Error in play_tune callback: {e}", file=sys.stderr)
 
         cb = PlayTuneCallback(c_callback)
         self._callbacks.append(cb)

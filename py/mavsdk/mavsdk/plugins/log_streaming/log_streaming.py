@@ -10,6 +10,7 @@ Provide log streaming data.
 
 import atexit
 import ctypes
+import sys
 
 from typing import Callable, Any
 from enum import IntEnum
@@ -110,7 +111,7 @@ class LogStreaming:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in start_log_streaming callback: {e}")
+                print(f"Error in start_log_streaming callback: {e}", file=sys.stderr)
 
         cb = StartLogStreamingCallback(c_callback)
         self._callbacks.append(cb)
@@ -139,7 +140,7 @@ class LogStreaming:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in stop_log_streaming callback: {e}")
+                print(f"Error in stop_log_streaming callback: {e}", file=sys.stderr)
 
         cb = StopLogStreamingCallback(c_callback)
         self._callbacks.append(cb)
@@ -172,7 +173,7 @@ class LogStreaming:
                 callback(py_data, user_data)
 
             except Exception as e:
-                print(f"Error in log_streaming_raw callback: {e}")
+                print(f"Error in log_streaming_raw callback: {e}", file=sys.stderr)
 
         cb = LogStreamingRawCallback(c_callback)
         self._callbacks.append(cb)

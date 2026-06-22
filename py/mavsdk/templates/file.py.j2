@@ -10,6 +10,7 @@
 
 import atexit
 import ctypes
+import sys
 
 from typing import Callable, Any
 from enum import IntEnum
@@ -283,7 +284,7 @@ class {{ plugin_name.upper_camel_case }}:
                 {% endif %}
 
             except Exception as e:
-                print(f"Error in {{ method.name.lower_snake_case }} callback: {e}")
+                print(f"Error in {{ method.name.lower_snake_case }} callback: {e}", file=sys.stderr)
 
         cb = {{ method.name.upper_camel_case }}Callback(c_callback)
         self._callbacks.append(cb)

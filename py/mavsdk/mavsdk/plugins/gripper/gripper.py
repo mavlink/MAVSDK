@@ -10,6 +10,7 @@ Allows users to send gripper actions.
 
 import atexit
 import ctypes
+import sys
 
 from typing import Callable, Any
 from enum import IntEnum
@@ -82,7 +83,7 @@ class Gripper:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in grab callback: {e}")
+                print(f"Error in grab callback: {e}", file=sys.stderr)
 
         cb = GrabCallback(c_callback)
         self._callbacks.append(cb)
@@ -112,7 +113,7 @@ class Gripper:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in release callback: {e}")
+                print(f"Error in release callback: {e}", file=sys.stderr)
 
         cb = ReleaseCallback(c_callback)
         self._callbacks.append(cb)

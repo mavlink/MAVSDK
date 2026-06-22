@@ -10,6 +10,7 @@ Get event notifications, such as takeoff, or arming checks
 
 import atexit
 import ctypes
+import sys
 
 from typing import Callable, Any
 from enum import IntEnum
@@ -414,7 +415,7 @@ class Events:
                 callback(py_data, user_data)
 
             except Exception as e:
-                print(f"Error in events callback: {e}")
+                print(f"Error in events callback: {e}", file=sys.stderr)
 
         cb = EventsCallback(c_callback)
         self._callbacks.append(cb)
@@ -441,7 +442,7 @@ class Events:
                 callback(py_data, user_data)
 
             except Exception as e:
-                print(f"Error in health_and_arming_checks callback: {e}")
+                print(f"Error in health_and_arming_checks callback: {e}", file=sys.stderr)
 
         cb = HealthAndArmingChecksCallback(c_callback)
         self._callbacks.append(cb)

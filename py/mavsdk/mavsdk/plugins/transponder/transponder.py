@@ -11,6 +11,7 @@ Allow users to get ADS-B information
 
 import atexit
 import ctypes
+import sys
 
 from typing import Callable, Any
 from enum import IntEnum
@@ -212,7 +213,7 @@ class Transponder:
                 callback(py_data, user_data)
 
             except Exception as e:
-                print(f"Error in transponder callback: {e}")
+                print(f"Error in transponder callback: {e}", file=sys.stderr)
 
         cb = TransponderCallback(c_callback)
         self._callbacks.append(cb)
@@ -248,7 +249,7 @@ class Transponder:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in set_rate_transponder callback: {e}")
+                print(f"Error in set_rate_transponder callback: {e}", file=sys.stderr)
 
         cb = SetRateTransponderCallback(c_callback)
         self._callbacks.append(cb)

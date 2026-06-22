@@ -10,6 +10,7 @@ Enable waypoint missions.
 
 import atexit
 import ctypes
+import sys
 
 from typing import Callable, Any
 from enum import IntEnum
@@ -418,7 +419,7 @@ class Mission:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in upload_mission callback: {e}")
+                print(f"Error in upload_mission callback: {e}", file=sys.stderr)
 
         cb = UploadMissionCallback(c_callback)
         self._callbacks.append(cb)
@@ -459,7 +460,7 @@ class Mission:
                 callback(py_result, py_data, user_data)
 
             except Exception as e:
-                print(f"Error in upload_mission_with_progress callback: {e}")
+                print(f"Error in upload_mission_with_progress callback: {e}", file=sys.stderr)
 
         cb = UploadMissionWithProgressCallback(c_callback)
         self._callbacks.append(cb)
@@ -497,7 +498,7 @@ class Mission:
                 callback(py_result, py_data, user_data)
 
             except Exception as e:
-                print(f"Error in download_mission callback: {e}")
+                print(f"Error in download_mission callback: {e}", file=sys.stderr)
 
         cb = DownloadMissionCallback(c_callback)
         self._callbacks.append(cb)
@@ -541,7 +542,7 @@ class Mission:
                 callback(py_result, py_data, user_data)
 
             except Exception as e:
-                print(f"Error in download_mission_with_progress callback: {e}")
+                print(f"Error in download_mission_with_progress callback: {e}", file=sys.stderr)
 
         cb = DownloadMissionWithProgressCallback(c_callback)
         self._callbacks.append(cb)
@@ -574,7 +575,7 @@ class Mission:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in start_mission callback: {e}")
+                print(f"Error in start_mission callback: {e}", file=sys.stderr)
 
         cb = StartMissionCallback(c_callback)
         self._callbacks.append(cb)
@@ -608,7 +609,7 @@ class Mission:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in pause_mission callback: {e}")
+                print(f"Error in pause_mission callback: {e}", file=sys.stderr)
 
         cb = PauseMissionCallback(c_callback)
         self._callbacks.append(cb)
@@ -637,7 +638,7 @@ class Mission:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in clear_mission callback: {e}")
+                print(f"Error in clear_mission callback: {e}", file=sys.stderr)
 
         cb = ClearMissionCallback(c_callback)
         self._callbacks.append(cb)
@@ -674,7 +675,7 @@ class Mission:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in set_current_mission_item callback: {e}")
+                print(f"Error in set_current_mission_item callback: {e}", file=sys.stderr)
 
         cb = SetCurrentMissionItemCallback(c_callback)
         self._callbacks.append(cb)
@@ -722,7 +723,7 @@ class Mission:
                 callback(py_data, user_data)
 
             except Exception as e:
-                print(f"Error in mission_progress callback: {e}")
+                print(f"Error in mission_progress callback: {e}", file=sys.stderr)
 
         cb = MissionProgressCallback(c_callback)
         self._callbacks.append(cb)

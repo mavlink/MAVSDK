@@ -10,6 +10,7 @@ Allow to communicate with the vehicle's system shell.
 
 import atexit
 import ctypes
+import sys
 
 from typing import Callable, Any
 from enum import IntEnum
@@ -88,7 +89,7 @@ class Shell:
                 callback(py_data, user_data)
 
             except Exception as e:
-                print(f"Error in receive callback: {e}")
+                print(f"Error in receive callback: {e}", file=sys.stderr)
 
         cb = ReceiveCallback(c_callback)
         self._callbacks.append(cb)

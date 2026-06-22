@@ -10,6 +10,7 @@ Access component metadata json definitions, such as parameters.
 
 import atexit
 import ctypes
+import sys
 
 from typing import Callable, Any
 from enum import IntEnum
@@ -185,7 +186,7 @@ class ComponentMetadata:
                 callback(py_data, user_data)
 
             except Exception as e:
-                print(f"Error in metadata_available callback: {e}")
+                print(f"Error in metadata_available callback: {e}", file=sys.stderr)
 
         cb = MetadataAvailableCallback(c_callback)
         self._callbacks.append(cb)

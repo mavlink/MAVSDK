@@ -16,6 +16,7 @@ Can be used to manage cameras that implement the MAVLink
 
 import atexit
 import ctypes
+import sys
 
 from typing import Callable, Any
 from enum import IntEnum
@@ -1174,7 +1175,7 @@ class Camera:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in take_photo callback: {e}")
+                print(f"Error in take_photo callback: {e}", file=sys.stderr)
 
         cb = TakePhotoCallback(c_callback)
         self._callbacks.append(cb)
@@ -1206,7 +1207,7 @@ class Camera:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in start_photo_interval callback: {e}")
+                print(f"Error in start_photo_interval callback: {e}", file=sys.stderr)
 
         cb = StartPhotoIntervalCallback(c_callback)
         self._callbacks.append(cb)
@@ -1241,7 +1242,7 @@ class Camera:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in stop_photo_interval callback: {e}")
+                print(f"Error in stop_photo_interval callback: {e}", file=sys.stderr)
 
         cb = StopPhotoIntervalCallback(c_callback)
         self._callbacks.append(cb)
@@ -1275,7 +1276,7 @@ class Camera:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in start_video callback: {e}")
+                print(f"Error in start_video callback: {e}", file=sys.stderr)
 
         cb = StartVideoCallback(c_callback)
         self._callbacks.append(cb)
@@ -1305,7 +1306,7 @@ class Camera:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in stop_video callback: {e}")
+                print(f"Error in stop_video callback: {e}", file=sys.stderr)
 
         cb = StopVideoCallback(c_callback)
         self._callbacks.append(cb)
@@ -1365,7 +1366,7 @@ class Camera:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in set_mode callback: {e}")
+                print(f"Error in set_mode callback: {e}", file=sys.stderr)
 
         cb = SetModeCallback(c_callback)
         self._callbacks.append(cb)
@@ -1411,7 +1412,7 @@ class Camera:
                 callback(py_result, py_data, user_data)
 
             except Exception as e:
-                print(f"Error in list_photos callback: {e}")
+                print(f"Error in list_photos callback: {e}", file=sys.stderr)
 
         cb = ListPhotosCallback(c_callback)
         self._callbacks.append(cb)
@@ -1458,7 +1459,7 @@ class Camera:
                 callback(py_data, user_data)
 
             except Exception as e:
-                print(f"Error in camera_list callback: {e}")
+                print(f"Error in camera_list callback: {e}", file=sys.stderr)
 
         cb = CameraListCallback(c_callback)
         self._callbacks.append(cb)
@@ -1492,7 +1493,7 @@ class Camera:
                 callback(py_data, user_data)
 
             except Exception as e:
-                print(f"Error in mode callback: {e}")
+                print(f"Error in mode callback: {e}", file=sys.stderr)
 
         cb = ModeCallback(c_callback)
         self._callbacks.append(cb)
@@ -1531,7 +1532,7 @@ class Camera:
                 callback(py_data, user_data)
 
             except Exception as e:
-                print(f"Error in video_stream_info callback: {e}")
+                print(f"Error in video_stream_info callback: {e}", file=sys.stderr)
 
         cb = VideoStreamInfoCallback(c_callback)
         self._callbacks.append(cb)
@@ -1572,7 +1573,7 @@ class Camera:
                 callback(py_data, user_data)
 
             except Exception as e:
-                print(f"Error in capture_info callback: {e}")
+                print(f"Error in capture_info callback: {e}", file=sys.stderr)
 
         cb = CaptureInfoCallback(c_callback)
         self._callbacks.append(cb)
@@ -1595,7 +1596,7 @@ class Camera:
                 callback(py_data, user_data)
 
             except Exception as e:
-                print(f"Error in storage callback: {e}")
+                print(f"Error in storage callback: {e}", file=sys.stderr)
 
         cb = StorageCallback(c_callback)
         self._callbacks.append(cb)
@@ -1636,7 +1637,7 @@ class Camera:
                 callback(py_data, user_data)
 
             except Exception as e:
-                print(f"Error in current_settings callback: {e}")
+                print(f"Error in current_settings callback: {e}", file=sys.stderr)
 
         cb = CurrentSettingsCallback(c_callback)
         self._callbacks.append(cb)
@@ -1682,7 +1683,7 @@ class Camera:
                 callback(py_data, user_data)
 
             except Exception as e:
-                print(f"Error in possible_setting_options callback: {e}")
+                print(f"Error in possible_setting_options callback: {e}", file=sys.stderr)
 
         cb = PossibleSettingOptionsCallback(c_callback)
         self._callbacks.append(cb)
@@ -1730,7 +1731,7 @@ class Camera:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in set_setting callback: {e}")
+                print(f"Error in set_setting callback: {e}", file=sys.stderr)
 
         cb = SetSettingCallback(c_callback)
         self._callbacks.append(cb)
@@ -1771,7 +1772,7 @@ class Camera:
                 callback(py_result, py_data, user_data)
 
             except Exception as e:
-                print(f"Error in get_setting callback: {e}")
+                print(f"Error in get_setting callback: {e}", file=sys.stderr)
 
         cb = GetSettingCallback(c_callback)
         self._callbacks.append(cb)
@@ -1810,7 +1811,7 @@ class Camera:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in format_storage callback: {e}")
+                print(f"Error in format_storage callback: {e}", file=sys.stderr)
 
         cb = FormatStorageCallback(c_callback)
         self._callbacks.append(cb)
@@ -1847,7 +1848,7 @@ class Camera:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in reset_settings callback: {e}")
+                print(f"Error in reset_settings callback: {e}", file=sys.stderr)
 
         cb = ResetSettingsCallback(c_callback)
         self._callbacks.append(cb)
@@ -1881,7 +1882,7 @@ class Camera:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in zoom_in_start callback: {e}")
+                print(f"Error in zoom_in_start callback: {e}", file=sys.stderr)
 
         cb = ZoomInStartCallback(c_callback)
         self._callbacks.append(cb)
@@ -1915,7 +1916,7 @@ class Camera:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in zoom_out_start callback: {e}")
+                print(f"Error in zoom_out_start callback: {e}", file=sys.stderr)
 
         cb = ZoomOutStartCallback(c_callback)
         self._callbacks.append(cb)
@@ -1947,7 +1948,7 @@ class Camera:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in zoom_stop callback: {e}")
+                print(f"Error in zoom_stop callback: {e}", file=sys.stderr)
 
         cb = ZoomStopCallback(c_callback)
         self._callbacks.append(cb)
@@ -1979,7 +1980,7 @@ class Camera:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in zoom_range callback: {e}")
+                print(f"Error in zoom_range callback: {e}", file=sys.stderr)
 
         cb = ZoomRangeCallback(c_callback)
         self._callbacks.append(cb)
@@ -2020,7 +2021,7 @@ class Camera:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in track_point callback: {e}")
+                print(f"Error in track_point callback: {e}", file=sys.stderr)
 
         cb = TrackPointCallback(c_callback)
         self._callbacks.append(cb)
@@ -2064,7 +2065,7 @@ class Camera:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in track_rectangle callback: {e}")
+                print(f"Error in track_rectangle callback: {e}", file=sys.stderr)
 
         cb = TrackRectangleCallback(c_callback)
         self._callbacks.append(cb)
@@ -2109,7 +2110,7 @@ class Camera:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in track_stop callback: {e}")
+                print(f"Error in track_stop callback: {e}", file=sys.stderr)
 
         cb = TrackStopCallback(c_callback)
         self._callbacks.append(cb)
@@ -2141,7 +2142,7 @@ class Camera:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in focus_in_start callback: {e}")
+                print(f"Error in focus_in_start callback: {e}", file=sys.stderr)
 
         cb = FocusInStartCallback(c_callback)
         self._callbacks.append(cb)
@@ -2175,7 +2176,7 @@ class Camera:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in focus_out_start callback: {e}")
+                print(f"Error in focus_out_start callback: {e}", file=sys.stderr)
 
         cb = FocusOutStartCallback(c_callback)
         self._callbacks.append(cb)
@@ -2207,7 +2208,7 @@ class Camera:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in focus_stop callback: {e}")
+                print(f"Error in focus_stop callback: {e}", file=sys.stderr)
 
         cb = FocusStopCallback(c_callback)
         self._callbacks.append(cb)
@@ -2239,7 +2240,7 @@ class Camera:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in focus_range callback: {e}")
+                print(f"Error in focus_range callback: {e}", file=sys.stderr)
 
         cb = FocusRangeCallback(c_callback)
         self._callbacks.append(cb)

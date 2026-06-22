@@ -10,6 +10,7 @@ Enable raw missions as exposed by MAVLink.
 
 import atexit
 import ctypes
+import sys
 
 from typing import Callable, Any
 from enum import IntEnum
@@ -334,7 +335,7 @@ class MissionRaw:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in upload_mission callback: {e}")
+                print(f"Error in upload_mission callback: {e}", file=sys.stderr)
 
         cb = UploadMissionCallback(c_callback)
         self._callbacks.append(cb)
@@ -368,7 +369,7 @@ class MissionRaw:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in upload_geofence callback: {e}")
+                print(f"Error in upload_geofence callback: {e}", file=sys.stderr)
 
         cb = UploadGeofenceCallback(c_callback)
         self._callbacks.append(cb)
@@ -402,7 +403,7 @@ class MissionRaw:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in upload_rally_points callback: {e}")
+                print(f"Error in upload_rally_points callback: {e}", file=sys.stderr)
 
         cb = UploadRallyPointsCallback(c_callback)
         self._callbacks.append(cb)
@@ -453,7 +454,7 @@ class MissionRaw:
                 callback(py_result, py_data, user_data)
 
             except Exception as e:
-                print(f"Error in download_mission callback: {e}")
+                print(f"Error in download_mission callback: {e}", file=sys.stderr)
 
         cb = DownloadMissionCallback(c_callback)
         self._callbacks.append(cb)
@@ -496,7 +497,7 @@ class MissionRaw:
                 callback(py_result, py_data, user_data)
 
             except Exception as e:
-                print(f"Error in download_geofence callback: {e}")
+                print(f"Error in download_geofence callback: {e}", file=sys.stderr)
 
         cb = DownloadGeofenceCallback(c_callback)
         self._callbacks.append(cb)
@@ -539,7 +540,7 @@ class MissionRaw:
                 callback(py_result, py_data, user_data)
 
             except Exception as e:
-                print(f"Error in download_rallypoints callback: {e}")
+                print(f"Error in download_rallypoints callback: {e}", file=sys.stderr)
 
         cb = DownloadRallypointsCallback(c_callback)
         self._callbacks.append(cb)
@@ -589,7 +590,7 @@ class MissionRaw:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in start_mission callback: {e}")
+                print(f"Error in start_mission callback: {e}", file=sys.stderr)
 
         cb = StartMissionCallback(c_callback)
         self._callbacks.append(cb)
@@ -623,7 +624,7 @@ class MissionRaw:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in pause_mission callback: {e}")
+                print(f"Error in pause_mission callback: {e}", file=sys.stderr)
 
         cb = PauseMissionCallback(c_callback)
         self._callbacks.append(cb)
@@ -652,7 +653,7 @@ class MissionRaw:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in clear_mission callback: {e}")
+                print(f"Error in clear_mission callback: {e}", file=sys.stderr)
 
         cb = ClearMissionCallback(c_callback)
         self._callbacks.append(cb)
@@ -686,7 +687,7 @@ class MissionRaw:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in set_current_mission_item callback: {e}")
+                print(f"Error in set_current_mission_item callback: {e}", file=sys.stderr)
 
         cb = SetCurrentMissionItemCallback(c_callback)
         self._callbacks.append(cb)
@@ -722,7 +723,7 @@ class MissionRaw:
                 callback(py_data, user_data)
 
             except Exception as e:
-                print(f"Error in mission_progress callback: {e}")
+                print(f"Error in mission_progress callback: {e}", file=sys.stderr)
 
         cb = MissionProgressCallback(c_callback)
         self._callbacks.append(cb)
@@ -763,7 +764,7 @@ class MissionRaw:
                 callback(py_data, user_data)
 
             except Exception as e:
-                print(f"Error in mission_changed callback: {e}")
+                print(f"Error in mission_changed callback: {e}", file=sys.stderr)
 
         cb = MissionChangedCallback(c_callback)
         self._callbacks.append(cb)

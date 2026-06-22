@@ -10,6 +10,7 @@ Enable to calibrate sensors of a drone such as gyro, accelerometer, and magnetom
 
 import atexit
 import ctypes
+import sys
 
 from typing import Callable, Any
 from enum import IntEnum
@@ -137,7 +138,7 @@ class Calibration:
                 callback(py_result, py_data, user_data)
 
             except Exception as e:
-                print(f"Error in calibrate_gyro callback: {e}")
+                print(f"Error in calibrate_gyro callback: {e}", file=sys.stderr)
 
         cb = CalibrateGyroCallback(c_callback)
         self._callbacks.append(cb)
@@ -158,7 +159,7 @@ class Calibration:
                 callback(py_result, py_data, user_data)
 
             except Exception as e:
-                print(f"Error in calibrate_accelerometer callback: {e}")
+                print(f"Error in calibrate_accelerometer callback: {e}", file=sys.stderr)
 
         cb = CalibrateAccelerometerCallback(c_callback)
         self._callbacks.append(cb)
@@ -181,7 +182,7 @@ class Calibration:
                 callback(py_result, py_data, user_data)
 
             except Exception as e:
-                print(f"Error in calibrate_magnetometer callback: {e}")
+                print(f"Error in calibrate_magnetometer callback: {e}", file=sys.stderr)
 
         cb = CalibrateMagnetometerCallback(c_callback)
         self._callbacks.append(cb)
@@ -204,7 +205,7 @@ class Calibration:
                 callback(py_result, py_data, user_data)
 
             except Exception as e:
-                print(f"Error in calibrate_level_horizon callback: {e}")
+                print(f"Error in calibrate_level_horizon callback: {e}", file=sys.stderr)
 
         cb = CalibrateLevelHorizonCallback(c_callback)
         self._callbacks.append(cb)
@@ -229,7 +230,7 @@ class Calibration:
                 callback(py_result, py_data, user_data)
 
             except Exception as e:
-                print(f"Error in calibrate_gimbal_accelerometer callback: {e}")
+                print(f"Error in calibrate_gimbal_accelerometer callback: {e}", file=sys.stderr)
 
         cb = CalibrateGimbalAccelerometerCallback(c_callback)
         self._callbacks.append(cb)

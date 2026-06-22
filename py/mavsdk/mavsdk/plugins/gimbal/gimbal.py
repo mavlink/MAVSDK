@@ -11,6 +11,7 @@ Provide control over a gimbal within the MAVLink
 
 import atexit
 import ctypes
+import sys
 
 from typing import Callable, Any
 from enum import IntEnum
@@ -548,7 +549,7 @@ class Gimbal:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in set_angles callback: {e}")
+                print(f"Error in set_angles callback: {e}", file=sys.stderr)
 
         cb = SetAnglesCallback(c_callback)
         self._callbacks.append(cb)
@@ -611,7 +612,7 @@ class Gimbal:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in set_angular_rates callback: {e}")
+                print(f"Error in set_angular_rates callback: {e}", file=sys.stderr)
 
         cb = SetAngularRatesCallback(c_callback)
         self._callbacks.append(cb)
@@ -678,7 +679,7 @@ class Gimbal:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in set_roi_location callback: {e}")
+                print(f"Error in set_roi_location callback: {e}", file=sys.stderr)
 
         cb = SetRoiLocationCallback(c_callback)
         self._callbacks.append(cb)
@@ -723,7 +724,7 @@ class Gimbal:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in take_control callback: {e}")
+                print(f"Error in take_control callback: {e}", file=sys.stderr)
 
         cb = TakeControlCallback(c_callback)
         self._callbacks.append(cb)
@@ -760,7 +761,7 @@ class Gimbal:
                 callback(py_result, user_data)
 
             except Exception as e:
-                print(f"Error in release_control callback: {e}")
+                print(f"Error in release_control callback: {e}", file=sys.stderr)
 
         cb = ReleaseControlCallback(c_callback)
         self._callbacks.append(cb)
@@ -795,7 +796,7 @@ class Gimbal:
                 callback(py_data, user_data)
 
             except Exception as e:
-                print(f"Error in gimbal_list callback: {e}")
+                print(f"Error in gimbal_list callback: {e}", file=sys.stderr)
 
         cb = GimbalListCallback(c_callback)
         self._callbacks.append(cb)
@@ -833,7 +834,7 @@ class Gimbal:
                 callback(py_data, user_data)
 
             except Exception as e:
-                print(f"Error in control_status callback: {e}")
+                print(f"Error in control_status callback: {e}", file=sys.stderr)
 
         cb = ControlStatusCallback(c_callback)
         self._callbacks.append(cb)
@@ -874,7 +875,7 @@ class Gimbal:
                 callback(py_data, user_data)
 
             except Exception as e:
-                print(f"Error in attitude callback: {e}")
+                print(f"Error in attitude callback: {e}", file=sys.stderr)
 
         cb = AttitudeCallback(c_callback)
         self._callbacks.append(cb)
