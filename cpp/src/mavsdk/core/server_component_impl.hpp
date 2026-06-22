@@ -19,6 +19,10 @@
 #include <mutex>
 #include <cstdint>
 
+namespace mav {
+class MessageSet;
+}
+
 namespace mavsdk {
 
 class MavsdkImpl;
@@ -113,6 +117,13 @@ public:
 
     bool queue_message(
         std::function<mavlink_message_t(MavlinkAddress mavlink_addres, uint8_t channel)> fun);
+
+    // Get MessageSet for message creation and parsing (shared per Mavsdk instance).
+    mav::MessageSet& get_message_set() const;
+
+    // Thread-safe loading of custom XML definitions into the shared MessageSet.
+    // Note: this affects the whole Mavsdk instance (all systems and server components).
+    bool load_custom_xml_to_message_set(const std::string& xml_content);
 
     CallEveryHandler::Cookie add_call_every(std::function<void()> callback, float interval_s);
     void change_call_every(float interval_s, CallEveryHandler::Cookie cookie);

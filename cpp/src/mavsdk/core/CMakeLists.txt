@@ -79,6 +79,7 @@ target_sources(mavsdk
     mavlink_parameter_helper.cpp
     mavlink_receiver.cpp
     libmav_receiver.cpp
+    libmav_conversions.cpp
     mavlink_request_message.cpp
     mavlink_request_message_handler.cpp
     mavlink_statustext_handler.cpp

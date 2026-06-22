@@ -188,6 +188,16 @@ bool ServerComponentImpl::queue_message(
     return _mavsdk_impl.send_message(message);
 }
 
+mav::MessageSet& ServerComponentImpl::get_message_set() const
+{
+    return _mavsdk_impl.get_message_set();
+}
+
+bool ServerComponentImpl::load_custom_xml_to_message_set(const std::string& xml_content)
+{
+    return _mavsdk_impl.load_custom_xml_to_message_set(xml_content);
+}
+
 CallEveryHandler::Cookie
 ServerComponentImpl::add_call_every(std::function<void()> callback, float interval_s)
 {

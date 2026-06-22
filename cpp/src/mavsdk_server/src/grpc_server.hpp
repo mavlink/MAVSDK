@@ -119,6 +119,11 @@
 #include "mavlink_direct/mavlink_direct_service_impl.hpp"
 #endif
 
+#ifdef MAVLINK_DIRECT_SERVER_ENABLED
+#include "plugins/mavlink_direct_server/mavlink_direct_server.hpp"
+#include "mavlink_direct_server/mavlink_direct_server_service_impl.hpp"
+#endif
+
 #ifdef MISSION_ENABLED
 #include "plugins/mission/mission.hpp"
 #include "mission/mission_service_impl.hpp"
@@ -306,6 +311,11 @@ public:
 #ifdef MAVLINK_DIRECT_ENABLED
     _mavlink_direct_lazy_plugin(mavsdk),
     _mavlink_direct_service(_mavlink_direct_lazy_plugin),
+#endif
+
+#ifdef MAVLINK_DIRECT_SERVER_ENABLED
+    _mavlink_direct_server_lazy_plugin(mavsdk),
+    _mavlink_direct_server_service(_mavlink_direct_server_lazy_plugin),
 #endif
 
 #ifdef MISSION_ENABLED
@@ -540,6 +550,13 @@ private:
     LazyPlugin<MavlinkDirect> _mavlink_direct_lazy_plugin;
 
     MavlinkDirectServiceImpl<> _mavlink_direct_service;
+#endif
+
+#ifdef MAVLINK_DIRECT_SERVER_ENABLED
+
+    LazyServerPlugin<MavlinkDirectServer> _mavlink_direct_server_lazy_plugin;
+
+    MavlinkDirectServerServiceImpl<> _mavlink_direct_server_service;
 #endif
 
 #ifdef MISSION_ENABLED

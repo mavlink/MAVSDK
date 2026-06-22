@@ -106,6 +106,10 @@ int GrpcServer::run()
     builder.RegisterService(&_mavlink_direct_service);
 #endif
 
+#ifdef MAVLINK_DIRECT_SERVER_ENABLED
+    builder.RegisterService(&_mavlink_direct_server_service);
+#endif
+
 #ifdef MISSION_ENABLED
     builder.RegisterService(&_mission_service);
 #endif
@@ -279,6 +283,10 @@ void GrpcServer::stop()
 
 #ifdef MAVLINK_DIRECT_ENABLED
         _mavlink_direct_service.stop();
+#endif
+
+#ifdef MAVLINK_DIRECT_SERVER_ENABLED
+        _mavlink_direct_server_service.stop();
 #endif
 
 #ifdef MISSION_ENABLED
