@@ -44,6 +44,16 @@ class RawConnection;
 struct TlogFile;
 
 class MavsdkImpl {
+    // The Asio io_context must outlive every member that posts onto it during teardown
+    // (the message handler, parameter subscriptions, connections, systems, and server
+    // components). Declaring it first means it is destroyed last, so those members'
+    // destructors can still safely post/erase. It runs on its own dedicated thread; see
+    // _io_thread, which is stopped and joined explicitly in ~MavsdkImpl.
+    asio::io_context _io_context{};
+    // Keep io_context::run() from returning when there are momentarily no async ops pending.
+    asio::executor_work_guard<asio::io_context::executor_type> _io_work_guard{
+        _io_context.get_executor()};
+
 public:
     MavsdkImpl(const Mavsdk::Configuration& configuration);
     ~MavsdkImpl();
@@ -299,11 +309,8 @@ private:
 
     std::atomic<bool> _should_exit{false};
 
-    // Asio event loop — runs on its own dedicated thread.
-    asio::io_context _io_context{};
-    // Keep io_context::run() from returning when there are momentarily no async ops pending.
-    asio::executor_work_guard<asio::io_context::executor_type> _io_work_guard{
-        _io_context.get_executor()};
+    // _io_context and _io_work_guard are declared at the very top of the class so that the
+    // io_context outlives every member that posts onto it during teardown.
     // Recurring timer that drives TimeoutHandler::run_once() and
     // CallEveryHandler::run_once() on the io_context thread.
     asio::steady_timer _timers_poll_timer{_io_context};
