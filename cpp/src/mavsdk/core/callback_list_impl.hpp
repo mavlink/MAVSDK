@@ -5,6 +5,7 @@
 #include <cstddef>
 #include <functional>
 #include <future>
+#include <memory>
 #include <utility>
 #include <vector>
 #include <asio/io_context.hpp>
@@ -20,16 +21,21 @@ namespace mavsdk {
 // - exec()/queue() iterate the list; they run inline when already on the io thread (the
 //   common case, driven by received-message handlers and timers) and otherwise post the
 //   access and wait for it.
-// - subscribe()/subscribe_conditional() post their insertion onto the io_context. The
-//   handle is created and returned synchronously (the handle factory is thread-safe); the
-//   list insertion lands on the next io turn.
-// - unsubscribe()/clear() mutate the list. They post the mutation rather than running it
-//   inline so they never mutate the list while exec() is iterating it (which is what makes
-//   it safe to unsubscribe from inside a callback). When called off the io thread they wait
-//   until the mutation has been applied, so no callback can fire afterwards.
+// - subscribe()/subscribe_conditional()/unsubscribe()/clear() post their list mutation
+//   without waiting. Posting (rather than running inline) means they never mutate the list
+//   while exec() is iterating it, so it is safe to (un)subscribe from inside a callback; not
+//   waiting means they never block, so it is also safe to call them while holding a lock (a
+//   blocking round-trip onto the io thread would deadlock if the io thread needed that same
+//   lock). The mutation lands on the next io turn.
+//
+// The list is owned by a plugin, which the user may destroy while the io thread is still
+// running. The posted mutations capture `this`, so the destructor waits (once) for the
+// io_context to flush any that are still queued before the list is torn down.
 template<typename... Args> class CallbackListImpl {
 public:
     explicit CallbackListImpl(asio::io_context& io_context) : _io_context(io_context) {}
+
+    ~CallbackListImpl() { drain(); }
 
     Handle<Args...> subscribe(const std::function<void(Args...)>& callback)
     {
@@ -38,7 +44,7 @@ public:
         auto handle = _handle_factory.create();
 
         if (callback != nullptr) {
-            asio::post(_io_context, [this, handle, callback]() {
+            post_mutation([this, handle, callback]() {
                 _list.emplace_back(handle, callback);
                 update_size();
             });
@@ -54,7 +60,7 @@ public:
     void subscribe_conditional(const std::function<bool(Args...)>& callback)
     {
         if (callback != nullptr) {
-            asio::post(_io_context, [this, callback]() {
+            post_mutation([this, callback]() {
                 _cond_cb_list.emplace_back(callback);
                 update_size();
             });
@@ -71,7 +77,7 @@ public:
             return;
         }
 
-        mutate_on_io([this, handle]() {
+        post_mutation([this, handle]() {
             _list.erase(
                 std::remove_if(
                     _list.begin(), _list.end(), [&](auto& pair) { return pair.first == handle; }),
@@ -113,7 +119,7 @@ public:
 
     void clear()
     {
-        mutate_on_io([this]() {
+        post_mutation([this]() {
             _list.clear();
             _cond_cb_list.clear();
             update_size();
@@ -129,8 +135,10 @@ private:
 
     bool on_io_thread() const { return _io_context.get_executor().running_in_this_thread(); }
 
-    // Run a list read/iteration on the io thread: inline when already there, otherwise
-    // posted and waited for. Safe to run inline because reads don't mutate the list.
+    // Run a list read/iteration on the io thread: inline when already there, otherwise posted
+    // and waited for. Safe to run inline because reads don't mutate the list, and safe to
+    // capture by reference because we block until the posted access has run (which also keeps
+    // the arguments, e.g. a borrowed buffer, alive for the duration).
     template<typename Func> void read_on_io(Func&& func)
     {
         if (_io_context.stopped() || on_io_thread()) {
@@ -145,25 +153,30 @@ private:
         done.get_future().wait();
     }
 
-    // Run a list mutation on the io thread. Never inline: if we are on the io thread we may
-    // be inside an exec() iteration, so the mutation is posted to run after it. Off the io
-    // thread we post and wait so the mutation has been applied by the time we return.
-    template<typename Func> void mutate_on_io(Func&& func)
+    // Post a list mutation onto the io thread, without waiting (see the class comment). When
+    // the io_context is already stopped (teardown) the io thread is gone, so we apply the
+    // mutation directly.
+    template<typename Func> void post_mutation(Func&& func)
     {
         if (_io_context.stopped()) {
-            // The io thread is gone (teardown); accessing the list directly is safe.
             func();
             return;
         }
-        if (on_io_thread()) {
-            asio::post(_io_context, std::forward<Func>(func));
+        asio::post(_io_context, std::forward<Func>(func));
+    }
+
+    // Wait until the io_context has run every mutation posted so far. Used by the destructor:
+    // the posted mutations capture `this`, so they must not outlive the object. If the
+    // io_context is stopped the io thread is gone and nothing will run; if we are on the io
+    // thread we cannot wait on ourselves (and this would only happen if a callback destroyed
+    // its own list, which we don't support).
+    void drain()
+    {
+        if (_io_context.stopped() || on_io_thread()) {
             return;
         }
         std::promise<void> done;
-        asio::post(_io_context, [&]() {
-            func();
-            done.set_value();
-        });
+        asio::post(_io_context, [&done]() { done.set_value(); });
         done.get_future().wait();
     }
 

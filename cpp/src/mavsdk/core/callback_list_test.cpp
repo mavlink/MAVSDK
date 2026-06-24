@@ -6,6 +6,7 @@
 #endif
 
 #include <atomic>
+#include <future>
 #include <mutex>
 #include <thread>
 #include <set>
@@ -45,6 +46,16 @@ protected:
         _work_guard.reset();
         _io_context.stop();
         _thread.join();
+    }
+
+    // Wait until the io_context has run everything posted so far. subscribe/unsubscribe are
+    // applied on the io thread, so a deferred (un)subscribe made from inside a callback is
+    // only observable via empty() after a round-trip.
+    void flush()
+    {
+        std::promise<void> done;
+        asio::post(_io_context, [&done]() { done.set_value(); });
+        done.get_future().wait();
     }
 
     asio::io_context _io_context{};
@@ -130,6 +141,7 @@ TEST_F(CallbackListTest, SubscribeCallUnsubscribe)
     EXPECT_EQ(conditional_called, 4);
 
     // Both handles are manually removed and conditional callback is autoremoved
+    flush();
     EXPECT_TRUE(cl.empty());
 }
 
@@ -261,7 +273,8 @@ TEST_F(CallbackListTest, SubscribeAndUnsubscribeWithinCallbacks)
     EXPECT_EQ(callback_count, 3);
     EXPECT_EQ(nested_callback_count, 4);
 
-    // List is now empty
+    // List is now empty (after the deferred in-callback unsubscribe has been applied).
+    flush();
     EXPECT_TRUE(cl.empty());
 }
 
