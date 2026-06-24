@@ -380,7 +380,6 @@ private:
     mutable std::mutex _wind_mutex{};
     Telemetry::Wind _wind{};
 
-    std::mutex _subscription_mutex{};
     CallbackList<Telemetry::PositionVelocityNed> _position_velocity_ned_subscriptions{
         _system_impl->io_context()};
     CallbackList<Telemetry::Position> _position_subscriptions{_system_impl->io_context()};

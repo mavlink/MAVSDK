@@ -42,7 +42,6 @@ private:
     mutable std::mutex _transponder_mutex{};
     Transponder::AdsbVehicle _transponder{};
 
-    std::mutex _subscription_mutex{};
     CallbackList<Transponder::AdsbVehicle> _transponder_subscriptions{_system_impl->io_context()};
 };
 

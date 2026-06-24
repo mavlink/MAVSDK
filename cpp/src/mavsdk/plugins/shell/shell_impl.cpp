@@ -62,13 +62,11 @@ Shell::Result ShellImpl::send(std::string command)
 
 Shell::ReceiveHandle ShellImpl::subscribe_receive(const Shell::ReceiveCallback& callback)
 {
-    std::lock_guard<std::mutex> lock(_receive.mutex);
     return _receive.callbacks.subscribe(callback);
 }
 
 void ShellImpl::unsubscribe_receive(Shell::ReceiveHandle handle)
 {
-    std::lock_guard<std::mutex> lock(_receive.mutex);
     _receive.callbacks.unsubscribe(handle);
 }
 
@@ -101,7 +99,6 @@ bool ShellImpl::send_command_message(std::string command)
     uint8_t flags = 0;
     {
         // We only ask for a response if we have subscribed to a response.
-        std::lock_guard<std::mutex> lock(_receive.mutex);
         if (!_receive.callbacks.empty()) {
             flags |= SERIAL_CONTROL_FLAG_RESPOND;
         }
@@ -150,7 +147,6 @@ void ShellImpl::process_shell_message(const mavlink_message_t& message)
         response.erase(index, 4);
     }
 
-    std::lock_guard<std::mutex> lock(_receive.mutex);
     _receive.callbacks.queue(
         response, [this](const auto& func) { _system_impl->call_user_callback(func); });
 }

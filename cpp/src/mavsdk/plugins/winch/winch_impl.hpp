@@ -71,8 +71,6 @@ private:
     mutable std::mutex _status_mutex{};
     Winch::Status _status{};
 
-    std::mutex _subscription_mutex{};
-
     CallbackList<Winch::Status> _status_subscriptions{_system_impl->io_context()};
 };
 

@@ -39,7 +39,6 @@ private:
 
     struct Receive {
         explicit Receive(asio::io_context& io_context) : callbacks(io_context) {}
-        std::mutex mutex{};
         CallbackList<std::string> callbacks;
     } _receive;
 };

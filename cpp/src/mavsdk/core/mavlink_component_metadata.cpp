@@ -312,7 +312,6 @@ void MavlinkComponentMetadata::handle_metadata_type_completed(
     if (component.json_metadata()) {
         auto metadata_type = get_metadata_type(type);
         if (metadata_type) {
-            const std::lock_guard lg_callbacks{_notification_callbacks_mutex};
             _notification_callbacks.queue(
                 MetadataUpdate{compid, metadata_type.value(), component.json_metadata().value()},
                 [this](const auto& func) { _system_impl.call_user_callback(func); });
@@ -466,14 +465,12 @@ void MavlinkComponentMetadata::parse_component_metadata_general(
 }
 void MavlinkComponentMetadata::unsubscribe_metadata_available(MetadataAvailableHandle handle)
 {
-    const std::lock_guard lg{_notification_callbacks_mutex};
     _notification_callbacks.unsubscribe(handle);
 }
 MavlinkComponentMetadata::MetadataAvailableHandle
 MavlinkComponentMetadata::subscribe_metadata_available(const MetadataAvailableCallback& callback)
 {
     const std::lock_guard lg_components{_mavlink_components_mutex}; // Take this mutex first
-    const std::lock_guard lg_callbacks{_notification_callbacks_mutex};
     const auto handle = _notification_callbacks.subscribe(callback);
 
     // Immediately call the callback for all already existing metadata (with the mutexes locked)
@@ -500,7 +497,6 @@ MavlinkComponentMetadata::subscribe_metadata_available(const MetadataAvailableCa
 
 void MavlinkComponentMetadata::on_all_types_completed(uint8_t compid)
 {
-    const std::lock_guard lg_callbacks{_notification_callbacks_mutex};
     _notification_callbacks.queue(
         MetadataUpdate{compid, MetadataType::AllCompleted, ""},
         [this](const auto& func) { _system_impl.call_user_callback(func); });

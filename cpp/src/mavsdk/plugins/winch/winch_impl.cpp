@@ -32,13 +32,11 @@ void WinchImpl::init()
 
 Winch::StatusHandle WinchImpl::subscribe_status(const Winch::StatusCallback& callback)
 {
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     return _status_subscriptions.subscribe(callback);
 }
 
 void WinchImpl::unsubscribe_status(Winch::StatusHandle handle)
 {
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     _status_subscriptions.unsubscribe(handle);
 }
 
@@ -102,7 +100,6 @@ void WinchImpl::process_status(const mavlink_message_t& message)
     set_status(new_status);
 
     {
-        std::lock_guard<std::mutex> lock(_subscription_mutex);
         _status_subscriptions.queue(
             status(), [this](const auto& func) { _system_impl->call_user_callback(func); });
     }
