@@ -5,7 +5,6 @@
 #include <cstddef>
 #include <functional>
 #include <future>
-#include <memory>
 #include <utility>
 #include <vector>
 #include <asio/io_context.hpp>
