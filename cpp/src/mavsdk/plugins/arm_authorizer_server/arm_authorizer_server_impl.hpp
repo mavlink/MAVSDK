@@ -25,7 +25,7 @@ public:
         bool temporarily, ArmAuthorizerServer::RejectionReason reason, int32_t extra_info) const;
 
 private:
-    CallbackList<uint32_t> _arm_authorization_callbacks{};
+    CallbackList<uint32_t> _arm_authorization_callbacks{_server_component_impl->io_context()};
 
     MavlinkCommandReceiver::CommandLong _last_arm_authorization_request_command;
 

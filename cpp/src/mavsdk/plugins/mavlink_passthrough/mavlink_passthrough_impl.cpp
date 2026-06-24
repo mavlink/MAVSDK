@@ -205,7 +205,8 @@ MavlinkPassthrough::MessageHandle MavlinkPassthroughImpl::subscribe_message(
             this);
     }
 
-    return _message_subscriptions[message_id].subscribe(callback);
+    return _message_subscriptions.try_emplace(message_id, _system_impl->io_context())
+        .first->second.subscribe(callback);
 }
 
 void MavlinkPassthroughImpl::unsubscribe_message(
@@ -219,8 +220,9 @@ void MavlinkPassthroughImpl::unsubscribe_message(
 
 void MavlinkPassthroughImpl::receive_mavlink_message(const mavlink_message_t& message)
 {
-    _message_subscriptions[message.msgid].queue(
-        message, [this](const auto& func) { _system_impl->call_user_callback(func); });
+    _message_subscriptions.try_emplace(message.msgid, _system_impl->io_context())
+        .first->second.queue(
+            message, [this](const auto& func) { _system_impl->call_user_callback(func); });
 }
 
 uint8_t MavlinkPassthroughImpl::get_our_sysid() const

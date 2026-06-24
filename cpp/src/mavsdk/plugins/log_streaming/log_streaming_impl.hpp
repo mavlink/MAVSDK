@@ -44,7 +44,7 @@ private:
 
     std::mutex _mutex{};
     std::unique_ptr<LogStreamingBackend> _backend{};
-    CallbackList<LogStreaming::LogStreamingRaw> _subscription_callbacks{};
+    CallbackList<LogStreaming::LogStreamingRaw> _subscription_callbacks{_system_impl->io_context()};
 
     bool _debugging{false};
 

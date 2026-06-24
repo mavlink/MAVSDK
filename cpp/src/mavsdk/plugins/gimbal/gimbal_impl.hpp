@@ -159,9 +159,9 @@ private:
     std::optional<GimbalAddress> maybe_address_for_gimbal_id(int32_t gimbal_id) const;
 
     mutable std::mutex _mutex{};
-    CallbackList<Gimbal::GimbalList> _gimbal_list_subscriptions{};
-    CallbackList<Gimbal::ControlStatus> _control_status_subscriptions{};
-    CallbackList<Gimbal::Attitude> _attitude_subscriptions{};
+    CallbackList<Gimbal::GimbalList> _gimbal_list_subscriptions{_system_impl->io_context()};
+    CallbackList<Gimbal::ControlStatus> _control_status_subscriptions{_system_impl->io_context()};
+    CallbackList<Gimbal::Attitude> _attitude_subscriptions{_system_impl->io_context()};
 
     std::vector<GimbalItem> _gimbals;
     std::unordered_map<uint8_t, GimbalDiscovery> _discovery;

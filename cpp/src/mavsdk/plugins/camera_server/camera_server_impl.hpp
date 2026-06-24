@@ -232,19 +232,21 @@ private:
     CallEveryHandler::Cookie _image_capture_timer_cookie{};
     int32_t _image_capture_count{};
 
-    CallbackList<int32_t> _take_photo_callbacks{};
-    CallbackList<int32_t> _start_video_callbacks{};
-    CallbackList<int32_t> _stop_video_callbacks{};
-    CallbackList<int32_t> _start_video_streaming_callbacks{};
-    CallbackList<int32_t> _stop_video_streaming_callbacks{};
-    CallbackList<CameraServer::Mode> _set_mode_callbacks{};
-    CallbackList<int32_t> _storage_information_callbacks{};
-    CallbackList<int32_t> _capture_status_callbacks{};
-    CallbackList<int32_t> _format_storage_callbacks{};
-    CallbackList<int32_t> _reset_settings_callbacks{};
-    CallbackList<CameraServer::TrackPoint> _tracking_point_callbacks{};
-    CallbackList<CameraServer::TrackRectangle> _tracking_rectangle_callbacks{};
-    CallbackList<int32_t> _tracking_off_callbacks{};
+    CallbackList<int32_t> _take_photo_callbacks{_server_component_impl->io_context()};
+    CallbackList<int32_t> _start_video_callbacks{_server_component_impl->io_context()};
+    CallbackList<int32_t> _stop_video_callbacks{_server_component_impl->io_context()};
+    CallbackList<int32_t> _start_video_streaming_callbacks{_server_component_impl->io_context()};
+    CallbackList<int32_t> _stop_video_streaming_callbacks{_server_component_impl->io_context()};
+    CallbackList<CameraServer::Mode> _set_mode_callbacks{_server_component_impl->io_context()};
+    CallbackList<int32_t> _storage_information_callbacks{_server_component_impl->io_context()};
+    CallbackList<int32_t> _capture_status_callbacks{_server_component_impl->io_context()};
+    CallbackList<int32_t> _format_storage_callbacks{_server_component_impl->io_context()};
+    CallbackList<int32_t> _reset_settings_callbacks{_server_component_impl->io_context()};
+    CallbackList<CameraServer::TrackPoint> _tracking_point_callbacks{
+        _server_component_impl->io_context()};
+    CallbackList<CameraServer::TrackRectangle> _tracking_rectangle_callbacks{
+        _server_component_impl->io_context()};
+    CallbackList<int32_t> _tracking_off_callbacks{_server_component_impl->io_context()};
 
     MavlinkCommandReceiver::CommandLong _last_take_photo_command;
     MavlinkCommandReceiver::CommandLong _last_start_video_command;
@@ -262,10 +264,10 @@ private:
 
     uint8_t _last_storage_id;
 
-    CallbackList<int32_t> _zoom_in_start_callbacks{};
-    CallbackList<int32_t> _zoom_out_start_callbacks{};
-    CallbackList<int32_t> _zoom_stop_callbacks{};
-    CallbackList<float> _zoom_range_callbacks{};
+    CallbackList<int32_t> _zoom_in_start_callbacks{_server_component_impl->io_context()};
+    CallbackList<int32_t> _zoom_out_start_callbacks{_server_component_impl->io_context()};
+    CallbackList<int32_t> _zoom_stop_callbacks{_server_component_impl->io_context()};
+    CallbackList<float> _zoom_range_callbacks{_server_component_impl->io_context()};
 
     MavlinkCommandReceiver::CommandLong _last_zoom_in_start_command;
     MavlinkCommandReceiver::CommandLong _last_zoom_out_start_command;

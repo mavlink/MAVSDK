@@ -25,12 +25,14 @@ void ShellImpl::enable() {}
 
 void ShellImpl::disable() {}
 
-ShellImpl::ShellImpl(System& system) : PluginImplBase(system)
+ShellImpl::ShellImpl(System& system) : PluginImplBase(system), _receive(_system_impl->io_context())
 {
     _system_impl->register_plugin(this);
 }
 
-ShellImpl::ShellImpl(std::shared_ptr<System> system) : PluginImplBase(std::move(system))
+ShellImpl::ShellImpl(std::shared_ptr<System> system) :
+    PluginImplBase(std::move(system)),
+    _receive(_system_impl->io_context())
 {
     _system_impl->register_plugin(this);
 }

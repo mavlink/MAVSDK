@@ -117,11 +117,13 @@ private:
         std::vector<MavlinkMissionTransferClient::ItemInt>& int_items, unsigned item_i);
 
     struct MissionData {
+        explicit MissionData(asio::io_context& io_context) : mission_progress_callbacks(io_context)
+        {}
         mutable std::mutex mutex{};
         int last_current_mavlink_mission_item{-1};
         int last_reached_mavlink_mission_item{-1};
         std::vector<int> mavlink_mission_item_to_mission_item_indices{};
-        CallbackList<Mission::MissionProgress> mission_progress_callbacks{};
+        CallbackList<Mission::MissionProgress> mission_progress_callbacks;
         int last_current_reported_mission_item{-1};
         int last_total_reported_mission_item{-1};
         // Separate mutex for last_upload / last_download so their read/write
@@ -133,7 +135,7 @@ private:
         std::weak_ptr<MavlinkMissionTransferClient::WorkItem> last_download{};
         bool gimbal_v2_in_control{false};
         uint8_t mission_state{MISSION_STATE_UNKNOWN};
-    } _mission_data{};
+    } _mission_data;
 
     TimeoutHandler::Cookie _timeout_cookie{};
 

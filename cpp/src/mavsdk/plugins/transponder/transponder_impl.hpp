@@ -43,7 +43,7 @@ private:
     Transponder::AdsbVehicle _transponder{};
 
     std::mutex _subscription_mutex{};
-    CallbackList<Transponder::AdsbVehicle> _transponder_subscriptions{};
+    CallbackList<Transponder::AdsbVehicle> _transponder_subscriptions{_system_impl->io_context()};
 };
 
 } // namespace mavsdk

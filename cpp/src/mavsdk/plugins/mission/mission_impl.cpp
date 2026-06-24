@@ -14,12 +14,16 @@ using MissionItem = Mission::MissionItem;
 using CameraAction = Mission::MissionItem::CameraAction;
 using VehicleAction = Mission::MissionItem::VehicleAction;
 
-MissionImpl::MissionImpl(System& system) : PluginImplBase(system)
+MissionImpl::MissionImpl(System& system) :
+    PluginImplBase(system),
+    _mission_data(_system_impl->io_context())
 {
     _system_impl->register_plugin(this);
 }
 
-MissionImpl::MissionImpl(std::shared_ptr<System> system) : PluginImplBase(std::move(system))
+MissionImpl::MissionImpl(std::shared_ptr<System> system) :
+    PluginImplBase(std::move(system)),
+    _mission_data(_system_impl->io_context())
 {
     _system_impl->register_plugin(this);
 }

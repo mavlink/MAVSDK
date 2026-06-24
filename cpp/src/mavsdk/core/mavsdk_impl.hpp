@@ -240,7 +240,7 @@ private:
         Handle<> handle;
     };
     std::vector<ConnectionEntry> _connections{};
-    CallbackList<Mavsdk::ConnectionError> _connections_errors_subscriptions{};
+    CallbackList<Mavsdk::ConnectionError> _connections_errors_subscriptions{_io_context};
 
     std::vector<std::pair<uint8_t, std::shared_ptr<System>>> _systems{};
 
@@ -248,7 +248,7 @@ private:
     std::vector<std::pair<uint8_t, std::shared_ptr<ServerComponent>>> _server_components{};
     std::shared_ptr<ServerComponent> _default_server_component{nullptr};
 
-    CallbackList<> _new_system_callbacks{};
+    CallbackList<> _new_system_callbacks{_io_context};
 
     Mavsdk::Configuration _configuration{ComponentType::GroundStation};
     std::atomic<uint8_t> _our_system_id{0};
@@ -292,7 +292,7 @@ private:
     HandleFactory<bool(Mavsdk::MavlinkMessage)> _json_handle_factory{};
 
     // Raw bytes subscriptions
-    CallbackList<const char*, size_t> _raw_bytes_subscriptions{};
+    CallbackList<const char*, size_t> _raw_bytes_subscriptions{_io_context};
 
     std::atomic<double> _timeout_s{DEFAULT_TIMEOUT_S};
     std::atomic<double> _heartbeat_timeout_s{DEFAULT_HEARTBEAT_TIMEOUT_S};

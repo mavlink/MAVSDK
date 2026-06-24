@@ -185,6 +185,8 @@ public:
 
     Sender& sender();
 
+    asio::io_context& io_context();
+
 private:
     MavsdkImpl& _mavsdk_impl;
     uint8_t _own_component_id{MAV_COMP_ID_AUTOPILOT1};

@@ -12,6 +12,8 @@
 #include <optional>
 #include <memory>
 #include <vector>
+#include <asio/executor_work_guard.hpp>
+#include <asio/io_context.hpp>
 #include <gtest/gtest.h>
 
 #include "callback_list.hpp"
@@ -27,13 +29,37 @@ template class CallbackList<>;
 } // namespace mavsdk
 
 using namespace mavsdk;
-TEST(CallbackList, SubscribeCallUnsubscribe)
+
+// CallbackList now confines its list to an io_context: subscribe/unsubscribe post their
+// mutation, and exec()/queue() run on the io thread. The fixture runs the io_context on a
+// background thread so that the (synchronous) test calls behave as they would in the SDK.
+class CallbackListTest : public ::testing::Test {
+protected:
+    void SetUp() override
+    {
+        _thread = std::thread([this]() { _io_context.run(); });
+    }
+
+    void TearDown() override
+    {
+        _work_guard.reset();
+        _io_context.stop();
+        _thread.join();
+    }
+
+    asio::io_context _io_context{};
+    asio::executor_work_guard<asio::io_context::executor_type> _work_guard{
+        _io_context.get_executor()};
+    std::thread _thread;
+};
+
+TEST_F(CallbackListTest, SubscribeCallUnsubscribe)
 {
     unsigned first_called = 0;
     unsigned second_called = 0;
     unsigned conditional_called = 0;
 
-    CallbackList<int, double> cl;
+    CallbackList<int, double> cl{_io_context};
     auto first_handle = cl.subscribe([&](int i, double d) {
         ++first_called;
         EXPECT_GE(i, 42);
@@ -107,11 +133,11 @@ TEST(CallbackList, SubscribeCallUnsubscribe)
     EXPECT_TRUE(cl.empty());
 }
 
-TEST(CallbackList, UnsubscribeFromCallback)
+TEST_F(CallbackListTest, UnsubscribeFromCallback)
 {
     unsigned called = 0;
 
-    CallbackList<> cl;
+    CallbackList<> cl{_io_context};
     Handle<> handle = cl.subscribe([&]() {
         cl.unsubscribe(handle);
         ++called;
@@ -123,13 +149,13 @@ TEST(CallbackList, UnsubscribeFromCallback)
     EXPECT_EQ(called, 1);
 }
 
-TEST(CallbackList, UnsubscribeAllWithNullptr)
+TEST_F(CallbackListTest, UnsubscribeAllWithNullptr)
 {
     // This is to deal with the previous API where nullptr would
     // unsubscribe the callback.
     unsigned num_called = 0;
 
-    CallbackList<> cl;
+    CallbackList<> cl{_io_context};
     cl.subscribe([&]() { ++num_called; });
 
     // Call once.
@@ -145,14 +171,14 @@ TEST(CallbackList, UnsubscribeAllWithNullptr)
     EXPECT_EQ(num_called, 1);
 }
 
-TEST(CallbackList, UnsubscribeAllWithClear)
+TEST_F(CallbackListTest, UnsubscribeAllWithClear)
 {
     // This is to deal with the previous API where nullptr would
     // unsubscribe the callback.
     unsigned num_called = 0;
     unsigned num_called_other = 0;
 
-    CallbackList<> cl;
+    CallbackList<> cl{_io_context};
     cl.subscribe([&]() { ++num_called; });
     cl.subscribe([&]() { ++num_called_other; });
 
@@ -170,7 +196,7 @@ TEST(CallbackList, UnsubscribeAllWithClear)
     EXPECT_EQ(num_called_other, 1);
 }
 
-TEST(CallbackList, SubscribeAndUnsubscribeWithinCallbacks)
+TEST_F(CallbackListTest, SubscribeAndUnsubscribeWithinCallbacks)
 {
     const int test_value1 = 42;
     const double test_value2 = 3.14;
@@ -178,7 +204,7 @@ TEST(CallbackList, SubscribeAndUnsubscribeWithinCallbacks)
     std::atomic<int> callback_count{0};
     std::atomic<int> nested_callback_count{0};
 
-    CallbackList<int, double> cl;
+    CallbackList<int, double> cl{_io_context};
 
     // Lambda function for subscribing within a callback
     auto subscribeCallback = [test_value1, test_value2, unsub_value, &nested_callback_count, &cl](
@@ -239,13 +265,13 @@ TEST(CallbackList, SubscribeAndUnsubscribeWithinCallbacks)
     EXPECT_TRUE(cl.empty());
 }
 
-TEST(CallbackList, SubscribeAndUnsubscribeWithinCallbacks2)
+TEST_F(CallbackListTest, SubscribeAndUnsubscribeWithinCallbacks2)
 {
     const int test_value1 = 42;
     const double test_value2 = 3.14;
     const int thread_count = 50000;
     std::atomic<int> nested_callback_count{0};
-    CallbackList<int, double> cl;
+    CallbackList<int, double> cl{_io_context};
 
     // Define the vector type
     using HandleType = Handle<int, double>;

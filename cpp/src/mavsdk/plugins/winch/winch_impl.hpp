@@ -73,7 +73,7 @@ private:
 
     std::mutex _subscription_mutex{};
 
-    CallbackList<Winch::Status> _status_subscriptions{};
+    CallbackList<Winch::Status> _status_subscriptions{_system_impl->io_context()};
 };
 
 } // namespace mavsdk

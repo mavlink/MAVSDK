@@ -131,20 +131,22 @@ private:
     std::weak_ptr<MavlinkMissionTransferClient::WorkItem> _last_upload{};
     std::weak_ptr<MavlinkMissionTransferClient::WorkItem> _last_download{};
 
-    struct {
+    struct MissionProgressData {
+        explicit MissionProgressData(asio::io_context& io_context) : callbacks(io_context) {}
         mutable std::mutex mutex{};
         MissionRaw::MissionProgress last{};
         MissionRaw::MissionProgress last_reported{};
-        CallbackList<MissionRaw::MissionProgress> callbacks{};
+        CallbackList<MissionRaw::MissionProgress> callbacks;
         int32_t last_reached{};
         uint8_t mission_state{MISSION_STATE_UNKNOWN};
-    } _mission_progress{};
+    } _mission_progress;
 
-    struct {
+    struct MissionChangedData {
+        explicit MissionChangedData(asio::io_context& io_context) : callbacks(io_context) {}
         std::mutex mutex{};
-        CallbackList<bool> callbacks{};
+        CallbackList<bool> callbacks;
         uint32_t last_mission_id{0};
-    } _mission_changed{};
+    } _mission_changed;
 };
 
 } // namespace mavsdk

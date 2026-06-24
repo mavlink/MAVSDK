@@ -70,13 +70,19 @@ private:
     void set_server_armed(bool armed);
 
     std::mutex _callback_mutex;
-    CallbackList<ActionServer::Result, ActionServer::ArmDisarm> _arm_disarm_callbacks{};
-    CallbackList<ActionServer::Result, ActionServer::FlightMode> _flight_mode_change_callbacks{};
-    CallbackList<ActionServer::Result, bool> _takeoff_callbacks{};
-    CallbackList<ActionServer::Result, bool> _land_callbacks{};
-    CallbackList<ActionServer::Result, bool> _reboot_callbacks{};
-    CallbackList<ActionServer::Result, bool> _shutdown_callbacks{};
-    CallbackList<ActionServer::Result, bool> _terminate_callbacks{};
+    CallbackList<ActionServer::Result, ActionServer::ArmDisarm> _arm_disarm_callbacks{
+        _server_component_impl->io_context()};
+    CallbackList<ActionServer::Result, ActionServer::FlightMode> _flight_mode_change_callbacks{
+        _server_component_impl->io_context()};
+    CallbackList<ActionServer::Result, bool> _takeoff_callbacks{
+        _server_component_impl->io_context()};
+    CallbackList<ActionServer::Result, bool> _land_callbacks{_server_component_impl->io_context()};
+    CallbackList<ActionServer::Result, bool> _reboot_callbacks{
+        _server_component_impl->io_context()};
+    CallbackList<ActionServer::Result, bool> _shutdown_callbacks{
+        _server_component_impl->io_context()};
+    CallbackList<ActionServer::Result, bool> _terminate_callbacks{
+        _server_component_impl->io_context()};
 
     std::atomic<bool> _armable = false;
     std::atomic<bool> _force_armable = false;

@@ -31,7 +31,7 @@ public:
 
 private:
     // Internal callback management
-    CallbackList<MavlinkDirect::MavlinkMessage> _callbacks{};
+    CallbackList<MavlinkDirect::MavlinkMessage> _callbacks{_system_impl->io_context()};
     Handle<Mavsdk::MavlinkMessage> _system_subscription{};
 
     bool _debugging = false;

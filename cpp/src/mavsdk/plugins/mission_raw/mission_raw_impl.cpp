@@ -16,12 +16,18 @@ template class MAVSDK_TEMPL_INST CallbackList<bool>;
 // This is an empty item that can be sent to ArduPilot to mimic clearing of mission.
 constexpr MissionRaw::MissionItem empty_item{0, 3, 16, 1};
 
-MissionRawImpl::MissionRawImpl(System& system) : PluginImplBase(system)
+MissionRawImpl::MissionRawImpl(System& system) :
+    PluginImplBase(system),
+    _mission_progress(_system_impl->io_context()),
+    _mission_changed(_system_impl->io_context())
 {
     _system_impl->register_plugin(this);
 }
 
-MissionRawImpl::MissionRawImpl(std::shared_ptr<System> system) : PluginImplBase(std::move(system))
+MissionRawImpl::MissionRawImpl(std::shared_ptr<System> system) :
+    PluginImplBase(std::move(system)),
+    _mission_progress(_system_impl->io_context()),
+    _mission_changed(_system_impl->io_context())
 {
     _system_impl->register_plugin(this);
 }
