@@ -18,8 +18,11 @@ namespace mavsdk {
 // Threading: the callback list is only ever touched on the io_context thread.
 //
 // - exec()/queue() iterate the list; they run inline when already on the io thread (the
-//   common case, driven by received-message handlers and timers) and otherwise post the
-//   access and wait for it.
+//   common case, driven by received-message handlers and timers). Off it, queue() posts the
+//   access without waiting (it only hands callbacks to a queue, so it need not be
+//   synchronous), while exec() posts and waits (it invokes the callbacks directly, so the
+//   caller's arguments must stay alive until they have run). exec() must therefore not be
+//   called off the io thread while holding a lock that the io thread needs.
 // - subscribe()/subscribe_conditional()/unsubscribe()/clear() post their list mutation
 //   without waiting. Posting (rather than running inline) means they never mutate the list
 //   while exec() is iterating it, so it is safe to (un)subscribe from inside a callback; not
@@ -107,7 +110,17 @@ public:
 
     void queue(Args... args, const std::function<void(const std::function<void()>&)>& queue_func)
     {
-        read_on_io([&]() {
+        // queue() only hands the callbacks to queue_func (which enqueues them to run later), so
+        // unlike exec() it never needs to run synchronously. Posting it without waiting (rather
+        // than blocking on the io thread) means it is safe to call while holding a lock that the
+        // io thread also needs -- a blocking round-trip there would deadlock.
+        if (_io_context.stopped() || on_io_thread()) {
+            for (const auto& pair : _list) {
+                queue_func([callback = pair.second, args...]() { callback(args...); });
+            }
+            return;
+        }
+        asio::post(_io_context, [this, args..., queue_func]() {
             for (const auto& pair : _list) {
                 queue_func([callback = pair.second, args...]() { callback(args...); });
             }
