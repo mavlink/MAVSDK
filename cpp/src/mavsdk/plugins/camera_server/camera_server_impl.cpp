@@ -16,6 +16,7 @@ CameraServerImpl::CameraServerImpl(std::shared_ptr<ServerComponent> server_compo
 
 CameraServerImpl::~CameraServerImpl()
 {
+    stop_sending_tracking_status();
     _server_component_impl->unregister_plugin(this);
 }
 
