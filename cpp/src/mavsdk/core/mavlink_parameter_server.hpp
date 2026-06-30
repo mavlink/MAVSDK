@@ -134,7 +134,6 @@ private:
 
     bool _extended_protocol = true;
     bool _parameter_debugging = false;
-    bool _last_extended = true;
 
     bool _params_locked_down = false;
 };

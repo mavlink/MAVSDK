@@ -99,20 +99,32 @@ MavlinkParameterServer::provide_server_param(const std::string& name, const Para
                 case MavlinkParameterCache::UpdateExistingParamResult::Ok:
                     find_and_call_subscriptions_value_changed(name, param_value);
                     {
-                        auto new_work = std::make_shared<WorkItem>(
-                            name,
-                            param_value,
-                            WorkItemValue{
-                                std::numeric_limits<std::uint16_t>::max(),
-                                std::numeric_limits<std::uint16_t>::max(),
-                                _last_extended});
-                        asio::post(_io_context, [this, new_work]() {
-                            const bool was_empty = _work_queue.empty();
-                            _work_queue.push_back(new_work);
-                            if (was_empty) {
-                                do_work();
-                            }
-                        });
+                        // Notify of the value change in every protocol the parameter is
+                        // exposed over, so subscribers on either protocol see it:
+                        // PARAM_EXT_VALUE always, plus PARAM_VALUE for parameters that are
+                        // also served over the non-extended protocol. Previously this was
+                        // keyed off the last received request, so a client using the other
+                        // protocol could miss the update.
+                        const auto enqueue_value = [this, &name, &param_value](bool extended) {
+                            auto new_work = std::make_shared<WorkItem>(
+                                name,
+                                param_value,
+                                WorkItemValue{
+                                    std::numeric_limits<std::uint16_t>::max(),
+                                    std::numeric_limits<std::uint16_t>::max(),
+                                    extended});
+                            asio::post(_io_context, [this, new_work]() {
+                                const bool was_empty = _work_queue.empty();
+                                _work_queue.push_back(new_work);
+                                if (was_empty) {
+                                    do_work();
+                                }
+                            });
+                        };
+                        enqueue_value(true);
+                        if (!param_value.needs_extended()) {
+                            enqueue_value(false);
+                        }
                     }
                     return Result::OkExistsAlready;
                 case MavlinkParameterCache::UpdateExistingParamResult::MissingParam:
@@ -446,7 +458,6 @@ void MavlinkParameterServer::internal_process_param_request_read_by_id(
                 asio::post(_io_context, [this] { do_work(); });
             }
 
-            _last_extended = extended;
             return;
         }
     }
