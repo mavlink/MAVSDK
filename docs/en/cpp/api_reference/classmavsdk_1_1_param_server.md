@@ -191,7 +191,7 @@ Value | Description
 <span id="classmavsdk_1_1_param_server_1a6f7fcc017f43dcf68837dbc35ee4f469aa2b5cfc4e45ca036892b3dadc483e655"></span> `ParamNameTooLong` | Parameter name too long (> 16). 
 <span id="classmavsdk_1_1_param_server_1a6f7fcc017f43dcf68837dbc35ee4f469a1119faf72ba0dfb23aeea644fed960ad"></span> `NoSystem` | No system available. 
 <span id="classmavsdk_1_1_param_server_1a6f7fcc017f43dcf68837dbc35ee4f469a1fc93bc695e2e3e1903029eb77228234"></span> `ParamValueTooLong` | Parameter name too long (> 128). 
-<span id="classmavsdk_1_1_param_server_1a6f7fcc017f43dcf68837dbc35ee4f469a9cd9a0364d53b441bd91afbfa9b6319a"></span> `ParamProvidedTooLate` | All parameters have to be provided upfront. 
+<span id="classmavsdk_1_1_param_server_1a6f7fcc017f43dcf68837dbc35ee4f469a9cd9a0364d53b441bd91afbfa9b6319a"></span> `ParamProvidedTooLate` | New params have to be provided before the param set is locked down. 
 
 ## Member Function Documentation
 
@@ -252,7 +252,7 @@ Provide an int parameter.
 If the type is wrong, the result will be `WRONG_TYPE`.
 
 
-Note that all params need to be provided upfront. Once a client has requested a param list, the indices are locked and no more params can be added.
+Note that new params have to be provided upfront. Once a client has requested the param list, the indices are locked and no new params can be added. Providing an already-existing param still updates its value and announces the change to connected clients.
 
 
 This function is blocking.
@@ -277,9 +277,6 @@ Retrieve a float parameter.
 If the type is wrong, the result will be `WRONG_TYPE`.
 
 
-Note that all params need to be provided upfront. Once a client has requested a param list, the indices are locked and no more params can be added.
-
-
 This function is blocking.
 
 **Parameters**
@@ -299,6 +296,9 @@ Result mavsdk::ParamServer::provide_param_float(std::string name, float value) c
 Provide a float parameter.
 
 If the type is wrong, the result will be `WRONG_TYPE`.
+
+
+Note that new params have to be provided upfront. Once a client has requested the param list, the indices are locked and no new params can be added. Providing an already-existing param still updates its value and announces the change to connected clients.
 
 
 This function is blocking.
@@ -323,9 +323,6 @@ Retrieve a custom parameter.
 If the type is wrong, the result will be `WRONG_TYPE`.
 
 
-Note that all params need to be provided upfront. Once a client has requested a param list, the indices are locked and no more params can be added.
-
-
 This function is blocking.
 
 **Parameters**
@@ -345,6 +342,9 @@ Result mavsdk::ParamServer::provide_param_custom(std::string name, std::string v
 Provide a custom parameter.
 
 If the type is wrong, the result will be `WRONG_TYPE`.
+
+
+Note that new params have to be provided upfront. Once a client has requested the param list, the indices are locked and no new params can be added. Providing an already-existing param still updates its value and announces the change to connected clients.
 
 
 This function is blocking.

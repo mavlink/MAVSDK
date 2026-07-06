@@ -295,3 +295,65 @@ TEST(Param, GetAndChangeTooLate)
 
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
+
+TEST(Param, ChangeExistingAfterLockdown)
+{
+    Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
+    mavsdk_groundstation.set_timeout_s(reduced_timeout_s);
+
+    Mavsdk mavsdk_autopilot{Mavsdk::Configuration{ComponentType::Autopilot}};
+    mavsdk_autopilot.set_timeout_s(reduced_timeout_s);
+
+    ASSERT_EQ(
+        mavsdk_groundstation.add_any_connection("udpin://0.0.0.0:17000"),
+        ConnectionResult::Success);
+    ASSERT_EQ(
+        mavsdk_autopilot.add_any_connection("udpout://127.0.0.1:17000"), ConnectionResult::Success);
+
+    auto param_server = ParamServer{mavsdk_autopilot.server_component()};
+
+    auto maybe_system = mavsdk_groundstation.first_autopilot(10.0);
+    ASSERT_TRUE(maybe_system);
+    auto system = maybe_system.value();
+
+    ASSERT_TRUE(system->has_autopilot());
+
+    auto param = Param{system};
+
+    EXPECT_EQ(
+        param_server.provide_param_float(param_name_float, param_value_float),
+        ParamServer::Result::Success);
+    EXPECT_EQ(
+        param_server.provide_param_int(param_name_int, param_value_int),
+        ParamServer::Result::Success);
+
+    // Requesting all params locks down the set: indices and count are now fixed.
+    const auto all_params = param.get_all_params();
+    ASSERT_EQ(all_params.float_params.size(), 1);
+    ASSERT_EQ(all_params.int_params.size(), 1);
+
+    // Adding a new parameter is no longer allowed.
+    EXPECT_EQ(
+        param_server.provide_param_int("ANOTHER_ONE", 67),
+        ParamServer::Result::ParamProvidedTooLate);
+
+    // But changing the value of an already-provided parameter still works, since it doesn't
+    // change the indices or count.
+    EXPECT_EQ(
+        param_server.provide_param_float(param_name_float, param_value_float + 1.0f),
+        ParamServer::Result::Success);
+    EXPECT_EQ(
+        param_server.provide_param_int(param_name_int, param_value_int + 2),
+        ParamServer::Result::Success);
+
+    // And the ground station reads back the changed values.
+    auto result_pair_float = param.get_param_float(param_name_float);
+    EXPECT_EQ(result_pair_float.first, Param::Result::Success);
+    EXPECT_EQ(result_pair_float.second, param_value_float + 1.0f);
+
+    auto result_pair_int = param.get_param_int(param_name_int);
+    EXPECT_EQ(result_pair_int.first, Param::Result::Success);
+    EXPECT_EQ(result_pair_int.second, param_value_int + 2);
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+}

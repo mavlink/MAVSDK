@@ -171,7 +171,7 @@ public:
         ParamNameTooLong, /**< @brief Parameter name too long (> 16). */
         NoSystem, /**< @brief No system available. */
         ParamValueTooLong, /**< @brief Parameter name too long (> 128). */
-        ParamProvidedTooLate, /**< @brief All parameters have to be provided upfront. */
+        ParamProvidedTooLate, /**< @brief New params have to be provided before the param set is locked down. */
     };
 
     /**
@@ -241,9 +241,10 @@ public:
      *
      * If the type is wrong, the result will be `WRONG_TYPE`.
      *
-     * Note that all params need to be provided upfront. Once a client has
-     * requested a param list, the indices are locked and no more params
-     * can be added.
+     * Note that new params have to be provided upfront. Once a client has
+     * requested the param list, the indices are locked and no new params can
+     * be added. Providing an already-existing param still updates its value
+     * and announces the change to connected clients.
      *
      * This function is blocking.
      *
@@ -263,10 +264,6 @@ public:
      *
      * If the type is wrong, the result will be `WRONG_TYPE`.
      *
-     * Note that all params need to be provided upfront. Once a client has
-     * requested a param list, the indices are locked and no more params
-     * can be added.
-     *
      * This function is blocking.
      *
      * @return Result of request.
@@ -282,6 +279,11 @@ public:
      * @brief Provide a float parameter.
      *
      * If the type is wrong, the result will be `WRONG_TYPE`.
+     *
+     * Note that new params have to be provided upfront. Once a client has
+     * requested the param list, the indices are locked and no new params can
+     * be added. Providing an already-existing param still updates its value
+     * and announces the change to connected clients.
      *
      * This function is blocking.
      *
@@ -301,10 +303,6 @@ public:
      *
      * If the type is wrong, the result will be `WRONG_TYPE`.
      *
-     * Note that all params need to be provided upfront. Once a client has
-     * requested a param list, the indices are locked and no more params
-     * can be added.
-     *
      * This function is blocking.
      *
      * @return Result of request.
@@ -320,6 +318,11 @@ public:
      * @brief Provide a custom parameter.
      *
      * If the type is wrong, the result will be `WRONG_TYPE`.
+     *
+     * Note that new params have to be provided upfront. Once a client has
+     * requested the param list, the indices are locked and no new params can
+     * be added. Providing an already-existing param still updates its value
+     * and announces the change to connected clients.
      *
      * This function is blocking.
      *
