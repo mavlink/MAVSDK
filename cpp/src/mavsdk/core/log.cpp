@@ -48,7 +48,7 @@ void log::subscribe(const log::Callback& callback)
 MAVSDK_TEST_EXPORT void set_color(Color color)
 {
 #if defined(WINDOWS)
-    HANDLE handle = GetStdHandle(STD_OUTPUT_HANDLE);
+    HANDLE handle = GetStdHandle(STD_ERROR_HANDLE);
     switch (color) {
         case Color::Red:
             SetConsoleTextAttribute(handle, WIN_COLOR_RED);
@@ -74,22 +74,22 @@ MAVSDK_TEST_EXPORT void set_color(Color color)
 #else
     switch (color) {
         case Color::Red:
-            std::cout << ANSI_COLOR_RED;
+            std::cerr << ANSI_COLOR_RED;
             break;
         case Color::Green:
-            std::cout << ANSI_COLOR_GREEN;
+            std::cerr << ANSI_COLOR_GREEN;
             break;
         case Color::Yellow:
-            std::cout << ANSI_COLOR_YELLOW;
+            std::cerr << ANSI_COLOR_YELLOW;
             break;
         case Color::Blue:
-            std::cout << ANSI_COLOR_BLUE;
+            std::cerr << ANSI_COLOR_BLUE;
             break;
         case Color::Gray:
-            std::cout << ANSI_COLOR_GRAY;
+            std::cerr << ANSI_COLOR_GRAY;
             break;
         case Color::Reset:
-            std::cout << ANSI_COLOR_RESET;
+            std::cerr << ANSI_COLOR_RESET;
             break;
     }
 #endif
@@ -139,28 +139,28 @@ void emit_log(log::Level level, const std::string& message, const char* filename
     struct tm* timeinfo = localtime(&rawtime);
     char time_buffer[10]{}; // We need 8 characters + \0
     strftime(time_buffer, sizeof(time_buffer), "%I:%M:%S", timeinfo);
-    std::cout << "[" << time_buffer;
+    std::cerr << "[" << time_buffer;
 
     switch (level) {
         case log::Level::Debug:
-            std::cout << "|Debug] ";
+            std::cerr << "|Debug] ";
             break;
         case log::Level::Info:
-            std::cout << "|Info ] ";
+            std::cerr << "|Info ] ";
             break;
         case log::Level::Warn:
-            std::cout << "|Warn ] ";
+            std::cerr << "|Warn ] ";
             break;
         case log::Level::Err:
-            std::cout << "|Error] ";
+            std::cerr << "|Error] ";
             break;
     }
 
     set_color(Color::Reset);
 
-    std::cout << message;
-    std::cout << " (" << filename << ":" << std::dec << line << ")";
-    std::cout << std::endl;
+    std::cerr << message;
+    std::cerr << " (" << filename << ":" << std::dec << line << ")";
+    std::cerr << std::endl;
 #endif
 }
 
