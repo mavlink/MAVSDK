@@ -98,21 +98,24 @@ MavlinkParameterServer::provide_server_param(const std::string& name, const Para
             switch (_param_cache.update_existing_param(name, param_value)) {
                 case MavlinkParameterCache::UpdateExistingParamResult::Ok:
                     find_and_call_subscriptions_value_changed(name, param_value);
-                    {
-                        auto new_work = std::make_shared<WorkItem>(
-                            name,
-                            param_value,
-                            WorkItemValue{
-                                std::numeric_limits<std::uint16_t>::max(),
-                                std::numeric_limits<std::uint16_t>::max(),
-                                _last_extended});
-                        asio::post(_io_context, [this, new_work]() {
-                            const bool was_empty = _work_queue.empty();
-                            _work_queue.push_back(new_work);
-                            if (was_empty) {
-                                do_work();
-                            }
-                        });
+                    // Notify clients of the changed value on the protocol(s) that can carry it and
+                    // that a client is actually using. The extended protocol can represent any
+                    // parameter; the non-extended protocol only those that don't need_extended.
+                    if (!_seen_extended && !_seen_non_extended) {
+                        // No request seen yet, so we can't tell which protocol a client uses.
+                        // Fall back to notifying on every protocol the parameter supports to avoid
+                        // silently dropping the change.
+                        enqueue_value_broadcast(name, param_value, true);
+                        if (!param_value.needs_extended()) {
+                            enqueue_value_broadcast(name, param_value, false);
+                        }
+                    } else {
+                        if (_seen_extended) {
+                            enqueue_value_broadcast(name, param_value, true);
+                        }
+                        if (_seen_non_extended && !param_value.needs_extended()) {
+                            enqueue_value_broadcast(name, param_value, false);
+                        }
                     }
                     return Result::OkExistsAlready;
                 case MavlinkParameterCache::UpdateExistingParamResult::MissingParam:
@@ -220,6 +223,7 @@ void MavlinkParameterServer::process_param_set_internally(
 
     {
         std::lock_guard<std::mutex> lock(_all_params_mutex);
+        mark_protocol_seen(extended);
         // for checking if the update actually changed the value
         const auto opt_before_update = _param_cache.param_by_id(param_id, extended);
         const auto result = _param_cache.update_existing_param(param_id, value_to_set);
@@ -426,6 +430,7 @@ void MavlinkParameterServer::internal_process_param_request_read_by_id(
 {
     {
         std::lock_guard<std::mutex> lock(_all_params_mutex);
+        mark_protocol_seen(extended);
         const auto param_opt = _param_cache.param_by_id(id, extended);
 
         if (!param_opt.has_value()) {
@@ -446,7 +451,6 @@ void MavlinkParameterServer::internal_process_param_request_read_by_id(
                 asio::post(_io_context, [this] { do_work(); });
             }
 
-            _last_extended = extended;
             return;
         }
     }
@@ -462,6 +466,7 @@ void MavlinkParameterServer::internal_process_param_request_read_by_index(
 {
     {
         std::lock_guard<std::mutex> lock(_all_params_mutex);
+        mark_protocol_seen(extended);
         const auto param_opt = _param_cache.param_by_index(index, extended);
 
         if (!param_opt.has_value()) {
@@ -521,6 +526,7 @@ void MavlinkParameterServer::process_param_ext_request_list(const mavlink_messag
 void MavlinkParameterServer::broadcast_all_parameters(const bool extended)
 {
     std::lock_guard<std::mutex> lock(_all_params_mutex);
+    mark_protocol_seen(extended);
 
     // Param used with index, we should no longer change the index
     _params_locked_down = true;
@@ -676,6 +682,34 @@ void MavlinkParameterServer::send_param_error(
         })) {
         LogErr("Error: Send PARAM_ERROR message failed");
     }
+}
+
+void MavlinkParameterServer::mark_protocol_seen(bool extended)
+{
+    if (extended) {
+        _seen_extended = true;
+    } else {
+        _seen_non_extended = true;
+    }
+}
+
+void MavlinkParameterServer::enqueue_value_broadcast(
+    const std::string& name, const ParamValue& param_value, bool extended)
+{
+    auto new_work = std::make_shared<WorkItem>(
+        name,
+        param_value,
+        WorkItemValue{
+            std::numeric_limits<std::uint16_t>::max(),
+            std::numeric_limits<std::uint16_t>::max(),
+            extended});
+    asio::post(_io_context, [this, new_work]() {
+        const bool was_empty = _work_queue.empty();
+        _work_queue.push_back(new_work);
+        if (was_empty) {
+            do_work();
+        }
+    });
 }
 
 std::ostream& operator<<(std::ostream& str, const MavlinkParameterServer::Result& result)

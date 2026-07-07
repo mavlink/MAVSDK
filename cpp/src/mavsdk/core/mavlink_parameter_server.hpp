@@ -96,6 +96,14 @@ private:
 
     void send_param_error(const std::string& param_id, int16_t param_index, uint8_t error_code);
 
+    // Remember which parameter protocol(s) clients have actually used, so that a spontaneous
+    // value-change notification is only sent on protocols someone is listening on.
+    // Must be called with _all_params_mutex held.
+    void mark_protocol_seen(bool extended);
+    // Enqueue a spontaneous PARAM_VALUE / PARAM_EXT_VALUE broadcast for a changed value.
+    void enqueue_value_broadcast(
+        const std::string& name, const ParamValue& param_value, bool extended);
+
     static std::variant<std::monostate, std::string, std::uint16_t>
     extract_request_read_param_identifier(int16_t param_index, const char* param_id);
 
@@ -134,7 +142,9 @@ private:
 
     bool _extended_protocol = true;
     bool _parameter_debugging = false;
-    bool _last_extended = true;
+    // Sticky flags tracking which protocol(s) clients have used (guarded by _all_params_mutex).
+    bool _seen_extended = false;
+    bool _seen_non_extended = false;
 
     bool _params_locked_down = false;
 };
