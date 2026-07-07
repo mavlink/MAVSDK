@@ -89,6 +89,15 @@ MavlinkParameterServer::provide_server_param(const std::string& name, const Para
         }
     }
     std::lock_guard<std::mutex> lock(_all_params_mutex);
+
+    // Updating the value of an already-provided parameter is always allowed. Adding a new
+    // parameter is only possible until the set has been locked down, i.e. until a client has
+    // enumerated the parameters and thereby fixed the indices and count.
+    const bool already_exists = _param_cache.param_by_id(name, true).has_value();
+    if (!already_exists && _params_locked_down) {
+        return Result::ParamProvidedTooLate;
+    }
+
     // first we try to add it as a new parameter
     switch (_param_cache.add_new_param(name, param_value)) {
         case MavlinkParameterCache::AddNewParamResult::Ok:
@@ -727,6 +736,8 @@ std::ostream& operator<<(std::ostream& str, const MavlinkParameterServer::Result
             return str << "NotFound";
         case MavlinkParameterServer::Result::ParamValueTooLong:
             return str << ":ParamValueTooLong";
+        case MavlinkParameterServer::Result::ParamProvidedTooLate:
+            return str << "ParamProvidedTooLate";
         default:
             return str << "UnknownError";
     }

@@ -44,6 +44,7 @@ public:
         ParamValueTooLong,
         TooManyParams,
         ParamNotFound,
+        ParamProvidedTooLate,
         Unknown,
         ValueOutOfRange,
         PermissionDenied,
