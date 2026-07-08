@@ -32,6 +32,7 @@ Namespace for all mavsdk types.
 * [mavsdk::LogStreaming](classmavsdk_1_1_log_streaming.md)
 * [mavsdk::ManualControl](classmavsdk_1_1_manual_control.md)
 * [mavsdk::MavlinkDirect](classmavsdk_1_1_mavlink_direct.md)
+* [mavsdk::MavlinkDirectServer](classmavsdk_1_1_mavlink_direct_server.md)
 * [mavsdk::MavlinkPassthrough](classmavsdk_1_1_mavlink_passthrough.md)
 * [mavsdk::Mavsdk](classmavsdk_1_1_mavsdk.md)
 * [mavsdk::Mission](classmavsdk_1_1_mission.md)

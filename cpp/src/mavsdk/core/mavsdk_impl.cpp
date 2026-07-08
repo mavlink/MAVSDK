@@ -743,6 +743,18 @@ void MavsdkImpl::process_libmav_message(
             message.message_name,
             message.system_id);
     }
+
+    // Also distribute to server components (e.g. the MavlinkDirectServer plugin).
+    // Unlike systems, this is not scoped by system_id: a server component sees
+    // matching messages from all systems.
+    {
+        std::lock_guard lock(_server_components_mutex);
+        for (auto& server_component : _server_components) {
+            if (server_component.second) {
+                server_component.second->_impl->process_libmav_message(message);
+            }
+        }
+    }
 }
 
 bool MavsdkImpl::send_message(mavlink_message_t& message)

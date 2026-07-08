@@ -5,12 +5,6 @@
 #include "plugin_impl_base.hpp"
 #include "callback_list.hpp"
 
-#include <json/json.h>
-#include <mav/Message.h>
-#include <optional>
-#include <map>
-#include <mutex>
-
 namespace mavsdk {
 
 class MavlinkDirectImpl : public PluginImplBase {
@@ -41,15 +35,6 @@ private:
     Handle<Mavsdk::MavlinkMessage> _system_subscription{};
 
     bool _debugging = false;
-
-    // Helper methods for message name/ID conversion
-    std::optional<uint32_t> message_name_to_id(const std::string& name) const;
-    std::optional<std::string> message_id_to_name(uint32_t id) const;
-
-    // Helper methods for JSON field conversion
-    Json::Value libmav_to_json(const mav::Message& msg) const;
-    bool json_to_libmav(const Json::Value& json, mav::Message& msg) const;
-    bool json_to_libmav_message(const std::string& json_string, mav::Message& msg) const;
 
     // Message handling
     void process_mavlink_message(mavlink_message_t& message);

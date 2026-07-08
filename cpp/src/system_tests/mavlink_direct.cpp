@@ -1,6 +1,7 @@
 #include "log.hpp"
 #include "mavsdk.hpp"
 #include "plugins/mavlink_direct/mavlink_direct.hpp"
+#include "plugins/mavlink_direct_server/mavlink_direct_server.hpp"
 #include "plugins/telemetry/telemetry.hpp"
 #include "plugins/telemetry_server/telemetry_server.hpp"
 #include <chrono>
@@ -28,19 +29,9 @@ TEST(MavlinkDirect, Roundtrip)
     auto system = maybe_system.value();
     ASSERT_TRUE(system->has_autopilot());
 
-    // Wait for autopilot instance to discover the connection to the ground station
-    LogInfo("Waiting for autopilot system to connect...");
-    while (mavsdk_autopilot.systems().size() == 0) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
-    }
-
-    // Get the autopilot's view of the connected system
-    auto groundstation_system = mavsdk_autopilot.systems().at(0);
-    ASSERT_EQ(groundstation_system->component_ids()[0], 190);
-
     // Create separate MavlinkDirect instances for sender (autopilot) and receiver (ground station)
     auto receiver_mavlink_direct = MavlinkDirect{system};
-    auto sender_mavlink_direct = MavlinkDirect{groundstation_system};
+    auto sender_mavlink_direct = MavlinkDirectServer{mavsdk_autopilot.server_component()};
 
     auto prom = std::promise<MavlinkDirect::MavlinkMessage>();
     auto fut = prom.get_future();
@@ -56,7 +47,7 @@ TEST(MavlinkDirect, Roundtrip)
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
     // Create a complex test message with multiple field types
-    MavlinkDirect::MavlinkMessage test_message;
+    MavlinkDirectServer::MavlinkMessage test_message;
     test_message.message_name = "GLOBAL_POSITION_INT";
     test_message.system_id = 1;
     test_message.component_id = 1;
@@ -67,8 +58,9 @@ TEST(MavlinkDirect, Roundtrip)
 
     LogInfo("Sending GLOBAL_POSITION_INT message...");
     auto result = sender_mavlink_direct.send_message(test_message);
-    LogInfo("Send result: {}", (result == MavlinkDirect::Result::Success ? "Success" : "Error"));
-    EXPECT_EQ(result, MavlinkDirect::Result::Success);
+    LogInfo(
+        "Send result: {}", (result == MavlinkDirectServer::Result::Success ? "Success" : "Error"));
+    EXPECT_EQ(result, MavlinkDirectServer::Result::Success);
 
     // Wait for message to be received
     ASSERT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
@@ -102,16 +94,8 @@ TEST(MavlinkDirect, ExtendedFields)
     auto system = maybe_system.value();
     ASSERT_TRUE(system->has_autopilot());
 
-    // Wait for autopilot instance to discover the connection to the ground station
-    while (mavsdk_autopilot.systems().size() == 0) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
-    }
-
-    auto groundstation_system = mavsdk_autopilot.systems().at(0);
-    ASSERT_EQ(groundstation_system->component_ids()[0], 190);
-
     auto receiver_mavlink_direct = MavlinkDirect{system};
-    auto sender_mavlink_direct = MavlinkDirect{groundstation_system};
+    auto sender_mavlink_direct = MavlinkDirectServer{mavsdk_autopilot.server_component()};
 
     auto compact_prom = std::promise<MavlinkDirect::MavlinkMessage>();
     auto compact_fut = compact_prom.get_future();
@@ -135,7 +119,7 @@ TEST(MavlinkDirect, ExtendedFields)
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
     // Test 1: Send SYS_STATUS in compact form (no extensions)
-    MavlinkDirect::MavlinkMessage compact_message;
+    MavlinkDirectServer::MavlinkMessage compact_message;
     compact_message.message_name = "SYS_STATUS";
     compact_message.system_id = 1;
     compact_message.component_id = 1;
@@ -145,12 +129,12 @@ TEST(MavlinkDirect, ExtendedFields)
         R"({"onboard_control_sensors_present":1,"onboard_control_sensors_enabled":1,"onboard_control_sensors_health":1,"load":500,"voltage_battery":12000,"current_battery":1000,"battery_remaining":75,"drop_rate_comm":0,"errors_comm":0,"errors_count1":0,"errors_count2":0,"errors_count3":0,"errors_count4":0})";
 
     auto result1 = sender_mavlink_direct.send_message(compact_message);
-    EXPECT_EQ(result1, MavlinkDirect::Result::Success);
+    EXPECT_EQ(result1, MavlinkDirectServer::Result::Success);
 
     std::this_thread::sleep_for(std::chrono::milliseconds(200));
 
     // Test 2: Send SYS_STATUS in full form (with extensions)
-    MavlinkDirect::MavlinkMessage full_message;
+    MavlinkDirectServer::MavlinkMessage full_message;
     full_message.message_name = "SYS_STATUS";
     full_message.system_id = 1;
     full_message.component_id = 1;
@@ -160,7 +144,7 @@ TEST(MavlinkDirect, ExtendedFields)
         R"({"onboard_control_sensors_present":1,"onboard_control_sensors_enabled":1,"onboard_control_sensors_health":1,"load":500,"voltage_battery":12000,"current_battery":1000,"battery_remaining":75,"drop_rate_comm":0,"errors_comm":0,"errors_count1":0,"errors_count2":0,"errors_count3":0,"errors_count4":0,"onboard_control_sensors_present_extended":123,"onboard_control_sensors_enabled_extended":456,"onboard_control_sensors_health_extended":789})";
 
     auto result2 = sender_mavlink_direct.send_message(full_message);
-    EXPECT_EQ(result2, MavlinkDirect::Result::Success);
+    EXPECT_EQ(result2, MavlinkDirectServer::Result::Success);
 
     // Wait for both messages to be received
     ASSERT_EQ(compact_fut.wait_for(std::chrono::seconds(5)), std::future_status::ready);
@@ -231,16 +215,8 @@ TEST(MavlinkDirect, ToTelemetry)
     auto system = maybe_system.value();
     ASSERT_TRUE(system->has_autopilot());
 
-    // Wait for autopilot instance to discover the connection to the ground station
-    while (mavsdk_autopilot.systems().size() == 0) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
-    }
-
-    auto groundstation_system = mavsdk_autopilot.systems().at(0);
-    ASSERT_EQ(groundstation_system->component_ids()[0], 190);
-
     // Autopilot uses MavlinkDirect to send, Ground station uses Telemetry to receive
-    auto sender_mavlink_direct = MavlinkDirect{groundstation_system};
+    auto sender_mavlink_direct = MavlinkDirectServer{mavsdk_autopilot.server_component()};
     auto receiver_telemetry = Telemetry{system};
 
     auto prom = std::promise<Telemetry::Position>();
@@ -258,7 +234,7 @@ TEST(MavlinkDirect, ToTelemetry)
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
     // Send GLOBAL_POSITION_INT via MavlinkDirect
-    MavlinkDirect::MavlinkMessage test_message;
+    MavlinkDirectServer::MavlinkMessage test_message;
     test_message.message_name = "GLOBAL_POSITION_INT";
     test_message.system_id = 1;
     test_message.component_id = 1;
@@ -268,7 +244,7 @@ TEST(MavlinkDirect, ToTelemetry)
         R"({"time_boot_ms":12345,"lat":473977418,"lon":-1223974560,"alt":100500,"relative_alt":50250,"vx":100,"vy":-50,"vz":25,"hdg":18000})";
 
     auto result = sender_mavlink_direct.send_message(test_message);
-    EXPECT_EQ(result, MavlinkDirect::Result::Success);
+    EXPECT_EQ(result, MavlinkDirectServer::Result::Success);
 
     // Wait for position to be received
     ASSERT_EQ(fut.wait_for(std::chrono::seconds(5)), std::future_status::ready);
@@ -299,14 +275,6 @@ TEST(MavlinkDirect, TelemetryServerTo)
     ASSERT_TRUE(maybe_system);
     auto system = maybe_system.value();
     ASSERT_TRUE(system->has_autopilot());
-
-    // Wait for autopilot instance to discover the connection to the ground station
-    while (mavsdk_autopilot.systems().size() == 0) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
-    }
-
-    auto groundstation_system = mavsdk_autopilot.systems().at(0);
-    ASSERT_EQ(groundstation_system->component_ids()[0], 190);
 
     // Autopilot uses TelemetryServer to send, Ground station uses MavlinkDirect to receive
     auto autopilot_server_component = mavsdk_autopilot.server_component();
@@ -376,16 +344,8 @@ TEST(MavlinkDirect, ArrayFields)
     auto system = maybe_system.value();
     ASSERT_TRUE(system->has_autopilot());
 
-    // Wait for autopilot instance to discover the connection to the ground station
-    while (mavsdk_autopilot.systems().size() == 0) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
-    }
-
-    auto groundstation_system = mavsdk_autopilot.systems().at(0);
-    ASSERT_EQ(groundstation_system->component_ids()[0], 190);
-
     auto receiver_mavlink_direct = MavlinkDirect{system};
-    auto sender_mavlink_direct = MavlinkDirect{groundstation_system};
+    auto sender_mavlink_direct = MavlinkDirectServer{mavsdk_autopilot.server_component()};
 
     auto partial_prom = std::promise<MavlinkDirect::MavlinkMessage>();
     auto partial_fut = partial_prom.get_future();
@@ -409,7 +369,7 @@ TEST(MavlinkDirect, ArrayFields)
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
     // Test 1: Send GPS_STATUS with partial array data (3 satellites)
-    MavlinkDirect::MavlinkMessage partial_message;
+    MavlinkDirectServer::MavlinkMessage partial_message;
     partial_message.message_name = "GPS_STATUS";
     partial_message.system_id = 1;
     partial_message.component_id = 1;
@@ -419,12 +379,12 @@ TEST(MavlinkDirect, ArrayFields)
         R"({"satellites_visible":3,"satellite_prn":[1,2,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"satellite_used":[1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"satellite_elevation":[45,60,30,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"satellite_azimuth":[90,180,270,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"satellite_snr":[25,30,15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]})";
 
     auto result1 = sender_mavlink_direct.send_message(partial_message);
-    EXPECT_EQ(result1, MavlinkDirect::Result::Success);
+    EXPECT_EQ(result1, MavlinkDirectServer::Result::Success);
 
     std::this_thread::sleep_for(std::chrono::milliseconds(200));
 
     // Test 2: Send GPS_STATUS with full array data (20 satellites)
-    MavlinkDirect::MavlinkMessage full_message;
+    MavlinkDirectServer::MavlinkMessage full_message;
     full_message.message_name = "GPS_STATUS";
     full_message.system_id = 1;
     full_message.component_id = 1;
@@ -434,7 +394,7 @@ TEST(MavlinkDirect, ArrayFields)
         R"({"satellites_visible":20,"satellite_prn":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],"satellite_used":[1,1,1,1,1,0,0,0,0,0,1,1,1,1,1,0,0,0,0,0],"satellite_elevation":[45,60,30,75,20,85,50,40,65,35,25,55,70,15,80,10,90,5,45,60],"satellite_azimuth":[0,36,72,108,144,180,216,252,28,64,100,136,172,208,244,20,56,92,128,164],"satellite_snr":[25,30,15,35,20,40,28,22,32,18,26,31,16,38,24,19,33,21,29,27]})";
 
     auto result2 = sender_mavlink_direct.send_message(full_message);
-    EXPECT_EQ(result2, MavlinkDirect::Result::Success);
+    EXPECT_EQ(result2, MavlinkDirectServer::Result::Success);
 
     // Wait for both messages to be received
     ASSERT_EQ(partial_fut.wait_for(std::chrono::seconds(5)), std::future_status::ready);
@@ -534,15 +494,7 @@ TEST(MavlinkDirect, LoadCustomXml)
     auto system = maybe_system.value();
     ASSERT_TRUE(system->has_autopilot());
 
-    // Wait for autopilot instance to discover the connection to the ground station
-    while (mavsdk_autopilot.systems().size() == 0) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
-    }
-
-    auto groundstation_system = mavsdk_autopilot.systems().at(0);
-    ASSERT_EQ(groundstation_system->component_ids()[0], 190);
-
-    auto sender_mavlink_direct = MavlinkDirect{groundstation_system};
+    auto sender_mavlink_direct = MavlinkDirectServer{mavsdk_autopilot.server_component()};
     auto receiver_mavlink_direct = MavlinkDirect{system};
 
     // Define custom XML with a test message
@@ -562,7 +514,7 @@ TEST(MavlinkDirect, LoadCustomXml)
 
     // Load custom XML on both sender and receiver
     auto result1 = sender_mavlink_direct.load_custom_xml(custom_xml);
-    EXPECT_EQ(result1, MavlinkDirect::Result::Success);
+    EXPECT_EQ(result1, MavlinkDirectServer::Result::Success);
 
     auto result2 = receiver_mavlink_direct.load_custom_xml(custom_xml);
     EXPECT_EQ(result2, MavlinkDirect::Result::Success);
@@ -580,7 +532,7 @@ TEST(MavlinkDirect, LoadCustomXml)
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
     // Send the custom message
-    MavlinkDirect::MavlinkMessage custom_message;
+    MavlinkDirectServer::MavlinkMessage custom_message;
     custom_message.message_name = "CUSTOM_TEST_MESSAGE";
     custom_message.system_id = 1;
     custom_message.component_id = 1;
@@ -589,7 +541,7 @@ TEST(MavlinkDirect, LoadCustomXml)
     custom_message.fields_json = R"({"test_value":42,"counter":1337,"status":5})";
 
     auto send_result = sender_mavlink_direct.send_message(custom_message);
-    EXPECT_EQ(send_result, MavlinkDirect::Result::Success);
+    EXPECT_EQ(send_result, MavlinkDirectServer::Result::Success);
 
     // Wait for message to be received
     ASSERT_EQ(fut.wait_for(std::chrono::seconds(5)), std::future_status::ready);
@@ -629,19 +581,9 @@ TEST(MavlinkDirect, ArdupilotmegaMessage)
     auto system = maybe_system.value();
     ASSERT_TRUE(system->has_autopilot());
 
-    // Wait for autopilot instance to discover the connection to the ground station
-    LogInfo("Waiting for autopilot system to connect...");
-    while (mavsdk_autopilot.systems().size() == 0) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
-    }
-
-    // Get the autopilot's view of the connected system
-    auto groundstation_system = mavsdk_autopilot.systems().at(0);
-    ASSERT_EQ(groundstation_system->component_ids()[0], 190);
-
     // Create separate MavlinkDirect instances for sender (autopilot) and receiver (ground station)
     auto receiver_mavlink_direct = MavlinkDirect{system};
-    auto sender_mavlink_direct = MavlinkDirect{groundstation_system};
+    auto sender_mavlink_direct = MavlinkDirectServer{mavsdk_autopilot.server_component()};
 
     auto prom = std::promise<MavlinkDirect::MavlinkMessage>();
     auto fut = prom.get_future();
@@ -654,12 +596,12 @@ TEST(MavlinkDirect, ArdupilotmegaMessage)
         });
 
     // Autopilot sends MEMINFO message (ID 152 from ardupilotmega.xml)
-    MavlinkDirect::MavlinkMessage meminfo_msg;
+    MavlinkDirectServer::MavlinkMessage meminfo_msg;
     meminfo_msg.message_name = "MEMINFO";
     meminfo_msg.fields_json = R"({"brkval": 32768, "freemem": 8192})";
 
     auto result = sender_mavlink_direct.send_message(meminfo_msg);
-    ASSERT_EQ(result, MavlinkDirect::Result::Success);
+    ASSERT_EQ(result, MavlinkDirectServer::Result::Success);
 
     // Wait for message to be received
     ASSERT_EQ(fut.wait_for(std::chrono::seconds(5)), std::future_status::ready);
@@ -700,16 +642,8 @@ TEST(MavlinkDirect, NanInfinityJsonHandling)
     auto system = maybe_system.value();
     ASSERT_TRUE(system->has_autopilot());
 
-    // Wait for autopilot instance to discover the connection to the ground station
-    while (mavsdk_autopilot.systems().size() == 0) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
-    }
-
-    auto groundstation_system = mavsdk_autopilot.systems().at(0);
-    ASSERT_EQ(groundstation_system->component_ids()[0], 190);
-
     auto receiver_mavlink_direct = MavlinkDirect{system};
-    auto sender_mavlink_direct = MavlinkDirect{groundstation_system};
+    auto sender_mavlink_direct = MavlinkDirectServer{mavsdk_autopilot.server_component()};
 
     // Define custom XML with a test message containing float fields
     std::string custom_xml = R"(<?xml version="1.0"?>
@@ -732,7 +666,7 @@ TEST(MavlinkDirect, NanInfinityJsonHandling)
 
     // Load custom XML on both sender and receiver
     auto result1 = sender_mavlink_direct.load_custom_xml(custom_xml);
-    EXPECT_EQ(result1, MavlinkDirect::Result::Success);
+    EXPECT_EQ(result1, MavlinkDirectServer::Result::Success);
 
     auto result2 = receiver_mavlink_direct.load_custom_xml(custom_xml);
     EXPECT_EQ(result2, MavlinkDirect::Result::Success);
@@ -757,7 +691,7 @@ TEST(MavlinkDirect, NanInfinityJsonHandling)
     // handles NaN/inf correctly. The actual test will be done by checking that
     // valid JSON is produced even when NaN/inf values are present in libmav parsing.
 
-    MavlinkDirect::MavlinkMessage test_message;
+    MavlinkDirectServer::MavlinkMessage test_message;
     test_message.message_name = "FLOAT_TEST_MESSAGE";
     test_message.system_id = 1;
     test_message.component_id = 1;
@@ -767,7 +701,7 @@ TEST(MavlinkDirect, NanInfinityJsonHandling)
         R"({"normal_float":3.14,"nan_float":null,"pos_inf_float":null,"neg_inf_float":null,"normal_double":2.718,"nan_double":null,"float_array":[1.0,null,null,4.0]})";
 
     auto send_result = sender_mavlink_direct.send_message(test_message);
-    EXPECT_EQ(send_result, MavlinkDirect::Result::Success);
+    EXPECT_EQ(send_result, MavlinkDirectServer::Result::Success);
 
     // Wait for message to be received
     ASSERT_EQ(fut.wait_for(std::chrono::seconds(5)), std::future_status::ready);
@@ -846,18 +780,9 @@ TEST(MavlinkDirect, MessageFiltering)
     auto system = maybe_system.value();
     ASSERT_TRUE(system->has_autopilot());
 
-    // Wait for autopilot instance to discover the connection to the ground station
-    LogInfo("Waiting for autopilot system to connect...");
-    while (mavsdk_autopilot.systems().size() == 0) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
-    }
-
-    auto groundstation_system = mavsdk_autopilot.systems().at(0);
-    ASSERT_EQ(groundstation_system->component_ids()[0], 190);
-
     // Create separate MavlinkDirect instances
     auto receiver_mavlink_direct = MavlinkDirect{system};
-    auto sender_mavlink_direct = MavlinkDirect{groundstation_system};
+    auto sender_mavlink_direct = MavlinkDirectServer{mavsdk_autopilot.server_component()};
 
     // Set up counters to track what messages are received
     std::atomic<int> heartbeat_count{0};
@@ -888,7 +813,7 @@ TEST(MavlinkDirect, MessageFiltering)
     // Send different message types - the subscription should only receive HEARTBEAT
 
     // 1. Send HEARTBEAT (should be received)
-    MavlinkDirect::MavlinkMessage heartbeat_message;
+    MavlinkDirectServer::MavlinkMessage heartbeat_message;
     heartbeat_message.message_name = "HEARTBEAT";
     heartbeat_message.system_id = 1;
     heartbeat_message.component_id = 1;
@@ -897,11 +822,12 @@ TEST(MavlinkDirect, MessageFiltering)
 
     LogInfo("Sending HEARTBEAT message (should be received)");
     EXPECT_EQ(
-        sender_mavlink_direct.send_message(heartbeat_message), MavlinkDirect::Result::Success);
+        sender_mavlink_direct.send_message(heartbeat_message),
+        MavlinkDirectServer::Result::Success);
     std::this_thread::sleep_for(std::chrono::milliseconds(200));
 
     // 2. Send GLOBAL_POSITION_INT (should NOT be received)
-    MavlinkDirect::MavlinkMessage gps_message;
+    MavlinkDirectServer::MavlinkMessage gps_message;
     gps_message.message_name = "GLOBAL_POSITION_INT";
     gps_message.system_id = 1;
     gps_message.component_id = 1;
@@ -909,11 +835,12 @@ TEST(MavlinkDirect, MessageFiltering)
         R"({"time_boot_ms":12345,"lat":473977418,"lon":-1223974560,"alt":100500,"relative_alt":50250,"vx":100,"vy":-50,"vz":25,"hdg":18000})";
 
     LogInfo("Sending GLOBAL_POSITION_INT message (should NOT be received)");
-    EXPECT_EQ(sender_mavlink_direct.send_message(gps_message), MavlinkDirect::Result::Success);
+    EXPECT_EQ(
+        sender_mavlink_direct.send_message(gps_message), MavlinkDirectServer::Result::Success);
     std::this_thread::sleep_for(std::chrono::milliseconds(200));
 
     // 3. Send SYS_STATUS (should NOT be received)
-    MavlinkDirect::MavlinkMessage sys_status_message;
+    MavlinkDirectServer::MavlinkMessage sys_status_message;
     sys_status_message.message_name = "SYS_STATUS";
     sys_status_message.system_id = 1;
     sys_status_message.component_id = 1;
@@ -922,13 +849,15 @@ TEST(MavlinkDirect, MessageFiltering)
 
     LogInfo("Sending SYS_STATUS message (should NOT be received)");
     EXPECT_EQ(
-        sender_mavlink_direct.send_message(sys_status_message), MavlinkDirect::Result::Success);
+        sender_mavlink_direct.send_message(sys_status_message),
+        MavlinkDirectServer::Result::Success);
     std::this_thread::sleep_for(std::chrono::milliseconds(200));
 
     // 4. Send another HEARTBEAT (should be received)
     LogInfo("Sending second HEARTBEAT message (should be received)");
     EXPECT_EQ(
-        sender_mavlink_direct.send_message(heartbeat_message), MavlinkDirect::Result::Success);
+        sender_mavlink_direct.send_message(heartbeat_message),
+        MavlinkDirectServer::Result::Success);
     std::this_thread::sleep_for(std::chrono::milliseconds(200));
 
     // Verify filtering worked correctly
@@ -967,18 +896,9 @@ TEST(MavlinkDirect, EmptyStringFiltering)
     auto system = maybe_system.value();
     ASSERT_TRUE(system->has_autopilot());
 
-    // Wait for autopilot instance to discover the connection to the ground station
-    LogInfo("Waiting for autopilot system to connect...");
-    while (mavsdk_autopilot.systems().size() == 0) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
-    }
-
-    auto groundstation_system = mavsdk_autopilot.systems().at(0);
-    ASSERT_EQ(groundstation_system->component_ids()[0], 190);
-
     // Create separate MavlinkDirect instances
     auto receiver_mavlink_direct = MavlinkDirect{system};
-    auto sender_mavlink_direct = MavlinkDirect{groundstation_system};
+    auto sender_mavlink_direct = MavlinkDirectServer{mavsdk_autopilot.server_component()};
 
     // Set up counters to track what messages are received
     std::atomic<int> heartbeat_count{0};
@@ -1011,7 +931,7 @@ TEST(MavlinkDirect, EmptyStringFiltering)
     // Send different message types - all should be received with empty string subscription
 
     // 1. Send HEARTBEAT
-    MavlinkDirect::MavlinkMessage heartbeat_message;
+    MavlinkDirectServer::MavlinkMessage heartbeat_message;
     heartbeat_message.message_name = "HEARTBEAT";
     heartbeat_message.system_id = 1;
     heartbeat_message.component_id = 1;
@@ -1020,11 +940,12 @@ TEST(MavlinkDirect, EmptyStringFiltering)
 
     LogInfo("Sending HEARTBEAT message");
     EXPECT_EQ(
-        sender_mavlink_direct.send_message(heartbeat_message), MavlinkDirect::Result::Success);
+        sender_mavlink_direct.send_message(heartbeat_message),
+        MavlinkDirectServer::Result::Success);
     std::this_thread::sleep_for(std::chrono::milliseconds(200));
 
     // 2. Send GLOBAL_POSITION_INT
-    MavlinkDirect::MavlinkMessage gps_message;
+    MavlinkDirectServer::MavlinkMessage gps_message;
     gps_message.message_name = "GLOBAL_POSITION_INT";
     gps_message.system_id = 1;
     gps_message.component_id = 1;
@@ -1032,11 +953,12 @@ TEST(MavlinkDirect, EmptyStringFiltering)
         R"({"time_boot_ms":12345,"lat":473977418,"lon":-1223974560,"alt":100500,"relative_alt":50250,"vx":100,"vy":-50,"vz":25,"hdg":18000})";
 
     LogInfo("Sending GLOBAL_POSITION_INT message");
-    EXPECT_EQ(sender_mavlink_direct.send_message(gps_message), MavlinkDirect::Result::Success);
+    EXPECT_EQ(
+        sender_mavlink_direct.send_message(gps_message), MavlinkDirectServer::Result::Success);
     std::this_thread::sleep_for(std::chrono::milliseconds(200));
 
     // 3. Send SYS_STATUS
-    MavlinkDirect::MavlinkMessage sys_status_message;
+    MavlinkDirectServer::MavlinkMessage sys_status_message;
     sys_status_message.message_name = "SYS_STATUS";
     sys_status_message.system_id = 1;
     sys_status_message.component_id = 1;
@@ -1045,7 +967,8 @@ TEST(MavlinkDirect, EmptyStringFiltering)
 
     LogInfo("Sending SYS_STATUS message");
     EXPECT_EQ(
-        sender_mavlink_direct.send_message(sys_status_message), MavlinkDirect::Result::Success);
+        sender_mavlink_direct.send_message(sys_status_message),
+        MavlinkDirectServer::Result::Success);
     std::this_thread::sleep_for(std::chrono::milliseconds(200));
 
     // Verify empty string subscription received ALL message types
@@ -1087,18 +1010,9 @@ TEST(MavlinkDirect, MultipleSubscriptions)
     auto system = maybe_system.value();
     ASSERT_TRUE(system->has_autopilot());
 
-    // Wait for autopilot instance to discover the connection to the ground station
-    LogInfo("Waiting for autopilot system to connect...");
-    while (mavsdk_autopilot.systems().size() == 0) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
-    }
-
-    auto groundstation_system = mavsdk_autopilot.systems().at(0);
-    ASSERT_EQ(groundstation_system->component_ids()[0], 190);
-
     // Create separate MavlinkDirect instances
     auto receiver_mavlink_direct = MavlinkDirect{system};
-    auto sender_mavlink_direct = MavlinkDirect{groundstation_system};
+    auto sender_mavlink_direct = MavlinkDirectServer{mavsdk_autopilot.server_component()};
 
     // Set up counters for the "all messages" subscription
     std::atomic<int> all_messages_heartbeat{0};
@@ -1145,7 +1059,7 @@ TEST(MavlinkDirect, MultipleSubscriptions)
     // Send different message types
 
     // 1. Send HEARTBEAT (both subscriptions should receive it)
-    MavlinkDirect::MavlinkMessage heartbeat_message;
+    MavlinkDirectServer::MavlinkMessage heartbeat_message;
     heartbeat_message.message_name = "HEARTBEAT";
     heartbeat_message.system_id = 1;
     heartbeat_message.component_id = 1;
@@ -1154,11 +1068,12 @@ TEST(MavlinkDirect, MultipleSubscriptions)
 
     LogInfo("Sending HEARTBEAT message");
     EXPECT_EQ(
-        sender_mavlink_direct.send_message(heartbeat_message), MavlinkDirect::Result::Success);
+        sender_mavlink_direct.send_message(heartbeat_message),
+        MavlinkDirectServer::Result::Success);
     std::this_thread::sleep_for(std::chrono::milliseconds(200));
 
     // 2. Send GLOBAL_POSITION_INT (only ALL subscription should receive it)
-    MavlinkDirect::MavlinkMessage gps_message;
+    MavlinkDirectServer::MavlinkMessage gps_message;
     gps_message.message_name = "GLOBAL_POSITION_INT";
     gps_message.system_id = 1;
     gps_message.component_id = 1;
@@ -1166,11 +1081,12 @@ TEST(MavlinkDirect, MultipleSubscriptions)
         R"({"time_boot_ms":12345,"lat":473977418,"lon":-1223974560,"alt":100500,"relative_alt":50250,"vx":100,"vy":-50,"vz":25,"hdg":18000})";
 
     LogInfo("Sending GLOBAL_POSITION_INT message");
-    EXPECT_EQ(sender_mavlink_direct.send_message(gps_message), MavlinkDirect::Result::Success);
+    EXPECT_EQ(
+        sender_mavlink_direct.send_message(gps_message), MavlinkDirectServer::Result::Success);
     std::this_thread::sleep_for(std::chrono::milliseconds(200));
 
     // 3. Send SYS_STATUS (only ALL subscription should receive it)
-    MavlinkDirect::MavlinkMessage sys_status_message;
+    MavlinkDirectServer::MavlinkMessage sys_status_message;
     sys_status_message.message_name = "SYS_STATUS";
     sys_status_message.system_id = 1;
     sys_status_message.component_id = 1;
@@ -1179,13 +1095,15 @@ TEST(MavlinkDirect, MultipleSubscriptions)
 
     LogInfo("Sending SYS_STATUS message");
     EXPECT_EQ(
-        sender_mavlink_direct.send_message(sys_status_message), MavlinkDirect::Result::Success);
+        sender_mavlink_direct.send_message(sys_status_message),
+        MavlinkDirectServer::Result::Success);
     std::this_thread::sleep_for(std::chrono::milliseconds(200));
 
     // 4. Send another HEARTBEAT (both subscriptions should receive it)
     LogInfo("Sending second HEARTBEAT message");
     EXPECT_EQ(
-        sender_mavlink_direct.send_message(heartbeat_message), MavlinkDirect::Result::Success);
+        sender_mavlink_direct.send_message(heartbeat_message),
+        MavlinkDirectServer::Result::Success);
     std::this_thread::sleep_for(std::chrono::milliseconds(200));
 
     // Verify correct filtering behavior
@@ -1234,17 +1152,8 @@ TEST(MavlinkDirect, LargeUint64)
     auto system = maybe_system.value();
     ASSERT_TRUE(system->has_autopilot());
 
-    // Wait for autopilot instance to discover the connection to the ground station
-    LogInfo("Waiting for autopilot system to connect...");
-    while (mavsdk_autopilot.systems().size() == 0) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
-    }
-
-    auto groundstation_system = mavsdk_autopilot.systems().at(0);
-    ASSERT_EQ(groundstation_system->component_ids()[0], 190);
-
     auto receiver_mavlink_direct = MavlinkDirect{system};
-    auto sender_mavlink_direct = MavlinkDirect{groundstation_system};
+    auto sender_mavlink_direct = MavlinkDirectServer{mavsdk_autopilot.server_component()};
 
     auto prom = std::promise<MavlinkDirect::MavlinkMessage>();
     auto fut = prom.get_future();
@@ -1260,7 +1169,7 @@ TEST(MavlinkDirect, LargeUint64)
 
     // Send GPS_RAW_INT with time_usec > 2^32 (5000000000 microseconds = ~83 minutes)
     // This value requires full uint64 representation
-    MavlinkDirect::MavlinkMessage gps_raw_message;
+    MavlinkDirectServer::MavlinkMessage gps_raw_message;
     gps_raw_message.message_name = "GPS_RAW_INT";
     gps_raw_message.system_id = 1;
     gps_raw_message.component_id = 1;
@@ -1271,7 +1180,7 @@ TEST(MavlinkDirect, LargeUint64)
 
     LogInfo("Sending GPS_RAW_INT with time_usec=5000000000 (> 2^32)");
     auto result = sender_mavlink_direct.send_message(gps_raw_message);
-    EXPECT_EQ(result, MavlinkDirect::Result::Success);
+    EXPECT_EQ(result, MavlinkDirectServer::Result::Success);
 
     // Wait for message to be received
     ASSERT_EQ(fut.wait_for(std::chrono::seconds(5)), std::future_status::ready);
