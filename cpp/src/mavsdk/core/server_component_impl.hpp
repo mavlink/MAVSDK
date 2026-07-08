@@ -196,7 +196,7 @@ private:
     uint8_t _channel{0};
 
     // Incoming libmav (JSON) message handling, used by the MavlinkDirectServer plugin.
-    CallbackList<Mavsdk::MavlinkMessage> _libmav_message_callbacks{};
+    CallbackList<Mavsdk::MavlinkMessage> _libmav_message_callbacks{io_context()};
 
     std::atomic<MAV_STATE> _system_status{MAV_STATE_UNINIT};
     std::atomic<uint8_t> _base_mode{0};
