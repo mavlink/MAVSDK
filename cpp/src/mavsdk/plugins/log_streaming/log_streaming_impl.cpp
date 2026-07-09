@@ -40,18 +40,25 @@ void LogStreamingImpl::init()
 
 void LogStreamingImpl::deinit()
 {
-    std::lock_guard<std::mutex> lock(_mutex);
+    std::unique_ptr<LogStreamingBackend> backend;
+    {
+        std::lock_guard<std::mutex> lock(_mutex);
 
-    // Cancel any pending autopilot type polling
-    if (_check_autopilot_cookie) {
-        _system_impl->remove_call_every(_check_autopilot_cookie);
-        _check_autopilot_cookie = {};
+        // Cancel any pending autopilot type polling
+        if (_check_autopilot_cookie) {
+            _system_impl->remove_call_every(_check_autopilot_cookie);
+            _check_autopilot_cookie = {};
+        }
+        _start_callback = nullptr;
+
+        backend = std::move(_backend);
     }
-    _start_callback = nullptr;
 
-    if (_backend) {
-        _backend->deinit();
-        _backend.reset();
+    // Deinit (and destroy) the backend outside of _mutex: its blocking unregister can wait
+    // for an in-flight message callback to finish, and that callback may be in
+    // process_data() waiting for _mutex.
+    if (backend) {
+        backend->deinit();
     }
 }
 
@@ -59,10 +66,15 @@ void LogStreamingImpl::enable() {}
 
 void LogStreamingImpl::disable()
 {
-    std::lock_guard<std::mutex> lock(_mutex);
-    if (_backend) {
-        _backend->deinit();
-        _backend.reset();
+    std::unique_ptr<LogStreamingBackend> backend;
+    {
+        std::lock_guard<std::mutex> lock(_mutex);
+        backend = std::move(_backend);
+    }
+
+    // Deinit (and destroy) the backend outside of _mutex, see deinit() above.
+    if (backend) {
+        backend->deinit();
     }
 }
 

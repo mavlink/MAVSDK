@@ -36,7 +36,10 @@ void LogStreamingBackendArdupilot::deinit()
     }
 
     if (_system_impl) {
-        _system_impl->unregister_all_mavlink_message_handlers(this);
+        // Blocking, so that no message callback can fire into this backend anymore once
+        // deinit() returns -- the backend is destroyed right afterwards. This is safe from
+        // both the user thread (plugin destructor) and the io thread (disconnect).
+        _system_impl->unregister_all_mavlink_message_handlers_blocking(this);
     }
 }
 
