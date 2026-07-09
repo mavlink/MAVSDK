@@ -159,7 +159,7 @@ MavlinkMissionTransferServer::ReceiveIncomingMission::ReceiveIncomingMission(
 
 MavlinkMissionTransferServer::ReceiveIncomingMission::~ReceiveIncomingMission()
 {
-    _message_handler.unregister_all_blocking(this);
+    _message_handler.unregister_all_on_io_thread(this);
     _timeout_handler.remove(_cookie);
 }
 
@@ -366,7 +366,7 @@ MavlinkMissionTransferServer::SendOutgoingMission::SendOutgoingMission(
 
 MavlinkMissionTransferServer::SendOutgoingMission::~SendOutgoingMission()
 {
-    _message_handler.unregister_all_blocking(this);
+    _message_handler.unregister_all_on_io_thread(this);
     _timeout_handler.remove(_cookie);
 }
 

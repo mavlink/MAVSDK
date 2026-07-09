@@ -1,6 +1,8 @@
 #include "mavlink_parameter_subscription.hpp"
 
 #include <algorithm>
+#include <cassert>
+#include <future>
 
 namespace mavsdk {
 
@@ -25,11 +27,11 @@ void MavlinkParameterSubscription::subscribe_param_custom_changed(
 void MavlinkParameterSubscription::find_and_call_subscriptions_value_changed(
     const std::string& param_name, const ParamValue& value)
 {
-    // Process any deferred operations before calling subscriptions
-    process_deferred_operations();
+    // Runs on the io_context thread; _param_changed_subscriptions is only touched there,
+    // so no locking is needed.
+    note_list_thread();
+    _iterating = true;
 
-    // Now lock the mutex and call the subscriptions
-    std::lock_guard<std::mutex> lock(_param_changed_subscriptions_mutex);
     for (const auto& subscription : _param_changed_subscriptions) {
         if (subscription.param_name != param_name) {
             continue;
@@ -50,30 +52,56 @@ void MavlinkParameterSubscription::find_and_call_subscriptions_value_changed(
             LogErr("Type and callback mismatch");
         }
     }
+
+    _iterating = false;
 }
 
 void MavlinkParameterSubscription::unsubscribe_all_params_changed(const void* cookie)
 {
-    // Process any deferred operations first
-    process_deferred_operations();
+    // Must be called on the io_context thread (or while it is stopped); the list is only
+    // touched there.
+    note_list_thread();
+    // Removing directly from within a subscription callback would invalidate the iteration
+    // in find_and_call_subscriptions_value_changed(); use the posted
+    // subscribe_param_changed(nullptr, ...) path there instead.
+    assert(!_iterating);
+    _param_changed_subscriptions.erase(
+        std::remove_if(
+            _param_changed_subscriptions.begin(),
+            _param_changed_subscriptions.end(),
+            [&](const auto& subscription) { return subscription.cookie == cookie; }),
+        _param_changed_subscriptions.end());
+}
 
-    // Try to lock the mutex, if it fails we're likely in a callback
-    if (_param_changed_subscriptions_mutex.try_lock()) {
-        // We've acquired the lock without blocking, so we can modify the list
-        _param_changed_subscriptions.erase(
-            std::remove_if(
-                _param_changed_subscriptions.begin(),
-                _param_changed_subscriptions.end(),
-                [&](const auto& subscription) { return subscription.cookie == cookie; }),
-            _param_changed_subscriptions.end());
-        _param_changed_subscriptions_mutex.unlock();
-    } else {
-        // We couldn't acquire the lock because we're likely in a callback
-        // Defer the unsubscription of all params for this cookie
-        std::lock_guard<std::mutex> lock(_deferred_unsubscriptions_mutex);
-        // Add a special marker for unsubscribe_all (empty param_name)
-        _deferred_unsubscriptions.push_back({"", cookie});
+void MavlinkParameterSubscription::unsubscribe_all_params_changed_blocking(const void* cookie)
+{
+    // Synchronous removal: once this returns, no callback for this cookie can fire
+    // anymore. Same shape as MavlinkMessageHandler::unregister_all_blocking().
+    if (_io_context.stopped()) {
+        // The io_context thread is dead — safe to access directly.
+        unsubscribe_all_params_changed(cookie);
+        return;
     }
+
+    if (on_io_thread()) {
+        // Already on the io thread: remove directly, we cannot post and then wait on
+        // ourselves. Not supported from within a subscription callback (see the assert in
+        // unsubscribe_all_params_changed).
+        unsubscribe_all_params_changed(cookie);
+        return;
+    }
+
+    // Waiting here relies on the io_context staying alive and running: it is only stopped
+    // in ~MavsdkImpl, after which the stopped() branch above applies. The stopped() check
+    // is not synchronized with that teardown, so destroying an owner concurrently with the
+    // Mavsdk instance itself is not supported -- the posted removal could then never run
+    // and this wait would hang.
+    std::promise<void> done;
+    asio::post(_io_context, [this, cookie, &done]() {
+        unsubscribe_all_params_changed(cookie);
+        done.set_value();
+    });
+    done.get_future().wait();
 }
 
 } // namespace mavsdk

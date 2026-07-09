@@ -44,6 +44,16 @@ class RawConnection;
 struct TlogFile;
 
 class MavsdkImpl {
+    // The Asio io_context must outlive every member that posts onto it during teardown
+    // (the message handler, parameter subscriptions, connections, systems, and server
+    // components). Declaring it first means it is destroyed last, so those members'
+    // destructors can still safely post/erase. It runs on its own dedicated thread; see
+    // _io_thread, which is stopped and joined explicitly in ~MavsdkImpl.
+    asio::io_context _io_context{};
+    // Keep io_context::run() from returning when there are momentarily no async ops pending.
+    asio::executor_work_guard<asio::io_context::executor_type> _io_work_guard{
+        _io_context.get_executor()};
+
 public:
     MavsdkImpl(const Mavsdk::Configuration& configuration);
     ~MavsdkImpl();
@@ -143,7 +153,7 @@ public:
     void set_heartbeat_timeout_s(double timeout_s) { _heartbeat_timeout_s = timeout_s; }
     double heartbeat_timeout_s() const { return _heartbeat_timeout_s; }
 
-    MavlinkMessageHandler mavlink_message_handler{};
+    MavlinkMessageHandler mavlink_message_handler{_io_context};
 
     ServerComponentImpl& default_server_component_impl();
 
@@ -230,7 +240,7 @@ private:
         Handle<> handle;
     };
     std::vector<ConnectionEntry> _connections{};
-    CallbackList<Mavsdk::ConnectionError> _connections_errors_subscriptions{};
+    CallbackList<Mavsdk::ConnectionError> _connections_errors_subscriptions{_io_context};
 
     std::vector<std::pair<uint8_t, std::shared_ptr<System>>> _systems{};
 
@@ -238,7 +248,7 @@ private:
     std::vector<std::pair<uint8_t, std::shared_ptr<ServerComponent>>> _server_components{};
     std::shared_ptr<ServerComponent> _default_server_component{nullptr};
 
-    CallbackList<> _new_system_callbacks{};
+    CallbackList<> _new_system_callbacks{_io_context};
 
     Mavsdk::Configuration _configuration{ComponentType::GroundStation};
     std::atomic<uint8_t> _our_system_id{0};
@@ -282,7 +292,7 @@ private:
     HandleFactory<bool(Mavsdk::MavlinkMessage)> _json_handle_factory{};
 
     // Raw bytes subscriptions
-    CallbackList<const char*, size_t> _raw_bytes_subscriptions{};
+    CallbackList<const char*, size_t> _raw_bytes_subscriptions{_io_context};
 
     std::atomic<double> _timeout_s{DEFAULT_TIMEOUT_S};
     std::atomic<double> _heartbeat_timeout_s{DEFAULT_HEARTBEAT_TIMEOUT_S};
@@ -299,11 +309,8 @@ private:
 
     std::atomic<bool> _should_exit{false};
 
-    // Asio event loop — runs on its own dedicated thread.
-    asio::io_context _io_context{};
-    // Keep io_context::run() from returning when there are momentarily no async ops pending.
-    asio::executor_work_guard<asio::io_context::executor_type> _io_work_guard{
-        _io_context.get_executor()};
+    // _io_context and _io_work_guard are declared at the very top of the class so that the
+    // io_context outlives every member that posts onto it during teardown.
     // Recurring timer that drives TimeoutHandler::run_once() and
     // CallEveryHandler::run_once() on the io_context thread.
     asio::steady_timer _timers_poll_timer{_io_context};

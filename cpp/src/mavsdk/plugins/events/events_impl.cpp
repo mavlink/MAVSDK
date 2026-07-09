@@ -5,12 +5,18 @@
 
 namespace mavsdk {
 
-EventsImpl::EventsImpl(System& system) : PluginImplBase(system)
+EventsImpl::EventsImpl(System& system) :
+    PluginImplBase(system),
+    _events_callbacks(_system_impl->io_context()),
+    _health_and_arming_checks_callbacks(_system_impl->io_context())
 {
     _system_impl->register_plugin(this);
 }
 
-EventsImpl::EventsImpl(std::shared_ptr<System> system) : PluginImplBase(std::move(system))
+EventsImpl::EventsImpl(std::shared_ptr<System> system) :
+    PluginImplBase(std::move(system)),
+    _events_callbacks(_system_impl->io_context()),
+    _health_and_arming_checks_callbacks(_system_impl->io_context())
 {
     _system_impl->register_plugin(this);
 }

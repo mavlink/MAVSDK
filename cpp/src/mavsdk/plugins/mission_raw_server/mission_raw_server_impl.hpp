@@ -42,11 +42,12 @@ private:
     get_mission_items(const uint8_t mission_type);
 
     CallbackList<MissionRawServer::Result, MissionRawServer::MissionPlan>
-        _incoming_mission_callbacks{};
+        _incoming_mission_callbacks{_server_component_impl->io_context()};
     CallbackList<MissionRawServer::Result, MissionRawServer::MissionPlan>
-        _outgoing_mission_callbacks{};
-    CallbackList<MissionRawServer::MissionItem> _current_item_changed_callbacks{};
-    CallbackList<uint32_t> _clear_all_callbacks{};
+        _outgoing_mission_callbacks{_server_component_impl->io_context()};
+    CallbackList<MissionRawServer::MissionItem> _current_item_changed_callbacks{
+        _server_component_impl->io_context()};
+    CallbackList<uint32_t> _clear_all_callbacks{_server_component_impl->io_context()};
     std::atomic<int> _target_system_id;
     std::atomic<int> _target_component_id;
     std::atomic<int> _mission_count;

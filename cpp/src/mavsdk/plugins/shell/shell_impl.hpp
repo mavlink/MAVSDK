@@ -37,9 +37,9 @@ private:
 
     static constexpr uint16_t timeout_ms = 1000;
 
-    struct {
-        std::mutex mutex{};
-        CallbackList<std::string> callbacks{};
-    } _receive{};
+    struct Receive {
+        explicit Receive(asio::io_context& io_context) : callbacks(io_context) {}
+        CallbackList<std::string> callbacks;
+    } _receive;
 };
 } // namespace mavsdk

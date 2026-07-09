@@ -9,13 +9,19 @@
 #include "handle.hpp"
 #include "mavsdk_export.h"
 
+// Forward-declared so this header (the public face of the CallbackList pair) does not pull
+// asio in; the full include lives in callback_list_impl.hpp.
+namespace asio {
+class io_context;
+}
+
 namespace mavsdk {
 
 template<typename... Args> class CallbackListImpl;
 
 template<typename... Args> class MAVSDK_PUBLIC CallbackList {
 public:
-    CallbackList();
+    explicit CallbackList(asio::io_context& io_context);
     ~CallbackList();
 
     Handle<Args...> subscribe(const std::function<void(Args...)>& callback);

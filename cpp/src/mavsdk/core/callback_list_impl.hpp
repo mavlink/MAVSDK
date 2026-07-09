@@ -1,49 +1,75 @@
 #pragma once
 
 #include <algorithm>
-#include <cstdint>
-#include <functional>
 #include <atomic>
-#include <memory>
-#include <mutex>
+#include <cassert>
+#include <cstddef>
+#include <functional>
+#include <future>
 #include <utility>
 #include <vector>
+#include <asio/io_context.hpp>
+#include <asio/post.hpp>
 #include "log.hpp"
 #include "callback_list.hpp"
 #include "handle_factory.hpp"
 
 namespace mavsdk {
 
+// Threading: the callback list is only ever touched on the io_context thread.
+//
+// - exec()/queue() iterate the list; they run inline when already on the io thread (the
+//   common case, driven by received-message handlers and timers). Off it, queue() posts the
+//   access without waiting (it only hands callbacks to a queue, so it need not be
+//   synchronous), while exec() posts and waits (it invokes the callbacks directly, so the
+//   caller's arguments must stay alive until they have run). exec() must therefore not be
+//   called off the io thread while holding a lock that the io thread needs.
+// - subscribe()/subscribe_conditional()/unsubscribe()/clear() post their list mutation
+//   without waiting. Posting (rather than running inline) means they never mutate the list
+//   while exec() is iterating it, so it is safe to (un)subscribe from inside a callback; not
+//   waiting means they never block, so it is also safe to call them while holding a lock (a
+//   blocking round-trip onto the io thread would deadlock if the io thread needed that same
+//   lock). The mutation lands on the next io turn.
+//
+// The list is owned by a plugin, which the user may destroy while the io thread is still
+// running. The posted mutations capture `this`, so the destructor waits (once) for the
+// io_context to flush any that are still queued before the list is torn down.
 template<typename... Args> class CallbackListImpl {
 public:
+    explicit CallbackListImpl(asio::io_context& io_context) : _io_context(io_context) {}
+
+    ~CallbackListImpl() { drain(); }
+
     Handle<Args...> subscribe(const std::function<void(Args...)>& callback)
     {
-        check_removals();
-        process_subscriptions();
-
-        // We need to return a handle, even if the callback is nullptr to
-        // unsubscribe. That's fine, the handle just won't remove anything
-        // when/if used later.
+        // The handle factory is thread-safe, so hand out the handle synchronously and
+        // apply the actual insertion on the io thread.
         auto handle = _handle_factory.create();
 
         if (callback != nullptr) {
-            if (_mutex.try_lock()) {
-                // We've acquired the lock without blocking, so we can modify the list.
+            post_mutation([this, handle, callback]() {
                 _list.emplace_back(handle, callback);
-                _mutex.unlock();
-            } else {
-                // We couldn't acquire the lock because we're likely in a callback.
-                // Defer the subscription.
-                std::lock_guard<std::mutex> lock(_subscribe_later_mutex);
-                _subscribe_later.emplace_back(handle, callback);
-            }
+                update_size();
+            });
         } else {
             LogErr("Use new unsubscribe methods instead of subscribe(nullptr). "
                    "See: https://mavsdk.mavlink.io/main/en/cpp/api_changes.html#unsubscribe");
-            try_clear();
+            clear();
         }
 
         return handle;
+    }
+
+    void subscribe_conditional(const std::function<bool(Args...)>& callback)
+    {
+        if (callback != nullptr) {
+            post_mutation([this, callback]() {
+                _cond_cb_list.emplace_back(callback);
+                update_size();
+            });
+        } else {
+            clear();
+        }
     }
 
     void unsubscribe(Handle<Args...> handle)
@@ -54,178 +80,137 @@ public:
             return;
         }
 
-        // We want to allow unsubscribing while in a callback. This would
-        // normally lead to a deadlock. Therefore, we just try to grab the
-        // lock here, and if it's already taken, we schedule the removal
-        // for later.
-        std::unique_lock<std::mutex> lock(_mutex, std::try_to_lock);
-        if (lock.owns_lock()) {
+        post_mutation([this, handle]() {
             _list.erase(
                 std::remove_if(
                     _list.begin(), _list.end(), [&](auto& pair) { return pair.first == handle; }),
                 _list.end());
-        } else {
-            std::lock_guard<std::mutex> remove_later_lock(_remove_later_mutex);
-            _remove_later.push_back(handle);
-        }
-
-        // check and remove from deferred lock list if present
-        std::lock_guard<std::mutex> later_lock(_subscribe_later_mutex);
-        _subscribe_later.erase(
-            std::remove_if(
-                _subscribe_later.begin(),
-                _subscribe_later.end(),
-                [&](const auto& pair) { return pair.first == handle; }),
-            _subscribe_later.end());
-    }
-
-    /**
-     * @brief Subscribe a new conditional callback to the list. Conditional callbacks
-     * automatically unsubscribe if the callback evaluates to true, so the user does not
-     * have to manage a handle for 'one-shot' callbacks.
-     *
-     * @param callback The callback function to subscribe.
-     * @return void Since removal is handled internally, we dont need to expose the Handle.
-     */
-    void subscribe_conditional(const std::function<bool(Args...)>& callback)
-    {
-        check_removals();
-        process_subscriptions();
-
-        if (callback != nullptr) {
-            if (_mutex.try_lock()) {
-                _cond_cb_list.emplace_back(callback);
-                _mutex.unlock();
-            } else {
-                // We couldn't acquire the lock because we're likely in a callback.
-                // Defer the subscription.
-                std::lock_guard<std::mutex> lock(_subscribe_later_mutex);
-                _subscribe_later_cond.emplace_back(callback);
-            }
-        } else {
-            try_clear();
-        }
+            update_size();
+        });
     }
 
     void exec(Args... args)
     {
-        check_removals();
-        process_subscriptions();
-
-        std::lock_guard<std::mutex> lock(_mutex);
-        for (const auto& pair : _list) {
-            pair.second(args...);
-        }
-
-        for (auto it = _cond_cb_list.begin(); it != _cond_cb_list.end();) {
-            if ((*it)(args...)) {
-                // If the callback returns true, remove it based on the iterator
-                it = _cond_cb_list.erase(it);
-            } else {
-                // Otherwise, move to the next element
-                ++it;
+        read_on_io([&]() {
+            for (const auto& pair : _list) {
+                pair.second(args...);
             }
-        }
+
+            for (auto it = _cond_cb_list.begin(); it != _cond_cb_list.end();) {
+                if ((*it)(args...)) {
+                    // If the callback returns true, remove it based on the iterator.
+                    it = _cond_cb_list.erase(it);
+                } else {
+                    // Otherwise, move to the next element.
+                    ++it;
+                }
+            }
+            update_size();
+        });
     }
 
     void queue(Args... args, const std::function<void(const std::function<void()>&)>& queue_func)
     {
-        check_removals();
-        process_subscriptions();
-
-        std::lock_guard<std::mutex> lock(_mutex);
-
-        for (const auto& pair : _list) {
-            queue_func([callback = pair.second, args...]() { callback(args...); });
+        // queue() only hands the callbacks to queue_func (which enqueues them to run later), so
+        // unlike exec() it never needs to run synchronously. Posting it without waiting (rather
+        // than blocking on the io thread) means it is safe to call while holding a lock that the
+        // io thread also needs -- a blocking round-trip there would deadlock.
+        if (_io_context.stopped() || on_io_thread()) {
+            for (const auto& pair : _list) {
+                queue_func([callback = pair.second, args...]() { callback(args...); });
+            }
+            return;
         }
+        asio::post(_io_context, [this, args..., queue_func]() {
+            for (const auto& pair : _list) {
+                queue_func([callback = pair.second, args...]() { callback(args...); });
+            }
+        });
     }
 
-    bool empty()
-    {
-        check_removals();
-        process_subscriptions();
-
-        std::lock_guard<std::mutex> lock(_mutex);
-        return _list.empty() && _cond_cb_list.empty();
-    }
+    bool empty() { return _size.load(std::memory_order_acquire) == 0; }
 
     void clear()
     {
-        std::lock_guard<std::mutex> lock(_mutex);
-        _list.clear();
-        _cond_cb_list.clear();
+        post_mutation([this]() {
+            _list.clear();
+            _cond_cb_list.clear();
+            update_size();
+        });
     }
 
 private:
-    void check_removals()
+    // Always called on the io thread, where the list is mutated.
+    void update_size()
     {
-        std::lock_guard<std::mutex> remove_later_lock(_remove_later_mutex);
-
-        // We could probably just grab the lock here, but it's safer not to
-        // acquire both locks to avoid deadlocks.
-        if (_mutex.try_lock()) {
-            if (_remove_all_later) {
-                _remove_all_later = false;
-                _list.clear();
-                _cond_cb_list.clear();
-                _remove_later.clear();
-            }
-
-            for (const auto& handle : _remove_later) {
-                _list.erase(
-                    std::remove_if(
-                        _list.begin(),
-                        _list.end(),
-                        [&](auto& pair) { return pair.first == handle; }),
-                    _list.end());
-            }
-            _mutex.unlock();
-        }
+        _size.store(_list.size() + _cond_cb_list.size(), std::memory_order_release);
     }
 
-    void process_subscriptions()
+    bool on_io_thread() const { return _io_context.get_executor().running_in_this_thread(); }
+
+    // Run a list read/iteration on the io thread: inline when already there, otherwise posted
+    // and waited for. Safe to run inline because reads don't mutate the list, and safe to
+    // capture by reference because we block until the posted access has run (which also keeps
+    // the arguments, e.g. a borrowed buffer, alive for the duration).
+    //
+    // Waiting relies on the io_context staying alive and running: it is only stopped in
+    // ~MavsdkImpl, after which the stopped() fast path applies. The stopped() check is not
+    // synchronized with that teardown, so using or destroying a plugin concurrently with the
+    // Mavsdk instance itself is not supported -- the posted access could then never run and
+    // this wait would hang. The same applies to drain() below.
+    template<typename Func> void read_on_io(Func&& func)
     {
-        std::lock_guard<std::mutex> subscribe_later_lock(_subscribe_later_mutex);
-
-        if (_mutex.try_lock()) {
-            for (const auto& sub : _subscribe_later) {
-                _list.emplace_back(sub);
-            }
-            _subscribe_later.clear();
-
-            // add conditional callbacks
-            for (const auto& sub : _subscribe_later_cond) {
-                _cond_cb_list.emplace_back(sub);
-            }
-            _subscribe_later_cond.clear();
-            _mutex.unlock();
+        if (_io_context.stopped() || on_io_thread()) {
+            func();
+            return;
         }
+        std::promise<void> done;
+        asio::post(_io_context, [&]() {
+            func();
+            done.set_value();
+        });
+        done.get_future().wait();
     }
 
-    void try_clear()
+    // Post a list mutation onto the io thread, without waiting (see the class comment). When
+    // the io_context is already stopped (teardown) the io thread is gone, so we apply the
+    // mutation directly.
+    template<typename Func> void post_mutation(Func&& func)
     {
-        std::unique_lock<std::mutex> lock(_mutex, std::try_to_lock);
-        if (lock.owns_lock()) {
-            _list.clear();
-        } else {
-            std::lock_guard<std::mutex> remove_later_lock(_remove_later_mutex);
-            _remove_all_later = true;
+        if (_io_context.stopped()) {
+            func();
+            return;
         }
+        asio::post(_io_context, std::forward<Func>(func));
     }
 
-    mutable std::mutex _mutex{};
+    // Wait until the io_context has run every mutation posted so far. Used by the destructor:
+    // the posted mutations capture `this`, so they must not outlive the object. If the
+    // io_context is stopped the io thread is gone and nothing will run; if we are on the io
+    // thread we cannot wait on ourselves (and this would only happen if a callback destroyed
+    // its own list, which we don't support).
+    void drain()
+    {
+        if (_io_context.stopped()) {
+            return;
+        }
+        // Destroying the list from the io thread (i.e. from within a callback) is not
+        // supported: we cannot wait on ourselves, and any still-queued mutations capturing
+        // `this` would then run after the list is gone.
+        assert(!on_io_thread());
+        if (on_io_thread()) {
+            return;
+        }
+        std::promise<void> done;
+        asio::post(_io_context, [&done]() { done.set_value(); });
+        done.get_future().wait();
+    }
+
+    asio::io_context& _io_context;
     HandleFactory<Args...> _handle_factory;
     std::vector<std::pair<Handle<Args...>, std::function<void(Args...)>>> _list{};
     std::vector<std::function<bool(Args...)>> _cond_cb_list{};
-
-    mutable std::mutex _remove_later_mutex{};
-    std::vector<Handle<Args...>> _remove_later{};
-
-    std::mutex _subscribe_later_mutex;
-    std::vector<std::pair<Handle<Args...>, std::function<void(Args...)>>> _subscribe_later;
-    std::vector<std::function<bool(Args...)>> _subscribe_later_cond;
-
-    bool _remove_all_later{false};
+    std::atomic<std::size_t> _size{0};
 };
 
 } // namespace mavsdk

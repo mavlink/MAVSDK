@@ -64,13 +64,11 @@ Transponder::AdsbVehicle TransponderImpl::transponder() const
 Transponder::TransponderHandle
 TransponderImpl::subscribe_transponder(const Transponder::TransponderCallback& callback)
 {
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     return _transponder_subscriptions.subscribe(callback);
 }
 
 void TransponderImpl::unsubscribe_transponder(Transponder::TransponderHandle handle)
 {
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
     _transponder_subscriptions.unsubscribe(handle);
 }
 

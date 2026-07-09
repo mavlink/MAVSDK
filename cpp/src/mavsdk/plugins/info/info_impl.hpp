@@ -74,7 +74,7 @@ private:
     SteadyTimePoint _last_time_attitude_arrived{};
     uint32_t _last_time_boot_ms{0};
 
-    CallbackList<Info::FlightInfo> _flight_info_subscriptions{};
+    CallbackList<Info::FlightInfo> _flight_info_subscriptions{_system_impl->io_context()};
 
     static const std::string vendor_id_str(uint16_t vendor_id);
     static const std::string product_id_str(uint16_t product_id);

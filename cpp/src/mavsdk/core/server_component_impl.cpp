@@ -487,4 +487,9 @@ asio::io_context& ServerComponentImpl::OurSender::io_context()
     return _server_component_impl._mavsdk_impl.io_context();
 }
 
+asio::io_context& ServerComponentImpl::io_context()
+{
+    return _mavsdk_impl.io_context();
+}
+
 } // namespace mavsdk

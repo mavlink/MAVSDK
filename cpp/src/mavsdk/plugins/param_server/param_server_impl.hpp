@@ -47,9 +47,12 @@ public:
     result_from_mavlink_parameter_server_result(MavlinkParameterServer::Result result);
 
 private:
-    CallbackList<ParamServer::IntParam> _changed_param_int_callbacks{};
-    CallbackList<ParamServer::FloatParam> _changed_param_float_callbacks{};
-    CallbackList<ParamServer::CustomParam> _changed_param_custom_callbacks{};
+    CallbackList<ParamServer::IntParam> _changed_param_int_callbacks{
+        _server_component_impl->io_context()};
+    CallbackList<ParamServer::FloatParam> _changed_param_float_callbacks{
+        _server_component_impl->io_context()};
+    CallbackList<ParamServer::CustomParam> _changed_param_custom_callbacks{
+        _server_component_impl->io_context()};
 };
 
 } // namespace mavsdk

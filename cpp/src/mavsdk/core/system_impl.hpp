@@ -382,17 +382,11 @@ private:
         ParamValue value,
         const GetParamIntCallback& callback);
 
-    CallbackList<ComponentType> _component_discovered_callbacks{};
-    CallbackList<ComponentType, uint8_t> _component_discovered_id_callbacks{};
-
     MavlinkAddress _target_address{};
 
     AutopilotTime _autopilot_time{};
 
-    MavlinkMessageHandler _mavlink_message_handler{};
-
-    // Libmav message handling using CallbackList for thread safety
-    CallbackList<Mavsdk::MavlinkMessage> _libmav_message_callbacks{};
+    MavlinkMessageHandler _mavlink_message_handler;
 
     bool _message_debugging = false;
 
@@ -411,12 +405,18 @@ private:
 
     MavsdkImpl& _mavsdk_impl;
 
+    // Declared after _mavsdk_impl so the default member initializers can use its io_context.
+    CallbackList<ComponentType> _component_discovered_callbacks{io_context()};
+    CallbackList<ComponentType, uint8_t> _component_discovered_id_callbacks{io_context()};
+    // Libmav message handling using CallbackList for thread safety
+    CallbackList<Mavsdk::MavlinkMessage> _libmav_message_callbacks{io_context()};
+
     asio::steady_timer _system_work_timer;
     SteadyTimePoint _last_ping_time{};
     std::atomic<bool> _should_exit{false};
 
     std::atomic<bool> _connected{false};
-    CallbackList<bool> _is_connected_callbacks{};
+    CallbackList<bool> _is_connected_callbacks{io_context()};
     TimeoutHandler::Cookie _heartbeat_timeout_cookie{};
 
     std::atomic<bool> _autopilot_version_pending{false};

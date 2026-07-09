@@ -7,12 +7,11 @@
 namespace mavsdk {
 
 template<typename... Args>
-CallbackList<Args...>::CallbackList() :
-    _impl(std::make_unique<CallbackListImpl<Args...>>())
+CallbackList<Args...>::CallbackList(asio::io_context& io_context) :
+    _impl(std::make_unique<CallbackListImpl<Args...>>(io_context))
 {}
 
-template<typename... Args>
-CallbackList<Args...>::~CallbackList() = default;
+template<typename... Args> CallbackList<Args...>::~CallbackList() = default;
 
 template<typename... Args>
 Handle<Args...> CallbackList<Args...>::subscribe(const std::function<void(Args...)>& callback)
@@ -46,7 +45,9 @@ template<typename... Args> void CallbackList<Args...>::clear()
     _impl->clear();
 }
 
-template<typename... Args> void CallbackList<Args...>::queue(Args... args, const std::function<void(const std::function<void()>&)>& queue_func)
+template<typename... Args>
+void CallbackList<Args...>::queue(
+    Args... args, const std::function<void(const std::function<void()>&)>& queue_func)
 {
     _impl->queue(args..., queue_func);
 }

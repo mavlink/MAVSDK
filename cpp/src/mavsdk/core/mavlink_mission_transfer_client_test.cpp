@@ -61,33 +61,34 @@ protected:
 
     void TearDown() override
     {
-        // Drain any pending io_context posts (e.g. enqueue lambdas holding shared_ptr<WorkItem>)
-        // so that WorkItem destructors run while message_handler and timeout_handler are still
-        // alive. Without this, io_context (declared first, destroyed last) would destroy those
-        // lambdas after message_handler is already gone, causing heap-use-after-free in
-        // unregister_all_blocking.
-        //
-        // io_context::poll() calls stop() internally when outstanding_work_ == 0, setting
-        // stopped_=true. A do_work() call on an idle queue will trigger this. restart() clears
-        // stopped_ so the subsequent poll() loop can actually execute any handlers still queued
-        // (e.g. the enqueue lambda that holds the last shared_ptr<WorkItem> reference).
+        // Drain any pending posts (handler registrations/removals, WorkItem destructors)
+        // on this thread while message_handler is still alive.
         io_context.restart();
         while (io_context.poll()) {
         }
     }
 
-    // Flush any io_context posts (e.g. the enqueue lambda) then drive the state machine.
-    // Tests call this instead of mmt.do_work() directly so that work posted via
-    // asio::post() from user-thread enqueue calls is processed before do_work() runs.
+    // The message handler posts its table mutations onto the io_context, so poll() first to
+    // apply any pending registrations before driving the state machine / delivering a message.
     void do_work()
     {
         io_context.poll();
         mmt.do_work();
     }
 
+    void process_message(const mavlink_message_t& message)
+    {
+        io_context.poll();
+        message_handler.process_message(message);
+    }
+
+    void run_timeouts() { timeout_handler.run_once(); }
+
+    bool is_idle() { return mmt.is_idle(); }
+
     asio::io_context io_context;
     MockSender mock_sender;
-    MavlinkMessageHandler message_handler;
+    MavlinkMessageHandler message_handler{io_context};
     FakeTime time;
     TimeoutHandler timeout_handler;
     MavlinkMissionTransferClient mmt;
@@ -147,7 +148,7 @@ TEST_F(MavlinkMissionTransferClientTest, UploadMissionDoesComplainAboutNoItems)
     EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
 
     do_work();
-    EXPECT_TRUE(mmt.is_idle());
+    EXPECT_TRUE(is_idle());
 }
 
 TEST_F(MavlinkMissionTransferClientTest, UploadMissionDoesComplainAboutWrongSequence)
@@ -170,7 +171,7 @@ TEST_F(MavlinkMissionTransferClientTest, UploadMissionDoesComplainAboutWrongSequ
     EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
 
     do_work();
-    EXPECT_TRUE(mmt.is_idle());
+    EXPECT_TRUE(is_idle());
 }
 
 TEST_F(
@@ -195,7 +196,7 @@ TEST_F(
     EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
 
     do_work();
-    EXPECT_TRUE(mmt.is_idle());
+    EXPECT_TRUE(is_idle());
 }
 
 TEST_F(
@@ -220,7 +221,7 @@ TEST_F(
     EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
 
     do_work();
-    EXPECT_TRUE(mmt.is_idle());
+    EXPECT_TRUE(is_idle());
 }
 
 TEST_F(MavlinkMissionTransferClientTest, UploadMissionDoesComplainAboutNoCurrent)
@@ -246,7 +247,7 @@ TEST_F(MavlinkMissionTransferClientTest, UploadMissionDoesComplainAboutNoCurrent
     EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
 
     do_work();
-    EXPECT_TRUE(mmt.is_idle());
+    EXPECT_TRUE(is_idle());
 }
 
 TEST_F(MavlinkMissionTransferClientTest, UploadMissionDoesComplainAboutTwoCurrents)
@@ -272,7 +273,7 @@ TEST_F(MavlinkMissionTransferClientTest, UploadMissionDoesComplainAboutTwoCurren
     EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
 
     do_work();
-    EXPECT_TRUE(mmt.is_idle());
+    EXPECT_TRUE(is_idle());
 }
 
 TEST_F(MavlinkMissionTransferClientTest, UploadMissionDoesNotCrashIfCallbackIsNull)
@@ -296,7 +297,7 @@ TEST_F(MavlinkMissionTransferClientTest, UploadMissionDoesNotCrashIfCallbackIsNu
     do_work();
 
     do_work();
-    EXPECT_TRUE(mmt.is_idle());
+    EXPECT_TRUE(is_idle());
 }
 
 TEST_F(MavlinkMissionTransferClientTest, UploadMissionReturnsConnectionErrorWhenSendMessageFails)
@@ -322,10 +323,10 @@ TEST_F(MavlinkMissionTransferClientTest, UploadMissionReturnsConnectionErrorWhen
 
     // We want to be sure a timeout is not still triggered later.
     time.sleep_for(std::chrono::milliseconds(static_cast<int>(timeout_s * 1.1 * 1000.)));
-    timeout_handler.run_once();
+    run_timeouts();
 
     do_work();
-    EXPECT_TRUE(mmt.is_idle());
+    EXPECT_TRUE(is_idle());
 }
 
 static bool
@@ -395,7 +396,7 @@ TEST_F(MavlinkMissionTransferClientTest, UploadMissionResendsCount)
     do_work();
 
     time.sleep_for(std::chrono::milliseconds(static_cast<int>(timeout_s * 1.1 * 1000.)));
-    timeout_handler.run_once();
+    run_timeouts();
 }
 
 TEST_F(MavlinkMissionTransferClientTest, UploadMissionTimeoutAfterSendCount)
@@ -431,7 +432,7 @@ TEST_F(MavlinkMissionTransferClientTest, UploadMissionTimeoutAfterSendCount)
     // After the specified retries we should give up with a timeout.
     for (unsigned i = 0; i < MavlinkMissionTransferClient::retries; ++i) {
         time.sleep_for(std::chrono::milliseconds(static_cast<int>(timeout_s * 1.1 * 1000.)));
-        timeout_handler.run_once();
+        run_timeouts();
     }
 
     EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
@@ -520,7 +521,7 @@ TEST_F(MavlinkMissionTransferClientTest, UploadMissionSendsMissionItems)
             return is_the_same_mission_item_int(items[0], fun(own_address, channel));
         })));
 
-    message_handler.process_message(make_mission_request_int(MAV_MISSION_TYPE_MISSION, 0));
+    process_message(make_mission_request_int(MAV_MISSION_TYPE_MISSION, 0));
 
     EXPECT_CALL(
         mock_sender,
@@ -529,20 +530,19 @@ TEST_F(MavlinkMissionTransferClientTest, UploadMissionSendsMissionItems)
             return is_the_same_mission_item_int(items[1], fun(own_address, channel));
         })));
 
-    message_handler.process_message(make_mission_request_int(MAV_MISSION_TYPE_MISSION, 1));
+    process_message(make_mission_request_int(MAV_MISSION_TYPE_MISSION, 1));
 
-    message_handler.process_message(
-        make_mission_ack(MAV_MISSION_TYPE_MISSION, MAV_MISSION_ACCEPTED));
+    process_message(make_mission_ack(MAV_MISSION_TYPE_MISSION, MAV_MISSION_ACCEPTED));
 
     // We are finished and should have received the successful result.
     EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
 
     // We do not expect a timeout later though.
     time.sleep_for(std::chrono::milliseconds(static_cast<int>(timeout_s * 1.1 * 1000.)));
-    timeout_handler.run_once();
+    run_timeouts();
 
     do_work();
-    EXPECT_TRUE(mmt.is_idle());
+    EXPECT_TRUE(is_idle());
 }
 
 TEST_F(MavlinkMissionTransferClientTest, UploadMissionResendsMissionItems)
@@ -571,7 +571,7 @@ TEST_F(MavlinkMissionTransferClientTest, UploadMissionResendsMissionItems)
             return is_the_same_mission_item_int(items[0], fun(own_address, channel));
         })));
 
-    message_handler.process_message(make_mission_request_int(MAV_MISSION_TYPE_MISSION, 0));
+    process_message(make_mission_request_int(MAV_MISSION_TYPE_MISSION, 0));
 
     EXPECT_CALL(
         mock_sender,
@@ -581,7 +581,7 @@ TEST_F(MavlinkMissionTransferClientTest, UploadMissionResendsMissionItems)
         })));
 
     // Request 0 again in case it had not arrived.
-    message_handler.process_message(make_mission_request_int(MAV_MISSION_TYPE_MISSION, 0));
+    process_message(make_mission_request_int(MAV_MISSION_TYPE_MISSION, 0));
 
     EXPECT_CALL(
         mock_sender,
@@ -591,16 +591,15 @@ TEST_F(MavlinkMissionTransferClientTest, UploadMissionResendsMissionItems)
         })));
 
     // Request 1 finally.
-    message_handler.process_message(make_mission_request_int(MAV_MISSION_TYPE_MISSION, 1));
+    process_message(make_mission_request_int(MAV_MISSION_TYPE_MISSION, 1));
 
-    message_handler.process_message(
-        make_mission_ack(MAV_MISSION_TYPE_MISSION, MAV_MISSION_ACCEPTED));
+    process_message(make_mission_ack(MAV_MISSION_TYPE_MISSION, MAV_MISSION_ACCEPTED));
 
     // We are finished and should have received the successful result.
     EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
 
     do_work();
-    EXPECT_TRUE(mmt.is_idle());
+    EXPECT_TRUE(is_idle());
 }
 
 TEST_F(MavlinkMissionTransferClientTest, UploadMissionResendsMissionItemsButGivesUpAfterSomeRetries)
@@ -631,18 +630,18 @@ TEST_F(MavlinkMissionTransferClientTest, UploadMissionResendsMissionItemsButGive
         .Times(MavlinkMissionTransferClient::retries);
 
     for (unsigned i = 0; i < MavlinkMissionTransferClient::retries; ++i) {
-        message_handler.process_message(make_mission_request_int(MAV_MISSION_TYPE_MISSION, 0));
+        process_message(make_mission_request_int(MAV_MISSION_TYPE_MISSION, 0));
     }
 
     EXPECT_EQ(fut.wait_for(std::chrono::seconds(0)), std::future_status::timeout);
 
-    message_handler.process_message(make_mission_request_int(MAV_MISSION_TYPE_MISSION, 0));
+    process_message(make_mission_request_int(MAV_MISSION_TYPE_MISSION, 0));
 
     // We are finished and should have received the successful result.
     EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
 
     do_work();
-    EXPECT_TRUE(mmt.is_idle());
+    EXPECT_TRUE(is_idle());
 }
 
 TEST_F(MavlinkMissionTransferClientTest, UploadMissionAckArrivesTooEarly)
@@ -671,16 +670,15 @@ TEST_F(MavlinkMissionTransferClientTest, UploadMissionAckArrivesTooEarly)
             return is_the_same_mission_item_int(items[0], fun(own_address, channel));
         })));
 
-    message_handler.process_message(make_mission_request_int(MAV_MISSION_TYPE_MISSION, 0));
+    process_message(make_mission_request_int(MAV_MISSION_TYPE_MISSION, 0));
 
     // Don't request item 1 but already send ack.
-    message_handler.process_message(
-        make_mission_ack(MAV_MISSION_TYPE_MISSION, MAV_MISSION_ACCEPTED));
+    process_message(make_mission_ack(MAV_MISSION_TYPE_MISSION, MAV_MISSION_ACCEPTED));
 
     EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
 
     do_work();
-    EXPECT_TRUE(mmt.is_idle());
+    EXPECT_TRUE(is_idle());
 }
 
 class MavlinkMissionTransferClientNack
@@ -718,15 +716,15 @@ TEST_P(MavlinkMissionTransferClientNack, UploadMissionNackAreHandled)
             return is_the_same_mission_item_int(items[0], fun(own_address, channel));
         })));
 
-    message_handler.process_message(make_mission_request_int(MAV_MISSION_TYPE_MISSION, 0));
+    process_message(make_mission_request_int(MAV_MISSION_TYPE_MISSION, 0));
 
     // Send nack now.
-    message_handler.process_message(make_mission_ack(MAV_MISSION_TYPE_MISSION, mavlink_nack));
+    process_message(make_mission_ack(MAV_MISSION_TYPE_MISSION, mavlink_nack));
 
     EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
 
     do_work();
-    EXPECT_TRUE(mmt.is_idle());
+    EXPECT_TRUE(is_idle());
 }
 
 INSTANTIATE_TEST_SUITE_P(
@@ -776,11 +774,11 @@ TEST_F(MavlinkMissionTransferClientTest, UploadMissionTimeoutNotTriggeredDuringT
             return is_the_same_mission_item_int(items[0], fun(own_address, channel));
         })));
 
-    message_handler.process_message(make_mission_request_int(MAV_MISSION_TYPE_MISSION, 0));
+    process_message(make_mission_request_int(MAV_MISSION_TYPE_MISSION, 0));
 
     // We almost use up the max timeout in each cycle.
     time.sleep_for(std::chrono::milliseconds(static_cast<int>(timeout_s * 0.8 * 1000.)));
-    timeout_handler.run_once();
+    run_timeouts();
 
     EXPECT_CALL(
         mock_sender,
@@ -789,10 +787,10 @@ TEST_F(MavlinkMissionTransferClientTest, UploadMissionTimeoutNotTriggeredDuringT
             return is_the_same_mission_item_int(items[1], fun(own_address, channel));
         })));
 
-    message_handler.process_message(make_mission_request_int(MAV_MISSION_TYPE_MISSION, 1));
+    process_message(make_mission_request_int(MAV_MISSION_TYPE_MISSION, 1));
 
     time.sleep_for(std::chrono::milliseconds(static_cast<int>(timeout_s * 0.8 * 1000.)));
-    timeout_handler.run_once();
+    run_timeouts();
 
     EXPECT_CALL(
         mock_sender,
@@ -801,19 +799,18 @@ TEST_F(MavlinkMissionTransferClientTest, UploadMissionTimeoutNotTriggeredDuringT
             return is_the_same_mission_item_int(items[2], fun(own_address, channel));
         })));
 
-    message_handler.process_message(make_mission_request_int(MAV_MISSION_TYPE_MISSION, 2));
+    process_message(make_mission_request_int(MAV_MISSION_TYPE_MISSION, 2));
 
     time.sleep_for(std::chrono::milliseconds(static_cast<int>(timeout_s * 0.8 * 1000.)));
-    timeout_handler.run_once();
+    run_timeouts();
 
-    message_handler.process_message(
-        make_mission_ack(MAV_MISSION_TYPE_MISSION, MAV_MISSION_ACCEPTED));
+    process_message(make_mission_ack(MAV_MISSION_TYPE_MISSION, MAV_MISSION_ACCEPTED));
 
     // We are finished and should have received the successful result.
     EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
 
     do_work();
-    EXPECT_TRUE(mmt.is_idle());
+    EXPECT_TRUE(is_idle());
 }
 
 TEST_F(MavlinkMissionTransferClientTest, UploadMissionTimeoutAfterSendMissionItem)
@@ -842,42 +839,40 @@ TEST_F(MavlinkMissionTransferClientTest, UploadMissionTimeoutAfterSendMissionIte
             return is_the_same_mission_item_int(items[0], fun(own_address, channel));
         })));
 
-    message_handler.process_message(make_mission_request_int(MAV_MISSION_TYPE_MISSION, 0));
+    process_message(make_mission_request_int(MAV_MISSION_TYPE_MISSION, 0));
 
     // Make sure single timeout does not trigger it yet.
     time.sleep_for(std::chrono::milliseconds(static_cast<int>(timeout_s * 1000. + 250)));
-    timeout_handler.run_once();
+    run_timeouts();
 
     EXPECT_EQ(fut.wait_for(std::chrono::milliseconds(50)), std::future_status::timeout);
 
     // But multiple do.
     for (unsigned i = 0; i < (MavlinkMissionTransferClient::retries - 1); ++i) {
         time.sleep_for(std::chrono::milliseconds(static_cast<int>(timeout_s * 1000.)));
-        timeout_handler.run_once();
+        run_timeouts();
     }
 
     EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
 
     // Ignore later (wrong) ack.
-    message_handler.process_message(
-        make_mission_ack(MAV_MISSION_TYPE_MISSION, MAV_MISSION_ACCEPTED));
+    process_message(make_mission_ack(MAV_MISSION_TYPE_MISSION, MAV_MISSION_ACCEPTED));
 
     do_work();
-    EXPECT_TRUE(mmt.is_idle());
+    EXPECT_TRUE(is_idle());
 }
 
 TEST_F(MavlinkMissionTransferClientTest, UploadMissionDoesNotCrashOnRandomMessages)
 {
-    message_handler.process_message(make_mission_request_int(MAV_MISSION_TYPE_MISSION, 0));
+    process_message(make_mission_request_int(MAV_MISSION_TYPE_MISSION, 0));
 
-    message_handler.process_message(
-        make_mission_ack(MAV_MISSION_TYPE_MISSION, MAV_MISSION_ACCEPTED));
+    process_message(make_mission_ack(MAV_MISSION_TYPE_MISSION, MAV_MISSION_ACCEPTED));
 
     time.sleep_for(std::chrono::milliseconds(static_cast<int>(timeout_s * 1.1 * 1000.)));
-    timeout_handler.run_once();
+    run_timeouts();
 
     do_work();
-    EXPECT_TRUE(mmt.is_idle());
+    EXPECT_TRUE(is_idle());
 }
 
 bool is_correct_mission_ack(uint8_t type, uint8_t result, const mavlink_message_t& message)
@@ -914,7 +909,7 @@ TEST_F(MavlinkMissionTransferClientTest, UploadMissionCanBeCancelled)
         });
     do_work();
 
-    message_handler.process_message(make_mission_request_int(MAV_MISSION_TYPE_MISSION, 0));
+    process_message(make_mission_request_int(MAV_MISSION_TYPE_MISSION, 0));
 
     EXPECT_CALL(
         mock_sender,
@@ -937,10 +932,10 @@ TEST_F(MavlinkMissionTransferClientTest, UploadMissionCanBeCancelled)
 
     // We do not expect a timeout later though.
     time.sleep_for(std::chrono::milliseconds(static_cast<int>(timeout_s * 1.1 * 1000.)));
-    timeout_handler.run_once();
+    run_timeouts();
 
     do_work();
-    EXPECT_TRUE(mmt.is_idle());
+    EXPECT_TRUE(is_idle());
 }
 
 mavlink_message_t make_mission_request(uint8_t type, int sequence)
@@ -985,7 +980,7 @@ TEST_F(MavlinkMissionTransferClientTest, UploadMissionNacksNonIntCase)
         .Times(1);
 
     // First the non-int wrong case comes in.
-    message_handler.process_message(make_mission_request(MAV_MISSION_TYPE_FENCE, 0));
+    process_message(make_mission_request(MAV_MISSION_TYPE_FENCE, 0));
 
     EXPECT_CALL(
         mock_sender,
@@ -994,18 +989,18 @@ TEST_F(MavlinkMissionTransferClientTest, UploadMissionNacksNonIntCase)
             return is_the_same_mission_item_int(items[0], fun(own_address, channel));
         })));
 
-    message_handler.process_message(make_mission_request_int(MAV_MISSION_TYPE_FENCE, 0));
-    message_handler.process_message(make_mission_ack(MAV_MISSION_TYPE_FENCE, MAV_MISSION_ACCEPTED));
+    process_message(make_mission_request_int(MAV_MISSION_TYPE_FENCE, 0));
+    process_message(make_mission_ack(MAV_MISSION_TYPE_FENCE, MAV_MISSION_ACCEPTED));
 
     // We are finished and should have received the successful result.
     EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
 
     // We do not expect a timeout later though.
     time.sleep_for(std::chrono::milliseconds(static_cast<int>(timeout_s * 1.1 * 1000.)));
-    timeout_handler.run_once();
+    run_timeouts();
 
     do_work();
-    EXPECT_TRUE(mmt.is_idle());
+    EXPECT_TRUE(is_idle());
 }
 
 TEST_F(MavlinkMissionTransferClientTest, UploadMissionWithProgress)
@@ -1042,10 +1037,9 @@ TEST_F(MavlinkMissionTransferClientTest, UploadMissionWithProgress)
         });
     do_work();
 
-    message_handler.process_message(make_mission_request_int(MAV_MISSION_TYPE_MISSION, 0));
-    message_handler.process_message(make_mission_request_int(MAV_MISSION_TYPE_MISSION, 1));
-    message_handler.process_message(
-        make_mission_ack(MAV_MISSION_TYPE_MISSION, MAV_MISSION_ACCEPTED));
+    process_message(make_mission_request_int(MAV_MISSION_TYPE_MISSION, 0));
+    process_message(make_mission_request_int(MAV_MISSION_TYPE_MISSION, 1));
+    process_message(make_mission_ack(MAV_MISSION_TYPE_MISSION, MAV_MISSION_ACCEPTED));
 
     // We are finished and should have received the successful result.
     EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
@@ -1056,10 +1050,10 @@ TEST_F(MavlinkMissionTransferClientTest, UploadMissionWithProgress)
 
     // We do not expect a timeout later though.
     time.sleep_for(std::chrono::milliseconds(static_cast<int>(timeout_s * 1.1 * 1000.)));
-    timeout_handler.run_once();
+    run_timeouts();
 
     do_work();
-    EXPECT_TRUE(mmt.is_idle());
+    EXPECT_TRUE(is_idle());
 }
 
 TEST_F(MavlinkMissionTransferClientTest, DownloadMissionSendsRequestList)
@@ -1134,7 +1128,7 @@ TEST_F(MavlinkMissionTransferClientTest, DownloadMissionResendsRequestList)
     do_work();
 
     time.sleep_for(std::chrono::milliseconds(static_cast<int>(timeout_s * 1.1 * 1000.)));
-    timeout_handler.run_once();
+    run_timeouts();
 }
 
 TEST_F(
@@ -1168,13 +1162,13 @@ TEST_F(
 
     for (unsigned i = 0; i < MavlinkMissionTransferClient::retries; ++i) {
         time.sleep_for(std::chrono::milliseconds(static_cast<int>(timeout_s * 1.1 * 1000.)));
-        timeout_handler.run_once();
+        run_timeouts();
     }
 
     EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
 
     do_work();
-    EXPECT_TRUE(mmt.is_idle());
+    EXPECT_TRUE(is_idle());
 }
 
 bool is_correct_mission_request_int(
@@ -1219,7 +1213,7 @@ TEST_F(MavlinkMissionTransferClientTest, DownloadMissionSendsMissionRequests)
     items.push_back(make_item(MAV_MISSION_TYPE_MISSION, 0));
     items.push_back(make_item(MAV_MISSION_TYPE_MISSION, 1));
 
-    message_handler.process_message(make_mission_count(items.size()));
+    process_message(make_mission_count(items.size()));
 }
 
 TEST_F(MavlinkMissionTransferClientTest, DownloadMissionResendsMissionRequestsAndTimesOutEventually)
@@ -1251,20 +1245,20 @@ TEST_F(MavlinkMissionTransferClientTest, DownloadMissionResendsMissionRequestsAn
     items.push_back(make_item(MAV_MISSION_TYPE_MISSION, 0));
     items.push_back(make_item(MAV_MISSION_TYPE_MISSION, 1));
 
-    message_handler.process_message(make_mission_count(items.size()));
+    process_message(make_mission_count(items.size()));
 
     EXPECT_EQ(fut.wait_for(std::chrono::seconds(0)), std::future_status::timeout);
 
     // After the specified retries we should give up with a timeout.
     for (unsigned i = 0; i < MavlinkMissionTransferClient::retries; ++i) {
         time.sleep_for(std::chrono::milliseconds(static_cast<int>(timeout_s * 1.1 * 1000.)));
-        timeout_handler.run_once();
+        run_timeouts();
     }
 
     EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
 
     do_work();
-    EXPECT_TRUE(mmt.is_idle());
+    EXPECT_TRUE(is_idle());
 }
 
 mavlink_message_t make_mission_item(const std::vector<ItemInt>& item_ints, std::size_t index)
@@ -1321,7 +1315,7 @@ TEST_F(MavlinkMissionTransferClientTest, DownloadMissionSendsAllMissionRequestsA
                 MAV_MISSION_TYPE_MISSION, 0, fun(own_address, channel));
         })));
 
-    message_handler.process_message(make_mission_count(real_items.size()));
+    process_message(make_mission_count(real_items.size()));
 
     EXPECT_CALL(
         mock_sender,
@@ -1331,7 +1325,7 @@ TEST_F(MavlinkMissionTransferClientTest, DownloadMissionSendsAllMissionRequestsA
                 MAV_MISSION_TYPE_MISSION, 1, fun(own_address, channel));
         })));
 
-    message_handler.process_message(make_mission_item(real_items, 0));
+    process_message(make_mission_item(real_items, 0));
 
     EXPECT_CALL(
         mock_sender,
@@ -1341,7 +1335,7 @@ TEST_F(MavlinkMissionTransferClientTest, DownloadMissionSendsAllMissionRequestsA
                 MAV_MISSION_TYPE_MISSION, 2, fun(own_address, channel));
         })));
 
-    message_handler.process_message(make_mission_item(real_items, 1));
+    process_message(make_mission_item(real_items, 1));
 
     EXPECT_CALL(
         mock_sender,
@@ -1351,12 +1345,12 @@ TEST_F(MavlinkMissionTransferClientTest, DownloadMissionSendsAllMissionRequestsA
                 MAV_MISSION_TYPE_MISSION, MAV_MISSION_ACCEPTED, fun(own_address, channel));
         })));
 
-    message_handler.process_message(make_mission_item(real_items, 2));
+    process_message(make_mission_item(real_items, 2));
 
     EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
 
     do_work();
-    EXPECT_TRUE(mmt.is_idle());
+    EXPECT_TRUE(is_idle());
 }
 
 TEST_F(MavlinkMissionTransferClientTest, DownloadMissionResendsRequestItemAgainForSecondItem)
@@ -1390,11 +1384,11 @@ TEST_F(MavlinkMissionTransferClientTest, DownloadMissionResendsRequestItemAgainF
         })))
         .Times(MavlinkMissionTransferClient::retries - 1);
 
-    message_handler.process_message(make_mission_count(items.size()));
+    process_message(make_mission_count(items.size()));
 
     for (unsigned i = 0; i < MavlinkMissionTransferClient::retries - 2; ++i) {
         time.sleep_for(std::chrono::milliseconds(static_cast<int>(timeout_s * 1.1 * 1000.)));
-        timeout_handler.run_once();
+        run_timeouts();
     }
 
     // This time we go over the retry limit.
@@ -1407,17 +1401,17 @@ TEST_F(MavlinkMissionTransferClientTest, DownloadMissionResendsRequestItemAgainF
         })))
         .Times(MavlinkMissionTransferClient::retries);
 
-    message_handler.process_message(make_mission_item(items, 0));
+    process_message(make_mission_item(items, 0));
 
     for (unsigned i = 0; i < MavlinkMissionTransferClient::retries; ++i) {
         time.sleep_for(std::chrono::milliseconds(static_cast<int>(timeout_s * 1.1 * 1000.)));
-        timeout_handler.run_once();
+        run_timeouts();
     }
 
     EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
 
     do_work();
-    EXPECT_TRUE(mmt.is_idle());
+    EXPECT_TRUE(is_idle());
 }
 
 TEST_F(MavlinkMissionTransferClientTest, DownloadMissionDoesntHaveDuplicates)
@@ -1449,7 +1443,7 @@ TEST_F(MavlinkMissionTransferClientTest, DownloadMissionDoesntHaveDuplicates)
                 MAV_MISSION_TYPE_MISSION, 0, fun(own_address, channel));
         })));
 
-    message_handler.process_message(make_mission_count(real_items.size()));
+    process_message(make_mission_count(real_items.size()));
 
     EXPECT_CALL(
         mock_sender,
@@ -1459,7 +1453,7 @@ TEST_F(MavlinkMissionTransferClientTest, DownloadMissionDoesntHaveDuplicates)
                 MAV_MISSION_TYPE_MISSION, 1, fun(own_address, channel));
         })));
 
-    message_handler.process_message(make_mission_item(real_items, 0));
+    process_message(make_mission_item(real_items, 0));
 
     EXPECT_CALL(
         mock_sender,
@@ -1470,7 +1464,7 @@ TEST_F(MavlinkMissionTransferClientTest, DownloadMissionDoesntHaveDuplicates)
         })));
 
     // Send a message 3 times, it should just get ignored.
-    message_handler.process_message(make_mission_item(real_items, 1));
+    process_message(make_mission_item(real_items, 1));
 
     EXPECT_CALL(
         mock_sender,
@@ -1480,15 +1474,15 @@ TEST_F(MavlinkMissionTransferClientTest, DownloadMissionDoesntHaveDuplicates)
                 MAV_MISSION_TYPE_MISSION, MAV_MISSION_ACCEPTED, fun(own_address, channel));
         })));
 
-    message_handler.process_message(make_mission_item(real_items, 1));
-    message_handler.process_message(make_mission_item(real_items, 1));
+    process_message(make_mission_item(real_items, 1));
+    process_message(make_mission_item(real_items, 1));
 
-    message_handler.process_message(make_mission_item(real_items, 2));
+    process_message(make_mission_item(real_items, 2));
 
     EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
 
     do_work();
-    EXPECT_TRUE(mmt.is_idle());
+    EXPECT_TRUE(is_idle());
 }
 
 TEST_F(MavlinkMissionTransferClientTest, DownloadMissionEmptyList)
@@ -1515,16 +1509,16 @@ TEST_F(MavlinkMissionTransferClientTest, DownloadMissionEmptyList)
                 MAV_MISSION_TYPE_MISSION, MAV_MISSION_ACCEPTED, fun(own_address, channel));
         })));
 
-    message_handler.process_message(make_mission_count(0));
+    process_message(make_mission_count(0));
 
     EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
 
     // We want to be sure a timeout is not still triggered later.
     time.sleep_for(std::chrono::milliseconds(static_cast<int>(timeout_s * 1.1 * 1000.)));
-    timeout_handler.run_once();
+    run_timeouts();
 
     do_work();
-    EXPECT_TRUE(mmt.is_idle());
+    EXPECT_TRUE(is_idle());
 }
 
 TEST_F(MavlinkMissionTransferClientTest, DownloadMissionTimeoutNotTriggeredDuringTransfer)
@@ -1551,32 +1545,32 @@ TEST_F(MavlinkMissionTransferClientTest, DownloadMissionTimeoutNotTriggeredDurin
     // We almost use up the max timeout in each cycle.
     time.sleep_for(std::chrono::milliseconds(
         static_cast<int>(timeout_s * MavlinkMissionTransferClient::retries * 0.8 * 1000.)));
-    timeout_handler.run_once();
+    run_timeouts();
 
-    message_handler.process_message(make_mission_count(real_items.size()));
-
-    time.sleep_for(std::chrono::milliseconds(
-        static_cast<int>(timeout_s * MavlinkMissionTransferClient::retries * 0.8 * 1000.)));
-    timeout_handler.run_once();
-
-    message_handler.process_message(make_mission_item(real_items, 0));
+    process_message(make_mission_count(real_items.size()));
 
     time.sleep_for(std::chrono::milliseconds(
         static_cast<int>(timeout_s * MavlinkMissionTransferClient::retries * 0.8 * 1000.)));
-    timeout_handler.run_once();
+    run_timeouts();
 
-    message_handler.process_message(make_mission_item(real_items, 1));
+    process_message(make_mission_item(real_items, 0));
 
     time.sleep_for(std::chrono::milliseconds(
         static_cast<int>(timeout_s * MavlinkMissionTransferClient::retries * 0.8 * 1000.)));
-    timeout_handler.run_once();
+    run_timeouts();
 
-    message_handler.process_message(make_mission_item(real_items, 2));
+    process_message(make_mission_item(real_items, 1));
+
+    time.sleep_for(std::chrono::milliseconds(
+        static_cast<int>(timeout_s * MavlinkMissionTransferClient::retries * 0.8 * 1000.)));
+    run_timeouts();
+
+    process_message(make_mission_item(real_items, 2));
 
     EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
 
     do_work();
-    EXPECT_TRUE(mmt.is_idle());
+    EXPECT_TRUE(is_idle());
 }
 
 TEST_F(MavlinkMissionTransferClientTest, DownloadMissionCanBeCancelled)
@@ -1600,8 +1594,8 @@ TEST_F(MavlinkMissionTransferClientTest, DownloadMissionCanBeCancelled)
     items.push_back(make_item(MAV_MISSION_TYPE_MISSION, 1));
     items.push_back(make_item(MAV_MISSION_TYPE_MISSION, 2));
 
-    message_handler.process_message(make_mission_count(items.size()));
-    message_handler.process_message(make_mission_item(items, 0));
+    process_message(make_mission_count(items.size()));
+    process_message(make_mission_item(items, 0));
 
     EXPECT_CALL(
         mock_sender,
@@ -1622,7 +1616,7 @@ TEST_F(MavlinkMissionTransferClientTest, DownloadMissionCanBeCancelled)
     EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
 
     do_work();
-    EXPECT_TRUE(mmt.is_idle());
+    EXPECT_TRUE(is_idle());
 }
 
 TEST_F(MavlinkMissionTransferClientTest, DownloadMissionWithProgress)
@@ -1659,10 +1653,10 @@ TEST_F(MavlinkMissionTransferClientTest, DownloadMissionWithProgress)
         });
     do_work();
 
-    message_handler.process_message(make_mission_count(real_items.size()));
-    message_handler.process_message(make_mission_item(real_items, 0));
-    message_handler.process_message(make_mission_item(real_items, 1));
-    message_handler.process_message(make_mission_item(real_items, 2));
+    process_message(make_mission_count(real_items.size()));
+    process_message(make_mission_item(real_items, 0));
+    process_message(make_mission_item(real_items, 1));
+    process_message(make_mission_item(real_items, 2));
 
     EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
 
@@ -1671,7 +1665,7 @@ TEST_F(MavlinkMissionTransferClientTest, DownloadMissionWithProgress)
     EXPECT_LE(num_progress_received, 10);
 
     do_work();
-    EXPECT_TRUE(mmt.is_idle());
+    EXPECT_TRUE(is_idle());
 }
 
 bool is_correct_mission_clear_all(uint8_t type, const mavlink_message_t& message)
@@ -1710,13 +1704,12 @@ TEST_F(MavlinkMissionTransferClientTest, ClearMissionSendsClear)
         });
     do_work();
 
-    message_handler.process_message(
-        make_mission_ack(MAV_MISSION_TYPE_MISSION, MAV_RESULT_ACCEPTED));
+    process_message(make_mission_ack(MAV_MISSION_TYPE_MISSION, MAV_RESULT_ACCEPTED));
 
     EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
 
     do_work();
-    EXPECT_TRUE(mmt.is_idle());
+    EXPECT_TRUE(is_idle());
 }
 
 bool is_correct_mission_set_current(uint16_t seq, const mavlink_message_t& message)
@@ -1761,12 +1754,12 @@ TEST_F(MavlinkMissionTransferClientTest, SetCurrentSendsSetCurrent)
     });
     do_work();
 
-    message_handler.process_message(make_mission_current(2));
+    process_message(make_mission_current(2));
 
     EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
 
     do_work();
-    EXPECT_TRUE(mmt.is_idle());
+    EXPECT_TRUE(is_idle());
 }
 
 TEST_F(MavlinkMissionTransferClientTest, SetCurrentWithRetransmissionAndTimeout)
@@ -1791,13 +1784,13 @@ TEST_F(MavlinkMissionTransferClientTest, SetCurrentWithRetransmissionAndTimeout)
 
     for (unsigned i = 0; i < MavlinkMissionTransferClient::retries; ++i) {
         time.sleep_for(std::chrono::milliseconds(static_cast<int>(timeout_s * 1.1 * 1000.)));
-        timeout_handler.run_once();
+        run_timeouts();
     }
 
     EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
 
     do_work();
-    EXPECT_TRUE(mmt.is_idle());
+    EXPECT_TRUE(is_idle());
 }
 
 TEST_F(MavlinkMissionTransferClientTest, SetCurrentWithRetransmissionAndSuccess)
@@ -1822,16 +1815,16 @@ TEST_F(MavlinkMissionTransferClientTest, SetCurrentWithRetransmissionAndSuccess)
 
     for (unsigned i = 0; i < MavlinkMissionTransferClient::retries - 2; ++i) {
         time.sleep_for(std::chrono::milliseconds(static_cast<int>(timeout_s * 1.1 * 1000.)));
-        timeout_handler.run_once();
+        run_timeouts();
     }
 
-    message_handler.process_message(make_mission_current(2));
+    process_message(make_mission_current(2));
     do_work();
 
     EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
 
     do_work();
-    EXPECT_TRUE(mmt.is_idle());
+    EXPECT_TRUE(is_idle());
 }
 
 TEST_F(MavlinkMissionTransferClientTest, SetCurrentWithInvalidInput)
@@ -1850,7 +1843,7 @@ TEST_F(MavlinkMissionTransferClientTest, SetCurrentWithInvalidInput)
     EXPECT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
 
     do_work();
-    EXPECT_TRUE(mmt.is_idle());
+    EXPECT_TRUE(is_idle());
 }
 
 TEST_F(MavlinkMissionTransferClientTest, SetCurrentWithRetransmissionWhenWrong)
@@ -1879,13 +1872,13 @@ TEST_F(MavlinkMissionTransferClientTest, SetCurrentWithRetransmissionWhenWrong)
             [](std::function<mavlink_message_t(MavlinkAddress mavlink_address, uint8_t channel)>
                    fun) { return is_correct_mission_set_current(2, fun(own_address, channel)); })));
 
-    message_handler.process_message(make_mission_current(1));
+    process_message(make_mission_current(1));
     do_work();
 
-    message_handler.process_message(make_mission_current(2));
+    process_message(make_mission_current(2));
 
     do_work();
-    EXPECT_TRUE(mmt.is_idle());
+    EXPECT_TRUE(is_idle());
 }
 
 TEST_F(MavlinkMissionTransferClientTest, IntMessagesNotSupported)
@@ -1909,7 +1902,7 @@ TEST_F(MavlinkMissionTransferClientTest, IntMessagesNotSupported)
     }
 
     do_work();
-    EXPECT_TRUE(mmt.is_idle());
+    EXPECT_TRUE(is_idle());
 
     {
         std::promise<void> prom;
@@ -1930,5 +1923,5 @@ TEST_F(MavlinkMissionTransferClientTest, IntMessagesNotSupported)
     }
 
     do_work();
-    EXPECT_TRUE(mmt.is_idle());
+    EXPECT_TRUE(is_idle());
 }

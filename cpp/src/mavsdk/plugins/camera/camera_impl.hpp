@@ -373,20 +373,23 @@ private:
     std::mutex& _mutex{*_mutex_keep_alive};
     std::shared_ptr<std::atomic<bool>> _alive{std::make_shared<std::atomic<bool>>(true)};
     std::vector<PotentialCamera> _potential_cameras;
-    CallbackList<Camera::CameraList> _camera_list_subscription_callbacks{};
+    CallbackList<Camera::CameraList> _camera_list_subscription_callbacks{
+        _system_impl->io_context()};
     CallbackList<Camera::PossibleSettingOptionsUpdate>
-        _subscribe_possible_setting_options_callbacks{};
-    CallbackList<Camera::CurrentSettingsUpdate> _subscribe_current_settings_callbacks{};
-    CallbackList<Camera::ModeUpdate> _mode_subscription_callbacks{};
-    CallbackList<Camera::CaptureInfo> _capture_info_callbacks{};
-    CallbackList<Camera::VideoStreamUpdate> _video_stream_info_subscription_callbacks{};
+        _subscribe_possible_setting_options_callbacks{_system_impl->io_context()};
+    CallbackList<Camera::CurrentSettingsUpdate> _subscribe_current_settings_callbacks{
+        _system_impl->io_context()};
+    CallbackList<Camera::ModeUpdate> _mode_subscription_callbacks{_system_impl->io_context()};
+    CallbackList<Camera::CaptureInfo> _capture_info_callbacks{_system_impl->io_context()};
+    CallbackList<Camera::VideoStreamUpdate> _video_stream_info_subscription_callbacks{
+        _system_impl->io_context()};
 
     CallEveryHandler::Cookie _check_potential_cameras_call_every_cookie{};
 
     std::optional<FileCache> _file_cache{};
     std::filesystem::path _tmp_download_path{};
 
-    CallbackList<Camera::StorageUpdate> _storage_subscription_callbacks{};
+    CallbackList<Camera::StorageUpdate> _storage_subscription_callbacks{_system_impl->io_context()};
 
     CallEveryHandler::Cookie _request_slower_call_every_cookie{};
     CallEveryHandler::Cookie _request_faster_call_every_cookie{};

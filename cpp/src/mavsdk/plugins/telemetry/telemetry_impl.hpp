@@ -380,40 +380,48 @@ private:
     mutable std::mutex _wind_mutex{};
     Telemetry::Wind _wind{};
 
-    std::mutex _subscription_mutex{};
-    CallbackList<Telemetry::PositionVelocityNed> _position_velocity_ned_subscriptions{};
-    CallbackList<Telemetry::Position> _position_subscriptions{};
-    CallbackList<Telemetry::HomePosition> _home_position_subscriptions{};
-    CallbackList<bool> _in_air_subscriptions{};
-    CallbackList<Telemetry::StatusText> _status_text_subscriptions{};
-    CallbackList<bool> _armed_subscriptions{};
-    CallbackList<Telemetry::Quaternion> _attitude_quaternion_angle_subscriptions{};
-    CallbackList<Telemetry::AngularVelocityBody> _attitude_angular_velocity_body_subscriptions{};
-    CallbackList<Telemetry::GroundTruth> _ground_truth_subscriptions{};
-    CallbackList<Telemetry::FixedwingMetrics> _fixedwing_metrics_subscriptions{};
-    CallbackList<Telemetry::EulerAngle> _attitude_euler_angle_subscriptions{};
-    CallbackList<Telemetry::VelocityNed> _velocity_ned_subscriptions{};
-    CallbackList<Telemetry::Imu> _imu_reading_ned_subscriptions{};
-    CallbackList<Telemetry::Imu> _scaled_imu_subscriptions{};
-    CallbackList<Telemetry::Imu> _raw_imu_subscriptions{};
-    CallbackList<Telemetry::GpsInfo> _gps_info_subscriptions{};
-    CallbackList<Telemetry::RawGps> _raw_gps_subscriptions{};
-    CallbackList<Telemetry::Battery> _battery_subscriptions{};
-    CallbackList<Telemetry::FlightMode> _flight_mode_subscriptions{};
-    CallbackList<Telemetry::Health> _health_subscriptions{};
-    CallbackList<bool> _health_all_ok_subscriptions{};
-    CallbackList<Telemetry::VtolState> _vtol_state_subscriptions{};
-    CallbackList<Telemetry::LandedState> _landed_state_subscriptions{};
-    CallbackList<Telemetry::RcStatus> _rc_status_subscriptions{};
-    CallbackList<uint64_t> _unix_epoch_time_subscriptions{};
-    CallbackList<Telemetry::ActuatorControlTarget> _actuator_control_target_subscriptions{};
-    CallbackList<Telemetry::ActuatorOutputStatus> _actuator_output_status_subscriptions{};
-    CallbackList<Telemetry::Odometry> _odometry_subscriptions{};
-    CallbackList<Telemetry::DistanceSensor> _distance_sensor_subscriptions{};
-    CallbackList<Telemetry::ScaledPressure> _scaled_pressure_subscriptions{};
-    CallbackList<Telemetry::Heading> _heading_subscriptions{};
-    CallbackList<Telemetry::Altitude> _altitude_subscriptions{};
-    CallbackList<Telemetry::Wind> _wind_subscriptions{};
+    CallbackList<Telemetry::PositionVelocityNed> _position_velocity_ned_subscriptions{
+        _system_impl->io_context()};
+    CallbackList<Telemetry::Position> _position_subscriptions{_system_impl->io_context()};
+    CallbackList<Telemetry::HomePosition> _home_position_subscriptions{_system_impl->io_context()};
+    CallbackList<bool> _in_air_subscriptions{_system_impl->io_context()};
+    CallbackList<Telemetry::StatusText> _status_text_subscriptions{_system_impl->io_context()};
+    CallbackList<bool> _armed_subscriptions{_system_impl->io_context()};
+    CallbackList<Telemetry::Quaternion> _attitude_quaternion_angle_subscriptions{
+        _system_impl->io_context()};
+    CallbackList<Telemetry::AngularVelocityBody> _attitude_angular_velocity_body_subscriptions{
+        _system_impl->io_context()};
+    CallbackList<Telemetry::GroundTruth> _ground_truth_subscriptions{_system_impl->io_context()};
+    CallbackList<Telemetry::FixedwingMetrics> _fixedwing_metrics_subscriptions{
+        _system_impl->io_context()};
+    CallbackList<Telemetry::EulerAngle> _attitude_euler_angle_subscriptions{
+        _system_impl->io_context()};
+    CallbackList<Telemetry::VelocityNed> _velocity_ned_subscriptions{_system_impl->io_context()};
+    CallbackList<Telemetry::Imu> _imu_reading_ned_subscriptions{_system_impl->io_context()};
+    CallbackList<Telemetry::Imu> _scaled_imu_subscriptions{_system_impl->io_context()};
+    CallbackList<Telemetry::Imu> _raw_imu_subscriptions{_system_impl->io_context()};
+    CallbackList<Telemetry::GpsInfo> _gps_info_subscriptions{_system_impl->io_context()};
+    CallbackList<Telemetry::RawGps> _raw_gps_subscriptions{_system_impl->io_context()};
+    CallbackList<Telemetry::Battery> _battery_subscriptions{_system_impl->io_context()};
+    CallbackList<Telemetry::FlightMode> _flight_mode_subscriptions{_system_impl->io_context()};
+    CallbackList<Telemetry::Health> _health_subscriptions{_system_impl->io_context()};
+    CallbackList<bool> _health_all_ok_subscriptions{_system_impl->io_context()};
+    CallbackList<Telemetry::VtolState> _vtol_state_subscriptions{_system_impl->io_context()};
+    CallbackList<Telemetry::LandedState> _landed_state_subscriptions{_system_impl->io_context()};
+    CallbackList<Telemetry::RcStatus> _rc_status_subscriptions{_system_impl->io_context()};
+    CallbackList<uint64_t> _unix_epoch_time_subscriptions{_system_impl->io_context()};
+    CallbackList<Telemetry::ActuatorControlTarget> _actuator_control_target_subscriptions{
+        _system_impl->io_context()};
+    CallbackList<Telemetry::ActuatorOutputStatus> _actuator_output_status_subscriptions{
+        _system_impl->io_context()};
+    CallbackList<Telemetry::Odometry> _odometry_subscriptions{_system_impl->io_context()};
+    CallbackList<Telemetry::DistanceSensor> _distance_sensor_subscriptions{
+        _system_impl->io_context()};
+    CallbackList<Telemetry::ScaledPressure> _scaled_pressure_subscriptions{
+        _system_impl->io_context()};
+    CallbackList<Telemetry::Heading> _heading_subscriptions{_system_impl->io_context()};
+    CallbackList<Telemetry::Altitude> _altitude_subscriptions{_system_impl->io_context()};
+    CallbackList<Telemetry::Wind> _wind_subscriptions{_system_impl->io_context()};
     // The velocity (former ground speed) and position are coupled to the same message, therefore,
     // we just use the faster between the two.
     double _velocity_ned_rate_hz{0.0};

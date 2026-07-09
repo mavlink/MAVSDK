@@ -156,7 +156,6 @@ private:
 
     SystemImpl& _system_impl;
 
-    std::mutex _notification_callbacks_mutex{}; ///< Protects access to _notification_callbacks
     CallbackList<MetadataUpdate> _notification_callbacks;
 
     const std::optional<std::string>
