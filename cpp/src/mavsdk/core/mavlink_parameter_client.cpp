@@ -78,7 +78,10 @@ MavlinkParameterClient::~MavlinkParameterClient()
             (_use_extended ? "extended" : "not extended"));
     }
 
-    _message_handler.unregister_all(this);
+    // Blocking, so that no message callback can fire into this object after destruction.
+    // (Today this runs during teardown with the io thread already stopped, in which case
+    // it degrades to a direct erase.)
+    _message_handler.unregister_all_blocking(this);
 }
 
 MavlinkParameterClient::Result

@@ -1,7 +1,9 @@
 #pragma once
 
+#include <atomic>
 #include <cstdint>
 #include <functional>
+#include <thread>
 #include <vector>
 #include <optional>
 #include <asio/io_context.hpp>
@@ -37,11 +39,14 @@ public:
     void unregister_one(uint16_t msg_id, const void* cookie);
     void unregister_all(const void* cookie);
     // Direct, synchronous unregister for owners that live and die ON the io_context thread
-    // (e.g. work-queue items). Must be called on the io thread.
+    // (e.g. work-queue items). Must be called on the io thread, but not from within a
+    // message callback (the removal would invalidate the dispatch in process_message()).
     void unregister_all_on_io_thread(const void* cookie);
-    // Synchronous unregister for owners destroyed OFF the io_context thread (e.g. plugins
-    // on the user thread): posts the removal to the io thread and waits for it, so no
-    // callback for this cookie can fire afterwards. Must NOT be called from the io thread.
+    // Synchronous unregister for owners about to be destroyed: once this returns, no
+    // callback for this cookie can fire anymore. Callable from any thread -- on the io
+    // thread it removes directly, off it it posts the removal and waits for it. The one
+    // exception: it must not be called from within a message callback (see
+    // unregister_all_on_io_thread above); use the posted unregister_all() there instead.
     void unregister_all_blocking(const void* cookie);
     void process_message(const mavlink_message_t& message);
     void update_component_id(uint16_t msg_id, uint8_t cmp_id, const void* cookie);
@@ -59,8 +64,25 @@ private:
     // Must be called on the io_context thread.
     void erase_from_table(std::optional<uint16_t> maybe_msg_id, const void* cookie);
 
+    bool on_io_thread() const;
+
+    // Record -- and in debug builds check -- which thread accesses _table; called by every
+    // code path that touches the table. See the implementation for why this exists in
+    // addition to on_io_thread().
+    void note_table_thread();
+
     asio::io_context& _io_context;
     std::vector<Entry> _table{};
+
+    // The single thread that is allowed to touch _table: the io thread while the
+    // io_context runs, the teardown thread once it is stopped. Only used by
+    // note_table_thread().
+    std::atomic<std::thread::id> _table_thread_id{};
+
+    // True while process_message() dispatches to the callbacks; only touched on the io
+    // thread. Used to assert that no callback removes entries from the table directly
+    // underneath the dispatch loop.
+    bool _processing{false};
 
     bool _debugging{false};
 };

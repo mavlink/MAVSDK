@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <atomic>
+#include <cassert>
 #include <cstddef>
 #include <functional>
 #include <future>
@@ -151,6 +152,12 @@ private:
     // and waited for. Safe to run inline because reads don't mutate the list, and safe to
     // capture by reference because we block until the posted access has run (which also keeps
     // the arguments, e.g. a borrowed buffer, alive for the duration).
+    //
+    // Waiting relies on the io_context staying alive and running: it is only stopped in
+    // ~MavsdkImpl, after which the stopped() fast path applies. The stopped() check is not
+    // synchronized with that teardown, so using or destroying a plugin concurrently with the
+    // Mavsdk instance itself is not supported -- the posted access could then never run and
+    // this wait would hang. The same applies to drain() below.
     template<typename Func> void read_on_io(Func&& func)
     {
         if (_io_context.stopped() || on_io_thread()) {
@@ -184,7 +191,14 @@ private:
     // its own list, which we don't support).
     void drain()
     {
-        if (_io_context.stopped() || on_io_thread()) {
+        if (_io_context.stopped()) {
+            return;
+        }
+        // Destroying the list from the io thread (i.e. from within a callback) is not
+        // supported: we cannot wait on ourselves, and any still-queued mutations capturing
+        // `this` would then run after the list is gone.
+        assert(!on_io_thread());
+        if (on_io_thread()) {
             return;
         }
         std::promise<void> done;

@@ -2,8 +2,11 @@
 
 #include "param_value.hpp"
 #include <algorithm>
+#include <atomic>
+#include <cassert>
 #include <functional>
 #include <string>
+#include <thread>
 #include <variant>
 #include <vector>
 #include <asio/io_context.hpp>
@@ -68,10 +71,12 @@ public:
         if (callback != nullptr) {
             ParamChangedSubscription subscription{name, callback, cookie};
             asio::post(_io_context, [this, subscription = std::move(subscription)]() mutable {
+                note_list_thread();
                 _param_changed_subscriptions.push_back(std::move(subscription));
             });
         } else {
             asio::post(_io_context, [this, name, cookie]() {
+                note_list_thread();
                 _param_changed_subscriptions.erase(
                     std::remove_if(
                         _param_changed_subscriptions.begin(),
@@ -96,13 +101,15 @@ public:
         const std::string& name, const ParamCustomChangedCallback& callback, const void* cookie);
 
     // Remove all subscriptions for the given cookie. Must be called on the io_context
-    // thread (or while it is stopped), e.g. from within a handler already posted there.
+    // thread (or while it is stopped), e.g. from within a handler already posted there --
+    // but not from within a subscription callback (the removal would invalidate the
+    // iteration in find_and_call_subscriptions_value_changed()).
     void unsubscribe_all_params_changed(const void* cookie);
 
-    // Same, but synchronous and callable from any thread: the removal is run on the
-    // io_context thread and this returns only once it has completed, so no callback for
-    // this cookie can fire afterwards. Safe to call from the io_context thread too (the
-    // removal then runs inline rather than waiting on itself).
+    // Same, but synchronous and callable from any thread: once this returns, no callback
+    // for this cookie can fire anymore. On the io thread it removes directly, off it it
+    // posts the removal and waits for it. Like unsubscribe_all_params_changed(), it must
+    // not be called from within a subscription callback.
     void unsubscribe_all_params_changed_blocking(const void* cookie);
 
 protected:
@@ -117,8 +124,35 @@ protected:
         const std::string& param_name, const ParamValue& new_param_value);
 
 private:
+    bool on_io_thread() const { return _io_context.get_executor().running_in_this_thread(); }
+
+    // Record -- and in debug builds check -- which thread accesses the subscription list:
+    // normally always the io thread; once the io_context is stopped (teardown), the
+    // teardown thread accesses it directly instead. We track the accessing thread
+    // ourselves rather than asserting on_io_thread(), because asio's
+    // running_in_this_thread() relies on thread-locals that are not shared with a test
+    // binary that polls the io_context from outside the mavsdk shared library.
+    void note_list_thread()
+    {
+        const auto this_id = std::this_thread::get_id();
+        const auto previous_id = _list_thread_id.exchange(this_id, std::memory_order_relaxed);
+        assert(
+            previous_id == std::thread::id() || previous_id == this_id ||
+            _io_context.stopped());
+        (void)previous_id;
+    }
+
     asio::io_context& _io_context;
     std::vector<ParamChangedSubscription> _param_changed_subscriptions{};
+
+    // The single thread that is allowed to touch the subscription list; only used by
+    // note_list_thread().
+    std::atomic<std::thread::id> _list_thread_id{};
+
+    // True while find_and_call_subscriptions_value_changed() dispatches to the callbacks;
+    // only touched on the io thread. Used to assert that no callback removes subscriptions
+    // directly underneath the dispatch loop.
+    bool _iterating{false};
 };
 
 } // namespace mavsdk
