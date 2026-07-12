@@ -103,6 +103,25 @@ void GimbalImpl::request_gimbal_device_information(uint8_t target_component_id) 
         MAVLINK_MSG_ID_GIMBAL_DEVICE_INFORMATION, target_component_id, nullptr);
 }
 
+void GimbalImpl::try_request_gimbal_device_information(
+    GimbalDiscovery& discovery, uint8_t manager_compid) const
+{
+    if (discovery.device_info_requests_left == 0) {
+        return;
+    }
+    --discovery.device_info_requests_left;
+
+    // For a non-MAVLink gimbal device (id 1..6), the gimbal manager answers on its behalf,
+    // otherwise we ask the gimbal device (with its own compid) directly.
+    const uint8_t target_component_id =
+        (discovery.gimbal_device_id > 0 && discovery.gimbal_device_id <= 6) ?
+            manager_compid :
+            discovery.gimbal_device_id;
+    if (target_component_id != 0) {
+        request_gimbal_device_information(target_component_id);
+    }
+}
+
 void GimbalImpl::process_heartbeat(const mavlink_message_t& message)
 {
     std::lock_guard<std::mutex> lock(_mutex);
@@ -127,19 +146,10 @@ void GimbalImpl::process_heartbeat(const mavlink_message_t& message)
     }
 
     // Manager info is known. Try to get device info so we can announce the gimbal.
-    if (discovery.device_info_requests_left > 0) {
-        --discovery.device_info_requests_left;
-        const uint8_t target_component_id =
-            (discovery.gimbal_device_id > 0 && discovery.gimbal_device_id <= 6) ?
-                message.compid :
-                discovery.gimbal_device_id;
-        if (target_component_id != 0) {
-            request_gimbal_device_information(target_component_id);
-        }
-    }
-    // If requests are exhausted we wait silently for GIMBAL_DEVICE_ATTITUDE_STATUS.
-    // Per MAVLink gimbal protocol v2, a gimbal that provides a manager must also stream
-    // GIMBAL_DEVICE_ATTITUDE_STATUS, so we will eventually get it.
+    try_request_gimbal_device_information(discovery, message.compid);
+    // Once the requests are exhausted we fall back to announcing the gimbal on the next
+    // GIMBAL_DEVICE_ATTITUDE_STATUS. Per MAVLink gimbal protocol v2, a gimbal that provides
+    // a manager must also stream GIMBAL_DEVICE_ATTITUDE_STATUS, so we will eventually get it.
 }
 
 void GimbalImpl::process_gimbal_manager_information(const mavlink_message_t& message)
@@ -176,6 +186,7 @@ void GimbalImpl::process_gimbal_manager_information(const mavlink_message_t& mes
             gimbal.gimbal_device_id = gimbal_manager_information.gimbal_device_id;
             discovery.gimbal_device_id = gimbal_manager_information.gimbal_device_id;
             discovery.device_info_requests_left = 5;
+            try_request_gimbal_device_information(discovery, message.compid);
         }
         return;
     }
@@ -186,6 +197,9 @@ void GimbalImpl::process_gimbal_manager_information(const mavlink_message_t& mes
         discovery.has_manager_info = true;
         discovery.gimbal_device_id = gimbal_manager_information.gimbal_device_id;
         discovery.device_info_requests_left = 5;
+        // Request it right away rather than only on the next heartbeat, so that the
+        // device info has a chance to arrive before the first GIMBAL_DEVICE_ATTITUDE_STATUS.
+        try_request_gimbal_device_information(discovery, message.compid);
     }
 }
 
@@ -336,6 +350,13 @@ void GimbalImpl::process_gimbal_device_attitude_status(const mavlink_message_t& 
         auto disc_it = _discovery.find(message.compid);
         if (disc_it != _discovery.end() && disc_it->second.has_manager_info) {
             auto& discovery = disc_it->second;
+
+            if (discovery.device_info_requests_left > 0) {
+                // Still trying to get GIMBAL_DEVICE_INFORMATION (requested once per
+                // heartbeat), so don't announce the gimbal just yet.
+                return;
+            }
+
             const bool device_id_matches =
                 attitude_status.gimbal_device_id == 0 ||
                 discovery.gimbal_device_id == attitude_status.gimbal_device_id;

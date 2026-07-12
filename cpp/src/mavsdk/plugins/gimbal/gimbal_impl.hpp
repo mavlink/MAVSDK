@@ -127,6 +127,8 @@ private:
 
     void request_gimbal_manager_information(uint8_t target_component_id) const;
     void request_gimbal_device_information(uint8_t target_component_id) const;
+    void try_request_gimbal_device_information(
+        GimbalDiscovery& discovery, uint8_t manager_compid) const;
 
     void process_heartbeat(const mavlink_message_t& message);
     void process_gimbal_manager_information(const mavlink_message_t& message);
