@@ -2,7 +2,7 @@ add_library(mavsdk)
 
 cmake_policy(SET CMP0076 NEW)
 
-find_package(jsoncpp REQUIRED)
+find_package(nlohmann_json REQUIRED)
 
 find_package(tinyxml2 REQUIRED)
 
@@ -16,7 +16,7 @@ target_link_libraries(mavsdk
     PUBLIC
     ${CMAKE_DL_LIBS}
     PRIVATE
-    JsonCpp::JsonCpp
+    nlohmann_json::nlohmann_json
     tinyxml2::tinyxml2
     LibEvents::LibEvents
     mav::mav

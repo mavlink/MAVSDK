@@ -1,17 +1,17 @@
 cmake_minimum_required(VERSION 3.13)
 
-project(external-jsoncpp)
+project(external-nlohmann_json)
 include(ExternalProject)
 
 list(APPEND CMAKE_ARGS
     "-DCMAKE_PREFIX_PATH:PATH=${CMAKE_PREFIX_PATH}"
     "-DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_INSTALL_PREFIX}"
     "-DCMAKE_TOOLCHAIN_FILE:PATH=${CMAKE_TOOLCHAIN_FILE}"
-    "-DCMAKE_POSITION_INDEPENDENT_CODE=ON"
     "-DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}"
+    "-DCMAKE_POSITION_INDEPENDENT_CODE=ON"
     "-DBUILD_SHARED_LIBS=OFF"
-    "-DJSONCPP_WITH_CMAKE_PACKAGE=ON"
-    "-DJSONCPP_WITH_TESTS=OFF"
+    "-DJSON_BuildTests=OFF"
+    "-DJSON_Install=ON"
     )
 
 if(IOS)
@@ -22,15 +22,15 @@ if(IOS)
         )
 endif()
 
-message(STATUS "Preparing external project \"jsoncpp\" with args:")
+message(STATUS "Preparing external project \"nlohmann_json\" with args:")
 foreach(CMAKE_ARG ${CMAKE_ARGS})
     message(STATUS "-- ${CMAKE_ARG}")
 endforeach()
 
-ExternalProject_Add(
-    jsoncpp
-    GIT_REPOSITORY https://github.com/open-source-parsers/jsoncpp
-    GIT_TAG 1.9.6
-    PREFIX jsoncpp
+ExternalProject_add(
+    nlohmann_json
+    GIT_REPOSITORY https://github.com/nlohmann/json
+    GIT_TAG v3.11.3
+    PREFIX nlohmann_json
     CMAKE_ARGS "${CMAKE_ARGS}"
     )

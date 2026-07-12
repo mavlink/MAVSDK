@@ -66,7 +66,7 @@ int main(int argc, char** argv)
     // On 3 segments we see an obstacle, the closest is at 7m.
     //
     // In a real application this JSON message content would of course be
-    // assembled manually, or using a json library like jsoncpp or nlohmann/json.
+    // assembled manually, or using a json library like nlohmann/json.
     obstacle_distance.fields_json = R"({
         "time_usec": 12345678,
         "sensor_type": 3,

@@ -100,7 +100,7 @@ obstacle_distance.target_component_id = 0; // Does not apply for this message
 // On 3 segments we see an obstacle, the closest is at 7m.
 //
 // In a real application this JSON message content would of course be
-// assembled manually, or using a json library like jsoncpp or nlohmann/json.
+// assembled manually, or using a json library like nlohmann/json.
 obstacle_distance.fields_json = R"({
     "time_usec": 12345678,
     "sensor_type": 3,
@@ -149,14 +149,11 @@ auto handle = mavlink_direct.subscribe_message(
     [](MavlinkDirect::MavlinkMessage message) {
         std::cout << "Received position: " << message.fields_json << std::endl;
 
-        // And this could now be parsed by jsoncpp or nlohmann/json:
-        // Json::Value json;
-        // Json::Reader reader;
-        // if (reader.parse(message.fields_json, json)) {
-        //     auto lat = json["lat"].asInt() / 1e7;  // Convert from degrees * 1e7
-        //     auto lon = json["lon"].asInt() / 1e7;
-        //     std::cout << "Position: " << lat << ", " << lon << std::endl;
-        // }
+        // And this could now be parsed by nlohmann/json:
+        // auto json = nlohmann::json::parse(message.fields_json);
+        // auto lat = json["lat"].get<int>() / 1e7;  // Convert from degrees * 1e7
+        // auto lon = json["lon"].get<int>() / 1e7;
+        // std::cout << "Position: " << lat << ", " << lon << std::endl;
     }
 );
 ```

@@ -1,4 +1,4 @@
-find_package(jsoncpp REQUIRED)
+find_package(nlohmann_json REQUIRED)
 
 add_executable(unit_tests_runner
     ${UNIT_TEST_SOURCES}
@@ -16,7 +16,7 @@ find_package(fmt REQUIRED)
 
 target_link_libraries(unit_tests_runner
     mavsdk
-    JsonCpp::JsonCpp
+    nlohmann_json::nlohmann_json
     tinyxml2::tinyxml2
     GTest::gtest
     GTest::gtest_main

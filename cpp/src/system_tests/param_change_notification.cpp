@@ -7,7 +7,7 @@
 #include <thread>
 #include <vector>
 #include <gtest/gtest.h>
-#include <json/json.h>
+#include <nlohmann/json.hpp>
 
 using namespace mavsdk;
 
@@ -25,30 +25,28 @@ struct ValueCollector {
 
     void add_param_value(const std::string& json)
     {
-        Json::Value root;
-        Json::Reader reader;
-        if (!reader.parse(json, root)) {
+        nlohmann::json root;
+        if (((root = nlohmann::json::parse(json, nullptr, false)).is_discarded())) {
             return;
         }
-        if (root["param_id"].asString().rfind(param_name, 0) != 0) {
+        if (root["param_id"].get<std::string>().rfind(param_name, 0) != 0) {
             return;
         }
         std::lock_guard<std::mutex> lock(mutex);
-        param_values.push_back(root["param_value"].asFloat());
+        param_values.push_back(root["param_value"].get<float>());
     }
 
     void add_param_ext_value(const std::string& json)
     {
-        Json::Value root;
-        Json::Reader reader;
-        if (!reader.parse(json, root)) {
+        nlohmann::json root;
+        if (((root = nlohmann::json::parse(json, nullptr, false)).is_discarded())) {
             return;
         }
-        if (root["param_id"].asString().rfind(param_name, 0) != 0) {
+        if (root["param_id"].get<std::string>().rfind(param_name, 0) != 0) {
             return;
         }
         std::lock_guard<std::mutex> lock(mutex);
-        param_ext_values.push_back(root["param_value"].asString());
+        param_ext_values.push_back(root["param_value"].get<std::string>());
     }
 };
 

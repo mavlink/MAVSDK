@@ -7,7 +7,7 @@
 #
 # Prerequisites (install via apt on Ubuntu/Debian):
 #   sudo apt install build-essential cmake git python3 python3-pip \
-#                    liblzma-dev libtinyxml2-dev libjsoncpp-dev \
+#                    liblzma-dev libtinyxml2-dev nlohmann-json3-dev \
 #                    libcurl4-openssl-dev libssl-dev libasio-dev libfmt-dev
 #
 # Usage:
@@ -58,7 +58,7 @@ cp "${DEPS_DIR}/mavlink/message_definitions/v1.0/minimal.xml" \
 
 # Build libevents
 # Use the same version as MAVSDK's superbuild (see third_party/libevents/CMakeLists.txt)
-LIBEVENTS_VERSION="7c1720749dfe555ec2e71d5f9f753e6ac1244e1c"
+LIBEVENTS_VERSION="840a88ea226d4eb0fd4c391ce860317422756435"
 echo "=== Building libevents (${LIBEVENTS_VERSION}) ==="
 if [ ! -d "${DEPS_DIR}/libevents" ]; then
     git clone https://github.com/mavlink/libevents.git "${DEPS_DIR}/libevents"

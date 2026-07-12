@@ -7,7 +7,7 @@ if(NOT @BUILD_SHARED_LIBS@)
     endif()
 
     find_dependency(Threads REQUIRED)
-    find_dependency(jsoncpp REQUIRED)
+    find_dependency(nlohmann_json REQUIRED)
     find_dependency(picosha2 REQUIRED)
     find_dependency(tinyxml2 REQUIRED)
     find_dependency(mav REQUIRED)

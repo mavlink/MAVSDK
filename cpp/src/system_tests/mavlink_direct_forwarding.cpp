@@ -6,7 +6,7 @@
 #include <future>
 #include <atomic>
 #include <gtest/gtest.h>
-#include <json/json.h>
+#include <nlohmann/json.hpp>
 
 using namespace mavsdk;
 
@@ -100,9 +100,9 @@ TEST(MavlinkDirect, ForwardingKnownMessage)
     EXPECT_EQ(received_message.component_id, 1);
 
     // Parse and verify JSON content
-    Json::Value json;
-    Json::Reader reader;
-    ASSERT_TRUE(reader.parse(received_message.fields_json, json));
+    nlohmann::json json;
+    ASSERT_TRUE(!((json = nlohmann::json::parse(received_message.fields_json, nullptr, false))
+                      .is_discarded()));
 
     // The JSON format may vary but should contain the message information
     // For now, just verify it's not empty and contains the message name
@@ -230,14 +230,14 @@ TEST(MavlinkDirect, ForwardingUnknownMessage)
     EXPECT_EQ(received_message.component_id, 1);
 
     // Parse and verify JSON content
-    Json::Value json;
-    Json::Reader reader;
-    ASSERT_TRUE(reader.parse(received_message.fields_json, json));
+    nlohmann::json json;
+    ASSERT_TRUE(!((json = nlohmann::json::parse(received_message.fields_json, nullptr, false))
+                      .is_discarded()));
 
-    EXPECT_EQ(json["test_id"].asUInt(), 12345u);
-    EXPECT_EQ(json["sequence"].asUInt(), 1u);
-    EXPECT_EQ(json["status"].asUInt(), 42u);
-    EXPECT_EQ(json["message"].asString(), "Hello through forwarder!");
+    EXPECT_EQ(json["test_id"].get<uint32_t>(), 12345u);
+    EXPECT_EQ(json["sequence"].get<uint32_t>(), 1u);
+    EXPECT_EQ(json["status"].get<uint32_t>(), 42u);
+    EXPECT_EQ(json["message"].get<std::string>(), "Hello through forwarder!");
 
     receiver_mavlink_direct.unsubscribe_message(handle);
 }

@@ -359,7 +359,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y liblzma-dev libtinyxml2-dev libjsoncpp-dev libcurl4-openssl-dev libssl-dev libasio-dev libfmt-dev
+          sudo apt-get install -y liblzma-dev libtinyxml2-dev nlohmann-json3-dev libcurl4-openssl-dev libssl-dev libasio-dev libfmt-dev
       - name: Build with system dependencies
         run: ./tools/build-with-system-deps.sh
       - name: unit tests
@@ -385,7 +385,8 @@ jobs:
           sudo apt-get update && sudo apt-get install -y \
             python3-venv \
             libasio-dev \
-            libfmt-dev
+            libfmt-dev \
+            nlohmann-json3-dev
       - name: git permission workaround
         run: |
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
