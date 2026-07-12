@@ -98,8 +98,7 @@ MavlinkDirectServerImpl::send_message(MavlinkDirectServer::MavlinkMessage messag
         libmav_message.set("target_system", static_cast<uint8_t>(message.target_system_id));
     }
     if (message.target_component_id != 0) {
-        libmav_message.set(
-            "target_component_id", static_cast<uint8_t>(message.target_component_id));
+        libmav_message.set("target_component", static_cast<uint8_t>(message.target_component_id));
     }
 
     _server_component_impl->queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
