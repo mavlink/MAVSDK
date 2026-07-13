@@ -21,7 +21,7 @@
         * [Plugin/Test Logging](cpp/guide/dev_logging.md)
         * [Testing](cpp/guide/test.md)
         * [Build on Linux](cpp/guide/build_linux.md)
-        * [Building on macOS](cpp/guide/build.md)
+        * [Building on macOS](cpp/guide/build_macos.md)
         * [Building on Windows](cpp/guide/build_windows.md)
         * [Building using Dockcross](cpp/guide/build_dockcross.md)
         * [Generate API docs from Source](cpp/guide/build_docs.md)
