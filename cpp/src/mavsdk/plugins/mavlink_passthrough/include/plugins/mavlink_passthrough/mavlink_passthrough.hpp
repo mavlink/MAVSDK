@@ -31,7 +31,7 @@ class MavlinkPassthroughImpl;
  *             - Custom message support via XML loading
  *             - Better language wrapper integration
  */
-class DEPRECATED MAVSDK_PUBLIC MavlinkPassthrough : public PluginBase {
+class MAVSDK_PUBLIC MavlinkPassthrough : public PluginBase {
 public:
     /**
      * @brief Constructor. Creates the plugin for a specific System.
@@ -44,7 +44,7 @@ public:
      *
      * @param system The specific system associated with this plugin.
      */
-    explicit MavlinkPassthrough(System& system); // deprecated
+    DEPRECATED explicit MavlinkPassthrough(System& system);
 
     /**
      * @brief Constructor. Creates the plugin for a specific System.
@@ -57,7 +57,7 @@ public:
      *
      * @param system The specific system associated with this plugin.
      */
-    explicit MavlinkPassthrough(std::shared_ptr<System> system); // new
+    DEPRECATED explicit MavlinkPassthrough(std::shared_ptr<System> system);
 
     /**
      * @brief Destructor (internal use only).
@@ -116,7 +116,7 @@ public:
      *
      * @return result of request
      */
-    Result queue_message(
+    DEPRECATED Result queue_message(
         std::function<mavlink_message_t(MavlinkAddress mavlink_address, uint8_t channel)> fun);
 
     /**
@@ -159,7 +159,7 @@ public:
      *
      * @return result of the request.
      */
-    Result send_command_long(const CommandLong& command);
+    DEPRECATED Result send_command_long(const CommandLong& command);
 
     /**
      * @brief Send a MAVLink command_long.
@@ -168,7 +168,7 @@ public:
      *
      * @return result of the request.
      */
-    Result send_command_int(const CommandInt& command);
+    DEPRECATED Result send_command_int(const CommandInt& command);
 
     /**
      * @brief Create a command_ack.
@@ -180,7 +180,7 @@ public:
      *
      * @return message to send.
      */
-    mavlink_message_t make_command_ack_message(
+    DEPRECATED mavlink_message_t make_command_ack_message(
         const uint8_t target_sysid,
         const uint8_t target_compid,
         const uint16_t command,
@@ -189,13 +189,13 @@ public:
     /**
      * @brief Request param (int).
      */
-    std::pair<Result, int32_t> get_param_int(
+    DEPRECATED std::pair<Result, int32_t> get_param_int(
         const std::string& name, std::optional<uint8_t> maybe_component_id, bool extended);
 
     /**
      * @brief Request param (float).
      */
-    std::pair<Result, float> get_param_float(
+    DEPRECATED std::pair<Result, float> get_param_float(
         const std::string& name, std::optional<uint8_t> maybe_component_id, bool extended);
 
     /**
@@ -218,7 +218,7 @@ public:
      * @param message_id The MAVLink message ID.
      * @param callback Callback to be called for message subscription.
      */
-    MessageHandle subscribe_message(uint16_t message_id, const MessageCallback& callback);
+    DEPRECATED MessageHandle subscribe_message(uint16_t message_id, const MessageCallback& callback);
 
     /**
      * @brief Unsubscribe from subscribe_message.
@@ -226,28 +226,28 @@ public:
      * @param message_id The MAVLink message ID.
      * @param handle The handle returned from subscribe_message.
      */
-    void unsubscribe_message(uint16_t message_id, MessageHandle handle);
+    DEPRECATED void unsubscribe_message(uint16_t message_id, MessageHandle handle);
 
     /**
      * @brief Get our own system ID.
      *
      * @return our own system ID.
      */
-    uint8_t get_our_sysid() const;
+    DEPRECATED uint8_t get_our_sysid() const;
 
     /**
      * @brief Get our own component ID.
      *
      * @return our own component ID.
      */
-    uint8_t get_our_compid() const;
+    DEPRECATED uint8_t get_our_compid() const;
 
     /**
      * @brief Get system ID of target.
      *
      * @return system ID of target.
      */
-    uint8_t get_target_sysid() const;
+    DEPRECATED uint8_t get_target_sysid() const;
 
     /**
      * @brief Get target component ID.
@@ -257,7 +257,7 @@ public:
      *
      * @return component ID of target.
      */
-    uint8_t get_target_compid() const;
+    DEPRECATED uint8_t get_target_compid() const;
 
     /**
      * @brief Copy Constructor (object is not copyable).
