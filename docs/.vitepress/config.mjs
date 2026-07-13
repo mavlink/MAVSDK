@@ -148,6 +148,10 @@ export default defineConfig({
             text: "v2",
             link: "https://mavsdk.mavlink.io/v2.0/en/",
           },
+          {
+            text: "v1",
+            link: "https://mavsdk.mavlink.io/v1.4/en/",
+          },
         ],
       },
     ],
