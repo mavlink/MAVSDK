@@ -33,9 +33,10 @@ TEST(MavlinkSeq, Sequential)
         [&](Mavsdk::MavlinkMessage message) -> bool {
             if (message.system_id == 1 && message.component_id == MAV_COMP_ID_AUTOPILOT1) {
                 if (message.raw_bytes.size() >= 5) {
-                    uint8_t seq = (message.raw_bytes[0] == 0xFE)
-                                      ? message.raw_bytes[2]   // MAVLink 1
-                                      : message.raw_bytes[4];  // MAVLink 2
+                    uint8_t seq = (message.raw_bytes[0] == 0xFE) ?
+                                      message.raw_bytes[2] // MAVLink 1
+                                      :
+                                      message.raw_bytes[4]; // MAVLink 2
                     std::lock_guard<std::mutex> lock(seq_mutex);
                     seq_numbers.push_back(seq);
                 }
