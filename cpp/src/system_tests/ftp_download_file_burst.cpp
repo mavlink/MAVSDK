@@ -260,8 +260,10 @@ TEST(Ftp, DownloadBurstStopAndTryAgain)
         return true;
     };
 
-    auto drop_at_in_handle = mavsdk_groundstation.subscribe_incoming_messages_json(drop_at_some_point_in);
-    auto drop_at_out_handle = mavsdk_groundstation.subscribe_outgoing_messages_json(drop_at_some_point_out);
+    auto drop_at_in_handle =
+        mavsdk_groundstation.subscribe_incoming_messages_json(drop_at_some_point_in);
+    auto drop_at_out_handle =
+        mavsdk_groundstation.subscribe_outgoing_messages_json(drop_at_some_point_out);
 
     ASSERT_EQ(
         mavsdk_groundstation.add_any_connection("udpin://0.0.0.0:17000"),
@@ -385,4 +387,3 @@ TEST(Ftp, DownloadBurstFileOutsideOfRoot)
 
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
-
