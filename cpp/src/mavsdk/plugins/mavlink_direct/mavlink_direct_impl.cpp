@@ -113,8 +113,7 @@ MavlinkDirect::Result MavlinkDirectImpl::send_message(MavlinkDirect::MavlinkMess
     }
     if (message.target_component_id != 0) {
         // For messages that have target_component field, set it
-        libmav_message.set(
-            "target_component_id", static_cast<uint8_t>(message.target_component_id));
+        libmav_message.set("target_component", static_cast<uint8_t>(message.target_component_id));
     }
 
     if (_debugging) {
