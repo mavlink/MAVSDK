@@ -24,15 +24,14 @@ class MavlinkPassthroughImpl;
  * you to send and receive MAVLink messages. There is no checking or
  * safe-guards, you're on your own, and you have been warned.
  *
- * @warning MavlinkPassthrough will get deprecated in MAVSDK v4 and will only
- *          be available built from source.
- *          Use MavlinkDirect instead.
- *          MavlinkDirect provides enhanced functionality including:
- *          - Runtime message parsing with JSON field representation
- *          - Custom message support via XML loading
- *          - Better language wrapper integration
+ * @deprecated MavlinkPassthrough is deprecated as of MAVSDK v4.
+ *             Use MavlinkDirect instead.
+ *             MavlinkDirect provides enhanced functionality including:
+ *             - Runtime message parsing with JSON field representation
+ *             - Custom message support via XML loading
+ *             - Better language wrapper integration
  */
-class MAVSDK_PUBLIC MavlinkPassthrough : public PluginBase {
+class [[deprecated("Use MavlinkDirect instead")]] MAVSDK_PUBLIC MavlinkPassthrough : public PluginBase {
 public:
     /**
      * @brief Constructor. Creates the plugin for a specific System.
