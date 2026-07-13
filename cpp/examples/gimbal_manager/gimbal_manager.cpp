@@ -69,8 +69,7 @@ constexpr uint32_t gimbal_cap_flags_has_yaw_lock = 1024;
 constexpr uint32_t gimbal_cap_flags =
     gimbal_cap_flags_has_neutral | gimbal_cap_flags_has_pitch_axis |
     gimbal_cap_flags_has_pitch_follow | gimbal_cap_flags_has_pitch_lock |
-    gimbal_cap_flags_has_yaw_axis | gimbal_cap_flags_has_yaw_follow |
-    gimbal_cap_flags_has_yaw_lock;
+    gimbal_cap_flags_has_yaw_axis | gimbal_cap_flags_has_yaw_follow | gimbal_cap_flags_has_yaw_lock;
 
 // Limits of the simulated gimbal.
 constexpr float pitch_min_deg = -90.0f;
@@ -139,12 +138,10 @@ public:
         _own_compid(own_compid),
         _boot_time(std::chrono::steady_clock::now())
     {
-        _server.subscribe_message("COMMAND_LONG", [this](const auto& message) {
-            handle_command(message, false);
-        });
-        _server.subscribe_message("COMMAND_INT", [this](const auto& message) {
-            handle_command(message, true);
-        });
+        _server.subscribe_message(
+            "COMMAND_LONG", [this](const auto& message) { handle_command(message, false); });
+        _server.subscribe_message(
+            "COMMAND_INT", [this](const auto& message) { handle_command(message, true); });
         _server.subscribe_message("GIMBAL_MANAGER_SET_ATTITUDE", [this](const auto& message) {
             handle_set_attitude(message);
         });
@@ -429,8 +426,7 @@ private:
         const auto pitch_rate_rad_s = optional_float(fields, "pitch_rate");
         const auto yaw_rate_rad_s = optional_float(fields, "yaw_rate");
 
-        _pitch_setpoint_deg =
-            pitch_rad ? std::optional<float>(degrees(*pitch_rad)) : std::nullopt;
+        _pitch_setpoint_deg = pitch_rad ? std::optional<float>(degrees(*pitch_rad)) : std::nullopt;
         _yaw_setpoint_deg = yaw_rad ? std::optional<float>(degrees(*yaw_rad)) : std::nullopt;
         _pitch_rate_setpoint_deg_s =
             pitch_rate_rad_s ? std::optional<float>(degrees(*pitch_rate_rad_s)) : std::nullopt;
@@ -499,8 +495,8 @@ private:
 
     uint32_t current_flags() const
     {
-        uint32_t flags = gimbal_flags_roll_lock | gimbal_flags_pitch_lock |
-                         gimbal_flags_yaw_in_vehicle_frame;
+        uint32_t flags =
+            gimbal_flags_roll_lock | gimbal_flags_pitch_lock | gimbal_flags_yaw_in_vehicle_frame;
         if (_yaw_lock) {
             flags |= gimbal_flags_yaw_lock;
         }
@@ -516,66 +512,74 @@ private:
 
     void send_ack(uint8_t target_sysid, uint8_t target_compid, unsigned command, unsigned result)
     {
-        send("COMMAND_ACK", {
-            {"command", command},
-            {"result", result},
-            {"progress", 0},
-            {"result_param2", 0},
-            {"target_system", target_sysid},
-            {"target_component", target_compid},
-        });
+        send(
+            "COMMAND_ACK",
+            {
+                {"command", command},
+                {"result", result},
+                {"progress", 0},
+                {"result_param2", 0},
+                {"target_system", target_sysid},
+                {"target_component", target_compid},
+            });
     }
 
     void send_gimbal_manager_information()
     {
-        send("GIMBAL_MANAGER_INFORMATION", {
-            {"time_boot_ms", time_boot_ms()},
-            {"cap_flags", gimbal_cap_flags},
-            {"gimbal_device_id", _own_compid},
-            {"roll_min", 0.0f},
-            {"roll_max", 0.0f},
-            {"pitch_min", radians(pitch_min_deg)},
-            {"pitch_max", radians(pitch_max_deg)},
-            {"yaw_min", radians(yaw_min_deg)},
-            {"yaw_max", radians(yaw_max_deg)},
-        });
+        send(
+            "GIMBAL_MANAGER_INFORMATION",
+            {
+                {"time_boot_ms", time_boot_ms()},
+                {"cap_flags", gimbal_cap_flags},
+                {"gimbal_device_id", _own_compid},
+                {"roll_min", 0.0f},
+                {"roll_max", 0.0f},
+                {"pitch_min", radians(pitch_min_deg)},
+                {"pitch_max", radians(pitch_max_deg)},
+                {"yaw_min", radians(yaw_min_deg)},
+                {"yaw_max", radians(yaw_max_deg)},
+            });
     }
 
     void send_gimbal_device_information()
     {
-        send("GIMBAL_DEVICE_INFORMATION", {
-            {"time_boot_ms", time_boot_ms()},
-            {"vendor_name", "MAVSDK"},
-            {"model_name", "Gimbal Manager Example"},
-            {"custom_name", ""},
-            {"firmware_version", 0},
-            {"hardware_version", 0},
-            {"uid", 0},
-            {"cap_flags", gimbal_cap_flags},
-            {"custom_cap_flags", 0},
-            {"roll_min", 0.0f},
-            {"roll_max", 0.0f},
-            {"pitch_min", radians(pitch_min_deg)},
-            {"pitch_max", radians(pitch_max_deg)},
-            {"yaw_min", radians(yaw_min_deg)},
-            {"yaw_max", radians(yaw_max_deg)},
-            {"gimbal_device_id", _own_compid},
-        });
+        send(
+            "GIMBAL_DEVICE_INFORMATION",
+            {
+                {"time_boot_ms", time_boot_ms()},
+                {"vendor_name", "MAVSDK"},
+                {"model_name", "Gimbal Manager Example"},
+                {"custom_name", ""},
+                {"firmware_version", 0},
+                {"hardware_version", 0},
+                {"uid", 0},
+                {"cap_flags", gimbal_cap_flags},
+                {"custom_cap_flags", 0},
+                {"roll_min", 0.0f},
+                {"roll_max", 0.0f},
+                {"pitch_min", radians(pitch_min_deg)},
+                {"pitch_max", radians(pitch_max_deg)},
+                {"yaw_min", radians(yaw_min_deg)},
+                {"yaw_max", radians(yaw_max_deg)},
+                {"gimbal_device_id", _own_compid},
+            });
     }
 
     void send_gimbal_manager_status()
     {
         std::lock_guard<std::mutex> lock(_mutex);
 
-        send("GIMBAL_MANAGER_STATUS", {
-            {"time_boot_ms", time_boot_ms()},
-            {"flags", current_flags()},
-            {"gimbal_device_id", _own_compid},
-            {"primary_control_sysid", _primary_sysid},
-            {"primary_control_compid", _primary_compid},
-            {"secondary_control_sysid", _secondary_sysid},
-            {"secondary_control_compid", _secondary_compid},
-        });
+        send(
+            "GIMBAL_MANAGER_STATUS",
+            {
+                {"time_boot_ms", time_boot_ms()},
+                {"flags", current_flags()},
+                {"gimbal_device_id", _own_compid},
+                {"primary_control_sysid", _primary_sysid},
+                {"primary_control_compid", _primary_compid},
+                {"secondary_control_sysid", _secondary_sysid},
+                {"secondary_control_compid", _secondary_compid},
+            });
     }
 
     void send_gimbal_device_attitude_status()
@@ -584,20 +588,22 @@ private:
 
         const auto q = quaternion_from_pitch_yaw(radians(_pitch_deg), radians(_yaw_deg));
 
-        send("GIMBAL_DEVICE_ATTITUDE_STATUS", {
-            {"target_system", 0},
-            {"target_component", 0},
-            {"time_boot_ms", time_boot_ms()},
-            {"flags", current_flags()},
-            {"q", {q.w, q.x, q.y, q.z}},
-            {"angular_velocity_x", 0.0f},
-            {"angular_velocity_y", radians(_pitch_rate_deg_s)},
-            {"angular_velocity_z", radians(_yaw_rate_deg_s)},
-            {"failure_flags", 0},
-            // With gimbal_device_id 0, the sending component id identifies the
-            // gimbal device.
-            {"gimbal_device_id", 0},
-        });
+        send(
+            "GIMBAL_DEVICE_ATTITUDE_STATUS",
+            {
+                {"target_system", 0},
+                {"target_component", 0},
+                {"time_boot_ms", time_boot_ms()},
+                {"flags", current_flags()},
+                {"q", {q.w, q.x, q.y, q.z}},
+                {"angular_velocity_x", 0.0f},
+                {"angular_velocity_y", radians(_pitch_rate_deg_s)},
+                {"angular_velocity_z", radians(_yaw_rate_deg_s)},
+                {"failure_flags", 0},
+                // With gimbal_device_id 0, the sending component id identifies the
+                // gimbal device.
+                {"gimbal_device_id", 0},
+            });
     }
 
     void send(const std::string& message_name, const json& fields)
