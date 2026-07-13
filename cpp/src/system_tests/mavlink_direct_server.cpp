@@ -201,3 +201,108 @@ TEST(MavlinkDirectServer, LoadCustomXml)
     receiver.unsubscribe_message(handle);
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
+
+// Send a message with target fields set via MavlinkMessage::target_system_id/
+// target_component_id (not via fields_json) from the client and check that
+// they end up in the actual MAVLink fields.
+TEST(MavlinkDirectServer, TargetedSendFromClient)
+{
+    Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
+    Mavsdk mavsdk_autopilot{Mavsdk::Configuration{ComponentType::Autopilot}};
+
+    ASSERT_EQ(
+        mavsdk_groundstation.add_any_connection("udpin://0.0.0.0:17023"),
+        ConnectionResult::Success);
+    ASSERT_EQ(
+        mavsdk_autopilot.add_any_connection("udpout://127.0.0.1:17023"), ConnectionResult::Success);
+
+    auto maybe_system = mavsdk_groundstation.first_autopilot(10.0);
+    ASSERT_TRUE(maybe_system);
+    auto system = maybe_system.value();
+
+    auto receiver = MavlinkDirectServer{mavsdk_autopilot.server_component()};
+    auto sender = MavlinkDirect{system};
+
+    auto prom = std::promise<MavlinkDirectServer::MavlinkMessage>();
+    auto fut = prom.get_future();
+
+    auto handle = receiver.subscribe_message(
+        "PARAM_SET", [&prom](MavlinkDirectServer::MavlinkMessage message) {
+            LogInfo("Server received PARAM_SET: {}", message.fields_json);
+            prom.set_value(message);
+        });
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+
+    MavlinkDirect::MavlinkMessage test_message;
+    test_message.message_name = "PARAM_SET";
+    test_message.target_system_id = 1;
+    test_message.target_component_id = 1;
+    test_message.fields_json = R"({"param_id":"TEST_PARAM","param_value":42.0,"param_type":9})";
+
+    EXPECT_EQ(sender.send_message(test_message), MavlinkDirect::Result::Success);
+
+    ASSERT_EQ(fut.wait_for(std::chrono::seconds(5)), std::future_status::ready);
+
+    auto received_message = fut.get();
+    nlohmann::json json;
+    ASSERT_TRUE(!((json = nlohmann::json::parse(received_message.fields_json, nullptr, false))
+                      .is_discarded()));
+    EXPECT_EQ(json["target_system"].get<uint32_t>(), 1u);
+    EXPECT_EQ(json["target_component"].get<uint32_t>(), 1u);
+
+    receiver.unsubscribe_message(handle);
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+}
+
+// Same in the other direction: target fields set via
+// MavlinkMessage::target_system_id/target_component_id on the server side.
+TEST(MavlinkDirectServer, TargetedSendFromServer)
+{
+    Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
+    Mavsdk mavsdk_autopilot{Mavsdk::Configuration{ComponentType::Autopilot}};
+
+    ASSERT_EQ(
+        mavsdk_groundstation.add_any_connection("udpin://0.0.0.0:17024"),
+        ConnectionResult::Success);
+    ASSERT_EQ(
+        mavsdk_autopilot.add_any_connection("udpout://127.0.0.1:17024"), ConnectionResult::Success);
+
+    auto maybe_system = mavsdk_groundstation.first_autopilot(10.0);
+    ASSERT_TRUE(maybe_system);
+    auto system = maybe_system.value();
+
+    auto sender = MavlinkDirectServer{mavsdk_autopilot.server_component()};
+    auto receiver = MavlinkDirect{system};
+
+    auto prom = std::promise<MavlinkDirect::MavlinkMessage>();
+    auto fut = prom.get_future();
+
+    auto handle =
+        receiver.subscribe_message("PARAM_SET", [&prom](MavlinkDirect::MavlinkMessage message) {
+            LogInfo("Received PARAM_SET: {}", message.fields_json);
+            prom.set_value(message);
+        });
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+
+    MavlinkDirectServer::MavlinkMessage test_message;
+    test_message.message_name = "PARAM_SET";
+    test_message.target_system_id = 245;
+    test_message.target_component_id = 190;
+    test_message.fields_json = R"({"param_id":"TEST_PARAM","param_value":42.0,"param_type":9})";
+
+    EXPECT_EQ(sender.send_message(test_message), MavlinkDirectServer::Result::Success);
+
+    ASSERT_EQ(fut.wait_for(std::chrono::seconds(5)), std::future_status::ready);
+
+    auto received_message = fut.get();
+    nlohmann::json json;
+    ASSERT_TRUE(!((json = nlohmann::json::parse(received_message.fields_json, nullptr, false))
+                      .is_discarded()));
+    EXPECT_EQ(json["target_system"].get<uint32_t>(), 245u);
+    EXPECT_EQ(json["target_component"].get<uint32_t>(), 190u);
+
+    receiver.unsubscribe_message(handle);
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+}
