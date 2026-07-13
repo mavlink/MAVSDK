@@ -531,7 +531,7 @@ public:
      * @param callback Callback to be called for each incoming message.
      *        To drop a message, return 'false' from the callback.
      */
-    void intercept_incoming_messages_async(std::function<bool(mavlink_message_t&)> callback);
+    DEPRECATED void intercept_incoming_messages_async(std::function<bool(mavlink_message_t&)> callback);
 
     /**
      * @brief Start recording all incoming MAVLink traffic to a .tlog file.
@@ -573,7 +573,7 @@ public:
      * @param callback Callback to be called for each outgoing message.
      *        To drop a message, return 'false' from the callback.
      */
-    void intercept_outgoing_messages_async(std::function<bool(mavlink_message_t&)> callback);
+    DEPRECATED void intercept_outgoing_messages_async(std::function<bool(mavlink_message_t&)> callback);
 
     /**
      * @brief Callback type for raw bytes subscriptions.
