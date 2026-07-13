@@ -21,6 +21,7 @@
 //
 
 #include <mavsdk/mavsdk.hpp>
+#include <mavsdk/math_utils.hpp>
 #include <mavsdk/plugins/mavlink_direct_server/mavlink_direct_server.hpp>
 
 #include <nlohmann/json.hpp>
@@ -66,10 +67,11 @@ constexpr uint32_t gimbal_cap_flags_has_yaw_axis = 256;
 constexpr uint32_t gimbal_cap_flags_has_yaw_follow = 512;
 constexpr uint32_t gimbal_cap_flags_has_yaw_lock = 1024;
 
+// No pitch follow: the simulated gimbal always stabilizes pitch (pitch lock).
 constexpr uint32_t gimbal_cap_flags =
     gimbal_cap_flags_has_neutral | gimbal_cap_flags_has_pitch_axis |
-    gimbal_cap_flags_has_pitch_follow | gimbal_cap_flags_has_pitch_lock |
-    gimbal_cap_flags_has_yaw_axis | gimbal_cap_flags_has_yaw_follow | gimbal_cap_flags_has_yaw_lock;
+    gimbal_cap_flags_has_pitch_lock | gimbal_cap_flags_has_yaw_axis |
+    gimbal_cap_flags_has_yaw_follow | gimbal_cap_flags_has_yaw_lock;
 
 // Limits of the simulated gimbal.
 constexpr float pitch_min_deg = -90.0f;
@@ -77,48 +79,6 @@ constexpr float pitch_max_deg = 30.0f;
 constexpr float yaw_min_deg = -160.0f;
 constexpr float yaw_max_deg = 160.0f;
 constexpr float default_slew_rate_deg_s = 60.0f;
-
-constexpr float pi = 3.14159265358979323846f;
-
-float degrees(float radians)
-{
-    return radians * 180.0f / pi;
-}
-
-float radians(float degrees)
-{
-    return degrees / 180.0f * pi;
-}
-
-struct Quaternion {
-    float w;
-    float x;
-    float y;
-    float z;
-};
-
-Quaternion quaternion_from_pitch_yaw(float pitch_rad, float yaw_rad)
-{
-    const float cp = std::cos(pitch_rad * 0.5f);
-    const float sp = std::sin(pitch_rad * 0.5f);
-    const float cy = std::cos(yaw_rad * 0.5f);
-    const float sy = std::sin(yaw_rad * 0.5f);
-
-    // Roll is always zero for this two-axis gimbal.
-    return {cp * cy, -sp * sy, sp * cy, cp * sy};
-}
-
-struct PitchYaw {
-    float pitch_rad;
-    float yaw_rad;
-};
-
-PitchYaw pitch_yaw_from_quaternion(const Quaternion& q)
-{
-    return {
-        std::asin(std::clamp(2.0f * (q.w * q.y - q.z * q.x), -1.0f, 1.0f)),
-        std::atan2(2.0f * (q.w * q.z + q.x * q.y), 1.0f - 2.0f * (q.y * q.y + q.z * q.z))};
-}
 
 // Float fields set to NaN ("don't change" in the gimbal protocol) arrive as
 // JSON null, so only return a value for actual numbers.
@@ -374,12 +334,12 @@ private:
         apply_flags(fields.value("flags", 0u));
 
         // A quaternion with NaN elements (arriving as null) means "only use rates".
-        std::optional<PitchYaw> setpoint{};
+        std::optional<EulerAngle> setpoint{};
         if (fields.contains("q") && fields["q"].is_array() && fields["q"].size() == 4 &&
             std::all_of(fields["q"].begin(), fields["q"].end(), [](const json& element) {
                 return element.is_number();
             })) {
-            setpoint = pitch_yaw_from_quaternion(Quaternion{
+            setpoint = to_euler_angle_from_quaternion(Quaternion{
                 fields["q"][0].get<float>(),
                 fields["q"][1].get<float>(),
                 fields["q"][2].get<float>(),
@@ -387,8 +347,8 @@ private:
         }
 
         if (setpoint) {
-            _pitch_setpoint_deg = degrees(setpoint->pitch_rad);
-            _yaw_setpoint_deg = degrees(setpoint->yaw_rad);
+            _pitch_setpoint_deg = setpoint->pitch_deg;
+            _yaw_setpoint_deg = setpoint->yaw_deg;
         } else {
             _pitch_setpoint_deg.reset();
             _yaw_setpoint_deg.reset();
@@ -396,10 +356,11 @@ private:
 
         const auto pitch_rate_rad_s = optional_float(fields, "angular_velocity_y");
         const auto yaw_rate_rad_s = optional_float(fields, "angular_velocity_z");
-        _pitch_rate_setpoint_deg_s =
-            pitch_rate_rad_s ? std::optional<float>(degrees(*pitch_rate_rad_s)) : std::nullopt;
+        _pitch_rate_setpoint_deg_s = pitch_rate_rad_s ?
+                                         std::optional<float>(to_deg_from_rad(*pitch_rate_rad_s)) :
+                                         std::nullopt;
         _yaw_rate_setpoint_deg_s =
-            yaw_rate_rad_s ? std::optional<float>(degrees(*yaw_rate_rad_s)) : std::nullopt;
+            yaw_rate_rad_s ? std::optional<float>(to_deg_from_rad(*yaw_rate_rad_s)) : std::nullopt;
     }
 
     void handle_set_pitchyaw(const MavlinkDirectServer::MavlinkMessage& message)
@@ -426,12 +387,15 @@ private:
         const auto pitch_rate_rad_s = optional_float(fields, "pitch_rate");
         const auto yaw_rate_rad_s = optional_float(fields, "yaw_rate");
 
-        _pitch_setpoint_deg = pitch_rad ? std::optional<float>(degrees(*pitch_rad)) : std::nullopt;
-        _yaw_setpoint_deg = yaw_rad ? std::optional<float>(degrees(*yaw_rad)) : std::nullopt;
-        _pitch_rate_setpoint_deg_s =
-            pitch_rate_rad_s ? std::optional<float>(degrees(*pitch_rate_rad_s)) : std::nullopt;
+        _pitch_setpoint_deg =
+            pitch_rad ? std::optional<float>(to_deg_from_rad(*pitch_rad)) : std::nullopt;
+        _yaw_setpoint_deg =
+            yaw_rad ? std::optional<float>(to_deg_from_rad(*yaw_rad)) : std::nullopt;
+        _pitch_rate_setpoint_deg_s = pitch_rate_rad_s ?
+                                         std::optional<float>(to_deg_from_rad(*pitch_rate_rad_s)) :
+                                         std::nullopt;
         _yaw_rate_setpoint_deg_s =
-            yaw_rate_rad_s ? std::optional<float>(degrees(*yaw_rate_rad_s)) : std::nullopt;
+            yaw_rate_rad_s ? std::optional<float>(to_deg_from_rad(*yaw_rate_rad_s)) : std::nullopt;
     }
 
     // Needs to be called with _mutex held.
@@ -534,10 +498,10 @@ private:
                 {"gimbal_device_id", _own_compid},
                 {"roll_min", 0.0f},
                 {"roll_max", 0.0f},
-                {"pitch_min", radians(pitch_min_deg)},
-                {"pitch_max", radians(pitch_max_deg)},
-                {"yaw_min", radians(yaw_min_deg)},
-                {"yaw_max", radians(yaw_max_deg)},
+                {"pitch_min", to_rad_from_deg(pitch_min_deg)},
+                {"pitch_max", to_rad_from_deg(pitch_max_deg)},
+                {"yaw_min", to_rad_from_deg(yaw_min_deg)},
+                {"yaw_max", to_rad_from_deg(yaw_max_deg)},
             });
     }
 
@@ -557,10 +521,10 @@ private:
                 {"custom_cap_flags", 0},
                 {"roll_min", 0.0f},
                 {"roll_max", 0.0f},
-                {"pitch_min", radians(pitch_min_deg)},
-                {"pitch_max", radians(pitch_max_deg)},
-                {"yaw_min", radians(yaw_min_deg)},
-                {"yaw_max", radians(yaw_max_deg)},
+                {"pitch_min", to_rad_from_deg(pitch_min_deg)},
+                {"pitch_max", to_rad_from_deg(pitch_max_deg)},
+                {"yaw_min", to_rad_from_deg(yaw_min_deg)},
+                {"yaw_max", to_rad_from_deg(yaw_max_deg)},
                 {"gimbal_device_id", _own_compid},
             });
     }
@@ -586,7 +550,8 @@ private:
     {
         std::lock_guard<std::mutex> lock(_mutex);
 
-        const auto q = quaternion_from_pitch_yaw(radians(_pitch_deg), radians(_yaw_deg));
+        // Roll is always zero for this two-axis gimbal.
+        const auto q = to_quaternion_from_euler_angle(EulerAngle{0.0f, _pitch_deg, _yaw_deg});
 
         send(
             "GIMBAL_DEVICE_ATTITUDE_STATUS",
@@ -597,8 +562,8 @@ private:
                 {"flags", current_flags()},
                 {"q", {q.w, q.x, q.y, q.z}},
                 {"angular_velocity_x", 0.0f},
-                {"angular_velocity_y", radians(_pitch_rate_deg_s)},
-                {"angular_velocity_z", radians(_yaw_rate_deg_s)},
+                {"angular_velocity_y", to_rad_from_deg(_pitch_rate_deg_s)},
+                {"angular_velocity_z", to_rad_from_deg(_yaw_rate_deg_s)},
                 {"failure_flags", 0},
                 // With gimbal_device_id 0, the sending component id identifies the
                 // gimbal device.
