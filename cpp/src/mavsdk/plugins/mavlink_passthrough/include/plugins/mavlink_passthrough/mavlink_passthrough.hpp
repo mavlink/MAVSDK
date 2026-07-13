@@ -31,7 +31,7 @@ class MavlinkPassthroughImpl;
  *             - Custom message support via XML loading
  *             - Better language wrapper integration
  */
-class [[deprecated("Use MavlinkDirect instead")]] MAVSDK_PUBLIC MavlinkPassthrough : public PluginBase {
+class DEPRECATED MAVSDK_PUBLIC MavlinkPassthrough : public PluginBase {
 public:
     /**
      * @brief Constructor. Creates the plugin for a specific System.
