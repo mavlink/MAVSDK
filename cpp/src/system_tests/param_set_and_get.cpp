@@ -102,12 +102,10 @@ TEST(Param, SetAndGetLossy)
     Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
     mavsdk_groundstation.set_timeout_s(reduced_timeout_s);
 
-    // Drop every third message
+    // Drop every third message to simulate a lossy link
     std::atomic<unsigned> counter = 0;
-    auto drop_some = [&counter](mavlink_message_t&) { return counter++ % 3; };
-
-    mavsdk_groundstation.intercept_incoming_messages_async(drop_some);
-    mavsdk_groundstation.intercept_incoming_messages_async(drop_some);
+    auto drop_handle = mavsdk_groundstation.subscribe_incoming_messages_json(
+        [&counter](Mavsdk::MavlinkMessage) -> bool { return counter++ % 3 != 0; });
 
     Mavsdk mavsdk_autopilot{Mavsdk::Configuration{ComponentType::Autopilot}};
     mavsdk_autopilot.set_timeout_s(reduced_timeout_s);
@@ -175,10 +173,8 @@ TEST(Param, SetAndGetLossy)
     EXPECT_EQ(server_result_all_params.int_params.size(), 1);
     EXPECT_EQ(server_result_all_params.float_params.size(), 1);
 
-    // Before going out of scope, we need to make sure to no longer access the
-    // drop_some callback which accesses the local counter variable.
-    mavsdk_groundstation.intercept_incoming_messages_async(nullptr);
-    mavsdk_groundstation.intercept_incoming_messages_async(nullptr);
+    // Stop dropping before going out of scope
+    mavsdk_groundstation.unsubscribe_incoming_messages_json(drop_handle);
 }
 
 TEST(Param, GetAndChange)
