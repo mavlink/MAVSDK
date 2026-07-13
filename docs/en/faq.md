@@ -105,7 +105,7 @@ There are multiple ways to support multiple programming languages all with their
 3. Direct language bindings manually written, or based on various tools like [pybind11](https://github.com/pybind/pybind11).
    `+` Some languages "almost for free".
    `-` Varies on the language. If done manually likely to have bugs.
-   `-` Requires linking to nan-native dependencies.
+   `-` Requires linking to non-native dependencies.
 4. Language bindings based on proto definitions (protobuf) and gRPC.
    `+` Nice native APIs can be auto-generated from proto files.
    `+` No non-native dependencies in language wrappers.
