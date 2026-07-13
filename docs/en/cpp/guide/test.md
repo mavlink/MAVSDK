@@ -54,7 +54,7 @@ MAVSDK includes a MAVLink fuzzer using libfuzzer to find bugs through randomized
 ### Building the Fuzzer
 
 ```bash
-cmake -Bbuild-fuzz -S. -GNinja -DBUILD_FUZZ_TESTS=ON -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++
+cmake -B build-fuzz -S. -GNinja -DBUILD_FUZZ_TESTS=ON -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++
 cmake --build build-fuzz
 ```
 

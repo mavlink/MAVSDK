@@ -74,7 +74,7 @@ To build the takeoff and land example, you can do:
 
 ```sh
 cd takeoff_and_land/
-cmake -Bbuild -S.
+cmake -B build -S.
 cmake --build build -j4
 ```
 

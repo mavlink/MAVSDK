@@ -32,7 +32,7 @@ docker run --rm dockcross/linux-armv7 > ./dockcross-linux-armv7
 chmod +x ./dockcross-linux-armv7
 
 # Use the script to run cmake and build
-./dockcross-linux-armv7 bash -c 'cmake -DCMAKE_BUILD_TYPE=Release -Bbuild -S. && cmake --build build'
+./dockcross-linux-armv7 bash -c 'cmake -DCMAKE_BUILD_TYPE=Release -B build -S. && cmake --build build'
 ```
 
 ## Building for Android
@@ -77,7 +77,7 @@ cmake \
     -DANDROID_ABI=arm64-v8a \
     -DANDROID_PLATFORM=android-28 \
     -DCMAKE_BUILD_TYPE=Release \
-    -Bbuild/android \
+    -B build/android \
     -S.
 
 cmake --build build/android
