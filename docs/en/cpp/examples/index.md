@@ -75,7 +75,7 @@ See [installation guide](../guide/installation.md) if that is not already the ca
 Then build the example:
 ```sh
 cd cpp/examples/takeoff_and_land/
-cmake -B build -S.
+cmake -B build -S .
 cmake --build build -j4
 ```
 

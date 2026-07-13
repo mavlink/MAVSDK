@@ -35,7 +35,7 @@ cd cpp
 
 For development, use the debug build:
 ```bash
-cmake -DCMAKE_BUILD_TYPE=Debug -B build -S.
+cmake -DCMAKE_BUILD_TYPE=Debug -B build -S .
 cmake --build build -j8
 ```
 
@@ -43,7 +43,7 @@ cmake --build build -j8
 
 For production use, build with optimizations enabled:
 ```bash
-cmake -DCMAKE_BUILD_TYPE=Release -B build -S.
+cmake -DCMAKE_BUILD_TYPE=Release -B build -S .
 cmake --build build -j8
 ```
 
@@ -62,7 +62,7 @@ sudo ldconfig  # Update linker cache
 To install to a custom location, e.g. `install`
 
 ```bash
-cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=install -B build -S.
+cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=install -B build -S .
 cmake --build build --target install
 ```
 
@@ -75,7 +75,7 @@ For more information about the architecture, also see [how the auto-generation w
 In order to include the mavsdk_server in the build, add `-DBUILD_MAVSDK_SERVER=ON`:
 
 ```bash
-cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_MAVSDK_SERVER=ON -B build -S.
+cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_MAVSDK_SERVER=ON -B build -S .
 cmake --build build -j8
 ```
 
@@ -110,18 +110,18 @@ Examples:
 
 ```bash
 # Build with development dialect
-cmake -DCMAKE_BUILD_TYPE=Debug -DMAVLINK_DIALECT=development -B build -S.
+cmake -DCMAKE_BUILD_TYPE=Debug -DMAVLINK_DIALECT=development -B build -S .
 
 # Use a custom MAVLink repository fork
 cmake -DCMAKE_BUILD_TYPE=Debug \
     -DMAVLINK_URL=https://github.com/yourfork/mavlink \
     -DMAVLINK_HASH=abc123def456 \
-    -B build -S.
+    -B build -S .
 
 # Use local MAVLink XML files
 cmake -DCMAKE_BUILD_TYPE=Debug \
     -DMAVLINK_XML_PATH=/path/to/mavlink/message_definitions/v1.0 \
-    -B build -S.
+    -B build -S .
 ```
 
 ## Building without Superbuild
