@@ -278,8 +278,8 @@ TEST(MavlinkDirectServer, TargetedSendFromServer)
     auto prom = std::promise<MavlinkDirect::MavlinkMessage>();
     auto fut = prom.get_future();
 
-    auto handle = receiver.subscribe_message(
-        "PARAM_SET", [&prom](MavlinkDirect::MavlinkMessage message) {
+    auto handle =
+        receiver.subscribe_message("PARAM_SET", [&prom](MavlinkDirect::MavlinkMessage message) {
             LogInfo("Received PARAM_SET: {}", message.fields_json);
             prom.set_value(message);
         });
