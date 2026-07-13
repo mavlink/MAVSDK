@@ -30,7 +30,7 @@ endforeach()
 ExternalProject_add(
     nlohmann_json
     GIT_REPOSITORY https://github.com/nlohmann/json
-    GIT_TAG v3.11.3
+    GIT_TAG v3.12.0
     PREFIX nlohmann_json
     CMAKE_ARGS "${CMAKE_ARGS}"
     )
