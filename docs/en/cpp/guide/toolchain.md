@@ -74,7 +74,7 @@ For this case `find_package(MAVSDK REQUIRED)` as used in `CMakeLists.txt` above 
 To build the example we would do:
 
 ```bash
-   cmake -B build -H.
+   cmake -B build -S.
    cmake --build build -j8
 ```
 
@@ -89,7 +89,7 @@ For the case where the library is installed in some local directory, you need to
 E.g. here there would be a directory called mavsdk just one directory up:
 
 ```bash
-cmake -B build -DCMAKE_PREFIX_PATH=../mavsdk -H.
+cmake -B build -DCMAKE_PREFIX_PATH=../mavsdk -S.
 cmake --build build -j8
 ```
 
@@ -112,14 +112,14 @@ In order to build in Release mode where the file size is smaller and optimizatio
 
 **macOS/Linux:**
 ```
-cmake -B build -DCMAKE_BUILD_TYPE=Release -H.
+cmake -B build -DCMAKE_BUILD_TYPE=Release -S.
 cmake --build build -j8
 ```
 
 **Windows:**
 
 ```
-cmake -B build -H.
+cmake -B build -S.
 cmake --build build -j8 --config Release
 ```
 

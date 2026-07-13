@@ -9,10 +9,10 @@ You will need a [Github](https://github.com/) login to make and submit changes t
 
 ## Overview
 
-This guide is written in [markdown](https://github.com/GitbookIO/gitbook/blob/master/docs/syntax/markdown.md) wiki syntax and stored in the Github [mavlink/MAVSDK-docs](https://github.com/mavlink/MAVSDK-docs) repo.
+This guide is written in [markdown](https://vitepress.dev/guide/markdown) and stored in the Github [mavlink/MAVSDK](https://github.com/mavlink/MAVSDK) repository under the `docs/` folder.
 
-The [API Reference](../api_reference/index.md) section is compiled from source code into markdown using a [separate toolchain](#api-reference) and then copied into Github.
-Updates to the reference should be made in the [source code repository](https://github.com/mavlink/MAVSDK) (see [API Reference](#api-reference) below for more information).
+The [API Reference](../api_reference/index.md) section is compiled from source code into markdown using a [separate toolchain](#api-reference) and then checked in.
+Updates to the reference should be made in the [source code](https://github.com/mavlink/MAVSDK) (see [API Reference](#api-reference) below for more information).
 
 The guide is licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) - if you make any changes then they will be made available under the same license.
 
@@ -21,38 +21,28 @@ The guide is licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/
 
 Simple fixes to an existing page can be made directly on Github:
 
-1. Click the **Edit** button in the top toolbar to open the page
-
-   ![Edit page](../../../assets/site/gitbook_toolbar_edit.png)
-
-1. Make required changes in the editor section near the top of the page.
-2. At the bottom of the page, add a comment and select the second radio button to create a new branch.
-
-   ![Edit page](../../../assets/site/github_edit.png)
-
-3. Follow the on-screen instructions to create a pull request with your change.
+1. Navigate to the relevant file in the [docs/en/](https://github.com/mavlink/MAVSDK/tree/main/docs/en) folder.
+1. Click the pencil (edit) icon to open the file editor.
+1. Make the required changes.
+1. At the bottom of the page, enter a commit message and select **Create a new branch** to open a pull request.
 
 
 ## Raising an Issue
 
-To raise an issue against the documentation:
-
-1. Open the page with problem content.
-1. Click the **Bug** button in the top toolbar.
-
-   ![Raise bug](../../../assets/site/gitbook_toolbar_bug.png)
-
-   This will open a bug in Github, seeded with the URL/name for the current page.
-1. Enter enough information for someone to understand the problem, and ideally to fix it.
-
-TODO: still valid?
+To raise an issue against the documentation, open a [Github issue](https://github.com/mavlink/MAVSDK/issues) and include the page URL and a description of the problem.
 
 
-## Making a Big Change
+## Building the Docs Locally
 
-If you want to make more significant changes or additions to the documentation you will need to set up *Git* and the *Gitbook* toolchain (this allows you to render the documentation and check that links work).
+The docs use [VitePress](https://vitepress.dev/). To build and preview locally:
 
-For setup information see: [Gitbook toolchain](https://github.com/GitbookIO/gitbook/blob/master/docs/setup.md).
+```bash
+cd docs
+npm install
+npm run dev
+```
+
+This starts a local dev server at `http://localhost:5173`.
 
 
 ## API Reference
@@ -60,6 +50,6 @@ For setup information see: [Gitbook toolchain](https://github.com/GitbookIO/gitb
 The C++ public header files are annotated using docstrings using [Doxygen](http://doxygen.nl/manual/index.html) syntax.
 You can extract the documentation to markdown files (one per class) on macOS or Linux using the instructions in [Build API Reference Documentation](../guide/build_docs.md).
 
-In order to include new API reference in the *SDK Documentation* it must be manually added to the [Github repository](https://github.com/mavlink/MAVSDK-docs):
-- Copy the files into the [/en/cpp/api_reference](https://github.com/mavlink/MAVSDK-docs/tree/main/en/cpp/api_reference) folder
-- *New* APIs should be added to appropriate sections in the [MAVSDK-docs/en/SUMMARY.md](https://github.com/mavlink/MAVSDK-docs/blob/main/en/SUMMARY.md) and [/en/cpp/api_reference/README.md](https://github.com/mavlink/MAVSDK-docs/blob/main/en/cpp/api_reference/README.md).
+In order to include new API reference in the documentation:
+- Copy the generated files into the [docs/en/cpp/api_reference](https://github.com/mavlink/MAVSDK/tree/main/docs/en/cpp/api_reference) folder
+- *New* APIs should be added to the appropriate sections in [docs/en/SUMMARY.md](https://github.com/mavlink/MAVSDK/tree/main/docs/en/SUMMARY.md) and [docs/en/cpp/api_reference/index.md](https://github.com/mavlink/MAVSDK/tree/main/docs/en/cpp/api_reference/index.md).
