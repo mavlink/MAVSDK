@@ -32,23 +32,12 @@ The idea is of course to automate this as much as possible.
    - `brew bump-formula-pr mavsdk --tag=vX.Y.Z --revision=<GIT HASH>`
    - This should then open the browser with the pull request already created.
 
-## MAVSDK-docs part
+## Documentation part
 
-1. [Generate the docs](../guide/build_docs.md) and update the reference docs.
-1. Check or update the examples in the docs.
-1. Create a branch off `main` for the release
-   - Create the branch
-     ```
-     git switch main
-     git pull
-     git switch -c vX.Y
-     ```
-   - Modify **book.json** in the vX.Y branch to change the value of `github_branch` to match the new branch: `"github_branch": "vX.Y"`
-   - Push the branch to the upstream repo
-     ```
-     git push origin vX.Y
-     ```
-1. Add the branch to the version checker in main branch [book.json](https://github.com/mavlink/MAVSDK-docs/blob/main/book.json) (see pattern below `versions`).
+Documentation is now in-tree under the `docs/` folder in this repository, so it is released together with the code.
+
+1. [Generate the API reference docs](../guide/build_docs.md) and commit any changes to `docs/en/cpp/api_reference/`.
+1. Check or update the examples and guides in `docs/en/` as needed.
 
 ## Other
 
