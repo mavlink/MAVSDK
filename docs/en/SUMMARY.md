@@ -14,6 +14,8 @@
         * [Missions](cpp/guide/missions.md)
         * [Offboard Control](cpp/guide/offboard.md)
         * [Follow Me](cpp/guide/follow_me.md)
+        * [Camera](cpp/guide/camera.md)
+        * [Gimbal](cpp/guide/gimbal.md)
         * [VTOL Support](cpp/guide/vtol.md)
         * [MavlinkDirect](cpp/guide/mavlink_direct.md)
         * [Building C++ Apps](cpp/guide/toolchain.md)
