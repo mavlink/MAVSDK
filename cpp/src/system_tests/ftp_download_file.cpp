@@ -237,8 +237,10 @@ TEST(Ftp, DownloadStopAndTryAgain)
     std::atomic<bool> got_some = false;
     auto drop_at_some_point = [&got_some](Mavsdk::MavlinkMessage) -> bool { return !got_some; };
 
-    auto drop_at_in_handle = mavsdk_groundstation.subscribe_incoming_messages_json(drop_at_some_point);
-    auto drop_at_out_handle = mavsdk_groundstation.subscribe_outgoing_messages_json(drop_at_some_point);
+    auto drop_at_in_handle =
+        mavsdk_groundstation.subscribe_incoming_messages_json(drop_at_some_point);
+    auto drop_at_out_handle =
+        mavsdk_groundstation.subscribe_outgoing_messages_json(drop_at_some_point);
 
     ASSERT_EQ(
         mavsdk_groundstation.add_any_connection("udpin://0.0.0.0:17000"),
@@ -364,4 +366,3 @@ TEST(Ftp, DownloadFileOutsideOfRoot)
         EXPECT_EQ(fut.get(), Ftp::Result::ProtocolError);
     }
 }
-
