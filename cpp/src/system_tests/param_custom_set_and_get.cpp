@@ -1,4 +1,3 @@
-SHA: f70cbe717ea0d2fe4683d123ed95ff4ac3e7b930
 #include "log.hpp"
 #include "mavsdk.hpp"
 #include "plugins/param/param.hpp"
