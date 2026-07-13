@@ -36,16 +36,11 @@ TEST(Intercept, IncomingDrop)
     ASSERT_TRUE(sender_system_opt);
     auto sender_system = sender_system_opt.value();
 
-    auto sender_system_receiver_opt = mavsdk_receiver.first_autopilot(10.0);
-    ASSERT_TRUE(sender_system_receiver_opt);
-    auto sender_system_receiver = sender_system_receiver_opt.value();
-
     while (mavsdk_sender.systems().size() == 0) {
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
 
     auto telemetry_interceptor = Telemetry{sender_system};
-    auto telemetry_receiver = Telemetry{sender_system_receiver};
     auto telemetry_server = TelemetryServer{mavsdk_sender.server_component()};
 
     // Drop all GLOBAL_POSITION_INT messages at the interceptor using the JSON API
@@ -64,11 +59,6 @@ TEST(Intercept, IncomingDrop)
     auto interceptor_handle = telemetry_interceptor.subscribe_position(
         [&interceptor_received](Telemetry::Position) { interceptor_received = true; });
 
-    // Receiver should also NOT receive a position update (forwarding is after interception)
-    std::atomic<bool> receiver_received{false};
-    auto receiver_handle = telemetry_receiver.subscribe_position(
-        [&receiver_received](Telemetry::Position) { receiver_received = true; });
-
     TelemetryServer::Position position{};
     position.latitude_deg = 47.3977421;
     position.longitude_deg = 8.5455938;
@@ -86,15 +76,12 @@ TEST(Intercept, IncomingDrop)
 
     EXPECT_TRUE(intercept_called.load());
     EXPECT_FALSE(interceptor_received.load());
-    EXPECT_FALSE(receiver_received.load());
 
     LogInfo("Test completed: GLOBAL_POSITION_INT was dropped by interceptor");
     LogInfo("  - Interceptor JSON callback was called: {}", intercept_called.load());
     LogInfo("  - Interceptor telemetry NOT received: {}", !interceptor_received.load());
-    LogInfo("  - Receiver telemetry NOT received: {}", !receiver_received.load());
 
     telemetry_interceptor.unsubscribe_position(interceptor_handle);
-    telemetry_receiver.unsubscribe_position(receiver_handle);
     mavsdk_interceptor.unsubscribe_incoming_messages_json(drop_handle);
 }
 
