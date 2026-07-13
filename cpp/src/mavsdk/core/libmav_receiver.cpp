@@ -5,9 +5,9 @@
 #include <nlohmann/json.hpp>
 #include <variant>
 #include <cstring>
-#include <set>
+#include <array>
 #include <string>
-#include <utility>
+#include <string_view>
 #include <vector>
 #include "log.hpp"
 
@@ -30,12 +30,24 @@ namespace {
 // added only for fields genuinely carrying binary in a char[].
 bool is_binary_char_field(const std::string& message_name, const std::string& field_name)
 {
-    static const std::set<std::pair<std::string, std::string>> binary_fields{
+    struct BinaryField {
+        std::string_view message;
+        std::string_view field;
+    };
+    // Kept as string-view literals in a constexpr array (no static object with a
+    // runtime destructor and no per-lookup allocation) so it is safe to read
+    // from the message-delivery thread, including during process teardown.
+    static constexpr std::array<BinaryField, 3> binary_fields{{
         {"PARAM_EXT_VALUE", "param_value"},
         {"PARAM_EXT_SET", "param_value"},
         {"PARAM_EXT_ACK", "param_value"},
-    };
-    return binary_fields.find({message_name, field_name}) != binary_fields.end();
+    }};
+    for (const auto& binary_field : binary_fields) {
+        if (field_name == binary_field.field && message_name == binary_field.message) {
+            return true;
+        }
+    }
+    return false;
 }
 
 } // namespace
