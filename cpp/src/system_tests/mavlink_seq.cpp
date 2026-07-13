@@ -27,15 +27,21 @@ TEST(MavlinkSeq, Sequential)
 
     constexpr unsigned num_messages = 10;
 
-    // Intercept all incoming messages on the ground station and record
-    // sequence numbers from the autopilot system (sysid 1, compid 1).
-    mavsdk_groundstation.intercept_incoming_messages_async([&](mavlink_message_t& message) -> bool {
-        if (message.sysid == 1 && message.compid == MAV_COMP_ID_AUTOPILOT1) {
-            std::lock_guard<std::mutex> lock(seq_mutex);
-            seq_numbers.push_back(message.seq);
-        }
-        return true;
-    });
+    // Intercept incoming messages and record sequence numbers from the autopilot.
+    // seq is extracted from raw_bytes: MAVLink1 byte[2], MAVLink2 byte[4].
+    auto handle = mavsdk_groundstation.subscribe_incoming_messages_json(
+        [&](Mavsdk::MavlinkMessage message) -> bool {
+            if (message.system_id == 1 && message.component_id == MAV_COMP_ID_AUTOPILOT1) {
+                if (message.raw_bytes.size() >= 5) {
+                    uint8_t seq = (message.raw_bytes[0] == 0xFE)
+                                      ? message.raw_bytes[2]   // MAVLink 1
+                                      : message.raw_bytes[4];  // MAVLink 2
+                    std::lock_guard<std::mutex> lock(seq_mutex);
+                    seq_numbers.push_back(seq);
+                }
+            }
+            return true;
+        });
 
     // Collect messages (heartbeats at 1 Hz plus any other traffic).
     for (unsigned i = 0; i < 150; ++i) {
@@ -46,8 +52,7 @@ TEST(MavlinkSeq, Sequential)
         }
     }
 
-    // Stop intercepting.
-    mavsdk_groundstation.intercept_incoming_messages_async(nullptr);
+    mavsdk_groundstation.unsubscribe_incoming_messages_json(handle);
 
     std::lock_guard<std::mutex> lock(seq_mutex);
     ASSERT_GE(seq_numbers.size(), num_messages);
