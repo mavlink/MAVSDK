@@ -5,9 +5,40 @@
 #include <nlohmann/json.hpp>
 #include <variant>
 #include <cstring>
+#include <set>
+#include <string>
+#include <utility>
+#include <vector>
 #include "log.hpp"
 
 namespace mavsdk {
+
+namespace {
+
+// A handful of MAVLink messages declare a field as char[] but actually use it
+// to carry raw binary data. The most common case is the extended-parameter
+// protocol, which packs a typed parameter value as little-endian bytes into
+// PARAM_EXT_{VALUE,SET,ACK}.param_value (char[128]).
+//
+// Such fields must be represented in JSON as a byte array, not a string:
+//  - libmav's getString() truncates char[] at the first NUL (strnlen), which
+//    corrupts any value containing a zero byte, and
+//  - the bytes are usually not valid UTF-8.
+//
+// This is an explicit, deliberately small allow-list. It intentionally does NOT
+// match PARAM_VALUE.param_value, which is a normal float. New entries should be
+// added only for fields genuinely carrying binary in a char[].
+bool is_binary_char_field(const std::string& message_name, const std::string& field_name)
+{
+    static const std::set<std::pair<std::string, std::string>> binary_fields{
+        {"PARAM_EXT_VALUE", "param_value"},
+        {"PARAM_EXT_SET", "param_value"},
+        {"PARAM_EXT_ACK", "param_value"},
+    };
+    return binary_fields.find({message_name, field_name}) != binary_fields.end();
+}
+
+} // namespace
 
 LibmavReceiver::LibmavReceiver(MavsdkImpl& mavsdk_impl) : _mavsdk_impl(mavsdk_impl)
 {
@@ -141,6 +172,18 @@ std::string LibmavReceiver::libmav_message_to_json(const mav::Message& msg) cons
         // Get field names and iterate through them
         auto field_names = message_def.fieldNames();
         for (const auto& field_name : field_names) {
+            // Binary char[] fields (see allow-list) are emitted as a byte array
+            // of the full field width, read directly as raw bytes so the value
+            // is not NUL-truncated. The field stays declared as char, so the
+            // message CRC_EXTRA is unaffected.
+            if (is_binary_char_field(msg.name(), field_name)) {
+                std::vector<uint8_t> raw;
+                if (msg.get(field_name, raw) == ::mav::MessageResult::Success) {
+                    json[field_name] = raw;
+                    continue;
+                }
+            }
+
             // Extract field value based on type and convert to JSON
             auto variant_opt = msg.getAsNativeTypeInVariant(field_name);
             if (variant_opt) {

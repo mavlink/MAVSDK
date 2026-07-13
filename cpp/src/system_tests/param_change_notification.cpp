@@ -46,7 +46,10 @@ struct ValueCollector {
             return;
         }
         std::lock_guard<std::mutex> lock(mutex);
-        param_ext_values.push_back(root["param_value"].get<std::string>());
+        // PARAM_EXT_VALUE.param_value is a binary field and is serialized as a
+        // JSON byte array; dump() gives a stable string form (this collector
+        // only counts notifications, it does not inspect the value).
+        param_ext_values.push_back(root["param_value"].dump());
     }
 };
 

@@ -1218,3 +1218,87 @@ TEST(MavlinkDirect, LargeUint64)
     receiver_mavlink_direct.unsubscribe_message(handle);
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
+
+// Regression test for binary data carried in a char[] field.
+//
+// PARAM_EXT_VALUE.param_value is declared as char[128] in the MAVLink XML, but
+// the extended-parameter protocol uses it to carry the raw bytes of the typed
+// value (little-endian). Treated as a NUL-terminated string it would be
+// truncated at the first zero byte, so MavlinkDirect represents this field as a
+// JSON byte array instead (see the allow-list in libmav_receiver.cpp). This
+// test sends a value with an interior NUL and verifies every byte round-trips.
+TEST(MavlinkDirect, ParamExtValueBinaryRoundtrip)
+{
+    Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
+    Mavsdk mavsdk_autopilot{Mavsdk::Configuration{ComponentType::Autopilot}};
+
+    ASSERT_EQ(
+        mavsdk_groundstation.add_any_connection("udpin://0.0.0.0:18010"),
+        ConnectionResult::Success);
+    ASSERT_EQ(
+        mavsdk_autopilot.add_any_connection("udpout://127.0.0.1:18010"), ConnectionResult::Success);
+
+    auto maybe_system = mavsdk_groundstation.first_autopilot(10.0);
+    ASSERT_TRUE(maybe_system);
+    auto system = maybe_system.value();
+    ASSERT_TRUE(system->has_autopilot());
+
+    auto receiver_mavlink_direct = MavlinkDirect{system};
+    auto sender_mavlink_direct = MavlinkDirectServer{mavsdk_autopilot.server_component()};
+
+    auto prom = std::promise<MavlinkDirect::MavlinkMessage>();
+    auto fut = prom.get_future();
+
+    auto handle = receiver_mavlink_direct.subscribe_message(
+        "PARAM_EXT_VALUE", [&prom](MavlinkDirect::MavlinkMessage message) {
+            LogInfo("Received PARAM_EXT_VALUE: {}", message.fields_json);
+            prom.set_value(message);
+        });
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+
+    // A uint32 value of 0x00020001 = 131073, little-endian bytes: 01 00 02 00.
+    // The interior zero byte at index 1 is what used to truncate the value, and
+    // the 0x02 at index 2 is the byte that used to be lost.
+    const std::vector<int> param_value_bytes{1, 0, 2, 0};
+
+    nlohmann::json send_fields;
+    send_fields["param_id"] = "TEST_BIN";
+    send_fields["param_value"] = param_value_bytes; // sent as a JSON byte array
+    send_fields["param_type"] = 6; // MAV_PARAM_EXT_TYPE_INT32
+    send_fields["param_count"] = 1;
+    send_fields["param_index"] = 0;
+
+    MavlinkDirectServer::MavlinkMessage test_message;
+    test_message.message_name = "PARAM_EXT_VALUE";
+    test_message.system_id = 1;
+    test_message.component_id = 1;
+    test_message.target_system_id = 0;
+    test_message.target_component_id = 0;
+    test_message.fields_json = send_fields.dump();
+
+    LogInfo("Sending PARAM_EXT_VALUE with binary param_value");
+    ASSERT_EQ(
+        sender_mavlink_direct.send_message(test_message), MavlinkDirectServer::Result::Success);
+
+    ASSERT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
+    auto received_message = fut.get();
+
+    auto received = nlohmann::json::parse(received_message.fields_json, nullptr, false);
+    ASSERT_FALSE(received.is_discarded());
+    ASSERT_TRUE(received.contains("param_value"));
+    const auto& received_value = received["param_value"];
+
+    // param_value must come back as a byte array covering the full field width,
+    // with the meaningful bytes (including the interior NUL and the byte after
+    // it) preserved -- i.e. no NUL truncation.
+    ASSERT_TRUE(received_value.is_array());
+    ASSERT_GE(received_value.size(), param_value_bytes.size());
+    EXPECT_EQ(received_value[0].get<int>(), 1);
+    EXPECT_EQ(received_value[1].get<int>(), 0); // interior NUL preserved
+    EXPECT_EQ(received_value[2].get<int>(), 2); // byte after the NUL preserved
+    EXPECT_EQ(received_value[3].get<int>(), 0);
+
+    receiver_mavlink_direct.unsubscribe_message(handle);
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+}
