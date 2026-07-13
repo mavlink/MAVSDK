@@ -515,6 +515,52 @@ void MavsdkImpl::process_message(mavlink_message_t& message, Connection* connect
             return;
         }
 
+        // JSON message interception for incoming messages — must run before forwarding so that
+        // dropped messages are neither forwarded nor delivered to local plugins.
+        {
+            uint8_t buf[MAVLINK_MAX_PACKET_LEN];
+            uint16_t len = mavlink_msg_to_send_buffer(buf, &message);
+            size_t bytes_consumed = 0;
+            auto libmav_msg_opt = parse_message_safe(buf, len, bytes_consumed);
+            if (libmav_msg_opt) {
+                Mavsdk::MavlinkMessage json_msg;
+                json_msg.message_name = libmav_msg_opt.value().name();
+                json_msg.system_id = message.sysid;
+                json_msg.component_id = message.compid;
+                json_msg.raw_bytes.assign(buf, buf + len);
+
+                if (!_connections.empty() && _connections[0].connection->get_libmav_receiver()) {
+                    json_msg.fields_json =
+                        _connections[0].connection->get_libmav_receiver()->libmav_message_to_json(
+                            libmav_msg_opt.value());
+                } else {
+                    json_msg.fields_json =
+                        "{\"message_id\":" + std::to_string(libmav_msg_opt.value().id()) +
+                        ",\"message_name\":\"" + libmav_msg_opt.value().name() + "\"}";
+                }
+
+                uint8_t target_sys = 0;
+                uint8_t target_comp = 0;
+                if (libmav_msg_opt.value().get("target_system", target_sys) ==
+                    mav::MessageResult::Success) {
+                    json_msg.target_system_id = target_sys;
+                }
+                if (libmav_msg_opt.value().get("target_component", target_comp) ==
+                    mav::MessageResult::Success) {
+                    json_msg.target_component_id = target_comp;
+                }
+
+                if (!call_json_interception_callbacks(
+                        json_msg, _incoming_json_message_subscriptions)) {
+                    if (_message_logging_on) {
+                        LogDebug(
+                            "Incoming JSON message {} dropped by intercept", json_msg.message_name);
+                    }
+                    return;
+                }
+            }
+        }
+
         /* Forward message (after intercept) if option is enabled and multiple interfaces
          * are connected.
          * Performs message forwarding checks for every message if message forwarding is
@@ -595,55 +641,6 @@ void MavsdkImpl::process_message(mavlink_message_t& message, Connection* connect
             // Don't try to call at() if systems have already been destroyed
             // in destructor.
             return;
-        }
-    }
-
-    // JSON message interception for incoming messages.
-    // Convert mavlink_message_t to Mavsdk::MavlinkMessage so JSON subscribers
-    // can inspect and drop messages before any plugin receives them.
-    {
-        uint8_t buf[MAVLINK_MAX_PACKET_LEN];
-        uint16_t len = mavlink_msg_to_send_buffer(buf, &message);
-        size_t bytes_consumed = 0;
-        auto libmav_msg_opt = parse_message_safe(buf, len, bytes_consumed);
-        if (libmav_msg_opt) {
-            Mavsdk::MavlinkMessage json_msg;
-            json_msg.message_name = libmav_msg_opt.value().name();
-            json_msg.system_id = message.sysid;
-            json_msg.component_id = message.compid;
-            json_msg.raw_bytes.assign(buf, buf + len);
-
-            {
-                std::lock_guard lock(_mutex);
-                if (!_connections.empty() && _connections[0].connection->get_libmav_receiver()) {
-                    json_msg.fields_json =
-                        _connections[0].connection->get_libmav_receiver()->libmav_message_to_json(
-                            libmav_msg_opt.value());
-                } else {
-                    json_msg.fields_json =
-                        "{\"message_id\":" + std::to_string(libmav_msg_opt.value().id()) +
-                        ",\"message_name\":\"" + libmav_msg_opt.value().name() + "\"}";
-                }
-            }
-
-            uint8_t target_sys = 0;
-            uint8_t target_comp = 0;
-            if (libmav_msg_opt.value().get("target_system", target_sys) ==
-                mav::MessageResult::Success) {
-                json_msg.target_system_id = target_sys;
-            }
-            if (libmav_msg_opt.value().get("target_component", target_comp) ==
-                mav::MessageResult::Success) {
-                json_msg.target_component_id = target_comp;
-            }
-
-            if (!call_json_interception_callbacks(json_msg, _incoming_json_message_subscriptions)) {
-                if (_message_logging_on) {
-                    LogDebug(
-                        "Incoming JSON message {} dropped by interceptio", json_msg.message_name);
-                }
-                return;
-            }
         }
     }
 
