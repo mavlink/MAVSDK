@@ -200,7 +200,7 @@ To forward only in one direction, e.g to send messages arriving on serial over U
 ```cpp
 Mavsdk mavsdk;
 mavsdk.add_any_connection("udpin://0.0.0.0:14540", ForwardingOption::ForwardingOn);
-mavsdk.add_any_connection("serial:///dev/serial/by-id/usb-FTDI_FT232R_USB_UART_XXXXXXXX-if00-port0:57600", `ForwardingOption::ForwardingOff`);
+mavsdk.add_any_connection("serial:///dev/serial/by-id/usb-FTDI_FT232R_USB_UART_XXXXXXXX-if00-port0:57600", ForwardingOption::ForwardingOff);
 ```
 
 Note that the default function overload is `ForwardingOption::ForwardingOff`.

@@ -51,7 +51,7 @@ The main steps are:
    Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
    ConnectionResult conn_result = mavsdk.add_udp_connection();
    // Wait for the system to connect via heartbeat
-   while (mavsdk.system().size() == 0) {
+   while (mavsdk.systems().size() == 0) {
       sleep_for(seconds(1));
    }
    // System got discovered.
@@ -90,11 +90,10 @@ The example below shows how you might set the other options on a second `Mission
 ```cpp
 std::shared_ptr<MissionItem> new_item2(new MissionItem());
 new_item2->latitude_deg = 47.40;
-new_item2->longitude_deg = 8.5455360114574432);
+new_item2->longitude_deg = 8.5455360114574432;
 new_item2->relative_altitude_m = 2.0f;
 new_item2->speed_m_s = 5.0f;
 new_item2->is_fly_through = true;
-new_item2->gimbal_pitch_deg = 20.0f;
 new_item2->gimbal_pitch_deg = 20.0f;
 new_item2->gimbal_yaw_deg = 60.0f;
 new_item2->camera_action = MissionItem::CameraAction::TakePhoto;
@@ -211,7 +210,7 @@ which receives a regular callback with the current `MissionItem` number and the 
 The code fragment just takes a lambda function that reports the current status.
 
 ```cpp
-mission.subscribe_mission_progress( [](Mission::MissionProgress mission_progress)) {
+mission.subscribe_mission_progress( [](Mission::MissionProgress mission_progress) {
        std::cout << "Mission status update: " << mission_progress.current << " / " << mission_progress.total << '\n';
     });
 ```
