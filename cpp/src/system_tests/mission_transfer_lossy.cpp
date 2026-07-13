@@ -62,10 +62,14 @@ TEST(Mission, TransferLossy)
     auto mission = Mission{system};
 
     // Drop ~5% of mission-related messages to simulate packet loss
-    auto out_handle = mavsdk_groundstation.subscribe_outgoing_messages_json(
-        [](Mavsdk::MavlinkMessage message) { return should_keep_mission_message(message.message_name); });
-    auto in_handle = mavsdk_groundstation.subscribe_incoming_messages_json(
-        [](Mavsdk::MavlinkMessage message) { return should_keep_mission_message(message.message_name); });
+    auto out_handle =
+        mavsdk_groundstation.subscribe_outgoing_messages_json([](Mavsdk::MavlinkMessage message) {
+            return should_keep_mission_message(message.message_name);
+        });
+    auto in_handle =
+        mavsdk_groundstation.subscribe_incoming_messages_json([](Mavsdk::MavlinkMessage message) {
+            return should_keep_mission_message(message.message_name);
+        });
 
     // Create mission plan
     Mission::MissionPlan mission_plan;
