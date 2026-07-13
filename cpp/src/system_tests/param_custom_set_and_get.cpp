@@ -1,3 +1,4 @@
+SHA: f70cbe717ea0d2fe4683d123ed95ff4ac3e7b930
 #include "log.hpp"
 #include "mavsdk.hpp"
 #include "plugins/param/param.hpp"
@@ -92,10 +93,9 @@ TEST(Param, CustomSetAndGetLossy)
 
     // Drop every third message
     std::atomic<unsigned> counter = 0;
-    auto drop_some = [&counter](mavlink_message_t&) { return counter++ % 3; };
+    auto drop_some = [&counter](Mavsdk::MavlinkMessage) -> bool { return counter++ % 3 != 0; };
 
-    mavsdk_groundstation.intercept_incoming_messages_async(drop_some);
-    mavsdk_groundstation.intercept_incoming_messages_async(drop_some);
+    auto drop_some_handle = mavsdk_groundstation.subscribe_incoming_messages_json(drop_some);
 
     ASSERT_EQ(
         mavsdk_groundstation.add_any_connection("udpin://0.0.0.0:17000"),
@@ -142,8 +142,7 @@ TEST(Param, CustomSetAndGetLossy)
 
     // Before going out of scope, we need to make sure to no longer access the
     // drop_some callback which accesses the local counter variable.
-    mavsdk_groundstation.intercept_incoming_messages_async(nullptr);
-    mavsdk_groundstation.intercept_incoming_messages_async(nullptr);
+    mavsdk_groundstation.unsubscribe_incoming_messages_json(drop_some_handle);
 
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
