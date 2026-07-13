@@ -80,7 +80,7 @@ cmake --build build -j4
 
 ::: info
 The examples match the MAVSDK version from your current branch. If you have another MAVSDK version installed, you should checkout the examples from that version. For example, if you have installed MAVSDK v2.x.y, you need to switch to the branch `v2`.
-"""
+:::
 
 ## Running an Example {#running_the_examples}
 
