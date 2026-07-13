@@ -615,8 +615,7 @@ void MavsdkImpl::process_message(mavlink_message_t& message, Connection* connect
 
             {
                 std::lock_guard lock(_mutex);
-                if (!_connections.empty() &&
-                    _connections[0].connection->get_libmav_receiver()) {
+                if (!_connections.empty() && _connections[0].connection->get_libmav_receiver()) {
                     json_msg.fields_json =
                         _connections[0].connection->get_libmav_receiver()->libmav_message_to_json(
                             libmav_msg_opt.value());
@@ -638,12 +637,10 @@ void MavsdkImpl::process_message(mavlink_message_t& message, Connection* connect
                 json_msg.target_component_id = target_comp;
             }
 
-            if (!call_json_interception_callbacks(
-                    json_msg, _incoming_json_message_subscriptions)) {
+            if (!call_json_interception_callbacks(json_msg, _incoming_json_message_subscriptions)) {
                 if (_message_logging_on) {
                     LogDebug(
-                        "Incoming JSON message {} dropped by interceptio",
-                        json_msg.message_name);
+                        "Incoming JSON message {} dropped by interceptio", json_msg.message_name);
                 }
                 return;
             }

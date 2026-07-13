@@ -10,17 +10,13 @@ The [MavlinkPassthrough](classmavsdk_1_1_mavlink_passthrough.md) class provides 
 "With great power comes great responsibility." - This plugin allows you to send and receive MAVLink messages. There is no checking or safe-guards, you're on your own, and you have been warned.
 
 
-::: warning
-[MavlinkPassthrough](classmavsdk_1_1_mavlink_passthrough.md) will get deprecated in MAVSDK v4 and will only be available built from source. Use [MavlinkDirect](classmavsdk_1_1_mavlink_direct.md) instead. [MavlinkDirect](classmavsdk_1_1_mavlink_direct.md) provides enhanced functionality including:
-<ul>
-<li><p>Runtime message parsing with JSON field representation</p>
-</li>
-<li><p>Custom message support via XML loading</p>
-</li>
-<li><p>Better language wrapper integration </p>
-</li>
-</ul>
-:::
+<xrefsect id="deprecated_1_deprecated000001"><xreftitle>Deprecated</xreftitle><xrefdescription><para><ref refid="classmavsdk_1_1_mavlink_passthrough" kindref="compound">MavlinkPassthrough</ref> is deprecated as of MAVSDK v4. Use <ref refid="classmavsdk_1_1_mavlink_direct" kindref="compound">MavlinkDirect</ref> instead. <ref refid="classmavsdk_1_1_mavlink_direct" kindref="compound">MavlinkDirect</ref> provides enhanced functionality including:<itemizedlist>
+<listitem><para>Runtime message parsing with JSON field representation</para>
+</listitem><listitem><para>Custom message support via XML loading</para>
+</listitem><listitem><para>Better language wrapper integration </para>
+</listitem></itemizedlist>
+</para>
+</xrefdescription></xrefsect>
 
 
 ## Data Structures
@@ -44,32 +40,32 @@ std::function< void(const mavlink_message_t &)> [MessageCallback](#classmavsdk_1
 
 Type | Name | Description
 ---: | --- | ---
-&nbsp; | [MavlinkPassthrough](#classmavsdk_1_1_mavlink_passthrough_1ad17fc20d2b7c5c6996e0841aaabccb56) ([System](classmavsdk_1_1_system.md) & system) | Constructor. Creates the plugin for a specific [System](classmavsdk_1_1_system.md).
-&nbsp; | [MavlinkPassthrough](#classmavsdk_1_1_mavlink_passthrough_1a9d1fdd3c4aeab8e221ac59612944c299) (std::shared_ptr< [System](classmavsdk_1_1_system.md) > system) | Constructor. Creates the plugin for a specific [System](classmavsdk_1_1_system.md).
+DEPRECATED | [MavlinkPassthrough](#classmavsdk_1_1_mavlink_passthrough_1a3b8db71291e153e753a8a316d58cfaa3) ([System](classmavsdk_1_1_system.md) & system) | Constructor. Creates the plugin for a specific [System](classmavsdk_1_1_system.md).
+DEPRECATED | [MavlinkPassthrough](#classmavsdk_1_1_mavlink_passthrough_1acddc4bdb520f49019f52cdafd74b43f2) (std::shared_ptr< [System](classmavsdk_1_1_system.md) > system) | Constructor. Creates the plugin for a specific [System](classmavsdk_1_1_system.md).
 &nbsp; | [~MavlinkPassthrough](#classmavsdk_1_1_mavlink_passthrough_1a890faef9ad80c3e79e0b785fd07106c8) () | Destructor (internal use only).
 &nbsp; | [MavlinkPassthrough](#classmavsdk_1_1_mavlink_passthrough_1ae4b30f9c2c5e938ab965729e27f50ce5) (const [MavlinkPassthrough](classmavsdk_1_1_mavlink_passthrough.md) &)=delete | Copy Constructor (object is not copyable).
 DEPRECATED [Result](classmavsdk_1_1_mavlink_passthrough.md#classmavsdk_1_1_mavlink_passthrough_1a265eacaeea064a31de3fe16d1e357793) | [send_message](#classmavsdk_1_1_mavlink_passthrough_1a9bbd09d34f7ae1b6e27bcd5c3d4ba667) (mavlink_message_t & message) | Send message (deprecated).
-[Result](classmavsdk_1_1_mavlink_passthrough.md#classmavsdk_1_1_mavlink_passthrough_1a265eacaeea064a31de3fe16d1e357793) | [queue_message](#classmavsdk_1_1_mavlink_passthrough_1aa95592bc4da7d56d444b8b5cb5bce814) (std::function< mavlink_message_t([MavlinkAddress](struct_mavlink_address.md) mavlink_address, uint8_t channel)> fun) | Send message by queueing it.
-[Result](classmavsdk_1_1_mavlink_passthrough.md#classmavsdk_1_1_mavlink_passthrough_1a265eacaeea064a31de3fe16d1e357793) | [send_command_long](#classmavsdk_1_1_mavlink_passthrough_1a7e258aa16b92195e5329e861fb18f8e9) (const [CommandLong](structmavsdk_1_1_mavlink_passthrough_1_1_command_long.md) & command) | Send a MAVLink command_long.
-[Result](classmavsdk_1_1_mavlink_passthrough.md#classmavsdk_1_1_mavlink_passthrough_1a265eacaeea064a31de3fe16d1e357793) | [send_command_int](#classmavsdk_1_1_mavlink_passthrough_1a654d67a3b136509c76e2ac804a656ada) (const [CommandInt](structmavsdk_1_1_mavlink_passthrough_1_1_command_int.md) & command) | Send a MAVLink command_long.
-mavlink_message_t | [make_command_ack_message](#classmavsdk_1_1_mavlink_passthrough_1aa08cb5d2f9aed795367cf7e05d58bdcc) (const uint8_t target_sysid, const uint8_t target_compid, const uint16_t command, MAV_RESULT result) | Create a command_ack.
-std::pair< [Result](classmavsdk_1_1_mavlink_passthrough.md#classmavsdk_1_1_mavlink_passthrough_1a265eacaeea064a31de3fe16d1e357793), int32_t > | [get_param_int](#classmavsdk_1_1_mavlink_passthrough_1ad692f8b619f317151831bc53b4f6c168) (const std::string & name, std::optional< uint8_t > maybe_component_id, bool extended) | Request param (int).
-std::pair< [Result](classmavsdk_1_1_mavlink_passthrough.md#classmavsdk_1_1_mavlink_passthrough_1a265eacaeea064a31de3fe16d1e357793), float > | [get_param_float](#classmavsdk_1_1_mavlink_passthrough_1a347f3921a786865c7bb62817b706c359) (const std::string & name, std::optional< uint8_t > maybe_component_id, bool extended) | Request param (float).
-[MessageHandle](classmavsdk_1_1_mavlink_passthrough.md#classmavsdk_1_1_mavlink_passthrough_1a2e283239c4429eaeb33deb5821833066) | [subscribe_message](#classmavsdk_1_1_mavlink_passthrough_1ae2ab2426bc0d844e931c266aa26c3607) (uint16_t message_id, const [MessageCallback](classmavsdk_1_1_mavlink_passthrough.md#classmavsdk_1_1_mavlink_passthrough_1a97f94c54e84fcce94d922fd7f4e3d231) & callback) | Subscribe to messages using message ID.
-void | [unsubscribe_message](#classmavsdk_1_1_mavlink_passthrough_1af4e722ae613e799b60020c30193656be) (uint16_t message_id, [MessageHandle](classmavsdk_1_1_mavlink_passthrough.md#classmavsdk_1_1_mavlink_passthrough_1a2e283239c4429eaeb33deb5821833066) handle) | Unsubscribe from subscribe_message.
-uint8_t | [get_our_sysid](#classmavsdk_1_1_mavlink_passthrough_1a985b269c1b78ec3e4e9d9468e46e19be) () const | Get our own system ID.
-uint8_t | [get_our_compid](#classmavsdk_1_1_mavlink_passthrough_1a85ddd016ab35d5f3f487b1362723d3cf) () const | Get our own component ID.
-uint8_t | [get_target_sysid](#classmavsdk_1_1_mavlink_passthrough_1a2867d1f37649d62e757bbac0a73b3ebd) () const | Get system ID of target.
-uint8_t | [get_target_compid](#classmavsdk_1_1_mavlink_passthrough_1a22ecab3905237a2f227f77bbab9afd17) () const | Get target component ID.
+DEPRECATED [Result](classmavsdk_1_1_mavlink_passthrough.md#classmavsdk_1_1_mavlink_passthrough_1a265eacaeea064a31de3fe16d1e357793) | [queue_message](#classmavsdk_1_1_mavlink_passthrough_1a272f72328f6298eb80332edacc0f7d38) (std::function< mavlink_message_t([MavlinkAddress](struct_mavlink_address.md) mavlink_address, uint8_t channel)> fun) | Send message by queueing it.
+DEPRECATED [Result](classmavsdk_1_1_mavlink_passthrough.md#classmavsdk_1_1_mavlink_passthrough_1a265eacaeea064a31de3fe16d1e357793) | [send_command_long](#classmavsdk_1_1_mavlink_passthrough_1a3c0d1373da35e5812ed1f70215ffa095) (const [CommandLong](structmavsdk_1_1_mavlink_passthrough_1_1_command_long.md) & command) | Send a MAVLink command_long.
+DEPRECATED [Result](classmavsdk_1_1_mavlink_passthrough.md#classmavsdk_1_1_mavlink_passthrough_1a265eacaeea064a31de3fe16d1e357793) | [send_command_int](#classmavsdk_1_1_mavlink_passthrough_1aaad7aef7c0f7009e31aed0470483db2b) (const [CommandInt](structmavsdk_1_1_mavlink_passthrough_1_1_command_int.md) & command) | Send a MAVLink command_long.
+DEPRECATED mavlink_message_t | [make_command_ack_message](#classmavsdk_1_1_mavlink_passthrough_1ab2ff746c12d2fead5eecb5d9eff5f1bb) (const uint8_t target_sysid, const uint8_t target_compid, const uint16_t command, MAV_RESULT result) | Create a command_ack.
+DEPRECATED std::pair< [Result](classmavsdk_1_1_mavlink_passthrough.md#classmavsdk_1_1_mavlink_passthrough_1a265eacaeea064a31de3fe16d1e357793), int32_t > | [get_param_int](#classmavsdk_1_1_mavlink_passthrough_1a7abe72a086741674ae6a27d545b4ccc3) (const std::string & name, std::optional< uint8_t > maybe_component_id, bool extended) | Request param (int).
+DEPRECATED std::pair< [Result](classmavsdk_1_1_mavlink_passthrough.md#classmavsdk_1_1_mavlink_passthrough_1a265eacaeea064a31de3fe16d1e357793), float > | [get_param_float](#classmavsdk_1_1_mavlink_passthrough_1a1d537c9ad28f89fa220c7a1aadf83668) (const std::string & name, std::optional< uint8_t > maybe_component_id, bool extended) | Request param (float).
+DEPRECATED [MessageHandle](classmavsdk_1_1_mavlink_passthrough.md#classmavsdk_1_1_mavlink_passthrough_1a2e283239c4429eaeb33deb5821833066) | [subscribe_message](#classmavsdk_1_1_mavlink_passthrough_1a1e9e4ef7c75d7b69a863a1aaf4dfd96b) (uint16_t message_id, const [MessageCallback](classmavsdk_1_1_mavlink_passthrough.md#classmavsdk_1_1_mavlink_passthrough_1a97f94c54e84fcce94d922fd7f4e3d231) & callback) | Subscribe to messages using message ID.
+DEPRECATED void | [unsubscribe_message](#classmavsdk_1_1_mavlink_passthrough_1a419a26941e923a42362c37d5e509ed8d) (uint16_t message_id, [MessageHandle](classmavsdk_1_1_mavlink_passthrough.md#classmavsdk_1_1_mavlink_passthrough_1a2e283239c4429eaeb33deb5821833066) handle) | Unsubscribe from subscribe_message.
+DEPRECATED uint8_t | [get_our_sysid](#classmavsdk_1_1_mavlink_passthrough_1a92417cb2892173b70b9458f9678bfea9) () const | Get our own system ID.
+DEPRECATED uint8_t | [get_our_compid](#classmavsdk_1_1_mavlink_passthrough_1a260b865afbeadfb6349ce242a4b997da) () const | Get our own component ID.
+DEPRECATED uint8_t | [get_target_sysid](#classmavsdk_1_1_mavlink_passthrough_1a319e2cec657560acb8a6c01175febf65) () const | Get system ID of target.
+DEPRECATED uint8_t | [get_target_compid](#classmavsdk_1_1_mavlink_passthrough_1a7b769a42fabf11c099cc28948ece2903) () const | Get target component ID.
 const [MavlinkPassthrough](classmavsdk_1_1_mavlink_passthrough.md) & | [operator=](#classmavsdk_1_1_mavlink_passthrough_1a39b74b37094511cc5bc910a2233d024e) (const [MavlinkPassthrough](classmavsdk_1_1_mavlink_passthrough.md) &)=delete | Equality operator (object is not copyable).
 
 
 ## Constructor & Destructor Documentation
 
 
-### MavlinkPassthrough() {#classmavsdk_1_1_mavlink_passthrough_1ad17fc20d2b7c5c6996e0841aaabccb56}
+### MavlinkPassthrough() {#classmavsdk_1_1_mavlink_passthrough_1a3b8db71291e153e753a8a316d58cfaa3}
 ```cpp
-mavsdk::MavlinkPassthrough::MavlinkPassthrough(System &system)
+DEPRECATED mavsdk::MavlinkPassthrough::MavlinkPassthrough(System &system)
 ```
 
 
@@ -85,9 +81,13 @@ auto mavlink_passthrough = MavlinkPassthrough(system);
 
 * [System](classmavsdk_1_1_system.md)& **system** - The specific system associated with this plugin.
 
-### MavlinkPassthrough() {#classmavsdk_1_1_mavlink_passthrough_1a9d1fdd3c4aeab8e221ac59612944c299}
+**Returns**
+
+&emsp;DEPRECATED - 
+
+### MavlinkPassthrough() {#classmavsdk_1_1_mavlink_passthrough_1acddc4bdb520f49019f52cdafd74b43f2}
 ```cpp
-mavsdk::MavlinkPassthrough::MavlinkPassthrough(std::shared_ptr< System > system)
+DEPRECATED mavsdk::MavlinkPassthrough::MavlinkPassthrough(std::shared_ptr< System > system)
 ```
 
 
@@ -102,6 +102,10 @@ auto mavlink_passthrough = MavlinkPassthrough(system);
 **Parameters**
 
 * std::shared_ptr< [System](classmavsdk_1_1_system.md) > **system** - The specific system associated with this plugin.
+
+**Returns**
+
+&emsp;DEPRECATED - 
 
 ### ~MavlinkPassthrough() {#classmavsdk_1_1_mavlink_passthrough_1a890faef9ad80c3e79e0b785fd07106c8}
 ```cpp
@@ -187,7 +191,7 @@ DEPRECATED Result mavsdk::MavlinkPassthrough::send_message(mavlink_message_t &me
 Send message (deprecated).
 
 ::: info
-This interface is deprecated. Instead the method [queue_message()](classmavsdk_1_1_mavlink_passthrough.md#classmavsdk_1_1_mavlink_passthrough_1aa95592bc4da7d56d444b8b5cb5bce814) should be used.
+This interface is deprecated. Instead the method [queue_message()](classmavsdk_1_1_mavlink_passthrough.md#classmavsdk_1_1_mavlink_passthrough_1a272f72328f6298eb80332edacc0f7d38) should be used.
 :::
 
 **Parameters**
@@ -198,9 +202,9 @@ This interface is deprecated. Instead the method [queue_message()](classmavsdk_1
 
 &emsp;DEPRECATED [Result](classmavsdk_1_1_mavlink_passthrough.md#classmavsdk_1_1_mavlink_passthrough_1a265eacaeea064a31de3fe16d1e357793) - result of the request.
 
-### queue_message() {#classmavsdk_1_1_mavlink_passthrough_1aa95592bc4da7d56d444b8b5cb5bce814}
+### queue_message() {#classmavsdk_1_1_mavlink_passthrough_1a272f72328f6298eb80332edacc0f7d38}
 ```cpp
-Result mavsdk::MavlinkPassthrough::queue_message(std::function< mavlink_message_t(MavlinkAddress mavlink_address, uint8_t channel)> fun)
+DEPRECATED Result mavsdk::MavlinkPassthrough::queue_message(std::function< mavlink_message_t(MavlinkAddress mavlink_address, uint8_t channel)> fun)
 ```
 
 
@@ -218,11 +222,11 @@ The interface changed in order to prevent accessing the internal MAVLink status 
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_mavlink_passthrough.md#classmavsdk_1_1_mavlink_passthrough_1a265eacaeea064a31de3fe16d1e357793) - result of request
+&emsp;DEPRECATED [Result](classmavsdk_1_1_mavlink_passthrough.md#classmavsdk_1_1_mavlink_passthrough_1a265eacaeea064a31de3fe16d1e357793) - result of request
 
-### send_command_long() {#classmavsdk_1_1_mavlink_passthrough_1a7e258aa16b92195e5329e861fb18f8e9}
+### send_command_long() {#classmavsdk_1_1_mavlink_passthrough_1a3c0d1373da35e5812ed1f70215ffa095}
 ```cpp
-Result mavsdk::MavlinkPassthrough::send_command_long(const CommandLong &command)
+DEPRECATED Result mavsdk::MavlinkPassthrough::send_command_long(const CommandLong &command)
 ```
 
 
@@ -235,11 +239,11 @@ Send a MAVLink command_long.
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_mavlink_passthrough.md#classmavsdk_1_1_mavlink_passthrough_1a265eacaeea064a31de3fe16d1e357793) - result of the request.
+&emsp;DEPRECATED [Result](classmavsdk_1_1_mavlink_passthrough.md#classmavsdk_1_1_mavlink_passthrough_1a265eacaeea064a31de3fe16d1e357793) - result of the request.
 
-### send_command_int() {#classmavsdk_1_1_mavlink_passthrough_1a654d67a3b136509c76e2ac804a656ada}
+### send_command_int() {#classmavsdk_1_1_mavlink_passthrough_1aaad7aef7c0f7009e31aed0470483db2b}
 ```cpp
-Result mavsdk::MavlinkPassthrough::send_command_int(const CommandInt &command)
+DEPRECATED Result mavsdk::MavlinkPassthrough::send_command_int(const CommandInt &command)
 ```
 
 
@@ -252,11 +256,11 @@ Send a MAVLink command_long.
 
 **Returns**
 
-&emsp;[Result](classmavsdk_1_1_mavlink_passthrough.md#classmavsdk_1_1_mavlink_passthrough_1a265eacaeea064a31de3fe16d1e357793) - result of the request.
+&emsp;DEPRECATED [Result](classmavsdk_1_1_mavlink_passthrough.md#classmavsdk_1_1_mavlink_passthrough_1a265eacaeea064a31de3fe16d1e357793) - result of the request.
 
-### make_command_ack_message() {#classmavsdk_1_1_mavlink_passthrough_1aa08cb5d2f9aed795367cf7e05d58bdcc}
+### make_command_ack_message() {#classmavsdk_1_1_mavlink_passthrough_1ab2ff746c12d2fead5eecb5d9eff5f1bb}
 ```cpp
-mavlink_message_t mavsdk::MavlinkPassthrough::make_command_ack_message(const uint8_t target_sysid, const uint8_t target_compid, const uint16_t command, MAV_RESULT result)
+DEPRECATED mavlink_message_t mavsdk::MavlinkPassthrough::make_command_ack_message(const uint8_t target_sysid, const uint8_t target_compid, const uint16_t command, MAV_RESULT result)
 ```
 
 
@@ -272,11 +276,11 @@ Create a command_ack.
 
 **Returns**
 
-&emsp;mavlink_message_t - message to send.
+&emsp;DEPRECATED mavlink_message_t - message to send.
 
-### get_param_int() {#classmavsdk_1_1_mavlink_passthrough_1ad692f8b619f317151831bc53b4f6c168}
+### get_param_int() {#classmavsdk_1_1_mavlink_passthrough_1a7abe72a086741674ae6a27d545b4ccc3}
 ```cpp
-std::pair< Result, int32_t > mavsdk::MavlinkPassthrough::get_param_int(const std::string &name, std::optional< uint8_t > maybe_component_id, bool extended)
+DEPRECATED std::pair< Result, int32_t > mavsdk::MavlinkPassthrough::get_param_int(const std::string &name, std::optional< uint8_t > maybe_component_id, bool extended)
 ```
 
 
@@ -291,11 +295,11 @@ Request param (int).
 
 **Returns**
 
-&emsp;std::pair< [Result](classmavsdk_1_1_mavlink_passthrough.md#classmavsdk_1_1_mavlink_passthrough_1a265eacaeea064a31de3fe16d1e357793), int32_t > - 
+&emsp;DEPRECATED std::pair< [Result](classmavsdk_1_1_mavlink_passthrough.md#classmavsdk_1_1_mavlink_passthrough_1a265eacaeea064a31de3fe16d1e357793), int32_t > - 
 
-### get_param_float() {#classmavsdk_1_1_mavlink_passthrough_1a347f3921a786865c7bb62817b706c359}
+### get_param_float() {#classmavsdk_1_1_mavlink_passthrough_1a1d537c9ad28f89fa220c7a1aadf83668}
 ```cpp
-std::pair< Result, float > mavsdk::MavlinkPassthrough::get_param_float(const std::string &name, std::optional< uint8_t > maybe_component_id, bool extended)
+DEPRECATED std::pair< Result, float > mavsdk::MavlinkPassthrough::get_param_float(const std::string &name, std::optional< uint8_t > maybe_component_id, bool extended)
 ```
 
 
@@ -310,11 +314,11 @@ Request param (float).
 
 **Returns**
 
-&emsp;std::pair< [Result](classmavsdk_1_1_mavlink_passthrough.md#classmavsdk_1_1_mavlink_passthrough_1a265eacaeea064a31de3fe16d1e357793), float > - 
+&emsp;DEPRECATED std::pair< [Result](classmavsdk_1_1_mavlink_passthrough.md#classmavsdk_1_1_mavlink_passthrough_1a265eacaeea064a31de3fe16d1e357793), float > - 
 
-### subscribe_message() {#classmavsdk_1_1_mavlink_passthrough_1ae2ab2426bc0d844e931c266aa26c3607}
+### subscribe_message() {#classmavsdk_1_1_mavlink_passthrough_1a1e9e4ef7c75d7b69a863a1aaf4dfd96b}
 ```cpp
-MessageHandle mavsdk::MavlinkPassthrough::subscribe_message(uint16_t message_id, const MessageCallback &callback)
+DEPRECATED MessageHandle mavsdk::MavlinkPassthrough::subscribe_message(uint16_t message_id, const MessageCallback &callback)
 ```
 
 
@@ -329,11 +333,11 @@ This means that all future messages being received will trigger the callback to 
 
 **Returns**
 
-&emsp;[MessageHandle](classmavsdk_1_1_mavlink_passthrough.md#classmavsdk_1_1_mavlink_passthrough_1a2e283239c4429eaeb33deb5821833066) - 
+&emsp;DEPRECATED [MessageHandle](classmavsdk_1_1_mavlink_passthrough.md#classmavsdk_1_1_mavlink_passthrough_1a2e283239c4429eaeb33deb5821833066) - 
 
-### unsubscribe_message() {#classmavsdk_1_1_mavlink_passthrough_1af4e722ae613e799b60020c30193656be}
+### unsubscribe_message() {#classmavsdk_1_1_mavlink_passthrough_1a419a26941e923a42362c37d5e509ed8d}
 ```cpp
-void mavsdk::MavlinkPassthrough::unsubscribe_message(uint16_t message_id, MessageHandle handle)
+DEPRECATED void mavsdk::MavlinkPassthrough::unsubscribe_message(uint16_t message_id, MessageHandle handle)
 ```
 
 
@@ -345,9 +349,13 @@ Unsubscribe from subscribe_message.
 * uint16_t **message_id** - The MAVLink message ID.
 * [MessageHandle](classmavsdk_1_1_mavlink_passthrough.md#classmavsdk_1_1_mavlink_passthrough_1a2e283239c4429eaeb33deb5821833066) **handle** - The handle returned from subscribe_message.
 
-### get_our_sysid() {#classmavsdk_1_1_mavlink_passthrough_1a985b269c1b78ec3e4e9d9468e46e19be}
+**Returns**
+
+&emsp;DEPRECATED void - 
+
+### get_our_sysid() {#classmavsdk_1_1_mavlink_passthrough_1a92417cb2892173b70b9458f9678bfea9}
 ```cpp
-uint8_t mavsdk::MavlinkPassthrough::get_our_sysid() const
+DEPRECATED uint8_t mavsdk::MavlinkPassthrough::get_our_sysid() const
 ```
 
 
@@ -356,11 +364,11 @@ Get our own system ID.
 
 **Returns**
 
-&emsp;uint8_t - our own system ID.
+&emsp;DEPRECATED uint8_t - our own system ID.
 
-### get_our_compid() {#classmavsdk_1_1_mavlink_passthrough_1a85ddd016ab35d5f3f487b1362723d3cf}
+### get_our_compid() {#classmavsdk_1_1_mavlink_passthrough_1a260b865afbeadfb6349ce242a4b997da}
 ```cpp
-uint8_t mavsdk::MavlinkPassthrough::get_our_compid() const
+DEPRECATED uint8_t mavsdk::MavlinkPassthrough::get_our_compid() const
 ```
 
 
@@ -369,11 +377,11 @@ Get our own component ID.
 
 **Returns**
 
-&emsp;uint8_t - our own component ID.
+&emsp;DEPRECATED uint8_t - our own component ID.
 
-### get_target_sysid() {#classmavsdk_1_1_mavlink_passthrough_1a2867d1f37649d62e757bbac0a73b3ebd}
+### get_target_sysid() {#classmavsdk_1_1_mavlink_passthrough_1a319e2cec657560acb8a6c01175febf65}
 ```cpp
-uint8_t mavsdk::MavlinkPassthrough::get_target_sysid() const
+DEPRECATED uint8_t mavsdk::MavlinkPassthrough::get_target_sysid() const
 ```
 
 
@@ -382,11 +390,11 @@ Get system ID of target.
 
 **Returns**
 
-&emsp;uint8_t - system ID of target.
+&emsp;DEPRECATED uint8_t - system ID of target.
 
-### get_target_compid() {#classmavsdk_1_1_mavlink_passthrough_1a22ecab3905237a2f227f77bbab9afd17}
+### get_target_compid() {#classmavsdk_1_1_mavlink_passthrough_1a7b769a42fabf11c099cc28948ece2903}
 ```cpp
-uint8_t mavsdk::MavlinkPassthrough::get_target_compid() const
+DEPRECATED uint8_t mavsdk::MavlinkPassthrough::get_target_compid() const
 ```
 
 
@@ -396,7 +404,7 @@ This defaults to the component ID of the autopilot (1) if available and otherwis
 
 **Returns**
 
-&emsp;uint8_t - component ID of target.
+&emsp;DEPRECATED uint8_t - component ID of target.
 
 ### operator=() {#classmavsdk_1_1_mavlink_passthrough_1a39b74b37094511cc5bc910a2233d024e}
 ```cpp

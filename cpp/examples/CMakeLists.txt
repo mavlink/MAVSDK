@@ -8,7 +8,9 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 if (WERROR)
-    add_compile_options(-Werror)
+    # Examples intentionally use deprecated APIs to document migration paths,
+    # so we allow deprecated-declarations warnings but keep all other errors.
+    add_compile_options(-Werror -Wno-error=deprecated-declarations)
 endif()
 
 add_subdirectory(arm_authorizer_server)
