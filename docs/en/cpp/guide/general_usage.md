@@ -115,11 +115,11 @@ The implication is that developers will need to separately monitor the completio
 
 ### Missions
 
-The [Mission](../api_reference/classmavsdk_1_1_mission.html) and [MissionItem](../api_reference/structmavsdk_1_1_mission_1_1_mission_item.html) APIs provide a simplified but often useful *subset* of MAVLink mission commands as a developer-friendly API.
+The [Mission](../api_reference/classmavsdk_1_1_mission.md) and [MissionItem](../api_reference/structmavsdk_1_1_mission_1_1_mission_item.md) APIs provide a simplified but often useful *subset* of MAVLink mission commands as a developer-friendly API.
 
 Not every mission command behaviour supported by the protocol and PX4 will be supported by the Mission plugins.
 
-In order to access the full mission API, the [MissionRaw](../api_reference/classmavsdk_1_1_mission_raw.html) plugin can be used instead.
+In order to access the full mission API, the [MissionRaw](../api_reference/classmavsdk_1_1_mission_raw.md) plugin can be used instead.
 
-The MissionRaw also allows to [import QGC mission files](https://mavsdk.mavlink.io/main/en/cpp/api_reference/classmavsdk_1_1_mission_raw.html#classmavsdk_1_1_mission_raw_1a2a4ca261c37737e691c6954693d6d0a5).
+The MissionRaw also allows to [import QGC mission files](https://mavsdk.mavlink.io/main/en/cpp/api_reference/classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a2a4ca261c37737e691c6954693d6d0a5).
 
