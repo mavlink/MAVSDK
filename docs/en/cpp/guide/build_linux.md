@@ -142,7 +142,7 @@ This script:
 Prerequisites (install before running the script):
 ```bash
 sudo apt install build-essential cmake git python3 python3-pip \
-                 liblzma-dev libtinyxml2-dev libjsoncpp-dev \
+                 liblzma-dev libtinyxml2-dev nlohmann-json3-dev \
                  libcurl4-openssl-dev libssl-dev
 ```
 

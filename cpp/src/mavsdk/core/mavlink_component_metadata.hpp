@@ -4,7 +4,7 @@
 #include "mavsdk_export.h"
 #include "file_cache.hpp"
 #include "mavlink_command_sender.hpp"
-#include <json/json.h>
+#include <nlohmann/json.hpp>
 
 #if BUILD_WITHOUT_CURL != 1
 #include "http_loader.hpp"
@@ -26,7 +26,7 @@ public:
         _crc_metadata(metadata_crc),
         _uri_metadata(std::move(metadata_uri))
     {}
-    explicit MetadataComponentUris(const Json::Value& value);
+    explicit MetadataComponentUris(const nlohmann::json& value);
 
     const std::string& uri_metadata() const { return _uri_metadata; }
     const std::string& uri_metadata_fallback() const { return _uri_metadata_fallback; }

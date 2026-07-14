@@ -7,7 +7,7 @@
 #include <optional>
 #include <string>
 #include <utility>
-#include <json/json.h>
+#include <nlohmann/json.hpp>
 
 namespace mavsdk {
 
@@ -20,23 +20,23 @@ public:
     parse_mission_planner(const std::string& raw_mission_planner, Autopilot autopilot);
 
 private:
-    static bool check_overall_version(const Json::Value& root);
+    static bool check_overall_version(const nlohmann::json& root);
     static std::optional<std::vector<MissionRaw::MissionItem>>
-    import_geofence(const Json::Value& root);
+    import_geofence(const nlohmann::json& root);
     static std::optional<std::vector<MissionRaw::MissionItem>>
-    import_rally_points(const Json::Value& root);
+    import_rally_points(const nlohmann::json& root);
     static std::optional<std::vector<MissionRaw::MissionItem>>
-    import_mission(const Json::Value& root, Autopilot autopilot);
+    import_mission(const nlohmann::json& root, Autopilot autopilot);
     static std::optional<MissionRaw::MissionItem>
-    import_simple_mission_item(const Json::Value& json_item);
+    import_simple_mission_item(const nlohmann::json& json_item);
     static std::optional<std::vector<MissionRaw::MissionItem>>
-    import_complex_mission_items(const Json::Value& json_item);
+    import_complex_mission_items(const nlohmann::json& json_item);
     static std::vector<MissionRaw::MissionItem>
-    import_polygon_geofences(const Json::Value& json_item);
+    import_polygon_geofences(const nlohmann::json& json_item);
     static std::vector<MissionRaw::MissionItem>
-    import_circular_geofences(const Json::Value& json_item);
-    static float set_float(const Json::Value& val);
-    static int32_t set_int32(const Json::Value& val, uint32_t frame);
+    import_circular_geofences(const nlohmann::json& json_item);
+    static float set_float(const nlohmann::json& val);
+    static int32_t set_int32(const nlohmann::json& val, uint32_t frame);
 
     // Mission Planner format parsing methods
     static std::optional<std::vector<MissionRaw::MissionItem>>

@@ -8,7 +8,7 @@
 #include <thread>
 #include <future>
 #include <gtest/gtest.h>
-#include <json/json.h>
+#include <nlohmann/json.hpp>
 
 using namespace mavsdk;
 
@@ -158,41 +158,43 @@ TEST(MavlinkDirect, ExtendedFields)
     EXPECT_EQ(received_full.message_name, "SYS_STATUS");
 
     // Parse JSON to verify field values
-    Json::Value compact_json, full_json;
-    Json::Reader reader;
+    nlohmann::json compact_json, full_json;
 
-    ASSERT_TRUE(reader.parse(received_compact.fields_json, compact_json));
-    ASSERT_TRUE(reader.parse(received_full.fields_json, full_json));
+    ASSERT_TRUE(
+        !((compact_json = nlohmann::json::parse(received_compact.fields_json, nullptr, false))
+              .is_discarded()));
+    ASSERT_TRUE(!((full_json = nlohmann::json::parse(received_full.fields_json, nullptr, false))
+                      .is_discarded()));
 
     // Verify basic fields are present and correct in both messages
-    EXPECT_EQ(compact_json["onboard_control_sensors_present"].asUInt(), 1u);
-    EXPECT_EQ(compact_json["load"].asUInt(), 500u);
-    EXPECT_EQ(compact_json["voltage_battery"].asUInt(), 12000u);
-    EXPECT_EQ(compact_json["current_battery"].asInt(), 1000);
-    EXPECT_EQ(compact_json["battery_remaining"].asInt(), 75);
+    EXPECT_EQ(compact_json["onboard_control_sensors_present"].get<uint32_t>(), 1u);
+    EXPECT_EQ(compact_json["load"].get<uint32_t>(), 500u);
+    EXPECT_EQ(compact_json["voltage_battery"].get<uint32_t>(), 12000u);
+    EXPECT_EQ(compact_json["current_battery"].get<int>(), 1000);
+    EXPECT_EQ(compact_json["battery_remaining"].get<int>(), 75);
 
-    EXPECT_EQ(full_json["onboard_control_sensors_present"].asUInt(), 1u);
-    EXPECT_EQ(full_json["load"].asUInt(), 500u);
-    EXPECT_EQ(full_json["voltage_battery"].asUInt(), 12000u);
-    EXPECT_EQ(full_json["current_battery"].asInt(), 1000);
-    EXPECT_EQ(full_json["battery_remaining"].asInt(), 75);
+    EXPECT_EQ(full_json["onboard_control_sensors_present"].get<uint32_t>(), 1u);
+    EXPECT_EQ(full_json["load"].get<uint32_t>(), 500u);
+    EXPECT_EQ(full_json["voltage_battery"].get<uint32_t>(), 12000u);
+    EXPECT_EQ(full_json["current_battery"].get<int>(), 1000);
+    EXPECT_EQ(full_json["battery_remaining"].get<int>(), 75);
 
     // Verify compact message HAS extended fields with zero values (MAVLink v2 zero-truncation)
-    EXPECT_TRUE(compact_json.isMember("onboard_control_sensors_present_extended"));
-    EXPECT_TRUE(compact_json.isMember("onboard_control_sensors_enabled_extended"));
-    EXPECT_TRUE(compact_json.isMember("onboard_control_sensors_health_extended"));
-    EXPECT_EQ(compact_json["onboard_control_sensors_present_extended"].asUInt(), 0u);
-    EXPECT_EQ(compact_json["onboard_control_sensors_enabled_extended"].asUInt(), 0u);
-    EXPECT_EQ(compact_json["onboard_control_sensors_health_extended"].asUInt(), 0u);
+    EXPECT_TRUE(compact_json.contains("onboard_control_sensors_present_extended"));
+    EXPECT_TRUE(compact_json.contains("onboard_control_sensors_enabled_extended"));
+    EXPECT_TRUE(compact_json.contains("onboard_control_sensors_health_extended"));
+    EXPECT_EQ(compact_json["onboard_control_sensors_present_extended"].get<uint32_t>(), 0u);
+    EXPECT_EQ(compact_json["onboard_control_sensors_enabled_extended"].get<uint32_t>(), 0u);
+    EXPECT_EQ(compact_json["onboard_control_sensors_health_extended"].get<uint32_t>(), 0u);
 
     // Verify full message HAS extended fields with correct values
-    EXPECT_TRUE(full_json.isMember("onboard_control_sensors_present_extended"));
-    EXPECT_TRUE(full_json.isMember("onboard_control_sensors_enabled_extended"));
-    EXPECT_TRUE(full_json.isMember("onboard_control_sensors_health_extended"));
+    EXPECT_TRUE(full_json.contains("onboard_control_sensors_present_extended"));
+    EXPECT_TRUE(full_json.contains("onboard_control_sensors_enabled_extended"));
+    EXPECT_TRUE(full_json.contains("onboard_control_sensors_health_extended"));
 
-    EXPECT_EQ(full_json["onboard_control_sensors_present_extended"].asUInt(), 123u);
-    EXPECT_EQ(full_json["onboard_control_sensors_enabled_extended"].asUInt(), 456u);
-    EXPECT_EQ(full_json["onboard_control_sensors_health_extended"].asUInt(), 789u);
+    EXPECT_EQ(full_json["onboard_control_sensors_present_extended"].get<uint32_t>(), 123u);
+    EXPECT_EQ(full_json["onboard_control_sensors_enabled_extended"].get<uint32_t>(), 456u);
+    EXPECT_EQ(full_json["onboard_control_sensors_health_extended"].get<uint32_t>(), 789u);
 
     receiver_mavlink_direct.unsubscribe_message(handle);
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
@@ -408,28 +410,30 @@ TEST(MavlinkDirect, ArrayFields)
     EXPECT_EQ(received_full.message_name, "GPS_STATUS");
 
     // Parse JSON to verify field values
-    Json::Value partial_json, full_json;
-    Json::Reader reader;
+    nlohmann::json partial_json, full_json;
 
-    ASSERT_TRUE(reader.parse(received_partial.fields_json, partial_json));
-    ASSERT_TRUE(reader.parse(received_full.fields_json, full_json));
+    ASSERT_TRUE(
+        !((partial_json = nlohmann::json::parse(received_partial.fields_json, nullptr, false))
+              .is_discarded()));
+    ASSERT_TRUE(!((full_json = nlohmann::json::parse(received_full.fields_json, nullptr, false))
+                      .is_discarded()));
 
     // Verify scalar field
-    EXPECT_EQ(partial_json["satellites_visible"].asUInt(), 3u);
-    EXPECT_EQ(full_json["satellites_visible"].asUInt(), 20u);
+    EXPECT_EQ(partial_json["satellites_visible"].get<uint32_t>(), 3u);
+    EXPECT_EQ(full_json["satellites_visible"].get<uint32_t>(), 20u);
 
     // Verify array fields are present and have correct type (arrays)
-    EXPECT_TRUE(partial_json["satellite_prn"].isArray());
-    EXPECT_TRUE(partial_json["satellite_used"].isArray());
-    EXPECT_TRUE(partial_json["satellite_elevation"].isArray());
-    EXPECT_TRUE(partial_json["satellite_azimuth"].isArray());
-    EXPECT_TRUE(partial_json["satellite_snr"].isArray());
+    EXPECT_TRUE(partial_json["satellite_prn"].is_array());
+    EXPECT_TRUE(partial_json["satellite_used"].is_array());
+    EXPECT_TRUE(partial_json["satellite_elevation"].is_array());
+    EXPECT_TRUE(partial_json["satellite_azimuth"].is_array());
+    EXPECT_TRUE(partial_json["satellite_snr"].is_array());
 
-    EXPECT_TRUE(full_json["satellite_prn"].isArray());
-    EXPECT_TRUE(full_json["satellite_used"].isArray());
-    EXPECT_TRUE(full_json["satellite_elevation"].isArray());
-    EXPECT_TRUE(full_json["satellite_azimuth"].isArray());
-    EXPECT_TRUE(full_json["satellite_snr"].isArray());
+    EXPECT_TRUE(full_json["satellite_prn"].is_array());
+    EXPECT_TRUE(full_json["satellite_used"].is_array());
+    EXPECT_TRUE(full_json["satellite_elevation"].is_array());
+    EXPECT_TRUE(full_json["satellite_azimuth"].is_array());
+    EXPECT_TRUE(full_json["satellite_snr"].is_array());
 
     // Verify array lengths (should be 20 elements each)
     EXPECT_EQ(partial_json["satellite_prn"].size(), 20u);
@@ -445,33 +449,33 @@ TEST(MavlinkDirect, ArrayFields)
     EXPECT_EQ(full_json["satellite_snr"].size(), 20u);
 
     // Verify specific array element values for partial message
-    EXPECT_EQ(partial_json["satellite_prn"][0].asUInt(), 1u);
-    EXPECT_EQ(partial_json["satellite_prn"][1].asUInt(), 2u);
-    EXPECT_EQ(partial_json["satellite_prn"][2].asUInt(), 3u);
-    EXPECT_EQ(partial_json["satellite_prn"][3].asUInt(), 0u); // Should be zero
-    EXPECT_EQ(partial_json["satellite_prn"][19].asUInt(), 0u); // Last element should be zero
+    EXPECT_EQ(partial_json["satellite_prn"][0].get<uint32_t>(), 1u);
+    EXPECT_EQ(partial_json["satellite_prn"][1].get<uint32_t>(), 2u);
+    EXPECT_EQ(partial_json["satellite_prn"][2].get<uint32_t>(), 3u);
+    EXPECT_EQ(partial_json["satellite_prn"][3].get<uint32_t>(), 0u); // Should be zero
+    EXPECT_EQ(partial_json["satellite_prn"][19].get<uint32_t>(), 0u); // Last element should be zero
 
-    EXPECT_EQ(partial_json["satellite_used"][0].asUInt(), 1u);
-    EXPECT_EQ(partial_json["satellite_used"][1].asUInt(), 1u);
-    EXPECT_EQ(partial_json["satellite_used"][2].asUInt(), 0u);
-    EXPECT_EQ(partial_json["satellite_used"][3].asUInt(), 0u);
+    EXPECT_EQ(partial_json["satellite_used"][0].get<uint32_t>(), 1u);
+    EXPECT_EQ(partial_json["satellite_used"][1].get<uint32_t>(), 1u);
+    EXPECT_EQ(partial_json["satellite_used"][2].get<uint32_t>(), 0u);
+    EXPECT_EQ(partial_json["satellite_used"][3].get<uint32_t>(), 0u);
 
-    EXPECT_EQ(partial_json["satellite_elevation"][0].asUInt(), 45u);
-    EXPECT_EQ(partial_json["satellite_elevation"][1].asUInt(), 60u);
-    EXPECT_EQ(partial_json["satellite_elevation"][2].asUInt(), 30u);
-    EXPECT_EQ(partial_json["satellite_elevation"][3].asUInt(), 0u);
+    EXPECT_EQ(partial_json["satellite_elevation"][0].get<uint32_t>(), 45u);
+    EXPECT_EQ(partial_json["satellite_elevation"][1].get<uint32_t>(), 60u);
+    EXPECT_EQ(partial_json["satellite_elevation"][2].get<uint32_t>(), 30u);
+    EXPECT_EQ(partial_json["satellite_elevation"][3].get<uint32_t>(), 0u);
 
     // Verify specific array element values for full message
-    EXPECT_EQ(full_json["satellite_prn"][0].asUInt(), 1u);
-    EXPECT_EQ(full_json["satellite_prn"][9].asUInt(), 10u);
-    EXPECT_EQ(full_json["satellite_prn"][19].asUInt(), 20u); // Last element
+    EXPECT_EQ(full_json["satellite_prn"][0].get<uint32_t>(), 1u);
+    EXPECT_EQ(full_json["satellite_prn"][9].get<uint32_t>(), 10u);
+    EXPECT_EQ(full_json["satellite_prn"][19].get<uint32_t>(), 20u); // Last element
 
-    EXPECT_EQ(full_json["satellite_used"][0].asUInt(), 1u);
-    EXPECT_EQ(full_json["satellite_used"][5].asUInt(), 0u); // Some unused satellites
-    EXPECT_EQ(full_json["satellite_used"][10].asUInt(), 1u);
+    EXPECT_EQ(full_json["satellite_used"][0].get<uint32_t>(), 1u);
+    EXPECT_EQ(full_json["satellite_used"][5].get<uint32_t>(), 0u); // Some unused satellites
+    EXPECT_EQ(full_json["satellite_used"][10].get<uint32_t>(), 1u);
 
-    EXPECT_EQ(full_json["satellite_snr"][0].asUInt(), 25u);
-    EXPECT_EQ(full_json["satellite_snr"][19].asUInt(), 27u); // Last element
+    EXPECT_EQ(full_json["satellite_snr"][0].get<uint32_t>(), 25u);
+    EXPECT_EQ(full_json["satellite_snr"][19].get<uint32_t>(), 27u); // Last element
 
     receiver_mavlink_direct.unsubscribe_message(handle);
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
@@ -551,14 +555,14 @@ TEST(MavlinkDirect, LoadCustomXml)
     EXPECT_EQ(received_message.message_name, "CUSTOM_TEST_MESSAGE");
 
     // Parse JSON to verify field values
-    Json::Value json;
-    Json::Reader reader;
-    ASSERT_TRUE(reader.parse(received_message.fields_json, json));
+    nlohmann::json json;
+    ASSERT_TRUE(!((json = nlohmann::json::parse(received_message.fields_json, nullptr, false))
+                      .is_discarded()));
 
     // Verify custom message fields
-    EXPECT_EQ(json["test_value"].asUInt(), 42u);
-    EXPECT_EQ(json["counter"].asUInt(), 1337u);
-    EXPECT_EQ(json["status"].asUInt(), 5u);
+    EXPECT_EQ(json["test_value"].get<uint32_t>(), 42u);
+    EXPECT_EQ(json["counter"].get<uint32_t>(), 1337u);
+    EXPECT_EQ(json["status"].get<uint32_t>(), 5u);
 
     receiver_mavlink_direct.unsubscribe_message(handle);
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
@@ -612,13 +616,13 @@ TEST(MavlinkDirect, ArdupilotmegaMessage)
     EXPECT_EQ(received_message.message_name, "MEMINFO");
 
     // Parse JSON to verify field values
-    Json::Value json;
-    Json::Reader reader;
-    ASSERT_TRUE(reader.parse(received_message.fields_json, json));
+    nlohmann::json json;
+    ASSERT_TRUE(!((json = nlohmann::json::parse(received_message.fields_json, nullptr, false))
+                      .is_discarded()));
 
     // Verify MEMINFO message fields
-    EXPECT_EQ(json["brkval"].asUInt(), 32768u); // Heap top
-    EXPECT_EQ(json["freemem"].asUInt(), 8192u); // Free memory
+    EXPECT_EQ(json["brkval"].get<uint32_t>(), 32768u); // Heap top
+    EXPECT_EQ(json["freemem"].get<uint32_t>(), 8192u); // Free memory
 
     LogInfo("Successfully tested ArduPilot-specific MEMINFO message from ardupilotmega.xml");
     receiver_mavlink_direct.unsubscribe_message(handle);
@@ -711,49 +715,49 @@ TEST(MavlinkDirect, NanInfinityJsonHandling)
     EXPECT_EQ(received_message.message_name, "FLOAT_TEST_MESSAGE");
 
     // Parse JSON to verify it's valid JSON (most important test)
-    Json::Value json;
-    Json::Reader reader;
-    ASSERT_TRUE(reader.parse(received_message.fields_json, json))
+    nlohmann::json json;
+    ASSERT_TRUE(!((json = nlohmann::json::parse(received_message.fields_json, nullptr, false))
+                      .is_discarded()))
         << "JSON parsing failed, indicating invalid JSON was generated. "
         << "JSON content: " << received_message.fields_json;
 
     // Verify all expected fields are present
-    EXPECT_TRUE(json.isMember("normal_float"));
-    EXPECT_TRUE(json.isMember("nan_float"));
-    EXPECT_TRUE(json.isMember("pos_inf_float"));
-    EXPECT_TRUE(json.isMember("neg_inf_float"));
-    EXPECT_TRUE(json.isMember("normal_double"));
-    EXPECT_TRUE(json.isMember("nan_double"));
-    EXPECT_TRUE(json.isMember("float_array"));
+    EXPECT_TRUE(json.contains("normal_float"));
+    EXPECT_TRUE(json.contains("nan_float"));
+    EXPECT_TRUE(json.contains("pos_inf_float"));
+    EXPECT_TRUE(json.contains("neg_inf_float"));
+    EXPECT_TRUE(json.contains("normal_double"));
+    EXPECT_TRUE(json.contains("nan_double"));
+    EXPECT_TRUE(json.contains("float_array"));
 
     // Verify that normal values are preserved correctly
-    EXPECT_TRUE(json["normal_float"].isNumeric());
-    EXPECT_NEAR(json["normal_float"].asFloat(), 3.14f, 0.001f);
-    EXPECT_TRUE(json["normal_double"].isNumeric());
-    EXPECT_NEAR(json["normal_double"].asDouble(), 2.718, 0.001);
+    EXPECT_TRUE(json["normal_float"].is_number());
+    EXPECT_NEAR(json["normal_float"].get<float>(), 3.14f, 0.001f);
+    EXPECT_TRUE(json["normal_double"].is_number());
+    EXPECT_NEAR(json["normal_double"].get<double>(), 2.718, 0.001);
 
     // The key test: verify that null values in input JSON were converted to NaN
     // in the MAVLink message, then back to null in the output JSON
-    EXPECT_TRUE(json["nan_float"].isNull())
+    EXPECT_TRUE(json["nan_float"].is_null())
         << "nan_float should be null, got: " << json["nan_float"];
-    EXPECT_TRUE(json["pos_inf_float"].isNull())
+    EXPECT_TRUE(json["pos_inf_float"].is_null())
         << "pos_inf_float should be null, got: " << json["pos_inf_float"];
-    EXPECT_TRUE(json["neg_inf_float"].isNull())
+    EXPECT_TRUE(json["neg_inf_float"].is_null())
         << "neg_inf_float should be null, got: " << json["neg_inf_float"];
-    EXPECT_TRUE(json["nan_double"].isNull())
+    EXPECT_TRUE(json["nan_double"].is_null())
         << "nan_double should be null, got: " << json["nan_double"];
 
     // Verify array handling: normal values preserved, null values round-trip as null (via NaN)
-    EXPECT_TRUE(json["float_array"].isArray());
+    EXPECT_TRUE(json["float_array"].is_array());
     EXPECT_EQ(json["float_array"].size(), 4u);
-    EXPECT_TRUE(json["float_array"][0].isNumeric());
-    EXPECT_NEAR(json["float_array"][0].asFloat(), 1.0f, 0.001f);
-    EXPECT_TRUE(json["float_array"][1].isNull())
+    EXPECT_TRUE(json["float_array"][0].is_number());
+    EXPECT_NEAR(json["float_array"][0].get<float>(), 1.0f, 0.001f);
+    EXPECT_TRUE(json["float_array"][1].is_null())
         << "float_array[1] should be null (converted from NaN), got: " << json["float_array"][1];
-    EXPECT_TRUE(json["float_array"][2].isNull())
+    EXPECT_TRUE(json["float_array"][2].is_null())
         << "float_array[2] should be null (converted from NaN), got: " << json["float_array"][2];
-    EXPECT_TRUE(json["float_array"][3].isNumeric());
-    EXPECT_NEAR(json["float_array"][3].asFloat(), 4.0f, 0.001f);
+    EXPECT_TRUE(json["float_array"][3].is_number());
+    EXPECT_NEAR(json["float_array"][3].get<float>(), 4.0f, 0.001f);
 
     LogInfo("Successfully verified that float/double JSON handling produces valid JSON");
     receiver_mavlink_direct.unsubscribe_message(handle);
@@ -1192,24 +1196,109 @@ TEST(MavlinkDirect, LargeUint64)
     EXPECT_EQ(received_message.component_id, 1);
 
     // Parse JSON to verify uint64 field value is preserved
-    Json::Value json;
-    Json::Reader reader;
-    ASSERT_TRUE(reader.parse(received_message.fields_json, json))
+    nlohmann::json json;
+    ASSERT_TRUE(!((json = nlohmann::json::parse(received_message.fields_json, nullptr, false))
+                      .is_discarded()))
         << "Failed to parse received JSON: " << received_message.fields_json;
 
     // Verify time_usec field is present and has the correct large value
-    ASSERT_TRUE(json.isMember("time_usec")) << "time_usec field missing from JSON";
-    EXPECT_EQ(json["time_usec"].asUInt64(), 5000000000ULL)
-        << "time_usec value incorrect: expected 5000000000, got " << json["time_usec"].asUInt64();
+    ASSERT_TRUE(json.contains("time_usec")) << "time_usec field missing from JSON";
+    EXPECT_EQ(json["time_usec"].get<uint64_t>(), 5000000000ULL)
+        << "time_usec value incorrect: expected 5000000000, got "
+        << json["time_usec"].get<uint64_t>();
 
     // Verify other fields for completeness
-    EXPECT_EQ(json["fix_type"].asUInt(), 3u);
-    EXPECT_EQ(json["lat"].asInt(), 473977418);
-    EXPECT_EQ(json["lon"].asInt(), -1223974560);
-    EXPECT_EQ(json["alt"].asInt(), 100500);
-    EXPECT_EQ(json["satellites_visible"].asUInt(), 12u);
+    EXPECT_EQ(json["fix_type"].get<uint32_t>(), 3u);
+    EXPECT_EQ(json["lat"].get<int>(), 473977418);
+    EXPECT_EQ(json["lon"].get<int>(), -1223974560);
+    EXPECT_EQ(json["alt"].get<int>(), 100500);
+    EXPECT_EQ(json["satellites_visible"].get<uint32_t>(), 12u);
 
     LogInfo("Successfully verified uint64 handling for time_usec > 2^32");
+    receiver_mavlink_direct.unsubscribe_message(handle);
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+}
+
+// Regression test for binary data carried in a char[] field.
+//
+// PARAM_EXT_VALUE.param_value is declared as char[128] in the MAVLink XML, but
+// the extended-parameter protocol uses it to carry the raw bytes of the typed
+// value (little-endian). Treated as a NUL-terminated string it would be
+// truncated at the first zero byte, so MavlinkDirect represents this field as a
+// JSON byte array instead (see the allow-list in libmav_receiver.cpp). This
+// test sends a value with an interior NUL and verifies every byte round-trips.
+TEST(MavlinkDirect, ParamExtValueBinaryRoundtrip)
+{
+    Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
+    Mavsdk mavsdk_autopilot{Mavsdk::Configuration{ComponentType::Autopilot}};
+
+    ASSERT_EQ(
+        mavsdk_groundstation.add_any_connection("udpin://0.0.0.0:18010"),
+        ConnectionResult::Success);
+    ASSERT_EQ(
+        mavsdk_autopilot.add_any_connection("udpout://127.0.0.1:18010"), ConnectionResult::Success);
+
+    auto maybe_system = mavsdk_groundstation.first_autopilot(10.0);
+    ASSERT_TRUE(maybe_system);
+    auto system = maybe_system.value();
+    ASSERT_TRUE(system->has_autopilot());
+
+    auto receiver_mavlink_direct = MavlinkDirect{system};
+    auto sender_mavlink_direct = MavlinkDirectServer{mavsdk_autopilot.server_component()};
+
+    auto prom = std::promise<MavlinkDirect::MavlinkMessage>();
+    auto fut = prom.get_future();
+
+    auto handle = receiver_mavlink_direct.subscribe_message(
+        "PARAM_EXT_VALUE", [&prom](MavlinkDirect::MavlinkMessage message) {
+            LogInfo("Received PARAM_EXT_VALUE: {}", message.fields_json);
+            prom.set_value(message);
+        });
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+
+    // A uint32 value of 0x00020001 = 131073, little-endian bytes: 01 00 02 00.
+    // The interior zero byte at index 1 is what used to truncate the value, and
+    // the 0x02 at index 2 is the byte that used to be lost.
+    const std::vector<int> param_value_bytes{1, 0, 2, 0};
+
+    nlohmann::json send_fields;
+    send_fields["param_id"] = "TEST_BIN";
+    send_fields["param_value"] = param_value_bytes; // sent as a JSON byte array
+    send_fields["param_type"] = 6; // MAV_PARAM_EXT_TYPE_INT32
+    send_fields["param_count"] = 1;
+    send_fields["param_index"] = 0;
+
+    MavlinkDirectServer::MavlinkMessage test_message;
+    test_message.message_name = "PARAM_EXT_VALUE";
+    test_message.system_id = 1;
+    test_message.component_id = 1;
+    test_message.target_system_id = 0;
+    test_message.target_component_id = 0;
+    test_message.fields_json = send_fields.dump();
+
+    LogInfo("Sending PARAM_EXT_VALUE with binary param_value");
+    ASSERT_EQ(
+        sender_mavlink_direct.send_message(test_message), MavlinkDirectServer::Result::Success);
+
+    ASSERT_EQ(fut.wait_for(std::chrono::seconds(1)), std::future_status::ready);
+    auto received_message = fut.get();
+
+    auto received = nlohmann::json::parse(received_message.fields_json, nullptr, false);
+    ASSERT_FALSE(received.is_discarded());
+    ASSERT_TRUE(received.contains("param_value"));
+    const auto& received_value = received["param_value"];
+
+    // param_value must come back as a byte array covering the full field width,
+    // with the meaningful bytes (including the interior NUL and the byte after
+    // it) preserved -- i.e. no NUL truncation.
+    ASSERT_TRUE(received_value.is_array());
+    ASSERT_GE(received_value.size(), param_value_bytes.size());
+    EXPECT_EQ(received_value[0].get<int>(), 1);
+    EXPECT_EQ(received_value[1].get<int>(), 0); // interior NUL preserved
+    EXPECT_EQ(received_value[2].get<int>(), 2); // byte after the NUL preserved
+    EXPECT_EQ(received_value[3].get<int>(), 0);
+
     receiver_mavlink_direct.unsubscribe_message(handle);
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }

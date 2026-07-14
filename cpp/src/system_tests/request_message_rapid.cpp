@@ -9,7 +9,7 @@
 #include <thread>
 #include <vector>
 #include <gtest/gtest.h>
-#include <json/json.h>
+#include <nlohmann/json.hpp>
 
 using namespace mavsdk;
 
@@ -72,12 +72,12 @@ TEST(SystemTest, RequestMessageRapid)
                 return;
             }
 
-            Json::Value root;
-            Json::Reader reader;
-            if (!reader.parse(command.fields_json, root)) {
+            nlohmann::json root;
+            if (((root = nlohmann::json::parse(command.fields_json, nullptr, false))
+                     .is_discarded())) {
                 return;
             }
-            const int command_id = root["command"].asInt();
+            const int command_id = root["command"].get<int>();
 
             MavlinkDirect::MavlinkMessage ack;
             ack.message_name = "COMMAND_ACK";

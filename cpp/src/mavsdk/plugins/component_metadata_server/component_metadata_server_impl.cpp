@@ -7,7 +7,7 @@
 #include "crc32.hpp"
 
 #include <string>
-#include <json/json.h>
+#include <nlohmann/json.hpp>
 
 namespace mavsdk {
 
@@ -133,15 +133,17 @@ void ComponentMetadataServerImpl::set_metadata(
 
 bool ComponentMetadataServerImpl::generate_component_metadata_general_file()
 {
-    Json::Value root;
+    // ordered_json keeps the human-readable key order (version, then
+    // metadataTypes); the parser reads keys by name so order is not required.
+    nlohmann::ordered_json root;
     root["version"] = 1;
-    Json::Value metadata_types = Json::arrayValue;
+    auto metadata_types = nlohmann::ordered_json::array();
     for (const auto& metadata : _metadata) {
-        Json::Value metadata_type;
-        metadata_type["type"] = Json::Int{metadata.type};
+        nlohmann::ordered_json metadata_type;
+        metadata_type["type"] = static_cast<int>(metadata.type);
         metadata_type["uri"] = "mftp://" + metadata.filename;
-        metadata_type["fileCrc"] = Json::UInt{metadata.crc};
-        metadata_types.append(metadata_type);
+        metadata_type["fileCrc"] = metadata.crc;
+        metadata_types.push_back(metadata_type);
     }
     root["metadataTypes"] = metadata_types;
 
@@ -151,7 +153,8 @@ bool ComponentMetadataServerImpl::generate_component_metadata_general_file()
         LogErr("Failed to open {}", path.string());
         return false;
     }
-    const std::string json_data = root.toStyledString();
+    const std::string json_data =
+        root.dump(4, ' ', false, nlohmann::ordered_json::error_handler_t::replace);
     Crc32 crc{};
     crc.add(reinterpret_cast<const uint8_t*>(json_data.data()), json_data.length());
     _comp_info_general_crc = crc.get();

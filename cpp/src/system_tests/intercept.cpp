@@ -6,7 +6,7 @@
 #include <thread>
 #include <future>
 #include <gtest/gtest.h>
-#include <json/json.h>
+#include <nlohmann/json.hpp>
 
 using namespace mavsdk;
 
@@ -269,23 +269,23 @@ TEST(Intercept, JsonIncoming)
     EXPECT_GT(intercepted_message.fields_json.length(), 0u);
 
     // Parse JSON to verify field values
-    Json::Value json;
-    Json::Reader reader;
-    ASSERT_TRUE(reader.parse(intercepted_message.fields_json, json));
+    nlohmann::json json;
+    ASSERT_TRUE(!((json = nlohmann::json::parse(intercepted_message.fields_json, nullptr, false))
+                      .is_discarded()));
 
     // Verify position fields from the intercepted message
-    EXPECT_NEAR(json["lat"].asInt() / 1e7, position.latitude_deg, 1e-6);
-    EXPECT_NEAR(json["lon"].asInt() / 1e7, position.longitude_deg, 1e-6);
-    EXPECT_NEAR(json["alt"].asInt() / 1e3, position.absolute_altitude_m, 1.0);
-    EXPECT_NEAR(json["relative_alt"].asInt() / 1e3, position.relative_altitude_m, 1.0);
+    EXPECT_NEAR(json["lat"].get<int>() / 1e7, position.latitude_deg, 1e-6);
+    EXPECT_NEAR(json["lon"].get<int>() / 1e7, position.longitude_deg, 1e-6);
+    EXPECT_NEAR(json["alt"].get<int>() / 1e3, position.absolute_altitude_m, 1.0);
+    EXPECT_NEAR(json["relative_alt"].get<int>() / 1e3, position.relative_altitude_m, 1.0);
 
     // Verify velocity fields
-    EXPECT_NEAR(json["vx"].asInt() / 1e2, velocity.north_m_s, 0.1);
-    EXPECT_NEAR(json["vy"].asInt() / 1e2, velocity.east_m_s, 0.1);
-    EXPECT_NEAR(json["vz"].asInt() / 1e2, velocity.down_m_s, 0.1);
+    EXPECT_NEAR(json["vx"].get<int>() / 1e2, velocity.north_m_s, 0.1);
+    EXPECT_NEAR(json["vy"].get<int>() / 1e2, velocity.east_m_s, 0.1);
+    EXPECT_NEAR(json["vz"].get<int>() / 1e2, velocity.down_m_s, 0.1);
 
     // Verify heading field
-    EXPECT_NEAR(json["hdg"].asInt() / 1e2, heading.heading_deg, 1.0);
+    EXPECT_NEAR(json["hdg"].get<int>() / 1e2, heading.heading_deg, 1.0);
 
     LogInfo("Successfully tested incoming JSON message interceptio");
     LogInfo("  - Message name: {}", intercepted_message.message_name);
@@ -382,21 +382,21 @@ TEST(Intercept, JsonOutgoing)
     EXPECT_GT(intercepted_message.fields_json.length(), 0u);
 
     // Parse JSON to verify field values
-    Json::Value json;
-    Json::Reader reader;
-    ASSERT_TRUE(reader.parse(intercepted_message.fields_json, json));
+    nlohmann::json json;
+    ASSERT_TRUE(!((json = nlohmann::json::parse(intercepted_message.fields_json, nullptr, false))
+                      .is_discarded()));
 
     // Verify GPS fields from the intercepted message
-    EXPECT_EQ(json["time_usec"].asUInt64(), raw_gps.timestamp_us);
-    EXPECT_EQ(json["fix_type"].asUInt(), static_cast<uint8_t>(gps_info.fix_type));
-    EXPECT_NEAR(json["lat"].asInt() / 1e7, raw_gps.latitude_deg, 1e-6);
-    EXPECT_NEAR(json["lon"].asInt() / 1e7, raw_gps.longitude_deg, 1e-6);
-    EXPECT_NEAR(json["alt"].asInt() / 1e3, raw_gps.absolute_altitude_m, 1.0);
-    EXPECT_NEAR(json["eph"].asInt() / 1e2, raw_gps.hdop, 0.1);
-    EXPECT_NEAR(json["epv"].asInt() / 1e2, raw_gps.vdop, 0.1);
-    EXPECT_NEAR(json["vel"].asInt() / 1e2, raw_gps.velocity_m_s, 0.1);
-    EXPECT_NEAR(json["cog"].asInt() / 1e2, raw_gps.cog_deg, 1.0);
-    EXPECT_EQ(json["satellites_visible"].asUInt(), gps_info.num_satellites);
+    EXPECT_EQ(json["time_usec"].get<uint64_t>(), raw_gps.timestamp_us);
+    EXPECT_EQ(json["fix_type"].get<uint32_t>(), static_cast<uint8_t>(gps_info.fix_type));
+    EXPECT_NEAR(json["lat"].get<int>() / 1e7, raw_gps.latitude_deg, 1e-6);
+    EXPECT_NEAR(json["lon"].get<int>() / 1e7, raw_gps.longitude_deg, 1e-6);
+    EXPECT_NEAR(json["alt"].get<int>() / 1e3, raw_gps.absolute_altitude_m, 1.0);
+    EXPECT_NEAR(json["eph"].get<int>() / 1e2, raw_gps.hdop, 0.1);
+    EXPECT_NEAR(json["epv"].get<int>() / 1e2, raw_gps.vdop, 0.1);
+    EXPECT_NEAR(json["vel"].get<int>() / 1e2, raw_gps.velocity_m_s, 0.1);
+    EXPECT_NEAR(json["cog"].get<int>() / 1e2, raw_gps.cog_deg, 1.0);
+    EXPECT_EQ(json["satellites_visible"].get<uint32_t>(), gps_info.num_satellites);
 
     LogInfo("Successfully tested outgoing JSON message interceptio");
     LogInfo("  - Message name: {}", intercepted_message.message_name);

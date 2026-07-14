@@ -421,41 +421,41 @@ MavlinkComponentMetadata::get_metadata(uint32_t compid, MetadataType type)
 void MavlinkComponentMetadata::parse_component_metadata_general(
     uint8_t compid, const std::string& json_metadata)
 {
-    Json::Value metadata;
-    Json::Reader reader;
-    bool parsing_successful = reader.parse(json_metadata, metadata);
-    if (!parsing_successful) {
-        LogErr("Failed to parse{}", reader.getFormattedErrorMessages());
+    // Parse without exceptions (MAVSDK is built with -fno-exceptions).
+    auto metadata = nlohmann::json::parse(json_metadata, nullptr, false);
+    if (metadata.is_discarded() || !metadata.is_object()) {
+        LogErr("Failed to parse component metadata JSON");
         return;
     }
 
-    if (!metadata.isMember("version")) {
+    if (!metadata.contains("version") || !metadata["version"].is_number_integer()) {
         LogErr("version not found");
         return;
     }
 
-    if (metadata["version"].asInt() != 1) {
-        LogWarn("version {} not supported", metadata["version"].asInt());
+    if (metadata["version"].get<int>() != 1) {
+        LogWarn("version {} not supported", metadata["version"].get<int>());
         return;
     }
 
-    if (!metadata.isMember("metadataTypes")) {
+    if (!metadata.contains("metadataTypes") || !metadata["metadataTypes"].is_array()) {
         LogErr("metadataTypes not found");
         return;
     }
 
     for (const auto& metadata_type : metadata["metadataTypes"]) {
-        if (!metadata_type.isMember("type")) {
+        if (!metadata_type.is_object() || !metadata_type.contains("type") ||
+            !metadata_type["type"].is_number_integer()) {
             LogErr("type missing");
             continue;
         }
-        auto type = static_cast<COMP_METADATA_TYPE>(metadata_type["type"].asInt());
+        auto type = static_cast<COMP_METADATA_TYPE>(metadata_type["type"].get<int>());
         auto& components = _mavlink_components[compid].components;
         if (components.find(type) != components.end()) {
             LogErr("component type already added: {}", static_cast<int>(type));
             continue;
         }
-        if (!metadata_type.isMember("uri")) {
+        if (!metadata_type.contains("uri")) {
             LogErr("uri missing");
             continue;
         }
@@ -502,27 +502,27 @@ void MavlinkComponentMetadata::on_all_types_completed(uint8_t compid)
         [this](const auto& func) { _system_impl.call_user_callback(func); });
 }
 
-MetadataComponentUris::MetadataComponentUris(const Json::Value& value)
+MetadataComponentUris::MetadataComponentUris(const nlohmann::json& value)
 {
-    if (value["uri"].isString()) {
-        _uri_metadata = value["uri"].asString();
+    if (value.contains("uri") && value["uri"].is_string()) {
+        _uri_metadata = value["uri"].get<std::string>();
     }
-    if (value["fileCrc"].isUInt()) {
-        _crc_metadata = value["fileCrc"].asUInt();
+    if (value.contains("fileCrc") && value["fileCrc"].is_number_unsigned()) {
+        _crc_metadata = value["fileCrc"].get<uint32_t>();
         _crc_metadata_valid = true;
     }
-    if (value["uriFallback"].isString()) {
-        _uri_metadata_fallback = value["uriFallback"].asString();
+    if (value.contains("uriFallback") && value["uriFallback"].is_string()) {
+        _uri_metadata_fallback = value["uriFallback"].get<std::string>();
     }
-    if (value["fileCrcFallback"].isUInt()) {
-        _crc_metadata_fallback = value["fileCrcFallback"].asUInt();
+    if (value.contains("fileCrcFallback") && value["fileCrcFallback"].is_number_unsigned()) {
+        _crc_metadata_fallback = value["fileCrcFallback"].get<uint32_t>();
         _crc_metadata_fallback_valid = true;
     }
-    if (value["translationUri"].isString()) {
-        _uri_translation = value["translationUri"].asString();
+    if (value.contains("translationUri") && value["translationUri"].is_string()) {
+        _uri_translation = value["translationUri"].get<std::string>();
     }
-    if (value["translationUriFallback"].isString()) {
-        _uri_translation_fallback = value["translationUriFallback"].asString();
+    if (value.contains("translationUriFallback") && value["translationUriFallback"].is_string()) {
+        _uri_translation_fallback = value["translationUriFallback"].get<std::string>();
     }
 }
 

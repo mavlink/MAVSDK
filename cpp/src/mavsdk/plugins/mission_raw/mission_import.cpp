@@ -6,16 +6,62 @@
 
 namespace mavsdk {
 
+namespace {
+
+// nlohmann's const operator[] aborts on a missing key (MAVSDK is built with
+// -fno-exceptions), unlike jsoncpp's which returned a null value. These helpers
+// restore that null-tolerant behavior for both object keys and array indices.
+const nlohmann::json& json_at(const nlohmann::json& j, const char* key)
+{
+    static const nlohmann::json null_json{};
+    if (j.is_object()) {
+        const auto it = j.find(key);
+        if (it != j.end()) {
+            return *it;
+        }
+    }
+    return null_json;
+}
+
+// Index overload takes int (not size_t) so a literal 0 is an exact match and
+// does not become ambiguous with the const char* key overload.
+const nlohmann::json& json_at(const nlohmann::json& j, int index)
+{
+    static const nlohmann::json null_json{};
+    if (j.is_array() && index >= 0 && static_cast<std::size_t>(index) < j.size()) {
+        return j[static_cast<std::size_t>(index)];
+    }
+    return null_json;
+}
+
+int json_get_int(const nlohmann::json& j)
+{
+    return j.is_number() ? j.get<int>() : 0;
+}
+
+bool json_get_bool(const nlohmann::json& j)
+{
+    return j.is_boolean() ? j.get<bool>() : false;
+}
+
+std::string json_to_string(const nlohmann::json& j)
+{
+    // Use the replace error handler so non-UTF-8 content can't make dump()
+    // abort under -fno-exceptions.
+    return j.is_string() ? j.get<std::string>() :
+                           j.dump(-1, ' ', false, nlohmann::json::error_handler_t::replace);
+}
+
+} // namespace
+
 std::pair<MissionRaw::Result, MissionRaw::MissionImportData>
 MissionImport::parse_json(const std::string& raw_json, Autopilot autopilot)
 {
-    Json::CharReaderBuilder builder;
-    const std::unique_ptr<Json::CharReader> reader(builder.newCharReader());
-    Json::Value root;
-    JSONCPP_STRING err;
+    // Parse without exceptions (MAVSDK is built with -fno-exceptions).
+    auto root = nlohmann::json::parse(raw_json, nullptr, false);
 
-    if (!reader->parse(raw_json.c_str(), raw_json.c_str() + raw_json.length(), &root, &err)) {
-        LogErr("Parse error: {}", err);
+    if (root.is_discarded()) {
+        LogErr("Parse error");
         return {MissionRaw::Result::FailedToParseQgcPlan, {}};
     }
 
@@ -46,14 +92,15 @@ MissionImport::parse_json(const std::string& raw_json, Autopilot autopilot)
     return {MissionRaw::Result::Success, import_data};
 }
 
-bool MissionImport::check_overall_version(const Json::Value& root)
+bool MissionImport::check_overall_version(const nlohmann::json& root)
 {
     const auto supported_overall_version = 1;
-    const auto overall_version = root["version"];
-    if (overall_version.empty() || overall_version.asInt() != supported_overall_version) {
+    const auto& overall_version = json_at(root, "version");
+    if (!overall_version.is_number_integer() ||
+        overall_version.get<int>() != supported_overall_version) {
         LogErr(
             "Overall .plan version not supported, found version: {}, supported: {}",
-            overall_version.asInt(),
+            json_get_int(overall_version),
             supported_overall_version);
         return false;
     }
@@ -62,10 +109,10 @@ bool MissionImport::check_overall_version(const Json::Value& root)
 }
 
 std::optional<std::vector<MissionRaw::MissionItem>>
-MissionImport::import_mission(const Json::Value& root, Autopilot autopilot)
+MissionImport::import_mission(const nlohmann::json& root, Autopilot autopilot)
 {
     // We need a mission part.
-    const auto mission = root["mission"];
+    const auto& mission = json_at(root, "mission");
     if (mission.empty()) {
         LogErr("No mission found in .plan.");
         return std::nullopt;
@@ -73,11 +120,12 @@ MissionImport::import_mission(const Json::Value& root, Autopilot autopilot)
 
     // Check the mission version.
     const auto supported_mission_version = 2;
-    const auto mission_version = mission["version"];
-    if (mission_version.empty() || mission_version.asInt() != supported_mission_version) {
+    const auto& mission_version = json_at(mission, "version");
+    if (!mission_version.is_number_integer() ||
+        mission_version.get<int>() != supported_mission_version) {
         LogErr(
             "mission version for .plan not supported, found version: {}, supported: {}",
-            mission_version.asInt(),
+            json_get_int(mission_version),
             supported_mission_version);
         return std::nullopt;
     }
@@ -85,10 +133,10 @@ MissionImport::import_mission(const Json::Value& root, Autopilot autopilot)
     std::vector<MissionRaw::MissionItem> mission_items;
 
     // Go through items
-    for (const auto& json_item : mission["items"]) {
-        const auto type = json_item["type"];
+    for (const auto& json_item : json_at(mission, "items")) {
+        const auto& type = json_at(json_item, "type");
 
-        if (!type.isNull() && type.asString() == "SimpleItem") {
+        if (type.is_string() && type.get<std::string>() == "SimpleItem") {
             const auto maybe_item = import_simple_mission_item(json_item);
             if (maybe_item.has_value()) {
                 mission_items.push_back(maybe_item.value());
@@ -96,7 +144,7 @@ MissionImport::import_mission(const Json::Value& root, Autopilot autopilot)
                 return std::nullopt;
             }
 
-        } else if (!type.isNull() && type.asString() == "ComplexItem") {
+        } else if (type.is_string() && type.get<std::string>() == "ComplexItem") {
             const auto maybe_items = import_complex_mission_items(json_item);
             if (maybe_items.has_value()) {
                 mission_items.insert(
@@ -106,7 +154,7 @@ MissionImport::import_mission(const Json::Value& root, Autopilot autopilot)
             }
 
         } else {
-            LogErr("Type {} not understood.", type.asString());
+            LogErr("Type {} not understood.", json_to_string(type));
             return std::nullopt;
         }
     }
@@ -118,9 +166,9 @@ MissionImport::import_mission(const Json::Value& root, Autopilot autopilot)
 
     // Add home position at 0 for ArduPilot
     if (autopilot == Autopilot::ArduPilot) {
-        const auto home = mission["plannedHomePosition"];
+        const auto& home = json_at(mission, "plannedHomePosition");
         if (!home.empty()) {
-            if (home.isArray() && home.size() != 3) {
+            if (!home.is_array() || home.size() != 3) {
                 LogErr("Unknown plannedHomePosition format");
                 return std::nullopt;
             }
@@ -145,9 +193,9 @@ MissionImport::import_mission(const Json::Value& root, Autopilot autopilot)
                     0.0f,
                     0.0f,
                     0.0f,
-                    set_int32(home[0], MAV_FRAME_GLOBAL_INT),
-                    set_int32(home[1], MAV_FRAME_GLOBAL_INT),
-                    home[2].asFloat(),
+                    set_int32(json_at(home, 0), MAV_FRAME_GLOBAL_INT),
+                    set_int32(json_at(home, 1), MAV_FRAME_GLOBAL_INT),
+                    set_float(json_at(home, 2)),
                     MAV_MISSION_TYPE_MISSION});
 #if defined(__GNUC__) && !defined(__clang__)
 #pragma GCC diagnostic pop
@@ -166,34 +214,35 @@ MissionImport::import_mission(const Json::Value& root, Autopilot autopilot)
 }
 
 std::optional<std::vector<MissionRaw::MissionItem>>
-MissionImport::import_geofence(const Json::Value& root)
+MissionImport::import_geofence(const nlohmann::json& root)
 {
     std::vector<MissionRaw::MissionItem> geofence_items;
 
     // Return early if there are no geofence items.
-    const auto geofence = root["geoFence"];
+    const auto& geofence = json_at(root, "geoFence");
     if (geofence.empty()) {
         return std::nullopt;
     }
 
     // Check the mission version.
     const auto supported_geofence_version = 2;
-    const auto geofence_version = geofence["version"];
-    if (geofence_version.empty() || geofence_version.asInt() != supported_geofence_version) {
+    const auto& geofence_version = json_at(geofence, "version");
+    if (!geofence_version.is_number_integer() ||
+        geofence_version.get<int>() != supported_geofence_version) {
         LogErr(
             "geofence version for .plan not supported, found version: {}, supported: {}",
-            geofence_version.asInt(),
+            json_get_int(geofence_version),
             supported_geofence_version);
         return std::nullopt;
     }
 
     // Import polygon geofences
     std::vector<MissionRaw::MissionItem> polygon_geofences;
-    polygon_geofences = import_polygon_geofences(geofence["polygons"]);
+    polygon_geofences = import_polygon_geofences(json_at(geofence, "polygons"));
 
     // Import circular geofences
     std::vector<MissionRaw::MissionItem> circular_geofences;
-    circular_geofences = import_circular_geofences(geofence["circles"]);
+    circular_geofences = import_circular_geofences(json_at(geofence, "circles"));
 
     geofence_items.insert(geofence_items.end(), polygon_geofences.begin(), polygon_geofences.end());
     geofence_items.insert(
@@ -214,38 +263,38 @@ MissionImport::import_geofence(const Json::Value& root)
 }
 
 std::optional<std::vector<MissionRaw::MissionItem>>
-MissionImport::import_rally_points(const Json::Value& root)
+MissionImport::import_rally_points(const nlohmann::json& root)
 {
     std::vector<MissionRaw::MissionItem> rally_items;
 
     // Return early if there are no rally points.
-    const auto rally_points = root["rallyPoints"];
+    const auto& rally_points = json_at(root, "rallyPoints");
     if (rally_points.empty()) {
         return std::nullopt;
     }
 
     // Check the rally points version.
     const auto supported_rally_points_version = 2;
-    const auto rally_points_version = rally_points["version"];
-    if (rally_points_version.empty() ||
-        rally_points_version.asInt() != supported_rally_points_version) {
+    const auto& rally_points_version = json_at(rally_points, "version");
+    if (!rally_points_version.is_number_integer() ||
+        rally_points_version.get<int>() != supported_rally_points_version) {
         LogErr(
             "rally points version for .plan not supported, found version: {}, supported: {}",
-            rally_points_version.asInt(),
+            json_get_int(rally_points_version),
             supported_rally_points_version);
         return std::nullopt;
     }
 
     // Go through items
-    for (const auto& point : rally_points["points"]) {
+    for (const auto& point : json_at(rally_points, "points")) {
         MissionRaw::MissionItem item{};
 
         item.command = MAV_CMD_NAV_RALLY_POINT;
         item.frame = MAV_FRAME_GLOBAL_RELATIVE_ALT;
         item.mission_type = MAV_MISSION_TYPE_RALLY;
-        item.x = set_int32(point[0], item.frame);
-        item.y = set_int32(point[1], item.frame);
-        item.z = set_float(point[2]);
+        item.x = set_int32(json_at(point, 0), item.frame);
+        item.y = set_int32(json_at(point, 1), item.frame);
+        item.z = set_float(json_at(point, 2));
 
         rally_items.push_back(item);
     }
@@ -265,47 +314,48 @@ MissionImport::import_rally_points(const Json::Value& root)
 }
 
 std::optional<MissionRaw::MissionItem>
-MissionImport::import_simple_mission_item(const Json::Value& json_item)
+MissionImport::import_simple_mission_item(const nlohmann::json& json_item)
 {
-    if (json_item["command"].empty() || json_item["autoContinue"].empty() ||
-        json_item["frame"].empty() || json_item["params"].empty()) {
+    if (json_at(json_item, "command").empty() || json_at(json_item, "autoContinue").empty() ||
+        json_at(json_item, "frame").empty() || json_at(json_item, "params").empty()) {
         LogErr("Missing mission item field.");
         return std::nullopt;
     }
 
-    if (!json_item["params"].isArray()) {
+    const auto& params = json_at(json_item, "params");
+    if (!params.is_array()) {
         LogErr("No param array found.");
         return std::nullopt;
     }
 
     MissionRaw::MissionItem item{};
-    item.command = json_item["command"].asInt();
-    item.autocontinue = json_item["autoContinue"].asBool() ? 1 : 0;
-    item.frame = json_item["frame"].asInt();
+    item.command = json_get_int(json_at(json_item, "command"));
+    item.autocontinue = json_get_bool(json_at(json_item, "autoContinue")) ? 1 : 0;
+    item.frame = json_get_int(json_at(json_item, "frame"));
     item.mission_type = MAV_MISSION_TYPE_MISSION;
 
     for (unsigned i = 0; i < 7; ++i) {
         switch (i) {
             case 0:
-                item.param1 = set_float(json_item["params"][i]);
+                item.param1 = set_float(json_at(params, i));
                 break;
             case 1:
-                item.param2 = set_float(json_item["params"][i]);
+                item.param2 = set_float(json_at(params, i));
                 break;
             case 2:
-                item.param3 = set_float(json_item["params"][i]);
+                item.param3 = set_float(json_at(params, i));
                 break;
             case 3:
-                item.param4 = set_float(json_item["params"][i]);
+                item.param4 = set_float(json_at(params, i));
                 break;
             case 4:
-                item.x = set_int32(json_item["params"][i], item.frame);
+                item.x = set_int32(json_at(params, i), item.frame);
                 break;
             case 5:
-                item.y = set_int32(json_item["params"][i], item.frame);
+                item.y = set_int32(json_at(params, i), item.frame);
                 break;
             case 6:
-                item.z = set_float(json_item["params"][i]);
+                item.z = set_float(json_at(params, i));
                 break;
             default:
                 // should never happen
@@ -317,25 +367,27 @@ MissionImport::import_simple_mission_item(const Json::Value& json_item)
 }
 
 std::optional<std::vector<MissionRaw::MissionItem>>
-MissionImport::import_complex_mission_items(const Json::Value& json_item)
+MissionImport::import_complex_mission_items(const nlohmann::json& json_item)
 {
-    if (json_item["complexItemType"].empty()) {
+    const auto& complex_item_type = json_at(json_item, "complexItemType");
+    if (complex_item_type.empty()) {
         LogErr("Could not determine complexItemType");
         return std::nullopt;
     }
 
-    if (json_item["complexItemType"] != "survey") {
-        LogErr("complexItemType: {} not supported", json_item["complexItemType"].asString());
+    if (complex_item_type != "survey") {
+        LogErr("complexItemType: {} not supported", json_to_string(complex_item_type));
         return std::nullopt;
     }
 
-    if (json_item["version"].empty()) {
+    const auto& version = json_at(json_item, "version");
+    if (version.empty()) {
         LogErr("version of complexItem not found");
         return std::nullopt;
     }
 
     const int supported_complex_item_version = 5;
-    const int found_version = json_item["version"].asInt();
+    const int found_version = json_get_int(version);
     if (found_version != 5) {
         LogErr(
             "version of complexItem not supported, found version: {}, supported: {}",
@@ -344,20 +396,21 @@ MissionImport::import_complex_mission_items(const Json::Value& json_item)
         return std::nullopt;
     }
 
-    if (json_item["TransectStyleComplexItem"].empty()) {
+    const auto& transect_style = json_at(json_item, "TransectStyleComplexItem");
+    if (transect_style.empty()) {
         LogErr("TransectStyleComplexItem not found");
         return std::nullopt;
     }
 
     // These are Items (capitalized!) inside the  TransectStyleComplexItem.
-    if (json_item["TransectStyleComplexItem"]["Items"].empty() ||
-        !json_item["TransectStyleComplexItem"]["Items"].isArray()) {
+    const auto& items = json_at(transect_style, "Items");
+    if (items.empty() || !items.is_array()) {
         LogErr("No survey items found");
         return std::nullopt;
     }
 
     std::vector<MissionRaw::MissionItem> mission_items;
-    for (const auto& json_item_subitem : json_item["TransectStyleComplexItem"]["Items"]) {
+    for (const auto& json_item_subitem : items) {
         const auto maybe_item = import_simple_mission_item(json_item_subitem);
         if (maybe_item.has_value()) {
             mission_items.push_back(maybe_item.value());
@@ -368,23 +421,24 @@ MissionImport::import_complex_mission_items(const Json::Value& json_item)
 }
 
 std::vector<MissionRaw::MissionItem>
-MissionImport::import_polygon_geofences(const Json::Value& polygons)
+MissionImport::import_polygon_geofences(const nlohmann::json& polygons)
 {
     std::vector<MissionRaw::MissionItem> polygon_geofences;
 
     for (const auto& polygon : polygons) {
-        bool inclusion_missing = polygon["inclusion"].isNull();
-        bool inclusion = inclusion_missing ? true : polygon["inclusion"].asBool();
-        const auto& points = polygon["polygon"];
+        const auto& inclusion_value = json_at(polygon, "inclusion");
+        bool inclusion_missing = inclusion_value.is_null();
+        bool inclusion = inclusion_missing ? true : json_get_bool(inclusion_value);
+        const auto& points = json_at(polygon, "polygon");
         for (const auto& point : points) {
             MissionRaw::MissionItem item{};
 
             item.command = inclusion ? MAV_CMD_NAV_FENCE_POLYGON_VERTEX_INCLUSION :
                                        MAV_CMD_NAV_FENCE_POLYGON_VERTEX_EXCLUSION;
             item.frame = MAV_FRAME_GLOBAL;
-            item.param1 = set_float(points.size());
-            item.x = set_int32(point[0], item.frame);
-            item.y = set_int32(point[1], item.frame);
+            item.param1 = static_cast<float>(points.size());
+            item.x = set_int32(json_at(point, 0), item.frame);
+            item.y = set_int32(json_at(point, 1), item.frame);
             item.mission_type = MAV_MISSION_TYPE_FENCE;
 
             polygon_geofences.push_back(item);
@@ -395,14 +449,15 @@ MissionImport::import_polygon_geofences(const Json::Value& polygons)
 }
 
 std::vector<MissionRaw::MissionItem>
-MissionImport::import_circular_geofences(const Json::Value& circles)
+MissionImport::import_circular_geofences(const nlohmann::json& circles)
 {
     std::vector<MissionRaw::MissionItem> circular_geofences;
 
     for (const auto& circle : circles) {
-        bool inclusion = circle["inclusion"].asBool();
-        const auto& center = circle["circle"]["center"];
-        const auto& radius = circle["circle"]["radius"];
+        bool inclusion = json_get_bool(json_at(circle, "inclusion"));
+        const auto& circle_obj = json_at(circle, "circle");
+        const auto& center = json_at(circle_obj, "center");
+        const auto& radius = json_at(circle_obj, "radius");
 
         MissionRaw::MissionItem item{};
 
@@ -410,8 +465,8 @@ MissionImport::import_circular_geofences(const Json::Value& circles)
             inclusion ? MAV_CMD_NAV_FENCE_CIRCLE_INCLUSION : MAV_CMD_NAV_FENCE_CIRCLE_EXCLUSION;
         item.frame = MAV_FRAME_GLOBAL;
         item.param1 = set_float(radius);
-        item.x = set_int32(center[0], item.frame);
-        item.y = set_int32(center[1], item.frame);
+        item.x = set_int32(json_at(center, 0), item.frame);
+        item.y = set_int32(json_at(center, 1), item.frame);
         item.mission_type = MAV_MISSION_TYPE_FENCE;
 
         circular_geofences.push_back(item);
@@ -420,18 +475,18 @@ MissionImport::import_circular_geofences(const Json::Value& circles)
     return circular_geofences;
 }
 
-float MissionImport::set_float(const Json::Value& val)
+float MissionImport::set_float(const nlohmann::json& val)
 {
-    return val.isNull() ? NAN : val.asFloat();
+    return val.is_number() ? val.get<float>() : NAN;
 }
 
-int32_t MissionImport::set_int32(const Json::Value& val, uint32_t frame)
+int32_t MissionImport::set_int32(const nlohmann::json& val, uint32_t frame)
 {
     // Don't apply 10^7 conversion for MAV_FRAME_MISSION
     if (frame == MAV_FRAME_MISSION) {
-        return static_cast<int32_t>(val.isNull() ? 0 : val.asFloat());
+        return static_cast<int32_t>(val.is_number() ? val.get<float>() : 0.0f);
     } else {
-        return static_cast<int32_t>(val.isNull() ? 0 : (std::round(val.asDouble() * 1e7)));
+        return static_cast<int32_t>(val.is_number() ? std::round(val.get<double>() * 1e7) : 0.0);
     }
 }
 

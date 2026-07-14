@@ -6,7 +6,7 @@
 #include <thread>
 #include <future>
 #include <gtest/gtest.h>
-#include <json/json.h>
+#include <nlohmann/json.hpp>
 
 using namespace mavsdk;
 
@@ -64,11 +64,11 @@ TEST(MavlinkDirectServer, BroadcastToClient)
     EXPECT_EQ(received_message.system_id, 1);
     EXPECT_EQ(received_message.component_id, 1);
 
-    Json::Value json;
-    Json::Reader reader;
-    ASSERT_TRUE(reader.parse(received_message.fields_json, json));
-    EXPECT_EQ(json["lat"].asInt(), 473977418);
-    EXPECT_EQ(json["lon"].asInt(), -1223974560);
+    nlohmann::json json;
+    ASSERT_TRUE(!((json = nlohmann::json::parse(received_message.fields_json, nullptr, false))
+                      .is_discarded()));
+    EXPECT_EQ(json["lat"].get<int>(), 473977418);
+    EXPECT_EQ(json["lon"].get<int>(), -1223974560);
 
     receiver.unsubscribe_message(handle);
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
@@ -122,10 +122,10 @@ TEST(MavlinkDirectServer, SubscribeFromClient)
     // The ground station sends as system 245, component 190 (MAV_COMP_ID_MISSIONPLANNER).
     EXPECT_EQ(received_message.component_id, 190);
 
-    Json::Value json;
-    Json::Reader reader;
-    ASSERT_TRUE(reader.parse(received_message.fields_json, json));
-    EXPECT_EQ(json["lat"].asInt(), 473977418);
+    nlohmann::json json;
+    ASSERT_TRUE(!((json = nlohmann::json::parse(received_message.fields_json, nullptr, false))
+                      .is_discarded()));
+    EXPECT_EQ(json["lat"].get<int>(), 473977418);
 
     receiver.unsubscribe_message(handle);
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
@@ -191,12 +191,12 @@ TEST(MavlinkDirectServer, LoadCustomXml)
     auto received_message = fut.get();
     EXPECT_EQ(received_message.message_name, "CUSTOM_TEST_MESSAGE");
 
-    Json::Value json;
-    Json::Reader reader;
-    ASSERT_TRUE(reader.parse(received_message.fields_json, json));
-    EXPECT_EQ(json["test_value"].asUInt(), 42u);
-    EXPECT_EQ(json["counter"].asUInt(), 1337u);
-    EXPECT_EQ(json["status"].asUInt(), 5u);
+    nlohmann::json json;
+    ASSERT_TRUE(!((json = nlohmann::json::parse(received_message.fields_json, nullptr, false))
+                      .is_discarded()));
+    EXPECT_EQ(json["test_value"].get<uint32_t>(), 42u);
+    EXPECT_EQ(json["counter"].get<uint32_t>(), 1337u);
+    EXPECT_EQ(json["status"].get<uint32_t>(), 5u);
 
     receiver.unsubscribe_message(handle);
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
@@ -245,11 +245,11 @@ TEST(MavlinkDirectServer, TargetedSendFromClient)
     ASSERT_EQ(fut.wait_for(std::chrono::seconds(5)), std::future_status::ready);
 
     auto received_message = fut.get();
-    Json::Value json;
-    Json::Reader reader;
-    ASSERT_TRUE(reader.parse(received_message.fields_json, json));
-    EXPECT_EQ(json["target_system"].asUInt(), 1u);
-    EXPECT_EQ(json["target_component"].asUInt(), 1u);
+    nlohmann::json json;
+    ASSERT_TRUE(!((json = nlohmann::json::parse(received_message.fields_json, nullptr, false))
+                      .is_discarded()));
+    EXPECT_EQ(json["target_system"].get<uint32_t>(), 1u);
+    EXPECT_EQ(json["target_component"].get<uint32_t>(), 1u);
 
     receiver.unsubscribe_message(handle);
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
@@ -297,11 +297,11 @@ TEST(MavlinkDirectServer, TargetedSendFromServer)
     ASSERT_EQ(fut.wait_for(std::chrono::seconds(5)), std::future_status::ready);
 
     auto received_message = fut.get();
-    Json::Value json;
-    Json::Reader reader;
-    ASSERT_TRUE(reader.parse(received_message.fields_json, json));
-    EXPECT_EQ(json["target_system"].asUInt(), 245u);
-    EXPECT_EQ(json["target_component"].asUInt(), 190u);
+    nlohmann::json json;
+    ASSERT_TRUE(!((json = nlohmann::json::parse(received_message.fields_json, nullptr, false))
+                      .is_discarded()));
+    EXPECT_EQ(json["target_system"].get<uint32_t>(), 245u);
+    EXPECT_EQ(json["target_component"].get<uint32_t>(), 190u);
 
     receiver.unsubscribe_message(handle);
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
