@@ -31,6 +31,14 @@ MavlinkRequestMessage::~MavlinkRequestMessage()
     // The message handler holds callbacks capturing 'this', so make sure none of
     // them can fire after we are gone.
     _message_handler.unregister_all_blocking(this);
+
+    // In-flight requests schedule timeouts that also capture 'this'. Cancel any that
+    // are still pending, otherwise TimeoutHandler could fire handle_timeout on us
+    // after destruction (use-after-free).
+    std::lock_guard<std::mutex> lock(_mutex);
+    for (const auto& item : _work_items) {
+        _timeout_handler.remove(item.timeout_cookie);
+    }
 }
 
 void MavlinkRequestMessage::request(
