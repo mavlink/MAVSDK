@@ -56,7 +56,7 @@ Make sure to run this within the Visual Studio environment to access Ninja. You 
 
 For development, use the debug build:
 ```bash
-cmake -GNinja -DCMAKE_BUILD_TYPE=Debug -Bbuild -S.
+cmake -GNinja -DCMAKE_BUILD_TYPE=Debug -B build -S .
 cmake --build build --config Debug
 ```
 
@@ -65,7 +65,7 @@ cmake --build build --config Debug
 For production use, build with optimizations enabled:
 
 ```bash
-cmake -GNinja -DCMAKE_BUILD_TYPE=Release -S. -Bbuild
+cmake -GNinja -DCMAKE_BUILD_TYPE=Release -S . -B build
 cmake --build build --config Release
 ```
 
@@ -87,7 +87,7 @@ Note that a `mavsdk.lib` built this way does not "contain" the dependencies it w
 For instance, to build the examples, it looks like this:
 
 ```bash
-cmake -GNinja -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_INSTALL_PREFIX=install -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DWERROR=ON -Bbuild -S.
+cmake -GNinja -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_INSTALL_PREFIX=install -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DWERROR=ON -B build -S .
 cmake --build build --config RelWithDebInfo --target install
 ```
 
@@ -95,7 +95,7 @@ And now the examples need both dependencies: mavsdk.lib but also its transitive 
 
 ```bash
 cd examples
-cmake -G"Ninja" -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_PREFIX_PATH="../install;../build/third_party/install" -DCMAKE_INSTALL_PREFIX=install -Bbuild -S.
+cmake -G"Ninja" -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_PREFIX_PATH="../install;../build/third_party/install" -DCMAKE_INSTALL_PREFIX=install -B build -S .
 cmake --build build
 ```
 
@@ -113,7 +113,7 @@ cmake --build build --target install
 
 To install to a custom location:
 ```bash
-cmake -GNinja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=install -Bbuild -S.
+cmake -GNinja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=install -B build -S .
 cmake --build build --target install
 ```
 
@@ -126,7 +126,7 @@ For more information about the architecture, also see [how the auto-generation w
 In order to include the mavsdk_server in the build, add `-DBUILD_MAVSDK_SERVER=ON`. In order to avoid a linking issue on Windows (where more than 65535 objects are present, we need to build all static libraries like so:
 
 ```bash
-cmake -GNinja -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF -DBUILD_MAVSDK_SERVER=ON -Bbuild -S.
+cmake -GNinja -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF -DBUILD_MAVSDK_SERVER=ON -B build -S .
 cmake --build build
 ```
 
@@ -157,7 +157,7 @@ rm -rf build
 
 If you don't need http/https downloads for camera definition files or other component definition files, and you're not building the MAVSDK server (`BUILD_MAVSDK_SERVER=OFF`), you can exclude CURL and OpenSSL using:
 ```bash
-cmake -GNinja -DBUILD_WITHOUT_CURL=ON -Bbuild -S.
+cmake -GNinja -DBUILD_WITHOUT_CURL=ON -B build -S .
 ```
 
 This eliminates the need for Perl/OpenSSL setup.
@@ -183,10 +183,10 @@ Ensure your application build configuration matches the MAVSDK library configura
 2. **When building from source**: Use the same `CMAKE_BUILD_TYPE` for both MAVSDK and your application:
    ```bash
    # For Debug applications
-   cmake -GNinja -DCMAKE_BUILD_TYPE=Debug -Bbuild -S.
+   cmake -GNinja -DCMAKE_BUILD_TYPE=Debug -B build -S .
 
    # For Release applications
-   cmake -GNinja -DCMAKE_BUILD_TYPE=Release -Bbuild -S.
+   cmake -GNinja -DCMAKE_BUILD_TYPE=Release -B build -S .
    ```
 
 3. **Mixed configurations are not supported**: Never link a Debug application against a Release MAVSDK library or vice versa on Windows.

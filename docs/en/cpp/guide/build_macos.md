@@ -38,7 +38,7 @@ cd cpp
 
 For development, use the debug build:
 ```bash
-cmake -DCMAKE_BUILD_TYPE=Debug -Bbuild -S.
+cmake -DCMAKE_BUILD_TYPE=Debug -B build -S .
 cmake --build build -j8
 ```
 
@@ -46,7 +46,7 @@ cmake --build build -j8
 
 For production use, build with optimizations enabled:
 ```bash
-cmake -DCMAKE_BUILD_TYPE=Release -Bbuild -S.
+cmake -DCMAKE_BUILD_TYPE=Release -B build -S .
 cmake --build build -j8
 ```
 
@@ -63,7 +63,7 @@ sudo cmake --build build --target install
 
 To install to a local folder, e.g. `install`:
 ```bash
-cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=install -Bbuild -S.
+cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=install -B build -S .
 cmake --build build --target install
 ```
 
@@ -72,14 +72,14 @@ cmake --build build --target install
 To build for real iOS devices on macOS:
 
 ```bash
-cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DCMAKE_TOOLCHAIN_FILE=tools/ios.toolchain.cmake -DPLATFORM=OS -Bbuild/ios -S.
+cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DCMAKE_TOOLCHAIN_FILE=tools/ios.toolchain.cmake -DPLATFORM=OS -B build/ios -S .
 cmake --build build/ios
 ```
 
 Build for the iOS simulator on macOS:
 
 ```bash
-cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DCMAKE_TOOLCHAIN_FILE=tools/ios.toolchain.cmake -DPLATFORM=SIMULATOR64 -Bbuild/ios_simulator -S.
+cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DCMAKE_TOOLCHAIN_FILE=tools/ios.toolchain.cmake -DPLATFORM=SIMULATOR64 -B build/ios_simulator -S .
 ```
 
 ## Build Options

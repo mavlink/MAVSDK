@@ -217,7 +217,7 @@ This mode is invoked from `Action` using the [return_to_launch()](../api_referen
 The code below shows how to use the synchronous method:
 
 ```cpp
-const Action::Result rtl_result = telemetry.return_to_launch();
+const Action::Result rtl_result = action.return_to_launch();
 if (rtl_result != Action::Result::Success) {
     //RTL failed, so exit (in reality might send kill command.)
     return 1;

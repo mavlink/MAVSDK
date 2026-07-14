@@ -53,7 +53,7 @@ If you really want to do something that takes longer inside a callback, the work
 void my_callback(Telemetry::Position position)
 {
     std::thread([position]() {
-        std::this_thread_sleep_for(std::chrono::seconds(3));
+        std::this_thread::sleep_for(std::chrono::seconds(3));
         my_delayed_action(position);
     }).detach();
 }

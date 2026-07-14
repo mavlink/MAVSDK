@@ -138,19 +138,19 @@ export default defineConfig({
         items: [
           {
             text: "main / v4",
-            link: "https://mavsdk.mavlink.io/main/en/cpp/api_changes.html",
+            link: "https://mavsdk.mavlink.io/main/en/",
           },
           {
             text: "v3",
-            link: "https://mavsdk.mavlink.io/v3/en/cpp/api_changes.html",
+            link: "https://mavsdk.mavlink.io/v3/en/",
           },
           {
             text: "v2",
-            link: "https://mavsdk.mavlink.io/v2.0/en/cpp/api_changes.html",
+            link: "https://mavsdk.mavlink.io/v2.0/en/",
           },
           {
-            text: "v1.4",
-            link: "https://mavsdk.mavlink.io/v1.4/en/cpp/api_changes.html",
+            text: "v1",
+            link: "https://mavsdk.mavlink.io/v1.4/en/",
           },
         ],
       },

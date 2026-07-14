@@ -75,7 +75,7 @@ See [installation guide](../guide/installation.md) if that is not already the ca
 Then build the example:
 ```sh
 cd cpp/examples/takeoff_and_land/
-cmake -Bbuild -S.
+cmake -B build -S .
 cmake --build build -j4
 ```
 
@@ -83,7 +83,7 @@ cmake --build build -j4
 if MAVSDK is installed locally (e.g. on Windows) you need to pass the location to cmake:
 
 ```
-cmake -Bbuild -DCMAKE_PREFIX_PATH=wherever_mavsdk_is_locally_installed
+cmake -B build -DCMAKE_PREFIX_PATH=wherever_mavsdk_is_locally_installed
 ```
 :::
 

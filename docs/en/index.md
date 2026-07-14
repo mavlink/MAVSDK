@@ -40,7 +40,7 @@ If you have specific questions that are not answered by the documentation, these
 Use Github for bug reports/enhancement requests:
 
 * [C++ API](https://github.com/mavlink/MAVSDK/issues)
-* [C++ Documentation](https://github.com/mavlink/MAVSDK-docs/issues)
+* [C++ Documentation](https://github.com/mavlink/MAVSDK/issues)
 * [Swift API and docs](https://github.com/mavlink/MAVSDK-Swift/issues)
 * [Python API and docs](https://github.com/mavlink/MAVSDK-Python/issues)
 <!-- Add info about where other API issues are reported). -->

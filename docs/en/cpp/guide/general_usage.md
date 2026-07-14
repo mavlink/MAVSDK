@@ -89,7 +89,26 @@ MAVSDK monitors a specified port for vehicles, see [Connecting to Systems (Vehic
 
 ### Connection Status
 
-A system is considered to be disconnected (timed-out) if its heartbeat message is not detected within 3 seconds.
+A system is considered to be disconnected if its heartbeat is not received within the heartbeat timeout (default: 3 seconds). See [Timeouts](#timeouts) below.
+
+### Timeouts {#timeouts}
+
+MAVSDK has two configurable timeouts on the `Mavsdk` object:
+
+**MAVLink transfer timeout** — how long to wait for an acknowledgment to a MAVLink command or request (default: 0.5 s). Increase this for high-latency links; decrease it when MAVSDK and the autopilot are on the same host:
+
+```cpp
+mavsdk.set_timeout_s(1.0); // wait up to 1 second for acknowledgments
+```
+
+**Heartbeat timeout** — how long to wait without a heartbeat before a system is considered disconnected (default: 3 s):
+
+```cpp
+mavsdk.set_heartbeat_timeout_s(5.0); // allow up to 5 seconds between heartbeats
+double current = mavsdk.get_heartbeat_timeout_s();
+```
+
+Both methods are on [class Mavsdk](../api_reference/classmavsdk_1_1_mavsdk.md) and can be called at any time before or after adding connections.
 
 ### Telemetry/Information
 

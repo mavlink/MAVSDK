@@ -74,13 +74,13 @@ To build the takeoff and land example, you can do:
 
 ```sh
 cd takeoff_and_land/
-cmake -Bbuild -S.
+cmake -B build -S .
 cmake --build build -j4
 ```
 
 ::: info
 The examples match the MAVSDK version from your current branch. If you have another MAVSDK version installed, you should checkout the examples from that version. For example, if you have installed MAVSDK v2.x.y, you need to switch to the branch `v2`.
-"""
+:::
 
 ## Running an Example {#running_the_examples}
 
