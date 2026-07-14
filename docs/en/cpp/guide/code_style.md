@@ -33,7 +33,7 @@ tools/run-docker.sh tools/fix_style.py .
 
 The following general guidelines should be used for all code:
 
-* C++17 is encouraged to allow developers to use C++17 features and the C++ STL:
+* The library is C++20; new contributions and examples should target C++20. The C++ STL is welcome when it improves clarity:
   Examples:
 
   * [`std::function`](http://en.cppreference.com/w/cpp/utility/functional/function) and [lambda expressions](http://en.cppreference.com/w/cpp/language/lambda)
