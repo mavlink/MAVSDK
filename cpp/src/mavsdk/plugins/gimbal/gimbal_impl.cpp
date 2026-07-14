@@ -119,6 +119,12 @@ void GimbalImpl::try_request_gimbal_device_information(
             manager_compid :
             discovery.gimbal_device_id;
     if (target_component_id != 0) {
+        if (_debugging) {
+            LogDebug(
+                "Requesting GIMBAL_DEVICE_INFORMATION for gimbal_device_id {} from compid {}",
+                discovery.gimbal_device_id,
+                target_component_id);
+        }
         request_gimbal_device_information(target_component_id);
     }
 }
@@ -316,6 +322,14 @@ void GimbalImpl::process_gimbal_device_information(const mavlink_message_t& mess
     new_item.custom_name = gimbal_device_information.custom_name;
     _gimbals.emplace_back(std::move(new_item));
 
+    if (_debugging) {
+        LogDebug(
+            "Announcing gimbal (manager compid {}, gimbal_device_id {}) from "
+            "GIMBAL_DEVICE_INFORMATION: {}",
+            manager_compid,
+            discovery.gimbal_device_id,
+            gimbal_device_information.model_name);
+    }
     _gimbal_list_subscriptions.queue(gimbal_list_with_lock(), [this](const auto& func) {
         _system_impl->call_user_callback(func);
     });
@@ -344,10 +358,14 @@ void GimbalImpl::process_gimbal_device_attitude_status(const mavlink_message_t& 
     }
 
     if (attitude_status.gimbal_device_id > 6) {
-        LogWarn(
-            "Ignoring gimbal device attitude status with invalid gimbal_device_id {} from ({}/)",
-            attitude_status.gimbal_device_id,
-            message.sysid);
+        // This streams at the attitude rate (e.g. 10 Hz), so keep it behind debugging.
+        if (_debugging) {
+            LogDebug(
+                "Ignoring gimbal device attitude status with invalid gimbal_device_id {} from {}/{}",
+                attitude_status.gimbal_device_id,
+                message.sysid,
+                message.compid);
+        }
         return;
     }
 
@@ -384,7 +402,13 @@ void GimbalImpl::process_gimbal_device_attitude_status(const mavlink_message_t& 
             // vendor/model/custom remain empty — no device info available.
             _gimbals.emplace_back(std::move(new_item));
 
-            LogWarn("Continuing without GIMBAL_DEVICE_INFORMATION for compid {}", manager_compid);
+            if (_debugging) {
+                LogDebug(
+                    "Announcing gimbal (manager compid {}, gimbal_device_id {}) via "
+                    "GIMBAL_DEVICE_ATTITUDE_STATUS without GIMBAL_DEVICE_INFORMATION.",
+                    manager_compid,
+                    discovery.gimbal_device_id);
+            }
             _gimbal_list_subscriptions.queue(gimbal_list_with_lock(), [this](const auto& func) {
                 _system_impl->call_user_callback(func);
             });
@@ -393,8 +417,14 @@ void GimbalImpl::process_gimbal_device_attitude_status(const mavlink_message_t& 
         }
 
         if (maybe_gimbal == _gimbals.end()) {
-            if (!_gimbals.empty()) {
-                LogWarn("Received gimbal device attitude status for unknown gimbal.");
+            // Also at the attitude rate — only surface it when debugging.
+            if (_debugging && !_gimbals.empty()) {
+                LogDebug(
+                    "Received gimbal device attitude status from {}/{} (gimbal_device_id {}) "
+                    "with no matching gimbal.",
+                    message.sysid,
+                    message.compid,
+                    attitude_status.gimbal_device_id);
             }
             return;
         }
