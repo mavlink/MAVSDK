@@ -41,7 +41,7 @@ MavlinkDirect works at runtime instead of compile-time, so instead of having the
 
 ## Load custom MAVLink XML/ MAVLink dialects
 
-By default all messsages from the [common.xml](https://mavlink.io/en/messages/common.html) MAVLink dialect are available, loaded in.
+By default all messages from the [common.xml](https://mavlink.io/en/messages/common.html) MAVLink dialect are available, loaded in.
 
 MavlinkDirect allows to load your own/custom MAVLink messages or other dialects.
 
