@@ -104,6 +104,10 @@ ConnectionResult UdpConnection::stop()
             // the socket's internal state.
             std::promise<void> close_done;
             asio::post(io_ctx, [this, &close_done]() {
+                // send_raw_bytes() calls _socket.send_to() synchronously on a caller
+                // thread while holding _remote_mutex, so take it here too: closing the
+                // socket concurrently with an in-flight send_to is a data race.
+                std::lock_guard<std::mutex> lock(_remote_mutex);
                 asio::error_code ec;
                 _socket.close(ec);
                 close_done.set_value();
@@ -119,8 +123,9 @@ ConnectionResult UdpConnection::stop()
             fence.get_future().wait();
         } else {
             // io_context has already been stopped (io_thread joined) — no
-            // concurrent async operation can be running, so closing directly
-            // is safe.
+            // concurrent async operation can be running, but a user thread could
+            // still call send_raw_bytes(), so guard the close with _remote_mutex.
+            std::lock_guard<std::mutex> lock(_remote_mutex);
             asio::error_code ec;
             _socket.close(ec);
         }
