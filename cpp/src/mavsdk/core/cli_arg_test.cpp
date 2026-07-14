@@ -400,3 +400,29 @@ TEST(CliArg, RawConnectionWrong)
     EXPECT_FALSE(ca.parse("raw://localhost"));
     EXPECT_FALSE(ca.parse("raw://127.0.0.1"));
 }
+
+TEST(CliArg, PortTrailingGarbageRejected)
+{
+    CliArg ca;
+
+    // std::from_chars stops at the first non-digit but still reports success, so a port
+    // with trailing garbage must be rejected rather than silently truncated to its
+    // leading digits.
+    EXPECT_FALSE(ca.parse("udp://127.0.0.1:8080abc"));
+    EXPECT_FALSE(ca.parse("udpin://0.0.0.0:8080abc"));
+    EXPECT_FALSE(ca.parse("udpout://127.0.0.1:8080abc"));
+    EXPECT_FALSE(ca.parse("tcpout://127.0.0.1:8080abc"));
+    EXPECT_FALSE(ca.parse("udp://127.0.0.1:80x"));
+    // Hex-looking input must not be accepted as its leading decimal digits (0).
+    EXPECT_FALSE(ca.parse("udp://127.0.0.1:0x50"));
+}
+
+TEST(CliArg, SerialBaudrateTrailingGarbageRejected)
+{
+    CliArg ca;
+
+    // Same for the serial baudrate.
+    EXPECT_FALSE(ca.parse("serial:///dev/ttyS0:57600xyz"));
+    EXPECT_FALSE(ca.parse("serial://COM13:57600xyz"));
+    EXPECT_FALSE(ca.parse("serial_flowcontrol:///dev/ttyS0:4000000nope"));
+}

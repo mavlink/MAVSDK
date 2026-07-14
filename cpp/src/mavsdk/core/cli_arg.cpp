@@ -230,7 +230,9 @@ std::optional<int> CliArg::port_from_str(std::string_view str)
     int value;
     auto [ptr, ec] = std::from_chars(str.data(), str.data() + str.size(), value);
 
-    if (static_cast<bool>(ec) || value < 1 || value > 65535) {
+    // from_chars stops at the first non-digit and reports success, so also require
+    // that the whole string was consumed to reject inputs like "8080abc".
+    if (static_cast<bool>(ec) || ptr != str.data() + str.size() || value < 1 || value > 65535) {
         return {};
     }
     return {value};
@@ -284,7 +286,8 @@ bool CliArg::parse_serial(const std::string_view rest, bool flow_control_enabled
     auto [ptr, ec] =
         std::from_chars(baudrate_str.data(), baudrate_str.data() + baudrate_str.size(), value);
 
-    if (static_cast<bool>(ec)) {
+    // Reject trailing garbage (e.g. "57600xyz"); from_chars would otherwise accept it.
+    if (static_cast<bool>(ec) || ptr != baudrate_str.data() + baudrate_str.size()) {
         return {};
     }
 
