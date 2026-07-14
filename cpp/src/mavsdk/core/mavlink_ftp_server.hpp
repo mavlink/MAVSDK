@@ -1,5 +1,6 @@
 #pragma once
 
+#include <atomic>
 #include <cinttypes>
 #include <fstream>
 #include <unordered_map>
@@ -136,7 +137,7 @@ private:
     void _work_rename(const PayloadHeader& payload);
     void _work_calc_file_CRC32(const PayloadHeader& payload);
 
-    bool _send_burst_packet();
+    bool _send_burst_packet(); // Requires _mutex to be held.
     void _make_burst_packet(PayloadHeader& packet);
 
     std::mutex _mutex{};
@@ -146,7 +147,10 @@ private:
         uint8_t burst_chunk_size{0};
         std::ifstream ifstream;
         std::ofstream ofstream;
-        bool burst_stop{false};
+        // Atomic so the burst worker can observe a stop request without holding
+        // _mutex, which lets a thread that holds _mutex join the worker without
+        // deadlocking (the worker would otherwise block trying to re-acquire _mutex).
+        std::atomic<bool> burst_stop{false};
         std::thread burst_thread;
     } _session_info{};
 

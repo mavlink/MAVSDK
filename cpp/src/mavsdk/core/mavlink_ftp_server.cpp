@@ -855,18 +855,30 @@ void MavlinkFtpServer::_work_burst(const PayloadHeader& payload)
 
     // Schedule sending out burst messages.
     _session_info.burst_thread = std::thread([this]() {
-        while (!_session_info.burst_stop)
-            if (_send_burst_packet())
+        while (!_session_info.burst_stop) {
+            // Try to grab the lock rather than blocking on it. If another thread holds
+            // _mutex to stop and join us, blocking here would deadlock; instead we fall
+            // back to observing burst_stop (atomic) and exit.
+            std::unique_lock<std::mutex> burst_lock(_mutex, std::try_to_lock);
+            if (!burst_lock.owns_lock()) {
+                std::this_thread::yield();
+                continue;
+            }
+            if (_session_info.burst_stop) {
                 break;
+            }
+            if (_send_burst_packet()) {
+                break;
+            }
+        }
     });
 
     // Don't send response as that's done in the call every burst call above.
 }
 
-// Returns true if sending is complete
+// Requires _mutex to be held. Returns true if sending is complete.
 bool MavlinkFtpServer::_send_burst_packet()
 {
-    std::lock_guard<std::mutex> lock(_mutex);
     if (!_session_info.ifstream.is_open()) {
         return false;
     }
