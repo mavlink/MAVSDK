@@ -59,6 +59,11 @@ constexpr unsigned mav_result_unsupported = 3;
 
 constexpr unsigned mav_comp_id_autopilot1 = 1;
 
+constexpr unsigned mav_frame_global = 0;
+constexpr unsigned mav_frame_global_relative_alt = 3;
+constexpr unsigned mav_frame_global_int = 5;
+constexpr unsigned mav_frame_global_relative_alt_int = 6;
+
 // GIMBAL_MANAGER_FLAGS and GIMBAL_DEVICE_FLAGS share the same bit values.
 constexpr uint32_t gimbal_flags_neutral = 2;
 constexpr uint32_t gimbal_flags_roll_lock = 4;
@@ -389,7 +394,31 @@ private:
             roi.lat_deg = static_cast<double>(fields.value("x", int64_t{0})) * 1e-7;
             roi.lon_deg = static_cast<double>(fields.value("y", int64_t{0})) * 1e-7;
             roi.alt_m = optional_float(fields, "z").value_or(0.0f);
+
+            // Convert the altitude to AMSL according to the frame.
+            const unsigned frame = fields.value("frame", 0u);
+            switch (frame) {
+                case mav_frame_global:
+                case mav_frame_global_int:
+                    // Already AMSL.
+                    break;
+                case mav_frame_global_relative_alt:
+                case mav_frame_global_relative_alt_int:
+                    // Relative to home, and home AMSL is the vehicle AMSL minus
+                    // its altitude relative to home.
+                    roi.alt_m += _vehicle_position->alt_m - _vehicle_relative_alt_m;
+                    break;
+                default:
+                    std::cout << "Denying ROI location: frame " << frame << " not supported\n";
+                    send_ack(
+                        sender_sysid,
+                        sender_compid,
+                        mav_cmd_do_set_roi_location,
+                        mav_result_denied);
+                    return;
+            }
         } else {
+            // COMMAND_LONG has no frame field, the altitude is taken as AMSL.
             roi.lat_deg = optional_float(fields, "param5").value_or(0.0f);
             roi.lon_deg = optional_float(fields, "param6").value_or(0.0f);
             roi.alt_m = optional_float(fields, "param7").value_or(0.0f);
@@ -401,7 +430,7 @@ private:
 
         std::cout << "ROI set by " << int(sender_sysid) << '/' << int(sender_compid) << ": lat "
                   << roi.lat_deg << " deg, lon " << roi.lon_deg << " deg, alt " << roi.alt_m
-                  << " m\n";
+                  << " m AMSL\n";
 
         send_ack(sender_sysid, sender_compid, mav_cmd_do_set_roi_location, mav_result_accepted);
     }
@@ -448,6 +477,8 @@ private:
             static_cast<double>(fields.value("lat", int64_t{0})) * 1e-7,
             static_cast<double>(fields.value("lon", int64_t{0})) * 1e-7,
             static_cast<float>(fields.value("alt", int64_t{0})) * 1e-3f};
+        _vehicle_relative_alt_m =
+            static_cast<float>(fields.value("relative_alt", int64_t{0})) * 1e-3f;
     }
 
     void handle_attitude(const MavlinkDirectServer::MavlinkMessage& message)
@@ -785,6 +816,7 @@ private:
     bool _yaw_lock{false};
     std::optional<GlobalPosition> _roi{};
     std::optional<GlobalPosition> _vehicle_position{};
+    float _vehicle_relative_alt_m{0.0f};
     std::optional<float> _vehicle_yaw_deg{};
     uint8_t _primary_sysid{0};
     uint8_t _primary_compid{0};
