@@ -1,6 +1,6 @@
 # Building C++ Apps
 
-The MAVSDK core C++ library is written in C++17 and exposes C++11 interfaces such as `std::function`. Therefore, applications using the library need to be C++11 or later as well.
+The MAVSDK core C++ library is written in **C++20** (see `CMAKE_CXX_STANDARD` in `cpp/src/CMakeLists.txt`) and exposes C++11-friendly interfaces such as `std::function`. Applications using the library should be C++11 or later; shipped examples use C++20.
 
 Applications can be built using your preferred build system, compiler and linker toolchain. The only requirement is that the build system must be able to locate the MAVSDK C++ headers and libraries (installed as described [here](installation.md)).
 
@@ -29,8 +29,8 @@ cmake_minimum_required(VERSION 3.15)
 # Specify your project's name
 project(your_project_name)
 
-# Specify at least C++11, better C++17
-set(CMAKE_CXX_STANDARD 17)
+# Match the library/examples (C++20). C++17 may work for apps that only need older language surface.
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Enable strict handling of warnings
