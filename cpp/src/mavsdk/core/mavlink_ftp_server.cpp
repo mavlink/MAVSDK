@@ -945,7 +945,7 @@ void MavlinkFtpServer::_work_write(const PayloadHeader& payload)
     }
 
     _session_info.ofstream.seekp(payload.offset);
-    if (_session_info.ifstream.fail()) {
+    if (_session_info.ofstream.fail()) {
         response.opcode = Opcode::RSP_NAK;
         response.size = 1;
         response.data[0] = ServerResult::ERR_FAIL;
