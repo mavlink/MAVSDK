@@ -11,10 +11,31 @@
 using namespace mavsdk;
 
 static std::vector<Mission::MissionItem> create_mission_items();
-static bool should_keep_message(const mavlink_message_t& message);
 
 static std::default_random_engine generator;
 static std::uniform_real_distribution<double> distribution(0.0, 1.0);
+
+static bool should_keep_mission_message(const std::string& message_name)
+{
+    static const std::vector<std::string> lossy_messages = {
+        "MISSION_REQUEST",
+        "MISSION_REQUEST_LIST",
+        "MISSION_REQUEST_INT",
+        "MISSION_COUNT",
+        "MISSION_ITEM_INT",
+    };
+    for (const auto& name : lossy_messages) {
+        if (message_name == name) {
+            // Keep 95% of messages (drop 5%)
+            bool keep = distribution(generator) < 0.95;
+            if (!keep) {
+                LogInfo("Dropping {} to simulate packet loss", message_name);
+            }
+            return keep;
+        }
+    }
+    return true;
+}
 
 TEST(Mission, TransferLossy)
 {
@@ -40,13 +61,15 @@ TEST(Mission, TransferLossy)
 
     auto mission = Mission{system};
 
-    // Set up lossy message interception on both directions
     // Drop ~5% of mission-related messages to simulate packet loss
-    mavsdk_groundstation.intercept_outgoing_messages_async(
-        [](const mavlink_message_t& message) { return should_keep_message(message); });
-
-    mavsdk_groundstation.intercept_incoming_messages_async(
-        [](const mavlink_message_t& message) { return should_keep_message(message); });
+    auto out_handle =
+        mavsdk_groundstation.subscribe_outgoing_messages_json([](Mavsdk::MavlinkMessage message) {
+            return should_keep_mission_message(message.message_name);
+        });
+    auto in_handle =
+        mavsdk_groundstation.subscribe_incoming_messages_json([](Mavsdk::MavlinkMessage message) {
+            return should_keep_mission_message(message.message_name);
+        });
 
     // Create mission plan
     Mission::MissionPlan mission_plan;
@@ -64,29 +87,10 @@ TEST(Mission, TransferLossy)
     // Verify downloaded mission matches uploaded mission
     EXPECT_EQ(mission_plan, result.second);
 
-    // Cleanup
-    mavsdk_groundstation.intercept_outgoing_messages_async(nullptr);
-    mavsdk_groundstation.intercept_incoming_messages_async(nullptr);
+    mavsdk_groundstation.unsubscribe_outgoing_messages_json(out_handle);
+    mavsdk_groundstation.unsubscribe_incoming_messages_json(in_handle);
 
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
-}
-
-bool should_keep_message(const mavlink_message_t& message)
-{
-    bool should_keep = true;
-    if (message.msgid == MAVLINK_MSG_ID_MISSION_REQUEST ||
-        message.msgid == MAVLINK_MSG_ID_MISSION_REQUEST_LIST ||
-        message.msgid == MAVLINK_MSG_ID_MISSION_REQUEST_INT ||
-        // Note: We don't drop MISSION_ACK as the protocol relies on it
-        message.msgid == MAVLINK_MSG_ID_MISSION_COUNT ||
-        message.msgid == MAVLINK_MSG_ID_MISSION_ITEM_INT) {
-        // Keep 95% of messages (drop 5%)
-        should_keep = distribution(generator) < 0.95;
-        if (!should_keep) {
-            LogInfo("Dropping message ID {} to simulate packet loss", (int)message.msgid);
-        }
-    }
-    return should_keep;
 }
 
 std::vector<Mission::MissionItem> create_mission_items()

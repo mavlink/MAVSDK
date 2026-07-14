@@ -598,6 +598,55 @@ void MavsdkImpl::process_message(mavlink_message_t& message, Connection* connect
         }
     }
 
+    // JSON message interception for incoming messages — runs after forwarding so that the
+    // message is still relayed to connected peers, but before plugin delivery so that local
+    // plugins only see messages the subscriber allows through.
+    {
+        uint8_t buf[MAVLINK_MAX_PACKET_LEN];
+        uint16_t len = mavlink_msg_to_send_buffer(buf, &message);
+        size_t bytes_consumed = 0;
+        auto libmav_msg_opt = parse_message_safe(buf, len, bytes_consumed);
+        if (libmav_msg_opt) {
+            Mavsdk::MavlinkMessage json_msg;
+            json_msg.message_name = libmav_msg_opt.value().name();
+            json_msg.system_id = message.sysid;
+            json_msg.component_id = message.compid;
+            json_msg.raw_bytes.assign(buf, buf + len);
+
+            {
+                std::lock_guard lock(_mutex);
+                if (!_connections.empty() && _connections[0].connection->get_libmav_receiver()) {
+                    json_msg.fields_json =
+                        _connections[0].connection->get_libmav_receiver()->libmav_message_to_json(
+                            libmav_msg_opt.value());
+                } else {
+                    json_msg.fields_json =
+                        "{\"message_id\":" + std::to_string(libmav_msg_opt.value().id()) +
+                        ",\"message_name\":\"" + libmav_msg_opt.value().name() + "\"}";
+                }
+            }
+
+            uint8_t target_sys = 0;
+            uint8_t target_comp = 0;
+            if (libmav_msg_opt.value().get("target_system", target_sys) ==
+                mav::MessageResult::Success) {
+                json_msg.target_system_id = target_sys;
+            }
+            if (libmav_msg_opt.value().get("target_component", target_comp) ==
+                mav::MessageResult::Success) {
+                json_msg.target_component_id = target_comp;
+            }
+
+            if (!call_json_interception_callbacks(json_msg, _incoming_json_message_subscriptions)) {
+                if (_message_logging_on) {
+                    LogDebug(
+                        "Incoming JSON message {} dropped by intercept", json_msg.message_name);
+                }
+                return;
+            }
+        }
+    }
+
     mavlink_message_handler.process_message(message);
 
     for (auto& system : _systems) {
@@ -619,14 +668,9 @@ void MavsdkImpl::process_libmav_message(
             static_cast<int>(message.component_id));
     }
 
-    // JSON message interception for incoming messages
-    if (!call_json_interception_callbacks(message, _incoming_json_message_subscriptions)) {
-        // Message was dropped by interception callback
-        if (_message_logging_on) {
-            LogDebug("Incoming JSON message {} dropped by interceptio", message.message_name);
-        }
-        return;
-    }
+    // JSON interception is handled in process_message (old-MAVLink path) which is
+    // called for every packet before process_libmav_message.  Checking here again
+    // would invoke each callback twice for the same physical packet.
 
     if (_message_logging_on) {
         LogDebug(
