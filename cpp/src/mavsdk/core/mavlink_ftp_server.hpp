@@ -155,8 +155,10 @@ private:
     } _session_info{};
 
     uint8_t _network_id = 0;
-    uint8_t _target_system_id = 0;
-    uint8_t _target_component_id = 0;
+    // Written from the message-processing thread and read from the burst thread
+    // (via _send_mavlink_ftp_message), so keep these atomic.
+    std::atomic<uint8_t> _target_system_id{0};
+    std::atomic<uint8_t> _target_component_id{0};
     std::string _root_dir{};
 
     std::mutex _tmp_files_mutex{};
