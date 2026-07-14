@@ -12,6 +12,9 @@
 // - It accepts setpoints via GIMBAL_MANAGER_SET_ATTITUDE,
 //   GIMBAL_MANAGER_SET_PITCHYAW and MAV_CMD_DO_GIMBAL_MANAGER_PITCHYAW.
 // - It tracks control ownership via MAV_CMD_DO_GIMBAL_MANAGER_CONFIGURE.
+// - It points at a region of interest set via MAV_CMD_DO_SET_ROI_LOCATION
+//   (and cancelled via MAV_CMD_DO_SET_ROI_NONE), using the vehicle's
+//   GLOBAL_POSITION_INT and ATTITUDE to compute where to point.
 //
 // The gimbal device itself is simulated: pitch and yaw slew towards the
 // setpoints with a limited angular rate.
@@ -40,6 +43,8 @@ using namespace mavsdk;
 using json = nlohmann::json;
 
 // MAVLink constants, so that we don't depend on the MAVLink C headers.
+constexpr unsigned mav_cmd_do_set_roi_location = 195;
+constexpr unsigned mav_cmd_do_set_roi_none = 197;
 constexpr unsigned mav_cmd_request_message = 512;
 constexpr unsigned mav_cmd_do_gimbal_manager_pitchyaw = 1000;
 constexpr unsigned mav_cmd_do_gimbal_manager_configure = 1001;
@@ -48,8 +53,11 @@ constexpr unsigned message_id_gimbal_manager_information = 280;
 constexpr unsigned message_id_gimbal_device_information = 283;
 
 constexpr unsigned mav_result_accepted = 0;
+constexpr unsigned mav_result_temporarily_rejected = 1;
 constexpr unsigned mav_result_denied = 2;
 constexpr unsigned mav_result_unsupported = 3;
+
+constexpr unsigned mav_comp_id_autopilot1 = 1;
 
 // GIMBAL_MANAGER_FLAGS and GIMBAL_DEVICE_FLAGS share the same bit values.
 constexpr uint32_t gimbal_flags_neutral = 2;
@@ -67,11 +75,17 @@ constexpr uint32_t gimbal_cap_flags_has_yaw_axis = 256;
 constexpr uint32_t gimbal_cap_flags_has_yaw_follow = 512;
 constexpr uint32_t gimbal_cap_flags_has_yaw_lock = 1024;
 
+// This one only exists for GIMBAL_MANAGER_CAP_FLAGS, not for GIMBAL_DEVICE_CAP_FLAGS.
+constexpr uint32_t gimbal_manager_cap_flags_can_point_location_global = 131072;
+
 // No pitch follow: the simulated gimbal always stabilizes pitch (pitch lock).
-constexpr uint32_t gimbal_cap_flags =
+constexpr uint32_t gimbal_device_cap_flags =
     gimbal_cap_flags_has_neutral | gimbal_cap_flags_has_pitch_axis |
     gimbal_cap_flags_has_pitch_lock | gimbal_cap_flags_has_yaw_axis |
     gimbal_cap_flags_has_yaw_follow | gimbal_cap_flags_has_yaw_lock;
+
+constexpr uint32_t gimbal_manager_cap_flags =
+    gimbal_device_cap_flags | gimbal_manager_cap_flags_can_point_location_global;
 
 // Limits of the simulated gimbal.
 constexpr float pitch_min_deg = -90.0f;
@@ -88,6 +102,48 @@ std::optional<float> optional_float(const json& fields, const char* key)
         return fields[key].get<float>();
     }
     return std::nullopt;
+}
+
+struct GlobalPosition {
+    double lat_deg;
+    double lon_deg;
+    float alt_m;
+};
+
+struct PointingAngles {
+    float pitch_deg;
+    float yaw_deg;
+};
+
+float wrap_180(float angle_deg)
+{
+    while (angle_deg > 180.0f) {
+        angle_deg -= 360.0f;
+    }
+    while (angle_deg < -180.0f) {
+        angle_deg += 360.0f;
+    }
+    return angle_deg;
+}
+
+// Pitch and yaw (in vehicle frame) to point from the vehicle position at the
+// ROI location, using a flat-earth approximation which is plenty for gimbal
+// pointing distances.
+PointingAngles pointing_angles_to_roi(
+    const GlobalPosition& vehicle, const GlobalPosition& roi, float vehicle_yaw_deg)
+{
+    constexpr double earth_radius_m = 6371000.0;
+
+    const double d_north_m = to_rad_from_deg(roi.lat_deg - vehicle.lat_deg) * earth_radius_m;
+    const double d_east_m = to_rad_from_deg(roi.lon_deg - vehicle.lon_deg) * earth_radius_m *
+                            std::cos(to_rad_from_deg(vehicle.lat_deg));
+    const double distance_m = std::hypot(d_north_m, d_east_m);
+
+    const auto bearing_deg = static_cast<float>(to_deg_from_rad(std::atan2(d_east_m, d_north_m)));
+    const auto pitch_deg = static_cast<float>(
+        to_deg_from_rad(std::atan2(static_cast<double>(roi.alt_m - vehicle.alt_m), distance_m)));
+
+    return {pitch_deg, wrap_180(bearing_deg - vehicle_yaw_deg)};
 }
 
 class GimbalManager {
@@ -108,6 +164,12 @@ public:
         _server.subscribe_message("GIMBAL_MANAGER_SET_PITCHYAW", [this](const auto& message) {
             handle_set_pitchyaw(message);
         });
+        // Vehicle state, needed to compute where to point for a ROI.
+        _server.subscribe_message("GLOBAL_POSITION_INT", [this](const auto& message) {
+            handle_global_position_int(message);
+        });
+        _server.subscribe_message(
+            "ATTITUDE", [this](const auto& message) { handle_attitude(message); });
     }
 
     void run()
@@ -183,6 +245,12 @@ private:
             case mav_cmd_do_gimbal_manager_configure:
                 handle_do_configure(fields, param7_key, sender_sysid, sender_compid);
                 break;
+            case mav_cmd_do_set_roi_location:
+                handle_do_set_roi_location(fields, is_int, sender_sysid, sender_compid);
+                break;
+            case mav_cmd_do_set_roi_none:
+                handle_do_set_roi_none(fields, sender_sysid, sender_compid);
+                break;
             default:
                 // Only refuse commands explicitly addressed to us, a broadcast
                 // command might be handled by another component.
@@ -247,6 +315,7 @@ private:
             apply_flags(static_cast<uint32_t>(flags.value()));
         }
 
+        _roi.reset();
         _pitch_setpoint_deg = pitch_deg;
         _yaw_setpoint_deg = yaw_deg;
         _pitch_rate_setpoint_deg_s = pitch_rate_deg_s;
@@ -291,6 +360,113 @@ private:
             sender_sysid, sender_compid, mav_cmd_do_gimbal_manager_configure, mav_result_accepted);
     }
 
+    void handle_do_set_roi_location(
+        const json& fields, bool is_int, uint8_t sender_sysid, uint8_t sender_compid)
+    {
+        const auto gimbal_device_id =
+            static_cast<unsigned>(optional_float(fields, "param1").value_or(0.0f));
+
+        std::lock_guard<std::mutex> lock(_mutex);
+
+        if (!for_us(fields, gimbal_device_id) || !in_control(sender_sysid, sender_compid)) {
+            send_ack(sender_sysid, sender_compid, mav_cmd_do_set_roi_location, mav_result_denied);
+            return;
+        }
+
+        if (!_vehicle_position) {
+            // Without the vehicle position we don't know where to point.
+            send_ack(
+                sender_sysid,
+                sender_compid,
+                mav_cmd_do_set_roi_location,
+                mav_result_temporarily_rejected);
+            return;
+        }
+
+        GlobalPosition roi{};
+        if (is_int) {
+            // COMMAND_INT carries latitude/longitude as degE7 integers in x/y.
+            roi.lat_deg = static_cast<double>(fields.value("x", int64_t{0})) * 1e-7;
+            roi.lon_deg = static_cast<double>(fields.value("y", int64_t{0})) * 1e-7;
+            roi.alt_m = optional_float(fields, "z").value_or(0.0f);
+        } else {
+            roi.lat_deg = optional_float(fields, "param5").value_or(0.0f);
+            roi.lon_deg = optional_float(fields, "param6").value_or(0.0f);
+            roi.alt_m = optional_float(fields, "param7").value_or(0.0f);
+        }
+
+        _roi = roi;
+        _pitch_rate_setpoint_deg_s.reset();
+        _yaw_rate_setpoint_deg_s.reset();
+
+        std::cout << "ROI set by " << int(sender_sysid) << '/' << int(sender_compid) << ": lat "
+                  << roi.lat_deg << " deg, lon " << roi.lon_deg << " deg, alt " << roi.alt_m
+                  << " m\n";
+
+        send_ack(sender_sysid, sender_compid, mav_cmd_do_set_roi_location, mav_result_accepted);
+    }
+
+    void handle_do_set_roi_none(const json& fields, uint8_t sender_sysid, uint8_t sender_compid)
+    {
+        const auto gimbal_device_id =
+            static_cast<unsigned>(optional_float(fields, "param1").value_or(0.0f));
+
+        std::lock_guard<std::mutex> lock(_mutex);
+
+        if (!for_us(fields, gimbal_device_id) || !in_control(sender_sysid, sender_compid)) {
+            send_ack(sender_sysid, sender_compid, mav_cmd_do_set_roi_none, mav_result_denied);
+            return;
+        }
+
+        // Back to neutral, as the spec asks for when there is no previous
+        // manual input to return to.
+        _roi.reset();
+        _pitch_setpoint_deg = 0.0f;
+        _yaw_setpoint_deg = 0.0f;
+        _pitch_rate_setpoint_deg_s.reset();
+        _yaw_rate_setpoint_deg_s.reset();
+
+        std::cout << "ROI cleared by " << int(sender_sysid) << '/' << int(sender_compid) << '\n';
+
+        send_ack(sender_sysid, sender_compid, mav_cmd_do_set_roi_none, mav_result_accepted);
+    }
+
+    void handle_global_position_int(const MavlinkDirectServer::MavlinkMessage& message)
+    {
+        // Only listen to the autopilot of our own system.
+        if (message.system_id != _own_sysid || message.component_id != mav_comp_id_autopilot1) {
+            return;
+        }
+
+        const auto fields = json::parse(message.fields_json, nullptr, false);
+        if (fields.is_discarded()) {
+            return;
+        }
+
+        std::lock_guard<std::mutex> lock(_mutex);
+        _vehicle_position = GlobalPosition{
+            static_cast<double>(fields.value("lat", int64_t{0})) * 1e-7,
+            static_cast<double>(fields.value("lon", int64_t{0})) * 1e-7,
+            static_cast<float>(fields.value("alt", int64_t{0})) * 1e-3f};
+    }
+
+    void handle_attitude(const MavlinkDirectServer::MavlinkMessage& message)
+    {
+        if (message.system_id != _own_sysid || message.component_id != mav_comp_id_autopilot1) {
+            return;
+        }
+
+        const auto fields = json::parse(message.fields_json, nullptr, false);
+        if (fields.is_discarded()) {
+            return;
+        }
+
+        std::lock_guard<std::mutex> lock(_mutex);
+        if (const auto yaw_rad = optional_float(fields, "yaw")) {
+            _vehicle_yaw_deg = to_deg_from_rad(*yaw_rad);
+        }
+    }
+
     // Apply one sysid/compid param of DO_GIMBAL_MANAGER_CONFIGURE with its special values:
     // -1: leave unchanged, -2: set to the sender's id, -3: remove if currently the sender's id.
     static void
@@ -332,6 +508,7 @@ private:
         }
 
         apply_flags(fields.value("flags", 0u));
+        _roi.reset();
 
         // A quaternion with NaN elements (arriving as null) means "only use rates".
         std::optional<EulerAngle> setpoint{};
@@ -380,6 +557,7 @@ private:
         }
 
         apply_flags(fields.value("flags", 0u));
+        _roi.reset();
 
         // Fields are in radians, rad/s.
         const auto pitch_rad = optional_float(fields, "pitch");
@@ -412,6 +590,13 @@ private:
     void update_simulation(float dt_s)
     {
         std::lock_guard<std::mutex> lock(_mutex);
+
+        if (_roi && _vehicle_position) {
+            const auto angles = pointing_angles_to_roi(
+                _vehicle_position.value(), _roi.value(), _vehicle_yaw_deg.value_or(0.0f));
+            _pitch_setpoint_deg = angles.pitch_deg;
+            _yaw_setpoint_deg = angles.yaw_deg;
+        }
 
         update_axis(
             dt_s,
@@ -494,7 +679,7 @@ private:
             "GIMBAL_MANAGER_INFORMATION",
             {
                 {"time_boot_ms", time_boot_ms()},
-                {"cap_flags", gimbal_cap_flags},
+                {"cap_flags", gimbal_manager_cap_flags},
                 {"gimbal_device_id", _own_compid},
                 {"roll_min", 0.0f},
                 {"roll_max", 0.0f},
@@ -517,7 +702,7 @@ private:
                 {"firmware_version", 0},
                 {"hardware_version", 0},
                 {"uid", 0},
-                {"cap_flags", gimbal_cap_flags},
+                {"cap_flags", gimbal_device_cap_flags},
                 {"custom_cap_flags", 0},
                 {"roll_min", 0.0f},
                 {"roll_max", 0.0f},
@@ -598,6 +783,9 @@ private:
     float _pitch_rate_deg_s{0.0f};
     float _yaw_rate_deg_s{0.0f};
     bool _yaw_lock{false};
+    std::optional<GlobalPosition> _roi{};
+    std::optional<GlobalPosition> _vehicle_position{};
+    std::optional<float> _vehicle_yaw_deg{};
     uint8_t _primary_sysid{0};
     uint8_t _primary_compid{0};
     uint8_t _secondary_sysid{0};
