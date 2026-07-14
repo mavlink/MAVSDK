@@ -1501,13 +1501,16 @@ void MavsdkImpl::process_user_callbacks_thread()
         }
 
         const double timeout_s = 1.0;
+        // Capture the fields we need by value: this watchdog runs on the io thread and
+        // can fire while (or just after) callback.func() runs here, so referencing the
+        // loop-local 'callback' would race with its destruction at the next iteration.
         auto cookie = timeout_handler.add(
-            [&]() {
+            [this, timeout_s, filename = callback.filename, linenumber = callback.linenumber]() {
                 if (_callback_debugging) {
                     LogWarn(
                         "Callback called from {}:{} took more than {} second to run.",
-                        callback.filename,
-                        callback.linenumber,
+                        filename,
+                        linenumber,
                         static_cast<int>(timeout_s));
                     fflush(stdout);
                     fflush(stderr);
