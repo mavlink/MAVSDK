@@ -118,6 +118,9 @@ private:
         unsigned device_info_requests_left{0};
     };
 
+    // Keyed by the gimbal manager's component ID (where GIMBAL_MANAGER_INFORMATION arrives).
+    using DiscoveryMap = std::unordered_map<uint8_t, GimbalDiscovery>;
+
     struct GimbalAddress {
         uint8_t gimbal_manager_compid{0};
         uint8_t gimbal_device_id{0};
@@ -127,8 +130,14 @@ private:
 
     void request_gimbal_manager_information(uint8_t target_component_id) const;
     void request_gimbal_device_information(uint8_t target_component_id) const;
-    void try_request_gimbal_device_information(
-        GimbalDiscovery& discovery, uint8_t manager_compid) const;
+    void
+    try_request_gimbal_device_information(GimbalDiscovery& discovery, uint8_t manager_compid) const;
+
+    // Find the pending discovery entry that owns a GIMBAL_DEVICE_* message. Returns
+    // _discovery.end() if none matches. The entry's key is the manager compid, which may differ
+    // from device_compid.
+    DiscoveryMap::iterator
+    find_pending_discovery_for_device(uint8_t device_compid, uint8_t device_msg_gimbal_device_id);
 
     void process_heartbeat(const mavlink_message_t& message);
     void process_gimbal_manager_information(const mavlink_message_t& message);
@@ -166,7 +175,7 @@ private:
     CallbackList<Gimbal::Attitude> _attitude_subscriptions{_system_impl->io_context()};
 
     std::vector<GimbalItem> _gimbals;
-    std::unordered_map<uint8_t, GimbalDiscovery> _discovery;
+    DiscoveryMap _discovery;
     float _vehicle_yaw_rad{NAN};
 
     bool _debugging{false};
