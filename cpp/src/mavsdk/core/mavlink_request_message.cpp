@@ -224,9 +224,10 @@ void MavlinkRequestMessage::handle_any_message(const mavlink_message_t& message)
     std::unique_lock<std::mutex> lock(_mutex);
 
     for (auto it = _work_items.begin(); it != _work_items.end(); ++it) {
-        // Check if we're waiting for this message.
+        // Check if we're waiting for this message. Skip unless both the message id and
+        // the component it came from match what this work item requested.
         // TODO: check if params are correct.
-        if (it->message_id != message.msgid && it->target_component == message.compid) {
+        if (it->message_id != message.msgid || it->target_component != message.compid) {
             continue;
         }
 
