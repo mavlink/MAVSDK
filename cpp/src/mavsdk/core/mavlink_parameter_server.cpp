@@ -261,7 +261,7 @@ void MavlinkParameterServer::process_param_set_internally(
                     error_code = 1; // MAV_PARAM_ERROR_DOES_NOT_EXIST
                     send_error = true;
                 }
-                return;
+                break;
             }
             case MavlinkParameterCache::UpdateExistingParamResult::WrongType: {
                 // Non-extended: send PARAM_ERROR with TYPE_MISMATCH
@@ -287,7 +287,7 @@ void MavlinkParameterServer::process_param_set_internally(
                     error_code = 7; // MAV_PARAM_ERROR_TYPE_MISMATCH
                     send_error = true;
                 }
-                return;
+                break;
             }
             case MavlinkParameterCache::UpdateExistingParamResult::Ok: {
                 LogWarn("Update existing params!");
