@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include "mavsdk_export.h"
 
 namespace mavsdk {
 
@@ -18,7 +19,7 @@ namespace mavsdk {
 // Returns whether the gimbal identified by (manager_compid, advertised_gimbal_device_id)
 // is the one that sent a device message from device_compid carrying
 // device_msg_gimbal_device_id.
-bool gimbal_device_message_matches(
+MAVSDK_TEST_EXPORT bool gimbal_device_message_matches(
     uint8_t manager_compid,
     uint8_t advertised_gimbal_device_id,
     uint8_t device_compid,
