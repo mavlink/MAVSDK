@@ -396,7 +396,7 @@ void SystemImpl::process_autopilot_version(const mavlink_message_t& message)
 
 void SystemImpl::heartbeats_timed_out()
 {
-    LogInfo("heartbeats timed out");
+    LogInfo("heartbeats from system {} timed out", int(get_system_id()));
     set_disconnected();
 }
 
@@ -635,11 +635,12 @@ void SystemImpl::set_connected()
         if (!_connected) {
             {
                 std::lock_guard<std::mutex> lock(_components_mutex);
-                if (!_components.empty()) {
+                for (const auto component_id : _components) {
                     LogDebug(
-                        "Discovered {}{}",
-                        _components.size(),
-                        (_components.size() == 1 ? " component" : " components"));
+                        "Discovered component {} (system ID: {}, component ID: {})",
+                        component_name(component_id),
+                        int(get_system_id()),
+                        int(component_id));
                 }
             }
 

@@ -268,7 +268,8 @@ jobs:
       - name: install dependencies for examples
         run: |
           sudo apt-get update && sudo apt-get install -y \
-            libsdl2-dev
+            libsdl2-dev \
+            nlohmann-json3-dev
       - uses: actions/cache@v5
         id: cache
         with:
