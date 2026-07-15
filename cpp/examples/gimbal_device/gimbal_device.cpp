@@ -160,6 +160,8 @@ private:
             static_cast<unsigned>(optional_float(fields, "param1").value_or(0.0f));
 
         if (requested_id == message_id_gimbal_device_information) {
+            std::cout << "GIMBAL_DEVICE_INFORMATION requested by " << int(sender_sysid) << '/'
+                      << int(sender_compid) << '\n';
             send_ack(sender_sysid, sender_compid, mav_cmd_request_message, mav_result_accepted);
             send_gimbal_device_information();
         } else if (fields.value("target_component", 0u) == _own_compid) {
@@ -174,7 +176,19 @@ private:
             return;
         }
 
+        const auto sender_sysid = static_cast<uint8_t>(message.system_id);
+        const auto sender_compid = static_cast<uint8_t>(message.component_id);
+
         std::lock_guard<std::mutex> lock(_mutex);
+
+        // Announce the first setpoint (and any change of manager), so it's visible
+        // that a gimbal manager has found and is driving this device.
+        if (sender_sysid != _manager_sysid || sender_compid != _manager_compid) {
+            _manager_sysid = sender_sysid;
+            _manager_compid = sender_compid;
+            std::cout << "Controlled by gimbal manager " << int(sender_sysid) << '/'
+                      << int(sender_compid) << '\n';
+        }
 
         apply_flags(fields.value("flags", 0u));
 
@@ -376,6 +390,8 @@ private:
     float _pitch_rate_deg_s{0.0f};
     float _yaw_rate_deg_s{0.0f};
     bool _yaw_lock{false};
+    uint8_t _manager_sysid{0};
+    uint8_t _manager_compid{0};
 };
 
 int main(int argc, char** argv)
