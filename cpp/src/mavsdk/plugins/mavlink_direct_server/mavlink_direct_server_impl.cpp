@@ -51,10 +51,13 @@ void MavlinkDirectServerImpl::init()
 
 void MavlinkDirectServerImpl::deinit()
 {
-    // Synchronise with any in-flight dispatch (see MavlinkDirectImpl::deinit for details):
-    // clear() blocks until the current exec() finishes and prevents further callbacks.
+    // Stop dispatching to our own subscribers.
     _callbacks.clear();
 
+    // Unregister from the server component BEFORE this object is destroyed. The registered
+    // callback captures 'this' and reaches into _callbacks on the io thread;
+    // unregister_libmav_message_handler() is blocking, so once it returns the io thread can
+    // no longer invoke it against a freed MavlinkDirectServerImpl (see MavlinkDirectImpl).
     if (_server_subscription.valid()) {
         _server_component_impl->unregister_libmav_message_handler(_server_subscription);
         _server_subscription = {};

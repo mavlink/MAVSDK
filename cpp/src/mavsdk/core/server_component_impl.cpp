@@ -148,7 +148,10 @@ Handle<Mavsdk::MavlinkMessage> ServerComponentImpl::register_libmav_message_hand
 
 void ServerComponentImpl::unregister_libmav_message_handler(Handle<Mavsdk::MavlinkMessage> handle)
 {
-    _libmav_message_callbacks.unsubscribe(handle);
+    // Blocking: once this returns the io thread can no longer invoke the callback. Plugin
+    // deinit() relies on that to destroy the object that owns the callback (which captures
+    // its 'this') without a use-after-free on the io thread.
+    _libmav_message_callbacks.unsubscribe_blocking(handle);
 }
 
 void ServerComponentImpl::process_libmav_message(const Mavsdk::MavlinkMessage& message)
