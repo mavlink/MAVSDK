@@ -77,7 +77,7 @@ if (connection_result != ConnectionResult::Success) {
 ```
 
 ::: info
-The connection string used above (`udpin://0.0.0.0:14540`) is the [standard PX4 UDP port](https://docs.px4.io/master/en/simulation/#default-px4-mavlink-udp-ports) for off-board APIs (14540) used with SITL.
+The connection string used above (`udpin://0.0.0.0:14540`) is the [standard PX4 UDP port](https://docs.px4.io/main/en/simulation/#default-px4-mavlink-udp-ports) for off-board APIs (14540) used with SITL.
   The standard way to talk to a ground station (e.g. QGC is on port 14550).
 :::
 
