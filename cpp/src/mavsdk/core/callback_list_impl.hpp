@@ -89,6 +89,43 @@ public:
         });
     }
 
+    // Blocking variant of unsubscribe(): does not return until the io thread has actually
+    // removed the callback. Because the io thread runs handlers in order, once this returns
+    // any dispatch that was already invoking the callback has finished and no future dispatch
+    // can invoke it -- so it is safe to destroy the object that owns the callback right after.
+    // Only call this off the io thread and while holding no lock the io thread needs (the
+    // plugin deinit path satisfies both); the guards below otherwise avoid a self-deadlock.
+    void unsubscribe_blocking(Handle<Args...> handle)
+    {
+        // Ignore null handle.
+        if (!handle.valid()) {
+            LogErr("Invalid null handle");
+            return;
+        }
+
+        auto erase = [this, handle]() {
+            _list.erase(
+                std::remove_if(
+                    _list.begin(), _list.end(), [&](auto& pair) { return pair.first == handle; }),
+                _list.end());
+            update_size();
+        };
+
+        // Same guards as read_on_io()/drain(): if the io thread is gone (stopped) or we are
+        // already on it, apply inline -- posting and waiting would hang or self-deadlock.
+        if (_io_context.stopped() || on_io_thread()) {
+            erase();
+            return;
+        }
+
+        std::promise<void> done;
+        asio::post(_io_context, [&]() {
+            erase();
+            done.set_value();
+        });
+        done.get_future().wait();
+    }
+
     void exec(Args... args)
     {
         read_on_io([&]() {
