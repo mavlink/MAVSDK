@@ -17,6 +17,12 @@ void handler(int sig)
     } else {
         LogErr("Got signal: <unknown> ({})", sig);
     }
+
+    // Note: generate_trace() symbolizes eagerly and is not strictly async-signal-safe,
+    // but we exit right after, and in practice it produces a fully symbolized backtrace
+    // (function, file, line). cpptrace's signal-safe raw-trace API is not used because it
+    // needs the libunwind backend to collect frames; with the default unwinder it returns
+    // nothing, which would be worse than this.
     cpptrace::generate_trace().print();
     exit(1);
 }

@@ -685,6 +685,18 @@ bool MavlinkFtpClient::download_burst_continue(
                 return false;
             }
 
+            if (payload->offset > item.file_size) {
+                // The server should never point us past the end of the file. Reject rather
+                // than allocating/zero-filling a gap of up to ~4 GB from a bad offset.
+                LogWarn(
+                    "Got payload offset {} past file size {}",
+                    (uint32_t)payload->offset,
+                    item.file_size);
+                item.callback(ClientResult::ProtocolError, {});
+                download_burst_end(work);
+                return false;
+            }
+
             // we missed a part
             item.missing_data.emplace_back(DownloadBurstItem::MissingData{
                 item.current_offset, payload->offset - item.current_offset});

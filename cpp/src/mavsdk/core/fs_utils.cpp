@@ -78,7 +78,10 @@ std::optional<std::filesystem::path> get_cache_directory()
 #elif defined(APPLE) || defined(LINUX)
     const char* homedir;
     if ((homedir = getenv("HOME")) == NULL) {
-        homedir = getpwuid(getuid())->pw_dir;
+        // getpwuid() can return NULL if there is no passwd entry for the uid (common in
+        // minimal containers), so guard against dereferencing it.
+        const struct passwd* pw = getpwuid(getuid());
+        homedir = (pw != nullptr) ? pw->pw_dir : nullptr;
     }
     if (!homedir) {
         return std::nullopt;

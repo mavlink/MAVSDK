@@ -31,6 +31,14 @@ MavlinkRequestMessage::~MavlinkRequestMessage()
     // The message handler holds callbacks capturing 'this', so make sure none of
     // them can fire after we are gone.
     _message_handler.unregister_all_blocking(this);
+
+    // In-flight requests schedule timeouts that also capture 'this'. Cancel any that
+    // are still pending, otherwise TimeoutHandler could fire handle_timeout on us
+    // after destruction (use-after-free).
+    std::lock_guard<std::mutex> lock(_mutex);
+    for (const auto& item : _work_items) {
+        _timeout_handler.remove(item.timeout_cookie);
+    }
 }
 
 void MavlinkRequestMessage::request(
@@ -216,9 +224,10 @@ void MavlinkRequestMessage::handle_any_message(const mavlink_message_t& message)
     std::unique_lock<std::mutex> lock(_mutex);
 
     for (auto it = _work_items.begin(); it != _work_items.end(); ++it) {
-        // Check if we're waiting for this message.
+        // Check if we're waiting for this message. Skip unless both the message id and
+        // the component it came from match what this work item requested.
         // TODO: check if params are correct.
-        if (it->message_id != message.msgid && it->target_component == message.compid) {
+        if (it->message_id != message.msgid || it->target_component != message.compid) {
             continue;
         }
 

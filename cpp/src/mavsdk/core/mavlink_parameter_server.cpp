@@ -261,7 +261,7 @@ void MavlinkParameterServer::process_param_set_internally(
                     error_code = 1; // MAV_PARAM_ERROR_DOES_NOT_EXIST
                     send_error = true;
                 }
-                return;
+                break;
             }
             case MavlinkParameterCache::UpdateExistingParamResult::WrongType: {
                 // Non-extended: send PARAM_ERROR with TYPE_MISMATCH
@@ -287,7 +287,7 @@ void MavlinkParameterServer::process_param_set_internally(
                     error_code = 7; // MAV_PARAM_ERROR_TYPE_MISMATCH
                     send_error = true;
                 }
-                return;
+                break;
             }
             case MavlinkParameterCache::UpdateExistingParamResult::Ok: {
                 LogWarn("Update existing params!");
@@ -299,8 +299,15 @@ void MavlinkParameterServer::process_param_set_internally(
                     LogDebug("Update had no effect: {}", updated_parameter.value.get_string());
                 } else {
                     LogDebug("Updated param to :{}", updated_parameter.value.get_string());
-                    find_and_call_subscriptions_value_changed(
-                        updated_parameter.id, updated_parameter.value);
+                    // Don't call the (user) subscription callbacks while holding
+                    // _all_params_mutex: a callback re-entering a server API that takes the
+                    // same mutex would self-deadlock. Post it onto the io_context instead,
+                    // matching provide_server_param().
+                    const auto changed_id = updated_parameter.id;
+                    const auto changed_value = updated_parameter.value;
+                    asio::post(_io_context, [this, changed_id, changed_value]() {
+                        find_and_call_subscriptions_value_changed(changed_id, changed_value);
+                    });
                 }
                 if (extended) {
                     auto new_work = std::make_shared<WorkItem>(

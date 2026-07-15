@@ -78,6 +78,7 @@ public:
 
     void set_configuration(Mavsdk::Configuration new_configuration);
     Mavsdk::Configuration get_configuration() const;
+    ComponentType get_component_type() const;
 
     bool send_message(mavlink_message_t& message);
     uint8_t get_own_system_id() const;
@@ -250,6 +251,10 @@ private:
 
     CallbackList<> _new_system_callbacks{_io_context};
 
+    // Leaf mutex guarding only _configuration. It is never held while acquiring
+    // another mutex, so it cannot participate in a lock-order inversion with
+    // _mutex / _server_components_mutex.
+    mutable std::mutex _configuration_mutex{};
     Mavsdk::Configuration _configuration{ComponentType::GroundStation};
     std::atomic<uint8_t> _our_system_id{0};
     std::atomic<uint8_t> _our_component_id{0};

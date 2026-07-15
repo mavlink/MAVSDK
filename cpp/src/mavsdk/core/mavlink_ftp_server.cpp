@@ -236,17 +236,32 @@ void MavlinkFtpServer::_send_mavlink_ftp_message(const PayloadHeader& payload)
 
 std::string MavlinkFtpServer::_data_as_string(const PayloadHeader& payload, size_t entry)
 {
+    // Only ever scan within the bytes the sender claims are valid. payload.size is
+    // validated to be <= max_data_length before we get here, but clamp defensively so
+    // we can never read past the fixed data[] buffer regardless of the input.
+    const size_t data_length = std::min(static_cast<size_t>(payload.size), size_t{max_data_length});
+
     size_t start = 0;
     size_t end = 0;
-    std::string result;
 
     for (int i = entry; i >= 0; --i) {
         start = end;
+        if (start >= data_length) {
+            // The requested entry is beyond the available data.
+            return {};
+        }
         end +=
-            strnlen(reinterpret_cast<const char*>(&payload.data[start]), max_data_length - start) +
-            1;
+            strnlen(reinterpret_cast<const char*>(&payload.data[start]), data_length - start) + 1;
     }
 
+    // The trailing field may not be null-terminated within the valid data, in which case
+    // strnlen pushed end one past data_length. Clamp it back so the memcpy stays in bounds.
+    end = std::min(end, data_length);
+    if (end <= start) {
+        return {};
+    }
+
+    std::string result;
     result.resize(end - start);
     std::memcpy(result.data(), &payload.data[start], end - start);
 
@@ -840,18 +855,30 @@ void MavlinkFtpServer::_work_burst(const PayloadHeader& payload)
 
     // Schedule sending out burst messages.
     _session_info.burst_thread = std::thread([this]() {
-        while (!_session_info.burst_stop)
-            if (_send_burst_packet())
+        while (!_session_info.burst_stop) {
+            // Try to grab the lock rather than blocking on it. If another thread holds
+            // _mutex to stop and join us, blocking here would deadlock; instead we fall
+            // back to observing burst_stop (atomic) and exit.
+            std::unique_lock<std::mutex> burst_lock(_mutex, std::try_to_lock);
+            if (!burst_lock.owns_lock()) {
+                std::this_thread::yield();
+                continue;
+            }
+            if (_session_info.burst_stop) {
                 break;
+            }
+            if (_send_burst_packet()) {
+                break;
+            }
+        }
     });
 
     // Don't send response as that's done in the call every burst call above.
 }
 
-// Returns true if sending is complete
+// Requires _mutex to be held. Returns true if sending is complete.
 bool MavlinkFtpServer::_send_burst_packet()
 {
-    std::lock_guard<std::mutex> lock(_mutex);
     if (!_session_info.ifstream.is_open()) {
         return false;
     }
@@ -918,7 +945,7 @@ void MavlinkFtpServer::_work_write(const PayloadHeader& payload)
     }
 
     _session_info.ofstream.seekp(payload.offset);
-    if (_session_info.ifstream.fail()) {
+    if (_session_info.ofstream.fail()) {
         response.opcode = Opcode::RSP_NAK;
         response.size = 1;
         response.data[0] = ServerResult::ERR_FAIL;
