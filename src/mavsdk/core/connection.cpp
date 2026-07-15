@@ -78,7 +78,8 @@ void Connection::receive_libmav_message(
     const Mavsdk::MavlinkMessage& message, Connection* connection)
 {
     // Register system ID when receiving a message from a new system.
-    if (_system_ids.find(message.system_id) == _system_ids.end()) {
+    {
+        std::lock_guard<std::mutex> lock(_system_ids_mutex);
         _system_ids.insert(message.system_id);
     }
 

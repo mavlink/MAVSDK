@@ -4,6 +4,7 @@
 #include "mavlink_message_handler.h"
 #include "timeout_handler.h"
 #include "mavlink_include.h"
+#include <cstdint>
 #include <functional>
 #include <mutex>
 #include <optional>
@@ -20,6 +21,7 @@ public:
         MavlinkCommandSender& command_sender,
         MavlinkMessageHandler& message_handler,
         TimeoutHandler& timeout_handler);
+    ~MavlinkRequestMessage();
     MavlinkRequestMessage() = delete;
 
     using MavlinkRequestMessageCallback =
@@ -58,7 +60,11 @@ private:
 
     std::mutex _mutex{};
     std::vector<WorkItem> _work_items{};
-    std::vector<int> _deferred_message_cleanup{};
+    // Message ids we have registered a handler for. We register lazily on first
+    // request and keep the handler until destruction, so there is never an
+    // unregister racing a register. This stays tiny (a handful of message ids),
+    // so a flat vector is faster than a node-based set.
+    std::vector<uint32_t> _registered_message_ids{};
 
     bool _debugging{false};
 };
