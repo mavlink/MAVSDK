@@ -396,6 +396,7 @@ private:
         void* cookie;
     };
     std::vector<StatustextCallback> _statustext_handler_callbacks;
+    std::mutex _statustext_handler_callbacks_mutex{};
 
     std::atomic<bool> _armed{false};
     std::atomic<bool> _hitl_enabled{false};
@@ -440,6 +441,7 @@ private:
     std::unordered_set<uint8_t> _components{};
 
     std::unordered_map<const void*, ParamChangedCallback> _param_changed_callbacks{};
+    std::mutex _param_changed_callbacks_mutex{};
 
     MAV_TYPE _vehicle_type{MAV_TYPE::MAV_TYPE_GENERIC};
     bool _vehicle_type_set{false};

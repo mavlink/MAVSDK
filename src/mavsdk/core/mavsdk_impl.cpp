@@ -210,7 +210,7 @@ std::shared_ptr<ServerComponent> MavsdkImpl::server_component(unsigned instance)
 {
     std::lock_guard lock(_mutex);
 
-    auto component_type = _configuration.get_component_type();
+    auto component_type = get_component_type();
     switch (component_type) {
         case ComponentType::Autopilot:
         case ComponentType::GroundStation:
@@ -508,8 +508,8 @@ void MavsdkImpl::process_message(mavlink_message_t& message, Connection* connect
         // examples and integration tests) to connect to QGroundControl by accident
         // instead of PX4 because the check `has_autopilot()` is not used.
 
-        if (_configuration.get_component_type() == ComponentType::GroundStation &&
-            message.sysid == 255 && message.compid == MAV_COMP_ID_MISSIONPLANNER) {
+        if (get_component_type() == ComponentType::GroundStation && message.sysid == 255 &&
+            message.compid == MAV_COMP_ID_MISSIONPLANNER) {
             if (_message_logging_on) {
                 LogDebug() << "Ignoring messages from QGC as we are also a ground station";
             }
@@ -604,8 +604,8 @@ void MavsdkImpl::process_libmav_message(
         }
 
         // Filter out QGroundControl messages similar to regular mavlink processing
-        if (_configuration.get_component_type() == ComponentType::GroundStation &&
-            message.system_id == 255 && message.component_id == MAV_COMP_ID_MISSIONPLANNER) {
+        if (get_component_type() == ComponentType::GroundStation && message.system_id == 255 &&
+            message.component_id == MAV_COMP_ID_MISSIONPLANNER) {
             if (_message_logging_on) {
                 LogDebug() << "Ignoring libmav messages from QGC as we are also a ground station";
             }
@@ -1037,8 +1037,14 @@ void MavsdkImpl::remove_connection(Mavsdk::ConnectionHandle handle)
 
 Mavsdk::Configuration MavsdkImpl::get_configuration() const
 {
-    std::lock_guard configuration_lock(_mutex);
+    std::lock_guard configuration_lock(_configuration_mutex);
     return _configuration;
+}
+
+ComponentType MavsdkImpl::get_component_type() const
+{
+    std::lock_guard configuration_lock(_configuration_mutex);
+    return _configuration.get_component_type();
 }
 
 void MavsdkImpl::set_configuration(Mavsdk::Configuration new_configuration)
@@ -1050,16 +1056,23 @@ void MavsdkImpl::set_configuration(Mavsdk::Configuration new_configuration)
     _default_server_component = server_component_by_id_with_lock(
         new_configuration.get_component_id(), new_configuration.get_mav_type());
 
-    if (new_configuration.get_always_send_heartbeats() &&
-        !_configuration.get_always_send_heartbeats()) {
+    const bool was_always_sending_heartbeats = [this] {
+        std::lock_guard configuration_lock(_configuration_mutex);
+        return _configuration.get_always_send_heartbeats();
+    }();
+
+    if (new_configuration.get_always_send_heartbeats() && !was_always_sending_heartbeats) {
         start_sending_heartbeats();
     } else if (
-        !new_configuration.get_always_send_heartbeats() &&
-        _configuration.get_always_send_heartbeats() && !is_any_system_connected()) {
+        !new_configuration.get_always_send_heartbeats() && was_always_sending_heartbeats &&
+        !is_any_system_connected()) {
         stop_sending_heartbeats();
     }
 
-    _configuration = new_configuration;
+    {
+        std::lock_guard configuration_lock(_configuration_mutex);
+        _configuration = new_configuration;
+    }
     // We cache these values as atomic to avoid having to lock any mutex for them.
     _our_system_id = new_configuration.get_system_id();
     _our_component_id = new_configuration.get_component_id();
@@ -1077,16 +1090,19 @@ uint8_t MavsdkImpl::get_own_component_id() const
 
 uint8_t MavsdkImpl::get_mav_type() const
 {
+    std::lock_guard configuration_lock(_configuration_mutex);
     return _configuration.get_mav_type();
 }
 
 Autopilot MavsdkImpl::get_autopilot() const
 {
+    std::lock_guard configuration_lock(_configuration_mutex);
     return _configuration.get_autopilot();
 }
 
 uint8_t MavsdkImpl::get_mav_autopilot() const
 {
+    std::lock_guard configuration_lock(_configuration_mutex);
     switch (_configuration.get_autopilot()) {
         case Autopilot::Px4:
             return MAV_AUTOPILOT_PX4;
@@ -1100,12 +1116,18 @@ uint8_t MavsdkImpl::get_mav_autopilot() const
 
 CompatibilityMode MavsdkImpl::get_compatibility_mode() const
 {
+    std::lock_guard configuration_lock(_configuration_mutex);
     return _configuration.get_compatibility_mode();
 }
 
 Autopilot MavsdkImpl::effective_autopilot(Autopilot detected) const
 {
-    switch (_configuration.get_compatibility_mode()) {
+    CompatibilityMode compatibility_mode;
+    {
+        std::lock_guard configuration_lock(_configuration_mutex);
+        compatibility_mode = _configuration.get_compatibility_mode();
+    }
+    switch (compatibility_mode) {
         case CompatibilityMode::Auto:
             return detected;
         case CompatibilityMode::Pure:
@@ -1342,12 +1364,14 @@ void MavsdkImpl::process_user_callbacks_thread()
         }
 
         const double timeout_s = 1.0;
+        // Capture the fields we need by value: this watchdog runs on the io thread and
+        // can fire while (or just after) callback.func() runs here, so referencing the
+        // loop-local 'callback' would race with its destruction at the next iteration.
         auto cookie = timeout_handler.add(
-            [&]() {
+            [this, timeout_s, filename = callback.filename, linenumber = callback.linenumber]() {
                 if (_callback_debugging) {
-                    LogWarn() << "Callback called from " << callback.filename << ":"
-                              << callback.linenumber << " took more than " << timeout_s
-                              << " second to run.";
+                    LogWarn() << "Callback called from " << filename << ":" << linenumber
+                              << " took more than " << timeout_s << " second to run.";
                     fflush(stdout);
                     fflush(stderr);
                     abort();
@@ -1394,7 +1418,11 @@ void MavsdkImpl::start_sending_heartbeats()
 
 void MavsdkImpl::stop_sending_heartbeats()
 {
-    if (!_configuration.get_always_send_heartbeats()) {
+    const bool always_send_heartbeats = [this] {
+        std::lock_guard configuration_lock(_configuration_mutex);
+        return _configuration.get_always_send_heartbeats();
+    }();
+    if (!always_send_heartbeats) {
         std::lock_guard<std::mutex> lock(_heartbeat_mutex);
         call_every_handler.remove(_heartbeat_send_cookie);
     }
