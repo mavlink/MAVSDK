@@ -16,7 +16,7 @@
 
 /*
  This example runs a MAVLink "autopilot" utilising the MAVSDK server plugins
- on a seperate thread. This uses two MAVSDK instances, one GCS, one autopilot.
+ on a separate thread. This uses two MAVSDK instances, one GCS, one autopilot.
 
  The main thread acts as a GCS and reads telemetry, parameters, transmits across
  a mission, clears the mission, arms the vehicle and then triggers a vehicle takeoff.
@@ -58,7 +58,7 @@ int main(int argc, char** argv)
 {
     std::atomic<bool> _should_exit{false};
 
-    // We run the server plugins on a seperate thread so we can use the main
+    // We run the server plugins on a separate thread so we can use the main
     // thread as a ground station.
     std::thread autopilot_thread([&_should_exit]() {
         mavsdk::Mavsdk mavsdkTester{
@@ -111,7 +111,7 @@ int main(int argc, char** argv)
                     MissionRawServer::Result res, MissionRawServer::MissionPlan plan) {
                     std::cout << "Received Uploaded Mission!" << std::endl;
                     std::cout << plan << std::endl;
-                    // Unsubscribe so we only recieve one mission
+                    // Unsubscribe so we only receive one mission
                     missionRawServer.unsubscribe_incoming_mission(handle);
                     mission_prom.set_value(plan);
                 });
