@@ -7,7 +7,7 @@ bool CameraDefinition::load_file(const std::string& filepath)
 {
     tinyxml2::XMLError xml_error = _doc.LoadFile(filepath.c_str());
     if (xml_error != tinyxml2::XML_SUCCESS) {
-        LogErr("tinyxml2::LoadFile failed: {}", _doc.ErrorStr());
+        LogErr("Call tinyxml2::LoadFile failed: {}", _doc.ErrorStr());
         return false;
     }
 
@@ -18,7 +18,7 @@ bool CameraDefinition::load_string(const std::string& content)
 {
     tinyxml2::XMLError xml_error = _doc.Parse(content.c_str());
     if (xml_error != tinyxml2::XML_SUCCESS) {
-        LogErr("tinyxml2::Parse failed: {}", _doc.ErrorStr());
+        LogErr("Call tinyxml2::Parse failed: {}", _doc.ErrorStr());
         return false;
     }
 
@@ -45,13 +45,13 @@ bool CameraDefinition::parse_xml()
 
     auto e_definition = e_mavlinkcamera->FirstChildElement("definition");
     if (!e_definition) {
-        LogErr("definition not found");
+        LogErr("Definition not found");
         return false;
     }
 
     auto e_model = e_definition->FirstChildElement("model");
     if (!e_model) {
-        LogErr("model not found");
+        LogErr("Model not found");
         return false;
     }
 
@@ -59,7 +59,7 @@ bool CameraDefinition::parse_xml()
 
     auto e_vendor = e_definition->FirstChildElement("vendor");
     if (!e_vendor) {
-        LogErr("vendor not found");
+        LogErr("Vendor not found");
         return false;
     }
 
@@ -77,13 +77,13 @@ bool CameraDefinition::parse_xml()
          e_parameter = e_parameter->NextSiblingElement("parameter")) {
         const char* param_name = e_parameter->Attribute("name");
         if (!param_name) {
-            LogErr("name attribute missing");
+            LogErr("Name attribute missing");
             return false;
         }
 
         const char* type_str = e_parameter->Attribute("type");
         if (!type_str) {
-            LogErr("type attribute missing");
+            LogErr("Type attribute missing");
             return false;
         }
 
@@ -96,13 +96,13 @@ bool CameraDefinition::parse_xml()
 
         const char* param_name = e_parameter->Attribute("name");
         if (!param_name) {
-            LogErr("name attribute missing");
+            LogErr("Name attribute missing");
             return false;
         }
 
         const char* type_str_res = e_parameter->Attribute("type");
         if (!type_str_res) {
-            LogErr("type attribute missing for {}", param_name);
+            LogErr("Type attribute missing for {}", param_name);
             return false;
         }
 
@@ -148,7 +148,7 @@ bool CameraDefinition::parse_xml()
         }
 
         if (new_parameter->is_readonly && new_parameter->is_writeonly) {
-            LogErr("parameter can't be readonly and writeonly");
+            LogErr("Parameter can't be readonly and writeonly");
             return false;
         }
 
@@ -263,13 +263,13 @@ CameraDefinition::parse_options(
          e_option = e_option->NextSiblingElement("option")) {
         const char* option_name = e_option->Attribute("name");
         if (!option_name) {
-            LogErr("no option name give");
+            LogErr("No option name give");
             return std::make_pair<>(false, options);
         }
 
         const char* option_value = e_option->Attribute("value");
         if (!option_value) {
-            LogErr("no option value give");
+            LogErr("No option value give");
             return std::make_pair<>(false, options);
         }
 
@@ -297,7 +297,7 @@ CameraDefinition::parse_options(
                  e_parameterrange = e_parameterrange->NextSiblingElement("parameterrange")) {
                 const char* roption_parameter_str = e_parameterrange->Attribute("parameter");
                 if (!roption_parameter_str) {
-                    LogErr("missing roption parameter name");
+                    LogErr("Missing roption parameter name");
                     return std::make_pair<>(false, options);
                 }
 
@@ -308,18 +308,18 @@ CameraDefinition::parse_options(
                      e_roption = e_roption->NextSiblingElement("roption")) {
                     const char* roption_name_str = e_roption->Attribute("name");
                     if (!roption_name_str) {
-                        LogErr("missing roption name attribute");
+                        LogErr("Missing roption name attribute");
                         return std::make_pair<>(false, options);
                     }
 
                     const char* roption_value_str = e_roption->Attribute("value");
                     if (!roption_value_str) {
-                        LogErr("missing roption value attribute");
+                        LogErr("Missing roption value attribute");
                         return std::make_pair<>(false, options);
                     }
 
                     if (type_map.find(roption_parameter_str) == type_map.end()) {
-                        LogErr("unknown roption type");
+                        LogErr("Unknown roption type");
                         return std::make_pair<>(false, options);
                     }
 
@@ -357,7 +357,7 @@ CameraDefinition::parse_range_options(
 
     const char* min_str = param_handle->Attribute("min");
     if (!min_str) {
-        LogDebug("min range missing for {}", param_name);
+        LogDebug("Min range missing for {}", param_name);
         return std::make_tuple<>(false, options, default_option);
     }
 
@@ -366,7 +366,7 @@ CameraDefinition::parse_range_options(
 
     const char* max_str = param_handle->Attribute("max");
     if (!max_str) {
-        LogDebug("max range missing for {}", param_name);
+        LogDebug("Max range missing for {}", param_name);
         return std::make_tuple<>(false, options, default_option);
     }
 
@@ -383,7 +383,7 @@ CameraDefinition::parse_range_options(
 
     const char* step_str = param_handle->Attribute("step");
     if (!step_str) {
-        LogDebug("step range missing for {}", param_name);
+        LogDebug("Step range missing for {}", param_name);
     }
 
     if (step_str) {
@@ -404,7 +404,7 @@ CameraDefinition::parse_range_options(
 
     const char* default_str = param_handle->Attribute("default");
     if (!default_str) {
-        LogDebug("default range missing for {}", param_name);
+        LogDebug("Default range missing for {}", param_name);
         return std::make_tuple<>(false, options, default_option);
     }
 

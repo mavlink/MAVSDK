@@ -112,7 +112,7 @@ ConnectionResult SerialConnection::setup_port()
     asio::error_code ec;
     _serial_port.open(_serial_node, ec);
     if (ec) {
-        LogErr("open failed: {}", ec.message());
+        LogErr("Call open failed: {}", ec.message());
         return ConnectionResult::ConnectionError;
     }
 
@@ -125,7 +125,7 @@ ConnectionResult SerialConnection::setup_port()
     const int fd = _serial_port.native_handle();
 
     if (tcgetattr(fd, &tc) != 0) {
-        LogErr("tcgetattr failed: {}", GET_ERROR());
+        LogErr("Call tcgetattr failed: {}", GET_ERROR());
         _serial_port.close(ec);
         return ConnectionResult::ConnectionError;
     }
@@ -157,19 +157,19 @@ ConnectionResult SerialConnection::setup_port()
     }
 
     if (cfsetispeed(&tc, baudrate_or_define) != 0) {
-        LogErr("cfsetispeed failed: {}", GET_ERROR());
+        LogErr("Call cfsetispeed failed: {}", GET_ERROR());
         _serial_port.close(ec);
         return ConnectionResult::ConnectionError;
     }
 
     if (cfsetospeed(&tc, baudrate_or_define) != 0) {
-        LogErr("cfsetospeed failed: {}", GET_ERROR());
+        LogErr("Call cfsetospeed failed: {}", GET_ERROR());
         _serial_port.close(ec);
         return ConnectionResult::ConnectionError;
     }
 
     if (tcsetattr(fd, TCSANOW, &tc) != 0) {
-        LogErr("tcsetattr failed: {}", GET_ERROR());
+        LogErr("Call tcsetattr failed: {}", GET_ERROR());
         _serial_port.close(ec);
         return ConnectionResult::ConnectionError;
     }
@@ -318,7 +318,7 @@ void SerialConnection::do_receive()
             }
 
             if (ec) {
-                LogErr("read failure: {}", ec.message());
+                LogErr("Read failure: {}", ec.message());
                 // Do not re-arm on hard errors (port removed, etc.).
                 return;
             }

@@ -1011,7 +1011,7 @@ void MissionImpl::report_progress_locked()
     if (should_report) {
         _mission_data.mission_progress_callbacks.queue(
             {current, total}, [this](const auto& func) { _system_impl->call_user_callback(func); });
-        LogDebug("current: {}, total: {}", current, total);
+        LogDebug("Current: {}, total: {}", current, total);
     }
 }
 

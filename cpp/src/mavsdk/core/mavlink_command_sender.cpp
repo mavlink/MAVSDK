@@ -227,7 +227,7 @@ void MavlinkCommandSender::receive_command_ack(const mavlink_message_t& message)
 
             case MAV_RESULT_DENIED:
                 if (_command_debugging) {
-                    LogDebug("command denied ({}).", work->identification.command);
+                    LogDebug("Command denied ({}).", work->identification.command);
                     if (work->identification.command == 512) {
                         LogDebug("(message {})", work->identification.maybe_param1);
                     }
@@ -239,7 +239,7 @@ void MavlinkCommandSender::receive_command_ack(const mavlink_message_t& message)
 
             case MAV_RESULT_UNSUPPORTED:
                 if (_command_debugging) {
-                    LogDebug("command unsupported ({}).", work->identification.command);
+                    LogDebug("Command unsupported ({}).", work->identification.command);
                 }
                 _system_impl.unregister_timeout_handler(work->timeout_cookie);
                 temp_result = {Result::Unsupported, NAN};
@@ -248,7 +248,7 @@ void MavlinkCommandSender::receive_command_ack(const mavlink_message_t& message)
 
             case MAV_RESULT_TEMPORARILY_REJECTED:
                 if (_command_debugging) {
-                    LogDebug("command temporarily rejected ({}).", work->identification.command);
+                    LogDebug("Command temporarily rejected ({}).", work->identification.command);
                 }
                 _system_impl.unregister_timeout_handler(work->timeout_cookie);
                 temp_result = {Result::TemporarilyRejected, NAN};
@@ -257,7 +257,7 @@ void MavlinkCommandSender::receive_command_ack(const mavlink_message_t& message)
 
             case MAV_RESULT_FAILED:
                 if (_command_debugging) {
-                    LogDebug("command failed ({}).", work->identification.command);
+                    LogDebug("Command failed ({}).", work->identification.command);
                 }
                 _system_impl.unregister_timeout_handler(work->timeout_cookie);
                 temp_result = {Result::Failed, NAN};
@@ -289,7 +289,7 @@ void MavlinkCommandSender::receive_command_ack(const mavlink_message_t& message)
 
             case MAV_RESULT_CANCELLED:
                 if (_command_debugging) {
-                    LogDebug("command cancelled ({}).", work->identification.command);
+                    LogDebug("Command cancelled ({}).", work->identification.command);
                 }
                 _system_impl.unregister_timeout_handler(work->timeout_cookie);
                 temp_result = {Result::Cancelled, NAN};
@@ -360,7 +360,7 @@ void MavlinkCommandSender::receive_timeout(const CommandIdentification& identifi
             }
 
             if (!send_mavlink_message(work->command)) {
-                LogErr("connection send error in retransmit ({}).", work->identification.command);
+                LogErr("Connection send error in retransmit ({}).", work->identification.command);
                 temp_callback = work->callback;
                 temp_result = {Result::ConnectionError, NAN};
                 _work_queue.erase(it);
@@ -455,7 +455,7 @@ void MavlinkCommandSender::do_work()
 
         {
             if (!send_mavlink_message(work->command)) {
-                LogErr("connection send error ({})", work->identification.command);
+                LogErr("Connection send error ({})", work->identification.command);
                 // In this case we try again after the timeout. Chances are slim it will work next
                 // time though.
             } else {

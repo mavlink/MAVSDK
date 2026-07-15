@@ -259,7 +259,7 @@ bool CameraServerImpl::parse_version_string(const std::string& version_str, uint
 CameraServer::Result CameraServerImpl::set_information(CameraServer::Information information)
 {
     if (!parse_version_string(information.firmware_version)) {
-        LogDebug("incorrectly formatted firmware version string: {}", information.firmware_version);
+        LogDebug("Incorrectly formatted firmware version string: {}", information.firmware_version);
         return CameraServer::Result::WrongArgument;
     }
 
@@ -404,7 +404,7 @@ CameraServer::Result CameraServerImpl::respond_take_photo(
                 capture_info.file_url.c_str());
             return message;
         });
-        LogDebug("sent camera image captured msg - index: {}", +capture_info.index);
+        LogDebug("Sent camera image captured msg - index: {}", +capture_info.index);
 
     } // Release mutex
 
@@ -1091,7 +1091,7 @@ void CameraServerImpl::start_image_capture_interval(float interval_s, int32_t co
     _last_interval_index = index;
     _image_capture_timer_cookie = _server_component_impl->add_call_every(
         [this, remaining]() {
-            LogDebug("capture image timer triggered");
+            LogDebug("Capture image timer triggered");
 
             if (!_take_photo_callbacks.empty()) {
                 _take_photo_callbacks.queue(_last_interval_index++, [this](const auto& func) {
@@ -1257,7 +1257,7 @@ std::optional<mavlink_command_ack_t> CameraServerImpl::process_camera_settings_r
     auto command_ack =
         _server_component_impl->make_command_ack_message(command, MAV_RESULT::MAV_RESULT_ACCEPTED);
     _server_component_impl->send_command_ack(command_ack);
-    LogDebug("sent settings ack");
+    LogDebug("Sent settings ack");
 
     // unsupported
     const auto mode_id = CAMERA_MODE::CAMERA_MODE_IMAGE;
@@ -1278,7 +1278,7 @@ std::optional<mavlink_command_ack_t> CameraServerImpl::process_camera_settings_r
             0);
         return message;
     });
-    LogDebug("sent settings msg");
+    LogDebug("Sent settings msg");
 
     // ack was already sent
     return std::nullopt;
@@ -1328,7 +1328,7 @@ CameraServerImpl::process_storage_format(const MavlinkCommandReceiver::CommandLo
     std::lock_guard<std::mutex> lg{_mutex};
 
     if (_format_storage_callbacks.empty()) {
-        LogDebug("process storage format requested with no storage format subscriber");
+        LogDebug("Process storage format requested with no storage format subscriber");
         return _server_component_impl->make_command_ack_message(
             command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
     }
@@ -1353,7 +1353,7 @@ std::optional<mavlink_command_ack_t> CameraServerImpl::process_camera_capture_st
 
     std::lock_guard<std::mutex> lg{_mutex};
     if (_capture_status_callbacks.empty()) {
-        LogDebug("process camera capture status requested with no capture status subscriber");
+        LogDebug("Process camera capture status requested with no capture status subscriber");
         return _server_component_impl->make_command_ack_message(
             command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
     }
@@ -1439,7 +1439,7 @@ CameraServerImpl::process_reset_camera_settings(const MavlinkCommandReceiver::Co
     std::lock_guard<std::mutex> lg{_mutex};
 
     if (_reset_settings_callbacks.empty()) {
-        LogDebug("reset camera settings requested with no camera settings subscriber");
+        LogDebug("Reset camera settings requested with no camera settings subscriber");
         return _server_component_impl->make_command_ack_message(
             command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
     }
@@ -1502,7 +1502,7 @@ CameraServerImpl::process_set_camera_zoom(const MavlinkCommandReceiver::CommandL
     }
 
     auto unsupported = [&]() {
-        LogWarn("unsupported set camera zoom type ({}) request", (int)zoom_type);
+        LogWarn("Unsupported set camera zoom type ({}) request", (int)zoom_type);
     };
 
     switch (zoom_type) {
@@ -1588,7 +1588,7 @@ CameraServerImpl::process_set_camera_focus(const MavlinkCommandReceiver::Command
     UNUSED(focus_type);
     UNUSED(focus_value);
 
-    LogDebug("unsupported set camera focus request");
+    LogDebug("Unsupported set camera focus request");
 
     return _server_component_impl->make_command_ack_message(
         command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
@@ -1603,7 +1603,7 @@ CameraServerImpl::process_set_storage_usage(const MavlinkCommandReceiver::Comman
     UNUSED(storage_id);
     UNUSED(usage);
 
-    LogDebug("unsupported set storage usage request");
+    LogDebug("Unsupported set storage usage request");
 
     return _server_component_impl->make_command_ack_message(
         command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
@@ -1629,7 +1629,7 @@ CameraServerImpl::process_image_start_capture(const MavlinkCommandReceiver::Comm
     std::lock_guard<std::mutex> lg{_mutex};
 
     if (_take_photo_callbacks.empty()) {
-        LogDebug("image capture requested with no take photo subscriber");
+        LogDebug("Image capture requested with no take photo subscriber");
         return _server_component_impl->make_command_ack_message(
             command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
     }
@@ -1659,7 +1659,7 @@ CameraServerImpl::process_image_start_capture(const MavlinkCommandReceiver::Comm
 std::optional<mavlink_command_ack_t>
 CameraServerImpl::process_image_stop_capture(const MavlinkCommandReceiver::CommandLong& command)
 {
-    LogDebug("received image stop capture request");
+    LogDebug("Received image stop capture request");
 
     // REVISIT: should we return something other that MAV_RESULT_ACCEPTED if
     // there is not currently a capture interval active?
@@ -1676,7 +1676,7 @@ std::optional<mavlink_command_ack_t> CameraServerImpl::process_camera_image_capt
 
     UNUSED(seq_number);
 
-    LogDebug("unsupported image capture request");
+    LogDebug("Unsupported image capture request");
 
     return _server_component_impl->make_command_ack_message(
         command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
@@ -1693,7 +1693,7 @@ CameraServerImpl::process_video_start_capture(const MavlinkCommandReceiver::Comm
     std::lock_guard<std::mutex> lg{_mutex};
 
     if (_start_video_callbacks.empty()) {
-        LogDebug("video start capture requested with no video start capture subscriber");
+        LogDebug("Video start capture requested with no video start capture subscriber");
         return _server_component_impl->make_command_ack_message(
             command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
     }
@@ -1713,7 +1713,7 @@ CameraServerImpl::process_video_stop_capture(const MavlinkCommandReceiver::Comma
     std::lock_guard<std::mutex> lg{_mutex};
 
     if (_stop_video_callbacks.empty()) {
-        LogDebug("video stop capture requested with no video stop capture subscriber");
+        LogDebug("Video stop capture requested with no video stop capture subscriber");
         return _server_component_impl->make_command_ack_message(
             command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
     }
@@ -1733,7 +1733,7 @@ CameraServerImpl::process_video_start_streaming(const MavlinkCommandReceiver::Co
     std::lock_guard<std::mutex> lg{_mutex};
 
     if (_start_video_streaming_callbacks.empty()) {
-        LogDebug("video start streaming requested with no video start streaming subscriber");
+        LogDebug("Video start streaming requested with no video start streaming subscriber");
         return _server_component_impl->make_command_ack_message(
             command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
     }
@@ -1753,7 +1753,7 @@ CameraServerImpl::process_video_stop_streaming(const MavlinkCommandReceiver::Com
     std::lock_guard<std::mutex> lg{_mutex};
 
     if (_stop_video_streaming_callbacks.empty()) {
-        LogDebug("video stop streaming requested with no video stop streaming subscriber");
+        LogDebug("Video stop streaming requested with no video stop streaming subscriber");
         return _server_component_impl->make_command_ack_message(
             command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
     }
@@ -1778,7 +1778,7 @@ std::optional<mavlink_command_ack_t> CameraServerImpl::process_video_stream_info
         auto command_ack = _server_component_impl->make_command_ack_message(
             command, MAV_RESULT::MAV_RESULT_ACCEPTED);
         _server_component_impl->send_command_ack(command_ack);
-        LogDebug("sent video streaming ack");
+        LogDebug("Sent video streaming ack");
 
         const char name[32] = "";
 
@@ -1834,7 +1834,7 @@ std::optional<mavlink_command_ack_t> CameraServerImpl::process_video_stream_stat
     auto command_ack =
         _server_component_impl->make_command_ack_message(command, MAV_RESULT::MAV_RESULT_ACCEPTED);
     _server_component_impl->send_command_ack(command_ack);
-    LogDebug("sent video streaming ack");
+    LogDebug("Sent video streaming ack");
 
     _server_component_impl->queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
         mavlink_message_t msg{};

@@ -111,7 +111,7 @@ void EventsImpl::set_metadata(uint8_t compid, const std::string& metadata_json)
         _system_impl->send_command_async(
             command, [this](MavlinkCommandSender::Result result, float) {
                 if (result != MavlinkCommandSender::Result::Success) {
-                    LogWarn("command MAV_CMD_RUN_PREARM_CHECKS failed");
+                    LogWarn("Command MAV_CMD_RUN_PREARM_CHECKS failed");
                 }
             });
     }

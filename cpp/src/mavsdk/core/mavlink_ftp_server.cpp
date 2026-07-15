@@ -1045,7 +1045,7 @@ void MavlinkFtpServer::_work_remove_directory(const PayloadHeader& payload)
         return;
     }
     if (ec) {
-        LogErr("fs::exists for {} returned error: {}", path.string(), ec.message());
+        LogErr("Call fs::exists for {} returned error: {}", path.string(), ec.message());
         response.opcode = Opcode::RSP_NAK;
         response.size = 1;
         response.data[0] = ServerResult::ERR_FAIL;
@@ -1054,7 +1054,7 @@ void MavlinkFtpServer::_work_remove_directory(const PayloadHeader& payload)
     }
 
     if (!fs::remove(path, ec)) {
-        LogErr("fs::remove returned error: {}", ec.message());
+        LogErr("Call fs::remove returned error: {}", ec.message());
         response.opcode = Opcode::RSP_NAK;
         response.size = 1;
         response.data[0] = ServerResult::ERR_FAIL;
@@ -1192,7 +1192,8 @@ void MavlinkFtpServer::_work_rename(const PayloadHeader& payload)
 
     fs::rename(old_name, new_name, ec);
     if (ec) {
-        LogErr("fs::rename from {} to {} returned error: {}", old_name, new_name, ec.message());
+        LogErr(
+            "Call fs::rename from {} to {} returned error: {}", old_name, new_name, ec.message());
         response.opcode = Opcode::RSP_NAK;
         response.size = 1;
         response.data[0] = ServerResult::ERR_FAIL;
