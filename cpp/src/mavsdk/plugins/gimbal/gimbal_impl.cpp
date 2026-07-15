@@ -1,4 +1,5 @@
 #include "gimbal_impl.hpp"
+#include "gimbal_device_matching.hpp"
 #include "callback_list.tpp"
 #include "mavsdk_export.h"
 #include "math_utils.hpp"
@@ -118,8 +119,26 @@ void GimbalImpl::try_request_gimbal_device_information(
             manager_compid :
             discovery.gimbal_device_id;
     if (target_component_id != 0) {
+        if (_debugging) {
+            LogDebug(
+                "Requesting GIMBAL_DEVICE_INFORMATION for gimbal_device_id {} from compid {}",
+                discovery.gimbal_device_id,
+                target_component_id);
+        }
         request_gimbal_device_information(target_component_id);
     }
+}
+
+GimbalImpl::DiscoveryMap::iterator GimbalImpl::find_pending_discovery_for_device(
+    uint8_t device_compid, uint8_t device_msg_gimbal_device_id)
+{
+    return std::find_if(_discovery.begin(), _discovery.end(), [&](const auto& entry) {
+        return entry.second.has_manager_info && gimbal_device_message_matches(
+                                                    entry.first,
+                                                    entry.second.gimbal_device_id,
+                                                    device_compid,
+                                                    device_msg_gimbal_device_id);
+    });
 }
 
 void GimbalImpl::process_heartbeat(const mavlink_message_t& message)
@@ -265,10 +284,11 @@ void GimbalImpl::process_gimbal_device_information(const mavlink_message_t& mess
 
     // Check if already announced — just update device info in that case.
     auto it = std::find_if(_gimbals.begin(), _gimbals.end(), [&](const GimbalItem& item) {
-        if (gimbal_device_information.gimbal_device_id == 0) {
-            return item.gimbal_device_id == message.compid;
-        }
-        return item.gimbal_manager_compid == message.compid;
+        return gimbal_device_message_matches(
+            item.gimbal_manager_compid,
+            item.gimbal_device_id,
+            message.compid,
+            gimbal_device_information.gimbal_device_id);
     });
 
     if (it != _gimbals.end()) {
@@ -279,9 +299,10 @@ void GimbalImpl::process_gimbal_device_information(const mavlink_message_t& mess
         return;
     }
 
-    // Look for a pending discovery entry for this compid.
-    auto disc_it = _discovery.find(message.compid);
-    if (disc_it == _discovery.end() || !disc_it->second.has_manager_info) {
+    // Look for a pending discovery entry that this gimbal device belongs to.
+    auto disc_it = find_pending_discovery_for_device(
+        message.compid, gimbal_device_information.gimbal_device_id);
+    if (disc_it == _discovery.end()) {
         if (_debugging) {
             LogDebug("Didn't find pending gimbal for gimbal device");
         }
@@ -289,17 +310,26 @@ void GimbalImpl::process_gimbal_device_information(const mavlink_message_t& mess
     }
 
     // Promote from pending to announced.
+    const uint8_t manager_compid = disc_it->first;
     auto& discovery = disc_it->second;
     discovery.device_info_requests_left = 0;
 
     GimbalItem new_item{};
-    new_item.gimbal_manager_compid = message.compid;
+    new_item.gimbal_manager_compid = manager_compid;
     new_item.gimbal_device_id = discovery.gimbal_device_id;
     new_item.vendor_name = gimbal_device_information.vendor_name;
     new_item.model_name = gimbal_device_information.model_name;
     new_item.custom_name = gimbal_device_information.custom_name;
     _gimbals.emplace_back(std::move(new_item));
 
+    if (_debugging) {
+        LogDebug(
+            "Announcing gimbal (manager compid {}, gimbal_device_id {}) from "
+            "GIMBAL_DEVICE_INFORMATION: {}",
+            manager_compid,
+            discovery.gimbal_device_id,
+            gimbal_device_information.model_name);
+    }
     _gimbal_list_subscriptions.queue(gimbal_list_with_lock(), [this](const auto& func) {
         _system_impl->call_user_callback(func);
     });
@@ -328,27 +358,33 @@ void GimbalImpl::process_gimbal_device_attitude_status(const mavlink_message_t& 
     }
 
     if (attitude_status.gimbal_device_id > 6) {
-        LogWarn(
-            "Ignoring gimbal device attitude status with invalid gimbal_device_id {} from ({}/)",
-            attitude_status.gimbal_device_id,
-            message.sysid);
+        // This streams at the attitude rate (e.g. 10 Hz), so keep it behind debugging.
+        if (_debugging) {
+            LogDebug(
+                "Ignoring gimbal device attitude status with invalid gimbal_device_id {} from {}/{}",
+                attitude_status.gimbal_device_id,
+                message.sysid,
+                message.compid);
+        }
         return;
     }
 
     std::lock_guard<std::mutex> lock(_mutex);
 
     auto maybe_gimbal = std::find_if(_gimbals.begin(), _gimbals.end(), [&](const GimbalItem& item) {
-        if (attitude_status.gimbal_device_id == 0) {
-            return item.gimbal_device_id == message.compid;
-        }
-        return item.gimbal_manager_compid == message.compid &&
-               item.gimbal_device_id == attitude_status.gimbal_device_id;
+        return gimbal_device_message_matches(
+            item.gimbal_manager_compid,
+            item.gimbal_device_id,
+            message.compid,
+            attitude_status.gimbal_device_id);
     });
 
     if (maybe_gimbal == _gimbals.end()) {
         // Not yet announced. Check if there is a matching pending discovery entry and promote it.
-        auto disc_it = _discovery.find(message.compid);
-        if (disc_it != _discovery.end() && disc_it->second.has_manager_info) {
+        auto disc_it =
+            find_pending_discovery_for_device(message.compid, attitude_status.gimbal_device_id);
+        if (disc_it != _discovery.end()) {
+            const uint8_t manager_compid = disc_it->first;
             auto& discovery = disc_it->second;
 
             if (discovery.device_info_requests_left > 0) {
@@ -357,33 +393,38 @@ void GimbalImpl::process_gimbal_device_attitude_status(const mavlink_message_t& 
                 return;
             }
 
-            const bool device_id_matches =
-                attitude_status.gimbal_device_id == 0 ||
-                discovery.gimbal_device_id == attitude_status.gimbal_device_id;
+            // Promote: we have confirmed the gimbal via attitude status.
+            discovery.device_info_requests_left = 0;
 
-            if (device_id_matches) {
-                // Promote: we have confirmed the gimbal via attitude status.
-                discovery.device_info_requests_left = 0;
+            GimbalItem new_item{};
+            new_item.gimbal_manager_compid = manager_compid;
+            new_item.gimbal_device_id = discovery.gimbal_device_id;
+            // vendor/model/custom remain empty — no device info available.
+            _gimbals.emplace_back(std::move(new_item));
 
-                GimbalItem new_item{};
-                new_item.gimbal_manager_compid = message.compid;
-                new_item.gimbal_device_id = discovery.gimbal_device_id;
-                // vendor/model/custom remain empty — no device info available.
-                _gimbals.emplace_back(std::move(new_item));
-
-                LogWarn(
-                    "Continuing without GIMBAL_DEVICE_INFORMATION for compid {}", message.compid);
-                _gimbal_list_subscriptions.queue(gimbal_list_with_lock(), [this](const auto& func) {
-                    _system_impl->call_user_callback(func);
-                });
-
-                maybe_gimbal = std::prev(_gimbals.end());
+            if (_debugging) {
+                LogDebug(
+                    "Announcing gimbal (manager compid {}, gimbal_device_id {}) via "
+                    "GIMBAL_DEVICE_ATTITUDE_STATUS without GIMBAL_DEVICE_INFORMATION.",
+                    manager_compid,
+                    discovery.gimbal_device_id);
             }
+            _gimbal_list_subscriptions.queue(gimbal_list_with_lock(), [this](const auto& func) {
+                _system_impl->call_user_callback(func);
+            });
+
+            maybe_gimbal = std::prev(_gimbals.end());
         }
 
         if (maybe_gimbal == _gimbals.end()) {
-            if (!_gimbals.empty()) {
-                LogWarn("Received gimbal device attitude status for unknown gimbal.");
+            // Also at the attitude rate — only surface it when debugging.
+            if (_debugging && !_gimbals.empty()) {
+                LogDebug(
+                    "Received gimbal device attitude status from {}/{} (gimbal_device_id {}) "
+                    "with no matching gimbal.",
+                    message.sysid,
+                    message.compid,
+                    attitude_status.gimbal_device_id);
             }
             return;
         }
