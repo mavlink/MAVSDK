@@ -276,7 +276,7 @@ bool CliArg::parse_serial(const std::string_view rest, bool flow_control_enabled
             return false;
         }
     } else {
-        LogErr("serial port needs to start with / or COM on Windows");
+        LogErr("Serial port needs to start with / or COM on Windows");
         return false;
     }
 
@@ -305,7 +305,7 @@ bool CliArg::parse_raw(const std::string_view rest)
 {
     // raw:// connection has no parameters
     if (!rest.empty()) {
-        LogErr("raw:// connection should not have parameters");
+        LogErr("A raw:// connection should not have parameters");
         return false;
     }
 

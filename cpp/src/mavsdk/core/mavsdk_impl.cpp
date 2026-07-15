@@ -483,7 +483,7 @@ void MavsdkImpl::process_message(mavlink_message_t& message, Connection* connect
             _tlog_file->stream.flush();
 
             if (!_tlog_file->stream.good()) {
-                LogErr("tlog: write failed, stopping recording");
+                LogErr("Tlog: write failed, stopping recording");
                 _tlog_file.reset();
             }
         }
@@ -710,7 +710,7 @@ void MavsdkImpl::process_libmav_message(
             _tlog_file->stream.flush();
 
             if (!_tlog_file->stream.good()) {
-                LogErr("tlog: write failed, stopping recording");
+                LogErr("Tlog: write failed, stopping recording");
                 _tlog_file.reset();
             }
         }

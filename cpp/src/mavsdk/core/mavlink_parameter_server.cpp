@@ -392,7 +392,7 @@ void MavlinkParameterServer::process_param_ext_set(const mavlink_message_t& mess
 void MavlinkParameterServer::process_param_request_read(const mavlink_message_t& message)
 {
     if (_parameter_debugging) {
-        LogDebug("process param_request_read");
+        LogDebug("Process param_request_read");
     }
     mavlink_param_request_read_t read_request{};
     mavlink_msg_param_request_read_decode(&message, &read_request);
@@ -409,13 +409,13 @@ void MavlinkParameterServer::process_param_request_read(const mavlink_message_t&
             [&](std::monostate) { LogWarn("Ill-formed param_request_read message"); },
             [&](std::uint16_t index) {
                 if (_parameter_debugging) {
-                    LogDebug("found index: {}", index);
+                    LogDebug("Found index: {}", index);
                 }
                 internal_process_param_request_read_by_index(index, false);
             },
             [&](const std::string& id) {
                 if (_parameter_debugging) {
-                    LogDebug("found id: {}", id);
+                    LogDebug("Found id: {}", id);
                 }
                 internal_process_param_request_read_by_id(id, false);
             }},
@@ -438,13 +438,13 @@ void MavlinkParameterServer::process_param_ext_request_read(const mavlink_messag
             [&](std::monostate) { LogWarn("Ill-formed param_request_read message"); },
             [&](std::uint16_t index) {
                 if (_parameter_debugging) {
-                    LogDebug("found index: {}", index);
+                    LogDebug("Found index: {}", index);
                 }
                 internal_process_param_request_read_by_index(index, true);
             },
             [&](const std::string& id) {
                 if (_parameter_debugging) {
-                    LogDebug("found id: {}", id);
+                    LogDebug("Found id: {}", id);
                 }
                 internal_process_param_request_read_by_id(id, true);
             }},
@@ -537,7 +537,7 @@ void MavlinkParameterServer::process_param_request_list(const mavlink_message_t&
 void MavlinkParameterServer::process_param_ext_request_list(const mavlink_message_t& message)
 {
     if (_parameter_debugging) {
-        LogDebug("process param_ext_request_list");
+        LogDebug("Process param_ext_request_list");
     }
 
     mavlink_param_ext_request_list_t ext_list_request{};
@@ -565,7 +565,7 @@ void MavlinkParameterServer::broadcast_all_parameters(const bool extended)
     const bool was_empty = _work_queue.empty();
     for (const auto& parameter : all_params) {
         if (_parameter_debugging) {
-            LogDebug("sending param:{}", parameter.id);
+            LogDebug("Sending param:{}", parameter.id);
         }
         auto new_work = std::make_shared<WorkItem>(
             parameter.id,
@@ -614,7 +614,7 @@ void MavlinkParameterServer::do_work()
                         return;
                     }
                 } else {
-                    LogWarn("sending not extended message");
+                    LogWarn("Sending not extended message");
                     float param_value;
                     if (_sender.compatibility_mode() == CompatibilityMode::ArduPilot) {
                         param_value = work->param_value.get_4_float_bytes_cast();

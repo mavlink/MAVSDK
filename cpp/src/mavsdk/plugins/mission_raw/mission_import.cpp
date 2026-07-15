@@ -376,13 +376,13 @@ MissionImport::import_complex_mission_items(const nlohmann::json& json_item)
     }
 
     if (complex_item_type != "survey") {
-        LogErr("complexItemType: {} not supported", json_to_string(complex_item_type));
+        LogErr("Field complexItemType: {} not supported", json_to_string(complex_item_type));
         return std::nullopt;
     }
 
     const auto& version = json_at(json_item, "version");
     if (version.empty()) {
-        LogErr("version of complexItem not found");
+        LogErr("Version of complexItem not found");
         return std::nullopt;
     }
 

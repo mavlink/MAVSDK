@@ -310,7 +310,7 @@ void LogFilesImpl::download_log_file_async(
                  fs::is_directory(fs::path(file_path)) || fs::exists(file_path);
 
     if (error) {
-        LogErr("error: download_log_file_async failed");
+        LogErr("Call download_log_file_async failed");
 
         if (callback) {
             _system_impl->call_user_callback([callback]() {

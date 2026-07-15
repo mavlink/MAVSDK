@@ -109,7 +109,7 @@ MavlinkParameterCache::param_by_index(uint16_t param_index, bool including_exten
 {
     const auto& params = all_parameters(including_extended);
     if (param_index >= params.size()) {
-        LogErr("param at {} out of bounds ({})", (int)param_index, params.size());
+        LogErr("Param at {} out of bounds ({})", (int)param_index, params.size());
         return {};
     }
 

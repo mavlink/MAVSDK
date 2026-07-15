@@ -55,7 +55,7 @@ MavlinkComponentMetadata::~MavlinkComponentMetadata()
     std::error_code ec;
     std::filesystem::remove_all(_tmp_download_path, ec);
     if (ec) {
-        LogErr("failed to remove directory: {}", ec.message());
+        LogErr("Failed to remove directory: {}", ec.message());
     }
 }
 
@@ -439,34 +439,34 @@ void MavlinkComponentMetadata::parse_component_metadata_general(
     }
 
     if (!metadata.contains("version") || !metadata["version"].is_number_integer()) {
-        LogErr("version not found");
+        LogErr("Version not found");
         return;
     }
 
     if (metadata["version"].get<int>() != 1) {
-        LogWarn("version {} not supported", metadata["version"].get<int>());
+        LogWarn("Version {} not supported", metadata["version"].get<int>());
         return;
     }
 
     if (!metadata.contains("metadataTypes") || !metadata["metadataTypes"].is_array()) {
-        LogErr("metadataTypes not found");
+        LogErr("Field metadataTypes not found");
         return;
     }
 
     for (const auto& metadata_type : metadata["metadataTypes"]) {
         if (!metadata_type.is_object() || !metadata_type.contains("type") ||
             !metadata_type["type"].is_number_integer()) {
-            LogErr("type missing");
+            LogErr("Type missing");
             continue;
         }
         auto type = static_cast<COMP_METADATA_TYPE>(metadata_type["type"].get<int>());
         auto& components = _mavlink_components[compid].components;
         if (components.find(type) != components.end()) {
-            LogErr("component type already added: {}", static_cast<int>(type));
+            LogErr("Component type already added: {}", static_cast<int>(type));
             continue;
         }
         if (!metadata_type.contains("uri")) {
-            LogErr("uri missing");
+            LogErr("URI missing");
             continue;
         }
 
@@ -625,7 +625,7 @@ std::optional<std::filesystem::path>& MetadataComponent::current_metadata_path()
         case State::Init:
             break;
     }
-    LogErr("current_metadata_path() called in invalid state");
+    LogErr("Function current_metadata_path() called in invalid state");
     return _metadata;
 }
 } // namespace mavsdk

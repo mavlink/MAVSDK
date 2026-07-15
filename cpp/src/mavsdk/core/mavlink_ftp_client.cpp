@@ -1187,7 +1187,7 @@ bool MavlinkFtpClient::list_dir_continue(Work& work, ListDirItem& item, PayloadH
         ++item.offset;
 
         if (_debugging) {
-            LogDebug("list_dir raw entry: '{}'", entry);
+            LogDebug("Raw entry from list_dir: '{}'", entry);
         }
 
         if (entry.empty()) {

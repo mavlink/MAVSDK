@@ -75,7 +75,7 @@ ConnectionResult UdpConnection::setup_port()
 
     _socket.open(asio::ip::udp::v4(), ec);
     if (ec) {
-        LogErr("socket open error: {}", ec.message());
+        LogErr("Socket open error: {}", ec.message());
         return ConnectionResult::SocketError;
     }
 
@@ -83,7 +83,7 @@ ConnectionResult UdpConnection::setup_port()
 
     _socket.bind(local_endpoint, ec);
     if (ec) {
-        LogErr("bind error: {}", ec.message());
+        LogErr("Bind error: {}", ec.message());
         return ConnectionResult::BindError;
     }
 
@@ -270,7 +270,7 @@ void UdpConnection::do_receive()
             if (ec) {
                 // operation_aborted happens when the socket is closed (stop()), which is normal.
                 if (ec != asio::error::operation_aborted) {
-                    LogErr("async_receive_from error: {}", ec.message());
+                    LogErr("Error from async_receive_from: {}", ec.message());
                 }
                 // Do NOT re-post — the connection is being torn down.
                 return;

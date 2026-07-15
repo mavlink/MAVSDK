@@ -62,7 +62,7 @@ ConnectionResult TcpServerConnection::start()
 
     _acceptor.open(asio::ip::tcp::v4(), ec);
     if (ec) {
-        LogErr("socket open error: {}", ec.message());
+        LogErr("Socket open error: {}", ec.message());
         return ConnectionResult::SocketError;
     }
 
@@ -70,13 +70,13 @@ ConnectionResult TcpServerConnection::start()
 
     _acceptor.bind(local_endpoint, ec);
     if (ec) {
-        LogErr("bind error: {}", ec.message());
+        LogErr("Bind error: {}", ec.message());
         return ConnectionResult::SocketError;
     }
 
     _acceptor.listen(asio::socket_base::max_listen_connections, ec);
     if (ec) {
-        LogErr("listen error: {}", ec.message());
+        LogErr("Listen error: {}", ec.message());
         return ConnectionResult::SocketError;
     }
 
@@ -195,7 +195,7 @@ void TcpServerConnection::do_accept()
             return;
         }
         if (ec) {
-            LogErr("accept error: {}", ec.message());
+            LogErr("Accept error: {}", ec.message());
             // Re-arm so the server keeps listening (unless we're shutting down).
             if (!_stopping) {
                 do_accept();

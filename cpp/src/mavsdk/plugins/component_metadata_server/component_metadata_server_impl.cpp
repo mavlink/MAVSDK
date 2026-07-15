@@ -90,7 +90,7 @@ void ComponentMetadataServerImpl::set_metadata(
 {
     const std::lock_guard lg{_mutex};
     if (_metadata_set) {
-        LogErr("metadata already set");
+        LogErr("Metadata already set");
         return;
     }
 

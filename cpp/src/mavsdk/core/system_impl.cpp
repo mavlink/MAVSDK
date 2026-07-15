@@ -332,7 +332,7 @@ void SystemImpl::process_heartbeat(const mavlink_message_t& message)
     // This check only works if the MAV_TYPE::MAV_TYPE_ENUM_END is actually the
     // last enumerator.
     if (MAV_TYPE::MAV_TYPE_ENUM_END < heartbeat.type) {
-        LogErr("type received in HEARTBEAT was not recognized");
+        LogErr("Type received in HEARTBEAT was not recognized");
     } else {
         const auto new_vehicle_type = static_cast<MAV_TYPE>(heartbeat.type);
         if (heartbeat.autopilot != MAV_AUTOPILOT_INVALID && new_vehicle_type != MAV_TYPE_GENERIC) {
@@ -396,7 +396,7 @@ void SystemImpl::process_autopilot_version(const mavlink_message_t& message)
 
 void SystemImpl::heartbeats_timed_out()
 {
-    LogInfo("heartbeats from system {} timed out", int(get_system_id()));
+    LogInfo("Heartbeats from system {} timed out", int(get_system_id()));
     set_disconnected();
 }
 
@@ -1425,7 +1425,7 @@ void SystemImpl::unregister_param_changed_handler(const void* cookie)
     std::lock_guard<std::mutex> lock(_param_changed_callbacks_mutex);
     auto it = _param_changed_callbacks.find(cookie);
     if (it == _param_changed_callbacks.end()) {
-        LogWarn("param_changed_handler for cookie not found");
+        LogWarn("Handler param_changed_handler for cookie not found");
         return;
     }
     _param_changed_callbacks.erase(it);

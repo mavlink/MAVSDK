@@ -820,7 +820,7 @@ void MavlinkParameterClient::process_param_value(const mavlink_message_t& messag
                             item.param_name);
 
                         if (!send_set_param_message(item)) {
-                            LogErr("connection send error in retransmit ({}).", item.param_name);
+                            LogErr("Connection send error in retransmit ({}).", item.param_name);
                             _work_queue.pop_front();
                             if (!_work_queue.empty()) {
                                 asio::post(_io_context, [this] { do_work(); });
@@ -965,7 +965,7 @@ void MavlinkParameterClient::process_param_ext_value(const mavlink_message_t& me
     }
 
     if (_parameter_debugging) {
-        LogDebug("process param_ext_value: {} {}", safe_param_id, received_value.get_string());
+        LogDebug("Process param_ext_value: {} {}", safe_param_id, received_value.get_string());
     }
 
     if (_work_queue.empty()) {
@@ -1068,7 +1068,7 @@ void MavlinkParameterClient::process_param_ext_ack(const mavlink_message_t& mess
     const auto safe_param_id = extract_safe_param_id(param_ext_ack.param_id);
 
     if (_parameter_debugging) {
-        LogDebug("process param_ext_ack: {} {}", safe_param_id, (int)param_ext_ack.param_result);
+        LogDebug("Process param_ext_ack: {} {}", safe_param_id, (int)param_ext_ack.param_result);
     }
 
     if (_work_queue.empty()) {
@@ -1141,7 +1141,7 @@ void MavlinkParameterClient::process_param_error(const mavlink_message_t& messag
     const auto safe_param_id = extract_safe_param_id(param_error.param_id);
 
     if (_parameter_debugging) {
-        LogDebug("process param_error: {} error code: {}", safe_param_id, (int)param_error.error);
+        LogDebug("Process param_error: {} error code: {}", safe_param_id, (int)param_error.error);
     }
 
     if (_work_queue.empty()) {
@@ -1241,7 +1241,7 @@ void MavlinkParameterClient::receive_timeout()
                         item.param_name);
 
                     if (!send_set_param_message(item)) {
-                        LogErr("connection send error in retransmit ({}).", item.param_name);
+                        LogErr("Connection send error in retransmit ({}).", item.param_name);
                         _work_queue.pop_front();
                         if (!_work_queue.empty()) {
                             asio::post(_io_context, [this] { do_work(); });
@@ -1269,9 +1269,9 @@ void MavlinkParameterClient::receive_timeout()
             [&](WorkItemGet& item) {
                 if (work->retries_to_do > 0) {
                     // We're not sure the command arrived, let's retransmit.
-                    LogWarn("sending again, retries to do: {}", work->retries_to_do);
+                    LogWarn("Sending again, retries to do: {}", work->retries_to_do);
                     if (!send_get_param_message(item)) {
-                        LogErr("connection send error in retransmit ");
+                        LogErr("Connection send error in retransmit ");
                         _work_queue.pop_front();
                         if (!_work_queue.empty()) {
                             asio::post(_io_context, [this] { do_work(); });
@@ -1286,7 +1286,7 @@ void MavlinkParameterClient::receive_timeout()
                     }
                 } else {
                     // We have tried retransmitting, giving up now.
-                    LogErr("retrying failed");
+                    LogErr("Retrying failed");
                     _work_queue.pop_front();
                     if (!_work_queue.empty()) {
                         asio::post(_io_context, [this] { do_work(); });
@@ -1372,7 +1372,7 @@ bool MavlinkParameterClient::request_next_missing(uint16_t count)
 
     auto next_missing_indices = _param_cache.next_missing_indices(count, chunk_size);
     if (next_missing_indices.empty()) {
-        LogErr("logic error, there should a missing index");
+        LogErr("Logic error, there should a missing index");
         return false;
     }
 

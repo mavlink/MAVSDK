@@ -417,13 +417,13 @@ void MavlinkMissionTransferClient::UploadWorkItem::process_mission_request_int(
     if (_next_sequence < request_int.seq) {
         // We should not go back to a previous one.
         // TODO: figure out if we should error here.
-        LogWarn("mission_request_int: sequence incorrect");
+        LogWarn("In mission_request_int: sequence incorrect");
         return;
 
     } else if (_next_sequence > request_int.seq) {
         // We have already sent that one before.
         if (_retries_done >= retries) {
-            LogWarn("mission_request_int: retries exceeded");
+            LogWarn("In mission_request_int: retries exceeded");
             _timeout_handler.remove(_cookie);
             callback_and_reset(Result::Timeout);
             return;
@@ -447,7 +447,7 @@ void MavlinkMissionTransferClient::UploadWorkItem::process_mission_request_int(
 void MavlinkMissionTransferClient::UploadWorkItem::send_mission_item()
 {
     if (_next_sequence >= _items.size()) {
-        LogErr("send_mission_item: sequence out of bounds");
+        LogErr("In send_mission_item: sequence out of bounds");
         return;
     }
 
@@ -561,7 +561,7 @@ void MavlinkMissionTransferClient::UploadWorkItem::process_timeout()
     }
 
     if (_retries_done >= retries) {
-        LogWarn("timeout: retries exceeded");
+        LogWarn("Timeout: retries exceeded");
         callback_and_reset(Result::Timeout);
         return;
     }
