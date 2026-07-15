@@ -16,6 +16,7 @@ CameraServerImpl::CameraServerImpl(std::shared_ptr<ServerComponent> server_compo
 
 CameraServerImpl::~CameraServerImpl()
 {
+    stop_sending_tracking_status();
     _server_component_impl->unregister_plugin(this);
 }
 
@@ -1369,35 +1370,45 @@ std::optional<mavlink_command_ack_t> CameraServerImpl::process_camera_capture_st
 
 void CameraServerImpl::send_capture_status()
 {
-    std::lock_guard<std::mutex> lg{_mutex};
-
     uint8_t image_status{};
-    if (_capture_status.image_status ==
-            CameraServer::CaptureStatus::ImageStatus::CaptureInProgress ||
-        _capture_status.image_status ==
-            CameraServer::CaptureStatus::ImageStatus::IntervalInProgress) {
-        image_status |= StatusFlags::IN_PROGRESS;
-    }
+    uint8_t video_status{};
+    uint32_t recording_time_ms{};
+    float available_capacity{};
+    float image_capture_timer_interval_s{};
+    int32_t image_capture_count{};
 
-    if (_capture_status.image_status == CameraServer::CaptureStatus::ImageStatus::IntervalIdle ||
-        _capture_status.image_status ==
-            CameraServer::CaptureStatus::ImageStatus::IntervalInProgress ||
-        _is_image_capture_interval_set) {
-        image_status |= StatusFlags::INTERVAL_SET;
-    }
+    {
+        std::lock_guard<std::mutex> lg{_mutex};
 
-    uint8_t video_status = 0;
-    if (_capture_status.video_status == CameraServer::CaptureStatus::VideoStatus::Idle) {
-        video_status = 0;
-    } else if (
-        _capture_status.video_status ==
-        CameraServer::CaptureStatus::VideoStatus::CaptureInProgress) {
-        video_status = 1;
-    }
+        if (_capture_status.image_status ==
+                CameraServer::CaptureStatus::ImageStatus::CaptureInProgress ||
+            _capture_status.image_status ==
+                CameraServer::CaptureStatus::ImageStatus::IntervalInProgress) {
+            image_status |= StatusFlags::IN_PROGRESS;
+        }
 
-    const uint32_t recording_time_ms =
-        static_cast<uint32_t>(static_cast<double>(_capture_status.recording_time_s) * 1e3);
-    const float available_capacity = _capture_status.available_capacity_mib;
+        if (_capture_status.image_status ==
+                CameraServer::CaptureStatus::ImageStatus::IntervalIdle ||
+            _capture_status.image_status ==
+                CameraServer::CaptureStatus::ImageStatus::IntervalInProgress ||
+            _is_image_capture_interval_set) {
+            image_status |= StatusFlags::INTERVAL_SET;
+        }
+
+        if (_capture_status.video_status == CameraServer::CaptureStatus::VideoStatus::Idle) {
+            video_status = 0;
+        } else if (
+            _capture_status.video_status ==
+            CameraServer::CaptureStatus::VideoStatus::CaptureInProgress) {
+            video_status = 1;
+        }
+
+        recording_time_ms =
+            static_cast<uint32_t>(static_cast<double>(_capture_status.recording_time_s) * 1e3);
+        available_capacity = _capture_status.available_capacity_mib;
+        image_capture_timer_interval_s = _image_capture_timer_interval_s;
+        image_capture_count = _image_capture_count;
+    }
 
     _server_component_impl->queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
         mavlink_message_t message{};
@@ -1409,10 +1420,10 @@ void CameraServerImpl::send_capture_status()
             static_cast<uint32_t>(_server_component_impl->get_time().elapsed_s() * 1e3),
             image_status,
             video_status,
-            _image_capture_timer_interval_s,
+            image_capture_timer_interval_s,
             recording_time_ms,
             available_capacity,
-            _image_capture_count,
+            image_capture_count,
             0);
         return message;
     });
@@ -2140,12 +2151,21 @@ void CameraServerImpl::send_tracking_status_with_interval(uint32_t interval_us)
                 return;
             }
         }
+        TrackingMode tracking_mode{};
+        CameraServer::TrackPoint tracked_point{};
+        CameraServer::TrackRectangle tracked_rectangle{};
+        {
+            std::lock_guard<std::mutex> lg{_mutex};
+            tracking_mode = _tracking_mode;
+            tracked_point = _tracked_point;
+            tracked_rectangle = _tracked_rectangle;
+        }
+
         _server_component_impl->queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
             mavlink_message_t message;
-            std::lock_guard<std::mutex> lg{_mutex};
 
             // The message is filled based on current tracking mode
-            switch (_tracking_mode) {
+            switch (tracking_mode) {
                 default:
                     // Fallthrough
                 case TrackingMode::NONE:
@@ -2177,9 +2197,9 @@ void CameraServerImpl::send_tracking_status_with_interval(uint32_t interval_us)
                         CAMERA_TRACKING_STATUS_FLAGS_ACTIVE,
                         CAMERA_TRACKING_MODE_POINT,
                         CAMERA_TRACKING_TARGET_DATA_IN_STATUS,
-                        _tracked_point.point_x,
-                        _tracked_point.point_y,
-                        _tracked_point.radius,
+                        tracked_point.point_x,
+                        tracked_point.point_y,
+                        tracked_point.radius,
                         0.0f,
                         0.0f,
                         0.0f,
@@ -2200,10 +2220,10 @@ void CameraServerImpl::send_tracking_status_with_interval(uint32_t interval_us)
                         0.0f,
                         0.0f,
                         0.0f,
-                        _tracked_rectangle.top_left_corner_x,
-                        _tracked_rectangle.top_left_corner_y,
-                        _tracked_rectangle.bottom_right_corner_x,
-                        _tracked_rectangle.bottom_right_corner_y,
+                        tracked_rectangle.top_left_corner_x,
+                        tracked_rectangle.top_left_corner_y,
+                        tracked_rectangle.bottom_right_corner_x,
+                        tracked_rectangle.bottom_right_corner_y,
                         0);
                     break;
             }

@@ -62,6 +62,13 @@ void MavlinkDirectImpl::init()
 
 void MavlinkDirectImpl::deinit()
 {
+    // Synchronise with any in-flight I/O-thread dispatch: _callbacks()/exec() holds
+    // the CallbackList's internal mutex, and clear() acquires the same mutex, so
+    // clear() blocks until the current exec() finishes.  After clear() the list is
+    // empty; subsequent exec() calls are no-ops, making it safe to destroy the
+    // CallbackList.  This also prevents any further user callbacks from being enqueued.
+    _callbacks.clear();
+
     // Unsubscribe from SystemImpl - this automatically prevents dangling callbacks
     if (_system_subscription.valid()) {
         _system_impl->unregister_libmav_message_handler(_system_subscription);
@@ -110,8 +117,7 @@ MavlinkDirect::Result MavlinkDirectImpl::send_message(MavlinkDirect::MavlinkMess
     }
     if (message.target_component_id != 0) {
         // For messages that have target_component field, set it
-        libmav_message.set(
-            "target_component_id", static_cast<uint8_t>(message.target_component_id));
+        libmav_message.set("target_component", static_cast<uint8_t>(message.target_component_id));
     }
 
     if (_debugging) {

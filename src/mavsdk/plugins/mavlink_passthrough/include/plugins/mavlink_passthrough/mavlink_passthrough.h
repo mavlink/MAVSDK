@@ -91,7 +91,8 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, MavlinkPassthrough::Result const& result);
+    friend MAVSDK_PUBLIC std::ostream&
+    operator<<(std::ostream& str, MavlinkPassthrough::Result const& result);
 
     /**
      * @brief Send message (deprecated).
