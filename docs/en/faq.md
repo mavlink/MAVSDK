@@ -3,7 +3,7 @@
 ## Why was the core of MAVSDK written in C++?
 
 The aim was to have an API in a language which is cross-platform and has many language bindings.
-The library also needs to be lightweight and fast, so it does not slow down for onboard usage at higher rate messaging.
+The core library is maintained as modern C++ (currently **C++20**; see `CMAKE_CXX_STANDARD` in `cpp/src/CMakeLists.txt`) and needs to remain lightweight and fast so it does not slow down for onboard usage at higher rate messaging.
 Additionally, MAVSDK should be able to run efficiently in embedded setups, e.g. as part of an app or onboard a drone on a companion computer, as well as provide a simple and safe API. This favoured C++ over C as it allows for more expressive but type-safe APIs using standard library containers (e.g. `std::vector<MissionItem>`) for usage in embedded setups.
 
 ## Are multiple vehicles supported?
