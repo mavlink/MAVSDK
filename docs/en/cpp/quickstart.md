@@ -41,7 +41,7 @@ For more detailed instructions or other platforms check out the [installation no
 
 The easiest way to try out MAVSDK is to run one of the MAVSDK examples against a simulated version of the vehicle.
 
-To set up and run the PX4 simulator, you need to either [set up the PX4 SITL developer environment](https://docs.px4.io/master/en/dev_setup/dev_env.html).
+To set up and run the PX4 simulator, you need to either [set up the PX4 SITL developer environment](https://docs.px4.io/main/en/dev_setup/dev_env.html).
 
 Or use a [pre-built docker container to run PX4 and the simulator](https://github.com/JonasVautherin/px4-gazebo-headless):
 ```
