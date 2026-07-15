@@ -58,6 +58,22 @@ void MavlinkMessageHandler::unregister_all_blocking(const void* cookie)
 {
     // Blocking version for use in destructors - waits for any in-flight callbacks to complete.
     // WARNING: Do NOT call this from within a message handler callback - it will deadlock.
+
+    // Also purge any deferred registrations for this cookie from _register_later_table.
+    // If register_one() was called while process_message() held _mutex, the entries land in
+    // _register_later_table instead of _table.  Without this step, check_register_later()
+    // would later promote those stale entries into _table and fire callbacks on a
+    // destroyed object (heap-use-after-free).
+    {
+        std::lock_guard<std::mutex> register_later_lock(_register_later_mutex);
+        _register_later_table.erase(
+            std::remove_if(
+                _register_later_table.begin(),
+                _register_later_table.end(),
+                [&](const auto& entry) { return entry.cookie == cookie; }),
+            _register_later_table.end());
+    }
+
     std::lock_guard<std::mutex> lock(_mutex);
     _table.erase(
         std::remove_if(

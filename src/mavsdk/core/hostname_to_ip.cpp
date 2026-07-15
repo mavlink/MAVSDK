@@ -41,20 +41,21 @@ std::optional<std::string> resolve_hostname_to_ip(const std::string& hostname)
         return {};
     }
 
-    std::string ipAddress;
+    std::optional<std::string> ipAddress;
     for (addrinfo* ptr = result; ptr != nullptr; ptr = ptr->ai_next) {
         sockaddr_in* sockaddrIpv4 = reinterpret_cast<sockaddr_in*>(ptr->ai_addr);
-        char ipStr[INET_ADDRSTRLEN];
-        inet_ntop(AF_INET, &(sockaddrIpv4->sin_addr), ipStr, INET_ADDRSTRLEN);
-        ipAddress = ipStr;
-        break; // Take the first result
+        char ipStr[INET_ADDRSTRLEN] = {};
+        if (inet_ntop(AF_INET, &(sockaddrIpv4->sin_addr), ipStr, INET_ADDRSTRLEN) != nullptr) {
+            ipAddress = ipStr;
+            break; // Take the first result
+        }
     }
 
     freeaddrinfo(result);
 #if defined(WINDOWS)
     WSACleanup();
 #endif
-    return {ipAddress};
+    return ipAddress;
 }
 
 } // namespace mavsdk
