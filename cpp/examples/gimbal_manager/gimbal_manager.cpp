@@ -59,6 +59,14 @@ constexpr unsigned mav_result_unsupported = 3;
 
 constexpr unsigned mav_comp_id_autopilot1 = 1;
 
+// This component is both the gimbal manager and the gimbal device in one
+// component. Because manager and device share a component ID, the gimbal
+// protocol v2 addresses the device by a small id in the range 1-6 (a
+// "non-MAVLink" gimbal) rather than by a component ID. We advertise this id in
+// GIMBAL_MANAGER_INFORMATION/STATUS and GIMBAL_DEVICE_INFORMATION, expect it in
+// incoming setpoints, and report it in GIMBAL_DEVICE_ATTITUDE_STATUS.
+constexpr unsigned own_gimbal_device_id = 1;
+
 constexpr unsigned mav_frame_global = 0;
 constexpr unsigned mav_frame_global_relative_alt = 3;
 constexpr unsigned mav_frame_global_int = 5;
@@ -210,7 +218,7 @@ private:
             return false;
         }
         // A gimbal_device_id of 0 addresses all gimbals of this manager.
-        if (accepted_gimbal_device_id != 0 && accepted_gimbal_device_id != _own_compid) {
+        if (accepted_gimbal_device_id != 0 && accepted_gimbal_device_id != own_gimbal_device_id) {
             return false;
         }
         return true;
@@ -711,7 +719,7 @@ private:
             {
                 {"time_boot_ms", time_boot_ms()},
                 {"cap_flags", gimbal_manager_cap_flags},
-                {"gimbal_device_id", _own_compid},
+                {"gimbal_device_id", own_gimbal_device_id},
                 {"roll_min", 0.0f},
                 {"roll_max", 0.0f},
                 {"pitch_min", to_rad_from_deg(pitch_min_deg)},
@@ -741,7 +749,7 @@ private:
                 {"pitch_max", to_rad_from_deg(pitch_max_deg)},
                 {"yaw_min", to_rad_from_deg(yaw_min_deg)},
                 {"yaw_max", to_rad_from_deg(yaw_max_deg)},
-                {"gimbal_device_id", _own_compid},
+                {"gimbal_device_id", own_gimbal_device_id},
             });
     }
 
@@ -754,7 +762,7 @@ private:
             {
                 {"time_boot_ms", time_boot_ms()},
                 {"flags", current_flags()},
-                {"gimbal_device_id", _own_compid},
+                {"gimbal_device_id", own_gimbal_device_id},
                 {"primary_control_sysid", _primary_sysid},
                 {"primary_control_compid", _primary_compid},
                 {"secondary_control_sysid", _secondary_sysid},
@@ -781,9 +789,10 @@ private:
                 {"angular_velocity_y", to_rad_from_deg(_pitch_rate_deg_s)},
                 {"angular_velocity_z", to_rad_from_deg(_yaw_rate_deg_s)},
                 {"failure_flags", 0},
-                // With gimbal_device_id 0, the sending component id identifies the
-                // gimbal device.
-                {"gimbal_device_id", 0},
+                // Manager and device are the same component, so per the gimbal
+                // protocol v2 we report the 1-6 device id here (0 would mean the
+                // device is a separate MAVLink component).
+                {"gimbal_device_id", own_gimbal_device_id},
             });
     }
 

@@ -38,12 +38,13 @@ add_subdirectory(geofence)
 add_subdirectory(gimbal)
 add_subdirectory(gimbal_device_tester)
 
-# Requires nlohmann_json, so we're skipping it if not found
+# Require nlohmann_json, so we're skipping these if not found
 find_package(nlohmann_json QUIET)
 if(nlohmann_json_FOUND)
     add_subdirectory(gimbal_manager)
+    add_subdirectory(gimbal_device)
 else()
-    message(STATUS "nlohmann_json not found, skipping gimbal_manager example")
+    message(STATUS "nlohmann_json not found, skipping gimbal_manager and gimbal_device examples")
 endif()
 add_subdirectory(goto_location)
 add_subdirectory(hold)
