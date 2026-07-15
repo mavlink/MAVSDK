@@ -3,7 +3,7 @@
 ## Prerequisites
 
 * __Python 3.6+:__ run `python --version` or `python3 --version` in a terminal to check the installed version.
-* __A running SITL instance__ ([jMAVSim](https://docs.px4.io/master/en/simulation/jmavsim.html), [gazebo](https://docs.px4.io/master/en/simulation/gazebo.html), …).
+* __A running SITL instance__ ([jMAVSim](https://docs.px4.io/main/en/sim_jmavsim/), [Gazebo](https://docs.px4.io/main/en/sim_gazebo_gz/), …).
   A quick way to run a headless gazebo SITL instance using docker is documented [here](https://github.com/jonasvautherin/px4-gazebo-headless).
 
 ## Install
