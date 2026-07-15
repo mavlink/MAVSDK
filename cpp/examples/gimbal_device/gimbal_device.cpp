@@ -29,6 +29,7 @@
 
 #include <algorithm>
 #include <chrono>
+#include <cmath>
 #include <cstdint>
 #include <iostream>
 #include <mutex>
@@ -220,6 +221,34 @@ private:
                                          std::nullopt;
         _yaw_rate_setpoint_deg_s =
             yaw_rate_rad_s ? std::optional<float>(to_deg_from_rad(*yaw_rate_rad_s)) : std::nullopt;
+
+        // Show the incoming setpoint when it changes noticeably, so the control path is
+        // visible without flooding (GIMBAL_DEVICE_SET_ATTITUDE streams continuously).
+        if (differs(_pitch_setpoint_deg, _last_printed_pitch_deg) ||
+            differs(_yaw_setpoint_deg, _last_printed_yaw_deg)) {
+            _last_printed_pitch_deg = _pitch_setpoint_deg;
+            _last_printed_yaw_deg = _yaw_setpoint_deg;
+            std::cout << "Setpoint: pitch " << _pitch_setpoint_deg.value_or(NAN) << " deg, yaw "
+                      << _yaw_setpoint_deg.value_or(NAN) << " deg";
+            if (_pitch_rate_setpoint_deg_s || _yaw_rate_setpoint_deg_s) {
+                std::cout << " (rate pitch " << _pitch_rate_setpoint_deg_s.value_or(NAN)
+                          << " deg/s, yaw " << _yaw_rate_setpoint_deg_s.value_or(NAN) << " deg/s)";
+            }
+            std::cout << '\n';
+        }
+    }
+
+    // Whether two optional angles differ enough to be worth printing (>1 deg), or one is
+    // set and the other isn't.
+    static bool differs(const std::optional<float>& a, const std::optional<float>& b)
+    {
+        if (a.has_value() != b.has_value()) {
+            return true;
+        }
+        if (!a.has_value()) {
+            return false;
+        }
+        return std::fabs(a.value() - b.value()) > 1.0f;
     }
 
     // Needs to be called with _mutex held.
@@ -392,6 +421,8 @@ private:
     bool _yaw_lock{false};
     uint8_t _manager_sysid{0};
     uint8_t _manager_compid{0};
+    std::optional<float> _last_printed_pitch_deg{};
+    std::optional<float> _last_printed_yaw_deg{};
 };
 
 int main(int argc, char** argv)
