@@ -242,7 +242,7 @@ PX4 will automatically disarm the vehicle after landing. The disarm methods expl
 
 ## Get/Set Cruise Speed
 
-You can get/set the normal horizontal velocity used in *Return mode*, *Hold mode*, *Takeoff* (and other [AUTO Flight Modes](https://docs.px4.io/main/en/getting_started/px4_basic_concepts#flight-modes) using the following methods:
+You can get/set the normal horizontal velocity used in *Return mode*, *Hold mode*, *Takeoff* (and other [AUTO Flight Modes](https://docs.px4.io/main/en/getting_started/px4_basic_concepts#flight-modes)) using the following methods:
 * [set_maximum_speed()](../api_reference/classmavsdk_1_1_action.md#classmavsdk_1_1_action_1a5fccee1636215bccf8d77d9dca15134e)
 * [get_maximum_speed](../api_reference/classmavsdk_1_1_action.md#classmavsdk_1_1_action_1a128bf73fe8d0d359f36a3a9a327799ee)
 
