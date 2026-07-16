@@ -19,17 +19,19 @@ TimeoutHandler::Cookie TimeoutHandler::add(std::function<void()> callback, doubl
     return new_timeout.cookie;
 }
 
-void TimeoutHandler::refresh(Cookie cookie)
+bool TimeoutHandler::refresh(Cookie cookie)
 {
     std::lock_guard<std::recursive_mutex> lock(_timeouts_mutex);
 
     auto it = std::find_if(_timeouts.begin(), _timeouts.end(), [&](const Timeout& timeout) {
         return timeout.cookie == cookie;
     });
-    if (it != _timeouts.end()) {
-        auto future_time = _time.steady_time_in_future(it->duration_s);
-        it->time = future_time;
+    if (it == _timeouts.end()) {
+        return false;
     }
+
+    it->time = _time.steady_time_in_future(it->duration_s);
+    return true;
 }
 
 void TimeoutHandler::remove(Cookie cookie)

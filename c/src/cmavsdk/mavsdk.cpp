@@ -121,6 +121,16 @@ void mavsdk_configuration_set_always_send_heartbeats(mavsdk_configuration_t conf
     cpp_config->set_always_send_heartbeats(always_send_heartbeats != 0);
 }
 
+double mavsdk_configuration_get_heartbeat_watchdog_timeout_s(mavsdk_configuration_t config) {
+    auto* cpp_config = reinterpret_cast<Mavsdk::Configuration*>(config);
+    return cpp_config->get_heartbeat_watchdog_timeout_s();
+}
+
+int mavsdk_configuration_set_heartbeat_watchdog_timeout_s(mavsdk_configuration_t config, double timeout_s) {
+    auto* cpp_config = reinterpret_cast<Mavsdk::Configuration*>(config);
+    return cpp_config->set_heartbeat_watchdog_timeout_s(timeout_s) ? 1 : 0;
+}
+
 mavsdk_component_type_t mavsdk_configuration_get_component_type(mavsdk_configuration_t config) {
     auto* cpp_config = reinterpret_cast<Mavsdk::Configuration*>(config);
     return c_component_type_from_cpp(cpp_config->get_component_type());
@@ -554,6 +564,11 @@ void mavsdk_unsubscribe_raw_bytes_to_be_sent(
 void mavsdk_set_timeout_s(mavsdk_t mavsdk, double timeout_s) {
     auto* cpp_mavsdk = reinterpret_cast<Mavsdk*>(mavsdk);
     cpp_mavsdk->set_timeout_s(timeout_s);
+}
+
+void mavsdk_feed_heartbeat_watchdog(mavsdk_t mavsdk) {
+    auto* cpp_mavsdk = reinterpret_cast<Mavsdk*>(mavsdk);
+    cpp_mavsdk->feed_heartbeat_watchdog();
 }
 
 // --- Memory Management Helpers ---

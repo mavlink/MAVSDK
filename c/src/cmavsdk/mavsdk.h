@@ -86,6 +86,9 @@ CMAVSDK_EXPORT uint8_t mavsdk_configuration_get_component_id(mavsdk_configuratio
 CMAVSDK_EXPORT void mavsdk_configuration_set_component_id(mavsdk_configuration_t config, uint8_t component_id);
 CMAVSDK_EXPORT int mavsdk_configuration_get_always_send_heartbeats(mavsdk_configuration_t config);
 CMAVSDK_EXPORT void mavsdk_configuration_set_always_send_heartbeats(mavsdk_configuration_t config, int always_send_heartbeats);
+CMAVSDK_EXPORT double mavsdk_configuration_get_heartbeat_watchdog_timeout_s(mavsdk_configuration_t config);
+// Returns 1 if the value was accepted, 0 if it was rejected (must be 0 or >= 1 second).
+CMAVSDK_EXPORT int mavsdk_configuration_set_heartbeat_watchdog_timeout_s(mavsdk_configuration_t config, double timeout_s);
 CMAVSDK_EXPORT mavsdk_component_type_t mavsdk_configuration_get_component_type(mavsdk_configuration_t config);
 CMAVSDK_EXPORT void mavsdk_configuration_set_component_type(mavsdk_configuration_t config, mavsdk_component_type_t component_type);
 CMAVSDK_EXPORT uint8_t mavsdk_configuration_get_mav_type(mavsdk_configuration_t config);
@@ -163,6 +166,7 @@ CMAVSDK_EXPORT void mavsdk_set_timeout_s(
     mavsdk_t mavsdk,
     double timeout_s
 );
+CMAVSDK_EXPORT void mavsdk_feed_heartbeat_watchdog(mavsdk_t mavsdk);
 
 // ===== Server Components =====
 CMAVSDK_EXPORT mavsdk_server_component_t mavsdk_server_component(

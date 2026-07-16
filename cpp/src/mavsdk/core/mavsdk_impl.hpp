@@ -43,7 +43,7 @@ class RawConnection;
 
 struct TlogFile;
 
-class MavsdkImpl {
+class MAVSDK_TEST_EXPORT MavsdkImpl {
     // The Asio io_context must outlive every member that posts onto it during teardown
     // (the message handler, parameter subscriptions, connections, systems, and server
     // components). Declaring it first means it is destroyed last, so those members'
@@ -55,7 +55,11 @@ class MavsdkImpl {
         _io_context.get_executor()};
 
 public:
-    MavsdkImpl(const Mavsdk::Configuration& configuration);
+    explicit MavsdkImpl(const Mavsdk::Configuration& configuration);
+    // Constructor for tests: inject a Time implementation (e.g. FakeTime) so
+    // that tests can advance time without real sleeps. The Time object must
+    // outlive this MavsdkImpl.
+    MavsdkImpl(const Mavsdk::Configuration& configuration, Time& time_override);
     ~MavsdkImpl();
     MavsdkImpl(const MavsdkImpl&) = delete;
     void operator=(const MavsdkImpl&) = delete;
@@ -77,6 +81,7 @@ public:
     std::optional<std::shared_ptr<System>> first_autopilot(double timeout_s);
 
     void set_configuration(Mavsdk::Configuration new_configuration);
+    bool set_heartbeat_watchdog_timeout_s(double timeout_s);
     Mavsdk::Configuration get_configuration() const;
     ComponentType get_component_type() const;
 
@@ -110,6 +115,7 @@ public:
 
     void start_sending_heartbeats();
     void stop_sending_heartbeats();
+    void feed_heartbeat_watchdog();
 
     void intercept_incoming_messages_async(std::function<bool(mavlink_message_t&)> callback);
     void intercept_outgoing_messages_async(std::function<bool(mavlink_message_t&)> callback);
@@ -141,7 +147,14 @@ public:
     server_component_by_type(ComponentType server_component_type, unsigned instance = 0);
     std::shared_ptr<ServerComponent> server_component_by_id(uint8_t component_id, uint8_t mav_type);
 
-    Time time{};
+private:
+    // Declared before `time` so it is initialized first.
+    Time _own_time{};
+
+public:
+    // References _own_time by default, or the Time passed into the
+    // test-only constructor.
+    Time& time;
     TimeoutHandler timeout_handler;
     CallEveryHandler call_every_handler;
 
@@ -199,7 +212,21 @@ private:
     Mavsdk::ConnectionHandle add_connection(std::unique_ptr<Connection>&& connection);
     void make_system_with_component(uint8_t system_id, uint8_t component_id);
 
+    // Apply a change to the configuration as one atomic read-modify-write, so
+    // that concurrent configuration updates cannot be lost between reading
+    // the current configuration and writing back the modified copy.
+    void update_configuration(const std::function<void(Mavsdk::Configuration&)>& modify);
+
     void send_heartbeats();
+    // Requires _heartbeat_mutex to be held.
+    void arm_heartbeat_watchdog_with_lock(double timeout_s);
+    void on_heartbeat_watchdog_expired(uint64_t generation);
+    // Must be called without _heartbeat_mutex held. Stops heartbeats again
+    // if the policy snapshot that justified a start has gone stale.
+    void stop_heartbeats_if_policy_disallows();
+    // Must be called without _heartbeat_mutex held. Starts heartbeats again
+    // if the policy snapshot that justified a stop has gone stale.
+    void start_heartbeats_if_policy_requires();
 
     void process_user_callbacks_thread();
 
@@ -251,13 +278,38 @@ private:
 
     CallbackList<> _new_system_callbacks{_io_context};
 
+    // Serializes configuration writers (set_configuration() and
+    // update_configuration()) so that read-modify-write updates cannot lose
+    // each other's changes. Always the outermost lock: it is never taken by
+    // the io thread, and set_configuration() takes _mutex,
+    // _server_components_mutex and _heartbeat_mutex only individually while
+    // holding it, so it cannot participate in a lock-order cycle. Recursive
+    // because update_configuration() calls set_configuration().
+    std::recursive_mutex _configuration_update_mutex;
+
     // Leaf mutex guarding only _configuration. It is never held while acquiring
     // another mutex, so it cannot participate in a lock-order inversion with
-    // _mutex / _server_components_mutex.
+    // _mutex / _server_components_mutex. Writers must additionally hold
+    // _configuration_update_mutex (via set_configuration() or
+    // update_configuration()), which serializes read-modify-write updates.
     mutable std::mutex _configuration_mutex{};
     Mavsdk::Configuration _configuration{ComponentType::GroundStation};
     std::atomic<uint8_t> _our_system_id{0};
     std::atomic<uint8_t> _our_component_id{0};
+    // Cached as atomics so they can be read on lock-free paths (e.g.
+    // feed_heartbeat_watchdog()) without racing against set_configuration()
+    // writing _configuration. This also keeps the getters free of _mutex:
+    // some of them are called while _server_components_mutex is held (e.g.
+    // send_heartbeats() -> ServerComponentImpl::send_heartbeat() ->
+    // get_mav_autopilot()), and taking _mutex there would create a
+    // _server_components_mutex -> _mutex ordering that conflicts with the io
+    // thread's _mutex -> _server_components_mutex order (process_message()
+    // -> start_sending_heartbeats()).
+    std::atomic<bool> _always_send_heartbeats{false};
+    std::atomic<double> _heartbeat_watchdog_timeout_s{0.0};
+    std::atomic<uint8_t> _our_mav_type{0};
+    std::atomic<Autopilot> _our_autopilot{Autopilot::Unknown};
+    std::atomic<CompatibilityMode> _our_compatibility_mode{CompatibilityMode::Auto};
 
     struct UserCallback {
         UserCallback() = default;
@@ -307,7 +359,25 @@ private:
 
     static constexpr double HEARTBEAT_SEND_INTERVAL_S = 1.0;
     std::mutex _heartbeat_mutex{};
-    CallEveryHandler::Cookie _heartbeat_send_cookie{};
+    CallEveryHandler::Cookie _heartbeat_send_cookie{0};
+    // Heartbeat watchdog (deadman timer): while configured (timeout > 0 in
+    // the configuration), periodic heartbeats are stopped unless
+    // feed_heartbeat_watchdog() is called at least once per timeout period.
+    // When enabled or when the timeout changes, heartbeats are latched off
+    // until the watchdog is fed - never left running for a free timeout
+    // period. Whenever heartbeats stop - watchdog expiry, disconnect, or the
+    // policy turning off - they are latched off until the watchdog is fed
+    // again.
+    TimeoutHandler::Cookie _heartbeat_watchdog_cookie{0};
+    bool _heartbeat_watchdog_expired{false};
+    // Incremented (under _heartbeat_mutex) whenever the watchdog timeout is
+    // armed, re-armed, reconfigured or stopped. The expiry callback captures
+    // the generation it was armed with and ignores the expiry if it no longer
+    // matches: TimeoutHandler removes an expired timeout before invoking its
+    // callback, so a feed_heartbeat_watchdog() or stop racing with the expiry
+    // could otherwise be lost (refresh misses, then the stale expiry latches
+    // heartbeats off although the feed arrived in time).
+    uint64_t _heartbeat_watchdog_generation{0};
 
     std::mutex _callback_executor_mutex{};
     std::function<void(std::function<void()>)> _callback_executor{};

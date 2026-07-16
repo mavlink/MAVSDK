@@ -21,6 +21,17 @@ namespace mavsdk {
 
 class ServerPluginImplBase;
 
+/** @brief Minimum heartbeat watchdog timeout when enabled, in seconds. */
+constexpr double heartbeat_watchdog_min_timeout_s = 1.0;
+
+/**
+ * @brief Check whether a heartbeat watchdog timeout is valid.
+ *
+ * @return true if timeout_s is 0 (disabled), or finite and at least
+ *         heartbeat_watchdog_min_timeout_s.
+ */
+MAVSDK_PUBLIC bool is_valid_heartbeat_watchdog_timeout_s(double timeout_s);
+
 /**
  * @brief ForwardingOption for Connection, used to set message forwarding option.
  */
@@ -241,8 +252,56 @@ public:
 
         /**
          * @brief Set whether to send heartbeats by default.
+         *
+         * Note: when a heartbeat watchdog is configured
+         * (set_heartbeat_watchdog_timeout_s()) and has expired, the watchdog
+         * latch takes precedence: heartbeats stay off until
+         * Mavsdk::feed_heartbeat_watchdog() is called again, even if
+         * always_send_heartbeats is set.
          */
         void set_always_send_heartbeats(bool always_send_heartbeats);
+
+        /**
+         * @brief Get the heartbeat watchdog timeout.
+         * @return Timeout in seconds, 0 if the watchdog is disabled.
+         */
+        double get_heartbeat_watchdog_timeout_s() const;
+
+        /**
+         * @brief Set the heartbeat watchdog (deadman timer) timeout.
+         *
+         * When set to a value greater than 0, the periodic heartbeats sent
+         * by MAVSDK are only sent as long as Mavsdk::feed_heartbeat_watchdog()
+         * keeps being called at least once per timeout period. Heartbeats
+         * never start (and any already-running heartbeats are stopped) until
+         * the watchdog has been fed - including when the watchdog is first
+         * enabled or its timeout is changed. If the watchdog times out,
+         * heartbeats are latched off - including across reconnects and new
+         * system discovery - until the watchdog is fed again.
+         *
+         * Heartbeats are also latched off whenever they stop for any other
+         * reason while the watchdog is configured (e.g. when the connected
+         * system disconnects): after a reconnect, heartbeats only resume
+         * once the watchdog has been fed again.
+         *
+         * This is useful when MAVSDK's heartbeats should reflect the liveness
+         * of the application: if the application hangs or dies, heartbeats
+         * stop.
+         *
+         * While the watchdog is expired, the latch takes precedence over
+         * set_always_send_heartbeats(): heartbeats stay off until the watchdog
+         * is fed again.
+         *
+         * When set to 0, the watchdog is disabled and heartbeats follow the
+         * usual policy (always_send_heartbeats or a connected system).
+         *
+         * Default: 0 (disabled)
+         *
+         * @param timeout_s Timeout in seconds: 0 (disabled) or at least 1.
+         * @return true if the value was accepted, false if it was rejected
+         *         (invalid values are ignored and the previous value kept).
+         */
+        bool set_heartbeat_watchdog_timeout_s(double timeout_s);
 
         /** @brief Component type of this configuration, used for automatic ID set */
         ComponentType get_component_type() const;
@@ -302,6 +361,7 @@ public:
         uint8_t _system_id;
         uint8_t _component_id;
         bool _always_send_heartbeats;
+        double _heartbeat_watchdog_timeout_s{0.0};
         ComponentType _component_type;
         MAV_TYPE _mav_type;
         Autopilot _autopilot{Autopilot::Unknown};
@@ -348,6 +408,26 @@ public:
     void set_configuration(Configuration configuration);
 
     /**
+     * @brief Set the heartbeat watchdog timeout at runtime.
+     *
+     * When set to a value greater than 0, the periodic heartbeats sent by
+     * MAVSDK are only sent as long as feed_heartbeat_watchdog() keeps being
+     * called at least once per timeout period. Enabling or changing the
+     * timeout stops any running heartbeats until the watchdog is fed.
+     *
+     * When set to 0, the watchdog is disabled and heartbeats follow the
+     * usual policy (always_send_heartbeats or a connected system).
+     *
+     * This is an alternative to configuring the watchdog via
+     * Configuration::set_heartbeat_watchdog_timeout_s() at startup.
+     *
+     * @param timeout_s Timeout in seconds: 0 (disabled) or at least 1.
+     * @return true if the value was accepted, false if it was rejected
+     *         (invalid values are ignored and the previous value kept).
+     */
+    bool set_heartbeat_watchdog_timeout_s(double timeout_s);
+
+    /**
      * @brief Set timeout of MAVLink transfers.
      *
      * The default timeout used is generally DEFAULT_SERIAL_BAUDRATE (0.5 seconds) seconds.
@@ -373,6 +453,23 @@ public:
      * @return Timeout in seconds.
      */
     double get_heartbeat_timeout_s() const;
+
+    /**
+     * @brief Feed the heartbeat watchdog.
+     *
+     * Resets the watchdog timer configured with
+     * Configuration::set_heartbeat_watchdog_timeout_s(), keeping the periodic
+     * heartbeats alive for another timeout period. If the watchdog had
+     * already expired, this restarts the heartbeats.
+     *
+     * Has no effect if no watchdog is configured. A feed only clears the
+     * watchdog latch (set on expiry or whenever heartbeats stop while the
+     * watchdog is configured), and only restarts heartbeats if they are
+     * supposed to be sent in the first place (always_send_heartbeats is set
+     * or a system is connected). It never starts heartbeats that are off for
+     * any other reason.
+     */
+    void feed_heartbeat_watchdog();
 
     /**
      * @brief Set a custom callback executor.
