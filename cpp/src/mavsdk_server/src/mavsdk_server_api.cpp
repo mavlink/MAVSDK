@@ -31,7 +31,19 @@ int mavsdk_server_run_with_mavlink_ids(
     const uint8_t system_id,
     const uint8_t component_id)
 {
-    mavsdk_server->setMavlinkIds(system_id, component_id);
+    return mavsdk_server_run_with_mavlink_ids_and_options(
+        mavsdk_server, system_address, mavsdk_server_port, system_id, component_id, 0.0);
+}
+
+int mavsdk_server_run_with_mavlink_ids_and_options(
+    MavsdkServer* mavsdk_server,
+    const char* system_address,
+    const int mavsdk_server_port,
+    const uint8_t system_id,
+    const uint8_t component_id,
+    const double heartbeat_watchdog_timeout_s)
+{
+    mavsdk_server->setMavlinkIds(system_id, component_id, heartbeat_watchdog_timeout_s);
     return mavsdk_server_run(mavsdk_server, system_address, mavsdk_server_port);
 }
 

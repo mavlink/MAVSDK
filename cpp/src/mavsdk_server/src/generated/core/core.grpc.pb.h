@@ -63,6 +63,49 @@ class CoreService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::core::SetMavlinkTimeoutResponse>> PrepareAsyncSetMavlinkTimeout(::grpc::ClientContext* context, const ::mavsdk::rpc::core::SetMavlinkTimeoutRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::core::SetMavlinkTimeoutResponse>>(PrepareAsyncSetMavlinkTimeoutRaw(context, request, cq));
     }
+    //
+    // Feed the heartbeat watchdog.
+    //
+    // MAVSDK can be configured with a heartbeat watchdog (deadman timer).
+    // While configured, the periodic heartbeats sent by MAVSDK are only sent
+    // as long as this is called at least once per timeout period. If the
+    // watchdog times out, heartbeats stop until it is fed again.
+    //
+    // This allows MAVSDK's heartbeats to reflect the liveness of the client:
+    // if the client hangs or dies, heartbeats stop.
+    //
+    // Has no effect if no watchdog is configured (e.g. with the
+    // --heartbeat-watchdog-timeout option of mavsdk_server, or
+    // SetHeartbeatWatchdogTimeout).
+    virtual ::grpc::Status FeedHeartbeatWatchdog(::grpc::ClientContext* context, const ::mavsdk::rpc::core::FeedHeartbeatWatchdogRequest& request, ::mavsdk::rpc::core::FeedHeartbeatWatchdogResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::core::FeedHeartbeatWatchdogResponse>> AsyncFeedHeartbeatWatchdog(::grpc::ClientContext* context, const ::mavsdk::rpc::core::FeedHeartbeatWatchdogRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::core::FeedHeartbeatWatchdogResponse>>(AsyncFeedHeartbeatWatchdogRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::core::FeedHeartbeatWatchdogResponse>> PrepareAsyncFeedHeartbeatWatchdog(::grpc::ClientContext* context, const ::mavsdk::rpc::core::FeedHeartbeatWatchdogRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::core::FeedHeartbeatWatchdogResponse>>(PrepareAsyncFeedHeartbeatWatchdogRaw(context, request, cq));
+    }
+    //
+    // Set the heartbeat watchdog timeout.
+    //
+    // When timeout_s is greater than 0, the periodic heartbeats sent by MAVSDK
+    // are only sent as long as FeedHeartbeatWatchdog is called at least once
+    // per timeout period. If the watchdog times out, heartbeats stop until it
+    // is fed again.
+    //
+    // When timeout_s is 0, the watchdog is disabled and heartbeats follow the
+    // usual policy (always_send_heartbeats or a connected system).
+    //
+    // Values greater than 0 and less than 1 are rejected.
+    //
+    // This is an alternative to configuring the watchdog at mavsdk_server
+    // startup with the --heartbeat-watchdog-timeout option.
+    virtual ::grpc::Status SetHeartbeatWatchdogTimeout(::grpc::ClientContext* context, const ::mavsdk::rpc::core::SetHeartbeatWatchdogTimeoutRequest& request, ::mavsdk::rpc::core::SetHeartbeatWatchdogTimeoutResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::core::SetHeartbeatWatchdogTimeoutResponse>> AsyncSetHeartbeatWatchdogTimeout(::grpc::ClientContext* context, const ::mavsdk::rpc::core::SetHeartbeatWatchdogTimeoutRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::core::SetHeartbeatWatchdogTimeoutResponse>>(AsyncSetHeartbeatWatchdogTimeoutRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::core::SetHeartbeatWatchdogTimeoutResponse>> PrepareAsyncSetHeartbeatWatchdogTimeout(::grpc::ClientContext* context, const ::mavsdk::rpc::core::SetHeartbeatWatchdogTimeoutRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::core::SetHeartbeatWatchdogTimeoutResponse>>(PrepareAsyncSetHeartbeatWatchdogTimeoutRaw(context, request, cq));
+    }
     class async_interface {
      public:
       virtual ~async_interface() {}
@@ -78,6 +121,39 @@ class CoreService final {
       // need to be increased to prevent timeouts.
       virtual void SetMavlinkTimeout(::grpc::ClientContext* context, const ::mavsdk::rpc::core::SetMavlinkTimeoutRequest* request, ::mavsdk::rpc::core::SetMavlinkTimeoutResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void SetMavlinkTimeout(::grpc::ClientContext* context, const ::mavsdk::rpc::core::SetMavlinkTimeoutRequest* request, ::mavsdk::rpc::core::SetMavlinkTimeoutResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      //
+      // Feed the heartbeat watchdog.
+      //
+      // MAVSDK can be configured with a heartbeat watchdog (deadman timer).
+      // While configured, the periodic heartbeats sent by MAVSDK are only sent
+      // as long as this is called at least once per timeout period. If the
+      // watchdog times out, heartbeats stop until it is fed again.
+      //
+      // This allows MAVSDK's heartbeats to reflect the liveness of the client:
+      // if the client hangs or dies, heartbeats stop.
+      //
+      // Has no effect if no watchdog is configured (e.g. with the
+      // --heartbeat-watchdog-timeout option of mavsdk_server, or
+      // SetHeartbeatWatchdogTimeout).
+      virtual void FeedHeartbeatWatchdog(::grpc::ClientContext* context, const ::mavsdk::rpc::core::FeedHeartbeatWatchdogRequest* request, ::mavsdk::rpc::core::FeedHeartbeatWatchdogResponse* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void FeedHeartbeatWatchdog(::grpc::ClientContext* context, const ::mavsdk::rpc::core::FeedHeartbeatWatchdogRequest* request, ::mavsdk::rpc::core::FeedHeartbeatWatchdogResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      //
+      // Set the heartbeat watchdog timeout.
+      //
+      // When timeout_s is greater than 0, the periodic heartbeats sent by MAVSDK
+      // are only sent as long as FeedHeartbeatWatchdog is called at least once
+      // per timeout period. If the watchdog times out, heartbeats stop until it
+      // is fed again.
+      //
+      // When timeout_s is 0, the watchdog is disabled and heartbeats follow the
+      // usual policy (always_send_heartbeats or a connected system).
+      //
+      // Values greater than 0 and less than 1 are rejected.
+      //
+      // This is an alternative to configuring the watchdog at mavsdk_server
+      // startup with the --heartbeat-watchdog-timeout option.
+      virtual void SetHeartbeatWatchdogTimeout(::grpc::ClientContext* context, const ::mavsdk::rpc::core::SetHeartbeatWatchdogTimeoutRequest* request, ::mavsdk::rpc::core::SetHeartbeatWatchdogTimeoutResponse* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void SetHeartbeatWatchdogTimeout(::grpc::ClientContext* context, const ::mavsdk::rpc::core::SetHeartbeatWatchdogTimeoutRequest* request, ::mavsdk::rpc::core::SetHeartbeatWatchdogTimeoutResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
     };
     typedef class async_interface experimental_async_interface;
     virtual class async_interface* async() { return nullptr; }
@@ -88,6 +164,10 @@ class CoreService final {
     virtual ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::core::ConnectionStateResponse>* PrepareAsyncSubscribeConnectionStateRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::core::SubscribeConnectionStateRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::core::SetMavlinkTimeoutResponse>* AsyncSetMavlinkTimeoutRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::core::SetMavlinkTimeoutRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::core::SetMavlinkTimeoutResponse>* PrepareAsyncSetMavlinkTimeoutRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::core::SetMavlinkTimeoutRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::core::FeedHeartbeatWatchdogResponse>* AsyncFeedHeartbeatWatchdogRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::core::FeedHeartbeatWatchdogRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::core::FeedHeartbeatWatchdogResponse>* PrepareAsyncFeedHeartbeatWatchdogRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::core::FeedHeartbeatWatchdogRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::core::SetHeartbeatWatchdogTimeoutResponse>* AsyncSetHeartbeatWatchdogTimeoutRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::core::SetHeartbeatWatchdogTimeoutRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::core::SetHeartbeatWatchdogTimeoutResponse>* PrepareAsyncSetHeartbeatWatchdogTimeoutRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::core::SetHeartbeatWatchdogTimeoutRequest& request, ::grpc::CompletionQueue* cq) = 0;
   };
   class Stub final : public StubInterface {
    public:
@@ -108,12 +188,30 @@ class CoreService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::core::SetMavlinkTimeoutResponse>> PrepareAsyncSetMavlinkTimeout(::grpc::ClientContext* context, const ::mavsdk::rpc::core::SetMavlinkTimeoutRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::core::SetMavlinkTimeoutResponse>>(PrepareAsyncSetMavlinkTimeoutRaw(context, request, cq));
     }
+    ::grpc::Status FeedHeartbeatWatchdog(::grpc::ClientContext* context, const ::mavsdk::rpc::core::FeedHeartbeatWatchdogRequest& request, ::mavsdk::rpc::core::FeedHeartbeatWatchdogResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::core::FeedHeartbeatWatchdogResponse>> AsyncFeedHeartbeatWatchdog(::grpc::ClientContext* context, const ::mavsdk::rpc::core::FeedHeartbeatWatchdogRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::core::FeedHeartbeatWatchdogResponse>>(AsyncFeedHeartbeatWatchdogRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::core::FeedHeartbeatWatchdogResponse>> PrepareAsyncFeedHeartbeatWatchdog(::grpc::ClientContext* context, const ::mavsdk::rpc::core::FeedHeartbeatWatchdogRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::core::FeedHeartbeatWatchdogResponse>>(PrepareAsyncFeedHeartbeatWatchdogRaw(context, request, cq));
+    }
+    ::grpc::Status SetHeartbeatWatchdogTimeout(::grpc::ClientContext* context, const ::mavsdk::rpc::core::SetHeartbeatWatchdogTimeoutRequest& request, ::mavsdk::rpc::core::SetHeartbeatWatchdogTimeoutResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::core::SetHeartbeatWatchdogTimeoutResponse>> AsyncSetHeartbeatWatchdogTimeout(::grpc::ClientContext* context, const ::mavsdk::rpc::core::SetHeartbeatWatchdogTimeoutRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::core::SetHeartbeatWatchdogTimeoutResponse>>(AsyncSetHeartbeatWatchdogTimeoutRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::core::SetHeartbeatWatchdogTimeoutResponse>> PrepareAsyncSetHeartbeatWatchdogTimeout(::grpc::ClientContext* context, const ::mavsdk::rpc::core::SetHeartbeatWatchdogTimeoutRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::core::SetHeartbeatWatchdogTimeoutResponse>>(PrepareAsyncSetHeartbeatWatchdogTimeoutRaw(context, request, cq));
+    }
     class async final :
       public StubInterface::async_interface {
      public:
       void SubscribeConnectionState(::grpc::ClientContext* context, const ::mavsdk::rpc::core::SubscribeConnectionStateRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::core::ConnectionStateResponse>* reactor) override;
       void SetMavlinkTimeout(::grpc::ClientContext* context, const ::mavsdk::rpc::core::SetMavlinkTimeoutRequest* request, ::mavsdk::rpc::core::SetMavlinkTimeoutResponse* response, std::function<void(::grpc::Status)>) override;
       void SetMavlinkTimeout(::grpc::ClientContext* context, const ::mavsdk::rpc::core::SetMavlinkTimeoutRequest* request, ::mavsdk::rpc::core::SetMavlinkTimeoutResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void FeedHeartbeatWatchdog(::grpc::ClientContext* context, const ::mavsdk::rpc::core::FeedHeartbeatWatchdogRequest* request, ::mavsdk::rpc::core::FeedHeartbeatWatchdogResponse* response, std::function<void(::grpc::Status)>) override;
+      void FeedHeartbeatWatchdog(::grpc::ClientContext* context, const ::mavsdk::rpc::core::FeedHeartbeatWatchdogRequest* request, ::mavsdk::rpc::core::FeedHeartbeatWatchdogResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void SetHeartbeatWatchdogTimeout(::grpc::ClientContext* context, const ::mavsdk::rpc::core::SetHeartbeatWatchdogTimeoutRequest* request, ::mavsdk::rpc::core::SetHeartbeatWatchdogTimeoutResponse* response, std::function<void(::grpc::Status)>) override;
+      void SetHeartbeatWatchdogTimeout(::grpc::ClientContext* context, const ::mavsdk::rpc::core::SetHeartbeatWatchdogTimeoutRequest* request, ::mavsdk::rpc::core::SetHeartbeatWatchdogTimeoutResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
      private:
       friend class Stub;
       explicit async(Stub* stub): stub_(stub) { }
@@ -130,8 +228,14 @@ class CoreService final {
     ::grpc::ClientAsyncReader< ::mavsdk::rpc::core::ConnectionStateResponse>* PrepareAsyncSubscribeConnectionStateRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::core::SubscribeConnectionStateRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::core::SetMavlinkTimeoutResponse>* AsyncSetMavlinkTimeoutRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::core::SetMavlinkTimeoutRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::core::SetMavlinkTimeoutResponse>* PrepareAsyncSetMavlinkTimeoutRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::core::SetMavlinkTimeoutRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::core::FeedHeartbeatWatchdogResponse>* AsyncFeedHeartbeatWatchdogRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::core::FeedHeartbeatWatchdogRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::core::FeedHeartbeatWatchdogResponse>* PrepareAsyncFeedHeartbeatWatchdogRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::core::FeedHeartbeatWatchdogRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::core::SetHeartbeatWatchdogTimeoutResponse>* AsyncSetHeartbeatWatchdogTimeoutRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::core::SetHeartbeatWatchdogTimeoutRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::core::SetHeartbeatWatchdogTimeoutResponse>* PrepareAsyncSetHeartbeatWatchdogTimeoutRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::core::SetHeartbeatWatchdogTimeoutRequest& request, ::grpc::CompletionQueue* cq) override;
     const ::grpc::internal::RpcMethod rpcmethod_SubscribeConnectionState_;
     const ::grpc::internal::RpcMethod rpcmethod_SetMavlinkTimeout_;
+    const ::grpc::internal::RpcMethod rpcmethod_FeedHeartbeatWatchdog_;
+    const ::grpc::internal::RpcMethod rpcmethod_SetHeartbeatWatchdogTimeout_;
   };
   static std::unique_ptr<Stub> NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
 
@@ -150,6 +254,37 @@ class CoreService final {
     // if MAVSDK has to communicate over links with high latency it might
     // need to be increased to prevent timeouts.
     virtual ::grpc::Status SetMavlinkTimeout(::grpc::ServerContext* context, const ::mavsdk::rpc::core::SetMavlinkTimeoutRequest* request, ::mavsdk::rpc::core::SetMavlinkTimeoutResponse* response);
+    //
+    // Feed the heartbeat watchdog.
+    //
+    // MAVSDK can be configured with a heartbeat watchdog (deadman timer).
+    // While configured, the periodic heartbeats sent by MAVSDK are only sent
+    // as long as this is called at least once per timeout period. If the
+    // watchdog times out, heartbeats stop until it is fed again.
+    //
+    // This allows MAVSDK's heartbeats to reflect the liveness of the client:
+    // if the client hangs or dies, heartbeats stop.
+    //
+    // Has no effect if no watchdog is configured (e.g. with the
+    // --heartbeat-watchdog-timeout option of mavsdk_server, or
+    // SetHeartbeatWatchdogTimeout).
+    virtual ::grpc::Status FeedHeartbeatWatchdog(::grpc::ServerContext* context, const ::mavsdk::rpc::core::FeedHeartbeatWatchdogRequest* request, ::mavsdk::rpc::core::FeedHeartbeatWatchdogResponse* response);
+    //
+    // Set the heartbeat watchdog timeout.
+    //
+    // When timeout_s is greater than 0, the periodic heartbeats sent by MAVSDK
+    // are only sent as long as FeedHeartbeatWatchdog is called at least once
+    // per timeout period. If the watchdog times out, heartbeats stop until it
+    // is fed again.
+    //
+    // When timeout_s is 0, the watchdog is disabled and heartbeats follow the
+    // usual policy (always_send_heartbeats or a connected system).
+    //
+    // Values greater than 0 and less than 1 are rejected.
+    //
+    // This is an alternative to configuring the watchdog at mavsdk_server
+    // startup with the --heartbeat-watchdog-timeout option.
+    virtual ::grpc::Status SetHeartbeatWatchdogTimeout(::grpc::ServerContext* context, const ::mavsdk::rpc::core::SetHeartbeatWatchdogTimeoutRequest* request, ::mavsdk::rpc::core::SetHeartbeatWatchdogTimeoutResponse* response);
   };
   template <class BaseClass>
   class WithAsyncMethod_SubscribeConnectionState : public BaseClass {
@@ -191,7 +326,47 @@ class CoreService final {
       ::grpc::Service::RequestAsyncUnary(1, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
-  typedef WithAsyncMethod_SubscribeConnectionState<WithAsyncMethod_SetMavlinkTimeout<Service > > AsyncService;
+  template <class BaseClass>
+  class WithAsyncMethod_FeedHeartbeatWatchdog : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithAsyncMethod_FeedHeartbeatWatchdog() {
+      ::grpc::Service::MarkMethodAsync(2);
+    }
+    ~WithAsyncMethod_FeedHeartbeatWatchdog() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status FeedHeartbeatWatchdog(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::core::FeedHeartbeatWatchdogRequest* /*request*/, ::mavsdk::rpc::core::FeedHeartbeatWatchdogResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestFeedHeartbeatWatchdog(::grpc::ServerContext* context, ::mavsdk::rpc::core::FeedHeartbeatWatchdogRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::core::FeedHeartbeatWatchdogResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(2, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithAsyncMethod_SetHeartbeatWatchdogTimeout : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithAsyncMethod_SetHeartbeatWatchdogTimeout() {
+      ::grpc::Service::MarkMethodAsync(3);
+    }
+    ~WithAsyncMethod_SetHeartbeatWatchdogTimeout() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SetHeartbeatWatchdogTimeout(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::core::SetHeartbeatWatchdogTimeoutRequest* /*request*/, ::mavsdk::rpc::core::SetHeartbeatWatchdogTimeoutResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestSetHeartbeatWatchdogTimeout(::grpc::ServerContext* context, ::mavsdk::rpc::core::SetHeartbeatWatchdogTimeoutRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::core::SetHeartbeatWatchdogTimeoutResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(3, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  typedef WithAsyncMethod_SubscribeConnectionState<WithAsyncMethod_SetMavlinkTimeout<WithAsyncMethod_FeedHeartbeatWatchdog<WithAsyncMethod_SetHeartbeatWatchdogTimeout<Service > > > > AsyncService;
   template <class BaseClass>
   class WithCallbackMethod_SubscribeConnectionState : public BaseClass {
    private:
@@ -241,7 +416,61 @@ class CoreService final {
     virtual ::grpc::ServerUnaryReactor* SetMavlinkTimeout(
       ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::core::SetMavlinkTimeoutRequest* /*request*/, ::mavsdk::rpc::core::SetMavlinkTimeoutResponse* /*response*/)  { return nullptr; }
   };
-  typedef WithCallbackMethod_SubscribeConnectionState<WithCallbackMethod_SetMavlinkTimeout<Service > > CallbackService;
+  template <class BaseClass>
+  class WithCallbackMethod_FeedHeartbeatWatchdog : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithCallbackMethod_FeedHeartbeatWatchdog() {
+      ::grpc::Service::MarkMethodCallback(2,
+          new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::core::FeedHeartbeatWatchdogRequest, ::mavsdk::rpc::core::FeedHeartbeatWatchdogResponse>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::core::FeedHeartbeatWatchdogRequest* request, ::mavsdk::rpc::core::FeedHeartbeatWatchdogResponse* response) { return this->FeedHeartbeatWatchdog(context, request, response); }));}
+    void SetMessageAllocatorFor_FeedHeartbeatWatchdog(
+        ::grpc::MessageAllocator< ::mavsdk::rpc::core::FeedHeartbeatWatchdogRequest, ::mavsdk::rpc::core::FeedHeartbeatWatchdogResponse>* allocator) {
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(2);
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::core::FeedHeartbeatWatchdogRequest, ::mavsdk::rpc::core::FeedHeartbeatWatchdogResponse>*>(handler)
+              ->SetMessageAllocator(allocator);
+    }
+    ~WithCallbackMethod_FeedHeartbeatWatchdog() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status FeedHeartbeatWatchdog(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::core::FeedHeartbeatWatchdogRequest* /*request*/, ::mavsdk::rpc::core::FeedHeartbeatWatchdogResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* FeedHeartbeatWatchdog(
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::core::FeedHeartbeatWatchdogRequest* /*request*/, ::mavsdk::rpc::core::FeedHeartbeatWatchdogResponse* /*response*/)  { return nullptr; }
+  };
+  template <class BaseClass>
+  class WithCallbackMethod_SetHeartbeatWatchdogTimeout : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithCallbackMethod_SetHeartbeatWatchdogTimeout() {
+      ::grpc::Service::MarkMethodCallback(3,
+          new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::core::SetHeartbeatWatchdogTimeoutRequest, ::mavsdk::rpc::core::SetHeartbeatWatchdogTimeoutResponse>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::core::SetHeartbeatWatchdogTimeoutRequest* request, ::mavsdk::rpc::core::SetHeartbeatWatchdogTimeoutResponse* response) { return this->SetHeartbeatWatchdogTimeout(context, request, response); }));}
+    void SetMessageAllocatorFor_SetHeartbeatWatchdogTimeout(
+        ::grpc::MessageAllocator< ::mavsdk::rpc::core::SetHeartbeatWatchdogTimeoutRequest, ::mavsdk::rpc::core::SetHeartbeatWatchdogTimeoutResponse>* allocator) {
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(3);
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::core::SetHeartbeatWatchdogTimeoutRequest, ::mavsdk::rpc::core::SetHeartbeatWatchdogTimeoutResponse>*>(handler)
+              ->SetMessageAllocator(allocator);
+    }
+    ~WithCallbackMethod_SetHeartbeatWatchdogTimeout() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SetHeartbeatWatchdogTimeout(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::core::SetHeartbeatWatchdogTimeoutRequest* /*request*/, ::mavsdk::rpc::core::SetHeartbeatWatchdogTimeoutResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* SetHeartbeatWatchdogTimeout(
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::core::SetHeartbeatWatchdogTimeoutRequest* /*request*/, ::mavsdk::rpc::core::SetHeartbeatWatchdogTimeoutResponse* /*response*/)  { return nullptr; }
+  };
+  typedef WithCallbackMethod_SubscribeConnectionState<WithCallbackMethod_SetMavlinkTimeout<WithCallbackMethod_FeedHeartbeatWatchdog<WithCallbackMethod_SetHeartbeatWatchdogTimeout<Service > > > > CallbackService;
   typedef CallbackService ExperimentalCallbackService;
   template <class BaseClass>
   class WithGenericMethod_SubscribeConnectionState : public BaseClass {
@@ -273,6 +502,40 @@ class CoreService final {
     }
     // disable synchronous version of this method
     ::grpc::Status SetMavlinkTimeout(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::core::SetMavlinkTimeoutRequest* /*request*/, ::mavsdk::rpc::core::SetMavlinkTimeoutResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
+  template <class BaseClass>
+  class WithGenericMethod_FeedHeartbeatWatchdog : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithGenericMethod_FeedHeartbeatWatchdog() {
+      ::grpc::Service::MarkMethodGeneric(2);
+    }
+    ~WithGenericMethod_FeedHeartbeatWatchdog() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status FeedHeartbeatWatchdog(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::core::FeedHeartbeatWatchdogRequest* /*request*/, ::mavsdk::rpc::core::FeedHeartbeatWatchdogResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
+  template <class BaseClass>
+  class WithGenericMethod_SetHeartbeatWatchdogTimeout : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithGenericMethod_SetHeartbeatWatchdogTimeout() {
+      ::grpc::Service::MarkMethodGeneric(3);
+    }
+    ~WithGenericMethod_SetHeartbeatWatchdogTimeout() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SetHeartbeatWatchdogTimeout(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::core::SetHeartbeatWatchdogTimeoutRequest* /*request*/, ::mavsdk::rpc::core::SetHeartbeatWatchdogTimeoutResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -315,6 +578,46 @@ class CoreService final {
     }
     void RequestSetMavlinkTimeout(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(1, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithRawMethod_FeedHeartbeatWatchdog : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawMethod_FeedHeartbeatWatchdog() {
+      ::grpc::Service::MarkMethodRaw(2);
+    }
+    ~WithRawMethod_FeedHeartbeatWatchdog() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status FeedHeartbeatWatchdog(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::core::FeedHeartbeatWatchdogRequest* /*request*/, ::mavsdk::rpc::core::FeedHeartbeatWatchdogResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestFeedHeartbeatWatchdog(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(2, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithRawMethod_SetHeartbeatWatchdogTimeout : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawMethod_SetHeartbeatWatchdogTimeout() {
+      ::grpc::Service::MarkMethodRaw(3);
+    }
+    ~WithRawMethod_SetHeartbeatWatchdogTimeout() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SetHeartbeatWatchdogTimeout(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::core::SetHeartbeatWatchdogTimeoutRequest* /*request*/, ::mavsdk::rpc::core::SetHeartbeatWatchdogTimeoutResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestSetHeartbeatWatchdogTimeout(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(3, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -362,6 +665,50 @@ class CoreService final {
       ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
+  class WithRawCallbackMethod_FeedHeartbeatWatchdog : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawCallbackMethod_FeedHeartbeatWatchdog() {
+      ::grpc::Service::MarkMethodRawCallback(2,
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->FeedHeartbeatWatchdog(context, request, response); }));
+    }
+    ~WithRawCallbackMethod_FeedHeartbeatWatchdog() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status FeedHeartbeatWatchdog(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::core::FeedHeartbeatWatchdogRequest* /*request*/, ::mavsdk::rpc::core::FeedHeartbeatWatchdogResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* FeedHeartbeatWatchdog(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
+  };
+  template <class BaseClass>
+  class WithRawCallbackMethod_SetHeartbeatWatchdogTimeout : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawCallbackMethod_SetHeartbeatWatchdogTimeout() {
+      ::grpc::Service::MarkMethodRawCallback(3,
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetHeartbeatWatchdogTimeout(context, request, response); }));
+    }
+    ~WithRawCallbackMethod_SetHeartbeatWatchdogTimeout() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SetHeartbeatWatchdogTimeout(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::core::SetHeartbeatWatchdogTimeoutRequest* /*request*/, ::mavsdk::rpc::core::SetHeartbeatWatchdogTimeoutResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* SetHeartbeatWatchdogTimeout(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
+  };
+  template <class BaseClass>
   class WithStreamedUnaryMethod_SetMavlinkTimeout : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
@@ -388,7 +735,61 @@ class CoreService final {
     // replace default version of method with streamed unary
     virtual ::grpc::Status StreamedSetMavlinkTimeout(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::core::SetMavlinkTimeoutRequest,::mavsdk::rpc::core::SetMavlinkTimeoutResponse>* server_unary_streamer) = 0;
   };
-  typedef WithStreamedUnaryMethod_SetMavlinkTimeout<Service > StreamedUnaryService;
+  template <class BaseClass>
+  class WithStreamedUnaryMethod_FeedHeartbeatWatchdog : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithStreamedUnaryMethod_FeedHeartbeatWatchdog() {
+      ::grpc::Service::MarkMethodStreamed(2,
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::mavsdk::rpc::core::FeedHeartbeatWatchdogRequest, ::mavsdk::rpc::core::FeedHeartbeatWatchdogResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::mavsdk::rpc::core::FeedHeartbeatWatchdogRequest, ::mavsdk::rpc::core::FeedHeartbeatWatchdogResponse>* streamer) {
+                       return this->StreamedFeedHeartbeatWatchdog(context,
+                         streamer);
+                  }));
+    }
+    ~WithStreamedUnaryMethod_FeedHeartbeatWatchdog() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status FeedHeartbeatWatchdog(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::core::FeedHeartbeatWatchdogRequest* /*request*/, ::mavsdk::rpc::core::FeedHeartbeatWatchdogResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with streamed unary
+    virtual ::grpc::Status StreamedFeedHeartbeatWatchdog(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::core::FeedHeartbeatWatchdogRequest,::mavsdk::rpc::core::FeedHeartbeatWatchdogResponse>* server_unary_streamer) = 0;
+  };
+  template <class BaseClass>
+  class WithStreamedUnaryMethod_SetHeartbeatWatchdogTimeout : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithStreamedUnaryMethod_SetHeartbeatWatchdogTimeout() {
+      ::grpc::Service::MarkMethodStreamed(3,
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::mavsdk::rpc::core::SetHeartbeatWatchdogTimeoutRequest, ::mavsdk::rpc::core::SetHeartbeatWatchdogTimeoutResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::mavsdk::rpc::core::SetHeartbeatWatchdogTimeoutRequest, ::mavsdk::rpc::core::SetHeartbeatWatchdogTimeoutResponse>* streamer) {
+                       return this->StreamedSetHeartbeatWatchdogTimeout(context,
+                         streamer);
+                  }));
+    }
+    ~WithStreamedUnaryMethod_SetHeartbeatWatchdogTimeout() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status SetHeartbeatWatchdogTimeout(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::core::SetHeartbeatWatchdogTimeoutRequest* /*request*/, ::mavsdk::rpc::core::SetHeartbeatWatchdogTimeoutResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with streamed unary
+    virtual ::grpc::Status StreamedSetHeartbeatWatchdogTimeout(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::core::SetHeartbeatWatchdogTimeoutRequest,::mavsdk::rpc::core::SetHeartbeatWatchdogTimeoutResponse>* server_unary_streamer) = 0;
+  };
+  typedef WithStreamedUnaryMethod_SetMavlinkTimeout<WithStreamedUnaryMethod_FeedHeartbeatWatchdog<WithStreamedUnaryMethod_SetHeartbeatWatchdogTimeout<Service > > > StreamedUnaryService;
   template <class BaseClass>
   class WithSplitStreamingMethod_SubscribeConnectionState : public BaseClass {
    private:
@@ -417,7 +818,7 @@ class CoreService final {
     virtual ::grpc::Status StreamedSubscribeConnectionState(::grpc::ServerContext* context, ::grpc::ServerSplitStreamer< ::mavsdk::rpc::core::SubscribeConnectionStateRequest,::mavsdk::rpc::core::ConnectionStateResponse>* server_split_streamer) = 0;
   };
   typedef WithSplitStreamingMethod_SubscribeConnectionState<Service > SplitStreamedService;
-  typedef WithSplitStreamingMethod_SubscribeConnectionState<WithStreamedUnaryMethod_SetMavlinkTimeout<Service > > StreamedService;
+  typedef WithSplitStreamingMethod_SubscribeConnectionState<WithStreamedUnaryMethod_SetMavlinkTimeout<WithStreamedUnaryMethod_FeedHeartbeatWatchdog<WithStreamedUnaryMethod_SetHeartbeatWatchdogTimeout<Service > > > > StreamedService;
 };
 
 }  // namespace core

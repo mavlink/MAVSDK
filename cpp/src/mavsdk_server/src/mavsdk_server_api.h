@@ -53,6 +53,21 @@ MAVSDK_PUBLIC int mavsdk_server_run_with_mavlink_ids(
     const uint8_t component_id);
 
 /*
+ * Run MavsdkServer with additional options.
+ *
+ * @param heartbeat_watchdog_timeout_s When greater than 0, MAVSDK's periodic
+ *        heartbeats are only sent as long as the FeedHeartbeatWatchdog RPC
+ *        keeps being called at least once per timeout period.
+ */
+MAVSDK_PUBLIC int mavsdk_server_run_with_mavlink_ids_and_options(
+    struct MavsdkServer* mavsdk_server,
+    const char* system_address,
+    const int mavsdk_server_port,
+    const uint8_t system_id,
+    const uint8_t component_id,
+    const double heartbeat_watchdog_timeout_s);
+
+/*
  * Get gRPC port.
  *
  * @param mavsdk_server Pointer to initialized MavsdkServer
