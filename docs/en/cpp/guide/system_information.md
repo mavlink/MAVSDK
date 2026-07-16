@@ -26,7 +26,7 @@ The code below shows how to query the hardware uid, version, and product, inform
 
 ::: tip
 The UUID/uid with type uint64_t has been replaced by uid2 called hardware_uid with type char[18].
-This was a a change inherited from mavlink in order to prevent ID conflicts.
+This was a change inherited from mavlink in order to prevent ID conflicts.
 :::
 
 ```cpp
