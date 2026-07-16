@@ -68,6 +68,7 @@ private:
     offboard_result_from_command_result(MavlinkCommandSender::Result result);
 
     void stop_sending_setpoints();
+    void note_setpoints_started();
 
     Time _time{};
 
@@ -94,7 +95,7 @@ private:
     Offboard::Attitude _attitude{};
     Offboard::AttitudeRate _attitude_rate{};
     Offboard::ActuatorControl _actuator_control{};
-    SteadyTimePoint _last_started{};
+    SteadyTimePoint _watchdog_grace_start{};
 
     CallEveryHandler::Cookie _call_every_cookie{};
 
